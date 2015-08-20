@@ -1,0 +1,2 @@
+Syslog-ng syslog server. This service is not intended to replace the default
+pfSense syslog server but rather acts as an independent syslog server.

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	syslog-ng_advanced.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2012 Lance Leger
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<name>Syslog-ng Advanced</name>
+	<version>1.0.8</version>
+	<title>Services: Syslog-ng Advanced</title>
+	<include_file>/usr/local/pkg/syslog-ng.inc</include_file>
+	<delete_string>An object has been deleted.</delete_string>
+	<addedit_string>An object has been created/modified.</addedit_string>
+	<menu>
+		<name>Syslog-ng</name>
+		<tooltiptext>Setup Syslog-ng</tooltiptext>
+		<section>Services</section>
+	</menu>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=syslog-ng.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Advanced</text>
+			<url>/pkg.php?xml=syslog-ng_advanced.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Log Viewer</text>
+			<url>/syslog-ng_log_viewer.php</url>
+		</tab>
+	</tabs>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Object Type</fielddescr>
+			<fieldname>objecttype</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Object Name</fielddescr>
+			<fieldname>objectname</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+		</columnitem>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<fielddescr>Object Name</fielddescr>
+			<fieldname>objectname</fieldname>
+			<description>Enter the object name</description>
+			<type>input</type>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Object Type</fielddescr>
+			<fieldname>objecttype</fieldname>
+			<description>Select the object type</description>
+			<type>select</type>
+			<value></value>
+			<options>
+				<option><name>Options</name><value>options</value></option>
+				<option><name>Source</name><value>source</value></option>
+				<option><name>Destination</name><value>destination</value></option>
+				<option><name>Log</name><value>log</value></option>
+				<option><name>Filter</name><value>filter</value></option>
+				<option><name>Parser</name><value>parser</value></option>
+				<option><name>Rewrite</name><value>rewrite</value></option>
+				<option><name>Template</name><value>template</value></option>
+			</options>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Object Parameters</fielddescr>
+			<fieldname>objectparameters</fieldname>
+			<description>Enter the object parameters</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<cols>65</cols>
+			<rows>5</rows>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+			<description>Enter the description for this item</description>
+			<type>input</type>
+		</field>
+	</fields>
+	<custom_delete_php_command>
+		syslogng_resync();
+	</custom_delete_php_command>
+	<custom_php_validation_command>
+		syslogng_validate_advanced($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		syslogng_resync();
+	</custom_php_resync_config_command>
+</packagegui>
