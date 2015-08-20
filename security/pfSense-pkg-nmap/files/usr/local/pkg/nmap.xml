@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ========================================================================== */
+/*
+	nmap.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2006 Bill Marquette <bill.marquette@gmail.com>
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+]]>
+	</copyright>
+	<name>nmap</name>
+	<version>1.4</version>
+	<title>Diagnostics: NMap</title>
+	<savetext>Scan</savetext>
+	<preoutput>yes</preoutput>
+	<donotsave>true</donotsave>
+	<include_file>/usr/local/pkg/nmap.inc</include_file>
+	<menu>
+		<name>NMap</name>
+		<tooltiptext>NMap is a utility for network exploration or security auditing. It supports ping scanning (determine which hosts are up), many port scanning techniques (determine what services the hosts are offering), version detection (determine what application/service is runing on a port), and TCP/IP fingerprinting (remote host OS or device identification). It also offers flexible target and port specification, decoy/stealth scanning, SunRPC scanning, and more. Most Unix and Windows platforms are supported in both GUI and command line modes. Several popular handheld devices are also supported, including the Sharp Zaurus and the iPAQ.</tooltiptext>
+		<section>Diagnostics</section>
+		<configfile>nmap.xml</configfile>
+	</menu>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/nmap/nmap.inc</item>
+	</additional_files_needed>
+	<fields>
+		<field>
+			<fielddescr>IP or Hostname</fielddescr>
+			<fieldname>hostname</fieldname>
+			<description>Enter the IP address or hostname that you would like to scan.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Interface</fielddescr>
+			<fieldname>interface</fieldname>
+			<description>Enter the source interface here.</description>
+			<type>select_source</type>
+			<source><![CDATA[nmap_get_interfaces()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+		</field>
+		<field>
+			<fielddescr>Scan Method</fielddescr>
+			<fieldname>scanmethod</fieldname>
+			<type>select</type>
+			<default_value>syn</default_value>
+			<options>
+				<option><name>SYN</name><value>syn</value></option>
+				<option><name>TCP connect()</name><value>connect</value></option>
+				<option><name>Ping</name><value>icmp</value></option>
+				<option><name>UDP</name><value>udp</value></option>
+				<option><name>ARP (directly connected networks only!)</name><value>arp</value></option>
+			</options>
+			<typehint>Scan method</typehint>
+		</field>
+		<field>
+			<fielddescr>-P0</fielddescr>
+			<fieldname>noping</fieldname>
+			<description>This allows the scanning of networks that don't allow ICMP echo requests (or responses) through their firewall. microsoft.com is an example of such a network, and thus you should always use -P0 or -PT80 when port scanning microsoft.com. Note the "ping" in this context may involve more than the traditional ICMP echo request packet. Nmap supports many such probes, including arbitrary combinations of TCP, UDP, and ICMP probes. By default, Nmap sends an ICMP echo request and a TCP ACK packet to port 80.</description>
+			<type>checkbox</type>
+			<typehint>Do not try to ping hosts at all before scanning them.</typehint>
+		</field>
+		<field>
+			<fielddescr>-sV</fielddescr>
+			<fieldname>servicever</fieldname>
+			<description>After TCP and/or UDP ports are discovered using one of the other scan methods, version detection communicates with those ports to try and determine more about what is actually running. A file called nmap-service-probes is used to determine the best probes for detecting various services and the match strings to expect. Nmap tries to determine the service protocol (e.g. ftp, ssh, telnet, http), the application name (e.g. ISC Bind, Apache httpd, Solaris telnetd), the version number, and sometimes miscellaneous details like whether an X server is open to connections or the SSH protocol version).</description>
+			<type>checkbox</type>
+			<typehint>Try to identify service versions.</typehint>
+		</field>
+		<field>
+			<fielddescr>-O</fielddescr>
+			<fieldname>osdetect</fieldname>
+			<description>This option activates remote host identification via TCP/IP fingerprinting. In other words, it uses a bunch of techniques to detect subtleties in the underlying operating system network stack of the computers you are scanning. It uses this information to create a "fingerprint" which it compares with its database of known OS fingerprints (the nmap-os-fingerprints file) to decide what type of system you are scanning.</description>
+			<type>checkbox</type>
+			<typehint>Turn on OS detection.</typehint>
+		</field>
+	</fields>
+	<custom_add_php_command>
+		nmap_custom_add_php_command();
+	</custom_add_php_command>
+	<custom_php_validation_command>
+		nmap_custom_php_validation_command($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_install_command>
+		nmap_install();
+	</custom_php_install_command>
+</packagegui>
