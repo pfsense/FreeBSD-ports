@@ -1,0 +1,3 @@
+Send and decode link layer advertisements. Support for LLDP (Link Layer
+Discovery Protocol), CDP (Cisco Discovery Protocol), EDP (Extreme Discovery
+Protocol) and NDP (Nortel Discovery Protocol).

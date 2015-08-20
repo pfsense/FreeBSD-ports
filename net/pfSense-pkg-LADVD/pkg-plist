@@ -1,0 +1,4 @@
+pkg/ladvd.xml
+pkg/ladvd.inc
+www/status_ladvd.php
+%%DATADIR%%/info.xml
