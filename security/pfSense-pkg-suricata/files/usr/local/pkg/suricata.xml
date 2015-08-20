@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	suricata.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2014-2015 Bill Meeks
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<description>Suricata IDS/IPS Package</description>
+	<name>suricata</name>
+	<version>2.0.8 pkg v2.1.6</version>
+	<title>Services: Suricata IDS</title>
+	<include_file>/usr/local/pkg/suricata/suricata.inc</include_file>
+	<menu>
+		<name>Suricata</name>
+		<tooltiptext>Configure Suricata settings</tooltiptext>
+		<section>Services</section>
+		<url>/suricata/suricata_interfaces.php</url>
+	</menu>
+	<service>
+		<name>suricata</name>
+		<rcfile>suricata.sh</rcfile>
+		<executable>suricata</executable>
+		<description>Suricata IDS/IPS Daemon</description>
+	</service>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata.priv.inc</item>
+		<prefix>/etc/inc/priv/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata.inc</item>
+		<prefix>/usr/local/pkg/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_sync.xml</item>
+		<prefix>/usr/local/pkg/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_check_cron_misc.inc</item>
+		<prefix>/usr/local/pkg/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_check_for_rule_updates.php</item>
+		<prefix>/usr/local/pkg/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_yaml_template.inc</item>
+		<prefix>/usr/local/pkg/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_generate_yaml.php</item>
+		<prefix>/usr/local/pkg/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_migrate_config.php</item>
+		<prefix>/usr/local/pkg/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_post_install.php</item>
+		<prefix>/usr/local/pkg/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_uninstall.php</item>
+		<prefix>/usr/local/pkg/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_defs.inc</item>
+		<prefix>/usr/local/pkg/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_geoipupdate.php</item>
+		<prefix>/usr/local/pkg/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_etiqrisk_update.php</item>
+		<prefix>/usr/local/pkg/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/deprecated_rules</item>
+		<prefix>/usr/local/pkg/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_download_updates.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_global.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_alerts.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_interfaces.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_interfaces_edit.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_download_rules.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_rules.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_rulesets.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_rules_flowbits.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_rules_edit.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_flow_stream.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_os_policy_engine.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_import_aliases.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_suppress.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_suppress_edit.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_logs_browser.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_logs_mgmt.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_sid_mgmt.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_list_view.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_app_parsers.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_libhtp_policy_engine.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_define_vars.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_barnyard.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_ip_list_mgmt.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_ip_reputation.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_iprep_list_browser.php</item>
+		<prefix>/usr/local/www/suricata/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/widgets/javascript/</prefix>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_alerts.js</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/widgets/widgets/</prefix>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_alerts.widget.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/widgets/include/</prefix>
+		<item>https://packages.pfsense.org/packages/config/suricata/widget-suricata.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/suricata/</prefix>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_blocked.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/suricata/</prefix>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_passlist.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/suricata/</prefix>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_passlist_edit.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/suricata/</prefix>
+		<item>https://packages.pfsense.org/packages/config/suricata/suricata_select_alias.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/var/db/suricata/sidmods/</prefix>
+		<item>https://packages.pfsense.org/packages/config/suricata/disablesid-sample.conf</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/var/db/suricata/sidmods/</prefix>
+		<item>https://packages.pfsense.org/packages/config/suricata/enablesid-sample.conf</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/var/db/suricata/sidmods/</prefix>
+		<item>https://packages.pfsense.org/packages/config/suricata/modifysid-sample.conf</item>
+	</additional_files_needed>
+	<!-- configpath gets expanded out automatically and config items will be stored in that location -->
+	<configpath>['installedpackages']['suricata']</configpath>
+	<custom_php_install_command>
+		<![CDATA[
+		include_once("/usr/local/pkg/suricata/suricata_post_install.php");
+		]]>
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		<![CDATA[
+		include_once("/usr/local/pkg/suricata/suricata_uninstall.php");
+		]]>
+	</custom_php_deinstall_command>
+	<custom_php_resync_config_command>
+		sync_suricata_package_config();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+	</custom_php_validation_command>
+</packagegui>
