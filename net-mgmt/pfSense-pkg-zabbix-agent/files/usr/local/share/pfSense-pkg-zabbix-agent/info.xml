@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>Zabbix Agent LTS</name>
+		<internal_name>zabbix-agent</internal_name>
+		<descr><![CDATA[LTS (Long Term Support) release of Zabbix Monitoring agent. Zabbix LTS releases are supported for 
+			Zabbix customers during five (5) years i.e. 3 years of Full Support (general, critical and security issues) 
+			and 2 additional years of Limited Support (critical and security issues only). Zabbix LTS version release 
+			will result in change of the first version number.&lt;br /&gt;
+			More info in &lt;a href=&quot;http://www.zabbix.com/life_cycle_and_release_policy.php&quot;&gt;Zabbix Life Cycle and Release Policy&lt;/a&gt;.]]></descr>
+		<website>http://www.zabbix.com/product.php</website>
+		<category>Services</category>
+		<config_file>https://packages.pfsense.org/packages/config/zabbix-agent-lts/zabbix-agent-lts.xml</config_file>
+		<version>0.8.5</version>
+		<status>BETA</status>
+		<required_version>2.2</required_version>
+		<configurationfile>zabbix-agent-lts.xml</configurationfile>
+		<maintainer>dbaio@bsd.com.br</maintainer>
+		<port_category>net-mgmt</port_category>
+		<run_depends>sbin/zabbix_agent:net-mgmt/zabbix22-agent</run_depends>
+		<build_pbi>
+			<custom_name>zabbix22-agent</custom_name>
+			<port>net-mgmt/zabbix22-agent</port>
+		</build_pbi>
+		<depends_on_package_pbi>zabbix22-agent-2.2.7-##ARCH##.pbi</depends_on_package_pbi>
+	</package>
+</pfsensepkgs>

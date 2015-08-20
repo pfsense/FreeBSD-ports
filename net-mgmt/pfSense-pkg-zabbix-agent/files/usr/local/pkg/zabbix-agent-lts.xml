@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packagegui>
+<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ========================================================================== */
+/*
+    zabbix-agent-lts.xml
+    part of the Zabbix package for pfSense
+    Copyright (C) 2013 Danilo G. Baio
+    Copyright (C) 2013 Marcello Coutinho
+	
+    All rights reserved.            
+			                                                                  */
+/* ========================================================================== */
+/*
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+     1. Redistributions of source code must retain the above copyright notice,
+        this list of conditions and the following disclaimer.
+
+     2. Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+                                                                              */
+/* ========================================================================== */
+	]]>
+	</copyright>
+	<name>zabbixagentlts</name>
+	<title>Services: Zabbix Agent LTS</title>
+	<category>Monitoring</category>
+	<version>0.8.5</version>
+	<include_file>/usr/local/pkg/zabbix-agent-lts.inc</include_file>
+	<addedit_string>Zabbix Agent LTS has been created/modified.</addedit_string>
+	<delete_string>Zabbix Agent LTS has been deleted.</delete_string>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/zabbix-agent-lts/zabbix-agent-lts.inc</item>
+		<prefix>/usr/local/pkg/</prefix>
+		<chmod>0755</chmod>
+	</additional_files_needed>
+	<menu>
+		<name>Zabbix Agent LTS</name>
+		<tooltiptext>Setup Zabbix Agent specific settings</tooltiptext>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=zabbix-agent-lts.xml&amp;id=0</url>
+	</menu>
+	<service>
+		<name>zabbix_agentd_lts</name>
+		<rcfile>zabbix_agentd_lts.sh</rcfile>
+		<executable>zabbix_agentd</executable>
+		<description>Zabbix Agent LTS host monitor daemon</description>
+	</service>
+	<tabs>
+		<tab>
+			<text>Agent</text>
+			<url>/pkg_edit.php?xml=zabbix-agent-lts.xml&amp;id=0</url>
+			<active />
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>Zabbix Agent LTS Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable</fielddescr>
+			<fieldname>agentenabled</fieldname>
+			<description>Enable Zabbix Agent LTS service</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Server</fielddescr>
+			<fieldname>server</fieldname>
+			<description>List of comma delimited IP addresses (or hostnames) of ZABBIX servers</description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>Server Active</fielddescr>
+			<fieldname>serveractive</fieldname>
+			<description>List of comma delimited IP:port (or hostname:port) pairs of Zabbix servers for active checks</description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>Hostname</fielddescr>
+			<fieldname>hostname</fieldname>
+			<description>Unique hostname. Required for active checks and must match hostname as configured on the Zabbix server (case sensitive).</description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>Listen IP</fielddescr>
+			<fieldname>listenip</fieldname>
+			<default_value>0.0.0.0</default_value>
+			<type>input</type>
+			<size>60</size>
+			<description>Listen IP for connections from the server (default 0.0.0.0 for all interfaces)</description>
+		</field>
+		<field>
+			<fielddescr>Listen Port</fielddescr>
+			<fieldname>listenport</fieldname>
+			<default_value>10050</default_value>
+			<type>input</type>
+			<size>5</size>
+			<description>Listen port for connections from the server (default 10050)</description>
+		</field>
+		<field>
+			<fielddescr>Refresh Active Checks</fielddescr>
+			<fieldname>refreshactchecks</fieldname>
+			<default_value>120</default_value>
+			<type>input</type>
+			<size>5</size>
+			<description>The agent will refresh list of active checks once per 120 (default) seconds.</description>
+		</field>
+		<field>
+			<fielddescr>Timeout</fielddescr>
+			<fieldname>timeout</fieldname>
+			<default_value>3</default_value>
+			<type>input</type>
+			<size>5</size>
+			<description>Timeout (default 3). Do not spend more that Timeout seconds on getting requested value (1-30). The agent does not kill timeouted User Parameters processes!</description>
+		</field>
+		<field>
+			<fielddescr>Buffer Send</fielddescr>
+			<fieldname>buffersend</fieldname>
+			<default_value>5</default_value>
+			<type>input</type>
+			<size>5</size>
+			<description>Buffer Send (default 5). Do not keep data longer than N seconds in buffer (1-3600).</description>
+		</field>
+		<field>
+			<fielddescr>Buffer Size</fielddescr>
+			<fieldname>buffersize</fieldname>
+			<default_value>100</default_value>
+			<type>input</type>
+			<size>5</size>
+			<description>Buffer Size (default 100). Maximum number of values in a memory buffer (2-65535). The agent will send all collected data to Zabbix server or proxy if the buffer is full.</description>
+		</field>
+		<field>
+			<fielddescr>Start Agents</fielddescr>
+			<fieldname>startagents</fieldname>
+			<default_value>3</default_value>
+			<type>input</type>
+			<size>5</size>
+			<description>Start Agents (default 3). Number of pre-forked instances of zabbix_agentd that process passive checks (0-100).If set to 0, disables passive checks and the agent will not listen on any TCP port.</description>
+		</field>
+		<field>
+			<fielddescr>User Parameters</fielddescr>
+			<fieldname>userparams</fieldname>
+			<encoding>base64</encoding>
+			<type>textarea</type>
+			<rows>5</rows>
+			<cols>50</cols>
+			<description>User-defined parameter to monitor. There can be several user-defined parameters. Value has form, example: UserParameter=users,who|wc -l</description>
+		</field>
+	</fields>
+	<custom_php_install_command>sync_package_zabbix_agent_lts();</custom_php_install_command>
+	<custom_php_command_before_form></custom_php_command_before_form>
+	<custom_php_after_head_command></custom_php_after_head_command>
+	<custom_php_after_form_command></custom_php_after_form_command>
+	<custom_php_validation_command>validate_input_zabbix_agent_lts($_POST, $input_errors);</custom_php_validation_command>
+	<custom_add_php_command></custom_add_php_command>
+	<custom_php_resync_config_command>sync_package_zabbix_agent_lts();</custom_php_resync_config_command>
+	<custom_php_deinstall_command>php_deinstall_zabbix_agent_lts();</custom_php_deinstall_command>
+</packagegui>
