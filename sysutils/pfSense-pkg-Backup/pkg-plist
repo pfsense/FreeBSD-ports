@@ -1,0 +1,5 @@
+pkg/backup.xml
+pkg/backup.inc
+www/packages/backup/backup.php
+www/packages/backup/backup_edit.php
+%%DATADIR%%/info.xml
