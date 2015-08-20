@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	quagga_ospfd_raw.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2012-2015 Jim Pingle
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<name>quagga_ospfd_raw</name>
+	<version>0.6.6</version>
+	<title>Services: Quagga OSPFd</title>
+	<include_file>/usr/local/pkg/quagga_ospfd.inc</include_file>
+	<aftersaveredirect>pkg_edit.php?xml=quagga_ospfd_raw.xml&amp;id=0</aftersaveredirect>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>http://www.pfsense.com/packages/config/quagga_ospfd/quagga_ospfd.inc</item>
+	</additional_files_needed>
+	<menu>
+		<name>OSPF</name>
+		<tooltiptext>Modify Quagga RAW Config.</tooltiptext>
+		<section>Services</section>
+		<configfile>quagga_ospfd.xml</configfile>
+		<url>/pkg_edit.php?xml=quagga_ospfd.xml&amp;id=0</url>
+	</menu>
+	<tabs>
+		<tab>
+			<text>Global Settings</text>
+			<url>pkg_edit.php?xml=quagga_ospfd.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Interface Settings</text>
+			<url>pkg.php?xml=quagga_ospfd_interfaces.xml</url>
+		</tab>
+		<tab>
+			<text>Raw Config</text>
+			<url>pkg_edit.php?xml=quagga_ospfd_raw.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>/status_ospfd.php</url>
+		</tab>	
+	</tabs>
+	<service>
+		<name>Quagga OSPFd</name>
+		<rcfile>quagga.sh</rcfile>
+		<executable>ospfd</executable>
+	</service>
+	<service>
+		<name>Quagga Zebra</name>
+		<rcfile>quagga.sh</rcfile>
+		<executable>zebra</executable>
+	</service>
+	<fields>
+		<field>
+			<fielddescr>ospfd.conf</fielddescr>
+			<fieldname>ospfd</fieldname>
+			<description>
+				<![CDATA[
+				Note: Once you click "Save" below, the assistant (in the "Global Settings" and "Interface Settings" tabs above) will be overridden with whatever you type here.<br />
+				To get back the assisted config save this form below once with both empty input fields.
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>30</rows>
+			<cols>65</cols>
+		</field>
+		<field>
+			<fielddescr>zebra.conf</fielddescr>
+			<fieldname>zebra</fieldname>
+			<description>
+				<![CDATA[
+				Note: Once you click "Save" below, the assistant (in the "Global Settings" and "Interface Settings" tabs above) will be overridden with whatever you type here.<br />
+				To get back the assisted config save this form below once with both empty input fields.
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>30</rows>
+			<cols>65</cols>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		quagga_ospfd_install_conf();
+	</custom_php_resync_config_command>
+</packagegui>
