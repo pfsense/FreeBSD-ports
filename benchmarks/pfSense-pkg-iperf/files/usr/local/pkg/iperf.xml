@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	iperf.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2015 Renato Botelho
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<name>iperf</name>
+	<version>2.0.5.2</version>
+	<title>iperf: Client</title>
+	<preoutput>yes</preoutput>
+	<donotsave>true</donotsave>
+	<menu>
+		<name>iperf</name>
+		<tooltiptext>Run iperf in client or server mode.</tooltiptext>
+		<section>Diagnostics</section>
+		<configfile>iperf.xml</configfile>
+	</menu>
+	<service>
+		<name>iperf</name>
+		<executable>iperf</executable>
+		<description>iperf network performance testing daemon/client</description>
+	</service>
+	<tabs>
+		<tab>
+			<text>Client</text>
+			<url>/pkg_edit.php?xml=iperf.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Server</text>
+			<url>/pkg_edit.php?xml=iperfserver.xml&amp;id=0</url>
+		</tab>
+	</tabs>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/iperf/iperfserver.xml</item>
+	</additional_files_needed>
+	<fields>
+		<field>
+			<fielddescr>Server</fielddescr>
+			<fieldname>hostname</fieldname>
+			<description>Enter the IP address or hostname that iperf will connect to.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Port</fielddescr>
+			<fieldname>port</fieldname>
+			<description>Enter the port that iperf will connect to. (Default is 5001.)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Protocol</fielddescr>
+			<fieldname>protocol</fieldname>
+			<description>Choose whether to use TCP or UDP here. (Default is TCP.)</description>
+			<type>select</type>
+			<options>
+				<option>
+					<name>TCP</name>
+					<value>tcp</value>
+				</option>
+				<option>
+					<name>UDP</name>
+					<value>udp</value>
+				</option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Output format</fielddescr>
+			<fieldname>format</fieldname>
+			<description>Choose to display output in bits/sec or bytes/sec. (Default is bits.)</description>
+			<type>select</type>
+			<options>
+				<option>
+					<name>bits/sec</name>
+					<value>bits</value>
+				</option>
+				<option>
+					<name>bytes/sec</name>
+					<value>bytes</value>
+				</option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Interval</fielddescr>
+			<fieldname>interval</fieldname>
+			<description>Enter the desired interval between bandwidth, jitter and loss reports here. (Default is 0 for no periodic reports.)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Buffer length</fielddescr>
+			<fieldname>length</fieldname>
+			<description>Enter the length of buffers to read or write here. (Default 8KB for TCP, 1470B for UDP.)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Socket buffer size</fielddescr>
+			<fieldname>window</fieldname>
+			<description>Enter the desired socket buffer size, if needed.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>UDP Bandwidth</fielddescr>
+			<fieldname>udpbandwidth</fieldname>
+			<description>Enter the UDP bandwidth to send at in bits/sec. (Default is 1Mbit/sec.)</description>
+			<type>input</type>
+		</field>
+	</fields>
+	<custom_add_php_command>
+	<![CDATA[
+		mwexec("/usr/bin/killall iperf");
+		$iperf_options = "";
+		if ($_POST['protocol'] == "udp") {
+			$iperf_options .= " -u";
+		}
+		if ($_POST['format'] == "bytes") {
+			$iperf_options .= " -f A";
+		}
+		if ($_POST['interval'] != "") {
+			$iperf_options .= " -i " . escapeshellarg($_POST['interval']);
+		}
+		if ($_POST['length'] != "") {
+			$iperf_options .= " -l " . escapeshellarg($_POST['length']);
+		}
+		if ($_POST['window'] != "") {
+			$iperf_options .= " -w " . escapeshellarg($_POST['window']);
+		}
+		if ($_POST['udpbandwidth'] != "") {
+			$iperf_options .= " -b " . escapeshellarg($_POST['udpbandwidth']);
+		}
+		if ($_POST['port'] != "") {
+			$iperf_options .= " -p " . escapeshellarg($_POST['port']);
+		}
+		$iperf_options .= " -c " . escapeshellarg($_POST['hostname']);
+		system("/usr/local/bin/iperf" . $iperf_options);
+	]]>
+	</custom_add_php_command>
+</packagegui>
