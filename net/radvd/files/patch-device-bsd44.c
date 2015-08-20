@@ -1,6 +1,6 @@
---- ./device-bsd44.c.orig	2011-02-26 17:00:23.000000000 +0100
-+++ ./device-bsd44.c	2011-07-08 13:13:44.000000000 +0200
-@@ -189,6 +189,24 @@
+--- device-bsd44.c.orig	2013-03-18 13:27:42.000000000 +0000
++++ device-bsd44.c	2013-03-18 13:28:32.000000000 +0000
+@@ -322,6 +322,27 @@
  
  int setup_allrouters_membership(struct Interface *iface)
  {
@@ -16,6 +16,9 @@
 +		return (-1);
 +	}
 +
++	/* XXX: See pfSense ticket #2878 */
++	setsockopt(sock, IPPROTO_IPV6, IPV6_LEAVE_GROUP, &mreq, sizeof(mreq));
++			
 +	if (setsockopt(sock, IPPROTO_IPV6, IPV6_JOIN_GROUP,
 +			&mreq, sizeof(mreq)) < 0) {
 +		flog(LOG_ERR, "can't join ipv6-allrouters on %s", iface->Name);

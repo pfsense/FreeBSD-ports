@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	radvd
-PORTVERSION=	1.9.7
+PORTVERSION=	1.9.1
 CATEGORIES=	net ipv6
 MASTER_SITES=	http://www.litech.org/radvd/dist/
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Linux/BSD IPv6 router advertisement daemon
+MAINTAINER=	dhn@FreeBSD.org
+COMMENT=	A Linux/BSD IPv6 router advertisement daemon
 
 LIB_DEPENDS=	libdaemon.so:${PORTSDIR}/devel/libdaemon
 
