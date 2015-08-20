@@ -1,0 +1,13 @@
+pkg/freeradius.xml
+pkg/freeradius.inc
+www/freeradius_view_config.php
+pkg/freeradiusclients.xml
+pkg/freeradiussettings.xml
+pkg/freeradiuseapconf.xml
+pkg/freeradiussqlconf.xml
+pkg/freeradiusinterfaces.xml
+pkg/freeradiuscerts.xml
+pkg/freeradiussync.xml
+pkg/freeradiusmodulesldap.xml
+pkg/freeradiusauthorizedmacs.xml
+%%DATADIR%%/info.xml

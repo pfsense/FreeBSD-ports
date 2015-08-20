@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>freeradius2</name>
+		<website>http://www.freeradius.org/</website>
+		<descr><![CDATA[A free implementation of the RADIUS protocol.&lt;br /&gt;
+			Support: MySQL, PostgreSQL, LDAP, Kerberos.&lt;br /&gt;
+			FreeRADIUS and FreeRADIUS2 settings are not compatible so don't use them together or try to update.&lt;br /&gt;
+			On pfSense docs there is a how-to which could help you on porting users.]]></descr>
+		<pkginfolink>https://doc.pfsense.org/index.php/FreeRADIUS_2.x_package</pkginfolink>
+		<category>System</category>
+		<version>1.6.14</version>
+		<status>RC1</status>
+		<required_version>2.2</required_version>
+		<maintainer>nachtfalkeaw@web.de</maintainer>
+		<depends_on_package_pbi>freeradius-2.2.6_3-##ARCH##.pbi</depends_on_package_pbi>
+		<config_file>https://packages.pfsense.org/packages/config/freeradius2/freeradius.xml</config_file>
+		<configurationfile>freeradius.xml</configurationfile>
+		<after_install_info>Please visit Services: FreeRADIUS.</after_install_info>
+		<port_category>net</port_category>
+		<run_depends>sbin/radiusd:net/freeradius2 bin/bash:shells/bash</run_depends>
+		<build_pbi>
+			<ports_before>security/krb5</ports_before>
+			<port>net/freeradius2</port>
+			<ports_after>shells/bash</ports_after>
+		</build_pbi>
+		<build_options>freeradius_SET_FORCE=KERBEROS MYSQL PGSQL PERL PYTHON LDAP SSL_PORT</build_options>
+	</package>
+</pfsensepkgs>
