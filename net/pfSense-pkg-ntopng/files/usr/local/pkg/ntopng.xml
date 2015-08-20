@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ========================================================================== */
+/*
+	ntopng.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2014 ESF, LLC
+	All rights reserved.
+*/
+/* ========================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+	 1. Redistributions of source code must retain the above copyright notice,
+		this list of conditions and the following disclaimer.
+
+	 2. Redistributions in binary form must reproduce the above copyright
+		notice, this list of conditions and the following disclaimer in the
+		documentation and/or other materials provided with the distribution.
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ========================================================================== */
+	]]>
+	</copyright>
+	<name>ntopng</name>
+	<version>0.7.2</version>
+	<title>Diagnostics: ntopng Settings</title>
+	<savetext>Change</savetext>
+	<aftersaveredirect>pkg_edit.php?xml=ntopng.xml</aftersaveredirect>
+	<menu>
+		<name>ntopng Settings</name>
+		<tooltiptext>Set ntopng settings such as password and port.</tooltiptext>
+		<section>Diagnostics</section>
+		<url>/pkg_edit.php?xml=ntopng.xml&amp;id=0</url>
+	</menu>
+	<menu>
+		<name>ntopng</name>
+		<tooltiptext>Access ntopng</tooltiptext>
+		<section>Diagnostics</section>
+		<url>http://$myurl:3000</url>
+		<depends_on_service>ntopng</depends_on_service>
+	</menu>
+	<service>
+		<name>ntopng</name>
+		<rcfile>ntopng.sh</rcfile>
+		<executable>ntopng</executable>
+		<description>ntopng bandwidth monitoring/graphing</description>
+	</service>
+	<tabs>
+		<tab>
+			<text>ntopng Settings</text>
+			<url>/pkg_edit.php?xml=ntopng.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Access ntopng</text>
+			<url>http://$myurl:3000</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<fielddescr>ntopng Admin Password</fielddescr>
+			<fieldname>password</fieldname>
+			<description>Enter the password for the ntopng GUI.  Minimum 5 characters, defaults to admin.</description>
+			<type>password</type>
+		</field>
+		<field>
+			<fielddescr>Confirm ntopng Admin Password</fielddescr>
+			<fieldname>passwordagain</fieldname>
+			<type>password</type>
+		</field>
+		<field>
+			<fielddescr>Interface</fielddescr>
+			<fieldname>interface_array</fieldname>
+			<type>interfaces_selection</type>
+			<size>3</size>
+			<value>lan</value>
+			<multiple>true</multiple>
+		</field>
+		<field>
+			<fielddescr>DNS Mode</fielddescr>
+			<fieldname>dns_mode</fieldname>
+			<description>
+				Configures how name resolution is handled&lt;br/&gt;&lt;br/&gt;
+				Additionally, GeoIP Data can provide location information about IP addresses.&lt;br/&gt;
+				This product includes GeoLite data created by MaxMind, available from &lt;a href=&quot;http://www.maxmind.com&quot;&gt;http://www.maxmind.com&lt;/a&gt;.&lt;br/&gt;
+				&lt;input type=&quot;submit&quot; name=&quot;Submit&quot; value=&quot;Update GeoIP Data&quot;&gt;
+			</description>
+			<type>select</type>
+			<default_value>0</default_value>
+			<options>
+				<option><value>0</value><name>Decode DNS responses and resolve local numeric IPs only (default)</name></option>
+				<option><value>1</value><name>Decode DNS responses and resolve all numeric IPs</name></option>
+				<option><value>2</value><name>Decode DNS responses and don't resolve numeric IPs</name></option>
+				<option><value>3</value><name>Don't decode DNS responses and don't resolve numeric IPs</name></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Local Networks</fielddescr>
+			<fieldname>local_networks</fieldname>
+			<description>Configures how Local Networks are defined</description>
+			<type>select</type>
+			<default_value>rfc1918</default_value>
+			<options>
+				<option><value>rfc1918</value><name>Consider all RFC1918 networks local</name></option>
+				<option><value>selected</value><name>Consider selected interface networks local</name></option>
+				<option><value>lanonly</value><name>Consider only LAN interface local</name></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Historical Data Storage</fielddescr>
+			<fieldname>dump_flows</fieldname>
+			<description>Enable historical data storage</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Disable Alerts</fielddescr>
+			<fieldname>disable_alerts</fieldname>
+			<description>Disables all alerts generated by ntopng, such as flooding notifications</description>
+			<type>checkbox</type>
+		</field>
+	</fields>
+	<custom_php_global_functions>
+	<![CDATA[
+	function sync_package_ntopng() {
+		if ($_POST['Submit'] == "Update GeoIP Data") {
+			return;
+		}
+		conf_mount_rw();
+		global $config;
+		global $input_errors;
+		global $pf_version, $scripts_path, $fonts_path;
+		$pf_version=substr(trim(file_get_contents("/etc/version")),0,3);
+		if ($_POST) {
+			$config['installedpackages']['ntopng']['config'] = array();
+			$config['installedpackages']['ntopng']['config'][0] = $_POST;
+		}
+		$ntopng_config =& $config['installedpackages']['ntopng']['config'][0];
+		$if_final = "";
+		$ifaces_final = "";
+		safe_mkdir("/var/db/ntopng/rrd/graphics", 0755, true);
+		system("/bin/chmod -R 755 /var/db/ntopng");
+		system("/usr/sbin/chown -R nobody:nobody /var/db/ntopng");
+		
+		if ($pf_version == "2.2") {
+			$fonts_path = "/usr/pbi/ntopng-" . php_uname("m") . "/local/lib/X11/fonts";
+			$scripts_path = "/usr/pbi/ntopng-" . php_uname("m") . "/local/share/ntopng/scripts";
+		} else if ($pf_version == "2.1") {
+			$fonts_path = "/usr/pbi/ntopng-" . php_uname("m") . "/lib/X11/fonts";
+			$scripts_path = "/usr/pbi/ntopng-" . php_uname("m") . "/share/ntopng/scripts";
+		} else {
+			$fonts_path = "/usr/local/lib/X11/fonts";
+		}
+		if ($pf_version == "2.1" || $pf_version == "2.2") {
+			$ntopng_share_path = "/usr/local/share/ntopng";
+			$scripts_link_path = $ntopng_share_path . "/scripts";
+			safe_mkdir("$ntopng_share_path", 0755, true);
+			if (!file_exists($scripts_link_path)) {
+				symlink($scripts_path, $scripts_link_path);
+			}
+		}
+		system("/bin/cp -Rp {$fonts_path}/webfonts/ {$fonts_path}/TTF/");
+
+		$first = 0;
+		foreach($ntopng_config['interface_array'] as $iface) {
+			$if = convert_friendly_interface_to_real_interface_name($iface);
+			if ($if) {
+				$ifaces .= " -i " . escapeshellarg("{$if}");
+			}
+		}
+
+		// DNS Mode
+		if (is_numeric($ntopng_config['dns_mode']) && ($ntopng_config['dns_mode'] >= 0) && ($ntopng_config['dns_mode'] <= 3)) {
+			$dns_mode = "--dns-mode " . escapeshellarg($ntopng_config['dns_mode']);
+		}
+
+		// Local Networks >
+		switch ($ntopng_config['local_networks']) {
+			case "selected":
+				$nets = array();
+				foreach ($ntopng_config['interface_array'] as $iface) {
+					if (is_ipaddr(get_interface_ip($iface))) {
+						$nets[] = gen_subnet(get_interface_ip($iface),get_interface_subnet($iface)) . '/' . get_interface_subnet($iface);
+					}
+				}
+				if (!empty($nets))
+					$local_networks = "--local-networks " . escapeshellarg(implode(",", $nets));
+				break;
+			case "lanonly":
+				if (is_ipaddr(get_interface_ip('lan'))) {
+					$local_networks = "--local-networks " . escapeshellarg(gen_subnet(get_interface_ip('lan'),get_interface_subnet('lan')) . '/' . get_interface_subnet('lan'));
+				}
+				break;
+			case "rfc1918":
+			default:
+				$local_networks = "--local-networks '192.168.0.0/16,172.16.0.0/12,10.0.0.0/8'";
+				break;
+		}
+
+		// Historical Data Storage, Dump expired flows
+		if ($ntopng_config['dump_flows'] >= on) {
+			$dump_flows = "-F";
+		}
+
+		// Disable alerts
+		if ($ntopng_config['disable_alerts'] >= on) {
+			$disable_alerts = "-H";
+		}
+
+		if ($pf_version == "2.2") {
+			$redis_path = "/usr/pbi/ntopng-" . php_uname("m") . "/local/bin";
+		} else if ($pf_version == "2.1") {
+			$redis_path = "/usr/pbi/ntopng-" . php_uname("m") . "/bin";
+		} else {
+			$redis_path = "/usr/local/bin";
+		}
+
+		$start = "";
+		if ($pf_version == "2.1" || $pf_version == "2.2") {
+			$start .= "ldconfig -m /usr/pbi/ntopng-" . php_uname("m") . "/lib\n";
+		}
+		$start .= "\t{$redis_path}/redis-server --dir /var/db/ntopng/ --dbfilename ntopng.rdb &\n";
+		// TODO:
+		//  Add support for --data-dir /somewhere, --httpdocs-dir /somewhereelse,
+		//  --dump-timeline (on/off) --http-port, --https-port
+
+		$start .= "\t/usr/local/bin/ntopng -d /var/db/ntopng -G /var/run/ntopng.pid -s -e {$disable_alerts} {$dump_flows} {$ifaces} {$dns_mode} {$aggregations} {$local_networks} &";
+		write_rcfile(array(
+					"file" => "ntopng.sh",
+					"start" => $start,
+					"stop" => "/usr/bin/killall ntopng redis-cli redis-server"
+				)
+		);
+		if (is_service_running("ntopng")) {
+			stop_service("ntopng");
+			// Wait for ntopng to shut down cleanly.
+			sleep(20);
+		}
+		ntopng_fixup_geoip();
+		start_service("ntopng");
+		sleep(2);
+
+		if (empty($ntopng_config['password']))
+			$ntopng_config['password'] = "admin";
+		$password = md5($ntopng_config['password']);
+		mwexec_bg("{$redis_path}/redis-cli SET user.admin.password " . escapeshellarg($password));
+		mwexec_bg("{$redis_path}/redis-cli save");
+		conf_mount_ro();
+	}
+	function ntopng_update_geoip() {
+		$fetchcmd = "/usr/bin/fetch";
+		$geolite_city = "https://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz";
+		$geolite_city_v6 = "https://geolite.maxmind.com/download/geoip/database/GeoLiteCityv6-beta/GeoLiteCityv6.dat.gz";
+		$geoip_asnum = "https://download.maxmind.com/download/geoip/database/asnum/GeoIPASNum.dat.gz";
+		$geoip_asnum_v6 = "https://download.maxmind.com/download/geoip/database/asnum/GeoIPASNumv6.dat.gz";
+		$pf_version=substr(trim(file_get_contents("/etc/version")),0,3);
+		if ($pf_version == "2.1" || $pf_version == "2.2") {
+			$output_dir = "/usr/pbi/ntopng-" . php_uname("m") . "/share/ntopng";
+		} else {
+			$output_dir = "/usr/local/share/ntopng";
+		}
+		
+		mwexec("{$fetchcmd} -o {$output_dir} -T 5 {$geolite_city}");
+		mwexec("{$fetchcmd} -o {$output_dir} -T 5 {$geolite_city_v6}");
+		mwexec("{$fetchcmd} -o {$output_dir} -T 5 {$geoip_asnum}");
+		mwexec("{$fetchcmd} -o {$output_dir} -T 5 {$geoip_asnum_v6}");
+		
+		ntopng_fixup_geoip();
+		restart_service("ntopng");
+	}
+	function ntopng_fixup_geoip() {
+		$pf_version=substr(trim(file_get_contents("/etc/version")),0,3);
+		if ($pf_version == "2.1" || $pf_version == "2.2") {
+			$target_dir = "/usr/pbi/ntopng-" . php_uname("m") . "/local/share/ntopng/httpdocs/geoip";
+			$source_dir = "/usr/pbi/ntopng-" . php_uname("m") . "/share/ntopng";
+		} else {
+			$target_dir = "/usr/local/share/ntopng/httpdocs/geoip";
+			$source_dir = "/usr/local/share/ntopng";
+		}
+
+		safe_mkdir($target_dir, 0755);
+
+		foreach(glob("{$source_dir}/Geo*.dat*") as $geofile) {
+			/* Decompress if needed. */
+			if (substr($geofile, -3, 3) == ".gz") {
+				// keep -f here, otherwise the files will not get updated
+				mwexec("/usr/bin/gzip -d -f " . escapeshellarg($geofile));
+			}
+		}
+
+		/* Use a separate glob since the filenames could have changed since the last run */
+		foreach(glob("{$source_dir}/Geo*.dat*") as $geofile) {
+			$target_file = $target_dir . '/' . basename($geofile);
+			if (!file_exists($target_file)) {
+				symlink($geofile, $target_file);
+			}
+		}
+	}
+	]]>
+	</custom_php_global_functions>
+	<custom_add_php_command>
+		sync_package_ntopng();
+	</custom_add_php_command>
+	<custom_php_resync_config_command>
+		sync_package_ntopng();
+	</custom_php_resync_config_command>
+	<custom_php_install_command>
+	<![CDATA[
+		ntopng_update_geoip();
+		sync_package_ntopng();
+	]]>
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		exec("rm /usr/local/etc/rc.d/ntopng*");
+		$pf_version=substr(trim(file_get_contents("/etc/version")),0,3);
+		if ($pf_version == "2.1" || $pf_version == "2.2") {
+			if (is_dir("/usr/local/share/ntopng/")) {
+				exec("rm -rf /usr/local/share/ntopng/");
+			}
+		}
+	</custom_php_deinstall_command>
+	<custom_php_validation_command>
+	<![CDATA[
+	if ($_POST) {
+		if (empty($_POST['password']) || empty($_POST['passwordagain']))
+			$input_errors[] = "You must provide (and confirm) ntopng's password.";
+		if ($_POST['password'] != $_POST['passwordagain'])
+			$input_errors[] = "The provided passwords did not match.";
+		if ($_POST['Submit'] == "Update GeoIP Data") {
+			ntopng_update_geoip();
+		}
+	}
+	]]>
+	</custom_php_validation_command>
+</packagegui>
