@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+        <copyright>
+        <![CDATA[
+/* $Id$ */
+/* ========================================================================== */
+/*
+    squid_antivirus.xml
+    part of pfSense (http://www.pfSense.com)
+    Copyright (C) 2013-2014 Marcello Coutinho
+    All rights reserved.
+
+    Based on m0n0wall (http://m0n0.ch/wall)
+    Copyright (C) 2003-2006 Manuel Kasper <mk@neon1.net>.
+    All rights reserved.
+                                                                              */
+/* ========================================================================== */
+/*
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+     1. Redistributions of source code MUST retain the above copyright notice,
+        this list of conditions and the following disclaimer.
+
+     2. Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+                                                                              */
+/* ========================================================================== */
+        ]]>
+        </copyright>
+    <description>Describe your package here</description>
+    <requirements>Describe your package requirements here</requirements>
+    <faq>Currently there are no FAQ items provided.</faq>
+	<name>squidantivirus</name>
+	<version>none</version>
+	<title>Proxy server: Antivirus</title>
+	<include_file>/usr/local/pkg/squid.inc</include_file>
+	<tabs>
+	<tab>
+		<text>General</text>
+			<url>/pkg_edit.php?xml=squid.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Remote Cache</text>
+			<url>/pkg.php?xml=squid_upstream.xml</url>
+		</tab>
+		<tab>
+			<text>Local Cache</text>
+			<url>/pkg_edit.php?xml=squid_cache.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Antivirus</text>
+			<url>/pkg_edit.php?xml=squid_antivirus.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>ACLs</text>
+			<url>/pkg_edit.php?xml=squid_nac.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Traffic Mgmt</text>
+			<url>/pkg_edit.php?xml=squid_traffic.xml&amp;id=0</url>
+			
+		</tab>
+		<tab>
+			<text>Authentication</text>
+			<url>/pkg_edit.php?xml=squid_auth.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Users</text>
+			<url>/pkg.php?xml=squid_users.xml</url>
+		</tab>
+		<tab>
+			<text>Real time</text>
+			<url>/squid_monitor.php</url>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=squid_sync.xml</url>
+		</tab>
+		</tabs>
+	<fields>
+		<field>
+			<name>Clamav anti-virus integration using c-icap</name>
+			<type>listtopic</type>
+		</field>
+				<field>
+			<fielddescr>Enable</fielddescr>
+			<fieldname>enable</fieldname>
+			<description>Enable squid antivirus check using clamav.</description>
+			<enablefields>max_check_size,Timeout,MaxKeepAliveRequests,KeepAliveTimeout,StartServers,MaxServers</enablefields>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Client forward options</fielddescr>
+			<fieldname>client_info</fieldname>
+      <description><![CDATA[Select what client info to forward to clamav.]]></description>
+  		<type>select</type>
+			<default_value>strip</default_value>
+			<options>
+				<option><name>Send Both client username and ip info(Default)</name><value>both</value></option>
+				<option><name>Send only client username</name><value>username</value></option>
+				<option><name>Send only client ip</name><value>ip</value></option>
+				<option><name>Do not send client info</name><value>none</value></option>
+			</options>
+		</field>
+		<field>
+			<name>Advanced options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>squidclamav.conf</fielddescr>
+			<fieldname>squidclamav</fieldname>
+			<description>squidclamav.conf file. Leave empty to load sample file. Edit only if you know what are you doing.</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<cols>75</cols>
+			<rows>15</rows>
+		</field>
+	    <field>
+			<fielddescr>c-icap.conf</fielddescr>
+			<fieldname>c-icap_conf</fieldname>
+			<description>c-icap.conf file. Leave empty to load sample file. Edit only if you know what are you doing.</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<cols>75</cols>
+			<rows>15</rows>
+		</field>
+		<field>
+			<fielddescr>c-icap.magic</fielddescr>
+			<fieldname>c-icap_magic</fieldname>
+			<description>c-icap.conf file. Leave empty to load sample file. Edit only if you know what are you doing.</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<cols>75</cols>
+			<rows>15</rows>
+		</field>
+	</fields>
+	<custom_php_validation_command>
+		squid_validate_antivirus($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		squid_resync();
+	</custom_php_resync_config_command>
+</packagegui>

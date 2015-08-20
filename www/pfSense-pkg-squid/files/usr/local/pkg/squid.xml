@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+        <copyright>
+        <![CDATA[
+/* $Id$ */
+/* ========================================================================== */
+/*
+    authng.xml
+    part of pfSense (http://www.pfSense.com)
+    Copyright (C) 2013-2014 Marcello Coutinho
+    All rights reserved.
+
+    Based on m0n0wall (http://m0n0.ch/wall)
+    Copyright (C) 2003-2006 Manuel Kasper <mk@neon1.net>.
+    All rights reserved.
+                                                                              */
+/* ========================================================================== */
+/*
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+     1. Redistributions of source code MUST retain the above copyright notice,
+        this list of conditions and the following disclaimer.
+
+     2. Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+                                                                              */
+/* ========================================================================== */
+        ]]>
+        </copyright>
+    <description>Describe your package here</description>
+    <requirements>Describe your package requirements here</requirements>
+    <faq>Currently there are no FAQ items provided.</faq>
+	<name>squid</name>
+	<version>0.2.8</version>
+	<title>Proxy server: General settings</title>
+	<include_file>/usr/local/pkg/squid.inc</include_file>
+	<menu>
+		<name>Proxy server</name>
+		<tooltiptext>Modify the proxy server's settings</tooltiptext>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=squid.xml&amp;id=0</url>
+	</menu>
+	<menu>
+		<name>Reverse Proxy</name>
+		<tooltiptext>Modify the proxy reverse server's settings</tooltiptext>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=squid_reverse_general.xml&amp;id=0</url>
+	</menu>
+	<service>
+		<name>squid</name>
+		<rcfile>squid.sh</rcfile>
+		<executable>squid</executable>
+		<description>Proxy server Service</description>
+	</service>
+	<service>
+		<name>clamd</name>
+		<rcfile>clamav-clamd</rcfile>
+		<executable>clamd</executable>
+		<description>Clamav Antivirus</description>
+	</service>
+	<service>
+		<name>c-icap</name>
+		<rcfile>c-icap</rcfile>
+		<executable>c-icap</executable>
+		<description>Icap inteface for squid and clamav integration</description>
+	</service>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=squid.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Remote Cache</text>
+			<url>/pkg.php?xml=squid_upstream.xml</url>
+		</tab>
+		<tab>
+			<text>Local Cache</text>
+			<url>/pkg_edit.php?xml=squid_cache.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Antivirus</text>
+			<url>/pkg_edit.php?xml=squid_antivirus.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>ACLs</text>
+			<url>/pkg_edit.php?xml=squid_nac.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Traffic Mgmt</text>
+			<url>/pkg_edit.php?xml=squid_traffic.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Authentication</text>
+			<url>/pkg_edit.php?xml=squid_auth.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Users</text>
+			<url>/pkg.php?xml=squid_users.xml</url>
+		</tab>
+		<tab>
+			<text>Real time</text>
+			<url>/squid_monitor.php</url>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=squid_sync.xml</url>
+		</tab>
+	</tabs>
+	<!-- Installation -->
+	<additional_files_needed>
+	    <prefix>/usr/local/pkg/</prefix>
+	    <chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	    <prefix>/usr/local/pkg/</prefix>
+	    <chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_reverse_general.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	    <prefix>/usr/local/pkg/</prefix>
+	    <chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_reverse_peer.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	    <prefix>/usr/local/pkg/</prefix>
+	    <chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_reverse_uri.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	    <prefix>/usr/local/pkg/</prefix>
+	    <chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_reverse_sync.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	    <prefix>/usr/local/pkg/</prefix>
+	    <chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_sync.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	    <prefix>/usr/local/pkg/</prefix>
+	    <chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_cache.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	    <prefix>/usr/local/pkg/</prefix>
+	    <chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_nac.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	    <prefix>/usr/local/pkg/</prefix>
+	    <chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_traffic.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	    <prefix>/usr/local/pkg/</prefix>
+	    <chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_upstream.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	    <prefix>/usr/local/pkg/</prefix>
+	    <chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_reverse.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	    <prefix>/usr/local/pkg/</prefix>
+	    <chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_reverse.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	    <prefix>/usr/local/pkg/</prefix>
+	    <chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_auth.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	    <prefix>/usr/local/pkg/</prefix>
+	    <chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_users.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	    <prefix>/usr/local/pkg/</prefix>
+	    <chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_antivirus.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+	    <chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/sqpmon.sh</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/swapstate_check.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_reverse_redir.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	    <prefix>/usr/local/www/</prefix>
+	    <chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_monitor.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	    <prefix>/usr/local/www/</prefix>
+	    <chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_monitor_data.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	    <prefix>/usr/local/www/</prefix>
+	    <chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_log_parser.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	    <prefix>/usr/local/www/</prefix>
+	    <chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_clwarn.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	    <prefix>/usr/local/www/shortcuts/</prefix>
+	    <chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/pkg_squid.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	    <prefix>/usr/local/bin/</prefix>
+	    <chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/check_ip.php</item>
+	</additional_files_needed>
+	<fields>
+		<field>
+			<name>Squid General Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Proxy interface(s)</fielddescr>
+			<fieldname>active_interface</fieldname>
+			<description>The interface(s) the proxy server will bind to.</description>
+			<type>interfaces_selection</type>
+			<required/>
+			<default_value>lan</default_value>
+			<multiple/>
+		</field>
+		<field>
+			<fielddescr>Proxy port</fielddescr>
+			<fieldname>proxy_port</fieldname>
+			<description>This is the port the proxy server will listen on.</description>
+			<type>input</type>
+			<size>5</size>
+			<required/>
+			<default_value>3128</default_value>
+		</field>
+		<field>
+			<fielddescr>ICP port</fielddescr>
+			<fieldname>icp_port</fieldname>
+			<description>This is the port the Proxy Server will send and receive ICP queries to and from neighbor caches. Leave this blank if you don't want the proxy server to communicate with neighbor caches through ICP.</description>
+			<type>input</type>
+			<size>5</size>
+		</field>
+
+		<field>
+			<fielddescr>Allow users on interface</fielddescr>
+			<fieldname>allow_interface</fieldname>
+			<description>If this field is checked, the users connected to the interface selected in the 'Proxy interface' field will be allowed to use the proxy, i.e., there will be no need to add the interface's subnet to the list of allowed subnets. This is just a shortcut.</description>
+			<type>checkbox</type>
+			<required/>
+			<default_value>on</default_value>
+		</field>
+		<field>
+			<fielddescr>Patch captive portal</fielddescr>
+			<fieldname>patch_cp</fieldname>
+			<description><![CDATA[Enable this option to force captive portal to non transparent proxy users.<br>
+						<strong>NOTE:</strong> You may need to reapply captive portal config after changing this option.]]></description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Resolv dns v4 first</fielddescr>
+			<fieldname>dns_v4_first</fieldname>
+			<description><![CDATA[Enable this option to force dns v4 lookup first. This option is very usefull if you have problems to access https sites.]]></description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Disable ICMP</fielddescr>
+			<fieldname>disable_pinger</fieldname>
+			<description><![CDATA[Enable this option to disable squid ICMP pinger helper.]]></description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Use alternate DNS-servers for the proxy-server</fielddescr>
+			<fieldname>dns_nameservers</fieldname>
+			<description>If you want to use other DNS-servers than the DNS-forwarder, enter the IPs here, separated by semi-colons (;).</description>
+			<type>input</type>
+			<size>70</size>
+		</field>
+		<field>
+			<name>Transparent Proxy Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Transparent HTTP proxy</fielddescr>
+			<fieldname>transparent_proxy</fieldname>
+			<description><![CDATA[Enable transparent mode to forward all requests for destination port 80 to the proxy server without any additional configuration necessary.<br>
+						 <strong>NOTE:</strong> Transparent mode will filter ssl(port 443) if enable men-in-the-middle options below.<br>
+						 To filter both http and https protocol without intercepting ssl connections, enable WPAD/PAC options on your dns/dhcp.]]></description>
+			<type>checkbox</type>
+			<enablefields>transparent_active_interface,private_subnet_proxy_off,defined_ip_proxy_off,defined_ip_proxy_off_dest</enablefields>			
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Transparent Proxy interface(s)</fielddescr>
+			<fieldname>transparent_active_interface</fieldname>
+			<description>The interface(s) the proxy server will transparent intercept requests.</description>
+			<type>interfaces_selection</type>
+			<required/>
+			<default_value>lan</default_value>
+			<multiple/>
+		</field>
+		<field>
+			<fielddescr>Bypass proxy for Private Address destination</fielddescr>
+			<fieldname>private_subnet_proxy_off</fieldname>
+			<description>Do not forward traffic to Private Address Space (RFC 1918) &lt;b&gt;destination&lt;/b&gt; through the proxy server but directly through the firewall.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Bypass proxy for these source IPs</fielddescr>
+			<fieldname>defined_ip_proxy_off</fieldname>
+			<description>Do not forward traffic from these &lt;b&gt;source&lt;/b&gt; IPs, CIDR nets, hostnames, or aliases through the proxy server but directly through the firewall. Separate by semi-colons (;). [Applies only to transparent mode]</description>
+			<type>input</type>
+  		<size>70</size>
+		</field>
+		<field>
+			<fielddescr>Bypass proxy for these destination IPs</fielddescr>
+			<fieldname>defined_ip_proxy_off_dest</fieldname>
+			<description>Do not proxy traffic going to these &lt;b&gt;destination&lt;/b&gt; IPs, CIDR nets, hostnames, or aliases, but let it pass directly through the firewall. Separate by semi-colons (;). [Applies only to transparent mode]</description>
+			<type>input</type>
+		<size>70</size>
+		</field>
+		<field>
+			<name>SSL man in the middle Filtering</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>HTTPS/SSL interception</fielddescr>
+			<fieldname>ssl_proxy</fieldname>
+			<description><![CDATA[Enable SSL filtering.]]></description>
+			<type>checkbox</type>
+			<enablefields>ssl_active_interface,dcert,sslcrtd_children,ssl_proxy_port,interception_checks</enablefields>
+		</field>
+		<field>
+			<fielddescr>SSL Intercept interface(s)</fielddescr>
+			<fieldname>ssl_active_interface</fieldname>
+			<description>The interface(s) the proxy server will intercept ssl requests.</description>
+			<type>interfaces_selection</type>
+			<required/>
+			<default_value>lan</default_value>
+			<multiple/>
+		</field>
+		<field>
+			<fielddescr>SSL Proxy port</fielddescr>
+			<fieldname>ssl_proxy_port</fieldname>
+			<description>This is the port the proxy server will listen on to intercept ssl while using transparent proxy.</description>
+			<type>input</type>
+			<size>5</size>
+			<default_value>3129</default_value>
+		</field>
+		<field>
+			<fielddescr>CA</fielddescr>
+			<fieldname>dca</fieldname>
+			<description><![CDATA[Select Certificate Authority to use when SSL interception is enabled.<br>
+								To create a CA on pfsense, go to <strong>system -> Cert Manager<strong><br>
+								Install the CA crt as an trusted ca on each computer you want to filter ssl to avoid ssl error on each connection.]]></description>
+	    	<type>select_source</type>
+			<source><![CDATA[$config['ca']]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+		</field>
+		<field>
+			<fielddescr>sslcrtd children</fielddescr>
+			<fieldname>sslcrtd_children</fieldname>
+			<description><![CDATA[This is the number of ssl crt deamon children to start. Default value is 5.<br>
+			if Squid is used in busy environments this may need to be increased, as well as the number of 'sslcrtd_children']]></description>
+			<type>input</type>
+			<size>2</size>
+			<default_value>5</default_value>
+		</field>
+		<field>
+			<fielddescr>Remote Cert checks</fielddescr>
+			<fieldname>interception_checks</fieldname>
+			<description><![CDATA[Select remote ssl cert checks to do.<br>Defaul is to do not select any of these options.]]></description>
+		<type>select</type>
+		<options>
+				<option><name>Accept remote server certificate Erros</name><value>sslproxy_cert_error</value></option>
+				<option><name>Do not verify remote certificate</name><value>sslproxy_flags</value></option>
+		</options>
+		<multiple/>
+		<size>3</size>
+		</field>
+		<field>
+			<fielddescr>Certificate adapt</fielddescr>
+			<fieldname>interception_adapt</fieldname>
+			<description><![CDATA[Pass original SSL server certificate information to the user. Allow the user to make an informed decision on whether to trust the server certificate.<br>Hint: Set subject CN<br><a target=_new href='http://wiki.squid-cache.org/Features/MimicSslServerCert'>wiki doc with reference</a>]]></description>
+			<type>select</type>
+			<options>
+					<option><name>Sets the "Not After" (setValidAfter).</name><value>setValidAfter</value></option>
+					<option><name>Sets the "Not Before" (setValidBefore).</name><value>setValidBefore</value></option>
+					<option><name>Sets CN property (setCommonName)</name><value>setCommonName</value></option>
+			</options>
+			<multiple/>
+			<size>3</size>
+		</field>
+		<field>
+			<name>Logging Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enabled logging</fielddescr>
+			<fieldname>log_enabled</fieldname>
+			<description>This will enable the access log. Don't switch this on if you don't have much disk space left.</description>
+			<type>checkbox</type>
+			<enablefields>log_query_terms,log_user_agents</enablefields>
+		</field>
+		<field>
+			<fielddescr>Log store directory</fielddescr>
+			<fieldname>log_dir</fieldname>
+			<description>The directory where the log will be stored (note: do not end with a / mark)</description>
+			<type>input</type>
+			<size>60</size>
+			<required/>
+			<default_value>/var/squid/logs</default_value>
+		</field>
+		<field>
+			<fielddescr>Log rotate</fielddescr>
+			<fieldname>log_rotate</fieldname>
+			<description>Defines how many days of logfiles will be kept. Rotation is disabled if left empty.</description>
+			<type>input</type>
+			<size>5</size>
+		</field>
+		<field>
+			<fielddescr>Visible hostname</fielddescr>
+			<fieldname>visible_hostname</fieldname>
+			<description>This is the URL to be displayed in proxy server error messages.</description>
+			<type>input</type>
+			<size>60</size>
+			<default_value>localhost</default_value>
+		</field>
+		<field>
+			<fielddescr>Administrator email</fielddescr>
+			<fieldname>admin_email</fieldname>
+			<description>This is the email address displayed in error messages to the users.</description>
+			<type>input</type>
+			<size>60</size>
+			<default_value>admin@localhost</default_value>
+		</field>
+		<field>
+			<fielddescr>Language</fielddescr>
+			<fieldname>error_language</fieldname>
+			<description>Select the language in which the proxy server will display error messages to users.</description>
+			<type>select</type>
+			<default_value>en</default_value>
+		</field>
+		<field>
+			<fielddescr>X-Forward Mode</fielddescr>
+			<fieldname>xforward_mode</fieldname>
+			<description>&lt;p&gt;&lt;b&gt; on:&lt;/b&gt; Squid will append your client's IP address in the HTTP requests it forwards. (Default)&lt;p&gt;          By default it looks like: X-Forwarded-For: 192.1.2.3  &lt;p&gt; &lt;b&gt; off:&lt;/b&gt; It will appear as: X-Forwarded-For: unknown&lt;p&gt; &lt;b&gt; transparent:&lt;/b&gt; Squid will not alter the X-Forwarded-For header in any way.&lt;p&gt; &lt;b&gt; delete:&lt;/b&gt; Squid will delete the entire X-Forwarded-For header.&lt;p&gt; &lt;b&gt; truncate:&lt;/b&gt; Squid will remove all existing X-Forwarded-For entries, and place the client IP as the sole entry.</description>
+			<type>select</type>
+			<default_value>on</default_value>
+			<options>
+				<option><name>(on)</name><value>on</value></option>
+				<option><name>off</name><value>off</value></option>
+				<option><name>transparent</name><value>transparent</value></option>
+				<option><name>delete</name><value>delete</value></option>
+				<option><name>truncate</name><value>truncate</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Disable VIA</fielddescr>
+			<fieldname>disable_via</fieldname>
+			<description>If not set, Squid will include a Via header in requests and replies as required by RFC2616.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Log denied pages by squidguard</fielddescr>
+			<fieldname>log_sqd</fieldname>
+			<description><![CDATA[Enable squidguard denied log to be included on squid logs.<br>
+			<strong>Note:</strong> This option only will work if you include this code on your sgerror.php file to force client browser send a second request to squid with denied string on url.<br><br>
+			$sge_prefix=(preg_match("/\?/",$cl['u'])?"&":"?");<br>
+        	$str[] = '< iframe > src="'.$cl['u'].$sge_prefix.'sgr=ACCESSDENIED" width="1" height="1" > < /iframe >';<br><br>
+        	removing extra space on iframe html code.]]></description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>What to do with requests that have whitespace characters in the	URI</fielddescr>
+			<fieldname>uri_whitespace</fieldname>
+      <description>&lt;b&gt; strip:&lt;/b&gt; The whitespace characters are stripped out of the URL. This is the behavior recommended by RFC2396. &lt;p&gt; &lt;b&gt; deny:&lt;/b&gt; The request is denied. The user receives an "Invalid Request" message.&lt;p&gt; &lt;b&gt; allow:&lt;/b&gt; The request is allowed and the URI is not changed. The whitespace characters remain in the URI.&lt;p&gt; &lt;b&gt; encode:&lt;/b&gt; The request is allowed and the whitespace characters are encoded according to RFC1738.&lt;p&gt; &lt;b&gt; chop:&lt;/b&gt;	The request is allowed and the URI is chopped at the first whitespace.</description>
+  		<type>select</type>
+			<default_value>strip</default_value>
+			<options>
+				<option><name>strip</name><value>strip</value></option>
+				<option><name>deny</name><value>deny</value></option>
+				<option><name>allow</name><value>allow</value></option>
+				<option><name>encode</name><value>encode</value></option>
+				<option><name>chop</name><value>chop</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Suppress Squid Version</fielddescr>
+			<fieldname>disable_squidversion</fieldname>
+			<description>If set, suppress Squid version string info in HTTP headers and HTML error pages.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<name>Custom Settings</name>
+			<type>listtopic</type>
+		</field>
+	    <field>
+			<fielddescr>Integrations</fielddescr>
+			<fieldname>custom_options</fieldname>
+			<description><![CDATA[Squid options added from packages like squidguard or havp for squid integration.]]></description>
+			<type>textarea</type>
+			<cols>78</cols>
+			<rows>5</rows>
+		</field>
+	    <field>
+			<fielddescr>Custom ACLS (Before_Auth)</fielddescr>
+			<fieldname>custom_options_squid3</fieldname>
+			<description><![CDATA[Put your own custom options here,one per line. They'll be added to the configuration before authetication acls(if any).<br>
+						<strong>They need to be squid.conf native options, otherwise squid will NOT work.</strong>]]></description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<cols>78</cols>
+			<rows>10</rows>
+		</field>
+	    <field>
+			<fielddescr>Custom ACLS (After_Auth)</fielddescr>
+			<fieldname>custom_options2_squid3</fieldname>
+			<description><![CDATA[Put your own custom options here,one per line. They'll be added to the configuration after authetication definition(if any).<br>
+						<strong>They need to be squid.conf native options, otherwise squid will NOT work.</strong>]]></description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<cols>78</cols>
+			<rows>10</rows>
+		</field>
+	</fields>
+	<custom_php_command_before_form>
+		squid_before_form_general($pkg);
+	</custom_php_command_before_form>
+	<custom_add_php_command>
+		squid_resync();
+	</custom_add_php_command>
+	<custom_php_validation_command>
+		squid_validate_general($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		squid_resync();
+		unlink_if_exists("/usr/local/etc/rc.d/squid");
+	</custom_php_resync_config_command>
+	<custom_php_install_command>
+		update_status("Checking Squid cache... One moment please...");
+		update_output_window("This operation may take quite some time, please be patient.  Do not press stop or attempt to navigate away from this page during this process.");
+		squid_install_command();
+		squid_resync();
+		exec("/bin/rm -f /usr/local/etc/rc.d/squid");
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		squid_deinstall_command();
+		exec("/bin/rm -f /usr/local/etc/rc.d/squid*");
+	</custom_php_deinstall_command>
+	<filter_rules_needed>squid_generate_rules</filter_rules_needed>
+</packagegui>

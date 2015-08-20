@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+        <copyright>
+        <![CDATA[
+/* $Id$ */
+/* ========================================================================== */
+/*
+    authng.xml
+    part of pfSense (http://www.pfSense.com)
+    Copyright (C) 2007 to whom it may belong
+    Copyright (C) 2012-2014 Marcello Coutinho
+    All rights reserved.
+
+    Based on m0n0wall (http://m0n0.ch/wall)
+    Copyright (C) 2003-2006 Manuel Kasper <mk@neon1.net>.
+    All rights reserved.
+                                                                              */
+/* ========================================================================== */
+/*
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+     1. Redistributions of source code MUST retain the above copyright notice,
+        this list of conditions and the following disclaimer.
+
+     2. Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+                                                                              */
+/* ========================================================================== */
+        ]]>
+        </copyright>
+    <description>Describe your package here</description>
+    <requirements>Describe your package requirements here</requirements>
+    <faq>Currently there are no FAQ items provided.</faq>
+	<name>squidnac</name>
+	<version>none</version>
+	<title>Proxy server: Access control</title>
+	<include_file>/usr/local/pkg/squid.inc</include_file>
+	<tabs>
+	<tab>
+		<text>General</text>
+			<url>/pkg_edit.php?xml=squid.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Remote Cache</text>
+			<url>/pkg.php?xml=squid_upstream.xml</url>
+		</tab>
+		<tab>
+			<text>Local Cache</text>
+			<url>/pkg_edit.php?xml=squid_cache.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Antivirus</text>
+			<url>/pkg_edit.php?xml=squid_antivirus.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>ACLs</text>
+			<url>/pkg_edit.php?xml=squid_nac.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Traffic Mgmt</text>
+			<url>/pkg_edit.php?xml=squid_traffic.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Authentication</text>
+			<url>/pkg_edit.php?xml=squid_auth.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Users</text>
+			<url>/pkg.php?xml=squid_users.xml</url>
+		</tab>
+		<tab>
+			<text>Real time</text>
+			<url>/squid_monitor.php</url>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=squid_sync.xml</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>Squid Access Control Lists</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Allowed subnets</fielddescr>
+			<fieldname>allowed_subnets</fieldname>
+			<description>Enter each subnet on a new line that is allowed to use the proxy. The subnets must be expressed as CIDR ranges (e.g.: 192.168.1.0/24). Note that the proxy interface subnet is already an allowed subnet. All the other subnets won't be able to use the proxy.</description>
+			<type>textarea</type>
+			<cols>50</cols>
+			<rows>5</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>Unrestricted IPs</fielddescr>
+			<fieldname>unrestricted_hosts</fieldname>
+			<description>Enter unrestricted IP address / network(in CIDR format) on a new line that is not to be filtered out by the other access control directives set in this page.</description>
+			<type>textarea</type>
+			<cols>50</cols>
+			<rows>5</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>Banned host addresses</fielddescr>
+			<fieldname>banned_hosts</fieldname>
+			<description>Enter each IP address / network(in CIDR format) on a new line that is not to be allowed to use the proxy.</description>
+			<type>textarea</type>
+			<cols>50</cols>
+			<rows>5</rows>
+			<encoding>base64</encoding>
+		</field>	
+		<field>
+			<fielddescr>Whitelist</fielddescr>
+			<fieldname>whitelist</fieldname>
+			<description>Enter each destination domain on a new line that will be accessable to the users that are allowed to use the proxy. You also can use regular expressions.</description>
+			<type>textarea</type>
+			<cols>50</cols>
+			<rows>5</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>Blacklist</fielddescr>
+			<fieldname>blacklist</fieldname>
+			<description>Enter each destination domain on a new line that will be blocked to the users that are allowed to use the proxy. You also can use regular expressions.</description>
+			<type>textarea</type>
+			<cols>50</cols>
+			<rows>5</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>Block user agents</fielddescr>
+			<fieldname>block_user_agent</fieldname>
+			<description>Enter each user agent on a new line that will be blocked to the users that are allowed to use the proxy. You also can use regular expressions.</description>
+			<type>textarea</type>
+			<cols>50</cols>
+			<rows>5</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>Block MIME types (reply only)</fielddescr>
+			<fieldname>block_reply_mime_type</fieldname>
+			<description>Enter each MIME type on a new line that will be blocked to the users that are allowed to use the proxy. You also can use regular expressions. Useful to block javascript (application/x-javascript).</description>
+			<type>textarea</type>
+			<cols>50</cols>
+			<rows>5</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<name>Squid Allowed ports</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>acl safeports</fielddescr>
+			<fieldname>addtl_ports</fieldname>
+			<description>This is a space-separated list of "safe ports" in addition to the already defined list: 21 70 80 210 280 443 488 563 591 631 777 901 1025-65535</description>
+			<type>input</type>
+			<size>60</size>
+			<default_value></default_value>
+		</field>
+		<field>
+			<fielddescr>acl sslports</fielddescr>
+			<fieldname>addtl_sslports</fieldname>
+			<description>This is a space-separated list of ports to allow SSL "CONNECT" in addition to the already defined list: 443 563</description>
+			<type>input</type>
+			<size>60</size>
+			<default_value></default_value>
+		</field>
+	</fields>
+	<custom_php_validation_command>
+		squid_validate_nac($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		squid_resync();
+	</custom_php_resync_config_command>
+</packagegui>

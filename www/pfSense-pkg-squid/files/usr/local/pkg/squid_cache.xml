@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+        <copyright>
+        <![CDATA[
+/* $Id$ */
+/* ========================================================================== */
+/*
+    authng.xml
+    part of pfSense (http://www.pfSense.com)
+    Copyright (C) 2007 to whom it may belong
+    Copyright (C) 2012-2014 Marcello Coutinho
+    All rights reserved.
+
+    Based on m0n0wall (http://m0n0.ch/wall)
+    Copyright (C) 2003-2006 Manuel Kasper <mk@neon1.net>.
+    All rights reserved.
+                                                                              */
+/* ========================================================================== */
+/*
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+     1. Redistributions of source code MUST retain the above copyright notice,
+        this list of conditions and the following disclaimer.
+
+     2. Redistributions in binary form MUST reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+                                                                              */
+/* ========================================================================== */
+        ]]>
+        </copyright>
+    <description>Describe your package here</description>
+    <requirements>Describe your package requirements here</requirements>
+    <faq>Currently there are no FAQ items provided.</faq>
+	<name>squidcache</name>
+	<version>none</version>
+	<title>Proxy server: Cache management</title>
+	<include_file>/usr/local/pkg/squid.inc</include_file>
+	<tabs>
+<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=squid.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Remote Cache</text>
+			<url>/pkg.php?xml=squid_upstream.xml</url>
+		</tab>
+		<tab>
+			<text>Local Cache</text>
+			<url>/pkg_edit.php?xml=squid_cache.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Antivirus</text>
+			<url>/pkg_edit.php?xml=squid_antivirus.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>ACLs</text>
+			<url>/pkg_edit.php?xml=squid_nac.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Traffic Mgmt</text>
+			<url>/pkg_edit.php?xml=squid_traffic.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Authentication</text>
+			<url>/pkg_edit.php?xml=squid_auth.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Users</text>
+			<url>/pkg.php?xml=squid_users.xml</url>
+		</tab>
+		<tab>
+			<text>Real time</text>
+			<url>/squid_monitor.php</url>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=squid_sync.xml</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>Squid Cache General Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Cache replacement policy</fielddescr>
+			<fieldname>cache_replacement_policy</fieldname>
+			<description>The cache replacement policy decides which objects will remain in cache and which objects are replaced to create space for the new objects.  The default policy for cache replacement is LFUDA.  Please see the type descriptions specified in the memory replacement policy for additional detail.</description>
+			<type>select</type>
+			<default_value>heap LFUDA</default_value>
+			<options>
+				<option><name>LRU</name><value>lru</value></option>
+				<option><name>Heap LFUDA</name><value>heap LFUDA</value></option>
+				<option><name>Heap GDSF</name><value>heap GDSF</value></option>
+				<option><name>Heap LRU</name><value>heap LRU</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Low-water-mark in %</fielddescr>
+			<fieldname>cache_swap_low</fieldname>
+			<description>Cache replacement begins when the swap usage is above the low-low-water mark and attempts to maintain utilisation near the low-water-mark.</description>
+			<type>input</type>
+			<size>5</size>
+			<default_value>90</default_value>
+		</field>
+		<field>
+			<fielddescr>High-water-mark in %</fielddescr>
+			<fieldname>cache_swap_high</fieldname>
+			<description>As swap utilisation gets close to the high-water-mark object eviction becomes more aggressive.</description>
+			<type>input</type>
+			<size>5</size>
+			<default_value>95</default_value>
+		</field>
+		<field>
+			<fielddescr>Do not cache</fielddescr>
+			<fieldname>donotcache</fieldname>
+			<description>Enter each domain or IP address on a new line that should never be cached.</description>
+			<type>textarea</type>
+			<cols>50</cols>
+			<rows>5</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>Enable offline mode</fielddescr>
+			<fieldname>enable_offline</fieldname>
+			<description>Enable this option and the proxy server will never try to validate cached objects. The offline mode gives access to more cached information than the proposed feature would allow (stale cached versions, where the origin server should have been contacted).</description>
+			<type>checkbox</type>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>External Cache-Managers</fielddescr>
+			<fieldname>ext_cachemanager</fieldname>
+			<description>Enter the IPs for the external Cache Managers to be allowed here, separated by semi-colons (;).</description>
+			<type>input</type>
+			<size>60</size>
+		</field>	
+		<field>
+			<name>Squid Hard disk cacheSettings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Hard disk cache size</fielddescr>
+			<fieldname>harddisk_cache_size</fieldname>
+			<description>This is the amount of disk space (in megabytes) to use for cached objects.</description>
+			<type>input</type>
+			<required/>
+			<size>10</size>
+			<default_value>100</default_value>
+		</field>
+		<field>
+			<fielddescr>Hard disk cache system</fielddescr>
+			<fieldname>harddisk_cache_system</fieldname>
+			<description><![CDATA[This specifies the kind of storage system to use.
+						<br><br><b>ufs</b> is the old well-known Squid storage format that has always been there.
+			 			<br><br><b>aufs</b> uses POSIX-threads to avoid blocking the main Squid process on disk-I/O. (Formerly known as async-io.)
+			 			<br><br><b>diskd</b> uses a separate process to avoid blocking the main Squid process on disk-I/O.<br>To use <b>ipcs</b> and <b>ipcrm</b> on squid, Download livefs.iso from ftp://ftp.freebsd.org/pub/FreeBSD/releases/ISO-IMAGES/8.3/ mount it and copy <b>/usr/bin/ipcs</b> and <b>/usr/bin/ipcrm</b> to your system and set them as executables.
+			 			<br><br><b>null</b> Does not use any storage. Ideal for Embedded/NanoBSD.]]></description>
+			<type>select</type>
+			<default_value>ufs</default_value>
+			<options>
+				<option><name>ufs</name><value>ufs</value></option>
+				<option><name>aufs</name><value>aufs</value></option>
+				<option><name>diskd</name><value>diskd</value></option>
+				<option><name>null</name><value>null</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Clear cache on log rotate</fielddescr>
+			<fieldname>clear_cache</fieldname>
+			<description><![CDATA[If set, Squid will clear cache and swap.state on every log rotate.<br>
+						This action will be executed automatically if the swap.state file is taking up more than 75% disk space,or the drive is 90%]]></description>
+			<type>checkbox</type>
+		</field>	
+		<field>
+			<fielddescr>Level 1 subdirectories</fielddescr>
+			<fieldname>level1_subdirs</fieldname>
+			<description>Each level-1 directory contains 256 subdirectories, so a value of 256 level-1 directories will use a total of 65536 directories for the hard disk cache.  This will significantly slow down the startup process of the proxy service, but can speed up the caching under certain conditions.</description>
+			<type>select</type>
+			<default_value>16</default_value>
+			<options>
+				<option><name>4</name><value>4</value></option>
+				<option><name>8</name><value>8</value></option>
+				<option><name>16</name><value>16</value></option>
+				<option><name>32</name><value>32</value></option>
+				<option><name>64</name><value>64</value></option>
+				<option><name>128</name><value>128</value></option>
+				<option><name>256</name><value>256</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Hard disk cache location</fielddescr>
+			<fieldname>harddisk_cache_location</fieldname>
+			<description>This is the directory where the cache will be stored. (note: do not end with a /).  If you change this location, squid needs to make a new cache, this could take a while</description>
+			<type>input</type>
+			<size>60</size>
+			<required/>
+			<default_value>/var/squid/cache</default_value>
+		</field>
+		<field>
+			<fielddescr>Minimum object size</fielddescr>
+			<fieldname>minimum_object_size</fieldname>
+			<description>Objects smaller than the size specified (in kilobytes) will not be saved on disk. The default value is 0, meaning there is no minimum.</description>
+			<type>input</type>
+			<required />
+			<size>10</size>
+			<default_value>0</default_value>
+		</field>
+		<field>
+			<fielddescr>Maximum object size</fielddescr>
+			<fieldname>maximum_object_size</fieldname>
+			<description>Objects larger than the size specified (in kilobytes) will not be saved on disk. If you wish to increase speed more than you want to save bandwidth, this should be set to a low value.</description>
+			<type>input</type>
+			<required/>
+			<size>10</size>
+			<default_value>4</default_value>
+		</field>
+		<field>
+			<name>Squid Memory Cache Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Memory cache size</fielddescr>
+			<fieldname>memory_cache_size</fieldname>
+			<description>This is the amount of physical RAM (in megabytes) to be used for negative cache and in-transit objects.  This value should not exceed more than 50% of the installed RAM. The minimum value is 1MB.</description>
+			<type>input</type>
+			<size>10</size>
+			<required/>
+			<default_value>8</default_value>
+		</field>
+		<field>
+			<fielddescr>Maximum object size in RAM</fielddescr>
+			<fieldname>maximum_objsize_in_mem</fieldname>
+			<description>Objects smaller than the size specified (in kilobytes) will be saved in RAM. Default is 32.</description>
+			<type>input</type>
+			<size>10</size>
+			<required/>
+			<default_value>32</default_value>
+		</field>		
+		<field>
+			<fielddescr>Memory replacement policy</fielddescr>
+			<fieldname>memory_replacement_policy</fieldname>
+			<description>The memory replacement policy determines which objects are purged from memory when space is needed.  The default policy for memory replacement is GDSF.  &lt;p&gt; &lt;b&gt; LRU: Last Recently Used Policy &lt;/b&gt; - The LRU policies keep recently referenced objects.  i.e., it replaces the object that has not been accessed for the longest time. &lt;p&gt; &lt;b&gt; Heap GDSF: Greedy-Dual Size Frequency &lt;/b&gt; - The Heap GDSF policy optimizes object-hit rate by keeping smaller, popular objects in cache.  It achieves a lower byte hit rate than LFUDA though, since it evicts larger (possibly popular) objects.  &lt;p&gt; &lt;b&gt; Heap LFUDA: Least Frequently Used with Dynamic Aging &lt;/b&gt; - The Heap LFUDA policy keeps popular objects in cache regardless of their size and thus optimizes byte hit rate at the expense of hit rate since one large, popular object will prevent many smaller, slightly less popular objects from being cached.  &lt;p&gt; &lt;b&gt; Heap LRU: Last Recently Used &lt;/b&gt; - Works like LRU, but uses a heap instead. &lt;p&gt; Note: If using the LFUDA replacement policy, the value of Maximum Object Size should be increased above its default of 12KB to maximize the potential byte hit rate improvement of LFUDA.</description>
+			<type>select</type>
+			<default_value>heap GDSF</default_value>
+			<options>
+				<option><name>LRU</name><value>lru</value></option>
+				<option><name>Heap LFUDA</name><value>heap LFUDA</value></option>
+				<option><name>Heap GDSF</name><value>heap GDSF</value></option>
+				<option><name>Heap LRU</name><value>heap LRU</value></option>
+			</options>
+		</field>
+		<field>
+			<name>Dynamic and Update Content</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Cache Dynamic Content</fielddescr>
+			<fieldname>cache_dynamic_content</fieldname>
+			<description><![CDATA[Select this option to <a target=_new href='http://wiki.squid-cache.org/ConfigExamples/DynamicContent'>enable caching of dynamic content.</a><br>
+								 ]]></description>
+			<type>checkbox</type>
+			<size>10</size>
+		</field>
+		<field>
+			<fielddescr>Refresh Patterns</fielddescr>
+			<fieldname>refresh_patterns</fieldname>
+			<description><![CDATA[With dynamic cache enabled, you can also apply squid wiki refresh_patterns to sites like <a target=_new href='http://wiki.squid-cache.org/ConfigExamples/DynamicContent/YouTube'>Youtube</a> and <a target=_new href='http://wiki.squid-cache.org/SquidFaq/WindowsUpdate'>windowsupdate</a><br>
+			<br><strong>Notes:</strong><br>
+			Squid wiki suggests 'Finish transfer if less than x KB remaining' on 'traffic mgmt' squid tab to -1 but you can apply your own values to control cache.<br><br>
+			set Maximum download size on 'traffic mgmt' squid tab to a value that fits patterns your are applying.<br>Microsoft may need 200Mb and youtube 4GB.]]></description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>Youtube</name><value>youtube</value></option>
+				<option><name>Windows Update</name><value>windows</value></option>
+				<option><name>Symantec Antivirus</name><value>symantec</value></option>
+				<option><name>Avira</name><value>avira</value></option>
+				<option><name>Avast</name><value>avast</value></option>
+			</options>
+			<multiple/>
+			<size>06</size>
+		</field>
+		<field>
+			<fielddescr>Custom refresh_patterns</fielddescr>
+			<fieldname>custom_refresh_patterns</fieldname>
+			<description>Enter custom refresh_patterns for better dynamic cache. This options will be included only if dynamic cache is enabled.</description>
+			<type>textarea</type>
+			<cols>67</cols>
+			<rows>5</rows>
+			<encoding>base64</encoding>
+		</field>
+	</fields>
+	<custom_php_command_before_form>
+		if($_POST['harddisk_cache_size'] != $config['installedpackages']['squidcache']['config'][0]['harddisk_cache_size']) {
+			$needs_dash_z = true;
+		}
+	</custom_php_command_before_form>
+	<custom_php_validation_command>
+		squid_validate_cache($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		squid_resync();
+		if($needs_dash_z)
+			squid_dash_z();
+	</custom_php_resync_config_command>
+</packagegui>

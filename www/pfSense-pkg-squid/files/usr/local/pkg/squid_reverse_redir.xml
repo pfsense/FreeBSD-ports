@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ============================================================================ */
+/*
+	squid_reverse_redir.xml
+	part of pfSense (http://www.pfSense.com)
+	Copyright (C) 2013 Gekkenhuis
+	All rights reserved.
+
+	Based on m0n0wall (http://m0n0.ch/wall)
+	Copyright (C) 2003-2006 Manuel Kasper <mk@neon1.net>.
+	All rights reserved.
+																				*/
+/* ============================================================================ */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+	 1. Redistributions of source code must retain the above copyright notice,
+		this list of conditions and the following disclaimer.
+
+	 2. Redistributions in binary form must reproduce the above copyright
+		notice, this list of conditions and the following disclaimer in the
+		documentation and/or other materials provided with the distribution.
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+																				*/
+/* ============================================================================ */
+	]]>
+	</copyright>
+	<description>Describe your package here</description>
+	<requirements>Describe your package requirements here</requirements>
+	<faq>Currently there are no FAQ items provided.</faq>
+	<name>squidreverseredir</name>
+	<version>none</version>
+	<title>Reverse Proxy server: Redirects</title>
+	<include_file>/usr/local/pkg/squid.inc</include_file>
+	<tabs>
+	<tab>
+		<text>General</text>
+			<url>/pkg_edit.php?xml=squid_reverse_general.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Web Servers</text>
+			<url>/pkg.php?xml=squid_reverse_peer.xml</url>
+		</tab>
+		<tab>
+			<text>Mappings</text>
+			<url>/pkg.php?xml=squid_reverse_uri.xml</url>
+		</tab>
+		<tab>
+			<text>Redirects</text>
+			<url>/pkg.php?xml=squid_reverse_redir.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Real time</text>
+			<url>/squid_monitor.php?menu=reverse</url>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=squid_reverse_sync.xml&amp;id=0</url>
+		</tab>
+	</tabs>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Status</fielddescr>
+			<fieldname>enable</fieldname>
+		</columnitem>
+		<columnitem>
+		<fielddescr>Redirect Name</fielddescr>
+		<fieldname>name</fieldname>
+		</columnitem>
+			<columnitem>
+				<fielddescr>Redirect to</fielddescr>
+				<fieldname>redirurl</fieldname>
+			</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+		</columnitem>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<name>Squid Redirect Mappings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable this redirect</fielddescr>
+			<fieldname>enable</fieldname>
+			<description><![CDATA[If this field is checked, then this redirect will be available for reverse config.]]></description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Redirect name</fielddescr>
+			<fieldname>name</fieldname>
+			<description><![CDATA[Name to identify this redirect on squid reverse conf<br/>
+							example: REDIR1]]></description>
+			<type>input</type>
+			<size>20</size>
+		</field>
+		<field>
+			<fielddescr>Redirect Description</fielddescr>
+			<fieldname>description</fieldname>
+			<description><![CDATA[Redirect Description (optional)]]></description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>Redirect Protocol</fielddescr>
+			<fieldname>protocol</fieldname>
+			<description><![CDATA[Protocol to redirect on.<br/>
+						  Use CTRL + click to select multiple]]></description>
+			<type>select</type>
+			<multiple/>
+			<size>03</size>
+				<options>
+				  <option>
+					<name>HTTP</name>
+					<value>HTTP</value>
+				  </option>
+				  <option>
+					<name>HTTPS</name>
+					<value>HTTPS</value>
+				  </option>
+				</options>
+		</field>
+		<field>
+			<fielddescr>Blocked domains</fielddescr>
+			<fieldname>none</fieldname>
+			<description>Domains to redirect for</description>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+				<fielddescr><![CDATA[<strong>Domains to match</strong><br/><br/>
+							Samples: mydomain.com sub.mydomain.com www.mydomain.com<br/><br/>
+							Do not enter http:&#47;&#47; or https:&#47;&#47; here! only the hostname is required.]]></fielddescr>
+				<fieldname>uri</fieldname>
+				<type>input</type>
+				<size>60</size>
+			</rowhelperfield>
+			</rowhelper>
+		</field>
+		<field>
+			<fielddescr>Path regex</fielddescr>
+			<fieldname>pathregex</fieldname>
+			<description><![CDATA[Path regex to match<br/><br/>]]>
+						 Enter &#94;&#47;&#36; to match the domain only.</description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>URL to redirect to</fielddescr>
+			<fieldname>redirurl</fieldname>
+			<description><![CDATA[URL to redirect to]]></description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+	</fields>
+
+	<custom_php_command_before_form>
+	</custom_php_command_before_form>
+	<custom_php_validation_command>
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		squid_resync();
+	</custom_php_resync_config_command>
+</packagegui>

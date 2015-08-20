@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ========================================================================== */
+/*
+    squid_sync.xml
+    part of the sarg package for pfSense
+    Copyright (C) 2012-2014 Marcello Coutinho
+    All rights reserved.            
+                                                                  */
+/* ========================================================================== */
+/*
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+     1. Redistributions of source code MUST retain the above copyright notice,
+        this list of conditions and the following disclaimer.
+
+     2. Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+                                                                              */
+/* ========================================================================== */
+	]]>
+	</copyright>
+	<description>Describe your package here</description>
+	<requirements>Describe your package requirements here</requirements>
+	<faq>Currently there are no FAQ items provided.</faq>
+	<name>squidsync</name>
+	<version>1.0</version>
+	<title>Proxy server: XMLRPC Sync</title>
+	<include_file>/usr/local/pkg/squid.inc</include_file>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=squid.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Remote Cache</text>
+			<url>/pkg.php?xml=squid_upstream.xml</url>
+		</tab>
+		<tab>
+			<text>Local Cache</text>
+			<url>/pkg_edit.php?xml=squid_cache.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Antivirus</text>
+			<url>/pkg_edit.php?xml=squid_antivirus.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>ACLs</text>
+			<url>/pkg_edit.php?xml=squid_nac.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Traffic Mgmt</text>
+			<url>/pkg_edit.php?xml=squid_traffic.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Authentication</text>
+			<url>/pkg_edit.php?xml=squid_auth.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Users</text>
+			<url>/pkg.php?xml=squid_users.xml</url>
+		</tab>
+		<tab>
+			<text>Real time</text>
+			<url>/squid_monitor.php</url>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=squid_sync.xml</url>
+			<active/>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>XMLRPC Sync</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Automatically sync squid configuration changes</fielddescr>
+			<fieldname>synconchanges</fieldname>
+			<description>Select a sync method for squid.</description>
+			<type>select</type>
+			<required/>
+			<default_value>auto</default_value>
+			<options>
+				<option><name>Sync to configured system backup server</name><value>auto</value></option>
+				<option><name>Sync to host(s) defined below</name><value>manual</value></option>
+				<option><name>Do not sync this package configuration</name><value>disabled</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Sync timeout</fielddescr>
+			<fieldname>synctimeout</fieldname>
+			<description>Select sync max wait time</description>
+			<type>select</type>
+			<required/>
+			<default_value>250</default_value>
+			<options>
+				<option><name>250 seconds(Default)</name><value>250</value></option>
+				<option><name>120 seconds</name><value>120</value></option>
+				<option><name>90 seconds</name><value>90</value></option>
+				<option><name>60 seconds</name><value>60</value></option>
+				<option><name>30 seconds</name><value>30</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Remote Server</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+			<rowhelperfield>
+				<fielddescr>IP Address</fielddescr>
+				<fieldname>ipaddress</fieldname>
+				<description>IP Address of remote server</description>
+				<type>input</type>
+				<size>20</size>
+			</rowhelperfield>
+			<rowhelperfield>
+				<fielddescr>Password</fielddescr>
+				<fieldname>password</fieldname>
+				<description>Password for remote server.</description>
+				<type>password</type>
+				<size>20</size>
+			</rowhelperfield>
+			</rowhelper>
+		</field>
+	</fields>
+	<custom_php_validation_command>
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		squid_resync();
+	</custom_php_resync_config_command>
+</packagegui>

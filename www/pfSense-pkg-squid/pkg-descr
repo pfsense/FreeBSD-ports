@@ -1,0 +1,8 @@
+High performance web proxy cache.<br />
+			It combines Squid as a proxy server with its
+			capabilities of acting as a HTTP / HTTPS reverse
+			proxy.<br /> It includes an Exchange-Web-Access (OWA)
+			Assistant, SSL filtering and antivirus integration via
+			C-ICAP.
+
+WWW: https://forum.pfsense.org/index.php/topic,48347.0.html
