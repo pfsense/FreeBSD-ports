@@ -1,0 +1,6 @@
+pkg/systempatches.xml
+www/system_patches.php
+www/system_patches_edit.php
+bin/apply_patches.php
+pkg/patches.inc
+%%DATADIR%%/info.xml
