@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+		<![CDATA[
+/* $Id$ */
+/* ========================================================================== */
+/*
+	mailreport.xml
+	part of pfSense (http://www.pfSense.com)
+	Copyright (C) 2011 Jim Pingle
+	All rights reserved.                                                  */
+/* ========================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+	 1. Redistributions of source code must retain the above copyright notice,
+		this list of conditions and the following disclaimer.
+
+	 2. Redistributions in binary form must reproduce the above copyright
+		notice, this list of conditions and the following disclaimer in the
+		documentation and/or other materials provided with the distribution.
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.					      */
+/* ========================================================================== */
+		]]>
+	</copyright>
+	<name>mailreport</name>
+	<version>2.3</version>
+	<title>Status: Email Reports</title>
+	<additional_files_needed>
+		<prefix>/usr/local/bin/</prefix>
+		<chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/mailreport/mail_reports_generate.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/etc/inc/</prefix>
+		<item>https://packages.pfsense.org/packages/config/mailreport/mail_reports.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/etc/inc/phpmailer/</prefix>
+		<item>https://packages.pfsense.org/packages/config/mailreport/PHPMailerAutoload.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/etc/inc/phpmailer/</prefix>
+		<item>https://packages.pfsense.org/packages/config/mailreport/class.phpmailer.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/etc/inc/phpmailer/</prefix>
+		<item>https://packages.pfsense.org/packages/config/mailreport/class.pop3.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/etc/inc/phpmailer/</prefix>
+		<item>https://packages.pfsense.org/packages/config/mailreport/class.smtp.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/</prefix>
+		<item>https://packages.pfsense.org/packages/config/mailreport/status_mail_report.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/</prefix>
+		<item>https://packages.pfsense.org/packages/config/mailreport/status_mail_report_edit.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/</prefix>
+		<item>https://packages.pfsense.org/packages/config/mailreport/status_mail_report_add_cmd.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/</prefix>
+		<item>https://packages.pfsense.org/packages/config/mailreport/status_mail_report_add_log.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/</prefix>
+		<item>https://packages.pfsense.org/packages/config/mailreport/status_mail_report_add_graph.php</item>
+	</additional_files_needed>
+	<menu>
+		<name>Email Reports</name>
+		<tooltiptext>Setup periodic email reports.</tooltiptext>
+		<section>Status</section>
+		<url>/status_mail_report.php</url>
+	</menu>
+	<custom_php_deinstall_command>
+	<![CDATA[
+		exec("rm /usr/local/bin/mail_reports_generate.php");
+		exec("rm /usr/local/etc/mail_reports.inc");
+		exec("rm /usr/local/etc/phpmailer/PHPMailerAutoload.php");
+		exec("rm /usr/local/etc/phpmailer/class.phpmailer.php");
+		exec("rm /usr/local/etc/phpmailer/class.pop3.php");
+		exec("rm /usr/local/etc/phpmailer/class.smtp.php");
+		exec("rmdir /usr/local/etc/phpmailer");
+		exec("rm /usr/local/www/status_mail_report.php");
+		exec("rm /usr/local/www/status_mail_report_edit.php");
+		exec("rm /usr/local/www/status_mail_report_add_cmd.php");
+		exec("rm /usr/local/www/status_mail_report_add_log.php");
+		exec("rm /usr/local/www/status_mail_report_add_graph.php");
+	]]>
+	</custom_php_deinstall_command>
+</packagegui>
