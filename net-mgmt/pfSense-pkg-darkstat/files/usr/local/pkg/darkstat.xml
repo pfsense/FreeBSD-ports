@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	darkstat.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2009-2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<name>Darkstat</name>
+	<version>3.1</version>
+	<title>Diagnostics: Darkstat</title>
+	<menu>
+		<name>Darkstat Settings</name>
+		<tooltiptext>Setup darkstat specific settings.</tooltiptext>
+		<section>Diagnostics</section>
+		<url>/pkg_edit.php?xml=darkstat.xml&amp;id=0</url>
+	</menu>
+	<service>
+		<name>darkstat</name>
+		<rcfile>darkstat.sh</rcfile>
+		<executable>darkstat</executable>
+		<description>Darkstat bandwidth monitoring daemon</description>
+	</service>
+	<configpath>installedpackages->package->$packagename->configuration->settings</configpath>
+	<tabs>
+		<tab>
+			<text>Darkstat Settings</text>
+			<url>/pkg_edit.php?xml=darkstat.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Access Darkstat</text>
+			<url>http://$myurl:666</url>
+		</tab>
+	</tabs>
+	<advanced_options>enabled</advanced_options>
+	<fields>
+		<field>
+			<fielddescr>Enable darkstat</fielddescr>
+			<fieldname>enable</fieldname>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Interface(s) to capture traffic on</fielddescr>
+			<fieldname>capture_interfaces</fieldname>
+			<description><![CDATA[
+				Capture traffic on the specified network interface(s).<br />
+				(Default is LAN.)
+				]]>
+			</description>
+			<type>interfaces_selection</type>
+			<hideinterfaceregex>loopback</hideinterfaceregex>
+			<size>3</size>
+			<multiple>true</multiple>
+			<value>lan</value>
+			<required>true</required>
+		</field>
+		<field>
+			<fielddescr>Darkstat web interface should listen on</fielddescr>
+			<fieldname>bind_interfaces</fieldname>
+			<description>
+				<![CDATA[
+				Bind the web interface to IP address(es) of the specified interface(s).<br />
+				(The default is to listen on all interfaces.)
+				]]>
+			</description>
+			<type>interfaces_selection</type>
+			<size>3</size>
+			<multiple>true</multiple>
+		</field>
+		<!-- Disabled until there is some way to handle the $myurl thing in the tabs/url tag above -->
+		<!--
+		<field>
+			<fielddescr>Port</fielddescr>
+			<fieldname>port</fieldname>
+			<description>
+				<![CDATA[
+				Bind the darkstat web interface to the specified port.<br />
+				<strong>WARNING: Do NOT set this to the same port where pfSense WebGUI is running (usually 80/443)!</strong><br />
+				(Default is 666.)
+				]]>
+			</description>
+			<type>input</type>
+			<size>5</size>
+		</field>
+		-->
+		<field>
+			<fielddescr>Enable the "local network" feature</fielddescr>
+			<fieldname>localnetworkenable</fieldname>
+			<description>
+				<![CDATA[
+				All traffic entering or leaving this network will be graphed.<br />
+				(The default behaviour is to only graph traffic to and from the local host.)
+				]]>
+			</description>
+			<type>checkbox</type>
+			<enablefields>localnetworkonly</enablefields>
+			<disablefields>localnetworkonly</disablefields>
+			</field>
+		<field>
+			<fielddescr>Make the web interface ONLY display hosts on the "local network"</fielddescr>
+			<fieldname>localnetworkonly</fieldname>
+			<description>
+				<![CDATA[
+				If the "local network" feature is enabled above, the web interface<br />
+				will only display hosts on the "local network" defined below.
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Define a "local network"</fielddescr>
+			<fieldname>localnetwork</fieldname>
+			<description>Traffic from/to the network/netmask of the selected interface will be considered as "local network".</description>
+			<type>interfaces_selection</type>
+			<hideinterfaceregex>(wan|loopback)</hideinterfaceregex>
+		</field>
+		<field>
+			<fielddescr>Do not use promiscuous mode to capture</fielddescr>
+			<fieldname>nopromisc</fieldname>
+			<description>
+				<![CDATA[
+				Note that an interface may already be in promiscuous mode,<br />
+				or may later enter promiscuous mode, due to circumstances beyond darkstat's control.<br />
+				<strong>This cannot be used when the "local network" feature is enabled above.</strong>
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Do not resolve IPs to host names</fielddescr>
+			<fieldname>nodns</fieldname>
+			<description>
+				<![CDATA[
+				This can significantly reduce memory footprint on small systems,<br />
+				as an extra process is created for DNS resolution.
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Do not display MAC addresses in the hosts table</fielddescr>
+			<fieldname>nomacs</fieldname>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Do not display the last seen time in the hosts table</fielddescr>
+			<fieldname>nolastseen</fieldname>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Maximum hosts count</fielddescr>
+			<fieldname>hostsmax</fieldname>
+			<description>
+				<![CDATA[
+				The maximum number of hosts that will be kept in the hosts table.<br />
+				This is used to limit how much accounting data will be kept in memory.<br />
+				(If filled in, the number must be greater than 'Maximum number of hosts to keep' below.)
+				]]>
+			</description>
+			<type>input</type>
+			<size>5</size>
+		</field>
+		<field>
+			<fielddescr>Maximum number of hosts to keep</fielddescr>
+			<fieldname>hostskeep</fieldname>
+			<description>
+				<![CDATA[
+				When the hosts table hits 'Maximum hosts count' and traffic is seen from a new host,<br />
+				we clean out the hosts table, keeping only the top number of hosts, sorted by total traffic.<br />
+				(If filled in, the number must be lower than 'Maximum hosts count' above.)
+				]]>
+			</description>
+			<type>input</type>
+			<size>5</size>
+		</field>
+		<field>
+			<fielddescr>Maximum ports count</fielddescr>
+			<fieldname>portsmax</fieldname>
+			<description>
+				<![CDATA[
+				The maximum number of ports that will be tracked for each host.<br />
+				This is used to limit how much accounting data will be kept in memory.<br />
+				(If filled in, the number must be greater than 'Maximum number of ports to keep' below.)
+				]]>
+			</description>
+			<type>input</type>
+			<size>5</size>
+		</field>
+		<field>
+			<fielddescr>Maximum number of ports to keep</fielddescr>
+			<fieldname>portskeep</fieldname>
+			<description>
+				<![CDATA[
+				When a ports table fills up, this many ports are kept and the rest are discarded.<br />
+				(If filled in, the number must be lower than 'Maximum ports count' above.)
+				]]>
+			</description>
+			<type>input</type>
+			<size>5</size>
+		</field>
+		<field>
+			<fielddescr>Advanced traffic filtering options</fielddescr>
+			<fieldname>advfilter</fieldname>
+			<description>
+				<![CDATA[
+				Use the specified filter expression when capturing traffic.<br /><br />
+				Example 1: We only want to account for SSH traffic.<br />
+				Filter expression: <em>port 22</em><br /><br />
+				Example 2: We don't want to account for traffic between internal IPs.<br />
+				Filter expression: <em>not (src net 192.168.0 and dst net 192.168.0)</em><br /><br />
+				NOTE: Filter syntax is beyond the scope of this description; please refer to 
+				<a href="https://www.freebsd.org/cgi/man.cgi?query=tcpdump&amp;sektion=1&amp;apropos=0&amp;manpath=FreeBSD+10.1-RELEASE+and+Ports">tcpdump(1)</a>, 
+				<a href="https://www.freebsd.org/cgi/man.cgi?query=pcap-filter&amp;sektion=7&amp;apropos=0&amp;manpath=FreeBSD+10.1-RELEASE+and+Ports">pcap-filter(7)</a> 
+				and <a href="https://www.freebsd.org/cgi/man.cgi?query=darkstat&apropos=0&sektion=0&manpath=FreeBSD+10.1-RELEASE+and+Ports&arch=default&format=html">darkstat(8)</a>
+				documentation.<br />
+				<strong>WARNING: You are completely on your own with this! If misconfigured, darkstat will malfunction or even not start at all.</strong>
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<cols>65</cols>
+			<rows>5</rows>
+			<advancedfield/>
+		</field>
+	</fields>
+	<custom_php_global_functions>
+	<![CDATA[
+		function sync_package_darkstat() {
+			conf_mount_rw();
+			global $config, $darkstat_config;
+			$darkstat_config =& $config['installedpackages']['darkstat']['config'][0];
+
+			/* Configure capture interface(s) */
+			$capture_interfaces = $darkstat_config['capture_interfaces'] ?: 'lan';
+			foreach (explode(",", $capture_interfaces) as $iface) {
+				$if = convert_friendly_interface_to_real_interface_name($iface);
+				if ($if) {
+					$ifaces_final .= " -i {$if}";
+				}
+			}
+			$start = "/usr/local/sbin/darkstat {$ifaces_final}";
+
+			/* Configure bind interface(s) */
+			foreach (explode(",", $darkstat_config['bind_interfaces']) as $iface) {
+				$if = convert_friendly_interface_to_real_interface_name($iface);
+				$if = get_interface_ip("$iface");
+				if ($if) {
+					$bind_ifaces_final .= " -b {$if}";
+				}
+			}
+			$start .= "{$bind_ifaces_final}";
+
+			/* Configure darkstat webgui port
+			NOTE: This will be always be 666 for now, until the 'Port' field is re-enabled in darkstat.xml
+			*/
+			$port = $darkstat_config['port'] ?: '666';
+			$start .= " -p {$port}";
+
+			/* Deal with the rest of configured options here */
+			$localnetworkenable = $darkstat_config['localnetworkenable'];
+			$lif = $darkstat_config['localnetwork'];
+			if ($localnetworkenable != "") {
+				if (is_ipaddrv4(get_interface_ip($lif))) {
+					$start .= " -l " . escapeshellarg(gen_subnet(get_interface_ip($lif), get_interface_subnet($lif)) . '/' . gen_subnet_mask(get_interface_subnet($lif)));
+				}
+				if ($darkstat_config['localnetworkonly'] != "") {
+					$start .= " --local-only";
+				}
+			}
+			if (($localnetworkenable == "") && ($darkstat_config['nopromisc'] != "")) {
+				$start .= " --no-promisc";
+			}
+			if ($darkstat_config['nodns'] != "") {
+				$start .= " --no-dns";
+			}
+			if ($darkstat_config['nomacs'] != "") {
+				$start .= " --no-macs";
+			}
+			if ($darkstat_config['nolastseen'] != "") {
+				$start .= " --no-lastseen";
+			}
+			$hostsmax = $darkstat_config['hostsmax'];
+			$hostskeep = $darkstat_config['hostskeep'];
+			if (($hostsmax > 0) && ($hostsmax > $hostskeep)) {
+				$start .= " --hosts-max {$hostsmax}";
+			}
+			if (($hostskeep > 0) && ($hostskeep < $hostsmax)) {
+				$start .= " --hosts-keep {$hostskeep}";
+			}
+			$portsmax = $darkstat_config['portsmax'];
+			$portskeep = $darkstat_config['portskeep'];
+			if (($portsmax > 0) && ($portsmax > $portskeep)) {
+				$start .= " --ports-max {$portsmax}";
+			}
+			if (($portskeep > 0) && ($portskeep < $portsmax)) {
+				$start .= " --ports-keep {$portskeep}";
+			}
+			$advfilter = $darkstat_config['advfilter'];
+			if ($advfilter != "") {
+				$start .= " -f " . escapeshellarg(base64_decode($advfilter));
+			}
+
+			write_rcfile(array(
+					"file" => "darkstat.sh",
+					"start" => $start,
+					"stop" => "/usr/bin/killall darkstat"
+				)
+			);
+
+			/* If the service is (being) disabled, stop it (if running) and do nothing else */
+			if (!($darkstat_config['enable'])) {
+				if (is_process_running("darkstat")) {
+					stop_service("darkstat");
+				}
+				return;
+			} else {
+				restart_service("darkstat");
+			}
+
+			conf_mount_ro();
+		}
+
+		function validate_input_darkstat($post, &$input_errors) {
+			if (($_POST['port']) && ($_POST['port'] < 1 || $_POST['port'] < 65535 || !is_numericint($_POST['port']))) {
+				$input_errors[] .= gettext("The value for 'Maximum number of ports' to keep' must be a positive integer between 1 and 65535.");
+			}
+			if (($_POST['hostsmax']) && ($_POST['hostsmax'] < 1 || !is_numericint($_POST['hostsmax']))) {
+				$input_errors[] = gettext("The value for 'Maximum hosts count' must be a positive integer.");
+			}
+			if (($_POST['hostskeep']) && ($_POST['hostskeep'] < 1 || !is_numericint($_POST['hostskeep']))) {
+				$input_errors[] .= gettext("The value for 'Maximum number of hosts to keep' must be a positive integer.");
+			}
+			if ($_POST['hostsmax'] || $_POST['hostskeep']) {
+				if ($_POST['hostsmax'] <= $_POST['hostskeep']) {
+					$input_errors[] .= gettext("'Maximum hosts count' must be greater than 'Maximum number of hosts to keep'.");
+				}
+			}
+			if (($_POST['portsmax']) && ($_POST['portsmax'] < 1 || !is_numericint($_POST['portsmax']))) {
+				$input_errors[] .= gettext("The value for 'Maximum ports count' must be a positive integer.");
+			}
+			if (($_POST['portskeep']) && ($_POST['portskeep'] < 1 || !is_numericint($_POST['portskeep']))) {
+				$input_errors[] .= gettext("The value for 'Maximum number of ports' to keep' must be a positive integer.");
+			}
+			if ($_POST['portsmax'] || $_POST['portskeep']) {
+				if ($_POST['portsmax'] <= $_POST['portskeep']) {
+					$input_errors[] .= gettext("'Maximum ports count' must be greater than 'Maximum number of ports to keep'.");
+				}
+			}
+			if ($_POST['localnetworkenable'] && $_POST['nopromisc'] != "") {
+				$input_errors[] .= gettext("'Do not use promiscuous mode to capture' cannot be used when the 'local network' feature is enabled.");
+			}
+			if ($_POST['localnetwork']) {
+				$int = convert_friendly_interface_to_real_interface_name($post['localnetwork']);
+				$ip = find_interface_ip($int);
+				if (!is_ipaddrv4($ip)) {
+					$input_errors[] .= gettext("The selected 'local network' interface has no IPv4 configured. Configured IPv4 is required.");
+				}
+			}
+			if (($post['advfilter']) && !preg_match("/^[a-zA-Z0-9\+\-\=\(\):. ]*$/", $post['advfilter'])) {
+				$input_errors[] .= gettext('Advanced traffic filtering options may only contain characters matching ^[a-zA-Z0-9\+\-\=\(\):. ]*$ regexp.');
+			}
+		}
+	]]>
+	</custom_php_global_functions>
+	<custom_add_php_command>
+		sync_package_darkstat();
+	</custom_add_php_command>
+	<custom_php_resync_config_command>
+		sync_package_darkstat();
+	</custom_php_resync_config_command>
+	<custom_php_deinstall_command>
+		unlink_if_exists("/usr/local/etc/rc.d/darkstat.sh");
+	</custom_php_deinstall_command>
+	<custom_php_validation_command>
+		validate_input_darkstat($_POST, $input_errors);
+	</custom_php_validation_command>
+</packagegui>
