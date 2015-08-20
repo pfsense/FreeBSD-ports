@@ -1,0 +1,20 @@
+--- rate_abusers.c.orig	2010-04-28 14:58:52.000000000 -0400
++++ rate_abusers.c	2010-04-28 14:59:29.000000000 -0400
+@@ -103,7 +103,7 @@
+ 
+ 			if(opt_color) printf("%s", COLOR_AB_HEADER);
+ 			
+-			snprintf(indent, 100, customize_format(opt_cols * 2, 65 * 2, "%%-%d.%ds"), "");
++			snprintf(indent, 100, customize_format(opt_cols * 2, 64 * 2, "%%-%d.%ds"), "");
+ 			
+ 			
+ 			if(opt_totals)
+@@ -151,7 +151,7 @@
+ 					
+ 					mkhuman(v, 20, sstr[k], NULL, k > 3 ? 1000 : 1024, opt_human);
+ 				}
+-				printf(customize_format(opt_cols * 2, 65 * 2, "%%s%%-%d.%ds %%s%%7s %%s%%7s%%c%%s%%7s %%s%%7s%%c%%s%%7s %%s%%7s%%c%%s%%7s %%s%%7s%%s\n"),
++				printf(customize_format(opt_cols * 2, 64 * 2, "%%s%%-%d.%ds %%s%%7s %%s%%7s%%c%%s%%7s %%s%%7s%%c%%s%%7s %%s%%7s%%c%%s%%7s %%s%%7s%%s\n"),
+ 						CM_AB_HOST(opt_color),
+ 						ip,
+ 						CM_AB_BMI(opt_color), sstr[BAC_BYTES_MOMENTARY_IN],
