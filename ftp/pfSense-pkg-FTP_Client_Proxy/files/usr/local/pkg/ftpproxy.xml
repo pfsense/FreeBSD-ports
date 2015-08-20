@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	ftpproxy.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<name>FTP Client Proxy</name>
+	<version>0.2.1</version>
+	<title>FTP Client Proxy</title>
+	<aftersaveredirect>pkg_edit.php?xml=ftpproxy.xml</aftersaveredirect>
+	<include_file>/usr/local/pkg/ftpproxy.inc</include_file>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/ftpproxy/ftpproxy.inc</item>
+	</additional_files_needed>
+	<menu>
+		<name>FTP Client Proxy</name>
+		<tooltiptext>Modify FTP Client Proxy settings.</tooltiptext>
+		<section>Services</section>
+		<configfile>ftpproxy.xml</configfile>
+		<url>/pkg_edit.php?xml=ftpproxy.xml</url>
+	</menu>
+	<service>
+		<name>ftp-proxy</name>
+		<rcfile>ftp-proxy.sh</rcfile>
+		<executable>ftp-proxy</executable>
+		<description>Client FTP Proxy Daemon</description>
+	</service>
+	<fields>
+		<field>
+			<name>General Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Proxy Enabled</fielddescr>
+			<fieldname>proxy_enable</fieldname>
+			<description>Enable the FTP Proxy.</description>
+			<type>checkbox</type>
+			<default_value>off</default_value>
+		</field>
+		<field>
+			<fielddescr>Local Interface</fielddescr>
+			<fieldname>localints</fieldname>
+			<type>interfaces_selection</type>
+			<description>Select the local (LAN type) interfaces which contain FTP clients.</description>
+			<required/>
+			<multiple/>
+		</field>
+		<field>
+			<fielddescr>Anonymous Only</fielddescr>
+			<fieldname>anononly</fieldname>
+			<description>Only permit anonymous FTP connections using the &quot;ftp&quot; or &quot;anonymous&quot; users.</description>
+			<type>checkbox</type>
+			<default_value>off</default_value>
+		</field>
+		<field>
+			<fielddescr>Source Address</fielddescr>
+			<fieldname>sourceaddr</fieldname>
+			<description>Enter a VIP to be the source of outgoing control traffic. Leave blank to use the default WAN IP address.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Proxy Bypass: Source</fielddescr>
+			<fieldname>bypasssrc</fieldname>
+			<description>Enter an IP address or alias for source client host(s) which should bypass the proxy.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Proxy Bypass: Destination</fielddescr>
+			<fieldname>bypassdst</fieldname>
+			<description>Enter an IP address or alias for destination server host(s) which should bypass the proxy.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Bind Port (Default: 8021)</fielddescr>
+			<fieldname>bindport</fieldname>
+			<description>Port where the proxy will listen for redirected connections. Do not set this to 21.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Maximum Sessions (Default: 100)</fielddescr>
+			<fieldname>maxessions</fieldname>
+			<description>Maximum number of concurrent FTP sessions. When the proxy reaches this limit, new connections are denied. Must be between 1 and 500.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Traffic Shaping Queue</fielddescr>
+			<fieldname>tsq</fieldname>
+			<description>Create rules with the specified queue appended so that data connections can be queued.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Rewrite Source to Port 20</fielddescr>
+			<fieldname>src20</fieldname>
+			<description>Rewrite source port to 20 in active mode to suit ancient clients that insist on this behavior.</description>
+			<type>checkbox</type>
+			<default_value>off</default_value>
+		</field>
+		<field>
+			<fielddescr>Idle Timeout (Default: 86400)</fielddescr>
+			<fieldname>idletimeout</fieldname>
+			<description>(Seconds) Number of seconds that the control connection can be idle, before the proxy will disconnect. The maximum is 86400 seconds. Do not set this too low, because the control connection is usually idle when large data transfers are taking place.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Log Connections</fielddescr>
+			<fieldname>log</fieldname>
+			<description>Set the 'log' flag on pf rules committed by ftp-proxy.</description>
+			<type>checkbox</type>
+			<default_value>off</default_value>
+		</field>
+
+	</fields>
+	<custom_php_resync_config_command>
+		sync_package_ftpproxy();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		validate_form_ftpproxy($_POST, $input_errors);
+	</custom_php_validation_command>
+</packagegui>
