@@ -97,6 +97,7 @@ TESTS_CONFIGURE_ENABLE=		unittests
 SUB_FILES=	pkg-message
 
 CONFIGURE_ARGS+=--enable-gccprotect \
+		--disable-gccmarch-native \
 		--with-libpcre-includes=${LOCALBASE}/include \
 		--with-libpcre-libraries=${LOCALBASE}/lib \
 		--with-libyaml-includes=${LOCALBASE}/include \
