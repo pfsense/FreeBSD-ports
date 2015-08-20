@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	sudo.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2013 Jim Pingle
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<description>Sudo Command Control</description>
+	<requirements>None</requirements>
+	<name>sudo</name>
+	<version>0.2.7</version>
+	<title>Sudo - Shell Command Privilege Delegation Utility</title>
+	<include_file>/usr/local/pkg/sudo.inc</include_file>
+	<menu>
+		<name>sudo</name>
+		<tooltiptext></tooltiptext>
+		<section>System</section>
+		<url>/pkg_edit.php?xml=sudo.xml</url>
+	</menu>
+	<configpath>installedpackages->package->sudo</configpath>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/sudo/sudo.inc</item>
+	</additional_files_needed>
+	<fields>
+		<field>
+			<type>listtopic</type>
+			<name>Sudo Options</name>
+		</field>
+		<field>
+			<type>info</type>
+			<description><![CDATA[
+User permission definitions for allowing the use of sudo by shell users to run commands as other users, such as root.
+<br /><br />More information on the full command options may be found in the <a href="http://www.sudo.ws/sudoers.man.html">sudoers manual</a>.
+<br /><br />By default the command is "ALL" meaning the user can run any commands. Leaving the commands field blank assumes "ALL". A comma-separated list of commands can be supplied to limit the user to individual binaries. Full paths to binaries must be used.
+			]]></description>
+		</field>
+		<field>
+			<fielddescr>User Permissions</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>User/Group</fielddescr>
+					<fieldname>username</fieldname>
+					<type>select_source</type>
+					<source><![CDATA[sudo_get_users()]]></source>
+					<source_name>descr</source_name>
+					<source_value>name</source_value>
+					<required/>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Run As</fielddescr>
+					<fieldname>runas</fieldname>
+					<type>select_source</type>
+					<source><![CDATA[sudo_get_users(true)]]></source>
+					<source_name>descr</source_name>
+					<source_value>name</source_value>
+					<required/>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>No Password</fielddescr>
+					<fieldname>nopasswd</fieldname>
+					<type>checkbox</type>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Command List</fielddescr>
+					<fieldname>cmdlist</fieldname>
+					<description>Commands the user may run. Comma-separated list, full paths preferred. Default: ALL</description>
+					<type>input</type>
+					<size>30</size>
+					<value>ALL</value>
+				</rowhelperfield>
+			</rowhelper>
+		</field>
+	</fields>
+	<custom_php_install_command>
+		<![CDATA[
+		sudo_install();
+		sudo_write_config();
+		]]>
+	</custom_php_install_command>
+	<custom_php_resync_config_command>
+		<![CDATA[
+		sudo_write_config();
+		]]>
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		<![CDATA[
+		sudo_validate_commands($input_errors);
+		]]>
+	</custom_php_validation_command>
+</packagegui>
