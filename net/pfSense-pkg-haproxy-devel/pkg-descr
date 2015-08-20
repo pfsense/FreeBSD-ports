@@ -1,0 +1,8 @@
+The Reliable, High Performance TCP/HTTP(S) Load Balancer.<br />
+			This package implements the TCP, HTTP and HTTPS
+			balancing features from haproxy.<br /> Supports ACLs for
+			smart backend switching.<br /> <strong>As of pkg v0.27
+			switched to using 1.6dev releases. If you need stable,
+			switch to haproxy-1_5 package.</strong>
+
+WWW: https://doc.pfsense.org/index.php/haproxy_package
