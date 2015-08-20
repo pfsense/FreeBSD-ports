@@ -1,0 +1,40 @@
+--- src/apinger.c.orig	2014-10-07 20:00:37.000000000 +0200
++++ src/apinger.c	2014-10-07 20:09:39.000000000 +0200
+@@ -486,12 +486,19 @@
+ 		naa=aal->next;
+ 		a=aal->alarm;
+ 		if (a->type==AL_DOWN){
++			t->received = 1;
++			t->recently_lost = 0;
+ 			t->upsent=0;
+ 			avg_loss=0;
+ 		}
+ 		if ((a->type==AL_DOWN)
+ 		   || (a->type==AL_DELAY && avg_delay<a->p.lh.low)
+ 		   || (a->type==AL_LOSS && avg_loss<a->p.lh.low) ){
++			if (a->type == AL_DELAY) {
++				t->delay_sum = delay-tmp;
++				if (t->delay_sum < 0)
++					t->delay_sum = 0;
++			}
+ 			toggle_alarm(t,a,0);
+ 		}
+ 	}
+@@ -690,7 +697,7 @@
+ 				t->queue = realloc(t->queue, l);
+ 				assert(t->queue != NULL);
+ 				memset(t->queue+(t->config->avg_loss_delay_samples+t->config->avg_loss_samples), 0, l - (t->config->avg_loss_delay_samples+t->config->avg_loss_samples));
+-			} else {
++			} else if (l < (t->config->avg_loss_delay_samples+t->config->avg_loss_samples)) {
+ 				t->queue = realloc(t->queue, l);
+ 				assert(t->queue != NULL);
+ 			}
+@@ -706,7 +713,7 @@
+ 				t->rbuf= realloc(t->rbuf, sizeof(double) * l);
+ 				assert(t->rbuf!= NULL);
+ 				memset(t->queue+t->config->avg_delay_samples, 0, l - t->config->avg_delay_samples);
+-			} else {
++			} else if (l < t->config->avg_delay_samples) {
+ 				int tmp;
+ 				for (tmp = l; tmp < t->config->avg_delay_samples;tmp++)
+ 					t->delay_sum -= t->rbuf[tmp];
