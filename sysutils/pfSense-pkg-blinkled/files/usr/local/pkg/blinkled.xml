@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	blinkled.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2009-2012 Jim Pingle
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<title>Interfaces: Assign LEDs</title>
+	<name>blinkled</name>
+	<version>0.4.5</version>
+	<savetext>Save</savetext>
+	<include_file>/usr/local/pkg/blinkled.inc</include_file>
+	<menu>
+		<name>Assign LEDs</name>
+		<tooltiptext>Assign LEDs to indicate network activity.</tooltiptext>
+		<section>Interfaces</section>
+		<url>/pkg_edit.php?xml=blinkled.xml&amp;id=0</url>
+	</menu>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/blinkled8/blinkled.inc</item>
+		<prefix>/usr/local/pkg/</prefix>
+	</additional_files_needed>
+	<service>
+		<name>blinkled</name>
+		<rcfile>blinkled.sh</rcfile>
+		<executable>blinkled</executable>
+		<description>Network Activity LED Indicator Daemon</description>
+	</service>
+	<fields>
+		<field>
+			<fielddescr>Enable blinkled</fielddescr>
+			<fieldname>enable</fieldname>
+			<type>checkbox</type>
+			<enablefields>enable_led2,enable_led3,iface_led2,iface_led3</enablefields>
+			<description>If this is enabled, it will use LED #2 and #3 to 
+				indicate network activity. Be aware, however, that this will 
+				possibly consume some system resources in the process.</description>
+		</field>			
+		<field>
+			<fielddescr>Enable LED #2</fielddescr>
+			<fieldname>enable_led2</fieldname>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Interface For LED #2</fielddescr>
+			<fieldname>iface_led2</fieldname>
+			<type>interfaces_selection</type>
+			<description>Pick an interface to blink for activity on LED #2.</description>
+		</field>
+		<field>
+			<fielddescr>Enable LED #3</fielddescr>
+			<fieldname>enable_led3</fieldname>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Interface For LED #3</fielddescr>
+			<fieldname>iface_led3</fieldname>
+			<type>interfaces_selection</type>
+			<description>Pick an interface to blink for activity on LED #3.</description>
+		</field>
+	</fields>
+	<custom_php_validation_command>
+		validate_form_blinkled($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		sync_package_blinkled();
+	</custom_php_resync_config_command>
+</packagegui>
