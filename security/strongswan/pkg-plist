@@ -354,7 +354,7 @@ man/man8/charon-cmd.8.gz
 %%XAUTH%%@sample %%ETCDIR%%.d/charon/xauth-eap.conf.sample
 %%XAUTHGEN%%%%DATADIR%%/templates/config/plugins/xauth-generic.conf
 %%XAUTHGEN%%@sample %%ETCDIR%%.d/charon/xauth-generic.conf.sample
-@sample etc/ipsec.conf.sample
+@sample /var/etc/ipsec/ipsec.conf.sample
 @sample %%ETCDIR%%.conf.sample
 @sample %%ETCDIR%%.d/charon-logging.conf.sample
 @sample %%ETCDIR%%.d/charon.conf.sample
@@ -405,11 +405,16 @@ lib/ipsec/libcharon.so.0.0.0
 lib/ipsec/libhydra.so.0.0.0
 lib/ipsec/libstrongswan.so.0.0.0
 lib/ipsec/libtls.so.0.0.0
-@dir etc/ipsec.d/aacerts
-@dir etc/ipsec.d/acerts
-@dir etc/ipsec.d/cacerts
-@dir etc/ipsec.d/certs
-@dir etc/ipsec.d/crls
-@dir etc/ipsec.d/ocspcerts
-@dir etc/ipsec.d/private
-@dir etc/ipsec.d/reqs
+@dir %%ETCDIR%%.d/charon
+@dir %%ETCDIR%%.d
+@dir /var/etc/ipsec/ipsec.d/aacerts
+@dir /var/etc/ipsec/ipsec.d/acerts
+@dir /var/etc/ipsec/ipsec.d/cacerts
+@dir /var/etc/ipsec/ipsec.d/certs
+@dir /var/etc/ipsec/ipsec.d/crls
+@dir /var/etc/ipsec/ipsec.d/ocspcerts
+@dir /var/etc/ipsec/ipsec.d/private
+@dir /var/etc/ipsec/ipsec.d/reqs
+@dir /var/etc/ipsec/ipsec.d
+@dir /var/etc/ipsec
+@dir /var/etc

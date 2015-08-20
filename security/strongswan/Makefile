@@ -37,6 +37,7 @@ CONFIGURE_ARGS=	--enable-kernel-pfkey \
 		--enable-whitelist \
 		--enable-cmd \
 		--with-group=wheel  \
+		--sysconfdir=/var/etc/ipsec \
 		--with-lib-prefix=${PREFIX}
 
 OPTIONS_DEFINE=	CURL EAPAKA3GPP2 EAPDYNAMIC EAPRADIUS EAPSIMFILE GCM IKEv1 \
