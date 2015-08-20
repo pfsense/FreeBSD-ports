@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	siproxd.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2006 Scott Ullrich
+	Copyright (C) 2010 Jim Pingle
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<name>siproxdsettings</name>
+	<version>1.0.5</version>
+	<title>siproxd: Settings</title>
+	<include_file>/usr/local/pkg/siproxd.inc</include_file>
+	<aftersaveredirect>/pkg_edit.php?xml=siproxd.xml&amp;id=0</aftersaveredirect>
+	<menu>
+		<name>siproxd</name>
+		<tooltiptext>Modify siproxd users and settings.</tooltiptext>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=siproxd.xml&amp;id=0</url>
+	</menu>
+	<service>
+		<name>siproxd</name>
+		<rcfile>siproxd.sh</rcfile>
+		<executable>siproxd</executable>
+	</service>
+	<tabs>
+		<tab>
+			<text>Settings</text>
+			<url>/pkg_edit.php?xml=siproxd.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Users</text>
+			<url>/pkg.php?xml=siproxdusers.xml</url>
+		</tab>
+		<tab>
+			<text>Registered Phones</text>
+			<url>/siproxd_registered_phones.php</url>
+		</tab>
+	</tabs>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/siproxd/siproxdusers.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/siproxd/siproxd.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/</prefix>
+		<item>https://packages.pfsense.org/packages/config/siproxd/siproxd_registered_phones.php</item>
+	</additional_files_needed>
+	<fields>
+		<field>
+			<fielddescr>Enable siproxd</fielddescr>
+			<fieldname>sipenable</fieldname>
+			<description>Enable or disable siproxd</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Inbound interface</fielddescr>
+			<fieldname>if_inbound</fieldname>
+			<description>Select the inbound interface.</description>
+			<type>interfaces_selection</type>
+		</field>
+		<field>
+			<fielddescr>Outbound interface</fielddescr>
+			<fieldname>if_outbound</fieldname>
+			<description>Select the outbound interface.</description>
+			<type>interfaces_selection</type>
+		</field>
+		<field>
+			<fielddescr>Listening port</fielddescr>
+			<fieldname>port</fieldname>
+			<description>
+				<![CDATA[
+				Enter the port on which to listen for SIP traffic (default 5060).<br />
+				<strong> WARNING: Do not change this unless you know what you're doing.</strong>
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Default expiration timeout</fielddescr>
+			<fieldname>defaulttimeout</fieldname>
+			<description>If a REGISTER request dose not contain an Expires header or expires= parameter, this number of seconds will be used and reported back to the UA in the answer.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<name>RTP Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable RTP proxy</fielddescr>
+			<fieldname>rtpenable</fieldname>
+			<description>Enable or disable the RTP proxy. (default is enabled)</description>
+			<type>select</type>
+			<options>
+				<option>
+					<name>Enable</name>
+					<value>1</value>
+				</option>
+				<option>
+					<name>Disable</name>
+					<value>0</value>
+				</option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>RTP port range (lower)</fielddescr>
+			<fieldname>rtplower</fieldname>
+			<description>Enter the bottom edge of the port range siproxd will allocate for incoming RTP traffic. This range must be one not blocked by the firewall (default 7070).</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>RTP port range (upper)</fielddescr>
+			<fieldname>rtpupper</fieldname>
+			<description>Enter the top edge of the port range siproxd will allocate for incoming RTP traffic. This range must be one not blocked by the firewall (default 7079).</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>RTP stream timeout</fielddescr>
+			<fieldname>rtptimeout</fieldname>
+			<description>After this number of seconds, an RTP stream is considered dead and proxying it will be stopped (default 300sec).</description>
+			<type>input</type>
+		</field>
+		<field>
+			<name>Dejittering Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Input Dejitter</fielddescr>
+			<fieldname>rtp_input_dejitter</fieldname>
+			<description>Artificial delay to be used to de-jitter RTP data streams. This time is in microseconds. 0 - completely disable dejitter (default)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Output Dejitter</fielddescr>
+			<fieldname>rtp_output_dejitter</fieldname>
+			<description>Artificial delay to be used to de-jitter RTP data streams. This time is in microseconds. 0 - completely disable dejitter (default)</description>
+			<type>input</type>
+		</field>
+		<field>
+			<name>SIP over TCP Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>TCP inactivity timeout</fielddescr>
+			<fieldname>tcp_timeout</fieldname>
+			<description>
+				<![CDATA[
+				Inactivity timeout (seconds). After that an idling TCP connection is disconnected.<br />
+				NOTE: Making this too short may cause multiple parallel registrations for the same phone. This timeout must be set larger than the used registration interval.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>TCP Connect Timeout</fielddescr>
+			<fieldname>tcp_connect_timeout</fieldname>
+			<description>
+				<![CDATA[
+				Defines How many msecs siproxd will wait for an successful connect when establishing an outgoing SIP signalling connection.<br />
+				This should be kept as short as possible as waiting for an TCP connection to establish is a BLOCKING operation - while waiting for a connect to succeed no SIP messages are processed (RTP is not affected).
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>TCP Keepalive</fielddescr>
+			<fieldname>tcp_keepalive</fieldname>
+			<description>For TCP SIP signalling, if > 0 empty SIP packets will be sent every 'n' seconds to keep the connection alive. Default is off.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<name>Proxy Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable proxy authentication</fielddescr>
+			<fieldname>authentication</fieldname>
+			<description>If this is checked, clients will be forced to authenticate themselves at the proxy (for registration only).</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Outbound proxy hostname</fielddescr>
+			<fieldname>outboundproxyhost</fieldname>
+			<description>Enter the hostname of an outbound proxy to send all traffic to. This is only useful if you have multiple masquerading firewalls to cross.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Outbound proxy port</fielddescr>
+			<fieldname>outboundproxyport</fieldname>
+			<description>Enter the port of the outbound proxy to send all traffic to. This is only useful if you have multiple masquerading firewalls to cross.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<name>DSCP Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Expedited RTP Forwarding</fielddescr>
+			<fieldname>expeditedforwarding</fieldname>
+			<description>
+				<![CDATA[
+				This service is designed to allow ISPs to offer a service with attributes similar to a "leased line".<br />
+				This service offers the ULTIMATE IN LOW LOSS, LOW LATENCY AND LOW JITTER by ensuring that there is always sufficient room in output queues for the contracted expedited forwarding traffic.
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Expedited SIP Forwarding</fielddescr>
+			<fieldname>expeditedsipforwarding</fieldname>
+			<description>
+				<![CDATA[
+				This service is designed to allow ISPs to offer a service with attributes similar to a "leased line".<br />
+				This service offers the ULTIMATE IN LOW LOSS, LOW LATENCY AND LOW JITTER by ensuring that there is always sufficient room in output queues for the contracted expedited forwarding traffic.
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<name>Plugin Settings - Default Target</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable Default Target Plugin</fielddescr>
+			<fieldname>plugin_defaulttarget</fieldname>
+			<description>Redirect unknown calls to a specified target.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Log redirected calls</fielddescr>
+			<fieldname>plugin_defaulttarget_log</fieldname>
+			<description>Log redirected calls.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Default Target</fielddescr>
+			<fieldname>plugin_defaulttarget_target</fieldname>
+			<description>Target must be a full SIP URI with the syntax sip:user@host[:port]</description>
+			<type>input</type>
+		</field>
+		<field>
+			<name>Plugin Settings - Bogus VIA Networks</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable Fix Bogus Via Networks Plugin</fielddescr>
+			<fieldname>plugin_fix_bogus_via</fieldname>
+			<description>
+				<![CDATA[
+				Incoming (from public network) SIP messages are checked for broken SIP Via headers.<br />
+				If the IP address in the latest Via Header is part of the list below, it will be replaced by the IP where the SIP message has been received from.
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Bogus Via Networks</fielddescr>
+			<fieldname>plugin_fix_bogus_via_networks</fieldname>
+			<description>
+				<![CDATA[
+				Comma separated list of networks which should have their via headers rewritten.<br />
+				Example: 10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<name>Plugin Settings - STUN</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable STUN Plugin</fielddescr>
+			<fieldname>plugin_stun</fieldname>
+			<description>Uses an external STUN server to determine the public IP address of siproxd. Useful for "in-front-of-NAT-router" scenarios.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>STUN Hostname</fielddescr>
+			<fieldname>plugin_stun_server</fieldname>
+			<description>External STUN server hostname.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>STUN Port</fielddescr>
+			<fieldname>plugin_stun_port</fieldname>
+			<description>External STUN server port.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>STUN Period</fielddescr>
+			<fieldname>plugin_stun_period</fieldname>
+			<description>Period in seconds to request IP info from STUN server.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<name>Debug Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Debug Level</fielddescr>
+			<fieldname>debug_level</fieldname>
+			<type>select</type>
+			<size>1</size>
+			<options>
+				<option><value>0x00000000</value><name>No Debug Info</name></option>
+				<option><value>0x00000001</value><name>babble (like entering/leaving func)</name></option>
+				<option><value>0x00000002</value><name>network</name></option>
+				<option><value>0x00000004</value><name>SIP manipulations</name></option>
+				<option><value>0x00000008</value><name>Client registration</name></option>
+				<option><value>0x00000010</value><name>non specified class</name></option>
+				<option><value>0x00000020</value><name>proxy</name></option>
+				<option><value>0x00000040</value><name>DNS stuff</name></option>
+				<option><value>0x00000080</value><name>network traffic</name></option>
+				<option><value>0x00000100</value><name>configuration</name></option>
+				<option><value>0x00000200</value><name>RTP proxy</name></option>
+				<option><value>0x00000400</value><name>Access list evaluation</name></option>
+				<option><value>0x00000800</value><name>Authentication</name></option>
+				<option><value>0x00001000</value><name>Plugins</name></option>
+				<option><value>0x00002000</value><name>RTP babble</name></option>
+				<option><value>-1</value><name>Everything</name></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>TCP Debug Port</fielddescr>
+			<fieldname>debug_port</fieldname>
+			<description>
+				<![CDATA[
+				You may connect to this port from a remote machine and receive debug output. This allows better creation of debug output on embedded systems that do not have enough memory for large disk files.<br />
+				NOTE: Port number 0 means this feature is disabled.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+	</fields>
+	<custom_php_global_functions>
+	</custom_php_global_functions>
+	<custom_add_php_command>
+		sync_package_siproxd();
+	</custom_add_php_command>
+	<custom_php_resync_config_command>
+		sync_package_siproxd();
+	</custom_php_resync_config_command>
+	<filter_rules_needed>siproxd_generate_rules</filter_rules_needed>
+	<custom_php_validation_command>
+		validate_form_siproxd($_POST, $input_errors);
+	</custom_php_validation_command>
+</packagegui>

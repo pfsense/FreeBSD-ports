@@ -1,0 +1,5 @@
+pkg/siproxd.xml
+pkg/siproxdusers.xml
+pkg/siproxd.inc
+www/siproxd_registered_phones.php
+%%DATADIR%%/info.xml
