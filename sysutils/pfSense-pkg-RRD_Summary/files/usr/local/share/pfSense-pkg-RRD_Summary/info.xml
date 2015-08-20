@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>RRD Summary</name>
+		<internal_name>RRD_Summary</internal_name>
+		<descr><![CDATA[RRD Summary Page, which will give a total amount of traffic passed In/Out during this and the previous month.]]></descr>
+		<category>System</category>
+		<version>1.2</version>
+		<status>Beta</status>
+		<maintainer>jimp@pfsense.org</maintainer>
+		<port_category>sysutils</port_category>
+		<required_version>2.2</required_version>
+		<config_file>https://packages.pfsense.org/packages/config/rrd-summary/rrd-summary.xml</config_file>
+		<configurationfile>rrd-summary.xml</configurationfile>
+	</package>
+</pfsensepkgs>
