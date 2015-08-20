@@ -1,0 +1,31 @@
+diff -ur srcold/pppoe.c src/pppoe.c
+--- srcold/pppoe.c	2010-12-28 21:35:48.000000000 +0000
++++ src/pppoe.c	2010-12-28 21:36:10.000000000 +0000
+@@ -665,6 +665,7 @@
+ {
+ 	u_char	rbuf[2048];
+ 	struct ng_mesg *resp;
++	struct ngm_name name;
+ 	const struct hooklist *hlist;
+ 	const struct nodeinfo *ninfo;
+ 	int f;
+@@ -734,6 +735,19 @@
+ 	}
+ 
+ 	/*
++	 * Attach the iface to the ng_ether node if it is not.
++	 */
++	snprintf(name.name, sizeof(name.name), "%s", iface);
++	if (NgSendMsg(PIf->csock, ".", NGM_GENERIC_COOKIE,
++	    NGM_ETHER_ATTACH, &name, sizeof(name)) < 0) {
++		Log(LG_ERR, ("[%s] Cannot attach to ng_ether message: %s.",
++		    iface, strerror(errno)));
++		close(PIf->csock);
++		close(PIf->dsock);
++		return (0);
++	}
++
++	/*
+ 	 * Ask for a list of hooks attached to the "ether" node. This node
+ 	 * should magically exist as a way of hooking stuff onto an ethernet
+ 	 * device.

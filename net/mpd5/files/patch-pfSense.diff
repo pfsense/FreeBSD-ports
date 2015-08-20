@@ -1,0 +1,62 @@
+diff -ur ../mpd-5.6.ol/src/iface.c ./src/iface.c
+--- ../mpd-5.6.ol/src/iface.c	2013-03-07 11:14:18.000000000 +0000
++++ ./src/iface.c	2013-03-07 11:14:34.000000000 +0000
+@@ -1881,8 +1881,9 @@
+ 
+ 	res = ioctl(s, add?SIOCAIFADDR:SIOCDIFADDR, &ifra);
+ 	if (res == -1) {
+-	    Perror("[%s] IFACE: %s IPv4 address %s %s failed", 
++	    Perror("[%s] IFACE: %s IPv4 address %s %s failed(IGNORING for now. This should be only for PPPoE friendly!)", 
+ 		b->name, add?"Adding":"Removing", add?"to":"from", b->iface.ifname);
++	    res = 0;
+ 	}
+ 	break;
+ 
+@@ -1989,12 +1990,18 @@
+     rtmes.m_rtm.rtm_msglen = nb;
+     wb = write(s, &rtmes, nb);
+     if (wb < 0) {
+-    	Log(LG_ERR, ("[%s] IFACE: %s route %s %s failed: %s",
+-	    b->name, cmdstr, u_rangetoa(dst, buf, sizeof(buf)), 
+-	    ((gw != NULL)?u_addrtoa(gw, buf1, sizeof(buf1)):""),
+-	    (rtmes.m_rtm.rtm_errno != 0)?strerror(rtmes.m_rtm.rtm_errno):strerror(errno)));
+-	close(s);
+-	return (-1);
++	if (u_rangeempty(dst) && cmd == RTM_ADD) {
++		rtmes.m_rtm.rtm_type = RTM_CHANGE;
++		wb = write(s, &rtmes, nb);
++	}
++	if (wb < 0) {
++		Log(LG_ERR, ("[%s] IFACE: %s route %s %s failed: %s",
++		    b->name, cmdstr, u_rangetoa(dst, buf, sizeof(buf)), 
++		    ((gw != NULL)?u_addrtoa(gw, buf1, sizeof(buf1)):""),
++		    (rtmes.m_rtm.rtm_errno != 0)?strerror(rtmes.m_rtm.rtm_errno):strerror(errno)));
++		close(s);
++		return (-1);
++	}
+     }
+     close(s);
+     Log(LG_IFACE2, ("[%s] IFACE: %s route %s %s",
+Only in ./src: iface.c.orig
+diff -ur ../mpd-5.6.ol/src/modem.c ./src/modem.c
+--- ../mpd-5.6.ol/src/modem.c	2013-03-07 11:14:18.000000000 +0000
++++ ./src/modem.c	2013-03-07 11:14:24.000000000 +0000
+@@ -513,7 +513,7 @@
+     struct ngm_connect	cn;
+     char       		path[NG_PATHSIZ];
+     int			hotchar = PPP_FLAG;
+-#if NGM_TTY_COOKIE < 1226109660
++#if 0
+     struct nodeinfo	ngtty;
+     int			ldisc = NETGRAPHDISC;
+ #else
+@@ -533,7 +533,7 @@
+ 	return(-1);
+     }
+ 
+-#if NGM_TTY_COOKIE < 1226109660
++#if 0
+     /* Install ng_tty line discipline */
+     if (ioctl(m->fd, TIOCSETD, &ldisc) < 0) {
+ 
+Only in ./src: modem.c.orig
