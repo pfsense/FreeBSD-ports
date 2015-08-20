@@ -1,0 +1,40 @@
+* Testing, testing, testing
+
+* Allow limiting of which "keep state" rules generate netflow record
+  - One way: lookup rule label and allow generation of flow records for
+    states whose labels match
+    - What to do if ruleset changes under us?
+
+* NetFlow v.9 export
+  - Supports IPv6!
+  - http://www.cisco.com/warp/public/cc/pd/iosw/prodlit/tflow_wp.htm
+
+* sflow export (www.sflow.org)
+
+* IPv6 export support
+  - Needs IPFIX, sflow or NetFlow v.9
+
+* Cleanup of code
+  - Kill globals in favour of ctxt
+
+* Import features from softflowd
+  - Basic statistics
+  - Control program
+
+* More netflow fields
+  - Most require kernel support
+  - May be able to (partially) infer tcp flags
+
+* Companion daemon which reads from pflog to log blocked/dropped packets
+  (maybe)
+
+* Kernel support for reporting state counter wraparound
+  - Check counters on kernel side
+  - Upon receipt of a packet which would cause either flow counter to wrap,
+    send a (new) pfsync info message with the state data
+  - Reset state's counters to zero + len of current packet
+  - Maybe can do this by watching update messages and flagging ones close to
+    wrap
+* Kernel changes to account for generated packets
+  - Which ones? ICMP is arguably not appropriate...
+

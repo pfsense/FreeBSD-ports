@@ -1,0 +1,169 @@
+.\" $Id: pfflowd.8,v 1.8 2006/07/07 08:45:01 djm Exp $
+.\"
+.\" Copyright (c) 2003 Damien Miller.  All rights reserved.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+.\" IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+.\" OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+.\" IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+.\" INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+.\" NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+.\" DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+.\" THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+.\" (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+.\" THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+.\"
+.Dd June 22, 2003
+.Dt PFFLOWD 8
+.Os
+.Sh NAME
+.Nm pfflowd
+.Nd Traffic flow monitoring
+.Sh SYNOPSIS
+.Nm pfflowd
+.Op Fl dDh
+.Op Fl S Ar direction
+.Op Fl i Ar interface
+.Op Fl n Ar host:port
+.Op Fl r Ar pcap_file
+.Op Fl v Ar netflow_version
+.Op bpf_program
+.Sh DESCRIPTION
+.Nm
+is a daemon which converts status update packets from
+.Xr pf 4
+sent over its
+.Xr pfsync 4
+interface to Cisco NetFlow(tm) datagrams. These UDP datagrams are then
+exported to the specified
+.Ar host
+and
+.Ar port .
+.Nm
+will (unless placed in debugging mode) drop privileges and chroot to an
+empty directory upon startup.
+.Pp
+The command-line options are as follows:
+.Bl -tag -width Ds
+.It Fl S Ar direction
+Restrict creation of flow records to states matching
+.Ar direction,
+which may be
+.Ar in ,
+.Ar out
+or
+.Ar any
+(default: any).
+This corresponds to the direction specified in the
+.Xr pf 4
+rule that caused the generation of the state.
+E.g. a "pass in ... keep state" rule corresponds to a
+.Ar in
+direction.
+.It Fl n Ar host:port
+Specify the
+.Ar host
+(an IP address in dotted-quad format) and
+.Ar port
+that the accounting datagrams are to be sent to. Note that it is possible
+to run this daemon without specifying a host and port to export flows to,
+but this doesn't make much sense unless one is running in debug mode.
+.It Fl i Ar interface
+Specify a network interface on which to listen for traffic.
+.Fl i
+or the
+.Fl r
+As it only makes sense to listen on
+.Xr pfsync 4
+interfaces, this argument is optional (defaulting to pfsync0).
+.It Fl r Ar pcap_file
+Specify that
+.Nm
+should read from a
+.Xr pcap 3
+packet capture (such as one created with the
+.Fl w
+option of
+.Xr tcpdump 8 )
+file rather than a network interface.
+.Nm
+will process the whole capture file and then exit. One would normally use
+the
+.Fl d
+flag to keep the process in the foreground in this mode.
+.It Fl v Ar netflow_version
+Select which version of the NetFlow protocol that
+.Nm
+should send.
+Currently,
+.Nm
+support NetFlow versions
+.Ar 1
+and
+.Ar 5 .
+The default is to send NetFlow v.5 datagrams.
+.It Fl d
+Specify that
+.Nm
+should not fork and daemonise itself.
+.It Fl D
+Places
+.Nm
+in a debugging mode. This implies the
+.Fl d
+flag and turns on additional debugging output. Please note that this flag
+.It Fl h
+Displays commandline usage information.
+.El
+.Pp
+Any further commandline arguments will be concatenated together and
+applied as a
+.Xr bpf 4
+packet filter. This filter will cause
+.Nm
+to ignore the specified traffic.
+.Sh BUGS
+A bpf program specified on the commandline does not do what one may expect
+(i.e. select traffic for accounting).
+Rather, it doesn't do much at all.
+To select traffic for accounting, use the
+.Ar no-sync
+argument in pf.conf. This argument is available in
+.Ox 3.5
+and later.
+.Pp
+.Nm
+works round the 32-bit limit of packet and byte counters in the NetFlow
+v.1 and v.5 protocols by sending multiple flows in cases where a counter
+has exceeded 2^32.
+For instance,
+.Nm
+will generate three NetFlow packets for a 10 gigabyte flow that has
+been recorded by
+.Xr pfsync 4
+(2 x 4GB flows and 1 x 2GB flow).
+In these cases, any packet or byte counter that does not exceed 2^32
+will be zero in all but the first packet.
+.Pp
+.Nm
+does not try to avoid generating NetFlow packets for flows resulting from
+its own datagram output.
+This is easily avoided by not creating state on this traffic.
+.Sh AUTHORS
+Damien Miller <djm@mindrot.org>
+.Sh SEE ALSO
+.Xr softflowctl 8 ,
+.Xr tcpdump 8 ,
+.Xr pcap 3 ,
+.Xr bpf 4
+.Bd -literal
+http://www.cisco.com/univercd/cc/td/doc/product/rtrmgmt/nfc/nfc_3_0/nfc_ug/nfcform.htm

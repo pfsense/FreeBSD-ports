@@ -1,0 +1,22 @@
+Welcome to pfflowd, a PF to NetFlow converter daemon
+
+pfflowd is a daemon which converts status update packets from pf(4) sent 
+over its pfsync(4) interface to Cisco NetFlow(tm) datagrams. These UDP 
+datagrams are then exported to a host of your choice.
+
+This version supports pfsync(4) version 3, as used by OpenBSD 3.9 and
+above. Older versions are not supported.
+
+More details about pfflowd's function and usage may be found in the
+supplied manpage, which you can view prior to installation using 
+
+/usr/bin/nroff -mandoc pfflowd.8 | less
+
+pfflowd itself is licensed under a two-term BSD license (see the source
+files for details). 
+
+Please report bugs in softflowd to http://bugzilla.mindrot.org/ If you find
+a security bug, please report it directly by email. If you have any feedback
+or questions, please email me: 
+
+Damien Miller <djm@mindrot.org>

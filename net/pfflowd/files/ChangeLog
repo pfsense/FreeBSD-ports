@@ -1,0 +1,54 @@
+20060707
+ - (djm) Mention that this version only supports pfsync(8) v.3
+ - (djm) Describe workaround for 32-bit NetFlow v.1 and v.5 counters
+ - (djm) Release pfflowd-0.7
+
+20060607
+ - (msf) add support for _PFSYNC_VER 3 by handling u_int64_t packets
+   and bytes counters. Remove support for older versions of PFSYNC.
+   While we're here change the default privdrop user to _pfflowd
+
+20040906
+ - (djm) NetFlow v.5 support, largely from ben AT tilderoot.com
+ - (djm) Release pfflowd-0.6
+
+20040712
+ - (djm) Import af-independent host/port parsing code from softflowd, allowing
+   IPv6 flow export
+ - (djm) Just use pcap_loop instead of our complicated main loop
+
+20040506
+ - (djm) Change license to simplified ISC license, update copyright year
+ - (djm) Tidy README
+ - (djm) Release pfflowd-0.5
+
+20040415
+ - (djm) Fix uninitialised getsockopt len
+
+20040315
+ - (djm) Clear socket errors before send(), stops pfflowd dropping packets 
+   when it receives ICMP errors
+ - (djm) Fix flow_start and flow_finish computation. These should be 
+   relative to SysUptime, not epoch. Spotted by Niels Provos
+ - (djm) Add basic filtering on state direction
+
+20040216
+ - (djm) Make this work with -current pfsync
+ - (djm) Add support for older pfsync (<=3.4) with -DOLD_PFSYNC flag
+ - (djm) Release pfflowd-0.4
+
+20031109
+ - (djm) Lock underlying BPF device using ioctl available in OpenBSD 3.5
+
+20030815
+ - (djm) Add -n option to usage message. Spotted by jose AT monkey.org
+ - (djm) Document current issues in manpage
+ - (djm) Fix manpage formatting command hint in README
+ - (djm) Release pfflowd-0.3
+
+20030623
+ - (djm) Drop privileges and chroot to /var/empty on non-debug startup
+ - (djm) Release pfflowd-0.2
+
+20030622
+ - (djm) Initial release: pfflowd-0.1
