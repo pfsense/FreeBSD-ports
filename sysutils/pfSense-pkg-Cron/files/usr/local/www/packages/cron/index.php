@@ -1,0 +1,6 @@
+<?php
+
+Header("Location: /");
+exit;
+
+?>

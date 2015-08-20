@@ -1,0 +1,6 @@
+pkg/cron.xml
+pkg/cron.inc
+www/packages/cron/cron.php
+www/packages/cron/cron_edit.php
+www/packages/cron/index.php
+%%DATADIR%%/info.xml

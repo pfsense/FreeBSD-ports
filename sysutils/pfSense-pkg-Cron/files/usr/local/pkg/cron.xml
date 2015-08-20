@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	cron.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2008 Mark J Crane
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<description>Cron</description>
+	<name>Cron Settings</name>
+	<version>0.3.0</version>
+	<title>Settings</title>
+	<include_file>/usr/local/pkg/cron.inc</include_file>
+	<menu>
+		<name>Cron</name>
+		<tooltiptext>Cron settings.</tooltiptext>
+		<section>Services</section>
+		<configfile>cron.xml</configfile>
+		<url>/packages/cron/cron.php</url>
+	</menu>
+	<configpath>installedpackages->package->$packagename->configuration->cron</configpath>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/cron/cron.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/cron/cron.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/packages/cron/</prefix>
+		<item>https://packages.pfsense.org/packages/config/cron/cron.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/packages/cron/</prefix>
+		<item>https://packages.pfsense.org/packages/config/cron/cron_edit.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/packages/cron/</prefix>
+		<item>https://packages.pfsense.org/packages/config/cron/index.php</item>
+	</additional_files_needed>
+	<custom_php_resync_config_command>
+		cron_sync_package();
+	</custom_php_resync_config_command>
+	<custom_delete_php_command>
+		cron_sync_package();
+	</custom_delete_php_command>
+	<custom_php_install_command>
+		cron_install_command();
+	</custom_php_install_command>
+</packagegui>
