@@ -1,0 +1,18 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+
+# PROVIDE: igmpproxy
+# REQUIRE: NETWORKING
+
+. /etc/rc.subr
+
+name="igmpproxy"
+rcvar=`set_rcvar`
+command="/usr/local/sbin/${name}"
+required_files="/usr/local/etc/igmpproxy.conf"
+igmpproxy_enable=${igmpproxy_enable-"NO"}
+
+load_rc_config $name
+run_rc_command "$1"

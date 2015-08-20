@@ -1,0 +1,37 @@
+diff -ur ../src/igmpproxy.c ./igmpproxy.c
+--- ../src/igmpproxy.c	2013-03-27 10:47:05.000000000 +0000
++++ ./igmpproxy.c	2013-03-27 10:47:14.000000000 +0000
+@@ -102,14 +102,17 @@
+                 exit( 0 );
+ 
+             case 'd':
+-                Log2Stderr = LOG_DEBUG;
+-                /*
++                if (i + 1 < ArgCn && ArgVc[i+1][0] != '-') {
++                    Log2Stderr = atoi(ArgVc[i+1]);
++                    i++;
++                } else
++			Log2Stderr = LOG_DEBUG;
++		break;
+             case 'v':
+                 // Enable debug mode...
+                 if (Log2Stderr < LOG_INFO) {
+                     Log2Stderr = LOG_INFO;
+                 }
+-                */
+                 debugMode = 1;
+                 break;
+ 
+diff -ur ../src/syslog.c ./syslog.c
+--- ../src/syslog.c	2013-03-27 10:47:05.000000000 +0000
++++ ./syslog.c	2013-03-27 10:47:14.000000000 +0000
+@@ -67,6 +67,9 @@
+  
+   const char *ErrSt = (Errno <= 0) ? NULL : (const char *)strerror( Errno ); 
+ 
++  if (Log2Stderr > Serverity)
++	return;
++
+   {
+     va_list ArgPt;
+     unsigned Ln;
