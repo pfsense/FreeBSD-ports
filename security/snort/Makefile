@@ -100,7 +100,7 @@ LIBNET_INCDIR=	${LIBNET_CFLAGS:M-I*:S/-I//}
 LIBNET_LIBDIR=	${LIBNET_LIBS:M-L*:S/-L//}
 
 CFLAGS+=	-fstack-protector
-CONFIGURE_ARGS+=--enable-reload \
+CONFIGURE_ARGS+=--enable-reload --enable-pthread \
 		--enable-mpls --enable-targetbased \
 		--enable-reload-error-restart \
 		--with-dnet-includes=${LIBNET_INCDIR} \
