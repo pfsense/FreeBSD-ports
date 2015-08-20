@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	openbgpd.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2007 Scott Ullrich (sullrich@gmail.com)
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<name>OpenBGPD</name>
+	<version>0.9.3.4</version>
+	<title>Services: OpenBGPD</title>
+	<include_file>/usr/local/pkg/openbgpd.inc</include_file>
+	<service>
+		<name>bgpd</name>
+		<rcfile>bgpd.sh</rcfile>
+		<executable>bgpd</executable>
+		<description>OpenBSD BGP Daemon</description>
+	</service>	
+	<additional_files_needed>
+		<prefix>/usr/local/www/</prefix>
+		<item>https://packages.pfsense.org/packages/config/openbgpd/openbgpd_status.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/</prefix>
+		<item>https://packages.pfsense.org/packages/config/openbgpd/openbgpd_raw.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/openbgpd/openbgpd.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/openbgpd/openbgpd_groups.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/openbgpd/openbgpd_neighbors.xml</item>
+	</additional_files_needed>
+	<menu>
+		<name>OpenBGPD</name>
+		<tooltiptext></tooltiptext>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=openbgpd.xml&amp;id=0</url>
+	</menu>
+	<tabs>
+		<tab>
+			<text>Settings</text>
+			<url>/pkg_edit.php?xml=openbgpd.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Neighbors</text>
+			<url>/pkg.php?xml=openbgpd_neighbors.xml</url>
+		</tab>
+		<tab>
+			<text>Groups</text>
+			<url>/pkg.php?xml=openbgpd_groups.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Raw config</text>
+			<url>/openbgpd_raw.php</url>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>/openbgpd_status.php</url>
+		</tab>
+	</tabs>
+	<plugins>
+		<item>
+			<type>plugin_carp</type>
+		</item>
+	</plugins>
+	<fields>
+		<field>
+			<fielddescr>Autonomous Systems (AS) Number</fielddescr>
+			<fieldname>asnum</fieldname>
+			<description>Set the local autonomous system number to as-number.</description>
+			<type>input</type>
+		</field>
+
+		<field>
+			<fielddescr>Holdtime</fielddescr>
+			<fieldname>holdtime</fieldname>
+			<description>
+				<![CDATA[
+				Set the holdtime in seconds. The holdtime is reset to its initial value every time either a KEEPALIVE or an UPDATE message is received from the neighbor.<br />
+				If the holdtime expires the session is dropped. The default is 90 seconds. Neighboring systems negotiate the holdtime used when the connection is established in the OPEN messages.<br />
+				Each neighbor announces its configured hold- time; the smaller one is then agreed upon.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+
+		<field>
+			<fielddescr>fib-update</fielddescr>
+			<fieldname>fibupdate</fieldname>
+			<description>If set to no, do not update the Forwarding Information Base a.k.a. the kernel routing table. The default is yes.</description>
+			<type>select</type>
+			<options>
+				<option><name>yes</name><value>yes</value></option>
+				<option><name>no</name><value>no</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Listen on IP</fielddescr>
+			<fieldname>listenip</fieldname>
+			<description>Specify the local IP address bgpd(8) should listen on, or leave blank to bind to all IPs.</description>
+			<type>input</type>
+		</field>
+
+		<field>
+			<fielddescr>Router IP</fielddescr>
+			<fieldname>routerid</fieldname>
+			<description>Set the router ID to the given IP address, which must be local to the machine.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>CARP Status IP</fielddescr>
+			<fieldname>carpstatusip</fieldname>
+			<description>
+				<![CDATA[
+				IP address used to determine the CARP status. When the VIP is in BACKUP status, bgpd will not be started.<br />
+				NOTE: On 2.1.x and before this requires changes to /etc/rc.carpmaster to start bgpd and /etc/rc.carpbackup to stop bgpd or it will not be fully effective. On pfSense 2.2.x and later, full support is automatic.
+				]]>
+			</description>
+			<type>input</type>
+			<size>25</size>
+		</field>
+		<field>
+			<fielddescr>Networks</fielddescr>
+			<fieldname>network</fieldname>
+			<type>rowhelper</type>
+			<description></description>
+			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>
+						<![CDATA[
+						Announce the specified network as belonging to our AS. If set to "(inet|inet6)connected", inet or inet6 routes to directly attached networks will be announced.<br />
+						If set to "(inet|inet6) static", all inet or inet6 static routes will be announced.
+						]]>
+					</fielddescr>
+					<fieldname>networks</fieldname>
+					<description>Network that you would like to advertise</description>
+					<type>input</type>
+					<size>45</size>
+				</rowhelperfield>
+			</rowhelper>
+		</field>
+	</fields>
+	<custom_php_deinstall_command>
+		deinstall_openbgpd();
+	</custom_php_deinstall_command>
+	<custom_php_resync_config_command>
+		openbgpd_install_conf();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		bgpd_validate_input();
+	</custom_php_validation_command>
+</packagegui>

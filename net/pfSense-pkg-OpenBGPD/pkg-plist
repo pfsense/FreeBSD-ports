@@ -1,0 +1,7 @@
+pkg/openbgpd.xml
+www/openbgpd_status.php
+www/openbgpd_raw.php
+pkg/openbgpd.inc
+pkg/openbgpd_groups.xml
+pkg/openbgpd_neighbors.xml
+%%DATADIR%%/info.xml

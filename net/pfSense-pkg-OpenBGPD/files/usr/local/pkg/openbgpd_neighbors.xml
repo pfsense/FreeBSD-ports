@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+        <copyright>
+        <![CDATA[
+/* $Id$ */
+/* ========================================================================== */
+/*
+    openbgpd_neighbors.xml
+    part of pfSense (http://www.pfSense.com)
+    Copyright (C) 2007 Scott Ullrich (sullrich@gmail.com)
+    All rights reserved.
+                                                                              */
+/* ========================================================================== */
+/*
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+     1. Redistributions of source code must retain the above copyright notice,
+        this list of conditions and the following disclaimer.
+
+     2. Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+                                                                              */
+/* ========================================================================== */
+        ]]>
+        </copyright>
+    <description>Describe your package here</description>
+    <requirements>Describe your package requirements here</requirements>
+    <faq>Currently there are no FAQ items provided.</faq>
+	<name>OpenBGPDNeighbors</name>
+	<version>1</version>
+	<title>Services: OpenBGPD Neighbors</title>
+	<include_file>/usr/local/pkg/openbgpd.inc</include_file>
+	<tabs>
+		<tab>
+			<text>Settings</text>
+			<url>/pkg_edit.php?xml=openbgpd.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Neighbors</text>
+			<url>/pkg.php?xml=openbgpd_neighbors.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Groups</text>
+			<url>/pkg.php?xml=openbgpd_groups.xml</url>
+		</tab>
+		<tab>
+			<text>Raw config</text>
+			<url>/openbgpd_raw.php</url>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>/openbgpd_status.php</url>
+		</tab>
+	</tabs>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Group</fielddescr>
+			<fieldname>groupname</fieldname>
+		</columnitem>		
+		<columnitem>
+			<fielddescr>Neighbor</fielddescr>
+			<fieldname>neighbor</fieldname>
+		</columnitem>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+			<description></description>
+			<type>input</type>
+			<size>80</size>
+		</field>
+		<field>
+			<fielddescr>Neighbor</fielddescr>
+			<fieldname>neighbor</fieldname>
+			<description>Neighbor IP address</description>
+			<type>input</type>
+			<size>25</size>
+		</field>
+		<field>
+			<fielddescr>TCP-MD5 key</fielddescr>
+			<fieldname>md5sigkey</fieldname>
+			<description>The md5 key to communicate with the peer. Does not work with Cisco BGP routers. If the Local Addr option is not set listening ip will be used.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>TCP-MD5 password</fielddescr>
+			<fieldname>md5sigpass</fieldname>
+			<description>The md5 password to communicate with the peer. Use this when communicating with a Cisco BGP router. If the Local Addr option is not set listenning ip will be used.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Group</fielddescr>
+			<fieldname>groupname</fieldname>
+			<description>Add neighbor to BGP group.</description>
+			<type>select</type>
+			<options>
+				<option>
+					<name>NAME</name>
+					<value>VALUE</value>
+				</option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Neighbor Parameters</fielddescr>
+			<fieldname>Neighbor Parameters</fieldname>
+		    <type>rowhelper</type>
+		    <rowhelper>
+				<rowhelperfield>
+				    <fielddescr>Parameters</fielddescr>
+				    <fieldname>parameters</fieldname>
+				    <description>Neighbor settings.</description>
+				    <type>select</type>
+					<options>
+						<option><name>Announce all</name><value>announce all</value></option>
+						<option><name>Announce none</name><value>announce none</value></option>
+						<option><name>Announce self</name><value>announce self</value></option>
+						<option><name>Announce default-route</name><value>announce default-route</value></option>
+						<option><name>Holdtime X</name><value>holdtime</value></option>
+						<option><name>Metric X</name><value>set metric</value></option>
+						<option><name>Multihop X</name><value>multihop</value></option>
+						<option><name>Localpref X</name><value>set localpref</value></option>
+						<option><name>Remote AS X</name><value>remote-as</value></option>
+						<option><name>Route-reflector X</name><value>route-reflector</value></option>
+						<option><name>Softreconfig in yes</name><value>softreconfig in yes</value></option>
+						<option><name>Softreconfig in no</name><value>softreconfig in no</value></option>
+						<option><name>Softreconfig out yes</name><value>softreconfig out yes</value></option>
+						<option><name>Softreconfig out no</name><value>softreconfig out no</value></option>
+						<option><name>Tcp md5sig password X</name><value>tcp md5sig password</value></option>
+						<option><name>Local address X</name><value>local-address</value></option>
+						<option><name>set nexthop X</name><value>set nexthop</value></option>	
+						<option><name>set nexthop blackhole</name><value>set nexthop blackhole</value></option>			
+						<option><name>set nexthop reject</name><value>set nexthop reject</value></option>	
+						<option><name>set nexthop no-modify</name><value>set nexthop no-modify</value></option>	
+						<option><name>set nexthop self</name><value>set nexthop self</value></option>	
+					</options>
+				</rowhelperfield>
+				<rowhelperfield>
+				    <fielddescr>Value</fielddescr>
+				    <fieldname>parmvalue</fieldname>
+				    <type>input</type>
+				    <size>25</size>
+				</rowhelperfield>
+		    </rowhelper>
+		</field>
+	</fields>
+	<custom_php_command_before_form>
+		$newoptions = array();
+		$new_groups = array();
+		if($config['installedpackages']['openbgpdgroups']['config']) {
+			foreach($config['installedpackages']['openbgpdgroups']['config'] as $item) 
+	    		    $new_groups[] = $item['name'];  
+			$counter = 0;  		    
+			foreach($new_groups as $group) {
+				$newoptions['option'][$counter]['name'] = $group;
+				$newoptions['option'][$counter]['value'] = $group;
+				$counter++;
+			}	
+			$newoptions['option'][$counter]['name'] = "";
+			$newoptions['option'][$counter]['value'] = "";		
+			$pkg['fields']['field'][4]['options'] = $newoptions;
+			$counter = 0;
+			foreach($pkg['fields']['field'] as $field) {
+				if($field['name'] == "group") {
+					$foundgroupid = $counter;
+					echo "found it: $counter";
+				}
+				$counter++;
+			}
+		} else {
+			$newoptions['option'][0]['name'] = "";
+			$newoptions['option'][0]['value'] = "";
+			$pkg['fields']['field'][4]['options'] =$newoptions;
+		}
+	</custom_php_command_before_form>
+	<custom_php_deinstall_command>
+	</custom_php_deinstall_command>
+	<custom_php_resync_config_command>
+		openbgpd_install_conf();
+	</custom_php_resync_config_command>
+	<custom_php_after_form_command>
+		grey_out_value_boxes();
+	</custom_php_after_form_command>
+</packagegui>
