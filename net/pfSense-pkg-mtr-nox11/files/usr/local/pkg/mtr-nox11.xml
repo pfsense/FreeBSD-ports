@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	mtr-nox11.xml
+	part of pfSense (http://www.pfSense.com)
+	Copyright (C) 2014-2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<description>Describe your package here</description>
+	<requirements>Describe your package requirements here</requirements>
+	<faq>Currently there are no FAQ items provided.</faq>
+	<name>mtr</name>
+	<version>0.85_3</version>
+	<title>Diagnostics: mtr</title>
+	<savetext>Run mtr</savetext>
+	<preoutput>yes</preoutput>
+	<!-- Invokes a simple input menu and will not update the configuration database. -->
+	<donotsave>true</donotsave>
+	<!-- Menu is where this packages menu will appear -->
+	<menu>
+		<name>mtr</name>
+		<tooltiptext>mtr combines the functionality of the "traceroute" and "ping" programs into a single network diagnostic tool</tooltiptext>
+		<section>Diagnostics</section>
+		<configfile>mtr-nox11.xml</configfile>
+	</menu>
+	<fields>
+		<field>
+			<fielddescr>IP or Hostname</fielddescr>
+			<fieldname>hostname</fieldname>
+			<description>Enter the IP address or hostname that you would like to traceroute to.</description>
+			<type>input</type>
+			<required>true</required>
+		</field>
+		<field>
+			<fielddescr>Count</fielddescr>
+			<fieldname>count</fieldname>
+			<description>This is the number of pings to send, each one takes 1 second.</description>
+			<type>input</type>
+			<typehint>(Defaults to 10)</typehint>
+		</field>
+		<field>
+			<fielddescr>No DNS Lookup</fielddescr>
+			<fieldname>nodns</fieldname>
+			<description>Use this option to force mtr to display numeric IP numbers and not try to resolve the host names.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Show IPs</fielddescr>
+			<fieldname>showips</fieldname>
+			<description>Use this option to tell mtr to display both the host names and numeric IP numbers.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Raw Output Format</fielddescr>
+			<fieldname>raw</fieldname>
+			<description>Use this option to tell mtr to use the raw output format.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Interval</fielddescr>
+			<fieldname>interval</fieldname>
+			<description>Use this option to specify the positive number of seconds between ICMP ECHO requests.</description>
+			<type>input</type>
+			<typehint>(Default is 1 second.)</typehint>
+		</field>
+		<field>
+			<fielddescr>Use IPv4 only</fielddescr>
+			<fieldname>ipv4only</fieldname>
+			<description>Use this option to use IPv4 only.</description>
+			<type>checkbox</type>
+		</field>
+	</fields>
+	<custom_add_php_command>
+	<![CDATA[
+	/* Do some basic input validation/sanitation here */
+	$int_count = (is_numeric($_POST['count']) ? (abs(intval($_POST['count']))) : 10);
+	$int_interval = (is_numeric($_POST['interval']) ? (abs(intval($_POST['interval']))) : 1);
+
+	if (!is_hostname($_POST['hostname']) && !is_ipaddr($_POST['hostname'])) {
+		echo "<div class=\"errmsg\">ERROR: No valid IP or Hostname given. Fix this and try again!</div>";
+		echo "\n<input class=\"formbtn\" type=\"button\" value=\"Back to mtr\" onclick=\"history.back()\">";
+		die();
+	}
+
+	/* Set up the configured options */
+	/* Use wide report mode to not cut hostnames in the report */
+	$mtr_options = " -w";
+	$mtr_options .= " -c " . $int_count;
+	if ($_POST['nodns']) {
+		$mtr_options .= " -n";
+	}
+	if ($_POST['showips']) {
+		$mtr_options .= " -b";
+	}
+	if ($_POST['raw']) {
+		$mtr_options .= " -l";
+	}
+	$mtr_options .= " -i " . $int_interval;
+	if ($_POST['ipv4only']) {
+		$mtr_options .= " -4";
+	}
+	$mtr_options .= " " . $_POST['hostname'];
+	echo "Running mtr $mtr_options:\n\n";
+	system("/usr/local/sbin/mtr" . $mtr_options);
+	echo "\n<input class=\"formbtn\" type=\"button\" value=\"Back to mtr\" onclick=\"history.back()\">";
+	]]>
+	</custom_add_php_command>
+</packagegui>
