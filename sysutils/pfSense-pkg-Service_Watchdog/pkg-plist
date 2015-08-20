@@ -1,0 +1,6 @@
+pkg/servicewatchdog.xml
+www/services_servicewatchdog.php
+www/services_servicewatchdog_add.php
+pkg/servicewatchdog_cron.php
+pkg/servicewatchdog.inc
+%%DATADIR%%/info.xml
