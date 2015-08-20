@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ======================================================================================= */
+/*
+	pfBlockerNG.xml
+
+	pfBlockerNG
+	Copyright (C) 2015 BBcan177@gmail.com
+	All rights reserved.
+
+	Based upon pfblocker for pfSense
+	Copyright (C) 2011 Marcello Coutinho
+	All rights reserved.
+/*
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+/*
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<description>Describe your package here</description>
+	<requirements>Describe your package requirements here</requirements>
+	<faq>Currently there are no FAQ items provided.</faq>
+	<name>pfblockerng</name>
+	<version>1.09</version>
+	<title>pfBlockerNG: General Settings</title>
+	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
+	<addedit_string>pfBlockerNG: Save General Settings</addedit_string>
+	<menu>
+		<name>pfBlockerNG</name>
+		<configfile>pfblockerng.xml</configfile>
+		<tooltiptext>Configure pfBlockerNG</tooltiptext>
+		<section>Firewall</section>
+		<url>/pkg_edit.php?xml=pfblockerng.xml</url>
+	</menu>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng.priv.inc</item>
+		<prefix>/etc/inc/priv/</prefix>
+		<chmod>0644</chmod>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng.inc</item>
+		<prefix>/usr/local/pkg/pfblockerng/</prefix>
+		<chmod>0644</chmod>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng.php</item>
+		<prefix>/usr/local/www/pfblockerng/</prefix>
+		<chmod>0644</chmod>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng_alerts.php</item>
+		<prefix>/usr/local/www/pfblockerng/</prefix>
+		<chmod>0644</chmod>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng_update.php</item>
+		<prefix>/usr/local/www/pfblockerng/</prefix>
+		<chmod>0644</chmod>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng_log.php</item>
+		<prefix>/usr/local/www/pfblockerng/</prefix>
+		<chmod>0644</chmod>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng_diag_dns.php</item>
+		<prefix>/usr/local/www/pfblockerng/</prefix>
+		<chmod>0644</chmod>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng.widget.php</item>
+		<prefix>/usr/local/www/widgets/widgets/</prefix>
+		<chmod>0644</chmod>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/pfblockerng/widget-pfblockerng.inc</item>
+		<prefix>/usr/local/www/widgets/include/</prefix>
+		<chmod>0644</chmod>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng.js</item>
+		<prefix>/usr/local/www/widgets/javascript/</prefix>
+		<chmod>0644</chmod>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng_top20.xml</item>
+		<prefix>/usr/local/pkg/pfblockerng/</prefix>
+		<chmod>0644</chmod>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng_v4lists.xml</item>
+		<prefix>/usr/local/pkg/pfblockerng/</prefix>
+		<chmod>0644</chmod>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng_v6lists.xml</item>
+		<prefix>/usr/local/pkg/pfblockerng/</prefix>
+		<chmod>0644</chmod>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng_sync.xml</item>
+		<prefix>/usr/local/pkg/pfblockerng/</prefix>
+		<chmod>0644</chmod>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/pfblockerng/countrycodes.tar.bz2</item>
+		<prefix>/var/db/pfblockerng/</prefix>
+		<chmod>0444</chmod>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng.sh</item>
+		<prefix>/usr/local/pkg/pfblockerng/</prefix>
+		<chmod>0755</chmod>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/pfblockerng/geoipupdate.sh</item>
+		<prefix>/usr/local/pkg/pfblockerng/</prefix>
+		<chmod>0755</chmod>
+	</additional_files_needed>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=pfblockerng.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Update</text>
+			<url>/pfblockerng/pfblockerng_update.php</url>
+		</tab>
+		<tab>
+			<text>Alerts</text>
+			<url>/pfblockerng/pfblockerng_alerts.php</url>
+		</tab>	
+		<tab>
+			<text>Reputation</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>IPv4</text>
+			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>IPv6</text>
+			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Top20</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Africa</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Africa.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Asia</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Asia.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Europe</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Europe.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>N.A.</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_NorthAmerica.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Oceania</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Oceania.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>S.A.</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_SouthAmerica.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>P.S.</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_ProxyandSatellite.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Logs</text>
+			<url>/pfblockerng/pfblockerng_log.php</url>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml&amp;id=0</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>pfBlockerNG General Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>LINKS</fielddescr>
+			<fieldname></fieldname>
+			<description><![CDATA[<a href="/firewall_aliases.php">Firewall Alias</a> &nbsp;&nbsp;&nbsp;
+				<a href="/firewall_rules.php">Firewall Rules</a> &nbsp;&nbsp;&nbsp; <a href="diag_logs_filter.php">Firewall Logs</a>]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Enable pfBlockerNG</fielddescr>
+			<fieldname>enable_cb</fieldname>
+			<type>checkbox</type>
+			<description><![CDATA[<div style="padding-right: 56px;">Enable/Disable</div>]]></description>
+			<usecolspan2/>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fieldname>pfb_keep</fieldname>
+			<type>checkbox</type>
+			<description><![CDATA[Keep Settings: <br /><font color='red'>Note:</font> - with 'Keep settings' enabled, pfBlockerNG will maintain run state
+				on Installation/Upgrade<br />If 'Keep Settings' is not 'enabled' on pkg Install/De-Install, all Settings will be Wiped!<br /><br />
+				<font color='red'>Note: </font>To clear all downloaded lists, uncheck these two checkboxes and 'Save'.
+				re-check both boxes and run a 'Force Update']]>
+			</description>
+			<default_value>on</default_value>
+			<dontdisplayname/>
+			<usecolspan2/>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>CRON Settings</fielddescr>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Hour Interval</fielddescr>
+			<fieldname>pfb_interval</fieldname>
+			<description><![CDATA[Default: <strong>Every hour</strong><br />
+				Select the cron Hour Interval. The interval selected will be used with the Start min/hour below.<br />
+				<strong>Ensure that all List 'Update Settings' are within the selected Interval/Start Hour Settings.</strong>]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>Every hour</name><value>1</value></option>
+				<option><name>Every 2 hours</name><value>2</value></option>
+				<option><name>Every 3 hours</name><value>3</value></option>
+				<option><name>Every 4 hours</name><value>4</value></option>
+				<option><name>Every 6 hours</name><value>6</value></option>
+				<option><name>Every 8 hours</name><value>8</value></option>
+				<option><name>Every 12 hours</name><value>12</value></option>
+				<option><name>Once a day</name><value>24</value></option>
+			</options>
+			<default_value>1</default_value>
+			<combinefields/>
+		</field>
+		<field>
+			<fielddescr>Start Min</fielddescr>
+			<fieldname>pfb_min</fieldname>
+			<description><![CDATA[Default: <strong>:00</strong><br />
+				Select Cron Update Minute]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>: 00</name><value>0</value></option>
+				<option><name>: 15</name><value>15</value></option>
+				<option><name>: 30</name><value>30</value></option>
+				<option><name>: 45</name><value>45</value></option>
+			</options>
+			<default_value>0</default_value>
+			<combinefields/>
+		</field>
+		<field>
+			<fielddescr>Start Hour</fielddescr>
+			<fieldname>pfb_hour</fieldname>
+			<description><![CDATA[Default: <strong>0</strong><br />
+				Select the Start Hour]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>0</name><value>0</value></option>
+				<option><name>1</name><value>1</value></option>
+				<option><name>2</name><value>2</value></option>
+				<option><name>3</name><value>3</value></option>
+				<option><name>4</name><value>4</value></option>
+				<option><name>5</name><value>5</value></option>
+				<option><name>6</name><value>6</value></option>
+				<option><name>7</name><value>7</value></option>
+				<option><name>8</name><value>8</value></option>
+				<option><name>9</name><value>9</value></option>
+				<option><name>10</name><value>10</value></option>
+				<option><name>11</name><value>11</value></option>
+				<option><name>12</name><value>12</value></option>
+				<option><name>13</name><value>13</value></option>
+				<option><name>14</name><value>14</value></option>
+				<option><name>15</name><value>15</value></option>
+				<option><name>16</name><value>16</value></option>
+				<option><name>17</name><value>17</value></option>
+				<option><name>18</name><value>18</value></option>
+				<option><name>19</name><value>19</value></option>
+				<option><name>20</name><value>20</value></option>
+				<option><name>21</name><value>21</value></option>
+				<option><name>22</name><value>22</value></option>
+				<option><name>23</name><value>23</value></option>
+			</options>
+			<default_value>0</default_value>
+			<combinefields/>
+		</field>
+		<field>
+			<fielddescr><![CDATA['Daily/Weekly'<br />Start Hour]]></fielddescr>
+			<fieldname>pfb_dailystart</fieldname>
+			<description><![CDATA[Default: <strong>0</strong><br />This is used for the 'Daily/Weekly' Scheduler Only.]]></description>
+			<type>select</type>
+			<options>
+				<option><name>0</name><value>0</value></option>
+				<option><name>1</name><value>1</value></option>
+				<option><name>2</name><value>2</value></option>
+				<option><name>3</name><value>3</value></option>
+				<option><name>4</name><value>4</value></option>
+				<option><name>5</name><value>5</value></option>
+				<option><name>6</name><value>6</value></option>
+				<option><name>7</name><value>7</value></option>
+				<option><name>8</name><value>8</value></option>
+				<option><name>9</name><value>9</value></option>
+				<option><name>10</name><value>10</value></option>
+				<option><name>11</name><value>11</value></option>
+				<option><name>12</name><value>12</value></option>
+				<option><name>13</name><value>13</value></option>
+				<option><name>14</name><value>14</value></option>
+				<option><name>15</name><value>15</value></option>
+				<option><name>16</name><value>16</value></option>
+				<option><name>17</name><value>17</value></option>
+				<option><name>18</name><value>18</value></option>
+				<option><name>19</name><value>19</value></option>
+				<option><name>20</name><value>20</value></option>
+				<option><name>21</name><value>21</value></option>
+				<option><name>22</name><value>22</value></option>
+				<option><name>23</name><value>23</value></option>
+			</options>
+			<default_value>0</default_value>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Enable De-Duplication</fielddescr>
+			<fieldname>enable_dup</fieldname>
+			<type>checkbox</type>
+			<description>Only for IPv4 Lists</description>
+		</field>
+		<field>
+			<fielddescr>Enable Suppression</fielddescr>
+			<fieldname>suppression</fieldname>
+			<type>checkbox</type>
+			<description><![CDATA[This will prevent Selected IPs from being Blocked. Only for IPv4 Lists (/32 and /24).<br />
+					Country Blocking Lists cannot be Suppressed.<br />This will also remove any RFC1918 addresses from all Lists.<br /><br />
+					Alerts can be Suppressed using the '+' icon in the Alerts Tab and IPs added to the 'pfBlockerNGSuppress' Alias<br />
+					A Blocked IP in a CIDR other than /32 or /24 will need a 'Whitelist Alias' w/ List Action: 'Permit Outbound' Firewall Rule
+					<br />Do not use the pfBlockerNGSuppress Alias in a Firewall Rule.
+					This alias is used during the cron download process only.]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>Global Enable Logging</fielddescr>
+			<fieldname>enable_log</fieldname>
+			<type>checkbox</type>
+			<description><![CDATA[Firewall Rule logging - Enable Global Logging to [ Status: System Logs: FIREWALL Log ]<br />
+				This overrides any Log Settings in the Alias Tabs.]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>Disable MaxMind Country Database CRON Updates</fielddescr>
+			<fieldname>database_cc</fieldname>
+			<type>checkbox</type>
+			<description><![CDATA[This will Disable the MaxMind Monthly Country Database Cron Update.<br />
+				This does not affect the MaxMind Binary Cron Task]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>Logfile Size</fielddescr>
+			<fieldname>log_maxlines</fieldname>
+			<description><![CDATA[Default: <strong>20000</strong><br />
+				Select number of Lines to keep in the pfblockerng.log and dnsbl.log files]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>20000</name><value>20000</value></option>
+				<option><name>40000</name><value>40000</value></option>
+				<option><name>60000</name><value>60000</value></option>
+				<option><name>80000</name><value>80000</value></option>
+				<option><name>100000</name><value>100000</value></option>
+				<option><name>No Limit</name><value>nolimit</value></option>
+			</options>
+			<default_value>20000</default_value>
+		</field>
+		<field>
+			<name><![CDATA[Interface/Rules Configuration]]></name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Inbound Firewall Rules</fielddescr>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fieldname>inbound_interface</fieldname>
+			<fielddescr>Interface(s)</fielddescr>
+			<description>Select the Inbound interface(s) you want to Apply Auto Rules to</description>
+			<type>interfaces_selection</type>
+			<hideinterfaceregex>loopback</hideinterfaceregex>
+			<required/>
+			<multiple/>
+			<combinefields/>
+		</field>
+		<field>
+			<fielddescr>Rule Action</fielddescr>
+			<fieldname>inbound_deny_action</fieldname>
+			<description><![CDATA[Default: <strong>Block</strong><br />Select 'Rule Action' for Inbound Rules]]></description>
+			<type>select</type>
+			<options>
+				<option><name>Block</name><value>block</value></option>
+				<option><name>Reject</name><value>reject</value></option>
+			</options>
+			<default_value>block</default_value>
+			<required/>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Outbound Firewall Rules</fielddescr>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Interface(s)</fielddescr>
+			<fieldname>outbound_interface</fieldname>
+			<description>Select the Outbound interface(s) you want to Apply Auto Rules to</description>
+			<type>interfaces_selection</type>
+			<hideinterfaceregex>loopback</hideinterfaceregex>
+			<required/>
+			<multiple/>
+			<combinefields/>
+		</field>
+		<field>
+			<fielddescr>Rule Action</fielddescr>
+			<fieldname>outbound_deny_action</fieldname>
+			<description><![CDATA[Default: <strong>Reject</strong><br />Select 'Rule Action' for Outbound rules]]></description>
+			<type>select</type>
+			<options>
+				<option><name>Reject</name><value>reject</value></option>
+				<option><name>Block</name><value>block</value></option>
+			</options>
+			<default_value>reject</default_value>
+			<required/>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>OpenVPN Interface</fielddescr>
+			<fieldname>openvpn_action</fieldname>
+			<type>checkbox</type>
+			<description>Select to add Auto-Rules for OpenVPN. These will be added to 'Floating Rules' or OpenVPN Rules Tab.</description>
+		</field>
+		<field>
+			<fielddescr>Floating Rules</fielddescr>
+			<fieldname>enable_float</fieldname>
+			<type>checkbox</type>
+			<description><![CDATA[<strong>Enabled:</strong> Auto-Rules will be generated in the 'Floating Rules' Tab<br /><br />
+				<strong>Disabled:</strong> Auto-Rules will be generated in the Selected Inbound/Outbound Interfaces<br /><br />
+				<strong>Rules will be ordered by the selection below.</strong>]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>Rule Order</fielddescr>
+			<fieldname>pass_order</fieldname>
+			<description><![CDATA[<br />Default Order:<strong> | pfB_Block/Reject | All other Rules | (original format)<br /></strong><br />
+				Select The '<strong>Order</strong>' of the Rules<br />
+				&nbsp;&nbsp;Selecting 'original format', sets pfBlockerNG rules at the top of the Firewall TAB.<br />
+				&nbsp;&nbsp;Selecting any other 'Order' will re-order <strong>all the Rules to the format indicated!</strong>]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>| pfB_Block/Reject | All other Rules | (original format)</name><value>order_0</value></option>
+				<option><name>| pfSense Pass/Match | pfB_Pass/Match | pfB_Block/Reject |</name><value>order_1</value></option>
+				<option><name>| pfB_Pass/Match | pfSense Pass/Match | pfB_Block/Reject |</name><value>order_2</value></option>
+				<option><name>| pfB_Pass/Match | pfB_Block/Reject | pfSense Pass/Match |</name><value>order_3</value></option>
+			</options>
+			<default_value>order_0</default_value>
+		</field>
+		<field>
+			<fielddescr>Auto Rule Suffix</fielddescr>
+			<fieldname>autorule_suffix</fieldname>
+			<description><![CDATA[Default: <strong>auto rule</strong><br />
+				Select 'Auto Rule' Description Suffix for Auto Defined rules. pfBlockerNG Must be Disabled to Modify Suffix]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>auto rule</name><value>autorule</value></option>
+				<option><name>Null (no suffix)</name><value>standard</value></option>
+				<option><name>AR</name><value>ar</value></option>
+			</options>
+			<default_value>autorule</default_value>
+		</field>
+		<field>
+			<name><![CDATA[Acknowledgements]]></name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Credits</fielddescr>
+			<fieldname>credits</fieldname>
+			<type>info</type>
+			<description><![CDATA[<strong>pfBlockerNG </strong>
+				Created in 2015 by <a target=_new href='https://forum.pfsense.org/index.php?action=profile;u=238481'>BBcan177.</a><br /><br />
+				Based upon pfBlocker by Marcello Coutinho and Tom Schaefer.<br />
+				Country Database GeoLite distributed under the Creative Commons Attribution-ShareAlike 3.0 Unported License by:
+				MaxMind Inc. @ <a target=_new href='http://www.maxmind.com'>MaxMind.com</a>.
+				The Database is Automatically Updated the First Tuesday of Each Month]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>Support</fielddescr>
+			<type>info</type>
+			<description><![CDATA[This package has been developed by BBcan177.<br />
+				 If you like this package, please support the developer @ BBCan177@gmail.com.]]>
+			</description>
+		</field>
+		<field>
+			<name><![CDATA[<center>Click to SAVE Settings and/or Rule Edits. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Changes are Applied via CRON or
+			'Force Update'</center>]]></name>
+			<type>listtopic</type>
+		</field>
+	</fields>
+	<custom_php_install_command>
+		pfblockerng_php_install_command();
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		pfblockerng_php_deinstall_command();
+	</custom_php_deinstall_command>
+	<custom_php_validation_command>
+		pfblockerng_validate_input($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		global $pfb;
+		$pfb['save'] = TRUE;
+		sync_package_pfblockerng();
+	</custom_php_resync_config_command>
+</packagegui>

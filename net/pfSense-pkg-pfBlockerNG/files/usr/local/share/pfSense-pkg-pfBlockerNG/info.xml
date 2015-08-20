@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>pfBlockerNG</name>
+		<descr><![CDATA[pfBlockerNG is the Next Generation of pfBlocker.&lt;br /&gt;
+			Manage IPv4/v6 List Sources into 'Deny, Permit or Match' formats.&lt;br /&gt;
+			Country Blocking Database by MaxMind Inc. (GeoLite Free version).&lt;br /&gt;
+			De-Duplication, Suppression, and Reputation enhancements.&lt;br /&gt;
+			Provision to download from diverse List formats.&lt;br /&gt;
+			Advanced Integration for Emerging Threats IQRisk IP Reputation Threat Sources.]]></descr>
+		<category>Firewall</category>
+		<pkginfolink>https://forum.pfsense.org/index.php?topic=86212.0</pkginfolink>
+		<config_file>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng.xml</config_file>
+		<version>1.09</version>
+		<status>Stable</status>
+		<required_version>2.2</required_version>
+		<maintainer>BBCan177@gmail.com</maintainer>
+		<configurationfile>pfblockerng.xml</configurationfile>
+		<run_depends>bin/geoiplookup:net/GeoIP bin/grepcidr:net-mgmt/grepcidr</run_depends>
+		<port_category>net</port_category>
+		<depends_on_package_pbi>pfblockerng-1.6.3_1-##ARCH##.pbi</depends_on_package_pbi>
+		<build_pbi>
+			<port>net/GeoIP</port>
+			<ports_after>net-mgmt/grepcidr</ports_after>
+			<custom_name>pfblockerng</custom_name>
+		</build_pbi>
+	</package>
+</pfsensepkgs>
