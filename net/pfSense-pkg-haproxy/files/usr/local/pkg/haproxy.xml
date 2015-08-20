@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	haproxy.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2009 Scott Ullrich
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<name>haproxy</name>
+	<version>0.28</version>
+	<title>HAProxy</title>
+	<aftersaveredirect>/pkg_edit.php?xml=haproxy_pools.php</aftersaveredirect>
+	<include_file>/usr/local/pkg/haproxy.inc</include_file>
+	<menu>
+		<name>HAProxy</name>
+		<tooltiptext></tooltiptext>
+		<section>Services</section>
+		<url>/haproxy_listeners.php</url>
+	</menu>
+	<menu>
+		<name>HAProxy Stats</name>
+		<tooltiptext>Stats of HAProxy</tooltiptext>
+		<section>Status</section>
+		<url>/haproxy_stats.php?haproxystats=1</url>
+	</menu>
+	<service>
+		<name>HAProxy</name>
+		<rcfile>haproxy.sh</rcfile>
+		<executable>haproxy</executable>
+		<description>The Reliable, High Performance TCP/HTTP Load Balancer</description>
+	</service>	
+	<plugins>
+		<item>
+			<type>plugin_carp</type>
+		</item>
+		<item>
+			<type>plugin_certificates</type>
+		</item>
+	</plugins>
+	<configpath>installedpackages->haproxy->config</configpath>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/haproxy1_5/pkg/haproxy.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/</prefix>
+		<item>https://packages.pfsense.org/packages/config/haproxy1_5/www/haproxy_listeners.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/</prefix>
+		<item>https://packages.pfsense.org/packages/config/haproxy1_5/www/haproxy_listeners_edit.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/</prefix>
+		<item>https://packages.pfsense.org/packages/config/haproxy1_5/www/haproxy_global.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/</prefix>
+		<item>https://packages.pfsense.org/packages/config/haproxy1_5/www/haproxy_files.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/</prefix>
+		<item>https://packages.pfsense.org/packages/config/haproxy1_5/www/haproxy_pools.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/</prefix>
+		<item>https://packages.pfsense.org/packages/config/haproxy1_5/www/haproxy_pool_edit.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/</prefix>
+		<item>https://packages.pfsense.org/packages/config/haproxy1_5/www/haproxy_stats.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/</prefix>
+		<item>https://packages.pfsense.org/packages/config/haproxy1_5/www/haproxy_templates.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/haproxy1_5/pkg/haproxy_socketinfo.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/haproxy1_5/pkg/haproxy_xmlrpcsyncclient.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/haproxy1_5/pkg/haproxy_htmllist.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/haproxy1_5/pkg/haproxy_utils.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/widgets/widgets/</prefix>
+		<item>https://packages.pfsense.org/packages/config/haproxy1_5/www/widgets/widgets/haproxy.widget.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/shortcuts/</prefix>
+		<chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/haproxy1_5/www/shortcuts/pkg_haproxy.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/haproxy1_5/pkg/pkg_haproxy_tabs.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/haproxy1_5/pkg/haproxy_upgrade_config.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/javascript/</prefix>
+		<item>https://packages.pfsense.org/packages/config/haproxy1_5/www/javascript/haproxy_geturl.js</item>
+	</additional_files_needed>
+	<custom_php_install_command>
+		haproxy_custom_php_install_command();
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		haproxy_custom_php_deinstall_command();
+	</custom_php_deinstall_command>
+</packagegui>
