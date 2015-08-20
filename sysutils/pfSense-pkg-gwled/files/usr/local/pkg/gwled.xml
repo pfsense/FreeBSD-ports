@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	gwled.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2011-2013 Jim Pingle
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<title>Interfaces: Gateway Status LEDs</title>
+	<name>gwled</name>
+	<version>0.2.2</version>
+	<savetext>Save</savetext>
+	<include_file>/usr/local/pkg/gwled.inc</include_file>
+	<menu>
+		<name>Gateway Status LEDs</name>
+		<tooltiptext>Assign LEDs to indicate Gateway status.</tooltiptext>
+		<section>Interfaces</section>
+		<url>/pkg_edit.php?xml=gwled.xml&amp;id=0</url>
+	</menu>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/gwled/gwled.inc</item>
+		<prefix>/usr/local/pkg/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/bin/</prefix>
+		<chmod>0755</chmod>
+		<item>https://packages.pfsense.org/packages/config/gwled/gwled.php</item>
+	</additional_files_needed>
+	<!-- TODO: Make the gwled.sh script really usable for start/stop/restart -->
+	<service>
+		<name>gwled</name>
+		<rcfile>gwled.sh</rcfile>
+		<executable>gwled</executable>
+		<description>Gateway LED Indicator Daemon</description>
+	</service>
+	<fields>
+		<field>
+			<fielddescr>Enable gwled</fielddescr>
+			<fieldname>enable</fieldname>
+			<type>checkbox</type>
+			<enablefields>enable_led2,enable_led3,gw_led2,gw_led3</enablefields>
+			<description>if this is enabled, it will use LED #2 and #3 to indicate gateway status with a peridic poll.</description>
+		</field>			
+		<field>
+			<fielddescr>Enable LED #2</fielddescr>
+			<fieldname>enable_led2</fieldname>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Interface For LED #2</fielddescr>
+			<fieldname>gw_led2</fieldname>
+			<type>select_source</type>
+			<source><![CDATA[gwled_get_gateways()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<description>Use LED #2 to indicate the status for this gateway.</description>
+		</field>
+		<field>
+			<fielddescr>Enable LED #3</fielddescr>
+			<fieldname>enable_led3</fieldname>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Interface For LED #3</fielddescr>
+			<fieldname>gw_led3</fieldname>
+			<type>select_source</type>
+			<source><![CDATA[gwled_get_gateways()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<description>Use LED #3 to indicate the status for this gateway.</description>
+		</field>
+	</fields>
+	<custom_php_validation_command>
+		validate_form_gwled($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		sync_package_gwled();
+	</custom_php_resync_config_command>
+</packagegui>

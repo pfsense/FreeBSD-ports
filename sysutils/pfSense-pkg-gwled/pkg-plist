@@ -1,0 +1,4 @@
+pkg/gwled.xml
+pkg/gwled.inc
+bin/gwled.php
+%%DATADIR%%/info.xml
