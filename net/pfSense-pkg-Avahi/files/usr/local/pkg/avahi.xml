@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	avahi.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2009 Scott Ullrich
+	Copyright (C) 2009-2013 Jim Pingle
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<title>Services: Avahi</title>
+	<name>avahi</name>
+	<version>1.10.0</version>
+	<savetext>Save</savetext>
+	<include_file>/usr/local/pkg/avahi.inc</include_file>
+	<menu>
+		<name>Avahi</name>
+		<tooltiptext>Modify avahi settings.</tooltiptext>
+		<section>Services</section>
+		<url>pkg_edit.php?xml=avahi.xml&amp;id=0</url>
+	</menu>
+	<service>
+		<name>avahi</name>
+		<rcfile>avahi-daemon.sh</rcfile>
+		<executable>avahi-daemon</executable>
+		<description>Avahi zeroconf/mDNS daemon</description>
+	</service>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/avahi/avahi.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/etc/avahi/</prefix>
+		<item>https://packages.pfsense.org/packages/config/avahi/services/ssh.service</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/etc/avahi/</prefix>
+		<item>https://packages.pfsense.org/packages/config/avahi/services/sftp-ssh.service</item>
+	</additional_files_needed>
+	<fields>
+		<field>
+			<fielddescr>Enable</fielddescr>
+			<fieldname>enable</fieldname>
+			<description>Enable Avahi Bonjour/Zeroconf proxy.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Browse domains (comma separated)</fielddescr>
+			<fieldname>browsedomains</fieldname>
+			<description>
+				<![CDATA[
+				Enter the domains that you would like proxied.<br />
+				(Example: local, pfsense.org, mydomain.com)
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Deny interfaces</fielddescr>
+			<fieldname>denyinterfaces</fieldname>
+			<description>
+				<![CDATA[
+				Interfaces that you do NOT want Avahi to listen on.
+				<strong>NOTE: WAN is always disabled (so it is not shown here).</strong>
+				]]>
+			</description>
+			<type>interfaces_selection</type>
+			<hideinterfaceregex>wan</hideinterfaceregex>
+			<multiple>true</multiple>
+		</field>
+		<field>
+			<fielddescr>Disable IPv6</fielddescr>
+			<fieldname>disable_ipv6</fieldname>
+			<description>Disable IPv6 support in Avahi.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Disable IPv4</fielddescr>
+			<fieldname>disable_ipv4</fieldname>
+			<description>Disable IPv4 support in Avahi.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Disable D-BUS</fielddescr>
+			<fieldname>disable_dbus</fieldname>
+			<description>Disable D-BUS client API support in Avahi.</description>
+			<type>checkbox</type>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		avahi_sync();
+	</custom_php_resync_config_command>
+	<custom_php_install_command>
+		avahi_install();
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		avahi_deinstall();
+	</custom_php_deinstall_command>
+</packagegui>

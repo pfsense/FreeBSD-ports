@@ -1,0 +1,39 @@
+# $FreeBSD$
+
+PORTNAME=	pfSense-pkg-Avahi
+PORTVERSION=	1.10.0
+CATEGORIES=	net
+MASTER_SITES=	# empty
+DISTFILES=	# empty
+EXTRACT_ONLY=	# empty
+
+MAINTAINER=	coreteam@pfsense.org
+COMMENT=	pfSense package Avahi
+
+LIB_DEPENDS=	libavahi-core.so:${PORTSDIR}/net/avahi-app
+
+NO_BUILD=	yes
+NO_MTREE=	yes
+
+SUB_FILES=	pkg-install pkg-deinstall
+SUB_LIST=	PORTNAME=${PORTNAME}
+
+do-extract:
+	${MKDIR} ${WRKSRC}
+
+do-install:
+	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/avahi
+	${MKDIR} ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/avahi.xml \
+		${STAGEDIR}${PREFIX}/pkg
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/avahi.inc \
+		${STAGEDIR}${PREFIX}/pkg
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/etc/avahi/ssh.service \
+		${STAGEDIR}${PREFIX}/etc/avahi
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/etc/avahi/sftp-ssh.service \
+		${STAGEDIR}${PREFIX}/etc/avahi
+	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
+		${STAGEDIR}${DATADIR}
+
+.include <bsd.port.mk>
