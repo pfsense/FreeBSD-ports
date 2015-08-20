@@ -1,0 +1,5 @@
+Welcome to DragonFly!
+
+- To start the installer, login as 'installer'.
+- To start the installer under X Windows, login as 'xinstaller'.
+- To just get a shell prompt, login as 'root'.

@@ -1,0 +1,13 @@
+It should be easy to build LuaSocket. Just as an example, I am providing my
+makefiles for Linux, Mac OS X and Visual C.NET. The Linux makefile can be
+used for AIX, SunOS, and IRIX too, with little modification.  These build
+two shared libraries: one for luasocket and one for mime.
+
+LuaSocket 2.0 uses the new package proposal for Lua 5.1. All Lua library
+developers are encouraged to update their libraries so that all libraries
+can coexist peacefully and users can benefit from the standardization and
+flexibility of the standard.
+
+Please check the installation instructions in the manual for details.
+Have fun! 
+Diego.

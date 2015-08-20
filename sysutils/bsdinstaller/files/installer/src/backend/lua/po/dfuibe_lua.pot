@@ -1,0 +1,1495 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-07-17 23:43+0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%d/%d packages were successfully installed!"
+msgstr ""
+
+#, c-format
+msgid "%d/%d packages were successfully removed!"
+msgstr ""
+
+#, c-format
+msgid "%s is now installed"
+msgstr ""
+
+#, c-format
+msgid "%s was not fully installed."
+msgstr ""
+
+#, c-format
+msgid "%s will be a plain dir in %s\n"
+msgstr ""
+
+#, c-format
+msgid "%s will be symlinked to %s\n"
+msgstr ""
+
+#, c-format
+msgid ""
+"'%s' is not a recognized partition type. Please use a numeric identifier if "
+"you wish to use an unlisted partition type."
+msgstr ""
+
+#, c-format
+msgid ""
+"'%s' is not a valid capacity specifier. Capacity must either end in 'M' for "
+"megabytes, 'G' for gigabytes, or be '*' to indicate 'use all remaining "
+"space.'"
+msgstr ""
+
+#, c-format
+msgid "'%s' is not a valid size in sectors."
+msgstr ""
+
+#, c-format
+msgid ""
+"'Packet Mode' refers to using newer BIOS calls to boot from a partition of "
+"the disk.  It is generally not required unless:\n"
+"\n"
+"- your BIOS does not support legacy mode; or\n"
+"- your %s primary partition resides on a cylinder of the disk beyond "
+"cylinder 1024; or\n"
+"- you just can't get it to boot without it."
+msgstr ""
+
+msgid ""
+"A failure occured while provisioning the NetBoot environment.  Please "
+"consult the log file for details."
+msgstr ""
+
+#, c-format
+msgid "Abort and Return to %s"
+msgstr ""
+
+msgid "Accept IPv6 router advertisements to discover network settings"
+msgstr ""
+
+msgid "Accept and Add User"
+msgstr ""
+
+msgid "Accept and Create"
+msgstr ""
+
+msgid "Accept and Install Bootblocks"
+msgstr ""
+
+msgid "Accept and Set Password"
+msgstr ""
+
+msgid "Accept these Packages"
+msgstr ""
+
+msgid "Accept these Settings"
+msgstr ""
+
+msgid "Access"
+msgstr ""
+
+msgid "Action cancelled - no primary partitions were formatted."
+msgstr ""
+
+msgid "Action cancelled.  No changes were made to the target system."
+msgstr ""
+
+msgid "Action cancelled.  No disks were formatted."
+msgstr ""
+
+msgid "Action cancelled.  No partitions were changed."
+msgstr ""
+
+msgid "Active?"
+msgstr ""
+
+msgid "Add User"
+msgstr ""
+
+msgid "Align Partition"
+msgstr ""
+
+#, c-format
+msgid "All packages present on the %s are already installed on this system."
+msgstr ""
+
+msgid "Alter these Partitions"
+msgstr ""
+
+msgid "Alter these Partitions?"
+msgstr ""
+
+msgid "An error occurred when setting the root password."
+msgstr ""
+
+msgid "An error occurred while attempting to set time and date."
+msgstr ""
+
+msgid "Assign IP Address"
+msgstr ""
+
+msgid "Begin Installation"
+msgstr ""
+
+msgid "Begin Installing Files"
+msgstr ""
+
+msgid "Begin Upgrade"
+msgstr ""
+
+msgid "Block Size"
+msgstr ""
+
+msgid "Bootblocks were not successfully installed."
+msgstr ""
+
+msgid "Bootblocks were successfully installed!"
+msgstr ""
+
+msgid "By DHCP"
+msgstr ""
+
+msgid "By Router Advertisements"
+msgstr ""
+
+msgid "Calculating package dependencies."
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Cancel this process and return to a command prompt"
+msgstr ""
+
+msgid "Cannot swapoff; reboot?"
+msgstr ""
+
+msgid "Capacity"
+msgstr ""
+
+msgid "Change Console Settings"
+msgstr ""
+
+#, c-format
+msgid "Change Keymap (%s)"
+msgstr ""
+
+#, c-format
+msgid "Change Screenmap (%s)"
+msgstr ""
+
+#, c-format
+msgid "Change Video Font (%s)"
+msgstr ""
+
+msgid "Choose Target System"
+msgstr ""
+
+msgid "Choose one of the following tasks to perform."
+msgstr ""
+
+msgid "Choose one of the following things to configure."
+msgstr ""
+
+msgid "Configuration Menu"
+msgstr ""
+
+msgid "Configure"
+msgstr ""
+
+msgid "Configure Console"
+msgstr ""
+
+msgid "Configure Interface"
+msgstr ""
+
+#, c-format
+msgid "Configure a %s OS that has already been installed"
+msgstr ""
+
+msgid "Configure a System on Disk"
+msgstr ""
+
+msgid "Configure an Installed System"
+msgstr ""
+
+msgid "Configure the Running System"
+msgstr ""
+
+msgid "Configure the system that was just installed"
+msgstr ""
+
+msgid "Configure your Network"
+msgstr ""
+
+msgid "Configuring Interface:"
+msgstr ""
+
+#, c-format
+msgid ""
+"Congratulations, %s is now installed on your hard drive! You may now do one "
+"of three things: you can perform some initial configuration of this system, "
+"you can reboot to test out your new installation, or you can go back to the "
+"main menu and select other actions to perform."
+msgstr ""
+
+msgid "Contact the DHCP server on this network to discover network settings"
+msgstr ""
+
+msgid "Could not create the skeletal target system."
+msgstr ""
+
+msgid "Could not mount the skeletal target system."
+msgstr ""
+
+msgid ""
+"Couldn't successfully configure the interface. Use the chosen settings "
+"anyway?"
+msgstr ""
+
+msgid "Couldn't write changes to configuration files for some reason."
+msgstr ""
+
+msgid "Day"
+msgstr ""
+
+msgid "Default (English)"
+msgstr ""
+
+msgid "Default Router"
+msgstr ""
+
+msgid "Description of Filesystem"
+msgstr ""
+
+msgid "Description of this filesystem"
+msgstr ""
+
+msgid "Device"
+msgstr ""
+
+msgid "Device node used for this filesystem"
+msgstr ""
+
+msgid "Disk Drive"
+msgstr ""
+
+msgid "Do not Load any Further Kernel Modules"
+msgstr ""
+
+msgid "Do not apply any language translation"
+msgstr ""
+
+msgid ""
+"Don't configure the environment; accept the default settings and continue"
+msgstr ""
+
+msgid "Edit Partitions"
+msgstr ""
+
+msgid "Enable NetBoot Installation Services"
+msgstr ""
+
+msgid "Enable NetBoot Installation Services?"
+msgstr ""
+
+msgid ""
+"Enter a comma-separated list of other groups that this user should belong to"
+msgstr ""
+
+msgid "Enter the IP Address you would like to use"
+msgstr ""
+
+msgid "Enter the IP address of the default router"
+msgstr ""
+
+msgid ""
+"Enter the current date and time of day to set this computer's internal "
+"timekeeping clock."
+msgstr ""
+
+msgid "Enter the current day of month (e.g. `30')"
+msgstr ""
+
+msgid "Enter the current hour (e.g. `07')"
+msgstr ""
+
+msgid "Enter the current minute (e.g. `59')"
+msgstr ""
+
+msgid "Enter the current month (e.g. `07')"
+msgstr ""
+
+msgid "Enter the current year (e.g. `2004')"
+msgstr ""
+
+msgid "Enter the full path to the user's home directory, or leave blank"
+msgstr ""
+
+msgid "Enter the full path to the user's shell program"
+msgstr ""
+
+msgid "Enter the netmask of the IP address"
+msgstr ""
+
+msgid "Enter the primary group for this account, or leave blank"
+msgstr ""
+
+msgid "Enter the real name (or GECOS field) of this user"
+msgstr ""
+
+msgid "Enter the root password you would like to use"
+msgstr ""
+
+msgid "Enter the same password again to confirm"
+msgstr ""
+
+msgid "Enter the user's password (will not be displayed)"
+msgstr ""
+
+msgid "Enter the username the user will log in as"
+msgstr ""
+
+msgid "Enter this account's numeric user id, or leave blank"
+msgstr ""
+
+msgid ""
+"Errors occurred while installing packages. Some packages may not have been "
+"successfully installed."
+msgstr ""
+
+msgid "Errors occurred; keyboard map was not successfully set."
+msgstr ""
+
+msgid "Errors occurred; screen map was not successfully set."
+msgstr ""
+
+msgid "Errors occurred; video font was not successfully set."
+msgstr ""
+
+#, c-format
+msgid ""
+"Everything is now ready to install the actual files which comprise the %s "
+"operating system on the selected partition of the selected disk.\n"
+"\n"
+"Note that this process will take quite a while to finish. You may wish to "
+"take a break now and come back to the computer in a short while."
+msgstr ""
+
+msgid "Exit"
+msgstr ""
+
+#, c-format
+msgid "Exit to %s"
+msgstr ""
+
+msgid "Expand Partition"
+msgstr ""
+
+#, c-format
+msgid "Expand to %d Sectors"
+msgstr ""
+
+msgid "FSType"
+msgstr ""
+
+msgid "Failed to make sure that the partition is bootable."
+msgstr ""
+
+msgid "Finished"
+msgstr ""
+
+msgid "Format Disk"
+msgstr ""
+
+msgid "Format this Disk"
+msgstr ""
+
+msgid "Format this Disk?"
+msgstr ""
+
+msgid "Frag Size"
+msgstr ""
+
+msgid "Full Name of Package"
+msgstr ""
+
+msgid ""
+"Here you can add a user to an installed system.\n"
+"\n"
+"You can leave the Home Directory, User ID, and Login Group fields empty if "
+"you want these items to be automatically allocated by the system."
+msgstr ""
+
+msgid "Here you can set the super-user (root) password."
+msgstr ""
+
+msgid "Home Directory"
+msgstr ""
+
+msgid "Hour"
+msgstr ""
+
+msgid "How this filesystem may be accessed"
+msgstr ""
+
+msgid "How would you like to try configuring this network interface?"
+msgstr ""
+
+msgid "IP Address"
+msgstr ""
+
+msgid "Include this filesystem on this installation?"
+msgstr ""
+
+msgid "Include?"
+msgstr ""
+
+msgid "Initialize Configuration"
+msgstr ""
+
+#, c-format
+msgid "Install %s"
+msgstr ""
+
+#, c-format
+msgid "Install %s on this computer system"
+msgstr ""
+
+msgid "Install Bootblock(s)"
+msgstr ""
+
+msgid "Install Bootblock?"
+msgstr ""
+
+msgid "Install Bootblocks"
+msgstr ""
+
+msgid "Install OS"
+msgstr ""
+
+msgid "Install Packages"
+msgstr ""
+
+msgid "Install a bootblock on this disk"
+msgstr ""
+
+msgid "Install these Packages"
+msgstr ""
+
+msgid "Install?"
+msgstr ""
+
+#, c-format
+msgid ""
+"Interface\n"
+"\n"
+"%s\n"
+"\n"
+"failed to come up."
+msgstr ""
+
+#, c-format
+msgid ""
+"Interface\n"
+"\n"
+"%s\n"
+"\n"
+"is now up, with IP address %s."
+msgstr ""
+
+msgid ""
+"Is this machine's internal clock set to local time or UTC (Universal "
+"Coordinated Time, roughly the same as Greenwich Mean Time)?\n"
+"\n"
+"If you don't know, assume local time for now."
+msgstr ""
+
+#, c-format
+msgid "Kernel module '%s' was successfully loaded."
+msgstr ""
+
+msgid "Load Kernel Modules"
+msgstr ""
+
+msgid "Local Time"
+msgstr ""
+
+msgid "Local or UTC (Greenwich Mean Time) clock"
+msgstr ""
+
+msgid "Login Group"
+msgstr ""
+
+msgid "Make this computer a boot server for other machines on the network"
+msgstr ""
+
+msgid ""
+"Manual configuration requires that you enter IP address for this computer "
+"and the default router and DNS server of the network.\n"
+"\n"
+"DHCP requires that you have a DHCP server operating on the network that this "
+"interface is attached to.\n"
+"\n"
+"Router adtervisements require IPv6."
+msgstr ""
+
+msgid "Manually"
+msgstr ""
+
+msgid "Manually enter the network settings for this interface"
+msgstr ""
+
+msgid "Minute"
+msgstr ""
+
+msgid "Month"
+msgstr ""
+
+msgid "Mount Target System"
+msgstr ""
+
+msgid "Mountpoint"
+msgstr ""
+
+msgid ""
+"NetBoot Installation Services allow this machine to become an Installation "
+"Server that will allow other machines on this network to boot as PXE "
+"clients, and will start the Installation Environment on them.\n"
+"\n"
+"Would you like to provision this machine to serve up the Installation "
+"Environment to other machines?"
+msgstr ""
+
+msgid "NetBoot installation services are now started."
+msgstr ""
+
+msgid "Netmask"
+msgstr ""
+
+msgid "No changes were made to the partition table layout."
+msgstr ""
+
+msgid ""
+"No network interfaces on this machine have been configured yet.  Please "
+"select an interface to configure."
+msgstr ""
+
+msgid "No partitions were configured!  Please create at least one partition."
+msgstr ""
+
+msgid "No thanks"
+msgstr ""
+
+#, c-format
+msgid ""
+"No valid partitions were found on this disk. You will have to create at "
+"least one in which to install %s.\n"
+"\n"
+"A single partition covering the entire disk will be selected for you by "
+"default, but if you wish, you may create multiple partitions instead."
+msgstr ""
+
+msgid ""
+"Note: none of the swap subpartitions that you have selected are large enough "
+"to hold the contents of memory, and thus cannot be used to hold a crash dump "
+"(an image of the computers' memory at the time of failure.) Because this "
+"complicates troubleshooting, we recommend that you increase the size of one "
+"of your swap subpartitions.\n"
+"\n"
+"Proceed anyway?"
+msgstr ""
+
+#, c-format
+msgid ""
+"Note: the total capacity required for the requested subpartitions (%s) does "
+"not make full use of the capacity available in the partition (%s.)  %d "
+"sectors (%s) of space will go unused.\n"
+"\n"
+"You may wish to expand one or more subpartitions before proceeding.\n"
+"\n"
+"Proceed anyway?"
+msgstr ""
+
+msgid "OK"
+msgstr ""
+
+msgid "Omit Subpartition"
+msgstr ""
+
+msgid "Omit Subpartitions"
+msgstr ""
+
+msgid "Omit subpartitions?"
+msgstr ""
+
+#, c-format
+msgid ""
+"One or more subpartitions of one or more primary partitions of the selected "
+"disk are already in use (they are currently mounted on mountpoints in the "
+"filesystem.) You should either unmount them before proceeding, or select a "
+"different disk to install %s on."
+msgstr ""
+
+#, c-format
+msgid ""
+"One or more subpartitions on the selected primary partition already in use "
+"(they are currently mounted in the filesystem.) You should either unmount "
+"them before proceeding, or select a different partition or disk on which to "
+"install %s."
+msgstr ""
+
+msgid "Only one partition may have a capacity of '*'."
+msgstr ""
+
+msgid "Only one subpartition may have a capacity of '*'."
+msgstr ""
+
+msgid "Other Group Memberships"
+msgstr ""
+
+msgid "Packet mode?"
+msgstr ""
+
+#, c-format
+msgid "Partition #%d (was %d long at %d; now %d long at %d)\n"
+msgstr ""
+
+#, c-format
+msgid ""
+"Partition #%d does not begin and end on a cylinder boundary (i.e. its size, %"
+"d, is not a multiple of %d.)\n"
+"\n"
+"Would you like to adjust it?  NOTE that this may result in subsequent "
+"partitions being moved!"
+msgstr ""
+
+#, c-format
+msgid ""
+"Partition #%d extends past the end of the disk by %d sectors (%s).  Would "
+"you like to shrink it so that it fits?"
+msgstr ""
+
+#, c-format
+msgid ""
+"Partition #%d falls short of the end of the disk by %d sectors (%s).  Would "
+"you like to expand it so that it takes up the entire rest of the disk?"
+msgstr ""
+
+msgid "Partition Disk"
+msgstr ""
+
+msgid "Partition Disk?"
+msgstr ""
+
+msgid "Partition Type"
+msgstr ""
+
+msgid "Password"
+msgstr ""
+
+msgid "Password (Again)"
+msgstr ""
+
+msgid "Perform Upgrade"
+msgstr ""
+
+msgid "Please choose which installed system you want to configure."
+msgstr ""
+
+msgid ""
+"Please enter numbers within acceptable ranges for year, month, day of month, "
+"hour, and minute."
+msgstr ""
+
+msgid "Please select the language you wish you use."
+msgstr ""
+
+msgid "Please select the network interface you wish to configure."
+msgstr ""
+
+msgid "Pre-Install Tasks"
+msgstr ""
+
+msgid "Pre-select Packages"
+msgstr ""
+
+msgid "Previous Menu"
+msgstr ""
+
+#, c-format
+msgid "Primary partition #%d was formatted."
+msgstr ""
+
+#, c-format
+msgid ""
+"Primary partition #%d was not correctly formatted, and may now be in an "
+"inconsistent state. We recommend re-formatting it before proceeding."
+msgstr ""
+
+msgid "Proceed"
+msgstr ""
+
+msgid "Re-enter the user's password to confirm"
+msgstr ""
+
+msgid "Re-type Root Password"
+msgstr ""
+
+msgid "Ready to Install"
+msgstr ""
+
+msgid "Real Name"
+msgstr ""
+
+msgid "Reboot"
+msgstr ""
+
+msgid "Reboot this computer"
+msgstr ""
+
+msgid "Remove Packages"
+msgstr ""
+
+msgid "Remove these Packages"
+msgstr ""
+
+msgid "Remove?"
+msgstr ""
+
+#, c-format
+msgid "Return to %s"
+msgstr ""
+
+msgid "Return to Configure Console"
+msgstr ""
+
+msgid "Return to Configure Menu"
+msgstr ""
+
+msgid "Return to Edit Partitions"
+msgstr ""
+
+msgid "Return to Utilities Menu"
+msgstr ""
+
+msgid "Revert to Partitions on Disk"
+msgstr ""
+
+msgid "Root Password"
+msgstr ""
+
+msgid "Russian"
+msgstr ""
+
+msgid "Russian KOI8-R"
+msgstr ""
+
+msgid "Select Additional Filesystems"
+msgstr ""
+
+msgid "Select All"
+msgstr ""
+
+msgid "Select Component to Configure"
+msgstr ""
+
+msgid "Select Console Font"
+msgstr ""
+
+msgid "Select Disk"
+msgstr ""
+
+msgid "Select Kernel Module to Load"
+msgstr ""
+
+msgid "Select Keyboard Map"
+msgstr ""
+
+msgid "Select Language"
+msgstr ""
+
+msgid "Select Network Configuration Method"
+msgstr ""
+
+msgid "Select Network Interface"
+msgstr ""
+
+msgid "Select None"
+msgstr ""
+
+msgid "Select Packages"
+msgstr ""
+
+msgid "Select Partition"
+msgstr ""
+
+msgid "Select Screen Map"
+msgstr ""
+
+msgid "Select Subpartitions"
+msgstr ""
+
+msgid "Select Task"
+msgstr ""
+
+msgid "Select Time Zone"
+msgstr ""
+
+msgid "Select a Disk"
+msgstr ""
+
+msgid "Select a Partition"
+msgstr ""
+
+msgid "Select a Time Zone appropriate to your physical location."
+msgstr ""
+
+#, c-format
+msgid "Select a disk on which to install %s."
+msgstr ""
+
+msgid "Select a disk."
+msgstr ""
+
+msgid "Select a font appropriate to your video monitor and language."
+msgstr ""
+
+msgid "Select a keyboard map appropriate to your keyboard layout."
+msgstr ""
+
+msgid ""
+"Select a mapping for translating characters as they appear on your video "
+"console screen."
+msgstr ""
+
+msgid "Select a partition."
+msgstr ""
+
+#, c-format
+msgid ""
+"Select any extra filesystems that you wish to be able to access on this "
+"computer when booted into %s."
+msgstr ""
+
+#, c-format
+msgid ""
+"Select the disk on which the installation of %s that you wish to configure "
+"resides."
+msgstr ""
+
+msgid ""
+"Select the disk on which the installation that you wish to upgrade resides."
+msgstr ""
+
+#, c-format
+msgid "Select the packages you wish to install from the %s onto the HDD."
+msgstr ""
+
+msgid "Select the packages you wish to install."
+msgstr ""
+
+msgid "Select the packages you wish to remove from this system"
+msgstr ""
+
+msgid ""
+"Select the partitions (also known as `slices' in BSD tradition) you want to "
+"have on this disk.\n"
+"\n"
+"For Size, enter a raw size in sectors (1 gigabyte = 2097152 sectors) or a "
+"single '*' to indicate 'use the remaining space on the disk'."
+msgstr ""
+
+#, c-format
+msgid ""
+"Select the primary partition of %s (also known as a `slice' in the BSD "
+"tradition) on which to install %s."
+msgstr ""
+
+#, c-format
+msgid ""
+"Select the primary partition of %s on which the installation of %s resides."
+msgstr ""
+
+#, c-format
+msgid ""
+"Select the primary partition of %s on which the installation that you wish "
+"to upgrade resides."
+msgstr ""
+
+msgid "Select this to use 'packet mode' to boot the disk"
+msgstr ""
+
+msgid "Set Root Password"
+msgstr ""
+
+msgid "Set Time and Date"
+msgstr ""
+
+msgid "Set Timezone"
+msgstr ""
+
+msgid "Set Up NetBoot Server"
+msgstr ""
+
+msgid "Set up the installation environment and continue"
+msgstr ""
+
+msgid ""
+"Set up the subpartitions (also known as just `partitions' in BSD tradition) "
+"you want to have on this primary partition.\n"
+"\n"
+"For Capacity, use 'M' to indicate megabytes, 'G' to indicate gigabytes, or a "
+"single '*' to indicate 'use the remaining space on the primary partition'."
+msgstr ""
+
+#, c-format
+msgid "Setting password for user `%s'."
+msgstr ""
+
+msgid "Shell"
+msgstr ""
+
+#, c-format
+msgid "Shrink to %d Sectors"
+msgstr ""
+
+msgid "Size (in Sectors)"
+msgstr ""
+
+msgid "Skip this Step"
+msgstr ""
+
+msgid "Skip to Select Task Menu"
+msgstr ""
+
+msgid "Softupdates?"
+msgstr ""
+
+#, c-format
+msgid ""
+"Some situations in which you might not wish to use this installer are:\n"
+"\n"
+"- you want to install %s onto a logical/extended partition;\n"
+"- you want to install %s onto a ``dangerously dedicated'' disk; or\n"
+"- you want full and utter control over the install process."
+msgstr ""
+
+#, c-format
+msgid ""
+"Some subpartitions on the selected primary partition are already activated "
+"as swap. Since there is no way to deactivate swap in %s once it is "
+"activated, in order to edit the subpartition layout of this primary "
+"partition, you must first reboot."
+msgstr ""
+
+#, c-format
+msgid ""
+"Subpartitions further divide a primary partition for use with %s.  Some "
+"reasons you may want a set of subpartitions are:\n"
+"\n"
+"- you want to restrict how much data can be written to certain parts of the "
+"primary partition, to quell denial-of-service attacks; and\n"
+"- you want to speed up access to data on the disk."
+msgstr ""
+
+msgid "Switch to Expert Mode"
+msgstr ""
+
+msgid "Switch to Normal Mode"
+msgstr ""
+
+msgid "Target system could not be unmounted!"
+msgstr ""
+
+msgid "Target system was not successfully upgraded."
+msgstr ""
+
+msgid "Target system was successfully upgraded!"
+msgstr ""
+
+#, c-format
+msgid "The Time Zone has been successfully set to %s."
+msgstr ""
+
+#, c-format
+msgid ""
+"The disk\n"
+"\n"
+"%s\n"
+"\n"
+"was formatted."
+msgstr ""
+
+#, c-format
+msgid ""
+"The disk\n"
+"\n"
+"%s\n"
+"\n"
+"was not correctly formatted, and may now be in an inconsistent state. We "
+"recommend trying to format it again before attempting to install %s on it."
+msgstr ""
+
+#, c-format
+msgid ""
+"The disk\n"
+"\n"
+"%s\n"
+"\n"
+"was not correctly partitioned, and may now be in an inconsistent state. We "
+"recommend partitioning it againbefore attempting to install %s on it."
+msgstr ""
+
+#, c-format
+msgid ""
+"The disk\n"
+"\n"
+"%s\n"
+"\n"
+"was successfully partitioned."
+msgstr ""
+
+msgid "The disk on which you wish to install a bootblock"
+msgstr ""
+
+#, c-format
+msgid ""
+"The following installed packages require one or more of the packages you "
+"selected, and will also be removed:\n"
+"\n"
+"%s\n"
+"Is this acceptable?"
+msgstr ""
+
+#, c-format
+msgid ""
+"The following packages are required to support the packages you selected, "
+"and will also be installed:\n"
+"\n"
+"%s\n"
+"Is this acceptable?"
+msgstr ""
+
+#, c-format
+msgid ""
+"The installer could not find any disks suitable for installation (IDE or "
+"SCSI) attached to this computer.  If you wish to install %s on an unorthodox "
+"storage device, you will have to exit to a %s command prompt and install it "
+"manually, using the file /README as a guide."
+msgstr ""
+
+#, c-format
+msgid ""
+"The installer could not find any suitable disks attached to this computer.  "
+"If you wish to configure an installation of %s on an unorthodox storage "
+"device, you will have to exit to a %s command prompt and configure it "
+"manually, using the file /README as a guide."
+msgstr ""
+
+#, c-format
+msgid ""
+"The installer could not find any suitable disks attached to this computer.  "
+"If you wish to upgrade an installation located on an unorthodox storage "
+"device, you will have to exit to a %s command prompt and configure it "
+"manually, using the file /README as a guide."
+msgstr ""
+
+msgid "The list of group memberships contains illegal characters."
+msgstr ""
+
+msgid "The name of the home directory contains illegal characters."
+msgstr ""
+
+msgid "The name of the login group contains illegal characters."
+msgstr ""
+
+msgid "The passwords do not match."
+msgstr ""
+
+msgid "The root password has been changed."
+msgstr ""
+
+#, c-format
+msgid "The selected shell (%s) does not exist on the system (%s)."
+msgstr ""
+
+msgid ""
+"The subpartitions you have chosen were not correctly created, and the "
+"primary partition may now be in an inconsistent state. We recommend re-"
+"formatting it before proceeding."
+msgstr ""
+
+msgid "The target system could not be successfully mounted."
+msgstr ""
+
+#, c-format
+msgid ""
+"The target system could not be successfully mounted:\n"
+"\n"
+"%s"
+msgstr ""
+
+msgid "The target system could not be successfully probed."
+msgstr ""
+
+#, c-format
+msgid ""
+"The target system could not be successfully probed:\n"
+"\n"
+"%s"
+msgstr ""
+
+msgid "The text specified in the Real Name field contains illegal characters."
+msgstr ""
+
+msgid "The time and date have successfully been set."
+msgstr ""
+
+msgid "The user ID (uid) contains illegal characters."
+msgstr ""
+
+msgid "The username contains illegal characters."
+msgstr ""
+
+msgid "There are no packages installed on this system."
+msgstr ""
+
+msgid ""
+"There were errors. Some packages may not have been successfully removed."
+msgstr ""
+
+#, c-format
+msgid ""
+"This experimental application will install %s on one of the hard disk drives "
+"attached to this computer. It has been designed to make it easy to install %"
+"s in the typical case. If you have special requirements that are not "
+"addressed by this installer, or if you have problems using it, you are "
+"welcome to install %s manually. To do so select Exit to Live CD, login as "
+"root, and follow the instructions given in the file /README .\n"
+"\n"
+"NOTE! As with any installation process, YOU ARE STRONGLY ENCOURAGED TO BACK "
+"UP ANY IMPORTANT DATA ON THIS COMPUTER BEFORE PROCEEDING!"
+msgstr ""
+
+#, c-format
+msgid ""
+"This experimental application will upgrade a FreeBSD 4.x or %s installation "
+"on this computer to the version of DragonFly included on the installation "
+"medium.\n"
+"\n"
+"If you have special requirements that are not addressed by this upgrade "
+"process, or if you have problems using it, you are welcome to upgrade %s "
+"manually. To do so select Exit to Live CD, login as root, and follow the "
+"instructions given in the file /README .\n"
+"\n"
+"NOTE! This upgrade process is EXPERIMENTAL! As with any experimental "
+"process, YOU ARE STRONGLY ENCOURAGED TO BACK UP ANY IMPORTANT DATA ON THIS "
+"COMPUTER BEFORE PROCEEDING!"
+msgstr ""
+
+msgid ""
+"This machine is about to be shut down. After the machine has reached its "
+"shutdown state, you may remove the CD from the CD-ROM drive tray and press "
+"Enter to reboot from the HDD."
+msgstr ""
+
+msgid ""
+"This network interface has not yet been configured.  Please configure it now."
+msgstr ""
+
+msgid "Truncate Partition"
+msgstr ""
+
+msgid "Type of this filesystem"
+msgstr ""
+
+msgid "UTC Time"
+msgstr ""
+
+#, c-format
+msgid "Unable to apply console settings for language '%s'."
+msgstr ""
+
+#, c-format
+msgid ""
+"Unable to inform the user interface that it should now use language '%s'."
+msgstr ""
+
+#, c-format
+msgid "Unable to set environment variables for language '%s'."
+msgstr ""
+
+msgid "Unmount Target System"
+msgstr ""
+
+msgid "Upgrade a system with to the newest available version"
+msgstr ""
+
+msgid "Upgrade an Installed System"
+msgstr ""
+
+#, c-format
+msgid "Upgrade to %s"
+msgstr ""
+
+msgid "User ID"
+msgstr ""
+
+#, c-format
+msgid "User `%s' was added."
+msgstr ""
+
+msgid "User was not successfully added."
+msgstr ""
+
+msgid "Username"
+msgstr ""
+
+#, c-format
+msgid ""
+"WARNING!  ALL data in ALL partitions on the disk\n"
+"\n"
+"%s\n"
+"\n"
+"will be IRREVOCABLY ERASED!\n"
+"\n"
+"Are you ABSOLUTELY SURE you wish to take this action?  This is your LAST "
+"CHANCE to cancel!"
+msgstr ""
+
+#, c-format
+msgid ""
+"WARNING!  ALL data in primary partition #%d,\n"
+"\n"
+"%s\n"
+"\n"
+"on the disk\n"
+"\n"
+"%s\n"
+"\n"
+" will be IRREVOCABLY ERASED!\n"
+"\n"
+"Are you ABSOLUTELY SURE you wish to take this action?  This is your LAST "
+"CHANCE to cancel!"
+msgstr ""
+
+#, c-format
+msgid ""
+"WARNING!  ALL files in ALL system directories on the disk\n"
+"\n"
+"%s\n"
+"\n"
+"will be FORCIBLY REPLACED!\n"
+"\n"
+"Are you ABSOLUTELY SURE you wish to take this action?  This is your LAST "
+"CHANCE to cancel!"
+msgstr ""
+
+#, c-format
+msgid ""
+"WARNING!  The parameters of the following partitions have been MODIFIED for "
+"the disk\n"
+"\n"
+"%s\n"
+"\n"
+"ANY meaningful data that may currently be on ANY of them will NOT remain "
+"meaningful after this operation has completed. In other words, they should "
+"be considered IRREVOCABLY ERASED if you proceed!\n"
+"\n"
+"%s\n"
+"Are you ABSOLUTELY SURE you wish to take this action?  This is your LAST "
+"CHANCE to cancel!"
+msgstr ""
+
+#, c-format
+msgid ""
+"WARNING: The partition layout currently on this disk is non-standard.  It "
+"may have gaps in between partitions, or the partitions may be listed in "
+"something other than strictly increading order. \n"
+"\n"
+"While %s can handle this situation, this installer's partition editor cannot "
+"at present. You will be given the option to completely repartition this "
+"disk, but if you wish to retain any existing information on the disk, you "
+"should exit the installer and use a tool such as `fdisk' to manually create "
+"a %s partition on it before continuing."
+msgstr ""
+
+#, c-format
+msgid ""
+"WARNING: The total number of sectors needed for the requested subpartitions "
+"(%d) exceeds the number of sectors available in the partition (%d) by %d "
+"sectors (%s.)\n"
+"\n"
+"This is an invalid configuration; we recommend shrinking the size of one or "
+"more subpartitions before proceeding.\n"
+"\n"
+"Proceed anyway?"
+msgstr ""
+
+#, c-format
+msgid ""
+"WARNING: primary partition #%d appears to have a capacity of %s, which is "
+"less than the minimum recommended capacity, %s. You may encounter problems "
+"while trying to install %s onto it."
+msgstr ""
+
+#, c-format
+msgid ""
+"WARNING: the %s subpartition should be at least %s in size or you will risk "
+"running out of space during the installation.\n"
+"\n"
+"Proceed anyway?"
+msgstr ""
+
+#, c-format
+msgid ""
+"WARNING: the disk\n"
+"\n"
+"%s\n"
+"\n"
+"appears to have a capacity of %s, which is less than the absolute minimum "
+"recommended capacity, %s. You may encounter problems while trying to install "
+"%s."
+msgstr ""
+
+#, c-format
+msgid "Waiting for interface %s to come up."
+msgstr ""
+
+#, c-format
+msgid ""
+"Warning!  Action was completed, but the storage parameters of the system "
+"have changed, and the previously selected disk, %s, could no longer be found!"
+msgstr ""
+
+#, c-format
+msgid ""
+"Warning!  Action was completed, but the storage parameters of the system "
+"have changed, and the previously selected partition, partition #%d of disk %"
+"s, could no longer be found!"
+msgstr ""
+
+msgid ""
+"Warning: already-mounted target system could not be correctly unmounted "
+"first."
+msgstr ""
+
+#, c-format
+msgid "Warning: kernel module '%s' could not successfully be loaded."
+msgstr ""
+
+msgid "Warning: subpartitions were not correctly unmounted."
+msgstr ""
+
+msgid "Welcome"
+msgstr ""
+
+msgid "Welcome Screen"
+msgstr ""
+
+msgid "Welcome to the BSD Installer!"
+msgstr ""
+
+msgid ""
+"Welcome to the BSD Installer!\n"
+"\n"
+"Before we begin, you will be asked a few questions so that this installation "
+"environment can be set up to suit your needs.\n"
+"\n"
+"You will then be presented a menu of items from which you may select to "
+"install a new system, or configure or upgrade an existing system."
+msgstr ""
+
+msgid "Where this filesystem is mounted"
+msgstr ""
+
+msgid "Write Configuration"
+msgstr ""
+
+msgid "Year"
+msgstr ""
+
+#, c-format
+msgid ""
+"You have elected to not have the following %s:\n"
+"\n"
+"%s\n"
+"\n"
+"The ramifications of %s being missing will be:\n"
+"\n"
+"%s\n"
+"Is this really what you want to do?"
+msgstr ""
+
+msgid ""
+"You have not yet configured your network settings. Would you like to do so "
+"now? (Having an operational network connection will enhance the ability of "
+"subsequent tasks, such as installing.)"
+msgstr ""
+
+msgid ""
+"You may now partition this disk if you desire.\n"
+"\n"
+"If this is a brand new disk, you should do this. If you would like to place "
+"multiple operating systems on this disk, you should create multiple "
+"partitions, one for each operating system.\n"
+"\n"
+"If this disk already has operating systems on it that you wish to keep, you "
+"should be careful not to change the partitions that they are on, when doing "
+"this.\n"
+"\n"
+"Partition this disk?"
+msgstr ""
+
+#, c-format
+msgid ""
+"You may now wish to install bootblocks on one or more disks. If you already "
+"have a boot manager installed, you can skip this step (but you may have to "
+"configure your boot manager separately.)  If you installed %s on a disk "
+"other than your first disk, you will need to put the bootblock on at least "
+"your first disk and the %s disk."
+msgstr ""
+
+msgid ""
+"You may wish to load some kernel modules before using the system (for "
+"example, to enable network interfaces which require drivers which are not "
+"included in the kernel by default.)  You may select a kernel module to load "
+"here."
+msgstr ""
+
+msgid "You must enter a username."
+msgstr ""
+
+msgid ""
+"Your selected environment uses the following console settings, shown in "
+"parentheses. Select any that you wish to change."
+msgstr ""
+
+msgid "default"
+msgstr ""
+
+msgid "subpartition"
+msgstr ""
+
+msgid "subpartitions"
+msgstr ""
+
+msgid "these subpartitions"
+msgstr ""
+
+msgid "this subpartition"
+msgstr ""

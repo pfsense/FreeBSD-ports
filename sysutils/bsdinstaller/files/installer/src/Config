@@ -1,0 +1,80 @@
+#
+# Global configuration file for BSD Installer Makefiles.
+# $Id: Config,v 1.7 2005/08/29 20:49:36 cpressey Exp $
+#
+
+# This file should be included by all other Makefiles in the following way:
+# BASE?= ../..
+# include ${BASE}/Config
+
+#
+# First, load in Lua configuration.  This file can override any settings
+# in that file; see the comments in that file for settings that you might
+# want to tweak in here.
+#
+include ${BASE}/platform/lua/config
+
+#
+# Locations/names of build tools.
+#
+CC?=cc
+AR?=ar
+RANLIB?=ranlib
+STRIP?=strip
+RM?=rm
+LN?=ln
+
+#
+# Standard warning flags.
+#
+WARNS=  -W -Wstrict-prototypes -Wmissing-prototypes \
+	-Wpointer-arith	-Wno-uninitialized -Wreturn-type -Wcast-qual \
+	-Wswitch -Wshadow -Wcast-align -Wchar-subscripts \
+	-Winline -Wnested-externs -Wredundant-decls
+
+#
+# For shared libraries
+#
+ANAME=	lib${LIB}.a
+SONAME=	lib${LIB}.so.${LIB_VER}
+SOLINK=	lib${LIB}.so
+#DLLIB= -ldl		# for Lua, uncomment on systems that need it
+
+#
+# Determine what components to build.
+# Note that these should either be 'true' or 'false'.
+#
+SKIP_C_BACKEND?=true
+SKIP_LUA_BACKEND?=false
+
+SKIP_NCURSES_FRONTEND?=false
+SKIP_CGI_FRONTEND?=false
+SKIP_QT_FRONTEND?=true
+
+#
+# For 'make distribution'
+#
+DESTDIR?=/tmp/bsdinstaller/
+
+#
+# NLS settings.  If not using NLS, you can comment out the following lines.
+#
+LOCALEDIR?=	/usr/local/share/locale
+NLS_CFLAGS?=	-DLOCALEDIR=\"${LOCALEDIR}\" -DPACKAGE=\"${PACKAGE}\" -DENABLE_NLS
+
+#
+# If your system's NLS is built-in, you might not need these.
+#
+NLS_CFLAGS+=	-I/usr/local/include -I/usr/pkg/include
+NLS_LDFLAGS?=	-L/usr/local/lib -L/usr/pkg/lib -lintl
+
+#
+# For systems that don't support strlcpy:
+#
+#CFLAGS+=-Dstrlcpy=strncpy
+
+#
+# For systems that don't define (or even support) __unused:
+#
+#CFLAGS+=-D__unused="__attribute__((__unused__))"
+#CFLAGS+=-D__unused=''

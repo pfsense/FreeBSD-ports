@@ -1,0 +1,140 @@
+The BSD Installer
+written by Chris Pressey and Scott Ullrich
+
+History
+-------
+
+The BSD Installer project started life on DragonFly BSD, and
+although it still maintains close ties to DragonFly, it is now
+a full-fledged project in its own right, used in other open-source
+distributions such as FreeSBIE and pfSense.
+
+Originally, DragonFly LiveCD's came only with a set of instructions
+in a README file for manually installing DragonFly on your computer -
+basically, formatting the hard drive appropriately, and then copying
+the contents of the CD-ROM onto the hard drive.
+
+This is a very useful and effective method, and one that is still
+possible to perform even today, with DragonFly 1.2.  It provides
+the most power and flexibility to the user doing the installation.
+
+However, it also involves issuing a lot of commands, some of which
+(like using disklabel to set up BSD partitions on the disk) are
+fairly obscure.  Also, there are few safety measures - if you
+accidentally type ad1s3 when you meant ad1s2, you could end up
+overwriting your install of Windows NT without even a suggestion
+from the computer that you are doing something dangerous.
+
+For that reason, several members of the DragonFly community decided
+that it would be nice to have something which was a little less
+intimidating to people who have not mastered BSD disk systems,
+and a little less nerve-wracking even for people who are.
+
+When we started to search for solutions we where well aware of 
+FreeBSD's 'sysinstall' program, which was inherited but not used by
+DragonFly.  With the advent of a LiveCD as a install medium, it has been 
+retired.  We were also well aware that sysinstall was starting to show
+its age and wanted something that could be as simple and
+straightforward as the good parts of sysinstall, while avoiding what we
+saw as the bad parts of sysinstall altogether.  At the same time, we
+wanted a code base that was easier to manage than sysinstall's.
+
+So, the installer team started with the instructions listed in the
+README and set about writing a system to automate them.
+
+Design
+------
+
+One of the most prominent design constraints is that we did not want to
+be tied down to one particular user interface.  Some people liked
+the console-based interface of sysinstall, some preferred a web-based
+frontend, while still others wanted a GUI, running perhaps under
+X Windows.  In order to achieve this sort of radical interface
+independence, a user interaction abstraction layer, called DFUI, was
+established.  It reduced the complexities of interacting with the
+user to an extremely small set of simple actions such as presenting a
+form with some informative text, some fill-out fields, and some buttons.
+
+Another design constraint which was present from the beginning was that
+the system should be robust.  For this reason, we had the frontend
+(user interface component) and backend (install logic component) of
+the DFUI layer run in separate UNIX processes.  If one process crashes,
+this does cause the other process to crash; in some instance, the
+first process can even be restarted, and the user can pick up where they
+left off.  (Ideally, of course, we want a system that never ever crashes
+at all; but this is reality, and some concessions have be made.  Most of
+all, we didn't want a failure mode that made the user reboot, as we
+felt this was one sure way to discourage potential adopters.)
+
+This approach extended to how the install logic itself worked.
+At one point, we considered writing a library of C source code for
+manipulating the user's hard drive, like sysinstall had.  However,
+one of the nicer things about DragonFly's distribution is that it comes
+on a LiveCD which boots into a real version of the operating system,
+with all tools available.  We could, then, use these tools from the
+installer, without having to rewrite anything.  As a bonus, they would
+operate in separate UNIX processes, isolated from crashes; and being
+standard BSD tools, the installation process would closely resemble the
+instructions in the README, and (hopefully) be less mysterious to
+anyone interested in how it works.
+
+Features
+--------
+
+- Multiple protocol support
+The BSD Installer supports  TCP/IP, Named Pipes or CAPS
+(DragonFly specific protocol) for backend and frontend communication.
+
+- NetBoot Installation Services
+
+NetBoot allows for PXE Netbooting of hosts over the network.   With 
+the flip of a button NetBoot installation services will configure
+tftpd, nfs and dhcpd to allow for transparent booting from PXE over
+the network.  The machine can launch the installer or use the LiveCD
+normally.
+
+- NCurses Installation
+By default The BSD Installer uses a NCurses based text installer similar
+to FreeBSD's sysinstall.  The NCurses based frontend is written in C.
+
+- CGI Installation
+
+The CGI Installer is written in C and uses THTTPD as its web server.
+A number of custom "widgets" where created to help match LibDFUI
+including a Add, Edit and Delete button helper.
+
+- QT Based Installation
+
+BSD Installer also features a QT Based frontend that can be used
+with a Xorg or XFree equipped LiveCD.  Work is starting back up
+to improve the appearance of the QT frontend but it is operational
+as is at the moment.
+
+- PFI (Pre-Flight Installer)
+
+Pre-Flight Installer allows for the tweaking of the LiveCD
+environment and Installer settings.   For example you can
+stick a pfi.conf file on a removable media device and PFI
+will automatically detect the file and make the necessary
+changes.  Many items can be set using this method
+including root passwords, ssh settings, installer frontends
+and many other features.
+
+Future
+------
+
+- Lua
+
+The "new" version of BSD Installer is built on C libraries and Lua.
+Lua is a great language that really allows for a lot of flexibility
+and customizations by 3rd parties wishing to utilize BSD Installer
+as the starting point for their project.  Work is actively ongoing
+to finish the Lua based installer and its starting to really shape
+up rapidly.  The Lua based backend will interface with the NCurses
+, QT and CGI frontends as normal.
+
+Distributions using BSD Installer
+---------------------------------
+
+Currently The BSD Installer is being used by DragonFlyBSD, FreeSBIE and
+pfSense.

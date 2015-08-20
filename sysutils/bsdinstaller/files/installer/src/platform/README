@@ -1,0 +1,17 @@
+$Id: README,v 1.1 2005/07/25 21:23:32 cpressey Exp $
+
+The following subdirectories are "contribs" which contain 3rd-party
+open-source code not developed by the BSD Installer team.
+
+This document lists the particulars of contribs such as their current
+version; please update it when upgrading to a new version.
+
+subdir:  lua
+title:   Lua
+version: 5.0.2
+desc:    Lightweight dynamic scripting/embedded programming language
+from:    http://www.lua.org/ftp/lua-5.0.2.tar.gz
+(c):     Tecgraf, PUC-Rio (http://www.tecgraf.puc-rio.br)
+legal:   http://www.lua.org/license.html (MIT license)
+scope:   does not include the following subdirs of the distribution:
+	    bin, doc, etc, lib, test

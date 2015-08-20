@@ -1,0 +1,48 @@
+This directory  contains the implementation  of the protocols  FTP, HTTP
+and SMTP, the URL parsing and composition module, MIME and LTN12 modules.
+The files provided are:
+
+	socket.lua				-- Core library loader
+
+The module socket.lua is the loader for the C core of LuaSocket. 
+It also provides some shortcut routines. 
+
+	ltn12.lua				-- LTN12 implementation
+
+The module ltn12.lua provides routines that implement the concepts
+introduced by LTN012. 
+
+	mime.lua				-- part of the MIME standard
+
+The module mime.lua provides routines that implement common operations
+defined in the MIME standard. 
+
+	http.lua				-- HTTP protocol implementation
+
+The module http.lua provides general HTTP client support.  
+
+	smtp.lua				-- SMTP protocol implementation
+	
+The module smtp.lua provides functionality  to send e-mail messages to a
+SMTP mail server. Support is also provided to send multipart messages.
+
+	ftp.lua					-- FTP protocol implementation
+
+The module ftp.lua provides functions  to download and upload files from
+and to FTP servers.
+
+	tp.lua					-- FTP/SMTP/DICT subsystem
+
+The module tp.lua provides a common subsystem over which the FTP/SMTP/DICT
+support is built. 
+
+	url.lua					-- URL parsing and composition
+
+The module url.lua provides routines to  split a URL into its components
+and to compose a base URL and relative URL into an absolute URL.
+
+These  modules are  part of  the  LuaSocket library  and are  supported.
+Please send any comments to the Lua List and I will hear. 
+
+Good luck,
+Diego.

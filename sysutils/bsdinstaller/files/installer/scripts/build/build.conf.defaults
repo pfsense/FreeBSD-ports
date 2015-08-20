@@ -1,0 +1,33 @@
+# $Id: build.conf.defaults,v 1.10 2005/08/29 18:21:24 cpressey Exp $
+
+# Defaults settings for the build scripts.
+# NOTE: There should be NO NEED to edit this file directly!
+# Instead, create a file build.conf with your own overrides.
+
+CVSDIR=${CVSDIR:-${HOME}/projects}		# local cvs checkout dir
+CVSMODULE=${CVSMODULE:-installer}		# cvs module name
+
+TMPDIR=${TMPDIR:-/tmp}				# dir for temp files
+NRELEASEDIR=${NRELEASEDIR:-/usr/src/nrelease}	# where 'nrelease' lives
+PORTSDIR=${PORTSDIR:-/usr/ports}		# system ports dir
+DISTFILESDIR=${DISTFILESDIR:-${PORTSDIR}/distfiles} # distfiles dir
+PACKAGESDIR=${PACKAGESDIR:-${PORTSDIR}/packages/All} # pkgs dir
+ISOROOT=${ISOROOT:-/usr/release/root}		# root of ISO-to-be tree
+PORTS_FLAGS=${PORTS_FLAGS:-}			# additional flags/vars
+
+REMOVEOLDPKGS=${REMOVEOLDPKGS:-YES}		# Remove old non-RELEASEBUILD
+REMOVEOLDDISTFILES=${REMOVEOLDDISTFILES:-YES}	# pkgs/dstfls when making new
+RELEASEBUILD=${RELEASEBUILD:-NO}		# NO = tack date on pkg vers
+ROOTSKEL=${ROOTSKEL:-${NRELEASEDIR}/installer}	# default installer skeleton
+EXTRA_ROOTSKELS=${EXTRA_ROOTSKELS:-}		# extra root skeletons
+
+INSTALL_DFUIFE_QT=${INSTALL_DFUIFE_QT:-NO}	# build & install Qt frontend
+INSTALL_DFUIBE_LUA=${INSTALL_DFUIBE_LUA:-NO}	# build & install Lua backend
+INSTALL_DFUIBE_INSTALLER=${INSTALL_DFUIBE_INSTALLER:-YES} # ditto C backend
+
+WITH_NLS=${WITH_NLS:-NO}			# build pkgs with i18n
+WITH_X11=${WITH_X11:-NO}			# build X11 support pkgs
+WITH_DEBUG_INFO=${WITH_DEBUG_INFO:-NO}		# leave debug info in binaries
+WITH_DEBUG=${WITH_DEBUG:-NO}			# build debug-enabled pkgs
+
+ONE_BIG_PKG=${ONE_BIG_PKG:-NO}			# build & install one big pkg?

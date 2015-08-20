@@ -1,0 +1,21 @@
+What's New
+
+The big change for the 2.0 (beta3) release was the adoption of the Lua
+5.1 package proposal. There were several bug fixes too (a beta is a
+beta, is a beta).
+
+* New compat-5.1 distribution:
+  - Instalation uses new directory structure;
+  - Namespace hierarchy is in now back in use (ex. socket.url instead of url);
+  - All modules call require even for standard libraries;
+* LTN12 avoids coroutines (so you can go wild on the C side);
+* socket.select wasn't calling tm_markstart;
+* Kludge on wsocket.c:sock_send for Windows timeout issue moved to
+  buffer.c:sendraw so it's not a kludge anymore;
+* socket.protect only catches errors thrown by socket.try;
+* Fixed udp:sendto to call sock_sendto instead of sock_send;
+* close wasn't returning 1!
+* socket.gettime returns time since Unix Epoch 1/1/1970 (UTC)
+* socket.sleep is robust to interrupts;
+* http.PROXY wasn't working.
+* fixed some of the examples

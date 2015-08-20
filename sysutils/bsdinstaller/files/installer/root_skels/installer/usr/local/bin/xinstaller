@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# xinstaller - start X11 & force use of Qt f/e before main installer script
+# $Id: xinstaller,v 1.7 2005/04/19 00:26:43 cpressey Exp $
+
+echo 'pfi_frontend="qt"' >> /etc/defaults/pfi.conf
+rcrun forcestart moused
+if [ ! -r /etc/X11/xorg.conf ]; then
+	X -configure
+	sed -i '' 's/^.*HorizSync.*$/HorizSync 31.5 - 35.1/' /root/xorg.conf.new
+	sed -i '' 's/^.*VertRefresh.*$/VertRefresh 50.0 - 70.0/' /root/xorg.conf.new
+	mv /root/xorg.conf.new /etc/X11/xorg.conf
+fi
+
+# Create a .fonts.conf file which prevents fontconfig from wasting space by
+# caching fonts into root's (MFS-mounted) home directory:
+
+echo '<?xml version="1.0"?>' > /root/.fonts.conf
+echo '<!DOCTYPE fontconfig SYSTEM "fonts.dtd">' >> /root/.fonts.conf
+echo '<fontconfig><cache>/dev/null</cache></fontconfig>' >> /root/.fonts.conf
+
+# Create an .xinitrc which starts up the backend (in a terminal window)
+# and the frontend.
+
+echo 'rxvt -geometry +0-0 -e /usr/local/bin/installer &' > /root/.xinitrc
+echo '/usr/local/sbin/dfuife_qt' >> /root/.xinitrc
+
+xinit

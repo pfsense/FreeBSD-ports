@@ -1,0 +1,49 @@
+The following subdirectories are "contribs" which contain 3rd-party
+open-source code not developed by the BSD Installer team.
+
+This document lists the particulars of contribs such as their current
+version; please update it when upgrading to a new version.
+
+subdir:  compat-5.1
+title:   Compat-5.1
+version: r4
+desc:    Lua 5.1 package system compatibility layer for Lua 5.0.2
+from:    http://www.keplerproject.org/compat/
+(c):     2004-2005 Kepler Project
+legal:   Compat-5.1 uses the same license as Lua 5.0 (MIT license)
+scope:   entire distribution
+adds:    Makefile
+
+subdir:  posix
+title:   Lua POSIX library
+version: Nov 2003
+desc:    Access to POSIX system calls from Lua
+from:    http://www.tecgraf.puc-rio.br/~lhf/ftp/lua/lposix.tar.gz
+(c):     public domain (author: Luiz Henrique de Figueirdo)
+legal:   public domain
+scope:   entire distribution
+adds:    mkstemp() and nanosleep() bindings
+
+subdir:  luasocket
+title:   Lua sockets library
+version: 2.0-beta3
+desc:    Access to TCP/IP and UDP sockets from Lua
+from:    http://www.cs.princeton.edu/~diego/professional/luasocket/
+(c):     Copyright © 2004-2005 Diego Nehab
+legal:   luasocket/LICENSE (MIT license)
+scope:   entire distribution, except for the following:
+             compat5.1r2, etc, examples, manual, tests,
+	     makefile.*, *.vcproj, *.sln
+adds:    Makefile
+
+subdir:  lcurses
+title:   Lua curses library
+version: 0.1-devel
+desc:    Access to curses (console screen rendering) services from Lua
+from:    http://mega.ist.utl.pt/~tngd/lua/
+(c):     Copyright 2004 Tiago Dionizio
+legal:   lcurses/lcurses.c (MIT license)
+scope:   entire distribution, except for the following:
+             doc, *cui* (may be re-added in the future,) README (empty),
+	     curses.panel.lua, firework.lua, interp.lua, requirelib.lua
+adds:    none
