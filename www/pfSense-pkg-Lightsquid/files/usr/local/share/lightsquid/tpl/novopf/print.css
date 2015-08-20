@@ -1,0 +1,119 @@
+.noprint {
+  display: none;
+}
+
+.print0 {
+  width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  color: black;
+  background: white;
+  font-family: verdana, arial, sans-serif;
+  font-size: 100%;
+  font-weight: normal;
+}
+
+img {
+  border: 0;
+}
+
+a, a:visited {
+  color: black;
+  text-decoration: none;
+  border: 0;
+}
+
+div.page {
+  margin: 0 1em 0 1em;
+}
+
+h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 50%;
+  text-align: right;
+  color: black;
+  background: white;
+  border-bottom: 1px solid black;
+}
+
+h1 a, h1 a:visited, h1 a:hover {
+  color: white;
+  text-decoration: none;
+  border: 0;
+}
+
+h2 {
+  font-size: 110%;
+  text-align: left;
+  font-weight: bold;
+}
+
+div.periodselector {
+  display: none;
+}
+
+div.monthselector {
+  display: inline;
+}
+
+form.yearselector {
+  display: inline;
+}
+
+div.side {
+  display: none;
+}
+
+div.main {
+  width: 100%;
+}
+
+table {
+  margin: auto;
+  border-collapse: collapse;
+  width: 100%;
+  text-align: center;
+  font-size: 80%;
+}
+
+th {
+  padding: 0.2em;
+  border: 1px solid black;
+  text-align: center;
+  color: black;
+  background: lightgray;
+}
+
+td {
+  padding: 0.2em;
+  border: 1px solid black;
+}
+
+tr.total {
+  border-top: 3px double black;
+  font-weight: bold;
+}
+
+tr.odd {
+  background: white;
+}
+
+tr.even {
+  background: #EFF2FF;
+}
+
+tr.sunday {
+  background: #FFEFFF;
+}
+
+div.copyright {
+  margin: 0.5em;
+  padding: 0.5em;
+  text-align: center;
+}

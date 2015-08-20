@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- LightSquid TPL v1.7 -->
+<html>
+<head>
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="generator" content="LightSquid - http://lightsquid.sf.net">
+  <meta http-equiv="Content-Type" content="text/html; charset=##MSG_CODEPAGE##">
+  ##META##
+  <title>LightSquid :: Day detail</title>
+  <link rel="stylesheet" media="screen" href="get.cgi?css=screen" type="text/css">
+  <link rel="stylesheet" media="print" href="get.cgi?css=print" type="text/css">
+</head>
+
+<body>
+  <center>
+    <!-- Title -->
+    <table class=title>
+      <tbody>
+        <tr class=title>
+          <th><a href="index.cgi"><h1 class=title>##MSG_HEADER##</h1></a></th>
+          <TH width="5%"><a href="/"><h1 class=title>Home</h1></a></TH>
+        </tr>
+        <tr>
+          <td colspan="2"><h2>##MSG_DATE##:&nbsp;<b>##DATE##&nbsp;</h2></td>
+        </tr>
+        <tr>
+          <td colspan="2"><h3><A HREF="##TOPSITESURL_L##">##TOPSITESURL_B##</A> ##MSG_REPORT##</h3></td>
+        </tr>
+        <tr>
+          <td colspan="2"><h3><A HREF="##BIGFILESURL_L##">##BIGFILESURL_B##</A> ##MSG_REPORT##</h3></td>
+        </tr>
+
+  	 <!-- Statistic data -->
+        <tr>
+          <td colspan="2">
+            <table width=100% class=stat>
+              <tbody>
+                <!-- HIDE overuser start-->		  
+                <tr>
+                  <td colspan="11">##OVERMSG##</td>
+                </tr>
+                <!-- HIDE overuser end-->		  
+		
+                <tr class=stat1>
+                  <th>##MSG_NUM##</th>
+                  <!-- HIDE timereport start-->		  
+                  <th>##MSG_TIME_REPORT##</th>
+                  <!-- HIDE timereport end-->
+                  <th>##MSG_USER##</th>
+                  <!-- HIDE realname start-->		  
+                  <th>##MSG_REALNAME##</th>
+                  <!-- HIDE realname end-->		  
+                  <th>##MSG_CONNECT##</th>
+                  <!-- HIDE putpost start-->		  
+                  <th>##MSG_PUTPOST##</th>
+                  <!-- HIDE putpost end-->		  
+                  <th>##MSG_BYTES##</th>
+                  <th>%</th>
+                  <!-- HIDE group start -->
+                  <th>##MSG_GROUP##</th>
+                  <!-- HIDE group end -->
+                </tr>
+	
+
+                <!-- VARIABLE oddattr bgcolor="white" -->
+                <!-- VARIABLE evenattr  bgcolor="#F5F5F5" -->
+
+                <!-- VARIABLE !putpostnormalattr  color="black" -->
+                <!-- VARIABLE !putpostwarningattr color="red"   -->
+
+                <!-- VARIABLE putpostnormalattr  </> -->
+                <!-- VARIABLE putpostwarningattr <img src="get.cgi?png=flag_red" border="0" title="Graph Report">  -->
+		
+                <!-- [[ user start-->
+                <tr ##ROWATTR##>
+                  <td align="right">##USERNUM##</td>
+                  <!-- HIDE timereport start-->		  
+		    <td align="center"><A HREF="##TIMEURL_L##"><img src="get.cgi?png=datetime" border="0" title="Graph Report"></A></td>
+                  <!-- HIDE timereport end-->		  
+                  <td align="left"><A HREF="##USERURL_L##">##USERURL_B##</A></td>
+                  <!-- HIDE realname start-->		  
+                  <td align="left" nowrap="true">##REALNAME##</td>
+                  <!-- HIDE realname end-->		  
+                  <td align="right" nowrap="true">##USERCONNECT##</td>
+                  <!-- HIDE putpost start-->		  
+                  <td align="right" nowrap="true">##USERPUTPOST####OVERPUTPOSTATTR##</td>
+                  <!-- HIDE putpost end-->		  
+                  <td align="right" nowrap="true">##USERBYTES##</td>
+                  <td align="right">##USERPERCENT##%</td>
+                  <!-- HIDE group start -->
+                  <td align="left"><a HREF="##USERGROUPURL_L##">##USERGROUPURL_B##</a></td>
+                  <!-- HIDE group end -->
+                </tr>
+                <!-- ]] user end-->
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+              ##COPYRIGHT##
+          </td>
+        </tr> 
+      </tbody>
+    </table>
+  </center>
+</body>
+</html>

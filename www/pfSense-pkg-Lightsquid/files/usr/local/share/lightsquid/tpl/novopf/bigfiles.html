@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- LightSquid TPL v1.7 -->
+<html>
+<head>
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="generator" content="LightSquid - http://lightsquid.sf.net">
+  <meta http-equiv="Content-Type" content="text/html; charset=##MSG_CODEPAGE##">
+  ##META##
+  <title>LightSquid :: Big Files Report</title>
+  <link rel="stylesheet" media="screen" href="get.cgi?css=screen" type="text/css">
+  <link rel="stylesheet" media="print" href="get.cgi?css=print" type="text/css">
+</head>
+
+<body background="" bgcolor="white" text="black">
+  <center>
+    <table class=title>
+      <tbody>
+        <TR class=title>
+            <TH><a href="index.cgi"><h1 class=title>##MSG_HEADER##</h1></a></TH>
+            <TH width="5%"><a href="/"><h1 class=title>Home</h1></a></TH>
+        </TR>
+        <tr>
+          <th colspan="2" align="center"><h2>##MSG_BIG_FILE_DOWNLOAD_REPORT##</h2></th>
+        </tr>
+        <tr>
+          <th colspan="2" align="center"><h3>##MSG_DATE##: ##DATE##</h3></th>
+        </tr>
+<!-- HIDE reportuser start-->		  
+        <tr>
+          <th colspan="2" align="center"><h3>##MSG_USER##: ##REPORTUSER##</h3></th>
+        </tr>
+<!-- HIDE reportuser end-->		  
+       <tr>
+         <td colspan="2">  
+      <table width="100%" class=stat>
+       <tbody>
+        <tr class=stat1>
+          <th>##MSG_NUM##</th>
+          <th>##MSG_TIME##</th>
+          <th>##MSG_USER##</th>
+          <th>##MSG_SIZE##</th>
+          <th>##MSG_URL##</th>
+        </tr>
+
+        <!-- VARIABLE oddattr   bgcolor="white" -->
+        <!-- VARIABLE evenattr  bgcolor="#F5F5F5" -->
+        <!-- VARIABLE total     bgcolor="E5EFF4" -->
+
+<!-- [[ bigfile start-->
+        <tr ##ROWATTR##>
+          <td align="left" >##BFILENUM##</td>
+          <td align="left" >##BFILETIME##</td>
+          <td align="left" ><A HREF="##BFILEUSER_L##">##BFILEUSER_B##</A></td>
+          <td align="right" nowrap="true">##BFILESIZE##</td>
+          <td align="right" >##BFILELINK##</td>
+        </tr>
+<!-- ]] bigfile end-->
+      
+       </tbody>
+      </table>
+            </td>
+         </tr>
+         <tr>
+           <td colspan="2">
+             ##COPYRIGHT##
+           </td>
+         </tr>
+       </tbody>
+     </table>
+  </center>
+</body>
+</html>

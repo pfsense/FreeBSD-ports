@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- LightSquid TPL v1.7 -->
+
+<HTML>
+<HEAD>
+  <META name="robots" content="noindex,nofollow">
+  <META name="generator" content="LightSquid - http://lightsquid.sf.net">
+  <META http-equiv="Content-Type" content="text/html; charset=##MSG_CODEPAGE##">
+  ##META##
+  <TITLE>LightSquid :: Index</TITLE>
+  <link rel="stylesheet" media="screen" href="get.cgi?css=screen" type="text/css">
+  <link rel="stylesheet" media="print" href="get.cgi?css=print" type="text/css">
+</HEAD>
+
+<BODY>
+  <CENTER>
+    <!-- Title -->
+    <TABLE class=title>
+      <TBODY>
+        <TR class=title>
+            <TH><a href="index.cgi"><h1 class=title>##MSG_HEADER##</h1></a></TH>
+            <TH width="5%"><a href="/"><h1 class=title>Home</h1></a></TH>
+        </TR>
+        <TR>
+            <TD colspan="2"><h2>##MSG_WORK_PERIOD##: ##WORKPERIOD##</h2></TD>
+        </TR>
+  
+        <TR>
+        <TD align="center" colspan="2">
+           <!-- Calendar -->
+           <TABLE class=calendar>
+            <TBODY>
+             <TR class=calendar>
+                <TH colspan="12">##MSG_CALENDAR##</TH>
+             </TR>
+             <TR>
+                <!-- VARIABLE yearselected bgcolor="#BBCCEE" -->
+                <!-- [[ year start-->
+                <TD colspan="##YEARCOLSPAN##" ##YEARSELECTED##>
+                         <a href="##YEARURL_L##">##YEARURL_B##</a><br>
+                </TD>
+                <!-- ]] year end-->
+             </TR>
+             <TR>
+                <!-- VARIABLE monthselected bgcolor="#BBCCEE" -->
+                <!-- [[ month start-->
+                <TD ##MONTHSELECTED##><a href="##MONTHURL_L##">##MONTHURL_B##</a></TD>
+                <!-- ]] month end--> 
+             </TR>
+            </TBODY>
+           </TABLE>
+        </TD>
+       </TR>
+
+       <!-- Statistic data -->
+	<TR><TD></TD></TR>
+	<TR><TD>
+           <TABLE width="100%" class=stat>
+            <TBODY>
+             <TR class=stat1>
+                 <TH>##MSG_DATE##</TH>
+                 <!-- HIDE group start -->
+                 <TH>##MSG_GROUP##</TH>
+                 <!-- HIDE group end -->
+                 <TH>##MSG_USERS##</TH>
+                 <!-- HIDE oversize start -->
+                 <TH>##MSG_OVERSIZE##</TH>
+                 <!-- HIDE oversize end -->
+                 <TH>##MSG_BYTES##</TH>
+                 <TH>##MSG_AVERAGE##</TH>
+                 <TH>##MSG_HIT%##</TH>
+             </TR>
+
+             <!-- VARIABLE oddattr bgcolor="white" -->
+             <!-- VARIABLE evenattr  bgcolor="#F5F5F5" -->
+             <!-- VARIABLE sundayattr bgcolor="beige" -->
+             <!-- VARIABLE saturdayattr bgcolor="#F0EFC7" -->
+
+             <!-- [[ day start-->
+             <TR ##DAYATTR##>
+                 <TD align="center"><A HREF="##DAYDATE_L##">##DAYDATE_B##</A></TD>
+                 <!-- HIDE group start -->
+                 <TD align="center"><A HREF="##DAYGROUP_L##">##DAYGROUP_B##</A></TD>
+                 <!-- HIDE group end -->
+                 <TD align="center">##DAYUSERS##</TD>
+
+                 <!-- HIDE oversize start-->
+                 <TD align="center"><A HREF="##DAYOVERUSERS_L##">##DAYOVERUSERS_B##</A></TD>
+                 <!-- HIDE oversize end-->
+                 <TD align="right" nowrap="true">##DAYBYTES##</TD>
+                 <TD align="right">##DAYAVERAGE##</TD>
+                 <TD align="right">##DAYCACHEHIT##%</TD>
+             </TR>
+             <!-- ]] day end-->
+
+             <!-- Summary -->
+             <TR class=total>
+                 <TD align="left">##MSG_TOTAL_AVERAGE##:</Td>
+                 <!-- HIDE group start -->
+                 <TD>&nbsp</TD>
+                 <!-- HIDE group end -->
+                 <TD align="center">##USERAVERAGE##</TD>
+                 <!-- HIDE oversize start-->
+                 <TD align="center">##OVERUSERAVERAGE##</TD>
+                 <!-- HIDE oversize end -->
+                 <TD align="right"><A HREF="##TOTAL_L##">##TOTAL_B##</A></TD>
+                 <TD align="right">##TOTALAVERAGE##</TD>
+                 <TD align="right">##AVERAGEHIT##%</TD>
+             </TR>
+            </TBODY>
+           </TABLE>
+	</TD>
+
+	<TD style="width: 20%; vertical-align: top; text-align: center;">
+       <!-- Popular sites -->
+          <TABLE width="100%" class="sites">
+            <TBODY>
+              <TR>
+                <TH colspan="2" class="sites">##MSG_TOP_SITES##</TH>
+              </TR>
+              <TR>
+                <TD class="sites"><A HREF="##TOP_YEAR_L##">##TOP_YEAR_B##</A></TD>
+                <!-- HIDE monthtop start -->
+                <TD class="sites"><A HREF="##TOP_MONTH_L##">##TOP_MONTH_B##</A></TD>
+              </TR>
+
+              <TR>
+                <TH colspan="2" class="sites">##MSG_TOTAL##</TH>
+              </TR>
+              <TR>
+                <TD class="sites"><A HREF="##TOTAL_YEAR_L##">##TOTAL_YEAR_B##</A></TD>
+                <TD nowrap="nowrap" class="sites">
+                	<A HREF="##TOTAL_MONTH_L##">##TOTAL_MONTH_B##</A>
+                 	<!-- HIDE graph start -->
+                  	<A HREF="##MONTH_GRAPH_L##"><img src="get.cgi?png=graph" border="0" title="Graph Report"></A>
+                   	<!-- HIDE graph end -->
+                </TD>
+              </TR>
+
+              <TR>
+                <TH colspan="2" class="sites">##MSG_GROUP##</TH>
+              </TR>
+              <TR>
+                <TD class="sites"><A HREF="##GROUP_YEAR_L##">##GROUP_YEAR_B##</A></TD>
+                <TD class="sites"><A HREF="##GROUP_MONTH_L##">##GROUP_MONTH_B##</TD>
+                <!-- HIDE monthtop end -->
+              </TR>
+           </TBODY>
+          </TABLE>
+        </TD>
+      </TR>
+
+    <!-- Footer -->
+      <TR><TD></TD></TR>
+        <TR>
+         <TD colspan="2">
+                  ##COPYRIGHT##
+         </TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </CENTER>
+</BODY>
+</HTML>

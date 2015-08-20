@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- LightSquid TPL v1.7 -->
+<html>
+<head>
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="generator" content="LightSquid - http://lightsquid.sf.net">
+  <meta http-equiv="Content-Type" content="text/html; charset=##MSG_CODEPAGE##">
+  ##META##
+  <title>LightSquid :: User Detail</title>
+  <link rel="stylesheet" media="screen" href="get.cgi?css=screen" type="text/css">
+  <link rel="stylesheet" media="print" href="get.cgi?css=print" type="text/css">
+</head>
+
+<body>
+  <center>
+    <table class=title>
+      <tbody>
+        <tr class=title>
+          <th><a href="index.cgi"><h1 class=title>##MSG_HEADER##</h1></a></th>
+            <TH width="5%"><a href="/"><h1 class=title>Home</h1></a></TH>
+        </tr>
+        <tr>
+          <td colspan="2"><h3>##MSG_USER##: ##USER##</h3></td>
+        </tr>
+<!-- HIDE group start -->
+        <tr>
+          <td colspan="2">##MSG_GROUP##: ##GROUP##</td>
+        </tr>
+<!-- HIDE group end -->
+        <tr>
+          <td colspan="2">##MSG_DATE##: ##WORKPERIOD##</td>
+        </tr>
+<!-- HIDE timereport start-->        
+        <tr>
+          <td colspan="2" align="center" >-= <A HREF="##TIMEURL_L##"><img src="get.cgi?png=datetime" border="0" title="Graph Report"></A> =-</td>
+        </tr>
+<!-- HIDE timereport end-->
+        <tr>
+          <td colspan="2"><A HREF="##BIGFILESURL_L##">##BIGFILESURL_B##</A></td>
+        </tr>
+
+        <tr>
+          <td colspan="2">
+    <table width="100%" class=stat>
+      <tbody>
+        <tr class=total>
+          <th align="left" >##MSG_TOTAL##</th>
+          <th>&nbsp</th>
+          <th>&nbsp</th>
+          <th align="right" nowrap="true">##TOTAL##</th>
+          <th colspan=2>&nbsp;</th>
+        </tr>
+
+        <tr class=stat1>
+          <th>##MSG_NUM##</th>
+          <th>##MSG_ACCESSED_SITE##</th>
+          <th>##MSG_CONNECT##</th>
+          <th>##MSG_BYTES##</th>
+          <th>##MSG_CUMULATIVE##</th>
+          <th>%</th>
+        </tr>
+
+        <!-- VARIABLE oddattr bgcolor="white" -->
+        <!-- VARIABLE evenattr  bgcolor="#F5F5F5" -->
+<!-- [[ site start-->
+        <tr ##ROWATTR##>
+          <td align="center">##NUM##</td>
+          <td align="left"><A HREF="##SITEURL_L##">##SITEURL_B##</A></td>
+          <td align="right" nowrap="true">##SITECONNECT##</td>
+          <td align="right" nowrap="true">##SITEBYTES##</td>
+          <td align="right" nowrap="true">##SITETOTAL##</td>
+          <td align="right" nowrap="true">##SITEPERCENT##%</td>
+        </tr>
+<!-- ]] site end-->
+
+        <tr class=total>
+          <th align="left" >##MSG_TOTAL##</th>
+          <th align="right">&nbsp;</th>
+          <th align="right">&nbsp;</th>
+          <th align="right" nowrap="true">##TOTAL##</th>
+          <th align="right">&nbsp;</th>
+          <th align="right">&nbsp;</th>
+        </tr>
+      </tbody>
+    </table>
+
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          ##COPYRIGHT##
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</center>
+</body>
+</html>

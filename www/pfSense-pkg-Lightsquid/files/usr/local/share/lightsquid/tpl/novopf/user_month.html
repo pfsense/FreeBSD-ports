@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- LightSquid TPL v1.7 -->
+<HTML>
+<HEAD>
+  <META name="robots" content="noindex,nofollow">
+  <META name="generator" content="LightSquid - http://lightsquid.sf.net">
+  <META http-equiv="Content-Type" content="text/html; charset=##MSG_CODEPAGE##">
+  ##META##
+  <TITLE>LightSquid :: User Month detail</TITLE>
+  <link rel="stylesheet" media="screen" href="get.cgi?css=screen" type="text/css">
+  <link rel="stylesheet" media="print" href="get.cgi?css=print" type="text/css">
+</HEAD>
+
+<BODY background="" bgcolor="white" text="black">
+
+ <center>
+    <table class="title">
+      <tbody>
+        <tr class="title">
+          <th align="center"><a href="index.cgi"><h1 class="title">##MSG_HEADER##</h1></a></th>
+          <TH width="5%"><a href="/"><h1 class=title>Home</h1></a></TH>
+        </tr>
+        <tr>
+          <td colspan="2" align="center"><h3>##MSG_USER##: ##USER##</h3></td>
+        </tr>
+        <tr>
+          <td colspan="2" align="center"><h3>##MSG_WORK_PERIOD##: ##WORKPERIOD##</h3></td>
+        </tr>	
+	 <tr>
+          <TD colspan="2" align="center">##MSG_TOTAL##: ##TOTALBYTES##</TD>
+	 </tr>
+        <tr>
+<!-- HIDE graphreport start-->
+          <td colspan="2" align="center"><A HREF="##GRAPHURL_L##"><img src="get.cgi?png=graph" border="0" title="Graph Report">
+<!-- HIDE graphreport end-->
+	 </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" class="stat">
+              <tbody>
+                <TR class="stat1">
+                  <TH>##MSG_DATE##</TH>
+                  <TH>##MSG_BYTES##</TH>
+                  <TH>##MSG_WEEKSUM##</th>
+                  <TH>##MSG_CUMULATIVE##</th>
+                </TR>
+	
+             <!-- VARIABLE oddattr bgcolor="white" -->
+             <!-- VARIABLE evenattr  bgcolor="#F5F5F5" -->
+        <!-- VARIABLE sundayattr bgcolor="bisque" -->
+        <!-- VARIABLE nooversizedattr color="black" -->
+        <!-- VARIABLE oversizedattr color="red" -->
+        
+                <!-- [[ day start-->
+                <TR ##DAYATTR##>
+                  <TD align="center"><FONT size="-1"><A HREF="##DAYDATE_L##">##DAYDATE_B##</A></FONT></TD>
+                  <TD align="right" nowrap="true"><FONT size="-1" ##OVERSIZEATTR##>##DAYBYTES##</FONT></TD>
+                  <td align="right" nowrap="true">##WEEKSUM##</td>
+                  <td align="right" nowrap="true"><font size="-2">##DAYCUMULATIVE##</font></td>
+                </TR>
+		  <!-- ]] day end-->
+
+                <TR class="total">
+                  <TD align="center">##MSG_TOTAL##</TD>
+                  <TD align="right" nowrap="true"><FONT size="-1">##TOTALBYTES##</FONT></TD>
+                  <td align="right" nowrap="true">&nbsp</td>
+                  <td align="right" nowrap="true">&nbsp</td>
+                </TR>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="2">
+            ##COPYRIGHT##
+          </td>
+        </tr>
+      </TBODY>
+    </TABLE>
+  </CENTER>
+</BODY>
+</HTML>

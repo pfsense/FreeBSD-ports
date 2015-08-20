@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>Lightsquid</name>
+		<descr><![CDATA[LightSquid is a high performance web proxy reporting tool. Proxy realtime statistics (SQStat). Requires Squid HTTP proxy.]]></descr>
+		<website>http://lightsquid.sf.net/</website>
+		<category>Network Report</category>
+		<version>2.41</version>
+		<maintainer>dv_serg@mail.ru</maintainer>
+		<port_category>www</port_category>
+		<run_depends>libexec/lightsquid/ip2name.list:www/lightsquid</run_depends>
+		<depends_on_package_pbi>lightsquid-1.8_2-##ARCH##.pbi</depends_on_package_pbi>
+		<build_pbi>
+			<ports_before>graphics/gd graphics/p5-GD</ports_before>
+			<port>www/lightsquid</port>
+		</build_pbi>
+		<build_options>lightsquid_SET_FORCE=GD;libgd_UNSET_FORCE=FONTCONFIG XPM;perl_UNSET_FORCE=MULTIPLICITY</build_options>
+		<status>RC1</status>
+		<required_version>2.2</required_version>
+		<config_file>https://packages.pfsense.org/packages/config/lightsquid/lightsquid.xml</config_file>
+		<configurationfile>lightsquid.xml</configurationfile>
+		<noembedded>true</noembedded>
+	</package>
+</pfsensepkgs>

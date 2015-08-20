@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- LightSquid TPL v1.7 -->
+<html>
+<head>
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="generator" content="LightSquid - http://lightsquid.sf.net">
+  <meta http-equiv="Content-Type" content="text/html; charset=##MSG_CODEPAGE##">
+  ##META##
+  <title>LightSquid :: Whole Month User Report</title>
+  <link rel="stylesheet" media="screen" href="get.cgi?css=screen" type="text/css">
+  <link rel="stylesheet" media="print" href="get.cgi?css=print" type="text/css">
+</head>
+
+<body>
+  <center>
+    <table class="title">
+      <tbody>
+        <tr class="title">
+          <th align="center"><a href="index.cgi"><h1 class=title>##MSG_HEADER##</h1></a></th>
+          <TH width="5%"><a href="/"><h1 class=title>Home</h1></a></TH>
+        </tr>
+        <tr>
+          <td align="center" colspan=2><h3>##MSG_WHOLE## ##WHOLEPERIOD##</h3></td>
+        </tr>
+        <tr>
+          <td colspan="2" align="center"><h3>##MSG_WORK_PERIOD##: ##DATE##</h3></td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" class=stat>
+              <tbody>
+                <tr class="stat1">
+                  <th>##MSG_NUM##</th>
+<!-- HIDE timereport start-->
+                  <th>##MSG_TIME_REPORT##</th>
+<!-- HIDE timereport end-->
+<!-- HIDE graphreport start-->
+                  <th>##MSG_GRAPH_REPORT##</th>
+<!-- HIDE graphreport end-->
+<!-- HIDE monthreport start-->
+                  <th>##MSG_MONTH##</th>
+<!-- HIDE monthreport end-->
+                  <th>##MSG_USER##</th>
+<!-- HIDE realname start-->
+                  <th>##MSG_REALNAME##</th>
+<!-- HIDE realname end-->
+                  <th>##MSG_CONNECT##</th>
+                  <th>##MSG_BYTES##</th>
+                  <th>%</th>
+                  <th>##MSG_CUMULATIVE##</th>
+                </tr>
+
+                <tr>
+                  <td></td>
+                </tr>
+		
+<!-- VARIABLE oddattr bgcolor="white" -->
+<!-- VARIABLE evenattr  bgcolor="#F5F5F5" -->
+		
+<!-- [[ user start-->
+                <tr ##ROWATTR##>
+                  <td border="0" align="right"><font size="-1">##USERNUM##</font></td>
+<!-- HIDE timereport start-->
+                  <td  align="center"><A HREF="##TIMEURL_L##"><img src="get.cgi?png=datetime" border="0" title="Graph Report"></A></td>
+<!-- HIDE timereport end-->
+<!-- HIDE graphreport start-->
+		  <td align="center"><A HREF="##GRAPHURL_L##"><img src="get.cgi?png=graph" border="0" title="Graph Report"></A></td>
+<!-- HIDE graphreport end-->
+<!-- HIDE monthreport start-->
+                  <td align="center"><A HREF="##USERMONTHURL_L##">##USERMONTHURL_B##</A></td>
+<!-- HIDE monthreport end-->
+                  <td ><A HREF="##USERURL_L##">##USERURL_B##</A></td>
+<!-- HIDE realname start-->
+                  <td align="right" nowrap="true"><font size="-1">##REALNAME##</font></td>
+<!-- HIDE realname end-->
+                  <td align="right"><font size="-1">##USERCONNECT##</font></td>
+                  <td align="right"><font size="-1">##USERBYTES##</font></td>
+                  <td align="right"><font size="-1">##USERPERCENT##%</font></td>
+                  <td align="right"><font size="-1">##ALLUSERTOTAL##</font></td>
+                </tr>
+<!-- ]] user end-->
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            ##COPYRIGHT##
+          </td>
+        </tr>       
+      </tbody>
+    </table>
+  </center>
+</body>
+</html>

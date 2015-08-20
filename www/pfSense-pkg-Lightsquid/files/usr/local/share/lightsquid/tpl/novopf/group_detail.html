@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- LightSquid TPL v1.7 -->
+<html>
+<head>
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="generator" content="LightSquid - http://lightsquid.sf.net">
+  <meta http-equiv="Content-Type" content="text/html; charset=##MSG_CODEPAGE##">
+  ##META##
+  <title>LightSquid :: Day detail - Group Mode</title>
+  <link rel="stylesheet" media="screen" href="get.cgi?css=screen" type="text/css">
+  <link rel="stylesheet" media="print" href="get.cgi?css=print" type="text/css">
+</head>
+
+<body>
+  <center>
+    <table class=title>
+      <tbody>
+        <tr class=title>
+          <th align="center"><a href="index.cgi"><h1 class=title>##MSG_HEADER##</h1></a></th>
+          <TH width="5%"><a href="/"><h1 class=title>Home</h1></a></TH>
+        </tr>
+        <tr>
+          <td colspan="2" align="center"><h3>##MSG_DATE##: ##DATE##&nbsp;</h3></td>
+        </tr>
+<!-- HIDE dayinfo start-->
+         <tr>
+	    <td colspan="2"><A HREF="##TOPSITESURL_L##">##TOPSITESURL_B##</A><h3>##MSG_REPORT##</h3></td>
+	 </tr>
+	 <tr>
+	    <td colspan="2"><A HREF="##BIGFILESURL_L##">##BIGFILESURL_B##</A><h3>##MSG_REPORT##</h3></td>
+	 </tr>
+<!-- HIDE dayinfo end -->  
+      </tbody>
+    </table>
+  </center>
+
+  <center>
+    <table>
+      <tbody>
+        <tr>
+         <td>            
+	    <table width="100%" class=stat>
+              <tbody>
+                <tr width="100%" class=stat1>
+                  <th>##MSG_NUM##</th>
+<!-- HIDE timereport start-->
+                  <th>##MSG_TIME_REPORT##</th>
+<!-- HIDE timereport end-->
+                  <th>##MSG_USER##</th>
+<!-- HIDE realname start-->
+                  <th>##MSG_REALNAME##</th>
+<!-- HIDE realname end-->
+                  <th>##MSG_CONNECT##</th>
+                  <th>##MSG_BYTES##</th>
+                  <th>%</th>
+                </tr>
+
+<!-- [[ groupstart start-->
+                <tr>
+                  <td colspan="7"><A name="##GROUPSTARTURL_L##">##GROUPSTARTURL_B##</A></td>
+                </tr>
+<!-- ]] groupstart end-->
+
+<!-- VARIABLE oddattr bgcolor="white" -->
+<!-- VARIABLE evenattr  bgcolor="#F5F5F5" -->
+	
+<!-- [[ user start-->
+                <tr ##ROWATTR##>
+                  <td>##USERNUM##</td>
+<!-- HIDE timereport start-->
+		  <td><A HREF="##TIMEURL_L##"><img src="get.cgi?png=datetime" border="0" title="Graph Report"></A></td>
+<!-- HIDE timereport end-->
+		  <td><A HREF="##USERURL_L##">##USERURL_B##</A></td>
+<!-- HIDE realname start-->
+                  <td align="right" nowrap="true">##REALNAME##</td>
+<!-- HIDE realname end-->		  
+                  <td align="right">##USERCONNECT##</td>
+                  <td align="right">##USERBYTES##</td>
+                  <td align="right">##USERPERCENT##%</td>
+                </tr>
+<!-- ]] user end-->
+
+<!-- [[ groupend start-->
+                <tr>
+                  <td colspan="3"></td>
+<!-- HIDE timereport start-->
+                  <td></td>
+<!-- HIDE timereport end-->
+<!-- HIDE realname start-->
+                  <td></td>
+<!-- HIDE realname end-->
+                  <td align="right">##GROUPENDBYTES##</td>
+                  <td align="right">##GROUPENDPERCENT##%</td>
+                </tr>
+<!-- ]] groupend end-->
+
+              </tbody>
+            </table>
+        </td>
+
+	 <!-- Rigth Column -->
+        <td style="width: 20%; vertical-align: top; text-align: center;">
+          <table width="100%" class=sites>
+            <tbody>
+	      <tr>
+                <th class=sites align="right">##MSG_NUM##</th>
+                <th class=sites>##MSG_GROUP##</th>
+                <th class=sites align="right">##MSG_BYTES##</th>
+                <th class=sites align="right">%</th>
+              </tr>
+      
+<!-- [[ grouplist start-->
+	      <tr ##GROUPROWATTR##>
+                <td class=sites border="0" align="right">##GROUPLISTNUM##</td>
+                <td class=sites><A HREF="##GROUPLISTNAMEURL_L##">##GROUPLISTNAMEURL_B##</A></td>
+                <td class=sites align="right">##GROUPLISTBYTES##</td>
+                <td class=sites align="right">##GROUPLISTPERCENT##</td>
+              </tr>
+<!-- ]] grouplist end-->
+
+	    </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+         ##COPYRIGHT##
+        </td>
+      </tr>
+     </tbody>
+    </table>
+   </center>
+  </body>
+</html>

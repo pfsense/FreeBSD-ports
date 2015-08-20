@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- LightSquid TPL v1.7 -->
+<html>
+<head>
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="generator" content="LightSquid - http://lightsquid.sf.net">
+  <meta http-equiv="Content-Type" content="text/html; charset=##MSG_CODEPAGE##">
+  ##META##
+  <title>LightSquid :: Who Use Site report</title>
+  <link rel="stylesheet" media="screen" href="get.cgi?css=screen" type="text/css">
+  <link rel="stylesheet" media="print" href="get.cgi?css=print" type="text/css">
+</head>
+
+<body>
+  <center>
+    <table class=title>
+      <tbody>
+        <tr class=title>
+          <th><a href="index.cgi"><h1 class="title">##MSG_HEADER##</h1></a></th>
+          <TH width="5%"><a href="/"><h1 class=title>Home</h1></a></TH>
+        </tr>
+        <tr>
+          <th colspan="2"><h2>##MSG_USER_WHO_USE_SITE##<br>##SITE##</h2></th>
+        </tr>
+        <tr>
+          <td colspan=2><b>##MSG_WORK_PERIOD##: ##DATE##</b></td>
+        </tr>
+
+        <tr>
+          <td colspan="2">
+            <table width="100%" class=stat>
+             <tbody>
+               <tr class=stat1>
+                 <th align="left" >##MSG_USER##</th>
+<!-- HIDE realname start-->
+                 <th>##MSG_REALNAME##</th>
+<!-- HIDE realname end-->
+                 <th>##MSG_CONNECT##</th>
+                 <th>##MSG_SIZE##</th>
+                 <!-- HIDE daylist start -->
+                 <th>##MSG_DAYLIST##</th>
+                 <!-- HIDE daylist end -->
+               </tr>
+
+               <!-- VARIABLE oddattr bgcolor="white" -->
+               <!-- VARIABLE evenattr  bgcolor="#F5F5F5" -->
+<!-- [[ who start-->
+               <tr ##ROWATTR##>
+                 <td align="left" >##WHOUSER##</td>
+<!-- HIDE realname start-->
+                 <td align="right" nowrap="true">##REALNAME##</td>
+<!-- HIDE realname end-->
+                 <td align="right">##WHOCONNECT##</td>
+                 <td align="right">##WHOSIZE##</td>
+                 <!-- HIDE daylist start -->
+                 <td align="right"><A HREF="##USEDAYURL_L##">##USEDAYURL_B##</A></td>
+                 <!-- HIDE daylist end -->
+               </tr>
+       <!-- ]] who end-->
+
+               <tr class=total>
+                 <th align="left">##MSG_TOTAL##</th>
+<!-- HIDE realname start-->
+                 <td>&nbsp</td>
+<!-- HIDE realname end-->
+                 <th align="right">##TOTALCONNECT##</th>
+                 <th align="right">##TOTAL##</th>
+                 <!-- HIDE daylist start -->
+                 <th></th>
+                 <!-- HIDE daylist end -->
+               </tr>
+              </tbody>
+            </table>
+
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            ##COPYRIGHT##
+          </td>
+       </td>
+      </tbody>
+    </table>
+  </center>
+</body>
+</html>
