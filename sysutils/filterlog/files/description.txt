@@ -1,0 +1,44 @@
+IPv4 rulenr,subrulenr,anchorname,ridentifier(tracker),interface,reason,action,dir,version, tos, ecn, ttl, id,offset,flags,proto,protoname,length,src,dst
+	UDP srcport,dstport, datalen
+	TCP srcport,dstport,datalen,flags,error?|seq,ack,window,urg,options
+	CARP type,ttl,vhid, version,advskew,advbase
+	ICMP type,
+		ECHO|ECHOREPLY,id,seq
+		UNREACH,type,
+			UNREACH_PROTOCOL,dstip,protocolnumber
+			UNREACH_PORT,dstip,protocol,port
+			UNREACH_NEEDFRAG,dstip,mtu
+			OTHER,descr with dst ip
+		REDIRECT,descr
+		ROUTERADVERT,descr type, lifetime,addr numbr,addrsize,routeraddr prefix.....
+		TIMXCEED,descr
+		PARAMPROB,descr
+		MASKREPLY,mask
+		TSTAMPREPLY,replyid, seq, org,recv,xmit
+		TSTAMP,queryid, seq
+		OTHERTYPES,length
+
+IPv6 rulenr,subrulenr,anchorname,ridentifier(tracker),interface,reason,action,dir,version,class,flowlabel,hlim,next-header(protoname),next,payload-length,src,dst
+	HBHOPT, HBH, PAD1,
+			PADN | PADNTRUNC
+			RTALERT,data | RTALERTTRUNC | RTALERTINVALID, len
+			JUMBO,data | JUMBOTRUNC | JUMBOINVALID, len
+			HOMEADDR,addr, otheroptions? | HOMEADDRESSINVALID, len | HOMEADDRESSTRUNC 
+			BINDINGUPTRUNC | BINDINGUPINVALID, len | BINDINGUP, opts, sequence,lifetime, otheroptions?
+			BINDINGACKTRUNC | BINDINGACKINVALID, len | BINDINGACK,status,res,sequence,lifetime,refresh, otheropts?
+			BINDINGREQTRUNC | BINDINGREQ, otheropts?
+			TYPETRUNC,type | TYPE,type,len
+	DSTOPT, opts...
+	FRAG6, frag,
+	MOBILITY,
+		BRR(binding request)
+		HoTI|SoTI(HOME_TEST_INIT),type(Home|Care-of),cookie
+		HoT|CoT, nonce, Home|Care-Of, cookie, keygen-token,
+		BINDINGUPDATE, seq,flags,lifetime,
+		BINDINGACK,status,flags,sequence,lifetime,
+		BINDINGERR,status,homeaddr,
+		TYPE,typen#,len
+	ROUTING, len,type,segleft,reserved,TRUNC|hdridx,addr
+	UDP srcport,dstport, datalen
+	TCP srcport,dstport,datalen,flags,error?|seq,ack,window,urg,options
+	CARP type,ttl,vhid, version,advskew,advbase
