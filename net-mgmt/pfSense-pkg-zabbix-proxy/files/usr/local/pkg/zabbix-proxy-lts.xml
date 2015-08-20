@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packagegui>
+<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ========================================================================== */
+/*
+    zabbix-proxy-lts.xml
+    part of the Zabbix package for pfSense
+    Copyright (C) 2013 Danilo G. Baio
+    Copyright (C) 2013 Marcello Coutinho
+
+    All rights reserved.            
+			                                                                  */
+/* ========================================================================== */
+/*
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+     1. Redistributions of source code must retain the above copyright notice,
+        this list of conditions and the following disclaimer.
+
+     2. Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+                                                                              */
+/* ========================================================================== */
+	]]>
+	</copyright>
+	<name>zabbixproxylts</name>
+	<title>Services: Zabbix Proxy LTS</title>
+	<category>Monitoring</category>
+	<version>0.8.5</version>
+	<include_file>/usr/local/pkg/zabbix-proxy-lts.inc</include_file>
+	<addedit_string>Zabbix Proxy has been created/modified.</addedit_string>
+	<delete_string>Zabbix Proxy has been deleted.</delete_string>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/zabbix-proxy-lts/zabbix-proxy-lts.inc</item>
+		<prefix>/usr/local/pkg/</prefix>
+		<chmod>0755</chmod>
+	</additional_files_needed>
+	<menu>
+		<name>Zabbix Proxy LTS</name>
+		<tooltiptext>Setup Zabbix Proxy LTS specific settings</tooltiptext>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=zabbix-proxy-lts.xml&amp;id=0</url>
+	</menu>
+	<service>
+		<name>zabbix_proxy_lts</name>
+		<rcfile>zabbix_proxy_lts.sh</rcfile>
+		<executable>zabbix_proxy</executable>
+		<description>Zabbix Proxy LTS collection daemon</description>
+	</service>
+	<tabs>
+		<tab>
+			<text>Proxy</text>
+			<url>/pkg_edit.php?xml=zabbix-proxy-lts.xml&amp;id=0</url>
+			<active />
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>Zabbix Proxy LTS Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable</fielddescr>
+			<fieldname>proxyenabled</fieldname>
+			<description>Enable Zabbix Proxy LTS service</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Server</fielddescr>
+			<fieldname>server</fieldname>
+			<description>List of comma delimited IP addresses (or hostnames) of ZABBIX servers</description>
+			<default_value>127.0.0.1</default_value>
+			<type>input</type>
+			<size>60</size>
+			<required>true</required>
+		</field>
+		<field>
+         <fielddescr>Server Port</fielddescr>
+         <fieldname>serverport</fieldname>
+         <description>Port of Zabbix trapper on Zabbix server. default value 10051</description>
+         <default_value>10051</default_value>
+         <type>input</type>
+         <size>6</size>
+         <required>true</required>
+		</field>
+		<field>
+			<fielddescr>Hostname</fielddescr>
+			<fieldname>hostname</fieldname>
+			<description>Unique, case-sensitive proxy name. Make sure the proxy name is known to the server</description>
+			<default_value>localhost</default_value>
+			<type>input</type>
+			<size>50</size>
+			<required>true</required>
+		</field>
+		<field>
+			<fielddescr>Proxy Mode</fielddescr>
+			<fieldname>proxymode</fieldname>
+			<description>Select Zabbix proxy mode (Active is default)</description>
+			<type>select</type>
+			<default_value>0</default_value>
+			<options>
+				<option><name>Active</name><value>0</value></option>
+				<option><name>Passive</name><value>1</value></option>
+			</options>
+			<required>true</required>
+		</field>
+		<field>
+			<fielddescr>Config Frequency</fielddescr>
+			<fieldname>configfrequency</fieldname>
+			<description>How often the proxy retrieves configuration data from the Zabbix server in seconds. Ignored if the proxy runs in passive mode.</description>
+			<default_value>3600</default_value>
+			<type>input</type>
+			<size>10</size>
+			<required>true</required>
+		</field>
+		<field>
+			<fielddescr>Advanced Parameters</fielddescr>
+			<fieldname>advancedparams</fieldname>
+			<encoding>base64</encoding>
+			<type>textarea</type>
+			<rows>5</rows>
+			<cols>50</cols>
+			<description>Advanced parameters. There are some rarely used parameters that sometimes need to be defined. Value has form, example: StartDiscoverers=10</description>
+		</field>
+	</fields>
+	<custom_php_install_command>sync_package_zabbix_proxy_lts();</custom_php_install_command>
+	<custom_php_command_before_form></custom_php_command_before_form>
+	<custom_php_after_head_command></custom_php_after_head_command>
+	<custom_php_after_form_command></custom_php_after_form_command>
+	<custom_php_validation_command>validate_input_zabbix_proxy_lts($_POST, $input_errors);</custom_php_validation_command>
+	<custom_add_php_command></custom_add_php_command>
+	<custom_php_resync_config_command>sync_package_zabbix_proxy_lts();</custom_php_resync_config_command>
+	<custom_php_deinstall_command>php_deinstall_zabbix_proxy_lts();</custom_php_deinstall_command>
+</packagegui>
