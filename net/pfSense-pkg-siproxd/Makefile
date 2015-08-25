@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-siproxd
-PORTVERSION=	1.0.5
+PORTVERSION=	1.0.6
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty

@@ -153,7 +153,7 @@ function squid_dash_z($cache_action='none') {
 	if (file_exists("/var/squid/cache/swap.state")) {
 		chown("/var/squid/cache/swap.state", SQUID_UID);
 		chgrp("/var/squid/cache/swap.state", SQUID_GID);
-		chmod("/var/squid/cache/swap.state", "a+rw");
+		chmod("/var/squid/cache/swap.state", 0666);
 	}
 }
 
@@ -308,7 +308,7 @@ function squid_install_command() {
 
 	/* make sure pinger is executable */
 	if (file_exists(SQUID_LOCALBASE. "/libexec/squid/pinger"))
-		@chmod(SQUID_LOCALBASE. "/libexec/squid/pinger", "a+x");
+		@chmod(SQUID_LOCALBASE. "/libexec/squid/pinger", 0755);
 
 	// XXX: Is it really necessary?
 	if (file_exists("/usr/local/etc/rc.d/squid"))
@@ -318,7 +318,7 @@ function squid_install_command() {
 
 	// XXX: Is it really necessary? mode is set to 0755 in squid.xml
 	if (file_exists("/usr/local/pkg/swapstate_check.php"))
-		@chmod("/usr/local/pkg/swapstate_check.php", "a+x");
+		@chmod("/usr/local/pkg/swapstate_check.php", 0755);
 
 	write_rcfile(array(
 		"file" => "sqp_monitor.sh",
@@ -1934,7 +1934,7 @@ function squid_resync($via_rpc="no") {
 	/* make sure pinger is executable */
 	// XXX: Is it really necessary? Who could change its permission?
 	if (file_exists(SQUID_LOCALBASE . "/libexec/squid/pinger"))
-		exec("chmod a+x " . SQUID_LOCALBASE . "/libexec/squid/pinger");
+		@chmod(SQUID_LOCALBASE. "/libexec/squid/pinger", 0755);
 
 	$log_dir="";
 	// check if squid is enabled

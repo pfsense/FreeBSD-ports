@@ -45,7 +45,7 @@
 	</copyright>
 	<description>Snort IDS/IPS Package</description>
 	<name>Snort</name>
-	<version>3.2.6</version>
+	<version>3.2.7</version>
 	<title>Services: Snort IDS</title>
 	<include_file>/usr/local/pkg/snort/snort.inc</include_file>
 	<menu>

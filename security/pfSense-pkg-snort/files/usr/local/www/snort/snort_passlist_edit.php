@@ -3,7 +3,7 @@
  * snort_passlist_edit.php
  * Copyright (C) 2004 Scott Ullrich
  * Copyright (C) 2011-2012 Ermal Luci
- * Copyright (C) 2014 Bill Meeks
+ * Copyright (C) 2015 Bill Meeks
  * All rights reserved.
  *
  * originially part of m0n0wall (http://m0n0.ch/wall)
@@ -71,7 +71,7 @@ if (isset($id) && isset($a_passlist[$id])) {
 	$pconfig['address'] = $a_passlist[$id]['address'];
 	$pconfig['descr'] = html_entity_decode($a_passlist[$id]['descr']);
 	$pconfig['localnets'] = $a_passlist[$id]['localnets'];
-	$pconfig['wanips'] = $a_passlist[$id]['wanips'];
+//	$pconfig['wanips'] = $a_passlist[$id]['wanips'];
 	$pconfig['wangateips'] = $a_passlist[$id]['wangateips'];
 	$pconfig['wandnsips'] = $a_passlist[$id]['wandnsips'];
 	$pconfig['vips'] = $a_passlist[$id]['vips'];
@@ -87,7 +87,7 @@ if ($_GET['act'] == "import") {
 	$pconfig['address'] = htmlspecialchars($_GET['address']);
 	$pconfig['descr'] = htmlspecialchars($_GET['descr']);
 	$pconfig['localnets'] = htmlspecialchars($_GET['localnets'])? 'yes' : 'no';
-	$pconfig['wanips'] = htmlspecialchars($_GET['wanips'])? 'yes' : 'no';
+//	$pconfig['wanips'] = htmlspecialchars($_GET['wanips'])? 'yes' : 'no';
 	$pconfig['wangateips'] = htmlspecialchars($_GET['wangateips'])? 'yes' : 'no';
 	$pconfig['wandnsips'] = htmlspecialchars($_GET['wandnsips'])? 'yes' : 'no';
 	$pconfig['vips'] = htmlspecialchars($_GET['vips'])? 'yes' : 'no';
@@ -168,7 +168,7 @@ if ($_POST['save']) {
 		$p_list['name'] = $_POST['name'];
 		$p_list['uuid'] = $passlist_uuid;
 		$p_list['localnets'] = $_POST['localnets']? 'yes' : 'no';
-		$p_list['wanips'] = $_POST['wanips']? 'yes' : 'no';
+//		$p_list['wanips'] = $_POST['wanips']? 'yes' : 'no';
 		$p_list['wangateips'] = $_POST['wangateips']? 'yes' : 'no';
 		$p_list['wandnsips'] = $_POST['wandnsips']? 'yes' : 'no';
 		$p_list['vips'] = $_POST['vips']? 'yes' : 'no';
@@ -255,21 +255,12 @@ if ($savemsg)
 	<tr>
 		<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Add auto-generated IP Addresses."); ?></td>
 	</tr>
-
 	<tr>
 		<td width="22%" valign="top" class="vncell"><?php echo gettext("Local Networks"); ?></td>
 		<td width="78%" class="vtable"><input name="localnets" type="checkbox"
 			id="localnets" size="40" value="yes"
 			<?php if($pconfig['localnets'] == 'yes'){ echo "checked";} if($pconfig['localnets'] == ''){ echo "checked";} ?> />
 		<span class="vexpl"> <?php echo gettext("Add firewall Local Networks to the list (excluding WAN)."); ?> </span></td>
-	</tr>
-
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("WAN IPs"); ?></td>
-		<td width="78%" class="vtable"><input name="wanips" type="checkbox"
-			id="wanips" size="40" value="yes"
-			<?php if($pconfig['wanips'] == 'yes'){ echo "checked";} if($pconfig['wanips'] == ''){ echo "checked";} ?> />
-		<span class="vexpl"> <?php echo gettext("Add WAN interface IPs to the list."); ?> </span></td>
 	</tr>
 	<tr>
 		<td width="22%" valign="top" class="vncell"><?php echo gettext("WAN Gateways"); ?></td>

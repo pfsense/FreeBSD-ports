@@ -197,7 +197,8 @@ if ($savemsg) {
 	<p><?php echo gettext("1. Here you can create Pass List files for your Snort package rules.  Hosts on a Pass List are never blocked by Snort."); ?><br/>
 	<?php echo gettext("2. Add all the IP addresses or networks (in CIDR notation) you want to protect against Snort block decisions."); ?><br/>
 	<?php echo gettext("3. The default Pass List includes the WAN IP and gateway, defined DNS servers, VPNs and locally-attached networks."); ?><br/>
-	<?php echo gettext("4. Be careful, it is very easy to get locked out of your system by altering the default settings."); ?></p></span></td>
+	<?php echo gettext("4. Be careful, it is very easy to get locked out of your system by altering the default settings."); ?><br/>
+	<?php echo gettext("5. To use a custom Pass List on an interface, you must manually assign the list using the drop-down control on the Interface Settings tab."); ?></p></span></td>
 	</tr>
 	<tr>
 	<td width="100%"><span class="vexpl"><?php echo gettext("Remember you must restart Snort on the interface for changes to take effect!"); ?></span></td>

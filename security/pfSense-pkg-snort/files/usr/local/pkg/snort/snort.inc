@@ -45,11 +45,6 @@ ini_set("memory_limit", "384M");
 // Explicitly declare this as global so it works through function call includes 
 global $g, $config, $rebuild_rules;
 
-// Grab the Snort binary version programmatically, but if that fails use a safe default
-$snortver = array();
-$snortbindir = SNORT_PBI_BINDIR;
-exec("{$snortbindir}snort -V 2>&1 |/usr/bin/grep Version | /usr/bin/cut -c20-26", $snortver);
-
 /* Rebuild Rules Flag -- if "true", rebuild enforcing rules and flowbit-rules files */
 $rebuild_rules = false;
 
@@ -292,7 +287,8 @@ function snort_build_list($snortcfg, $listname = "", $whitelist = false, $extern
                 if (empty($list))
                         return $list;
 		$localnet = $list['localnets'];
-		$wanip = $list['wanips'];
+//		$wanip = $list['wanips'];
+		$wanip = 'yes';
 		$wangw = $list['wangateips'];
 		$wandns = $list['wandnsips'];
 		$vips = $list['vips'];
@@ -471,7 +467,7 @@ function snort_build_list($snortcfg, $listname = "", $whitelist = false, $extern
 		/* iterate all vips and add to whitelist */
 		if (is_array($config['virtualip']) && is_array($config['virtualip']['vip'])) {
 			foreach($config['virtualip']['vip'] as $vip) {
-				if ($vip['subnet'] && $vip['mode'] != 'proxyarp') {
+				if ($vip['subnet']) {
 					if (!in_array("{$vip['subnet']}/{$vip['subnet_bits']}", $home_net))
 						$home_net[] = "{$vip['subnet']}/{$vip['subnet_bits']}";
 				}
@@ -3454,7 +3450,7 @@ function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
 
 	/* Build a new sid-msg.map file from the enabled */
 	/* rules and copy it to the interface directory. */
-	log_error(gettext("[Snort] Building new sig-msg.map file for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . "..."));
+	log_error(gettext("[Snort] Building new sid-msg.map file for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . "..."));
 	snort_build_sid_msg_map("{$snortcfgdir}/rules/", "{$snortcfgdir}/sid-msg.map");
 }
 

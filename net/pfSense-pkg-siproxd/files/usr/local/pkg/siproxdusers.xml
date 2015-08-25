@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
-<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
 <packagegui>
 	<copyright>
 	<![CDATA[
@@ -43,9 +43,9 @@
 	]]>
 	</copyright>
 	<name>siproxdusers</name>
-	<version>1.0.5</version>
+	<version>1.0.6</version>
 	<title>siproxd: Users</title>
-	<include_file>/usr/local/pkg/siproxd.inc</include_file>	
+	<include_file>/usr/local/pkg/siproxd.inc</include_file>
 	<tabs>
 		<tab>
 			<text>Settings</text>
@@ -93,9 +93,9 @@
 		</field>
 	</fields>
 	<custom_add_php_command>
-		sync_package_sipproxd_users();
+		sync_package_siproxd_users();
 	</custom_add_php_command>
 	<custom_php_resync_config_command>
-	    sync_package_sipproxd_users();
+		sync_package_siproxd_users();
 	</custom_php_resync_config_command>
 </packagegui>

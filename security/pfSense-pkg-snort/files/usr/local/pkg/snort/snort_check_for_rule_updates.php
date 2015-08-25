@@ -64,19 +64,14 @@ $openappid_detectors = $config['installedpackages']['snortglobal']['openappid_de
 /* Working directory for downloaded rules tarballs and extraction */
 $tmpfname = "{$g['tmp_path']}/snort_rules_up";
 
-/* Grab the Snort binary version programmatically and use it to construct */
-/* the proper Snort VRT rules tarball and md5 filenames. Fallback to a    */
-/* default in the event we fail.                                          */
-$snortver = array();
-exec("{$snortbindir}snort -V 2>&1 |/usr/bin/grep Version | /usr/bin/cut -c20-26", $snortver);
-// Save the version with decimal delimiters for use in extracting the rules
-$snort_version = $snortver[0];
-if (empty($snort_version))
-	$snort_version = SNORT_BIN_VERSION;
+/* Use the Snort binary version to construct the proper Snort VRT */
+/* rules tarball and md5 filenames. Save the version with decimal */
+/* delimiters for use in extracting the rules.                    */
+$snort_version = SNORT_BIN_VERSION;
 
 // Create a collapsed version string for use in the tarball filename
-$snortver[0] = str_replace(".", "", $snortver[0]);
-$snort_filename = "snortrules-snapshot-{$snortver[0]}.tar.gz";
+$snortver = str_replace(".", "", SNORT_BIN_VERSION);
+$snort_filename = "snortrules-snapshot-{$snortver}.tar.gz";
 $snort_filename_md5 = "{$snort_filename}.md5";
 $snort_rule_url = VRT_DNLD_URL;
 
