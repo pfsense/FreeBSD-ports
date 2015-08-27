@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-builder
-DISTVERSION=	2.3-20150512
+DISTVERSION=	2.3-20150827
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,9 +13,7 @@ COMMENT?=	Meta package to install pfSense builder required ports
 RUN_DEPENDS=	${LOCALBASE}/bin/git:${PORTSDIR}/devel/git-lite \
 		${LOCALBASE}/bin/curl:${PORTSDIR}/ftp/curl \
 		${LOCALBASE}/bin/rsync:${PORTSDIR}/net/rsync \
-		${LOCALBASE}/bin/cpdup:${PORTSDIR}/sysutils/cpdup \
 		${LOCALBASE}/bin/screen:${PORTSDIR}/sysutils/screen \
-		${LOCALBASE}/bin/vmdktool:${PORTSDIR}/sysutils/vmdktool \
 		${LOCALBASE}/bin/salt:${PORTSDIR}/sysutils/py-salt \
 		${LOCALBASE}/bin/sudo:${PORTSDIR}/security/sudo \
 		${LOCALBASE}/sbin/nginx:${PORTSDIR}/www/nginx \
