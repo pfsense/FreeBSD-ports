@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense
-DISTVERSION=	2.3-20150820
+DISTVERSION=	2.3-20150827
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -71,7 +71,7 @@ USES=		kmod
 NO_BUILD=	yes
 NO_MTREE=	yes
 
-CONFLICTS=	pfSense-vm-[0-9]*
+CONFLICTS=	pfSense-vmware-[0-9]*
 
 .include <bsd.port.pre.mk>
 

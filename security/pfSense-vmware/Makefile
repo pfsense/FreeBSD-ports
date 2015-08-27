@@ -2,7 +2,7 @@
 
 PKGNAMESUFFIX=	-vm
 
-COMMENT=	Meta package to install pfSense required ports on VMs
+COMMENT=	Meta package to install pfSense required ports on VMware
 
 MASTERDIR=	${.CURDIR}/../pfSense
 
