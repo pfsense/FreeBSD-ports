@@ -58,6 +58,551 @@ Notes:
 
 -->
 <vuxml xmlns="http://www.vuxml.org/apps/vuxml-1">
+  <vuln vid="a9350df8-5157-11e5-b5c1-e8e0b747a45a">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>chromium</name>
+	<range><lt>45.0.2454.85</lt></range>
+      </package>
+      <package>
+	<!--pcbsd-->
+	<name>chromium-npapi</name>
+	<range><lt>45.0.2454.85</lt></range>
+      </package>
+      <package>
+	<!--pcbsd-->
+	<name>chromium-pulse</name>
+	<range><lt>45.0.2454.85</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Google Chrome Releases reports:</p>
+	<blockquote cite="http://googlechromereleases.blogspot.nl">
+	  <p>29 security fixes in this release, including:</p>
+	  <ul>
+	    <li>[516377] High CVE-2015-1291: Cross-origin bypass in DOM. Credit
+	      to anonymous.</li>
+	    <li>[522791] High CVE-2015-1292: Cross-origin bypass in
+	      ServiceWorker. Credit to Mariusz Mlynski.</li>
+	    <li>[524074] High CVE-2015-1293: Cross-origin bypass in DOM. Credit
+	      to Mariusz Mlynski.</li>
+	    <li>[492263] High CVE-2015-1294: Use-after-free in Skia. Credit
+	      to cloudfuzzer.</li>
+	    <li>[502562] High CVE-2015-1295: Use-after-free in Printing. Credit
+	      to anonymous.</li>
+	    <li>[421332] High CVE-2015-1296: Character spoofing in omnibox.
+	      Credit to zcorpan.</li>
+	    <li>[510802] Medium CVE-2015-1297: Permission scoping error in
+	      Webrequest. Credit to Alexander Kashev.</li>
+	    <li>[518827] Medium CVE-2015-1298: URL validation error in
+	      extensions. Credit to Rob Wu.</li>
+	    <li>[416362] Medium CVE-2015-1299: Use-after-free in Blink. Credit
+	      to taro.suzuki.dev.</li>
+	    <li>[511616] Medium CVE-2015-1300: Information leak in Blink. Credit
+	      to cgvwzq.</li>
+	    <li>[526825] CVE-2015-1301: Various fixes from internal audits,
+	      fuzzing and other initiatives.</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2015-1291</cvename>
+      <cvename>CVE-2015-1292</cvename>
+      <cvename>CVE-2015-1293</cvename>
+      <cvename>CVE-2015-1294</cvename>
+      <cvename>CVE-2015-1295</cvename>
+      <cvename>CVE-2015-1296</cvename>
+      <cvename>CVE-2015-1297</cvename>
+      <cvename>CVE-2015-1298</cvename>
+      <cvename>CVE-2015-1299</cvename>
+      <cvename>CVE-2015-1300</cvename>
+      <cvename>CVE-2015-1301</cvename>
+      <url>http://googlechromereleases.blogspot.nl</url>
+    </references>
+    <dates>
+      <discovery>2015-09-01</discovery>
+      <entry>2015-09-02</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="55c43f5b-5190-11e5-9ad8-14dae9d210b8">
+    <topic>powerdns -- denial of service</topic>
+    <affects>
+      <package>
+	<name>powerdns</name>
+	<range><ge>3.4.0</ge><lt>3.4.6</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>PowerDNS reports:</p>
+	<blockquote cite="https://doc.powerdns.com/md/security/powerdns-advisory-2015-02/">
+	  <p>A bug was found in our DNS packet parsing/generation code,
+	    which, when exploited, can cause individual threads (disabling service)
+	    or whole processes (allowing a supervisor to restart them) to crash with
+	    just one or a few query packets.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://doc.powerdns.com/md/security/powerdns-advisory-2015-02/</url>
+      <cvename>CVE-2015-5230</cvename>
+    </references>
+    <dates>
+      <discovery>2015-09-02</discovery>
+      <entry>2015-09-02</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="fc1f6658-4f53-11e5-934b-002590263bf5">
+    <topic>ghostscript -- denial of service (crash) via crafted Postscript files</topic>
+    <affects>
+      <package>
+	<name>ghostscript7</name>
+	<name>ghostscript7-nox11</name>
+	<name>ghostscript7-base</name>
+	<name>ghostscript7-x11</name>
+	<range><lt>7.07_32</lt></range>
+      </package>
+      <package>
+	<name>ghostscript8</name>
+	<name>ghostscript8-nox11</name>
+	<name>ghostscript8-base</name>
+	<name>ghostscript8-x11</name>
+	<range><lt>8.71_19</lt></range>
+      </package>
+      <package>
+	<name>ghostscript9</name>
+	<name>ghostscript9-nox11</name>
+	<name>ghostscript9-base</name>
+	<name>ghostscript9-x11</name>
+	<range><lt>9.06_11</lt></range>
+      </package>
+      <package>
+	<name>ghostscript9-agpl</name>
+	<name>ghostscript9-agpl-nox11</name>
+	<range><lt>9.15_2</lt></range>
+      </package>
+      <package>
+	<name>ghostscript9-agpl-base</name>
+	<name>ghostscript9-agpl-x11</name>
+	<range><lt>9.16_2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>MITRE reports:</p>
+	<blockquote cite="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-3228">
+	  <p>Integer overflow in the gs_heap_alloc_bytes function in
+	    base/gsmalloc.c in Ghostscript 9.15 and earlier allows remote
+	    attackers to cause a denial of service (crash) via a crafted
+	    Postscript (ps) file, as demonstrated by using the ps2pdf command,
+	    which triggers an out-of-bounds read or write.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2015-3228</cvename>
+      <url>http://bugs.ghostscript.com/show_bug.cgi?id=696041</url>
+      <url>http://bugs.ghostscript.com/show_bug.cgi?id=696070</url>
+      <url>http://git.ghostscript.com/?p=ghostpdl.git;a=commitdiff;h=0c0b0859</url>
+    </references>
+    <dates>
+      <discovery>2015-06-17</discovery>
+      <entry>2015-09-01</entry>
+      <modified>2015-09-02</modified>
+    </dates>
+  </vuln>
+
+  <vuln vid="80c66af0-d1c5-449e-bd31-63b12525ff88">
+    <topic>ffmpeg -- out-of-bounds array access</topic>
+    <affects>
+      <package>
+	<name>libav</name>
+	<range><ge>11.0</ge><lt>11.4</lt></range>
+	<range><lt>10.7</lt></range>
+      </package>
+      <package>
+	<name>gstreamer1-libav</name>
+	<!-- gst-libav-1.4.5 has libav-10.5 -->
+	<range><lt>1.5.1</lt></range>
+      </package>
+      <package>
+	<name>handbrake</name>
+	<!-- handbrake-0.10.2 has libav-10.1 -->
+	<!-- no known fixed version -->
+	<range><ge>0</ge></range>
+      </package>
+      <package>
+	<name>ffmpeg</name>
+	<range><ge>2.2.0,1</ge><lt>2.2.15,1</lt></range>
+	<range><lt>2.0.7,1</lt></range>
+      </package>
+      <package>
+	<name>ffmpeg26</name>
+	<range><lt>2.6.2</lt></range>
+      </package>
+      <package>
+	<name>ffmpeg25</name>
+	<range><lt>2.5.6</lt></range>
+      </package>
+      <package>
+	<name>ffmpeg24</name>
+	<range><lt>2.4.8</lt></range>
+      </package>
+      <package>
+	<name>ffmpeg23</name>
+	<!-- just in case: f7e1367 wasn't cherry-picked -->
+	<!-- no known fixed version -->
+	<range><ge>0</ge></range>
+      </package>
+      <package>
+	<name>ffmpeg1</name>
+	<!-- just in case: f7e1367 wasn't cherry-picked -->
+	<!-- no known fixed version -->
+	<range><ge>0</ge></range>
+      </package>
+      <package>
+	<name>avidemux</name>
+	<name>avidemux26</name>
+	<!-- avidemux-2.6.10 has ffmpeg-2.6.1 -->
+	<!-- no known fixed version -->
+	<range><ge>0</ge></range>
+      </package>
+      <package>
+	<name>kodi</name>
+	<!-- kodi-14.2 has ffmpeg-2.4.6 -->
+	<range><lt>15.1</lt></range>
+      </package>
+      <package>
+	<name>mplayer</name>
+	<name>mencoder</name>
+	<!-- mplayer-1.1.r20141223 has ffmpeg-2.5.1+ (snapshot, 03b84f2) -->
+	<range><lt>1.1.r20150403</lt></range>
+      </package>
+      <package>
+	<name>mythtv</name>
+	<name>mythtv-frontend</name>
+	<!-- mythtv-0.27.0.20140121 has ffmpeg-1.2.2+ (snapshot, f9c8726) -->
+	<!-- no known fixed version -->
+	<range><ge>0</ge></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>NVD reports:</p>
+	<blockquote cite="https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2015-3395">
+	  <p>The msrle_decode_pal4 function in msrledec.c in Libav
+	    before 10.7 and 11.x before 11.4 and FFmpeg before 2.0.7,
+	    2.2.x before 2.2.15, 2.4.x before 2.4.8, 2.5.x before 2.5.6,
+	    and 2.6.x before 2.6.2 allows remote attackers to have
+	    unspecified impact via a crafted image, related to a pixel
+	    pointer, which triggers an out-of-bounds array access.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2015-3395</cvename>
+      <url>https://git.videolan.org/?p=ffmpeg.git;a=commitdiff;h=f7e1367f58263593e6cee3c282f7277d7ee9d553</url>
+      <url>https://git.libav.org/?p=libav.git;a=commit;h=5ecabd3c54b7c802522dc338838c9a4c2dc42948</url>
+      <url>https://ffmpeg.org/security.html</url>
+      <url>https://git.libav.org/?p=libav.git;a=blob;f=Changelog;hb=refs/tags/v11.4</url>
+    </references>
+    <dates>
+      <discovery>2015-04-12</discovery>
+      <entry>2015-09-01</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="da434a78-e342-4d9a-87e2-7497e5f117ba">
+    <topic>ffmpeg -- use after free</topic>
+    <affects>
+      <package>
+	<name>libav</name>
+	<range><ge>11.0</ge><lt>11.4</lt></range>
+	<range><lt>10.7</lt></range>
+      </package>
+      <package>
+	<name>gstreamer1-libav</name>
+	<!-- gst-libav-1.4.5 has libav-10.5 -->
+	<range><lt>1.5.0</lt></range>
+      </package>
+      <package>
+	<name>handbrake</name>
+	<!-- handbrake-0.10.2 has libav-10.1 -->
+	<!-- no known fixed version -->
+	<range><ge>0</ge></range>
+      </package>
+      <package>
+	<name>ffmpeg</name>
+	<range><ge>2.2.0,1</ge><lt>2.2.12,1</lt></range>
+	<range><ge>2.1.0,1</ge><lt>2.1.7,1</lt></range>
+	<range><lt>2.0.7,1</lt></range>
+      </package>
+      <package>
+	<name>ffmpeg25</name>
+	<range><lt>2.5.2</lt></range>
+      </package>
+      <package>
+	<name>ffmpeg24</name>
+	<range><lt>2.4.5</lt></range>
+      </package>
+      <package>
+	<name>ffmpeg23</name>
+	<range><lt>2.3.6</lt></range>
+      </package>
+      <package>
+	<name>ffmpeg1</name>
+	<range><lt>1.2.11</lt></range>
+      </package>
+      <package>
+	<name>mythtv</name>
+	<name>mythtv-frontend</name>
+	<!-- mythtv-0.27.0.20140121 has ffmpeg-1.2.2+ (snapshot, f9c8726) -->
+	<!-- no known fixed version -->
+	<range><ge>0</ge></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>NVD reports:</p>
+	<blockquote cite="https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2015-3417">
+	  <p>Use-after-free vulnerability in the ff_h264_free_tables
+	    function in libavcodec/h264.c in FFmpeg before 2.3.6 allows
+	    remote attackers to cause a denial of service or possibly
+	    have unspecified other impact via crafted H.264 data in an
+	    MP4 file, as demonstrated by an HTML VIDEO element that
+	    references H.264 data.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2015-3417</cvename>
+      <!-- ffmpeg and libav fixes are different -->
+      <url>https://git.videolan.org/?p=ffmpeg.git;a=commitdiff;h=e8714f6f93d1a32f4e4655209960afcf4c185214</url>
+      <url>https://git.libav.org/?p=libav.git;a=commitdiff;h=3b69f245dbe6e2016659a45c4bfe284f6c5ac57e</url>
+      <url>https://ffmpeg.org/security.html</url>
+      <url>https://git.libav.org/?p=libav.git;a=blob;f=Changelog;hb=refs/tags/v11.4</url>
+    </references>
+    <dates>
+      <discovery>2014-12-19</discovery>
+      <entry>2015-09-01</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="5300711b-4e61-11e5-9ad8-14dae9d210b8">
+    <topic>graphviz -- format string vulnerability</topic>
+    <affects>
+      <package>
+	<name>graphviz</name>
+	<range><lt>2.38.0_7</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Joshua Rogers reports:</p>
+	<blockquote cite="http://seclists.org/oss-sec/2014/q4/784">
+	  <p>A format string vulnerability has been found in `graphviz'.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>http://seclists.org/oss-sec/2014/q4/784</url>
+      <url>https://github.com/ellson/graphviz/commit/99eda421f7ddc27b14e4ac1d2126e5fe41719081</url>
+    </references>
+    <dates>
+      <discovery>2014-11-24</discovery>
+      <entry>2015-08-29</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="237a201c-888b-487f-84d3-7d92266381d6">
+    <topic>mozilla -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><lt>40.0.3,1</lt></range>
+      </package>
+      <package>
+	<name>linux-firefox</name>
+	<range><lt>40.0.3,1</lt></range>
+      </package>
+      <package>
+	<name>firefox-esr</name>
+	<range><lt>38.2.1,1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Mozilla Project reports:</p>
+	<blockquote cite="https://www.mozilla.org/en-US/security/advisories/">
+	  <p>MFSA 2015-95 Add-on notification bypass through data URLs</p>
+	  <p>MFSA 2015-94 Use-after-free when resizing canvas element
+	    during restyling</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2015-4497</cvename>
+      <cvename>CVE-2015-4498</cvename>
+      <url>https://www.mozilla.org/security/advisories/mfsa2015-94/</url>
+      <url>https://www.mozilla.org/security/advisories/mfsa2015-95/</url>
+    </references>
+    <dates>
+      <discovery>2015-08-27</discovery>
+      <entry>2015-08-28</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="4464212e-4acd-11e5-934b-002590263bf5">
+    <topic>go -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>go</name>
+	<range><lt>1.4.3,1</lt></range>
+      </package>
+      <package>
+	<name>go14</name>
+	<range><lt>1.4.3</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Jason Buberel, Go Product Manager, reports:</p>
+	<blockquote cite="http://seclists.org/oss-sec/2015/q3/237">
+	  <p>CVE-2015-5739 - "Content Length" treated as valid header</p>
+	  <p>CVE-2015-5740 - Double content-length headers does not return 400
+	    error</p>
+	  <p>CVE-2015-5741 - Additional hardening, not sending Content-Length
+	    w/Transfer-Encoding, Closing connections</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2015-5739</cvename>
+      <cvename>CVE-2015-5740</cvename>
+      <cvename>CVE-2015-5741</cvename>
+      <url>https://github.com/golang/go/commit/117ddcb83d7f42d6aa72241240af99ded81118e9</url>
+      <url>https://github.com/golang/go/commit/143822585e32449860e624cace9d2e521deee62e</url>
+      <url>https://github.com/golang/go/commit/300d9a21583e7cf0149a778a0611e76ff7c6680f</url>
+      <url>http://seclists.org/oss-sec/2015/q3/237</url>
+    </references>
+    <dates>
+      <discovery>2015-07-29</discovery>
+      <entry>2015-08-25</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="40497e81-fee3-4e54-9d5f-175a5c633b73">
+    <topic>libtremor -- memory corruption</topic>
+    <affects>
+      <package>
+	<name>libtremor</name>
+	<range><lt>1.2.0.s20120120</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Mozilla Project reports:</p>
+	<blockquote cite="https://www.mozilla.org/en-US/security/advisories/mfsa2012-07/">
+	  <p>Security researcher regenrecht reported via
+	    TippingPoint's Zero Day Initiative the possibility of memory
+	    corruption during the decoding of Ogg Vorbis files. This can
+	    cause a crash during decoding and has the potential for
+	    remote code execution.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2012-0444</cvename>
+      <url>https://bugzilla.mozilla.org/show_bug.cgi?id=719612</url>
+      <url>https://git.xiph.org/?p=tremor.git;a=commitdiff;h=3daa274</url>
+    </references>
+    <dates>
+      <discovery>2012-01-31</discovery>
+      <entry>2015-08-25</entry>
+      <modified>2015-08-25</modified>
+    </dates>
+  </vuln>
+
+  <vuln vid="3dac84c9-bce1-4199-9784-d68af1eb7b2e">
+    <topic>libtremor -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>libtremor</name>
+	<range><lt>1.2.0.s20101013</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The RedHat Project reports:</p>
+	<blockquote cite="https://bugzilla.redhat.com/show_bug.cgi?id=438125">
+	  <p>Will Drewry of the Google Security Team reported multiple
+	    issues in OGG Vorbis and Tremor libraries, that could cause
+	    application using those libraries to crash (NULL pointer
+	    dereference or divide by zero), enter an infinite loop or
+	    cause heap overflow caused by integer overflow.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2008-1418</cvename>
+      <cvename>CVE-2008-1419</cvename>
+      <cvename>CVE-2008-1420</cvename>
+      <cvename>CVE-2008-1423</cvename>
+      <cvename>CVE-2008-2009</cvename>
+      <url>http://redpig.dataspill.org/2008/05/multiple-vulnerabilities-in-ogg-tremor.html</url>
+      <url>https://git.xiph.org/?p=tremor.git;a=commitdiff;h=7e94eea</url>
+      <url>https://git.xiph.org/?p=tremor.git;a=commitdiff;h=1d1f93e</url>
+      <url>https://git.xiph.org/?p=tremor.git;a=commitdiff;h=159efc4</url>
+    </references>
+    <dates>
+      <discovery>2008-03-19</discovery>
+      <entry>2015-08-25</entry>
+      <modified>2015-08-25</modified>
+    </dates>
+  </vuln>
+
+  <vuln vid="6900e6f1-4a79-11e5-9ad8-14dae9d210b8">
+    <topic>pcre -- heap overflow vulnerability</topic>
+    <affects>
+      <package>
+	<name>pcre</name>
+	<range><lt>8.37_4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Guanxing Wen reports:</p>
+	<blockquote cite="http://seclists.org/oss-sec/2015/q3/295">
+	  <p>PCRE library is prone to a vulnerability which leads to
+	    Heap Overflow.
+	    During the compilation of a malformed regular expression, more data is
+	    written on the malloced block than the expected size output by
+	    compile_regex().
+	    The Heap Overflow vulnerability is caused by the following regular
+	    expression.</p>
+	    <p>/(?J:(?|(:(?|(?'R')(\z(?|(?'R')(\k'R')|((?'R')))k'R')|((?'R')))H'Ak'Rf)|s(?'R')))/</p>
+	    <p>A dry run of this particular regular expression with pcretest will
+	    reports "double free or corruption (!prev)".
+	    But it is actually a heap overflow problem.
+	    The overflow only affects pcre 8.x branch, pcre2 branch is not affected.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>http://seclists.org/oss-sec/2015/q3/295</url>
+      <url>https://bugs.exim.org/show_bug.cgi?id=1672</url>
+    </references>
+    <dates>
+      <discovery>2015-08-21</discovery>
+      <entry>2015-08-24</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="9393213d-489b-11e5-b8c7-d050996490d0">
     <topic>drupal -- multiple vulnerabilities</topic>
     <affects>
@@ -280,10 +825,12 @@ Notes:
       <url>http://seclists.org/oss-sec/2015/q3/404</url>
       <url>https://sourceforge.net/p/libpgf/code/147/</url>
       <url>https://sourceforge.net/p/libpgf/code/148/</url>
+      <cvename>CVE-2015-6673</cvename>
     </references>
     <dates>
       <discovery>2015-08-08</discovery>
       <entry>2015-08-20</entry>
+      <modified>2015-08-26</modified>
     </dates>
   </vuln>
 
@@ -7608,6 +8155,8 @@ Notes:
 	  <p>MFSA-2015-57 Privilege escalation through IPC channel messages</p>
 	  <p>MFSA-2015-58 Mozilla Windows updater can be run outside
 	    of application directory</p>
+	  <p>MFSA 2015-93 Integer overflows in libstagefright while processing
+	    MP4 video metadata</p>
 	</blockquote>
       </body>
     </description>
@@ -7627,6 +8176,7 @@ Notes:
       <cvename>CVE-2015-2717</cvename>
       <cvename>CVE-2015-2718</cvename>
       <cvename>CVE-2015-2720</cvename>
+      <cvename>CVE-2015-4496</cvename>
       <url>https://www.mozilla.org/security/advisories/mfsa2015-46/</url>
       <url>https://www.mozilla.org/security/advisories/mfsa2015-47/</url>
       <url>https://www.mozilla.org/security/advisories/mfsa2015-48/</url>
@@ -7640,10 +8190,12 @@ Notes:
       <url>https://www.mozilla.org/security/advisories/mfsa2015-56/</url>
       <url>https://www.mozilla.org/security/advisories/mfsa2015-57/</url>
       <url>https://www.mozilla.org/security/advisories/mfsa2015-58/</url>
+      <url>https://www.mozilla.org/security/advisories/mfsa2015-93/</url>
     </references>
     <dates>
       <discovery>2015-05-12</discovery>
       <entry>2015-05-12</entry>
+      <modified>2015-08-28</modified>
     </dates>
   </vuln>
 

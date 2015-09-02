@@ -1024,6 +1024,10 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 #				  has been specified in distinfo.  This is useful
 #				  when using an alternate FETCH_CMD.
 #
+# PKG_CREATE_VERBOSE		- If set, pass the -v option to pkg create which
+#				  ensures periodic output during packaging and
+#				  will help prevent timeouts by build monitors
+#
 # End of the list of all variables that need to be defined in a port.
 # Most port authors should not need to understand anything after this point.
 #
@@ -3453,6 +3457,9 @@ do-install:
 
 .if !target(do-package)
 PKG_CREATE_ARGS=	-r ${STAGEDIR} -m ${METADIR} -p ${TMPPLIST}
+.if defined(PKG_CREATE_VERBOSE)
+PKG_CREATE_ARGS+=	-v
+.endif
 do-package: create-manifest
 do-package: ${TMPPLIST}
 	@if [ -d ${PACKAGES} ]; then \
@@ -4421,10 +4428,14 @@ build-depends-list:
 
 BUILD-DEPENDS-LIST= \
 	for dir in $$(${ECHO_CMD} "${PKG_DEPENDS} ${EXTRACT_DEPENDS} ${PATCH_DEPENDS} ${FETCH_DEPENDS} ${BUILD_DEPENDS} ${LIB_DEPENDS}" | ${SED} -E -e 's,([^: ]*):([^: ]*)(:[^ ]*)?,\2,g' -e 'y/ /\n/'| ${SORT} -u); do \
-		if [ -d $$dir ]; then \
-			${ECHO_CMD} $$dir; \
+		case $$dir in \
+		/*) pdir=$$dir ;; \
+		*) pdir=${PORTSDIR}/$$dir ;; \
+		esac ; \
+		if [ -d $$pdir ]; then \
+			${ECHO_CMD} $$pdir; \
 		else \
-			${ECHO_MSG} "${PKGNAME}: \"$$dir\" non-existent -- dependency list incomplete" >&2; \
+			${ECHO_MSG} "${PKGNAME}: \"$$pdir\" non-existent -- dependency list incomplete" >&2; \
 		fi; \
 	done | ${SORT} -u
 
@@ -4435,10 +4446,14 @@ run-depends-list:
 
 RUN-DEPENDS-LIST= \
 	for dir in $$(${ECHO_CMD} "${_LIB_RUN_DEPENDS:C,.*:([^:]*).*,\1,}" | ${SED} -e 'y/ /\n/' | ${SORT} -u); do \
-		if [ -d $$dir ]; then \
-			${ECHO_CMD} $$dir; \
+		case $$dir in \
+		/*) pdir=$$dir ;; \
+		*) pdir=${PORTSDIR}/$$dir ;; \
+		esac ; \
+		if [ -d $$pdir ]; then \
+			${ECHO_CMD} $$pdir; \
 		else \
-			${ECHO_MSG} "${PKGNAME}: \"$$dir\" non-existent -- dependency list incomplete" >&2; \
+			${ECHO_MSG} "${PKGNAME}: \"$$pdir\" non-existent -- dependency list incomplete" >&2; \
 		fi; \
 	done | ${SORT} -u
 
@@ -4467,6 +4482,10 @@ PACKAGE-DEPENDS-LIST?= \
 	fi; \
 	checked="${PARENT_CHECKED}"; \
 	for dir in ${_LIB_RUN_DEPENDS:C,[^:]*:([^:]*):?.*,\1,}; do \
+		case "$$dir" in \
+		/*) ;; \
+		*) dir=${PORTSDIR}/$$dir ;; \
+		esac ; \
 		dir=$$(${REALPATH} $$dir); \
 		if [ -d $$dir ]; then \
 			case $$checked in	\
@@ -5049,6 +5068,9 @@ _check-config: pre-check-config
 	@${ECHO_MSG} "====> Two or more enabled options conflict with each other"
 .  for prevents in ${OPTIONS_WRONG_PREVENTS}
 	@${ECHO_MSG} "=====> Option ${prevents} conflicts with ${OPTIONS_WRONG_PREVENTS_${prevents}} (select only one)"
+.    if defined(${prevents}_PREVENTS_MSG)
+	@${ECHO_MSG} "======> ${${prevents}_PREVENTS_MSG}"
+.    endif
 .  endfor
 .endif
 .if !empty(OPTIONS_WRONG_MULTI) || !empty(OPTIONS_WRONG_SINGLE) || !empty(OPTIONS_WRONG_RADIO) || !empty(OPTIONS_WRONG_PREVENTS)

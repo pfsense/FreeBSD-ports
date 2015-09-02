@@ -1315,7 +1315,6 @@
     SUBDIR += p5-WWW-Shorten-Bitly
     SUBDIR += p5-WWW-Shorten-Googl
     SUBDIR += p5-WWW-Shorten-KUSO
-    SUBDIR += p5-WWW-Shorten-NotLong
     SUBDIR += p5-WWW-Shorten-Yourls
     SUBDIR += p5-WWW-Shorten-isgd
     SUBDIR += p5-WWW-SourceForge
@@ -1434,7 +1433,6 @@
     SUBDIR += pecl-yaf
     SUBDIR += pecl-yar
     SUBDIR += pecl-zendopcache
-    SUBDIR += pelican
     SUBDIR += perlbal
     SUBDIR += pglogd
     SUBDIR += phalcon
@@ -1501,6 +1499,7 @@
     SUBDIR += py-blogofile
     SUBDIR += py-bottle
     SUBDIR += py-bottle-cork
+    SUBDIR += py-cactus
     SUBDIR += py-cherrypy
     SUBDIR += py-cherrypy-old
     SUBDIR += py-clientform
@@ -1534,6 +1533,7 @@
     SUBDIR += py-django-keyedcache
     SUBDIR += py-django-ldapdb
     SUBDIR += py-django-livesettings
+    SUBDIR += py-django-markwhat
     SUBDIR += py-django-mezzanine
     SUBDIR += py-django-mezzanine-filebrowser
     SUBDIR += py-django-mezzanine-grappelli
@@ -1565,6 +1565,7 @@
     SUBDIR += py-django16
     SUBDIR += py-django16-tastypie
     SUBDIR += py-django17
+    SUBDIR += py-django18
     SUBDIR += py-django_compressor
     SUBDIR += py-djangotoolbox
     SUBDIR += py-djblets
@@ -1618,6 +1619,7 @@
     SUBDIR += py-paste
     SUBDIR += py-pastedeploy
     SUBDIR += py-pastescript
+    SUBDIR += py-pelican
     SUBDIR += py-plone.alterego
     SUBDIR += py-plone.app.blob
     SUBDIR += py-plone.app.caching
@@ -1702,6 +1704,7 @@
     SUBDIR += py-py-restclient
     SUBDIR += py-pyjwt
     SUBDIR += py-pylons
+    SUBDIR += py-pyocclient
     SUBDIR += py-pyquery
     SUBDIR += py-pyramid
     SUBDIR += py-pyramid_rpc

@@ -128,6 +128,7 @@ MOZ_MK_OPTIONS+=MOZ_OBJDIR="${MOZ_OBJDIR}"
 CPPFLAGS+=		-isystem${LOCALBASE}/include
 LDFLAGS+=		-L${LOCALBASE}/lib -Wl,-rpath,${PREFIX}/lib/${MOZILLA}
 
+.if ${OPSYS} != DragonFly # XXX xpcshell crash during install
 # use jemalloc 3.0.0 API for stats/tuning
 MOZ_EXPORT+=	MOZ_JEMALLOC3=1
 .if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100079
@@ -138,9 +139,17 @@ EXTRA_PATCHES+=	${FILESDIR}/extra-patch-bug1125514
 .elif ${OPSYS} != FreeBSD || ${OSVERSION} < 1000012 || ${MOZILLA_VER:R:R} >= 37
 MOZ_OPTIONS+=	--enable-jemalloc
 .endif
+.endif # !DragonFly
 
 # Standard depends
-_ALL_DEPENDS=	cairo event ffi graphite harfbuzz hunspell icu jpeg nspr nss opus png pixman soundtouch sqlite vorbis vpx
+_ALL_DEPENDS=	cairo event ffi graphite harfbuzz hunspell icu jpeg nspr nss opus png pixman soundtouch sqlite vpx
+
+.if ${PORT_OPTIONS:MINTEGER_SAMPLES}
+MOZ_EXPORT+=	MOZ_INTEGER_SAMPLES=1
+_ALL_DEPENDS+=	tremor
+.else
+_ALL_DEPENDS+=	vorbis
+.endif
 
 .if ! ${PORT_OPTIONS:MBUNDLED_CAIRO}
 cairo_LIB_DEPENDS=	libcairo.so:${PORTSDIR}/graphics/cairo
@@ -206,6 +215,9 @@ sqlite_MOZ_OPTIONS=	--enable-system-sqlite
 # XXX disabled: update to 1.2.x or review backported fixes
 theora_LIB_DEPENDS=	libtheora.so:${PORTSDIR}/multimedia/libtheora
 theora_MOZ_OPTIONS=	--with-system-theora
+
+tremor_LIB_DEPENDS=	libvorbisidec.so:${PORTSDIR}/audio/libtremor
+tremor_MOZ_OPTIONS=	--with-system-tremor --with-system-ogg
 
 vorbis_LIB_DEPENDS=	libvorbis.so:${PORTSDIR}/audio/libvorbis
 vorbis_MOZ_OPTIONS=	--with-system-vorbis --with-system-ogg

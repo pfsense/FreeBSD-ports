@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	twig
-PORTVERSION=	1.15.1
+PORTVERSION=	1.21.1
 CATEGORIES=	www pear
 MASTER_SITES=	http://pear.twig-project.org/get/
 DISTNAME=	Twig-${PORTVERSION}
 
-MAINTAINER=	joehorn@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The flexible, fast, and secure template engine for PHP
 
 LICENSE=	BSD3CLAUSE
