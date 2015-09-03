@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-builder
-DISTVERSION=	2.3-20150831
+DISTVERSION=	2.3-20150903
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -10,7 +10,7 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	renato@pfsense.com
 COMMENT?=	Meta package to install pfSense builder required ports
 
-RUN_DEPENDS=	${LOCALBASE}/bin/git:${PORTSDIR}/devel/git-lite \
+RUN_DEPENDS=	${LOCALBASE}/bin/git:${PORTSDIR}/devel/git \
 		${LOCALBASE}/bin/curl:${PORTSDIR}/ftp/curl \
 		${LOCALBASE}/bin/rsync:${PORTSDIR}/net/rsync \
 		${LOCALBASE}/bin/screen:${PORTSDIR}/sysutils/screen \
