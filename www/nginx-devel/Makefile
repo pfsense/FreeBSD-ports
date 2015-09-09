@@ -370,7 +370,7 @@ JAVA_VERSION=	1.8
 JAVA_VENDOR=	openjdk
 JAVA_BUILD=	yes
 JAVA_RUN=	yes
-NGINX_CLOJURE_VERSION=	0.4.1
+NGINX_CLOJURE_VERSION=	0.4.2
 GH_ACCOUNT+=	nginx-clojure:clojure
 GH_PROJECT+=	nginx-clojure:clojure
 GH_TAGNAME+=	v${NGINX_CLOJURE_VERSION}:clojure
@@ -778,7 +778,6 @@ EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-ngx_http_sflow_config.c \
 .endif
 
 .if ${PORT_OPTIONS:MSHIBBOLETH}
-RUN_DEPENDS+=	${LOCALBASE}/sbin/shibd:${PORTSDIR}/security/shibboleth2-sp/
 GIT_SHIBBOLETH_VERSION=	20150121
 GH_ACCOUNT+=	nginx-shib:shib
 GH_PROJECT+=	nginx-http-shibboleth:shib
@@ -859,7 +858,7 @@ NGINX_OPENSSL=	yes
 USE_HTTP_SSL=	yes
 CONFIGURE_ARGS+=--with-http_v2_module
 USE_OPENSSL_PORT=	yes
-NGINX_HTTPV2_VERSION=	3
+NGINX_HTTPV2_VERSION=	4
 PATCH_SITES+=	http://nginx.org/patches/http2/:httpv2
 PATCHFILES+=	patch.http2-v${NGINX_HTTPV2_VERSION}_${PORTVERSION}.txt:httpv2
 PATCH_DIST_STRIP=	-p1
