@@ -1,14 +1,14 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense
-PORTVERSION=	0.5
+PORTVERSION=	0.6
 CATEGORIES=	devel
 MASTER_SITES=	#
 DISTFILES=	#
-PKGNAMEPREFIX=	php55-
+PKGNAMEPREFIX=	php56-
 PKGNAMESUFFIX=	-module
 
-MAINTAINER=	eri@pfsense.org
+MAINTAINER=	garga@pfsense.org
 COMMENT=	Library for getting useful info
 
 USE_PHP=	yes

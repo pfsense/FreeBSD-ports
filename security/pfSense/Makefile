@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense
-DISTVERSION=	2.3-ALPHA-20150910
+DISTVERSION=	2.3-ALPHA-20150915
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -81,7 +81,7 @@ RUN_DEPENDS+=	${LOCALBASE}/sbin/dmidecode:${PORTSDIR}/sysutils/dmidecode \
 		${LOCALBASE}/bin/beep:${PORTSDIR}/audio/beep
 .endif
 
-RUN_DEPENDS+=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/pfSense.so:${PORTSDIR}/devel/php55-pfSense-module \
+RUN_DEPENDS+=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/pfSense.so:${PORTSDIR}/devel/php56-pfSense-module \
 		${PHPBASE}/lib/php/${PHP_EXT_DIR}/ssh2.so:${PORTSDIR}/security/pecl-ssh2 \
 		${PHPBASE}/lib/php/${PHP_EXT_DIR}/suhosin.so:${PORTSDIR}/security/php-suhosin \
 		${PHPBASE}/lib/php/${PHP_EXT_DIR}/xdebug.so:${PORTSDIR}/devel/php-xdebug \
