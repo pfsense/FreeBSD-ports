@@ -41,10 +41,6 @@ if ($pf_version == "2.1" || $pf_version == "2.2") {
 }
 
 function php_deinstall_zabbix_agent_lts() {
-	conf_mount_rw();
-
-	stop_service("zabbix_agentd_lts");
-	unlink_if_exists(ZABBIX_AGENT_BASE . "/etc/rc.d/zabbix_agentd_lts.sh");
 	unlink_if_exists(ZABBIX_AGENT_BASE . "/etc/zabbix22/zabbix_agentd.conf");
 	unlink_if_exists("/var/log/zabbix-agent-lts/zabbix_agentd_lts.log");
 	unlink_if_exists("/var/run/zabbix-agent-lts/zabbix_agentd_lts.pid");
@@ -55,8 +51,6 @@ function php_deinstall_zabbix_agent_lts() {
 	if (is_dir("/var/run/zabbix-agent-lts")) {
 		mwexec("/bin/rm -rf /var/run/zabbix-agent-lts/");
 	}
-
-	conf_mount_ro();
 }
 
 function validate_input_zabbix_agent_lts($post, &$input_errors) {

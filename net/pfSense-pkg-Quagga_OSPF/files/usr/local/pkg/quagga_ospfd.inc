@@ -1,9 +1,10 @@
 <?php
 /*
 	quagga_ospfd.inc
-	Copyright (C) 2010 Ermal Lu�i
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2010 Ermal Luçi
 	Copyright (C) 2012 Jim Pingle
-	part of pfSense
+	Copyright (C) 2015 ESF, LLC
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -46,7 +47,7 @@ function quagga_ospfd_get_interfaces() {
 	$interfaces = get_configured_interface_with_descr();
 	$ospf_ifs = array();
 	foreach ($interfaces as $iface => $ifacename) {
-		$tmp["name"]  = $ifacename;
+		$tmp["name"] = $ifacename;
 		$tmp["value"] = $iface;
 		$ospf_ifs[] = $tmp;
 	}
@@ -55,7 +56,7 @@ function quagga_ospfd_get_interfaces() {
 		if (is_array($config['openvpn']["openvpn-{$mode}"])) {
 			foreach ($config['openvpn']["openvpn-{$mode}"] as $id => $setting) {
 				if (!isset($setting['disable'])) {
-					$tmp["name"]  = gettext("OpenVPN") . " ".$mode.": ".htmlspecialchars($setting['description']);
+					$tmp["name"] = gettext("OpenVPN") . " ".$mode.": ".htmlspecialchars($setting['description']);
 					$tmp["value"] = 'ovpn' . substr($mode, 0, 1) . $setting['vpnid'];
 					$ospf_ifs[] = $tmp;
 				}
@@ -74,11 +75,11 @@ function quagga_ospfd_install_conf() {
 	$quagga_config_base = PKG_QUAGGA_CONFIG_BASE;
 
 	$noaccept = "";
-	
+
 	// generate ospfd.conf based on the assistant
-	if(is_array($config['installedpackages']['quaggaospfd']['config']))
+	if(is_array($config['installedpackages']['quaggaospfd']['config'])) {
 		$ospfd_conf = &$config['installedpackages']['quaggaospfd']['config'][0];
-	else {
+	} else {
 		log_error("Quagga OSPFd: No config data found.");
 		return;
 	}
@@ -90,11 +91,12 @@ function quagga_ospfd_install_conf() {
 	} else {
 		$conffile = "# This file was created by the pfSense package manager.  Do not edit!\n\n";
 
-		if($ospfd_conf['password'])
+		if($ospfd_conf['password']) {
 			$conffile .= "password {$ospfd_conf['password']}\n";
-
-		if ($ospfd_conf['logging'])
+		}
+		if ($ospfd_conf['logging']) {
 			$conffile .= "log syslog\n";
+		}
 
 		/* Interface Settings */
 		$passive_interfaces = array();
@@ -113,7 +115,7 @@ function quagga_ospfd_install_conf() {
 				if ($conf['md5password'] && !empty($conf['password'])) {
 					$conffile .= "  ip ospf authentication message-digest\n";
 					$conffile .= "  ip ospf message-digest-key 1 md5 " . substr($conf['password'], 0, 15) . "\n";
-				} else if (!empty($conf['password'])) {
+				} elseif (!empty($conf['password'])) {
 					$conffile .= "  ip ospf authentication-key " . substr($conf['password'], 0, 8) . "\n";
 				}
 				if (!empty($conf['routerpriorityelections'])) {
@@ -124,38 +126,36 @@ function quagga_ospfd_install_conf() {
 				}
 				if (!empty($conf['deadtimer'])) {
 					$conffile .= "  ip ospf dead-interval {$conf['deadtimer']}\n";
-		}
+				}
 				if (!empty($conf['passive'])) {
 					$passive_interfaces[] = $realif;
 				}
 				$interface_ip = find_interface_ip($realif);
 				$interface_subnet = find_interface_subnet($realif);
 				/* Cheap hack since point-to-points won't attach if /32 is used. */
-				if ($interface_subnet == 32)
+				if ($interface_subnet == 32) {
 					$interface_subnet = 30;
+				}
 				$subnet = gen_subnet($interface_ip, $interface_subnet);
 				if (!empty($conf['acceptfilter'])) {
 					$noaccept .= "ip prefix-list ACCEPTFILTER deny {$subnet}/{$interface_subnet}\n";
 				}
 				if (!empty($conf['interfacearea'])) {
 					$interface_networks[] = array( "subnet" => "{$subnet}/{$interface_subnet}", "area" => $conf['interfacearea']);
-				}
-				else {
+				} else {
 					$interface_networks[] = array( "subnet" => "{$subnet}/{$interface_subnet}", "area" => $ospfd_conf['area']);
 				}
-				
-
-
  			}
 		}
-		
+
 
 		$redist = "";
 		$noredist = "";
 		if (is_array($ospfd_conf['row'])) {
 			foreach ($ospfd_conf['row'] as $redistr) {
-				if (empty($redistr['routevalue']))
+				if (empty($redistr['routevalue'])) {
 					continue;
+				}
 				if (isset($redistr['acceptfilter'])) {
 					$noaccept .= "ip prefix-list ACCEPTFILTER deny {$redistr['routevalue']}\n";
 				}
@@ -173,55 +173,60 @@ function quagga_ospfd_install_conf() {
 		$conffile .= "\n\nrouter ospf\n";
 
 		// Specify router id
-		if($ospfd_conf['routerid'])
+		if ($ospfd_conf['routerid']) {
 			$conffile .= "  ospf router-id {$ospfd_conf['routerid']}\n";
-
-		if ($ospfd_conf['updatefib'])
+		}
+		if ($ospfd_conf['updatefib']) {
 			$conffile .= "  area {$ospfd_conf['area']} stub\n";
-
-		if ($ospfd_conf['logging'] && $ospfd_conf['adjacencylog'])
+		}
+		if ($ospfd_conf['logging'] && $ospfd_conf['adjacencylog']) {
 			$conffile .= "  log-adjacency-changes detail\n";
-
-		if ($ospfd_conf['redistributeconnectedsubnets'])
+		}
+		if ($ospfd_conf['redistributeconnectedsubnets']) {
 			$conffile .= "  redistribute connected\n";
-
-		if ($ospfd_conf['redistributestatic'])
+		}
+		if ($ospfd_conf['redistributestatic']) {
 			$conffile .= "  redistribute static\n";
-		
-		if ($ospfd_conf['redistributekernel'])
+		}
+		if ($ospfd_conf['redistributekernel']) {
 			$conffile .= "  redistribute kernel\n";
-		
-
-		if ($ospfd_conf['redistributedefaultroute'])
+		}
+		if ($ospfd_conf['redistributedefaultroute']) {
 			$conffile .= "  default-information originate\n";
-
+		}
 		if ($ospfd_conf['spfholdtime'] || $ospfd_conf['spfdelay']) {
 			$spf_minhold = ($ospfd_conf['spfholdtime']) ? $ospfd_conf['spfholdtime'] : 1000;
 			$spf_maxhold = $spf_minhold * 10;
 			$spf_delay = ($ospfd_conf['spfdelay']) ? $ospfd_conf['spfdelay'] : 200;
 			$conffile .= "  timers throttle spf {$spf_delay} {$spf_minhold} {$spf_maxhold}\n";
 		}
-
-		if ($ospfd_conf['rfc1583'])
+		if ($ospfd_conf['rfc1583']) {
 			$conffile .= "  ospf rfc1583compatibility\n";
-
+		}
 		if (is_array($passive_interfaces)) {
 			foreach ($passive_interfaces as $pint)
 				$conffile .= "  passive-interface {$pint}\n";
 		}
-
-
 		if (is_array($interface_networks)) {
 			foreach ($interface_networks as $ifn) {
 				if (is_subnet($ifn['subnet'])) {
-						$conffile .= "  network {$ifn['subnet']} area {$ifn['area']}\n";
-					}
+					$conffile .= "  network {$ifn['subnet']} area {$ifn['area']}\n";
+				}
 			}
 		}
-
-		if (!empty($redist))
+		if ($conf['md5password'] && !empty($conf['password']) && !empty($conf['interfacearea'])) {
+			$conffile .= "  area {$conf['interfacearea']} authentication message-digest\n";
+		} elseif ($conf['md5password'] && !empty($conf['password']) && empty($conf['interfacearea'])) {
+			$conffile .= "  area 0.0.0.0 authentication message-digest\n";
+		}
+		if ($conf['password'] && empty($conf['md5password']) && !empty($conf['interfacearea'])) {
+			$conffile .= "  area {$conf['interfacearea']} authentication\n";
+		} elseif ($conf['password'] && empty($conf['md5password']) && empty($conf['interfacearea'])) {
+			$conffile .= "  area 0.0.0.0 authentication\n";
+		}
+		if (!empty($redist)) {
 			$conffile .= $redist;
-
+		}
 		if (!empty($noredist)) {
 			$conffile .= "  distribute-list dnr-list out connected\n";
 			$conffile .= "  distribute-list dnr-list out kernel\n";
@@ -248,10 +253,12 @@ function quagga_ospfd_install_conf() {
 		$zebraconffile = str_replace("\r","",base64_decode($config['installedpackages']['quaggaospfdraw']['config'][0]['zebra']));
 	} else {
 		$zebraconffile = "# This file was created by the pfSense package manager.  Do not edit!\n\n";
-		if($ospfd_conf['password'])
+		if($ospfd_conf['password']) {
 			$zebraconffile .= "password {$ospfd_conf['password']}\n";
-		if ($ospfd_conf['logging'])
+		}
+		if ($ospfd_conf['logging']) {
 			$zebraconffile .= "log syslog\n";
+		}
 		if (!empty($noaccept)) {
 			$zebraconffile .= $noaccept;
 			$zebraconffile .= "ip prefix-list ACCEPTFILTER permit any\n";
@@ -381,31 +388,40 @@ function quagga_ospfd_validate_interface() {
 
 	if ($config['installedpackages']['quaggaospfdinterfaces']['config']) {
 		foreach ($config['installedpackages']['quaggaospfdinterfaces']['config'] as $index => $conf) {
-			if ($index == 0)
+			if ($index == 0) {
 				continue;
-			if ($id != $index && $conf['interface'] == $_POST['interface'])
+			}
+			if ($id != $index && $conf['interface'] == $_POST['interface']) {
 				$input_errors[] = "Interface {$_POST['interface']} is already configured.";
+			}
 		}
 	}
-	if ($_POST['md5password'] && empty($_POST['password']))
+	if ($_POST['md5password'] && empty($_POST['password'])) {
 		$input_errors[] = "Please input a password.";
+	}
 }
 
 function quagga_ospfd_validate_input() {
 	global $config, $g, $input_errors;
 
-	if ($_POST['password'] <> "" && (strpos($_POST['password'], "'") !== false))
+	if ($_POST['password'] <> "" && (strpos($_POST['password'], "'") !== false)) {
 		$input_errors[] = "Password cannot contain a single quote (')";
-	if (!empty($_POST['routerid']) && !is_ipaddr($_POST['routerid']))
+	}
+	if (!empty($_POST['routerid']) && !is_ipaddr($_POST['routerid'])) {
 		$input_errors[] = "Router ID must be an address.";
-	if (!is_ipaddr($_POST['area']))
+	}
+	if (!is_ipaddr($_POST['area'])) {
 		$input_errors[] = "Area needs to be a valid ip_address.";
-	if ($_POST['spfholdtime'] <> "" && ($_POST['spfholdtime'] < 1 || $_POST['spfholdtime'] > 5))
+	}
+	if ($_POST['spfholdtime'] <> "" && ($_POST['spfholdtime'] < 1 || $_POST['spfholdtime'] > 5)) {
 		$input_errors[] = "SPF holdtime needs to be between 1 and 5.";
-	if ($_POST['spfdelay'] <> "" && ($_POST['spfdelay'] < 1 || $_POST['spfdelay'] > 10))
+	}
+	if ($_POST['spfdelay'] <> "" && ($_POST['spfdelay'] < 1 || $_POST['spfdelay'] > 10)) {
 		$input_errors[] = "SPF delay needs to be between 1 and 10.";
-	if (!$config['installedpackages']['quaggaospfdinterfaces']['config'])
+	}
+	if (!$config['installedpackages']['quaggaospfdinterfaces']['config']) {
 		$input_errors[] = "Please select an interface to use for Quagga OSPFd.";
+	}
 }
 
 function quagga_get_carp_status_by_ip($ipaddr) {
@@ -413,8 +429,9 @@ function quagga_get_carp_status_by_ip($ipaddr) {
 	if ($iface) {
 		$status = get_carp_interface_status($iface);
 		// If there is no status for that interface, return null.
-		if (!$status)
+		if (!$status) {
 			$status = null;
+		}
 	} else {
 		// If there is no VIP by that IP, return null.
 		$status = null;
@@ -430,7 +447,7 @@ function quagga_ospfd_plugin_carp($pluginparams) {
 	// $pluginparams['interface'] contains the affected interface
 
 	/* If there is no OSPF config, then stop */
-	if(is_array($config['installedpackages']['quaggaospfd']['config'])) {
+	if (is_array($config['installedpackages']['quaggaospfd']['config'])) {
 		$ospfd_conf = &$config['installedpackages']['quaggaospfd']['config'][0];
 	} else {
 		return null;

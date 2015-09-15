@@ -1,9 +1,9 @@
 <?php
-/* $Id$ */
 /*
 	openbgpd_status.php
-	part of pfSense (https://www.pfsense.org/)
+	part of pfSense (https://www.pfSense.org/)
 	Copyright (C) 2007 Scott Ullrich (sullrich@gmail.com)
+	Copyright (C) 2015 ESF, LLC
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -27,36 +27,32 @@
 	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
 */
-
 require("guiconfig.inc");
 
 $commands = array();
 
-defCmdT("summary",	"OpenBGPD Summary",	"/usr/local/sbin/bgpctl show summary");
-defCmdT("interfaces",	"OpenBGPD Interfaces",	"/usr/local/sbin/bgpctl show interfaces");
-defCmdT("routing",	"OpenBGPD Routing",	"/usr/local/sbin/bgpctl show rib",		true, 4);
-defCmdT("forwarding",	"OpenBGPD Forwarding",	"/usr/local/sbin/bgpctl show fib",		true, 5);
-defCmdT("network",	"OpenBGPD Network",	"/usr/local/sbin/bgpctl show network");
-defCmdT("nexthops",	"OpenBGPD Nexthops",	"/usr/local/sbin/bgpctl show nexthop");
-defCmdT("ip",		"OpenBGPD IP",		"/usr/local/sbin/bgpctl show ip bgp",		true, 4);
-defCmdT("neighbors",	"OpenBGPD Neighbors",	"/usr/local/sbin/bgpctl show neighbor");
+defCmdT("summary", "OpenBGPD Summary", "/usr/local/sbin/bgpctl show summary");
+defCmdT("interfaces", "OpenBGPD Interfaces", "/usr/local/sbin/bgpctl show interfaces");
+defCmdT("routing", "OpenBGPD Routing", "/usr/local/sbin/bgpctl show rib", true, 4);
+defCmdT("forwarding", "OpenBGPD Forwarding", "/usr/local/sbin/bgpctl show fib", true, 5);
+defCmdT("network", "OpenBGPD Network", "/usr/local/sbin/bgpctl show network");
+defCmdT("nexthops", "OpenBGPD Nexthops", "/usr/local/sbin/bgpctl show nexthop");
+defCmdT("ip", "OpenBGPD IP", "/usr/local/sbin/bgpctl show ip bgp", true, 4);
+defCmdT("neighbors", "OpenBGPD Neighbors", "/usr/local/sbin/bgpctl show neighbor");
 
 if (isset($_REQUEST['isAjax'])) {
 	if (isset($_REQUEST['cmd']) && isset($commands[$_REQUEST['cmd']])) {
 		echo "{$_REQUEST['cmd']}\n";
-		if (isset($_REQUEST['count']))
+		if (isset($_REQUEST['count'])) {
 			echo " of " . countCmdT($commands[$_REQUEST['cmd']]['command']) . " items";
-		else
+		} else {
 			echo htmlspecialchars_decode(doCmdT($commands[$_REQUEST['cmd']]['command'], $_REQUEST['limit'], $_REQUEST['filter'], $_REQUEST['header_size']));
+		}
 	}
 	exit;
 }
 
-if ($config['version'] >= 6)
-	$pgtitle = array("OpenBGPD", "Status");
-else
-	$pgtitle = "OpenBGPD: Status";
-
+$pgtitle = array("OpenBGPD", "Status");
 include("head.inc");
 
 function doCmdT($command, $limit = "all", $filter = "", $header_size = 0) {
@@ -88,9 +84,9 @@ function doCmdT($command, $limit = "all", $filter = "", $header_size = 0) {
 function countCmdT($command) {
 	$fd = popen("{$command} 2>&1", "r");
 	$c = 0;
-	while (fgets($fd) !== FALSE)
+	while (fgets($fd) !== FALSE) {
 		$c++;
-
+	}
 	pclose($fd);
 
 	return $c;
@@ -118,7 +114,7 @@ function showCmdT($idx, $data) {
 		echo "</td></tr>\n";
 	}
 
-	echo "<tr><td colspan=\"2\" class=\"listlr\"><pre id=\"{$idx}\">";	/* no newline after pre */
+	echo "<tr><td colspan=\"2\" class=\"listlr\"><pre id=\"{$idx}\">"; // no newline after pre
 	echo "Gathering data, please wait...\n";
 	echo "</pre></td></tr>\n";
 	echo "</table>\n";
@@ -127,7 +123,7 @@ function showCmdT($idx, $data) {
 /* Define a command, with a title, to be executed later. */
 function defCmdT($idx, $title, $command, $has_filter = false, $header_size = 0) {
 	global $commands;
-	$title = htmlspecialchars($title,ENT_NOQUOTES);
+	$title = htmlspecialchars($title, ENT_NOQUOTES);
 	$commands[$idx] = array(
 		'title' => $title,
 		'command' => $command,
@@ -140,16 +136,18 @@ function listCmds() {
 	global $commands;
 	echo "<p>This status page includes the following information:\n";
 	echo "<ul width=\"700\">\n";
-	foreach ($commands as $idx => $command)
+	foreach ($commands as $idx => $command) {
 		echo "<li><strong><a href=\"#" . $command['title'] . "\">" . $command['title'] . "</a></strong></li>\n";
+	}
 	echo "</ul>\n";
 }
 
 /* Execute all of the commands which were defined by a call to defCmd. */
 function execCmds() {
 	global $commands;
-	foreach ($commands as $idx => $command)
+	foreach ($commands as $idx => $command) {
 		showCmdT($idx, $command);
+	}
 }
 
 ?>
@@ -216,8 +214,9 @@ function execCmds() {
 	function exec_all_cmds() {
 <?php
 		foreach ($commands as $idx => $command) {
-			if ($command['has_filter'])
+			if ($command['has_filter']) {
 				echo "\t\tupdate_count('{$idx}', {$command['header_size']});\n";
+			}
 			echo "\t\tupdate_filter('{$idx}', {$command['header_size']});\n";
 		}
 ?>
@@ -230,11 +229,6 @@ else
 
 //]]>
 </script>
-
-<?php
-	if ($config['version'] < 6)
-		echo '<p class="pgtitle">' . $pgtitle . '</font></p>';
-?>
 
 <?php if ($savemsg) print_info_box($savemsg); ?>
 
@@ -251,17 +245,13 @@ else
 ?>
 </table>
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
-	<tr>
-		<td class="tabcont" >
+	<tr><td class="tabcont" >
+		<div id="cmdspace" style="width:100%">
+		<?php listCmds(); ?>
 
-			<div id="cmdspace" style="width:100%">
-			<?php listCmds(); ?>
-
-			<?php execCmds(); ?>
-			</div>
-
-		</td>
-	</tr>
+		<?php execCmds(); ?>
+		</div>
+	</td></tr>
 </table>
 </div>
 

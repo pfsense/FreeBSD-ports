@@ -114,7 +114,9 @@ class HaproxyHtmlList
 				echo $itemvalue=='yes' ? gettext('yes') : gettext('no');
 			} else
 			if ($itemtype == "textarea"){
-				echo htmlspecialchars(base64_decode($itemvalue));
+				echo '<div style="overlow:scroll;max-height:120px;overflow-y: scroll;">';
+				echo str_replace("\n","<br/>", htmlspecialchars(base64_decode($itemvalue)));
+				echo '</div>';
 			} else
 				echo htmlspecialchars($itemvalue);
 		}

@@ -1,7 +1,9 @@
 <?php
 /*
 	services_servicewatchdog.php
+	part of pfSense (https://www.pfSense.org/)
 	Copyright (C) 2013 Jim Pingle
+	Copyright (C) 2015 ESF, LLC
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -78,7 +80,8 @@ if (isset($_POST['Update'])) {
 				}
 			}
 		}
-	} else { /* No notifies selected, remove them all. */
+	} else {
+		/* No notifies selected, remove them all. */
 		foreach ($a_pwservices as $idx => $thisservice) {
 			unset($a_pwservices[$idx]['notify']);
 		}
@@ -201,15 +204,15 @@ $nservices = $i = 0;
 foreach ($a_pwservices as $thisservice):
 ?>
 	<tr valign="top" id="fr<?=$nservices;?>">
-		<td class="listt"><input type="checkbox" id="frc<?=$nservices;?>" name="pwservices[]" value="<?=$i;?>" onClick="fr_bgcolor('<?=$nservices;?>')" style="margin: 0; padding: 0; width: 15px; height: 15px;" /></td>
-		<td class="listlr"><input type="checkbox" id="notify<?=$nservices;?>" name="notifies[]" value="<?=$i;?>" style="margin: 0; padding: 0; width: 15px; height: 15px;" <?PHP if (isset($thisservice['notify'])) echo 'checked="CHECKED"';?>/></td>
+		<td class="listt"><input type="checkbox" id="frc<?=$nservices;?>" name="pwservices[]" value="<?=$i;?>" onclick="fr_bgcolor('<?=$nservices;?>')" style="margin: 0; padding: 0; width: 15px; height: 15px;" /></td>
+		<td class="listlr"><input type="checkbox" id="notify<?=$nservices;?>" name="notifies[]" value="<?=$i;?>" style="margin: 0; padding: 0; width: 15px; height: 15px;" <?PHP if (isset($thisservice['notify'])) echo 'checked="checked"';?>/></td>
 		<td class="listr" onclick="fr_toggle(<?=$nservices;?>)" id="frd<?=$nservices;?>" ondblclick="document.location='services_servicewatchdog_add.php?id=<?=$nservices;?>';">
 			<?=$thisservice['name'];?>
 		</td>
 		<td class="listr" onclick="fr_toggle(<?=$nservices;?>)" id="frd<?=$nservices;?>" ondblclick="document.location='services_servicewatchdog_add.php?id=<?=$nservices;?>';">
 			<?=$thisservice['description'];?>
 		</td>
-		<td valign="middle" class="list" nowrap>
+		<td valign="middle" class="list" nowrap="nowrap">
 			<table border="0" cellspacing="0" cellpadding="1" summary="add">
 				<tr>
 					<td><input onmouseover="fr_insline(<?=$nservices;?>, true)" onmouseout="fr_insline(<?=$nservices;?>, false)" name="move_<?=$i;?>" src="/themes/<?= $g['theme']; ?>/images/icons/icon_left.gif" title="<?=gettext("move selected services before this service");?>" height="17" type="image" width="17" border="0" /></td>
@@ -225,7 +228,7 @@ endforeach;
 ?>
 	<tr>
 		<td class="list" colspan="4"></td>
-		<td class="list" valign="middle" nowrap>
+		<td class="list" valign="middle" nowrap="nowrap">
 			<table border="0" cellspacing="0" cellpadding="1" summary="add">
 				<tr>
 					<td><?php if ($nservices == 0): ?><img src="/themes/<?= $g['theme']; ?>/images/icons/icon_left_d.gif" width="17" height="17" title="<?=gettext("move selected services to end"); ?>" border="0" alt="move" /><?php else: ?><input name="move_<?=$i;?>" type="image" src="/themes/<?= $g['theme']; ?>/images/icons/icon_left.gif" width="17" height="17" title="<?=gettext("move selected services to end");?>" border="0" alt="move" /><?php endif; ?></td>

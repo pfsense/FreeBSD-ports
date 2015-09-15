@@ -5,7 +5,7 @@
 		<descr><![CDATA[The shellcmd utility is used to manage commands on system startup.]]></descr>
 		<category>Services</category>
 		<config_file>https://packages.pfsense.org/packages/config/shellcmd/shellcmd.xml</config_file>
-		<version>0.6</version>
+		<version>1.0</version>
 		<status>Beta</status>
 		<required_version>2.2</required_version>
 		<maintainer>markjcrane@gmail.com</maintainer>

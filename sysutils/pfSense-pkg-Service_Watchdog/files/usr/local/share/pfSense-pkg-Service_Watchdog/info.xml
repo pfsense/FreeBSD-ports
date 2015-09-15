@@ -5,7 +5,7 @@
 		<internal_name>Service_Watchdog</internal_name>
 		<descr><![CDATA[Monitors for stopped services and restarts them.]]></descr>
 		<maintainer>jimp@pfsense.org</maintainer>
-		<version>1.7</version>
+		<version>1.7.1</version>
 		<category>Services</category>
 		<status>Release</status>
 		<config_file>https://packages.pfsense.org/packages/config/servicewatchdog/servicewatchdog.xml</config_file>

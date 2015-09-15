@@ -36,8 +36,6 @@ if ($pfs_version == "2.1" || $pfs_version == "2.2") {
 }
 
 function avahi_install() {
-	conf_mount_rw();
-
 	if (!file_exists('/usr/local/etc/gnome.subr')) {
 		@symlink(AVAHI_BASE . '/etc/gnome.subr', '/usr/local/etc/gnome.subr');
 	}
@@ -49,21 +47,10 @@ function avahi_install() {
 	if (!exec("/usr/sbin/pw groupshow avahi")) {
 		exec("/usr/sbin/pw groupadd avahi -g 558");
 	}
-
-	conf_mount_ro();
 }
 
 function avahi_deinstall() {
-	conf_mount_rw();
-
-	// Stop services and remove created rc script and symlink
-	if (is_process_running("avahi-daemon")) {
-		exec("/usr/bin/killall -9 avahi-daemon");
-	}
-	if (is_process_running("dbus-daemon")) {
-		exec("/usr/bin/killall -9 dbus-daemon");
-	}
-	unlink_if_exists("/usr/local/etc/rc.d/avahi-daemon.sh");
+	// Remove created symlink
 	unlink_if_exists("/usr/local/etc/gnome.subr");
 
 	// Remove created users and groups if they exist
@@ -73,8 +60,6 @@ function avahi_deinstall() {
 	if (exec("/usr/sbin/pw usershow avahi")) {
 		exec("/usr/sbin/pw userdel avahi");
 	}
-
-	conf_mount_ro();
 }
 
 function avahi_write_config() {

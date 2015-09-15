@@ -1,7 +1,9 @@
 <?php
 /*
 	services_servicewatchdog_add.php
+	part of pfSense (https://www.pfSense.org/)
 	Copyright (C) 2013 Jim Pingle
+	Copyright (C) 2015 ESF, LLC
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -54,8 +56,9 @@ $system_services = get_services();
 unset($input_errors);
 
 if ($_POST) {
-	if (!is_numeric($_POST['svcid']))
+	if (!is_numeric($_POST['svcid'])) {
 		return;
+	}
 
 	if (!isset($system_services[$_POST['svcid']])) {
 		$input_errors[] = gettext("The supplied service appears to be invalid.");
@@ -93,7 +96,7 @@ include("head.inc");
 	<td width="22%" valign="top" class="vncell"><?=gettext("Service to Add:"); ?></td>
 	<td width="78%" class="vtable">
 		<select name="svcid" class="formselect" id="svcid">
-<?php		$i=0;
+<?php		$i = 0;
 		foreach ($system_services as $svc): ?>
 			<?php if (!servicewatchdog_is_service_watched($svc)): ?>
 			<?php $svc['description'] = empty($svc['description']) ? get_pkg_descr($svc['name']) : $svc['description']; ?>

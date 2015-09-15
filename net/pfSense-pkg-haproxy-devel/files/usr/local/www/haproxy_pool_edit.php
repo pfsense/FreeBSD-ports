@@ -65,13 +65,20 @@ $simplefields = array(
 "stats_enabled","stats_username","stats_password","stats_uri","stats_scope","stats_realm","stats_admin","stats_node","stats_desc","stats_refresh",
 "persist_stick_expire","persist_stick_tablesize","persist_stick_length","persist_stick_cookiename","persist_sticky_type",
 "persist_cookie_enabled","persist_cookie_name","persist_cookie_mode","persist_cookie_cachable",
-"strict_transport_security","cookie_attribute_secure"
+"strict_transport_security", "cookie_attribute_secure",
+"email_level", "email_to"
 );
 
 $primaryfrontends = get_haproxy_frontends();
 $none = array();
 $none['']['name']="Address+Port:";
 $primaryfrontends = $none + $primaryfrontends;
+
+$default = array();
+$default['']['name'] = "Default level from global";
+$none = array();
+$none['dontlog']['name'] = "Dont log";
+$a_sysloglevel = $default + $none + $a_sysloglevel;
 
 $fields_servers=array();
 $fields_servers[0]['name']="status";
@@ -861,6 +868,32 @@ set by the 'retries' parameter.</div>
 			</td>
 		</tr>
 		<tr><td>&nbsp;</td></tr>
+		<? if (haproxy_verion() >= '1.6' ) { ?>
+		<tr>
+			<td colspan="2" valign="top" class="listtopic">Email notifications</td>
+		</tr>		
+		<tr>
+			<td valign="top" class="vncell">
+				Mail level
+			</td>
+			<td class="vtable">
+				<?
+				echo_html_select('email_level', $a_sysloglevel, $pconfig['email_level']);
+				?>
+				Define the maximum loglevel to send emails for.
+			</td>
+		</tr>
+		<tr>
+			<td valign="top" class="vncell">
+				Mail to
+			</td>
+			<td class="vtable">
+				<input name="email_to" type="text" <?if(isset($pconfig['email_to'])) echo "value=\"{$pconfig['email_to']}\"";?> size="50"/><br/>
+				Email address to send emails to, defaults to the value set on the global settings tab.
+			</td>
+		</tr>
+		<tr><td>&nbsp;</td></tr>
+		<? } ?>
 		<tr>
 			<td colspan="2" valign="top" class="listtopic">Statistics</td>
 		</tr>

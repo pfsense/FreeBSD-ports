@@ -6,7 +6,7 @@
 		<descr><![CDATA[OSPF routing protocol using Quagga.&lt;br /&gt;
 			&lt;strong&gt;WARNING! Installs files to the same place as OpenBGPD. Installing both will break things.&lt;/strong&gt;]]></descr>
 		<maintainer>jimp@pfsense.org</maintainer>
-		<version>0.6.6</version>
+		<version>0.6.7</version>
 		<category>Routing</category>
 		<status>BETA</status>
 		<depends_on_package_pbi>quagga-0.99.23.1_2-##ARCH##.pbi</depends_on_package_pbi>

@@ -47,11 +47,9 @@ function backup_sync_package() {
 }
 
 function backup_install_command() {
-	conf_mount_rw();
 	// Create the backup directory
 	safe_mkdir("/root/backup/");
 	backup_sync_package();
-	conf_mount_ro();
 }
 
 ?>

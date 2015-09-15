@@ -1968,65 +1968,11 @@ function squidguard_cron_install()
     global $squidguard_config;
 
     $on_off = $squidguard_config[F_LOGROTATION] == 'on';
-
-    $opt = "";
+    $cron_cmd = "/usr/bin/nice -n20 " . SQUIDGUARD_SCR_LOGROTATE;
     if ($on_off) {
-        $opt    = array("0", "0", "*", "*", "*", "root", "/usr/bin/nice -n20 " . SQUIDGUARD_SCR_LOGROTATE);
-    }
-    squidguard_setup_cron("squidGuard_logrotate", $opt, $on_off);
-}
-
-# ------------------------------------------------------------------------------
-# squidguard_setup_cron
-# ------------------------------------------------------------------------------
-# $options: [0]='minute', [1]='hour', [2]='mday', [3]='month', [4]='wday', [5]='who', [6]='command'
-# ------------------------------------------------------------------------------
-function squidguard_setup_cron($task_key, $options, $on_off)
-{
-    global $config;
-    $cron_item = array();
-
-    # $on_off = TRUE/FALSE - install/deinstall cron task:
-    # prepare new cron item
-	if (is_array($options)) {
-        $cron_item['minute']  =  $options[0];
-        $cron_item['hour']    =  $options[1];
-        $cron_item['mday']    =  $options[2];
-        $cron_item['month']   =  $options[3];
-        $cron_item['wday']    =  $options[4];
-        $cron_item['who']     = ($options[5]) ? $options[5] : 'nobody';
-        $cron_item['command'] =  $options[6];
-    }
-
-    # unset old cron task with $task_key
-    if (!empty($task_key)) {
-        $flag_cron_upd = false;
-        # delete old cron task if exists
-        if (is_array($config['cron']['item'])) {
-            foreach($config['cron']['item'] as $key => $val) {
-                if (strpos($config['cron']['item'][$key]['command'], $task_key) !== false) {
-                    unset($config['cron']['item'][$key]);
-                    $flag_cron_upd = true;
-                    break;
-                }
-            }
-        }
-
-        # set new cron task
-        if (($on_off === true) and !empty($cron_item)) {
-            $config['cron']['item'][] = $cron_item;
-            $flag_cron_upd = true;
-        }
-
-        # write config and configure cron only if cron task modified
-        if ($flag_cron_upd === true) {
-            write_config("Installed cron task '$task_key' for 'squidGuard' package");
-            configure_cron();
-        }
-    }
-    else {
-        # ! error $name !
-        return;
+	    install_cron_job("{$cron_cmd}", true, "0", "0", "*", "*", "*", "root");
+    } else {
+	    install_cron_job("{$cron_cmd}", false);
     }
 }
 

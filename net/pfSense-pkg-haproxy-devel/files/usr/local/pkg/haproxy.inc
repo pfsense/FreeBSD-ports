@@ -212,7 +212,18 @@ $a_error['500'] = array('descr' => "internal error");
 $a_error['502'] = array('descr' => "server response invalid or blocked");
 $a_error['503'] = array('descr' => "no server was available to handle the request");
 $a_error['504'] = array('descr' => "timeout before the server responds");
-   
+
+global $a_sysloglevel;
+$a_sysloglevel = array();
+$a_sysloglevel['emerg'] = array('name' => "Emergency");
+$a_sysloglevel['alert'] = array('name' => "Alert");
+$a_sysloglevel['crit'] = array('name' => "Critical");
+$a_sysloglevel['err'] = array('name' => "Error");
+$a_sysloglevel['warning'] = array('name' => "Warning");
+$a_sysloglevel['notice'] = array('name' => "Notice");
+$a_sysloglevel['info'] = array('name' => "Informational");
+$a_sysloglevel['debug'] = array('name' => "Debugging");
+
 if(!function_exists('group_ports')){
 // function group_ports() is present in pfSense 2.2 in util.inc
 /* create ranges of sequential port numbers (200:215) and remove duplicates */
@@ -262,6 +273,15 @@ function group_ports($ports) {
 
 	return $result;
 }
+}
+
+global $haproxy_version;
+function haproxy_verion() {
+	global $haproxy_version;
+	if (empty($haproxy_version)) {
+		$haproxy_version = shell_exec("haproxy -v | head -n 1 | awk '{ print $3 }'");
+	}
+	return $haproxy_version;
 }
 
 function haproxy_portoralias_to_list($port_or_alias) {
@@ -347,10 +367,10 @@ function haproxy_custom_php_deinstall_command() {
 	update_output_window($static_output);
 	unlink_if_exists("/usr/local/etc/rc.d/haproxy.sh");
 	unlink_if_exists("/etc/rc.haproxy_ocsp.sh");
-	$static_output .= "HAProxy, installing cron job if needed\n";
+	$static_output .= "HAProxy, uninstalling cron job if needed\n";
 	update_output_window($static_output);
-	haproxy_install_cron(false);
-	haproxy_install_cronjob(false, '/etc/rc.haproxy_ocsp.sh');
+	install_cron_job("/usr/local/etc/rc.d/haproxy.sh onecheck", false);
+	install_cron_job("/etc/rc.haproxy_ocsp.sh", false);
 	$static_output .= "HAProxy, running haproxy_custom_php_deinstall_command() DONE\n";
 	update_output_window($static_output);
 }
@@ -359,10 +379,6 @@ function haproxy_custom_php_install_command() {
 	global $g, $config, $static_output;
 	$static_output .= "HAProxy, running haproxy_custom_php_install_command()\n";
 	update_output_window($static_output);
-	
-	$static_output .= "HAProxy, conf_mount_rw\n";
-	update_output_window($static_output);
-	conf_mount_rw();
 	
 	$pf_version=substr(trim(file_get_contents("/etc/version")),0,3);
 	if ($pf_version == "2.1" || $pf_version == "2.2")
@@ -468,106 +484,12 @@ EOD;
 	require_once('haproxy_upgrade_config.inc'); 
 	haproxy_upgrade_config();
 	
-	$static_output .= "HAProxy, conf_mount_ro\n";
-	update_output_window($static_output);
-	conf_mount_ro();
-	
 	$static_output .= "HAProxy, starting haproxy (if previously enabled)\n";
 	update_output_window($static_output);
 	haproxy_check_run(1);
 	
 	$static_output .= "HAProxy, running haproxy_custom_php_install_command() DONE\n";
 	update_output_window($static_output);
-}
-
-function haproxy_install_cronjob($should_install, $script, $interval = 60, $parameters = "") {
-	global $config, $g;
-	if($g['booting']==true) 
-		return;
-	$is_installed = false;
-	if(!$config['cron']['item'])
-		return;
-	$x=0;
-	foreach($config['cron']['item'] as $item) {
-		if(strstr($item['command'], $script)) {
-			$is_installed = true;
-			break;
-		}
-		$x++;
-	}
-	switch($should_install) {
-		case true:
-			if(!$is_installed) {
-				$cron_item = array();
-				$cron_item['minute'] = "*/{$interval}";
-				$cron_item['hour'] = "*";
-				$cron_item['mday'] = "*";
-				$cron_item['month'] = "*";
-				$cron_item['wday'] = "*";
-				$cron_item['who'] = "root";
-				$cron_item['command'] = "$script $parameters";		
-				$config['cron']['item'][] = $cron_item;
-				parse_config(true);
-				write_config("haproxy, install cron job");
-				configure_cron();
-			}
-		break;
-		case false:
-			if($is_installed == true) {
-				if($x > 0) {
-					unset($config['cron']['item'][$x]);
-					parse_config(true);
-					write_config("haproxy, remove cron job");
-				}
-				configure_cron();
-			}
-		break;
-	}
-}
-
-function haproxy_install_cron($should_install) {
-	global $config, $g;
-	if($g['booting']==true) 
-		return;
-	$is_installed = false;
-	if(!$config['cron']['item'])
-		return;
-	$x=0;
-	foreach($config['cron']['item'] as $item) {
-		if(strstr($item['command'], "/usr/local/etc/rc.d/haproxy.sh")) {
-			$is_installed = true;
-			break;
-		}
-		$x++;
-	}
-	switch($should_install) {
-		case true:
-			if(!$is_installed) {
-				$cron_item = array();
-				$cron_item['minute'] = "*/2";
-				$cron_item['hour'] = "*";
-				$cron_item['mday'] = "*";
-				$cron_item['month'] = "*";
-				$cron_item['wday'] = "*";
-				$cron_item['who'] = "root";
-				$cron_item['command'] = "/usr/local/etc/rc.d/haproxy.sh onecheck";		
-				$config['cron']['item'][] = $cron_item;
-				parse_config(true);
-				write_config("haproxy, install cron CARP job");
-				configure_cron();
-			}
-		break;
-		case false:
-			if($is_installed == true) {
-				if($x > 0) {
-					unset($config['cron']['item'][$x]);
-					parse_config(true);
-					write_config("haproxy, remove cron CARP job");
-				}
-				configure_cron();
-			}
-		break;
-	}
 }
 
 function haproxy_find_backend($backendname) {
@@ -592,8 +514,11 @@ function haproxy_find_acl($name) {
 }
 
 function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
+	global $config;
 	$frontend = $backendsettings['frontend'];
 	$ipversion = $backendsettings['ipversion'];
+	$a_global = &$config['installedpackages']['haproxy'];
+	$a_mailers = &$config['installedpackages']['haproxy']['email_mailers']['items'];
 
 	if(!is_array($pool['ha_servers']['item']) && !$pool['stats_enabled']=='yes')
 		return;
@@ -610,6 +535,36 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 		$backend_mode = $frontendtype;
 	}
 	fwrite ($fd, "\tmode\t\t\t" . $backend_mode . "\n");
+	
+	if (haproxy_verion() >= '1.6') {
+		$use_mailers = is_array($a_mailers) && count($a_mailers) > 0;
+		if ($use_mailers) {
+			fwrite ($fd, "\t# use mailers\n");
+			if (empty($pool['email_level'])) {
+				$email_level = $a_global['email_level'];
+			} else {
+				$email_level = $pool['email_level'];
+			}
+		
+			fwrite ($fd, "\t# level  $email_level \n");
+			if (!empty($email_level) && $email_level != 'dontlog') {
+				if (empty($pool['email_to'])) {
+					$email_to = $a_global['email_to'];
+				} else {
+					$email_to = $pool['email_to'];
+				}
+			
+				fwrite ($fd, "\temail-alert mailers\t\t\tglobalmailers\n");
+				fwrite ($fd, "\temail-alert level\t\t\t{$email_level}\n");
+				fwrite ($fd, "\temail-alert from\t\t\t{$a_global['email_from']}\n");
+				fwrite ($fd, "\temail-alert to\t\t\t{$email_to}\n");
+				if (!empty($a_global['email_myhostname'])) {
+					fwrite ($fd, "\temail-alert myhostname\t\t\t{$a_global['email_myhostname']}\n");
+				}
+			}
+		}
+	}
+	
 	if ($pool['log-health-checks'] == 'yes')
 		fwrite ($fd, "\toption\t\t\tlog-health-checks\n");
 		
@@ -732,8 +687,6 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 		if ($check_type == "Agent") {
 			$checkport = " port " . $pool['monitor_agentport'];
 		}
-	} else {
-		$optioncheck = "httpchk";
 	}
 	
 	if($pool['balance'])
@@ -1049,9 +1002,9 @@ function haproxy_updateocsp($socketupdate = true) {
 		haproxy_updateocsp_one($socketupdate, $filename, $frontend['name']);
 		
 		$subfolder = "$configpath/{$frontend['name']}";
-		$certs = $frontend['ha_certificates']['item'];
-		if (is_array($certs)){
-			foreach($certs as $cert){
+		if (is_arrayset($frontend, 'ha_certificates', 'item')) {
+			$certs = $frontend['ha_certificates']['item'];
+			foreach($certs as $cert) {
 				$filename = "$subfolder/{$cert['ssl_certificate']}.pem";
 				haproxy_updateocsp_one($socketupdate, $filename, $frontend['name']);
 			}
@@ -1075,6 +1028,7 @@ function haproxy_writeconf($configpath) {
 	$a_global = &$config['installedpackages']['haproxy'];
 	$a_frontends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 	$a_backends = &$config['installedpackages']['haproxy']['ha_pools']['item'];
+	$a_mailers = &$config['installedpackages']['haproxy']['email_mailers']['items'];
 	
 	$fd = fopen($configfile, "w");
 	if(is_array($a_global)) {
@@ -1130,6 +1084,17 @@ function haproxy_writeconf($configpath) {
 			fwrite ($fd, "\n");
 		}
 	}
+	
+	if (haproxy_verion() >= '1.6') {
+		$use_mailers = is_array($a_mailers) && count($a_mailers) > 0;
+		if ($use_mailers) {
+			fwrite ($fd, "mailers globalmailers\n");
+			foreach($a_mailers as $mailer) {
+				fwrite ($fd, "\tmailer {$mailer['name']} {$mailer['mailserver']}:{$mailer['mailserverport']}\n");
+			}
+			fwrite ($fd, "\n");
+		}
+	}
 
 	// Try and get a unique array for address:port as frontends can duplicate
 	$a_bind = array();
@@ -1158,7 +1123,8 @@ function haproxy_writeconf($configpath) {
 
 				haproxy_write_certificate_fullchain($filename, $frontend['ssloffloadcert']);
 				if ($frontend['sslocsp'] == 'yes') {
-					if (!empty(haproxy_getocspurl($filename))) {
+					$ocspurl = haproxy_getocspurl($filename);
+					if (!empty($ocspurl)) {
 						haproxy_write_certificate_issuer($filename . ".issuer", $frontend['ssloffloadcert']);
 						touch($filename . ".ocsp");//create initial empty file. this will trigger updates, and inform haproxy it 'should' be using ocsp
 					}
@@ -1173,7 +1139,8 @@ function haproxy_writeconf($configpath) {
 							$filenamefoldercert = "$subfolder/{$cert['ssl_certificate']}.pem";
 							haproxy_write_certificate_fullchain($filenamefoldercert, $cert['ssl_certificate']);
 							if ($frontend['sslocsp'] == 'yes') {
-								if (!empty(haproxy_getocspurl($filenamefoldercert))) {
+								$ocspurl = haproxy_getocspurl($filenamefoldercert);
+								if (!empty($ocspurl)) {
 									haproxy_write_certificate_issuer($filenamefoldercert . ".issuer", $cert['ssl_certificate']);
 									touch($filenamefoldercert . ".ocsp");
 								}
@@ -1737,12 +1704,16 @@ function haproxy_check_run($reload) {
 		haproxy_updateocsp(false);
 		
 		if (isset($a_global['carpdev']))
-			haproxy_install_cron(true);
+			install_cron_job("/usr/local/etc/rc.d/haproxy.sh onecheck", true, "*/2");
 		else
-			haproxy_install_cron(false);
+			install_cron_job("/usr/local/etc/rc.d/haproxy.sh onecheck", false);
 	
 		$useocsp = haproxy_uses_ocsp();
-		haproxy_install_cronjob($useocsp, '/etc/rc.haproxy_ocsp.sh', 120);
+		if ($useocsp == "true") {
+			install_cron_job("/etc/rc.haproxy_ocsp.sh", true, "*/120");
+		} else {
+			install_cron_job("/etc/rc.haproxy_ocsp.sh", false);
+		}
 	}
 
 	if(isset($a_global['enable'])) {

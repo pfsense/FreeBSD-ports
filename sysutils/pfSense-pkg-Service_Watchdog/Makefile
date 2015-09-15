@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Service_Watchdog
-PORTVERSION=	1.7
+PORTVERSION=	1.7.1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -25,13 +25,13 @@ do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/servicewatchdog.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 644 ${FILESDIR}${PREFIX}/www/services_servicewatchdog.php \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/services_servicewatchdog.php \
 		${STAGEDIR}${PREFIX}/www
-	${INSTALL_DATA} -m 644 ${FILESDIR}${PREFIX}/www/services_servicewatchdog_add.php \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/services_servicewatchdog_add.php \
 		${STAGEDIR}${PREFIX}/www
 	${INSTALL_DATA} -m 755 ${FILESDIR}${PREFIX}/pkg/servicewatchdog_cron.php \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 644 ${FILESDIR}${PREFIX}/pkg/servicewatchdog.inc \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/servicewatchdog.inc \
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}

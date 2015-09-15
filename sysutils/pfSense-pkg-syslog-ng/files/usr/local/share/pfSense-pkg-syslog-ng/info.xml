@@ -5,7 +5,7 @@
 		<website>http://www.balabit.com/network-security/syslog-ng/</website>
 		<descr><![CDATA[Syslog-ng syslog server. This service is not intended to replace the default pfSense syslog server but rather acts as an independent syslog server.]]></descr>
 		<category>Services</category>
-		<version>1.0.8</version>
+		<version>1.1</version>
 		<status>ALPHA</status>
 		<required_version>2.2</required_version>
 		<depends_on_package_pbi>syslog-ng-3.6.2_3-##ARCH##.pbi</depends_on_package_pbi>

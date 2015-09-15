@@ -189,7 +189,7 @@ function pfb_update_check($header_url, $list_url, $url_format, $pfbfolder) {
 	if (file_exists($local_file)) {
 		// Determine if URL is Remote or Local
 		if ($host['host'] == "127.0.0.1" || $host['host'] == $pfb['iplocal'] || empty($host['host'])) {
-			$remote_tds = gmdate ("D, d M Y H:i:s T", filemtime($local_file));
+			$remote_tds = gmdate ("D, d M Y H:i:s T", filemtime($list_url));
 		} else {
 			$remote_tds = @implode(preg_grep("/Last-Modified/", get_headers($list_url)));
 			$remote_tds = preg_replace("/^Last-Modified: /","", $remote_tds);

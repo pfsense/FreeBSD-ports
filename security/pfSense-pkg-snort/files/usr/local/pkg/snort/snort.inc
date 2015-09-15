@@ -3748,8 +3748,8 @@ function snort_sync_on_changes() {
 		$syncdownloadrules = $snort_sync['vardownloadrules'];
 		switch ($synconchanges){
 			case "manual":
-				if (is_array($snort_sync[row])){
-					$rs=$snort_sync[row];
+				if (is_array($snort_sync['row'])){
+					$rs=$snort_sync['row'];
 				}
 				else{
 					log_error("[snort] xmlrpc sync is enabled but there are no hosts configured as replication targets.");
@@ -3757,8 +3757,8 @@ function snort_sync_on_changes() {
 				}
 				break;
 			case "auto":
-					if (is_array($config['installedpackages']['carpsettings']) && is_array($config['installedpackages']['carpsettings']['config'])){
-						$system_carp=$config['installedpackages']['carpsettings']['config'][0];
+					if (is_array($config['hasync'])) {
+						$system_carp=$config['hasync'];
 						$rs[0]['varsyncipaddress']=$system_carp['synchronizetoip'];
 						$rs[0]['varsyncusername']=$system_carp['username'];
 						$rs[0]['varsyncpassword']=$system_carp['password'];

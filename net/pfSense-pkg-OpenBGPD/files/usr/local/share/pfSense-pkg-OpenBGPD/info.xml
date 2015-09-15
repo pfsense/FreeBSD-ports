@@ -12,7 +12,7 @@
 		<build_pbi>
 			<port>net/openbgpd</port>
 		</build_pbi>
-		<version>0.9.3.4</version>
+		<version>0.9.3.6</version>
 		<status>STABLE</status>
 		<pkginfolink>https://doc.pfsense.org/index.php/OpenBGPD_package</pkginfolink>
 		<required_version>2.2</required_version>

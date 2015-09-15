@@ -90,8 +90,7 @@ function freeradius_deinstall_command() {
 
 function freeradius_install_command() {
 	global $config, $frlib;
-	conf_mount_rw();
-	
+
 	// We create here different folders for different counters.
 	@mkdir("/var/log/radacct/datacounter/daily", 0755, true);
 	@mkdir("/var/log/radacct/datacounter/weekly", 0755, true);
@@ -186,7 +185,6 @@ SERVICENAME="radiusd"
 EOD;
 	$rcfile['stop'] = FREERADIUS_ETC . '/rc.d/radiusd onestop';
 	write_rcfile($rcfile);
-		conf_mount_ro();
 	start_service("radiusd");
 }
 

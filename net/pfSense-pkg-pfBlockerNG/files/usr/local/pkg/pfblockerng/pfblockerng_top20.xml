@@ -132,6 +132,17 @@
 			<type>listtopic</type>
 		</field>
 		<field>
+			<description><![CDATA[<font color='red'>Note:</font> pfSense by default implicitly blocks all unsolicited inbound traffic to the WAN
+				interface. Therefore adding GeoIP based firewall rules to the WAN will <strong>not</strong> provide any benefit, unless there are
+				open WAN ports.  Also consider protecting just the specific open WAN ports. It's also <strong>not</strong> recommended to
+				block the 'world', instead consider rules to 'Permit' traffic from selected Countries only. Finally, it's just as important
+				to protect the outbound LAN traffic.]]>
+			</description>
+			<type>info</type>
+			<dontdisplayname/>
+			<usecolspan2/>
+		</field>
+		<field>
 			<fielddescr>LINKS</fielddescr>
 			<description><![CDATA[<a href="/firewall_aliases.php">Firewall Alias</a> &nbsp;&nbsp;&nbsp;
 				<a href="/firewall_rules.php">Firewall Rules</a> &nbsp;&nbsp;&nbsp; <a href="diag_logs_filter.php">Firewall Logs</a>]]>

@@ -3,23 +3,28 @@
 <?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
 <packagegui>
 	<copyright>
-	<![CDATA[
-/* ========================================================================== */
+<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
 /*
-	part of pfSense (http://www.pfSense.com)
-	Copyright (C) 2013
+	iftop.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2013-2015 ESF, LLC
 	All rights reserved.
-/* ========================================================================== */
+*/
+/* ====================================================================================== */
 /*
 	Redistribution and use in source and binary forms, with or without
 	modification, are permitted provided that the following conditions are met:
 
-	 1. Redistributions of source code must retain the above copyright notice,
-		this list of conditions and the following disclaimer.
 
-	 2. Redistributions in binary form must reproduce the above copyright
-		notice, this list of conditions and the following disclaimer in the
-		documentation and/or other materials provided with the distribution.
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
 
 	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
 	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
@@ -31,14 +36,12 @@
 	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
-										*/
-/* ==========================================================================	*/
+*/
+/* ====================================================================================== */
 	]]>
 	</copyright>
 	<description>iftop</description>
-	<requirements>None</requirements>
-	<faq></faq>
 	<name>iftop</name>
-	<version>0.0</version>
+	<version>0.17</version>
 	<title>iftop</title>
 </packagegui>

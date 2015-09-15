@@ -5,7 +5,7 @@
 		<descr><![CDATA[The cron utility is used to manage commands on a schedule.]]></descr>
 		<category>Services</category>
 		<config_file>https://packages.pfsense.org/packages/config/cron/cron.xml</config_file>
-		<version>0.3.0</version>
+		<version>0.3.1</version>
 		<status>Beta</status>
 		<required_version>2.2</required_version>
 		<maintainer>markjcrane@gmail.com</maintainer>

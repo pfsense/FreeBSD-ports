@@ -52,28 +52,25 @@ function syslogng_get_real_interface_address($interface) {
 }
 
 function syslogng_install_command() {
-	conf_mount_rw();
 	if (is_link("/usr/local/lib/syslog-ng")) {
 		unlink("/usr/local/lib/syslog-ng");
 	}
 	if (!file_exists("/usr/local/lib/syslog-ng")) {
 		@symlink(SYSLOGNG_BASEDIR . "local/lib/syslog-ng", "/usr/local/lib/syslog-ng");
 	}
-	syslogng_install_cron(true);
-	conf_mount_ro();
+	$crontask = "/usr/bin/nice -n20 " . SYSLOGNG_BASEDIR . "local/sbin/logrotate /usr/local/etc/logrotate.conf";
+	install_cron_job("${crontask}", true, "0");
 	syslogng_resync();
 }
 
 function syslogng_deinstall_command() {
-	conf_mount_rw();
-	service_stop("syslog-ng");
-	unlink_if_exists("/usr/local/etc/rc.d/syslog-ng.sh");
-	if (is_link("/usr/local/lib/syslog-ng"))
+	if (is_link("/usr/local/lib/syslog-ng")) {
 		unlink("/usr/local/lib/syslog-ng");
-	syslogng_install_cron(false);
+	}
+	$crontask = "/usr/bin/nice -n20 " . SYSLOGNG_BASEDIR . "local/sbin/logrotate /usr/local/etc/logrotate.conf";
+	install_cron_job("${crontask}", false);
 	unlink_if_exists("/usr/local/etc/logrotate.conf");
 	unlink_if_exists("/usr/local/etc/syslog-ng.conf");
-	conf_mount_ro();
 	filter_configure();
 }
 
@@ -141,62 +138,6 @@ function syslogng_validate_advanced($post, &$input_errors) {
 	if ($errors = syslogng_test_object_syntax($objects)) {
 		$input_errors[] = "Syslog-ng syntax test failed:\n" . $errors;
 	}
-}
-
-function syslogng_install_cron($should_install) {
-	global $config;
-
-	if (platform_booting()) {
-		return;
-	}
-
-	if (!$config['cron']['item']) {
-		return;
-	}
-
-	$x=0;
-	$rotate_job_id=-1;
-	$rotate_is_installed = false;
-
-	foreach ($config['cron']['item'] as $item) {
-		if (strstr($item['task_name'], "syslogng_rotate_logs")) {
-			$rotate_job_id = $x;
-		}
-		$x++;
-	}
-	$need_write = false;
-	switch ($should_install) {
-		case true:
-			if ($rotate_job_id < 0) {
-				$cron_item = array();
-				$cron_item['task_name'] = "syslogng_rotate_logs";
-				$cron_item['minute'] = "0";
-				$cron_item['hour'] = "*";
-				$cron_item['mday'] = "*";
-				$cron_item['month'] = "*";
-				$cron_item['wday'] = "*";
-				$cron_item['who'] = "root";
-				$cron_item['command'] = "/usr/bin/nice -n20 " . SYSLOGNG_BASEDIR . "local/sbin/logrotate /usr/local/etc/logrotate.conf";
-				$config['cron']['item'][] = $cron_item;
-				$need_write = true;
-			}
-			if ($need_write) {
-				parse_config(true);
-				write_config("Adding syslog-ng Cron Jobs");
-			}
-		break;
-		case false:
-			if ($rotate_job_id >= 0) {
-				unset($config['cron']['item'][$rotate_job_id]);
-				$need_write = true;
-			}
-			if ($need_write) {
-				parse_config(true);
-				write_config("Removing syslog-ng Cron Jobs");
-			}
-		break;
-	}
-	configure_cron();
 }
 
 function syslogng_build_default_objects($settings) {

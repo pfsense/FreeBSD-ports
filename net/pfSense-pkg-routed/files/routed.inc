@@ -105,21 +105,17 @@ function setup_etc_gateways($iface="", $mode="") {
 }
 
 function routed_install_command() {
-	conf_mount_rw();
 	write_rcfile(array(
 		"file" => "routed.sh",
 		"start" => "/usr/bin/nohup /sbin/routed > /dev/null 2>&1 &",
 		"stop" => "/bin/pkill routed"
 		)
 	);
-	conf_mount_ro();
 }
 
 function routed_deinstall_command() {
 	stop_service("routed");
-	conf_mount_rw();
 	unlink_if_exists("/usr/local/etc/rc.d/routed.sh");
-	conf_mount_ro();
 }
 
 ?>

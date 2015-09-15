@@ -207,9 +207,9 @@ include_once("head.inc");
 			<tr>
 				<td colspan="2" class="listr">
 				<?php
-					if ($pfb['enable'] == "on") {
+					if ($pfb['enable'] == 'on') {
 
-						/* Legend - Time Variables
+						/* Legend - Time variables
 
 							$pfb['interval']	Hour interval setting	(1,2,3,4,6,8,12,24)
 							$pfb['min']		Cron minute start time	(0-23)
@@ -218,92 +218,70 @@ include_once("head.inc");
 
 							$currenthour		Current hour
 							$currentmin		Current minute
+							$currentsec		Current second
+							$currentdaysec		Total number of seconds elapsed so far in the day
 							$cron_hour_begin	First cron hour setting (interval 2-24)
 							$cron_hour_next		Next cron hour setting  (interval 2-24)
 
-							$max_min_remain		Max minutes to next cron (not including currentmin)
-							$min_remain		Total minutes remaining to next cron
-							$min_final		The minute component in hour:min
-
 							$nextcron		Next cron event in hour:mins
-							$cronreal		Time remaining to next cron in hours:mins	*/
+							$cronreal		Time remaining to next cron in hours:mins:secs		*/
 
 						$currenthour	= date('G');
 						$currentmin	= date('i');
+						$currentsec	= date('s');
+						$currentdaysec	= ($currenthour * 3600) + ($currentmin * 60) + $currentsec;
 
 						if ($pfb['interval'] == 1) {
-							if (($currenthour + ($currentmin/60)) <= ($pfb['hour'] + ($pfb['min']/60))) {
+							if ($currentmin < $pfb['min']) {
 								$cron_hour_next = $currenthour;
 							} else {
-								$cron_hour_next = $currenthour + 1;
+								$cron_hour_next = ($currenthour + 1) % 24;
 							}
-							if (($currenthour + ($pfb['min']/60)) >= 24) {
-								$cron_hour_next = $pfb['hour'];
-							}
-							$max_min_remain = 60 + $pfb['min'];
 						}
 						elseif ($pfb['interval'] == 24) {
-							$cron_hour_next = $cron_hour_begin = $pfb['24hour'] != '' ? $pfb['24hour'] : '00';
+							$cron_hour_next = $cron_hour_begin = !empty($pfb['24hour']) ?: '00';
 						}
 						else {
-							// Find Next Cron hour schedule
+							// Find next cron hour schedule
 							$crondata = pfb_cron_base_hour();
+							$cron_hour_begin = 0;
+							$cron_hour_next  = '';
 							if (!empty($crondata)) {
 								foreach ($crondata as $key => $line) {
 									if ($key == 0) {
 										$cron_hour_begin = $line;
 									}
-									if ($line > $currenthour) {
+									if (($line * 3600) + ($pfb['min'] * 60) > $currentdaysec) {
 										$cron_hour_next = $line;
 										break;
 									}
 								}
 							}
-
-							// Roll over to First cron hour setting
-							if (!isset($cron_hour_next)) {
-								if (empty($cron_hour_begin)) {
-									// $cron_hour_begin is hour '0'
-									$cron_hour_next = (24 - $currenthour);
-								} else {
-									$cron_hour_next = $cron_hour_begin;
-								}
-							}
-						}
-
-						if ($pfb['interval'] != 1) {
-							if (($currenthour + ($currentmin/60)) <= ($cron_hour_next + ($pfb['min']/60))) {
-								$max_min_remain = (($cron_hour_next - $currenthour) * 60) + $pfb['min'];
-							} else {
-								$max_min_remain = ((24 - $currenthour + $cron_hour_begin) * 60) + $pfb['min'];
+							// Roll over to the first cron hour setting
+							if (empty($cron_hour_next)) {
 								$cron_hour_next = $cron_hour_begin;
 							}
 						}
 
-						$min_remain	= ($max_min_remain - $currentmin);
-						$min_final	= ($min_remain % 60);
-						$sec_final	= (60 - date('s'));
-
-						if (strlen($sec_final) == 1) {
-							$sec_final = '0' . $sec_final;
-						}
-						if (strlen($min_final) == 1) {
-							$min_final = '0' . $min_final;
-						}
-						if (strlen($cron_hour_next) == 1) {
-							$cron_hour_next = '0' . $cron_hour_next;
-						}
-
-						if ($min_remain > 59) {
-							$nextcron = floor($min_remain / 60) . ':' . $min_final . ':' . $sec_final;
+						$cron_seconds_next = ($cron_hour_next * 3600) + ($pfb['min'] * 60);
+						if ($currentdaysec < $cron_seconds_next) {
+							// The next cron job is ahead of us in the day
+							$sec_remain = $cron_seconds_next - $currentdaysec;
 						} else {
-							$nextcron = '00:' . $min_final . ':' . $sec_final;
+							// The next cron job is tomorrow
+							$sec_remain = (24*60*60) + $cron_seconds_next - $currentdaysec;
 						}
 
-						if ($pfb['min'] == 0) {
-							$pfb['min'] = '00';
-						}
+						// Ensure hour:min:sec variables are two digit
+						$pfb['min']	= str_pad($pfb['min'], 2, '0', STR_PAD_LEFT);
+						$sec_final	= str_pad(($sec_remain % 60),  2, '0', STR_PAD_LEFT);
+						$min_remain	= str_pad(floor($sec_remain / 60), 2, '0', STR_PAD_LEFT);
+						$min_final	= str_pad(($min_remain % 60), 2, '0', STR_PAD_LEFT);
+						$hour_final	= str_pad(floor($min_remain / 60), 2, '0', STR_PAD_LEFT);
+						$cron_hour_next = str_pad($cron_hour_next, 2, '0', STR_PAD_LEFT);
+
 						$cronreal = "{$cron_hour_next}:{$pfb['min']}";
+						$nextcron = "{$hour_final}:{$min_final}:{$sec_final}";
 					}
 
 					if (empty($pfb['enable']) || empty($cron_hour_next)) {
@@ -314,9 +292,8 @@ include_once("head.inc");
 					echo "NEXT Scheduled CRON Event will run at <font size=\"3\">&nbsp;{$cronreal}</font>&nbsp; with
 						<font size=\"3\"><span class=\"red\">&nbsp;{$nextcron}&nbsp;</span></font> time remaining.";
 
-					// Query for any Active pfBlockerNG CRON Jobs
-					$result_cron = array();
-					$cron_event = exec ("/bin/ps -wax", $result_cron);
+					// Query for any active pfBlockerNG CRON jobs
+					exec ('/bin/ps -wax', $result_cron);
 					if (preg_grep("/pfblockerng[.]php\s+cron/", $result_cron)) {
 						echo "<font size=\"2\"><span class=\"red\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							Active pfBlockerNG CRON Job </span></font>&nbsp;&nbsp;";

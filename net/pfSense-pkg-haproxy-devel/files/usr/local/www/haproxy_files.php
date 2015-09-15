@@ -155,7 +155,7 @@ include("head.inc");
 			</tr>
 			<tr>
 				<td width="78%">
-					<input name="Submit" type="submit" class="formbtn" value="Save" onClick="enable_change(true)" />
+					<input name="Submit" type="submit" class="formbtn" value="Save" />
 				</td>
 			</tr>
 		</table>

@@ -11,7 +11,7 @@
 		<website>http://www.zabbix.com/product.php</website>
 		<category>Services</category>
 		<config_file>https://packages.pfsense.org/packages/config/zabbix-agent-lts/zabbix-agent-lts.xml</config_file>
-		<version>0.8.6</version>
+		<version>0.8.7</version>
 		<status>BETA</status>
 		<required_version>2.2</required_version>
 		<configurationfile>zabbix-agent-lts.xml</configurationfile>

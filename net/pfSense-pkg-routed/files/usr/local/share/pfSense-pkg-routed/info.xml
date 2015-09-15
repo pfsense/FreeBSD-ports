@@ -7,7 +7,7 @@
 		<category>Network Management</category>
 		<port_category>net</port_category>
 		<config_file>https://packages.pfsense.org/packages/config/routed/routed.xml</config_file>
-		<version>1.2</version>
+		<version>1.2.1</version>
 		<status>Stable</status>
 		<required_version>2.2</required_version>
 		<configurationfile>routed.xml</configurationfile>

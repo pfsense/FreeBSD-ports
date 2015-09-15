@@ -27,20 +27,14 @@
 	POSSIBILITY OF SUCH DAMAGE.
 */
 function open_vm_tools_deinstall() {
-	conf_mount_rw();
-	stop_service("vmware-guestd");
-	unlink_if_exists("/usr/local/etc/rc.d/vmware-guestd.sh");
 	unlink_if_exists("/usr/local/etc/rc.d/vmware-kmod.sh");
 	unlink_if_exists("/boot/kernel/vmblock.ko");
 	unlink_if_exists("/boot/kernel/vmhgfs.ko");
 	unlink_if_exists("/boot/kernel/vmmemctl.ko");
 	unlink_if_exists("/boot/kernel/vmxnet.ko");
-	conf_mount_ro();
 }
 
 function open_vm_tools_install() {
-	conf_mount_rw();
-
 	// Clean up old .ko files if they exist
 	unlink_if_exists("/boot/kernel/vmblock.ko");
 	unlink_if_exists("/boot/kernel/vmhgfs.ko");

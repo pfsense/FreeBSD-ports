@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-pfBlockerNG
-PORTVERSION=	1.09
+PORTVERSION=	1.10
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -37,6 +37,8 @@ do-install:
 	${INSTALL_DATA} -m 0644 ${FILESDIR}/etc/inc/priv/pfblockerng.priv.inc \
 		${STAGEDIR}/etc/inc/priv
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfblockerng.inc \
+		${STAGEDIR}${PREFIX}/pkg/pfblockerng
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfblockerng_install.inc \
 		${STAGEDIR}${PREFIX}/pkg/pfblockerng
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/www/pfblockerng/pfblockerng.php \
 		${STAGEDIR}${PREFIX}/www/pfblockerng

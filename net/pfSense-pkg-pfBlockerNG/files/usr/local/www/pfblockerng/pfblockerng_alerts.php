@@ -451,7 +451,7 @@ function conv_log_filter_lite($logfile, $nentries, $tail, $pfbdenycnt, $pfbpermi
 			}
 
 			// Skip Repeated Alerts 
-			if (($pfbalert[3] . $pfbalert[8] . $pfbalert[10]) == $previous_dstip || ($pfbalert[3] . $pfbalert[7] . $pfbalert[9]) == $previous_srcip) {
+			if (($pfbalert[1] . $pfbalert[3] . $pfbalert[7] . $pfbalert[8] . $pfbalert[10]) == $previous_alert) {
 				continue;
 			}
 
@@ -489,8 +489,7 @@ function conv_log_filter_lite($logfile, $nentries, $tail, $pfbdenycnt, $pfbpermi
 			}
 
 			// Collect Details for Repeated Alert Comparison
-			$previous_srcip = $pfbalert[3] . $pfbalert[7] . $pfbalert[9];
-			$previous_dstip = $pfbalert[3] . $pfbalert[8] . $pfbalert[10];
+			$previous_alert = $pfbalert[1] . $pfbalert[3] . $pfbalert[7] . $pfbalert[8] . $pfbalert[10];
 		}
 		unset ($pfbalert, $logarr);
 		return $fields_array;

@@ -7,7 +7,7 @@
 		<category>Network Management</category>
 		<config_file>https://packages.pfsense.org/packages/config/softflowd/softflowd.xml</config_file>
 		<depends_on_package_pbi>softflowd-0.9.8_2-##ARCH##.pbi</depends_on_package_pbi>
-		<version>1.2</version>
+		<version>1.2.1</version>
 		<status>Beta</status>
 		<required_version>2.2</required_version>
 		<configurationfile>softflowd.xml</configurationfile>

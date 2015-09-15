@@ -35,12 +35,37 @@ require_once("haproxy.inc");
 require_once("haproxy_utils.inc");
 require_once("globals.inc");
 require_once("pkg_haproxy_tabs.inc");
+require_once("haproxy_htmllist.inc");
 
-$simplefields = array('localstats_refreshtime','localstats_sticktable_refreshtime','log-send-hostname','ssldefaultdhparam');
+$simplefields = array('localstats_refreshtime', 'localstats_sticktable_refreshtime', 'log-send-hostname', 'ssldefaultdhparam',
+  'email_level', 'email_myhostname', 'email_from', 'email_to');
+
+$none = array();
+$none['']['name'] = "Dont log";
+$a_sysloglevel = $none + $a_sysloglevel;
+  
+$fields_mailers = array();
+$fields_mailers[0]['name'] = "name";
+$fields_mailers[0]['columnheader'] = "Name";
+$fields_mailers[0]['colwidth'] = "30%";
+$fields_mailers[0]['type'] = "textbox";
+$fields_mailers[0]['size'] = "20";
+$fields_mailers[1]['name'] = "mailserver";
+$fields_mailers[1]['columnheader'] = "Mailserver";
+$fields_mailers[1]['colwidth'] = "60%";
+$fields_mailers[1]['type'] = "textbox";
+$fields_mailers[1]['size'] = "60";
+$fields_mailers[2]['name'] = "mailserverport";
+$fields_mailers[2]['columnheader'] = "Mailserverport";
+$fields_mailers[2]['colwidth'] = "10%";
+$fields_mailers[2]['type'] = "textbox";
+$fields_mailers[2]['size'] = "10";
+
+$mailerslist = new HaproxyHtmlList("table_mailers", $fields_mailers);
+$mailerslist->keyfield = "name";
 
 if (!is_array($config['installedpackages']['haproxy'])) 
 	$config['installedpackages']['haproxy'] = array();
-
 
 if ($_POST) {
 	unset($input_errors);
@@ -56,15 +81,11 @@ if ($_POST) {
 		if ($result)
 			unlink_if_exists($d_haproxyconfdirty_path);
 	} else {
-		//if ($_POST['enable']) {
-		//	$reqdfields = explode(" ", "maxconn");
-		//	$reqdfieldsn = explode(",", "Maximum connections");
-		//}
+		$a_mailers = $mailerslist->haproxy_htmllist_get_values();
+		$pool['ha_servers']['item'] = $a_servers;
 
 		if ($_POST['carpdev'] == "disabled")
 			unset($_POST['carpdev']);
-
-		//do_input_validation($_POST, $reqdfields, $reqdfieldsn, &$input_errors);
 
 		if ($_POST['maxconn'] && (!is_numeric($_POST['maxconn']))) 
 			$input_errors[] = "The maximum number of connections should be numeric.";
@@ -86,6 +107,8 @@ if ($_POST) {
 			$input_errors[] = "Synchost3 needs to be an IPAddress.";*/
 
 		if (!$input_errors) {
+			$config['installedpackages']['haproxy']['email_mailers']['items'] = $a_mailers;
+		
 			$config['installedpackages']['haproxy']['enable'] = $_POST['enable'] ? true : false;
 			$config['installedpackages']['haproxy']['terminate_on_reload'] = $_POST['terminate_on_reload'] ? true : false;
 			$config['installedpackages']['haproxy']['maxconn'] = $_POST['maxconn'] ? $_POST['maxconn'] : false;
@@ -108,6 +131,8 @@ if ($_POST) {
 		}
 	}
 }
+
+$a_mailers = $config['installedpackages']['haproxy']['email_mailers']['items'];
 
 $pconfig['enable'] = isset($config['installedpackages']['haproxy']['enable']);
 $pconfig['terminate_on_reload'] = isset($config['installedpackages']['haproxy']['terminate_on_reload']);
@@ -181,6 +206,12 @@ function enable_change(enable_change) {
 				<td width="78%" class="vtable">
 				<input name="enable" type="checkbox" value="yes" <?php if ($pconfig['enable']) echo "checked"; ?> onClick="enable_change(false)" />
 				<strong>Enable HAProxy</strong></td>
+			</tr>
+			<tr>
+				<td width="22%" valign="top" class="vncell">Installed version:</td>
+				<td width="78%" class="vtable">
+					<strong><?=haproxy_verion()?></strong>
+				</td>
 			</tr>
 			<tr>
 				<td valign="top" class="vncell">
@@ -368,6 +399,64 @@ function enable_change(enable_change) {
 					<input name="log-send-hostname" type="text" <?if(isset($pconfig['log-send-hostname'])) echo "value=\"{$pconfig['log-send-hostname']}\"";?> size="18" maxlength="50" /> EXAMPLE: HaproxyMasterNode<br/>Sets the hostname field in the syslog header. If empty defaults to the system hostname.
 				</td>
 			</tr>
+			<tr><td>&nbsp;</td></tr>
+			<? if (haproxy_verion() >= '1.6' ) { ?>
+			<tr>
+				<td colspan="2" valign="top" class="listtopic">Email notifications</td>
+			</tr>
+			<tr>
+				<td valign="top" class="vncell">
+					Mailer servers
+				</td>
+				<td class="vtable">
+					It is possible to send email alerts when the state of servers changes. If configured email alerts are sent to each mailer that is configured in a mailers section. Email is sent to mailers using SMTP.
+					<br/>
+					<?
+					$counter=0;
+					$mailerslist->Draw($a_mailers);
+					?>
+				</td>
+			</tr>
+			<tr>
+				<td valign="top" class="vncell">
+					Mail level
+				</td>
+				<td class="vtable">
+					<?
+					echo_html_select('email_level', $a_sysloglevel, $pconfig['email_level']);
+					?>
+					Define the maximum loglevel to send emails for.
+				</td>
+			</tr>
+			<tr>
+				<td valign="top" class="vncell">
+					Mail myhostname
+				</td>
+				<td class="vtable">
+					<input name="email_myhostname" type="text" <?if(isset($pconfig['email_myhostname'])) echo "value=\"{$pconfig['email_myhostname']}\"";?> size="50" /><br/>
+					Define hostname to use as sending the emails.
+				</td>
+			</tr>
+			<tr>
+				<td valign="top" class="vncell">
+					Mail from
+				</td>
+				<td class="vtable">
+					<input name="email_from" type="text" <?if(isset($pconfig['email_from'])) echo "value=\"{$pconfig['email_from']}\"";?> size="50"/><br/>
+					Email address to be used as the sender of the emails.
+				</td>
+			</tr>
+			<tr>
+				<td valign="top" class="vncell">
+					Mail to
+				</td>
+				<td class="vtable">
+					<input name="email_to" type="text" <?if(isset($pconfig['email_to'])) echo "value=\"{$pconfig['email_to']}\"";?> size="50"/><br/>
+					Email address to send emails to.
+				</td>
+			</tr>
+			<? } ?>
+			<tr><td>&nbsp;</td></tr>
 			<tr>
 				<td colspan="2" valign="top" class="listtopic">Tuning</td>
 			</tr>
@@ -487,7 +576,15 @@ Minimum and default value is: 1024, bigger values might increase CPU usage.<br/>
 <?php endif; ?>
 
 </form>
+<?
+haproxy_htmllist_js();
+?>
 <script type="text/javascript">
+	totalrows =  <?php echo $counter; ?>;
+<?
+	phparray_to_javascriptarray($fields_mailers,"fields_mailers",Array('/*','/*/name','/*/type','/*/size','/*/items','/*/items/*','/*/items/*/*','/*/items/*/*/name'));
+?>
+
 	function scroll_after_fade() {
 		scrollTo(0,99999999999);
 	}

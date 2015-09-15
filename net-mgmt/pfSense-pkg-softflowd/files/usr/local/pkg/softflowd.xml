@@ -39,7 +39,7 @@
 	]]>
 	</copyright>
 	<name>softflowd</name>
-	<version>1.2</version>
+	<version>1.2.1</version>
 	<title>softflowd: Settings</title>
 	<aftersaveredirect>pkg_edit.php?xml=softflowd.xml&amp;id=0</aftersaveredirect>
 	<menu>
@@ -243,7 +243,11 @@
 					)
 				);
 				/* Only try to restart if not booting */
-				if (!platform_booting()) {
+				if (function_exists("platform_booting")) {
+					if (!platform_booting()) {
+						restart_service("softflowd");
+					}
+				} elseif (!($g['booting'])) {
 					restart_service("softflowd");
 				}
 			}

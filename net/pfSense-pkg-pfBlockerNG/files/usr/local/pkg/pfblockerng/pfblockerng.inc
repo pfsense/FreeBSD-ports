@@ -2724,53 +2724,6 @@ function pfblockerng_validate_input($post, &$input_errors) {
 	}
 }
 
-
-function pfblockerng_php_install_command() {
-	require_once("/usr/local/www/pfblockerng/pfblockerng.php");
-	global $config,$pfb;
-	pfb_global();
-
-	// Remove previously used CC folder location if exists
-	@rmdir_recursive("{$pfb['dbdir']}/cc");
-
-	// Uncompress Country Code File
-	@copy("{$pfb['dbdir']}/countrycodes.tar.bz2", "{$pfb['ccdir']}/countrycodes.tar.bz2");
-	exec("/usr/bin/tar -jx -C {$pfb['ccdir']} -f {$pfb['ccdir']}/countrycodes.tar.bz2");
-	// Download MaxMind Files and Create Country Code files and Build Continent XML Files
-	update_output_window(gettext("Downloading MaxMind Country Databases. This may take a minute..."));
-	exec("/bin/sh /usr/local/pkg/pfblockerng/geoipupdate.sh all >> {$pfb['geolog']} 2>&1");
-
-	update_output_window(gettext("MaxMind Country Database downloads completed..."));
-	update_output_window(gettext("Converting MaxMind Country Databases for pfBlockerNG. This may take a few minutes..."));
-	pfblockerng_uc_countries();
-	update_output_window(gettext("Creating pfBlockerNG Continenet XML Files..."));
-	pfblockerng_get_countries();
-	update_output_window(gettext("Completed Creating pfBlockerNG Continenet XML Files..."));
-
-	// Remove Original Maxmind Database Files
-	@unlink_if_exists("{$pfb['dbdir']}/GeoIPCountryCSV.zip");
-	@unlink_if_exists("{$pfb['dbdir']}/GeoIPCountryWhois.csv");
-	@unlink_if_exists("{$pfb['dbdir']}/GeoIPv6.csv");
-	@unlink_if_exists("{$pfb['dbdir']}/country_continent.csv");
-
-	// Add Widget to Dashboard
-	update_output_window(gettext("Adding pfBlockerNG Widget to Dashboard."));
-	if ($pfb['keep'] == "on" && !empty($pfb['widgets'])) {
-		// Restore previous Widget setting if "Keep" is enabled.
-		$config['widgets']['sequence'] = $pfb['widgets'];
-	} else {
-		$widgets = $config['widgets']['sequence'];
-		if (!preg_match("/pfblockerng-container/", $widgets)) {
-			if (empty($widgets)) {
-				$config['widgets']['sequence'] = "pfblockerng-container:col2:show";
-			} else {
-				$config['widgets']['sequence'] .= ",pfblockerng-container:col2:show";
-			}
-		}
-	}
-}
-
-
 function pfblockerng_php_deinstall_command() {
 	require_once("config.inc");
 	global $config,$pfb;

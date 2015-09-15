@@ -9,7 +9,7 @@
 			&lt;strong&gt;As of pkg v0.27 switched to using 1.6dev releases. If you need stable, switch to haproxy-1_5 package.&lt;/strong&gt;]]></descr>
 		<website>http://haproxy.1wt.eu/</website>
 		<category>Services</category>
-		<version>0.28</version>
+		<version>0.30</version>
 		<status>Release</status>
 		<required_version>2.2</required_version>
 		<config_file>https://packages.pfsense.org/packages/config/haproxy-devel/haproxy.xml</config_file>
@@ -23,6 +23,6 @@
 			<custom_name>haproxy-devel</custom_name>
 			<port>net/haproxy-devel</port>
 		</build_pbi>
-		<build_options>WITH_OPENSSL_PORT=yes;haproxy_UNSET_FORCE=DPCRE;haproxy_SET_FORCE=OPENSSL SPCRE LUA</build_options>
+		<build_options>WITH_OPENSSL_PORT=yes;net_haproxy-devel_UNSET_FORCE=DPCRE;net_haproxy-devel_SET_FORCE=OPENSSL SPCRE LUA</build_options>
 	</package>
 </pfsensepkgs>

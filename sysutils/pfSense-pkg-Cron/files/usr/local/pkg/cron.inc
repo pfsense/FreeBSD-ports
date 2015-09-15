@@ -40,7 +40,6 @@ function cron_sync_package() {
 }
 
 function cron_install_command() {
-	conf_mount_rw();
 	// Clean up possible lingering garbage after previous package versions
 	unlink_if_exists("/usr/local/etc/rc.d/cron.sh");
 	cron_sync_package();

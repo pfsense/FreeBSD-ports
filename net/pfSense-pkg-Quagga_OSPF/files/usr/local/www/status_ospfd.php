@@ -1,8 +1,10 @@
 <?php
 /*
 	status_ospfd.php
-	Copyright (C) 2010 Nick Buraglio; nick@buraglio.com
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2010 Nick Buraglio <nick@buraglio.com>
 	Copyright (C) 2010 Scott Ullrich <sullrich@pfsense.org>
+	Copyright (C) 2015 ESF, LLC
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -16,7 +18,7 @@
 	   documentation and/or other materials provided with the distribution.
 
 	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-	INClUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
 	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
 	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
 	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
@@ -26,14 +28,13 @@
 	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
 */
-
 require("guiconfig.inc");
 
 $pgtitle = "Quagga OSPF: Status";
 include("head.inc");
 
 $control_script = "/usr/local/bin/quaggactl";
-$pkg_homedir	= "/var/etc/quagga";
+$pkg_homedir = "/var/etc/quagga";
 
 /* List all of the commands as an index. */
 function listCmds() {
@@ -61,11 +62,12 @@ function defCmdT($title, $command) {
 }
 
 function doCmdT($title, $command) {
-	echo "<p>\n";
+	echo "<br />\n";
 	echo "<a name=\"" . $title . "\">\n";
 	echo "<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
 	echo "<tr><td class=\"listtopic\">" . $title . "</td></tr>\n";
-	echo "<tr><td class=\"listlr\"><pre>";		/* no newline after pre */
+	/* no newline after pre */
+	echo "<tr><td class=\"listlr\"><pre>";
 
 	$execOutput = "";
 	$execStatus = "";
@@ -86,7 +88,7 @@ function doCmdT($title, $command) {
 		<?php if ($savemsg) print_info_box($savemsg); ?>
 
 		<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  			<tr><td class="tabnavtbl">
+			<tr><td class="tabnavtbl">
 <?php
 				$tab_array = array();
 				$tab_array[] = array(gettext("Settings"), false, "/pkg_edit.php?xml=quagga_ospfd.xml&id=0");
@@ -96,8 +98,7 @@ function doCmdT($title, $command) {
 				display_top_tabs($tab_array);
 			?>
 			</td></tr>
-			  <tr>
-				<td>
+			<tr><td>
 				<div id="mainarea">
 					<table class="tabcont" width="100%" border="0" cellpadding="6" cellspacing="0">
 						<tr>
@@ -123,8 +124,7 @@ function doCmdT($title, $command) {
 						</tr>
 					</table>
 				</div>
-				</td>
-			   </tr>
+			</td></tr>
 		</table>
 		<?php include("fend.inc"); ?>
 	</body>

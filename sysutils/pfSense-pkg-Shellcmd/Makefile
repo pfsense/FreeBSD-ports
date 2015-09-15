@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Shellcmd
-PORTVERSION=	0.6
+PORTVERSION=	1.0
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -21,18 +21,11 @@ do-extract:
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
-	${MKDIR} ${STAGEDIR}${PREFIX}/www/packages/shellcmd
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/shellcmd.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/shellcmd.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/shellcmd.inc \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/shellcmd.inc \
-		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/www/packages/shellcmd/shellcmd.php \
-		${STAGEDIR}${PREFIX}/www/packages/shellcmd
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/www/packages/shellcmd/shellcmd_edit.php \
-		${STAGEDIR}${PREFIX}/www/packages/shellcmd
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
 

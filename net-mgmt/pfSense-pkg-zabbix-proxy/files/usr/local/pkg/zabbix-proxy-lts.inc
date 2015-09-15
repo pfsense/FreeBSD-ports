@@ -41,10 +41,6 @@ if ($pf_version == "2.1" || $pf_version == "2.2") {
 }
 
 function php_deinstall_zabbix_proxy_lts() {
-	conf_mount_rw();
-
-	stop_service("zabbix_proxy_lts");
-	unlink_if_exists(ZABBIX_PROXY_BASE . "/etc/rc.d/zabbix_proxy_lts.sh");
 	unlink_if_exists(ZABBIX_PROXY_BASE . "/etc/zabbix22/zabbix_proxy_lts.conf");
 	unlink_if_exists("/var/log/zabbix-proxy-lts/zabbix_proxy_lts.log");
 	unlink_if_exists("/var/run/zabbix-proxy-lts/zabbix_proxy_lts.pid");
@@ -58,8 +54,6 @@ function php_deinstall_zabbix_proxy_lts() {
 	if (is_dir("/var/db/zabbix-proxy-lts")) {
 		mwexec("/bin/rm -rf /var/db/zabbix-proxy-lts/");
 	}
-
-	conf_mount_ro();
 }
 
 function validate_input_zabbix_proxy_lts($post, &$input_errors) {

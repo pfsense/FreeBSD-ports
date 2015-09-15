@@ -1,115 +1,157 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
-<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
 <packagegui>
-        <copyright>
-        <![CDATA[
+	<copyright>
+<![CDATA[
 /* $Id$ */
-/* ========================================================================== */
+/* ====================================================================================== */
 /*
-    shellcmd.xml
-    Copyright (C) 2008 Mark J Crane
-    All rights reserved.
-                                                                              */
-/* ========================================================================== */
+	shellcmd.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2008 Mark J Crane
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
 /*
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions are met:
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
 
-     1. Redistributions of source code must retain the above copyright notice,
-        this list of conditions and the following disclaimer.
 
-     2. Redistributions in binary form must reproduce the above copyright
-        notice, this list of conditions and the following disclaimer in the
-        documentation and/or other materials provided with the distribution.
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
 
-    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-    POSSIBILITY OF SUCH DAMAGE.
-                                                                              */
-/* ========================================================================== */
-        ]]>
-        </copyright>
-    <description>Shellcmd</description>
-    <requirements>Describe your package requirements here</requirements>
-    <faq>Currently there are no FAQ items provided.</faq>
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
 	<name>Shellcmd Settings</name>
-	<version>0.4</version>
-	<title>Settings</title>
+	<version>1.0</version>
+	<title>Shellcmd Settings</title>
 	<include_file>/usr/local/pkg/shellcmd.inc</include_file>
+	<aftersaveredirect>/pkg.php?xml=shellcmd.xml</aftersaveredirect>
+	<addedit_string>[shellcmd] Successfully created/modified custom (early)shellcmd.</addedit_string>
+	<delete_string>[shellcmd] Successfully deleted custom (early)shellcmd.</delete_string>
 	<menu>
 		<name>Shellcmd</name>
-		<tooltiptext>shellcmd settings.</tooltiptext>
 		<section>Services</section>
 		<configfile>shellcmd.xml</configfile>
-		<url>/packages/shellcmd/shellcmd.php</url>
+		<url>/pkg.php?xml=shellcmd.xml</url>
 	</menu>
 	<tabs>
 		<tab>
 			<text>Settings</text>
-			<url>/pkg_edit.php?xml=shellcmd.xml&amp;id=0</url>
+			<url>/pkg.php?xml=shellcmd.xml</url>
 			<active/>
 		</tab>
-		<tab>
-			<text>Settings</text>
-			<url>/packages/shellcmd/shellcmd.php</url>
-			<active/>
-		</tab>		
 	</tabs>
-	<configpath>installedpackages->package->$packagename->configuration->shellcmd</configpath>
+	<configpath>['installedpackages']['shellcmdsettings']['config']</configpath>
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
-		<chmod>0755</chmod>		
-		<item>https://packages.pfsense.org/packages/config/shellcmd/shellcmd.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<chmod>0755</chmod>		
 		<item>https://packages.pfsense.org/packages/config/shellcmd/shellcmd.inc</item>
 	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/packages/shellcmd/</prefix>
-		<chmod>0755</chmod>		
-		<item>https://packages.pfsense.org/packages/config/shellcmd/shellcmd.php</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/packages/shellcmd/</prefix>
-		<chmod>0755</chmod>		
-		<item>https://packages.pfsense.org/packages/config/shellcmd/shellcmd_edit.php</item>
-	</additional_files_needed>			
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Command</fielddescr>
+			<fieldname>cmd</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Shellcmd Type</fielddescr>
+			<fieldname>cmdtype</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+		</columnitem>
+	<addtext>Add a new (early)shellcmd entry</addtext>
+	<edittext>Edit this (early)shellcmd entry</edittext>
+	<deletetext>Delete this (early)shellcmd entry</deletetext>
+	</adddeleteeditpagefields>
 	<fields>
 		<field>
-			<fielddescr>Variable One</fielddescr>
-			<fieldname>var1</fieldname>
-			<description>Enter the variable one here.</description>
-			<type>input</type>
+			<type>listtopic</type>
+			<fieldname>none</fieldname>
+			<name>Shellcmd Configuration</name>
 		</field>
 		<field>
-			<fielddescr>Variable Two</fielddescr>
-			<fieldname>var1</fieldname>
-			<description>Enter the variable one here.</description>
+			<fielddescr>Command</fielddescr>
+			<fieldname>cmd</fieldname>
 			<type>input</type>
+			<size>60</size>
+			<description>Enter the command to run.</description>
+			<required/>
 		</field>
-	</fields>	
-	<custom_add_php_command>
-	</custom_add_php_command>
+		<field>
+			<fielddescr>Shellcmd Type</fielddescr>
+			<fieldname>cmdtype</fieldname>
+			<type>select</type>
+				<options>
+					<option>
+						<name>shellcmd</name>
+						<value>shellcmd</value>
+					</option>
+					<option>
+						<name>earlyshellcmd</name>
+						<value>earlyshellcmd</value>
+					</option>
+					<option>
+						<name>afterfilterchangeshellcmd</name>
+						<value>afterfilterchangeshellcmd</value>
+					</option>
+					<option>
+						<name>disabled</name>
+						<value>disabled</value>
+					</option>
+				</options>
+			<description>
+				<![CDATA[
+				Choose the shellcmd type.<br /><br />
+				<strong>shellcmd</strong> will run the command specified towards the end of the boot process.<br />
+				<strong>earlyshellcmd</strong> will run the command specified at the beginning of the boot process.<br />
+				<strong>afterfilterchangeshellcmd</strong> will run after each filter_configure() call.
+				See <a href="https://github.com/pfsense/pfsense/blob/master/etc/inc/filter.inc">filter.inc source code</a> for "documentation".
+				<span class="errmsg">N.B.: Only one entry of this type can be configured!</span><br />
+				<strong>disabled</strong> will save the command in package configuration but it will NOT run on boot.<br /><br />
+				See <a href="https://doc.pfsense.org/index.php/Executing_commands_at_boot_time">Executing commands at boot time</a> for detailed explanation.
+				]]>
+			</description>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+			<description>Enter a description for this command.</description>
+			<type>input</type>
+			<typehint>(This is for your reference only.)</typehint>
+			<size>60</size>
+		</field>
+	</fields>
+	<custom_php_install_command>
+		shellcmd_import_config();
+	</custom_php_install_command>
 	<custom_php_resync_config_command>
 		shellcmd_sync_package();
 	</custom_php_resync_config_command>
-	<custom_delete_php_command>    
-		shellcmd_sync_package();
+	<custom_delete_php_command>
+		shellcmd_delete_php_command();
 	</custom_delete_php_command>
-	<custom_php_install_command>
-		shellcmd_install_command();
-	</custom_php_install_command>
-	<custom_php_deinstall_command>
-		shellcmd_deinstall_command();
-	</custom_php_deinstall_command>
+	<custom_php_validation_command>
+		shellcmd_validate_input($_POST, $input_errors);
+	</custom_php_validation_command>
 </packagegui>

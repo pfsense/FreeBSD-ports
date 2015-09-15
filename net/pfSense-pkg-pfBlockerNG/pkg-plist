@@ -1,6 +1,7 @@
 pkg/pfblockerng.xml
 /etc/inc/priv/pfblockerng.priv.inc
 pkg/pfblockerng/pfblockerng.inc
+pkg/pfblockerng/pfblockerng_install.inc
 www/pfblockerng/pfblockerng.php
 www/pfblockerng/pfblockerng_alerts.php
 www/pfblockerng/pfblockerng_update.php

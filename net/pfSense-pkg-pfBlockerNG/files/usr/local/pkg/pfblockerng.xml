@@ -71,6 +71,10 @@
 		<chmod>0644</chmod>
 	</additional_files_needed>
 	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng_install.inc</item>
+		<prefix>/usr/local/pkg/pfblockerng/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
 		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng.php</item>
 		<prefix>/usr/local/www/pfblockerng/</prefix>
 		<chmod>0644</chmod>
@@ -542,10 +546,14 @@
 		</field>
 	</fields>
 	<custom_php_install_command>
-		pfblockerng_php_install_command();
+		<![CDATA[
+		include_once('/usr/local/pkg/pfblockerng/pfblockerng_install.inc');
+		]]>
 	</custom_php_install_command>
 	<custom_php_deinstall_command>
+		<![CDATA[
 		pfblockerng_php_deinstall_command();
+		]]>
 	</custom_php_deinstall_command>
 	<custom_php_validation_command>
 		pfblockerng_validate_input($_POST, $input_errors);

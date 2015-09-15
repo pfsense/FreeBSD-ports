@@ -1,5 +1,3 @@
 pkg/shellcmd.xml
 pkg/shellcmd.inc
-www/packages/shellcmd/shellcmd.php
-www/packages/shellcmd/shellcmd_edit.php
 %%DATADIR%%/info.xml
