@@ -13,7 +13,7 @@ COMMENT=	Network monitoring tool with command line and web interfaces
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	librrd.so:${PORTSDIR}/databases/rrdtool \
+LIB_DEPENDS=	librrd.so:${PORTSDIR}/databases/rrdtool12 \
 		libluajit-5.1.so:${PORTSDIR}/lang/luajit \
 		libndpi.so:${PORTSDIR}/net/ndpi \
 		libzmq.so:${PORTSDIR}/net/libzmq4
