@@ -1,1 +1,1 @@
-Daemon to detect button press on alix and wrap that spawns a config reset.
+Utility to detect platform reset button state for use in scripting

@@ -8,7 +8,7 @@ DISTFILES=	# none
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	garga@pfsense.org
-COMMENT=	Run various pfSense scripts on event
+COMMENT=	Utility to detect platform reset button state for use in scripting
 
 PLIST_FILES=	sbin/wrapresetbtn \
 		sbin/alixresetbtn \
