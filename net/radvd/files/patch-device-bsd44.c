@@ -1,6 +1,6 @@
---- device-bsd44.c.orig	2013-03-18 13:27:42.000000000 +0000
-+++ device-bsd44.c	2013-03-18 13:28:32.000000000 +0000
-@@ -322,6 +322,27 @@
+--- device-bsd44.c.orig	2012-06-05 16:12:29 UTC
++++ device-bsd44.c
+@@ -188,6 +188,27 @@ ret:
  
  int setup_allrouters_membership(struct Interface *iface)
  {
@@ -25,6 +25,6 @@
 +		return (-1);
 +	}
 +
- 	return 0;
+ 	return (0);
  }
  
