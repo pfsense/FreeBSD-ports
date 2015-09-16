@@ -6,8 +6,8 @@ PORTVERSION=	1.9.1
 CATEGORIES=	net ipv6
 MASTER_SITES=	http://www.litech.org/radvd/dist/
 
-MAINTAINER=	dhn@FreeBSD.org
-COMMENT=	A Linux/BSD IPv6 router advertisement daemon
+MAINTAINER=	farrokhi@FreeBSD.org
+COMMENT=	Linux/BSD IPv6 router advertisement daemon
 
 LIB_DEPENDS=	libdaemon.so:${PORTSDIR}/devel/libdaemon
 
@@ -16,7 +16,7 @@ CONFIGURE_ARGS=	--program-transform-name=
 USES=		gmake pkgconfig
 USE_RC_SUBR=	radvd
 
-PORTDOCS=	CHANGES-1 COPYRIGHT INTRO.html README TODO
+PORTDOCS=	CHANGES COPYRIGHT INTRO.html README TODO
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/radvd.conf.example ${STAGEDIR}${PREFIX}/etc
