@@ -14,7 +14,7 @@
 			<ports_after>net/avahi-app devel/dbus</ports_after>
 		</build_pbi>
 		<depends_on_package_pbi>avahi-0.6.31-##ARCH##.pbi</depends_on_package_pbi>
-		<version>1.10.1</version>
+		<version>1.10.2</version>
 		<status>BETA</status>
 		<required_version>2.2</required_version>
 		<config_file>https://packages.pfsense.org/packages/config/avahi/avahi.xml</config_file>

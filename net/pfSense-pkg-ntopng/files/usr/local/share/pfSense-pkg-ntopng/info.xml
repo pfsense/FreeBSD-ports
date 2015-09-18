@@ -12,7 +12,7 @@
 			<ports_before>databases/redis databases/gdbm net/GeoIP x11-fonts/font-util x11-fonts/webfonts graphics/graphviz</ports_before>
 			<port>net/ntopng</port>
 		</build_pbi>
-		<version>0.7.2</version>
+		<version>0.8.0</version>
 		<status>ALPHA</status>
 		<required_version>2.2</required_version>
 		<config_file>https://packages.pfsense.org/packages/config/ntopng/ntopng.xml</config_file>

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Avahi
-PORTVERSION=	1.10.1
+PORTVERSION=	1.10.2
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty

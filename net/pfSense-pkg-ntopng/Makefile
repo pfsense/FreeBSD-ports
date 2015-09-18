@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-ntopng
-PORTVERSION=	0.7.2
+PORTVERSION=	0.8.0
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -16,6 +16,8 @@ RUN_DEPENDS=	${LOCALBASE}/bin/ntopng:${PORTSDIR}/net/ntopng \
 		${LOCALBASE}/share/fonts/webfonts/arial.ttf:${PORTSDIR}/x11-fonts/webfonts \
 		${LOCALBASE}/bin/acyclic:${PORTSDIR}/graphics/graphviz
 
+CONFLICTS=	pfSense-base-nanobsd-[0-9]*
+
 NO_BUILD=	yes
 NO_MTREE=	yes
 
@@ -29,6 +31,8 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/ntopng.xml \
+		${STAGEDIR}${PREFIX}/pkg
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/ntopng.inc \
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}

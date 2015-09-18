@@ -5,7 +5,7 @@
 		<internal_name>System_Patches</internal_name>
 		<descr><![CDATA[A package to apply and maintain custom system patches.]]></descr>
 		<maintainer>jimp@pfsense.org</maintainer>
-		<version>1.0.5</version>
+		<version>1.0.6</version>
 		<category>System</category>
 		<status>RELEASE</status>
 		<config_file>https://packages.pfsense.org/packages/config/systempatches/systempatches.xml</config_file>

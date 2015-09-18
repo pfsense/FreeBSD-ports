@@ -51,7 +51,7 @@
 		<name>Avahi</name>
 		<tooltiptext>Modify avahi settings.</tooltiptext>
 		<section>Services</section>
-		<url>pkg_edit.php?xml=avahi.xml&amp;id=0</url>
+		<url>pkg_edit.php?xml=avahi.xml</url>
 	</menu>
 	<service>
 		<name>avahi</name>
@@ -73,61 +73,242 @@
 	</additional_files_needed>
 	<fields>
 		<field>
+			<name>Server Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
 			<fielddescr>Enable</fielddescr>
 			<fieldname>enable</fieldname>
 			<description>Enable Avahi Bonjour/Zeroconf proxy.</description>
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Browse domains (comma separated)</fielddescr>
+			<fielddescr>Browse Domains</fielddescr>
 			<fieldname>browsedomains</fieldname>
 			<description>
 				<![CDATA[
-				Enter the domains that you would like proxied.<br />
-				(Example: local, pfsense.org, mydomain.com)
+				Enter the (comma separated) list of domains that you would like proxied. (Example: local, pfsense.org, mydomain.com)<br />
+				(Default: local)
 				]]>
 			</description>
 			<type>input</type>
+			<default_value>local</default_value>
 		</field>
 		<field>
 			<fielddescr>Deny interfaces</fielddescr>
 			<fieldname>denyinterfaces</fieldname>
 			<description>
 				<![CDATA[
-				Interfaces that you do NOT want Avahi to listen on.
-				<strong>NOTE: WAN is always disabled (so it is not shown here).</strong>
+				Interfaces that you do NOT want Avahi to listen on.<br />
+				<strong>Note: WAN is always disabled (so it is not shown here).</strong>
 				]]>
 			</description>
 			<type>interfaces_selection</type>
-			<hideinterfaceregex>wan</hideinterfaceregex>
+			<hideinterfaceregex>(wan|loopback)</hideinterfaceregex>
 			<multiple>true</multiple>
 		</field>
 		<field>
-			<fielddescr>Disable IPv6</fielddescr>
-			<fieldname>disable_ipv6</fieldname>
-			<description>Disable IPv6 support in Avahi.</description>
+			<fielddescr>Enable IPv4</fielddescr>
+			<fieldname>enable_ipv4</fieldname>
+			<description>Enable IPv4 support in Avahi. (Default: enabled)</description>
 			<type>checkbox</type>
+			<default_value>on</default_value>
+			<enablefields>publish_aaaa_on_ipv4</enablefields>
 		</field>
 		<field>
-			<fielddescr>Disable IPv4</fielddescr>
-			<fieldname>disable_ipv4</fieldname>
-			<description>Disable IPv4 support in Avahi.</description>
+			<fielddescr>Enable IPv6</fielddescr>
+			<fieldname>enable_ipv6</fieldname>
+			<description>Enable IPv6 support in Avahi. (Default: enabled)</description>
 			<type>checkbox</type>
+			<default_value>on</default_value>
+			<enablefields>publish_a_on_ipv6</enablefields>
 		</field>
 		<field>
-			<fielddescr>Disable D-BUS</fielddescr>
+			<fielddescr>Disable D-Bus</fielddescr>
 			<fieldname>disable_dbus</fieldname>
-			<description>Disable D-BUS client API support in Avahi.</description>
+			<description>Disable D-Bus client API support in Avahi. (Default: no)</description>
 			<type>checkbox</type>
+		</field>
+		<field>
+			<name>Wide Area</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable Wide-Area DNS-SD</fielddescr>
+			<fieldname>enable_wide_area</fieldname>
+			<description>
+				<![CDATA[
+				Enable wide-area DNS-SD, aka DNS-SD over unicast DNS. If this is enabled only
+				domains ending in .local will be resolved on mDNS, all other domains are resolved via unicast DNS.<br />
+				If you want to maintain multiple different multicast DNS domains even with this option enabled,
+				use subdomains of .local, such as "kitchen.local".<br />
+				(Default: enabled)
+				]]>
+			</description>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+		<field>
+			<name>Publishing Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Disable Publishing</fielddescr>
+			<fieldname>disable_publishing</fieldname>
+			<description>
+				<![CDATA[
+				If checked, no record will be published by Avahi, not even address records for the local host. Avahi will be started in a querying-only mode.<br />
+				You can use this is a security measure. <strong>Warning: Do NOT disable publishing unless you know what you are doing!</strong><br />
+				(Default: no)
+				]]>
+			</description>
+			<type>checkbox</type>
+			<default_value>off</default_value>
+		</field>
+		<field>
+			<fielddescr>Disable User Service Publishing</fielddescr>
+			<fieldname>disable_user_service_publishing</fieldname>
+			<description>
+				<![CDATA[
+				If checked, Avahi will still publish address records and suchlike but will not allow user applications to publish services.
+				You can use this is a security measure.<br />
+				(Default: no)
+				]]>
+			</description>
+			<type>checkbox</type>
+			<default_value>off</default_value>
+		</field>
+		<field>
+			<fielddescr>Add Service Cookie</fielddescr>
+			<fieldname>add_service_cookie</fieldname>
+			<description>
+				<![CDATA[
+				If enabled, an implicit TXT entry will be added to all locally registered services.
+				This can be used to detect if two services on two different interfaces/protocols are actually identical.<br />
+				(Default: disabled)
+				]]>
+			</description>
+			<type>checkbox</type>
+			<default_value>off</default_value>
+		</field>
+		<field>
+			<fielddescr>Publish Addresses</fielddescr>
+			<fieldname>publish_addresses</fieldname>
+			<description>
+				<![CDATA[
+				If enabled, Avahi will register mDNS address records for all local IP addresses. Unless you want to use Avahi exclusively
+				for browsing it’s recommended to enable this. If you want to register local services you need to enable this option.<br />
+				(Default: enabled)
+				]]>
+				</description>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+		<field>
+			<fielddescr>Publish HINFO</fielddescr>
+			<fieldname>publish_hinfo</fieldname>
+			<description>
+				<![CDATA[
+				If enabled, Avahi will register an mDNS HINFO record on all interfaces which contains information about the local operating system and CPU.<br />
+				This is recommended by the mDNS specification but not required. For the sake of privacy you might choose to disable this feature.<br />
+				(Default: enabled)
+				]]>
+			</description>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+		<field>
+			<fielddescr>Publish Workstation</fielddescr>
+			<fieldname>publish_workstation</fieldname>
+			<description>
+				<![CDATA[
+				If enabled, Avahi will register will register a service of type "_workstation._tcp" on the local LAN.
+				This might be useful for administrative purposes (i.e. browse for all PCs on the LAN).<br />
+				(Default: enabled)
+				]]>
+			</description>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+		<field>
+			<fielddescr>Publish DNS Servers</fielddescr>
+			<fieldname>publish_resolv_conf_dns_servers</fieldname>
+			<description>
+				<![CDATA[
+				If enabled, Avahi will publish the unicast DNS servers configured in System - General settings.
+				You can use this to announce unicast DNS servers via mDNS.<br />
+				When used in conjunction with avahi-dnsconfd on the client side this allows DHCP-like configuration of unicast DNS servers.<br />
+				(Default: disabled)
+				]]>
+			</description>
+			<type>checkbox</type>
+			<default_value>off</default_value>
+		</field>
+		<field>
+			<fielddescr>Publish AAAA records on IPv4</fielddescr>
+			<fieldname>publish_aaaa_on_ipv4</fieldname>
+			<description>
+				<![CDATA[
+				If enabled, Avahi will publish an IPv6 AAAA record via IPv4, i.e. the local IPv6 addresses can be resolved using an IPv4 transport.<br />
+				(Default: enabled)
+				]]>
+			</description>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+		<field>
+			<fielddescr>Publish A records on IPv6</fielddescr>
+			<fieldname>publish_a_on_ipv6</fieldname>
+			<description>
+				<![CDATA[
+				If enabled, Avahi will publish an IPv4 A record via IPv6, i.e. the local IPv4 addresses can be resolved using an IPv6 transport.<br />
+				(Default: disabled)
+				]]>
+			</description>
+			<type>checkbox</type>
+			<default_value>off</default_value>
+		</field>
+		<field>
+			<name>Reflector Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable Reflector</fielddescr>
+			<fieldname>enable_reflector</fieldname>
+			<description>
+				<![CDATA[
+				If enabled, Avahi will reflect incoming mDNS requests to all local network interfaces,
+				effectively allowing clients to browse mDNS/DNS-SD services on all networks connected to the gateway.<br />
+				(Default: enabled)
+				]]>
+			</description>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+		<field>
+			<fielddescr>Reflect IPv</fielddescr>
+			<fieldname>reflect_ipv</fieldname>
+			<description>
+				<![CDATA[
+				If enabled, Avahi will forward mDNS traffic between IPv4 and IPv6, which is usually not recommended.<br />
+				(Default: disabled)
+				]]>
+			</description>
+			<type>checkbox</type>
+			<default_value>off</default_value>
 		</field>
 	</fields>
 	<custom_php_resync_config_command>
 		avahi_sync();
 	</custom_php_resync_config_command>
 	<custom_php_install_command>
+		avahi_upgrade_config();
 		avahi_install();
 	</custom_php_install_command>
 	<custom_php_deinstall_command>
 		avahi_deinstall();
 	</custom_php_deinstall_command>
+	<custom_php_validation_command>
+		avahi_validate_input($_POST, $input_errors);
+	</custom_php_validation_command>
 </packagegui>

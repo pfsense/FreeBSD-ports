@@ -12,6 +12,8 @@ COMMENT=	pfSense package Lightsquid
 
 RUN_DEPENDS=	${LOCALBASE}/libexec/lightsquid/ip2name.list:${PORTSDIR}/www/lightsquid
 
+CONFLICTS=	pfSense-base-nanobsd-[0-9]*
+
 NO_BUILD=	yes
 NO_MTREE=	yes
 
