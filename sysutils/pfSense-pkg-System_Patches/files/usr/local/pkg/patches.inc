@@ -94,6 +94,12 @@ function patch_fetch(& $patch) {
 		return false;
 	} else {
 		$patch['patch'] = base64_encode($text);
+		// Detect pfSense move from / to /src and fix pathstrip
+		if (is_github_url($patch['location']) &&
+		    $patch['pathstrip'] == 1 &&
+		    preg_match('/\n--- a\/src\//', $text)) {
+			$patch['pathstrip'] = 2;
+		}
 		write_config("Fetched patch {$patch['descr']}");
 		return true;
 	}
