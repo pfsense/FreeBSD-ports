@@ -1265,6 +1265,7 @@
     SUBDIR += py-sphinxcontrib-adadomain
     SUBDIR += py-sphinxcontrib-bitbucket
     SUBDIR += py-sphinxcontrib-httpdomain
+    SUBDIR += py-sphinxcontrib-programoutput
     SUBDIR += py-syck
     SUBDIR += py-texttable
     SUBDIR += py-tinycss
@@ -1282,8 +1283,6 @@
     SUBDIR += py-xlutils
     SUBDIR += py-xlwriter
     SUBDIR += py-xlwt
-    SUBDIR += py-xml
-    SUBDIR += py-xmltools
     SUBDIR += py-xmltv
     SUBDIR += py-zope.app.i18n
     SUBDIR += py-zope.app.locales
@@ -1349,6 +1348,7 @@
     SUBDIR += ruby-xml-configfile
     SUBDIR += ruby-xmlparser
     SUBDIR += ruby-xmlscan
+    SUBDIR += rubygem-actionpack-xml_parser
     SUBDIR += rubygem-albino
     SUBDIR += rubygem-amatch
     SUBDIR += rubygem-asciidoctor

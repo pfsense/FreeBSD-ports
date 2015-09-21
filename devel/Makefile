@@ -252,6 +252,7 @@
     SUBDIR += cld2
     SUBDIR += clewn
     SUBDIR += clig
+    SUBDIR += clinfo
     SUBDIR += clisp-hyperspec
     SUBDIR += clojure-cider
     SUBDIR += cloudabi-binutils
@@ -1141,6 +1142,7 @@
     SUBDIR += libesedb
     SUBDIR += libestr
     SUBDIR += libev
+    SUBDIR += libevdev
     SUBDIR += libevent-hiphop
     SUBDIR += libevent2
     SUBDIR += libevt
@@ -1213,6 +1215,7 @@
     SUBDIR += libmpsse
     SUBDIR += libmsiecf
     SUBDIR += libmsocket
+    SUBDIR += libmtdev
     SUBDIR += libmtrie
     SUBDIR += libnaji
     SUBDIR += libnfc
@@ -1534,6 +1537,7 @@
     SUBDIR += ocaml-xstr
     SUBDIR += ocaml-xstrp4
     SUBDIR += ocfpcsc
+    SUBDIR += ocl-icd
     SUBDIR += ode
     SUBDIR += ois
     SUBDIR += okteta
@@ -3959,6 +3963,7 @@
     SUBDIR += py-eggtestinfo
     SUBDIR += py-enum34
     SUBDIR += py-epsilon
+    SUBDIR += py-evdev
     SUBDIR += py-event
     SUBDIR += py-experimental.cssselect
     SUBDIR += py-extras
@@ -4202,6 +4207,7 @@
     SUBDIR += py-raven
     SUBDIR += py-repl
     SUBDIR += py-repoze.lru
+    SUBDIR += py-repoze.sphinx.autointerface
     SUBDIR += py-repoze.tm2
     SUBDIR += py-repoze.what
     SUBDIR += py-repoze.what-pylons
@@ -4834,6 +4840,7 @@
     SUBDIR += rubygem-power_assert
     SUBDIR += rubygem-powerbar
     SUBDIR += rubygem-progressbar
+    SUBDIR += rubygem-protected_attributes
     SUBDIR += rubygem-prototype-rails
     SUBDIR += rubygem-pry
     SUBDIR += rubygem-pry-rails
