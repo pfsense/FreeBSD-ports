@@ -451,8 +451,6 @@ write_status() {
 static int
 write_unbound_conf() {
 	struct isc_lease *lease;
-	struct stat tmp;
-	size_t tmpsize;
 	int fd;
 
 	fd = open(unbound_conf, O_WRONLY | O_TRUNC | O_CREAT | O_FSYNC);
