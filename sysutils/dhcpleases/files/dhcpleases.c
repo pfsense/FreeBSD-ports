@@ -83,15 +83,11 @@ struct isc_lease {
 
 LIST_HEAD(isc_leases, isc_lease) leases =
 	LIST_HEAD_INITIALIZER(leases);
-static char *leasefile = NULL;
-static char *pidfile = NULL;
 static char *HOSTS = NULL;
-static FILE *fp = NULL;
 static char *domain_suffix = NULL;
-static char *command = NULL;
 static int hostssize = 0;
-static size_t foreground = 0;
-static size_t unbound = 0;
+static int foreground = 0;
+static int unbound = 0;
 static char *unbound_conf = NULL;
 
 static int fexist(char *);
@@ -101,12 +97,12 @@ static int canonicalise(char *);
 static int hostname_isequal(char *, char *);
 static int next_token (char *, int, FILE *);
 static time_t convert_time(struct tm);
-static int load_dhcp(time_t);
+static int load_dhcp(FILE *, char *, char *, time_t);
 
 static int write_status(void);
 static int write_unbound_conf(void);
 static void cleanup(void);
-static void signal_process(void);
+static void signal_process(char *);
 static void handle_signal(int);
 
 /* Check if file exists */
@@ -260,7 +256,7 @@ convert_time(struct tm lease_time) {
 }
 
 static int
-load_dhcp(time_t now) {
+load_dhcp(FILE *fp, char *leasefile, char *domain_sufix, time_t now) {
 	char namebuff[256];
 	char *hostname = namebuff, *suffix = NULL;
 	char token[MAXTOK], *dot;
@@ -491,7 +487,7 @@ cleanup() {
 }
 
 static void
-signal_process() {
+signal_process(char *pidfile) {
 	FILE *fd;
 	int size = 0;
 	char *pid = NULL, *pc;
@@ -561,12 +557,17 @@ handle_signal(int sig) {
 
 int
 main(int argc, char **argv) {
+	char *command, *domain_sufix, *leasefile, *pidfile;
+	FILE *fp;
 	struct kevent evlist;    /* events we want to monitor */
 	struct kevent chlist;    /* events that were triggered */
 	struct sigaction sa;
 	time_t	now;
 	int kq, nev, leasefd, pidf, ch;
 
+	command = NULL;
+	leasefile = NULL;
+	domain_sufix = NULL;
 	while ((ch = getopt(argc, argv, "c:d:fp:h:l:u:")) != -1) {
 		switch (ch) {
 		case 'c':
@@ -694,7 +695,7 @@ reopen:
 
 	now = time(NULL);
 	if (command == NULL) {
-		load_dhcp(now);
+		load_dhcp(fp, leasefile, domain_sufix, now);
 
 		write_status();
 		//syslog(LOG_INFO, "written temp hosts file after modification event.");
@@ -703,7 +704,7 @@ reopen:
 		//syslog(LOG_INFO, "Cleaned up.");
 
 		if (!foreground)
-			signal_process();
+			signal_process(pidfile);
 	}
 
 	if (!foreground) {
@@ -731,7 +732,7 @@ reopen:
 				if (command != NULL)
 					system(command);
 				else {
-					load_dhcp(now);
+					load_dhcp(fp, leasefile, domain_sufix, now);
 
 					write_status();
 					//syslog(LOG_INFO, "written temp hosts file after modification event.");
@@ -739,7 +740,7 @@ reopen:
 					cleanup();
 					//syslog(LOG_INFO, "Cleaned up.");
 
-					signal_process();
+					signal_process(pidfile);
 				}
 			}
 		}
