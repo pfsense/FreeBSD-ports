@@ -565,7 +565,7 @@ main(int argc, char **argv) {
 	struct kevent chlist;    /* events that were triggered */
 	struct sigaction sa;
 	time_t	now;
-	int kq, nev, leasefd = 0, pidf, ch;
+	int kq, nev, leasefd, pidf, ch;
 
 	while ((ch = getopt(argc, argv, "c:d:fp:h:l:u:")) != -1) {
 		switch (ch) {
