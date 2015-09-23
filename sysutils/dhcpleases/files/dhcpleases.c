@@ -592,7 +592,7 @@ main(int argc, char **argv) {
 			unbound = 1;
 			break;
 		default:
-			perror("Wrong number of arguments given."); /* XXX: usage */
+			printf("Wrong number of arguments given.\n"); /* XXX: usage */
 			exit(2);
 			/* NOTREACHED */
 		}
