@@ -507,7 +507,7 @@ signal_process() {
 	if (fd == NULL)
 		goto error;
 
-	pid = calloc(size, size);
+	pid = calloc(1, size + 1);
 	if (pid == NULL) {
 		fclose(fd);
 		goto error;
@@ -523,6 +523,10 @@ signal_process() {
 	pidno = atoi(pid);
 	free(pid);
 
+	if (pidno <= 1) {
+		syslog(LOG_ERR, "Invalid PID for dns daemon(%u)", pidno);
+		return;
+	}
 	syslog(LOG_INFO, "Sending HUP signal to dns daemon(%u)", pidno);
 	if (kill((pid_t)pidno, SIGHUP) < 0)
 		goto error;
