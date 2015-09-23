@@ -602,12 +602,12 @@ main(int argc, char **argv) {
 
 	if (leasefile == NULL) {
 		syslog(LOG_ERR, "lease file is mandatory as parameter");
-		perror("lease file is mandatory as parameter");
+		printf("lease file is mandatory as parameter\n");
 		exit(1);
 	}
 	if (!fexist(leasefile)) {
 		syslog(LOG_ERR, "lease file needs to exist before starting dhcpleases");
-		perror("lease file needs to exist before starting dhcpleases");
+		printf("lease file needs to exist before starting dhcpleases\n");
 		exit(1);
 	}
 	if (domain_suffix == NULL) {
@@ -617,25 +617,25 @@ main(int argc, char **argv) {
 
 	if (pidfile == NULL && !foreground) {
 		syslog(LOG_ERR, "pidfile argument not passed it is mandatory");
-		perror("pidfile argument not passed it is mandatory");
+		printf("pidfile argument not passed it is mandatory\n");
 		exit(1);
 	}
 
 	if (!foreground) {
 		if (HOSTS == NULL) {
 			syslog(LOG_ERR, "You need to specify the hosts file path.");
-			perror("You need to specify the hosts file path.");
+			printf("You need to specify the hosts file path.\n");
 			exit(8);
 		}
 		if (!fexist(HOSTS)) {
 			syslog(LOG_ERR, "Hosts file %s does not exist!", HOSTS);
-			perror("Hosts file passed as parameter does not exist");
+			printf("Hosts file passed as parameter does not exist.\n");
 			exit(8);
 		}
 
 		if ((hostssize = fsize(HOSTS)) < 0) {
 			syslog(LOG_ERR, "Error while getting %s file size.", HOSTS);
-			perror("Error while getting /etc/hosts file size.");
+			printf("Error while getting /etc/hosts file size.\n");
 			exit(6);
 		}
 
@@ -643,8 +643,8 @@ main(int argc, char **argv) {
 		closefrom(3);
 
 		if (daemon(0, 0) < 0) {
-			syslog(LOG_ERR, "Could not daemonize");
 			perror("Could not daemonize");
+			syslog(LOG_ERR, "Could not daemonize");
 			exit(4);
 		}
 
@@ -680,15 +680,15 @@ main(int argc, char **argv) {
 reopen:
 	leasefd = open(leasefile, O_RDONLY);
 	if (leasefd < 0) {
-		syslog(LOG_ERR, "Could not get descriptor");
 		perror("Could not get descriptor");
+		syslog(LOG_ERR, "Could not get descriptor");
 		exit(6);
 	}
 
 	fp = fdopen(leasefd, "r");
 	if (fp == NULL) {
-		syslog(LOG_ERR, "could not open leases file");
 		perror("could not open leases file");
+		syslog(LOG_ERR, "could not open leases file");
 		exit(5);
 	}
 
