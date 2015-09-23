@@ -647,24 +647,7 @@ main(int argc, char **argv) {
 			perror("Could not daemonize");
 			exit(4);
 		}
-	}
 
-reopen:
-	leasefd = open(leasefile, O_RDONLY);
-	if (leasefd < 0) {
-		syslog(LOG_ERR, "Could not get descriptor");
-		perror("Could not get descriptor");
-		exit(6);
-	}
-
-	fp = fdopen(leasefd, "r");
-	if (fp == NULL) {
-		syslog(LOG_ERR, "could not open leases file");
-		perror("could not open leases file");
-		exit(5);
-	}
-
-	if (!foreground) {
 		pidf = open(PIDFILE, O_RDWR | O_CREAT | O_FSYNC);
 		if (pidf < 0)
 			syslog(LOG_ERR, "could not write pid file, %m");
@@ -692,6 +675,21 @@ reopen:
 		/* Create a new kernel event queue */
 		if ((kq = kqueue()) == -1)
 			exit(1);
+	}
+
+reopen:
+	leasefd = open(leasefile, O_RDONLY);
+	if (leasefd < 0) {
+		syslog(LOG_ERR, "Could not get descriptor");
+		perror("Could not get descriptor");
+		exit(6);
+	}
+
+	fp = fdopen(leasefd, "r");
+	if (fp == NULL) {
+		syslog(LOG_ERR, "could not open leases file");
+		perror("could not open leases file");
+		exit(5);
 	}
 
 	now = time(NULL);
