@@ -716,16 +716,16 @@ reopen:
 			nev = kevent(kq, &chlist, 1, &evlist, 1, NULL);
 			if (nev == -1) {
 				syslog(LOG_ERR, "kqueue error: unkown");
-				close(leasefd);
+				fclose(fp);
 				goto reopen;
 			} else if (nev > 0) {
 				if (evlist.flags & EV_ERROR) {
 					syslog(LOG_ERR, "EV_ERROR: %s\n", strerror(evlist.data));
-					close(leasefd);
+					fclose(fp);
 					goto reopen;
 				}
 				if ((evlist.fflags & NOTE_DELETE) || (evlist.fflags & NOTE_RENAME)) {
-					close(leasefd);
+					fclose(fp);
 					goto reopen;
 				}
 				now = time(NULL);
