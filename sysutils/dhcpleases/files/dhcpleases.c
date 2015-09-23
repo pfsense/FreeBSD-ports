@@ -639,6 +639,7 @@ main(int argc, char **argv) {
 			exit(6);
 		}
 
+		closelog();
 		closefrom(3);
 
 		if (daemon(0, 0) < 0) {
