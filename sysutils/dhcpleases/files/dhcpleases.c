@@ -566,8 +566,9 @@ main(int argc, char **argv) {
 	int kq, nev, leasefd, pidf, ch;
 
 	command = NULL;
-	leasefile = NULL;
 	domain_sufix = NULL;
+	leasefile = NULL;
+	pidfile = NULL;
 	while ((ch = getopt(argc, argv, "c:d:fp:h:l:u:")) != -1) {
 		switch (ch) {
 		case 'c':
