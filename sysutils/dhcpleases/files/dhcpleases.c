@@ -494,7 +494,7 @@ signal_process(char *pidfile) {
 	int c, pidno;
 
 	if (pidfile == NULL)
-		goto error;
+		return;
 	size = fsize(pidfile);
 	if (size < 0)
 		goto error;
