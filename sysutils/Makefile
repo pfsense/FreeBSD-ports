@@ -626,6 +626,8 @@
     SUBDIR += p5-Iterator-File
     SUBDIR += p5-Lchown
     SUBDIR += p5-Linux-Cpuinfo
+    SUBDIR += p5-Log-Syslog-Constants
+    SUBDIR += p5-Log-Syslog-Fast
     SUBDIR += p5-MogileFS-Client
     SUBDIR += p5-MogileFS-Network
     SUBDIR += p5-MogileFS-Server
@@ -757,6 +759,7 @@
     SUBDIR += py-XenAPI
     SUBDIR += py-analyzemft
     SUBDIR += py-bcfg2
+    SUBDIR += py-cdmi
     SUBDIR += py-croniter
     SUBDIR += py-crontab
     SUBDIR += py-danzfs
