@@ -709,7 +709,7 @@ reopen:
 
 	if (!foreground) {
 		/* Initialise kevent structure */
-		EV_SET(&chlist, leasefd, EVFILT_VNODE, EV_ADD | EV_CLEAR | EV_ENABLE | EV_ONESHOT,
+		EV_SET(&chlist, leasefd, EVFILT_VNODE, EV_ADD | EV_CLEAR | EV_ENABLE,
 			NOTE_WRITE | NOTE_ATTRIB | NOTE_DELETE | NOTE_RENAME | NOTE_LINK, 0, NULL);
 		/* Loop forever */
 		for (;;) {
