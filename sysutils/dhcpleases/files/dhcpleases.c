@@ -471,6 +471,31 @@ write_unbound_conf() {
 }
 
 static void
+truncate_hosts()
+{
+	int fd;
+	size_t tmpsize;
+	struct stat tmp;
+
+	fd = open(HOSTS, O_RDWR | O_CREAT | O_FSYNC);
+	if (fd < 0)
+		return;
+	if (fstat(fd, &tmp) < 0)
+		tmpsize = hostssize;
+	else
+		tmpsize = tmp.st_size;
+	if (tmpsize < hostssize) {
+		if (foreground)
+			printf("%s changed size from original!", HOSTS);
+		else
+			syslog(LOG_WARNING, "%s changed size from original!", HOSTS);
+		hostssize = tmpsize;
+	}
+	ftruncate(fd, hostssize);
+	close(fd);
+}
+
+static void
 cleanup() {
 	struct isc_lease *lease, *tmp;
 
@@ -546,6 +571,7 @@ handle_signal(int sig) {
 				hostssize = size;
 			break;
 		case SIGTERM:
+			truncate_hosts();
 			unlink(PIDFILE);
 			cleanup();
 			exit(0);
