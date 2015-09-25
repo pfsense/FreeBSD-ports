@@ -418,6 +418,7 @@
     SUBDIR += ioping
     SUBDIR += ipa
     SUBDIR += ipad_charge
+    SUBDIR += ipfs-go
     SUBDIR += ipmitool
     SUBDIR += ipsc
     SUBDIR += isc-cron
@@ -823,6 +824,7 @@
     SUBDIR += reoback
     SUBDIR += reptyr
     SUBDIR += respond
+    SUBDIR += restic
     SUBDIR += retail
     SUBDIR += rfstool
     SUBDIR += rhc
