@@ -2,14 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	dhcpleases
-PORTVERSION=	0.2
-PORTREVISION=	1
+PORTVERSION=	0.3
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# none
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	eri@pfsense.org
+MAINTAINER=	luiz@netgate.com
 COMMENT=	read dhpcd.lease file and add it to hosts file
 
 WHERE=		sbin
