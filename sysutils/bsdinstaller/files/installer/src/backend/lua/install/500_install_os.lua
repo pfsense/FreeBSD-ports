@@ -85,7 +85,7 @@ return {
 	-- App.state.target:cmds_install_srcs(cmds, App.conf.install_items)
 
 	cmds:add(
-	    "${root}${TAR} -C ${root}${base} -xzpf ${root}install/pfSense.txz"
+	    "${root}${TAR} -C ${root}${base} -xzpf ${root}install/" .. App.conf.product.name .. ".txz"
 	)
 
 	--
