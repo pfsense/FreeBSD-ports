@@ -93,6 +93,10 @@ int main(int argc, char *argv[]) {
 #endif
 
 	/* Check if the pin is configured for GPIO */
+	if (!gpio_read(GPIO_SC_USE_SEL, led_gpio)) {
+		gpio_write(GPIO_SC_USE_SEL, led_gpio, 1);
+		gpio_write(GPIO_SC_IO_SEL, led_gpio, 0);
+	}
 	if (!gpio_read(GPIO_SC_USE_SEL, switch_gpio)) {
 		/* Enable it for GPIO */
 		gpio_write(GPIO_SC_USE_SEL, switch_gpio, 1);
@@ -105,14 +109,10 @@ int main(int argc, char *argv[]) {
 
 	/* check whether the switch S1 is pressed */
 	if (!is_switch_pressed()) {
-		/* Disable for GPIO */
-		gpio_write(GPIO_SC_USE_SEL, switch_gpio, 0);
-		gpio_write(GPIO_SC_IO_SEL, switch_gpio, 0);
 #ifdef DEBUG
 		printf("GPIO_SC_USE_SEL: %x\n", inl(GPIO_SC_USE_SEL));
 		printf("GPIO_SC_IO_SEL: %x\n", inl(GPIO_SC_IO_SEL));
 #endif
-
 		/* nothing to do */
 		exit(0);
 	}
@@ -127,7 +127,6 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	gpio_write(GPIO_SC_IO_SEL, led_gpio, 1);
 	/* blink all three LEDs five times to indicate reset */
         for (i = 0; i < 5; i++) {
                 led_on();
@@ -138,10 +137,6 @@ int main(int argc, char *argv[]) {
 
 	led_off();
 
-	/* Disable for GPIO */
-	gpio_write(GPIO_SC_USE_SEL, switch_gpio, 0);
-	gpio_write(GPIO_SC_IO_SEL, switch_gpio, 0);
-	gpio_write(GPIO_SC_IO_SEL, led_gpio, 0);
 #ifdef DEBUG
 	printf("GPIO_SC_USE_SEL: %x\n", inl(GPIO_SC_USE_SEL));
 	printf("GPIO_SC_IO_SEL: %x\n", inl(GPIO_SC_IO_SEL));
