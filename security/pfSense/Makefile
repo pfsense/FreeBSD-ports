@@ -55,7 +55,7 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/clog:${PORTSDIR}/sysutils/clog \
 		${LOCALBASE}/lib/snmp_regex.a:${PORTSDIR}/net-mgmt/bsnmp-regex \
 		${LOCALBASE}/lib/snmp_ucd.so:${PORTSDIR}/net-mgmt/bsnmp-ucd \
 		${LOCALBASE}/share/certs/ca-root-nss.crt:${PORTSDIR}/security/ca_root_nss \
-		${LOCALBASE}/bin/nsupdate:${PORTSDIR}/dns/bind99 \
+		${LOCALBASE}/bin/nsupdate:${PORTSDIR}/dns/bind-tools \
 		${LOCALBASE}/sbin/ipsec:${PORTSDIR}/security/strongswan \
 		${LOCALBASE}/sbin/unbound:${PORTSDIR}/dns/unbound \
 		${KMODDIR}/bwi_v3_ucode.ko:${PORTSDIR}/net/bwi-firmware-kmod
