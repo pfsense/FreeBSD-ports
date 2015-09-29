@@ -6,8 +6,8 @@
 --
 
 product = {
-	name = "pfSense-rescue",
-	version = "rescue1",
+	name = "%%PRODUCT_NAME%%-rescue",
+	version = "%%PRODUCT_VERSION%%",
 	arch = "%%ARCH%%"
 }
 

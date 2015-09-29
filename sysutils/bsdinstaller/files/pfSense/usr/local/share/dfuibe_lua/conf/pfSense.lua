@@ -6,8 +6,8 @@
 --
 
 product = {
-	name = "%%PRODUCT%%",
-	version = "%%VERSION%%",
+	name = "%%PRODUCT_NAME%%",
+	version = "%%PRODUCT_VERSION%%",
 	arch = "%%ARCH%%"
 }
 
