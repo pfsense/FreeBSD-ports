@@ -188,6 +188,7 @@
     SUBDIR += gtknetcat
     SUBDIR += gupnp
     SUBDIR += gupnp-av
+    SUBDIR += gupnp-dlna
     SUBDIR += gupnp-igd
     SUBDIR += gupnp-ui
     SUBDIR += gutenfetch
@@ -355,8 +356,6 @@
     SUBDIR += libzmq3
     SUBDIR += libzmq4
     SUBDIR += liferea
-    SUBDIR += linc
-    SUBDIR += linc-reference
     SUBDIR += linknx
     SUBDIR += linphone
     SUBDIR += linux-c6-avahi-libs

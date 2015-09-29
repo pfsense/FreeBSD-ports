@@ -429,6 +429,7 @@
     SUBDIR += elixir-exjsx
     SUBDIR += elixir-exprotobuf
     SUBDIR += elixir-exrm
+    SUBDIR += elixir-gettext
     SUBDIR += elixir-hex
     SUBDIR += elixir-inflex
     SUBDIR += elixir-lager_logger
@@ -475,6 +476,7 @@
     SUBDIR += erlang-oserl
     SUBDIR += erlang-parse_trans
     SUBDIR += erlang-poolboy
+    SUBDIR += erlang-pooler
     SUBDIR += erlang-protobuffs
     SUBDIR += erlang-providers
     SUBDIR += erlang-rebar3_hex
@@ -635,6 +637,7 @@
     SUBDIR += git-codereview
     SUBDIR += git-cola
     SUBDIR += git-extras
+    SUBDIR += git-gui
     SUBDIR += git-lite
     SUBDIR += git-merge-changelog
     SUBDIR += git-modes
@@ -3331,6 +3334,7 @@
     SUBDIR += p5-Tree-Trie
     SUBDIR += p5-Type-Tie
     SUBDIR += p5-Type-Tiny
+    SUBDIR += p5-Type-Tiny-Signatures
     SUBDIR += p5-Type-Tiny-XS
     SUBDIR += p5-Types-Core
     SUBDIR += p5-Types-Path-Tiny
@@ -3447,8 +3451,8 @@
     SUBDIR += pccts
     SUBDIR += pcl
     SUBDIR += pcre
-    SUBDIR += pcre2
     SUBDIR += pcre++
+    SUBDIR += pcre2
     SUBDIR += pcsc-ada
     SUBDIR += pcsc-lite
     SUBDIR += pdcurses
@@ -3966,6 +3970,7 @@
     SUBDIR += py-efl
     SUBDIR += py-eggtestinfo
     SUBDIR += py-enum34
+    SUBDIR += py-epdb
     SUBDIR += py-epsilon
     SUBDIR += py-evdev
     SUBDIR += py-event
