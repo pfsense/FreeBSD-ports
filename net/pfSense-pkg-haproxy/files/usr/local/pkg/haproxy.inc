@@ -433,7 +433,6 @@ EOD;
 
 	$haproxy_ocsp = <<<EOD
 #!/usr/local/bin/php-cgi -f
-
 <?php
 
 /*

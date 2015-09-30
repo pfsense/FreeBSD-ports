@@ -1,8 +1,10 @@
 #!/bin/sh
 # $Id$ */
 #
-#  sqpmon.sh
-#  Copyright (C) 2006 Scott Ullrich
+#	sqpmon.sh
+#	part of pfSense (https://www.pfSense.org/)
+#	Copyright (C) 2006 Scott Ullrich
+#	Copyright (C) 2015 ESF, LLC
 #	All rights reserved.
 #
 #	Redistribution and use in source and binary forms, with or without
@@ -27,8 +29,8 @@
 #	POSSIBILITY OF SUCH DAMAGE.
 #
 
-if [ `pgrep -f "sqpmon.sh"|wc -l` -ge 1 ]; then
-        exit 0
+if [ `/bin/pgrep -f "sqpmon.sh" | /usr/bin/wc -l` -ge 1 ]; then
+	exit 0
 fi
 
 set -e
@@ -36,7 +38,7 @@ set -e
 LOOP_SLEEP=55
 
 if [ -f /var/run/squid_alarm ]; then
-	rm /var/run/squid_alarm
+	/bin/rm -f /var/run/squid_alarm
 fi
 
 # Sleep 5 seconds on startup not to mangle with existing boot scripts.
@@ -44,32 +46,32 @@ sleep 5
 
 # Squid monitor 1.2
 while [ /bin/true ]; do
-        if [  ! -f /var/run/squid_alarm ]; then
-		NUM_PROCS=`ps auxw | grep "[s]quid -f"|awk '{print $2}'| wc -l | awk '{ print $1 }'`
-                if [ $NUM_PROCS -lt 1 ]; then
-                        # squid is down
-                        echo "Squid has exited.  Reconfiguring filter." | \
-                                logger -p daemon.info -i -t Squid_Alarm
-                        echo "Attempting restart..." | logger -p daemon.info -i -t Squid_Alarm
-                        /usr/local/etc/rc.d/squid.sh start
-                        sleep 3
-                        echo "Reconfiguring filter..." | logger -p daemon.info -i -t Squid_Alarm
-                        /etc/rc.filter_configure
-                        touch /var/run/squid_alarm
-                fi
-        fi
-	NUM_PROCS=`ps auxw | grep "[s]quid -f"|awk '{print $2}'| wc -l | awk '{ print $1 }'`
-        if [ $NUM_PROCS -gt 0 ]; then
-                if [ -f /var/run/squid_alarm ]; then
-                        echo "Squid has resumed. Reconfiguring filter." | \
-                                logger -p daemon.info -i -t Squid_Alarm
-						/etc/rc.filter_configure
-                        rm /var/run/squid_alarm
-                fi
-        fi
-        sleep $LOOP_SLEEP
+	if [ ! -f /var/run/squid_alarm ]; then
+		NUM_PROCS=`/bin/ps auxw | /usr/bin/grep "[s]quid -f" | /usr/bin/awk '{print $2}' | /usr/bin/wc -l | /usr/bin/awk '{ print $1 }'`
+		if [ $NUM_PROCS -lt 1 ]; then
+			# squid is down
+			echo "Squid has exited. Reconfiguring filter." | \
+				/usr/bin/logger -p daemon.info -i -t Squid_Alarm
+			echo "Attempting restart..." | /usr/bin/logger -p daemon.info -i -t Squid_Alarm
+			/usr/local/etc/rc.d/squid.sh start
+			sleep 3
+			echo "Reconfiguring filter..." | /usr/bin/logger -p daemon.info -i -t Squid_Alarm
+			/etc/rc.filter_configure
+			touch /var/run/squid_alarm
+		fi
+	fi
+	NUM_PROCS=`/bin/ps auxw | /usr/bin/grep "[s]quid -f" | /usr/bin/awk '{print $2}' | /usr/bin/wc -l | /usr/bin/awk '{ print $1 }'`
+	if [ $NUM_PROCS -gt 0 ]; then
+		if [ -f /var/run/squid_alarm ]; then
+			echo "Squid has resumed. Reconfiguring filter." | \
+				/usr/bin/logger -p daemon.info -i -t Squid_Alarm
+			/etc/rc.filter_configure
+			/bin/rm -f /var/run/squid_alarm
+		fi
+	fi
+	sleep $LOOP_SLEEP
 done
 
 if [ -f /var/run/squid_alarm ]; then
-	rm /var/run/squid_alarm
+	/bin/rm -f /var/run/squid_alarm
 fi

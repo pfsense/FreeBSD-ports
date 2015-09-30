@@ -2,53 +2,48 @@
 <!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
 <?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
 <packagegui>
-        <copyright>
-        <![CDATA[
+	<copyright>
+<![CDATA[
 /* $Id$ */
-/* ========================================================================== */
+/* ====================================================================================== */
 /*
-    authng.xml
-    part of pfSense (http://www.pfSense.com)
-    Copyright (C) 2007 to whom it may belong
-    Copyright (C) 2012-2014 Marcello Coutinho
-    All rights reserved.
-
-    Based on m0n0wall (http://m0n0.ch/wall)
-    Copyright (C) 2003-2006 Manuel Kasper <mk@neon1.net>.
-    All rights reserved.
-                                                                              */
-/* ========================================================================== */
+	squid_auth.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2012-2014 Marcello Coutinho
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
 /*
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions are met:
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
 
-     1. Redistributions of source code MUST retain the above copyright notice,
-        this list of conditions and the following disclaimer.
 
-     2. Redistributions in binary form must reproduce the above copyright
-        notice, this list of conditions and the following disclaimer in the
-        documentation and/or other materials provided with the distribution.
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
 
-    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-    POSSIBILITY OF SUCH DAMAGE.
-                                                                              */
-/* ========================================================================== */
-        ]]>
-        </copyright>
-    <description>Describe your package here</description>
-    <requirements>Describe your package requirements here</requirements>
-    <faq>Currently there are no FAQ items provided.</faq>
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
 	<name>squidauth</name>
-	<version>none</version>
-	<title>Proxy server: Authentication</title>
+	<version>0.3.5</version>
+	<title>Proxy Server: Authentication</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
 		<tab>
@@ -85,7 +80,7 @@
 			<url>/pkg.php?xml=squid_users.xml</url>
 		</tab>
 		<tab>
-			<text>Real time</text>
+			<text>Real Time</text>
 			<url>/squid_monitor.php</url>
 		</tab>
 		<tab>
@@ -99,7 +94,7 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Authentication method</fielddescr>
+			<fielddescr>Authentication Method</fielddescr>
 			<fieldname>auth_method</fieldname>
 			<description>Select an authentication method. This will allow users to be authenticated by local or external services.</description>
 			<type>select</type>
@@ -111,33 +106,38 @@
 				<option><name>LDAP</name><value>ldap</value></option>
 				<option><name>RADIUS</name><value>radius</value></option>
 				<option><name>Captive Portal</name><value>cp</value></option>
-				<option><name>NT domain</name><value>msnt</value></option>
+				<option><name>NT Domain</name><value>msnt</value></option>
 			</options>
 			<onchange>on_auth_method_changed()</onchange>
 		</field>
 		<field>
-			<fielddescr>Authentication server</fielddescr>
+			<fielddescr>Authentication Server</fielddescr>
 			<fieldname>auth_server</fieldname>
-			<description>Enter here the IP or hostname of the server that will perform the authentication.</description>
+			<description>Enter the IP or hostname of the server that will perform the authentication here.</description>
 			<type>input</type>
 			<size>60</size>
 		</field>
 		<field>
 			<fielddescr>Authentication server port</fielddescr>
 			<fieldname>auth_server_port</fieldname>
-			<description>Enter here the port to use to connect to the authentication server. Leave this field blank to use the authentication method's default port.</description>
+			<description>
+				<![CDATA[
+				Enter the port to use to connect to the authentication server here.<br/>
+				Leave this field blank to use the authentication method's default port.
+				]]>
+			</description>
 			<type>input</type>
 			<size>60</size>
 		</field>
 		<field>
-			<fielddescr>Authentication prompt</fielddescr>
+			<fielddescr>Authentication Prompt</fielddescr>
 			<fieldname>auth_prompt</fieldname>
 			<description>This string will be displayed at the top of the authentication request window.</description>
 			<type>input</type>
 			<default_value>Please enter your credentials to access the proxy</default_value>
 		</field>
 		<field>
-			<fielddescr>Authentication processes</fielddescr>
+			<fielddescr>Authentication Processes</fielddescr>
 			<fieldname>auth_processes</fieldname>
 			<description>The number of authenticator processes to spawn. If many authentications are expected within a short timeframe, increase this number accordingly.</description>
 			<type>input</type>
@@ -147,74 +147,87 @@
 		<field>
 			<fielddescr>Authentication TTL</fielddescr>
 			<fieldname>auth_ttl</fieldname>
-			<description>This specifies for how long (in seconds) the proxy server assumes an externally validated username and password combination is valid (Time To Live).  When the TTL expires, the user will be prompted for credentials again.Default value is 5.</description>
+			<description>
+				<![CDATA[
+				This specifies for how long (in minutes) the proxy server assumes an externally validated username and password combination is valid (Time To Live).<br/>
+				When the TTL expires, the user will be prompted for credentials again.<br/>
+				Default value: 5.
+				]]>
+			</description>
 			<type>input</type>
 			<size>5</size>
 			<default_value>5</default_value>
 		</field>
 		<field>
-			<fielddescr>Requiere authentication for unrestricted hosts</fielddescr>
+			<fielddescr>Require Authentication for Unrestricted Hosts</fielddescr>
 			<fieldname>unrestricted_auth</fieldname>
-			<description>If this option is enabled, even users tagged as unrestricted through access control are required to authenticate to use the proxy.</description>
+			<description>If enabled, even users tagged as unrestricted through access control are required to authenticate to use the proxy.</description>
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Subnets that don't need authentication</fielddescr>
+			<fielddescr>Subnets That Don't Need Authentication</fielddescr>
 			<fieldname>no_auth_hosts</fieldname>
-			<description>Enter each subnet or IP address on a new line (in CIDR format, e.g.: 10.5.0.0/16, 192.168.1.50/32) that should not be asked for authentication to access the proxy.</description>
+			<description>
+				<![CDATA[
+				Enter subnet(s) or IP address(es) (in CIDR format) that should NOT be asked for authentication to access the proxy.<br/>
+				Example (subnet): 10.5.0.0/16<br/>
+				Example (single host): 192.168.1.50/32<br/><br/>
+				<strong>Note: Put each entry on a separate line.</strong>
+				]]>
+			</description>
 			<type>textarea</type>
 			<cols>50</cols>
 			<rows>5</rows>
 			<encoding>base64</encoding>
 		</field>
 		<field>
-			<name>Squid Authentication Ldap Settings</name>
+			<name>Squid Authentication LDAP Settings</name>
 			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr>LDAP version</fielddescr>
 			<fieldname>ldap_version</fieldname>
-			<description>Enter LDAP protocol version (2 or 3).</description>
+			<description>Select LDAP protocol version.</description>
 			<type>select</type>
 			<default_value>2</default_value>
 			<options>
-			<option><name>2</name><value>2</value></option>
-			<option><name>3</name><value>3</value></option>
+				<option><name>2</name><value>2</value></option>
+				<option><name>3</name><value>3</value></option>
 			</options>
 		</field>
 		<field>
-			<fielddescr>LDAP server user DN</fielddescr>
+			<fielddescr>LDAP Server User DN</fielddescr>
 			<fieldname>ldap_user</fieldname>
-			<description>Enter here the user DN to use to connect to the LDAP server.</description>
+			<description>Enter the user DN to use to connect to the LDAP server here.</description>
 			<type>input</type>
 			<size>60</size>
 		</field>
 		<field>
-			<fielddescr>LDAP password</fielddescr>
+			<fielddescr>LDAP Password</fielddescr>
 			<fieldname>ldap_pass</fieldname>
-			<description>Enter here the password to use to connect to the LDAP server.</description>
+			<description>Enter the password to use to connect to the LDAP server here.</description>
 			<type>password</type>
 			<size>20</size>
 		</field>
 		<field>
-			<fielddescr>LDAP base domain</fielddescr>
+			<fielddescr>LDAP Base Domain</fielddescr>
 			<fieldname>ldap_basedomain</fieldname>
-			<description>For LDAP authentication, enter here the base domain in the LDAP server.</description>
+			<description>Enter the base domain of the LDAP server here.</description>
 			<type>input</type>
 			<size>60</size>
 		</field>
 		<field>
-			<fielddescr>LDAP username DN attribute</fielddescr>
+			<fielddescr>LDAP Username DN Attribute</fielddescr>
 			<fieldname>ldap_userattribute</fieldname>
-			<description>Enter LDAP username DN attibute.</description>
+			<description>Enter LDAP username DN attibute here.</description>
 			<type>input</type>
 			<size>20</size>
 			<default_value>uid</default_value>
 		</field>
 		<field>
-			<fielddescr>LDAP search filter</fielddescr>
+			<fielddescr>LDAP Search Filter</fielddescr>
 			<fieldname>ldap_filter</fieldname>
-			<description>Enter LDAP search filter.</description>
+			<description>Enter LDAP search filter here.</description>
 			<type>input</type>
 			<size>40</size>
 			<default_value>(&amp;(objectClass=person)(uid=%s))</default_value>
@@ -224,27 +237,27 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>NT domain</fielddescr>
+			<fielddescr>NT Domain</fielddescr>
 			<fieldname>auth_ntdomain</fieldname>
-			<description>Enter here the NT domain.</description>
+			<description>Enter the NT domain here.</description>
 			<type>input</type>
 			<size>60</size>
 		</field>
 		<field>
-			<fielddescr>Secondary NT servers</fielddescr>
+			<fielddescr>Secondary NT Servers</fielddescr>
 			<fieldname>msnt_secondary</fieldname>
-			<description>Comma-separated list of secondary servers to be used for NT domain authentication.</description>
+			<description>Enter comma-separated list of secondary servers to be used for NT domain authentication here.</description>
 			<type>input</type>
 			<size>60</size>
 		</field>
 		<field>
-			<name>Squid Authentication Radius Settings</name>
+			<name>Squid Authentication RADIUS Settings</name>
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>RADIUS secret</fielddescr>
+			<fielddescr>RADIUS Secret</fielddescr>
 			<fieldname>radius_secret</fieldname>
-			<description>The RADIUS secret for RADIUS authentication.</description>
+			<description>Enter the RADIUS secret for RADIUS authentication here.</description>
 			<type>password</type>
 			<size>20</size>
 		</field>
@@ -262,9 +275,12 @@
 		squid_print_javascript_auth2();
 	</custom_php_before_form_command>
 	<custom_php_after_head_command>
+		<![CDATA[
 		$transparent_proxy = ($config['installedpackages']['squid']['config'][0]['transparent_proxy'] == 'on');
-		if($transparent_proxy and preg_match("/(local|ldap|radius|msnt|ntlm)/",$config['installedpackages']['squidauth']['config'][0]['auth_method']))
+		if ($transparent_proxy and preg_match("/(local|ldap|radius|msnt|ntlm)/", $config['installedpackages']['squidauth']['config'][0]['auth_method'])) {
 			$input_errors[] = "Authentication cannot be enabled while transparent proxy mode is enabled";
+		}
 		squid_print_javascript_auth();
+		]]>
 	</custom_php_after_head_command>
 </packagegui>

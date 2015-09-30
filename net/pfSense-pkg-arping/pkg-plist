@@ -1,3 +1,5 @@
 pkg/arping.xml
 pkg/arping.inc
+/etc/inc/priv/arping.priv.inc
 %%DATADIR%%/info.xml
+@dir /etc/inc/priv

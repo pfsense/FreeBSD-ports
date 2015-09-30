@@ -3,41 +3,47 @@
 <?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
 <packagegui>
 	<copyright>
-        <![CDATA[
-		/* $Id$ */
-		/*
-		   autoconfigbackup.xml 
-		   part of pfSense (https://www.pfsense.org)
-		   Copyright (C) 2008-2014 Electric Sheep Fencing LP 
-		   All rights reserved.
+<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	autoconfigbackup.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2008-2015 Electric Sheep Fencing LP
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
 
-		   Redistribution and use in source and binary forms, with or without
-		   modification, are permitted provided that the following conditions are met:
 
-		    1. Redistributions of source code must retain the above copyright notice,
-		       this list of conditions and the following disclaimer.
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
 
-		    2. Redistributions in binary form must reproduce the above copyright
-		       notice, this list of conditions and the following disclaimer in the
-		       documentation and/or other materials provided with the distribution.
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
 
-		   THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-		   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-		   AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-		   AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-		   OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-		   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-		   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-		   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-		   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-		   POSSIBILITY OF SUCH DAMAGE.
-		*/
-        ]]>
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
 	</copyright>
-    <description>Automatically backs up your pfSense configuration.  All contents are encrypted before being sent to the server.  Requires Gold Subscription from https://portal.pfsense.org</description>
-    <requirements>pfSense Portal subscription</requirements>
+	<description>Automatically backs up your pfSense configuration. All contents are encrypted before being sent to the server. Requires Gold Subscription from https://portal.pfsense.org</description>
+	<requirements>pfSense Portal subscription</requirements>
 	<name>AutoConfigBackup</name>
-	<version>1.28</version>
+	<version>1.29</version>
 	<title>Diagnostics: Auto Configuration Backup</title>
 	<savetext>Change</savetext>
 	<include_file>/usr/local/pkg/autoconfigbackup.inc</include_file>
@@ -49,38 +55,31 @@
 		<url>/autoconfigbackup.php</url>
 	</menu>
 	<additional_files_needed>
-	    <prefix>/usr/local/pkg/write_config/</prefix>
-	    <chmod>0755</chmod>
+		<prefix>/usr/local/pkg/write_config/</prefix>
 		<item>https://packages.pfsense.org/packages/config/autoconfigbackup/parse_config_upload.inc</item>
 	</additional_files_needed>
 	<additional_files_needed>
-	    <prefix>/usr/local/www/</prefix>
-	    <chmod>0755</chmod>
+		<prefix>/usr/local/www/</prefix>
 		<item>https://packages.pfsense.org/packages/config/autoconfigbackup/autoconfigbackup.php</item>
 	</additional_files_needed>
 	<additional_files_needed>
-	    <prefix>/usr/local/pkg/</prefix>
-	    <chmod>0755</chmod>
+		<prefix>/usr/local/pkg/</prefix>
 		<item>https://packages.pfsense.org/packages/config/autoconfigbackup/autoconfigbackup.inc</item>
 	</additional_files_needed>
 	<additional_files_needed>
-	    <prefix>/etc/inc/</prefix>
-	    <chmod>0755</chmod>
+		<prefix>/etc/inc/</prefix>
 		<item>https://packages.pfsense.org/packages/config/autoconfigbackup/crypt_acb.php</item>
 	</additional_files_needed>
 	<additional_files_needed>
-	    <prefix>/usr/local/www/</prefix>
-	    <chmod>0755</chmod>
+		<prefix>/usr/local/www/</prefix>
 		<item>https://packages.pfsense.org/packages/config/autoconfigbackup/autoconfigbackup_backup.php</item>
 	</additional_files_needed>
 	<additional_files_needed>
-	    <prefix>/usr/local/pkg/write_config/</prefix>
-	    <chmod>0755</chmod>
+		<prefix>/usr/local/pkg/write_config/</prefix>
 		<item>https://packages.pfsense.org/packages/config/autoconfigbackup/parse_config_upload.php</item>
 	</additional_files_needed>
 	<additional_files_needed>
-	    <prefix>/usr/local/www/</prefix>
-	    <chmod>0755</chmod>
+		<prefix>/usr/local/www/</prefix>
 		<item>https://packages.pfsense.org/packages/config/autoconfigbackup/autoconfigbackup_stats.php</item>
 	</additional_files_needed>
 	<tabs>
@@ -116,37 +115,32 @@
 			<type>password</type>
 		</field>
 		<field>
-			<fielddescr>Enter Password again</fielddescr>
+			<fielddescr>Enter Password Again</fielddescr>
 			<fieldname>passwordagain</fieldname>
 			<type>password</type>
 		</field>
 		<field>
 			<fielddescr>Encryption Password</fielddescr>
-			<description>This password will be used to encrypt config.xml before uploading. We recommend not setting this to the same thing as your portal.pfsense.org account. Keep record of this password in a safe place - without it, your configurations will be impossible to restore.</description>
+			<description>
+				<![CDATA[
+				This password will be used to encrypt config.xml before uploading. We recommend <strong>not</strong> setting this to the same password as your portal.pfsense.org account.<br />
+				<span class="errmsg">Keep record of this password in a safe place - without it, your configurations will be impossible to restore.</span>
+				]]>
+			</description>
 			<fieldname>crypto_password</fieldname>
 			<type>password</type>
 		</field>
 		<field>
-			<fielddescr>Encryption Password again</fielddescr>
+			<fielddescr>Encryption Password Again</fielddescr>
 			<description>Enter the encryption password again.</description>
 			<fieldname>crypto_password2</fieldname>
 			<type>password</type>
 		</field>
-    </fields>
+	</fields>
 	<custom_php_validation_command>
-		custom_php_validation_command($_POST, $input_errors);
+		acb_custom_php_validation_command($_POST, $input_errors);
 	</custom_php_validation_command>
 	<custom_php_resync_config_command>
-        <![CDATA[		
-			conf_mount_rw();
-			@unlink("/cf/conf/lastpfSbackup.txt");
-			conf_mount_ro();
-			if(!function_exists("filter_configure")) 
-				require_once("filter.inc");
-			filter_configure();
-			if($savemsg) 
-				$savemsg .= "<br/>";
-			$savemsg .= "A configuration backup has been queued.";
-        ]]>		
+		acb_custom_php_resync_config_command();
 	</custom_php_resync_config_command>
 </packagegui>

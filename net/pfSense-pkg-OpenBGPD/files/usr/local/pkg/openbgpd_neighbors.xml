@@ -136,6 +136,9 @@
 						<option><name>Announce none</name><value>announce none</value></option>
 						<option><name>Announce self</name><value>announce self</value></option>
 						<option><name>Announce default-route</name><value>announce default-route</value></option>
+						<option><name>Depend on X</name><value>depend on</value></option>
+						<option><name>Enforce Neighbor-AS yes</name><value>enforce neighbor-as yes</value></option>
+						<option><name>Enforce Neighbor-AS no</name><value>enforce neighbor-as no</value></option>
 						<option><name>Holdtime X</name><value>holdtime</value></option>
 						<option><name>Metric X</name><value>set metric</value></option>
 						<option><name>Multihop X</name><value>multihop</value></option>

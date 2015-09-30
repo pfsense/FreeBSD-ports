@@ -44,7 +44,7 @@
 	</copyright>
 	<title>Services: Avahi</title>
 	<name>avahi</name>
-	<version>1.10.0</version>
+	<version>1.10.1</version>
 	<savetext>Save</savetext>
 	<include_file>/usr/local/pkg/avahi.inc</include_file>
 	<menu>
@@ -62,6 +62,10 @@
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
 		<item>https://packages.pfsense.org/packages/config/avahi/avahi.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/etc/inc/priv/</prefix>
+		<item>https://packages.pfsense.org/packages/config/avahi/avahi.priv.inc</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/etc/avahi/</prefix>

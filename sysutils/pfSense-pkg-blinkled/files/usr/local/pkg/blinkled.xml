@@ -43,7 +43,7 @@
 	</copyright>
 	<title>Interfaces: Assign LEDs</title>
 	<name>blinkled</name>
-	<version>0.4.5</version>
+	<version>0.4.6</version>
 	<savetext>Save</savetext>
 	<include_file>/usr/local/pkg/blinkled.inc</include_file>
 	<menu>
@@ -55,6 +55,10 @@
 	<additional_files_needed>
 		<item>https://packages.pfsense.org/packages/config/blinkled8/blinkled.inc</item>
 		<prefix>/usr/local/pkg/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/blinkled8/blinkled.priv.inc</item>
+		<prefix>/etc/inc/priv/</prefix>
 	</additional_files_needed>
 	<service>
 		<name>blinkled</name>

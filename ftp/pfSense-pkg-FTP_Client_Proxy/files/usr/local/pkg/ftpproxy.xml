@@ -41,13 +41,17 @@
 	]]>
 	</copyright>
 	<name>FTP Client Proxy</name>
-	<version>0.2.1</version>
+	<version>0.2.2</version>
 	<title>FTP Client Proxy</title>
 	<aftersaveredirect>pkg_edit.php?xml=ftpproxy.xml</aftersaveredirect>
 	<include_file>/usr/local/pkg/ftpproxy.inc</include_file>
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
 		<item>https://packages.pfsense.org/packages/config/ftpproxy/ftpproxy.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/etc/inc/priv/</prefix>
+		<item>https://packages.pfsense.org/packages/config/ftpproxy/ftpproxy.priv.inc</item>
 	</additional_files_needed>
 	<menu>
 		<name>FTP Client Proxy</name>

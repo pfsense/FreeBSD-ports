@@ -1,23 +1,21 @@
 <?php
-/* ========================================================================== */
 /*
 	squid_monitor.php
-	part of pfSense (http://www.pfSense.com)
+	part of pfSense (https://www.pfSense.org/)
 	Copyright (C) 2012-2014 Marcello Coutinho
-	Copyright (C) 2012-2014 Carlos Cesario - carloscesario@gmail.com
+	Copyright (C) 2012-2014 Carlos Cesario <carloscesario@gmail.com>
+	Copyright (C) 2015 ESF, LLC
 	All rights reserved.
-                                                                              */
-/* ========================================================================== */
-/*
+
 	Redistribution and use in source and binary forms, with or without
 	modification, are permitted provided that the following conditions are met:
 
-	 1. Redistributions of source code must retain the above copyright notice,
-		this list of conditions and the following disclaimer.
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
 
-	 2. Redistributions in binary form must reproduce the above copyright
-		notice, this list of conditions and the following disclaimer in the
-		documentation and/or other materials provided with the distribution.
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
 
 	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
 	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
@@ -29,18 +27,12 @@
 	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
-                                                                              */
-/* ========================================================================== */
-
+*/
 require_once("/etc/inc/util.inc");
 require_once("/etc/inc/functions.inc");
 require_once("/etc/inc/pkg-utils.inc");
 require_once("/etc/inc/globals.inc");
 require_once("guiconfig.inc");
-
-$pfSversion = str_replace("\n", "", file_get_contents("/etc/version"));
-if(strstr($pfSversion, "1.2"))
-        $one_two = true;
 
 $pgtitle = "Status: Proxy Monitor";
 $shortcut_section = "squid";
@@ -51,44 +43,40 @@ include("head.inc");
 
 <?php include("fbegin.inc"); ?>
 
-<?php if($one_two): ?>
-
-	<p class="pgtitle"><?=$pgtitle?></font></p>
-
-<?php endif; ?>
-
 <?php if ($savemsg) print_info_box($savemsg); ?>
 
 <!-- Function to call programs logs -->
-<script language="JavaScript">
-	function showLog(content,url,program)
-    {
-		new PeriodicalExecuter(function(pe) {
+<script type="text/javascript">
+//<![CDATA[
+	function showLog(content, url, program) {
+		new PeriodicalExecuter(function (pe) {
 			new Ajax.Updater(content, url, {
-									method: 'post',
-									asynchronous: true,
-									evalScripts: true,
-									parameters: { 	maxlines: $('maxlines').getValue(),
-			   										strfilter: $('strfilter').getValue(),
-													program: program }
+				method: 'post',
+				asynchronous: true,
+				evalScripts: true,
+				parameters: {
+					maxlines: $('maxlines').getValue(),
+					strfilter: $('strfilter').getValue(),
+					program: program
+				}
 			})
 		}, 1)
 	}
+//]]>
 </script>
 <div id="mainlevel">
-		<table width="100%" border="0" cellpadding="0" cellspacing="0">
-			<tr><td>
+	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<tr><td>
 		<?php
 		$tab_array = array();
-		if ($_REQUEST["menu"]=="reverse"){
+		if ($_REQUEST["menu"] == "reverse") {
 			$tab_array[] = array(gettext("General"), false, "/pkg_edit.php?xml=squid_reverse_general.xml&amp;id=0");
 			$tab_array[] = array(gettext("Web Servers"), false, "/pkg.php?xml=squid_reverse_peer.xml");
 			$tab_array[] = array(gettext("Mappings"), false, "/pkg.php?xml=squid_reverse_uri.xml");
 			$tab_array[] = array(gettext("Redirects"), false, "/pkg.php?xml=squid_reverse_redir.xml");
 			$tab_array[] = array(gettext("Real time"), true, "/squid_monitor.php?menu=reverse");
 			$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=squid_reverse_sync.xml");
-		}
-		else{
+		} else {
 			$tab_array[] = array(gettext("General"), false, "/pkg_edit.php?xml=squid.xml&amp;id=0");
 			$tab_array[] = array(gettext("Remote Cache"), false, "/pkg.php?xml=squid_upstream.xml");
 			$tab_array[] = array(gettext("Local Cache"), false, "/pkg_edit.php?xml=squid_cache.xml&amp;id=0");
@@ -99,16 +87,15 @@ include("head.inc");
 			$tab_array[] = array(gettext("Users"), false, "/pkg.php?xml=squid_users.xml");
 			$tab_array[] = array(gettext("Real time"), true, "/squid_monitor.php");
 			$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=squid_sync.xml");
-			}
+		}
 		display_top_tabs($tab_array);
 	?>
-</td></tr>
-	 		<tr>
-	    		<td>
-<div id="mainarea" style="padding-top: 0px; padding-bottom: 0px; ">
-	<form id="paramsForm" name="paramsForm" method="post">
-		<table class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="6">
-			<tbody>
+	</td></tr>
+	<tr><td>
+		<div id="mainarea" style="padding-top: 0px; padding-bottom: 0px; ">
+			<form id="paramsForm" name="paramsForm" method="post">
+			<table class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="6">
+				<tbody>
 				<tr>
 					<td width="22%" valign="top" class="vncellreq">Max lines:</td>
 					<td width="78%" class="vtable">
@@ -123,94 +110,86 @@ include("head.inc");
 						</select>
 						<br/>
 						<span class="vexpl">
-						   <?=gettext("Max. lines to be displayed.");?>
+							<?=gettext("Max. lines to be displayed.");?>
 						</span>
 					</td>
 				</tr>
 				<tr>
 					<td width="22%" valign="top" class="vncellreq">String filter:</td>
 					<td width="78%" class="vtable">
-						<input name="strfilter" type="text" class="formfld search" id="strfilter" size="50" value="">
+						<input name="strfilter" type="text" class="formfld search" id="strfilter" size="50" value="" />
 						<br/>
 						<span class="vexpl">
-						   <?=gettext("Enter a grep like string/pattern to filterlog.");?><br>
-						   <?=gettext("eg. username, ip addr, url.");?><br>
-						   <?=gettext("Use <b>!</b> to invert the sense of matching, to select non-matching lines.");?>
+							<?=gettext("Enter a grep-like string/pattern to filter the log entries.");?><br/>
+							<?=gettext("E.g.: username, IP address, URL.");?><br/>
+							<?=gettext("Use <strong>!</strong> to invert the sense of matching (to select non-matching lines).");?>
 						</span>
 					</td>
 				</tr>
-			</tbody>
-		</table>
-	</form>
+				</tbody>
+			</table>
+			</form>
 
-	<!-- Squid Table -->
-	<table width="100%" border="0" cellpadding="0" cellspacing="0">
-		<tbody>
-			<tr>
-				<td>
+			<!-- Squid Table -->
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tbody>
+				<tr><td>
 					<table class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="0">
 						<tr>
-							<td colspan="6" class="listtopic"><center><?=gettext("Squid Logs"); ?><center></td>
+							<td colspan="6" class="listtopic" align="center"><?=gettext("Squid Logs"); ?></td>
 						</tr>
 						<tbody id="squidView">
-							<script language="JavaScript">
+							<script type="text/javascript">
 								// Call function to show squid log
-								showLog('squidView', 'squid_monitor_data.php','squid');
+								showLog('squidView', 'squid_monitor_data.php', 'squid');
 							</script>
 						</tbody>
 					</table>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-<?php if ($_REQUEST["menu"]!="reverse"){?>
-	<!-- SquidGuard Table -->
-	<table width="100%" border="0" cellpadding="0" cellspacing="0">
-		<tbody>
-			<tr>
-				<td>
+				</td></tr>
+				</tbody>
+			</table>
+<?php if ($_REQUEST["menu"] != "reverse") {?>
+			<!-- SquidGuard Table -->
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tbody>
+				<tr><td>
 					<table class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="0">
 						<tr>
-							<td colspan="5" class="listtopic"><center><?=gettext("SquidGuard Logs"); ?><center></td>
+							<td colspan="5" class="listtopic" align="center"><?=gettext("SquidGuard Logs"); ?></td>
 						</tr>
 						<tbody id="sguardView">
-							<script language="JavaScript">
+							<script type="text/javascript">
 								// Call function to show squidGuard log
-								showLog('sguardView', 'squid_monitor_data.php','sguard');
+								showLog('sguardView', 'squid_monitor_data.php', 'sguard');
 							</script>
 						</tbody>
 					</table>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	<!-- clamav Table -->
-	<table width="100%" border="0" cellpadding="0" cellspacing="0">
-		<tbody>
-			<tr>
-				<td>
+				</td></tr>
+				</tbody>
+			</table>
+			<!-- clamav Table -->
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tbody>
+				<tr><td>
 					<table class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="0">
 						<tr>
-							<td colspan="6" class="listtopic"><center><?=gettext("clamav Logs"); ?><center></td>
+							<td colspan="6" class="listtopic" align="center"><?=gettext("clamav Logs"); ?></td>
 						</tr>
 						<tbody id="clamView">
-							<script language="JavaScript">
+							<script type="text/javascript">
 								// Call function to show squidGuard log
-								showLog('clamView', 'squid_monitor_data.php','clamav');
+								showLog('clamView', 'squid_monitor_data.php', 'clamav');
 							</script>
 						</tbody>
 					</table>
-				</td>
-			</tr>
-		</tbody>
-	</table>	
-</div>
+				</td></tr>
+				</tbody>
+			</table>
+		</div>
 <?php }?>
-</td>
-</tr>
-</table>
+	</td></tr>
+	</table>
 </div>
-
 
 <?php
 include("fend.inc");

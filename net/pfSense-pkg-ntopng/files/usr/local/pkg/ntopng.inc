@@ -89,7 +89,7 @@ function ntopng_sync_package() {
 		return;
 	}
 
-	global $g, $config, $pf_version;
+	global $g, $config, $pf_version, $ntopng_config;
 	$pf_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
 
 	$ifaces = "";
@@ -151,8 +151,10 @@ function ntopng_sync_package() {
 
 	$start = "";
 	$stop = "";
-	if ($pf_version == "2.1" || $pf_version == "2.2") {
-		$start .= "ldconfig -m /usr/pbi/ntopng-" . php_uname("m") . "/lib\n";
+	if ($pf_version == "2.2") {
+		$start .= "/sbin/ldconfig -m /usr/pbi/ntopng-" . php_uname("m") . "/local/lib\n";
+	} elseif ($pf_version == "2.1") {
+		$start .= "/sbin/ldconfig -m /usr/pbi/ntopng-" . php_uname("m") . "/lib\n";
 	}
 	$start .= "\t{$redis_path}/redis-server --dir /var/db/ntopng/ --dbfilename ntopng.rdb &\n";
 	// TODO:
@@ -206,7 +208,9 @@ function ntopng_redis_started() {
 		$redis_path = "/usr/local/bin";
 	}
 	if (!is_process_running("redis-server")) {
-		if ($pf_version == "2.1" || $pf_version == "2.2") {
+		if ($pf_version == "2.2") {
+			mwexec("/sbin/ldconfig -m /usr/pbi/ntopng-" . php_uname("m") . "/local/lib");
+		} elseif ($pf_version == "2.1") {
 			mwexec("/sbin/ldconfig -m /usr/pbi/ntopng-" . php_uname("m") . "/lib");
 		}
 		mwexec_bg("{$redis_path}/redis-server --dir /var/db/ntopng/ --dbfilename ntopng.rdb");
@@ -260,7 +264,9 @@ function ntopng_update_geoip() {
 	$geoip_asnum = "https://download.maxmind.com/download/geoip/database/asnum/GeoIPASNum.dat.gz";
 	$geoip_asnum_v6 = "https://download.maxmind.com/download/geoip/database/asnum/GeoIPASNumv6.dat.gz";
 	$pf_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-	if ($pf_version == "2.1" || $pf_version == "2.2") {
+	if ($pf_version == "2.2") {
+		$output_dir = "/usr/pbi/ntopng-" . php_uname("m") . "/local/share/ntopng";
+	} elseif ($pf_version == "2.1") {
 		$output_dir = "/usr/pbi/ntopng-" . php_uname("m") . "/share/ntopng";
 	} else {
 		$output_dir = "/usr/local/share/ntopng";
@@ -285,8 +291,11 @@ function ntopng_update_geoip() {
 
 function ntopng_fixup_geoip() {
 	$pf_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-	if ($pf_version == "2.1" || $pf_version == "2.2") {
+	if ($pf_version == "2.2") {
 		$target_dir = "/usr/pbi/ntopng-" . php_uname("m") . "/local/share/ntopng/httpdocs/geoip";
+		$source_dir = "/usr/pbi/ntopng-" . php_uname("m") . "/local/share/ntopng";
+	} elseif ($pf_version == "2.1") {
+		$target_dir = "/usr/pbi/ntopng-" . php_uname("m") . "/share/ntopng/httpdocs/geoip";
 		$source_dir = "/usr/pbi/ntopng-" . php_uname("m") . "/share/ntopng";
 	} else {
 		$target_dir = "/usr/local/share/ntopng/httpdocs/geoip";

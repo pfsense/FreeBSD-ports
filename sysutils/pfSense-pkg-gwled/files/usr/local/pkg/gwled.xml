@@ -41,7 +41,7 @@
 	</copyright>
 	<title>Interfaces: Gateway Status LEDs</title>
 	<name>gwled</name>
-	<version>0.2.2</version>
+	<version>0.2.3</version>
 	<savetext>Save</savetext>
 	<include_file>/usr/local/pkg/gwled.inc</include_file>
 	<menu>
@@ -53,6 +53,10 @@
 	<additional_files_needed>
 		<item>https://packages.pfsense.org/packages/config/gwled/gwled.inc</item>
 		<prefix>/usr/local/pkg/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/gwled/gwled.priv.inc</item>
+		<prefix>/etc/inc/priv/</prefix>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/bin/</prefix>

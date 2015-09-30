@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>OpenBGPD</name>
-	<version>0.9.3.4</version>
+	<version>0.9.3.7</version>
 	<title>Services: OpenBGPD</title>
 	<include_file>/usr/local/pkg/openbgpd.inc</include_file>
 	<service>

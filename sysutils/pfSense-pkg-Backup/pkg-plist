@@ -1,5 +1,7 @@
 pkg/backup.xml
 pkg/backup.inc
+/etc/inc/priv/backup.priv.inc
 www/packages/backup/backup.php
 www/packages/backup/backup_edit.php
 %%DATADIR%%/info.xml
+@dir /etc/inc/priv

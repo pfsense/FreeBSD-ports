@@ -43,7 +43,7 @@
 	</copyright>
 	<description>Backup</description>
 	<name>Backup Settings</name>
-	<version>0.1.9</version>
+	<version>0.2.0</version>
 	<title>Settings</title>
 	<include_file>/usr/local/pkg/backup.inc</include_file>
 	<menu>
@@ -64,6 +64,10 @@
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
 		<item>https://packages.pfsense.org/packages/config/backup/backup.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/etc/inc/priv/</prefix>
+		<item>https://packages.pfsense.org/packages/config/backup/backup.priv.inc</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/www/packages/backup/</prefix>

@@ -1,2 +1,4 @@
 pkg/darkstat.xml
+/etc/inc/priv/darkstat.priv.inc
 %%DATADIR%%/info.xml
+@dir /etc/inc/priv

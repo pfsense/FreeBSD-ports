@@ -4,7 +4,7 @@
 		<name>gwled</name>
 		<descr><![CDATA[Allows you to use LEDs for monitoring gateway status on supported platforms (ALIX, WRAP, Soekris, etc.)]]></descr>
 		<category>System</category>
-		<version>0.2.2</version>
+		<version>0.2.3</version>
 		<status>Beta</status>
 		<maintainer>jimp@pfsense.org</maintainer>
 		<port_category>sysutils</port_category>

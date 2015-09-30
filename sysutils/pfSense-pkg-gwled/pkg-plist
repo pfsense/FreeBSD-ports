@@ -1,4 +1,6 @@
 pkg/gwled.xml
 pkg/gwled.inc
+/etc/inc/priv/gwled.priv.inc
 bin/gwled.php
 %%DATADIR%%/info.xml
+@dir /etc/inc/priv

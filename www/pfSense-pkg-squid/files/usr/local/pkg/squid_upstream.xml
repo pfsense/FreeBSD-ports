@@ -2,56 +2,51 @@
 <!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
 <?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
 <packagegui>
-        <copyright>
-        <![CDATA[
+	<copyright>
+<![CDATA[
 /* $Id$ */
-/* ========================================================================== */
+/* ====================================================================================== */
 /*
-    squid_upstream.xml
-    part of pfSense (http://www.pfSense.com)
-    Copyright (C) 2007 to whom it may belong
-    Copyright (C) 2012-2014 Marcello Coutinho
-    All rights reserved.
-
-    Based on m0n0wall (http://m0n0.ch/wall)
-    Copyright (C) 2003-2006 Manuel Kasper <mk@neon1.net>.
-    All rights reserved.
-                                                                              */
-/* ========================================================================== */
+	squid_upstream.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2012-2014 Marcello Coutinho
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
 /*
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions are met:
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
 
-     1. Redistributions of source code MUST retain the above copyright notice,
-        this list of conditions and the following disclaimer.
 
-     2. Redistributions in binary form must reproduce the above copyright
-        notice, this list of conditions and the following disclaimer in the
-        documentation and/or other materials provided with the distribution.
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
 
-    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-    POSSIBILITY OF SUCH DAMAGE.
-                                                                              */
-/* ========================================================================== */
-        ]]>
-        </copyright>
-    <description>Describe your package here</description>
-    <requirements>Describe your package requirements here</requirements>
-    <faq>Currently there are no FAQ items provided.</faq>
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
 	<name>squidremote</name>
-	<version>none</version>
-	<title>Proxy server: Remote proxy settings</title>		
+	<version>0.3.5</version>
+	<title>Proxy Server: Remote Proxy Settings</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
-<tab>
+		<tab>
 			<text>General</text>
 			<url>/pkg_edit.php?xml=squid.xml&amp;id=0</url>
 		</tab>
@@ -99,7 +94,7 @@
 			<fieldname>enable</fieldname>
 		</columnitem>
 		<columnitem>
-			<fielddescr>name</fielddescr>
+			<fielddescr>Name</fielddescr>
 			<fieldname>proxyaddr</fieldname>
 		</columnitem>
 		<columnitem>
@@ -109,17 +104,16 @@
 		<columnitem>
 			<fielddescr>ICP</fielddescr>
 			<fieldname>icpport</fieldname>
-		</columnitem>	
+		</columnitem>
 		<columnitem>
-			<fielddescr>Peer type</fielddescr>
+			<fielddescr>Peer Type</fielddescr>
 			<fieldname>hierarchy</fieldname>
 		</columnitem>
 		<columnitem>
 			<fielddescr>Method</fielddescr>
 			<fieldname>peermethod</fieldname>
-		</columnitem>	
+		</columnitem>
 	</adddeleteeditpagefields>
-	
 	<fields>
 		<field>
 			<name>General Settings</name>
@@ -135,7 +129,7 @@
 		<field>
 			<fielddescr>Hostname</fielddescr>
 			<fieldname>proxyaddr</fieldname>
-			<description>Enter here the IP address or host name of the upstream proxy.</description>
+			<description>Enter the IP address or host name of the upstream proxy here.</description>
 			<type>input</type>
 			<size>35</size>
 			<required/>
@@ -143,48 +137,78 @@
 		<field>
 			<fielddescr>Name</fielddescr>
 			<fieldname>proxyname</fieldname>
-			<description>Unique name for the peer.Required if you have multiple peers on the same host but different ports.</description>
+			<description>
+				<![CDATA[
+				Unique name for the peer.<br/>
+				<strong>Note: Name is required if you have multiple peers on the same host but different ports.</strong>
+				]]>
+			</description>
 			<type>input</type>
 			<size>35</size>
 			<required/>
 		</field>
 		<field>
-			<fielddescr>TCP port</fielddescr>
+			<fielddescr>TCP Port</fielddescr>
 			<fieldname>proxyport</fieldname>
-			<description>Enter the port to use to connect to the upstream proxy.</description>
+			<description>Enter the port to use to connect to the upstream proxy here.</description>
 			<type>input</type>
 			<size>5</size>
 			<default_value>3128</default_value>
 			<required/>
 		</field>
+		<!-- The commented-out options are not used anywhere in the code -->
+		<!--
 		<field>
 			<fielddescr>Timeout</fielddescr>
 			<fieldname>connecttimeout</fieldname>
-			<description>A peer-specific connect timeout. Also see the peer_connect_timeout directive.</description>
+			<description>
+				<![CDATA[
+				A peer-specific connect timeout. This parameter specifies how long to wait for a pending TCP connection to a peer cache.<br/>
+				Also see <a href="http://www.squid-cache.org/Doc/config/peer_connect_timeout/">peer_connect_timeout directive</a>.
+				]]>
+			</description>
 			<type>input</type>
 			<size>5</size>
 		</field>
 		<field>
 			<fielddescr>Fail Limit</fielddescr>
-			<fieldname>connectfailLimit</fieldname>
-			<description>How many times connecting to a peer must fail before it is marked as down. Default is 10.</description>
+			<fieldname>connectfaillimit</fieldname>
+			<description>
+				<![CDATA[
+				How many times connecting to a peer must fail before it is marked as down.<br/>
+				Default: 10
+				]]>
+			</description>
 			<type>input</type>
 			<size>5</size>
 			<default_value>10</default_value>
 		</field>
 		<field>
-			<fielddescr>Max</fielddescr>
+			<fielddescr>Max Connections</fielddescr>
 			<fieldname>maxconn</fieldname>
-			<description>Limit the amount of connections Squid may open to this peer.</description>
+			<description>
+				<![CDATA[
+				Limit the amount of connections Squid may open to this peer.<br/>
+				Peer exceeding the limit is not used for new requests unless a standby connection is available.<br/>
+				<strong>Warning: This feature currently works poorly with idle persistent connections.</strong><br/>
+				See <a href="http://www.squid-cache.org/Doc/config/cache_peer/">cache_peer directive documentation</a> for details.
+				]]>
+			</description>
 			<type>input</type>
 			<size>5</size>
 		</field>
+		-->
 		<field>
-			<fielddescr>Allow Miss</fielddescr>
+			<fielddescr>General Options (Allow Miss/No Tproxy/Proxy Only)</fielddescr>
 			<fieldname>allowmiss</fieldname>
-			<description><![CDATA[<strong>allow-miss</strong> - Disable Squid's use of only-if-cached when forwarding requests to siblings. This is primarily useful when icp_hit_stale is used by the sibling.<br><br>
-			<strong>no-tproxy</strong> - Do not use the client-spoof TPROXY support when forwarding requests to this peer. Use normal address selection instead.<br><br>
-			<strong>proxy-only</strong> - Objects fetched from the peer will not be stored locally.]]></description>
+			<description>
+				<![CDATA[
+				<strong>allow-miss</strong> - Disable Squid's use of only-if-cached when forwarding requests to siblings. This is primarily useful when icp_hit_stale is used by the sibling.<br/>
+				<strong>no-tproxy</strong> - Do not use the client-spoof TPROXY support when forwarding requests to this peer. Use normal address selection instead.<br/>
+				<strong>proxy-only</strong> - Objects fetched from the peer will not be stored locally.<br/><br/>
+				Note: Use CTRL + click to select multiple options.
+				]]>
+			</description>
 			<type>select</type>
 			<default_value>allow-miss</default_value>
 			<options>
@@ -196,8 +220,16 @@
 			<size>4</size>
 		</field>
 		<field>
-			<name>Peer settings</name>
+			<name>Peer Settings</name>
 			<type>listtopic</type>
+		</field>
+		<field>
+			<type>info</type>
+			<description>
+				<![CDATA[
+				Please, see <a href="http://www.squid-cache.org/Doc/config/cache_peer/">cache_peer directive documentation</a> for detailed description of the settings below.<br/>
+				]]>
+			</description>
 		</field>
 		<field>
 			<fielddescr>Hierarchy</fielddescr>
@@ -212,20 +244,21 @@
 			</options>
 		</field>
 		<field>
-			<fielddescr>Select method</fielddescr>
+			<fielddescr>Select Method</fielddescr>
 			<fieldname>peermethod</fieldname>
-			<description><![CDATA[The default peer selection method is ICP, with the first responding peer being used as source. These options can be used for better load balancing.<br><br>
-								<strong>default</strong> - This is a parent cache which can be used as a "last-resort" if a peer cannot be located by any of the peer-selection methods.<br>
-								If specified more than once, only the first is used.<br><br>
-								<strong>round-robin</strong> - Load-Balance parents which should be used in a round-robin fashion in the absence of any ICP queries.<br>weight=N can be used to add bias.<br><br>
-								<strong>weighted-round-robin</strong> - Load-Balance parents which should be used in a round-robin fashion with the frequency of each parent being based on the	round trip time.<br>
-								Closer parents are used more often. Usually used for background-ping parents. weight=N can be used to add bias.<br><br>
-								<strong>carp</strong> - Load-Balance parents which should be used as a CARP array. The requests will be distributed among the parents based on the CARP load balancing hash function based on their weight.<br><br>
-								<strong>userhash</strong> -	Load-balance parents based on the client proxy_auth or ident username.<br><br>
-								<strong>sourcehash</strong>	- Load-balance parents based on the client source IP.<br><br>
-								<strong>multicast-siblings</strong> - To be used only for cache peers of type "multicast".<br>
-								 ALL members of this multicast group have "sibling" relationship with it, not "parent".  This is to a multicast group when the requested object would be fetched only from a "parent" cache, anyway.<br>
-								 It's useful, e.g., when configuring a pool of redundant Squid proxies, being members of the same multicast group.]]></description>
+			<description>
+				<![CDATA[
+				The default peer selection method is ICP, with the first responding peer being used as source. These options can be used for better load balancing.<br/>
+				Please see <a href="http://www.squid-cache.org/Doc/config/cache_peer/">cache_peer directive documentation</a> for details.<br/><br/>
+				<strong>default</strong> - Parent cache which can be used as a "last-resort" if a peer cannot be located by any of the peer-selection methods.<br/>
+				<strong>round-robin</strong> - Load-Balance parents which should be used in a round-robin fashion in the absence of any ICP queries.<br/>
+				<strong>weighted-round-robin</strong> - Load-Balance parents which should be used in a round-robin fashion with the frequency of each parent being based on the	round trip time.<br/>
+				<strong>carp</strong> - Load-Balance parents which should be used as a CARP array.<br/>
+				<strong>userhash</strong> -Load-Balance parents based on the client proxy_auth or ident username.<br/>
+				<strong>sourcehash</strong> - Load-balance parents based on the client source IP.<br/>
+				<strong>multicast-siblings</strong> - To be used only for cache peers of type "multicast".<br/>
+				 ]]>
+			</description>
 			<type>select</type>
 			<default_value>round-robin</default_value>
 			<options>
@@ -239,45 +272,68 @@
 			</options>
 		</field>
 		<field>
-			<fielddescr>weight</fielddescr>
+			<fielddescr>Weight</fielddescr>
 			<fieldname>weight</fieldname>
-			<description>Use to affect the selection of a peer during any weighted peer-selection mechanisms. The weight must be an integer; default is 1,larger weights are favored more.</description>
+			<description>
+				<![CDATA[
+				Use to affect the selection of a peer during any weighted peer-selection mechanisms.<br/>
+				<strong>Note: The weight must be an integer; larger weights are favored more.</strong><br/><br/>
+				Default: 1
+				]]>
+			</description>
 			<type>input</type>
 			<size>5</size>
 			<default>1</default>
 		</field>
 		<field>
-			<fielddescr>basetime</fielddescr>
+			<fielddescr>Basetime</fielddescr>
 			<fieldname>basetime</fieldname>
-			<description><![CDATA[Specify a base amount to be subtracted from round trip times of parents.<br>
-							It is subtracted before division by weight in calculating which parent to fectch from. If the rtt is less than the base time the rtt is set to a minimal value.]]></description>
+			<description>
+				<![CDATA[
+				Specify a base amount to be subtracted from round trip times of parents.<br/>
+				It is subtracted before division by weight in calculating which parent to fetch from. If the RTT is less than the base time, the RTT is set to a minimal value.
+				]]>
+			</description>
 			<type>input</type>
 			<size>5</size>
 			<default>1</default>
 		</field>
 		<field>
-			<fielddescr>ttl</fielddescr>
+			<fielddescr>TTL</fielddescr>
 			<fieldname>ttl</fieldname>
-			<description><![CDATA[Specify a TTL to use when sending multicast ICP queries to this address<br>
-							Only useful when sending to a multicast group. Because we don't accept ICP replies from random hosts, you must configure other group members as peers with the 'multicast-responder' option.]]></description>
+			<description>
+				<![CDATA[
+				Specify a TTL to use when sending multicast ICP queries to this address. Only useful when sending to a multicast group.<br/>
+				Note: Because we don't accept ICP replies from random hosts, you must configure other group members as peers with the 'multicast-responder' option.
+				]]>
+			</description>
 			<type>input</type>
 			<size>5</size>
 			<default>1</default>
 		</field>
 		<field>
-			<fielddescr>no-delay</fielddescr>
+			<fielddescr>No Delay</fielddescr>
 			<fieldname>nodelay</fieldname>
-			<description><![CDATA[To prevent access to this neighbor from influencing the delay pools.]]></description>
+			<description>
+				<![CDATA[
+				Use to prevent access to this neighbor from influencing the delay pools.
+				]]>
+			</description>
 			<type>checkbox</type>
 		</field>
 		<field>
-			<name>ICP settings</name>
+			<name>ICP Settings</name>
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>ICP port</fielddescr>
+			<fielddescr>ICP Port</fielddescr>
 			<fieldname>icpport</fieldname>
-			<description>Enter the port to connect to the upstream proxy for the ICP protocol. Use port number 7 to disable ICP communication between the proxies.</description>
+			<description>
+				<![CDATA[
+				Enter the port to connect to the upstream proxy for the ICP protocol.<br/>
+				<strong>Hint: Use port number 7 to disable ICP communication between the proxies.</strong>
+				]]>
+			</description>
 			<type>input</type>
 			<size>5</size>
 			<default_value>7</default_value>
@@ -285,14 +341,16 @@
 		<field>
 			<fielddescr>ICP Options</fielddescr>
 			<fieldname>icpoptions</fieldname>
-			<description><![CDATA[You MUST also set icp_port and icp_access explicitly when using these options.<br>
-								The defaults will prevent peer traffic using ICP<br><br>
-								<strong>no-query</strong> -	Disable ICP queries to this neighbor.<br><br>
-								<strong>multicast-responder</strong> -Indicates the named peer is a member of a multicast group.<br>
-								ICP queries will not be sent directly to the peer, but ICP replies will be accepted from it.<br><br>
-								<strong>closest-only</strong> - Indicates that, for ICP_OP_MISS replies, we'll only forward CLOSEST_PARENT_MISSes and never FIRST_PARENT_MISSes.<br><br>
-								<strong>background-ping</strong> - To only send ICP queries to this neighbor infrequently.<br>
-								This is used to keep the neighbor round trip time updated and is usually used in conjunction with weighted-round-robin.]]></description>
+			<description>
+				<![CDATA[
+				<strong>Note: You MUST also set 'ICP Port' explicitly when using these options.</strong> The defaults will prevent peer traffic using ICP.<br/>
+				Please see <a href="http://www.squid-cache.org/Doc/config/cache_peer/">cache_peer directive documentation</a> for details.<br/><br/>
+				<strong>no-query</strong> - Disable ICP queries to this neighbor.<br/>
+				<strong>multicast-responder</strong> - Indicates the named peer is a member of a multicast group.<br/>
+				<strong>closest-only</strong> - Indicates that, for ICP_OP_MISS replies, we'll only forward CLOSEST_PARENT_MISSes and never FIRST_PARENT_MISSes.<br/>
+				<strong>background-ping</strong> - To only send ICP queries to this neighbor infrequently.<br/>
+				]]>
+			</description>
 			<type>select</type>
 			<default_value>no-query</default_value>
 			<options>
@@ -303,7 +361,7 @@
 			</options>
 		</field>
 		<field>
-			<name>Auth settings</name>
+			<name>Auth Settings</name>
 			<type>listtopic</type>
 		</field>
 		<field>
@@ -319,25 +377,21 @@
 			<type>password</type>
 		</field>
 		<field>
-			<fielddescr>Authentication options</fielddescr>
+			<fielddescr>Authentication Options</fielddescr>
 			<fieldname>authoption</fieldname>
-			<description><![CDATA[<br><strong>login=user:password</strong> - If this is a personal/workgroup proxy and your parent requires proxy authentication.<br><br>
-								  <strong>login=PASSTHRU</strong> - Send login details received from client to this peer. Authentication is not required by Squid for this to work.<br>
-								This will pass any form of authentication but only Basic auth will work through a proxy unless the	connection-auth options are also used.<br><br>
-								<strong>login=PASS</strong>	- Send login details received from client to this peer.Authentication is not required by this option.<br>
-								To combine this with proxy_auth both proxies must share the same user database as HTTP only allows for a single login (one for proxy, one for origin server).<br>
-								Also be warned this will expose your users proxy password to the peer. USE WITH CAUTION<br><br>
-								<strong>login=*:password</strong> - Send the username to the upstream cache, but with a fixed password. This is meant to be used when the peer is in another administrative domain, but it is still needed to identify each user.<br><br>
-								<strong>login=NEGOTIATE</strong> - If this is a personal/workgroup proxy and your parent requires a secure proxy authentication.<br>
-								The first principal from the default keytab or defined by the environment variable KRB5_KTNAME will be used.<br> 
-								WARNING: The connection may transmit requests from multiple	clients. Negotiate often assumes end-to-end authentication and a single-client. Which is not strictly true here.<br><br>
-								<strong>login=NEGOTIATE:principal_name</strong>If this is a personal/workgroup proxy and your parent requires a secure proxy authentication.<br> 
-								The principal principal_name from the default keytab or defined by the environment variable KRB5_KTNAME will be used.
-								WARNING: The connection may transmit requests from multiple	clients. Negotiate often assumes end-to-end authentication and a single-client. Which is not strictly true here.<br><br>
-								<strong>connection-auth=on</strong> - Tell Squid that this peer does support Microsoft connection oriented authentication, and any such challenges received from there should be ignored.<br>
-								Default is auto to automatically determine the status of the peer.<br><br>
-								<strong>connection-auth=off</strong> - Tell Squid that this peer does not support Microsoft connection oriented authentication, and any such challenges received from there should be ignored.<br>
-								Default is auto to automatically determine the status of the peer.]]></description>
+			<description>
+				<![CDATA[
+				Please see <a href="http://www.squid-cache.org/Doc/config/cache_peer/">cache_peer directive documentation</a> for details.<br/><br/>
+				<strong>login=user:password</strong> - If this is a personal/workgroup proxy and your parent requires proxy authentication.<br/>
+				<strong>login=PASSTHRU</strong> - Send login details received from client to this peer. Authentication is not required by Squid for this to work.<br/>
+				<strong>login=PASS</strong> - Send login details received from client to this peer. Authentication is not required by this option.<br/>
+				<strong>login=*:password</strong> - Send the username to the upstream cache, but with a fixed password.<br/>
+				<strong>login=NEGOTIATE</strong> - If this is a personal/workgroup proxy and your parent requires a secure proxy authentication.<br>
+				<strong>login=NEGOTIATE:principal_name</strong> - If this is a personal/workgroup proxy and your parent requires a secure proxy authentication.<br/>
+				<strong>connection-auth=on</strong> - Peer does support Microsoft connection oriented authentication, and any such challenges received from there should be ignored.<br/>
+				<strong>connection-auth=off</strong> - Peer does not support Microsoft connection oriented authentication, and any such challenges received from there should be ignored.<br/>
+				]]>
+			</description>
 			<type>select</type>
 			<default_value>login=*:password</default_value>
 			<options>

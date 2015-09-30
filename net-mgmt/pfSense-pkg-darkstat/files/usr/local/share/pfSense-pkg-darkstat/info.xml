@@ -6,7 +6,7 @@
 		<descr><![CDATA[darkstat is a network statistics gatherer. It's a packet sniffer that runs as a background process on a cable/DSL router, gathers all sorts of statistics about network usage, and serves them over HTTP.]]></descr>
 		<category>Network Management</category>
 		<depends_on_package_pbi>darkstat-3.0.718-##ARCH##.pbi</depends_on_package_pbi>
-		<version>3.1</version>
+		<version>3.1.1</version>
 		<status>Stable</status>
 		<required_version>2.2</required_version>
 		<maintainer>coreteam@pfsense.org</maintainer>

@@ -2,56 +2,52 @@
 <!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
 <?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
 <packagegui>
-        <copyright>
-        <![CDATA[
+	<copyright>
+<![CDATA[
 /* $Id$ */
-/* ========================================================================== */
+/* ====================================================================================== */
 /*
-    squid_antivirus.xml
-    part of pfSense (http://www.pfSense.com)
-    Copyright (C) 2013-2014 Marcello Coutinho
-    All rights reserved.
-
-    Based on m0n0wall (http://m0n0.ch/wall)
-    Copyright (C) 2003-2006 Manuel Kasper <mk@neon1.net>.
-    All rights reserved.
-                                                                              */
-/* ========================================================================== */
+	squid_antivirus.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2013-2014 Marcello Coutinho
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
 /*
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions are met:
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
 
-     1. Redistributions of source code MUST retain the above copyright notice,
-        this list of conditions and the following disclaimer.
 
-     2. Redistributions in binary form must reproduce the above copyright
-        notice, this list of conditions and the following disclaimer in the
-        documentation and/or other materials provided with the distribution.
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
 
-    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-    POSSIBILITY OF SUCH DAMAGE.
-                                                                              */
-/* ========================================================================== */
-        ]]>
-        </copyright>
-    <description>Describe your package here</description>
-    <requirements>Describe your package requirements here</requirements>
-    <faq>Currently there are no FAQ items provided.</faq>
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
 	<name>squidantivirus</name>
-	<version>none</version>
+	<version>0.3.5</version>
 	<title>Proxy server: Antivirus</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
-	<tab>
-		<text>General</text>
+		<tab>
+			<text>General</text>
 			<url>/pkg_edit.php?xml=squid.xml&amp;id=0</url>
 		</tab>
 		<tab>
@@ -74,7 +70,6 @@
 		<tab>
 			<text>Traffic Mgmt</text>
 			<url>/pkg_edit.php?xml=squid_traffic.xml&amp;id=0</url>
-			
 		</tab>
 		<tab>
 			<text>Authentication</text>
@@ -85,41 +80,44 @@
 			<url>/pkg.php?xml=squid_users.xml</url>
 		</tab>
 		<tab>
-			<text>Real time</text>
+			<text>Real Time</text>
 			<url>/squid_monitor.php</url>
 		</tab>
 		<tab>
 			<text>Sync</text>
 			<url>/pkg_edit.php?xml=squid_sync.xml</url>
 		</tab>
-		</tabs>
+	</tabs>
 	<fields>
 		<field>
-			<name>Clamav anti-virus integration using c-icap</name>
+			<name>ClamAV Anti-Virus Integration Using C-ICAP</name>
 			<type>listtopic</type>
 		</field>
-				<field>
+		<field>
 			<fielddescr>Enable</fielddescr>
 			<fieldname>enable</fieldname>
-			<description>Enable squid antivirus check using clamav.</description>
-			<enablefields>max_check_size,Timeout,MaxKeepAliveRequests,KeepAliveTimeout,StartServers,MaxServers</enablefields>
+			<description>Enable Squid antivirus check using ClamAV.</description>
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Client forward options</fielddescr>
+			<fielddescr>Client Forward Options</fielddescr>
 			<fieldname>client_info</fieldname>
-      <description><![CDATA[Select what client info to forward to clamav.]]></description>
-  		<type>select</type>
-			<default_value>strip</default_value>
+			<description>
+				<![CDATA[
+				Select what client info to forward to ClamAV.
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>both</default_value>
 			<options>
-				<option><name>Send Both client username and ip info(Default)</name><value>both</value></option>
+				<option><name>Send both client username and IP info (Default)</name><value>both</value></option>
 				<option><name>Send only client username</name><value>username</value></option>
-				<option><name>Send only client ip</name><value>ip</value></option>
+				<option><name>Send only client IP</name><value>ip</value></option>
 				<option><name>Do not send client info</name><value>none</value></option>
 			</options>
 		</field>
 		<field>
-			<name>Advanced options</name>
+			<name>Advanced Options</name>
 			<type>listtopic</type>
 		</field>
 		<field>
@@ -128,16 +126,16 @@
 			<description>squidclamav.conf file. Leave empty to load sample file. Edit only if you know what are you doing.</description>
 			<type>textarea</type>
 			<encoding>base64</encoding>
-			<cols>75</cols>
+			<cols>85</cols>
 			<rows>15</rows>
 		</field>
-	    <field>
+		<field>
 			<fielddescr>c-icap.conf</fielddescr>
 			<fieldname>c-icap_conf</fieldname>
 			<description>c-icap.conf file. Leave empty to load sample file. Edit only if you know what are you doing.</description>
 			<type>textarea</type>
 			<encoding>base64</encoding>
-			<cols>75</cols>
+			<cols>85</cols>
 			<rows>15</rows>
 		</field>
 		<field>
@@ -146,7 +144,7 @@
 			<description>c-icap.conf file. Leave empty to load sample file. Edit only if you know what are you doing.</description>
 			<type>textarea</type>
 			<encoding>base64</encoding>
-			<cols>75</cols>
+			<cols>85</cols>
 			<rows>15</rows>
 		</field>
 	</fields>

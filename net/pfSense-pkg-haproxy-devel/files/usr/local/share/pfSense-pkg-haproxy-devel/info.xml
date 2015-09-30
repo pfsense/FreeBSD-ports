@@ -9,7 +9,7 @@
 			&lt;strong&gt;As of pkg v0.27 switched to using 1.6dev releases. If you need stable, switch to haproxy-1_5 package.&lt;/strong&gt;]]></descr>
 		<website>http://haproxy.1wt.eu/</website>
 		<category>Services</category>
-		<version>0.30</version>
+		<version>0.31</version>
 		<status>Release</status>
 		<required_version>2.2</required_version>
 		<config_file>https://packages.pfsense.org/packages/config/haproxy-devel/haproxy.xml</config_file>

@@ -1,5 +1,7 @@
 pkg/avahi.xml
 pkg/avahi.inc
+/etc/inc/priv/avahi.priv.inc
 etc/avahi/ssh.service
 etc/avahi/sftp-ssh.service
 %%DATADIR%%/info.xml
+@dir /etc/inc/priv

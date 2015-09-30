@@ -2,55 +2,51 @@
 <!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
 <?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
 <packagegui>
-        <copyright>
-        <![CDATA[
+	<copyright>
+<![CDATA[
 /* $Id$ */
-/* ========================================================================== */
+/* ====================================================================================== */
 /*
-    authng.xml
-    part of pfSense (http://www.pfSense.com)
-    Copyright (C) 2007 to whom it may belong
-    All rights reserved.
-
-    Based on m0n0wall (http://m0n0.ch/wall)
-    Copyright (C) 2003-2006 Manuel Kasper <mk@neon1.net>.
-    All rights reserved.
-                                                                              */
-/* ========================================================================== */
+	squid_reverse.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2012-2014 Marcello Coutinho
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
 /*
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions are met:
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
 
-     1. Redistributions of source code must retain the above copyright notice,
-        this list of conditions and the following disclaimer.
 
-     2. Redistributions in binary form must reproduce the above copyright
-        notice, this list of conditions and the following disclaimer in the
-        documentation and/or other materials provided with the distribution.
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
 
-    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-    POSSIBILITY OF SUCH DAMAGE.
-                                                                              */
-/* ========================================================================== */
-        ]]>
-        </copyright>
-    <description>Describe your package here</description>
-    <requirements>Describe your package requirements here</requirements>
-    <faq>Currently there are no FAQ items provided.</faq>
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
 	<name>squidreverse</name>
-	<version>none</version>
-	<title>Proxy server: Reverse Proxy</title>
+	<version>0.3.5</version>
+	<title>Proxy Server: Reverse Proxy</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
-<tab>
+		<tab>
 			<text>General</text>
 			<url>/pkg_edit.php?xml=squid.xml&amp;id=0</url>
 		</tab>
@@ -84,7 +80,7 @@
 			<url>/pkg.php?xml=squid_users.xml</url>
 		</tab>
 		<tab>
-			<text>Real time</text>
+			<text>Real Time</text>
 			<url>/squid_monitor.php</url>
 		</tab>
 		<tab>
@@ -94,37 +90,47 @@
 	</tabs>
 	<fields>
 		<field>
-			<name>Squid Reverse proxy General Settings</name>
+			<name>Squid Reverse Proxy General Settings</name>
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Reverse Proxy interface</fielddescr>
+			<fielddescr>Reverse Proxy Interface</fielddescr>
 			<fieldname>reverse_interface</fieldname>
-			<description>The interface(s) the reverse-proxy server will bind to.</description>
+			<description>
+				<![CDATA[
+				The interface(s) the reverse-proxy server will bind to.<br/>
+				Use CTRL + click to select multiple interfaces.
+				]]>
+			</description>
 			<type>interfaces_selection</type>
 			<required/>
 			<default_value>wan</default_value>
 			<multiple/>
 		</field>
 		<field>
-			<fielddescr>User-defined reverse-proxy IPs</fielddescr>
+			<fielddescr>User Defined Reverse Proxy IPs</fielddescr>
 			<fieldname>reverse_ip</fieldname>
-			<description>Squid will additionally bind to this user-defined IPs for reverse-proxy operation. Useful for virtual IPs such as CARP. Separate by semi-colons (;).</description>
+			<description>
+				<![CDATA[
+				Squid will additionally bind to these user-defined IPs for reverse proxy operation. Useful for virtual IPs such as CARP.<br/>
+				<strong>Note: Separate entries by semi-colons (;)</strong>
+				]]>
+			</description>
 			<type>input</type>
 			<size>70</size>
-		</field>			
+		</field>
 		<field>
-			<fielddescr>external FQDN</fielddescr>
+			<fielddescr>External FQDN</fielddescr>
 			<fieldname>reverse_external_fqdn</fieldname>
-			<description>The external full-qualified-domain-name of the WAN address.</description>
+			<description>The external fully qualified domain name of the WAN IP address.</description>
 			<type>input</type>
 			<required/>
 			<size>70</size>
 		</field>
 		<field>
-			<fielddescr>Reset TCP connections if request is unauthorized</fielddescr>
+			<fielddescr>Reset TCP Connections on Unauthorized Requests</fielddescr>
 			<fieldname>deny_info_tcp_reset</fieldname>
-			<description>If this field is checked, the reverse-proxy will reset the TCP connection if the request is unauthorized.</description>
+			<description>If checked, the reverse proxy will reset the TCP connection if the request is unauthorized.</description>
 			<type>checkbox</type>
 			<default_value>on</default_value>
 		</field>
@@ -133,26 +139,41 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Enable HTTP reverse mode</fielddescr>
+			<fielddescr>Enable HTTP Reverse Mode</fielddescr>
 			<fieldname>reverse_http</fieldname>
-			<description>If this field is checked, the proxy-server will act in HTTP reverse mode. &lt;br&gt;(You have to add a rule with destination "WAN-address")</description>
+			<description>
+				<![CDATA[
+				If checked, the proxy server will act in HTTP reverse mode.<br/>
+				<strong>Note: You must add a proper firewall rule with destination 'WAN Address'.</strong>
+				]]>
+			</description>
 			<type>checkbox</type>
-			<enablefields>reverse_http_port,reverse_http_defsite</enablefields>			
+			<enablefields>reverse_http_port,reverse_http_defsite</enablefields>
 			<required/>
 			<default_value>off</default_value>
 		</field>
 		<field>
-			<fielddescr>reverse HTTP port</fielddescr>
+			<fielddescr>Reverse HTTP Port</fielddescr>
 			<fieldname>reverse_http_port</fieldname>
-			<description>This is the port the HTTP reverse-proxy will listen on. (leave empty to use 80)</description>
+			<description>
+				<![CDATA[
+				This is the port the HTTP reverse proxy will listen on. Default value will be used if left empty.<br/>
+				Default: 80
+				]]>
+			</description>
 			<type>input</type>
 			<size>5</size>
 			<default_value>80</default_value>
 		</field>
 		<field>
-			<fielddescr>reverse HTTP default site</fielddescr>
+			<fielddescr>Reverse HTTP Default Site</fielddescr>
 			<fieldname>reverse_http_defsite</fieldname>
-			<description>This is the HTTP reverse default site. (leave empty to use the external fqdn)</description>
+			<description>
+				<![CDATA[
+				This is the HTTP reverse proxy default site.<br/>
+				Note: Leave empty to use 'External FQDN' value specified above.
+				]]>
+			</description>
 			<type>input</type>
 			<size>60</size>
 		</field>
@@ -161,99 +182,139 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Enable HTTPS reverse proxy</fielddescr>
+			<fielddescr>Enable HTTPS Reverse Proxy</fielddescr>
 			<fieldname>reverse_https</fieldname>
-			<description>If this field is checked, the proxy-server will act in HTTPS reverse mode. &lt;br&gt;(You have to add a rule with destination "WAN-address")</description>
+			<description>
+				<![CDATA[
+				If checked, the proxy server will act in HTTPS reverse mode.<br/>
+				<strong>Note: You must add a proper firewall rule with destination 'WAN Address'.</strong>
+				]]>
+			</description>
 			<type>checkbox</type>
 			<enablefields>reverse_https_port,reverse_https_defsite,reverse_ssl_cert,reverse_int_ca,reverse_ignore_ssl_valid,reverse_owa,reverse_owa_ip,reverse_owa_webservice,reverse_owa_activesync,reverse_owa_rpchttp,reverse_owa_mapihttp,reverse_owa_autodiscover,reverse_ssl_chain</enablefields>
 			<required/>
 			<default_value>off</default_value>
-		</field> 
+		</field>
 		<field>
-			<fielddescr>reverse HTTPS port</fielddescr>
+			<fielddescr>Reverse HTTPS Port</fielddescr>
 			<fieldname>reverse_https_port</fieldname>
-			<description>This is the port the HTTPS reverse-proxy will listen on. (leave empty to use 443)</description>
+			<description>
+				<![CDATA[
+				This is the port the HTTPS reverse proxy will listen on. Default value will be used if left empty.<br/>
+				Default: 443
+				]]>
+			</description>
 			<type>input</type>
 			<size>5</size>
 			<default_value>443</default_value>
 		</field>
 		<field>
-			<fielddescr>reverse HTTPS default site</fielddescr>
+			<fielddescr>Reverse HTTPS Default Site</fielddescr>
 			<fieldname>reverse_https_defsite</fieldname>
-			<description>This is the HTTPS reverse default site. (leave empty to use the external fqdn)</description>
+			<description>
+				<![CDATA[
+				This is the HTTPS reverse proxy default site.<br/>
+				Note: Leave empty to use 'External FQDN' value specified above.
+				]]>
+			</description>
 			<type>input</type>
 			<size>60</size>
 		</field>
 		<field>
-			<fielddescr>reverse SSL certificate</fielddescr>
+			<fielddescr>Reverse SSL Certificate</fielddescr>
 			<fieldname>reverse_ssl_cert</fieldname>
 			<description>Choose the SSL Server Certificate here.</description>
-	    	<type>select_source</type>
-			<source><![CDATA[$config['cert']]]></source>
+			<type>select_source</type>
+			<source>$config['cert']</source>
 			<source_name>descr</source_name>
 			<source_value>refid</source_value>
 		</field>
 		<field>
-			<fielddescr>intermediate CA certificate (if needed)</fielddescr>
+			<fielddescr>Intermediate CA Certificate (If Needed)</fielddescr>
 			<fieldname>reverse_int_ca</fieldname>
-			<description>Paste a signed certificate in X.509 PEM format here.</description>
+			<description>
+				<![CDATA[
+				Paste a signed certificate in X.509 <strong>PEM format</strong> here.
+				]]>
+			</description>
 			<type>textarea</type>
-			<cols>50</cols>
+			<cols>75</cols>
 			<rows>5</rows>
 			<encoding>base64</encoding>
 		</field>
 		<field>
-			<fielddescr>Ignore internal Certificate validation</fielddescr>
+			<fielddescr>Ignore Internal Certificate Validation</fielddescr>
 			<fieldname>reverse_ignore_ssl_valid</fieldname>
-			<description>If this field is checked, internal certificate validation will be ignored.</description>
-			<type>checkbox</type>  
+			<description>If checked, internal certificate validation will be ignored.</description>
+			<type>checkbox</type>
 			<default_value>on</default_value>
 		</field>
 		<field>
-			<fielddescr>Enable OWA reverse proxy</fielddescr>
-			<fieldname>reverse_owa</fieldname>
-			<description>If this field is checked, squid will act as an accelerator/ SSL offloader for Outlook Web App.</description>
-			<type>checkbox</type>
-			<enablefields>reverse_owa_ip,reverse_owa_activesync,reverse_owa_rpchttp,reverse_owa_mapihttp,reverse_owa_webservice,reverse_owa_autodiscover</enablefields>		
+			<name>OWA Reverse Proxy General Settings</name>
+			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>CAS-Array / OWA frontend IP address</fielddescr>
+			<fielddescr>Enable OWA Reverse Proxy</fielddescr>
+			<fieldname>reverse_owa</fieldname>
+			<description>If checked, Squid will act as an accelerator/SSL offloader for Outlook Web App.</description>
+			<type>checkbox</type>
+			<enablefields>reverse_owa_ip,reverse_owa_activesync,reverse_owa_rpchttp,reverse_owa_mapihttp,reverse_owa_webservice,reverse_owa_autodiscover</enablefields>
+		</field>
+		<field>
+			<fielddescr>CAS-Array / OWA Frontend IP Address</fielddescr>
 			<fieldname>reverse_owa_ip</fieldname>
-			<description>These are the internal IPs of the CAS-Array (OWA frontend servers). Separate by semi-colons (;). </description>
+			<description>
+				<![CDATA[
+				These are the internal IPs of the CAS-Array (OWA frontend servers).<br/>
+				<strong>Note: Separate entries by semi-colons (;)</strong>
+				]]>
+			</description>
 			<type>input</type>
 			<size>70</size>
-		</field>		
+		</field>
 		<field>
 			<fielddescr>Enable ActiveSync</fielddescr>
 			<fieldname>reverse_owa_activesync</fieldname>
-			<description>If this field is checked, ActiveSync will be enabled.</description>
+			<description>If checked, ActiveSync will be enabled.</description>
 			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>Enable Outlook Anywhere</fielddescr>
 			<fieldname>reverse_owa_rpchttp</fieldname>
-			<description>If this field is checked, RPC over HTTP will be enabled.</description>
+			<description>If checked, RPC over HTTP will be enabled.</description>
 			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>Enable MAPI HTTP</fielddescr>
 			<fieldname>reverse_owa_mapihttp</fieldname>
-			<description><![CDATA[If this field is checked, MAPI over HTTP will be enabled.<br>
-								<strong>This feature is only available with at least Exchange 2013 SP1</strong>]]></description>
+			<description>
+				<![CDATA[
+				If checked, MAPI over HTTP will be enabled.<br/>
+				<strong>This feature is only available with at least Microsoft Exchange 2013 SP1</strong>
+				]]>
+			</description>
 			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>Enable Exchange WebServices</fielddescr>
 			<fieldname>reverse_owa_webservice</fieldname>
-			<description><![CDATA[If this field is checked, Exchange WebServices will be enabled.<br>
-								<strong>There are potential DoS side effects to its use, please avoid unless you must.</strong>]]></description>
+			<description>
+				<![CDATA[
+				If checked, Exchange WebServices will be enabled.<br/>
+				<strong>There are potential DoS side effects to its use. Please avoid unless really required.</strong>
+				]]>
+			</description>
 			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>Enable AutoDiscover</fielddescr>
 			<fieldname>reverse_owa_autodiscover</fieldname>
-			<description><![CDATA[If this field is checked, AutoDiscover will be enabled.<br>
-								<strong>You also should set up the autodiscover DNS-record to point to you WAN-IP.</strong>]]></description>
+			<description>
+				<![CDATA[
+				If checked, AutoDiscover will be enabled.<br/>
+				<strong>You also should set up the autodiscover DNS record to point to you WAN IP.</strong>
+				]]>
+			</description>
 			<type>checkbox</type>
 		</field>
 		<field>
@@ -261,49 +322,79 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>&lt;b&gt;peer definitions&lt;/b&gt; &lt;br&gt;publishing hosts</fielddescr>
+			<fielddescr>
+				<![CDATA[
+				Peer Definitions<br/>
+				Publishing Hosts
+				]]>
+			</fielddescr>
 			<fieldname>reverse_cache_peer</fieldname>
-			<description><![CDATA[Enter each peer definition on a new line. Directives have to be separated by a semicolon(;).<BR>
-								syntax: [peer alias];[internal ip address];[port];[HTTP / HTTPS]<br>
-								example: HOST1;192.168.0.1;80;HTTP<br>
-								<strong>WRONG SYNTAX USAGE WILL RESULT IN SQUID NOT STARTING</strong>]]></description>
+			<description>
+				<![CDATA[
+				Enter each peer definition on a new line. Directives have to be separated by a semicolon(;).<br/><br/>
+				Syntax: [peer alias];[internal ip address];[port];[HTTP/HTTPS]<br/>
+				Example: HOST1;192.168.0.1;80;HTTP<br/>
+				<strong><span class="errmsg">WARNING:</span> Wrong syntax usage will result in Squid not starting!</strong>
+				]]>
+			</description>
 			<type>textarea</type>
 			<cols>60</cols>
 			<rows>10</rows>
 			<encoding>base64</encoding>
 		</field>
 		<field>
-			<fielddescr>&lt;b&gt;URI definitions&lt;/b&gt; &lt;br&gt;published URIs</fielddescr>
+			<fielddescr>
+				<![CDATA[
+				URI Definitions<br/>
+				Published URIs
+				]]>
+			</fielddescr>
 			<fieldname>reverse_uri</fieldname>
-      <description><![CDATA[Enter each reverse acl definition on a new line. Directives have to be separated by a semicolon(;)<BR>
-      					syntax: [group the uri belongs to];[URI to publish](;[vhost fqdn]) <BR>
-      					(a group can contain multiple URIs, without vhost fqdn the external fqdn is used, you also can specity http:// or https://)<BR>
-      					example: URI1;public;server.pfsense.org.<BR>
-      					<STRONG>WRONG SYNTAX USAGE WILL RESULT IN SQUID NOT STARTING</STRONG>]]></description>
+			<description>
+				<![CDATA[
+				Enter each reverse ACL definition on a separate line. Directives have to be separated by a semicolon(;)<br/><br/>
+				Syntax: [group the uri belongs to];[URI to publish](;[vhost fqdn])<br/>
+				Example: URI1;public;server.example.com<br/><br/>
+				Notes:<br/>
+				- A group can contain multiple URIs<br/>
+				- If [vhost fqdn] is ommited, 'External FQDN' is used<br/>
+				- You also can specify http:// or https://<br/><br/>
+				<strong><span class="errmsg">WARNING:</span> Wrong syntax usage will result in Squid not starting!</strong>
+				]]>
+			</description>
 			<type>textarea</type>
 			<cols>60</cols>
 			<rows>10</rows>
 			<encoding>base64</encoding>
-		</field>		
+		</field>
 		<field>
-			<fielddescr>&lt;b&gt;ACL definitions&lt;/b&gt; &lt;br&gt;published URIs</fielddescr>
+			<fielddescr>
+				<![CDATA[
+				ACL Definitions<br/>
+				Published URIs
+				]]>
+			</fielddescr>
 			<fieldname>reverse_acl</fieldname>
-      <description><![CDATA[Enter each reverse acl definition on a new line. Directives have to be separated by a semicolon(;). <br>
-      						syntax: [peer alias];[uri group alias] <br>example: HOST1;URI1 <br>
-      						<strong>WRONG SYNTAX USAGE WILL RESULT IN SQUID NOT STARTING</strong>]]></description>
+			<description>
+				<![CDATA[
+				Enter each reverse ACL definition on a new line. Directives have to be separated by a semicolon(;)<br/>
+				Syntax: [peer alias];[uri group alias]<br/>
+				Example: HOST1;URI1<br/>
+				<strong><span class="errmsg">WARNING:</span> Wrong syntax usage will result in Squid not starting!</strong>
+				]]>
+			</description>
 			<type>textarea</type>
 			<cols>60</cols>
 			<rows>10</rows>
 			<encoding>base64</encoding>
-		</field>	
-
-<!--
+		</field>
+		<!--
 		<field>
-			<fielddescr>internal hosts</fielddescr>
+			<fielddescr>Internal Hosts</fielddescr>
 			<type>rowhelper</type>
 			<rowhelper>
 				<rowhelperfield>
-					<fielddescr>IP address</fielddescr>
+					<fielddescr>IP Address</fielddescr>
 					<fieldname>reverse_cache_peer_ip</fieldname>
 					<type>input</type>
 					<size>15</size>
@@ -312,28 +403,27 @@
 					<fielddescr>Protocol</fielddescr>
 					<fieldname>reverse_cache_peer_proto</fieldname>
 					<type>select</type>
-            <options>
-              <option> <name>HTTP</name> <value>HTTP</value> </option>
-              <option> <name>HTTPS</name> <value>HTTPS</value> </option>
-            </options>
+					<options>
+						<option><name>HTTP</name><value>HTTP</value></option>
+						<option><name>HTTPS</name><value>HTTPS</value></option>
+					</options>
 				</rowhelperfield>
 				<rowhelperfield>
-					<fielddescr>port</fielddescr>
+					<fielddescr>Port</fielddescr>
 					<fieldname>reverse_cache_peer_port</fieldname>
 					<type>input</type>
 					<size>5</size>
 				</rowhelperfield>
 				<rowhelperfield>
-					<fielddescr>peer name</fielddescr>
+					<fielddescr>Peer Name</fielddescr>
 					<fieldname>reverse_cache_peer_name</fieldname>
 					<type>input</type>
 					<size>25</size>
 				</rowhelperfield>
 			</rowhelper>
 		</field>
-
 		<field>
-			<fielddescr>published URI</fielddescr>
+			<fielddescr>Published URI</fielddescr>
 			<type>rowhelper</type>
 			<rowhelper>
 				<rowhelperfield>
@@ -343,19 +433,15 @@
 					<size>50</size>
 				</rowhelperfield>
 				<rowhelperfield>
-					<fielddescr>peer name</fielddescr>
+					<fielddescr>Peer Name</fielddescr>
 					<fieldname>reverse_cache_peer</fieldname>
 					<type>input</type>
 					<size>25</size>
 				</rowhelperfield>
 			</rowhelper>
 		</field>
--->
-
+		-->
 	</fields>
-	<custom_php_command_before_form>
-		squid_before_form_general($pkg);
-	</custom_php_command_before_form>
 	<custom_php_validation_command>
 		squid_validate_reverse($_POST, $input_errors);
 	</custom_php_validation_command>

@@ -4,7 +4,7 @@
 		<name>blinkled</name>
 		<descr><![CDATA[Allows you to use LEDs for monitoring network activity on supported platforms (ALIX, WRAP, Soekris, etc.)]]></descr>
 		<category>System</category>
-		<version>0.4.5</version>
+		<version>0.4.6</version>
 		<status>Beta</status>
 		<maintainer>jimp@pfsense.org</maintainer>
 		<required_version>2.2</required_version>

@@ -2,56 +2,52 @@
 <!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
 <?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
 <packagegui>
-        <copyright>
-        <![CDATA[
+	<copyright>
+<![CDATA[
 /* $Id$ */
-/* ========================================================================== */
+/* ====================================================================================== */
 /*
-    squid_reverse_peer.xml
-    part of pfSense (http://www.pfSense.com)
-    Copyright (C) 2012-2014 Marcello Coutinho
-    All rights reserved.
-
-    Based on m0n0wall (http://m0n0.ch/wall)
-    Copyright (C) 2003-2006 Manuel Kasper <mk@neon1.net>.
-    All rights reserved.
-                                                                              */
-/* ========================================================================== */
+	squid_reverse_peer.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2012-2014 Marcello Coutinho
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
 /*
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions are met:
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
 
-     1. Redistributions of source code must retain the above copyright notice,
-        this list of conditions and the following disclaimer.
 
-     2. Redistributions in binary form must reproduce the above copyright
-        notice, this list of conditions and the following disclaimer in the
-        documentation and/or other materials provided with the distribution.
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
 
-    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-    POSSIBILITY OF SUCH DAMAGE.
-                                                                              */
-/* ========================================================================== */
-        ]]>
-    </copyright>
-    <description>Describe your package here</description>
-    <requirements>Describe your package requirements here</requirements>
-    <faq>Currently there are no FAQ items provided.</faq>
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
 	<name>squidreversepeer</name>
-	<version>none</version>
-	<title>Reverse Proxy server: Peers</title>
+	<version>0.3.5</version>
+	<title>Reverse Proxy Server: Peers</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
-	<tab>
-		<text>General</text>
+		<tab>
+			<text>General</text>
 			<url>/pkg_edit.php?xml=squid_reverse_general.xml&amp;id=0</url>
 		</tab>
 		<tab>
@@ -68,7 +64,7 @@
 			<url>/pkg.php?xml=squid_reverse_redir.xml</url>
 		</tab>
 		<tab>
-			<text>Real time</text>
+			<text>Real Time</text>
 			<url>/squid_monitor.php?menu=reverse</url>
 		</tab>
 		<tab>
@@ -86,7 +82,7 @@
 			<fieldname>name</fieldname>
 		</columnitem>
 		<columnitem>
-			<fielddescr>Ip address</fielddescr>
+			<fielddescr>IP Address</fielddescr>
 			<fieldname>ip</fieldname>
 		</columnitem>
 		<columnitem>
@@ -96,11 +92,11 @@
 		<columnitem>
 			<fielddescr>Protocol</fielddescr>
 			<fieldname>Protocol</fieldname>
-		</columnitem>	
+		</columnitem>
 		<columnitem>
 			<fielddescr>Description</fielddescr>
 			<fieldname>description</fieldname>
-		</columnitem>	
+		</columnitem>
 	</adddeleteeditpagefields>
 	<fields>
 		<field>
@@ -108,56 +104,65 @@
 			<type>listtopic</type>
 		</field>
 			<field>
-			<fielddescr>Enable this peer</fielddescr>
+			<fielddescr>Enable This Peer</fielddescr>
 			<fieldname>enable</fieldname>
-			<description>If this field is checked, then this peer will be available for reverse config.</description>
+			<description>If checked, then this peer will be available for reverse proxy configuration.</description>
 			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>Peer Alias</fielddescr>
 			<fieldname>name</fieldname>
-			<description><![CDATA[Name to identify this peer on squid reverse conf<br>
-						example: HOST1]]></description>
+			<description>
+				<![CDATA[
+				Name to identify this peer on Squid reverse proxy configuration.<br/>
+				Example: HOST1
+				]]>
+			</description>
 			<type>input</type>
 			<size>20</size>
 		</field>
 		<field>
 			<fielddescr>Peer IP</fielddescr>
 			<fieldname>ip</fieldname>
-			<description><![CDATA[Ip Address of this peer.<br>
-						example: 192.168.0.1]]></description>
+			<description>
+				<![CDATA[
+				IP address of this peer.<br/>
+				Example: 192.168.0.1
+				]]>
+			</description>
 			<type>input</type>
 			<size>20</size>
 		</field>
 		<field>
 			<fielddescr>Peer Port</fielddescr>
 			<fieldname>port</fieldname>
-			<description><![CDATA[Listening port of this peer.<br>
-						example: 80]]></description>
+			<description>
+				<![CDATA[
+				Listening port of this peer.<br/>
+				Example: 80
+				]]>
+			</description>
 			<type>input</type>
 			<size>20</size>
 		</field>
 		<field>
 			<fielddescr>Peer Protocol</fielddescr>
 			<fieldname>protocol</fieldname>
-			<description><![CDATA[Protocol listening on this peer port.]]></description>
+			<description>Select protocol listening on this peer port.</description>
 			<type>select</type>
-            <options>
-              <option> <name>HTTP</name> <value>HTTP</value> </option>
-              <option> <name>HTTPS</name> <value>HTTPS</value> </option>
-            </options>
+			<options>
+				<option><name>HTTP</name> <value>HTTP</value></option>
+				<option><name>HTTPS</name> <value>HTTPS</value></option>
+			</options>
 		</field>
 		<field>
 			<fielddescr>Peer Description</fielddescr>
 			<fieldname>description</fieldname>
-			<description><![CDATA[Peer Description (optional)]]></description>
+			<description>Peer Description (Optional)</description>
 			<type>input</type>
 			<size>60</size>
 		</field>
 	</fields>
-	<custom_php_command_before_form>
-		squid_before_form_general($pkg);
-	</custom_php_command_before_form>
 	<custom_php_validation_command>
 		squid_validate_reverse($_POST, $input_errors);
 	</custom_php_validation_command>

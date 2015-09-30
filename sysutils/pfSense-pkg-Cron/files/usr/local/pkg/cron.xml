@@ -43,7 +43,7 @@
 	</copyright>
 	<description>Cron</description>
 	<name>Cron Settings</name>
-	<version>0.3.0</version>
+	<version>0.3.1</version>
 	<title>Settings</title>
 	<include_file>/usr/local/pkg/cron.inc</include_file>
 	<menu>
@@ -61,6 +61,10 @@
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
 		<item>https://packages.pfsense.org/packages/config/cron/cron.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/etc/inc/priv/</prefix>
+		<item>https://packages.pfsense.org/packages/config/cron/cron.priv.inc</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/www/packages/cron/</prefix>

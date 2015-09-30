@@ -41,7 +41,7 @@
 	]]>
 	</copyright>
 	<name>arping</name>
-	<version>1.2</version>
+	<version>1.2.1</version>
 	<title>Diagnostics: ARPing</title>
 	<savetext>Run ARPing</savetext>
 	<preoutput>yes</preoutput>
@@ -56,6 +56,10 @@
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
 		<item>https://packages.pfsense.org/packages/config/arping/arping.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/etc/inc/priv/</prefix>
+		<item>https://packages.pfsense.org/packages/config/arping/arping.priv.inc</item>
 	</additional_files_needed>
 	<fields>
 		<field>

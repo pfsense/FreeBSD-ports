@@ -5,7 +5,7 @@
 		<descr><![CDATA[Broadcasts a who-has ARP packet on the network and prints answers.]]></descr>
 		<website>http://www.habets.pp.se/synscan/programs.php?prog=arping</website>
 		<category>Services</category>
-		<version>1.2</version>
+		<version>1.2.1</version>
 		<status>Stable</status>
 		<required_version>2.2</required_version>
 		<config_file>https://packages.pfsense.org/packages/config/arping/arping.xml</config_file>
