@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PKGNAMESUFFIX=	-vm
+PKGNAMESUFFIX=	-vmware
 
 COMMENT=	Meta package to install pfSense required ports on VMware
 
