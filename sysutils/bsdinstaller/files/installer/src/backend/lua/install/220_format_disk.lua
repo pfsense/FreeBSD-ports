@@ -113,7 +113,7 @@ local format_disk = function(step, dd)
 	cmdsGPT:set_replacements{
 	    disk = disk
 	}
-	cmdsGPT:add("/usr/sbin/cleargpt.sh ${disk}");
+	cmdsGPT:add("/usr/local/sbin/cleargpt.sh ${disk}");
 	cmdsGPT:execute()
 	dd:cmds_format(cmds)
 
