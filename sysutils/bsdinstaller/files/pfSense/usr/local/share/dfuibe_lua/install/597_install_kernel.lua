@@ -77,18 +77,18 @@ return {
 
 	if response.action_id == "SMP" then
 		local cmds = CmdChain.new()
-		cmds:add("env ASSUME_ALWAYS_YES=true pkg -c /mnt delete -f pfSense-default-config*")
-		cmds:add("cp /pkgs/pfSense-default-config-[0-9]*txz /mnt")
-		cmds:add("env ASSUME_ALWAYS_YES=true pkg -c /mnt add -f /pfSense-default-config*txz")
-		cmds:add("rm -f /mnt/pfSense-default-config-[0-9]*txz")
+		cmds:add("env ASSUME_ALWAYS_YES=true pkg -c /mnt delete -f " .. App.conf.product.name .. "-default-config*")
+		cmds:add("cp /pkgs/" .. App.conf.product.name .. "-default-config-[0-9]*txz /mnt")
+		cmds:add("env ASSUME_ALWAYS_YES=true pkg -c /mnt add -f /" .. App.conf.product.name .. "-default-config*txz")
+		cmds:add("rm -f /mnt/" .. App.conf.product.name .. "-default-config-[0-9]*txz")
 		cmds:execute()
 	end
 	if response.action_id == "Embedded" then
 		local cmds = CmdChain.new()
-		cmds:add("env ASSUME_ALWAYS_YES=true pkg -c /mnt delete -f pfSense-default-config*")
-		cmds:add("cp /pkgs/pfSense-default-config-serial-[0-9]*txz /mnt")
-		cmds:add("env ASSUME_ALWAYS_YES=true pkg -c /mnt add -f /pfSense-default-config*txz")
-		cmds:add("rm -f /mnt/pfSense-default-config-serial-[0-9]*txz")
+		cmds:add("env ASSUME_ALWAYS_YES=true pkg -c /mnt delete -f " .. App.conf.product.name .. "-default-config*")
+		cmds:add("cp /pkgs/" .. App.conf.product.name .. "-default-config-serial-[0-9]*txz /mnt")
+		cmds:add("env ASSUME_ALWAYS_YES=true pkg -c /mnt add -f /" .. App.conf.product.name .. "-default-config*txz")
+		cmds:add("rm -f /mnt/" .. App.conf.product.name .. "-default-config-serial-[0-9]*txz")
 		if is_adi then
 			cmds:add("echo -S115200 -h >> /mnt/boot.config")
 		else
