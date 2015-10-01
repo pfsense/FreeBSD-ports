@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squidreverseredir</name>
-	<version>0.3.5</version>
+	<version>0.3.7</version>
 	<title>Reverse Proxy Server: Redirects</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
@@ -138,19 +138,19 @@
 			</options>
 		</field>
 		<field>
-			<fielddescr>Blocked Domains</fielddescr>
+			<fielddescr>
+				<![CDATA[
+				Blocked Domains<br/><br/>
+				Enter the domains to match here.<br/>
+				<strong>Example:</strong> example.com sub.example.com www.example.com<br/><br/>
+				<strong>Do NOT enter http:// or https:// here!</strong> Only the hostname is required.
+				]]>
+			</fielddescr>
 			<fieldname>none</fieldname>
 			<description>Domains to redirect for.</description>
 			<type>rowhelper</type>
 			<rowhelper>
 				<rowhelperfield>
-					<fielddescr>
-						<![CDATA[
-						Enter the domains to match here.<br/>
-						Example: example.com sub.example.com www.example.com<br/><br/>
-						Do <strong>NOT</strong> enter http:// or https:// here! Only the hostname is required.
-						]]>
-					</fielddescr>
 					<fieldname>uri</fieldname>
 					<type>input</type>
 					<size>60</size>

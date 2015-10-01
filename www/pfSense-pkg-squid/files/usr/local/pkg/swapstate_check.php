@@ -36,12 +36,19 @@ global $config;
 $settings = $config['installedpackages']['squidcache']['config'][0];
 // Only check the cache if Squid is actually caching.
 // If there is no cache then quietly do nothing.
+// If cache dir is located outside of /var/squid hierarchy, log some instructions.
 if (isset($settings['harddisk_cache_system']) && $settings['harddisk_cache_system'] != "null") {
 	$cachedir = ($settings['harddisk_cache_location'] ? $settings['harddisk_cache_location'] : '/var/squid/cache');
 	$swapstate = $cachedir . '/swap.state';
 	if (!file_exists($swapstate)) {
 		return;
 	}
+	if (substr($cachedir, 0, 11) !== "/var/squid/") {
+		log_error("swapstate_check.php will NOT manage Squid cache dir '{$cachedir}' since it is not located under /var/squid.");
+		log_error("Disable 'Clear Cache on Log Rotate' on the 'Local Cache' tab or relocate your cache dir under /var/squid.");
+		return;
+	}
+
 	$disktotal = disk_total_space(dirname($cachedir));
 	$diskfree = disk_free_space(dirname($cachedir));
 	$diskusedpct = round((($disktotal - $diskfree) / $disktotal) * 100);

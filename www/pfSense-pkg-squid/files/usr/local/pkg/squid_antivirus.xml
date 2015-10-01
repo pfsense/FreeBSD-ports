@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squidantivirus</name>
-	<version>0.3.5</version>
+	<version>0.3.7</version>
 	<title>Proxy server: Antivirus</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
@@ -117,6 +117,87 @@
 			</options>
 		</field>
 		<field>
+			<fielddescr>Google Safe Browsing</fielddescr>
+			<fieldname>clamav_safebrowsing</fieldname>
+			<description>
+				<![CDATA[
+				This option enables support for <a href="http://www.clamav.net/doc/safebrowsing.html">Google Safe Browsing</a>.
+				Google Safe Browsing database includes information about websites that may be <a href="https://support.google.com/code/answer/70015">phishing sites or possible sources of malware</a>.<br/>
+				<strong>Note: This option consumes significant amount of RAM.</strong><br/>
+				<strong><span class="errmsg">Important:</span> Set 'ClamAV Database Update' below to 'every 1 hours' if you want to use this feature!</strong>
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>ClamAV Database Update</fielddescr>
+			<fieldname>clamav_update</fieldname>
+			<description>
+				<![CDATA[
+				Optionally, you can schedule ClamAV definitions updates via cron.<br/>
+				Select the desired frequency here.<br/><br/>
+				<input name='submit' type='submit' value='Update AV' />
+				Click the button to update AV databases now.<br/>
+				<strong>Note: This will take a while.</strong> Check /var/log/clamav/freshclam.log for progress information.
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>0</default_value>
+			<options>
+				<option><name>never	  </name><value>0</value></option>
+				<option><name>every 1  hours</name><value>1</value></option>
+				<option><name>every 2  hours</name><value>2</value></option>
+				<option><name>every 3  hours</name><value>3</value></option>
+				<option><name>every 4  hours</name><value>4</value></option>
+				<option><name>every 6  hours</name><value>5</value></option>
+				<option><name>every 8  hours</name><value>6</value></option>
+				<option><name>every 12 hours</name><value>12</value></option>
+				<option><name>every 24 hours</name><value>24</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Regional ClamAV Database Update Mirror</fielddescr>
+			<fieldname>clamav_dbregion</fieldname>
+			<description>
+				<![CDATA[
+				Select regional database mirror.<br/>
+				<strong><span class="errmsg">Note:</span> It is strongly recommended to choose something here and/or configure your own mirrors manually below.</strong>
+				The default ClamAV database mirror performs extremely slow.
+				]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><value></value><name>none</name></option>
+				<option><value>au</value><name>Australia</name></option>
+				<option><value>europe</value><name>Europe</name></option>
+				<option><value>ca</value><name>Canada</name></option>
+				<option><value>cn</value><name>China</name></option>
+				<option><value>id</value><name>Indonesia</name></option>
+				<option><value>jp</value><name>Japan</name></option>
+				<option><value>kr</value><name>Korea</name></option>
+				<option><value>ml</value><name>Malaysia</name></option>
+				<option><value>ru</value><name>Russia</name></option>
+				<option><value>sa</value><name>South Africa</name></option>
+				<option><value>tw</value><name>Taiwan</name></option>
+				<option><value>uk</value><name>United Kingdom</name></option>
+				<option><value>us</value><name>United States</name></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Optional ClamAV Database Update Servers</fielddescr>
+			<fieldname>clamav_dbservers</fieldname>
+			<description>
+				<![CDATA[
+				Enter ClamAV update servers here, or leave empty.<br />
+				Note: For official update mirrors, use db.XY.clamav.net format. (Replace XY with your <a href="http://www.iana.org/domains/root/db">country code</a>.)<br/>
+				<strong>Note: Separate entries by semi-colons (;)</strong>
+				]]>
+			</description>
+			<type>input</type>
+			<cols>60</cols>
+			<rows>5</rows>
+		</field>
+		<field>
 			<name>Advanced Options</name>
 			<type>listtopic</type>
 		</field>
@@ -142,6 +223,15 @@
 			<fielddescr>c-icap.magic</fielddescr>
 			<fieldname>c-icap_magic</fieldname>
 			<description>c-icap.conf file. Leave empty to load sample file. Edit only if you know what are you doing.</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<cols>85</cols>
+			<rows>15</rows>
+		</field>
+		<field>
+			<fielddescr>freshclam.conf</fielddescr>
+			<fieldname>freshclam_conf</fieldname>
+			<description>freshclam.conf file. Leave empty to load sample file. Edit only if you know what are you doing.</description>
 			<type>textarea</type>
 			<encoding>base64</encoding>
 			<cols>85</cols>

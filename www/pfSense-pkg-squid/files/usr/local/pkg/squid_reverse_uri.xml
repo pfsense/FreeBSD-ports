@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squidreverseuri</name>
-	<version>0.3.5</version>
+	<version>0.3.7</version>
 	<title>Reverse Proxy Server: Mappings</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
@@ -137,20 +137,20 @@
 			<size>05</size>
 		</field>
 		<field>
-			<fielddescr>URIs</fielddescr>
+			<fielddescr>
+				<![CDATA[
+				URIs<br/><br/>
+				Enter URL <strong>regex</strong> to match.<br/><br/>
+				<strong>Examples:</strong><br/>
+				.mydomain.com .mydomain.com/test<br/>
+				www.mydomain.com http://www.mydomain.com/ ^http://www.mydomain.com/.*$
+				]]>
+			</fielddescr>
 			<fieldname>none</fieldname>
 			<description>URI to publish.</description>
 			<type>rowhelper</type>
 			<rowhelper>
 				<rowhelperfield>
-					<fielddescr>
-						<![CDATA[
-						Enter URL <strong>regex</strong> to match.<br/><br/>
-						Examples:<br/>
-						.mydomain.com .mydomain.com/test<br/>
-						www.mydomain.com http://www.mydomain.com/ ^http://www.mydomain.com/.*$
-						]]>
-					</fielddescr>
 					<fieldname>uri</fieldname>
 					<type>input</type>
 					<size>70</size>

@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squidsync</name>
-	<version>0.3.5</version>
+	<version>0.3.7</version>
 	<title>Proxy server: XMLRPC Sync</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
@@ -109,12 +109,12 @@
 		<field>
 			<fielddescr>Sync Timeout</fielddescr>
 			<fieldname>synctimeout</fieldname>
-			<description>Select sync max wait time.</description>
+			<description>XMLRPC timeout in seconds.</description>
 			<type>select</type>
 			<required/>
 			<default_value>250</default_value>
 			<options>
-				<option><name>250 seconds(Default)</name><value>250</value></option>
+				<option><name>250 seconds (Default)</name><value>250</value></option>
 				<option><name>120 seconds</name><value>120</value></option>
 				<option><name>90 seconds</name><value>90</value></option>
 				<option><name>60 seconds</name><value>60</value></option>
@@ -129,14 +129,12 @@
 				<rowhelperfield>
 					<fielddescr>IP Address</fielddescr>
 					<fieldname>ipaddress</fieldname>
-					<description>IP address of remote server.</description>
 					<type>input</type>
 					<size>20</size>
 				</rowhelperfield>
 				<rowhelperfield>
-					<fielddescr>Password</fielddescr>
+					<fielddescr>Password (admin)</fielddescr>
 					<fieldname>password</fieldname>
-					<description>Password for remote server.</description>
 					<type>password</type>
 					<size>20</size>
 				</rowhelperfield>

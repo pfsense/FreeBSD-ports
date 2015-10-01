@@ -403,10 +403,40 @@
 			<encoding>base64</encoding>
 		</field>
 	</fields>
+	<custom_php_command_before_form>
+	<![CDATA[
+		global $oldcachedir;
+		// do not leave orphaned cachedirs if harddisk_cache_location changed
+		if ($_POST['harddisk_cache_location'] != $config['installedpackages']['squidcache']['config'][0]['harddisk_cache_location']) {
+			$oldcachedir = $config['installedpackages']['squidcache']['config'][0]['harddisk_cache_location'];
+			$cachedir_changed = true;
+		}
+	]]>
+	</custom_php_command_before_form>
 	<custom_php_validation_command>
 		squid_validate_cache($_POST, $input_errors);
 	</custom_php_validation_command>
 	<custom_php_resync_config_command>
+		<![CDATA[
+		if ($cachedir_changed) {
+			// only delete directories under sane paths automatically
+			if (substr($oldcachedir, 0, 11) === "/var/squid/") {
+				log_error("Deleting Squid cache dir '{$oldcachedir}' since 'Hard Disk Cache Location' changed to '{$_POST['harddisk_cache_location']}'.");
+				// cannot nuke disk cache while Squid is running
+				squid_stop_monitor();
+				if (is_service_running('squid')) {
+					stop_service("squid");
+				}
+				rename($oldcachedir, "{$oldcachedir}.old");
+				mwexec_bg("/bin/rm -rf {$oldcachedir}.old");
+				// new cachedir will be created on squid_resync() below which calls squid_dash_z()
+				// also the services will get restarted there
+			} else {
+				log_error("'Hard Disk Cache Location' changed to '{$_POST['harddisk_cache_location']}'.");
+				log_error("Will NOT delete Squid cache dir '{$oldcachedir}' since it is not located under /var/squid. Delete manually if required.");
+			}
+		}
 		squid_resync();
+	]]>
 	</custom_php_resync_config_command>
 </packagegui>

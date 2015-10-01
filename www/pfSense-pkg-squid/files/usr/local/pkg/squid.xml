@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squid</name>
-	<version>0.3.5.1</version>
+	<version>0.3.7</version>
 	<title>Proxy Server: General Settings</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<menu>
@@ -71,7 +71,7 @@
 	</service>
 	<service>
 		<name>c-icap</name>
-		<rcfile>c-icap</rcfile>
+		<rcfile>c-icap.sh</rcfile>
 		<executable>c-icap</executable>
 		<description>ICAP Inteface for Squid and ClamAV integration</description>
 	</service>
@@ -725,17 +725,14 @@
 	</custom_php_resync_config_command>
 	<custom_php_install_command>
 	<![CDATA[
-		update_status("Checking Squid cache... One moment please...");
 		update_output_window("This operation may take quite some time, please be patient. Do not press stop or attempt to navigate away from this page during this process.");
 		squid_install_command();
-		exec("/bin/rm -f /usr/local/etc/rc.d/squid");
+		unlink_if_exists("/usr/local/etc/rc.d/squid");
+		unlink_if_exists("/usr/local/etc/rc.d/c-icap");
 	]]>
 	</custom_php_install_command>
 	<custom_php_deinstall_command>
-	<![CDATA[
 		squid_deinstall_command();
-		exec("/bin/rm -f /usr/local/etc/rc.d/squid*");
-	]]>
 	</custom_php_deinstall_command>
 	<filter_rules_needed>squid_generate_rules</filter_rules_needed>
 </packagegui>
