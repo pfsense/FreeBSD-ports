@@ -8,7 +8,7 @@ CATEGORIES=	devel
 MASTER_SITES=	http://libvirt.org/sources/ \
 		ftp://libvirt.org/libvirt/
 
-MAINTAINER=	jgh@FreeBSD.org
+MAINTAINER=	novel@FreeBSD.org
 COMMENT=	Toolkit to interact with virtualization capabilities
 
 LICENSE=	LGPL3
@@ -98,6 +98,10 @@ CONFIGURE_ARGS+=	--without-bhyve
 .if ${PORT_OPTIONS:MBHYVE}
 STRIP_FILES+=	lib/libvirt/connection-driver/libvirt_driver_bhyve.so
 PLIST_FILES+=	lib/libvirt/connection-driver/libvirt_driver_bhyve.so
+.endif
+
+.if !${PLIST_SUB:MXEN}
+PLIST_SUB+=     XEN="@comment "
 .endif
 
 post-patch:
