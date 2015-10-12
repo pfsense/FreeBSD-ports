@@ -78,7 +78,7 @@ if ($_POST['mode'] == 'blist_add' && isset($_POST['iplist'])) {
 		// See if the file is already assigned to the interface
 		foreach ($a_nat[$id]['blist_files']['item'] as $f) {
 			if ($f == basename($_POST['iplist'])) {
-				$input_errors[] = gettext("The file {$f} is already assigned as a blacklist file.");
+				$input_errors[] = sprintf(gettext("The file %s is already assigned as a blacklist file."), htmlspecialchars($f));
 				break;
 			}
 		}
@@ -89,7 +89,7 @@ if ($_POST['mode'] == 'blist_add' && isset($_POST['iplist'])) {
 		}
 	}
 	else
-		$input_errors[] = gettext("The file '{$_POST['iplist']}' could not be found.");
+		$input_errors[] = sprintf(gettext("The file '%s' could not be found."), htmlspecialchars($_POST['iplist']));
 
 	$pconfig['blist_files'] = $a_nat[$id]['blist_files'];
 	$pconfig['wlist_files'] = $a_nat[$id]['wlist_files'];
@@ -103,7 +103,7 @@ if ($_POST['mode'] == 'wlist_add' && isset($_POST['iplist'])) {
 		// See if the file is already assigned to the interface
 		foreach ($a_nat[$id]['wlist_files']['item'] as $f) {
 			if ($f == basename($_POST['iplist'])) {
-				$input_errors[] = gettext("The file {$f} is already assigned as a whitelist file.");
+				$input_errors[] = sprintf(gettext("The file %s is already assigned as a whitelist file."), htmlspecialchars($f));
 				break;
 			}
 		}
@@ -114,7 +114,7 @@ if ($_POST['mode'] == 'wlist_add' && isset($_POST['iplist'])) {
 		}
 	}
 	else
-		$input_errors[] = gettext("The file '{$_POST['iplist']}' could not be found.");
+		$input_errors[] = sprintf(gettext("The file '%s' could not be found."), htmlspecialchars($_POST['iplist']));
 
 	$pconfig['blist_files'] = $a_nat[$id]['blist_files'];
 	$pconfig['wlist_files'] = $a_nat[$id]['wlist_files'];

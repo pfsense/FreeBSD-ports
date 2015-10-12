@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squidreversegeneral</name>
-	<version>0.3.5</version>
+	<version>0.3.8</version>
 	<title>Reverse Proxy Server: General</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
@@ -303,7 +303,12 @@
 		</field>
 	</fields>
 	<custom_php_validation_command>
+		<![CDATA[
+		if (!empty($_POST) && !squid_enabled()) {
+			$input_errors[] = "Squid is disabled. You must enable Squid proxy under Services - Squid Proxy Server - General.";
+		}
 		squid_validate_reverse($_POST, $input_errors);
+		]]>
 	</custom_php_validation_command>
 	<custom_php_resync_config_command>
 		squid_resync();

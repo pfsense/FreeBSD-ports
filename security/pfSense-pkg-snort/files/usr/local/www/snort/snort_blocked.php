@@ -46,7 +46,7 @@ if (!is_array($config['installedpackages']['snortglobal']['alertsblocks']))
 $pconfig['brefresh'] = $config['installedpackages']['snortglobal']['alertsblocks']['brefresh'];
 $pconfig['blertnumber'] = $config['installedpackages']['snortglobal']['alertsblocks']['blertnumber'];
 
-if (empty($pconfig['blertnumber']))
+if (empty($pconfig['blertnumber']) || !is_numeric($pconfig['blertnumber']))
 	$bnentries = '500';
 else
 	$bnentries = $pconfig['blertnumber'];
@@ -130,6 +130,10 @@ if ($_POST['download'])
 
 if ($_POST['save'])
 {
+	if (!is_numeric($_POST['blertnumber'])) {
+		$input_errors[] = gettext("Alert number must be numeric");
+	}
+
 	/* no errors */
 	if (!$input_errors) {
 		$config['installedpackages']['snortglobal']['alertsblocks']['brefresh'] = $_POST['brefresh'] ? 'on' : 'off';
@@ -219,7 +223,7 @@ if ($savemsg) {
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2" class="listtopic"><?php printf(gettext("Last %s Hosts Blocked by Snort"), $bnentries); ?></td>
+				<td colspan="2" class="listtopic"><?php printf(gettext("Last %s Hosts Blocked by Snort"), htmlspecialchars($bnentries)); ?></td>
 			</tr>
 			<tr>
 				<td colspan="2">

@@ -208,15 +208,15 @@ if ($savemsg)
 			</thead>
 		<?php foreach ($ipfiles as $file): ?>
 			<tr>
-				<td class="listr"><?php echo gettext($file); ?></td>
+				<td class="listr"><?php echo htmlspecialchars(gettext($file)); ?></td>
 				<td class="listr"><?=date('M-d Y g:i a', filemtime("{$iprep_path}{$file}")); ?></td>
 				<td class="listr"><?=format_bytes(filesize("{$iprep_path}{$file}")); ?> </td>
 				<td class="list"><input type="image" name="iplist_edit[]" id="iplist_edit[]" 
-				onClick="document.getElementById('iplist_fname').value='<?=$file;?>';" 
+				onClick="document.getElementById('iplist_fname').value='<?=addslashes($file);?>';"
 				src="../themes/<?= $g['theme']; ?>/images/icons/icon_e.gif" width="17" 
 				height="17" border="0" title="<?php echo gettext('Edit this IP List');?>"/>
 				<input type="image" name="iplist_delete[]" id="iplist_delete[]" 
-				onClick="document.getElementById('iplist_fname').value='<?=$file;?>'; 
+				onClick="document.getElementById('iplist_fname').value='<?=addslashes($file);?>';
 				return confirm('<?=gettext("Are you sure you want to permanently delete this IP List file?  Click OK to continue or CANCEL to quit.");?>');" 
 				src="../themes/<?= $g['theme']; ?>/images/icons/icon_x.gif" width="17" 
 				height="17" border="0" title="<?php echo gettext('Delete this IP List');?>"/></td>

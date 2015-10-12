@@ -217,6 +217,7 @@
 			<fieldname>quick_abort_max</fieldname>
 			<description>If the transfer has more than x KB remaining, it will abort the retrieval.</description>
 			<type>input</type>
+			<size>10</size>
 			<default_value>0</default_value>
 		</field>
 		<field>

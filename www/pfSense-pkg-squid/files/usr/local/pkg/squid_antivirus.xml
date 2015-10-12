@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squidantivirus</name>
-	<version>0.3.7</version>
+	<version>0.4.0</version>
 	<title>Proxy server: Antivirus</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
@@ -88,6 +88,7 @@
 			<url>/pkg_edit.php?xml=squid_sync.xml</url>
 		</tab>
 	</tabs>
+	<advanced_options>enabled</advanced_options>
 	<fields>
 		<field>
 			<name>ClamAV Anti-Virus Integration Using C-ICAP</name>
@@ -117,6 +118,40 @@
 			</options>
 		</field>
 		<field>
+			<fielddescr>Enable Manual Configuration</fielddescr>
+			<fieldname>enable_advanced</fieldname>
+			<description>
+				<![CDATA[
+				When enabled, the options below no longer have any effect.<br/>
+				You must edit the configuration files directly in the 'Advanced Features'.<br/>
+				<strong><span class="errmsg">Warning:</span> Only enable this if you know what are you doing.</strong><br/><br/>
+				After enabling manual configuration, click <input name='load_advanced' id='load_advanced' type='submit' value='Load Advanced' /> button once to load default configuration files.
+				To disable manual configuration again, select 'disabled' and click 'Save' button.
+				]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><value>disabled</value><name>disabled</name></option>
+				<option><value>enabled</value><name>enabled</name></option>
+			</options>
+			<default_value>disabled</default_value>
+			<onchange>on_antivirus_advanced_config_changed()</onchange>
+		</field>
+		<field>
+			<fielddescr>Redirect URL</fielddescr>
+			<fieldname>clamav_url</fieldname>
+			<description>
+				<![CDATA[
+				When a virus is found then redirect the user to this URL.<br />
+				Leave empty to use the default Squid/pfSense WebGUI URL.<br/>
+				<strong>Example:</strong> http://proxy.example.com/blocked.html
+				]]>
+			</description>
+			<type>input</type>
+			<cols>60</cols>
+			
+		</field>
+		<field>
 			<fielddescr>Google Safe Browsing</fielddescr>
 			<fieldname>clamav_safebrowsing</fieldname>
 			<description>
@@ -136,7 +171,7 @@
 				<![CDATA[
 				Optionally, you can schedule ClamAV definitions updates via cron.<br/>
 				Select the desired frequency here.<br/><br/>
-				<input name='submit' type='submit' value='Update AV' />
+				<input name='update_av' id='update_av' type='submit' value='Update AV' />
 				Click the button to update AV databases now.<br/>
 				<strong>Note: This will take a while.</strong> Check /var/log/clamav/freshclam.log for progress information.
 				]]>
@@ -144,13 +179,13 @@
 			<type>select</type>
 			<default_value>0</default_value>
 			<options>
-				<option><name>never	  </name><value>0</value></option>
+				<option><name>never	  </name><value></value></option>
 				<option><name>every 1  hours</name><value>1</value></option>
 				<option><name>every 2  hours</name><value>2</value></option>
 				<option><name>every 3  hours</name><value>3</value></option>
 				<option><name>every 4  hours</name><value>4</value></option>
-				<option><name>every 6  hours</name><value>5</value></option>
-				<option><name>every 8  hours</name><value>6</value></option>
+				<option><name>every 6  hours</name><value>6</value></option>
+				<option><name>every 8  hours</name><value>8</value></option>
 				<option><name>every 12 hours</name><value>12</value></option>
 				<option><name>every 24 hours</name><value>24</value></option>
 			</options>
@@ -195,53 +230,99 @@
 			</description>
 			<type>input</type>
 			<cols>60</cols>
-			<rows>5</rows>
-		</field>
-		<field>
-			<name>Advanced Options</name>
-			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr>squidclamav.conf</fielddescr>
-			<fieldname>squidclamav</fieldname>
-			<description>squidclamav.conf file. Leave empty to load sample file. Edit only if you know what are you doing.</description>
+			<fieldname>raw_squidclamav_conf</fieldname>
+			<description>squidclamav.conf file. Edit only if you know what are you doing.</description>
 			<type>textarea</type>
 			<encoding>base64</encoding>
 			<cols>85</cols>
 			<rows>15</rows>
+			<advancedfield/>
 		</field>
 		<field>
 			<fielddescr>c-icap.conf</fielddescr>
-			<fieldname>c-icap_conf</fieldname>
-			<description>c-icap.conf file. Leave empty to load sample file. Edit only if you know what are you doing.</description>
+			<fieldname>raw_cicap_conf</fieldname>
+			<description>c-icap.conf file. Edit only if you know what are you doing.</description>
 			<type>textarea</type>
 			<encoding>base64</encoding>
 			<cols>85</cols>
 			<rows>15</rows>
+			<advancedfield/>
 		</field>
 		<field>
 			<fielddescr>c-icap.magic</fielddescr>
-			<fieldname>c-icap_magic</fieldname>
-			<description>c-icap.conf file. Leave empty to load sample file. Edit only if you know what are you doing.</description>
+			<fieldname>raw_cicap_magic</fieldname>
+			<description>c-icap.conf file. Edit only if you know what are you doing.</description>
 			<type>textarea</type>
 			<encoding>base64</encoding>
 			<cols>85</cols>
 			<rows>15</rows>
+			<advancedfield/>
 		</field>
 		<field>
 			<fielddescr>freshclam.conf</fielddescr>
-			<fieldname>freshclam_conf</fieldname>
-			<description>freshclam.conf file. Leave empty to load sample file. Edit only if you know what are you doing.</description>
+			<fieldname>raw_freshclam_conf</fieldname>
+			<description>freshclam.conf file. Edit only if you know what are you doing.</description>
 			<type>textarea</type>
 			<encoding>base64</encoding>
 			<cols>85</cols>
 			<rows>15</rows>
+			<advancedfield/>
+		</field>
+		<field>
+			<fielddescr>clamd.conf</fielddescr>
+			<fieldname>raw_clamd_conf</fieldname>
+			<description>clamd.conf file. Edit only if you know what are you doing.</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<cols>85</cols>
+			<rows>15</rows>
+			<advancedfield/>
 		</field>
 	</fields>
+	<custom_php_after_head_command>
+		squid_print_antivirus_advanced_config();
+	</custom_php_after_head_command>
+	<custom_php_before_form_command>
+		<![CDATA[
+		squid_print_antivirus_advanced_config2();
+		if ($_POST['enable_advanced'] == "enabled") {
+			$opts = array("clamav_url", "clamav_safebrowsing", "clamav_dbregion", "clamav_dbservers");
+			foreach ($opts as $opt) {
+				if (isset($_POST[$opt])) {
+					unset($_POST[$opt]);
+				}
+			}
+		} else {
+			$opts = array("raw_squidclamav_conf", "raw_cicap_conf", "raw_cicap_magic", "raw_freshclam_conf", "raw_clamd_conf");
+			foreach ($opts as $opt) {
+				if (isset($_POST[$opt])) {
+					unset($_POST[$opt]);
+				}
+			}
+		}
+		]]>
+	</custom_php_before_form_command>
+	<custom_php_after_form_command>
+		squid_print_antivirus_advanced_config2();
+	</custom_php_after_form_command>
 	<custom_php_validation_command>
 		squid_validate_antivirus($_POST, $input_errors);
 	</custom_php_validation_command>
 	<custom_php_resync_config_command>
+		<![CDATA[
+		if ($_POST['load_advanced'] == "Load Advanced" ) {
+			return;
+		}
+		if ($_POST['update_av'] == 'Update AV') {
+			return;
+		}
+		if ($_POST['enable_advanced'] == "enabled" ) {
+			squid_antivirus_put_raw_config($_POST);
+		}
 		squid_resync();
+		]]>
 	</custom_php_resync_config_command>
 </packagegui>

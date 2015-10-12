@@ -127,7 +127,7 @@
 				]]>
 			</description>
 			<type>input</type>
-			<size>60</size>
+			<size>5</size>
 		</field>
 		<field>
 			<fielddescr>Authentication Prompt</fielddescr>
@@ -135,6 +135,7 @@
 			<description>This string will be displayed at the top of the authentication request window.</description>
 			<type>input</type>
 			<default_value>Please enter your credentials to access the proxy</default_value>
+			<size>60</size>
 		</field>
 		<field>
 			<fielddescr>Authentication Processes</fielddescr>

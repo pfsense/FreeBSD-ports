@@ -205,7 +205,7 @@ function js_callback(req) {
 						title="<?=gettext("click to toggle enable/disable this frontend");?>" alt="icon" />
 					</a>
 				  </td>
-				  <td class="listr" style="<?=$frontend['secondary']=='yes'?"visibility:hidden;":""?>" ondblclick="document.location='haproxy_listeners_edit.php?id=<?=$frontendname;?>';">
+				  <td class="listr" ondblclick="document.location='haproxy_listeners_edit.php?id=<?=$frontendname;?>';">
 					<?=$frontend['secondary']!='yes'?"yes":"no";?>
 				  </td>
 				  <td class="listr" ondblclick="document.location='haproxy_listeners_edit.php?id=<?=$frontendname;?>';">

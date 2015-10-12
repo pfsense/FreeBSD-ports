@@ -44,8 +44,7 @@ if (isset($settings['harddisk_cache_system']) && $settings['harddisk_cache_syste
 		return;
 	}
 	if (substr($cachedir, 0, 11) !== "/var/squid/") {
-		log_error("swapstate_check.php will NOT manage Squid cache dir '{$cachedir}' since it is not located under /var/squid.");
-		log_error("Disable 'Clear Cache on Log Rotate' on the 'Local Cache' tab or relocate your cache dir under /var/squid.");
+		log_error("[squid] swapstate_check.php will NOT manage Squid cache dir '{$cachedir}' since it is not located under /var/squid.");
 		return;
 	}
 
@@ -67,15 +66,12 @@ if (isset($settings['harddisk_cache_system']) && $settings['harddisk_cache_syste
 	if ($swapstate_size > 1024*1024*1024) {
 		$rotate_reason .= "$cachedir/swap.state is larger than 1GB. ";
 	}
-	if ($settings['clear_cache'] == 'on') {
-		$rotate_reason .= "'Clear Cache on Log Rotate' is enabled in 'Local Cache' settings. ";
-	}
 	if ($argv[1] == "clean") {
-		$rotate_reason .= "Clear cache forced by cronjob. ";
+		$rotate_reason .= "Clear cache forced by running swapstate_check.php manually with {$argv[1]} argument. ";
 	}
 	if (($swapstate_pct > 75) || (($diskusedpct > 90) && ($swapstate_size > 1024*1024*1024)) || $argv[1] == "clean") {
 		squid_dash_z('clean');
-		log_error(gettext(sprintf("$rotate_reason Removing and rotating. File was %d bytes, %d%% of total disk space.", $swapstate_size, $swapstate_pct)));
+		log_error(gettext(sprintf("[squid] $rotate_reason Removing and rotating. File was %d bytes, %d%% of total disk space.", $swapstate_size, $swapstate_pct)));
 	}
 }
 ?>

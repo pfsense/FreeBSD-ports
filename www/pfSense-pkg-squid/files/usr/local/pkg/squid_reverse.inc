@@ -33,6 +33,7 @@ require_once('certs.inc');
 /* This file is currently only being included in squid.inc and not used separately */
 // require_once('squid.inc');
 
+/* Reverse Proxy Server configuration handler */
 function squid_resync_reverse() {
 	global $config;
 
@@ -260,6 +261,129 @@ function squid_resync_reverse() {
 	}
 
 	return $conf;
+}
+
+/* Migrate reverse proxy configuration from old Squid package versions */
+function squid_reverse_upgrade_config() {
+	global $config;
+	if (is_array($config['installedpackages']['squidreverse'])) {
+		$old_reverse_settings = $config['installedpackages']['squidreverse']['config'][0];
+
+		// settings
+		if (!is_array($config['installedpackages']['squidreversegeneral'])) {
+			$config['installedpackages']['squidreversegeneral']['config'][0] = $old_reverse_settings;
+			unset($config['installedpackages']['squidreversegeneral']['config'][0]['reverse_cache_peer']);
+			unset($config['installedpackages']['squidreversegeneral']['config'][0]['reverse_uri']);
+			unset($config['installedpackages']['squidreversegeneral']['config'][0]['reverse_acl']);
+		}
+
+		// peers
+		if (!is_array($config['installedpackages']['squidreversepeer'])) {
+			foreach (explode("\n", sq_text_area_decode($old_reverse_settings['reverse_cache_peer'])) as $cache_peers) {
+				foreach (explode(";", $cache_peers) as $cache_peer) {
+					$config['installedpackages']['squidreversepeer']['config'][] = array(
+						'description' => 'migrated',
+						'enable' => 'on',
+						'name' => $cache_peer[0],
+						'port' => $cache_peer[1],
+						'protocol' => $cache_peer[2]
+					);
+				}
+			}
+		}
+
+		// mappings
+		if (!is_array($config['installedpackages']['squidreverseuri'])) {
+			foreach (explode("\n", sq_text_area_decode($old_reverse_settings['reverse_acl'])) as $acls) {
+				foreach (explode(";", $acls) as $acl) {
+					array_push(${'peer_'.$acl[0]}, $acl[1]);
+				}
+			}
+			foreach (explode("\n", sq_text_area_decode($old_reverse_settings['reverse_uri'])) as $uris) {
+				foreach (explode(";", $uris) as $uri) {
+					$peer_list = (is_array(${'peer_' . $uri[0]}) ? implode(",", ${'peer_' . $uri[0]}) : "");
+					$config['installedpackages']['squidreverseuri']['config'][] = array(
+						'description' => 'migrated',
+						'enable' => 'on',
+						'name' => $uri[0],
+						'uri' => $uri[1],
+						'vhost' => $uri[2],
+						'peers' => $peer_list
+					);
+				}
+			}
+		}
+	}
+}
+
+/* Reverse Proxy Server input validation */
+function squid_validate_reverse($post, &$input_errors) {
+	global $config;
+
+	if (!empty($post['reverse_ip'])) {
+		$reverse_ip = explode(";", ($post['reverse_ip']));
+		foreach ($reverse_ip as $reip) {
+			if (!is_ipaddr(trim($reip))) {
+				$input_errors[] = "You must enter a valid IP address in the 'User-defined reverse-proxy IPs' field. '$reip' is invalid.";
+			}
+		}
+	}
+
+	$fqdn = trim($post['reverse_external_fqdn']);
+	if (!empty($fqdn) && !is_domain($fqdn)) {
+		$input_errors[] = "'External FQDN' field must contain a valid domain name.";
+	}
+
+	$port = trim($post['reverse_http_port']);
+	preg_match("/(\d+)/", shell_exec("/sbin/sysctl net.inet.ip.portrange.reservedhigh"), $portrange);
+	if (!empty($port) && !is_port($port)) {
+		$input_errors[] = "'Reverse HTTP port' must contain a valid port number.";
+	}
+	if (!empty($port) && is_port($port) && $port <= $portrange[1]) {
+		$input_errors[] = "'Reverse HTTP port' must contain a port number higher than net.inet.ip.portrange.reservedhigh sysctl value({$portrange[1]}).";
+		$input_errors[] = "To listen on low ports, change portrange.reservedhigh sysctl value to 0 in system tunable options and restart Squid daemon.";
+	}
+	$port = trim($post['reverse_https_port']);
+	if (!empty($port) && !is_port($port)) {
+		$input_errors[] = "'Reverse HTTPS port' must contain a valid port number.";
+	}
+	if (!empty($port) && is_port($port) && $port <= $portrange[1]) {
+		$input_errors[] = "'Reverse HTTPS port' must contain a port number higher than net.inet.ip.portrange.reservedhigh sysctl value({$portrange[1]}).";
+		$input_errors[] = "To listen on low ports, change portrange.reservedhigh sysctl value to 0 in system tunable options and restart Squid daemon.";
+	}
+	if ($post['reverse_ssl_cert'] == 'none') {
+		$input_errors[] = 'A valid certificate for the external interface must be selected';
+	}
+
+	if (($post['reverse_https'] != 'on') && ($post['reverse_owa'] == 'on')) {
+		$input_errors[] = "You have to enable reverse HTTPS before enabling OWA support.";
+	}
+
+	if (!empty($post['reverse_owa_ip'])) {
+		$reverse_owa_ip = explode(";", ($post['reverse_owa_ip']));
+		foreach ($reverse_owa_ip as $reowaip) {
+			if (!is_ipaddr(trim($reowaip))) {
+				$input_errors[] = "You must enter a valid IP address in the 'CAS-Array / OWA frontend IP address' field. '$reowaip' is invalid.";
+			}
+		}
+	}
+
+	$contents = $post['reverse_cache_peer'];
+	if (!empty($contents)) {
+		$defs = explode("\r\n", ($contents));
+		foreach ($defs as $def) {
+			$cfg = explode(";", ($def));
+			if (!is_ipaddr($cfg[1])) {
+				$input_errors[] = "Please choose a valid IP in the cache peer configuration.";
+			}
+			if (!is_port($cfg[2])) {
+				$input_errors[] = "Please choose a valid port in the cache peer configuration.";
+			}
+			if (($cfg[3] != 'HTTPS') && ($cfg[3] != 'HTTP')) {
+				$input_errors[] = "Please choose HTTP or HTTPS in the cache peer configuration.";
+			}
+		}
+	}
 }
 
 ?>

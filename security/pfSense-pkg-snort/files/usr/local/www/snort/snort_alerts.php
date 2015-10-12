@@ -188,7 +188,7 @@ if (is_array($config['installedpackages']['snortglobal']['alertsblocks'])) {
 	$pconfig['alertnumber'] = $config['installedpackages']['snortglobal']['alertsblocks']['alertnumber'];
 }
 
-if (empty($pconfig['alertnumber']))
+if (empty($pconfig['alertnumber']) || !is_numeric($pconfig['alertnumber']))
 	$pconfig['alertnumber'] = '250';
 if (empty($pconfig['arefresh']))
 	$pconfig['arefresh'] = 'off';
@@ -242,12 +242,15 @@ if ($_POST['save']) {
 	if (!is_array($config['installedpackages']['snortglobal']['alertsblocks']))
 		$config['installedpackages']['snortglobal']['alertsblocks'] = array();
 	$config['installedpackages']['snortglobal']['alertsblocks']['arefresh'] = $_POST['arefresh'] ? 'on' : 'off';
-	$config['installedpackages']['snortglobal']['alertsblocks']['alertnumber'] = $_POST['alertnumber'];
 
-	write_config("Snort pkg: updated ALERTS tab settings.");
-
-	header("Location: /snort/snort_alerts.php?instance={$instanceid}");
-	exit;
+	if (is_numeric($_POST['alertnumber'])) {
+		$config['installedpackages']['snortglobal']['alertsblocks']['alertnumber'] = $_POST['alertnumber'];
+		write_config("Snort pkg: updated ALERTS tab settings.");
+		header("Location: /snort/snort_alerts.php?instance={$instanceid}");
+		return;
+	} else {
+		$input_errors[] = gettext("Alert number must be numeric");
+	}
 }
 
 if ($_POST['todelete']) {
@@ -582,12 +585,12 @@ if ($savemsg) {
 			</tr>
 		<?php if ($filterlogentries) : ?>
 			<tr>
-				<td colspan="2" class="listtopic"><?php printf(gettext("Last %s Alert Entries"), $anentries); ?>&nbsp;&nbsp;
+				<td colspan="2" class="listtopic"><?php printf(gettext("Last %s Alert Entries"), htmlspecialchars($anentries)); ?>&nbsp;&nbsp;
 				<?php echo gettext("(Most recent listed first)  ** FILTERED VIEW **  clear filter to see all entries"); ?></td>
 			</tr>
 		<?php else: ?>
 			<tr>
-				<td colspan="2" class="listtopic"><?php printf(gettext("Last %s Alert Entries"), $anentries); ?>&nbsp;&nbsp;
+				<td colspan="2" class="listtopic"><?php printf(gettext("Last %s Alert Entries"), htmlspecialchars($anentries)); ?>&nbsp;&nbsp;
 				<?php echo gettext("(Most recent entries are listed first)"); ?></td>
 			</tr>
 		<?php endif; ?>
@@ -625,7 +628,7 @@ if ($savemsg) {
 
 /* make sure alert file exists */
 if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
-	exec("tail -{$anentries} -r {$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert > {$g['tmp_path']}/alert_{$snort_uuid}");
+	exec("tail -n" . escapeshellarg($anentries) . " -r " . escapeshellarg("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert") . " > " . escapeshellarg("{$g['tmp_path']}/alert_{$snort_uuid}"));
 	if (file_exists("{$g['tmp_path']}/alert_{$snort_uuid}")) {
 		$tmpblocked = array_flip(snort_get_blocked_ips());
 		$counter = 0;

@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squidcache</name>
-	<version>0.3.5</version>
+	<version>0.4.0</version>
 	<title>Proxy Server: Cache management</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
@@ -168,7 +168,6 @@
 				]]>
 			</description>
 			<type>checkbox</type>
-			<required/>
 		</field>
 		<field>
 			<fielddescr>External Cache Managers</fielddescr>
@@ -218,15 +217,17 @@
 			</options>
 		</field>
 		<field>
-			<fielddescr>Clear Cache on Log Rotate</fielddescr>
-			<fieldname>clear_cache</fieldname>
+			<fielddescr>Clear Disk Cache NOW</fielddescr>
 			<description>
 				<![CDATA[
-				If set, Squid will clear cache and swap.state every time the log is rotated.<br/>
-				Note: This action will be executed automatically if the swap.state file is taking up more than 75% of available space, or the filesystem is 90% full.
+				Hard Disk Cache is automatically managed by swapstate_check.php script which is scheduled to run daily via cron.<br/>
+				The script will only clear the disk cache on the following conditions:<br/>
+				- if the swap.state file is taking up more than 75% of disk space;<br/>
+				- or the drive is 90% full and swap.state is larger than 1GB.<br/><br/>
+				If you wish to clear cache <strong>immediately,</strong> press the <input name='clear_cache' id='clear_cache' type='submit' value='Clear Disk Cache NOW' /> button.
 				]]>
 			</description>
-			<type>checkbox</type>
+			<type>info</type>
 		</field>
 		<field>
 			<fielddescr>Level 1 Directories</fielddescr>

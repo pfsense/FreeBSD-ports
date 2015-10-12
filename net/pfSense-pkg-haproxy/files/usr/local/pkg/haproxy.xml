@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>haproxy</name>
-	<version>0.28</version>
+	<version>0.32</version>
 	<title>HAProxy</title>
 	<aftersaveredirect>/pkg_edit.php?xml=haproxy_pools.php</aftersaveredirect>
 	<include_file>/usr/local/pkg/haproxy.inc</include_file>

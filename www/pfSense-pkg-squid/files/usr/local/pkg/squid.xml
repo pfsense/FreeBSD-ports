@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squid</name>
-	<version>0.3.7</version>
+	<version>0.4.0</version>
 	<title>Proxy Server: General Settings</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<menu>
@@ -65,7 +65,7 @@
 	</service>
 	<service>
 		<name>clamd</name>
-		<rcfile>clamav-clamd</rcfile>
+		<rcfile>clamd.sh</rcfile>
 		<executable>clamd</executable>
 		<description>ClamAV Antivirus</description>
 	</service>
@@ -125,6 +125,18 @@
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_antivirus.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/widgets/include</prefix>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_antivirus_status.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_js.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
 		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_reverse.inc</item>
 	</additional_files_needed>
 	<additional_files_needed>
@@ -152,10 +164,6 @@
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
 		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_nac.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_reverse.xml</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
@@ -196,6 +204,10 @@
 	<!-- END XML files -->
 	<!-- START additional PHP files -->
 	<additional_files_needed>
+		<prefix>/usr/local/www/widgets/widgets</prefix>
+		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_antivirus_status.widget.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
 		<prefix>/usr/local/www/</prefix>
 		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_clwarn.php</item>
 	</additional_files_needed>
@@ -235,6 +247,29 @@
 		<field>
 			<name>Squid General Settings</name>
 			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable Squid Proxy</fielddescr>
+			<fieldname>enable_squid</fieldname>
+			<description>
+				<![CDATA[
+				Check to enable the Squid proxy.<br/>
+				Note: If unchecked, <strong>all</strong> Squid services will be disabled and stopped.<br/>
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Keep Settings/Data</fielddescr>
+			<fieldname>keep_squid_data</fieldname>
+			<description>
+				<![CDATA[
+				If enabled, the settings, logs, cache, AV defs and other data will be preserved across package reinstalls.<br/>
+				<strong><span class="errmsg">Note:</span> If disabled, all settings and data will be wiped on package uninstall/reinstall/upgrade.</strong>
+				]]>
+			</description>
+			<type>checkbox</type>
+			<default_value>on</default_value>
 		</field>
 		<field>
 			<fielddescr>Proxy Interface(s)</fielddescr>
@@ -496,23 +531,23 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Enable Logging</fielddescr>
+			<fielddescr>Enable Access Logging</fielddescr>
 			<fieldname>log_enabled</fieldname>
 			<description>
 				<![CDATA[
-				This will enable the access log.
+				This will enable the <strong>access</strong> log.
 				<strong>Warning:</strong> Do not switch this on if you don't have much disk space left.
 				]]>
 			</description>
 			<type>checkbox</type>
-			<enablefields>log_dir,log_rotate</enablefields>
+			<enablefields>log_rotate</enablefields>
 		</field>
 		<field>
 			<fielddescr>Log Store Directory</fielddescr>
 			<fieldname>log_dir</fieldname>
 			<description>
 				<![CDATA[
-				The directory where the log will be stored.<br/>
+				The directory where the logs will be stored. This is also used for logs other than the Access Log above.<br/>
 				Default: /var/squid/logs<br/>
 				<strong>Note: Do NOT include the trailing / when setting a custom location.</strong>
 				]]>
@@ -724,12 +759,7 @@
 		squid_resync();
 	</custom_php_resync_config_command>
 	<custom_php_install_command>
-	<![CDATA[
-		update_output_window("This operation may take quite some time, please be patient. Do not press stop or attempt to navigate away from this page during this process.");
 		squid_install_command();
-		unlink_if_exists("/usr/local/etc/rc.d/squid");
-		unlink_if_exists("/usr/local/etc/rc.d/c-icap");
-	]]>
 	</custom_php_install_command>
 	<custom_php_deinstall_command>
 		squid_deinstall_command();
