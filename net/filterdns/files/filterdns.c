@@ -494,7 +494,7 @@ ipfw_tableentry(struct thread_data *ipfwd, struct sockaddr *address, int action)
 		entry.op3.opcode = action == ADD ? IP_FW_TABLE_XADD : IP_FW_TABLE_XDEL;
 		entry.op3.ctxid = ipfwctx;
 
-		if (setsockopt(s, IPPROTO_IP, entry.op3.opcode, (void *)&entry, sizeof(entry)) < 0) {
+		if (setsockopt(s, IPPROTO_IP, IP_FW3, (void *)&entry, sizeof(entry)) < 0) {
 			error++;
 			continue;
 		}
