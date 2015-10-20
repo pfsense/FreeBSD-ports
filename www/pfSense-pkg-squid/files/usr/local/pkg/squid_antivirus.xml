@@ -42,8 +42,8 @@
 	]]>
 	</copyright>
 	<name>squidantivirus</name>
-	<version>0.4.0</version>
-	<title>Proxy server: Antivirus</title>
+	<version>0.4.1</version>
+	<title>Proxy Server: Antivirus</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
 		<tab>
@@ -148,7 +148,7 @@
 				]]>
 			</description>
 			<type>input</type>
-			<cols>60</cols>
+			<size>60</size>
 			
 		</field>
 		<field>
@@ -173,7 +173,7 @@
 				Select the desired frequency here.<br/><br/>
 				<input name='update_av' id='update_av' type='submit' value='Update AV' />
 				Click the button to update AV databases now.<br/>
-				<strong>Note: This will take a while.</strong> Check /var/log/clamav/freshclam.log for progress information.
+				<strong>Note: This will take a while.</strong> Check freshclam log on the <a href="squid_monitor.php">'Real Time' tab</a> for progress information.
 				]]>
 			</description>
 			<type>select</type>
@@ -229,7 +229,7 @@
 				]]>
 			</description>
 			<type>input</type>
-			<cols>60</cols>
+			<size>60</size>
 		</field>
 		<field>
 			<fielddescr>squidclamav.conf</fielddescr>

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Lightsquid
-PORTVERSION=	2.41
+PORTVERSION=	2.42
 CATEGORIES=	www
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -25,6 +25,7 @@ do-extract:
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
+	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/sqstat
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novopf
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novopf/images
@@ -33,91 +34,93 @@ do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/lightsquid.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/lightsquid.inc \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/lightsquid.inc \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/www/sqstat/sqstat.class.php \
+	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/lightsquid.priv.inc \
+		${STAGEDIR}/etc/inc/priv
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/sqstat/sqstat.class.php \
 		${STAGEDIR}${PREFIX}/www/sqstat
-	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/www/sqstat/sqstat.php \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/sqstat/sqstat.php \
 		${STAGEDIR}${PREFIX}/www/sqstat
-	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/www/sqstat/sqstat.css \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/sqstat/sqstat.css \
 		${STAGEDIR}${PREFIX}/www/sqstat
-	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/www/sqstat/zhabascript.js \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/sqstat/zhabascript.js \
 		${STAGEDIR}${PREFIX}/www/sqstat
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/bigfiles.html \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/bigfiles.html \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novopf
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/day_detail.html \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/day_detail.html \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novopf
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/graph.html \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/graph.html \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novopf
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/group_detail.html \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/group_detail.html \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novopf
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/images/datetime.png \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/images/datetime.png \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novopf/images
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/images/flag_red.png \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/images/flag_red.png \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novopf/images
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/images/graph.png \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/images/graph.png \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novopf/images
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/images/groups.png \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/images/groups.png \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novopf/images
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/images/printer.png \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/images/printer.png \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novopf/images
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/images/users.png \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/images/users.png \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novopf/images
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/index.html \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/index.html \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novopf
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/month_detail.html \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/month_detail.html \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novopf
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/print.css \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/print.css \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novopf
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/screen.css \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/screen.css \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novopf
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/topsites.html \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/topsites.html \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novopf
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/user_detail.html \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/user_detail.html \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novopf
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/user_month.html \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/user_month.html \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novopf
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/user_time.html \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/user_time.html \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novopf
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/whousesite.html \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novopf/whousesite.html \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novopf
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/bigfiles.html \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/bigfiles.html \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novosea
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/day_detail.html \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/day_detail.html \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novosea
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/graph.html \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/graph.html \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novosea
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/group_detail.html \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/group_detail.html \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novosea
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/images/datetime.png \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/images/datetime.png \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novosea/images
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/images/flag_red.png \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/images/flag_red.png \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novosea/images
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/images/graph.png \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/images/graph.png \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novosea/images
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/images/groups.png \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/images/groups.png \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novosea/images
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/images/printer.png \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/images/printer.png \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novosea/images
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/images/users.png \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/images/users.png \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novosea/images
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/index.html \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/index.html \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novosea
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/month_detail.html \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/month_detail.html \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novosea
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/print.css \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/print.css \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novosea
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/screen.css \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/screen.css \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novosea
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/topsites.html \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/topsites.html \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novosea
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/user_detail.html \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/user_detail.html \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novosea
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/user_month.html \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/user_month.html \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novosea
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/user_time.html \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/user_time.html \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novosea
-	${INSTALL_DATA} -m 0444 ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/whousesite.html \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/share/lightsquid/tpl/novosea/whousesite.html \
 		${STAGEDIR}${PREFIX}/share/lightsquid/tpl/novosea
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}

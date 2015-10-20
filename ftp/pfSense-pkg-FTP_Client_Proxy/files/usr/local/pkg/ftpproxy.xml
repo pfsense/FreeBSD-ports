@@ -41,7 +41,7 @@
 	]]>
 	</copyright>
 	<name>FTP Client Proxy</name>
-	<version>0.2.2</version>
+	<version>0.3</version>
 	<title>FTP Client Proxy</title>
 	<aftersaveredirect>pkg_edit.php?xml=ftpproxy.xml</aftersaveredirect>
 	<include_file>/usr/local/pkg/ftpproxy.inc</include_file>
@@ -85,6 +85,13 @@
 			<description>Select the local (LAN type) interfaces which contain FTP clients.</description>
 			<required/>
 			<multiple/>
+		</field>
+		<field>
+			<fielddescr>Early Firewall Rule</fielddescr>
+			<fieldname>earlyrule</fieldname>
+			<description>Check this box to move the automatically added FTP rules higher in the ruleset to bypass explicit blocks. Helps allow passive FTP to arbitrary destinations, but FTP will always be allowed outbound when checked.</description>
+			<type>checkbox</type>
+			<default_value>off</default_value>
 		</field>
 		<field>
 			<fielddescr>Anonymous Only</fielddescr>

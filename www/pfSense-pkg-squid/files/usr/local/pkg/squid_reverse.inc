@@ -209,7 +209,11 @@ function squid_resync_reverse() {
 		}
 
 		if (($settings['reverse_owa'] == 'on') && (!empty($settings['reverse_owa_ip'])) && ($settings['reverse_owa_autodiscover'] == 'on')) {
-			$reverse_external_domain = strstr($settings['reverse_external_fqdn'], '.');
+			if (substr_count($settings['reverse_external_fqdn'], ".") > 1) {
+				$reverse_external_domain = strstr($settings['reverse_external_fqdn'], '.');
+			} else {
+				$reverse_external_domain = ".{$settings['reverse_external_fqdn']}";
+			}
 			$conf .= "acl OWA_URI_pfs url_regex -i ^http://{$settings['reverse_external_fqdn']}/AutoDiscover/AutoDiscover.xml\n";
 			$conf .= "acl OWA_URI_pfs url_regex -i ^https://{$settings['reverse_external_fqdn']}/AutoDiscover/AutoDiscover.xml\n";
 			$conf .= "acl OWA_URI_pfs url_regex -i ^http://autodiscover{$reverse_external_domain}/AutoDiscover/AutoDiscover.xml\n";

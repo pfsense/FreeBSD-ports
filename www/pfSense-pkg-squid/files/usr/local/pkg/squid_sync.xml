@@ -42,8 +42,8 @@
 	]]>
 	</copyright>
 	<name>squidsync</name>
-	<version>0.3.7</version>
-	<title>Proxy server: XMLRPC Sync</title>
+	<version>0.4.1</version>
+	<title>Proxy Server: XMLRPC Sync</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
 		<tab>

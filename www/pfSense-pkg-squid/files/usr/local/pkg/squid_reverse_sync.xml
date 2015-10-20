@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squidsync</name>
-	<version>0.3.7</version>
+	<version>0.4.1</version>
 	<title>Reverse Proxy Server: XMLRPC Sync</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
@@ -63,7 +63,7 @@
 			<url>/pkg.php?xml=squid_reverse_redir.xml</url>
 		</tab>
 		<tab>
-			<text>Real time</text>
+			<text>Real Time</text>
 			<url>/squid_monitor.php?menu=reverse</url>
 		</tab>
 		<tab>

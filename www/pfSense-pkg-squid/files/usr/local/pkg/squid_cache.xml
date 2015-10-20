@@ -42,8 +42,8 @@
 	]]>
 	</copyright>
 	<name>squidcache</name>
-	<version>0.4.0</version>
-	<title>Proxy Server: Cache management</title>
+	<version>0.4.1</version>
+	<title>Proxy Server: Cache Management</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
 		<tab>
@@ -410,7 +410,9 @@
 		// do not leave orphaned cachedirs if harddisk_cache_location changed
 		if ($_POST['harddisk_cache_location'] != $config['installedpackages']['squidcache']['config'][0]['harddisk_cache_location']) {
 			$oldcachedir = $config['installedpackages']['squidcache']['config'][0]['harddisk_cache_location'];
-			$cachedir_changed = true;
+			if ($oldcachedir != "") {
+				$cachedir_changed = true;
+			}
 		}
 	]]>
 	</custom_php_command_before_form>

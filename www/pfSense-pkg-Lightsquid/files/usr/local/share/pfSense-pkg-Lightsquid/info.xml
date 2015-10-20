@@ -5,7 +5,7 @@
 		<descr><![CDATA[LightSquid is a high performance web proxy reporting tool. Proxy realtime statistics (SQStat). Requires Squid HTTP proxy.]]></descr>
 		<website>http://lightsquid.sf.net/</website>
 		<category>Network Report</category>
-		<version>2.41</version>
+		<version>2.42</version>
 		<maintainer>dv_serg@mail.ru</maintainer>
 		<port_category>www</port_category>
 		<run_depends>libexec/lightsquid/ip2name.list:www/lightsquid</run_depends>
@@ -20,5 +20,6 @@
 		<config_file>https://packages.pfsense.org/packages/config/lightsquid/lightsquid.xml</config_file>
 		<configurationfile>lightsquid.xml</configurationfile>
 		<noembedded>true</noembedded>
+		<after_install_info>Please visit Status - Squid Proxy Reports - Settings and read the configuration and usage instructions.</after_install_info>
 	</package>
 </pfsensepkgs>

@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squidnac</name>
-	<version>0.3.5</version>
+	<version>0.4.1</version>
 	<title>Proxy Server: Access Control</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
@@ -98,9 +98,10 @@
 			<fieldname>allowed_subnets</fieldname>
 			<description>
 				<![CDATA[
-				Enter each subnet on a new line that is allowed to use the proxy.<br/>
-				The subnets must be expressed as CIDR ranges (e.g.: 192.168.1.0/24).<br/><br/>
-				Note: The proxy interface subnet is already an allowed subnet. All the other subnets won't be able to use the proxy.
+				Enter subnets that are allowed to use the proxy.<br/>
+				The subnets must be expressed as CIDR ranges (e.g.: 192.168.1.0/24).<br/>
+				The proxy interface subnet is already an allowed subnet. All the other subnets won't be able to use the proxy.<br/>
+				<strong>Note: Put each entry on a separate line.</strong>
 				]]>
 			</description>
 			<type>textarea</type>

@@ -2,453 +2,429 @@
 <!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
 <?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
 <packagegui>
-        <copyright>
-        <![CDATA[
+	<copyright>
+<![CDATA[
 /* $Id$ */
-/* ========================================================================== */
+/* ====================================================================================== */
 /*
-    lightsquid.xml
-    part of pfSense (http://www.pfSense.com)
-    Copyright (C) 2007 to whom it may belong
-    All rights reserved.
-
-    Based on m0n0wall (http://m0n0.ch/wall)
-    Copyright (C) 2003-2006 Manuel Kasper <mk@neon1.net>.
-    All rights reserved.
-                                                                              */
-/* ========================================================================== */
+	lightsquid.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2006-2012 Sergey Dvoriancev <dv_serg@mail.ru>
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
 /*
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions are met:
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
 
-     1. Redistributions of source code must retain the above copyright notice,
-        this list of conditions and the following disclaimer.
 
-     2. Redistributions in binary form must reproduce the above copyright
-        notice, this list of conditions and the following disclaimer in the
-        documentation and/or other materials provided with the distribution.
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
 
-    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-    POSSIBILITY OF SUCH DAMAGE.
-                                                                              */
-/* ========================================================================== */
-        ]]>
-        </copyright>
-	<description>Describe your package here</description>
-	<requirements>Describe your package requirements here</requirements>
-	<faq>Currently there are no FAQ items provided.</faq>
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
 	<name>lightsquid</name>
-	<version>2.41</version>
-	<title>Services: Proxy Reports (LightSquid, SQStat) -> Settings</title>
+	<version>2.42</version>
+	<title>Squid Proxy Reports: Settings</title>
 	<category>Status</category>
 	<include_file>/usr/local/pkg/lightsquid.inc</include_file>
 	<menu>
-		<name>Proxy report</name>
-		<tooltiptext>Proxy server statistic report</tooltiptext>
+		<name>Squid Proxy Reports</name>
+		<tooltiptext>Proxy Server Statistic Reports</tooltiptext>
 		<section>Status</section>
-		<url>/pkg_edit.php?xml=lightsquid.xml&amp;id=0</url>
+		<url>/pkg_edit.php?xml=lightsquid.xml</url>
 	</menu>
-        <tabs>
-                <tab>
-                        <text>Settings</text>
-                        <url>/pkg_edit.php?xml=lightsquid.xml&amp;id=0</url>
-                        <active/>
-                </tab>
-                <tab>
-                        <text>Lightsquid Report</text>
-                        <url>/lightsquid/index.cgi</url>
-                </tab>
-                <tab>
-                        <text>Proxy State</text>
-                        <url>/sqstat/sqstat.php</url>
-                </tab>
-        </tabs>
-        <additional_files_needed>
-               <prefix>/usr/local/pkg/</prefix>
-               <chmod>0755</chmod>
-               <item>https://packages.pfsense.org/packages/config/lightsquid/lightsquid.inc</item>
-        </additional_files_needed>
-        <additional_files_needed>
-               <prefix>/usr/local/www/sqstat/</prefix>
-               <chmod>0644</chmod>
-               <item>https://packages.pfsense.org/packages/config/lightsquid/sqstat.class.php</item>
-        </additional_files_needed>
-        <additional_files_needed>
-               <prefix>/usr/local/www/sqstat/</prefix>
-               <chmod>0644</chmod>
-               <item>https://packages.pfsense.org/packages/config/lightsquid/sqstat.php</item>
-        </additional_files_needed>
-        <additional_files_needed>
-               <prefix>/usr/local/www/sqstat/</prefix>
-               <chmod>0644</chmod>
-               <item>https://packages.pfsense.org/packages/config/lightsquid/sqstat.css</item>
-        </additional_files_needed>
-        <additional_files_needed>
-               <prefix>/usr/local/www/sqstat/</prefix>
-               <chmod>0644</chmod>
-               <item>https://packages.pfsense.org/packages/config/lightsquid/zhabascript.js</item>
-        </additional_files_needed>
+	<tabs>
+		<tab>
+			<text>Settings</text>
+			<url>/pkg_edit.php?xml=lightsquid.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Lightsquid Report</text>
+			<url>/lightsquid/index.cgi</url>
+		</tab>
+		<tab>
+			<text>Proxy Status</text>
+			<url>/sqstat/sqstat.php</url>
+		</tab>
+	</tabs>
+	<additional_files_needed>
+	       <prefix>/usr/local/pkg/</prefix>
+	       <item>https://packages.pfsense.org/packages/config/lightsquid/lightsquid.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	       <prefix>/etc/inc/priv/</prefix>
+	       <item>https://packages.pfsense.org/packages/config/lightsquid/lightsquid.priv.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	       <prefix>/usr/local/www/sqstat/</prefix>
+	       <item>https://packages.pfsense.org/packages/config/lightsquid/sqstat.class.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	       <prefix>/usr/local/www/sqstat/</prefix>
+	       <item>https://packages.pfsense.org/packages/config/lightsquid/sqstat.php</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	       <prefix>/usr/local/www/sqstat/</prefix>
+	       <item>https://packages.pfsense.org/packages/config/lightsquid/sqstat.css</item>
+	</additional_files_needed>
+	<additional_files_needed>
+	       <prefix>/usr/local/www/sqstat/</prefix>
+	       <item>https://packages.pfsense.org/packages/config/lightsquid/zhabascript.js</item>
+	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/bigfiles.html</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/day_detail.html</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/graph.html</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/group_detail.html</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novopf/images/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/images/datetime.png</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novopf/images/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/images/flag_red.png</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novopf/images/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/images/graph.png</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novopf/images/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/images/groups.png</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novopf/images/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/images/printer.png</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novopf/images/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/images/users.png</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/index.html</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/month_detail.html</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/print.css</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/screen.css</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/topsites.html</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/user_detail.html</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/user_month.html</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/user_time.html</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/whousesite.html</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/bigfiles.html</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/day_detail.html</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/graph.html</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/group_detail.html</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novosea/images/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/images/datetime.png</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novosea/images/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/images/flag_red.png</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novosea/images/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/images/graph.png</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novosea/images/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/images/groups.png</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novosea/images/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/images/printer.png</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novosea/images/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/images/users.png</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/index.html</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/month_detail.html</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/print.css</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/screen.css</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/topsites.html</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/user_detail.html</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/user_month.html</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/user_time.html</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<chmod>0444</chmod>
 		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/whousesite.html</item>
 	</additional_files_needed>
-        <fields>
-                <field>
-                        <fielddescr>Language</fielddescr>
-                        <fieldname>lightsquid_lang</fieldname>
-                        <description>Select report language</description>
-                        <type>select</type>
-                        <value>eng</value>
-                        <options>
-                                 <option><name>Bulgarian</name><value>bg</value></option>
-                                 <option><name>Czech</name><value>cz</value></option>
-                                 <option><name>English</name><value>eng</value></option>
-                                 <option><name>French</name><value>fr</value></option>
-                                 <option><name>Hungarian</name><value>hu</value></option>
-                                 <option><name>Italian</name><value>it</value></option>
-                                 <option><name>Portuguese - Brazil</name><value>pt_br</value></option>
-                                 <option><name>Russian</name><value>ru</value></option>
-                                 <option><name>Russian KOI-8</name><value>ru-koi8</value></option>
-                                 <option><name>Spanish</name><value>sp</value></option>
-                                 <option><name>Ukrainian</name><value>ua</value></option>
-                        </options>
-                </field>
-                <field>
-                        <fielddescr>Bar color</fielddescr>
-                        <fieldname>lightsquid_barcolor</fieldname>
-                        <description>Select bar color</description>
-                        <type>select</type>
-                        <value>orange</value>
-                        <options>
-                                <option><name>Orange</name><value>orange</value></option>
-                                <option><name>Blue</name><value>blue</value></option>
-                                <option><name>Green</name><value>green</value></option>
-                                <option><name>Yellow</name><value>yellow</value></option>
-                                <option><name>Brown</name><value>brown</value></option>
-                                <option><name>Red</name><value>red</value></option>
-                        </options>
-                </field>
-                <field>
-                        <fielddescr>Report scheme</fielddescr>
-                        <fieldname>lightsquid_template</fieldname>
-                        <description>Select report scheme</description>
-                        <type>select</type>
-                        <value>base</value>
-                        <options>
-                                <option><name>Base</name><value>base</value></option>
-                                <option><name>Text</name><value>text</value></option>
-                                <option><name>NovoSea</name><value>novosea</value></option>
-                                <option><name>NovoPf</name><value>novopf</value></option>
-                        </options>
-                </field>
-                <field>
-                        <fielddescr>IP resolve method (future)</fielddescr>
-                        <fieldname>lightsquid_ip2name</fieldname>
-                        <description>
-                        &lt;table cellpadding=1 cellspacing=0 style=&quot;text-align: left;&quot;&gt; &lt;tbody&gt;
-                        &lt;tr&gt;&lt;th colspan=2&gt; Select IP to Name resolve method (take effect only on new data): &lt;/th&gt;&lt;tr&gt;
-                        &lt;tr&gt;&lt;th&gt; IP         &lt;/th&gt;&lt;td&gt; - return IP &lt;/td&gt;&lt;tr&gt;
-                        &lt;tr&gt;&lt;th&gt; Demo       &lt;/th&gt;&lt;td&gt; - return AUTHNAME, else DNSNAME, else IP &lt;/td&gt;&lt;tr&gt;
-                        &lt;tr&gt;&lt;th&gt; DNS        &lt;/th&gt;&lt;td&gt; - return DNSNAME &lt;/td&gt;&lt;tr&gt;
-                        &lt;tr&gt;&lt;th&gt; Simple     &lt;/th&gt;&lt;td&gt; - return AUTHNAME else IP &lt;/td&gt;&lt;tr&gt;
-                        &lt;tr&gt;&lt;th&gt; SMB        &lt;/th&gt;&lt;td&gt; - return SMB name of pc &lt;/td&gt;&lt;tr&gt;
-                        &lt;tr&gt;&lt;th&gt; Squidauth  &lt;/th&gt;&lt;td&gt; - return AUTHNAME else IP, allow cyrilyc name &lt;/td&gt;&lt;tr&gt;
-                        &lt;/tbody&gt; &lt;/table&gt;
-                        </description>
-                        <type>select</type>
-                        <value>dns</value>
-                        <options>
-                                <option><name>IP</name><value>ip</value></option>
-                                <option><name>Demo</name><value>demo</value></option>
-                                <option><name>DNS</name><value>dns</value></option>
-                                <option><name>Simple</name><value>simple</value></option>
-                                <option><name>SMB</name><value>smb</value></option>
-                                <option><name>Squidauth</name><value>squidauth</value></option>
-                        </options>
-                </field>
-                <field>
-                        <fielddescr>Refresh sheduler</fielddescr>
-                        <fieldname>lightsquid_refreshsheduler_time</fieldname>
-                        <description>
-			Select data refresh period. System will execute task every XX time as from 00:00 hours. &lt;br&gt;
-			For example: if selected 2h - system wil start task at 0-2-4-..-24h. &lt;br&gt;
-			Note:  (!),(*) - use only for powerful system; (+) - recomended. &lt;br&gt;&lt;br&gt;
-			&lt;input type=&quot;submit&quot; name=&quot;Submit&quot; value=&quot;Refresh now&quot;&gt;&lt;br&gt;
-			&lt;input type=&quot;submit&quot; name=&quot;Submit&quot; value=&quot;Refresh full&quot;&gt;
-			&lt;br&gt; Press button for start background refresh (this take some time).
-			&lt;br&gt; &lt;span style=&quot;color: rgb(153, 51, 0);&quot;&gt; Note after installation:
-			&lt;br&gt; Firstly - enable log in squid package with &quot;/var/squid/logs&quot; path.
-			&lt;br&gt; Secondly - press Refresh button to create lightsquid reports, else you will have an error diagnostic page.&lt;/span&gt;
-			</description>
-                        <type>select</type>
-                        <value>lhp_none</value>
-                        <options>
-                                <option><name>none</name><value>lhp_none</value></option>
-                                <option><name>10min(!)</name><value>lhp_10m</value></option>
-                                <option><name>20min(!)</name><value>lhp_20m</value></option>
-                                <option><name>30min(*)</name><value>lhp_30m</value></option>
-                                <option><name>40min(*)</name><value>lhp_40m</value></option>
-                                <option><name>50min(+)</name><value>lhp_50m</value></option>
-                                <option><name>60min(+)</name><value>lhp_60m</value></option>
-                                <option><name>2h</name><value>lhp_2h</value></option>
-                                <option><name>3h</name><value>lhp_3h</value></option>
-                                <option><name>4h</name><value>lhp_4h</value></option>
-                                <option><name>6h</name><value>lhp_6h</value></option>
-                                <option><name>8h</name><value>lhp_8h</value></option>
-                                <option><name>12h</name><value>lhp_12h</value></option>
-                                <option><name>24(00)h</name><value>lhp_24h</value></option>
-                        </options>
-                </field>
-                <!--field>
-                        <fielddescr>Squid rotate log sheduler</fielddescr>
-                        <fieldname>lightsquid_squidrotatelog_sheduler_time</fieldname>
+	<fields>
+		<field>
+			<name>Instructions</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<type>info</type>
+			<fielddescr>
+				<![CDATA[
+				<span class="errmsg">IMPORTANT: Perform these steps after install:</span>
+				]]>
+			</fielddescr>
 			<description>
-					Select squid log rotate period. System will execute task every XX time as from 00:00 hours. &lt;br&gt;
-					This option will allow the updating of the faster &lt;br&gt;
-					For example: if selected '2 day' - system wil start task every 2 day of month. &lt;br&gt;
-					This option will allow the updating of the faster &lt;br&gt;
-				Note:  You must choose from that the rate of filling dialogue access.log squid; &lt;br&gt;
-					The more customers, the more often it should be the job.
+				<![CDATA[
+				1/ <strong>Enable 'Access Logging' in the Squid package!</strong> It is strongly suggested to leave the 'Log Store Directory' in Squid package at default '/var/squid/logs' value.<br/><br/>
+				2a/ <strong>ONLY if Squid is NOT set up as transparent proxy:</strong><br/>
+				- Configure Squid - General - Proxy Interface(s) to include <strong>'loopback'</strong> interface (in addition to any other interfaces you want Squid to bind on).<br/>
+				2b/ <strong>ONLY if using Squid 2.7 package</strong> (this is not needed for Squid 3.x.):<br/>
+				- Add '127.0.0.1' to Squid - Access Control - External Cache-Managers.<br/><br/>
+				3/ <strong>Configure 'Report Template Settings' and 'Reporting Settings and Scheduler' below and Save when finished.</strong><br/><br/>
+				4/ <strong>Use the Refresh buttons in the 'Manual Refresh' section below to create initial LightSquid reports</strong>; otherwise you will get an error diagnostic page.<br/>
+				- <em>"Refresh now"</em> will (re)parse today's entries only in Squid's current access.log.<br/>
+				- <em>"Refresh full"</em> will (re)parse all entries in all Squid's access logs, including the rotated ones. <strong>Note: This may take long time to finish!</strong><br/>
+				]]>
+			</description>
+		</field>
+		<field>
+			<name>Report Template Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Language</fielddescr>
+			<fieldname>lightsquid_lang</fieldname>
+			<description>Select report language.</description>
+			<type>select</type>
+			<default_value>eng</default_value>
+			<options>
+				<option><name>Bulgarian</name><value>bg</value></option>
+				<option><name>Czech</name><value>cz</value></option>
+				<option><name>English</name><value>eng</value></option>
+				<option><name>French</name><value>fr</value></option>
+				<option><name>Hungarian</name><value>hu</value></option>
+				<option><name>Italian</name><value>it</value></option>
+				<option><name>Portuguese (Brazilian)</name><value>pt_br</value></option>
+				<option><name>Russian</name><value>ru</value></option>
+				<option><name>Russian (KOI-8)</name><value>ru-koi8</value></option>
+				<option><name>Spanish</name><value>sp</value></option>
+				<option><name>Ukrainian</name><value>ua</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Report Template</fielddescr>
+			<fieldname>lightsquid_template</fieldname>
+			<description>Select report template.</description>
+			<type>select</type>
+			<default_value>base</default_value>
+			<options>
+				<option><name>Base</name><value>base</value></option>
+				<option><name>Text</name><value>text</value></option>
+				<option><name>NovoSea</name><value>novosea</value></option>
+				<option><name>NovoPf</name><value>novopf</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Bar Color</fielddescr>
+			<fieldname>lightsquid_barcolor</fieldname>
+			<description>Select bar color.</description>
+			<type>select</type>
+			<default_value>orange</default_value>
+			<options>
+				<option><name>Orange</name><value>orange</value></option>
+				<option><name>Blue</name><value>blue</value></option>
+				<option><name>Green</name><value>green</value></option>
+				<option><name>Yellow</name><value>yellow</value></option>
+				<option><name>Brown</name><value>brown</value></option>
+				<option><name>Red</name><value>red</value></option>
+			</options>
+		</field>
+		<field>
+			<name>Reporting Settings and Scheduler</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>IP Resolve Method</fielddescr>
+			<fieldname>lightsquid_ip2name</fieldname>
+			<description>
+				<![CDATA[
+				<table cellpadding=1 cellspacing=0 style="text-align: left;">
+				<tbody>
+					<tr><th colspan=2>Select which method(s) should be attempted (in the order listed below) to resolve IPs to hostnames:</th></tr>
+					<tr><th>IP         </th><td> - Do not resolve IP addresses.</td></tr>
+					<tr><th>Demo       </th><td> - Use Squid AUTHNAME, then DNSNAME, then IP.</td></tr>
+					<tr><th>DNS        </th><td> - Use DNSNAME.</td></tr>
+					<tr><th>Simple     </th><td> - Use Squid AUTHNAME, then IP address.</td></tr>
+					<tr><th>SMB        </th><td> - Use NetBIOS name.</td></tr>
+					<tr><th>Squidauth  </th><td> - Use Squid AUTHNAME, then IP address (allow international characters).</td></tr>
+				</tbody>
+				</table>
+				]]>
 			</description>
 			<type>select</type>
-                        <value>lsr_none</value>
-                        <options>
-                                <option><name>none</name><value>lsr_none</value></option>
-                                <option><name>every 1 day</name><value>lsr_d1</value></option>
-                                <option><name>every 2 day</name><value>lsr_d2</value></option>
-                                <option><name>every 3 day</name><value>lsr_d3</value></option>
-                                <option><name>every 4 day</name><value>lsr_d4</value></option>
-                                <option><name>every 5 day</name><value>lsr_d5</value></option>
-                                <option><name>every 6 day</name><value>lsr_d6</value></option>
-                                <option><name>weekly at Monday</name><value>lsr_w1</value></option>
-                                <option><name>weekly at Tuesday</name><value>lsr_w2</value></option>
-                                <option><name>weekly at Wednesday</name><value>lsr_w3</value></option>
-                                <option><name>weekly at Thursday</name><value>lsr_w4</value></option>
-                                <option><name>weekly at Friday</name><value>lsr_w5</value></option>
-                                <option><name>weekly at Saturday</name><value>lsr_w6</value></option>
-                                <option><name>weekly at Sunday</name><value>lsr_w7</value></option>
-                                <option><name>every 10 day</name><value>lsr_d10</value></option>
-                                <option><name>every 15 day</name><value>lsr_d15</value></option>
-                                <option><name>every 20 day</name><value>lsr_d20</value></option>
-                                <option><name>every 25 day</name><value>lsr_d25</value></option>
-                                <option><name>every 30 day</name><value>lsr_d30</value></option>
-                        </options>
-		</field-->
+			<default_value>dns</default_value>
+			<options>
+				<option><name>IP</name><value>ip</value></option>
+				<option><name>Demo</name><value>demo</value></option>
+				<option><name>DNS</name><value>dns</value></option>
+				<option><name>Simple</name><value>simple</value></option>
+				<option><name>SMB</name><value>smb</value></option>
+				<option><name>Squidauth</name><value>squidauth</value></option>
+			</options>
+		</field>
 		<field>
-            <fielddescr>Skip url</fielddescr>
-            <fieldname>lightsquid_skipurl</fieldname>
+			<fielddescr>Skip URL(s)</fielddescr>
+			<fieldname>lightsquid_skipurl</fieldname>
 			<description>
-                                If you want skip some sites from stat, example our local www server
-                                Example, if you want skip LOCAL site, put it here
-                                zdd.com|192.168.1.|cnn.com
+				<![CDATA[
+				If you want to omit some sites from statistics (e.g., a local webserver), specify the URL(s) here.<br/>
+				Separate multiple entries by <strong>|</strong> character.<br/><br/>
+				Example: example.com|192.168.1.|example.net
+				]]>
 			</description>
 			<type>textarea</type>
 			<cols>60</cols>
 			<rows>5</rows>
 		</field>
+		<field>
+			<fielddescr>Refresh Scheduler</fielddescr>
+			<fieldname>lightsquid_refreshsheduler_time</fieldname>
+			<description>
+				<![CDATA[
+				Select data refresh period. The reporting task will be executed every XX minutes/hours.<br/>
+				<strong>Legend:</strong>  (!),(*) - use only with fast hardware; (+) - recommended values.<br/>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>lhp_none</default_value>
+			<options>
+				<option><name>none</name><value>lhp_none</value></option>
+				<option><name>10min(!)</name><value>lhp_10m</value></option>
+				<option><name>20min(!)</name><value>lhp_20m</value></option>
+				<option><name>30min(*)</name><value>lhp_30m</value></option>
+				<option><name>40min(*)</name><value>lhp_40m</value></option>
+				<option><name>50min(+)</name><value>lhp_50m</value></option>
+				<option><name>60min(+)</name><value>lhp_60m</value></option>
+				<option><name>2h</name><value>lhp_2h</value></option>
+				<option><name>3h</name><value>lhp_3h</value></option>
+				<option><name>4h</name><value>lhp_4h</value></option>
+				<option><name>6h</name><value>lhp_6h</value></option>
+				<option><name>8h</name><value>lhp_8h</value></option>
+				<option><name>12h</name><value>lhp_12h</value></option>
+				<option><name>24h</name><value>lhp_24h</value></option>
+			</options>
+		</field>
+		<field>
+			<type>info</type>
+			<fielddescr>Manual Refresh</fielddescr>
+			<description>
+				<![CDATA[
+				<input type="submit" name="refreshnow" id="refreshnow" value="Refresh now" /> will (re)parse today's entries only in Squid's current access.log.<br/><br/>
+				<input type="submit" name="refreshfull" id="refreshfull" value="Refresh full" /> will (re)parse all entries in all Squid's access logs, including the rotated ones.
+				<strong>Note: This may take long time to finish!</strong><br/><br/>
+				Press a button above to start background refresh (this will take some time).<br/>
+				]]>
+			</description>
+		</field>
 	</fields>
-	<custom_php_resync_config_command>
-	  	lightsquid_resync();
-	</custom_php_resync_config_command>
 	<custom_php_install_command>
 		lightsquid_install();
-		lightsquid_resync();
 	</custom_php_install_command>
 	<custom_php_deinstall_command>
 		lightsquid_deinstall();
 	</custom_php_deinstall_command>
+	<custom_php_resync_config_command>
+	<![CDATA[
+		// Do not resync configuration on manual reports refresh
+		if ($_POST['refreshnow'] == "Refresh now" || $_POST['refreshfull'] == "Refresh full") {
+			return;
+		}
+	  	lightsquid_resync();
+	]]>
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		lightsquid_validate_input($_POST, $input_errors);
+	</custom_php_validation_command>
 </packagegui>

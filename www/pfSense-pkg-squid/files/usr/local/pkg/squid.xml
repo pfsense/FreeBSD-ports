@@ -128,7 +128,7 @@
 		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_antivirus.inc</item>
 	</additional_files_needed>
 	<additional_files_needed>
-		<prefix>/usr/local/www/widgets/include</prefix>
+		<prefix>/usr/local/www/widgets/include/</prefix>
 		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_antivirus_status.inc</item>
 	</additional_files_needed>
 	<additional_files_needed>
@@ -204,7 +204,7 @@
 	<!-- END XML files -->
 	<!-- START additional PHP files -->
 	<additional_files_needed>
-		<prefix>/usr/local/www/widgets/widgets</prefix>
+		<prefix>/usr/local/www/widgets/widgets/</prefix>
 		<item>https://packages.pfsense.org/packages/config/squid3/34/squid_antivirus_status.widget.php</item>
 	</additional_files_needed>
 	<additional_files_needed>

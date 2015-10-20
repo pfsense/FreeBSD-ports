@@ -502,8 +502,9 @@ function squid_install_command() {
 	// remove unwanted PBI rc script
 	unlink_if_exists("/usr/local/etc/rc.d/squid");
 
-	// remove broken cronjob possibly left over after 'Clear Cache on Log Rotate' misfeature
+	// remove broken cronjobs possibly left over after 'Clear Cache on Log Rotate' misfeature
 	install_cron_job("/usr/local/pkg/swapstate_check.php clean;", false);
+	install_cron_job("/bin/rm /var/squid/cache/swap.state;", false);
 
 }
 
@@ -516,12 +517,14 @@ function squid_deinstall_command() {
 	/* kill all running services */
 	update_output_window("Stopping and removing services...");
 	mwexec('/usr/local/etc/rc.d/sqp_monitor.sh stop');
-	mwexec("/bin/ps awux | /usr/bin/grep '[s]quid' | /usr/bin/awk '{ print $2 }' | /usr/bin/xargs kill");
+	mwexec("/bin/ps awux | /usr/bin/egrep -i '[s]quid -f|\([s]quid\)' | /usr/bin/awk '{ print $2 }' | /usr/bin/xargs kill");
+	mwexec("/bin/ps awux | /usr/bin/grep '[d]iskd' | /usr/bin/awk '{ print $2 }' | /usr/bin/xargs kill");
 	mwexec("/bin/ps awux | /usr/bin/grep '[d]nsserver' | /usr/bin/awk '{ print $2 }' | /usr/bin/xargs kill");
 	mwexec("/bin/ps awux | /usr/bin/grep '[u]nlinkd' | /usr/bin/awk '{ print $2 }' | /usr/bin/xargs kill");
 
 	/* delete rc scripts */
 	unlink_if_exists('/usr/local/etc/rc.d/sqp_monitor.sh');
+	unlink_if_exists('/usr/local/etc/rc.d/squid.sh');
 
 	/* clean up created directories if 'Keep Settings/Data' is disabled */
 	if (is_array($config['installedpackages']['squidcache'])) {
@@ -599,6 +602,9 @@ function squid_deinstall_command() {
 		}
 		if (is_array($config['installedpackages']['squidreverseredir'])) {
 			unset($config['installedpackages']['squidreverseredir']);
+		}
+		if (is_array($config['installedpackages']['squidreverseuri'])) {
+			unset($config['installedpackages']['squidreverseuri']);
 		}
 		if (is_array($config['installedpackages']['squidsync'])) {
 			unset($config['installedpackages']['squidsync']);
@@ -888,8 +894,8 @@ function squid_validate_nac($post, &$input_errors) {
 	$allowed_subnets = explode("\n", $post['allowed_subnets']);
 	foreach ($allowed_subnets as $subnet) {
 		$subnet = trim($subnet);
-		if (!empty($subnet) && !is_subnet($subnet)) {
-			$input_errors[] = "The subnet '$subnet' is not a valid CIDR range.";
+		if (!empty($subnet) && !is_subnet($subnet) && $subnet != "all") {
+			$input_errors[] = "'Allowed Subnets' must be a valid CIDR range or 'all'. The subnet '$subnet' is not valid.";
 		}
 	}
 
@@ -953,7 +959,7 @@ function squid_validate_traffic($post, &$input_errors) {
 
 	if (!empty($post['quick_abort_min'])) {
 		$value = trim($post['quick_abort_min']);
-		if ((!is_numericint($value)) && ($value !== -1)) {
+		if ((!is_numericint($value)) && ($value != "-1")) {
 			$input_errors[] = "'Finish when remaining KB' must contain a positive integer or '-1'.";
 		}
 	}
@@ -971,6 +977,14 @@ function squid_validate_traffic($post, &$input_errors) {
 			$input_errors[] = "'Finish when remaining %' must contain valid percentage (1-100).";
 		}
 	}
+
+	if ($post['throttle_specific'] == "on") {
+		$others = trim($post['throttle_others']);
+		if ($post['throttle_binaries'] == "" && $post['throttle_cdimages'] == "" && $post['throttle_multimedia'] == "" && $others == "") {
+			$input_errors[] = "'Throttle Only Specific Extensions' enabled but no extensions specified. Select some options under 'Squid Transfer Extension Settings' or disable this option.";
+		}
+	}
+
 }
 
 /* Proxy Server: Authentication input validation */
@@ -1065,12 +1079,21 @@ function squid_resync_general() {
 				// cert, key, version, cipher, options, clientca, cafile, capath, crlfile, dhparams, sslflags, sslcontext
 				$crt_pk = SQUID_CONFBASE . "/serverkey.pem";
 				$crt_capath = SQUID_LOCALBASE . "/share/certs/";
+				/* XXX: Bug #4453
+				 * http://wiki.squid-cache.org/ConfigExamples/Intercept/SslBumpExplicit#Modern_DH.2Fciphers_usage
+				 */
+				//$sslproxy_cipher = "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH+aRSA+RC4:EECDH:EDH+aRSA:!RC4:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS";
+				$sslproxy_cipher = "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH+aRSA+RC4:EECDH:EDH+aRSA:HIGH:!RC4:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS";
+				$sslproxy_dhparams = "/etc/dh-parameters.2048";
+				$sslproxy_options = "NO_SSLv2,NO_SSLv3,SINGLE_DH_USE";
 				file_put_contents($crt_pk, base64_decode($srv_cert['prv']) . base64_decode($srv_cert['crt']));
 				$sslcrtd_children = ($settings['sslcrtd_children'] ? $settings['sslcrtd_children'] : 5);
-				$ssl_interception .= "ssl-bump generate-host-certificates=on dynamic_cert_mem_cache_size=" . ($sslcrtd_children*2) . "MB cert={$crt_pk} capath={$crt_capath}\n";
+				$ssl_interception .= "ssl-bump generate-host-certificates=on dynamic_cert_mem_cache_size=" . ($sslcrtd_children*2) . "MB cert={$crt_pk} capath={$crt_capath} cipher={$sslproxy_cipher} dhparams={$sslproxy_dhparams} options={$sslproxy_options}\n";
 				$interception_checks = "sslcrtd_program " . SQUID_LOCALBASE . "/libexec/squid/ssl_crtd -s " . SQUID_SSL_DB . " -M 4MB -b 2048\n";
 				$interception_checks .= "sslcrtd_children {$sslcrtd_children}\n";
 				$interception_checks .= "sslproxy_capath {$crt_capath}\n";
+				$interception_checks .= "sslproxy_options {$sslproxy_options}\n";
+				$interception_checks .= "sslproxy_cipher {$sslproxy_cipher}\n";
 				if (preg_match("/sslproxy_cert_error/", $settings["interception_checks"])) {
 					$interception_checks .= "sslproxy_cert_error allow all\n";
 				}
@@ -1620,6 +1643,7 @@ EOD;
 		$conf .= "delay_access 1 allow throttle_exts\n";
 		$conf .= "delay_access 1 deny allsrc\n";
 	} else {
+		unlink_if_exists(SQUID_ACLDIR . '/throttle_exts.acl');
 		$conf .= "delay_access 1 allow allsrc\n";
 	}
 
@@ -1766,7 +1790,7 @@ function squid_resync_auth() {
 			$conf .= "http_access allow $acl\n";
 		}
 	} else {
-		$noauth = implode(' ', explode("\n", base64_decode($settings['no_auth_hosts'])));
+		$noauth = implode(' ', explode("\n", sq_text_area_decode($settings['no_auth_hosts'])));
 		if (!empty($noauth)) {
 			$conf .= "acl noauth src $noauth\n";
 			$valid_acls[] = 'noauth';

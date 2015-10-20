@@ -42,8 +42,8 @@
 	]]>
 	</copyright>
 	<name>squidtraffic</name>
-	<version>0.3.5</version>
-	<title>Proxy server: Traffic Management</title>
+	<version>0.4.1</version>
+	<title>Proxy Server: Traffic Management</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
 		<tab>
@@ -160,7 +160,6 @@
 			<description>Leave this checked to be able to choose the extensions that throttling will be applied to. Otherwise, all files will be throttled.</description>
 			<type>checkbox</type>
 			<enablefields>throttle_binaries,throttle_cdimages,throttle_multimedia,throttle_others</enablefields>
-			<default_value>on</default_value>
 		</field>
 		<field>
 			<fielddescr>Throttle Binary Files</fielddescr>

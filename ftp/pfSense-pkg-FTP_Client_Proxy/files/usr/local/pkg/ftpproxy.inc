@@ -125,6 +125,11 @@ function ftpproxy_generate_rules($type) {
 	global $config;
 	$cf = $config['installedpackages']['ftpclientproxy']['config'][0];
 	$interface_list = explode(",", $cf['localints']);
+	if ($cf['earlyrule']) {
+		$ruletype = "pfearly";
+	} else {
+		$ruletype = "filter";
+	}
 
 	/* Proxy is not enabled, therefore, no rules/anchors. */
 	if ($cf["proxy_enable"] != "on") {
@@ -164,7 +169,7 @@ function ftpproxy_generate_rules($type) {
 				$rules .= "rdr pass on {$interface} inet proto tcp from any to any port 21 -> 127.0.0.1 port " . ftpproxy_get_port() . "\n";
 			}
 			break;
-		case "filter":
+		case $ruletype:
 			$rules .= "anchor \"ftp-proxy/*\"\n";
 			// $rules = "pass out proto tcp from any to any port 21\n";
 			break;

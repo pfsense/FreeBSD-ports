@@ -82,8 +82,8 @@ function avahi_write_config() {
 	// Wide Area
 	$widearea = ($avahi_config['enable_wide_area']) ? "yes" : "no";
 	// Publishing Options
-	$publish = ($avahi_config['disable_publishing']) ? "no" : "yes";
-	$userpublish = ($avahi_config['disable_user_service_publishing']) ? "no" : "yes";
+	$publish = ($avahi_config['disable_publishing']) ? "yes" : "no";
+	$userpublish = ($avahi_config['disable_user_service_publishing']) ? "yes" : "no";
 	$addresspublish = ($avahi_config['publish_addresses']) ? "yes" : "no";
 	$cookie = ($avahi_config['add_service_cookie']) ? "yes" : "no";
 	$hinfopublish = ($avahi_config['publish_hinfo']) ? "yes" : "no";

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-FTP_Client_Proxy
-PORTVERSION=	0.2.2
+PORTVERSION=	0.3
 CATEGORIES=	ftp
 MASTER_SITES=	# empty
 DISTFILES=	# empty

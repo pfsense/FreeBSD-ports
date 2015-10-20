@@ -44,8 +44,8 @@ global $clamd_path, $cicap_cfg_path, $img;
 $clamd_path = SQUID_BASE . "/bin/clamd";
 $cicap_cfg_path = SQUID_LOCALBASE . "/bin/c-icap-config";
 $img = array();
-$img['up'] = "<img src ='data:image/gif;base64,R0lGODlhCwALAIABACPcMP///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAh+QQBCgABACwAAAAACwALAAACFYwNpwi50eKK9NA722Puyf15GjgaBQA7' title='Service running' alt='' />";
-$img['down'] = "<img src ='data:image/gif;base64,R0lGODlhCwALAIABANwjI////yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAh+QQBCgABACwAAAAACwALAAACFowDeYvKlsCD7sXZ5Iq89kpdFshoRwEAOw==' title='Service not running' alt='' />";
+$img['up'] = "<img src='data:image/gif;base64,R0lGODlhCwALAIABACPcMP///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAh+QQBCgABACwAAAAACwALAAACFYwNpwi50eKK9NA722Puyf15GjgaBQA7' title='Service running' alt='' />";
+$img['down'] = "<img src='data:image/gif;base64,R0lGODlhCwALAIABANwjI////yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAh+QQBCgABACwAAAAACwALAAACFowDeYvKlsCD7sXZ5Iq89kpdFshoRwEAOw==' title='Service not running' alt='' />";
 
 function squid_avdb_info($filename) {
 	$stl = "style='padding-top: 0px; padding-bottom: 0px; padding-left: 4px; padding-right: 4px; border-left: 1px solid #999999;'";
@@ -71,10 +71,10 @@ function squid_avdb_info($filename) {
 function squid_antivirus_bases_info() {
 	$db = '<table width="100%" border="0" cellspacing="0" cellpadding="1"><tbody>';
 	$db .= '<tr class="vncellt" ><td>Database</td><td>Date</td><td>Version</td><td>Builder</td></tr>';
-	$db .= squid_avdb_info("daily.cvd");
-	$db .= squid_avdb_info("bytecode.cvd");
-	$db .= squid_avdb_info("main.cvd");
-	$db .= squid_avdb_info("safebrowsing.cvd");
+	$avdbs = array("daily.cvd", "daily.cld", "bytecode.cvd", "bytecode.cld", "main.cvd", "main.cld", "safebrowsing.cvd", "safebrowsing.cld");
+	foreach ($avdbs as $avdb) {
+		$db .= squid_avdb_info($avdb);
+	}
 	$db .= '</tbody></table>';
 	return $db;
 }

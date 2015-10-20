@@ -1,5 +1,6 @@
 pkg/lightsquid.xml
 pkg/lightsquid.inc
+/etc/inc/priv/lightsquid.priv.inc
 www/sqstat/sqstat.class.php
 www/sqstat/sqstat.php
 www/sqstat/sqstat.css
@@ -43,3 +44,4 @@ share/lightsquid/tpl/novosea/user_month.html
 share/lightsquid/tpl/novosea/user_time.html
 share/lightsquid/tpl/novosea/whousesite.html
 %%DATADIR%%/info.xml
+@dir /etc/inc/priv

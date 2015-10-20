@@ -1,68 +1,73 @@
 /* "connections" table */
-TABLE.result{
-	border:1px solid #ccccdd;border-collapse:collapse;
+table.result {
+    border: 1px solid #ccccdd;
+    border-collapse: collapse;
 }
-TABLE.result TH{
-	font-family: Verdana;font-size:14px;
+table.result th {
+    font-family: Verdana;
+    font-size: 14px;
 }
-TABLE.result TD{
-	font-family: Verdana;font-size:11px;border:1px solid #c0c0c0;padding:2px;
+table.result td {
+    font-family: Verdana;
+    font-size: 11px;
+    border: 1px solid #c0c0c0;
+    padding: 2px;
 }
-TABLE.result TR.total TD{
-	background-color:#DCDAD5;
+table.result tr.total td {
+    background-color: #DCDAD5;
 }
-
-TABLE.result TH{
-	background-color:#ccccdd;
-	white-space: nowrap; padding: 0px 2px;
+table.result th {
+    background-color: #ccccdd;
+    white-space: nowrap;
+    padding: 0px 2px;
 }
-
-TABLE.result tr.odd td        {
-	background-color: #eef;
+table.result tr.odd td {
+    background-color: #eef;
 }
-TABLE.result tr.odd td#white  {
-	background-color: #fff;
+table.result tr.odd td#white {
+    background-color: #fff;
 }
-TABLE.result td#highlight     {
-	background-color: #e9e9e9;
+table.result td#highlight {
+    background-color: #e9e9e9;
 }
-
 
 /* top header */
-DIV.header{
-	border:3px solid #ccccdd;margin-bottom:10px;padding:3px;
-	font-family: Verdana;font-size:12pt;
+div.header {
+    border: 3px solid #ccccdd;
+    margin-bottom: 10px;
+    padding: 3px;
+    font-family: Verdana;
+    font-size: 12pt;
 }
-.copyleft,SELECT{
-	font-family: Verdana;font-size:10px;
+.copyleft, select {
+    font-family: Verdana;
+    font-size: 10px;
 }
-.copyleft A{
-	text-decoration:none
+.copyleft a {
+    text-decoration: none
 }
-.copyleft A:HOVER{
-	text-decoration:underline
+.copyleft a:hover {
+    text-decoration: underline
 }
-FORM{
-	margin:0;padding:0;
+form {
+    margin: 0;
+    padding: 0;
 }
-
-#dhtmltooltip{
-	position: absolute;
-	/* width: 350px; */
-	border: 2px solid black;
-	padding: 2px;
-	background-color: lightyellow;
-	visibility: hidden; 
-	z-index: 100;
-	font-family: Verdana; font-size: 10px;
+#dhtmltooltip {
+    position: absolute;
+    /* width: 350px; */
+    
+    border: 2px solid black;
+    padding: 2px;
+    background-color: lightyellow;
+    visibility: hidden;
+    z-index: 100;
+    font-family: Verdana;
+    font-size: 10px;
 }
-
-
-#dhtmlpointer{
-	position:absolute;
-	left: -300px;
-	z-index: 101;
-	visibility: hidden;
+#dhtmlpointer {
+    position: absolute;
+    left: -300px;
+    z-index: 101;
+    visibility: hidden;
 }
-
-

@@ -1,7 +1,9 @@
 <?php
 /*
 	lightsquid.inc
-	Copyright (C) 2006 Serg Dvorianceev
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2006-2012 Sergey Dvoriancev <dv_serg@mail.ru>
+	Copyright (C) 2015 ESF, LLC
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -25,7 +27,6 @@
 	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
 */
-
 require_once('globals.inc');
 require_once('config.inc');
 require_once('util.inc');
@@ -34,13 +35,14 @@ require_once('pkg-utils.inc');
 require_once('filter.inc');
 require_once('service-utils.inc');
 
-if (file_exists('squid.inc')) {
-  require_once('squid.inc');
+if (file_exists('/usr/local/pkg/squid.inc')) {
+	require_once('/usr/local/pkg/squid.inc');
+} else {
+	echo "No squid.inc found. You must have Squid/Squid3 package installed to use LightSquid.";
 }
-else update_log("File 'squid.inc' not found.");
 
 global $pfs_version;
-$pfs_version = substr(trim(file_get_contents("/etc/version")),0,3);
+$pfs_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
 switch ($pfs_version) {
 	case "2.1":
 		define('LIGHTSQUID_BASE', '/usr/pbi/lightsquid-' . php_uname("m"));
@@ -49,15 +51,9 @@ switch ($pfs_version) {
 		define('LIGHTSQUID_BASE', '/usr/pbi/lightsquid-' . php_uname("m") . '/local');
 		break;
 	default:
-		define('LIGHTSQUID_BASE','/usr/local');
+		define('LIGHTSQUID_BASE', '/usr/local');
 		break;
 }
-
-define ('CMD_PKGDELETE', 'pkg_delete lightsquid-1.7.1');
-
-// enable GUI debug
-define('LS_GUI_DEBUG', 'on');
-define('LS_LOG_FILE',  '/tmp/lightsquid_gui.log');
 
 // configuration settings !-- CHECK THIS --!
 define('LS_CONFIGPATH',			LIGHTSQUID_BASE . '/etc/lightsquid');
@@ -69,20 +65,15 @@ define('LS_LANGPATH',			LIGHTSQUID_BASE . '/share/lightsquid/lang');
 define('LS_REPORTPATH',			'/var/lightsquid/report');
 
 global $config;
-if (isset($config['installedpackages']['squid']['config'][0])) {
-	if (!empty($config['installedpackages']['squid']['config'][0]['log_dir']))
-		define('LS_SQUIDLOGPATH', $config['installedpackages']['squid']['config'][0]['log_dir']);
-	else
-		define('LS_SQUIDLOGPATH', '/var/squid/logs');
+if (is_array($config['installedpackages']['squid']['config'][0]) && $config['installedpackages']['squid']['config'][0]['log_dir'] != "") {
+	define('LS_SQUIDLOGPATH',	$config['installedpackages']['squid']['config'][0]['log_dir']);
+} else {
+	define('LS_SQUIDLOGPATH',	'/var/squid/logs');
 }
+		
 define('LS_SQUIDLOG',			'access.log');
 define('LS_IP2NAMEPATH',		LIGHTSQUID_BASE . '/libexec/lightsquid');
-
-define('CRONTAB_FILE',			'/var/cron/tabs/root');
 define('CRONTAB_LS_TEMPLATE',		'/usr/bin/perl ' . LIGHTSQUID_BASE . '/www/lightsquid/lightparser.pl');
-define('CRONTAB_LS_JOBKEY',		'/lightparser.pl');
-define('CRONTAB_SQUID_TEMPLATE',	'/usr/local/sbin/squid -k rotate > /dev/null');
-define('CRONTAB_SQUID_JOBKEY',		'/squid -k rotate');
 
 // default values
 define('LS_DEF_IP2NAME',		'dns');
@@ -106,43 +97,27 @@ define('LS_VAR_IP2NAME',		'ip2name');
 define('LS_VAR_TEMPLATE',		'templatename');
 define('LS_VAR_BARCOLOR',		'barcolor');
 
-// xml variables
+// XML GUI variables
 define('LS_XML_LANG',			'lightsquid_lang');
 define('LS_XML_SKIPURL',		'lightsquid_skipurl');
 define('LS_XML_IP2NAME',		'lightsquid_ip2name');
 define('LS_XML_TEMPLATE',		'lightsquid_template');
 define('LS_XML_BARCOLOR',		'lightsquid_barcolor');
 define('LS_XML_SHEDULERTIME',		'lightsquid_refreshsheduler_time');
-define('LS_XML_SQUID_SHEDULERTIME',	'lightsquid_squidrotatelog_sheduler_time');
+
+/*
+ * Package install/uninstall
+ */
 
 function lightsquid_install() {
-	global $pfs_version;
+	// create lightsquid reports directory
+	lightsquid_create_reportdir();
 
-	update_log("lightsquid_install: started");
+	// ugly PBI hacks
+	if (LIGHTSQUID_BASE != '/usr/local') {
+		// check and fix perl paths
+		lightsquid_fix_perl();
 
-	// create lightsquid report catalog
-	if (!file_exists(LS_REPORTPATH)) {
-		update_log("lightsquid_install: Create report dir " . LS_REPORTPATH);
-		mwexec("/bin/mkdir -p " . LS_REPORTPATH);
-	}
-
-	if ($pfs_version == "2.1" || $pfs_version == "2.2") {
-		# check perl
-		$perl_path = '/usr/bin/perl';
-
-		/* Clean up a bad perl link. */
-		ls_cleanup_bad_link($perl_path);
-
-		if (!file_exists("/usr/bin/perl")) {
-			if (is_executable('/usr/local/bin/perl')) {
-				symlink('/usr/local/bin/perl', '/usr/bin/perl');
-			} elseif (is_executable(LIGHTSQUID_BASE . '/bin/perl')) {
-				symlink(LIGHTSQUID_BASE . '/bin/perl', '/usr/bin/perl');
-			}
-		}
-		if (!is_dir('/usr/local/lib/perl5') && is_dir(LIGHTSQUID_BASE . '/lib/perl5')) {
-			symlink(LIGHTSQUID_BASE . '/lib/perl5', '/usr/local/lib/perl5');
-		}
 		if (!is_dir('/usr/local/etc/lightsquid') && is_dir(LS_CONFIGPATH)) {
 			symlink(LS_CONFIGPATH, '/usr/local/etc/lightsquid');
 		}
@@ -155,332 +130,358 @@ function lightsquid_install() {
 		}
 	}
 
+	// template symlinks
 	foreach (array('novopf', 'novosea') as $tpl) {
-		if (file_exists(LS_TEMPLATEPATH . '/' . $tpl))
+		if (is_dir(LS_TEMPLATEPATH . '/' . $tpl)) {
 			$_gc = exec('rm -rf ' . LS_TEMPLATEPATH . '/' . $tpl);
+		}
 		symlink('/usr/local/share/lightsquid/tpl/' . $tpl, LS_TEMPLATEPATH . '/' . $tpl);
 	}
-
-	update_log("lightsquid_install: stopped");
+	symlink("/usr/local/www/themes", "/usr/local/www/sqstat/themes");
 }
 
 function lightsquid_deinstall() {
-	update_log("lightsquid_deinstall: started");
-
-	// delete cron task's
-	ls_setup_cron("lightsquid_squid_rotate", "", "", false);
-	ls_setup_cron("lightsquid_parser", "", "", false);
-
-	update_log("lightsquid_deinstall: stopped");
+	// remove cronjobs
+	lightsquid_setup_cron(false);
+	// undo PBI hacks
+	lightsquid_unfix_perl();
+	if (is_dir("/usr/local/www/sqstat/")) {
+		mwexec("/bin/rm -rf /usr/local/www/sqstat/");
+	}
 }
 
+/*
+ * Ugly PBI hacks around perl paths; only needed for pfSense <2.3
+ */
+/* Create perl links on package install */
+function lightsquid_fix_perl() {
+	if (LIGHTSQUID_BASE != '/usr/local') {
+		/* Clean up a broken perl link first if needed. */
+		$perl_path = '/usr/bin/perl';
+		if (file_exists($perl_path) && is_link($perl_path)) {
+			$target = readlink($perl_path);
+			if (!file_exists($target) || !is_executable($target)) {
+				unlink($target);
+			}
+		}
+		/* Find usable perl and create perl symlink to $perl_path */
+		if (!file_exists($perl_path)) {
+			if (is_executable("/usr/local/bin/perl")) {
+				symlink("/usr/local/bin/perl", "{$perl_path}");
+			} elseif (is_executable(LIGHTSQUID_BASE . "/bin/perl")) {
+				symlink(LIGHTSQUID_BASE . "/bin/perl", "{$perl_path}");
+			}
+		}
+		if (!is_dir("/usr/local/lib/perl5") && is_dir(LIGHTSQUID_BASE . "/lib/perl5")) {
+			symlink(LIGHTSQUID_BASE . "/lib/perl5", "/usr/local/lib/perl5");
+		}
+	}
+}
+/* Remove perl links on package uninstall */
+function lightsquid_unfix_perl() {
+	if (LIGHTSQUID_BASE != '/usr/local') {
+		$perl_path = '/usr/bin/perl';
+		if (file_exists($perl_path) && is_link($perl_path)) {
+			$target = readlink($perl_path);
+			$ls_target = LIGHTSQUID_BASE . "/bin/perl";
+			if ($target === $ls_target) {
+				unlink($perl_path);
+			}
+		}
+		$perl_libpath = "/usr/local/lib/perl5";
+		if (is_dir($perl_libpath) && is_link($perl_libpath)) {
+			$target = readlink($perl_libpath);
+			$ls_target = LIGHTSQUID_BASE . "/lib/perl5";
+			if ($target === $ls_target) {
+				unlink($perl_libpath);
+			}
+		}
+	}
+}
+
+/*
+ * Package configuration routines
+ */
 function lightsquid_resync() {
 	global $config, $pfs_version;
-	$tm = '';
-	$tm_squid = '';
 
-	if ($pfs_version == "2.1" || $pfs_version == "2.2") {
-		# check perl
-		if (!file_exists("/usr/bin/perl"))
-			mwexec("ln -s /usr/local/bin/perl /usr/bin/perl");
+	// Ugly PBI hacks
+	if (LIGHTSQUID_BASE != '/usr/local') {
+		// check perl paths
+		if (!file_exists("/usr/bin/perl")) {
+			lightsquid_fix_perl();
+		}
 
 		// Fixup library path so GD can find its libraries for graphs.
 		mwexec("/sbin/ldconfig -m " . LIGHTSQUID_BASE . "/lib/");
 	}
 
-	// create lightsquid report catalog
-	if (!file_exists(LS_REPORTPATH)) {
-		update_log("lightsquid_install: Create report dir " . LS_REPORTPATH);
-		mwexec("mkdir -p " . LS_REPORTPATH);
-	}
-
+	lightsquid_create_reportdir();
 	mwexec("/bin/chmod -R u+w " . LIGHTSQUID_BASE . "/etc/lightsquid");
 
-	// debug
-	$light_test = array();
-	if (($_POST['Submit'] === 'Save') or !isset($_POST['Submit'])) {
-		$lsconf_var = array();
+	// Set up variables for configuration update
+	$lsconf_var = array();
+	$lsconf_var[LS_VAR_CFGPATH]	= "\"" . LS_CONFIGPATH . "\"";
+	$lsconf_var[LS_VAR_LOGPATH]	= "\"" . LS_SQUIDLOGPATH . "\"";
 
-		// variables for update
-		$lsconf_var[LS_VAR_CFGPATH]	= "\"" . LS_CONFIGPATH . "\"";
-		if (isset($config['installedpackages']['squid']['config'][0])) {
-			$lsconf_var[LS_VAR_LOGPATH]	= "\"" . LS_SQUIDLOGPATH . "\"";
+	$lsconf_var[LS_VAR_TPLPATH]	= "\"" . LS_TEMPLATEPATH . "\"";
+	$lsconf_var[LS_VAR_LANGPATH]	= "\"" . LS_LANGPATH . "\"";
+	$lsconf_var[LS_VAR_REPORTPATH]	= "\"" . LS_REPORTPATH . "\"";
+	$lsconf_var[LS_VAR_IP2NAMEPATH]	= "\"" . LS_IP2NAMEPATH . "\"";
+
+	$lsconf_var[LS_VAR_LANG]	= "\"" . LS_DEF_LANG . "\"";
+	$lsconf_var[LS_VAR_TEMPLATE]	= "\"" . LS_DEF_TEMPLATE . "\"";
+	$lsconf_var[LS_VAR_IP2NAME]	= "\"" . LS_DEF_IP2NAME . "\"";
+	$lsconf_var[LS_VAR_SKIPURL]	= "'" . LS_DEF_SKIPURL . "'";
+	$lsconf_var[LS_VAR_SQUIDLOGTYPE]= LS_DEF_SQUIDLOGTYPE;
+
+	// Update variables from package GUI config
+	if (is_array($config['installedpackages']['lightsquid']['config'][0])) {
+		$lightsquid_config = $config['installedpackages']['lightsquid']['config'][0];
+
+		if (isset($lightsquid_config[LS_XML_LANG]) and !empty($lightsquid_config[LS_XML_LANG])) {
+			$lsconf_var[LS_VAR_LANG] = "\"" . $lightsquid_config[LS_XML_LANG] . "\"";
 		}
-		$lsconf_var[LS_VAR_TPLPATH]	= "\"" . LS_TEMPLATEPATH . "\"";
-		$lsconf_var[LS_VAR_LANGPATH]	= "\"" . LS_LANGPATH . "\"";
-		$lsconf_var[LS_VAR_REPORTPATH]	= "\"" . LS_REPORTPATH . "\"";
-		$lsconf_var[LS_VAR_IP2NAMEPATH]	= "\"" . LS_IP2NAMEPATH . "\"";
 
-		$lsconf_var[LS_VAR_LANG]	= "\"" . LS_DEF_LANG . "\"";
-		$lsconf_var[LS_VAR_TEMPLATE]	= "\"" . LS_DEF_TEMPLATE . "\"";
-		$lsconf_var[LS_VAR_IP2NAME]	= "\"" . LS_DEF_IP2NAME . "\"";
-		$lsconf_var[LS_VAR_SKIPURL]	= "\"" . LS_DEF_SKIPURL . "\"";
-		$lsconf_var[LS_VAR_SQUIDLOGTYPE]= LS_DEF_SQUIDLOGTYPE;
+		if (isset($lightsquid_config[LS_XML_SKIPURL]) and !empty($lightsquid_config[LS_XML_SKIPURL])) {
+			$lsconf_var[LS_VAR_SKIPURL] = "'" . str_replace(".", "\\.", $lightsquid_config[LS_XML_SKIPURL]) . "'";
+		}
 
-		// update variables from package GUI config
-		if (isset($config['installedpackages']['lightsquid']['config'][0])) {
-			$cfg = $config['installedpackages']['lightsquid']['config'][0];
+		if (isset($lightsquid_config[LS_XML_IP2NAME]) and !empty($lightsquid_config[LS_XML_IP2NAME] )) {
+			$lsconf_var[LS_VAR_IP2NAME] = "\"" . $lightsquid_config[LS_XML_IP2NAME] . "\"";
+		}
 
-			$tm = $cfg[LS_XML_SHEDULERTIME];
-			$tm_squid = $cfg[LS_XML_SQUID_SHEDULERTIME];
-
-			if (isset($cfg[LS_XML_LANG]) and !empty($cfg[LS_XML_LANG]))
-				$lsconf_var[LS_VAR_LANG] = "\"" . $cfg[LS_XML_LANG] . "\";";
-
-			if (isset($cfg[LS_XML_SKIPURL]) and !empty($cfg[LS_XML_SKIPURL]))
-				$lsconf_var[LS_VAR_SKIPURL] = "\"" . $cfg[LS_XML_SKIPURL] . "\";";
-
-			if (isset($cfg[LS_XML_IP2NAME]) and !empty($cfg[LS_XML_IP2NAME] ))
-				$lsconf_var[LS_VAR_IP2NAME] = "\"" . $cfg[LS_XML_IP2NAME] . "\";";
-
-			if (isset($cfg[LS_XML_TEMPLATE]) and !empty($cfg[LS_XML_TEMPLATE])) {
-				$tpl_val = $cfg[LS_XML_TEMPLATE];
-				// check template path
-				if (!file_exists(LS_TEMPLATEPATH."/$tpl_val")) $tpl_val = 'base';
-				$lsconf_var[LS_VAR_TEMPLATE] = "\"" . $tpl_val . "\";";
+		if (isset($lightsquid_config[LS_XML_TEMPLATE]) and !empty($lightsquid_config[LS_XML_TEMPLATE])) {
+			$tpl_val = $lightsquid_config[LS_XML_TEMPLATE];
+			// check template path
+			if (!file_exists(LS_TEMPLATEPATH."/$tpl_val")) {
+				$tpl_val = 'base';
 			}
-
-			if (isset($cfg[LS_XML_BARCOLOR]) and !empty($cfg[LS_XML_BARCOLOR]))
-				$lsconf_var[LS_VAR_BARCOLOR] = "\"" . $cfg[LS_XML_BARCOLOR] . "\";";
+			$lsconf_var[LS_VAR_TEMPLATE] = "\"" . $tpl_val . "\"";
 		}
 
-		$lsconf = "";
-		$lsconf_file = LS_CONFIGPATH . "/" . LS_CONFIGFILE;
-		// open lightsquid config
-		if (file_exists($lsconf_file)) {
-			$lsconf = file_get_contents($lsconf_file);
-			update_log("Load config file $lsconf_file");
-		} else {
-			update_log("Error loading config file $lsconf_file");
-			// or open from 'lightsquid.cfg.dist'
-			$lsconf_dist_file = LS_CONFIGPATH . "/" . LS_CONFIGFILE_DIST;
-			if (file_exists($lsconf_dist_file)) {
-				$lsconf = file_get_contents($lsconf_dist_file);
-				update_log("Load config dist. file $lsconf_dist_file");
-			} else update_log("Error loading config dist. file $lsconf_dist_file");
+		if (isset($lightsquid_config[LS_XML_BARCOLOR]) and !empty($lightsquid_config[LS_XML_BARCOLOR])) {
+			$lsconf_var[LS_VAR_BARCOLOR] = "\"" . $lightsquid_config[LS_XML_BARCOLOR] . "\"";
 		}
+	}
 
-		// update lightsquid config
-		if (!empty($lsconf)) {
-			$lsconf = explode("\n", $lsconf);
-			foreach ($lsconf_var as $key => $val) {
-				for($i = 0; $i < count($lsconf); $i++) {
-					$s = trim($lsconf[$i]);
-					$e_key = "/^[$]" . $key . "[ ]*[=]+/i";
-#					update_log("Regular: preg_match(\"$e_key," . "'$s')"); // debug regular template
-					if (preg_match($e_key, $s)) {
-#					update_log("Regular PASSED: preg_match(\"$e_key," . "'$s')"); // debug regular template
-						$lsconf[$i] = '$' . "$key = $val;";
-						update_log("Update config: $key=$val");
-					}
+	// Create or update lightsquid.cfg
+	$lsconf = "";
+	$lsconf_file = LS_CONFIGPATH . "/" . LS_CONFIGFILE;
+	// Always use the lightsquid.cfg.dist template to avoid issues with GUI values reconfiguration
+	$lsconf_dist_file = LS_CONFIGPATH . "/" . LS_CONFIGFILE_DIST;
+	if (file_exists($lsconf_dist_file)) {
+		$lsconf = file_get_contents($lsconf_dist_file);
+		log_error("[lightsquid] Loaded default '{$lsconf_dist_file}' configuration file.");
+	} else {
+		log_error("[lightsquid] Error: Could not load default '{$lsconf_dist_file}' configuration file.");
+	}
+
+	// Update lightsquid.cfg
+	if (!empty($lsconf)) {
+		$lsconf = explode("\n", $lsconf);
+		foreach ($lsconf_var as $key => $val) {
+			for ($i = 0; $i < count($lsconf); $i++) {
+				$s = trim($lsconf[$i]);
+				$e_key = "/^[$]" . $key . "[ ]*[=]+/i";
+				if (preg_match($e_key, $s)) {
+					$lsconf[$i] = '$' . "$key = $val;";
 				}
 			}
-
-			$lsconf = implode("\n", $lsconf);
-			$fl = file_put_contents($lsconf_file, $lsconf);
-			update_log("Save config file $lsconf_file ($fl)");
 		}
 
-		// set shedule - refresh data job
-		if ($tm) {
-			$on = false;
-			$opt = array("*", "*", "*", "*", "*", "root", CRONTAB_LS_TEMPLATE . " today");
-			switch($tm) {
-				case 'lhp_none': $on = false; break;
-				case 'lhp_10m':  $on = true; $opt[0]= "*/10"; break;
-				case 'lhp_20m':  $on = true; $opt[0]= "*/20"; break;
-				case 'lhp_30m':  $on = true; $opt[0]= "*/30"; break;
-				case 'lhp_40m':  $on = true; $opt[0]= "*/40"; break;
-				case 'lhp_50m':  $on = true; $opt[0]= "*/50"; break;
-				case 'lhp_60m':  $on = true; $opt[0]= "*/60"; break;
-				case 'lhp_2h':   $on = true; $opt[0]= "0";  $opt[1]= "*/2";  break;
-				case 'lhp_3h':   $on = true; $opt[0]= "0";  $opt[1]= "*/3";  break;
-				case 'lhp_4h':   $on = true; $opt[0]= "0";  $opt[1]= "*/4";  break;
-				case 'lhp_6h':   $on = true; $opt[0]= "0";  $opt[1]= "*/6";  break;
-				case 'lhp_8h':   $on = true; $opt[0]= "0";  $opt[1]= "*/8";  break;
-				case 'lhp_12h':  $on = true; $opt[0]= "0";  $opt[1]= "*/12"; break;
-				case 'lhp_24h':  $on = true; $opt[0]= "45"; $opt[1]= "23";   break; # dayly at 23:45
-			}
-			ls_setup_cron("lightsquid_parser_today", $opt, CRONTAB_LS_JOBKEY, $on);
-	
-			# fix possible data lost with 00:00 script start - rescan yesterday
-			$opt = array("15", "0", "*", "*", "*", "root", CRONTAB_LS_TEMPLATE . " yesterday");
-			ls_setup_cron("lightsquid_parser_yesterday", $opt, CRONTAB_LS_JOBKEY, $on);
-	
-		}  else {
-			ls_setup_cron("lightsquid_parser_today", "", "", false);
-			ls_setup_cron("lightsquid_parser_yesterday", "", "", false);
+		$lsconf = implode("\n", $lsconf);
+		if (file_put_contents($lsconf_file, $lsconf)) {
+			log_error("[lightsquid] Successfully created '{$lsconf_file}' configuration file.");
+		} else {
+			log_error("[lightsquid] Error: Could not create '{$lsconf_file}' configuration file.");
 		}
-	
-		ls_setup_cron("lightsquid_squid_rotate", "", "", false);
-
-		// update squid conf
-		if (isset($config['installedpackages']['squid']['config'][0])) {
-			$squid_settings = $config['installedpackages']['squid']['config'][0];
-			$squid_settings['log_enabled'] = 'on';
-			if (empty($squid_settings['log_dir']))
-				$squid_settings['log_dir'] = LS_SQUIDLOGPATH;
-			
-			# sqstat
-                     $ifmgr = "127.0.0.1;";
-			$iface = ($squid_settings['active_interface'] ? $squid_settings['active_interface'] : 'lan');
-			$iface = explode(",", $iface);
-			foreach ($iface as $i => $if) {
-				$realif = ls_get_real_interface_address($if);
-                            if ($realif[0]) 
-					$ifmgr = $ifmgr . $realif[0] . ";";
-			}
-
-			/* Only save and resync if we're actually making any changes. */
-			if (strpos($config['installedpackages']['squidnac']['config'][0]['ext_cachemanager'], $ifmgr) === FALSE) {
-				$config['installedpackages']['squidnac']['config'][0]['ext_cachemanager'] = $ifmgr;
-				write_config();
-				if (function_exists('squid_resync'))
-					squid_resync();
-				else
-					update_log("Function 'squid_resync' not found.");
-			}
-		}
+	} else {
+		log_error("[lightsquid] Error: Could not create '{$lsconf_file}' configuration file.");
 	}
 
-	if ($_POST['Submit'] === 'Refresh now')  refresh_now();
-	if ($_POST['Submit'] === 'Refresh full') refresh_full();
+	// Set up scheduled reports updates
+	lightsquid_setup_cron(true);
 }
 
-// setup cron tasks
-// original source from '/etc/inc/pfsense-utils.inc' function 'tdr_install_cron'
-// this function safe for other tasks
-// *****************************************************************************
-// - $task_name: cron task name (for config identification) /for searching my cron tasks/
-// - $options:   array=[0:minute][1:hour][2:mday][3:month][4:wday][5:who][6:cmd]
-// - $task_key:  cron command key for searching
-// - $on_off:	true-'on task', false-'off' task
-// required: $task_nameand $on_off
-// *****************************************************************************
-define('FIELD_TASKNAME', 'task_name');
+/*
+ * Reports
+ */
 
-function ls_setup_cron($task_name, $options, $task_key, $on_off) {
+/* Configure scheduled reports updates via cron */
+function lightsquid_setup_cron($active=false) {
 	global $config;
-	update_log("ls_setup_cron: start task_name=$task_name, task_key=$task_key, on_off=$on_off");
-
-	// check input params
-	if(!$task_name) {
-		update_log("ls_setup_cron: exit - uncomplete input params.");
-		return;
+	if (is_array($config['installedpackages']['lightsquid']['config'][0])) {
+		$cron_schedule = $config['installedpackages']['lightsquid']['config'][0][LS_XML_SHEDULERTIME];
+	} else {
+		$cron_schedule = '';
 	}
+	$lightsquid_parser_today = CRONTAB_LS_TEMPLATE . " today";
+	$lightsquid_parser_yesterday = CRONTAB_LS_TEMPLATE . " yesterday";
 
-	// delete old task(s)
-	if (is_array($config['cron']['item'])) {
-		foreach ($config['cron']['item'] as $key => $item) {
-		# unset crontask by name
-		if (!empty($task_name) && ($item[FIELD_TASKNAME] == $task_name)) {
-			unset($config['cron']['item'][$key]);
-		} else
-		# unset crontask by cmd
-		if ($options[6] && (strpos($item['command'], $options[6]) !== false)) {
-			unset($config['cron']['item'][$key]);
+	if ($active && $cron_schedule) {
+		$on = false;
+		$opt = array("*", "*", "*", "*", "*", "root");
+		// remove old cronjobs first ...
+		log_error("[lightsquid] Removing old cronjobs...");
+		install_cron_job($lightsquid_parser_today, false);
+		install_cron_job($lightsquid_parser_yesterday, false);
+		// ... and configure updated cronjobs if needed
+		switch($cron_schedule) {
+			case 'lhp_none': $on = false; break;
+			case 'lhp_10m':  $on = true; $opt[0]= "*/10"; break;
+			case 'lhp_20m':  $on = true; $opt[0]= "*/20"; break;
+			case 'lhp_30m':  $on = true; $opt[0]= "*/30"; break;
+			case 'lhp_40m':  $on = true; $opt[0]= "*/40"; break;
+			case 'lhp_50m':  $on = true; $opt[0]= "*/50"; break;
+			case 'lhp_60m':  $on = true; $opt[0]= "*/60"; break;
+			case 'lhp_2h':   $on = true; $opt[0]= "0"; $opt[1]= "*/2";  break;
+			case 'lhp_3h':   $on = true; $opt[0]= "0"; $opt[1]= "*/3";  break;
+			case 'lhp_4h':   $on = true; $opt[0]= "0"; $opt[1]= "*/4";  break;
+			case 'lhp_6h':   $on = true; $opt[0]= "0"; $opt[1]= "*/6";  break;
+			case 'lhp_8h':   $on = true; $opt[0]= "0"; $opt[1]= "*/8";  break;
+			case 'lhp_12h':  $on = true; $opt[0]= "0"; $opt[1]= "*/12"; break;
+			case 'lhp_24h':  $on = true; $opt[0]= "45"; $opt[1]= "23";   break; // daily at 23:45
 		}
+		if ($on) {
+			log_error("[lightsquid] Updating cronjobs...");
+			install_cron_job($lightsquid_parser_today, $on, $opt[0], $opt[1], $opt[2], $opt[3], $opt[4], $opt[5]);
+			// fix possible data lost with 00:00 script start - rescan yesterday
+			install_cron_job($lightsquid_parser_yesterday, true, "15", "0", "*", "*", "*", "root");
 		}
-	}
-
-	# install cron task
-	if ($on_off) {
-		if ($task_key) {
-		if (is_array($options)) {
-			# add new
-			$cron_item = array();
-			$cron_item[FIELD_TASKNAME]	= $task_name;
-			$cron_item['minute']		= $options[0];
-			$cron_item['hour']		= $options[1];
-			$cron_item['mday']		= $options[2];
-			$cron_item['month']		= $options[3];
-			$cron_item['wday']		= $options[4];
-			$cron_item['who']		= $options[5];
-			$cron_item['command']		= $options[6];
-
-			# check options
-			if (!$cron_item['who']) $cron_item['who'] = "nobody";
-
-			$config['cron']['item'][] = $cron_item;
-			update_log("ls_setup_cron: add cron task '{$task_name}'='{$cron_item['command']}'");
-		}
-		} else
-		// log
-		update_log("ls_setup_cron: input prm 'task_key' not defined");
-	}
-
-	write_config("Installed cron task '$task_name' for 'lightsquid' package");
-	configure_cron();
-	update_log("ls_setup_cron: Apply new cron settings.");
-}
-
-function update_log($log) {
-	if (LS_GUI_DEBUG === 'on') {
-		$t_ls_log = '';
-		if (file_exists(LS_LOG_FILE))
-			$t_ls_log = file_get_contents(LS_LOG_FILE);
-		$t_ls_log .= "\n$log";
-		file_put_contents(LS_LOG_FILE, $t_ls_log);
+	} else {
+		log_error("[lightsquid] Removing all cronjobs...");
+		install_cron_job($lightsquid_parser_today, false);
+		install_cron_job($lightsquid_parser_yesterday, false);
 	}
 }
 
-function refresh_now() {
+/* Parse today's entires only in access.log via the GUI button */
+function lightsquid_refresh_now() {
 	$cmd = CRONTAB_LS_TEMPLATE . " today";
-	update_log("refresh_now: execute command '$cmd'");
-	// create lightsquid report catalog
-	if (!file_exists(LS_REPORTPATH)) {
-		update_log("lightsquid_install: Create report dir " . LS_REPORTPATH);
-		mwexec("mkdir -p " . LS_REPORTPATH);
+	$lg = LS_SQUIDLOG;
+	lightsquid_create_reportdir();
+
+	if (file_exists(LS_SQUIDLOGPATH . "/{$lg}")) {
+		log_error("[lightsquid] Parsing today's entries in access.log using '{$cmd}'");
+		mwexec_bg($cmd);
+	} else {
+		log_error("[lightsquid] Could not parse '{$lg}' - log does not exist!");
 	}
-	mwexec_bg($cmd);
 }
 
-function refresh_full() {
+/* Parse all entries in all access logs, including the rotated ones via the GUI button */
+function lightsquid_refresh_full() {
 	$cmd = CRONTAB_LS_TEMPLATE;
-	$log_name = LS_SQUIDLOG;
-	update_log("refresh_full: start");
+	lightsquid_create_reportdir();
 
-	// create lightsquid report catalog
-	if (!file_exists(LS_REPORTPATH)) {
-		update_log("lightsquid_install: Create report dir " . LS_REPORTPATH);
-		mwexec("mkdir -p " . LS_REPORTPATH);
-	}
-
+	log_error("[lightsquid] Parsing all access log(s) entries using '{$cmd}'...");
 	// parse access.log
-	update_log("refresh_full: execute command '$cmd'");
-	mwexec_bg("$cmd $log_name");
-	// parse access.log.x
-	if (isset($config['installedpackages']['squid']['config'][0])) {
-		for ($i=0; $i<100; $i++) {
-			$lg = LS_SQUIDLOG . ".$i";
-			if (file_exists(LS_SQUIDLOGPATH . "/$lg")) {
-				update_log("refresh_full: execute command '$cmd $lg'");
-				mwexec_bg("$cmd $lg");
-			} else
-				// really go <= 10 cycles
-				break;
+	$lg = LS_SQUIDLOG;
+	if (file_exists(LS_SQUIDLOGPATH . "/{$lg}")) {
+		log_error("[lightsquid] Parsing log entries in '{$lg}'...");
+		mwexec_bg("{$cmd} {$lg}");
+	} else {
+		log_error("[lightsquid] Could not parse '{$lg}' - log does not exist!");
+	}
+	// parse access.log.x; if user configured some insane amount of rotated logs, only parse the first 100 of them
+	for ($i = 0; $i < 100; $i++) {
+		$lg = LS_SQUIDLOG . ".{$i}";
+		if (file_exists(LS_SQUIDLOGPATH . "/{$lg}")) {
+			log_error("[lightsquid] Parsing log entries in '{$lg}'...");
+			mwexec_bg("{$cmd} {$lg}");
+		} else {
+			break;
 		}
 	}
-	update_log("refresh_full: stop");
 }
 
-function ls_get_real_interface_address($iface)
-{
+/* Helper function to create lightsquid reports directory if needed */
+function lightsquid_create_reportdir() {
+	if (!is_dir(LS_REPORTPATH)) {
+		log_error("[lightsquid] Creating report dir " . LS_REPORTPATH);
+		safe_mkdir(LS_REPORTPATH);
+	}
+}
+
+
+/*
+ * Input validation
+ * Check required Squid configuration and provide instructions to users,
+ * instead of trying to mess with Squid's settings directly.
+ */
+function lightsquid_validate_input($post, &$input_errors) {
 	global $config;
+	/* Manual reports refresh; only allow to run if the configuration file exists already! */
+	if ($post['refreshnow'] == 'Refresh now' || $post['refreshfull'] == 'Refresh full') {
+		$lsconf_file = LS_CONFIGPATH . "/" . LS_CONFIGFILE;
+		if (file_exists($lsconf_file)) {
+			if ($post['refreshnow'] == 'Refresh now') {
+				lightsquid_refresh_now();
+				return;
+			} elseif ($post['refreshfull'] == 'Refresh full') {
+				lightsquid_refresh_full();
+				return;
+			}
+		} else {
+			$input_errors[] = "Please, configure LightSquid package first and Save settings before trying to manually refresh reports.";
+		}
+	}
 
-	$iface = convert_friendly_interface_to_real_interface_name($iface);
-	$line = trim(shell_exec("ifconfig $iface | grep inet | grep -v inet6"));
-	list($dummy, $ip, $dummy2, $netmask) = explode(" ", $line);
+	/* Check whether Squid is configured at all */
+	if (is_array($config['installedpackages']['squid']['config'][0])) {
+		$squid_settings = $config['installedpackages']['squid']['config'][0];
+	} else {
+		$input_errors[] = "Please, configure Squid package 'General' settings first.";
+		$squid_settings = array();
+	}
 
-	return array($ip, long2ip(hexdec($netmask)));
-}
+	/* Check whether logging is enabled in Squid */
+	if ($squid_settings['log_enabled'] != "on") {
+		$input_errors[] = "Please, enable Access Logging in Squid package 'General' settings first.";
+	}
 
-/* If a path is a symlink but the target is missing, remove the link. */
-function ls_cleanup_bad_link($link) {
-	if (file_exists($link) && is_link($link)) {
-		$target = readlink($link);
-		if (!file_exists($target) || !is_executable($target)) {
-			unlink($link);
+	/* Check whether log directory is configured in Squid */
+	if ($squid_settings['log_dir'] == "") {
+		$input_errors[] = "Please, configure Log Store Directory in Squid package 'General' settings first.";
+	}
+
+	/* SqStat - check external cache managers
+	 * This check is only needed for Squid 2.7 packages, any Squid 3.x package allows localhost as cache manager by default
+	 */
+	$ifmgr = "127.0.0.1";
+	if (get_pkg_id("squid") !== -1) {
+		if (is_array($config['installedpackages']['squidnac']['config'])) {
+			$ext_cachemanager = ($config['installedpackages']['squidnac']['config'][0]['ext_cachemanager'] ?: "");
+		} else {
+			$ext_cachemanager = "";
+		}
+		if (strpos($ext_cachemanager, $ifmgr) === false) {
+			$input_errors[] = "Please, add '{$ifmgr}' to Squid - Access Control - External Cache-Managers first.";
+		}
+	}
+	/* SqStat - check that Squid listens on loopback unless the proxy is set as transparent (which makes it listen on localhost automatically) */
+	if (is_array($config['installedpackages']['squid']['config'])) {
+		$active_interfaces = ($config['installedpackages']['squid']['config'][0]['active_interface'] ?: "");
+		$transparent = ($config['installedpackages']['squid']['config'][0]['transparent_proxy'] == "on" ? true : false);
+	} else {
+		$active_interfaces = "";
+		$transparent = false;
+	}
+	if (!$transparent) {
+		if (strpos($active_interfaces, "lo0") === false) {
+			$input_errors[] = "Please, configure Squid - General - Proxy Interface(s) to include 'loopback' interface.";
+		}
+	}
+	
+	/* 'Skip URL(s)' validation */
+	if ($post['lightsquid_skipurl'] != "") {
+		$hosts = explode("|", $post['lightsquid_skipurl']);
+		foreach ($hosts as $host) {
+			$host = trim($host);
+			if (!is_ipaddr($host) && !is_hostname($host) && !is_domain($host)) {
+				$input_errors[] = "'Skip URL(s)' entry '{$host}' is not a valid IP address, hostname, domain or subnet.";
+			}
 		}
 	}
 }

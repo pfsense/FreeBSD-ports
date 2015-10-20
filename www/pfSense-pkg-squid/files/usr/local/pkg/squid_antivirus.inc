@@ -41,11 +41,20 @@ function squid_check_clamav_user() {
 	if (SQUID_BASE == '/usr/local') {
 		return;
 	} else {
-		if (!exec("/usr/sbin/pw usershow clamav")) {
-			mwexec("/usr/sbin/pw useradd clamav -G wheel -u 9595 -s /sbin/nologin");
-		}
-		if (!exec("/usr/sbin/pw groupshow wheel | /usr/bin/grep clamav")) {
-			mwexec("/usr/sbin/pw usermod clamav -G wheel");
+		/*
+		 * Check whether clamav user already exists and is a member of wheel group.
+		 * If the account already exists, modify the UID to 9595, otherwise things blow up because the PBI clusterfuck adds the account with UID=106.
+		 * If the account does not exist yes because PBI screwed things once again, create it with the proper UID.
+		 * If clamav user is not a member of wheel group, add it there as well and avoid re-adding it to wheel everytime this code runs.
+		 * Note that the clamav group (GID=106) added by PBI is irrelevant because it's not used for anything.
+		 */
+		$_gc = exec("/usr/sbin/pw groupshow wheel | /usr/bin/grep clamav", $group_ex_output, $group_ex_return);
+		$group_arg = ($group_ex_return != 0 ? "-G wheel" : "");
+		$_gc = exec("/usr/sbin/pw usershow clamav", $user_ex_output, $user_ex_return);
+		$user_arg = ($user_ex_return == 0 ? "mod" : "add");
+		$_gc = exec("/usr/sbin/pw user{$user_arg} clamav {$group_arg} -u 9595 -s /sbin/nologin", $user_ex_output, $user_ex_return);
+		if ($user_ex_return != 0) {
+			log_error("[squid] Could not change clamav user settings. " . serialize($user_ex_output));
 		}
 	}
 }
@@ -55,14 +64,22 @@ function squid_check_antivirus_dirs() {
 	$dirs = array(
 		"/var/run/c-icap" => "clamav",
 		"/var/log/c-icap" => "clamav",
+
+	);
+	foreach ($dirs as $dir_path => $dir_user) {
+		safe_mkdir($dir_path, 0755);
+		chown($dir_path, $dir_user);
+		chgrp($dir_path, "wheel");
+	}
+	/* These ClamAV dirs MUST be chown-ed recursively, see the notes on PBI idiocy in squid_check_clamav_user() */
+	$dirs = array(
 		"/var/log/clamav" => "clamav",
 		"/var/run/clamav" => "clamav",
 		"/var/db/clamav" => "clamav"
 	);
 	foreach ($dirs as $dir_path => $dir_user) {
 		safe_mkdir($dir_path, 0755);
-		chown($dir_path, $dir_user);
-		chgrp($dir_path, "wheel");
+		squid_chown_recursive($dir_path, $dir_user, "wheel");
 	}
 }
 
@@ -98,7 +115,7 @@ function squid_install_freshclam_cron($should_install) {
 /* Manually update ClamAV virus definitions via the GUI button */
 function squid_update_clamav() {
 	squid_check_antivirus_dirs();
-	log_error("[squid] Updating ClamAV definitions now... This will take a while. Check /var/log/clamav/freshclam.log for progress information.");
+	log_error("[squid] Updating ClamAV definitions now... This will take a while. Check freshclam log on the 'Real Time' tab for progress information.");
 	mwexec_bg(SQUID_BASE . "/bin/freshclam --config-file=" . SQUID_BASE . "/etc/freshclam.conf");
 }
 
@@ -147,20 +164,9 @@ function squid_antivirus_install_command() {
 /* Run on Squid package uninstall */
 function squid_antivirus_deinstall_command() {
 	global $config, $keep;
-	/* kill all running services */
-	if (is_process_running("c-icap")) {
-		mwexec('/bin/echo -n "stop" > /var/run/c-icap/c-icap.ctl');
-	}
-	mwexec("/bin/ps awux | /usr/bin/grep '[c]lamd' | /usr/bin/awk '{ print $2 }' | /usr/bin/xargs kill");
+	/* Stop all running services, remove rc scripts and cronjobs */
+	squid_stop_antivirus();
 	mwexec("/bin/ps awux | /usr/bin/grep '[f]reshclam' | /usr/bin/awk '{ print $2 }' | /usr/bin/xargs kill");
-
-	/* remove cronjobs */
-	squid_install_freshclam_cron(false);
-
-	/* delete rc scripts */
-	unlink_if_exists('/usr/local/etc/rc.d/squid.sh');
-	unlink_if_exists("/usr/local/etc/rc.d/c-icap.sh");
-	unlink_if_exists('/usr/local/etc/rc.d/clamd.sh');
 
 	/* clean up created PBI symlinks */
 	update_output_window("Finishing package cleanup.");
@@ -656,11 +662,11 @@ function squid_antivirus_put_raw_config($rawfiles) {
 					break;
 				case 'raw_freshclam_conf':
 					$confdir = "";
-					$conffile = "freshclam.conf";
+					$conffile = "/freshclam.conf";
 					break;
 				case 'raw_clamd_conf':
 					$confdir = "";
-					$conffile = "clamd.conf";
+					$conffile = "/clamd.conf";
 					break;
 				default:
 					$confdir = "";
@@ -677,10 +683,11 @@ function squid_antivirus_put_raw_config($rawfiles) {
 /* Helper function for squid_antivirus_put_raw_config() */
 function squid_antivirus_write_conffile($dir, $file, $text) {
 	if ($file && $text) {
-		if (!file_put_contents(SQUID_LOCALBASE . "/etc" . "{$dir}" . "/{$file}", preg_replace("/\r\n/", "\n", base64_decode($text)), LOCK_EX)) {
-			log_error("[squid] Could not save '{$file}' configuration file.");
+		$cfgfile = SQUID_LOCALBASE . "/etc" . "{$dir}" . "{$file}";
+		if (!file_put_contents("{$cfgfile}", preg_replace("/\r\n/", "\n", base64_decode($text)), LOCK_EX)) {
+			log_error("[squid] Could not save '{$cfgfile}' configuration file.");
 		} else {
-			log_error("[squid] Saved '{$file}' configuration file.");
+			log_error("[squid] Saved '{$cfgfile}' configuration file.");
 		}
 	}
 }
@@ -697,7 +704,7 @@ function squid_write_clamd_rcfile() {
 	$rc['start'] = <<< EOD
 
 if [ ! -f /var/db/clamav/main.cvd -a ! -f /var/db/clamav/main.cld ]; then
-	echo "Missing /var/db/clamav/*.cvd or *.cld files. You must run freshclam first"
+	echo "Missing /var/db/clamav/*.cvd or *.cld files. You must run freshclam first!"
         exit 1
 fi
 
@@ -717,6 +724,7 @@ fi
 EOD;
 
 	conf_mount_rw();
+	log_error("[squid] Creating 'clamd.sh' rc script.");
 	write_rcfile($rc);
 	conf_mount_ro();
 }
@@ -730,6 +738,7 @@ function squid_write_cicap_rcfile() {
 	$cicap_start_cmd = "LD_LIBRARY_PATH={$cicap_libdir} {$cicap_bin} -f {$cicap_conf}";
 	$cicap_stop_cmd = '/bin/echo -n "stop" > /var/run/c-icap/c-icap.ctl';
 	conf_mount_rw();
+	log_error("[squid] Creating '{$c_icap_rcfile}' rc script.");
 	write_rcfile(array(
 		"file" => "{$c_icap_rcfile}",
 		"start" => "{$cicap_start_cmd}",
@@ -739,7 +748,7 @@ function squid_write_cicap_rcfile() {
 	conf_mount_ro();
 }
 
-/* (Re)start antivirus services if AV features are enabled; otherwise stop and disable them */
+/* (Re)start antivirus services if AV features are enabled */
 function squid_restart_antivirus() {
 	global $config;
 	if (is_array($config['installedpackages']['squidantivirus'])) {
@@ -751,6 +760,7 @@ function squid_restart_antivirus() {
 	// reconfigure and (re)start service as needed if enabled, otherwise stop them
 	// do not (re)start antivirus services on boot
 	if (platform_booting()) {
+		log_error("[squid] Skipping antivirus services (re)start on boot.");
 		return;
 	}
 
@@ -758,7 +768,7 @@ function squid_restart_antivirus() {
 		// Check clamav database
 		if (count(glob("/var/db/clamav/*d")) == 0) {
 			log_error("[squid] Missing /var/db/clamav/*.cvd or *.cld files. Running freshclam in background.");
-			log_error("[squid] Do NOT attempt to start ClamAV service until AV definitions are downloaded. Check /var/log/clamav/freshclam.log for progress information.");
+			log_error("[squid] Do NOT attempt to start ClamAV service until AV definitions are downloaded.");
 			squid_update_clamav();
 		} elseif ($antivirus_config['clamav_safebrowsing'] == "on" && !is_file("/var/db/clamav/safebrowsing.cvd")) {
 			log_error("[squid] Google Safe Browsing is enabled but missing safebrowsing.cvd definitions. Running freshclam in background.");
@@ -789,30 +799,54 @@ function squid_restart_antivirus() {
 			squid_write_cicap_rcfile();
 		}
 		if (is_process_running("c-icap")) {
+			log_error("[squid] Reloading C-ICAP...");
 			mwexec_bg('/bin/echo -n "reconfigure" > /var/run/c-icap/c-icap.ctl');
 		} else {
+			log_error("[squid] Starting C-ICAP...");
 			mwexec_bg("{$c_icap_rcfile} start");
 		}
 	} else {
 		// stop AV services and disable all C-ICAP/AV features
 		log_error("[squid] Antivirus features disabled.");
-		if (is_process_running("clamd")) {
-			log_error("[squid] Stopping and disabling ClamAV...");
-			mwexec("/usr/bin/killall clamd");
-		}
-		unlink_if_exists("/usr/local/etc/rc.d/clamd.sh");
-
-		// freshclam cronjob
-		squid_install_freshclam_cron(false);
-
-		// check c-icap rcfile
-		if (is_process_running("c-icap")) {
-			log_error("[squid] Stopping and disabling C-ICAP...");
-			mwexec('/bin/echo -n "stop" > /var/run/c-icap/c-icap.ctl');
-		}
-		unlink_if_exists("/usr/local/etc/rc.d/c-icap.sh");
+		squid_stop_antivirus();
 	}
 }
+
+/* Stop AV services and disable all C-ICAP/AV features */
+function squid_stop_antivirus() {
+	// Stop C-ICAP
+	if (is_process_running("c-icap")) {
+		log_error("[squid] Stopping and disabling C-ICAP...");
+		mwexec('/bin/echo -n "stop" > /var/run/c-icap/c-icap.ctl');
+		sleep(5);
+		if (is_process_running("c-icap")) {
+			log_error("[squid] C-ICAP still running, forcibly killing c-icap process(es).");
+			mwexec("/bin/ps awux | /usr/bin/grep '[c]-icap' | /usr/bin/awk '{ print $2 }' | /usr/bin/xargs kill -9");
+		}
+	}
+	unlink_if_exists("/usr/local/etc/rc.d/c-icap.sh");
+
+	// Stop ClamAV
+	if (is_process_running("clamd")) {
+		log_error("[squid] Stopping and disabling ClamAV...");
+		mwexec("/usr/bin/killall clamd");
+		// sleep for a couple of seconds to give clamd a chance to perform clean exit
+		for ($i = 0; $i < 10; $i++) {
+			if (is_process_running('clamd')) {
+				sleep(1);
+			}
+		}
+	}
+	if (is_process_running("clamd")) {
+		log_error("[squid] ClamAV still running, forcibly killing clamd process(es).");
+		mwexec("/usr/bin/killall -9 clamd");
+	}
+	unlink_if_exists("/usr/local/etc/rc.d/clamd.sh");
+
+	// Remove freshclam cronjob
+	squid_install_freshclam_cron(false);
+}
+
 
 /*
  * Input validation

@@ -49,9 +49,6 @@ if ($_POST) {
 				// Split line by space delimiter
 				$logline = preg_split("/\s+/", $logent);
 
-				// Apply date format to first line
-				//$logline[0] = date("d.m.Y H:i:s",$logline[0]);
-
 				// Word wrap the URL
 				$logline[7] = htmlentities($logline[7]);
 				$logline[7] = html_autowrap($logline[7]);
@@ -62,7 +59,7 @@ if ($_POST) {
 				// Apply filter and color
 				// Need validate special chars
 				if ($filter != "") {
-					$logline = preg_replace("@($filter)@i","<spam><font color='red'>$1</font></span>", $logline);
+					$logline = preg_replace("@($filter)@i","<span><font color='red'>$1</font></span>", $logline);
 				}
 
 				echo "<tr valign=\"top\">\n";
@@ -72,6 +69,30 @@ if ($_POST) {
 				echo "<td class=\"listr\" width=\"*\">{$logline[7]}</td>\n";
 				echo "<td class=\"listr\">{$logline[8]}</td>\n";
 				echo "<td class=\"listr\">{$logline_dest[1]}</td>\n";
+				echo "</tr>\n";
+			}
+			break;
+		case 'squid_cache';
+			// Define log file
+			$log = '/var/squid/logs/cache.log';
+			// Show table headers
+			show_tds(array("Date-Time", "Message"));
+			// Fetch lines
+			$logarr = fetch_log($log);
+			foreach ($logarr as $logent) {
+				// Split line by delimiter
+				$logline = preg_split("@\|@", $logent);
+
+				// Replace some build host nonsense and apply time format
+				$logline[0] = date("d.m.Y H:i:s", strtotime(str_replace("kid1", "", $logline[0])));
+
+				// Word wrap the message
+				$logline[1] = htmlentities($logline[1]);
+				$logline[1] = html_autowrap($logline[1]);
+
+				echo "<tr>\n";
+				echo "<td class=\"listlr\" nowrap=\"nowrap\">{$logline[0]}</td>\n";
+				echo "<td class=\"listr\" nowrap=\"nowrap\">{$logline[1]}</td>\n";
 				echo "</tr>\n";
 			}
 			break;
@@ -107,7 +128,7 @@ if ($_POST) {
 				echo "</tr>\n";
 			}
 			break;
-		case 'clamav';
+		case 'cicap_virus';
 			// Define log file
 			$log = '/var/log/c-icap/virus.log';
 			// Show table headers
@@ -115,7 +136,7 @@ if ($_POST) {
 			// Fetch lines
 			$logarr = fetch_log($log);
 			foreach ($logarr as $logent) {
-				// Split line by space delimiter
+				// Split line by delimiter
 				$logline = preg_split("/\|/", $logent);
 
 				// Apply time format
@@ -135,7 +156,91 @@ if ($_POST) {
 				echo "</tr>\n";
 			}
 			break;
-	}
+		case 'cicap_access';
+			// Define log file
+			$log = '/var/log/c-icap/access.log';
+			// Show table headers
+			show_tds(array("Date-Time", "Message"));
+			// Fetch lines
+			$logarr = fetch_log($log);
+			foreach ($logarr as $logent) {
+				// Split line by delimiter
+				$logline = preg_split("/,/", $logent);
+
+				// Apply time format
+				$logline[0] = date("d.m.Y H:i:s", strtotime($logline[0]));
+
+				// Word wrap the message
+				$logline[1] = htmlentities($logline[1]);
+				$logline[1] = html_autowrap($logline[1]);
+
+				echo "<tr>\n";
+				echo "<td class=\"listlr\" nowrap=\"nowrap\">{$logline[0]}</td>\n";
+				echo "<td class=\"listr\" nowrap=\"nowrap\">{$logline[1]}</td>\n";
+				echo "</tr>\n";
+			}
+			break;
+		case 'cicap_server';
+			// Define log file
+			$log = '/var/log/c-icap/server.log';
+			// Show table headers
+			show_tds(array("Date-Time", "Message"));
+			// Fetch lines
+			$logarr = fetch_log($log);
+			foreach ($logarr as $logent) {
+				// Split line by delimiter
+				$logline = preg_split("/,/", $logent);
+
+				// Apply time format
+				$logline[0] = date("d.m.Y H:i:s", strtotime($logline[0]));
+
+				// Word wrap the message
+				$logline[2] = htmlentities($logline[2]);
+				$logline[2] = html_autowrap($logline[2]);
+
+				echo "<tr>\n";
+				echo "<td class=\"listlr\" nowrap=\"nowrap\">{$logline[0]}</td>\n";
+				echo "<td class=\"listr\" nowrap=\"nowrap\">{$logline[2]}</td>\n";
+				echo "</tr>\n";
+			}
+			break;
+		case 'freshclam';
+			// Define log file
+			$log = '/var/log/clamav/freshclam.log';
+			// Show table headers
+			show_tds(array("Message"));
+			// Fetch lines
+			$logarr = fetch_log($log);
+			foreach ($logarr as $logent) {
+				$logline = preg_split("/\n/", $logent);
+				// Word wrap the message
+				$logline[0] = htmlentities($logline[0]);
+				$logline[0] = html_autowrap($logline[0]);
+
+				echo "<tr>\n";
+				echo "<td class=\"listlr\" nowrap=\"nowrap\">{$logline[0]}</td>\n";
+				echo "</tr>\n";
+			}
+			break;
+		case 'clamd';
+			// Define log file
+			$log = '/var/log/clamav/clamd.log';
+			// Show table headers
+			show_tds(array("Message"));
+			// Fetch lines
+			$logarr = fetch_log($log);
+			foreach ($logarr as $logent) {
+				$logline = preg_split("/\n/", $logent);
+				// Word wrap the message
+				$logline[0] = htmlentities($logline[0]);
+				$logline[0] = html_autowrap($logline[0]);
+
+				echo "<tr>\n";
+				echo "<td class=\"listlr\" nowrap=\"nowrap\">{$logline[0]}</td>\n";
+				echo "</tr>\n";
+			}
+			break;
+		}
 }
 
 /* Functions */
