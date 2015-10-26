@@ -12,6 +12,8 @@ COMMENT=	Open Source IKEv2 IPsec-based VPN solution
 
 LICENSE=	GPLv2
 
+LIB_DEPENDS=	libvstr.so:${PORTSDIR}/devel/vstr
+
 USES=		cpe execinfo libtool:keepla pkgconfig tar:bzip2
 USE_OPENSSL=	yes
 USE_RC_SUBR=	strongswan
