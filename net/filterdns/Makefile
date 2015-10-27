@@ -6,7 +6,7 @@ MASTER_SITES=	# empty
 DISTFILES=	# none
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	eri@pfsense.org
+MAINTAINER=	luiz@netgate.com
 COMMENT=	filterdns
 
 WHERE=		sbin
