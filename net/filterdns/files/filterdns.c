@@ -478,16 +478,17 @@ ipfw_tableentry(struct thread_data *ipfwd, struct sockaddr *address, int action)
 			continue;
 		}
 		bzero(&entry, sizeof(entry));
-		entry.xent.masklen = ipfwd->mask;
 		entry.xent.tbl = ipfwd->tablenr;
 		entry.xent.value = ipfwd->pipe; /* XXX */
 		entry.xent.type = IPFW_TABLE_CIDR;
 		if (address->sa_family == AF_INET) {
 			memcpy(&entry.xent.k.addr6, &satosin(address)->sin_addr, sizeof(struct in_addr));
 			entry.xent.flags = IPFW_TCF_INET;
-			addrlen = sizeof(struct in_addr);;
+			entry.xent.masklen = ipfwd->mask;
+			addrlen = sizeof(struct in_addr);
 		} else if (address->sa_family == AF_INET6) {
 			memcpy(&entry.xent.k.addr6, &satosin6(address)->sin6_addr, sizeof(struct in6_addr));
+			entry.xent.masklen = ipfwd->mask6;
 			addrlen = sizeof(struct in6_addr);
 		}
 		entry.xent.len = offsetof(ipfw_table_xentry, k) + addrlen;
