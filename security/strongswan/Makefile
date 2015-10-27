@@ -20,7 +20,6 @@ USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 
 CONFIGURE_ARGS=	--enable-kernel-pfkey \
-		--with-printf-hooks=vstr \
 		--enable-kernel-pfroute  \
 		--disable-kernel-netlink  \
 		--disable-scripts  \
