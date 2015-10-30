@@ -169,6 +169,7 @@ static zend_function_entry pfSense_functions[] = {
    PHP_FE(pfSense_ipfw_Tableaction, NULL)
    PHP_FE(pfSense_pipe_action, NULL)
 #endif
+   PHP_FE(pfSense_ipsec_list_sa, NULL)
     {NULL, NULL, NULL}
 };
 
@@ -2619,4 +2620,93 @@ PHP_FUNCTION(pfSense_get_os_kern_data) {
 	len = sizeof(idata);
 	if (!sysctl(mib, 2, &idata, &len, NULL, 0))
 		add_assoc_long(return_value, "osreleasedate", idata);
+}
+
+static void build_ipsec_sa_array(void *salist, char *label, vici_res_t *res) {
+	char *name, *value;
+
+	/* message sections may be nested. maintain a stack as we traverse */
+	int done = 0, level = 0;
+	zval *nestedarrs[32];
+
+	nestedarrs[level] = (zval *) salist;
+
+	while (!done) {
+		name = value = NULL;
+		vici_parse_t pres;
+		pres = vici_parse(res);
+		switch (pres) {
+			case VICI_PARSE_BEGIN_SECTION:
+				name = vici_parse_name(res);
+				ALLOC_INIT_ZVAL(nestedarrs[level + 1]);
+				array_init(nestedarrs[level + 1]);
+				add_assoc_zval(nestedarrs[level], name, nestedarrs[level + 1]);
+				Z_ADDREF_P(nestedarrs[level + 1]);
+				level++;
+				break;
+			case VICI_PARSE_END_SECTION:
+				nestedarrs[level] = NULL;
+				level--;
+				break;
+			case VICI_PARSE_KEY_VALUE:
+				name = vici_parse_name(res);
+				value = vici_parse_value_str(res);
+				add_assoc_string(nestedarrs[level], name, value, 1);
+				break;
+			case VICI_PARSE_BEGIN_LIST:
+				name = vici_parse_name(res);
+				ALLOC_INIT_ZVAL(nestedarrs[level + 1]);
+				array_init(nestedarrs[level + 1]);
+				add_assoc_zval(nestedarrs[level], name, nestedarrs[level + 1]);
+				Z_ADDREF_P(nestedarrs[level + 1]);
+				level++;
+				break;
+			case VICI_PARSE_END_LIST:
+				nestedarrs[level] = NULL;
+				level--;
+				break;
+			case VICI_PARSE_LIST_ITEM:
+				value = vici_parse_value_str(res);
+				add_next_index_string(nestedarrs[level], value, 1);
+				break;
+			case VICI_PARSE_END:
+				done++;
+				break;
+			default:
+				php_printf("Parse error!\n");
+				done++;
+				break;
+		}
+	}
+
+	return;
+}
+
+PHP_FUNCTION(pfSense_ipsec_list_sa) {
+
+	vici_conn_t *conn;
+	vici_req_t *req;
+	vici_res_t *res;
+
+	array_init(return_value);
+
+	vici_init();
+	conn = vici_connect(NULL);
+	if (conn) {
+		if (vici_register(conn, "list-sa", build_ipsec_sa_array, (void *) return_value) != 0) {
+			php_printf("VICI registration failed: %s\n", strerror(errno));
+		} else {
+			req = vici_begin("list-sas");
+			res = vici_submit(req, conn);
+			if (res) {
+				vici_free_res(res);
+			}
+		}
+		vici_disconnect(conn);
+	} else {
+		php_printf("VICI connection failed: %s\n", strerror(errno));
+	}
+
+	vici_deinit();
+
 }

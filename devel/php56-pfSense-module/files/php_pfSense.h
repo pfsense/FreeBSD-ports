@@ -16,6 +16,8 @@ typedef char dns_tsec_t;
 #include "php_dummynet.h"
 #endif
 
+#include <libvici.h>
+
 ZEND_BEGIN_MODULE_GLOBALS(pfSense)
 	int s;
 	int inets;
@@ -88,6 +90,7 @@ PHP_FUNCTION(pfSense_ipfw_getTablestats);
 PHP_FUNCTION(pfSense_ipfw_Tableaction);
 PHP_FUNCTION(pfSense_pipe_action);
 #endif
+PHP_FUNCTION(pfSense_ipsec_list_sa);
 
 extern zend_module_entry pfSense_module_entry;
 #define phpext_pfSense_ptr &pfSense_module_entry

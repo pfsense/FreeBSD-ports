@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense
-PORTVERSION=	0.6
+PORTVERSION=	0.7
 CATEGORIES=	devel
 MASTER_SITES=	#
 DISTFILES=	#
@@ -11,10 +11,12 @@ PKGNAMESUFFIX=	-module
 MAINTAINER=	garga@pfsense.org
 COMMENT=	Library for getting useful info
 
+LIB_DEPENDS=	libvici.so:${PORTSDIR}/security/strongswan
+
 USE_PHP=	yes
 USE_PHPEXT=	yes
 
-CFLAGS+=	-I/usr/local/include -L/usr/local/lib -I. -DIPFW_FUNCTIONS
+CFLAGS+=	-I/usr/local/include -L/usr/local/lib -L/usr/local/lib/ipsec -I. -DIPFW_FUNCTIONS
 
 CONFIGURE_ARGS=	--enable-pfSense
 
