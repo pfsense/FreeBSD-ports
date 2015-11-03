@@ -68,7 +68,7 @@ if (isset($_GET['haproxystats']) || isset($_GET['scope']) || (isset($_POST) && i
 	exit(0);
 }
 require_once("guiconfig.inc");
-if (isset($_GET['showsticktablecontent'])){
+if (isset($_GET['showsticktablecontent']) || isset($_GET['showstatresolvers'])) {
 	if (is_numeric($pconfig['localstats_sticktable_refreshtime']))
 		header("Refresh: {$pconfig['localstats_sticktable_refreshtime']}");
 }
@@ -91,10 +91,6 @@ if ($_POST) {
 	}
 }
 
-$pf_version=substr(trim(file_get_contents("/etc/version")),0,3);
-if ($pf_version < 2.0)
-	$one_two = true;
-	
 $pgtitle = "Services: HAProxy: Stats";
 include("head.inc");
 
@@ -102,9 +98,6 @@ include("head.inc");
 <body link="#0000CC" vlink="#0000CC" alink="#0000CC">
 <?php include("fbegin.inc"); ?>
 <form action="haproxy_stats.php" method="post">
-<?php if($one_two): ?>
-<p class="pgtitle"><?=$pgtitle?></p>
-<?php endif; ?>
 <?php if ($input_errors) print_input_errors($input_errors); ?>
 <?php if ($savemsg) print_info_box($savemsg); ?>
 <?php if (file_exists($d_haproxyconfdirty_path)): ?>
@@ -123,15 +116,25 @@ include("head.inc");
 		<table class="tabcont" width="100%" height="100%" cellspacing="0">
 		<tr>
 		<?
-if (isset($_GET['showsticktablecontent'])){
+
+if (isset($_GET['showstatresolvers'])){
+	$showstatresolversname = $_GET['showstatresolvers'];
+	echo "<td colspan='2'>";
+	echo "Contents of the sticktable: $sticktablename<br/>";
+	$res = haproxy_socket_command("show stat resolvers $showstatresolversname");
+	foreach($res as $line){
+		echo "<br/>".print_r($line,true);
+	}
+	echo "</td>";
+} elseif (isset($_GET['showsticktablecontent'])){
 	$sticktablename = $_GET['showsticktablecontent'];
-echo "<td colspan='2'>";
+	echo "<td colspan='2'>";
 	echo "Contents of the sticktable: $sticktablename<br/>";
 	$res = haproxy_socket_command("show table $sticktablename");
 	foreach($res as $line){
 		echo "<br/>".print_r($line,true);
 	}
-echo "</td>";
+	echo "</td>";
 } else {
 ?>
 		<td colspan="2">
@@ -172,6 +175,15 @@ echo "</td>";
 			<? } ?>
 			</table>
 			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td colspan="2" valign="top" class="listtopic">HAProxy DNS</td>
+		</tr>
+		<tr>
+			<td colspan="2" valign="top" class="vncell"><a href="/haproxy_stats.php?showstatresolvers=globalresolvers" target="_blank">DNS statistics</a></td>
 		</tr>
 		<tr>
 			<td>&nbsp;</td>

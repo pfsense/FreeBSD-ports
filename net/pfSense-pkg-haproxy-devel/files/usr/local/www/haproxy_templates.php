@@ -114,6 +114,7 @@ EOD;
 		$savemsg = "File 'ExampleErrorfile' is already configured on the Files tab.";
 	}
 	
+	$changedesc = "haproxy, add template errorfile";
 	if ($changecount > 0) {
 		header("Location: haproxy_files.php");
 		echo "touching: $d_haproxyconfdirty_path";
@@ -122,7 +123,83 @@ EOD;
 		exit;
 	}
 }
+
+function haproxy_template_multipledomains() {
+	global $config, $d_haproxyconfdirty_path;
+	$a_backends = &$config['installedpackages']['haproxy']['ha_pools']['item'];
+	$a_frontends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 	
+	$backend = array();
+	$backend["name"] = "example_backend1";
+	$backend["stats_enabled"] = "yes";
+	$backend["stats_uri"] = "/";
+	$backend["stats_refresh"] = "10";
+	$backend["stats_scope"] = ".";
+	$backend["stats_node"] = "NODE1";
+	$a_backends[] = $backend;
+	
+	$backend = array();
+	$backend["name"] = "example_backend2";
+	$backend["stats_enabled"] = "yes";
+	$backend["stats_uri"] = "/";
+	$backend["stats_refresh"] = "10";
+	$backend["stats_scope"] = ".";
+	$backend["stats_node"] = "NODE2";
+	$a_backends[] = $backend;
+	
+	$backend = array();
+	$backend["name"] = "example_backend3";
+	$backend["stats_enabled"] = "yes";
+	$backend["stats_uri"] = "/";
+	$backend["stats_refresh"] = "10";
+	$backend["stats_scope"] = ".";
+	$backend["stats_node"] = "NODE3";
+	$a_backends[] = $backend;
+	
+	$frontend = array();
+	$frontend["name"] = "example_multipledomains";
+	$frontend["status"] = "active";
+	$frontend["type"] = "http";
+	$frontend["a_extaddr"]["item"]["stats_name"]["extaddr"] = "wan_ipv4";
+	$frontend["a_extaddr"]["item"]["stats_name"]["extaddr_port"] = "80";
+	$frontend["backend_serverpool"] = "example_backend1";
+	$acl = array();
+	$acl["name"] = "mail_acl";
+	$acl["expression"] = "host_matches";
+	$acl["value"] = "mail.domain.tld";
+	$frontend["ha_acls"]["item"][] = $acl;
+	$action = array();
+	$action["action"] = "use_backend";
+	$action["use_backendbackend"] = "example_backend2";
+	$action["acl"] = "mail_acl";
+	$frontend["a_actionitems"]["item"][] = $action;
+	$a_frontends[] = $frontend;
+	
+	$frontend = array();
+	$frontend["name"] = "example_multipledomains_forum";
+	$frontend["status"] = "active";
+	$frontend["secondary"] = "yes";
+	$frontend["primary_frontend"] = "example_multipledomains";
+	$acl = array();
+	$acl["name"] = "forum_acl";
+	$acl["expression"] = "host_matches";
+	$acl["value"] = "forum.domain.tld";
+	$frontend["ha_acls"]["item"][] = $acl;
+	$action = array();
+	$action["action"] = "use_backend";
+	$action["use_backendbackend"] = "example_backend3";
+	$action["acl"] = "forum_acl";
+	$frontend["a_actionitems"]["item"][] = $action;
+	$a_frontends[] = $frontend;
+	
+	$changedesc = "haproxy, add multi domain example";
+	header("Location: haproxy_listeners.php");
+	echo "touching: $d_haproxyconfdirty_path";
+	touch($d_haproxyconfdirty_path);
+	write_config($changedesc);
+	exit;
+}
+
 if (isset($_GET['add_stats_example'])) {
 	$templateid = $_GET['add_stats_example'];
 	switch ($templateid) {
@@ -131,6 +208,9 @@ if (isset($_GET['add_stats_example'])) {
 			break;
 		case "2":
 			template_errorfile();
+			break;
+		case "3":
+			haproxy_template_multipledomains();
 			break;
 	}
 }
@@ -145,14 +225,12 @@ if ($_POST) {
 
 $pgtitle = "Services: HAProxy: Templates";
 include("head.inc");
+haproxy_css();
 
 ?>
 <body link="#0000CC" vlink="#0000CC" alink="#0000CC">
 <?php include("fbegin.inc"); ?>
 <form action="haproxy_templates.php" method="post">
-<?php if($one_two): ?>
-<p class="pgtitle"><?=$pgtitle?></p>
-<?php endif; ?>
 <?php if ($input_errors) print_input_errors($input_errors); ?>
 <?php if ($savemsg) print_info_box($savemsg); ?>
 <?php if (file_exists($d_haproxyconfdirty_path)): ?>
@@ -174,6 +252,20 @@ include("head.inc");
 		</tr>
 		<tr>
 			<td colspan="2">This page contains some templates that can be added into the haproxy configuration to possible ways to configure haproxy using this the webgui from this package.</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td colspan="2" valign="top" class="listtopic">Serving multiple domains from 1 frontend.</td>
+		</tr>
+		<tr>
+			<td width="22%" valign="top" class="vncell">
+				<a href="haproxy_templates.php?add_stats_example=3">Create configuration</a>
+			</td>
+			<td class="vtable">
+				As an basic example of how to serve multiple domains on 1 listening ip:port.
+			</td>
 		</tr>
 		<tr>
 			<td>&nbsp;</td>

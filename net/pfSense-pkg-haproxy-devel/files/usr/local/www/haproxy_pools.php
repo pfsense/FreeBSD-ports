@@ -65,19 +65,13 @@ if ($_GET['act'] == "del") {
 	exit;
 }
 
-$pf_version=substr(trim(file_get_contents("/etc/version")),0,3);
-if ($pf_version < 2.0)
-	$one_two = true;
-	
 $pgtitle = "Services: HAProxy: Backend server pools";
 include("head.inc");
+haproxy_css();
 
 ?>
 <body link="#0000CC" vlink="#0000CC" alink="#0000CC">
 <?php include("fbegin.inc"); ?>
-<?php if($one_two): ?>
-<p class="pgtitle"><?=$pgtitle?></p>
-<?php endif; ?>
 <form action="haproxy_pools.php" method="post">
 <?php if ($input_errors) print_input_errors($input_errors); ?>
 <?php if ($savemsg) print_info_box($savemsg); ?>
@@ -108,18 +102,31 @@ include("head.inc");
 		foreach ($a_pools as $pool){
 			$fe_list = "";
 			$sep = "";
-			foreach ($a_backends as $backend) {
-				 if($backend['backend_serverpool'] == $pool['name']) {
-					 $fe_list .= $sep . $backend['name'];
-					 $sep = ", ";
-				 }
+			foreach ($a_backends as $frontend) {
+				$used = false;
+				if($frontend['backend_serverpool'] == $pool['name']) {
+					$used = true;
+				}
+				$actions = $frontend['a_actionitems']['item'];
+				if (is_array($actions)) {
+					foreach($actions as $action) {
+						if ($action["action"] == "use_backend" && $action['use_backendbackend'] == $pool['name']) {
+							$used = true;
+						}
+					}
+				}
+				if ($used) {
+					$fe_list .= $sep . $frontend['name'];
+					$sep = ", ";
+				}
 			}
 			$textgray = $fe_list == "" ? " gray" : "";
 			
-			if (is_array($pool['ha_servers']))
+			if (is_array($pool['ha_servers'])) {
 				$count = count($pool['ha_servers']['item']);
-			else
-				 $count = 0;
+			} else {
+				$count = 0;
+			}
 ?>
 			<tr class="<?=$textgray?>">
 			  <td class="listlr" ondblclick="document.location='haproxy_pool_edit.php?id=<?=$i;?>';">

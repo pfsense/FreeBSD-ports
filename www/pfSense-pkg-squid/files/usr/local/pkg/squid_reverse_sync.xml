@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squidsync</name>
-	<version>0.4.1</version>
+	<version>0.4.2</version>
 	<title>Reverse Proxy Server: XMLRPC Sync</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
@@ -78,12 +78,18 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Automatically sync Squid configuration changes</fielddescr>
+			<fielddescr>Enable Sync</fielddescr>
 			<fieldname>synconchanges</fieldname>
-			<description>Select a sync method for Squid.</description>
+			<description>
+				<![CDATA[
+				Select a sync method for Squid Reverse Proxy.<br/><br/>
+				<strong>Important:</strong> While using "Sync to host(s) defined below", only sync from host A to B, A to C but <strong>do not</strong> enable XMLRPC sync <b>to</b> A.
+				This will result in a loop!
+				]]>
+			</description>
 			<type>select</type>
 			<required/>
-			<default_value>auto</default_value>
+			<default_value>disabled</default_value>
 			<options>
 				<option><name>Sync to configured system backup server</name><value>auto</value></option>
 				<option><name>Sync to host(s) defined below</name><value>manual</value></option>
@@ -106,19 +112,45 @@
 			</options>
 		</field>
 		<field>
-			<fielddescr>Remote Server</fielddescr>
+			<fielddescr>Replication Targets</fielddescr>
 			<fieldname>none</fieldname>
 			<type>rowhelper</type>
 			<rowhelper>
 				<rowhelperfield>
-					<fielddescr>IP Address</fielddescr>
-					<fieldname>ipaddress</fieldname>
-					<type>input</type>
-					<size>20</size>
+					<fielddescr>Enable</fielddescr>
+					<fieldname>syncdestinenable</fieldname>
+					<description><![CDATA[Enable this host as a replication target]]></description>
+					<type>checkbox</type>
 				</rowhelperfield>
 				<rowhelperfield>
-					<fielddescr>Password (admin)</fielddescr>
+					<fielddescr>Protocol</fielddescr>
+					<fieldname>syncprotocol</fieldname>
+					<description><![CDATA[Choose the protocol used to sync with the destination host (HTTP or HTTPS).]]></description>
+					<type>select</type>
+					<default_value>HTTP</default_value>
+					<options>
+						<option><name>HTTP</name><value>http</value></option>
+						<option><name>HTTPS</name><value>https</value></option>
+					</options>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>IP Address/Hostname</fielddescr>
+					<fieldname>ipaddress</fieldname>
+					<description><![CDATA[IP address or hostname of the destination host.]]></description>
+					<type>input</type>
+					<size>40</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Port</fielddescr>
+					<fieldname>syncport</fieldname>
+					<description><![CDATA[Choose the sync port of the destination host.]]></description>
+					<type>input</type>
+					<size>3</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Admin Password</fielddescr>
 					<fieldname>password</fieldname>
+					<description><![CDATA[Password of the user "admin" on the destination host.]]></description>
 					<type>password</type>
 					<size>20</size>
 				</rowhelperfield>

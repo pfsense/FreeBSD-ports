@@ -452,9 +452,6 @@ function squid_restart_services() {
 function squid_install_command() {
 	global $config, $g;
 
-	update_output_window("This operation may take quite some time, please be patient. Do not press stop or attempt to navigate away from this page during this process.");
-	update_output_window("Checking if there is configuration to migrate... One moment please...");
-
 	/* Set storage system for nanobsd */
 	if (!is_array($config['installedpackages']['squidcache'])) {
 		$config['installedpackages']['squidcache'] = array();
@@ -515,7 +512,6 @@ function squid_deinstall_command() {
 	squid_install_cron(false);
 
 	/* kill all running services */
-	update_output_window("Stopping and removing services...");
 	mwexec('/usr/local/etc/rc.d/sqp_monitor.sh stop');
 	mwexec("/bin/ps awux | /usr/bin/egrep -i '[s]quid -f|\([s]quid\)' | /usr/bin/awk '{ print $2 }' | /usr/bin/xargs kill");
 	mwexec("/bin/ps awux | /usr/bin/grep '[d]iskd' | /usr/bin/awk '{ print $2 }' | /usr/bin/xargs kill");
@@ -542,8 +538,6 @@ function squid_deinstall_command() {
 	$keep = ($squidsettings['keep_squid_data'] ? true : false);
 
 	if (!$keep) {
-		update_output_window("Removing cache and logs ... One moment please...");
-		update_output_window("This operation may take quite some time, please be patient. Do not press stop or attempt to navigate away from this page during this process.");
 		if (is_dir("{$cachedir}")) {
 			if (substr($cachedir, 0, 11) === "/var/squid/") {
 				mwexec_bg("/bin/rm -rf {$cachedir}");
@@ -558,7 +552,6 @@ function squid_deinstall_command() {
 				log_error("[squid] Will NOT delete Squid log dir '{$logdir}' since it is not located under /var/squid. Delete manually if required.");
 			}
 		}
-		update_output_window("Removing remaining Squid directories ... One moment please...");
 		$dirs = array("/var/run/squid", "/var/squid");
 		foreach ($dirs as $dir) {
 			if (is_dir("{$dir}")) {
@@ -570,7 +563,6 @@ function squid_deinstall_command() {
 	// remove antivirus integration features
 	squid_antivirus_deinstall_command();
 
-	update_output_window("Reloading filter...");
 	filter_configure();
 
 	/* Remove package settings from config if 'Keep Settings/Data' is disabled */
@@ -619,7 +611,6 @@ function squid_deinstall_command() {
 			unset($config['installedpackages']['squidusers']);
 		}
 	}
-	update_output_window("Squid3 has been uninstalled.");
 }
 
 /* Migrate configuration from god knows which Squid package versions */
@@ -704,7 +695,6 @@ function squid_upgrade_config() {
 	/* unset broken antivirus settings */
 	squid_antivirus_upgrade_config();
 
-	update_output_window("Writing configuration... One moment please...");
 	write_config();
 }
 
@@ -2163,28 +2153,45 @@ function squid_generate_rules($type) {
 
 /* XMLRPC sync configuration */
 function squid_sync_on_changes() {
-	global $config, $g;
+	global $config;
+
 	if (is_array($config['installedpackages']['squidsync']['config'])) {
 		$squid_sync = $config['installedpackages']['squidsync']['config'][0];
 		$synconchanges = $squid_sync['synconchanges'];
-		$synctimeout = $squid_sync['synctimeout'];
+		$synctimeout = $squid_sync['synctimeout'] ?: '250';
 		switch ($synconchanges) {
 			case "manual":
 				if (is_array($squid_sync['row'])) {
 					$rs = $squid_sync['row'];
 				} else {
-					log_error("[squid] XMLRPC sync is enabled but there is no hosts to push on Squid config.");
+					log_error("[squid] XMLRPC sync is enabled but there are no hosts configured as replication targets.");
 					return;
 				}
 				break;
 			case "auto":
-				if (is_array($config['installedpackages']['carpsettings']) && is_array($config['installedpackages']['carpsettings']['config'])) {
-					$system_carp = $config['installedpackages']['carpsettings']['config'][0];
+				if (is_array($config['hasync'])) {
+					$system_carp = $config['hasync'];
 					$rs[0]['ipaddress'] = $system_carp['synchronizetoip'];
 					$rs[0]['username'] = $system_carp['username'];
 					$rs[0]['password'] = $system_carp['password'];
+					$rs[0]['syncdestinenable'] = FALSE;
+
+					// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
+					if ($config['system']['webgui']['protocol'] == "http") {
+						$rs[0]['syncprotocol'] = "http";
+						$rs[0]['syncport'] = $config['system']['webgui']['port'] ?: '80';
+					} else {
+						$rs[0]['syncprotocol'] = "https";
+						$rs[0]['syncport'] = $config['system']['webgui']['port'] ?: '443';
+					}
+					if ($system_carp['synchronizetoip'] == "") {
+						log_error("[squid] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
+						return;
+					} else {
+						$rs[0]['syncdestinenable'] = TRUE;
+					}
 				} else {
-					log_error("[squid] XMLRPC sync is enabled but there is no system backup hosts to push Squid config.");
+					log_error("[squid] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
 					return;
 				}
 				break;
@@ -2195,45 +2202,56 @@ function squid_sync_on_changes() {
 		if (is_array($rs)) {
 			log_error("[squid] XMLRPC sync is starting.");
 			foreach ($rs as $sh) {
-				$sync_to_ip = $sh['ipaddress'];
-				$password = $sh['password'];
-				if ($sh['username']) {
-					$username = $sh['username'];
-				} else {
-					$username = 'admin';
-				}
-				if ($password && $sync_to_ip) {
-					squid_do_xmlrpc_sync($sync_to_ip, $username, $password, $synctimeout);
+				// Only sync enabled replication targets
+				if ($sh['syncdestinenable']) {
+					$sync_to_ip = $sh['ipaddress'];
+					$port = $sh['syncport'];
+					$username = $sh['username'] ?: 'admin';
+					$password = $sh['password'];
+					$protocol = $sh['syncprotocol'];
+
+					$error = '';
+					$valid = TRUE;
+
+					if ($password == "") {
+						$error = "Password parameter is empty. ";
+						$valid = FALSE;
+					}
+					if (!is_ipaddr($sync_to_ip) && !is_hostname($sync_to_ip) && !is_domain($sync_to_ip)) {
+						$error .= "Misconfigured Replication Target IP Address or Hostname. ";
+						$valid = FALSE;
+					}
+					if (!is_port($port)) {
+						$error .= "Misconfigured Replication Target Port. ";
+						$valid = FALSE;
+					}
+					if ($valid) {
+						squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout);
+					} else {
+						log_error("[squid] XMLRPC sync with '{$sync_to_ip}' aborted due to the following error(s): {$error}");
+					}
 				}
 			}
-			log_error("[squid] XMLRPC sync is ending.");
+			log_error("[squid] XMLRPC sync completed.");
 		}
-	}
+ 	}
 }
 
 /* Perform the actual XMLRPC sync */
-function squid_do_xmlrpc_sync($sync_to_ip, $username, $password, $synctimeout) {
+function squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout) {
 	global $config, $g;
 
-	if (!$username || !$password || !$sync_to_ip) {
+	if ($username == "" || $password == "" || $sync_to_ip == "" || $port == "" || $protocol == "") {
+		log_error("[squid] A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync");
 		return;
 	}
 
-	if (!$synctimeout) {
-		$synctimeout = 250;
+	// Take care of IPv6 literal address
+	if (is_ipaddrv6($sync_to_ip)) {
+		$sync_to_ip = "[{$sync_to_ip}]";
 	}
 
-	$xmlrpc_sync_neighbor = $sync_to_ip;
-	if ($config['system']['webgui']['protocol'] != "") {
-		$synchronizetoip = $config['system']['webgui']['protocol'];
-		$synchronizetoip .= "://";
-	}
-	$port = $config['system']['webgui']['port'];
-	/* If port is empty let's rely on the protocol selection */
-	if ($port == "") {
-		$port = $config['system']['webgui']['protocol'] == "http" ? "80" : "443";
-	}
-	$synchronizetoip .= $sync_to_ip;
+	$url = "{$protocol}://{$sync_to_ip}";
 
 	/* XML will hold the sections to sync */
 	$xml = array();
@@ -2249,14 +2267,9 @@ function squid_do_xmlrpc_sync($sync_to_ip, $username, $password, $synctimeout) {
 	$xml['squidauth'] = $config['installedpackages']['squidauth'];
 	$xml['squidusers'] = $config['installedpackages']['squidusers'];
 	/* Assemble XMLRPC payload */
-	$params = array(
-		XML_RPC_encode($password),
-		XML_RPC_encode($xml)
-	);
+	$params = array(XML_RPC_encode($password), XML_RPC_encode($xml));
 
 	/* Set a few variables needed for sync */
-	$url = $synchronizetoip;
-	log_error("[squid] Beginning XMLRPC sync to {$url}:{$port}.");
 	$method = 'pfsense.merge_installedpackages_section_xmlrpc';
 	$msg = new XML_RPC_Message($method, $params);
 	$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
@@ -2267,14 +2280,14 @@ function squid_do_xmlrpc_sync($sync_to_ip, $username, $password, $synctimeout) {
 	/* Send our XMLRPC message and timeout after defined sync timeout value*/
 	$resp = $cli->send($msg, $synctimeout);
 	if (!$resp) {
-		$error = "[squid] Communication error occurred while attempting XMLRPC sync with {$url}:{$port}.";
-		log_error($error);
+		$error = "A communication error occurred while attempting XMLRPC sync with {$url}:{$port}.";
+		log_error("[squid] {$error}");
 		file_notice("sync_settings", $error, "Squid Settings Sync", "");
 	} elseif ($resp->faultCode()) {
 		$cli->setDebug(1);
 		$resp = $cli->send($msg, $synctimeout);
-		$error = "[squid] An error code was received while attempting XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-		log_error($error);
+		$error = "An error code was received while attempting XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
+		log_error("[squid] {$error}");
 		file_notice("sync_settings", $error, "Squid Settings Sync", "");
 	} else {
 		log_error("[squid] XMLRPC sync successfully completed with {$url}:{$port}.");
@@ -2285,25 +2298,21 @@ function squid_do_xmlrpc_sync($sync_to_ip, $username, $password, $synctimeout) {
 	$execcmd = "require_once('/usr/local/pkg/squid.inc');\n";
 	$execcmd .= "squid_resync('yes');";
 	/* Assemble XMLRPC payload */
-	$params = array(
-		XML_RPC_encode($password),
-		XML_RPC_encode($execcmd)
-	);
+	$params = array(XML_RPC_encode($password), XML_RPC_encode($execcmd));
 
-	log_error("[squid] XMLRPC reload data {$url}:{$port}.");
 	$msg = new XML_RPC_Message($method, $params);
 	$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
 	$cli->setCredentials($username, $password);
 	$resp = $cli->send($msg, $synctimeout);
 	if (!$resp) {
-		$error = "[squid] Communication error occurred while attempting XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
-		log_error($error);
+		$error = "A communication error occurred while attempting XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
+		log_error("[squid] {$error}");
 		file_notice("sync_settings", $error, "Squid Settings Sync", "");
 	} elseif ($resp->faultCode()) {
 		$cli->setDebug(1);
 		$resp = $cli->send($msg, $synctimeout);
-		$error = "[squid] An error code was received while attempting XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-		log_error($error);
+		$error = "An error code was received while attempting XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
+		log_error("[squid] {$error}");
 		file_notice("sync_settings", $error, "Squid Settings Sync", "");
 	} else {
 		log_error("[squid] XMLRPC reload data success with {$url}:{$port} (pfsense.exec_php).");

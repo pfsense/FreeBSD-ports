@@ -48,7 +48,7 @@ if (isset($_POST['id']))
 	$id = $_POST['id'];
 else
 	$id = $_GET['id'];
-	
+
 $tmp = get_backend_id($id);
 if (is_numeric($tmp))
 	$id = $tmp;
@@ -58,7 +58,9 @@ if (isset($_GET['dup']))
 
 global $simplefields;
 $simplefields = array(
-"name","balance","transparent_clientip","transparent_interface",
+"name",
+"balance","balance_urilen","balance_uridepth","balance_uriwhole",
+"transparent_clientip","transparent_interface",
 "check_type","checkinter","log-health-checks","httpcheck_method","monitor_uri","monitor_httpversion","monitor_username","monitor_domain","monitor_agentport",
 "agent_check","agent_port","agent_inter",
 "connection_timeout","server_timeout","retries",
@@ -194,16 +196,131 @@ $fields_errorfile[1]['type']="select";
 $fields_errorfile[1]['size']="170px";
 $fields_errorfile[1]['items']=&$a_files;
 
+$serverslist = new HaproxyHtmlList("tableA_servers", $fields_servers);
+$serverslist->keyfield = "name";
+$serverslist->fields_details = $fields_servers_details;
+
+$errorfileslist = new HaproxyHtmlList("table_errorfile", $fields_errorfile);
+$errorfileslist->keyfield = "errorcode";
+
+
+
+$fields_aclSelectionList=array();
+$fields_aclSelectionList[0]['name']="name";
+$fields_aclSelectionList[0]['columnheader']="Name";
+$fields_aclSelectionList[0]['colwidth']="30%";
+$fields_aclSelectionList[0]['type']="textbox";
+$fields_aclSelectionList[0]['size']="20";
+
+$fields_aclSelectionList[1]['name']="expression";
+$fields_aclSelectionList[1]['columnheader']="Expression";
+$fields_aclSelectionList[1]['colwidth']="30%";
+$fields_aclSelectionList[1]['type']="select";
+$fields_aclSelectionList[1]['size']="10";
+$fields_aclSelectionList[1]['items']=&$a_acltypes;
+
+$fields_aclSelectionList[2]['name']="not";
+$fields_aclSelectionList[2]['columnheader']="Not";
+$fields_aclSelectionList[2]['colwidth']="5%";
+$fields_aclSelectionList[2]['type']="checkbox";
+$fields_aclSelectionList[2]['size']="5";
+
+$fields_aclSelectionList[3]['name']="value";
+$fields_aclSelectionList[3]['columnheader']="Value";
+$fields_aclSelectionList[3]['colwidth']="35%";
+$fields_aclSelectionList[3]['type']="textbox";
+$fields_aclSelectionList[3]['size']="35";
+
+$fields_actions=array();
+$fields_actions[0]['name']="action";
+$fields_actions[0]['columnheader']="Action";
+$fields_actions[0]['colwidth']="30%";
+$fields_actions[0]['type']="select";
+$fields_actions[0]['size']="200px";
+$fields_actions[0]['items']=&$a_action;
+$fields_actions[1]['name']="parameters";
+$fields_actions[1]['columnheader']="Parameters";
+$fields_actions[1]['colwidth']="30%";
+$fields_actions[1]['type']="fixedtext";
+$fields_actions[1]['size']="200px";
+$fields_actions[1]['text']="See below";
+$fields_actions[2]['name']="acl";
+$fields_actions[2]['columnheader']="Condition acl names";
+$fields_actions[2]['colwidth']="15%";
+$fields_actions[2]['type']="textbox";
+$fields_actions[2]['size']="40";
+
+
+$fields_actions_details=array();
+foreach($a_action as $key => $action) {
+	if (is_array($action['fields'])) {
+		foreach($action['fields'] as $field) {
+			$item = $field;
+			$name = $key . $item['name'];
+			$item['name'] = $name;
+			$item['columnheader'] = $field['name'];
+			$item['customdrawcell'] = customdrawcell_actions;
+			$fields_actions_details[$name] = $item;
+		}
+	}
+}
+
+$a_acltypes["backendservercount"]['fields']['backend']['items'] = &$backends;
+$fields_acl_details=array();
+foreach($a_acltypes as $key => $action) {
+	if (is_array($action['fields'])) {
+		foreach($action['fields'] as $field) {
+			$item = $field;
+			$name = $key . $item['name'];
+			$item['name'] = $name;
+			$item['columnheader'] = $field['name'];
+			$item['customdrawcell'] = customdrawcell_actions;
+			$fields_acl_details[$name] = $item;
+		}
+	}
+}
+
+function customdrawcell_actions($object, $item, $itemvalue, $editable, $itemname, $counter) {
+	if ($editable) {
+		$object->haproxy_htmllist_drawcell($item, $itemvalue, $editable, $itemname, $counter);
+	} else {
+		//TODO hide fields not applicable.?.
+		echo $itemvalue;
+	}
+}
+
+$htmllist_acls = new HaproxyHtmlList("table_acls", $fields_aclSelectionList);
+$htmllist_acls->fields_details = $fields_acl_details;
+$htmllist_acls->editmode = true;
+
+$htmllist_actions = new HaproxyHtmlList("table_actions", $fields_actions);
+$htmllist_actions->fields_details = $fields_actions_details;
+$htmllist_actions->keyfield = "name";
+
+
 if (isset($id) && $a_pools[$id]) {
+	$pconfig['a_acl'] = &$a_pools[$id]['a_acl']['item'];
+	if (!is_array($pconfig['a_acl'])) {
+		$pconfig['a_acl'] = array();
+	}
+	$pconfig['a_actionitems'] = &$a_pools[$id]['a_actionitems']['item'];
+	if (!is_array($pconfig['a_actionitems'])) {
+		$pconfig['a_actionitems'] = array();
+	}
 	$pconfig['advanced'] = base64_decode($a_pools[$id]['advanced']);
 	$pconfig['advanced_backend'] = base64_decode($a_pools[$id]['advanced_backend']);
-	$pconfig['a_servers']=&$a_pools[$id]['ha_servers']['item'];	
+	
+	
+	$a_servers = &$a_pools[$id]['ha_servers']['item'];	
 	
 	foreach($simplefields as $stat)
 		$pconfig[$stat] = $a_pools[$id][$stat];
 		
+	
 	$a_errorfiles = &$a_pools[$id]['errorfiles']['item'];
-	if (!is_array($a_errorfiles)) $a_errorfiles = array();
+	if (!is_array($a_errorfiles)) {
+		$a_errorfiles = array();
+	}
 }
 
 if (isset($_GET['dup']))
@@ -265,7 +382,9 @@ if ($_POST) {
 		if (($_POST['name'] == $config['installedpackages']['haproxy']['ha_pools']['item'][$i]['name']) && ($i != $id))
 			$input_errors[] = "This pool name has already been used.  Pool names must be unique.";
 
-	$a_servers = haproxy_htmllist_get_values(array_merge($fields_servers,$fields_servers_details));
+	$pconfig['a_acl'] = $htmllist_acls->haproxy_htmllist_get_values();
+	$pconfig['a_actionitems'] = $htmllist_actions->haproxy_htmllist_get_values();
+	$a_servers = $serverslist->haproxy_htmllist_get_values();
 	foreach($a_servers as $server){
 		$server_name    = $server['name'];
 		$server_address = $server['address'];
@@ -294,66 +413,75 @@ if ($_POST) {
 			$input_errors[] = "The field 'Port' value is not a number.";
 	}
 	
-	$a_errorfiles = haproxy_htmllist_get_values($fields_errorfile);
+	$a_errorfiles = $errorfileslist->haproxy_htmllist_get_values();
 	
 	if ($_POST['strict_transport_security'] !== "" && !is_numeric($_POST['strict_transport_security']))
 		$input_errors[] = "The field 'Strict-Transport-Security' is not empty or a number.";
 
-//	if (!$input_errors) {
-		$pool = array();
-		if(isset($id) && $a_pools[$id])
-			$pool = $a_pools[$id];
-			
-		if ($pool['name'] != $_POST['name']) {
-			// name changed:
-			if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
-				$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
-			}
-			$a_backend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
-
-			for ( $i = 0; $i < count($a_backend); $i++) {
-				if ($a_backend[$i]['backend_serverpool'] == $pool['name'])
-					$a_backend[$i]['backend_serverpool'] = $_POST['name'];
-			}
+	$pool = array();
+	if(isset($id) && $a_pools[$id])
+		$pool = $a_pools[$id];
+		
+	if (!empty($pool['name']) && ($pool['name'] != $_POST['name'])) {
+		//old $pool['name'] can be empty if a new or cloned item is saved, nothing should be renamed then
+		// name changed:
+		$oldvalue = $pool['name'];
+		$newvalue = $_POST['name'];
+		
+		$a_backend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
+		if (!is_array($a_backend)) {
+			$a_backend = array();
 		}
 
-		if($pool['name'] != "")
-			$changedesc .= " modified pool: '{$pool['name']}'";
-
-		$pool['ha_servers']['item']=$a_servers;
-
-		update_if_changed("advanced", $pool['advanced'], base64_encode($_POST['advanced']));
-		update_if_changed("advanced_backend", $pool['advanced_backend'], base64_encode($_POST['advanced_backend']));
-
-		global $simplefields;
-		foreach($simplefields as $stat)
-			update_if_changed($stat, $pool[$stat], $_POST[$stat]);
-	
-		if (isset($id) && $a_pools[$id]) {
-			$a_pools[$id] = $pool;
-		} else {
-			$a_pools[] = $pool;
+		for ( $i = 0; $i < count($a_backend); $i++) {
+			$backend = &$a_backend[$i];
+			if ($a_backend[$i]['backend_serverpool'] == $oldvalue) {
+				$a_backend[$i]['backend_serverpool'] = $newvalue;
+			}
+			if (is_array($backend['a_actionitems']['item'])) {
+				foreach($backend['a_actionitems']['item'] as &$item) {
+					if ($item['action'] == "use_backend") {
+						if ($item['use_backendbackend'] == $oldvalue) {
+							$item['use_backendbackend'] = $newvalue;
+						}
+					}
+				}
+			}
 		}
+	}
+
+	if($pool['name'] != "")
+		$changedesc .= " modified pool: '{$pool['name']}'";
+	$pool['ha_servers']['item'] = $a_servers;
+	$pool['a_acl']['item'] = $pconfig['a_acl'];
+	$pool['a_actionitems']['item'] = $pconfig['a_actionitems'];
+
+	update_if_changed("advanced", $pool['advanced'], base64_encode($_POST['advanced']));
+	update_if_changed("advanced_backend", $pool['advanced_backend'], base64_encode($_POST['advanced_backend']));
+
+	global $simplefields;
+	foreach($simplefields as $stat)
+		update_if_changed($stat, $pool[$stat], $_POST[$stat]);
+
+	if (isset($id) && $a_pools[$id]) {
+		$a_pools[$id] = $pool;
+	} else {
+		$a_pools[] = $pool;
+	}
 	if (!isset($input_errors)) {
 		if ($changecount > 0) {
 			touch($d_haproxyconfdirty_path);
-			write_config($changedesc);			
-			/*
-			echo "<PRE>";
-			print_r($config);
-			echo "</PRE>";
-			*/
+			write_config($changedesc);
 		}
-
 		header("Location: haproxy_pools.php");
 		exit;
 	}
-	$pconfig['a_servers']=&$a_pools[$id]['ha_servers']['item'];	
 }
 
 $closehead = false;
 $pgtitle = "HAProxy: Backend server pool: Edit";
 include("head.inc");
+haproxy_css();
 
 // 'processing' done, make all simple fields usable in html.
 foreach($simplefields as $field){
@@ -379,16 +507,6 @@ foreach($simplefields as $field){
 </head>
 <body link="#0000CC" vlink="#0000CC" alink="#0000CC">
 <script type="text/javascript">
-	function htmllist_get_select_options(tableId, fieldname) {
-		if (fieldname == 'forwardto')
-			return "<?=haproxy_js_select_options($primaryfrontends);?>";
-		else
-		if (fieldname == 'errorfile')
-			return "<?=haproxy_js_select_options($a_files);?>";
-		else
-			return "<?=haproxy_js_select_options($a_servermodes);?>";
-	}
-	
 	function clearcombo(){
 	  for (var i=document.iform.serversSelect.options.length-1; i>=0; i--){
 		document.iform.serversSelect.options[i] = null;
@@ -498,8 +616,7 @@ foreach($simplefields as $field){
 			</span>
 			<?
 			$counter=0;
-			$a_servers = $pconfig['a_servers'];
-			haproxy_htmllist("tableA_servers", $a_servers, $fields_servers, null, $fields_servers_details);
+			$serverslist->Draw($a_servers);
 			?>
 			<table class="haproxy_help_serverlist" style="border:1px dashed green" cellspacing="0">
 			<tr><td class="vncell">
@@ -528,66 +645,104 @@ foreach($simplefields as $field){
 		<tr align="left">
 			<td width="22%" valign="top" class="vncellreq">Balance</td>
 			<td width="78%" class="vtable" colspan="1">
-				<table width="100%">
+				<table width="100%" cellspacing="0">
 				<tr>
-					<td width="25%" valign="top">
+					<td class="vncell" width="25%" valign="top">
+						<input type="radio" name="balance" value=""<?php if(empty($pconfig['balance'])) echo " CHECKED"; ?> />None
+					</td>
+					<td class="vncell">
+						This allows writing your own custom balance settings into the advanced section.
+						Or when you have no need for balancing with only 1 server.
+					</td>
+				</tr>
+				<tr>
+					<td class="vncell" width="25%" valign="top">
 						<input type="radio" name="balance" value="roundrobin"<?php if($pconfig['balance'] == "roundrobin") echo " CHECKED"; ?> />Round robin
 					</td>
-					<td>
-						  Each server is used in turns, according to their weights.
-		                  This is the smoothest and fairest algorithm when the server's
-		                  processing time remains equally distributed. This algorithm
-		                  is dynamic, which means that server weights may be adjusted
-		                  on the fly for slow starts for instance.
+					<td class="vncell">
+						Each server is used in turns, according to their weights.
+						This is the smoothest and fairest algorithm when the server's
+						processing time remains equally distributed. This algorithm
+						is dynamic, which means that server weights may be adjusted
+						on the fly for slow starts for instance.
 					</td>
 				</tr>
 				<tr>
-					<td width="25%" valign="top">
+					<td class="vncell" width="25%" valign="top">
 						<input type="radio" name="balance" value="static-rr"<?php if($pconfig['balance'] == "static-rr") echo " CHECKED"; ?> />Static Round Robin
 					</td>
-					<td>
+					<td class="vncell">
 						Each server is used in turns, according to their weights.
-				This algorithm is as similar to roundrobin except that it is
-				static, which means that changing a server's weight on the
-				fly will have no effect. On the other hand, it has no design
-				limitation on the number of servers, and when a server goes
-				up, it is always immediately reintroduced into the farm, once
-				the full map is recomputed. It also uses slightly less CPU to
-				run (around -1%).					
+						This algorithm is as similar to roundrobin except that it is
+						static, which means that changing a server's weight on the
+						fly will have no effect. On the other hand, it has no design
+						limitation on the number of servers, and when a server goes
+						up, it is always immediately reintroduced into the farm, once
+						the full map is recomputed. It also uses slightly less CPU to
+						run (around -1%).					
 					</td>
 				</tr>
 				<tr>
-					<td width="25%" valign="top">
+					<td class="vncell" width="25%" valign="top">
 						<input type="radio" name="balance" value="leastconn"<?php if($pconfig['balance'] == "leastconn") echo " CHECKED"; ?> />Least Connections
 					</td>
-					<td>
-						  The server with the lowest number of connections receives the
-				connection. Round-robin is performed within groups of servers
-				of the same load to ensure that all servers will be used. Use
-				of this algorithm is recommended where very long sessions are
-				expected, such as LDAP, SQL, TSE, etc... but is not very well
-				suited for protocols using short sessions such as HTTP. This
-				algorithm is dynamic, which means that server weights may be
-				adjusted on the fly for slow starts for instance.
+					<td class="vncell">
+						The server with the lowest number of connections receives the
+						connection. Round-robin is performed within groups of servers
+						of the same load to ensure that all servers will be used. Use
+						of this algorithm is recommended where very long sessions are
+						expected, such as LDAP, SQL, TSE, etc... but is not very well
+						suited for protocols using short sessions such as HTTP. This
+						algorithm is dynamic, which means that server weights may be
+						adjusted on the fly for slow starts for instance.
 					</td>
 				</tr>
-				  <tr><td valign="top"><input type="radio" name="balance" value="source"<?php if($pconfig['balance'] == "source") echo " CHECKED"; ?> />Source
-				  </td>
-				  <td>
-		 			  The source IP address is hashed and divided by the total
-	                  weight of the running servers to designate which server will
-	                  receive the request. This ensures that the same client IP
-	                  address will always reach the same server as long as no
-	                  server goes down or up. If the hash result changes due to the
-	                  number of running servers changing, many clients will be
-					  directed to a different server. This algorithm is generally
-	                  used in TCP mode where no cookie may be inserted. It may also
-	                  be used on the Internet to provide a best-effort stickyness
-	                  to clients which refuse session cookies. This algorithm is
-	                  static, which means that changing a server's weight on the
-	                  fly will have no effect.
+				<tr>
+					<td class="vncell" valign="top">
+						<input type="radio" name="balance" value="source"<?php if($pconfig['balance'] == "source") echo " CHECKED"; ?> />Source
+					</td>
+					<td class="vncell">
+						The source IP address is hashed and divided by the total
+						weight of the running servers to designate which server will
+						receive the request. This ensures that the same client IP
+						address will always reach the same server as long as no
+						server goes down or up. If the hash result changes due to the
+						number of running servers changing, many clients will be
+						directed to a different server. This algorithm is generally
+						used in TCP mode where no cookie may be inserted. It may also
+						be used on the Internet to provide a best-effort stickyness
+						to clients which refuse session cookies. This algorithm is
+						static, which means that changing a server's weight on the
+						fly will have no effect.
 					</td>
 				</tr>
+				<tr>
+					<td class="vncell" valign="top">
+						<input type="radio" name="balance" value="uri"<?php if($pconfig['balance'] == "uri") echo " CHECKED"; ?> />Uri (HTTP backends only)
+					</td>
+					<td class="vncell">
+						This algorithm hashes either the left part of the URI (before
+						the question mark) or the whole URI (if the "whole" parameter
+						is present) and divides the hash value by the total weight of
+						the running servers. The result designates which server will
+						receive the request. This ensures that the same URI will
+						always be directed to the same server as long as no server
+						goes up or down. This is used with proxy caches and
+						anti-virus proxies in order to maximize the cache hit rate.
+						Note that this algorithm may only be used in an HTTP backend.<br/>
+						<input name="balance_urilen" size="10" value="<?=$pconfig['balance_urilen']?>" />Len (optional) <br/>
+						The "len" parameter
+						indicates that the algorithm should only consider that many
+						characters at the beginning of the URI to compute the hash.<br/>
+						<input name="balance_uridepth" size="10" value="<?=$pconfig['balance_uridepth']?>" />Depth (optional) <br/>
+						The "depth" parameter indicates the maximum directory depth
+						to be used to compute the hash. One level is counted for each
+						slash in the request.<br/>
+						<input id="balance_uriwhole" name="balance_uriwhole" type="checkbox" value="yes" <?php if ($pconfig['balance_uriwhole']=='yes') echo "checked"; ?> />
+						Allow using whole URI including url parameters behind a question mark.
+					</td>
+				</tr>
+				<!-- TODO add some other balance methods -->
 				</table>
 			</td>
 		</tr>
@@ -635,6 +790,71 @@ foreach($simplefields as $field){
 				<textarea  rows="<?=$textrowcount;?>" cols="70" name='advanced_backend' id='advanced_backend'><?php echo htmlspecialchars($pconfig['advanced_backend']); ?></textarea>
 				<br/>
 				NOTE: paste text into this box that you would like to pass thru. Applied to the backend section.
+			</td>
+		</tr>	
+		<tr>
+			<td width="22%" valign="top" class="vncell">Access Control lists</td>
+			<td width="78%" class="vtable" colspan="2" valign="top">
+			<?
+			$a_acl = $pconfig['a_acl'];
+			$htmllist_acls->Draw($a_acl);
+			?>
+			<br/>
+				Example:
+				<table border='1' style='border-collapse:collapse'>
+					<tr>
+						<td><b>Name</b></td>
+						<td><b>Expression</b></td>
+						<td><b>Not</b></td>
+						<td><b>Value</b></td>
+					</tr>
+					<tr>
+						<td>Backend1acl</td>
+						<td>Host matches</td>
+						<td></td>
+						<td>www.yourdomain.tld</td>
+					</tr>
+					<tr>
+						<td>addHeaderAcl</td>
+						<td>SSL Client certificate valid</td>
+						<td></td>
+						<td></td>
+					</tr>
+				</table>
+			<br/>
+			acl's with the same name will be 'combined' using OR criteria.<br/>
+			For more information about ACL's please see <a href='http://haproxy.1wt.eu/download/1.5/doc/configuration.txt' target='_blank'>HAProxy Documentation</a> Section 7 - Using ACL's<br/><br/>
+			<strong>NOTE Important change in behaviour, since package version 0.32</strong><br/>
+			-acl's are no longer combined with logical AND operators, list multiple acl's below where needed.<br/>
+			-acl's alone no longer implicitly generate use_backend configuration. Add 'actions' below to accomplish this behaviour.
+			</td>
+		</tr>
+		<tr>
+			<td width="22%" valign="top" class="vncellreq">Actions</td>
+			<td width="78%" class="vtable" colspan="2" valign="top">
+				<?
+				$a_actionitems = $pconfig['a_actionitems'];
+				$htmllist_actions->Draw($a_actionitems);
+				?>
+				<br/>
+				Example:
+				<table border='1' style='border-collapse:collapse'>
+					<tr>
+						<td><b>Action</b></td>
+						<td><b>Parameters</b></td>
+						<td><b>Condition</b></td>
+					</tr>
+					<tr>
+						<td>Use Backend</td>
+						<td>Website1Backend</td>
+						<td>Backend1acl</td>
+					</tr>
+					<tr>
+						<td>http-request header set</td>
+						<td>Headername: X-HEADER-ClientCertValid<br/>New logformat value: YES</td>
+						<td>addHeaderAcl</td>
+					</tr>
+				</table>
 			</td>
 		</tr>
 		<tr><td>&nbsp;</td></tr>
@@ -868,7 +1088,7 @@ set by the 'retries' parameter.</div>
 			</td>
 		</tr>
 		<tr><td>&nbsp;</td></tr>
-		<? if (haproxy_verion() >= '1.6' ) { ?>
+		<? if (haproxy_version() >= '1.6' ) { ?>
 		<tr>
 			<td colspan="2" valign="top" class="listtopic">Email notifications</td>
 		</tr>		
@@ -985,7 +1205,7 @@ set by the 'retries' parameter.</div>
 		<br/>
 		<br/>
 		<?
-		haproxy_htmllist("table_errorfile", $a_errorfiles, $fields_errorfile);
+		$errorfileslist->Draw($a_errorfiles);
 		?>
 		</td>
 		</tr>
@@ -1030,17 +1250,78 @@ set by the 'retries' parameter.</div>
 <br/>
 <script type="text/javascript">
 <?
-	phparray_to_javascriptarray($fields_servers,"fields_servers",Array('/*','/*/name','/*/type','/*/size','/*/items','/*/items/*','/*/items/*/*','/*/items/*/*/name'));
 	phparray_to_javascriptarray($fields_servers_details,"fields_details_servers",Array('/*','/*/name','/*/type'));
-	phparray_to_javascriptarray($fields_errorfile,"fields_errorfile",Array('/*','/*/name','/*/type','/*/size','/*/items','/*/items/*','/*/items/*/*','/*/items/*/*/name'));
 	phparray_to_javascriptarray($a_checktypes,"checktypes",Array('/*','/*/name','/*/descr'));
 	phparray_to_javascriptarray($a_cookiemode,"cookiemode",Array('/*','/*/name','/*/descr'));
 	phparray_to_javascriptarray($a_sticky_type,"sticky_type",Array('/*','/*/descr','/*/cookiedescr'));
-	phparray_to_javascriptarray($a_files,"a_files",Array('/*','/*/name','/*/descr'));
+	//phparray_to_javascriptarray($a_files,"a_files",Array('/*','/*/name','/*/descr'));
+
+	phparray_to_javascriptarray($a_action, "showhide_actionfields",
+		Array('/*', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
+	phparray_to_javascriptarray($a_acltypes, "showhide_aclfields",
+		Array('/*', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
+		
+	$serverslist->outputjavascript();
+	$errorfileslist->outputjavascript();
+	$htmllist_acls->outputjavascript();
+	$htmllist_actions->outputjavascript();
 ?>
 	browser_InnerText_support = (document.getElementsByTagName("body")[0].innerText != undefined) ? true : false;
-
+	
 	totalrows =  <?php echo $counter; ?>;
+	
+	function table_acls_listitem_change(tableId, fieldId, rowNr, field) {
+		if (fieldId = "toggle_details") {
+			fieldId = "expression";
+			field = d.getElementById(tableId+"expression"+rowNr);
+		}
+		if (fieldId = "expression") {
+			var actiontype = field.value;
+			
+			var table = d.getElementById(tableId);
+			
+			for(var actionkey in showhide_aclfields) {
+				var fields = showhide_aclfields[actionkey]['fields'];
+				for(var fieldkey in fields){
+					var fieldname = fields[fieldkey]['name'];
+					var rowid = "tr_edititemdetails_"+rowNr+"_"+actionkey+fieldname;
+					var element = d.getElementById(rowid);
+					
+					if (actionkey == actiontype)
+						element.style.display = '';
+					else
+						element.style.display = 'none';
+				}
+			}
+		}
+	}
+	
+	function table_actions_listitem_change(tableId, fieldId, rowNr, field) {
+		if (fieldId = "toggle_details") {
+			fieldId = "action";
+			field = d.getElementById(tableId+"action"+rowNr);
+		}
+		if (fieldId = "action") {
+			var actiontype = field.value;
+			
+			var table = d.getElementById(tableId);
+			
+			for(var actionkey in showhide_actionfields) {
+				var fields = showhide_actionfields[actionkey]['fields'];
+				for(var fieldkey in fields){
+					var fieldname = fields[fieldkey]['name'];
+					var rowid = "tr_edititemdetails_"+rowNr+"_"+actionkey+fieldname;
+					var element = d.getElementById(rowid);
+					
+					if (actionkey == actiontype)
+						element.style.display = '';
+					else
+						element.style.display = 'none';
+				}
+			}
+		}
+	}
+	
 	updatevisibility();
 </script>
 <?php

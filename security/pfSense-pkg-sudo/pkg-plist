@@ -1,3 +1,5 @@
 pkg/sudo.xml
 pkg/sudo.inc
+/etc/inc/priv/sudo.priv.inc
 %%DATADIR%%/info.xml
+@dir /etc/inc/priv

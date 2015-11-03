@@ -1,51 +1,47 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
-<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
 <packagegui>
 	<copyright>
-<![CDATA[
+	<![CDATA[
 /* $Id$ */
-/* ========================================================================== */
+/* ====================================================================================== */
 /*
-freeradiussync.xml
-part of pfSense (http://www.pfSense.com)
-Copyright (C) 2013 Alexander Wilke <nachtfalkeaw@web.de>
-Copyright (C) 2013 Marcello Coutinho <marcellocoutinho@gmail.com>
-based on pfblocker_sync.xml
-All rights reserved.
-
-Based on m0n0wall (http://m0n0.ch/wall)
-Copyright (C) 2003-2006 Manuel Kasper <mk@neon1.net>.
-All rights reserved.
+	freeradiussync.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2013 Alexander Wilke <nachtfalkeaw@web.de>
+	Copyright (C) 2013 Marcello Coutinho <marcellocoutinho@gmail.com>
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
 */
-/* ========================================================================== */
+/* ====================================================================================== */
 /*
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
 
-1. Redistributions of source code must retain the above copyright notice,
-this list of conditions and the following disclaimer.
 
-2. Redistributions in binary form must reproduce the above copyright
-notice, this list of conditions and the following disclaimer in the
-documentation and/or other materials provided with the distribution.
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
 
-THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE.
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
 */
-/* ========================================================================== */
-]]></copyright>
-	<description><![CDATA[Describe your package here]]></description>
-	<requirements>Describe your package requirements here</requirements>
-	<faq>Currently there are no FAQ items provided.</faq>
+/* ====================================================================================== */
+	]]>
+	</copyright>
 	<name>freeradiussync</name>
 	<version>2.2.0</version>
 	<title>FreeRADIUS: XMLRPC Sync</title>
@@ -111,8 +107,13 @@ POSSIBILITY OF SUCH DAMAGE.
 		<field>
 			<fielddescr>Enable Sync</fielddescr>
 			<fieldname>varsyncenablexmlrpc</fieldname>
-			<description><![CDATA[All changes will be synced immediately to the IPs listed below if this option is checked.<br>
-						<b>Important:</b> While using "Sync to hosts defined below", only sync from host A to B, A to C but <b>do not</B> enable XMLRPC sync <b>to</b> A. This will result in a loop!]]></description>
+			<description>
+				<![CDATA[
+				Select a sync method for FreeRADIUS.<br />
+				<b>Important:</b> While using "Sync to host(s) defined below", only sync from host A to B, A to C but <b>do not</B> enable XMLRPC sync <b>to</b> A.
+				This will result in a loop!
+				]]>
+			</description>
 			<type>select</type>
 			<required/>
 			<default_value>auto</default_value>
@@ -127,7 +128,7 @@ POSSIBILITY OF SUCH DAMAGE.
 			<fieldname>varsynctimeout</fieldname>
 			<description><![CDATA[Timeout in seconds for the XMLRPC timeout. Default: 150]]></description>
 			<type>input</type>
-						<default_value>150</default_value>
+			<default_value>150</default_value>
 			<size>5</size>
 		</field>
 
@@ -144,7 +145,7 @@ POSSIBILITY OF SUCH DAMAGE.
 				<rowhelperfield>
 					<fielddescr>GUI Protocol</fielddescr>
 					<fieldname>varsyncprotocol</fieldname>
-					<description><![CDATA[Choose the protocol of the destination host. Probably <b>http</b> or <b>https</b>]]></description>
+					<description><![CDATA[Choose the protocol of the destination host (HTTP or HTTPS).]]></description>
 					<type>select</type>
 					<default_value>HTTP</default_value>
 					<options>
@@ -153,9 +154,9 @@ POSSIBILITY OF SUCH DAMAGE.
 					</options>
 				</rowhelperfield>
 				<rowhelperfield>
-					<fielddescr>GUI IP-Address</fielddescr>
+					<fielddescr>GUI IP Address/Hostname</fielddescr>
 					<fieldname>varsyncipaddress</fieldname>
-					<description><![CDATA[IP Address of the destination host.]]></description>
+					<description><![CDATA[IP Address or hostname of the destination host.]]></description>
 					<type>input</type>
 					<size>15</size>
 				</rowhelperfield>
@@ -178,7 +179,7 @@ POSSIBILITY OF SUCH DAMAGE.
 	</fields>
 	<custom_delete_php_command>
 		freeradius_sync_on_changes();
-	</custom_delete_php_command>	
+	</custom_delete_php_command>
 	<custom_php_resync_config_command>
 		freeradius_sync_on_changes();
 	</custom_php_resync_config_command>

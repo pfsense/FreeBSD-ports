@@ -17,4 +17,6 @@ www/shortcuts/pkg_haproxy.inc
 pkg/pkg_haproxy_tabs.inc
 pkg/haproxy_upgrade_config.inc
 www/javascript/haproxy_geturl.js
+/etc/inc/priv/haproxy.priv.inc
 %%DATADIR%%/info.xml
+@dir /etc/inc/priv

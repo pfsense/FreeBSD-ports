@@ -45,13 +45,17 @@
 	<name>zabbixproxylts</name>
 	<title>Services: Zabbix Proxy LTS</title>
 	<category>Monitoring</category>
-	<version>0.8.6</version>
+	<version>0.8.8</version>
 	<include_file>/usr/local/pkg/zabbix-proxy-lts.inc</include_file>
 	<addedit_string>Zabbix Proxy has been created/modified.</addedit_string>
 	<delete_string>Zabbix Proxy has been deleted.</delete_string>
 	<additional_files_needed>
 		<item>https://packages.pfsense.org/packages/config/zabbix-proxy-lts/zabbix-proxy-lts.inc</item>
 		<prefix>/usr/local/pkg/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/zabbix-proxy-lts/zabbix-proxy-lts.priv.inc</item>
+		<prefix>/etc/inc/priv/</prefix>
 	</additional_files_needed>
 	<menu>
 		<name>Zabbix Proxy LTS</name>

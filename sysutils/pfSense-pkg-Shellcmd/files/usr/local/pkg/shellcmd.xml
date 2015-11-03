@@ -124,8 +124,8 @@
 				Choose the shellcmd type.<br /><br />
 				<strong>shellcmd</strong> will run the command specified towards the end of the boot process.<br />
 				<strong>earlyshellcmd</strong> will run the command specified at the beginning of the boot process.<br />
-				<strong>afterfilterchangeshellcmd</strong> will run after each filter_configure() call.
-				See <a href="https://github.com/pfsense/pfsense/blob/master/etc/inc/filter.inc">filter.inc source code</a> for "documentation".
+				<strong>afterfilterchangeshellcmd</strong> will run after each filter_configure() call. 
+				See /etc/inc/filter.inc source code for "documentation".
 				<span class="errmsg">N.B.: Only one entry of this type can be configured!</span><br />
 				<strong>disabled</strong> will save the command in package configuration but it will NOT run on boot.<br /><br />
 				See <a href="https://doc.pfsense.org/index.php/Executing_commands_at_boot_time">Executing commands at boot time</a> for detailed explanation.

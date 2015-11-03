@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>haproxy</name>
-	<version>0.29</version>
+	<version>0.32</version>
 	<title>HAProxy</title>
 	<aftersaveredirect>/pkg_edit.php?xml=haproxy_pools.php</aftersaveredirect>
 	<include_file>/usr/local/pkg/haproxy.inc</include_file>
@@ -145,6 +145,10 @@
 	<additional_files_needed>
 		<prefix>/usr/local/www/javascript/</prefix>
 		<item>https://packages.pfsense.org/packages/config/haproxy-devel/www/javascript/haproxy_geturl.js</item>
+	</additional_files_needed>
+ 	<additional_files_needed>
+		<prefix>/etc/inc/priv/</prefix>
+		<item>https://packages.pfsense.org/packages/config/haproxy-devel/haproxy.priv.inc</item>
 	</additional_files_needed>
 	<custom_php_install_command>
 		haproxy_custom_php_install_command();

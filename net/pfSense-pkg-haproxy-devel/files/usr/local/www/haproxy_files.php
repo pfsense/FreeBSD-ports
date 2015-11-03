@@ -42,15 +42,20 @@ if (!is_array($a_pools)) $a_pools = array();
 $fields_files = array();
 $fields_files[0]['name']="name";
 $fields_files[0]['columnheader']="Name";
-$fields_files[0]['colwidth']="30%";
+$fields_files[0]['colwidth']="20%";
 $fields_files[0]['type']="textbox";
 $fields_files[0]['size']="20";
-
-$fields_files[1]['name']="content";
-$fields_files[1]['columnheader']="content";
-$fields_files[1]['colwidth']="70%";
-$fields_files[1]['type']="textarea";
-$fields_files[1]['size']="70";
+$fields_files[1]['name']="type";
+$fields_files[1]['columnheader']="Type";
+$fields_files[1]['colwidth']="10%";
+$fields_files[1]['type']="select";
+$fields_files[1]['size']="10";
+$fields_files[1]['items']=$a_filestype;
+$fields_files[2]['name']="content";
+$fields_files[2]['columnheader']="content";
+$fields_files[2]['colwidth']="70%";
+$fields_files[2]['type']="textarea";
+$fields_files[2]['size']="70";
 
 $fileslist = new HaproxyHtmlList("table_files", $fields_files);
 $fileslist->keyfield = "name";
@@ -63,7 +68,7 @@ if ($_POST) {
 		if ($result)
 			unlink_if_exists($d_haproxyconfdirty_path);
 	} else {
-		$a_files = $fileslist->haproxy_htmllist_get_values($fields_files);
+		$a_files = $fileslist->haproxy_htmllist_get_values();
 		$filedupcheck = array();
 
 		foreach($a_files as $key => $file) {
@@ -77,7 +82,7 @@ if ($_POST) {
 		
 		// replace references in backends to renamed 'files'
 		foreach($a_pools as &$backend) {
-			if (is_arrayset($backend,'errorfiles','item'))
+			if (is_arrayset($backend,'errorfiles','item')) {
 				foreach($backend['errorfiles']['item'] as &$errorfile) {
 					$found = false;
 					foreach($a_files as $key => $file) {
@@ -86,9 +91,11 @@ if ($_POST) {
 							$found = true;
 						}
 					}
-					if (!$found)
+					if (!$found) {
 						$input_errors[] = "Errorfile marked for deletion: " . $errorfile['errorfile'] . " which is used in backend " . $backend['name'];
+					}
 				}
+			}
 		}
 		if (!$input_errors) {
 			// save config when no errors found
@@ -100,10 +107,9 @@ if ($_POST) {
 	}
 }
 
-$pf_version=substr(trim(file_get_contents("/etc/version")),0,3);
-	
 $pgtitle = "Services: HAProxy: Files";
 include("head.inc");
+haproxy_css();
 
 ?>
 <body link="#0000CC" vlink="#0000CC" alink="#0000CC">
@@ -165,7 +171,7 @@ include("head.inc");
 <script type="text/javascript">
 	totalrows =  <?php echo $counter; ?>;
 <?
-	phparray_to_javascriptarray($fields_files,"fields_files",Array('/*','/*/name','/*/type','/*/size','/*/items','/*/items/*','/*/items/*/*','/*/items/*/*/name'));
+	$fileslist->outputjavascript();
 ?>
 </script>
 

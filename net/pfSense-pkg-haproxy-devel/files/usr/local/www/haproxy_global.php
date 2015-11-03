@@ -38,12 +38,13 @@ require_once("pkg_haproxy_tabs.inc");
 require_once("haproxy_htmllist.inc");
 
 $simplefields = array('localstats_refreshtime', 'localstats_sticktable_refreshtime', 'log-send-hostname', 'ssldefaultdhparam',
-  'email_level', 'email_myhostname', 'email_from', 'email_to');
+  'email_level', 'email_myhostname', 'email_from', 'email_to',
+  'resolver_retries', 'resolver_timeoutretry', 'resolver_holdvalid');
 
 $none = array();
 $none['']['name'] = "Dont log";
 $a_sysloglevel = $none + $a_sysloglevel;
-  
+
 $fields_mailers = array();
 $fields_mailers[0]['name'] = "name";
 $fields_mailers[0]['columnheader'] = "Name";
@@ -61,8 +62,27 @@ $fields_mailers[2]['colwidth'] = "10%";
 $fields_mailers[2]['type'] = "textbox";
 $fields_mailers[2]['size'] = "10";
 
+$fields_resolvers = array();
+$fields_resolvers[0]['name'] = "name";
+$fields_resolvers[0]['columnheader'] = "Name";
+$fields_resolvers[0]['colwidth'] = "30%";
+$fields_resolvers[0]['type'] = "textbox";
+$fields_resolvers[0]['size'] = "20";
+$fields_resolvers[1]['name'] = "server";
+$fields_resolvers[1]['columnheader'] = "DNSserver";
+$fields_resolvers[1]['colwidth'] = "60%";
+$fields_resolvers[1]['type'] = "textbox";
+$fields_resolvers[1]['size'] = "60";
+$fields_resolvers[2]['name'] = "port";
+$fields_resolvers[2]['columnheader'] = "DNSport";
+$fields_resolvers[2]['colwidth'] = "10%";
+$fields_resolvers[2]['type'] = "textbox";
+$fields_resolvers[2]['size'] = "10";
+
 $mailerslist = new HaproxyHtmlList("table_mailers", $fields_mailers);
 $mailerslist->keyfield = "name";
+$resolverslist = new HaproxyHtmlList("table_resolvers", $fields_resolvers);
+$resolverslist->keyfield = "name";
 
 if (!is_array($config['installedpackages']['haproxy'])) 
 	$config['installedpackages']['haproxy'] = array();
@@ -82,7 +102,7 @@ if ($_POST) {
 			unlink_if_exists($d_haproxyconfdirty_path);
 	} else {
 		$a_mailers = $mailerslist->haproxy_htmllist_get_values();
-		$pool['ha_servers']['item'] = $a_servers;
+		$a_resolvers = $resolverslist->haproxy_htmllist_get_values();
 
 		if ($_POST['carpdev'] == "disabled")
 			unset($_POST['carpdev']);
@@ -99,28 +119,18 @@ if ($_POST) {
 		if ($_POST['localstats_sticktable_refreshtime'] && (!is_numeric($_POST['localstats_sticktable_refreshtime']))) 
 			$input_errors[] = "The local stats sticktable refresh time should be numeric or empty.";
 
-		/*if($_POST['synchost1'] && !is_ipaddr($_POST['synchost1']))
-			$input_errors[] = "Synchost1 needs to be an IPAddress.";
-		if($_POST['synchost2'] && !is_ipaddr($_POST['synchost2']))
-			$input_errors[] = "Synchost2 needs to be an IPAddress.";
-		if($_POST['synchost3'] && !is_ipaddr($_POST['synchost3']))
-			$input_errors[] = "Synchost3 needs to be an IPAddress.";*/
-
 		if (!$input_errors) {
-			$config['installedpackages']['haproxy']['email_mailers']['items'] = $a_mailers;
+			$config['installedpackages']['haproxy']['email_mailers']['item'] = $a_mailers;
+			$config['installedpackages']['haproxy']['dns_resolvers']['item'] = $a_resolvers;
 		
 			$config['installedpackages']['haproxy']['enable'] = $_POST['enable'] ? true : false;
 			$config['installedpackages']['haproxy']['terminate_on_reload'] = $_POST['terminate_on_reload'] ? true : false;
 			$config['installedpackages']['haproxy']['maxconn'] = $_POST['maxconn'] ? $_POST['maxconn'] : false;
 			$config['installedpackages']['haproxy']['enablesync'] = $_POST['enablesync'] ? true : false;
-			//$config['installedpackages']['haproxy']['synchost1'] = $_POST['synchost1'] ? $_POST['synchost1'] : false;
-			//$config['installedpackages']['haproxy']['synchost2'] = $_POST['synchost2'] ? $_POST['synchost2'] : false;
-			//$config['installedpackages']['haproxy']['synchost2'] = $_POST['synchost3'] ? $_POST['synchost3'] : false;
 			$config['installedpackages']['haproxy']['remotesyslog'] = $_POST['remotesyslog'] ? $_POST['remotesyslog'] : false;
 			$config['installedpackages']['haproxy']['logfacility'] = $_POST['logfacility'] ? $_POST['logfacility'] : false;
 			$config['installedpackages']['haproxy']['loglevel'] = $_POST['loglevel'] ? $_POST['loglevel'] : false;
 			$config['installedpackages']['haproxy']['carpdev'] = $_POST['carpdev'] ? $_POST['carpdev'] : false;
-			//$config['installedpackages']['haproxy']['syncpassword'] = $_POST['syncpassword'] ? $_POST['syncpassword'] : false;
 			$config['installedpackages']['haproxy']['localstatsport'] = $_POST['localstatsport'] ? $_POST['localstatsport'] : false;
 			$config['installedpackages']['haproxy']['advanced'] = $_POST['advanced'] ? base64_encode($_POST['advanced']) : false;
 			$config['installedpackages']['haproxy']['nbproc'] = $_POST['nbproc'] ? $_POST['nbproc'] : false;			
@@ -132,16 +142,19 @@ if ($_POST) {
 	}
 }
 
-$a_mailers = $config['installedpackages']['haproxy']['email_mailers']['items'];
+$a_mailers = $config['installedpackages']['haproxy']['email_mailers']['item'];
+if (!is_array($a_mailers)) {
+	$a_mailers = array();
+}
+$a_resolvers = $config['installedpackages']['haproxy']['dns_resolvers']['item'];
+if (!is_array($a_resolvers)) {
+	$a_resolvers = array();
+}
 
 $pconfig['enable'] = isset($config['installedpackages']['haproxy']['enable']);
 $pconfig['terminate_on_reload'] = isset($config['installedpackages']['haproxy']['terminate_on_reload']);
 $pconfig['maxconn'] = $config['installedpackages']['haproxy']['maxconn'];
 $pconfig['enablesync'] = isset($config['installedpackages']['haproxy']['enablesync']);
-//$pconfig['syncpassword'] = $config['installedpackages']['haproxy']['syncpassword'];
-//$pconfig['synchost1'] = $config['installedpackages']['haproxy']['synchost1'];
-//$pconfig['synchost2'] = $config['installedpackages']['haproxy']['synchost2'];
-//$pconfig['synchost3'] = $config['installedpackages']['haproxy']['synchost3'];
 $pconfig['remotesyslog'] = $config['installedpackages']['haproxy']['remotesyslog'];
 $pconfig['logfacility'] = $config['installedpackages']['haproxy']['logfacility'];
 $pconfig['loglevel'] = $config['installedpackages']['haproxy']['loglevel'];
@@ -158,13 +171,9 @@ if (!$pconfig['logfacility'])
 if (!$pconfig['loglevel'])
 	$pconfig['loglevel'] = 'info';
 
-$pf_version=substr(trim(file_get_contents("/etc/version")),0,3);
-if ($pf_version < 2.0)
-	$one_two = true;
-
 $pgtitle = "Services: HAProxy: Settings";
 include("head.inc");
-
+haproxy_css();
 ?>
 <body link="#0000CC" vlink="#0000CC" alink="#0000CC">
 <script type="text/javascript" src="javascript/scriptaculous/prototype.js"></script>
@@ -179,9 +188,6 @@ function enable_change(enable_change) {
 }
 //-->
 </script>
-<?php if($one_two): ?>
-<p class="pgtitle"><?=$pgtitle?></p>
-<?php endif; ?>
 <form action="haproxy_global.php" method="post" name="iform">
 <?php if ($input_errors) print_input_errors($input_errors); ?>
 <?php if ($savemsg) print_info_box($savemsg); ?>
@@ -210,7 +216,7 @@ function enable_change(enable_change) {
 			<tr>
 				<td width="22%" valign="top" class="vncell">Installed version:</td>
 				<td width="78%" class="vtable">
-					<strong><?=haproxy_verion()?></strong>
+					<strong><?=haproxy_version()?></strong>
 				</td>
 			</tr>
 			<tr>
@@ -400,9 +406,55 @@ function enable_change(enable_change) {
 				</td>
 			</tr>
 			<tr><td>&nbsp;</td></tr>
-			<? if (haproxy_verion() >= '1.6' ) { ?>
+			<? if (haproxy_version() >= '1.6-dev4' ) { ?>
 			<tr>
-				<td colspan="2" valign="top" class="listtopic">Email notifications</td>
+				<td colspan="2" valign="top" class="listtopic">Global DNS resolvers for haproxy</td>
+			</tr>
+			<tr>
+				<td valign="top" class="vncell">
+					DNS servers
+				</td>
+				<td class="vtable">
+					Configuring DNS servers will allow haproxy to detect when a servers IP changes to a different one in 'elastic' environments without needing to be restarted.
+					<br/>
+					<?
+					$counter=0;
+					$resolverslist->Draw($a_resolvers);
+					?>
+				</td>
+			</tr>
+			<tr>
+				<td valign="top" class="vncell">
+					'resolver_retries'
+				</td>
+				<td class="vtable">
+					<input name="resolver_retries" type="text" <?if(isset($pconfig['resolver_retries'])) echo "value=\"{$pconfig['resolver_retries']}\"";?> size="50"/><br/>
+					Email address to be used as the sender of the emails.
+				</td>
+			</tr>
+			<tr>
+				<td valign="top" class="vncell">
+					'resolver_timeoutretry'
+				</td>
+				<td class="vtable">
+					<input name="resolver_timeoutretry" type="text" <?if(isset($pconfig['resolver_timeoutretry'])) echo "value=\"{$pconfig['resolver_timeoutretry']}\"";?> size="50"/><br/>
+					Email address to be used as the sender of the emails.
+				</td>
+			</tr>
+			<tr>
+				<td valign="top" class="vncell">
+					'resolver_holdvalid'
+				</td>
+				<td class="vtable">
+					<input name="resolver_holdvalid" type="text" <?if(isset($pconfig['resolver_holdvalid'])) echo "value=\"{$pconfig['resolver_holdvalid']}\"";?> size="50"/><br/>
+					Email address to be used as the sender of the emails.
+				</td>
+			</tr>
+			<tr><td>&nbsp;</td></tr>
+			<? }
+			if (haproxy_version() >= '1.6' ) { ?>
+			<tr>
+				<td colspan="2" valign="top" class="listtopic">Global email notifications</td>
 			</tr>
 			<tr>
 				<td valign="top" class="vncell">
@@ -412,7 +464,6 @@ function enable_change(enable_change) {
 					It is possible to send email alerts when the state of servers changes. If configured email alerts are sent to each mailer that is configured in a mailers section. Email is sent to mailers using SMTP.
 					<br/>
 					<?
-					$counter=0;
 					$mailerslist->Draw($a_mailers);
 					?>
 				</td>
@@ -582,7 +633,8 @@ haproxy_htmllist_js();
 <script type="text/javascript">
 	totalrows =  <?php echo $counter; ?>;
 <?
-	phparray_to_javascriptarray($fields_mailers,"fields_mailers",Array('/*','/*/name','/*/type','/*/size','/*/items','/*/items/*','/*/items/*/*','/*/items/*/*/name'));
+	$mailerslist->outputjavascript();
+	$resolverslist->outputjavascript();
 ?>
 
 	function scroll_after_fade() {

@@ -399,7 +399,7 @@
 			<fieldname>private_subnet_proxy_off</fieldname>
 			<description>
 				<![CDATA[
-				Do not forward traffic to Private Address Space (RFC 1918) <strong>destinations</strong> through the proxy server but let is pass directly through the firewall.
+				Do not forward traffic to Private Address Space (RFC 1918) <strong>destinations</strong> through the proxy server but let it pass directly through the firewall.
 				]]>
 			</description>
 			<type>checkbox</type>

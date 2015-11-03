@@ -1,3 +1,5 @@
 pkg/zabbix-proxy-lts.xml
 pkg/zabbix-proxy-lts.inc
+/etc/inc/priv/zabbix-proxy-lts.priv.inc
 %%DATADIR%%/info.xml
+@dir /etc/inc/priv

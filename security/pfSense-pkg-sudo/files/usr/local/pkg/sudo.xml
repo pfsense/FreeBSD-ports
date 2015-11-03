@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
 <packagegui>
 	<copyright>
 	<![CDATA[
@@ -42,7 +44,7 @@
 	<description>Sudo Command Control</description>
 	<requirements>None</requirements>
 	<name>sudo</name>
-	<version>0.2.7</version>
+	<version>0.2.8</version>
 	<title>Sudo - Shell Command Privilege Delegation Utility</title>
 	<include_file>/usr/local/pkg/sudo.inc</include_file>
 	<menu>
@@ -56,6 +58,10 @@
 		<prefix>/usr/local/pkg/</prefix>
 		<item>https://packages.pfsense.org/packages/config/sudo/sudo.inc</item>
 	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/etc/inc/priv/</prefix>
+		<item>https://packages.pfsense.org/packages/config/sudo/sudo.priv.inc</item>
+	</additional_files_needed>
 	<fields>
 		<field>
 			<type>listtopic</type>
@@ -63,11 +69,14 @@
 		</field>
 		<field>
 			<type>info</type>
-			<description><![CDATA[
-User permission definitions for allowing the use of sudo by shell users to run commands as other users, such as root.
-<br /><br />More information on the full command options may be found in the <a href="http://www.sudo.ws/sudoers.man.html">sudoers manual</a>.
-<br /><br />By default the command is "ALL" meaning the user can run any commands. Leaving the commands field blank assumes "ALL". A comma-separated list of commands can be supplied to limit the user to individual binaries. Full paths to binaries must be used.
-			]]></description>
+			<description>
+			<![CDATA[
+				User permission definitions for allowing the use of sudo by shell users to run commands as other users, such as root.<br /><br />
+				More information on the full command options may be found in the <a href="http://www.sudo.ws/sudoers.man.html">sudoers manual</a>.<br /><br />
+				By default the command is "ALL" meaning the user can run any commands. Leaving the commands field blank assumes "ALL".<br /><br />
+				A comma-separated list of commands can be supplied to limit the user to individual binaries. <strong>Full paths to binaries must be used.</strong>
+			]]>
+			</description>
 		</field>
 		<field>
 			<fielddescr>User Permissions</fielddescr>
@@ -100,7 +109,7 @@ User permission definitions for allowing the use of sudo by shell users to run c
 				<rowhelperfield>
 					<fielddescr>Command List</fielddescr>
 					<fieldname>cmdlist</fieldname>
-					<description>Commands the user may run. Comma-separated list, full paths preferred. Default: ALL</description>
+					<description>Commands the user may run. Comma-separated list, full paths required. Default: ALL</description>
 					<type>input</type>
 					<size>30</size>
 					<value>ALL</value>

@@ -169,7 +169,6 @@ function squid_antivirus_deinstall_command() {
 	mwexec("/bin/ps awux | /usr/bin/grep '[f]reshclam' | /usr/bin/awk '{ print $2 }' | /usr/bin/xargs kill");
 
 	/* clean up created PBI symlinks */
-	update_output_window("Finishing package cleanup.");
 	if (SQUID_LOCALBASE != '/usr/local') {
 		$ln_icap = array('bin/c-icap', 'bin/c-icap-client', 'c-icap-config', 'c-icap-libicapapi-config', 'c-icap-stretch', 'lib/c_icap', 'share/c_icap', 'etc/c-icap');
 		foreach ($ln_icap as $ln) {
@@ -191,7 +190,6 @@ function squid_antivirus_deinstall_command() {
 	$keep = ($squidsettings['keep_squid_data'] ? true : false);
 
 	if (!$keep) {
-		update_output_window("Removing antivirus definitions and logs ... One moment please...");
 		$dirs = array("/var/run/c-icap", "/var/log/c-icap", "/var/log/clamav", "/var/run/clamav", "/var/db/clamav");
 		foreach ($dirs as $dir) {
 			if (is_dir("{$dir}")) {
@@ -218,7 +216,6 @@ function squid_antivirus_deinstall_command() {
 	/* check if clamav/c_icap is enabled in rc.conf.local */
 	// XXX: This hasn't been used since 0.3.7; to be removed in future
 	if (file_exists("/etc/rc.conf.local")) {
-		update_output_window("Removing antivirus services from /etc/rc.conf.local...");
 		$sample_file = file_get_contents("/etc/rc.conf.local");
 		$rcconf_local_m[0] = "@c_icap_enable(.*)\n@";
 		$rcconf_local_m[1] = "@clamav_clamd_enable(.*)\n@";

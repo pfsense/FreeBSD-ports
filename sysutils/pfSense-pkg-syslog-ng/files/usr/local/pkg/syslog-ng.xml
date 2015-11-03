@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>Syslog-ng</name>
-	<version>1.0.8</version>
+	<version>1.1.1</version>
 	<title>Services: Syslog-ng</title>
 	<include_file>/usr/local/pkg/syslog-ng.inc</include_file>
 	<menu>
@@ -74,6 +74,10 @@
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
 		<item>https://packages.pfsense.org/packages/config/syslog-ng/syslog-ng.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/etc/inc/priv/</prefix>
+		<item>https://packages.pfsense.org/packages/config/syslog-ng/syslog-ng.priv.inc</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
