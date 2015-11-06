@@ -2,9 +2,10 @@
 <pfsensepkgs>
 	<package>
 		<name>Lightsquid</name>
-		<descr><![CDATA[LightSquid is a high performance web proxy reporting tool. Proxy realtime statistics (SQStat). Requires Squid HTTP proxy.]]></descr>
+		<descr><![CDATA[LightSquid is a high performance web proxy reporting tool. Includes proxy realtime statistics (SQStat).
+			&lt;strong&gt;Requires Squid3 or Squid package.&lt;/strong&gt;]]></descr>
 		<website>http://lightsquid.sf.net/</website>
-		<category>Network Report</category>
+		<category>Network Management</category>
 		<version>2.42</version>
 		<maintainer>dv_serg@mail.ru</maintainer>
 		<port_category>www</port_category>
@@ -15,7 +16,7 @@
 			<port>www/lightsquid</port>
 		</build_pbi>
 		<build_options>lightsquid_SET_FORCE=GD;libgd_UNSET_FORCE=FONTCONFIG XPM;perl_UNSET_FORCE=MULTIPLICITY</build_options>
-		<status>RC1</status>
+		<status>RC</status>
 		<required_version>2.2</required_version>
 		<config_file>https://packages.pfsense.org/packages/config/lightsquid/lightsquid.xml</config_file>
 		<configurationfile>lightsquid.xml</configurationfile>

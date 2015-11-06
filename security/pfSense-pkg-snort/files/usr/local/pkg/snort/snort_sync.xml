@@ -172,11 +172,11 @@
 					</options>
 				</rowhelperfield>
 				<rowhelperfield>
-					<fielddescr>IP-Address</fielddescr>
+					<fielddescr>IP Address/Hostname</fielddescr>
 					<fieldname>varsyncipaddress</fieldname>
-					<description><![CDATA[IP Address of the destination host.]]></description>
+					<description><![CDATA[IP address or hostname of the destination host.]]></description>
 					<type>input</type>
-					<size>15</size>
+					<size>40</size>
 				</rowhelperfield>
 				<rowhelperfield>
 					<fielddescr>Port</fielddescr>
@@ -202,8 +202,6 @@
 			</rowhelper>
 		</field>
 	</fields>
-	<custom_delete_php_command>
-	</custom_delete_php_command>	
 	<custom_php_resync_config_command>
 		write_config("Snort pkg: saved changes to XMLRPC sync configuration.");snort_sync_on_changes();
 	</custom_php_resync_config_command>

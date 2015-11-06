@@ -323,9 +323,10 @@ if (isset($id) && $a_pools[$id]) {
 	}
 }
 
-if (isset($_GET['dup']))
+if (isset($_GET['dup'])) {
 	unset($id);
-
+	$pconfig['name'] .= "-copy";
+}
 $changedesc = "Services: HAProxy: Backend server pool: ";
 $changecount = 0;
 

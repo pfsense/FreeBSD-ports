@@ -8,7 +8,7 @@
 		<config_file>https://packages.pfsense.org/packages/config/iperf/iperf.xml</config_file>
 		<depends_on_package_pbi>iperf-2.0.5-##ARCH##.pbi</depends_on_package_pbi>
 		<version>2.0.5.2</version>
-		<status>Beta</status>
+		<status>BETA</status>
 		<pkginfolink>https://doc.pfsense.org/index.php/Iperf_package</pkginfolink>
 		<required_version>2.2</required_version>
 		<configurationfile>iperf.xml</configurationfile>

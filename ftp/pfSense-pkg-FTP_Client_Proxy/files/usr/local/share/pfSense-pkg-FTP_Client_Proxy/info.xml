@@ -8,7 +8,7 @@
 		<maintainer>jimp@pfsense.org</maintainer>
 		<version>0.3</version>
 		<category>Services</category>
-		<status>Beta</status>
+		<status>BETA</status>
 		<port_category>ftp</port_category>
 		<config_file>https://packages.pfsense.org/packages/config/ftpproxy/ftpproxy.xml</config_file>
 		<required_version>2.2</required_version>

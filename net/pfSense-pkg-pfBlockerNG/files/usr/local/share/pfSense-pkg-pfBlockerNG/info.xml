@@ -8,11 +8,11 @@
 			De-Duplication, Suppression, and Reputation enhancements.&lt;br /&gt;
 			Provision to download from diverse List formats.&lt;br /&gt;
 			Advanced Integration for Emerging Threats IQRisk IP Reputation Threat Sources.]]></descr>
-		<category>Firewall</category>
+		<category>Security</category>
 		<pkginfolink>https://forum.pfsense.org/index.php?topic=86212.0</pkginfolink>
 		<config_file>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng.xml</config_file>
 		<version>1.10</version>
-		<status>Stable</status>
+		<status>RELEASE</status>
 		<required_version>2.2</required_version>
 		<maintainer>BBCan177@gmail.com</maintainer>
 		<configurationfile>pfblockerng.xml</configurationfile>

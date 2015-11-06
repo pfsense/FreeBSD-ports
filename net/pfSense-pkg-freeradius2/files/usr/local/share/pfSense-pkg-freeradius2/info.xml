@@ -8,15 +8,15 @@
 			FreeRADIUS and FreeRADIUS2 settings are not compatible so don't use them together or try to update.&lt;br /&gt;
 			On pfSense docs there is a how-to which could help you on porting users.]]></descr>
 		<pkginfolink>https://doc.pfsense.org/index.php/FreeRADIUS_2.x_package</pkginfolink>
-		<category>System</category>
-		<version>1.6.16</version>
-		<status>RC1</status>
+		<category>Services</category>
+		<version>1.6.17</version>
+		<status>RC</status>
 		<required_version>2.2</required_version>
 		<maintainer>nachtfalkeaw@web.de</maintainer>
 		<depends_on_package_pbi>freeradius-2.2.6_3-##ARCH##.pbi</depends_on_package_pbi>
 		<config_file>https://packages.pfsense.org/packages/config/freeradius2/freeradius.xml</config_file>
 		<configurationfile>freeradius.xml</configurationfile>
-		<after_install_info>Please visit Services: FreeRADIUS.</after_install_info>
+		<after_install_info>Please visit Services - FreeRADIUS menu to configure the package.</after_install_info>
 		<port_category>net</port_category>
 		<run_depends>sbin/radiusd:net/freeradius2 bin/bash:shells/bash</run_depends>
 		<build_pbi>

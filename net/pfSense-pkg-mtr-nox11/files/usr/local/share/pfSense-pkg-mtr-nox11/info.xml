@@ -8,7 +8,7 @@
 		<category>Network Management</category>
 		<depends_on_package_pbi>mtr-0.85_1-##ARCH##.pbi</depends_on_package_pbi>
 		<version>0.85_3</version>
-		<status>Stable</status>
+		<status>RELEASE</status>
 		<required_version>2.2</required_version>
 		<config_file>https://packages.pfsense.org/packages/config/mtr-nox11/mtr-nox11.xml</config_file>
 		<configurationfile>mtr-nox11.xml</configurationfile>

@@ -766,7 +766,8 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 		$backend_mode = $frontendtype;
 	}
 	fwrite ($fd, "\tmode\t\t\t" . $backend_mode . "\n");
-	
+	fwrite ($fd, "\tlog\t\t\tglobal\n");
+
 	$use_haproxyresolvers = false;
 	if (haproxy_version() >= '1.6') {
 		$use_mailers = is_array($a_mailers) && count($a_mailers) > 0;
@@ -1460,6 +1461,18 @@ function haproxy_writeconf($configpath) {
 	$a_mailers = &$config['installedpackages']['haproxy']['email_mailers']['item'];
 	$a_resolvers = &$config['installedpackages']['haproxy']['dns_resolvers']['item'];
 	$a_files = &$config['installedpackages']['haproxy']['files']['item'];
+	if (!is_array($a_frontends)) {
+		$a_frontends = array();
+	}
+	if (!is_array($a_backends)) {
+		$a_backends = array();
+	}
+	if (!is_array($a_mailers)) {
+		$a_mailers = array();
+	}
+	if (!is_array($a_resolvers)) {
+		$a_resolvers = array();
+	}
 	
 	$fd = fopen($configfile, "w");
 	if (is_array($a_global)) {

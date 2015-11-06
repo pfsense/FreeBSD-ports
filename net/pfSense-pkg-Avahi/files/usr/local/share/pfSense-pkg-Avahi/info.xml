@@ -4,7 +4,10 @@
 		<name>Avahi</name>
 		<pkginfolink>https://doc.pfsense.org/index.php/Avahi_package</pkginfolink>
 		<website>http://www.avahi.org/</website>
-		<descr><![CDATA[Avahi is a system which facilitates service discovery on a local network. This means that you can plug your laptop or computer into a network and instantly be able to view other people who you can chat with, find printers to print to or find files being shared. This kind of technology is already found in Apple Mac OS X (branded Rendezvous, Bonjour and sometimes Zeroconf) and is very convenient. Avahi is mainly based on Lennart Poettering's flexmdns mDNS implementation for Linux which has been discontinued in favour of Avahi.]]></descr>
+		<descr><![CDATA[Avahi is a system which facilitates service discovery on a local network via the mDNS/DNS-SD protocol suite.&lt;br/&gt;
+			This enables you to plug your laptop or computer into a network and instantly be able to view other people who you can chat with, find printers to print to or find files being shared.&lt;br/&gt;
+			In addition it supports some nifty things that have never been seen elsewhere like correct mDNS reflection across LAN segments.&lt;br/&gt;
+			Compatible technology is found in Apple MacOS X (branded ​Bonjour and sometimes Zeroconf).]]></descr>
 		<category>Network Management</category>
 		<lib_depends>libavahi-core.so:net/avahi-app</lib_depends>
 		<port_category>net</port_category>
@@ -19,6 +22,6 @@
 		<required_version>2.2</required_version>
 		<config_file>https://packages.pfsense.org/packages/config/avahi/avahi.xml</config_file>
 		<configurationfile>avahi.xml</configurationfile>
-		<after_install_info>Please visit the Avahi settings tab and select which interfaces you do not wish Avahi to listen on and click save to start the service.</after_install_info>
+		<after_install_info>Please visit Services - Avahi menu, enable the service and select which interfaces you do NOT wish Avahi to listen on. Save settings to start the service.</after_install_info>
 	</package>
 </pfsensepkgs>

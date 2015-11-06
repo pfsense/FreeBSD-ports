@@ -283,6 +283,7 @@ if (isset($id) && $a_backend[$id]) {
 
 if (isset($_GET['dup'])) {
 	unset($id);
+	$pconfig['name'] .= "-copy";
 	if ($pconfig['secondary'] != 'yes')
 		$pconfig['primary_frontend'] = $pconfig['name'];
 }

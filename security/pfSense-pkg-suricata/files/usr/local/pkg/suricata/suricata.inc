@@ -3304,7 +3304,7 @@ function suricata_sync_on_changes() {
 
 	/* Do not attempt a package sync while booting up or installing package */
 	if ($g['booting'] || $g['suricata_postinstall'] == TRUE) {
-		log_error("[suricata] No xmlrpc sync to CARP targets when booting up or during package reinstallation.");
+		log_error("[suricata] Skipping XMLRPC sync when booting up or during package reinstallation.");
 		return;
 	}
 
@@ -3318,17 +3318,18 @@ function suricata_sync_on_changes() {
 				if (is_array($suricata_sync['row'])) {
 					$rs = $suricata_sync['row'];
 				} else {
-					log_error("[suricata] xmlrpc CARP sync is enabled but there are no hosts configured as replication targets.");
+					log_error("[suricata] XMLRPC sync is enabled but there are no hosts configured as replication targets.");
 					return;
 				}
 				break;
 			case "auto":
-				if (is_array($config['installedpackages']['carpsettings']) && is_array($config['installedpackages']['carpsettings']['config'])) {
-					$system_carp = $config['installedpackages']['carpsettings']['config'][0];
+				if (is_array($config['hasync'])) {
+					$system_carp = $config['hasync'];
 					$rs[0]['varsyncipaddress'] = $system_carp['synchronizetoip'];
 					$rs[0]['varsyncusername'] = $system_carp['username'];
 					$rs[0]['varsyncpassword'] = $system_carp['password'];
-					$rs[0]['varsyncsuricatastart'] = "no";
+					$rs[0]['varsyncsuricatastart'] = FALSE;
+					$rs[0]['varsyncdestinenable'] = FALSE;
 					// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
 					if ($config['system']['webgui']['protocol'] == "http") {
 						$rs[0]['varsyncprotocol'] = "http";
@@ -3338,11 +3339,13 @@ function suricata_sync_on_changes() {
 						$rs[0]['varsyncport'] = $config['system']['webgui']['port'] ?: '443';
 					}
 					if ($system_carp['synchronizetoip'] == "") {
-						log_error("[suricata] xmlrpc CARP sync is enabled but there are no system backup hosts configured as replication targets.");
+						log_error("[suricata] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
 						return;
+					} else {
+						$rs[0]['varsyncdestinenable'] = TRUE;
 					}
 				} else {
-					log_error("[suricata] xmlrpc CARP sync is enabled but there are no system backup hosts configured as replication targets.");
+					log_error("[suricata] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
 					return;
 				}
 				break;			
@@ -3351,44 +3354,42 @@ function suricata_sync_on_changes() {
 				break;
 		}
 		if (is_array($rs)) {
-			log_error("[suricata] Suricata pkg xmlrpc CARP sync is starting.");
+			log_error("[suricata] XMLRPC sync is starting.");
 			foreach ($rs as $sh) {
-				if ($sh['varsyncsuricatastart']) {
-					$syncstartsuricata = $sh['varsyncsuricatastart'];
-				} else {
-					$syncstartsuricata = "OFF";
-				}
-				$sync_to_ip = $sh['varsyncipaddress'];
-				$password = $sh['varsyncpassword'];
-				$port = $sh['varsyncport'];
-				$protocol = $sh['varsyncprotocol'];
-				$error = '';
-				$success = TRUE;
-				if ($sh['varsyncusername']) {
-					$username = $sh['varsyncusername'];
-				} else {
-					$username = 'admin';
-				}
-				if ($password == "") {
-					$error = "Password parameter is empty. ";
-					$success = FALSE;
-				}
-				if (!is_ipaddr($sync_to_ip) && !is_hostname($sync_to_ip) && !is_domain($sync_to_ip)) {
-					$error .= "Misconfigured Replication Target IP Address. ";
-					$success = FALSE;
-				}
-				if (!is_port($port)) {
-					$error .= "Misconfigured Replication Target Port. ";
-					$success = FALSE;
-				}
-				if ($success) {
-					suricata_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protocol, $username, $password, $synctimeout, $syncstartsuricata);
-				} else {
-					log_error("[suricata] Suricata pkg xmlrpc CARP sync aborted due to the following error(s): {$error}");
-					return;
+				// Only sync enabled replication targets
+				if ($sh['varsyncdestinenable']) {
+					if ($sh['varsyncsuricatastart']) {
+						$syncstartsuricata = $sh['varsyncsuricatastart'];
+					} else {
+						$syncstartsuricata = "OFF";
+					}
+					$sync_to_ip = $sh['varsyncipaddress'];
+					$password = $sh['varsyncpassword'];
+					$port = $sh['varsyncport'];
+					$protocol = $sh['varsyncprotocol'];
+					$error = '';
+					$success = TRUE;
+					$username = $sh['varsyncusername'] ?: 'admin';
+					if ($password == "") {
+						$error = "Password parameter is empty. ";
+						$success = FALSE;
+					}
+					if (!is_ipaddr($sync_to_ip) && !is_hostname($sync_to_ip) && !is_domain($sync_to_ip)) {
+						$error .= "Misconfigured Replication Target IP Address. ";
+						$success = FALSE;
+					}
+					if (!is_port($port)) {
+						$error .= "Misconfigured Replication Target Port. ";
+						$success = FALSE;
+					}
+					if ($success) {
+						suricata_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protocol, $username, $password, $synctimeout, $syncstartsuricata);
+					} else {
+						log_error("[suricata] XMLRPC sync with '{$sync_to_ip}' aborted due to the following error(s): {$error}");
+					}
 				}
 			}
-			log_error("[suricata] Suricata pkg xmlrpc CARP sync completed.");
+			log_error("[suricata] XMLRPC sync completed.");
 		}
  	}
 }
@@ -3399,12 +3400,12 @@ function suricata_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protoc
 
 	/* Do not attempt a package sync while booting up or installing package */
 	if ($g['booting'] || isset($g['suricata_postinstall'])) {
-		log_error("[suricata] No xmlrpc sync to CARP targets when booting up or during package reinstallation.");
+		log_error("[suricata] Skipping XMLRPC sync when booting up or during package reinstallation.");
 		return;
 	}
 
 	if ($username == "" || $password == "" || $sync_to_ip == "" || $port == "" || $protocol == "") {
-		log_error("[suricata] A required XMLRPC CARP sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync");
+		log_error("[suricata] A required XMLRPC sync parameter (username, password, replication target, port or protocol) is empty ... aborting pkg sync");
 		return;
 	}
 
@@ -3428,25 +3429,25 @@ function suricata_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protoc
 		$method = 'pfsense.exec_php';
 		$params = array( XML_RPC_encode($password), XML_RPC_encode($payload) );
 	
-		log_error("[suricata] Suricata XMLRPC CARP sync sending auto-SID conf files to {$url}:{$port}.");
+		log_error("[suricata] XMLRPC sync sending auto-SID conf files to {$url}:{$port}.");
 		$msg = new XML_RPC_Message($method, $params);
 		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
 		$cli->setCredentials($username, $password);
 		$resp = $cli->send($msg, $synctimeout);
 		$error = "";
 		if (!$resp) {
-			$error = "A communications error occurred while attempting Suricata XMLRPC CARP sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
+			$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
 			log_error($error);
 			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
 		} elseif ($resp->faultCode()) {
-			$error = "An error code was received while attempting Suricata XMLRPC CARP sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
+			$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
 			log_error($error);
 			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
 		}
 	}
 
 	if (!empty($sid_files) && $error == "") {
-		log_error("[suricata] Suricata pkg XMLRPC CARP sync auto-SID conf files success with {$url}:{$port} (pfsense.exec_php).");
+		log_error("[suricata] XMLRPC sync auto-SID conf files success with {$url}:{$port} (pfsense.exec_php).");
 	}
 
 	/*************************************************/
@@ -3461,25 +3462,25 @@ function suricata_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protoc
 		$method = 'pfsense.exec_php';
 		$params = array( XML_RPC_encode($password), XML_RPC_encode($payload) );
 	
-		log_error("[suricata] Suricata XMLRPC CARP sync sending IPREP files to {$url}:{$port}.");
+		log_error("[suricata] Suricata XMLRPC sync sending IPREP files to {$url}:{$port}.");
 		$msg = new XML_RPC_Message($method, $params);
 		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
 		$cli->setCredentials($username, $password);
 		$resp = $cli->send($msg, $synctimeout);
 		$error = "";
 		if (!$resp) {
-			$error = "A communications error occurred while attempting Suricata XMLRPC CARP sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
+			$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
 			log_error($error);
 			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
 		} elseif ($resp->faultCode()) {
-			$error = "An error code was received while attempting Suricata XMLRPC CARP sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
+			$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
 			log_error($error);
 			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
 		}
 	}
 
 	if (!empty($iprep_files) && $error == "") {
-		log_error("[suricata] Suricata pkg XMLRPC CARP sync IPREP files success with {$url}:{$port} (pfsense.exec_php).");
+		log_error("[suricata] XMLRPC sync IPREP files success with {$url}:{$port} (pfsense.exec_php).");
 	}
 
 	/**************************************************/
@@ -3494,7 +3495,7 @@ function suricata_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protoc
 		XML_RPC_encode($xml)
 	);
 
-	log_error("[suricata] Beginning Suricata pkg configuration XMLRPC sync to {$url}:{$port}.");
+	log_error("[suricata] Beginning package configuration XMLRPC sync to {$url}:{$port}.");
 	$method = 'pfsense.merge_installedpackages_section_xmlrpc';
 	$msg = new XML_RPC_Message($method, $params);
 	$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
@@ -3503,30 +3504,30 @@ function suricata_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protoc
 	/* send our XMLRPC message and timeout after defined sync timeout value*/
 	$resp = $cli->send($msg, $synctimeout);
 	if (!$resp) {
-		$error = "A communications error occurred while attempting Suricata XMLRPC CARP sync with {$url}:{$port}.";
+		$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.";
 		log_error($error);
 		file_notice("sync_settings", $error, "Suricata Settings Sync", "");
 	} elseif ($resp->faultCode()) {
-		$error = "An error code was received while attempting Suricata XMLRPC CARP sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
+		$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
 		log_error($error);
 		file_notice("sync_settings", $error, "Suricata Settings Sync", "");
 	} else {
-		log_error("[suricata] Suricata pkg configuration XMLRPC CARP sync successfully completed with {$url}:{$port}.");
+		log_error("[suricata] Package configuration XMLRPC sync successfully completed with {$url}:{$port}.");
 	}
 
 	$downloadrulescmd = "";
 	if ($syncdownloadrules == "yes") {
-		$downloadrulescmd = "log_error(gettext(\"[suricata] XMLRPC pkg CARP sync: Update of downloaded rule sets requested...\"));\n";
+		$downloadrulescmd = "log_error(gettext(\"[suricata] XMLRPC pkg sync: Update of downloaded rule sets requested...\"));\n";
 		$downloadrulescmd .= "\tinclude_once(\"/usr/local/pkg/suricata/suricata_check_for_rule_updates.php\");\n";
 	}
 	$suricatastart = "";
 	if ($syncstartsuricata == "ON") {
-		$suricatastart = "log_error(gettext(\"[suricata] XMLRPC pkg CARP sync: Checking Suricata status...\"));\n";
+		$suricatastart = "log_error(gettext(\"[suricata] XMLRPC pkg sync: Checking Suricata status...\"));\n";
 		$suricatastart .= "\tif (!is_process_running(\"suricata\")) {\n";
-		$suricatastart .= "\t\tlog_error(gettext(\"[suricata] XMLRPC pkg CARP sync: Suricata not running. Sending a start command...\"));\n";
+		$suricatastart .= "\t\tlog_error(gettext(\"[suricata] XMLRPC pkg sync: Suricata not running. Sending a start command...\"));\n";
 		$suricatastart .= "\t\t\$sh_script = RCFILEPREFIX . \"suricata.sh\";\n";
 		$suricatastart .= "\t\tmwexec_bg(\"{\$sh_script} start\");\n\t}\n";
-		$suricatastart .= "\telse {\n\t\tlog_error(gettext(\"[suricata] XMLRPC pkg CARP sync: Suricata is running...\"));\n\t}\n";
+		$suricatastart .= "\telse {\n\t\tlog_error(gettext(\"[suricata] XMLRPC pkg sync: Suricata is running...\"));\n\t}\n";
 	}
 
 	/*************************************************/
@@ -3546,14 +3547,14 @@ function suricata_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protoc
 	\$pkg_interface = "console";
 	{$downloadrulescmd}
 	unset(\$g["suricata_postinstall"]);
-	log_error(gettext("[suricata] XMLRPC pkg CARP sync: Generating suricata.yaml file using Master Host settings..."));
+	log_error(gettext("[suricata] XMLRPC pkg sync: Generating suricata.yaml file using Master Host settings..."));
 	\$rebuild_rules = true;
 	conf_mount_rw();
 	sync_suricata_package_config();
 	conf_mount_ro();
 	\$rebuild_rules = false;
 	{$suricatastart}
-	log_error(gettext("[suricata] XMLRPC pkg CARP sync process on this host is complete..."));
+	log_error(gettext("[suricata] XMLRPC pkg sync process on this host is complete..."));
 	\$pkg_interface = \$orig_pkg_interface;
 	unset(\$g["suricata_sync_in_progress"]);
 	return true;
@@ -3574,21 +3575,21 @@ EOD;
 		XML_RPC_encode($execcmd)
 	);
 	
-	log_error("[suricata] Suricata XMLRPC CARP sync sending reload configuration cmd set as a file to {$url}:{$port}.");
+	log_error("[suricata] XMLRPC sync sending reload configuration cmd set as a file to {$url}:{$port}.");
 	$msg = new XML_RPC_Message($method, $params);
 	$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
 	$cli->setCredentials($username, $password);
 	$resp = $cli->send($msg, $synctimeout);
 	if (!$resp) {
-		$error = "A communications error occurred while attempting Suricata XMLRPC CARP sync with {$url}:{$port} (pfsense.exec_php).";
+		$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
 		log_error($error);
 		file_notice("sync_settings", $error, "Suricata Settings Sync", "");
 	} elseif ($resp->faultCode()) {
-		$error = "An error code was received while attempting Suricata XMLRPC CARP sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
+		$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
 		log_error($error);
 		file_notice("sync_settings", $error, "Suricata Settings Sync", "");
 	} else {
-		log_error("[suricata] Suricata pkg XMLRPC CARP sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
+		log_error("[suricata] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
 	}
 
 	/*************************************************/
@@ -3600,19 +3601,19 @@ EOD;
 		XML_RPC_encode($password),
 		XML_RPC_encode($execcmd)
 	);
-	log_error("[suricata] Suricata XMLRPC CARP sync sending {$url}:{$port} cmd to execute configuration reload.");
+	log_error("[suricata] XMLRPC sync sending {$url}:{$port} cmd to execute configuration reload.");
 	$msg2 = new XML_RPC_Message($method, $params2);
 	$resp = $cli->send($msg2, $synctimeout);
 	if (!$resp) {
-		$error = "A communications error occurred while attempting Suricata XMLRPC CARP sync with {$url}:{$port} (pfsense.exec_php).";
+		$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
 		log_error($error);
 		file_notice("sync_settings", $error, "Suricata Settings Sync", "");
 	} elseif ($resp->faultCode()) {
-		$error = "An error code was received while attempting Suricata XMLRPC CARP sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
+		$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
 		log_error($error);
 		file_notice("sync_settings", $error, "Suricata Settings Sync", "");
 	} else {
-		log_error("[suricata] Suricata pkg XMLRPC CARP sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
+		log_error("[suricata] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
 	}
 }
 

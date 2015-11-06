@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-squidGuard
-PORTVERSION=	1.9.15
+PORTVERSION=	1.9.16
 CATEGORIES=	www
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -23,32 +23,35 @@ do-extract:
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
+	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/squidGuard
 	${MKDIR} ${STAGEDIR}${PREFIX}/www
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/squidguard.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/squidguard.inc \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/squidguard.inc \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/squidguard_configurator.inc \
+	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/squidguard.priv.inc \
+		${STAGEDIR}/etc/inc/priv
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/squidguard_configurator.inc \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/squidguard_acl.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/squidguard_acl.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/squidguard_default.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/squidguard_default.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/squidguard_dest.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/squidguard_dest.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/squidguard_rewr.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/squidguard_rewr.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/squidguard_time.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/squidguard_time.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/squidguard_sync.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/squidguard_sync.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/www/squidGuard/squidguard_log.php \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/squidGuard/squidguard_log.php \
 		${STAGEDIR}${PREFIX}/www/squidGuard
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/www/squidGuard/squidguard_blacklist.php \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/squidGuard/squidguard_blacklist.php \
 		${STAGEDIR}${PREFIX}/www/squidGuard
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/www/sgerror.php \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/sgerror.php \
 		${STAGEDIR}${PREFIX}/www
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}

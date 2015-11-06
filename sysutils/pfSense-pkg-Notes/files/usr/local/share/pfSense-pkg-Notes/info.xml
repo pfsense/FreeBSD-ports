@@ -3,11 +3,11 @@
 	<package>
 		<name>Notes</name>
 		<descr><![CDATA[Track things you want to note for this system.]]></descr>
-		<category>Status</category>
+		<category>Utility</category>
 		<pkginfolink/>
 		<config_file>https://packages.pfsense.org/packages/config/notes/notes.xml</config_file>
 		<version>0.2.7</version>
-		<status>Alpha</status>
+		<status>RC</status>
 		<required_version>2.2</required_version>
 		<maintainer>markjcrane@gmail.com</maintainer>
 		<configurationfile>notes.xml</configurationfile>

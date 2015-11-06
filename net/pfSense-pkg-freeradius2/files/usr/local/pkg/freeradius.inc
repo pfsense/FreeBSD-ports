@@ -621,7 +621,7 @@ if (is_array($arrusers) && !empty($arrusers)) {
 	// If an octet limit is NOT set we delete the files for the limit and the counter.
 	else {
 		if (file_exists("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/max-octets-$varusersusername")) { unlink("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/max-octets-$varusersusername"); }
-		if (file_exists("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/used-octets-$varusersusername")) { unlink("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/used-octets-$varusersusername"); }
+		if (file_exists("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/used-octets-$varusersusername")) { unlink("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/used-octets-$varusersusername*"); }
 	}
 	if ($varusersadditionaloptionsreplyitems != '') {
 		if ($varusersreplyitem != '') { $varusersreplyitem .=","; }
@@ -815,7 +815,7 @@ if (is_array($arrmacs) && !empty($arrmacs)) {
 	// If an octet limit is NOT set we delete the files for the limit and the counter.
 	else {
 		if (file_exists("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/max-octets-$varmacsaddress")) { unlink("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/max-octets-$varmacsaddress"); }
-		if (file_exists("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/used-octets-$varmacsaddress")) { unlink("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/used-octets-$varmacsaddress"); }
+		if (file_exists("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/used-octets-$varmacsaddress")) { unlink("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/used-octets-$varmacsaddress*"); }
 	}
 	if ($varmacsadditionaloptionsreplyitems != '') {
 		if ($varmacsreplyitem != '') { $varmacsreplyitem .=","; }
@@ -4132,20 +4132,20 @@ function freeradius_modulesdatacounter_resync() {
 	$conf .= <<<EOD
 exec datacounterdaily {
 		wait = yes
-		program = "/bin/sh {$varFREERADIUS_ETC}/raddb/scripts/datacounter_acct.sh %{request:User-Name} daily %{request:Acct-Input-Octets} %{request:Acct-Output-Octets}"
+		program = "/bin/sh {$varFREERADIUS_ETC}/raddb/scripts/datacounter_acct.sh %{request:User-Name} daily %{request:Acct-Input-Octets} %{request:Acct-Output-Octets} %{request:Acct-Status-Type} %{request:Acct-Session-Id}"
 	}
 exec datacounterweekly {
 		wait = yes
-		program = "/bin/sh {$varFREERADIUS_ETC}/raddb/scripts/datacounter_acct.sh %{request:User-Name} weekly %{request:Acct-Input-Octets} %{request:Acct-Output-Octets}"
+		program = "/bin/sh {$varFREERADIUS_ETC}/raddb/scripts/datacounter_acct.sh %{request:User-Name} weekly %{request:Acct-Input-Octets} %{request:Acct-Output-Octets} %{request:Acct-Status-Type} %{request:Acct-Session-Id}"
 	}
 exec datacountermonthly {
 		wait = yes
-		program = "/bin/sh {$varFREERADIUS_ETC}/raddb/scripts/datacounter_acct.sh %{request:User-Name} monthly %{request:Acct-Input-Octets} %{request:Acct-Output-Octets}"
+		program = "/bin/sh {$varFREERADIUS_ETC}/raddb/scripts/datacounter_acct.sh %{request:User-Name} monthly %{request:Acct-Input-Octets} %{request:Acct-Output-Octets} %{request:Acct-Status-Type} %{request:Acct-Session-Id}"
 	}
 exec datacounterforever {
 		wait = yes
-		program = "/bin/sh {$varFREERADIUS_ETC}/raddb/scripts/datacounter_acct.sh %{request:User-Name} forever %{request:Acct-Input-Octets} %{request:Acct-Output-Octets}"
-	}	
+		program = "/bin/sh {$varFREERADIUS_ETC}/raddb/scripts/datacounter_acct.sh %{request:User-Name} forever %{request:Acct-Input-Octets} %{request:Acct-Output-Octets} %{request:Acct-Status-Type} %{request:Acct-Session-Id}"
+	}
 EOD;
 
 	$filename = FREERADIUS_ETC . '/raddb/modules/datacounter_acct';
@@ -4171,18 +4171,19 @@ TIMERANGE=`echo -n "\\$2" | sed 's/[^a-z]//g' `
 ### This is to make sure there is a used-octets file after the cronjob resetted the counter
 if [ -e "/var/log/radacct/datacounter/\$TIMERANGE/max-octets-\$USERNAME" ] && [ ! -e "/var/log/radacct/datacounter/\$TIMERANGE/used-octets-\$USERNAME" ]; then
 	echo 0 > "/var/log/radacct/datacounter/\$TIMERANGE/used-octets-\$USERNAME"
+	rm "/var/log/radacct/datacounter/\$TIMERANGE/used-octets-\$USERNAME-"*
 fi
 
 ### The next two lines are just for getting values for logging output
-MAXOCTETSUSERNAMEMB=$((`cat "/var/log/radacct/datacounter/\$TIMERANGE/max-octets-\$USERNAME"`/1024/1024))
-USEDOCTETSUSERNAMEMB=$((`cat "/var/log/radacct/datacounter/\$TIMERANGE/used-octets-\$USERNAME"`/1024/1024))
-	
+MAXOCTETSUSERNAMEMB=$((`/bin/cat "/var/log/radacct/datacounter/\$TIMERANGE/max-octets-\$USERNAME"`/1024/1024))
+USEDOCTETSUSERNAMEMB=`/bin/cat "/var/log/radacct/datacounter/\$TIMERANGE/used-octets-\${USERNAME}"* | /usr/bin/awk '{ SUM += \$1; } END { print int(SUM/1024/1024); }'`
+
 ### We check if MAX-OCTETS-USERNAME is greater than USED-OCTETS-USERNAME and accept or reject the user
-if [ `cat "/var/log/radacct/datacounter/\$TIMERANGE/max-octets-\$USERNAME"` -gt `cat "/var/log/radacct/datacounter/\$TIMERANGE/used-octets-\$USERNAME"` ]; then
-	logger -f /var/log/system.log "FreeRADIUS: Used amount of \$TIMERANGE traffic by \$USERNAME is \$USEDOCTETSUSERNAMEMB MB of \$MAXOCTETSUSERNAMEMB MB! The user was accepted!!!"
+if [ \$MAXOCTETSUSERNAMEMB -gt \$USEDOCTETSUSERNAMEMB ]; then
+	logger -f /var/log/system.log "FreeRADIUS: User \$USERNAME has used \$USEDOCTETSUSERNAMEMB MB of \$MAXOCTETSUSERNAMEMB MB \$TIMERANGE allotted traffic. The login request was accepted."
 	exit 0
 else
-	logger -f /var/log/system.log "FreeRADIUS: Credentials are probably correct but the user \$USERNAME has reached the \$TIMERANGE Amount of Upload and Download Traffic which is \$USEDOCTETSUSERNAMEMB MB of \$MAXOCTETSUSERNAMEMB MB! The user was rejected!!!"
+	logger -f /var/log/system.log "FreeRADIUS: User \$USERNAME has reached the \$TIMERANGE amount of upload and download traffic (\$USEDOCTETSUSERNAMEMB MB of \$MAXOCTETSUSERNAMEMB MB). The login request was denied."
 	exit 99
 fi
 EOD;
@@ -4207,6 +4208,8 @@ USERNAME=`echo -n "\\$1" | sed 's/[^0-9a-zA-Z.:_-]/X/g' `
 TIMERANGE=`echo -n "\\$2" | sed 's/[^a-z]//g' `
 ACCTINPUTOCTETS=`echo -n "\\$3" | sed 's/[^0-9]/0/g' `
 ACCTOUTPUTOCTETS=`echo -n "\\$4" | sed 's/[^0-9]/0/g' `
+UPDATETYPE=\$5
+SESSIONID=\$6
 
 ### If we do not get Octets we set some default values
 if [ ! \$ACCTINPUTOCTETS ]; then
@@ -4225,11 +4228,23 @@ else
 	if [ ! -e "/var/log/radacct/datacounter/\$TIMERANGE/used-octets-\$USERNAME" ]; then
 		echo 0 > "/var/log/radacct/datacounter/\$TIMERANGE/used-octets-\$USERNAME"
 	fi
-### The following two lines (chose the one or the other) are a bad workaround to make accounting accurate with stop/start accounting on pfsense 2.0.1 - it only works if the session will not be interrupted (host disconnects)
-###	USEDOCTETS=\$((\$ACCTINPUTOCTETS+\$ACCTOUTPUTOCTETS))
-	USEDOCTETS=\$((\$ACCTINPUTOCTETS+\$ACCTOUTPUTOCTETS+`cat "/var/log/radacct/datacounter/\$TIMERANGE/used-octets-\$USERNAME"`))
-	
-	echo "\$USEDOCTETS" > "/var/log/radacct/datacounter/\$TIMERANGE/used-octets-\$USERNAME"
+
+	USEDOCTETS=\$((\$ACCTINPUTOCTETS+\$ACCTOUTPUTOCTETS))
+
+	# If this is an interim update, track it in a separate session file
+	# since the incoming data is a gauge not a counter.
+	if [ \$UPDATETYPE = "Interim-Update" ]; then
+		echo \$USEDOCTETS > "/var/log/radacct/datacounter/\$TIMERANGE/used-octets-\$USERNAME-\$SESSIONID"
+	else
+		USEDOCTETS=\$((\$USEDOCTETS+`cat "/var/log/radacct/datacounter/\$TIMERANGE/used-octets-\$USERNAME"`))
+
+		# If there was a session file for this session (from interim updates) clear it since the equivalent
+		# value was just added to the total.
+		if [ -e "/var/log/radacct/datacounter/\$TIMERANGE/used-octets-\$USERNAME-\$SESSIONID" ]; then
+			rm "/var/log/radacct/datacounter/\$TIMERANGE/used-octets-\$USERNAME-\$SESSIONID"
+		fi
+		echo "\$USEDOCTETS" > "/var/log/radacct/datacounter/\$TIMERANGE/used-octets-\$USERNAME"
+	fi
 	exit 0
 fi
 

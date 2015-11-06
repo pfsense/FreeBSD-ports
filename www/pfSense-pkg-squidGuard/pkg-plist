@@ -1,5 +1,6 @@
 pkg/squidguard.xml
 pkg/squidguard.inc
+/etc/inc/priv/squidguard.priv.inc
 pkg/squidguard_configurator.inc
 pkg/squidguard_acl.xml
 pkg/squidguard_default.xml
@@ -11,3 +12,4 @@ www/squidGuard/squidguard_log.php
 www/squidGuard/squidguard_blacklist.php
 www/sgerror.php
 %%DATADIR%%/info.xml
+@dir /etc/inc/priv

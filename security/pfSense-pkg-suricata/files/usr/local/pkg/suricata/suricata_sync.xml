@@ -1,56 +1,49 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
-<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
 <packagegui>
-  <copyright>
+	<copyright>
 <![CDATA[
 /* $Id$ */
-/* ========================================================================== */
+/* ====================================================================================== */
 /*
-based on snortsync.xml developed as part
-of pfSense (http://www.pfSense.com)  
-Copyright (C) 2013 Marcello Coutinho
-based on pfblocker_sync.xml
-All rights reserved.
-
-modified for use with Suricata package  
-Copyright (C) 2014 Bill Meeks
-All rights reserved.
-
-Based on m0n0wall (http://m0n0.ch/wall)
-Copyright (C) 2003-2006 Manuel Kasper <mk@neon1.net>.
-All rights reserved.
+	suricata_sync.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2013 Marcello Coutinho
+	Copyright (C) 2014-2015 Bill Meeks
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
 */
-/* ========================================================================== */
+/* ====================================================================================== */
 /*
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
 
-1. Redistributions of source code MUST retain the above copyright notice,
-this list of conditions and the following disclaimer.
 
-2. Redistributions in binary form MUST reproduce the above copyright
-notice, this list of conditions and the following disclaimer in the
-documentation and/or other materials provided with the distribution.
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
 
-THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE.
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
 */
-/* ========================================================================== */
-]]></copyright>
-	<description><![CDATA[Describe your package here]]></description>
-	<requirements>Describe your package requirements here</requirements>
-	<faq>Currently there are no FAQ items provided.</faq>
+/* ====================================================================================== */
+	]]>
+	</copyright>
 	<name>suricatasync</name>
-	<version>1.0</version>
+	<version>2.1.8</version>
 	<title>Suricata: XMLRPC Sync</title>
 	<include_file>/usr/local/pkg/suricata/suricata.inc</include_file>
 	<tabs>
@@ -183,11 +176,11 @@ POSSIBILITY OF SUCH DAMAGE.
 					</options>
 				</rowhelperfield>
 				<rowhelperfield>
-					<fielddescr>IP-Address</fielddescr>
+					<fielddescr>IP Address/Hostname</fielddescr>
 					<fieldname>varsyncipaddress</fieldname>
-					<description><![CDATA[IP Address of the destination host.]]></description>
+					<description><![CDATA[IP address or hostname of the destination host.]]></description>
 					<type>input</type>
-					<size>15</size>
+					<size>40</size>
 				</rowhelperfield>
 				<rowhelperfield>
 					<fielddescr>Port</fielddescr>
@@ -213,8 +206,6 @@ POSSIBILITY OF SUCH DAMAGE.
 			</rowhelper>
 		</field>
 	</fields>
-	<custom_delete_php_command>
-	</custom_delete_php_command>	
 	<custom_php_resync_config_command>
 		write_config("Suricata pkg: updating CARP sync info.");suricata_sync_on_changes();
 	</custom_php_resync_config_command>

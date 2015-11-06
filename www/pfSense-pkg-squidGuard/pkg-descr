@@ -1,1 +1,3 @@
-High performance web proxy URL filter. Works with both Squid 2.x and Squid 3.x.
+High performance web proxy URL filter.<br/>
+			<strong>Works with both Squid (2.7 legacy branch) and
+			Squid3 (3.4 branch) packages.</strong>

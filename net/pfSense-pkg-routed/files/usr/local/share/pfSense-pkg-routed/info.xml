@@ -8,7 +8,7 @@
 		<port_category>net</port_category>
 		<config_file>https://packages.pfsense.org/packages/config/routed/routed.xml</config_file>
 		<version>1.2.1</version>
-		<status>Stable</status>
+		<status>RELEASE</status>
 		<required_version>2.2</required_version>
 		<configurationfile>routed.xml</configurationfile>
 	</package>

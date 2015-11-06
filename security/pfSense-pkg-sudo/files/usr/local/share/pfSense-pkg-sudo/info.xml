@@ -5,9 +5,9 @@
 		<pkginfolink>https://doc.pfsense.org/index.php/Sudo_Package</pkginfolink>
 		<descr><![CDATA[sudo allows delegation of privileges to users in the shell so commands can be run as other users, such as root.]]></descr>
 		<website>http://www.sudo.ws/</website>
-		<category>Security</category>
+		<category>System</category>
 		<version>0.2.8</version>
-		<status>Beta</status>
+		<status>BETA</status>
 		<required_version>2.2</required_version>
 		<config_file>https://packages.pfsense.org/packages/config/sudo/sudo.xml</config_file>
 		<maintainer>jimp@pfsense.org</maintainer>
