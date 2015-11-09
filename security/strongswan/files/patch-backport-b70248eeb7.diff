@@ -1,0 +1,75 @@
+From b70248eeb7b7de33e4e6e105d59c9832507c7a56 Mon Sep 17 00:00:00 2001
+From: Tobias Brunner <tobias@strongswan.org>
+Date: Mon, 19 Oct 2015 16:05:47 +0200
+Subject: [PATCH] vici: Return local and remote virtual IPs when listing SAs
+
+---
+ src/libcharon/plugins/vici/README.md    |  6 ++++++
+ src/libcharon/plugins/vici/vici_query.c | 30 ++++++++++++++++++++++++++++++
+ 2 files changed, 36 insertions(+)
+
+diff --git a/src/libcharon/plugins/vici/README.md b/src/libcharon/plugins/vici/README.md
+index 51a17e2..a0522b5 100644
+--- src/libcharon/plugins/vici/README.md
++++ src/libcharon/plugins/vici/README.md
+@@ -600,6 +600,12 @@ command.
+ 			established = <seconds the IKE_SA has been established>
+ 			rekey-time = <seconds before IKE_SA gets rekeyed>
+ 			reauth-time = <seconds before IKE_SA gets re-authenticated>
++			local-vips = [
++				<list of virtual IPs assigned by the remote peer, installed locally>
++			]
++			remote-vips = [
++				<list of virtual IPs assigned to the remote peer>
++			]
+ 			tasks-queued = [
+ 				<list of currently queued tasks for execution>
+ 			]
+diff --git a/src/libcharon/plugins/vici/vici_query.c b/src/libcharon/plugins/vici/vici_query.c
+index 265a17e..9a3d832 100644
+--- src/libcharon/plugins/vici/vici_query.c
++++ src/libcharon/plugins/vici/vici_query.c
+@@ -234,6 +234,33 @@ static void add_condition(vici_builder_t *b, ike_sa_t *ike_sa,
+ }
+ 
+ /**
++ * List virtual IPs
++ */
++static void list_vips(private_vici_query_t *this, vici_builder_t *b,
++					  ike_sa_t *ike_sa, bool local, char *name)
++{
++	enumerator_t *enumerator;
++	bool has = FALSE;
++	host_t *vip;
++
++	enumerator = ike_sa->create_virtual_ip_enumerator(ike_sa, local);
++	while (enumerator->enumerate(enumerator, &vip))
++	{
++		if (!has)
++		{
++			b->begin_list(b, name);
++			has = TRUE;
++		}
++		b->add_li(b, "%H", vip);
++	}
++	enumerator->destroy(enumerator);
++	if (has)
++	{
++		b->end_list(b);
++	}
++}
++
++/**
+  * List details of an IKE_SA
+  */
+ static void list_ike(private_vici_query_t *this, vici_builder_t *b,
+@@ -327,6 +354,9 @@ static void list_ike(private_vici_query_t *this, vici_builder_t *b,
+ 		}
+ 	}
+ 
++	list_vips(this, b, ike_sa, TRUE, "local-vips");
++	list_vips(this, b, ike_sa, FALSE, "remote-vips");
++
+ 	list_task_queue(this, b, ike_sa, TASK_QUEUE_QUEUED, "tasks-queued");
+ 	list_task_queue(this, b, ike_sa, TASK_QUEUE_ACTIVE, "tasks-active");
+ 	list_task_queue(this, b, ike_sa, TASK_QUEUE_PASSIVE, "tasks-passive");
