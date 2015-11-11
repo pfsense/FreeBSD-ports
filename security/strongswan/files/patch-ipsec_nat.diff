@@ -205,9 +205,9 @@ diff -ruN ../strongswan-5.3.0.orig/src/libstrongswan/selectors/traffic_selector.
 -	char to_str[INET6_ADDRSTRLEN] = "";
 +	char from_str[INET6_ADDRSTRLEN] = "", natfrom_str[INET6_ADDRSTRLEN] = "";
 +	char to_str[INET6_ADDRSTRLEN] = "", natto_str[INET6_ADDRSTRLEN] = "";
- 	char *serv_proto = NULL;
- 	bool has_proto;
- 	bool has_ports;
+ 	char *serv_proto = NULL, *sep = "";
+ 	bool has_proto, has_ports;
+ 	size_t written = 0;
 @@ -255,26 +353,34 @@
  		if (this->type == TS_IPV4_ADDR_RANGE)
  		{
