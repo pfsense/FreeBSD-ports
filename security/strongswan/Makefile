@@ -3,7 +3,7 @@
 
 PORTNAME=	strongswan
 PORTVERSION=	5.3.3
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	security
 MASTER_SITES=	http://download.strongswan.org/ \
 		http://download2.strongswan.org/
@@ -38,14 +38,13 @@ CONFIGURE_ARGS=	--enable-kernel-pfkey \
 		--enable-whitelist \
 		--enable-cmd \
 		--with-group=wheel  \
-		--sysconfdir=/var/etc/ipsec \
 		--with-lib-prefix=${PREFIX}
 
 OPTIONS_DEFINE=	CURL EAPAKA3GPP2 EAPDYNAMIC EAPRADIUS EAPSIMFILE GCM IKEv1 \
 		IPSECKEY KERNELLIBIPSEC LOADTESTER LDAP MYSQL PKI SCEP SMP \
 		SQLITE SWANCTL TESTVECTOR UNBOUND UNITY VICI XAUTH
 OPTIONS_DEFAULT=	IKEv1 BUILTIN
-OPTIONS_SINGLE=		PRINTF_HOOKS
+OPTIONS_SINGLE=	PRINTF_HOOKS
 OPTIONS_SINGLE_PRINTF_HOOKS=	BUILTIN VSTR LIBC
 OPTIONS_SUB=	yes
 CURL_DESC=	Enable CURL to fetch CRL/OCSP
@@ -133,8 +132,8 @@ post-install:
 		${STAGEDIR}${PREFIX}/include
 .endif
 .if ${PORT_OPTIONS:MSWANCTL}
-	${MV} ${STAGEDIR}/var/etc/ipsec/swanctl/swanctl.conf \
-		${STAGEDIR}/var/etc/ipsec/swanctl/swanctl.conf.sample
+	${MV} ${STAGEDIR}${PREFIX}/etc/swanctl/swanctl.conf \
+		${STAGEDIR}${PREFIX}/etc/swanctl/swanctl.conf.sample
 .endif
 
 .include <bsd.port.mk>
