@@ -1,36 +1,20 @@
-# New ports collection makefile for:  igmpproxy
-# Date created:        5 January 2009
-# Whom:                asami
-#
+# Created by: asami
 # $FreeBSD$
-#
 
-PORTNAME=       igmpproxy
-PORTVERSION=    0.1
-#PORTREVISION=  2
-CATEGORIES=     net
-MASTER_SITES=   ${MASTER_SITE_SOURCEFORGE}
-MASTER_SITE_SUBDIR=     ${PORTNAME}/${PORTNAME}/${PORTVERSION}-beta2
-DISTNAME=       ${PORTNAME}-src-${PORTVERSION}-beta2
+PORTNAME=	igmpproxy
+PORTVERSION=	0.1
+PORTREVISION=	2
+PORTEPOCH=	1
+CATEGORIES=	net
+MASTER_SITES=	SF
 
-MAINTAINER=     melifaro@ipfw.ru
-COMMENT=        Multicast router utilizing IGMP forwarding
+MAINTAINER=	melifaro@ipfw.ru
+COMMENT=	Multicast forwarding IGMP proxy
 
-HOMEPAGE=       http://igmpproxy.sourceforge.net/
-WRKSRC=         ${WRKDIR}/igmpproxy/src
+HOMEPAGE=	http://igmpproxy.sourceforge.net/
 
-
-PLIST_FILES=    sbin/igmpproxy \
-                etc/igmpproxy.conf.sample \
-                etc/rc.d/igmpproxy \
-		man/man5/igmpproxy.conf.5.gz \
-		man/man8/igmpproxy.8.gz
-
-do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/igmpproxy ${STAGEDIR}${PREFIX}/sbin
-	${INSTALL_MAN} ${WRKSRC}/../doc/igmpproxy.8 ${STAGEDIR}${PREFIX}/man/man8
-	${INSTALL_MAN} ${WRKSRC}/../doc/igmpproxy.conf.5 ${STAGEDIR}${PREFIX}/man/man5
-	${INSTALL_DATA} ${WRKSRC}/igmpproxy.conf ${STAGEDIR}${PREFIX}/etc/igmpproxy.conf.sample
-	${INSTALL_SCRIPT} ${FILESDIR}/igmpproxy ${STAGEDIR}${PREFIX}/etc/rc.d
+USE_RC_SUBR=	igmpproxy
+USES=		gmake
+GNU_CONFIGURE=	yes
 
 .include <bsd.port.mk>
