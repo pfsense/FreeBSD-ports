@@ -31,7 +31,7 @@ return {
 	local datasets_list = {}
 	local actions_list = {}
 
-	local is_adi = (os.execute("/bin/kenv -q smbios.system.product | /usr/bin/egrep -q 'RCC-(VE|DFF)'") == 0)
+	local is_adi = (os.execute("/bin/kenv -q smbios.system.product | /usr/bin/egrep -q 'RCC-VE|DFFv2'") == 0)
 
 	if is_adi then
 		actions_list = {
