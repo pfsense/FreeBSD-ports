@@ -1,6 +1,6 @@
-diff -rNu ./src/Makefile.am ./src.new/Makefile.am
---- ./src/Makefile.am	2014-03-25 04:47:37.000000000 -0400
-+++ ./src.new/Makefile.am	2014-05-01 18:25:30.000000000 -0400
+diff -ruN ../suricata-2.0.9.orig/src/Makefile.am ./src/Makefile.am
+--- ../suricata-2.0.9.orig/src/Makefile.am	2015-09-25 10:18:34.000000000 -0400
++++ ./src/Makefile.am	2015-10-30 17:35:11.000000000 -0400
 @@ -10,6 +10,7 @@
  alert-debuglog.c alert-debuglog.h \
  alert-fastlog.c alert-fastlog.h \
@@ -9,9 +9,9 @@ diff -rNu ./src/Makefile.am ./src.new/Makefile.am
  alert-prelude.c alert-prelude.h \
  alert-syslog.c alert-syslog.h \
  alert-unified2-alert.c alert-unified2-alert.h \
-diff -rNu ./src/Makefile.in ./src.new/Makefile.in
---- ./src/Makefile.in	2014-03-25 04:48:12.000000000 -0400
-+++ ./src.new/Makefile.in	2014-05-01 18:27:44.000000000 -0400
+diff -ruN ../suricata-2.0.9.orig/src/Makefile.in ./src/Makefile.in
+--- ../suricata-2.0.9.orig/src/Makefile.in	2015-09-25 10:18:56.000000000 -0400
++++ ./src/Makefile.in	2015-10-30 17:35:11.000000000 -0400
 @@ -99,6 +99,7 @@
  am_suricata_OBJECTS = alert-debuglog.$(OBJEXT) alert-fastlog.$(OBJEXT) \
  	alert-pcapinfo.$(OBJEXT) alert-prelude.$(OBJEXT) \
@@ -20,7 +20,7 @@ diff -rNu ./src/Makefile.in ./src.new/Makefile.in
  	app-layer.$(OBJEXT) app-layer-dcerpc.$(OBJEXT) \
  	app-layer-dcerpc-udp.$(OBJEXT) \
  	app-layer-detect-proto.$(OBJEXT) \
-@@ -518,6 +519,7 @@
+@@ -521,6 +522,7 @@
  alert-debuglog.c alert-debuglog.h \
  alert-fastlog.c alert-fastlog.h \
  alert-pcapinfo.c alert-pcapinfo.h \
@@ -28,7 +28,7 @@ diff -rNu ./src/Makefile.in ./src.new/Makefile.in
  alert-prelude.c alert-prelude.h \
  alert-syslog.c alert-syslog.h \
  alert-unified2-alert.c alert-unified2-alert.h \
-@@ -1012,6 +1014,7 @@
+@@ -1017,6 +1019,7 @@
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alert-debuglog.Po@am__quote@
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alert-fastlog.Po@am__quote@
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alert-pcapinfo.Po@am__quote@
@@ -36,10 +36,10 @@ diff -rNu ./src/Makefile.in ./src.new/Makefile.in
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alert-prelude.Po@am__quote@
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alert-syslog.Po@am__quote@
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alert-unified2-alert.Po@am__quote@
-diff -rNu ./src/alert-pf.c ./src.new/alert-pf.c
---- ./src/alert-pf.c	1969-12-31 19:00:00.000000000 -0500
-+++ ./src.new/alert-pf.c	2014-05-01 18:56:05.000000000 -0400
-@@ -0,0 +1,821 @@
+diff -ruN ../suricata-2.0.9.orig/src/alert-pf.c ./src/alert-pf.c
+--- ../suricata-2.0.9.orig/src/alert-pf.c	1969-12-31 19:00:00.000000000 -0500
++++ ./src/alert-pf.c	2015-11-04 22:48:45.000000000 -0500
+@@ -0,0 +1,1072 @@
 +/* Copyright (C) 2007-2014 Open Information Security Foundation
 + *
 + * You can copy, redistribute or modify this Program under the terms of
@@ -58,6 +58,7 @@ diff -rNu ./src/alert-pf.c ./src.new/alert-pf.c
 + *
 + * Portions of this module are based on previous works of the following:
 + *
++ * Copyright (c) 2015  Bill Meeks
 + * Copyright (c) 2012  Ermal Luci
 + * Copyright (c) 2006  Antonio Benojar <zz.stalker@gmail.com>
 + * Copyright (c) 2005  Antonio Benojar <zz.stalker@gmail.com>
@@ -100,7 +101,7 @@ diff -rNu ./src/alert-pf.c ./src.new/alert-pf.c
 + * Inserts blocks for IP alerts into the pf firewall used in NetBSD and FreeBSD, 
 + * and logs the event, including the IP address, in "block.log".
 + *
-+ *    # alert_pf blocking plugin
++ *    # alert-pf blocking plugin
 + *    - alert-pf:
 + *        enabled: yes/no            # "yes" to enable blocking plugin
 + *        kill-state: yes/no         # "yes" to kill open state table entries associated with blocked IP addresses (default is YES)
@@ -129,19 +130,26 @@ diff -rNu ./src/alert-pf.c ./src.new/alert-pf.c
 +
 +#include <sys/types.h>
 +#include <sys/ioctl.h>
++#include <sys/sysctl.h>
 +#include <sys/socket.h>
 +#include <sys/stat.h>
 +#include <ctype.h>
 +#include <net/if.h>
 +#include <net/pfvar.h>
++#include <net/route.h>
++#include <netinet/in.h>
++#include <arpa/inet.h>
 +#include <err.h>
 +#include <unistd.h>
 +#include <regex.h>
++#include <ifaddrs.h>
++#include <pthread.h>
 +
 +#define PFDEVICE	"/dev/pf"
 +#define WLMAX		1024
 +#define MODULE_NAME	"AlertPf"
 +#define DEFAULT_LOG_FILENAME "block.log"
++#define MAX_RTMSG_SIZE 2048
 +
 +enum spblock { BLOCK_SRC, BLOCK_DST, BLOCK_BOTH };
 +
@@ -203,13 +211,21 @@ diff -rNu ./src/alert-pf.c ./src.new/alert-pf.c
 +    int fd;                /* pf device handle */
 +} AlertPfThread;
 +
-+SC_ATOMIC_DECLARE(uint64_t, alert_pf_blocks);  /**< Atomic counter, to hold block count */
++SC_ATOMIC_DECLARE(uint64_t, alert_pf_blocks);  /* Atomic counter, to hold block count */
 +
++// Used for Interface IP change monitoring thread
++pthread_t alert_pf_ifmon_thread;
++
++static int AlertPfInitIfaceList(AlertPfCtx *);
++static int AlertPfParseIfamAddress(char *, Address *, int);
++static void AlertPf_IflistMaint(Address *, AlertPfCtx *, u_char);
 +static int AlertPf_parse_line(char *, FILE *);
 +static int AlertPfLoadPassList(char *, AlertPfCtx *);
 +static int AlertPfDeviceInit(void);
 +static int AlertPfTableExists(char *);
-+static int AlertPfBlock(AlertPfThread *, Address *net_addr);
++static int AlertPfBlock(AlertPfThread *, Address *);
++
++void *AlertPfMonitorIfaceChanges(void *);
 +
 +/**
 + * This opens the pf device and returns a file descriptor.
@@ -221,7 +237,8 @@ diff -rNu ./src/alert-pf.c ./src.new/alert-pf.c
 +
 +/** \brief Verifies the supplied pf table exists
 + *  \param *tablename pointer to pf table name string
-+ *  \retval -1 on error, 1 if table exists or 0 if not */
++ *  \retval -1 on error, 1 if table exists or 0 if not
++ */
 +static int AlertPfTableExists(char *tablename)
 +{
 +    int i;
@@ -272,7 +289,8 @@ diff -rNu ./src/alert-pf.c ./src.new/alert-pf.c
 +/** \brief Inserts the passed IP address into the pf block table
 + *  \param *data pointer to AlertPfThread structure for current thread
 + *  \param *net_addr pointer to IP address to block
-+ *  \retval -1 on error, 1 if IP blocked, 0 if already blocked */
++ *  \retval -1 on error, 1 if IP blocked, 0 if already blocked
++ */
 +static int AlertPfBlock(AlertPfThread *data, Address *net_addr) 
 +{ 
 +    struct pfioc_table io; 
@@ -355,7 +373,8 @@ diff -rNu ./src/alert-pf.c ./src.new/alert-pf.c
 + *  \param buf buffer of length WLMAX to receive a line of text from Pass List file
 + *  \param *wfile FILE pointer to open Pass List text file
 + *  \retval buf[] filled with next line of text from Pass List file
-+ *  \retval 0 on EOF, 1 if success or -1 if line exceed WLMAX length */
++ *  \retval 0 on EOF, 1 if success or -1 if line exceed WLMAX length
++ */
 +static int AlertPf_parse_line(char buf[WLMAX], FILE* wfile)
 +{
 +    static char     next_ch = '\n';
@@ -382,7 +401,8 @@ diff -rNu ./src/alert-pf.c ./src.new/alert-pf.c
 + *   Radix Tree for easy searching.
 + *  \param *plfile pointer to Pass List filename string
 + *  \param *ctx pointer to AlertPfCtx global data structure
-+ *  \retval false (0) if error, true (-1) if success */
++ *  \retval false (0) if error, true (-1) if success
++ */
 +static int AlertPfLoadPassList(char *plfile, AlertPfCtx *ctx)
 +{
 +    FILE *wfile;
@@ -400,8 +420,6 @@ diff -rNu ./src/alert-pf.c ./src.new/alert-pf.c
 +    memset(&lock, 0x00, sizeof(struct flock));
 +    lock.l_type = F_RDLCK;
 +    fcntl(fileno(wfile), F_SETLKW, &lock);
-+
-+    ctx->tree = SCRadixCreateRadixTree(free, NULL);
 +
 +    memset(cad, 0, WLMAX);
 +    while((ret = AlertPf_parse_line(cad, wfile)) != 0) {
@@ -435,6 +453,146 @@ diff -rNu ./src/alert-pf.c ./src.new/alert-pf.c
 +	SCLogInfo("Pass List %s parsed: %d IP addresses loaded.", plfile, count);
 +
 +    return (-1);
++}
++
++/** \brief Grab all firewall interface addresses and insert
++ *   the IP addresses into a Radix Tree for easy searching.
++ *  \param *ctx pointer to AlertPfCtx global data structure
++ *  \retval false (0) if error, true (-1) if success
++ */
++static int AlertPfInitIfaceList(AlertPfCtx *ctx)
++{
++    struct ifaddrs *ifap, *ifa;
++    char tmp[46];
++
++    if (getifaddrs(&ifap) == 0) {
++        for (ifa = ifap; ifa != NULL; ifa = ifa->ifa_next) {
++            if (ifa->ifa_addr) {
++                switch (ifa->ifa_addr->sa_family) {
++                    case AF_INET:
++			PrintInet(AF_INET, (const void *)&((struct sockaddr_in *)ifa->ifa_addr)->sin_addr.s_addr, tmp, sizeof(tmp));
++			SCLogInfo("alert-pf -> adding firewall interface %s IPv4 address %s to automatic interface IP Pass List.", ifa->ifa_name, tmp);
++			SCRadixAddKeyIPV4(&((struct sockaddr_in *)ifa->ifa_addr)->sin_addr.s_addr, ctx->tree, 0);
++			break;
++
++		    case AF_INET6:
++			PrintInet(AF_INET6, (const void *)&((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr.s6_addr, tmp, sizeof(tmp));
++			SCLogInfo("alert-pf -> adding firewall interface %s IPv6 address %s to automatic interface IP Pass List.", ifa->ifa_name, tmp);
++			SCRadixAddKeyIPV6(&((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr.s6_addr, ctx->tree, 0);
++			break;
++
++		    default:
++			continue;
++		}
++	    }
++	}
++	freeifaddrs(ifap);
++	return -1;
++    }
++    else
++	return 0;
++}
++
++/** \brief Parse an if_addr RTM structure to grab the IP address
++ *   and write it into the passed Address structure.
++ *  \param *cp pointer to if_addr data structure from Kernel routing message
++ *  \param *ip pointer to Address structure to receive IP address
++ *  \param len length of if_addr data in bytes
++ *  \retval false (0) if error, true (-1) if success
++ */
++static int AlertPfParseIfamAddress(char *cp, Address *ip, int len)
++{
++	struct sockaddr *sa;
++
++	if (cp == NULL)
++		return 0;
++
++	sa = (struct sockaddr *)cp;
++
++	if (len == 0 || len < SA_SIZE(sa) || sa->sa_len == 0)
++		return 0;
++
++	switch (sa->sa_family) {
++		case AF_INET:
++			if (((struct sockaddr_in *)(void *)sa)->sin_addr.s_addr == INADDR_ANY)
++				return 0;
++			ip->family = AF_INET;
++			memcpy(&ip->addr_data32, &((struct sockaddr_in *)(void *)sa)->sin_addr.s_addr, sizeof(ip->addr_data32));
++			return 1;
++
++		case AF_INET6:
++			if (IN6_IS_ADDR_UNSPECIFIED(&((struct sockaddr_in6 *)(void *)sa)->sin6_addr))
++				return 0;
++			ip->family = AF_INET6;
++			memcpy(&ip->addr_data8, &((struct sockaddr_in6 *)(void *)sa)->sin6_addr.s6_addr, sizeof(ip->addr_data8));
++			return 1;
++
++		default:
++			break;
++	}
++	return 0;
++}
++
++/** \brief Add/remove interface IP address from Radix tree
++ *  \param *ip pointer to Address structure containing IP address
++ *  \param *ctx pointer to AlertPfCtx global data structure
++ *  \param action value from Kernel Routing Message
++ */
++static void AlertPf_IflistMaint(Address *ip, AlertPfCtx *ctx, u_char action)
++{
++	char tmp[46];
++
++	// Validate passed pointers
++	if (ip == NULL || ctx == NULL)
++		return;
++
++	switch (action) {
++		case RTM_NEWADDR:
++			// Check if new address already in list
++			if (ip->family == AF_INET) {
++				if (SCRadixFindKeyIPV4ExactMatch((uint8_t *)&ip->addr_data32, ctx->tree, NULL) == NULL) {
++					// Not already in list, so add it
++					SCRadixAddKeyIPV4((uint8_t *)&ip->addr_data32, ctx->tree, NULL);
++    					PrintInet(AF_INET, (const void *)&ip->addr_data32, tmp, sizeof(tmp));
++					SCLogInfo("alert-pf -> added address %s to automatic interface IP Pass List.", tmp);
++				}
++			}
++			else if (ip->family == AF_INET6) {
++				if (SCRadixFindKeyIPV6ExactMatch((uint8_t *)&ip->addr_data8, ctx->tree, NULL) == NULL) {
++					// Not already in list, so add it
++					SCRadixAddKeyIPV6((uint8_t *)&ip->addr_data8, ctx->tree, NULL);
++    					PrintInet(AF_INET6, (const void *)&ip->addr_data8, tmp, sizeof(tmp));
++					SCLogInfo("alert-pf -> added address %s to automatic interface IP Pass List.", tmp);
++				}
++			}
++			break;
++
++		case RTM_DELADDR:
++
++			// Delete the passed IP address only if it is in our IP List
++			if (ip->family == AF_INET) {
++				if (SCRadixFindKeyIPV4ExactMatch((uint8_t *)&ip->addr_data32, ctx->tree, NULL)) {
++					// In list, so delete it
++					SCRadixRemoveKeyIPV4((uint8_t *)&ip->addr_data32, ctx->tree);
++    					PrintInet(AF_INET, (const void *)&ip->addr_data32, tmp, sizeof(tmp));
++					SCLogInfo("alert-pf -> deleted address %s from automatic interface IP Pass List.", tmp);
++				}
++			}
++			else if (ip->family == AF_INET6) {
++				if (SCRadixFindKeyIPV6ExactMatch((uint8_t *)&ip->addr_data8, ctx->tree, NULL)) {
++					// In list, so delete it
++					SCRadixRemoveKeyIPV6((uint8_t *)&ip->addr_data8, ctx->tree);
++    					PrintInet(AF_INET6, (const void *)&ip->addr_data8, tmp, sizeof(tmp));
++					SCLogInfo("alert-pf -> deleted address %s from automatic interface IP Pass List.", tmp);
++				}
++			}
++			break;
++
++		default:
++			SCLogWarning(SC_WARN_UNCOMMON, "alert-pf -> AlertPf_IflistMaint() received unrecognized action parameter.");
++			return;
++	}
++	return;
 +}
 +
 +/**
@@ -495,7 +653,7 @@ diff -rNu ./src/alert-pf.c ./src.new/alert-pf.c
 +/** \brief Print the pf alert module blocking stats.
 + *  \param *tv pointer to ThreadVars structure
 + *  \param *data pointer to AlertPfThread structure
-+*/
++ */
 +void AlertPfExitPrintStats(ThreadVars *tv, void *data)
 +{
 +    AlertPfThread *apft = (AlertPfThread *)data;
@@ -517,6 +675,86 @@ diff -rNu ./src/alert-pf.c ./src.new/alert-pf.c
 +    SC_ATOMIC_DESTROY(alert_pf_blocks);
 +}
 +
++/** \brief Thread for monitoring firewall interface IP address changes.
++ *  \param *args pointer to global AlertPfCtx structure
++ */
++void *AlertPfMonitorIfaceChanges(void *args)
++{
++	int sock = -1;
++	int fib;
++	size_t fib_len = sizeof(fib);
++	ssize_t len;
++	char msg[MAX_RTMSG_SIZE];
++	char ifname[IFNAMSIZ];
++	Address addr;
++	struct rt_msghdr *rtm;
++	struct ifa_msghdr *ifam;
++
++	AlertPfCtx *ctx = args;
++
++	sock = socket(PF_ROUTE, SOCK_RAW, 0);
++	if (sock == -1) {
++		SCLogWarning(SC_WARN_UNCOMMON, "Failed to create socket(PF_ROUTE): %s.  Dynamic IP changes will not be monitored!", strerror(errno));
++		return (NULL);
++	}
++
++	if (sysctlbyname("net.my_fibnum", &fib, &fib_len, NULL, 0) < 0)
++	{  
++		SCLogWarning(SC_WARN_UNCOMMON, "alert-pf -> Failed to obtain active route table FIB so using all FIBs by default.");
++		fib = RT_ALL_FIBS;
++	}
++
++	setsockopt(sock, SOL_SOCKET, SO_SETFIB, (void *)&fib, sizeof(fib));
++
++	// Loop forever receiving and handling kernel RTM messages
++	for (;;) {
++
++		len = read(sock, &msg, sizeof(msg));
++		if (len == -1)
++			continue;
++
++		rtm = (struct rt_msghdr *)msg;
++		if (rtm->rtm_version != RTM_VERSION)
++			continue;
++
++		ifam = (struct ifa_msghdr *)msg;
++
++		switch (rtm->rtm_type) {
++			case RTM_NEWADDR:
++			case RTM_DELADDR:
++				// Make sure all address info we need is present in the message
++				if (ifam->ifam_addrs != 0xb4)
++					continue;
++				break;
++
++			default:
++				continue;
++		}
++
++		// First check that we have a non-zero subnet mask indicating an actual IP address
++		if (!AlertPfParseIfamAddress((char *)(ifam + 1), &addr, ifam->ifam_msglen))
++			continue;
++
++		// Get the address that is changing (should be third sockaddr structure in msg)
++		char *aux = (char *)(ifam + 1);
++		int len = ifam->ifam_msglen;
++		aux += SA_SIZE(aux);
++		len -= SA_SIZE(aux);
++		aux += SA_SIZE(aux);
++		len -= SA_SIZE(aux);
++
++		// Make sure we have a valid non-zero IP address in that sockaddr structure
++		if (!AlertPfParseIfamAddress(aux, &addr, len))
++			continue;
++
++		// OK, now either delete it from or add it to the interface IP list
++		SCLogInfo("alert-pf -> Received notification of IP address change on interface %s.", if_indextoname(ifam->ifam_index, ifname));
++		AlertPf_IflistMaint(&addr, ctx, ifam->ifam_type);
++	}
++
++	return (NULL);
++}
++
 +/** \brief Initialize the pf alert blocking module.
 + *  \param *conf pointer to module's ConfNode structure
 + * \return A newly allocated AlertPfCtx structure, or NULL
@@ -533,7 +771,7 @@ diff -rNu ./src/alert-pf.c ./src.new/alert-pf.c
 +
 +    pass_list_name = ConfNodeLookupChildValue(conf, "pass-list");
 +    if (pass_list_name == NULL) {
-+	SCLogWarning(SC_WARN_UNCOMMON, "alert-pf: No Pass List specified, critical interface IPs may become blocked.");
++	SCLogWarning(SC_WARN_UNCOMMON, "alert-pf: No Pass List was specified.");
 +    }
 +
 +    kill_state = ConfNodeLookupChildValue(conf, "kill-state");
@@ -551,6 +789,13 @@ diff -rNu ./src/alert-pf.c ./src.new/alert-pf.c
 +        exit(EXIT_FAILURE);
 +    }
 +
++    /* Create a Radix Tree to hold PASS LIST IP addresses */
++    ctx->tree = SCRadixCreateRadixTree(free, NULL);
++
++    /* Grab all firewall interface IP addresses and save in Radix Tree */
++    if (!AlertPfInitIfaceList(ctx))
++	SCLogWarning(SC_ERR_SYSCALL, "alert-pf: Failed to get the list of firewall interface addresses for auto-whitelisting.");
++
 +    /* Create a LogFileCtx for the block.log output */
 +    logfile_ctx = LogFileNewCtx();
 +    if (logfile_ctx == NULL) {
@@ -559,7 +804,7 @@ diff -rNu ./src/alert-pf.c ./src.new/alert-pf.c
 +        return NULL;
 +    }
 +
-+    if (SCConfLogOpenGeneric(conf, logfile_ctx, DEFAULT_LOG_FILENAME) < 0) {
++    if (SCConfLogOpenGeneric(conf, logfile_ctx, DEFAULT_LOG_FILENAME, 0) < 0) {
 +        LogFileFreeCtx(logfile_ctx);
 +        SCLogDebug("AlertPfInitCtx: Could not create new LogFileCtx");
 +        SCFree(ctx);
@@ -624,6 +869,12 @@ diff -rNu ./src/alert-pf.c ./src.new/alert-pf.c
 +            block = "both";
 +    }
 +    const char *state = ctx->kill_state ? "on" : "off";
++
++    if (pthread_create(&alert_pf_ifmon_thread, NULL, AlertPfMonitorIfaceChanges, ctx))
++	SCLogError(SC_ERR_SYSCALL, "Failed to create Interface IP Address change monitoring thread for 'alert-pf' output plugin.");
++    else
++	SCLogInfo("Created firewall interface IP change monitor thread for auto-whitelisting of firewall interface IP addresses.");
++
 +    SCLogInfo("alert-pf output initialized, pf-table=%s  block-ip=%s  kill-state=%s", ctx->pftable, block, state);
 +
 +    return output_ctx;
@@ -861,10 +1112,10 @@ diff -rNu ./src/alert-pf.c ./src.new/alert-pf.c
 +    return TM_ECODE_OK;
 +}
 +
-diff -rNu ./src/alert-pf.h ./src.new/alert-pf.h
---- ./src/alert-pf.h	1969-12-31 19:00:00.000000000 -0500
-+++ ./src.new/alert-pf.h	2014-04-21 20:13:22.000000000 -0400
-@@ -0,0 +1,51 @@
+diff -ruN ../suricata-2.0.9.orig/src/alert-pf.h ./src/alert-pf.h
+--- ../suricata-2.0.9.orig/src/alert-pf.h	1969-12-31 19:00:00.000000000 -0500
++++ ./src/alert-pf.h	2015-11-04 22:52:05.000000000 -0500
+@@ -0,0 +1,61 @@
 +/* Copyright (C) 2007-2010 Open Information Security Foundation
 + *
 + * You can copy, redistribute or modify this Program under the terms of
@@ -880,6 +1131,16 @@ diff -rNu ./src/alert-pf.h ./src.new/alert-pf.h
 + * version 2 along with this program; if not, write to the Free Software
 + * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 + * 02110-1301, USA.
++ *
++ * Portions of this module are based on previous works of the following:
++ *
++ * Copyright (c) 2015  Bill Meeks
++ * Copyright (c) 2012  Ermal Luci
++ * Copyright (c) 2006  Antonio Benojar <zz.stalker@gmail.com>
++ * Copyright (c) 2005  Antonio Benojar <zz.stalker@gmail.com>
++ * Copyright (c) 2003, 2004 Armin Wolfermann:
++ *
++ * All rights reserved.
 + */
 +
 +/**
@@ -916,9 +1177,9 @@ diff -rNu ./src/alert-pf.h ./src.new/alert-pf.h
 +
 +#endif /* __ALERT_PF_H__ */
 +
-diff -rNu ./src/suricata.c ./src.new/suricata.c
---- ./src/suricata.c	2014-03-25 04:47:38.000000000 -0400
-+++ ./src.new/suricata.c	2014-05-01 18:29:00.000000000 -0400
+diff -ruN ../suricata-2.0.9.orig/src/suricata.c ./src/suricata.c
+--- ../suricata-2.0.9.orig/src/suricata.c	2015-09-25 10:18:34.000000000 -0400
++++ ./src/suricata.c	2015-10-30 17:35:11.000000000 -0400
 @@ -78,6 +78,7 @@
  #include "alert-prelude.h"
  #include "alert-syslog.h"
@@ -927,7 +1188,7 @@ diff -rNu ./src/suricata.c ./src.new/suricata.c
  #include "output-json-alert.h"
  
  #include "log-droplog.h"
-@@ -752,6 +753,10 @@
+@@ -792,6 +793,10 @@
  
  void RegisterAllModules()
  {
@@ -938,10 +1199,10 @@ diff -rNu ./src/suricata.c ./src.new/suricata.c
      /* nfq */
      TmModuleReceiveNFQRegister();
      TmModuleVerdictNFQRegister();
-diff -rNu ./src/tm-modules.c ./src.new/tm-modules.c
---- ./src/tm-modules.c	2014-03-25 04:47:38.000000000 -0400
-+++ ./src.new/tm-modules.c	2014-05-01 14:49:05.000000000 -0400
-@@ -213,6 +213,9 @@
+diff -ruN ../suricata-2.0.9.orig/src/tm-modules.c ./src/tm-modules.c
+--- ../suricata-2.0.9.orig/src/tm-modules.c	2015-09-25 10:18:34.000000000 -0400
++++ ./src/tm-modules.c	2015-10-30 17:35:11.000000000 -0400
+@@ -215,6 +215,9 @@
          CASE_CODE (TMM_LOGDROPLOG);
          CASE_CODE (TMM_ALERTSYSLOG4);
          CASE_CODE (TMM_ALERTSYSLOG6);
@@ -951,9 +1212,9 @@ diff -rNu ./src/tm-modules.c ./src.new/tm-modules.c
          CASE_CODE (TMM_RESPONDREJECT);
          CASE_CODE (TMM_LOGDNSLOG);
          CASE_CODE (TMM_LOGHTTPLOG);
-diff -rNu ./src/tm-threads-common.h ./src.new/tm-threads-common.h
---- ./src/tm-threads-common.h	2014-03-25 04:47:38.000000000 -0400
-+++ ./src.new/tm-threads-common.h	2014-05-01 14:50:53.000000000 -0400
+diff -ruN ../suricata-2.0.9.orig/src/tm-threads-common.h ./src/tm-threads-common.h
+--- ../suricata-2.0.9.orig/src/tm-threads-common.h	2015-09-25 10:18:34.000000000 -0400
++++ ./src/tm-threads-common.h	2015-10-30 17:35:11.000000000 -0400
 @@ -78,6 +78,9 @@
      TMM_DECODEMPIPE,
      TMM_RECEIVENAPATECH,
