@@ -175,6 +175,11 @@ function is_github_url($url) {
 function bootup_apply_patches() {
 	global $config;
 
+	if (!isset($config['installedpackages']['patches']['item']) ||
+	    !is_array($config['installedpackages']['patches']['item'])) {
+		$config['installedpackages']['patches']['item'] = array();
+	}
+
 	$a_patches = &$config['installedpackages']['patches']['item'];
 
 	foreach ($a_patches as $patch) {
