@@ -1,3 +1,5 @@
 pkg/routed.xml
-/routed.inc
+pkg/routed.inc
+/etc/inc/priv/routed.priv.inc
 %%DATADIR%%/info.xml
+@dir /etc/inc/priv

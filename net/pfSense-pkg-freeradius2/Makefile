@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-freeradius2
-PORTVERSION=	1.6.17
+PORTVERSION=	1.6.18
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -24,31 +24,34 @@ do-extract:
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
+	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${MKDIR} ${STAGEDIR}${PREFIX}/www
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/freeradius.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/freeradius.inc \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/freeradius.inc \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/www/freeradius_view_config.php \
+	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/freeradius.priv.inc \
+		${STAGEDIR}/etc/inc/priv
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/freeradius_view_config.php \
 		${STAGEDIR}${PREFIX}/www
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/freeradiusclients.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/freeradiusclients.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/freeradiussettings.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/freeradiussettings.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/freeradiuseapconf.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/freeradiuseapconf.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/freeradiussqlconf.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/freeradiussqlconf.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/freeradiusinterfaces.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/freeradiusinterfaces.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/freeradiuscerts.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/freeradiuscerts.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/freeradiussync.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/freeradiussync.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/freeradiusmodulesldap.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/freeradiusmodulesldap.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/freeradiusauthorizedmacs.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/freeradiusauthorizedmacs.xml \
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}

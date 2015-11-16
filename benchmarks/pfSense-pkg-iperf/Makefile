@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-iperf
-PORTVERSION=	2.0.5.2
+PORTVERSION=	2.0.5.3
 CATEGORIES=	benchmarks
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -23,12 +23,14 @@ do-extract:
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
-	${MKDIR} ${STAGEDIR}
+	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/iperf.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} ${FILESDIR}/iperfserver.xml \
-		${STAGEDIR}
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/iperfserver.xml \
+		${STAGEDIR}${PREFIX}/pkg
+	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/iperf.priv.inc \
+		${STAGEDIR}/etc/inc/priv
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
 

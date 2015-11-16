@@ -42,7 +42,7 @@
 	</copyright>
 	<description>Suricata IDS/IPS Package</description>
 	<name>suricata</name>
-	<version>2.0.8 pkg v2.1.6</version>
+	<version>2.1.9</version>
 	<title>Services: Suricata IDS</title>
 	<include_file>/usr/local/pkg/suricata/suricata.inc</include_file>
 	<menu>

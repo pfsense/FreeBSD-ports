@@ -471,6 +471,26 @@ foreach ($rule as &$r) {
 		$updated_cfg = true;
 	}
 
+	/**********************************************************/
+	/* Create interface Unified2 XFF log settings if not set  */
+	/**********************************************************/
+	if (!isset($pconfig['barnyard_xff_logging'])) {
+		$pconfig['barnyard_xff_logging'] = "off";
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['barnyard_xff_mode'])) {
+		$pconfig['barnyard_xff_mode'] = "extra-data";
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['barnyard_xff_deployment'])) {
+		$pconfig['barnyard_xff_deployment'] = "reverse";
+		$updated_cfg = true;
+	}
+	if (empty($pconfig['barnyard_xff_header'])) {
+		$pconfig['barnyard_xff_header'] = "X-Forwarded-For";
+		$updated_cfg = true;
+	}
+
 	// Save the new configuration data into the $config array pointer
 	$r = $pconfig;
 }

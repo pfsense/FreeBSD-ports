@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
-<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
 <packagegui>
 	<copyright>
-<![CDATA[	
+	<![CDATA[
 /* $Id$ */
-/* ========================================================================== */
+/* ====================================================================================== */
 /*
 	freeradius.xml
-	part of pfSense (http://www.pfSense.com)
+	part of pfSense (https://www.pfSense.org/)
 	Copyright (C) 2013 Alexander Wilke <nachtfalkeaw@web.de>
+	Copyright (C) 2015 ESF, LLC
 	All rights reserved.
-
-	Based on m0n0wall (http://m0n0.ch/wall)
-	Copyright (C) 2003-2006 Manuel Kasper <mk@neon1.net>.
-	All rights reserved.
-									      */
-/* ========================================================================== */
+*/
+/* ====================================================================================== */
 /*
 	Redistribution and use in source and binary forms, with or without
 	modification, are permitted provided that the following conditions are met:
+
 
 	1. Redistributions of source code must retain the above copyright notice,
 	   this list of conditions and the following disclaimer.
@@ -27,6 +25,7 @@
 	2. Redistributions in binary form must reproduce the above copyright
 	   notice, this list of conditions and the following disclaimer in the
 	   documentation and/or other materials provided with the distribution.
+
 
 	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
 	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
@@ -38,14 +37,12 @@
 	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
-									      */
-/* ========================================================================== */
-]]>	</copyright>
-	<description><![CDATA[Describe your package here]]></description>
-	<requirements>Describe your package requirements here</requirements>
-	<faq>Currently there are no FAQ items provided.</faq>
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
 	<name>freeradius</name>
-	<version>1.6.17</version>
+	<version>1.6.18</version>
 	<title>FreeRADIUS: Users</title>
 	<include_file>/usr/local/pkg/freeradius.inc</include_file>
 	<menu>
@@ -58,9 +55,8 @@
 		<name>radiusd</name>
 		<rcfile>radiusd.sh</rcfile>
 		<executable>radiusd</executable>
-		<description><![CDATA[FreeRADIUS Server]]></description>
+		<description>FreeRADIUS Server</description>
 	</service>
-
 	<tabs>
 		<tab>
 			<text>Users</text>
@@ -110,57 +106,50 @@
 	</tabs>
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
-		<chmod>0755</chmod>
 		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradius.inc</item>
 	</additional_files_needed>
 	<additional_files_needed>
+		<prefix>/etc/inc/priv/</prefix>
+		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradius.priv.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
 		<prefix>/usr/local/www/</prefix>
-		<chmod>0755</chmod>
 		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradius_view_config.php</item>
-	</additional_files_needed>	
+	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
-		<chmod>0755</chmod>
 		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradiusclients.xml</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
-		<chmod>0755</chmod>
 		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradiussettings.xml</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
-		<chmod>0755</chmod>
 		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradiuseapconf.xml</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
-		<chmod>0755</chmod>
 		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradiussqlconf.xml</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
-		<chmod>0755</chmod>
 		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradiusinterfaces.xml</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
-		<chmod>0755</chmod>
 		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradiuscerts.xml</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
-		<chmod>0755</chmod>
 		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradiussync.xml</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
-		<chmod>0755</chmod>
 		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradiusmodulesldap.xml</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
-		<chmod>0755</chmod>
 		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradiusauthorizedmacs.xml</item>
 	</additional_files_needed>
 	<adddeleteeditpagefields>
@@ -228,54 +217,81 @@
 		<field>
 			<fielddescr>Username</fielddescr>
 			<fieldname>varusersusername</fieldname>
-			<description><![CDATA[Enter the username. Whitespace is possible. If you do not want to use username/password but custom options then leave this field empty.]]></description>
+			<description>
+				<![CDATA[
+				Enter the username. Whitespace is possible. If you do not want to use username/password but custom options then leave this field empty.
+				]]>
+			</description>
 			<type>input</type>
 		</field>
 		<field>
 			<fielddescr>Password</fielddescr>
 			<fieldname>varuserspassword</fieldname>
-			<description><![CDATA[Enter the password for this username. If you do not  want to use username/password but custom options then leave this field empty.]]></description>
+			<description>
+				<![CDATA[
+				Enter the password for this username. If you do not  want to use username/password but custom options then leave this field empty.
+				]]>
+			</description>
 			<type>password</type>
 		</field>
 		<field>
-			<fielddescr>Password encryption</fielddescr>
-			<fieldname>varuserspasswordencryption</fieldname>			
-			<description><![CDATA[Select the password encryption for this user. Default: Cleartext-Password]]></description>
+			<fielddescr>Password Encryption</fielddescr>
+			<fieldname>varuserspasswordencryption</fieldname>
+			<description>
+				<![CDATA[
+				Select the password encryption for this user. Default: Cleartext-Password
+				]]>
+			</description>
 			<type>select</type>
 			<default_value>Cleartext-Password</default_value>
-				<options>
-					<option><name>Cleartext-Password</name><value>Cleartext-Password</value></option>
-					<option><name>MD5-Password</name><value>MD5-Password</value></option>
-				</options>
+			<options>
+				<option><name>Cleartext-Password</name><value>Cleartext-Password</value></option>
+				<option><name>MD5-Password</name><value>MD5-Password</value></option>
+			</options>
 		</field>
 		<field>
 			<fielddescr>Enable One-Time-Password for this user</fielddescr>
 			<fieldname>varusersmotpenable</fieldname>
-			<description><![CDATA[This enables the possibility to authenticate against an username and an one-time-password. The client to generate OTP can be installed on various mobile device plattforms like Android and more.<br><br>
-								<b>IMPORTANT:</b> You need to enabled mOTP first in FreeRADIUS => Settings (Default: unchecked)]]></description>
+			<description>
+				<![CDATA[
+				This enables the possibility to authenticate against an username and an one-time-password. The client to generate OTP can be installed on various mobile device plattforms like Android and more.<br/><br/>
+				<b>IMPORTANT:</b> You need to enabled mOTP first in FreeRADIUS => Settings (Default: unchecked)
+				]]>
+			</description>
 			<type>checkbox</type>
 			<enablefields>varusersmotpinitsecret,varusersmotppin,varusersmotpoffset</enablefields>
 		</field>
 		<field>
 			<fielddescr>Init-Secret</fielddescr>
 			<fieldname>varusersmotpinitsecret</fieldname>
-			<description><![CDATA[This is the generated init secret you get when you initialize the toke the first time on a client (mobile device).]]></description>
+			<description>
+				<![CDATA[
+				This is the generated init secret you get when you initialize the toke the first time on a client (mobile device).
+				]]>
+			</description>
 			<type>password</type>
 		</field>
 		<field>
 			<fielddescr>PIN</fielddescr>
 			<fieldname>varusersmotppin</fieldname>
-			<description><![CDATA[This is the PIN the user has to enter on his mobile device to generate a one-time-password.]]></description>
+			<description>
+				<![CDATA[
+				This is the PIN the user has to enter on his mobile device to generate a one-time-password.
+				]]>
+			</description>
 			<type>password</type>
 		</field>
 		<field>
 			<fielddescr>Time Offset</fielddescr>
 			<fieldname>varusersmotpoffset</fieldname>
-			<description><![CDATA[If the client is not in the correct time zone or is not changing time zone automatically than you have to calculate the offset and enter it here. To calculate it do the following:<br><br>
-			
-									1. Write down the first 9 digits of the Epoch-Time on the client.<br>
-									2. Check with <b>date +%s</b> the Epoch-Time on your FreeRADIUS server and write down the first 9 digits.<br>
-									3. Subtract both values, multiply the result with 10 and enter the value in this field. Example: 30 or -180 (Default: 0)]]></description>
+			<description>
+				<![CDATA[
+				If the client is not in the correct time zone or is not changing time zone automatically than you have to calculate the offset and enter it here. To calculate it do the following:<br/><br/>
+				1. Write down the first 9 digits of the Epoch-Time on the client.<br/>
+				2. Check with <b>date +%s</b> the Epoch-Time on your FreeRADIUS server and write down the first 9 digits.<br/>
+				3. Subtract both values, multiply the result with 10 and enter the value in this field. Example: 30 or -180 (Default: 0)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>0</default_value>
 		</field>
@@ -284,21 +300,34 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Number of simultaneous connections</fielddescr>
+			<fielddescr>Number of Simultaneous Connections</fielddescr>
 			<fieldname>varuserssimultaneousconnect</fieldname>
-			<description><![CDATA[The maximum of simultaneous connections with this username. If you leave this field empty than there is no limit. If you are using FreeRADIUS with Captive Portal you should leave this empty. Read the documentation!]]></description>
+			<description>
+				<![CDATA[
+				The maximum of simultaneous connections with this username. If you leave this field empty than there is no limit. If you are using FreeRADIUS with Captive Portal you should leave this empty.
+				Read the documentation!
+				]]>
+			</description>
 			<type>input</type>
 		</field>
 		<field>
 			<fielddescr>Redirection URL</fielddescr>
-			<fieldname>varuserswisprredirectionurl</fieldname>			
-			<description><![CDATA[Enter the URL the user should be redirected to after successful login. (e.g.: http://www.google.com)]]></description>
+			<fieldname>varuserswisprredirectionurl</fieldname>
+			<description>
+				<![CDATA[
+				Enter the URL the user should be redirected to after successful login. (e.g.: http://www.google.com)
+				]]>
+			</description>
 			<type>input</type>
 		</field>
 		<field>
 			<fielddescr>Description</fielddescr>
-			<fieldname>description</fieldname>			
-			<description><![CDATA[Enter any description for this user you like.]]></description>
+			<fieldname>description</fieldname>
+			<description>
+				<![CDATA[
+				Enter any description for this user you like.
+				]]>
+			</description>
 			<type>input</type>
 		</field>
 		<field>
@@ -308,80 +337,107 @@
 		<field>
 			<fielddescr>IP Address</fielddescr>
 			<fieldname>varusersframedipaddress</fieldname>
-			<description><![CDATA[<b>Framed-IP-Address</b> must be supported by NAS.<br><br>
-							If you want this user to be assigned a specific IP address from radius, enter the IP address here.<br>
-							Continuous IP address is available with "+" suffix (e.g. 192.168.1.5+). Could be useful for simultaneous connections.<br><br>
-							<b>IMPORTANT:</b> You must enter an IP address here if you checked "RADIUS issued IP" on VPN PPTP or VPN PPPoE configuration.]]></description>
+			<description>
+				<![CDATA[
+				<b>Framed-IP-Address</b> must be supported by NAS.<br/><br/>
+				If you want this user to be assigned a specific IP address from radius, enter the IP address here.<br/>
+				Continuous IP address is available with "+" suffix (e.g. 192.168.1.5+). Could be useful for simultaneous connections.<br/><br/>
+				<b>IMPORTANT:</b> You must enter an IP address here if you checked "RADIUS issued IP" on VPN PPTP or VPN PPPoE configuration.
+				]]>
+			</description>
 			<type>input</type>
 		</field>
 		<field>
 			<fielddescr>Subnet Mask</fielddescr>
-			<fieldname>varusersframedipnetmask</fieldname>			
-			<description><![CDATA[<b>Framed-IP-Netmask</b> must be supported by NAS. (e.g. 255.255.255.0)]]></description>
+			<fieldname>varusersframedipnetmask</fieldname>
+			<description>
+				<![CDATA[
+				<b>Framed-IP-Netmask</b> must be supported by NAS. (e.g. 255.255.255.0)
+				]]>
+			</description>
 			<type>input</type>
 		</field>
 		<field>
 			<fielddescr>Gateway</fielddescr>
-			<fieldname>varusersframedroute</fieldname>			
+			<fieldname>varusersframedroute</fieldname>
 			<description><![CDATA[<b>Framed-Route</b> must be supported by NAS. Format is: Subnet Gateway Metric (e.g. 192.168.10.0 192.168.10.1 1).]]></description>
 			<type>input</type>
 		</field>
 		<field>
 			<fielddescr>VLAN ID</fielddescr>
-			<fieldname>varusersvlanid</fieldname>			
-			<description><![CDATA[Enter the VLAN ID (integer from 1-4095) or the VLAN name that this username should be assigned to.<br>
-								Must be supported by the NAS.<br>
-								This setting can be used for a NAS that supports the following RADIUS parameters:<br><br>
-								
-								Tunnel-Type = VLAN<br>
-								Tunnel-Medium-Type = IEEE-802<br>
-								Tunnel-Private-Group-ID = "<b>THIS IS YOUR INPUT</b>"]]></description>
+			<fieldname>varusersvlanid</fieldname>
+			<description>
+				<![CDATA[
+				Enter the VLAN ID (integer from 1-4095) or the VLAN name that this username should be assigned to.<br/>
+				Must be supported by the NAS.<br/>
+				This setting can be used for a NAS that supports the following RADIUS parameters:<br/><br/>
+				Tunnel-Type = VLAN<br/>
+				Tunnel-Medium-Type = IEEE-802<br/>
+				Tunnel-Private-Group-ID = "<b>THIS IS YOUR INPUT</b>"
+				]]>
+			</description>
 			<type>input</type>
-		</field>		
+		</field>
 		<field>
 			<name>Time Configuration</name>
 			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr>Expiration Date</fielddescr>
-			<fieldname>varusersexpiration</fieldname>			
-			<description><![CDATA[Enter the date when this account should expire. Format is: Mmm dd yyyy (e.g. Jan 01 2012).]]></description>
+			<fieldname>varusersexpiration</fieldname>
+			<description>
+				<![CDATA[
+				Enter the date when this account should expire. Format is: Mmm dd yyyy (e.g. Jan 01 2012).
+				]]>
+			</description>
 			<type>input</type>
 		</field>
 		<field>
 			<fielddescr>Session Timeout</fielddescr>
-			<fieldname>varuserssessiontimeout</fieldname>			
+			<fieldname>varuserssessiontimeout</fieldname>
 			<description><![CDATA[Enter the time this user has until relogin in seconds.]]></description>
 			<type>input</type>
 		</field>
 		<field>
 			<fielddescr>Possible Login Times</fielddescr>
-			<fieldname>varuserslogintime</fieldname>			
-			<description><![CDATA[Enter the time when this user should have access. If no time is entered it means "always".<br>
-							Every time string contains a day (Mo,Tu,We,Th,Fr,Sa,Su) or all weekdays which is from monday till friday (Wk).<br>
-							All weekdays plus weekend which means all days from monday till sunday is (Al).<br><br>
-							<b>Wk0855-2305,Sa,Su2230-0230</b><br><br>
-							This means weekdays after 8:55 AM and before 11:05 PM | any time on saturday | sunday after 10:30 PM and before 02:30 AM.]]></description>
+			<fieldname>varuserslogintime</fieldname>
+			<description>
+				<![CDATA[
+				Enter the time when this user should have access. If no time is entered it means "always".<br/>
+				Every time string contains a day (Mo,Tu,We,Th,Fr,Sa,Su) or all weekdays which is from monday till friday (Wk).<br/>
+				All weekdays plus weekend which means all days from monday till sunday is (Al).<br/><br/>
+				<b>Wk0855-2305,Sa,Su2230-0230</b><br/><br/>
+				This means weekdays after 8:55 AM and before 11:05 PM | any time on saturday | sunday after 10:30 PM and before 02:30 AM.
+				]]>
+			</description>
 			<type>input</type>
 		</field>
 		<field>
 			<fielddescr>Amount of Time</fielddescr>
-			<fieldname>varusersamountoftime</fieldname>			
-			<description><![CDATA[Enter the amount of time for this user in minutes.]]></description>
+			<fieldname>varusersamountoftime</fieldname>
+			<description>
+				<![CDATA[
+				Enter the amount of time for this user in minutes.
+				]]>
+			</description>
 			<type>input</type>
 		</field>
 		<field>
 			<fielddescr>Time Period</fielddescr>
-			<fieldname>varuserspointoftime</fieldname>			
-			<description><![CDATA[Select the time period for the amount of time.]]></description>
+			<fieldname>varuserspointoftime</fieldname>
+			<description>
+				<![CDATA[
+				Select the time period for the amount of time.
+				]]>
+			</description>
 			<type>select</type>
 			<default_value>daily</default_value>
-				<options>
-					<option><name>Daily</name><value>Daily</value></option>
-					<option><name>Weekly</name><value>Weekly</value></option>
-					<option><name>Monthly</name><value>Monthly</value></option>
-					<option><name>Forever</name><value>Forever</value></option>
-				</options>
+			<options>
+				<option><name>Daily</name><value>Daily</value></option>
+				<option><name>Weekly</name><value>Weekly</value></option>
+				<option><name>Monthly</name><value>Monthly</value></option>
+				<option><name>Forever</name><value>Forever</value></option>
+			</options>
 		</field>
 		<field>
 			<name>Traffic and Bandwidth</name>
@@ -389,39 +445,60 @@
 		</field>
 		<field>
 			<fielddescr>Amount of Download and Upload Traffic</fielddescr>
-			<fieldname>varusersmaxtotaloctets</fieldname>			
-			<description><![CDATA[Enter the amount of download and upload traffic (summarized) for this user in <b>MegaByte (MB)</b>. There is a bug in CP (pfSense v2.0.x) which counts the real traffic many times faster and incorrect.]]></description>
+			<fieldname>varusersmaxtotaloctets</fieldname>
+			<description>
+				<![CDATA[
+				Enter the amount of download and upload traffic (summarized) for this user in <b>MegaByte (MB)</b>. There is a bug in CP (pfSense v2.0.x) which counts the real traffic many times faster and incorrect.
+				]]>
+			</description>
 			<type>input</type>
 		</field>
 		<field>
 			<fielddescr>Time Period</fielddescr>
-			<fieldname>varusersmaxtotaloctetstimerange</fieldname>			
-			<description><![CDATA[Select the time period for the amount of download and upload traffic. This does not automatically reset the counter. You need to setup a cronjob (with cron package) which will reset the counter. Read the documentation!]]></description>
+			<fieldname>varusersmaxtotaloctetstimerange</fieldname>
+			<description>
+				<![CDATA[
+				Select the time period for the amount of download and upload traffic. This does not automatically reset the counter.<br/>
+				You need to setup a cronjob (with cron package) which will reset the counter. Read the documentation!
+				]]>
+			</description>
 			<type>select</type>
 			<default_value>daily</default_value>
-				<options>
-					<option><name>Daily</name><value>daily</value></option>
-					<option><name>Weekly</name><value>weekly</value></option>
-					<option><name>Monthly</name><value>monthly</value></option>
-					<option><name>Forever</name><value>forever</value></option>
-				</options>
+			<options>
+				<option><name>Daily</name><value>daily</value></option>
+				<option><name>Weekly</name><value>weekly</value></option>
+				<option><name>Monthly</name><value>monthly</value></option>
+				<option><name>Forever</name><value>forever</value></option>
+			</options>
 		</field>
 		<field>
 			<fielddescr>Maximum Bandwidth Down</fielddescr>
-			<fieldname>varusersmaxbandwidthdown</fieldname>			
-			<description><![CDATA[Enter the maximum bandwidth for download in <b>KiloBits</b> per second.]]></description>
+			<fieldname>varusersmaxbandwidthdown</fieldname>
+			<description>
+				<![CDATA[
+				Enter the maximum bandwidth for download in <b>KiloBits</b> per second.
+				]]>
+			</description>
 			<type>input</type>
 		</field>
 		<field>
 			<fielddescr>Maximum Bandwidth Up</fielddescr>
-			<fieldname>varusersmaxbandwidthup</fieldname>			
-			<description><![CDATA[Enter the maximum bandwidth for upload in <b>KiloBits</b> per second.]]></description>
+			<fieldname>varusersmaxbandwidthup</fieldname>
+			<description>
+				<![CDATA[
+				Enter the maximum bandwidth for upload in <b>KiloBits</b> per second.
+				]]>
+			</description>
 			<type>input</type>
 		</field>
 		<field>
 			<fielddescr>Accounting Interim Interval</fielddescr>
-			<fieldname>varusersacctinteriminterval</fieldname>			
-			<description><![CDATA[Enter the seconds which should be between every interim-update. It MUST be more than 60s and SHOULD NOT be less than 600s. (Default: 600)]]></description>
+			<fieldname>varusersacctinteriminterval</fieldname>
+			<description>
+				<![CDATA[
+				Enter the seconds which should be between every interim-update. It MUST be more than 60s and SHOULD NOT be less than 600s. (Default: 600)
+				]]>
+			</description>
 			<type>input</type>
 		</field>
 		<field>
@@ -430,39 +507,51 @@
 		</field>
 		<field>
 			<fielddescr>Additional RADIUS Attributes on the TOP of this entry</fielddescr>
-			<fieldname>varuserstopadditionaloptions</fieldname>			
-			<description><![CDATA[This is for experts only and should be treat with care!<br>
-								You may append custom RADIUS options to this user account. If the syntax needs it, you have to set quotes and commas.<br>
-								To put a command in a new line use a vertical bar (|).<br><br>
-								Example: DEFAULT Auth-Type = System<br><br>
-								<b>IMPORTANT:</b> If you don't format this field correctly freeRADIUS will not start because of syntax errors.<br>
-								Verify your changes by checking users file (View config -> users).]]></description>
+			<fieldname>varuserstopadditionaloptions</fieldname>
+			<description>
+				<![CDATA[
+				This is for experts only and should be treat with care!<br/>
+				You may append custom RADIUS options to this user account. If the syntax needs it, you have to set quotes and commas.<br/>
+				To put a command in a new line use a vertical bar (|).<br/><br/>
+				Example: DEFAULT Auth-Type = System<br/><br/>
+				<b>IMPORTANT:</b> If you don't format this field correctly freeRADIUS will not start because of syntax errors.<br/>
+				Verify your changes by checking users file (View config -> users).
+				]]>
+			</description>
 			<type>textarea</type>
 			<rows>4</rows>
 			<cols>75</cols>
 		</field>
 		<field>
 			<fielddescr>Additional RADIUS Attributes (CHECK-ITEM).</fielddescr>
-			<fieldname>varuserscheckitemsadditionaloptions</fieldname>			
-			<description><![CDATA[This is for experts only and should be treat with care!<br>
-								You may append custom RADIUS options to this user account. If the syntax needs it, you have to set quotes and commas.<br>
-								To put a command in a new line use a vertical bar (|).<br><br>
-								Example: Max-Daily-Session := 36000<br><br>
-								<b>IMPORTANT:</b> If you don't format this field correctly freeRADIUS will not start because of syntax errors.<br>
-								Verify your changes by checking users file (View config -> users).]]></description>
+			<fieldname>varuserscheckitemsadditionaloptions</fieldname>
+			<description>
+				<![CDATA[
+				This is for experts only and should be treat with care!<br/>
+				You may append custom RADIUS options to this user account. If the syntax needs it, you have to set quotes and commas.<br/>
+				To put a command in a new line use a vertical bar (|).<br/><br/>
+				Example: Max-Daily-Session := 36000<br/><br/>
+				<b>IMPORTANT:</b> If you don't format this field correctly freeRADIUS will not start because of syntax errors.<br/>
+				Verify your changes by checking users file (View config -> users).
+				]]>
+			</description>
 			<type>textarea</type>
 			<rows>4</rows>
 			<cols>75</cols>
 		</field>
 		<field>
 			<fielddescr>Additional RADIUS Attributes (REPLY-ITEM).</fielddescr>
-			<fieldname>varusersreplyitemsadditionaloptions</fieldname>			
-			<description><![CDATA[This is for experts only and should be treat with care!<br>
-								You may append custom RADIUS options to this user account. If the syntax needs it, you have to set quotes and commas.<br>
-								To put a command in a new line use a vertical bar (|).<br><br>
-								Example: Service-Type == Login-User,|Login-Service == Telnet,|Login-IP-Host == 192.168.1.2<br><br>
-								<b>IMPORTANT:</b> If you don't format this field correctly freeRADIUS will not start because of syntax errors.<br>
-								Verify your changes by checking users file (View config -> users).]]></description>
+			<fieldname>varusersreplyitemsadditionaloptions</fieldname>
+			<description>
+				<![CDATA[
+				This is for experts only and should be treat with care!<br/>
+				You may append custom RADIUS options to this user account. If the syntax needs it, you have to set quotes and commas.<br/>
+				To put a command in a new line use a vertical bar (|).<br/><br/>
+				Example: Service-Type == Login-User,|Login-Service == Telnet,|Login-IP-Host == 192.168.1.2<br/><br/>
+				<b>IMPORTANT:</b> If you don't format this field correctly freeRADIUS will not start because of syntax errors.<br/>
+				Verify your changes by checking users file (View config -> users).
+				]]>
+			</description>
 			<type>textarea</type>
 			<rows>4</rows>
 			<cols>75</cols>

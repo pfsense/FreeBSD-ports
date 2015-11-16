@@ -13,7 +13,7 @@
  * All rights reserved.
  *
  * Adapted for Suricata by:
- * Copyright (C) 2014 Bill Meeks
+ * Copyright (C) 2015 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,7 +50,7 @@ require_once("functions.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
 require("/usr/local/pkg/suricata/suricata_defs.inc");
 
-global $config, $g, $rebuild_rules, $pkg_interface, $suricata_gui_include;
+global $config, $g, $rebuild_rules, $pkg_interface, $suricata_gui_include, $static_output;
 
 /****************************************
  * Define any new constants here that   *
@@ -201,11 +201,12 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 	/****************************************************************/
 
 	/* Do one-time settings migration for new version configuration */
-	update_output_window(gettext("Please wait... migrating settings to new configuration..."));
+	$static_output .= gettext("\nMigrating settings to new configuration...");
+	update_output_window($static_output);
 	include('/usr/local/pkg/suricata/suricata_migrate_config.php');
-	update_output_window(gettext("Please wait... rebuilding installation with saved settings..."));
+	$static_output .= gettext(" done.\n");
+	update_output_window($static_output);
 	log_error(gettext("[Suricata] Downloading and updating configured rule types..."));
-	update_output_window(gettext("Please wait... downloading and updating configured rule types..."));
 	if ($pkg_interface <> "console")
 		$suricata_gui_include = true;
 	include('/usr/local/pkg/suricata/suricata_check_for_rule_updates.php');
@@ -219,7 +220,8 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 		$if_real = get_real_interface($suricatacfg['interface']);
 		$suricata_uuid = $suricatacfg['uuid'];
 		$suricatacfgdir = "{$suricatadir}suricata_{$suricata_uuid}_{$if_real}";
-		update_output_window(gettext("Generating configuration for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . "..."));
+		$static_output .= gettext("Generating YAML configuration file for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . "...");
+		update_output_window($static_output);
 
 		// Pull in the PHP code that generates the suricata.yaml file
 		// variables that will be substituted further down below.
@@ -238,6 +240,9 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 		// create barnyard2.conf file for interface
 		if ($suricatacfg['barnyard_enable'] == 'on')
 			suricata_generate_barnyard2_conf($suricatacfg, $if_real);
+
+		$static_output .= gettext(" done.\n");
+		update_output_window($static_output);
 	}
 
 	// create Suricata bootup file suricata.sh
@@ -259,17 +264,21 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 	}
 
 	$rebuild_rules = false;
-	if ($pkg_interface <> "console")
-		update_output_window(gettext("Finished rebuilding Suricata configuration files..."));
+	if ($pkg_interface <> "console") {
+		$static_output .= gettext("Finished rebuilding Suricata configuration from saved settings.\n");
+		update_output_window($static_output);
+	}
 	log_error(gettext("[Suricata] Finished rebuilding installation from saved settings..."));
 
 	// Only try to start Suricata if not in reboot
 	if (!$g['booting']) {
 		if ($pkg_interface <> "console") {
 			update_status(gettext("Starting Suricata using rebuilt configuration..."));
-			update_output_window(gettext("Please wait while Suricata is started..."));
+			$static_output .= gettext("Starting Suricata using the rebuilt configuration...");
+			update_output_window($static_output);
 			mwexec_bg("{$rcdir}suricata.sh start");
-			update_output_window(gettext("Suricata is starting as a background task using the rebuilt configuration..."));
+			$static_output .= gettext(" done.\n");
+			update_output_window($static_output);
 		}
 		else
 			mwexec_bg("{$rcdir}suricata.sh start");
@@ -291,6 +300,7 @@ write_config("Suricata pkg v{$config['installedpackages']['package'][get_pkg_id(
 // Done with post-install, so clear flag
 unset($g['suricata_postinstall']);
 log_error(gettext("[Suricata] Package post-installation tasks completed..."));
+update_status("");
 return true;
 
 ?>

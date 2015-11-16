@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squidguardgeneral</name>
-	<version>1.9.16</version>
+	<version>1.9.17</version>
 	<title>Proxy filter SquidGuard: General settings</title>
 	<include_file>/usr/local/pkg/squidguard.inc</include_file>
 	<!-- Installation -->
@@ -148,7 +148,13 @@
                 <field>
                         <fielddescr>Enable</fielddescr>
                         <fieldname>squidguard_enable</fieldname>
-                        <description><![CDATA[Check this option to enable squidGuard]]></description>
+                        <description>
+                        	<![CDATA[
+                        	Check this option to enable squidGuard.<br />
+                        	<strong><span class="errmsg">Important: </span></strong>Please set up at least one category on the 'Target Categories' tab before enabling.
+                        	See <a href="https://forum.pfsense.org/index.php?topic=94312.0">this link for details</a>.
+                        	]]>
+                        </description>
                         <type>checkbox</type>
                 </field>
                 <field>
@@ -244,8 +250,14 @@
                 <field>
                         <fielddescr>Blacklist</fielddescr>
                         <fieldname>blacklist</fieldname>
-                        <description><![CDATA[Check this option to enable blacklist]]></description>
+                        <description>
+                        	<![CDATA[
+                        	Check this option to enable blacklist.<br />
+                        	<strong><span class="errmsg">Do NOT enable this on NanoBSD installs!</span></strong>
+                        	]]>
+                        </description>
                         <type>checkbox</type>
+                        <enablefields>blacklist_proxy,blacklist_url</enablefields>
                 </field>
                 <field>
                         <fielddescr>Blacklist proxy</fielddescr>

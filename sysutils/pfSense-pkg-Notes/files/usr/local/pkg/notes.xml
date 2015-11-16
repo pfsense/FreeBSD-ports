@@ -43,23 +43,29 @@
 	</copyright>
 	<description>Notes</description>
 	<name>Notes</name>
-	<version>0.2.6</version>
-	<title>Settings</title>
+	<version>0.2.8</version>
+	<title>Status: Notes</title>
+	<aftersaveredirect>/pkg.php?xml=notes.xml</aftersaveredirect>
+	<addedit_string>[notes] Successfully created/modified a note.</addedit_string>
+	<delete_string>[notes] Successfully deleted a note.</delete_string>
 	<menu>
 		<name>Notes</name>
-		<tooltiptext>Notes.</tooltiptext>
 		<section>Status</section>
 		<configfile>notes.xml</configfile>
 		<url>/pkg.php?xml=notes.xml</url>
 	</menu>
 	<tabs>
 		<tab>
-			<text>Settings</text>
-			<url>/pkg_edit.php?xml=notes.xml</url>
+			<text>Notes</text>
+			<url>/pkg.php?xml=notes.xml</url>
 			<active/>
 		</tab>
 	</tabs>
 	<configpath>installedpackages->package->$packagename->configuration->notes</configpath>
+	<additional_files_needed>
+		<prefix>/etc/inc/priv/</prefix>
+		<item>https://packages.pfsense.org/packages/config/notes/notes.priv.inc</item>
+	</additional_files_needed>
 	<adddeleteeditpagefields>
 		<columnitem>
 			<fielddescr>Title</fielddescr>
@@ -69,6 +75,9 @@
 			<fielddescr>Category</fielddescr>
 			<fieldname>category</fieldname>
 		</columnitem>
+	<addtext>Add a new note</addtext>
+	<edittext>Edit this note</edittext>
+	<deletetext>Delete this note</deletetext>
 	</adddeleteeditpagefields>
 	<fields>
 		<field>

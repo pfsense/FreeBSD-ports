@@ -1,3 +1,5 @@
 pkg/rrd-summary.xml
+/etc/inc/priv/rrd-summary.priv.inc
 www/status_rrd_summary.php
 %%DATADIR%%/info.xml
+@dir /etc/inc/priv

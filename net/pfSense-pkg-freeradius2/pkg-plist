@@ -1,5 +1,6 @@
 pkg/freeradius.xml
 pkg/freeradius.inc
+/etc/inc/priv/freeradius.priv.inc
 www/freeradius_view_config.php
 pkg/freeradiusclients.xml
 pkg/freeradiussettings.xml
@@ -11,3 +12,4 @@ pkg/freeradiussync.xml
 pkg/freeradiusmodulesldap.xml
 pkg/freeradiusauthorizedmacs.xml
 %%DATADIR%%/info.xml
+@dir /etc/inc/priv

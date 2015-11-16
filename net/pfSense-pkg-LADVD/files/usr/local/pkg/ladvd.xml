@@ -44,15 +44,17 @@
 	</copyright>
 	<description>Link Layer Discovery Protocol</description>
 	<name>LADVD</name>
-	<version>1.0.4.2</version>
+	<version>1.0.4.3</version>
 	<category>Network Management</category>
 	<title>Services: LADVD</title>
-	<savetext>Save</savetext>
 	<include_file>/usr/local/pkg/ladvd.inc</include_file>
-	<aftersaveredirect>/pkg_edit.php?xml=ladvd.xml&amp;id=0</aftersaveredirect>
 	<additional_files_needed>
 		<item>https://packages.pfsense.org/packages/config/ladvd/ladvd.inc</item>
 		<prefix>/usr/local/pkg/</prefix>
+	</additional_files_needed>
+	<additional_files_needed>
+		<item>https://packages.pfsense.org/packages/config/ladvd/ladvd.priv.inc</item>
+		<prefix>/etc/inc/priv/</prefix>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/www/</prefix>
@@ -62,7 +64,7 @@
 		<name>LADVD</name>
 		<tooltiptext>Modify LADVD settings.</tooltiptext>
 		<section>Services</section>
-		<url>/pkg_edit.php?xml=ladvd.xml&amp;id=0</url>
+		<url>/pkg_edit.php?xml=ladvd.xml</url>
 	</menu>
 	<menu>
 		<name>LADVD Status</name>
@@ -74,12 +76,12 @@
 		<name>ladvd</name>
 		<rcfile>ladvd.sh</rcfile>
 		<executable>ladvd</executable>
-		<description>Send and decode link layer advertisements.</description>
+		<description>Link Layer Discovery Protocol Daemon</description>
 	</service>
 	<tabs>
 		<tab>
 			<text>General</text>
-			<url>/pkg_edit.php?xml=ladvd.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=ladvd.xml</url>
 			<active/>
 		</tab>
 		<tab>
@@ -89,7 +91,7 @@
 	</tabs>
 	<fields>
 		<field>
-			<fielddescr>Enable ladvd</fielddescr>
+			<fielddescr>Enable</fielddescr>
 			<fieldname>enable</fieldname>
 			<description>Enable or disable ladvd.</description>
 			<enablefields>iface_array[],autoenable,silent,management,location,lldp,cdp,edp,ndp</enablefields>
@@ -105,7 +107,7 @@
 			<description>Select the interfaces that LADVD will bind to. You can use the CTRL or COMMAND key to select multiple interfaces.</description>
 		</field>
 		<field>
-			<fielddescr>Auto-enable protocols</fielddescr>
+			<fielddescr>Auto-Enable Protocols</fielddescr>
 			<fieldname>autoenable</fieldname>
 			<description>Auto-enable protocols based on received packets (also enables receive mode).</description>
 			<type>checkbox</type>
@@ -113,11 +115,11 @@
 		<field>
 			<fielddescr>Silent</fielddescr>
 			<fieldname>silent</fieldname>
-			<description>Silent, don't transmit packets.</description>
+			<description>Silent mode, do not transmit packets.</description>
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Management interfaces</fielddescr>
+			<fielddescr>Management Interfaces</fielddescr>
 			<fieldname>management</fieldname>
 			<value>lan</value>
 			<type>interfaces_selection</type>
@@ -151,7 +153,7 @@
 		<field>
 			<fielddescr>Enable NDP</fielddescr>
 			<fieldname>ndp</fieldname>
-			<description>Enable NDP (Nortel Discovery Protocol) formerly called SynOptics Network Management Protocol (SONMP).</description>
+			<description>Enable NDP (Nortel Discovery Protocol); formerly called SynOptics Network Management Protocol (SONMP).</description>
 			<type>checkbox</type>
 		</field>
 	</fields>

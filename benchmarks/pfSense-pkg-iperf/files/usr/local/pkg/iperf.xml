@@ -42,34 +42,39 @@
 	]]>
 	</copyright>
 	<name>iperf</name>
-	<version>2.0.5.2</version>
+	<version>2.0.5.3</version>
 	<title>iperf: Client</title>
+	<savetext>Run iperf client</savetext>
 	<preoutput>yes</preoutput>
 	<donotsave>true</donotsave>
 	<menu>
 		<name>iperf</name>
-		<tooltiptext>Run iperf in client or server mode.</tooltiptext>
 		<section>Diagnostics</section>
 		<configfile>iperf.xml</configfile>
 	</menu>
 	<service>
 		<name>iperf</name>
 		<executable>iperf</executable>
-		<description>iperf network performance testing daemon/client</description>
+		<description>iperf Network Performance Testing Daemon/Client</description>
 	</service>
 	<tabs>
 		<tab>
 			<text>Client</text>
-			<url>/pkg_edit.php?xml=iperf.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=iperf.xml</url>
 			<active/>
 		</tab>
 		<tab>
 			<text>Server</text>
-			<url>/pkg_edit.php?xml=iperfserver.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=iperfserver.xml</url>
 		</tab>
 	</tabs>
 	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
 		<item>https://packages.pfsense.org/packages/config/iperf/iperfserver.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/etc/inc/priv/</prefix>
+		<item>https://packages.pfsense.org/packages/config/iperf/iperf.priv.inc</item>
 	</additional_files_needed>
 	<fields>
 		<field>

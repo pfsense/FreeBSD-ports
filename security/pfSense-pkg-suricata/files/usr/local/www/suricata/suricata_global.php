@@ -308,7 +308,7 @@ if ($input_errors)
 			<td><input name="snort_rules_file" type="text" class="formfld unknown" id="snort_rules_file" size="52" 
 			value="<?=htmlspecialchars($pconfig['snort_rules_file']);?>"/><br/>
 			<?php echo gettext("Enter the rules tarball filename (filename only, do not include the URL.)"); ?>
-			<br/><span class="red"><strong><?php echo gettext("Example: ") . "</strong></span>" . gettext("snortrules-snapshot-2962.tar.gz");?><br/><br/></td>
+			<br/><span class="red"><strong><?php echo gettext("Example: ") . "</strong></span>" . gettext("snortrules-snapshot-2976.tar.gz");?><br/><br/></td>
 		</tr>
 		<tr>
 			<td valign="top" align="right"><span class="vexpl"><strong><?php echo gettext("Oinkmaster Code:"); ?></strong></span>&nbsp;</td>

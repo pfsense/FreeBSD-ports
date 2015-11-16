@@ -14,7 +14,7 @@
  * All rights reserved.
  *
  * Adapted for Suricata by:
- * Copyright (C) 2014 Bill Meeks
+ * Copyright (C) 2015 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -250,8 +250,11 @@ elseif ($_POST['ResetAll']) {
 	$pconfig['flow_icmp_emerg_new_timeout'] = '10';
 	$pconfig['flow_icmp_emerg_established_timeout'] = '100';
 
-	$pconfig['stream_memcap'] = '33554432';
+	// The default 'stream_memcap' value must be calculated as follows:
+	// 216 * prealloc_sessions * number of threads = memory use in bytes
+	// 64 MB is a decent all-around default, but some setups need more. 
 	$pconfig['stream_prealloc_sessions'] = '32768';
+	$pconfig['stream_memcap'] = '67108864';
 	$pconfig['reassembly_memcap'] = '67108864';
 	$pconfig['reassembly_depth'] = '1048576';
 	$pconfig['reassembly_to_server_chunk'] = '2560';
@@ -298,7 +301,7 @@ elseif ($_POST['save'] || $_POST['apply']) {
 		if ($_POST['flow_icmp_emerg_new_timeout'] != "") { $natent['flow_icmp_emerg_new_timeout'] = $_POST['flow_icmp_emerg_new_timeout']; }else{ $natent['flow_icmp_emerg_new_timeout'] = "10"; }
 		if ($_POST['flow_icmp_emerg_established_timeout'] != "") { $natent['flow_icmp_emerg_established_timeout'] = $_POST['flow_icmp_emerg_established_timeout']; }else{ $natent['flow_icmp_emerg_established_timeout'] = "100"; }
 
-		if ($_POST['stream_memcap'] != "") { $natent['stream_memcap'] = $_POST['stream_memcap']; }else{ $natent['stream_memcap'] = "33554432"; }
+		if ($_POST['stream_memcap'] != "") { $natent['stream_memcap'] = $_POST['stream_memcap']; }else{ $natent['stream_memcap'] = "67108864"; }
 		if ($_POST['stream_prealloc_sessions'] != "") { $natent['stream_prealloc_sessions'] = $_POST['stream_prealloc_sessions']; }else{ $natent['stream_prealloc_sessions'] = "32768"; }
 		if ($_POST['enable_midstream_sessions'] == "on") { $natent['enable_midstream_sessions'] = 'on'; }else{ $natent['enable_midstream_sessions'] = 'off'; }
 		if ($_POST['enable_async_sessions'] == "on") { $natent['enable_async_sessions'] = 'on'; }else{ $natent['enable_async_sessions'] = 'off'; }
@@ -764,8 +767,11 @@ if ($savemsg) {
 			<input name="stream_memcap" type="text" class="formfld unknown" id="stream_memcap" size="9"
 			value="<?=htmlspecialchars($pconfig['stream_memcap']);?>">&nbsp;
 			<?php echo gettext("Max memory to be used by stream engine.  Default is ") . 
-			"<strong>" . gettext("33,554,432") . "</strong>" . gettext(" bytes (32MB)"); ?><br/><br/>
-			<?php echo gettext("Sets the maximum amount of memory, in bytes, to be used by the stream engine."); ?>
+			"<strong>" . gettext("67,108,864") . "</strong>" . gettext(" bytes (64MB)"); ?><br/><br/>
+			<?php echo gettext("Sets the maximum amount of memory, in bytes, to be used by the stream engine.  ");?><br/>
+			<span class="red"><strong><?php echo gettext("Note: ") . "</strong></span>" . 
+			gettext("This number will likely need to be increased beyond the default value in systems with more than 4 processor cores.  " . 
+			"If Suricata fails to start and logs a memory allocation error, increase this value in 4 MB chunks until Suricata starts successfully."); ?>
 		</td>
 	</tr>
 	<tr>

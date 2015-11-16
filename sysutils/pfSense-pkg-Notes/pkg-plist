@@ -1,2 +1,4 @@
 pkg/notes.xml
+/etc/inc/priv/notes.priv.inc
 %%DATADIR%%/info.xml
+@dir /etc/inc/priv

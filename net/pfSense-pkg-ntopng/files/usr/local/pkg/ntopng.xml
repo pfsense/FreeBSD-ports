@@ -39,12 +39,16 @@
 	]]>
 	</copyright>
 	<name>ntopng</name>
-	<version>0.8.0</version>
+	<version>0.8.2</version>
 	<title>Diagnostics: ntopng Settings</title>
 	<include_file>/usr/local/pkg/ntopng.inc</include_file>
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
 		<item>https://packages.pfsense.org/packages/config/ntopng/ntopng.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/etc/inc/priv/</prefix>
+		<item>https://packages.pfsense.org/packages/config/ntopng/ntopng.priv.inc</item>
 	</additional_files_needed>
 	<aftersaveredirect>pkg_edit.php?xml=ntopng.xml</aftersaveredirect>
 	<menu>

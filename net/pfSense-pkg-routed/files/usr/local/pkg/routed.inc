@@ -29,7 +29,6 @@
 */
 function setup_routed() {
 	global $config;
-	$gw = "";
 
 	if (!is_array($config['installedpackages']['routed'])) {
 		return;
@@ -37,6 +36,10 @@ function setup_routed() {
 	if (!is_array($config['installedpackages']['routed']['config'])) {
 		return;
 	}
+
+	$gw = "";
+	conf_mount_rw();
+
 	if (isset($config['installedpackages']['routed']['config'][0]['enable']) &&
 	    $config['installedpackages']['routed']['config'][0]['enable'] == "on") {
 			/* if user selected individual interfaces */
@@ -55,21 +58,30 @@ function setup_routed() {
 				/* setup for all interfaces */
 				$gw = setup_etc_gateways();
 			}
-			conf_mount_rw();
 			file_put_contents("/etc/gateways", $gw);
-			conf_mount_ro();
-			restart_service("routed");
+			routed_write_rcfile();
+			if (is_service_running("routed")) {
+				restart_service("routed");
+			} else {
+				start_service("routed");
+			}
 	} else {
-		stop_service("routed");
+		if (is_service_running("routed")) {
+			 stop_service("routed");
+		}
+		unlink_if_exists("/etc/gateways");
+		unlink_if_exists("/usr/local/etc/rc.d/routed.sh");
 	}
+
+	conf_mount_ro();
 }
 
-function setup_etc_gateways($iface="", $mode="") {
+function setup_etc_gateways($iface = "", $mode = "") {
 	global $config;
 
 	$ret = "";
 	if ($iface != "") {
-		$realif=convert_friendly_interface_to_real_interface_name($iface);
+		$realif = convert_friendly_interface_to_real_interface_name($iface);
 		if (!empty($realif)) {
 			$ret = "if={$realif} ";
 		}
@@ -104,7 +116,7 @@ function setup_etc_gateways($iface="", $mode="") {
 	return $ret;
 }
 
-function routed_install_command() {
+function routed_write_rcfile() {
 	write_rcfile(array(
 		"file" => "routed.sh",
 		"start" => "/usr/bin/nohup /sbin/routed > /dev/null 2>&1 &",
@@ -114,7 +126,7 @@ function routed_install_command() {
 }
 
 function routed_deinstall_command() {
-	stop_service("routed");
+	unlink_if_exists("/etc/gateways");
 	unlink_if_exists("/usr/local/etc/rc.d/routed.sh");
 }
 

@@ -5,7 +5,7 @@
 		<website>http://suricata-ids.org/</website>
 		<descr><![CDATA[High Performance Network IDS, IPS and Security Monitoring engine by OISF.]]></descr>
 		<category>Security</category>
-		<version>2.1.8</version>
+		<version>2.1.9</version>
 		<status>Stable</status>
 		<required_version>2.2</required_version>
 		<config_file>https://packages.pfsense.org/packages/config/suricata/suricata.xml</config_file>
@@ -16,7 +16,7 @@
 			<port>security/suricata</port>
 			<ports_after>security/barnyard2</ports_after>
 		</build_pbi>
-		<build_options>barnyard2_UNSET_FORCE=ODBC PGSQL PRELUDE;barnyard2_SET_FORCE=GRE IPV6 MPLS MYSQL PORT_PCAP BRO;suricata_SET_FORCE=IPFW PORTS_PCAP GEOIP JSON NSS LUAJIT HTP_PORT;suricata_UNSET_FORCE=PRELUDE TESTS SC LUA</build_options>
-		<depends_on_package_pbi>suricata-2.0.8_1-##ARCH##.pbi</depends_on_package_pbi>
+		<build_options>security_barnyard2_UNSET_FORCE=ODBC PGSQL PRELUDE;security_barnyard2_SET_FORCE=GRE IPV6 MPLS MYSQL PORT_PCAP BRO;security_suricata_SET_FORCE=IPFW PORTS_PCAP GEOIP JSON NSS LUAJIT HTP_PORT;security_suricata_UNSET_FORCE=PRELUDE TESTS SC LUA</build_options>
+		<depends_on_package_pbi>suricata-2.0.9-##ARCH##.pbi</depends_on_package_pbi>
 	</package>
 </pfsensepkgs>

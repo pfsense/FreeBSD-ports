@@ -42,8 +42,9 @@
 	]]>
 	</copyright>
 	<name>iperf</name>
-	<version>2.0.5.2</version>
+	<version>2.0.5.3</version>
 	<title>iperf: Server</title>
+	<savetext>Run iperf server</savetext>
 	<preoutput>yes</preoutput>
 	<donotsave>true</donotsave>
 	<menu>
@@ -55,11 +56,11 @@
 	<tabs>
 		<tab>
 			<text>Client</text>
-			<url>/pkg_edit.php?xml=iperf.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=iperf.xml</url>
 		</tab>
 		<tab>
 			<text>Server</text>
-			<url>/pkg_edit.php?xml=iperfserver.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=iperfserver.xml</url>
 			<active/>
 		</tab>
 	</tabs>

@@ -14,7 +14,7 @@
  * All rights reserved.
  *
  * Adapted for Suricata by:
- * Copyright (C) 2014 Bill Meeks
+ * Copyright (C) 2015 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -86,6 +86,14 @@ if (isset($id) && $a_nat[$id]) {
 		$pconfig['barnyard_bro_ids_dport'] = "47760";
 	if (empty($a_nat[$id]['barnyard_sensor_id']))
 		$pconfig['barnyard_sensor_id'] = "0";
+	if (empty($pconfig['barnyard_xff_logging']))
+		$pconfig['barnyard_xff_logging'] = "off";
+	if (empty($pconfig['barnyard_xff_mode']))
+		$pconfig['barnyard_xff_mode'] = "extra-data";
+	if (empty($pconfig['barnyard_xff_deployment']))
+		$pconfig['barnyard_xff_deployment'] = "reverse";
+	if (empty($pconfig['barnyard_xff_header']))
+		$pconfig['barnyard_xff_header'] = "X-Forwarded-For";
 }
 
 if ($_POST['save']) {
@@ -128,6 +136,9 @@ if ($_POST['save']) {
 		if (!is_numericint($_POST['barnyard_sensor_id']) || $_POST['barnyard_sensor_id'] < 0)
 			$input_errors[] = gettext("The value for 'Sensor ID' must be a valid positive integer.");
 	}
+
+	if (empty($_POST['barnyard_xff_header']) && $_POST['barnyard_xff_logging'] == "on")
+		$input_errors[] = gettext("The value for the X-Forwarded-For Header cannot be blank when X-Forwarded-For logging is enabled.");
 
 	// Validate inputs if MySQL database loggging enabled
 	if ($_POST['barnyard_mysql_enable'] == 'on' && $_POST['barnyard_enable'] == "on") {
@@ -172,11 +183,13 @@ if ($_POST['save']) {
 		$natent['barnyard_syslog_local'] = $_POST['barnyard_syslog_local'] ? 'on' : 'off';
 		$natent['barnyard_bro_ids_enable'] = $_POST['barnyard_bro_ids_enable'] ? 'on' : 'off';
 		$natent['barnyard_disable_sig_ref_tbl'] = $_POST['barnyard_disable_sig_ref_tbl'] ? 'on' : 'off';
+		$natent['barnyard_xff_logging'] = $_POST['barnyard_xff_logging'] ? 'on' : 'off';
 		$natent['barnyard_syslog_opmode'] = $_POST['barnyard_syslog_opmode'];
 		$natent['barnyard_syslog_proto'] = $_POST['barnyard_syslog_proto'];
 
 		if ($_POST['barnyard_sensor_id']) $natent['barnyard_sensor_id'] = $_POST['barnyard_sensor_id']; else $natent['barnyard_sensor_id'] = '0';
 		if ($_POST['barnyard_sensor_name']) $natent['barnyard_sensor_name'] = $_POST['barnyard_sensor_name']; else unset($natent['barnyard_sensor_name']);
+		if ($_POST['barnyard_xff_header']) $natent['barnyard_xff_header'] = $_POST['barnyard_xff_header']; else $natent['barnyard_xff_header'] = 'X-Forwarded-For';
 		if ($_POST['barnyard_dbhost']) $natent['barnyard_dbhost'] = $_POST['barnyard_dbhost']; else unset($natent['barnyard_dbhost']);
 		if ($_POST['barnyard_dbname']) $natent['barnyard_dbname'] = $_POST['barnyard_dbname']; else unset($natent['barnyard_dbname']);
 		if ($_POST['barnyard_dbuser']) $natent['barnyard_dbuser'] = $_POST['barnyard_dbuser']; else unset($natent['barnyard_dbuser']);
@@ -334,6 +347,56 @@ include_once("head.inc");
 					&nbsp;<?php echo gettext("Unique name to use for this sensor. (Optional)"); ?>
 				</td>
 			</tr>
+			<tr>
+				<td width="22%" valign="top" class="vncell"><?php echo gettext("X-Forwarded-For Logging"); ?></td>
+				<td width="78%" class="vtable">
+					<input name="barnyard_xff_logging" id="barnyard_xff_logging" type="checkbox" value="on" <?php if ($pconfig['barnyard_xff_logging'] == "on") echo "checked"; ?> onClick="toggle_xff_log_options()"/>
+					<?php echo gettext("Enable logging of X-Forwarded-For IP addresses.  Default value is ") . "<strong>" . gettext("Not Checked") . "</strong>"; ?>
+				</td>
+			</tr>
+			<tbody id="xff_options">
+			<tr id="barnyard_xff_mode_row">
+				<td width="22%" valign="top" class="vncell"><?php echo gettext("X-Forwarded-For Mode"); ?></td>
+				<td width="78%" class="vtable">
+					<select name="barnyard_xff_mode" id="barnyard_xff_mode" class="formselect">
+					<?php
+						$xff_modes = array( "extra-data", "overwrite" );
+						foreach ($xff_modes as $mode) {
+							$selected = "";
+							if ($mode == $pconfig['barnyard_xff_mode'])
+								$selected = " selected";
+							echo "<option value='{$mode}'{$selected}>" . $mode . "</option>\n";
+						}
+					?></select>&nbsp;&nbsp;
+					<?php echo gettext("Select HTTP X-Forwarded-For Operation Mode.  Default is ") . "<strong>" . gettext("extra-data") . "</strong>."; ?>
+				</td>
+			</tr>
+			<tr id="barnyard_xff_deployment_row">
+				<td width="22%" valign="top" class="vncell"><?php echo gettext("X-Forwarded-For Deployment"); ?></td>
+				<td width="78%" class="vtable">
+					<select name="barnyard_xff_deployment" id="barnyard_xff_deployment" class="formselect">
+					<?php
+						$xff_deployments = array( "reverse", "forward" );
+						foreach ($xff_deployments as $deployment) {
+							$selected = "";
+							if ($mode == $pconfig['barnyard_xff_deployment'])
+								$selected = " selected";
+							echo "<option value='{$deployment}'{$selected}>" . $deployment . "</option>\n";
+						}
+					?></select>&nbsp;&nbsp;
+					<?php echo gettext("Select HTTP X-Forwarded-For Deployment.  Default is ") . "<strong>" . gettext("reverse") . "</strong>."; ?>
+				</td>
+			</tr>
+			<tr id="barnyard_xff_header_row">
+				<td width="22%" valign="top" class="vncell"><?php echo gettext("X-Forwarded-For Header"); ?></td>
+				<td width="78%" class="vtable">
+					<input name="barnyard_xff_header" type="text" class="formfld unknown" id="barnyard_xff_header" 
+					size="18" value="<?=htmlspecialchars($pconfig['barnyard_xff_header']); ?>"/>&nbsp;
+					<?php echo gettext("Enter header where actual IP address is reported.  Default is ") . "<strong>" . 
+					gettext("X-Forwarded-For") . "</strong>."; ?><br/><br/><?php echo gettext("If more than one IP address is present, the last one will be used.") ?>
+				</td>
+			</tr>
+			</tbody>
 			<tr>
 				<td colspan="2" valign="top" class="listtopic"><?php echo gettext("MySQL Database Output Settings"); ?></td>
 			</tr>
@@ -600,6 +663,16 @@ function toggle_bro_ids() {
 		document.getElementById("bro_ids_config_rows").style.display = "";
 }
 
+function toggle_xff_log_options() {
+	var endis = !(document.iform.barnyard_xff_logging.checked);
+	if (endis) {
+		document.getElementById("xff_options").style.display = "none";
+	}
+	else {
+		document.getElementById("xff_options").style.display = "";
+	}
+}
+
 function enable_change(enable_change) {
 	endis = !(document.iform.barnyard_enable.checked || enable_change);
 	// make sure a default answer is called if this is invoked.
@@ -610,6 +683,10 @@ function enable_change(enable_change) {
 	document.iform.barnyard_obfuscate_ip.disabled = endis;
 	document.iform.barnyard_sensor_id.disabled = endis;
 	document.iform.barnyard_sensor_name.disabled = endis;
+	document.iform.barnyard_xff_logging.disabled = endis;
+	document.iform.barnyard_xff_mode.disabled = endis;
+	document.iform.barnyard_xff_deployment.disabled = endis;
+	document.iform.barnyard_xff_header.disabled = endis;
 	document.iform.barnyard_mysql_enable.disabled = endis;
 	document.iform.barnyard_dbhost.disabled = endis;
 	document.iform.barnyard_dbname.disabled = endis;
@@ -636,6 +713,7 @@ toggle_mySQL();
 toggle_syslog();
 toggle_local_syslog();
 toggle_bro_ids();
+toggle_xff_log_options();
 enable_change(false);
 
 </script>

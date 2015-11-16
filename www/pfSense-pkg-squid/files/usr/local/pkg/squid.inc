@@ -642,6 +642,10 @@ function squid_upgrade_config() {
 		$settingscache['donotcache'] = base64_encode(implode("\n", explode(",", $settingscache['donotcache'])));
 		$config['installedpackages']['squidcache']['config'][0]['donotcache'] = $settingscache['donotcache'];
 	}
+	/* unset broken dynamic caching patterns removed since Squid3 package v0.4.3 */
+	if (!empty($config['installedpackages']['squidcache']['config']['refresh_patterns'])) {
+		unset($config['installedpackages']['squidcache']['config']['refresh_patterns']);
+	}
 
 	/* migrate nac settings */
 	if (!empty($settingsnac['allowed_subnets']) && strstr($settingsnac['allowed_subnets'], ",")) {
@@ -1303,61 +1307,13 @@ function squid_resync_cache() {
 	if (empty($settings['cache_dynamic_content'])) {
 		$conf .= 'acl dynamic urlpath_regex cgi-bin \?' . "\n";
 		$conf .= "cache deny dynamic\n";
-	} elseif (preg_match('/youtube/', $settings['refresh_patterns'])) {
-// Broken (Bug #3847) and not working (http://wiki.squid-cache.org/ConfigExamples/DynamicContent/YouTube#Discussion)
-/*		$conf .= <<< EOC
-# Break HTTP standard for flash videos. Keep them in cache even if asked not to.
-refresh_pattern -i \.flv$ 10080 90% 999999 ignore-no-cache override-expire ignore-private
-
-# Let the clients favorite video site through with full caching
-acl youtube dstdomain .youtube.com
-cache allow youtube
-
-EOC;
-*/
-	}
-	if (preg_match('/windows/', $settings['refresh_patterns'])) {
-		$conf .= <<< EOC
-
-# Windows Update refresh_pattern
-range_offset_limit -1
-refresh_pattern -i microsoft.com/.*\.(cab|exe|ms[i|u|f]|asf|wm[v|a]|dat|zip) 4320 80% 43200 reload-into-ims
-refresh_pattern -i windowsupdate.com/.*\.(cab|exe|ms[i|u|f]|asf|wm[v|a]|dat|zip) 4320 80% 43200 reload-into-ims
-refresh_pattern -i windows.com/.*\.(cab|exe|ms[i|u|f]|asf|wm[v|a]|dat|zip) 4320 80% 43200 reload-into-ims
-
-EOC;
+	} else {
+		if ($settings['custom_refresh_patterns'] != "") {
+			$conf .= sq_text_area_decode($settings['custom_refresh_patterns']) . "\n";
+		}
 	}
 
-	if (preg_match('/symantec/', $settings['refresh_patterns'])) {
-		$conf .= <<< EOC
-
-# Symantec refresh_pattern
-range_offset_limit -1
-refresh_pattern liveupdate.symantecliveupdate.com/.*\.(cab|exe|dll|msi) 10080 100% 43200 reload-into-ims
-refresh_pattern symantecliveupdate.com/.*\.(cab|exe|dll|msi) 10080 100% 43200 reload-into-ims
-
-EOC;
-	}
-	if (preg_match('/avast/', $settings['refresh_patterns'])) {
-		$conf .= <<< EOC
-
-# Avast refresh_pattern
-range_offset_limit -1
-refresh_pattern avast.com/.*\.(vpu|cab|stamp|exe) 10080 100% 43200 reload-into-ims
-
-EOC;
-	}
-	if (preg_match('/avira/', $settings['refresh_patterns'])) {
-		$conf.=<<< EOC
-
-# Avira refresh_pattern
-range_offset_limit -1
-refresh_pattern personal.avira-update.com/.*\.(cab|exe|dll|msi|gz) 10080 100% 43200 reload-into-ims
-
-EOC;
-	}
 	$refresh_conf = <<< EOC
-
 # Add any of your own refresh_pattern entries above these.
 refresh_pattern ^ftp:    1440  20%  10080
 refresh_pattern ^gopher:  1440  0%  1440
@@ -1365,10 +1321,6 @@ refresh_pattern -i (/cgi-bin/|\?) 0  0%  0
 refresh_pattern .    0  20%  4320
 
 EOC;
-
-	if ($settings['custom_refresh_patterns'] != "") {
-		$conf .= sq_text_area_decode($settings['custom_refresh_patterns']) . "\n";
-	}
 
 	$conf .= <<< EOD
 

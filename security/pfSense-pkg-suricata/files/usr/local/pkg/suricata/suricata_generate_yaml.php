@@ -292,6 +292,7 @@ if (!empty($suricatacfg['max_pcap_log_files']))
 else
 	$pcap_log_max_files = "1000";
 
+// Unified2 Alert Log Settings
 if ($suricatacfg['barnyard_enable'] == 'on')
 	$barnyard2_enabled = "yes";
 else
@@ -306,6 +307,28 @@ if (isset($suricatacfg['barnyard_sensor_id']))
 	$unified2_sensor_id = $suricatacfg['barnyard_sensor_id'];
 else
 	$unified2_sensor_id = "0";
+
+// Unified2 X-Forwarded-For logging options
+if ($suricatacfg['barnyard_xff_logging'] == 'on') {
+	$unified2_xff_output = "xff:";
+	$unified2_xff_output .= "\n        enabled: yes";
+	if (!empty($suricatacfg['barnyard_xff_mode']))
+		$unified2_xff_output .= "\n        mode: {$suricatacfg['barnyard_xff_mode']}";
+	else
+		$unified2_xff_output .= "\n        mode: extra-data";
+	if (!empty($suricatacfg['barnyard_xff_deployment']))
+		$unified2_xff_output .= "\n        deployment: {$suricatacfg['barnyard_xff_deployment']}";
+	else
+		$unified2_xff_output .= "\n        deployment: reverse";
+	if (!empty($suricatacfg['barnyard_xff_header']))
+		$unified2_xff_output .= "\n        header: {$suricatacfg['barnyard_xff_header']}";
+	else
+		$unified2_xff_output .= "\n        header: X-Forwarded-For";
+}
+else {
+	$unified2_xff_output = "xff:";
+	$unified2_xff_output .= "\n        enabled: no";
+}
 
 // EVE JSON log output settings
 if ($suricatacfg['enable_eve_log'] == 'on')
@@ -494,7 +517,7 @@ else
 if (!empty($suricatacfg['stream_memcap']))
 	$stream_memcap = $suricatacfg['stream_memcap'];
 else
-	$stream_memcap = "33554432";
+	$stream_memcap = "67108864";
 
 if (!empty($suricatacfg['stream_prealloc_sessions']))
 	$stream_prealloc_sessions = $suricatacfg['stream_prealloc_sessions'];

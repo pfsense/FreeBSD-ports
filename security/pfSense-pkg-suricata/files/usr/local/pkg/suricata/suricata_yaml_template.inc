@@ -54,6 +54,7 @@ outputs:
       filename: unified2.alert
       limit: {$unified2_log_limit}
       sensor-id: {$unified2_sensor_id}
+      {$unified2_xff_output}
 
   - http-log:
       enabled: {$http_log_enabled}

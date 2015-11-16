@@ -27,10 +27,12 @@
 	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
 */
+require_once("pkg-utils.inc");
+require_once("util.inc");
 
 function nmap_install() {
 	$destination_file = "/usr/local/share/nmap/nmap-mac-prefixes";
-	$pfs_version = substr(trim(file_get_contents("/etc/version")),0,3);
+	$pfs_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
 	switch ($pfs_version) {
 		case "2.1":
 			$source_file = "/usr/pbi/nmap-" . php_uname("m") . "/share/nmap/nmap-mac-prefixes";
@@ -48,17 +50,23 @@ function nmap_install() {
 	}
 }
 
+function nmap_deinstall() {
+	$destination_file = "/usr/local/share/nmap/nmap-mac-prefixes";
+	if (is_link($destination_file)) {
+		@unlink($destination_file);
+	}
+}
+	 
 function nmap_custom_php_validation_command($post, &$input_errors) {
-	global $_POST, $savemsg, $config;
-	if (empty($_POST['hostname'])) {
+	if (empty($post['hostname'])) {
 		$input_errors[] = gettext("You must enter an IP address to scan.");
-	} elseif (!(is_ipaddr($_POST['hostname']) || is_subnet($_POST['hostname']) || is_hostname($_POST['hostname']))) {
+	} elseif (!(is_ipaddr($post['hostname']) || is_subnet($post['hostname']) || is_hostname($post['hostname']))) {
 		$input_errors[] = gettext("You must enter a valid IP address to scan.");
 	}
 
-	if(!empty($_POST['interface'])) {
+	if(!empty($post['interface'])) {
 		$interfaces = get_configured_interface_with_descr();
-		if (!array_key_exists($_POST['interface'], $interfaces)) {
+		if (!array_key_exists($post['interface'], $interfaces)) {
 			$input_errors[] = gettext("Invalid interface.");
 		}
 	}
@@ -122,7 +130,7 @@ function nmap_get_interfaces() {
 		if (is_array($config['openvpn']["openvpn-{$mode}"])) {
 			foreach ($config['openvpn']["openvpn-{$mode}"] as $id => $setting) {
 				if (!isset($setting['disable'])) {
-					$tmp["name"]  = gettext("OpenVPN") . " ".$mode.": ".htmlspecialchars($setting['description']);
+					$tmp["name"]  = gettext("OpenVPN") . " " . $mode . ": " . htmlspecialchars($setting['description']);
 					$tmp["value"] = 'ovpn' . substr($mode, 0, 1) . $setting['vpnid'];
 					$nmap_ifs[] = $tmp;
 				}

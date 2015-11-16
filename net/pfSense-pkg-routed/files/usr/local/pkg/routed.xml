@@ -42,17 +42,23 @@
 	]]>
 	</copyright>
 	<name>routed</name>
-	<version>1.2</version>
+	<version>1.2.2</version>
 	<title>Services: RIP</title>
 	<include_file>/usr/local/pkg/routed.inc</include_file>
+	<aftersaveredirect>pkg_edit.php?xml=routed.xml</aftersaveredirect>
 	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
 		<item>https://packages.pfsense.org/packages/config/routed/routed.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/etc/inc/priv/</prefix>
+		<item>https://packages.pfsense.org/packages/config/routed/routed.priv.inc</item>
 	</additional_files_needed>
 	<menu>
 		<name>RIP</name>
 		<section>Services</section>
 		<configfile>routed.xml</configfile>
-		<url>pkg_edit.php?xml=routed.xml&amp;id=0</url>
+		<url>pkg_edit.php?xml=routed.xml</url>
 	</menu>
 	<service>
 		<name>routed</name>
@@ -117,13 +123,9 @@
 			<type>checkbox</type>
 		</field>
 	</fields>
-	<aftersaveredirect>pkg_edit.php?xml=routed.xml&amp;id=0</aftersaveredirect>
 	<custom_php_resync_config_command>
 		setup_routed();
 	</custom_php_resync_config_command>
-	<custom_php_install_command>
-		routed_install_command();
-	</custom_php_install_command>
 	<custom_php_deinstall_command>
 		routed_deinstall_command();
 	</custom_php_deinstall_command>

@@ -42,8 +42,8 @@
 	]]>
 	</copyright>
 	<name>Shellcmd Settings</name>
-	<version>1.0</version>
-	<title>Shellcmd Settings</title>
+	<version>1.0.1</version>
+	<title>Services: Shellcmd Settings</title>
 	<include_file>/usr/local/pkg/shellcmd.inc</include_file>
 	<aftersaveredirect>/pkg.php?xml=shellcmd.xml</aftersaveredirect>
 	<addedit_string>[shellcmd] Successfully created/modified custom (early)shellcmd.</addedit_string>
@@ -65,6 +65,10 @@
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
 		<item>https://packages.pfsense.org/packages/config/shellcmd/shellcmd.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/etc/inc/priv/</prefix>
+		<item>https://packages.pfsense.org/packages/config/shellcmd/shellcmd.priv.inc</item>
 	</additional_files_needed>
 	<adddeleteeditpagefields>
 		<columnitem>

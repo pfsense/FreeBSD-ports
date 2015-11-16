@@ -36,18 +36,24 @@ require_once("pkg-utils.inc");
 function ladvd_resync_config() {
 	global $config;
 
-	conf_mount_rw();
-
-	if (!is_array($config['installedpackages']['ladvd']))
+	if (!is_array($config['installedpackages']['ladvd'])) {
 		return;
-	if (!is_array($config['installedpackages']['ladvd']['config']))
+	}
+	if (!is_array($config['installedpackages']['ladvd']['config'])) {
 		return;
+	}
 
 	$ladvd_conf = &$config['installedpackages']['ladvd']['config'][0];
+	conf_mount_rw();
 
 	/* ladvd is turned off in package settings */
-	if (empty($ladvd_conf['enable']))
+	if (empty($ladvd_conf['enable'])) {
+		if (is_service_running("ladvd")) {
+			 stop_service("ladvd");
+		}
+		unlink_if_exists("/usr/local/etc/rc.d/ladvd.sh");
 		return;
+	}
 
 	$cmdline = "";
 
@@ -98,7 +104,12 @@ function ladvd_resync_config() {
 		)
 	);
 
-	restart_service("ladvd");
+	if (is_service_running("ladvd")) {
+		restart_service("ladvd");
+	} else {
+		start_service("ladvd");
+	}
+
 	sleep(1);
 	conf_mount_ro();
 }

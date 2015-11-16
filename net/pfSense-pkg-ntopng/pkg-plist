@@ -1,3 +1,5 @@
 pkg/ntopng.xml
 pkg/ntopng.inc
+/etc/inc/priv/ntopng.priv.inc
 %%DATADIR%%/info.xml
+@dir /etc/inc/priv

@@ -94,6 +94,14 @@ function ntopng_sync_package() {
 
 	$ifaces = "";
 	$ntopng_config =& $config['installedpackages']['ntopng']['config'][0];
+
+	/* Just stop services and unlink rc script if disabled */
+	if ($ntopng_config['enable'] != "on") {
+		ntopng_services_stop();
+		unlink_if_exists("/usr/local/etc/rc.d/ntopng.sh");
+		return;
+	}
+
 	foreach ($ntopng_config['interface_array'] as $iface) {
 		$if = convert_friendly_interface_to_real_interface_name($iface);
 		if ($if) {
@@ -168,19 +176,15 @@ function ntopng_sync_package() {
 	/* Set up admin password */
 	ntopng_set_redis_password();
 	
-	/* Restart services if enabled and not booting */
+	/* (Re)start services if not booting */
 	if ((function_exists("platform_booting")) && (!platform_booting())) {
 		ntopng_services_stop();
-		if ($ntopng_config['enable'] == "on") {
-			start_service("ntopng");
-			sleep(20);
-		}
+		start_service("ntopng");
+		sleep(20);
 	} elseif (!($g['booting'])) {
 		ntopng_services_stop();
-		if ($ntopng_config['enable'] == "on") {
-			start_service("ntopng");
-			sleep(20);
-		}
+		start_service("ntopng");
+		sleep(20);
 	}
 }
 

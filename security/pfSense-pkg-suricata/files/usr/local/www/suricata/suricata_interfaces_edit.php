@@ -372,7 +372,7 @@ if ($_POST["save"] && !$input_errors) {
 			$natent['flow_icmp_emerg_new_timeout'] = '10';
 			$natent['flow_icmp_emerg_established_timeout'] = '100';
 
-			$natent['stream_memcap'] = '33554432';
+			$natent['stream_memcap'] = '67108864';
 			$natent['stream_prealloc_sessions'] = '32768';
 			$natent['reassembly_memcap'] = '67108864';
 			$natent['reassembly_depth'] = '1048576';

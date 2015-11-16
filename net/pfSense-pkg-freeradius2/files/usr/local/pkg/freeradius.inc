@@ -135,6 +135,7 @@ function freeradius_install_command() {
 	freeradius_sqlconf_resync();
 	freeradius_eapconf_resync();
 	freeradius_clients_resync();
+	freeradius_modulesldap_resync();
 
 	$rcfile = array();
 	$rcfile['file'] = 'radiusd.sh';

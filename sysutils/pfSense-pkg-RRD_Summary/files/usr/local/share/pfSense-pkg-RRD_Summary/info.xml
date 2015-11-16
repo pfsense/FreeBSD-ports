@@ -5,8 +5,8 @@
 		<internal_name>RRD_Summary</internal_name>
 		<descr><![CDATA[RRD Summary Page, which will give a total amount of traffic passed In/Out during this and the previous month.]]></descr>
 		<category>Network Management</category>
-		<version>1.2</version>
-		<status>BETA</status>
+		<version>1.2.1</version>
+		<status>RC</status>
 		<maintainer>jimp@pfsense.org</maintainer>
 		<port_category>sysutils</port_category>
 		<required_version>2.2</required_version>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
-<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
 <packagegui>
 	<copyright>
 	<![CDATA[
@@ -8,7 +8,7 @@
 /* ====================================================================================== */
 /*
 	mtr-nox11.xml
-	part of pfSense (http://www.pfSense.com)
+	part of pfSense (https://www.pfSense.org/)
 	Copyright (C) 2014-2015 ESF, LLC
 	All rights reserved.
 */
@@ -40,23 +40,21 @@
 /* ====================================================================================== */
 	]]>
 	</copyright>
-	<description>Describe your package here</description>
-	<requirements>Describe your package requirements here</requirements>
-	<faq>Currently there are no FAQ items provided.</faq>
 	<name>mtr</name>
-	<version>0.85_3</version>
+	<version>0.85.4</version>
 	<title>Diagnostics: mtr</title>
 	<savetext>Run mtr</savetext>
 	<preoutput>yes</preoutput>
-	<!-- Invokes a simple input menu and will not update the configuration database. -->
 	<donotsave>true</donotsave>
-	<!-- Menu is where this packages menu will appear -->
 	<menu>
 		<name>mtr</name>
-		<tooltiptext>mtr combines the functionality of the "traceroute" and "ping" programs into a single network diagnostic tool</tooltiptext>
 		<section>Diagnostics</section>
-		<configfile>mtr-nox11.xml</configfile>
+		<url>/pkg_edit.php?xml=mtr-nox11.xml</url>
 	</menu>
+	<additional_files_needed>
+		<prefix>/etc/inc/priv/</prefix>
+		<item>https://packages.pfsense.org/packages/config/mtr-nox11/mtr-nox11.priv.inc</item>
+	</additional_files_needed>
 	<fields>
 		<field>
 			<fielddescr>IP or Hostname</fielddescr>
@@ -70,7 +68,7 @@
 			<fieldname>count</fieldname>
 			<description>This is the number of pings to send, each one takes 1 second.</description>
 			<type>input</type>
-			<typehint>(Defaults to 10)</typehint>
+			<typehint>(Defaults to 10.)</typehint>
 		</field>
 		<field>
 			<fielddescr>No DNS Lookup</fielddescr>
@@ -111,8 +109,8 @@
 	$int_interval = (is_numeric($_POST['interval']) ? (abs(intval($_POST['interval']))) : 1);
 
 	if (!is_hostname($_POST['hostname']) && !is_ipaddr($_POST['hostname'])) {
-		echo "<div class=\"errmsg\">ERROR: No valid IP or Hostname given. Fix this and try again!</div>";
-		echo "\n<input class=\"formbtn\" type=\"button\" value=\"Back to mtr\" onclick=\"history.back()\">";
+		echo "<strong><span class='errmsg'>ERROR:</span> No valid IP or Hostname given. Fix this and try again!</strong>\n";
+		echo "\n<input class='formbtn' type='button' value='Back to mtr' onclick='history.back()'>";
 		die();
 	}
 
@@ -136,7 +134,7 @@
 	$mtr_options .= " " . $_POST['hostname'];
 	echo "Running mtr $mtr_options:\n\n";
 	system("/usr/local/sbin/mtr" . $mtr_options);
-	echo "\n<input class=\"formbtn\" type=\"button\" value=\"Back to mtr\" onclick=\"history.back()\">";
+	echo "\n<input class='formbtn' type='button' value='Back to mtr' onclick='history.back()'>";
 	]]>
 	</custom_add_php_command>
 </packagegui>

@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squidcache</name>
-	<version>0.4.1</version>
+	<version>0.4.3</version>
 	<title>Proxy Server: Cache Management</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
@@ -361,33 +361,14 @@
 			<description>
 				<![CDATA[
 				Select to <a href="http://wiki.squid-cache.org/ConfigExamples/DynamicContent">enable caching of dynamic content.</a><br/>
-				]]>
-			</description>
-			<type>checkbox</type>
-			<size>10</size>
-		</field>
-		<field>
-			<fielddescr>Refresh Patterns</fielddescr>
-			<fieldname>refresh_patterns</fieldname>
-			<description>
-				<![CDATA[
 				With dynamic cache enabled, you can also apply refresh_patterns to sites like <a href="http://wiki.squid-cache.org/SquidFaq/WindowsUpdate">Windows Updates</a><br/><br/>
 				<strong>Notes:</strong><br/>
 				- Squid wiki suggests setting 'Finish transfer if less than x KB remaining' on 'Traffic Mgmt' tab to -1 (but you can apply your own values to control cache).<br/>
 				- Set 'Maximum Download Size' on 'Traffic Mgmt' tab to a value that fits patterns your are applying.
 				]]>
 			</description>
-			<type>select</type>
-			<default_value>none</default_value>
-			<options>
-				<!--<option><name>Youtube</name><value>youtube</value></option>-->
-				<option><name>Windows Update</name><value>windows</value></option>
-				<option><name>Symantec Antivirus</name><value>symantec</value></option>
-				<option><name>Avira</name><value>avira</value></option>
-				<option><name>Avast</name><value>avast</value></option>
-			</options>
-			<multiple/>
-			<size>05</size>
+			<type>checkbox</type>
+			<size>10</size>
 		</field>
 		<field>
 			<fielddescr>Custom refresh_patterns</fielddescr>
@@ -424,7 +405,7 @@
 		if ($cachedir_changed) {
 			// only delete directories under sane paths automatically
 			if (substr($oldcachedir, 0, 11) === "/var/squid/") {
-				log_error("Deleting Squid cache dir '{$oldcachedir}' since 'Hard Disk Cache Location' changed to '{$_POST['harddisk_cache_location']}'.");
+				log_error("[squid] Deleting Squid cache dir '{$oldcachedir}' since 'Hard Disk Cache Location' changed to '{$_POST['harddisk_cache_location']}'.");
 				// cannot nuke disk cache while Squid is running
 				squid_stop_monitor();
 				if (is_service_running('squid')) {
@@ -435,8 +416,8 @@
 				// new cachedir will be created on squid_resync() below which calls squid_dash_z()
 				// also the services will get restarted there
 			} else {
-				log_error("'Hard Disk Cache Location' changed to '{$_POST['harddisk_cache_location']}'.");
-				log_error("Will NOT delete Squid cache dir '{$oldcachedir}' since it is not located under /var/squid. Delete manually if required.");
+				log_error("[squid] 'Hard Disk Cache Location' changed to '{$_POST['harddisk_cache_location']}'.");
+				log_error("[squid] Will NOT delete Squid cache dir '{$oldcachedir}' since it is not located under /var/squid. Delete manually if required.");
 			}
 		}
 		squid_resync();

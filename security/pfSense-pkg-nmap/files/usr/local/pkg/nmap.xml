@@ -42,7 +42,7 @@
 ]]>
 	</copyright>
 	<name>nmap</name>
-	<version>1.4</version>
+	<version>1.4.1</version>
 	<title>Diagnostics: NMap</title>
 	<savetext>Scan</savetext>
 	<preoutput>yes</preoutput>
@@ -50,13 +50,16 @@
 	<include_file>/usr/local/pkg/nmap.inc</include_file>
 	<menu>
 		<name>NMap</name>
-		<tooltiptext>NMap is a utility for network exploration or security auditing. It supports ping scanning (determine which hosts are up), many port scanning techniques (determine what services the hosts are offering), version detection (determine what application/service is runing on a port), and TCP/IP fingerprinting (remote host OS or device identification). It also offers flexible target and port specification, decoy/stealth scanning, SunRPC scanning, and more. Most Unix and Windows platforms are supported in both GUI and command line modes. Several popular handheld devices are also supported, including the Sharp Zaurus and the iPAQ.</tooltiptext>
 		<section>Diagnostics</section>
 		<configfile>nmap.xml</configfile>
 	</menu>
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
 		<item>https://packages.pfsense.org/packages/config/nmap/nmap.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/etc/inc/priv/</prefix>
+		<item>https://packages.pfsense.org/packages/config/nmap/nmap.priv.inc</item>
 	</additional_files_needed>
 	<fields>
 		<field>
@@ -68,7 +71,7 @@
 		<field>
 			<fielddescr>Interface</fielddescr>
 			<fieldname>interface</fieldname>
-			<description>Enter the source interface here.</description>
+			<description>Select the source interface here.</description>
 			<type>select_source</type>
 			<source><![CDATA[nmap_get_interfaces()]]></source>
 			<source_name>name</source_name>
@@ -86,28 +89,44 @@
 				<option><name>UDP</name><value>udp</value></option>
 				<option><name>ARP (directly connected networks only!)</name><value>arp</value></option>
 			</options>
-			<typehint>Scan method</typehint>
+			<typehint>Select scan method.</typehint>
 		</field>
 		<field>
 			<fielddescr>-P0</fielddescr>
 			<fieldname>noping</fieldname>
-			<description>This allows the scanning of networks that don't allow ICMP echo requests (or responses) through their firewall. microsoft.com is an example of such a network, and thus you should always use -P0 or -PT80 when port scanning microsoft.com. Note the "ping" in this context may involve more than the traditional ICMP echo request packet. Nmap supports many such probes, including arbitrary combinations of TCP, UDP, and ICMP probes. By default, Nmap sends an ICMP echo request and a TCP ACK packet to port 80.</description>
+			<description>
+				<![CDATA[
+				Do not try to ping hosts at all before scanning them. This allows the scanning of networks that don't allow ICMP echo requests (or responses) through their firewall.<br/>
+				microsoft.com is an example of such a network, and thus you should always use -P0 or -PT80 when port scanning microsoft.com.<br/>
+				Note the "ping" in this context may involve more than the traditional ICMP echo request packet. Nmap supports many such probes, including arbitrary combinations of TCP, UDP, and ICMP probes.<br/>
+				By default, Nmap sends an ICMP echo request and a TCP ACK packet to port 80.
+				]]>
+			</description>
 			<type>checkbox</type>
-			<typehint>Do not try to ping hosts at all before scanning them.</typehint>
 		</field>
 		<field>
 			<fielddescr>-sV</fielddescr>
 			<fieldname>servicever</fieldname>
-			<description>After TCP and/or UDP ports are discovered using one of the other scan methods, version detection communicates with those ports to try and determine more about what is actually running. A file called nmap-service-probes is used to determine the best probes for detecting various services and the match strings to expect. Nmap tries to determine the service protocol (e.g. ftp, ssh, telnet, http), the application name (e.g. ISC Bind, Apache httpd, Solaris telnetd), the version number, and sometimes miscellaneous details like whether an X server is open to connections or the SSH protocol version).</description>
+			<description>
+				<![CDATA[
+				Try to identify service versions. After TCP and/or UDP ports are discovered using one of the other scan methods, version detection communicates with those ports to try and determine more about what is actually running.<br/>
+				A file called nmap-service-probes is used to determine the best probes for detecting various services and the match strings to expect.<br/>
+				Nmap tries to determine the service protocol (e.g. ftp, ssh, telnet, http), the application name (e.g. ISC Bind, Apache httpd, Solaris telnetd), the version number, and sometimes miscellaneous details like whether an X server is open to connections or the SSH protocol version).
+				]]>
+			</description>
 			<type>checkbox</type>
-			<typehint>Try to identify service versions.</typehint>
 		</field>
 		<field>
 			<fielddescr>-O</fielddescr>
 			<fieldname>osdetect</fieldname>
-			<description>This option activates remote host identification via TCP/IP fingerprinting. In other words, it uses a bunch of techniques to detect subtleties in the underlying operating system network stack of the computers you are scanning. It uses this information to create a "fingerprint" which it compares with its database of known OS fingerprints (the nmap-os-fingerprints file) to decide what type of system you are scanning.</description>
+			<description>
+				<![CDATA[
+				Turn on OS detection. This option activates remote host identification via TCP/IP fingerprinting.<br/>
+				In other words, it uses a bunch of techniques to detect subtleties in the underlying operating system network stack of the computers you are scanning.<br/>
+				It uses this information to create a "fingerprint" which it compares with its database of known OS fingerprints (the nmap-os-fingerprints file) to decide what type of system you are scanning.
+				]]>
+			</description>
 			<type>checkbox</type>
-			<typehint>Turn on OS detection.</typehint>
 		</field>
 	</fields>
 	<custom_add_php_command>
@@ -119,4 +138,7 @@
 	<custom_php_install_command>
 		nmap_install();
 	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		nmap_deinstall();
+	</custom_php_deinstall_command>
 </packagegui>

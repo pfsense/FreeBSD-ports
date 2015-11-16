@@ -1,3 +1,5 @@
 pkg/iperf.xml
-/iperfserver.xml
+pkg/iperfserver.xml
+/etc/inc/priv/iperf.priv.inc
 %%DATADIR%%/info.xml
+@dir /etc/inc/priv
