@@ -1,6 +1,6 @@
-diff -urN ../snort-2.9.7.5.old/src/output-plugins/Makefile.am ./src/output-plugins/Makefile.am
---- ../snort-2.9.7.5.old/src/output-plugins/Makefile.am	2013-06-04 17:19:54.000000000 -0400
-+++ ./src/output-plugins/Makefile.am	2015-07-26 15:08:47.000000000 -0400
+diff -urN ../snort-2.9.7.6.orig/src/output-plugins/Makefile.am ./src/output-plugins/Makefile.am
+--- ../snort-2.9.7.6.orig/src/output-plugins/Makefile.am	2013-06-04 18:19:54.000000000 -0400
++++ ./src/output-plugins/Makefile.am	2015-11-10 10:21:53.000000000 -0500
 @@ -13,6 +13,7 @@
  spo_unified2.c spo_unified2.h \
  spo_log_ascii.c spo_log_ascii.h \
@@ -10,10 +10,10 @@ diff -urN ../snort-2.9.7.5.old/src/output-plugins/Makefile.am ./src/output-plugi
 +spo_pf.h spo_pf.c
  
  INCLUDES = @INCLUDES@
-diff -urN ../snort-2.9.7.5.old/src/output-plugins/Makefile.in ./src/output-plugins/Makefile.in
---- ../snort-2.9.7.5.old/src/output-plugins/Makefile.in	2015-07-16 13:05:30.000000000 -0400
-+++ ./src/output-plugins/Makefile.in	2015-07-26 15:08:47.000000000 -0400
-@@ -111,7 +111,8 @@
+diff -urN ../snort-2.9.7.6.orig/src/output-plugins/Makefile.in ./src/output-plugins/Makefile.in
+--- ../snort-2.9.7.6.orig/src/output-plugins/Makefile.in	2015-08-28 02:53:36.000000000 -0400
++++ ./src/output-plugins/Makefile.in	2015-11-10 10:21:53.000000000 -0500
+@@ -101,7 +101,8 @@
  	spo_alert_unixsock.$(OBJEXT) spo_csv.$(OBJEXT) \
  	spo_log_null.$(OBJEXT) spo_log_tcpdump.$(OBJEXT) \
  	spo_unified2.$(OBJEXT) spo_log_ascii.$(OBJEXT) \
@@ -23,7 +23,7 @@ diff -urN ../snort-2.9.7.5.old/src/output-plugins/Makefile.in ./src/output-plugi
  libspo_a_OBJECTS = $(am_libspo_a_OBJECTS)
  AM_V_P = $(am__v_P_@AM_V@)
  am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
-@@ -325,7 +326,8 @@
+@@ -313,7 +314,8 @@
  spo_unified2.c spo_unified2.h \
  spo_log_ascii.c spo_log_ascii.h \
  spo_alert_sf_socket.h spo_alert_sf_socket.c \
@@ -33,20 +33,20 @@ diff -urN ../snort-2.9.7.5.old/src/output-plugins/Makefile.in ./src/output-plugi
  
  all: all-am
  
-diff -urN ../snort-2.9.7.5.old/src/output-plugins/spo_pf.c ./src/output-plugins/spo_pf.c
---- ../snort-2.9.7.5.old/src/output-plugins/spo_pf.c	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/output-plugins/spo_pf.c	2015-08-11 17:43:25.000000000 -0400
-@@ -0,0 +1,758 @@
+diff -urN ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.c ./src/output-plugins/spo_pf.c
+--- ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.c	1969-12-31 19:00:00.000000000 -0500
++++ ./src/output-plugins/spo_pf.c	2015-11-10 11:31:52.000000000 -0500
+@@ -0,0 +1,762 @@
 +/*
 +* Copyright (c) 2015  Bill Meeks
-+* Copyright (c) 2012  Ermal Lu√i
++* Copyright (c) 2012  Ermal Luci
 +* Copyright (c) 2006  Antonio Benojar <zz.stalker@gmail.com>
 +* Copyright (c) 2005  Antonio Benojar <zz.stalker@gmail.com>
 +*
 +* Copyright (c) 2003, 2004 Armin Wolfermann:
 +* 
 +* s2c_pf_block and s2c_pf_unblock functions are based 
-+* in Armin's Wolfermann pftabled-1.03 functions.
++* on Armin's Wolfermann pftabled-1.03 functions.
 +*
 +* All rights reserved.
 +*
@@ -251,6 +251,7 @@ diff -urN ../snort-2.9.7.5.old/src/output-plugins/spo_pf.c ./src/output-plugins/
 +	size_t fib_len = sizeof(fib);
 +	ssize_t len;
 +	char msg[MAX_RTMSG_SIZE];
++	char ifname[IFNAMSIZ];
 +	sfip_t addr;
 +	struct rt_msghdr *rtm;
 +	struct ifa_msghdr *ifam;
@@ -265,7 +266,7 @@ diff -urN ../snort-2.9.7.5.old/src/output-plugins/spo_pf.c ./src/output-plugins/
 +
 +	if (sysctlbyname("net.my_fibnum", &fib, &fib_len, NULL, 0) < 0)
 +	{  
-+		ErrorMessage("spo_pf -> Failed to obtain active route table FIB so using all FIBs by default.\n");
++		WarningMessage("spo_pf -> Failed to obtain active route table FIB so using all FIBs by default.\n");
 +		fib = RT_ALL_FIBS;
 +	}
 +
@@ -313,6 +314,7 @@ diff -urN ../snort-2.9.7.5.old/src/output-plugins/spo_pf.c ./src/output-plugins/
 +			continue;
 +
 +		// OK, now either delete it from or add it to the interface IP list
++		LogMessage("spo_pf -> Received notification of IP address change on interface %s.", if_indextoname(ifam->ifam_index, ifname));
 +		s2c_iflist_maint(&addr, head, ifam->ifam_type);
 +	}
 +
@@ -381,7 +383,7 @@ diff -urN ../snort-2.9.7.5.old/src/output-plugins/spo_pf.c ./src/output-plugins/
 +			}
 +			memcpy(&(ifl->ifaddr), ip, sizeof(sfip_t));
 +			LIST_INSERT_HEAD(head, ifl, elem);
-+			ErrorMessage("spo_pf -> added address %s to automatic interface IP Pass List.\n", sfip_to_str(ip));
++			LogMessage("spo_pf -> added address %s to automatic interface IP Pass List.\n", sfip_to_str(ip));
 +			break;
 +
 +		case RTM_DELADDR:
@@ -396,7 +398,7 @@ diff -urN ../snort-2.9.7.5.old/src/output-plugins/spo_pf.c ./src/output-plugins/
 +				if (sfip_fast_equals_raw(&aux1->ifaddr, ip)) {
 +					LIST_REMOVE(aux1, elem);
 +					free(aux1);
-+					ErrorMessage("spo_pf -> deleted address %s from automatic IP Pass List.\n", sfip_to_str(ip));
++					LogMessage("spo_pf -> deleted address %s from automatic IP Pass List.\n", sfip_to_str(ip));
 +					break;
 +				}
 +			}
@@ -743,12 +745,14 @@ diff -urN ../snort-2.9.7.5.old/src/output-plugins/spo_pf.c ./src/output-plugins/
 +						addr.family = AF_INET;
 +						addr.bits = 32;
 +						memcpy(&addr.ip32, &((struct sockaddr_in *)ifa->ifa_addr)->sin_addr.s_addr, sizeof(addr.ip32));
++						LogMessage("spo_pf -> adding firewall interface %s IPv4 address %s to automatic interface IP Pass List.\n", ifa->ifa_name, sfip_to_str(&addr));
 +						break;
 +
 +					case AF_INET6:
 +						addr.family = AF_INET6;
 +						addr.bits = 128;
 +						memcpy(&addr.ip8, &((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr.s6_addr, sizeof(addr.ip8));
++						LogMessage("spo_pf -> adding firewall interface %s IPv6 address %s to automatic interface IP Pass List.\n", ifa->ifa_name, sfip_to_str(&addr));
 +						break;
 +
 +					default:
@@ -769,7 +773,7 @@ diff -urN ../snort-2.9.7.5.old/src/output-plugins/spo_pf.c ./src/output-plugins/
 +		freeifaddrs(ifap);
 +	}
 +	else {
-+		ErrorMessage("Warning -- Failed to get list of firewall interface addresses for auto-whitelisting.\n");
++		WarningMessage("Warning -- Failed to get list of firewall interface addresses for auto-whitelisting.\n");
 +		return -1;
 +	}
 +
@@ -795,14 +799,20 @@ diff -urN ../snort-2.9.7.5.old/src/output-plugins/spo_pf.c ./src/output-plugins/
 +	}
 +}
 +
-diff -urN ../snort-2.9.7.5.old/src/output-plugins/spo_pf.h ./src/output-plugins/spo_pf.h
---- ../snort-2.9.7.5.old/src/output-plugins/spo_pf.h	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/output-plugins/spo_pf.h	2015-07-26 15:08:47.000000000 -0400
-@@ -0,0 +1,36 @@
+diff -urN ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.h ./src/output-plugins/spo_pf.h
+--- ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.h	1969-12-31 19:00:00.000000000 -0500
++++ ./src/output-plugins/spo_pf.h	2015-11-10 11:02:10.000000000 -0500
+@@ -0,0 +1,42 @@
 +/*
-+*
++* Copyright (c) 2015  Bill Meeks
++* Copyright (c) 2012  Ermal Luci
 +* Copyright (c) 2006  Antonio Benojar <zz.stalker@gmail.com>
 +* Copyright (c) 2005  Antonio Benojar <zz.stalker@gmail.com>
++*
++* Copyright (c) 2003, 2004 Armin Wolfermann:
++* 
++* s2c_pf_block and s2c_pf_unblock functions are based 
++* on Armin's Wolfermann pftabled-1.03 functions.
 +*
 +* All rights reserved.
 +*
@@ -834,10 +844,10 @@ diff -urN ../snort-2.9.7.5.old/src/output-plugins/spo_pf.h ./src/output-plugins/
 +
 +void AlertPfSetup(void);
 +
-+#endif
-diff -urN ../snort-2.9.7.5.old/src/plugbase.c ./src/plugbase.c
---- ../snort-2.9.7.5.old/src/plugbase.c	2015-04-23 14:28:10.000000000 -0400
-+++ ./src/plugbase.c	2015-07-26 15:08:47.000000000 -0400
++#endif 
+diff -urN ../snort-2.9.7.6.orig/src/plugbase.c ./src/plugbase.c
+--- ../snort-2.9.7.6.orig/src/plugbase.c	2015-04-23 15:28:10.000000000 -0400
++++ ./src/plugbase.c	2015-11-10 10:21:53.000000000 -0500
 @@ -122,6 +122,7 @@
  #include "output-plugins/spo_csv.h"
  #include "output-plugins/spo_log_null.h"
