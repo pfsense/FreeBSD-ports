@@ -4,7 +4,7 @@
  *
  * Copyright (C) 2008-2009 Robert Zelaya.
  * Copyright (C) 2011-2012 Ermal Luci
- * Copyright (C) 2014 Bill Meeks
+ * Copyright (C) 2015 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -269,7 +269,8 @@ if ($_POST["save"] && !$input_errors) {
 					   "unlimited_decompress" => "on", "inspect_gzip" => "on", "normalize_cookies" =>"on", 
 					   "normalize_headers" => "on", "normalize_utf" => "on", "normalize_javascript" => "on", 
 					   "allow_proxy_use" => "off", "inspect_uri_only" => "off", "max_javascript_whitespaces" => 200,
-					   "post_depth" => -1, "max_headers" => 0, "max_spaces" => 0, "max_header_length" => 0, "ports" => "default" );
+					   "post_depth" => -1, "max_headers" => 0, "max_spaces" => 0, "max_header_length" => 0, "ports" => "default",
+					   "decompress_swf" => "off", "decompress_pdf" => "off" );
 
 			$ftp_client_eng = array( "name" => "default", "bind_to" => "all", "max_resp_len" => 256, 
 						 "telnet_cmds" => "no", "ignore_telnet_erase_cmds" => "yes", 

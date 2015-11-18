@@ -330,6 +330,9 @@ if ($_POST['save']) {
 		/* Now write the new engine array to conf */
 		write_config("Snort pkg: save modified stream5 engine.");
 
+		// We have saved a preproc config change, so set "dirty" flag
+		mark_subsystem_dirty('snort_preprocessors');
+
 		header("Location: /snort/snort_preprocessors.php?id={$id}#stream5_row");
 		exit;
 	}

@@ -896,6 +896,9 @@ EOD;
 $appid_memcap = $snortcfg['sf_appid_mem_cap'] * 1024 * 1024;
 $appid_params = "app_detector_dir " . rtrim(SNORT_APPID_ODP_PATH, '/') . ", \\\n\tmemcap {$appid_memcap}";
 if ($snortcfg['sf_appid_statslog'] == "on") {
+	if (!file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/app-stats.log")) {
+		touch("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/app-stats.log");
+	}
 	$appid_params .= ", \\\n\tapp_stats_filename app-stats.log";
 	$appid_params .= ", \\\n\tapp_stats_period {$snortcfg['sf_appid_stats_period']}";
 	$appid_params .= ", \\\n\tapp_stats_rollover_size " . strval($config['installedpackages']['snortglobal']['appid_stats_log_limit_size'] * 1024);
@@ -1271,7 +1274,7 @@ if ($snortcfg['host_attribute_table'] == "on" && !empty($snortcfg['host_attribut
 $http_inspect_global = "preprocessor http_inspect: global ";
 if ($snortcfg['http_inspect'] == "off")
 	$http_inspect_global .= "disabled ";
-$http_inspect_global .= "\\\n\tiis_unicode_map unicode.map 1252 \\\n";
+$http_inspect_global .= "\\\n\tiis_unicode_map {$snortdir}/unicode.map 1252 \\\n";
 $http_inspect_global .= "\tcompress_depth 65535 \\\n";
 $http_inspect_global .= "\tdecompress_depth 65535 \\\n";
 if (!empty($snortcfg['http_inspect_memcap']))
@@ -1291,7 +1294,7 @@ $http_inspect_default_engine = array( "name" => "default", "bind_to" => "all", "
 				      "unlimited_decompress" => "on", "inspect_gzip" => "on", "normalize_cookies" =>"on", "normalize_headers" => "on", 
 				      "normalize_utf" => "on", "normalize_javascript" => "on", "allow_proxy_use" => "off", "inspect_uri_only" => "off", 
 				      "max_javascript_whitespaces" => 200, "post_depth" => -1, "max_headers" => 0, "max_spaces" => 0, 
-				      "max_header_length" => 0, "ports" => "default" );
+				      "max_header_length" => 0, "ports" => "default", "decompress_swf" => "off", "decompress_pdf" => "off" );
 $http_ports = str_replace(",", " ", snort_expand_port_range($snort_ports['http_ports']));
 $http_inspect_servers = "";
 
@@ -1385,6 +1388,10 @@ if ($snortcfg['http_inspect'] <> "off") {
 			$http_inspect_servers .= " \\\n\tlog_uri";
 		if ($v['log_hostname'] == "on")
 			$http_inspect_servers .= " \\\n\tlog_hostname";
+		if ($v['decompress_swf'] == "on")
+			$http_inspect_servers .= " \\\n\tdecompress_swf";
+		if ($v['decompress_pdf'] == "on")
+			$http_inspect_servers .= " \\\n\tdecompress_pdf";
 
 		// Add a pair of trailing newlines to terminate this server config
 		$http_inspect_servers .= "\n\n";

@@ -263,6 +263,9 @@ if ($_GET['act'] == "import" && isset($_GET['varname']) && !empty($_GET['varvalu
 
 	// Now retrieve the "selected alias" returned from SELECT ALIAS page
 	$pconfig[$_GET['varname']] = htmlspecialchars($_GET['varvalue']);
+
+	// We have made a preproc config change, so set "dirty" flag
+	mark_subsystem_dirty('snort_preprocessors');
 }
 
 // Handle deleting of any of the multiple configuration engines
@@ -397,7 +400,7 @@ if ($_POST['ResetAll']) {
 	$savemsg = gettext("All preprocessor settings have been reset to their defaults.");
 }
 
-if ($_POST['save']) {
+if ($_POST['save'] || $_POST['apply']) {
 	$natent = array();
 	$natent = $pconfig;
 
@@ -590,6 +593,9 @@ if ($_POST['save']) {
 		/* Sync to configured CARP slaves if any are enabled */
 		snort_sync_on_changes();
 
+		// We have saved changes, so clear "dirty" flag
+		clear_subsystem_dirty('snort_preprocessors');
+
 		/* after click go to this page */
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
@@ -619,6 +625,10 @@ if ($_POST['btn_import']) {
 				$a_nat[$id]['max_attribute_services_per_host'] = $pconfig['max_attribute_services_per_host'];
 				write_config("Snort pkg: imported Host Attribute Table data for {$a_nat[$id]['interface']}.");
 			}
+
+			// We have made a preproc config change, so set "dirty" flag
+			mark_subsystem_dirty('snort_preprocessors');
+
 			header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 			header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 			header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -675,6 +685,11 @@ if ($savemsg) {
 <form action="snort_preprocessors.php" method="post" enctype="multipart/form-data" name="iform" id="iform">
 <input name="id" type="hidden" value="<?=$id;?>"/>
 <input name="eng_id" id="eng_id" type="hidden" value=""/>
+
+<?php if (is_subsystem_dirty('snort_preprocessors')): ?><p>
+<?php print_info_box_np(gettext("A change has been made to the preprocessors configuration.") . "<br/>" . gettext("Click SAVE when finished to apply the change to the Snort configuration."));?>
+<?php endif; ?>
+
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
 <tr><td>
 <?php

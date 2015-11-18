@@ -5,7 +5,7 @@
  * Copyright (C) 2006 Scott Ullrich
  * Copyright (C) 2009 Robert Zelaya
  * Copyright (C) 2011-2012 Ermal Luci
- * Copyright (C) 2013-2014 Bill Meeks
+ * Copyright (C) 2013-2015 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,7 @@ require_once("service-utils.inc");
 require_once("/usr/local/pkg/snort/snort.inc");
 require("/usr/local/pkg/snort/snort_defs.inc");
 
-global $g, $config, $pkg_interface, $snort_gui_include, $rebuild_rules;
+global $g, $config, $pkg_interface, $snort_gui_include, $rebuild_rules, $static_output;
 
 $snortdir = SNORTDIR;
 $snortlibdir = SNORT_PBI_BASEDIR . "lib";
@@ -266,45 +266,56 @@ function snort_check_rule_md5($file_url, $file_dst, $desc = "") {
 	/*           error occurred.                              */
 	/**********************************************************/
 
-	global $pkg_interface, $last_curl_error, $update_errors;
+	global $last_curl_error, $update_errors, $static_output;
 
 	$snortdir = SNORTDIR;
 	$filename_md5 = basename($file_dst);
 
-	if ($pkg_interface <> "console")
-		update_status(gettext("Downloading {$desc} md5 file..."));
+	update_status(gettext("Downloading {$desc} md5 file..."));
+	$static_output .= gettext("Downloading {$desc} md5 file...");
+	update_output_window($static_output);
 	error_log(gettext("\tDownloading {$desc} md5 file {$filename_md5}...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 	$rc = snort_download_file_url($file_url, $file_dst);
 
 	// See if download from URL was successful
 	if ($rc === true) {
-		if ($pkg_interface <> "console")
-			update_status(gettext("Done downloading {$filename_md5}."));
+		update_status(gettext("Done downloading {$filename_md5}."));
+		$static_output .= gettext(" done.\n");
+		update_output_window($static_output);
 		error_log("\tChecking {$desc} md5 file...\n", 3, SNORT_RULES_UPD_LOGFILE);
+		$static_output .= gettext("Checking {$desc} md5 file...");
+		update_output_window($static_output);
 
 		// check md5 hash in new file against current file to see if new download is posted
 		if (file_exists("{$snortdir}/{$filename_md5}")) {
 			$md5_check_new = file_get_contents($file_dst);
 			$md5_check_old = file_get_contents("{$snortdir}/{$filename_md5}");
+			$static_output .= gettext(" done.\n");
+			update_output_window($static_output);
 			if ($md5_check_new == $md5_check_old) {
-				if ($pkg_interface <> "console")
-					update_status(gettext("{$desc} are up to date..."));
+				update_status(gettext("{$desc} are up to date..."));
 				log_error(gettext("[Snort] {$desc} are up to date..."));
 				error_log(gettext("\t{$desc} are up to date.\n"), 3, SNORT_RULES_UPD_LOGFILE);
+				$static_output .= gettext("{$desc} are current. No update required.\n");
+				update_output_window($static_output);
 				return false;
 			}
-			else
+			else {
 				return true;
+			}
 		}
+		$static_output .= gettext(" done.\n");
+		update_output_window($static_output);
 		return true;
 	}
 	else {
 		error_log(gettext("\t{$desc} md5 download failed.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		$snort_err_msg = gettext("Server returned error code {$rc}.");
-		if ($pkg_interface <> "console") {
-			update_status(gettext("{$desc} md5 error ... Server returned error code {$rc} ..."));
-			update_output_window(gettext("{$desc} will not be updated.\n\t{$snort_err_msg}")); 
-		}
+		update_status(gettext("{$desc} md5 error ... Server returned error code {$rc} ..."));
+		$static_output .= gettext(" FAILED!\n");
+		update_output_window($static_output);
+		$static_output .= gettext("{$desc} will not be updated.\n{$snort_err_msg}\n");
+		update_output_window($static_output); 
 		log_error(gettext("[Snort] {$desc} md5 download failed..."));
 		log_error(gettext("[Snort] Server returned error code {$rc}..."));
 		error_log(gettext("\t{$snort_err_msg}\n"), 3, SNORT_RULES_UPD_LOGFILE);
@@ -334,29 +345,31 @@ function snort_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 	/*           FALSE if download was not successful.        */
 	/**********************************************************/
 
-	global $pkg_interface, $last_curl_error, $update_errors;
+	global $last_curl_error, $update_errors, $static_output;
 
 	$snortdir = SNORTDIR;
 	$filename = basename($file_dst);
 
-	if ($pkg_interface <> "console")
-		update_status(gettext("There is a new set of {$desc} posted. Downloading..."));
+	update_status(gettext("There is a new set of {$desc} posted. Downloading..."));
 	log_error(gettext("[Snort] There is a new set of {$desc} posted. Downloading {$filename}..."));
 	error_log(gettext("\tThere is a new set of {$desc} posted.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 	error_log(gettext("\tDownloading file '{$filename}'...\n"), 3, SNORT_RULES_UPD_LOGFILE);
+	$static_output .= gettext("There is a new set of {$desc} posted.\nDownloading {$filename}...");
+	update_output_window($static_output); 
        	$rc = snort_download_file_url($file_url, $file_dst);
 
 	// See if the download from the URL was successful
 	if ($rc === true) {
-		if ($pkg_interface <> "console")
-			update_status(gettext("Done downloading {$desc} file."));
+		update_status(gettext("Done downloading {$desc} file."));
 		log_error("[Snort] {$desc} file update downloaded successfully");
 		error_log(gettext("\tDone downloading rules file.\n"),3, SNORT_RULES_UPD_LOGFILE);
+		$static_output .= gettext(" done.\n");
+		update_output_window($static_output);
 	
 		// Test integrity of the rules file.  Turn off update if file has wrong md5 hash
 		if ($file_md5 != trim(md5_file($file_dst))){
-			if ($pkg_interface <> "console")
-				update_output_window(gettext("{$desc} file MD5 checksum failed..."));
+			$static_output .= gettext("{$desc} file MD5 checksum failed...\n");
+			update_output_window($static_output);
 			log_error(gettext("[Snort] {$desc} file download failed.  Bad MD5 checksum..."));
         	        log_error(gettext("[Snort] Downloaded File MD5: " . md5_file($file_dst)));
 			log_error(gettext("[Snort] Expected File MD5: {$file_md5}"));
@@ -370,12 +383,16 @@ function snort_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 		return true;
 	}
 	else {
-		if ($pkg_interface <> "console")
-			update_output_window(gettext("{$desc} file download failed..."));
+		$static_output .= gettext(" FAILED!\n");
+		update_output_window($static_output);
+		$static_output .= gettext("{$desc} file download failed... server returned error '{$rc}'.\n");
+		update_output_window($static_output); 
 		log_error(gettext("[Snort] {$desc} file download failed... server returned error '{$rc}'..."));
 		error_log(gettext("\t{$desc} file download failed.  Server returned error {$rc}.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		error_log(gettext("\tThe error text was: {$last_curl_error}\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		error_log(gettext("\t{$desc} will not be updated.\n"), 3, SNORT_RULES_UPD_LOGFILE);
+		$static_output .= gettext("{$desc} will not be updated.\n");
+		update_output_window($static_output);
 		$update_errors = true;
 		return false;
 	}
@@ -462,6 +479,9 @@ if ($emergingthreats == 'on') {
 /* Untar Snort rules file to tmp and install the rules */
 if ($snortdownload == 'on') {
 	if (file_exists("{$tmpfname}/{$snort_filename}")) {
+		$static_output .= gettext("Installing Sourcefire VRT rules...");
+		update_output_window($static_output);
+
 		/* Currently, only FreeBSD-8-1, FreeBSD-9-0 and FreeBSD-10-0 precompiled SO rules exist from Snort.org */
 		/* Default to FreeBSD 8.1, and then test for FreeBSD 9.x  or FreeBSD 10.x */
 		$freebsd_version_so = 'FreeBSD-8-1';
@@ -471,13 +491,11 @@ if ($snortdownload == 'on') {
 			$freebsd_version_so = 'FreeBSD-10-0';
 
 		/* Remove the old Snort rules files */
+		update_status(gettext("Removing old Snort VRT rules..."));
 		$vrt_prefix = VRT_FILE_PREFIX;
 		unlink_if_exists("{$snortdir}/rules/{$vrt_prefix}*.rules");
 
-		if ($pkg_interface <> "console") {
-			update_status(gettext("Extracting Snort VRT rules..."));
-			update_output_window(gettext("Installing Sourcefire VRT rules..."));
-		}
+		update_status(gettext("Extracting new Snort VRT rules..."));
 		error_log(gettext("\tExtracting and installing Snort VRT rules...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		/* extract snort.org rules and add VRT_FILE_PREFIX prefix to all snort.org files */
 		safe_mkdir("{$tmpfname}/snortrules");
@@ -495,8 +513,7 @@ if ($snortdownload == 'on') {
 		}
 		rmdir_recursive("{$tmpfname}/snortrules");
 		/* Extract the Snort preprocessor rules */
-		if ($pkg_interface <> "console")
-			update_output_window(gettext("Extracting preprocessor rules files..."));
+		update_status(gettext("Extracting preprocessor rules files..."));
 		exec("/usr/bin/tar xzf {$tmpfname}/{$snort_filename} -C {$tmpfname} preproc_rules/");
 		$files = glob("{$tmpfname}/preproc_rules/*.rules");
 		foreach ($files as $file) {
@@ -505,10 +522,7 @@ if ($snortdownload == 'on') {
 		}
 		rmdir_recursive("{$tmpfname}/preproc_rules");
 		/* extract so rules */
-		if ($pkg_interface <> "console") {
-			update_status(gettext("Extracting Snort VRT Shared Objects rules..."));
-			update_output_window(gettext("Installing precompiled Shared Objects rules for {$freebsd_version_so}..."));
-		}
+		update_status(gettext("Extracting Snort VRT Shared Objects rules..."));
 		error_log(gettext("\tUsing Snort VRT precompiled SO rules for {$freebsd_version_so} ...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		$snort_arch = php_uname("m");
 		$nosorules = false;
@@ -523,8 +537,7 @@ if ($snortdownload == 'on') {
 		rmdir_recursive("{$tmpfname}/so_rules/");
 		if ($nosorules == false) {
 			/* extract Shared Object stub rules, rename and copy to the rules folder. */
-			if ($pkg_interface <> "console")
-			        update_status(gettext("Copying Snort VRT Shared Objects rules..."));
+		        update_status(gettext("Copying Snort VRT Shared Objects rules..."));
 			exec("/usr/bin/tar xzf {$tmpfname}/{$snort_filename} -C {$tmpfname} --exclude precompiled/ --exclude src/ so_rules/");
 			$files = glob("{$tmpfname}/so_rules/*.rules");
 			foreach ($files as $file) {
@@ -534,10 +547,7 @@ if ($snortdownload == 'on') {
 			rmdir_recursive("{$tmpfname}/so_rules/");
 		}
 		/* extract base etc files */
-		if ($pkg_interface <> "console") {
-		        update_status(gettext("Extracting Snort VRT config and map files..."));
-			update_output_window(gettext("Copying config and map files..."));
-		}
+	        update_status(gettext("Extracting Snort VRT config and map files..."));
 		exec("/usr/bin/tar xzf {$tmpfname}/{$snort_filename} -C {$tmpfname} etc/");
 		foreach (array("classification.config", "reference.config", "gen-msg.map", "unicode.map") as $file) {
 			if (file_exists("{$tmpfname}/etc/{$file}"))
@@ -545,14 +555,12 @@ if ($snortdownload == 'on') {
 		}
 		rmdir_recursive("{$tmpfname}/etc");
 		if (file_exists("{$tmpfname}/{$snort_filename_md5}")) {
-			if ($pkg_interface <> "console")
-				update_status(gettext("Copying md5 signature to snort directory..."));
+			update_status(gettext("Copying md5 signature to snort directory..."));
 			@copy("{$tmpfname}/{$snort_filename_md5}", "{$snortdir}/{$snort_filename_md5}");
 		}
-		if ($pkg_interface <> "console") {
-			update_status(gettext("Extraction of Snort VRT rules completed..."));
-			update_output_window(gettext("Installation of Sourcefire VRT rules completed..."));
-		}
+		update_status(gettext("Extraction of Snort VRT rules completed..."));
+		$static_output .= gettext(" done.\n");
+		update_output_window($static_output);
 		error_log(gettext("\tInstallation of Snort VRT rules completed.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 	}
 }
@@ -561,20 +569,25 @@ if ($snortdownload == 'on') {
 if ($openappid_detectors == 'on') {
 	// If we have a valid downloaded file, then first cleanup the old directory
 	if (file_exists("{$tmpfname}/{$snort_openappid_filename}")) {
+		update_status(gettext("Extracting Snort OpenAppID detectors..."));
+		$static_output .= gettext("Installing Snort OpenAppID detectors...");
 		$snort_openappid_path = SNORT_APPID_ODP_PATH;
 		rmdir_recursive("{$snort_openappid_path}odp");
 		error_log(gettext("\tExtracting and installing Snort OpenAppID detectors...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		safe_mkdir(SNORT_APPID_ODP_PATH);
 		exec("/usr/bin/tar oxzf {$tmpfname}/{$snort_openappid_filename} -C {$snort_openappid_path}");
 		if (file_exists("{$tmpfname}/{$snort_openappid_filename_md5}")) {
-			if ($pkg_interface <> "console")
-				update_status(gettext("Copying md5 signature to snort directory..."));
+			update_status(gettext("Copying md5 signature to snort directory..."));
 			@copy("{$tmpfname}/{$snort_openappid_filename_md5}", "{$snortdir}/{$snort_openappid_filename_md5}");
 		}
-		if ($pkg_interface <> "console") {
-			update_status(gettext("Extraction of Snort OpenAppID detectors completed..."));
-			update_output_window(gettext("Installation of Snort OpenAppID detectors completed..."));
+		if (!is_dir("{$snort_openappid_path}custom")) {
+			safe_mkdir("{$snort_openappid_path}custom");
+			safe_mkdir("{$snort_openappid_path}custom/lua");
+			touch("{$snort_openappid_path}custom/userappid.conf");
 		}
+		update_status(gettext("Extraction of Snort OpenAppID detectors completed..."));
+		$static_output .= gettext(" done.\n");
+		update_output_window($static_output);
 		unlink_if_exists("{$tmpfname}/{$snort_openappid_filename}");
 		error_log(gettext("\tInstallation of Snort OpenAppID detectors completed.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 	}
@@ -584,10 +597,9 @@ if ($openappid_detectors == 'on') {
 if ($snortcommunityrules == 'on') {
 	safe_mkdir("{$tmpfname}/community");
 	if (file_exists("{$tmpfname}/{$snort_community_rules_filename}")) {
-		if ($pkg_interface <> "console") {
-			update_status(gettext("Extracting Snort GPLv2 Community Rules..."));
-			update_output_window(gettext("Installing Snort GPLv2 Community Rules..."));
-		}
+		update_status(gettext("Extracting Snort GPLv2 Community Rules..."));
+		$static_output .= gettext("Installing Snort GPLv2 Community Rules...\n");
+		update_output_window($static_output);
 		error_log(gettext("\tExtracting and installing Snort GPLv2 Community Rules...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		exec("/usr/bin/tar xzf {$tmpfname}/{$snort_community_rules_filename} -C {$tmpfname}/community/");
 
@@ -603,14 +615,12 @@ if ($snortcommunityrules == 'on') {
 		}
 		/*  Copy snort community md5 sig to snort dir */
 		if (file_exists("{$tmpfname}/{$snort_community_rules_filename_md5}")) {
-			if ($pkg_interface <> "console")
-				update_status(gettext("Copying md5 signature to snort directory..."));
+			update_status(gettext("Copying md5 signature to snort directory..."));
 			@copy("{$tmpfname}/{$snort_community_rules_filename_md5}", "{$snortdir}/{$snort_community_rules_filename_md5}");
 		}
-		if ($pkg_interface <> "console") {
-			update_status(gettext("Extraction of Snort GPLv2 Community Rules completed..."));
-			update_output_window(gettext("Installation of Snort GPLv2 Community Rules file completed..."));
-		}
+		update_status(gettext("Extraction of Snort GPLv2 Community Rules completed..."));
+		$static_output .= gettext(" done.\n");
+		update_output_window($static_output);
 		error_log(gettext("\tInstallation of Snort GPLv2 Community Rules completed.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		rmdir_recursive("{$tmpfname}/community/");
 	}
@@ -620,22 +630,23 @@ if ($snortcommunityrules == 'on') {
 if ($emergingthreats == 'on') {
 	safe_mkdir("{$tmpfname}/emerging");
 	if (file_exists("{$tmpfname}/{$emergingthreats_filename}")) {
-		if ($pkg_interface <> "console") {
-			update_status(gettext("Extracting {$et_name} rules..."));
-			update_output_window(gettext("Installing {$et_name} rules..."));
-		}
+		update_status(gettext("Extracting {$et_name} rules..."));
+		$static_output .= gettext("Installing {$et_name} rules...");
+		update_output_window($static_output);
 		error_log(gettext("\tExtracting and installing {$et_name} rules...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		exec("/usr/bin/tar xzf {$tmpfname}/{$emergingthreats_filename} -C {$tmpfname}/emerging rules/");
 
 		/* Remove the old Emerging Threats rules files */
 		$eto_prefix = ET_OPEN_FILE_PREFIX;
 		$etpro_prefix = ET_PRO_FILE_PREFIX;
+		update_status(gettext("Removing old {$et_name} files..."));
 		unlink_if_exists("{$snortdir}/rules/{$eto_prefix}*.rules");
 		unlink_if_exists("{$snortdir}/rules/{$etpro_prefix}*.rules");
 		unlink_if_exists("{$snortdir}/rules/{$eto_prefix}*ips.txt");
 		unlink_if_exists("{$snortdir}/rules/{$etpro_prefix}*ips.txt");
 
 		$files = glob("{$tmpfname}/emerging/rules/*.rules");
+		update_status(gettext("Copying new {$et_name} files..."));
 		foreach ($files as $file) {
 			$newfile = basename($file);
 			if ($etpro == "on")
@@ -664,14 +675,12 @@ if ($emergingthreats == 'on') {
 
 		/*  Copy emergingthreats md5 sig to snort dir */
 		if (file_exists("{$tmpfname}/{$emergingthreats_filename_md5}")) {
-			if ($pkg_interface <> "console")
-				update_status(gettext("Copying md5 signature to snort directory..."));
+			update_status(gettext("Copying md5 signature to snort directory..."));
 			@copy("{$tmpfname}/{$emergingthreats_filename_md5}", "{$snortdir}/{$emergingthreats_filename_md5}");
 		}
-		if ($pkg_interface <> "console") {
-			update_status(gettext("Extraction of {$et_name} rules completed..."));
-			update_output_window(gettext("Installation of {$et_name} rules completed..."));
-		}
+		update_status(gettext("Extraction of {$et_name} rules completed..."));
+		$static_output .= gettext(" done.\n");
+		update_output_window($static_output);
 		error_log(gettext("\tInstallation of {$et_name} rules completed.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		rmdir_recursive("{$tmpfname}/emerging/");
 	}
@@ -710,8 +719,7 @@ function snort_apply_customizations($snortcfg, $if_real) {
 
 if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules == 'on') {
 
-	if ($pkg_interface <> "console")
-		update_status(gettext('Copying new config and map files...'));
+	update_status(gettext('Copying new config and map files...'));
 	error_log(gettext("\tCopying new config and map files...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 
 	/******************************************************************/
@@ -757,10 +765,9 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 		foreach ($config['installedpackages']['snortglobal']['rule'] as $id => $value) {
 			$if_real = get_real_interface($value['interface']);
 			$tmp = "Updating rules configuration for: " . convert_friendly_interface_to_friendly_descr($value['interface']) . " ...";
-			if ($pkg_interface <> "console"){
-				update_status(gettext($tmp));
-				update_output_window(gettext("Please wait while Snort interface files are updated..."));
-			}
+			update_status(gettext($tmp));
+			$static_output .= gettext($tmp . "...");
+			update_output_window($static_output);
 
 			// Make sure the interface subdirectory and required sub-directories exists.
 			// We need to re-create them during a pkg reinstall for the intial rules set
@@ -783,13 +790,14 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 				$tmp .= convert_friendly_interface_to_friendly_descr($value['interface']) . "...\n";
 			}
 			error_log($tmp, 3, SNORT_RULES_UPD_LOGFILE);
+			$static_output .= gettext(" done.\n");
+			update_output_window($static_output);
 		}
 	}
 	else {
-		if ($pkg_interface <> "console") {
-		        update_output_window(gettext("Warning:  No interfaces configured for Snort were found..."));
-			update_output_window(gettext("No interfaces currently have Snort configured and enabled on them..."));
-		}
+		$static_output .= gettext("Warning:  No interfaces configured for Snort were found...\n");
+		$static_output .= gettext("No interfaces currently have Snort configured and enabled on them.\n");
+	        update_output_window($static_output);
 		error_log(gettext("\tWarning:  No interfaces configured for Snort were found...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 	}
 
@@ -798,23 +806,18 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 
 	/* Restart snort if running, and not in post-install, so as to pick up the new rules. */
        	if (!$g['snort_postinstall'] && is_service_running("snort") && count($config['installedpackages']['snortglobal']['rule']) > 0) {
-		if ($pkg_interface <> "console") {
-			update_status(gettext('Restarting Snort to activate the new set of rules...'));
-			update_output_window(gettext("Please wait ... restarting Snort will take some time..."));
-		}
+		update_status(gettext('Restarting Snort to activate the new set of rules...'));
+		$static_output .= gettext("Restarting Snort...");
+		update_output_window($static_output);
 		error_log(gettext("\tRestarting Snort to activate the new set of rules...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		touch("{$g['varrun_path']}/snort_pkg_starting.lck");
 		snort_restart_all_interfaces(TRUE);
 		sleep(3);
 		unlink_if_exists("{$g['varrun_path']}/snort_pkg_starting.lck");
-		if ($pkg_interface <> "console")
-		        update_output_window(gettext("Snort has restarted with your new set of rules..."));
+		$static_output .= gettext(" done.\n");
+	        update_output_window($static_output);
        		log_error(gettext("[Snort] Snort has restarted with your new set of rules..."));
 		error_log(gettext("\tSnort has restarted with your new set of rules.\n"), 3, SNORT_RULES_UPD_LOGFILE);
-	}
-	else {
-		if ($pkg_interface <> "console")
-			update_output_window(gettext("The rules update task is complete..."));
 	}
 }
 elseif ($openappid_detectors == 'on') {
@@ -823,33 +826,31 @@ elseif ($openappid_detectors == 'on') {
 	/* Restart snort if running, and not in post-install, so as to pick up the detectors. */
 	/**************************************************************************************/
        	if (!$g['snort_postinstall'] && is_service_running("snort") && count($config['installedpackages']['snortglobal']['rule']) > 0) {
-		if ($pkg_interface <> "console") {
-			update_status(gettext('Restarting Snort to activate the new OpenAppID detectors...'));
-			update_output_window(gettext("Please wait ... restarting Snort will take some time..."));
-		}
+		update_status(gettext('Restarting Snort to activate the new OpenAppID detectors...'));
+		$static_output .= gettext("Restarting Snort...");
+		update_output_window($static_output);
 		error_log(gettext("\tRestarting Snort to activate the new OpenAppID detectors...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		touch("{$g['varrun_path']}/snort_pkg_starting.lck");
 		snort_restart_all_interfaces(TRUE);
 		sleep(2);
 		unlink_if_exists("{$g['varrun_path']}/snort_pkg_starting.lck");
-		if ($pkg_interface <> "console")
-		        update_output_window(gettext("Snort has restarted with your new set of OpenAppID detectors..."));
+		$static_output .= gettext(" done.\n");
+	        update_output_window($static_output);
        		log_error(gettext("[Snort] Snort has restarted with your new set of OpenAppID detectors..."));
 		error_log(gettext("\tSnort has restarted with your new set of OpenAppID detectors.\n"), 3, SNORT_RULES_UPD_LOGFILE);
-	}
-	else {
-		if ($pkg_interface <> "console")
-			update_output_window(gettext("The rules update task is complete..."));
 	}
 }
 
 /*  remove $tmpfname files */
 if (is_dir("{$tmpfname}")) {
+	$static_output .= gettext("Cleaning up temp dirs and files...");
+        update_output_window($static_output);
 	rmdir_recursive($tmpfname);
+	$static_output .= gettext(" done.\n");
+        update_output_window($static_output);
 }
 
-if ($pkg_interface <> "console")
-	update_status(gettext("The Rules update has finished..."));
+update_status(gettext("The Rules update has finished."));
 log_error(gettext("[Snort] The Rules update has finished."));
 error_log(gettext("The Rules update has finished.  Time: " . date("Y-m-d H:i:s"). "\n\n"), 3, SNORT_RULES_UPD_LOGFILE);
 

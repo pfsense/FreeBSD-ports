@@ -41,12 +41,6 @@ require_once('service-utils.inc');
 if (!function_exists("filter_configure")) {
 	require_once("filter.inc");
 }
-/* Squid reverse proxy */
-require_once('/usr/local/pkg/squid_reverse.inc');
-/* Squid javascript helpers */
-require_once('/usr/local/pkg/squid_js.inc');
-/* Squid antivirus intergration features helpers */
-require_once('/usr/local/pkg/squid_antivirus.inc');
 
 $shortcut_section = "squid";
 
@@ -76,6 +70,13 @@ $uname = posix_uname();
 if ($uname['machine'] == 'amd64') {
 	ini_set('memory_limit', '250M');
 }
+
+/* Squid reverse proxy */
+require_once('/usr/local/pkg/squid_reverse.inc');
+/* Squid javascript helpers */
+require_once('/usr/local/pkg/squid_js.inc');
+/* Squid antivirus intergration features helpers */
+require_once('/usr/local/pkg/squid_antivirus.inc');
 
 /*
  * Utility functions
@@ -1222,9 +1223,14 @@ EOD;
 		foreach ($real_ifaces as $iface) {
 			list($ip, $mask) = $iface;
 			$ip = long2ip(ip2long($ip) & ip2long($mask));
-			$mask = 32-log((ip2long($mask) ^ ip2long('255.255.255.255'))+1,2);
+			$mask = 32 - log((ip2long($mask) ^ ip2long('255.255.255.255')) +1, 2);
 			if (!preg_match("@$ip/$mask@", $src)) {
-				$src .= " $ip/$mask";
+				// XXX: Do not add invalid subnets (Bug #4331, Bug #4526)
+				if (is_subnet("{$ip}/{$mask}")) {
+					$src .= " $ip/$mask";
+				} else {
+					log_error("[squid] 'Allow Users on Interface' ACL skipped for '{$ip}/{$mask}' since it is not a valid subnet.");
+				}
 			}
 		}
 		$conf .= "# Allow local network(s) on interface(s)\n";

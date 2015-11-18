@@ -1,7 +1,7 @@
 <?php
 /*
  * snort_httpinspect_engine.php
- * Copyright (C) 2013-2014 Bill Meeks
+ * Copyright (C) 2013-2015 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -66,7 +66,7 @@ if (empty($a_nat[$eng_id])) {
 		      "unlimited_decompress" => "on", "inspect_gzip" => "on", "normalize_cookies" =>"on", "normalize_headers" => "on", 
 		      "normalize_utf" => "on", "normalize_javascript" => "on", "allow_proxy_use" => "off", "inspect_uri_only" => "off", 
 		      "max_javascript_whitespaces" => 200, "post_depth" => -1, "max_headers" => 0, "max_spaces" => 0, 
-		      "max_header_length" => 0, "ports" => "default" );
+		      "max_header_length" => 0, "ports" => "default", "decompress_swf" => "off", "decompress_pdf" => "off" );
 	// See if this is initial entry and set to "default" if true
 	if ($eng_id < 1) {
 		$def['name'] = "default";
@@ -124,6 +124,10 @@ else {
 		$pconfig['max_spaces'] = 0;
 	if (empty($pconfig['max_header_length']))
 		$pconfig['max_header_length'] = 0;
+	if (empty($pconfig['decompress_swf']))
+		$pconfig['decompress_swf'] = "off";
+	if (empty($pconfig['decompress_pdf']))
+		$pconfig['decompress_pdf'] = "off";
 }
 
 if ($_POST['Cancel']) {
@@ -259,6 +263,8 @@ if ($_POST['save']) {
 	$engine['normalize_javascript'] = $_POST['httpinspect_normalize_javascript'] ? 'on' : 'off';
 	$engine['allow_proxy_use'] = $_POST['httpinspect_allow_proxy_use'] ? 'on' : 'off';
 	$engine['inspect_uri_only'] = $_POST['httpinspect_inspect_uri_only'] ? 'on' : 'off';
+	$engine['decompress_swf'] = $_POST['httpinspect_decompress_swf'] ? 'on' : 'off';
+	$engine['decompress_pdf'] = $_POST['httpinspect_decompress_pdf'] ? 'on' : 'off';
 
 	// Can only have one "all" Bind_To address
 	if ($engine['bind_to'] == "all" && $engine['name'] <> "default") {
@@ -297,6 +303,9 @@ if ($_POST['save']) {
 
 		// Now write the new engine array to conf
 		write_config("Snort pkg: modified http_inspect engine settings.");
+
+		// We have saved a preproc config change, so set "dirty" flag
+		mark_subsystem_dirty('snort_preprocessors');
 
 		header("Location: /snort/snort_preprocessors.php?id={$id}#httpinspect_row");
 		exit;
@@ -526,6 +535,24 @@ if ($savemsg)
 			<?php if ($pconfig['unlimited_decompress']=="on") echo "checked";?>>
 			<?php echo gettext("Decompress unlimited gzip data (across multiple packets). Default is ");?> 
 			<strong><?php echo gettext("Checked");?></strong>.</td>
+	</tr>
+	<tr>
+		<td width="22%" valign="top" class="vncell"><?php echo gettext("Decompress SWF");?></td>
+		<td width="78%" class="vtable"><input name="httpinspect_decompress_swf" 
+			type="checkbox" value="on" id="httpinspect_decompress_swf" 
+			<?php if ($pconfig['decompress_swf']=="on") echo "checked";?>>
+			<?php echo gettext("Uncompress and inspect Shockwave Flash data in HTTP response. " .
+				"Default is ");?>
+			<strong><?php echo gettext("Not Checked");?></strong>.</td>
+	</tr>
+	<tr>
+		<td width="22%" valign="top" class="vncell"><?php echo gettext("Decompress PDF");?></td>
+		<td width="78%" class="vtable"><input name="httpinspect_decompress_pdf" 
+			type="checkbox" value="on" id="httpinspect_decompress_pdf" 
+			<?php if ($pconfig['decompress_pdf']=="on") echo "checked";?>>
+			<?php echo gettext("Uncompress and inspect PDF data in HTTP response. " .
+				"Default is ");?>
+			<strong><?php echo gettext("Not Checked");?></strong>.</td>
 	</tr>
 	<tr>
 		<td width="22%" valign="top" class="vncell"><?php echo gettext("Normalize Cookies");?></td>

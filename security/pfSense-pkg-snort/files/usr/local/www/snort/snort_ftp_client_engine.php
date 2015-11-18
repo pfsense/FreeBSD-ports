@@ -218,6 +218,9 @@ if ($_POST['save']) {
 		/* Now write the new engine array to conf */
 		write_config("Snort pkg: modified ftp_telnet_client engine settings.");
 
+		// We have saved a preproc config change, so set "dirty" flag
+		mark_subsystem_dirty('snort_preprocessors');
+
 		header("Location: /snort/snort_preprocessors.php?id={$id}#ftp_telnet_row_ftp_proto_opts");
 		exit;
 	}

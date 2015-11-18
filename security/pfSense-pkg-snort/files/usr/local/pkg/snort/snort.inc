@@ -2934,6 +2934,7 @@ rc_start() {
 
 	### Remove the lock since we have started all interfaces
 	if [ -f {$g['varrun_path']}/snort_pkg_starting.lck ]; then
+		sleep 2
 		/bin/rm {$g['varrun_path']}/snort_pkg_starting.lck
 	fi
 }
@@ -2954,8 +2955,12 @@ case $1 in
 		rc_stop
 		;;
 	restart)
-		rc_stop
-		rc_start
+		if [ ! -f {$g['varrun_path']}/snort_pkg_starting.lck ]; then
+			rc_stop
+			rc_start
+		else
+			/usr/bin/logger -p daemon.info -i -t SnortRestart "Ignoring RESTART command since Snort is already starting..."
+		fi
 		;;
 esac
 
