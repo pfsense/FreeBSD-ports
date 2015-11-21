@@ -43,7 +43,6 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/clog:${PORTSDIR}/sysutils/clog \
 		${LOCALBASE}/sbin/openvpn:${PORTSDIR}/security/openvpn \
 		${LOCALBASE}/sbin/pftop:${PORTSDIR}/sysutils/pftop \
 		${LOCALBASE}/sbin/relayctl:${PORTSDIR}/net/relayd \
-		${LOCALBASE}/sbin/ipfw-classifyd:${PORTSDIR}/net/ipfw-classifyd \
 		${LOCALBASE}/sbin/sshlockout_pf:${PORTSDIR}/sysutils/sshlockout_pf \
 		${LOCALBASE}/sbin/qstats:${PORTSDIR}/sysutils/qstats \
 		${LOCALBASE}/bin/wol:${PORTSDIR}/net/wol \
