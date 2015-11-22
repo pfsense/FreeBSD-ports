@@ -1336,12 +1336,7 @@ PHP_FUNCTION(pfSense_getall_interface_addresses)
 		case AF_INET6:
 			bzero(outputbuf, sizeof outputbuf);
 			tmp6 = (struct sockaddr_in6 *)mb->ifa_addr;
-			if (IN6_IS_ADDR_LINKLOCAL(&tmp6->sin6_addr)) {
-				tmp6->sin6_scope_id = ntohs(*(u_int16_t *)&tmp6->sin6_addr.s6_addr[2]);
-				tmp6->sin6_addr.s6_addr[2] = tmp6->sin6_addr.s6_addr[3] = 0;
-				if (getnameinfo((struct sockaddr *)tmp6, tmp6->sin6_len, outputbuf, sizeof(outputbuf), NULL, 0, NI_NUMERICHOST))
-					inet_ntop(AF_INET6, (void *)&tmp6->sin6_addr, outputbuf, INET6_ADDRSTRLEN);
-			} else
+			if (getnameinfo((struct sockaddr *)tmp6, tmp6->sin6_len, outputbuf, sizeof(outputbuf), NULL, 0, NI_NUMERICHOST))
 				inet_ntop(AF_INET6, (void *)&tmp6->sin6_addr, outputbuf, INET6_ADDRSTRLEN);
 			tmp6 = (struct sockaddr_in6 *)mb->ifa_netmask;
 			snprintf(outputbuf + strlen(outputbuf), sizeof(outputbuf) - strlen(outputbuf),
