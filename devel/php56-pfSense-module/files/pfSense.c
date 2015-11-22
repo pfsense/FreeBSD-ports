@@ -1569,10 +1569,12 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 			}
 
 			if (mb->ifa_flags & IFF_POINTOPOINT) {
-				bzero(outputbuf, sizeof outputbuf);
-				tmp6 = (struct sockaddr_in6 *)mb->ifa_dstaddr;
-				inet_ntop(AF_INET, (void *)&tmp6->sin6_addr, outputbuf, sizeof(outputbuf));
-				add_assoc_string(return_value, "tunnel", outputbuf, 1);
+				tmp = (struct sockaddr_in *)mb->ifa_dstaddr;
+				if (tmp != NULL && tmp->sin_family == AF_INET) {
+					bzero(outputbuf, sizeof outputbuf);
+					inet_ntop(AF_INET, (void *)&tmp->sin_addr, outputbuf, sizeof(outputbuf));
+					add_assoc_string(return_value, "tunnel", outputbuf, 1);
+				}
 			}
 
 		break;
@@ -1590,10 +1592,12 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
                         add_assoc_long(return_value, "subnetbits6", prefix(&tmp6->sin6_addr, sizeof(struct in6_addr)));
                 
                         if (mb->ifa_flags & IFF_POINTOPOINT) {
-                                bzero(outputbuf, sizeof outputbuf);
-                                tmp = (struct sockaddr_in *)mb->ifa_dstaddr;
-                                inet_ntop(AF_INET, (void *)&tmp->sin_addr, outputbuf, sizeof(outputbuf));
-                                add_assoc_string(return_value, "tunnel6", outputbuf, 1);
+				tmp6 = (struct sockaddr_in6 *)mb->ifa_dstaddr;
+				if (tmp6 != NULL && tmp6->sin6_family == AF_INET6) {
+	                                bzero(outputbuf, sizeof outputbuf);
+					inet_ntop(AF_INET6, (void *)&tmp6->sin6_addr, outputbuf, sizeof(outputbuf));
+	                                add_assoc_string(return_value, "tunnel6", outputbuf, 1);
+				}
                         }
 		break;
 		case AF_LINK:
