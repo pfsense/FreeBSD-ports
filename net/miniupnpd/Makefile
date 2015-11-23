@@ -2,7 +2,7 @@
 # $FreeBSD: head/net/miniupnpd/Makefile 390722 2015-06-27 19:30:34Z pgollucci $
 
 PORTNAME=	miniupnpd
-PORTVERSION=	1.9.20150721
+PORTVERSION=	1.9.20151118
 PORTEPOCH=	1
 CATEGORIES=	net
 MASTER_SITES=	http://miniupnp.tuxfamily.org/files/ \
