@@ -31,7 +31,9 @@ WINSCP_DESC=	WinSCP support
 
 OPTIONS_SUB=	yes
 
-BUILD_DEPENDS=	sftp:${PORTSDIR}/security/openssh-portable
+.if !exists(/usr/bin/sftp)
+BUILD_DEPENDS=	${LOCALBASE}/bin/sftp:${PORTSDIR}/security/openssh-portable
+.endif
 DEFAULT_CHDIR_CONFIGURE_ON=	--with-default-chdir=${SCPONLY_DEFAULT_CHDIR}
 WILDCARDS_CONFIGURE_ENABLE=	wildcards
 GFTP_CONFIGURE_ENABLE=		gftp-compat
