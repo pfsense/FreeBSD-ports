@@ -57,7 +57,9 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/clog:${PORTSDIR}/sysutils/clog \
 		${LOCALBASE}/bin/nsupdate:${PORTSDIR}/dns/bind-tools \
 		${LOCALBASE}/sbin/ipsec:${PORTSDIR}/security/strongswan \
 		${LOCALBASE}/sbin/unbound:${PORTSDIR}/dns/unbound \
-		${KMODDIR}/bwi_v3_ucode.ko:${PORTSDIR}/net/bwi-firmware-kmod
+		${KMODDIR}/bwi_v3_ucode.ko:${PORTSDIR}/net/bwi-firmware-kmod \
+		${LOCALBASE}/bin/scponly:${PORTSDIR}/shells/scponly
+
 LIB_DEPENDS=	libltdl.so:${PORTSDIR}/devel/libltdl
 
 USE_PHP=	bz2 bcmath ctype curl dom filter gettext json mbstring \
