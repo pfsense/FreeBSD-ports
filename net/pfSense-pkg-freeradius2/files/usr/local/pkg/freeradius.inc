@@ -28,14 +28,17 @@
 	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
 */
-require_once('config.inc');
-require_once('service-utils.inc');
-require_once("util.inc");
-require_once("functions.inc");
-require_once("pkg-utils.inc");
-require_once("globals.inc");
+require_once("config.inc");
 require_once("filter.inc");
+require_once("functions.inc");
+require_once("globals.inc");
+require_once("notices.inc");
+require_once("pkg-utils.inc");
 require_once("services.inc");
+require_once("service-utils.inc");
+require_once("util.inc");
+require_once("xmlrpc.inc");
+require_once("xmlrpc_client.inc");
 
 // Check pfSense version
 $pfs_version = substr(trim(file_get_contents("/etc/version")),0,3);

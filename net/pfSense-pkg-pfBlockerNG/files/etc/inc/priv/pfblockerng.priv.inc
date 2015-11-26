@@ -17,16 +17,23 @@ $priv_list['page-firewall-pfblockerng']['match'][] = "pkg_edit.php?xml=pfblocker
 $priv_list['page-firewall-pfblockerng']['match'][] = "pkg_edit.php?xml=pfblockerng/pfblockerng_SouthAmerica.xml*";
 $priv_list['page-firewall-pfblockerng']['match'][] = "pkg_edit.php?xml=pfblockerng/pfblockerng_ProxyandSatellite.xml*";
 $priv_list['page-firewall-pfblockerng']['match'][] = "pkg_edit.php?xml=pfblockerng/pfblockerng_sync.xml*";
+$priv_list['page-firewall-pfblockerng']['match'][] = "pkg_edit.php?xml=pfblockerng/pfblockerng_dnsbl.xml*";
+$priv_list['page-firewall-pfblockerng']['match'][] = "pkg_edit.php?xml=pfblockerng/pfblockerng_dnsbl_easylist.xml*";
 
 $priv_list['page-firewall-pfblockerng']['match'][] = "pkg.php?xml=pfblockerng/pfblockerng_v4lists.xml*";
 $priv_list['page-firewall-pfblockerng']['match'][] = "pkg.php?xml=pfblockerng/pfblockerng_v6lists.xml*";
+$priv_list['page-firewall-pfblockerng']['match'][] = "pkg.php?xml=pfblockerng/pfblockerng_dnsbl_lists.xml*";
 
 $priv_list['page-firewall-pfblockerng']['match'][] = "pfblockerng/pfblockerng_update.php*";
 $priv_list['page-firewall-pfblockerng']['match'][] = "pfblockerng/pfblockerng_alerts.php*";
+$priv_list['page-firewall-pfblockerng']['match'][] = "pfblockerng/pfblockerng_alerts_ar.php*";
 $priv_list['page-firewall-pfblockerng']['match'][] = "pfblockerng/pfblockerng_log.php*";
-$priv_list['page-firewall-pfblockerng']['match'][] = "pfblockerng/pfblockerng_diag_dns.php*";
+$priv_list['page-firewall-pfblockerng']['match'][] = "pfblockerng/pfblockerng_threats.php*";
 $priv_list['page-firewall-pfblockerng']['match'][] = "widgets/javascript/pfblockerng.js*";
 $priv_list['page-firewall-pfblockerng']['match'][] = "widgets/include/widget-pfblockerng.inc*";
 $priv_list['page-firewall-pfblockerng']['match'][] = "widgets/widgets/pfblockerng.widget.php*";
+$priv_list['page-firewall-pfblockerng']['match'][] = "pfblockerng/pfblockerng.inc*";
+$priv_list['page-firewall-pfblockerng']['match'][] = "pfblockerng/pfblockerng_extra.inc*";
+$priv_list['page-firewall-pfblockerng']['match'][] = "pfblockerng/pfblockerng_install.inc*";
 $priv_list['page-firewall-pfblockerng']['match'][] = "pfblockerng/pfblockerng.inc*";
 ?>

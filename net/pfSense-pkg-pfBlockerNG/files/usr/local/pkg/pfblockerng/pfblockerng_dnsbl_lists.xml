@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* ========================================================================== */
+/*
+	pfBlockerNG_dnsbl_lists.xml
+
+	pfBlockerNG
+	Copyright (c) 2015 BBcan177@gmail.com
+	All rights reserved.
+
+*/
+/* ========================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ========================================================================== */
+	]]>
+	</copyright>
+	<description>Describe your package here</description>
+	<requirements>Describe your package requirements here</requirements>
+	<faq>Currently there are no FAQ items provided.</faq>
+	<name>pfblockerngdnsbl</name>
+	<version>1.0</version>
+	<title>pfBlockerNG: DNSBL: Lists</title>
+	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
+	<addedit_string>pfBlockerNG: Save DNSBL Feeds settings</addedit_string>
+	<menu>
+		<name>pfBlockerNG</name>
+		<section>Firewall</section>
+		<configfile>pfblockerng_dnsbl_lists.xml</configfile>
+	</menu>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=pfblockerng.xml</url>
+		</tab>
+		<tab>
+			<text>Update</text>
+			<url>/pfblockerng/pfblockerng_update.php</url>
+		</tab>
+		<tab>
+			<text>Alerts</text>
+			<url>/pfblockerng/pfblockerng_alerts.php</url>
+		</tab>
+		<tab>
+			<text>Reputation</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml</url>
+		</tab>
+		<tab>
+			<text>IPv4</text>
+			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml</url>
+		</tab>
+		<tab>
+			<text>IPv6</text>
+			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml</url>
+		</tab>
+		<tab>
+			<text>DNSBL</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml</url>
+		</tab>
+		<tab>
+			<text>Country</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml</url>
+		</tab>
+		<tab>
+			<text>Logs</text>
+			<url>/pfblockerng/pfblockerng_log.php</url>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml</url>
+		</tab>
+		<tab>
+			<text>DNSBL</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml</url>
+			<tab_level>2</tab_level>
+		</tab>
+		<tab>
+			<text>DNSBL Feeds</text>
+			<url>/pkg.php?xml=/pfblockerng/pfblockerng_dnsbl_lists.xml</url>
+			<tab_level>2</tab_level>
+			<active/>
+		</tab>
+		<tab>
+			<text>DNSBL EasyList</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl_easylist.xml</url>
+			<tab_level>2</tab_level>
+		</tab>
+	</tabs>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>DNS Group Name</fielddescr>
+			<fieldname>aliasname</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>DNS Group Description</fielddescr>
+			<fieldname>description</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Action</fielddescr>
+			<fieldname>action</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Frequency</fielddescr>
+			<fieldname>cron</fieldname>
+		</columnitem>
+		<addtext>Add a new Alias</addtext>
+		<movable>on</movable>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<name><![CDATA[DNS Domain Name Block List &emsp; Run 'Force Update' to deploy new Settings.]]></name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>LINKS</fielddescr>
+			<fieldname></fieldname>
+			<description><![CDATA[<a href="/firewall_aliases.php">Firewall Alias</a>&emsp;
+				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="diag_logs_filter.php">Firewall Logs</a>]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>DNS GROUP Name</fielddescr>
+			<fieldname>aliasname</fieldname>
+			<description><![CDATA[Enter DNS Group Name.&emsp; Example: Ads]]></description>
+			<type>input</type>
+			<size>20</size>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+			<type>input</type>
+			<size>90</size>
+		</field>
+		<field>
+			<fieldname>InfoLists</fieldname>
+			<type>info</type>
+			<description><![CDATA[<strong><u>'Format'</u></strong>: Select the Format type.<br /><br />
+				<strong><u>'State'</u></strong>: Select the run state.<br /><br />
+				<strong><u>'Source'</u></strong>:
+				<ul><li><strong>'URL'</strong>: External link to source
+					&emsp;(ie: <a target="_blank" href='http://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&mimetype=plaintext'>yoyo</a>,
+					<a target="_blank" href='http://someonewhocares.org/hosts/hosts'>SomeoneWhoCares</a>,
+					<a target="_blank" href='https://adaway.org/hosts.txt'>Adaway</a>)</li></ul>
+				<ul><li><strong>'Local File'</strong>: http(s)://127.0.0.1/filename
+					&emsp;<strong>or</strong>&emsp; /var/db/pfblockerng/filename</li></ul>
+				<strong><u>'Header/Label'</u></strong>: This field must be <u>unique.</u> This names the file and is referenced in the widget.
+					&emsp;(ie: hpHosts_ads, hpHosts_partial)<br /><br />
+				<strong>AdBlock Easylists <u>cannot</u> be used in this Tab</strong><br /><br />]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr><![CDATA[<strong>DNSBL</strong>]]></fielddescr>
+			<description><![CDATA[<br /><strong>'Format'</strong>: Select the file format that URL will retrieve.<br />
+				<ul><li><strong>'auto'</strong>&emsp;- Default parser</li>
+				<li><strong>'rsync'</strong> - RSync Lists</li></ul>
+				<strong>'State'</strong>: Select the Run State for each list.<br />
+				<ul><li><strong>'ON/OFF'</strong> - Enabled / Disabled</li>
+				<li><strong>'HOLD'</strong> - Once a List has been Downloaded, list will remain Static.</li>
+				<li><strong>'FLEX'</strong> - Not Recommended - Allow lower SSL connections</li></ul>
+				<strong>'Note'</strong>: Downloaded or pfsense local file must have only one Domain Name per line.]]>
+			</description>
+			<type>rowhelper</type>
+			<sortablefields/>
+			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>Format</fielddescr>
+					<fieldname>format</fieldname>
+					<type>select</type>
+					<options>
+						<option><name>Auto</name><value>auto</value></option>
+						<option><name>RSync</name><value>rsync</value></option>
+					</options>
+					<default_value>auto</default_value>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>State</fielddescr>
+					<fieldname>state</fieldname>
+					<type>select</type>
+					<options>
+						<option><name>ON</name><value>Enabled</value></option>
+						<option><name>OFF</name><value>Disabled</value></option>
+						<option><name>HOLD</name><value>Hold</value></option>
+						<option><name>FLEX</name><value>Flex</value></option>
+					</options>
+					<default_value>Enabled</default_value>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Source</fielddescr>
+					<fieldname>url</fieldname>
+					<type>input</type>
+					<size>50</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Header/Label</fielddescr>
+					<fieldname>header</fieldname>
+					<type>input</type>
+					<size>15</size>
+					<sortablefields/>
+				</rowhelperfield>
+			</rowhelper>
+		</field>
+		<field>
+			<fielddescr>List Action</fielddescr>
+			<description><![CDATA[Default: <strong>Disabled</strong><br />
+				Select <strong>Unbound</strong> to enable 'Domain Name' blocking for this Alias.]]>
+			</description>
+			<fieldname>action</fieldname>
+			<type>select</type>
+			<options>
+				<option><name>Disabled</name><value>Disabled</value></option>
+				<option><name>Unbound</name><value>unbound</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Update Frequency</fielddescr>
+			<fieldname>cron</fieldname>
+			<description><![CDATA[Default: <strong>Never</strong><br />
+				Select how often List files will be downloaded. <strong>This must be within the Cron Interval/Start Hour settings.</strong>]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>Never</name><value>Never</value></option>
+				<option><name>Every Hour</name><value>01hour</value></option>
+				<option><name>Every 2 Hours</name><value>02hours</value></option>
+				<option><name>Every 3 Hours</name><value>03hours</value></option>
+				<option><name>Every 4 Hours</name><value>04hours</value></option>
+				<option><name>Every 6 Hours</name><value>06hours</value></option>
+				<option><name>Every 8 Hours</name><value>08hours</value></option>
+				<option><name>Every 12 Hours</name><value>12hours</value></option>
+				<option><name>Once a day</name><value>EveryDay</value></option>
+				<option><name>Weekly</name><value>Weekly</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Weekly (Day of Week)</fielddescr>
+			<fieldname>dow</fieldname>
+			<description><![CDATA[Default: <strong>Monday</strong><br />
+				Select the 'Weekly' ( Day of the Week ) to Update <br />
+				This is only required for the 'Weekly' Frequency Selection. The 24 Hour Download 'Time' will be used.]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>Monday</name><value>1</value></option>
+				<option><name>Tuesday</name><value>2</value></option>
+				<option><name>Wednesday</name><value>3</value></option>
+				<option><name>Thursday</name><value>4</value></option>
+				<option><name>Friday</name><value>5</value></option>
+				<option><name>Saturday</name><value>6</value></option>
+				<option><name>Sunday</name><value>7</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Enable Alexa Whitelist</fielddescr>
+			<fieldname>filter_alexa</fieldname>
+			<description>Filter Alias via Alexa</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<name><![CDATA[Custom Block List]]></name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Custom Domain Name Block List</fielddescr>
+			<fieldname>custom</fieldname>
+			<description><![CDATA[No Regex Entries Allowed!<br /><br />
+				Enter one &emsp; <strong>'Domain Name'</strong> &emsp; per line<br /><br />
+				You may use "<strong>#</strong>" after any Domain name to add comments. example ( ads.google.com # Block Google Ads )<br />
+				This List is stored as 'Base64' format in the config.xml file.]]>
+			</description>
+			<type>textarea</type>
+			<cols>80</cols>
+			<rows>20</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>Update Custom List</fielddescr>
+			<fieldname>custom_update</fieldname>
+			<description><![CDATA[Select - '<strong>Default</strong>' to update Custom List as per Update Frequency setting.<br />
+				Select - '<strong>Update Custom List</strong>' followed by a 'Force Update' to apply Custom List Changes.<br />
+				Cron will also resync this Custom List at the next Update Frequency.]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>Default</name><value>disabled</value></option>
+				<option><name>Update Custom List</name><value>enabled</value></option>
+			</options>
+		</field>
+		<field>
+			<name><![CDATA[<center>Click to SAVE Settings and/or Rule Edits. &emsp; Changes are Applied via CRON or
+				'Force Update'</center>]]></name>
+			<type>listtopic</type>
+		</field>
+	</fields>
+	<custom_php_validation_command>
+		<![CDATA[
+		pfblockerng_validate_input($_POST, $input_errors);
+		]]>
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		<![CDATA[
+		global $pfb;
+		$pfb['save'] = TRUE;
+		sync_package_pfblockerng();
+		]]>
+	</custom_php_resync_config_command>
+</packagegui>

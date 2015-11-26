@@ -29,7 +29,6 @@
 /*
  * Squid javascript helpers for GUI fields status manipulation
  */
-require_once('globals.inc');
 require_once('config.inc');
 
 /*

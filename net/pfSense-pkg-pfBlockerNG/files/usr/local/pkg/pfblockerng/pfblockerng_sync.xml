@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
-<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
 <packagegui>
 	<copyright>
 	<![CDATA[
-/* $Id$ */
 /* ========================================================================== */
 /*
 	pfBlockerNG_sync.xml
 
 	pfBlockerNG
-	Copyright (C) 2015 BBcan177@gmail.com
+	Copyright (c) 2015 BBcan177@gmail.com
 	All rights reserved.
 
 	Based upon pfblocker for pfSense
-	Copyright (C) 2011 Marcello Coutinho
+	Copyright (c) 2011 Marcello Coutinho
 	All rights reserved.
 */
 /* ========================================================================== */
@@ -57,12 +56,12 @@
 		<name>pfBlockerNG</name>
 		<tooltiptext>Configure pfBlockerNG</tooltiptext>
 		<section>Services</section>
-		<url>pkg_edit.php?xml=pfblockerng.xml&amp;id=0</url>
+		<url>pkg_edit.php?xml=pfblockerng.xml</url>
 	</menu>
 	<tabs>
 		<tab>
 			<text>General</text>
-			<url>/pkg_edit.php?xml=pfblockerng.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=pfblockerng.xml</url>
 		</tab>
 		<tab>
 			<text>Update</text>
@@ -74,47 +73,23 @@
 		</tab>
 		<tab>
 			<text>Reputation</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml</url>
 		</tab>
 		<tab>
 			<text>IPv4</text>
-			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml&amp;id=0</url>
+			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml</url>
 		</tab>
 		<tab>
 			<text>IPv6</text>
-			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml&amp;id=0</url>
+			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml</url>
 		</tab>
 		<tab>
-			<text>Top 20</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml&amp;id=0</url>
+			<text>DNSBL</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml</url>
 		</tab>
 		<tab>
-			<text>Africa</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Africa.xml&amp;id=0</url>
-		</tab>
-		<tab>
-			<text>Asia</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Asia.xml&amp;id=0</url>
-		</tab>
-		<tab>
-			<text>Europe</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Europe.xml&amp;id=0</url>
-		</tab>
-		<tab>
-			<text>N.A.</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_NorthAmerica.xml&amp;id=0</url>
-		</tab>
-		<tab>
-			<text>Oceania</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Oceania.xml&amp;id=0</url>
-		</tab>
-		<tab>
-			<text>S.A.</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_SouthAmerica.xml&amp;id=0</url>
-		</tab>
-		<tab>
-			<text>P.S.</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_ProxyandSatellite.xml&amp;id=0</url>
+			<text>Country</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml</url>
 		</tab>
 		<tab>
 			<text>Logs</text>
@@ -122,7 +97,7 @@
 		</tab>
 		<tab>
 			<text>Sync</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml</url>
 			<active/>
 		</tab>
 	</tabs>
@@ -133,8 +108,8 @@
 		</field>
 		<field>
 			<fielddescr>LINKS</fielddescr>
-			<description><![CDATA[<a href="/firewall_aliases.php">Firewall Alias</a> &nbsp;&nbsp;&nbsp;
-				<a href="/firewall_rules.php">Firewall Rules</a> &nbsp;&nbsp;&nbsp; <a href="diag_logs_filter.php">Firewall Logs</a>]]>
+			<description><![CDATA[<a href="/firewall_aliases.php">Firewall Alias</a>&emsp;
+				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="diag_logs_filter.php">Firewall Logs</a>]]>
 			</description>
 			<type>info</type>
 		</field>
@@ -163,9 +138,9 @@
 			<size>5</size>
 		</field>
 		<field>
-			<fielddescr><![CDATA[Disable 'General Tab' sync]]></fielddescr>
+			<fielddescr><![CDATA[Disable 'General/DNSBL tab' sync]]></fielddescr>
 			<fieldname>syncinterfaces</fieldname>
-			<description>When selected, the 'General' Tab Customizations will not be sync'd</description>
+			<description>When selected, the 'General' tab and 'DNSBL' tab customizations will not be sync'd</description>
 			<type>checkbox</type>
 		</field>
 		<field>
@@ -194,9 +169,9 @@
 					</options>
 				</rowhelperfield>
 				<rowhelperfield>
-					<fielddescr>Target IP Address</fielddescr>
+					<fielddescr>Target IP/Hostname</fielddescr>
 					<fieldname>varsyncipaddress</fieldname>
-					<description><![CDATA[IP Address of the destination host.]]></description>
+					<description><![CDATA[IP Address or Hostname of the destination host.]]></description>
 					<type>input</type>
 					<size>15</size>
 				</rowhelperfield>
@@ -224,23 +199,21 @@
 			</rowhelper>
 		</field>
 		<field>
-			<name><![CDATA[<center>Click to SAVE Settings and/or Rule Edits. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Changes are Applied via CRON or
+			<name><![CDATA[<center>Click to SAVE Settings and/or Rule Edits. &emsp; Changes are Applied via CRON or
 			'Force Update'</center>]]></name>
 			<type>listtopic</type>
 		</field>
 	</fields>
-	<custom_php_install_command>
-		pfblockerng_php_install_command();
-	</custom_php_install_command>
-	<custom_php_deinstall_command>
-		pfblockerng_php_deinstall_command();
-	</custom_php_deinstall_command>
 	<custom_php_validation_command>
+		<![CDATA[
 		pfblockerng_validate_input($_POST, $input_errors);
+		]]>
 	</custom_php_validation_command>
 	<custom_php_resync_config_command>
+		<![CDATA[
 		require_once("/usr/local/pkg/pfblockerng/pfblockerng.inc");
 		write_config("[pfBlockerNG] XMLRPC sync configurations saved.");
 		pfblockerng_sync_on_changes();
+		]]>
 	</custom_php_resync_config_command>
 </packagegui>

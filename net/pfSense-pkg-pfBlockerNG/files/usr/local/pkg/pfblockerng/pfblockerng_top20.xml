@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
-<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
 <packagegui>
 	<copyright>
 	<![CDATA[
-/* $Id$ */
 /* ========================================================================== */
 /*
 	pfBlockerNG_Top20.xml
 
 	pfBlockerNG
-	Copyright (C) 2015 BBcan177@gmail.com
+	Copyright (c) 2015 BBcan177@gmail.com
 	All rights reserved.
 
 	Based upon pfblocker for pfSense
-	Copyright (C) 2011 Marcello Coutinho
+	Copyright (c) 2011 Marcello Coutinho
 	All rights reserved.
 */
 /* ========================================================================== */
@@ -57,12 +56,12 @@
 		<name>pfBlockerNG</name>
 		<tooltiptext>Configure pfblockerNG</tooltiptext>
 		<section>Firewall</section>
-		<url>pkg_edit.php?xml=pfblockerng.xml&amp;id=0</url>
+		<url>pkg_edit.php?xml=pfblockerng.xml</url>
 	</menu>
 	<tabs>
 		<tab>
 			<text>General</text>
-			<url>/pkg_edit.php?xml=pfblockerng.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=pfblockerng.xml</url>
 		</tab>
 		<tab>
 			<text>Update</text>
@@ -74,48 +73,64 @@
 		</tab>
 		<tab>
 			<text>Reputation</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml</url>
 		</tab>
 		<tab>
 			<text>IPv4</text>
-			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml&amp;id=0</url>
+			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml</url>
 		</tab>
 		<tab>
 			<text>IPv6</text>
-			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml&amp;id=0</url>
+			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml</url>
+		</tab>
+		<tab>
+			<text>DNSBL</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml</url>
+		</tab>
+		<tab>
+			<text>Country</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml</url>
 		</tab>
 		<tab>
 			<text>Top 20</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml</url>
+			<tab_level>2</tab_level>
 			<active/>
 		</tab>
 		<tab>
 			<text>Africa</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Africa.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Africa.xml</url>
+			<tab_level>2</tab_level>
 		</tab>
 		<tab>
 			<text>Asia</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Asia.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Asia.xml</url>
+			<tab_level>2</tab_level>
 		</tab>
 		<tab>
 			<text>Europe</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Europe.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Europe.xml</url>
+			<tab_level>2</tab_level>
 		</tab>
 		<tab>
-			<text>N.A.</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_NorthAmerica.xml&amp;id=0</url>
+			<text>North America</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_NorthAmerica.xml</url>
+			<tab_level>2</tab_level>
 		</tab>
 		<tab>
 			<text>Oceania</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Oceania.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Oceania.xml</url>
+			<tab_level>2</tab_level>
 		</tab>
 		<tab>
-			<text>S.A.</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_SouthAmerica.xml&amp;id=0</url>
+			<text>South America</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_SouthAmerica.xml</url>
+			<tab_level>2</tab_level>
 		</tab>
 		<tab>
-			<text>P.S.</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_ProxyandSatellite.xml&amp;id=0</url>
+			<text>Proxy and Satellite</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_ProxyandSatellite.xml</url>
+			<tab_level>2</tab_level>
 		</tab>
 		<tab>
 			<text>Logs</text>
@@ -123,12 +138,12 @@
 		</tab>
 		<tab>
 			<text>Sync</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml</url>
 		</tab>
 	</tabs>
 	<fields>
 		<field>
-			<name><![CDATA[TOP 20 - Spammer Countries&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (Geolite Data by Maxmind Inc. - ISO 3166)]]></name>
+			<name><![CDATA[TOP 20 - Spammer Countries&emsp; (Geolite Data by Maxmind Inc. - ISO 3166)]]></name>
 			<type>listtopic</type>
 		</field>
 		<field>
@@ -144,15 +159,15 @@
 		</field>
 		<field>
 			<fielddescr>LINKS</fielddescr>
-			<description><![CDATA[<a href="/firewall_aliases.php">Firewall Alias</a> &nbsp;&nbsp;&nbsp;
-				<a href="/firewall_rules.php">Firewall Rules</a> &nbsp;&nbsp;&nbsp; <a href="diag_logs_filter.php">Firewall Logs</a>]]>
+			<description><![CDATA[<a href="/firewall_aliases.php">Firewall Alias</a>&emsp;
+				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="diag_logs_filter.php">Firewall Logs</a>]]>
 			</description>
 			<type>info</type>
 		</field>
 		<field>
 			<fieldname>countries4</fieldname>
 			<fielddescr><![CDATA[<strong><center>Top 20<br /> Spammer Countries</center></strong><br />
-				<center>Use CTRL + CLICK to unselect countries</center>]]>
+				<center>Use CTRL + CLICK to select/unselect countries</center>]]>
 			</fielddescr>
 			<description><![CDATA[<center><br />IPv4 Countries</center>]]></description>
 			<type>select</type>
@@ -176,7 +191,7 @@
 				<option><name>Columbia-CO</name><value>CO</value></option>
 				<option><name>Taiwan-TW</name><value>TW</value></option>
 				<option><name>Mexico-MX</name><value>MX</value></option>
-				<option><name>Chilie-CL</name><value>CL</value></option>
+				<option><name>Chile-CL</name><value>CL</value></option>
 			</options>
 			<size>20</size>
 			<multiple/>
@@ -247,11 +262,9 @@
 				<li>'Alias Deny' can use De-Duplication and Reputation Processes if configured.</li><br />
 				<li>'Alias Permit' and 'Alias Match' will be saved in the Same folder as the other Permit/Match Auto-Rules</li><br />
 				<li>'Alias Native' lists are kept in their Native format without any modifications.</li></ul>
-				<strong>When using 'Alias' rules, change (pfB_) to ( pfb_ ) in the beginning of rule description and Use the 'Exact' spelling of
-				the Alias (no trailing Whitespace)</strong> Custom 'Alias' rules with 'pfB_  xxx' description will be removed by package if
-				using Auto Rule Creation.<br /><br /><strong>Tip</strong>: You can create the Auto Rules and remove "<u>auto rule</u>" from the Rule
-				Descriptions, then disable Auto Rules. This method will 'KEEP' these rules from being 'Deleted' which will allow editing for a Custom
-				Alias Configuration<br />]]>
+				<font color='red'>Note: </font><ul>When manually creating 'Alias' type firewall rules; <strong>Do not add</strong> (pfB_) to the
+				start of the rule description, use (pfb_) (Lowercase prefix). Manually created 'Alias' rules with 'pfB_' in the
+				description will be auto-removed by package when 'Auto' rules are defined.</ul>]]>
 			</description>
 			<fieldname>action</fieldname>
 			<type>select</type>
@@ -289,8 +302,8 @@
 		</field>
 		<field>
 			<type>info</type>
-			<description><![CDATA[<font color='red'>Note: </font>In general Auto-Rules are created as follows:<br />
-				<ul>Inbound &nbsp;&nbsp;- 'any' port, 'any' protocol and 'any' destination<br />
+			<description><![CDATA[<font color='red'>Note: </font>In general, Auto-Rules are created as follows:<br />
+				<ul>Inbound &emsp;- 'any' port, 'any' protocol and 'any' destination<br />
 				Outbound - 'any' port, 'any' protocol and 'any' destination address in the lists</ul>
 				Configuring the Adv. Inbound Rule settings, will allow for more customization of the Inbound Auto-Rules.<br />
 				<strong>Select the pfSense 'Port' and/or 'Destination' Alias below:</strong>]]>
@@ -351,7 +364,8 @@
 		<field>
 			<fielddescr>Custom Protocol</fielddescr>
 			<fieldname>autoproto</fieldname>
-			<description><![CDATA[<strong>Default: any</strong><br />Select the Protocol used for Inbound Firewall Rule(s).]]></description>
+			<description><![CDATA[<strong>Default: any</strong><br />Select the Protocol used for Inbound Firewall Rule(s).<br />
+				Do not use 'any' with Adv. Inbound Rules as it will bypass these settings!]]></description>
 			<type>select</type>
 			<options>
 				<option><name>any</name><value></value></option>
@@ -363,23 +377,21 @@
 			<default_value></default_value>
 		</field>
 		<field>
-			<name><![CDATA[<center>Click to SAVE Settings and/or Rule Edits. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Changes are Applied via CRON or
+			<name><![CDATA[<center>Click to SAVE Settings and/or Rule Edits. &emsp; Changes are Applied via CRON or
 				'Force Update'</center>]]></name>
 			<type>listtopic</type>
 		</field>
 	</fields>
-	<custom_php_install_command>
-		pfblockerng_php_install_command();
-	</custom_php_install_command>
-	<custom_php_deinstall_command>
-		pfblockerng_php_deinstall_command();
-	</custom_php_deinstall_command>
 	<custom_php_validation_command>
+		<![CDATA[
 		pfblockerng_validate_input($_POST, $input_errors);
+		]]>
 	</custom_php_validation_command>
 	<custom_php_resync_config_command>
+		<![CDATA[
 		global $pfb;
 		$pfb['save'] = TRUE;
 		sync_package_pfblockerng();
+		]]>
 	</custom_php_resync_config_command>
 </packagegui>

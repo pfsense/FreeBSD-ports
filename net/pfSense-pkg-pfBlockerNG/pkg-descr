@@ -4,7 +4,8 @@ pfBlockerNG is the Next Generation of pfBlocker.<br />
 			(GeoLite Free version).<br /> De-Duplication,
 			Suppression, and Reputation enhancements.<br />
 			Provision to download from diverse List formats.<br />
-			Advanced Integration for Emerging Threats IQRisk IP
-			Reputation Threat Sources.
+			Advanced Integration for Proofpoint ET IQRisk IP
+			Reputation Threat Sources.<br /> Domain Name (DNSBL)
+			blocking via Unbound DNS Resolver.
 
 WWW: https://forum.pfsense.org/index.php?topic=86212.0

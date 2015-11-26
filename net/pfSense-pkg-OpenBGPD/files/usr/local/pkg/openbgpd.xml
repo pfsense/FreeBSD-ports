@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>OpenBGPD</name>
-	<version>0.9.3.7</version>
+	<version>0.9.3.9</version>
 	<title>Services: OpenBGPD</title>
 	<include_file>/usr/local/pkg/openbgpd.inc</include_file>
 	<service>
@@ -64,6 +64,10 @@
 		<item>https://packages.pfsense.org/packages/config/openbgpd/openbgpd.inc</item>
 	</additional_files_needed>
 	<additional_files_needed>
+		<prefix>/etc/inc/priv/</prefix>
+		<item>https://packages.pfsense.org/packages/config/openbgpd/openbgpd.priv.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
 		<item>https://packages.pfsense.org/packages/config/openbgpd/openbgpd_groups.xml</item>
 	</additional_files_needed>
@@ -73,7 +77,6 @@
 	</additional_files_needed>
 	<menu>
 		<name>OpenBGPD</name>
-		<tooltiptext></tooltiptext>
 		<section>Services</section>
 		<url>/pkg_edit.php?xml=openbgpd.xml&amp;id=0</url>
 	</menu>

@@ -2,21 +2,24 @@ pkg/pfblockerng.xml
 /etc/inc/priv/pfblockerng.priv.inc
 pkg/pfblockerng/pfblockerng.inc
 pkg/pfblockerng/pfblockerng_install.inc
+pkg/pfblockerng/pfblockerng_extra.inc
 www/pfblockerng/pfblockerng.php
 www/pfblockerng/pfblockerng_alerts.php
+www/pfblockerng/pfblockerng_alerts_ar.php
 www/pfblockerng/pfblockerng_update.php
 www/pfblockerng/pfblockerng_log.php
-www/pfblockerng/pfblockerng_diag_dns.php
+www/pfblockerng/pfblockerng_threats.php
 www/widgets/widgets/pfblockerng.widget.php
 www/widgets/include/widget-pfblockerng.inc
 www/widgets/javascript/pfblockerng.js
 pkg/pfblockerng/pfblockerng_top20.xml
+pkg/pfblockerng/pfblockerng_dnsbl.xml
+pkg/pfblockerng/pfblockerng_dnsbl_lists.xml
+pkg/pfblockerng/pfblockerng_dnsbl_easylist.xml
 pkg/pfblockerng/pfblockerng_v4lists.xml
 pkg/pfblockerng/pfblockerng_v6lists.xml
 pkg/pfblockerng/pfblockerng_sync.xml
-/var/db/pfblockerng/countrycodes.tar.bz2
 pkg/pfblockerng/pfblockerng.sh
-pkg/pfblockerng/geoipupdate.sh
+www/pfblockerng/www/index.php
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv
-@dir /var/db/pfblockerng

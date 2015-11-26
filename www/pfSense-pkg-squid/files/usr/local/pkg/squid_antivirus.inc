@@ -27,8 +27,11 @@
 	POSSIBILITY OF SUCH DAMAGE.
 */
 /* Functions for Squid C-ICAP/ClamAV integration */
-require_once('globals.inc');
 require_once('config.inc');
+require_once('globals.inc');
+require_once('services.inc');
+require_once('service-utils.inc');
+require_once('util.inc');
 /* This file is currently only being included in squid.inc and not used separately */
 // require_once('squid.inc');
 

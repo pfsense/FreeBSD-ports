@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
-<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
 <packagegui>
 	<copyright>
 	<![CDATA[
@@ -9,14 +9,15 @@
 	pfBlockerNG_v6lists.xml
 
 	pfBlockerNG
-	Copyright (C) 2015 BBcan177@gmail.com
+	Copyright (c) 2015 BBcan177@gmail.com
 	All rights reserved.
 
 	Based upon pfblocker for pfSense
-	Copyright (C) 2011 Marcello Coutinho
+	Copyright (c) 2011 Marcello Coutinho
 
-	part of pfSense (http://www.pfSense.com)
-	Copyright (C) 2010 Scott Ullrich <sullrich@gmail.com>
+	part of pfSense (http://www.pfSense.org)
+	Copyright (c) 2015 Electric Sheep Fencing, LLC. All rights reserved.
+	Copyright (c) 2004-2005 Scott Ullrich
 	All rights reserved.
 */
 /* ========================================================================== */
@@ -64,7 +65,7 @@
 	<tabs>
 		<tab>
 			<text>General</text>
-			<url>/pkg_edit.php?xml=pfblockerng.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=pfblockerng.xml</url>
 			<tooltiptext></tooltiptext>
 		</tab>
 		<tab>
@@ -77,48 +78,24 @@
 		</tab>
 		<tab>
 			<text>Reputation</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml</url>
 		</tab>
 		<tab>
 			<text>IPv4</text>
-			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml&amp;id=0</url>
+			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml</url>
 		</tab>
 		<tab>
 			<text>IPv6</text>
-			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml&amp;id=0</url>
+			<url>/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml</url>
 			<active/>
 		</tab>
 		<tab>
-			<text>Top 20</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml&amp;id=0</url>
+			<text>DNSBL</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml</url>
 		</tab>
 		<tab>
-			<text>Africa</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Africa.xml&amp;id=0</url>
-		</tab>
-		<tab>
-			<text>Asia</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Asia.xml&amp;id=0</url>
-		</tab>
-		<tab>
-			<text>Europe</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Europe.xml&amp;id=0</url>
-		</tab>
-		<tab>
-			<text>N.A.</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_NorthAmerica.xml&amp;id=0</url>
-		</tab>
-		<tab>
-			<text>Oceania</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Oceania.xml&amp;id=0</url>
-		</tab>
-		<tab>
-			<text>S.A.</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_SouthAmerica.xml&amp;id=0</url>
-		</tab>
-		<tab>
-			<text>P.S.</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_ProxyandSatellite.xml&amp;id=0</url>
+			<text>Country</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml</url>
 		</tab>
 		<tab>
 			<text>Logs</text>
@@ -126,50 +103,49 @@
 		</tab>
 		<tab>
 			<text>Sync</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml</url>
 		</tab>
 	</tabs>
-		<adddeleteeditpagefields>
-			<columnitem>
-				<fielddescr>Alias Name</fielddescr>
-				<fieldname>aliasname</fieldname>
-			</columnitem>
-			<columnitem>
-				<fielddescr>Alias Description</fielddescr>
-				<fieldname>description</fieldname>
-			</columnitem>
-			<columnitem>
-				<fielddescr>Action</fielddescr>
-				<fieldname>action</fieldname>
-			</columnitem>
-			<columnitem>
-				<fielddescr>Frequency</fielddescr>
-				<fieldname>cron</fieldname>
-			</columnitem>
-			<columnitem>
-				<fielddescr>Logging</fielddescr>
-				<fieldname>aliaslog</fieldname>
-			</columnitem>
-			<addtext>Add a new Alias</addtext>
-			<movable>on</movable>
-		</adddeleteeditpagefields>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Alias Name</fielddescr>
+			<fieldname>aliasname</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Alias Description</fielddescr>
+			<fieldname>description</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Action</fielddescr>
+			<fieldname>action</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Frequency</fielddescr>
+			<fieldname>cron</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Logging</fielddescr>
+			<fieldname>aliaslog</fieldname>
+		</columnitem>
+		<addtext>Add a new Alias</addtext>
+		<movable>on</movable>
+	</adddeleteeditpagefields>
 	<fields>
 		<field>
-			<name>IPv6 Network ranges / CIDR lists</name>
+			<name><![CDATA[IPv6 - &emsp; Run 'Force Update' to deploy new Settings. &emsp;]]></name>
 			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr>LINKS</fielddescr>
-			<description><![CDATA[<a href="/firewall_aliases.php">Firewall Alias</a> &nbsp;&nbsp;&nbsp;
-				<a href="/firewall_rules.php">Firewall Rules</a> &nbsp;&nbsp;&nbsp; <a href="diag_logs_filter.php">Firewall Logs</a>]]>
+			<description><![CDATA[<a href="/firewall_aliases.php">Firewall Alias</a>&emsp;
+				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="diag_logs_filter.php">Firewall Logs</a>]]>
 			</description>
 			<type>info</type>
 		</field>
 		<field>
 			<fielddescr>Alias Name</fielddescr>
 			<fieldname>aliasname</fieldname>
-			<description><![CDATA[Enter Alias Name.<br />
-				Example: Badguys<br />
+			<description><![CDATA[Enter Alias Name (Example: Badguys)<br />
 				Do not include <strong>'pfBlocker' or 'pfB_'</strong> in the Alias Name, it's done by package.<br />
 				<strong>International, special or space characters will be ignored in firewall alias names.
 				</strong><br />]]>
@@ -185,38 +161,33 @@
 		</field>
 		<field>
 			<type>info</type>
-			<description><![CDATA[<strong><u>'Format'</u></strong>: Select the Format Type<br /><br />
-				<strong><u>'URL'</u></strong>: Add direct link to list:
-				Example: <a target=_new href='http://list.iblocklist.com/?list=bt_ads&fileformat=p2p&archiveformat=gz'>Ads</a>,
-				<a target=_new href='http://list.iblocklist.com/?list=bt_spyware&fileformat=p2p&archiveformat=gz'>Spyware</a>,
-				<a target=_new href='http://list.iblocklist.com/?list=bt_proxy&fileformat=p2p&archiveformat=gz'>Proxies</a><br /><br />
-				<strong><u>'pfSense Local File'</u></strong> Format:<br /><br />
-				&nbsp;&nbsp;http(s)://127.0.0.1/NAME_OF_FILE &nbsp;&nbsp;<strong>or</strong>&nbsp;&nbsp;
-				/usr/local/www/NAME_OF_FILE &nbsp;&nbsp; (Files can also be placed in the /var/db/pfblockerng folders)<br /><br />
-
-				<strong><u>'Header'</u></strong>: The <u>'Header' Field</u> must be <u>Unique</u>, it will
-				name the List File and it will be referenced in the pfBlockerNG Widget.
-				Use a Unique Prefix per 'Alias Category' followed by a unique descriptor for each List.<br /><br />]]>
+			<description><![CDATA[<strong><u>'Format'</u></strong>: Select the Format type.<br /><br />
+				<strong><u>'State'</u></strong>: Select the run state.<br /><br />
+				<strong><u>'Source'</u></strong>:
+				<ul><li><strong>'URL'</strong>: External link to source
+					&emsp;(ie: <a target="_blank" href='https://lists.blocklist.de/lists/all.txt'>Blocklist.de</a>)</li></ul>
+				<ul><li><strong>'Local File'</strong>: http(s)://127.0.0.1/filename
+					&emsp;<strong>or</strong>&emsp; /var/db/pfblockerng/filename</li></ul>
+				<ul><li><strong>'Country code'</strong>: /usr/pbi/pfblockerng-amd64/share/GeoIP/cc/US_v6.txt
+					&emsp;(Change 'US' to required code)</li></ul>
+				<ul><li><strong>'Whois'</strong>: Domain name or AS&emsp;(ie: facebook.com or AS13414)
+					&emsp;(<a target="_blank" href='https://asn.cymru.com/'>Click for ASN Lookup</a>)</li></ul>
+				<strong><u>'Header/Label'</u></strong>: This field must be <u>unique.</u> This names the file and is referenced in the widget.
+					&emsp;(ie: Spamhaus_drop, Spamhaus_edrop)<br /><br />]]>
 			</description>
 		</field>
 		<field>
 			<fielddescr><![CDATA[<strong>IPv6</strong> Lists]]></fielddescr>
-			<description><![CDATA[<br /><strong>'Format'</strong> - Select the file format that URL will retrieve.<br />
-				<ul><li><strong>'txt'</strong> Plain txt Lists</li>
-				<li><strong>'gz'</strong> - IBlock GZ Lists in Range Format only</li>
-				<li><strong>'gz_2'</strong> - Other GZ Lists in IP or CIDR only</li>
-				<li><strong>'zip'</strong> - ZIP'd Lists</li>
-				<li><strong>'block'</strong>- IP x.x.x.0 Block type</li>
-				<li><strong>'html'</strong> - Web Links</li>
-				<li><strong>'xlsx'</strong> - Excel Lists</li>
-				<li><strong>'rsync'</strong> - RSync Lists</li>
-				<strong>'State'</strong> - Select the Run State for each list<br />
+			<description><![CDATA[<br /><strong>'Format'</strong>: Select the file format that URL will retrieve.<br />
+				<ul><li><strong>'auto'</strong>&emsp;- Default parser</li>
+				<li><strong>'regex'</strong> - 'Regex' style parsing (ie: html Lists)</li>
+				<li><strong>'whois'</strong> - Convert a Domain name or AS into its respective IP addresses.</li>
+				<li><strong>'rsync'</strong> - RSync Lists</li></ul>
+				<strong>'State'</strong>: Select the Run State for each list<br />
 				<ul><li><strong>'ON/OFF'</strong> - Enabled / Disabled</li>
-				<li><strong>'HOLD'</strong> - Once a List has been Downloaded, list will remain Static</li></ul>
-				<strong>'Note' -</strong> Downloaded or pfsense local file must have only one network per line and follows the syntax below:
-				<ul>Network ranges: <strong> TBC </strong><br />
-				IP Address: <strong> TBC </strong><br />
-				CIDR: <strong> TBC </strong></ul>]]>
+				<li><strong>'HOLD'</strong> - Once a List has been Downloaded, list will remain Static</li>
+				<li><strong>'FLEX'</strong> - Not Recommended - Allow downgraded SSL connections</li></ul>
+				<strong>'Note'</strong>: Downloaded or pfsense local file musts have the syntax (See customlist below)</ul>]]>
 			</description>
 			<type>rowhelper</type>
 			<rowhelper>
@@ -225,15 +196,12 @@
 					<fieldname>format</fieldname>
 					<type>select</type>
 					<options>
-						<option><name>txt</name><value>txt</value></option>
-						<option><name>gz</name><value>gz</value></option>
-						<option><name>gz_2</name><value>gz_2</value></option>
-						<option><name>zip</name><value>zip</value></option>
-						<option><name>block</name><value>block</value></option>
-						<option><name>html</name><value>html</value></option>
-						<option><name>xlsx</name><value>xlsx</value></option>
+						<option><name>Auto</name><value>auto</value></option>
+						<option><name>Regex</name><value>regex</value></option>
+						<option><name>Whois</name><value>whois</value></option>
 						<option><name>RSync</name><value>rsync</value></option>
 					</options>
+					<default_value>auto</default_value>
 				</rowhelperfield>
 				<rowhelperfield>
 					<fielddescr>State</fielddescr>
@@ -243,16 +211,18 @@
 						<option><name>ON</name><value>Enabled</value></option>
 						<option><name>OFF</name><value>Disabled</value></option>
 						<option><name>HOLD</name><value>Hold</value></option>
+						<option><name>FLEX</name><value>Flex</value></option>
 					</options>
+					<default_value>Enabled</default_value>
 				</rowhelperfield>
 				<rowhelperfield>
-					<fielddescr>URL or pfSense local file</fielddescr>
+					<fielddescr>Source</fielddescr>
 					<fieldname>url</fieldname>
 					<type>input</type>
 					<size>50</size>
 				</rowhelperfield>
 				<rowhelperfield>
-					<fielddescr>Header</fielddescr>
+					<fielddescr>Header/Label</fielddescr>
 					<fieldname>header</fieldname>
 					<type>input</type>
 					<size>15</size>
@@ -291,11 +261,9 @@
 				<li>'Alias Deny' can use De-Duplication and Reputation Processes if configured.</li><br />
 				<li>'Alias Permit' and 'Alias Match' will be saved in the Same folder as the other Permit/Match Auto-Rules</li><br />
 				<li>'Alias Native' lists are kept in their Native format without any modifications.</li></ul>
-				<strong>When using 'Alias' rules, change (pfB_) to ( pfb_ ) in the beginning of rule description and Use the 'Exact' spelling of
-				the Alias (no trailing Whitespace)&nbsp;</strong> Custom 'Alias' rules with 'pfB_  xxx' description will be removed by package if
-				using Auto Rule Creation.<br /><br /><strong>Tip</strong>: You can create the Auto Rules and remove "<u>auto rule</u>" from the Rule
-				Descriptions, then disable Auto Rules. This method will 'KEEP' these rules from being 'Deleted' which will allow editing for a Custom
-				Alias Configuration<br />]]>
+				<font color='red'>Note: </font><ul>When manually creating 'Alias' type firewall rules; <strong>Do not add</strong> (pfB_) to the
+				start of the rule description, use (pfb_) (Lowercase prefix). Manually created 'Alias' rules with 'pfB_' in the
+				description will be auto-removed by package when 'Auto' rules are defined.</ul>]]>
 			</description>
 			<fieldname>action</fieldname>
 			<type>select</type>
@@ -368,13 +336,24 @@
 			</options>
 		</field>
 		<field>
+			<fieldname>stateremoval</fieldname>
+			<fielddescr>States Removal</fielddescr>
+			<description>With the 'Kill States' option (General Tab), you can disable States removal for this Alias.</description>
+			<type>select</type>
+			<options>
+				<option><name>Enable</name><value>enabled</value></option>
+				<option><name>Disable</name><value>disabled</value></option>
+			</options>
+			<default_value>enabled</default_value>
+		</field>
+		<field>
 			<name>Advanced Inbound Firewall Rule Settings</name>
 			<type>listtopic</type>
 		</field>
 		<field>
 			<type>info</type>
-			<description><![CDATA[<font color='red'>Note: </font>In general Auto-Rules are created as follows:<br />
-				<ul>Inbound &nbsp;&nbsp;- 'any' port, 'any' protocol and 'any' destination<br />
+			<description><![CDATA[<font color='red'>Note: </font>&emsp;In general, Auto-Rules are created as follows:<br />
+				<ul>Inbound &emsp;- 'any' port, 'any' protocol and 'any' destination<br />
 				Outbound - 'any' port, 'any' protocol and 'any' destination address in the lists</ul>
 				Configuring the Adv. Inbound Rule settings, will allow for more customization of the Inbound Auto-Rules.<br />
 				<strong>Select the pfSense 'Port' and/or 'Destination' Alias below:</strong>]]>
@@ -435,7 +414,8 @@
 		<field>
 			<fielddescr>Custom Protocol</fielddescr>
 			<fieldname>autoproto</fieldname>
-			<description><![CDATA[<strong>Default: any</strong><br />Select the Protocol used for Inbound Firewall Rule(s).]]></description>
+			<description><![CDATA[<strong>Default: any</strong><br />Select the Protocol used for Inbound Firewall Rule(s).<br />
+				Do not use 'any' with Adv. Inbound Rules as it will bypass these settings!]]></description>
 			<type>select</type>
 			<options>
 				<option><name>any</name><value></value></option>
@@ -451,14 +431,51 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>IPv6 Custom Address(es)</fielddescr>
+			<type>info</type>
+			<description><![CDATA[<font color='red'>Note: </font>&emsp;Custom List can be used in <strong>ONE</strong> of two ways:<br />
+				<ul>1. IPv6 addresses entered directly into the custom list, as per the required format.
+				<br />2. Domain names or AS numbers, which will be converted into their respective IPv6 addresses.</ul>]]>
+			</description>
+		</field>
+		<field>
+			<fieldname>whois_convert</fieldname>
+			<description><![CDATA[Select to enable 'Domain/AS' conversion.
+				<font color='red'>DO NOT</font> mix IPs with Domains/ASs in this custom list.]]>
+			</description>
+			<fielddescr>Enable Domain/AS</fielddescr>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Custom Address(es)</fielddescr>
 			<fieldname>custom</fieldname>
-			<description><![CDATA[Please limit the size of the Custom List as this is stored as 'Base64' format in the config.xml file.<br />
-				Follow the syntax below:<br /><br />
-				Network ranges: <strong> TBC </strong><br />
-				IP Address: <strong> TBC </strong><br />
-				CIDR: <strong> TBC </strong><br /><br />
-				You may use "<strong>#</strong>" after any IP/CIDR/Range to add comments. # Safe IP Address]]>
+			<description><![CDATA[Please limit the size of the Custom List as this is stored as 'Base64' format in the config.xml file.<br /><br />
+				<strong>Format IPv6:</strong><br /><br />
+
+				Source of Regex and format descriptions: <a href="http://labs.spritelink.net/regex">SpriteLink</a><br />
+				fe80:0000:0000:0000:0204:61ff:fe9d:f156 // full form of IPv6<br />
+				fe80:0:0:0:204:61ff:fe9d:f156 // drop leading zeroes<br />
+				fe80::204:61ff:fe9d:f156 // collapse multiple zeroes to :: in the IPv6 address<br />
+				fe80:0000:0000:0000:0204:61ff:254.157.241.086 // IPv4 dotted quad at the end<br />
+				fe80:0:0:0:0204:61ff:254.157.241.86 // drop leading zeroes, IPv4 dotted quad at the end<br />
+				fe80::204:61ff:254.157.241.86 // dotted quad at the end, multiple zeroes collapsed<br /><br />
+
+				In addition, the regular expression matches these IPv6 forms:<br /><br />
+
+				::1 // localhost<br />
+				fe80:: // link-local prefix<br />
+				2000:: // global unicast prefix<br />
+				Any slash-notation style prefix<br /><br />
+
+				Private IPv6 addresses may be used in a custom list.<br />
+				You may use "<strong>#</strong>" after any IP/CIDR/Range to add comments. ie: x::x:x:x:x # Safe IP Address<br /><br />
+				If you select the <strong>Domain/AS</strong> checkbox above, the custom list can <strong>only</strong>
+				be used for Domain names/AS's.<br /><br />
+				<strong>Format Domain/AS:</strong><br /><br />
+				One 'Domain' or 'AS' per line.<br />
+				Domains and/or ASs can be used in the same list.<br /><br />
+				Conversion of Domains/ASs utilize <a target="_blank" href="http://www.team-cymru.org/IP-ASN-mapping.html">Team CYMRU</a>
+				and the <a target="_blank" href="http://www.radb.net/">RADb</a> whois registry.<br />
+				Configure the 'update frequency', so that it does not <strong>abuse</strong> these free services.]]>
 			</description>
 			<type>textarea</type>
 			<cols>50</cols>
@@ -479,23 +496,21 @@
 			</options>
 		</field>
 		<field>
-			<name><![CDATA[<center>Click to SAVE Settings and/or Rule Edits. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Changes are Applied via CRON or
+			<name><![CDATA[<center>Click to SAVE Settings and/or Rule Edits. &emsp; Changes are Applied via CRON or
 				'Force Update'</center>]]></name>
 			<type>listtopic</type>
 		</field>
 	</fields>
-	<custom_php_install_command>
-		pfblockerng_php_install_command();
-	</custom_php_install_command>
-	<custom_php_deinstall_command>
-		pfblockerng_php_deinstall_command();
-	</custom_php_deinstall_command>
 	<custom_php_validation_command>
+		<![CDATA[
 		pfblockerng_validate_input($_POST, $input_errors);
+		]]>
 	</custom_php_validation_command>
 	<custom_php_resync_config_command>
+		<![CDATA[
 		global $pfb;
 		$pfb['save'] = TRUE;
 		sync_package_pfblockerng();
+		]]>
 	</custom_php_resync_config_command>
 </packagegui>

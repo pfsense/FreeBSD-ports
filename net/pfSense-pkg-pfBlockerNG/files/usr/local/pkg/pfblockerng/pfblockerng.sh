@@ -1,6 +1,6 @@
 #!/bin/sh
 # pfBlockerNG IP Reputation Script - By BBcan177@gmail.com - 04-12-14
-# Copyright (C) 2015 BBcan177@gmail.com
+# Copyright (c) 2015 BBcan177@gmail.com
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License Version 2 as
@@ -13,951 +13,951 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
-pfs_version=$(cat /etc/version | cut -c 1-3)
-
-if [ "${pfs_version}" = "2.2" ]; then
+pfs_version=$(/bin/cat /etc/version | /usr/bin/cut -c 1-3)
+if [ "${pfs_version}" = '2.2' ]; then
 	mtype=$(/usr/bin/uname -m)
 	prefix="/usr/pbi/pfblockerng-${mtype}"
 else
-	prefix="/usr/local"
+	prefix='/usr/local'
 fi
 
 now=$(/bin/date +%m/%d/%y' '%T)
 
 # Application Locations
 pathgrepcidr="${prefix}/bin/grepcidr"
+pathaggregate="${prefix}/bin/aggregate"
+pathmwhois="${prefix}/bin/mwhois"
 pathgeoip="${prefix}/bin/geoiplookup"
-
-pathtar=/usr/bin/tar
 pathgunzip=/usr/bin/gunzip
+pathhost=/usr/bin/host
+pathtar=/usr/bin/tar
 pathpfctl=/sbin/pfctl
 
 # Script Arguments
-alias=$2
-max=$3
-dedup=$4
-cc=$(echo $5 | sed 's/,/, /g')
-ccwhite=$(echo $6 | tr '[A-Z]' '[a-z]')
-ccblack=$(echo $7 | tr '[A-Z]' '[a-z]')
-etblock=$(echo $8 | sed 's/,/, /g')
-etmatch=$(echo $9 | sed 's/,/, /g')
+alias="${2}"
+max="${3}"
+dedup="${4}"
+cc="$(echo ${5} | sed 's/,/, /g')"
+ccwhite="$(echo ${6} | tr '[A-Z]' '[a-z]')"
+ccblack="$(echo ${7} | tr '[A-Z]' '[a-z]')"
+etblock="$(echo ${8} | sed 's/,/, /g')"
+etmatch="$(echo ${9} | sed 's/,/, /g')"
 
 # File Locations
 aliasarchive="${prefix}/etc/aliastables.tar.bz2"
 pathgeoipdat="${prefix}/share/GeoIP/GeoIP.dat"
 pfbsuppression=/var/db/pfblockerng/pfbsuppression.txt
+pfbalexa=/var/db/pfblockerng/pfbalexawhitelist.txt
 masterfile=/var/db/pfblockerng/masterfile
 mastercat=/var/db/pfblockerng/mastercat
 geoiplog=/var/log/pfblockerng/geoip.log
 errorlog=/var/log/pfblockerng/error.log
+domainmaster=/tmp/domainmaster
 
 # Folder Locations
 etdir=/var/db/pfblockerng/ET
 tmpxlsx=/tmp/xlsx/
 
-pfbdbdir=/var/db/pfblockerng/
+pfbdb=/var/db/pfblockerng/
 pfbdeny=/var/db/pfblockerng/deny/
 pfborig=/var/db/pfblockerng/original/
 pfbmatch=/var/db/pfblockerng/match/
 pfbpermit=/var/db/pfblockerng/permit/
 pfbnative=/var/db/pfblockerng/native/
-pfsense_alias_dir=/var/db/aliastables/
+pfsensealias=/var/db/aliastables/
+pfbdomain=/var/db/pfblockerng/dnsbl/
 
-# Store "Match" d-dedups in matchdedup.txt file
+# Store 'Match' d-dedups in matchdedup.txt file
 matchdedup=matchdedup.txt
 
-tempfile=/tmp/pfbtempfile
-tempfile2=/tmp/pfbtempfile2
-dupfile=/tmp//pfbduptemp
-dedupfile=/tmp/pfbdeduptemp
-addfile=/tmp/pfBaddfile
-syncfile=/tmp/pfbsyncfile
-matchfile=/tmp/pfbmatchfile
-tempmatchfile=/tmp/pfbtempmatchfile
+# Randomize temporary variables
+rvar="$(/usr/bin/jot -r 1 1000 100000)"
 
-PLATFORM=`cat /etc/platform`
-USE_MFS_TMPVAR=`/usr/bin/grep -c use_mfs_tmpvar /cf/conf/config.xml`
-DISK_NAME=`/bin/df /var/db/rrd | /usr/bin/tail -1 | /usr/bin/awk '{print $1;}'`
-DISK_TYPE=`/usr/bin/basename ${DISK_NAME} | /usr/bin/cut -c1-2`
+tempfile=/tmp/pfbtemp1_$rvar
+tempfile2=/tmp/pfbtemp2_$rvar
+dupfile=/tmp/pfbtemp3_$rvar
+dedupfile=/tmp/pfbtemp4_$rvar
+addfile=/tmp/pfbtemp5_$rvar
+syncfile=/tmp/pfbtemp6_$rvar
+matchfile=/tmp/pfbtemp7_$rvar
+tempmatchfile=/tmp/pfbtemp8_$rvar
 
-if [ "${PLATFORM}" != "pfSense" ] || [ ${USE_MFS_TMPVAR} -gt 0 ] || [ "${DISK_TYPE}" = "md" ]; then
-	/etc/rc.conf_mount_rw >/dev/null 2>&1
-	if [ ! -d $pfbdbdir ]; then mkdir $pfbdbdir; fi
-	if [ ! -d $pfsense_alias_dir ]; then mkdir $pfsense_alias_dir; fi
+PLATFORM="$(cat /etc/platform)"
+USE_MFS_TMPVAR="$(/usr/bin/grep -c use_mfs_tmpvar /cf/conf/config.xml)"
+DISK_NAME="$(/bin/df /var/db/rrd | /usr/bin/tail -1 | /usr/bin/awk '{print $1;}')"
+DISK_TYPE="$(/usr/bin/basename ${DISK_NAME} | /usr/bin/cut -c1-2)"
+
+if [ "${PLATFORM}" != 'pfSense' ] || [ ${USE_MFS_TMPVAR} -gt 0 ] || [ "${DISK_TYPE}" = 'md' ]; then
+	/etc/rc.conf_mount_rw > /dev/null 2>&1
 fi
 
-if [ ! -f $masterfile ]; then touch $masterfile; fi
-if [ ! -f $mastercat ]; then touch $mastercat; fi
-if [ ! -f $tempfile ]; then touch $tempfile; fi
-if [ ! -f $tempfile2 ]; then touch $tempfile2; fi
-if [ ! -f $dupfile ]; then touch $dupfile; fi
-if [ ! -f $dedupfile ]; then touch $dedupfile; fi
-if [ ! -f $addfile ]; then touch $addfile; fi
-if [ ! -f $syncfile ]; then touch $syncfile; fi
-if [ ! -f $matchfile ]; then touch $matchfile; fi
-if [ ! -f $tempmatchfile ]; then touch $tempmatchfile; fi
-if [ ! -d $pfbmatch ]; then mkdir $pfbmatch; fi
-if [ ! -d $etdir ]; then mkdir $etdir; fi
-if [ ! -d $tmpxlsx ]; then mkdir $tmpxlsx; fi
+if [ ! -d "${pfbdb}" ]; then mkdir "${pfbdb}"; fi
+if [ ! -d "${pfsensealias}" ]; then mkdir "${pfsensealias}"; fi
+if [ ! -d "${pfbmatch}" ]; then mkdir "${pfbmatch}"; fi
+if [ ! -d "${etdir}" ]; then mkdir "${etdir}"; fi
+if [ ! -d "${tmpxlsx}" ]; then mkdir "${tmpxlsx}"; fi
+
+if [ ! -f "${masterfile}" ]; then touch "${masterfile}"; fi
+if [ ! -f "${mastercat}" ]; then touch "${mastercat}"; fi
 
 
-# Exit Function to set mount RO if required before Exiting
+# Exit function to set mount RO if required before exiting.
 exitnow() {
-	if [ "${PLATFORM}" != "pfSense" ] || [ ${USE_MFS_TMPVAR} -gt 0 ] || [ "${DISK_TYPE}" = "md" ]; then
-		/etc/rc.conf_mount_ro >/dev/null 2>&1
+	if [ "${PLATFORM}" != 'pfSense' ] || [ ${USE_MFS_TMPVAR} -gt 0 ] || [ "${DISK_TYPE}" = 'md' ]; then
+		/etc/rc.conf_mount_ro > /dev/null 2>&1
 	fi
+
+	# Remove temp files
+	rm -f /tmp/pfbtemp?_"${rvar}"
 	exit
 }
 
 
-##########
-# Process to condense an IP range if a "Max" amount of IP addresses are found in a /24 range per Alias Group.
-process24() {
-
-if [ ! -x $pathgeoip ]; then 
-	echo "Process24 - Application [ GeoIP ] Not found. Can't proceed."
-	echo "Process24 - Application [ GeoIP ] Not found. Can't proceed. [ $now ]" >> $errorlog
-	exitnow
-fi
-
-# Download MaxMind GeoIP.dat Binary on first Install.
-if [ ! -f $pathgeoipdat ]; then
-	echo "Downloading [ MaxMind GeoIP.dat ] [ $now ]" >> $geoiplog
-	/usr/local/pkg/pfblockerng/geoipupdate.sh bu
-fi
-# Exit if GeoIP.dat is not found.
-if [ ! -f $pathgeoipdat ]; then 
-	echo "Process24 - Database GeoIP [ GeoIP.Dat ] not found. Can't proceed."
-	echo "Process24 - Database GeoIP [ GeoIP.Dat ] not found. Can't proceed. [ $now ]" >>  $errorlog
-	exitnow
-fi
-
-count=$(grep -c ^ $pfbdeny$alias".txt")
-echo; echo "Original File Count [ $count ]"
-
-grep -Ev "^(#|$)" $pfbdeny$alias".txt" | sort | uniq > $tempfile
-> $dupfile; > $tempfile2; > $matchfile; > $tempmatchfile
-data="$(cut -d '.' -f 1-3 $tempfile | awk -v max="$max" '{a[$0]++}END{for(i in a){if(a[i] > max){print i}}}')"
-count=$(echo "$data" | grep -c ^); mcount=0; dcount=0; safe=0
-if [ "$data" == "" ]; then count=0; fi
-matchoutfile="match"$header".txt"
-# Classify Repeat Offenders by Country Code
-if [ -f $pathgeoipdat ]; then
-	for ip in $data; do
-		ccheck=$($pathgeoip -f $pathgeoipdat "$ip.1" | cut -c 24-25)
-		case "$cc" in
-			*$ccheck*)
-				safe=$(($safe + 1))
-				if [ "$ccwhite" == "match" -o "$ccblack" == "match" ]; then
-					echo "$ip." >> $matchfile
-				fi
-				;;
-			*)
-				echo "$ip." >> $dupfile
-				;;
-		esac
-	done
-else
-	echo; echo "MaxMind Binary Database Missing [ $pathgeoipdat ], skipping p24 Process"; echo
-	echo "MaxMind Binary Database Missing [ $pathgeoipdat ], skipping p24 Process [ $now ]" >> $errorlog
-fi
-# Collect Match File Details
-if [ -s "$matchfile" -a ! "$dedup" == "on" -a "$ccwhite" == "match" ]; then
-	mon=$(sed -e 's/^/^/' -e 's/\./\\\./g' $matchfile)
-	for ip in $mon; do
-		grep $ip $tempfile >> $tempfile2
-	done
-	mcount=$(grep -c ^ $tempfile2)
-	if [ "$ccwhite" == "match" ]; then
-		sed 's/$/0\/24/' $matchfile >> $tempmatchfile
-	sed 's/^/\!/' $tempfile2 >> $tempmatchfile
+# Function to restore aliasables from archive on reboot. ( NanoBSD and Ramdisk installations only )
+aliastables() {
+	if [ "${PLATFORM}" != 'pfSense' ] || [ ${USE_MFS_TMPVAR} -gt 0 ] || [ "${DISK_TYPE}" = 'md' ]; then
+		[ -f "${aliasarchive}" ] && cd "${pfsensealias}" && /usr/bin/tar -jxvf "${aliasarchive}"
 	fi
-fi
+}
 
-# If no Matches found remove previous Matchoutfile if exists.
-if [ ! -s "$tempmatchfile" -a -f $matchoutfile ]; then rm -r $matchoutfile; fi
-# Move Match File to the Match Folder by Individual Blocklist Name
-if [ -s "$tempmatchfile" ]; then mv -f $tempmatchfile $pfbmatch$matchoutfile; fi
 
-# Find Repeat Offenders in each individual Blocklist Outfile
-if [ -s "$dupfile" ]; then
-	> $tempfile2
-	dup=$(sed -e 's/^/^/' -e 's/\./\\\./g' $dupfile)
-	for ip in $dup; do
-		grep $ip $tempfile >> $tempfile2
+# Function to write '1.1.1.1' to 'empty' final blocklist files.
+emptyfiles() {
+	emptyfiles="$(find ${pfbdeny}*.txt -size 0 2>/dev/null)"
+	for i in ${emptyfiles}; do
+		echo '1.1.1.1' > "${i}";
 	done
-	dcount=$(grep -c ^ $tempfile2)
-	if [ "$ccblack" == "block" ]; then
-		awk 'FNR==NR{a[$0];next}!($0 in a)' $tempfile2 $tempfile > $pfbdeny$alias".txt"
-		sed 's/$/0\/24/' $dupfile >> $pfbdeny$alias".txt"
-	elif [ "$ccblack" == "match" ]; then
-		sed 's/$/0\/24/' $dupfile >> $tempmatchfile
-		sed 's/^/\!/' $tempfile2 >> $tempmatchfile
-	else
-		:
-	fi
-fi
-if [ "$count" == "0" -a "$safe" == "0" ]; then echo; echo " Process /24 Stats [ $alias ] [ $now ] "; echo "------------------------------------------------"; fi
-if [ "$count" == "0" ]; then echo "Found [ 0 ] IP range(s) over the threshold of [ $max ] p24 - CC Blacklist"; fi
-if [ "$safe" == "0" ]; then echo "Found [ 0 ] IP range(s) over the threshold of [ $max ] p24 - CC Whitelist"; fi
- 
-if [ -s "$dupfile" -o -s "$matchfile" ]; then
-echo
-echo " Process /24 Stats [ $alias ] [ $now ]"
-echo "--------------------------------------------------------"
-echo "Found [ $count ] IP range(s) over the threshold of [ $max ] on the CC Blacklist"
-echo "Found [ $safe ] IP range(s) over the threshold of [ $max ] on the CC Whitelist"
-echo
-echo "Found [ $dcount ] CC Blacklisted IP Address(es) are being set to [ $ccblack ]"
-# Skip Match Process if dedup=yes as it will create duplicates
-if [ "$dedup" == "on" ]; then mcount=Skipped; fi
-echo "Found [ $mcount ] CC Whitelisted IP Address(es) are being set to [ $ccwhite ]"
-if [ "$ccblack" == "block" ]; then
-	echo; echo "Removed the following IP Ranges"
-	cat $dupfile | tr '\n' '|'; echo
-else
-	echo "Skipped, CCBlack set to [ $ccblack ]"
-fi
-sort $pfbdeny$alias".txt" | uniq > $tempfile; mv -f $tempfile $pfbdeny$alias".txt"
-echo "-------------------------------------------------------"
-cocount=$(grep -cv "^1\.1\.1\.1" $pfbdeny$alias".txt")
-echo "Post /24 Count   [ $cocount ]"; echo
-fi
-exitnow
 }
 
 
-##########
-process255() {
-# Remove IPs if exists over 255 IPs in a Range and replace with a single /24 Block
-cp $pfbdeny$alias".txt" $tempfile; > $dedupfile
+# Function to remove lists from masterfiles and delete associated files.
+remove() {
+	echo
+	for i in ${cc}; do
+		header="$(echo ${i%*,})"
+		if [ ! -z "${header}" ]; then
+			# Make sure that alias exists in masterfile before removal.
+			masterchk="$(grep -m1 '${header}[[:space:]]' ${masterfile})"
 
-data255="$(cut -d '.' -f 1-3 $tempfile | awk '{a[$0]++}END{for(i in a){if(a[i] > 255){print i}}}')"
-if [ ! -z "$data255" ]; then
-	for ip in $data255; do
-		ii=$(echo "^$ip." | sed 's/\./\\\./g')
-		grep $ii $tempfile >> $dedupfile
-	done
-	awk 'FNR==NR{a[$0];next}!($0 in a)' $dedupfile $tempfile > $pfbdeny$alias".txt"
-	for ip in $data255; do echo $ip".0/24" >> $pfbdeny$alias".txt"; done
-fi
-}
+			if [ ! -z "${masterchk}" ]; then
+				# Grep header with a trailing space character
+				grep "${header}[[:space:]]" "${masterfile}" > "${tempfile}"
+				awk 'FNR==NR{a[$0];next}!($0 in a)' "${tempfile}" "${masterfile}" > "${tempfile2}"; mv -f "${tempfile2}" "${masterfile}"
+			fi
 
-
-##########
-continent() {
-
-dupcheck=yes
-# Check if Masterfile is Empty
-hcheck=$(grep -c ^ $masterfile); if [ "$hcheck" -eq "0" ]; then dupcheck=no; fi
-# Check if Alias exists in Masterfile
-lcheck=$(grep -m 1 "$alias " $masterfile ); if [ "$lcheck" == "" ]; then dupcheck=no; fi
-# Check for single alias in masterfile
-aliaslist=$(cut -d' ' -f1 $masterfile | sort | uniq); if [ "$alias" == "$aliaslist" ]; then hcheck="0"; fi
-
-if [ "$dupcheck" == "yes" ]; then
-	# Grep Alias with a trailing Space character
-	grep "$alias[[:space:]]" $masterfile > $tempfile
-	awk 'FNR==NR{a[$0];next}!($0 in a)' $tempfile $masterfile > $tempfile2; mv -f $tempfile2 $masterfile
-	cut -d' ' -f2 $masterfile > $mastercat
-fi
-
-grep -Ev "^(#|$)" $pfbdeny$alias".txt" | sort | uniq > $tempfile
-
-if [ ! "$hcheck" -eq "0" ]; then
-	$pathgrepcidr -vf $mastercat $pfbdeny$alias".txt" > $tempfile; mv -f $tempfile $pfbdeny$alias".txt"
-fi
-
-sed -e 's/^/'$alias' /' $pfbdeny$alias".txt" >> $masterfile
-cut -d' ' -f2 $masterfile > $mastercat
-
-countg=$(grep -c ^ $pfborig$alias".orig")
-countm=$(grep -c "$alias " $masterfile); counto=$(grep -c ^ $pfbdeny$alias".txt")
-if [ "$countm" == "$counto" ]; then sanity="Passed"; else sanity=" ==> FAILED <== "; fi
-echo "----------------------------------------------------------"
-echo; echo " Post Duplication count [ $now ]"
-echo "----------------------------------------------------------"
-printf "%-10s %-10s %-10s %-30s\n" "Original" "Masterfile" "Outfile" "Sanity Check"
-echo "----------------------------------------------------------"
-printf "%-10s %-10s %-10s %-30s\n" "$countg" "$countm" "$counto" " [ $sanity ]"
-echo "----------------------------------------------------------"
-exitnow
-}
-
-
-##########
-# Process to remove Suppressed Entries and RFC 1918 and Misc IPs on each downloaded Blocklist
-suppress() {
-
-if [ ! -x $pathgrepcidr ]; then
-	echo "Application [ Grepcidr ] Not found. Can't proceed. [ $now ]"
-	echo "Application [ Grepcidr ] Not found. Can't proceed. [ $now ]" >> errorlog
-	exitnow
-fi
-
-if [ -e "$pfbsuppression" ] && [ -s "$pfbsuppression" ]; then
-	# Find '/24' Blocked IPs that are single addresses in the Suppressed IP Address List.
-	# These '/24' Are converted to single Addresses excluding the Suppressed IPs.
-	data="$(cat $pfbsuppression)"
-	if [ ! -z "$data" -a ! -z "$cc" ]; then
-		# Loop thru each Updated List to remove Suppression and RFC1918 Addresses
-		if [ "$cc" == "suppressheader" ]; then
-			echo; echo "===[ Suppression Stats ]========================================"; echo
-			printf "%-20s %-10s %-10s %-10s %-10s\n" "List" "Pre" "RFC1918" "Suppress" "Masterfile"
-			echo "----------------------------------------------------------------"
-			exitnow
+			rm -f "${pfborig}${header}"*; rm -f "${pfbdeny}${header}"*; rm -f "${pfbmatch}${header}"*;
+			rm -f "${pfbpermit}${header}"*; rm -f "${pfbnative}${header}"*
+			echo "The Following list has been REMOVED [ ${header} ]"
 		fi
+	done
+	cut -d ' ' -f2 "${masterfile}" > "${mastercat}"
 
-		for i in $cc; do
-			counter=0
-			> $dupfile
-			alias=$(echo "${i%|*}")
-			pfbfolder=$(echo "${i#*|}")
+	# Delete masterfiles if they are empty
+	if [ ! -s "${masterfile}" ]; then
+		rm -f "${masterfile}"; rm -f "${mastercat}"
+	fi
+}
 
-			if [ ! "$alias" == "" ]; then
-				# Count (PRE)	
-				countg=$(grep -c ^ $pfbfolder$alias".txt")
 
-				grep -Ev "^(192\.168|10\.|172\.1[6789]\.|172\.2[0-9]\.|172\.3[01]\.|#|$)" $pfbfolder$alias".txt" |
-					sort | uniq > $tempfile	
-				# Count (Post RFC1918)
-				countm=$(grep -c ^ $tempfile)
+# Function to remove IPs if exists over 253 IPs in a range and replace with a single /24 block. (excl. '0' & '255')
+process255() {
+	> "${dedupfile}"
+	data255="$(cut -d '.' -f 1-3 ${pfbdeny}${alias}.txt | awk '{a[$0]++}END{for(i in a){if(a[i] > 253){print i}}}')"
 
-				for ip in $data; do
-					found=""; ddcheck="";
-					iptrim=$(echo $ip | cut -d '.' -f 1-3)
-					mask=$(echo $ip | cut -d"/" -f2)
-					found=$(grep -m1 $iptrim".0/24" $tempfile)
-					# If a Suppression is '/32' and a Blocklist has a full '/24' Block execute the following.
-					if [ ! "$found" == "" -a "$mask" == "32" ]; then
-						echo " Suppression $alias: $iptrim.0/24"
-						octet4=$(echo $ip | cut -d '.' -f 4 | sed 's/\/.*//')
-						dcheck=$(grep $iptrim".0/24" $dupfile)
-						if [ "$dcheck" == "" ]; then
-							echo $iptrim".0/24" >> $dupfile
-							counter=$(($counter + 1))
-							# Add Individual IP addresses from Range excluding Suppressed IP
+	if [ ! -z "${data255}" ]; then
+		cp "${pfbdeny}${alias}.txt" "${tempfile}"
+
+		for ip in ${data255}; do
+			ii="$(echo ^${ip}. | sed 's/\./\\\./g')"
+			grep "${ii}" "${tempfile}" >> "${dedupfile}"
+		done
+
+		awk 'FNR==NR{a[$0];next}!($0 in a)' "${dedupfile}" "${tempfile}" > "${pfbdeny}${alias}.txt"
+		for ip in ${data255}; do echo "${ip}.0/24" >> "${pfbdeny}${alias}.txt"; done
+	fi
+}
+
+# Process to remove suppressed entries.
+suppress() {
+	if [ ! -x "${pathgrepcidr}" ]; then
+		log="Application [ grepcidr ] Not found. Cannot proceed."
+		echo "${log}" | tee -a "${errorlog}"
+		exitnow
+	fi
+
+	if [ -e "${pfbsuppression}" ] && [ -s "${pfbsuppression}" ]; then
+		data="$(cat ${pfbsuppression} | sort | uniq)"
+
+		if [ ! -z "${data}" ] && [ ! -z "${cc}" ]; then
+			if [ "${cc}" == 'suppressheader' ]; then
+				echo; echo '===[ Suppression Stats ]==================================='; echo
+				printf "%-20s %-10s %-10s %-10s\n" 'List' 'Pre' 'Suppress' 'Master'
+				echo '-----------------------------------------------------------'
+				exitnow
+			fi
+
+			alias="$(echo ${cc%|*})"
+			pfbfolder="$(echo ${cc#*|})"
+			counter=0; > "${dupfile}"
+
+			if [ ! -z "${alias}" ]; then
+				countg="$(grep -c ^ ${pfbfolder}${alias}.txt)"
+				cp "${pfbfolder}${alias}.txt" "${tempfile}"
+
+				for ip in ${data}; do
+					found=''; dcheck='';
+					mask="$(echo ${ip##*/})"
+					iptrim="$(echo "${ip%.*}")"
+					ip="$(echo ${ip%%/*})"
+					found="$(grep -m1 ${iptrim}.0/24 ${tempfile})"
+
+					# If a suppression is '/32' and a blocklist has a full '/24' block, execute the following.
+					if [ ! -z "${found}" ] && [ "${mask}" -eq 32 ]; then
+						echo " Suppression ${alias}: ${iptrim}.0/24"
+						octet4="$(echo ${ip##*.})"
+						dcheck="$(grep ${iptrim}.0/24 ${dupfile})"
+
+						if [ -z "${dcheck}" ]; then
+							echo "${iptrim}.0/24" >> "${dupfile}"
+							counter="$((counter + 1))"
+
+							# Add individual IP addresses from range excluding suppressed IP
 							for i in $(/usr/bin/jot 255); do
-								if [ "$i" != "$octet4" ]; then
-									echo $iptrim"."$i >> $tempfile
-									counter=$(($counter + 1))
+								if [ "${i}" != "${octet4}" ]; then
+									echo "${iptrim}.${i}" >> "${tempfile}"
+									counter="$((counter + 1))"
 								fi
 							done
 						fi
 					fi
 				done
-				if [ -s $dupfile ]; then
-					# Remove '/24' Suppressed Ranges
-					awk 'FNR==NR{a[$0];next}!($0 in a)' $dupfile $tempfile > $tempfile2; mv -f $tempfile2 $tempfile
+
+				if [ -s "${dupfile}" ]; then
+					# Remove '/24' suppressed ranges
+					awk 'FNR==NR{a[$0];next}!($0 in a)' "${dupfile}" "${tempfile}" > "${tempfile2}"; mv -f "${tempfile2}" "${tempfile}"
 				fi
-				# Remove All other Suppressions from Lists
-				$pathgrepcidr -vf $pfbsuppression $tempfile > $pfbfolder$alias".txt"
-				# Update Masterfiles. Don't execute if Duplication Process is Disabled
-				if [ "$dedup" == "x" ]; then
-					# Dont execute if Alias doesnt exist in Masterfile
-					lcheck=$(grep -m1 "$alias " $masterfile)
-					if [ ! "$lcheck" == "" ]; then
-						# Replace Masterfile with changes to List.
-						grep "$alias[[:space:]]" $masterfile > $tempfile
-						awk 'FNR==NR{a[$0];next}!($0 in a)' $tempfile $masterfile > $tempfile2; mv -f $tempfile2 $masterfile
-						sed -e 's/^/'$alias' /' $pfbfolder$alias".txt" >> $masterfile
-						cut -d' ' -f2 $masterfile > $mastercat
+
+				# Remove all other suppressions from list
+				"${pathgrepcidr}" -vf "${pfbsuppression}" "${tempfile}" > "${pfbfolder}${alias}.txt"
+
+				# Update masterfiles. Don't execute if duplication process is disabled
+				if [ "${dedup}" == 'x' ]; then
+					# Don't execute if alias doesn't exist in masterfile
+					lcheck="$(grep -m1 ${alias} ${masterfile})"
+
+					if [ ! -z "${lcheck}" ]; then
+						# Replace masterfile with changes to list.
+						grep "${alias}[[:space:]]" "${masterfile}" > "${tempfile}"
+						awk 'FNR==NR{a[$0];next}!($0 in a)' "${tempfile}" "${masterfile}" > "${tempfile2}"
+						mv -f "${tempfile2}" "${masterfile}"
+						sed -e 's/^/'$alias' /' "${pfbfolder}${alias}.txt" >> "${masterfile}"
+						cut -d ' ' -f2 "${masterfile}" > "${mastercat}"
 					fi
 				fi
-				countk=$(grep -c ^ $masterfile)
-				countx=$(grep -c ^ $pfbfolder$alias".txt")
-				counto=$(($countx - $counter))
-				printf "%-20s %-10s %-10s %-10s %-10s\n" "$alias" "$countg" "$countm" "$counto" "$countk"
+
+				countk="$(grep -c ^ ${masterfile})"
+				countx="$(grep -c ^ ${pfbfolder}${alias}.txt)"
+				counto="$((countx - counter))"
+				printf "%-20s %-10s %-10s %-10s\n" "${alias}" "${countg}" "${counto}" "${countk}"
 			fi
-		done
+		fi
 	fi
-else
-	if [ "$cc" == "suppressheader" ]; then
-		echo; echo "===[ Suppression Stats ]========================================"; echo
-		printf "%-20s %-10s %-10s %-10s %-10s\n" "List" "Pre" "RFC1918" "Suppress" "Masterfile"
-		echo "----------------------------------------------------------------"
+}
+
+
+# Function to optimise CIDRs
+cidr_aggregate() {
+	if [ ! -x "${pathaggregate}" ]; then
+		log="Application [ aggregate ] Not found. Cannot proceed."
+		echo "${log}" | tee -a "${errorlog}"
+		return
+	fi
+
+	if [ "${agg_folder}" = true ]; then
+		# Use $3 folder path
+		pfbfolder="${max}/"
+	else
+		pfbfolder="${pfbdeny}"
+	fi
+
+	counto="$(grep -c ^ ${pfbfolder}${alias}.txt)"
+	retval="$(cat "${pfbfolder}${alias}.txt" | "${pathaggregate}" -t -p 32 -m 32 -o 32  2>&1 > ${tempfile})"
+	sed 's/\/32//' "${tempfile}" > "${pfbfolder}${alias}.txt"
+	countf="$(grep -c ^ ${pfbfolder}${alias}.txt)"
+
+	# Report errors (First two lines are informational only)
+	aggstring='aggregate: maximum prefix length permitted will be 32aggregate: prefix length of 32 bits will be used where none specified'
+	retval2=$(echo "${retval}" | tr -d '\n\r' | sed "s/${aggstring}//g")
+	if [ ! -z "${retval2}" ]; then
+		echo "${retval2}"
+	fi
+
+	if [ "${counto}" != "${countf}" ]; then
+		echo; echo '  Aggregation Stats:'
+		echo '  ------------------'
+		printf "%-10s %-10s \n" '  Original' 'Final'
+		echo '  ------------------'
+		printf "%-10s %-10s \n" "  ${counto}" "${countf}"
+		echo '  ------------------'
+	fi
+}
+
+
+# Function to remove duplicate entries in each list individually.
+duplicate() {
+	if [ ! -x "${pathgrepcidr}" ]; then
+		log="Application [ grepcidr ] Not found. Cannot proceed."
+		echo "${log}" | tee -a "${errorlog}"
 		exitnow
 	fi
-	for i in $cc; do
-		alias=$(echo "${i%|*}")
-		pfbfolder=$(echo "${i#*|}")
 
-		if [ ! "$alias" == "" ]; then
-			countg=$(grep -c ^ $pfbfolder$alias".txt")
-			grep -Ev "^(192\.168|10\.|172\.1[6789]\.|172\.2[0-9]\.|172\.3[01]\.|#|$)" $pfbfolder$alias".txt" |
-				sort | uniq > $tempfile; mv -f $tempfile $pfbfolder$alias".txt"
-			countx=$(grep -c ^ $pfbfolder$alias".txt")
-			# Update Masterfiles. Don't execute if Duplication Process is Disabled or if No Suppression Changes Found
-			if [ "$dedup" == "x" -a "$countg" != "$countx" ]; then
-				# Dont execute if Alias doesnt exist in Masterfile
-				lcheck=$(grep -m1 "$alias " $masterfile)
-				if [ ! "$lcheck" == "" ]; then
-					# Replace Masterfile with changes to List.
-					grep "$alias[[:space:]]" $masterfile > $tempfile
-					awk 'FNR==NR{a[$0];next}!($0 in a)' $tempfile $masterfile > $tempfile2; mv -f $tempfile2 $masterfile
-					sed -e 's/^/'$alias' /' $pfbfolder$alias".txt" >> $masterfile
-					cut -d' ' -f2 $masterfile > $mastercat
-				fi
-			fi
-			countm=$(grep -c ^ $pfbfolder$alias".txt")
-			counto=" - "
-			countk=$(grep -c ^ $masterfile)
-			printf "%-20s %-10s %-10s %-10s %-10s\n" "$alias" "$countg" "$countm" "$counto" "$countk"
-		fi
-	done
-fi
-exitnow
-}
+	dupcheck=1
+	# Check if masterfile is empty
+	hcheck="$(grep -cv ^$ ${masterfile})"; if [ "${hcheck}" -eq 0 ]; then dupcheck=0; fi
+	# Check if alias exists in masterfile
+	lcheck="$(grep -m1 ${alias} ${masterfile})"; if [ -z "${lcheck}" ]; then dupcheck=0; fi
+	# Check for single alias in masterfile
+	aliaslist="$(cut -d ' ' -f1 ${masterfile} | sort | uniq)"; if [ "${alias}" == "${aliaslist}" ]; then hcheck=0; fi
 
-
-##########
-# Process to remove Duplicate Entries on each downloaded Blocklist Individually
-duplicate() {
-
-if [ ! -x $pathgrepcidr ]; then
-	echo "Application [ Grepcidr ] Not found. Can't proceed. [ $now ]"
-	echo "Application [ Grepcidr ] Not found. Can't proceed. [ $now ]" >> errorlog
-	exitnow
-fi
-
-dupcheck=yes
-# Check if Masterfile is Empty
-hcheck=$(grep -cv "^$" $masterfile); if [ "$hcheck" -eq "0" ]; then dupcheck=no; fi
-# Check if Alias exists in Masterfile
-lcheck=$(grep -m1 "$alias " $masterfile); if [ "$lcheck" == "" ]; then dupcheck=no; fi
-# Check for single alias in masterfile
-aliaslist=$(cut -d' ' -f1 $masterfile | sort | uniq); if [ "$alias" == "$aliaslist" ]; then hcheck="0"; fi
-
-if [ "$dupcheck" == "yes" ]; then
-	# Grep Alias with a trailing Space character
-	grep "$alias[[:space:]]" $masterfile > $tempfile
-	awk 'FNR==NR{a[$0];next}!($0 in a)' $tempfile $masterfile > $tempfile2; mv -f $tempfile2 $masterfile
-	cut -d' ' -f2 $masterfile > $mastercat
-fi
-
-grep -Ev "^(#|$)" $pfbdeny$alias".txt" | sort | uniq > $tempfile; mv -f $tempfile $pfbdeny$alias".txt"
-
-if [ ! "$hcheck" -eq "0" ]; then
-	$pathgrepcidr -vf $mastercat $pfbdeny$alias".txt" > $tempfile; mv -f $tempfile $pfbdeny$alias".txt"
-fi
-
-sed -e 's/^/'$alias' /' $pfbdeny$alias".txt" >> $masterfile
-cut -d' ' -f2 $masterfile > $mastercat
-
-countg=$(grep -c ^ $pfborig$alias".orig")
-countm=$(grep -c "$alias " $masterfile); counto=$(grep -c ^ $pfbdeny$alias".txt")
-if [ "$countm" == "$counto" ]; then sanity="Passed"; else sanity=" ==> FAILED <== "; fi
-echo "----------------------------------------------------------"
-printf "%-10s %-10s %-10s %-30s\n" "Original" "Masterfile" "Outfile" " [ Post Duplication count ]"
-echo "----------------------------------------------------------"
-printf "%-10s %-10s %-10s %-30s\n" "$countg" "$countm" "$counto" " [ $sanity ]"
-echo "----------------------------------------------------------"
-exitnow
-}
-
-
-##########
-# De-Duplication utilizing MaxMind GeoIP Country Code Whitelisting ("dmax" variable)
-deduplication() {
-
-if [ ! -x $pathgeoip ]; then
-	echo "d-duplication - Application [ GeoIP ] Not found. Can't proceed."
-	echo "d-duplication - Application [ GeoIP ] Not found. Can't proceed. [ $now ]" >> $errorlog
-	exitnow
-fi
-
-# Download MaxMind GeoIP.dat on first Install.
-if [ ! -f $pathgeoipdat ]; then 
-	echo "Downloading [ MaxMind GeoIP.dat ] [ $now ]" >> $geoiplog
-	/usr/local/pkg/pfblockerng/geoipupdate.sh bu
-fi
-
-# Exit if GeoIP.dat is not found
-if [ ! -f $pathgeoipdat ]; then
-	echo "d-duplication - Database GeoIP [ GeoIP.Dat ] not found. Can't proceed."
-	echo "d-duplication - Database GeoIP [ GeoIP.Dat ] not found. Can't proceed. [ $now ]" >> $errorlog
-	exitnow
-fi
-
-> $tempfile; > $tempfile2; > $dupfile; > $addfile; > $dedupfile; > $matchfile; > $tempmatchfile; count=0; dcount=0; mcount=0; mmcount=0
-echo; echo "Querying for Repeat Offenders"
-data="$(find $pfbdeny ! -name "pfB*.txt" ! -name "*_v6.txt" -type f | xargs cut -d '.' -f 1-3 |
-	awk -v max="$max" '{a[$0]++}END{for(i in a){if(a[i] > max){print i}}}' | grep -v "^1\.1\.1")"
-count=$(echo "$data" | grep -c ^)
-if [ "$data" == "" ]; then count=0; fi
-safe=0
-# Classify Repeat Offenders by Country Code
-if [ -f $pathgeoipdat ]; then
-	echo "Classifying Repeat Offenders by GeoIP"
-	for ip in $data; do
-		ccheck=$($pathgeoip -f $pathgeoipdat "$ip.1" | cut -c 24-25)
-		case "$cc" in
-			*$ccheck*)
-				safe=$(($safe + 1))
-				if [ "$ccwhite" == "match" -o "$ccblack" == "match" ]; then
-					echo "$ip." >> $matchfile
-				fi
-				;;
-			*)
-				echo "$ip." >> $dupfile
-				;;
-		esac
-	done
-else
-	echo; echo "MaxMind Binary Database Missing [ $pathgeoipdat ], skipping d-dedup Process"; echo
-	echo "MaxMind Binary Database Missing [ $pathgeoipdat ], skipping d-dedup Process [ $now ]" >> $errorlog
-fi
-if [ -s "$matchfile" -a "$ccwhite" == "match" ]; then
-	echo "Processing [ Match ] IPs"
-	match=$(sed -e 's/^/^/' -e 's/\./\\\./g' $matchfile)
-	for mfile in $match; do
-		grep $mfile $pfbdeny*.txt >> $tempfile
-	done
-	sed 's/$/0\/24/' $matchfile >> $tempmatchfile
-	sed -e 's/.*://' -e 's/^/\!/' $tempfile >> $tempmatchfile
-	mv -f $tempmatchfile $pfbmatch$matchdedup
-	mcount=$(grep -c ^ $tempfile)
-	mmcount=$(($mcount + $mmcount))
-fi
-# Find Repeat Offenders in each individual Blocklist Outfile
-if [ -s "$dupfile" ]; then
-	echo "Processing [ Block ] IPs"
-	dup=$(cat $dupfile)
-	for ip in $dup; do
-		pcount=1; ii=$(echo "^$ip" | sed 's/\./\\\./g')
-		list=$(find $pfbdeny ! -name "pfB*.txt" ! -name "*_v6.txt" -type f | xargs grep -al $ii)
-		for blfile in $list; do
-			header=$(echo "${blfile##*/}" | cut -d '.' -f1)
-			grep $ii $blfile > $tempfile
-			if [ "$ccblack" == "block" ]; then
-				awk 'FNR==NR{a[$0];next}!($0 in a)' $tempfile $blfile > $tempfile2; mv -f $tempfile2 $blfile
-				if [ "$pcount" -eq "1" ]; then
-					echo $ip"0/24" >> $blfile
-					echo $header" "$ip >> $dedupfile
-					echo $header" "$ip"0/24" >> $addfile
-					pcount=2
-				else
-					echo $header" "$ip >> $dedupfile
-				fi
-			else	
-				if [ "$pcount" -eq "1" ]; then
-					matchoutfile="match"$header".txt"
-					echo $ip"0/24" >> $pfbmatch$matchoutfile
-					sed 's/^/\!/' $tempfile >> $pfbmatch$matchoutfile
-					mcount=$(grep -c ^ $pfbmatch$matchoutfile)
-					mmcount=$(($mcount + $mmcount))
-					pcount=2
-				fi
-			fi
-		done
-	done
-	# Remove Repeat Offenders in Masterfiles
-	if [ -s "$dedupfile" ]; then
-		echo "Removing   [ Block ] IPs"
-		> $tempfile; > $tempfile2
-		sed 's/\./\\\./g' $dedupfile > $tempfile2
-		while IFS=' ' read -r ips; do grep "$ips" $masterfile >> $tempfile; done < $tempfile2
-		dcount=$(grep -c ^ $tempfile)
-		awk 'FNR==NR{a[$0];next}!($0 in a)' $tempfile $masterfile > $tempfile2; mv -f $tempfile2 $masterfile
-		cat $addfile >> $masterfile
-		cut -d' ' -f2 $masterfile > $mastercat
+	# Only execute if 'Alias' exists in masterfile
+	if [ "${dupcheck}" -eq 1 ]; then
+		# Grep alias with a trailing space character
+		grep "${alias}[[:space:]]" "${masterfile}" > "${tempfile}"
+		awk 'FNR==NR{a[$0];next}!($0 in a)' "${tempfile}" "${masterfile}" > "${tempfile2}"; mv -f "${tempfile2}" "${masterfile}"
+		cut -d ' ' -f2 "${masterfile}" > "${mastercat}"
 	fi
-fi
 
-echo; echo "d-Duplication Process  [ $now ]"; echo "------------------------------------------------"
-echo; echo "Found [ $count ] IP range(s) over the threshold of dmax= [ $max ]"
-echo "Found [ $safe ] IP range(s) classified as Whitelisted"
-echo; echo "Found [ $dcount ] CC Blacklisted IP Address(es) are being set to [ $ccblack ]"
-echo "Found [ $mmcount ] CC Whitelisted IP Address(es) are being set to [ $ccwhite ]"; echo
-if [ -s "$addfile" ]; then
-        echo; echo "Removed the following IP Ranges"
-        sed -e 's/^.* //' -e 's/0\/24//' $addfile | tr '\n' '|'; echo
-fi
-count=$(grep -c ^ $masterfile)
-echo " [ Post d-Deduplication count ]  [ $count ]"; echo
+	# Don't execute when only a single 'Alias' exists in masterfile
+	if [ ! "${hcheck}" -eq 0 ]; then
+		sort "${pfbdeny}${alias}.txt" | uniq > "${tempfile}"; mv -f "${tempfile}" "${pfbdeny}${alias}.txt"
+		"${pathgrepcidr}" -vf "${mastercat}" "${pfbdeny}${alias}.txt" > "${tempfile}"; mv -f "${tempfile}" "${pfbdeny}${alias}.txt"
+	fi
 
-# Write "1.1.1.1" to empty Final Blocklist Files
-emptyfiles=$(find $pfbdeny -size 0)
-for i in $emptyfiles; do echo "1.1.1.1" > $i; done
-exitnow
+	sed -e 's/^/'$alias' /' "${pfbdeny}${alias}.txt" >> "${masterfile}"
+	cut -d ' ' -f2 "${masterfile}" > "${mastercat}"
+
+	counto="$(grep -cv '^#\|^$' ${pfborig}${alias}.orig)"
+	countm="$(grep -c ${alias} ${masterfile})"
+	countf="$(grep -c ^ ${pfbdeny}${alias}.txt)"
+
+	if [ "${countm}" -eq "${countf}" ]; then
+		sanity='Pass'
+	else
+		sanity=' ==> FAILED <== '
+	fi
+
+	echo '  ------------------------------'
+	printf "%-10s %-10s %-10s\n" '  Original' 'Master' 'Final'
+	echo '  ------------------------------'
+	printf "%-10s %-10s %-10s %-10s\n" "  ${counto}" "${countm}" "${countf}" " [ ${sanity} ]"
+	echo '  -----------------------------------------------------------------'
 }
 
 
-##########
-# Process to perform a final De-Duplication on all of the BlockLists (Excluding Country Whitelist) ("pmax" variable).
-pdeduplication(){
+# Function to remove duplicate DNSBL domain names from feeds.
+domainduplicate() {
+	# Alexa Whitelist variables
+	alexa_enable="${max}"
 
-if [ ! -x $pathgeoip ]; then
-	echo "p-duplication - Application [ GeoIP ] Not found. Can't proceed."
-	echo "p-duplication - Application [ GeoIP ] Not found. Can't proceed. [ $now ]" >> $errorlog
-	exitnow
-fi
+	counto="$(grep -c ^ ${pfbdomain}${alias}.bk)"
+	if [ -d "${pfbdomain}" ] && [ "$(ls -A ${pfbdomain}*.txt 2>/dev/null)" ]; then
+		sort "${pfbdomain}${alias}.bk" | uniq > "${pfbdomain}${alias}.bk2"
+		countu="$(grep -c ^ ${pfbdomain}${alias}.bk2)"
+		find "${pfbdomain}"*.txt ! -name "${alias}.txt" | xargs cat > "${domainmaster}"
 
-# Download MaxMind GeoIP.dat on first Install.
-if [ ! -f $pathgeoipdat ]; then
-	echo "Downloading [ MaxMind GeoIP.dat ] [ $now ]" >> $geoiplog
-	/usr/local/pkg/pfblockerng/geoipupdate.sh bu
-fi
-# Exit if GeoIP.dat is not found.
-if [ ! -f $pathgeoipdat ]; then
-	echo "p-duplication - Database GeoIP [ GeoIP.Dat ] not found. Can't proceed."
-	echo "p-duplication - Database GeoIP [ GeoIP.Dat ] not found. Can't proceed. [ $now ]" >> $errorlog
-	exitnow
-fi
+		# Only execute awk command, if master domain file contains data.
+		counta="$(grep -c ^ ${domainmaster})"
+		if [ "${counta}" -gt 0 ]; then
+			awk 'FNR==NR{a[$0];next}!($0 in a)' "${domainmaster}" "${pfbdomain}${alias}.bk2" > "${pfbdomain}${alias}.bk"
+		fi
 
-> $tempfile; > $tempfile2; > $dupfile; > $addfile; > $dedupfile; count=0; dcount=0
-echo; echo "====================================================================="
-echo; echo "Querying for Repeat Offenders"
-data="$(find $pfbdeny ! -name "pfB*.txt" ! -name "*_v6.txt" -type f | xargs cut -d '.' -f 1-3 |
-	awk -v max="$max" '{a[$0]++}END{for(i in a){if(a[i] > max){print i}}}' | grep -v "^1\.1\.1")"
-count=$(echo "$data" | grep -c ^)
-if [ "$data" == "" ]; then count=0; fi
-# Find Repeat Offenders in each individual Blocklist Outfile
-echo "Processing [ Block ] IPs"
-for ip in $data; do
-	pcount=1; ii=$(echo "^$ip." | sed 's/\./\\\./g')
-	list=$(find $pfbdeny ! -name "pfB*.txt" ! -name "*_v6.txt" -type f | xargs grep -al $ii)
-	for blfile in $list; do
-		header=$(echo "${blfile##*/}" | cut -d '.' -f1)
-		grep $ii $blfile > $tempfile
-		awk 'FNR==NR{a[$0];next}!($0 in a)' $tempfile $blfile > $tempfile2; mv -f $tempfile2 $blfile
-		if [ "$pcount" -eq "1" ]; then
-			echo $ip".0/24" >> $blfile
-			echo $header" $ip." >> $dedupfile
-			echo $header" "$ip".0/24" >> $addfile
-			pcount=2
+		rm -f "${domainmaster}"; rm -f "${pfbdomain}${alias}.bk2"
+		countf="$(grep -c ^ ${pfbdomain}${alias}.bk)"
+		countd="$((countu - countf))"
+	else
+		sort "${pfbdomain}${alias}.bk" | uniq > "${pfbdomain}${alias}.bk2" && mv -f "${pfbdomain}${alias}.bk2" "${pfbdomain}${alias}.bk"
+		countf="$(grep -c ^ ${pfbdomain}${alias}.bk)"
+		countd=0; countu="${counto}"
+	fi
+
+	if [ "${alexa_enable}" == 'on' ]; then
+		awk 'FNR==NR{a[$0];next}!($0 in a)' "${pfbalexa}" "${pfbdomain}${alias}.bk" > "${pfbdomain}${alias}.bk2"
+		countw="$(grep -c ^ ${pfbdomain}${alias}.bk2)"
+		counta="$((countf - countw))"
+
+		if [ "${counta}" -gt 0 ]; then
+			data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
+				cut -d '"' -f2 | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
+			echo; echo; echo "  Alexa Whitelist: ${data}"
+			mv -f "${pfbdomain}${alias}.bk2" "${pfbdomain}${alias}.bk"
+			countf="$((countw))"
 		else
-			echo $header" $ip." >> $dedupfile
+			rm -f "${pfbdomain}${alias}.bk2"
 		fi
-	done
-done
-# Remove Repeat Offenders in Masterfile
-if [ -s "$dedupfile" ]; then
-	echo "Removing   [ Block ] IPs"
-	> $tempfile; > $tempfile2
-	sed 's/\./\\\./g' $dedupfile > $tempfile2
-	while IFS=' ' read -r ips; do grep "$ips" $masterfile >> $tempfile; done < $tempfile2
-	dcount=$(grep -c ^ $tempfile)
-	awk 'FNR==NR{a[$0];next}!($0 in a)' $tempfile $masterfile > $tempfile2; mv -f $tempfile2 $masterfile
-	cat $addfile >> $masterfile
-	cut -d' ' -f2 $masterfile > $mastercat
-fi
+	else
+		counta='-'
+	fi
 
-echo; echo "p-Duplication Process  [ $now ]"; echo "------------------------------------------------"
-echo "Found [ $dcount ] IP Address(es) are being set to [ block ]"
-if [ -s "$addfile" ]; then
-	echo; echo "Removed the following IP Ranges"
-	sed -e 's/^.* //' -e 's/0\/24//' $addfile | tr '\n' '|'; echo
-fi
-count=$(grep -c ^ $masterfile)
-echo; echo " [ Post p-Deduplication count ]  [ $count ]"
-
-# Write "1.1.1.1" to empty Final Blocklist Files
-emptyfiles=$(find $pfbdeny -size 0)
-for i in $emptyfiles; do echo "1.1.1.1" > $i; done
-exitnow
+	echo; echo '  ------------------------------------------------'
+	printf "%-10s %-10s %-10s %-10s %-10s\n" '  Original' 'Unique' '# Dups' 'Alexa' 'Final'
+	echo '  ------------------------------------------------'
+	printf "%-10s %-10s %-10s %-10s %-10s\n" "  ${counto}" "${countu}" "${countd}" "${counta}" "${countf}"
+	echo '  ------------------------------------------------'
 }
 
 
-##########
-# Process to Split ET Pro IPREP into Category Files and Compile selected Blocked categories into Outfile
+# Function to convert Domains/ASs to its respective IP addresses
+whoisconvert() {
+	if [ ! -x "${pathmwhois}" ]; then
+		log="Application [ mwhois ] Not found. Cannot proceed."
+		echo "${log}" | tee -a "${errorlog}"
+		exitnow
+	fi
+
+	vtype="${max}"
+	custom_list="$(echo ${dedup} | tr ',' ' ')"
+	rm -f "${pfborig}${alias}.orig"
+
+	if [ "${vtype}" == '_v4' ]; then
+		_type=A
+		_route=route
+		_opt=gAS
+	else
+		_type=AAAA
+		_route=route6
+		_opt=6AS
+	fi
+
+	for host in ${custom_list}; do
+		# Determine if host is a Domain or an AS
+		host_check="$(echo ${host} | grep '\.')"
+		if [ ! -z "${host_check}" ]; then
+			echo "### Domain: ${host} ###" >> "${pfborig}${alias}.orig"
+			${pathhost} -t ${_type} ${host} | sed 's/^.* //' >> "${pfborig}${alias}.orig"
+		else
+			asn="$(echo ${host} | tr -d 'AaSs')"
+			echo "### AS${asn}: ${host} ###" >> "${pfborig}${alias}.orig"
+			"${pathmwhois}" -h whois.radb.net \!"${_opt}${asn}" | tail -n +2 | tr -d '\nC' | tr ' ' '\n' >> "${pfborig}${alias}.orig"
+		fi
+
+		echo >> "${pfborig}${alias}.orig"
+	done
+}
+
+
+# Function to check for Reputation application dependencies.
+reputation_depends() {
+	if [ ! -x "${pathgeoip}" ]; then
+		log="Application [ GeoIP ] Not found, cannot proceed. [ ${now} ]"
+		echo "${log}" | tee -a "${errorlog}"
+		return
+	fi
+
+	# Download MaxMind GeoIP.dat on first install.
+	if [ ! -f "${pathgeoipdat}" ]; then
+		echo "Downloading [ MaxMind GeoIP.dat ] [ ${now} ]" >> "${geoiplog}"
+		/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php bu
+	fi
+
+	# Exit if GeoIP.dat is not found
+	if [ ! -f "${pathgeoipdat}" ]; then
+		log="Database GeoIP [ GeoIP.Dat ] not found. Reputation function terminated."
+		echo "${log}" | tee -a "${errorlog}"
+		return
+	fi
+
+	# Clear variables and tempfiles
+	rm -f /tmp/pfbtemp?_"${rvar}"
+	count=0; countb=0; countm=0; counts=0; countr=0
+}
+
+
+# Reputation function to condense an IP range if a 'Max' amount of IP addresses are found in a /24 range per individual list.
+reputation_max() {
+	sort "${pfbdeny}${alias}.txt" | uniq > "${tempfile}"
+	data="$(cut -d '.' -f 1-3 ${tempfile} | awk -v max=${max} '{a[$0]++}END{for(i in a){if(a[i] > max){print i}}}')"
+
+	# Classify repeat offenders by Country code
+	if [ ! -z "${data}" ]; then
+		for ip in ${data}; do
+			ccheck="$(${pathgeoip} -f ${pathgeoipdat} ${ip}.1 | cut -c 24-25)"
+			case "${cc}" in
+				*$ccheck*)
+					countr="$((countr + 1))"
+					if [ "${ccwhite}" == 'match' ] || [ "${ccblack}" == 'match' ]; then
+						echo "${ip}." >> "${matchfile}"
+					fi
+					;;
+				*)
+					count="$((count + 1))"
+					echo "${ip}." >> "${dupfile}"
+					;;
+			esac
+		done
+	else
+		countr=0; count=0
+	fi
+
+	# Collect match file details
+	if [ -s "${matchfile}" ] && [ "${dedup}" != 'on' ] && [ "${ccwhite}" == 'match' ]; then
+		mon="$(sed -e 's/^/^/' -e 's/\./\\\./g' ${matchfile})"
+		for ip in ${mon}; do
+			grep "${ip}" "${tempfile}" >> "${tempfile2}"
+		done
+		counts="$(grep -c ^ ${tempfile2})"
+		if [ "${ccwhite}" == 'match' ]; then
+			sed 's/$/0\/24/' "${matchfile}" >> "${tempmatchfile}"
+			sed 's/^/\!/' "${tempfile2}" >> "${tempmatchfile}"
+		fi
+	fi
+
+	# If no matches found remove previous matchoutfile if exists.
+	matchoutfile="match${header}.txt"
+	if [ ! -s "${tempmatchfile}" ] && [ -f "${matchoutfile}" ]; then rm -r "${matchoutfile}"; fi
+	# Move match file to the match folder by individual blocklist name
+	if [ -s "${tempmatchfile}" ]; then mv -f "${tempmatchfile}" "${pfbmatch}${matchoutfile}"; fi
+
+	# Find repeat offenders in each individual blocklist outfile
+	if [ -s "${dupfile}" ]; then
+		> "${tempfile2}"
+		dup="$(sed -e 's/^/^/' -e 's/\./\\\./g' ${dupfile})"
+		for ip in ${dup}; do
+			grep "${ip}" "${tempfile}" >> "${tempfile2}"
+		done
+		countb="$(grep -c ^ ${tempfile2})"
+
+		if [ "${ccblack}" == 'block' ]; then
+			awk 'FNR==NR{a[$0];next}!($0 in a)' "${tempfile2}" "${tempfile}" > "${pfbdeny}${alias}.txt"
+			sed 's/$/0\/24/' "${dupfile}" >> "${pfbdeny}${alias}.txt"
+		elif [ "${ccblack}" == 'match' ]; then
+			sed 's/$/0\/24/' "${dupfile}" >> "${tempmatchfile}"
+			sed 's/^/\!/' "${tempfile2}" >> "${tempmatchfile}"
+		else
+			:
+		fi
+	fi
+
+	if [ "${count}" -gt 0 ]; then
+		echo; echo "  Reputation (Max=${max}) - Range(s)"
+		cat "${dupfile}" | tr '\n' '|'; echo
+		sort "${pfbdeny}${alias}.txt" | uniq > "${tempfile}"; mv -f "${tempfile}" "${pfbdeny}${alias}.txt"
+	fi
+
+	if [ "${count}" -gt 0 ] || [ "${countr}" -gt 0 ]; then
+		echo; echo '  Reputation -Max Stats'
+		echo '  ------------------------------'
+		printf "%-17s %-10s\n" '  Blacklisted' 'Match'
+		printf "%-8s %-8s %-8s %-8s\n" '  Ranges' 'IPs' 'Ranges' 'IPs'
+		echo '  ------------------------------'
+		printf "%-8s %-8s %-8s %-8s\n" "  ${count}" "${countb}" "${countr}" "${counts}"
+		echo
+	fi
+}
+
+
+# Reputation function 'dMax' utilizing MaxMind GeoIP Country code.
+reputation_dmax() {
+	echo; echo '===[ Reputation - dMax ]======================================'
+	echo; echo "  Querying for repeat offenders ( dMax=${max} ) [ ${now} ]"
+	data="$(find ${pfbdeny}*.txt ! -name pfB*.txt ! -name *_v6.txt -type f | xargs cut -d '.' -f 1-3 | \
+		awk -v max=${max} '{a[$0]++}END{for(i in a){if(a[i] > max){print i}}}' | grep -v '^1\.1\.1')"
+
+	# Classify repeat offenders by Country code
+	if [ ! -z "${data}" ]; then
+		echo '  Classifying repeat offenders by GeoIP'
+		for ip in ${data}; do
+			ccheck="$(${pathgeoip} -f ${pathgeoipdat} ${ip}.1 | cut -c 24-25)"
+			case "${cc}" in
+				*$ccheck*)
+					countr="$((countr + 1))"
+					if [ "${ccwhite}" == 'match' ] || [ "${ccblack}" == 'match' ]; then
+						echo "${ip}." >> "${matchfile}"
+					fi
+					;;
+				*)
+					count="$((count + 1))"
+					echo "${ip}." >> "${dupfile}"
+					;;
+			esac
+		done
+	else
+		countr=0; count=0
+	fi
+
+	if [ "${ccwhite}" == 'match' ] && [ -s "${matchfile}" ]; then
+		echo '  Processing [ Match ] IPs'
+		match="$(sed -e 's/^/^/' -e 's/\./\\\./g' ${matchfile})"
+
+		for mfile in ${match}; do
+			grep "${mfile}" "${pfbdeny}"*.txt >> "${tempfile}"
+		done
+
+		sed 's/$/0\/24/' "${matchfile}" >> "${tempmatchfile}"
+		sed -e 's/.*://' -e 's/^/\!/' "${tempfile}" >> "${tempmatchfile}"
+		mv -f "${tempmatchfile}" "${pfbmatch}${matchdedup}"
+		countm="$(grep -c ^ ${tempfile})"
+		counts="$((countm + counts))"
+	fi
+
+	# Find repeat offenders in each individual blocklist outfile
+	if [ "${count}" -gt 0 ]; then
+		echo '  Processing [ Block ] IPs'
+		dup="$(cat ${dupfile})"
+
+		for ip in ${dup}; do
+			runonce=0; ii="$(echo ^${ip} | sed 's/\./\\\./g')"
+			list="$(find ${pfbdeny}*.txt ! -name pfB*.txt ! -name *_v6.txt -type f | xargs grep -al ${ii})"
+
+			for blfile in ${list}; do
+				header="$(echo ${blfile##*/} | cut -d '.' -f1)"
+				grep "${ii}" "${blfile}" > "${tempfile}"
+
+				if [ "${ccblack}" == 'block' ]; then
+					awk 'FNR==NR{a[$0];next}!($0 in a)' "${tempfile}" "${blfile}" > "${tempfile2}"; mv -f "${tempfile2}" "${blfile}"
+					if [ "${runonce}" -eq 0 ]; then
+						echo "${ip}0/24" >> "${blfile}"
+						echo "${header}" "${ip}" >> "${dedupfile}"
+						echo "${header}" "${ip}0/24" >> "${addfile}"
+						runonce=1
+					else
+						echo "${header}" "${ip}" >> "${dedupfile}"
+					fi
+				else
+					if [ "${runonce}" -eq 0 ]; then
+						matchoutfile="match${header}.txt"
+						echo "${ip}0/24" >> "${pfbmatch}${matchoutfile}"
+						sed 's/^/\!/' "${tempfile}" >> "${pfbmatch}${matchoutfile}"
+						countm="$(grep -c ^ ${pfbmatch}${matchoutfile})"
+						counts="$((countm + counts))"
+						runonce=1
+					fi
+				fi
+			done
+		done
+
+		# Remove repeat offenders in masterfiles
+		echo '  Removing   [ Block ] IPs'
+		> "${tempfile}"; > "${tempfile2}"
+		sed 's/\./\\\./g' "${dedupfile}" > "${tempfile2}"
+		while IFS=' ' read -r ips; do grep "${ips}" "${masterfile}" >> "${tempfile}"; done < "${tempfile2}"
+		countb="$(grep -c ^ ${tempfile})"
+		awk 'FNR==NR{a[$0];next}!($0 in a)' "${tempfile}" "${masterfile}" > "${tempfile2}"; mv -f "${tempfile2}" "${masterfile}"
+		cat "${addfile}" >> "${masterfile}"
+		cut -d ' ' -f2 "${masterfile}" > "${mastercat}"
+
+		echo; echo '  Removed the following IP ranges:'
+		sed -e 's/^.* //' -e 's/0\/24//' "${addfile}" | tr '\n' '|'; echo
+	fi
+
+	if [ "${count}" -gt 0 ] || [ "${countr}" -gt 0 ]; then
+		echo; echo '  Reputation - dMax Stats'
+		echo '  ------------------------------'
+		printf "%-17s %-10s\n" '  Blacklisted' 'Match'
+		printf "%-8s %-8s %-8s %-8s\n" '  Ranges' 'IPs' 'Ranges' 'IPs'
+		echo '  ------------------------------'
+		printf "%-8s %-8s %-8s %-8s\n" "  ${count}" "${countb}" "${countr}" "${counts}"
+
+		emptyfiles # Call emptyfiles function
+	else
+		echo '  Reputation -dMax ( None )'
+	fi
+}
+
+
+# Reputation function 'pMax'. (No Country code exclusions)
+reputation_pmax(){
+	echo; echo; echo '===[ Reputation - pMax ]======================================'
+	echo; echo "  Querying for repeat offenders ( pMax=${max} ) [ ${now} ]"
+	data="$(find ${pfbdeny}*.txt ! -name pfB*.txt ! -name *_v6.txt -type f | xargs cut -d '.' -f 1-3 |
+		awk -v max=${max} '{a[$0]++}END{for(i in a){if(a[i] > max){print i}}}' | grep -v '^1\.1\.1')"
+
+	if [ ! -z "${data}" ]; then
+		# Find repeat offenders in each individual blocklist outfile
+		echo '  Processing [ Block ] IPs'
+		count=0
+
+		for ip in ${data}; do
+			count="$((count + 1))"
+			runonce=0; ii="$(echo ^${ip}. | sed 's/\./\\\./g')"
+			list="$(find ${pfbdeny}*.txt ! -name pfB*.txt ! -name *_v6.txt -type f | xargs grep -al ${ii})"
+
+			for blfile in ${list}; do
+				header="$(echo ${blfile##*/} | cut -d '.' -f1)"
+				grep "${ii}" "${blfile}" > "${tempfile}"
+				awk 'FNR==NR{a[$0];next}!($0 in a)' "${tempfile}" "${blfile}" > "${tempfile2}"; mv -f "${tempfile2}" "${blfile}"
+
+				if [ "${runonce}" -eq 0 ]; then
+					echo "${ip}.0/24" >> "${blfile}"
+					echo "${header}" "${ip}." >> "${dedupfile}"
+					echo "${header}" "${ip}.0/24" >> "${addfile}"
+					runonce=1
+				else
+					echo "${header}" "${ip}." >> "${dedupfile}"
+				fi
+			done
+		done
+
+		# Remove repeat offenders in masterfile
+		echo '  Removing   [ Block ] IPs'
+		> "${tempfile}"; > "${tempfile2}"
+		sed 's/\./\\\./g' "${dedupfile}" > "${tempfile2}"
+		while IFS=' ' read -r ips; do grep "${ips}" "${masterfile}" >> "${tempfile}"; done < "${tempfile2}"
+		countb="$(grep -c ^ ${tempfile})"
+		awk 'FNR==NR{a[$0];next}!($0 in a)' "${tempfile}" "${masterfile}" > "${tempfile2}"; mv -f "${tempfile2}" "${masterfile}"
+		cat "${addfile}" >> "${masterfile}"
+		cut -d ' ' -f2 "${masterfile}" > "${mastercat}"
+
+		echo; echo '  Removed the following IP ranges:'
+		sed -e 's/^.* //' -e 's/0\/24//' "${addfile}" | tr '\n' '|'; echo
+
+		echo; echo '  Reputation - pMax Stats'
+		echo '  ----------------'
+		printf "%-8s %-8s\n" '  Ranges' 'IPs'
+		echo '  ----------------'
+		printf "%-8s %-8s\n" "  ${count}" "${countb}"
+
+		emptyfiles # Call emptyfiles function
+	else
+		echo '  Reputation -pMax ( None )'
+	fi
+}
+
+
+# Function to split ET Pro IPREP into category files and compile selected blocked categories into outfile.
 processet() {
+	if [ -s "${pfborig}${alias}.orig" ]; then
+		# Remove previous ET IPRep files
+		[ -d "${etdir}" ] && [ "$(ls -A ${etdir})" ] && rm -r "${etdir}/ET_"*
+		> "${tempfile}"; > "${tempfile2}"
 
-if [ ! -x $pathgunzip ]; then
-	echo "Application [ Gunzip ] Not found, Can't proceed."
-	echo "Application [ Gunzip ] Not found, Can't proceed. [ $now ]" >> $errorlog
-	exitnow
-fi
+		# ET CSV format (IP, Category, Score)
+		echo; echo; echo 'Compiling ET IPREP IQRisk based upon user selected categories'
+		while IFS=',' read i j k; do
+			# Some ET categories are not in use (For future use)
+			case "${j}" in
+				1)  echo "${i}" >> "${etdir}/ET_Cnc.txt";;
+				2)  echo "${i}" >> "${etdir}/ET_Bot.txt";;
+				3)  echo "${i}" >> "${etdir}/ET_Spam.txt";;
+				4)  echo "${i}" >> "${etdir}/ET_Drop.txt";;
+				5)  echo "${i}" >> "${etdir}/ET_Spywarecnc.txt";;
+				6)  echo "${i}" >> "${etdir}/ET_Onlinegaming.txt";;
+				7)  echo "${i}" >> "${etdir}/ET_Drivebysrc.txt";;
+				8)  echo "${i}" >> "${etdir}/ET_Cat8.txt";;
+				9)  echo "${i}" >> "${etdir}/ET_Chatserver.txt";;
+				10) echo "${i}" >> "${etdir}/ET_Tornode.txt";;
+				11) echo "${i}" >> "${etdir}/ET_Cat11.txt";;
+				12) echo "${i}" >> "${etdir}/ET_Cat12.txt";;
+				13) echo "${i}" >> "${etdir}/ET_Compromised.txt";;
+				14) echo "${i}" >> "${etdir}/ET_Cat14.txt";;
+				15) echo "${i}" >> "${etdir}/ET_P2P.txt";;
+				16) echo "${i}" >> "${etdir}/ET_Proxy.txt";;
+				17) echo "${i}" >> "${etdir}/ET_Ipcheck.txt";;
+				18) echo "${i}" >> "$[etdir}/ET_Cat18.txt";;
+				19) echo "${i}" >> "${etdir}/ET_Utility.txt";;
+				20) echo "${i}" >> "${etdir}/ET_DDos.txt";;
+				21) echo "${i}" >> "${etdir}/ET_Scanner.txt";;
+				22) echo "${i}" >> "${etdir}/ET_Cat22.txt";;
+				23) echo "${i}" >> "${etdir}/ET_Brute.txt";;
+				24) echo "${i}" >> "${etdir}/ET_Fakeav.txt";;
+				25) echo "${i}" >> "${etdir}/ET_Dyndns.txt";;
+				26) echo "${i}" >> "${etdir}/ET_Undesireable.txt";;
+				27) echo "${i}" >> "${etdir}/ET_Abusedtld.txt";;
+				28) echo "${i}" >> "${etdir}/ET_Selfsignedssl.txt";;
+				29) echo "${i}" >> "${etdir}/ET_Blackhole.txt";;
+				30) echo "${i}" >> "${etdir}/ET_RAS.txt";;
+				31) echo "${i}" >> "${etdir}/ET_P2Pcnc.txt";;
+				32) echo "${i}" >> "${etdir}/ET_Sharedhosting.txt";;
+				33) echo "${i}" >> "${etdir}/ET_Parking.txt";;
+				34) echo "${i}" >> "${etdir}/ET_VPN.txt";;
+				35) echo "${i}" >> "${etdir}/ET_Exesource.txt";;
+				36) echo "${i}" >> "${etdir}/ET_Cat36.txt";;
+				37) echo "${i}" >> "${etdir}/ET_Mobilecnc.txt";;
+				38) echo "${i}" >> "${etdir}/ET_Mobilespyware.txt";;
+				39) echo "${i}" >> "${etdir}/ET_Skypenode.txt";;
+				40) echo "${i}" >> "${etdir}/ET_Bitcoin.txt";;
+				41) echo "${i}" >> "${etdir}/ET_DDosattack.txt";;
+				*)  echo "${i}" >> "${etdir}/ET_Unknown.txt";;
+			esac
+		done < "${pfborig}${alias}.orig"
+		data="$(ls ${etdir})"
+		printf "%-10s %-25s\n" '  Action' 'Category'
+		echo '-------------------------------------------'
 
-if [ -s $pfborig$alias".gz" ]; then
-	evar="ET_*"
-	# Remove Previous ET IPRep Files
-	[ -d $etdir ] && [ "$(ls -A $etdir)" ] && rm -r $etdir/$evar
-	> $tempfile; > $tempfile2
+		for list in ${data}; do
+			case "${etblock}" in
+				*$list*)
+					printf "%-10s %-25s\n" '  Block: ' "${list}"
+					cat "${etdir}/${list}" >> "${tempfile}"
+					;;
+			esac
+			case "${etmatch}" in
+				*$list*)
+					printf "%-10s %-25s\n" '  Match: ' "${list}"
+					cat "${etdir}/${list}" >> "${tempfile2}"
+					;;
+			esac
+		done
+		echo '-------------------------------------------'
 
-	$pathgunzip -c $pfborig$alias".gz" > $pfborig$alias".raw"
-
-	# ET CSV Format (IP, Category, Score)
-	while IFS="," read a b c; do
-		# Some ET Categories are not in use (For Future Use)
-		case "$b" in
-			1)  echo $a >> $etdir/ET_Cnc;;
-			2)  echo $a >> $etdir/ET_Bot;;
-			3)  echo $a >> $etdir/ET_Spam;;
-			4)  echo $a >> $etdir/ET_Drop;;
-			5)  echo $a >> $etdir/ET_Spywarecnc;;
-			6)  echo $a >> $etdir/ET_Onlinegaming;;
-			7)  echo $a >> $etdir/ET_Drivebysrc;;
-			8)  echo $a >> $etdir/ET_Cat8;;
-			9)  echo $a >> $etdir/ET_Chatserver;;
-			10) echo $a >> $etdir/ET_Tornode;;
-			11) echo $a >> $etdir/ET_Cat11;;
-			12) echo $a >> $etdir/ET_Cat12;;
-			13) echo $a >> $etdir/ET_Compromised;;
-			14) echo $a >> $etdir/ET_Cat14;;
-			15) echo $a >> $etdir/ET_P2P;;
-			16) echo $a >> $etdir/ET_Proxy;;
-			17) echo $a >> $etdir/ET_Ipcheck;;
-			18) echo $a >> $etdir/ET_Cat18;;
-			19) echo $a >> $etdir/ET_Utility;;
-			20) echo $a >> $etdir/ET_DDos;;
-			21) echo $a >> $etdir/ET_Scanner;;
-			22) echo $a >> $etdir/ET_Cat22;;
-			23) echo $a >> $etdir/ET_Brute;;
-			24) echo $a >> $etdir/ET_Fakeav;;
-			25) echo $a >> $etdir/ET_Dyndns;;
-			26) echo $a >> $etdir/ET_Undesireable;;
-			27) echo $a >> $etdir/ET_Abusedtld;;
-			28) echo $a >> $etdir/ET_Selfsignedssl;;
-			29) echo $a >> $etdir/ET_Blackhole;;
-			30) echo $a >> $etdir/ET_RAS;;
-			31) echo $a >> $etdir/ET_P2Pcnc;;
-			32) echo $a >> $etdir/ET_Sharedhosting;;
-			33) echo $a >> $etdir/ET_Parking;;
-			34) echo $a >> $etdir/ET_VPN;;
-			35) echo $a >> $etdir/ET_Exesource;;
-			36) echo $a >> $etdir/ET_Cat36;;
-			37) echo $a >> $etdir/ET_Mobilecnc;;
-			38) echo $a >> $etdir/ET_Mobilespyware;;
-			39) echo $a >> $etdir/ET_Skypenode;;
-			40) echo $a >> $etdir/ET_Bitcoin;;
-			41) echo $a >> $etdir/ET_DDosattack;;
-			*)  echo $a >> $etdir/ET_Unknown;;
-		esac
-	done <"$pfborig$alias.raw"
-	data=$(ls $etdir)
-	echo; echo "Compiling ET IP IQRisk REP Lists based upon User Selected Categories"
-	printf "%-10s %-25s\n" "  Action" "Category"
-	echo "-------------------------------------------"
-
-	for list in $data; do
-		case "$etblock" in
-			*$list*)
-				printf "%-10s %-25s\n" "  Block: " "$list"
-				cat $etdir/$list >> $tempfile
-				;;
-		esac
-		case "$etmatch" in
-			*$list*)
-				printf "%-10s %-25s\n" "  Match: " "$list"
-				cat $etdir/$list >> $tempfile2
-				;;
-		esac
-	done
-	echo "-------------------------------------------"
-
-	if [ -f $tempfile ]; then mv -f $tempfile $pfborig$alias".orig"; fi
-	if [ "$etmatch" != "x" ]; then mv -f $tempfile2 $pfbmatch/ETMatch.txt; fi
-	cicount=$(cat $etdir/$evar | grep -cv '^#\|^$'); cocount=$(grep -cv "^1\.1\.1\.1" $pfborig$alias".orig")
-	echo; echo "ET Folder count [ $cicount ]  Outfile count [ $cocount ]"
-else
-	echo; echo "No ET .GZ File Found!"
-fi
-exitnow
+		if [ -f "${tempfile}" ]; then mv -f "${tempfile}" "${pfborig}${alias}.orig"; fi
+		if [ "${etmatch}" != 'x' ]; then mv -f "${tempfile2}" "${pfbmatch}/ETMatch.txt"; fi
+		counto="$(cat ${etdir}/ET_* | grep -cv '^#\|^$')"; countf="$(grep -cv '^1\.1\.1\.1$' ${pfborig}${alias}.orig)"
+		echo; echo "All ET Folder count [ ${counto} ]  Final count [ ${countf} ]"
+	else
+		echo; echo 'No ET .orig File Found!'
+	fi
 }
 
-# Process to extract IP addresses from XLSX Files
+
+# Function to extract IP addresses from XLSX files.
 processxlsx() {
+	if [ ! -x "${pathtar}" ]; then
+		log='Application [ TAR ] Not found, cannot proceed.'
+		echo "${log}" | tee -a "${errorlog}"
+		exitnow
+	fi
 
-if [ ! -x $pathtar ]; then
-	echo "Application [ TAR ] Not found, Can't proceed."
-	echo "Application [ TAR ] Not found, Can't proceed. [ $now ]" >> $errorlog
-	exitnow
-fi
+	if [ -s "${pfborig}${alias}.raw" ]; then
+		"${pathtar}" -xf "${pfborig}${alias}.raw" -C "${tmpxlsx}"
+		"${pathtar}" -xOf "${tmpxlsx}"*.[xX][lL][sS][xX] "xl/sharedStrings.xml" | \
+			grep -aoEw "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)" | sort | uniq > "${pfborig}${alias}.orig"
+		rm -r "${tmpxlsx}"*
 
-if [ -s $pfborig$alias".zip" ]; then
-
-	$pathtar -xf $pfborig$alias".zip" -C $tmpxlsx
-	$pathtar -xOf $tmpxlsx*.[xX][lL][sS][xX] xl/sharedStrings.xml |
-		grep -aoEw "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)" | sort | uniq > $pfborig$alias".orig"
-	rm -r $tmpxlsx*
-
-	cocount=$(grep -cv "^1\.1\.1\.1" $pfborig$alias".orig")
-	echo; echo "Download file count [ ZIP file ]  Outfile count [ $cocount ]"
-else
-	echo "XLSX Download File Missing"
-	echo " [ $alias ] XLSX Download File Missing [ $now ]" >> $errorlog
-fi
-exitnow
+		countf="$(grep -cv '^1\.1\.1\.1$' ${pfborig}${alias}.orig)"
+		echo; echo "Final count [ ${countf} ]"
+	else
+		echo 'XLSX download file missing'
+		echo " [ ${alias} ] XLSX download file missing [ ${now} ]" >> "${errorlog}"
+	fi
 }
 
+
+# Function to report final pfBlockerNG statistics.
 closingprocess() {
-
-# Write "1.1.1.1" to empty Final Blocklist Files
-emptyfiles=$(find $pfbdeny -size 0)
-for i in $emptyfiles; do echo "1.1.1.1" > $i; done
-
-if [ -d "$pfborig" ] && [ "$(ls -A $pfborig)" ]; then
-	fcount=$(find $pfborig*.orig | xargs cat | grep -cv '^#\|^$')
-else
-	fcount=0
-fi
-
-if [ "$alias" == "on" ]; then
-	sort -o $masterfile $masterfile
-	sort -t . -k 1,1n -k 2,2n -k 3,3n -k 4,4n $mastercat > $tempfile; mv -f $tempfile $mastercat
-
-	echo; echo "===[ FINAL Processing ]====================================="; echo
-	echo "   [ Original count   ]  [ $fcount ]"
-	count=$(grep -c ^ $masterfile)
-	echo; echo "   [ Processed Count  ]  [ $count ]"; echo
-
-	s1=$(grep -cv "1\.1\.1\.1" $masterfile)
-	s2=$(find $pfbdeny ! -name "*_v6.txt" -type f | xargs cat | grep -cv "^1\.1\.1\.1")
-	s3=$(sort $mastercat | uniq -d | tail -30)
-	s4=$(find $pfbdeny ! -name "*_v6.txt" -type f | xargs cat | sort | uniq -d | tail -30 | grep -v "^1\.1\.1\.1")
-
-	if [ -d "$pfbpermit" ] && [ "$(ls -A $pfbpermit)" ]; then
-		echo; echo "===[ Permit List IP Counts ]========================="; echo
-		wc -l $pfbpermit* | sort -n -r
+	counto=0
+	echo; echo '===[ FINAL Processing ]====================================='; echo
+	if [ -d "${pfborig}" ] && [ "$(ls -A ${pfborig})" ]; then
+		counto="$(find ${pfborig}*.orig 2>/dev/null | xargs cat | grep -cv '^#\|^$')"
 	fi
-	if [ -d "$pfbmatch" ] && [ "$(ls -A $pfbmatch)" ]; then
-		echo; echo "===[ Match List IP Counts ]=========================="; echo
-		wc -l $pfbmatch* | sort -n -r
+
+	# Execute when 'de-duplication' is enabled
+	if [ "${alias}" == 'on' ]; then
+		sort -o "${masterfile}" "${masterfile}"
+		sort -t . -k 1,1n -k 2,2n -k 3,3n -k 4,4n "${mastercat}" > "${tempfile}"; mv -f "${tempfile}" "${mastercat}"
+
+		echo "   [ Original IP count   ]  [ ${counto} ]"
+		countm="$(grep -c ^ ${masterfile})"
+		echo; echo "   [ Final IP Count  ]  [ ${countm} ]"; echo
+
+		s1="$(grep -cv '1\.1\.1\.1$' ${masterfile})"
+		s2="$(find ${pfbdeny}*.txt ! -name *_v6.txt -type f 2>/dev/null | xargs cat | grep -cv '^1\.1\.1\.1$')"
+		s3="$(sort ${mastercat} | uniq -d | tail -30)"
+		s4="$(find ${pfbdeny}*.txt ! -name *_v6.txt -type f 2>/dev/null | xargs cat | sort | uniq -d | tail -30 | grep -v '^1\.1\.1\.1$')"
+	else
+		echo "   [ Original IP count   ]  [ ${counto} ]"
 	fi
-	if [ -d "$pfbdeny" ] && [ "$(ls -A $pfbdeny)" ]; then
-		echo; echo "===[ Deny List IP Counts ]==========================="; echo
-		wc -l $pfbdeny* | sort -n -r
+
+	if [ -d "${pfbpermit}" ] && [ "$(ls -A ${pfbpermit})" ]; then
+		echo; echo '===[ Permit List IP Counts ]========================='; echo
+		wc -l "${pfbpermit}"*.txt 2>/dev/null | sort -n -r
 	fi
-	if [ -d "$pfbnative" ] && [ "$(ls -A $pfbnative)" ]; then
-		echo; echo "===[ Native List IP Counts ] ==================================="; echo
-		wc -l $pfbnative* | sort -n -r
+	if [ -d "${pfbmatch}" ] && [ "$(ls -A ${pfbmatch})" ]; then
+		echo; echo '===[ Match List IP Counts ]=========================='; echo
+		wc -l "${pfbmatch}"*.txt 2>/dev/null | sort -n -r
 	fi
-	if [ -d "$pfbdeny" ] && [ "$(ls -A $pfbdeny)" ]; then
-		emptylists=$(grep "1\.1\.1\.1" $pfbdeny* | sed -e 's/^.*[a-zA-Z]\///' -e 's/\.txt:1.1.1.1/ /')
-		if [ ! -z "$emptylists" ]; then 
-			echo; echo "====================[ Empty Lists w/1.1.1.1 ]=================="; echo
-			for list in $emptylists; do
-				echo $list
+	if [ -d "${pfbdeny}" ] && [ "$(ls -A ${pfbdeny})" ]; then
+		echo; echo '===[ Deny List IP Counts ]==========================='; echo
+		wc -l "${pfbdeny}"*.txt 2>/dev/null | sort -n -r
+	fi
+	if [ -d "${pfbnative}" ] && [ "$(ls -A ${pfbnative})" ]; then
+		echo; echo '===[ Native List IP Counts ] ==================================='; echo
+		wc -l "${pfbnative}"*.txt 2>/dev/null | sort -n -r
+	fi
+	if [ -d "${pfbdeny}" ] && [ "$(ls -A ${pfbdeny})" ]; then
+		emptylists="$(grep '^1\.1\.1\.1$' ${pfbdeny}*.txt | sed -e 's/^.*[a-zA-Z]\///' -e 's/\.txt:1.1.1.1/ /')"
+		if [ ! -z "${emptylists}" ]; then
+			echo; echo '====================[ Empty Lists w/1.1.1.1 ]=================='; echo
+			for list in ${emptylists}; do
+				echo "${list}"
 			done
 		fi
 	fi
-	if [ -d "$pfborig" ] && [ "$(ls -A $pfborig)" ]; then
-		echo; echo "====================[ Last Updated List Summary ]=============="; echo
-		ls -lahtr $pfborig* | sed -e 's/\/.*\// /' -e 's/.orig//' | awk -v OFS='\t' '{print $6" "$7,$8,$9}'
+	if [ -d "${pfbdomain}" ] && [ "$(ls -A ${pfbdomain})" ]; then
+		echo; echo '===[ DNSBL Domain/IP Counts ] ==================================='; echo
+		wc -l "${pfbdomain}"* 2>/dev/null | sort -n -r
 	fi
-	echo "==============================================================="; echo
-	echo "Sanity Check (Not Including IPv6)  ** These two Counts should Match! **"
-	echo "------------"
-	echo "Masterfile Count    [ $s1 ]"
-	echo "Deny folder Count   [ $s2 ]"; echo
-	echo "Duplication Sanity Check (Pass=No IPs reported)"
-	echo "------------------------"
-	echo "Masterfile/Deny Folder Uniq check"
-	if [ ! -z "$s3" ]; then echo $s3; fi
-	echo "Deny Folder/Masterfile Uniq check"
-	if [ ! -z "$s4" ]; then echo $s4; fi
-	echo; echo "Sync Check (Pass=No IPs reported)"
-	echo "----------"
-else
-	echo; echo "===[ FINAL Processing ]============================================="; echo
-	echo "   [ Original count   ]  [ $fcount ]"
-	if [ -d "$pfbpermit" ] && [ "$(ls -A $pfbpermit)" ]; then
-		echo; echo "===[ Permit List IP Counts ]========================="; echo
-		wc -l $pfbpermit* | sort -n -r
+	if [ -d "${pfborig}" ] && [ "$(ls -A ${pfborig})" ]; then
+		echo; echo '====================[ Last Updated List Summary ]=============='; echo
+		ls -lahtr "${pfborig}"*.orig | sed -e 's/\/.*\// /' -e 's/.orig//' | awk -v OFS='\t' '{print $6" "$7,$8,$9}'
 	fi
-	if [ -d "$pfbmatch" ] && [ "$(ls -A $pfbmatch)" ]; then
-		echo; echo "===[ Match List IP Counts ]=========================="; echo
-		wc -l $pfbmatch* | sort -n -r
-	fi
-	if [ -d "$pfbdeny" ] && [ "$(ls -A $pfbdeny)" ]; then
-		echo; echo "===[ Deny List IP Counts ]==========================="; echo
-		wc -l $pfbdeny* | sort -n -r
-	fi
-	if [ -d "$pfbnative" ] && [ "$(ls -A $pfbnative)" ]; then
-		echo; echo "===[ Native List IP Counts ] ==================================="; echo
-		wc -l $pfbnative* | sort -n -r
-	fi
-	if [ -d "$pfbdeny" ] && [ "$(ls -A $pfbdeny)" ]; then
-		emptylists=$(grep "1\.1\.1\.1" $pfbdeny* | sed -e 's/^.*[a-zA-Z]\///' -e 's/\.txt:1.1.1.1/ /')
-		if [ ! -z "$emptylists" ]; then
-			echo; echo "====================[ Empty Lists w/1.1.1.1 ]=================="; echo
-			for list in $emptylists; do
-				echo $list
-			done
+
+	# Execute when 'de-duplication' is enabled
+	if [ "${alias}" == 'on' ]; then
+		echo '==============================================================='; echo
+		if [ "${s1} == ${s2}" ]; then
+			echo 'Database Sanity check [  PASSED  ]'
+		else
+			echo 'Database Sanity check [  FAILED  ] ** These two counts should match! **'
+			echo '------------'
+			echo "Masterfile Count    [ ${s1} ]"
+			echo "Deny folder Count   [ ${s2} ]"; echo
+			echo 'Duplication sanity check (Pass=No IPs reported)'
 		fi
+		echo '------------------------'
+		echo 'Masterfile/Deny folder uniq check'
+		if [ ! -z "${s3}" ]; then echo "${s3}"; fi
+		echo 'Deny folder/Masterfile uniq check'
+		if [ ! -z "${s4}" ]; then echo "${s4}"; fi
+		echo; echo 'Sync check (Pass=No IPs reported)'
+		echo '----------'
 	fi
-	if [ -d "$pfborig" ] && [ "$(ls -A $pfborig)" ]; then
-		echo; echo "====================[ Last Updated List Summary ]=============="; echo
-		ls -lahtr $pfborig* | sed -e 's/\/.*\// /' -e 's/.orig//' | awk -v OFS='\t' '{print $6" "$7,$8,$9}'
-		echo "==============================================================="
-	fi
-fi
 
-echo; echo "IPv4 Alias Table IP Total"; echo "-----------------------------"
-find $pfsense_alias_dir ! -name "*_v6.txt" -type f | xargs cat | grep -c ^
+	echo; echo 'IPv4 alias tables IP count'; echo '-----------------------------'
+	find "${pfsensealias}"pfB_*.txt ! -name "*_v6.txt" -type f 2>/dev/null | xargs cat | grep -c ^
 
-echo; echo "IPv6 Alias Table IP Total"; echo "-----------------------------"
-find $pfsense_alias_dir -name "*_v6.txt" -type f | xargs cat | grep -c ^
+	echo; echo 'IPv6 alias tables IP count'; echo '-----------------------------'
+	find "${pfsensealias}"pfB_*.txt -name "*_v6.txt" -type f 2>/dev/null | xargs cat | grep -c ^
 
-echo; echo "Alias Table IP Counts"; echo "-----------------------------"
-wc -l $pfsense_alias_dir*.txt | sort -n -r
+	echo; echo 'Alias table IP Counts'; echo '-----------------------------'
+	wc -l "${pfsensealias}"pfB_*.txt 2>/dev/null | sort -n -r
 
-echo; echo "pfSense Table Stats"; echo "-------------------"
-$pathpfctl -s memory | grep "table-entries"
-pfctlcount=$($pathpfctl -vvsTables | awk '/Addresses/ {s+=$2}; END {print s}')
-echo "Table Usage Count       " $pfctlcount
-exitnow
+	echo; echo 'pfSense Table Stats'; echo '-------------------'
+	"${pathpfctl}" -s memory | grep 'table-entries'
+	pfctlcount="$(${pathpfctl} -vvsTables | awk '/Addresses/ {s+=$2}; END {print s}')"
+	echo "Table Usage Count         ${pfctlcount}"
 }
 
-remove() {
-# Remove Lists from Masterfiles and Delete Associated Files
-echo
-for i in $cc; do
-	header=$(echo "${i%*,}")
-	if [ ! "$header" == "" ]; then
-		# Make sure that Alias Exists in Masterfile before removal.
-		masterchk=$(grep -m1 "$header[[:space:]]" $masterfile)
-		if [ ! -z "$masterchk" ]; then
-			# Grep Header with a Trailing Space character
-			grep "$header[[:space:]]" $masterfile > $tempfile
-			awk 'FNR==NR{a[$0];next}!($0 in a)' $tempfile $masterfile > $tempfile2; mv -f $tempfile2 $masterfile
-			cut -d' ' -f2 $masterfile > $mastercat
-		fi
-		rm -rf $pfborig$header*; rm -rf $pfbdeny$header*; rm -rf $pfbmatch$header*; rm -rf $pfbpermit$header*; rm -rf $pfbnative$header*
-		echo "The Following list has been REMOVED [ $header ]"
-	fi
-	echo
-done
-
-# Delete Masterfiles if they are empty
-emptychk=$(find $masterfile -size 0)
-if [ ! "$emptychk" == "" ]; then
-	rm -r $masterfile; rm -r $mastercat
-fi
-exitnow
-}
-
-# Process to restore aliasables from archive on reboot ( NanoBSD and Ramdisk Installations only )
-aliastables() {
-	if [ "${PLATFORM}" != "pfSense" ] || [ ${USE_MFS_TMPVAR} -gt 0 ] || [ "${DISK_TYPE}" = "md" ]; then
-		[ -f $aliasarchive ] && cd $pfsense_alias_dir && /usr/bin/tar -jxvf $aliasarchive
-	fi
-	exitnow
-}
-
-
-##########
-# CALL APPROPRIATE PROCESSES using Script Argument $1
-case $1 in
-	continent)
-		continent
+# Call appropriate processes using script argument $1.
+case "${1}" in
+	_*)
+		if [ "$(echo ${1} | grep -c '_255')" -gt 0 ]; then process255; fi
+		if [ "$(echo ${1} | grep -c '_agg')" -gt 0 ]; then cidr_aggregate; fi
+		if [ "$(echo ${1} | grep -c '_rep')" -gt 0 ]; then reputation_depends; reputation_max; fi
+		if [ "$(echo ${1} | grep -c '_dup')" -gt 0 ]; then duplicate; fi
 		;;
-	duplicate)
-		process255
+	continent)
 		duplicate
+		;;
+	domainduplicate)
+		domainduplicate
+		;;
+	cidr_aggregate)
+		agg_folder=true
+		cidr_aggregate
+		;;
+	whoisconvert)
+		whoisconvert
 		;;
 	suppress)
 		suppress
 		;;
-	p24)
-		process24
+	dmax)
+		reputation_depends
+		reputation_dmax
 		;;
-	dedup)
-		deduplication
-		;;
-	pdup)
-		pdeduplication
+	pmax)
+		reputation_depends
+		reputation_pmax
 		;;
 	et)
 		processet
@@ -965,17 +965,17 @@ case $1 in
 	xlsx)
 		processxlsx
 		;;
-	closing)
-		closingprocess
-		;;
 	remove)
 		remove
 		;;
 	aliastables)
 		aliastables
 		;;
+	closing)
+		emptyfiles
+		closingprocess
+		;;
 	*)
-		exitnow
 		;;
 esac
 exitnow

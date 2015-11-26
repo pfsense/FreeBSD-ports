@@ -7,21 +7,22 @@
 			Country Blocking Database by MaxMind Inc. (GeoLite Free version).&lt;br /&gt;
 			De-Duplication, Suppression, and Reputation enhancements.&lt;br /&gt;
 			Provision to download from diverse List formats.&lt;br /&gt;
-			Advanced Integration for Emerging Threats IQRisk IP Reputation Threat Sources.]]></descr>
+			Advanced Integration for Proofpoint ET IQRisk IP Reputation Threat Sources.&lt;br /&gt;
+			Domain Name (DNSBL) blocking via Unbound DNS Resolver.]]></descr>
 		<category>Security</category>
 		<pkginfolink>https://forum.pfsense.org/index.php?topic=86212.0</pkginfolink>
 		<config_file>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng.xml</config_file>
-		<version>1.10</version>
+		<version>2.0.1</version>
 		<status>RELEASE</status>
 		<required_version>2.2</required_version>
 		<maintainer>BBCan177@gmail.com</maintainer>
 		<configurationfile>pfblockerng.xml</configurationfile>
-		<run_depends>bin/geoiplookup:net/GeoIP bin/grepcidr:net-mgmt/grepcidr</run_depends>
+		<run_depends>bin/geoiplookup:net/GeoIP bin/grepcidr:net-mgmt/grepcidr bin/aggregate:net-mgmt/aggregate bin/whois:net/whois</run_depends>
 		<port_category>net</port_category>
-		<depends_on_package_pbi>pfblockerng-1.6.3_1-##ARCH##.pbi</depends_on_package_pbi>
+		<depends_on_package_pbi>pfblockerng-1.6.6-##ARCH##.pbi</depends_on_package_pbi>
 		<build_pbi>
 			<port>net/GeoIP</port>
-			<ports_after>net-mgmt/grepcidr</ports_after>
+			<ports_after>net-mgmt/grepcidr net-mgmt/aggregate net/whois</ports_after>
 			<custom_name>pfblockerng</custom_name>
 		</build_pbi>
 	</package>

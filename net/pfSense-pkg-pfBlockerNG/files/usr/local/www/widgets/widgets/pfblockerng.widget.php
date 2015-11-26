@@ -3,19 +3,17 @@
 	pfBlockerNG.widget.php
 
 	pfBlockerNG
-	Copyright (C) 2015 BBcan177@gmail.com
+	Copyright (c) 2015 BBcan177@gmail.com
 	All rights reserved.
 
 	Based Upon pfblocker :
-	Copyright 2011 Thomas Schaefer - Tomschaefer.org
-	Copyright 2011 Marcello Coutinho
-	Part of pfSense widgets (www.pfsense.org)
+	Copyright (c) 2011 Thomas Schaefer
+	Copyright (c) 2011 Marcello Coutinho
 
 	Adapted From:
 	snort_alerts.widget.php
-	Copyright (C) 2009 Jim Pingle
-	mod 24-07-2012
-	mod 28-02-2015 by Bill Meeks
+	Copyright (c) 2015 Electric Sheep Fencing, LLC. All rights reserved.
+	Copyright (c) 2015 Bill Meeks
 
 	Javascript and Integration modifications by J. Nieuwenhuizen
 
@@ -43,9 +41,9 @@
 	POSSIBILITY OF SUCH DAMAGE.
 */
 $nocsrf = true;
-@require_once("/usr/local/www/widgets/include/widget-pfblockerng.inc");
-@require_once("/usr/local/pkg/pfblockerng/pfblockerng.inc");
-@require_once("guiconfig.inc");
+@require_once('/usr/local/www/widgets/include/widget-pfblockerng.inc');
+@require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
+@require_once('guiconfig.inc');
 
 pfb_global();
 
@@ -58,71 +56,62 @@ $pfb['err']	= "<img src ='/themes/{$g['theme']}/images/icons/icon_wzd_nsaved.png
 $pfb['RowOddClass']	= "style='background-color: #FFFFFF;'";
 $pfb['RowEvenClass']	= "style='background-color: #F0F0F0;'";
 $pfb['RowEvenClass2']	= "style='background-color: #D0D0D0;'";
-$pfb['ColClass']	= "listMRr";
+$pfb['ColClass']	= 'listMRr';
 
-$pfb['global'] = &$config['installedpackages']['pfblockerngglobal'];
-
-// Define default widget customizations
-if (!isset($pfb['global']['widget-maxfails'])) {
-	$pfb['global']['widget-maxfails']	= '3';
-}
-if (!isset($pfb['global']['widget-maxpivot'])) {
-	$pfb['global']['widget-maxpivot']	= '200';
-}
-if (!isset($pfb['global']['widget-sortcolumn'])) {
-	$pfb['global']['widget-sortcolumn']	= 'none'; 
-}
-if (!isset($pfb['global']['widget-sortdir'])) {
-	$pfb['global']['widget-sortdir']	= 'asc';
-}
-if (!isset($pfb['global']['widget-popup'])) {
-	$pfb['global']['widget-popup']		= 'on';
-}
-
-// Collect variables
-if (is_array($pfb['global'])) {
-	$pfb['maxfails']	= $pfb['global']['widget-maxfails'];
-	$pfb['maxpivot']	= $pfb['global']['widget-maxpivot'];
-	$pfb['sortcolumn']	= $pfb['global']['widget-sortcolumn'];
-	$pfb['sortdir']		= $pfb['global']['widget-sortdir'];
-	$pfb['popup']		= $pfb['global']['widget-popup'];
+// Widget customizations
+$wglobal_array = array('popup' => 'off', 'sortcolumn' => 'none', 'sortdir' => 'asc', 'maxfails' => 3, 'maxpivot' => 200);
+$pfb['wglobal'] = &$config['installedpackages']['pfblockerngglobal'];
+foreach ($wglobal_array as $type => $value) {
+	$pfb[$type] = $pfb['wglobal']['widget-' . "{$type}"] ?: $value;
 }
 
 // Save widget customizations
-if ($_POST) {
-	if (is_numeric($_POST['pfb_maxfails'])) {
-		$pfb['global']['widget-maxfails']	= $_POST['pfb_maxfails'];
+if (isset($_POST['pfb_submit'])) {
+	$pfb['wglobal']['widget-popup']			= htmlspecialchars($_POST['pfb_popup']) ?: 'off';
+	$pfb['wglobal']['widget-sortcolumn']		= htmlspecialchars($_POST['pfb_sortcolumn']) ?: 'none';
+	$pfb['wglobal']['widget-sortdir']		= htmlspecialchars($_POST['pfb_sortdir']) ?: 'asc';
+
+	if (ctype_digit(htmlspecialchars($_POST['pfb_maxfails']))) {
+		$pfb['wglobal']['widget-maxfails']	= htmlspecialchars($_POST['pfb_maxfails']);
 	}
-	if (is_numeric($_POST['pfb_maxpivot'])) {
-		$pfb['global']['widget-maxpivot']	= $_POST['pfb_maxpivot'];
+	if (ctype_digit(htmlspecialchars($_POST['pfb_maxpivot']))) {
+		$pfb['wglobal']['widget-maxpivot']	= htmlspecialchars($_POST['pfb_maxpivot']);
 	}
-	if (!empty($_POST['pfb_popup'])) {
-		$pfb['global']['widget-popup']		= $_POST['pfb_popup'];
-	}
-	if (!empty($_POST['pfb_sortcolumn'])) {
-		$pfb['global']['widget-sortcolumn']	= $_POST['pfb_sortcolumn'];
-	}
-	if (!empty($_POST['pfb_sortdir'])) {
-		$pfb['global']['widget-sortdir']	= $_POST['pfb_sortdir'];
-	}
-	write_config("pfBlockerNG: Saved Widget customizations via Dashboard");
-	header("Location: ../../index.php");
+
+	write_config('pfBlockerNG: Saved Widget customizations via Dashboard');
+	header('Location: ../../index.php');
 }
 
 // Ackwnowlege failed downloads
 if (isset($_POST['pfblockerngack'])) {
-	exec("/usr/bin/sed -i '' 's/FAIL/Fail/g' {$pfb['errlog']}");
-	header("Location: ../../index.php");
+	exec("{$pfb['sed']} -i '' 's/FAIL/Fail/g' {$pfb['errlog']}");
+	header('Location: ../../index.php');
 }
 
 // Called by Ajax to update table contents
 if (isset($_GET['getNewCounts'])) {
-	pfBlockerNG_get_table("js");
+	pfBlockerNG_get_table('js');
 	return;
 }
 
+// Reset DNSBL Alias packet counters
+if (isset($_POST['pfblockerngdnsblclear'])) {
+	$dnsbl_info = array_map('str_getcsv', @file("{$pfb['dnsbl_info']}"));
+	if (!empty ($dnsbl_info)) {
+		$handle = fopen("{$pfb['dnsbl_info']}", 'w');
+		foreach ($dnsbl_info as $line) {
+			if (substr($line[0], 0, 1) != '#') {
+				$line[3] = '0';
+			}
+			fputcsv($handle, $line);
+		}
+		fclose ($handle);
+	}
+	header('Location: ../../index.php');
+}
+
 // Sort widget table according to user configuration
-function pfbsort(&$array, $subkey="id", $sort_ascending=FALSE) {
+function pfbsort(&$array, $subkey='id', $sort_ascending=FALSE) {
 	if (empty($array)) {
 		return;
 	}
@@ -130,12 +119,16 @@ function pfbsort(&$array, $subkey="id", $sort_ascending=FALSE) {
 		$temp_array[key($array)] = array_shift($array);
 	}
 
+	if ($subkey == 'alias') {
+		$subkey = 0;
+	} 
+
 	foreach ($array as $key => $val) {
 		$offset = 0;
 		$found = FALSE;
 		foreach ($temp_array as $tmp_key => $tmp_val) {
-			if (!$found and strtolower($val[$subkey]) > strtolower($tmp_val[$subkey])) {
-				$temp_array = array_merge((array)array_slice($temp_array,0,$offset), array($key => $val), array_slice($temp_array,$offset));
+			if (!$found && strtolower($val[$subkey]) > strtolower($tmp_val[$subkey])) {
+				$temp_array = array_merge((array)array_slice($temp_array, 0, $offset), array($key => $val), array_slice($temp_array, $offset));
 				$found = TRUE;
 			}
 			$offset++;
@@ -156,14 +149,14 @@ function pfbsort(&$array, $subkey="id", $sort_ascending=FALSE) {
 // Collect all pfBlockerNG statistics
 function pfBlockerNG_get_counts() {
 	global $config, $pfb;
-	$pfb_table = array();
+	$pfb_table = $pfb_dtable = array();
 
 	/* Alias Table Definitions -	'update'	- Last Updated Timestamp
 					'rule'		- Total number of Firewall rules per alias
 					'count'		- Total Line Count per alias
 					'packets'	- Total number of pf packets per alias */
 
-	exec("/sbin/pfctl -vvsTables | grep -A4 'pfB_'", $pfb_pfctl);
+	exec("{$pfb['pfctl']} -vvsTables | {$pfb['grep']} -A4 'pfB_'", $pfb_pfctl);
 	if (!empty($pfb_pfctl)) {
 		foreach($pfb_pfctl as $line) {
 			$line = trim(str_replace(array( '[', ']' ), '', $line));
@@ -173,9 +166,9 @@ function pfBlockerNG_get_counts() {
 					unset($pfb_alias);
 					continue;
 				}
-				exec("/usr/bin/grep -cv '^1\.1\.1\.1' {$pfb['aliasdir']}/{$pfb_alias}.txt", $match);
+				exec("{$pfb['grep']} -cv '^1\.1\.1\.1$' {$pfb['aliasdir']}/{$pfb_alias}.txt", $match);
 				$pfb_table[$pfb_alias] = array('count' => $match[1], 'img' => $pfb['down']);
-				exec("ls -ld {$pfb['aliasdir']}/{$pfb_alias}.txt | awk '{ print $6,$7,$8 }'", $update);
+				exec("{$pfb['ls']} -ld {$pfb['aliasdir']}/{$pfb_alias}.txt | {$pfb['awk']} '{ print $6,$7,$8 }'", $update);
 				$pfb_table[$pfb_alias]['update'] = $update[0];
 				$pfb_table[$pfb_alias]['rule'] = 0;
 				unset($match, $update);
@@ -198,21 +191,21 @@ function pfBlockerNG_get_counts() {
 	}
 	else {
 		// Error. No pf labels found.
-		$pfb['pfctl'] = TRUE;
+		$pfb['pfctlerr'] = TRUE;
 	}
 
 	// Determine if firewall rules are defined
-	if (is_array($config['filter']['rule'])) {
+	if (isset($config['filter']['rule'])) {
 		foreach ($config['filter']['rule'] as $rule) {
 			// Skip disabled rules
 			if (isset($rule['disabled'])) {
 				continue;
 			}
-			if (stripos($rule['source']['address'], "pfb_") !== FALSE) {
+			if (stripos($rule['source']['address'], 'pfb_') !== FALSE) {
 				$pfb_table[$rule['source']['address']]['img'] = $pfb['up'];
 				$pfb_table[$rule['source']['address']]['rule'] += 1;
 			}
-			if (stripos($rule['destination']['address'], "pfb_") !== FALSE) {
+			if (stripos($rule['destination']['address'], 'pfb_') !== FALSE) {
 				$pfb_table[$rule['destination']['address']]['img'] = $pfb['up'];
 				$pfb_table[$rule['destination']['address']]['rule'] += 1;
 			}
@@ -220,79 +213,115 @@ function pfBlockerNG_get_counts() {
 	}
 
 	// Collect packet fence rule numbers
-	exec("/sbin/pfctl -vv -sr | grep 'pfB_'", $pfrules);
+	exec("{$pfb['pfctl']} -vv -sr | {$pfb['grep']} 'pfB_'", $pfrules);
 	if (!empty($pfrules)) {
 		foreach ($pfrules as $result) {
 			// Sample : @112(0) block return in log quick on em1 from any to <pfB_PRI1:160323> label "USER_RULE: pfB_PRI1"
-			if (preg_match("/@(\d+)\(\d+\).*\<(pfB_\w+):\d+\>/", $result, $rule)) {
-				$pfb_table[$rule[2]]['rules'] .= $rule[1] . '|';
+			$id = strstr($result, '(', FALSE);
+			$id = ltrim(strstr($id, ')', TRUE), '(');
+			$descr = ltrim(stristr($result, '<pfb_', FALSE), '<');
+			$descr = strstr($descr, ':', TRUE);
+
+			if (!empty($id) && !empty($descr) && strpos($pfb_table[$descr]['rules'], $id) === FALSE) {
+				$pfb_table[$descr]['rules'] .= $id . '|';
+			}
+		}
+	}
+
+	// DNSBL collect statistics
+	if ($pfb['enable'] == 'on' && $pfb['dnsbl'] == 'on' && file_exists ("{$pfb['dnsbl_info']}")) {
+		$dnsbl_info = array_map('str_getcsv', @file("{$pfb['dnsbl_info']}"));
+		if (!empty($dnsbl_info)) {
+			foreach ($dnsbl_info as $line) {
+				if (substr($line[0], 0, 1) != '#') {
+					if ($line[2] == 'disabled') {
+						$pfb_dtable[$line[0]] = array ('count' => 'disabled', 'img' => $pfb['down']);
+					} else {
+						$pfb_dtable[$line[0]] = array ('count' => $line[2], 'img' => $pfb['up']);
+					}
+					$pfb_dtable[$line[0]]['update'] = "{$line[1]}";
+					$pfb_dtable[$line[0]]['packets'] = "{$line[3]}";
+				}
 			}
 		}
 	}
 
 	// Sort tables per sort customization
-	if ($pfb['sortcolumn'] != "none") {
-		if ($pfb['sortdir'] == "asc") {
-			pfbsort($pfb_table, $pfb['sortcolumn'], TRUE);
-		} else {
+	if ($pfb['sortcolumn'] != 'none') {
+		if ($pfb['sortdir'] == 'asc') {
 			pfbsort($pfb_table, $pfb['sortcolumn'], FALSE);
+			pfbsort($pfb_dtable, $pfb['sortcolumn'], FALSE);
+		} else {
+			pfbsort($pfb_table, $pfb['sortcolumn'], TRUE);
+			pfbsort($pfb_dtable, $pfb['sortcolumn'], TRUE);
 		}
 	}
+	$pfb_table = array_merge($pfb_table, $pfb_dtable);
 	return $pfb_table;
 }
 
 // Called on initial load and Ajax to update table contents
-function pfBlockerNG_get_table($mode="") {
+function pfBlockerNG_get_table($mode='') {
 	global $pfb;
 	$counter = 0; $dcounter = 1; $response = '';
 
 	$pfb_table = pfBlockerNG_get_counts();
 	if (!empty($pfb_table)) {
 		foreach ($pfb_table as $pfb_alias => $values) {
-			// Add firewall rules count associated with alias
-			$values['img'] = $values['img'] . "<span title='Alias Firewall Rule count' ><small>({$values['rule']})</small></span>";
+			if (strpos($pfb_alias, 'DNSBL_') !== FALSE) {
+				$alias_span = $alias_span_end = '';
+				$packets = $values['packets'];
+				$dnsbl = TRUE;
+			} else {
+				// Add firewall rules count associated with alias
+				$values['img'] = $values['img'] . "<span title='Alias Firewall Rule count' ><small>({$values['rule']})</small></span>";
 
-			// If packet fence errors found, display error.
-			if ($pfb['pfctl']) {
-				$values['img'] = $pfb['err'];
-			}
-
-			// Alias table popup
-			if ($values['count'] > 0 && $pfb['popup'] == "on") {
-				$alias_popup = rule_popup($pfb_alias, '', '', '');
-				$alias_span = $alias_popup['src'];
-				$alias_span_end = $alias_popup['src_end'];
-			}
-			else {
-				$alias_span = '';
-				$alias_span_end = '';
-			}
-
-			// Packet column pivot to Alerts Tab
-			if ($values['packets'] > 0) {
-				$rules = rtrim($values['rules'], '|');
-				if ($values['packets'] > $pfb['maxpivot']) {
-					$aentries = $pfb['maxpivot'];
-				} else {
-					$aentries = $values['packets'];
+				// If packet fence errors found, display error.
+				if ($pfb['pfctlerr']) {
+					$values['img'] = $pfb['err'];
 				}
 
-				$packets  = "<a target='_new' href='/pfblockerng/pfblockerng_alerts.php?rule={$rules}&entries={$aentries}' ";
-				$packets .= "style='text-decoration: underline;' title='Click to view these packets in Alerts tab' >{$values['packets']}</a>";
-			}
-			else {
-				$packets = $values['packets'];
+				// Alias table popup
+				if ($values['count'] > 0 && $pfb['popup'] == 'on') {
+					$alias_popup = rule_popup($pfb_alias, '', '', '');
+					$alias_span = $alias_popup['src'];
+					$alias_span_end = $alias_popup['src_end'];
+				}
+				else {
+					$alias_span = $alias_span_end = '';
+				}
+
+				// Packet column pivot to Alerts Tab
+				if ($values['packets'] > 0) {
+					$rules = rtrim($values['rules'], '|');
+					if ($values['packets'] > $pfb['maxpivot']) {
+						$aentries = $pfb['maxpivot'];
+					} else {
+						$aentries = $values['packets'];
+					}
+
+					$packets  = "<a target='_blank' href='/pfblockerng/pfblockerng_alerts.php?rule={$rules}&entries={$aentries}' ";
+					$packets .= "title='Click to view these packets in Alerts tab' >{$values['packets']}</a>";
+				}
+				else {
+					$packets = $values['packets'];
+				}
 			}
 
-			if ($mode == "js") {
-				echo $response = $alias_span . $pfb_alias . $alias_span_end . "||" . $values['count'] . "||" . $packets . "||" . $values['update']
-					. "||" . $values['img'] . "\n";
+			if ($mode == 'js') {
+				echo $response = "{$alias_span}{$pfb_alias}{$alias_span_end}||{$values['count']}||{$packets}||{$values['update']}||{$values['img']}\n";
 			}
 			else {
-				$RowClass = $counter % 2 ? $pfb['RowEvenClass'] : $pfb['RowOddClass'];
-				$counter++;
+				// Print darker shading for DNSBL
+				if ($dnsbl) {
+					$RowClass = $dcounter % 2 ? $pfb['RowEvenClass2'] : $pfb['RowOddClass'];
+					$dcounter++;
+				} else {
+					$RowClass = $counter % 2 ? $pfb['RowEvenClass'] : $pfb['RowOddClass'];
+					$counter++;
+				}
 				echo (" <tr {$RowClass}>
-					<td class='listMRr ellipsis'>" . $alias_span . $pfb_alias . $alias_span_end . "</td>
+					<td class='listMRr ellipsis'>{$alias_span}{$pfb_alias}{$alias_span_end}</td>
 					<td class='listMRr' align='center'>{$values['count']}</td>
 					<td class='listMRr' sorttable_customkey='{$values['packets']}' align='center'>{$packets}</td>
 					<td class='listMRr' align='center'>{$values['update']}</td>
@@ -304,29 +333,51 @@ function pfBlockerNG_get_table($mode="") {
 }
 
 // Status indicator if pfBlockerNG is enabled/disabled
-if ("{$pfb['enable']}" == "on") {
-	$pfb_status = "/themes/{$g['theme']}/images/icons/icon_pass.gif";
-	$pfb_msg = "pfBlockerNG is Active.";
+if ($pfb['enable'] == 'on') {
+	$mode = 'pass';
+	$pfb_msg = 'pfBlockerNG is Active.';
+
+	if ($pfb['config']['enable_dup'] == 'on') {
+		// Check Masterfile Database Sanity
+		$db_sanity = exec("{$pfb['grep']} 'Sanity check' {$pfb['logdir']}/pfblockerng.log | {$pfb['grep']} -o 'PASSED' | tail -1");
+		if ($db_sanity != 'PASSED') {
+			$mode = 'reject';
+			$pfb_msg = 'pfBlockerNG deDuplication is out of sync. Perform a Force Reload to correct.';
+		}
+	}
 } else {
-	$pfb_status = "/themes/{$g['theme']}/images/icons/icon_block.gif";
-	$pfb_msg = "pfBlockerNG is Disabled.";
+	$mode = 'block';
+	$pfb_msg = 'pfBlockerNG is Disabled.';
 }
+$pfb_status = "/themes/{$g['theme']}/images/icons/icon_{$mode}.gif";
+
+// Status indicator if DNSBL is actively running
+if ($pfb['dnsbl'] == 'on' && $pfb['unbound_state'] == 'on' && $pfb['enable'] == 'on' &&
+    strpos(file_get_contents("{$pfb['dnsbldir']}/unbound.conf"), 'pfb_dnsbl') !== FALSE) {
+	$mode = 'pass';
+	$dnsbl_msg = 'DNSBL is Active.';
+} else {
+	$mode = 'block';
+	$dnsbl_msg = 'DNSBL is Disabled.';
+}
+$dnsbl_status = "/themes/{$g['theme']}/images/icons/icon_{$mode}.gif";
 
 // Collect total IP/Cidr counts
-$dcount = exec("cat {$pfb['denydir']}/*.txt | grep -cv '^#\|^$\|^1\.1\.1\.1'");
-$pcount = exec("cat {$pfb['permitdir']}/*.txt | grep -cv '^#\|^$\|^1\.1\.1\.1'");
-$mcount = exec("cat {$pfb['matchdir']}/*.txt | grep -cv '^#\|^$\|^1\.1\.1\.1'");
-$ncount = exec("cat {$pfb['nativedir']}/*.txt | grep -cv '^#\|^$\|^1\.1\.1\.1'");
+$dcount = exec("{$pfb['cat']} {$pfb['denydir']}/*.txt | {$pfb['grep']} -cv '^#\|^$\|^1\.1\.1\.1$'");
+$pcount = exec("{$pfb['cat']} {$pfb['permitdir']}/*.txt | {$pfb['grep']} -cv '^#\|^$\|^1\.1\.1\.1$'");
+$mcount = exec("{$pfb['cat']} {$pfb['matchdir']}/*.txt | {$pfb['grep']} -cv '^#\|^$\|^1\.1\.1\.1$'");
+$ncount = exec("{$pfb['cat']} {$pfb['nativedir']}/*.txt | {$pfb['grep']} -cv '^#\|^$\|^1\.1\.1\.1$'");
+$scount = exec("{$pfb['grep']} -c ^ {$pfb['dnsbl_file']}.conf");
+$maxver = exec("grep -o 'Last-.*' /var/log/pfblockerng/maxmind_ver");
 
 // Collect number of suppressed hosts
+$pfbsupp_cnt = 0;
 if (file_exists("{$pfb['supptxt']}")) {
-	$pfbsupp_cnt = exec ("/usr/bin/grep -c ^ {$pfb['supptxt']}");
-} else {
-	$pfbsupp_cnt = 0;
+	$pfbsupp_cnt = exec("{$pfb['grep']} -c ^ {$pfb['supptxt']}");
 }
 
 // Collect any failed downloads
-exec("grep $(date +%m/%d/%y) {$pfb['errlog']} | grep 'FAIL'", $results);
+exec("{$pfb['grep']} 'FAIL' {$pfb['errlog']} | {$pfb['grep']} $(date +%m/%d/%y)", $results);
 $results = array_reverse($results);
 
 ?>
@@ -343,7 +394,7 @@ $results = array_reverse($results);
 		</tr>
 		<tr>
 			<td width="22%" class="vncellt" valign="top" ><input type="text" size="3" name="pfb_maxfails" class="formfld unknown" id="pfb_maxfails"
-				title="Tha maximum number of Failed Download Alerts to be shown. Refer to the error.log for add'l details"
+				title="The maximum number of Failed Download Alerts to be shown. Refer to the error.log for add'l details"
 				value="<?= $pfb['maxfails'] ?>" /></td>
 			<td width="78%" class="listr" ><?=gettext("Enter number of download fails to display (default:3)");?></td>
 		</tr>
@@ -357,9 +408,7 @@ $results = array_reverse($results);
 			<td width="22" class="vncellt" valign="top" >
 				<select name="pfb_sortcolumn" id="pfb_sortcolumn" class="formselect" title="The Column to be sorted" >
 				<?php
-				$pfbsort = array(	'none' => 'None', 'alias' => 'Alias', 'count' => 'Count',
-							'packets' => 'Packets', 'updated' => 'Updated'
-						);
+				$pfbsort = array( 'none' => 'None', 'alias' => 'Alias', 'count' => 'Count', 'packets' => 'Packets', 'updated' => 'Updated' );
 				foreach ($pfbsort as $sort => $sorttype): ?>
 					<option value="<?=$sort; ?>" <?php if ($sort == $pfb['sortcolumn']) echo 'selected'; ?> ><?=$sorttype; ?></option>
 				<?php endforeach; ?>
@@ -383,38 +432,62 @@ $results = array_reverse($results);
 
 	<!-- Print widget status bar items -->
 	<div class="marinarea">
-	<table id="pfb_table" border="0" cellspacing="0" cellpadding="0">
+	<table id="pfb_table" width="100%" border="0" cellspacing="0" cellpadding="0">
 		<thead>
 		<tr>
-			<td valign="middle">&nbsp;<img src="<?= $pfb_status ?>" width="13" height="13" border="0" title="<?=gettext($pfb_msg) ?>" alt="" /></td>
-			<td valign="middle">&nbsp;&nbsp;</td>
-			<td valign="middle" p style="font-size:10px">
-									<?php if ($dcount != 0): ?>
-										<?=gettext("Deny:"); echo("&nbsp;<strong>" . $dcount . "</strong>") ?>
-									<?php endif; ?>
-									<?php if ($pcount != 0): ?>
-										<?=gettext("&nbsp;Permit:"); echo("&nbsp;<strong>" . $pcount . "</strong>") ?>
-									<?php endif; ?>
-									<?php if ($mcount != 0): ?>
-										<?=gettext("&nbsp;Match:"); echo("&nbsp;<strong>" . $mcount . "</strong>"); ?>
-									<?php endif; ?>
-									<?php if ($ncount != 0): ?>
-										<?=gettext("&nbsp;Native:"); echo("&nbsp;<strong>" . $ncount . "</strong>"); ?>
-									<?php endif; ?>
-									<?php if ($pfbsupp_cnt != 0): ?>
-										<?=gettext("&nbsp;Supp:"); echo("&nbsp;<strong>" . $pfbsupp_cnt . "</strong>"); ?>
-									<?php endif; ?></td>
-			<td valign="middle">&nbsp;&nbsp;</td>
-			<td valign="top"><a href="pfblockerng/pfblockerng_log.php"><img src="/themes/<?=$g['theme']; ?>/images/icons/icon_logs.gif"
-				width="13" height="13" border="0" title="<?=gettext("View pfBlockerNG Logs TAB") ?>" alt="" /></a>&nbsp;
-			<td valign="top">
+			<td style="font-size:10px;white-space: nowrap;">&nbsp;<img src="<?= $pfb_status ?>"
+				width="13" height="13" border="0" title="<?=gettext($pfb_msg) ?>" alt="" />
+
+				<?=gettext("&nbsp;") ?>
+				<?php if ($dcount != 0): ?>
+					<?php echo("IP- Deny: <strong>{$dcount}</strong>"); ?>
+				<?php endif; ?>
+				<?php if ($pcount != 0): ?>
+					<?php echo("Permit: <strong>{$pcount}</strong>"); ?>
+				<?php endif; ?>
+				<?php if ($mcount != 0): ?>
+					<?php echo("Match: <strong>{$mcount}</strong>"); ?>
+				<?php endif; ?>
+					<?php if ($ncount != 0): ?>
+				<?php echo("Native: <strong>{$ncount}</strong>"); ?>
+					<?php endif; ?>
+				<?php if ($pfbsupp_cnt != 0): ?>
+					<?php echo("Supp: <strong>{$pfbsupp_cnt}</strong>"); ?>
+				<?php endif; ?>
+				<?=gettext("&nbsp;") ?>
+
+				<a target='_blank' href="pfblockerng/pfblockerng_log.php"><img src="/themes/<?=$g['theme']; ?>/images/icons/icon_logs.gif"
+					width="13" height="13" border="0" title="<?=gettext("View pfBlockerNG Logs TAB") ?>" alt="" /></a>&nbsp;
+
 				<?php if (!empty($results)): ?>		<!--Hide "Ack" Button when Failed Downloads are Empty-->
-					<form action="/widgets/widgets/pfblockerng.widget.php" method="post" name="widget_pfblockerng_ack">
+					<form  style="display:inline;" action="/widgets/widgets/pfblockerng.widget.php" method="post" name="widget_pfblockerng_ack">
 						<input type="hidden" value="clearack" name="pfblockerngack" />
-						<input class="vexpl" type="image" name="pfblockerng_ackbutton" src="/themes/<?=$g['theme']; ?>/images/icons/icon_x.gif"
-							width="14" height="14" border="0" title="<?=gettext("Clear Failed Downloads") ?>"/>
+						<input class="vexpl" type="image" name="pfblockerng_ackbutton" src="/themes/<?=$g['theme']; ?>
+							/images/icons/icon_x.gif" width="14" height="14" border="0" title="<?=gettext("Clear Failed Downloads") ?>"/>
 					</form>
 				<?php endif; ?>
+			</td>
+		</tr>
+
+		<?php if ($pfb['dnsbl'] == 'on'): ?>	<!--Enable DNSBL widget statistics if enabled-->
+		<tr>
+			<td style="font-size:10px">&nbsp;<img src="<?= $dnsbl_status ?>" width="13" height="13" border="0"
+				title="<?=gettext($dnsbl_msg); ?>" alt="" />
+				<?php if ($scount != 0): ?>
+					<?php echo("&nbsp;&nbsp;DNSBL- <strong>{$scount}</strong>&nbsp;&nbsp;"); ?>
+				<?php endif; ?>
+				<form style="display:inline"; action="/widgets/widgets/pfblockerng.widget.php" method="post" name="widget_pfblockerng_dnsblclear">
+					<input type="hidden" value="dnsblclear" name="pfblockerngdnsblclear" />
+					<input class="vexpl" type="image" name="dnsblclearbutton" src="/themes/<?=$g['theme']; ?>/images/icons/icon_x.gif"
+						width="14" height="14" border="0" title="<?=gettext("Clear DNSBL Packets") ?>"/>
+				</form>
+			</td>
+		</tr>
+		<?php endif; ?>
+
+		<tr>
+			<td >
+				<?php echo "<br />&nbsp;MaxMind: {$maxver}"; ?>
 			</td>
 		</tr>
 		</thead>
@@ -426,17 +499,18 @@ $results = array_reverse($results);
 <?php
 
 // Report any failed downloads
-$counter = 0;
 if (!empty($results)) {
+	$counter = 1;
+	$entries = count($results);
 	foreach ($results as $result) {
 		$RowClass = $counter % 2 ? $pfb['RowEvenClass'] : $pfb['RowOddClass'];
-		echo(" <tr " . $RowClass . "><td class='" . $pfb['ColClass'] . "'>" . $result . "</td><tr>");
-		$counter++;
-		if ($counter > $pfb['maxfails']) {
+		if ($counter > $pfb['maxfails'] && $entries > $pfb['maxfails']) {
 			// To many errors stop displaying
-			echo(" <tr " . $RowClass . "><td class='" . $pfb['ColClass'] . "'>" . (count($results) - $pfb['maxfails']) . " more error(s)...</td><tr>");
+			echo("<tr {$RowClass}><td class='{$pfb['ColClass']}'>" . ($entries - $pfb['maxfails']) . ' more error(s)...</td><tr>');
 			break;
 		}
+		echo("<tr {$RowClass}><td class='{$pfb['ColClass']}'>{$result}</td><tr>");
+		$counter++;
 	}
 }
 

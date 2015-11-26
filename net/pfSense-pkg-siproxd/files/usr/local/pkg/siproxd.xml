@@ -43,25 +43,25 @@
 	]]>
 	</copyright>
 	<name>siproxdsettings</name>
-	<version>1.0.6</version>
+	<version>1.0.7</version>
 	<title>siproxd: Settings</title>
 	<include_file>/usr/local/pkg/siproxd.inc</include_file>
-	<aftersaveredirect>/pkg_edit.php?xml=siproxd.xml&amp;id=0</aftersaveredirect>
+	<aftersaveredirect>/pkg_edit.php?xml=siproxd.xml</aftersaveredirect>
 	<menu>
 		<name>siproxd</name>
-		<tooltiptext>Modify siproxd users and settings.</tooltiptext>
 		<section>Services</section>
-		<url>/pkg_edit.php?xml=siproxd.xml&amp;id=0</url>
+		<url>/pkg_edit.php?xml=siproxd.xml</url>
 	</menu>
 	<service>
 		<name>siproxd</name>
 		<rcfile>siproxd.sh</rcfile>
 		<executable>siproxd</executable>
+		<description>Proxy/Masquerading Daemon for SIP</description>
 	</service>
 	<tabs>
 		<tab>
 			<text>Settings</text>
-			<url>/pkg_edit.php?xml=siproxd.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=siproxd.xml</url>
 			<active/>
 		</tab>
 		<tab>
@@ -82,6 +82,10 @@
 		<item>https://packages.pfsense.org/packages/config/siproxd/siproxd.inc</item>
 	</additional_files_needed>
 	<additional_files_needed>
+		<prefix>/etc/inc/priv/</prefix>
+		<item>https://packages.pfsense.org/packages/config/siproxd/siproxd.priv.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
 		<prefix>/usr/local/www/</prefix>
 		<item>https://packages.pfsense.org/packages/config/siproxd/siproxd_registered_phones.php</item>
 	</additional_files_needed>
@@ -89,23 +93,23 @@
 		<field>
 			<fielddescr>Enable siproxd</fielddescr>
 			<fieldname>sipenable</fieldname>
-			<description>Enable or disable siproxd</description>
+			<description>Enable or disable siproxd.</description>
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Inbound interface</fielddescr>
+			<fielddescr>Inbound Interface</fielddescr>
 			<fieldname>if_inbound</fieldname>
 			<description>Select the inbound interface.</description>
 			<type>interfaces_selection</type>
 		</field>
 		<field>
-			<fielddescr>Outbound interface</fielddescr>
+			<fielddescr>Outbound Interface</fielddescr>
 			<fieldname>if_outbound</fieldname>
 			<description>Select the outbound interface.</description>
 			<type>interfaces_selection</type>
 		</field>
 		<field>
-			<fielddescr>Listening port</fielddescr>
+			<fielddescr>Listening Port</fielddescr>
 			<fieldname>port</fieldname>
 			<description>
 				<![CDATA[
@@ -114,11 +118,12 @@
 				]]>
 			</description>
 			<type>input</type>
+			<default_value>5060</default_value>
 		</field>
 		<field>
-			<fielddescr>Default expiration timeout</fielddescr>
+			<fielddescr>Default Expiration Timeout</fielddescr>
 			<fieldname>defaulttimeout</fieldname>
-			<description>If a REGISTER request dose not contain an Expires header or expires= parameter, this number of seconds will be used and reported back to the UA in the answer.</description>
+			<description>If a REGISTER request does not contain an Expires header or expires= parameter, this number of seconds will be used and reported back to the UA in the answer.</description>
 			<type>input</type>
 		</field>
 		<field>
@@ -126,38 +131,36 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Enable RTP proxy</fielddescr>
+			<fielddescr>Enable RTP Proxy</fielddescr>
 			<fieldname>rtpenable</fieldname>
-			<description>Enable or disable the RTP proxy. (default is enabled)</description>
+			<description>Enable or disable the RTP proxy. (Default: enabled)</description>
 			<type>select</type>
 			<options>
-				<option>
-					<name>Enable</name>
-					<value>1</value>
-				</option>
-				<option>
-					<name>Disable</name>
-					<value>0</value>
-				</option>
+				<option><name>Enable</name><value>1</value></option>
+				<option><name>Disable</name><value>0</value></option>
 			</options>
+			<default_value>1</default_value>
 		</field>
 		<field>
-			<fielddescr>RTP port range (lower)</fielddescr>
+			<fielddescr>RTP Port Range (Lower)</fielddescr>
 			<fieldname>rtplower</fieldname>
-			<description>Enter the bottom edge of the port range siproxd will allocate for incoming RTP traffic. This range must be one not blocked by the firewall (default 7070).</description>
+			<description>Enter the bottom edge of the port range siproxd will allocate for incoming RTP traffic. This range must not be blocked by the firewall. (Default: 7070)</description>
 			<type>input</type>
+			<default_value>7070</default_value>
 		</field>
 		<field>
-			<fielddescr>RTP port range (upper)</fielddescr>
+			<fielddescr>RTP Port Range (Upper)</fielddescr>
 			<fieldname>rtpupper</fieldname>
-			<description>Enter the top edge of the port range siproxd will allocate for incoming RTP traffic. This range must be one not blocked by the firewall (default 7079).</description>
+			<description>Enter the top edge of the port range siproxd will allocate for incoming RTP traffic. This range must not be blocked by the firewall. (Default: 7079)</description>
 			<type>input</type>
+			<default_value>7079</default_value>
 		</field>
 		<field>
-			<fielddescr>RTP stream timeout</fielddescr>
+			<fielddescr>RTP Stream Timeout</fielddescr>
 			<fieldname>rtptimeout</fieldname>
-			<description>After this number of seconds, an RTP stream is considered dead and proxying it will be stopped (default 300sec).</description>
+			<description>After this number of seconds, an RTP stream is considered dead and proxying it will be stopped. (Default: 300sec)</description>
 			<type>input</type>
+			<default_value>300</default_value>
 		</field>
 		<field>
 			<name>Dejittering Settings</name>
@@ -180,7 +183,7 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>TCP inactivity timeout</fielddescr>
+			<fielddescr>TCP Inactivity Timeout</fielddescr>
 			<fieldname>tcp_timeout</fieldname>
 			<description>
 				<![CDATA[
@@ -195,8 +198,8 @@
 			<fieldname>tcp_connect_timeout</fieldname>
 			<description>
 				<![CDATA[
-				Defines How many msecs siproxd will wait for an successful connect when establishing an outgoing SIP signalling connection.<br />
-				This should be kept as short as possible as waiting for an TCP connection to establish is a BLOCKING operation - while waiting for a connect to succeed no SIP messages are processed (RTP is not affected).
+				Defines How many msecs siproxd will wait for a successful connect when establishing an outgoing SIP signalling connection.<br />
+				This should be kept as short as possible as waiting for an TCP connection to establish is a BLOCKING operation - no SIP messages are processed while waiting for a connect to succeed (RTP is not affected).
 				]]>
 			</description>
 			<type>input</type>
@@ -212,19 +215,19 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Enable proxy authentication</fielddescr>
+			<fielddescr>Enable Proxy Authentication</fielddescr>
 			<fieldname>authentication</fieldname>
-			<description>If this is checked, clients will be forced to authenticate themselves at the proxy (for registration only).</description>
+			<description>If checked, clients will be forced to authenticate themselves at the proxy (for registration only).</description>
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Outbound proxy hostname</fielddescr>
+			<fielddescr>Outbound Proxy Hostname</fielddescr>
 			<fieldname>outboundproxyhost</fieldname>
 			<description>Enter the hostname of an outbound proxy to send all traffic to. This is only useful if you have multiple masquerading firewalls to cross.</description>
 			<type>input</type>
 		</field>
 		<field>
-			<fielddescr>Outbound proxy port</fielddescr>
+			<fielddescr>Outbound Proxy Port</fielddescr>
 			<fieldname>outboundproxyport</fieldname>
 			<description>Enter the port of the outbound proxy to send all traffic to. This is only useful if you have multiple masquerading firewalls to cross.</description>
 			<type>input</type>
@@ -266,7 +269,7 @@
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Log redirected calls</fielddescr>
+			<fielddescr>Log Redirected Calls</fielddescr>
 			<fieldname>plugin_defaulttarget_log</fieldname>
 			<description>Log redirected calls.</description>
 			<type>checkbox</type>
@@ -371,6 +374,12 @@
 			<type>input</type>
 		</field>
 	</fields>
+	<custom_php_install_command>
+		install_package_siproxd();
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		deinstall_package_siproxd();
+	</custom_php_deinstall_command>
 	<custom_add_php_command>
 		sync_package_siproxd();
 	</custom_add_php_command>
@@ -378,7 +387,7 @@
 		sync_package_siproxd();
 	</custom_php_resync_config_command>
 	<filter_rules_needed>
-		siproxd_generate_rules();
+		siproxd_generate_rules
 	</filter_rules_needed>
 	<custom_php_validation_command>
 		validate_form_siproxd($_POST, $input_errors);

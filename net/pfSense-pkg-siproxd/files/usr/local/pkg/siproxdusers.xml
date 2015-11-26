@@ -43,13 +43,13 @@
 	]]>
 	</copyright>
 	<name>siproxdusers</name>
-	<version>1.0.6</version>
+	<version>1.0.7</version>
 	<title>siproxd: Users</title>
 	<include_file>/usr/local/pkg/siproxd.inc</include_file>
 	<tabs>
 		<tab>
 			<text>Settings</text>
-			<url>/pkg_edit.php?xml=siproxd.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=siproxd.xml</url>
 		</tab>
 		<tab>
 			<text>Users</text>
@@ -61,7 +61,6 @@
 			<url>/siproxd_registered_phones.php</url>
 		</tab>
 	</tabs>
-	<configpath>installedpackages->package->$packagename->configuration->settings</configpath>
 	<adddeleteeditpagefields>
 		<columnitem>
 			<fielddescr>Username</fielddescr>
@@ -76,19 +75,19 @@
 		<field>
 			<fielddescr>Username</fielddescr>
 			<fieldname>username</fieldname>
-			<description>Enter the username here</description>
+			<description>Enter the username here.</description>
 			<type>input</type>
 		</field>
 		<field>
 			<fielddescr>Password</fielddescr>
 			<fieldname>password</fieldname>
-			<description>Enter the password here</description>
+			<description>Enter the password here.</description>
 			<type>password</type>
 		</field>
 		<field>
 			<fielddescr>Username Description</fielddescr>
 			<fieldname>description</fieldname>
-			<description>Enter the description of the user here</description>
+			<description>Enter the description of the user here.</description>
 			<type>input</type>
 		</field>
 	</fields>

@@ -30,6 +30,7 @@
 	POSSIBILITY OF SUCH DAMAGE.
 */
 require_once('certs.inc');
+require_once('util.inc');
 /* This file is currently only being included in squid.inc and not used separately */
 // require_once('squid.inc');
 

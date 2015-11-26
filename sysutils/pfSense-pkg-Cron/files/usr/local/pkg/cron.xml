@@ -41,19 +41,16 @@
 /* ====================================================================================== */
 	]]>
 	</copyright>
-	<description>Cron</description>
-	<name>Cron Settings</name>
-	<version>0.3.1</version>
-	<title>Settings</title>
+	<name>cronsettings</name>
+	<version>0.3.3</version>
+	<title>Cron Settings</title>
 	<include_file>/usr/local/pkg/cron.inc</include_file>
 	<menu>
 		<name>Cron</name>
-		<tooltiptext>Cron settings.</tooltiptext>
 		<section>Services</section>
 		<configfile>cron.xml</configfile>
 		<url>/packages/cron/cron.php</url>
 	</menu>
-	<configpath>installedpackages->package->$packagename->configuration->cron</configpath>
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
 		<item>https://packages.pfsense.org/packages/config/cron/cron.xml</item>
@@ -87,4 +84,7 @@
 	<custom_php_install_command>
 		cron_install_command();
 	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		cron_deinstall_command();
+	</custom_php_deinstall_command>
 </packagegui>

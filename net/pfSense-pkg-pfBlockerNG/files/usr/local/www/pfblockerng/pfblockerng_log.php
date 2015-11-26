@@ -9,15 +9,16 @@
 	Portions of this code are based on original work done for the
 	Snort package for pfSense from the following contributors:
 
-	Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
-	Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
-	Copyright (C) 2006 Scott Ullrich
-	Copyright (C) 2009 Robert Zelaya Sr. Developer
-	Copyright (C) 2012 Ermal Luci
+	Copyright (c) 2015 Electric Sheep Fencing, LLC. All rights reserved.
+	Copyright (c) 2009 Robert Zelaya Sr. Developer
+	Copyright (c) 2005 Bill Marquette
+	Copyright (c) 2004-2005 Scott Ullrich
+	Copyright (c) 2004 Manuel Kasper (BSD 2 clause)
+
 	All rights reserved.
 
 	Adapted for Suricata by:
-	Copyright (C) 2015 Bill Meeks
+	Copyright (c) 2015 Bill Meeks
 	All rights reserved.
 
 	Javascript and Integration modifications by J. Nieuwenhuizen
@@ -46,9 +47,9 @@
 	POSSIBILITY OF SUCH DAMAGE.
 */
 
-require_once("guiconfig.inc");
-require_once("globals.inc");
-require_once("/usr/local/pkg/pfblockerng/pfblockerng.inc");
+require_once('guiconfig.inc');
+require_once('globals.inc');
+require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 
 pfb_global();
 
@@ -61,10 +62,10 @@ function getlogs($logdir, $log_extentions = array('log')) {
 	// Get logfiles
 	$log_filenames = array();
 	foreach ($log_extentions as $extention) {
-		if ($extention <> '*') {
-			$log_filenames = array_merge($log_filenames, glob($logdir . "*." . $extention));
+		if ($extention != '*') {
+			$log_filenames = array_merge($log_filenames, glob($logdir . '*.' . $extention));
 		} else {
-			$log_filenames = array_merge($log_filenames, glob($logdir . "*"));
+			$log_filenames = array_merge($log_filenames, glob($logdir . '*'));
 		}
 	}
 
@@ -91,26 +92,39 @@ function getlogs($logdir, $log_extentions = array('log')) {
 
 $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 						'logdir'	=> "{$pfb['logdir']}/",
-						'logs'		=> array("pfblockerng.log", "error.log", "geoip.log", "maxmind_ver"),
+						'logs'		=> array('pfblockerng.log', 'error.log', 'dnsbl.log', 'extras.log', 'maxmind_ver'),
 						'download'	=> TRUE,
 						'clear'		=> TRUE
 						),
 			'masterfiles'	=> array('name'		=> 'Masterfiles',
 						'logdir'	=> "{$pfb['dbdir']}/",
-						'logs'		=> array("masterfile", "mastercat"),
+						'logs'		=> array('masterfile', 'mastercat'),
 						'download'	=> TRUE,
 						'clear'		=> FALSE
 						),
-			'originallogs'	=> array('name'		=> 'Original Files',
+			'originallogs'	=> array('name'		=> 'Original IP Files',
 						'ext'		=> array('orig', 'raw'),
 						'logdir'	=> "{$pfb['origdir']}/",
 						'download'	=> TRUE,
 						'clear'		=> TRUE
 						),
+			'origdnslogs'	=> array('name'		=> 'Original DNS Files',
+						'ext'		=> array('orig', 'raw'),
+						'logdir'	=> "{$pfb['dnsorigdir']}/",
+						'download'	=> TRUE,
+						'clear'		=> TRUE
+						),	
 			'denylogs'	=> array('name'		=> 'Deny Files',
 						'ext'		=> 'txt',
 						'txt'		=> 'deny',
 						'logdir'	=> "{$pfb['denydir']}/",
+						'download'	=> TRUE,
+						'clear'		=> TRUE
+						),
+			'dnsbl'		=> array('name'		=> 'DNSBL Files',
+						'ext'		=> array('txt', 'ip'),
+						'txt'		=> 'dnsbl',
+						'logdir'	=> "{$pfb['dnsdir']}/",
 						'download'	=> TRUE,
 						'clear'		=> TRUE
 						),
@@ -151,13 +165,19 @@ $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 						'logdir'	=> "{$pfb['ccdir']}/",
 						'download'	=> TRUE,
 						'clear'		=> FALSE
+						),
+			'unbound'	=> array('name'		=> 'Unbound',
+						'ext'		=> 'conf',
+						'logdir'	=> "{$pfb['dnsbldir']}/",
+						'download'	=> TRUE,
+						'clear'		=> FALSE
 						)
 		);
 
 // Check logtypes
 $logtypeid = 'defaultlogs';
 if (isset($_POST['logtype'])) {
-	$logtypeid = $_POST['logtype'];
+	$logtypeid = htmlspecialchars($_POST['logtype']);
 } elseif (isset($_GET['logtype'])) {
 	$logtypeid = htmlspecialchars($_GET['logtype']);
 }
@@ -165,17 +185,17 @@ if (isset($_POST['logtype'])) {
 // Check if POST has been set
 if (isset($_POST['file'])) {
 	clearstatcache();
-	$pfb_logfilename = $_POST['file'];
+	$pfb_logfilename = htmlspecialchars($_POST['file']);
 	$pfb_ext = pathinfo($pfb_logfilename, PATHINFO_EXTENSION);
 
 	// Load log
 	if ($_POST['action'] == 'load') {
 		if (!is_file($pfb_logfilename)) {
-			echo "|3|" . gettext("Log file is empty or does not exist") . ".|";
+			echo "|3|" . gettext('Log file is empty or does not exist') . ".|";
 		} else {
 			$data = file_get_contents($pfb_logfilename);
 			if ($data === false) {
-				echo "|1|" . gettext("Failed to read log file") . ".|";
+				echo "|1|" . gettext('Failed to read log file') . ".|";
 			} else {
 				$data = base64_encode($data);
 				echo "|0|" . $pfb_logfilename . "|" . $data . "|";
@@ -186,7 +206,7 @@ if (isset($_POST['file'])) {
 }
 
 if (isset($_POST['logFile'])) {
-	$s_logfile = $_POST['logFile'];
+	$s_logfile = htmlspecialchars($_POST['logFile']);
 
 	// Clear selected file
 	if (isset($_POST['clear'])) {
@@ -201,32 +221,33 @@ if (isset($_POST['logFile'])) {
 				header('Pragma: ');
 				header('Cache-Control: ');
 			} else {
-				header("Pragma: private");
-				header("Cache-Control: private, must-revalidate");
+				header('Pragma: private');
+				header('Cache-Control: private, must-revalidate');
 			}
-			header("Content-Type: application/octet-stream");
-			header("Content-length: " . filesize($s_logfile));
-			header("Content-disposition: attachment; filename = " . basename($s_logfile));
+			header('Content-Type: application/octet-stream');
+			header('Content-length: ' . filesize($s_logfile));
+			header('Content-disposition: attachment; filename = ' . basename($s_logfile));
 			ob_end_clean(); //important or other post will fail
 			readfile($s_logfile);
 		}
 	}
 } else {
-	$s_logfile = "";
+	$s_logfile = '';
 }
 
-$pgtitle = gettext("pfBlockerNG: Log Browser");
-include_once("head.inc");
+$pgtitle = gettext('pfBlockerNG: Log Browser');
+include_once('head.inc');
 ?>
 
 <body link="#000000" vlink="#0000CC" alink="#000000">
 
 <?php
-include_once("fbegin.inc");
+include_once('fbegin.inc');
 if ($input_errors) {
 	print_input_errors($input_errors);
 }
 ?>
+
 <script type="text/javascript" src="/javascript/base64.js"></script>
 <script type="text/javascript">	
 //<![CDATA[
@@ -238,7 +259,7 @@ if ($input_errors) {
 		jQuery("#fbTarget").html("");
 
 		jQuery.ajax(
-			"<?=$_SERVER['SCRIPT_NAME'];?>", {
+			"/pfblockerng/pfblockerng_log.php", {
 				type: 'POST',
 				data: "instance=" + jQuery("#instance").val() + "&action=load&file=" + jQuery("#logFile").val(),
 				complete: loadComplete
@@ -271,7 +292,7 @@ if ($input_errors) {
 </script>
 
 <?php
-echo("<form action='" . $_SERVER['PHP_SELF'] . "' method='post' id='formbrowse'>");
+echo("<form action='/pfblockerng/pfblockerng_log.php' method='post' id='formbrowse'>");
 if ($savemsg) {
 	print_info_box($savemsg);
 }
@@ -282,22 +303,16 @@ if ($savemsg) {
 		<td>
 	<?php
 		$tab_array = array();
-		$tab_array[] = array(gettext("General"), false, "/pkg_edit.php?xml=pfblockerng.xml&amp;id=0");
+		$tab_array[] = array(gettext("General"), false, "/pkg_edit.php?xml=pfblockerng.xml");
 		$tab_array[] = array(gettext("Update"), false, "/pfblockerng/pfblockerng_update.php");
 		$tab_array[] = array(gettext("Alerts"), false, "/pfblockerng/pfblockerng_alerts.php");
-		$tab_array[] = array(gettext("Reputation"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml&id=0");
+		$tab_array[] = array(gettext("Reputation"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml");
 		$tab_array[] = array(gettext("IPv4"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml");
 		$tab_array[] = array(gettext("IPv6"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml");
-		$tab_array[] = array(gettext("Top 20"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml&id=0");
-		$tab_array[] = array(gettext("Africa"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_Africa.xml&id=0");
-		$tab_array[] = array(gettext("Asia"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_Asia.xml&id=0");
-		$tab_array[] = array(gettext("Europe"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_Europe.xml&id=0");
-		$tab_array[] = array(gettext("N.A."), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_NorthAmerica.xml&id=0");
-		$tab_array[] = array(gettext("Oceania"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_Oceania.xml&id=0");
-		$tab_array[] = array(gettext("S.A."), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_SouthAmerica.xml&id=0");
-		$tab_array[] = array(gettext("P.S."), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_ProxyandSatellite.xml&id=0");
+		$tab_array[] = array(gettext("DNSBL"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml");
+		$tab_array[] = array(gettext("Country"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml");
 		$tab_array[] = array(gettext("Logs"), true, "/pfblockerng/pfblockerng_log.php");
-		$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml&id=0");
+		$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml");
 		display_top_tabs($tab_array, true);
 	?>
 		</td>
@@ -311,9 +326,9 @@ if ($savemsg) {
 				<td colspan="2" class="listtopic"><?php echo gettext("Log/File Browser Selections"); ?></td>
 			</tr>
 			<tr>
-				<td colspan="3" class="vncell" align="left"><?php echo gettext("LINKS :"); ?> &nbsp;
-				<a href='/firewall_aliases.php' target="_blank"><?php echo gettext("Firewall Alias"); ?></a> &nbsp;
-				<a href='/firewall_rules.php' target="_blank"><?php echo gettext("Firewall Rules"); ?></a> &nbsp;
+				<td colspan="3" class="vncell" align="left"><?php echo gettext("LINKS :"); ?>&emsp;
+				<a href='/firewall_aliases.php' target="_blank"><?php echo gettext("Firewall Alias"); ?></a>&emsp;
+				<a href='/firewall_rules.php' target="_blank"><?php echo gettext("Firewall Rules"); ?></a>&emsp;
 				<a href='/diag_logs_filter.php' target="_blank"><?php echo gettext("Firewall Logs"); ?></a><br /></td>
 			</tr>
 			<tr>
@@ -324,16 +339,16 @@ if ($savemsg) {
 				$clearable = FALSE;
 				$downloadable = FALSE;
 				foreach ($pfb_logtypes as $id => $logtype) {
-					$selected = "";
+					$selected = '';
 					if ($id == $logtypeid) {
-						$selected = " selected";
+						$selected = ' selected';
 						$clearable = $logtype['clear'];
 						$downloadable = $logtype['download'];
 					}
 					echo("<option value='" . $id . "'" . $selected . ">" . $logtype['name'] . "</option>\n");
 				}
 			?>
-					</select>&nbsp;&nbsp;<?php echo gettext('Choose which type of log/file you want to view.'); ?>
+					</select>&emsp;<?php echo gettext('Choose which type of log/file you want to view.'); ?>
 				</td>
 			</tr>
 			<tr>
@@ -347,14 +362,14 @@ if ($savemsg) {
 					$logs = getlogs($pfb_logtypes[$logtypeid]['logdir'], $pfb_logtypes[$logtypeid]['ext']);
 				}
 				foreach ($logs as $log) {
-					$selected = "";
+					$selected = '';
 					if ($log == $pfb_logfilename) {
-						$selected = " selected";
+						$selected = ' selected';
 					}
 					echo("<option value='" . $pfb_logtypes[$logtypeid]['logdir'] . $log . "'" . $selected . ">" . $log . "</option>\n");
 				}
 			?>
-					</select>&nbsp;&nbsp;<?php echo gettext('Choose which log/file you want to view.'); ?>
+					</select>&emsp;<?php echo gettext('Choose which log/file you want to view.'); ?>
 				</td>
 			</tr>
 			<tr>
@@ -424,6 +439,6 @@ if ($savemsg) {
 //]]>
 </script>
 <?php endif; ?>
-<?php include("fend.inc"); ?>
+<?php include('fend.inc'); ?>
 </body>
 </html>

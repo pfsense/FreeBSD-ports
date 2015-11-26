@@ -349,8 +349,9 @@ class squidstat {
 				$is_time = time();
 				$curr_speed = 0;
 				$avg_speed = 0;
-				if (isset($session_data[$con_id]) && $con_data == $session_data[$con_id]) {
+				if (isset($session_data[$con_id]) && !empty($session_data[$con_id])) {
 					// if we have info about current connection, we do analyze its data current speed
+					$con_data = $session_data[$con_id];
 					$was_time = $con_data['time'];
 					$was_size = $con_data['size'];
 					if ($was_time && $was_size) {
@@ -505,8 +506,9 @@ class squidstat {
 				$con_id = $con['connection'];
 				$is_time = time();
 				$curr_speed = $avg_speed = 0;
-				if (isset($session_data[$con_id]) && $con_data == $session_data[$con_id]) {
+				if (isset($session_data[$con_id]) && !empty($session_data[$con_id])) {
 					// if we have info about current connection, we do analyze its data current speed
+					$con_data = $session_data[$con_id];
 					$was_time = $con_data['time'];
 					$was_size = $con_data['size'];
 					if ($was_time && $was_size) {

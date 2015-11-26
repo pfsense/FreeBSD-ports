@@ -1,8 +1,7 @@
 <?php
 /*
-	cron.inc
-	part of pfSense (https://www.pfSense.org/)
-	Copyright (C) 2008 Mark J Crane
+	siproxd.priv.inc
+	part of pfSense (http://www.pfSense.org/)
 	Copyright (C) 2015 ESF, LLC
 	All rights reserved.
 
@@ -27,30 +26,17 @@
 	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
 */
-require_once("pfsense-utils.inc");
-require_once("services.inc");
-require_once("util.inc");
+global $priv_list;
 
-function cron_sync_package() {
-	configure_cron();
-	// Previous package versions were "helpfully" killing cron on uninstall.
-	// Also, need to make sure cron is running, otherwise the package is useless.
-	// configure_cron() function in services.inc already does this check on pfSense >=2.2.5
-	$pfs_version = str_replace(".", "", substr(trim(file_get_contents("/etc/version")), 0, 5));
-	if ($pfs_version < 225) {
-		if (!is_process_running("cron")) {
-			exec("cd /tmp && /usr/sbin/cron -s 2>/dev/null");
-		}
-	}
-}
+$priv_list['page-services-siproxd'] = array();
+$priv_list['page-services-siproxd']['name'] = "WebCfg - Services: siproxd package";
+$priv_list['page-services-siproxd']['descr'] = "Allow access to siproxd package GUI";
 
-function cron_install_command() {
-	// Clean up possible lingering garbage after previous package versions
-	unlink_if_exists("/usr/local/etc/rc.d/cron.sh");
-}
-
-function cron_deinstall_command() {
-	rmdir_recursive("/usr/local/www/packages/cron");
-}
+$priv_list['page-services-siproxd']['match'] = array();
+$priv_list['page-services-siproxd']['match'][] = "pkg.php?xml=siproxd.xml*";
+$priv_list['page-services-siproxd']['match'][] = "pkg.php?xml=siproxdusers.xml*";
+$priv_list['page-services-siproxd']['match'][] = "pkg_edit.php?xml=siproxd.xml*";
+$priv_list['page-services-siproxd']['match'][] = "pkg_edit.php?xml=siproxdusers.xml*";
+$priv_list['page-services-siproxd']['match'][] = "siproxd_registered_phones.php*";
 
 ?>

@@ -29,13 +29,16 @@
 	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
 */
-require_once('globals.inc');
 require_once('config.inc');
-require_once('util.inc');
+require_once('filter.inc');
+require_once('globals.inc');
+require_once("notices.inc");
 require_once('pfsense-utils.inc');
 require_once('pkg-utils.inc');
-require_once('filter.inc');
 require_once('service-utils.inc');
+require_once('util.inc');
+require_once("xmlrpc.inc");
+require_once("xmlrpc_client.inc");
 require_once('squidguard_configurator.inc');
 
 # ------------------------------------------------------------------------------
