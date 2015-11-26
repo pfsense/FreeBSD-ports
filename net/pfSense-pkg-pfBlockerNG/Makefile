@@ -13,7 +13,7 @@ COMMENT=	pfSense package pfBlockerNG
 RUN_DEPENDS=	${LOCALBASE}/bin/geoiplookup:${PORTSDIR}/net/GeoIP \
 		${LOCALBASE}/bin/grepcidr:${PORTSDIR}/net-mgmt/grepcidr \
 		${LOCALBASE}/bin/aggregate:${PORTSDIR}/net-mgmt/aggregate \
-		${LOCALBASE}/bin/whois:${PORTSDIR}/net/whois
+		${LOCALBASE}/bin/mwhois:${PORTSDIR}/net/whois
 
 NO_BUILD=	yes
 NO_MTREE=	yes
