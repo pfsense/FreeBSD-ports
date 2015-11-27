@@ -1936,11 +1936,11 @@ PHP_FUNCTION(pfSense_vlan_create) {
 	char *ifname = NULL;
 	char *parentifname = NULL;
 	int ifname_len, parent_len;
-	long tag; 
+	long tag, pcp; 
 	struct ifreq ifr;
 	struct vlanreq params;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ssl", &ifname, &ifname_len, &parentifname, &parent_len, &tag) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ssll", &ifname, &ifname_len, &parentifname, &parent_len, &tag, &pcp) == FAILURE) {
 		RETURN_NULL();
 	}
 
@@ -1951,6 +1951,9 @@ PHP_FUNCTION(pfSense_vlan_create) {
 	params.vlr_tag = (u_short) tag;
 	ifr.ifr_data = (caddr_t) &params;
 	if (ioctl(PFSENSE_G(s), SIOCSETVLAN, (caddr_t) &ifr) < 0)
+		RETURN_NULL();
+	ifr.ifr_vlan_pcp = (u_short) pcp;
+	if (ioctl(PFSENSE_G(s), SIOCSETVLANPCP, (caddr_t) &ifr) < 0)
 		RETURN_NULL();
 
 	RETURN_TRUE;
