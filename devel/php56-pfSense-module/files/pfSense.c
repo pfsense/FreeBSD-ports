@@ -1953,7 +1953,7 @@ PHP_FUNCTION(pfSense_vlan_create) {
 	if (ioctl(PFSENSE_G(s), SIOCSETVLAN, (caddr_t) &ifr) < 0)
 		RETURN_NULL();
 	ifr.ifr_vlan_pcp = (u_short) pcp;
-	if (ioctl(PFSENSE_G(s), SIOCSETVLANPCP, (caddr_t) &ifr) < 0)
+	if (ioctl(PFSENSE_G(s), SIOCSVLANPCP, (caddr_t) &ifr) < 0)
 		RETURN_NULL();
 
 	RETURN_TRUE;
