@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squidreverseuri</name>
-	<version>0.3.7</version>
+	<version>0.4.5</version>
 	<title>Reverse Proxy Server: Mappings</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
@@ -112,6 +112,7 @@
 			</description>
 			<type>input</type>
 			<size>20</size>
+			<required/>
 		</field>
 		<field>
 			<fielddescr>Group Description</fielddescr>
@@ -134,7 +135,7 @@
 			<source_name>name</source_name>
 			<source_value>name</source_value>
 			<multiple/>
-			<size>05</size>
+			<size>5</size>
 		</field>
 		<field>
 			<fielddescr>
@@ -154,6 +155,7 @@
 					<fieldname>uri</fieldname>
 					<type>input</type>
 					<size>70</size>
+					<required/>
 				</rowhelperfield>
 			</rowhelper>
 		</field>

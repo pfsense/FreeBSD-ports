@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squidreverseredir</name>
-	<version>0.3.7</version>
+	<version>0.4.5</version>
 	<title>Reverse Proxy Server: Redirects</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
@@ -112,6 +112,7 @@
 			</description>
 			<type>input</type>
 			<size>20</size>
+			<required/>
 		</field>
 		<field>
 			<fielddescr>Redirect Description</fielddescr>
@@ -136,6 +137,7 @@
 				<option><name>HTTP</name><value>HTTP</value></option>
 				<option><name>HTTPS</name><value>HTTPS</value></option>
 			</options>
+			<required/>
 		</field>
 		<field>
 			<fielddescr>
@@ -154,6 +156,7 @@
 					<fieldname>uri</fieldname>
 					<type>input</type>
 					<size>60</size>
+					<required/>
 				</rowhelperfield>
 			</rowhelper>
 		</field>
@@ -168,6 +171,7 @@
 			</description>
 			<type>input</type>
 			<size>60</size>
+			<required/>
 		</field>
 		<field>
 			<fielddescr>URL to Redirect To</fielddescr>
@@ -175,6 +179,7 @@
 			<description>Enter the URL to redirect to here.</description>
 			<type>input</type>
 			<size>60</size>
+			<required/>
 		</field>
 	</fields>
 	<custom_php_resync_config_command>

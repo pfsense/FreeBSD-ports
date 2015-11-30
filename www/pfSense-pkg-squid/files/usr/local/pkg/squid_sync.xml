@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squidsync</name>
-	<version>0.4.2</version>
+	<version>0.4.5</version>
 	<title>Proxy Server: XMLRPC Sync</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
@@ -104,7 +104,6 @@
 				]]>
 			</description>
 			<type>select</type>
-			<required/>
 			<default_value>disabled</default_value>
 			<options>
 				<option><name>Sync to configured system backup server</name><value>auto</value></option>
@@ -117,7 +116,6 @@
 			<fieldname>synctimeout</fieldname>
 			<description>XMLRPC timeout in seconds.</description>
 			<type>select</type>
-			<required/>
 			<default_value>250</default_value>
 			<options>
 				<option><name>250 seconds (Default)</name><value>250</value></option>
@@ -155,6 +153,7 @@
 					<description><![CDATA[IP address or hostname of the destination host.]]></description>
 					<type>input</type>
 					<size>40</size>
+					<required/>
 				</rowhelperfield>
 				<rowhelperfield>
 					<fielddescr>Port</fielddescr>
@@ -162,6 +161,7 @@
 					<description><![CDATA[Choose the sync port of the destination host.]]></description>
 					<type>input</type>
 					<size>3</size>
+					<required/>
 				</rowhelperfield>
 				<rowhelperfield>
 					<fielddescr>Admin Password</fielddescr>
@@ -169,6 +169,7 @@
 					<description><![CDATA[Password of the user "admin" on the destination host.]]></description>
 					<type>password</type>
 					<size>20</size>
+					<required/>
 				</rowhelperfield>
 			</rowhelper>
 		</field>

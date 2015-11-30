@@ -30,6 +30,7 @@
 	POSSIBILITY OF SUCH DAMAGE.
 */
 require_once('certs.inc');
+require_once("pfsense-utils.inc");
 require_once('util.inc');
 /* This file is currently only being included in squid.inc and not used separately */
 // require_once('squid.inc');
@@ -41,47 +42,84 @@ function squid_resync_reverse() {
 	// config file
 	if (is_array($config['installedpackages']['squidreversegeneral'])) {
 		$settings = $config['installedpackages']['squidreversegeneral']['config'][0];
+	} else {
+		$settings = array();
 	}
 	if (is_array($config['installedpackages']['squidreversepeer'])) {
 		$reverse_peers = $config['installedpackages']['squidreversepeer']['config'];
+	} else {
+		$reverse_peers = array();
 	}
 	if (is_array($config['installedpackages']['squidreverseuri'])) {
 		$reverse_maps = $config['installedpackages']['squidreverseuri']['config'];
+	} else {
+		$reverse_maps = array();
 	}
 	if (is_array($config['installedpackages']['squidreverseredir'])) {
 		$reverse_redir = $config['installedpackages']['squidreverseredir']['config'];
+	} else {
+		$reverse_redir = array();
 	}
 
 	$conf = "# Reverse Proxy settings\n";
 
-	if (isset($settings["reverse_ssl_cert"]) && $settings["reverse_ssl_cert"] != "none") {
-		$svr_cert = lookup_cert($settings["reverse_ssl_cert"]);
+	if (isset($settings['reverse_ssl_cert']) && $settings['reverse_ssl_cert'] != "none") {
+		$svr_cert = lookup_cert($settings['reverse_ssl_cert']);
 		if ($svr_cert != false) {
 			if (base64_decode($svr_cert['crt'])) {
-				file_put_contents(SQUID_CONFBASE . "/{$settings["reverse_ssl_cert"]}.crt", sq_text_area_decode($svr_cert['crt']));
-				$reverse_crt = SQUID_CONFBASE . "/{$settings["reverse_ssl_cert"]}.crt";
+				file_put_contents(SQUID_CONFBASE . "/{$settings['reverse_ssl_cert']}.crt", sq_text_area_decode($svr_cert['crt']));
+				$reverse_crt = SQUID_CONFBASE . "/{$settings['reverse_ssl_cert']}.crt";
 			}
 			if (base64_decode($svr_cert['prv'])) {
-				file_put_contents(SQUID_CONFBASE . "/{$settings["reverse_ssl_cert"]}.key", sq_text_area_decode($svr_cert['prv']));
-				$reverse_key = SQUID_CONFBASE . "/{$settings["reverse_ssl_cert"]}.key";
+				file_put_contents(SQUID_CONFBASE . "/{$settings['reverse_ssl_cert']}.key", sq_text_area_decode($svr_cert['prv']));
+				$reverse_key = SQUID_CONFBASE . "/{$settings['reverse_ssl_cert']}.key";
 			}
 		}
 	}
 
 	if (!empty($settings['reverse_int_ca'])) {
-		file_put_contents(SQUID_CONFBASE . "/{$settings["reverse_ssl_cert"]}.crt", "\n" . sq_text_area_decode($settings['reverse_int_ca']), FILE_APPEND | LOCK_EX);
+		file_put_contents(SQUID_CONFBASE . "/{$settings['reverse_ssl_cert']}.crt", "\n" . sq_text_area_decode($settings['reverse_int_ca']), FILE_APPEND | LOCK_EX);
+	}
+
+	if (isset($settings['reverse_check_clientca']) && $settings['reverse_check_clientca'] == "on") {
+		if (isset($settings['reverse_ssl_clientca']) && $settings['reverse_ssl_clientca'] != 'none') {
+			$clientca_cert = lookup_ca($settings['reverse_ssl_clientca']);
+			$clientca_opts = '';
+			if ($clientca_cert != false) {
+				if (base64_decode($clientca_cert['crt'])) {
+					file_put_contents(SQUID_CONFBASE . "/{$settings['reverse_ssl_clientca']}.crt", sq_text_area_decode($clientca_cert['prv']));
+					$clientca_opts = "clientca=" . SQUID_CONFBASE . "/{$settings['reverse_ssl_clientca']}.crt";
+				}
+				if (base64_decode($clientca_cert['prv'])) {
+					file_put_contents(SQUID_CONFBASE . "/{$settings['reverse_ssl_clientca']}.crt", "\n" . sq_text_area_decode($clientca_cert['crt']), FILE_APPEND | LOCK_EX);
+				}
+			}
+		}
+		if (isset($settings['reverse_ssl_clientcrl']) && $settings['reverse_ssl_clientcrl'] != 'none') {
+			$crl = lookup_crl($settings['reverse_ssl_clientcrl']);
+			crl_update($crl);
+			if ($crl != false) {
+				if (base64_decode($crl['text'])) {
+					file_put_contents(SQUID_CONFBASE . "/{$settings['reverse_ssl_clientcrl']}.crl", sq_text_area_decode($crl['text']));
+					$clientca_opts .= " crlfile=" . SQUID_CONFBASE . "/{$settings['reverse_ssl_clientcrl']}.crl sslflags=VERIFY_CRL";
+				}
+			}
+		}
 	}
 
 	$ifaces = ($settings['reverse_interface'] ? $settings['reverse_interface'] : 'wan');
 	$real_ifaces = array();
 
 	// set HTTP port and defsite
-	$http_port = (empty($settings['reverse_http_port']) ? "80" : $settings['reverse_http_port']);
+	$http_port = (!is_port($settings['reverse_http_port']) ? "80" : $settings['reverse_http_port']);
 	$http_defsite = (empty($settings['reverse_http_defsite']) ? $settings['reverse_external_fqdn'] : $settings['reverse_http_defsite']);
 
 	// set HTTPS port and defsite
-	$https_port = (empty($settings['reverse_https_port']) ? "443" : $settings['reverse_https_port']);
+	$https_port = (!is_port($settings['reverse_https_port']) ? "443" : $settings['reverse_https_port']);
 	$https_defsite = (empty($settings['reverse_https_defsite']) ? $settings['reverse_external_fqdn'] : $settings['reverse_https_defsite']);
+
+	// Ignore Internal Certificate Validation
+	$sslflags = ($settings['reverse_ignore_ssl_valid'] == "on" ? "sslflags=DONT_VERIFY_PEER" : "");
 
 	foreach (explode(",", $ifaces) as $i => $iface) {
 		$real_ifaces[] = squid_get_real_interface_address($iface);
@@ -92,7 +130,7 @@ function squid_resync_reverse() {
 			}
 			//HTTPS
 			if (!empty($settings['reverse_https'])) {
-				$conf .= "https_port {$real_ifaces[$i][0]}:{$https_port} accel cert={$reverse_crt} key={$reverse_key} defaultsite={$https_defsite} vhost\n";
+				$conf .= "https_port {$real_ifaces[$i][0]}:{$https_port} accel cert={$reverse_crt} key={$reverse_key} {$clientca_opts} defaultsite={$https_defsite} vhost\n";
 			}
 		}
 	}
@@ -112,13 +150,13 @@ function squid_resync_reverse() {
 	}
 
 	// peers
-	if (($settings['reverse_owa'] == 'on') && (!empty($settings['reverse_owa_ip']))) {
+	if ($settings['reverse_owa'] == 'on') {
 		if (!empty($settings['reverse_owa_ip'])) {
 			$reverse_owa_ip = explode(";", ($settings['reverse_owa_ip']));
 			$casnr = 0;
 			foreach ($reverse_owa_ip as $reowaip) {
 				$casnr++;
-				$conf .= "cache_peer {$reowaip} parent 443 0 proxy-only no-query no-digest originserver login=PASSTHRU connection-auth=on ssl sslflags=DONT_VERIFY_PEER front-end-https=on name=OWA_HOST_443_{$casnr}_pfs\n";
+				$conf .= "cache_peer {$reowaip} parent 443 0 proxy-only no-query no-digest originserver login=PASSTHRU connection-auth=on ssl {$sslflags} front-end-https=on name=OWA_HOST_443_{$casnr}_pfs\n";
 				$conf .= "cache_peer {$reowaip} parent 80 0 proxy-only no-query no-digest originserver login=PASSTHRU connection-auth=on name=OWA_HOST_80_{$casnr}_pfs\n";
 			}
 		}
@@ -131,7 +169,7 @@ function squid_resync_reverse() {
 				$conf_peer = "#{$rp['description']}\n";
 				$conf_peer .= "cache_peer {$rp['ip']} parent {$rp['port']} 0 proxy-only no-query no-digest originserver login=PASSTHRU connection-auth=on round-robin ";
 				if ($rp['protocol'] == 'HTTPS') {
-					$conf_peer .= "ssl sslflags=DONT_VERIFY_PEER front-end-https=auto ";
+					$conf_peer .= "ssl {$sslflags} front-end-https=auto ";
 				}
 				$conf_peer .= "name=rvp_{$rp['name']}\n\n";
 
@@ -259,13 +297,53 @@ function squid_resync_reverse() {
 		$conf .= "http_access allow OWA_URI_pfs\n";
 	}
 
-	$conf .= $cache_peer_allow_conf.$cache_peer_deny_conf.$cache_peer_never_direct_conf.$http_access_conf."\n";
+	$conf .= $cache_peer_allow_conf . $cache_peer_deny_conf . $cache_peer_never_direct_conf . $http_access_conf . "\n";
 
 	if (!empty($settings['deny_info_tcp_reset'])) {
 		$conf .= "deny_info TCP_RESET allsrc\n";
 	}
 
 	return $conf;
+}
+
+/* Refresh Client Certificate Revocation List */
+function squid_refresh_crl() {
+	global $config;
+
+	if (is_array($config['installedpackages']['squidreversegeneral'])) {
+		$settings = $config['installedpackages']['squidreversegeneral']['config'][0];
+	} else {
+		$settings = array();
+	}
+
+	if (isset($settings['reverse_check_clientca']) && $settings['reverse_check_clientca'] == "on" && isset($settings['reverse_ssl_clientcrl']) && $settings['reverse_ssl_clientcrl'] != 'none') {
+		$crl = lookup_crl($settings['reverse_ssl_clientcrl']);
+		crl_update($crl);
+		if ($crl != false) {
+			if (base64_decode($crl['text'])) {
+				file_put_contents(SQUID_CONFBASE . "/{$settings['reverse_ssl_clientcrl']}.crl", sq_text_area_decode($crl['text']));
+			}
+		}
+	}
+}
+
+/* Check whether Squid reverse proxy is enabled */
+function squid_reverse_enabled() {
+	global $config, $reverse_proxy_enabled;
+	$reverse_proxy_enabled = false;
+
+	if (is_array($config['installedpackages']['squidreversegeneral']['config'])) {
+		// check whether HTTP or HTTPS reverse proxy is enabled ...
+		if ($config['installedpackages']['squidreversegeneral']['config'][0]['reverse_http'] == "on" ||
+		    $config['installedpackages']['squidreversegeneral']['config'][0]['reverse_https'] == "on") {
+			// ... and has at least one reverse interface configured
+			if (!empty($config['installedpackages']['squidreversegeneral']['config'][0]['reverse_interface'])) {
+				$reverse_proxy_enabled = true;
+			}
+		}
+	}
+
+	return $reverse_proxy_enabled;
 }
 
 /* Migrate reverse proxy configuration from old Squid package versions */
@@ -325,51 +403,84 @@ function squid_reverse_upgrade_config() {
 function squid_validate_reverse($post, &$input_errors) {
 	global $config;
 
+	/* Manually refresh client CRL */
+	if ($post['refresh_crl'] == 'Refresh CRL') {
+		log_error("[squid] Client Certificate Revocation List refresh forced via GUI. Refreshing now...");
+		squid_refresh_crl();
+	}
+
+	if ($post['reverse_http'] == 'on' || $post['reverse_https'] == 'on') {
+		if (empty($post['reverse_interface'])) {
+			$input_errors[] = "You must select at least one interface under 'Reverse Proxy Interface(s)' to enable HTTP Reverse Proxy.";
+		}
+		$fqdn = trim($post['reverse_external_fqdn']);
+		if (empty($fqdn) || !is_domain($fqdn)) {
+			$input_errors[] = "'External FQDN' field must contain a valid domain name.";
+		}
+		unset($fqdn);
+	}
+
 	if (!empty($post['reverse_ip'])) {
 		$reverse_ip = explode(";", ($post['reverse_ip']));
 		foreach ($reverse_ip as $reip) {
-			if (!is_ipaddr(trim($reip))) {
-				$input_errors[] = "You must enter a valid IP address in the 'User-defined reverse-proxy IPs' field. '$reip' is invalid.";
+			if (!is_ipaddr_configured(trim($reip))) {
+				$input_errors[] = "You must enter a valid, locally configured IP address in the 'User Defined Reverse Proxy IPs' field. '$reip' is invalid.";
+			}
+		}
+		unset($reverse_ip);
+	}
+
+	if ($post['reverse_http'] == 'on') {
+		$port = trim($post['reverse_http_port']);
+		preg_match("/(\d+)/", shell_exec("/sbin/sysctl net.inet.ip.portrange.reservedhigh"), $portrange);
+		if (!is_port($port)) {
+			$input_errors[] = "'Reverse HTTP port' must contain a valid port number.";
+		}
+		if (is_port($port) && $port <= $portrange[1]) {
+			$input_errors[] = "'Reverse HTTP port' must contain a port number higher than net.inet.ip.portrange.reservedhigh sysctl value({$portrange[1]}).";
+			$input_errors[] = "To listen on low ports, change portrange.reservedhigh sysctl value to 0 in System: Advanced: System Tunables and restart Squid daemon.";
+		}
+		unset($port, $portrange);
+	}
+
+	if ($post['reverse_https'] == 'on') {
+		$port = trim($post['reverse_https_port']);
+		preg_match("/(\d+)/", shell_exec("/sbin/sysctl net.inet.ip.portrange.reservedhigh"), $portrange);
+		if (!is_port($port)) {
+			$input_errors[] = "'Reverse HTTPS port' must contain a valid port number.";
+		}
+		if (!empty($port) && is_port($port) && $port <= $portrange[1]) {
+			$input_errors[] = "'Reverse HTTPS port' must contain a port number higher than net.inet.ip.portrange.reservedhigh sysctl value({$portrange[1]}).";
+			$input_errors[] = "To listen on low ports, change portrange.reservedhigh sysctl value to 0 in System: Advanced: System Tunables and restart Squid daemon.";
+		}
+		unset($port, $portrange);
+
+		if ($post['reverse_ssl_cert'] == 'none') {
+			$input_errors[] = "A valid certificate for the external interface must be selected when 'HTTPS Reverse Proxy' is enabled.";
+		}
+
+		if ($post['reverse_check_clientca'] == 'on') {
+			if ($post['reverse_ssl_clientca'] == 'none') {
+				$input_errors[] = "A valid 'Client Certificate CA' must be selected when 'Check Client Certificate' is enabled";
 			}
 		}
 	}
 
-	$fqdn = trim($post['reverse_external_fqdn']);
-	if (!empty($fqdn) && !is_domain($fqdn)) {
-		$input_errors[] = "'External FQDN' field must contain a valid domain name.";
-	}
+	if ($post['reverse_owa'] == 'on') {
+		if ($post['reverse_https'] != 'on') {
+			$input_errors[] = "You have to enable HTTPS Reverse Proxy to enable OWA support.";
+		}
 
-	$port = trim($post['reverse_http_port']);
-	preg_match("/(\d+)/", shell_exec("/sbin/sysctl net.inet.ip.portrange.reservedhigh"), $portrange);
-	if (!empty($port) && !is_port($port)) {
-		$input_errors[] = "'Reverse HTTP port' must contain a valid port number.";
-	}
-	if (!empty($port) && is_port($port) && $port <= $portrange[1]) {
-		$input_errors[] = "'Reverse HTTP port' must contain a port number higher than net.inet.ip.portrange.reservedhigh sysctl value({$portrange[1]}).";
-		$input_errors[] = "To listen on low ports, change portrange.reservedhigh sysctl value to 0 in system tunable options and restart Squid daemon.";
-	}
-	$port = trim($post['reverse_https_port']);
-	if (!empty($port) && !is_port($port)) {
-		$input_errors[] = "'Reverse HTTPS port' must contain a valid port number.";
-	}
-	if (!empty($port) && is_port($port) && $port <= $portrange[1]) {
-		$input_errors[] = "'Reverse HTTPS port' must contain a port number higher than net.inet.ip.portrange.reservedhigh sysctl value({$portrange[1]}).";
-		$input_errors[] = "To listen on low ports, change portrange.reservedhigh sysctl value to 0 in system tunable options and restart Squid daemon.";
-	}
-	if ($post['reverse_ssl_cert'] == 'none') {
-		$input_errors[] = 'A valid certificate for the external interface must be selected';
-	}
-
-	if (($post['reverse_https'] != 'on') && ($post['reverse_owa'] == 'on')) {
-		$input_errors[] = "You have to enable reverse HTTPS before enabling OWA support.";
-	}
-
-	if (!empty($post['reverse_owa_ip'])) {
-		$reverse_owa_ip = explode(";", ($post['reverse_owa_ip']));
-		foreach ($reverse_owa_ip as $reowaip) {
-			if (!is_ipaddr(trim($reowaip))) {
-				$input_errors[] = "You must enter a valid IP address in the 'CAS-Array / OWA frontend IP address' field. '$reowaip' is invalid.";
+		if (!empty($post['reverse_owa_ip'])) {
+			$reowaips = explode(";", ($post['reverse_owa_ip']));
+			foreach ($reowaips as $reowaip) {
+				if (!is_ipaddr(trim($reowaip))) {
+					$input_errors[] = "You must enter a valid IP address in the 'CAS-Array / OWA Frontend IP Address(es)' field. '$reowaip' is invalid.";
+				}
 			}
+			unset($reowaips);
+		} else {
+			$input_errors[] = "You must enter at least one valid IP address in the 'CAS-Array / OWA Frontend IP Address(es)' field.";
 		}
 	}
 
@@ -388,7 +499,9 @@ function squid_validate_reverse($post, &$input_errors) {
 				$input_errors[] = "Please choose HTTP or HTTPS in the cache peer configuration.";
 			}
 		}
+		unset($cfg, $defs);
 	}
+	unset($contents);
 }
 
 ?>

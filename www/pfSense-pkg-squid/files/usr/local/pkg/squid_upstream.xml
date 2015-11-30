@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squidremote</name>
-	<version>0.3.5</version>
+	<version>0.4.5</version>
 	<title>Proxy Server: Remote Proxy Settings</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
@@ -124,7 +124,6 @@
 			<fieldname>enable</fieldname>
 			<description>This option enables the proxy server to forward requests to an upstream/neighbor server.</description>
 			<type>checkbox</type>
-			<required/>
 		</field>
 		<field>
 			<fielddescr>Hostname</fielddescr>

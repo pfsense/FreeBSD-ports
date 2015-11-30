@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squid</name>
-	<version>0.4.0</version>
+	<version>0.4.5</version>
 	<title>Proxy Server: General Settings</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<menu>
@@ -254,7 +254,7 @@
 			<description>
 				<![CDATA[
 				Check to enable the Squid proxy.<br/>
-				Note: If unchecked, <strong>all</strong> Squid services will be disabled and stopped.<br/>
+				<strong><span class="errmsg">Note:</span> If unchecked, ALL Squid services will be disabled and stopped.</strong>
 				]]>
 			</description>
 			<type>checkbox</type>
@@ -277,21 +277,24 @@
 			<description>
 				<![CDATA[
 				The interface(s) the proxy server will bind to.<br/>
-				<strong>Note: Use CTRL + click to select multiple interfaces.</strong>
+				Note: Use CTRL + click to select multiple interfaces.
 				]]>
 			</description>
 			<type>interfaces_selection</type>
-			<required/>
 			<default_value>lan</default_value>
 			<multiple/>
 		</field>
 		<field>
 			<fielddescr>Proxy Port</fielddescr>
 			<fieldname>proxy_port</fieldname>
-			<description>This is the port the proxy server will listen on.</description>
+			<description>
+				<![CDATA[
+				This is the port the proxy server will listen on.<br/>
+				(Default: 3128)
+				]]>
+			</description>
 			<type>input</type>
 			<size>5</size>
-			<required/>
 			<default_value>3128</default_value>
 		</field>
 		<field>
@@ -386,12 +389,12 @@
 			<description>
 				<![CDATA[
 				The interface(s) the proxy server will transparently intercept requests on.<br/>
-				<strong>Note: Use CTRL + click to select multiple interfaces.</strong>
+				Note: Use CTRL + click to select multiple interfaces.
 				]]>
 			</description>
 			<type>interfaces_selection</type>
-			<required/>
 			<default_value>lan</default_value>
+			<hideinterfaceregex>loopback</hideinterfaceregex>
 			<multiple/>
 		</field>
 		<field>
@@ -410,7 +413,7 @@
 			<description>
 				<![CDATA[
 				Do not forward traffic from these <strong>source</strong> IPs, CIDR nets, hostnames, or aliases through the proxy server but let it pass directly through the firewall.
-				(Applies only to transparent mode.)<br/><br/>
+				(Applies only to transparent mode.)<br/>
 				<strong>Note: Separate entries by semi-colons (;)</strong>
 				]]>
 			</description>
@@ -422,8 +425,8 @@
 			<fieldname>defined_ip_proxy_off_dest</fieldname>
 			<description>
 				<![CDATA[
-				Do not proxy traffic going to these <strong>destination</strong> IPs, CIDR nets, hostnames, or aliases, but let it pass directly through the firewall.<br/>
-				(Applies only to transparent mode.)<br/><br/>
+				Do not proxy traffic going to these <strong>destination</strong> IPs, CIDR nets, hostnames, or aliases, but let it pass directly through the firewall.
+				(Applies only to transparent mode.)<br/>
 				<strong>Note: Separate entries by semi-colons (;)</strong>
 				]]>
 			</description>
@@ -435,7 +438,7 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>HTTPS/SSL interception</fielddescr>
+			<fielddescr>HTTPS/SSL Interception</fielddescr>
 			<fieldname>ssl_proxy</fieldname>
 			<description>Enable SSL filtering.</description>
 			<type>checkbox</type>
@@ -447,18 +450,23 @@
 			<description>
 				<![CDATA[
 				The interface(s) the proxy server will intercept SSL requests on.<br/>
-				<strong>Note: Use CTRL + click to select multiple interfaces.</strong>
+				Note: Use CTRL + click to select multiple interfaces.
 				]]>
 			</description>
 			<type>interfaces_selection</type>
-			<required/>
 			<default_value>lan</default_value>
+			<hideinterfaceregex>loopback</hideinterfaceregex>
 			<multiple/>
 		</field>
 		<field>
 			<fielddescr>SSL Proxy port</fielddescr>
 			<fieldname>ssl_proxy_port</fieldname>
-			<description>This is the port the proxy server will listen on to intercept SSL while using transparent proxy.</description>
+			<description>
+				<![CDATA[
+				This is the port the proxy server will listen on to intercept SSL while using transparent proxy.<br/>
+				(Default: 3129)
+				]]>
+			</description>
 			<type>input</type>
 			<size>5</size>
 			<default_value>3129</default_value>
@@ -477,6 +485,8 @@
 			<source><![CDATA[$config['ca']]]></source>
 			<source_name>descr</source_name>
 			<source_value>refid</source_value>
+			<show_disable_value>none</show_disable_value>
+			<default_value>none</default_value>
 		</field>
 		<field>
 			<fielddescr>SSL Certificate Deamon Children</fielddescr>
@@ -514,7 +524,7 @@
 			<description>
 				<![CDATA[
 				Pass original SSL server certificate information to the user. Allow the user to make an informed decision on whether to trust the server certificate.<br/>
-				Hint: Set the subject CN - see <a href="http://wiki.squid-cache.org/Features/MimicSslServerCert">fake certificate properties documentation</a> for details.
+				<strong>Hint:</strong> Set the subject CN - see <a href="http://wiki.squid-cache.org/Features/MimicSslServerCert">fake certificate properties documentation</a> for details.
 				]]>
 			</description>
 			<type>select</type>
@@ -563,6 +573,25 @@
 			<description>Defines how many days of logfiles will be kept. Rotation is disabled if left empty.</description>
 			<type>input</type>
 			<size>5</size>
+		</field>
+		<field>
+			<fielddescr>Log Pages Denied by SquidGuard</fielddescr>
+			<fieldname>log_sqd</fieldname>
+			<description>
+				<![CDATA[
+				Makes it possible for SquidGuard denied log to be included on Squid logs.<br/>
+				<strong>Note: This option will only work if you include the code below in your sgerror.php file.</strong><br/>
+				This forces the client browser to send a second request to Squid with the denied string in URL.<br/><br/>
+				$sge_prefix = (preg_match("/\?/", $cl['u']) ? "&" : "?");<br/>
+				$str[] = '< iframe > src="'. $cl['u'] . $sge_prefix . 'sgr=ACCESSDENIED" width="1" height="1" > < /iframe >';<br/><br/>
+				<strong>Hint: You MUST remove extra spaces in the above iframe HTML tags.</strong>
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<name>Headers Handling, Language and Other Customizations</name>
+			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr>Visible Hostname</fielddescr>
@@ -663,21 +692,6 @@
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Log Pages Denied by SquidGuard</fielddescr>
-			<fieldname>log_sqd</fieldname>
-			<description>
-				<![CDATA[
-				Makes it possible for SquidGuard denied log to be included on Squid logs.<br/>
-				<strong>Note: This option will only work if you include the code below in your sgerror.php file.</strong><br/>
-				This forces the client browser to send a second request to Squid with the denied string in URL.<br/><br/>
-				$sge_prefix = (preg_match("/\?/", $cl['u']) ? "&" : "?");<br/>
-				$str[] = '< iframe > src="'. $cl['u'] . $sge_prefix . 'sgr=ACCESSDENIED" width="1" height="1" > < /iframe >';<br/><br/>
-				<strong>Hint: You MUST remove extra spaces in the above iframe HTML tags.</strong>
-				]]>
-			</description>
-			<type>checkbox</type>
-		</field>
-		<field>
 			<fielddescr>URI Whitespace Characters Handling</fielddescr>
 			<fieldname>uri_whitespace</fieldname>
 			<description>
@@ -710,7 +724,7 @@
 			<fieldname>custom_options</fieldname>
 			<description>
 				<![CDATA[
-				Squid options added from packages like SquidGuard or HAVP for Squid integration.
+				Squid options added from packages like SquidGuard for Squid integration.
 				]]>
 			</description>
 			<type>textarea</type>

@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squidauth</name>
-	<version>0.3.5</version>
+	<version>0.4.5</version>
 	<title>Proxy Server: Authentication</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
@@ -98,7 +98,6 @@
 			<fieldname>auth_method</fieldname>
 			<description>Select an authentication method. This will allow users to be authenticated by local or external services.</description>
 			<type>select</type>
-			<required/>
 			<default_value>none</default_value>
 			<options>
 				<option><name>None</name><value>none</value></option>

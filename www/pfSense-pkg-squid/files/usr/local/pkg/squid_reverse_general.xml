@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squidreversegeneral</name>
-	<version>0.3.8</version>
+	<version>0.4.5</version>
 	<title>Reverse Proxy Server: General</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
@@ -78,16 +78,18 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Reverse Proxy Interface</fielddescr>
+			<fielddescr>Reverse Proxy Interface(s)</fielddescr>
 			<fieldname>reverse_interface</fieldname>
 			<description>
 				<![CDATA[
-				The interface(s) the reverse-proxy server will bind to.<br/>
-				Use CTRL + click to select multiple interfaces.
+				The interface(s) the reverse-proxy server will bind to (usually WAN).<br/>
+				Use CTRL + click to select multiple interfaces.<br/><br/>
+				<strong><span class="errmsg">Important:</span><br/></strong>
+				<strong>To use Squid as a reverse proxy ONLY:</strong> After saving configuration here, you must tick the 'Enable Squid Proxy' checkbox under Services - Squid Proxy Server - General and click Save there.<br/>
+				<strong>To disable the reverse proxy ONLY (without disabling Squid completely):</strong> Unselect all 'Reverse Proxy Interface(s)', uncheck both 'Enable HTTP Reverse Proxy' and 'Enable HTTPS Reverse Proxy' below and click Save.
 				]]>
 			</description>
 			<type>interfaces_selection</type>
-			<required/>
 			<default_value>wan</default_value>
 			<multiple/>
 		</field>
@@ -97,7 +99,8 @@
 			<description>
 				<![CDATA[
 				Squid will additionally bind to these user-defined IPs for reverse proxy operation. Useful for virtual IPs such as CARP.<br/>
-				<strong>Note: Separate entries by semi-colons (;)</strong>
+				Note: Separate entries by semi-colons (;)<br/><br/>
+				<strong><span class="errmsg">Important:</span> Any entry here must be a valid, locally configured IP address.</strong>
 				]]>
 			</description>
 			<type>input</type>
@@ -108,7 +111,6 @@
 			<fieldname>reverse_external_fqdn</fieldname>
 			<description>The external fully qualified domain name of the WAN IP address.</description>
 			<type>input</type>
-			<required/>
 			<size>70</size>
 		</field>
 		<field>
@@ -123,17 +125,16 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Enable HTTP Reverse Mode</fielddescr>
+			<fielddescr>Enable HTTP Reverse Proxy</fielddescr>
 			<fieldname>reverse_http</fieldname>
 			<description>
 				<![CDATA[
 				If checked, the proxy server will act in HTTP reverse mode.<br/>
-				<strong>Note: You must add a proper firewall rule with destination 'WAN Address'.</strong>
+				<strong><span class="errmsg">Important:</span> You must add a proper firewall rule with destination matching the 'Reverse Proxy Interface(s)' address.</strong>
 				]]>
 			</description>
 			<type>checkbox</type>
 			<enablefields>reverse_http_port,reverse_http_defsite</enablefields>
-			<required/>
 			<default_value>off</default_value>
 		</field>
 		<field>
@@ -141,7 +142,7 @@
 			<fieldname>reverse_http_port</fieldname>
 			<description>
 				<![CDATA[
-				This is the port the HTTP reverse proxy will listen on. Default value will be used if left empty.<br/>
+				This is the port the HTTP reverse proxy will listen on.<br/>
 				Default: 80
 				]]>
 			</description>
@@ -159,7 +160,7 @@
 				]]>
 			</description>
 			<type>input</type>
-			<size>60</size>
+			<size>70</size>
 		</field>
 		<field>
 			<name>Squid Reverse HTTPS Settings</name>
@@ -171,12 +172,11 @@
 			<description>
 				<![CDATA[
 				If checked, the proxy server will act in HTTPS reverse mode.<br/>
-				<strong>Note: You must add a proper firewall rule with destination 'WAN Address'.</strong>
+				<strong><span class="errmsg">Important:</span> You must add a proper firewall rule with destination matching the 'Reverse Proxy Interface(s)' address.</strong>
 				]]>
 			</description>
 			<type>checkbox</type>
-			<enablefields>reverse_https_port,reverse_https_defsite,reverse_ssl_cert,reverse_int_ca,reverse_ignore_ssl_valid,reverse_owa,reverse_owa_ip,reverse_owa_webservice,reverse_owa_activesync,reverse_owa_rpchttp,reverse_owa_mapihttp,reverse_owa_autodiscover,reverse_ssl_chain</enablefields>
-			<required/>
+			<enablefields>reverse_https_port,reverse_https_defsite,reverse_ssl_cert,reverse_int_ca,reverse_ignore_ssl_valid,reverse_check_clientca,reverse_owa</enablefields>
 			<default_value>off</default_value>
 		</field>
 		<field>
@@ -184,7 +184,7 @@
 			<fieldname>reverse_https_port</fieldname>
 			<description>
 				<![CDATA[
-				This is the port the HTTPS reverse proxy will listen on. Default value will be used if left empty.<br/>
+				This is the port the HTTPS reverse proxy will listen on.<br/>
 				Default: 443
 				]]>
 			</description>
@@ -198,20 +198,22 @@
 			<description>
 				<![CDATA[
 				This is the HTTPS reverse proxy default site.<br/>
-				Note: Leave empty to use 'External FQDN' value specified above.
+				Note: Leave empty to use 'External FQDN' value specified in 'Squid Reverse Proxy General Settings'.
 				]]>
 			</description>
 			<type>input</type>
-			<size>60</size>
+			<size>70</size>
 		</field>
 		<field>
 			<fielddescr>Reverse SSL Certificate</fielddescr>
 			<fieldname>reverse_ssl_cert</fieldname>
 			<description>Choose the SSL Server Certificate here.</description>
 			<type>select_source</type>
-			<source>$config['cert']</source>
+			<source><![CDATA[$config['cert']]]></source>
 			<source_name>descr</source_name>
 			<source_value>refid</source_value>
+			<show_disable_value>none</show_disable_value>
+			<default_value>none</default_value>
 		</field>
 		<field>
 			<fielddescr>Intermediate CA Certificate (If Needed)</fielddescr>
@@ -234,6 +236,43 @@
 			<default_value>on</default_value>
 		</field>
 		<field>
+			<fielddescr>Check Client Certificate</fielddescr>
+			<fieldname>reverse_check_clientca</fieldname>
+			<description>If checked, clients need a client certificate to authenticate.</description>
+			<type>checkbox</type>  
+			<default_value>off</default_value>
+		</field>
+		<field>
+			<fielddescr>Client Certificate CA</fielddescr>
+			<fieldname>reverse_ssl_clientca</fieldname>
+			<description>Choose the CA used to issue client authentication certificates.</description>
+	    	<type>select_source</type>
+			<source><![CDATA[$config['ca']]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+			<show_disable_value>none</show_disable_value>
+			<default_value>none</default_value>
+		</field>
+		<field>
+			<fielddescr>Client Certificate Revocation List</fielddescr>
+			<fieldname>reverse_ssl_clientcrl</fieldname>
+			<description>
+				<![CDATA[
+				Choose the CRL used for client certificates revocation. If set to 'none', no CRL validation will be performed.<br/>
+				<strong>Note: This must match the 'Client Certificate CA' selected above!</strong><br/><br/>
+				<strong><span class="errmsg">Important:</span></strong> After updating the CRL in System - Cert Manager - Certificate Revocation, remember to press the 'Refresh CRL' button below.<br/>
+				Otherwise, the updated CRL will not have any effect on Squid reverse proxy users!<br/><br/>
+				<input name='refresh_crl' id='refresh_crl' type='submit' value='Refresh CRL' />
+				]]>
+			</description>
+	    	<type>select_source</type>
+			<source><![CDATA[$config['crl']]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+			<show_disable_value>none</show_disable_value>
+			<default_value>none</default_value>
+		</field>
+		<field>
 			<name>OWA Reverse Proxy General Settings</name>
 			<type>listtopic</type>
 		</field>
@@ -245,12 +284,12 @@
 			<enablefields>reverse_owa_ip,reverse_owa_activesync,reverse_owa_rpchttp,reverse_owa_mapihttp,reverse_owa_webservice,reverse_owa_autodiscover</enablefields>
 		</field>
 		<field>
-			<fielddescr>CAS-Array / OWA Frontend IP Address</fielddescr>
+			<fielddescr>CAS-Array / OWA Frontend IP Address(es)</fielddescr>
 			<fieldname>reverse_owa_ip</fieldname>
 			<description>
 				<![CDATA[
 				These are the internal IPs of the CAS-Array (OWA frontend servers).<br/>
-				<strong>Note: Separate entries by semi-colons (;)</strong>
+				Note: Separate entries by semi-colons (;)
 				]]>
 			</description>
 			<type>input</type>
@@ -305,7 +344,8 @@
 	<custom_php_validation_command>
 		<![CDATA[
 		if (!empty($_POST) && !squid_enabled()) {
-			$input_errors[] = "Squid is disabled. You must enable Squid proxy under Services - Squid Proxy Server - General.";
+			$errmsg = "Squid is disabled. You must enable Squid proxy under Services - Squid Proxy Server - General.";
+			file_notice("squidreversegeneral", $errmsg, "Squid Reverse Proxy", "");
 		}
 		squid_validate_reverse($_POST, $input_errors);
 		]]>
