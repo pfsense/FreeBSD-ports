@@ -35,6 +35,8 @@
 require("globals.inc");
 require("guiconfig.inc");
 require("openvpn-client-export.inc");
+require("pkg-utils.inc");
+require('classes/Form.class.php');
 
 global $current_openvpn_version, $current_openvpn_version_rev;
 
@@ -137,7 +139,7 @@ if (!empty($act)) {
 		pfSenseHeader("vpn_openvpn_export.php");
 		exit;
 	} else if (($config['openvpn']['openvpn-server'][$srvid]['mode'] != "server_user") &&
-	    (($usrid === false) || ($crtid === false))) {
+		(($usrid === false) || ($crtid === false))) {
 		pfSenseHeader("vpn_openvpn_export.php");
 		exit;
 	}
@@ -154,8 +156,8 @@ if (!empty($act)) {
 	}
 
 	if (!(is_ipaddr($useaddr) || is_hostname($useaddr) ||
-	    in_array($useaddr, array("serveraddr", "servermagic", "servermagichost", "serverhostname")))) {
-		$input_errors[] = "You need to specify an IP or hostname.";
+		in_array($useaddr, array("serveraddr", "servermagic", "servermagichost", "serverhostname")))) {
+		$input_errors[] = "An IP address or hostname must be specified.";
 	}
 
 	$advancedoptions = $_GET['advancedoptions'];
@@ -165,10 +167,10 @@ if (!empty($act)) {
 	$randomlocalport = $_GET['randomlocalport'];
 	$usetoken = $_GET['usetoken'];
 	if ($usetoken && (substr($act, 0, 10) == "confinline")) {
-		$input_errors[] = "You cannot use Microsoft Certificate Storage with an Inline configuration.";
+		$input_errors[] = "Microsoft Certificate Storage cannot be used with an Inline configuration.";
 	}
 	if ($usetoken && (($act == "conf_yealink_t28") || ($act == "conf_yealink_t38g") || ($act == "conf_yealink_t38g2") || ($act == "conf_snom"))) {
-		$input_errors[] = "You cannot use Microsoft Certificate Storage with a Yealink or SNOM configuration.";
+		$input_errors[] = "Microsoft Certificate Storage cannot be used with a Yealink or SNOM configuration.";
 	}
 	$password = "";
 	if ($_GET['password']) {
@@ -179,12 +181,12 @@ if (!empty($act)) {
 	if (!empty($_GET['proxy_addr']) || !empty($_GET['proxy_port'])) {
 		$proxy = array();
 		if (empty($_GET['proxy_addr'])) {
-			$input_errors[] = "You need to specify an address for the proxy port.";
+			$input_errors[] = "An address for the proxy must be specified.";
 		} else {
 			$proxy['ip'] = $_GET['proxy_addr'];
 		}
 		if (empty($_GET['proxy_port'])) {
-			$input_errors[] = "You need to specify a port for the proxy ip.";
+			$input_errors[] = "A port for the proxy must be specified.";
 		} else {
 			$proxy['port'] = $_GET['proxy_port'];
 		}
@@ -192,12 +194,12 @@ if (!empty($act)) {
 		$proxy['proxy_authtype'] = $_GET['proxy_authtype'];
 		if ($_GET['proxy_authtype'] != "none") {
 			if (empty($_GET['proxy_user'])) {
-				$input_errors[] = "You need to specify a username with the proxy config.";
+				$input_errors[] = "A username for the proxy configuration must be specified.";
 			} else {
 				$proxy['user'] = $_GET['proxy_user'];
 			}
 			if (!empty($_GET['proxy_user']) && empty($_GET['proxy_password'])) {
-				$input_errors[] = "You need to specify a password with the proxy user.";
+				$input_errors[] = "A password for the proxy user must be specified.";
 			} else {
 				$proxy['password'] = $_GET['proxy_password'];
 			}
@@ -288,33 +290,273 @@ if (!empty($act)) {
 
 include("head.inc");
 
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
+if ($savemsg) {
+	print_info_box($savemsg);
+}
+$tab_array = array();
+$tab_array[] = array(gettext("Server"), true, "vpn_openvpn_server.php");
+$tab_array[] = array(gettext("Client"), false, "vpn_openvpn_client.php");
+$tab_array[] = array(gettext("Client Specific Overrides"), false, "vpn_openvpn_csc.php");
+$tab_array[] = array(gettext("Wizards"), false, "wizard.php?xml=openvpn_wizard.xml");
+add_package_tabs("OpenVPN", $tab_array);
+display_top_tabs($tab_array);
+
+$form = new Form();
+
+$section = new Form_Section('OpenVPN Server');
+
+$serverlist = array();
+foreach ($ras_server as $server) {
+	$serverlist[$server['index']] = $server['name'];
+}
+
+$section->addInput(new Form_Select(
+	'server',
+	'Remote Access Server',
+	null,
+	$serverlist
+	));
+
+$form->add($section);
+
+$section = new Form_Section('Client Connection Behavior');
+
+$useaddrlist = array(
+	"serveraddr" => "Interface IP Address",
+	"servermagic" => "Automagic Multi-WAN IPs (port forward targets)",
+	"servermagichost" => "Automagic Multi-WAN DDNS Hostnames (port forward targets)",
+	"serverhostname" => "Installation hostname"
+);
+
+if (is_array($config['dyndnses']['dyndns'])) {
+	foreach ($config['dyndnses']['dyndns'] as $ddns) {
+		$useaddrlist[$ddns["host"]] = $ddns["host"];
+	}
+}
+if (is_array($config['dnsupdates']['dnsupdate'])) {
+	foreach ($config['dnsupdates']['dnsupdate'] as $ddns) {
+		$useaddrlist[$ddns["host"]] = $ddns["host"];
+	}
+}
+
+$useaddrlist["other"] = "Other";
+
+$section->addInput(new Form_Select(
+	'useaddr',
+	'Host Name Resolution',
+	null,
+	$useaddrlist
+	));
+
+$section->addInput(new Form_Input(
+	'useaddr_hostname',
+	'Host Name',
+	'text'
+))->setHelp('Enter the hostname or IP address the client will use to connect to this server.');
+
+
+$section->addInput(new Form_Select(
+	'verifyservercn',
+	'Verify Server CN',
+	null,
+	array(
+		"auto" => "Automatic - Use verify-x509-name (OpenVPN 2.3+) where possible",
+		"tls-remote" => "Use tls-remote (Deprecated, use only on old clients &lt;= OpenVPN 2.2.x)",
+		"tls-remote-quote" => "Use tls-remote and quote the server CN",
+		"none" => "Do not verify the server CN")
+))->setHelp("Optionally verify the server certificate Common Name (CN) when the client connects. Current clients, including the most recent versions of Windows, Viscosity, Tunnelblick, OpenVPN on iOS and Android and so on should all work at the default automatic setting.".
+	"<br/><br/>Only use tls-remote if an older client must be used. The option has been deprecated by OpenVPN and will be removed in the next major version.".
+	"<br/><br/>With tls-remote the server CN may optionally be enclosed in quotes. This can help if the server CN contains spaces and certain clients cannot parse the server CN. Some clients have problems parsing the CN with quotes. Use only as needed.");
+
+$section->addInput(new Form_Checkbox(
+	'randomlocalport',
+	'Use Random Local Port',
+	'Use a random local source port (lport) for traffic from the client. Without this set, two clients may not run concurrently.',
+	true
+));
+
+$form->add($section);
+
+$section = new Form_Section('Certificate Export Options');
+
+$section->addInput(new Form_Checkbox(
+	'usetoken',
+	'Microsoft Certificate Storage',
+	'Use Microsoft Certificate Storage instead of local files.',
+	false
+));
+
+$section->addInput(new Form_Checkbox(
+	'usepass',
+	'Password Protect Certificate',
+	'Use a password to protect the pkcs12 file contents or key in Viscosity bundle.',
+	false
+));
+
+$section->addInput(new Form_Input(
+	'pass',
+	'Certificate Password',
+	'password',
+	null
+))->setHelp('Password used to protect the certificate file contents.');
+
+$section->addInput(new Form_Input(
+	'conf',
+	'Confirm Certificate Password',
+	'password',
+	null
+))->setHelp('Type the Certificate Password again to confirm.');
+
+$form->add($section);
+
+$section = new Form_Section('Proxy Options');
+
+$section->addInput(new Form_Checkbox(
+	'useproxy',
+	'Use A Proxy',
+	'Use proxy to communicate with the OpenVPN server.',
+	false
+));
+
+$section->addInput(new Form_Select(
+	'useproxytype',
+	'Proxy Type',
+	null,
+	array(
+		"http" => "HTTP",
+		"socks" => "SOCKS")
+));
+
+$section->addInput(new Form_Input(
+	'proxyaddr',
+	'Proxy IP Address',
+	'text',
+	null
+))->setHelp('Hostname or IP address of proxy server.');
+
+$section->addInput(new Form_Input(
+	'proxyport',
+	'Proxy Port',
+	'text',
+	null
+))->setHelp('Port where proxy server is listening.');
+
+$section->addInput(new Form_Select(
+	'useproxypass',
+	'Proxy Authentication',
+	null,
+	array(
+		"none" => "None",
+		"basic" => "Basic",
+		"ntlm" => "NTLM")
+))->setHelp('Choose proxy authentication method, if any.');
+
+$section->addInput(new Form_Input(
+	'proxyuser',
+	'Proxy Username',
+	'text',
+	null
+))->setHelp('Username for authentication to proxy server.');
+
+$section->addInput(new Form_Input(
+	'proxypass',
+	'Proxy Password',
+	'password',
+	null
+))->setHelp('Password for authentication to proxy server.');
+
+$section->addInput(new Form_Input(
+	'proxyconf',
+	'Proxy Password (Confirm)',
+	'password',
+	null
+))->setHelp('Password for authentication to proxy server.');
+
+$form->add($section);
+
+$section = new Form_Section('Management Interface');
+
+$section->addInput(new Form_Checkbox(
+	'openvpnmanager',
+	'Management Interface',
+	'Use the OpenVPNManager Management Interface.',
+	false
+))->setHelp("This will activate management interface in the generated .ovpn configuration and ".
+	"include the OpenVPNManager program in the Windows Installers. With this management interface, OpenVPN can be used by non-administrator users.".
+	"This is also useful for Windows Vista/7/8/10 systems where elevated permissions are needed to add routes to the OS.".
+	"<br/><br/>NOTE: This is not currently compatible with the 64-bit OpenVPN installer. It will work with the 32-bit installer on a 64-bit system.");
+
+$form->add($section);
+
+$section = new Form_Section('Advanced');
+
+	$section->addInput(new Form_Textarea(
+		'advancedoptions',
+		'Additional configuration options',
+		null
+	))->setHelp('Enter any additional options to add to the OpenVPN client export configuration here, separated by a line break or semicolon.<br/><br/>EXAMPLE: remote-random;');
+
+$form->add($section);
+
+print($form);
 ?>
 
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-<?php include("fbegin.inc"); ?>
+<div class="table-responsive">
+	<table class="table table-striped table-hover table-condensed" id="users">
+		<thead>
+			<tr>
+				<td width="25%" class="listhdrr"><?=gettext("User")?></td>
+				<td width="35%" class="listhdrr"><?=gettext("Certificate Name")?></td>
+				<td width="40%" class="listhdrr"><?=gettext("Export")?></td>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+
+<br />
+<br />
+<?= print_info_box(gettext("The &quot;XP&quot; Windows installers work on Windows XP and later versions. The &quot;win6&quot; Windows installers include a new tap-windows6 driver that works only on Windows Vista and later. " .
+"If a client is missing from the list it is usually due to a CA mismatch between the OpenVPN server instance and the client certificate found in the User Manager."), 'info'); ?>
+
+Links to OpenVPN clients for various platforms:<br />
+<br />
+<a href="http://openvpn.net/index.php/open-source/downloads.html"><?= gettext("OpenVPN Community Client") ?></a> - <?=gettext("Binaries for Windows, Source for other platforms. Packaged above in the Windows Installers")?>
+<br/><a href="https://play.google.com/store/apps/details?id=de.blinkt.openvpn"><?= gettext("OpenVPN For Android") ?></a> - <?=gettext("Recommended client for Android")?>
+<br/><a href="http://www.featvpn.com/"><?= gettext("FEAT VPN For Android") ?></a> - <?=gettext("For older versions of Android")?>
+<br/><?= gettext("OpenVPN Connect") ?>: <a href="https://play.google.com/store/apps/details?id=net.openvpn.openvpn"><?=gettext("Android (Google Play)")?></a> or <a href="https://itunes.apple.com/us/app/openvpn-connect/id590379981"><?=gettext("iOS (App Store)")?></a> - <?= gettext("Recommended client for iOS") ?>
+<br/><a href="https://www.sparklabs.com/viscosity/"><?= gettext("Viscosity") ?></a> - <?= gettext("Recommended commercial client for Mac OS X and Windows") ?>
+<br/><a href="https://tunnelblick.net"><?= gettext("Tunnelblick") ?></a> - <?= gettext("Free client for OS X") ?>
+
+<?php include("foot.inc"); ?>
+
 <script type="text/javascript">
 //<![CDATA[
 var viscosityAvailable = false;
 
 var servers = new Array();
 <?php foreach ($ras_server as $sindex => $server): ?>
-servers[<?=$sindex;?>] = new Array();
-servers[<?=$sindex;?>][0] = '<?=$server['index'];?>';
-servers[<?=$sindex;?>][1] = new Array();
-servers[<?=$sindex;?>][2] = '<?=$server['mode'];?>';
-servers[<?=$sindex;?>][3] = new Array();
+servers[<?=$sindex?>] = new Array();
+servers[<?=$sindex?>][0] = '<?=$server['index']?>';
+servers[<?=$sindex?>][1] = new Array();
+servers[<?=$sindex?>][2] = '<?=$server['mode']?>';
+servers[<?=$sindex?>][3] = new Array();
 <?php		foreach ($server['users'] as $uindex => $user): ?>
-servers[<?=$sindex;?>][1][<?=$uindex;?>] = new Array();
-servers[<?=$sindex;?>][1][<?=$uindex;?>][0] = '<?=$user['uindex'];?>';
-servers[<?=$sindex;?>][1][<?=$uindex;?>][1] = '<?=$user['cindex'];?>';
-servers[<?=$sindex;?>][1][<?=$uindex;?>][2] = '<?=$user['name'];?>';
-servers[<?=$sindex;?>][1][<?=$uindex;?>][3] = '<?=str_replace("'", "\\'", $user['certname']);?>';
+servers[<?=$sindex?>][1][<?=$uindex?>] = new Array();
+servers[<?=$sindex?>][1][<?=$uindex?>][0] = '<?=$user['uindex']?>';
+servers[<?=$sindex?>][1][<?=$uindex?>][1] = '<?=$user['cindex']?>';
+servers[<?=$sindex?>][1][<?=$uindex?>][2] = '<?=$user['name']?>';
+servers[<?=$sindex?>][1][<?=$uindex?>][3] = '<?=str_replace("'", "\\'", $user['certname'])?>';
 <?		endforeach; ?>
 <?php		$c=0;
 		foreach ($server['certs'] as $cert): ?>
-servers[<?=$sindex;?>][3][<?=$c;?>] = new Array();
-servers[<?=$sindex;?>][3][<?=$c;?>][0] = '<?=$cert['cindex'];?>';
-servers[<?=$sindex;?>][3][<?=$c;?>][1] = '<?=str_replace("'", "\\'", $cert['certname']);?>';
+servers[<?=$sindex?>][3][<?=$c?>] = new Array();
+servers[<?=$sindex?>][3][<?=$c?>][0] = '<?=$cert['cindex']?>';
+servers[<?=$sindex?>][3][<?=$c?>][1] = '<?=str_replace("'", "\\'", $cert['certname'])?>';
 <?		$c++;
 		endforeach; ?>
 <?	endforeach; ?>
@@ -480,7 +722,7 @@ function server_changed() {
 		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlineios\"," + i + ", -1)'>OpenVPN Connect (iOS/Android)<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\"," + i + ", -1)'>Others<\/a>";
-		cell2.innerHTML += "<br\/>- Windows Installers (<?php echo $current_openvpn_version . '-Ix' . $current_openvpn_version_rev;?>):<br\/>";
+		cell2.innerHTML += "<br\/>- Windows Installers (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-xp\"," + i + ", -1)'>x86-xp<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
@@ -521,7 +763,7 @@ function server_changed() {
 		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlineios\", -1," + j + ")'>OpenVPN Connect (iOS/Android)<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\", -1," + j + ")'>Others<\/a>";
-		cell2.innerHTML += "<br\/>- Windows Installers (<?php echo $current_openvpn_version . '-Ix' . $current_openvpn_version_rev;?>):<br\/>";
+		cell2.innerHTML += "<br\/>- Windows Installers (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-xp\", -1," + j + ")'>x86-xp<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
@@ -569,7 +811,7 @@ function server_changed() {
 		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlineios\"," + i + ")'>OpenVPN Connect (iOS/Android)<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\"," + i + ")'>Others<\/a>";
-		cell2.innerHTML += "<br\/>- Windows Installers (<?php echo $current_openvpn_version . '-Ix' . $current_openvpn_version_rev;?>):<br\/>";
+		cell2.innerHTML += "<br\/>- Windows Installers (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-xp\"," + i + ")'>x86-xp<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
@@ -586,384 +828,75 @@ function server_changed() {
 	}
 }
 
-function useaddr_changed(obj) {
-
-	if (obj.value == "other") {
-		$('HostName').show();
+function useaddr_changed() {
+	if ($('#useaddr').val() == "other") {
+		hideInput('useaddr_hostname', false);
 	} else {
-		$('HostName').hide();
+		hideInput('useaddr_hostname', true);
 	}
-
 }
 
 function usepass_changed() {
-
-	if (document.getElementById("usepass").checked) {
-		document.getElementById("usepass_opts").style.display = "";
+	if ($('#usepass').prop('checked')) {
+		hideInput('pass', false);
+		hideInput('conf', false);
 	} else {
-		document.getElementById("usepass_opts").style.display = "none";
+		hideInput('pass', true);
+		hideInput('conf', true);
 	}
 }
 
-function useproxy_changed(obj) {
-
-	if ((obj.id == "useproxy" && obj.checked) ||
-	    (obj.id == "useproxypass" && (obj.value != 'none'))) {
-		$(obj.id + '_opts').show();
+function useproxy_changed() {
+	if ($('#useproxy').prop('checked')) {
+		hideInput('useproxytype', false);
+		hideInput('proxyaddr', false);
+		hideInput('proxyport', false);
+		hideInput('useproxypass', false);
 	} else {
-		$(obj.id + '_opts').hide();
+		hideInput('useproxytype', true);
+		hideInput('proxyaddr', true);
+		hideInput('proxyport', true);
+		hideInput('useproxypass', true);
+		hideInput('proxyuser', true);
+		hideInput('proxypass', true);
+		hideInput('proxyconf', true);
+	}
+	if ($('#useproxy').prop('checked') && ($('#useproxypass').val() != 'none')) {
+		hideInput('proxyuser', false);
+		hideInput('proxypass', false);
+		hideInput('proxyconf', false);
+	} else {
+		hideInput('proxyuser', true);
+		hideInput('proxypass', true);
+		hideInput('proxyconf', true);
 	}
 }
+
+events.push(function(){
+	// ---------- OnChange handlers ---------------------------------------------------------
+
+	$('#server').on('change', function() {
+		server_changed();
+	});
+	$('#useaddr').on('change', function() {
+		useaddr_changed();
+	});
+	$('#usepass').on('change', function() {
+		usepass_changed();
+	});
+	$('#useproxy').on('change', function() {
+		useproxy_changed();
+	});
+	$('#useproxypass').on('change', function() {
+		useproxy_changed();
+	});
+
+	// ---------- On initial page load ------------------------------------------------------------
+
+	server_changed();
+	useaddr_changed();
+	usepass_changed();
+	useproxy_changed();
+});
 //]]>
 </script>
-<?php
-	if ($input_errors) {
-		print_input_errors($input_errors);
-	}
-	if ($savemsg) {
-		print_info_box($savemsg);
-	}
-?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0" summary="openvpn export">
-	<tr>
-		<td>
-			<?php
-				$tab_array = array();
-				$tab_array[] = array(gettext("Server"), false, "vpn_openvpn_server.php");
-				$tab_array[] = array(gettext("Client"), false, "vpn_openvpn_client.php");
-				$tab_array[] = array(gettext("Client Specific Overrides"), false, "vpn_openvpn_csc.php");
-				$tab_array[] = array(gettext("Wizards"), false, "wizard.php?xml=openvpn_wizard.xml");
-				$tab_array[] = array(gettext("Client Export"), true, "vpn_openvpn_export.php");
-				$tab_array[] = array(gettext("Shared Key Export"), false, "vpn_openvpn_export_shared.php");
-				display_top_tabs($tab_array);
-			?>
-		</td>
-	</tr>
-	<tr>
-		<td id="mainarea">
-			<div class="tabcont">
-				<table width="100%" border="0" cellpadding="6" cellspacing="0" summary="main area">
-					<tr>
-						<td width="22%" valign="top" class="vncellreq">Remote Access Server</td>
-						<td width="78%" class="vtable">
-							<select name="server" id="server" class="formselect" onchange="server_changed()">
-								<?php foreach ($ras_server as & $server): ?>
-								<option value="<?=$server['index'];?>"><?=$server['name'];?></option>
-								<?php endforeach; ?>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td width="22%" valign="top" class="vncell">Host Name Resolution</td>
-						<td width="78%" class="vtable">
-							<table border="0" cellpadding="2" cellspacing="0" summary="name resolution">
-								<tr>
-									<td>
-										<select name="useaddr" id="useaddr" class="formselect" onchange="useaddr_changed(this)">
-											<option value="serveraddr" >Interface IP Address</option>
-											<option value="servermagic" >Automagic Multi-WAN IPs (port forward targets)</option>
-											<option value="servermagichost" >Automagic Multi-WAN DDNS Hostnames (port forward targets)</option>
-											<option value="serverhostname" >Installation hostname</option>
-											<?php if (is_array($config['dyndnses']['dyndns'])): ?>
-												<?php foreach ($config['dyndnses']['dyndns'] as $ddns): ?>
-													<option value="<?php echo $ddns["host"] ?>">DynDNS: <?php echo $ddns["host"] ?></option>
-												<?php endforeach; ?>
-											<?php endif; ?>
-											<?php if (is_array($config['dnsupdates']['dnsupdate'])): ?>
-												<?php foreach ($config['dnsupdates']['dnsupdate'] as $ddns): ?>
-													<option value="<?php echo $ddns["host"] ?>">DynDNS: <?php echo $ddns["host"] ?></option>
-												<?php endforeach; ?>
-											<?php endif; ?>
-											<option value="other">Other</option>
-										</select>
-										<br />
-										<div style="display:none;" id="HostName">
-											<input name="useaddr_hostname" id="useaddr_hostname" size="40" />
-											<span class="vexpl">
-												Enter the hostname or IP address the client will use to connect to this server.
-											</span>
-										</div>
-									</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-					<tr>
-						<td width="22%" valign="top" class="vncell">Verify Server CN</td>
-						<td width="78%" class="vtable">
-							<table border="0" cellpadding="2" cellspacing="0" summary="verify server cn">
-								<tr>
-									<td>
-										<select name="verifyservercn" id="verifyservercn" class="formselect">
-											<option value="auto">Automatic - Use verify-x509-name (OpenVPN 2.3+) where possible</option>
-											<option value="tls-remote">Use tls-remote (Deprecated, use only on old clients &lt;= OpenVPN 2.2.x)</option>
-											<option value="tls-remote-quote">Use tls-remote and quote the server CN</option>
-											<option value="none">Do not verify the server CN</option>
-										</select>
-										<br/>
-										<span class="vexpl">
-											Optionally verify the server certificate Common Name (CN) when the client connects. Current clients, including the most recent versions of Windows, Viscosity, Tunnelblick, OpenVPN on iOS and Android and so on should all work at the default automatic setting.
-											<br/><br/>Only use tls-remote if you must use an older client that you cannot control. The option has been deprecated by OpenVPN and will be removed in the next major version.
-											<br/><br/>With tls-remote the server CN may optionally be enclosed in quotes. This can help if the server CN contains spaces and certain clients cannot parse the server CN. Some clients have problems parsing the CN with quotes. Use only as needed.
-										</span>
-									</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-					<tr>
-						<td width="22%" valign="top" class="vncell">Use Random Local Port</td>
-						<td width="78%" class="vtable">
-							 <table border="0" cellpadding="2" cellspacing="0" summary="random local port">
-								<tr>
-									<td>
-										<input name="randomlocalport" id="randomlocalport" type="checkbox" value="yes" checked="CHECKED" />
-									</td>
-									<td>
-										<span class="vexpl">
-											Use a random local source port (lport) for traffic from the client. Without this set, two clients may not run concurrently.
-										</span>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="2">
-										<span class="vexpl"><br/>NOTE: Not supported on older clients. Automatically disabled for Yealink and Snom configurations.</span>
-									</td>
-								</tr>
-							</table>
-					</tr>
-					<tr>
-						<td width="22%" valign="top" class="vncell">Certificate Export Options</td>
-						<td width="78%" class="vtable">
-							<table border="0" cellpadding="2" cellspacing="0" summary="export options">
-								<tr>
-									<td>
-										<input name="usetoken" id="usetoken" type="checkbox" value="yes" />
-									</td>
-									<td>
-										<span class="vexpl">
-											 Use Microsoft Certificate Storage instead of local files.
-										</span>
-									</td>
-								</tr>
-							</table>
-							<table border="0" cellpadding="2" cellspacing="0" summary="checkbox for password">
-								<tr>
-									<td>
-										<input name="usepass" id="usepass" type="checkbox" value="yes" onclick="usepass_changed()" />
-									</td>
-									<td>
-										<span class="vexpl">
-											Use a password to protect the pkcs12 file contents or key in Viscosity bundle.
-										</span>
-									</td>
-								</tr>
-							</table>
-							<table border="0" cellpadding="2" cellspacing="0" id="usepass_opts" style="display:none" summary="password">
-								<tr>
-									<td align="right">
-										<span class="vexpl">
-											 &nbsp;Password :&nbsp;
-										</span>
-									</td>
-									<td>
-										<input name="pass" id="pass" type="password" class="formfld pwd" size="20" value="" />
-									</td>
-								</tr>
-								<tr>
-									<td align="right">
-										<span class="vexpl">
-											 &nbsp;Confirm :&nbsp;
-										</span>
-									</td>
-									<td>
-										<input name="conf" id="conf" type="password" class="formfld pwd" size="20" value="" />
-									</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-					<tr>
-						<td width="22%" valign="top" class="vncell">Use Proxy</td>
-						<td width="78%" class="vtable">
-							 <table border="0" cellpadding="2" cellspacing="0" summary="http proxy">
-								<tr>
-									<td>
-										<input name="useproxy" id="useproxy" type="checkbox" value="yes" onclick="useproxy_changed(this)" />
-
-									</td>
-									<td>
-										<span class="vexpl">
-											Use proxy to communicate with the server.
-										</span>
-									</td>
-								</tr>
-							</table>
-							<table border="0" cellpadding="2" cellspacing="0" id="useproxy_opts" style="display:none" summary="user options">
-								<tr>
-									<td align="right" width="25%">
-										<span class="vexpl">
-											 &nbsp;     Type :&nbsp;
-										</span>
-									</td>
-									<td>
-										<select name="useproxytype" id="useproxytype" class="formselect">
-											<option value="http">HTTP</option>
-											<option value="socks">Socks</option>
-										</select>
-									</td>
-								</tr>
-								<tr>
-									<td align="right" width="25%">
-										<span class="vexpl">
-											 &nbsp;     IP Address :&nbsp;
-										</span>
-									</td>
-									<td>
-										<input name="proxyaddr" id="proxyaddr" class="formfld unknown" size="30" value="" />
-									</td>
-								</tr>
-								<tr>
-									<td align="right" width="25%">
-										<span class="vexpl">
-											 &nbsp;      Port :&nbsp;
-										</span>
-									</td>
-														<td>
-										<input name="proxyport" id="proxyport" class="formfld unknown" size="5" value="" />
-									</td>
-								</tr>
-								<tr>
-									<td width="25%">
-							<br />
-									</td>
-									<td>
-										<select name="useproxypass" id="useproxypass" class="formselect" onchange="useproxy_changed(this)">
-											<option value="none">none</option>
-											<option value="basic">basic</option>
-											<option value="ntlm">ntlm</option>
-										</select>
-										<span class="vexpl">
-											Choose proxy authentication if any.
-										</span>
-							<br />
-							<table border="0" cellpadding="2" cellspacing="0" id="useproxypass_opts" style="display:none" summary="name and password">
-								<tr>
-									<td align="right" width="25%">
-										<span class="vexpl">
-											 &nbsp;Username :&nbsp;
-										</span>
-									</td>
-									<td>
-										<input name="proxyuser" id="proxyuser" class="formfld unknown" size="20" value="" />
-									</td>
-								</tr>
-								<tr>
-									<td align="right" width="25%">
-										<span class="vexpl">
-											 &nbsp;Password :&nbsp;
-										</span>
-									</td>
-									<td>
-										<input name="proxypass" id="proxypass" type="password" class="formfld pwd" size="20" value="" />
-									</td>
-								</tr>
-								<tr>
-									<td align="right" width="25%">
-										<span class="vexpl">
-											 &nbsp;Confirm :&nbsp;
-										</span>
-									</td>
-														<td>
-										<input name="proxyconf" id="proxyconf" type="password" class="formfld pwd" size="20" value="" />
-									</td>
-								</tr>
-							</table>
-									</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-					<tr>
-						<td width="22%" valign="top" class="vncell">Management&nbsp;Interface<br/>OpenVPNManager</td>
-						<td width="78%" class="vtable">
-							<table border="0" cellpadding="2" cellspacing="0" summary="openvpn manager">
-								<tr>
-									<td>
-										<input name="openvpnmanager" id="openvpnmanager" type="checkbox" value="yes" />
-									</td>
-									<td>
-										<span class="vexpl">
-											 This will change the generated .ovpn configuration to allow for usage of the management interface.
-											 And include the OpenVPNManager program in the "Windows Installers". With this OpenVPN can be used also by non-administrator users.
-											 This is also useful for Windows Vista/7/8 systems where elevated permissions are needed to add routes to the system.
-										</span>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="2">
-										<span class="vexpl"><br/>NOTE: This is not currently compatible with the 64-bit OpenVPN installer. It will work with the 32-bit installer on a 64-bit system.</span>
-									</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2" class="list" height="12">&nbsp;</td>
-					</tr>
-					<tr>
-						<td width="22%" valign="top" class="vncell">Additional configuration options</td>
-						<td width="78%" class="vtable">
-							<textarea rows="6" cols="68" name="advancedoptions" id="advancedoptions"></textarea><br/>
-							<?=gettext("Enter any additional options you would like to add to the OpenVPN client export configuration here, separated by a line break or semicolon"); ?><br/>
-							<?=gettext("EXAMPLE: remote-random"); ?>;
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2" valign="top" class="listtopic">Client Install Packages</td>
-					</tr>
-				</table>
-				<table width="100%" id="users" border="0" cellpadding="0" cellspacing="0" summary="heading">
-					<tr>
-						<td width="25%" class="listhdrr"><?=gettext("User");?></td>
-						<td width="35%" class="listhdrr"><?=gettext("Certificate Name");?></td>
-						<td width="40%" class="listhdrr"><?=gettext("Export");?></td>
-					</tr>
-				</table>
-				<table width="100%" border="0" cellpadding="0" cellspacing="5" summary="note">
-					<tr>
-						<td align="right" valign="top" width="5%"><?= gettext("NOTES:") ?></td>
-						<td><?= gettext("The &quot;XP&quot; Windows installers work on Windows XP and later versions. The &quot;win6&quot; Windows installers include a new tap-windows6 driver that works only on Windows Vista and later.") ?></td>
-					</tr>
-					<tr>
-						<td>&nbsp;</td>
-						<td><?= gettext("If you expect to see a certain client in the list but it is not there, it is usually due to a CA mismatch between the OpenVPN server instance and the client certificates found in the User Manager.") ?></td>
-					</tr>
-					<tr>
-						<td colspan="2"><br/><strong><?= gettext("Links to OpenVPN clients for various platforms:") ?></strong></td>
-					</tr>
-					<tr>
-						<td>&nbsp;</td>
-						<td>
-						<a href="http://openvpn.net/index.php/open-source/downloads.html"><?= gettext("OpenVPN Community Client") ?></a> - <?=gettext("Binaries for Windows, Source for other platforms. Packaged above in the Windows Installers")?>
-						<br/><a href="https://play.google.com/store/apps/details?id=de.blinkt.openvpn"><?= gettext("OpenVPN For Android") ?></a> - <?=gettext("Recommended client for Android")?>
-						<br/><a href="http://www.featvpn.com/"><?= gettext("FEAT VPN For Android") ?></a> - <?=gettext("For older versions of Android")?>
-						<br/><?= gettext("OpenVPN Connect") ?>: <a href="https://play.google.com/store/apps/details?id=net.openvpn.openvpn"><?=gettext("Android (Google Play)")?></a> or <a href="https://itunes.apple.com/us/app/openvpn-connect/id590379981"><?=gettext("iOS (App Store)")?></a> - <?= gettext("Recommended client for iOS") ?>
-						<br/><a href="https://www.sparklabs.com/viscosity/"><?= gettext("Viscosity") ?></a> - <?= gettext("Recommended commercial client for Mac OS X and Windows") ?>
-						<br/><a href="https://tunnelblick.net"><?= gettext("Tunnelblick") ?></a> - <?= gettext("Free client for OS X") ?>
-						</td>
-					</tr>
-				</table>
-			</div>
-		</td>
-	</tr>
-</table>
-<script type="text/javascript">
-//<![CDATA[
-server_changed();
-//]]>
-</script>
-
-<?php include("fend.inc"); ?>
-</body>
-</html>
