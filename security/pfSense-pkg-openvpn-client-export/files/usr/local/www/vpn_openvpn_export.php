@@ -897,6 +897,7 @@ events.push(function(){
 	useaddr_changed();
 	usepass_changed();
 	useproxy_changed();
+	$('#save').hide();
 });
 //]]>
 </script>
