@@ -240,6 +240,10 @@ if (!empty($act)) {
 				$exp_name = urlencode($exp_name . "-ios-config.ovpn");
 				$expformat = "inlineios";
 				break;
+			case "confinlinevisc":
+				$exp_name = urlencode($exp_name . "-viscosity-config.ovpn");
+				$expformat = "inlinevisc";
+				break;
 			default:
 				$exp_name = urlencode($exp_name . "-config.ovpn");
 				$expformat = "baseconf";
@@ -485,9 +489,11 @@ function server_changed() {
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-win6\"," + i + ", -1)'>x86-win6<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-win6\"," + i + ", -1)'>x64-win6<\/a>";
-		cell2.innerHTML += "<br\/>- Mac OS X:<br\/>";
+		cell2.innerHTML += "<br\/>- Viscosity (Mac OS X and Windows):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"visc\"," + i + ", -1)'>Viscosity Bundle<\/a>";
+		cell2.innerHTML += "&nbsp;&nbsp; ";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinevisc\"," + i + ", -1)'>Viscosity Inline Config<\/a>";
 	}
 	for (j = 0; j < certs.length; j++) {
 		var row = table.insertRow(table.rows.length);
@@ -524,9 +530,11 @@ function server_changed() {
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-win6\", -1," + j + ")'>x86-win6<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-win6\", -1," + j + ")'>x64-win6<\/a>";
-		cell2.innerHTML += "<br\/>- Mac OS X:<br\/>";
+		cell2.innerHTML += "<br\/>- Viscosity (Mac OS X and Windows):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"visc\", -1," + j + ")'>Viscosity Bundle<\/a>";
+		cell2.innerHTML += "&nbsp;&nbsp; ";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinevisc\", -1," + j + ")'>Viscosity Inline Config<\/a>";
 		if (servers[index][2] == "server_tls") {
 			cell2.innerHTML += "<br\/>- Yealink SIP Handsets: <br\/>";
 			cell2.innerHTML += "&nbsp;&nbsp; ";
@@ -570,9 +578,11 @@ function server_changed() {
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x86-win6\"," + i + ")'>x86-win6<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-x64-win6\"," + i + ")'>x64-win6<\/a>";
-		cell2.innerHTML += "<br\/>- Mac OS X:<br\/>";
+		cell2.innerHTML += "<br\/>- Viscosity (Mac OS X and Windows):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"visc\"," + i + ")'>Viscosity Bundle<\/a>";
+		cell2.innerHTML += "&nbsp;&nbsp; ";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinevisc\"," + i + ")'>Viscosity Inline Config<\/a>";
 	}
 }
 
@@ -939,7 +949,7 @@ function useproxy_changed(obj) {
 						<br/><a href="https://play.google.com/store/apps/details?id=de.blinkt.openvpn"><?= gettext("OpenVPN For Android") ?></a> - <?=gettext("Recommended client for Android")?>
 						<br/><a href="http://www.featvpn.com/"><?= gettext("FEAT VPN For Android") ?></a> - <?=gettext("For older versions of Android")?>
 						<br/><?= gettext("OpenVPN Connect") ?>: <a href="https://play.google.com/store/apps/details?id=net.openvpn.openvpn"><?=gettext("Android (Google Play)")?></a> or <a href="https://itunes.apple.com/us/app/openvpn-connect/id590379981"><?=gettext("iOS (App Store)")?></a> - <?= gettext("Recommended client for iOS") ?>
-						<br/><a href="https://www.sparklabs.com/viscosity/"><?= gettext("Viscosity") ?></a> - <?= gettext("Recommended client for Mac OS X") ?>
+						<br/><a href="https://www.sparklabs.com/viscosity/"><?= gettext("Viscosity") ?></a> - <?= gettext("Recommended commercial client for Mac OS X and Windows") ?>
 						<br/><a href="https://tunnelblick.net"><?= gettext("Tunnelblick") ?></a> - <?= gettext("Free client for OS X") ?>
 						</td>
 					</tr>
