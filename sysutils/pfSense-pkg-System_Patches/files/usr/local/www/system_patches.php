@@ -42,6 +42,8 @@ require("guiconfig.inc");
 require_once("functions.inc");
 require_once("itemid.inc");
 require_once("patches.inc");
+require_once("pkg-utils.inc");
+require_once('classes/Form.class.php');
 
 if (!is_array($config['installedpackages']['patches']['item'])) {
 	$config['installedpackages']['patches']['item'] = array();
@@ -58,15 +60,6 @@ if ($_POST) {
 	$pconfig = $_POST;
 	if ($_POST['apply']) {
 		write_config();
-	}
-}
-
-if ($_GET['act'] == "del") {
-	if ($a_patches[$_GET['id']]) {
-		unset($a_patches[$_GET['id']]);
-		write_config();
-		header("Location: system_patches.php");
-		exit;
 	}
 }
 
@@ -95,7 +88,7 @@ if (($_GET['act'] == "revert") && ($a_patches[$_GET['id']])) {
 }
 
 
-if (isset($_POST['del_x'])) {
+if (isset($_POST['del'])) {
 	/* delete selected patches */
 	if (is_array($_POST['patch']) && count($_POST['patch'])) {
 		foreach ($_POST['patch'] as $patchi) {
@@ -107,13 +100,15 @@ if (isset($_POST['del_x'])) {
 	}
 } else {
 	/* yuck - IE won't send value attributes for image buttons, while Mozilla does - so we use .x/.y to find move button clicks instead... */
-	unset($movebtn);
+	unset($delbtn, $movebtn);
 	foreach ($_POST as $pn => $pd) {
-		if (preg_match("/move_(\d+)_x/", $pn, $matches)) {
+		if (preg_match("/del_(\d+)/", $pn, $matches)) {
+			$delbtn = $matches[1];
+		} elseif (preg_match("/move_(\d+)/", $pn, $matches)) {
 			$movebtn = $matches[1];
-			break;
 		}
 	}
+
 	/* move selected patches before this patch */
 	if (isset($movebtn) && is_array($_POST['patch']) && count($_POST['patch'])) {
 		$a_patches_new = array();
@@ -150,6 +145,8 @@ if (isset($_POST['del_x'])) {
 		write_config();
 		header("Location: system_patches.php");
 		return;
+	} else if (isset($delbtn)) {
+		unset($a_patches[$delbtn]);
 	}
 }
 
@@ -157,63 +154,41 @@ $closehead = false;
 $pgtitle = array(gettext("System"), gettext("Patches"));
 include("head.inc");
 
+if ($savemsg) {
+	print_info_box($savemsg, 'success');
+}
 ?>
-<script type="text/javascript" src="/javascript/domTT/domLib.js"></script>
-<script type="text/javascript" src="/javascript/domTT/domTT.js"></script>
-<script type="text/javascript" src="/javascript/domTT/behaviour.js"></script>
-<script type="text/javascript" src="/javascript/domTT/fadomatic.js"></script>
+<? print_info_box(gettext("This page allows adding patches, either from the official code repository or ones pasted in from e-mail or other sources. <br />Use with caution!"), 'warning'); ?>
 
-<link type="text/css" rel="stylesheet" href="/javascript/chosen/chosen.css" />
-</head>
-<body link="#000000" vlink="#000000" alink="#000000">
-<?php include("fbegin.inc"); ?>
-<form action="system_patches.php" method="post" name="iform">
-<script type="text/javascript" src="/javascript/row_toggle.js"></script>
-<?php if ($savemsg) print_info_box_np($savemsg, "Patches", "Close", false); ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0" summary="system patches">
-<tr><td><div id="mainarea">
-<table class="tabcont" width="100%" border="0" cellpadding="0" cellspacing="0" summary="main area">
-	<tr>
-		<td colspan="8" align="center">
-			<?php echo gettext("This page allows you to add patches, either from the official code repository or ones pasted in from e-mail or other sources."); ?>
-			<br/><br/>
-			<strong><?php echo gettext("Use with caution!"); ?></strong>
-			<br/><br/>
-<?php if (!empty($fulldetail)): ?>
-		</td>
-	</tr>
-	<tr>
-		<td></td>
-		<td colspan="7" align="left">Output of full patch <?php echo $_GET['fulltest']; ?> test:
-			<pre><?php echo $fulldetail; ?></pre>
+<form name="mainform" method="post">
+	<?php if (!empty($fulldetail)): ?>
+	<div class="panel panel-default">
+		<div class="panel-heading"><h2 class="panel-title"><?=gettext('Patch Test Output')?> <?= htmlspecialchars($_GET['fulltest']) ?></h2></div>
+		<div class="panel-body table-responsive">
+			<pre><?=$fulldetail; ?></pre>
 			<a href="system_patches.php">Close</a><br/><br/>
-<?php endif; ?>
-		</td>
-	</tr>
-	<tr id="frheader">
-		<td width="5%" class="list">&nbsp;</td>
-		<td width="5%" class="listhdrr"><?=gettext("Description");?></td>
-		<td width="60%" class="listhdrr"><?=gettext("URL/ID");?></td>
-		<td width="5%" class="listhdrr"><?=gettext("Fetch");?></td>
-		<td width="5%" class="listhdrr"><?=gettext("Test");?></td>
-		<td width="5%" class="listhdrr"><?=gettext("Apply");?></td>
-		<td width="5%" class="listhdr"><?=gettext("Revert");?></td>
-		<td width="5%" class="listhdr"><?=gettext("Auto Apply");?></td>
-		<td width="5%" class="list">
-			<table border="0" cellspacing="0" cellpadding="1" summary="buttons">
-				<tr>
-					<td width="17">
-					<?php if (count($a_patches) == 0): ?>
-						<img src="./themes/<?= $g['theme']; ?>/images/icons/icon_x_d.gif" width="17" height="17" title="<?=gettext("delete selected patches");?>" border="0" alt="delete" />
-					<?php else: ?>
-						<input name="del" type="image" src="./themes/<?= $g['theme']; ?>/images/icons/icon_x.gif" title="<?=gettext("delete selected patches"); ?>" onclick="return confirm('<?=gettext("Do you really want to delete the selected patches?");?>')" />
-					<?php endif; ?>
-					</td>
-					<td><a href="system_patches_edit.php"><img src="/themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif" width="17" height="17" border="0" title="<?=gettext("add new patch"); ?>" alt="add" /></a></td>
-				</tr>
-			</table>
-		</td>
-	</tr>
+		</div>
+	</div>
+	<?php endif; ?>
+	<div class="panel panel-default">
+		<div class="panel-heading"><h2 class="panel-title"><?=gettext('System Patches')?></h2></div>
+		<div class="panel-body table-responsive">
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th width="5%">&nbsp;</th>
+						<th width="5%"><?=gettext("Description")?></th>
+						<th width="60%"><?=gettext("URL/ID")?></th>
+						<th width="5%"><?=gettext("Fetch")?></th>
+						<th width="5%"><?=gettext("Test")?></th>
+						<th width="5%"><?=gettext("Apply")?></th>
+						<th width="5%"><?=gettext("Revert")?></th>
+						<th width="5%"><?=gettext("Auto Apply")?></th>
+						<th width="5%"><?=gettext("Actions")?></th>
+					</tr>
+				</thead>
+				<tbody class="patchentries">
+
 
 <?php
 $npatches = $i = 0;
@@ -222,13 +197,19 @@ foreach ($a_patches as $thispatch):
 	$can_revert = patch_test_revert($thispatch);
 
 ?>
-	<tr valign="top" id="fr<?=$npatches;?>">
-		<td class="listt"><input type="checkbox" id="frc<?=$npatches;?>" name="patch[]" value="<?=$i;?>" onclick="fr_bgcolor('<?=$npatches;?>')" style="margin: 0; padding: 0; width: 15px; height: 15px;" /></td>
-		<td class="listlr" onclick="fr_toggle(<?=$npatches;?>)" id="frd<?=$npatches;?>" ondblclick="document.location='system_patches_edit.php?id=<?=$npatches;?>';">
-			<?=$thispatch['descr'];?>
-		</td>
-		<td class="listr" onclick="fr_toggle(<?=$npatches;?>)" id="frd<?=$npatches;?>" ondblclick="document.location='system_patches_edit.php?id=<?=$npatches;?>';">
 
+	<tr valign="top" id="fr<?=$npatches?>">
+
+		<tr id="fr<?=$i?>" id="frd<?=$i?>" ondblclick="document.location='system_patches_edit.php?id=<?= $i ?>'">
+		<td>
+			<input type="checkbox" id="frc<?=$i?>" name="patch[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$i?>')" />
+			<a class="fa fa-anchor" id="Xmove_<?=$i?>" title="<?=gettext("Move checked entries to here")?>"></a>
+		</td>
+
+		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
+			<?=$thispatch['descr']?>
+		</td>
+		<td id="frd<?=$i?>">
 			<?php
 			if (!empty($thispatch['location'])) {
 				echo $thispatch['location'];
@@ -237,42 +218,37 @@ foreach ($a_patches as $thispatch):
 			}
 			?>
 		</td>
-		<td class="listr" onclick="fr_toggle(<?=$npatches;?>)" id="frd<?=$npatches;?>" ondblclick="document.location='system_patches_edit.php?id=<?=$npatches;?>';">
+		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
 		<?php if (empty($thispatch['patch'])): ?>
-			<a href="system_patches.php?id=<?=$i;?>&amp;act=fetch"><?php echo gettext("Fetch"); ?></a>
+			<a href="system_patches.php?id=<?=$i?>&amp;act=fetch" class="btn btn-sm btn-primary"><i class="fa fa-download"></i> <?=gettext("Fetch"); ?></a>
 		<?php elseif (!empty($thispatch['location'])): ?>
-			<a href="system_patches.php?id=<?=$i;?>&amp;act=fetch"><?php echo gettext("Re-Fetch"); ?></a>
+			<a href="system_patches.php?id=<?=$i?>&amp;act=fetch" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i> <?=gettext("Re-Fetch"); ?></a>
 		<?php endif; ?>
 		</td>
-		<td class="listr" onclick="fr_toggle(<?=$npatches;?>)" id="frd<?=$npatches;?>" ondblclick="document.location='system_patches_edit.php?id=<?=$npatches;?>';">
+		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
 		<?php if (!empty($thispatch['patch'])): ?>
-			<a href="system_patches.php?id=<?=$i;?>&amp;act=test"><?php echo gettext("Test"); ?></a>
+			<a href="system_patches.php?id=<?=$i?>&amp;act=test" class="btn btn-sm btn-primary"><i class="fa fa-check"></i> <?=gettext("Test"); ?></a>
 		<?php endif; ?>
 		</td>
-		<td class="listr" onclick="fr_toggle(<?=$npatches;?>)" id="frd<?=$npatches;?>" ondblclick="document.location='system_patches_edit.php?id=<?=$npatches;?>';">
+		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
 		<?php if ($can_apply): ?>
-			<a href="system_patches.php?id=<?=$i;?>&amp;act=apply"><?php echo gettext("Apply"); ?></a>
+			<a href="system_patches.php?id=<?=$i?>&amp;act=apply" class="btn btn-sm btn-primary"><i class="fa fa-plus-circle"></i> <?=gettext("Apply"); ?></a>
 		<?php endif; ?>
 		</td>
-		<td class="listr" onclick="fr_toggle(<?=$npatches;?>)" id="frd<?=$npatches;?>" ondblclick="document.location='system_patches_edit.php?id=<?=$npatches;?>';">
+		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
 		<?php if ($can_revert): ?>
-			<a href="system_patches.php?id=<?=$i;?>&amp;act=revert"><?php echo gettext("Revert"); ?></a>
+			<a href="system_patches.php?id=<?=$i?>&amp;act=revert" class="btn btn-sm btn-primary"><i class="fa fa-minus-circle"></i> <?=gettext("Revert"); ?></a>
 		<?php endif; ?>
 		</td>
-		<td class="listr" onclick="fr_toggle(<?=$npatches;?>)" id="frd<?=$npatches;?>" ondblclick="document.location='system_patches_edit.php?id=<?=$npatches;?>';">
+		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
 			<?= isset($thispatch['autoapply']) ? "Yes" : "No" ?>
 		</td>
-		<td valign="middle" class="list" nowrap="nowrap">
-			<table border="0" cellspacing="0" cellpadding="1" summary="edit">
-				<tr>
-					<td><input onmouseover="fr_insline(<?=$npatches;?>, true)" onmouseout="fr_insline(<?=$npatches;?>, false)" name="move_<?=$i;?>" src="/themes/<?= $g['theme']; ?>/images/icons/icon_left.gif" title="<?=gettext("move selected patches before this patch");?>" type="image" /></td>
-					<td><a href="system_patches_edit.php?id=<?=$i;?>"><img src="/themes/<?= $g['theme']; ?>/images/icons/icon_e.gif" width="17" height="17" border="0" title="<?=gettext("edit patch"); ?>" alt="edit" /></a></td>
-				</tr>
-				<tr>
-					<td align="center" valign="middle"><a href="system_patches.php?act=del&amp;id=<?=$i;?>" onclick="return confirm('<?=gettext("Do you really want to delete this patch?");?>')"><img src="./themes/<?= $g['theme']; ?>/images/icons/icon_x.gif" width="17" height="17" border="0" title="<?=gettext("delete patch");?>" alt="delete" /></a></td>
-					<td></td>
-				</tr>
-			</table>
+
+		<td style="cursor: pointer;">
+			<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=$i?>" name="move_<?=$i?>" value="move_<?=$i?>"><?=gettext("Move checked entries to here")?></button>
+			<a class="fa fa-pencil" href="system_patches_edit.php?id=<?=$i?>" title="<?=gettext("Edit Patch"); ?>"></a>
+			<a class="fa fa-trash no-confirm" id="Xdel_<?=$i?>" title="<?=gettext('Delete Patch'); ?>"></a>
+			<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="del_<?=$i?>" name="del_<?=$i?>" value="del_<?=$i?>" title="<?=gettext('Delete Patch'); ?>">delete</button>
 		</td>
 	</tr>
 <?php
@@ -280,39 +256,52 @@ foreach ($a_patches as $thispatch):
 	$npatches++;
 endforeach;
 ?>
-	<tr>
-		<td class="list" colspan="8"></td>
-		<td class="list" valign="middle" nowrap="nowrap">
-			<table border="0" cellspacing="0" cellpadding="1" summary="edit">
-				<tr>
-					<td><?php if ($npatches == 0): ?><img src="/themes/<?= $g['theme']; ?>/images/icons/icon_left_d.gif" width="17" height="17" title="<?=gettext("move selected patches to end"); ?>" border="0" alt="move" /><?php else: ?><input name="move_<?=$i;?>" type="image" src="/themes/<?= $g['theme']; ?>/images/icons/icon_left.gif" title="<?=gettext("move selected patches to end");?>" alt="move" /><?php endif; ?></td>
-				</tr>
-				<tr>
-					<td width="17">
-					<?php if (count($a_patches) == 0): ?>
-						<img src="./themes/<?= $g['theme']; ?>/images/icons/icon_x_d.gif" width="17" height="17" title="<?=gettext("delete selected patches");?>" border="0" alt="delete" />
-					<?php else: ?>
-						<input name="del" type="image" src="./themes/<?= $g['theme']; ?>/images/icons/icon_x.gif" title="<?=gettext("delete selected patches"); ?>" onclick="return confirm('<?=gettext("Do you really want to delete the selected patches?");?>')" />
-					<?php endif; ?>
-					</td>
-					<td><a href="system_patches_edit.php"><img src="/themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif" width="17" height="17" border="0" title="<?=gettext("add new patch"); ?>" alt="add" /></a></td>
-				</tr>
+				</tbody>
 			</table>
-		</td>
-	</tr>
-	<tr>
-		<td></td>
-		<td colspan="6">
-			<?php echo gettext("NOTE: Each patch is tested, and the appropriate action is shown. If neither 'Apply' or 'Revert' shows up, the patch cannot be used (check the pathstrip and whitespace options)."); ?>
-			<br/><br/>
-			<?php echo gettext("Use the 'Test' link to see if a patch can be applied or reverted. You can reorder patches so that higher patches apply later than lower patches."); ?>
-		</td>
-		<td></td>
-	</tr>
-</table>
-</div></td></tr>
-</table>
+		</div>
+	</div>
+	<nav class="action-buttons">
+		<a href="system_patches_edit.php" class="btn btn-success btn-sm">
+			<i class="fa fa-plus icon-embed-btn"></i>
+			<?=gettext("Add New Patch")?>
+		</a>
+<?php if ($i !== 0): ?>
+		<button type="submit" name="del" class="btn btn-danger btn-sm" value="<?=gettext("Delete selected P1s")?>">
+			<i class="fa fa-trash icon-embed-btn"></i>
+			<?=gettext("Delete Patches")?>
+		</button>
+<?php endif; ?>
+	</nav>
 </form>
-<?php include("fend.inc"); ?>
-</body>
-</html>
+
+<div id="infoblock">
+	<?=print_info_box('<strong>' . gettext("Note:") . '</strong><br />' .
+	gettext("Each patch is tested and the appropriate action is shown. If neither 'Apply' or 'Revert' shows up, the patch cannot be used (check the pathstrip and whitespace options).") .
+	"<br/><br/>" .
+	gettext("Use the 'Test' link to see if a patch can be applied or reverted. Patches may be reordered so that higher patches apply later than lower patches."), 'info'); ?>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+function show_phase2(id, buttonid) {
+	document.getElementById(buttonid).innerHTML='';
+	document.getElementById(id).style.display = "block";
+	var visible = id + '-visible';
+	document.getElementById(visible).value = "1";
+}
+
+events.push(function() {
+	$('[id^=Xmove_]').click(function (event) {
+		$('#' + event.target.id.slice(1)).click();
+	});
+
+	$('[id^=Xdel_]').click(function (event) {
+		if(confirm("<?=gettext('Delete this patch entry?')?>")) {
+			$('#' + event.target.id.slice(1)).click();
+		}
+	});
+});
+//]]>
+</script>
+
+<?php include("foot.inc"); ?>

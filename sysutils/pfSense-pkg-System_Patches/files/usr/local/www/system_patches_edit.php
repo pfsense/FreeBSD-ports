@@ -41,6 +41,8 @@
 require("guiconfig.inc");
 require_once("itemid.inc");
 require_once("patches.inc");
+require_once("pkg-utils.inc");
+require_once('classes/Form.class.php');
 
 if (!is_array($config['installedpackages']['patches']['item'])) {
 	$config['installedpackages']['patches']['item'] = array();
@@ -154,86 +156,101 @@ $closehead = false;
 $pgtitle = array(gettext("System"),gettext("Patches"), gettext("Edit"));
 include("head.inc");
 
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
+if ($savemsg) {
+	print_info_box($savemsg, 'success');
+}
+
+$form = new Form();
+
+$section = new Form_Section('Patch Details');
+
+$section->addInput(new Form_Input(
+	'descr',
+	'Description',
+	'text',
+	$pconfig['descr']
+))->setHelp('Enter a description here for reference.');
+
+$section->addInput(new Form_Input(
+	'location',
+	'URL/Commit ID',
+	'text',
+	$pconfig['location']
+))->setHelp('Enter a URL to a patch, or a commit ID from the main github repository (NOT the tools or packages repos!)');
+
+$patchtext = new Form_Textarea(
+	'patch',
+	'Patch Contents',
+	htmlspecialchars(base64_decode($pconfig['patch']))
+);
+
+$patchtext->setWidth(7);
+$patchtext->setHelp('The contents of the patch. Paste a patch here, or enter a URL/commit ID above.');
+
+$section->addInput($patchtext);
+
+$form->add($section);
+
+$section = new Form_Section('Patch Application Behavoir');
+
+$section->addInput(new Form_Select(
+	'pathstrip',
+	'Path Strip Count',
+	$pconfig['pathstrip'],
+	array_combine(range(0, 20, 1), range(0, 20, 1))
+))->setHelp('The number of levels to strip from the front of the path in the patch header.');
+
+$section->addInput(new Form_Input(
+	'basedir',
+	'Base Directory',
+	'text',
+	htmlspecialchars($pconfig['basedir'])
+))->setHelp('Enter the base directory for the patch, default is /. Patches from github are all based in /. <br/>Custom patches may need a full path here such as /usr/local/www/.');
+
+$section->addInput(new Form_Checkbox(
+	'ignorewhitespace',
+	'Ignore Whitespace',
+	'Ignore whitespace in the patch.',
+	$pconfig['ignorewhitespace']
+));
+
+$section->addInput(new Form_Checkbox(
+	'autoapply',
+	'Auto Apply',
+	'Apply the patch automatically when possible, useful for patches to survive after updates.',
+	$pconfig['autoapply']
+));
+
+$form->add($section);
+
+$section = new Form_Section('Patch Information');
+
+$section->addInput(new Form_StaticText(
+	'Patch ID',
+	$pconfig['uniqid']
+));
+
+$form->add($section);
+
+$form->addGlobal(new Form_Input(
+	'id',
+	null,
+	'hidden',
+	$id
+));
+
+$form->addGlobal(new Form_Input(
+	'uniqid',
+	null,
+	'hidden',
+	$pconfig['uniqid']
+));
+
+
+print($form);
+
 ?>
-<link type="text/css" rel="stylesheet" href="/pfCenter/javascript/chosen/chosen.css" />
-<script src="/pfCenter/javascript/chosen/chosen.proto.js" type="text/javascript"></script>
-</head>
-
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-
-<?php include("fbegin.inc"); ?>
-<?php if ($input_errors) print_input_errors($input_errors); ?>
-<form action="system_patches_edit.php" method="post" name="iform" id="iform">
-<table width="100%" border="0" cellpadding="6" cellspacing="0" summary="system patches edit">
-<tr>
-	<td colspan="2" valign="top" class="listtopic"><?=gettext("Edit Patch Entry"); ?></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncellreq"><strong><?=gettext("Description"); ?></strong></td>
-	<td width="78%" class="vtable">
-		<input name="descr" type="text" class="formfld unknown" id="descr" size="40" value="<?=htmlspecialchars($pconfig['descr']);?>" />
-		<br /> <span class="vexpl"><?=gettext("Enter a description here for your reference."); ?></span></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?=gettext("URL/Commit ID"); ?></td>
-	<td width="78%" class="vtable">
-		<input name="location" type="text" class="formfld unknown" id="location" size="40" value="<?=htmlspecialchars($pconfig['location']);?>" />
-		<br /> <span class="vexpl"><?=gettext("Enter a URL to a patch, or a commit ID from the main github repository (NOT the tools or packages repos!)."); ?></span></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?=gettext("Patch Contents"); ?></td>
-	<td width="78%" class="vtable">
-		<textarea name="patch" class="" id="patch" rows="15" cols="70" wrap="off"><?=htmlspecialchars(base64_decode($pconfig['patch']));?></textarea>
-		<br /> <span class="vexpl"><?=gettext("The contents of the patch. You can paste a patch here, or enter a URL/commit ID above, it can then be fetched into here automatically."); ?></span></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?=gettext("Path Strip Count:"); ?></td>
-	<td width="78%" class="vtable">
-		<select name="pathstrip" class="formselect" id="pathstrip">
-<?php		for ($i = 0; $i < 20; $i++): ?>
-			<option value="<?=$i;?>" <?php if ($i == $pconfig['pathstrip']) echo "selected=\"selected\""; ?>><?=$i;?></option>
-<?php 		endfor; ?>
-		</select>
-	</td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?=gettext("Base Directory"); ?></td>
-	<td width="78%" class="vtable">
-		<input name="basedir" type="text" class="formfld unknown" id="basedir" size="40" value="<?=htmlspecialchars($pconfig['basedir']);?>" />
-		<br /> <span class="vexpl"><?=gettext("Enter the base directory for the patch, default is /. Patches from github are all based in /. Custom patches may need a full path here such as /usr/local/www/"); ?></span></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?=gettext("Ignore Whitespace"); ?></td>
-	<td width="78%" class="vtable">
-		<input name="ignorewhitespace" type="checkbox" id="ignorewhitespace" value="yes" <?php if ($pconfig['ignorewhitespace']) echo "checked=\"checked\""; ?> />
-		<strong><?=gettext("Ignore Whitespace"); ?></strong><br />
-		<span class="vexpl"><?=gettext("Set this option to ignore whitespace in the patch."); ?></span>
-	</td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?=gettext("Auto Apply"); ?></td>
-	<td width="78%" class="vtable">
-		<input name="autoapply" type="checkbox" id="autoapply" value="yes" <?php if ($pconfig['autoapply']) echo "checked=\"checked\""; ?> />
-		<strong><?=gettext("Auto-Apply Patch"); ?></strong><br />
-		<span class="vexpl"><?=gettext("Set this option to apply the patch automatically when possible, useful for patches to survive after firmware updates."); ?></span>
-	</td>
-</tr>
-<tr>
-	<td width="22%" valign="top">&nbsp;</td>
-	<td width="78%">Patch id: <?php echo $pconfig['uniqid']; ?></td>
-</tr>
-<tr>
-	<td width="22%" valign="top">&nbsp;</td>
-	<td width="78%">
-		<input name="Submit" type="submit" class="formbtn" value="<?=gettext("Save"); ?>" /> <input type="button" class="formbtn" value="<?=gettext("Cancel"); ?>" onclick="history.back()" />
-		<?php if (isset($id) && $a_patches[$id]): ?>
-		<input name="id" type="hidden" value="<?=htmlspecialchars($id);?>" />
-		<input name="uniqid" type="hidden" value="<?=htmlspecialchars($pconfig['uniqid']);?>" />
-		<?php endif; ?>
-	</td>
-</tr>
-</table>
-</form>
-<?php include("fend.inc"); ?>
-</body>
-</html>
+<?php include("foot.inc"); ?>
