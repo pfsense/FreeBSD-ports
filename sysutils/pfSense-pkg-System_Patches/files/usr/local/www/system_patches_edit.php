@@ -184,10 +184,12 @@ $section->addInput(new Form_Input(
 $patchtext = new Form_Textarea(
 	'patch',
 	'Patch Contents',
-	htmlspecialchars(base64_decode($pconfig['patch']))
+	base64_decode($pconfig['patch'])
 );
 
 $patchtext->setWidth(7);
+$patchtext->setAttribute("rows", "15");
+$patchtext->setAttribute("wrap", "off");
 $patchtext->setHelp('The contents of the patch. Paste a patch here, or enter a URL/commit ID above.');
 
 $section->addInput($patchtext);
