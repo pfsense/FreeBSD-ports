@@ -34,8 +34,10 @@
 require("globals.inc");
 require("guiconfig.inc");
 require("openvpn-client-export.inc");
+require("pkg-utils.inc");
+require('classes/Form.class.php');
 
-$pgtitle = array("OpenVPN", "Client Export Utility");
+$pgtitle = array("OpenVPN", "Shared Key Export");
 
 if (!is_array($config['openvpn']['openvpn-server'])) {
 	$config['openvpn']['openvpn-server'] = array();
@@ -78,7 +80,7 @@ if (isset($_POST['act'])) {
 
 $error = false;
 
-if (($act == "skconf") || ($act == "skzipconf")) {
+if (($act == "skconfinline") || ($act == "skconf") || ($act == "skzipconf")) {
 	$srvid = $_GET['srvid'];
 	if (($srvid === false) || ($config['openvpn']['openvpn-server'][$srvid]['mode'] != "p2p_shared_key")) {
 		pfSenseHeader("vpn_openvpn_export.php");
@@ -87,7 +89,7 @@ if (($act == "skconf") || ($act == "skzipconf")) {
 
 	if (empty($_GET['useaddr'])) {
 		$error = true;
-		$input_errors[] = "You need to specify an IP or hostname.";
+		$input_errors[] = "An IP address or hostname must be specified.";
 	} else {
 		$useaddr = $_GET['useaddr'];
 	}
@@ -97,13 +99,13 @@ if (($act == "skconf") || ($act == "skzipconf")) {
 		$proxy = array();
 		if (empty($_GET['proxy_addr'])) {
 			$error = true;
-			$input_errors[] = "You need to specify an address for the proxy port.";
+			$input_errors[] = "An address for the proxy must be specified.";
 		} else {
 			$proxy['ip'] = $_GET['proxy_addr'];
 		}
 		if (empty($_GET['proxy_port'])) {
 			$error = true;
-			$input_errors[] = "You need to specify a port for the proxy ip.";
+			$input_errors[] = "A port for the proxy must be specified.";
 		} else {
 			$proxy['port'] = $_GET['proxy_port'];
 		}
@@ -112,13 +114,13 @@ if (($act == "skconf") || ($act == "skzipconf")) {
 		if ($_GET['proxy_authtype'] != "none") {
 			if (empty($_GET['proxy_user'])) {
 				$error = true;
-				$input_errors[] = "You need to specify a username with the proxy config.";
+				$input_errors[] = "A username for the proxy configuration must be specified.";
 			} else {
 				$proxy['user'] = $_GET['proxy_user'];
 			}
 			if (!empty($_GET['proxy_user']) && empty($_GET['proxy_password'])) {
 				$error = true;
-				$input_errors[] = "You need to specify a password with the proxy user.";
+				$input_errors[] = "A password for the proxy user must be specified.";
 			} else {
 				$proxy['password'] = $_GET['proxy_password'];
 			}
@@ -126,10 +128,14 @@ if (($act == "skconf") || ($act == "skzipconf")) {
 	}
 
 	$exp_name = openvpn_client_export_prefix($srvid);
-	if ($act == "skzipconf") {
+	if ($act == "skconfinline") {
+		$nokeys = false;
+	} elseif ($act == "skconf") {
+		$nokeys = true;
+	} elseif ($act == "skzipconf") {
 		$zipconf = true;
 	}
-	$exp_data = openvpn_client_export_sharedkey_config($srvid, $useaddr, $proxy, $zipconf);
+	$exp_data = openvpn_client_export_sharedkey_config($srvid, $useaddr, $proxy, $nokeys, $zipconf);
 	if (!$exp_data) {
 		$input_errors[] = "Failed to export config files!";
 		$error = true;
@@ -161,20 +167,166 @@ if (($act == "skconf") || ($act == "skzipconf")) {
 
 include("head.inc");
 
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
+if ($savemsg) {
+	print_info_box($savemsg, 'success');
+}
+
+$tab_array = array();
+$tab_array[] = array(gettext("Server"), true, "vpn_openvpn_server.php");
+$tab_array[] = array(gettext("Client"), false, "vpn_openvpn_client.php");
+$tab_array[] = array(gettext("Client Specific Overrides"), false, "vpn_openvpn_csc.php");
+$tab_array[] = array(gettext("Wizards"), false, "wizard.php?xml=openvpn_wizard.xml");
+add_package_tabs("OpenVPN", $tab_array);
+display_top_tabs($tab_array);
+
+$form = new Form(false);
+
+$section = new Form_Section('OpenVPN Server');
+
+$serverlist = array();
+foreach ($ras_server as $server) {
+	$serverlist[$server['sindex']] = $server['name'];
+}
+
+$section->addInput(new Form_Select(
+	'server',
+	'Shared Key Server',
+	null,
+	$serverlist
+	));
+
+$form->add($section);
+
+$section = new Form_Section('Client Connection Behavior');
+
+$useaddrlist = array(
+	"serveraddr" => "Interface IP Address",
+	"servermagic" => "Automagic Multi-WAN IPs (port forward targets)",
+	"servermagichost" => "Automagic Multi-WAN DDNS Hostnames (port forward targets)",
+	"serverhostname" => "Installation hostname"
+);
+
+if (is_array($config['dyndnses']['dyndns'])) {
+	foreach ($config['dyndnses']['dyndns'] as $ddns) {
+		$useaddrlist[$ddns["host"]] = $ddns["host"];
+	}
+}
+if (is_array($config['dnsupdates']['dnsupdate'])) {
+	foreach ($config['dnsupdates']['dnsupdate'] as $ddns) {
+		$useaddrlist[$ddns["host"]] = $ddns["host"];
+	}
+}
+
+$useaddrlist["other"] = "Other";
+
+$section->addInput(new Form_Select(
+	'useaddr',
+	'Host Name Resolution',
+	null,
+	$useaddrlist
+	));
+
+$section->addInput(new Form_Input(
+	'useaddr_hostname',
+	'Host Name'
+))->setHelp('Enter the hostname or IP address the client will use to connect to this server.');
+
+$form->add($section);
+
+$section = new Form_Section('Proxy Options');
+
+$section->addInput(new Form_Checkbox(
+	'useproxy',
+	'Use A Proxy',
+	'Use proxy to communicate with the OpenVPN server.',
+	false
+));
+
+$section->addInput(new Form_Select(
+	'useproxytype',
+	'Proxy Type',
+	null,
+	array(
+		"http" => "HTTP",
+		"socks" => "SOCKS")
+));
+
+$section->addInput(new Form_Input(
+	'proxyaddr',
+	'Proxy IP Address'
+))->setHelp('Hostname or IP address of proxy server.');
+
+$section->addInput(new Form_Input(
+	'proxyport',
+	'Proxy Port'
+))->setHelp('Port where proxy server is listening.');
+
+$section->addInput(new Form_Select(
+	'useproxypass',
+	'Proxy Authentication',
+	null,
+	array(
+		"none" => "None",
+		"basic" => "Basic",
+		"ntlm" => "NTLM")
+))->setHelp('Choose proxy authentication method, if any.');
+
+$section->addInput(new Form_Input(
+	'proxyuser',
+	'Proxy Username'
+))->setHelp('Username for authentication to proxy server.');
+
+$section->addInput(new Form_Input(
+	'proxypass',
+	'Proxy Password',
+	'password'
+))->setHelp('Password for authentication to proxy server.');
+
+$section->addInput(new Form_Input(
+	'proxyconf',
+	'Proxy Password (Confirm)',
+	'password'
+))->setHelp('Password for authentication to proxy server.');
+
+$form->add($section);
+
+print($form);
 ?>
 
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-<?php include("fbegin.inc"); ?>
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("OpenVPN Shared Key Clients")?></h2></div>
+	<div class="panel-body">
+		<div class="table-responsive">
+			<table class="table table-striped table-hover table-condensed" id="clients">
+				<thead>
+					<tr>
+						<td width="25%" class="listhdrr"><?=gettext("Client Type")?></td>
+						<td width="50%" class="listhdrr"><?=gettext("Export")?></td>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<br />
+<br />
+<?= print_info_box(gettext("These are shared key configurations for use in site-to-site tunnels with other routers. Shared key tunnels are not normally used for remote access connections to end users."), 'info'); ?>
+
 <script type="text/javascript">
 //<![CDATA[
 var viscosityAvailable = false;
 
 var servers = new Array();
 <?php	foreach ($ras_server as $sindex => $server): ?>
-servers[<?=$sindex;?>] = new Array();
-servers[<?=$sindex;?>][0] = '<?=$server['index'];?>';
-servers[<?=$sindex;?>][1] = new Array();
-servers[<?=$sindex;?>][2] = '<?=$server['mode'];?>';
+servers[<?=$sindex?>] = new Array();
+servers[<?=$sindex?>][0] = '<?=$server['index']?>';
+servers[<?=$sindex?>][1] = new Array();
+servers[<?=$sindex?>][2] = '<?=$server['mode']?>';
 <?	endforeach; ?>
 
 function download_begin(act) {
@@ -266,227 +418,71 @@ function server_changed() {
 		cell0.className = "listlr";
 		cell0.innerHTML = "Other Shared Key OS Client";
 		cell1.className = "listr";
-		cell1.innerHTML = "<a href='javascript:download_begin(\"skconf\")'>Configuration<\/a>";
-		cell1.innerHTML += "<br\/>";
-		cell1.innerHTML += "<a href='javascript:download_begin(\"skzipconf\")'>Configuration archive<\/a>";
+		cell1.innerHTML = "<a href='javascript:download_begin(\"skconfinline\")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Inline Configuration<\/a>";
+		cell1.innerHTML += "&nbsp;&nbsp;";
+		cell1.innerHTML += "<a href='javascript:download_begin(\"skconf\")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Configuration Only<\/a>";
+		cell1.innerHTML += "&nbsp;&nbsp;";
+		cell1.innerHTML += "<a href='javascript:download_begin(\"skzipconf\")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Configuration archive<\/a>";
 	}
 }
 
-function useaddr_changed(obj) {
-
-	if (obj.value == "other") {
-		$('HostName').show();
+function useaddr_changed() {
+	if ($('#useaddr').val() == "other") {
+		hideInput('useaddr_hostname', false);
 	} else {
-		$('HostName').hide();
+		hideInput('useaddr_hostname', true);
 	}
-
 }
 
-function useproxy_changed(obj) {
-
-	if ((obj.id == "useproxy" && obj.checked) ||
-	    (obj.id == "useproxypass" && (obj.value != 'none'))) {
-		$(obj.id + '_opts').show();
+function useproxy_changed() {
+	if ($('#useproxy').prop('checked')) {
+		hideInput('useproxytype', false);
+		hideInput('proxyaddr', false);
+		hideInput('proxyport', false);
+		hideInput('useproxypass', false);
 	} else {
-		$(obj.id + '_opts').hide();
+		hideInput('useproxytype', true);
+		hideInput('proxyaddr', true);
+		hideInput('proxyport', true);
+		hideInput('useproxypass', true);
+		hideInput('proxyuser', true);
+		hideInput('proxypass', true);
+		hideInput('proxyconf', true);
+	}
+	if ($('#useproxy').prop('checked') && ($('#useproxypass').val() != 'none')) {
+		hideInput('proxyuser', false);
+		hideInput('proxypass', false);
+		hideInput('proxyconf', false);
+	} else {
+		hideInput('proxyuser', true);
+		hideInput('proxypass', true);
+		hideInput('proxyconf', true);
 	}
 }
+
+events.push(function(){
+	// ---------- OnChange handlers ---------------------------------------------------------
+
+	$('#server').on('change', function() {
+		server_changed();
+	});
+	$('#useaddr').on('change', function() {
+		useaddr_changed();
+	});
+	$('#useproxy').on('change', function() {
+		useproxy_changed();
+	});
+	$('#useproxypass').on('change', function() {
+		useproxy_changed();
+	});
+
+	// ---------- On initial page load ------------------------------------------------------------
+
+	server_changed();
+	useaddr_changed();
+	useproxy_changed();
+});
+
 //]]>
 </script>
-<?php
-	if ($input_errors) {
-		print_input_errors($input_errors);
-	}
-	if ($savemsg) {
-		print_info_box($savemsg);
-	}
-?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0" summary="openvpn export shared">
-	<tr>
-		<td>
-			<?php
-				$tab_array = array();
-				$tab_array[] = array(gettext("Server"), false, "vpn_openvpn_server.php");
-				$tab_array[] = array(gettext("Client"), false, "vpn_openvpn_client.php");
-				$tab_array[] = array(gettext("Client Specific Overrides"), false, "vpn_openvpn_csc.php");
-				$tab_array[] = array(gettext("Wizards"), false, "wizard.php?xml=openvpn_wizard.xml");
-				$tab_array[] = array(gettext("Client Export"), false, "vpn_openvpn_export.php");
-				$tab_array[] = array(gettext("Shared Key Export"), true, "vpn_openvpn_export_shared.php");
-				display_top_tabs($tab_array);
-			?>
-		</td>
-	</tr>
-	<tr>
-		<td id="mainarea">
-			<div class="tabcont">
-				<table width="100%" border="0" cellpadding="6" cellspacing="0" summary="main area">
-					<tr>
-						<td width="22%" valign="top" class="vncellreq">Shared Key Server</td>
-						<td width="78%" class="vtable">
-							<select name="server" id="server" class="formselect" onchange="server_changed()">
-								<?php foreach ($ras_server as & $server): ?>
-								<option value="<?=$server['sindex'];?>"><?=$server['name'];?></option>
-								<?php endforeach; ?>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td width="22%" valign="top" class="vncell">Host Name Resolution</td>
-						<td width="78%" class="vtable">
-							<table border="0" cellpadding="2" cellspacing="0" summary="host name resolution">
-								<tr>
-									<td>
-										<select name="useaddr" id="useaddr" class="formselect" onchange="useaddr_changed(this)">
-											<option value="serveraddr" >Interface IP Address</option>
-											<option value="serverhostname" >Installation hostname</option>
-											<?php if (is_array($config['dyndnses']['dyndns'])): ?>
-												<?php foreach ($config['dyndnses']['dyndns'] as $ddns): ?>
-													<option value="<?php echo $ddns["host"] ?>">DynDNS: <?php echo $ddns["host"] ?></option>
-												<?php endforeach; ?>
-											<?php endif; ?>
-											<option value="other">Other</option>
-										</select>
-										<br />
-										<div style="display:none;" id="HostName">
-											<input name="useaddr_hostname" id="useaddr_hostname" size="40" />
-											<span class="vexpl">
-												Enter the hostname or IP address the client will use to connect to this server.
-											</span>
-										</div>
-									</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-					<tr>
-						<td width="22%" valign="top" class="vncell">Use Proxy</td>
-						<td width="78%" class="vtable">
-							 <table border="0" cellpadding="2" cellspacing="0" summary="http proxy">
-								<tr>
-									<td>
-										<input name="useproxy" id="useproxy" type="checkbox" value="yes" onclick="useproxy_changed(this)" />
-
-									</td>
-									<td>
-										<span class="vexpl">
-											Use proxy to communicate with the server.
-										</span>
-									</td>
-								</tr>
-							</table>
-							<table border="0" cellpadding="2" cellspacing="0" id="useproxy_opts" style="display:none" summary="user options">
-								<tr>
-									<td align="right" width="25%">
-										<span class="vexpl">
-											 &nbsp;     Type :&nbsp;
-										</span>
-									</td>
-									<td>
-										<select name="useproxytype" id="useproxytype" class="formselect">
-											<option value="http">HTTP</option>
-											<option value="socks">Socks</option>
-										</select>
-									</td>
-								</tr>
-								<tr>
-									<td align="right" width="25%">
-										<span class="vexpl">
-											 &nbsp;     IP Address :&nbsp;
-										</span>
-									</td>
-									<td>
-										<input name="proxyaddr" id="proxyaddr" class="formfld unknown" size="30" value="" />
-									</td>
-								</tr>
-								<tr>
-									<td align="right" width="25%">
-										<span class="vexpl">
-											 &nbsp;      Port :&nbsp;
-										</span>
-									</td>
-														<td>
-										<input name="proxyport" id="proxyport" class="formfld unknown" size="5" value="" />
-									</td>
-								</tr>
-								<tr>
-									<td width="25%">
-										<br />
-									</td>
-									<td>
-										<select name="useproxypass" id="useproxypass" class="formselect" onchange="useproxy_changed(this)">
-											<option value="none">none</option>
-											<option value="basic">basic</option>
-											<option value="ntlm">ntlm</option>
-										</select>
-										<span class="vexpl">
-											Choose proxy authentication if any.
-										</span>
-										<br />
-										<table border="0" cellpadding="2" cellspacing="0" id="useproxypass_opts" style="display:none" summary="name and password">
-											<tr>
-												<td align="right" width="25%">
-													<span class="vexpl">
-														 &nbsp;Username :&nbsp;
-													</span>
-												</td>
-												<td>
-													<input name="proxyuser" id="proxyuser" class="formfld unknown" size="20" value="" />
-												</td>
-											</tr>
-											<tr>
-												<td align="right" width="25%">
-													<span class="vexpl">
-														 &nbsp;Password :&nbsp;
-													</span>
-												</td>
-												<td>
-													<input name="proxypass" id="proxypass" type="password" class="formfld pwd" size="20" value="" />
-												</td>
-											</tr>
-											<tr>
-												<td align="right" width="25%">
-													<span class="vexpl">
-														 &nbsp;Confirm :&nbsp;
-													</span>
-												</td>
-												<td>
-													<input name="proxyconf" id="proxyconf" type="password" class="formfld pwd" size="20" value="" />
-												</td>
-											</tr>
-										</table>
-									</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2" class="list" height="12">&nbsp;</td>
-					</tr>
-					<tr>
-						<td colspan="2" valign="top" class="listtopic">Client Configuration Packages</td>
-					</tr>
-				</table>
-				<table width="100%" id="clients" border="0" cellpadding="0" cellspacing="0" summary="heading">
-					<tr>
-						<td width="25%" class="listhdrr"><?=gettext("Client Type");?></td>
-						<td width="50%" class="listhdrr"><?=gettext("Export");?></td>
-					</tr>
-				</table>
-				<table width="100%" border="0" cellpadding="5" cellspacing="10" summary="note">
-					<tr>
-						<td align="right" valign="top" width="5%"><?= gettext("NOTE:") ?></td>
-						<td><?= gettext("These are shared key configurations for use in site-to-site tunnels with other routers. Shared key tunnels are not normally used for remote access connections to end users.") ?></td>
-					</tr>
-				</table>
-			</div>
-		</td>
-	</tr>
-</table>
-<script type="text/javascript">
-//<![CDATA[
-server_changed();
-//]]>
-</script>
-<?php include("fend.inc"); ?>
-</body>
-</html>
+<?php include("foot.inc"); ?>

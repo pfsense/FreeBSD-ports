@@ -753,7 +753,7 @@ EOF;
 
 }
 
-function openvpn_client_export_sharedkey_config($srvid, $useaddr, $proxy, $zipconf = false) {
+function openvpn_client_export_sharedkey_config($srvid, $useaddr, $proxy, $nokeys = false, $zipconf = false) {
 	global $config, $input_errors, $g;
 
 	// lookup server settings
@@ -851,7 +851,12 @@ function openvpn_client_export_sharedkey_config($srvid, $useaddr, $proxy, $zipco
 	// add key settings
 	$prefix = openvpn_client_export_prefix($srvid);
 	$shkeyfile = "{$prefix}.secret";
-	$conf .= "secret {$shkeyfile}\n";
+
+	if ($nokeys) {
+		$conf .= "secret {$shkeyfile}\n";
+	} else {
+		$conf .= "<secret>\n" . trim(base64_decode($settings['shared_key'])) . "\n</secret>\n";
+	}
 
 	// add optional settings
 	if ($settings['compression'])

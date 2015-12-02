@@ -493,20 +493,25 @@ $form->add($section);
 print($form);
 ?>
 
-<div class="table-responsive">
-	<table class="table table-striped table-hover table-condensed" id="users">
-		<thead>
-			<tr>
-				<td width="25%" class="listhdrr"><?=gettext("User")?></td>
-				<td width="35%" class="listhdrr"><?=gettext("Certificate Name")?></td>
-				<td width="40%" class="listhdrr"><?=gettext("Export")?></td>
-			</tr>
-		</thead>
-		<tbody>
-		</tbody>
-	</table>
-</div>
 
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("OpenVPN Clients")?></h2></div>
+	<div class="panel-body">
+		<div class="table-responsive">
+			<table class="table table-striped table-hover table-condensed" id="users">
+				<thead>
+					<tr>
+						<td width="25%" class="listhdrr"><?=gettext("User")?></td>
+						<td width="35%" class="listhdrr"><?=gettext("Certificate Name")?></td>
+						<td width="40%" class="listhdrr"><?=gettext("Export")?></td>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
 <br />
 <br />
 <?= print_info_box(gettext("The &quot;XP&quot; Windows installers work on Windows XP and later versions. The &quot;win6&quot; Windows installers include a new tap-windows6 driver that works only on Windows Vista and later. " .
