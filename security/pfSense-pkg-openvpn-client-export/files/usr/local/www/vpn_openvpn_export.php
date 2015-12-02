@@ -297,7 +297,7 @@ if ($savemsg) {
 	print_info_box($savemsg, 'success');
 }
 $tab_array = array();
-$tab_array[] = array(gettext("Server"), true, "vpn_openvpn_server.php");
+$tab_array[] = array(gettext("Server"), false, "vpn_openvpn_server.php");
 $tab_array[] = array(gettext("Client"), false, "vpn_openvpn_client.php");
 $tab_array[] = array(gettext("Client Specific Overrides"), false, "vpn_openvpn_csc.php");
 $tab_array[] = array(gettext("Wizards"), false, "wizard.php?xml=openvpn_wizard.xml");
