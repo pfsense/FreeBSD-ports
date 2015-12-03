@@ -109,5 +109,3 @@ include("head.inc");
 </table>
 </form>
 <?php include("foot.inc"); ?>
-</body>
-</html>

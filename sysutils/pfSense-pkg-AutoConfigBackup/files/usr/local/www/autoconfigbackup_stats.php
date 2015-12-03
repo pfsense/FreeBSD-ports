@@ -65,7 +65,7 @@ if ($_REQUEST['delhostname']) {
 	curl_setopt($curl_session, CURLOPT_URL, $del_url);
 	curl_setopt($curl_session, CURLOPT_HTTPHEADER, array("Authorization: Basic " . base64_encode("{$username}:{$password}")));
 	curl_setopt($curl_session, CURLOPT_POST, 2);
-	curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, 0);
+	curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, 1);
 	curl_setopt($curl_session, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($curl_session, CURLOPT_POSTFIELDS, "action=deletehostname&delhostname=" . urlencode($_REQUEST['delhostname']));
 	curl_setopt($curl_session, CURLOPT_USERAGENT, $g['product_name'] . '/' . rtrim(file_get_contents("/etc/version")));
@@ -91,7 +91,6 @@ include("head.inc");
 
 ?>
 
-<script src="/javascript/scriptaculous/prototype.js" type="text/javascript"></script>
 <div id='maincontent'>
 <?php
 	include("fbegin.inc");
@@ -132,7 +131,7 @@ include("head.inc");
 	$curl_session = curl_init();
 	curl_setopt($curl_session, CURLOPT_URL, $stats_url);
 	curl_setopt($curl_session, CURLOPT_HTTPHEADER, array("Authorization: Basic " . base64_encode("{$username}:{$password}")));
-	curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, 0);
+	curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, 1);
 	curl_setopt($curl_session, CURLOPT_POST, 1);
 	curl_setopt($curl_session, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($curl_session, CURLOPT_POSTFIELDS, "action=showstats");
@@ -164,7 +163,7 @@ include("head.inc");
 	}
 	$counter = 0;
 	echo "<script type=\"text/javascript\">";
-	echo "$('loading').innerHTML = '';";
+	echo "$('loading').hide();";
 	echo "</script>";
 	$total_backups = 0;
 	foreach ($statvers as $cv):
@@ -204,5 +203,3 @@ include("head.inc");
 </table>
 </form>
 <?php include("foot.inc"); ?>
-</body>
-</html>
