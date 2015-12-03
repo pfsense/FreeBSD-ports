@@ -7,7 +7,7 @@
 			Requires Gold Subscription from &lt;a href=&quot;https://portal.pfsense.org&quot;&gt;pfSense Portal&lt;/a&gt;.]]></descr>
 		<website>https://portal.pfsense.org</website>
 		<category>Services</category>
-		<version>1.40</version>
+		<version>1.41</version>
 		<status>RELEASE</status>
 		<required_version>2.3</required_version>
 		<pkginfolink>https://doc.pfsense.org/index.php/AutoConfigBackup</pkginfolink>
