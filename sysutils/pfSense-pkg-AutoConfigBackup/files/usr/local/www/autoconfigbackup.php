@@ -71,9 +71,9 @@ if ($_REQUEST['savemsg']) {
 }
 
 if ($_REQUEST['download']) {
-	$pgtitle = "Diagnostics: Auto Configuration Backup revision information";
+	$pgtitle = array("Diagnostics", "Auto Configuration Backup", "Revision Information");
 } else {
-	$pgtitle = "Diagnostics: Auto Configuration Backup";
+	$pgtitle = array("Diagnostics", "Auto Configuration Backup", "Restore");
 }
 
 /* Set up time zones for conversion. See #5250 */
