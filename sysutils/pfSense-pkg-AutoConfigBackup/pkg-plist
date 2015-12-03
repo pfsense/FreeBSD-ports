@@ -2,7 +2,6 @@ pkg/autoconfigbackup.xml
 pkg/write_config/parse_config_upload.inc
 www/autoconfigbackup.php
 pkg/autoconfigbackup.inc
-/etc/inc/crypt_acb.php
 www/autoconfigbackup_backup.php
 pkg/write_config/parse_config_upload.php
 www/autoconfigbackup_stats.php

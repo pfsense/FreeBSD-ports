@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-AutoConfigBackup
-PORTVERSION=	1.33
+PORTVERSION=	1.40
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -33,8 +33,6 @@ do-install:
 		${STAGEDIR}${PREFIX}/www
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/autoconfigbackup.inc \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} ${FILESDIR}/etc/inc/crypt_acb.php \
-		${STAGEDIR}/etc/inc
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/autoconfigbackup_backup.php \
 		${STAGEDIR}${PREFIX}/www
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/write_config/parse_config_upload.php \

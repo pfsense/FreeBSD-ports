@@ -31,12 +31,6 @@ require("globals.inc");
 require("guiconfig.inc");
 require("autoconfigbackup.inc");
 
-global $pf_version, $config, $g;
-$pf_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-if ($pf_version < 2.0) {
-	require("crypt_acb.php");
-}
-
 // Seperator used during client / server communications
 $oper_sep = "\|\|";
 
@@ -96,14 +90,11 @@ $pgtitle = "Diagnostics: Auto Configuration Backup Stats";
 include("head.inc");
 
 ?>
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
+
 <script src="/javascript/scriptaculous/prototype.js" type="text/javascript"></script>
 <div id='maincontent'>
 <?php
 	include("fbegin.inc");
-	if ($pf_version < 2.0) {
-		echo "<p class=\"pgtitle\">{$pgtitle}</p>";
-	}
 	if ($savemsg) {
 		print_info_box($savemsg);
 	}
@@ -188,10 +179,10 @@ include("head.inc");
 			<td>
 			<span style="white-space: nowrap;">
 				<a title="View all backups for this host" href="autoconfigbackup.php?hostname=<?=urlencode($cv['hostname'])?>">
-					<img src="/themes/<?= $g['theme']; ?>/images/icons/icon_e.gif" width="17" height="17" border="0" alt="" />
+					<img src="/themes/<?= $g['theme']; ?>/images/icons/icon_e.gif" alt="" />
 				</a>
 				<a title="Delete all backups for this host" onclick="return confirm('Are you sure you want to delete *ALL BACKUPS FOR THIS HOSTNAME* <?= $cv['hostname']; ?>?')" href="autoconfigbackup_stats.php?delhostname=<?=urlencode($cv['hostname'])?>">
-					<img src="/themes/<?= $g['theme']; ?>/images/icons/icon_x.gif" width="17" height="17" border="0" alt="" />
+					<img src="/themes/<?= $g['theme']; ?>/images/icons/icon_x.gif" alt="" />
 				</a>
 			</span>
 			</td>
@@ -212,6 +203,6 @@ include("head.inc");
 </td></tr>
 </table>
 </form>
-<?php include("fend.inc"); ?>
+<?php include("foot.inc"); ?>
 </body>
 </html>

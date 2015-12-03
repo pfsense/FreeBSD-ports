@@ -31,12 +31,6 @@ require("globals.inc");
 require("guiconfig.inc");
 require("autoconfigbackup.inc");
 
-global $pf_version;
-$pf_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-if ($pf_version < 2.0) {
-	require("crypt_acb.php");
-}
-
 if (!$config['installedpackages']['autoconfigbackup']['config'][0]['username']) {
 	Header("Location: /pkg_edit.php?xml=autoconfigbackup.xml&id=0&savemsg=Please+setup+Auto+Config+Backup");
 	exit;
@@ -64,13 +58,10 @@ $pgtitle = "Diagnostics: Auto Configuration Backup Now";
 include("head.inc");
 
 ?>
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
+
 <div id='maincontent'>
 <?php
 	include("fbegin.inc");
-	if ($pf_version < 2.0) {
-		echo "<p class=\"pgtitle\">{$pgtitle}</p>";
-	}
 	if ($savemsg) {
 		print_info_box($savemsg);
 	}
@@ -117,6 +108,6 @@ include("head.inc");
 </td></tr>
 </table>
 </form>
-<?php include("fend.inc"); ?>
+<?php include("foot.inc"); ?>
 </body>
 </html>
