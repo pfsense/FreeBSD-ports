@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squidantivirus</name>
-	<version>0.4.1</version>
+	<version>0.4.6</version>
 	<title>Proxy Server: Antivirus</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
@@ -160,6 +160,16 @@
 				Google Safe Browsing database includes information about websites that may be <a href="https://support.google.com/code/answer/70015">phishing sites or possible sources of malware</a>.<br/>
 				<strong>Note: This option consumes significant amount of RAM.</strong><br/>
 				<strong><span class="errmsg">Important:</span> Set 'ClamAV Database Update' below to 'every 1 hours' if you want to use this feature!</strong>
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Exclude Audio/Video Streams</fielddescr>
+			<fieldname>clamav_disable_stream_scanning</fieldname>
+			<description>
+				<![CDATA[
+				This option disables antivirus scanning of streamed video and audio.
 				]]>
 			</description>
 			<type>checkbox</type>

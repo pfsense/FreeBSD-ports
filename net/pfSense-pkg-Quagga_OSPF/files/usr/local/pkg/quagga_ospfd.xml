@@ -42,13 +42,17 @@
 	]]>
 	</copyright>
 	<name>quagga_ospfd</name>
-	<version>0.6.8</version>
+	<version>0.6.9</version>
 	<title>Services: Quagga OSPFd</title>
 	<include_file>/usr/local/pkg/quagga_ospfd.inc</include_file>
 	<aftersaveredirect>pkg_edit.php?xml=quagga_ospfd.xml&amp;id=0</aftersaveredirect>
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
 		<item>https://packages.pfsense.org/packages/config/quagga_ospfd/quagga_ospfd.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/etc/inc/priv/</prefix>
+		<item>https://packages.pfsense.org/packages/config/quagga_ospfd/quagga_ospfd.priv.inc</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
@@ -69,7 +73,6 @@
 	</additional_files_needed>
 	<menu>
 		<name>Quagga OSPFd</name>
-		<tooltiptext>Modify Quagga ospfd settings.</tooltiptext>
 		<section>Services</section>
 		<configfile>quagga_ospfd.xml</configfile>
 		<url>/pkg_edit.php?xml=quagga_ospfd.xml&amp;id=0</url>

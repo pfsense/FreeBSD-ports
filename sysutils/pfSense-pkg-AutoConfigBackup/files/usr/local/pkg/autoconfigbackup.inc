@@ -139,6 +139,12 @@ function test_connection($post) {
 	$curl_session = curl_init();
 	curl_setopt($curl_session, CURLOPT_URL, $get_url);
 	curl_setopt($curl_session, CURLOPT_HTTPHEADER, array("Authorization: Basic " . base64_encode("{$username}:{$password}")));
+	if ($pf_version < 2.2) {
+		// pre-2.2 doesn't have ca-root-nss
+		curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, 0);
+	} else {
+		curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, 1);
+	}
 	curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, 0);
 	curl_setopt($curl_session, CURLOPT_POST, 1);
 	curl_setopt($curl_session, CURLOPT_RETURNTRANSFER, 1);

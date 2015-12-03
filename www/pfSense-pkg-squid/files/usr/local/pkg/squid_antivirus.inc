@@ -348,6 +348,28 @@ EOF;
 				if (!file_put_contents("{$cf}", preg_replace($squidclamav_m, $squidclamav_r, $sample_file), LOCK_EX)) {
 					log_error("[squid] Could not save generated {$cf} file!");
 				}
+				if ($antivirus_config['clamav_disable_stream_scanning'] == "on") {
+					$stream_exclude = <<< EOF
+# Do not scan (streamed) videos and audios
+abort ^.*\.(flv|f4f|mp(3|4))(\?.*)?$
+abort ^.*\.(m3u|pls|wmx|aac|mpeg)(\?.*)?$
+abortcontent ^video\/x-flv$
+abortcontent ^video\/mp4$
+abortcontent ^audio\/mp4$
+abortcontent ^.*audio\/mp4.*$
+abortcontent ^video\/webm$
+abortcontent ^audio\/webm$
+abortcontent ^video\/MP2T$
+abortcontent ^audio\/wmx$
+abortcontent ^audio\/mpeg$
+abortcontent ^audio\/aac$
+abortcontent ^.*application\/x-mms-framed.*$
+
+EOF;
+					if (!file_put_contents("{$cf}", "{$stream_exclude}", FILE_APPEND | LOCK_EX)) {
+						log_error("[squid] Could not add streaming exclusions to {$cf} file!");
+					}
+				}
 			} else {
 				log_error("[squid] Template not found; could not generate '{$cf}' file!");
 			}
@@ -468,6 +490,8 @@ function squid_antivirus_install_config_files() {
 		} else {
 			$squidclamav_r[2] = "{$config['system']['webgui']['protocol']}://{$config['system']['hostname']}.{$config['system']['domain']}:{$port}/squid_clwarn.php";
 		}
+		$squidclamav_m[3] = "@dnslookup\s1@";
+		$squidclamav_r[3] = "dnslookup 0";
 		if (!file_put_contents("{$cf}.pfsense", preg_replace($squidclamav_m, $squidclamav_r, $sample_file), LOCK_EX)) {
 			log_error("[squid] Could not save patched '{$cf}.pfsense' template file!");
 		}

@@ -215,10 +215,9 @@ function on_antivirus_advanced_config_changed() {
 	if (enable_advanced === 'disabled') {
 		document.iform['clamav_url'].disabled = 0;
 		document.iform['clamav_safebrowsing'].disabled = 0;
+		document.iform['clamav_disable_stream_scanning'].disabled = 0;
 		document.iform['clamav_update'].disabled = 0;
 		document.iform['clamav_dbregion'].disabled = 0;
-		document.iform['clamav_dbservers'].disabled = 0;
-		document.iform['clamav_dbservers'].disabled = 0;
 		document.iform['clamav_dbservers'].disabled = 0;
 		document.getElementById("load_advanced").disabled = 1;
 		document.iform['raw_squidclamav_conf'].disabled = 1;
@@ -235,6 +234,8 @@ function on_antivirus_advanced_config_changed() {
 		document.iform['clamav_url'].disabled = 1;
 		document.iform['clamav_safebrowsing'].disabled = 1;
 		document.getElementById('clamav_safebrowsing').checked = 0;
+		document.iform['clamav_disable_stream_scanning'].disabled = 1;
+		document.getElementById('clamav_disable_stream_scanning').checked = 0;
 		document.iform['clamav_update'].disabled = 0;
 		document.iform['clamav_dbregion'].disabled = 1;
 		document.getElementById("clamav_dbregion").value = '';

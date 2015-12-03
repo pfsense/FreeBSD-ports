@@ -41,8 +41,8 @@
 /* ====================================================================================== */
 	]]>
 	</copyright>
-	<name>Shellcmd Settings</name>
-	<version>1.0.1</version>
+	<name>shellcmdsettings</name>
+	<version>1.0.2</version>
 	<title>Services: Shellcmd Settings</title>
 	<include_file>/usr/local/pkg/shellcmd.inc</include_file>
 	<aftersaveredirect>/pkg.php?xml=shellcmd.xml</aftersaveredirect>
@@ -54,14 +54,6 @@
 		<configfile>shellcmd.xml</configfile>
 		<url>/pkg.php?xml=shellcmd.xml</url>
 	</menu>
-	<tabs>
-		<tab>
-			<text>Settings</text>
-			<url>/pkg.php?xml=shellcmd.xml</url>
-			<active/>
-		</tab>
-	</tabs>
-	<configpath>['installedpackages']['shellcmdsettings']['config']</configpath>
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
 		<item>https://packages.pfsense.org/packages/config/shellcmd/shellcmd.inc</item>

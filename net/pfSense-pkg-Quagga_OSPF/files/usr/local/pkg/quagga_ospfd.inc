@@ -30,10 +30,13 @@
 */
 require_once("config.inc");
 require_once("functions.inc");
+require_once("interfaces.inc");
 require_once("service-utils.inc");
+require_once("util.inc");
 
 define('PKG_QUAGGA_CONFIG_BASE', '/var/etc/quagga');
 
+global $pkg_login, $pkg_uid, $pkg_group, $pkg_gid, $pkg_gecos, $pkg_homedir, $pkg_shell;
 $pkg_login	= "quagga";
 $pkg_uid	= "101";
 $pkg_group	= "quagga";
@@ -68,7 +71,7 @@ function quagga_ospfd_get_interfaces() {
 }
 
 function quagga_ospfd_install_conf() {
-	global $config, $g, $input_errors, $pkg_login, $pkg_uid, $pkg_group, $pkg_gid, $pkg_gecos, $pkg_homedir, $pkg_shell;
+	global $config, $pkg_login, $pkg_uid, $pkg_group, $pkg_gid, $pkg_gecos, $pkg_homedir, $pkg_shell;
 
 	conf_mount_rw();
 	// Since we need to embed this in a string, copy to a var. Can't embed constnats.
@@ -77,7 +80,7 @@ function quagga_ospfd_install_conf() {
 	$noaccept = "";
 
 	// generate ospfd.conf based on the assistant
-	if(is_array($config['installedpackages']['quaggaospfd']['config'])) {
+	if (is_array($config['installedpackages']['quaggaospfd']['config'])) {
 		$ospfd_conf = &$config['installedpackages']['quaggaospfd']['config'][0];
 	} else {
 		log_error("Quagga OSPFd: No config data found.");
@@ -91,7 +94,7 @@ function quagga_ospfd_install_conf() {
 	} else {
 		$conffile = "# This file was created by the pfSense package manager.  Do not edit!\n\n";
 
-		if($ospfd_conf['password']) {
+		if ($ospfd_conf['password']) {
 			$conffile .= "password {$ospfd_conf['password']}\n";
 		}
 		if ($ospfd_conf['logging']) {
@@ -250,10 +253,10 @@ function quagga_ospfd_install_conf() {
 	if (isset($config['installedpackages']['quaggaospfdraw']['config'][0]['zebra'])
 	    && !empty($config['installedpackages']['quaggaospfdraw']['config'][0]['zebra'])) {
 		// if there is a raw config specifyed in tthe config.xml use that instead of the assisted config
-		$zebraconffile = str_replace("\r","",base64_decode($config['installedpackages']['quaggaospfdraw']['config'][0]['zebra']));
+		$zebraconffile = str_replace("\r", "", base64_decode($config['installedpackages']['quaggaospfdraw']['config'][0]['zebra']));
 	} else {
 		$zebraconffile = "# This file was created by the pfSense package manager.  Do not edit!\n\n";
-		if($ospfd_conf['password']) {
+		if ($ospfd_conf['password']) {
 			$zebraconffile .= "password {$ospfd_conf['password']}\n";
 		}
 		if ($ospfd_conf['logging']) {
@@ -315,24 +318,24 @@ EOF;
 	// Create rc.d file
 	$rc_file_stop = <<<EOF
 if [ -e /var/run/quagga/zebra.pid ]; then
-	kill -9 `cat /var/run/quagga/zebra.pid`
-	rm -f /var/run/quagga/zebra.pid
+	/bin/kill -9 `/bin/cat /var/run/quagga/zebra.pid`
+	/bin/rm -f /var/run/quagga/zebra.pid
 fi
 if [ -e /var/run/quagga/ospfd.pid ]; then
-	kill -9 `cat /var/run/quagga/ospfd.pid`
-	rm -f /var/run/quagga/ospfd.pid
+	/bin/kill -9 `/bin/cat /var/run/quagga/ospfd.pid`
+	/bin/rm -f /var/run/quagga/ospfd.pid
 fi
 EOF;
 	$rc_file_start = <<<EOF
 /bin/mkdir -p /var/run/quagga
 /bin/mkdir -p /var/log/quagga
-rm -f /var/run/quagga/zebra.pid
-rm -f /var/run/quagga/ospfd.pid
+/bin/rm -f /var/run/quagga/zebra.pid
+/bin/rm -f /var/run/quagga/ospfd.pid
 
-if [ `pw groupshow {$pkg_group} 2>&1 | grep -c "pw: unknown group"` -gt 0 ]; then
+if [ `/usr/sbin/pw groupshow {$pkg_group} 2>&1 | /usr/bin/grep -c "pw: unknown group"` -gt 0 ]; then
 	/usr/sbin/pw groupadd {$pkg_group} -g {$pkg_gid}
 fi
-if [ `pw usershow {$pkg_login} 2>&1 | grep -c "pw: no such user"` -gt 0 ]; then
+if [ `/usr/sbin/pw usershow {$pkg_login} 2>&1 | /usr/bin/grep -c "pw: no such user"` -gt 0 ]; then
 	/usr/sbin/pw useradd {$pkg_login} -u {$pkg_uid} -g {$pkg_gid} -c "{$pkg_gecos}" -d {$pkg_homedir} -s {$pkg_shell}
 fi
 
@@ -340,8 +343,8 @@ fi
 /usr/sbin/chown -R quagga:quagga /var/run/quagga
 /usr/sbin/chown -R quagga:quagga /var/log/quagga
 # Ensure no other copies of the daemons are running or it breaks.
-killall -9 zebra 2>/dev/null
-killall -9 ospfd 2>/dev/null
+/usr/bin/killall -9 zebra 2>/dev/null
+/usr/bin/killall -9 ospfd 2>/dev/null
 sleep 1
 {$carp_ip_status_check}
 /usr/local/sbin/zebra -d -f {$quagga_config_base}/zebra.conf
@@ -355,9 +358,9 @@ EOF;
 	);
 
 	// Ensure files have correct permissions
-	exec("chmod a+rx /usr/local/etc/rc.d/quagga.sh");
-	exec("chmod u+rw,go-rw {$quagga_config_base}/ospfd.conf");
-	exec("chmod u+rw,go-rw {$quagga_config_base}/zebra.conf");
+	mwexec("/bin/chmod a+rx /usr/local/etc/rc.d/quagga.sh");
+	mwexec("/bin/chmod u+rw,go-rw {$quagga_config_base}/ospfd.conf");
+	mwexec("/bin/chmod u+rw,go-rw {$quagga_config_base}/zebra.conf");
 
 	// Kick off newly created rc.d script
 	if (is_ipaddr($ospfd_conf['carpstatusip'])) {
@@ -366,17 +369,17 @@ EOF;
 			// Stop the service if the VIP is in BACKUP or INIT state.
 			case "BACKUP":
 			case "INIT":
-				exec("/usr/local/etc/rc.d/quagga.sh stop");
+				mwexec("/usr/local/etc/rc.d/quagga.sh stop");
 				break;
 			// Start the service if the VIP is MASTER state.
 			case "MASTER":
 			// Assume it's up if the status can't be determined.
 			default:
-				exec("/usr/local/etc/rc.d/quagga.sh restart");
+				mwexec("/usr/local/etc/rc.d/quagga.sh restart");
 				break;
 		}
 	} else {
-		exec("/usr/local/etc/rc.d/quagga.sh restart");
+		mwexec("/usr/local/etc/rc.d/quagga.sh restart");
 	}
 
 	// Back to RO mount for NanoBSD and friends
@@ -384,7 +387,7 @@ EOF;
 }
 
 function quagga_ospfd_validate_interface() {
-	global $config, $g, $id, $input_errors;
+	global $config, $id, $input_errors;
 
 	if ($config['installedpackages']['quaggaospfdinterfaces']['config']) {
 		foreach ($config['installedpackages']['quaggaospfdinterfaces']['config'] as $index => $conf) {
@@ -402,7 +405,7 @@ function quagga_ospfd_validate_interface() {
 }
 
 function quagga_ospfd_validate_input() {
-	global $config, $g, $input_errors;
+	global $config, $input_errors;
 
 	if ($_POST['password'] <> "" && (strpos($_POST['password'], "'") !== false)) {
 		$input_errors[] = "Password cannot contain a single quote (')";

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-AutoConfigBackup
-PORTVERSION=	1.32
+PORTVERSION=	1.33
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
