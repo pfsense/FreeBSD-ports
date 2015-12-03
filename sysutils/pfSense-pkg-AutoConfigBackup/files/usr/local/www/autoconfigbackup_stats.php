@@ -152,9 +152,9 @@ $total_backups = 0;
 			<table class="table table-striped table-hover table-condensed" id="backup_stats">
 				<thead>
 					<tr>
-						<th width="30%"><?=gettext("Hostname")?></th>
-						<th width="60%"><?=gettext("Backup Count")?></th>
-						<th width="10%"><?=gettext("Actions")?></th>
+						<th><?=gettext("Hostname")?></th>
+						<th><?=gettext("Backup Count")?></th>
+						<th><?=gettext("Actions")?></th>
 					</tr>
 				</thead>
 				<tbody>
