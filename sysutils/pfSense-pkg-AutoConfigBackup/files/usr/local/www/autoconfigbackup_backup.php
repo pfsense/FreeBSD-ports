@@ -54,58 +54,37 @@ if ($_POST) {
 	$donotshowheader = true;
 }
 
-$pgtitle = "Diagnostics: Auto Configuration Backup Now";
+$pgtitle = array("Diagnostics", "Auto Configuration Backup", "Backup Now");
 include("head.inc");
 
-?>
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
+if ($savemsg) {
+	print_info_box($savemsg, 'success');
+}
 
-<div id='maincontent'>
-<?php
-	include("fbegin.inc");
-	if ($savemsg) {
-		print_info_box($savemsg);
-	}
-	if ($input_errors) {
-		print_input_errors($input_errors);
-	}
+$tab_array = array();
+$tab_array[] = array("Settings", false, "/pkg_edit.php?xml=autoconfigbackup.xml&amp;id=0");
+$tab_array[] = array("Restore", false, "/autoconfigbackup.php");
+$tab_array[] = array("Backup now", true, "/autoconfigbackup_backup.php");
+$tab_array[] = array("Stats", false, "/autoconfigbackup_stats.php");
+display_top_tabs($tab_array);
+
+$form = new Form("Backup");
+
+$section = new Form_Section('Backup Details');
+
+$section->addInput(new Form_Input(
+	'reason',
+	'Revision Reason',
+	'text',
+	$_REQUEST['reason']
+))->setWidth(7)->setHelp("Enter the reason for the backup");
+
+$form->add($section);
+
+print($form);
+
 ?>
-<form method="post" action="autoconfigbackup_backup.php">
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr><td>
-	<div id='feedbackdiv'></div>
-	<?php
-		$tab_array = array();
-		$tab_array[] = array("Settings", false, "/pkg_edit.php?xml=autoconfigbackup.xml&amp;id=0");
-		$tab_array[] = array("Restore", false, "/autoconfigbackup.php");
-		$tab_array[] = array("Backup now", true, "/autoconfigbackup_backup.php");
-		$tab_array[] = array("Stats", false, "/autoconfigbackup_stats.php");
-		display_top_tabs($tab_array);
-	?>
-</td></tr>
-<tr><td>
-	<table id="backuptable" class="tabcont" align="center" width="100%" border="0" cellpadding="6" cellspacing="0">
-		<tr><td colspan="2" align="left">
-			<table>
-				<tr>
-					<td align="right">Enter the backup reason:</td>
-					<td>
-						<input name="reason" id="reason" size="80" />
-					</td>
-				</tr>
-				<tr>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td align="right">
-						<input type="submit" name="Backup" value="Backup" />
-					</td>
-				</tr>
-			</table>
-		</td></tr>
-	</table>
-</td></tr>
-</div>
-</td></tr>
-</table>
-</form>
 <?php include("foot.inc"); ?>

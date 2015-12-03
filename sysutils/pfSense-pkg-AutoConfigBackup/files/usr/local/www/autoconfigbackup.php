@@ -400,7 +400,7 @@ print($form);
 		</select>
 		</div>
 		<div class="table-responsive">
-			<table class="table table-striped table-hover table-condensed" id="users">
+			<table class="table table-striped table-hover table-condensed" id="backups">
 				<thead>
 					<tr>
 						<th width="30%"><?=gettext("Date")?></th>

@@ -86,120 +86,118 @@ if ($_REQUEST['delhostname']) {
 	}
 }
 
-$pgtitle = "Diagnostics: Auto Configuration Backup Stats";
+$pgtitle = array("Diagnostics", "Auto Configuration Backup", "Stats");
 include("head.inc");
 
-?>
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
+if ($savemsg) {
+	print_info_box($savemsg, 'success');
+}
 
-<div id='maincontent'>
-<?php
-	include("fbegin.inc");
-	if ($savemsg) {
-		print_info_box($savemsg);
-	}
-	if ($input_errors) {
-		print_input_errors($input_errors);
-	}
-?>
-<form method="post" action="autoconfigbackup_stats.php">
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr><td>
-<div id='feedbackdiv'></div>
-	<?php
-		$tab_array = array();
-		$tab_array[] = array("Settings", false, "/pkg_edit.php?xml=autoconfigbackup.xml&amp;id=0");
-		$tab_array[] = array("Restore", false, "/autoconfigbackup.php");
-		$tab_array[] = array("Backup now", false, "/autoconfigbackup_backup.php");
-		$tab_array[] = array("Stats", true, "/autoconfigbackup_stats.php");
-		display_top_tabs($tab_array);
-	?>
-</td></tr>
-<tr><td>
-	<table id="backuptable" class="tabcont" align="center" width="100%" border="0" cellpadding="6" cellspacing="0">
-	<tr>
-		<td colspan="2" align="left">
-			<div id="loading">
-				<img src="themes/metallic/images/misc/loader.gif" alt="" /> Loading, please wait...
-			</div>
-	</tr>
-	<tr>
-		<td width="30%" class="listhdrr">Hostname</td>
-		<td width="70%" class="listhdrr">Backup count</td>
-	</tr>
-<?php
-	// Populate available backups
-	$curl_session = curl_init();
-	curl_setopt($curl_session, CURLOPT_URL, $stats_url);
-	curl_setopt($curl_session, CURLOPT_HTTPHEADER, array("Authorization: Basic " . base64_encode("{$username}:{$password}")));
-	curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, 1);
-	curl_setopt($curl_session, CURLOPT_POST, 1);
-	curl_setopt($curl_session, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($curl_session, CURLOPT_POSTFIELDS, "action=showstats");
-	curl_setopt($curl_session, CURLOPT_USERAGENT, $g['product_name'] . '/' . rtrim(file_get_contents("/etc/version")));
-	// Proxy
-	curl_setopt_array($curl_session, configure_proxy());
+$tab_array = array();
+$tab_array[] = array("Settings", false, "/pkg_edit.php?xml=autoconfigbackup.xml&amp;id=0");
+$tab_array[] = array("Restore", false, "/autoconfigbackup.php");
+$tab_array[] = array("Backup now", false, "/autoconfigbackup_backup.php");
+$tab_array[] = array("Stats", true, "/autoconfigbackup_stats.php");
+display_top_tabs($tab_array);
 
-	$data = curl_exec($curl_session);
-	if (curl_errno($curl_session)) {
-		$fd = fopen("/tmp/acb_statsdebug.txt", "w");
-		fwrite($fd, $get_url . "" . "action=showstats" . "\n\n");
-		fwrite($fd, $data);
-		fwrite($fd, curl_error($curl_session));
-		fclose($fd);
-	} else {
-		curl_close($curl_session);
-	}
-	// Loop through and create new confvers
-	$data_split = explode("\n", $data);
-	$statvers = array();
-	foreach($data_split as $ds) {
-		$ds_split = split($oper_sep, $ds);
-		$tmp_array = array();
-		$tmp_array['hostname'] = $ds_split[0];
-		$tmp_array['hostnamecount'] = $ds_split[1];
-		if ($ds_split[0] && $ds_split[1]) {
-			$statvers[] = $tmp_array;
-		}
-	}
-	$counter = 0;
-	echo "<script type=\"text/javascript\">";
-	echo "$('loading').hide();";
-	echo "</script>";
-	$total_backups = 0;
-	foreach ($statvers as $cv):
 ?>
-		<tr valign="top">
-			<td class="listlr">
-				<?= $cv['hostname']; ?>
-			</td>
-			<td class="listbg">
-				<?= $cv['hostnamecount']; ?>
-			</td>
-			<td>
-			<span style="white-space: nowrap;">
-				<a title="View all backups for this host" href="autoconfigbackup.php?hostname=<?=urlencode($cv['hostname'])?>">
-					<img src="/themes/<?= $g['theme']; ?>/images/icons/icon_e.gif" alt="" />
-				</a>
-				<a title="Delete all backups for this host" onclick="return confirm('Are you sure you want to delete *ALL BACKUPS FOR THIS HOSTNAME* <?= $cv['hostname']; ?>?')" href="autoconfigbackup_stats.php?delhostname=<?=urlencode($cv['hostname'])?>">
-					<img src="/themes/<?= $g['theme']; ?>/images/icons/icon_x.gif" alt="" />
-				</a>
-			</span>
-			</td>
-		</tr>
+<div id="loading">
+	<i class="fa fa-spinner fa-spin"></i> Loading, please wait...
+</div>
 <?php
-	$total_backups = $total_backups + $cv['hostnamecount'];
-	$counter++;
-	endforeach;
-	if ($counter == 0)
-		echo "<tr><td colspan='3' align='center'>Sorry, we could not load the status information for the account ($username).</td></tr>";
+// Populate available backups
+$curl_session = curl_init();
+curl_setopt($curl_session, CURLOPT_URL, $stats_url);
+curl_setopt($curl_session, CURLOPT_HTTPHEADER, array("Authorization: Basic " . base64_encode("{$username}:{$password}")));
+curl_setopt($curl_session, CURLOPT_SSL_VERIFYPEER, 1);
+curl_setopt($curl_session, CURLOPT_POST, 1);
+curl_setopt($curl_session, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($curl_session, CURLOPT_POSTFIELDS, "action=showstats");
+curl_setopt($curl_session, CURLOPT_USERAGENT, $g['product_name'] . '/' . rtrim(file_get_contents("/etc/version")));
+// Proxy
+curl_setopt_array($curl_session, configure_proxy());
+
+$data = curl_exec($curl_session);
+if (curl_errno($curl_session)) {
+	$fd = fopen("/tmp/acb_statsdebug.txt", "w");
+	fwrite($fd, $get_url . "" . "action=showstats" . "\n\n");
+	fwrite($fd, $data);
+	fwrite($fd, curl_error($curl_session));
+	fclose($fd);
+} else {
+	curl_close($curl_session);
+}
+// Loop through and create new confvers
+$data_split = explode("\n", $data);
+$statvers = array();
+foreach($data_split as $ds) {
+	$ds_split = split($oper_sep, $ds);
+	$tmp_array = array();
+	$tmp_array['hostname'] = $ds_split[0];
+	$tmp_array['hostnamecount'] = $ds_split[1];
+	if ($ds_split[0] && $ds_split[1]) {
+		$statvers[] = $tmp_array;
+	}
+}
+$counter = 0;
+$total_backups = 0;
 ?>
-		<tr>
-			<td align="right">Total&nbsp;</td>
-			<td><?=$total_backups?></td>
-		</tr>
-	</td></tr>
-	</table>
-</td></tr>
-</table>
-</form>
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("Automatic Configuration Backups")?></h2></div>
+	<div class="panel-body">
+		<div class="table-responsive">
+			<table class="table table-striped table-hover table-condensed" id="backup_stats">
+				<thead>
+					<tr>
+						<th width="30%"><?=gettext("Hostname")?></th>
+						<th width="60%"><?=gettext("Backup Count")?></th>
+						<th width="10%"><?=gettext("Actions")?></th>
+					</tr>
+				</thead>
+				<tbody>
+			<?php	foreach ($statvers as $cv): ?>
+					<tr>
+						<td>
+							<?= $cv['hostname']; ?>
+						</td>
+						<td>
+							<?= $cv['hostnamecount']; ?>
+						</td>
+						<td>
+							<a class="fa fa-search"	title="<?=gettext('View all backups for this host')?>"		href="autoconfigbackup.php?hostname=<?=urlencode($cv['hostname'])?>"></a>
+							<a class="fa fa-trash"	title="<?=gettext('Delete all backups for this host')?>"	href="autoconfigbackup_stats.php?delhostname=<?=urlencode($cv['hostname'])?>"></a>
+						</td>
+					</tr>
+			<?php
+				$total_backups = $total_backups + $cv['hostnamecount'];
+				$counter++;
+				endforeach;
+				if ($counter == 0): ?>
+					<tr>
+						<td colspan="3" align="center">
+							<?=gettext("Sorry, status information could be located on portal.pfsense.org for this account.")?> (<?=htmlspecialchars($username)?>)
+						</td>
+					</tr>
+				<?php endif; ?>
+					<tr>
+						<td align="right">Total:&nbsp;</td>
+						<td><?=$total_backups?></td>
+						<td>&nbsp;</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+events.push(function(){
+	$('#loading').hide();
+});
+//]]>
+</script>
 <?php include("foot.inc"); ?>
