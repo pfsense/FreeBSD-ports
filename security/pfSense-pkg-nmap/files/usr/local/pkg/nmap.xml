@@ -42,7 +42,7 @@
 ]]>
 	</copyright>
 	<name>nmap</name>
-	<version>1.4.1</version>
+	<version>1.4.2</version>
 	<title>Diagnostics: NMap</title>
 	<savetext>Scan</savetext>
 	<preoutput>yes</preoutput>
@@ -135,10 +135,4 @@
 	<custom_php_validation_command>
 		nmap_custom_php_validation_command($_POST, $input_errors);
 	</custom_php_validation_command>
-	<custom_php_install_command>
-		nmap_install();
-	</custom_php_install_command>
-	<custom_php_deinstall_command>
-		nmap_deinstall();
-	</custom_php_deinstall_command>
 </packagegui>
