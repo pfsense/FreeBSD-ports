@@ -30,33 +30,6 @@
 require_once("pkg-utils.inc");
 require_once("util.inc");
 
-function nmap_install() {
-	$destination_file = "/usr/local/share/nmap/nmap-mac-prefixes";
-	$pfs_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-	switch ($pfs_version) {
-		case "2.1":
-			$source_file = "/usr/pbi/nmap-" . php_uname("m") . "/share/nmap/nmap-mac-prefixes";
-			break;
-		case "2.2":
-			$source_file = "/usr/pbi/nmap-" . php_uname("m") . "/local/share/nmap/nmap-mac-prefixes";
-			break;
-		default:
-			return null;
-	}
-	/* Only copy the file if it doesn't exist */
-	if (file_exists($source_file) && !file_exists($destination_file)) {
-		safe_mkdir(dirname($destination_file));
-		@symlink($source_file, $destination_file);
-	}
-}
-
-function nmap_deinstall() {
-	$destination_file = "/usr/local/share/nmap/nmap-mac-prefixes";
-	if (is_link($destination_file)) {
-		@unlink($destination_file);
-	}
-}
-	 
 function nmap_custom_php_validation_command($post, &$input_errors) {
 	if (empty($post['hostname'])) {
 		$input_errors[] = gettext("You must enter an IP address to scan.");
