@@ -13,9 +13,9 @@
 		<build_pbi>
 			<port>net/siproxd</port>
 		</build_pbi>
-		<version>1.0.8</version>
+		<version>1.0.9</version>
 		<status>BETA</status>
-		<required_version>2.2</required_version>
+		<required_version>2.3</required_version>
 		<configurationfile>siproxd.xml</configurationfile>
 	</package>
 </pfsensepkgs>
