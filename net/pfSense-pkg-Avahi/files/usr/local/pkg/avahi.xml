@@ -44,20 +44,18 @@
 	</copyright>
 	<title>Services: Avahi</title>
 	<name>avahi</name>
-	<version>1.10.1</version>
-	<savetext>Save</savetext>
+	<version>1.10.4</version>
 	<include_file>/usr/local/pkg/avahi.inc</include_file>
 	<menu>
 		<name>Avahi</name>
-		<tooltiptext>Modify avahi settings.</tooltiptext>
 		<section>Services</section>
-		<url>pkg_edit.php?xml=avahi.xml</url>
+		<url>/pkg_edit.php?xml=avahi.xml</url>
 	</menu>
 	<service>
 		<name>avahi</name>
 		<rcfile>avahi-daemon.sh</rcfile>
 		<executable>avahi-daemon</executable>
-		<description>Avahi zeroconf/mDNS daemon</description>
+		<description>Avahi Zeroconf/mDNS Daemon</description>
 	</service>
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
@@ -307,11 +305,7 @@
 	</custom_php_resync_config_command>
 	<custom_php_install_command>
 		avahi_upgrade_config();
-		avahi_install();
 	</custom_php_install_command>
-	<custom_php_deinstall_command>
-		avahi_deinstall();
-	</custom_php_deinstall_command>
 	<custom_php_validation_command>
 		avahi_validate_input($_POST, $input_errors);
 	</custom_php_validation_command>
