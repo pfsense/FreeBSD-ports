@@ -94,7 +94,6 @@ if (file_exists($logfile) && (filesize($logfile) > 0)) {
 $pgtitle = "Services: Syslog-ng Log Viewer";
 include("head.inc");
 ?>
-<body link="#000000" vlink="#000000" alink="#000000">
 <?php include("fbegin.inc"); ?>
 <?php if ($savemsg) print_info_box($savemsg); ?>
 <form action="syslog-ng_log_viewer.php" method="post" name="iform">
@@ -164,6 +163,4 @@ include("head.inc");
 	</td></tr>
 </table>
 </form>
-<?php include("fend.inc"); ?>
-</body>
-</html>
+<?php include("foot.inc"); ?>
