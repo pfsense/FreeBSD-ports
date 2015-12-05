@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>Syslog-ng</name>
-	<version>1.1.1</version>
+	<version>1.1.2</version>
 	<title>Services: Syslog-ng</title>
 	<include_file>/usr/local/pkg/syslog-ng.inc</include_file>
 	<menu>
@@ -190,6 +190,6 @@
 		syslogng_deinstall_command();
 	</custom_php_deinstall_command>
 	<filter_rules_needed>
-		syslogng_generate_rules();
+		syslogng_generate_rules
 	</filter_rules_needed>
 </packagegui>
