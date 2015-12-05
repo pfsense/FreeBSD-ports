@@ -158,5 +158,3 @@ require("head.inc");
 </table>
 
 <?php include("foot.inc"); ?>
-</body>
-</html>
