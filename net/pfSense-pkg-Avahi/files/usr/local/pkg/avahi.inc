@@ -28,47 +28,21 @@
 	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
 */
-$pfs_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-if ($pfs_version == "2.1" || $pfs_version == "2.2") {
-	define('AVAHI_BASE', '/usr/pbi/avahi-' . php_uname("m"));
-} else {
-	define('AVAHI_BASE', '/usr/local');
-}
-
-function avahi_install() {
-	if (!file_exists('/usr/local/etc/gnome.subr')) {
-		@symlink(AVAHI_BASE . '/etc/gnome.subr', '/usr/local/etc/gnome.subr');
-	}
-
-	// Add needed users and groups if they don't exist
-	if (!exec("/usr/sbin/pw usershow avahi")) {
-		exec("/usr/sbin/pw useradd avahi -u 558");
-	}
-	if (!exec("/usr/sbin/pw groupshow avahi")) {
-		exec("/usr/sbin/pw groupadd avahi -g 558");
-	}
-}
-
-function avahi_deinstall() {
-	// Remove created symlink
-	unlink_if_exists("/usr/local/etc/gnome.subr");
-
-	// Remove created users and groups if they exist
-	if (exec("/usr/sbin/pw groupshow avahi")) {
-		exec("/usr/sbin/pw groupdel avahi");
-	}
-	if (exec("/usr/sbin/pw usershow avahi")) {
-		exec("/usr/sbin/pw userdel avahi");
-	}
-}
+require_once('config.inc');
+require_once('interfaces.inc');
+require_once('service-utils.inc');
+require_once('util.inc');
+ 
+define('AVAHI_BASE', '/usr/local');
 
 function avahi_write_config() {
-	global $config, $avahi_config;
-	conf_mount_rw();
+	global $config;
 
 	// Pull some various values out of config.xml
 	if (isset($config['installedpackages']['avahi']['config'][0])) {
 		$avahi_config = $config['installedpackages']['avahi']['config'][0];
+	} else {
+		$avahi_config = array();
 	}
 	// Server Options
 	$hostname = $config['system']['hostname'];
@@ -107,7 +81,7 @@ function avahi_write_config() {
 			}
 		}
 	}
-	
+
 	// Process DNS servers and omit localhost if present in /etc/resolv.conf
 	$publishdns = '';
 	$dns = implode(" ", get_dns_servers());
@@ -174,14 +148,20 @@ EOF;
 	fwrite($fd, $avahiconfig);
 	fclose($fd);
 
-	/* Write out rc.d startup file */
+}
+
+function avahi_write_rcfile() {
+	global $config;
+	if (isset($config['installedpackages']['avahi']['config'][0])) {
+		$avahi_config = $config['installedpackages']['avahi']['config'][0];
+	} else {
+		$avahi_config = array();
+	}
+
 	$start = "/etc/rc.conf_mount_rw\n";
 	$start .= "if [ ! -d /proc/0 ]; then\n";
 	$start .= "	/bin/mkdir -p /proc\n";
 	$start .= "	/sbin/mount -t procfs procfs /proc\n";
-	$start .= "fi\n";
-	$start .= "if [ ! -f /usr/local/etc/gnome.subr ]; then\n";
-	$start .= "	/bin/ln -sf " . AVAHI_BASE . "/etc/gnome.subr /usr/local/etc/gnome.subr\n";
 	$start .= "fi\n";
 	$start .= "/usr/bin/killall avahi-daemon >/dev/null 2>&1\n";
 	if (!$avahi_config['disable_dbus']) {
@@ -189,12 +169,12 @@ EOF;
 		$start .= "        /bin/mkdir /var/run/dbus\n";
 		$start .= "        /usr/sbin/chown messagebus:messagebus /var/run/dbus\n";
 		$start .= "fi\n";
-			if (file_exists(AVAHI_BASE . "/etc/rc.d/dbus")) {
-				$start .= AVAHI_BASE . "/etc/rc.d/dbus onestop\n";
-				$start .= "/bin/rm /var/run/dbus/dbus.pid >/dev/null 2>&1\n";
-				$start .= AVAHI_BASE . "/etc/rc.d/dbus onestart\n";
-				$start .= "sleep 5\n";
-			}
+		if (file_exists(AVAHI_BASE . "/etc/rc.d/dbus")) {
+			$start .= AVAHI_BASE . "/etc/rc.d/dbus onestop\n";
+			$start .= "/bin/rm /var/run/dbus/dbus.pid >/dev/null 2>&1\n";
+			$start .= AVAHI_BASE . "/etc/rc.d/dbus onestart\n";
+			$start .= "sleep 5\n";
+		}
 	}
 	$start .= AVAHI_BASE . "/sbin/avahi-daemon -D\n";
 	$start .= "/etc/rc.conf_mount_ro\n";
@@ -213,25 +193,38 @@ EOF;
 		"stop" => $stop
 		)
 	);
-
-	conf_mount_ro();
 }
 
 function avahi_sync() {
 	global $config;
+	conf_mount_rw();
 
 	if (is_service_running("avahi")) {
 		stop_service("avahi");
 	}
 	avahi_write_config();
+
 	// Is package enabled?
 	if ($config['installedpackages']['avahi']['config'][0]['enable']) {
+		avahi_write_rcfile();
+		if (file_exists("/usr/local/etc/rc.d/dbus")) {
+			if (!$config['installedpackages']['avahi']['config'][0]['disable_dbus']) {
+				chmod("/usr/local/etc/rc.d/dbus", 0755);
+			}
+		}
 		start_service("avahi");
+	} else {
+		unlink_if_exists("/usr/local/etc/rc.d/avahi-daemon.sh");
+		if (file_exists("/usr/local/etc/rc.d/dbus")) {
+			chmod("/usr/local/etc/rc.d/dbus", 0644);
+		}
 	}
+
+	conf_mount_ro();
 }
 
 function avahi_upgrade_config() {
-	global $config, $avahi_config;
+	global $config;
 
 	$avahi_config =& $config['installedpackages']['avahi']['config'][0];
 	if (!is_array($avahi_config)) {
