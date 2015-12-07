@@ -246,7 +246,7 @@ events.push(function() {
 	});
 
 	$('[id^=Xdel_]').click(function (event) {
-		if(confirm("<?=gettext('Delete this patch entry?')?>")) {
+		if(confirm("<?=gettext('Delete this Service entry?')?>")) {
 			$('#' + event.target.id.slice(1)).click();
 		}
 	});
