@@ -44,7 +44,7 @@ function fetch_rrd_summary($rrd, $start, $end, $resolution=3600) {
 	$rrd = escapeshellarg("/var/db/rrd/{$rrd}");
 	$start = escapeshellarg($start);
 	$end = escapeshellarg($end);
-	exec("/usr/local/bin/rrdtool fetch {$rrd} AVERAGE -r {$resolution} -s {$start} -e {$end} | grep -v nan | awk '{ sum1 += $2/(1024*1024); sum2 += $3/(1024*1024) } END { printf \"%u|%u\", sum1*{$resolution}, sum2*{$resolution}; }'", $traffic);
+	exec("/usr/local/bin/rrdtool fetch {$rrd} AVERAGE -r {$resolution} -s {$start} -e {$end} | grep -v nan | awk '{ sum1 += $2/(1024*1024) + $4/(1024*1024) + $6/(1024*1024) + $8/(1024*1024); sum2 += $3/(1024*1024) + $5/(1024*1024) + $7/(1024*1024) + $9/(1024*1024); } END { printf \"%u|%u\", sum1*{$resolution}, sum2*{$resolution}; }'", $traffic);
 	return explode('|', trim($traffic[0]));
 }
 
