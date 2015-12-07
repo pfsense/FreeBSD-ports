@@ -45,115 +45,88 @@ if ($_GET['act'] == "del") {
 
 $pgtitle = array(gettext("Cron"), gettext("Settings"));
 include("head.inc");
-
 ?>
 
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-<?php include("fbegin.inc"); ?>
-
-<div id="mainlevel">
-<table width="100%" border="0" cellpadding="0" cellspacing="0" summary="tabs">
-<tr><td class="tabnavtbl">
-<?php
-	$tab_array = array();
-	$tab_array[] = array(gettext("Settings"), true, "/packages/cron/cron.php");
-	$tab_array[] = array(gettext("Edit"), false, "/packages/cron/cron_edit.php");
-	display_top_tabs($tab_array);
-?>
-</td></tr>
-</table>
-
-<table width="100%" border="0" cellpadding="0" cellspacing="0" summary="content">
-<tr><td class="tabcont" >
-	<form action="cron.php" method="post" name="iform" id="iform">
-	<?php
-	if ($config_change == 1) {
-		write_config();
-		$config_change = 0;
-	}
-	?>
-	<table width="100%" border="0" cellpadding="6" cellspacing="0" summary="title">
-	<tr><td>
-		<div>
-		Cron controls the scheduling of commands.<br /><br />
-		For more information see: <a href='http://www.freebsd.org/doc/en/books/handbook/configtuning-cron.html'>http://www.freebsd.org/doc/en/books/handbook/configtuning-cron.html</a>
-		</div>
-	</td></tr>
-	</table>
-	<br />
-
-	<table width="100%" border="0" cellpadding="0" cellspacing="0" summary="heading">
+<table summary="tabs">
 	<tr>
-		<td width="5%" class="listhdrr">minute</td>
-		<td width="5%" class="listhdrr">hour</td>
-		<td width="5%" class="listhdrr">mday</td>
-		<td width="5%" class="listhdrr">month</td>
-		<td width="5%" class="listhdrr">wday</td>
-		<td width="5%" class="listhdrr">who</td>
-		<td width="60%" class="listhdr">command</td>
-		<td width="10%" class="list">
-			<table border="0" cellspacing="0" cellpadding="1" summary="icons">
-			<tr>
-				<td width="17"></td>
-				<td valign="middle"><a href="cron_edit.php"><img src="/themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif" width="17" height="17" border="0" alt="edit" /></a></td>
-			</tr>
-			</table>
+		<td class="tabnavtbl">
+		<?php
+			$tab_array = array();
+			$tab_array[] = array(gettext("Settings"), true, "/packages/cron/cron.php");
+			$tab_array[] = array(gettext("Edit"), false, "/packages/cron/cron_edit.php");
+			display_top_tabs($tab_array);
+		?>
 		</td>
 	</tr>
+</table>
 
+<div class="panel panel-default">
+    <div class="panel-heading"><h2 class="panel-title">Cron Schedules</h2></div>
+    <div class="panel-body">
+		<div class="table-responsive">
+			<form action="cron.php" method="post" name="iform" id="iform">
+			<?php
+			if ($config_change == 1) {
+				write_config();
+				$config_change = 0;
+			}
+			?>
+
+			<table class="table table-striped table-hover table-condensed">
+				<thead>
+					<tr>
+						<th width="5%">minute</th>
+						<th width="5%">hour</th>
+						<th width="5%">mday</th>
+						<th width="5%">month</th>
+						<th width="5%">wday</th>
+						<th width="5%">who</th>
+						<th width="60%">command</th>
+						<th width="10%">
+							<a class="btn btn-small btn-success" href="cron_edit.php"><i class="fa fa-plus" alt="edit"></i> Add</a>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
 
 	<?php
 		$i = 0;
 		if (count($a_cron) > 0) {
 			foreach ($a_cron as $ent) {
 	?>
-				<tr>
-					<td class="listr" ondblclick="document.location='cron_edit.php?id=<?=$i;?>';"><?=$ent['minute'];?>&nbsp;</td>
-					<td class="listr" ondblclick="document.location='cron_edit.php?id=<?=$i;?>';"><?=$ent['hour'];?>&nbsp;</td>
-					<td class="listr" ondblclick="document.location='cron_edit.php?id=<?=$i;?>';"><?=$ent['mday'];?>&nbsp;</td>
-					<td class="listr" ondblclick="document.location='cron_edit.php?id=<?=$i;?>';"><?=$ent['month'];?>&nbsp;</td>
-					<td class="listr" ondblclick="document.location='cron_edit.php?id=<?=$i;?>';"><?=$ent['wday'];?>&nbsp;</td>
-					<td class="listr" ondblclick="document.location='cron_edit.php?id=<?=$i;?>';"><?=$ent['who'];?>&nbsp;</td>
-					<td class="listr" ondblclick="document.location='cron_edit.php?id=<?=$i;?>';"><?=$ent['command'];?>&nbsp;</td>
-					<td valign="middle" style="white-space:nowrap" class="list">
-						<table border="0" cellspacing="0" cellpadding="1" summary="edit delete">
-						<tr>
-							<td valign="middle"><a href="cron_edit.php?id=<?=$i;?>"><img src="/themes/<?= $g['theme']; ?>/images/icons/icon_e.gif" width="17" height="17" border="0" alt="edit" /></a></td>
-							<td><a href="cron_edit.php?type=php&amp;act=del&amp;id=<?=$i;?>" onclick="return confirm('Do you really want to delete this?')"><img src="/themes/<?= $g['theme']; ?>/images/icons/icon_x.gif" width="17" height="17" border="0" alt="delete" /></a></td>
-						</tr>
-						</table>
-					</td>
-				</tr>
+					<tr>
+						<td><?=$ent['minute']?></td>
+						<td><?=$ent['hour']?></td>
+						<td><?=$ent['mday']?></td>
+						<td><?=$ent['month']?></td>
+						<td><?=$ent['wday']?></td>
+						<td><?=$ent['who']?></td>
+						<td><?=$ent['command']?></td>
+						<td>
+							<a href="cron_edit.php?id=<?=$i?>"><i class="fa fa-pencil" alt="edit"></i></a>
+							<a href="cron_edit.php?type=php&amp;act=del&amp;id=<?=$i?>" onclick="return confirm('Do you really want to delete this?')"><i class="fa fa-trash" alt="delete"></i></a>
+						</td>
+					</tr>
 	<?php
 		$i++;
 			}
 		}
 	?>
-
-	<tr>
-		<td class="list" colspan="7"></td>
-		<td class="list">
-			<table border="0" cellspacing="0" cellpadding="1" summary="add">
-			<tr>
-				<td width="17"></td>
-				<td valign="middle"><a href="cron_edit.php"><img src="/themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif" width="17" height="17" border="0" alt="add" /></a></td>
-			</tr>
+					<tr>
+						<td colspan="7"></td>
+						<td>
+							<a class="btn btn-small btn-success" href="cron_edit.php"><i class="fa fa-plus" alt="add"></i> Add</a>
+						</td>
+					</tr>
+				</tbody>
 			</table>
-		</td>
-	</tr>
-
-	<tr>
-		<td class="list" colspan="8"></td>
-		<td class="list"></td>
-	</tr>
-	</table>
-
-	</form>
-</td></tr>
-</table>
-
+			</form>
+		</div>
+	</div>
 </div>
 
-<?php include("fend.inc"); ?>
-</body>
-</html>
+<div class="infoblock">
+    <?=print_info_box('For more information see: <a href="http://www.freebsd.org/doc/en/books/handbook/configtuning-cron.html">http://www.freebsd.org/doc/en/books/handbook/configtuning-cron.html</a>', info)?>
+</div>
+
+<?php include("foot.inc"); ?>

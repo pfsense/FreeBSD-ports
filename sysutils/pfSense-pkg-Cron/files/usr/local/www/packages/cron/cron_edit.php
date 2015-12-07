@@ -92,10 +92,7 @@ if ($_POST) {
 
 $pgtitle = array(gettext("Cron"),gettext("Edit"));
 include("head.inc");
-
 ?>
-
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
 
 <script type="text/javascript">
 //<![CDATA[
@@ -106,86 +103,86 @@ function show_advanced_config() {
 //]]>
 </script>
 
-<?php include("fbegin.inc"); ?>
-
 <?php if ($input_errors) print_input_errors($input_errors); ?>
 
-<div id="mainlevel">
-<table width="100%" border="0" cellpadding="0" cellspacing="0" summary="mainlevel">
-<tr><td class="tabnavtbl">
+<table summary="mainlevel">
+	<tr>
+		<td class="tabnavtbl">
+		<?php
+			$tab_array = array();
+			$tab_array[] = array(gettext("Settings"), false, "/packages/cron/cron.php");
+			$tab_array[] = array(gettext("Edit"), true, "/packages/cron/cron_edit.php");
+			display_top_tabs($tab_array);
+		?>
+		</td>
+	</tr>
+</table>
 <?php
-	$tab_array = array();
-	$tab_array[] = array(gettext("Settings"), false, "/packages/cron/cron.php");
-	$tab_array[] = array(gettext("Edit"), true, "/packages/cron/cron_edit.php");
-	display_top_tabs($tab_array);
+
+$form = new Form;
+$section = new Form_Section('Add A Cron Schedule');
+
+$section->addInput(new Form_Input(
+	'minute',
+	'minute',
+	'text',
+	htmlspecialchars($pconfig['minute'])
+));
+
+$section->addInput(new Form_Input(
+	'hour',
+	'hour',
+	'text',
+	htmlspecialchars($pconfig['hour'])
+));
+
+$section->addInput(new Form_Input(
+	'mday',
+	'mday',
+	'text',
+	htmlspecialchars($pconfig['mday'])
+));
+
+$section->addInput(new Form_Input(
+	'month',
+	'month',
+	'text',
+	htmlspecialchars($pconfig['month'])
+));
+
+$section->addInput(new Form_Input(
+	'wday',
+	'wday',
+	'text',
+	htmlspecialchars($pconfig['wday'])
+));
+
+$section->addInput(new Form_Input(
+	'who',
+	'who',
+	'text',
+	htmlspecialchars($pconfig['who'])
+));
+
+$section->addInput(new Form_Textarea(
+	'command',
+	'command',
+	htmlspecialchars($pconfig['command'])
+));
+
+$form->add($section);
+
+$btncncl = new Form_Button(
+    'cancel',
+    'Cancel'
+);
+ 
+$btncncl->removeClass('btn-primary')->addClass('btn-danger');
+ 
+$form->addGlobal($btncncl);
+
+print $form;
+
 ?>
-</td></tr>
-</table>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0" summary="mainarea">
-<tr><td class="tabcont" >
-	<br />
-	<form action="cron_edit.php" method="post" name="iform" id="iform">
-		<table width="100%" border="0" cellpadding="6" cellspacing="0" summary="form">
-		<tr>
-			<td width="25%" valign="top" class="vncellreq">minute</td>
-			<td width="75%" class="vtable">
-				<input name="minute" type="text" class="formfld" id="minute" size="40" value="<?=htmlspecialchars($pconfig['minute']);?>" />
-			</td>
-		</tr>
-		<tr>
-			<td width="25%" valign="top" class="vncellreq">hour</td>
-			<td width="75%" class="vtable">
-				<input name="hour" type="text" class="formfld" id="hour" size="40" value="<?=htmlspecialchars($pconfig['hour']);?>" />
-			</td>
-		</tr>
-		<tr>
-			<td width="25%" valign="top" class="vncellreq">mday</td>
-			<td width="75%" class="vtable">
-				<input name="mday" type="text" class="formfld" id="mday" size="40" value="<?=htmlspecialchars($pconfig['mday']);?>" />
-			</td>
-		</tr>
-		<tr>
-			<td width="25%" valign="top" class="vncellreq">month</td>
-			<td width="75%" class="vtable">
-				<input name="month" type="text" class="formfld" id="month" size="40" value="<?=htmlspecialchars($pconfig['month']);?>" />
-			</td>
-		</tr>
-		<tr>
-			<td width="25%" valign="top" class="vncellreq">wday</td>
-			<td width="75%" class="vtable">
-				<input name="wday" type="text" class="formfld" id="wday" size="40" value="<?=htmlspecialchars($pconfig['wday']);?>" />
-			</td>
-		</tr>
-		<tr>
-			<td width="25%" valign="top" class="vncellreq">who</td>
-			<td width="75%" class="vtable">
-				<input name="who" type="text" class="formfld" id="who" size="40" value="<?=htmlspecialchars($pconfig['who']);?>" />
-			</td>
-		</tr>
-		<tr>
-			<td width="25%" valign="top" class="vncellreq">command</td>
-			<td width="75%" class="vtable">
-				<textarea rows="3" cols="68" name="command" id="command"><?=htmlspecialchars($pconfig['command']);?></textarea>
-			</td>
-		</tr>
-		<tr>
-			<td valign="top">&nbsp;</td>
-			<td>
-				<input name="Submit" type="submit" class="formbtn" value="Save" /> <input class="formbtn" type="button" value="Cancel" onclick="history.back()" />
-				<?php if (isset($id) && $a_cron[$id]): ?>
-					<input name="id" type="hidden" value="<?=$id;?>" />
-				<?php endif; ?>
-			</td>
-		</tr>
-		</table>
-	</form>
-	<br />
-</td></tr>
-</table>
-
-</div>
-
-<?php include("fend.inc"); ?>
-</body>
-</html>
+<?php include("foot.inc"); ?>
