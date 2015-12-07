@@ -31,14 +31,8 @@
 require_once("globals.inc");
 require_once("servicewatchdog.inc");
 
-global $g;
-
 /* Do nothing at bootup. */
-if (function_exists("platform_booting")) {
-	if (platform_booting()) {
-		return;
-	}
-} elseif ($g['booting']) {
+if (platform_booting()) {
 	return;
 }
 

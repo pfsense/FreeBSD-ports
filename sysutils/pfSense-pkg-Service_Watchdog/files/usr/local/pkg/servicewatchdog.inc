@@ -119,4 +119,19 @@ function servicewatchdog_check_services() {
 	}
 }
 
+function servicewatchdog_build_service_list() {
+	$i = 0;
+	$list = array();
+	$system_services = get_services();
+	foreach ($system_services as $svc) {
+		if (!servicewatchdog_is_service_watched($svc)) {
+			$svc['description'] = empty($svc['description']) ? get_pkg_descr($svc['name']) : $svc['description'];
+			$list[$i] = "{$svc['name']}: ";
+			$list[$i] .= strlen($svc['description']) > 50 ? substr($svc['description'], 0, 50) . "..." : $svc['description'];
+		}
+		$i++;
+	}
+	return $list;
+}
+
 ?>

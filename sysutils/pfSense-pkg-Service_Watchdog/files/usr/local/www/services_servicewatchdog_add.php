@@ -46,12 +46,6 @@ if (!is_array($config['installedpackages']['servicewatchdog']['item'])) {
 	$config['installedpackages']['servicewatchdog']['item'] = array();
 }
 $a_pwservices = &$config['installedpackages']['servicewatchdog']['item'];
-// Pre-load "cron" into this array to blacklist it from being offered as a choice.
-$a_pwservice_names = array("cron");
-foreach ($a_pwservices as $svc) {
-	$a_pwservice_names[] = $svc['name'];
-}
-$system_services = get_services();
 
 unset($input_errors);
 
@@ -60,6 +54,7 @@ if ($_POST) {
 		return;
 	}
 
+	$system_services = get_services();
 	if (!isset($system_services[$_POST['svcid']])) {
 		$input_errors[] = gettext("The supplied service appears to be invalid.");
 	}
@@ -74,47 +69,31 @@ if ($_POST) {
 	}
 }
 
-$closehead = false;
-$pgtitle = array(gettext("Services"), gettext("servicewatchdog"), gettext("Add"));
+$pgtitle = array(gettext("Services"), gettext("Service Watchdog"), gettext("Add"));
 include("head.inc");
 
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
+if ($savemsg) {
+	print_info_box($savemsg, 'success');
+}
+
+$form = new Form("Add");
+
+$section = new Form_Section('Add Service to Monitor');
+
+$section->addInput(new Form_Select(
+	'svcid',
+	'Service to Add',
+	null,
+	servicewatchdog_build_service_list()
+))->setHelp('Select a service to add to the monitoring list.');
+
+
+$form->add($section);
+
+print($form);
+
 ?>
-<link type="text/css" rel="stylesheet" href="/pfCenter/javascript/chosen/chosen.css" />
-<script src="/pfCenter/javascript/chosen/chosen.proto.js" type="text/javascript"></script>
-</head>
-
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-
-<?php include("fbegin.inc"); ?>
-<?php if ($input_errors) print_input_errors($input_errors); ?>
-<form action="services_servicewatchdog_add.php" method="post" name="iform" id="iform">
-<table width="100%" border="0" cellpadding="6" cellspacing="0" summary="add monitored service">
-<tr>
-	<td colspan="2" valign="top" class="listtopic"><?=gettext("Add Service Entry"); ?></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?=gettext("Service to Add:"); ?></td>
-	<td width="78%" class="vtable">
-		<select name="svcid" class="formselect" id="svcid">
-<?php		$i = 0;
-		foreach ($system_services as $svc): ?>
-			<?php if (!servicewatchdog_is_service_watched($svc)): ?>
-			<?php $svc['description'] = empty($svc['description']) ? get_pkg_descr($svc['name']) : $svc['description']; ?>
-			<option value="<?= $i ?>"><?=$svc['name'];?>: <?= strlen($svc['description']) > 50 ? substr($svc['description'], 0, 50) . "..." : $svc['description'];?></option>
-			<?php endif;
-			$i++; ?>
-<?php 		endforeach; ?>
-		</select>
-	</td>
-</tr>
-<tr>
-	<td width="22%" valign="top">&nbsp;</td>
-	<td width="78%">
-		<input name="Submit" type="submit" class="formbtn" value="<?=gettext("Add"); ?>" /> <input type="button" class="formbtn" value="<?=gettext("Cancel"); ?>" onclick="history.back()" />
-	</td>
-</tr>
-</table>
-</form>
-<?php include("fend.inc"); ?>
-</body>
-</html>
+<?php include("foot.inc"); ?>
