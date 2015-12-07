@@ -29,6 +29,7 @@
 */
 require_once("guiconfig.inc");
 
+$rrds = glob("/var/db/rrd/*-traffic.rrd");
 $startday = isset($_POST['startday']) ? $_POST['startday'] : "01";
 $rrd = isset($_POST['rrd']) ? $_POST['rrd'] : "wan-traffic.rrd";
 
@@ -48,49 +49,73 @@ function fetch_rrd_summary($rrd, $start, $end, $resolution=3600) {
 }
 
 function print_rrd_summary_table($data) { ?>
-<table cellspacing="5">
-	<tr><th>&nbsp;</th><th>Bandwidth</th></tr>
-	<tr><td>In</td><td align="right"><?php echo $data[0]; ?> MBytes</td></tr>
-	<tr><td>Out</td><td align="right"><?php echo $data[1]; ?> MBytes</td></tr>
-	<tr><td>Total</td><td align="right"><?php echo $data[0] + $data[1]; ?> MBytes</td></tr>
-</table>
+		<div class="table-responsive">
+			<table class="table table-striped table-hover table-condensed" id="rrdsummary">
+				<thead>
+					<tr><th>Direction</th><th>Bandwidth</th></tr>
+				</thead>
+				<tbody>
+					<tr><td>In</td><td align="right"><?=$data[0]; ?> MBytes</td></tr>
+					<tr><td>Out</td><td align="right"><?=$data[1]; ?> MBytes</td></tr>
+					<tr><td>Total</td><td align="right"><?=$data[0] + $data[1]; ?> MBytes</td></tr>
+				</tbody>
+			</table>
+		</div>
 <?php
 }
 
-$pgtitle = "Status: RRD Summary";
-include_once("head.inc");
-echo "<body link=\"#0000CC\" vlink=\"#0000CC\" alink=\"#0000CC\">";
-include_once("fbegin.inc");
+$pgtitle = array("Status", "RRD Summary");
 
-$rrds = glob("/var/db/rrd/*-traffic.rrd");
+include_once("head.inc");
+
+$form = new Form(false);
+
+$section = new Form_Section('Select RRD Parameters');
+
+$rrd_options = array();
+foreach ($rrds as $r) {
+	$r = basename($r);
+	$rrd_options[$r] = $r;
+}
+
+$section->addInput(new Form_Select(
+	'rrd',
+	'RRD File',
+	$rrd,
+	$rrd_options
+));
+
+$section->addInput(new Form_Select(
+	'startday',
+	'Start Day',
+	$startday,
+	array_combine(range(1, 28, 1), range(1, 28, 1))
+));
+
+$form->add($section);
+
+print($form);
 
 ?>
-<form name="form1" action="status_rrd_summary.php" method="post">
-	RRD Database:&nbsp;
-	<select name="rrd" class="formselect" onchange="document.form1.submit()">
-	<?php
-	foreach ($rrds as $r) {
-		$r = basename($r);
-		$selected = ($r == $rrd) ? ' selected="selected"' : '';
-		print "<option value=\"{$r}\"{$selected}>{$r}</option>";
-	} ?>
-	</select>
-	Start Day:
-	<select name="startday" class="formselect" onchange="document.form1.submit()">
-	<?php
-	for ($day=1; $day < 29; $day++) {
-		$selected = ($day == $startday) ? ' selected="selected"' : "";
-		print "<option value=\"{$day}\"{$selected}>{$day}</option>";
-	} ?>
-	</select>
-</form>
-<br/>
-This Month (to date, does not include this hour, starting at day <?php echo $startday; ?>):
-<?php print_rrd_summary_table($thismonth); ?>
-<br/><br/>
-Last Month:
-<?php print_rrd_summary_table($lastmonth); ?>
 
-<?php include_once("fend.inc"); ?>
-</body>
-</html>
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("RRD Summary")?></h2></div>
+	<div class="panel-body">
+		<strong>This Month (to date, does not include this hour, starting at day <?=$startday; ?>):</strong>
+		<?php print_rrd_summary_table($thismonth); ?>
+		<br/>
+		<strong>Last Month:</strong>
+		<?php print_rrd_summary_table($lastmonth); ?>
+	</div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+events.push(function(){
+	$('#rrd, #startday').on('change', function(){
+		$(this).parents('form').submit();
+	});
+});
+//]]>
+</script>
+<?php include_once("foot.inc"); ?>
