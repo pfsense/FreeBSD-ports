@@ -97,9 +97,10 @@ if (isset($_POST['del'])) {
 	/* yuck - IE won't send value attributes for image buttons, while Mozilla does - so we use .x/.y to find move button clicks instead... */
 	unset($movebtn);
 	foreach ($_POST as $pn => $pd) {
-		if (preg_match("/move_(\d+)/", $pn, $matches)) {
+		if (preg_match("/del_(\d+)/", $pn, $matches)) {
+			$delbtn = $matches[1];
+		} elseif (preg_match("/move_(\d+)/", $pn, $matches)) {
 			$movebtn = $matches[1];
-			break;
 		}
 	}
 	/* move selected services before this service */
@@ -135,6 +136,12 @@ if (isset($_POST['del'])) {
 			}
 		}
 		$a_pwservices = $a_pwservices_new;
+		servicewatchdog_cron_job();
+		write_config();
+		header("Location: services_servicewatchdog.php");
+		return;
+	} else if (isset($delbtn)) {
+		unset($a_pwservices[$delbtn]);
 		servicewatchdog_cron_job();
 		write_config();
 		header("Location: services_servicewatchdog.php");
