@@ -27,7 +27,7 @@
 	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
 */
-/*	
+/*
 	pfSense_MODULE:	system
 */
 
@@ -46,69 +46,120 @@ if (!is_array($config['mailreports']['schedule']))
 
 $a_mailreports = &$config['mailreports']['schedule'];
 
-if ($_GET['act'] == "del") {
-	if ($a_mailreports[$_GET['id']]) {
-		$name = $a_mailreports[$_GET['id']]['descr'];
-		unset($a_mailreports[$_GET['id']]);
-
-		// Fix up cron job(s)
-		set_mail_report_cron_jobs($a_mailreports);
-
-		write_config("Removed Email Report '{$name}'");
+if (isset($_POST['del'])) {
+	if (is_array($_POST['reports']) && count($_POST['reports'])) {
+		foreach ($_POST['reports'] as $reportsi) {
+			unset($a_mailreports[$reportsi]);
+			set_mail_report_cron_jobs($a_mailreports);
+		}
+		write_config("Removed Multiple Email Reports");
 		configure_cron();
 		header("Location: status_mail_report.php");
 		exit;
 	}
+} else {
+	unset($delbtn);
+	foreach ($_POST as $pn => $pd) {
+		if (preg_match("/del_(\d+)/", $pn, $matches)) {
+			$delbtn = $matches[1];
+		}
+	}
+
+	if (isset($delbtn)) {
+		if ($a_mailreports[$delbtn]) {
+			$name = $a_mailreports[$delbtn]['descr'];
+			unset($a_mailreports[$delbtn]);
+
+			// Fix up cron job(s)
+			set_mail_report_cron_jobs($a_mailreports);
+
+			write_config("Removed Email Report '{$name}'");
+			configure_cron();
+			header("Location: status_mail_report.php");
+			exit;
+		}
+	}
 }
 
-$pgtitle = array(gettext("Status"),gettext("Email Reports"));
+
+$pgtitle = array(gettext("Status"), gettext("Email Reports"), gettext("Add Log"));
 include("head.inc");
 ?>
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-<?php include("fbegin.inc"); ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-	<tr><td><div id="mainarea">
-	<table class="tabcont" width="100%" border="0" cellpadding="0" cellspacing="0">
-		<tr><td colspan="4">Here you can define a list of reports to be sent by email. </td></tr>
-		<tr><td>&nbsp;</td></tr>
-		<tr>
-			<td width="34%" class="listhdr"><?=gettext("Description");?></td>
-			<td width="24%" class="listhdr"><?=gettext("Schedule");?></td>
-			<td width="12%" class="listhdr"><?=gettext("Commands");?></td>
-			<td width="12%" class="listhdr"><?=gettext("Logs");?></td>
-			<td width="12%" class="listhdr"><?=gettext("Graphs");?></td>
-			<td width="6%" class="list"><a href="status_mail_report_edit.php"><img src="./themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif" width="17" height="17" border="0"></a></td>
-		</tr>
+
+<form name="mainform" method="post">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h2 class="panel-title"><?=gettext('Email Reports')?></h2>
+			<?=gettext("Define reports to by sent periodically via email.");?>
+		</div>
+		<div class="panel-body table-responsive">
+			<table class="table table-striped table-hover">
+				<thead>
+					<th>&nbsp;</th>
+					<th><?=gettext("Description")?></th>
+					<th><?=gettext("Schedule")?></th>
+					<th><?=gettext("Commands")?></th>
+					<th><?=gettext("Logs")?></th>
+					<th><?=gettext("Graphs")?></th>
+					<th><?=gettext("Actions")?></th>
+				</thead>
+				<tbody class="services">
+
 		<?php $i = 0; foreach ($a_mailreports as $mailreport): ?>
-		<tr ondblclick="document.location='status_mail_report_edit.php?id=<?=$i;?>'">
-			<td class="listlr"><?php echo $mailreport['descr']; ?></td>
-			<td class="listlr"><?php echo $mailreport['schedule_friendly']; ?></td>
-			<td class="listlr"><?php echo count($mailreport['cmd']['row']); ?></td>
-			<td class="listlr"><?php echo count($mailreport['log']['row']); ?></td>
-			<td class="listlr"><?php echo count($mailreport['row']); ?></td>
-			<td valign="middle" nowrap class="list">
-				<a href="status_mail_report_edit.php?id=<?=$i;?>"><img src="./themes/<?= $g['theme']; ?>/images/icons/icon_e.gif" width="17" height="17" border="0"></a>
-				&nbsp;
-				<a href="status_mail_report.php?act=del&id=<?=$i;?>" onclick="return confirm('<?=gettext("Do you really want to delete this entry?");?>')"><img src="./themes/<?= $g['theme']; ?>/images/icons/icon_x.gif" width="17" height="17" border="0"></a>
+		<tr>
+			<td><input type="checkbox" id="frc<?=$i?>" name="reports[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$i?>')" /></td>
+			<td onclick="fr_toggle(<?=$i?>)" id="frd<?=$i?>" ondblclick="document.location='status_mail_report_edit.php?id=<?=$i?>';">
+				<?=$mailreport['descr']; ?>
+			</td>
+			<td onclick="fr_toggle(<?=$i?>)" id="frd<?=$i?>" ondblclick="document.location='status_mail_report_edit.php?id=<?=$i?>';">
+				<?=$mailreport['schedule_friendly']; ?>
+			</td>
+			<td onclick="fr_toggle(<?=$i?>)" id="frd<?=$i?>" ondblclick="document.location='status_mail_report_edit.php?id=<?=$i?>';">
+				<?=count($mailreport['cmd']['row']); ?>
+			</td>
+			<td onclick="fr_toggle(<?=$i?>)" id="frd<?=$i?>" ondblclick="document.location='status_mail_report_edit.php?id=<?=$i?>';">
+				<?=count($mailreport['log']['row']); ?>
+			</td>
+			<td onclick="fr_toggle(<?=$i?>)" id="frd<?=$i?>" ondblclick="document.location='status_mail_report_edit.php?id=<?=$i?>';">
+				<?=count($mailreport['row']); ?>
+			</td>
+			<td style="cursor: pointer;">
+				<a class="fa fa-pencil" href="status_mail_report_edit.php?id=<?=$i?>" title="<?=gettext("Edit Report"); ?>"></a>
+				<a class="fa fa-trash no-confirm" id="Xdel_<?=$i?>" title="<?=gettext('Delete Report'); ?>"></a>
+				<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="del_<?=$i?>" name="del_<?=$i?>" value="del_<?=$i?>" title="<?=gettext('Delete Report'); ?>">Delete</button>
 			</td>
 		</tr>
 		<?php $i++; endforeach; ?>
-		<tr>
-			<td class="list" colspan="5"></td>
-			<td class="list"><a href="status_mail_report_edit.php"><img src="./themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif" width="17" height="17" border="0"></a></td>
-		</tr>
-		<tr>
-			<td colspan="3" class="list"><p class="vexpl">
-				<span class="red"><strong><?=gettext("Note:");?><br></strong></span>
-				<?=gettext("Click + above to add scheduled reports.");?><br/>
-				Configure your SMTP settings under <a href="/system_advanced_notifications.php">System -&gt; Advanced, on the Notifications tab</a>.
-			</td>
-			<td class="list">&nbsp;</td>
-		</tr>
-	</table>
-	</div></td></tr>
-</table>
 
-<?php include("fend.inc"); ?>
-</body>
-</html>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<nav class="action-buttons">
+		<br />
+		<a href="status_mail_report_edit.php" class="btn btn-success btn-sm">
+			<i class="fa fa-plus icon-embed-btn"></i>
+			<?=gettext("Add New Report")?>
+		</a>
+<?php if ($i !== 0): ?>
+		<button type="submit" name="del" class="btn btn-danger btn-sm" value="<?=gettext("Delete Selected Reports")?>">
+			<i class="fa fa-trash icon-embed-btn"></i>
+			<?=gettext("Delete")?>
+		</button>
+<?php endif; ?>
+	</nav>
+</form>
+<?php print_info_box(gettext("Configure SMTP settings under <a href=\"/system_advanced_notifications.php\">System -&gt; Advanced, on the Notifications tab</a>"), 'info'); ?>
+<script type="text/javascript">
+//<![CDATA[
+
+events.push(function() {
+	$('[id^=Xdel_]').click(function (event) {
+		if(confirm("<?=gettext('Delete this patch entry?')?>")) {
+			$('#' + event.target.id.slice(1)).click();
+		}
+	});
+});
+//]]>
+</script>
+<?php include("foot.inc"); ?>

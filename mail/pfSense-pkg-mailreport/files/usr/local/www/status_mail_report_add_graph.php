@@ -157,109 +157,74 @@ if ($_POST) {
 	return;
 }
 
-
-$pgtitle = array(gettext("Status"),gettext("Add Email Report Graph"));
+$pgtitle = array(gettext("Status"), gettext("Email Reports"), gettext("Add Graph"));
 include("head.inc");
-?>
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-<?php include("fbegin.inc"); ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-	<tr><td><div id="mainarea">
-	<form action="status_mail_report_add_graph.php" method="post" name="iform" id="iform">
-	<table class="tabcont" width="100%" border="0" cellpadding="1" cellspacing="1">
-		<tr>
-			<td class="listtopic" colspan="2">Graph Settings</td>
-		</tr>
-		<tr>
-			<td width="20%" class="listhdr">
-				<?=gettext("Graphs:");?>
-			</td>
-			<td width="80%" class="listhdr">
-				<select name="graph" class="formselect" style="z-index: -10;">
-				<?php
-				foreach ($custom_databases as $db => $database) {
-					$optionc = explode("-", $database);
-					$optionc[1] = str_replace(".rrd", "", $optionc[1]);
-					$friendly = convert_friendly_interface_to_friendly_descr(strtolower($optionc[0]));
-					if(!empty($friendly)) {
-						$optionc[0] = $friendly;
-					}
-					$prettyprint = ucwords(implode(" :: ", $optionc));
-					echo "<option value=\"{$database}\"";
-					if ($pconfig['graph'] == $database) {
-						echo " selected";
-					}
-					echo ">" . htmlspecialchars($prettyprint) . "</option>\n";
-				}
-				?>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td class="listhdr">
-				<?=gettext("Style:");?>
-			</td>
-			<td class="listhdr">
-				<select name="style" class="formselect" style="z-index: -10;">
-				<?php
-				foreach ($styles as $style => $styled) {
-					echo "<option value=\"$style\"";
-					if ($style == $pconfig['style']) echo " selected";
-					echo ">" . htmlspecialchars($styled) . "</option>\n";
-				}
-				?>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td class="listhdr">
-				<?=gettext("Time Span:");?>
-			</td>
-			<td class="listhdr">
-				<select name="timespan" class="formselect" style="z-index: -10;">
-				<?php
-				foreach (array_keys($graph_length) as $timespan) {
-					$pconfig['timespan'] = fixup_graph_timespan($pconfig['timespan']);
-					echo "<option value=\"$timespan\"";
-					if ($timespan == $pconfig['timespan']) echo " selected";
-					echo ">" . htmlspecialchars(ucwords($timespan)) . "</option>\n";
-				}
-				?>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td class="listhdr">
-				<?=gettext("Period:");?>
-			</td>
-			<td class="listhdr">
-				<select name="period" class="formselect" style="z-index: -10;">
-				<?php
-				foreach ($periods as $period => $value) {
-					echo "<option value=\"$period\"";
-					if ($period == $pconfig['period']) echo " selected";
-					echo ">" . htmlspecialchars($value) . "</option>\n";
-				}
-				?>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2" align="center">
-			<input name="Submit" type="submit" class="formbtn" value="<?=gettext("Save");?>">
-			<a href="status_mail_report_edit.php?id=<?php echo $reportid;?>"><input name="cancel" type="button" class="formbtn" value="<?=gettext("Cancel");?>"></a>
-			<input name="reportid" type="hidden" value="<?=htmlspecialchars($reportid);?>">
-			<?php if (isset($id) && $a_graphs[$id]): ?>
-			<input name="id" type="hidden" value="<?=htmlspecialchars($id);?>">
-			<?php endif; ?>
-			</td>
-			<td></td>
-		</tr>
-	</table>
-	</form>
-	</div></td></tr>
-</table>
 
-<?php include("fend.inc"); ?>
-</body>
-</html>
+$form = new Form();
+
+$section = new Form_Section('Graph Settings');
+
+$graphoptions = array();
+foreach ($custom_databases as $db => $database) {
+	$optionc = explode("-", $database);
+	$optionc[1] = str_replace(".rrd", "", $optionc[1]);
+	$friendly = convert_friendly_interface_to_friendly_descr(strtolower($optionc[0]));
+	if(!empty($friendly)) {
+		$optionc[0] = $friendly;
+	}
+	$prettyprint = ucwords(implode(" :: ", $optionc));
+	$graphoptions[$database] = $prettyprint;
+}
+$section->addInput(new Form_Select(
+	'graph',
+	'Graph',
+	$pconfig['graph'],
+	$graphoptions
+))->setHelp('Select the graph database to include in the report.');
+
+$section->addInput(new Form_Select(
+	'style',
+	'Style',
+	$pconfig['style'],
+	$styles
+))->setHelp('Select the style for the generated graph.');
+
+$pconfig['timespan'] = fixup_graph_timespan($pconfig['timespan']);
+$timespanoptions = array();
+foreach (array_keys($graph_length) as $timespan) {
+	$timespanoptions[$timespan] = ucwords($timespan);
+}
+$section->addInput(new Form_Select(
+	'timespan',
+	'Time Span',
+	$pconfig['timespan'],
+	$timespanoptions
+))->setHelp('Select the time span for the generated graph.');
+
+$section->addInput(new Form_Select(
+	'period',
+	'Period',
+	$pconfig['period'],
+	$periods
+))->setHelp('Select the period for the generated graph.');
+
+$form->add($section);
+
+$form->addGlobal(new Form_Input(
+	'reportid',
+	null,
+	'hidden',
+	$reportid
+));
+
+if (isset($id) && $a_graphs[$id]) {
+	$form->addGlobal(new Form_Input(
+		'id',
+		null,
+		'hidden',
+		$id
+	));
+}
+print($form);
+?>
+<?php include("foot.inc"); ?>

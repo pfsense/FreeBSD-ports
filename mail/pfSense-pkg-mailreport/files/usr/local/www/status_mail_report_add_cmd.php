@@ -88,59 +88,52 @@ if ($_POST) {
 	return;
 }
 
-
-$pgtitle = array(gettext("Status"),gettext("Add Email Report Command"));
+$pgtitle = array(gettext("Status"), gettext("Email Reports"), gettext("Add Command"));
 include("head.inc");
-?>
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-<?php include("fbegin.inc"); ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-	<tr><td><div id="mainarea">
-	<form action="status_mail_report_add_cmd.php" method="post" name="iform" id="iform">
-	<table class="tabcont" width="100%" border="0" cellpadding="1" cellspacing="1">
-		<tr>
-			<td class="listtopic" colspan="2">Command Settings</td>
-		</tr>
-		<tr>
-			<td width="20%" class="listhdr">
-				<?=gettext("Name:");?>
-			</td>
-			<td width="80%" class="listhdr">
-				<input name="descr" type="text" class="formfld unknown" id="descr" size="20" value="<?=htmlspecialchars($pconfig['descr']);?>">
-			</td>
-		</tr>
-		<tr>
-			<td class="listhdr">
-				<?=gettext("Command:");?>
-			</td>
-			<td class="listhdr">
-				<input name="detail" type="text" class="formfld unknown" id="detail" size="60" value="<?=htmlspecialchars($pconfig['detail']);?>">
-			</td>
-		</tr>
-		<tr>
-			<td>&nbsp;</td>
-			<td>
-				<br/>NOTE: Use full paths to commands to ensure they run properly. The command will be run during the report and its stdout output will be included in the report body. Be extremely careful what commands you choose to run, the same warnings apply as those when using Diagnostics &gt; Command.
-				<br/>
-				<br/>Do not use this solely as a way to run a command on a schedule, use the Cron package for that purpose instead.
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2" align="center">
-			<input name="Submit" type="submit" class="formbtn" value="<?=gettext("Save");?>">
-			<a href="status_mail_report_edit.php?id=<?php echo $reportid;?>"><input name="cancel" type="button" class="formbtn" value="<?=gettext("Cancel");?>"></a>
-			<input name="reportid" type="hidden" value="<?=htmlspecialchars($reportid);?>">
-			<?php if (isset($id) && $a_cmds[$id]): ?>
-			<input name="id" type="hidden" value="<?=htmlspecialchars($id);?>">
-			<?php endif; ?>
-			</td>
-			<td></td>
-		</tr>
-	</table>
-	</form>
-	</div></td></tr>
-</table>
 
-<?php include("fend.inc"); ?>
-</body>
-</html>
+$form = new Form();
+
+$section = new Form_Section('Command Settings');
+
+$section->addInput(new Form_Input(
+	'descr',
+	'Name',
+	'text',
+	$pconfig['descr']
+))->setHelp('Enter a description here for reference.');
+
+$section->addInput(new Form_Input(
+	'detail',
+	'Command',
+	'text',
+	$pconfig['detail']
+))->setHelp('Enter the full path to a command here.')->setWidth(6);
+
+$form->add($section);
+
+$form->addGlobal(new Form_Input(
+	'reportid',
+	null,
+	'hidden',
+	$reportid
+));
+
+if (isset($id) && $a_cmds[$id]) {
+	$form->addGlobal(new Form_Input(
+		'id',
+		null,
+		'hidden',
+		$id
+	));
+}
+print($form);
+
+?>
+
+<div>
+<?=print_info_box(gettext("Use full paths to commands to ensure they run properly. The command will be run during the report and its stdout output will be included in the report body. Be extremely careful what commands are run, the same warnings apply as those when using Diagnostics &gt; Command.") .
+	"<br /><br />" .
+	gettext("Do not use this solely as a way to run a command on a schedule, use the Cron package for that purpose instead."), 'warning'); ?>
+</div>
+
+<?php include("foot.inc"); ?>

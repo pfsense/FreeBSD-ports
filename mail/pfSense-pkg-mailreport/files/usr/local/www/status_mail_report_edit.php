@@ -68,29 +68,6 @@ if (!is_array($a_logs))
 if (!is_array($a_graphs))
 	$a_graphs = array();
 
-
-if ($_GET['act'] == "del") {
-	if (is_numeric($cmdid) && $a_cmds[$cmdid]) {
-		unset($a_cmds[$cmdid]);
-		$a_mailreports[$id]['cmd']['row'] = $a_cmds;
-		write_config();
-		header("Location: status_mail_report_edit.php?id={$id}");
-		return;
-	} elseif (is_numeric($logid) && $a_logs[$logid]) {
-		unset($a_logs[$logid]);
-		$a_mailreports[$id]['log']['row'] = $a_logs;
-		write_config();
-		header("Location: status_mail_report_edit.php?id={$id}");
-		return;
-	} elseif (is_numeric($graphid) && $a_graphs[$graphid]) {
-		unset($a_graphs[$graphid]);
-		$a_mailreports[$id]['row'] = $a_graphs;
-		write_config();
-		header("Location: status_mail_report_edit.php?id={$id}");
-		return;
-	}
-}
-
 $frequencies = array("daily", "weekly", "monthly", "quarterly", "yearly");
 $daysofweek = array(
 		"" => "",
@@ -120,6 +97,70 @@ $monthofyear = array(
 		"10" => "October",
 		"11" => "November",
 		"12" => "December");
+
+if (isset($_POST['del'])) {
+	$need_save = false;
+	if (is_array($_POST['commands']) && count($_POST['commands'])) {
+		foreach ($_POST['commands'] as $commandsi) {
+			unset($a_cmds[$commandsi]);
+			$a_mailreports[$id]['cmd']['row'] = $a_cmds;
+			$need_save = true;
+		}
+	}
+	if (is_array($_POST['logs']) && count($_POST['logs'])) {
+		foreach ($_POST['logs'] as $logsi) {
+			unset($a_logs[$logsi]);
+			$a_mailreports[$id]['log']['row'] = $a_logs;
+			$need_save = true;
+		}
+	}
+	if (is_array($_POST['graphs']) && count($_POST['graphs'])) {
+		foreach ($_POST['graphs'] as $graphsi) {
+			unset($a_graphs[$graphsi]);
+			$a_mailreports[$id]['row'] = $a_graphs;
+			$need_save = true;
+		}
+	}
+	if ($need_save) {
+		write_config();
+	}
+	header("Location: status_mail_report_edit.php?id={$id}");
+	return;
+} else {
+	unset($delbtn_cmd, $delbtn_log, $delbtn_graph);
+
+	foreach ($_POST as $pn => $pd) {
+		if (preg_match("/cdel_(\d+)/", $pn, $matches)) {
+			$delbtn_cmd = $matches[1];
+		} elseif (preg_match("/ldel_(\d+)/", $pn, $matches)) {
+			$delbtn_log = $matches[1];
+		} elseif (preg_match("/gdel_(\d+)/", $pn, $matches)) {
+			$delbtn_graph = $matches[1];
+		}
+	}
+	$need_save = false;
+	if (is_numeric($delbtn_cmd) && $a_cmds[$delbtn_cmd]) {
+		unset($a_cmds[$delbtn_cmd]);
+		$a_mailreports[$id]['cmd']['row'] = $a_cmds;
+		$need_save = true;
+	}
+	if (is_numeric($delbtn_log) && $a_logs[$delbtn_log]) {
+		unset($a_logs[$delbtn_log]);
+		$a_mailreports[$id]['log']['row'] = $a_logs;
+		$need_save = true;
+	}
+	if (is_numeric($delbtn_graph) && $a_graphs[$delbtn_graph]) {
+		unset($a_graphs[$delbtn_graph]);
+		$a_mailreports[$id]['row'] = $a_graphs;
+		$need_save = true;
+	}
+	if ($need_save) {
+		write_config();
+		header("Location: status_mail_report_edit.php?id={$id}");
+		return;
+	}
+}
+
 
 if ($_POST) {
 	unset($_POST['__csrf_magic']);
@@ -203,199 +244,203 @@ if ($_POST) {
 	return;
 }
 
-$pgtitle = array(gettext("Status"),gettext("Edit Email Reports"));
+$pgtitle = array(gettext("Status"), gettext("Email Reports"), gettext("Edit Reports"));
 include("head.inc");
+
+$form = new Form(false);
+
+$section = new Form_Section('Report Settings');
+
+$section->addInput(new Form_Input(
+	'descr',
+	'Description',
+	'text',
+	$pconfig['descr']
+))->setHelp('Enter a description here for reference.');
+
+$form->add($section);
+
+$section = new Form_Section('Schedule');
+
+$freqoptions = array();
+foreach ($frequencies as $freq) {
+	$freqoptions[$freq] = ucwords($freq);
+}
+$section->addInput(new Form_Select(
+	'frequency',
+	'Frequency',
+	$pconfig['frequency'],
+	$freqoptions
+))->setHelp('Select the frequency for the report to be sent via email.');
+
+$dowoptions = array();
+foreach ($daysofweek as $dowi => $dow) {
+	$dowoptions[$dowi] = ucwords($dow);
+}
+$section->addInput(new Form_Select(
+	'dayofweek',
+	'Day of the Week',
+	$pconfig['dayofweek'],
+	$dowoptions
+))->setHelp('Select the day of the week to send the report. Only valid for weekly reports.');
+
+$domoptions = array();
+foreach ($dayofmonth as $dom) {
+	$domoptions[$dom] = $dom;
+}
+$section->addInput(new Form_Select(
+	'dayofmonth',
+	'Day of the Month',
+	$pconfig['dayofmonth'],
+	$domoptions
+))->setHelp('Select the day of the month to send the report. Only valid for monthly and yearly reports.');
+
+$moqoptions = array();
+foreach ($monthofquarter as $moqi => $moq) {
+	$moqoptions[$moqi] = ucwords($moq);
+}
+$section->addInput(new Form_Select(
+	'monthofquarter',
+	'Time of Quarter',
+	$pconfig['monthofquarter'],
+	$moqoptions
+))->setHelp('Select the time of the quarter to send the report. Only valid for quarter reports.');
+
+$moyoptions = array();
+foreach ($monthofyear as $moyi => $moy) {
+	$moyoptions[$moyi] = ucwords($moy);
+}
+$section->addInput(new Form_Select(
+	'monthofyear',
+	'Month of the Year',
+	$pconfig['monthofyear'],
+	$moyoptions
+))->setHelp('Select the month of the year to send the report. Only valid for yearly reports.');
+
+
+$section->addInput(new Form_Select(
+	'timeofday',
+	'Hour of Day',
+	$pconfig['timeofday'],
+	array_combine(range(0, 23, 1), range(0, 23, 1))
+))->setHelp('Select the hour of the day when the report should be sent. Be aware that scheduling reports between 1am-3am can cause issues during DST switches in zones that have them. Valid for any type of report.');
+
+$group = new Form_Group('');
+$group->add(new Form_Button(
+	'Submit',
+	'Save'
+));
+if (isset($id) && $a_mailreports[$id]) {
+	$group->add(new Form_Button(
+		'Submit',
+		'Send Now'
+	));
+}
+$section->add($group);
+
+$form->add($section);
+
+if (isset($id) && $a_mailreports[$id]) {
+	$form->addGlobal(new Form_Input(
+		'id',
+		null,
+		'hidden',
+		$id
+	));
+}
+print($form);
 ?>
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-<?php include("fbegin.inc"); ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-	<tr><td><div id="mainarea">
-	<form action="status_mail_report_edit.php" method="post" name="iform" id="iform">
-	<table class="tabcont" width="100%" border="0" cellpadding="1" cellspacing="1">
-		<tr>
-			<td class="listtopic" colspan="4">General Settings</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td valign="top" class="vncell"><?=gettext("Description");?></td>
-			<td class="vtable" colspan="3">
-				<input name="descr" type="text" class="formfld unknown" id="descr" size="60" value="<?=htmlspecialchars($pconfig['descr']);?>">
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td class="listtopic" colspan="4">Report Schedule</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td class="vncellreq" valign="top" colspan="1">Frequency</td>
-			<td class="vtable" colspan="3">
-			<select name="frequency">
-			<?php foreach($frequencies as $freq): ?>
-				<option value="<?php echo $freq; ?>" <?php if($pconfig["frequency"] === $freq) echo "selected"; ?>><?php echo ucwords($freq); ?></option>
-			<?php endforeach; ?>
-			</select>
-			<br/>Select the frequency for the report to be sent via email.
-			<br/>
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td class="vncell" valign="top" colspan="1">Day of the Week</td>
-			<td class="vtable" colspan="3">
-			<select name="dayofweek">
-			<?php foreach($daysofweek as $dowi => $dow): ?>
-				<option value="<?php echo $dowi; ?>" <?php if($pconfig["dayofweek"] == $dowi) echo "selected"; ?>><?php echo ucwords($dow); ?></option>
-			<?php endforeach; ?>
-			</select>
-			<br/>Select the day of the week to send the report. Only valid for weekly reports.
-			<br/>
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td class="vncell" valign="top" colspan="1">Day of the Month</td>
-			<td class="vtable" colspan="3">
-			<select name="dayofmonth">
-			<?php foreach($dayofmonth as $dom): ?>
-				<option value="<?php echo $dom; ?>" <?php if($pconfig["dayofmonth"] == $dom) echo "selected"; ?>><?php echo $dom; ?></option>
-			<?php endforeach; ?>
-			</select>
-			<br/>Select the day of the month to send the report. Only valid for monthly and yearly reports.
-			<br/>
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td class="vncell" valign="top" colspan="1">Time of Quarter</td>
-			<td class="vtable" colspan="3">
-			<select name="monthofquarter">
-			<?php foreach($monthofquarter as $moqi => $moq): ?>
-				<option value="<?php echo $moqi; ?>" <?php if($pconfig["monthofquarter"] == $moqi) echo "selected"; ?>><?php echo $moq; ?></option>
-			<?php endforeach; ?>
-			</select>
-			<br/>Select the time of the quarter to send the report. Only valid for quarter reports.
-			<br/>
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td class="vncell" valign="top" colspan="1">Month of the Year</td>
-			<td class="vtable" colspan="3">
-			<select name="monthofyear">
-			<?php foreach($monthofyear as $moyi => $moy): ?>
-				<option value="<?php echo $moyi; ?>" <?php if($pconfig["monthofyear"] == $moyi) echo "selected"; ?>><?php echo $moy; ?></option>
-			<?php endforeach; ?>
-			</select>
-			<br/>Select the month of the year to send the report. Only valid for yearly reports.
-			<br/>
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td class="vncell" valign="top" colspan="1">Hour of Day</td>
-			<td class="vtable" colspan="3">
-			<select name="timeofday">
-				<option value="" <?php if($pconfig["timeofday"] == "") echo "selected"; ?>></option>
-				<?php for($i=0; $i < 24; $i++): ?>
-				<option value="<?php echo $i; ?>" <?php if("{$pconfig['timeofday']}" == "{$i}") echo "selected"; ?>><?php echo $i; ?></option>
-				<?php endfor; ?>
-			</select>
-			<br/>Select the hour of the day when the report should be sent. Be aware that scheduling reports between 1am-3am can cause issues during DST switches in zones that have them. Valid for any type of report.
-			<br/>
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td class="listtopic" colspan="4">Report Commands</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td width="30%" class="listhdr"><?=gettext("Name");?></td>
-			<td width="60%" colspan="3" class="listhdr"><?=gettext("Command");?></td>
-			<td width="10%" class="list">
-			<?php if (isset($id) && $a_mailreports[$id]): ?>
-				<a href="status_mail_report_add_cmd.php?reportid=<?php echo $id ;?>"><img src="./themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif" width="17" height="17" border="0"></a>
-			</td>
-			<?php else: ?>
-			</td>
-				<tr><td colspan="5" align="center"><br/>Save the report first, then items may be added.<br/></td></tr>
-			<?php endif; ?>
-		</tr>
+
+<?php if (isset($id) && $a_mailreports[$id]): ?>
+
+<div class="panel panel-default" id="commandentries">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext('Included Commands')?></h2></div>
+	<div class="panel-body table-responsive">
+		<table class="table table-striped table-hover">
+			<thead>
+				<th>&nbsp;</th>
+				<th width="30%"><?=gettext("Name")?></th>
+				<th width="60%"><?=gettext("Command")?></th>
+				<th width="10%"><?=gettext("Actions")?></th>
+			</thead>
+			<tbody>
+
 		<?php $i = 0; foreach ($a_cmds as $cmd): ?>
-		<tr ondblclick="document.location='status_mail_report_add_cmd.php?reportid=<?php echo $id ;?>&amp;id=<?=$i;?>'">
-			<td class="listlr"><?php echo htmlspecialchars($cmd['descr']); ?></td>
-			<td colspan="3" class="listlr"><?php echo htmlspecialchars($cmd['detail']); ?></td>
-			<td valign="middle" nowrap class="list">
-				<a href="status_mail_report_add_cmd.php?reportid=<?php echo $id ;?>&id=<?=$i;?>"><img src="./themes/<?= $g['theme']; ?>/images/icons/icon_e.gif" width="17" height="17" border="0"></a>
-				&nbsp;
-				<a href="status_mail_report_edit.php?act=del&id=<?php echo $id ;?>&cmdid=<?=$i;?>" onclick="return confirm('<?=gettext("Do you really want to delete this entry?");?>')"><img src="./themes/<?= $g['theme']; ?>/images/icons/icon_x.gif" width="17" height="17" border="0"></a>
+		<tr>
+			<td><input type="checkbox" id="frc<?=$i?>" name="commands[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$i?>')" /></td>
+			<td><?=htmlspecialchars($cmd['descr']); ?></td>
+			<td><?=htmlspecialchars($cmd['detail']); ?></td>
+			<td style="cursor: pointer;">
+				<a class="fa fa-pencil" href="status_mail_report_add_cmd.php?reportid=<?=$id ?>&id=<?=$i?>" title="<?=gettext("Edit Command"); ?>"></a>
+				<a class="fa fa-trash no-confirm" id="Xcdel_<?=$i?>" title="<?=gettext('Delete Command'); ?>"></a>
+				<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="cdel_<?=$i?>" name="cdel_<?=$i?>" value="cdel_<?=$i?>" title="<?=gettext('Delete Command'); ?>">Delete Command</button>
 			</td>
 		</tr>
 		<?php $i++; endforeach; ?>
-		<tr>
-			<td class="list" colspan="4"></td>
-			<td class="list">
-			<?php if (isset($id) && $a_mailreports[$id]): ?>
-				<a href="status_mail_report_add_cmd.php?reportid=<?php echo $id ;?>"><img src="./themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif" width="17" height="17" border="0"></a>
-			<?php endif; ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="listtopic" colspan="4">Report Logs</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td width="30%" class="listhdr"><?=gettext("Log");?></td>
-			<td width="20%" class="listhdr"><?=gettext("# Rows");?></td>
-			<td width="40%" colspan="2" class="listhdr"><?=gettext("Filter");?></td>
-			<td width="10%" class="list">
-			<?php if (isset($id) && $a_mailreports[$id]): ?>
-				<a href="status_mail_report_add_log.php?reportid=<?php echo $id ;?>"><img src="./themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif" width="17" height="17" border="0"></a>
-			</td>
-			<?php else: ?>
-			</td>
-				<tr><td colspan="5" align="center"><br/>Save the report first, then items may be added.<br/></td></tr>
-			<?php endif; ?>
-		</tr>
+
+			</tbody>
+		</table>
+	</div>
+	<nav class="action-buttons">
+		<a href="status_mail_report_add_cmd.php?reportid=<?=$id ?>" class="btn btn-success btn-sm">
+			<i class="fa fa-plus icon-embed-btn"></i>
+			<?=gettext("Add New Command")?>
+		</a>
+	</nav>
+</div>
+
+<div class="panel panel-default" id="logentries">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext('Included Logs')?></h2></div>
+	<div class="panel-body table-responsive">
+		<table class="table table-striped table-hover">
+			<thead>
+				<th>&nbsp;</th>
+				<th width="30%"><?=gettext("Log")?></th>
+				<th width="20%"><?=gettext("# Rows")?></th>
+				<th width="40%"><?=gettext("Filter")?></th>
+				<th width="10%"><?=gettext("Actions")?></th>
+			</thead>
+			<tbody>
+
 		<?php $i = 0; foreach ($a_logs as $log): ?>
-		<tr ondblclick="document.location='status_mail_report_add_log.php?reportid=<?php echo $id ;?>&amp;id=<?=$i;?>'">
-			<td class="listlr"><?php echo get_friendly_log_name($log['logfile']); ?></td>
-			<td class="listlr"><?php echo $log['lines']; ?></td>
-			<td colspan="2" class="listlr"><?php echo $log['detail']; ?></td>
-			<td valign="middle" nowrap class="list">
-				<a href="status_mail_report_add_log.php?reportid=<?php echo $id ;?>&id=<?=$i;?>"><img src="./themes/<?= $g['theme']; ?>/images/icons/icon_e.gif" width="17" height="17" border="0"></a>
-				&nbsp;
-				<a href="status_mail_report_edit.php?act=del&id=<?php echo $id ;?>&logid=<?=$i;?>" onclick="return confirm('<?=gettext("Do you really want to delete this entry?");?>')"><img src="./themes/<?= $g['theme']; ?>/images/icons/icon_x.gif" width="17" height="17" border="0"></a>
+		<tr>
+			<td><input type="checkbox" id="frl<?=$i?>" name="logs[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$i?>')" /></td>
+			<td><?=get_friendly_log_name($log['logfile']); ?></td>
+			<td><?=$log['lines']; ?></td>
+			<td><?=$log['detail']; ?></td>
+			<td style="cursor: pointer;">
+				<a class="fa fa-pencil" href="status_mail_report_add_log.php?reportid=<?=$id ?>&id=<?=$i?>" title="<?=gettext("Edit Log"); ?>"></a>
+				<a class="fa fa-trash no-confirm" id="Xldel_<?=$i?>" title="<?=gettext('Delete Log'); ?>"></a>
+				<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="ldel_<?=$i?>" name="ldel_<?=$i?>" value="ldel_<?=$i?>" title="<?=gettext('Delete Log'); ?>">Delete Log</button>
 			</td>
 		</tr>
 		<?php $i++; endforeach; ?>
-		<tr>
-			<td class="list" colspan="4"></td>
-			<td class="list">
-			<?php if (isset($id) && $a_mailreports[$id]): ?>
-				<a href="status_mail_report_add_log.php?reportid=<?php echo $id ;?>"><img src="./themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif" width="17" height="17" border="0"></a>
-			<?php endif; ?>
-			</td>
-		</tr>
-		<tr>
-			<td class="listtopic" colspan="4">Report Graphs</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td width="30%" class="listhdr"><?=gettext("Graph");?></td>
-			<td width="20%" class="listhdr"><?=gettext("Style");?></td>
-			<td width="20%" class="listhdr"><?=gettext("Time Span");?></td>
-			<td width="20%" class="listhdr"><?=gettext("Period");?></td>
-			<td width="10%" class="list">
-			<?php if (isset($id) && $a_mailreports[$id]): ?>
-				<a href="status_mail_report_add_graph.php?reportid=<?php echo $id ;?>"><img src="./themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif" width="17" height="17" border="0"></a>
-			</td>
-			<?php else: ?>
-			</td>
-				<tr><td colspan="5" align="center"><br/>Save the report first, then items may be added.<br/></td></tr>
-			<?php endif; ?>
-		</tr>
+			</tbody>
+		</table>
+	</div>
+	<nav class="action-buttons">
+		<a href="status_mail_report_add_log.php?reportid=<?=$id ?>" class="btn btn-success btn-sm">
+			<i class="fa fa-plus icon-embed-btn"></i>
+			<?=gettext("Add New Log")?>
+		</a>
+	</nav>
+</div>
+
+<form name="itemsform" method="post">
+	<div class="panel panel-default" id="graphentries">
+		<div class="panel-heading"><h2 class="panel-title"><?=gettext('Included Graphs')?></h2></div>
+		<div class="panel-body table-responsive">
+			<table class="table table-striped table-hover">
+				<thead>
+					<th>&nbsp;</th>
+					<th width="30%"><?=gettext("Graph")?></th>
+					<th width="20%"><?=gettext("Style")?></th>
+					<th width="20%"><?=gettext("Time Span")?></th>
+					<th width="20%"><?=gettext("Period")?></th>
+					<th width="10%"><?=gettext("Actions")?></th>
+				</thead>
+				<tbody>
+
 		<?php $i = 0; foreach ($a_graphs as $graph): 
 			$optionc = explode("-", $graph['graph']);
 			$optionc[1] = str_replace(".rrd", "", $optionc[1]);
@@ -405,52 +450,68 @@ include("head.inc");
 			}
 			$prettyprint = ucwords(implode(" :: ", $optionc));
 		?>
-		<tr ondblclick="document.location='status_mail_report_add_graph.php?reportid=<?php echo $id ;?>&amp;id=<?=$i;?>'">
-			<td class="listlr"><?php echo $prettyprint; ?></td>
-			<td class="listlr"><?php echo $graph['style']; ?></td>
-			<td class="listlr"><?php echo $graph['timespan']; ?></td>
-			<td class="listlr"><?php echo $graph['period']; ?></td>
-			<td valign="middle" nowrap class="list">
-				<a href="status_mail_report_add_graph.php?reportid=<?php echo $id ;?>&id=<?=$i;?>"><img src="./themes/<?= $g['theme']; ?>/images/icons/icon_e.gif" width="17" height="17" border="0"></a>
-				&nbsp;
-				<a href="status_mail_report_edit.php?act=del&id=<?php echo $id ;?>&graphid=<?=$i;?>" onclick="return confirm('<?=gettext("Do you really want to delete this entry?");?>')"><img src="./themes/<?= $g['theme']; ?>/images/icons/icon_x.gif" width="17" height="17" border="0"></a>
+		<tr>
+			<td><input type="checkbox" id="frg<?=$i?>" name="graphs[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$i?>')" /></td>
+			<td><?=$prettyprint; ?></td>
+			<td><?=$graph['style']; ?></td>
+			<td><?=$graph['timespan']; ?></td>
+			<td><?=$graph['period']; ?></td>
+			<td style="cursor: pointer;">
+				<a class="fa fa-pencil" href="status_mail_report_add_graph.php?reportid=<?=$id ?>&id=<?=$i?>" title="<?=gettext("Edit Graph"); ?>"></a>
+				<a class="fa fa-trash no-confirm" id="Xgdel_<?=$i?>" title="<?=gettext('Delete Graph'); ?>"></a>
+				<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="gdel_<?=$i?>" name="gdel_<?=$i?>" value="gdel_<?=$i?>" title="<?=gettext('Delete Graph'); ?>">Delete Graph</button>
 			</td>
 		</tr>
 		<?php $i++; endforeach; ?>
-		<tr>
-			<td class="list" colspan="4"></td>
-			<td class="list">
-			<?php if (isset($id) && $a_mailreports[$id]): ?>
-				<a href="status_mail_report_add_graph.php?reportid=<?php echo $id ;?>"><img src="./themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif" width="17" height="17" border="0"></a>
-			<?php endif; ?>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="4" align="center">
-			<input name="Submit" type="submit" class="formbtn" value="<?=gettext("Save");?>">
-			<?php if (isset($id) && $a_mailreports[$id]): ?>
-			<input name="Submit" type="submit" class="formbtn" value="<?=gettext("Send Now");?>">
-			<?php endif; ?>
-			<a href="status_mail_report.php"><input name="cancel" type="button" class="formbtn" value="<?=gettext("Cancel");?>"></a>
-			<?php if (isset($id) && $a_mailreports[$id]): ?>
-			<input name="id" type="hidden" value="<?=htmlspecialchars($id);?>">
-			<?php endif; ?>
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td colspan="4" class="list"><p class="vexpl">
-				<span class="red"><strong><?=gettext("Note:");?><br></strong></span>
-				<?=gettext("Click + above to add graphs to this report.");?><br/>
-				Configure your SMTP settings under <a href="/system_advanced_notifications.php">System -&gt; Advanced, on the Notifications tab</a>.
-			</td>
-			<td class="list">&nbsp;</td>
-		</tr>
-	</table>
-	</form>
-	</div></td></tr>
-</table>
 
-<?php include("fend.inc"); ?>
-</body>
-</html>
+				</tbody>
+			</table>
+		</div>
+		<nav class="action-buttons">
+			<a href="status_mail_report_add_graph.php?reportid=<?=$id ?>" class="btn btn-success btn-sm">
+				<i class="fa fa-plus icon-embed-btn"></i>
+				<?=gettext("Add New Graph")?>
+			</a>
+		</nav>
+	</div>
+	<nav class="action-buttons">
+		<br />
+	<?php if ($i !== 0): ?>
+		<button type="submit" name="del" class="btn btn-danger btn-sm" value="<?=gettext("Delete Selected Items")?>">
+			<i class="fa fa-trash icon-embed-btn"></i>
+			<?=gettext("Delete Selected Items")?>
+		</button>
+	<?php endif; ?>
+	</nav>
+</form>
+<?php else: ?>
+<?php print_info_box(gettext("Submit the report first, then items may be added."), 'warning'); ?>
+<?php endif; ?>
+
+
+<?php print_info_box(gettext("Configure SMTP settings under <a href=\"/system_advanced_notifications.php\">System -&gt; Advanced, on the Notifications tab</a>"), 'info'); ?>
+
+<script type="text/javascript">
+//<![CDATA[
+
+events.push(function() {
+	$('[id^=Xcdel_]').click(function (event) {
+		if(confirm("<?=gettext('Delete this report command entry?')?>")) {
+			$('#' + event.target.id.slice(1)).click();
+		}
+	});
+	$('[id^=Xldel_]').click(function (event) {
+		if(confirm("<?=gettext('Delete this report log entry?')?>")) {
+			$('#' + event.target.id.slice(1)).click();
+		}
+	});
+	$('[id^=Xgdel_]').click(function (event) {
+		if(confirm("<?=gettext('Delete this report graph entry?')?>")) {
+			$('#' + event.target.id.slice(1)).click();
+		}
+	});
+});
+
+//]]>
+</script>
+<?php include("foot.inc"); ?>

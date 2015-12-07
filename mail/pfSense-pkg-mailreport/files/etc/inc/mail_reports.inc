@@ -244,7 +244,6 @@ function mail_report_generate_graph($database, $style, $graph, $start, $end) {
 	require_once("rrd.inc");
 	require_once("util.inc");
 	global $g;
-	$g['theme'] = get_current_theme();
 
 	$pgtitle = array(gettext("System"),gettext("RRD Graphs"),gettext("Image viewer"));
 
@@ -392,36 +391,29 @@ function mail_report_generate_graph($database, $style, $graph, $start, $end) {
 
 	$speedlimit = ($upstream + $downstream);
 
-	/* Set default colors explicitly, the theme can then override them below.
-	   This prevents missing colors in themes from crashing the graphs. */
-	$colortrafficup = array("666666", "CCCCCC");
-	$colortrafficdown = array("990000", "CC0000");
-	$colortraffic95 = array("660000", "FF0000");
-	$colorpacketsup = array("666666", "CCCCCC");
-	$colorpacketsdown = array("990000", "CC0000");
-	$colorstates = array('990000','a83c3c','b36666','bd9090','cccccc','000000');
-	$colorprocessor = array('990000','a83c3c','b36666','bd9090','cccccc','000000');
-	$colormemory = array('990000','a83c3c','b36666','bd9090','cccccc','000000');
-	$colormbuf = array('990000','a83c3c','b36666','bd9090','cccccc','000000');
-	$colorqueuesup = array('000000','7B0000','990000','BB0000','CC0000','D90000','EE0000','FF0000','CC0000');
-	$colorqueuesdown = array('000000','7B7B7B','999999','BBBBBB','CCCCCC','D9D9D9','EEEEEE','FFFFFF','CCCCCC');
-	$colorqueuesdropup = array('000000','7B0000','990000','BB0000','CC0000','D90000','EE0000','FF0000','CC0000');
-	$colorqueuesdropdown = array('000000','7B7B7B','999999','BBBBBB','CCCCCC','D9D9D9','EEEEEE','FFFFFF','CCCCCC');
-	$colorqualityrtt = array('990000','a83c3c','b36666','bd9090','cccccc','000000');
-	$colorqualityloss = "ee0000";
-	$colorwireless = array('333333','a83c3c','999999');
-	$colorspamdtime = array('DDDDFF', 'AAAAFF', 'DDDDFF', '000066');
-	$colorspamdconn = array('00AA00BB', 'FFFFFFFF', '00660088', 'FFFFFF88', '006600');
-	$colorvpnusers = array('990000');
+	/* Set default colors explicitly. */
+	$colortrafficup		= array('666666', 'CCCCCC', '2217AA', '625AE7');
+	$colortrafficdown	= array('990000', 'CC0000', 'FFC875', 'FF9900');
+	$colorpacketsup		= array('666666', 'CCCCCC', '2217AA', '625AE7');
+	$colorpacketsdown	= array('990000', 'CC0000', 'FFC875', 'FF9900');
+	$colortraffic95		= array('660000', 'FF0000');
+	$colorstates		= array('00AA00', '990000', '0000FF', '000000', 'DD9B00');
+	$colorprocessor		= array('00AA00', '990000', '0000FF', 'DD9B00', '000000');
+	$colormemory		= array('00AA00', '990000', '0000FF', '666666', 'DD9B00');
+	$colormbuf		= array('0080FF', '00E344', 'FF0000', '000000');
+	$colorqueuesup		= array('000000', '7B0000', '0080FF', '00E344', 'FF0000', '2217AA', 'FFC875', 'FF9900', 'CC0000');
+	$colorqueuesdown	= array('000000', '7B7B7B', '999999', 'BBBBBB', 'CCCCCC', 'D9D9D9', 'EEEEEE', 'FFFFFF', 'CCCCCC');
+	$colorqueuesdropup	= array('000000', '7B0000', '0080FF', '00E344', 'FF0000', '2217AA', 'FFC875', 'FF9900', 'CC0000');
+	$colorqueuesdropdown	= array('000000', '7B7B7B', '999999', 'BBBBBB', 'CCCCCC', 'D9D9D9', 'EEEEEE', 'FFFFFF', 'CCCCCC');
+	$colorqualityrtt	= array('990000', 'a83c3c', 'b36666', 'bd9090', 'cccccc', '000000');
+	$colorqualityloss	= 'ee0000';
+	$colorwireless		= array('333333', 'a83c3c', '999999');
+	$colorspamdtime		= array('DDDDFF', 'AAAAFF', 'DDDDFF', '000066');
+	$colorspamdconn		= array('AA00BB', 'FFFFFF', '660088', 'FFFF88', '006600');
+	$colorvpnusers		= array('990000');
+	$colorntpd		= array('0080FF', '00E344', 'FF0000', '000000');
 	$colorcaptiveportalusers = array('990000');
-
-	/* select theme colors if the inclusion file exists */
-	$rrdcolors = "{$g['www_path']}/themes/{$g['theme']}/rrdcolors.inc.php";
-	if(file_exists($rrdcolors)) {
-		include($rrdcolors);
-	} else {
-		log_error(sprintf(gettext("rrdcolors.inc.php for theme %s does not exist, using defaults!"),$g['theme']));
-	}
+	$colordhcpd 		= array('990000', '0000FF', '000000');
 
 	switch ($curstyle) {
 	case "absolute":
@@ -1215,8 +1207,6 @@ function mail_report_generate_graph($database, $style, $graph, $start, $end) {
 		header("Cache-Control: no-store, no-cache, must-revalidate");
 		header("Cache-Control: post-check=0, pre-check=0", false);
 		header("Pragma: no-cache");
-		$file= "/usr/local/www/themes/{$g['theme']}/images/misc/rrd_error.png";
-		return($file);
 	} else {
 		$file = "$rrdtmppath$curdatabase-$curgraph.png";
 		if(file_exists("$file")) {

@@ -94,69 +94,60 @@ if ($_POST) {
 	return;
 }
 
-
-$pgtitle = array(gettext("Status"),gettext("Add Email Report Log"));
+$pgtitle = array(gettext("Status"), gettext("Email Reports"), gettext("Add Log"));
 include("head.inc");
-?>
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-<?php include("fbegin.inc"); ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-	<tr><td><div id="mainarea">
-	<form action="status_mail_report_add_log.php" method="post" name="iform" id="iform">
-	<table class="tabcont" width="100%" border="0" cellpadding="1" cellspacing="1">
-		<tr>
-			<td class="listtopic" colspan="2">Log Settings</td>
-		</tr>
-		<tr>
-			<td width="20%" class="listhdr">
-				<?=gettext("Logs:");?>
-			</td>
-			<td width="80%" class="listhdr">
-				<select name="logfile" class="formselect" style="z-index: -10;">
-				<?php
-				foreach ($logfiles as $logfile) {
-					echo "<option value=\"{$logfile}\"";
-					if ($pconfig['logfile'] == $logfile) {
-						echo " selected";
-					}
-					echo ">" . htmlspecialchars(get_friendly_log_name($logfile)) . "</option>\n";
-				}
-				?>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td width="20%" class="listhdr">
-				<?=gettext("# Rows:");?>
-			</td>
-			<td width="80%" class="listhdr">
-				<input name="lines" type="text" class="formfld unknown" id="lines" size="10" value="<?=htmlspecialchars($pconfig['lines']);?>">
-			</td>
-		</tr>
-		<tr>
-			<td class="listhdr">
-				<?=gettext("Filter:");?>
-			</td>
-			<td class="listhdr">
-				<input name="detail" type="text" class="formfld unknown" id="detail" size="60" value="<?=htmlspecialchars($pconfig['detail']);?>">
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2" align="center">
-			<input name="Submit" type="submit" class="formbtn" value="<?=gettext("Save");?>">
-			<a href="status_mail_report_edit.php?id=<?php echo $reportid;?>"><input name="cancel" type="button" class="formbtn" value="<?=gettext("Cancel");?>"></a>
-			<input name="reportid" type="hidden" value="<?=htmlspecialchars($reportid);?>">
-			<?php if (isset($id) && $a_logs[$id]): ?>
-			<input name="id" type="hidden" value="<?=htmlspecialchars($id);?>">
-			<?php endif; ?>
-			</td>
-			<td></td>
-		</tr>
-	</table>
-	</form>
-	</div></td></tr>
-</table>
 
-<?php include("fend.inc"); ?>
-</body>
-</html>
+$form = new Form();
+
+$section = new Form_Section('Log Settings');
+
+$no_list_logs = array("utx.log");
+$logoptions = array();
+foreach ($logfiles as $logfile) {
+	if (in_array($logfile, $no_list_logs)) {
+		continue;
+	}
+	$logoptions[$logfile] = get_friendly_log_name($logfile);
+}
+$section->addInput(new Form_Select(
+	'logfile',
+	'Log',
+	$pconfig['logfile'],
+	$logoptions
+))->setHelp('Select the log file to include in the report.');
+
+
+$section->addInput(new Form_Input(
+	'lines',
+	'# Rows',
+	'text',
+	$pconfig['lines']
+))->setHelp('Enter the number of rows to include in the report.');
+
+$section->addInput(new Form_Input(
+	'detail',
+	'Filter',
+	'text',
+	$pconfig['detail']
+))->setHelp('Enter some text to filter for log lines containing this string.')->setWidth(6);
+
+$form->add($section);
+
+$form->addGlobal(new Form_Input(
+	'reportid',
+	null,
+	'hidden',
+	$reportid
+));
+
+if (isset($id) && $a_logs[$id]) {
+	$form->addGlobal(new Form_Input(
+		'id',
+		null,
+		'hidden',
+		$id
+	));
+}
+print($form);
+?>
+<?php include("foot.inc"); ?>
