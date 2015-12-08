@@ -27,7 +27,7 @@
 	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
 */
-/*	
+/*
 	pfSense_MODULE:	system
 */
 
@@ -225,9 +225,21 @@ if ($_POST) {
 	}
 
 	// Copy back into the schedule.
-	$pconfig['cmd']["row"] = $a_cmds;
-	$pconfig['log']["row"] = $a_logs;
-	$pconfig["row"] = $a_graphs;
+	if (count($a_cmds)) {
+		$pconfig['cmd']["row"] = $a_cmds;
+	} elseif (is_array($pconfig['cmd'])) {
+		unset($pconfig['cmd']);
+	}
+	if (count($a_logs)) {
+		$pconfig['log']["row"] = $a_logs;
+	} elseif (is_array($pconfig['log'])) {
+		unset($pconfig['log']);
+	}
+	if (count($a_graphs)) {
+		$pconfig["row"] = $a_graphs;
+	} elseif (is_array($pconfig['row'])) {
+		unset($pconfig['row']);
+	}
 
 	$pconfig['schedule_friendly'] = $friendly;
 
@@ -349,84 +361,80 @@ if (isset($id) && $a_mailreports[$id]) {
 	));
 }
 print($form);
+
+$allcount = 0;
 ?>
 
 <?php if (isset($id) && $a_mailreports[$id]): ?>
-
-<div class="panel panel-default" id="commandentries">
-	<div class="panel-heading"><h2 class="panel-title"><?=gettext('Included Commands')?></h2></div>
-	<div class="panel-body table-responsive">
-		<table class="table table-striped table-hover">
-			<thead>
-				<th>&nbsp;</th>
-				<th width="30%"><?=gettext("Name")?></th>
-				<th width="60%"><?=gettext("Command")?></th>
-				<th width="10%"><?=gettext("Actions")?></th>
-			</thead>
-			<tbody>
-
-		<?php $i = 0; foreach ($a_cmds as $cmd): ?>
-		<tr>
-			<td><input type="checkbox" id="frc<?=$i?>" name="commands[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$i?>')" /></td>
-			<td><?=htmlspecialchars($cmd['descr']); ?></td>
-			<td><?=htmlspecialchars($cmd['detail']); ?></td>
-			<td style="cursor: pointer;">
-				<a class="fa fa-pencil" href="status_mail_report_add_cmd.php?reportid=<?=$id ?>&id=<?=$i?>" title="<?=gettext("Edit Command"); ?>"></a>
-				<a class="fa fa-trash no-confirm" id="Xcdel_<?=$i?>" title="<?=gettext('Delete Command'); ?>"></a>
-				<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="cdel_<?=$i?>" name="cdel_<?=$i?>" value="cdel_<?=$i?>" title="<?=gettext('Delete Command'); ?>">Delete Command</button>
-			</td>
-		</tr>
-		<?php $i++; endforeach; ?>
-
-			</tbody>
-		</table>
-	</div>
-	<nav class="action-buttons">
-		<a href="status_mail_report_add_cmd.php?reportid=<?=$id ?>" class="btn btn-success btn-sm">
-			<i class="fa fa-plus icon-embed-btn"></i>
-			<?=gettext("Add New Command")?>
-		</a>
-	</nav>
-</div>
-
-<div class="panel panel-default" id="logentries">
-	<div class="panel-heading"><h2 class="panel-title"><?=gettext('Included Logs')?></h2></div>
-	<div class="panel-body table-responsive">
-		<table class="table table-striped table-hover">
-			<thead>
-				<th>&nbsp;</th>
-				<th width="30%"><?=gettext("Log")?></th>
-				<th width="20%"><?=gettext("# Rows")?></th>
-				<th width="40%"><?=gettext("Filter")?></th>
-				<th width="10%"><?=gettext("Actions")?></th>
-			</thead>
-			<tbody>
-
-		<?php $i = 0; foreach ($a_logs as $log): ?>
-		<tr>
-			<td><input type="checkbox" id="frl<?=$i?>" name="logs[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$i?>')" /></td>
-			<td><?=get_friendly_log_name($log['logfile']); ?></td>
-			<td><?=$log['lines']; ?></td>
-			<td><?=$log['detail']; ?></td>
-			<td style="cursor: pointer;">
-				<a class="fa fa-pencil" href="status_mail_report_add_log.php?reportid=<?=$id ?>&id=<?=$i?>" title="<?=gettext("Edit Log"); ?>"></a>
-				<a class="fa fa-trash no-confirm" id="Xldel_<?=$i?>" title="<?=gettext('Delete Log'); ?>"></a>
-				<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="ldel_<?=$i?>" name="ldel_<?=$i?>" value="ldel_<?=$i?>" title="<?=gettext('Delete Log'); ?>">Delete Log</button>
-			</td>
-		</tr>
-		<?php $i++; endforeach; ?>
-			</tbody>
-		</table>
-	</div>
-	<nav class="action-buttons">
-		<a href="status_mail_report_add_log.php?reportid=<?=$id ?>" class="btn btn-success btn-sm">
-			<i class="fa fa-plus icon-embed-btn"></i>
-			<?=gettext("Add New Log")?>
-		</a>
-	</nav>
-</div>
-
 <form name="itemsform" method="post">
+	<div class="panel panel-default" id="commandentries">
+		<div class="panel-heading"><h2 class="panel-title"><?=gettext('Included Commands')?></h2></div>
+		<div class="panel-body table-responsive">
+			<table class="table table-striped table-hover">
+				<thead>
+					<th>&nbsp;</th>
+					<th width="30%"><?=gettext("Name")?></th>
+					<th width="60%"><?=gettext("Command")?></th>
+					<th width="10%"><?=gettext("Actions")?></th>
+				</thead>
+				<tbody>
+			<?php $i = 0; foreach ($a_cmds as $cmd): ?>
+			<tr>
+				<td><input type="checkbox" id="frc<?=$i?>" name="commands[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$i?>')" /></td>
+				<td><?=htmlspecialchars($cmd['descr']); ?></td>
+				<td><?=htmlspecialchars($cmd['detail']); ?></td>
+				<td style="cursor: pointer;">
+					<a class="fa fa-pencil" href="status_mail_report_add_cmd.php?reportid=<?=$id ?>&id=<?=$i?>" title="<?=gettext("Edit Command"); ?>"></a>
+					<a class="fa fa-trash no-confirm" id="Xcdel_<?=$i?>" title="<?=gettext('Delete Command'); ?>"></a>
+					<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="cdel_<?=$i?>" name="cdel_<?=$i?>" value="cdel_<?=$i?>" title="<?=gettext('Delete Command'); ?>">Delete Command</button>
+				</td>
+			</tr>
+			<?php $i++; $allcount++; endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+		<nav class="action-buttons">
+			<a href="status_mail_report_add_cmd.php?reportid=<?=$id ?>" class="btn btn-success btn-sm">
+				<i class="fa fa-plus icon-embed-btn"></i>
+				<?=gettext("Add New Command")?>
+			</a>
+		</nav>
+	</div>
+	<div class="panel panel-default" id="logentries">
+		<div class="panel-heading"><h2 class="panel-title"><?=gettext('Included Logs')?></h2></div>
+		<div class="panel-body table-responsive">
+			<table class="table table-striped table-hover">
+				<thead>
+					<th>&nbsp;</th>
+					<th width="30%"><?=gettext("Log")?></th>
+					<th width="20%"><?=gettext("# Rows")?></th>
+					<th width="40%"><?=gettext("Filter")?></th>
+					<th width="10%"><?=gettext("Actions")?></th>
+				</thead>
+				<tbody>
+			<?php $i = 0; foreach ($a_logs as $log): ?>
+			<tr>
+				<td><input type="checkbox" id="frl<?=$i?>" name="logs[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$i?>')" /></td>
+				<td><?=get_friendly_log_name($log['logfile']); ?></td>
+				<td><?=$log['lines']; ?></td>
+				<td><?=$log['detail']; ?></td>
+				<td style="cursor: pointer;">
+					<a class="fa fa-pencil" href="status_mail_report_add_log.php?reportid=<?=$id ?>&id=<?=$i?>" title="<?=gettext("Edit Log"); ?>"></a>
+					<a class="fa fa-trash no-confirm" id="Xldel_<?=$i?>" title="<?=gettext('Delete Log'); ?>"></a>
+					<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="ldel_<?=$i?>" name="ldel_<?=$i?>" value="ldel_<?=$i?>" title="<?=gettext('Delete Log'); ?>">Delete Log</button>
+				</td>
+			</tr>
+			<?php $i++; $allcount++; endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+		<nav class="action-buttons">
+			<a href="status_mail_report_add_log.php?reportid=<?=$id ?>" class="btn btn-success btn-sm">
+				<i class="fa fa-plus icon-embed-btn"></i>
+				<?=gettext("Add New Log")?>
+			</a>
+		</nav>
+	</div>
 	<div class="panel panel-default" id="graphentries">
 		<div class="panel-heading"><h2 class="panel-title"><?=gettext('Included Graphs')?></h2></div>
 		<div class="panel-body table-responsive">
@@ -441,7 +449,7 @@ print($form);
 				</thead>
 				<tbody>
 
-		<?php $i = 0; foreach ($a_graphs as $graph): 
+		<?php $i = 0; foreach ($a_graphs as $graph):
 			$optionc = explode("-", $graph['graph']);
 			$optionc[1] = str_replace(".rrd", "", $optionc[1]);
 			$friendly = convert_friendly_interface_to_friendly_descr(strtolower($optionc[0]));
@@ -462,7 +470,7 @@ print($form);
 				<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="gdel_<?=$i?>" name="gdel_<?=$i?>" value="gdel_<?=$i?>" title="<?=gettext('Delete Graph'); ?>">Delete Graph</button>
 			</td>
 		</tr>
-		<?php $i++; endforeach; ?>
+		<?php $i++; $allcount++; endforeach; ?>
 
 				</tbody>
 			</table>
@@ -476,7 +484,7 @@ print($form);
 	</div>
 	<nav class="action-buttons">
 		<br />
-	<?php if ($i !== 0): ?>
+	<?php if ($allcount > 0): ?>
 		<button type="submit" name="del" class="btn btn-danger btn-sm" value="<?=gettext("Delete Selected Items")?>">
 			<i class="fa fa-trash icon-embed-btn"></i>
 			<?=gettext("Delete Selected Items")?>
