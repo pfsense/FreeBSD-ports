@@ -444,7 +444,7 @@ print($form);
 	</div>
 </div>
 
-<?= print_info_box(gettext("Click the + sign next to the revision to restore."), 'info'); ?>
+<?= print_info_box(sprintf(gettext("Click %s next to the revision to restore."), '<i class="fa fa-undo"></i>'), 'info'); ?>
 
 <?php endif; ?>
 
