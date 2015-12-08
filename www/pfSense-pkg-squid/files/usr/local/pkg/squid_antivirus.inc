@@ -39,29 +39,6 @@ require_once('util.inc');
  * Utility functions
  */
 
-/* clamav user account hadling (only needed for PBI/pfSense <2.3) */
-function squid_check_clamav_user() {
-	if (SQUID_BASE == '/usr/local') {
-		return;
-	} else {
-		/*
-		 * Check whether clamav user already exists and is a member of wheel group.
-		 * If the account already exists, modify the UID to 9595, otherwise things blow up because the PBI clusterfuck adds the account with UID=106.
-		 * If the account does not exist yes because PBI screwed things once again, create it with the proper UID.
-		 * If clamav user is not a member of wheel group, add it there as well and avoid re-adding it to wheel everytime this code runs.
-		 * Note that the clamav group (GID=106) added by PBI is irrelevant because it's not used for anything.
-		 */
-		$_gc = exec("/usr/sbin/pw groupshow wheel | /usr/bin/grep clamav", $group_ex_output, $group_ex_return);
-		$group_arg = ($group_ex_return != 0 ? "-G wheel" : "");
-		$_gc = exec("/usr/sbin/pw usershow clamav", $user_ex_output, $user_ex_return);
-		$user_arg = ($user_ex_return == 0 ? "mod" : "add");
-		$_gc = exec("/usr/sbin/pw user{$user_arg} clamav {$group_arg} -u 9595 -s /sbin/nologin", $user_ex_output, $user_ex_return);
-		if ($user_ex_return != 0) {
-			log_error("[squid] Could not change clamav user settings. " . serialize($user_ex_output));
-		}
-	}
-}
-
 /* check and fix ClamAV/C-ICAP antivirus dirs and permissions if needed */
 function squid_check_antivirus_dirs() {
 	$dirs = array(
@@ -135,17 +112,6 @@ function squid_antivirus_install_command() {
 	// antivirus config files
 	squid_antivirus_install_config_files();
 
-	// check squidclamav files until PBIs are gone (https://redmine.pfsense.org/issues/4197)
-	$ln_icap = array('bin/c-icap', 'bin/c-icap-client', 'c-icap-config', 'c-icap-libicapapi-config', 'c-icap-stretch', 'lib/c_icap', 'share/c_icap', 'etc/c-icap');
-	foreach ($ln_icap as $ln) {
-		if (SQUID_LOCALBASE != '/usr/local' && !file_exists("/usr/local/{$ln}") && file_exists(SQUID_LOCALBASE . "/{$ln}")) {
-			symlink(SQUID_LOCALBASE . "/{$ln}", "/usr/local/{$ln}");
-		}
-	}
-	if (SQUID_LOCALBASE != '/usr/local' && !file_exists("/usr/local/lib/libicapapi.so.3") && file_exists(SQUID_LOCALBASE . "/lib/libicapapi.so.3.0.5")) {
-		symlink(SQUID_LOCALBASE . "/lib/libicapapi.so.3.0.5", "/usr/local/lib/libicapapi.so.3");
-	}
-
 	// remove dirs with possibly broken file permissions after previous versions
 	$dirs = array("/var/run/c-icap", "/var/log/c-icap");
 	foreach ($dirs as $dir) {
@@ -154,8 +120,7 @@ function squid_antivirus_install_command() {
 		}
 	}
 
-	// create required dirs and set up clamav user if needed
-	squid_check_clamav_user();
+	// create required dirs if needed
 	squid_check_antivirus_dirs();
 
 	// remove unwanted PBI rc scripts
@@ -170,19 +135,6 @@ function squid_antivirus_deinstall_command() {
 	/* Stop all running services, remove rc scripts and cronjobs */
 	squid_stop_antivirus();
 	mwexec("/bin/ps awux | /usr/bin/grep '[f]reshclam' | /usr/bin/awk '{ print $2 }' | /usr/bin/xargs kill");
-
-	/* clean up created PBI symlinks */
-	if (SQUID_LOCALBASE != '/usr/local') {
-		$ln_icap = array('bin/c-icap', 'bin/c-icap-client', 'c-icap-config', 'c-icap-libicapapi-config', 'c-icap-stretch', 'lib/c_icap', 'share/c_icap', 'etc/c-icap');
-		foreach ($ln_icap as $ln) {
-			if (is_link("/usr/local/{$ln}")) {
-				unlink("/usr/local/{$ln}");
-			}
-		}
-		if (is_link("/usr/local/lib/libicapapi.so.3")) {
-			unlink("/usr/local/lib/libicapapi.so.3");
-		}
-	}
 
 	/* clean up created directories if 'Keep Settings/Data' is disabled */
 	if (is_array($config['installedpackages']['squid'])) {
@@ -199,32 +151,6 @@ function squid_antivirus_deinstall_command() {
 				mwexec("/bin/rm -rf {$dir}");
 			}
 		}
-	}
-
-	/* clean up user/groups if needed */
-	if (SQUID_BASE == '/usr/local') {
-		return;
-	} else {
-		if (exec("/usr/sbin/pw groupshow wheel | /usr/bin/grep clamav")) {
-			mwexec("/usr/sbin/pw groupmod wheel -d clamav");
-		}
-		if (exec("/usr/sbin/pw usershow clamav")) {
-			mwexec("/usr/sbin/pw userdel clamav");
-		}
-		if (exec("/usr/sbin/pw groupshow clamav")) {
-			mwexec("/usr/sbin/pw groupdel clamav");
-		}
-	}
-
-	/* check if clamav/c_icap is enabled in rc.conf.local */
-	// XXX: This hasn't been used since 0.3.7; to be removed in future
-	if (file_exists("/etc/rc.conf.local")) {
-		$sample_file = file_get_contents("/etc/rc.conf.local");
-		$rcconf_local_m[0] = "@c_icap_enable(.*)\n@";
-		$rcconf_local_m[1] = "@clamav_clamd_enable(.*)\n@";
-		$rcconf_local_r[0] = "";
-		$rcconf_local_r[1] = "";
-		file_put_contents("/etc/rc.conf.local", preg_replace($rcconf_local_m, $rcconf_local_r, $sample_file), LOCK_EX);
 	}
 }
 
@@ -309,8 +235,7 @@ adaptation_access service_avi_resp allow all
 
 EOF;
 
-		// check clamav user and dirs
-		squid_check_clamav_user();
+		// check clamav dirs
 		squid_check_antivirus_dirs();
 
 		if ($antivirus_config['enable_advanced'] == "enabled") {
