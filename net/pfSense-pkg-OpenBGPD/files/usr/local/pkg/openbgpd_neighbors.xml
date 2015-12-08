@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>OpenBGPDNeighbors</name>
-	<version>0.9.3.6</version>
+	<version>0.9.3.10</version>
 	<title>Services: OpenBGPD Neighbors</title>
 	<include_file>/usr/local/pkg/openbgpd.inc</include_file>
 	<tabs>
