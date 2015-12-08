@@ -42,10 +42,8 @@ $openbgpd_raw = openbgpd_get_raw_config();
 
 $pgtitle = array("OpenBGPD", "Raw config");
 include("head.inc");
-
+include("fbegin.inc");
 ?>
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-<?php include("fbegin.inc"); ?>
 
 <?php if ($savemsg) print_info_box($savemsg); ?>
 
@@ -78,7 +76,4 @@ include("head.inc");
 </table>
 </div>
 
-<?php include("fend.inc"); ?>
-
-</body>
-</html>
+<?php include("foot.inc"); ?>
