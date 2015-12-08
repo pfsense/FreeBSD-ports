@@ -30,7 +30,7 @@
 require("guiconfig.inc");
 require("autoconfigbackup.inc");
 
-// Seperator used during client / server communications
+// Separator used during client / server communications
 $oper_sep = "\|\|";
 
 // Encryption password
@@ -299,7 +299,7 @@ if ($savemsg) {
 }
 
 if ($hostname != $myhostname) {
-	print_info_box("Warning: Currently viewing the backup history of an an alternate host (" . htmlspecialchars($hostname) . ")", 'warning');
+	print_info_box("Warning: Currently viewing the backup history of an alternate host (" . htmlspecialchars($hostname) . ")", 'warning');
 }
 
 $tab_array = array();
