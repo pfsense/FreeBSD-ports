@@ -9,21 +9,11 @@
 			On pfSense docs there is a how-to which could help you on porting users.]]></descr>
 		<pkginfolink>https://doc.pfsense.org/index.php/FreeRADIUS_2.x_package</pkginfolink>
 		<category>Services</category>
-		<version>1.6.19</version>
+		<version>1.6.20</version>
 		<status>RC</status>
-		<required_version>2.2</required_version>
+		<required_version>2.3</required_version>
 		<maintainer>nachtfalkeaw@web.de</maintainer>
-		<depends_on_package_pbi>freeradius-2.2.6_3-##ARCH##.pbi</depends_on_package_pbi>
-		<config_file>https://packages.pfsense.org/packages/config/freeradius2/freeradius.xml</config_file>
 		<configurationfile>freeradius.xml</configurationfile>
-		<after_install_info>Please visit Services - FreeRADIUS menu to configure the package.</after_install_info>
-		<port_category>net</port_category>
-		<run_depends>sbin/radiusd:net/freeradius2 bin/bash:shells/bash</run_depends>
-		<build_pbi>
-			<ports_before>security/krb5</ports_before>
-			<port>net/freeradius2</port>
-			<ports_after>shells/bash</ports_after>
-		</build_pbi>
 		<build_options>freeradius_SET_FORCE=KERBEROS MYSQL PGSQL PERL PYTHON LDAP SSL_PORT</build_options>
 	</package>
 </pfsensepkgs>
