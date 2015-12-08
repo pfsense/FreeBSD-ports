@@ -9,12 +9,10 @@
 			In addition it supports some nifty things that have never been seen elsewhere like correct mDNS reflection across LAN segments.&lt;br/&gt;
 			Compatible technology is found in Apple MacOS X (branded ​Bonjour and sometimes Zeroconf).]]></descr>
 		<category>Network Management</category>
-		<port_category>net</port_category>
 		<build_options>avahi_UNSET_FORCE=GTK;cairo_UNSET_FORCE=X11 XCB</build_options>
 		<version>1.10.4</version>
 		<status>BETA</status>
 		<required_version>2.3</required_version>
-		<config_file>https://packages.pfsense.org/packages/config/avahi/avahi.xml</config_file>
 		<configurationfile>avahi.xml</configurationfile>
 		<after_install_info>Please visit Services - Avahi menu, enable the service and select which interfaces you do NOT wish Avahi to listen on. Save settings to start the service.</after_install_info>
 	</package>
