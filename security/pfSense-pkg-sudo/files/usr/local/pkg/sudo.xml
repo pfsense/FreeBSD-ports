@@ -41,19 +41,15 @@
 /* ====================================================================================== */
 	]]>
 	</copyright>
-	<description>Sudo Command Control</description>
-	<requirements>None</requirements>
 	<name>sudo</name>
-	<version>0.2.8</version>
+	<version>0.2.9</version>
 	<title>Sudo - Shell Command Privilege Delegation Utility</title>
 	<include_file>/usr/local/pkg/sudo.inc</include_file>
 	<menu>
 		<name>sudo</name>
-		<tooltiptext></tooltiptext>
 		<section>System</section>
 		<url>/pkg_edit.php?xml=sudo.xml</url>
 	</menu>
-	<configpath>installedpackages->package->sudo</configpath>
 	<additional_files_needed>
 		<prefix>/usr/local/pkg/</prefix>
 		<item>https://packages.pfsense.org/packages/config/sudo/sudo.inc</item>
