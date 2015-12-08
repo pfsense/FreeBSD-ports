@@ -37,11 +37,8 @@ require_once("guiconfig.inc");
 $pgtitle = "Status: Proxy Monitor";
 $shortcut_section = "squid";
 include("head.inc");
+include("fbegin.inc");
 ?>
-
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-
-<?php include("fbegin.inc"); ?>
 
 <?php if ($savemsg) print_info_box($savemsg); ?>
 
@@ -290,8 +287,5 @@ include("head.inc");
 </div>
 
 <?php
-include("fend.inc");
+include("foot.inc");
 ?>
-
-</body>
-</html>
