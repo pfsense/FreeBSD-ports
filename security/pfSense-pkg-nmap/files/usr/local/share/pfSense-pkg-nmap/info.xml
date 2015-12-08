@@ -7,17 +7,10 @@
 			It supports ping scanning (determine which hosts are up), many port scanning techniques (determine what services the hosts are offering), version detection (determine what application/service is running on a port), and TCP/IP fingerprinting (remote host OS or device identification).
 			It also offers flexible target and port specification, decoy/stealth scanning, SunRPC scanning, and more.]]></descr>
 		<category>Security</category>
-		<depends_on_package_pbi>nmap-6.47-##ARCH##.pbi</depends_on_package_pbi>
-		<config_file>https://packages.pfsense.org/packages/config/nmap/nmap.xml</config_file>
 		<version>1.4.2</version>
 		<status>RELEASE</status>
 		<pkginfolink>https://doc.pfsense.org/index.php/Nmap_package</pkginfolink>
 		<required_version>2.3</required_version>
 		<configurationfile>nmap.xml</configurationfile>
-		<port_category>security</port_category>
-		<run_depends>bin/nmap:security/nmap</run_depends>
-		<build_pbi>
-			<port>security/nmap</port>
-		</build_pbi>
 	</package>
 </pfsensepkgs>
