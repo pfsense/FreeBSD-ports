@@ -75,7 +75,6 @@ $pgtitle = array(gettext("Status"), gettext("siproxd Registered Phones"));
 require("head.inc");
 ?>
 
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
 <?php include("fbegin.inc"); ?>
 
 <br />
@@ -158,6 +157,4 @@ require("head.inc");
 </td></tr>
 </table>
 
-<?php include("fend.inc"); ?>
-</body>
-</html>
+<?php include("foot.inc"); ?>

@@ -31,17 +31,13 @@
 if (!function_exists("filter_configure")) {
 	require_once("filter.inc");
 }
+require_once("globals.inc");
+require_once("interfaces.inc");
 require_once("pfsense-utils.inc");
 require_once("service-utils.inc");
+require_once("util.inc");
 
-// Check to find out on which pfSense version the package is running
-global $pfs_version;
-$pfs_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-if ($pfs_version == "2.1" || $pfs_version == "2.2") {
-	define('SIPROXD', '/usr/pbi/siproxd-' . php_uname("m"));
-} else {
-	define('SIPROXD', '/usr/local');
-}
+define('SIPROXD', '/usr/local');
 
 function install_package_siproxd() {
 	siproxd_create_chroot();
@@ -134,7 +130,7 @@ function siproxd_create_chroot() {
 }
 
 function sync_package_siproxd() {
-	global $config, $pfs_version;
+	global $config;
 
 	conf_mount_rw();
 	siproxd_create_chroot();
@@ -147,13 +143,7 @@ function sync_package_siproxd() {
 	$siproxd_conffile = SIPROXD . '/etc/siproxd.conf';
 	$siproxd_pwfile = SIPROXD . '/etc/siproxd_passwd.cfg';
 	$siproxd_chroot = "/var/siproxd/";
-
-	$pfs_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-	if ($pfs_version == '2.2') {
-		$siproxd_bin = SIPROXD . '/bin/siproxd';
-	} else {
-		$siproxd_bin = SIPROXD . '/sbin/siproxd';
-	}
+	$siproxd_bin = SIPROXD . '/sbin/siproxd';
 	$plugindir = SIPROXD . '/lib/siproxd';
 
 	$fout = fopen($siproxd_conffile, "w");
