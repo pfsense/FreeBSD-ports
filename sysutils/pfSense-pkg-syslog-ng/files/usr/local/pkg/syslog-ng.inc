@@ -27,23 +27,19 @@
 	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
 */
-require_once('globals.inc');
 require_once('config.inc');
-require_once('util.inc');
+require_once('globals.inc');
+require_once('interfaces.inc');
 require_once('pfsense-utils.inc');
 require_once('pkg-utils.inc');
+require_once('services.inc');
 require_once('service-utils.inc');
-
+require_once('util.inc');
 if (!function_exists("filter_configure")) {
 	require_once("filter.inc");
 }
 
-$pf_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-if ($pf_version == "2.1" || $pf_version == "2.2") {
-	define("SYSLOGNG_BASEDIR", "/usr/pbi/syslog-ng-" . php_uname("m") . "/");
-} else {
-	define("SYSLOGNG_BASEDIR", "/usr/local/");
-}
+define("SYSLOGNG_BASEDIR", "/usr/local/");
 
 function syslogng_get_real_interface_address($interface) {
 	$interface = convert_friendly_interface_to_real_interface_name($interface);
@@ -52,13 +48,7 @@ function syslogng_get_real_interface_address($interface) {
 }
 
 function syslogng_install_command() {
-	if (is_link("/usr/local/lib/syslog-ng")) {
-		unlink("/usr/local/lib/syslog-ng");
-	}
-	if (!file_exists("/usr/local/lib/syslog-ng")) {
-		@symlink(SYSLOGNG_BASEDIR . "local/lib/syslog-ng", "/usr/local/lib/syslog-ng");
-	}
-	$crontask = "/usr/bin/nice -n20 " . SYSLOGNG_BASEDIR . "local/sbin/logrotate /usr/local/etc/logrotate.conf";
+	$crontask = "/usr/bin/nice -n20 " . SYSLOGNG_BASEDIR . "sbin/logrotate /usr/local/etc/logrotate.conf";
 	install_cron_job("${crontask}", true, "0");
 	syslogng_resync();
 }
@@ -67,7 +57,7 @@ function syslogng_deinstall_command() {
 	if (is_link("/usr/local/lib/syslog-ng")) {
 		unlink("/usr/local/lib/syslog-ng");
 	}
-	$crontask = "/usr/bin/nice -n20 " . SYSLOGNG_BASEDIR . "local/sbin/logrotate /usr/local/etc/logrotate.conf";
+	$crontask = "/usr/bin/nice -n20 " . SYSLOGNG_BASEDIR . "sbin/logrotate /usr/local/etc/logrotate.conf";
 	install_cron_job("${crontask}", false);
 	unlink_if_exists("/usr/local/etc/logrotate.conf");
 	unlink_if_exists("/usr/local/etc/syslog-ng.conf");
@@ -89,7 +79,7 @@ function syslogng_validate_general($post, &$input_errors) {
 		$input_errors[] = 'You must enter a valid port number in the \'Default Port\' field';
 	}
 
-	$sockstat = trim(shell_exec("sockstat -l -P " . $post['default_protocol'] . " -p " . $post['default_port'] . " | grep -v ^USER | grep -v syslog-ng"));
+	$sockstat = trim(shell_exec("/usr/bin/sockstat -l -P " . $post['default_protocol'] . " -p " . $post['default_port'] . " | /usr/bin/grep -v ^USER | /usr/bin/grep -v syslog-ng"));
 	if (!empty($sockstat)) {
 		$input_errors[] = 'The port specified in the \'Default Port\' field is already in use';
 	}
@@ -342,9 +332,7 @@ function syslogng_resync() {
 	$config['installedpackages']['syslogngadvanced']['config'] = $objects;
 
 	if ($settings['enable'] == 'on') {
-		if (!file_exists($settings['default_logdir'])) {
-			exec("mkdir -p " . $settings['default_logdir']);
-		}
+		safe_mkdir("{$settings['default_logdir']}", 0755);
 
 		syslogng_write_rcfile();
 
@@ -380,27 +368,27 @@ function syslogng_write_rcfile() {
 	$pid_file = "/var/run/syslog-ng.pid";
 	$rc['file'] = 'syslog-ng.sh';
 	$rc['start'] = <<<EOD
-if [ -z "`ps auxw | grep "syslog-ng" | grep -v "syslog-ng.sh" | grep -v "grep"`" ]; then
+if [ -z "`/bin/ps auxw | /usr/bin/grep "syslog-ng" | /usr/bin/grep -v "syslog-ng.sh" | /usr/bin/grep -v "grep"`" ]; then
 	/usr/local/sbin/syslog-ng -p {$pid_file}
 fi
 
 EOD;
 	$rc['stop'] = <<<EOD
 if [ -s "{$pid_file}" ]; then
-	kill `cat {$pid_file}` 2>/dev/null
+	/bin/kill `cat {$pid_file}` 2>/dev/null
 fi
 # Just in case pid file didn't exist or process is still running...
 sleep 5
-killall -9 syslog-ng 2>/dev/null
+/usr/bin/killall -9 syslog-ng 2>/dev/null
 
 EOD;
 	$rc['restart'] = <<<EOD
-if [ -z "`ps auxw | grep "syslog-ng" | grep -v "syslog-ng.sh"`" ]; then
+if [ -z "`/bin/ps auxw | /usr/bin/grep "syslog-ng" | /usr/bin/grep -v "syslog-ng.sh"`" ]; then
 	/usr/local/sbin/syslog-ng -p {$pid_file}
 elif [ -s "{$pid_file}" ]; then
-	kill -s HUP `cat {$pid_file}` 2>/dev/null
+	/bin/kill -s HUP `cat {$pid_file}` 2>/dev/null
 else
-	killall -9 syslog-ng 2>/dev/null
+	/usr/bin/killall -9 syslog-ng 2>/dev/null
 	/usr/local/sbin/syslog-ng -p {$pid_file}
 fi
 
