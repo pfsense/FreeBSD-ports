@@ -48,20 +48,10 @@ if (!function_exists("filter_configure")) {
 
 $shortcut_section = "squid";
 
-global $pfs_version;
-$pfs_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-if ($pfs_version == "2.1" || $pfs_version == "2.2") {
-	define('SQUID_BASE', '/usr/pbi/squid-' . php_uname("m"));
-	define('SQUID_LOCALBASE', SQUID_BASE . "/local");
-	define('SQUID_UID', 'proxy');
-	define('SQUID_GID', 'proxy');
-} else {
-	define('SQUID_BASE', '/usr/local');
-	define('SQUID_LOCALBASE', '/usr/local');
-	define('SQUID_UID', 'squid');
-	define('SQUID_GID', 'squid');
-}
-
+define('SQUID_BASE', '/usr/local');
+define('SQUID_LOCALBASE', '/usr/local');
+define('SQUID_UID', 'squid');
+define('SQUID_GID', 'squid');
 define('SQUID_CONFBASE', SQUID_LOCALBASE .'/etc/squid');
 define('SQUID_CONFFILE', SQUID_CONFBASE . '/squid.conf');
 define('SQUID_ACLDIR', '/var/squid/acl');
@@ -470,11 +460,6 @@ function squid_install_command() {
 		chgrp(SQUID_LOCALBASE . "/libexec/squid/pinger", SQUID_GID);
 	}
 
-	// another PBI hack
-	if (SQUID_BASE != '/usr/local' && file_exists('/usr/local/bin/check_ip.php') && !file_exists(SQUID_BASE . '/bin/check_ip.php')) {
-		symlink("/usr/local/bin/check_ip.php", SQUID_BASE . "/bin/check_ip.php");
-	}
-
 	// create squid rcfile
 	squid_write_rcfile();
 
@@ -497,7 +482,7 @@ function squid_install_command() {
 		copy(SQUID_CONFBASE . '/mime.conf.default', SQUID_CONFBASE . '/mime.conf');
 	}
 
-	// remove unwanted PBI rc script
+	// remove unwanted rc script
 	unlink_if_exists("/usr/local/etc/rc.d/squid");
 
 	// remove broken cronjobs possibly left over after 'Clear Cache on Log Rotate' misfeature
@@ -2010,7 +1995,7 @@ function squid_resync($via_rpc = "no") {
  */
 
 function squid_generate_rules($type) {
-	global $config, $pfs_version;
+	global $config;
 
 	$squid_conf = $config['installedpackages']['squid']['config'][0];
 
