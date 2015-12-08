@@ -26,6 +26,9 @@
 	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
 */
+require_once("service-utils.inc");
+require_once("util.inc");
+
 function open_vm_tools_deinstall() {
 	unlink_if_exists("/usr/local/etc/rc.d/vmware-kmod.sh");
 	unlink_if_exists("/boot/kernel/vmblock.ko");
@@ -44,15 +47,7 @@ function open_vm_tools_install() {
 	unlink_if_exists("/usr/local/etc/rc.d/vmware-kmod");
 	unlink_if_exists("/usr/local/etc/rc.d/vmware-guestd");
 
-	$pfs_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-	if ($pfs_version == "2.1") {
-		$openvmtools_path = "/usr/pbi/open-vm-tools-nox11-" . php_uname("m");
-	} else if ($pfs_version == "2.2") {
-		$openvmtools_path = "/usr/pbi/open-vm-tools-" . php_uname("m") . "/local";
-	} else {
-		$openvmtools_path = "/usr/local";
-	}
-
+	$openvmtools_path = "/usr/local";
 	$vmware_tools_conf = <<<EOF
 [powerops]
 poweron-script=
