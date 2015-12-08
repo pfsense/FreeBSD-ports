@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>OpenBGPD</name>
-	<version>0.9.3.9</version>
+	<version>0.9.3.10</version>
 	<title>Services: OpenBGPD</title>
 	<include_file>/usr/local/pkg/openbgpd.inc</include_file>
 	<service>
@@ -158,7 +158,6 @@
 			<description>
 				<![CDATA[
 				IP address used to determine the CARP status. When the VIP is in BACKUP status, bgpd will not be started.<br />
-				NOTE: On 2.1.x and before this requires changes to /etc/rc.carpmaster to start bgpd and /etc/rc.carpbackup to stop bgpd or it will not be fully effective. On pfSense 2.2.x and later, full support is automatic.
 				]]>
 			</description>
 			<type>input</type>
