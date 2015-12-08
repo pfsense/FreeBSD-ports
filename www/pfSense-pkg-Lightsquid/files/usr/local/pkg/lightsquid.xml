@@ -42,13 +42,12 @@
 	]]>
 	</copyright>
 	<name>lightsquid</name>
-	<version>2.42</version>
+	<version>2.44</version>
 	<title>Squid Proxy Reports: Settings</title>
 	<category>Status</category>
 	<include_file>/usr/local/pkg/lightsquid.inc</include_file>
 	<menu>
 		<name>Squid Proxy Reports</name>
-		<tooltiptext>Proxy Server Statistic Reports</tooltiptext>
 		<section>Status</section>
 		<url>/pkg_edit.php?xml=lightsquid.xml</url>
 	</menu>
@@ -258,10 +257,8 @@
 			<description>
 				<![CDATA[
 				1/ <strong>Enable 'Access Logging' in the Squid package!</strong> It is strongly suggested to leave the 'Log Store Directory' in Squid package at default '/var/squid/logs' value.<br/><br/>
-				2a/ <strong>ONLY if Squid is NOT set up as transparent proxy:</strong><br/>
-				- Configure Squid - General - Proxy Interface(s) to include <strong>'loopback'</strong> interface (in addition to any other interfaces you want Squid to bind on).<br/>
-				2b/ <strong>ONLY if using Squid 2.7 package</strong> (this is not needed for Squid 3.x.):<br/>
-				- Add '127.0.0.1' to Squid - Access Control - External Cache-Managers.<br/><br/>
+				2/ <strong>ONLY if Squid is NOT set up as transparent proxy:</strong><br/>
+				-  Configure Squid - General - Proxy Interface(s) to include <strong>'loopback'</strong> interface (in addition to any other interfaces you want Squid to bind on).<br/>
 				3/ <strong>Configure 'Report Template Settings' and 'Reporting Settings and Scheduler' below and Save when finished.</strong><br/><br/>
 				4/ <strong>Use the Refresh buttons in the 'Manual Refresh' section below to create initial LightSquid reports</strong>; otherwise you will get an error diagnostic page.<br/>
 				- <em>"Refresh now"</em> will (re)parse today's entries only in Squid's current access.log.<br/>
