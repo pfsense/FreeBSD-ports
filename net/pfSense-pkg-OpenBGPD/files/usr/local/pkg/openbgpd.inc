@@ -30,33 +30,13 @@
 require_once("config.inc");
 require_once("functions.inc");
 require_once("service-utils.inc");
+require_once("util.inc");
 
 define('PKG_BGPD_CONFIG_BASE', '/var/etc/openbgpd');
-
-$pf_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-if ($pf_version == "2.1" || $pf_version == "2.2") {
-	define('PKG_BGPD_BIN', '/usr/pbi/openbgpd-' . php_uname("m") . '/sbin');
-} else {
-	define('PKG_BGPD_BIN','/usr/local/sbin');
-}
-
-define('PKG_BGPD_LOGIN', "_bgpd");
-define('PKG_BGPD_UID', "130");
-define('PKG_BGPD_GROUP', "_bgpd");
-define('PKG_BGPD_GID', "130");
-define('PKG_BGPD_GECOS', "BGP Daemon");
-define('PKG_BGPD_HOMEDIR', "/var/empty");
-define('PKG_BGPD_SHELL', "/usr/sbin/nologin");
+define('PKG_BGPD_BIN','/usr/local/sbin');
 
 function openbgpd_install_conf() {
 	global $config, $g;
-	$pkg_login = PKG_BGPD_LOGIN;
-	$pkg_uid = PKG_BGPD_UID;
-	$pkg_group = PKG_BGPD_GROUP;
-	$pkg_gid = PKG_BGPD_GID;
-	$pkg_gecos = PKG_BGPD_GECOS;
-	$pkg_homedir = PKG_BGPD_HOMEDIR;
-	$pkg_shell = PKG_BGPD_SHELL;
 	$pkg_bin = PKG_BGPD_BIN;
 
 	conf_mount_rw();
@@ -209,41 +189,20 @@ function openbgpd_install_conf() {
 
 	$carp_ip_status_check = "";
 	if (is_ipaddr($openbgpd_conf['carpstatusip'])) {
-
-		$pfs_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-		switch ($pfs_version) {
-			case "2.0":
-			case "2.1":
-				/* Check for 2.1 and before */
-				$carpcheckinterface = trim(find_carp_interface($openbgpd_conf['carpstatusip']));
-				$carp_ip_status_check = <<<EOF
-
-CARP_STATUS=`/sbin/ifconfig {$carpcheckinterface} | /usr/bin/grep carp: | /usr/bin/awk '{print \$2;}'`
-if [ \${CARP_STATUS} != "MASTER" ]; then
-	exit;
-fi
-
-EOF;
-				break;
-			case "2.2":
-			default:
-				/* Check for 2.2 and later */
-				if (is_array($config['virtualip']['vip'])) {
-					foreach ($config['virtualip']['vip'] as $vip) {
-						if (($vip['mode'] == "carp") && ($vip['subnet'] == $openbgpd_conf['carpstatusip'])) {
-							$carpcheckinterface = escapeshellarg(get_real_interface($vip['interface']));
-							$vhid = escapeshellarg($vip['vhid']);
-							$carp_ip_status_check = <<<EOF
+		if (is_array($config['virtualip']['vip'])) {
+			foreach ($config['virtualip']['vip'] as $vip) {
+				if (($vip['mode'] == "carp") && ($vip['subnet'] == $openbgpd_conf['carpstatusip'])) {
+					$carpcheckinterface = escapeshellarg(get_real_interface($vip['interface']));
+					$vhid = escapeshellarg($vip['vhid']);
+					$carp_ip_status_check = <<<EOF
 
 CARP_STATUS=`/sbin/ifconfig {$carpcheckinterface} | /usr/bin/grep 'carp:' | /usr/bin/grep 'vhid {$vhid}' | /usr/bin/awk '{print \$2;}'`
 if [ \${CARP_STATUS} != "MASTER" ]; then
 	exit;
 fi
 EOF;
-						}
-					}
 				}
-				break;
+			}
 		}
 	}
 
@@ -252,13 +211,6 @@ EOF;
 /usr/bin/killall -TERM bgpd
 EOF;
 	$rc_file_start = <<<EOF
-
-if [ `/usr/sbin/pw groupshow {$pkg_group} 2>&1 | /usr/bin/grep -c "pw: unknown group"` -gt 0 ]; then
-	/usr/sbin/pw groupadd {$pkg_group} -g {$pkg_gid}
-fi
-if [ `/usr/sbin/pw usershow {$pkg_login} 2>&1 | /usr/bin/grep -c "pw: no such user"` -gt 0 ]; then
-	/usr/sbin/pw useradd {$pkg_login} -u {$pkg_uid} -g {$pkg_gid} -c "{$pkg_gecos}" -d {$pkg_homedir} -s {$pkg_shell}
-fi
 
 /bin/mkdir -p {$bgpd_config_base}
 /usr/sbin/chown -R root:wheel {$bgpd_config_base}
@@ -280,7 +232,6 @@ EOF;
 	);
 	unset($rc_file_start, $rc_file_stop);
 
-	$_gb = exec("/sbin/sysctl net.inet.ip.ipsec_in_use=1");
 	// Is bgpd process running? If so, reload, else start.
 
 	// Kick off newly created rc.d script
