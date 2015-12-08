@@ -26,30 +26,18 @@
 	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
 */
+require_once("config.inc");
+require_once("globals.inc");
+require_once("interfaces.inc");
 require_once("pkg-utils.inc");
+require_once("service-utils.inc");
+require_once("util.inc");
+
+global $redis_path;
+$redis_path = "/usr/local/bin";
 
 function ntopng_php_install_command() {
-	global $config, $pf_version, $scripts_path, $fonts_path;
-	$pf_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-
-	/* Various hacks around PBI stupidity */
-	if ($pf_version == "2.2") {
-		$fonts_path = "/usr/pbi/ntopng-" . php_uname("m") . "/local/lib/X11/fonts";
-		$scripts_path = "/usr/pbi/ntopng-" . php_uname("m") . "/local/share/ntopng/scripts";
-	} else if ($pf_version == "2.1") {
-		$fonts_path = "/usr/pbi/ntopng-" . php_uname("m") . "/lib/X11/fonts";
-		$scripts_path = "/usr/pbi/ntopng-" . php_uname("m") . "/share/ntopng/scripts";
-	} else {
-		$fonts_path = "/usr/local/lib/X11/fonts";
-	}
-	if ($pf_version == "2.1" || $pf_version == "2.2") {
-		$ntopng_share_path = "/usr/local/share/ntopng";
-		$scripts_link_path = $ntopng_share_path . "/scripts";
-		safe_mkdir("$ntopng_share_path", 0755);
-		if (!file_exists($scripts_link_path)) {
-			symlink($scripts_path, $scripts_link_path);
-		}
-	}
+	$fonts_path = "/usr/local/lib/X11/fonts";
 	/* Fix broken GUI fonts */
 	mwexec("/bin/cp -Rp {$fonts_path}/webfonts/ {$fonts_path}/TTF/");
 
@@ -58,14 +46,8 @@ function ntopng_php_install_command() {
 }
 
 function ntopng_php_deinstall_command() {
-	global $config, $pf_version;
-	$pf_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-	/* Remove the PBI-related hacks */
-	if ($pf_version == "2.1" || $pf_version == "2.2") {
-		if (is_dir("/usr/local/share/ntopng/")) {
-			mwexec("rm -rf /usr/local/share/ntopng/");
-		}
-	}
+	global $config;
+
 	/* Wipe data and settings if the user does not wish to keep them */
 	$ntopng_config = $config['installedpackages']['ntopng']['config'][0];
 	if ($ntopng_config['keepdata'] != "on") {
@@ -81,6 +63,7 @@ function ntopng_php_deinstall_command() {
 }
 
 function ntopng_sync_package() {
+	global $config, $ntopng_config, $redis_path;
 	/* These are done via ntopng_validate_input(), just return */
 	if ($_POST['Submit'] == "Update GeoIP Data") {
 		return;
@@ -88,9 +71,6 @@ function ntopng_sync_package() {
 	if ($_POST['Delete'] == "Delete (Historical) Data") {
 		return;
 	}
-
-	global $g, $config, $pf_version, $ntopng_config;
-	$pf_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
 
 	$ifaces = "";
 	$ntopng_config =& $config['installedpackages']['ntopng']['config'][0];
@@ -149,21 +129,8 @@ function ntopng_sync_package() {
 	}
 
 	/* Create rc script */
-	if ($pf_version == "2.2") {
-		$redis_path = "/usr/pbi/ntopng-" . php_uname("m") . "/local/bin";
-	} elseif ($pf_version == "2.1") {
-		$redis_path = "/usr/pbi/ntopng-" . php_uname("m") . "/bin";
-	} else {
-		$redis_path = "/usr/local/bin";
-	}
-
 	$start = "";
 	$stop = "";
-	if ($pf_version == "2.2") {
-		$start .= "/sbin/ldconfig -m /usr/pbi/ntopng-" . php_uname("m") . "/local/lib\n";
-	} elseif ($pf_version == "2.1") {
-		$start .= "/sbin/ldconfig -m /usr/pbi/ntopng-" . php_uname("m") . "/lib\n";
-	}
 	$start .= "\t{$redis_path}/redis-server --dir /var/db/ntopng/ --dbfilename ntopng.rdb &\n";
 	// TODO:
 	// Add support for --data-dir /somewhere, --httpdocs-dir /somewhereelse,
@@ -177,11 +144,7 @@ function ntopng_sync_package() {
 	ntopng_set_redis_password();
 	
 	/* (Re)start services if not booting */
-	if ((function_exists("platform_booting")) && (!platform_booting())) {
-		ntopng_services_stop();
-		start_service("ntopng");
-		sleep(20);
-	} elseif (!($g['booting'])) {
+	if (!platform_booting()) {
 		ntopng_services_stop();
 		start_service("ntopng");
 		sleep(20);
@@ -201,22 +164,10 @@ function ntopng_services_stop() {
 }
 
 function ntopng_redis_started() {
-	global $redis_path, $pf_version, $redis_started;
+	global $redis_path, $redis_started;
 	$redis_started = false;
-	$pf_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-	if ($pf_version == "2.2") {
-		$redis_path = "/usr/pbi/ntopng-" . php_uname("m") . "/local/bin";
-	} elseif ($pf_version == "2.1") {
-		$redis_path = "/usr/pbi/ntopng-" . php_uname("m") . "/bin";
-	} else {
-		$redis_path = "/usr/local/bin";
-	}
+
 	if (!is_process_running("redis-server")) {
-		if ($pf_version == "2.2") {
-			mwexec("/sbin/ldconfig -m /usr/pbi/ntopng-" . php_uname("m") . "/local/lib");
-		} elseif ($pf_version == "2.1") {
-			mwexec("/sbin/ldconfig -m /usr/pbi/ntopng-" . php_uname("m") . "/lib");
-		}
 		mwexec_bg("{$redis_path}/redis-server --dir /var/db/ntopng/ --dbfilename ntopng.rdb");
 		for ($i = 0; $i <= 10; $i++) {
 			if (is_process_running("redis-server")) {
@@ -234,14 +185,6 @@ function ntopng_redis_started() {
 function ntopng_set_redis_password() {
 	global $config, $ntopng_config, $redis_path;
 	$ntopng_config = $config['installedpackages']['ntopng']['config'][0];
-	$pf_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-	if ($pf_version == "2.2") {
-		$redis_path = "/usr/pbi/ntopng-" . php_uname("m") . "/local/bin";
-	} elseif ($pf_version == "2.1") {
-		$redis_path = "/usr/pbi/ntopng-" . php_uname("m") . "/bin";
-	} else {
-		$redis_path = "/usr/local/bin";
-	}
 
 	if (!empty($ntopng_config['redis_password'])) {
 		$password = md5($ntopng_config['redis_password']);
@@ -267,14 +210,7 @@ function ntopng_update_geoip() {
 	$geolite_city_v6 = "https://geolite.maxmind.com/download/geoip/database/GeoLiteCityv6-beta/GeoLiteCityv6.dat.gz";
 	$geoip_asnum = "https://download.maxmind.com/download/geoip/database/asnum/GeoIPASNum.dat.gz";
 	$geoip_asnum_v6 = "https://download.maxmind.com/download/geoip/database/asnum/GeoIPASNumv6.dat.gz";
-	$pf_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-	if ($pf_version == "2.2") {
-		$output_dir = "/usr/pbi/ntopng-" . php_uname("m") . "/local/share/ntopng";
-	} elseif ($pf_version == "2.1") {
-		$output_dir = "/usr/pbi/ntopng-" . php_uname("m") . "/share/ntopng";
-	} else {
-		$output_dir = "/usr/local/share/ntopng";
-	}
+	$output_dir = "/usr/local/share/ntopng";
 
 	mwexec("{$fetchcmd} -o {$output_dir} -T 5 {$geolite_city}");
 	mwexec("{$fetchcmd} -o {$output_dir} -T 5 {$geolite_city_v6}");
@@ -294,17 +230,8 @@ function ntopng_update_geoip() {
 }
 
 function ntopng_fixup_geoip() {
-	$pf_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-	if ($pf_version == "2.2") {
-		$target_dir = "/usr/pbi/ntopng-" . php_uname("m") . "/local/share/ntopng/httpdocs/geoip";
-		$source_dir = "/usr/pbi/ntopng-" . php_uname("m") . "/local/share/ntopng";
-	} elseif ($pf_version == "2.1") {
-		$target_dir = "/usr/pbi/ntopng-" . php_uname("m") . "/share/ntopng/httpdocs/geoip";
-		$source_dir = "/usr/pbi/ntopng-" . php_uname("m") . "/share/ntopng";
-	} else {
-		$target_dir = "/usr/local/share/ntopng/httpdocs/geoip";
-		$source_dir = "/usr/local/share/ntopng";
-	}
+	$target_dir = "/usr/local/share/ntopng/httpdocs/geoip";
+	$source_dir = "/usr/local/share/ntopng";
 
 	safe_mkdir($target_dir, 0755);
 
@@ -328,14 +255,6 @@ function ntopng_fixup_geoip() {
 function ntopng_flush_historical_data() {
 	global $config, $ntopng_config, $redis_path;
 	$ntopng_config = $config['installedpackages']['ntopng']['config'][0];
-	$pf_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-	if ($pf_version == "2.2") {
-		$redis_path = "/usr/pbi/ntopng-" . php_uname("m") . "/local/bin";
-	} elseif ($pf_version == "2.1") {
-		$redis_path = "/usr/pbi/ntopng-" . php_uname("m") . "/bin";
-	} else {
-		$redis_path = "/usr/local/bin";
-	}
 
 	if (ntopng_redis_started()) {
 		/* Delete all the keys of all the existing Redis databases */

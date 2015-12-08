@@ -5,17 +5,9 @@
 		<website>http://www.ntop.org/</website>
 		<descr><![CDATA[ntopng (replaces ntop) is a network probe that shows network usage in a way similar to what top does for processes. In interactive mode, it displays the network status on the user's terminal. In Web mode it acts as a Web server, creating an HTML dump of the network status. It sports a NetFlow/sFlow emitter/collector, an HTTP-based client interface for creating ntop-centric monitoring applications, and RRD for persistently storing traffic statistics.]]></descr>
 		<category>Network Management</category>
-		<port_category>net</port_category>
-		<run_depends>bin/ntopng:net/ntopng bin/redis-cli:databases/redis bin/gdbmtool:databases/gdbm share/fonts/webfonts/arial.ttf:x11-fonts/webfonts bin/acyclic:graphics/graphviz</run_depends>
-		<depends_on_package_pbi>ntopng-1.2.1-##ARCH##.pbi</depends_on_package_pbi>
-		<build_pbi>
-			<ports_before>databases/redis databases/gdbm net/GeoIP x11-fonts/font-util x11-fonts/webfonts graphics/graphviz</ports_before>
-			<port>net/ntopng</port>
-		</build_pbi>
-		<version>0.8.2</version>
+		<version>0.8.3</version>
 		<status>BETA</status>
-		<required_version>2.2</required_version>
-		<config_file>https://packages.pfsense.org/packages/config/ntopng/ntopng.xml</config_file>
+		<required_version>2.3</required_version>
 		<configurationfile>ntopng.xml</configurationfile>
 		<noembedded>true</noembedded>
 	</package>
