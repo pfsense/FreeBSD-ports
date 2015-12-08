@@ -40,21 +40,10 @@ require_once("util.inc");
 require_once("xmlrpc.inc");
 require_once("xmlrpc_client.inc");
 
-// Check pfSense version
-$pfs_version = substr(trim(file_get_contents("/etc/version")),0,3);
-if ($pfs_version == "2.1" || $pfs_version == "2.2")
-	define('FREERADIUS_BASE', '/usr/pbi/freeradius-' . php_uname("m"));
-else
-	define('FREERADIUS_BASE', '/usr/local');
+define('FREERADIUS_BASE', '/usr/local');
 $bash_path = FREERADIUS_BASE . "/bin/bash";
-
-if ($pfs_version == "2.2") {
-	define('FREERADIUS_LIB', FREERADIUS_BASE . '/local/lib');
-	define('FREERADIUS_ETC', FREERADIUS_BASE . '/local/etc');
-} else {
-	define('FREERADIUS_LIB', FREERADIUS_BASE . '/lib');
-	define('FREERADIUS_ETC', FREERADIUS_BASE . '/etc');
-}
+define('FREERADIUS_LIB', FREERADIUS_BASE . '/lib');
+define('FREERADIUS_ETC', FREERADIUS_BASE . '/etc');
 
 // Check freeradius lib version
 	$frlib="";
