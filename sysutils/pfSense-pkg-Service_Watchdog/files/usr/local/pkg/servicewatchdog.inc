@@ -83,7 +83,7 @@ function servicewatchdog_is_service_watched($svc) {
 	return false;
 }
 
-function servicewatchdog_cron_job($force_remove) {
+function servicewatchdog_cron_job($force_remove = false) {
 	global $config;
 	if (!is_array($config['installedpackages']['servicewatchdog']['item'])) {
 		$config['installedpackages']['servicewatchdog']['item'] = array();
