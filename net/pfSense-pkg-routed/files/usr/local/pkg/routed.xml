@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>routed</name>
-	<version>1.2.2</version>
+	<version>1.2.3</version>
 	<title>Services: RIP</title>
 	<include_file>/usr/local/pkg/routed.inc</include_file>
 	<aftersaveredirect>pkg_edit.php?xml=routed.xml</aftersaveredirect>
@@ -58,7 +58,7 @@
 		<name>RIP</name>
 		<section>Services</section>
 		<configfile>routed.xml</configfile>
-		<url>pkg_edit.php?xml=routed.xml</url>
+		<url>/pkg_edit.php?xml=routed.xml</url>
 	</menu>
 	<service>
 		<name>routed</name>
@@ -73,7 +73,6 @@
 			<active/>
 		</tab>
 	</tabs>
-	<configpath>['installedpackages']['routed']['config']</configpath>
 	<fields>
 		<field>
 			<fielddescr>Enable RIP</fielddescr>
