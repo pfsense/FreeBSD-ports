@@ -9,18 +9,10 @@
 			In addition it supports some nifty things that have never been seen elsewhere like correct mDNS reflection across LAN segments.&lt;br/&gt;
 			Compatible technology is found in Apple MacOS X (branded ​Bonjour and sometimes Zeroconf).]]></descr>
 		<category>Network Management</category>
-		<lib_depends>libavahi-core.so:net/avahi-app</lib_depends>
-		<port_category>net</port_category>
 		<build_options>avahi_UNSET_FORCE=GTK;cairo_UNSET_FORCE=X11 XCB</build_options>
-		<build_pbi>
-			<port>net/avahi</port>
-			<ports_after>net/avahi-app devel/dbus</ports_after>
-		</build_pbi>
-		<depends_on_package_pbi>avahi-0.6.31-##ARCH##.pbi</depends_on_package_pbi>
-		<version>1.10.3</version>
+		<version>1.10.4</version>
 		<status>BETA</status>
-		<required_version>2.2</required_version>
-		<config_file>https://packages.pfsense.org/packages/config/avahi/avahi.xml</config_file>
+		<required_version>2.3</required_version>
 		<configurationfile>avahi.xml</configurationfile>
 		<after_install_info>Please visit Services - Avahi menu, enable the service and select which interfaces you do NOT wish Avahi to listen on. Save settings to start the service.</after_install_info>
 	</package>
