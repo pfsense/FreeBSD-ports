@@ -694,6 +694,18 @@ function squid_upgrade_config() {
 		$config['installedpackages']['squidnac']['config'][0]['block_reply_mime_type'] = $settingsnac['block_reply_mime_type'];
 	}
 
+	/* XXX: broken Captive Portal patch (Bug #5594) */
+	if (isset($config['installedpackages']['squid']['config'][0]['patch_cp'])) {
+		if ($config['installedpackages']['squid']['config'][0]['patch_cp'] == "on") {
+			$cp_msg = "Patch Captive Portal feature was removed - see Bug #5594!";
+			$cp_msg .= "Double-check '/etc/inc/captiveportal.inc' contents for sanity! Get a sane copy of the file from pfSense GitHub repository if needed.";
+			file_notice("squid", $cp_msg, "Packages", "");
+			log_error("[squid] {$cp_msg}");
+			unset($cp_msg);
+		}
+		unset($config['installedpackages']['squid']['config'][0]['patch_cp']);
+	}
+
 	/* migrate reverse proxy settings */
 	squid_reverse_upgrade_config();
 	
@@ -2001,33 +2013,6 @@ function squid_generate_rules($type) {
 	global $config, $pfs_version;
 
 	$squid_conf = $config['installedpackages']['squid']['config'][0];
-	//check captive portal option
-	$cp_file = '/etc/inc/captiveportal.inc';
-	$port = ($settings['proxy_port'] ? $settings['proxy_port'] : 3128);
-	$cp_inc = file($cp_file);
-	$new_cp_inc = "";
-	$found_rule = 0;
-	foreach ($cp_inc as $line) {
-		$new_line = $line;
-		//remove applied squid patch
-		if (preg_match('/skipto 65314 ip/', $line)) {
-			$found_rule++;
-			$new_line = "";
-		}
-
-		if (preg_match('/255.255.255.255/', $line) && $squid_conf['patch_cp']) {
-			$found_rule++;
-			$new_line .= "\t" . '$cprules .= "add {$rulenum} skipto 65314 ip from any to {$ips} ' . $port . ' in\n";' . "\n";
-			$new_line .= "\t" . '$cprules .= "add {$rulenum} skipto 65314 ip from {$ips} ' . $port . ' to any out\n";' . "\n";
-		}
-		$new_cp_inc .= $new_line;
-	}
-	if (!file_exists('/root/' . $pfs_version . '.captiveportal.inc.backup')) {
-		copy($cp_file, '/root/' . $pfs_version . '.captiveportal.inc.backup');
-	}
-	if ($found_rule > 0) {
-		file_put_contents($cp_file, $new_cp_inc, LOCK_EX);
-	}
 
 	// do not install any firewall rules if Squid is disabled or used as reverse proxy only
 	if (!squid_enabled()) {
