@@ -6,17 +6,10 @@
 		<descr><![CDATA[sudo allows delegation of privileges to users in the shell so commands can be run as other users, such as root.]]></descr>
 		<website>http://www.sudo.ws/</website>
 		<category>System</category>
-		<version>0.2.8</version>
+		<version>0.2.9</version>
 		<status>BETA</status>
-		<required_version>2.2</required_version>
-		<config_file>https://packages.pfsense.org/packages/config/sudo/sudo.xml</config_file>
+		<required_version>2.3</required_version>
 		<maintainer>jimp@pfsense.org</maintainer>
 		<configurationfile>sudo.xml</configurationfile>
-		<port_category>security</port_category>
-		<run_depends>bin/sudo:security/sudo</run_depends>
-		<build_pbi>
-			<port>security/sudo</port>
-		</build_pbi>
-		<depends_on_package_pbi>sudo-1.8.12-##ARCH##.pbi</depends_on_package_pbi>
 	</package>
 </pfsensepkgs>
