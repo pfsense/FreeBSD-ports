@@ -2062,10 +2062,6 @@ function squid_generate_rules($type) {
 				if (($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) || (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) {
 					$rules .= "no rdr on $PPPOE_ALIAS proto tcp from any to { 192.168.0.0/16, 172.16.0.0/12, 10.0.0.0/8 } port {$pf_rule_port}\n";
 				}
-				/* Handle PPTP case */
-				if ($config['pptpd']['mode'] == "server" && $config['pptpd']['localip']) {
-					$rules .= "no rdr on $PPTP_ALIAS proto tcp from any to { 192.168.0.0/16, 172.16.0.0/12, 10.0.0.0/8 } port {$pf_rule_port}\n";
-				}
 			}
 			if (!empty($squid_conf['defined_ip_proxy_off'])) {
 				$defined_ip_proxy_off = explode(";", $squid_conf['defined_ip_proxy_off']);
@@ -2087,10 +2083,6 @@ function squid_generate_rules($type) {
 				/* Handle PPPOE case */
 				if (($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) || (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) {
 					$rules .= "no rdr on $PPPOE_ALIAS proto tcp from { $exempt_ip } to any port {$pf_rule_port}\n";
-				}
-				/* Handle PPTP case */
-				if ($config['pptpd']['mode'] == "server" && $config['pptpd']['localip']) {
-					$rules .= "no rdr on $PPTP_ALIAS proto tcp from { $exempt_ip } to any port {$pf_rule_port}\n";
 				}
 			}
 			if (!empty($squid_conf['defined_ip_proxy_off_dest'])) {
@@ -2114,10 +2106,6 @@ function squid_generate_rules($type) {
 				if (($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) || (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) {
 					$rules .= "no rdr on $PPPOE_ALIAS proto tcp from any to { $exempt_dest } port {$pf_rule_port}\n";
 				}
-				/* Handle PPTP case */
-				if ($config['pptpd']['mode'] == "server" && $config['pptpd']['localip']) {
-					$rules .= "no rdr on $PPTP_ALIAS proto tcp from any to { $exempt_dest } port {$pf_rule_port}\n";
-				}
 			}
 			foreach ($transparent_ifaces as $t_iface) {
 				$pf_transparent_rule_port = (in_array($t_iface, $ssl_ifaces) ? "{80,443}" : "80");
@@ -2129,10 +2117,6 @@ function squid_generate_rules($type) {
 			/* Handle PPPOE case */
 			if (($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) || (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) {
 				$rules .= "rdr on $PPPOE_ALIAS proto tcp from any to !127.0.0.1 port {$pf_rule_port} -> 127.0.0.1 port {$port}\n";
-			}
-			/* Handle PPTP case */
-			if ($config['pptpd']['mode'] == "server" && $config['pptpd']['localip']) {
-				$rules .= "rdr on $PPTP_ALIAS proto tcp from any to !127.0.0.1 port {$pf_rule_port} -> 127.0.0.1 port {$port}\n";
 			}
 			$rules .= "\n";
 			break;
@@ -2147,9 +2131,6 @@ function squid_generate_rules($type) {
 			}
 			if ($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) {
 				$rules .= "pass in quick on $PPPOE_ALIAS proto tcp from any to !127.0.0.1 port {$port} flags S/SA keep state\n";
-			}
-			if ($config['pptpd']['mode'] == "server" && $config['pptpd']['localip']) {
-				$rules .= "pass in quick on $PPTP_ALIAS proto tcp from any to !127.0.0.1 port {$port} flags S/SA keep state\n";
 			}
 			break;
 		default:
