@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Open-VM-Tools
-PORTVERSION=	1280544.12
+PORTVERSION=	1280544.13
 CATEGORIES=	emulators
 MASTER_SITES=	# empty
 DISTFILES=	# empty
