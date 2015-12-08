@@ -151,7 +151,6 @@ function execCmds() {
 }
 
 ?>
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
 
 <script type="text/javascript">
 //<![CDATA[
@@ -255,7 +254,4 @@ else
 </table>
 </div>
 
-<?php include("fend.inc"); ?>
-
-</body>
-</html>
+<?php include("foot.inc"); ?>
