@@ -132,18 +132,8 @@ function squid_antivirus_statistics() {
 			<td class="vncellt">Squid Version</td>
 			<td class="listr" width="75%">
 			<?php
-				$pfs_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
 				$updown = (is_service_running("squid") ? $img['up'] : $img['down']);
-				$squid_path = PATH_SQUID;
-				if ($pfs_version == "2.2") {
-					if (is_executable($squid_path)) {
-						preg_match("@(\d{1}).(\d{1}).(\d{2})@", shell_exec("{$squid_path} -v"), $squid_version);
-						$version = $squid_version[0];
-					}
-					$version .= "&nbsp; (pkg v{$config['installedpackages']['package'][get_pkg_id("squid3")]['version']})";
-				} else {
-					pkg_exec("query '%v' squid", $version, $err);
-				}
+				pkg_exec("query '%v' squid", $version, $err);
 				echo "{$updown}&nbsp;&nbsp;${version}";
 			?>
 			</td>

@@ -35,54 +35,27 @@ require_once('util.inc');
 /* This file is currently only being included in squid.inc and not used separately */
 // require_once('squid.inc');
 
+global $clamav_uid, $clamav_gid;
+$clamav_uid = "clamav";
+$clamav_gid = "clamav";
+
 /*
  * Utility functions
  */
 
-/* clamav user account hadling (only needed for PBI/pfSense <2.3) */
-function squid_check_clamav_user() {
-	if (SQUID_BASE == '/usr/local') {
-		return;
-	} else {
-		/*
-		 * Check whether clamav user already exists and is a member of wheel group.
-		 * If the account already exists, modify the UID to 9595, otherwise things blow up because the PBI clusterfuck adds the account with UID=106.
-		 * If the account does not exist yes because PBI screwed things once again, create it with the proper UID.
-		 * If clamav user is not a member of wheel group, add it there as well and avoid re-adding it to wheel everytime this code runs.
-		 * Note that the clamav group (GID=106) added by PBI is irrelevant because it's not used for anything.
-		 */
-		$_gc = exec("/usr/sbin/pw groupshow wheel | /usr/bin/grep clamav", $group_ex_output, $group_ex_return);
-		$group_arg = ($group_ex_return != 0 ? "-G wheel" : "");
-		$_gc = exec("/usr/sbin/pw usershow clamav", $user_ex_output, $user_ex_return);
-		$user_arg = ($user_ex_return == 0 ? "mod" : "add");
-		$_gc = exec("/usr/sbin/pw user{$user_arg} clamav {$group_arg} -u 9595 -s /sbin/nologin", $user_ex_output, $user_ex_return);
-		if ($user_ex_return != 0) {
-			log_error("[squid] Could not change clamav user settings. " . serialize($user_ex_output));
-		}
-	}
-}
-
 /* check and fix ClamAV/C-ICAP antivirus dirs and permissions if needed */
 function squid_check_antivirus_dirs() {
+	global $clamav_uid, $clamav_gid;
 	$dirs = array(
-		"/var/run/c-icap" => "clamav",
-		"/var/log/c-icap" => "clamav",
-
+		"/var/log/clamav",
+		"/var/run/clamav",
+		"/var/db/clamav",
+		"/var/run/c-icap",
+		"/var/log/c-icap"
 	);
-	foreach ($dirs as $dir_path => $dir_user) {
+	foreach ($dirs as $dir_path) {
 		safe_mkdir($dir_path, 0755);
-		chown($dir_path, $dir_user);
-		chgrp($dir_path, "wheel");
-	}
-	/* These ClamAV dirs MUST be chown-ed recursively, see the notes on PBI idiocy in squid_check_clamav_user() */
-	$dirs = array(
-		"/var/log/clamav" => "clamav",
-		"/var/run/clamav" => "clamav",
-		"/var/db/clamav" => "clamav"
-	);
-	foreach ($dirs as $dir_path => $dir_user) {
-		safe_mkdir($dir_path, 0755);
-		squid_chown_recursive($dir_path, $dir_user, "wheel");
+		squid_chown_recursive($dir_path, $clamav_uid, $clamav_gid);
 	}
 }
 
@@ -135,17 +108,6 @@ function squid_antivirus_install_command() {
 	// antivirus config files
 	squid_antivirus_install_config_files();
 
-	// check squidclamav files until PBIs are gone (https://redmine.pfsense.org/issues/4197)
-	$ln_icap = array('bin/c-icap', 'bin/c-icap-client', 'c-icap-config', 'c-icap-libicapapi-config', 'c-icap-stretch', 'lib/c_icap', 'share/c_icap', 'etc/c-icap');
-	foreach ($ln_icap as $ln) {
-		if (SQUID_LOCALBASE != '/usr/local' && !file_exists("/usr/local/{$ln}") && file_exists(SQUID_LOCALBASE . "/{$ln}")) {
-			symlink(SQUID_LOCALBASE . "/{$ln}", "/usr/local/{$ln}");
-		}
-	}
-	if (SQUID_LOCALBASE != '/usr/local' && !file_exists("/usr/local/lib/libicapapi.so.3") && file_exists(SQUID_LOCALBASE . "/lib/libicapapi.so.3.0.5")) {
-		symlink(SQUID_LOCALBASE . "/lib/libicapapi.so.3.0.5", "/usr/local/lib/libicapapi.so.3");
-	}
-
 	// remove dirs with possibly broken file permissions after previous versions
 	$dirs = array("/var/run/c-icap", "/var/log/c-icap");
 	foreach ($dirs as $dir) {
@@ -154,11 +116,10 @@ function squid_antivirus_install_command() {
 		}
 	}
 
-	// create required dirs and set up clamav user if needed
-	squid_check_clamav_user();
+	// create required dirs if needed
 	squid_check_antivirus_dirs();
 
-	// remove unwanted PBI rc scripts
+	// remove unwanted rc scripts
 	unlink_if_exists("/usr/local/etc/rc.d/c-icap");
 	unlink_if_exists("/usr/local/etc/rc.d/clamav-clamd");
 	unlink_if_exists("/usr/local/etc/rc.d/clamav-freshclam");
@@ -170,19 +131,6 @@ function squid_antivirus_deinstall_command() {
 	/* Stop all running services, remove rc scripts and cronjobs */
 	squid_stop_antivirus();
 	mwexec("/bin/ps awux | /usr/bin/grep '[f]reshclam' | /usr/bin/awk '{ print $2 }' | /usr/bin/xargs kill");
-
-	/* clean up created PBI symlinks */
-	if (SQUID_LOCALBASE != '/usr/local') {
-		$ln_icap = array('bin/c-icap', 'bin/c-icap-client', 'c-icap-config', 'c-icap-libicapapi-config', 'c-icap-stretch', 'lib/c_icap', 'share/c_icap', 'etc/c-icap');
-		foreach ($ln_icap as $ln) {
-			if (is_link("/usr/local/{$ln}")) {
-				unlink("/usr/local/{$ln}");
-			}
-		}
-		if (is_link("/usr/local/lib/libicapapi.so.3")) {
-			unlink("/usr/local/lib/libicapapi.so.3");
-		}
-	}
 
 	/* clean up created directories if 'Keep Settings/Data' is disabled */
 	if (is_array($config['installedpackages']['squid'])) {
@@ -199,32 +147,6 @@ function squid_antivirus_deinstall_command() {
 				mwexec("/bin/rm -rf {$dir}");
 			}
 		}
-	}
-
-	/* clean up user/groups if needed */
-	if (SQUID_BASE == '/usr/local') {
-		return;
-	} else {
-		if (exec("/usr/sbin/pw groupshow wheel | /usr/bin/grep clamav")) {
-			mwexec("/usr/sbin/pw groupmod wheel -d clamav");
-		}
-		if (exec("/usr/sbin/pw usershow clamav")) {
-			mwexec("/usr/sbin/pw userdel clamav");
-		}
-		if (exec("/usr/sbin/pw groupshow clamav")) {
-			mwexec("/usr/sbin/pw groupdel clamav");
-		}
-	}
-
-	/* check if clamav/c_icap is enabled in rc.conf.local */
-	// XXX: This hasn't been used since 0.3.7; to be removed in future
-	if (file_exists("/etc/rc.conf.local")) {
-		$sample_file = file_get_contents("/etc/rc.conf.local");
-		$rcconf_local_m[0] = "@c_icap_enable(.*)\n@";
-		$rcconf_local_m[1] = "@clamav_clamd_enable(.*)\n@";
-		$rcconf_local_r[0] = "";
-		$rcconf_local_r[1] = "";
-		file_put_contents("/etc/rc.conf.local", preg_replace($rcconf_local_m, $rcconf_local_r, $sample_file), LOCK_EX);
 	}
 }
 
@@ -245,7 +167,7 @@ function squid_antivirus_upgrade_config() {
  *
  * <file>.conf is the actual configuration file used for services.
  * <file>.conf.pfsense is a template file patched for pfSense; should be never altered beyond initial install.
- * <file>.conf.{sample,default} are templates distributed directly with PBI/package;
+ * <file>.conf.{sample,default} are templates distributed directly with FreeBSD packages;
  * If <file>.conf.default does not exist, a backup copy is made from another distributed files before patching it for pfSense.
  *
  * Configuration via the GUI options:
@@ -309,8 +231,7 @@ adaptation_access service_avi_resp allow all
 
 EOF;
 
-		// check clamav user and dirs
-		squid_check_clamav_user();
+		// check clamav dirs
 		squid_check_antivirus_dirs();
 
 		if ($antivirus_config['enable_advanced'] == "enabled") {
@@ -381,14 +302,8 @@ EOF;
 				if (!preg_match("/squid_clamav/", $sample_file)) {
 					$sample_file .= "\nService squid_clamav squidclamav.so\n";
 				}
-				/* XXX: Bug #4615
-				 * Do NOT move the C-ICAP log anywhere, ever! It breaks C-ICAP in completely inexplicable ways,
-				 * such as Error: [No Error] or 500 response codes.
-				 */
 				$cicap_m[0] = "@#This file was automatically generated by pfSense@";
 				$cicap_r[0] = "#This file was automatically generated by pfSense WebGUI configuration";
-				$cicap_m[1] = "@DebugLevel\s1@";
-				$cicap_r[1] = "DebugLevel 0";
 				if (!file_put_contents("{$cf}", preg_replace($cicap_m, $cicap_r, $sample_file), LOCK_EX)) {
 					log_error("[squid] Could not save generated {$cf} file!");
 				}
@@ -465,7 +380,7 @@ EOF;
 
 /* Patch paths and settings in configuration files template for pfSense-specific values on install */
 function squid_antivirus_install_config_files() {
-	global $config;
+	global $config, $clamav_uid, $clamav_gid;
 	if (is_array($config['installedpackages']['squid'])) {
 		$squidsettings = $config['installedpackages']['squid']['config'][0];
 	} else {
@@ -492,6 +407,9 @@ function squid_antivirus_install_config_files() {
 		}
 		$squidclamav_m[3] = "@dnslookup\s1@";
 		$squidclamav_r[3] = "dnslookup 0";
+		// This should match StreamMaxLength in clamd.conf
+		$squidclamav_m[4] = "@maxsize\s+5000000@";
+		$squidclamav_r[4] = "maxsize 25000000";
 		if (!file_put_contents("{$cf}.pfsense", preg_replace($squidclamav_m, $squidclamav_r, $sample_file), LOCK_EX)) {
 			log_error("[squid] Could not save patched '{$cf}.pfsense' template file!");
 		}
@@ -506,18 +424,27 @@ function squid_antivirus_install_config_files() {
 		copy("{$cf}", "{$cf}.default");
 	}
 	if (file_exists("{$cf}.default")) {
+		// http://wiki.squid-cache.org/ConfigExamples/ContentAdaptation/C-ICAP#Antivirus_checking_with_C-ICAP.2C_ClamAV_daemon_and_Squidclamav
 		$sample_file = file_get_contents("{$cf}.default");
 		if (!preg_match("/squid_clamav/", $sample_file)) {
 			$sample_file .= "\nService squid_clamav squidclamav.so\n";
 		}
+		$sample_file .= "User {$clamav_uid}\n";
+		$sample_file .= "Group {$clamav_gid}\n";
 		$cicap_m[0] = "@# This file contains the default settings for c-icap@";
 		$cicap_r[0] = "#This file was automatically generated by pfSense";
+		$cicap_m[1] = "@StartServers\s+3@";
+		$cicap_r[1] = "StartServers 1";
+		$cicap_m[2] = "@MaxServers\s+10@";
+		$cicap_r[2] = "MaxServers 20";
+		$cicap_m[3] = "@MaxRequestsPerChild\s+0@";
+		$cicap_r[3] = "MaxRequestsPerChild 1000";
 		/* XXX: Bug #4615
 		 * Do NOT move the C-ICAP log anywhere, ever! It breaks C-ICAP in completely inexplicable ways,
 		 * such as Error: [No Error] or 500 response codes.
 		 */
-		$cicap_m[1] = "@DebugLevel\s1@";
-		$cicap_r[1] = "DebugLevel 0";
+		$cicap_m[4] = "@DebugLevel\s1@";
+		$cicap_r[4] = "DebugLevel 0";
 		if (!file_put_contents("{$cf}.pfsense", preg_replace($cicap_m, $cicap_r, $sample_file), LOCK_EX)) {
 			log_error("[squid] Could not save patched '{$cf}.pfsense' template file!");
 		}
@@ -756,11 +683,20 @@ EOD;
 /* Create c-icap.sh rc script */
 function squid_write_cicap_rcfile() {
 	$c_icap_rcfile = "c-icap.sh";
-	$cicap_libdir = SQUID_LOCALBASE . "/lib";
 	$cicap_bin = SQUID_LOCALBASE . "/bin/c-icap";
 	$cicap_conf = SQUID_LOCALBASE . "/etc/c-icap/c-icap.conf";
-	$cicap_start_cmd = "LD_LIBRARY_PATH={$cicap_libdir} {$cicap_bin} -f {$cicap_conf}";
-	$cicap_stop_cmd = '/bin/echo -n "stop" > /var/run/c-icap/c-icap.ctl';
+	$cicap_pipe = "/var/run/c-icap/c-icap.ctl";
+	$cicap_start_cmd = "{$cicap_bin} -f {$cicap_conf}";
+	$cicap_stop_cmd = <<< EOF
+
+if [ -p "{$cicap_pipe}" ]; then
+	/bin/echo -n "stop" > /var/run/c-icap/c-icap.ctl
+else
+	/usr/bin/killall -9 c-icap 2>/dev/null
+fi
+sleep 5
+/bin/rm -f {$cicap_pipe}
+EOF;
 	conf_mount_rw();
 	log_error("[squid] Creating '{$c_icap_rcfile}' rc script.");
 	write_rcfile(array(
@@ -824,7 +760,11 @@ function squid_restart_antivirus() {
 		}
 		if (is_process_running("c-icap")) {
 			log_error("[squid] Reloading C-ICAP...");
-			mwexec_bg('/bin/echo -n "reconfigure" > /var/run/c-icap/c-icap.ctl');
+			if (file_exists("/var/run/c-icap/c-icap.ctl")) {
+				mwexec_bg('/bin/echo -n "reconfigure" > /var/run/c-icap/c-icap.ctl');
+			} else {
+				mwexec_bg("{$c_icap_rcfile} restart");
+			}
 		} else {
 			log_error("[squid] Starting C-ICAP...");
 			mwexec_bg("{$c_icap_rcfile} start");
@@ -841,11 +781,11 @@ function squid_stop_antivirus() {
 	// Stop C-ICAP
 	if (is_process_running("c-icap")) {
 		log_error("[squid] Stopping and disabling C-ICAP...");
-		mwexec('/bin/echo -n "stop" > /var/run/c-icap/c-icap.ctl');
-		sleep(5);
+		mwexec("/usr/local/etc/rc.d/c-icap.sh stop");
 		if (is_process_running("c-icap")) {
 			log_error("[squid] C-ICAP still running, forcibly killing c-icap process(es).");
 			mwexec("/bin/ps awux | /usr/bin/grep '[c]-icap' | /usr/bin/awk '{ print $2 }' | /usr/bin/xargs kill -9");
+			unlink_if_exists("/var/run/c-icap/c-icap.ctl");
 		}
 	}
 	unlink_if_exists("/usr/local/etc/rc.d/c-icap.sh");

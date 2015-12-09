@@ -48,20 +48,10 @@ if (!function_exists("filter_configure")) {
 
 $shortcut_section = "squid";
 
-global $pfs_version;
-$pfs_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-if ($pfs_version == "2.1" || $pfs_version == "2.2") {
-	define('SQUID_BASE', '/usr/pbi/squid-' . php_uname("m"));
-	define('SQUID_LOCALBASE', SQUID_BASE . "/local");
-	define('SQUID_UID', 'proxy');
-	define('SQUID_GID', 'proxy');
-} else {
-	define('SQUID_BASE', '/usr/local');
-	define('SQUID_LOCALBASE', '/usr/local');
-	define('SQUID_UID', 'squid');
-	define('SQUID_GID', 'squid');
-}
-
+define('SQUID_BASE', '/usr/local');
+define('SQUID_LOCALBASE', '/usr/local');
+define('SQUID_UID', 'squid');
+define('SQUID_GID', 'squid');
 define('SQUID_CONFBASE', SQUID_LOCALBASE .'/etc/squid');
 define('SQUID_CONFFILE', SQUID_CONFBASE . '/squid.conf');
 define('SQUID_ACLDIR', '/var/squid/acl');
@@ -470,11 +460,6 @@ function squid_install_command() {
 		chgrp(SQUID_LOCALBASE . "/libexec/squid/pinger", SQUID_GID);
 	}
 
-	// another PBI hack
-	if (SQUID_BASE != '/usr/local' && file_exists('/usr/local/bin/check_ip.php') && !file_exists(SQUID_BASE . '/bin/check_ip.php')) {
-		symlink("/usr/local/bin/check_ip.php", SQUID_BASE . "/bin/check_ip.php");
-	}
-
 	// create squid rcfile
 	squid_write_rcfile();
 
@@ -497,7 +482,7 @@ function squid_install_command() {
 		copy(SQUID_CONFBASE . '/mime.conf.default', SQUID_CONFBASE . '/mime.conf');
 	}
 
-	// remove unwanted PBI rc script
+	// remove unwanted rc script
 	unlink_if_exists("/usr/local/etc/rc.d/squid");
 
 	// remove broken cronjobs possibly left over after 'Clear Cache on Log Rotate' misfeature
@@ -692,6 +677,18 @@ function squid_upgrade_config() {
 	if (!empty($settingsnac['block_reply_mime_type']) && strstr($settingsnac['block_reply_mime_type'], ",")) {
 		$settingsnac['block_reply_mime_type'] = base64_encode(implode("\n", explode(",", $settingsnac['block_reply_mime_type'])));
 		$config['installedpackages']['squidnac']['config'][0]['block_reply_mime_type'] = $settingsnac['block_reply_mime_type'];
+	}
+
+	/* XXX: broken Captive Portal patch (Bug #5594) */
+	if (isset($config['installedpackages']['squid']['config'][0]['patch_cp'])) {
+		if ($config['installedpackages']['squid']['config'][0]['patch_cp'] == "on") {
+			$cp_msg = "Patch Captive Portal feature was removed - see Bug #5594!";
+			$cp_msg .= "Double-check '/etc/inc/captiveportal.inc' contents for sanity! Get a sane copy of the file from pfSense GitHub repository if needed.";
+			file_notice("squid", $cp_msg, "Packages", "");
+			log_error("[squid] {$cp_msg}");
+			unset($cp_msg);
+		}
+		unset($config['installedpackages']['squid']['config'][0]['patch_cp']);
 	}
 
 	/* migrate reverse proxy settings */
@@ -1998,36 +1995,9 @@ function squid_resync($via_rpc = "no") {
  */
 
 function squid_generate_rules($type) {
-	global $config, $pfs_version;
+	global $config;
 
 	$squid_conf = $config['installedpackages']['squid']['config'][0];
-	//check captive portal option
-	$cp_file = '/etc/inc/captiveportal.inc';
-	$port = ($settings['proxy_port'] ? $settings['proxy_port'] : 3128);
-	$cp_inc = file($cp_file);
-	$new_cp_inc = "";
-	$found_rule = 0;
-	foreach ($cp_inc as $line) {
-		$new_line = $line;
-		//remove applied squid patch
-		if (preg_match('/skipto 65314 ip/', $line)) {
-			$found_rule++;
-			$new_line = "";
-		}
-
-		if (preg_match('/255.255.255.255/', $line) && $squid_conf['patch_cp']) {
-			$found_rule++;
-			$new_line .= "\t" . '$cprules .= "add {$rulenum} skipto 65314 ip from any to {$ips} ' . $port . ' in\n";' . "\n";
-			$new_line .= "\t" . '$cprules .= "add {$rulenum} skipto 65314 ip from {$ips} ' . $port . ' to any out\n";' . "\n";
-		}
-		$new_cp_inc .= $new_line;
-	}
-	if (!file_exists('/root/' . $pfs_version . '.captiveportal.inc.backup')) {
-		copy($cp_file, '/root/' . $pfs_version . '.captiveportal.inc.backup');
-	}
-	if ($found_rule > 0) {
-		file_put_contents($cp_file, $new_cp_inc, LOCK_EX);
-	}
 
 	// do not install any firewall rules if Squid is disabled or used as reverse proxy only
 	if (!squid_enabled()) {
@@ -2092,10 +2062,6 @@ function squid_generate_rules($type) {
 				if (($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) || (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) {
 					$rules .= "no rdr on $PPPOE_ALIAS proto tcp from any to { 192.168.0.0/16, 172.16.0.0/12, 10.0.0.0/8 } port {$pf_rule_port}\n";
 				}
-				/* Handle PPTP case */
-				if ($config['pptpd']['mode'] == "server" && $config['pptpd']['localip']) {
-					$rules .= "no rdr on $PPTP_ALIAS proto tcp from any to { 192.168.0.0/16, 172.16.0.0/12, 10.0.0.0/8 } port {$pf_rule_port}\n";
-				}
 			}
 			if (!empty($squid_conf['defined_ip_proxy_off'])) {
 				$defined_ip_proxy_off = explode(";", $squid_conf['defined_ip_proxy_off']);
@@ -2117,10 +2083,6 @@ function squid_generate_rules($type) {
 				/* Handle PPPOE case */
 				if (($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) || (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) {
 					$rules .= "no rdr on $PPPOE_ALIAS proto tcp from { $exempt_ip } to any port {$pf_rule_port}\n";
-				}
-				/* Handle PPTP case */
-				if ($config['pptpd']['mode'] == "server" && $config['pptpd']['localip']) {
-					$rules .= "no rdr on $PPTP_ALIAS proto tcp from { $exempt_ip } to any port {$pf_rule_port}\n";
 				}
 			}
 			if (!empty($squid_conf['defined_ip_proxy_off_dest'])) {
@@ -2144,10 +2106,6 @@ function squid_generate_rules($type) {
 				if (($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) || (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) {
 					$rules .= "no rdr on $PPPOE_ALIAS proto tcp from any to { $exempt_dest } port {$pf_rule_port}\n";
 				}
-				/* Handle PPTP case */
-				if ($config['pptpd']['mode'] == "server" && $config['pptpd']['localip']) {
-					$rules .= "no rdr on $PPTP_ALIAS proto tcp from any to { $exempt_dest } port {$pf_rule_port}\n";
-				}
 			}
 			foreach ($transparent_ifaces as $t_iface) {
 				$pf_transparent_rule_port = (in_array($t_iface, $ssl_ifaces) ? "{80,443}" : "80");
@@ -2159,10 +2117,6 @@ function squid_generate_rules($type) {
 			/* Handle PPPOE case */
 			if (($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) || (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) {
 				$rules .= "rdr on $PPPOE_ALIAS proto tcp from any to !127.0.0.1 port {$pf_rule_port} -> 127.0.0.1 port {$port}\n";
-			}
-			/* Handle PPTP case */
-			if ($config['pptpd']['mode'] == "server" && $config['pptpd']['localip']) {
-				$rules .= "rdr on $PPTP_ALIAS proto tcp from any to !127.0.0.1 port {$pf_rule_port} -> 127.0.0.1 port {$port}\n";
 			}
 			$rules .= "\n";
 			break;
@@ -2177,9 +2131,6 @@ function squid_generate_rules($type) {
 			}
 			if ($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) {
 				$rules .= "pass in quick on $PPPOE_ALIAS proto tcp from any to !127.0.0.1 port {$port} flags S/SA keep state\n";
-			}
-			if ($config['pptpd']['mode'] == "server" && $config['pptpd']['localip']) {
-				$rules .= "pass in quick on $PPTP_ALIAS proto tcp from any to !127.0.0.1 port {$port} flags S/SA keep state\n";
 			}
 			break;
 		default:
