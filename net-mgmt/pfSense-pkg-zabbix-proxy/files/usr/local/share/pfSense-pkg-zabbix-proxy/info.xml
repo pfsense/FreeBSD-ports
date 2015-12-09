@@ -10,19 +10,10 @@
 			More info in &lt;a href=&quot;http://www.zabbix.com/life_cycle_and_release_policy.php&quot;&gt;Zabbix Life Cycle and Release Policy&lt;/a&gt;.]]></descr>
 		<website>http://www.zabbix.com/product.php</website>
 		<category>Services</category>
-		<config_file>https://packages.pfsense.org/packages/config/zabbix-proxy-lts/zabbix-proxy-lts.xml</config_file>
-		<version>0.8.8</version>
+		<version>0.8.9</version>
 		<status>BETA</status>
-		<required_version>2.2</required_version>
+		<required_version>2.3</required_version>
 		<configurationfile>zabbix-proxy-lts.xml</configurationfile>
 		<maintainer>dbaio@bsd.com.br</maintainer>
-		<port_category>net-mgmt</port_category>
-		<run_depends>sbin/zabbix_proxy:net-mgmt/zabbix22-proxy</run_depends>
-		<build_pbi>
-			<custom_name>zabbix22-proxy</custom_name>
-			<port>net-mgmt/zabbix22-proxy</port>
-		</build_pbi>
-		<build_options>zabbix22_SET_FORCE=SQLITE IPV6;zabbix22_UNSET_FORCE=MYSQL JABBER GSSAPI</build_options>
-		<depends_on_package_pbi>zabbix22-proxy-2.2.7-##ARCH##.pbi</depends_on_package_pbi>
 	</package>
 </pfsensepkgs>
