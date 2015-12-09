@@ -72,11 +72,9 @@ if ($_REQUEST['file']!=""){
 else{
 	$pgtitle = "FreeRADIUS: View Configuration";
 	include("head.inc");
-	
+	include("fbegin.inc");
 	?>
-	<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-	<?php include("fbegin.inc"); ?>
-	
+
 	<?php if ($savemsg) print_info_box($savemsg); ?>
 	
 	<form action="freeradius_view_config.php" method="post">
@@ -169,8 +167,6 @@ else{
 		}
 	</script>
 	<?php 
-	include("fend.inc"); 
+	include("foot.inc"); 
 	}
 	?>
-	</body>
-	</html>
