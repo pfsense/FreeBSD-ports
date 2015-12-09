@@ -29,6 +29,7 @@
 	POSSIBILITY OF SUCH DAMAGE.
 */
 require_once("config.inc");
+require_once("globals.inc");
 error_reporting(0);
 global $g;
 // stdin loop
