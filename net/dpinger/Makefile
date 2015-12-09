@@ -2,6 +2,7 @@
 
 PORTNAME=	dpinger
 PORTVERSION=	0.0.1.20151209
+PORTREVISION=	1
 CATEGORIES=	net
 
 MAINTAINER=	garga@FreeBSD.org
@@ -13,7 +14,7 @@ USES=		uidfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	pfsense
 GH_PROJECT=	dpinger
-GH_TAGNAME=	a9c8d1c511
+GH_TAGNAME=	0494d354a1
 
 PLIST_FILES=	bin/dpinger
 
