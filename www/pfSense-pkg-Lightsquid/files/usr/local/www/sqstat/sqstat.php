@@ -108,7 +108,6 @@ window.setTimeout('update_start()', 150);
 </script>
 
 <!-- HTML start -->
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
 <?php include("fbegin.inc"); ?>
 
 <?php
@@ -138,10 +137,7 @@ window.setTimeout('update_start()', 150);
 </div>
 
 <!-- HTML end -->
-<?php include("fend.inc"); ?>
-</body>
-</html>
-
+<?php include("foot.inc"); ?>
 
 <?php
 

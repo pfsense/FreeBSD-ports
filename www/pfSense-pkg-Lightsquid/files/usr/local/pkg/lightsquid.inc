@@ -41,19 +41,7 @@ if (file_exists('/usr/local/pkg/squid.inc')) {
 	echo "No squid.inc found. You must have Squid/Squid3 package installed to use LightSquid.";
 }
 
-global $pfs_version;
-$pfs_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-switch ($pfs_version) {
-	case "2.1":
-		define('LIGHTSQUID_BASE', '/usr/pbi/lightsquid-' . php_uname("m"));
-		break;
-	case "2.2":
-		define('LIGHTSQUID_BASE', '/usr/pbi/lightsquid-' . php_uname("m") . '/local');
-		break;
-	default:
-		define('LIGHTSQUID_BASE', '/usr/local');
-		break;
-}
+define('LIGHTSQUID_BASE', '/usr/local');
 
 // configuration settings !-- CHECK THIS --!
 define('LS_CONFIGPATH',			LIGHTSQUID_BASE . '/etc/lightsquid');
@@ -113,23 +101,6 @@ function lightsquid_install() {
 	// create lightsquid reports directory
 	lightsquid_create_reportdir();
 
-	// ugly PBI hacks
-	if (LIGHTSQUID_BASE != '/usr/local') {
-		// check and fix perl paths
-		lightsquid_fix_perl();
-
-		if (!is_dir('/usr/local/etc/lightsquid') && is_dir(LS_CONFIGPATH)) {
-			symlink(LS_CONFIGPATH, '/usr/local/etc/lightsquid');
-		}
-
-		if (is_dir('/usr/local/www/lightsquid'))
-			$_gc = exec('rm -rf /usr/local/www/lightsquid');
-
-		if (is_dir(LS_WWWPATH)) {
-			symlink(LS_WWWPATH, '/usr/local/www/lightsquid');
-		}
-	}
-
 	// template symlinks
 	foreach (array('novopf', 'novosea') as $tpl) {
 		if (is_dir(LS_TEMPLATEPATH . '/' . $tpl)) {
@@ -143,78 +114,17 @@ function lightsquid_install() {
 function lightsquid_deinstall() {
 	// remove cronjobs
 	lightsquid_setup_cron(false);
-	// undo PBI hacks
-	lightsquid_unfix_perl();
 	if (is_dir("/usr/local/www/sqstat/")) {
 		mwexec("/bin/rm -rf /usr/local/www/sqstat/");
 	}
 }
 
-/*
- * Ugly PBI hacks around perl paths; only needed for pfSense <2.3
- */
-/* Create perl links on package install */
-function lightsquid_fix_perl() {
-	if (LIGHTSQUID_BASE != '/usr/local') {
-		/* Clean up a broken perl link first if needed. */
-		$perl_path = '/usr/bin/perl';
-		if (file_exists($perl_path) && is_link($perl_path)) {
-			$target = readlink($perl_path);
-			if (!file_exists($target) || !is_executable($target)) {
-				unlink($target);
-			}
-		}
-		/* Find usable perl and create perl symlink to $perl_path */
-		if (!file_exists($perl_path)) {
-			if (is_executable("/usr/local/bin/perl")) {
-				symlink("/usr/local/bin/perl", "{$perl_path}");
-			} elseif (is_executable(LIGHTSQUID_BASE . "/bin/perl")) {
-				symlink(LIGHTSQUID_BASE . "/bin/perl", "{$perl_path}");
-			}
-		}
-		if (!is_dir("/usr/local/lib/perl5") && is_dir(LIGHTSQUID_BASE . "/lib/perl5")) {
-			symlink(LIGHTSQUID_BASE . "/lib/perl5", "/usr/local/lib/perl5");
-		}
-	}
-}
-/* Remove perl links on package uninstall */
-function lightsquid_unfix_perl() {
-	if (LIGHTSQUID_BASE != '/usr/local') {
-		$perl_path = '/usr/bin/perl';
-		if (file_exists($perl_path) && is_link($perl_path)) {
-			$target = readlink($perl_path);
-			$ls_target = LIGHTSQUID_BASE . "/bin/perl";
-			if ($target === $ls_target) {
-				unlink($perl_path);
-			}
-		}
-		$perl_libpath = "/usr/local/lib/perl5";
-		if (is_dir($perl_libpath) && is_link($perl_libpath)) {
-			$target = readlink($perl_libpath);
-			$ls_target = LIGHTSQUID_BASE . "/lib/perl5";
-			if ($target === $ls_target) {
-				unlink($perl_libpath);
-			}
-		}
-	}
-}
 
 /*
  * Package configuration routines
  */
 function lightsquid_resync() {
-	global $config, $pfs_version;
-
-	// Ugly PBI hacks
-	if (LIGHTSQUID_BASE != '/usr/local') {
-		// check perl paths
-		if (!file_exists("/usr/bin/perl")) {
-			lightsquid_fix_perl();
-		}
-
-		// Fixup library path so GD can find its libraries for graphs.
-		mwexec("/sbin/ldconfig -m " . LIGHTSQUID_BASE . "/lib/");
-	}
+	global $config;
 
 	lightsquid_create_reportdir();
 	mwexec("/bin/chmod -R u+w " . LIGHTSQUID_BASE . "/etc/lightsquid");

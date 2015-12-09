@@ -1,3 +1,2 @@
 LightSquid is a high performance web proxy reporting tool. Includes proxy
-realtime statistics (SQStat).
-			<strong>Requires Squid3 or Squid package.</strong>
+realtime statistics (SQStat). Requires Squid3 package.
