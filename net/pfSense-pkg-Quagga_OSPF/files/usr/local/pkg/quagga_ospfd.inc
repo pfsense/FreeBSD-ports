@@ -36,15 +36,6 @@ require_once("util.inc");
 
 define('PKG_QUAGGA_CONFIG_BASE', '/var/etc/quagga');
 
-global $pkg_login, $pkg_uid, $pkg_group, $pkg_gid, $pkg_gecos, $pkg_homedir, $pkg_shell;
-$pkg_login	= "quagga";
-$pkg_uid	= "101";
-$pkg_group	= "quagga";
-$pkg_gid	= "101";
-$pkg_gecos	= "Quagga route daemon pseudo user";
-$pkg_homedir	= "/var/etc/quagga";
-$pkg_shell	= "/usr/sbin/nologin";
-
 function quagga_ospfd_get_interfaces() {
 	global $config;
 	$interfaces = get_configured_interface_with_descr();
@@ -71,7 +62,7 @@ function quagga_ospfd_get_interfaces() {
 }
 
 function quagga_ospfd_install_conf() {
-	global $config, $pkg_login, $pkg_uid, $pkg_group, $pkg_gid, $pkg_gecos, $pkg_homedir, $pkg_shell;
+	global $config;
 
 	conf_mount_rw();
 	// Since we need to embed this in a string, copy to a var. Can't embed constnats.
@@ -276,41 +267,20 @@ function quagga_ospfd_install_conf() {
 
 	$carp_ip_status_check = "";
 	if (is_ipaddr($ospfd_conf['carpstatusip'])) {
-
-		$pfs_version = substr(trim(file_get_contents("/etc/version")),0,3);
-		switch ($pfs_version) {
-			case "2.0":
-			case "2.1":
-				/* Check for 2.1 and before */
-				$carpcheckinterface = trim(find_carp_interface($ospfd_conf['carpstatusip']));
-				$carp_ip_status_check = <<<EOF
-
-CARP_STATUS=`/sbin/ifconfig {$carpcheckinterface} | /usr/bin/grep carp: | /usr/bin/awk '{print \$2;}'`
-if [ \${CARP_STATUS} != "MASTER" ]; then
-	exit;
-fi
-
-EOF;
-				break;
-			case "2.2":
-			default:
-				/* Check for 2.2 and later */
-				if (is_array($config['virtualip']['vip'])) {
-					foreach ($config['virtualip']['vip'] as $vip) {
-						if (($vip['mode'] == "carp") && ($vip['subnet'] == $ospfd_conf['carpstatusip'])) {
-							$carpcheckinterface = escapeshellarg(get_real_interface($vip['interface']));
-							$vhid = escapeshellarg($vip['vhid']);
-							$carp_ip_status_check = <<<EOF
+		if (is_array($config['virtualip']['vip'])) {
+			foreach ($config['virtualip']['vip'] as $vip) {
+				if (($vip['mode'] == "carp") && ($vip['subnet'] == $ospfd_conf['carpstatusip'])) {
+					$carpcheckinterface = escapeshellarg(get_real_interface($vip['interface']));
+					$vhid = escapeshellarg($vip['vhid']);
+					$carp_ip_status_check = <<<EOF
 
 CARP_STATUS=`/sbin/ifconfig {$carpcheckinterface} | /usr/bin/grep 'carp:' | /usr/bin/grep 'vhid {$vhid}' | /usr/bin/awk '{print \$2;}'`
 if [ \${CARP_STATUS} != "MASTER" ]; then
 	exit;
 fi
 EOF;
-						}
-					}
 				}
-				break;
+			}
 		}
 	}
 
@@ -331,13 +301,6 @@ EOF;
 /bin/mkdir -p /var/log/quagga
 /bin/rm -f /var/run/quagga/zebra.pid
 /bin/rm -f /var/run/quagga/ospfd.pid
-
-if [ `/usr/sbin/pw groupshow {$pkg_group} 2>&1 | /usr/bin/grep -c "pw: unknown group"` -gt 0 ]; then
-	/usr/sbin/pw groupadd {$pkg_group} -g {$pkg_gid}
-fi
-if [ `/usr/sbin/pw usershow {$pkg_login} 2>&1 | /usr/bin/grep -c "pw: no such user"` -gt 0 ]; then
-	/usr/sbin/pw useradd {$pkg_login} -u {$pkg_uid} -g {$pkg_gid} -c "{$pkg_gecos}" -d {$pkg_homedir} -s {$pkg_shell}
-fi
 
 /usr/sbin/chown -R quagga:quagga {$quagga_config_base}
 /usr/sbin/chown -R quagga:quagga /var/run/quagga
