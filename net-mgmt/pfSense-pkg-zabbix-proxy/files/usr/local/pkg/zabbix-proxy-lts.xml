@@ -45,7 +45,7 @@
 	<name>zabbixproxylts</name>
 	<title>Services: Zabbix Proxy LTS</title>
 	<category>Monitoring</category>
-	<version>0.8.8</version>
+	<version>0.8.9</version>
 	<include_file>/usr/local/pkg/zabbix-proxy-lts.inc</include_file>
 	<addedit_string>Zabbix Proxy has been created/modified.</addedit_string>
 	<delete_string>Zabbix Proxy has been deleted.</delete_string>
@@ -59,7 +59,6 @@
 	</additional_files_needed>
 	<menu>
 		<name>Zabbix Proxy LTS</name>
-		<tooltiptext>Setup Zabbix Proxy LTS specific settings</tooltiptext>
 		<section>Services</section>
 		<url>/pkg_edit.php?xml=zabbix-proxy-lts.xml&amp;id=0</url>
 	</menu>
