@@ -44,7 +44,7 @@
 	]]>
 	</copyright>
 	<name>OpenVPN Client Export</name>
-	<version>1.3.4</version>
+	<version>1.3.5</version>
 	<title>OpenVPN Client Export</title>
 	<include_file>/usr/local/pkg/openvpn-client-export.inc</include_file>
 	<tabs>
@@ -80,9 +80,6 @@
 		<prefix>/etc/inc/priv/</prefix>
 		<item>https://packages.pfsense.org/packages/config/openvpn-client-export/openvpnexport.inc</item>
 	</additional_files_needed>
-	<custom_php_install_command>
-		openvpn_client_export_install();
-	</custom_php_install_command>
 	<custom_php_deinstall_command>
 		openvpn_client_export_deinstall();
 	</custom_php_deinstall_command>
