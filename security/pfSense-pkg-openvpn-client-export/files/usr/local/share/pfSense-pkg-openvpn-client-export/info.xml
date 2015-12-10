@@ -5,15 +5,9 @@
 		<internal_name>openvpn-client-export</internal_name>
 		<descr><![CDATA[Allows a pre-configured OpenVPN Windows Client or Mac OS X's Viscosity configuration bundle to be exported directly from pfSense.]]></descr>
 		<category>Security</category>
-		<depends_on_package_pbi>zip-3.0_1-##ARCH##.pbi p7zip-9.20.1_2-##ARCH##.pbi</depends_on_package_pbi>
-		<build_port_path>/usr/ports/archivers/p7zip</build_port_path>
-		<build_port_path>/usr/ports/archivers/zip</build_port_path>
-		<port_category>security</port_category>
-		<run_depends>share/openvpn/client-export/template/config-import:security/openvpn-client-export bin/zip:archivers/zip bin/7z:archivers/p7zip</run_depends>
-		<version>1.3.4</version>
+		<version>1.3.5</version>
 		<status>RELEASE</status>
-		<required_version>2.2</required_version>
-		<config_file>https://packages.pfsense.org/packages/config/openvpn-client-export/openvpn-client-export.xml</config_file>
+		<required_version>2.3</required_version>
 		<configurationfile>openvpn-client-export.xml</configurationfile>
 	</package>
 </pfsensepkgs>
