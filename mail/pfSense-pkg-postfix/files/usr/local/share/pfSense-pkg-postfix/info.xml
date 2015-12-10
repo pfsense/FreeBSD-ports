@@ -12,14 +12,11 @@
 		</descr>
 		<category>Services</category>
 		<pkginfolink>https://forum.pfsense.org/index.php/topic,40622.0.html</pkginfolink>
-		<config_file>https://packages.pfsense.org/packages/config/postfix/postfix.xml</config_file>
-		<depends_on_package_pbi>postfix-2.11.3_2-##ARCH##.pbi</depends_on_package_pbi>
 		<version>2.5</version>
-		<status>RELEASE</status>
+		<status>RC</status>
 		<required_version>2.3</required_version>
 		<configurationfile>postfix.xml</configurationfile>
 		<port_category>mail</port_category>
-		<run_depends>bin/qshape:mail/postfix</run_depends>
 		<maintainer>marcellocoutinho@gmail.com</maintainer>
 		<build_options>postfix_SET_FORCE=PCRE SASL2 SPF TLS</build_options>
 	</package>
