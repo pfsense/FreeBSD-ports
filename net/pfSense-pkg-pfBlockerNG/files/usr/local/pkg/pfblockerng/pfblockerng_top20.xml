@@ -167,7 +167,7 @@
 		<field>
 			<fieldname>countries4</fieldname>
 			<fielddescr><![CDATA[<strong><center>Top 20<br /> Spammer Countries</center></strong><br />
-				<center>Use CTRL + CLICK to select/unselect countries</center>]]>
+				<center>Use CTRL&nbsp;+&nbsp;CLICK to select/unselect countries</center>]]>
 			</fielddescr>
 			<description><![CDATA[<center><br />IPv4 Countries</center>]]></description>
 			<type>select</type>
@@ -232,7 +232,8 @@
 		</field>
 		<field>
 			<fielddescr>List Action</fielddescr>
-			<description><![CDATA[<br />Default: <strong>Disabled</strong><br /><br />
+			<description><![CDATA[<br />Default: <strong>Disabled</strong>
+				<div id="infoblock" name="listaction">
 				Select the <strong>Action</strong> for Firewall Rules on lists you have selected.<br /><br />
 				<strong><u>'Disabled' Rules:</u></strong> Disables selection and does nothing to selected Alias.<br /><br />
 
@@ -264,7 +265,7 @@
 				<li>'Alias Native' lists are kept in their Native format without any modifications.</li></ul>
 				<font color='red'>Note: </font><ul>When manually creating 'Alias' type firewall rules; <strong>Do not add</strong> (pfB_) to the
 				start of the rule description, use (pfb_) (Lowercase prefix). Manually created 'Alias' rules with 'pfB_' in the
-				description will be auto-removed by package when 'Auto' rules are defined.</ul>]]>
+				description will be auto-removed by package when 'Auto' rules are defined.</ul></div>]]>
 			</description>
 			<fieldname>action</fieldname>
 			<type>select</type>
@@ -282,6 +283,7 @@
 				<option><name>Alias Deny</name><value>Alias_Deny</value></option>
 				<option><name>Alias Permit</name><value>Alias_Permit</value></option>
 				<option><name>Alias Match</name><value>Alias_Match</value></option>
+				<option><name>Alias Native</name><value>Alias_Native</value></option>
 			</options>
 		</field>
 		<field>
@@ -302,7 +304,7 @@
 		</field>
 		<field>
 			<type>info</type>
-			<description><![CDATA[<font color='red'>Note: </font>In general, Auto-Rules are created as follows:<br />
+			<description><![CDATA[<font color='red'>Note:</font>&nbsp; In general, Auto-Rules are created as follows:<br />
 				<ul>Inbound &emsp;- 'any' port, 'any' protocol and 'any' destination<br />
 				Outbound - 'any' port, 'any' protocol and 'any' destination address in the lists</ul>
 				Configuring the Adv. Inbound Rule settings, will allow for more customization of the Inbound Auto-Rules.<br />
@@ -353,9 +355,9 @@
 		<field>
 			<fielddescr>Invert</fielddescr>
 			<fieldname>autonot</fieldname>
-			<description><![CDATA[<div style="padding-left: 22px;"><strong>Invert</strong> - Option to invert the sense of the match.<br />
-				ie - Not (!) Destination Address(es)</div>]]>
-			</description>
+			<sethelp><![CDATA[<strong>Invert</strong> - Option to invert the sense of the match.<br />
+				ie - Not (!) Destination Address(es)]]>
+			</sethelp>
 			<type>checkbox</type>
 			<dontdisplayname/>
 			<usecolspan2/>
