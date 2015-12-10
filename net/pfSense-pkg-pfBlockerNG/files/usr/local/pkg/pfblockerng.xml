@@ -48,7 +48,7 @@
 	<requirements>Describe your package requirements here</requirements>
 	<faq>Currently there are no FAQ items provided.</faq>
 	<name>pfblockerng</name>
-	<version>2.0</version>
+	<version>2.0.2</version>
 	<title>pfBlockerNG: General Settings</title>
 	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
 	<addedit_string>pfBlockerNG: Save General Settings</addedit_string>
