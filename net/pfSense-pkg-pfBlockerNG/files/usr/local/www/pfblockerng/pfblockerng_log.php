@@ -21,7 +21,7 @@
 	Copyright (c) 2015 Bill Meeks
 	All rights reserved.
 
-	Javascript and Integration modifications by J. Nieuwenhuizen
+	Javascript and Integration modifications by J. Nieuwenhuizen and J. Van Breedam
 
 	Redistribution and use in source and binary forms, with or without
 	modification, are permitted provided that the following conditions are met:
@@ -77,10 +77,7 @@ function getlogs($logdir, $log_extentions = array('log')) {
 		}
 	}
 	
-	// Sort the filename
 	asort($log_filenames);
-	
-	// Done
 	return $log_filenames;
 }
 
@@ -88,7 +85,8 @@ function getlogs($logdir, $log_extentions = array('log')) {
 		name	=>	Displayname of the type
 		ext	=>	Log extentions (array for multiple extentions)
 		logdir	=>	Log directory
-		clear	=>	Add clear button (TRUE/FALSE)	*/
+		clear	=>	Add clear button (TRUE/FALSE)
+		download=>	Add download button (TRUE/FALSE)	*/
 
 $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 						'logdir'	=> "{$pfb['logdir']}/",
@@ -174,271 +172,288 @@ $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 						)
 		);
 
-// Check logtypes
-$logtypeid = 'defaultlogs';
-if (isset($_POST['logtype'])) {
-	$logtypeid = htmlspecialchars($_POST['logtype']);
-} elseif (isset($_GET['logtype'])) {
-	$logtypeid = htmlspecialchars($_GET['logtype']);
+$pconfig = array();
+if ($_POST) {
+	$pconfig = $_POST;
 }
 
-// Check if POST has been set
-if (isset($_POST['file'])) {
+// Send logfile to screen
+if ($_REQUEST['ajax']) {
 	clearstatcache();
-	$pfb_logfilename = htmlspecialchars($_POST['file']);
-	$pfb_ext = pathinfo($pfb_logfilename, PATHINFO_EXTENSION);
+	$pfb_logfilename = htmlspecialchars($_REQUEST['file']);
 
 	// Load log
-	if ($_POST['action'] == 'load') {
-		if (!is_file($pfb_logfilename)) {
-			echo "|3|" . gettext('Log file is empty or does not exist') . ".|";
+	if ($_REQUEST['action'] == 'load') {
+		if (!$pfb_logfilename) {
+			print "|3|" . gettext('Log file is empty or does not exist') . ".|";
 		} else {
-			$data = file_get_contents($pfb_logfilename);
+			$data = @file_get_contents($pfb_logfilename);
 			if ($data === false) {
-				echo "|1|" . gettext('Failed to read log file') . ".|";
+				print "|1|" . gettext('Failed to read log file') . ".|";
 			} else {
 				$data = base64_encode($data);
-				echo "|0|" . $pfb_logfilename . "|" . $data . "|";
+				print "|0|" . $pfb_logfilename . "|" . $data . "|";
 			}
 		}
 		exit;
 	}
 }
 
-if (isset($_POST['logFile'])) {
-	$s_logfile = htmlspecialchars($_POST['logFile']);
+// Download/Clear logfile
+if ($pconfig['logFile'] && ($pconfig['download'] || $pconfig['clear'])) {
+	$s_logfile = $pconfig['logFile'];
 
 	// Clear selected file
-	if (isset($_POST['clear'])) {
+	if ($pconfig['clear']) {
 		unlink_if_exists($s_logfile);
 	}
 
 	// Download log
-	if (isset($_POST['download'])) {
+	if ($pconfig['download']) {
 		if (file_exists($s_logfile)) {
-			ob_start(); //important or other posts will fail
+			session_cache_limiter('public');
+			$fd = @fopen($s_logfile, "rb");
+			header("Content-Type: application/octet-stream");
+			header("Content-Length: " . filesize($s_logfile));
+			header("Content-Disposition: attachment; filename=\"" .
+				trim(htmlentities(basename($s_logfile))) . "\"");
 			if (isset($_SERVER['HTTPS'])) {
 				header('Pragma: ');
 				header('Cache-Control: ');
 			} else {
-				header('Pragma: private');
-				header('Cache-Control: private, must-revalidate');
+				header("Pragma: private");
+				header("Cache-Control: private, must-revalidate");
 			}
-			header('Content-Type: application/octet-stream');
-			header('Content-length: ' . filesize($s_logfile));
-			header('Content-disposition: attachment; filename = ' . basename($s_logfile));
-			ob_end_clean(); //important or other post will fail
-			readfile($s_logfile);
+			@fpassthru($fd);
+			@fclose($fd);
 		}
 	}
 } else {
 	$s_logfile = '';
 }
 
-$pgtitle = gettext('pfBlockerNG: Log Browser');
+$pgtitle = array(gettext('pfBlockerNG'), gettext('Log Browser'));
 include_once('head.inc');
-?>
 
-<body link="#000000" vlink="#0000CC" alink="#000000">
-
-<?php
-include_once('fbegin.inc');
 if ($input_errors) {
 	print_input_errors($input_errors);
 }
-?>
-
-<script type="text/javascript" src="/javascript/base64.js"></script>
-<script type="text/javascript">	
-//<![CDATA[
-
-	function loadFile() {
-		jQuery("#fileStatus").html("<?=gettext("Loading file"); ?> ...");
-		jQuery("#fileStatusBox").show(250);
-		jQuery("#filePathBox").show(250);
-		jQuery("#fbTarget").html("");
-
-		jQuery.ajax(
-			"/pfblockerng/pfblockerng_log.php", {
-				type: 'POST',
-				data: "instance=" + jQuery("#instance").val() + "&action=load&file=" + jQuery("#logFile").val(),
-				complete: loadComplete
-			}
-		)
-	}
-
-	function loadComplete(req) {
-		jQuery("#fileContent").show(250);
-		var values = req.responseText.split("|");
-		values.shift(); values.pop();
-
-		if(values.shift() == "0") {
-			var file = values.shift();
-			var fileContent = Base64.decode(values.join("|"));
-			jQuery("#fileStatus").html("<?=gettext("File successfully loaded"); ?>.");
-			jQuery("#fbTarget").html(file);
-			jQuery("#fileRefreshBtn").show();
-			jQuery("#fileContent").prop("disabled", false);
-			jQuery("#fileContent").val(fileContent);
-		} else {
-			jQuery("#fileStatus").html(values[0]);
-			jQuery("#fbTarget").html("");
-			jQuery("#fileRefreshBtn").hide();
-			jQuery("#fileContent").val("");
-			jQuery("#fileContent").prop("disabled", true);
-		}
-	}
-//]]>
-</script>
-
-<?php
-echo("<form action='/pfblockerng/pfblockerng_log.php' method='post' id='formbrowse'>");
 if ($savemsg) {
 	print_info_box($savemsg);
 }
-?>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
+?>
+<table summary="tabs">
 	<tr>
-		<td>
-	<?php
-		$tab_array = array();
-		$tab_array[] = array(gettext("General"), false, "/pkg_edit.php?xml=pfblockerng.xml");
-		$tab_array[] = array(gettext("Update"), false, "/pfblockerng/pfblockerng_update.php");
-		$tab_array[] = array(gettext("Alerts"), false, "/pfblockerng/pfblockerng_alerts.php");
-		$tab_array[] = array(gettext("Reputation"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml");
-		$tab_array[] = array(gettext("IPv4"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml");
-		$tab_array[] = array(gettext("IPv6"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml");
-		$tab_array[] = array(gettext("DNSBL"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml");
-		$tab_array[] = array(gettext("Country"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml");
-		$tab_array[] = array(gettext("Logs"), true, "/pfblockerng/pfblockerng_log.php");
-		$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml");
-		display_top_tabs($tab_array, true);
-	?>
-		</td>
-	</tr>
-	<tr>
-		<td>
-		<div id="mainarea">
-		<table id="maintable" class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="6">
-			<tbody>
-			<tr>
-				<td colspan="2" class="listtopic"><?php echo gettext("Log/File Browser Selections"); ?></td>
-			</tr>
-			<tr>
-				<td colspan="3" class="vncell" align="left"><?php echo gettext("LINKS :"); ?>&emsp;
-				<a href='/firewall_aliases.php' target="_blank"><?php echo gettext("Firewall Alias"); ?></a>&emsp;
-				<a href='/firewall_rules.php' target="_blank"><?php echo gettext("Firewall Rules"); ?></a>&emsp;
-				<a href='/diag_logs_filter.php' target="_blank"><?php echo gettext("Firewall Logs"); ?></a><br /></td>
-			</tr>
-			<tr>
-				<td width="22%" class="vncell"><?php echo gettext('Log/File type:'); ?></td>
-				<td width="78%" class="vtable">
-					<select name="logtype" id="logtype" class="formselect" onChange="document.getElementById('formbrowse').method='post';document.getElementById('formbrowse').submit()">
-			<?php
-				$clearable = FALSE;
-				$downloadable = FALSE;
-				foreach ($pfb_logtypes as $id => $logtype) {
-					$selected = '';
-					if ($id == $logtypeid) {
-						$selected = ' selected';
-						$clearable = $logtype['clear'];
-						$downloadable = $logtype['download'];
-					}
-					echo("<option value='" . $id . "'" . $selected . ">" . $logtype['name'] . "</option>\n");
-				}
-			?>
-					</select>&emsp;<?php echo gettext('Choose which type of log/file you want to view.'); ?>
-				</td>
-			</tr>
-			<tr>
-				<td width="22%" class="vncell"><?php echo gettext('Log/File selection:'); ?></td>
-				<td width="78%" class="vtable">
-					<select name="logFile" id="logFile" class="formselect" onChange="loadFile();">
-			<?php
-				if (isset($pfb_logtypes[$logtypeid]['logs'])) {
-					$logs = $pfb_logtypes[$logtypeid]['logs'];
-				} else {
-					$logs = getlogs($pfb_logtypes[$logtypeid]['logdir'], $pfb_logtypes[$logtypeid]['ext']);
-				}
-				foreach ($logs as $log) {
-					$selected = '';
-					if ($log == $pfb_logfilename) {
-						$selected = ' selected';
-					}
-					echo("<option value='" . $pfb_logtypes[$logtypeid]['logdir'] . $log . "'" . $selected . ">" . $log . "</option>\n");
-				}
-			?>
-					</select>&emsp;<?php echo gettext('Choose which log/file you want to view.'); ?>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" class="listtopic"><?php echo gettext("Log/File Contents"); ?></td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<table width="100%">
-						<tbody>
-						<tr>
-							<td width="75%">
-								<div style="display:none; " id="fileStatusBox">
-									<div class="list" style="padding-left:15px;">
-									<strong id="fileStatus"></strong>
-									</div>
-								</div>
-								<div style="padding-left:15px; display:none;" id="filePathBox">
-									<strong><?=gettext("Log/File Path"); ?>:</strong>
-									<div class="list" style="display:inline;" id="fbTarget"></div>
-								</div>
-							</td>
-							<td align="right">
-								<div style="padding-right:15px; display:none;" id="fileRefreshBtn">
-									<?php
-										echo("<img src='../tree/page-file.png' onclick='loadFile()' title='" . gettext("Refresh current display") . "' alt='refresh' width='17' height='17' border='0' /> &nbsp;");
-										if ($downloadable) {
-											echo("<input type='image' src='../tree/page-file_play.gif' name='download[]' id='download' value='Download' title='" . gettext("Download current logfile") . "' alt='download' width='17' height='17' border='0' /> &nbsp;");
-										}
-										if ($clearable) {
-											echo("<input type='image' src='../tree/page-file_x.gif' name='clear[]' id='clear' value='Clear' title='" . gettext("Clear current logfile") . "' alt='clear' width='17' height='17' border='0' />");
-										}
-									?>
-								</div>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<table width="100%">
-						<tbody>
-						<tr>
-							<td valign="top" class="label">
-							<div style="background:#eeeeee;" id="fileOutput">
-							<textarea id="fileContent" name="fileContent" style="width:100%;" rows="30" wrap="off" disabled></textarea>
-							</div>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</td>
-			</tr>
-			</tbody>
-		</table>
-		</div>
+		<td class="tabnavtbl">
+		<?php
+			$tab_array	= array();
+			$tab_array[]	= array(gettext("General"), false, "/pkg_edit.php?xml=pfblockerng.xml");
+			$tab_array[]	= array(gettext("Update"), false, "/pfblockerng/pfblockerng_update.php");
+			$tab_array[]	= array(gettext("Alerts"), false, "/pfblockerng/pfblockerng_alerts.php");
+			$tab_array[]	= array(gettext("Reputation"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml");
+			$tab_array[]	= array(gettext("IPv4"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml");
+			$tab_array[]	= array(gettext("IPv6"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml");
+			$tab_array[]	= array(gettext("DNSBL"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml");
+			$tab_array[]	= array(gettext("Country"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml");
+			$tab_array[]	= array(gettext("Logs"), true, "/pfblockerng/pfblockerng_log.php");
+			$tab_array[]	= array(gettext("Sync"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml");
+			display_top_tabs($tab_array, true);
+		?>
 		</td>
 	</tr>
 </table>
-</form>
+<?php
 
-<?php if (!isset($_POST['file'])): ?>
-<script type="text/javascript">
+// Create Form
+$form = new Form(false);
+
+// Build 'Shortcut Links' section
+$section = new Form_Section('Log/File Browser selections');
+$section->addInput(new Form_StaticText(
+	NULL,
+	'<small>'
+	. '<a href="/firewall_aliases.php" target="_blank">Firewall Alias</a>&emsp;'
+	. '<a href="/firewall_rules.php" target="_blank">Firewall Rules</a>&emsp;'
+	. '<a href="/diag_logs_filter.php" target="_blank">Firewall Logs</a></small>'
+));
+
+// Collect main logtypes
+$options = array();
+foreach ($pfb_logtypes as $type => $logtype) {
+	$options[$type] = $logtype['name'];
+}
+
+$section->addInput(new Form_Select(
+	'logtype',
+	'Log/File type:',
+	$pconfig['logtype'],
+	$options
+))->setHelp('Choose which type of log/file you want to view.');
+
+// Collect selected logs
+$logs = array();
+$clearable = $downloadable = FALSE;
+$selected = $pconfig['logtype'] ?: 'defaultlogs';
+$pfb_sel = $pfb_logtypes[$selected];
+
+if (isset($pfb_sel['logs'])) {
+	$logs = $pfb_sel['logs'];
+} else {
+	$logs = getlogs($pfb_sel['logdir'], $pfb_sel['ext']);
+}
+
+$logdir		= $pfb_sel['logdir'] ?: '/var/db/pfblockerng';
+$clearable	= $pfb_sel['clear'] ?: FALSE;
+$downloadable	= $pfb_sel['download'] ?: FALSE;
+
+// Add filepath to selected logs
+$options = array();
+foreach ($logs as $id => $log) {
+	if ($id == 'logs' && is_array($log)) {
+		foreach ($log as $opt) {
+			$options["{$logdir}" . "{$opt}"] = $opt;
+		}
+	} else {
+		$options["{$logdir}" . "{$log}"] = $log;
+	}
+}
+
+$section->addInput(new Form_Select(
+	'logFile',
+	'Log/File selection:',
+	$pconfig['logFile'],
+	$options
+))->setHelp('Choose which log/file you want to view.');
+$form->add($section);
+
+
+// Add appropriate buttons for logfile
+$logbtns = '&emsp;&nbsp;<i class="fa fa-refresh icon-pointer icon-primary" onclick="loadFile()" title="Refresh current logfile."></i>';
+if ($downloadable) {
+	$logbtns .= '&emsp;<i class="fa fa-download icon-pointer icon-primary" name="download[]" id="downloadicon" title="Download current logfile."></i>';
+}
+if ($clearable) {
+	$logbtns .= '&emsp;<i class="fa fa-trash icon-pointer icon-primary" name="clear[]" id="clearicon" title="Clear selected logfile."></i>';
+}
+
+$section = new Form_Section('Log/File Contents');
+$section->addInput(new Form_StaticText(
+	NULL,
+	'<div style="display:none;" id="fileStatusBox"><strong id="fileStatus"></strong></div>'
+	. '<div style="display:none;" id="filePathBox"><strong>Log/File Path:&emsp;</strong>'
+	. '<div style="display:inline;" id="fbTarget"></div>'
+	. '<div class="pull-right" display:inline;" id="fileRefreshBtn">'
+	. $logbtns . '</div>'
+));
+$form->add($section);
+
+
+$section = new Form_Section('Log');
+$section->addInput(new Form_Textarea(
+	'fileContent',
+	NULL,
+	''
+))->removeClass('form-control')->addClass('row-fluid col-sm-12')->setAttribute('rows', '30')->setAttribute('wrap', 'off')
+  ->setAttribute('style', 'background:#fafafa;');
+$form->add($section);
+
+$form->addGlobal(new Form_Input('download', 'download', 'hidden', ''));
+$form->addGlobal(new Form_Input('clear', 'clear', 'hidden', ''));
+
+$form->addGlobal(new Form_Input('action', 'action', 'hidden', ''));
+$form->addGlobal(new Form_Input('load', 'load', 'hidden', ''));
+$form->addGlobal(new Form_Input('file', 'file', 'hidden', ''));
+
+$form->addGlobal(new Form_Input('fileStatus', 'fileStatus', 'hidden', ''));
+$form->addGlobal(new Form_Input('fileStatusBox', 'fileStatusBox', 'hidden', ''));
+$form->addGlobal(new Form_Input('filePathBox', 'filePathBox', 'hidden', ''));
+$form->addGlobal(new Form_Input('fbTarget', 'fbTarget', 'hidden', ''));
+$form->addGlobal(new Form_Input('fileRefreshBtn', 'fileRefreshBtn', 'hidden', ''));
+
+print($form);
+?>
+
+<script type="text/javascript">	
 //<![CDATA[
-	document.getElementById("logFile").selectedIndex=-1;
+
+var toggle = false;
+
+function loadFile() {
+	$("#fileStatus").html("<?=gettext("Loading file"); ?> ...");
+	$("#fileStatusBox").show(250);
+	$("#filePathBox").show(250);
+	$("#fbTarget").html("");
+	var ajaxRequest
+
+	ajaxRequest = $.ajax({
+			url: "/pfblockerng/pfblockerng_log.php",
+			type: "post",
+			data: { ajax: "ajax",
+					action: "load",
+					file: $("#logFile").val()
+				},
+			complete: loadComplete
+	});
+}
+
+function loadComplete(req) {
+	$("#fileContent").show(250);
+	var values = req.responseText.split("|");
+	values.shift(); values.pop();
+
+	if(values.shift() == "0") {
+		var file = values.shift();
+		var fileContent = window.atob(values.join("|"));
+		$("#fileStatus").html("<?=gettext("File successfully loaded"); ?>.");
+		$("#fbTarget").html(file);
+		$("#fileRefreshBtn").show();
+		$("#fileContent").prop("disabled", false);
+		$("#fileContent").val(fileContent);
+	} else {
+		$("#fileStatus").html(values[0]);
+		$("#fbTarget").html("");
+		$("#fileRefreshBtn").hide();
+		$("#fileContent").val("");
+		$("#fileContent").prop("disabled", true);
+	}
+}
+
+events.push(function() {
+
+	// Select log type and clear download variable
+	$('#logtype').on('click', function() {
+		$('#download').val('');
+	});
+	$('#logtype').on('change', function() {
+		$('form').submit();
+	});
+
+	// Open selected logfile
+	$('#logFile').on('click', function() {
+		// Toggle used to prevent opening the logfile on first click of dropdown menu
+		if (toggle) {
+			loadFile();
+			// Scroll to the bottom of the page
+			$("html, body").animate({ scrollTop: $(document).height() }, 1000);
+		}
+		toggle = ! toggle
+	});
+
+	// Download selected logfile 
+	$('[id^=downloadicon]').click(function(event) {
+		$('#download').val('download');
+		$('#fileContent').val('');
+		$('form').submit();
+	});
+
+	// Clear selected logfile
+	$('[id^=clearicon]').click(function(event) {
+		$('#clear').val('clear');
+		$('#fileContent').val('');
+		$('form').submit();
+	});
+});
 //]]>
 </script>
-<?php endif; ?>
-<?php include('fend.inc'); ?>
-</body>
-</html>
+<?php include("foot.inc"); ?>
