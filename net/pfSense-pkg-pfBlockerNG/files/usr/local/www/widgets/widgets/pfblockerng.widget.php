@@ -15,7 +15,7 @@
 	Copyright (c) 2015 Electric Sheep Fencing, LLC. All rights reserved.
 	Copyright (c) 2015 Bill Meeks
 
-	Javascript and Integration modifications by J. Nieuwenhuizen
+	Javascript and Integration modifications by J. Nieuwenhuizen and J. Van Breedam
 
 	Redistribution and use in source and binary forms, with or without
 	modification, are permitted provided that the following conditions are met:
@@ -48,15 +48,9 @@ $nocsrf = true;
 pfb_global();
 
 // Image source definition
-$pfb['down']	= "<img src ='/themes/{$g['theme']}/images/icons/icon_interface_down.gif' title='No Rules are Defined using this Alias' alt='' />";
-$pfb['up']	= "<img src ='/themes/{$g['theme']}/images/icons/icon_interface_up.gif' title='Rules are Defined using this Alias (# of fw rules defined)' alt='' />";
-$pfb['err']	= "<img src ='/themes/{$g['theme']}/images/icons/icon_wzd_nsaved.png' title='pf Errors found.' alt='' />";
-
-// Alternating line shading
-$pfb['RowOddClass']	= "style='background-color: #FFFFFF;'";
-$pfb['RowEvenClass']	= "style='background-color: #F0F0F0;'";
-$pfb['RowEvenClass2']	= "style='background-color: #D0D0D0;'";
-$pfb['ColClass']	= 'listMRr';
+$pfb['down']	= '<i class="fa fa-level-down" title="No Rules are Defined using this Alias"></i>';
+$pfb['up']	= '<i class="fa fa-level-up text-success" title="Rules are Defined using this Alias (# of fw rules defined)"></i>';
+$pfb['err']	= '<i class="fa fa-minus-circle text-danger" title="pf Errors found."></i>';
 
 // Widget customizations
 $wglobal_array = array('popup' => 'off', 'sortcolumn' => 'none', 'sortdir' => 'asc', 'maxfails' => 3, 'maxpivot' => 200);
@@ -79,13 +73,15 @@ if (isset($_POST['pfb_submit'])) {
 	}
 
 	write_config('pfBlockerNG: Saved Widget customizations via Dashboard');
-	header('Location: ../../index.php');
+	header("Location: /");
+	exit(0);
 }
 
 // Ackwnowlege failed downloads
-if (isset($_POST['pfblockerngack'])) {
+if ($_POST['pfblockerngack']) {
 	exec("{$pfb['sed']} -i '' 's/FAIL/Fail/g' {$pfb['errlog']}");
-	header('Location: ../../index.php');
+	header("Location: /");
+	exit(0);
 }
 
 // Called by Ajax to update table contents
@@ -95,19 +91,20 @@ if (isset($_GET['getNewCounts'])) {
 }
 
 // Reset DNSBL Alias packet counters
-if (isset($_POST['pfblockerngdnsblclear'])) {
+if ($_POST['pfblockerngdnsblclear']) {
 	$dnsbl_info = array_map('str_getcsv', @file("{$pfb['dnsbl_info']}"));
 	if (!empty ($dnsbl_info)) {
-		$handle = fopen("{$pfb['dnsbl_info']}", 'w');
+		$handle = @fopen("{$pfb['dnsbl_info']}", 'w');
 		foreach ($dnsbl_info as $line) {
 			if (substr($line[0], 0, 1) != '#') {
 				$line[3] = '0';
 			}
 			fputcsv($handle, $line);
 		}
-		fclose ($handle);
+		@fclose ($handle);
 	}
-	header('Location: ../../index.php');
+	header("Location: /");
+	exit(0);
 }
 
 // Sort widget table according to user configuration
@@ -154,7 +151,8 @@ function pfBlockerNG_get_counts() {
 	/* Alias Table Definitions -	'update'	- Last Updated Timestamp
 					'rule'		- Total number of Firewall rules per alias
 					'count'		- Total Line Count per alias
-					'packets'	- Total number of pf packets per alias */
+					'packets'	- Total number of pf packets per alias
+					'id'		- Alias key value				*/
 
 	exec("{$pfb['pfctl']} -vvsTables | {$pfb['grep']} -A4 'pfB_'", $pfb_pfctl);
 	if (!empty($pfb_pfctl)) {
@@ -228,6 +226,15 @@ function pfBlockerNG_get_counts() {
 		}
 	}
 
+	// Collect pfB Alias ID for popup
+	if (isset($config['aliases']['alias'])) {
+		foreach ($config['aliases']['alias'] as $key => $alias) {
+			if (isset($pfb_table[$alias['name']])) {
+				$pfb_table[$alias['name']]['id'] = $key;
+			}
+		}
+	}
+
 	// DNSBL collect statistics
 	if ($pfb['enable'] == 'on' && $pfb['dnsbl'] == 'on' && file_exists ("{$pfb['dnsbl_info']}")) {
 		$dnsbl_info = array_map('str_getcsv', @file("{$pfb['dnsbl_info']}"));
@@ -269,12 +276,11 @@ function pfBlockerNG_get_table($mode='') {
 	if (!empty($pfb_table)) {
 		foreach ($pfb_table as $pfb_alias => $values) {
 			if (strpos($pfb_alias, 'DNSBL_') !== FALSE) {
-				$alias_span = $alias_span_end = '';
 				$packets = $values['packets'];
 				$dnsbl = TRUE;
 			} else {
 				// Add firewall rules count associated with alias
-				$values['img'] = $values['img'] . "<span title='Alias Firewall Rule count' ><small>({$values['rule']})</small></span>";
+				$values['img'] = $values['img'] . "&nbsp;&nbsp;<span title=\"Alias Firewall Rule count\" ><small>({$values['rule']})</small></span>";
 
 				// If packet fence errors found, display error.
 				if ($pfb['pfctlerr']) {
@@ -283,12 +289,9 @@ function pfBlockerNG_get_table($mode='') {
 
 				// Alias table popup
 				if ($values['count'] > 0 && $pfb['popup'] == 'on') {
-					$alias_popup = rule_popup($pfb_alias, '', '', '');
-					$alias_span = $alias_popup['src'];
-					$alias_span_end = $alias_popup['src_end'];
-				}
-				else {
-					$alias_span = $alias_span_end = '';
+					$pfb_alias = "<a href=\"/firewall_aliases_edit.php?id={$values['id']}\" data-popover=\"true\" "
+						. " data-trigger=\"hover focus\" title=\"pfBlockerNG Alias details\" data-content=\""
+						. alias_info_popup($values['id']) . "\" data-html=\"true\">{$pfb_alias}</a>";
 				}
 
 				// Packet column pivot to Alerts Tab
@@ -300,8 +303,8 @@ function pfBlockerNG_get_table($mode='') {
 						$aentries = $values['packets'];
 					}
 
-					$packets  = "<a target='_blank' href='/pfblockerng/pfblockerng_alerts.php?rule={$rules}&entries={$aentries}' ";
-					$packets .= "title='Click to view these packets in Alerts tab' >{$values['packets']}</a>";
+					$packets  = "<a target=\"_blank\" href=\"/pfblockerng/pfblockerng_alerts.php?rule={$rules}&entries={$aentries}\" ";
+					$packets .= "title=\"Click to view these packets in Alerts tab\" >{$values['packets']}</a>";
 				}
 				else {
 					$packets = $values['packets'];
@@ -309,23 +312,15 @@ function pfBlockerNG_get_table($mode='') {
 			}
 
 			if ($mode == 'js') {
-				echo $response = "{$alias_span}{$pfb_alias}{$alias_span_end}||{$values['count']}||{$packets}||{$values['update']}||{$values['img']}\n";
+				print $response = "{$pfb_alias}||{$values['count']}||{$packets}||{$values['update']}||{$values['img']}\n";
 			}
 			else {
-				// Print darker shading for DNSBL
-				if ($dnsbl) {
-					$RowClass = $dcounter % 2 ? $pfb['RowEvenClass2'] : $pfb['RowOddClass'];
-					$dcounter++;
-				} else {
-					$RowClass = $counter % 2 ? $pfb['RowEvenClass'] : $pfb['RowOddClass'];
-					$counter++;
-				}
-				echo (" <tr {$RowClass}>
-					<td class='listMRr ellipsis'>{$alias_span}{$pfb_alias}{$alias_span_end}</td>
-					<td class='listMRr' align='center'>{$values['count']}</td>
-					<td class='listMRr' sorttable_customkey='{$values['packets']}' align='center'>{$packets}</td>
-					<td class='listMRr' align='center'>{$values['update']}</td>
-					<td class='listMRr' align='center'>{$values['img']}</td>
+				print ("<tr>
+					<td><small>{$pfb_alias}</small></td>
+					<td><small>{$values['count']}</small></td>
+					<td><small>{$packets}</small></td>
+					<td><small>{$values['update']}</small></td>
+					<td>{$values['img']}</td>
 					</tr>");
 			}
 		}
@@ -334,33 +329,33 @@ function pfBlockerNG_get_table($mode='') {
 
 // Status indicator if pfBlockerNG is enabled/disabled
 if ($pfb['enable'] == 'on') {
-	$mode = 'pass';
+	$mode = 'text-success';
 	$pfb_msg = 'pfBlockerNG is Active.';
 
 	if ($pfb['config']['enable_dup'] == 'on') {
 		// Check Masterfile Database Sanity
 		$db_sanity = exec("{$pfb['grep']} 'Sanity check' {$pfb['logdir']}/pfblockerng.log | {$pfb['grep']} -o 'PASSED' | tail -1");
 		if ($db_sanity != 'PASSED') {
-			$mode = 'reject';
+			$mode = 'text-warning';
 			$pfb_msg = 'pfBlockerNG deDuplication is out of sync. Perform a Force Reload to correct.';
 		}
 	}
 } else {
-	$mode = 'block';
+	$mode = '';
 	$pfb_msg = 'pfBlockerNG is Disabled.';
 }
-$pfb_status = "/themes/{$g['theme']}/images/icons/icon_{$mode}.gif";
+$pfb_status = "fa fa-check-circle {$mode}";
 
 // Status indicator if DNSBL is actively running
 if ($pfb['dnsbl'] == 'on' && $pfb['unbound_state'] == 'on' && $pfb['enable'] == 'on' &&
     strpos(file_get_contents("{$pfb['dnsbldir']}/unbound.conf"), 'pfb_dnsbl') !== FALSE) {
-	$mode = 'pass';
+	$mode = 'text-success';
 	$dnsbl_msg = 'DNSBL is Active.';
 } else {
-	$mode = 'block';
+	$mode = '';
 	$dnsbl_msg = 'DNSBL is Disabled.';
 }
-$dnsbl_status = "/themes/{$g['theme']}/images/icons/icon_{$mode}.gif";
+$dnsbl_status = "fa fa-check-circle {$mode}";
 
 // Collect total IP/Cidr counts
 $dcount = exec("{$pfb['cat']} {$pfb['denydir']}/*.txt | {$pfb['grep']} -cv '^#\|^$\|^1\.1\.1\.1$'");
@@ -378,174 +373,226 @@ if (file_exists("{$pfb['supptxt']}")) {
 
 // Collect any failed downloads
 exec("{$pfb['grep']} 'FAIL' {$pfb['errlog']} | {$pfb['grep']} $(date +%m/%d/%y)", $results);
+
 $results = array_reverse($results);
-
+$entries = count($results);
 ?>
-	<!-- Widget customization settings icon -->
-	<input type="hidden" id="pfblockerng-config" name="pfblockerng-config" value="" />
-	<div id="pfblockerng-settings" class="widgetconfigdiv" style="display:none;outline: none;">
-	<form action="/widgets/widgets/pfblockerng.widget.php" method="post" name="pfb_iform">
-		<table id="widgettable" class="none" width="100%" border="0" cellpadding="0" cellspacing="0">
-		<tr>
-			<td width="22%" class="vncellt" valign="top" align="right" ><input type="checkbox" name="pfb_popup" class="formfld unknown" id="pfb_popup"
-				title="Enabling this option, will Popup a Table showing all of the Alias Table IPs"
-				value="on" <?php if ($pfb['popup'] == "on") echo 'checked'; ?> /></td>
-			<td width="78%" class="listr" ><?=gettext("Enable Alias Table Popup");?></td>
-		</tr>
-		<tr>
-			<td width="22%" class="vncellt" valign="top" ><input type="text" size="3" name="pfb_maxfails" class="formfld unknown" id="pfb_maxfails"
-				title="The maximum number of Failed Download Alerts to be shown. Refer to the error.log for add'l details"
-				value="<?= $pfb['maxfails'] ?>" /></td>
-			<td width="78%" class="listr" ><?=gettext("Enter number of download fails to display (default:3)");?></td>
-		</tr>
-		<tr>
-			<td width="22%" class="vncellt" valign="top" ><input type="text" size="3" name="pfb_maxpivot" class="formfld unknown" id="pfb_maxpivot"
-				title="The maximum number of Packets to pivot to the Alerts Tab"
-				value="<?= $pfb['maxpivot'] ?>" /></td>
-			<td width="78%" class="listr" ><?=gettext("Enter 'max' Packets for Alerts Tab pivot (default:200)");?></td>
-		</tr>
-		<tr>
-			<td width="22" class="vncellt" valign="top" >
-				<select name="pfb_sortcolumn" id="pfb_sortcolumn" class="formselect" title="The Column to be sorted" >
-				<?php
-				$pfbsort = array( 'none' => 'None', 'alias' => 'Alias', 'count' => 'Count', 'packets' => 'Packets', 'updated' => 'Updated' );
-				foreach ($pfbsort as $sort => $sorttype): ?>
-					<option value="<?=$sort; ?>" <?php if ($sort == $pfb['sortcolumn']) echo 'selected'; ?> ><?=$sorttype; ?></option>
-				<?php endforeach; ?>
-				</select></td>
-			<td width="78%" class="listr" ><?=gettext("Enter Sort Column");?></td>
-		</tr>
-		</table>
 
-		<table id="widgettablesummary" width="100%" border="0" cellpadding="0" cellspacing="0">
-		<tr>
-			<td width="92%" class="vncellt" >&nbsp;<?=gettext("Sort");?>
-				<input name="pfb_sortdir" type="radio" value="asc" <?php if ($pfb['sortdir'] == "asc") echo 'checked'; ?> />
-					<?=gettext("Ascending");?>
-				<input name="pfb_sortdir" type="radio" value="des" <?php if ($pfb['sortdir'] == "des") echo 'checked'; ?> />
-					<?=gettext("Descending");?></td>
-			<td width="8%" class="vncellt" valign="top" ><input id="pfb_submit" name="pfb_submit" type="submit" class="formbtns" value="Save" /></td>
-		</tr>
-		</table>
-	</form>
-	</div>
+<form id="formicons" action="/widgets/widgets/pfblockerng.widget.php" method="post" class="form-horizontal">
+<input type="hidden" name="pfblockerngack" id="pfblockerngack" value="">
+<input type="hidden" name="pfblockerngdnsblclear" id="pfblockerngdnsblclear" value="">
 
-	<!-- Print widget status bar items -->
-	<div class="marinarea">
-	<table id="pfb_table" width="100%" border="0" cellspacing="0" cellpadding="0">
+	<!-- Print failed downloads (if any) -->
+	<?php if (!empty($results)): ?>
+		<ol><small>
+<?
+		$counter = 1;
+		foreach ($results as $result) {
+			if ($counter > $pfb['maxfails'] && $entries > $pfb['maxfails']) {
+				// To many errors stop displaying
+				print (($entries - $pfb['maxfails']) . gettext(' more error(s)...'));
+				break;
+			}
+			if ($counter == 1) {
+				print ("<li>{$result}&emsp;<i class=\"fa fa-trash icon-pointer\" id=\"pfblockerngackicon\"
+						title=\"" . gettext("Clear Failed Downloads") . "\" ></i></li>");
+			} else {
+				print ("<li>{$result}</li>");
+			}
+			$counter++;
+		}
+?>
+		</small></ol>
+	<?php else: ?>
+		<!-- Print MaxMind version when failed downloads is null -->
+		<p><?="&emsp;<small>MaxMind: {$maxver}</small>"?></p>
+	<?php endif; ?>
+
+	<!-- Print Status header -->
+	<table class="table table-condensed">
 		<thead>
+			<th width=" 5%"><!-- Status icon    --></th>
+			<th width="17%"><!-- IP/DNSBL count --></th>
+			<th width="17%"><!-- Permit count   --></th>
+			<th width="17%"><!-- Match count    --></th>
+			<th width="17%"><!-- Native count   --></th>
+			<th width="17%"><!-- Supp count     --></th>
+			<th width="10%"><!-- Icons          --></th>
+		</thead>
+		<tbody>
 		<tr>
-			<td style="font-size:10px;white-space: nowrap;">&nbsp;<img src="<?= $pfb_status ?>"
-				width="13" height="13" border="0" title="<?=gettext($pfb_msg) ?>" alt="" />
-
-				<?=gettext("&nbsp;") ?>
+			<td>
+				<i class="<?=$pfb_status?>" title="<?=gettext($pfb_msg)?>"></i>
+			</td>
+			<td>
 				<?php if ($dcount != 0): ?>
-					<?php echo("IP- Deny: <strong>{$dcount}</strong>"); ?>
+					<?=("Deny:<strong>{$dcount}</strong>")?>
 				<?php endif; ?>
+			</td>
+			<td>
 				<?php if ($pcount != 0): ?>
-					<?php echo("Permit: <strong>{$pcount}</strong>"); ?>
+					<?=("Permit:<strong>{$pcount}</strong>")?>
 				<?php endif; ?>
+			</td>
+			<td>
 				<?php if ($mcount != 0): ?>
-					<?php echo("Match: <strong>{$mcount}</strong>"); ?>
+					<?=("Match:<strong>{$mcount}</strong>")?>
 				<?php endif; ?>
-					<?php if ($ncount != 0): ?>
-				<?php echo("Native: <strong>{$ncount}</strong>"); ?>
-					<?php endif; ?>
+			<td>
+				<?php if ($ncount != 0): ?>
+					<?=("Native:<strong>{$ncount}</strong>")?>
+				<?php endif; ?>
+			</td>
+			<td>
 				<?php if ($pfbsupp_cnt != 0): ?>
-					<?php echo("Supp: <strong>{$pfbsupp_cnt}</strong>"); ?>
+					<?=("Supp:<strong>{$pfbsupp_cnt}</strong>")?>
 				<?php endif; ?>
-				<?=gettext("&nbsp;") ?>
-
-				<a target='_blank' href="pfblockerng/pfblockerng_log.php"><img src="/themes/<?=$g['theme']; ?>/images/icons/icon_logs.gif"
-					width="13" height="13" border="0" title="<?=gettext("View pfBlockerNG Logs TAB") ?>" alt="" /></a>&nbsp;
-
-				<?php if (!empty($results)): ?>		<!--Hide "Ack" Button when Failed Downloads are Empty-->
-					<form  style="display:inline;" action="/widgets/widgets/pfblockerng.widget.php" method="post" name="widget_pfblockerng_ack">
-						<input type="hidden" value="clearack" name="pfblockerngack" />
-						<input class="vexpl" type="image" name="pfblockerng_ackbutton" src="/themes/<?=$g['theme']; ?>
-							/images/icons/icon_x.gif" width="14" height="14" border="0" title="<?=gettext("Clear Failed Downloads") ?>"/>
-					</form>
-				<?php endif; ?>
+			</td>
+			<td>
+				<a target="_blank" href="pfblockerng/pfblockerng_log.php" title="<?=gettext("View pfBlockerNG Logs TAB")?>">
+					<i class="fa fa-info-circle icon-pointer"></i></a>&nbsp;
 			</td>
 		</tr>
 
 		<?php if ($pfb['dnsbl'] == 'on'): ?>	<!--Enable DNSBL widget statistics if enabled-->
 		<tr>
-			<td style="font-size:10px">&nbsp;<img src="<?= $dnsbl_status ?>" width="13" height="13" border="0"
-				title="<?=gettext($dnsbl_msg); ?>" alt="" />
+			<td>
+				<i class="<?=$dnsbl_status?>" title="<?=gettext($dnsbl_msg)?>"></i>
+			</td>
+			<td>
 				<?php if ($scount != 0): ?>
-					<?php echo("&nbsp;&nbsp;DNSBL- <strong>{$scount}</strong>&nbsp;&nbsp;"); ?>
+					<?=("DNSBL:<strong>{$scount}</strong>")?>
 				<?php endif; ?>
-				<form style="display:inline"; action="/widgets/widgets/pfblockerng.widget.php" method="post" name="widget_pfblockerng_dnsblclear">
-					<input type="hidden" value="dnsblclear" name="pfblockerngdnsblclear" />
-					<input class="vexpl" type="image" name="dnsblclearbutton" src="/themes/<?=$g['theme']; ?>/images/icons/icon_x.gif"
-						width="14" height="14" border="0" title="<?=gettext("Clear DNSBL Packets") ?>"/>
-				</form>
+			</td>
+			<td></td><td></td><td></td><td></td>
+			<td>
+				<i class="fa fa-trash icon-pointer" id="pfblockerngdnsblclearicon" title="<?=gettext("Clear DNSBL Packets")?>"></i>
 			</td>
 		</tr>
 		<?php endif; ?>
-
-		<tr>
-			<td >
-				<?php echo "<br />&nbsp;MaxMind: {$maxver}"; ?>
-			</td>
-		</tr>
-		</thead>
+		</tbody>
 	</table>
-	</div>
 
-	<table id="pfb-tblfails" width="100%" border="0" cellspacing="0" cellpadding="0">
-	<tbody id="pfb-fails">
-<?php
-
-// Report any failed downloads
-if (!empty($results)) {
-	$counter = 1;
-	$entries = count($results);
-	foreach ($results as $result) {
-		$RowClass = $counter % 2 ? $pfb['RowEvenClass'] : $pfb['RowOddClass'];
-		if ($counter > $pfb['maxfails'] && $entries > $pfb['maxfails']) {
-			// To many errors stop displaying
-			echo("<tr {$RowClass}><td class='{$pfb['ColClass']}'>" . ($entries - $pfb['maxfails']) . ' more error(s)...</td><tr>');
-			break;
-		}
-		echo("<tr {$RowClass}><td class='{$pfb['ColClass']}'>{$result}</td><tr>");
-		$counter++;
-	}
-}
-
-?>
 	<!-- Print main table header -->
-	</tbody>
+	<table id="pfb-tbl" class="table table-striped table-hover table-condensed sortable-theme-bootstrap" data-sortable>
+		<thead>
+			<tr>
+				<th><?=gettext("Alias");?></th>
+				<th title="The count can be a mixture of Single IPs or CIDR values"><?=gettext("Count");?></th>
+				<th title="Packet Counts can be cleared by the pfSense filter_configure() function.
+					Make sure Rule Descriptions start with 'pfB_'"><?=gettext("Packets");?></th>
+				<th title="Last Update (Date/Time) of the Alias"><?=gettext("Updated");?></th>
+				<th><?=$pfb['down']?>&nbsp;<?=$pfb['up']?></th>
+			</tr>
+		</thead>
+		<tbody id="pfbNG-entries">
+			<!-- Print main table body, subsequent refresh by javascript function -->
+			<?=pfBlockerNG_get_table()?>
+		</tbody>
 	</table>
-	<table id="pfb-tbl" width="100%" class="sortable" border="0" cellspacing="0" cellpadding="0">
-	<thead>
-		<tr class="sortableHeaderRowIdentifier">
-			<th class="widgetsubheader" axis="string" align="center"><?=gettext("Alias");?></th>
-			<th title="The count can be a mixture of Single IPs or CIDR values" class="widgetsubheader" axis="string"
-				align="center"><?=gettext("Count");?></th>
-			<th title="Packet Counts can be cleared by the pfSense filter_configure() function. Make sure Rule Descriptions start with 'pfB_'"
-				class="widgetsubheader" axis="string" align="center"><?=gettext("Packets");?></th>
-			<th title="Last Update (Date/Time) of the Alias " class="widgetsubheader" axis="string" align="center"><?=gettext("Updated");?></th>
-			<th class="widgetsubheader" axis="string" align="center"><?php echo $pfb['down']; ?><?php echo $pfb['up']; ?></th>
-		</tr>
-	</thead>
-	<tbody id="pfbNG-entries">
+</form>
 
-<!-- Print main table body, subsequent refresh by javascript function -->
-<?php pfBlockerNG_get_table(); ?>
+<!-- Widget customization settings wrench -->
+</div>
+<div class="panel-footer collapse">
 
-</tbody>
-</table>
+<form action="/widgets/widgets/pfblockerng.widget.php" method="post" class="form-horizontal">
+	<div class="form-group">
+		<label class="col-sm-8 control-label">Enable Alias Table Popup</label>
+		<div class="col-sm-2 checkbox">
+			<label><input type="checkbox" name="pfb_popup" value="on"
+				<?=($pfb['popup'] == "on" ? 'checked' : '')?> /></label>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="pfb_maxfails" class="col-sm-8 control-label">Enter number of download fails to display (default:3)</label>
+		<div class="col-sm-2">
+			<input type="number" name="pfb_maxfails" value="<?=$pfb['maxfails']?>"
+				min="1" max="20" class="form-control" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="pfb_maxpivot" class="col-sm-8 control-label">Enter 'max' Packets for Alerts Tab pivot (default:200)</label>
+		<div class="col-sm-2">
+			<input type="number" name="pfb_maxpivot" value="<?=$pfb['maxpivot']?>"
+				min="1" max="500" class="form-control" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="pfb_sortcolumn" class="col-sm-8 control-label">Enter Sort Column</label>
+		<div class="col-sm-3">
+			<select name="pfb_sortcolumn" class="form-control">
+			<?php foreach (array('none' => 'None', 'alias' => 'Alias', 'count' => 'Count', 'packets' => 'Packets', 'updated' => 'Updated')
+				as $sort => $sorttype):?>
+				<option value="<?=$sort?>" <?=($sort == $pfb['sortcolumn'] ? 'selected' : '')?> ><?=$sorttype?></option>
+			<?php endforeach;?>
+			</select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="pfb_sortdir" class="col-sm-8 control-label">Select sort direction</label>
+		<div class="col-sm-3">
+			<label><input type="radio" name="pfb_sortdir" id="pfb_sortdir_asc" value="asc"
+				<?=($pfb['sortdir'] == "asc" ? 'checked' : '')?> />Ascending</label>
+			<label><input type="radio" name="pfb_sortdir" id="pfb_sortdir_des" value="des"
+				<?=($pfb['sortdir'] == "des" ? 'checked' : '')?> />Descending</label>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-6 col-sm-6">
+			<button type="submit" name="pfb_submit" class="btn btn-primary">Save</button>
+		</div>
+	</div>
+</form>
 
 <script type="text/javascript">
 //<![CDATA[
 <!-- update every 10000 ms -->
-	var pfBlockerNGupdateDelay = 10000;
+var pfBlockerNGupdateDelay = 10000;
 
-<!-- needed to display the widget settings menu -->
-	selectIntLink = "pfblockerng-configure";
-	textlink = document.getElementById(selectIntLink);
-	textlink.style.display = "inline";
+events.push(function() {
+
+	// Keep popover open on mouseover
+	// Reference: http://jsfiddle.net/wojtekkruszewski/zf3m7/22/
+	var originalLeave = $.fn.popover.Constructor.prototype.leave;
+	$.fn.popover.Constructor.prototype.leave = function(obj){
+		var self = obj instanceof this.constructor ?
+			obj : $(obj.currentTarget)[this.type](this.getDelegateOptions()).data('bs.' + this.type)
+		var container, timeout;
+
+		originalLeave.call(this, obj);
+
+		if(obj.currentTarget) {
+			container = $(obj.currentTarget).siblings('.popover')
+			timeout = self.timeout;
+			container.one('mouseenter', function(){
+				//We entered the actual popover - call off the dogs
+				clearTimeout(timeout);
+				var pfBlockerNGupdateDelay = 90000;	// Increase pfBNG refresh interval
+				clearInterval(pfBlockerNGtimer);
+				pfBlockerNGtimer = setInterval('fetch_new_pfBlockerNGcounts()', pfBlockerNGupdateDelay);
+				//Let's monitor popover content instead
+				container.one('mouseleave', function(){
+					$.fn.popover.Constructor.prototype.leave.call(self, self);
+					var pfBlockerNGupdateDelay = 10000;	// Reset pfBNG refresh interval
+					clearInterval(pfBlockerNGtimer);
+					pfBlockerNGtimer = setInterval('fetch_new_pfBlockerNGcounts()', pfBlockerNGupdateDelay);
+				});
+			})
+		}
+	};
+	$('body').popover({ selector: '[data-popover]', trigger: 'click hover', placement: 'right', delay: {show: 50, hide: 400}});
+
+	$('[id^=pfblockerngackicon').click(function(event) {
+		$('#pfblockerngack').val('true');
+		$('#formicons').submit();
+	});
+
+	$('[id^=pfblockerngdnsblclearicon').click(function(event) {
+		$('#pfblockerngdnsblclear').val('true');
+		$('#formicons').submit();
+	});
+});
+
 //]]>
 </script>
