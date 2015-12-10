@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ========================================================================== */
+/*
+    postfix_domains.xml
+    part of the Postfix package for pfSense
+    Copyright (C) 2010 Erik Fonnesbeck
+    Copyright (C) 2011-2015 Marcello Coutinho
+
+    All rights reserved.            
+			                                                                  */
+/* ========================================================================== */
+/*
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+     1. Redistributions of source code must retain the above copyright notice,
+        this list of conditions and the following disclaimer.
+
+     2. Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+                                                                              */
+/* ========================================================================== */
+	]]>
+	</copyright>
+	<description>Describe your package here</description>
+	<requirements>Describe your package requirements here</requirements>
+	<faq>Currently there are no FAQ items provided.</faq>
+	<name>postfixdomains</name>
+	<version>1.0</version>
+	<title>Services: Postfix relay and antispam</title>
+	<include_file>/usr/local/pkg/postfix.inc</include_file>
+	<menu>
+		<name>Postfix Forwarder</name>
+		<tooltiptext>Configure Postfix Forwarder</tooltiptext>
+		<section>Services</section>
+		<url>pkg_edit.php?xml=postfix.xml&amp;id=0</url>
+	</menu>
+	<menu>
+		<name>Search Email</name>
+		<tooltiptext>Search postfix logs</tooltiptext>
+		<section>Diagnostics</section>
+		<url>/postfix_search.php</url>
+	</menu>
+<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=postfix.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Domains</text>
+			<url>/pkg_edit.php?xml=postfix_domains.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Recipients</text>
+			<url>/pkg_edit.php?xml=postfix_recipients.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Access Lists</text>
+			<url>/pkg_edit.php?xml=postfix_acl.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Antispam</text>
+			<url>/pkg_edit.php?xml=postfix_antispam.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=postfix_sync.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>View config</text>
+			<url>/postfix_view_config.php</url>
+		</tab>
+		<tab>
+			<text>Search mail</text>
+			<url>/postfix_search.php</url>
+		</tab>
+		<tab>
+			<text>Queue</text>
+			<url>/postfix_queue.php</url>
+		</tab>
+		<tab>
+			<text>About</text>
+			<url>/postfix_about.php</url>
+		</tab>
+
+</tabs>
+	<fields>
+		<field>
+			<name>Domains to Forward</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Forwarding</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+			<rowhelperfield>
+				<fielddescr>Domain</fielddescr>
+				<fieldname>domain</fieldname>
+				<description>Enter the domain here (ex: example.com)</description>
+				<type>input</type>
+				<size>30</size>
+			</rowhelperfield>
+			<rowhelperfield>
+				<fielddescr>Mail Server IP</fielddescr>
+				<fieldname>mailserverip</fieldname>
+				<description>Enter the mail server IP to forward to here.</description>
+				<type>input</type>
+				<size>40</size>
+			</rowhelperfield>
+			</rowhelper>
+		</field>
+	</fields>
+	<custom_php_install_command>
+		postfix_php_install_command();
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		postfix_php_deinstall_command();
+	</custom_php_deinstall_command>
+	<custom_php_validation_command>
+		postfix_validate_input($_POST, $input_errors);
+	</custom_php_validation_command>	
+	<custom_php_resync_config_command>
+		sync_package_postfix();
+	</custom_php_resync_config_command>
+</packagegui>
