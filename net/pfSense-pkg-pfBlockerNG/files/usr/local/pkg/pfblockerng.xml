@@ -214,23 +214,20 @@
 		<field>
 			<fielddescr>Enable pfBlockerNG</fielddescr>
 			<fieldname>enable_cb</fieldname>
+			<description>Enable/Disable</description>
 			<type>checkbox</type>
-			<description><![CDATA[<div style="padding-right: 56px;">Enable/Disable</div>]]></description>
-			<usecolspan2/>
-			<combinefields>begin</combinefields>
 		</field>
 		<field>
+			<fielddescr>Keep Settings</fielddescr>
 			<fieldname>pfb_keep</fieldname>
+			<description>Keep settings</description>
 			<type>checkbox</type>
-			<description><![CDATA[Keep Settings: <br /><font color='red'>Note:</font> - with 'Keep settings' enabled, pfBlockerNG will maintain run state
-				on Installation/Upgrade<br />If 'Keep Settings' is not 'enabled' on pkg Install/De-Install, all settings will be Wiped!<br /><br />
+			<sethelp><![CDATA[<font color='red'>Note:</font> - with 'Keep settings' enabled, pfBlockerNG will maintain run state
+				on Installation/Upgrade.<br /> If 'Keep Settings' is not 'enabled' on pkg Install/De-Install, all settings will be Wiped!<br /><br />
 				<font color='red'>Note: </font>To clear all downloaded lists, uncheck these two checkboxes and 'Save'.
 				re-check both boxes and run a 'Force Update']]>
-			</description>
+			</sethelp>
 			<default_value>on</default_value>
-			<dontdisplayname/>
-			<usecolspan2/>
-			<combinefields>end</combinefields>
 		</field>
 		<field>
 			<fielddescr>CRON Settings</fielddescr>
@@ -240,8 +237,7 @@
 			<fielddescr>Hour Interval</fielddescr>
 			<fieldname>pfb_interval</fieldname>
 			<description><![CDATA[Default: <strong>Every hour</strong><br />
-				Select the cron hour interval. The interval selected will be used with the start min/hour below.<br />
-				<strong>Ensure that all list 'Update settings' are within the selected interval/start hour settings.</strong>]]>
+				Select the Cron hour interval.]]>
 			</description>
 			<type>select</type>
 			<options>
@@ -261,7 +257,7 @@
 			<fielddescr>Start Min</fielddescr>
 			<fieldname>pfb_min</fieldname>
 			<description><![CDATA[Default: <strong>:00</strong><br />
-				Select Cron Update Minute]]>
+				Select the Cron update minute.]]>
 			</description>
 			<type>select</type>
 			<options>
@@ -277,7 +273,7 @@
 			<fielddescr>Start Hour</fielddescr>
 			<fieldname>pfb_hour</fieldname>
 			<description><![CDATA[Default: <strong>0</strong><br />
-				Select the start hour]]>
+				Select the Cron start hour.]]>
 			</description>
 			<type>select</type>
 			<options>
@@ -312,7 +308,7 @@
 		<field>
 			<fielddescr><![CDATA['Daily/Weekly'<br />Start Hour]]></fielddescr>
 			<fieldname>pfb_dailystart</fieldname>
-			<description><![CDATA[Default: <strong>0</strong><br />This is used by the 'Daily/Weekly' scheduler only.]]></description>
+			<description><![CDATA[Default: <strong>0</strong><br />Select the 'Daily/Weekly' start hour.]]></description>
 			<type>select</type>
 			<options>
 				<option><name>0</name><value>0</value></option>
@@ -347,10 +343,10 @@
 			<fielddescr>Enable De-Duplication</fielddescr>
 			<fieldname>enable_dup</fieldname>
 			<type>checkbox</type>
-			<description>Only for IPv4 Lists</description>
+			<description>Only used for IPv4 Deny Lists</description>
 		</field>
 		<field>
-			<fielddescr>Enable Aggregation of CIDRs</fielddescr>
+			<fielddescr>Enable CIDR Aggregation</fielddescr>
 			<fieldname>enable_agg</fieldname>
 			<type>checkbox</type>
 			<description>Optimise CIDRs (not recommended for slow systems with large lists)</description>
@@ -358,33 +354,33 @@
 		<field>
 			<fielddescr>Enable Suppression</fielddescr>
 			<fieldname>suppression</fieldname>
-			<type>checkbox</type>
-			<description><![CDATA[This will prevent Selected IPs from being blocked. Only for IPv4 lists (/32 and /24).<br />
-					Country blocking lists cannot be suppressed.<br />This will also remove any RFC1918 addresses from all lists.<br /><br />
-					Alerts can be suppressed using the '+' icon in the Alerts tab and IPs added to the 'pfBlockerNGSuppress' alias<br />
+			<sethelp><![CDATA[This will prevent Selected IPs from being blocked. Only for IPv4 lists (/32 and /24).
+					Country blocking lists cannot be suppressed. This will also remove any RFC1918 addresses from all lists.<br /><br />
+					Alerts can be suppressed using the '+' icon in the Alerts tab and IPs added to the 'pfBlockerNGSuppress' alias
 					A blocked IP in a CIDR other than /32 or /24 will need a 'Whitelist alias' w/ list action: 'Permit Outbound' Firewall rule
-					<br />Do not use the pfBlockerNGSuppress Alias in a Firewall Rule.
+					<br /><br />Do not use the pfBlockerNGSuppress Alias in a Firewall Rule.
 					This alias is used during the cron download process only.]]>
-			</description>
+			</sethelp>
+			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>Global Enable Logging</fielddescr>
 			<fieldname>enable_log</fieldname>
 			<type>checkbox</type>
-			<description><![CDATA[Firewall Rule logging - Enable Global logging to [ Status: System Logs: FIREWALL Log ]<br />
-				This overrides any log settings in the Alias tabs.]]>
+			<description>Firewall Rule logging - Enable Global logging to [ Status: System Logs: FIREWALL Log ]
+				This overrides any log settings in the Alias tabs.
 			</description>
 		</field>
 		<field>
-			<fielddescr>Disable MaxMind Country database CRON updates</fielddescr>
+			<fielddescr>Disable MaxMind Updates</fielddescr>
 			<fieldname>database_cc</fieldname>
 			<type>checkbox</type>
-			<description><![CDATA[This will disable the MaxMind monthly Country database Cron update.<br />
-				This does not affect the MaxMind binary cron task]]>
+			<description>This will disable the MaxMind monthly Country database Cron update.
+				This does not affect the MaxMind binary cron task.
 			</description>
 		</field>
 		<field>
-			<fielddescr>Max daily download failure threshold</fielddescr>
+			<fielddescr>Download Failure Threshold</fielddescr>
 			<fieldname>skipfeed</fieldname>
 			<description><![CDATA[Default: <strong>0</strong> (Disabled)<br />
 				Select max daily download failure threshold via CRON. Clear widget 'failed downloads' to reset.]]>
@@ -402,12 +398,12 @@
 			<default_value>0</default_value>
 		</field>
 		<field>
-			<fielddescr>Restore previous download on failure</fielddescr>
+			<fielddescr>Restore on Failure</fielddescr>
 			<fieldname>restore_feed</fieldname>
-			<type>checkbox</type>
-			<description><![CDATA[Default: <strong>Enabled</strong><br />
+			<sethelp><![CDATA[Default: <strong>Enabled</strong><br />
 				When 'selected', on a download failure, the previously downloaded list is restored.]]>
-			</description> 
+			</sethelp>
+			<type>checkbox</type>
 			<default_value>on</default_value>
 		</field>
 		<field>
@@ -497,15 +493,15 @@
 			<fielddescr>Floating Rules</fielddescr>
 			<fieldname>enable_float</fieldname>
 			<type>checkbox</type>
-			<description><![CDATA[<strong>Enabled:</strong> Auto-rules will be generated in the 'Floating Rules' tab<br /><br />
-				<strong>Disabled:</strong> Auto-rules will be generated in the selected Inbound/Outbound interfaces<br /><br />
+			<sethelp><![CDATA[<strong>Enabled:</strong> Auto-rules will be generated in the 'Floating Rules' tab<br />
+				<strong>Disabled:</strong> Auto-rules will be generated in the selected Inbound/Outbound interfaces<br />
 				<strong>Rules will be ordered by the selection below.</strong>]]>
-			</description>
+			</sethelp>
 		</field>
 		<field>
 			<fielddescr>Rule Order</fielddescr>
 			<fieldname>pass_order</fieldname>
-			<description><![CDATA[<br />Default Order:<strong> | pfB_Block/Reject | All other Rules | (original format)<br /></strong><br />
+			<description><![CDATA[Default Order:<strong> | pfB_Block/Reject | All other Rules | (original format)<br /></strong><br />
 				Select The '<strong>Order</strong>' of the Rules<br />
 				&emsp;Selecting 'original format', sets pfBlockerNG rules at the top of the Firewall TAB.<br />
 				&emsp;Selecting any other 'Order' will re-order <strong>all the rules to the format indicated!</strong>]]>
@@ -536,10 +532,10 @@
 		<field>
 			<fielddescr>Kill States</fielddescr>
 			<fieldname>killstates</fieldname>
-			<type>checkbox</type>
-			<description><![CDATA[When 'Enabled', after a cron event or any 'Force' commands, any blocked IPs found in the <br />
-				Firewall states will be cleared.]]>
+			<description>When 'Enabled', after a cron event or any 'Force' commands, any blocked IPs found in the
+				Firewall states will be cleared.
 			</description>
+			<type>checkbox</type>
 		</field>
 		<field>
 			<name><![CDATA[Acknowledgements]]></name>
@@ -548,7 +544,6 @@
 		<field>
 			<fielddescr>Credits</fielddescr>
 			<fieldname>credits</fieldname>
-			<type>info</type>
 			<description><![CDATA[<strong>pfBlockerNG </strong>
 				Created in 2015 by <a target='_blank' href='https://forum.pfsense.org/index.php?action=profile;u=238481'>BBcan177.</a><br /><br />
 				Based upon pfBlocker by Marcello Coutinho and Tom Schaefer.<br />
@@ -556,17 +551,19 @@
 				MaxMind Inc. @ <a target='_blank' href='http://www.maxmind.com'>MaxMind.com</a>.
 				The database is automatically updated the first Tuesday of each month]]>
 			</description>
+			<type>info</type>
 		</field>
 		<field>
 			<fielddescr>Support</fielddescr>
-			<type>info</type>
 			<description><![CDATA[This package has been developed by BBcan177.<br />
-				 If you like this package, please support the developer @ BBCan177@gmail.com.]]>
+				If you like this package, please support the developer @ BBCan177@gmail.com
+				<span class="fa fa-cc-paypal fa-2x icon-primary"></span>]]>
 			</description>
+			<type>info</type>
 		</field>
 		<field>
-			<name><![CDATA[<center>Click to SAVE Settings and/or Rule edits. &emsp; Changes are applied via CRON or
-			'Force Update'</center>]]></name>
+			<name><![CDATA[<small><center>Click to SAVE Settings and/or Rule edits. &emsp; Changes are applied via CRON or
+			'Force Update'</center></small>]]></name>
 			<type>listtopic</type>
 		</field>
 	</fields>
