@@ -43,24 +43,6 @@ global $current_openvpn_version, $current_openvpn_version_rev;
 $current_openvpn_version = "2.3.8";
 $current_openvpn_version_rev = "01";
 
-function openvpn_client_export_install() {
-	global $current_openvpn_version;
-
-	$pfs_version = substr(trim(file_get_contents("/etc/version")),0,3);
-	if ($pfs_version == "2.1" || $pfs_version == "2.2") {
-		conf_mount_rw();
-		$tarpath = "/usr/local/pkg/openvpn-client-export-{$current_openvpn_version}.tgz";
-		$ovpndir = "/usr/local/share/openvpn";
-		$workdir = "{$ovpndir}/client-export";
-
-		if (!is_dir($workdir)) {
-			mkdir($workdir, 0777, true);
-		}
-		exec("/usr/bin/tar zxf {$tarpath} -C {$ovpndir}");
-		conf_mount_ro();
-	}
-}
-
 function openvpn_client_export_deinstall() {
 	exec("/bin/rm -r /usr/local/share/openvpn/client-export");
 }
@@ -176,7 +158,6 @@ function openvpn_client_export_validate_config($srvid, $usrid, $crtid) {
 
 function openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $randomlocalport, $usetoken, $nokeys = false, $proxy, $expformat = "baseconf", $outpass = "", $skiptls = false, $doslines = false, $openvpnmanager, $advancedoptions = "") {
 	global $config, $input_errors, $g;
-	$pfs_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
 
 	$nl = ($doslines) ? "\r\n" : "\n";
 	$conf = "";
@@ -343,11 +324,7 @@ EOF;
 
 	// add optional settings
 	if (!empty($settings['compression'])) {
-		if ($pfs_version > 2.1) {
-			$conf .= "comp-lzo {$settings['compression']}{$nl}";
-		} else {
-			$conf .= "comp-lzo{$nl}";
-		}
+		$conf .= "comp-lzo {$settings['compression']}{$nl}";
 	}
 
 	if ($settings['passtos']) {
@@ -527,9 +504,6 @@ function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $veri
 
 	$ovpndir = "/usr/local/share/openvpn";
 	$workdir = "{$ovpndir}/client-export";
-	if (!file_exists($workdir . "/template/{$client_install_exe}")) {
-		openvpn_client_export_install();
-	}
 
 	$validconfig = openvpn_client_export_validate_config($srvid, $usrid, $crtid);
 	if ($validconfig) {
@@ -638,10 +612,6 @@ function viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $usead
 	$uname_p = trim(exec("uname -p"));
 
 	$ovpndir = "/usr/local/share/openvpn/";
-	if (!file_exists($workdir . "/template/openvpn-install.exe")) {
-		openvpn_client_export_install();
-	}
-
 	$uniq = uniqid();
 	$tempdir = $g['tmp_path'] . "/openvpn-export-" . $uniq;
 	$zipfile = $g['tmp_path'] . "/{$uniq}-Viscosity.visc.zip";
