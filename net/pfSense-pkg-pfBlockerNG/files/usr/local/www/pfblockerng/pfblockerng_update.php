@@ -52,24 +52,25 @@ pfb_global();
 // Collect pfBlockerNG log file and post live output to terminal window.
 function pfbupdate_output($text) {
 	$text = str_replace("\n", "\\n", $text);
-	echo "\n<script type=\"text/javascript\">";
-	echo "\n//<![CDATA[";
-	echo "\nthis.document.forms[0].pfb_output.value = \"" . $text . "\";";
-	echo "\nthis.document.forms[0].pfb_output.scrollTop = this.document.forms[0].pfb_output.scrollHeight;";
-	echo "\n//]]>";
-	echo "\n</script>";
+	print ("\n<script type=\"text/javascript\">");
+	print ("\n//<![CDATA[");
+	print ("\nthis.document.forms[0].pfb_output.value = \"" . $text . "\";");
+	print ("\nthis.document.forms[0].pfb_output.scrollTop = this.document.forms[0].pfb_output.scrollHeight;");
+	print ("\n//]]>");
+	print ("\n</script>");
 	/* ensure that contents are written out */
 	ob_flush();
 }
 
+
 // Post status message to terminal window.
 function pfbupdate_status($status) {
 	$status = str_replace("\n", "\\n", $status);
-	echo "\n<script type=\"text/javascript\">";
-	echo "\n//<![CDATA[";
-	echo "\nthis.document.forms[0].pfb_status.value=\"" . $status . "\";";
-	echo "\n//]]>";
-	echo "\n</script>";
+	print ("\n<script type=\"text/javascript\">");
+	print ("\n//<![CDATA[");
+	print ("\nthis.document.forms[0].pfb_status.value=\"" . $status . "\";");
+	print ("\n//]]>");
+	print ("\n</script>");
 	/* ensure that contents are written out */
 	ob_flush();
 }
@@ -83,6 +84,7 @@ function pfb_cron_update($type) {
 	exec('/bin/ps -wx', $result_cron);
 	if (preg_grep("/pfblockerng[.]php\s+?(cron|update)/", $result_cron)) {
 		pfbupdate_status(gettext("Force {$type} Terminated - Failed due to Active Running Task. Click 'View' for running process"));
+		header('Location: pfblockerng_update.php');
 		exit;
 	}
 
@@ -94,10 +96,8 @@ function pfb_cron_update($type) {
 	if ($type == 'update') {
 		pfbupdate_status(gettext('Running Force Update Task'));
 	} elseif ($type == 'reload') {
-		$reload_type = htmlspecialchars($_POST['rmode']);
-		pfbupdate_status(gettext("Running Force Reload Task - {$reload_type}"));
-
-		switch ($reload_type) {
+		pfbupdate_status(gettext("Running Force Reload Task - {$pfb['rmode']}"));
+		switch ($pfb['rmode']) {
 			case 'IP':
 				$type = 'updateip';
 				break;
@@ -118,258 +118,384 @@ function pfb_cron_update($type) {
 	install_cron_job('pfblockerng.php cron', false);
 
 	// Execute PHP process in the background
-	mwexec_bg("/usr/local/bin/php-cgi /usr/local/www/pfblockerng/pfblockerng.php {$type} >> {$pfb['log']} 2>&1");
+	mwexec_bg("/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php {$type} >> {$pfb['log']} 2>&1");
 
 	// Execute Live Tail function
 	pfb_livetail($pfb['log'], 'force');
 }
 
-
-$pgtitle = gettext('pfBlockerNG: Update');
+$pgtitle = array(gettext('pfBlockerNG'), gettext('Update'));
 include_once('head.inc');
-include_once('fbegin.inc');
+
+$pconfig = array();
+if ($_POST) {
+	$pconfig = $_POST;
+}
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
+if ($savemsg) {
+	print_info_box($savemsg, 'success');
+}
+
 ?>
-<body link="#000000" vlink="#0000CC" alink="#000000">
-<form action="/pfblockerng/pfblockerng_update.php" method="post">
-	<table width="100%" border="0" cellpadding="0" cellspacing="0">
-		<tr>
-			<td>
-				<?php
-					$tab_array = array();
-					$tab_array[] = array(gettext("General"), false, "/pkg_edit.php?xml=pfblockerng.xml");
-					$tab_array[] = array(gettext("Update"), true, "/pfblockerng/pfblockerng_update.php");
-					$tab_array[] = array(gettext("Alerts"), false, "/pfblockerng/pfblockerng_alerts.php");
-					$tab_array[] = array(gettext("Reputation"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml");
-					$tab_array[] = array(gettext("IPv4"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml");
-					$tab_array[] = array(gettext("IPv6"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml");
-					$tab_array[] = array(gettext("DNSBL"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml");
-					$tab_array[] = array(gettext("Country"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml");
-					$tab_array[] = array(gettext("Logs"), false, "/pfblockerng/pfblockerng_log.php");
-					$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml");
-					display_top_tabs($tab_array, true);
-				?>
-			</td>
-		</tr>
-	</table>
-	<div id="mainareapkg">
-		<table id="maintable" class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="2">
-			<tr>
-				<td colspan="2" class="vncell" align="left"><?php echo gettext("LINKS :"); ?>&emsp;
-					<a href='/firewall_aliases.php' target="_blank"><?php echo gettext("Firewall Alias"); ?></a>&emsp;
-					<a href='/firewall_rules.php' target="_blank"><?php echo gettext("Firewall Rules"); ?></a>&emsp;
-					<a href='/diag_logs_filter.php' target="_blank"><?php echo gettext("Firewall Logs"); ?></a><br />
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" class="listtopic"><?php echo gettext("CRON Status"); ?></td>
-			</tr>
-			<tr>
-				<td colspan="2" class="listr">
-				<?php
-
-					if ($pfb['enable'] == 'on') {
-
-						/* Legend - Time variables
-
-							$pfb['interval']	Hour interval setting	(1,2,3,4,6,8,12,24)
-							$pfb['min']		Cron minute start time	(0-23)
-							$pfb['hour']		Cron start hour		(0-23)
-							$pfb['24hour']		Cron daily/wk start hr	(0-23)
-
-							$currenthour		Current hour
-							$currentmin		Current minute
-							$currentsec		Current second
-							$currentdaysec		Total number of seconds elapsed so far in the day
-							$cron_hour_begin	First cron hour setting (interval 2-24)
-							$cron_hour_next		Next cron hour setting  (interval 2-24)
-
-							$nextcron		Next cron event in hour:mins
-							$cronreal		Time remaining to next cron in hours:mins:secs		*/
-
-						$currenthour	= date('G');
-						$currentmin	= date('i');
-						$currentsec	= date('s');
-						$currentdaysec	= ($currenthour * 3600) + ($currentmin * 60) + $currentsec;
-
-						if ($pfb['interval'] == 1) {
-							if ($currentmin < $pfb['min']) {
-								$cron_hour_next = $currenthour;
-							} else {
-								$cron_hour_next = ($currenthour + 1) % 24;
-							}
-						}
-						elseif ($pfb['interval'] == 24) {
-							$cron_hour_next = $cron_hour_begin = !empty($pfb['24hour']) ?: '00';
-						}
-						else {
-							// Find next cron hour schedule
-							$crondata = pfb_cron_base_hour();
-							$cron_hour_begin = 0;
-							$cron_hour_next  = '';
-							if (!empty($crondata)) {
-								foreach ($crondata as $key => $line) {
-									if ($key == 0) {
-										$cron_hour_begin = $line;
-									}
-									if (($line * 3600) + ($pfb['min'] * 60) > $currentdaysec) {
-										$cron_hour_next = $line;
-										break;
-									}
-								}
-							}
-							// Roll over to the first cron hour setting
-							if (empty($cron_hour_next)) {
-								$cron_hour_next = $cron_hour_begin;
-							}
-						}
-
-						$cron_seconds_next = ($cron_hour_next * 3600) + ($pfb['min'] * 60);
-						if ($currentdaysec < $cron_seconds_next) {
-							// The next cron job is ahead of us in the day
-							$sec_remain = $cron_seconds_next - $currentdaysec;
-						} else {
-							// The next cron job is tomorrow
-							$sec_remain = (24*60*60) + $cron_seconds_next - $currentdaysec;
-						}
-
-						// Ensure hour:min:sec variables are two digit
-						$pfb['min']	= str_pad($pfb['min'], 2, '0', STR_PAD_LEFT);
-						$sec_final	= str_pad(($sec_remain % 60),  2, '0', STR_PAD_LEFT);
-						$min_remain	= str_pad(floor($sec_remain / 60), 2, '0', STR_PAD_LEFT);
-						$min_final	= str_pad(($min_remain % 60), 2, '0', STR_PAD_LEFT);
-						$hour_final	= str_pad(floor($min_remain / 60), 2, '0', STR_PAD_LEFT);
-						$cron_hour_next = str_pad($cron_hour_next, 2, '0', STR_PAD_LEFT);
-
-						$cronreal = "{$cron_hour_next}:{$pfb['min']}";
-						$nextcron = "{$hour_final}:{$min_final}:{$sec_final}";
-					}
-
-					if (empty($pfb['enable']) || empty($cron_hour_next)) {
-						$cronreal = ' [ Disabled ]';
-						$nextcron = '--';
-					}
-
-					echo "NEXT Scheduled CRON Event will run at <font size=\"3\">&nbsp;{$cronreal}</font>&nbsp; with
-						<font size=\"3\"><span class=\"red\">&nbsp;{$nextcron}&nbsp;</span></font> time remaining.";
-
-					// Query for any active pfBlockerNG CRON jobs
-					exec('/bin/ps -wax', $result_cron);
-					if (preg_grep("/pfblockerng[.]php\s+?(cron|update)/", $result_cron)) {
-						echo "<font size=\"2\"><span class=\"red\">&emsp;&emsp;
-							Active pfBlockerNG CRON Job </span></font>&emsp;";
-						echo "<img src = '/themes/{$g['theme']}/images/icons/icon_pass.gif' alt='' width='15' height='15'
-							border='0' title='pfBockerNG Cron Task is Running.'/>";
-					}
-					echo "<br /><font size=\"3\"><span class=\"red\">Refresh</span></font> to update current Status and time remaining";
-				?>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" class="vncell"><?php echo gettext("<br />"); ?></td>
-			</tr>
-			<tr>
-				<td colspan="2" class="listtopic"><?php echo gettext("Update Options"); ?></td>
-			</tr>
-			<tr>
-				<td colspan="2" class="listr">
-					<!-- Update Option Text -->
-					<?php echo "<span class='red'><strong>" . gettext("** AVOID ** ") . "&nbsp;" . "</strong></span>" .
-						gettext("Running these Options - when CRON is expected to RUN!") . gettext("<br /><br />") .
-						"<strong>" . gettext("Force Update") . "</strong>" . gettext(" will download any new Alias/Lists.") .
-						gettext("<br />") . "<strong>" . gettext("Force Cron") . "</strong>" .
-						gettext(" will download any Alias/Lists that are within the Frequency Setting (due for Update).") . gettext("<br />") .
-						"<strong>" . gettext("Force Reload") . "</strong>" .
-						gettext("  will reload all Lists using the existing Downloaded files.") .
-						gettext(" This is useful when Lists are out of 'sync' or Reputation changes were made.") ;?><br />
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" class="vncell">
-					<!-- Update Option Buttons -->
-					<input type="submit" class="formbtns" name="pfbupdate" id="pfbupdate" value="Force Update" 
-						title="<?=gettext("Run Force Update");?>" />
-					<input type="submit" class="formbtns" name="pfbcron" id="pfbcron" value="Force Cron" 
-						title="<?=gettext("Run Force Cron Update");?>" />
-					<input type="submit" class="formbtns" name="pfbreload" id="pfbreload" value="Force Reload" 
-						title="<?=gettext("Run Force Reload");?>" />&emsp;<?=gettext("Reload Options:");?>
-					<input name="rmode" type="radio" value="All" <?php echo 'checked'; ?> /><?=gettext("All");?>
-					<input name="rmode" type="radio" value="IP" /><?=gettext("IP");?>
-					<input name="rmode" type="radio" value="DNSBL" /><?=gettext("DNSBL"); ?>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" class="vncell"><?php echo gettext("<br />"); ?></td>
-			</tr>
-			<tr>
-				<td colspan="2" class="listtopic"><?php echo gettext("Live Log Viewer only"); ?></td>
-			</tr>
-			<tr>
-				<td colspan="2" class="listr"><?php echo gettext("Selecting 'Live Log Viewer' will allow viewing a running Cron Update"); ?></td>
-			</tr>
-			<tr>
-				<td colspan="2" class="vncell">
-					<!-- Log Viewer Buttons -->
-					<input type="submit" class="formbtns" name="pfbview" id="pfbview" value="VIEW" 
-						title="<?=gettext("VIEW pfBlockerNG LOG");?>"/>
-					<input type="submit" class="formbtns" name="pfbviewcancel" id="pfbviewcancel" value="End View" 
-						title="<?=gettext("END VIEW of pfBlockerNG LOG");?>"/>
-					<?php echo "&emsp;" . gettext(" Select 'view' to open ") . "<strong>" . gettext(' pfBlockerNG ') . "</strong>" .
-						gettext(" Log. &emsp; (Select 'End View' to terminate the viewer.)"); ?><br /><br />
-				</td>
-			</tr>
-			<tr>
-				<td class="tabcont" align="left">
-					<!-- status box -->
-					<textarea cols="90" rows="1" name="pfb_status" id="pfb_status"
-						wrap="hard"><?=gettext("Log Viewer Standby");?></textarea>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<!-- command output box -->
-					<textarea cols="90" rows="35" name="pfb_output" id="pfb_output" wrap="hard"></textarea>
-				</td>
-			</tr>
-		</table>
-	</div>
-
+<table summary="tabs">
+	<tr>
+		<td class="tabnavtbl">
+		<?php
+			$tab_array	= array();
+			$tab_array[]	= array(gettext("General"), false, "/pkg_edit.php?xml=pfblockerng.xml");
+			$tab_array[]	= array(gettext("Update"), true, "/pfblockerng/pfblockerng_update.php");
+			$tab_array[]	= array(gettext("Alerts"), false, "/pfblockerng/pfblockerng_alerts.php");
+			$tab_array[]	= array(gettext("Reputation"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml");
+			$tab_array[]	= array(gettext("IPv4"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml");
+			$tab_array[]	= array(gettext("IPv6"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml");
+			$tab_array[]	= array(gettext("DNSBL"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml");
+			$tab_array[]	= array(gettext("Country"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml");
+			$tab_array[]	= array(gettext("Logs"), false, "/pfblockerng/pfblockerng_log.php");
+			$tab_array[]	= array(gettext("Sync"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml");
+			display_top_tabs($tab_array, true);
+		?>
+		</td>
+	</tr>
+</table>
 <?php
-include('fend.inc');
 
+if ($pfb['enable'] == 'on') {
+	/* Legend - Time variables
+
+	$pfb['interval']	Hour interval setting	(1,2,3,4,6,8,12,24)
+	$pfb['min']		Cron minute start time	(0-23)
+	$pfb['hour']		Cron start hour		(0-23)
+	$pfb['24hour']		Cron daily/wk start hr	(0-23)
+
+	$currenthour		Current hour
+	$currentmin		Current minute
+	$currentsec		Current second
+	$currentdaysec		Total number of seconds elapsed so far in the day
+	$cron_hour_begin	First cron hour setting (interval 2-24)
+	$cron_hour_next		Next cron hour setting  (interval 2-24)
+
+	$nextcron		Next cron event in hour:mins
+	$cronreal		Time remaining to next cron in hours:mins:secs		*/
+
+	$currenthour	= date('G');
+	$currentmin	= date('i');
+	$currentsec	= date('s');
+	$currentdaysec	= ($currenthour * 3600) + ($currentmin * 60) + $currentsec;
+
+	if ($pfb['interval'] == 1) {
+		if ($currentmin < $pfb['min']) {
+			$cron_hour_next = $currenthour;
+		} else {
+			$cron_hour_next = ($currenthour + 1) % 24;
+		}
+	}
+	elseif ($pfb['interval'] == 24) {
+		$cron_hour_next = $cron_hour_begin = !empty($pfb['24hour']) ?: '00';
+	}
+	else {
+		// Find next cron hour schedule
+		$crondata = pfb_cron_base_hour();
+		$cron_hour_begin = 0;
+		$cron_hour_next  = '';
+		if (!empty($crondata)) {
+			foreach ($crondata as $key => $line) {
+				if ($key == 0) {
+					$cron_hour_begin = $line;
+				}
+				if (($line * 3600) + ($pfb['min'] * 60) > $currentdaysec) {
+						$cron_hour_next = $line;
+					break;
+				}
+			}
+		}
+		// Roll over to the first cron hour setting
+		if (empty($cron_hour_next)) {
+			$cron_hour_next = $cron_hour_begin;
+		}
+	}
+
+	$cron_seconds_next = ($cron_hour_next * 3600) + ($pfb['min'] * 60);
+	if ($currentdaysec < $cron_seconds_next) {
+		// The next cron job is ahead of us in the day
+		$sec_remain = $cron_seconds_next - $currentdaysec;
+	} else {
+		// The next cron job is tomorrow
+		$sec_remain = (24*60*60) + $cron_seconds_next - $currentdaysec;
+	}
+
+	// Ensure hour:min:sec variables are two digit
+	$pfb['min']	= str_pad($pfb['min'], 2, '0', STR_PAD_LEFT);
+	$sec_final	= str_pad(($sec_remain % 60),  2, '0', STR_PAD_LEFT);
+	$min_remain	= str_pad(floor($sec_remain / 60), 2, '0', STR_PAD_LEFT);
+	$min_final	= str_pad(($min_remain % 60), 2, '0', STR_PAD_LEFT);
+	$hour_final	= str_pad(floor($min_remain / 60), 2, '0', STR_PAD_LEFT);
+	$cron_hour_next = str_pad($cron_hour_next, 2, '0', STR_PAD_LEFT);
+
+	$cronreal = "{$cron_hour_next}:{$pfb['min']}";
+	$nextcron = "{$hour_final}:{$min_final}:{$sec_final}";
+}
+
+if (empty($pfb['enable']) || empty($cron_hour_next)) {
+	$cronreal = ' [ Disabled ]';
+	$nextcron = '--';
+}
+
+$status .= 'NEXT Scheduled CRON Event will run at';
+$status .= "&emsp;<strong>{$cronreal}</strong>&emsp;with<strong><font color=\"red\">&emsp;{$nextcron}";
+$status .= '&emsp;</font></strong> time remaining.</font>';
+
+// Query for any active pfBlockerNG CRON jobs
+exec('/bin/ps -wax', $result_cron);
+if (preg_grep("/pfblockerng[.]php\s+?(cron|update)/", $result_cron)) {
+	$status .= '<font color="red">&emsp;&emsp;';
+	$status .= 'Active pfBlockerNG CRON JOB';
+	$status .= '</font>&emsp;<i class="fa fa-spinner fa-pulse fa-lg"></i>';
+}
+$status .= '<br />&emsp;<small><font color="red">Refresh to update current Status and time remaining.</font></small>';
+
+$options .= '<dl class="dl-horizontal">';
+$options .= '	<dt>Update:</dt><dd>will download any new Alias/Lists.</dd>';
+$options .= '	<dt>Cron:</dt><dd>will download any Alias/Lists that are within the Frequency Setting (due for Update).</dd>';
+$options .= '	<dt>Reload:</dt><dd>will reload all Lists using the existing Downloaded files.<br />';
+$options .= '		This is useful when Lists are out of <q>sync</q> or Reputation changes were made.</dd>';
+$options .= '</dl>';
+
+// Create Form
+$form = new Form(false);
+
+$section = new Form_Section('Update Settings');
+$section->addInput(new Form_StaticText(
+	NULL,
+	'<small>'
+	. '<a href="/firewall_aliases.php" target="_blank">Firewall Alias</a>&emsp;'
+	. '<a href="/firewall_rules.php" target="_blank">Firewall Rules</a>&emsp;'
+	. '<a href="/diag_logs_filter.php" target="_blank">Firewall Logs</a></small>'
+));
+
+// Build Status section
+$section->addInput(new Form_StaticText(
+	'Status',
+	$status
+));
+$form->add($section);
+
+// Build Options section
+$group = new Form_Group('Force Options');
+$group->add(new Form_StaticText(
+	NULL,
+	'<font color="red">** AVOID ** </font>&nbsp;Running these <q>Force</q> options - when CRON is expected to RUN!'
+));
+
+$section->add($group)->setHelp('<div id="infoblock">' . $options . '</div>');
+
+$group = new Form_Group('Select \'Force\' option');
+$group->add(new Form_Checkbox(
+	'pfbupdate',
+	'pfbupdate',
+	'Update',
+	'on',
+	'on'
+))->displayAsRadio()->setAttribute('title', 'Force Update: IP & DNSBL.')->setWidth(1);
+
+$group->add(new Form_Checkbox(
+	'pfbcron',
+	'pfbcron',
+	'Cron',
+	'',
+	'on'
+))->displayAsRadio()->setAttribute('title', 'Force Cron: IP & DNSBL.')->setWidth(1);
+
+$group->add(new Form_Checkbox(
+	'pfbreload',
+	'pfbreload',
+	'Reload',
+	'',
+	'on'
+))->displayAsRadio()->setAttribute('title', 'Force Reload: IP & DNSBL.')->setWidth(1);
+$section->add($group);
+
+
+// Build 'Force Options' group section
+$group = new Form_Group('Select \'Reload\' option');
+$group->add(new Form_Checkbox(
+	'pfball',
+	'pfball',
+	'All',
+	'on',
+	'All'
+))->displayAsRadio()->setAttribute('title', 'Reload: IP & DNSBL.')->setWidth(1);
+
+$group->add(new Form_Checkbox(
+	'pfbip',
+	'pfbip',
+	'IP',
+	'',
+	'IP'
+))->displayAsRadio()->setAttribute('title', 'Reload: IP only.')->setWidth(1);
+
+$group->add(new Form_Checkbox(
+	'pfbdnsbl',
+	'pfbdnsbl',
+	'DNSBL',
+	'',
+	'DNSBL'
+))->displayAsRadio()->setAttribute('title', 'Reload: DNSBL only.')->setWidth(2);
+$section->add($group);
+
+
+$group = new Form_Group(NULL);
+$btn_run = new Form_Button(
+	'run',
+	'Run'
+);
+
+$btn_run->removeClass('btn-primary')->addClass('btn-primary btn-xs');
+$group->add(new Form_StaticText(
+	NULL,
+	$btn_run
+));
+
+// Alternate view/end view button text
+if (!isset($pconfig['log_view'])) {
+	$pconfig['log_view'] = 'View';
+} elseif($pconfig['log_view'] == 'View') {
+	$pconfig['log_view'] = 'End View' ;
+} else {
+	$pconfig['log_view'] = 'View';
+}
+
+// Alternate view/end view title text
+$btn_logview_title = 'Click to End Log View';
+if ($pconfig['log_view'] == 'View') {
+	$btn_logview_title = 'Click to View a running Cron Update.';
+}
+
+$btn_logview = new Form_Button(
+	'log_view',
+	$pconfig['log_view']
+);
+$btn_logview->removeClass('btn-primary')->addClass('btn-primary btn-xs')->setAttribute('title', $btn_logview_title);
+$group->add(new Form_StaticText(
+		NULL,
+		$btn_logview
+));
+$section->add($group);
+
+// Build 'textarea' windows
+$section = new Form_Section('Log');
+$section->addInput(new Form_Textarea(
+	pfb_status,
+	NULL,
+	'Log Viewer Standby'
+))->removeClass('form-control')->addClass('row-fluid col-sm-12')->setAttribute('rows', '1')->setAttribute('wrap', 'off')
+  ->setAttribute('style', 'background:#fafafa;');
+
+$section->addInput(new Form_Textarea(
+	pfb_output,
+	NULL,
+	NULL
+))->removeClass('form-control')->addClass('row-fluid col-sm-12')->setAttribute('rows', '30')->setAttribute('wrap', 'off')
+  ->setAttribute('style', 'background:#fafafa;');
+$form->add($section);
+print($form);
 
 // Execute the viewer output window
-if (isset($_POST['pfbview'])) {
-	pfbupdate_status(gettext("Log Viewing in progress.    ** Press 'END VIEW' to Exit ** "));
-	pfb_livetail($pfb['log'], 'view');
+if (isset($pconfig['log_view'])) {
+	if ($pconfig['log_view'] !== 'View') {
+		pfbupdate_status(gettext("Log Viewing in progress.    ** Press 'END VIEW' to Exit ** "));
+		pfb_livetail($pfb['log'], 'view');
+	} else {
+		// End the viewer output Window
+		clearstatcache(false, $pfb['log']);
+		ob_flush();
+		flush();
+		@fclose("{$pfb['log']}");
+	}
 }
 
-// End the viewer output Window
-if (isset($_POST['pfbviewcancel'])) {
-	clearstatcache(false, $pfb['log']);
-	ob_flush();
-	flush();
-	fclose("{$pfb['log']}");
-}
+if ($pfb['enable'] == 'on' && isset($pconfig['run'])) {
+	// Execute a reload of all aliases and lists
+	if ($pconfig['pfbupdate'] == 'on') {
+		pfb_cron_update(update);
+	} elseif ($pconfig['pfbcron'] == 'on') {
+		pfb_cron_update(cron);
+	} elseif ($pconfig['pfbreload'] == 'on') {
+		// Determine which reload type to run.
+		if (isset($pconfig['pfbdnsbl'])) {
+			$pfb['rmode'] = 'DNSBL';
+		} elseif (isset($pconfig['pfbip'])) {
+			$pfb['rmode'] = 'IP';
+		} else {
+			$pfb['rmode'] = 'All';
+		}
 
-// Execute a Force Update 
-if (isset($_POST['pfbupdate']) && $pfb['enable'] == 'on') {
-	pfb_cron_update(update);
+		$config['installedpackages']['pfblockerng']['config'][0]['pfb_reuse'] = 'on';
+		write_config('pfBlockerNG: Executing Force Reload');
+		pfb_cron_update(reload);
+	}
 }
-
-// Execute a CRON command to update any lists within the frequency settings
-if (isset($_POST['pfbcron']) && $pfb['enable'] == 'on') {
-	pfb_cron_update(cron);
-}
-
-// Execute a reload of all aliases and lists
-if (isset($_POST['pfbreload']) && $pfb['enable'] == 'on') {
-	// Set 'Reuse' flag for reload process
-	$config['installedpackages']['pfblockerng']['config'][0]['pfb_reuse'] = 'on';
-	write_config('pfBlockerNG: Executing Force Reload');
-	pfb_cron_update(reload);
-}
-
 ?>
-</form>
-</body>
-</html>
+
+<script type="text/javascript">
+//<![CDATA[
+
+events.push(function(){
+
+	// Hide/Show 'Force Reload' radios
+	function mode_change(mode) {
+		switch(mode) {
+			case 'on':
+				hideCheckbox('pfball', false);
+				hideCheckbox('pfbip', false);
+				hideCheckbox('pfbdnsbl', false);
+				break;
+			default:
+				hideCheckbox('pfball',  true);
+				hideCheckbox('pfbip',  true);
+				hideCheckbox('pfbdnsbl',  true);
+				break;
+		}
+	}
+	mode_change();
+
+	// On-click - toggle radios on/off
+	$('#pfbupdate').click(function() {
+		$('#pfbcron').prop('checked', false);
+		$('#pfbreload').prop('checked', false);
+		mode_change();
+	});
+	$('#pfbcron').click(function() {
+		$('#pfbupdate').prop('checked', false);
+		$('#pfbreload').prop('checked', false);
+		mode_change();
+	});
+	$('#pfbreload').click(function() {
+		$('#pfbupdate').prop('checked', false);
+		$('#pfbcron').prop('checked', false);
+		mode_change('on');
+	});
+
+	// On-click - toggle 'Reload' radios on/off
+	$('#pfball').click(function() {
+		$('#pfbip').prop('checked', false);
+		$('#pfbdnsbl').prop('checked', false);
+	});
+	$('#pfbip').click(function() {
+		$('#pfball').prop('checked', false);
+		$('#pfbdnsbl').prop('checked', false);
+	});
+	$('#pfbdnsbl').click(function() {
+		$('#pfball').prop('checked', false);
+		$('#pfbip').prop('checked', false);
+	});
+
+	$('#run').click(function() {
+		// Scroll to the bottom of the page
+		$("html, body").animate({ scrollTop: $(document).height() }, 2000);
+	});
+});
+//]]>
+</script>
+<?php include("foot.inc"); ?>
