@@ -161,18 +161,18 @@
 		<field>
 			<fieldname>InfoLists</fieldname>
 			<type>info</type>
-			<description><![CDATA[<strong><u>'Format'</u></strong>: Select the Format type.<br /><br />
-				<strong><u>'State'</u></strong>: Select the run state.<br /><br />
+			<description><![CDATA[<strong><u>'Format'</u></strong>: Select the Format type.<br />
+				<strong><u>'State'</u></strong>: Select the run state.<br />
 				<strong><u>'Source'</u></strong>:
 				<ul><li><strong>'URL'</strong>: External link to source
 					&emsp;(ie: <a target="_blank" href='http://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&mimetype=plaintext'>yoyo</a>,
 					<a target="_blank" href='http://someonewhocares.org/hosts/hosts'>SomeoneWhoCares</a>,
-					<a target="_blank" href='https://adaway.org/hosts.txt'>Adaway</a>)</li></ul>
-				<ul><li><strong>'Local File'</strong>: http(s)://127.0.0.1/filename
+					<a target="_blank" href='https://adaway.org/hosts.txt'>Adaway</a>)</li>
+				<li><strong>'Local File'</strong>: http(s)://127.0.0.1/filename
 					&emsp;<strong>or</strong>&emsp; /var/db/pfblockerng/filename</li></ul>
 				<strong><u>'Header/Label'</u></strong>: This field must be <u>unique.</u> This names the file and is referenced in the widget.
 					&emsp;(ie: hpHosts_ads, hpHosts_partial)<br /><br />
-				<strong>AdBlock Easylists <u>cannot</u> be used in this Tab</strong><br /><br />]]>
+				<strong>AdBlock Easylists <u>cannot</u> be used in this Tab.</strong>]]>
 			</description>
 		</field>
 		<field>
