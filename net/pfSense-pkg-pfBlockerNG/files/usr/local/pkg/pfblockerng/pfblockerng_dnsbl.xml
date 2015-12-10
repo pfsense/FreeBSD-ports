@@ -147,9 +147,9 @@
 			<fielddescr>Enable DNSBL</fielddescr>
 			<fieldname>pfb_dnsbl</fieldname>
 			<type>checkbox</type>
-			<description><![CDATA[This will enable DNS Block List for Malicious and/or unwanted Adverts Domains<br />
+			<sethelp><![CDATA[This will enable DNS Block List for Malicious and/or unwanted Adverts Domains<br />
 				To Utilize, <strong>Unbound DNS Resolver</strong> must be enabled.]]>
-			</description>
+			</sethelp>
 		</field>
 		<field>
 			<fielddescr>DNSBL Virtual IP</fielddescr>
@@ -170,7 +170,7 @@
 			<type>input</type>
 			<size>3</size>
 			<description><![CDATA[Example ( 8081 )<br />
-				Enter a &emsp;<strong>single PORT</strong> &emsp;that is in the range of 1 - 65535<br /><br />
+				Enter a &emsp;<strong>single PORT</strong> &emsp;that is in the range of 1 - 65535<br />
 				This Port must not be in use by any other process.]]>
 			</description>
 			<default_value>8081</default_value>
@@ -181,7 +181,7 @@
 			<type>input</type>
 			<size>3</size>
 			<description><![CDATA[Example ( 8443 )<br />
-				Enter a &emsp;<strong>single PORT</strong> &emsp;that is in the range of 1 - 65535<br /><br />
+				Enter a &emsp;<strong>single PORT</strong> &emsp;that is in the range of 1 - 65535<br />
 				This Port must not be in use by any other process.]]>
 			</description>
 			<default_value>8443</default_value>
@@ -225,7 +225,8 @@
 		</field>
 		<field>
 			<fielddescr>List Action</fielddescr>
-			<description><![CDATA[Default: <strong>Disabled</strong><br /><br />
+			<description><![CDATA[Default: <strong>Disabled</strong>
+				<div id="infoblock" name="listaction">
 				Select the <strong>Action</strong> for Firewall Rules when any DNSBL Feed contain IP addresses.<br /><br />
 				<strong><u>'Disabled' Rule:</u></strong> Disables selection and does nothing to selected Alias.<br /><br />
 
@@ -239,7 +240,7 @@
 				still allowing <u>deliberate</u> outgoing sessions to be created in the other direction.</li></ul>
 				<strong><u>'Alias' Rule:</u></strong><br />
 				<strong>'Alias'</strong> rules create an <a href="/firewall_aliases.php">alias</a> for the list (and do nothing else).
-				This enables a pfBlockerNG list to be used by name, in any firewall rule or pfSense function, as desired.]]>
+				This enables a pfBlockerNG list to be used by name, in any firewall rule or pfSense function, as desired.</div>]]>
 			</description>
 			<fieldname>action</fieldname>
 			<type>select</type>
@@ -270,7 +271,7 @@
 		</field>
 		<field>
 			<type>info</type>
-			<description><![CDATA[<font color='red'>Note: </font>In general, Auto-Rules are created as follows:<br />
+			<description><![CDATA[<font color='red'>Note:</font>&nbsp; In general, Auto-Rules are created as follows:<br />
 				<ul>Inbound &emsp;- 'any' port, 'any' protocol and 'any' destination<br />
 				Outbound - 'any' port, 'any' protocol and 'any' destination address in the lists</ul>
 				Configuring the Adv. Inbound Rule settings, will allow for more customization of the Inbound Auto-Rules.<br />
@@ -321,8 +322,8 @@
 		<field>
 			<fielddescr>Invert</fielddescr>
 			<fieldname>autonot</fieldname>
-			<description><![CDATA[<div style="padding-left: 22px;"><strong>Invert</strong> - Option to invert the sense of the match.<br />
-				ie - Not (!) Destination Address(es)</div>]]>
+			<description><![CDATA[<strong>Invert</strong> - Option to invert the sense of the match.<br />
+				ie - Not (!) Destination Address(es)]]>
 			</description>
 			<type>checkbox</type>
 			<dontdisplayname/>
@@ -351,8 +352,8 @@
 		<field>
 			<fielddescr>Enable Alexa</fielddescr>
 			<fieldname>alexa_enable</fieldname>
-			<description><![CDATA[Alexa provides a <a target="_blank" href="https://aws.amazon.com/alexa-top-sites/">Top 1 million sites list.</a>
-				(Global 1 month average traffic ranking)<br /><br />
+			<sethelp><![CDATA[Alexa provides a <a target="_blank" href="https://aws.amazon.com/alexa-top-sites/">Top 1 million sites list.</a>
+				(Global 1 month average traffic ranking)<br />
 				Alexa can be used to whitelist the most popular domain names to avoid false positives.
 				To use this feature, select the number of 'Top Domains' to whitelist. You can also 'include' which TLDs to whitelist.<br />
 
@@ -365,7 +366,7 @@
 				The complete 'Top 1M list' can be downloaded from
 				<a target=_blank href="https://s3.amazonaws.com/alexa-static/top-1m.csv.zip">Here</a> (Database is free to use.)<br />
 				When enabled, this list will be automatically updated once per month along with the MaxMind Database.]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
