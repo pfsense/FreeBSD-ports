@@ -12,7 +12,7 @@ COMMENT?=	Meta package to install pfSense required ports
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/clog:${PORTSDIR}/sysutils/clog \
 		${LOCALBASE}/bin/rate:${PORTSDIR}/net-mgmt/rate \
-		${LOCALBASE}/sbin/apinger:${PORTSDIR}/net/apinger \
+		${LOCALBASE}/bin/dpinger:${PORTSDIR}/net/dpinger \
 		${LOCALBASE}/sbin/radvd:${PORTSDIR}/net/radvd \
 		${LOCALBASE}/bin/cpdup:${PORTSDIR}/sysutils/cpdup \
 		${LOCALBASE}/bin/gogoc:${PORTSDIR}/net/gogoc \
