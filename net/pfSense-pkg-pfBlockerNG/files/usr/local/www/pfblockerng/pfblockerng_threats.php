@@ -36,107 +36,167 @@ require('guiconfig.inc');
 if (isset($_REQUEST['host'])) {
 	$host = htmlspecialchars($_REQUEST['host']);
 }
-
 if (isset($_REQUEST['domain'])) {
 	$domain = htmlspecialchars($_REQUEST['domain']);
 }
 
 include('head.inc');
-include('fbegin.inc');
 ?>
 
-<tr>
-	<td>
-	<div id="mainarea">
-	<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-	<table width="100%" border="0" cellpadding="6" cellspacing="0" summary="tabcont">
-		<tbody>
-			<tr>
-				<td colspan="2" class="listtopic"><?php echo gettext("Threat"); ?></td>
-			</tr>
-			<tr>
-				<td colspan="2" class="listr"><font size="3"><?php echo " {$host}{$domain}"; ?></font></td>
-			</tr>
-			<tr>
-				<td colspan="2" class="vncell"></td>
-			</tr>
-			<tr>
-				<td colspan="2" class="listtopic"><?php echo gettext("Threat Lookups"); ?></td>
-			</tr>
-			<tr>
-			<td width="14%" valign="top" class="vncell"></td>
-			<td width="86%" class="listr">
-				<?=gettext("NOTE:");?><br /><br />
-				<?=gettext("The following links are to external services, so their reliability cannot be guaranteed.");?><br />
-				<?=gettext("It is also recommended to open these links in a different Browser.");?><br /><br />
-
-				<?php if (isset($_REQUEST['host'])) { ?>
-
-				<a target="_blank" href="http://www.ipvoid.com/scan/<?php echo $host; ?>/">
-					<?=gettext("IPVOID");?></a><br />
-				<a target="_blank" href="http://www.tcpiputils.com/browse/ip-address/<?php echo $host; ?>/">
-					<?=gettext("TCPUtils");?></a><br />
-				<a target="_blank" href="https://www.herdprotect.com/ip-address-<?php echo $host; ?>.aspx">
-					<?=gettext("Herd Protect");?></a><br />
-				<a target="_blank" href="https://www.senderbase.org/lookup/ip/?search_string=<?php echo $host; ?>">
-					<?=gettext("SenderBase");?></a><br />
-				<a target="_blank" href="http://www.ip-tracker.org/locator/ip-lookup.php?ip=<?php echo $host; ?>">
-					<?=gettext("IP Tracker");?></a><br />
-				<a target="_blank" href="https://www.fortiguard.com/ip_rep/index.php?data=/<?php echo $host; ?>?">
-					<?=gettext("FortiGuard");?></a><br />
-				<a target="_blank" href="https://www.projecthoneypot.org/ip_<?php echo $host; ?>">
-					<?=gettext("Project HoneyPot");?></a><br />
-				<a target="_blank" href="https://www.virustotal.com/en/ip-address/<?php echo $host; ?>/information">
-					<?=gettext("VirusTotal Info");?></a><br />
-				<a target="_blank" href="https://www.mcafee.com/threat-intelligence/ip/default.aspx?ip=<?php echo $host; ?>">
-					<?=gettext("McAfee Threat Center");?></a><br />
-				<a target="_blank" href="https://sitecheck.sucuri.net/results/<?php echo $host; ?>">
-					<?=gettext("Securi SiteCheck");?></a><br />
-				<a target="_blank" href="https://www.dshield.org/ipinfo.html?IP=<?php echo $host; ?>">
-					<?=gettext("DShield Threat Lookup");?></a><br />
-				<a target="_blank" href="https://isc.sans.edu/ipinfo.html?ip=<?php echo $host; ?>">
-					<?=gettext("Internet Storm Center");?></a><br />
-				<a target="_blank" href="https://www.mywot.com/en/scorecard/<?php echo $host; ?>">
-					<?=gettext("Web of Trust (WOT) Scorecard");?></a><br />
-				<a target="_blank" href="https://quttera.com/sitescan/<?php echo $host; ?>">
-					<?=gettext("Quattera");?></a><br />
-				<a target="_blank" href="https://www.iblocklist.com/search.php?string=<?php echo $host; ?>">
-					<?=gettext("I-Block List");?></a><br />
-				<p/>
-
-				<?=gettext("Mail Server DNSRBL Lookups");?><br /><br />
-				<a target="_blank" href="https://senderscore.org/lookup.php?lookup=<?php echo $host; ?>&ipLookup=Go">
-					<?=gettext("SenderScore");?></a><br />
-				<a target="_blank" href="https://www.spamhaus.org/query/bl?ip=<?php echo $host; ?>">
-					<?=gettext("Spamhaus Blocklist");?></a><br />
-				<a target="_blank" href="https://www.spamcop.net/w3m?action=checkblock&ip=<?php echo $host; ?>">
-					<?=gettext("SPAMcop Blocklist");?></a><br />
-				<a target="_blank" href="http://multirbl.valli.org/lookup/<?php echo $host; ?>.html">
-					<?=gettext("multirbl RBL Lookup");?></a><br />
-				<a target="_blank" href="https://mxtoolbox.com/SuperTool.aspx?action=blacklist%3a<?php echo $host; ?>&run=toolpage">
-					<?=gettext("MXToolbox");?></a><br />
-
-				<?php } else { ?>
-
-				<a target="_blank" href="http://www.alexa.com/siteinfo/<?php echo $domain; ?>">
-					<?=gettext("Alexa");?></a><br />
-				<a target="_blank" href="https://www.c-sirt.org/en/incidents-on-domain/<?php echo $domain; ?>">
-					<?=gettext("C-SIRT");?></a><br />
-				<a target="_blank" href="https://www.herdprotect.com/domain-<?php echo $domain; ?>.aspx">
-					<?=gettext("HerdProtect");?></a><br />
-				<a target="_blank" href="https://sitecheck.sucuri.net/results/<?php echo $domain; ?>">
-					<?=gettext("Sucuri");?></a><br />
-
-				<?php } ?>
-
-			</td>
-			</tr>
-		</tbody>
-	</table>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h4 class="panel-title"><?=gettext("Threat:&emsp;" . $host . $domain); ?></h4>
 	</div>
-	</td>
-</tr>
+	<div>
+		<p class="text-center"><br />NOTE:&emsp;The following links are to external services, so their reliability cannot be guaranteed
+			It is also recommended to open these links in a different Browser</p>
+	</div>
+	<div>
+		<table class="table table-striped table-hover table-compact">
+			<thead>
+				<tr>
+					<th width="20%"><!-- Icon field --></th>
+					<th><!-- Threat Source Link --></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php if (isset($_REQUEST['host'])): ?>
+				<!-- IP threat source links -->
+				<tr>
+					<td><font color="blue">Threat Lookups</font><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="http://www.ipvoid.com/scan/<?php echo $host; ?>/">
+						<?=gettext("IPVOID");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="http://www.tcpiputils.com/browse/ip-address/<?php echo $host; ?>/">
+						<?=gettext("TCPUtils");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.herdprotect.com/ip-address-<?php echo $host; ?>.aspx">
+						<?=gettext("Herd Protect");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.senderbase.org/lookup/ip/?search_string=<?php echo $host; ?>">
+					<?=gettext("SenderBase");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>	
+					<td><a target="_blank" href="http://www.ip-tracker.org/locator/ip-lookup.php?ip=<?php echo $host; ?>">
+						<?=gettext("IP Tracker");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.fortiguard.com/ip_rep/index.php?data=/<?php echo $host; ?>?">
+						<?=gettext("FortiGuard");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.projecthoneypot.org/ip_<?php echo $host; ?>">
+						<?=gettext("Project HoneyPot");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.virustotal.com/en/ip-address/<?php echo $host; ?>/information">
+						<?=gettext("VirusTotal Info");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.mcafee.com/threat-intelligence/ip/default.aspx?ip=<?php echo $host; ?>">
+						<?=gettext("McAfee Threat Center");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://sitecheck.sucuri.net/results/<?php echo $host; ?>">
+						<?=gettext("Securi SiteCheck");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.dshield.org/ipinfo.html?ip=<?php echo $host; ?>">
+						<?=gettext("DShield Threat Lookup");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://isc.sans.edu/ipinfo.html?ip=<?php echo $host; ?>">
+						<?=gettext("Internet Storm Center");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.mywot.com/en/scorecard/<?php echo $host; ?>">
+						<?=gettext("Web of Trust (WOT) Scorecard");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://quttera.com/sitescan/<?php echo $host; ?>">
+						<?=gettext("Quattera");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.iblocklist.com/search.php?string=<?php echo $host; ?>">
+						<?=gettext("I-Block List");?></a></td>
+				</tr>
 
-<?php include('fend.inc'); ?>
-</body>
-</html>
+				<!-- Mail Server threat source links -->
+				<tr>
+					<td><font color="blue">Mail Server Lookups</font><i class="fa fa-envelope pull-right"></i></td>
+					<td><a target="_blank" href="https://senderscore.org/lookup.php?lookup=<?php echo $host; ?>&ipLookup=Go">
+						<?=gettext("SenderScore");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-envelope pull-right"></i></td>
+					<td><a target="_blank" href="https://www.spamhaus.org/query/bl?ip=<?php echo $host; ?>">
+						<?=gettext("Spamhaus Blocklist");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-envelope pull-right"></i></td>
+					<td><a target="_blank" href="https://www.spamcop.net/w3m?action=checkblock&ip=<?php echo $host; ?>">
+						<?=gettext("SPAMcop Blocklist");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-envelope pull-right"></i></td>
+					<td><a target="_blank" href="http://multirbl.valli.org/lookup/<?php echo $host; ?>.html">
+						<?=gettext("multirbl RBL Lookup");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-envelope pull-right"></i></td>
+					<td><a target="_blank" href="https://mxtoolbox.com/SuperTool.aspx?action=blacklist%3a<?php echo $host; ?>&run=toolpage">
+						<?=gettext("MXToolbox");?></a></td>
+				</tr>
+
+				<?php else: ?>
+
+				<!-- Domain threat source links -->
+				<tr>
+					<td>Domain Lookups<i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="http://www.alexa.com/siteinfo/<?php echo $domain; ?>">
+						<?=gettext("Alexa");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.c-sirt.org/en/incidents-on-domain/<?php echo $domain; ?>">
+						<?=gettext("C-SIRT");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://www.herdprotect.com/domain-<?php echo $domain; ?>.aspx">
+						<?=gettext("HerdProtect");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://sitecheck.sucuri.net/results/<?php echo $domain; ?>">
+						<?=gettext("Sucuri");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="http://www.tcpiputils.com/browse/domain/<?php echo $domain; ?>/">
+						<?=gettext("TCPUtils");?></a></td>
+				</tr>
+			<?php endif; ?>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<?php include('foot.inc'); ?>
