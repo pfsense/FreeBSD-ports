@@ -47,8 +47,8 @@ global $g, $pfb, $rule_list, $pfb_localsub;
 pfb_global();
 
 // Application paths
-$pathgeoip	= "{$pfb['prefix']}/bin/geoiplookup";
-$pathgeoip6	= "{$pfb['prefix']}/bin/geoiplookup6";
+$pathgeoip	= "/usr/local/bin/geoiplookup";
+$pathgeoip6	= "/usr/local/bin/geoiplookup6";
 
 // Define file locations
 $filter_logfile = "{$g['varlog_path']}/filter.log";
@@ -74,8 +74,11 @@ if (file_exists("{$pfb['supptxt']}")) {
 }
 
 // Alerts tab customizations
-$aglobal_array = array('pfbdenycnt' => 25, 'pfbpermitcnt' => 5, 'pfbmatchcnt' => 5, 'pfbdnscnt' => 5, 'alertrefresh' => 'on', 'hostlookup' => 'on');
+$aglobal_array = array('pfbdenycnt' => 25, 'pfbpermitcnt' => 5, 'pfbmatchcnt' => 5, 'pfbdnscnt' => 5);
 $pfb['aglobal'] = &$config['installedpackages']['pfblockerngglobal'];
+
+$alertrefresh	= $pfb['aglobal']['alertrefresh'] != '' ? $pfb['aglobal']['alertrefresh'] : 'on';
+$hostlookup	= $pfb['aglobal']['hostlookup'] != '' ? $pfb['aglobal']['hostlookup'] : 'on';
 foreach ($aglobal_array as $type => $value) {
 	${"$type"} = $pfb['aglobal'][$type] != '' ? $pfb['aglobal'][$type] : $value;
 }
@@ -84,8 +87,6 @@ foreach ($aglobal_array as $type => $value) {
 if (isset($_POST['save'])) {
 	$pfb['aglobal']['alertrefresh']	= htmlspecialchars($_POST['alertrefresh']) ?: 'off';
 	$pfb['aglobal']['hostlookup']	= htmlspecialchars($_POST['hostlookup']) ?: 'off';
-	unset($aglobal_array['alertrefresh'], $aglobal_array['hostlookup']);
-
 	foreach ($aglobal_array as $type => $value) {
 		if (ctype_digit(htmlspecialchars($_POST[$type]))) {
 			$pfb['aglobal'][$type] = htmlspecialchars($_POST[$type]);
@@ -133,13 +134,13 @@ if (isset($_POST['filterlogentries_submit'])) {
 	}
 }
 
-if (isset($_POST['filterlogentries_clear'])) {
+if ($_POST['filterlogentries_clear']) {
 	$pfb['filterlogentries'] = FALSE;
 	$filterfieldsarray = array();
 }
 
 // Add IP to the suppression alias
-if (isset($_POST['addsuppress'])) {
+if ($_POST['addsuppress']) {
 	if (isset($_POST['ip'])) {
 		$ip	= htmlspecialchars($_POST['ip']);
 		$table	= htmlspecialchars($_POST['table']);
@@ -247,7 +248,7 @@ if (isset($_POST['addsuppress'])) {
 }
 
 // Add domain to the suppression list
-if (isset($_POST['addsuppressdom'])) {
+if ($_POST['addsuppressdom']) {
 	$domain		= htmlspecialchars($_POST['domain']);
 	$domainparse	= str_replace('.', '\.', $domain);
 	$pfb['dsupp']	= &$config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['suppression'];
@@ -641,203 +642,233 @@ function conv_log_filter_lite($logfile, $nentries, $tail, $pfbdenycnt, $pfbpermi
 		return $fields_array;
 	}
 }
-
-
-$pgtitle = gettext('pfBlockerNG: Alerts');
+$pgtitle = array(gettext("pfBlockerNG"), gettext("Alerts"));
 include_once('head.inc');
-?>
-<body link="#000000" vlink="#0000CC" alink="#000000">
-<form action="/pfblockerng/pfblockerng_alerts.php" method="post">
-<input type="hidden" name="ip" id="ip" value=""/>
-<input type="hidden" name="table" id="table" value=""/>
-<input type="hidden" name="descr" id="descr" value=""/>
-<input type="hidden" name="cidr" id="cidr" value=""/>
-<input type="hidden" name="domain" id="domain" value=""/>
-<?php
-
-include_once('fbegin.inc');
 
 // refresh every 60 secs
 if ($alertrefresh == 'on') {
 	if ($pfb['filterlogentries']) {
 		// Refresh page with 'Filter options' if defined.
 		$refreshentries = urlencode(serialize($filterfieldsarray));
-		echo "<meta http-equiv=\"refresh\" content=\"60;url=/pfblockerng/pfblockerng_alerts.php?refresh={$refreshentries}\" />\n";
+		print "<meta http-equiv=\"refresh\" content=\"60;url=/pfblockerng/pfblockerng_alerts.php?refresh={$refreshentries}\" />\n";
 	} else {
-		echo "<meta http-equiv=\"refresh\" content=\"60;url=/pfblockerng/pfblockerng_alerts.php\" />\n";
+		print "<meta http-equiv=\"refresh\" content=\"60;url=/pfblockerng/pfblockerng_alerts.php\" />\n";
 	}
 }
+
 if ($savemsg) {
 	print_info_box($savemsg);
 }
 
-$skipcount = $counter = $resolvecounter = 0;
 ?>
-	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<table summary="tabs">
 	<tr>
-		<td>
-			<?php
-				$tab_array = array();
-				$tab_array[] = array(gettext("General"), false, "/pkg_edit.php?xml=pfblockerng.xml");
-				$tab_array[] = array(gettext("Update"), false, "/pfblockerng/pfblockerng_update.php");
-				$tab_array[] = array(gettext("Alerts"), true, "/pfblockerng/pfblockerng_alerts.php");
-				$tab_array[] = array(gettext("Reputation"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml");
-				$tab_array[] = array(gettext("IPv4"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml");
-				$tab_array[] = array(gettext("IPv6"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml");
-				$tab_array[] = array(gettext("DNSBL"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml");
-				$tab_array[] = array(gettext("Country"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml");
-				$tab_array[] = array(gettext("Logs"), false, "/pfblockerng/pfblockerng_log.php");
-				$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml");
-				display_top_tabs($tab_array, true);
-			?>
+		<td class="tabnavtbl">
+		<?php
+			$tab_array   = array();
+			$tab_array[] = array(gettext("General"), false, "/pkg_edit.php?xml=pfblockerng.xml");
+			$tab_array[] = array(gettext("Update"), false, "/pfblockerng/pfblockerng_update.php");
+			$tab_array[] = array(gettext("Alerts"), true, "/pfblockerng/pfblockerng_alerts.php");
+			$tab_array[] = array(gettext("Reputation"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml");
+			$tab_array[] = array(gettext("IPv4"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml");
+			$tab_array[] = array(gettext("IPv6"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml");
+			$tab_array[] = array(gettext("DNSBL"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml");
+			$tab_array[] = array(gettext("Country"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml");
+			$tab_array[] = array(gettext("Logs"), false, "/pfblockerng/pfblockerng_log.php");
+			$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml");
+			display_top_tabs($tab_array, true);
+		?>
 		</td>
 	</tr>
-	<tr>
-	<td><div id="mainarea">
-		<table id="maintable" class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="4">
-			<tr>
-				<td colspan="3" class="vncell" align="left"><?php echo gettext("LINKS :"); ?>&nbsp;
-				<a href='/firewall_aliases.php' target="_blank"><?php echo gettext("Firewall Alias"); ?></a>&nbsp;
-				<a href='/firewall_rules.php' target="_blank"><?php echo gettext("Firewall Rules"); ?></a>&nbsp;
-				<a href='/diag_logs_filter.php' target="_blank"><?php echo gettext("Firewall Logs"); ?></a><br /></td>
-			</tr>
-			<tr>
-			<td width="10%" class="vncell"><?php echo gettext('Alert Settings'); ?></td>
-			<td width="90%" class="vtable">
-				<input name="pfbdenycnt" type="text" class="formfld unknown" id="pdbdenycnt" size="1"
-					title="Enter the number of 'Deny' Alerts to Show"  value="<?=htmlspecialchars($pfbdenycnt);?>"/>
-				<?php printf(gettext('%sDeny%s.&emsp;') , '<strong>', '</strong>'); ?>
-				<?php if ($pfb['dnsbl'] == "on"): ?>
-					<input name="pfbdnscnt" type="text" class="formfld unknown" id="pdbdnscnt" size="1"
-						title="Enter the number of 'DNSBL' Alerts to Show" value="<?=htmlspecialchars($pfbdnscnt);?>"/>
-					<?php printf(gettext('%sDNSBL%s.&emsp;') , '<strong>', '</strong>'); ?>
-				<?php endif; ?>
-				<input name="pfbpermitcnt" type="text" class="formfld unknown" id="pdbpermitcnt" size="1"
-					title="Enter the number of 'Permit' Alerts to Show" value="<?=htmlspecialchars($pfbpermitcnt);?>"/>
-				<?php printf(gettext('%sPermit%s.&emsp;'), '<strong>', '</strong>'); ?>
-				<input name="pfbmatchcnt" type="text" class="formfld unknown" id="pdbmatchcnt" size="1"
-					title="Enter the number of 'Match' Alerts to Show" value="<?=htmlspecialchars($pfbmatchcnt); ?>"/>
-				<?php printf(gettext('%sMatch%s.'), '<strong>', '</strong>'); ?>
+</table>
+<?php
 
-				<?php echo gettext('&emsp;Auto-Refresh');?>&emsp;<input name="alertrefresh" type="checkbox" value="on"
-					title="Click to enable Auto-Refresh of this Tab once per minute"
-				<?php if ($config['installedpackages']['pfblockerngglobal']['alertrefresh']=="on") echo "checked"; ?>/>&nbsp;
+// Create Form
+$form = new Form(false);
 
-				<?php echo gettext('&nbsp;Auto-Resolve');?>&emsp;<input name="hostlookup" type="checkbox" value="on"
-					title="Click to enable Auto-Resolve of Hostnames. Country Blocks/Permit/Match Lists will not auto-resolve"
-				<?php if ($config['installedpackages']['pfblockerngglobal']['hostlookup']=="on") echo "checked"; ?>/>&emsp;
-				<input name="save" type="submit" class="formbtns" value="Save" title="<?=gettext('Save settings');?>"/><br />
+// Build 'Shortcut Links' section
+$section = new Form_Section(NULL);
+$section->addInput(new Form_StaticText(
+	NULL,
+	'<small>'
+	. '<a href="/firewall_aliases.php" target="_blank">Firewall Alias</a>&emsp;'
+	. '<a href="/firewall_rules.php" target="_blank">Firewall Rules</a>&emsp;'
+	. '<a href="/diag_logs_filter.php" target="_blank">Firewall Logs</a></small>'
+));
+$form->add($section);
 
-				<?php printf(gettext('Enter number of log entries to view.')); ?>&emsp;
-				<?php printf(gettext("Currently Suppressing &nbsp; %s$pfbsupp_cnt%s &nbsp; Hosts."), '<strong>', '</strong>');?>
-			</td>
-			</tr>
-			<tr>
-				<td colspan="3" class="listtopic"><?php echo gettext("Alert Log View Filter"); ?></td>
-			</tr>
-			<tr id="filter_enable_row" style="display:<?php if (!$pfb['filterlogentries']) {echo "table-row;";} else {echo "none;";} ?>">
-				<td width="10%" class="vncell"><?php echo gettext('Filter Options'); ?></td>
-				<td width="90%" class="vtable">
-					<input name="show_filter" id="show_filter" type="button" class="formbtns" value="<?=gettext("Show Filter");?>"
-						onclick="enable_showFilter();" />
-					&emsp;<?=gettext("Click to display advanced filtering options dialog");?>
-				</td>
-			</tr>
-			<tr id="filter_options_row" style="display:<?php if (!$pfb['filterlogentries']) {echo "none;";} else {echo "table-row;";} ?>">
-				<td colspan="2">
-					<table width="100%" border="0" cellspacing="0" cellpadding="1" summary="action">
-					<tr>
-						<td valign="top">
-							<div align="center"><?=gettext("Date");?></div>
-							<div align="center"><input id="filterlogentries_date" name="filterlogentries_date" class="formfld search"
-								type="text" size="15" value="<?= $filterfieldsarray[99] ?>" /></div>
-						</td>
-						<td valign="top">
-							<div align="center"><?=gettext("Source IP Address");?></div>
-							<div align="center"><input id="filterlogentries_srcip" name="filterlogentries_srcip" class="formfld search"
-								type="text" size="28" value="<?= $filterfieldsarray[7] ?>" /></div>
-						</td>
-						<td valign="top">
-							<div align="center"><?=gettext("Source Port");?></div>
-							<div align="center"><input id="filterlogentries_srcport" name="filterlogentries_srcport" class="formfld search"
-								type="text" size="5" value="<?= $filterfieldsarray[9] ?>" /></div>
-						</td>
-						<td valign="top">
-							<div align="center"><?=gettext("Interface");?></div>
-							<div align="center"><input id="filterlogentries_int" name="filterlogentries_int" class="formfld search"
-								type="text" size="15" value="<?= $filterfieldsarray[2] ?>" /></div>
-						</td>
-					</tr>
-					<tr>
-						<td valign="top">
-							<div align="center"><?=gettext("Rule Number Only");?></div>
-							<div align="center"><input id="filterlogentries_rule" name="filterlogentries_rule" class="formfld search"
-								type="text" size="15" value="<?= $filterfieldsarray[0] ?>" /></div>
-						</td>
-						<td valign="top">
-							<div align="center"><?=gettext("Destination IP Address/Domain Name");?></div>
-							<div align="center"><input id="filterlogentries_dstip" name="filterlogentries_dstip" class="formfld search"
-								type="text" size="28" value="<?= $filterfieldsarray[8] ?>" /></div>
-						</td>
-						<td valign="top">
-							<div align="center"><?=gettext("Destination Port");?></div>
-							<div align="center"><input id="filterlogentries_dstport" name="filterlogentries_dstport" class="formfld search"
-								type="text" size="5" value="<?= $filterfieldsarray[10] ?>" /></div>
-						</td>
-						<td valign="top">
-							<div align="center"><?=gettext("Protocol");?></div>
-							<div align="center"><input id="filterlogentries_proto" name="filterlogentries_proto" class="formfld search"
-								type="text" size="15" value="<?= $filterfieldsarray[6] ?>" /></div>
-						</td>
-						<td valign="top" colspan="3">
-							&nbsp;
-						</td>
-					</tr>
+$section = new Form_Section('Alert Settings', 'alertsettings', COLLAPSIBLE|SEC_CLOSED);
+$form->add($section);
 
-						<?php if ($pfb['dnsbl'] == 'on'): ?>
-							<tr>
-								<td valign="top">
-									<div align="center"><?=gettext("DNSBL URL");?></div>
-									<div align="center"><input id="filterlogentries_dnsbl" name="filterlogentries_dnsbl"
-									class="formfld search" type="text" size="15" value="<?= $filterfieldsarray[90] ?>" /></div>
-								</td>
-								<td valign="top" colspan="3">
-									&nbsp;
-								</td>
-							</tr>
-						<?php else: ?>
-							<tr>
-								<td valign="top" colspan="3">
-									&nbsp;
-								</td>
-							</tr>
-						<?php endif; ?>
+// Build 'Alert Settings' group section
+$group = new Form_Group('Alert Settings');
+$group->add(new Form_Input(
+	'pfbdenycnt',
+	'Deny',
+	'number',
+	$pfbdenycnt,
+	[min => 0, max => 1000]
+))->setHelp('Deny')->setAttribute('title', 'Enter number of \'Deny\' log entries to view. Set to \'0\' to disable');
 
-					<tr>
-						<td colspan="3" style="vertical-align:bottom">
-							<br /><?printf(gettext('Regex Style Matching Only! %1$s Regular Expression Help link%2$s.'), '
-								<a target="_blank" href="http://www.php.net/manual/en/book.pcre.php">', '</a>');?>&emsp;
-								<?=gettext("Precede with exclamation (!) as first character to exclude match.) ");?>
-							<br /><?printf(gettext("Example: ( ^80$ - Match Port 80, ^80$|^8080$ - Match both port 80 & 8080 ) "));?><br />
-						</td>
-					</tr>
-					<tr>
-						<td colspan="3" style="vertical-align:bottom">
-							<div align="left"><input id="filterlogentries_submit" name="filterlogentries_submit" type="submit"
-								class="formbtns" value="<?=gettext("Apply Filter");?>" title="<?=gettext("Apply filter"); ?>" />
-								&emsp;<input id="filterlogentries_clear" name="filterlogentries_clear" type="submit"
-								class="formbtns" value="<?=gettext("Clear");?>" title="<?=gettext("Remove filter");?>" />
-								&emsp;<input id="filterlogentries_hide" name="filterlogentries_hide" type="button"
-								class="formbtns" value="<?=gettext("Hide");?>" onclick="enable_hideFilter();"
-								title="<?=gettext("Hide filter options");?>" /></div>
-						</td>
-					</tr>
-					</table>
-				</td>
-			</tr>
+$group->add(new Form_Input(
+	'pfbdnscnt',
+	'DNSBL',
+	'number',
+	$pfbdnscnt,
+	[min => 0, max => 1000]
+))->setHelp('DNSBL')->setAttribute('title', 'Enter number of \'DNSBL\' log entries to view. Set to \'0\' to disable');
 
-<!--Create three output windows 'Deny', 'DNSBL', 'Permit' and 'Match'-->
-<?php foreach (array (	'Deny'		=> "{$pfb['denydir']}/* {$pfb['nativedir']}/*",
+$group->add(new Form_Input(
+	'pfbpermitcnt',
+	'Permit',
+	'number',
+	$pfbpermitcnt,
+	[min => 0, max => 1000]
+))->setHelp('Permit')->setAttribute('title', 'Enter number of \'Permit\' log entries to view. Set to \'0\' to disable');
+
+$group->add(new Form_Input(
+	'pfbmatchcnt',
+	'Match',
+	'number',
+	$pfbmatchcnt,
+	[min => 0, max => 1000]
+))->setHelp('Match')->setAttribute('title', 'Enter number of \'Match\' log entries to view. Set to \'0\' to disable');
+
+$group->add(new Form_Checkbox(
+	'alertrefresh',
+	'Auto-Refresh',
+	'on',
+	$alertrefresh == 'on' ? true:false,
+	'on'
+))->setHelp('Auto-Refresh')->setAttribute('title', 'Select to \'Auto-Refresh\' page every 60 seconds.');
+
+$group->add(new Form_Checkbox(
+	'hostlookup',
+	'Auto-Resolve',
+	'on',
+	$hostlookup == 'on' ? true:false,
+	'on'
+))->setHelp('Auto-Resolve')->setAttribute('title', 'Select to \'Auto-Resolve\' Hosts.');
+
+$group->add(new Form_Button(
+	'save',
+	'Save'
+))->removeClass('btn-primary')->addClass('btn-primary btn-xs')->setAttribute('title', 'Save Alert settings');
+$section->add($group);
+
+// Build 'Alert Filter' group section
+$filterstatus = SEC_CLOSED;
+if ($pfb['filterlogentries']) {
+	$filterstatus = SEC_OPEN;
+}
+$section = new Form_Section('Alert filter', 'alertfilter', COLLAPSIBLE|$filterstatus);
+$form->add($section);
+
+$group = new Form_Group(NULL);
+$group->add(new Form_Input(
+	'filterlogentries_date',
+	'Date',
+	'text',
+	$filterfieldsarray[99]
+))->setAttribute('title', 'Enter filter \'Date\'.');
+
+$group->add(new Form_Input(
+	'filterlogentries_srcip',
+	'Source IP Address',
+	'text',
+	$filterfieldsarray[7]
+))->setAttribute('title', 'Enter filter \'Source IP Address\'.');
+
+$group->add(new Form_Input(
+	'filterlogentries_srcport',
+	'Source Port',
+	'number',
+	$filterfieldsarray[9]
+))->setAttribute('title', 'Enter filter \'Source Port\'.');
+
+$group->add(new Form_Input(
+	'filterlogentries_int',
+	'Interface',
+	'text',
+	$filterfieldsarray[2]
+))->setAttribute('title', 'Enter filter \'Interface\'.');
+$section->add($group);
+
+$group = new Form_Group(NULL);
+$group->add(new Form_Input(
+	'filterlogentries_rule',
+	'Rule Number Only',
+	'text',
+	$filterfieldsarray[0]
+))->setAttribute('title', 'Enter filter \'Rule Number\' only.');
+
+$group->add(new Form_Input(
+	'filterlogentries_dstip',
+	'Dest. IP/Domain Name',
+	'text',
+	$filterfieldsarray[8]
+))->setAttribute('title', 'Enter filter \'Destination IP Address/Domain Name\'.');
+
+$group->add(new Form_Input(
+	'filterlogentries_dstport',
+	'Destination Port',
+	'number',
+	$filterfieldsarray[10]
+))->setAttribute('title', 'Enter filter \'Destination Port\'.');
+
+$group->add(new Form_Input(
+	'filterlogentries_proto',
+	'Protocol',
+	'number',
+	$filterfieldsarray[6]
+))->setAttribute('title', 'Enter filter \'Protocol\'.');
+$section->add($group);
+
+if ($pfb['dnsbl'] == 'on') {
+	$section->addInput(new Form_Input(
+		'filterlogentries_dnsbl',
+		'',
+		'text',
+		$filterfieldsarray[90],
+		['placeholder' => 'DNSBL URL']
+	))->setAttribute('title', 'Enter filter \'DNSBL URL\'.');
+}
+
+$group = new Form_Group(NULL);
+$group->add(new Form_StaticText(
+	NULL,
+	'<div id="infoblock">'
+	. '<h6>Regex Style Matching Only! <a href="http://regexr.com/" target="_blank">Regular Expression Help link</a>. '
+	. 'Precede with exclamation (!) as first character to exclude match.)</h6>'
+	. '<h6>Example: ( ^80$ - Match Port 80, ^80$|^8080$ - Match both port 80 & 8080 )</h6>'
+	. '</div>'
+));
+$section->add($group);
+
+$group = new Form_Group(NULL);
+$group->add(new Form_Button(
+	'filterlogentries_submit',
+	'Apply Filter'
+))->removeClass('btn-primary')->addClass('btn-primary btn-xs');
+
+$group->add(new Form_Button(
+	'filterlogentries_clear',
+	'Clear Filter'
+))->removeClass('btn-primary')->addClass('btn-primary btn-xs');
+$section->add($group);
+
+$form->addGlobal(new Form_Input('domain', 'domain', 'hidden', ''));
+$form->addGlobal(new Form_Input('table', 'table', 'hidden', ''));
+$form->addGlobal(new Form_Input('descr', 'descr', 'hidden', ''));
+$form->addGlobal(new Form_Input('cidr', 'cidr', 'hidden', ''));
+$form->addGlobal(new Form_Input('ip', 'ip', 'hidden', ''));
+$form->addGlobal(new Form_Input('addsuppress', 'addsuppress', 'hidden', ''));
+$form->addGlobal(new Form_Input('addsuppressdom', 'addsuppressdom', 'hidden', ''));
+print($form);
+
+$skipcount = $counter = $resolvecounter = 0;
+// Create three output windows 'Deny', 'DNSBL', 'Permit' and 'Match'-->
+foreach (array (	'Deny'		=> "{$pfb['denydir']}/* {$pfb['nativedir']}/*",
 			'DNSBL'		=> "{$pfb['dnsdir']}",
 			'Permit'	=> "{$pfb['permitdir']}/* {$pfb['nativedir']}/*",
 			'Match'		=> "{$pfb['matchdir']}/* {$pfb['nativedir']}/*" ) as $type => $pfbfolder ):
@@ -864,49 +895,35 @@ $skipcount = $counter = $resolvecounter = 0;
 		$skipcount++;
 		continue;
 	}
-
-	// Print alternating line shading
-	$alertRowEvenClass	= "style='background-color: #D8D8D8;'";
-	$alertRowOddClass	= "style='background-color: #E8E8E8;'";
 ?>
-			<table id="maintable" class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="6">
-			<tr>
-				<!--Print table info-->
-				<td colspan="2" class="listtopic">
-					<?php printf(gettext("&nbsp;{$type}&emsp; - &nbsp; Last %s Alert Entries."),"{$pfbentries}"); ?>
-				</td>
-			</tr>
 
-<td width="100%" colspan="2">
-<table id="pfbAlertsTable" style="table-layout: fixed;" width="100%" class="sortable" border="0" cellpadding="0" cellspacing="0">
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h6 class="panel-title"><?=gettext("&nbsp;" . $type . "&emsp; - &nbsp; Last " . $pfbentries . " Alert Entries."); ?></h6>
+	</div>
+	<div class="panel-body">
+		<div class="table-responsive">
+		<table class="table table-striped table-hover table-compact sortable-theme-bootstrap" data-sortable>
 
 <?php
-// Process dns array for: DNSBL and generate output
+// Process dns array for DNSBL and generate output
 if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 ?>
-
-	<colgroup>
-		<col width="8%" align="center" axis="date">
-		<col width="7%" align="center" axis="string">
-		<col width="12%" align="center" axis="string">
-		<col width="59%" align="center" axis="string">
-		<col width="14%" align="center" axis="string">
-	</colgroup>
-	<thead>
-		<tr class="sortableHeaderRowIdentifier">
-			<th class="listhdrr" axis="date"><?php echo gettext("Date"); ?></th>
-			<th class="listhdrr" axis="string"><?php echo gettext("IF"); ?></th>
-			<th class="listhdrr" axis="string"><?php echo gettext("Source"); ?></th>
-			<th class="listhdrr" axis="string"><?php echo gettext("Domain/Referer|URI|Agent"); ?></th>
-			<th class="listhdrr" axis="string"><?php echo gettext("List"); ?></th>
-		</tr>
-	</thead>
-	<tbody>
-
+			<thead>
+				<tr>
+					<th><?=gettext("Date")?></th>
+					<th><?=gettext("IF")?></th>
+					<th><?=gettext("Source")?></th>
+					<th><!----- Buttons -----></th>
+					<th><?=gettext("Domain/Referer|URI|Agent")?></th>
+					<th><?=gettext("List")?></th>
+				</tr>
+			</thead>
+			<tbody>
 <?php
 	$dns_array = $final = array();
 	if (file_exists("{$pfb['dnslog']}")) {
-		if (($handle = fopen("{$pfb['dnslog']}", 'r')) !== FALSE) {
+		if (($handle = @fopen("{$pfb['dnslog']}", 'r')) !== FALSE) {
 			while (($line = fgetcsv($handle)) !== FALSE) {
 
 				// Define missing data for HTTPS alerts
@@ -922,7 +939,7 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 				$pdomain = "{$line[2]}{$line[3]}";
 			}
 		}
-		fclose($handle);
+		@fclose($handle);
 
 		if (!empty($final)) {
 			$dns_array = array_slice(array_reverse($final), 0, $pfbentries);
@@ -966,8 +983,7 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 			// Add 'https' icon to Domains as required.
 			$pfb_https = '';
 			if (strpos($aline[4], 'https://') !== FALSE || strpos($aline[4], 'Not available for HTTPS alerts') !== FALSE) {
-				$pfb_https = "<img src=\"/themes/{$g['theme']}/images/icons/icon_frmfld_pwd.png\" alt='' width='11' height='11' border='0' 
-						title='HTTPS alerts are not fully logged due to Browser security' />";
+				$pfb_https = '&nbsp;<i class="fa fa-key icon-pointer" title="HTTPS alerts are not fully logged due to Browser security"></i>';
 			}
 
 			// If alerts filtering is selected, process filters as required.
@@ -993,23 +1009,17 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 				$pfb_alias	= substr($pfb_alias, 0, 24) . '...';
 			}
 
-			// Print alternating line shading
-			$alertRowClass = $counter % 2 ? $alertRowEvenClass : $alertRowOddClass;
-
-			$alert_dom  = "<a href='/pfblockerng/pfblockerng_threats.php?domain={$aline[2]}' title=\" " . gettext("Resolve Domain via DNS lookup");
-			$alert_dom .= "\"> <img src=\"/themes/{$g['theme']}/images/icons/icon_log.gif\" width='11' height='11' border='0' ";
-			$alert_dom .= "alt=\"Icon Reverse Resolve with DNS\" style=\"cursor: pointer;\" /></a>";
+			$alert_dom = '<a class="fa fa-info icon-pointer icon-primary" title="Click for Threat Source Lookup." ' .
+					'href="/pfblockerng/pfblockerng_threats.php?domain=' . $aline[2] . '"></a>';
 
 			// Collect existing suppression list
 			$dnssupp_ex = collectsuppression();
 			if (!in_array($pfbalertdnsbl[8], $dnssupp_ex)) {
-				$supp_dom  = "<input type='image' name='addsuppressdom[]' onclick=\"domainlistid('{$domain}');\" ";
-				$supp_dom .= "src=\"../themes/{$g['theme']}/images/icons/icon_pass_add.gif\" alt='' title=\"";
-				$supp_dom .= gettext($supp_dom_txt) . "\" border='0' width='11' height='11' />&emsp;";
+				$supp_dom = '<i class="fa fa-plus icon-pointer icon-primary" id="DNSBLSUP' . $domain . '"' .
+						'" title="' . $supp_dom_txt . '"></i>';
 			}
 			else {
-				$supp_dom  = "<img src=\"../themes/{$g['theme']}/images/icons/icon_plus_d.gif\" alt='' border='0' width='11' height='11' ";
-				$supp_dom .= "title='" . gettext("This domain is already in the DNSBL Suppress List") . "' />&emsp;";
+				$supp_dom = '<i class="fa fa-plus-square-o icon-pointer" title="This domain is already in the DNSBL Suppress List"></i>&emsp;';
 			}
 
 			// Truncate long URLs
@@ -1019,14 +1029,15 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 				$pfbalertdnsbl[90] = substr(str_replace(array('?', '-'), '', $pfbalertdnsbl[90]), 0, 69) . '...';
 			}
 
-			echo "<tr {$alertRowClass}>
-				<td class='listMRr' align='center'>{$pfbalertdnsbl[99]}</td>
-				<td class='listMRr' align='center'><small>{$pfbalertdnsbl[1]}</small></td>
-				<td class='listMRr' align='center'>{$pfbalertdnsbl[7]}</td>
-				<td class='listMRr' align='left' title='{$url_title}' sorttable_customkey='{$pfbalertdnsbl[8]}'>
-					{$alert_dom} {$supp_dom}{$pfbalertdnsbl[8]} {$pfb_https}<br />&emsp;&emsp;&emsp;<small>{$pfbalertdnsbl[90]}</small></td>
-				<td class='listbg'  align='center' title='{$pfb_matchtitle}' style='white-space: word;'>
-					{$pfb_query}<br /><small>{$pfb_alias}</small></td></tr>";
+			print ("<tr>
+				<td>{$pfbalertdnsbl[99]}</td>
+				<td><small>{$pfbalertdnsbl[1]}</small></td>
+				<td>{$pfbalertdnsbl[7]}</td>
+				<td>{$alert_dom} {$supp_dom}</td>
+				<td  title=\"{$url_title}\">{$pfbalertdnsbl[8]} {$pfb_https}
+					<br />&nbsp;&nbsp;<small>{$pfbalertdnsbl[90]}</small></td>
+				<td title=\"{$pfb_matchtitle}\">{$pfb_query}
+					<br /><small>{$pfb_alias}</small></td></tr>");
 			$counter++;
 		}
 	}
@@ -1034,31 +1045,21 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 
 if ($type != 'DNSBL') {
 ?>
-
-	<colgroup>
-		<col width="7%" align="center" axis="date">
-		<col width="6%" align="center" axis="string">
-		<col width="15%" align="center" axis="string">
-		<col width="6%" align="center" axis="string">
-		<col width="21%" align="center" axis="string">
-		<col width="21%" align="center" axis="string">
-		<col width="3%" align="center" axis="string">
-		<col width="13%" align="center" axis="string">
-	</colgroup>
-	<thead>
-		<tr class="sortableHeaderRowIdentifier">
-			<th class="listhdrr" axis="date"><?php echo gettext("Date"); ?></th>
-			<th class="listhdrr" axis="string"><?php echo gettext("IF"); ?></th>
-			<th class="listhdrr" axis="string"><?php echo gettext("Rule"); ?></th>
-			<th class="listhdrr" axis="string"><?php echo gettext("Proto"); ?></th>
-			<th class="listhdrr" axis="string"><?php echo gettext("Source"); ?></th>
-			<th class="listhdrr" axis="string"><?php echo gettext("Destination"); ?></th>
-			<th class="listhdrr" axis="string"><?php echo gettext("CC"); ?></th>
-			<th class="listhdrr" axis="string"><?php echo gettext("List"); ?></th>
-		</tr>
-	</thead>
-	<tbody>
-
+			<thead>
+				<tr>
+					<th><?=gettext("Date")?></th>
+					<th><?=gettext("IF")?></th>
+					<th><?=gettext("Rule")?></th>
+					<th><?=gettext("Proto")?></th>
+					<th><!----- Buttons -----></th>
+					<th><?=gettext("Source")?></th>
+					<th><!----- Buttons -----></th>
+					<th><?=gettext("Destination")?></th>
+					<th><?=gettext("CC")?></th>
+					<th><?=gettext("List")?></th>
+				</tr>
+			</thead>
+			<tbody>
 <?php
 }
 
@@ -1096,14 +1097,12 @@ if (!empty($fields_array[$type]) && !empty($rule_list) && $type != 'DNSBL') {
 				$rule = "{$rule_list[$rulenum]['name']}<br /><small>({$rulenum})</small>";
 				$host = $fields[7];
 
-				$alert_ip  = "<a href='/pfblockerng/pfblockerng_threats.php?host={$host}' title=\" " . gettext("Resolve host via Rev. DNS lookup");
-				$alert_ip .= "\"> <img src=\"/themes/{$g['theme']}/images/icons/icon_log.gif\" width='11' height='11' border='0' ";
-				$alert_ip .= "alt=\"Icon Reverse Resolve with DNS\" style=\"cursor: pointer;\" /></a>";
+				$alert_ip  = '<a class="fa fa-info icon-pointer icon-primary" href="/pfblockerng/pfblockerng_threats.php?host=' .
+						$host . '" title="Click for Threat Source Lookup."></a>';
 
 				if ($pfb_query != 'Country' && $rtype == 'block' && $pfb['supp'] == 'on') {
-					$supp_ip  = "<input type='image' name='addsuppress[]' onclick=\"hostruleid('{$host}','{$rule_list[$rulenum]['name']}');\" ";
-					$supp_ip .= "src=\"../themes/{$g['theme']}/images/icons/icon_pass_add.gif\" alt='' title=\"";
-					$supp_ip .= gettext($supp_ip_txt) . "\" border='0' width='11' height='11' />";
+					$supp_ip = '<i class="fa fa-plus icon-pointer icon-primary"' .
+						'id="PFBIPSUP' . $host . '|' . $rule_list[$rulenum]['name'] . '" title="Add IP to Suppress List"></i>';
 				}
 
 				if ($rtype == 'block' && $hostlookup == 'on') {
@@ -1111,9 +1110,9 @@ if (!empty($fields_array[$type]) && !empty($rule_list) && $type != 'DNSBL') {
 				} else {
 					$hostname = '';
 				}
-		
-				$src_icons_1	= "{$alert_ip}&nbsp;{$supp_ip}&nbsp;";
-				$src_icons_2	= "{$alert_ip}&nbsp;";
+
+				$src_icons_1	= "{$alert_ip}&nbsp;{$supp_ip}";
+				$src_icons_2	= "{$alert_ip}";
 				$dst_icons_1	= '';
 				$dst_icons_2	= '';
 
@@ -1122,14 +1121,12 @@ if (!empty($fields_array[$type]) && !empty($rule_list) && $type != 'DNSBL') {
 				$rule = "{$rule_list[$rulenum]['name']}<br /><small>({$rulenum})</small>";
 				$host = $fields[8];
 
-				$alert_ip  = "<a href='/pfblockerng/pfblockerng_threats.php?host={$host}' title=\"" . gettext("Resolve host via Rev. DNS lookup");
-				$alert_ip .= "\"> <img src=\"/themes/{$g['theme']}/images/icons/icon_log.gif\" width='11' height='11' border='0' ";
-				$alert_ip .= "alt=\"Icon Reverse Resolve with DNS\" style=\"cursor: pointer;\" /></a>";
+				$alert_ip = '<a class="fa fa-info icon-pointer icon-primary" href="/pfblockerng/pfblockerng_threats.php?host=' .
+						$host . '" title="Click for Threat Source Lookup."></a>';
 
 				if ($pfb_query != 'Country' && $rtype == 'block' && $pfb['supp'] == 'on') {
-					$supp_ip  = "<input type='image' name='addsuppress[]' onclick=\"hostruleid('{$host}','{$rule_list[$rulenum]['name']}');\" ";
-					$supp_ip .= "src=\"../themes/{$g['theme']}/images/icons/icon_pass_add.gif\" alt='' title=\"";
-					$supp_ip .= gettext($supp_ip_txt) . "\" border='0' width='11' height='11' />";
+					$supp_ip = '<i class="fa fa-plus icon-pointer icon-primary"' .
+						'id="PFBIPSUP' . $host . '|' . $rule_list[$rulenum]['name'] . '" title="Add IP to Suppress List"></i>';
 				}
 
 				if ($rtype == 'block' && $hostlookup == 'on') {
@@ -1141,7 +1138,7 @@ if (!empty($fields_array[$type]) && !empty($rule_list) && $type != 'DNSBL') {
 				$src_icons_1	= '';
 				$src_icons_2	= '';
 				$dst_icons_1	= "{$alert_ip}&nbsp;{$supp_ip}&nbsp;";
-				$dst_icons_2	= "{$alert_ip}&nbsp;";
+				$dst_icons_2	= "{$alert_ip}";
 			}
 
 			// Determine Country code of host
@@ -1204,20 +1201,17 @@ if (!empty($fields_array[$type]) && !empty($rule_list) && $type != 'DNSBL') {
 				$pfb_match[1]	= substr($pfb_match[1], 0, 16) . '...';
 			}
 
-			// Print alternating line shading 
-			$alertRowClass = $counter % 2 ? $alertRowEvenClass : $alertRowOddClass;
-			echo "<tr {$alertRowClass}>
-				<td class='listMRr' align='center'>{$fields[99]}</td>
-				<td class='listMRr' align='center'><small>{$fields[2]}</small></td>
-				<td class='listMRr' align='center' title='The pfBlockerNG Rule that Blocked this Host.'>{$rule}</td>
-				<td class='listMRr' align='center'><small>{$fields[6]}</small></td>
-				<td class='listMRr' align='center' sorttable_customkey='{$fields[97]}'>{$src_icons}{$fields[97]}{$srcport}<br />
-					<small>{$hostname['src']}</small></td>
-				<td class='listMRr' align='center' sorttable_customkey='{$fields[98]}'>{$dst_icons}{$fields[98]}{$dstport}<br />
-					<small>{$hostname['dst']}</small></td>
-				<td class='listMRr' align='center'>{$country}</td>
-				<td class='listbg' align='center' title='{$pfb_matchtitle}' style=\"font-size: 10px word-wrap:break-word;\">
-					{$pfb_match[1]}<br /><small>{$pfb_match[2]}</small></td></tr>";
+			print ("<tr>
+				<td>{$fields[99]}</td>
+				<td><small>{$fields[2]}</small></td>
+				<td>{$rule}</td>
+				<td><small>{$fields[6]}</small></td>
+				<td>{$src_icons}</td>
+				<td>{$fields[97]}{$srcport}<br /><small>{$hostname['src']}</small></td>
+				<td>{$dst_icons}</td>
+				<td>{$fields[98]}{$dstport}<br /><small>{$hostname['dst']}</small></td>
+				<td>{$country}</td>
+				<td title=\"{$pfb_matchtitle}\">{$pfb_match[1]}<br /><small>{$pfb_match[2]}</small></td></tr>");
 			$counter++;
 			if ($rtype == 'block') {
 				$resolvecounter = $counter;
@@ -1225,90 +1219,91 @@ if (!empty($fields_array[$type]) && !empty($rule_list) && $type != 'DNSBL') {
 		}
 	}
 }
-?>
 
-	</tbody>
-	<tr>
-		<!--Print final table info-->
-		<?php
+		// Print final table info
 			if ($pfbentries != $counter) {
 				$msg = ' - Insufficient Firewall Alerts found.';
 			}
 			if ($type == 'DNSBL') {
 				$colspan = "colspan='7'";
 			} else {
-				$colspan = "colspan='8'";
+				$colspan = "colspan='10'";
 			}
 
-			echo (" <td {$colspan} style='font-size:10px; background-color: #F0F0F0;' >Found {$counter} Alert Entries {$msg}</td>");
+			print ("<td {$colspan} style='font-size:10px; background-color: #F0F0F0;' >Found {$counter} Alert Entries {$msg}</td>");
 			$counter = 0; $msg = '';
-		?>
-	</tr>
-	</table>
-	</table>
-<?php endforeach; ?>	<!--End - Create three output windows 'Deny', 'Permit' and 'Match'-->
-<?php unset ($fields_array); ?>
-</td></tr>
-</table>
-</td>
+?>
+			</tbody>
+		</table>
+		</div>
+	</div>
+</div>
+<?php
+endforeach;	// End - Create four output windows ('Deny', 'DNSBL', 'Permit' and 'Match')
+unset($fields_array);
+
+include('foot.inc');
+?>
 
 <script type="text/javascript">
 //<![CDATA[
 
-// This function inserts the passed HOST and table values into a hidden Form fields for postback.
-function hostruleid(host,table) {
-	document.getElementById("ip").value = host;
-	document.getElementById("table").value = table;
-
-	var description = prompt("Please enter Suppression Description");
-	document.getElementById("descr").value = description;
-
-	if (description.value != "") {
-		var cidr = prompt("Please enter CIDR [ 32 or 24 CIDR only supported ]","32");
-		document.getElementById("cidr").value = cidr;
-	}
-}
-
-// This function collects the domain and list for the DNSBL suppression function.
-function domainlistid(domain,domainlist) {
-	document.getElementById("domain").value = domain;
-}
-
 // Auto-resolve of alerted hostnames
 function findhostnames(counter) {
-	getip = jQuery('#gethostname_' + counter).attr('name');
+	getip = $('#gethostname_' + counter).attr('name');
 	geturl = "/pfblockerng/pfblockerng_alerts_ar.php";
-	jQuery.get( geturl, { "getpfhostname": getip } )
+	$.get( geturl, { "getpfhostname": getip } )
 	.done(function( data ) {
-			jQuery('#gethostname_' + counter).prop('title' , data );
+			$('#gethostname_' + counter).prop('title' , data );
 			var str = data;
 			if(str.length > 32) str = str.substring(0,29)+"...";
-			jQuery('#gethostname_' + counter).html( str );
+			$('#gethostname_' + counter).html( str );
 		}
 	)
 }
 
-var alertlines = <?php echo $resolvecounter; ?>;
-var autoresolve = "<?php echo $config['installedpackages']['pfblockerngglobal']['hostlookup']; ?>";
+var alertlines = "<?php echo $resolvecounter?>";
+var autoresolve = "<?php echo $hostlookup?>";
 if ( autoresolve == 'on' ) {
 	for (alertcount = 0; alertcount < alertlines; alertcount++) {
 		setTimeout(findhostnames(alertcount), 30);
 	}
 }
 
-function enable_showFilter() {
-	document.getElementById("filter_enable_row").style.display="none";
-	document.getElementById("filter_options_row").style.display="table-row";
-}
+events.push(function() {
 
-function enable_hideFilter() {
-	document.getElementById("filter_enable_row").style.display="table-row";
-	document.getElementById("filter_options_row").style.display="none";
-}
+	$('[id^=DNSBLSUP]').click(function(event) {
+		if (confirm(event.target.title)) {
+			var domain = this.id.replace(/DNSBLSUP|\\/gi, "");
+			$('#domain').val(domain);
+
+			if (domain) {
+				$('#addsuppressdom').val('true');
+				$('form').submit();
+			}
+		}
+	});
+
+	$('[id^=PFBIPSUP]').click(function(event) {
+		var iprule = this.id.replace("PFBIPSUP", "");
+		var arr = iprule.split('|');	// Split iprule into (IP/Rulename)
+		$('#ip').val(arr[0]);
+		$('#table').val(arr[1]);
+
+		var description = prompt("Please enter Suppression Description");
+		$('#descr').val(description);
+
+		if (description.value != "") {
+			var cidr = prompt("Please enter CIDR [ 32 or 24 CIDR only supported ]","32");
+			$('#cidr').val(cidr);
+
+			if (arr[0] && arr[1] && description && cidr) {
+				$('#addsuppress').val('true');
+				$('form').submit();
+			}
+		}
+	});
+});
 
 //]]>
 </script>
-<?php include('fend.inc'); ?>
-</form>
-</body>
-</html>
