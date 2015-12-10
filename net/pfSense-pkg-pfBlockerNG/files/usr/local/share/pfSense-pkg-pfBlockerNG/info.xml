@@ -10,20 +10,11 @@
 			Advanced Integration for Proofpoint ET IQRisk IP Reputation Threat Sources.&lt;br /&gt;
 			Domain Name (DNSBL) blocking via Unbound DNS Resolver.]]></descr>
 		<category>Security</category>
-		<pkginfolink>https://forum.pfsense.org/index.php?topic=86212.0</pkginfolink>
-		<config_file>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng.xml</config_file>
-		<version>2.0.1</version>
+		<pkginfolink>https://forum.pfsense.org/index.php?topic=102470.0</pkginfolink>
+		<version>2.0.2</version>
 		<status>RELEASE</status>
-		<required_version>2.2</required_version>
+		<required_version>2.3</required_version>
 		<maintainer>BBCan177@gmail.com</maintainer>
 		<configurationfile>pfblockerng.xml</configurationfile>
-		<run_depends>bin/geoiplookup:net/GeoIP bin/grepcidr:net-mgmt/grepcidr bin/aggregate:net-mgmt/aggregate bin/mwhois:net/whois</run_depends>
-		<port_category>net</port_category>
-		<depends_on_package_pbi>pfblockerng-1.6.6-##ARCH##.pbi</depends_on_package_pbi>
-		<build_pbi>
-			<port>net/GeoIP</port>
-			<ports_after>net-mgmt/grepcidr net-mgmt/aggregate net/whois</ports_after>
-			<custom_name>pfblockerng</custom_name>
-		</build_pbi>
 	</package>
 </pfsensepkgs>
