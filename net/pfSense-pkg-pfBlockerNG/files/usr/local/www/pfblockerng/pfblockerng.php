@@ -108,7 +108,7 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'bu', 'u
 			}
 
 			// Skip Alexa update, if disabled
-			if ($pfb['dnsbl_alexa'] == 'Disabled') {
+			if ($pfb['dnsbl_alexa'] != 'on') {
 				unset($pfb['extras'][5]);
 			}
 
@@ -450,8 +450,8 @@ function pfblockerng_uc_countries() {
 	pfb_logger("{$log}", 3);
 
 	$cont_array = array();
-	if (($handle = fopen("{$maxmind_cont}", 'r')) !== FALSE) {
-		while (($cc = fgetcsv($handle)) !== FALSE) {
+	if (($handle = @fopen("{$maxmind_cont}", 'r')) !== FALSE) {
+		while (($cc = @fgetcsv($handle)) !== FALSE) {
 			$cc_key = $cc[0];
 			$cont_key = $cc[1];
 
@@ -496,7 +496,7 @@ function pfblockerng_uc_countries() {
 		}
 	}
 	unset($cc);
-	fclose($handle);
+	@fclose($handle);
 
 	// Add Maxmind Anonymous Proxy and Satellite Providers to array
 	$cont_array[6]['continent']	= 'Proxy and Satellite';
@@ -522,8 +522,8 @@ function pfblockerng_uc_countries() {
 		$iptype = "ip{$type}";
 		$filetype = "file{$type}";
 
-		if (($handle = fopen("{$maxmind_cc}", 'r')) !== FALSE) {
-			while (($cc = fgetcsv($handle)) !== FALSE) {
+		if (($handle = @fopen("{$maxmind_cc}", 'r')) !== FALSE) {
+			while (($cc = @fgetcsv($handle)) !== FALSE) {
 				$cc_key		= $cc[4];
 				$country_key	= $cc[5];
 				$a_cidr		= implode(',', ip_range_to_subnet_array_temp($cc[0], $cc[1]));
@@ -537,7 +537,7 @@ function pfblockerng_uc_countries() {
 			}
 		}
 		unset($cc);
-		fclose($handle);
+		@fclose($handle);
 
 		// Build Continent files
 		foreach ($cont_array as $key => $iso) {
@@ -846,7 +846,7 @@ $xml = <<<EOF
 		<field>
 			<fieldname>countries4</fieldname>
 			<fielddescr><![CDATA[<strong><center>Countries</center></strong><br />
-				<center>Use CTRL + CLICK to select/unselect countries</center>]]>
+				<center>Use CTRL&nbsp;+&nbsp;CLICK to select/unselect countries</center>]]>
 			</fielddescr>
 			<type>select</type>
 			<options>
@@ -897,7 +897,8 @@ EOF;
 $xml .= <<<EOF
 		<field>
 			<fielddescr>List Action</fielddescr>
-			<description><![CDATA[<br />Default: <strong>Disabled</strong><br /><br />
+			<description><![CDATA[<br />Default: <strong>Disabled</strong>
+				<div id="infoblock" name="listaction">
 				Select the <strong>Action</strong> for Firewall Rules on lists you have selected.<br /><br />
 				<strong><u>'Disabled' Rules:</u></strong> Disables selection and does nothing to selected Alias.<br /><br />
 
@@ -929,7 +930,7 @@ $xml .= <<<EOF
 				<li>'Alias Native' lists are kept in their Native format without any modifications.</li></ul>
 				<font color='red'>Note: </font><ul>When manually creating 'Alias' type firewall rules; <strong>Do not add</strong> (pfB_) to the
 				start of the rule description, use (pfb_) (Lowercase prefix). Manually created 'Alias' rules with 'pfB_' in the
-				description will be auto-removed by package when 'Auto' rules are defined.</ul>]]>
+				description will be auto-removed by package when 'Auto' rules are defined.</ul></div>]]>
 			</description>
 			<fieldname>action</fieldname>
 			<type>select</type>
@@ -969,7 +970,7 @@ $xml .= <<<EOF
 		</field>
 		<field>
 			<type>info</type>
-			<description><![CDATA[<font color='red'>Note: </font>In general, Auto-Rules are created as follows:<br />
+			<description><![CDATA[<font color='red'>Note:</font>&nbsp; In general, Auto-Rules are created as follows:<br />
 				<ul>Inbound &emsp;- 'any' port, 'any' protocol and 'any' destination<br />
 				Outbound - 'any' port, 'any' protocol and 'any' destination address in the lists</ul>
 				Configuring the Adv. Inbound Rule settings, will allow for more customization of the Inbound Auto-Rules.<br />
@@ -1020,9 +1021,9 @@ $xml .= <<<EOF
 		<field>
 			<fielddescr>Invert</fielddescr>
 			<fieldname>autonot</fieldname>
-			<description><![CDATA[<div style="padding-left: 22px;"><strong>Invert</strong> - Option to invert the sense of the match.<br />
-				ie - Not (!) Destination Address(es)</div>]]>
-			</description>
+			<sethelp><![CDATA[<strong>Invert</strong> - Option to invert the sense of the match.<br />
+				ie - Not (!) Destination Address(es)]]>
+			</sethelp>
 			<type>checkbox</type>
 			<dontdisplayname/>
 			<usecolspan2/>
@@ -1362,7 +1363,7 @@ $xmlrep = <<<EOF
 			<fieldname>ccexclude</fieldname>
 			<description>
 				<![CDATA[Select Countries you want to <strong>Exclude</strong> from the Reputation Process.<br />
-				<strong>Use CTRL + CLICK to select/unselect countries</strong>]]>
+				<strong>Use CTRL&nbsp;+&nbsp;CLICK to select/unselect countries</strong>]]>
 			</description>
 			<type>select</type>
 			<options>
@@ -1405,7 +1406,7 @@ $xmlrep = <<<EOF
 			<fieldname>etblock</fieldname>
 			<description>
 				<![CDATA[Select Lists you want to BLOCK.<br />
-				<strong>Use CTRL + CLICK to select/unselect Categories</strong>
+				<strong>Use CTRL&nbsp;+&nbsp;CLICK to select/unselect Categories</strong>
 				<br /><br />Any Changes will take effect at the Next Scheduled CRON Task]]>
 			</description>
 			<type>select</type>
@@ -1454,7 +1455,7 @@ $xmlrep = <<<EOF
 			<fieldname>etmatch</fieldname>
 			<description>
 				<![CDATA[Select Lists you want to MATCH.<br />
-				<strong>Use CTRL + CLICK to select/unselect Categories</strong>
+				<strong>Use CTRL&nbsp;+&nbsp;CLICK to select/unselect Categories</strong>
 				<br /><br />Any Changes will take effect at the Next Scheduled CRON Task]]>
 			</description>
 			<type>select</type>
