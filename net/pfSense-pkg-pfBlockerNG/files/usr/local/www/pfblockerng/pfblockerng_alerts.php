@@ -47,8 +47,8 @@ global $g, $pfb, $rule_list, $pfb_localsub;
 pfb_global();
 
 // Application paths
-$pathgeoip	= "/usr/local/bin/geoiplookup";
-$pathgeoip6	= "/usr/local/bin/geoiplookup6";
+$pathgeoip	= '/usr/local/bin/geoiplookup';
+$pathgeoip6	= '/usr/local/bin/geoiplookup6';
 
 // Define file locations
 $filter_logfile = "{$g['varlog_path']}/filter.log";
@@ -650,9 +650,9 @@ if ($alertrefresh == 'on') {
 	if ($pfb['filterlogentries']) {
 		// Refresh page with 'Filter options' if defined.
 		$refreshentries = urlencode(serialize($filterfieldsarray));
-		print "<meta http-equiv=\"refresh\" content=\"60;url=/pfblockerng/pfblockerng_alerts.php?refresh={$refreshentries}\" />\n";
+		print ("<meta http-equiv=\"refresh\" content=\"60;url=/pfblockerng/pfblockerng_alerts.php?refresh={$refreshentries}\" />\n");
 	} else {
-		print "<meta http-equiv=\"refresh\" content=\"60;url=/pfblockerng/pfblockerng_alerts.php\" />\n";
+		print ("<meta http-equiv=\"refresh\" content=\"60;url=/pfblockerng/pfblockerng_alerts.php\" />\n");
 	}
 }
 
