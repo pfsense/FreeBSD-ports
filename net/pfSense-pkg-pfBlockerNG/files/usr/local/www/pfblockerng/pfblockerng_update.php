@@ -242,7 +242,7 @@ if (empty($pfb['enable']) || empty($cron_hour_next)) {
 	$nextcron = '--';
 }
 
-$status .= 'NEXT Scheduled CRON Event will run at';
+$status  = 'NEXT Scheduled CRON Event will run at';
 $status .= "&emsp;<strong>{$cronreal}</strong>&emsp;with<strong><font color=\"red\">&emsp;{$nextcron}";
 $status .= '&emsp;</font></strong> time remaining.</font>';
 
