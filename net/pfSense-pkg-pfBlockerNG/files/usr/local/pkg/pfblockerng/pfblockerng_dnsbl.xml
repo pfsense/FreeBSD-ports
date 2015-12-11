@@ -322,9 +322,9 @@
 		<field>
 			<fielddescr>Invert</fielddescr>
 			<fieldname>autonot</fieldname>
-			<description><![CDATA[<strong>Invert</strong> - Option to invert the sense of the match.<br />
+			<sethelp><![CDATA[<strong>Invert</strong> - Option to invert the sense of the match.<br />
 				ie - Not (!) Destination Address(es)]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 			<dontdisplayname/>
 			<usecolspan2/>
