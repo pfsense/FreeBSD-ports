@@ -344,7 +344,7 @@ $section->addInput(new Form_StaticText(
 	. '<div style="display:none;" id="filePathBox"><strong>Log/File Path:&emsp;</strong>'
 	. '<div style="display:inline;" id="fbTarget"></div>'
 	. '<div style="display:inline; margin-right:10px;" class="pull-right" id="fileRefreshBtn">'
-	. $logbtns . '</div>'
+	. $logbtns . '</div></div>'
 ));
 $form->add($section);
 
