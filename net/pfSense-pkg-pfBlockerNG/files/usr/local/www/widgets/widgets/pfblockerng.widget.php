@@ -280,8 +280,11 @@ function pfBlockerNG_get_table($mode='') {
 				$dnsbl = TRUE;
 			} else {
 				// Add firewall rules count associated with alias
-				$values['img'] = $values['img'] . "&nbsp;&nbsp;<span title=\"Alias Firewall Rule count\" ><small>({$values['rule']})</small></span>";
-
+				$values['img'] = $values['img'] . '<span title="Alias Firewall Rule count"></span>';
+				if ($values['rule'] > 0) {
+					$values['img'] .= "&nbsp;&nbsp;<small>({$values['rule']})</small>";
+				}
+                                
 				// If packet fence errors found, display error.
 				if ($pfb['pfctlerr']) {
 					$values['img'] = $pfb['err'];
