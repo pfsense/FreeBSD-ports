@@ -255,7 +255,7 @@ if (preg_grep("/pfblockerng[.]php\s+?(cron|update)/", $result_cron)) {
 }
 $status .= '<br />&emsp;<small><font color="red">Refresh to update current Status and time remaining.</font></small>';
 
-$options .= '<dl class="dl-horizontal">';
+$options  = '<dl class="dl-horizontal">';
 $options .= '	<dt>Update:</dt><dd>will download any new Alias/Lists.</dd>';
 $options .= '	<dt>Cron:</dt><dd>will download any Alias/Lists that are within the Frequency Setting (due for Update).</dd>';
 $options .= '	<dt>Reload:</dt><dd>will reload all Lists using the existing Downloaded files.<br />';
