@@ -185,14 +185,14 @@ if ($_REQUEST['ajax']) {
 	// Load log
 	if ($_REQUEST['action'] == 'load') {
 		if (!$pfb_logfilename) {
-			print "|3|" . gettext('Log file is empty or does not exist') . ".|";
+			print ("|3|" . gettext('Log file is empty or does not exist') . ".|");
 		} else {
 			$data = @file_get_contents($pfb_logfilename);
 			if ($data === false) {
-				print "|1|" . gettext('Failed to read log file') . ".|";
+				print ("|1|" . gettext('Failed to read log file') . ".|");
 			} else {
 				$data = base64_encode($data);
-				print "|0|" . $pfb_logfilename . "|" . $data . "|";
+				print ("|0|" . $pfb_logfilename . "|" . $data . "|");
 			}
 		}
 		exit;
