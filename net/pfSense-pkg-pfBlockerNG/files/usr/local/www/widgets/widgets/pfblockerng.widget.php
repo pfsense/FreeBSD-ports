@@ -453,7 +453,7 @@ $entries = count($results);
 			</td>
 			<td>
 				<a target="_blank" href="pfblockerng/pfblockerng_log.php" title="<?=gettext("View pfBlockerNG Logs TAB")?>">
-					<i class="fa fa-info-circle icon-pointer"></i></a>&nbsp;
+					<i class="fa fa-info-circle"></i></a>&nbsp;
 			</td>
 		</tr>
 
