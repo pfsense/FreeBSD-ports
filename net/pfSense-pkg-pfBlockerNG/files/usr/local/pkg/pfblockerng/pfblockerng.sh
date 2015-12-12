@@ -13,21 +13,13 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
-pfs_version=$(/bin/cat /etc/version | /usr/bin/cut -c 1-3)
-if [ "${pfs_version}" = '2.2' ]; then
-	mtype=$(/usr/bin/uname -m)
-	prefix="/usr/pbi/pfblockerng-${mtype}"
-else
-	prefix='/usr/local'
-fi
-
 now=$(/bin/date +%m/%d/%y' '%T)
 
 # Application Locations
-pathgrepcidr="${prefix}/bin/grepcidr"
-pathaggregate="${prefix}/bin/aggregate"
-pathmwhois="${prefix}/bin/mwhois"
-pathgeoip="${prefix}/bin/geoiplookup"
+pathgrepcidr="/usr/local/bin/grepcidr"
+pathaggregate="/usr/local/bin/aggregate"
+pathmwhois="/usr/local/bin/mwhois"
+pathgeoip="/usr/local/bin/geoiplookup"
 pathgunzip=/usr/bin/gunzip
 pathhost=/usr/bin/host
 pathtar=/usr/bin/tar
@@ -44,8 +36,8 @@ etblock="$(echo ${8} | sed 's/,/, /g')"
 etmatch="$(echo ${9} | sed 's/,/, /g')"
 
 # File Locations
-aliasarchive="${prefix}/etc/aliastables.tar.bz2"
-pathgeoipdat="${prefix}/share/GeoIP/GeoIP.dat"
+aliasarchive="/usr/local/etc/aliastables.tar.bz2"
+pathgeoipdat="/usr/local/share/GeoIP/GeoIP.dat"
 pfbsuppression=/var/db/pfblockerng/pfbsuppression.txt
 pfbalexa=/var/db/pfblockerng/pfbalexawhitelist.txt
 masterfile=/var/db/pfblockerng/masterfile

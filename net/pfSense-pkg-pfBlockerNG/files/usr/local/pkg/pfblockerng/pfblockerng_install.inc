@@ -31,38 +31,16 @@
 
 */
 
+require_once('pfsense-utils.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 require_once('/usr/local/www/pfblockerng/pfblockerng.php');
 
-global $config, $pfb, $static_output;
+global $config, $pfb;
+set_language($config['system']['language']);
 pfb_global();
-
-function update_static_output($text) {
-	global $static_output;
-
-	$static_output .= "{$text}";
-	update_output_window("{$static_output}");
-	return;
-}
 
 // Set 'Install flag' to skip sync process during installations.
 $g['pfblockerng_install'] = true;
-
-// Remove previous ccdir location files if exist
-$old_ccfiles = glob('/usr/pbi/pfblockerng-' . php_uname('m') . '/share/GeoIP/*_v?.txt');
-if (!empty($old_ccfiles)) {
-	foreach ($old_ccfiles as $oldfile) {
-		unlink_if_exists("{$oldfile}");
-	}
-}
-
-$pfs_version = substr(trim(file_get_contents('/etc/version')), 0, 3);
-if ($pfs_version == '2.2') {
-	$pfb['prefix'] = '/usr/pbi/pfblockerng-' . php_uname('m');
-} else {
-	$pfb['prefix'] = '/usr/local';
-}
-$pfb['geoipshare'] = "{$pfb['prefix']}/share/GeoIP";
 
 $pfb['maxmind'][0]['url']	= 'http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz';
 $pfb['maxmind'][0]['file_dwn']	= 'GeoIP.dat.gz';
@@ -82,20 +60,21 @@ $pfb['maxmind'][4]['file']	= 'GeoIPv6.csv';
 
 // Only download MaxMind Database if files do not exist.
 $maxmind_verify = 0;
+$pfb['geoipshare'] = '/usr/local/share/GeoIP';
 if (!file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][0]['file']}") ||
     !file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][1]['file']}") ||
     !file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][2]['file']}") ||
     !file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][3]['file']}") ||
     !file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][4]['file']}")) {
 
-	update_static_output("\nDownloading MaxMind Country databases. This may take a minute...\n");
+	update_status("\nDownloading MaxMind Country databases. This may take a minute...\n");
 	foreach ($pfb['maxmind'] as $feed) {
 
 		$file_dwn = "{$pfb['geoipshare']}/{$feed['file_dwn']}";
-		if (($fhandle = fopen("{$file_dwn}", 'w')) !== FALSE) {
-			update_static_output(" {$feed['file']}...");
+		if (($fhandle = @fopen("{$file_dwn}", 'w')) !== FALSE) {
+			update_status(" {$feed['file']}...");
 			if (!($ch = curl_init("{$feed['url']}"))) {
-				update_static_output(" Failed to create cURL resource.\n");
+				update_status(" Failed to create cURL resource.\n");
 				break;
 			}
 
@@ -116,7 +95,7 @@ if (!file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][0]['file']}") ||
 				}
 
 				$curl_error = curl_errno($ch);
-				update_static_output(" cURL Error: {$curl_error}. ", 1);
+				update_status(" cURL Error: {$curl_error}. ", 1);
 			}
 
 			$http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -127,47 +106,47 @@ if (!file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][0]['file']}") ||
 					exec("/usr/bin/tar -xOf {$file_dwn} > {$pfb['geoipshare']}/{$feed['file']}");
 					unlink_if_exists("{$file_dwn}");
 				}
-				update_static_output(" done.\n");
+				update_status(" done.\n");
 				$maxmind_verify += 1;
 			}
 			else {
-				update_static_output(" failed!\n");
+				update_status(" failed!\n");
 				break;
 			}
 		}
 		curl_close($ch);
-		fclose($fhandle);
+		@fclose($fhandle);
 	}
 
 	if ($maxmind_verify != 5) {
-		update_static_output(" MaxMind download failed!\nFetching MaxMind archive from pfSense package repo...");
+		update_status(" MaxMind download failed!\nFetching MaxMind archive from pfSense package repo...");
 		// Fetch archived MaxMind database
 		$url = 'https://packages.pfsense.org/packages/config/pfblockerng/countrycodes.tar.bz2';
 		exec("/usr/bin/fetch -o /tmp/countrycodes.tar.bz2 {$url}");
 		// Uncompress archived Country code file
 		exec("/usr/bin/tar -jx -C {$pfb['ccdir']} -f /tmp/countrycodes.tar.bz2");
-		update_static_output(" done.\n");
+		update_status(" done.\n");
 	}
 	else {
-		update_static_output("Downloading MaxMind Country databases... done.\n");
+		update_status("Downloading MaxMind Country databases... done.\n");
 	}
 }
 else {
-	update_static_output("\nMaxMind Country databases previously downloaded.\n");
+	update_status("\nMaxMind Country databases previously downloaded.\n");
 }
 
-update_static_output("Converting MaxMind Country databases for pfBlockerNG.\n This may take a few minutes...");
+update_status("Converting MaxMind Country databases for pfBlockerNG.\n This may take a few minutes...");
 pfblockerng_uc_countries();
-update_static_output(" done.\nCreating pfBlockerNG Continent XML files...");
+update_status(" done.\nCreating pfBlockerNG Continent XML files...");
 pfblockerng_get_countries();
 
 if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'pfblockerng-container') !== FALSE) {
-	update_static_output(" done.\nRestoring previous pfBlockerNG Widget settings...");
+	update_status(" done.\nRestoring previous pfBlockerNG Widget settings...");
 	// Restore previous widget setting if 'keep' is enabled.
 	$config['widgets']['sequence'] = $pfb['widgets'];
 	write_config('pfBlockerNG: Save widget');
 } else {
-	update_static_output(" done.\nAdding pfBlockerNG Widget to the Dashboard...");
+	update_status(" done.\nAdding pfBlockerNG Widget to the Dashboard...");
 	$widgets = $config['widgets']['sequence'];
 	if (strpos($widgets, 'pfblockerng-container') === FALSE) {
 		if (empty($widgets)) {
@@ -179,18 +158,18 @@ if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'p
 	}
 }
 
-update_static_output(" done.\nRemove any existing and create link for DNSBL lighttpd executable...");
+update_status(" done.\nRemove any existing and create link for DNSBL lighttpd executable...");
 unlink_if_exists('/usr/local/sbin/lighttpd_pfb');
 link('/usr/local/sbin/lighttpd', '/usr/local/sbin/lighttpd_pfb');
 
-update_static_output(" done.\nCreating DNSBL web server start-up script...");
+update_status(" done.\nCreating DNSBL web server start-up script...");
 $rc = array();
 $rc['file'] = 'dnsbl.sh';
 $rc['start'] = <<<EOF
 
 	# Start DNSBL Lighttpd webserver
-	if [ -f '{$pfb['dnsbl_conf']}' ]; then
-		/usr/local/sbin/lighttpd_pfb -f '{$pfb['dnsbl_conf']}'
+	if [ -f /var/unbound/pfb_dnsbl_lighty.conf ]; then
+		/usr/local/sbin/lighttpd_pfb -f /var/unbound/pfb_dnsbl_lighty.conf
 	fi
 
 	# Terminate DNSBL HTTPS Daemon if found
@@ -223,10 +202,10 @@ $rc['stop'] = <<<EOF
 EOF;
 
 write_rcfile($rc);
-update_static_output(" done.\n");
+update_status(" done.\n");
 
 if ($pfb['enable'] == 'on' && $pfb['dnsbl'] == 'on' && !empty($pfb['dnsbl_port']) && !empty($pfb['dnsbl_port_ssl'])) {
-	update_static_output("Creating DNSBL web server config ...");
+	update_status("Creating DNSBL web server config ...");
 
 	$pfb_conf = <<<EOF
 #
@@ -255,7 +234,7 @@ debug.log-condition-handling	= "enable"
 
 \$SERVER["socket"] == "0.0.0.0:{$pfb['dnsbl_port_ssl']}" {
 	ssl.engine		= "enable"
-	ssl.pemfile		= "{$pfb['dnsbl_cert']}"
+	ssl.pemfile		= "/var/unbound/dnsbl_cert.pem"
 	ssl.use-sslv2		= "disable"
 	ssl.use-sslv3		= "disable"
 	ssl.honor-cipher-order	= "enable"
@@ -268,17 +247,17 @@ debug.log-condition-handling	= "enable"
 
 EOF;
 
-	@file_put_contents($pfb['dnsbl_conf'], $pfb_conf, LOCK_EX);
+	@file_put_contents('/var/unbound/pfb_dnsbl_lighty.conf', $pfb_conf, LOCK_EX);
 	unset($pfb_conf);
-	update_static_output(" done.\n");
+	update_status(" done.\n");
 
-	update_static_output("Starting DNSBL Service...");
-	start_service('dnsbl');
-	update_static_output(" done.\n");
+	update_status("Starting DNSBL Service...");
+	restart_service('dnsbl');
+	update_status(" done.\n");
 }
 
 unset($g['pfblockerng_install']);	// Remove 'Install flag'
-update_static_output("Custom commands completed ... ");
+update_status("Custom commands completed ... ");
 return TRUE;
 
 ?>

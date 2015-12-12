@@ -29,21 +29,21 @@ $pfb_query = strstr($match[0], 'DNSBL', FALSE);
 if (!empty($pfb_query)) {
 	// Increment DNSBL Alias Counter
 	$dnsbl_info = '/var/db/pfblockerng/dnsbl_info';
-	if (($handle = fopen("{$dnsbl_info}", 'r')) !== FALSE) {
+	if (($handle = @fopen("{$dnsbl_info}", 'r')) !== FALSE) {
 		flock($handle, LOCK_EX);
-		$pfb_output = fopen("{$dnsbl_info}.bk", 'w');
+		$pfb_output = @fopen("{$dnsbl_info}.bk", 'w');
 		flock($pfb_output, LOCK_EX);
 
 		// Find line with corresponding DNSBL Aliasname
-		while (($line = fgetcsv($handle)) !== FALSE) {
+		while (($line = @fgetcsv($handle)) !== FALSE) {
 			if ($line[0] == $pfb_query) {
 				$line[3] += 1;
 			}
-			fputcsv($pfb_output, $line);
+			@fputcsv($pfb_output, $line);
 		}
 
-		fclose($pfb_output);
-		fclose($handle);
+		@fclose($pfb_output);
+		@fclose($handle);
 		@rename("{$dnsbl_info}.bk", "{$dnsbl_info}");
 	}
 }

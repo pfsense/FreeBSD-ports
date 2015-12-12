@@ -141,7 +141,7 @@
 			<size>90</size>
 		</field>
 		<field>
-			<fielddescr><![CDATA[<strong>EasyList Feeds</strong>]]></fielddescr>
+			<fielddescr>EasyList Feeds</fielddescr>
 			<description><![CDATA[Add Easylist Feed]]></description>
 			<fieldname></fieldname>
 			<type>rowhelper</type>
