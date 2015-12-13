@@ -35,7 +35,7 @@ require_once('pfsense-utils.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 require_once('/usr/local/www/pfblockerng/pfblockerng.php');
 
-global $config, $pfb;
+global $config, $g, $pfb;
 set_language($config['system']['language']);
 pfb_global();
 
@@ -135,18 +135,18 @@ else {
 	update_status("\nMaxMind Country databases previously downloaded.\n");
 }
 
-update_status("Converting MaxMind Country databases for pfBlockerNG.\n This may take a few minutes...");
+update_status("Converting MaxMind Country databases for pfBlockerNG.\n This may take a few minutes...\n");
 pfblockerng_uc_countries();
-update_status(" done.\nCreating pfBlockerNG Continent XML files...");
+update_status("Creating pfBlockerNG Continent XML files...\n");
 pfblockerng_get_countries();
 
 if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'pfblockerng-container') !== FALSE) {
-	update_status(" done.\nRestoring previous pfBlockerNG Widget settings...");
+	update_status("Restoring previous pfBlockerNG Widget settings...");
 	// Restore previous widget setting if 'keep' is enabled.
 	$config['widgets']['sequence'] = $pfb['widgets'];
 	write_config('pfBlockerNG: Save widget');
 } else {
-	update_status(" done.\nAdding pfBlockerNG Widget to the Dashboard...");
+	update_status("Adding pfBlockerNG Widget to the Dashboard...");
 	$widgets = $config['widgets']['sequence'];
 	if (strpos($widgets, 'pfblockerng-container') === FALSE) {
 		if (empty($widgets)) {
@@ -180,7 +180,7 @@ $rc['start'] = <<<EOF
 	fi
 
 	# Start DNSBL HTTPS Daemon
-	/usr/local/bin/php-cgi -f /usr/local/pkg/pfblockerng/pfblockerng.inc dnsbl &
+	/usr/local/bin/php -f /usr/local/pkg/pfblockerng/pfblockerng.inc dnsbl &
 
 EOF;
 
