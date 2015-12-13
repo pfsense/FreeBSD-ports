@@ -229,6 +229,7 @@ pfb_global();
 
 // DNSBL Lighttpd HTTPS Daemon (Scans Lighttpd dnsbl_error.log for requested https domain names)
 if ($argv[1] == 'dnsbl') {
+	set_time_limit(0);
 	pfb_livetail($pfb['dnserrlog'], 'dnsbl');
 	exit;
 }
