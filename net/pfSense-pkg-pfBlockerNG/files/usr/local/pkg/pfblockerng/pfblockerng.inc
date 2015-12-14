@@ -229,6 +229,7 @@ pfb_global();
 
 // DNSBL Lighttpd HTTPS Daemon (Scans Lighttpd dnsbl_error.log for requested https domain names)
 if ($argv[1] == 'dnsbl') {
+	set_time_limit(0);
 	pfb_livetail($pfb['dnserrlog'], 'dnsbl');
 	exit;
 }
@@ -1771,7 +1772,7 @@ function sync_package_pfblockerng($cron='') {
 		log_error('[pfBlockerNG] Sync terminated during boot process.');
 		return;
 	}
-	syslog(LOG_NOTICE, '[pfBlockerNG] Starting sync process.');
+	syslog(LOG_NOTICE, '[pfBlockerNG] Starting cron process.');
 
 	// Reloads existing lists without downloading new lists when defined 'on'
 	$pfb['reuse'] = $pfb['config']['pfb_reuse'];
@@ -2213,7 +2214,7 @@ function sync_package_pfblockerng($cron='') {
 											pfb_logger("\n ** Running Background Reload Task\n", 1);
 											// Clear any existing pfBlockerNG Cron Jobs to avoid collision
 											install_cron_job('pfblockerng.php cron', false);
-											$cmd = "/usr/local/bin/php-cgi /usr/local/www/pfblockerng/pfblockerng.php";
+											$cmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php";
 											mwexec_bg("${cmd} updatednsbl >> {$pfb['log']} 2>&1");
 										}
 									}
@@ -2333,7 +2334,7 @@ function sync_package_pfblockerng($cron='') {
 					if (!preg_grep("/pfblockerng[.]php\s+al/", $result_cron)) {
 						$log = "\nAlexa Database downloading ( approx 21M ) ... Please wait ...\n";
 						pfb_logger("{$log}", 1);
-						exec("/usr/local/bin/php-cgi /usr/local/www/pfblockerng/pfblockerng.php al");
+						exec("/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php al");
 					}
 					else {
 						$log = "\nAlexa download already in process...\n";
@@ -4111,7 +4112,8 @@ function sync_package_pfblockerng($cron='') {
 			$log = "\n===[  Aliastables / Rules  ]================================\n\n";
 			pfb_logger("{$log}", 1);
 
-			$log = "Firewall Rule Changes found, Applying Filter Reload\n";
+			$log = "Firewall rule changes found, applying Filter Reload\n";
+			syslog(LOG_NOTICE, "[pfBlockerNG] {$log}");
 			pfb_logger("{$log}", 1);
 		}
 
@@ -4134,7 +4136,8 @@ function sync_package_pfblockerng($cron='') {
 			$log = "\n\n===[  Aliastables / Rules  ]==========================================\n\n";
 			pfb_logger("{$log}", 1);
 
-			$log = "No Changes to Firewall Rules, Skipping Filter Reload\n";
+			$log = "No changes to Firewall rules, skipping Filter Reload\n";
+			syslog(LOG_NOTICE, "[pfBlockerNG] {$log}");
 			pfb_logger("{$log}", 1);
 
 			// Only Save Aliases that have been updated.
@@ -4386,7 +4389,7 @@ function sync_package_pfblockerng($cron='') {
 	// Replace CRON job with any user changes to $pfb_min
 	if ($pfb['enable'] == 'on') {
 		// Define pfBlockerNG CRON job
-		$pfb_cmd = "/usr/local/bin/php-cgi /usr/local/www/pfblockerng/pfblockerng.php cron >> {$pfb['log']} 2>&1";
+		$pfb_cmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php cron >> {$pfb['log']} 2>&1";
 		// $pfb['min'] ( User defined variable. Variable defined at start of script )
 
 		// Define CRON hour (CRON interval & start hour)
@@ -4415,7 +4418,7 @@ function sync_package_pfblockerng($cron='') {
 
 	if ($pfb['enable'] == 'on') {
 		// Define pfBlockerNG MaxMind CRON job
-		$pfb_gcmd = "/usr/local/bin/php-cgi /usr/local/www/pfblockerng/pfblockerng.php dc >> {$pfb['extraslog']} 2>&1";
+		$pfb_gcmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php dc >> {$pfb['extraslog']} 2>&1";
 		// MaxMind GeoIP CRON hour is randomized between 0-23 Hour to minimize effect on MaxMind website
 		$pfb_gmin	= '0';
 		$pfb_ghour	= rand(0,23);
