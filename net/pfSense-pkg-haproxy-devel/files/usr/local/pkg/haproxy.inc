@@ -43,7 +43,10 @@ $a_frontendmode = array();
 $a_frontendmode['http'] = array('name' => "http / https(offloading)", 'shortname' => "http/https");
 $a_frontendmode['https'] = array('name' => "ssl / https(TCP mode)", 'shortname' => "ssl/https");
 $a_frontendmode['tcp'] = array('name' => "tcp", 'shortname' => "tcp");
-$a_frontendmode['health'] = array('name' => "health", 'shortname' => "health");
+/*
+  if anyone actually used this what was it good for with recent package versions?
+$a_frontendmode['health'] = array('name' => "health", 'shortname' => "health"); 
+*/
 
 global $a_acltypes;
 $a_acltypes = array();
@@ -1738,8 +1741,8 @@ function haproxy_writeconf($configpath) {
 				if ($bind['forwardfor']) {
 					fwrite ($fd, "\toption\t\t\tforwardfor\n");
 					fwrite ($fd, "\tacl https ssl_fc\n");
-					fwrite ($fd, "\treqadd X-Forwarded-Proto:\ http if !https\n");
-					fwrite ($fd, "\treqadd X-Forwarded-Proto:\ https if https\n");
+					fwrite ($fd, "\thttp-request set-header\t\tX-Forwarded-Proto http if !https\n");
+					fwrite ($fd, "\thttp-request set-header\t\tX-Forwarded-Proto https if https\n");
 				}
 			}
 

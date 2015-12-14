@@ -425,29 +425,29 @@ function enable_change(enable_change) {
 			</tr>
 			<tr>
 				<td valign="top" class="vncell">
-					'resolver_retries'
+					Retries
 				</td>
 				<td class="vtable">
 					<input name="resolver_retries" type="text" <?if(isset($pconfig['resolver_retries'])) echo "value=\"{$pconfig['resolver_retries']}\"";?> size="50"/><br/>
-					Email address to be used as the sender of the emails.
+					Defines the number of queries to send to resolve a server name before giving up. Default value: 3
 				</td>
 			</tr>
 			<tr>
 				<td valign="top" class="vncell">
-					'resolver_timeoutretry'
+					Retry timeout
 				</td>
 				<td class="vtable">
 					<input name="resolver_timeoutretry" type="text" <?if(isset($pconfig['resolver_timeoutretry'])) echo "value=\"{$pconfig['resolver_timeoutretry']}\"";?> size="50"/><br/>
-					Email address to be used as the sender of the emails.
+					Time between two DNS queries, when no response have been received. Default value: 1s
 				</td>
 			</tr>
 			<tr>
 				<td valign="top" class="vncell">
-					'resolver_holdvalid'
+					Interval
 				</td>
 				<td class="vtable">
 					<input name="resolver_holdvalid" type="text" <?if(isset($pconfig['resolver_holdvalid'])) echo "value=\"{$pconfig['resolver_holdvalid']}\"";?> size="50"/><br/>
-					Email address to be used as the sender of the emails.
+					Interval between two successive name resolution when the last answer was valid. Default value: 10s
 				</td>
 			</tr>
 			<tr><td>&nbsp;</td></tr>
@@ -612,13 +612,22 @@ Minimum and default value is: 1024, bigger values might increase CPU usage.<br/>
 	</div>
 </table>
 
+<?php if(file_exists("/var/etc/haproxy_test/haproxy.cfg")): ?>
+	<div id="testconfiguration" style="display:none; border-style:dashed; padding: 8px;">
+		<b><i>/var/etc/haproxy_test/haproxy.cfg file contents:</i></b>
+		<?php
+			echo "<pre>" . trim(file_get_contents("/var/etc/haproxy_test/haproxy.cfg")) . "</pre>";
+		?>
+	</div>
+	<div id="showtestconfiguration">
+		<a onClick="new Effect.Fade('showtestconfiguration'); new Effect.Appear('testconfiguration');  setTimeout('scroll_after_fade();', 250); return false;" href="#">Show</a> automatically generated test configuration.
+	</div>
+<?php endif; ?>
 <?php if(file_exists("/var/etc/haproxy/haproxy.cfg")): ?>
 	<div id="configuration" style="display:none; border-style:dashed; padding: 8px;">
-		<b><i>/var/etc/haproxy.cfg file contents:</i></b>
+		<b><i>/var/etc/haproxy/haproxy.cfg file contents:</i></b>
 		<?php
-			if(file_exists("/var/etc/haproxy/haproxy.cfg")) {
-				echo "<pre>" . trim(file_get_contents("/var/etc/haproxy/haproxy.cfg")) . "</pre>";
-			}
+			echo "<pre>" . trim(file_get_contents("/var/etc/haproxy/haproxy.cfg")) . "</pre>";
 		?>
 	</div>
 	<div id="showconfiguration">

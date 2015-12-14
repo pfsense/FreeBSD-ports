@@ -491,7 +491,6 @@ foreach($simplefields as $field){
 
 ?>
   <style type="text/css">
-	.tableA_servers_details_visible{display:none;}
 	.haproxy_stats_visible{display:none;}
 	.haproxy_check_enabled{display:none;}
 	.haproxy_check_http{display:none;}
@@ -543,7 +542,12 @@ foreach($simplefields as $field){
 	function updatevisibility()
 	{
 		d = document;
-		setCSSdisplay(".tableA_servers_details_visible", server_advanced_options_visible.checked);
+		// IE needs components found into javascript variables
+		stats_enabled = d.getElementById("stats_enabled");
+		persist_cookie_enabled = d.getElementById("persist_cookie_enabled");
+		agent_check = d.getElementById("agent_check");
+		sticky_type_description = d.getElementById("sticky_type_description");
+		
 		setCSSdisplay(".haproxy_stats_visible", stats_enabled.checked);
 		setCSSdisplay(".haproxy_cookie_visible", persist_cookie_enabled.checked);
 		
@@ -611,7 +615,7 @@ foreach($simplefields as $field){
 			</td>
 		</tr>
 		<tr align="left">
-			<td class="vncell" colspan="3"><strong>Server list</strong><input id="server_advanced_options_visible" name="server_advanced_options_visible" type='checkbox' onclick="updatevisibility();">Show advanced options(servers need to first be saved to configure these settings)</input>
+			<td class="vncell" colspan="3"><strong>Server list</strong>
 			<span style="float:right;">
 			Toggle serverlist help. <a onclick="toggleCSSdisplay('.haproxy_help_serverlist');" title="<?php echo gettext("Help"); ?>"><img style="vertical-align:middle" src="/themes/<?php echo $g['theme']; ?>/images/icons/icon_help.gif" border="0" alt="help" /></a>
 			</span>
@@ -893,7 +897,8 @@ foreach($simplefields as $field){
 				<?
 				echo_html_select("httpcheck_method",$a_httpcheck_method,$pconfig['httpcheck_method']);
 				?>
-				<br/>OPTIONS is the method usually best to perform server checks, HEAD and GET can also be used
+				<br/>OPTIONS is the method usually best to perform server checks, HEAD and GET can also be used.
+				If the server gets marked as down in the stats page then changing this to GET usually has the biggest chance of working, but might cause more processing overhead on the websever and is less easy to filter out of its logs.
 			</td>
 		</tr>
 		<tr align="left" class="haproxy_check_http">

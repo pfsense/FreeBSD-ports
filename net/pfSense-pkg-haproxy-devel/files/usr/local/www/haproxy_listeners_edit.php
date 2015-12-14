@@ -532,8 +532,9 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
         d = document;
 		for (i = 0; i < 99; i++) {
 			el = d.getElementById("table_acls" + "expression" + i);
+			row_v = d.getElementById("tr_view_" + i);
 			row_e = d.getElementById("tr_edit_" + i);
-			row_v = d.getElementById("tr_viewdetail_" + i);
+			row_vd = d.getElementById("tr_viewdetail_" + i);
 			if (!el || !row_e)
 				continue;
 			for (j = 0; j < count; j++) {
@@ -543,10 +544,17 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 						if (row_v) {
 							Effect.Fade(row_v,{ duration: 1.0 });
 						}
+						if (row_vd) {
+							Effect.Fade(row_vd,{ duration: 1.0 });
+						}
 					} else {
-						Effect.Appear(row_e,{ duration: 1.0 });
-						if (row_v) {
-							Effect.Appear(row_v,{ duration: 1.0 });
+						if (!row_v || (row_v && row_v.style.display == "none")) {
+							// only make the edit row appear if the view row is not still on the screen.
+							// (when switching frontend types)
+							Effect.Appear(row_e,{ duration: 1.0 });
+						}
+						if (row_vd) {
+							Effect.Appear(row_vd,{ duration: 1.0 });
 						}
 					}
 				}

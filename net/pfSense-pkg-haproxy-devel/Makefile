@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-haproxy-devel
-PORTVERSION=	0.34
+PORTVERSION=	0.35
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
