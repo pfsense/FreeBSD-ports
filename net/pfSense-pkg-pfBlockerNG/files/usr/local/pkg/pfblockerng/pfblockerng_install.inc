@@ -36,7 +36,6 @@ require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 require_once('/usr/local/www/pfblockerng/pfblockerng.php');
 
 global $config, $g, $pfb;
-set_language($config['system']['language']);
 pfb_global();
 
 // Set 'Install flag' to skip sync process during installations.
