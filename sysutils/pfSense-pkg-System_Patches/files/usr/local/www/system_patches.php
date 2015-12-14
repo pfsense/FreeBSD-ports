@@ -87,16 +87,14 @@ if (($_GET['act'] == "revert") && ($a_patches[$_GET['id']])) {
 	$savemsg = patch_revert($a_patches[$_GET['id']]) ? gettext("Patch reverted successfully") : gettext("Patch could NOT be reverted!");
 }
 
-
+$need_save = false;
 if (isset($_POST['del'])) {
 	/* delete selected patches */
 	if (is_array($_POST['patch']) && count($_POST['patch'])) {
 		foreach ($_POST['patch'] as $patchi) {
 			unset($a_patches[$patchi]);
 		}
-		write_config();
-		header("Location: system_patches.php");
-		exit;
+		$need_save = true;
 	}
 } else {
 	/* yuck - IE won't send value attributes for image buttons, while Mozilla does - so we use .x/.y to find move button clicks instead... */
@@ -142,12 +140,17 @@ if (isset($_POST['del'])) {
 			}
 		}
 		$a_patches = $a_patches_new;
-		write_config();
-		header("Location: system_patches.php");
-		return;
+		$need_save = true;
 	} else if (isset($delbtn)) {
 		unset($a_patches[$delbtn]);
+		$need_save = true;
 	}
+}
+
+if ($need_save) {
+	write_config();
+	header("Location: system_patches.php");
+	return;
 }
 
 $closehead = false;
