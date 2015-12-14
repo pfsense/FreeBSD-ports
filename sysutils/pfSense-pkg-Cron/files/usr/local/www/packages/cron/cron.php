@@ -43,22 +43,16 @@ if ($_GET['act'] == "del") {
 	}
 }
 
-$pgtitle = array(gettext("Cron"), gettext("Settings"));
+$pgtitle = array(gettext("Services"), gettext("Cron"), gettext("Settings"));
 include("head.inc");
+
+$tab_array = array();
+$tab_array[] = array(gettext("Settings"), true, "/packages/cron/cron.php");
+$tab_array[] = array(gettext("Add"), false, "/packages/cron/cron_edit.php");
+display_top_tabs($tab_array);
 ?>
 
-<table summary="tabs">
-	<tr>
-		<td class="tabnavtbl">
-		<?php
-			$tab_array = array();
-			$tab_array[] = array(gettext("Settings"), true, "/packages/cron/cron.php");
-			$tab_array[] = array(gettext("Edit"), false, "/packages/cron/cron_edit.php");
-			display_top_tabs($tab_array);
-		?>
-		</td>
-	</tr>
-</table>
+
 
 <div class="panel panel-default">
     <div class="panel-heading"><h2 class="panel-title">Cron Schedules</h2></div>
@@ -104,7 +98,7 @@ include("head.inc");
 						<td><?=$ent['command']?></td>
 						<td>
 							<a href="cron_edit.php?id=<?=$i?>"><i class="fa fa-pencil" alt="edit"></i></a>
-							<a href="cron_edit.php?type=php&amp;act=del&amp;id=<?=$i?>" onclick="return confirm('Do you really want to delete this?')"><i class="fa fa-trash" alt="delete"></i></a>
+							<a href="cron_edit.php?type=php&amp;act=del&amp;id=<?=$i?>"><i class="fa fa-trash" alt="delete"></i></a>
 						</td>
 					</tr>
 	<?php
