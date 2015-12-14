@@ -443,7 +443,7 @@ function pfblockerng_uc_countries() {
 	@file_put_contents("{$pfb['logdir']}/maxmind_ver", $maxmind_ver, LOCK_EX);
 
 	// Collect ISO codes for each Continent
-	$log = " Processing Continent Data\n";
+	$log = " Converting MaxMind Country databases for pfBlockerNG.\n";
 	if (!$g['pfblockerng_install']) {
 		print ("{$log}");
 	}
@@ -509,9 +509,7 @@ function pfblockerng_uc_countries() {
 	// Collect Country ISO data and sort to Continent arrays (IPv4 and IPv6)
 	foreach (array('4', '6') as $type) {
 		$log = " Processing ISO IPv{$type} Continent/Country Data\n";
-		if (!$g['pfblockerng_install']) {
-			print ("{$log}");
-		}
+		print ("{$log}");
 		pfb_logger("{$log}", 3);
 
 		if ($type == '4') {
@@ -576,7 +574,7 @@ function pfblockerng_get_countries() {
 				);
 
 	// Collect data to generate new continent XML files.
-	$log = " Building pfBlockerNG XML Files \n";
+	$log = " Creating pfBlockerNG Continent XML files\n";
 	if (!$g['pfblockerng_install']) {
 		print ("{$log}");
 	}
@@ -586,9 +584,7 @@ function pfblockerng_get_countries() {
 		// Process the following for IPv4 and IPv6
 		foreach (array('4', '6') as $type) {
 			$log = " IPv{$type} {$cont}\n";
-			if (!$g['pfblockerng_install']) {
-				print ("{$log}");
-			}
+			print ("{$log}");
 			pfb_logger("{$log}", 3);
 
 			if ($type == '6') {
