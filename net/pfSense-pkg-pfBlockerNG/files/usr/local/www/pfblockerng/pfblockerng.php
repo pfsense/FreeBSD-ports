@@ -47,7 +47,7 @@ require_once('services.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng.inc');
 require_once('/usr/local/pkg/pfblockerng/pfblockerng_extra.inc');	// 'include functions' not yet merged into pfSense
 
-global $config, $pfb;
+global $config, $g, $pfb;
 
 // Extras - MaxMind/Alexa Download URLs/filenames/settings
 $pfb['extras'][0]['url']	= 'http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz';
@@ -406,7 +406,7 @@ function pfblockerng_sync_cron() {
 
 // Function to process the downloaded MaxMind database and format into Continent txt files.
 function pfblockerng_uc_countries() {
-	global $pfb;
+	global $g, $pfb;
 
 	$maxmind_cont	= "{$pfb['geoipshare']}/country_continent.csv";
 	$maxmind_cc4	= "{$pfb['geoipshare']}/GeoIPCountryWhois.csv";
@@ -421,14 +421,14 @@ function pfblockerng_uc_countries() {
 	$now = date('m/d/y G:i:s', time());
 	$log = "Country code update Start [ NOW ]\n";
 	if (!$g['pfblockerng_install']) {
-		print "Country code update Start [ $now ]\n";
+		print ("Country code update Start [ {$now} ]\n");
 	}
 	pfb_logger("{$log}", 3);
 
 	if (!file_exists($maxmind_cont) || !file_exists($maxmind_cc4) || !file_exists($maxmind_cc6)) {
 		$log = " [ MAXMIND UPDATE FAIL, CSV missing, using previous Country code database \n";
 		if (!$g['pfblockerng_install']) {
-			print $log;
+			print ("{$log}");
 		}
 		pfb_logger("{$log}", 3);
 		return;
@@ -445,7 +445,7 @@ function pfblockerng_uc_countries() {
 	// Collect ISO codes for each Continent
 	$log = " Processing Continent Data\n";
 	if (!$g['pfblockerng_install']) {
-		print $log;
+		print ("{$log}");
 	}
 	pfb_logger("{$log}", 3);
 
@@ -510,7 +510,7 @@ function pfblockerng_uc_countries() {
 	foreach (array('4', '6') as $type) {
 		$log = " Processing ISO IPv{$type} Continent/Country Data\n";
 		if (!$g['pfblockerng_install']) {
-			print $log;
+			print ("{$log}");
 		}
 		pfb_logger("{$log}", 3);
 
@@ -564,7 +564,7 @@ function pfblockerng_uc_countries() {
 
 // Function to process Continent txt files and create Country ISO files and to Generate GUI XML files.
 function pfblockerng_get_countries() {
-	global $pfb;
+	global $g, $pfb;
 
 	$files = array (	'Africa'		=> "{$pfb['ccdir']}/Africa_v4.txt",
 				'Asia'			=> "{$pfb['ccdir']}/Asia_v4.txt",
@@ -578,7 +578,7 @@ function pfblockerng_get_countries() {
 	// Collect data to generate new continent XML files.
 	$log = " Building pfBlockerNG XML Files \n";
 	if (!$g['pfblockerng_install']) {
-		print $log;
+		print ("{$log}");
 	}
 	pfb_logger("{$log}", 3);
 
@@ -587,7 +587,7 @@ function pfblockerng_get_countries() {
 		foreach (array('4', '6') as $type) {
 			$log = " IPv{$type} {$cont}\n";
 			if (!$g['pfblockerng_install']) {
-				print $log;
+				print ("{$log}");
 			}
 			pfb_logger("{$log}", 3);
 
@@ -1530,9 +1530,7 @@ $xmlrep = <<<EOF
 </packagegui>
 EOF;
 	$log = " Saving pfBlockerNG Reputation TAB\n";
-	if (!$g['pfblockerng_install']) {
-		print $log;
-	}
+	print ("{$log}");
 	pfb_logger("{$log}", 3);
 
 	// Save pfBlockerng_reputation.xml file
@@ -1541,11 +1539,11 @@ EOF;
 	$now = date('m/d/y G.i:s', time());
 	$log = "Country Code Update Ended - [ NOW ]\n\n";
 	if (!$g['pfblockerng_install']) {
-		print "Country Code Update Ended - [ $now ]\n\n";
+		print ("Country Code Update Ended - [ {$now} ]\n\n");
 	}
 	pfb_logger("{$log}", 3);
 
 	// Unset arrays
-	unset ($roptions4, $et_options, $xmlrep);
+	unset($roptions4, $et_options, $xmlrep);
 }
 ?>
