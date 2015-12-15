@@ -232,7 +232,7 @@ if ($pconfig['logFile'] && ($pconfig['download'] || $pconfig['clear'])) {
 	$s_logfile = '';
 }
 
-$pgtitle = array(gettext('pfBlockerNG'), gettext('Log Browser'));
+$pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'), gettext('Log Browser'));
 include_once('head.inc');
 
 if ($input_errors) {
