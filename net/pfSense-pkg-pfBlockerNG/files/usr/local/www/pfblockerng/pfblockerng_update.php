@@ -78,7 +78,7 @@ function pfbupdate_status($status) {
 
 // Function to perform a Force Update, Cron or Reload
 function pfb_cron_update($type) {
-	global $pfb;
+	global $pfb, $pconfig;
 
 	// Query for any active pfBlockerNG CRON jobs
 	exec('/bin/ps -wx', $result_cron);
@@ -96,8 +96,8 @@ function pfb_cron_update($type) {
 	if ($type == 'update') {
 		pfbupdate_status(gettext('Running Force Update Task'));
 	} elseif ($type == 'reload') {
-		pfbupdate_status(gettext("Running Force Reload Task - {$pfb['rmode']}"));
-		switch ($pfb['rmode']) {
+		pfbupdate_status(gettext("Running Force Reload Task - {$pconfig['pfb_reload_option']}"));
+		switch ($pconfig['pfb_reload_option']) {
 			case 'IP':
 				$type = 'updateip';
 				break;
@@ -124,7 +124,7 @@ function pfb_cron_update($type) {
 	pfb_livetail($pfb['log'], 'force');
 }
 
-$pgtitle = array(gettext('pfBlockerNG'), gettext('Update'));
+$pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'), gettext('Update'));
 include_once('head.inc');
 
 $pconfig = array();
@@ -292,56 +292,56 @@ $section->add($group)->setHelp('<div id="infoblock">' . $options . '</div>');
 
 $group = new Form_Group('Select \'Force\' option');
 $group->add(new Form_Checkbox(
-	'pfbupdate',
-	'pfbupdate',
+	'pfb_force',
+	NULL,
 	'Update',
-	'on',
-	'on'
-))->displayAsRadio()->setAttribute('title', 'Force Update: IP & DNSBL.')->setWidth(1);
+	TRUE,
+	'update'
+))->displayAsRadio('pfb_force_update')->setAttribute('title', 'Force Update: IP & DNSBL.')->setWidth(1);
 
 $group->add(new Form_Checkbox(
-	'pfbcron',
-	'pfbcron',
+	'pfb_force',
+	NULL,
 	'Cron',
-	'',
-	'on'
-))->displayAsRadio()->setAttribute('title', 'Force Cron: IP & DNSBL.')->setWidth(1);
+	FALSE,
+	'cron'
+))->displayAsRadio('pfb_force_cron')->setAttribute('title', 'Force Cron: IP & DNSBL.')->setWidth(1);
 
 $group->add(new Form_Checkbox(
-	'pfbreload',
-	'pfbreload',
+	'pfb_force',
+	NULL,
 	'Reload',
-	'',
-	'on'
-))->displayAsRadio()->setAttribute('title', 'Force Reload: IP & DNSBL.')->setWidth(1);
+	FALSE,
+	'reload'
+))->displayAsRadio('pfb_force_reload')->setAttribute('title', 'Force Reload: IP & DNSBL.')->setWidth(1);
 $section->add($group);
 
 
 // Build 'Force Options' group section
 $group = new Form_Group('Select \'Reload\' option');
 $group->add(new Form_Checkbox(
-	'pfball',
-	'pfball',
+	'pfb_reload_option',
+	NULL,
 	'All',
-	'on',
+	TRUE,
 	'All'
-))->displayAsRadio()->setAttribute('title', 'Reload: IP & DNSBL.')->setWidth(1);
+))->displayAsRadio('pfb_reload_option_all')->setAttribute('title', 'Reload: IP & DNSBL.')->setWidth(1);
 
 $group->add(new Form_Checkbox(
-	'pfbip',
-	'pfbip',
+	'pfb_reload_option',
+	NULL,
 	'IP',
-	'',
+	FALSE,
 	'IP'
-))->displayAsRadio()->setAttribute('title', 'Reload: IP only.')->setWidth(1);
+))->displayAsRadio('pfb_reload_option_ip')->setAttribute('title', 'Reload: IP only.')->setWidth(1);
 
 $group->add(new Form_Checkbox(
-	'pfbdnsbl',
-	'pfbdnsbl',
+	'pfb_reload_option',
+	NULL,
 	'DNSBL',
-	'',
+	FALSE,
 	'DNSBL'
-))->displayAsRadio()->setAttribute('title', 'Reload: DNSBL only.')->setWidth(2);
+))->displayAsRadio('pfb_reload_option_dnsbl')->setAttribute('title', 'Reload: DNSBL only.')->setWidth(2);
 $section->add($group);
 
 
@@ -415,22 +415,13 @@ if (isset($pconfig['log_view'])) {
 	}
 }
 
-if ($pfb['enable'] == 'on' && isset($pconfig['run'])) {
-	// Execute a reload of all aliases and lists
-	if ($pconfig['pfbupdate'] == 'on') {
+if ($pfb['enable'] == 'on' && isset($pconfig['run']) && !empty($pconfig['pfb_force'])) {
+	// Execute appropriate 'Force command' 
+	if ($pconfig['pfb_force'] == 'update') {
 		pfb_cron_update(update);
-	} elseif ($pconfig['pfbcron'] == 'on') {
+	} elseif ($pconfig['pfb_force'] == 'cron') {
 		pfb_cron_update(cron);
-	} elseif ($pconfig['pfbreload'] == 'on') {
-		// Determine which reload type to run.
-		if (isset($pconfig['pfbdnsbl'])) {
-			$pfb['rmode'] = 'DNSBL';
-		} elseif (isset($pconfig['pfbip'])) {
-			$pfb['rmode'] = 'IP';
-		} else {
-			$pfb['rmode'] = 'All';
-		}
-
+	} elseif ($pconfig['pfb_force'] == 'reload') {
 		$config['installedpackages']['pfblockerng']['config'][0]['pfb_reuse'] = 'on';
 		write_config('pfBlockerNG: Executing Force Reload');
 		pfb_cron_update(reload);
@@ -445,50 +436,43 @@ events.push(function(){
 
 	// Hide/Show 'Force Reload' radios
 	function mode_change(mode) {
-		switch(mode) {
-			case 'on':
-				hideCheckbox('pfball', false);
-				hideCheckbox('pfbip', false);
-				hideCheckbox('pfbdnsbl', false);
-				break;
-			default:
-				hideCheckbox('pfball',  true);
-				hideCheckbox('pfbip',  true);
-				hideCheckbox('pfbdnsbl',  true);
-				break;
+		if (mode == 'on') {
+			hideCheckbox('pfb_reload_option_all', false);
+		} else {
+			hideCheckbox('pfb_reload_option_all',  true);
 		}
 	}
 	mode_change();
 
 	// On-click - toggle radios on/off
-	$('#pfbupdate').click(function() {
-		$('#pfbcron').prop('checked', false);
-		$('#pfbreload').prop('checked', false);
+	$('#pfb_force_update').click(function() {
+		$('#pfb_force_cron').prop('checked', false);
+		$('#pfb_force_reload').prop('checked', false);
 		mode_change();
 	});
-	$('#pfbcron').click(function() {
-		$('#pfbupdate').prop('checked', false);
-		$('#pfbreload').prop('checked', false);
+	$('#pfb_force_cron').click(function() {
+		$('#pfb_force_update').prop('checked', false);
+		$('#pfb_force_reload').prop('checked', false);
 		mode_change();
 	});
-	$('#pfbreload').click(function() {
-		$('#pfbupdate').prop('checked', false);
-		$('#pfbcron').prop('checked', false);
+	$('#pfb_force_reload').click(function() {
+		$('#pfb_force_update').prop('checked', false);
+		$('#pfb_force_cron').prop('checked', false);
 		mode_change('on');
 	});
 
 	// On-click - toggle 'Reload' radios on/off
-	$('#pfball').click(function() {
-		$('#pfbip').prop('checked', false);
-		$('#pfbdnsbl').prop('checked', false);
+	$('#pfb_reload_option_all').click(function() {
+		$('#pfb_reload_option_ip').prop('checked', false);
+		$('#pfb_reload_option_dnsbl').prop('checked', false);
 	});
-	$('#pfbip').click(function() {
-		$('#pfball').prop('checked', false);
-		$('#pfbdnsbl').prop('checked', false);
+	$('#pfb_reload_option_ip').click(function() {
+		$('#pfb_reload_option_all').prop('checked', false);
+		$('#pfb_reload_option_dnsbl').prop('checked', false);
 	});
-	$('#pfbdnsbl').click(function() {
-		$('#pfball').prop('checked', false);
-		$('#pfbip').prop('checked', false);
+	$('#pfb_reload_option_dnsbl').click(function() {
+		$('#pfb_reload_option_all').prop('checked', false);
+		$('#pfb_reload_option_ip').prop('checked', false);
 	});
 
 	$('#run').click(function() {
