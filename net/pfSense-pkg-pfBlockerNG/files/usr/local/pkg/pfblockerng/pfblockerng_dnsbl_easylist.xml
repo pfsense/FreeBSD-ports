@@ -41,12 +41,8 @@
 /* ========================================================================== */
 	]]>
 	</copyright>
-	<description>Describe your package here</description>
-	<requirements>Describe your package requirements here</requirements>
-	<faq>Currently there are no FAQ items provided.</faq>
 	<name>pfblockerngdnsbleasylist</name>
-	<version>1.0</version>
-	<title>pfBlockerNG: DNSBL: EasyList</title>
+	<title>Firewall/pfBlockerNG</title>
 	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
 	<addedit_string>pfBlockerNG: Save DNSBL Easylist settings</addedit_string>
 	<menu>

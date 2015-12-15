@@ -44,12 +44,9 @@
 /* ====================================================================================== */
 	]]>
 	</copyright>
-	<description>Describe your package here</description>
-	<requirements>Describe your package requirements here</requirements>
-	<faq>Currently there are no FAQ items provided.</faq>
 	<name>pfblockerng</name>
-	<version>2.0.3</version>
-	<title>pfBlockerNG: General Settings</title>
+	<version>2.0.4</version>
+	<title>Firewall/pfBlockerNG</title>
 	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
 	<addedit_string>pfBlockerNG: Save General Settings</addedit_string>
 	<menu>
@@ -65,96 +62,6 @@
 		<executable>lighttpd_pfb</executable>
 		<description>pfBlockerNG DNSBL Web Server</description>
 	</service>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng.priv.inc</item>
-		<prefix>/etc/inc/priv/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng.inc</item>
-		<prefix>/usr/local/pkg/pfblockerng/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng_install.inc</item>
-		<prefix>/usr/local/pkg/pfblockerng/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng_extra.inc</item>
-		<prefix>/usr/local/pkg/pfblockerng/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng.php</item>
-		<prefix>/usr/local/www/pfblockerng/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng_alerts.php</item>
-		<prefix>/usr/local/www/pfblockerng/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng_alerts_ar.php</item>
-		<prefix>/usr/local/www/pfblockerng/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng_update.php</item>
-		<prefix>/usr/local/www/pfblockerng/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng_log.php</item>
-		<prefix>/usr/local/www/pfblockerng/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng_threats.php</item>
-		<prefix>/usr/local/www/pfblockerng/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng.widget.php</item>
-		<prefix>/usr/local/www/widgets/widgets/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/pfblockerng/widget-pfblockerng.inc</item>
-		<prefix>/usr/local/www/widgets/include/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng.js</item>
-		<prefix>/usr/local/www/widgets/javascript/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng_top20.xml</item>
-		<prefix>/usr/local/pkg/pfblockerng/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng_dnsbl.xml</item>
-		<prefix>/usr/local/pkg/pfblockerng/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng_dnsbl_lists.xml</item>
-		<prefix>/usr/local/pkg/pfblockerng/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng_dnsbl_easylist.xml</item>
-		<prefix>/usr/local/pkg/pfblockerng/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng_v4lists.xml</item>
-		<prefix>/usr/local/pkg/pfblockerng/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng_v6lists.xml</item>
-		<prefix>/usr/local/pkg/pfblockerng/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng_sync.xml</item>
-		<prefix>/usr/local/pkg/pfblockerng/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/pfblockerng/pfblockerng.sh</item>
-		<prefix>/usr/local/pkg/pfblockerng/</prefix>
-		<chmod>0755</chmod>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/pfblockerng/index.php</item>
-		<prefix>/usr/local/www/pfblockerng/www/</prefix>
-		<chmod>0755</chmod>
-	</additional_files_needed>
 	<tabs>
 		<tab>
 			<text>General</text>

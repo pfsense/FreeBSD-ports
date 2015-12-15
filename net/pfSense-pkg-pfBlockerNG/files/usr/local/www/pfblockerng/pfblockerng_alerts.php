@@ -642,7 +642,7 @@ function conv_log_filter_lite($logfile, $nentries, $tail, $pfbdenycnt, $pfbpermi
 		return $fields_array;
 	}
 }
-$pgtitle = array(gettext("pfBlockerNG"), gettext("Alerts"));
+$pgtitle = array(gettext('Firewall'), gettext("pfBlockerNG"), gettext("Alerts"));
 include_once('head.inc');
 
 // refresh every 60 secs
@@ -660,28 +660,18 @@ if ($savemsg) {
 	print_info_box($savemsg);
 }
 
-?>
-<table summary="tabs">
-	<tr>
-		<td class="tabnavtbl">
-		<?php
-			$tab_array   = array();
-			$tab_array[] = array(gettext("General"), false, "/pkg_edit.php?xml=pfblockerng.xml");
-			$tab_array[] = array(gettext("Update"), false, "/pfblockerng/pfblockerng_update.php");
-			$tab_array[] = array(gettext("Alerts"), true, "/pfblockerng/pfblockerng_alerts.php");
-			$tab_array[] = array(gettext("Reputation"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml");
-			$tab_array[] = array(gettext("IPv4"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml");
-			$tab_array[] = array(gettext("IPv6"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml");
-			$tab_array[] = array(gettext("DNSBL"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml");
-			$tab_array[] = array(gettext("Country"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml");
-			$tab_array[] = array(gettext("Logs"), false, "/pfblockerng/pfblockerng_log.php");
-			$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml");
-			display_top_tabs($tab_array, true);
-		?>
-		</td>
-	</tr>
-</table>
-<?php
+$tab_array   = array();
+$tab_array[] = array(gettext("General"), false, "/pkg_edit.php?xml=pfblockerng.xml");
+$tab_array[] = array(gettext("Update"), false, "/pfblockerng/pfblockerng_update.php");
+$tab_array[] = array(gettext("Alerts"), true, "/pfblockerng/pfblockerng_alerts.php");
+$tab_array[] = array(gettext("Reputation"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_reputation.xml");
+$tab_array[] = array(gettext("IPv4"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml");
+$tab_array[] = array(gettext("IPv6"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml");
+$tab_array[] = array(gettext("DNSBL"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml");
+$tab_array[] = array(gettext("Country"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml");
+$tab_array[] = array(gettext("Logs"), false, "/pfblockerng/pfblockerng_log.php");
+$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml");
+display_top_tabs($tab_array, true);
 
 // Create Form
 $form = new Form(false);

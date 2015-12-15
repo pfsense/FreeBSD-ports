@@ -41,12 +41,8 @@
 /* ========================================================================== */
 	]]>
 	</copyright>
-	<description>Describe your package here</description>
-	<requirements>Describe your package requirements here</requirements>
-	<faq>Currently there are no FAQ items provided.</faq>
 	<name>pfblockerngdnsbl</name>
-	<version>1.0</version>
-	<title>pfBlockerNG: DNSBL: Lists</title>
+	<title>Firewall/pfBlockerNG</title>
 	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
 	<addedit_string>pfBlockerNG: Save DNSBL Feeds settings</addedit_string>
 	<menu>
@@ -176,7 +172,7 @@
 			</description>
 		</field>
 		<field>
-			<fielddescr><![CDATA[<strong>DNSBL</strong>]]></fielddescr>
+			<fielddescr><![CDATA[DNSBL]]></fielddescr>
 			<description><![CDATA[<br /><strong>'Format'</strong>: Select the file format that URL will retrieve.<br />
 				<ul><li><strong>'auto'</strong>&emsp;- Default parser</li>
 				<li><strong>'rsync'</strong> - RSync Lists</li></ul>

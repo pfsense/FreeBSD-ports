@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-pfBlockerNG
-PORTVERSION=	2.0.3
+PORTVERSION=	2.0.4
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty

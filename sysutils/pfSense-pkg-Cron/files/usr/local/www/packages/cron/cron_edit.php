@@ -90,34 +90,26 @@ if ($_POST) {
 	}
 }
 
-$pgtitle = array(gettext("Cron"),gettext("Edit"));
+
+if (empty($id)) {
+	$pgtitle = array(gettext("Services"), gettext("Cron"), gettext("Add"));
+} else {
+	$pgtitle = array(gettext("Services"), gettext("Cron"), gettext("Edit"));
+}
 include("head.inc");
-?>
 
-<script type="text/javascript">
-//<![CDATA[
-function show_advanced_config() {
-	document.getElementById("showadvancedbox").innerHTML = '';
-	aodiv = document.getElementById('showadvanced');
-	aodiv.style.display = "block";
-//]]>
-</script>
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
 
-<?php if ($input_errors) print_input_errors($input_errors); ?>
-
-<table summary="mainlevel">
-	<tr>
-		<td class="tabnavtbl">
-		<?php
-			$tab_array = array();
-			$tab_array[] = array(gettext("Settings"), false, "/packages/cron/cron.php");
-			$tab_array[] = array(gettext("Edit"), true, "/packages/cron/cron_edit.php");
-			display_top_tabs($tab_array);
-		?>
-		</td>
-	</tr>
-</table>
-<?php
+$tab_array = array();
+$tab_array[] = array(gettext("Settings"), false, "/packages/cron/cron.php");
+if (empty($id)) {
+	$tab_array[] = array(gettext("Add"), true, "/packages/cron/cron_edit.php");
+} else {
+	$tab_array[] = array(gettext("Edit"), true, "/packages/cron/cron_edit.php");
+}
+display_top_tabs($tab_array);
 
 $form = new Form;
 $section = new Form_Section('Add A Cron Schedule');
@@ -126,48 +118,48 @@ $section->addInput(new Form_Input(
 	'minute',
 	'minute',
 	'text',
-	htmlspecialchars($pconfig['minute'])
+	$pconfig['minute']
 ));
 
 $section->addInput(new Form_Input(
 	'hour',
 	'hour',
 	'text',
-	htmlspecialchars($pconfig['hour'])
+	$pconfig['hour']
 ));
 
 $section->addInput(new Form_Input(
 	'mday',
 	'mday',
 	'text',
-	htmlspecialchars($pconfig['mday'])
+	$pconfig['mday']
 ));
 
 $section->addInput(new Form_Input(
 	'month',
 	'month',
 	'text',
-	htmlspecialchars($pconfig['month'])
+	$pconfig['month']
 ));
 
 $section->addInput(new Form_Input(
 	'wday',
 	'wday',
 	'text',
-	htmlspecialchars($pconfig['wday'])
+	$pconfig['wday']
 ));
 
 $section->addInput(new Form_Input(
 	'who',
 	'who',
 	'text',
-	htmlspecialchars($pconfig['who'])
+	$pconfig['who']
 ));
 
 $section->addInput(new Form_Textarea(
 	'command',
 	'command',
-	htmlspecialchars($pconfig['command'])
+	$pconfig['command']
 ));
 
 $form->add($section);
