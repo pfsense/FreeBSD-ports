@@ -44,12 +44,8 @@
 /* ========================================================================== */
 	]]>
 	</copyright>
-	<description>Describe your package here</description>
-	<requirements>Describe your package requirements here</requirements>
-	<faq>Currently there are no FAQ items provided.</faq>
 	<name>pfblockerngsync</name>
-	<version>1.0</version>
-	<title>pfBlockerNG: XMLRPC Sync</title>
+	<title>Firewall/pfBlockerNG</title>
 	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
 	<addedit_string>pfBlockerNG: Save XMLRPC Sync settings</addedit_string>
 	<menu>
