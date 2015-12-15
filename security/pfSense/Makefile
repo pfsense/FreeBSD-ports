@@ -32,7 +32,6 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/clog:${PORTSDIR}/sysutils/clog \
 		${LOCALBASE}/sbin/dhcp6c:${PORTSDIR}/net/dhcp6 \
 		${LOCALBASE}/sbin/dnsmasq:${PORTSDIR}/dns/dnsmasq \
 		${LOCALBASE}/sbin/igmpproxy:${PORTSDIR}/net/igmpproxy \
-		${LOCALBASE}/sbin/gzsig:${PORTSDIR}/sysutils/gzsig \
 		${LOCALBASE}/sbin/filterdns:${PORTSDIR}/net/filterdns \
 		${LOCALBASE}/sbin/filterlog:${PORTSDIR}/sysutils/filterlog \
 		${LOCALBASE}/sbin/lighttpd:${PORTSDIR}/www/lighttpd \
