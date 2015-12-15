@@ -642,7 +642,7 @@ function conv_log_filter_lite($logfile, $nentries, $tail, $pfbdenycnt, $pfbpermi
 		return $fields_array;
 	}
 }
-$pgtitle = array(gettext("pfBlockerNG"), gettext("Alerts"));
+$pgtitle = array(gettext('Firewall'), gettext("pfBlockerNG"), gettext("Alerts"));
 include_once('head.inc');
 
 // refresh every 60 secs
