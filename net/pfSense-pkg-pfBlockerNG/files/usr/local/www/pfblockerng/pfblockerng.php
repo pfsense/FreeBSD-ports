@@ -723,12 +723,8 @@ $xml = <<<EOF
 /* ========================================================================== */
 ]]>
 	</copyright>
-	<description>Describe your package here</description>
-	<requirements>Describe your package requirements here</requirements>
-	<faq>Currently there are no FAQ items provided.</faq>
 	<name>pfblockerng{$cont_name_lower}</name>
-	<version>1.0</version>
-	<title>pfBlockerNG: {$cont}</title>
+	<title>Firewall/pfBlockerNG</title>
 	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
 	<addedit_string>pfBlockerNG: Save {$cont} settings</addedit_string>
 	<menu>
@@ -1132,12 +1128,8 @@ $xmlrep = <<<EOF
 */
 	]]>
 	</copyright>
-	<description>Describe your package here</description>
-	<requirements>Describe your package requirements here</requirements>
-	<faq>Currently there are no FAQ items provided.</faq>
 	<name>pfblockerngreputation</name>
-	<version>1.0</version>
-	<title>pfBlockerNG: IPv4 Reputation</title>
+	<title>Firewall/pfBlockerNG</title>
 	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
 	<addedit_string>pfBlockerNG: Save Reputation Settings</addedit_string>
 	<menu>
