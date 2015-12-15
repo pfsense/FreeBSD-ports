@@ -49,7 +49,7 @@
 	<faq>Currently there are no FAQ items provided.</faq>
 	<name>pfblockerngtopspammers</name>
 	<version>1.0</version>
-	<title>pfBlockerNG: Top 20 Spammer Countries</title>
+	<title>Firewall/pfBlockerNG</title>
 	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
 	<addedit_string>pfBlockerNG: Save Top20 settings</addedit_string>
 	<menu>
