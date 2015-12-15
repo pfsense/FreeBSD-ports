@@ -55,8 +55,8 @@ display_top_tabs($tab_array);
 
 
 <div class="panel panel-default">
-    <div class="panel-heading"><h2 class="panel-title">Cron Schedules</h2></div>
-    <div class="panel-body">
+	<div class="panel-heading"><h2 class="panel-title">Cron Schedules</h2></div>
+	<div class="panel-body">
 		<div class="table-responsive">
 			<form action="cron.php" method="post" name="iform" id="iform">
 			<?php
@@ -120,7 +120,7 @@ display_top_tabs($tab_array);
 </div>
 
 <div class="infoblock">
-    <?=print_info_box('For more information see: <a href="http://www.freebsd.org/doc/en/books/handbook/configtuning-cron.html">http://www.freebsd.org/doc/en/books/handbook/configtuning-cron.html</a>', info)?>
+	<?=print_info_box('For more information see: <a href="http://www.freebsd.org/doc/en/books/handbook/configtuning-cron.html">http://www.freebsd.org/doc/en/books/handbook/configtuning-cron.html</a>', info)?>
 </div>
 
 <?php include("foot.inc"); ?>

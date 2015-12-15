@@ -116,51 +116,51 @@ $section = new Form_Section('Add A Cron Schedule');
 
 $section->addInput(new Form_Input(
 	'minute',
-	'minute',
+	'Minute',
 	'text',
 	$pconfig['minute']
-));
+))->setHelp("The minute(s) at which the command will be executed. (0-59, ranges, or divided, *=all)");
 
 $section->addInput(new Form_Input(
 	'hour',
-	'hour',
+	'Hour',
 	'text',
 	$pconfig['hour']
-));
+))->setHelp("The hour(s) at which the command will be executed. (0-23, ranges, or divided, *=all)");
 
 $section->addInput(new Form_Input(
 	'mday',
-	'mday',
+	'Day of the Month',
 	'text',
 	$pconfig['mday']
-));
+))->setHelp("The day(s) of the month on which the command will be executed. (1-31, ranges, or divided, *=all)");
 
 $section->addInput(new Form_Input(
 	'month',
-	'month',
+	'Month of the Year',
 	'text',
 	$pconfig['month']
-));
+))->setHelp("The month(s) of the year during which the command will be executed. (1-12, ranges, or divided, *=all)");
 
 $section->addInput(new Form_Input(
 	'wday',
-	'wday',
+	'Day of the Week',
 	'text',
 	$pconfig['wday']
-));
+))->setHelp("The day(s) of the week on which the command will be executed. (0-7, 7=Sun or use names, ranges, or divided, *=all)");
 
 $section->addInput(new Form_Input(
 	'who',
-	'who',
+	'User',
 	'text',
 	$pconfig['who']
-));
+))->setHelp("The user executing the command (typically \"root\")");
 
 $section->addInput(new Form_Textarea(
 	'command',
-	'command',
+	'Command',
 	$pconfig['command']
-));
+))->setHelp("The <strong>full path</strong> to the command, plus parameters.");
 
 $form->add($section);
 
@@ -176,5 +176,11 @@ $form->addGlobal($btncncl);
 print $form;
 
 ?>
+<div class="infoblock">
+	<?=print_info_box('Using "*" for a time entry means "all" or "every", and is the same as a range from first to last. ' .
+		'<br/>Ranges may also be used, for example "0-5" in the "Day of Week" field means Monday through Friday' .
+		'<br/>Time entries may be divided and will be executed when they divide evenly, for example "*/15" in the Minute field means "Every 15 minutes".' .
+		'<br/><br/>For more information see: <a href="http://www.freebsd.org/doc/en/books/handbook/configtuning-cron.html">http://www.freebsd.org/doc/en/books/handbook/configtuning-cron.html</a>', info)?>
+</div>
 
 <?php include("foot.inc"); ?>

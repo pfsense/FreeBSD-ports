@@ -4,7 +4,7 @@
 		<name>Cron</name>
 		<descr><![CDATA[The cron utility is used to manage commands on a schedule.]]></descr>
 		<category>System</category>
-		<version>0.3.4</version>
+		<version>0.3.5</version>
 		<status>RC</status>
 		<required_version>2.3</required_version>
 		<configurationfile>cron.xml</configurationfile>
