@@ -1319,7 +1319,7 @@ function pfb_download_failure($alias, $header, $pfbfolder, $vtype, $list_url) {
 			// Query Firewall aliastables
 			$result = find_reported_header($ip, "{$pfbfolder}/*", TRUE);
 			if (!empty($result)) {
-				$log = " [ {$ip} ] Firewall IP block found in: [ {$result[1]} {$result[0]} ]\n";
+				$log = " [ {$ip} ] Firewall IP block found in: [ {$result[1]} | {$result[0]} ]\n";
 				pfb_logger("{$log}", 2);
 				$pfbfound = TRUE;
 			}
