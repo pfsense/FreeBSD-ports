@@ -8,9 +8,9 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	marcellocoutinho@gmail.com
-COMMENT=	pfSense package Postfix Forwarder
+COMMENT=	pfSense package Postfix Forwarder.
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/postfix:${PORTSDIR}/mail/postfix \
+RUN_DEPENDS=	${LOCALBASE}/sbin/postfix:${PORTSDIR}/mail/postfix
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -23,7 +23,6 @@ do-extract:
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
-	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/include
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/shortcuts
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/widgets
@@ -59,7 +58,7 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/postfix_queue.php \
 		${STAGEDIR}${PREFIX}/www
 	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/postfix.priv.inc \
-                ${STAGEDIR}/etc/inc/priv
+		${STAGEDIR}/etc/inc/priv
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/bin/adexport.pl \
 		${STAGEDIR}${PREFIX}/bin
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/shortcuts/pkg_postfix.inc \

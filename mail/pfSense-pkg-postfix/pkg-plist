@@ -15,4 +15,6 @@ pkg/postfix.xml
 pkg/postfix_sync.xml
 pkg/postfix_acl.xml
 %%DATADIR%%/info.xml
+@dir /etc/inc
 @dir /etc/inc/priv
+/etc/inc/priv/postfix.priv.inc
