@@ -129,9 +129,9 @@
 			<fieldname>pfb_keep</fieldname>
 			<description>Keep settings</description>
 			<type>checkbox</type>
-			<sethelp><![CDATA[<font color='red'>Note:</font> - with 'Keep settings' enabled, pfBlockerNG will maintain run state
+			<sethelp><![CDATA[<span class="text-danger">Note:</span> with 'Keep settings' enabled, pfBlockerNG will maintain run state
 				on Installation/Upgrade.<br /> If 'Keep Settings' is not 'enabled' on pkg Install/De-Install, all settings will be Wiped!<br /><br />
-				<font color='red'>Note: </font>To clear all downloaded lists, uncheck these two checkboxes and 'Save'.
+				<span class="text-danger">Note:</span> To clear all downloaded lists, uncheck these two checkboxes and 'Save'.
 				re-check both boxes and run a 'Force Update']]>
 			</sethelp>
 			<default_value>on</default_value>
@@ -464,7 +464,7 @@
 			<fielddescr>Support</fielddescr>
 			<description><![CDATA[This package has been developed by BBcan177.<br />
 				If you like this package, please support the developer @ BBCan177@gmail.com
-				<span class="fa fa-cc-paypal fa-2x icon-primary"></span>]]>
+				<i class="fa fa-cc-paypal fa-2x"></i>]]>
 			</description>
 			<type>info</type>
 		</field>
