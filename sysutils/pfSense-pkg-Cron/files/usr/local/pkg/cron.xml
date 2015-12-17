@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>cronsettings</name>
-	<version>0.3.5</version>
+	<version>0.3.6</version>
 	<title>Cron Settings</title>
 	<include_file>/usr/local/pkg/cron.inc</include_file>
 	<menu>
@@ -51,30 +51,6 @@
 		<configfile>cron.xml</configfile>
 		<url>/packages/cron/cron.php</url>
 	</menu>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/cron/cron.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/cron/cron.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/etc/inc/priv/</prefix>
-		<item>https://packages.pfsense.org/packages/config/cron/cron.priv.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/packages/cron/</prefix>
-		<item>https://packages.pfsense.org/packages/config/cron/cron.php</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/packages/cron/</prefix>
-		<item>https://packages.pfsense.org/packages/config/cron/cron_edit.php</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/packages/cron/</prefix>
-		<item>https://packages.pfsense.org/packages/config/cron/index.php</item>
-	</additional_files_needed>
 	<custom_php_resync_config_command>
 		cron_sync_package();
 	</custom_php_resync_config_command>
