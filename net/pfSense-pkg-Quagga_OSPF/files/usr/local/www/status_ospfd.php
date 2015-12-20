@@ -30,16 +30,12 @@
 */
 require("guiconfig.inc");
 
-$pgtitle = "Quagga OSPF: Status";
-include("head.inc");
-
 $control_script = "/usr/local/bin/quaggactl";
 $pkg_homedir = "/var/etc/quagga";
 
 /* List all of the commands as an index. */
 function listCmds() {
 	global $commands;
-	echo "<br/>This status page includes the following information:\n";
 	echo "<ul width=\"100%\">\n";
 	for ($i = 0; isset($commands[$i]); $i++ ) {
 		echo "<li><strong><a href=\"#" . $commands[$i][0] . "\">" . $commands[$i][0] . "</a></strong></li>\n";
@@ -62,70 +58,55 @@ function defCmdT($title, $command) {
 }
 
 function doCmdT($title, $command) {
-	echo "<br />\n";
-	echo "<a name=\"" . $title . "\">\n";
-	echo "<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
-	echo "<tr><td class=\"listtopic\">" . $title . "</td></tr>\n";
-	/* no newline after pre */
-	echo "<tr><td class=\"listlr\"><pre>";
-
-	$execOutput = "";
-	$execStatus = "";
-	$fd = popen("{$command} 2>&1", "r");
-	while (($line = fgets($fd)) !== FALSE) {
-		echo htmlspecialchars($line, ENT_NOQUOTES);
-	}
-	pclose($fd);
-	echo "</pre></tr>\n";
-	echo "</table>\n";
+	echo "<tr><td>";
+		echo "<div name=\"" . $title . "\"><h5><a name=\"" . $title . "\">". $title . "</a></h4>";
+			echo "<pre>";
+				$execOutput = "";
+				$execStatus = "";
+				$fd = popen("{$command} 2>&1", "r");
+				while (($line = fgets($fd)) !== FALSE) {
+					echo htmlspecialchars($line, ENT_NOQUOTES);
+				}
+				pclose($fd);
+			echo "</pre><br />" ;
+		echo "</div>" ;
+	echo "</tr></td>";
 }
 
+defCmdT("Quagga OSPF General", "{$control_script} ospf general");
+defCmdT("Quagga OSPF Neighbors", "{$control_script} ospf neighbor");
+defCmdT("Quagga OSPF Database", "{$control_script} ospf database");
+defCmdT("Quagga OSPF Router Database", "{$control_script} ospf database router");
+defCmdT("Quagga OSPF Routes", "{$control_script} ospf route");
+defCmdT("Quagga Zebra Routes", "{$control_script} zebra route");
+defCmdT("Quagga OSPF Interfaces", "{$control_script} ospf interfaces");
+defCmdT("Quagga OSPF CPU Usage", "{$control_script} ospf cpu");
+defCmdT("Quagga OSPF Memory", "{$control_script} ospf mem");
+defCmdT("Quagga ospfd.conf", "/bin/cat {$pkg_homedir}/ospfd.conf");
+defCmdT("Quagga zebra.conf", "/bin/cat {$pkg_homedir}/zebra.conf");
+
+$tab_array = array();
+$tab_array[] = array(gettext("Settings"), false, "/pkg_edit.php?xml=quagga_ospfd.xml&id=0");
+$tab_array[] = array(gettext("Interface Settings"), false, "/pkg.php?xml=quagga_ospfd_interfaces.xml");
+$tab_array[] = array(gettext("RAW Config"), false, "/pkg_edit.php?xml=quagga_ospfd_raw.xml&id=0");
+$tab_array[] = array(gettext("Status"), true, "/status_ospfd.php");
+
+$pgtitle = array(gettext("Services"),gettext("Quagga OSPF"),gettext("Status"));
+include("head.inc");
+display_top_tabs($tab_array);
 ?>
 
-<html>
-	<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-		<?php include("fbegin.inc"); ?>
-		<?php if ($savemsg) print_info_box($savemsg); ?>
-
-		<table width="100%" border="0" cellpadding="0" cellspacing="0">
-			<tr><td class="tabnavtbl">
-<?php
-				$tab_array = array();
-				$tab_array[] = array(gettext("Settings"), false, "/pkg_edit.php?xml=quagga_ospfd.xml&id=0");
-				$tab_array[] = array(gettext("Interface Settings"), false, "/pkg.php?xml=quagga_ospfd_interfaces.xml");
-				$tab_array[] = array(gettext("RAW Config"), false, "/pkg_edit.php?xml=quagga_ospfd_raw.xml&id=0");
-				$tab_array[] = array(gettext("Status"), true, "/status_ospfd.php");
-				display_top_tabs($tab_array);
-			?>
-			</td></tr>
-			<tr><td>
-				<div id="mainarea">
-					<table class="tabcont" width="100%" border="0" cellpadding="6" cellspacing="0">
-						<tr>
-							<td>
-<?php
-								defCmdT("Quagga OSPF General", "{$control_script} ospf general");
-								defCmdT("Quagga OSPF Neighbors", "{$control_script} ospf neighbor");
-								defCmdT("Quagga OSPF Database", "{$control_script} ospf database");
-								defCmdT("Quagga OSPF Router Database", "{$control_script} ospf database router");
-								defCmdT("Quagga OSPF Routes", "{$control_script} ospf route");
-								defCmdT("Quagga Zebra Routes", "{$control_script} zebra route");
-								defCmdT("Quagga OSPF Interfaces", "{$control_script} ospf interfaces");
-								defCmdT("Quagga OSPF CPU Usage", "{$control_script} ospf cpu");
-								defCmdT("Quagga OSPF Memory", "{$control_script} ospf mem");
-								defCmdT("Quagga ospfd.conf", "/bin/cat {$pkg_homedir}/ospfd.conf");
-								defCmdT("Quagga zebra.conf", "/bin/cat {$pkg_homedir}/zebra.conf");
-?>
-								<div id="cmdspace" style="width:100%">
-									<?php listCmds(); ?>
-									<?php execCmds(); ?>
-								</div>
-							</td>
-						</tr>
-					</table>
-				</div>
-			</td></tr>
-		</table>
-		<?php include("fend.inc"); ?>
-	</body>
-</html>
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("Detailled OSPF status Information.")?></h2></div>
+		<div class="table-responsive">
+			<table class="table table-hover table-condensed" >
+				<tr>
+					<td>
+						<?php listCmds(); ?>
+					</td>
+				</tr>
+				<?php execCmds(); ?>
+			</table>
+		</div>
+		
+<?php include("foot.inc");
