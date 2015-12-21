@@ -59,7 +59,7 @@ function defCmdT($title, $command) {
 
 function doCmdT($title, $command) {
 	echo "<tr><td>";
-		echo "<div name=\"" . $title . "\"><h5><a name=\"" . $title . "\">". $title . "</a></h4>";
+		echo "<div name=\"" . $title . "\"><h5><a name=\"" . $title . "\">". $title . "</a></h5>";
 			echo "<pre>";
 				$execOutput = "";
 				$execStatus = "";
