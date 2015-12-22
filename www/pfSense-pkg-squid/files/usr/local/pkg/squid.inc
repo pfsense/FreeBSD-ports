@@ -498,6 +498,7 @@ function squid_deinstall_command() {
 
 	/* remove cronjobs */
 	squid_install_cron(false);
+	squid_adk_cron(false);
 
 	/* kill all running services */
 	mwexec('/usr/local/etc/rc.d/sqp_monitor.sh stop');
@@ -1282,6 +1283,7 @@ EOD;
 	$conf .= "logfile_rotate {$rotate}\n";
 	$conf .= "debug_options rotate={$rotate}\n";
 	squid_install_cron(true);
+	squid_adk_cron(true);
 
 	$conf .= <<< EOD
 shutdown_lifetime 3 seconds
@@ -1940,6 +1942,26 @@ function squid_resync_msnt() {
 	file_put_contents(SQUID_CONFBASE . "/msntauth.conf", "server {$pdcserver} {$bdcserver} {$ntdomain}");
 	chown(SQUID_CONFBASE . "/msntauth.conf", SQUID_UID);
 	chmod(SQUID_CONFBASE . "/msntauth.conf", 0600);
+}
+
+/* squid adk cron */
+function squid_adk_cron($should_install) {
+	global $config;
+
+	if (is_array($config['installedpackages']['squidauth'])) {
+		$settings = $config['installedpackages']['squidauth']['config'][0];
+	} else {
+		$settings = array();
+	}
+	$cron_cmd = SQUID_BASE . "/sbin/msktutil --auto-update --verbose --computer-name " . strtolower($config['system']['hostname']);
+	if ( ($should_install) && ($settings['auth_method'] == 'adk') ) {
+		log_error("[squid] Adding cronjob for Active Directory authentication ...");
+		install_cron_job("{$cron_cmd}", true,  "0", "0", "1", "*", "*","root");
+	}
+	else {
+		log_error("[squid] Removing cronjob for Active Directory authentication ...");
+		install_cron_job("{$cron_cmd}", false);
+	}
 }
 
 /* Proxy server: Active Directory Kerberos configuration handler */
