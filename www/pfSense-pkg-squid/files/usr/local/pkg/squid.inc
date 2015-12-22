@@ -1957,8 +1957,7 @@ function squid_adk_cron($should_install) {
 	if ( ($should_install) && ($settings['auth_method'] == 'adk') ) {
 		log_error("[squid] Adding cronjob for Active Directory authentication ...");
 		install_cron_job("{$cron_cmd}", true,  "0", "0", "1", "*", "*","root");
-	}
-	else {
+	} else {
 		log_error("[squid] Removing cronjob for Active Directory authentication ...");
 		install_cron_job("{$cron_cmd}", false);
 	}
@@ -2013,15 +2012,13 @@ function squid_resync_adk() {
 	mwexec("/usr/bin/kinit --password-file=/etc/krb5secret ". $settings['adk_user'] . "@" . strtoupper($settings['adk_domain']));
 
 	if ( file_exists(SQUID_CONFBASE . "/PROXY.keytab") ) {
-	}
-	else {
+	} else {
 		if ( $settings['adk_version'] == '2003' ) {
 			mwexec(SQUID_LOCALBASE . '/sbin/msktutil -c -b CN=COMPUTERS -s HTTP -k ' . SQUID_CONFBASE . '/PROXY.keytab --computer-name ' . strtoupper($config['system']['hostname']) . ' --upn HTTP/' . $hostname  . ' --server ' . $settings['adk_dc'] . ' --verbose');
-		}
-		elseif ( $settings['adk_version'] == '2008' ) { 
+		} elseif ( $settings['adk_version'] == '2008' ) { 
 			mwexec(SQUID_LOCALBASE . '/sbin/msktutil -c -b CN=COMPUTERS -s HTTP -k ' . SQUID_CONFBASE . '/PROXY.keytab --computer-name ' . strtoupper($config['system']['hostname']) . ' --upn HTTP/' . $hostname  . ' --server ' . $settings['adk_dc'] . ' --verbose --enctypes 28');
 		}
-	} 
+	}
 }
 
 /* Wrapper function to sync whole Squid configuration */
