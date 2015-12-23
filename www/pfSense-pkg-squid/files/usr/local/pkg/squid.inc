@@ -500,6 +500,9 @@ function squid_deinstall_command() {
 	squid_install_cron(false);
 	squid_adk_cron(false);
 
+	/* remove adk keytab/krb5secret file */
+	squid_adk_remove_files();
+
 	/* kill all running services */
 	mwexec('/usr/local/etc/rc.d/sqp_monitor.sh stop');
 	mwexec("/bin/ps awux | /usr/bin/egrep -i '[s]quid -f|\([s]quid\)' | /usr/bin/awk '{ print $2 }' | /usr/bin/xargs kill");
@@ -1944,6 +1947,16 @@ function squid_resync_msnt() {
 	chmod(SQUID_CONFBASE . "/msntauth.conf", 0600);
 }
 
+/* adk remove keytab/krb5secret if exists */
+squid_adk_remove_files() {
+	if ( file_exists(SQUID_CONFBASE . "/PROXY.keytab") ) {
+		unlink(SQUID_CONFBASE . "/PROXY.keytab");
+	}
+	if ( file_exists("/etc/krb5secret") {
+		unlink("/etc/krb5secret");
+	}
+}
+
 /* squid adk cron */
 function squid_adk_cron($should_install) {
 	global $config;
@@ -2006,18 +2019,17 @@ function squid_resync_adk() {
 	chown("/etc/krb5.conf", SQUID_UID);
 	chmod("/etc/krb5.conf", 0600);
 
-	file_put_contents("/etc/krb5secret", $settings['adk_secret']);
-	chmod("/etc/krb5secret", 0600);
-
-	mwexec("/usr/bin/kinit --password-file=/etc/krb5secret ". $settings['adk_user'] . "@" . strtoupper($settings['adk_domain']));
-
-	if ( file_exists(SQUID_CONFBASE . "/PROXY.keytab") ) {
-	} else {
+	if ( !file_exists(SQUID_CONFBASE . "/PROXY.keytab") ) {
+		file_put_contents("/etc/krb5secret", $settings['adk_secret']);
+		chmod("/etc/krb5secret", 0600);
+		mwexec("/usr/bin/kinit --password-file=/etc/krb5secret ". $settings['adk_user'] . "@" . strtoupper($settings['adk_domain']));
 		if ( $settings['adk_version'] == '2003' ) {
 			mwexec(SQUID_LOCALBASE . '/sbin/msktutil -c -b CN=COMPUTERS -s HTTP -k ' . SQUID_CONFBASE . '/PROXY.keytab --computer-name ' . strtoupper($config['system']['hostname']) . ' --upn HTTP/' . $hostname  . ' --server ' . $settings['adk_dc'] . ' --verbose');
 		} elseif ( $settings['adk_version'] == '2008' ) { 
 			mwexec(SQUID_LOCALBASE . '/sbin/msktutil -c -b CN=COMPUTERS -s HTTP -k ' . SQUID_CONFBASE . '/PROXY.keytab --computer-name ' . strtoupper($config['system']['hostname']) . ' --upn HTTP/' . $hostname  . ' --server ' . $settings['adk_dc'] . ' --verbose --enctypes 28');
 		}
+		mwexec("/usr/bin/kdestroy");
+		unlink("/etc/krb5secret");
 	}
 }
 
