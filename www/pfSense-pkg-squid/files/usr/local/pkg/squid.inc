@@ -1952,7 +1952,7 @@ squid_adk_remove_files() {
 	if ( file_exists(SQUID_CONFBASE . "/PROXY.keytab") ) {
 		unlink(SQUID_CONFBASE . "/PROXY.keytab");
 	}
-	if ( file_exists("/etc/krb5secret") {
+	if ( file_exists("/etc/krb5secret") ) {
 		unlink("/etc/krb5secret");
 	}
 }
