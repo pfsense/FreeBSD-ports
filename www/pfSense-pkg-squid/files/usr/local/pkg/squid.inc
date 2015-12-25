@@ -1949,12 +1949,8 @@ function squid_resync_msnt() {
 
 /* adk remove keytab/krb5secret if exists */
 squid_adk_remove_files() {
-	if ( file_exists(SQUID_CONFBASE . "/PROXY.keytab") ) {
-		unlink(SQUID_CONFBASE . "/PROXY.keytab");
-	}
-	if ( file_exists("/etc/krb5secret") ) {
-		unlink("/etc/krb5secret");
-	}
+	unlink_if_exists(SQUID_CONFBASE . "/PROXY.keytab");
+	unlink_if_exists("/etc/krb5secret");
 }
 
 /* squid adk cron */
