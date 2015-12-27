@@ -48,9 +48,11 @@
 	<title>Firewall/pfBlockerNG</title>
 	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
 	<addedit_string>pfBlockerNG: Save XMLRPC Sync settings</addedit_string>
+	<savehelp><![CDATA[<strong>Click to SAVE Settings and/or Rule edits.&emsp;Changes are applied via CRON or
+		'Force Update'</strong>]]>
+	</savehelp>
 	<menu>
 		<name>pfBlockerNG</name>
-		<tooltiptext>Configure pfBlockerNG</tooltiptext>
 		<section>Services</section>
 		<url>pkg_edit.php?xml=pfblockerng.xml</url>
 	</menu>
@@ -105,7 +107,7 @@
 		<field>
 			<fielddescr>LINKS</fielddescr>
 			<description><![CDATA[<a href="/firewall_aliases.php">Firewall Alias</a>&emsp;
-				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="diag_logs_filter.php">Firewall Logs</a>]]>
+				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="status_logs_filter.php">Firewall Logs</a>]]>
 			</description>
 			<type>info</type>
 		</field>
@@ -131,7 +133,6 @@
 			<description><![CDATA[Timeout in seconds for the XMLRPC timeout. Default: 150]]></description>
 			<type>input</type>
 			<default_value>150</default_value>
-			<size>5</size>
 		</field>
 		<field>
 			<fielddescr><![CDATA[Disable 'General/DNSBL tab' sync]]></fielddescr>
@@ -152,12 +153,14 @@
 					<fieldname>varsyncdestinenable</fieldname>
 					<description><![CDATA[Enable this host as a replication target]]></description>
 					<type>checkbox</type>
+					<width>1</width>
 				</rowhelperfield>
 				<rowhelperfield>
 					<fielddescr>Protocol</fielddescr>
 					<fieldname>varsyncprotocol</fieldname>
 					<description><![CDATA[Choose the protocol of the destination host. Probably <b>http</b> or <b>https</b>]]></description>
 					<type>select</type>
+					<width>1</width>
 					<default_value>HTTP</default_value>
 					<options>
 						<option><name>HTTP</name><value>http</value></option>
@@ -169,35 +172,30 @@
 					<fieldname>varsyncipaddress</fieldname>
 					<description><![CDATA[IP Address or Hostname of the destination host.]]></description>
 					<type>input</type>
-					<size>15</size>
+					<width>1</width>
 				</rowhelperfield>
 				<rowhelperfield>
 					<fielddescr>Target Port</fielddescr>
 					<fieldname>varsyncport</fieldname>
 					<description><![CDATA[Choose the sync port of the destination host.]]></description>
 					<type>input</type>
-					<size>3</size>
+					<width>1</width>
 				</rowhelperfield>
 				<rowhelperfield>
 					<fielddescr>Target Username (admin)</fielddescr>
 					<fieldname>varsyncusername</fieldname>
 					<description><![CDATA[Enter the Username Account for Authentication]]></description>
 					<type>input</type>
-					<size>15</size>
+					<width>2</width>
 				</rowhelperfield>
 				<rowhelperfield>
 					<fielddescr>Target Password</fielddescr>
 					<fieldname>varsyncpassword</fieldname>
 					<description><![CDATA[Password of the user 'admin' on the destination host.]]></description>
 					<type>password</type>
-					<size>20</size>
+					<width>2</width>
 				</rowhelperfield>
 			</rowhelper>
-		</field>
-		<field>
-			<name><![CDATA[<center>Click to SAVE Settings and/or Rule Edits. &emsp; Changes are Applied via CRON or
-			'Force Update'</center>]]></name>
-			<type>listtopic</type>
 		</field>
 	</fields>
 	<custom_php_validation_command>
