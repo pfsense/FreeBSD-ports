@@ -257,6 +257,7 @@ display_top_tabs($tab_array, true);
 
 // Create Form
 $form = new Form(false);
+$form->setAction('/pfblockerng/pfblockerng_log.php');
 
 // Build 'Shortcut Links' section
 $section = new Form_Section('Log/File Browser selections');
@@ -265,7 +266,7 @@ $section->addInput(new Form_StaticText(
 	'<small>'
 	. '<a href="/firewall_aliases.php" target="_blank">Firewall Alias</a>&emsp;'
 	. '<a href="/firewall_rules.php" target="_blank">Firewall Rules</a>&emsp;'
-	. '<a href="/diag_logs_filter.php" target="_blank">Firewall Logs</a></small>'
+	. '<a href="/status_logs_filter.php" target="_blank">Firewall Logs</a></small>'
 ));
 
 // Collect main logtypes
