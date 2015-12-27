@@ -284,7 +284,7 @@ function pfBlockerNG_get_table($mode='') {
 				if ($values['rule'] > 0) {
 					$values['img'] .= "&nbsp;&nbsp;<small>({$values['rule']})</small>";
 				}
-                                
+
 				// If packet fence errors found, display error.
 				if ($pfb['pfctlerr']) {
 					$values['img'] = $pfb['err'];
@@ -429,30 +429,30 @@ $entries = count($results);
 			</td>
 			<td>
 				<?php if ($dcount != 0): ?>
-					<?=("Deny:<strong>{$dcount}</strong>")?>
+					<?=("<small>Deny:<strong>{$dcount}</strong></small>")?>
 				<?php endif; ?>
 			</td>
 			<td>
 				<?php if ($pcount != 0): ?>
-					<?=("Permit:<strong>{$pcount}</strong>")?>
+					<?=("<small>Permit:<strong>{$pcount}</strong></small>")?>
 				<?php endif; ?>
 			</td>
 			<td>
 				<?php if ($mcount != 0): ?>
-					<?=("Match:<strong>{$mcount}</strong>")?>
+					<?=("<small>Match:<strong>{$mcount}</strong></small>")?>
 				<?php endif; ?>
 			<td>
 				<?php if ($ncount != 0): ?>
-					<?=("Native:<strong>{$ncount}</strong>")?>
+					<?=("<small>Native:<strong>{$ncount}</strong></small>")?>
 				<?php endif; ?>
 			</td>
 			<td>
 				<?php if ($pfbsupp_cnt != 0): ?>
-					<?=("Supp:<strong>{$pfbsupp_cnt}</strong>")?>
+					<?=("<small>Supp:<strong>{$pfbsupp_cnt}</strong></small>")?>
 				<?php endif; ?>
 			</td>
 			<td>
-				<a target="_blank" href="pfblockerng/pfblockerng_log.php" title="<?=gettext("View pfBlockerNG Logs TAB")?>">
+				<a target="_blank" href="pfblockerng/pfblockerng_log.php" title="<?=gettext("Click to open Logs tab")?>">
 					<i class="fa fa-info-circle"></i></a>&nbsp;
 			</td>
 		</tr>
@@ -464,7 +464,7 @@ $entries = count($results);
 			</td>
 			<td>
 				<?php if ($scount != 0): ?>
-					<?=("DNSBL:<strong>{$scount}</strong>")?>
+					<?=("<small>DNSBL:<strong>{$scount}</strong></small>")?>
 				<?php endif; ?>
 			</td>
 			<td></td><td></td><td></td><td></td>
