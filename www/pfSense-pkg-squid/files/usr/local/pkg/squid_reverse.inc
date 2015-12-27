@@ -4,7 +4,7 @@
 	part of pfSense (https://www.pfSense.org/)
 	Copyright (C) 2012 Martin Fuchs
 	Copyright (C) 2012-2014 Marcello Coutinho
-	Copyright (C) 2013 Gekkenhuis
+	Copyright (C) 2013-2015 Gekkenhuis
 	Copyright (C) 2015 ESF, LLC
 	All rights reserved.
 
@@ -121,6 +121,23 @@ function squid_resync_reverse() {
 	// Ignore Internal Certificate Validation
 	$sslflags = ($settings['reverse_ignore_ssl_valid'] == "on" ? "sslflags=DONT_VERIFY_PEER" : "");
 
+	// Reverse Proxy security settings
+	$ciphers = "cipher=EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH+aRSA+RC4:EECDH:EDH+aRSA:HIGH:!RC4:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS";
+	$options = "options=NO_SSLv2,NO_SSLv3,SINGLE_DH_USE,CIPHER_SERVER_PREFERENCE";
+	
+	if (isset($settings["dhparams_size"])) {
+		if ($settings['dhparams_size'] == '1024') {
+			$dhparams = "dhparams=/etc/dh-parameters.1024";
+		} else if ($settings['dhparams_size'] == '2048') {
+			$dhparams = "dhparams=/etc/dh-parameters.2048";
+		} else if ($settings['dhparams_size'] == '4096') {
+			$dhparams = "dhparams=/etc/dh-parameters.4096";
+		}
+	} else {
+		// Fallback dhparams option
+		$dhparams = "dhparams=/etc/dh-parameters.2048";
+	}
+
 	foreach (explode(",", $ifaces) as $i => $iface) {
 		$real_ifaces[] = squid_get_real_interface_address($iface);
 		if ($real_ifaces[$i][0]) {
@@ -130,7 +147,7 @@ function squid_resync_reverse() {
 			}
 			//HTTPS
 			if (!empty($settings['reverse_https'])) {
-				$conf .= "https_port {$real_ifaces[$i][0]}:{$https_port} accel cert={$reverse_crt} key={$reverse_key} {$clientca_opts} defaultsite={$https_defsite} vhost\n";
+				$conf .= "https_port {$real_ifaces[$i][0]}:{$https_port} accel cert={$reverse_crt} key={$reverse_key} {$clientca_opts} {$dhparams} {$ciphers} {$options} defaultsite={$https_defsite} vhost\n";
 			}
 		}
 	}
@@ -144,7 +161,7 @@ function squid_resync_reverse() {
 			}
 			//HTTPS
 			if (!empty($settings['reverse_https'])) {
-				$conf .= "https_port {$reip}:{$https_port} accel cert={$reverse_crt} key={$reverse_key} defaultsite={$https_defsite} vhost\n";
+				$conf .= "https_port {$reip}:{$https_port} accel cert={$reverse_crt} key={$reverse_key} {$dhparams} {$ciphers} {$options} defaultsite={$https_defsite} vhost\n";
 			}
 		}
 	}

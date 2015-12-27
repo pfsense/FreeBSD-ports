@@ -9,7 +9,7 @@
 		<pkginfolink>https://forum.pfsense.org/index.php?topic=100167.0</pkginfolink>
 		<website>http://www.squid-cache.org/</website>
 		<category>Services</category>
-		<version>0.4.7</version>
+		<version>0.4.8</version>
 		<status>RC</status>
 		<required_version>2.3</required_version>
 		<maintainer>marcellocoutinho@gmail.com fernando@netfilter.com.br seth.mos@dds.nl mfuchs77@googlemail.com jimp@pfsense.org</maintainer>

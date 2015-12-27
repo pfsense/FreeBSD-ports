@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squidreversegeneral</name>
-	<version>0.4.5</version>
+	<version>0.4.8</version>
 	<title>Reverse Proxy Server: General</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
@@ -265,12 +265,39 @@
 				<input name='refresh_crl' id='refresh_crl' type='submit' value='Refresh CRL' />
 				]]>
 			</description>
-	    	<type>select_source</type>
+			<type>select_source</type>
 			<source><![CDATA[$config['crl']]]></source>
 			<source_name>descr</source_name>
 			<source_value>refid</source_value>
 			<show_disable_value>none</show_disable_value>
 			<default_value>none</default_value>
+		</field>
+		<field>
+			<fielddescr>DHParams key size</fielddescr>
+			<fieldname>dhparams_size</fieldname>
+			<description>
+				<![CDATA[
+				DH parameters are used for temporary/ephemeral DH key exchanges. They improve security by enabling the use of DHE ciphers.<br/>
+				The pre-generated DH parameters keys provided with pfSense are used.
+				]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option>
+					<name>1024</name>
+					<value>1024</value>
+				</option>
+				<option>
+					<name>2048</name>
+					<value>2048</value>
+				</option>
+				<option>
+					<name>4096</name>
+					<value>4096</value>
+				</option>
+			</options>
+			<size>1</size>
+			<default_value>2048</default_value>
 		</field>
 		<field>
 			<name>OWA Reverse Proxy General Settings</name>
