@@ -45,6 +45,9 @@
 	<title>Firewall/pfBlockerNG</title>
 	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
 	<addedit_string>pfBlockerNG: Save DNSBL general settings</addedit_string>
+	<savehelp><![CDATA[<strong>Click to SAVE Settings and/or Rule edits.&emsp;Changes are applied via CRON or
+		'Force Update'</strong>]]>
+	</savehelp>
 	<menu>
 		<name>pfBlockerNG</name>
 		<tooltiptext></tooltiptext>
@@ -119,24 +122,24 @@
 			<fielddescr>LINKS</fielddescr>
 			<fieldname></fieldname>
 			<description><![CDATA[<a href="/firewall_aliases.php">Firewall Alias</a>&emsp;
-				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="diag_logs_filter.php">Firewall Logs</a>]]>
+				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="status_logs_filter.php">Firewall Logs</a>]]>
 			</description>
 			<type>info</type>
 		</field>
 		<field>
 			<type>info</type>
-			<description><![CDATA[<font color='red'>Note: </font>DNSBL requires the DNS Resolver (Unbound) to be used as the DNS service.<br />
+			<description><![CDATA[<span class="text-danger">Note: </span>DNSBL requires the DNS Resolver (Unbound) to be used as the DNS service.<br />
 				When a DNS request is made for a domain that is listed in DNSBL, the request is redirected to the Virtual IP address<br />
 				where an instance of Lighttpd Web Server will collect the packet statistics and push a '1x1' GIF image to the Browser.
 				If browsing is slow, check for Firewall LAN Rules/Limiters that might be blocking access to the DNSBL VIP.<br /><br />
 
-				<font color='red'>Note: </font>DNSBL will block and <u>partially</u> log Alerts for HTTPS requests.
-					To debug issues with 'False Positives', the following tools below can be used:<br /><ul>
+				<span class="text-danger">Note: </span>DNSBL will block and <u>partially</u> log Alerts for HTTPS requests.
+					To debug issues with 'False Positives', the following tools below can be used:<br /><ol>
 
-				<li>1. Browser Dev mode (F12) and goto 'Console' to review any error messages.</li>
-				<li>2. Execute the following command from pfSense Shell (Changing the interface 're1' to the pfSense Lan Interface):<br />
-				<li>&emsp;<strong>tcpdump -nnvli re1 port 53 | grep -B1 'A 10.10.10.1'</strong></li>
-				<li>3. Packet capture software such as Wireshark.</li></ul>]]>
+				<li>Browser Dev mode (F12) and goto 'Console' to review any error messages.</li>
+				<li>Execute the following command from pfSense Shell (Changing the interface 're1' to the pfSense Lan Interface):<br />
+				&emsp;<strong>tcpdump -nnvli re1 port 53 | grep -B1 'A 10.10.10.1'</strong></li>
+				<li>Packet capture software such as Wireshark.</li></ol>]]>
 			</description>
 		</field>
 		<field>
@@ -151,7 +154,6 @@
 			<fielddescr>DNSBL Virtual IP</fielddescr>
 			<fieldname>pfb_dnsvip</fieldname>
 			<type>input</type>
-			<size>13</size>
 			<description><![CDATA[Example ( 10.10.10.1 )<br />
 				Enter a &emsp;<strong>single IPv4 VIP address</strong> &emsp;that is RFC1918 Compliant.<br /><br />
 				This address should be in an Isolated Range than what is used in your Network.<br />
@@ -164,7 +166,6 @@
 			<fielddescr>DNSBL Listening Port</fielddescr>
 			<fieldname>pfb_dnsport</fieldname>
 			<type>input</type>
-			<size>3</size>
 			<description><![CDATA[Example ( 8081 )<br />
 				Enter a &emsp;<strong>single PORT</strong> &emsp;that is in the range of 1 - 65535<br />
 				This Port must not be in use by any other process.]]>
@@ -175,7 +176,6 @@
 			<fielddescr>DNSBL SSL Listening Port</fielddescr>
 			<fieldname>pfb_dnsport_ssl</fieldname>
 			<type>input</type>
-			<size>3</size>
 			<description><![CDATA[Example ( 8443 )<br />
 				Enter a &emsp;<strong>single PORT</strong> &emsp;that is in the range of 1 - 65535<br />
 				This Port must not be in use by any other process.]]>
@@ -196,7 +196,6 @@
 			<fielddescr>DNSBL Firewall Rule</fielddescr>
 			<fieldname>pfb_dnsbl_rule</fieldname>
 			<type>checkbox</type>
-			<usecolspan2/>
 			<combinefields>begin</combinefields>
 		</field>
 		<field>
@@ -205,10 +204,9 @@
 				to access the DNSBL VIP on the LAN interface. This is only required for multiple LAN Segments.]]>
 			</description>
 			<type>interfaces_selection</type>
+			<width>7</width>
 			<hideinterfaceregex>wan</hideinterfaceregex>
 			<multiple/>
-			<usecolspan2/>
-			<dontdisplayname/>
 			<combinefields>end</combinefields>
 		</field>
 		<field>
@@ -267,63 +265,59 @@
 		</field>
 		<field>
 			<type>info</type>
-			<description><![CDATA[<font color='red'>Note:</font>&nbsp; In general, Auto-Rules are created as follows:<br />
-				<ul>Inbound &emsp;- 'any' port, 'any' protocol and 'any' destination<br />
-				Outbound - 'any' port, 'any' protocol and 'any' destination address in the lists</ul>
+			<description><![CDATA[<span class="text-danger">Note:</span>&nbsp; In general, Auto-Rules are created as follows:<br />
+				<dl class="dl-horizontal">
+					<dt>Inbound</dt><dd>'any' port, 'any' protocol and 'any' destination</dd>
+					<dt>Outbound</dt><dd>'any' port, 'any' protocol and 'any' destination address in the lists</dd>
+				</dl>
 				Configuring the Adv. Inbound Rule settings, will allow for more customization of the Inbound Auto-Rules.<br />
 				<strong>Select the pfSense 'Port' and/or 'Destination' Alias below:</strong>]]>
 			</description>
 		</field>
 		<field>
 			<fieldname>autoports</fieldname>
-			<fielddescr>Enable Custom Port</fielddescr>
+			<fielddescr>Custom Port</fielddescr>
 			<type>checkbox</type>
+			<sethelp>Enable</sethelp>
 			<enablefields>aliasports</enablefields>
-			<usecolspan2/>
 			<combinefields>begin</combinefields>
 		</field>
 		<field>
-			<fielddescr>Define Alias</fielddescr>
 			<fieldname>aliasports</fieldname>
-			<description><![CDATA[<a href="/firewall_aliases.php?tab=port">Click Here to add/edit Aliases</a>
+			<fielddescr>Custom Port</fielddescr>
+			<description><![CDATA[<a target="_blank" href="/firegall_aliases.php?tab=port">Click Here to add/edit Aliases</a>
 				Do not manually enter port numbers. <br />Do not use 'pfB_' in the Port Alias name.]]>
 			</description>
-			<size>21</size>
+			<width>6</width>
 			<type>aliases</type>
 			<typealiases>port</typealiases>
-			<dontdisplayname/>
-			<usecolspan2/>
 			<combinefields>end</combinefields>
 		</field>
 		<field>
 			<fieldname>autodest</fieldname>
-			<fielddescr>Enable Custom Destination</fielddescr>
+			<fielddescr>Custom Destination</fielddescr>
 			<type>checkbox</type>
+			<sethelp>Enable</sethelp>
 			<enablefields>aliasdest,autonot</enablefields>
-			<usecolspan2/>
 			<combinefields>begin</combinefields>
-		</field>
-		<field>
-			<fieldname>aliasdest</fieldname>
-			<description><![CDATA[<a href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>
-				Do not manually enter Addresses(es). <br />Do not use 'pfB_' in the 'IP Network Type' Alias name.]]>
-			</description>
-			<size>21</size>
-			<type>aliases</type>
-			<typealiases>network</typealiases>
-			<dontdisplayname/>
-			<usecolspan2/>
-			<combinefields/>
 		</field>
 		<field>
 			<fielddescr>Invert</fielddescr>
 			<fieldname>autonot</fieldname>
-			<sethelp><![CDATA[<strong>Invert</strong> - Option to invert the sense of the match.<br />
-				ie - Not (!) Destination Address(es)]]>
-			</sethelp>
 			<type>checkbox</type>
-			<dontdisplayname/>
-			<usecolspan2/>
+			<sethelp>Invert</sethelp>
+			<combinefields/>
+		</field>
+		<field>
+			<fieldname>aliasdest</fieldname>
+			<fielddescr>Custom Destination</fielddescr>
+			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>
+				Do not manually enter Addresses(es). <br />Do not use 'pfB_' in the 'IP Network Type' Alias name.<br />
+				Select 'invert' to invert the sense of the match. ie - Not (!) Destination Address(es)]]>
+			</description>
+			<width>6</width>
+			<type>aliases</type>
+			<typealiases>network</typealiases>
 			<combinefields>end</combinefields>
 		</field>
 		<field>
@@ -338,7 +332,6 @@
 				<option><name>UDP</name><value>udp</value></option>
 				<option><name>TCP/UDP</name><value>tcp/udp</value></option>
 			</options>
-			<size>4</size>
 			<default_value></default_value>
 		</field>
 		<field>
@@ -353,7 +346,7 @@
 				Alexa can be used to whitelist the most popular domain names to avoid false positives.
 				To use this feature, select the number of 'Top Domains' to whitelist. You can also 'include' which TLDs to whitelist.<br />
 
-				<br /><font color='red'>Recommendation: </font>
+				<br /><span class="text-danger">Recommendation: </span>
 				<ul>Alexa also contains the 'Top' AD Servers, so its recommended to configure the first DNSBL Alias with AD Server<br />
 				(ie. yoyo, Adaway...) based feeds. Alexa whitelisting can be disabled for this first defined Alias.<br /><br />
 				Generally, Alexa should be used for feeds that post full URLs like PhishTank, OpenPhish or MalwarePatrol.<br /><br />
@@ -554,7 +547,7 @@
 			<multiple/>
 		</field>
 		<field>
-			<name><![CDATA[Custom Domain Suppression]]></name>
+			<name>Custom Domain Suppression</name>
 			<type>listtopic</type>
 		</field>
 		<field>
@@ -564,19 +557,14 @@
 				Enter one &emsp; <strong>Domain Name</strong>&emsp; per line<br />
 				You may use "<strong>#</strong>" after any Domain name to add comments. example (google.com # Suppress Google.com)<br />
 				This List is stored as 'Base64' format in the config.xml file.<br /><br />
-				<font color='red'>Note: </font>These entries are only suppressed when Feeds are downloaded or on a
-				<font color='red'>'Force Reload'.</font><br />
+				<span class="text-danger">Note: </span>These entries are only suppressed when Feeds are downloaded or on a
+				<span class="text-danger">'Force Reload'.</span><br />
 				Use the Alerts Tab '+' Suppression icon to immediately remove a domain from Unbound DNSBL.]]> 
 			</description>
 			<type>textarea</type>
-			<cols>50</cols>
-			<rows>25</rows>
+			<cols>90</cols>
+			<rows>15</rows>
 			<encoding>base64</encoding>
-		</field>
-		<field>
-			<name><![CDATA[<center>Click to SAVE Settings and/or Rule Edits. &emsp; Changes are Applied via CRON or
-				'Force Update'</center>]]></name>
-			<type>listtopic</type>
 		</field>
 	</fields>
 	<custom_php_validation_command>
