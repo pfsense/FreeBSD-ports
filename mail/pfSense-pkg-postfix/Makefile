@@ -12,9 +12,8 @@ COMMENT=	pfSense package Postfix Forwarder.
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/postfix:${PORTSDIR}/mail/postfix
 
-USES=		perl5
 USE_PERL5=	run
-USES=		shebangfix
+USES=		perl5 shebangfix
 SHEBANG_FILES=	${FILESDIR}${PREFIX}/bin/adexport.pl
 
 NO_BUILD=	yes
