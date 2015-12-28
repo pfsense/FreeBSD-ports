@@ -3452,7 +3452,7 @@ function sync_package_pfblockerng($cron='') {
 										if (strpos($line, '-') !== FALSE) {
 											$matches = explode('-', $line);
 											if (count($matches) == 2) {
-												$a_cidr = ip_range_to_subnet_array_temp($matches[0],$matches[1]);
+												$a_cidr = ip_range_to_subnet_array($matches[0],$matches[1]);
 												if (!empty($a_cidr)) {
 													foreach ($a_cidr as $cidr) {
 														$cidr = sanitize_ipaddr($cidr, $custom);
@@ -3495,7 +3495,7 @@ function sync_package_pfblockerng($cron='') {
 										if (strpos($oline, '-') !== FALSE) {
 											// Network range 192.168.0.0-192.168.0.254
 											if (preg_match($pfb['range'], $oline, $matches)) {
-												$a_cidr = ip_range_to_subnet_array_temp($matches[1], $matches[2]);
+												$a_cidr = ip_range_to_subnet_array($matches[1], $matches[2]);
 												if (!empty($a_cidr)) {
 													foreach ($a_cidr as $cidr) {
 														$cidr = sanitize_ipaddr($cidr, $custom);

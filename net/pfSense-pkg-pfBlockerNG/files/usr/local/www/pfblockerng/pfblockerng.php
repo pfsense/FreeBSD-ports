@@ -519,7 +519,7 @@ function pfblockerng_uc_countries() {
 			while (($cc = @fgetcsv($handle)) !== FALSE) {
 				$cc_key		= $cc[4];
 				$country_key	= $cc[5];
-				$a_cidr		= implode(',', ip_range_to_subnet_array_temp($cc[0], $cc[1]));
+				$a_cidr		= implode(',', ip_range_to_subnet_array($cc[0], $cc[1]));
 				foreach ($cont_array as $key => $iso) {
 					if (strpos($iso['iso'], $cc_key) !== FALSE) {
 						$cont_array[$key][$cc_key][$iptype]  .= "{$a_cidr},";
