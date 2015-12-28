@@ -10,7 +10,8 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	marcellocoutinho@gmail.com
 COMMENT=	pfSense package Postfix Forwarder.
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/postfix:${PORTSDIR}/mail/postfix
+RUN_DEPENDS=	${LOCALBASE}/sbin/postfix:${PORTSDIR}/mail/postfix \
+		p5-perl-ldap>0:${PORTSDIR}/net/p5-perl-ldap
 
 USE_PERL5=	run
 USES=		perl5

@@ -42,7 +42,7 @@
 	<requirements>Describe your package requirements here</requirements>
 	<faq>Currently there are no FAQ items provided.</faq>
 	<name>postfixrecipients</name>
-	<version>1.0</version>
+	<version>2.6</version>
 	<title>Services: Postfix relay and antispam</title>
 	<include_file>/usr/local/pkg/postfix.inc</include_file>
 	<menu>
@@ -115,8 +115,7 @@
 			<fielddescr>Enable LDAP fetch</fielddescr>
 			<fieldname>enable_ldap</fieldname>
 			<type>checkbox</type>
-			<description><![CDATA[Extract valid email addresses from Active Directory.<br>
-								Before using LDAP fetch you must install p5-perl-ldap package(hint: <strong>/usr/sbin/pkg_add -r p5-perl-ldap</strong>)]]></description>
+			<description><![CDATA[Extract valid email addresses from Active Directory.]]></description>
 		</field>
 		<field>
 			<fieldname>none</fieldname>
