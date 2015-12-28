@@ -57,7 +57,8 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/clog:${PORTSDIR}/sysutils/clog \
 		${LOCALBASE}/sbin/ipsec:${PORTSDIR}/security/strongswan \
 		${LOCALBASE}/sbin/unbound:${PORTSDIR}/dns/unbound \
 		${KMODDIR}/bwi_v3_ucode.ko:${PORTSDIR}/net/bwi-firmware-kmod \
-		${LOCALBASE}/bin/scponly:${PORTSDIR}/shells/scponly
+		${LOCALBASE}/bin/scponly:${PORTSDIR}/shells/scponly \
+		${LOCALBASE}/sbin/xinetd:${PORTSDIR}/security/xinetd
 
 LIB_DEPENDS=	libltdl.so:${PORTSDIR}/devel/libltdl
 
