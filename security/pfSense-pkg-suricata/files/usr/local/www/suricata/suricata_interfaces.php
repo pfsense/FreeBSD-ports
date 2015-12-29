@@ -147,16 +147,9 @@ if ($_POST['toggle']) {
 }
 $suri_bin_ver = SURICATA_BIN_VERSION;
 $suri_pkg_ver = SURICATA_PKG_VER;
-$pgtitle = "Services: Suricata {$suri_bin_ver} pkg v{$suri_pkg_ver} - Intrusion Detection System";
-include_once("head.inc");
+$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Interfaces"));
+include_once("head.inc"); ?>
 
-?>
-<body link="#000000" vlink="#000000" alink="#000000">
-
-<?php include_once("fbegin.inc"); ?>
-
-<form action="suricata_interfaces.php" method="post" enctype="multipart/form-data" name="iform" id="iform">
-<input type="hidden" name="id" id="id" value="">
 <?php
 	/* Display Alert message */
 	if ($input_errors)
@@ -166,311 +159,267 @@ include_once("head.inc");
 		print_info_box($savemsg);
 ?>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tbody>
-<tr>
-	<td>
-	<?php
-		$tab_array = array();
-		$tab_array[] = array(gettext("Interfaces"), true, "/suricata/suricata_interfaces.php");
-		$tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_global.php");
-		$tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
-		$tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php");
-		$tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
-		$tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
-		$tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
-		$tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php");
-		$tab_array[] = array(gettext("Logs Mgmt"), false, "/suricata/suricata_logs_mgmt.php");
-		$tab_array[] = array(gettext("SID Mgmt"), false, "/suricata/suricata_sid_mgmt.php");
-		$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=suricata/suricata_sync.xml");
-		$tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
-		display_top_tabs($tab_array, true);
-	?>
-	</td>
-</tr>
-<tr>
-	<td>
-	<div id="mainarea">
-	<table id="maintable" class="tabcont" width="100%" border="0" cellpadding="0" cellspacing="0">
-		<colgroup>
-			<col width="3%" align="center">
-			<col width="12%">
-			<col width="14%">
-			<col width="120" align="center">
-			<col width="65" align="center">
-			<col width="14%">
-			<col>
-			<col width="20" align="center">
-		</colgroup>
-		<thead>
-		<tr id="frheader">
-			<th class="list">&nbsp;</th>
-			<th class="listhdrr"><?php echo gettext("Interface"); ?></th>
-			<th class="listhdrr"><?php echo gettext("Suricata"); ?></th>
-			<th class="listhdrr"><?php echo gettext("Pattern Match"); ?></th>
-			<th class="listhdrr"><?php echo gettext("Block"); ?></th>
-			<th class="listhdrr"><?php echo gettext("Barnyard2"); ?></th>
-			<th class="listhdr"><?php echo gettext("Description"); ?></th>
-			<th class="list">
-				<?php if ($id_gen < count($ifaces)): ?>
-					<a href="suricata_interfaces_edit.php?id=<?php echo $id_gen;?>">
-					<img src="../themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif"
-					width="17" height="17" border="0" title="<?php echo gettext('Add Suricata interface mapping');?>"></a>
-				<?php else: ?>
-					<img src="../themes/<?= $g['theme']; ?>/images/icons/icon_plus_d.gif" width="17" height="17" border="0" 
-					title="<?php echo gettext('No available interfaces for a new Suricata mapping');?>">
-				<?php endif; ?>
-				<?php if ($id_gen == 0): ?>
-					<img src="../themes/<?= $g['theme']; ?>/images/icons/icon_x_d.gif" width="17" height="17" " border="0">
-				<?php else: ?>
-					<input name="del" type="image" src="../themes/<?= $g['theme']; ?>/images/icons/icon_x.gif" 
-					width="17" height="17" title="<?php echo gettext("Delete selected Suricata interface mapping(s)"); ?>"
-					onclick="return intf_del()">
-				<?php endif; ?>
-			</th>
-		</tr>
-		</thead>
-		<tbody>
-		<?php $nnats = $i = 0;
+<?php
+	$tab_array = array();
+	$tab_array[] = array(gettext("Interfaces"), true, "/suricata/suricata_interfaces.php");
+	$tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_global.php");
+	$tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
+	$tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php");
+	$tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+	$tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
+	$tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
+	$tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php");
+	$tab_array[] = array(gettext("Logs Mgmt"), false, "/suricata/suricata_logs_mgmt.php");
+	$tab_array[] = array(gettext("SID Mgmt"), false, "/suricata/suricata_sid_mgmt.php");
+	$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=suricata/suricata_sync.xml");
+	$tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
+	display_top_tabs($tab_array, true);
+?>
 
-		// Turn on buffering to speed up rendering
-		ini_set('output_buffering','true');
-
-		// Start buffering to fix display lag issues in IE9 and IE10
-		ob_start(null, 0);
-
-		/* If no interfaces are defined, then turn off the "no rules" warning */
-		$no_rules_footnote = false;
-		if ($id_gen == 0)
-			$no_rules = false;
-		else
-			$no_rules = true;
-
-		foreach ($a_nat as $natent): ?>
-		<tr valign="top" id="fr<?=$nnats;?>">
-		<?php
-
-			/* convert fake interfaces to real and check if iface is up */
-			/* There has to be a smarter way to do this */
-			$if_real = get_real_interface($natent['interface']);
-			$natend_friendly= convert_friendly_interface_to_friendly_descr($natent['interface']);
-			$suricata_uuid = $natent['uuid'];
-			if (!suricata_is_running($suricata_uuid, $if_real)){
-				$iconfn = 'block';
-				$iconfn_msg1 = 'Suricata is not running on ';
-				$iconfn_msg2 = '. Click to start.';
-			}
-			else{
-				$iconfn = 'pass';
-				$iconfn_msg1 = 'Suricata is running on ';
-				$iconfn_msg2 = '. Click to stop.';
-			}
-			if (!suricata_is_running($suricata_uuid, $if_real, 'barnyard2')){
-				$biconfn = 'block';
-				$biconfn_msg1 = 'Barnyard2 is not running on ';
-				$biconfn_msg2 = '. Click to start.';
-			}
-			else{
-				$biconfn = 'pass';
-				$biconfn_msg1 = 'Barnyard2 is running on ';
-				$biconfn_msg2 = '. Click to stop.';
-				}
-
-			/* See if interface has any rules defined and set boolean flag */
-			$no_rules = true;
-			if (isset($natent['customrules']) && !empty($natent['customrules']))
-				$no_rules = false;
-			if (isset($natent['rulesets']) && !empty($natent['rulesets']))
-				$no_rules = false;
-			if (isset($natent['ips_policy']) && !empty($natent['ips_policy']))
-				$no_rules = false;
-			/* Do not display the "no rules" warning if interface disabled */
-			if ($natent['enable'] == "off")
-				$no_rules = false;
-			if ($no_rules)
-				$no_rules_footnote = true;
-		?>
-			<td class="listt">
-			<input type="checkbox" id="frc<?=$nnats;?>" name="rule[]" value="<?=$i;?>" onClick="fr_bgcolor('<?=$nnats;?>')" style="margin: 0; padding: 0;">
-			</td>
-			<td class="listr" valign="middle" 
-			id="frd<?=$nnats;?>" 
-			ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats;?>';">
-			<?php
-				echo $natend_friendly;
-			?>
-			</td>
-			<td class="listr" valign="middle"   
-			id="frd<?=$nnats;?>"  
-			ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats;?>';">
-			<?php
-			$check_suricata_info = $config['installedpackages']['suricata']['rule'][$nnats]['enable'];
-			if ($check_suricata_info == "on") {
-				echo gettext("ENABLED") . "&nbsp;";
-				echo "<input type='image' src='../themes/{$g['theme']}/images/icons/icon_{$iconfn}.gif' width='13' height='13' border='0' ";
-				echo "onClick='document.getElementById(\"id\").value=\"{$nnats}\";' name=\"toggle[]\" ";
-				echo "title='" . gettext($iconfn_msg1.$natend_friendly.$iconfn_msg2) . "'/>";
-				echo ($no_rules) ? "&nbsp;<img src=\"../themes/{$g['theme']}/images/icons/icon_frmfld_imp.png\" width=\"15\" height=\"15\" border=\"0\">" : "";
-			} else
-				echo gettext("DISABLED");
-			?>
-			</td>
-			<td class="listr" 
-			id="frd<?=$nnats;?>" valign="middle" align="center" 
-			ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats;?>';">
-			<?php
-			$check_performance_info = $config['installedpackages']['suricata']['rule'][$nnats]['mpm_algo'];
-			if ($check_performance_info != "") {
-				$check_performance = $check_performance_info;
-			}else{
-				$check_performance = "unknown";
-			}
-			?> <?=strtoupper($check_performance);?>
-			</td>
-			<td class="listr" 
-			id="frd<?=$nnats;?>" valign="middle" align="center" 
-			ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats;?>';">
-			<?php
-			$check_blockoffenders_info = $config['installedpackages']['suricata']['rule'][$nnats]['blockoffenders'];
-			if ($check_blockoffenders_info == "on")
-			{
-				$check_blockoffenders = enabled;
-			} else {
-				$check_blockoffenders = disabled;
-			}
-			?> <?=strtoupper($check_blockoffenders);?>
-			</td>
-			<td class="listr" 
-			id="frd<?=$nnats;?>" valign="middle" 
-			ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats;?>';">
-			<?php
-			$check_suricatabarnyardlog_info = $config['installedpackages']['suricata']['rule'][$nnats]['barnyard_enable'];
-			if ($check_suricatabarnyardlog_info == "on") {
-				echo gettext("ENABLED") . "&nbsp;";
-				echo "<input type='image' name='bartoggle[]' src='../themes/{$g['theme']}/images/icons/icon_{$biconfn}.gif' width='13' height='13' border='0' ";
-				echo "onClick='document.getElementById(\"id\").value=\"{$nnats}\"'; title='" . gettext($biconfn_msg1.$natend_friendly.$biconfn_msg2) . "'/>";
-			} else
-				echo gettext("DISABLED");
-			?>
-			</td>
-			<td class="listbg" valign="middle" 
-			ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats;?>';">
-			<font color="#ffffff"> <?=htmlspecialchars($natent['descr']);?>&nbsp;</font>
-			</td>
-			<td valign="middle" class="list" nowrap>
-				<a href="suricata_interfaces_edit.php?id=<?=$i;?>">
-				<img src="/themes/<?= $g['theme']; ?>/images/icons/icon_e.gif"
-				width="17" height="17" border="0" title="<?php echo gettext('Edit this Suricata interface mapping'); ?>"></a>
-				<?php if ($id_gen < count($ifaces)): ?>
-					<a href="suricata_interfaces_edit.php?id=<?=$i;?>&action=dup">
-					<img src="/themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif"
-					width="17" height="17" border="0" title="<?php echo gettext('Add new interface mapping based on this one'); ?>"></a>
-				<?php else: ?>
-					<img src="/themes/<?= $g['theme']; ?>/images/icons/icon_plus_d.gif" width="17" height="17" border="0" 
-					title="<?php echo gettext('No available interfaces for a new Suricata mapping');?>">
-				<?php endif; ?>
-			</td>	
-		</tr>
-		<?php $i++; $nnats++; endforeach; ob_end_flush(); ?>
-		<tr>
-			<td class="list"></td>
-			<td class="list" colspan="6">
-				<?php if ($no_rules_footnote): ?><br><img src="../themes/<?= $g['theme']; ?>/images/icons/icon_frmfld_imp.png" width="15" height="15" border="0">
-					<span class="red">&nbsp;&nbsp <?php echo gettext("WARNING: Marked interface currently has no rules defined for Suricata"); ?></span>
-				<?php else: ?>&nbsp;
-				<?php endif; ?>					 
-			</td>
-			<td class="list">
-				<?php if ($id_gen < count($ifaces)): ?>
-					<a href="suricata_interfaces_edit.php?id=<?php echo $id_gen;?>">
-					<img src="../themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif"
-					width="17" height="17" border="0" title="<?php echo gettext('Add Suricata interface mapping');?>"></a>
-				<?php else: ?>
-					<img src="../themes/<?= $g['theme']; ?>/images/icons/icon_plus_d.gif" width="17" height="17" border="0" 
-					title="<?php echo gettext('No available interfaces for a new Suricata mapping');?>">
-				<?php endif; ?>
-				<?php if ($id_gen == 0): ?>
-					<img src="../themes/<?= $g['theme']; ?>/images/icons/icon_x_d.gif" width="17" height="17" " border="0">
-				<?php else: ?>
-					<input name="del" type="image" src="../themes/<?= $g['theme']; ?>/images/icons/icon_x.gif" 
-					width="17" height="17" title="<?php echo gettext("Delete selected Suricata interface mapping(s)"); ?>"
-					onclick="return intf_del()">
-				<?php endif; ?>
-			</td>
-		</tr>
-		<tr>
-		<td colspan="8">&nbsp;</td>
-		</tr>
-		<tr>
-			<td>&nbsp;</td>
-			<td colspan="6">
-			<table class="tabcont" width="100%" border="0" cellpadding="1" cellspacing="0">
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("Interface Settings Overview")?></h2></div>
+	<div class="panel-body">
+		<div class="table-responsive">
+			<form action="suricata_interfaces.php" method="post" enctype="multipart/form-data" name="iform" id="iform">
+			<input type="hidden" name="id" id="id" value="">
+			<table id="maintable" class="table table-striped table-hover table-condensed">
+				<colgroup>
+					<col width="3%" align="center">
+					<col width="12%">
+					<col width="14%">
+					<col width="120" align="center">
+					<col width="65" align="center">
+					<col width="14%">
+					<col>
+					<col width="20" align="center">
+				</colgroup>
+				<thead>
+				<tr id="frheader">
+					<th>&nbsp;</th>
+					<th><?=gettext("Interface"); ?></th>
+					<th><?=gettext("Suricata"); ?></th>
+					<th><?=gettext("Pattern Match"); ?></th>
+					<th><?=gettext("Block"); ?></th>
+					<th><?=gettext("Barnyard2"); ?></th>
+					<th><?=gettext("Description"); ?></th>
+					<th>
+						<?php if ($id_gen < count($ifaces)): ?>
+							<a href="suricata_interfaces_edit.php?id=<?=$id_gen?>">
+								<i class="fa fa-lg fa-plus" title="<?=gettext('Add Suricata interface mapping')?>"></i>
+							</a>
+						<?php else: ?>
+							<img src="/icon_plus_d.gif" 
+							title="<?=gettext('No available interfaces for a new Suricata mapping')?>">
+						<?php endif; ?>
+						<?php if ($id_gen == 0): ?>
+							<img src="/icon_x_d.gif" width="17" height="17" " border="0">
+						<?php else: ?>
+							<input name="del" type="image" src="/icon_x.gif" 
+							width="17" height="17" title="<?=gettext("Delete selected Suricata interface mapping(s)"); ?>"
+							onclick="return intf_del()">
+						<?php endif; ?>
+					</th>
+				</tr>
+				</thead>
 				<tbody>
-				<tr>
-					<td colspan="3" class="vexpl"><span class="red"><strong><?php echo gettext("Note:"); ?></strong></span> <br>
-						<?php echo gettext("This is the ") . "<strong>" . gettext("Suricata Menu ") . 
-						"</strong>" . gettext("where you can see an overview of all your interface settings.  ");
-						if (empty($a_nat)) {
-							echo gettext("Please configure the parameters on the ") . "<strong>" . gettext("Global Settings") . 
-							"</strong>" . gettext(" tab before adding an interface."); 
-						}?>
+				<?php $nnats = $i = 0;
+
+				// Turn on buffering to speed up rendering
+				ini_set('output_buffering','true');
+
+				// Start buffering to fix display lag issues in IE9 and IE10
+				ob_start(null, 0);
+
+				/* If no interfaces are defined, then turn off the "no rules" warning */
+				$no_rules_footnote = false;
+				if ($id_gen == 0)
+					$no_rules = false;
+				else
+					$no_rules = true;
+
+				foreach ($a_nat as $natent): ?>
+				<tr valign="top" id="fr<?=$nnats?>">
+				<?php
+
+					/* convert fake interfaces to real and check if iface is up */
+					/* There has to be a smarter way to do this */
+					$if_real = get_real_interface($natent['interface']);
+					$natend_friendly= convert_friendly_interface_to_friendly_descr($natent['interface']);
+					$suricata_uuid = $natent['uuid'];
+					if (!suricata_is_running($suricata_uuid, $if_real)){
+						$iconfn = 'block';
+						$iconfn_msg1 = 'Suricata is not running on ';
+						$iconfn_msg2 = '. Click to start.';
+					}
+					else{
+						$iconfn = 'pass';
+						$iconfn_msg1 = 'Suricata is running on ';
+						$iconfn_msg2 = '. Click to stop.';
+					}
+					if (!suricata_is_running($suricata_uuid, $if_real, 'barnyard2')){
+						$biconfn = 'block';
+						$biconfn_msg1 = 'Barnyard2 is not running on ';
+						$biconfn_msg2 = '. Click to start.';
+					}
+					else{
+						$biconfn = 'pass';
+						$biconfn_msg1 = 'Barnyard2 is running on ';
+						$biconfn_msg2 = '. Click to stop.';
+						}
+
+					/* See if interface has any rules defined and set boolean flag */
+					$no_rules = true;
+					if (isset($natent['customrules']) && !empty($natent['customrules']))
+						$no_rules = false;
+					if (isset($natent['rulesets']) && !empty($natent['rulesets']))
+						$no_rules = false;
+					if (isset($natent['ips_policy']) && !empty($natent['ips_policy']))
+						$no_rules = false;
+					/* Do not display the "no rules" warning if interface disabled */
+					if ($natent['enable'] == "off")
+						$no_rules = false;
+					if ($no_rules)
+						$no_rules_footnote = true;
+				?>
+					<td>
+					<input type="checkbox" id="frc<?=$nnats?>" name="rule[]" value="<?=$i?>" onClick="fr_bgcolor('<?=$nnats?>')" style="margin: 0; padding: 0;">
 					</td>
+					<td valign="middle" 
+					id="frd<?=$nnats?>" 
+					ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
+					<?php
+						echo $natend_friendly;
+					?>
+					</td>
+					<td valign="middle"   
+					id="frd<?=$nnats?>"  
+					ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
+					<?php
+					$check_suricata_info = $config['installedpackages']['suricata']['rule'][$nnats]['enable'];
+					if ($check_suricata_info == "on") {
+						echo gettext("ENABLED") . "&nbsp;";
+						echo "<input type='image' src='../themes/{$g['theme']}/images/icons/icon_{$iconfn}.gif' width='13' height='13' border='0' ";
+						echo "onClick='document.getElementById(\"id\").value=\"{$nnats}\";' name=\"toggle[]\" ";
+						echo "title='" . gettext($iconfn_msg1.$natend_friendly.$iconfn_msg2) . "'/>";
+						echo ($no_rules) ? "&nbsp;<img src=\"../themes/{$g['theme']}/images/icons/icon_frmfld_imp.png\" width=\"15\" height=\"15\" border=\"0\">" : "";
+					} else
+						echo gettext("DISABLED");
+					?>
+					</td>
+					<td 
+					id="frd<?=$nnats?>" valign="middle" align="center" 
+					ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
+					<?php
+					$check_performance_info = $config['installedpackages']['suricata']['rule'][$nnats]['mpm_algo'];
+					if ($check_performance_info != "") {
+						$check_performance = $check_performance_info;
+					}else{
+						$check_performance = "unknown";
+					}
+					?><?=trtoupper($check_performance)?>
+					</td>
+					<td 
+					id="frd<?=$nnats?>" valign="middle" align="center" 
+					ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
+					<?php
+					$check_blockoffenders_info = $config['installedpackages']['suricata']['rule'][$nnats]['blockoffenders'];
+					if ($check_blockoffenders_info == "on")
+					{
+						$check_blockoffenders = enabled;
+					} else {
+						$check_blockoffenders = disabled;
+					}
+					?><?=trtoupper($check_blockoffenders)?>
+					</td>
+					<td 
+					id="frd<?=$nnats?>" valign="middle" 
+					ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
+					<?php
+					$check_suricatabarnyardlog_info = $config['installedpackages']['suricata']['rule'][$nnats]['barnyard_enable'];
+					if ($check_suricatabarnyardlog_info == "on") {
+						echo gettext("ENABLED") . "&nbsp;";
+						echo "<input type='image' name='bartoggle[]' src='/icon_{$biconfn}.gif' width='13' height='13' border='0' ";
+						echo "onClick='document.getElementById(\"id\").value=\"{$nnats}\"'; title='" . gettext($biconfn_msg1.$natend_friendly.$biconfn_msg2) . "'/>";
+					} else
+						echo gettext("DISABLED");
+					?>
+					</td>
+					<td valign="middle" 
+					ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
+					<font color="#ffffff"><?=htmlspecialchars($natent['descr'])?>&nbsp;</font>
+					</td>
+					<td valign="middle" nowrap>
+						<a href="suricata_interfaces_edit.php?id=<?=$i?>">
+						<img src="/icon_e.gif"
+						width="17" height="17" border="0" title="<?=gettext('Edit this Suricata interface mapping'); ?>"></a>
+						<?php if ($id_gen < count($ifaces)): ?>
+							<a href="suricata_interfaces_edit.php?id=<?=$i?>&action=dup">
+							<img src="/icon_plus.gif"
+							width="17" height="17" border="0" title="<?=gettext('Add new interface mapping based on this one'); ?>"></a>
+						<?php else: ?>
+							<img src="/icon_plus_d.gif" 
+							title="<?=gettext('No available interfaces for a new Suricata mapping')?>">
+						<?php endif; ?>
+					</td>	
 				</tr>
+				<?php $i++; $nnats++; endforeach; ob_end_flush(); ?>
 				<tr>
-					<td colspan="3" class="vexpl"><br>
+					<td></td>
+					<td colspan="6">
+						<?php if ($no_rules_footnote): ?><br><img src="../themes/<?= $g['theme']; ?>/images/icons/icon_frmfld_imp.png" width="15" height="15" border="0">
+							<span class="red">&nbsp;&nbsp; <?=gettext("WARNING: Marked interface currently has no rules defined for Suricata"); ?></span>
+						<?php else: ?>&nbsp;
+						<?php endif; ?>					 
 					</td>
-				</tr>
-				<tr>
-					<td colspan="3" class="vexpl"><span class="red"><strong><?php echo gettext("Warning:"); ?></strong></span><br>
-						<strong><?php echo gettext("New settings will not take effect until interface restart."); ?></strong>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="3" class="vexpl"><br>
-					</td>
-				</tr>
-				<tr>
-					<td class="vexpl"><strong>Click</strong> on the <img src="../themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif"
-						width="17" height="17" border="0" title="<?php echo gettext("Add Icon"); ?>"> icon to add 
-						an interface.
-					</td>
-					<td width="3%" class="vexpl">&nbsp;
-					</td>
-					<td class="vexpl"><img src="../themes/<?= $g['theme']; ?>/images/icons/icon_pass.gif"
-						width="13" height="13" border="0" title="<?php echo gettext("Running"); ?>">
-						<img src="../themes/<?= $g['theme']; ?>/images/icons/icon_block.gif"
-						width="13" height="13" border="0" title="<?php echo gettext("Not Running"); ?>">  icons will show current 
-						suricata and barnyard2 status.
-					</td>
-				</tr>
-				<tr>
-					<td class="vexpl"><strong>Click</strong> on the <img src="../themes/<?= $g['theme']; ?>/images/icons/icon_e.gif"
-						width="17" height="17" border="0" title="<?php echo gettext("Edit Icon"); ?>"> icon to edit 
-						an interface and settings.
-					<td width="3%">&nbsp;
-					</td>
-					<td class="vexpl"><strong>Click</strong> on the status icons to <strong>toggle</strong> suricata and barnyard2 status.
-					</td>
-				</tr>
-				<tr>
-					<td colspan="3" class="vexpl"><strong> Click</strong> on the <img src="../themes/<?= $g['theme']; ?>/images/icons/icon_x.gif"
-						width="17" height="17" border="0" title="<?php echo gettext("Delete Icon"); ?>"> icon to
-						delete an interface and settings.
+					<td>
+						<?php if ($id_gen < count($ifaces)): ?>
+							<a href="suricata_interfaces_edit.php?id=<?=$id_gen?>">
+								<i class="fa fa-lg fa-plus" title="<?=gettext('Add Suricata interface mapping')?>"></i>
+							</a>
+						<?php else: ?>
+							<img src="/icon_plus_d.gif" 
+							title="<?=gettext('No available interfaces for a new Suricata mapping')?>">
+						<?php endif; ?>
+						<?php if ($id_gen == 0): ?>
+							<img src="/icon_x_d.gif" width="17" height="17" " border="0">
+						<?php else: ?>
+							<input name="del" type="image" src="/icon_x.gif" 
+							width="17" height="17" title="<?=gettext("Delete selected Suricata interface mapping(s)"); ?>"
+							onclick="return intf_del()">
+						<?php endif; ?>
 					</td>
 				</tr>
 				</tbody>
 			</table>
-			</td>
-			<td>&nbsp;</td>
-		</tr>
-		</tbody>
-	</table>
+			</form>
+		</div>
 	</div>
-	</td>
-</tr>
-</tbody>
-</table>
-</form>
+</div>
+
+
+<div class="infoblock">
+	<?=print_info_box('<div class="row">
+							<div class="col-md-12">
+								<p>This is where you can see an overview of all your interface settings. Please configure the parameters on the <strong>Global Settings</strong> tab before adding an interface.</p>
+								<p><strong>Warning: New settings will not take effect until interface restart</strong></p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<p>
+									Click on the <i class="fa fa-lg fa-plus" alt="Add Icon"></i> icon to add an interface.<br/>
+									Click on the <i class="fa fa-lg fa-pencil" alt="Edit Icon"></i> icon to edit an interface and settings.<br/>
+									Click on the <i class="fa fa-lg fa-trash" alt="Delete Icon"></i> icon to delete an interface and settings.
+								</p>
+							</div>
+							<div class="col-md-6">
+								<p>
+									<i class="fa fa-lg fa-play" alt="Running"></i> <i class="fa fa-lg fa-times" alt="Not Running"></i> icons will show current suricata and barnyard2 status<br/>
+									Click on the status icons to toggle suricata and barnyard2 status.
+								</p>
+							</div>
+						</div>', info)?>
+</div>
 
 <script type="text/javascript">
 
@@ -494,5 +443,3 @@ function intf_del() {
 <?php
 include("fend.inc");
 ?>
-</body>
-</html>
