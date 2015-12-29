@@ -184,7 +184,7 @@ $section->addInput(new Form_Input(
 $patchtext = new Form_Textarea(
 	'patch',
 	'Patch Contents',
-	base64_decode($pconfig['patch'])
+	$input_errors ? $pconfig['patch'] : base64_decode($pconfig['patch'])
 );
 
 $patchtext->setWidth(7);
