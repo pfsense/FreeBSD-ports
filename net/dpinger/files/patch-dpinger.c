@@ -1,24 +1,24 @@
---- dpinger.c.orig	2015-12-29 20:45:19 UTC
+--- dpinger.c.orig	2015-12-28 20:50:39 UTC
 +++ dpinger.c
-@@ -39,7 +39,9 @@
- #include <signal.h>
+@@ -40,6 +40,9 @@
  
  #include <netdb.h>
-+#include <ifaddrs.h>
  #include <net/if.h>
++#include <net/if_var.h>
++#include <ifaddrs.h>
 +#include <sys/ioctl.h>
  #include <sys/socket.h>
  #include <sys/un.h>
  #include <sys/stat.h>
-@@ -47,6 +49,7 @@
+@@ -47,6 +50,7 @@
  #include <netinet/ip.h>
  #include <netinet/ip_icmp.h>
  #include <netinet/icmp6.h>
-+#include <netinet6/in6_var.h>
++#include <netinet/in_var.h>
  #include <arpa/inet.h>
  
  #include <pthread.h>
-@@ -820,6 +823,70 @@ fatal(
+@@ -820,6 +824,70 @@ fatal(
  
  
  //
@@ -89,7 +89,7 @@
  // Parse command line arguments
  //
  static void
-@@ -1063,6 +1130,13 @@ main(
+@@ -1063,6 +1131,13 @@ main(
      // Bind our sockets to an address if requested
      if (bind_addr_len)
      {
