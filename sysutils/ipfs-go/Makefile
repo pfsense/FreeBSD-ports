@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	ipfs-go
-PORTVERSION=	0.3.7
+PORTVERSION=	0.3.9
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
@@ -24,12 +24,18 @@ USE_RC_SUBR=	${PORTNAME}
 
 STRIP=		# stripping can break go binaries
 
+.include <bsd.port.pre.mk>
+
+.if ${ARCH} == i386
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-32bit
+.endif
+
 # Prepare for possible extra modules in future
 post-extract:
 	@${MKDIR} ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}
-.for src in CHANGELOG.md Dockerfile Godeps LICENSE Makefile README.md assets bin blocks blockservice circle.yml cmd commands core dev dev.md diagnostics doc.go docs exchange fuse importer ipnsfs jenkins merkledag metrics misc namesys notifications p2p path pin repo routing test thirdparty tour unixfs updates util
+.for src in CHANGELOG.md Dockerfile Godeps LICENSE Makefile README.md assets bin blocks blockservice circle.yml cmd commands core dev dev.md diagnostics doc.go docs exchange fuse importer ipnsfs merkledag metrics misc namesys notifications p2p path pin repo routing tar test thirdparty tour unixfs updates util vendor
 	${MV} ${WRKSRC}/${src} \
-		${WRKSRC}/src/github.com/ipfs/${GH_PROJECT}
+		${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}
 .endfor
 
 do-build:
@@ -38,4 +44,4 @@ do-build:
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}/cmd/ipfs/ipfs ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

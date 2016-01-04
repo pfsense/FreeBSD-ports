@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	opus
-PORTVERSION=	1.1
+PORTVERSION=	1.1.1
 PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://downloads.xiph.org/releases/opus/ \
@@ -21,11 +21,15 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-custom-modes \
 		--disable-maintainer-mode \
 		--disable-doc   # requires doxygen
-
-regression-test: build
-	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} check
+INSTALL_TARGET=	install-strip
+TEST_TARGET=	check
 
 .include <bsd.port.options.mk>
+
+# i386: needs cpuid instruction; arm: only floating point
+.if ${ARCH} == "amd64"
+CONFIGURE_ARGS+=--enable-intrinsics
+.endif
 
 .if ${ARCH} == "arm"
 CONFIGURE_ARGS+=--enable-fixed-point

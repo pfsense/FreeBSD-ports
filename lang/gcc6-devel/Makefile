@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	gcc
-PORTVERSION=	6.0.0.s20150927
+PORTVERSION=	6.0.0.s20151206
 CATEGORIES=	lang java
 MASTER_SITES=	GCC/snapshots/${DISTVERSION}
-PKGNAMESUFFIX=	${SUFFIX}
+PKGNAMESUFFIX=	${SUFFIX}-devel
 
 MAINTAINER=	gerald@FreeBSD.org
 COMMENT=	GNU Compiler Collection 6
@@ -34,7 +34,7 @@ DISTVERSION=	${PORTVERSION:C/([0-9]+).*\.s([0-9]+)/\1-\2/}
 GCC_VERSION=	${PORTVERSION:C/(.+)\.s[0-9]{8}/\1/}
 SUFFIX=		${PORTVERSION:C/([0-9]+).*/\1/}
 ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 sparc64 arm armv6 armv6hf
-USES=		cpe gmake iconv libtool makeinfo perl5 tar:bzip2
+USES=		compiler cpe gmake iconv libtool makeinfo perl5 tar:bzip2
 USE_BINUTILS=	yes
 USE_PERL5=	build
 SSP_UNSAFE=	yes
@@ -42,14 +42,26 @@ SSP_UNSAFE=	yes
 PATCH_WRKSRC=	${SRCDIR}
 CONFIGURE_SCRIPT=	../${SRCDIR:S/${WRKDIR}\///}/configure
 
-OPTIONS_DEFINE=		BOOTSTRAP
+OPTIONS_DEFINE=		BOOTSTRAP GRAPHITE
 OPTIONS_DEFINE_i386=	JAVA
 OPTIONS_DEFINE_amd64=	JAVA
+OPTIONS_DEFINE_powerpc64=	JAVA
 OPTIONS_DEFAULT=	BOOTSTRAP
 OPTIONS_DEFAULT_i386=	JAVA
 OPTIONS_DEFAULT_amd64=	JAVA
+OPTIONS_DEFAULT_powerpc64=	JAVA
 OPTIONS_EXCLUDE_DragonFly=	JAVA
 BOOTSTRAP_DESC=		Build using a full bootstrap
+GRAPHITE_DESC=		Support for Graphite loop optimizations
+
+.if exists(/usr/lib32/libc.so)
+OPTIONS_DEFINE_powerpc64+=	MULTILIB
+OPTIONS_DEFAULT_powerpc64+=	MULTILIB
+MULTILIB_DESC=		Build support for 32-bit and 64-bit targets
+MULTILIB_CONFIGURE_ENABLE=	multilib
+.else
+CONFIGURE_ARGS+=	--disable-multilib
+.endif
 
 .include <bsd.port.pre.mk>
 
@@ -61,6 +73,7 @@ CONFIGURE_TARGET=	${ARCH}-portbld-${OPSYS:tl}${OSREL}
 
 .if ${ARCH} == powerpc64
 CONFIGURE_ENV+=	UNAME_m="powerpc64"
+USE_GCC=	4.9+
 .endif
 
 .if ${ARCH} == "armv6" || ${ARCH} == "armv6hf"
@@ -115,6 +128,11 @@ INFO+=		gcc${SUFFIX}/libquadmath \
 .endif
 SUB_FILES=	pkg-message
 SUB_LIST+=	TARGLIB=${TARGLIB}
+
+.if ${PORT_OPTIONS:MGRAPHITE}
+LIB_DEPENDS+=	libisl.so:${PORTSDIR}/devel/isl
+CONFIGURE_ARGS+=--with-isl=${LOCALBASE}
+.endif
 
 .if ${PORT_OPTIONS:MJAVA}
 ECJ_JAR=	${LOCALBASE}/share/java/ecj-4.5.jar

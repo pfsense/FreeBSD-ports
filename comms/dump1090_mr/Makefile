@@ -2,17 +2,18 @@
 
 PORTNAME=	dump1090_mr
 PORTVERSION=	1.15
+DISTVERSIONPREFIX= v
 PORTREVISION=	1
 CATEGORIES=	comms
 
 MAINTAINER=	rpaulo@FreeBSD.org
 COMMENT=	FlightAware's Mode S decoder for RTLSDR devices
 
+BROKEN=		unfetchable
+
 LICENSE=	BSD3CLAUSE
 
 LIB_DEPENDS=	librtlsdr.so:${PORTSDIR}/comms/rtl-sdr
-
-DISTVERSIONPREFIX= v
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	flightaware

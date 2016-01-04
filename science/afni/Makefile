@@ -1,4 +1,4 @@
-# Created by: Jason W. Bacon <jwbacon@tds.net>
+# Created by: Jason W. Bacon <bacon4000@gmail.com>
 # $FreeBSD$
 
 ############################################################################
@@ -13,14 +13,13 @@ PORTNAME=	afni
 PORTVERSION=	2012.04.17.2129
 PORTREVISION=	12
 CATEGORIES=	science biology graphics
-MASTER_SITES=	http://personalpages.tds.net/~jwbacon/Ports/distfiles/AFNI/${PORTVERSION}/ \
-		http://www.acadix.biz/Ports/distfiles/AFNI/${PORTVERSION}/
+MASTER_SITES=	http://www.acadix.biz/Ports/distfiles/AFNI/${PORTVERSION}/
 DISTFILES=	afni_src.tgz afni.1 3dClustBust.c \
 		TTatlas+tlrc.BRIK.gz TTatlas+tlrc.HEAD CA_EZ_v1.5-July3107.tgz
 DIST_SUBDIR=	AFNI-${PORTVERSION}
 EXTRACT_ONLY=	afni_src.tgz CA_EZ_v1.5-July3107.tgz
 
-MAINTAINER=	jwbacon@tds.net
+MAINTAINER=	bacon4000@gmail.com
 COMMENT=	Advanced Functional Neuro Imaging
 
 LICENSE=	GPLv2
@@ -39,15 +38,13 @@ CONFLICTS=	im-[0-9]* \
 		nifticlib-[0-9]* \
 		open-usp-tukubai-[0-9]*
 
-USES=		gettext iconv jpeg:run gmake motif perl5 shebangfix
+USES=		gettext gmake iconv jpeg:run motif perl5 shebangfix
 SHEBANG_FILES=	suma_change_spec 3dPAR2AFNI.pl
 
 # Some prereqs use gcc anyway
 USE_GCC=	yes
 
 OPTIONS_DEFINE=	DOCS
-
-.include <bsd.port.options.mk>
 
 BROKEN_sparc64=	Does not compile: "undefined reference to '_mcount'"
 
@@ -129,11 +126,12 @@ do-install:
 	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/TTatlas* ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${WRKDIR}/CA_EZ_v1.5-July3107/* ${STAGEDIR}${DATADIR}
 	${INSTALL_MAN} ${WRKDIR}/afni.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${STAGEDIR}${DOCSDIR} ${STAGEDIR}${PREFIX}/etc/mri
-	${INSTALL_DATA} ${PRESTAGE}/doc/* ${STAGEDIR}${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/mri
 	${INSTALL_SCRIPT} ${WRKDIR}/afni.cshrc ${WRKDIR}/afni.profile \
 		${STAGEDIR}${PREFIX}/etc/mri
-.endif
+
+do-install-DOCS-on:
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PRESTAGE}/doc/* ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

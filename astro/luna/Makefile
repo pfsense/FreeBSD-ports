@@ -4,7 +4,7 @@
 PORTNAME=	luna
 PORTVERSION=	1.9
 CATEGORIES=	astro games
-MASTER_SITES=	http://ftp.vector.co.jp/pack/dos/edu/science/space/
+MASTER_SITES=	http://ftp.vector.co.jp/00/48/300/
 DISTNAME=	luna19s
 
 MAINTAINER=	ports@FreeBSD.org

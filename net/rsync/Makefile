@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	rsync
-PORTVERSION=	3.1.1
-PORTREVISION=	3
+PORTVERSION=	3.1.2
 CATEGORIES=	net ipv6
+PORTREVISION=	1
 MASTER_SITES=	http://rsync.samba.org/ftp/rsync/ \
 		ftp://ftp.samba.org/pub/rsync/ \
 		ftp://ftp.sunet.se/pub/unix/admin/rsync/  \
@@ -50,7 +50,7 @@ PTS_DESC=	Functionality provided by third party patches
 TIMELIMIT_DESC=	Time limit patch
 RENAMED_DESC=	Add support for renamed file detection
 FLAGS_DESC=	File system flags support patch, adds --fileflags
-ATIMES_DESC=	Preserve access times, adds --atimes
+ATIMES_DESC=	Preserve access times, adds --atimes (BROKEN)
 ACL_DESC=	Add backward-compatibility for the --acls option
 
 # define default options
@@ -62,7 +62,8 @@ ATIMES_EXTRA_PATCHES=		${WRKSRC}/patches/atimes.diff
 FLAGS_EXTRA_PATCHES=		${WRKSRC}/patches/fileflags.diff \
 				${FILESDIR}/extrapatch-main.c
 RENAMED_EXTRA_PATCHES=		${WRKSRC}/patches/detect-renamed.diff
-ACL_EXTRA_PATCHES=		${WRKSRC}/patches/acls.diff
+ACL_EXTRA_PATCHES=		${WRKSRC}/patches/acls.diff \
+				${FILESDIR}/extrapatch-acl
 
 ICONV_USES=	iconv
 ICONV_CPPFLAGS=	-I${LOCALBASE}/include

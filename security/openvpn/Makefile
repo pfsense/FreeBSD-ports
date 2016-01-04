@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=		openvpn
-DISTVERSION=		2.3.8
+DISTVERSION=		2.3.9
 CATEGORIES=		security net
 MASTER_SITES=		http://swupdate.openvpn.net/community/releases/ \
 			http://build.openvpn.net/downloads/releases/
@@ -27,45 +27,41 @@ LDFLAGS+=		-L${LOCALBASE}/lib
 # set PLUGIN_LIBDIR so that unqualified plugin paths are found:
 CPPFLAGS+=		-DPLUGIN_LIBDIR=\\\"${PREFIX}/lib/openvpn/plugins\\\"
 
-OPTIONS_DEFINE=		PW_SAVE PKCS11 EASYRSA DOCS EXAMPLES X509ALTUSERNAME
+OPTIONS_DEFINE=		PKCS11 EASYRSA DOCS EXAMPLES X509ALTUSERNAME \
+			TUNNELBLICK
 OPTIONS_DEFAULT=	EASYRSA OPENSSL
 OPTIONS_SINGLE=		SSL
 OPTIONS_SINGLE_SSL=	OPENSSL POLARSSL
-PW_SAVE_DESC=		Interactive passwords may be read from a file
+# The following feature is always enabled since 2.3.9 and no longer optional.
+# PW_SAVE_DESC=		Interactive passwords may be read from a file
 PKCS11_DESC=		Use security/pkcs11-helper
 EASYRSA_DESC=		Install security/easy-rsa RSA helper package
 POLARSSL_DESC=		SSL/TLS support via PolarSSL 1.2
-X509ALTUSERNAME_DESC=	Enable --x509-username-field (only with OpenSSL)
+TUNNELBLICK_DESC=	Tunnelblick XOR scramble patch (READ HELP!)
+X509ALTUSERNAME_DESC=	Enable --x509-username-field (OpenSSL only)
 
 EASYRSA_RUN_DEPENDS=	easy-rsa>=0:${PORTSDIR}/security/easy-rsa
 
 PKCS11_LIB_DEPENDS=	libpkcs11-helper.so:${PORTSDIR}/security/pkcs11-helper
 PKCS11_CONFIGURE_ENABLE=	pkcs11
 
-PW_SAVE_CONFIGURE_ENABLE=	password-save
+TUNNELBLICK_EXTRA_PATCHES=	${FILESDIR}/extra-tunnelblick-openvpn_xorpatch
 
 X509ALTUSERNAME_CONFIGURE_ENABLE=	x509-alt-username
 
-.include <bsd.port.options.mk>
+X509ALTUSERNAME_PREVENTS=	POLARSSL
+X509ALTUSERNAME_PREVENTS_MSG=	OpenVPN ${DISTVERSION} cannot use --x509-username-field with PolarSSL. Disable X509ALTUSERNAME, or use OpenSSL instead
 
-.if ${PORT_OPTIONS:MPOLARSSL}
-. if ${PORT_OPTIONS:MX509ALTUSERNAME}
-BROKEN=	OpenVPN ${DISTVERSION} cannot use --x509-username-field with PolarSSL. Disable X509ALTUSERNAME, or use OpenSSL instead
-. else
-LIB_DEPENDS+=		libpolarssl.so:${PORTSDIR}/security/polarssl
-CONFIGURE_ARGS+=	--with-crypto-library=polarssl
-. endif
-.else
-USE_OPENSSL=		yes
-CONFIGURE_ARGS+=	--with-crypto-library=openssl
-.endif
+OPENSSL_USE=		openssl=yes
+OPENSSL_CONFIGURE_ON=	--with-crypto-library=openssl
+
+POLARSSL_LIB_DEPENDS=	libpolarssl.so:${PORTSDIR}/security/polarssl
+POLARSSL_CONFIGURE_ON=	--with-crypto-library=polarssl
 
 USE_RC_SUBR=		openvpn
 USE_LDCONFIG=		${PREFIX}/lib
 
 SUB_FILES=		pkg-message openvpn-client
-
-.include <bsd.port.pre.mk>
 
 .ifdef (LOG_OPENVPN)
 CFLAGS+=		-DLOG_OPENVPN=${LOG_OPENVPN}
@@ -93,9 +89,9 @@ post-configure:
 	    ${WRKSRC}/src/plugins/auth-pam/Makefile \
 	    ${WRKSRC}/src/plugins/down-root/Makefile
 
+.if !defined(WITHOUT_CHECK)
 post-build:
 	@# self-tests here
-.if !defined(WITHOUT_CHECK)
 	@${ECHO} ; ${ECHO} "### Note that you can skip these lengthy selftests with WITHOUT_CHECK=yes ###" ; ${ECHO}
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_FLAGS} ${MAKEFILE} ${_MAKE_JOBS} ${MAKE_ARGS} check
 .endif
@@ -108,15 +104,15 @@ post-install:
 	@${REINPLACE_CMD} 's|resolvconf -p -a|resolvconf -a|' ${STAGEDIR}${PREFIX}/libexec/openvpn-client.up
 	${INSTALL_SCRIPT} ${WRKDIR}/openvpn-client ${STAGEDIR}${PREFIX}/sbin/openvpn-client
 	${MKDIR} ${STAGEDIR}${PREFIX}/include
-.if ${PORT_OPTIONS:MDOCS}
+
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/
 .for i in AUTHORS ChangeLog PORTS
 	${INSTALL_MAN} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}/
 .endfor
-.endif
-.if ${PORT_OPTIONS:MEXAMPLES}
+
+post-install-EXAMPLES-on:
 	(cd ${WRKSRC}/sample && ${COPYTREE_SHARE} \* ${STAGEDIR}${EXAMPLESDIR}/)
 	${CHMOD} ${BINMODE} ${STAGEDIR}${EXAMPLESDIR}/sample-scripts/*
-.endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

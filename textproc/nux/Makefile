@@ -6,7 +6,7 @@ PORTVERSION=	1.6
 PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	textproc java
-MASTER_SITES=	http://dsd.lbl.gov/nux-download/releases/
+MASTER_SITES=	http://dst.lbl.gov/ACSSoftware/nux/nux-download/releases/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Small open-source XQuery extension of the XOM library

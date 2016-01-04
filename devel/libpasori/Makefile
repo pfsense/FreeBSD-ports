@@ -8,14 +8,12 @@ CATEGORIES=	devel
 MASTER_SITES=	SOURCEFORGE_JP/${PORTNAME}/20457
 DISTNAME=	${PORTNAME}${PORTVERSION}
 
-MAINTAINER=	sarumaru@jp.FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	FeliCa read/write library for Sony RC-S320 USB FeliCa R/W(PaSoRi)
 
 USES=		tar:bzip2 uidfix
 USE_LDCONFIG=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
-
-.include <bsd.port.pre.mk>
 
 post-extract:
 	@${MKDIR} ${WRKSRC}/lib ${WRKSRC}/lpdump ${WRKSRC}/lptest
@@ -24,4 +22,4 @@ post-extract:
 	@${CP} ${FILESDIR}/Makefile.lpdump ${WRKSRC}/lpdump/Makefile
 	@${CP} ${FILESDIR}/Makefile.lptest ${WRKSRC}/lptest/Makefile
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

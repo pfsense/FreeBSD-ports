@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	raw
-PORTVERSION=	1.15.0
+PORTVERSION=	1.16.0
 PORTREVISION=	1
 CATEGORIES=	graphics enlightenment
 MASTER_SITES=	http://download.enlightenment.org/rel/libs/${PKGNAMEPREFIX:S/-//}/

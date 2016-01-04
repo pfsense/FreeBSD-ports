@@ -101,6 +101,7 @@ rbldns:*:153:153::0:0:rbldnsd pseudo-user:/nonexistent:/usr/sbin/nologin
 trircd:*:154:154::0:0:& user:/usr/local/etc/tr-ircd:/usr/sbin/nologin
 monetdb:*:156:156::0:0:MonetDB user:/usr/local/monetdb5:/bin/sh
 barman:*:157:157::0:0:Barman user:/var/barman:/bin/sh
+pootle:*:158:158::0:0:Pootle User:/var/db/pootle:/usr/sbin/nologin
 nocat:*:159:159::0:0:NoCat Daemon:/libexec/nocat:/sbin/nologin
 sfs:*:171:171::0:0:Self-Certifying File System:/nonexistent:/usr/sbin/nologin
 agk:*:172:172::0:0:AquaGateKeeper:/nonexistent:/nonexistent
@@ -174,12 +175,15 @@ wildfire:*:340:340::0:0:Wildfire Daemon:/nonexistent:/usr/sbin/nologin
 stunnel:*:341:341::0:0:Stunnel Daemon:/nonexistent:/usr/sbin/nologin
 openfire:*:342:342::0:0:Openfire IM Daemon:/nonexistent:/usr/sbin/nologin
 _sabnzbd:*:350:350::0:0:sabnzb Daemon:/nonexistent:/usr/sbin/nologin
+sonarr:*:351:65534::0:0:Sonarr PVR:/nonexistent:/usr/sbin/nologin
 _iodined:*:353:353::0:0:Iodine Daemon:/nonexistent:/usr/sbin/nologin
 httptunnel:*:361:361::0:0:httptunnel Daemon:/nonexistent:/usr/sbin/nologin
 ldap:*:389:389::0:0:OpenLDAP Server:/nonexistent:/usr/sbin/nologin
 tiarra:*:398:398::0:0:Tiarra IRC Proxy:/nonexistent:/usr/sbin/nologin
 uhub:*:411:411::0:0:uHub ADC Daemon:/nonexistent:/usr/sbin/nologin
 drweb:*:426:426::0:0:Dr.Web Mail Scanner:/nonexistent:/usr/sbin/nologin
+varnish:*:429:429::0:0:Varnish Cache User:/nonexistent:/usr/sbin/nologin
+varnishlog:*:430:429::0:0:Varnish Log User:/nonexistent:/usr/sbin/nologin
 quasselcore:*:442:442::0:0:Quassel IRC User:/nonexistent:/usr/sbin/nologin
 callweaver:*:444:444::0:0:Callweaver account:/var/lib/callweaver:/usr/sbin/nologin
 ecartis:*:450:450::0:0:Ecartis Listserver:/usr/local/ecartis:/usr/sbin/nologin
@@ -238,6 +242,8 @@ jenkins:*:818:818::0:0:Jenkins CI:/usr/local/jenkins:/bin/sh
 rundeck:*:819:819::0:0:Rundeck:/usr/local/rundeck:/bin/sh
 openacs:*:820:820::0:0:OpenACS Daemon User:/nonexistent:/usr/sbin/nologin
 dotlrn:*:821:821::0:0:.LRN Daemon User:/nonexistent:/usr/sbin/nologin
+titus:*:822:65533::0:0:Titus Daemon User:/nonexistent:/usr/sbin/nologin
+titus-keys:*:823:65533::0:0:Titus Keyserver User:/nonexistent:/usr/sbin/nologin
 polw:*:825:825::0:0:Policyd-weight Cache Owner:/nonexistent:/sbin/nologin
 statsd:*:826:826::0:0:Statsd Daemon:/nonexistent:/sbin/nologin
 netdisco:*:840:840::0:0:netdisco daemon:/nonexistent:/usr/sbin/nologin
@@ -248,6 +254,9 @@ sogod:*:846:846::0:0:SOGo groupware:/nonexistent:/usr/sbin/nologin
 fossy:*:901:901::0:0:FOSSology user:/usr/local/share/fossology:/usr/local/bin/bash
 scanlogd:*:902:902::0:0:scanlogd user:/nonexistent:/usr/sbin/nologin
 _ocserv:*:903:903::0:0:ocserv user:/nonexistent:/usr/sbin/nologin
+grafana:*:904:904::0:0:Grafana2:/nonexistent:/usr/bin/nologin
+artifactory:*:905:905::0:0:artifactory user:/nonexistent:/usr/sbin/nologin
+opentsdb:*:906:906::0:0:OpenTSDB Daemon:/var/empty:/usr/sbin/nologin
 influxd:*:907:907::0:0:InfluxDB Daemon:/var/empty:/usr/sbin/nologin
 riemann:*:908:908::0:0:Riemann User:/var/empty:/usr/sbin/nologin
 proxy65:*:909:909::0:0:Proxy65 Daemon:/nonexistent:/usr/sbin/nologin
@@ -337,5 +346,6 @@ rcynic:*:994:994::0:0:RPKI validation system:/nonexistent:/usr/sbin/nologin
 rpkirtr:*:995:995::0:0:RPKI router server:/nonexistent:/usr/sbin/nologin
 tarantool:*:996:996::0:0:Tarantool Daemon:/nonexistent:/usr/sbin/nologin
 bareos:*:997:997::0:0:Bareos Daemon:/var/db/bareos:/usr/sbin/nologin
+_rmilter:*:998:998::0:0:Rmilter daemon:/nonexistent:/usr/sbin/nologin
 ebnetd:*:999:999::0:0:EBNETD:/nonexistent:/usr/sbin/nologin
 nobody:*:65534:65534::0:0:Unprivileged user:/nonexistent:/usr/sbin/nologin

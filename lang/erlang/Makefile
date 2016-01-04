@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	erlang
-PORTVERSION=	18.1
+PORTVERSION=	18.2.1
 PORTEPOCH=	3
 CATEGORIES=	lang parallel java
 MASTER_SITES=	http://www.erlang.org/download/:erlangorg		\
@@ -41,7 +41,6 @@ OPTIONS_DEFINE=	DOCS DTRACE GCC GS HIPE JAVA KQUEUE ODBC OPENSSL SCTP SMP THREAD
 
 DIRTY_DESC=	Enable Dirty schedulers (experimental)
 DTRACE_DESC=	Enable DTrace support
-GCC_DESC=	Use current GCC
 GS_DESC=	Enable GS application (deprecated)
 HIPE_DESC=	Build native HiPE compiler
 KQUEUE_DESC=	Enable Kernel Poll (kqueue) support
@@ -52,7 +51,7 @@ WX_DESC=	Enable WX application
 OPTIONS_DEFAULT=HIPE KQUEUE OPENSSL SCTP SMP THREADS
 OPTIONS_EXCLUDE_DragonFly=	HIPE SCTP
 
-ERL_RELEASE=	18.1
+ERL_RELEASE=	18.2.1
 
 USES=		gmake perl5
 USE_PERL5=	build
@@ -60,9 +59,9 @@ USE_RC_SUBR=	epmd
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-EI_VSN=		3.8
-SNMP_VSN=	5.2
-TOOLS_VSN=	2.8.1
+EI_VSN=		3.8.1
+SNMP_VSN=	5.2.1
+TOOLS_VSN=	2.8.2
 
 .include <bsd.port.options.mk>
 
@@ -87,7 +86,7 @@ DOC_DISTFILES=	armstrong_thesis_2003.pdf:joe		\
 
 .if ${OSVERSION} < 1000000
 .if ${ARCH} == "amd64" && ${PORT_OPTIONS:MDTRACE} && ! ${PORT_OPTIONS:MGCC}
-IGNORE=		DTRACE support on amd64 requires GCC option
+IGNORE=		support for DTrace on amd64 requires GCC option
 .endif
 .endif
 

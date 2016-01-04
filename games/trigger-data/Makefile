@@ -3,7 +3,7 @@
 PORTNAME=	trigger-data
 PORTVERSION=	0.6.1
 CATEGORIES=	games
-MASTER_SITES=	SF/trigger-rally/trigger-rally/trigger-${PORTVERSION}
+MASTER_SITES=	SF/trigger-rally/trigger-${PORTVERSION}
 DISTNAME=	trigger-rally-${PORTVERSION}-data
 
 MAINTAINER=	makc@FreeBSD.org

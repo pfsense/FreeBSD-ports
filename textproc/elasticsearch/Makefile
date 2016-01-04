@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	elasticsearch
-PORTVERSION=	1.7.1
+PORTVERSION=	1.7.3
+PORTREVISION=	1
 CATEGORIES=	textproc java devel
 MASTER_SITES=	http://download.elasticsearch.org/${PORTNAME}/${PORTNAME}/ \
 		http://mirrors.rit.edu/zi/
@@ -13,6 +14,8 @@ COMMENT=	Full-text search engine for Java
 LICENSE=	APACHE20
 
 RUN_DEPENDS=	java-sigar>=0:${PORTSDIR}/java/sigar
+
+CONFLICTS=	elasticsearch2-[0-9]*
 
 USES=		cpe
 NO_ARCH=	yes
@@ -68,10 +71,8 @@ ELASTIC_LOGDIR=	/var/log/elasticsearch
 .if ${OPSYS} == FreeBSD
 .  if ${OSVERSION} >= 1000000
 PLATFORM_VER=	1
-.  elif ${OSVERSION} >= 900000
-PLATFORM_VER=	9
 .  else
-PLATFORM_VER=	8
+PLATFORM_VER=	9
 .  endif
 .else
 BROKEN=		${OPSYS} platform is not supported

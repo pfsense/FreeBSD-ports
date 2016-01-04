@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Catalyst-Runtime
-PORTVERSION=	5.90101
+PORTVERSION=	5.90103
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -32,6 +32,7 @@ BUILD_DEPENDS=	p5-CGI-Simple>=1.109:${PORTSDIR}/www/p5-CGI-Simple \
 		p5-JSON-MaybeXS>=1:${PORTSDIR}/converters/p5-JSON-MaybeXS \
 		p5-List-MoreUtils>=0:${PORTSDIR}/lang/p5-List-MoreUtils \
 		p5-MRO-Compat>=0:${PORTSDIR}/devel/p5-MRO-Compat \
+		p5-Module-Pluggable>=4.7:${PORTSDIR}/devel/p5-Module-Pluggable \
 		p5-Moose>=2:${PORTSDIR}/devel/p5-Moose \
 		p5-MooseX-Emulate-Class-Accessor-Fast>=0.00903:${PORTSDIR}/devel/p5-MooseX-Emulate-Class-Accessor-Fast \
 		p5-MooseX-Getopt>=0.48:${PORTSDIR}/devel/p5-MooseX-Getopt \
@@ -56,7 +57,7 @@ BUILD_DEPENDS=	p5-CGI-Simple>=1.109:${PORTSDIR}/www/p5-CGI-Simple \
 		p5-URI>=1.65:${PORTSDIR}/net/p5-URI \
 		p5-URI-ws>=0.03:${PORTSDIR}/net/p5-URI-ws \
 		p5-libwww>=5.837:${PORTSDIR}/www/p5-libwww \
-		p5-namespace-autoclean>=0.09:${PORTSDIR}/devel/p5-namespace-autoclean \
+		p5-namespace-autoclean>=0.28:${PORTSDIR}/devel/p5-namespace-autoclean \
 		p5-namespace-clean>=0.23:${PORTSDIR}/devel/p5-namespace-clean
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 TEST_DEPENDS=	p5-IO-stringy>=0:${PORTSDIR}/devel/p5-IO-stringy \
@@ -72,17 +73,4 @@ NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
 
-.include <bsd.port.pre.mk>
-
-.if ${PERL_LEVEL} < 501800
-BUILD_DEPENDS+=	p5-Encode>=2.49:${PORTSDIR}/converters/p5-Encode
-RUN_DEPENDS+=	p5-Encode>=2.49:${PORTSDIR}/converters/p5-Encode
-.endif
-
-# Devel::InnerPackage (in Module::Pluggable) will be removed from core since Perl 5.20
-.if ${PERL_LEVEL} >= 501800
-BUILD_DEPENDS+=	p5-Module-Pluggable>=4.7:${PORTSDIR}/devel/p5-Module-Pluggable
-RUN_DEPENDS+=	p5-Module-Pluggable>=4.7:${PORTSDIR}/devel/p5-Module-Pluggable
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

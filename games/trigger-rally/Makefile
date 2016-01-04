@@ -3,9 +3,9 @@
 
 PORTNAME=	trigger-rally
 PORTVERSION=	0.6.1
-CATEGORIES=	games
-MASTER_SITES=	SF/trigger-rally/trigger-rally/trigger-${PORTVERSION}
 DISTVERSIONSUFFIX=	-src
+CATEGORIES=	games
+MASTER_SITES=	SF/trigger-rally/trigger-${PORTVERSION}
 
 MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Rally car racing game

@@ -1,4 +1,5 @@
 bin/function_grep.pl
+%%STAGING%%bin/msidb
 bin/msiexec
 bin/notepad
 bin/regedit
@@ -202,6 +203,8 @@ include/wine/windows/d3drmobj.h
 include/wine/windows/d3drmwin.h
 include/wine/windows/d3dtypes.h
 include/wine/windows/d3dvec.inl
+include/wine/windows/d3dx10.h
+include/wine/windows/d3dx10async.h
 %%STAGING%%include/wine/windows/d3dx10core.h
 %%STAGING%%include/wine/windows/d3dx10core.idl
 include/wine/windows/d3dx9.h
@@ -565,6 +568,7 @@ include/wine/windows/physicalmonitorenumerationapi.h
 include/wine/windows/pktdef.h
 include/wine/windows/poppack.h
 include/wine/windows/powrprof.h
+include/wine/windows/prntvpt.h
 include/wine/windows/profinfo.h
 include/wine/windows/propidl.h
 include/wine/windows/propidl.idl
@@ -730,6 +734,7 @@ include/wine/windows/wia_lh.h
 include/wine/windows/wia_lh.idl
 include/wine/windows/wia_xp.h
 include/wine/windows/wia_xp.idl
+include/wine/windows/wiadef.h
 include/wine/windows/winbase.h
 include/wine/windows/wincodec.h
 include/wine/windows/wincodec.idl
@@ -803,8 +808,14 @@ include/wine/windows/wtypes.h
 include/wine/windows/wtypes.idl
 include/wine/windows/wuapi.h
 include/wine/windows/wuapi.idl
+include/wine/windows/x3daudio.h
+include/wine/windows/xapo.h
+include/wine/windows/xapo.idl
+include/wine/windows/xapofx.h
 include/wine/windows/xaudio2.h
 include/wine/windows/xaudio2.idl
+include/wine/windows/xaudio2fx.h
+include/wine/windows/xaudio2fx.idl
 include/wine/windows/xcmc.h
 include/wine/windows/xinput.h
 include/wine/windows/xmldom.h
@@ -955,7 +966,9 @@ lib/wine/avifil32.dll.so
 %%WINE32%%lib/wine/avifile.dll16.so
 lib/wine/avrt.dll.so
 lib/wine/bcrypt.dll.so
+lib/wine/bluetoothapis.dll.so
 lib/wine/browseui.dll.so
+lib/wine/bthprops.cpl.so
 lib/wine/cabarc.exe.so
 lib/wine/cabinet.dll.so
 lib/wine/cacls.exe.so
@@ -1091,6 +1104,7 @@ lib/wine/dxdiagn.dll.so
 lib/wine/dxgi.dll.so
 lib/wine/dxva2.dll.so
 lib/wine/eject.exe.so
+lib/wine/esent.dll.so
 lib/wine/evr.dll.so
 lib/wine/expand.exe.so
 lib/wine/explorer.exe.so
@@ -1212,7 +1226,9 @@ lib/wine/fakedlls/avifil32.dll
 %%WINE32%%lib/wine/fakedlls/avifile.dll16
 lib/wine/fakedlls/avrt.dll
 lib/wine/fakedlls/bcrypt.dll
+lib/wine/fakedlls/bluetoothapis.dll
 lib/wine/fakedlls/browseui.dll
+lib/wine/fakedlls/bthprops.cpl
 lib/wine/fakedlls/cabarc.exe
 lib/wine/fakedlls/cabinet.dll
 lib/wine/fakedlls/cacls.exe
@@ -1348,6 +1364,7 @@ lib/wine/fakedlls/dxdiagn.dll
 lib/wine/fakedlls/dxgi.dll
 lib/wine/fakedlls/dxva2.dll
 lib/wine/fakedlls/eject.exe
+lib/wine/fakedlls/esent.dll
 lib/wine/fakedlls/evr.dll
 lib/wine/fakedlls/expand.exe
 lib/wine/fakedlls/explorer.exe
@@ -1447,6 +1464,7 @@ lib/wine/fakedlls/mscoree.dll
 lib/wine/fakedlls/msctf.dll
 lib/wine/fakedlls/msctfp.dll
 lib/wine/fakedlls/msdaps.dll
+lib/wine/fakedlls/msdelta.dll
 lib/wine/fakedlls/msdmo.dll
 lib/wine/fakedlls/msftedit.dll
 lib/wine/fakedlls/msg711.acm
@@ -1455,6 +1473,7 @@ lib/wine/fakedlls/mshta.exe
 lib/wine/fakedlls/mshtml.dll
 lib/wine/fakedlls/mshtml.tlb
 lib/wine/fakedlls/msi.dll
+%%STAGING%%lib/wine/fakedlls/msidb.exe
 lib/wine/fakedlls/msident.dll
 lib/wine/fakedlls/msiexec.exe
 lib/wine/fakedlls/msimg32.dll
@@ -1643,6 +1662,7 @@ lib/wine/fakedlls/taskkill.exe
 lib/wine/fakedlls/tasklist.exe
 lib/wine/fakedlls/taskmgr.exe
 lib/wine/fakedlls/taskschd.dll
+%%STAGING%%lib/wine/fakedlls/tdi.sys
 lib/wine/fakedlls/termsv.exe
 %%WINE32%%lib/wine/fakedlls/toolhelp.dll16
 lib/wine/fakedlls/traffic.dll
@@ -1666,6 +1686,7 @@ lib/wine/fakedlls/vbscript.dll
 lib/wine/fakedlls/vcomp.dll
 lib/wine/fakedlls/vcomp100.dll
 lib/wine/fakedlls/vcomp110.dll
+lib/wine/fakedlls/vcomp120.dll
 lib/wine/fakedlls/vcomp90.dll
 %%STAGING%%lib/wine/fakedlls/vcruntime140.dll
 %%WINE32%%lib/wine/fakedlls/vdhcp.vxd
@@ -1688,6 +1709,7 @@ lib/wine/fakedlls/wer.dll
 lib/wine/fakedlls/wevtapi.dll
 lib/wine/fakedlls/wevtutil.exe
 lib/wine/fakedlls/wiaservc.dll
+lib/wine/fakedlls/wimgapi.dll
 %%WINE32%%lib/wine/fakedlls/win32s16.dll16
 %%WINE32%%lib/wine/fakedlls/win87em.dll16
 %%WINE32%%lib/wine/fakedlls/winaspi.dll16
@@ -1738,6 +1760,7 @@ lib/wine/fakedlls/wmi.dll
 lib/wine/fakedlls/wmic.exe
 lib/wine/fakedlls/wmiutils.dll
 lib/wine/fakedlls/wmp.dll
+lib/wine/fakedlls/wmplayer.exe
 lib/wine/fakedlls/wmvcore.dll
 lib/wine/fakedlls/wnaspi32.dll
 lib/wine/fakedlls/wordpad.exe
@@ -1753,6 +1776,7 @@ lib/wine/fakedlls/wtsapi32.dll
 lib/wine/fakedlls/wuapi.dll
 lib/wine/fakedlls/wuaueng.dll
 lib/wine/fakedlls/wusa.exe
+lib/wine/fakedlls/x3daudio1_0.dll
 lib/wine/fakedlls/x3daudio1_1.dll
 lib/wine/fakedlls/x3daudio1_2.dll
 lib/wine/fakedlls/x3daudio1_3.dll
@@ -1761,9 +1785,17 @@ lib/wine/fakedlls/x3daudio1_5.dll
 lib/wine/fakedlls/x3daudio1_6.dll
 lib/wine/fakedlls/x3daudio1_7.dll
 lib/wine/fakedlls/xapofx1_1.dll
+lib/wine/fakedlls/xapofx1_2.dll
 lib/wine/fakedlls/xapofx1_3.dll
 lib/wine/fakedlls/xapofx1_4.dll
 lib/wine/fakedlls/xapofx1_5.dll
+lib/wine/fakedlls/xaudio2_0.dll
+lib/wine/fakedlls/xaudio2_1.dll
+lib/wine/fakedlls/xaudio2_2.dll
+lib/wine/fakedlls/xaudio2_3.dll
+lib/wine/fakedlls/xaudio2_4.dll
+lib/wine/fakedlls/xaudio2_5.dll
+lib/wine/fakedlls/xaudio2_6.dll
 lib/wine/fakedlls/xaudio2_8.dll
 lib/wine/fakedlls/xcopy.exe
 lib/wine/fakedlls/xinput1_1.dll
@@ -1985,7 +2017,6 @@ lib/wine/libuserenv.def
 lib/wine/libusp10.def
 lib/wine/libuuid.a
 lib/wine/libuxtheme.def
-%%STAGING%%lib/wine/libvcruntime140.def
 lib/wine/libvdmdbg.def
 lib/wine/libversion.def
 lib/wine/libwebservices.def
@@ -2010,6 +2041,7 @@ lib/wine/libws2_32.def
 lib/wine/libwsnmp32.def
 lib/wine/libwsock32.def
 lib/wine/libwtsapi32.def
+lib/wine/libxaudio2_8.def
 lib/wine/libxinput.def
 lib/wine/libxmllite.def
 lib/wine/loadperf.dll.so
@@ -2052,6 +2084,7 @@ lib/wine/mscoree.dll.so
 lib/wine/msctf.dll.so
 lib/wine/msctfp.dll.so
 lib/wine/msdaps.dll.so
+lib/wine/msdelta.dll.so
 lib/wine/msdmo.dll.so
 lib/wine/msftedit.dll.so
 lib/wine/msg711.acm.so
@@ -2060,6 +2093,7 @@ lib/wine/mshta.exe.so
 lib/wine/mshtml.dll.so
 lib/wine/mshtml.tlb.so
 lib/wine/msi.dll.so
+%%STAGING%%lib/wine/msidb.exe.so
 lib/wine/msident.dll.so
 lib/wine/msiexec.exe.so
 lib/wine/msimg32.dll.so
@@ -2248,6 +2282,7 @@ lib/wine/taskkill.exe.so
 lib/wine/tasklist.exe.so
 lib/wine/taskmgr.exe.so
 lib/wine/taskschd.dll.so
+%%STAGING%%lib/wine/tdi.sys.so
 lib/wine/termsv.exe.so
 %%WINE32%%lib/wine/toolhelp.dll16.so
 lib/wine/traffic.dll.so
@@ -2271,10 +2306,12 @@ lib/wine/vbscript.dll.so
 lib/wine/vcomp.dll.so
 lib/wine/vcomp100.dll.so
 lib/wine/vcomp110.dll.so
+lib/wine/vcomp120.dll.so
 lib/wine/vcomp90.dll.so
 %%STAGING%%lib/wine/vcruntime140.dll.so
 %%WINE32%%lib/wine/vdhcp.vxd.so
 lib/wine/vdmdbg.dll.so
+lib/wine/wimgapi.dll.so
 %%WINE32%%lib/wine/ver.dll16.so
 lib/wine/version.dll.so
 lib/wine/view.exe.so
@@ -2343,6 +2380,7 @@ lib/wine/wmi.dll.so
 lib/wine/wmic.exe.so
 lib/wine/wmiutils.dll.so
 lib/wine/wmp.dll.so
+lib/wine/wmplayer.exe.so
 lib/wine/wmvcore.dll.so
 lib/wine/wnaspi32.dll.so
 lib/wine/wordpad.exe.so
@@ -2358,6 +2396,7 @@ lib/wine/wtsapi32.dll.so
 lib/wine/wuapi.dll.so
 lib/wine/wuaueng.dll.so
 lib/wine/wusa.exe.so
+lib/wine/x3daudio1_0.dll.so
 lib/wine/x3daudio1_1.dll.so
 lib/wine/x3daudio1_2.dll.so
 lib/wine/x3daudio1_3.dll.so
@@ -2366,9 +2405,17 @@ lib/wine/x3daudio1_5.dll.so
 lib/wine/x3daudio1_6.dll.so
 lib/wine/x3daudio1_7.dll.so
 lib/wine/xapofx1_1.dll.so
+lib/wine/xapofx1_2.dll.so
 lib/wine/xapofx1_3.dll.so
 lib/wine/xapofx1_4.dll.so
 lib/wine/xapofx1_5.dll.so
+lib/wine/xaudio2_0.dll.so
+lib/wine/xaudio2_1.dll.so
+lib/wine/xaudio2_2.dll.so
+lib/wine/xaudio2_3.dll.so
+lib/wine/xaudio2_4.dll.so
+lib/wine/xaudio2_5.dll.so
+lib/wine/xaudio2_6.dll.so
 lib/wine/xaudio2_8.dll.so
 lib/wine/xcopy.exe.so
 lib/wine/xinput1_1.dll.so
@@ -2380,10 +2427,10 @@ lib/wine/xmllite.dll.so
 lib/wine/xolehlp.dll.so
 lib/wine/xpsprint.dll.so
 lib/wine/xpssvcs.dll.so
-man/de.UTF-8/man1/wine.1.gz
+%%WINE32%%man/de.UTF-8/man1/wine.1.gz
 man/de.UTF-8/man1/winemaker.1.gz
 man/de.UTF-8/man1/wineserver.1.gz
-man/fr.UTF-8/man1/wine.1.gz
+%%WINE32%%man/fr.UTF-8/man1/wine.1.gz
 man/fr.UTF-8/man1/winemaker.1.gz
 man/fr.UTF-8/man1/wineserver.1.gz
 man/man1/msiexec.1.gz
@@ -2391,7 +2438,7 @@ man/man1/notepad.1.gz
 man/man1/regedit.1.gz
 man/man1/regsvr32.1.gz
 man/man1/widl.1.gz
-man/man1/wine.1.gz
+%%WINE32%%man/man1/wine.1.gz
 man/man1/wineboot.1.gz
 man/man1/winebuild.1.gz
 man/man1/winecfg.1.gz
@@ -2408,7 +2455,7 @@ man/man1/winepath.1.gz
 man/man1/wineserver.1.gz
 man/man1/wmc.1.gz
 man/man1/wrc.1.gz
-man/pl.UTF-8/man1/wine.1.gz
+%%WINE32%%man/pl.UTF-8/man1/wine.1.gz
 share/applications/wine.desktop
 %%PORTDOCS%%%%DOCSDIR%%/ANNOUNCE
 %%PORTDOCS%%%%DOCSDIR%%/AUTHORS

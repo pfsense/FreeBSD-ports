@@ -191,12 +191,14 @@
     SUBDIR += pslib
     SUBDIR += pstotext
     SUBDIR += psutils
-    SUBDIR += py-cups
     SUBDIR += py-fonttools
+    SUBDIR += py-fpdf
     SUBDIR += py-pdf
     SUBDIR += py-pollyreports
     SUBDIR += py-preppy
+    SUBDIR += py-pycups
     SUBDIR += py-pyscript
+    SUBDIR += py-qt5-printsupport
     SUBDIR += py-relatorio
     SUBDIR += py-reportlab
     SUBDIR += py-reportlab1
@@ -225,6 +227,7 @@
     SUBDIR += rubygem-prawn-security
     SUBDIR += rubygem-prawn-svg
     SUBDIR += rubygem-rbpdf
+    SUBDIR += rubygem-rbpdf-font
     SUBDIR += rubygem-ttfunk
     SUBDIR += scribus
     SUBDIR += sgf2tex

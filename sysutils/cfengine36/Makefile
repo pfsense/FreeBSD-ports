@@ -2,22 +2,23 @@
 # $FreeBSD$
 
 PORTNAME=	cfengine
-PORTVERSION=	3.6.5
-PORTEPOCH=	2
+PORTVERSION=	3.6.6
+.if !defined(MASTERDIR)
+PKGNAMESUFFIX=	36
+PORTEPOCH?=	2
+.endif
 CATEGORIES=	sysutils
-MASTER_SITES=	https://s3.amazonaws.com/cfengine.package-repos/tarballs/
+MASTER_SITES=	https://cfengine-package-repos.s3.amazonaws.com/tarballs/
+DISTFILES=	${PORTNAME}-${PORTVERSION}-2.tar.gz
 
 MAINTAINER=	cy@FreeBSD.org
 #		gjb@FreeBSD.org is also committer for this port
+#		skreuzer@FreeBSD.org is also committer for this port
 COMMENT=	Systems administration tool for networks
 
 LICENSE=	GPLv3
 
 CPE_VENDOR=	gnu
-
-.if !defined(MASTERDIR)
-PKGNAMESUFFIX=	36
-.endif
 
 FETCH_BEFORE_ARGS=	-o ${DISTDIR}/${DISTFILES}
 

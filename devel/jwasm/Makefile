@@ -16,11 +16,13 @@ ONLY_FOR_ARCHS=	amd64 i386
 
 NO_WRKSUBDIR=	yes
 
-USES=	dos2unix gmake zip
+USES=		alias dos2unix gmake zip
 MAKEFILE=	GccUnix.mak
 
 PORTDOCS=	*
 PLIST_FILES=	bin/jwasm
+
+MAKE_JOBS_UNSAFE=	yes
 
 post-patch:
 	@${REINPLACE_CMD} -e \

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	MongoDB
-PORTVERSION=	0.708.4.0
+PORTVERSION=	1.2.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
@@ -14,6 +14,7 @@ COMMENT=	Mongo Driver for Perl
 LICENSE=	APACHE20
 
 BUILD_DEPENDS=	p5-Authen-SCRAM>=0.003:${PORTSDIR}/security/p5-Authen-SCRAM \
+		p5-Class-XSAccessor>0:${PORTSDIR}/devel/p5-Class-XSAccessor \
 		p5-DateTime>=0.78:${PORTSDIR}/devel/p5-DateTime \
 		p5-Moose>=2:${PORTSDIR}/devel/p5-Moose \
 		p5-Safe-Isa>=0:${PORTSDIR}/devel/p5-Safe-Isa \
@@ -32,9 +33,7 @@ TEST_DEPENDS=	p5-Data-Dump>=0:${PORTSDIR}/devel/p5-Data-Dump \
 		p5-Test-Fatal>=0:${PORTSDIR}/devel/p5-Test-Fatal \
 		p5-Test-Warn>=0:${PORTSDIR}/devel/p5-Test-Warn
 
-PORTSCOUT=	skipv:0.999.998.5
-
-CFLAGS+=	-DBSON_COMPILATION
+CFLAGS+=	-DBSON_COMPILATION -DMONGO_USE_64_BIT_INT
 MAKE_JOBS_UNSAFE=	yes
 USES=		perl5
 USE_PERL5=	configure

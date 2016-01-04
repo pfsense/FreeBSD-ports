@@ -1,22 +1,21 @@
-# Created by: Jason Bacon <jwbacon@tds.net>
+# Created by: Jason Bacon <bacon4000@gmail.com>
 # $FreeBSD$
 
 PORTNAME=	praat
 PORTVERSION=	5.4.08
+DISTVERSIONPREFIX=	v
 PORTREVISION=	1
 CATEGORIES=	audio science
-MASTER_SITES=	http://www.fon.hum.uva.nl/praat/
-DISTNAME=	praat5408_sources
 
-MAINTAINER=	jwbacon@tds.net
+MAINTAINER=	bacon4000@gmail.com
 COMMENT=	Phonetics by Computer
 
 LICENSE=	GPLv2
 
+USE_GITHUB=	yes
 DOS2UNIX_REGEX=	.*Makefile
 USES=		dos2unix iconv pkgconfig
 USE_GNOME=	gtk20
-WRKSRC=		${WRKDIR}/sources_5408
 MAKEFILE=	makefile
 PLIST_FILES=	bin/praat man/man1/praat.1.gz
 

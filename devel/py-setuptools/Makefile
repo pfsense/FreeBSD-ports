@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	setuptools
-PORTVERSION=	17.0
+PORTVERSION=	19.2
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -20,7 +20,8 @@ PYDISTUTILS_SETUP=	${PYSETUP}
 
 CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}distribute-[0-9]*
 MAKE_ENV+=		SETUPTOOLS_DISABLE_VERSIONED_EASY_INSTALL_SCRIPT=1
-PLIST_SUB=		EASYINSTALL_PTH=${PYTHON_SITELIBDIR}/easy-install.pth
+
+PLIST_FILES=	"@sample %%PYTHON_SITELIBDIR%%/easy-install.pth.dist %%PYTHON_SITELIBDIR%%/easy-install.pth"
 
 .include <bsd.port.pre.mk>
 
@@ -39,7 +40,7 @@ SUB_LIST+=	PYTHON_VER=${PYTHON_VER}
 post-install:
 	${INSTALL_DATA} ${FILESDIR}/easy-install.pth.dist ${STAGEDIR}${PYTHON_SITELIBDIR}/
 
-regression-test: build
+do-test:
 	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
 
 .include <bsd.port.post.mk>

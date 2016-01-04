@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	asterisk
-PORTVERSION=	11.19.0
+PORTVERSION=	11.20.0
 PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://downloads.asterisk.org/pub/telephony/%SUBDIR%/:main,g729
@@ -96,7 +96,6 @@ BACKTRACE_DESC= Stack backtrace support via (lib)execinfo
 BASE_DESC=	Use base compiler (experimental)
 DAHDI_DESC=	DAHDI support
 EXCHANGE_DESC=	Exchange calendar support
-GCC_DESC=	Use gcc from ports
 MP3PLAYER_DESC=	Install MP3 Player for Music-On-Hold (mpg123)
 NEWG711_DESC=	New G711 codec
 OOH323_DESC=	ooh323 support
@@ -108,7 +107,7 @@ XMPP_DESC=	XMPP/GTALK support
 OPTIONS_SUB=		yes
 
 BACKTRACE_CONFIGURE_WITH=	execinfo
-BACKTRACE_LIB_DEPENDS=		libexecinfo.so:${PORTSDIR}/devel/libexecinfo
+BACKTRACE_USES=			execinfo
 
 CURL_CONFIGURE_ON=	--with-libcurl
 CURL_CONFIGURE_OFF=	--with-libcurl=no
@@ -222,6 +221,7 @@ post-extract:
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/var/lib|${PREFIX}/share|g' ${WRKSRC}/configs/musiconhold.conf.sample
+	@${REINPLACE_CMD} -e 's/-liconv/${ICONV_LIB}/' ${WRKSRC}/configure
 .if ${PORT_OPTIONS:MSYSINFO}
 	@${REINPLACE_CMD} -e 's/%%LIBSYSINFO%%/-lsysinfo/' ${WRKSRC}/main/Makefile
 .else

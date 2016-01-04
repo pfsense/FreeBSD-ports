@@ -11,7 +11,7 @@ PATCH_SITES=	LOCAL/nox/
 PATCHFILES=	${PORTNAME}_1.6-7.diff.gz
 PATCH_DIST_STRIP=	-p1
 
-MAINTAINER=	nox@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Audio recording and tick/scratch reduction for e.g. vinyl records
 
 LIB_DEPENDS=	libfftw.so:${PORTSDIR}/math/fftw
@@ -19,11 +19,13 @@ LIB_DEPENDS=	libfftw.so:${PORTSDIR}/math/fftw
 ALL_TARGET=	gramofile
 USES=		gmake perl5
 USE_CSTD=	gnu89
-MAKE_ARGS+=	CC="${CC}"
-MAKE_ARGS+=	CXX="${CXX}"
+MAKE_ARGS=	CC="${CC}" \
+		CXX="${CXX}" \
+		PERLCOREDIR=${PERLCOREDIR}
 
 PERLCOREDIR=	${LOCALBASE}/lib/perl5/${PERL_VER}/${PERL_ARCH}/CORE
-MAKE_ARGS+=	PERLCOREDIR=${PERLCOREDIR}
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	${RM} ${WRKSRC}/debian/20-warning-fixes.dpatch
@@ -42,8 +44,10 @@ post-patch:
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/gramofile ${WRKSRC}/bplay_gramo \
 		${STAGEDIR}${PREFIX}/bin
+	${LN} -s bplay_gramo ${STAGEDIR}${PREFIX}/bin/brec_gramo
+
+do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
-	${LN} -s bplay_gramo ${STAGEDIR}${PREFIX}/bin/brec_gramo
 
 .include <bsd.port.mk>

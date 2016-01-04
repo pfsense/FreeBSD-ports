@@ -3,6 +3,7 @@
 
 PORTNAME=	ja2
 PORTVERSION=	0.12.1
+DISTVERSIONSUFFIX=	-source
 PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	http://deponie.yamagi.org/freebsd/distfiles/ \
@@ -11,7 +12,7 @@ MASTER_SITES=	http://deponie.yamagi.org/freebsd/distfiles/ \
 MAINTAINER=	lme@FreeBSD.org
 COMMENT=	Port of "Jagged Alliance 2" using SDL
 
-DISTVERSIONSUFFIX=	-source
+BROKEN=		unfetchable
 
 # Ignore this if you feel adventurous
 ONLY_FOR_ARCHS=	amd64 arm i386 pc98

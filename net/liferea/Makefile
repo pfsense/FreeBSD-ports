@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	liferea
-PORTVERSION=	1.10.16
+PORTVERSION=	1.10.17
 CATEGORIES=	net gnome
 MASTER_SITES=	https://github.com/lwindolf/liferea/releases/download/v${PORTVERSION}/
 
@@ -36,6 +36,6 @@ OPTIONS_DEFINE=	NOTIFY
 OPTIONS_DEFAULT=NOTIFY
 
 NOTIFY_LIB_DEPENDS=	libnotify.so:${PORTSDIR}/devel/libnotify
-NOTIFY_CONFIGURE_ENABLE=libnotify 
+NOTIFY_CONFIGURE_ENABLE=libnotify
 
 .include <bsd.port.mk>

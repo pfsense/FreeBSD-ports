@@ -3,13 +3,13 @@
 
 PORTNAME=	astrolog
 PORTVERSION=	5.41g
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	misc astro
 MASTER_SITES=	ftp://ftp.astro.com/pub/swisseph/ephe/archive_gzip/:ephe \
 		ftp://ftp.astro.com/pub/swisseph/:libswe \
 		http://astrolog.offline.ee/astrolog/changed/:dist
 DISTFILES=	a541gsrc.tar.gz:dist ${EPHE} \
-		swe_unix_src_1.78.00.tar.gz:libswe
+		swe_unix_src_2.04.tar.gz:libswe
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Astrology program for X11 and alpha-numeric terminals
@@ -35,32 +35,27 @@ NO_WRKSUBDIR=	yes
 
 PORTDOCS=	helpfile.540 readme.541 changes.txt
 
+SUB_FILES=	pkg-message
+
 OPTIONS_DEFINE=	X11 DOCS
 OPTIONS_DEFAULT=X11
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MX11}
-USE_XORG=	x11
-MAKE_ARGS=	-DX11
-.endif
+X11_USE=	XORG=x11
+X11_MAKE_ARGS=	-DX11
 
 post-extract:
-	${RM} ${WRKDIR}/swe[a-z]*
+	${RM} ${WRKSRC}/swe[a-z]*
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/astrolog
-	cd ${WRKDIR} && \
+	cd ${WRKSRC} && \
 		${INSTALL_DATA} fixstars.ast *.se1 ${STAGEDIR}${PREFIX}/lib/astrolog
 	cd ${WRKSRC}; \
 		${INSTALL_DATA} astrolog.dat ${STAGEDIR}${PREFIX}/lib/astrolog/astrolog.dat-dist
 	cd ${WRKSRC} && ${INSTALL_PROGRAM} astrolog ${STAGEDIR}${PREFIX}/bin
-.if ${PORT_OPTIONS:MDOCS}
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}/
-.endif
-	@${ECHO_MSG}
-	@${ECHO_MSG} "See the file ${PREFIX}/share/doc/astrolog/helpfile.540 for help"
-	@${ECHO_MSG} "and tune ${PREFIX}/lib/astrolog/astrolog.dat"
 
 .include <bsd.port.mk>

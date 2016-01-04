@@ -12,14 +12,14 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	FFmpeg shared extension for php
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libgd.so:${PORTSDIR}/graphics/gd \
 		libavutil.so:${PORTSDIR}/multimedia/ffmpeg
 
-CFLAGS+=	-I${LOCALBASE}/include
 USE_PHP=	yes
 USE_PHPEXT=	yes
 USE_PHPIZE=	yes
-USES=		tar:xz
+USES=		localbase tar:xz
 
 .include <bsd.port.mk>

@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	python34
-PORTVERSION=	3.4.3
-PORTREVISION=	1
+PORTVERSION=	${PYTHON_PORTVERSION}
+PORTREVISION=	2
 CATEGORIES=	lang python ipv6
 MASTER_SITES=	PYTHON/ftp/python/${PORTVERSION}
 DISTNAME=	Python-${PORTVERSION}
@@ -28,9 +28,16 @@ CONFIGURE_ARGS+=	--enable-shared --without-ensurepip
 CONFIGURE_ENV+=		OPT="" DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS}"	# Null out OPT to respect user CFLAGS and remove optimizations
 
 INSTALL_TARGET=		altinstall						# Don't want cloberring of unprefixed files
+
+TEST_TARGET=		buildbottest
+TEST_ARGS=		TESTOPTS=-j${MAKE_JOBS_NUMBER}
+
 MAKE_ARGS+=		INSTALL_SHARED="${INSTALL_LIB}"				# Strip shared library
 MAKE_ARGS+=		LIBPC="${PREFIX}/libdata/pkgconfig"			# Until pathfix gets support for files other than Makefile.in
 MAKE_JOBS_UNSAFE=	yes							# Parser/pgen build bug. See Issue: 200622, 201974
+
+SUB_FILES=		pkg-message
+SUB_LIST=		PYTHON_SUFFIX=${PORTVERSION:R:S/.//g}
 
 PLIST_SUB=		ABI=${ABIFLAGS} \
 			OSMAJOR=${OSVERSION:C/([0-9]*)[0-9]{5}/\1/}		# For plat-freebsd* in pkg-plist. http://bugs.python.org/issue19554
@@ -75,6 +82,7 @@ THREADS_LDFLAGS=	-lpthread
 
 TSC_CONFIGURE_WITH=	tsc
 
+.include "${.CURDIR}/Makefile.version"
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MPYMALLOC}
@@ -115,8 +123,5 @@ post-install:
 .endif
 	for i in ${STAGEDIR}${PREFIX}/lib/python3.4/lib-dynload/*.so; do \
 		${STRIP_CMD} $$i; done								# Strip shared extensions
-
-regression-test: build
-	@cd ${WRKSRC} && ${MAKE} TESTOPTS=-j${MAKE_JOBS_NUMBER} buildbottest
 
 .include <bsd.port.mk>

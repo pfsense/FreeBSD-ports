@@ -14,6 +14,8 @@ COMMENT=	Powerful translation memory application written in Java
 
 LICENSE=	GPLv2
 
+BROKEN=		unfetchable
+
 USES=		shebangfix zip
 SHEBANG_FILES=	release/linux-specific/OmegaT \
 		release/linux-specific/OmegaT-JRE \
@@ -39,11 +41,11 @@ DESKTOP_ENTRIES="OmegaT" "Translation memory application" \
 		"omegaT" "Office;WordProcessor;Java;" \
 		false
 post-build:
-	@cd ${WRKDIR} && ${MV} 'dist' ${PORTNAME}
+	@cd ${WRKSRC} && ${MV} 'dist' ${PORTNAME}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${JAVASHAREDIR}/${PORTNAME}
-	@cd  ${WRKDIR} && ${COPYTREE_BIN} ${PORTNAME} ${STAGEDIR}${JAVASHAREDIR}
+	@cd  ${WRKSRC} && ${COPYTREE_BIN} ${PORTNAME} ${STAGEDIR}${JAVASHAREDIR}
 	${INSTALL_SCRIPT} ${WRKDIR}/omegat.prefs ${STAGEDIR}${JAVASHAREDIR}/${PORTNAME}
 	${INSTALL_SCRIPT} ${WRKDIR}/omegaT.sh ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 

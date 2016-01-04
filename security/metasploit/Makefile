@@ -9,6 +9,9 @@ CATEGORIES=	security
 MAINTAINER=	tanawts@gmail.com
 COMMENT=	Exploit-Framework for Penetration-Testing
 
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYING
+
 RUN_DEPENDS=	nasm:${PORTSDIR}/devel/nasm \
 		nmap:${PORTSDIR}/security/nmap \
 		rubygem-activesupport>=3.0.0:${PORTSDIR}/devel/rubygem-activesupport \
@@ -63,8 +66,6 @@ DB_RUN_DEPENDS=	rubygem-activerecord>=3.0.0:${PORTSDIR}/databases/rubygem-active
 		rubygem-metasploit_data_models>=0.24.0,2:${PORTSDIR}/security/rubygem-metasploit_data_models \
 		rubygem-pg>=0.11:${PORTSDIR}/databases/rubygem-pg
 
-.include <bsd.port.options.mk>
-
 post-patch:
 	${REINPLACE_CMD} 's,git ls-files,find . ! -type d | sed "s|^./||", ; \
 		/jsobfu/s/~> 0.2.0/>= 0.2.0/ ; \
@@ -78,9 +79,9 @@ do-build:
 	${CHMOD} 666 ${WRKSRC}/Gemfile.lock ${WRKSRC}/log/production.log
 	${REINPLACE_CMD} '/^group :coverage/,/^end/d ; /^group :development/,/^end/d ; /^group :test/,/^end/d' \
 		${WRKSRC}/Gemfile
-.if ! ${PORT_OPTIONS:MDB}
+
+do-build-DB-off:
 	${REINPLACE_CMD} '/^group :db do/,/^end/d' ${WRKSRC}/Gemfile
-.endif
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}

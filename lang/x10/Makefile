@@ -1,4 +1,4 @@
-# Created by: Jason Bacon <jwbacon@tds.net>
+# Created by: Jason Bacon <bacon4000@gmail.com>
 # $FreeBSD$
 
 PORTNAME=	x10
@@ -20,14 +20,14 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		bdwgc-7.1.tar.gz
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	jwbacon@tds.net
+MAINTAINER=	bacon4000@gmail.com
 COMMENT=	Object-oriented parallel programming language
 
 LICENSE=	EPL
 
 USES=	tar:bzip2
 USE_JAVA=	yes
-JAVA_VERSION=	1.6+
+JAVA_VERSION=	1.6 1.7
 USE_ANT=	yes
 USE_GCC=	yes
 
@@ -41,7 +41,7 @@ WRKSRC=		${WRKDIR}/x10.dist
 
 OPTIONS_DEFINE=	EXAMPLES
 
-.include <bsd.port.options.mk>
+.include <bsd.port.pre.mk>
 
 post-patch:
 	${REINPLACE_CMD} -e 's/value="make"/value="gmake"/g' \
@@ -72,4 +72,4 @@ do-install:
 	${CP} -R ${WRKSRC}/samples/* ${STAGEDIR}${EXAMPLESDIR}
 .endif
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

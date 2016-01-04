@@ -1,44 +1,31 @@
 # $FreeBSD$
 
 PORTNAME=	tbe
-PORTVERSION=	9
+PORTVERSION=	0.9.2.1
+PORTEPOCH=	1
 CATEGORIES=	games
-MASTER_SITES=	SF/${PORTNAME}/Milestone%20${PORTVERSION}
-DISTNAME=	TheButterflyEffect-M${PORTVERSION}.src
+DISTVERSIONPREFIX=	v
 
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	The Butterfly Effect
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/unzip:${PORTSDIR}/archivers/unzip
-LIB_DEPENDS=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo
 
-USES=		qmake gmake tar:tgz
-USE_QT4=	corelib gui moc_build rcc_build svg uic_build xml
-WRKSRC=		${WRKDIR}/TheButterflyEffect-M${PORTVERSION}rc3
+USES=		cmake compiler:c++11-lib execinfo gmake tar:tgz
+USE_QT4=	gui linguisttools_build moc_build qmake_build rcc_build \
+		svg uic_build xml
 
-PLIST_FILES=	bin/tbe
+USE_GITHUB=	yes
+GH_ACCOUNT=	kaa-ching
+
 PORTDATA=	*
-
-DESKTOP_ENTRIES="The Butterfly Effect" "Inspired by The Incredible Machine" \
-		"${DATADIR}/images/tbe-icon.png" \
-		"${PREFIX}/bin/tbe" "LogicGame;Game;" false
+PORTDOCS=	*
 
 post-patch:
-		@${REINPLACE_CMD} 's/ make/ ${MAKE_CMD}/' \
-			${WRKSRC}/3rdParty/Makefile
-		@${REINPLACE_CMD} 's/debug/release link_prl/' ${WRKSRC}/tbe.pro
-		@${SED} 's:%%DATADIR:QString("${DATADIR}"):'  \
-			${WRKSRC}/src/tbe_global.h.in > ${WRKSRC}/src/tbe_global.h
-		@${REINPLACE_CMD} -e '/ensure that no-one tries to build/,$$d' \
-			${WRKSRC}/tbe.pro
-
-pre-configure:
-		# This is supposedly done by the ./configure script
-		@cd ${WRKSRC}/3rdParty && ${MAKE_CMD}
-
-do-install:
-		@${MKDIR} ${STAGEDIR}${PREFIX}/bin ${STAGEDIR}${DATADIR}
-		${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
-		cd ${WRKSRC} && ${PAX} -rw images levels ${STAGEDIR}${DATADIR}
+	@${REINPLACE_CMD} 's/ make/ $$(MAKE)/' \
+		${WRKSRC}/Makefile
+	@${REINPLACE_CMD} -e 's:/share/games/tbe/:/share/tbe/:' \
+		-e 's:/usr:${PREFIX}: ; s:/games:/bin:' \
+		${WRKSRC}/CMakeLists.txt ${WRKSRC}/src/tbe_paths.h
 
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libmediainfo
-PORTVERSION=	0.7.77
+PORTVERSION=	0.7.79
 CATEGORIES=	multimedia
 MASTER_SITES=	http://mediaarea.net/download/binary/mediainfo/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -22,24 +22,22 @@ OPTIONS_DEFAULT=TINYXML2
 TINYXML2_DESC=	Use textproc/tinyxml2 instead of bundled one
 
 CONFIGURE_ARGS=	--enable-shared
-CPPFLAGS+=	-I${LOCALBASE}/include
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
-USES=		alias libtool pathfix pkgconfig tar:bzip2
+USES=		alias libtool localbase pathfix pkgconfig tar:bzip2
 
 WRKSRC=		${WRKDIR}/MediaInfo_CLI_GNU_FromSource/MediaInfoLib/Project/GNU/Library
 
 CURL_CONFIGURE_ON=	--with-libcurl=${LOCALBASE}
 CURL_LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
 MMS_CONFIGURE_ON=	--with-libmms=${LOCALBASE}
-MMS_LDFLAGS=		-L${LOCALBASE}/lib -lmms
 MMS_LIB_DEPENDS=	libmms.so:${PORTSDIR}/net/libmms
-TINYXML2_CONFIGURE_ENV=	TINYXML2_CFLAGS=-I${LOCALBASE}/include TINYXML2_LIBS="-L${LOCALBASE}lib -ltinyxml2"
 TINYXML2_CONFIGURE_ON=	--with-libtinyxml2=yes
 TINYXML2_LIB_DEPENDS=	libtinyxml2.so:${PORTSDIR}/textproc/tinyxml2
 
 post-patch:
+	@${TOUCH} ${WRKSRC}/aclocal.m4
 	@${REINPLACE_CMD} \
 		-e 's|../../../../ZenLib/Project/GNU/Library/libzen-config|${LOCALBASE}/bin/libzen-config|' \
 		-e 's|lib/pkgconfig/|libdata/pkgconfig/|g' \

@@ -6,7 +6,7 @@ PORTVERSION=	${THRIFT_PORTVERSION} # to keep in sync with thrift
 PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	devel
-MASTER_SITES=	APACHE/thrift/${PORTVERSION
+MASTER_SITES=	APACHE/thrift/${PORTVERSION}
 DISTNAME=	thrift-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
@@ -40,7 +40,8 @@ CONFIGURE_ARGS+=        \
 		--without-php \
 		--without-php_extension \
 		--without-python \
-		--without-ruby
+		--without-ruby \
+		--without-go
 
 post-patch:
 	@${REINPLACE_CMD} 's,^pkgconfigdir = .*,pkgconfigdir=$${prefix}/libdata/pkgconfig,' ${WRKSRC}/lib/c_glib/Makefile.am

@@ -2,18 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	rkward
-PORTVERSION=	0.6.2
+PORTVERSION=	0.6.4
 CATEGORIES=	math
-MASTER_SITES=	SF/${PORTNAME}/Current_Stable_Releases
+MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}/src
 PKGNAMESUFFIX=	-kde4
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	IDE/GUI for the R-project
 
 LICENSE=	GPLv2
-
-DEPRECATED=	Depends on deprecated math/R-cran-car
-EXPIRATION_DATE=	2015-10-31
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/R:${PORTSDIR}/math/R
 RUN_DEPENDS=	${LOCALBASE}/bin/R:${PORTSDIR}/math/R \
@@ -26,7 +23,7 @@ USE_QT4=	qmake_build moc_build rcc_build uic_build phonon
 USE_KDE4=	kdeprefix automoc4 kdelibs
 USE_PHP=	yes
 WANT_PHP_CLI=	yes
-USES=		cmake gettext fortran
+USES=		cmake gettext fortran shared-mime-info
 INSTALLS_ICONS=	yes
 
 CFLAGS+=	-I${LOCALBASE}/include

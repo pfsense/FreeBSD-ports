@@ -2,20 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	wordpress
-PORTVERSION=	4.3.1
+PORTVERSION=	4.4
 DISTVERSIONSUFFIX=	-zh_TW
 CATEGORIES=	chinese www
 MASTER_SITES=	http://tw.wordpress.org/
 PKGNAMESUFFIX=	-zh_TW
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	miwi@FreeBSD.org
 COMMENT=	State-of-the-art semantic personal publishing platform
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/license.txt
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USE_PHP=	curl gd mysql pcre tokenizer xml zip
+USE_PHP=	curl gd mysqli pcre tokenizer xml zip ftp
 NO_ARCH=	yes
 NO_BUILD=	yes
 WANT_PHP_WEB=	yes
@@ -44,9 +45,11 @@ pre-install:
 		${WRKSRC}/wp-config.php.sample ${WRKSRC}/wp-config.php; fi
 
 do-install:
-	${INSTALL} -d -m 755 ${STAGEDIR}${WWWDIR}/
+	${MKDIR} ${STAGEDIR}${WWWDIR}/
 	${CP} -R ${WRKSRC}/ ${STAGEDIR}${WWWDIR}/
 	${FIND} ${STAGEDIR}${WWWDIR}/ -type d -exec ${CHMOD} g+w '{}' \;
+
+do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/
 	cd ${WRKSRC}/ && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}/
 

@@ -18,11 +18,18 @@ USE_GNOME=	cairo
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-python_OLD_CMD?=	/usr/bin/env python
-python_CMD?=		${LOCALBASE}/bin/python${PYTHON_VER}
-SHEBANG_FILES=		examples/*.py examples/*/*.py test/*.py
+SHEBANG_FILES=	examples/*.py examples/*/*.py test/*.py
 
-PLIST_SUB+=	PYTVER=${PYTHON_VER:S/.//}
+.include <bsd.port.pre.mk>
+
+.if ${PYTHON_REL} < 3500
+PYOEXTENSION=	pyo
+.else
+PYOEXTENSION=	opt-1.pyc
+.endif
+
+PLIST_SUB+=	PYTVER=${PYTHON_VER:S/.//} \
+		PYOEXTENSION=${PYOEXTENSION}
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|python %s|${PYTHON_CMD} %s|g' \
@@ -32,7 +39,8 @@ pre-configure:
 # Run waf configure twice, once to extract waflib and patch and then actual configure
 	@cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} ${CONFIGURE_CMD} || :
 	@cd ${WRKSRC}/.waf3-1.6.4-e3c1e08604b18a10567cfcd2d02eb6e6/ && \
-		${PATCH} -p1 < ${FILESDIR}/pycairo-1.10.0-waf-py3_4.patch
+		${PATCH} -p1 < ${FILESDIR}/pycairo-1.10.0-waf-py3_4.patch && \
+		${PATCH} -p1 < ${FILESDIR}/pycairo-1.10.0-waf-py3_5.patch
 
 post-install:
 	@${RM} ${STAGEDIR}${PYTHON_SITELIBDIR}/cairo/__init__.py[co]
@@ -42,4 +50,4 @@ post-install:
 		-d ${PYTHONPREFIX_SITELIBDIR} -f ${PYTHONPREFIX_SITELIBDIR:S;${PREFIX}/;;}
 	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/cairo/_cairo.so
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

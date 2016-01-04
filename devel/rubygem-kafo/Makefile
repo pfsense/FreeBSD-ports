@@ -6,10 +6,11 @@ PORTVERSION=	0.6.12
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	mmoll@FreeBSD.org
+MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Ruby framework to create installers
 
 LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	rubygem-clamp>=0.6.2:${PORTSDIR}/devel/rubygem-clamp \
 		rubygem-highline>=1.6.21:${PORTSDIR}/devel/rubygem-highline \

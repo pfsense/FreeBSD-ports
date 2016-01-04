@@ -4,7 +4,7 @@ PORTNAME=	volpack
 PORTVERSION=	1.0b3
 PORTREVISION=	1
 CATEGORIES=	graphics
-MASTER_SITES=	http://www-graphics.stanford.edu/software/volpack/
+MASTER_SITES=	http://graphics.stanford.edu/software/volpack/
 EXTRACT_SUFX=	.tar.Z
 
 MAINTAINER=	madpilot@FreeBSD.org

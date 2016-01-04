@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	smart_proxy_salt
-PORTVERSION=	2.1.5
+PORTVERSION=	2.1.6
 CATEGORIES=	sysutils ruby
 MASTER_SITES=	RG
 
-MAINTAINER=	mmoll@FreeBSD.org
+MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	SaltStack Plug-In for Foreman's Smart Proxy
 
 LICENSE=	GPLv3

@@ -27,15 +27,10 @@ OPTIONS_DEFINE=	DOCS
 
 PORTDOCS=	install.html README README.freebsd LICENSE
 
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 900000
 BINVER=		9.0
-.elif ${OPSYS} == FreeBSD
-BINVER=		8.0
-.else
-IGNORE=		requires FreeBSD
-.endif
+IGNORE_DragonFly=	requires FreeBSD
+
+.include <bsd.port.pre.mk>
 
 .if ${ARCH} == amd64
 DIST_ARCH=	x86_64
@@ -53,8 +48,8 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/conf/general.cf-dist ${STAGEDIR}${PREFIX}/etc/ncftpd
 	${INSTALL_DATA} ${WRKSRC}/conf/domain.cf-dist ${STAGEDIR}${PREFIX}/etc/ncftpd
 
-post-install:
-	@${INSTALL} -d ${STAGEDIR}${DOCSDIR}
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.post.mk>

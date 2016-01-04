@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	hedgewars
-PORTVERSION=	0.9.21.1
-PORTREVISION=	2
+PORTVERSION=	0.9.22
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	http://download.gna.org/hedgewars/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -17,12 +17,9 @@ LICENSE_COMB=	multi
 
 LIB_DEPENDS=	libphysfs.so:${PORTSDIR}/devel/physfs
 
-ONLY_FOR_ARCHS=	i386 amd64
-ONLY_FOR_ARCHS_REASON=	depends on fpc which is only available for i386 and amd64
-
 USES=		cmake desktop-file-utils lua:51 tar:bzip2
 USE_SDL=	sdl mixer image ttf net
-USE_FPC=	opengl libpng
+USE_FPC=	opengl libpng rtl-objpas
 USE_QT4=	corelib gui moc_build network \
 		qmake_build rcc_build svg xml \
 		uic_build linguisttools_build

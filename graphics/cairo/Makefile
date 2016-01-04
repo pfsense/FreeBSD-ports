@@ -2,13 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	cairo
-PORTVERSION=	1.14.2
+PORTVERSION=	1.14.6
 PORTEPOCH=	2
 CATEGORIES=	graphics
 MASTER_SITES=	http://cairographics.org/releases/
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Vector graphics library with cross-device output support
+
+LICENSE=	LGPL21 MPL
+LICENSE_COMB=	multi
 
 USES=		tar:xz
 
@@ -54,9 +57,16 @@ XCB_RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/xcb-renderutil.pc:${PORTSDIR}/x1
 XCB_CONFIGURE_ENABLE=	xcb
 # this has another option --enable-xlib-xcb=auto but it is buggy.
 
-PLIST_SUB+=	LIBVER=2.11400.2
+PLIST_SUB+=	LIBVER=2.11400.6
 
 .include <bsd.port.options.mk>
+
+.if ${ARCH} == "mips"
+BUILD_DEPENDS+=	${LOCALBASE}/include/atomic_ops.h:${PORTSDIR}/devel/libatomic_ops
+CPPFLAGS+=	-I${LOCALBASE}/include
+LDFLAGS+=	-L${LOCALBASE}/lib
+CONFIGURE_ENV=	cairo_cv_atomic_primitives="libatomic-ops"
+.endif
 
 .if ${PORT_OPTIONS:MOPENGL} && !${PORT_OPTIONS:MX11}
 BROKEN=	OpenGL option needs X11 support

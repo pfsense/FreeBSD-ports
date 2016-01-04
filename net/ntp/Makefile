@@ -20,7 +20,8 @@ USES=		cpe pathfix shebangfix libedit libtool pkgconfig
 LIB_DEPENDS=	libevent.so:${PORTSDIR}/devel/libevent2
 
 SHEBANG_FILES=	scripts/ntptrace/ntptrace.in \
-		scripts/ntp-wait/ntp-wait.in
+		scripts/ntp-wait/ntp-wait.in \
+		scripts/update-leap/update-leap.in
 perl_OLD_CMD=	@PATH_PERL@
 
 .include "Makefile.inc"

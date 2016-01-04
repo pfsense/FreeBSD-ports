@@ -12,15 +12,14 @@ DISTNAME=	sz${PORTVERSION:S/.//}_src
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast compression utility
 
-OPTIONS_DEFINE=	DOCS
-
 USES=		gmake
-
 NO_WRKSUBDIR=	yes
 MAKEFILE=	makefile
 
 PLIST_FILES=	bin/${PORTNAME}
 PORTDOCS=	*.txt
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,more logfile,cat logfile,' \
@@ -28,8 +27,10 @@ post-patch:
 		${WRKSRC}/makefile
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKDIR}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKDIR}/*.txt ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/*.txt ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -3,9 +3,8 @@
 
 PORTNAME=		crits
 PORTVERSION=		3.1.0
-PORTREVISION=		1
+PORTREVISION=		3
 DISTVERSIONPREFIX=	v
-PORTREVISION=		1
 CATEGORIES=		security
 PKGNAMEPREFIX=		${PYTHON_PKGNAMEPREFIX}
 
@@ -16,7 +15,6 @@ LICENSE=		MIT
 LICENSE_FILE=		${WRKSRC}/LICENSE
 
 USE_GITHUB=		yes
-GH_PROJECT=		crits
 
 USES=			python
 USE_PYTHON=		autoplist
@@ -32,7 +30,7 @@ RUN_DEPENDS+=	7z:${PORTSDIR}/archivers/p7zip     \
 		upx:${PORTSDIR}/archivers/upx	   \
 		zip:${PORTSDIR}/archivers/zip	   \
 		${PYTHON_PKGNAMEPREFIX}simplejson>=0:${PORTSDIR}/devel/py-simplejson  \
-		${PYTHON_PKGNAMEPREFIX}curl>0:${PORTSDIR}/ftp/py-curl                 \
+		${PYTHON_PKGNAMEPREFIX}pycurl>0:${PORTSDIR}/ftp/py-pycurl             \
 		${PYTHON_PKGNAMEPREFIX}pydot>=0:${PORTSDIR}/graphics/py-pydot         \
 		${PYTHON_PKGNAMEPREFIX}yaml>0:${PORTSDIR}/devel/py-yaml               \
 		${PYTHON_PKGNAMEPREFIX}setuptools${PYTHON_SUFFIX}>0:${PORTSDIR}/devel/py-setuptools${PYTHON_SUFFIX} \
@@ -59,7 +57,7 @@ RUN_DEPENDS+=	7z:${PORTSDIR}/archivers/p7zip     \
 		${PYTHON_PKGNAMEPREFIX}celery>=3.0.12:${PORTSDIR}/devel/py-celery          \
 		${PYTHON_PKGNAMEPREFIX}requests1>=1.1.0_9:${PORTSDIR}/www/py-requests1     \
 		${PKGNAMEPREFIX}pillow>=2.4.0:${PORTSDIR}/graphics/py-pillow               \
-		${PYTHON_PKGNAMEPREFIX}parsing>=1.5.1:${PORTSDIR}/devel/py-parsing         \
+		${PYTHON_PKGNAMEPREFIX}pyparsing>=1.5.1:${PORTSDIR}/devel/py-pyparsing     \
 		${PYTHON_PKGNAMEPREFIX}ldap>=2.4.15:${PORTSDIR}/net/py-ldap                \
 		${PYTHON_PKGNAMEPREFIX}magic>0:${PORTSDIR}/devel/py-magic                  \
 		${PYTHON_PKGNAMEPREFIX}mimeparse>=0.1.4:${PORTSDIR}/devel/py-mimeparse     \

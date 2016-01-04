@@ -10,6 +10,9 @@ MASTER_SITES=	ftp://ftp.hylafax.org/source/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fax software
 
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/COPYRIGHT
+
 BUILD_DEPENDS=	${LOCALBASE}/lib/afm/Courier:${PORTSDIR}/print/afm
 LIB_DEPENDS=	libtiff.so:${PORTSDIR}/graphics/tiff \
 		libjbig.so:${PORTSDIR}/graphics/jbigkit
@@ -24,7 +27,8 @@ CONFIGURE_ARGS=	--with-INSTALL="" \
 		--with-TIFFINC="-I${LOCALBASE}/include" \
 		--with-GCOPTS=" " --with-GCXXOPTS=" " \
 		--with-REGEX=no --with-LIBREGEX='' --with-REGEXINC=-I/usr/include \
-		--with-DIR_HTML="${DOCSDIR}"
+		--with-DIR_HTML="${DOCSDIR}" \
+		--with-GETTY=SysV
 CFLAGS+=	-D_XOPEN_SOURCE -D_XOPEN_SOURCE_EXTENDED -Wall -L${LOCALBASE}/lib
 CONFIGURE_ENV=	ENVOPTS="${CFLAGS}"
 MAKE_ENV+=	ROOT=${STAGEDIR}
@@ -66,10 +70,6 @@ PLIST_SUB+=	HYLAFAX_SPOOL=${HYLAFAX_SPOOL}
 CONFIGURE_ARGS+=--nointeractive
 .endif
 
-.if ${OSVERSION} >= 900007
-CONFIGURE_ARGS+=	--with-GETTY=SysV
-.endif
-
 post-patch:
 	${REINPLACE_CMD} \
 		-e 's,/usr/local,${LOCALBASE},g' \
@@ -93,7 +93,7 @@ pre-install:
 		${STAGEDIR}${HYLAFAX_SPOOL}/info \
 		${STAGEDIR}${HYLAFAX_SPOOL}/log
 
-post-install:
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC}/doc && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}/
 

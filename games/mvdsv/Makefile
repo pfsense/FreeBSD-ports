@@ -3,9 +3,9 @@
 
 PORTNAME?=	mvdsv
 PORTVERSION=	0.29
+DISTVERSIONPREFIX=	v
 PORTEPOCH=	2
 CATEGORIES?=	games
-MASTER_SITES=	http://qw-dev.net/attachments/download/201/
 DISTNAME=	mvdsv_${PORTVERSION}-sources
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -13,12 +13,12 @@ COMMENT?=	Enhanced QuakeWorld server with multi-view demos capability
 
 LICENSE=	GPLv2
 
-USES=		zip
+USE_GITHUB=	yes
+GH_ACCOUNT=	deurk
 
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	${OPSYS} ${ARCH:C/.*(64)/\1/}
 ALL_TARGET=	${PORTNAME}
-WRKSRC=		${WRKDIR}/mvdsv
 
 PLIST_FILES=	bin/${PORTNAME}
 

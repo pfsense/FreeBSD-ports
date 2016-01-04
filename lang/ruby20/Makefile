@@ -62,11 +62,11 @@ READLINE_DESC=		Use libreadline
 CAPIDOCS_BUILD_DEPENDS=	doxygen>0:${PORTSDIR}/devel/doxygen \
 			dot:${PORTSDIR}/graphics/graphviz
 CAPIDOCS_CONFIGURE_ENABLE=	install-capi
-LIBEDIT_CONFIGURE_ON=	--enable-libedit --with-libedit-prefix=${LOCALBASE}
+LIBEDIT_CONFIGURE_ON=	--enable-libedit --with-libedit-dir=${LOCALBASE}
 LIBEDIT_USES=		libedit
 RDOC_CONFIGURE_ENABLE=	install-rdoc
 READLINE_BUILD_DEPENDS=	readline>=0:${PORTSDIR}/devel/readline
-READLINE_CONFIGURE_ON=	--disable-libedit --with-readline-prefix=${LOCALBASE}
+READLINE_CONFIGURE_ON=	--disable-libedit --with-readline-dir=${LOCALBASE}
 READLINE_RUN_DEPENDS=	readline>=0:${PORTSDIR}/devel/readline
 
 CPE_VENDOR=	ruby-lang
@@ -95,6 +95,7 @@ CONFIGURE_ARGS+=	--disable-dtrace
 
 .if ${ARCH} == "armv6" || ${ARCH} == "armv6hf"
 CONFIGURE_ARGS+=	--with-setjmp-type=_setjmp
+CONFIGURE_ENV+=	ac_cv_func__setjmp=yes
 .endif
 
 .if ${PORT_OPTIONS:MCAPIDOCS}

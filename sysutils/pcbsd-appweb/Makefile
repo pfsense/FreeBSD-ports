@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pcbsd-appweb
-PORTVERSION=	1438362426
+PORTVERSION=	1441129621
 CATEGORIES=	sysutils
 
 MAINTAINER=	kmoore@FreeBSD.org
@@ -15,7 +15,7 @@ RUN_DEPENDS=	syscache:${PORTSDIR}/sysutils/pcbsd-syscache \
 		warden:${PORTSDIR}/sysutils/warden \
 		nginx:${PORTSDIR}/www/nginx
 
-IGNORE_WITH_PHP=54
+IGNORE_WITH_PHP=5 54
 USE_PHP=	filter gd json session
 WRKSRC_SUBDIR=	src-webui
 USES=		pkgconfig tar:xz
@@ -25,7 +25,7 @@ MAKE_ARGS=	PREFIX=${STAGEDIR}${PREFIX}
 USE_GITHUB=	yes
 GH_ACCOUNT=	pcbsd
 GH_PROJECT=	pcbsd
-GH_TAGNAME=	2c5a0c
+GH_TAGNAME=	3c4d2b
 
 .include <bsd.port.pre.mk>
 

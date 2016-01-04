@@ -1,11 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	facter
-PORTVERSION=	3.1.0
+PORTVERSION=	3.1.3
 CATEGORIES=	sysutils
 MASTER_SITES=	http://downloads.puppetlabs.com/facter/
 
-MAINTAINER=	mmoll@FreeBSD.org
+MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Cross-platform library for retrieving facts from OS
 
 LICENSE=	APACHE20
@@ -13,6 +13,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libboost_system.so:${PORTSDIR}/devel/boost-libs \
 		libyaml-cpp.so:${PORTSDIR}/devel/yaml-cpp
+
+PLIST_SUB+=	PORTVERSION="${PORTVERSION}"
 
 USE_LDCONFIG=	yes
 USE_RUBY=	yes

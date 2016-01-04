@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	python32
-PORTVERSION=	3.2.5
-PORTREVISION=	14
+PORTVERSION=	${PYTHON_PORTVERSION}
 CATEGORIES=	lang python ipv6
 MASTER_SITES=	PYTHON/ftp/python/${PORTVERSION}
 DISTNAME=	Python-${PORTVERSION}
@@ -12,6 +11,9 @@ MAINTAINER=	python@FreeBSD.org
 COMMENT=	Interpreted object-oriented programming language
 
 LICENSE=	PSFL
+
+DEPRECATED=	No longer receives bug fixes, only security updates. Please update to Python 3.5
+EXPIRATION_DATE=	2016-02-01
 
 USES=		cpe ncurses pkgconfig readline tar:xz
 USE_OPENSSL=	yes
@@ -26,9 +28,16 @@ CONFIGURE_ARGS+=	--enable-shared
 CONFIGURE_ENV+=		OPT=""							# Null out OPT to respect user CFLAGS and remove optimizations
 
 INSTALL_TARGET=		altinstall						# Don't want cloberring of unprefixed files
+
+TEST_TARGET=		buildbottest
+TEST_ARGS=		TESTOPTS=-j${MAKE_JOBS_NUMBER}
+
 MAKE_ARGS+=		INSTALL_SHARED="${INSTALL_LIB}"				# Strip shared library
 MAKE_ARGS+=		LIBPC="${PREFIX}/libdata/pkgconfig"			# Until pathfix gets support for files other than Makefile.in
 MAKE_JOBS_UNSAFE=	yes							# Parser/pgen build bug. See Issue: 200622, 201974
+
+SUB_FILES=		pkg-message
+SUB_LIST=		PYTHON_SUFFIX=${PORTVERSION:R:S/.//g}
 
 PLIST_SUB=		ABI=${ABIFLAGS} \
 			OSMAJOR=${OSVERSION:C/([0-9]*)[0-9]{5}/\1/}		# For plat-freebsd* in pkg-plist. http://bugs.python.org/issue19554
@@ -62,6 +71,7 @@ THREADS_LDFLAGS=	-lpthread
 TSC_CONFIGURE_WITH=	tsc
 UCS4_CONFIGURE_WITH=	wide-unicode
 
+.include "${.CURDIR}/Makefile.version"
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MUCS4}
@@ -121,8 +131,5 @@ post-install:
 	# Strip shared extensions
 	for i in ${STAGEDIR}${PREFIX}/lib/python3.2/lib-dynload/*.so; do \
 		${STRIP_CMD} $$i; done
-
-regression-test: build
-	@cd ${WRKSRC} && ${MAKE} TESTOPTS=-j${MAKE_JOBS_NUMBER} buildbottest
 
 .include <bsd.port.mk>

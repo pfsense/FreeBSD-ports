@@ -3,7 +3,7 @@
 PORTNAME=	tomsfastmath
 PORTVERSION=	0.12
 CATEGORIES=	math
-MASTER_SITES=	http://libtom.org/files/
+MASTER_SITES=	http://libtom.net/files/
 DISTNAME=	tfm-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org

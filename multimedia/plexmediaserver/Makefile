@@ -2,18 +2,18 @@
 # $FreeBSD$
 
 PORTNAME=	plexmediaserver
-PORTVERSION?=	0.9.12.11.1406
-PORTREVISION?=	0
+PORTVERSION?=	0.9.14.6.1620
+PORTREVISION?=	1
 CATEGORIES=	multimedia
-MASTER_SITES=	http://downloads.plexapp.com/plex-media-server/${PORTVERSION}-${PLEX_BUILD}/ \
-		http://nightlies.plexapp.com/directdl/plex-media-server/dist-ninja/${PORTVERSION}-${PLEX_BUILD}/
+MASTER_SITES=	https://downloads.plexapp.com/plex-media-server/${PORTVERSION}-${PLEX_BUILD}/ \
+		https://nightlies.plexapp.com/directdl/plex-media-server/dist-ninja/${PORTVERSION}-${PLEX_BUILD}/
 DISTNAME=	PlexMediaServer-${PORTVERSION}-${PLEX_BUILD}-freebsd-${ARCH}
 
 MAINTAINER?=	feld@FreeBSD.org
 COMMENT=	Plex Media Server component
 
 USES=		cpe tar:bzip2
-PLEX_BUILD?=	8403350
+PLEX_BUILD?=	e0b7243
 NO_BUILD=	yes
 WRKSRC=	${WRKDIR}/PlexMediaServer-${PORTVERSION}-${PLEX_BUILD}
 
@@ -36,14 +36,8 @@ ONLY_FOR_ARCHS_REASON=	binary-only program, source code not available
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD
-.if ${OSVERSION} < 900000
-IGNORE=	supplied binaries compiled for FreeBSD 9
-.endif
-
-.if ${OSVERSION} >= 1000054
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1000054
 RUN_DEPENDS+=	${LOCALBASE}/lib/compat/libstdc++.so.6:${PORTSDIR}/misc/compat9x
-.endif
 .endif
 
 post-patch:

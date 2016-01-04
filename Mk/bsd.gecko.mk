@@ -322,6 +322,13 @@ MOZ_OPTIONS+=	--enable-startup-notification
 MOZ_OPTIONS+=	--disable-dbus --disable-libnotify
 .endif
 
+.if ${PORT_OPTIONS:MFFMPEG}
+# dom/media/platforms/ffmpeg/FFmpegRuntimeLinker.cpp
+RUN_DEPENDS+=	ffmpeg>=0.8,1:${PORTSDIR}/multimedia/ffmpeg
+.else
+MOZ_OPTIONS+=	--disable-ffmpeg
+.endif
+
 .if ${PORT_OPTIONS:MGSTREAMER}
 USE_GSTREAMER1?=good libav
 MOZ_OPTIONS+=	--enable-gstreamer=1.0
@@ -448,14 +455,14 @@ MOZ_SED_ARGS+=	-e's|@CPPFLAGS@|${CPPFLAGS}|g'		\
 		-e 's|@LDFLAGS@|${LDFLAGS}|g'		\
 		-e 's|@LIBS@|${LIBS}|g'			\
 		-e 's|@LOCALBASE@|${LOCALBASE}|g'	\
-		-e 's|@PERL@|${PERL5}|g'			\
+		-e 's|@PERL@|${PERL}|g'			\
 		-e 's|@MOZDIR@|${PREFIX}/lib/${MOZILLA}|g'	\
 		-e 's|%%PREFIX%%|${PREFIX}|g'		\
 		-e 's|%%CFLAGS%%|${CFLAGS}|g'		\
 		-e 's|%%LDFLAGS%%|${LDFLAGS}|g'		\
 		-e 's|%%LIBS%%|${LIBS}|g'		\
 		-e 's|%%LOCALBASE%%|${LOCALBASE}|g'	\
-		-e 's|%%PERL%%|${PERL5}|g'		\
+		-e 's|%%PERL%%|${PERL}|g'		\
 		-e 's|%%MOZILLA%%|${MOZILLA}|g'		\
 		-e 's|%%MOZILLA_BIN%%|${MOZILLA_BIN}|g'	\
 		-e 's|%%MOZDIR%%|${PREFIX}/lib/${MOZILLA}|g'
@@ -466,10 +473,6 @@ MOZCONFIG_SED?= ${SED} ${MOZ_SED_ARGS}
 USE_BINUTILS=	# intel-gcm.s
 CFLAGS+=	-B${LOCALBASE}/bin
 LDFLAGS+=	-B${LOCALBASE}/bin
-.  if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000041 && \
-	exists(/usr/lib/libcxxrt.so) && ${CXXFLAGS:M-stdlib=libc++}
-LIBS+=		-lcxxrt
-.  endif
 . endif
 .elif ${ARCH:Mpowerpc*}
 USES:=		compiler:gcc-c++11-lib ${USES:Ncompiler*c++11*}
@@ -533,7 +536,7 @@ gecko-post-patch:
 .if ${USE_MOZILLA:M-nspr}
 	@${ECHO_MSG} "===>  Applying NSPR patches"
 	@for i in ${.CURDIR}/../../devel/nspr/files/patch-*; do \
-		${PATCH} ${PATCH_ARGS} -d ${MOZSRC}/nsprpub/build < $$i; \
+		${PATCH} ${PATCH_ARGS} -d ${MOZSRC}/nsprpub < $$i; \
 	done
 .endif
 .if ${USE_MOZILLA:M-nss}

@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	zabbix24
-PORTVERSION=	2.4.6
+PORTVERSION=	2.4.7
 PORTREVISION?=	0
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/zabbix/ZABBIX%20Latest%20Stable/${PORTVERSION}
 PKGNAMESUFFIX?=	-server
 DISTNAME=	zabbix-${PORTVERSION}
 
-MAINTAINER=	pakhom706@gmail.com
+MAINTAINER=	pakhom@pakhom.spb.ru
 COMMENT=	Enterprise-class open source distributed monitoring (${PKGNAMESUFFIX:S/^-//})
 
 LICENSE=	GPLv2
@@ -60,8 +60,11 @@ CONFIGURE_ARGS+=	--enable-${ZABBIX_BUILD} \
 			--with-iconv=${ICONV_PREFIX}
 
 .if ${ZABBIX_BUILD} != "agent"
-LIB_DEPENDS=	libnetsnmp.so:${PORTSDIR}/net-mgmt/net-snmp \
-		libexecinfo.so:${PORTSDIR}/devel/libexecinfo
+LIB_DEPENDS=	libnetsnmp.so:${PORTSDIR}/net-mgmt/net-snmp
+USES+=		execinfo
+
+CPPFLAGS+=	${EXECINFO_CPPFLAGS}
+LDFLAGS+=	${EXECINFO_LDFLAGS}
 
 SUB_FILES=	pkg-message
 

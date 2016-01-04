@@ -4,9 +4,9 @@
 PORTNAME=	e2ps
 PORTVERSION=	4.34
 CATEGORIES=	japanese print
-MASTER_SITES=	http://wt1.ld.infoseek.co.jp/sources/
+MASTER_SITES=	http://wtpage.info/sources/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	CQG00620@nifty.ne.jp
 COMMENT=	Text file to postscript converter (with Japanese support)
 
 USES=		tar:bzip2

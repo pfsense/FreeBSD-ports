@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	npm
-PORTVERSION=	2.14.4
+PORTVERSION=	2.14.7
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	LOCAL/sunpoet
 
@@ -10,6 +11,8 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Node package manager
 
 LICENSE=	MIT
+
+RUN_DEPENDS=	gmake:${PORTSDIR}/devel/gmake
 
 OPTIONS_SINGLE=	BACKEND
 OPTIONS_SINGLE_BACKEND=	NODE NODE_DEVEL
@@ -28,6 +31,7 @@ CPE_VENDOR=	npmjs
 CPE_PRODUCT=	node_packaged_modules
 
 SHEBANG_FILES=	lib/utils/completion.sh \
+		node_modules/node-gyp/test/docker.sh \
 		node_modules/request/node_modules/node-uuid/benchmark/bench.sh \
 		scripts/clean-old.sh \
 		scripts/release.sh \

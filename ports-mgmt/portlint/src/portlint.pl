@@ -15,7 +15,7 @@
 # was removed.
 #
 # $FreeBSD$
-# $MCom: portlint/portlint.pl,v 1.371 2015/08/09 22:21:09 jclarke Exp $
+# $MCom: portlint/portlint.pl,v 1.380 2015/12/19 21:08:11 jclarke Exp $
 #
 
 use strict;
@@ -50,7 +50,7 @@ $portdir = '.';
 # version variables
 my $major = 2;
 my $minor = 16;
-my $micro = 6;
+my $micro = 8;
 
 # default setting - for FreeBSD
 my $portsdir = '/usr/ports';
@@ -531,6 +531,8 @@ sub checkplist {
 
 	my $seen_special = 0;
 	my $item_count = 0;
+	my $owner_seen = 0;
+	my $group_seen = 0;
 
 	# Variables that are allowed to be out-of-sync in the XXXDIR check.
 	# E.g., %%PORTDOCS%%%%RUBY_MODDOCDIR%% will be OK because there is
@@ -615,6 +617,13 @@ sub checkplist {
 				"see HANDLE_RC_SCRIPTS in pkg.conf(5).");
 		}
 
+		if (m'^\@(un)?exec') {
+			&perror("WARN", $file, $., "@[un]exec is deprecated in ".
+				"favor of \@<pre|post>[un]exec as the latter specifies ".
+				"the exact part of the pkg lifecycle the commands need ".
+				"to run");
+		}
+
 		$seen_special++ if /[\%\@]/;
 		if ($_ =~ /^\@/) {
 			if ($_ =~ /^\@(cwd|cd)[ \t]+(\S+)/) {
@@ -638,7 +647,7 @@ sub checkplist {
 					"instead of \"\@unexec rmdir\".");
 			} elsif ($_ =~ /^\@unexec[ \t]+install-info[ \t]+--delete\s+(.+)\s+(.+)$/) {
 				&perror("WARN", $file, $., "\@unexec install-info is deprecated in favor of adding info files into the Makefile using the INFO macro.");
-			} elsif ($_ =~ /^\@(exec|unexec)/) {
+			} elsif ($_ =~ /^\@(pre|post)?(exec|unexec|)/) {
 				if (/ldconfig/) {
 					&perror("WARN", $file, $., "possible ".
 						"direct use of ldconfig ".
@@ -663,12 +672,46 @@ sub checkplist {
 			} elsif ($_ eq "\@cwd") {
 				; # @cwd by itself means change directory back to the original
 				  # PREFIX.
-		  	} elsif ($_ =~ /^\@sample\s+(\S*)/) {
+			} elsif ($_ =~ /^\@\(/) {
+				if ($_ !~ /^\@\([^,]*,[^,]*,[^\),]*(,[^\)]*)?\)/) {
+					&perror("WARN", $file, $., "Invalid use of \@(...). ".
+						"Arguments should be owner,group,perms[,fflags]");
+				}
+		  	} elsif ($_ =~ /^\@sample\s+(.+)/) {
 				my $sl = $.;
-				if ($1 !~ /\.sample$/) {
+				my @sampleparts = split(/\s+/, $1);
+				if (scalar @sampleparts == 1 && $sampleparts[0] !~ /\.sample$/) {
 					&perror("WARN", $file, $sl, "\@sample directive references".
 						" file that does not end in ``.sample''.  Sample".
 						" files must end in ``.sample''.");
+				}
+			} elsif ($_ =~ /^\@owner/) {
+				if ($_ =~ /^\@owner\s+.+/) {
+					if ($owner_seen > 0) {
+						&perror("WARN", $file, $., "Nested setting of \@owner ".
+							"found.  Reset \@owner before setting it again.");
+					}
+				    $owner_seen++;
+				} else {
+					if ($owner_seen == 0) {
+						&perror("WARN", $file, $., "\@owner reset seen before ".
+							"a new owner section was started.");
+					}
+					$owner_seen--;
+				}
+			} elsif ($_ =~ /^\@group/) {
+				if ($_ =~ /^\@group\s+.+/) {
+					if ($group_seen > 0) {
+						&perror("WARN", $file, $., "Nested setting of \@group ".
+							"found.  Reset \@group before setting it again.");
+					}
+					$group_seen++;
+				} else {
+					if ($group_seen == 0) {
+						&perror("WARN", $file, $., "\@group reset seen before ".
+							"a new group section was started.");
+					}
+					$group_seen--;
 				}
 			} elsif ($_ =~ /^\@(dir|dirrm|dirrmtry|rmtry|option|stopdaemon|owner|group|mode|fc|fcfontsdir|fontsdir|info|shell)\b/) {
 				; # no check made
@@ -721,9 +764,18 @@ sub checkplist {
 				"for more details)");
 		}
 
-		if ($_ =~ m|\.mo$| && $makevar{USES} !~ /\bgettext\b/) {
-			&perror("WARN", $file, $., "installing gettext translation files, ".
-				"please define USES[+]=gettext as appropriate");
+		if ($_ =~ m|^(%%([^%]+)%%)?.*\.mo$| && $makevar{USES} !~ /\bgettext\b/) {
+			my $show_nls_warn = 1;
+			if ($2) {
+				my $mv = get_makevar($2."_USES");
+				if ($mv =~ /\bgettext\b/) {
+					$show_nls_warn = 0;
+				}
+			}
+			if ($show_nls_warn) {
+					&perror("WARN", $file, $., "installing gettext translation files, ".
+						"please define USES[+]=gettext as appropriate");
+			}
 		}
 
 		if ($_ =~ m|\.core$| && $_ !~ /^\@/) {
@@ -806,6 +858,16 @@ sub checkplist {
 				"($curdir/$_)\n" if ($verbose);
 			$sharedocused++;
 		}
+	}
+
+	if ($owner_seen > 0) {
+		&perror("WARN", $file, -1, "A \@owner section was started but never ".
+			"reset.  USe \@owner without any arguments to reset the owner");
+	}
+
+	if ($group_seen > 0) {
+		&perror("WARN", $file, -1, "A \@group section was started but never ".
+			"reset.  Use \@group without any arguments to reset the group");
 	}
 
 	if (!$seen_special && $item_count < $numpitems) {
@@ -1164,6 +1226,11 @@ sub checkmakefile {
 	my $optused = 0;
 	my $desktop_entries = '';
 
+	my $masterdir = $makevar{MASTERDIR};
+	if ($masterdir ne '' && $masterdir ne $makevar{'.CURDIR'}) {
+		$slaveport = 1;
+	}
+
 	open(IN, "< $file") || return 0;
 	$rawwhole = '';
 	$tmp = 0;
@@ -1517,8 +1584,15 @@ sub checkmakefile {
 		next if ($i eq 'DOCS' or $i eq 'NLS' or $i eq 'EXAMPLES' or $i eq 'IPV6' or $i eq 'X11' or $i eq 'DEBUG');
 		if (!grep(/^$i$/, (@mopt, @popt))) {
 			if ($whole !~ /\n${i}_($m)(.)?=[^\n]+/) {
-				&perror("WARN", $file, -1, "$i is listed in ".
+				if (!$slaveport) {
+					&perror("WARN", $file, -1, "$i is listed in ".
 						"OPTIONS_DEFINE, but no PORT_OPTIONS:M$i appears.");
+				} else {
+					&perror("WARN", $file, -1, "$i is listed in ".
+						"OPTIONS_DEFINE, but no PORT_OPTIONS:M$i appears ".
+						"in this slave Makefile.  Make sure it appears in ".
+						"the master's Makefile.");
+				}
 			}
 		}
 	}
@@ -1656,18 +1730,18 @@ sub checkmakefile {
 		USE_PYTHON
 		USE_XORG
 	);
-	print "OK: checking to see if USES_* stuff is sorted.\n" if ($verbose);
-	foreach my $sorted_use (@uses_to_sort) {
-		while ($whole =~ /\n$sorted_use.?=\s*(.+)\n/g) {
-			my $lineno = &linenumber($`);
-			my $srex = $1;
-			my @suses = sort(split / /, $srex);
-			if (join(" ", @suses) ne $srex) {
-				&perror("WARN", $file, $lineno, "the options to $sorted_use ".
-					"are not sorted.  Please consider sorting them.");
-			}
-		}
-	}
+#	print "OK: checking to see if USES_* stuff is sorted.\n" if ($verbose);
+#	foreach my $sorted_use (@uses_to_sort) {
+#		while ($whole =~ /\n$sorted_use.?=\s*(.+)\n/g) {
+#			my $lineno = &linenumber($`);
+#			my $srex = $1;
+#			my @suses = sort(split / /, $srex);
+#			if (join(" ", @suses) ne $srex) {
+#				&perror("WARN", $file, $lineno, "the options to $sorted_use ".
+#					"are not sorted.  Please consider sorting them.");
+#			}
+#		}
+#	}
 
 	#
 	# whole file: USE_GNOME=pkgconfig
@@ -2234,9 +2308,7 @@ xargs xmkmf
 	#
 	# slave port check
 	#
-	my $masterdir = $makevar{MASTERDIR};
-	if ($masterdir ne '' && $masterdir ne $makevar{'.CURDIR'}) {
-		$slaveport = 1;
+	if ($slaveport) {
 		print "OK: slave port detected, checking for inclusion of $masterdir/Makefile.\n"
 			if ($verbose);
 		if ($whole =~ /^\.\s*include\s*[<"]bsd\.port(?:\.post)?\.mk[">]/m) {

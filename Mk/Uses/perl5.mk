@@ -50,9 +50,7 @@ THIS_IS_OLD_PERL=	yes
 .else
 # end of remove
 .include "${PORTSDIR}/Mk/bsd.default-versions.mk"
-.if ${PERL5_DEFAULT} == 5.16
-.include "${PORTSDIR}/lang/perl5.16/version.mk"
-.elif ${PERL5_DEFAULT} == 5.18
+.if ${PERL5_DEFAULT} == 5.18
 .include "${PORTSDIR}/lang/perl5.18/version.mk"
 .elif ${PERL5_DEFAULT} == 5.20
 .include "${PORTSDIR}/lang/perl5.20/version.mk"
@@ -94,10 +92,8 @@ PERL_ARCH?=	mach
 PERL_PORT?=	perl5.22
 .elif   ${PERL_LEVEL} >= 502000
 PERL_PORT?=	perl5.20
-.elif ${PERL_LEVEL} >= 501800
+.else # ${PERL_LEVEL} < 502000
 PERL_PORT?=	perl5.18
-.else # ${PERL_LEVEL} < 501800
-PERL_PORT?=	perl5.16
 .endif
 
 SITE_PERL_REL?=	lib/perl5/site_perl
@@ -308,7 +304,7 @@ fix-perl-things:
 	@${RM} -f ${STAGEDIR}${PREFIX}/lib/perl5/${PERL_VER}/${PERL_ARCH}/perllocal.pod* || :
 	@${RMDIR} -p ${STAGEDIR}${PREFIX}/lib/perl5/${PERL_VER}/${PERL_ARCH} 2>/dev/null || :
 
-.if !target(do-test)
+.if !target(do-test) && (!empty(USE_PERL5:Mmodbuild*) || !empty(USE_PERL5:Mconfigure))
 TEST_TARGET?=	test
 TEST_WRKSRC?=	${BUILD_WRKSRC}
 do-test:
@@ -317,5 +313,5 @@ do-test:
 .elif ${USE_PERL5:Mconfigure}
 	cd ${TEST_WRKSRC}/ && ${SETENV} ${TEST_ENV} ${MAKE_CMD} ${TEST_ARGS} ${TEST_TARGET}
 .endif # USE_PERL5:Mmodbuild*
-.endif # regression-test
+.endif # do-test
 .endif # defined(_POSTMKINCLUDED)

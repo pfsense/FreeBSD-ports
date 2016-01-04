@@ -5,7 +5,7 @@ PORTNAME=	pure-xml
 PORTVERSION=	0.6
 PORTREVISION=	3
 CATEGORIES=	textproc
-MASTER_SITES=	https://cdn.bitbucket.org/purelang/pure-lang/downloads/
+MASTER_SITES=	https://bitbucket.org/purelang/pure-lang/downloads/
 DIST_SUBDIR=	pure
 
 MAINTAINER=	ports@FreeBSD.org

@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	gnuplot
-PORTVERSION=	4.6.6
-PORTREVISION=	2
+PORTVERSION=	5.0.1
+PORTREVISION=	1
 CATEGORIES=	math graphics
 MASTER_SITES=	SF
 
@@ -14,14 +14,14 @@ USE_TEX=	kpathsea
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib ${ICONV_LIB}
 CONFIGURE_ENV=	LUA_VER="${LUA_VER}"
-CONFIGURE_ARGS+=--with-lasergnu \
-		--with-readline=gnu \
+CONFIGURE_ARGS+=--with-readline=gnu \
 		--with-kpsexpand \
 		--without-linux-vga \
 		--without-lisp-files \
 		--without-tutorial \
 		--with-bitmap-terminals \
 		--with-latex \
+		--with-qt=no \
 		ac_cv_prog_KPSEXPAND=${LOCALBASE}/bin/kpsexpand \
 		ac_cv_prog_PLAINTEX=${LOCALBASE}/bin/tex \
 		ac_cv_prog_LATEX=${LOCALBASE}/bin/latex \
@@ -29,13 +29,14 @@ CONFIGURE_ARGS+=--with-lasergnu \
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
-OPTIONS_DEFINE=	CAIRO DOCS EXAMPLES GD GRIDBOX PDF PLOT THINSPLINES WX X11
+# MAKE_JOBS_UNSAFE=yes
+
+OPTIONS_DEFINE=	CAIRO DOCS EXAMPLES GD GRIDBOX PDF THINSPLINES WX X11
 GRIDBOX_DESC=		Use the gridbox optimization for hidden3d
-PLOT_DESC=		Enable plot support
 THINSPLINES_DESC=	Enable thin plate splines for grids in dgrid3d
 WX_DESC=		wxWidgets (formerly wxWindows) support
 
-OPTIONS_DEFAULT=CAIRO GD PLOT WX X11
+OPTIONS_DEFAULT=CAIRO GD WX X11
 OPTIONS_SUB=	yes
 
 CAIRO_LIB_DEPENDS=	libcairo.so:${PORTSDIR}/graphics/cairo
@@ -52,11 +53,6 @@ PDF_LIB_DEPENDS=	libpdf.so:${PORTSDIR}/print/pdflib
 PDF_CONFIGURE_ON=	--with-pdf=${LOCALBASE}
 PDF_CONFIGURE_OFF=	--without-pdf
 
-PLOT_USE=		XORG=xaw,xmu,xt,xext
-PLOT_LIB_DEPENDS=	libplot.so:${PORTSDIR}/graphics/plotutils
-PLOT_CONFIGURE_ON=	--with-plot=${LOCALBASE}
-PLOT_CONFIGURE_OFF=	--without-plot
-
 THINSPLINES_CONFIGURE_ENABLE=	thin-splines
 
 X11_USE=	XORG=x11
@@ -67,7 +63,6 @@ X11_USE=	XORG=x11
 # Version 3.x of WX currently cause gnuplot to crash.
 # Do not update without this without testing.
 USE_WX=			2.8
-WX_UNICODE=		yes
 WX_CONF_ARGS=		absolute
 .else
 CONFIGURE_ARGS+=	--disable-wxwidgets
@@ -87,7 +82,6 @@ post-build:
 .endif
 
 post-install:
-	${INSTALL_SCRIPT} ${WRKSRC}/src/lasergnu ${STAGEDIR}${PREFIX}/bin
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	cd ${WRKSRC}/demo && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
 .if ${PORT_OPTIONS:MDOCS}

@@ -5,7 +5,7 @@ PORTNAME=	plan9port
 PORTVERSION=	20140306
 PORTREVISION=	4
 CATEGORIES=	devel plan9
-MASTER_SITES=	http://swtch.com/${PORTNAME}/
+MASTER_SITES=	https://plan9port.googlecode.com/files/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Port of many Plan 9 programs to Unix-like operating systems

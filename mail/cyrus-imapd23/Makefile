@@ -2,7 +2,7 @@
 
 PORTNAME=	cyrus-imapd
 PORTVERSION=	2.3.19
-#PORTREVISION=	10
+PORTREVISION=	1
 CATEGORIES=	mail ipv6
 MASTER_SITES=	ftp://ftp.cyrusimap.org/cyrus-imapd/
 PKGNAMESUFFIX=	23
@@ -32,7 +32,7 @@ CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc \
 		--with-bdb=${BDB_LIB_NAME} \
 		--with-com_err \
 		--with-openssl=${OPENSSLBASE} \
-		--with-perl=${PERL5}
+		--with-perl=${PERL}
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
 MAKE_JOBS_UNSAFE=	yes
@@ -111,7 +111,7 @@ PORTEXAMPLES=	*
 
 SUB_FILES=	pkg-message pkg-install pkg-deinstall cyrus-imapd-man.conf
 
-SUB_LIST=	CYRUS_USER=${CYRUS_USER} CYRUS_GROUP=${CYRUS_GROUP} 
+SUB_LIST=	CYRUS_USER=${CYRUS_USER} CYRUS_GROUP=${CYRUS_GROUP}
 
 CYRUS_USER?=	cyrus
 CYRUS_GROUP?=	cyrus

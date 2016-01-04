@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	multitail
-PORTVERSION=	6.4.1
+PORTVERSION=	6.4.2
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.vanheusden.com/multitail/ \
 		http://fossies.org/unix/privat/
@@ -13,7 +13,7 @@ COMMENT=	Tail multiple files on console with ncurses
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/license.txt
 
-USES=		gmake tar:tgz
+USES=		alias gmake tar:tgz
 
 PLIST_FILES=	bin/multitail etc/multitail.conf.sample \
 		man/man1/multitail.1.gz

@@ -27,7 +27,6 @@
     SUBDIR += c
     SUBDIR += ccl
     SUBDIR += cdent
-    SUBDIR += cduce
     SUBDIR += ceylon
     SUBDIR += cfortran
     SUBDIR += chibi-scheme
@@ -80,6 +79,10 @@
     SUBDIR += fpc-docs
     SUBDIR += fpc-lua
     SUBDIR += fpc-rexx
+    SUBDIR += fpc-rtl-console
+    SUBDIR += fpc-rtl-extra
+    SUBDIR += fpc-rtl-objpas
+    SUBDIR += fpc-rtl-unicode
     SUBDIR += fpc-tcl
     SUBDIR += fpc-units
     SUBDIR += fpc-utils
@@ -97,6 +100,7 @@
     SUBDIR += gcc5
     SUBDIR += gcc5-aux
     SUBDIR += gcc5-devel
+    SUBDIR += gcc6-aux
     SUBDIR += gcc6-devel
     SUBDIR += gcl
     SUBDIR += gforth
@@ -105,7 +109,10 @@
     SUBDIR += gnat_util
     SUBDIR += gnatdroid-armv7
     SUBDIR += gnatdroid-binutils
+    SUBDIR += gnatdroid-binutils-x86
     SUBDIR += gnatdroid-sysroot
+    SUBDIR += gnatdroid-sysroot-x86
+    SUBDIR += gnatdroid-x86
     SUBDIR += gnu-cobol
     SUBDIR += gnustep-base
     SUBDIR += go
@@ -228,7 +235,6 @@
     SUBDIR += pcc
     SUBDIR += pecl-perl
     SUBDIR += perl5-devel
-    SUBDIR += perl5.16
     SUBDIR += perl5.18
     SUBDIR += perl5.20
     SUBDIR += perl5.22
@@ -253,6 +259,7 @@
     SUBDIR += py-clojure
     SUBDIR += py-mx-base
     SUBDIR += py-prolog
+    SUBDIR += py-qt5-qml
     SUBDIR += pypy
     SUBDIR += pypy3-devel
     SUBDIR += python

@@ -8,15 +8,17 @@ CATEGORIES=	mail
 MASTER_SITES=	http://www.ringofsaturn.com/distfiles/
 DISTNAME=	${PORTNAME:tu}_${PORTVERSION}_Install
 
-MAINTAINER=	rnejdl@ringofsaturn.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Anti-Spam SMTP Proxy
 
 RUN_DEPENDS=	p5-Net-DNS>=0.68:${PORTSDIR}/dns/p5-Net-DNS \
 		p5-libwww>=6.04:${PORTSDIR}/www/p5-libwww \
 		p5-HTML-Parser>=3.69:${PORTSDIR}/www/p5-HTML-Parser
 
-USES=		perl5 zip:infozip
+USES=		perl5 zip:infozip shebangfix
+SHEBANG_FILES=	*.pl
 NO_BUILD=	yes
+NO_ARCH=	yes
 USE_PERL5=	run
 
 ASSP_USER=	assp
@@ -122,9 +124,6 @@ RUN_DEPENDS+=	p5-IO-Socket-INET6>=2.69:${PORTSDIR}/net/p5-IO-Socket-INET6
 
 EXTRACT_AFTER_ARGS=	-d ${PORTNAME}-${PORTVERSION}
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|/usr/bin/perl|${PERL}|' ${WRKSRC}/*.pl
-
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/images \
 		${STAGEDIR}${DATADIR}/logs ${STAGEDIR}${DATADIR}/reports
@@ -140,14 +139,17 @@ do-install:
 
 	${INSTALL_MAN} ${WRKDIR}/assp.8 ${STAGEDIR}${MAN8PREFIX}/man/man8
 	${INSTALL_MAN} ${WRKDIR}/assplog.8 ${STAGEDIR}${MAN8PREFIX}/man/man8
-	${MKDIR} ${STAGEDIR}${PREFIX}/etc/periodic/daily
+	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/periodic/daily
 	${INSTALL_SCRIPT} ${WRKDIR}/510.assp ${STAGEDIR}${PREFIX}/etc/periodic/daily/
-	${MKDIR} ${STAGEDIR}${ASSP_HOME}
-	${MKDIR} ${STAGEDIR}${ASSP_LOG}
+	@${MKDIR} ${STAGEDIR}${ASSP_HOME}
+	@${MKDIR} ${STAGEDIR}${ASSP_LOG}
+.for f in files images rebuildspamdb.pl reports
+	${LN} -sf ${DATADIR}/${f} ${STAGEDIR}${ASSP_HOME}/
+.endfor
+	${LN} -sf ${ASSP_LOG} ${STAGEDIR}${ASSP_HOME}/logs
 
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/docs/*.htm ${STAGEDIR}${DOCSDIR}
-.endif
 
 .include <bsd.port.mk>

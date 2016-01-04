@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	gpb
-PORTVERSION=	3.18.8
+PORTVERSION=	3.18.10
 CATEGORIES=	devel
 PKGNAMEPREFIX=	erlang-
 
@@ -17,7 +17,6 @@ SUB_LIST+=	PORTNAME=${PORTNAME} \
 USES=		erlang:rebar
 USE_GITHUB=	yes
 GH_ACCOUNT=	tomas-abrahamsson
-GH_PROJECT=	gpb
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${ERL_APP_ROOT}/bin

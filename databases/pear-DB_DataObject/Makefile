@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	DB_DataObject
-PORTVERSION=	1.11.4
+PORTVERSION=	1.11.5
 CATEGORIES=	databases pear
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	miwi@FreeBSD.org
 COMMENT=	SQL Builder, Object Interface to Database Tables
 
 LICENSE=	PHP301

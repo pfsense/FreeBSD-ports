@@ -12,6 +12,7 @@ COMMENT=	Variety of cryptographic primitives for Objective Caml
 
 DESTDIRNAME=	destdir
 HAS_CONFIGURE=	yes
+CONFIGURE_ARGS=	--docdir ${OCAML_DOCSDIR}
 
 USE_OCAML=	yes
 USE_OCAML_LDCONFIG=	yes
@@ -23,12 +24,7 @@ PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MDOCS}
-ALL_TARGET+=	doc
-CONFIGURE_ARGS+=	--docdir ${OCAML_DOCSDIR}
-.endif
+DOCS_ALL_TARGET=	doc
 
 post-patch:
 	${REINPLACE_CMD} 's,"install","install" :: "-ldconf ignore",' \

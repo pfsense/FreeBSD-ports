@@ -16,10 +16,9 @@ LIB_DEPENDS=	libGeoIP.so:${PORTSDIR}/net/GeoIP
 USES=		compiler
 USE_GITHUB=	yes
 GH_ACCOUNT=	abh
-GH_PROJECT=	${PORTNAME}
 GH_TAGNAME=	da13074
 
-GO_PKGNAME=	github.com/${GH_ACCOUNT}/${GH_PROJECT}
+GO_PKGNAME=	github.com/${GH_ACCOUNT}/${PORTNAME}
 
 .include <bsd.port.pre.mk>
 .include "${PORTSDIR}/lang/go/files/bsd.go.mk"

@@ -1,8 +1,9 @@
-# Created by: Torsten Zühlsdorff <ports@toco-domains.de>
+# Created by: Torsten Zuhlsdorff <ports@toco-domains.de>
 # $FreeBSD$
 
 PORTNAME=	omniauth-saml
 PORTVERSION=	1.4.1
+PORTREVISION=	1
 CATEGORIES=	security rubygems
 MASTER_SITES=	RG
 

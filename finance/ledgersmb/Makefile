@@ -5,7 +5,7 @@ PORTNAME=	ledger-smb
 PORTVERSION=	1.1.12
 PORTREVISION=	3
 CATEGORIES=	finance perl5
-MASTER_SITES=	SF/${PORTNAME}/ledgersmb/${PORTVERSION}
+MASTER_SITES=	SF/${PORTNAME}/Releases/archive-1.1/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Double entry accounting system

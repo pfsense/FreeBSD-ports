@@ -9,9 +9,11 @@
     SUBDIR += R-cran-DCluster
     SUBDIR += R-cran-Epi
     SUBDIR += R-cran-bayesm
+    SUBDIR += R-cran-cmprsk
     SUBDIR += R-cran-e1071
     SUBDIR += R-cran-eco
     SUBDIR += R-cran-epicalc
+    SUBDIR += R-cran-etm
     SUBDIR += R-cran-snow
     SUBDIR += R-cran-som
     SUBDIR += afni
@@ -58,7 +60,6 @@
     SUBDIR += h5utils
     SUBDIR += harminv
     SUBDIR += hdf
-    SUBDIR += hdf-java
     SUBDIR += hdf5
     SUBDIR += hs-bio
     SUBDIR += isaac-cfd
@@ -76,6 +77,7 @@
     SUBDIR += libquantum
     SUBDIR += libsvm
     SUBDIR += libsvm-python
+    SUBDIR += libxc
     SUBDIR += linsmith
     SUBDIR += massxpert
     SUBDIR += mbdyn
@@ -98,6 +100,7 @@
     SUBDIR += openbabel
     SUBDIR += openkim
     SUBDIR += orthanc
+    SUBDIR += orthanc-dicomweb
     SUBDIR += orthanc-postgresql
     SUBDIR += orthanc-webviewer
     SUBDIR += p5-Algorithm-SVMLight
@@ -128,6 +131,7 @@
     SUBDIR += p5-Geo-Coordinates-Converter-iArea
     SUBDIR += p5-Geo-ReadGRIB
     SUBDIR += p5-Geo-WebService-Elevation-USGS
+    SUBDIR += p5-Mcstas-Tools
     SUBDIR += p5-PerlMol
     SUBDIR += p5-Physics-Unit
     SUBDIR += paje
@@ -150,6 +154,9 @@
     SUBDIR += py-pydap
     SUBDIR += py-pydicom
     SUBDIR += py-pysal
+    SUBDIR += py-pyteomics
+    SUBDIR += py-pyteomics.biolccc
+    SUBDIR += py-scikit-fuzzy
     SUBDIR += py-scikit-learn
     SUBDIR += py-scikit-sparse
     SUBDIR += py-scimath
@@ -158,8 +165,6 @@
     SUBDIR += pybrain
     SUBDIR += pycdf
     SUBDIR += pynn
-    SUBDIR += pyteomics
-    SUBDIR += pyteomics.biolccc
     SUBDIR += qcl
     SUBDIR += qtresistors
     SUBDIR += rubygem-ai4r

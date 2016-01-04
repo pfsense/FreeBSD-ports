@@ -2,7 +2,6 @@
 
 .include "${.CURDIR}/Makefile.common"
 
-PORTREVISION=	0
 MASTER_SITES=	http://download.documentfoundation.org/libreoffice/src/${PORTVERSION}/ \
 		http://dev-www.libreoffice.org/src/:src \
 		http://dev-www.libreoffice.org/extern/:ext
@@ -227,6 +226,7 @@ CONFIGURE_ARGS=	--disable-dependency-tracking \
 		--enable-release-build \
 		--exec-prefix=${PREFIX} \
 		--with-alloc=system \
+		--with-boost=${LOCALBASE} \
 		--with-build-version="FreeBSD ports ${PKGVERSION}" \
 		--with-external-dict-dir=${LOCALBASE}/share/hunspell \
 		--with-external-hyph-dir=${LOCALBASE}/share/hyphen \
