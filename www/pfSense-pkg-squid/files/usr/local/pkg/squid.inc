@@ -2024,6 +2024,8 @@ function squid_resync_adk() {
 		} elseif ( $settings['adk_version'] == '2008' ) { 
 			mwexec(SQUID_LOCALBASE . '/sbin/msktutil -c -b CN=COMPUTERS -s HTTP -k ' . SQUID_CONFBASE . '/PROXY.keytab --computer-name ' . strtoupper($config['system']['hostname']) . ' --upn HTTP/' . $hostname  . ' --server ' . $settings['adk_dc'] . ' --verbose --enctypes 28');
 		}
+		chown(SQUID_CONFBASE . "/PROXY.keytab",SQUID_UID);
+		chown(SQUID_CONFBASE . "/PROXY.keytab",SQUID_GID);
 		mwexec("/usr/bin/kdestroy");
 		unlink("/etc/krb5secret");
 	}
