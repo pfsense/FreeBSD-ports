@@ -8,15 +8,17 @@ www/haproxy_pools.php
 www/haproxy_pool_edit.php
 www/haproxy_stats.php
 www/haproxy_templates.php
+pkg/haproxy_gui.inc
 pkg/haproxy_socketinfo.inc
 pkg/haproxy_xmlrpcsyncclient.inc
 pkg/haproxy_htmllist.inc
 pkg/haproxy_utils.inc
+pkg/haproxy_socket.sh
 www/widgets/widgets/haproxy.widget.php
 www/shortcuts/pkg_haproxy.inc
 pkg/pkg_haproxy_tabs.inc
 pkg/haproxy_upgrade_config.inc
-www/javascript/haproxy_geturl.js
+www/haproxy/haproxy_geturl.js
 /etc/inc/priv/haproxy.priv.inc
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv

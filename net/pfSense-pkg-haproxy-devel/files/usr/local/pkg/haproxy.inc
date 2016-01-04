@@ -235,6 +235,15 @@ $a_sysloglevel['notice'] = array('name' => "Notice");
 $a_sysloglevel['info'] = array('name' => "Informational");
 $a_sysloglevel['debug'] = array('name' => "Debugging");
 
+global $a_facilities;
+$a_facilities = array();
+$facilities = array("kern", "user", "mail", "daemon", "auth", "syslog", "lpr",
+	"news", "uucp", "cron", "auth2", "ftp", "ntp", "audit", "alert", "cron2",
+	"local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7");
+foreach($facilities as $facility) {
+	$a_facilities[$facility] = array('name' => $facility);
+}
+
 global $a_filestype;
 $a_filestype = array();
 $a_filestype[''] = array('name' => "Errorfile");
@@ -253,7 +262,7 @@ $a_action["use_server"] = array('name' => "Use Server", 'mode' => '', 'syntax' =
 		'server' => array('name'=>"server",'columnheader'=>"Server",'type'=>"select",'size'=>"50",'mask'=>'server')
 	));
 //
-$a_action["custom"] = array('name' => "Custom", 'mode' => '', 
+$a_action["custom"] = array('name' => "Custom", 'mode' => '', 'syntax' => '{customaction}',
 	'fields' => array(
 		array('name'=>"customaction",'columnheader'=>"Custom action",'type'=>"textbox",'size'=>"50",'mask'=>'freetext')
 	));

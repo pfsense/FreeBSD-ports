@@ -479,17 +479,27 @@ function haproxy_js_select_options($keyvaluelist, $selected="") {
 }
 
 function echo_html_select($name, $keyvaluelist, $selected, $listEmptyMessage="", $onchangeEvent="", $style="") {
+	$result = "";
 	if (count($keyvaluelist)>0){
 		if ($onchangeEvent != "")
 			$onchangeEvent = " onchange='$onchangeEvent'";
 		if ($style != "")
 			$style = " style='$style'";
-		echo "<select name=\"$name\" id=\"$name\" class=\"formselect\"$onchangeEvent$style>";
-		echo haproxy_html_select_options($keyvaluelist, $selected);
-		echo "</select>";
+		$result .= "<select name=\"$name\" id=\"$name\" class=\"formselect\"$onchangeEvent$style>";
+		$result .= haproxy_html_select_options($keyvaluelist, $selected);
+		$result .= "</select>";
 	} else {
-		echo $listEmptyMessage;
+		$result .= $listEmptyMessage;
 	}
+	return $result;
+}
+
+function haproxy_keyvalue_array($hap_array) {
+	$result = array();
+	foreach($hap_array as $key => $item) {
+		$result[$key] = $item['name'];
+	}
+	return $result;
 }
 
 ?>

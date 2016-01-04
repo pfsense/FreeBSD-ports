@@ -9,9 +9,9 @@
 			&lt;strong&gt;As of pkg v0.33 switched to using 1.6 stable releases.&lt;/strong&gt;]]></descr>
 		<website>http://haproxy.1wt.eu/</website>
 		<category>Services</category>
-		<version>0.35</version>
+		<version>0.36</version>
 		<status>RELEASE</status>
-		<required_version>2.2</required_version>
+		<required_version>2.3</required_version>
 		<config_file>https://packages.pfsense.org/packages/config/haproxy-devel/haproxy.xml</config_file>
 		<configurationfile>haproxy.xml</configurationfile>
 		<run_depends>sbin/haproxy:net/haproxy</run_depends>

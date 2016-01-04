@@ -91,36 +91,27 @@ if ($_POST) {
 	}
 }
 
-$pgtitle = "Services: HAProxy: Stats";
+$pgtitle = array("Services", "HAProxy", "Stats");
 include("head.inc");
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
+if ($savemsg) {
+	print_info_box($savemsg);
+}
+if (file_exists($d_haproxyconfdirty_path)) {
+	print_info_box_np("The haproxy configuration has been changed.<br/>You must apply the changes in order for them to take effect.");
+}
+haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "stats");
 
 ?>
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-<?php include("fbegin.inc"); ?>
-<form action="haproxy_stats.php" method="post">
-<?php if ($input_errors) print_input_errors($input_errors); ?>
-<?php if ($savemsg) print_info_box($savemsg); ?>
-<?php if (file_exists($d_haproxyconfdirty_path)): ?>
-<?php print_info_box_np("The haproxy configuration has been changed.<br/>You must apply the changes in order for them to take effect.");?><br/>
-<?php endif; ?>
-</form>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr><td class="tabnavtbl">
-  <?php
-	haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "stats");
-  ?>
-  </td></tr>
-  <tr>
-    <td>
-	<div id="mainarea">
-		<table class="tabcont" width="100%" height="100%" cellspacing="0">
-		<tr>
-		<?
+	<div class="panel panel-default">
 
+	<?
 if (isset($_GET['showstatresolvers'])){
 	$showstatresolversname = $_GET['showstatresolvers'];
 	echo "<td colspan='2'>";
-	echo "Contents of the sticktable: $sticktablename<br/>";
+	echo "Resolver statistics: $sticktablename<br/>";
 	$res = haproxy_socket_command("show stat resolvers $showstatresolversname");
 	foreach($res as $line){
 		echo "<br/>".print_r($line,true);
@@ -137,7 +128,10 @@ if (isset($_GET['showstatresolvers'])){
 	echo "</td>";
 } else {
 ?>
-		<td colspan="2">
+		<div class="panel-heading">
+			<h2 class="panel-title"><?=gettext("Stats")?></h2>
+		</div>
+		<div class="table-responsive panel-body">
 			This page contains a 'stats' page available from haproxy accessible through the pfSense gui.<br/>
 			<br/>
 			As the page is forwarded through the pfSense gui, this might cause some functionality to not work.<br/>
@@ -146,24 +140,24 @@ if (isset($_GET['showstatresolvers'])){
 			and can be accessed from wherever the associated frontend is accessible.(as long as rules permit access)<br/>
 			To use this or for simply an example how to use SSL-offloading configure stats on either a real backend while utilizing the 'stats uri'.<br/>
 			Or create a backend specifically for serving stats, for that you can start with  the 'stats example' from the template tab.<br/>
-		</td>
-		</tr>
-		<tr>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td colspan="2" valign="top" class="listtopic">HAProxy stick-tables</td>
-		</tr>
-		<tr>
-			<td colspan="2" valign="top" class="vncell">	
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h2 class="panel-title"><?=gettext("HAProxy stick-tables")?></h2>
+		</div>
+		<div class="table-responsive panel-body">
 			These tables are used to store information for session persistence and can be used with ssl-session-id information, application-cookies, or other information that is used to persist a user to a server.
-			<table class="tabcont sortable" id="sortabletable" width="100%" cellspacing="0" cellpadding="6" border="0">
-			<head>
-				<td class="listhdrr">Stick-table</td>
-				<td class="listhdrr">Type</td>
-				<td class="listhdrr">Size</td>
-				<td class="listhdrr">Used</td>
-			</head>
+			<table  class="table table-hover table-striped table-condensed sortable-theme-bootstrap" data-sortable id="sortabletable">
+			<thead>
+				<tr>
+				<th class="listhdrr">Stick-table</th>
+				<th class="listhdrr">Type</th>
+				<th class="listhdrr">Size</th>
+				<th class="listhdrr">Used</th>
+				</tr>
+			</thead>
+			<tbody>
 			<? $tables = haproxy_get_tables();
 			foreach($tables as $key => $table) { ?>
 			<tr>
@@ -173,44 +167,34 @@ if (isset($_GET['showstatresolvers'])){
 				<td class="listr"><?=$table['used'];?></td>
 			</tr>
 			<? } ?>
+			</tbody>
 			</table>
-			</td>
-		</tr>
-		<tr>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td colspan="2" valign="top" class="listtopic">HAProxy DNS</td>
-		</tr>
-		<tr>
-			<td colspan="2" valign="top" class="vncell"><a href="/haproxy_stats.php?showstatresolvers=globalresolvers" target="_blank">DNS statistics</a></td>
-		</tr>
-		<tr>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<td colspan="2" valign="top" class="listtopic">HAProxy stats</td>
-		</tr>
-		<tr>
-			<td colspan="2" valign="top" class="vncell"><a href="/haproxy_stats.php?haproxystats=1" target="_blank">Fullscreen stats page</a></td>
-		</tr>
-		<tr>
-		<td colspan="2"  class="listlr">
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h2 class="panel-title"><?=gettext("HAProxy DNS statistics")?></h2>
+		</div>
+		<div class="table-responsive panel-body">
+			<a href="/haproxy_stats.php?showstatresolvers=globalresolvers" target="_blank">DNS statistics</a>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h2 class="panel-title"><?=gettext("HAProxy stats")?></h2>
+		</div>
+		<div class="table-responsive panel-body">
+			<a href="/haproxy_stats.php?haproxystats=1" target="_blank">Fullscreen stats page</a>
+		</div>
+		<div class="table-responsive panel-body">
 		<? if (isset($pconfig['enable']) && $pconfig['localstatsport'] && is_numeric($pconfig['localstatsport'])){?>
-			<iframe id="frame_haproxy_stats" width="1000px" height="1500px" seamless=1 src="/haproxy_stats.php?haproxystats=1<?=$request;?>"></iframe>
+			<iframe id="frame_haproxy_stats" width="1000" height="1500" seamless src="/haproxy_stats.php?haproxystats=1<?=$request;?>"></iframe>
 		<? } else { ?>
 			<br/>
 			In the "Settings" configure a internal stats port and enable haproxy for this to be functional. Also make sure the service is running.<br/>
 			<br/>
 		<? } ?>
+		</div>
 <?}?>		
-		</td>
-		</tr>
-		</table>
 	</div>
-	</td>
-	</tr>
-</table>
-<?php include("fend.inc"); ?>
-</body>
-</html>
+<?php include("foot.inc");
