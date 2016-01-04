@@ -203,8 +203,6 @@ $serverslist->fields_details = $fields_servers_details;
 $errorfileslist = new HaproxyHtmlList("table_errorfile", $fields_errorfile);
 $errorfileslist->keyfield = "errorcode";
 
-
-
 $fields_aclSelectionList=array();
 $fields_aclSelectionList[0]['name']="name";
 $fields_aclSelectionList[0]['columnheader']="Name";
@@ -480,9 +478,9 @@ if ($_POST) {
 }
 
 $closehead = false;
-$pgtitle = "HAProxy: Backend server pool: Edit";
+$pgtitle = array("Services", "HAProxy", "Backend server pool: Edit");
 include("head.inc");
-haproxy_css();
+haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 
 // 'processing' done, make all simple fields usable in html.
 foreach($simplefields as $field){
@@ -499,13 +497,10 @@ foreach($simplefields as $field){
 	.haproxy_transparent_clientip{display:none;}
 	.haproxy_check_agent{display:none;}
 	.haproxy_agent_check{display:none;}
-	.haproxy_stick_cookiename{display:none;}
-	.haproxy_stick_tableused{display:none;}
 	.haproxy_cookie_visible{display:none;}
 	.haproxy_help_serverlist{display:none;}
   </style>
 </head>
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
 <script type="text/javascript">
 	function clearcombo(){
 	  for (var i=document.iform.serversSelect.options.length-1; i>=0; i--){
@@ -574,8 +569,9 @@ foreach($simplefields as $field){
 		
 		
 		persist_sticky_type = d.getElementById("persist_sticky_type").value;
-		setCSSdisplay(".haproxy_stick_tableused", persist_sticky_type != 'none');
-		setCSSdisplay(".haproxy_stick_cookiename", persist_sticky_type == 'stick_rdp_cookie' ||  persist_sticky_type == 'stick_cookie_value');
+		//hideClass('haproxytestcfg', false);
+		hideClass('haproxy_stick_tableused', persist_sticky_type == 'none');
+		hideClass('haproxy_stick_cookiename', persist_sticky_type != 'stick_rdp_cookie' &&  persist_sticky_type != 'stick_cookie_value');
 		
 		cookie_example = sticky_type[persist_sticky_type]['cookiedescr'];
 		stick_cookiename_description = d.getElementById("stick_cookiename_description");
@@ -591,219 +587,208 @@ foreach($simplefields as $field){
 		}
 	}
 </script>
-<?php include("fbegin.inc"); ?>
-<?php if (isset($input_errors)) print_input_errors($input_errors); ?>
-	<form action="haproxy_pool_edit.php" method="post" name="iform" id="iform">
-	
-	<table width="100%" border="0" cellpadding="0" cellspacing="0">
-	  <tr><td class="tabnavtbl">
-	  <?php
-		haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
-	  ?>
-	  </td></tr>
-  <tr>
-    <td>
-	<div class="tabcont">
-	<table width="100%" border="0" cellpadding="6" cellspacing="0">
-		<tr>
-			<td colspan="2" valign="top" class="listtopic">Edit HAProxy Backend server pool</td>
-		</tr>	
-		<tr align="left">
-			<td width="22%" valign="top" class="vncellreq">Name</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input name="name" type="text" <?if(isset($pconfig['name'])) echo "value=\"{$pconfig['name']}\"";?> size="16" maxlength="16" />
-			</td>
-		</tr>
-		<tr align="left">
-			<td class="vncell" colspan="3"><strong>Server list</strong>
-			<span style="float:right;">
-			Toggle serverlist help. <a onclick="toggleCSSdisplay('.haproxy_help_serverlist');" title="<?php echo gettext("Help"); ?>"><img style="vertical-align:middle" src="/themes/<?php echo $g['theme']; ?>/images/icons/icon_help.gif" border="0" alt="help" /></a>
-			</span>
-			<?
-			$counter=0;
-			$serverslist->Draw($a_servers);
-			?>
-			<table class="haproxy_help_serverlist" style="border:1px dashed green" cellspacing="0">
-			<tr><td class="vncell">
-			Mode: </td><td class="vncell">Active: server will be used normally<br/>
-			Backup: server is only used in load balancing when all other non-backup servers are unavailable<br/>
-			Disabled: server is marked down in maintenance mode<br/>
-			Inactive: server will not be available for use
-			</td></tr><tr><td class="vncell">
-			Name: </td><td class="vncell">Used to as a name for the server in for example the stats<br/>EXAMPLE: MyWebServer
-			</td></tr><tr><td class="vncell">
-			Address: </td><td class="vncell">IP or hostname(only resolved on start-up.)<br/>EXAMPLE: 192.168.1.22 , fe80::1000:2000:3000:4000%em0 , WebServer1.localdomain
-			</td></tr><tr><td class="vncell">
-			Port: </td><td class="vncell">The port of the backend.<br/>EXAMPLE: 80 or 443<br/>
-			</td></tr><tr><td class="vncell">
-			SSL: </td><td class="vncell">Is the backend using SSL (commonly with port 443)<br/>
-			</td></tr><tr><td class="vncell">
-			Weight: </td><td class="vncell">A weight between 0 and 256, this setting can be used when multiple servers on different hardware need to be balanced with with a different part the traffic. A server with weight 0 wont get new traffic. Default if empty: 1
-			</td></tr><tr><td class="vncell">
-			Cookie: </td><td class="vncell">the value of the cookie used to identify a server (only when cookie-persistence is enabled below)
-			</td></tr><tr><td class="vncell">
-			Advanced: </td><td class="vncell">More advanced settings like rise,fall,error-limit,send-proxy and others can be configured here.<br/>For a full list of options see the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#5.2">HAProxy manual: Server and default-server options</a>
-			</td></tr>
-			</table>
-			</td>
-		</tr>
-		<tr align="left">
-			<td width="22%" valign="top" class="vncellreq">Balance</td>
-			<td width="78%" class="vtable" colspan="1">
-				<table width="100%" cellspacing="0">
-				<tr>
-					<td class="vncell" width="25%" valign="top">
-						<input type="radio" name="balance" value=""<?php if(empty($pconfig['balance'])) echo " CHECKED"; ?> />None
-					</td>
-					<td class="vncell">
-						This allows writing your own custom balance settings into the advanced section.
-						Or when you have no need for balancing with only 1 server.
-					</td>
-				</tr>
-				<tr>
-					<td class="vncell" width="25%" valign="top">
-						<input type="radio" name="balance" value="roundrobin"<?php if($pconfig['balance'] == "roundrobin") echo " CHECKED"; ?> />Round robin
-					</td>
-					<td class="vncell">
-						Each server is used in turns, according to their weights.
-						This is the smoothest and fairest algorithm when the server's
-						processing time remains equally distributed. This algorithm
-						is dynamic, which means that server weights may be adjusted
-						on the fly for slow starts for instance.
-					</td>
-				</tr>
-				<tr>
-					<td class="vncell" width="25%" valign="top">
-						<input type="radio" name="balance" value="static-rr"<?php if($pconfig['balance'] == "static-rr") echo " CHECKED"; ?> />Static Round Robin
-					</td>
-					<td class="vncell">
-						Each server is used in turns, according to their weights.
-						This algorithm is as similar to roundrobin except that it is
-						static, which means that changing a server's weight on the
-						fly will have no effect. On the other hand, it has no design
-						limitation on the number of servers, and when a server goes
-						up, it is always immediately reintroduced into the farm, once
-						the full map is recomputed. It also uses slightly less CPU to
-						run (around -1%).					
-					</td>
-				</tr>
-				<tr>
-					<td class="vncell" width="25%" valign="top">
-						<input type="radio" name="balance" value="leastconn"<?php if($pconfig['balance'] == "leastconn") echo " CHECKED"; ?> />Least Connections
-					</td>
-					<td class="vncell">
-						The server with the lowest number of connections receives the
-						connection. Round-robin is performed within groups of servers
-						of the same load to ensure that all servers will be used. Use
-						of this algorithm is recommended where very long sessions are
-						expected, such as LDAP, SQL, TSE, etc... but is not very well
-						suited for protocols using short sessions such as HTTP. This
-						algorithm is dynamic, which means that server weights may be
-						adjusted on the fly for slow starts for instance.
-					</td>
-				</tr>
-				<tr>
-					<td class="vncell" valign="top">
-						<input type="radio" name="balance" value="source"<?php if($pconfig['balance'] == "source") echo " CHECKED"; ?> />Source
-					</td>
-					<td class="vncell">
-						The source IP address is hashed and divided by the total
-						weight of the running servers to designate which server will
-						receive the request. This ensures that the same client IP
-						address will always reach the same server as long as no
-						server goes down or up. If the hash result changes due to the
-						number of running servers changing, many clients will be
-						directed to a different server. This algorithm is generally
-						used in TCP mode where no cookie may be inserted. It may also
-						be used on the Internet to provide a best-effort stickyness
-						to clients which refuse session cookies. This algorithm is
-						static, which means that changing a server's weight on the
-						fly will have no effect.
-					</td>
-				</tr>
-				<tr>
-					<td class="vncell" valign="top">
-						<input type="radio" name="balance" value="uri"<?php if($pconfig['balance'] == "uri") echo " CHECKED"; ?> />Uri (HTTP backends only)
-					</td>
-					<td class="vncell">
-						This algorithm hashes either the left part of the URI (before
-						the question mark) or the whole URI (if the "whole" parameter
-						is present) and divides the hash value by the total weight of
-						the running servers. The result designates which server will
-						receive the request. This ensures that the same URI will
-						always be directed to the same server as long as no server
-						goes up or down. This is used with proxy caches and
-						anti-virus proxies in order to maximize the cache hit rate.
-						Note that this algorithm may only be used in an HTTP backend.<br/>
-						<input name="balance_urilen" size="10" value="<?=$pconfig['balance_urilen']?>" />Len (optional) <br/>
-						The "len" parameter
-						indicates that the algorithm should only consider that many
-						characters at the beginning of the URI to compute the hash.<br/>
-						<input name="balance_uridepth" size="10" value="<?=$pconfig['balance_uridepth']?>" />Depth (optional) <br/>
-						The "depth" parameter indicates the maximum directory depth
-						to be used to compute the hash. One level is counted for each
-						slash in the request.<br/>
-						<input id="balance_uriwhole" name="balance_uriwhole" type="checkbox" value="yes" <?php if ($pconfig['balance_uriwhole']=='yes') echo "checked"; ?> />
-						Allow using whole URI including url parameters behind a question mark.
-					</td>
-				</tr>
-				<!-- TODO add some other balance methods -->
-				</table>
-			</td>
-		</tr>
-		<tr align="left">
-			<td width="22%" valign="top" class="vncell">Transparent ClientIP</td>
-			<td width="78%" class="vtable" colspan="2">
-				WARNING Activating this option will load rules in IPFW and might interfere with CaptivePortal and possibly other services due to the way server return traffic must be 'captured' with a automatically created fwd rule. This also breaks directly accessing the (web)server on the ports configured above. Also a automatic sloppy pf rule is made to allow HAProxy to server traffic.<br/>
-				<input id="transparent_clientip" name="transparent_clientip" type="checkbox" value="yes" <?php if ($pconfig['transparent_clientip']=='yes') echo "checked"; ?> onclick='updatevisibility();' />
-				Use Client-IP to connect to backend servers.
-				<div class="haproxy_transparent_clientip">
-			
-			<?
-				$interfaces = get_configured_interface_with_descr();
-				$interfaces2 = array();
-				foreach($interfaces as $key => $name)
-				{
-					
-					$interfaces2[$key]['name'] = $name;
-				}
-				echo_html_select("transparent_interface",$interfaces2,$pconfig['transparent_interface']?$pconfig['transparent_interface']:"lan","","updatevisibility();");	
-			?>Interface that will connect to the backend server. (this will generally be your LAN or OPT1(dmz) interface)<br/>			
-				</div>
-				<br/>
-				Connect transparently to the backend server's so the connection seams to come straight from the client ip address.
-				To work properly this requires the reply traffic to pass through pfSense by means of correct routing.<br/>
-				When using IPv6 only routable ip addresses can be used, host names or link-local addresses (FE80) will not work.<br/>				
-				(uses the option "source 0.0.0.0 usesrc clientip" or "source ipv6@ usesrc clientip")
-				<br/><br/>
-				Note : When this is enabled for any backend HAProxy will run as 'root' instead of chrooting to a lower privileged user, this reduces security in case a vulnerability is found.
-			</td>
-		</tr>
-		<tr align="left">
-			<td width="22%" valign="top" class="vncell">Per server pass thru</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input type="text" name='advanced' id='advanced' value='<?php echo htmlspecialchars($pconfig['advanced']); ?>' size="64" />
-				<br/>
-				NOTE: paste text into this box that you would like to pass thru. Applied to each 'server' line.
-			</td>
-		</tr>
+<?php if (isset($input_errors)) print_input_errors($input_errors);
 
-		<tr align="left">
-			<td width="22%" valign="top" class="vncell">Backend pass thru</td>
-			<td width="78%" class="vtable" colspan="2">
-				<? $textrowcount = max(substr_count($pconfig['advanced_backend'],"\n"), 2) + 2; ?>
-				<textarea  rows="<?=$textrowcount;?>" cols="70" name='advanced_backend' id='advanced_backend'><?php echo htmlspecialchars($pconfig['advanced_backend']); ?></textarea>
-				<br/>
-				NOTE: paste text into this box that you would like to pass thru. Applied to the backend section.
-			</td>
-		</tr>	
-		<tr>
-			<td width="22%" valign="top" class="vncell">Access Control lists</td>
-			<td width="78%" class="vtable" colspan="2" valign="top">
-			<?
-			$a_acl = $pconfig['a_acl'];
-			$htmllist_acls->Draw($a_acl);
-			?>
+$counter=0;
+
+//TODO - show 'required' fields (bold in 2.2 ..)  - max length for textinputs? -default selections?
+
+$form = new Form;
+
+$section = new Form_Section('Edit HAProxy Backend server pool');
+$section->addInput(new Form_Input('name', 'Name', 'text', $pconfig['name']
+))->setHelp('');
+$section->addInput(new Form_StaticText(
+	'Server list', 
+'
+	<span style="float:right;">
+	Toggle serverlist help. <a onclick="toggleCSSdisplay(\'.haproxy_help_serverlist\');" title="' . gettext("Help") . '">
+	'. haproxyicon("help", gettext("Help")) . '
+	</a>
+	</span>
+'
+.
+$serverslist->Draw($a_servers).
+<<<EOT
+<table class="haproxy_help_serverlist" style="border:1px dashed green" cellspacing="0">
+	<tr><td class="vncell">
+	Mode: </td><td class="vncell">Active: server will be used normally<br/>
+	Backup: server is only used in load balancing when all other non-backup servers are unavailable<br/>
+	Disabled: server is marked down in maintenance mode<br/>
+	Inactive: server will not be available for use
+	</td></tr><tr><td class="vncell">
+	Name: </td><td class="vncell">Used to as a name for the server in for example the stats<br/>EXAMPLE: MyWebServer
+	</td></tr><tr><td class="vncell">
+	Address: </td><td class="vncell">IP or hostname(only resolved on start-up.)<br/>EXAMPLE: 192.168.1.22 , fe80::1000:2000:3000:4000%em0 , WebServer1.localdomain
+	</td></tr><tr><td class="vncell">
+	Port: </td><td class="vncell">The port of the backend.<br/>EXAMPLE: 80 or 443<br/>
+	</td></tr><tr><td class="vncell">
+	SSL: </td><td class="vncell">Is the backend using SSL (commonly with port 443)<br/>
+	</td></tr><tr><td class="vncell">
+	Weight: </td><td class="vncell">A weight between 0 and 256, this setting can be used when multiple servers on different hardware need to be balanced with with a different part the traffic. A server with weight 0 wont get new traffic. Default if empty: 1
+	</td></tr><tr><td class="vncell">
+	Cookie: </td><td class="vncell">the value of the cookie used to identify a server (only when cookie-persistence is enabled below)
+	</td></tr><tr><td class="vncell">
+	Advanced: </td><td class="vncell">More advanced settings like rise,fall,error-limit,send-proxy and others can be configured here.<br/>For a full list of options see the <a target="_blank" href="http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#5.2">HAProxy manual: Server and default-server options</a>
+	</td></tr>
+	</table>
+EOT
+));
+
+$mode = $pconfig['balance'];
+$section->addInput(new Form_Checkbox(
+	'balance',
+	'Balance',
+	"None",
+	empty($mode),
+	''
+))->displayAsRadio()->setHelp('This allows writing your own custom balance settings into the advanced section.
+	Or when you have no need for balancing with only 1 server.');
+
+$section->addInput(new Form_Checkbox(
+	'balance',
+	null,
+	"Round robin",
+	$mode == 'roundrobin',
+	'roundrobin'
+))->displayAsRadio()->setHelp("Each server is used in turns, according to their weights.
+	This is the smoothest and fairest algorithm when the server's
+	processing time remains equally distributed. This algorithm
+	is dynamic, which means that server weights may be adjusted
+	on the fly for slow starts for instance.");
+
+$section->addInput(new Form_Checkbox(
+	'balance',
+	null,
+	"Static Round Robin",
+	$mode == 'static-rr',
+	'static-rr'
+))->displayAsRadio()->setHelp("Each server is used in turns, according to their weights.
+	This algorithm is as similar to roundrobin except that it is
+	static, which means that changing a server's weight on the
+	fly will have no effect. On the other hand, it has no design
+	limitation on the number of servers, and when a server goes
+	up, it is always immediately reintroduced into the farm, once
+	the full map is recomputed. It also uses slightly less CPU to
+	run (around -1%).");
+
+$section->addInput(new Form_Checkbox(
+	'balance',
+	null,
+	"Least Connections",
+	$mode == 'leastconn',
+	'leastconn'
+))->displayAsRadio()->setHelp('The server with the lowest number of connections receives the
+	connection. Round-robin is performed within groups of servers
+	of the same load to ensure that all servers will be used. Use
+	of this algorithm is recommended where very long sessions are
+	expected, such as LDAP, SQL, TSE, etc... but is not very well
+	suited for protocols using short sessions such as HTTP. This
+	algorithm is dynamic, which means that server weights may be
+	adjusted on the fly for slow starts for instance.');
+
+$section->addInput(new Form_Checkbox(
+	'balance',
+	null,
+	"Source",
+	$mode == 'source',
+	'source'
+))->displayAsRadio()->setHelp("The source IP address is hashed and divided by the total
+	weight of the running servers to designate which server will
+	receive the request. This ensures that the same client IP
+	address will always reach the same server as long as no
+	server goes down or up. If the hash result changes due to the
+	number of running servers changing, many clients will be
+	directed to a different server. This algorithm is generally
+	used in TCP mode where no cookie may be inserted. It may also
+	be used on the Internet to provide a best-effort stickyness
+	to clients which refuse session cookies. This algorithm is
+	static, which means that changing a server's weight on the
+	fly will have no effect.");
+
+$section->addInput(new Form_Checkbox(
+	'balance',
+	null,
+	"Uri (HTTP backends only)",
+	$mode == 'uri',
+	'uri'
+))->displayAsRadio()->setHelp(
+'This algorithm hashes either the left part of the URI (before
+	the question mark) or the whole URI (if the "whole" parameter
+	is present) and divides the hash value by the total weight of
+	the running servers. The result designates which server will
+	receive the request. This ensures that the same URI will
+	always be directed to the same server as long as no server
+	goes up or down. This is used with proxy caches and
+	anti-virus proxies in order to maximize the cache hit rate.
+	Note that this algorithm may only be used in an HTTP backend.<br/>
+	<input name="balance_urilen" size="10" value="'. $pconfig['balance_urilen'] . '" />Len (optional) <br/>
+	The "len" parameter
+	indicates that the algorithm should only consider that many
+	characters at the beginning of the URI to compute the hash.<br/>
+	<input name="balance_uridepth" size="10" value="' . $pconfig['balance_uridepth'] .'" />Depth (optional) <br/>
+	The "depth" parameter indicates the maximum directory depth
+	to be used to compute the hash. One level is counted for each
+	slash in the request.<br/>
+	<input id="balance_uriwhole" name="balance_uriwhole" type="checkbox" value="yes" '. (($pconfig['balance_uriwhole']=='yes')? "checked" : "") .' />
+	Allow using whole URI including url parameters behind a question mark.'
+);
+
+$interfaces = get_configured_interface_with_descr();
+$section->addInput(new Form_StaticText(
+	'Transparent ClientIP', <<<EOT
+	<div class="alert alert-warning" role="alert">
+		<p>
+			WARNING Activating this option will load rules in IPFW and might interfere with CaptivePortal and possibly other services due 
+			to the way server return traffic must be 'captured' with a automatically created fwd rule. This also breaks directly accessing 
+			the (web)server on the ports configured above. Also a automatic sloppy pf rule is made to allow HAProxy to server traffic.<br/>
+			Workaround exists only by configuring a second port or IP on the destination server for direct access of the website.
+		</p>
+	</div>
+EOT
+.(new Form_Checkbox(
+	'transparent_clientip',
+	'',
+	"Use Client-IP to connect to backend servers.",
+	$pconfig['transparent_clientip']
+))->setHelp("By default, failed health check are logged if server is UP and successful health checks are logged if server is DOWN, so the amount of additional information is limited."
+)
+.
+(new Form_Select(
+	'transparent_interface',
+	'Health check method',
+	$pconfig['transparent_interface']?$pconfig['transparent_interface']:"lan",
+	$interfaces
+))->addClass("haproxy_transparent_clientip")->setHelp("Interface that will connect to the backend server. (this will generally be your LAN or OPT1(dmz) interface)")
+.
+<<<EOT
+	
+	Connect transparently to the backend server's so the connection seams to come straight from the client ip address.
+	To work properly this requires the reply traffic to pass through pfSense by means of correct routing.<br/>
+	When using IPv6 only routable ip addresses can be used, host names or link-local addresses (FE80) will not work.<br/>				
+	(uses the option "source 0.0.0.0 usesrc clientip" or "source ipv6@ usesrc clientip")
+	<br/><br/>
+	Note : When this is enabled for any backend HAProxy will run as 'root' instead of chrooting to a lower privileged user, this reduces security in case a vulnerability is found.
+EOT
+));
+
+$section->addInput(new Form_Input('advanced', 'Per server pass thru', 'text', $pconfig['advanced']
+))->setHelp('NOTE: paste text into this box that you would like to pass thru. Applied to each "server" line.');
+
+$textrowcount = max(substr_count($pconfig['advanced_backend'],"\n"), 2) + 2;
+$section->addInput(new Form_Textarea (
+	'advanced_backend',
+	'Backend pass thru',
+	$pconfig['advanced_backend']
+))->setRows($textrowcount)->setNoWrap()->setHelp('NOTE: paste text into this box that you would like to pass thru. Applied to the backend section.');
+
+$form->add($section);
+
+$section = new Form_Section('Access control lists and actions');
+$section->addInput(new Form_StaticText(
+	'Access Control lists',
+	$htmllist_acls->Draw($pconfig['a_acl']).
+<<<EOT
 			<br/>
 				Example:
 				<table border='1' style='border-collapse:collapse'>
@@ -829,429 +814,279 @@ foreach($simplefields as $field){
 			<br/>
 			acl's with the same name will be 'combined' using OR criteria.<br/>
 			For more information about ACL's please see <a href='http://haproxy.1wt.eu/download/1.5/doc/configuration.txt' target='_blank'>HAProxy Documentation</a> Section 7 - Using ACL's<br/><br/>
-			<strong>NOTE Important change in behaviour, since package version 0.32</strong><br/>
-			-acl's are no longer combined with logical AND operators, list multiple acl's below where needed.<br/>
-			-acl's alone no longer implicitly generate use_backend configuration. Add 'actions' below to accomplish this behaviour.
-			</td>
+			Actions should be added below to use the result of the acl as a conditional parameter.
+EOT
+));
+
+$section->addInput(new Form_StaticText(
+	'Actions',
+	$htmllist_actions->Draw($pconfig['a_actionitems']).
+<<<EOT
+	<br/>Example:
+	<table border='1' style='border-collapse:collapse'>
+		<tr>
+			<td><b>Action</b></td>
+			<td><b>Parameters</b></td>
+			<td><b>Condition</b></td>
 		</tr>
 		<tr>
-			<td width="22%" valign="top" class="vncellreq">Actions</td>
-			<td width="78%" class="vtable" colspan="2" valign="top">
-				<?
-				$a_actionitems = $pconfig['a_actionitems'];
-				$htmllist_actions->Draw($a_actionitems);
-				?>
-				<br/>
-				Example:
-				<table border='1' style='border-collapse:collapse'>
-					<tr>
-						<td><b>Action</b></td>
-						<td><b>Parameters</b></td>
-						<td><b>Condition</b></td>
-					</tr>
-					<tr>
-						<td>Use Backend</td>
-						<td>Website1Backend</td>
-						<td>Backend1acl</td>
-					</tr>
-					<tr>
-						<td>http-request header set</td>
-						<td>Headername: X-HEADER-ClientCertValid<br/>New logformat value: YES</td>
-						<td>addHeaderAcl</td>
-					</tr>
-				</table>
-			</td>
+			<td>Use Backend</td>
+			<td>Website1Backend</td>
+			<td>Backend1acl</td>
 		</tr>
-		<tr><td>&nbsp;</td></tr>
 		<tr>
-			<td colspan="2" valign="top" class="listtopic">Health checking</td>
+			<td>http-request header set</td>
+			<td>Headername: X-HEADER-ClientCertValid<br/>New logformat value: YES</td>
+			<td>addHeaderAcl</td>
 		</tr>
-		<tr align="left">
-			<td width="22%" valign="top" class="vncell">Health check method</td>
-			<td width="78%" class="vtable" colspan="2">
-				<?
-				echo_html_select("check_type",$a_checktypes,$pconfig['check_type']?$pconfig['check_type']:"HTTP","","updatevisibility();");
-				?><br/>
-				<textarea readonly="yes" cols="60" rows="2" id="check_type_description" name="check_type_description" style="padding:5px; border:1px dashed #990000; background-color: #ffffff; color: #000000; font-size: 8pt;"></textarea>
-			</td>
-		</tr>
-		<tr align="left" class="haproxy_check_enabled">
-			<td width="22%" valign="top" class="vncell">Check frequency</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input name="checkinter" type="text" <?if(isset($pconfig['checkinter'])) echo "value=\"{$pconfig['checkinter']}\"";?> size="20" /> milliseconds
-				<br/>For HTTP/HTTPS defaults to 1000 if left blank. For TCP no check will be performed if left empty.
-			</td>
-		</tr>
-		<tr align="left" class="haproxy_check_enabled">
-			<td width="22%" valign="top" class="vncell">Log checks</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="log-health-checks" name="log-health-checks" type="checkbox" value="yes" <?php if ($pconfig['log-health-checks']=='yes') echo "checked"; ?> onclick='updatevisibility();' />
-				When this option is enabled, any change of the health check status or to the server's health will be logged.
-				<br/>
-				By default, failed health check are logged if server is UP and successful health checks are logged if server is DOWN, so the amount of additional information is limited.
-			</td>
-		</tr>
-		<tr align="left" class="haproxy_check_http">
-			<td width="22%" valign="top" class="vncell">Http check method</td>
-			<td width="78%" class="vtable" colspan="2">
-				<?
-				echo_html_select("httpcheck_method",$a_httpcheck_method,$pconfig['httpcheck_method']);
-				?>
-				<br/>OPTIONS is the method usually best to perform server checks, HEAD and GET can also be used.
-				If the server gets marked as down in the stats page then changing this to GET usually has the biggest chance of working, but might cause more processing overhead on the websever and is less easy to filter out of its logs.
-			</td>
-		</tr>
-		<tr align="left" class="haproxy_check_http">
-			<td width="22%" valign="top" class="vncell">Http check URI</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input name="monitor_uri" type="text" <?if(isset($pconfig['monitor_uri'])) echo "value=\"{$pconfig['monitor_uri']}\"";?>size="64" />
-				<br/>Defaults to / if left blank.
-			</td>
-		</tr>
-		<tr align="left" class="haproxy_check_http">
-			<td width="22%" valign="top" class="vncell">Http check version</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input name="monitor_httpversion" type="text" <?if(isset($pconfig['monitor_httpversion'])) echo "value=\"{$pconfig['monitor_httpversion']}\"";?> size="64" />
-				<br/>Defaults to "HTTP/1.0" if left blank.
-				Note that the Host field is mandatory in HTTP/1.1, and as a trick, it is possible to pass it
-				after "\r\n" following the version string like this:<br/>
-				&nbsp;&nbsp;&nbsp;&nbsp;"<i>HTTP/1.1\r\nHost:\ www</i>"<br/>
-				Also some hosts might require an accept parameter like this:<br/>
-				&nbsp;&nbsp;&nbsp;&nbsp;"<i>HTTP/1.0\r\nHost:\ webservername:8080\r\nAccept:\ */*</i>"
-			</td>
-		</tr>
-		<tr align="left" class="haproxy_check_username">
-			<td width="22%" valign="top" class="vncell">Check with Username</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input name="monitor_username" id="monitor_username" type="text" <?if(isset($pconfig['monitor_username'])) echo "value=\"{$pconfig['monitor_username']}\"";?>size="64" onchange="updatevisibility();" onkeyup="updatevisibility();" />
-				<br/>
-				This is the username which will be used when connecting to MySQL/PostgreSQL server.
+	</table>
+EOT
+));
+$form->add($section);
+
+$section = new Form_Section_class('Health checking');
+$section->addInput(new Form_Select(
+	'check_type',
+	'Health check method',
+	$pconfig['check_type']?$pconfig['check_type']:"HTTP",
+	haproxy_keyvalue_array($a_checktypes)
+))->setHelp('<textarea readonly="yes" cols="60" rows="2" id="check_type_description" name="check_type_description" style="padding:5px; border:1px dashed #990000; background-color: #ffffff; color: #000000; font-size: 8pt;"></textarea>');
+
+//TODO milliseconds behind field.
+$section->addInput(new Form_Input('checkinter', 'Check frequency', 'text', $pconfig['checkinter']
+),"haproxy_check_enabled")->setHelp('milliseconds<br/> For HTTP/HTTPS defaults to 1000 if left blank. For TCP no check will be performed if left empty.');
+$section->addInput(new Form_Checkbox(
+	'log-health-checks',
+	'Log checks',
+	"When this option is enabled, any change of the health check status or to the server's health will be logged.",
+	$pconfig['log-health-checks']
+),"haproxy_check_enabled")->setHelp("By default, failed health check are logged if server is UP and successful health checks are logged if server is DOWN, so the amount of additional information is limited.");
+$section->addInput(new Form_Select(
+	'httpcheck_method',
+	'Http check method',
+	$pconfig['httpcheck_method'],
+	haproxy_keyvalue_array($a_httpcheck_method)
+),"haproxy_check_http")->setHelp('OPTIONS is the method usually best to perform server checks, HEAD and GET can also be used.
+	If the server gets marked as down in the stats page then changing this to GET usually has the biggest chance of working, but might cause more processing overhead on the websever and is less easy to filter out of its logs.');
+$section->addInput(new Form_Input('monitor_uri', 'Url used by http check requests.', 'text', $pconfig['monitor_uri']
+),"haproxy_check_http")->setHelp('Defaults to / if left blank.');
+$section->addInput(new Form_Input('monitor_httpversion', 'Http check version', 'text', $pconfig['monitor_httpversion']
+),"haproxy_check_http")->setHelp(<<<EOT
+	Defaults to "HTTP/1.0" if left blank.
+	Note that the Host field is mandatory in HTTP/1.1, and as a trick, it is possible to pass it
+	after "\r\n" following the version string like this:<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;"<i>HTTP/1.1\r\nHost:\ www</i>"<br/>
+	Also some hosts might require an accept parameter like this:<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;"<i>HTTP/1.0\r\nHost:\ webservername:8080\r\nAccept:\ */*</i>"
+EOT
+);
+$section->addInput(new Form_Input('monitor_username', 'Check with Username', 'text', $pconfig['monitor_username']
+),"haproxy_check_username")->setHelp(<<<EOT
+This is the username which will be used when connecting to MySQL/PostgreSQL server.
 				<pre>
 USE mysql;
 CREATE USER '<span id="sqlcheckusername"></span>'@'&lt;pfSenseIP&gt;';
 FLUSH PRIVILEGES;</pre>
-			</td>
-		</tr>
-		<tr align="left" class="haproxy_check_smtp">
-			<td width="22%" valign="top" class="vncell">Domain</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input name="monitor_domain" type="text" <?if(isset($pconfig['monitor_domain'])) echo "value=\"{$pconfig['monitor_domain']}\"";?> size="64" />
-			</td>
-		</tr>
-		<tr align="left" class="haproxy_check_agent">
-			<td width="22%" valign="top" class="vncell">Agentport</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input name="monitor_agentport" type="text" <?if(isset($pconfig['monitor_agentport'])) echo "value=\"{$pconfig['monitor_agentport']}\"";?> size="64" />
-				<br/>
-				Fill in the TCP portnumber the healthcheck should be performed on.
-			</td>
-		</tr>
-		<tr><td>&nbsp;</td></tr>
-		<tr>
-			<td colspan="2" valign="top" class="listtopic">Agent checks</td>
-		</tr>
-		<tr align="left">
-			<td width="22%" valign="top" class="vncell">Use agent checks</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="agent_check" name="agent_check" type="checkbox" value="yes" <?php if ($pconfig['agent_check']=='yes') echo "checked"; ?> onclick='updatevisibility();' />
-				Use a TCP connection to read an ASCII string of the form 100%,75%,drain,down (more about this in the <a href='http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#agent-check' target='_blank'>haproxy manual</a>)
-			</td>
-		</tr>
-		<tr align="left" class="haproxy_agent_check">
-			<td width="22%" valign="top" class="vncell">Agent port</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input name="agent_port" type="text" <?if(isset($pconfig['agent_port'])) echo "value=\"{$pconfig['agent_port']}\"";?> size="64" />
-				<br/>
-				Fill in the TCP portnumber the healthcheck should be performed on.
-			</td>
-		</tr>
-		<tr align="left" class="haproxy_agent_check">
-			<td width="22%" valign="top" class="vncell">Agent interval</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input name="agent_inter" type="text" <?if(isset($pconfig['agent_inter'])) echo "value=\"{$pconfig['agent_inter']}\"";?> size="64" />
-				<br/>
-				Interval between two agent checks, defaults to 2000 ms.
-			</td>
-		</tr>
-		<tr><td>&nbsp;</td></tr>
-		<tr>
-			<td colspan="2" valign="top" class="listtopic">Advanced settings</td>
-		</tr>
-		<tr align="left">
-			<td width="22%" valign="top" class="vncell">Connection timeout</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input name="connection_timeout" type="text" <?if(isset($pconfig['connection_timeout'])) echo "value=\"{$pconfig['connection_timeout']}\"";?> size="20" />
-				<div>the time (in milliseconds) we give up if the connection does not complete within (default 30000).</div>
-			</td>
-		</tr>
-		<tr align="left">
-			<td width="22%" valign="top" class="vncell">Server timeout</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input name="server_timeout" type="text" <?if(isset($pconfig['server_timeout'])) echo "value=\"{$pconfig['server_timeout']}\"";?> size="20" />
-				<div>the time (in milliseconds) we accept to wait for data from the server, or for the server to accept data (default 30000).</div>
-			</td>
-		</tr>
-		<tr align="left">
-			<td width="22%" valign="top" class="vncell">Retries</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input name="retries" type="text" <?if(isset($pconfig['retries'])) echo "value=\"{$pconfig['retries']}\"";?> size="20" />
-				<div>After a connection failure to a server, it is possible to retry, potentially
-on another server. This is useful if health-checks are too rare and you don't
-want the clients to see the failures. The number of attempts to reconnect is
-set by the 'retries' parameter.</div>
-			</td>
-		</tr>
-		<tr><td>&nbsp;</td></tr>
-		<tr>
-			<td colspan="2" valign="top" class="listtopic">Cookie persistence</td>
-		</tr>
-		<tr align="left">
-			<td width="22%" valign="top" class="vncell">Cookie Enabled</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="persist_cookie_enabled" name="persist_cookie_enabled" type="checkbox" value="yes" <?php if ($pconfig['persist_cookie_enabled']=='yes') echo "checked"; ?> onclick='updatevisibility();' />
-				Enables cookie based persistence. (only used on 'http' frontends)
-			</td>
-		</tr>
-		<tr class="haproxy_cookie_visible" align="left">
-			<td width="22%" valign="top" class="vncellreq">Server Cookies</td>
-			<td width="78%" class="vtable" colspan="2">
-				<b>Make sure to configure a different cookie on every server in this backend.<b/>
-			</td>
-		</tr>
-		<tr class="haproxy_cookie_visible" align="left">
-			<td width="22%" valign="top" class="vncellreq">Cookie Name</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="persist_cookie_name" name="persist_cookie_name" type="text" <?if(isset($pconfig['persist_cookie_name'])) echo "value=\"{$pconfig['persist_cookie_name']}\"";?> size="64" /><br/>
-				The string name to track in Set-Cookie and Cookie HTTP headers.<br/>
-				EXAMPLE: MyLoadBalanceCookie JSESSIONID PHPSESSID ASP.NET_SessionId
-			</td>
-		</tr>
-		<tr class="haproxy_cookie_visible" align="left">
-			<td width="22%" valign="top" class="vncellreq">Cookie Mode</td>
-			<td width="78%" class="vtable" colspan="2">
-				<?
-				echo_html_select("persist_cookie_mode",$a_cookiemode,$pconfig['persist_cookie_mode'],"","updatevisibility();");
-				?>
-				Determines how HAProxy inserts/prefixes/replaces or examines cookie and set-cookie headers.<br/>
-				EXAMPLE: with an existing PHPSESSIONID you can for example use "Session-prefix" or to create a new cookie use "Insert-silent".<br/>
-				<br/>
-				<textarea readonly="yes" cols="60" rows="2" id="persist_cookie_mode_description" name="persist_cookie_mode_description" style="padding:5px; border:1px dashed #990000; background-color: #ffffff; color: #000000; font-size: 8pt;"></textarea>
-			</td>
-		</tr>
-		<tr class="haproxy_cookie_visible"  align="left">
-			<td width="22%" valign="top" class="vncell">Cookie Cachable</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="persist_cookie_cachable" name="persist_cookie_cachable" type="checkbox" value="yes" <?php if ($pconfig['persist_cookie_cachable']=='yes') echo "checked"; ?> onclick='updatevisibility();' />
-				Allows shared caches to cache the server response.
-			</td>
-		</tr>
-		<tr><td>&nbsp;</td></tr>
-		<tr>
-			<td colspan="2" valign="top" class="listtopic">Stick-table persistence</td>
-		</tr>
-		<tr><td class="vncell"></td><td class="vncell">These options are used to make sure seperate requests from a single client go to the same backend. This can be required for servers that keep track of for example a shopping cart.</td></tr>
-		<tr align="left">
-			<td width="22%" valign="top" class="vncell">Stick tables</td>
-			<td width="78%" class="vtable" colspan="2">
-				<?
-				echo_html_select("persist_sticky_type",$a_sticky_type,$pconfig['persist_sticky_type'],"","updatevisibility();");
-				?>
-				Sticktables that are kept in memory, and when matched make sure the same server will be used.<br/>
-				<textarea readonly="yes" cols="60" rows="2" id="sticky_type_description" name="sticky_type_description" style="padding:5px; border:1px dashed #990000; background-color: #ffffff; color: #000000; font-size: 8pt;"></textarea>
-			</td>
-		</tr>
-		<tr align="left" class="haproxy_stick_cookiename">
-			<td width="22%" valign="top" class="vncellreq">Stick cookie name</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input name="persist_stick_cookiename" type="text" <?if(isset($pconfig['persist_stick_cookiename'])) echo "value=\"{$pconfig['persist_stick_cookiename']}\"";?> size="20" />
-				Cookiename to use for sticktable<br/>
-				<span id="stick_cookiename_description"></span>
-			</td>
-		</tr>
-		<tr align="left" class="haproxy_stick_cookiename">
-			<td width="22%" valign="top" class="vncellreq">Stick cookie length</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input name="persist_stick_length" type="text" <?if(isset($pconfig['persist_stick_length'])) echo "value=\"{$pconfig['persist_stick_length']}\"";?> size="20" />
-				The maximum number of characters that will be stored in a "string" type stick-table<br/>
-				<span id="stick_cookiename_description"></span>
-			</td>
-		</tr>
-		<tr align="left" class="haproxy_stick_tableused">
-			<td width="22%" valign="top" class="vncellreq">stick-table expire</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input name="persist_stick_expire" type="text" <?if(isset($pconfig['persist_stick_expire'])) echo "value=\"{$pconfig['persist_stick_expire']}\"";?> size="20" /> d=days h=hour m=minute s=seconds ms=miliseconds(default)<br/>
-				Defines the maximum duration of an entry in the stick-table since it was last created, refreshed or matched.<br/>
-				EXAMPLE: 30m 
-			</td>
-		</tr>
-		<tr align="left" class="haproxy_stick_tableused">
-			<td width="22%" valign="top" class="vncellreq">stick-table size</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input name="persist_stick_tablesize" type="text" <?if(isset($pconfig['persist_stick_tablesize'])) echo "value=\"{$pconfig['persist_stick_tablesize']}\"";?> size="20" /> maximum number of entries supports suffixes "k", "m", "g" for 2^10, 2^20 and 2^30 factors.<br/>
-				Is the maximum number of entries that can fit in the table. This value directly impacts memory usage. Count approximately
-				50 bytes per entry, plus the size of a string if any.<br/>
-				EXAMPLE: 50k
-			</td>
-		</tr>
-		<tr><td>&nbsp;</td></tr>
-		<? if (haproxy_version() >= '1.6' ) { ?>
-		<tr>
-			<td colspan="2" valign="top" class="listtopic">Email notifications</td>
-		</tr>		
-		<tr>
-			<td valign="top" class="vncell">
-				Mail level
-			</td>
-			<td class="vtable">
-				<?
-				echo_html_select('email_level', $a_sysloglevel, $pconfig['email_level']);
-				?>
-				Define the maximum loglevel to send emails for.
-			</td>
-		</tr>
-		<tr>
-			<td valign="top" class="vncell">
-				Mail to
-			</td>
-			<td class="vtable">
-				<input name="email_to" type="text" <?if(isset($pconfig['email_to'])) echo "value=\"{$pconfig['email_to']}\"";?> size="50"/><br/>
-				Email address to send emails to, defaults to the value set on the global settings tab.
-			</td>
-		</tr>
-		<tr><td>&nbsp;</td></tr>
-		<? } ?>
-		<tr>
-			<td colspan="2" valign="top" class="listtopic">Statistics</td>
-		</tr>
-		<tr align="left">
-			<td width="22%" valign="top" class="vncell">Stats Enabled</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="stats_enabled" name="stats_enabled" type="checkbox" value="yes" <?php if ($pconfig['stats_enabled']=='yes') echo "checked"; ?> onclick='updatevisibility();' />
-				Enables the haproxy statistics page (only used on 'http' frontends)
-			</td>
-		</tr>
-		<tr class="haproxy_stats_visible" align="left" id='stats_uri_row'>
-			<td width="22%" valign="top" class="vncellreq">Stats Uri</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="stats_uri" name="stats_uri" type="text" <?if(isset($pconfig['stats_uri'])) echo "value=\"{$pconfig['stats_uri']}\"";?> size="64" /><br/>
-				This url can be used when this same backend is used for passing connections to backends<br/>
-				EXAMPLE: / or /haproxy?stats
-			</td>
-		</tr>
-		<tr class="haproxy_stats_visible" align="left" id='stats_scope_row'>
-			<td width="22%" valign="top" class="vncell">Stats Scope</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="stats_scope" name="stats_scope" type="text" <?if(isset($pconfig['stats_scope'])) echo "value=\"{$pconfig['stats_scope']}\"";?> size="64" /><br/>
-				Determines which frontends and backends are shown, leave empty to show all.<br/>
-				EXAMPLE: frontendA,backend1,backend2
-			</td>
-		</tr>
-		<tr class="haproxy_stats_visible" align="left" id='stats_realm_row'>
-			<td width="22%" valign="top" class="vncell">Stats Realm</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="stats_realm" name="stats_realm" type="text" <?if(isset($pconfig['stats_realm'])) echo "value=\"{$pconfig['stats_realm']}\"";?> size="64" /><br/>
-				The realm is shown when authentication is requested by haproxy.<br/>
-				EXAMPLE: haproxystats
-			</td>
-		</tr>
-		<tr class="haproxy_stats_visible" align="left" id='stats_username_row'>
-			<td width="22%" valign="top" class="vncell">Stats Username</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="stats_username" name="stats_username" type="text" <?if(isset($pconfig['stats_username'])) echo "value=\"".$pconfig['stats_username']."\"";?> size="64" />
-				EXAMPLE: admin
-			</td>
-		</tr>
-		<tr class="haproxy_stats_visible" align="left" id='stats_password_row'>
-			<td width="22%" valign="top" class="vncell">Stats Password</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="stats_password" name="stats_password" type="password" <?
-					if(isset($pconfig['stats_password'])) 
-						echo "value=\"".$pconfig['stats_password']."\"";
-					?> size="64" />
-				EXAMPLE: 1Your2Secret3P@ssword
-			</td>
-		</tr>
-		<tr class="haproxy_stats_visible" align="left" id='stats_node_admin_row'>
-			<td width="22%" valign="top" class="vncell">Stats Admin</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="stats_admin" name="stats_admin" type="checkbox" value="yes" <?php if ($pconfig['stats_admin']=='yes') echo "checked"; ?> />
-				Makes available the options disable/enable/softstop/softstart/killsessions from the stats page.<br/>
-				Note: This is not persisted when haproxy restarts. For publicly visible stats pages this should be disabled.
-			</td>
-		</tr>
-		<tr class="haproxy_stats_visible" align="left" id='stats_node_row'>
-			<td width="22%" valign="top" class="vncell">Stats Nodename</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="stats_node" name="stats_node" type="text" <?if(isset($pconfig['stats_node'])) echo "value=\"{$pconfig['stats_node']}\"";?> size="64" /><br/>
-				The short name is displayed in the stats and helps to differentiate which server in a cluster is actually serving clients.
-			</td>
-		</tr>
-		<tr class="haproxy_stats_visible" align="left" id='stats_desc_row'>
-			<td width="22%" valign="top" class="vncell">Stats Description</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="stats_desc" name="stats_desc" type="text" <?if(isset($pconfig['stats_desc'])) echo "value=\"{$pconfig['stats_desc']}\"";?> size="64" /><br/><br/>
-				The description is displayed behind the Nodename set above.
-			</td>
-		</tr>
-		<tr class="haproxy_stats_visible" align="left" id='stats_refresh_row'>
-			<td width="22%" valign="top" class="vncell">Stats Refresh</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="stats_refresh" name="stats_refresh" type="text" <?if(isset($pconfig['stats_refresh'])) echo "value=\"{$pconfig['stats_refresh']}\"";?> size="10" maxlength="30" /><br/>
-				Specify the refresh rate of the stats page in seconds, or specified time unit (us, ms, s, m, h, d).
-			</td>
-		</tr>
-		<tr><td>&nbsp;</td></tr>
-		<tr>
-			<td colspan="2" valign="top" class="listtopic">Error files</td>
-		</tr>
-		<tr class="" align="left" id='errorfiles'>
-		<td colspan="2" valign="top" class="vtable">
-		Use these to replace the error pages that haproxy can generate by custom pages created on the files tab.
-		For example haproxy will generate a 503 error page when no backend is available, you can replace that page here.
-		<br/>
-		<br/>
-		<?
-		$errorfileslist->Draw($a_errorfiles);
-		?>
-		</td>
-		</tr>
-		<tr><td>&nbsp;</td></tr>
-		<tr>
-			<td colspan="2" valign="top" class="listtopic">Advanced</td>
-		</tr>
-		<tr class="" align="left" id='Strict-Transport-Security'>
-			<td width="22%" valign="top" class="vncell">HSTS Strict-Transport-Security</td>
-			<td width="78%" class="vtable" colspan="2">
-				When configured enables "HTTP Strict Transport Security" leave empty to disable. (only used on 'http' frontends)<br/>
-				<b>WARNING! the domain will only work over https with a valid certificate!</b><br/>
-				<input id="strict_transport_security" name="strict_transport_security" type="text" <?if(isset($pconfig['strict_transport_security'])) echo "value=\"{$pconfig['strict_transport_security']}\"";?> size="20" /> Seconds<br/>
+EOT
+);
+$section->addInput(new Form_Input('monitor_domain', 'Domain', 'text', $pconfig['monitor_domain']
+),"haproxy_check_smtp")->setHelp('');
+$section->addInput(new Form_Input('monitor_agentport', 'Agentport', 'monitor_agentport', $pconfig['name']
+),"haproxy_check_agent")->setHelp('Fill in the TCP portnumber the healthcheck should be performed on.');
+
+$form->add($section);
+
+$section = new Form_Section_class('Agent checks');
+$section->addInput(new Form_Checkbox(
+	'agent_check',
+	'Agent checks',
+	'Use agent checks',
+	$pconfig['agent_check']
+))->setHelp("Use a TCP connection to read an ASCII string of the form 100%,75%,drain,down (more about this in the <a href='http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#agent-check' target='_blank'>haproxy manual</a>)");
+$section->addInput(new Form_Input('agent_port', 'Agent port', 'number', $pconfig['agent_port']
+),"haproxy_agent_check")->setHelp('Fill in the TCP portnumber the healthcheck should be performed on.');
+$section->addInput(new Form_Input('agent_inter', 'Agent interval', 'text', $pconfig['agent_inter']
+),"haproxy_agent_check")->setHelp('Interval between two agent checks, defaults to 2000 ms.');
+
+$form->add($section);
+
+$section = new Form_Section('Advanced settings');
+$section->addInput(new Form_Input('connection_timeout', 'Connection timeout', 'text', $pconfig['connection_timeout']
+))->setHelp('The time (in milliseconds) we give up if the connection does not complete within (default 30000).');
+$section->addInput(new Form_Input('server_timeout', 'Server timeout', 'text', $pconfig['server_timeout']
+))->setHelp('The time (in milliseconds) we accept to wait for data from the server, or for the server to accept data (default 30000).');
+$section->addInput(new Form_Input('retries', 'Retries', 'text', $pconfig['retries']
+))->setHelp(<<<EOT
+	After a connection failure to a server, it is possible to retry, potentially
+	on another server. This is useful if health-checks are too rare and you don't
+	want the clients to see the failures. The number of attempts to reconnect is
+	set by the "retries" parameter.
+EOT
+);
+$form->add($section);
+
+$section = new Form_Section_class('Cookie persistence');
+$section->addInput(new Form_Checkbox(
+	'persist_cookie_enabled',
+	'Cookie Enabled',
+	'Enables cookie based persistence. (only used on "http" frontends)',
+	$pconfig['persist_cookie_enabled']
+))->setHelp('');
+$section->addInput(new Form_StaticText(
+	'Server Cookies',
+	"<strong>Make sure to configure a different cookie on every server in this backend.</strong>"
+),"haproxy_cookie_visible")
+->setHelp(''); // TODO why is this needed to get a good screenlayout? (fieldnames of later fields before the inputbox..)
+
+$section->addInput(new Form_Input('persist_cookie_name', 'Cookie Name', 'text', $pconfig['persist_cookie_name']
+),"haproxy_cookie_visible")->setHelp('The string name to track in Set-Cookie and Cookie HTTP headers.<br/>
+	EXAMPLE: MyLoadBalanceCookie JSESSIONID PHPSESSID ASP.NET_SessionId');
+$section->addInput(new Form_Select(
+	'persist_cookie_mode',
+	'Cookie Mode',
+	$pconfig['persist_cookie_mode'],
+	haproxy_keyvalue_array($a_cookiemode)
+),"haproxy_cookie_visible")->setHelp('Determines how HAProxy inserts/prefixes/replaces or examines cookie and set-cookie headers.<br/>
+	EXAMPLE: with an existing PHPSESSIONID you can for example use "Session-prefix" or to create a new cookie use "Insert-silent".<br/>
+	<br/>
+	<textarea readonly="yes" cols="60" rows="2" id="persist_cookie_mode_description" name="persist_cookie_mode_description" style="padding:5px; border:1px dashed #990000; background-color: #ffffff; color: #000000; font-size: 8pt;"></textarea>');
+$section->addInput(new Form_Checkbox(
+	'persist_cookie_cachable',
+	'Cookie Cachable',
+	'Allows shared caches to cache the server response.',
+	$pconfig['persist_cookie_cachable']
+),"haproxy_cookie_visible");
+
+$form->add($section);
+
+$section = new Form_Section_class('Stick-table persistence');
+$form->add($section);
+$section->addInput(new Form_StaticText(
+	'',
+	"These options are used to make sure seperate requests from a single client go to the same backend. This can be required for servers that keep track of for example a shopping cart."
+));
+$section->addInput(new Form_Select(
+	'persist_sticky_type',
+	'Stick tables',
+	$pconfig['persist_sticky_type'],
+	haproxy_keyvalue_array($a_sticky_type))
+)->setHelp('Sticktables that are kept in memory, and when matched make sure the same server will be used.<br/>
+	<textarea readonly="yes" cols="60" rows="2" id="sticky_type_description" name="sticky_type_description" style="padding:5px; border:1px dashed #990000; background-color: #ffffff; color: #000000; font-size: 8pt;"></textarea>');
+$section->addInput(new Form_Input('persist_stick_cookiename', 'Stick cookie name', 'text', $pconfig['persist_stick_cookiename']
+),"haproxy_stick_cookiename")->setHelp('Cookiename to use for sticktable<br/>
+	<span id="stick_cookiename_description"></span>');
+$section->addInput(new Form_Input('persist_stick_length', 'Stick cookie length', 'text', $pconfig['persist_stick_length']
+),"haproxy_stick_cookiename")->setHelp('The maximum number of characters that will be stored in a "string" type stick-table<br/>
+	<span id="stick_cookiename_description"></span>');
+$section->addInput(new Form_Input('persist_stick_expire', 'Stick-table expire', 'text', $pconfig['persist_stick_expire']
+),"haproxy_stick_tableused")->setHelp('d=days h=hour m=minute s=seconds ms=miliseconds(default)<br/>
+	Defines the maximum duration of an entry in the stick-table since it was last created, refreshed or matched.<br/>
+	EXAMPLE: 30m ');
+$section->addInput(new Form_Input('persist_stick_tablesize', 'Stick-table size', 'text', $pconfig['persist_stick_tablesize']
+),"haproxy_stick_tableused")->setHelp('maximum number of entries supports suffixes "k", "m", "g" for 2^10, 2^20 and 2^30 factors.<br/>
+	Is the maximum number of entries that can fit in the table. This value directly impacts memory usage. Count approximately
+	50 bytes per entry, plus the size of a string if any.<br/>
+	EXAMPLE: 50k');
+
+$section = new Form_Section('Email notifications');
+$form->add($section);
+$section->addInput(new Form_Select(
+	'email_level',
+	'Mail level',
+	$pconfig['email_level'],
+	haproxy_keyvalue_array($a_sysloglevel))
+)->setHelp('Define the maximum loglevel to send emails for.');
+
+$section->addInput(new Form_Input('email_to', 'Mail to', 'text', $pconfig['email_to']
+))->setHelp('Email address to send emails to, defaults to the value set on the global settings tab if left empty.');
+
+$section = new Form_Section_class('Statistics');
+
+// TODO add show/hide class "haproxy_stats_visible"
+$section->addInput(new Form_Checkbox(
+	'stats_enabled',
+	'Stats Enabled',
+	'Enables the haproxy statistics page (only used on "http" frontends)',
+	$pconfig['stats_enabled']
+))->setHelp('');
+
+$section->addInput(new Form_Input('stats_uri', 'Stats Uri', 'text', $pconfig['stats_uri']
+),"haproxy_stats_visible")->setHelp('This url can be used when this same backend is used for passing connections to backends<br/>EXAMPLE: / or /haproxy?stats');
+
+$section->addInput(new Form_Input('stats_scope', 'Stats Scope', 'text', $pconfig['stats_scope']
+),"haproxy_stats_visible")->setHelp('Determines which frontends and backends are shown, leave empty to show all.<br/>EXAMPLE: frontendA,backend1,backend2');
+
+$section->addInput(new Form_Input('stats_realm', 'Stats Realm', 'text', $pconfig['stats_realm']
+),"haproxy_stats_visible")->setHelp('The realm is shown when authentication is requested by haproxy.<br/>EXAMPLE: haproxystats');
+
+$section->addInput(new Form_Input('stats_username', 'Stats Username', 'text', $pconfig['stats_username']
+),"haproxy_stats_visible")->setHelp('EXAMPLE: admin');
+
+//TODO hide password completely from client ? DMYPWD ?
+$section->addInput(new Form_Input('stats_password', 'Stats Password', 'text', $pconfig['stats_password']
+),"haproxy_stats_visible")->setHelp('EXAMPLE: 1Your2Secret3P@ssword')->setType("password");
+
+$section->addInput(new Form_Input('stats_admin', 'Stats Admin', 'text', $pconfig['stats_admin']
+),"haproxy_stats_visible")->setHelp('Makes available the options disable/enable/softstop/softstart/killsessions from the stats page.<br/>
+Note: This is not persisted when haproxy restarts. For publicly visible stats pages this should be disabled.');
+
+$section->addInput(new Form_Input('stats_node', 'Stats Nodename', 'text', $pconfig['stats_node']
+),"haproxy_stats_visible")->setHelp('The short name is displayed in the stats and helps to differentiate which server in a cluster is actually serving clients.');
+
+$section->addInput(new Form_Input('stats_desc', 'Stats Description', 'text', $pconfig['stats_desc']
+),"haproxy_stats_visible")->setHelp('The description is displayed behind the Nodename set above.');
+
+$section->addInput(new Form_Input('stats_refresh', 'Stats Refresh', 'text', $pconfig['stats_refresh']
+),"haproxy_stats_visible")->setHelp('Specify the refresh rate of the stats page in seconds, or specified time unit (us, ms, s, m, h, d).');
+
+
+$form->add($section);
+$section = new Form_Section('Error files');
+$section->addInput(new Form_StaticText(
+	'Error files',
+	"Use these to replace the error pages that haproxy can generate by custom pages created on the files tab.
+	For example haproxy will generate a 503 error page when no backend is available, you can replace that page here.<br/>".
+	$errorfileslist->Draw($a_errorfiles)
+));
+$form->add($section);
+
+$section = new Form_Section('Advanced');
+$field = (new Form_Input(
+	'strict_transport_security',
+	'',
+	'number',
+	$pconfig['strict_transport_security'],
+	['min' => 1, 'max' => 1000000000]
+))->addClass("col-sm-3");
+$section->addInput((new Form_StaticText(
+	'HSTS Strict-Transport-Security',
+	'When configured enables "HTTP Strict Transport Security" leave empty to disable. (only used on "http" frontends)<br/>
+	<strong><div class="alert alert-warning" role="alert">'.gettext("WARNING! the domain will only work over https with a valid certificate!<br/>
+	Clients will cache this header for the set duration which means removing this header will still require a valid certificate for the set time.").'</div></strong>' .
+	"<div class='col-sm-12'>$field Seconds</div>"
+
+))->setHelp(<<<EOT
 				If configured clients that requested the page with this setting active will not be able to visit this domain over a unencrypted http connection.
 				So make sure you understand the consequence of this setting or start with a really low value.<br/>
 				EXAMPLE: 60 for testing if you are absolutely sure you want this 31536000 (12 months) would be good for production.
-			</td>
-		</tr>
-		<tr class="" align="left">
-			<td width="22%" valign="top" class="vncell">Cookie protection.</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="cookie_attribute_secure" name="cookie_attribute_secure" type="checkbox" value="yes" <?php if ($pconfig['cookie_attribute_secure']=='yes') echo "checked"; ?> onclick='updatevisibility();' />
-				Set 'secure' attribure on cookies (only used on 'http' frontends)<br/>
-				This configuration option sets up the Secure attribute on cookies if it has not been setup by the application server while the client was browsing the application over a ciphered connection.
-			</td>
-		</tr>
-		<tr><td>&nbsp;</td></tr>
-		<tr align="left">
-			<td width="22%" valign="top">&nbsp;</td>
-			<td width="78%">
-				<input name="Submit" type="submit" class="formbtn" value="Save" />
-				<input type="button" class="formbtn" value="Cancel" onclick="history.back()" />
+EOT
+));
+
+$section->addInput(new Form_Checkbox(
+	'cookie_attribute_secure',
+	'Cookie protection',
+	'Set "secure" attribure on cookies (only used on "http" frontends)',
+	$pconfig['cookie_attribute_secure']
+))->setHelp("This configuration option sets up the Secure attribute on cookies if it has not been setup by the application server while the client was browsing the application over a ciphered connection.");
+
+$form->add($section);
+
+print $form;
+?>	
 				<?php if (isset($id) && $a_pools[$id]): ?>
 				<input name="id" type="hidden" value="<?=$id;?>" />
 				<?php endif; ?>
-			</td>
-		</tr>
-	</table>
-	</div>
-	</td></tr></table>
+	
 	</form>
 <br/>
 <script type="text/javascript">
@@ -1326,12 +1161,36 @@ set by the 'retries' parameter.</div>
 				}
 			}
 		}
-	}
+	}	
+</script>
+<script type="text/javascript">
+//<![CDATA[
+events.push(function() {
+
+	$('#transparent_clientip').on('change', function() {
+		updatevisibility();
+	});
+	$('#persist_cookie_enabled').on('change', function() {
+		updatevisibility();
+	});
+	$('#persist_sticky_type').on('change', function() {
+		updatevisibility();
+	});
+	$('#check_type').on('change', function() {
+		updatevisibility();
+	});
+	$('#agent_check').click(function () {
+		updatevisibility();
+	});
+	$('#stats_enabled').click(function () {
+		updatevisibility();
+	});
 	
 	updatevisibility();
+});
+//]]>
 </script>
+
 <?php
 haproxy_htmllist_js();
-include("fend.inc"); ?>
-</body>
-</html>
+include("foot.inc");

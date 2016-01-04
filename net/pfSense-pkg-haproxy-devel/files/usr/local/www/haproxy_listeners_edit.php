@@ -85,6 +85,8 @@ if (!is_numeric($id))
 	$pconfig['a_extaddr'][] = $new_item;
 }
 
+$listitem_none['']['name']="None";
+
 $servercerts = haproxy_get_certificates('server,user');
 $fields_sslCertificates=array();
 $fields_sslCertificates[0]['name']="ssl_certificate";
@@ -240,25 +242,45 @@ foreach($a_acltypes as $key => $action) {
 }
 
 function customdrawcell_actions($object, $item, $itemvalue, $editable, $itemname, $counter) {
+	$result = "";
 	if ($editable) {
-		$object->haproxy_htmllist_drawcell($item, $itemvalue, $editable, $itemname, $counter);
+		$result = $object->haproxy_htmllist_drawcell($item, $itemvalue, $editable, $itemname, $counter);
 	} else {
-		//TODO hide fields not applicable.?.
-		echo $itemvalue;
+		$result = $itemvalue;
 	}
+	return $result;
 }
 
 $htmllist_extaddr = new HaproxyHtmlList("table_extaddr", $fields_externalAddress);
 $htmllist_extaddr->editmode = true;
 
+function fields_details_showfieldfunction($items, $action,  $itemname) {
+	if (is_array($items[$action]) && is_array($items[$action]['fields'])) {
+		foreach($items[$action]['fields'] as $item) {
+			if ($action . "" . $item['name'] == $itemname) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+function fields_acls_details_showfieldfunction($htmltable, $itemname, $values) {
+	$items = $htmltable->fields[1]['items'];
+	$action = $values['expression'];
+	return fields_details_showfieldfunction($items, $action, $itemname);
+}
 $htmllist_acls = new HaproxyHtmlList("table_acls", $fields_aclSelectionList);
 $htmllist_acls->fields_details = $fields_acl_details;
-//$htmllist_acls->editmode = true;
+$htmllist_acls->fields_details_showfieldfunction = fields_acls_details_showfieldfunction;
 
+function fields_actions_details_showfieldfunction($htmltable, $itemname, $values) {
+	$items = $htmltable->fields[0]['items'];
+	$action = $values['action'];
+	return fields_details_showfieldfunction($items, $action, $itemname);
+}
 $htmllist_actions = new HaproxyHtmlList("table_actions", $fields_actions);
 $htmllist_actions->fields_details = $fields_actions_details;
-//$htmllist_actions->keyfield = "name";
-//$htmllist_actions->editmode = true;
+$htmllist_actions->fields_details_showfieldfunction = fields_actions_details_showfieldfunction;
 
 $htmllist_sslCertificates = new HaproxyHtmlList("tbl_sslCerts", $fields_sslCertificates);
 $htmllist_caCertificates = new HaproxyHtmlList("tbl_caCerts", $fields_caCertificates );
@@ -423,9 +445,11 @@ if ($_POST) {
 }
 
 $closehead = false;
-$pgtitle = "HAProxy: Frontend: Edit";
+$pgtitle = array("HAProxy", "Frontend", "Edit");
 include("head.inc");
-haproxy_css();
+haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "frontend");
+
+$counter = 0;
 
 if (!isset($_GET['dup']))
 	$excludefrontend = $pconfig['name'];
@@ -439,10 +463,7 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 	.haproxy_primary{}
 	.haproxy_secondary{display:none;}
   </style>
-  <script type="text/javascript" src="/javascript/suggestions.js"></script>
-  <script type="text/javascript" src="/javascript/autosuggest.js"></script>
 </head>
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
 
 <script type="text/javascript">
 	function htmllist_get_select_options(tableId, fieldname, itemstable) {
@@ -540,473 +561,383 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 			for (j = 0; j < count; j++) {
 				if (acl[j] == el.value) {
 					if (mode[j] != '' && mode[j] != type) {
-						Effect.Fade(row_e,{ duration: 1.0 });
-						if (row_v) {
-							Effect.Fade(row_v,{ duration: 1.0 });
-						}
-						if (row_vd) {
-							Effect.Fade(row_vd,{ duration: 1.0 });
-						}
+						hideElement(row_e, true);
+						hideElement(row_v, true);
+						hideElement(row_vd, true);
 					} else {
-						if (!row_v || (row_v && row_v.style.display == "none")) {
+						if (!row_v || (row_v && $(row_v).hasClass("hidden"))) {
 							// only make the edit row appear if the view row is not still on the screen.
 							// (when switching frontend types)
-							Effect.Appear(row_e,{ duration: 1.0 });
+							hideElement(row_e, false);
 						}
-						if (row_vd) {
-							Effect.Appear(row_vd,{ duration: 1.0 });
-						}
+						hideElement(row_vd, false);
 					}
 				}
 			}
 		}
 	}
 </script>
-<?php include("fbegin.inc"); ?>
 <?php if ($input_errors) print_input_errors($input_errors); ?>
-<form action="haproxy_listeners_edit.php" method="post" name="iform" id="iform">
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr><td class="tabnavtbl">
-  <?php
-	haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "frontend");
-  ?>
-  </td></tr>
-  <tr>
-    <td>
-	<div class="tabcont">
-	<table width="100%" border="0" cellpadding="6" cellspacing="0">
-		<tr>
-			<td colspan="2" valign="top" class="listtopic">Edit haproxy listener</td>
-		</tr>
-		<tr>
-			<td width="22%" valign="top" class="vncellreq">Name</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input name="name" type="text" <?if(isset($pconfig['name'])) echo "value=\"{$pconfig['name']}\"";?> size="25" maxlength="25" />
-			</td>
-		</tr>
-		<tr align="left">
-			<td width="22%" valign="top" class="vncell">Description</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input name="desc" type="text" <?if(isset($pconfig['desc'])) echo "value=\"{$pconfig['desc']}\"";?> size="64" />
-			</td>
-		</tr>
-		<tr align="left">
-			<td width="22%" valign="top" class="vncellreq">Status</td>
-			<td width="78%" class="vtable" colspan="2">
-				<select name="status" id="status">
-					<option value="active"<?php if($pconfig['status'] == "active") echo " SELECTED"; ?>>Active</option>
-					<option value="disabled"<?php if($pconfig['status'] == "disabled") echo " SELECTED"; ?>>Disabled</option>
-				</select>
-			</td>
-		</tr>
-		<tr align="left">
-			<td width="22%" valign="top" class="vncell">Shared Frontend</td>
-			<td width="78%" class="vtable" colspan="2">
-				<?if (count($primaryfrontends)==0){ ?>
-				<b>At least 1 primary frontend is needed.</b><br/><br/>
-				<? } else{ ?>
-				<input id="secondary" name="secondary" type="checkbox" value="yes" <?php if ($pconfig['secondary']=='yes') echo "checked"; ?> onclick="updatevisibility();" />
-				<? } ?>
-				This can be used to host a second or more website on the same IP:Port combination.<br/>
-				Use this setting to configure multiple backends/accesslists for a single frontend.<br/>
-				All settings of which only 1 can exist will be hidden.<br/>
-				The frontend settings will be merged into 1 set of frontend configuration.
-			</td>
-		</tr>
-		<tr class="haproxy_secondary" align="left">
-			<td width="22%" valign="top" class="vncellreq">Primary frontend</td>
-			<td width="78%" class="vtable" colspan="2">
-				<?
-				echo_html_select('primary_frontend',$primaryfrontends, $pconfig['primary_frontend'],"You must first create a 'primary' frontend.","updatevisibility();");
-				?>
-			</td>
-		</tr>
-		<tr class="haproxy_primary">
-			  <td width="22%" valign="top" class="vncellreq">External address</td>
-			  <td width="78%" class="vtable">
-			<?
-			$counter=0;
-			$a_extaddr = $pconfig['a_extaddr'];
-			$htmllist_extaddr->Draw($a_extaddr);
-			?>
-			<script type="text/javascript">
-			function table_extaddr_row_added(tableId, rowId){
-				new AutoSuggestControl(document.getElementById(tableId+"extaddr_custom"+rowId), new StateSuggestions(address_array));
-				new AutoSuggestControl(document.getElementById(tableId+"extaddr_port"+rowId), new StateSuggestions(port_array));
-				table_extaddr_listitem_change(tableId,"",rowId, null);//disables address when not set to custom.
-			}
-			
-			function table_extaddr_listitem_change(tableId, fieldId, rowNr, field) {
-				if (fieldId == "extaddr" || fieldId == "") {
-					field = field || document.getElementById(tableId+"extaddr"+rowNr);
-					customEdit = document.getElementById(tableId+"extaddr_custom"+rowNr);
-					customdisabled = field.value == "custom" ? 0 : 1;
-					customEdit.disabled = customdisabled;
-				}
-				if (fieldId == "extaddr_ssl") {
-					updatevisibility();
-				}
-			}
-			
-			</script>
-				<br />
-				<span class="vexpl">
-					If you want this rule to apply to another IP address than the IP address of the interface chosen above,
-					select it here (you need to define <a href="firewall_virtual_ip.php">Virtual IP</a> addresses on the first).  
-					Also note that if you are trying to redirect connections on the LAN select the "any" option.
 
-					In the port to listen to, if you want to specify multiple ports, separate them with a comma (,). EXAMPLE: 80,8000
-					Or to listen on both 80 and 443 create 2 rows in the table.
-				</span>
-			  </td>
-		</tr>
-		<tr class="haproxy_primary" align="left">
-			<td width="22%" valign="top" class="vncell">Max connections</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input name="max_connections" type="text" <?if(isset($pconfig['max_connections'])) echo "value=\"{$pconfig['max_connections']}\"";?> size="10" maxlength="10" />
-			</td>
-		</tr>	
-		<tr class="haproxy_primary" align="left">
-			<td width="22%" valign="top" class="vncellreq">Type</td>
-			<td width="78%" class="vtable" colspan="2">
-				<select name="type" id="type" onchange="updatevisibility();">
-					<option value="http"<?php if($pconfig['type'] == "http") echo " SELECTED"; ?>>HTTP / HTTPS(offloading)</option>
-					<option value="https"<?php if($pconfig['type'] == "https") echo " SELECTED"; ?>>SSL / HTTPS(TCP mode)</option>
-					<option value="tcp"<?php if($pconfig['type'] == "tcp") echo " SELECTED"; ?>>TCP</option>
-					<option value="health"<?php if($pconfig['type'] == "health") echo " SELECTED"; ?>>Health</option>
-				</select><br/>
-				<span class="vexpl">
-					This defines the processing type of HAProxy, and will determine the availabe options for acl checks and also several other options.<br/>
-					Please note that for https encryption/decryption on HAProxy with a certificate the processing type needs to be set to 'http'.
-				</span>
-			</td>
+<?
+$form = new Form;
+
+$section = new Form_Section_class("Edit HAProxy Frontend");
+
+$activedisable = array();
+$activedisable['active'] = "Active";
+$activedisable['disable'] = "Disable";
+
+$section->addInput(new Form_Input('name', 'Name', 'text', $pconfig['name']));
+$section->addInput(new Form_Input('desc', 'Description', 'text', $pconfig['desc']));
+
+$section->addInput(new Form_Select(
+	'status',
+	'Status',
+	$pconfig['status'],
+	$activedisable
+));
+
+if (count($primaryfrontends) > 0){
+	$section->addInput(new Form_Checkbox(
+		'secondary',
+		'Shared Frontend',
+		'This can be used to host a second or more website on the same IP:Port combination.',
+		$pconfig['secondary']
+	))->setHelp("Use this setting to configure multiple backends/accesslists for a single frontend.<br/>
+		All settings of which only 1 can exist will be hidden.<br/>
+		The frontend settings will be merged into 1 set of frontend configuration.");
+}
+
+$section->addInput(new Form_Select(
+	'primary_frontend',
+	'Primary frontend',
+	$pconfig['primary_frontend'],
+	haproxy_keyvalue_array($primaryfrontends)
+),"haproxy_secondary");
+
+//TODO check frontend extaddr adding works..
+$section->addInput(new Form_StaticText(
+	'External address',
+	"Define what ip:port combinations to listen on for incomming connections.
+	<br/>".
+	$htmllist_extaddr->Draw($pconfig['a_extaddr'])
+),"haproxy_primary")->setHelp(<<<EOT
+	<b>NOTE:</b> You must add a firewall rules permitting access to the listen ports above.<br/>
+
+	If you want this rule to apply to another IP address than the IP address of the interface chosen above,
+	select it here (you need to define <a href="firewall_virtual_ip.php">Virtual IP</a> addresses on the first).  
+	Also note that if you are trying to redirect connections on the LAN select the "any" option.
+	In the port to listen to, if you want to specify multiple ports, separate them with a comma (,). EXAMPLE: 80,8000
+	Or to listen on both 80 and 443 create 2 rows in the table where for the 443 you would likely want to check the SSL-offloading checkbox.
+EOT
+);
+
+
+$section->addInput(new Form_Input('max_connections', 'Max connections', 'text', $pconfig['max_connections']
+),"haproxy_primary")->setHelp('Sets the maximum amount of connections this frontend will accept, may be left empty.');
+
+$section->addInput(new Form_Select(
+	'type',
+	'Type',
+	$pconfig['type'],
+	haproxy_keyvalue_array($a_frontendmode)
+),"haproxy_primary")->setHelp('This defines the processing type of HAProxy, and will determine the availabe options for acl checks and also several other options.<br/>
+	Please note that for https encryption/decryption on HAProxy with a certificate the processing type needs to be set to "http".');
+$form->add($section);
+
+$section = new Form_Section_class("Default backend, access control lists and actions");
+
+$section->addInput(new Form_StaticText(
+	'Access Control lists',
+	"Use these to replace the error pages that haproxy can generate by custom pages created on the files tab.
+	For example haproxy will generate a 503 error page when no backend is available, you can replace that page here.<br/>".
+	$htmllist_acls->Draw($pconfig['a_acl'])
+))->setHelp(<<<EOT
+	Example:
+	<table border='1' style='border-collapse:collapse'>
+		<tr>
+			<td><b>Name</b></td>
+			<td><b>Expression</b></td>
+			<td><b>Not</b></td>
+			<td><b>Value</b></td>
 		</tr>
 		<tr>
-			<td width="22%" valign="top" class="vncell">Access Control lists</td>
-			<td width="78%" class="vtable" colspan="2" valign="top">
-			<?
-			$a_acl = $pconfig['a_acl'];
-			$htmllist_acls->Draw($a_acl);
-			?>
-			<br/>
-				Example:
-				<table border='1' style='border-collapse:collapse'>
-					<tr>
-						<td><b>Name</b></td>
-						<td><b>Expression</b></td>
-						<td><b>Not</b></td>
-						<td><b>Value</b></td>
-					</tr>
-					<tr>
-						<td>Backend1acl</td>
-						<td>Host matches</td>
-						<td></td>
-						<td>www.yourdomain.tld</td>
-					</tr>
-					<tr>
-						<td>addHeaderAcl</td>
-						<td>SSL Client certificate valid</td>
-						<td></td>
-						<td></td>
-					</tr>
-				</table>
-			<br/>
-			acl's with the same name will be 'combined' using OR criteria.<br/>
-			For more information about ACL's please see <a href='http://haproxy.1wt.eu/download/1.5/doc/configuration.txt' target='_blank'>HAProxy Documentation</a> Section 7 - Using ACL's<br/><br/>
-			<strong>NOTE Important change in behaviour, since package version 0.32</strong><br/>
-			-acl's are no longer combined with logical AND operators, list multiple acl's below where needed.<br/>
-			-acl's alone no longer implicitly generate use_backend configuration. Add 'actions' below to accomplish this behaviour.
-			</td>
+			<td>Backend1acl</td>
+			<td>Host matches</td>
+			<td></td>
+			<td>www.yourdomain.tld</td>
 		</tr>
 		<tr>
-			<td width="22%" valign="top" class="vncellreq">Actions</td>
-			<td width="78%" class="vtable" colspan="2" valign="top">
-				<?
-				$a_actionitems = $pconfig['a_actionitems'];
-				$htmllist_actions->Draw($a_actionitems);
-				?>
-				<br/>
-				Example:
-				<table border='1' style='border-collapse:collapse'>
-					<tr>
-						<td><b>Action</b></td>
-						<td><b>Parameters</b></td>
-						<td><b>Condition</b></td>
-					</tr>
-					<tr>
-						<td>Use Backend</td>
-						<td>Website1Backend</td>
-						<td>Backend1acl</td>
-					</tr>
-					<tr>
-						<td>http-request header set</td>
-						<td>Headername: X-HEADER-ClientCertValid<br/>New logformat value: YES</td>
-						<td>addHeaderAcl</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td width="22%" valign="top" class="vncellreq">Default Backend</td>
-			<td width="78%" class="vtable">
-				<?php
-				$listitem_none['']['name']="None";
-				$backends = $listitem_none + $backends;
-				echo_html_select("backend_serverpool", $backends, $pconfig['backend_serverpool'] ? $pconfig['backend_serverpool'] : "none", "", "updatevisibility();");
-				?>
-			</td>
-		</tr>
-		<tr class="haproxy_primary"><td>&nbsp;</td></tr>
-		<tr class="haproxy_primary">
-			<td colspan="2" valign="top" class="listtopic">Stats options</td>
-		</tr>
-		<tr class="haproxy_primary" align="left">
-			<td width="22%" valign="top" class="vncell">Separate sockets</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="socket-stats" name="socket-stats" type="checkbox" value="yes" <?php if ($pconfig['socket-stats']=='yes') echo "checked"; ?> onclick='updatevisibility();' />
-				Enable collecting &amp; providing separate statistics for each socket.
-			</td>
-		</tr>
-		<tr class="haproxy_primary"><td>&nbsp;</td></tr>
-		<tr class="haproxy_primary">
-			<td colspan="2" valign="top" class="listtopic">Logging options</td>
-		</tr>
-		<tr class="haproxy_primary" align="left">
-			<td width="22%" valign="top" class="vncell">Dont log null</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="dontlognull" name="dontlognull" type="checkbox" value="yes" <?php if ($pconfig['dontlognull']=='yes') echo "checked"; ?> onclick='updatevisibility();' />
-				A connection on which no data has been transferred will not be logged.
-				<div>To skip logging probes from monitoring systems that otherwise would pollute the logging. (It is generally recommended not to use this option in uncontrolled environments (eg: internet), otherwise scans and other malicious activities would not be logged.)</div>
-			</td>
-		</tr>
-		<tr class="haproxy_primary" align="left">
-			<td width="22%" valign="top" class="vncell">Dont log normal</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="dontlog-normal" name="dontlog-normal" type="checkbox" value="yes" <?php if ($pconfig['dontlog-normal']=='yes') echo "checked"; ?> onclick='updatevisibility();' />
-				Don't log connections in which no anomalies are found.
-				<div>Setting this option ensures that
-				normal connections, those which experience no error, no timeout, no retry nor
-				redispatch, will not be logged.</div>
-			</td>
-		</tr>
-		<tr class="haproxy_primary" align="left">
-			<td width="22%" valign="top" class="vncell">Raise level for errors</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="log-separate-errors" name="log-separate-errors" type="checkbox" value="yes" <?php if ($pconfig['log-separate-errors']=='yes') echo "checked"; ?> onclick='updatevisibility();' />
-				Change the level changes from "info" to "err" for potentially interesting information.
-				<div>This option makes haproxy raise the level of logs containing potentially interesting information such
-				as errors, timeouts, retries, redispatches, or HTTP status codes 5xx. </div>
-			</td>
-		</tr>
-		<tr class="haproxy_primary" align="left">
-			<td width="22%" valign="top" class="vncell">Detailed logging</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="log-detailed" name="log-detailed" type="checkbox" value="yes" <?php if ($pconfig['log-detailed']=='yes') echo "checked"; ?> onclick='updatevisibility();' />
-				If checked provides more detailed logging.
-				<div>Each log line turns into a much richer format including, but
-				not limited to, the connection timers, the session status, the connections
-				numbers, the frontend, backend and server name, and of course the source
-				address and ports. In http mode also the HTTP request and captured headers and cookies will be logged.</div>
-			</td>
-		</tr>
-		<tr><td>&nbsp;</td></tr>
-		<tr>
-			<td colspan="2" valign="top" class="listtopic">Error files</td>
-		</tr>
-		<tr class="" align="left" id='errorfiles'>
-			<td colspan="2" valign="top" class="vtable">
-			Use these to replace the error pages that haproxy can generate by custom pages created on the files tab.
-			For example haproxy will generate a 503 error page when no backend is available, you can replace that page here.
-			<br/>
-			<br/>
-			<?
-			$a_errorfiles = $pconfig['a_errorfiles'];
-			$errorfileslist->Draw($a_errorfiles);
-			?>
-			</td>
-		</tr>
-		<tr><td>&nbsp;</td></tr>
-	</table>
-	<br/>&nbsp;<br/>
-	<table class="haproxy_primary" width="100%" border="0" cellpadding="6" cellspacing="0">
-		<tr>
-			<td colspan="2" valign="top" class="listtopic">Advanced settings</td>
-		</tr>
-		<tr align="left">
-			<td width="22%" valign="top" class="vncell">Client timeout</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input name="client_timeout" type="text" <?if(isset($pconfig['client_timeout'])) echo "value=\"{$pconfig['client_timeout']}\"";?> size="10" maxlength="10" />
-				<div>the time (in milliseconds) we accept to wait for data from the client, or for the client to accept data (default 30000).</div>
-			</td>
-		</tr>
-		<tr align="left" class="haproxy_mode_http">
-			<td width="22%" valign="top" class="vncell">Use 'forwardfor' option</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="forwardfor" name="forwardfor" type="checkbox" value="yes" <?php if ($pconfig['forwardfor']=='yes') echo "checked"; ?> />
-				<br/>
-				The 'forwardfor' option creates an HTTP 'X-Forwarded-For' header which
-				contains the client's IP address. This is useful to let the final web server
-				know what the client address was. (eg for statistics on domains)<br/>
-			</td>
-		</tr>
-		<tr align="left" class="haproxy_mode_http">
-			<td width="22%" valign="top" class="vncell">Use 'httpclose' option</td>
-			<td width="78%" class="vtable" colspan="2">
-				<?
-					echo_html_select("httpclose",$a_closetypes,$pconfig['httpclose']?$pconfig['httpclose']:"none","","updatevisibility();");
-				?><br/>
-				<textarea readonly="yes" cols="70" rows="3" id="http_close_description" name="http_close_description" style="padding:5px; border:1px dashed #990000; background-color: #ffffff; color: #000000; font-size: 8pt;"></textarea>
-			</td>
-		</tr>
-		<tr align="left">
-			<td width="22%" valign="top" class="vncell">Bind pass thru</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input name="advanced_bind" type="text" <?if(isset($pconfig['advanced_bind'])) echo "value=\"".htmlspecialchars($pconfig['advanced_bind'])."\"";?> size="64" />
-				<br/>
-				NOTE: paste text into this box that you would like to pass behind the bind option.
-			</td>
-		</tr>
-		<tr align="left">
-			<td width="22%" valign="top" class="vncell">Advanced pass thru</td>
-			<td width="78%" class="vtable" colspan="2">
-				<? $textrowcount = max(substr_count($pconfig['advanced'],"\n"), 2) + 2; ?>
-				<textarea name='advanced' rows="<?=$textrowcount;?>" cols="70" id='advanced'><?php echo htmlspecialchars($pconfig['advanced']); ?></textarea>
-				<br/>
-				NOTE: paste text into this box that you would like to pass thru.
-			</td>
-		</tr>
-		<tr>
-			<td>&nbsp;</td>
+			<td>addHeaderAcl</td>
+			<td>SSL Client certificate valid</td>
+			<td></td>
+			<td></td>
 		</tr>
 	</table>
-	<table class="haproxy_ssloffloading_show" width="100%" border="0" cellpadding="6" cellspacing="0">
+	<br/>
+	acl's with the same name will be 'combined' using OR criteria.<br/>
+	For more information about ACL's please see <a href='http://haproxy.1wt.eu/download/1.5/doc/configuration.txt' target='_blank'>HAProxy Documentation</a> Section 7 - Using ACL's<br/><br/>
+	<strong>NOTE Important change in behaviour, since package version 0.32</strong><br/>
+	-acl's are no longer combined with logical AND operators, list multiple acl's below where needed.<br/>
+	-acl's alone no longer implicitly generate use_backend configuration. Add 'actions' below to accomplish this behaviour.
+EOT
+);
+
+$section->addInput(new Form_StaticText(
+	'Actions',
+	"Use these to replace the error pages that haproxy can generate by custom pages created on the files tab.
+	For example haproxy will generate a 503 error page when no backend is available, you can replace that page here.<br/>".
+	$htmllist_actions->Draw($pconfig['a_actionitems'])
+))->setHelp(<<<EOT
+	Example:
+	<table border='1' style='border-collapse:collapse'>
 		<tr>
-			<td colspan="2" valign="top" class="listtopic">SSL Offloading</td>
-		</tr>
-		<tr align="left">
-			<td width="78%" class="vtable" colspan="2">
-				SSL Offloading will reduce web servers load by maintaining and encrypting connection with users on internet while sending and retrieving data without encrytion to internal servers.
-				Also more ACL rules and http logging may be configured when this option is used. 
-				Certificates can be imported into the <a href="/system_camanager.php" target="_blank">pfSense "Certificate Authority Manager"</a>
-				Please be aware this possibly will not work with all web applications. Some applications will require setting the SSL checkbox on the backend server configurations so the connection to the webserver will also be a encrypted connection, in that case there will be a slight overall performance loss.
-			</td>
-		</tr>
-		<tr align="left" class="haproxy_secondary" >
-			<td width="22%" valign="top" class="vncell">Use Offloading</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="ssloffload" name="ssloffload" type="checkbox" value="yes" <?php if ($pconfig['ssloffload']=='yes') echo "checked";?> onclick="updatevisibility();" /><strong>Specify additional certificates for this shared-frontend.</strong>
-			</td>
-		</tr>
-		<tr class="haproxy_ssloffloading_enabled" align="left">
-			<td width="22%" valign="top" class="vncell">Certificate</td>
-			<td width="78%" class="vtable" colspan="2">
-				<?  
-					echo_html_select("ssloffloadcert", $servercerts, $pconfig['ssloffloadcert'], '<b>No Certificates defined.</b> <br/>Create one under <a href="system_certmanager.php">System &gt; Cert Manager</a>.');
-				?>
-				<br/>
-				Choose the cert to use on this frontend.
-				<br/>
-				<input id="ssloffloadacl" name="ssloffloadacl" type="checkbox" value="yes" <?php if ($pconfig['ssloffloadacl']=='yes') echo "checked";?> onclick="updatevisibility();" />Add ACL for certificate CommonName. (host header matches the 'CN' of the certificate)<br/>
-				<input id="ssloffloadacl_an" name="ssloffloadacl_an" type="checkbox" value="yes" <?php if ($pconfig['ssloffloadacl_an']=='yes') echo "checked";?> onclick="updatevisibility();" />Add ACL for certificate Subject Alternative Names.<br/>
-			</td>
-		</tr>
-		<tr class="haproxy_ssloffloading_enabled" align="left">
-			<td width="22%" valign="top" class="vncell">OCSP</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="sslocsp" name="sslocsp" type="checkbox" value="yes" <?php if ($pconfig['sslocsp']=='yes') echo "checked";?> onclick="updatevisibility();" />Load certificate ocsp responses for easy certificate validation by the client.<br/>
-			</td>
-		</tr>
-		<tr class="haproxy_ssloffloading_enabled">
-			<td width="22%" valign="top" class="vncell">Additional certificates</td>
-			<td width="78%" class="vtable" colspan="2" valign="top">
-			Which of these certificate will be send will be determined by haproxys SNI recognition. If the browser does not send SNI this will not work properly. (IE on XP is one example, possibly also older browsers or mobile devices)
-			<?
-			$a_certificates = $pconfig['a_certificates'];
-			//haproxy_htmllist("tableA_sslCertificates", $a_certificates, $fields_sslCertificates);
-			$htmllist_sslCertificates->Draw($a_certificates);
-			?>
-				<br/>
-				<input id="ssloffloadacladditional" name="ssloffloadacladditional" type="checkbox" value="yes" <?php if ($pconfig['ssloffloadacladditional']=='yes') echo "checked";?> onclick="updatevisibility();" />Add ACL for certificate CommonName. (host header matches the 'CN' of the certificate)<br/>
-				<input id="ssloffloadacladditional_an" name="ssloffloadacladditional_an" type="checkbox" value="yes" <?php if ($pconfig['ssloffloadacladditional_an']=='yes') echo "checked";?> onclick="updatevisibility();" />Add ACL for certificate Subject Alternative Names.<br/>
-			</td>
-		</tr>
-		<tr class="haproxy_ssloffloading_enabled haproxy_primary" align="left">
-			<td width="22%" valign="top" class="vncell">Advanced ssl options</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input type='text' name='dcertadv' size="64" id='dcertadv' <?if(isset($pconfig['dcertadv'])) echo 'value="'.htmlspecialchars($pconfig['dcertadv']).'"';?> />
-				<br/>
-				NOTE: Paste additional ssl options(without commas) to include on ssl listening options.<br/>
-				some options: force-sslv3, force-tlsv10 force-tlsv11 force-tlsv12 no-sslv3 no-tlsv10 no-tlsv11 no-tlsv12 no-tls-tickets<br/>
-				Example: no-sslv3 ciphers EECDH+aRSA+AES:TLSv1+kRSA+AES:TLSv1+kRSA+3DES
-			</td>
-		</tr>
-		<tr class="haproxy_ssloffloading_enabled haproxy_primary">
-			<td class="vncell" colspan="2"><b>Client certificate verification options, leave all these options empty if you do not want to ask for a client certificate</b><br/>
-			The users that visit this site will need to load the client cert signed by one of the ca's listed below imported into their browser.</td>
-		</tr>
-		<tr class="haproxy_ssloffloading_enabled haproxy_primary" align="left">
-			<td width="22%" valign="top" class="vncell">Without client cert</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="sslclientcert-none" name="sslclientcert-none" type="checkbox" value="yes" <?php if ($pconfig['sslclientcert-none']=='yes') echo "checked"; ?> onclick='updatevisibility();' />
-				Allows clients without a certificate to connect.
-				<div>Make sure to add appropriate acl's to check for presence of a user certificate where needed.</div>
-			</td>
-		</tr>
-		<tr class="haproxy_ssloffloading_enabled haproxy_primary" align="left">
-			<td width="22%" valign="top" class="vncell">Allow invalid cert</td>
-			<td width="78%" class="vtable" colspan="2">
-				<input id="sslclientcert-invalid" name="sslclientcert-invalid" type="checkbox" value="yes" <?php if ($pconfig['sslclientcert-invalid']=='yes') echo "checked"; ?> onclick='updatevisibility();' />
-				Allows client with a invalid/expired/revoked or otherwise wrong certificate to connect.
-				<div>Make sure to add appropriate acl's to check for valid certificates and verify errors using codes from the following list.
-				<a target="_blank" href="https://www.openssl.org/docs/apps/verify.html#DIAGNOSTICS">https://www.openssl.org/docs/apps/verify.html#DIAGNOSTICS</a></div>
-				
-			</td>
-		</tr>
-		<tr class="haproxy_ssloffloading_enabled haproxy_primary">
-			<td width="22%" valign="top" class="vncell">Client verification CA certificates</td>
-			<td width="78%" class="vtable" colspan="2" valign="top">
-			Client certificate will be verified against these CA certificates.
-			<?
-			$a_certificates = $pconfig['clientcert_ca'];
-			$htmllist_caCertificates->Draw($a_certificates);
-			?>
-			</td>
-		</tr>
-		<tr class="haproxy_ssloffloading_enabled haproxy_primary">
-			<td width="22%" valign="top" class="vncell">Client verification CRL</td>
-			<td width="78%" class="vtable" colspan="2" valign="top">
-			Client certificate will be verified against these CRL revocation lists.
-			<?
-			$a_certificates = $pconfig['clientcert_crl'];
-			$htmllist_crlCertificates->Draw($a_certificates);
-			?>
-			</td>
+			<td><b>Action</b></td>
+			<td><b>Parameters</b></td>
+			<td><b>Condition</b></td>
 		</tr>
 		<tr>
-			<td>&nbsp;</td>
+			<td>Use Backend</td>
+			<td>Website1Backend</td>
+			<td>Backend1acl</td>
+		</tr>
+		<tr>
+			<td>http-request header set</td>
+			<td>Headername: X-HEADER-ClientCertValid<br/>New logformat value: YES</td>
+			<td>addHeaderAcl</td>
 		</tr>
 	</table>
-	<table width="100%" border="0" cellpadding="6" cellspacing="0">
-		<tr align="left">
-			<td width="22%" valign="top">&nbsp;</td>
-			<td width="78%">
-				<input name="Submit" type="submit" class="formbtn" value="Save" />  
-				<input type="button" class="formbtn" value="Cancel" onclick="history.back()" />
-				<?php if (isset($id) && $a_backend[$id]): ?>
-				<input name="id" type="hidden" value="<?=$a_backend[$id]['name'];?>" />
-				<?php endif; ?>
-			</td>
-		</tr>
-		<tr>
-			<td colspan='3'>
-					<span class="vexpl"><b>NOTE:</b> You must add a firewall rule permitting access to this frontend!</span>
-			</td>
-		</tr>
-	</table>
-	</div></td></tr></table>
-	</form>
-<br/>
+EOT
+);
+
+$section->addInput(new Form_Select(
+	'backend_serverpool',
+	'Default Backend',
+	$pconfig['backend_serverpool'],
+	haproxy_keyvalue_array($listitem_none + $backends)
+))->setHelp('If actions above or in other shared frontends no default is needed and backend is selected with actions above this can be left to "None".');
+
+
+$form->add($section);
+
+$section = new Form_Section_class("Stats options");
+$section->addClass("haproxy_primary");
+$section->addInput(new Form_Checkbox(
+	'socket-stats',
+	'Separate sockets',
+	'Enable collecting & providing separate statistics for each socket.',
+	$pconfig['socket-stats']
+));
+$form->add($section);
+
+
+$section = new Form_Section_class("Logging options");
+$section->addClass("haproxy_primary");
+
+$section->addInput(new Form_Checkbox(
+	'dontlognull',
+	'Dont log null',
+	'A connection on which no data has been transferred will not be logged.',
+	$pconfig['dontlognull']
+))->setHelp("To skip logging probes from monitoring systems that otherwise would pollute the logging. 
+	(It is generally recommended not to use this option in uncontrolled environments (eg: internet), 
+	otherwise scans and other malicious activities would not be logged.)");
+
+$section->addInput(new Form_Checkbox(
+	'dontlog-normal',
+	"Don't log normal",
+	"Don't log connections in which no anomalies are found.",
+	$pconfig['dontlog-normal']
+))->setHelp("Setting this option ensures that
+	normal connections, those which experience no error, no timeout, no retry nor
+	redispatch, will not be logged.");
+
+$section->addInput(new Form_Checkbox(
+	'log-separate-errors',
+	'Raise level for errors',
+	'Change the level changes from "info" to "err" for potentially interesting information.',
+	$pconfig['log-separate-errors']
+))->setHelp("This option makes haproxy raise the level of logs containing potentially interesting information such
+	as errors, timeouts, retries, redispatches, or HTTP status codes 5xx.");
+
+$section->addInput(new Form_Checkbox(
+	'log-detailed',
+	'Detailed logging',
+	'If checked provides more detailed logging.',
+	$pconfig['log-detailed']
+))->setHelp("Each log line turns into a much richer format including, but
+	not limited to, the connection timers, the session status, the connections
+	numbers, the frontend, backend and server name, and of course the source
+	address and ports. In http mode also the HTTP request and captured headers and cookies will be logged.");
+
+$form->add($section);
+
+$section = new Form_Section_class("Error files");
+$section->addInput(new Form_StaticText(
+	'Error files',
+	"Use these to replace the error pages that haproxy can generate by custom pages created on the files tab.
+	For example haproxy will generate a 503 error page when no backend is available, you can replace that page here.<br/>".
+	$errorfileslist->Draw($pconfig['a_errorfiles'])
+));
+$form->add($section);
+
+$section = new Form_Section_class("Advanced settings");
+$section->addClass("haproxy_primary");
+
+$section->addInput(new Form_Input('client_timeout', 'Client timeout', 'text', $pconfig['client_timeout']
+))->setHelp('the time (in milliseconds) we accept to wait for data from the client, or for the client to accept data (default 30000).');
+
+$section->addInput(new Form_Checkbox(
+	'forwardfor',
+	'Use "forwardfor" option',
+	'Use "forwardfor" option.',
+	$pconfig['forwardfor']
+),"haproxy_mode_http")->setHelp("The \"forwardfor\" option creates an HTTP \"X-Forwarded-For\" header which
+	contains the client's IP address. This is useful to let the final web server
+	know what the client address was. (eg for statistics on domains)<br/>");
+
+$section->addInput(new Form_Select(
+		'httpclose',
+		'Use "httpclose" option',
+		$pconfig['httpclose'],
+		haproxy_keyvalue_array($a_closetypes)
+))->setHelp('<textarea readonly="readonly" cols="70" rows="3" id="http_close_description" name="http_close_description" style="padding:5px; border:1px dashed #990000; background-color: #ffffff; color: #000000; font-size: 8pt;"></textarea>');
+
+$section->addInput(new Form_Input('advanced_bind', 'Bind pass thru', 'text', $pconfig['advanced_bind']
+))->setHelp('NOTE: paste text into this box that you would like to pass behind each bind option.');
+
+$textrowcount = max(substr_count($pconfig['advanced'],"\n"), 2) + 2;
+$section->addInput(new Form_Textarea (
+	'advanced',
+	'Advanced pass thru',
+	$pconfig['advanced']
+))->setRows($textrowcount)->setNoWrap()->setHelp('NOTE: paste text into this box that you would like to pass thru in the frontend.');
+$form->add($section);
+
+$section = new Form_Section_class("SSL Offloading");
+$section->addClass("haproxy_ssloffloading_show");
+$section->addInput(new Form_StaticText(
+	'Note',
+	<<<EOT
+	SSL Offloading will reduce web servers load by maintaining and encrypting connection with users on internet while sending and retrieving data without encrytion to internal servers.
+	Also more ACL rules and http logging may be configured when this option is used. 
+	Certificates can be imported into the <a href="/system_camanager.php" target="_blank">pfSense "Certificate Authority Manager"</a>
+	Please be aware this possibly will not work with all web applications. Some applications will require setting the SSL checkbox on the backend server configurations so the connection to the webserver will also be a encrypted connection, in that case there will be a slight overall performance loss."
+EOT
+));
+$section->addInput(new Form_Checkbox(
+	'ssloffload',
+	'Use Offloading',
+	'Specify additional certificates for this shared-frontend.',
+	$pconfig['ssloffload']
+),"haproxy_secondary");
+$section->addInput(
+	new Form_StaticText(
+		'Certificate',
+	(new Form_Select(
+		'ssloffloadcert',
+		'',
+		$pconfig['ssloffloadcert'],
+		haproxy_keyvalue_array($servercerts)
+	))."Choose the cert to use on this frontend.".
+
+	(new Form_Checkbox(
+		'ssloffloadacl',
+		'',
+		'Add ACL for certificate CommonName. (host header matches the "CN" of the certificate)',
+		$pconfig['ssloffloadacl']
+	)).
+	(new Form_Checkbox(
+		'ssloffloadacl_an',
+		'',
+		'Add ACL for certificate Subject Alternative Names.',
+		$pconfig['ssloffloadacl_an']
+	))
+),"haproxy_ssloffloading_enabled");
+
+
+$section->addInput(new Form_Checkbox(
+	'sslocsp',
+	'OCSP',
+	'Load certificate ocsp responses for easy certificate validation by the client.',
+	$pconfig['sslocsp']
+),"haproxy_ssloffloading_enabled")->setHelp("Make sure to add appropriate acl's to check for presence of a user certificate where needed.");
+
+$section->addInput(
+	new Form_StaticText(
+		'Additional certificates',
+		"Which of these certificate will be send will be determined by haproxys SNI recognition. If the browser does not send SNI this will not work properly. (IE on XP is one example, possibly also older browsers or mobile devices).<br/>".
+		$htmllist_sslCertificates->Draw($pconfig['a_certificates']).
+	(new Form_Checkbox(
+		'ssloffloadacladditional',
+		'',
+		'Add ACL for certificate CommonName. (host header matches the "CN" of the certificate)',
+		$pconfig['ssloffloadacladditional']
+	)).
+	(new Form_Checkbox(
+		'ssloffloadacladditional_an',
+		'',
+		'Add ACL for certificate Subject Alternative Names.',
+		$pconfig['ssloffloadacladditional_an']
+	))
+),"haproxy_ssloffloading_enabled");
+
+$section->addInput(new Form_Input('dcertadv', 'Advanced ssl options', 'text', $pconfig['dcertadv']
+),"haproxy_ssloffloading_enabled haproxy_primary")->setHelp('NOTE: Paste additional ssl options(without commas) to include on ssl listening options.<br/>
+	some options: force-sslv3, force-tlsv10 force-tlsv11 force-tlsv12 no-sslv3 no-tlsv10 no-tlsv11 no-tlsv12 no-tls-tickets<br/>
+	Example: no-sslv3 ciphers EECDH+aRSA+AES:TLSv1+kRSA+AES:TLSv1+kRSA+3DES');
+
+$form->add($section);
+
+$section = new Form_Section_class("SSL Offloading - client certificates");
+$section->addClass("haproxy_ssloffloading_enabled haproxy_primary");
+$section->addInput(new Form_StaticText(
+	'Note',
+	"<b>Client certificate verification options, leave all these options empty if you do not want to ask for a client certificate</b><br/>
+	The users that visit this site will need to load the client cert signed by one of the ca's listed below imported into their browser."
+));
+$section->addInput(new Form_Checkbox(
+	'sslclientcert-none',
+	'Without client cert',
+	'Allows clients without a certificate to connect.',
+	$pconfig['sslclientcert-none']
+))->setHelp("Make sure to add appropriate acl's to check for presence of a user certificate where needed.");
+$section->addInput(new Form_Checkbox(
+	'sslclientcert-invalid',
+	'Allow invalid cert',
+	'Allows client with a invalid/expired/revoked or otherwise wrong certificate to connect.',
+	$pconfig['sslclientcert-invalid']
+))->setHelp(<<<EOD
+	<div>Make sure to add appropriate acl's to check for valid certificates and verify errors using codes from the following list.
+	<a target="_blank" href="https://www.openssl.org/docs/apps/verify.html#DIAGNOSTICS">https://www.openssl.org/docs/apps/verify.html#DIAGNOSTICS</a></div>
+EOD
+);
+$section->addInput(new Form_StaticText(
+	'Client verification CA certificates',
+	"Client certificate will be verified against these CA certificates.<br/>".
+	$htmllist_caCertificates->Draw($pconfig['clientcert_ca'])
+));
+$section->addInput(new Form_StaticText(
+	'Client verification CRL',
+	"Client certificate will be verified against these CRL revocation lists.<br/>".
+	$htmllist_crlCertificates->Draw($pconfig['clientcert_crl'])
+));
+
+$form->add($section);
+print $form;
+
+
+?>
 <script type="text/javascript">
+//<![CDATA[
+
+var port_array  = <?= json_encode(get_alias_list(array("port", "url_ports", "urltable_ports"))) ?>;
+var address_array = <?= json_encode(get_alias_list(array("host", "network", "openvpn", "urltable"))) ?>;
+
+events.push(function() {
+
+
 <?
 	// On gui descriptions when a closetype has been selected..
 	phparray_to_javascriptarray($a_closetypes, "closetypes", Array('/*', '/*/name', '/*/descr'));
@@ -1029,21 +960,38 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 	$htmllist_caCertificates->outputjavascript();
 	$htmllist_crlCertificates->outputjavascript();
 ?>
-</script>
-<script type="text/javascript">
 	totalrows =  <?php echo $counter; ?>;
-	
-	var port_array  = <?= json_encode(get_alias_list(array("port", "url_ports", "urltable_ports"))) ?>;
-	var address_array = <?= json_encode(get_alias_list(array("host", "network", "openvpn", "urltable"))) ?>;
 
-	
 	for(i=0;i < <?=count($a_extaddr)?>;i++){
-		new AutoSuggestControl(document.getElementById('table_extaddrextaddr_custom'+i), new StateSuggestions(address_array));
-		new AutoSuggestControl(document.getElementById('table_extaddrextaddr_port'+i), new StateSuggestions(port_array));
+		$('#table_extaddrextaddr_custom'+i).autocomplete({
+			source: address_array
+		});
+		$('#table_extaddrextaddr_port'+i).autocomplete({
+			source: port_array
+		});
 		// Initially set fields disabled where needed
 		table_extaddr_listitem_change('table_extaddr','',i,null);
 	}
 	
+	$('#secondary').click(function () {
+		updatevisibility();
+	});
+	$('#primary_frontend').on('change', function() {
+		updatevisibility();
+	});
+	$('#type').on('change', function() {
+		updatevisibility();
+	});
+	$('#httpclose').on('change', function() {
+		updatevisibility();
+	});
+	$('#ssloffload').click(function () {
+		updatevisibility();
+	});
+
+	updatevisibility();
+});
+
 	function table_acls_listitem_change(tableId, fieldId, rowNr, field) {
 		if (fieldId = "toggle_details") {
 			fieldId = "expression";
@@ -1059,12 +1007,11 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 				for(var fieldkey in fields){
 					var fieldname = fields[fieldkey]['name'];
 					var rowid = "tr_edititemdetails_"+rowNr+"_"+actionkey+fieldname;
-					var element = d.getElementById(rowid);
-					
-					if (actionkey == actiontype)
-						element.style.display = '';
-					else
-						element.style.display = 'none';
+					if (actionkey == actiontype) {
+						$("#"+rowid).removeClass("hidden");
+					} else {
+						$("#"+rowid).addClass("hidden");
+					}
 				}
 			}
 		}
@@ -1085,21 +1032,49 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 				for(var fieldkey in fields){
 					var fieldname = fields[fieldkey]['name'];
 					var rowid = "tr_edititemdetails_"+rowNr+"_"+actionkey+fieldname;
-					var element = d.getElementById(rowid);
-					
-					if (actionkey == actiontype)
-						element.style.display = '';
-					else
-						element.style.display = 'none';
+					if (actionkey == actiontype) {
+						$("#"+rowid).removeClass("hidden");
+					} else {
+						$("#"+rowid).addClass("hidden");
+					}
 				}
 			}
 		}
 	}
-	
-	updatevisibility();
+
+			function table_extaddr_row_added(tableId, rowId){
+
+				$('#'+tableId+"extaddr_custom"+rowId).autocomplete({
+					source: address_array
+				});
+				$('#'+tableId+"extaddr_port"+rowId).autocomplete({
+					source: port_array
+				});
+				table_extaddr_listitem_change(tableId,"",rowId, null);//disables address when not set to custom.
+			}
+			
+			function table_extaddr_listitem_change(tableId, fieldId, rowNr, field) {
+				if (fieldId == "extaddr" || fieldId == "") {
+					field = field || document.getElementById(tableId+"extaddr"+rowNr);
+					customEdit = document.getElementById(tableId+"extaddr_custom"+rowNr);
+					customdisabled = field.value == "custom" ? 0 : 1;
+					customEdit.disabled = customdisabled;
+				}
+				if (fieldId == "extaddr_ssl") {
+					updatevisibility();
+				}
+			}
+			
+
+//]]>
 </script>
+
+<!--
+<?php if (isset($id) && $a_backend[$id]): ?>
+<input name="id" type="hidden" value="<?=$a_backend[$id]['name'];?>" />
+<?php endif; ?>
+-->
+
 <?php 
 haproxy_htmllist_js();
-include("fend.inc"); ?>
-</body>
-</html>
+include("foot.inc");

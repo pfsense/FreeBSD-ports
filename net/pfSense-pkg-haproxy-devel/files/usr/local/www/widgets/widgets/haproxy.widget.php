@@ -30,10 +30,15 @@
 	Some mods made from pfBlocker widget to make this for HAProxy on Pfsense
 	Copyleft 2012 by jvorhees
 */
+
+$nocsrf = true;
+
 require_once("guiconfig.inc");
 require_once("pfsense-utils.inc");
 require_once("functions.inc");
 require_once("haproxy_socketinfo.inc");
+require_once("haproxy_gui.inc");
+
 $first_time = false;
 if (!is_array($config["widgets"]["haproxy"])) {
 	$first_time = true;
@@ -59,7 +64,7 @@ if ($_POST) {
 	foreach($simplefields as $fieldname)
 		$a_config[$fieldname] = $_POST[$fieldname];
 			
-	write_config("Updated traffic graph settings via dashboard.");
+	write_config("Services: HAProxy: Widget: Updated settings via dashboard.");
 	header("Location: /");
 	exit(0);
 }
@@ -77,13 +82,13 @@ $show_frontends = $a_config['haproxy_widget_showfrontends']=='yes';
 $show_clients = $a_config['haproxy_widget_showclients']=='yes';
 $show_clients_traffic = $a_config['haproxy_widget_showclienttraffic']=='yes';
 			
-$out="<img src ='/themes/{$g['theme']}/images/icons/icon_interface_down.gif'>";
-$in="<img src ='/themes/{$g['theme']}/images/icons/icon_interface_up.gif'>";
-$running="<img src ='/themes/{$g['theme']}/images/icons/icon_pass.gif'>";
-$stopped="<img src ='/themes/{$g['theme']}/images/icons/icon_block.gif'>";
-$log="<img src ='/themes/{$g['theme']}/images/icons/icon_log.gif'>";
-$start="<img src ='/themes/{$g['theme']}/images/icons/icon_service_start.gif' title='Enable this backend/server'>";
-$stop="<img src ='/themes/{$g['theme']}/images/icons/icon_service_stop.gif' title='Disable this backend/server'>";
+$out = haproxyicon("down", "");
+$in = haproxyicon("up", "");
+$running = haproxyicon("enabled", "");
+$stopped = haproxyicon("disabled", "");
+$log = haproxyicon("resolvedns", "");
+$start = haproxyicon("start","Enable this backend/server");
+$stop = haproxyicon("stop","Disable this backend/server");
 
 $clients=array();
 $clientstraffic=array();
@@ -98,35 +103,11 @@ if ($show_clients == "YES") {
 }
 if (!$getupdatestatus) {
 ?>
-<div id="haproxy-settings" name="haproxy-settings" class="widgetconfigdiv" style="display:none;">
-<form action="/widgets/widgets/haproxy.widget.php" method="post" name="iform" id="iform">
-	<table>
-	<tr><td>
-	Refresh Interval:</td><td>
-	<input id="haproxy_widget_timer" name="haproxy_widget_timer" type="text" value="<?=$a_config['haproxy_widget_timer']?>"/></td>
-	</tr><tr>
-	<td>Show frontends:</td><td>
-	<input id="haproxy_widget_showfrontends" name="haproxy_widget_showfrontends" type="checkbox" value="yes" <?php if ($a_config['haproxy_widget_showfrontends']=='yes') echo "checked"; ?>/></td>
-	</tr><tr>
-	<td>Show clients:</td>
-	<td><input id="haproxy_widget_showclients" name="haproxy_widget_showclients" type="checkbox" value="yes" <?php if ($a_config['haproxy_widget_showclients']=='yes') echo "checked"; ?>/>
-	Note: showing clients increases CPU/memory usage.
-	</td>
-	</tr><tr>
-	<td>Show client traffic:</td>
-	<td><input id="haproxy_widget_showclienttraffic" name="haproxy_widget_showclienttraffic" type="checkbox" value="yes" <?php if ($a_config['haproxy_widget_showclienttraffic']=='yes') echo "checked"; ?>/>
-	Note: showing client traffic considerably increases CPU/memory usage.
-	</td>
-	</tr></table>
-	<br> 
-	<input id="submit" name="submit" type="submit" onclick="return updatePref();" class="formbtn" value="Save Settings" />
-</form>
-</div>
-<div name="haproxy_content" id="haproxy_content">
+<div id="haproxy_content">
 <?
 }
 
-echo "<table style=\"padding-top:0px; padding-bottom:0px; padding-left:0px; padding-right:0px\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"";
+echo "<table style=\"padding-top:0px; padding-bottom:0px; padding-left:0px; padding-right:0px\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">";
 #Frontends
 if ($show_frontends == "YES") {
 	print "<tr><td class=\"widgetsubheader\" colspan=\"4\"><strong>FrontEnd(s)</strong></td></tr>";
@@ -236,7 +217,17 @@ if (!$getupdatestatus)
 {
 	echo "</div>";
 ?>
-<script language="javascript" type="text/javascript">
+<?
+}
+
+if ($getupdatestatus) {
+	exit;
+}
+?>
+</div>
+
+<script type="text/javascript" src="/haproxy/haproxy_geturl.js"></script>
+<script type="text/javascript">
 	d = document;
 	selectIntLink = "haproxy-configure";
 	textlink = d.getElementById(selectIntLink);
@@ -246,37 +237,54 @@ if (!$getupdatestatus)
 	function getstatusgetupdate() {
 		var url = "/widgets/widgets/haproxy.widget.php";
 		var pars = 'getupdatestatus=yes';
-		var myAjax = new Ajax.Request(
-			url,
-			{
-					method: 'get',
-					parameters: pars,
-					onComplete: activitycallback_haproxy
-			});
+		getURL(url+"?"+pars, activitycallback_haproxy);
 	}
 	function getstatus_haproxy() {
+		setTimeout(getstatus_haproxy, <?= $refresh_rate ?>);
 		getstatusgetupdate();
-		setTimeout('getstatus_haproxy()', <?= $refresh_rate ?>);
+
 	}
 	function activitycallback_haproxy(transport) {
-		$('haproxy_content').innerHTML = transport.responseText;
+		if ($('haproxy_content').innerHTML) {
+			$('haproxy_content').innerHTML = transport.content;
+		} else {
+			$('#haproxy_content').html(transport.content);
+		}
 	}
-	setTimeout('getstatus_haproxy()', <?= $refresh_rate ?>);
-</script>
-<script type="text/javascript">
-        function control_haproxy(act,be,srv) {
-                var url = "/widgets/widgets/haproxy.widget.php";
-                var pars = 'act='+act+'&be='+be+'&srv='+srv;
-                var myAjax = new Ajax.Request(
-                        url,
-                        {
-                                method: 'get',
-                                parameters: pars,
-                                //onComplete: activitycallback_haproxy
-								onComplete: getstatusgetupdate
-                        });
-        }
+	setTimeout(getstatus_haproxy, <?= $refresh_rate ?>);
+	
+	function control_haproxy(act,be,srv) {
+			var url = "/widgets/widgets/haproxy.widget.php";
+			var pars = 'act='+act+'&be='+be+'&srv='+srv;
+			getURL(url+"?"+pars, getstatusgetupdate);
+	}
 </script>
 <?
+if (pf_version() < "2.3") {
+	echo '<div id="haproxy-settings" class="widgetconfigdiv" style="display:none;">';
+} else {
+	echo '<div id="widget-haproxy_panel-footer" class="panel-footer collapse">';
 }
 ?>
+<form action="/widgets/widgets/haproxy.widget.php" method="post" name="iform" id="iform">
+	<table>
+	<tr><td>
+	Refresh Interval:</td><td>
+	<input id="haproxy_widget_timer" name="haproxy_widget_timer" type="text" value="<?=$a_config['haproxy_widget_timer']?>"/></td>
+	</tr><tr>
+	<td>Show frontends:</td><td>
+	<input id="haproxy_widget_showfrontends" name="haproxy_widget_showfrontends" type="checkbox" value="yes" <?php if ($a_config['haproxy_widget_showfrontends']=='yes') echo "checked"; ?>/></td>
+	</tr><tr>
+	<td>Show clients:</td>
+	<td><input id="haproxy_widget_showclients" name="haproxy_widget_showclients" type="checkbox" value="yes" <?php if ($a_config['haproxy_widget_showclients']=='yes') echo "checked"; ?>/>
+	Note: showing clients increases CPU/memory usage.
+	</td>
+	</tr><tr>
+	<td>Show client traffic:</td>
+	<td><input id="haproxy_widget_showclienttraffic" name="haproxy_widget_showclienttraffic" type="checkbox" value="yes" <?php if ($a_config['haproxy_widget_showclienttraffic']=='yes') echo "checked"; ?>/>
+	Note: showing client traffic considerably increases CPU/memory usage.
+	</td>
+	</tr></table>
+	<br> 
+	<input id="submit" name="submit" type="submit" onclick="return updatePref();" class="formbtn" value="Save Settings" />
+</form>
