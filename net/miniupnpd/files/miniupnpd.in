@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# $FreeBSD: head/net/miniupnpd/files/miniupnpd.in 358711 2014-06-21 15:52:16Z wg $
+# $FreeBSD$
 #
 
 # PROVIDE: miniupnpd
