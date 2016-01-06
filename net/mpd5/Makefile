@@ -3,7 +3,7 @@
 
 PORTNAME=	mpd
 DISTVERSION=	5.7
-PORTREVISION=	5
+PORTREVISION=	3
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}/Mpd5/Mpd-${PORTVERSION}
 PKGNAMESUFFIX=	5
@@ -11,8 +11,6 @@ DIST_SUBDIR=	mpd5
 
 MAINTAINER=	mav@FreeBSD.org
 COMMENT=	Multi-link PPP daemon based on netgraph(4)
-
-LICENSE=	BSD3CLAUSE
 
 OPTIONS_DEFINE=	NG_IPACCT
 NG_IPACCT_DESC=	Use ng_ipacct kernel module from port
@@ -43,18 +41,6 @@ PLIST_FILES=	${CONFSUF:S/^/etc\/mpd5\/mpd./:S/$/.sample/} sbin/mpd5
 
 .if !defined(WITHOUT_MAN)
 PLIST_FILES+=	man/man8/mpd5.8.gz
-.endif
-
-# RFC 4638 support - requires kernel support introduced in:
-# FreeBSD 10.x			base r288918	(${OSVERSION} bumped to 1002501 in base r289005)
-# FreeBSD 11.x and later	base r287654	(${OSVERSION} bumped to 1100080 in base r288943)
-.if (${OPSYS} == FreeBSD && ((${OSVERSION} >= 1002501 && ${OSVERSION} < 1100000) || ${OSVERSION} >= 1100080))
-EXTRA_PATCHES+=	${PATCHDIR}/rfc4638/patch-src_bund.c
-EXTRA_PATCHES+=	${PATCHDIR}/rfc4638/patch-src_lcp.c
-EXTRA_PATCHES+=	${PATCHDIR}/rfc4638/patch-src_phys.c
-EXTRA_PATCHES+=	${PATCHDIR}/rfc4638/patch-src_phys.h
-EXTRA_PATCHES+=	${PATCHDIR}/rfc4638/patch-src_pppoe.c
-COMMENT+=	 (with RFC 4638 support)
 .endif
 
 .include <bsd.port.mk>
