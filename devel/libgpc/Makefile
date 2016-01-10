@@ -4,7 +4,7 @@
 PORTNAME=	libgpc
 PORTVERSION=	2.32
 CATEGORIES=	devel math graphics
-MASTER_SITES=	ftp://ftp.cs.man.ac.uk/pub/toby/gpc/
+MASTER_SITES=	http://www.cs.man.ac.uk/~toby/alan/software/assets/
 DISTNAME=	gpc${PORTVERSION:S/.//}
 
 MAINTAINER=	mi@aldan.algebra.com

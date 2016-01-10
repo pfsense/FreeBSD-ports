@@ -3,6 +3,7 @@
 
 PORTNAME=	fontforge
 PORTVERSION=	20150824
+PORTREVISION=	2
 CATEGORIES=	print
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -60,7 +61,7 @@ MASTER_SITES+=	http://savannah.nongnu.org/download/freetype/:freetype \
 		http://www.funet.fi/pub/mirrors/ftp.freetype.org/freetype2/:freetype \
 		http://ftp.sunet.se/pub/text-processing/freetype/freetype2/:freetype \
 		ftp://ftp.freetype.org/freetype/freetype2/:freetype
-FREETYPE_VERSION=	2.6
+FREETYPE_VERSION=	2.6.2
 FREETYPE_SRC=	freetype-${FREETYPE_VERSION}.tar.bz2
 DISTFILES+=	${FREETYPE_SRC:C/$/:freetype/}
 CONFIGURE_ARGS+=	--enable-freetype-debugger=${WRKDIR}/freetype-${FREETYPE_VERSION}
@@ -77,6 +78,6 @@ pre-configure:
 		${SH} -c '. ./bootstrap.conf ; \
 		${LOCALBASE}/bin/libtoolize -i -c -q ; \
 		${LOCALBASE}/bin/gnulib-tool --aux-dir=config --m4-base=m4 --libtool --symlink --import $${gnulib_modules}' ; \
-		export LIBTOOLIZE=true ; ${LOCALBASE}/bin/autoreconf -s -i)
+		export LIBTOOLIZE=true ; ${AUTORECONF} -f -i)
 
 .include <bsd.port.mk>

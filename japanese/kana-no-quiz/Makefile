@@ -5,7 +5,7 @@ PORTNAME=	kana-no-quiz
 DISTVERSION=	1.9
 PORTREVISION=	10
 CATEGORIES=	japanese
-MASTER_SITES=	SF/${PORTNAME}
+MASTER_SITES=	SF/${PORTNAME}/Program%20releases/version%20${DISTVERSION}
 DISTNAME=	${PORTNAME:S,k,K,}-${DISTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
@@ -14,6 +14,7 @@ COMMENT=	Little tool to memorize Japanese KANA (Hiragana/Katakana)
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}game>0:${PORTSDIR}/devel/py-game
 
 NO_BUILD=	yes
+NO_ARCH=	yes
 
 RM_FILES=	CHANGES.txt FAL.txt  GPL.txt
 RM_OPTS=	-f

@@ -10,11 +10,13 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}.src
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Free archiver and file compressor
 
+BROKEN=		fails with FPC 3.0.0
+
 BUILD_DEPENDS=	lazbuild:${PORTSDIR}/editors/lazarus \
 		fpcres:${PORTSDIR}/lang/fpc-utils
 
 USES=		dos2unix zip
-USE_FPC=	cairo fcl-base fcl-image fcl-process hash pasjpeg paszlib x11
+USE_FPC=	cairo fcl-base fcl-image pasjpeg rtl-objpas x11
 USE_GNOME=	#
 
 SUB_FILES=	pea pealauncher peazip
@@ -109,7 +111,7 @@ do-install:
 			${INSTALL_PROGRAM} peazip ${STAGEDIR}${DATADIR}
 	@cd ${WRKSRC}/FreeDesktop_integration && \
 		${INSTALL_DATA} peazip.desktop ${STAGEDIR}${DESKTOPDIR} && \
-		${INSTALL_DATA} peazip.png ${STAGEDIR}${PREFIX}/share/pixmaps/		
+		${INSTALL_DATA} peazip.png ${STAGEDIR}${PREFIX}/share/pixmaps/
 	${INSTALL_SCRIPT} ${WRKDIR}/pea ${WRKDIR}/pealauncher ${WRKDIR}/peazip ${STAGEDIR}${PREFIX}/bin/
 
 .include <bsd.port.post.mk>

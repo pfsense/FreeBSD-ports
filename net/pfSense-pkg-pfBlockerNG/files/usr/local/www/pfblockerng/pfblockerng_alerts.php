@@ -388,7 +388,7 @@ if (isset($config['interfaces'])) {
 				}
 
 				// Collect DNSBL Interfaces
-				$dnsbl_int[] = array("{$int['ipaddr']}/{$int['subnet']}",  "{$int['descr']}");
+				$dnsbl_int[] = array("{$int['ipaddr']}/{$int['subnet']}", "{$int['descr']}");
 
 			}
 		}
@@ -675,6 +675,7 @@ display_top_tabs($tab_array, true);
 
 // Create Form
 $form = new Form(false);
+$form->setAction('/pfblockerng/pfblockerng_alerts.php');
 
 // Build 'Shortcut Links' section
 $section = new Form_Section(NULL);
@@ -683,7 +684,7 @@ $section->addInput(new Form_StaticText(
 	'<small>'
 	. '<a href="/firewall_aliases.php" target="_blank">Firewall Alias</a>&emsp;'
 	. '<a href="/firewall_rules.php" target="_blank">Firewall Rules</a>&emsp;'
-	. '<a href="/diag_logs_filter.php" target="_blank">Firewall Logs</a></small>'
+	. '<a href="/status_logs_filter.php" target="_blank">Firewall Logs</a></small>'
 ));
 $form->add($section);
 
@@ -691,7 +692,7 @@ $section = new Form_Section('Alert Settings', 'alertsettings', COLLAPSIBLE|SEC_C
 $form->add($section);
 
 // Build 'Alert Settings' group section
-$group = new Form_Group('Alert Settings');
+$group = new Form_Group(NULL);
 $group->add(new Form_Input(
 	'pfbdenycnt',
 	'Deny',
@@ -727,31 +728,39 @@ $group->add(new Form_Input(
 $group->add(new Form_Checkbox(
 	'alertrefresh',
 	'Auto-Refresh',
-	'on',
-	$alertrefresh == 'on' ? true:false,
+	NULL,
+	($alertrefresh == 'on' ? TRUE : FALSE),
 	'on'
 ))->setHelp('Auto-Refresh')->setAttribute('title', 'Select to \'Auto-Refresh\' page every 60 seconds.');
 
 $group->add(new Form_Checkbox(
 	'hostlookup',
 	'Auto-Resolve',
-	'on',
-	$hostlookup == 'on' ? true:false,
+	NULL,
+	($hostookup == 'on' ? TRUE : FALSE),
 	'on'
 ))->setHelp('Auto-Resolve')->setAttribute('title', 'Select to \'Auto-Resolve\' Hosts.');
 
-$group->add(new Form_Button(
+$btn_save = new Form_Button(
 	'save',
-	'Save'
-))->removeClass('btn-primary')->addClass('btn-primary btn-xs')->setAttribute('title', 'Save Alert settings');
+	'Save',
+	NULL,
+	'fa-save'
+);
+$btn_save->removeClass('btn-primary')->addClass('btn-primary btn-xs');
+$group->add(new Form_StaticText(
+	NULL,
+	$btn_save
+));
 $section->add($group);
+
 
 // Build 'Alert Filter' group section
 $filterstatus = SEC_CLOSED;
 if ($pfb['filterlogentries']) {
 	$filterstatus = SEC_OPEN;
 }
-$section = new Form_Section('Alert filter', 'alertfilter', COLLAPSIBLE|$filterstatus);
+$section = new Form_Section('Alert Filter', 'alertfilter', COLLAPSIBLE|$filterstatus);
 $form->add($section);
 
 $group = new Form_Group(NULL);
@@ -825,26 +834,32 @@ if ($pfb['dnsbl'] == 'on') {
 }
 
 $group = new Form_Group(NULL);
-$group->add(new Form_StaticText(
+$btnsubmit = new Form_Button(
+	'filterlogentries_submit',
+	' ' . gettext('Apply Filter'),
 	NULL,
-	'<div id="infoblock">'
+	'fa-filter'
+	);
+$btnsubmit->removeClass('btn-primary')->addClass('btn-primary btn-xs');
+
+$btnclear = new Form_Button(
+	'filterlogentries_clear',
+	' ' . gettext('Clear Filter'),
+	NULL,
+	'fa-filter fa-rotate-180'
+	);
+$btnclear->removeClass('btn-primary')->addClass('btn-primary btn-xs');
+
+$group->add(new Form_StaticText(
+	'',
+	$btnsubmit . '&emsp;' . $btnclear
+	. '&emsp;<div id="infoblock">'
 	. '<h6>Regex Style Matching Only! <a href="http://regexr.com/" target="_blank">Regular Expression Help link</a>. '
 	. 'Precede with exclamation (!) as first character to exclude match.)</h6>'
 	. '<h6>Example: ( ^80$ - Match Port 80, ^80$|^8080$ - Match both port 80 & 8080 )</h6>'
 	. '</div>'
 ));
-$section->add($group);
 
-$group = new Form_Group(NULL);
-$group->add(new Form_Button(
-	'filterlogentries_submit',
-	'Apply Filter'
-))->removeClass('btn-primary')->addClass('btn-primary btn-xs');
-
-$group->add(new Form_Button(
-	'filterlogentries_clear',
-	'Clear Filter'
-))->removeClass('btn-primary')->addClass('btn-primary btn-xs');
 $section->add($group);
 
 $form->addGlobal(new Form_Input('domain', 'domain', 'hidden', ''));
@@ -889,7 +904,9 @@ foreach (array (	'Deny'		=> "{$pfb['denydir']}/* {$pfb['nativedir']}/*",
 
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<h6 class="panel-title"><?=gettext("&nbsp;" . $type . "&emsp; - &nbsp; Last " . $pfbentries . " Alert Entries."); ?></h6>
+		<h2 class="panel-title">&nbsp;<?=gettext($type)?>
+			<small>-&nbsp;<?=gettext(Last)?>&nbsp;<?=$pfbentries?>&nbsp;<?=gettext("Alert Entries")?></small>
+		</h2>
 	</div>
 	<div class="panel-body">
 		<div class="table-responsive">
@@ -1087,7 +1104,7 @@ if (!empty($fields_array[$type]) && !empty($rule_list) && $type != 'DNSBL') {
 				$rule = "{$rule_list[$rulenum]['name']}<br /><small>({$rulenum})</small>";
 				$host = $fields[7];
 
-				$alert_ip  = '<a class="fa fa-info icon-pointer icon-primary" href="/pfblockerng/pfblockerng_threats.php?host=' .
+				$alert_ip = '<a class="fa fa-info icon-pointer icon-primary" href="/pfblockerng/pfblockerng_threats.php?host=' .
 						$host . '" title="Click for Threat Source Lookup."></a>';
 
 				if ($pfb_query != 'Country' && $rtype == 'block' && $pfb['supp'] == 'on') {
@@ -1252,8 +1269,8 @@ function findhostnames(counter) {
 	)
 }
 
-var alertlines = "<?php echo $resolvecounter?>";
-var autoresolve = "<?php echo $hostlookup?>";
+var alertlines = "<?=$resolvecounter?>";
+var autoresolve = "<?=$hostlookup?>";
 if ( autoresolve == 'on' ) {
 	for (alertcount = 0; alertcount < alertlines; alertcount++) {
 		setTimeout(findhostnames(alertcount), 30);

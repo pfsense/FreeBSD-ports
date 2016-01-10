@@ -5,8 +5,7 @@ PORTNAME=	excido
 PORTVERSION=	0.1.5c
 PORTREVISION=	15
 CATEGORIES=	games
-MASTER_SITES=	http://offload2.icculus.org:9090/excido/ \
-		http://offload1.icculus.org:9090/excido/
+MASTER_SITES=	https://icculus.org/${PORTNAME}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
 MAINTAINER=	ports@FreeBSD.org

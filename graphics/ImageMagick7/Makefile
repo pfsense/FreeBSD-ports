@@ -2,6 +2,7 @@
 
 PORTNAME=	ImageMagick
 DISTVERSION=	7.0.0-0~beta${DATE}
+PORTREVISION=	1
 CATEGORIES=	graphics perl5
 MASTER_SITES=	http://www.imagemagick.org/download/ \
 		http://www.imagemagick.org/download/beta/ \
@@ -36,7 +37,7 @@ COMMENT=	Image processing tools (unstable version)
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-DATE=		20150902
+DATE=		20151120
 WRKSRC=		${WRKDIR}/${PORTNAME}-7.0.0-0
 
 LIB_DEPENDS=	libltdl.so:${PORTSDIR}/devel/libltdl
@@ -112,7 +113,7 @@ _IMAGEMAGICK_THREADS_IGNORE_MSG=. Define WITH_THREADS
 .endif
 
 .if ${PORT_OPTIONS:MPERL}
-CONFIGURE_ARGS+=	--with-perl=${PERL5} \
+CONFIGURE_ARGS+=	--with-perl=${PERL} \
 			--with-perl-options="MAKE=${MAKE_CMD}"
 PLIST_SUB+=		WITH_PERL=''
 # PerlMagick does not work with threads, if perl is not threaded, and vice versa
@@ -426,15 +427,15 @@ pre-configure:
 	@${ECHO_CMD} NOTICE: SVG format support disabled, requires X11
 .endif
 
-post-install: test
+post-install:
 .for i in ${SAMPLE_FILES}
 	@${MV} ${STAGEDIR}${PREFIX}/etc/ImageMagick-7/${i} \
 		${STAGEDIR}${PREFIX}/etc/ImageMagick-7/${i}.sample
 .endfor
 
-test check:
-.if ${PORT_OPTIONS:MTESTS}
+post-install-TESTS-on: test
+
+do-test:
 	-cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} limits -m 20m ${MAKE} ${_MAKE_JOBS} check
-.endif
 
 .include <bsd.port.mk>

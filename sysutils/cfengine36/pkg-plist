@@ -223,6 +223,7 @@ sbin/rpmvercmp
 %%DOCSDIR%%/examples/package_windows_feature.cf
 %%DOCSDIR%%/examples/package_yum.cf
 %%DOCSDIR%%/examples/package_zypper.cf
+%%DOCSDIR%%/examples/packagesmatching.cf
 %%DOCSDIR%%/examples/parallel_exec.cf
 %%DOCSDIR%%/examples/parseintrealstringarray.cf
 %%DOCSDIR%%/examples/parsestringarray.cf
@@ -339,9 +340,6 @@ sbin/rpmvercmp
 %%DOCSDIR%%/examples/win_registry.cf
 %%DOCSDIR%%/examples/win_schedule.cf
 %%DOCSDIR%%/examples/zenoss.cf
-@dir %%DOCSDIR%%/examples
-@dir %%DOCSDIR%%
-@dir libexec/cfengine
 @unexec rmdir "/var/cfengine/inputs" >/dev/null 2>&1 || :
 @unexec rmdir "/var/cfengine/modules" >/dev/null 2>&1 || :
 @unexec rmdir "/var/cfengine/outputs" >/dev/null 2>&1 || :

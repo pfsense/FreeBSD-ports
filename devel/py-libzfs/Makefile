@@ -3,7 +3,7 @@
 
 PORTNAME=	libzfs
 PORTVERSION=	1.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -17,7 +17,7 @@ BUILD_DEPENDS=	cython>0:${PORTSDIR}/lang/cython
 USE_GITHUB=     yes
 GH_ACCOUNT=	freenas
 GH_PROJECT=	py-libzfs
-GH_TAGNAME=	a86351c
+GH_TAGNAME=	ab14b4f
 
 USES=		python
 USE_PYTHON=	autoplist distutils
@@ -34,8 +34,8 @@ RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}enum34>0:${PORTSDIR}/devel/py-enum34
 IGNORE=	requires kernel source files in ${SRC_BASE}
 .endif
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} <= 1000000
-IGNORE=	This module requires at least FreeBSD 10
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1002000
+IGNORE=	This module requires at least FreeBSD 10.2
 .endif
 
 .include <bsd.port.post.mk>

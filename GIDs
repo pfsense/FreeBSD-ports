@@ -95,6 +95,7 @@ trircd:*:154:
 xorp:*:155:
 monetdb:*:156:
 barman:*:157:
+pootle:*:158:
 nocat:*:159:
 sfs:*:171:
 agk:*:172:
@@ -174,6 +175,7 @@ ldap:*:389:
 tiarra:*:398:
 uhub:*:411:
 drweb:*:426:
+varnish:*:429:
 quasselcore:*:442:
 callweaver:*:444:
 ecartis:*:450:
@@ -241,6 +243,9 @@ sogod:*:846:
 fossy:*:901:www
 scanlogd:*:902:
 _ocserv:*:903:
+grafana:*:904:
+artifactory:*:905:
+opentsdb:*:906:
 influxd:*:907:
 riemann:*:908:
 proxy65:*:909:
@@ -326,6 +331,7 @@ rcynic:*:994:
 rpkirtr:*:995:
 tarantool:*:996:
 bareos:*:997:
+_rmilter:*:998:
 ebnetd:*:999:
 nogroup:*:65533:
 nobody:*:65534:

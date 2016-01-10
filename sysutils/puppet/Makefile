@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	puppet
-PORTVERSION=	3.8.2
+PORTVERSION=	3.8.4
 PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://downloads.puppetlabs.com/puppet/
 
-MAINTAINER=	swills@FreeBSD.org
+MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Configuration management framework written in Ruby
 
 LICENSE=	APACHE20
@@ -23,7 +23,6 @@ CPE_VENDOR=	puppetlabs
 CONFLICTS_INSTALL=	puppet37-* puppet4-*
 NO_BUILD=	yes
 USE_RUBY=	yes
-USE_RUBY_FEATURES=	iconv
 USE_RC_SUBR=	puppet puppetmaster
 PORTDOCS=	LICENSE README.md
 PORTEXAMPLES=	*
@@ -33,29 +32,8 @@ SUB_FILES+=	pkg-message
 SUB_LIST=	RUBY=${RUBY}
 
 OPTIONS_DEFINE=		DOCS EXAMPLES
-OPTIONS_DEFAULT=	PACKAGE_ORIGIN
-OPTIONS_RADIO=		PATCHES
-OPTIONS_RADIO_PATCHES=	PACKAGE_ORIGIN PACKAGE_ROOT
-PACKAGE_ORIGIN_DESC=	Use port origin as package name
-PACKAGE_ROOT_DESC=	Use PACKAGEROOT instead of PACKAGESITE
-PATCHES_DESC=		Optional exclusive patches
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MPACKAGE_ROOT}
-.if ! ${PORT_OPTIONS:MPACKAGE_ORIGIN}
-EXTRA_PATCHES+=	${FILESDIR}/optpatch-package_root
-.else
-BROKEN=	PACKAGE_ROOT option patch is incompatible with PACKAGE_ORIGIN patch.
-.endif
-.endif
 
 .include <bsd.port.pre.mk>
-
-.if ${PORT_OPTIONS:MPACKAGE_ORIGIN}
-EXTRA_PATCHES+=	${FILESDIR}/optpatch-package_origin
-RUN_DEPENDS+=	rubygem-bzip2-ruby>=0:${PORTSDIR}/archivers/rubygem-bzip2-ruby
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e "s|/etc/puppet|${ETCDIR}|" \

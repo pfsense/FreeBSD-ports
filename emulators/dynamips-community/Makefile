@@ -15,6 +15,8 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libelf.so:${PORTSDIR}/devel/libelf \
 		libuuid.so:${PORTSDIR}/misc/e2fsprogs-libuuid
 
+CFLAGS+=	-I${PREFIX}/include/libelf
+
 CONFLICTS=	dynamips-[0-9]* dynamips-devel-[0-9]*
 
 USES=		cmake
@@ -23,7 +25,6 @@ USE_GITHUB=	yes
 MAKE_JOBS_UNSAFE=	yes
 
 GH_ACCOUNT=	GNS3
-GH_PROJECT=	dynamips
 
 MAKE_ENV=	DYNAMIPS_CODE=${DYNAMIPS_CODE} \
 		DYNAMIPS_ARCH=${DYNAMIPS_ARCH}

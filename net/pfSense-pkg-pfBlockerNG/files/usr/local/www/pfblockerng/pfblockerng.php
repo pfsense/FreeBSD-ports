@@ -142,31 +142,26 @@ function pfb_update_check($header, $list_url, $pfbfolder, $pfborig, $pflex, $for
 	pfb_logger("{$log}", 1);
 	$pfb['cron_update'] = FALSE;
 
-	// Determine if previous download fails have exceeded threshold.
-	if ($pfb['restore'] == 'on') {
-		if ($pfb['skipfeed'] != 0) {
-			// Call function to get all previous download fails
-			pfb_failures();
+	// Call function to get all previous download fails
+	pfb_failures();
 
-			if ($pfb['failed'][$header] >= $pfb['skipfeed']) {
-				$log = "  Max daily download failure attempts exceeded. Clear widget 'failed downloads' to reset.\n\n";
-				pfb_logger("{$log}", 1);
-				unlink_if_exists("{$pfbfolder}/{$header}.fail");
-				return;
-			}
-		}
-
-		// Attempt download, when a previous 'fail' file marker is found.
-		if (file_exists("{$pfbfolder}/{$header}.fail")) {
-			$log = "\t\t\tPrevious download failed.\tRe-attempt download\n";
+	if ($pfb['skipfeed'] != 0) {
+		// Determine if previous download fails have exceeded threshold.
+		if ($pfb['failed'][$header] >= $pfb['skipfeed']) {
+			$log = "  Max daily download failure attempts exceeded. Clear widget 'failed downloads' to reset.\n\n";
 			pfb_logger("{$log}", 1);
-			$pfb['update_cron'] = TRUE;
-			unlink_if_exists("{$pfbfolder}/{$header}.txt");
+			unlink_if_exists("{$pfbfolder}/{$header}.fail");
 			return;
 		}
 	}
-	else {
-		unlink_if_exists("{$pfbfolder}/{$header}.fail");
+
+	// Attempt download, when a previous 'fail' file marker is found.
+	if (file_exists("{$pfbfolder}/{$header}.fail")) {
+		$log = "\t\t\tPrevious download failed.\tRe-attempt download\n";
+		pfb_logger("{$log}", 1);
+		$pfb['update_cron'] = TRUE;
+		unlink_if_exists("{$pfbfolder}/{$header}.txt");
+		return;
 	}
 
 	// Check if List file doesn't exist or Format is 'whois'.
@@ -524,7 +519,7 @@ function pfblockerng_uc_countries() {
 			while (($cc = @fgetcsv($handle)) !== FALSE) {
 				$cc_key		= $cc[4];
 				$country_key	= $cc[5];
-				$a_cidr		= implode(',', ip_range_to_subnet_array_temp($cc[0], $cc[1]));
+				$a_cidr		= implode(',', ip_range_to_subnet_array($cc[0], $cc[1]));
 				foreach ($cont_array as $key => $iso) {
 					if (strpos($iso['iso'], $cc_key) !== FALSE) {
 						$cont_array[$key][$cc_key][$iptype]  .= "{$a_cidr},";
@@ -727,9 +722,11 @@ $xml = <<<EOF
 	<title>Firewall/pfBlockerNG</title>
 	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
 	<addedit_string>pfBlockerNG: Save {$cont} settings</addedit_string>
+	<savehelp><![CDATA[<strong>Click to SAVE Settings and/or Rule edits.&emsp;Changes are applied via CRON or
+		'Force Update'</strong>]]>
+	</savehelp>
 	<menu>
 		<name>pfBlockerNG: {$cont_name}</name>
-		<tooltiptext>Configure pfBlockerNG</tooltiptext>
 		<section>Firewall</section>
 		<url>pkg_edit.php?xml=pfblockerng_{$cont_name_lower}.xml</url>
 	</menu>
@@ -831,7 +828,7 @@ $xml = <<<EOF
 		<field>
 			<fielddescr>LINKS</fielddescr>
 			<description><![CDATA[<a href="/firewall_aliases.php">Firewall Alias</a>&emsp;
-				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="diag_logs_filter.php">Firewall Logs</a>]]>
+				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="status_logs_filter.php">Firewall Logs</a>]]>
 			</description>
 			<type>info</type>
 		</field>
@@ -853,7 +850,6 @@ EOF;
 if (!empty (${'options6'})) {
 	$xml .= <<<EOF
 			<description><![CDATA[<center><br />IPv4 Countries</center>]]></description>
-			<usecolspan2/>
 			<combinefields>begin</combinefields>
 		</field>
 
@@ -878,8 +874,6 @@ if (!empty (${'options6'})) {
 			</options>
 			<size>${'ftotal6'}</size>
 			<multiple/>
-			<usecolspan2/>
-			<dontdisplayname/>
 			<combinefields>end</combinefields>
 		</field>
 
@@ -920,9 +914,9 @@ $xml .= <<<EOF
 				<li>'Alias Deny' can use De-Duplication and Reputation Processes if configured.</li><br />
 				<li>'Alias Permit' and 'Alias Match' will be saved in the Same folder as the other Permit/Match Auto-Rules</li><br />
 				<li>'Alias Native' lists are kept in their Native format without any modifications.</li></ul>
-				<font color='red'>Note: </font><ul>When manually creating 'Alias' type firewall rules; <strong>Do not add</strong> (pfB_) to the
-				start of the rule description, use (pfb_) (Lowercase prefix). Manually created 'Alias' rules with 'pfB_' in the
-				description will be auto-removed by package when 'Auto' rules are defined.</ul></div>]]>
+				<span class="text-danger">Note: </span><ul>When manually creating 'Alias' type firewall rules;
+				<strong>Do not add</strong> (pfB_) to the start of the rule description, use (pfb_) (Lowercase prefix). Manually created
+				 'Alias' rules with 'pfB_' in the description will be auto-removed by package when 'Auto' rules are defined.</ul></div>]]>
 			</description>
 			<fieldname>action</fieldname>
 			<type>select</type>
@@ -962,63 +956,59 @@ $xml .= <<<EOF
 		</field>
 		<field>
 			<type>info</type>
-			<description><![CDATA[<font color='red'>Note:</font>&nbsp; In general, Auto-Rules are created as follows:<br />
-				<ul>Inbound &emsp;- 'any' port, 'any' protocol and 'any' destination<br />
-				Outbound - 'any' port, 'any' protocol and 'any' destination address in the lists</ul>
+			<description><![CDATA[<span class="text-danger">Note:</span>&nbsp; In general, Auto-Rules are created as follows:<br />
+				<dl class="dl-horizontal">
+					<dt>Inbound</dt><dd>'any' port, 'any' protocol and 'any' destination</dd>
+					<dt>Outbound</dt><dd>'any' port, 'any' protocol and 'any' destination address in the lists</dd>
+				</dl>
 				Configuring the Adv. Inbound Rule settings, will allow for more customization of the Inbound Auto-Rules.<br />
 				<strong>Select the pfSense 'Port' and/or 'Destination' Alias below:</strong>]]>
 			</description>
 		</field>
 		<field>
 			<fieldname>autoports</fieldname>
-			<fielddescr>Enable Custom Port</fielddescr>
+			<fielddescr>Custom Port</fielddescr>
 			<type>checkbox</type>
+			<sethelp>Enable</sethelp>
 			<enablefields>aliasports</enablefields>
-			<usecolspan2/>
 			<combinefields>begin</combinefields>
 		</field>
 		<field>
-			<fielddescr>Define Alias</fielddescr>
 			<fieldname>aliasports</fieldname>
-			<description><![CDATA[<a href="/firewall_aliases.php?tab=port">Click Here to add/edit Aliases</a>
+			<fielddescr>Custom Port</fielddescr>
+			<description><![CDATA[<a target="_blank" href="/firegall_aliases.php?tab=port">Click Here to add/edit Aliases</a>
 				Do not manually enter port numbers. <br />Do not use 'pfB_' in the Port Alias name.]]>
 			</description>
-			<size>21</size>
+			<width>6</width>
 			<type>aliases</type>
 			<typealiases>port</typealiases>
-			<dontdisplayname/>
-			<usecolspan2/>
 			<combinefields>end</combinefields>
 		</field>
 		<field>
 			<fieldname>autodest</fieldname>
-			<fielddescr>Enable Custom Destination</fielddescr>
+			<fielddescr>Custom Destination</fielddescr>
 			<type>checkbox</type>
+			<sethelp>Enable</sethelp>
 			<enablefields>aliasdest,autonot</enablefields>
-			<usecolspan2/>
 			<combinefields>begin</combinefields>
-		</field>
-		<field>
-			<fieldname>aliasdest</fieldname>
-			<description><![CDATA[<a href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>
-				Do not manually enter Addresses(es). <br />Do not use 'pfB_' in the 'IP Network Type' Alias name.]]>
-			</description>
-			<size>21</size>
-			<type>aliases</type>
-			<typealiases>network</typealiases>
-			<dontdisplayname/>
-			<usecolspan2/>
-			<combinefields/>
 		</field>
 		<field>
 			<fielddescr>Invert</fielddescr>
 			<fieldname>autonot</fieldname>
-			<sethelp><![CDATA[<strong>Invert</strong> - Option to invert the sense of the match.<br />
-				ie - Not (!) Destination Address(es)]]>
-			</sethelp>
 			<type>checkbox</type>
-			<dontdisplayname/>
-			<usecolspan2/>
+			<sethelp>Invert</sethelp>
+			<combinefields/>
+		</field>
+		<field>
+			<fieldname>aliasdest</fieldname>
+			<fielddescr>Custom Destination</fielddescr>
+			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>
+				Do not manually enter Addresses(es). <br />Do not use 'pfB_' in the 'IP Network Type' Alias name.<br />
+				Select 'invert' to invert the sense of the match. ie - Not (!) Destination Address(es)]]>
+			</description>
+			<width>6</width>
+			<type>aliases</type>
+			<typealiases>network</typealiases>
 			<combinefields>end</combinefields>
 		</field>
 		<field>
@@ -1033,13 +1023,7 @@ $xml .= <<<EOF
 				<option><name>UDP</name><value>udp</value></option>
 				<option><name>TCP/UDP</name><value>tcp/udp</value></option>
 			</options>
-			<size>4</size>
 			<default_value></default_value>
-		</field>
-		<field>
-			<name><![CDATA[<center>Click to SAVE Settings and/or Rule Edits. &emsp; Changes are Applied via CRON or
-				'Force Update'</center>]]></name>
-			<type>listtopic</type>
 		</field>
 	</fields>
 	<custom_php_validation_command>
@@ -1132,9 +1116,11 @@ $xmlrep = <<<EOF
 	<title>Firewall/pfBlockerNG</title>
 	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
 	<addedit_string>pfBlockerNG: Save Reputation Settings</addedit_string>
+	<savehelp><![CDATA[<strong>Click to SAVE Settings and/or Rule edits.&emsp;Changes are applied via CRON or
+		'Force Update'</strong>]]>
+	</savehelp>
 	<menu>
 		<name>pfBlockerNG</name>
-		<tooltiptext>Configure pfblockerNG</tooltiptext>
 		<section>Firewall</section>
 		<url>pkg_edit.php?xml=pfblockerng.xml</url>
 	</menu>
@@ -1189,7 +1175,7 @@ $xmlrep = <<<EOF
 		<field>
 			<fielddescr>LINKS</fielddescr>
 			<description><![CDATA[<a href="/firewall_aliases.php">Firewall Alias</a>&emsp;
-				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="diag_logs_filter.php">Firewall Logs</a>]]>
+				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="status_logs_filter.php">Firewall Logs</a>]]>
 			</description>
 			<type>info</type>
 		</field>
@@ -1223,7 +1209,7 @@ $xmlrep = <<<EOF
 			<fielddescr><![CDATA[Enable Max]]></fielddescr>
 			<fieldname>enable_rep</fieldname>
 			<type>checkbox</type>
-			<description><![CDATA[Enables Search for Repeat Offenders in a /24 Range on <strong>Each Individual Blocklist</strong>]]></description>
+			<sethelp><![CDATA[Enables Search for Repeat Offenders in a /24 Range on <strong>Each Individual Blocklist</strong>]]></sethelp>
 		</field>
 		<field>
 			<fielddescr><![CDATA[&emsp;[ <strong>Max</strong> ] Setting]]></fielddescr>
@@ -1262,8 +1248,8 @@ $xmlrep = <<<EOF
 			<fielddescr>Enable pMAX</fielddescr>
 			<fieldname>enable_pdup</fieldname>
 			<type>checkbox</type>
-			<description><![CDATA[Enables Search for Repeat Offenders in All BlockLists, <strong>Without</strong> Country Code Exclusion]]>
-			</description>
+			<sethelp><![CDATA[Enables Search for Repeat Offenders in All BlockLists, <strong>Without</strong> Country Code Exclusion]]>
+			</sethelp>
 		</field>
 		<field>
 			<fielddescr><![CDATA[&emsp;[ <strong>pMax</strong> ] Setting]]></fielddescr>
@@ -1283,8 +1269,8 @@ $xmlrep = <<<EOF
 			<fielddescr>Enable dMAX</fielddescr>
 			<fieldname>enable_dedup</fieldname>
 			<type>checkbox</type>
-			<description><![CDATA[Enables Search for Repeat Offenders in All BlockLists <strong>Using</strong> Country Code Exclusion]]>
-			</description>
+			<sethelp><![CDATA[Enables Search for Repeat Offenders in All BlockLists <strong>Using</strong> Country Code Exclusion]]>
+			</sethelp>
 		</field>
 		<field>
 			<fielddescr><![CDATA[&emsp;[ <strong>dMax</strong> ] Setting]]></fielddescr>
@@ -1500,11 +1486,6 @@ $xmlrep = <<<EOF
 				<option><name>Disable</name><value>disabled</value></option>
 				<option><name>Enable</name><value>enabled</value></option>
 			</options>
-		</field>
-		<field>
-			<name><![CDATA[<center>Click to SAVE Settings and/or Rule Edits. &emsp; Changes are Applied via CRON or
-				'Force Update'</center>]]></name>
-			<type>listtopic</type>
 		</field>
 	</fields>
 	<custom_php_validation_command>

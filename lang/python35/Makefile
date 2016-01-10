@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	python
-DISTVERSION=	3.5.0
+DISTVERSION=	${PYTHON_PORTVERSION}
 CATEGORIES=	lang python ipv6
-MASTER_SITES=	PYTHON/ftp/python/${DISTVERSION:C/^([0-9]+\.[0-9]+\.[0-9]+).*/\1/}
-PKGNAMESUFFIX=	35
+MASTER_SITES=	PYTHON/ftp/python/${PYTHON_PORTVERSION}
+PKGNAMESUFFIX=	${PYTHON_SUFFIX}
 DISTNAME=	Python-${DISTVERSION}
 DIST_SUBDIR=	python
 
@@ -24,9 +24,8 @@ CPE_PRODUCT=	${CPE_VENDOR}
 CPE_VERSION=	${DISTVERSION}
 
 # Duplicate python.mk variables. TODO: Let lang/python?? ports use python.mk bits.
-PYTHON_VER=		${DISTVERSION:C/^([0-9]+\.[0-9]+).*/\1/}
+PYTHON_VER=		${PYTHON_PORTVERSION:R}
 PYTHON_VERSION=		python${PYTHON_VER}
-PYTHON_PORTVERSION=	${DISTVERSION:C/^([0-9]+\.[0-9]+\.[0-9]+).*/\1/}
 PYTHON_SUFFIX=		${PYTHON_VER:S/.//g}
 
 DISABLED_EXTENSIONS=	_sqlite3 _tkinter _gdbm
@@ -34,9 +33,16 @@ CONFIGURE_ARGS+=	--enable-shared --without-ensurepip
 CONFIGURE_ENV+=		OPT="" DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS}"	# Null out OPT to respect user CFLAGS and remove optimizations
 
 INSTALL_TARGET=		altinstall						# Don't want cloberring of unprefixed files
+
+TEST_TARGET=		buildbottest
+TEST_ARGS=		TESTOPTS=-j${MAKE_JOBS_NUMBER}
+
 MAKE_ARGS+=		INSTALL_SHARED="${INSTALL_LIB}"				# Strip shared library
 MAKE_ARGS+=		LIBPC="${PREFIX}/libdata/pkgconfig"			# Until pathfix gets support for files other than Makefile.in
 MAKE_JOBS_UNSAFE=	yes							# Parser/pgen build bug. See Issue: 200622, 201974
+
+SUB_FILES=		pkg-message
+SUB_LIST=		PYTHON_SUFFIX=${PYTHON_SUFFIX}
 
 PLIST_SUB=		XYDOT=${PYTHON_VER} XY=${PYTHON_SUFFIX} \
 			XYZDOT=${PYTHON_PORTVERSION} ABI=${ABIFLAGS} \
@@ -82,6 +88,7 @@ THREADS_LDFLAGS=	-lpthread
 
 TSC_CONFIGURE_WITH=	tsc
 
+.include "${.CURDIR}/Makefile.version"
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MPYMALLOC}
@@ -122,8 +129,5 @@ post-install:
 .endif
 	for i in ${STAGEDIR}${PREFIX}/lib/python${PYTHON_VER}/lib-dynload/*.so; do \
 		${STRIP_CMD} $$i; done								# Strip shared extensions
-
-regression-test: build
-	@cd ${WRKSRC} && ${MAKE} TESTOPTS=-j${MAKE_JOBS_NUMBER} buildbottest
 
 .include <bsd.port.mk>

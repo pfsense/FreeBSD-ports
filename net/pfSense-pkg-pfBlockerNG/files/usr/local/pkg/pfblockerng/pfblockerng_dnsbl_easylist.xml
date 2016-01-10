@@ -45,9 +45,11 @@
 	<title>Firewall/pfBlockerNG</title>
 	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
 	<addedit_string>pfBlockerNG: Save DNSBL Easylist settings</addedit_string>
+	<savehelp><![CDATA[<strong>Click to SAVE Settings and/or Rule edits.&emsp;Changes are applied via CRON or
+		'Force Update'</strong>]]>
+	</savehelp>
 	<menu>
 		<name>pfBlockerNG</name>
-		<tooltiptext></tooltiptext>
 		<section>Firewall</section>
 		<configfile>pfblockerng_dnsbl_easylist.xml</configfile>
 	</menu>
@@ -55,7 +57,6 @@
 		<tab>
 			<text>General</text>
 			<url>/pkg_edit.php?xml=pfblockerng.xml</url>
-			<tooltiptext></tooltiptext>
 		</tab>
 		<tab>
 			<text>Update</text>
@@ -112,14 +113,14 @@
 	</tabs>
 	<fields>
 		<field>
-			<name><![CDATA[DNSBL - EasyList &emsp; Run 'Force Update' to deploy new Settings.]]></name>
+			<name>DNSBL - EasyList</name>
 			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr>LINKS</fielddescr>
 			<fieldname></fieldname>
 			<description><![CDATA[<a href="/firewall_aliases.php">Firewall Alias</a>&emsp;
-				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="diag_logs_filter.php">Firewall Logs</a>]]>
+				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="status_logs_filter.php">Firewall Logs</a>]]>
 			</description>
 			<type>info</type>
 		</field>
@@ -128,24 +129,22 @@
 			<fieldname>aliasname</fieldname>
 			<description><![CDATA[Enter DNS Group Name.&emsp; Example: EasyList]]></description>
 			<type>input</type>
-			<size>20</size>
 		</field>
 		<field>
 			<fielddescr>Description</fielddescr>
 			<fieldname>description</fieldname>
 			<type>input</type>
-			<size>90</size>
+			<width>9</width>
 		</field>
 		<field>
 			<fielddescr>EasyList Feeds</fielddescr>
-			<description><![CDATA[Add Easylist Feed]]></description>
-			<fieldname></fieldname>
 			<type>rowhelper</type>
 			<rowhelper>
 				<rowhelperfield>
 					<fielddescr>State</fielddescr>
 					<fieldname>state</fieldname>
 					<type>select</type>
+					<width>1</width>
 					<options>
 						<option><name>ON</name><value>Enabled</value></option>
 						<option><name>OFF</name><value>Disabled</value></option>
@@ -157,6 +156,7 @@
 					<fielddescr>EasyList Feed</fielddescr>
 					<fieldname>url</fieldname>
 					<type>select</type>
+					<width>5</width>
 					<options>
 						<option>
 							<name>EasyList w/o Elements</name>
@@ -172,12 +172,12 @@
 					<fielddescr>Header</fielddescr>
 					<fieldname>header</fieldname>
 					<type>input</type>
-					<size>15</size>
+					<width>3</width>
 				</rowhelperfield>
 			</rowhelper>
 		</field>
 		<field>
-			<name><![CDATA[DNSBL - EasyList Settings]]></name>
+			<name>DNSBL - EasyList Settings</name>
 			<type>listtopic</type>
 		</field>
 		<field>
@@ -200,7 +200,6 @@
 				<option><name>EASYPRIVACY Tracking Servers</name><value>epts</value></option>
 				<option><name>EASYPRIVACY Tracking International</name><value>epti</value></option>
 			</options>
-			<size>6</size>
 			<multiple/>
 		</field>
 		<field>
@@ -258,11 +257,6 @@
 			<fieldname>filter_alexa</fieldname>
 			<description>Filter Alias via Alexa</description>
 			<type>checkbox</type>
-		</field>
-		<field>
-			<name><![CDATA[<center>Click to SAVE Settings and/or Rule Edits. &emsp; Changes are Applied via CRON or
-				'Force Update'</center>]]></name>
-			<type>listtopic</type>
 		</field>
 	</fields>
 	<custom_php_validation_command>

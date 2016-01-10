@@ -5,12 +5,13 @@ PORTNAME=	foobillard
 PORTVERSION=	3.0a
 PORTREVISION=	10
 CATEGORIES=	games
-MASTER_SITES=	http://foobillard.sunsite.dk/dnl/
+MASTER_SITES=	SF/${PORTNAME}/FooBillard-Sources/
 
 MAINTAINER=	thomas@bsdunix.ch
 COMMENT=	Free OpenGL billiards game
 
-BROKEN=		fails to link
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
 		libfreetype.so:${PORTSDIR}/print/freetype2
@@ -47,6 +48,7 @@ CONFIGURE_ARGS+=	--enable-glut
 
 .if ! ${PORT_OPTIONS:MNVIDIA_BUMPREF}
 CONFIGURE_ARGS+=	--disable-nvidia
+CFLAGS += -DGL_AMD_gpu_shader_int64=1 -DGLuint64EXT=uint64_t -DGLint64EXT=int64_t -UGL_VERTEX_PROGRAM_NV -DGL_NV_vertex_program=1
 .endif
 
 post-patch:
@@ -54,6 +56,6 @@ post-patch:
 		${WRKSRC}/src/Makefile.in
 
 post-install:
-	@${INSTALL_MAN} ${WRKSRC}/foobillard.6 ${STAGEDIR}${PREFIX}/man/man6/foobillard.6
+	${INSTALL_MAN} ${WRKSRC}/foobillard.6 ${STAGEDIR}${PREFIX}/man/man6/foobillard.6
 
 .include <bsd.port.mk>

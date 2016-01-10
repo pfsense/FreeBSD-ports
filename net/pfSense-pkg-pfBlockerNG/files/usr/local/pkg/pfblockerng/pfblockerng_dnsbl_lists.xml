@@ -45,6 +45,9 @@
 	<title>Firewall/pfBlockerNG</title>
 	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
 	<addedit_string>pfBlockerNG: Save DNSBL Feeds settings</addedit_string>
+	<savehelp><![CDATA[<strong>Click to SAVE Settings and/or Rule edits.&emsp;Changes are applied via CRON or
+		'Force Update'</strong>]]>
+	</savehelp>
 	<menu>
 		<name>pfBlockerNG</name>
 		<section>Firewall</section>
@@ -130,58 +133,53 @@
 	</adddeleteeditpagefields>
 	<fields>
 		<field>
-			<name><![CDATA[DNS Domain Name Block List &emsp; Run 'Force Update' to deploy new Settings.]]></name>
+			<name>DNSBL Feeds</name>
 			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr>LINKS</fielddescr>
 			<fieldname></fieldname>
-			<description><![CDATA[<a href="/firewall_aliases.php">Firewall Alias</a>&emsp;
-				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="diag_logs_filter.php">Firewall Logs</a>]]>
-			</description>
 			<type>info</type>
+			<description><![CDATA[<a href="/firewall_aliases.php">Firewall Alias</a>&emsp;
+				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="status_logs_filter.php">Firewall Logs</a>]]>
+			</description>
 		</field>
 		<field>
 			<fielddescr>DNS GROUP Name</fielddescr>
 			<fieldname>aliasname</fieldname>
-			<description><![CDATA[Enter DNS Group Name.&emsp; Example: Ads]]></description>
 			<type>input</type>
-			<size>20</size>
+			<description><![CDATA[Enter DNS Group Name.&emsp; Example: Ads]]></description>
 		</field>
 		<field>
 			<fielddescr>Description</fielddescr>
 			<fieldname>description</fieldname>
 			<type>input</type>
-			<size>90</size>
+			<width>9</width>
 		</field>
 		<field>
 			<fieldname>InfoLists</fieldname>
+			<fielddescr>DNSBL Settings</fielddescr>
 			<type>info</type>
-			<description><![CDATA[<strong><u>'Format'</u></strong>: Select the Format type.<br />
-				<strong><u>'State'</u></strong>: Select the run state.<br />
-				<strong><u>'Source'</u></strong>:
-				<ul><li><strong>'URL'</strong>: External link to source
-					&emsp;(ie: <a target="_blank" href='http://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&mimetype=plaintext'>yoyo</a>,
-					<a target="_blank" href='http://someonewhocares.org/hosts/hosts'>SomeoneWhoCares</a>,
-					<a target="_blank" href='https://adaway.org/hosts.txt'>Adaway</a>)</li>
-				<li><strong>'Local File'</strong>: http(s)://127.0.0.1/filename
-					&emsp;<strong>or</strong>&emsp; /var/db/pfblockerng/filename</li></ul>
-				<strong><u>'Header/Label'</u></strong>: This field must be <u>unique.</u> This names the file and is referenced in the widget.
-					&emsp;(ie: hpHosts_ads, hpHosts_partial)<br /><br />
-				<strong>AdBlock Easylists <u>cannot</u> be used in this Tab.</strong>]]>
+			<description><![CDATA[<dl class="dl-horizontal">
+				<dt>Format:</dt><dd>Select the Format type:</dd>
+				<dt>State:</dt><dd>Select the run State:</dd>
+				<dt>Source:</dt><dd>Select the Source type:
+					<dl class="dl-horizontal">
+						<dt>URL:</dt><dd>External link to source&emsp;(ie:&nbsp;
+							<a target="_blank" href="http://pgl.yoyo.org/adservers/serverlist.php?hostformat=;showintro=0">yoyo</a>,&nbsp;
+							<a target="_blank" href="http://someonewhocares.org/hosts/hosts">SomeoneWhoCares</a>,&nbsp;
+							<a target="_blank" href="https://adaway.org/hosts.txt">Adaway</a>)</dd>
+						<dt>Local file:</dt><dd>http(s)://127.0.0.1/filename
+							&emsp;<strong>or</strong>&emsp; /var/db/pfblockerng/filename</dd>
+					</dl></dd>
+				<dt>Header/Label:</dt><dd>This field must be <u>unique.</u> This names the file and is referenced in the widget.
+					&emsp;(ie: hpHosts_ads,&emsp;hpHosts_partial)</dd>
+				<dt>Note:</dt><dd><strong>AdBlock Easylists <u>cannot</u> be used in this Tab.</strong></dd>
+			</dl>]]>
 			</description>
 		</field>
 		<field>
-			<fielddescr><![CDATA[DNSBL]]></fielddescr>
-			<description><![CDATA[<br /><strong>'Format'</strong>: Select the file format that URL will retrieve.<br />
-				<ul><li><strong>'auto'</strong>&emsp;- Default parser</li>
-				<li><strong>'rsync'</strong> - RSync Lists</li></ul>
-				<strong>'State'</strong>: Select the Run State for each list.<br />
-				<ul><li><strong>'ON/OFF'</strong> - Enabled / Disabled</li>
-				<li><strong>'HOLD'</strong> - Once a List has been Downloaded, list will remain Static.</li>
-				<li><strong>'FLEX'</strong> - Not Recommended - Allow lower SSL connections</li></ul>
-				<strong>'Note'</strong>: Downloaded or pfsense local file must have only one Domain Name per line.]]>
-			</description>
+			<fielddescr>DNSBL</fielddescr>
 			<type>rowhelper</type>
 			<sortablefields/>
 			<rowhelper>
@@ -189,6 +187,7 @@
 					<fielddescr>Format</fielddescr>
 					<fieldname>format</fieldname>
 					<type>select</type>
+					<width>1</width>
 					<options>
 						<option><name>Auto</name><value>auto</value></option>
 						<option><name>RSync</name><value>rsync</value></option>
@@ -199,6 +198,7 @@
 					<fielddescr>State</fielddescr>
 					<fieldname>state</fieldname>
 					<type>select</type>
+					<width>1</width>
 					<options>
 						<option><name>ON</name><value>Enabled</value></option>
 						<option><name>OFF</name><value>Disabled</value></option>
@@ -211,13 +211,13 @@
 					<fielddescr>Source</fielddescr>
 					<fieldname>url</fieldname>
 					<type>input</type>
-					<size>50</size>
+					<width>5</width>
 				</rowhelperfield>
 				<rowhelperfield>
 					<fielddescr>Header/Label</fielddescr>
 					<fieldname>header</fieldname>
 					<type>input</type>
-					<size>15</size>
+					<width>2</width>
 					<sortablefields/>
 				</rowhelperfield>
 			</rowhelper>
@@ -307,11 +307,6 @@
 				<option><name>Default</name><value>disabled</value></option>
 				<option><name>Update Custom List</name><value>enabled</value></option>
 			</options>
-		</field>
-		<field>
-			<name><![CDATA[<center>Click to SAVE Settings and/or Rule Edits. &emsp; Changes are Applied via CRON or
-				'Force Update'</center>]]></name>
-			<type>listtopic</type>
 		</field>
 	</fields>
 	<custom_php_validation_command>

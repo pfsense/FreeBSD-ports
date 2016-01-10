@@ -5,7 +5,7 @@ PORTNAME=	erwn
 PORTVERSION=	0.8
 PORTREVISION=	12
 CATEGORIES=	www editors
-MASTER_SITES=	http://lisas.de/erwin/
+MASTER_SITES=	https://lisas.de/erwin/
 DISTNAME=	erwin-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
@@ -24,7 +24,7 @@ post-patch:
 	@${REINPLACE_CMD} -e "s|gtkhtml-3.6|gtkhtml-3.14|g" \
 		${WRKSRC}/configure
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 

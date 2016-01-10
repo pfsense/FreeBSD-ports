@@ -45,14 +45,16 @@
 	]]>
 	</copyright>
 	<name>pfblockerng</name>
-	<version>2.0.4</version>
+	<version>2.0.6</version>
 	<title>Firewall/pfBlockerNG</title>
 	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
 	<addedit_string>pfBlockerNG: Save General Settings</addedit_string>
+	<savehelp><![CDATA[<strong>Click to SAVE Settings and/or Rule edits.&emsp;Changes are applied via CRON or
+		'Force Update'</strong>]]>
+	</savehelp>
 	<menu>
 		<name>pfBlockerNG</name>
 		<configfile>pfblockerng.xml</configfile>
-		<tooltiptext>Configure pfBlockerNG</tooltiptext>
 		<section>Firewall</section>
 		<url>/pkg_edit.php?xml=pfblockerng.xml</url>
 	</menu>
@@ -107,14 +109,14 @@
 	</tabs>
 	<fields>
 		<field>
-			<name>pfBlockerNG General Settings</name>
+			<name>General Settings</name>
 			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr>LINKS</fielddescr>
 			<fieldname></fieldname>
 			<description><![CDATA[<a href="/firewall_aliases.php">Firewall Alias</a>&emsp;
-				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="diag_logs_filter.php">Firewall Logs</a>]]>
+				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="status_logs_filter.php">Firewall Logs</a>]]>
 			</description>
 			<type>info</type>
 		</field>
@@ -129,9 +131,9 @@
 			<fieldname>pfb_keep</fieldname>
 			<description>Keep settings</description>
 			<type>checkbox</type>
-			<sethelp><![CDATA[<span class="text-danger">Note:</span> with 'Keep settings' enabled, pfBlockerNG will maintain run state
+			<sethelp><![CDATA[<span class="text-danger">Note: </span>With 'Keep settings' enabled, pfBlockerNG will maintain run state
 				on Installation/Upgrade.<br /> If 'Keep Settings' is not 'enabled' on pkg Install/De-Install, all settings will be Wiped!<br /><br />
-				<span class="text-danger">Note:</span> To clear all downloaded lists, uncheck these two checkboxes and 'Save'.
+				<span class="text-danger">Note: </span>To clear all downloaded lists, uncheck these two checkboxes and 'Save'.
 				re-check both boxes and run a 'Force Update']]>
 			</sethelp>
 			<default_value>on</default_value>
@@ -289,12 +291,13 @@
 		<field>
 			<fielddescr>Download Failure Threshold</fielddescr>
 			<fieldname>skipfeed</fieldname>
-			<description><![CDATA[Default: <strong>0</strong> (Disabled)<br />
-				Select max daily download failure threshold via CRON. Clear widget 'failed downloads' to reset.]]>
+			<description><![CDATA[Default: <strong>No limit</strong><br />
+				Select max daily download failure threshold via CRON. Clear widget 'failed downloads' to reset.<br />
+				On a download failure, the previously downloaded list is reloaded.]]>
 			</description>
 			<type>select</type>
 			<options>
-				<option><name>0</name><value>0</value></option>
+				<option><name>No limit</name><value>0</value></option>
 				<option><name>1</name><value>1</value></option>
 				<option><name>2</name><value>2</value></option>
 				<option><name>3</name><value>3</value></option>
@@ -305,15 +308,6 @@
 			<default_value>0</default_value>
 		</field>
 		<field>
-			<fielddescr>Restore on Failure</fielddescr>
-			<fieldname>restore_feed</fieldname>
-			<sethelp><![CDATA[Default: <strong>Enabled</strong><br />
-				When 'selected', on a download failure, the previously downloaded list is restored.]]>
-			</sethelp>
-			<type>checkbox</type>
-			<default_value>on</default_value>
-		</field>
-		<field>
 			<fielddescr>Logfile Size</fielddescr>
 			<fieldname>log_maxlines</fieldname>
 			<description><![CDATA[Default: <strong>20000</strong><br />
@@ -321,6 +315,8 @@
 			</description>
 			<type>select</type>
 			<options>
+				<option><name>5000</name><value>5000</value></option>
+				<option><name>10000</name><value>10000</value></option>
 				<option><name>20000</name><value>20000</value></option>
 				<option><name>40000</name><value>40000</value></option>
 				<option><name>60000</name><value>60000</value></option>
@@ -452,26 +448,21 @@
 			<fielddescr>Credits</fielddescr>
 			<fieldname>credits</fieldname>
 			<description><![CDATA[<strong>pfBlockerNG </strong>
-				Created in 2015 by <a target='_blank' href='https://forum.pfsense.org/index.php?action=profile;u=238481'>BBcan177.</a><br /><br />
+				Created in 2015 by <a target="_blank" href="https://forum.pfsense.org/index.php?action=profile;u=238481">BBcan177.</a><br /><br />
 				Based upon pfBlocker by Marcello Coutinho and Tom Schaefer.<br />
 				Country database GeoLite distributed under the Creative Commons Attribution-ShareAlike 3.0 Unported License by:
-				MaxMind Inc. @ <a target='_blank' href='http://www.maxmind.com'>MaxMind.com</a>.
+				MaxMind Inc. @ <a target="_blank" href="http://www.maxmind.com">MaxMind.com</a>.
 				The database is automatically updated the first Tuesday of each month]]>
 			</description>
 			<type>info</type>
 		</field>
 		<field>
 			<fielddescr>Support</fielddescr>
-			<description><![CDATA[This package has been developed by BBcan177.<br />
-				If you like this package, please support the developer @ BBCan177@gmail.com
-				<i class="fa fa-cc-paypal fa-2x"></i>]]>
+			<description><![CDATA[<u>If you like this package, please support the developer</u>.&emsp;&emsp;
+				<a class="fa fa-cc-paypal fa-2x" title="Your support is appreciated. Thank you!" target="_blank"
+					href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RHZUKWX2Y85ZA"> support</a>]]>
 			</description>
 			<type>info</type>
-		</field>
-		<field>
-			<name><![CDATA[<small><center>Click to SAVE Settings and/or Rule edits. &emsp; Changes are applied via CRON or
-			'Force Update'</center></small>]]></name>
-			<type>listtopic</type>
 		</field>
 	</fields>
 	<custom_php_install_command>

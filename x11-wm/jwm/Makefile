@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	jwm
-PORTVERSION=	2.3.1
+PORTVERSION=	2.3.4
 CATEGORIES=	x11-wm
-MASTER_SITES=	http://joewing.net/programs/jwm/releases/
+MASTER_SITES=	http://joewing.net/projects/jwm/releases/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Joe's Window Manager
@@ -20,7 +20,7 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 
 OPTIONS_DEFINE=		CAIRO DEBUG FRIBIDI JPEG NLS PNG SVG XEXT XFT \
 			XINERAMA XMU XPM XRENDER
-OPTIONS_DEFAULT=	JPEG NLS PNG FRIBIDI XEXT XFT XINERAMA XMU XPM XRENDER
+OPTIONS_DEFAULT=	FRIBIDI JPEG PNG XEXT XFT XINERAMA XMU XPM XRENDER
 OPTIONS_SUB=		yes
 
 CAIRO_USE=		GNOME=cairo
@@ -42,30 +42,29 @@ XEXT_USE=		XORG=xext
 XEXT_CONFIGURE_ENABLE=	shape
 XFT_USE=		XORG=xft
 XFT_CONFIGURE_ENABLE=	xft
+XFT_IMPLIES=		XRENDER
 XINERAMA_USE=		XORG=xinerama
 XINERAMA_CONFIGURE_ENABLE=xinerama
+XINERAMA_IMPLIES=	XEXT
 XMU_DESC=		X11 Miscellaneous Utilities support
 XMU_USE=		XORG=xmu
 XMU_CONFIGURE_ENABLE=	xmu
+XMU_IMPLIES=		XEXT
 XPM_USE=		XORG=xpm
 XPM_CONFIGURE_ENABLE=	xpm
+XPM_IMPLIES=		XEXT
 XRENDER_DESC=		X11 Render Extension support
 XRENDER_USE=		XORG=xrender
 XRENDER_CONFIGURE_ENABLE=xrender
 
-.include <bsd.port.options.mk>
+.include <bsd.port.pre.mk>
 
-.if ${PORT_OPTIONS:MXFT} && empty(PORT_OPTIONS:MXRENDER)
-IGNORE=		the XFT support requires XRENDER
+.if !empty(ICONV_LIB)
+CONFIGURE_ARGS+=ac_cv_lib_iconv_iconv=yes
 .endif
 
-.if ${PORT_OPTIONS:MXMU} && empty(PORT_OPTIONS:MXEXT)
-IGNORE=		the XMU support requires XEXT
-.endif
-
-.if ${PORT_OPTIONS:MXPM} && empty(PORT_OPTIONS:MXEXT)
-IGNORE=		the XPM support requires XEXT
-.endif
+post-extract:
+	@${LN} -sf pt-br.po ${WRKSRC}/po/pt_BR.po
 
 post-patch:
 	@${REINPLACE_CMD} -e \
@@ -74,7 +73,9 @@ post-patch:
 		's|install -m 644|@INSTALL_DATA@| ; \
 		 s|jwmrc$$|jwmrc.sample|' ${WRKSRC}/Makefile.in
 	@${REINPLACE_CMD} -e \
+		's|pt-br|pt_BR|' ${WRKSRC}/po/LINGUAS
+	@${REINPLACE_CMD} -e \
 		'/EXE/s|install|@INSTALL_PROGRAM@| ; \
 		 /strip/s|^|#|' ${WRKSRC}/src/Makefile.in
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

@@ -11,7 +11,7 @@
 			Domain Name (DNSBL) blocking via Unbound DNS Resolver.]]></descr>
 		<category>Security</category>
 		<pkginfolink>https://forum.pfsense.org/index.php?topic=102470.0</pkginfolink>
-		<version>2.0.4</version>
+		<version>2.0.6</version>
 		<status>RELEASE</status>
 		<required_version>2.3</required_version>
 		<maintainer>BBCan177@gmail.com</maintainer>

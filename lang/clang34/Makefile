@@ -2,7 +2,7 @@
 
 PORTNAME=	clang
 DISTVERSION=	3.4.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	lang devel
 MASTER_SITES=	http://llvm.org/releases/${PORTVERSION}/
 PKGNAMESUFFIX=	${LLVM_SUFFIX}
@@ -36,7 +36,7 @@ PYTHONLIBDIR=	${LLVM_PREFIX}/lib/python
 
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_PREFIX=	${LLVM_PREFIX}
-USES=		gmake perl5 python
+USES=		gmake libedit perl5 python
 USE_LDCONFIG=	yes
 
 MAKE_ARGS=	CLANG_TBLGEN=${WRKSRC}/${RELTYPE}/bin/clang-tblgen \
@@ -74,6 +74,10 @@ PORTDATA=	scanview.css \
 		sorttable.js
 
 .include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_GCC=	yes
+.endif
 
 # keep in sync with /usr/src/lib/clang/clang.build.mk
 CONFIGURE_TARGET:=${ARCH:C/amd64/x86_64/:C/armv6hf/armv6/}-portbld-${OPSYS:tl}${OSREL}

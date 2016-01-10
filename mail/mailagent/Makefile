@@ -3,7 +3,7 @@
 
 PORTNAME=		mailagent
 PORTVERSION=		3.1.78
-PORTREVISION=		1
+PORTREVISION=		2
 CATEGORIES=		mail
 MASTER_SITES=		http://eron.info/
 
@@ -25,18 +25,12 @@ CONFIGURE_ARGS=		-dres \
 			-Dprefix='${PREFIX}' \
 			-Dmansrc='${STAGEDIR}${PREFIX}/man/man1'
 MAKE_JOBS_UNSAFE=	yes
-MAKE_ENV=	PATH=`dirname ${PERL5}`:${PATH} INSTALL_PREFIX=${STAGEDIR}
+MAKE_ENV=	PATH=`dirname ${PERL}`:${PATH} INSTALL_PREFIX=${STAGEDIR}
 INSTALL_TARGET=	install install.man
 
 SUB_LIST+=	ORGFILE="${ORGFILE}"
 SUB_FILES=	pkg-message
 PLIST_SUB+=	ORGFILE="${ORGFILE}"
-
-.include <bsd.port.pre.mk>
-.if ${OSVERSION} > 900006
-EXTRA_PATCHES=	${PATCHDIR}/extra-patch-utmpx-agent_pl_utmp_utmp.pl \
-		${PATCHDIR}/extra-patch-utmpx-agent_pl_utmp_Makefile.SH
-.endif
 
 pre-extract:
 	@if [ `${SH} -c umask` != 0022 ]; then \
@@ -67,4 +61,4 @@ post-install:
 	cd ${WRKSRC}/misc && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}/misc
 	${MV} ${STAGEDIR}${PREFIX}/lib/mailagent/examples ${STAGEDIR}${EXAMPLESDIR}/agent
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

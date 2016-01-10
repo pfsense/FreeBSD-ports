@@ -33,7 +33,7 @@ $shortcut_section = "haproxy";
 require_once("guiconfig.inc");
 require_once("haproxy.inc");
 require_once("pkg_haproxy_tabs.inc");
-
+require_once("haproxy_gui.inc");
 
 if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
 	$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
@@ -45,17 +45,49 @@ if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
 $a_pools = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 $a_backends = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 
-if ($_POST) {
-	$pconfig = $_POST;
-
-	if ($_POST['apply']) {
-		$result = haproxy_check_and_run($savemsg, true);
-		if ($result)
-			unlink_if_exists($d_haproxyconfdirty_path);
+if ($_POST['apply']) {
+	$result = haproxy_check_and_run($savemsg, true);
+	if ($result) {
+		unlink_if_exists($d_haproxyconfdirty_path);
 	}
-}
+} elseif ($_POST['del_x']) {
+	/* delete selected rules */
+	$deleted = false;
+	if (is_array($_POST['rule']) && count($_POST['rule'])) {
+		foreach ($_POST['rule'] as $rulei) {
+			unset($a_pools[$rulei]);
+			$deleted = true;
+		}
 
-if ($_GET['act'] == "del") {
+		if ($deleted) {
+			if (write_config("HAProxy, deleting backend(s)")) {
+				//mark_subsystem_dirty('filter');
+				touch($d_haproxyconfdirty_path);
+			}
+		}
+
+		header("Location: haproxy_pools.php");
+		exit;
+	}
+} elseif ($_POST['order-store']) {
+	/* update rule order, POST[rule] is an array of ordered IDs */
+	if (is_array($_POST['rule']) && !empty($_POST['rule'])) {
+		$a_filter_new = array();
+
+		// if a rule is not in POST[rule], it has been deleted by the user
+		foreach ($_POST['rule'] as $id) {
+			$a_filter_new[] = $a_pools[$id];
+		}
+
+		$a_pools = $a_filter_new;
+		if (write_config()) {
+			mark_subsystem_dirty('filter');
+		}
+
+		header("Location: haproxy_pools.php");
+		exit;
+	}
+} elseif ($_GET['act'] == "del") {
 	if (isset($a_pools[$_GET['id']])) {
 		unset($a_pools[$_GET['id']]);
 		write_config();
@@ -65,39 +97,42 @@ if ($_GET['act'] == "del") {
 	exit;
 }
 
-$pgtitle = "Services: HAProxy: Backend server pools";
+$pgtitle = array("Services", "HAProxy", "Backend server pools");
 include("head.inc");
-haproxy_css();
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
+if ($savemsg) {
+	print_info_box($savemsg);
+}
+if (file_exists($d_haproxyconfdirty_path)) {
+	print_info_box_np("The haproxy configuration has been changed.<br/>You must apply the changes in order for them to take effect.");
+}
+haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 
 ?>
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-<?php include("fbegin.inc"); ?>
-<form action="haproxy_pools.php" method="post">
-<?php if ($input_errors) print_input_errors($input_errors); ?>
-<?php if ($savemsg) print_info_box($savemsg); ?>
-<?php if (file_exists($d_haproxyconfdirty_path)): ?>
-<?php print_info_box_np("The haproxy configuration has been changed.<br/>You must apply the changes in order for them to take effect.");?><br/>
-<?php endif; ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr><td class="tabnavtbl">
-  <?php
-	haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
-  ?>
-  </td></tr>
-  <tr>
-    <td>
-	<div id="mainarea">
-		<table class="tabcont sortable" width="100%" border="0" cellpadding="0" cellspacing="0">
-		<tr>
-			<td width="5%" class="listhdrr">Advanced</td>
-			<td width="25%" class="listhdrr">Name</td>
-			<td width="10%" class="listhdrr">Servers</td>
-			<td width="10%" class="listhdrr">Check</td>
-			<td width="30%" class="listhdrr">Frontend</td>
-			<td width="10%" class="list"></td>
-		</tr>
+
+<form method="post">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h2 class="panel-title"><?=gettext("Backends")?></h2>
+		</div>
+		<div id="mainarea" class="table-responsive panel-body">
+			<table class="table table-hover table-striped table-condensed">
+				<thead>
+					<tr>
+						<th><!-- checkbox --></th>
+						<th>Advanced</th>
+						<th>Name</th>
+						<th>Servers</th>
+						<th>Check</th>
+						<th>Frontend</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody class="user-entries">
+
 <?php
-		$img_adv = "/themes/{$g['theme']}/images/icons/icon_advanced.gif";
 		$i = 0;
 		foreach ($a_pools as $pool){
 			$fe_list = "";
@@ -120,69 +155,102 @@ haproxy_css();
 					$sep = ", ";
 				}
 			}
-			$textgray = $fe_list == "" ? " gray" : "";
+			$disabled = $fe_list == "";
 			
 			if (is_array($pool['ha_servers'])) {
 				$count = count($pool['ha_servers']['item']);
 			} else {
 				$count = 0;
 			}
-?>
-			<tr class="<?=$textgray?>">
-			  <td class="listlr" ondblclick="document.location='haproxy_pool_edit.php?id=<?=$i;?>';">
+?>														
+					<tr id="fr<?=$i;?>" <?=$display?> onClick="fr_toggle(<?=$i;?>)" ondblclick="document.location='haproxy_pool_edit.php?id=<?=$i;?>';" <?=($disabled ? ' class="disabled"' : '')?>>
+						<td >
+							<input type="checkbox" id="frc<?=$i;?>" onClick="fr_toggle(<?=$i;?>)" name="rule[]" value="<?=$i;?>"/>
+						</td>
+			<!--tr class="<?=$textgray?>"-->
+			  <td>
 			  <?
-				if ($pool['stats_enabled']=='yes'){
-					echo "<img src=\"./themes/{$g['theme']}/images/icons/icon_log_s.gif\"" . ' title="stats enabled" width="11" height="15" border="0" />';
+				if ($pool['stats_enabled']=='yes') {
+					echo haproxyicon("stats", gettext("stats enabled"));
 				}
 				$isadvset = "";
-				if ($pool['advanced']) $isadvset .= "Per server pass thru\r\n";
-				if ($pool['advanced_backend']) $isadvset .= "Backend pass thru\r\n";
-				if ($isadvset)
-					echo "<img src=\"$img_adv\" title=\"" . gettext("advanced settings set") . ": {$isadvset}\" border=\"0\" />";
+				if ($pool['advanced']) {
+					$isadvset .= "Per server pass thru\r\n";
+				}
+				if ($pool['advanced_backend']) {
+					$isadvset .= "Backend pass thru\r\n";
+				}
+				if ($isadvset) {
+					echo haproxyicon("advanced", gettext("advanced settings set") . ": {$isadvset}");
+				}
 			  ?>
 			  </td>
-			  <td class="listlr" ondblclick="document.location='haproxy_pool_edit.php?id=<?=$i;?>';">
+			  <td>
 				<?=$pool['name'];?>
 			  </td>
-			  <td class="listlr" ondblclick="document.location='haproxy_pool_edit.php?id=<?=$i;?>';">
+			  <td>
 				<?=$count;?>
 			  </td>
-			  <td class="listlr" ondblclick="document.location='haproxy_pool_edit.php?id=<?=$i;?>';">
+			  <td>
 				<?=$a_checktypes[$pool['check_type']]['name'];?>
 			  </td>
-			  <td class="listlr" ondblclick="document.location='haproxy_pool_edit.php?id=<?=$i;?>';">
+			  <td>
 				<?=$fe_list;?>
 			  </td>
-			  <td class="list" nowrap>
-				<table border="0" cellspacing="0" cellpadding="1">
-				  <tr>
-					<td valign="middle"><a href="haproxy_pool_edit.php?id=<?=$i;?>"><img src="/themes/<?= $g['theme']; ?>/images/icons/icon_e.gif" title="<?=gettext("edit backend");?>" width="17" height="17" border="0" /></a></td>
-					<td valign="middle"><a href="haproxy_pools.php?act=del&amp;id=<?=$i;?>" onclick="return confirm('Do you really want to delete this entry?')"><img src="/themes/<?= $g['theme']; ?>/images/icons/icon_x.gif" title="<?=gettext("delete backend");?>" width="17" height="17" border="0" /></a></td>
-					<td valign="middle"><a href="haproxy_pool_edit.php?dup=<?=$i;?>"><img src="/themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif" title="<?=gettext("clone backend");?>" width="17" height="17" border="0" /></a></td>
-				  </tr>
-				</table>
-			  </td>
+				<td class="action-icons">
+					<a href="haproxy_pool_edit.php?id=<?=$i;?>">
+						<?=haproxyicon("edit", gettext("edit backend"))?>
+					</a>
+					<a href="haproxy_pools.php?act=del&amp;id=<?=$i;?>" onclick="return confirm('Do you really want to delete this entry?')">
+						<?=haproxyicon("delete", gettext("delete backend"))?>
+					</a>
+					<a href="haproxy_pool_edit.php?dup=<?=$i;?>">
+						<?=haproxyicon("clone", gettext("clone backend"))?>
+					</a>
+			  	</td>
 			</tr>
 <?php
 			$i++; 
 		}
 ?>
-			<tfoot>
-			<tr>
-			  <td class="list" colspan="5"></td>
-			  <td class="list">
-				<table border="0" cellspacing="0" cellpadding="1">
-				  <tr>
-					<td valign="middle"><a href="haproxy_pool_edit.php"><img src="/themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif" title="<?=gettext("add new backend");?>" width="17" height="17" border="0" /></a></td>
-				  </tr>
-				</table>
-			  </td>
-			</tr>
-			</tfoot>
-		</table>
+				</tbody>
+			</table>
+		</div>
 	</div>
-	</table>
-	</form>
-<?php include("fend.inc"); ?>
-</body>
-</html>
+	<nav class="action-buttons">
+		<a href="haproxy_pool_edit.php" role="button" class="btn btn-sm btn-success" title="<?=gettext('Add backend to the end of the list')?>">
+			<i class="fa fa-level-down icon-embed-btn"></i>
+			<?=gettext("Add");?>
+		</a>
+		<button name="del_x" type="submit" class="btn btn-danger btn-sm" value="<?=gettext("Delete selected backends"); ?>" title="<?=gettext('Delete selected backends')?>">
+			<i class="fa fa-trash icon-embed-btn"></i>
+			<?=gettext("Delete"); ?>
+		</button>
+		<button type="submit" id="order-store" name="order-store" class="btn btn-sm btn-primary" value="store changes" disabled title="<?=gettext('Save backend order')?>">
+			<i class="fa fa-save icon-embed-btn"></i>
+			<?=gettext("Save")?>
+		</button>
+	</nav>
+</form>
+
+<script type="text/javascript">
+//<![CDATA[
+events.push(function() {
+
+	// Make rules sortable
+	$('table tbody.user-entries').sortable({
+		cursor: 'grabbing',
+		update: function(event, ui) {
+			$('#order-store').removeAttr('disabled');
+		}
+	});
+
+	// Check all of the rule checkboxes so that their values are posted
+	$('#order-store').click(function () {
+	   $('[id^=frc]').prop('checked', true);
+	});
+});
+//]]>
+</script>
+
+<?php include("foot.inc"); ?>

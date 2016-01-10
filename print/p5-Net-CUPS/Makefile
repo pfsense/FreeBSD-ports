@@ -11,7 +11,8 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	vg@FreeBSD.org
 COMMENT=	Interface to the CUPS API
 
-BROKEN=		Fails to configure or build
+LICENSE=	ART10 GPLv1
+LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	cups-config:${PORTSDIR}/print/cups-client
 LIB_DEPENDS=	libcupsimage.so:${PORTSDIR}/print/cups-image \

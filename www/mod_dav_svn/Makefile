@@ -9,7 +9,11 @@ CATEGORIES=	www
 MAINTAINER=	lev@FreeBSD.org
 COMMENT=	Apache module for subversion serving.
 
+.if defined(WITH_SUBVERSION_VER) && ${WITH_SUBVERSION_VER} == 18
+MASTERDIR=	${.CURDIR}/../../devel/subversion18
+.else
 MASTERDIR=	${.CURDIR}/../../devel/subversion
+.endif
 PKGDIR=		${.CURDIR}
 
 SVN_BUILD_ADDONS=	yes

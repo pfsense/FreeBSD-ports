@@ -9,10 +9,10 @@ MAINTAINER=	bland@FreeBSD.org
 COMMENT=	Tool to manipulate X configuration files for the NVidia driver
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	NVIDIA
-GH_TAGNAME=	${PORTVERSION}
 
 USES=		gmake
 
@@ -26,7 +26,7 @@ PLIST_FILES=	bin/nvidia-xconfig \
 		man/man1/nvidia-xconfig.1.gz
 
 post-patch:	.SILENT
-	${REINPLACE_CMD} -e '/^prefix/s/=/?&/' \
-		 -e '/^MANDIR/s|share/||' ${WRKSRC}/utils.mk
+	${REINPLACE_CMD} -e '/^MANDIR/s|share/||' \
+		${WRKSRC}/utils.mk
 
 .include <bsd.port.mk>

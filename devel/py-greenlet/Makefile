@@ -11,15 +11,15 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Light-weight microthreads for Python
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
+DO_MAKE_TEST=	${PYTHON_CMD}
 ONLY_FOR_ARCHS=	amd64 i386
+TEST_TARGET=	run-tests.py
 USE_PYTHON=	autoplist concurrent distutils
 USES=		python
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/greenlet.so
-
-regression-test test: build
-	cd ${WRKSRC}/ && ${PYTHON_CMD} run-tests.py
 
 .include <bsd.port.mk>

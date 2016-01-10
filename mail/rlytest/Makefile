@@ -12,16 +12,14 @@ COMMENT=	Test remote system for unsecured mail relay
 
 EXTRACT_CMD=	${GZIP_CMD}
 EXTRACT_BEFORE_ARGS=	-dc
-EXTRACT_AFTER_ARGS=	> ${WRKDIR}/${PORTNAME}
+EXTRACT_AFTER_ARGS=	> ${WRKSRC}/${PORTNAME}
 
 NO_WRKSUBDIR=	yes
 
-USES=		perl5
+USES=		perl5 shebangfix
+SHEBANG_FILES=	${PORTNAME}
 
 PLIST_FILES=	bin/rlytest man/man1/rlytest.1.gz
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|^#!.*|#!${PERL}|' ${WRKSRC}/${PORTNAME}
 
 do-build:
 	@cd ${WRKSRC} && pod2man ${PORTNAME} > ${PORTNAME}.1

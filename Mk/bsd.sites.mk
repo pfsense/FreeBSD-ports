@@ -111,8 +111,7 @@ MASTER_SITE_BERLIOS+= \
 # Removal of the PyPI Mirror Auto Discovery and Naming Scheme
 # Reference: https://www.python.org/dev/peps/pep-0449/
 MASTER_SITE_CHEESESHOP+= \
-	https://pypi.python.org/packages/%SUBDIR%/ \
-	http://pypi.python.org/packages/%SUBDIR%/
+	https://pypi.python.org/packages/%SUBDIR%/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_COMP_SOURCES)
@@ -244,6 +243,7 @@ MASTER_SITE_CENTOS_LINUX+= \
 .if !defined(IGNORE_MASTER_SITE_CENTOS_LINUX)
 MASTER_SITE_CENTOS_LINUX_UPDATES+= \
 	http://mirror.centos.org/centos/${LINUX_DIST_VER}/updates/${LINUX_REPO_ARCH}/Packages/ \
+	http://vault.centos.org/${LINUX_DIST_VER}/updates/${LINUX_REPO_ARCH}/Packages/ \
 	http://vault.centos.org/${LINUX_DIST_VER}/updates/Source/SPackages/:SOURCE
 .endif
 
@@ -542,66 +542,66 @@ GH_TAGNAME_DEFAULT=	${DISTVERSIONFULL}
 GH_TAGNAME?=	${GH_TAGNAME_DEFAULT}
 # Iterate over GH_ACCOUNT, GH_PROJECT and GH_TAGNAME to extract groups
 _GITHUB_GROUPS= DEFAULT
-.for _A in ${GH_ACCOUNT}
+.  for _A in ${GH_ACCOUNT}
 _S_TEMP=	${_A:S/^${_A:C@:[^/:]+$@@}//:S/^://}
-.  if !empty(_S_TEMP)
-.    for _group in ${_S_TEMP:S/,/ /g}
+.    if !empty(_S_TEMP)
+.      for _group in ${_S_TEMP:S/,/ /g}
 _G_TEMP=	${_group}
-.      if ${_G_TEMP} == all || ${_G_TEMP} == ALL || ${_G_TEMP} == default
+.        if ${_G_TEMP} == all || ${_G_TEMP} == ALL || ${_G_TEMP} == default
 check-makevars::
 		@${ECHO_MSG} "Makefile error: the words all, ALL and default are reserved and cannot be"
 		@${ECHO_MSG} "used in group definitions. Please fix your GH_ACCOUNT"
 		@${FALSE}
-.      endif
-.      if !${_GITHUB_GROUPS:M${_group}}
+.        endif
+.        if !${_GITHUB_GROUPS:M${_group}}
 _GITHUB_GROUPS+=	${_group}
-.       endif
+.         endif
 GH_ACCOUNT_${_group}=	${_A:C@^(.*):[^/:]+$@\1@}
-.    endfor
-.  else
+.      endfor
+.    else
 GH_ACCOUNT_DEFAULT=	${_A:C@^(.*):[^/:]+$@\1@}
-.  endif
-.endfor
-.for _P in ${GH_PROJECT}
+.    endif
+.  endfor
+.  for _P in ${GH_PROJECT}
 _S_TEMP=	${_P:S/^${_P:C@:[^/:]+$@@}//:S/^://}
-.  if !empty(_S_TEMP)
-.    for _group in ${_S_TEMP:S/,/ /g}
+.    if !empty(_S_TEMP)
+.      for _group in ${_S_TEMP:S/,/ /g}
 _G_TEMP=	${_group}
-.      if ${_G_TEMP} == all || ${_G_TEMP} == ALL || ${_G_TEMP} == default
+.        if ${_G_TEMP} == all || ${_G_TEMP} == ALL || ${_G_TEMP} == default
 check-makevars::
 		@${ECHO_MSG} "Makefile error: the words all, ALL and default are reserved and cannot be"
 		@${ECHO_MSG} "used in group definitions. Please fix your GH_PROJECT"
 		@${FALSE}
-.      endif
-.      if !${_GITHUB_GROUPS:M${_group}}
+.        endif
+.        if !${_GITHUB_GROUPS:M${_group}}
 _GITHUB_GROUPS+=	${_group}
-.       endif
+.         endif
 GH_PROJECT_${_group}=	${_P:C@^(.*):[^/:]+$@\1@}
-.    endfor
-.  else
+.      endfor
+.    else
 GH_PROJECT_DEFAULT=	${_P:C@^(.*):[^/:]+$@\1@}
-.  endif
-.endfor
-.for _T in ${GH_TAGNAME}
+.    endif
+.  endfor
+.  for _T in ${GH_TAGNAME}
 _S_TEMP=	${_T:S/^${_T:C@:[^/:]+$@@}//:S/^://}
-.  if !empty(_S_TEMP)
-.    for _group in ${_S_TEMP:S/,/ /g}
+.    if !empty(_S_TEMP)
+.      for _group in ${_S_TEMP:S/,/ /g}
 _G_TEMP=	${_group}
-.      if ${_G_TEMP} == all || ${_G_TEMP} == ALL || ${_G_TEMP} == default
+.        if ${_G_TEMP} == all || ${_G_TEMP} == ALL || ${_G_TEMP} == default
 check-makevars::
 		@${ECHO_MSG} "Makefile error: the words all, ALL and default are reserved and cannot be"
 		@${ECHO_MSG} "used in group definitions. Please fix your GH_TAGNAME"
 		@${FALSE}
-.      endif
-.      if !${_GITHUB_GROUPS:M${_group}}
+.        endif
+.        if !${_GITHUB_GROUPS:M${_group}}
 _GITHUB_GROUPS+=	${_group}
-.       endif
+.         endif
 GH_TAGNAME_${_group}=	${_T:C@^(.*):[^/:]+$@\1@}
-.    endfor
-.  else
+.      endfor
+.    else
 GH_TAGNAME_DEFAULT=	${_T:C@^(.*):[^/:]+$@\1@}
-.  endif
-.endfor
+.    endif
+.  endfor
 # Put the default values back into the variables so that the *default* behavior
 # is not changed.
 GH_ACCOUNT:=	${GH_ACCOUNT_DEFAULT}
@@ -628,18 +628,17 @@ _GITHUB_REV=	0
 .  if ${MASTER_SITES:MGH}
 DISTNAME:=	${DISTNAME}_GH${_GITHUB_REV}
 .  endif
-.endif
 _GITHUB_EXTRACT_SUFX=	.tar.gz
 # If there are non default groups
-.if !empty(_GITHUB_GROUPS:NDEFAULT)
+.  if !empty(_GITHUB_GROUPS:NDEFAULT)
 # Put the DEFAULT distfile first
-.if !${USE_GITHUB:Mnodefault}
+.    if !${USE_GITHUB:Mnodefault}
 DISTFILES+=	${DISTNAME}${_GITHUB_EXTRACT_SUFX}
-.endif
+.    endif
 # Then for each of the remaining groups, add DISTFILES and MASTER_SITES
 # entries with the correct group and create {WRKSRC,DISTNAME,DISTFILES}_group
 # helper variables.
-.  for _group in ${_GITHUB_GROUPS:NDEFAULT}
+.    for _group in ${_GITHUB_GROUPS:NDEFAULT}
 GH_ACCOUNT_${_group}?=	${GH_ACCOUNT_DEFAULT}
 GH_PROJECT_${_group}?=	${GH_PROJECT_DEFAULT}
 GH_TAGNAME_${_group}?=	${GH_TAGNAME_DEFAULT}
@@ -650,9 +649,10 @@ DISTFILE_${_group}:=	${DISTNAME_${_group}}_GH${_GITHUB_REV}${_GITHUB_EXTRACT_SUF
 DISTFILES:=	${DISTFILES} ${DISTFILE_${_group}}:${_group}
 MASTER_SITES:=	${MASTER_SITES} ${MASTER_SITE_GITHUB:S@%SUBDIR%@${GH_ACCOUNT_${_group}}/${GH_PROJECT_${_group}}/tar.gz/${GH_TAGNAME_${_group}}?dummy=/:${_group}@}
 WRKSRC_${_group}:=	${WRKDIR}/${GH_PROJECT_${_group}}-${GH_TAGNAME_${_group}_EXTRACT}
-.  endfor
-.endif
-.endif
+.    endfor
+.  endif
+.endif # defined(USE_GITHUB)
+.endif # !defined(IGNORE_MASTER_SITE_GITHUB)
 
 .if !defined(IGNORE_MASTER_SITE_GNOME)
 MASTER_SITE_GNOME+= \
@@ -699,26 +699,18 @@ MASTER_SITE_GNU+= \
 
 .if !defined(IGNORE_MASTER_SITE_GNUPG)
 MASTER_SITE_GNUPG+= \
-	http://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/%SUBDIR%/ \
-	http://mirror.tje.me.uk/pub/mirrors/ftp.gnupg.org/%SUBDIR%/ \
-	ftp://ftp.surfnet.nl/pub/security/gnupg/%SUBDIR%/ \
-	http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/%SUBDIR%/ \
-	ftp://ftp.franken.de/pub/crypt/mirror/ftp.gnupg.org/gcrypt/%SUBDIR%/ \
-	ftp://ftp.gnupg.org/gcrypt/%SUBDIR%/ \
-	ftp://ftp.bit.nl/mirror/gnupg/%SUBDIR%/ \
-	ftp://mirror.switch.ch/mirror/gnupg/%SUBDIR%/ \
 	http://artfiles.org/gnupg.org/%SUBDIR%/ \
+	http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/%SUBDIR%/ \
+	ftp://ftp.sunet.se/pub/security/gnupg/%SUBDIR%/ \
+	ftp://ftp.franken.de/pub/crypt/mirror/ftp.gnupg.org/gcrypt/%SUBDIR%/ \
+	ftp://mirror.switch.ch/mirror/gnupg/%SUBDIR%/ \
+	http://gd.tuwien.ac.at/privacy/gnupg/%SUBDIR%/ \
+	http://mirrors.dotsrc.org/gcrypt/%SUBDIR%/ \
 	ftp://ftp.freenet.de/pub/ftp.gnupg.org/gcrypt/%SUBDIR%/ \
 	ftp://ftp.crysys.hu/pub/gnupg/%SUBDIR%/ \
-	http://gd.tuwien.ac.at/privacy/gnupg/%SUBDIR%/ \
-	ftp://mirror.cict.fr/gnupg/%SUBDIR%/ \
-	http://mirrors.dotsrc.org/%SUBDIR%/ \
-	ftp://ftp.iasi.roedu.net/pub/mirrors/ftp.gnupg.org/%SUBDIR%/ \
-	ftp://ftp.sunet.se/pub/security/gnupg/%SUBDIR%/ \
-	ftp://ftp.hi.is/pub/mirrors/gnupg/%SUBDIR%/ \
-	ftp://ftp.jyu.fi/pub/crypt/gcrypt/%SUBDIR%/ \
-	http://dist.gnupg.pt/%SUBDIR%/ \
-	http://gnupg.org.favoritelinks.net/%SUBDIR%/
+	http://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/%SUBDIR%/ \
+	ftp://ftp.gnupg.org/gcrypt/%SUBDIR%/ \
+	http://mirror.tje.me.uk/pub/mirrors/ftp.gnupg.org/%SUBDIR%/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_GNUSTEP)
@@ -875,10 +867,8 @@ MASTER_SITE_MOZDEV+= \
 
 .if !defined(IGNORE_MASTER_SITE_MOZILLA)
 MASTER_SITE_MOZILLA+= \
-	http://releases.mozilla.org/pub/mozilla.org/%SUBDIR%/ \
-	https://ftp.mozilla.org/pub/mozilla.org/%SUBDIR%/ \
-	http://ftp.mozilla.org/pub/mozilla.org/%SUBDIR%/ \
-	ftp://ftp.mozilla.org/pub/mozilla.org/%SUBDIR%/
+	http://download.cdn.mozilla.net/pub/%SUBDIR%/ \
+	https://archive.mozilla.org/pub/%SUBDIR%/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_MOZILLA_ADDONS)
@@ -1126,15 +1116,10 @@ MASTER_SITE_REDHAT_LINUX+= \
 .if !defined(IGNORE_MASTER_SITE_RUBY)
 MASTER_SITE_RUBY+= \
 	http://cache.ruby-lang.org/pub/ruby/%SUBDIR%/ \
+	http://ftp.ruby-lang.org/pub/ruby/%SUBDIR%/ \
 	ftp://ftp.ruby-lang.org/pub/ruby/%SUBDIR%/ \
-	ftp://ftp.SpringDaemons.com/pub/ruby/ruby/%SUBDIR%/ \
-	http://www.ibiblio.org/pub/languages/ruby/%SUBDIR%/ \
-	ftp://xyz.lcs.mit.edu/pub/ruby/%SUBDIR%/ \
 	ftp://ftp.fu-berlin.de/unix/languages/ruby/%SUBDIR%/ \
-	ftp://ftp.easynet.be/ruby/ruby/%SUBDIR%/ \
-	ftp://ftp.ntua.gr/pub/lang/ruby/%SUBDIR%/ \
 	ftp://ftp.kr.FreeBSD.org/pub/ruby/%SUBDIR%/ \
-	http://mirrors.sunsite.dk/ruby/%SUBDIR%/ \
 	ftp://ftp.iDaemons.org/pub/mirror/ftp.ruby-lang.org/ruby/%SUBDIR%/
 .endif
 
@@ -1149,8 +1134,7 @@ MASTER_SITE_RUBYGEMS+= \
 MASTER_SITE_SAMBA+= \
 	http://ftp.samba.org/pub/%SUBDIR%/ \
 	ftp://ca.samba.org/pub/%SUBDIR%/ \
-	ftp://de.samba.org/pub/%SUBDIR%/ \
-	ftp://ftp.easynet.be/%SUBDIR%/
+	ftp://de.samba.org/pub/%SUBDIR%/
 .endif
 
 # List:	http://download.savannah.gnu.org/mirmon/

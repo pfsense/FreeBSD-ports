@@ -8,7 +8,7 @@ CATEGORIES=	comms audio hamradio
 MASTER_SITES=	http://www.sdr-j.tk/ \
 		LOCAL/nox/
 
-MAINTAINER=	nox@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	DAB/DAB+ and wideband FM receiver for RTL2832-based USB sticks
 
 LICENSE=	GPLv2
@@ -32,9 +32,7 @@ ONLY_FOR_ARCHS_REASON=	uses MMX and SSE2 instructions
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.options.mk>
-
-.if (${OSVERSION} >= 900014) && exists(${DESTDIR}/usr/bin/clang)
+.if exists(${DESTDIR}/usr/bin/clang)
 CC=		clang
 CXX=		clang++
 CPP=		clang-cpp

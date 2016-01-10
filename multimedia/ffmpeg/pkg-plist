@@ -75,6 +75,7 @@ include/libavutil/mem.h
 include/libavutil/motion_vector.h
 include/libavutil/murmur3.h
 include/libavutil/old_pix_fmts.h
+%%OPENCL%%include/libavutil/opencl.h
 include/libavutil/opt.h
 include/libavutil/parseutils.h
 include/libavutil/pixdesc.h
@@ -164,6 +165,13 @@ man/man1/ffprobe-all.1.gz
 man/man1/ffprobe.1.gz
 %%FFSERVER%%man/man1/ffserver-all.1.gz
 %%FFSERVER%%man/man1/ffserver.1.gz
+man/man3/libavcodec.3.gz
+man/man3/libavdevice.3.gz
+man/man3/libavfilter.3.gz
+man/man3/libavformat.3.gz
+man/man3/libavutil.3.gz
+man/man3/libswresample.3.gz
+man/man3/libswscale.3.gz
 %%DATADIR%%/examples/Makefile
 %%DATADIR%%/examples/README
 %%DATADIR%%/examples/avio_dir_cmd.c

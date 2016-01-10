@@ -1,13 +1,13 @@
 # $FreeBSD$
 
 PORTNAME=	seafobj
-PORTVERSION=	4.0.5
+PORTVERSION=	5.1.0
 DISTVERSIONPREFIX=	v
 DISTVERSIONSUFFIX=	-pro
 CATEGORIES=	www python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	yan_jingfeng@yahoo.com
+MAINTAINER=	ultima1252@gmail.com
 COMMENT=	Python library for accessing seafile data model
 
 LICENSE=	APACHE20
@@ -15,8 +15,10 @@ LICENSE=	APACHE20
 USE_GITHUB=	yes
 GH_ACCOUNT=	haiwen
 
+NO_ARCH=	yes
 NO_BUILD=	yes
-USES=		python:2
+USES=		python:-2.7 shebangfix
+SHEBANG_FILES=	*.sh *.py
 
 HAIWENDIR=	www/haiwen
 SEAFILE_SERVER=	${HAIWENDIR}/seafile-server

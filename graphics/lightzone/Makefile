@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lightzone
-DISTVERSION=	4.1.2
+DISTVERSION=	4.1.4
 CATEGORIES=	graphics java
 DIST_SUBDIR=	${PORTNAME}
 
@@ -11,8 +11,7 @@ COMMENT=	Professional-level digital darkroom and photo editor
 
 LICENSE=	BSD3CLAUSE
 
-BUILD_DEPENDS=	ant:${PORTSDIR}/devel/apache-ant \
-		jhindexer:${PORTSDIR}/java/javahelp \
+BUILD_DEPENDS=	jhindexer:${PORTSDIR}/java/javahelp \
 		git:${PORTSDIR}/devel/git \
 		rsync:${PORTSDIR}/net/rsync \
 		tidy:${PORTSDIR}/www/tidy-lib \
@@ -36,7 +35,7 @@ JAVA_BUILD=	yes
 JAVA_RUN=	yes
 INSTALLS_ICONS=	yes
 
-LIBDIR=	${PREFIX}/lib/${PORTNAME}
+LIBDIR=		${PREFIX}/lib/${PORTNAME}
 PLIST_SUB=	LIBDIR="${LIBDIR}"
 WRKSRC_SUBDIR=		linux
 

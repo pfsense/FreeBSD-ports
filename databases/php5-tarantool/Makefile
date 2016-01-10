@@ -9,6 +9,9 @@ PKGNAMEPREFIX=	php5-
 MAINTAINER=	vg@FreeBSD.org
 COMMENT=	PECL PHP driver for Tarantool/Box
 
+DEPRECATED=	PHP 5.4 EOL reached
+EXPIRATION_DATE=	2016-01-15
+
 USE_GITHUB=	yes
 USE_PHP=	yes
 USE_PHPEXT=	yes
@@ -23,10 +26,4 @@ TR_VER=		20150708
 
 CONFIGURE_ARGS+=	--with-tarantool
 
-.include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 900000
-IGNORE=	does not support FreeBSD versions < 9.0
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

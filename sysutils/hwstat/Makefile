@@ -4,9 +4,9 @@
 PORTNAME=	hwstat
 PORTVERSION=	0.5.1
 CATEGORIES=	sysutils
-MASTER_SITES=	http://pub.rhaamo.li/Archives/hwstat/
+MASTER_SITES=	http://BSDforge.com/projects/source/sysutils/hwstat/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Command line tool to display CPU temp and battery infos
 
 LICENSE=	BSD2CLAUSE

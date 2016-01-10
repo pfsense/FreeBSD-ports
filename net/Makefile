@@ -27,6 +27,7 @@
     SUBDIR += asio
     SUBDIR += aslookup
     SUBDIR += asterisk
+    SUBDIR += asterisk-chan_sccp
     SUBDIR += asterisk-g72x
     SUBDIR += asterisk11
     SUBDIR += asterisk13
@@ -95,6 +96,7 @@
     SUBDIR += dgd-lpmud
     SUBDIR += dhcp6
     SUBDIR += dhcpcd
+    SUBDIR += dhcpd
     SUBDIR += dhcpd-pools
     SUBDIR += dhcpdump
     SUBDIR += dhcperf
@@ -439,6 +441,7 @@
     SUBDIR += nocatsplash
     SUBDIR += nos-ttb
     SUBDIR += nph
+    SUBDIR += ns3
     SUBDIR += nss-pam-ldapd
     SUBDIR += nss-pam-ldapd-sasl
     SUBDIR += nss_ldap
@@ -465,6 +468,7 @@
     SUBDIR += opal
     SUBDIR += openafs
     SUBDIR += openbgpd
+    SUBDIR += openbsc
     SUBDIR += opendpi
     SUBDIR += openggsn
     SUBDIR += openh323
@@ -527,6 +531,7 @@
     SUBDIR += p5-IO-Socket-IP
     SUBDIR += p5-IO-Socket-Multicast
     SUBDIR += p5-IO-Socket-Multicast6
+    SUBDIR += p5-IO-Socket-Timeout
     SUBDIR += p5-IO-Socket-UNIX-Util
     SUBDIR += p5-IP-Anonymous
     SUBDIR += p5-IP-Country
@@ -620,6 +625,7 @@
     SUBDIR += p5-Net-LDAP-AutoDNs
     SUBDIR += p5-Net-LDAP-AutoServer
     SUBDIR += p5-Net-LDAP-Express
+    SUBDIR += p5-Net-LDAP-FilterBuilder
     SUBDIR += p5-Net-LDAP-LDAPhash
     SUBDIR += p5-Net-LDAP-Makepath
     SUBDIR += p5-Net-LDAP-Server
@@ -759,6 +765,7 @@
     SUBDIR += p5-SOAP-Data-Builder
     SUBDIR += p5-SOAP-Lite
     SUBDIR += p5-SOAP-MySOAP
+    SUBDIR += p5-SOAP-XML-Client
     SUBDIR += p5-Samba-LDAP
     SUBDIR += p5-Server-Starter
     SUBDIR += p5-Socket
@@ -798,7 +805,10 @@
     SUBDIR += p5-ZConf
     SUBDIR += p5-ZConf-Bookmarks
     SUBDIR += p5-ZeroMQ
+    SUBDIR += p5-ldap2pf
+    SUBDIR += p5-ldap2pw
     SUBDIR += p5-perl-ldap
+    SUBDIR += p5-srv2pf
     SUBDIR += packetdrill
     SUBDIR += packter-agent
     SUBDIR += panoptis
@@ -920,6 +930,7 @@
     SUBDIR += py-beanstalkc
     SUBDIR += py-cloudfiles
     SUBDIR += py-dpkt
+    SUBDIR += py-dugong
     SUBDIR += py-ec2-cli-tools
     SUBDIR += py-eventlet
     SUBDIR += py-gntp
@@ -936,7 +947,6 @@
     SUBDIR += py-libdnet
     SUBDIR += py-libnet
     SUBDIR += py-maxminddb
-    SUBDIR += py-medusa
     SUBDIR += py-miniupnpc
     SUBDIR += py-msrplib
     SUBDIR += py-ndg_httpsclient
@@ -946,6 +956,7 @@
     SUBDIR += py-netlib
     SUBDIR += py-netstring
     SUBDIR += py-novaclient
+    SUBDIR += py-ntplib
     SUBDIR += py-oauth
     SUBDIR += py-oauth2
     SUBDIR += py-paho-mqtt
@@ -959,19 +970,24 @@
     SUBDIR += py-pynsq
     SUBDIR += py-pypcap
     SUBDIR += py-pysendfile
+    SUBDIR += py-pysmb
     SUBDIR += py-pysocks
-    SUBDIR += py-pysphere
+    SUBDIR += py-pystun
     SUBDIR += py-python-bitcoinrpc
     SUBDIR += py-pyvmomi
     SUBDIR += py-pyzmq
     SUBDIR += py-qt4-network
+    SUBDIR += py-qt5-network
     SUBDIR += py-radix
     SUBDIR += py-raet
+    SUBDIR += py-ripe.atlas.cousteau
+    SUBDIR += py-ripe.atlas.sagan
+    SUBDIR += py-ripe.atlas.tools
     SUBDIR += py-s3cmd
     SUBDIR += py-simplesoap
-    SUBDIR += py-smb
     SUBDIR += py-smbpasswd
     SUBDIR += py-soappy
+    SUBDIR += py-socketio-client
     SUBDIR += py-speedtest-cli
     SUBDIR += py-suds
     SUBDIR += py-terminado
@@ -981,12 +997,14 @@
     SUBDIR += py-twitter
     SUBDIR += py-twitter-tools
     SUBDIR += py-txamqp
+    SUBDIR += py-txrestapi
     SUBDIR += py-uritemplate
     SUBDIR += py-urllib3
     SUBDIR += py-wolframalpha
     SUBDIR += py-xmlrpc
     SUBDIR += py-zope.proxy
     SUBDIR += py-zsi
+    SUBDIR += py3-netifaces
     SUBDIR += pygopherd
     SUBDIR += pynids
     SUBDIR += pyrad
@@ -1022,7 +1040,6 @@
     SUBDIR += remmina-plugin-gnome
     SUBDIR += remmina-plugin-i18n
     SUBDIR += remmina-plugin-nx
-    SUBDIR += remmina-plugin-rdp
     SUBDIR += remmina-plugin-telepathy
     SUBDIR += remmina-plugin-vnc
     SUBDIR += remmina-plugin-xdmcp
@@ -1063,6 +1080,7 @@
     SUBDIR += rubygem-epp-client-rgp
     SUBDIR += rubygem-epp-client-secdns
     SUBDIR += rubygem-epp-client-smallregistry
+    SUBDIR += rubygem-fog-aliyun
     SUBDIR += rubygem-fog-atmos
     SUBDIR += rubygem-fog-aws
     SUBDIR += rubygem-fog-brightbox
@@ -1081,6 +1099,8 @@
     SUBDIR += rubygem-fog-terremark
     SUBDIR += rubygem-fog-vmfusion
     SUBDIR += rubygem-fog-voxel
+    SUBDIR += rubygem-fog-vsphere
+    SUBDIR += rubygem-fog-xenserver
     SUBDIR += rubygem-geoip
     SUBDIR += rubygem-gitlab_omniauth-ldap
     SUBDIR += rubygem-http_parser.rb
@@ -1096,6 +1116,7 @@
     SUBDIR += rubygem-oauth
     SUBDIR += rubygem-oauth2
     SUBDIR += rubygem-octokit
+    SUBDIR += rubygem-octopress-deploy
     SUBDIR += rubygem-omniauth-facebook
     SUBDIR += rubygem-omniauth-github
     SUBDIR += rubygem-omniauth-github-discourse
@@ -1141,6 +1162,7 @@
     SUBDIR += samba4
     SUBDIR += samba41
     SUBDIR += samba42
+    SUBDIR += samba43
     SUBDIR += samplicator
     SUBDIR += sbd
     SUBDIR += scamper
@@ -1247,6 +1269,7 @@
     SUBDIR += tigervnc
     SUBDIR += tightvnc
     SUBDIR += tintin++
+    SUBDIR += tiny-network-utilities
     SUBDIR += tinyfugue
     SUBDIR += tinyldap
     SUBDIR += tn5250
@@ -1351,6 +1374,7 @@
     SUBDIR += zebra
     SUBDIR += zebra-server
     SUBDIR += zeroconf-ioslave
+    SUBDIR += zerotier
     SUBDIR += zillion
     SUBDIR += zsync
 

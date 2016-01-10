@@ -3,6 +3,7 @@
 
 PORTNAME=	nvidia-settings
 PORTVERSION=	355.11
+PORTREVISION=	1
 CATEGORIES=	x11
 
 MAINTAINER=	bland@FreeBSD.org
@@ -15,7 +16,6 @@ LIB_DEPENDS=	libjansson.so:${PORTSDIR}/devel/jansson \
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	NVIDIA
-GH_TAGNAME=	${PORTVERSION}
 
 USE_GNOME=	gtk20
 USES=		gmake pkgconfig
@@ -26,7 +26,7 @@ PLIST_FILES=	bin/nvidia-settings \
 		man/man1/nvidia-settings.1.gz \
 		lib/libnvidia-gtk2.so.${PORTVERSION}
 
-LDFLAGS+=	-Wl,--as-needed
+LDFLAGS+=	-pthread
 MAKE_ENV=	NV_USE_BUNDLED_LIBJANSSON=0 \
 		NV_VERBOSE= \
 		STRIP_CMD=${TRUE} \

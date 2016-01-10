@@ -5,12 +5,12 @@ PORTNAME=	UDDI
 PORTVERSION=	0.2.4
 CATEGORIES=	www pear finance
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	miwi@FreeBSD.org
 COMMENT=	PEAR UDDI for PHP
 
-BUILD_DEPENDS=	${PEARDIR}/XML/XML/Parser.php:${PORTSDIR}/devel/pear-XML_Parser \
+BUILD_DEPENDS=	${PEARDIR}/XML/Parser.php:${PORTSDIR}/devel/pear-XML_Parser \
 		${PEARDIR}/XML/Util.php:${PORTSDIR}/devel/pear-XML_Util
-RUN_DEPENDS=	${PEARDIR}/XML/XML/Parser.php:${PORTSDIR}/devel/pear-XML_Parser \
+RUN_DEPENDS=	${PEARDIR}/XML/Parser.php:${PORTSDIR}/devel/pear-XML_Parser \
 		${PEARDIR}/XML/Util.php:${PORTSDIR}/devel/pear-XML_Util
 
 USES=	pear

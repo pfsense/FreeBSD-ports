@@ -7,17 +7,17 @@ CATEGORIES=	graphics audio
 MASTER_SITES=	SF/${PORTNAME:tl:S/lib//}/${PORTVERSION}/
 DISTNAME=	${PORTNAME:S/lib//}-${DISTVERSION}-Source
 
-MAINTAINER=	crees@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Awesome music visualiser
 
-LICENSE=	LGPL21
+LICENSE=	LGPL21 # or later
 
 LIB_DEPENDS=	libftgl.so:${PORTSDIR}/graphics/ftgl \
 		libfreetype.so:${PORTSDIR}/print/freetype2
 
-USES=		cmake
+USES=		cmake localbase
+CMAKE_ARGS=	-DUSE_OPENMP=OFF # openmp breaks build on 11.x
 USE_GL=		glew
-CFLAGS+=	-I${LOCALBASE}/include -L${LOCALBASE}/lib
 USE_LDCONFIG=	yes
 
 post-patch:

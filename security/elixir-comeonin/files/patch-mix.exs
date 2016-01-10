@@ -1,9 +1,9 @@
---- mix.exs.orig	2015-07-14 14:26:45 UTC
+--- mix.exs.orig	2015-12-17 02:11:33 UTC
 +++ mix.exs
-@@ -68,7 +68,6 @@ defmodule Comeonin.Mixfile do
+@@ -120,7 +120,6 @@ defmodule Comeonin.Mixfile do
        package: package,
        source_url: "https://github.com/elixircnx/comeonin",
-       compilers: [:comeonin, :elixir, :app],
+       compilers: [:comeonin] ++ Mix.compilers,
 -      deps: deps
      ]
    end

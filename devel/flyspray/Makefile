@@ -5,7 +5,7 @@ PORTNAME=	flyspray
 PORTVERSION=	0.9.9.7
 PORTREVISION=	3
 CATEGORIES=	devel www
-MASTER_SITES=	http://flyspray.org/
+MASTER_SITES=	http://flyspray.org/packed/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple, easy-to-use web based bug tracking system

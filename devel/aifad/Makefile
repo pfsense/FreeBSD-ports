@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	aifad
-PORTVERSION=	2.0.2
+PORTVERSION=	2.0.8
+DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
-MASTER_SITES=	http://cdn.bitbucket.org/mmottl/aifad/downloads/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Machine learning system
 
-LICENSE=	GPLv3
+LICENSE=	LGPL21 # or later
 
 BUILD_DEPENDS=	menhir:${PORTSDIR}/devel/menhir \
 		ocaml-cfg>0:${PORTSDIR}/devel/ocaml-cfg \
@@ -17,19 +17,29 @@ BUILD_DEPENDS=	menhir:${PORTSDIR}/devel/menhir \
 		ocaml-res>0:${PORTSDIR}/devel/ocaml-res
 LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
 
+USE_GITHUB=	yes
+GH_ACCOUNT=	mmottl
+
 USE_OCAML=	yes
 NO_OCAML_RUNDEPENDS=yes
 
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix ${STAGEDIR}${PREFIX}
 
+PORTDOCS=	AUTHORS.txt CHANGES.txt README.md TODO.md
+PORTEXAMPLES=	*
+PLIST_FILES=	bin/aifad
+
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/aifad
+
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	(cd ${WRKSRC} && ${INSTALL_DATA} AUTHORS.txt CHANGES.txt README.md \
-		TODO.md ${STAGEDIR}${DOCSDIR})
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
+
+post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	(cd ${WRKSRC}/examples && ${INSTALL_DATA} * ${STAGEDIR}${EXAMPLESDIR})
 

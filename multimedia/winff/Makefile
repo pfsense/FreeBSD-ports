@@ -3,7 +3,7 @@
 
 PORTNAME=	WinFF
 PORTVERSION=	1.5.2
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	multimedia
 MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
 PROJECTHOST=	${_PORTNAME}
@@ -18,8 +18,7 @@ BUILD_DEPENDS=	lazbuild:${PORTSDIR}/editors/lazarus
 LIB_DEPENDS=	libavutil.so:${PORTSDIR}/multimedia/ffmpeg
 
 NO_WRKSUBDIR=	yes
-USE_FPC=	cairo fcl-base fcl-image fcl-json fcl-process fcl-xml hash \
-		pasjpeg paszlib x11
+USE_FPC=	cairo fcl-base fcl-image fcl-json fcl-xml pasjpeg x11
 USE_GNOME=	#
 _PORTNAME=	${PORTNAME:tl}
 DATADIR=	${PREFIX}/share/${_PORTNAME}
@@ -50,7 +49,7 @@ OPTIONS_DEFAULT=	GTK2
 
 .if ${PORT_OPTIONS:MGTK2}
 USE_FPC+=	gtk2
-USE_GNOME=	gtk20
+USE_GNOME+=	gtk20
 LCL_PLATFORM=	gtk2
 BUILD_DEPENDS+=	${LCL_UNITS_DIR}/${LCL_PLATFORM}/interfaces.ppu:${PORTSDIR}/editors/lazarus-lcl-gtk2
 .endif

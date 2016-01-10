@@ -4,7 +4,7 @@
 PORTNAME=	uudx
 PORTVERSION=	2.99
 CATEGORIES=	converters
-MASTER_SITES=	http://ftp.vector.co.jp/pack/dos/util/bin/conv/
+MASTER_SITES=	http://ftp.vector.co.jp/01/45/528/
 DISTNAME=	${PORTNAME}_${PORTVERSION:S/.//}
 
 MAINTAINER=	ports@FreeBSD.org

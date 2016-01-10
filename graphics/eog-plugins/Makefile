@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	eog-plugins
-PORTVERSION=	3.16.1
+PORTVERSION=	3.16.3
 CATEGORIES=	graphics gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -63,4 +63,14 @@ post-patch:
 		${WRKSRC}/configure
 .endif
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${PYTHON_REL} < 3500
+PYOEXTENSION=	pyo
+.else
+PYOEXTENSION=	opt-1.pyc
+.endif
+
+PLIST_SUB+=	PYOEXTENSION=${PYOEXTENSION}
+
+.include <bsd.port.post.mk>

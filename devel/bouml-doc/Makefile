@@ -4,7 +4,8 @@
 PORTNAME=	bouml-doc
 PORTVERSION=	4.23
 CATEGORIES=	devel
-MASTER_SITES=	SF/bouml/doc/${PORTVERSION}_ultimate/
+MASTER_SITES=	http://www.bouml.fr/ \
+		http://bouml.free.fr/
 DISTNAME=	doc${PORTVERSION}
 
 MAINTAINER=	thierry@FreeBSD.org

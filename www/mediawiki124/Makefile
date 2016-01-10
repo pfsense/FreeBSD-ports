@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mediawiki
-PORTVERSION=	1.24.4
+PORTVERSION=	1.24.6
 CATEGORIES=	www
 MASTER_SITES=	http://releases.wikimedia.org/mediawiki/${PORTVERSION:R}/
 PKGNAMESUFFIX=	124
@@ -12,7 +12,7 @@ COMMENT=	Wiki engine used by Wikipedia
 
 LICENSE=	GPLv2
 
-CONFLICTS=	mediawiki119-[0-9]* mediawiki12[35]-[0-9]*
+CONFLICTS=	mediawiki12[356]-[0-9]*
 
 USES=		shebangfix
 SHEBANG_FILES=	maintenance/dev/*.sh \
@@ -20,7 +20,8 @@ SHEBANG_FILES=	maintenance/dev/*.sh \
 SHEBANG_LANG=	hhvm
 hhvm_OLD_CMD=	/usr/bin/hhvm
 hhvm_CMD=	${LOCALBASE}/bin/hhvm # not installed by anything yet
-USE_PHP=	ctype hash iconv mbstring pcre session xml zlib readline dom json
+USE_PHP=	ctype dom hash iconv json mbstring pcre readline \
+		session xml xmlreader zlib
 WANT_PHP_WEB=	yes
 MEDIAWIKIDIR?=	www/mediawiki
 
@@ -78,6 +79,9 @@ USE_PHP+=	sockets
 
 pre-install:
 	@${FIND} -s -d ${WRKSRC} -not -type d | ${SED} "s?${WRKSRC}?${MEDIAWIKIDIR}?g" >>${PLIST}
+	@${ECHO} "@mode 0777" >> ${PLIST}
+	@${ECHO} "@dir %%WWWDIR%%/images" >> ${PLIST}
+	@${ECHO} "@mode" >> ${PLIST}
 	@${ECHO} @dir ${MEDIAWIKIDIR} >> ${PLIST}
 
 do-install:

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	zope.event
-PORTVERSION=	3.5.2
-PORTREVISION=	1
+PORTVERSION=	4.1.0
 CATEGORIES=	devel python zope
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,8 +12,10 @@ MAINTAINER=	zope@FreeBSD.org
 COMMENT=	Very basic event publishing system
 
 LICENSE=	ZPL21
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
+NO_ARCH=	yes
 USES=		python
-USE_PYTHON=	distutils autoplist
+USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

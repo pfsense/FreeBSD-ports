@@ -2,6 +2,7 @@
 
 PORTNAME=	libreoffice
 PORTVERSION=	4.3.7
+PORTREVISION=	1
 CATEGORIES=	editors
 MASTER_SITES=	http://download.documentfoundation.org/libreoffice/ \
 		http://dev-www.libreoffice.org/extern/:ext \
@@ -335,10 +336,6 @@ EXTRA_PATCHES+=	${FILESDIR}/extra-libc++.i386:-p0
 
 .if ${COMPILER_FEATURES:Mlibstdc++}
 EXTRA_PATCHES+=	${FILESDIR}/extra-configure.ac
-.endif
-
-.if ${OSVERSION} < 900506
-CONFIGURE_ARGS+=	--with-linker-hash-style=sysv
 .endif
 
 .if ${OSVERSION} < 1000033

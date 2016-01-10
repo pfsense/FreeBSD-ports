@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	erlang
-PORTVERSION=	18.1
+PORTVERSION=	18.2.1
 CATEGORIES=	lang parallel java
 MASTER_SITES=	http://www.erlang.org/download/:erlangorg		\
 		http://erlang.stacken.kth.se/download/:erlangorg	\
@@ -36,7 +36,6 @@ OPTIONS_DEFINE=	DOCS DTRACE GCC GS HIPE JAVA KQUEUE ODBC OPENSSL SCTP SMP THREAD
 
 DIRTY_DESC=	Enable Dirty schedulers (experimental)
 DTRACE_DESC=	Enable DTrace support
-GCC_DESC=	Use current GCC
 GS_DESC=	Enable GS application (deprecated)
 HIPE_DESC=	Build native HiPE compiler
 KQUEUE_DESC=	Enable Kernel Poll (kqueue) support
@@ -47,7 +46,7 @@ WX_DESC=	Enable WX application
 OPTIONS_DEFAULT=KQUEUE OPENSSL SCTP SMP THREADS
 OPTIONS_EXCLUDE_DragonFly=	HIPE SCTP
 
-ERL_RELEASE=	18.1
+ERL_RELEASE=	18.2.1
 
 USES=		gmake perl5
 USE_PERL5=	build
@@ -70,7 +69,7 @@ DISTFILES+=	${ERLANG_DOCS}:erlangorg
 
 .if ${OSVERSION} < 1000000
 .if ${ARCH} == "amd64" && ${PORT_OPTIONS:MDTRACE} && ! ${PORT_OPTIONS:MGCC}
-IGNORE=		DTRACE support on amd64 requires GCC option
+IGNORE=		support for DTrace on amd64 requires GCC option
 .endif
 .endif
 

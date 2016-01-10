@@ -3,25 +3,26 @@
 
 PORTNAME=	gracer
 PORTVERSION=	0.1.5
-PORTREVISION=	19
+PORTREVISION=	20
 CATEGORIES=	games
 MASTER_SITES=	SF
 
-MAINTAINER=	nox@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	3D motor sport simulator
+
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:${PORTSDIR}/x11-toolkits/plib
 LIB_DEPENDS=	libgif.so:${PORTSDIR}/graphics/giflib \
 		libpng.so:${PORTSDIR}/graphics/png
 
 USE_GL=		glut
-USES=		gmake jpeg perl5 tcl:84
+USES=		gmake jpeg localbase perl5 tcl:84
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-plib=${LOCALBASE}
-CPPFLAGS+=	-I${LOCALBASE}/include \
-		-I${TCL_INCLUDEDIR}
-LIBS+=		-L${LOCALBASE}/lib
+CPPFLAGS+=	-I${TCL_INCLUDEDIR}
 
 post-patch:
 	@${REINPLACE_CMD} -i '' -e 's|<malloc.h>|<stdlib.h>|' \

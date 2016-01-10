@@ -5,10 +5,7 @@ PORTNAME=	jaymod
 PORTVERSION=	2.1.7
 PORTREVISION=	4
 CATEGORIES=	games linux
-MASTER_SITES=	http://etmod.googlecode.com/files/ \
-		http://www.zenenterprises.biz/bud/jaymod/ \
-		http://bud.zenenterprises.biz/jaymod/ \
-		http://et.lsdfunweb.fr/et/jaymod/
+MASTER_SITES=	https://storage.googleapis.com/google-code-archive-downloads/v1/code.google.com/etmod/
 PKGNAMEPREFIX=	linux-enemyterritory-
 
 MAINTAINER=	bar@FreeBSD.org
@@ -22,7 +19,7 @@ PLIST_SUB=	VERSTR="${VERSTR}"
 
 USES=		shebangfix
 SHEBANG_FILES=	linux/convert_shrub
-perl_OLD_CMD=	/bin/env perl
+perl_OLD_CMD=	"/bin/env perl"
 USE_LINUX=	yes
 
 PORTSCOUT=	limit:^2\.1\.7

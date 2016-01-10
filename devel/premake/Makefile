@@ -8,24 +8,29 @@ CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/Premake/${PORTVERSION}
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 
-MAINTAINER=	lippe@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Build script creation tool
 
-OPTIONS_DEFINE=	DOCS
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 WRKSRC=		${WRKDIR}/Premake-${PORTVERSION}
 
-USES=		gmake dos2unix zip
+USES=		dos2unix gmake zip
 
 PLIST_FILES=	bin/premake
 
-PORTDOCS=	CHANGES.txt LICENSE.txt README.txt
+PORTDOCS=	CHANGES.txt README.txt
 
 MAKE_JOBS_UNSAFE=	yes
 
+OPTIONS_DEFINE=	DOCS
+
 do-install:
+	${INSTALL_PROGRAM} ${WRKSRC}/bin/premake ${STAGEDIR}${PREFIX}/bin
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_PROGRAM} ${WRKSRC}/bin/premake ${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.mk>

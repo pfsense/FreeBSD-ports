@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	grep
-PORTVERSION=	2.21
+PORTVERSION=	2.22
 PORTREVISION=	1
 CATEGORIES=	textproc
 MASTER_SITES=	GNU
@@ -44,6 +44,7 @@ PCRE_CONFIGURE_OFF=	--disable-perl-regexp
 .include <bsd.port.options.mk>
 
 post-patch:
+	@${REINPLACE_CMD} 's:@grep@:${LOCALBASE}/bin/&:' ${WRKSRC}/src/egrep.sh
 .if empty(PORT_OPTIONS:MNLS)
 	@${REINPLACE_CMD} '/install-exec-local:/s/install-exec-localcharset//' \
 		${WRKSRC}/lib/Makefile.in

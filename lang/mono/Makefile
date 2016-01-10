@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	mono
-PORTVERSION=	4.0.3.20
+PORTVERSION=	4.2.1.124
 CATEGORIES=	lang
 MASTER_SITES=	http://download.mono-project.com/sources/${PORTNAME}/
 
-PATCHFILES=	#
+PATCHFILES=	932359f3d627da13408350b1172ceb63c30f6327.diff
 PATCH_SITES=	https://github.com/mono/mono/commit/
 PATCH_DIST_STRIP=-p1
 
@@ -21,7 +21,7 @@ USE_GNOME=	glib20
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-WRKSRC=		${WRKDIR}/mono-4.0.3
+WRKSRC=		${WRKDIR}/mono-${PORTVERSION:R}
 
 # Moonlight is installed as part of www/moonlight
 CONFIGURE_ARGS=	--with-moonlight=no --disable-dtrace

@@ -13,6 +13,8 @@ COMMENT=	Musical MIDI Accompaniment generator
 
 LICENSE=	GPLv2
 
+BROKEN=		unfetchable
+
 RUN_DEPENDS=	aplaymidi:${PORTSDIR}/audio/alsa-utils \
 		timidity:${PORTSDIR}/audio/timidity++
 
@@ -30,8 +32,6 @@ USES=		python shebangfix
 
 WRKDOC=	${WRKDIR}/${PORTNAME}-pdf-${DISTVERSION:S,a,,}
 WRKSRC=	${WRKDIR}/${PORTNAME}-bin-${DISTVERSION}
-
-python_OLD_CMD=	/usr/bin/env python
 
 DOCS_DISTFILES=	${PORTNAME}-pdf-${DISTVERSION:S,a,,}.tar.gz
 

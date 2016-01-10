@@ -27,6 +27,7 @@
     SUBDIR += aird
     SUBDIR += am-utils
     SUBDIR += amrstat
+    SUBDIR += amtc
     SUBDIR += anacron
     SUBDIR += and
     SUBDIR += ansible
@@ -75,7 +76,6 @@
     SUBDIR += bareos-client-static
     SUBDIR += bareos-docs
     SUBDIR += bareos-server
-    SUBDIR += bashburn
     SUBDIR += batmon
     SUBDIR += battfink
     SUBDIR += battmond
@@ -104,8 +104,8 @@
     SUBDIR += bsdstats
     SUBDIR += btsixad
     SUBDIR += bulk_extractor
+    SUBDIR += burp
     SUBDIR += busybox
-    SUBDIR += busybox-unstable
     SUBDIR += byobu
     SUBDIR += cbsd
     SUBDIR += ccd2iso
@@ -123,6 +123,9 @@
     SUBDIR += cdrtools
     SUBDIR += cdrtools-devel
     SUBDIR += cfengine
+    SUBDIR += cfengine-masterfiles
+    SUBDIR += cfengine-masterfiles36
+    SUBDIR += cfengine-masterfiles37
     SUBDIR += cfengine22
     SUBDIR += cfengine32
     SUBDIR += cfengine33
@@ -177,6 +180,7 @@
     SUBDIR += daa2iso
     SUBDIR += dae
     SUBDIR += daedalus
+    SUBDIR += daemonize
     SUBDIR += daemontools
     SUBDIR += daemontools-encore
     SUBDIR += dar
@@ -308,6 +312,7 @@
     SUBDIR += fusefs-ifuse
     SUBDIR += fusefs-kmod
     SUBDIR += fusefs-libs
+    SUBDIR += fusefs-lkl
     SUBDIR += fusefs-mhddfs
     SUBDIR += fusefs-mp3fs
     SUBDIR += fusefs-ntfs
@@ -319,6 +324,7 @@
     SUBDIR += fusefs-sqlfs
     SUBDIR += fusefs-sshfs
     SUBDIR += fusefs-unionfs
+    SUBDIR += fusefs-wdfs
     SUBDIR += fusefs-wikipediafs
     SUBDIR += fusefs-zip
     SUBDIR += fvcool
@@ -409,12 +415,14 @@
     SUBDIR += i2c-tools
     SUBDIR += i7z
     SUBDIR += iat
+    SUBDIR += inotify-tools
     SUBDIR += installwatch
     SUBDIR += intel-pcm
     SUBDIR += iocage
     SUBDIR += iocage-devel
     SUBDIR += iogen
     SUBDIR += iograph
+    SUBDIR += iohyve
     SUBDIR += ioping
     SUBDIR += ipa
     SUBDIR += ipad_charge
@@ -596,6 +604,7 @@
     SUBDIR += obliterate
     SUBDIR += odo
     SUBDIR += ods2
+    SUBDIR += ohmu
     SUBDIR += open
     SUBDIR += openipmi
     SUBDIR += openupsd
@@ -721,6 +730,7 @@
     SUBDIR += php55-posix
     SUBDIR += php56-fileinfo
     SUBDIR += php56-posix
+    SUBDIR += phybs
     SUBDIR += pick
     SUBDIR += pidof
     SUBDIR += pipemeter
@@ -765,15 +775,18 @@
     SUBDIR += py-croniter
     SUBDIR += py-crontab
     SUBDIR += py-danzfs
+    SUBDIR += py-dlipower
     SUBDIR += py-drmaa
     SUBDIR += py-execnet
     SUBDIR += py-ezjailremote
     SUBDIR += py-filelike
+    SUBDIR += py-freenas.cli
     SUBDIR += py-glances
     SUBDIR += py-halite
     SUBDIR += py-honcho
     SUBDIR += py-iowait
     SUBDIR += py-nagiosplugin
+    SUBDIR += py-pkginfo
     SUBDIR += py-ploy
     SUBDIR += py-ploy_ansible
     SUBDIR += py-ploy_ec2
@@ -785,6 +798,7 @@
     SUBDIR += py-psutil121
     SUBDIR += py-ptyprocess
     SUBDIR += py-pytsk
+    SUBDIR += py-pywatchman
     SUBDIR += py-queuelib
     SUBDIR += py-ranger
     SUBDIR += py-salt
@@ -807,6 +821,7 @@
     SUBDIR += racktables
     SUBDIR += radeontool
     SUBDIR += radmind
+    SUBDIR += rainbarf
     SUBDIR += raincoat
     SUBDIR += rcadm
     SUBDIR += rclean
@@ -819,6 +834,7 @@
     SUBDIR += recoverdm
     SUBDIR += reed
     SUBDIR += rej
+    SUBDIR += relaunchd
     SUBDIR += relaxconf
     SUBDIR += rename
     SUBDIR += renameutils
@@ -874,6 +890,7 @@
     SUBDIR += rubygem-hiera
     SUBDIR += rubygem-hiera-file
     SUBDIR += rubygem-hiera1
+    SUBDIR += rubygem-hieracles
     SUBDIR += rubygem-librarian-puppet
     SUBDIR += rubygem-log4r
     SUBDIR += rubygem-logify
@@ -888,6 +905,8 @@
     SUBDIR += rubygem-rubyipmi
     SUBDIR += rubygem-shellany
     SUBDIR += rubygem-smart_proxy_chef
+    SUBDIR += rubygem-smart_proxy_dynflow
+    SUBDIR += rubygem-smart_proxy_remote_execution_ssh
     SUBDIR += rubygem-smart_proxy_salt
     SUBDIR += rubygem-sys-admin
     SUBDIR += rubygem-sys-cpu
@@ -909,6 +928,7 @@
     SUBDIR += samefile
     SUBDIR += samesame
     SUBDIR += sas2ircu
+    SUBDIR += sas3ircu
     SUBDIR += savelogs
     SUBDIR += sb16config
     SUBDIR += sbsigntool
@@ -924,7 +944,6 @@
     SUBDIR += screenie
     SUBDIR += scterc
     SUBDIR += sd-agent
-    SUBDIR += sdd
     SUBDIR += sdparm
     SUBDIR += searchmonkey
     SUBDIR += seatools
@@ -1011,7 +1030,6 @@
     SUBDIR += tmux
     SUBDIR += topless
     SUBDIR += torque
-    SUBDIR += torsmo
     SUBDIR += toshctl
     SUBDIR += tracker
     SUBDIR += tree
@@ -1020,6 +1038,7 @@
     SUBDIR += tss
     SUBDIR += tty-clock
     SUBDIR += ttyload
+    SUBDIR += tuptime
     SUBDIR += tw_cli
     SUBDIR += tzdialog
     SUBDIR += u-boot-bananapi
@@ -1051,6 +1070,7 @@
     SUBDIR += upsdaemon
     SUBDIR += uptimed
     SUBDIR += usb_modeswitch
+    SUBDIR += usbhid-dump
     SUBDIR += usbhotkey
     SUBDIR += usbutils
     SUBDIR += uschedule
@@ -1071,6 +1091,7 @@
     SUBDIR += vimpager
     SUBDIR += virtualmin
     SUBDIR += vlogger
+    SUBDIR += vm-bhyve
     SUBDIR += vmdktool
     SUBDIR += vmtouch
     SUBDIR += vobcopy
@@ -1125,7 +1146,6 @@
     SUBDIR += xfce4-diskperf-plugin
     SUBDIR += xfce4-fsguard-plugin
     SUBDIR += xfce4-genmon-plugin
-    SUBDIR += xfce4-minicmd-plugin
     SUBDIR += xfce4-mount-plugin
     SUBDIR += xfce4-netload-plugin
     SUBDIR += xfce4-power-manager

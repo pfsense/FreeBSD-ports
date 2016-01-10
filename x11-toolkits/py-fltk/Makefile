@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	fltk
-PORTVERSION=	1.3.3
+PORTVERSION=	1.3.3.1
 CATEGORIES=	x11-toolkits python
 MASTER_SITES=	SF/py${PORTNAME}/py${PORTNAME}/pyFltk-${PORTVERSION}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -27,6 +27,12 @@ EXAMPLESDIR=	${PREFIX}/share/examples/py-${PORTNAME}
 PORTDOCS=	*
 PORTEXAMPLES=	*
 WRKSRC=		${WRKDIR}/pyFltk-${PORTVERSION}
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
+USE_GCC=	yes
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e "s|/usr/X11R6|${LOCALBASE}|g;s|package_data.*},||g;s|sunos5|dragonfly4', 'freebsd8', 'freebsd9', 'freebsd10', 'freebsd11|g" ${WRKSRC}/setup.py

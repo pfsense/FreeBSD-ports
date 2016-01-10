@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	appleseed
-DISTVERSION=	1.2.0-beta
+DISTVERSION=	1.3.0-beta
 PORTREVISION=	1
 CATEGORIES=	graphics
 
@@ -20,17 +20,17 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	${PORTNAME}hq
 
 ONLY_FOR_ARCHS=	i386 amd64
-ONLY_FOR_ARCHS_REASON=	uses SSE instructions
+ONLY_FOR_ARCHS_REASON=	not ported to it yet
 
 USES=		cmake:outsource
-USE_GL=		gl
 USE_QT4=	moc_build qmake_build rcc_build uic_build opengl
 
-CMAKE_ARGS=	-DUSE_STATIC_BOOST:BOOL=OFF -DWITH_DOXYGEN:BOOL=OFF \
-		-DWITH_TESTS:BOOL=OFF -DWITH_HEADERS:BOOL=OFF \
-		-DWITH_PYTHON:BOOL=OFF
+CMAKE_ARGS=	-DUSE_STATIC_BOOST:BOOL=OFF -DUSE_STATIC_OIIO:BOOL=OFF \
+		-DUSE_STATIC_OSL:BOOL=OFF -DWITH_DOXYGEN:BOOL=OFF \
+		-DWITH_HEADERS:BOOL=OFF -DWITH_PYTHON:BOOL=OFF \
+		-DWITH_TESTS:BOOL=OFF
 
-.for lib in ZLIB PNG EXR XERCES
+.for lib in EXR OIIO OSL PNG SEEXPR XERCES ZLIB
 CMAKE_ARGS+=	-DUSE_EXTERNAL_${lib}:BOOL=ON
 .endfor
 
@@ -41,15 +41,23 @@ PLIST_SUB=	APPHOME=${CMAKE_INSTALL_PREFIX}
 SUB_FILES=	pkg-message
 SUB_LIST:=	${PLIST_SUB}
 
+OPTIONS_DEFINE=	EXAMPLES OSL DISNEY
+OPTIONS_DEFAULT=	OSL DISNEY
+OPTIONS_SUB=	yes
+
+OSL_DESC=	Open Shading Language support
+DISNEY_DESC=	Disney material support
+
+EXAMPLES_CMAKE_OFF=	-DWITH_SAMPLES:BOOL=OFF
+
+OSL_CMAKE_ON=	-DWITH_OSL:BOOL=ON
+OSL_LIB_DEPENDS=	liboslexec.so:${PORTSDIR}/graphics/openshadinglanguage
+
+DISNEY_CMAKE_ON=	-DWITH_DISNEY_MATERIAL:BOOL=ON
+DISNEY_LIB_DEPENDS=	libOpenImageIO.so:${PORTSDIR}/graphics/openimageio \
+			libSeExprEditor.so:${PORTSDIR}/graphics/seexpr
+
 post-patch:
-	@${REINPLACE_CMD} -e 's,Linux,${OPSYS},' \
-		${WRKSRC}/src/appleseed.cli/CMakeLists.txt \
-		${WRKSRC}/src/appleseed.studio/CMakeLists.txt \
-		${WRKSRC}/src/tools/animatecamera/CMakeLists.txt \
-		${WRKSRC}/src/tools/convertmeshfile/CMakeLists.txt \
-		${WRKSRC}/src/tools/dumpmetadata/CMakeLists.txt \
-		${WRKSRC}/src/tools/makefluffy/CMakeLists.txt \
-		${WRKSRC}/src/tools/updateprojectfile/CMakeLists.txt
 	@${RMDIR} ${WRKSRC}/sandbox/docs/api
 
 .include <bsd.port.mk>

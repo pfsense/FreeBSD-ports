@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	smtube
-PORTVERSION=	15.9.0
+PORTVERSION=	15.11.0
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/smtube/SMTube/${PORTVERSION}/
 
@@ -27,6 +27,6 @@ post-patch:
 		${WRKSRC}/Makefile
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}	
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

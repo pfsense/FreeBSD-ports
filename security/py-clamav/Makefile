@@ -3,7 +3,7 @@
 
 PORTNAME=	clamav
 PORTVERSION=	0.4.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	security python
 MASTER_SITES=	http://xael.org/norman/python/pyclamav/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,6 +11,8 @@ DISTNAME=	py${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python binding to libclamav written in C
+
+BROKEN=		unfetchable
 
 LICENSE=	GPLv2 # or later
 LICENSE_FILE=	${WRKSRC}/gpl.txt

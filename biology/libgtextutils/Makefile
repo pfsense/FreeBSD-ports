@@ -1,11 +1,11 @@
-# Created by: Jason Bacon <jwbacon@tds.net>
+# Created by: Jason Bacon <bacon4000@gmail.com>
 # $FreeBSD$
 
 PORTNAME=	libgtextutils
 PORTVERSION=	0.7
 CATEGORIES=	biology
 
-MAINTAINER=	jwbacon@tds.net
+MAINTAINER=	bacon4000@gmail.com
 COMMENT=	Gordon's text utilities
 
 LICENSE=	AGPLv3
@@ -16,7 +16,6 @@ USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	agordon
-GH_PROJECT=	libgtextutils
 
 INSTALL_TARGET=	install-strip
 

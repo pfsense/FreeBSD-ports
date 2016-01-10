@@ -4,21 +4,20 @@
 #  - etc/*.sample support
 
 PORTNAME=	openmpi
-PORTVERSION=	1.10.0
+PORTVERSION=	1.10.1
 CATEGORIES=	net parallel
 MASTER_SITES=	http://www.open-mpi.org/software/ompi/v${PORTVERSION:R}/downloads/
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	High Performance Message Passing Library
 
-LIB_DEPENDS=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo \
-		libhwloc.so:${PORTSDIR}/devel/hwloc \
+LIB_DEPENDS=	libhwloc.so:${PORTSDIR}/devel/hwloc \
 		libltdl.so:${PORTSDIR}/devel/libltdl
 
 HAS_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 # :keepla because port uses lt_dlopen
-USES=		fortran gmake libtool:keepla perl5 pkgconfig tar:bzip2
+USES=		execinfo fortran gmake libtool:keepla perl5 pkgconfig tar:bzip2
 USE_PERL5=	build
 
 MPIBASE?=	mpi
@@ -31,7 +30,10 @@ CONFIGURE_ARGS+=	--prefix=${PREFIX}/${MPIDIR} \
 			--mandir=${PREFIX}/${MPIDIR}/man \
 			--program-prefix= \
 			--with-hwloc=${LOCALBASE} \
-			--with-libltdl=${LOCALBASE}
+			--with-libltdl=${LOCALBASE} \
+			--enable-mpi-fortran=usempi \
+			ompi_cv_fortran_ignore_tkr_data=0
+
 LDFLAGS+=	-L${LOCALBASE}/lib
 USE_LDCONFIG=	${PREFIX}/${MPIDIR}/lib \
 		${PREFIX}/${MPIDIR}/lib/openmpi

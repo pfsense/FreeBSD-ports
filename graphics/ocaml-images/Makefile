@@ -3,7 +3,7 @@
 
 PORTNAME=	images
 PORTVERSION=	4.0.1
-PORTREVISION=	5
+PORTREVISION=	6
 PORTEPOCH=	2
 CATEGORIES=	graphics
 MASTER_SITES=	https://bitbucket.org/camlspotter/camlimages/get/
@@ -81,7 +81,7 @@ ocaml-findlib:
 	# The consequence is that pkg-plist must be manually supported
 
 do-install:
-	@${MKDIR} ${STAGEDIR}${PREFIX}/${OCAML_LDLIBS}	
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${OCAML_LDLIBS}
 	(cd ${WRKSRC} && ${OMAKE} ${OMARGS} install)
 
 .include <bsd.port.mk>

@@ -77,7 +77,6 @@
     SUBDIR += courier-pythonfilter
     SUBDIR += couriergraph
     SUBDIR += crm114
-    SUBDIR += cucipop
     SUBDIR += cvsmail
     SUBDIR += cyrus-imapd23
     SUBDIR += cyrus-imapd24
@@ -285,6 +284,8 @@
     SUBDIR += offlineimap
     SUBDIR += opendkim
     SUBDIR += opendmarc
+    SUBDIR += openemm2013
+    SUBDIR += openemm2015
     SUBDIR += opensmtpd
     SUBDIR += opensmtpd-devel
     SUBDIR += openwebmail
@@ -396,6 +397,7 @@
     SUBDIR += p5-Mail-Verify
     SUBDIR += p5-Mail-Verp
     SUBDIR += p5-Mail-Webmail-Gmail
+    SUBDIR += p5-Mojolicious-Plugin-Mail
     SUBDIR += p5-Net-IMAP-Client
     SUBDIR += p5-Net-IMAP-Server
     SUBDIR += p5-Net-IMAP-Simple
@@ -507,9 +509,10 @@
     SUBDIR += py-dkimpy
     SUBDIR += py-libgmail
     SUBDIR += py-milter
+    SUBDIR += py-notmuch
     SUBDIR += py-ppolicy
+    SUBDIR += py-pyspf
     SUBDIR += py-spambayes
-    SUBDIR += py-spf
     SUBDIR += py-turbomail
     SUBDIR += py-twistedMail
     SUBDIR += py-zope.sendmail
@@ -571,6 +574,7 @@
     SUBDIR += roundcube-umich
     SUBDIR += roundcube-veximaccountadmin
     SUBDIR += rspamd
+    SUBDIR += rspamd-devel
     SUBDIR += rss2email2
     SUBDIR += rss2email3
     SUBDIR += ruby-rfilter
@@ -578,14 +582,19 @@
     SUBDIR += rubygem-actionmailer
     SUBDIR += rubygem-actionmailer4
     SUBDIR += rubygem-actionmailer41
+    SUBDIR += rubygem-email_reply_parser
     SUBDIR += rubygem-email_reply_parser-discourse
     SUBDIR += rubygem-exception_notification
     SUBDIR += rubygem-larch
     SUBDIR += rubygem-mail
     SUBDIR += rubygem-mail25
+    SUBDIR += rubygem-mail_room
+    SUBDIR += rubygem-mailboxer
     SUBDIR += rubygem-mailfactory
     SUBDIR += rubygem-pony
     SUBDIR += rubygem-rmail
+    SUBDIR += rubygem-roadie
+    SUBDIR += rubygem-roadie-rails
     SUBDIR += rubygem-ruby-qmail
     SUBDIR += rubygem-tmail
     SUBDIR += rubygem-vmail

@@ -1,12 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	fossil
-PORTVERSION=	1.33
+PORTVERSION=	1.34
+DISTVERSIONPREFIX=	src-
 PORTEPOCH=	2
-PORTREVISION=	1
 CATEGORIES=	devel www
 MASTER_SITES=	http://www.fossil-scm.org/download/
-DISTVERSIONPREFIX=	src-
 
 MAINTAINER=	bapt@FreeBSD.org
 COMMENT=	DSCM with built-in wiki, http interface and server, tickets database
@@ -21,8 +20,6 @@ CONFIGURE_ARGS=	--prefix=${PREFIX}
 USE_OPENSSL=	yes
 USE_RC_SUBR=	fossil
 MAKE_JOBS_UNSAFE=yes
-
-CONFIGURE_ARGS=	--disable-lineedit
 
 OPTIONS_DEFINE=	JSON FUSE STATIC
 OPTIONS_DEFAULT=	JSON

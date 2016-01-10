@@ -5,17 +5,15 @@ PORTNAME=	elsamuko
 DISTVERSION=	0.24
 PORTREVISION=	2
 CATEGORIES=	graphics
-MASTER_SITES=	https://sites.google.com/site/${PORTNAME}/gimp/
+MASTER_SITES=	https://github.com/site/${PORTNAME}/gimp-${PORTNAME}/archive/
 PKGNAMEPREFIX=	gimp-
 PKGNAMESUFFIX=	-script
 DISTNAME=	${PORTNAME}
 
-MAINTAINER=	lioux@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Gimp scripts by elsamuko
 
 LICENSE=	GPLv3
-
-BROKEN=		No public distfiles
 
 RUN_DEPENDS=	${LOCALBASE}/bin/gimp:${PORTSDIR}/graphics/gimp-app
 

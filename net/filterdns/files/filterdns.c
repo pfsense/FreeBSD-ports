@@ -77,8 +77,6 @@ static void clear_config(struct thread_list *);
 static void clear_hostname_addresses(struct thread_data *);
 static int filterdns_check_sameip_diff_hostname(struct thread_data *, struct table *);
 
-void *check_hostname(void *arg);
-
 #define DELETE 1
 #define ADD 2
 #define TABLENAME(name)	name != NULL ? name : ""
@@ -683,7 +681,8 @@ is_ipaddrv6(const char *s, struct sockaddr_in6 *sin6)
 	return (result);
 }
 
-void *check_hostname(void *arg)
+static void *
+check_hostname(void *arg)
 {
 	struct thread_data *thrd = arg;
 	struct timespec ts;
@@ -697,9 +696,6 @@ void *check_hostname(void *arg)
 	if (debug >= 2)
 		syslog(LOG_WARNING, "Found hostname %s with netmask %d.", thrd->hostname, thrd->mask);
 
-	while ((ts.tv_sec = time(NULL)) < 0)
-		;
-
 	if (thrd->type == PF_TYPE)
 		get_present_table_entries(thrd);
 
@@ -707,6 +703,7 @@ void *check_hostname(void *arg)
 	tmp = 0;
 	pthread_mutex_lock(&thrd->mtx);
 	for (;;) {
+		clock_gettime(CLOCK_MONOTONIC, &ts);
 		ts.tv_sec += interval;
 		ts.tv_sec += (interval % 30);
 		ts.tv_nsec = 0;
@@ -770,6 +767,29 @@ void *check_hostname(void *arg)
 	free(thrd);
 
 	return (NULL);
+}
+
+static int
+check_hostname_create(struct thread_data *thr)
+{
+	pthread_condattr_t condattr;
+
+	if (pthread_mutex_init(&thr->mtx, NULL) != 0)
+		return (-1);
+	if (pthread_condattr_init(&condattr) != 0 ||
+	    pthread_condattr_setclock(&condattr, CLOCK_MONOTONIC) != 0 ||
+	    pthread_cond_init(&thr->cond, &condattr) != 0 ||
+	    pthread_condattr_destroy(&condattr) != 0) {
+		pthread_mutex_destroy(&thr->mtx);
+		return (-1);
+	}
+	if (pthread_create(&thr->thr_pid, &attr, check_hostname, thr) != 0) {
+		pthread_mutex_destroy(&thr->mtx);
+		pthread_cond_destroy(&thr->cond);
+		return (-1);
+	}
+	pthread_set_name_np(thr->thr_pid, thr->hostname);
+	return (0);
 }
 
 static void
@@ -871,15 +891,8 @@ merge_config(void *arg __unused) {
 				if (foundexisting == 0) {
 					if (debug > 3)
 						syslog(LOG_ERR, "Creating a new thread for host %s!", thr->hostname);
-					pthread_mutex_init(&thr->mtx, NULL);
-					pthread_cond_init(&thr->cond, NULL);
-					error = pthread_create(&thr->thr_pid, &attr, check_hostname, thr);
-					if (error != 0) {
+					if (check_hostname_create(thr) == -1)
 						syslog(LOG_ERR, "Unable to create monitoring thread for host %s! It will not be monitored!", thr->hostname);
-						pthread_mutex_destroy(&thr->mtx);
-						pthread_cond_destroy(&thr->cond);
-					}
-					pthread_set_name_np(thr->thr_pid, thr->hostname);
 				}
 			}
 		}
@@ -1052,16 +1065,9 @@ int main(int argc, char *argv[]) {
 	TAILQ_FOREACH(thr, &thread_list, next) {
 		if (debug > 3)
 			syslog(LOG_ERR, "Creating a new thread for host %s!", thr->hostname);
-		pthread_mutex_init(&thr->mtx, NULL);
-		pthread_cond_init(&thr->cond, NULL);
-		error = pthread_create(&thr->thr_pid, &attr, check_hostname, thr);
-		if (error != 0) {
+		if (check_hostname_create(thr) == -1)
 			if (debug >= 1)
 				syslog(LOG_ERR, "Unable to create monitoring thread for host %s", thr->hostname);
-			pthread_mutex_destroy(&thr->mtx);
-			pthread_cond_destroy(&thr->cond);
-		}
-		pthread_set_name_np(thr->thr_pid, thr->hostname);
 	}
 
 	pthread_mutex_init(&sig_mtx, NULL);

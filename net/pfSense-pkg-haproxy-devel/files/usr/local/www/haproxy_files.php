@@ -107,67 +107,56 @@ if ($_POST) {
 	}
 }
 
-$pgtitle = "Services: HAProxy: Files";
+$pgtitle = array("Services", "HAProxy", "Files");
 include("head.inc");
-haproxy_css();
-
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
+if ($savemsg) {
+	print_info_box($savemsg);
+}
+if (file_exists($d_haproxyconfdirty_path)) {
+	print_info_box_np("The haproxy configuration has been changed.<br/>You must apply the changes in order for them to take effect.");
+}
+haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "files");
+//haproxy_css();
 ?>
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-<?php include("fbegin.inc"); ?>
 <form action="haproxy_files.php" method="post">
-<?php if ($input_errors) print_input_errors($input_errors); ?>
-<?php if ($savemsg) print_info_box($savemsg); ?>
-<?php if (file_exists($d_haproxyconfdirty_path)): ?>
-<?php print_info_box_np("The haproxy configuration has been changed.<br/>You must apply the changes in order for them to take effect.");?><br/>
-<?php endif; ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr><td class="tabnavtbl">
-  <?php
-	haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "files");
-  ?>
-  </td></tr>
-  <tr>
-    <td>
-	<div id="mainarea">
-		<table class="tabcont" width="100%" border="0" cellpadding="0" cellspacing="0">
-		<tr>
-			<td>
-				Files can be used for errorfiles, that can return custom error pages in 
-				case haproxy reports a error (like no available backend). The content needs 
-				to be less than the buffer size which is typically 8kb.
-				There are 2 possible variables to use inside the template:
-				Put these variables in the content of the errorfile templates and they will be replaced by the actual errorcode / message. (include the curly braces around the text)<br/>
-				<b>{errorcode}</b> this represents the errorcode<br/>
-				<b>{errormsg}</b> this represents the human readable error<br/>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				&nbsp;
-			</td>
-		</tr>
-		<tr>
-			<td>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h2 class="panel-title"><?=gettext("Files")?></h2>
+		</div>
+	<div class="content">
+		<div class="table-responsive panel-body content">
+			Files can be used for errorfiles and lua scripts.<br/>
+			- Errorfiles can return custom error pages in 
+			case haproxy reports a error (like no available backend). The content needs 
+			to be less than the buffer size which is typically 8kb.
+			There are 2 possible variables to use inside the template:
+			Put these variables in the content of the errorfile templates and they will be replaced by the actual errorcode / message. (include the curly braces around the text)<br/>
+			<b>{errorcode}</b> this represents the errorcode<br/>
+			<b>{errormsg}</b> this represents the human readable error<br/>
+			- Lua files, can be used to implement custom fetches, service implementations and has several other options.<br/>
+			<a href="http://www.arpalert.org/src/haproxy-lua-api/1.6/">See the api for more information.</a>
+		</div>
+		<div class="table-responsive panel-body">
 			<?
 			$counter=0;
-			$fileslist->Draw($a_files);
+			echo $fileslist->Draw($a_files);
 			?>
-			</td>
-		</tr>
-			<tr>
-				<td>
-					&nbsp;
-				</td>
-			</tr>
-			<tr>
-				<td width="78%">
-					<input name="Submit" type="submit" class="formbtn" value="Save" />
-				</td>
-			</tr>
-		</table>
+		</div>
 	</div>
-	</table>
-	</form>
+		<div class="col-sm-2">
+		</div>
+		<div class="col-sm-8">
+			<br/><?=new Form_Button('save','Save');?>
+		</div>
+	</div>
+
+</form>
+<?
+haproxy_htmllist_js();
+?>
 <script type="text/javascript">
 	totalrows =  <?php echo $counter; ?>;
 <?
@@ -176,7 +165,4 @@ haproxy_css();
 </script>
 
 <?php
-haproxy_htmllist_js();
-include("fend.inc"); ?>
-</body>
-</html>
+include("foot.inc");

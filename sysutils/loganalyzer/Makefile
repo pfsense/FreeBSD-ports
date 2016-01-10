@@ -12,6 +12,9 @@ COMMENT=	Web based Syslog browsing and analysis
 LICENSE=	GPLv3 # or later
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+DEPRECATED=	PHP 5.4 EOL reached
+EXPIRATION_DATE=	2016-01-15
+
 USES=		cpe
 CPE_VENDOR=	adiscon
 NO_BUILD=	yes
@@ -35,7 +38,7 @@ DEFAULT_PHP_VER=5
 PHP_MYSQL_USE=	php=mysql
 PDO_DBLIB_RUN_DEPENDS=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/pdo_dblib.so:${PORTSDIR}/databases/php5-pdo_dblib
 PDO_FIREBIRD_RUN_DEPENDS=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/pdo_firebird.so:${PORTSDIR}/databases/php5-pdo_firebird
-PDO_MYSQL_USE=	php=pgo_mysql
+PDO_MYSQL_USE=	php=pdo_mysql
 PDO_ODBC_RUN_DEPENDS=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/pdo_odbc.so:${PORTSDIR}/databases/php5-pdo_odbc
 PDO_PGSQL_RUN_DEPENDS=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/pdo_pgsql.so:${PORTSDIR}/databases/php5-pdo_pgsql
 PDO_SQLITE_USE=	php=pdo_sqlite

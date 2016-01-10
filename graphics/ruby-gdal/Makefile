@@ -15,7 +15,7 @@ COMMENT=	Ruby binding for GDAL
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/../../LICENSE.TXT
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/swig3.0:${PORTSDIR}/devel/swig30
+BUILD_DEPENDS=	swig3.0:${PORTSDIR}/devel/swig30
 LIB_DEPENDS=	libgdal.so:${PORTSDIR}/graphics/gdal
 
 IGNORE=		disabled by upstream (https://trac.osgeo.org/gdal/changeset/28756)
@@ -25,7 +25,7 @@ MAKEFILE=	GNUmakefile
 USE_RUBY=	yes
 USES=		gmake tar:xz
 
-WRKSRC=		${WRKDIR}/${DISTNAME}/swig/ruby
+WRKSRC_SUBDIR=	swig/ruby
 
 post-patch:
 	@${REINPLACE_CMD} -e '/^SWIG = swig/ s|$$|3.0|' ${WRKSRC}/../SWIGmake.base

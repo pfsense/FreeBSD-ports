@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	thunderbird
-DISTVERSION=	38.4.0
+DISTVERSION=	38.5.0
 CATEGORIES=	mail news net-im ipv6
 MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}/source \
-		MOZILLA/${PORTNAME}/candidates/${DISTVERSION}-candidates/build3/source
+		MOZILLA/${PORTNAME}/candidates/${DISTVERSION}-candidates/build1/source
 DISTFILES=	${PORTNAME}-${DISTVERSION}.source${EXTRACT_SUFX}
 EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}.source${EXTRACT_SUFX}
 
@@ -18,8 +18,7 @@ BUILD_DEPENDS=	nspr>=4.10.8:${PORTSDIR}/devel/nspr \
 		soundtouch>=1.8.0:${PORTSDIR}/audio/soundtouch \
 		harfbuzz>=0.9.34:${PORTSDIR}/print/harfbuzz \
 		graphite2>=1.2.4:${PORTSDIR}/graphics/graphite2 \
-		libvorbis>=1.3.5:${PORTSDIR}/audio/libvorbis \
-		opus>=1.1:${PORTSDIR}/audio/opus \
+		libvorbis>=1.3.5,3:${PORTSDIR}/audio/libvorbis \
 		libvpx>=1.3.0:${PORTSDIR}/multimedia/libvpx \
 		sqlite3>=3.8.9:${PORTSDIR}/databases/sqlite3 \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:${PORTSDIR}/databases/py-sqlite3 \
@@ -32,7 +31,7 @@ BUILD_DEPENDS=	nspr>=4.10.8:${PORTSDIR}/devel/nspr \
 LIB_DEPENDS=	libv4l2.so:${PORTSDIR}/multimedia/libv4l
 
 EM_VERSION=	1.8.2
-L_VERSION=	4.0.4
+L_VERSION=	4.0.5
 
 SSP_UNSAFE=	yes
 USE_GECKO=	gecko
@@ -41,8 +40,7 @@ USE_MOZILLA=	-opus
 USE_QT5=	# empty
 QT_NONSTANDARD=	yes
 USE_GL=		gl
-USES=		dos2unix tar:bzip2
-DOS2UNIX_FILES=	mozilla/media/webrtc/trunk/webrtc/system_wrappers/source/spreadsortlib/spreadsort.hpp
+USES=		tar:bzip2
 
 MOZ_OPTIONS=	--program-transform-name='s/thunderbird/${MOZILLA}/' \
 	--enable-single-profile --disable-profilesharing \

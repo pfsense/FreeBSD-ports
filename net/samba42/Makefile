@@ -13,11 +13,13 @@ COMMENT?=		Free SMB/CIFS and AD/DC server and client for Unix
 
 LICENSE=		GPLv3
 
-CONFLICTS?=		*samba3[2-6]-3.* samba4-4.0.* samba41-4.1.*
+CONFLICTS?=		*samba3[2-6]-3.* samba4-4.0.* samba41-4.1.* samba43-4.3.*
+
+EXTRA_PATCHES=		${PATCHDIR}/extra-patch-security:-p1
 
 SAMBA4_BASENAME=	samba
 SAMBA4_PORTNAME=	${SAMBA4_BASENAME}4
-SAMBA4_VERSION=		4.2.4
+SAMBA4_VERSION=		4.2.7
 SAMBA4_DISTNAME=	${SAMBA4_BASENAME}-${SAMBA4_VERSION:S|.p|pre|:S|.r|rc|:S|.t|tp|:S|.a|alpha|}
 
 WRKSRC?=		${WRKDIR}/${DISTNAME}
@@ -86,29 +88,29 @@ RUN_DEPENDS+=		libarchive>=3.1.2:${PORTSDIR}/archivers/libarchive
 # External Samba dependencies
 # IDL compiler
 BUILD_DEPENDS+=		p5-Parse-Pidl>=4.0.0:${PORTSDIR}/devel/p5-Parse-Pidl
-# 
+#
 BUILD_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}dnspython>=1.9.4:${PORTSDIR}/dns/py-dnspython
 RUN_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}dnspython>=1.9.4:${PORTSDIR}/dns/py-dnspython
 PLIST_SUB+=		PY_DNSPYTHON="@comment "
 # talloc
-BUILD_DEPENDS+=		talloc>=2.1.3_1:${PORTSDIR}/devel/talloc
-RUN_DEPENDS+=		talloc>=2.1.3_1:${PORTSDIR}/devel/talloc
+BUILD_DEPENDS+=		talloc>=2.1.5:${PORTSDIR}/devel/talloc
+RUN_DEPENDS+=		talloc>=2.1.5:${PORTSDIR}/devel/talloc
 SAMBA4_BUNDLED_LIBS+=	!talloc
 # tevent
 BUILD_DEPENDS+=		tevent>=0.9.25:${PORTSDIR}/devel/tevent
 RUN_DEPENDS+=		tevent>=0.9.25:${PORTSDIR}/devel/tevent
 SAMBA4_BUNDLED_LIBS+=	!tevent
 # tdb
-BUILD_DEPENDS+=		tdb>=1.3.7_1:${PORTSDIR}/databases/tdb
-RUN_DEPENDS+=		tdb>=1.3.7_1:${PORTSDIR}/databases/tdb
+BUILD_DEPENDS+=		tdb>=1.3.8:${PORTSDIR}/databases/tdb
+RUN_DEPENDS+=		tdb>=1.3.8:${PORTSDIR}/databases/tdb
 SAMBA4_BUNDLED_LIBS+=	!tdb
 # ntdb
 BUILD_DEPENDS+=		ntdb>=1.0:${PORTSDIR}/databases/ntdb
 RUN_DEPENDS+=		ntdb>=1.0:${PORTSDIR}/databases/ntdb
 SAMBA4_BUNDLED_LIBS+=	!ntdb
 # ldb
-BUILD_DEPENDS+=		ldb>=1.1.21_1:${PORTSDIR}/databases/ldb
-RUN_DEPENDS+=		ldb>=1.1.21_1:${PORTSDIR}/databases/ldb
+BUILD_DEPENDS+=		ldb>=1.1.24:${PORTSDIR}/databases/ldb
+RUN_DEPENDS+=		ldb>=1.1.24:${PORTSDIR}/databases/ldb
 SAMBA4_BUNDLED_LIBS+=	!ldb
 # Don't use external libcom_err
 SAMBA4_BUNDLED_LIBS+=	com_err
@@ -174,6 +176,8 @@ SUB_LIST+=		NSUPDATE="@comment "
 .elif ${PORT_OPTIONS:MNSUPDATE}
 RUN_DEPENDS+=		samba-nsupdate:${PORTSDIR}/dns/samba-nsupdate
 SUB_LIST+=		NSUPDATE=""
+.else
+SUB_LIST+=		NSUPDATE="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MDEBUG}
@@ -239,8 +243,10 @@ CONFIGURE_ARGS+=	--without-acl-support
 .if ! ${PORT_OPTIONS:MAD_DC}
 CONFIGURE_ARGS+=	--without-ad-dc
 PLIST_SUB+=		AD_DC="@comment "
+SUB_LIST+=		AD_DC="@comment "
 .else
 PLIST_SUB+=		AD_DC=""
+SUB_LIST+=		AD_DC=""
 .endif
 
 .if ${PORT_OPTIONS:MADS}
@@ -403,7 +409,6 @@ USE_RC_SUBR=		samba_server
 SUB_FILES=		pkg-message README.FreeBSD
 # Make sure that the right version of Python is used by the tools
 # https://bugzilla.samba.org/show_bug.cgi?id=7305
-python_OLD_CMD=		/usr/bin/env python
 SHEBANG_FILES=		${PATCH_WRKSRC}/source4/scripting/bin/*
 # No fancy color error messages
 .if ${COMPILER_TYPE} == "clang"

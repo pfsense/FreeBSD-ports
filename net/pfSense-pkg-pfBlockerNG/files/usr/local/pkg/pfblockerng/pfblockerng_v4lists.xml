@@ -52,9 +52,11 @@
 	<title>Firewall/pfBlockerNG</title>
 	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
 	<addedit_string>pfBlockerNG: Save IPv4 settings</addedit_string>
+	<savehelp><![CDATA[<strong>Click to SAVE Settings and/or Rule edits.&emsp;Changes are applied via CRON or
+		'Force Update'</strong>]]>
+	</savehelp>
 	<menu>
 		<name>pfBlockerNG</name>
-		<tooltiptext></tooltiptext>
 		<section>Firewall</section>
 		<configfile>pfblockerng_v4lists.xml</configfile>
 	</menu>
@@ -62,7 +64,6 @@
 		<tab>
 			<text>General</text>
 			<url>/pkg_edit.php?xml=pfblockerng.xml</url>
-			<tooltiptext></tooltiptext>
 		</tab>
 		<tab>
 			<text>Update</text>
@@ -128,14 +129,13 @@
 	</adddeleteeditpagefields>
 	<fields>
 		<field>
-			<name><![CDATA[IPv4 - &emsp; Run 'Force Update' to deploy new Settings.&emsp;
-				(When Removing or Re-configuring Lists a 'Reload' is recommended.)]]></name>
+			<name>IPv4 Settings</name>
 			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr>LINKS</fielddescr>
 			<description><![CDATA[<a href="/firewall_aliases.php">Firewall Alias</a>&emsp;
-				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="diag_logs_filter.php">Firewall Logs</a>]]>
+				<a href="/firewall_rules.php">Firewall Rules</a>&emsp;<a href="status_logs_filter.php">Firewall Logs</a>]]>
 			</description>
 			<type>info</type>
 		</field>
@@ -148,55 +148,56 @@
 				</strong><br />]]>
 			</description>
 			<type>input</type>
-			<size>20</size>
 		</field>
 		<field>
 			<fielddescr>List Description</fielddescr>
 			<fieldname>description</fieldname>
 			<type>input</type>
-			<size>90</size>
+			<width>9</width>
 		</field>
 		<field>
+			<fielddescr>List Settings</fielddescr>
 			<type>info</type>
-			<description><![CDATA[<strong><u>'Format'</u></strong>: Select the Format type.<br />
-				<strong><u>'State'</u></strong>: Select the run state.<br />
-				<strong><u>'Source'</u></strong>:
-				<ul><li><strong>'URL'</strong>: External link to source
-					&emsp;(ie: <a target="_blank" href='https://rules.emergingthreats.net/blockrules/compromised-ips.txt'>ET Compromised</a>,
-					<a target="_blank" href='https://rules.emergingthreats.net/fwrules/emerging-Block-IPs.txt'>ET Blocked</a>,
-					<a target="_blank" href='https://www.spamhaus.org/drop/drop.txt'>Spamhaus Drop</a>)</li>
-				<li><strong>'Local File'</strong>: http(s)://127.0.0.1/filename
-					&emsp;<strong>or</strong>&emsp; /var/db/pfblockerng/filename</li>
-				<li><strong>'Country code'</strong>: /usr/local/share/GeoIP/cc/US_v4.txt
-					&emsp;(Change 'US' to required code)</li>
-				<li><strong>'Whois'</strong>: Domain name or AS&emsp;(ie: facebook.com or AS13414)
-					&emsp;(<a target="_blank" href='https://asn.cymru.com/'>Click for ASN Lookup</a>)</li></ul>
-				<strong><u>'Header/Label'</u></strong>: This field must be <u>unique.</u> This names the file and is referenced in the widget.
-					&emsp;(ie: Spamhaus_drop, Spamhaus_edrop)]]>
+			<description><![CDATA[<dl class="dl-horizontal">
+				<dt>Format:</dt><dd>Select the Format type:
+					<dl class="dl-horizontal">
+						<dt>Auto:</dt><dd>Default parser</dd>
+						<dt>Regex:</dt><dd>'Regex' style parsing (ie: html Lists)</dd>
+						<dt>Whois:</dt><dd>Convert a Domain name or AS into its respective IP addresses.</dd>
+						<dt>Rsync:</dt><dd>RSync Lists</dd>
+					</dl></dd>
+				<dt>State:</dt><dd>Select the run State:</dd>
+				<dt>Source:</dt><dd>Select Source type:
+					<dl class="dl-horizontal">
+						<dt>URL:</dt><dd>External link to source&emsp;(ie:&nbsp;
+							<a target="_blank" href="https://rules.emergingthreats.net/blockrules/compromised-ips.txt">ET Compromised</a>,
+							<a target="_blank" href="https://rules.emergingthreats.net/fwrules/emerging-Block-IPs.txt">ET Blocked</a>,
+							<a target="_blank" href="https://www.spamhaus.org/drop/drop.txt">Spamhaus Drop</a>)</dd>
+						<dt>Local file:</dt><dd>http(s)://127.0.0.1/filename
+							&emsp;<strong>or</strong>&emsp; /var/db/pfblockerng/filename</dd>
+						<dt>Country code:</dt><dd>/usr/local/share/GeoIP/cc/US_v4.txt
+							&emsp;(Change 'US' to required code)</dd>
+						<dt>Whois:</dt><dd>Domain name or AS&emsp;(ie: facebook.com or AS13414)
+							&emsp;(<a target="_blank" href="https://asn.cymru.com/">Click for ASN Lookup</a>)</dd>
+					</dl></dd>
+				<dt>Header/Label:</dt><dd>This field must be <u>unique.</u> This names the file and is referenced in the widget.
+					&emsp;(ie: Spamhaus_drop, Spamhaus_edrop)</dd>
+				<dt>Note:</dt><dd>Source lists musts follow the syntax below:<br />
+					<strong>Network ranges:</strong>172.16.1.0-172.16.1.255&emsp;
+					<strong>IP Address:</strong>172.16.1.10&emsp;
+					<strong>CIDR:</strong>172.16.1.0/24</dd>
+			</dl>]]>
 			</description>
 		</field>
 		<field>
-			<fielddescr><![CDATA[IPv4 Lists]]></fielddescr>
-			<description><![CDATA[<br /><strong>'Format'</strong>: Select the file format that URL will retrieve.<br />
-				<ul><li><strong>'auto'</strong>&emsp;- Default parser</li>
-				<li><strong>'regex'</strong> - 'Regex' style parsing (ie: html Lists)</li>
-				<li><strong>'whois'</strong> - Convert a Domain name or AS into its respective IP addresses.</li>
-				<li><strong>'rsync'</strong> - RSync Lists</li></ul>
-				<strong>'State'</strong>: Select the Run State for each list<br />
-				<ul><li><strong>'ON/OFF'</strong> - Enabled / Disabled</li>
-				<li><strong>'HOLD'</strong> - Once a List has been Downloaded, list will remain Static</li>
-				<li><strong>'FLEX'</strong> - Not Recommended - Allow downgraded SSL connections</li></ul>
-				<strong>'Note'</strong>: Source lists musts follow the syntax below:
-				<ul>Network ranges: <strong>172.16.1.0-172.16.1.255</strong><br />
-				IP Address: <strong>172.16.1.10</strong><br />
-				CIDR: <strong>172.16.1.0/24</strong></ul>]]>
-			</description>
+			<fielddescr>IPv4 Lists</fielddescr>
 			<type>rowhelper</type>
 			<rowhelper>
 				<rowhelperfield>
 					<fielddescr>Format</fielddescr>
 					<fieldname>format</fieldname>
 					<type>select</type>
+					<width>1</width>
 					<options>
 						<option><name>Auto</name><value>auto</value></option>
 						<option><name>Regex</name><value>regex</value></option>
@@ -209,6 +210,7 @@
 					<fielddescr>State</fielddescr>
 					<fieldname>state</fieldname>
 					<type>select</type>
+					<width>1</width>
 					<options>
 						<option><name>ON</name><value>Enabled</value></option>
 						<option><name>OFF</name><value>Disabled</value></option>
@@ -221,13 +223,13 @@
 					<fielddescr>Source</fielddescr>
 					<fieldname>url</fieldname>
 					<type>input</type>
-					<size>50</size>
+					<width>5</width>
 				</rowhelperfield>
 				<rowhelperfield>
 					<fielddescr>Header/Label</fielddescr>
 					<fieldname>header</fieldname>
 					<type>input</type>
-					<size>15</size>
+					<width>2</width>
 				</rowhelperfield>
 			</rowhelper>
 		</field>
@@ -264,7 +266,8 @@
 				<li>'Alias Deny' can use De-Duplication and Reputation Processes if configured.</li>
 				<li>'Alias Permit' and 'Alias Match' will be saved in the Same folder as the other Permit/Match Auto-Rules</li>
 				<li>'Alias Native' lists are kept in their Native format without any modifications.</li></ul>
-				<font color='red'>Note: </font><ul>When manually creating 'Alias' type firewall rules; <strong>Do not add</strong> (pfB_) to the
+				<span class="text-danger">Note: </span><ul>
+				When manually creating 'Alias' type firewall rules; <strong>Do not add</strong> (pfB_) to the
 				start of the rule description, use (pfb_) (Lowercase prefix). Manually created 'Alias' rules with 'pfB_' in the
 				description will be auto-removed by package when 'Auto' rules are defined.</ul></div>]]>
 			</description>
@@ -290,10 +293,10 @@
 		<field>
 			<fielddescr>Update Frequency</fielddescr>
 			<fieldname>cron</fieldname>
+			<type>select</type>
 			<description><![CDATA[Default: <strong>Never</strong><br />
 				Select how often List files will be downloaded. <strong>This must be within the Cron Interval/Start Hour settings.</strong>]]>
 			</description>
-			<type>select</type>
 			<options>
 				<option><name>Never</name><value>Never</value></option>
 				<option><name>Every Hour</name><value>01hour</value></option>
@@ -355,60 +358,59 @@
 		</field>
 		<field>
 			<type>info</type>
-			<description><![CDATA[<font color='red'>Note:</font>&nbsp; In general, Auto-Rules are created as follows:<br />
-				<ul>Inbound &emsp;- 'any' port, 'any' protocol and 'any' destination<br />
-				Outbound - 'any' port, 'any' protocol and 'any' destination address in the lists</ul>
+			<description><![CDATA[<span class="text-danger">Note:</span>&nbsp; In general, Auto-Rules are created as follows:<br />
+				<dl class="dl-horizontal">
+					<dt>Inbound</dt><dd>'any' port, 'any' protocol and 'any' destination</dd>
+					<dt>Outbound</dt><dd>'any' port, 'any' protocol and 'any' destination address in the lists</dd>
+				</dl>
 				Configuring the Adv. Inbound Rule settings, will allow for more customization of the Inbound Auto-Rules.<br />
 				<strong>Select the pfSense 'Port' and/or 'Destination' Alias below:</strong>]]>
 			</description>
 		</field>
 		<field>
 			<fieldname>autoports</fieldname>
-			<fielddescr>Enable Custom Port</fielddescr>
+			<fielddescr>Custom Port</fielddescr>
 			<type>checkbox</type>
+			<sethelp>Enable</sethelp>
 			<enablefields>aliasports</enablefields>
 			<combinefields>begin</combinefields>
 		</field>
 		<field>
-			<fielddescr>Define Alias</fielddescr>
 			<fieldname>aliasports</fieldname>
-			<size>21</size>
-			<type>aliases</type>
-			<typealiases>port</typealiases>
-			<description><![CDATA[<a href="/firewall_aliases.php?tab=port">Click Here to add/edit Aliases</a>
+			<fielddescr>Custom Port</fielddescr>
+			<description><![CDATA[<a target="_blank" href="/firegall_aliases.php?tab=port">Click Here to add/edit Aliases</a>
 				Do not manually enter port numbers. <br />Do not use 'pfB_' in the Port Alias name.]]>
 			</description>
+			<width>6</width>
+			<type>aliases</type>
+			<typealiases>port</typealiases>
 			<combinefields>end</combinefields>
 		</field>
 		<field>
 			<fieldname>autodest</fieldname>
-			<fielddescr>Enable Custom Destination</fielddescr>
+			<fielddescr>Custom Destination</fielddescr>
 			<type>checkbox</type>
+			<sethelp>Enable</sethelp>
 			<enablefields>aliasdest,autonot</enablefields>
-			<usecolspan2/>
 			<combinefields>begin</combinefields>
-		</field>
-		<field>
-			<fieldname>aliasdest</fieldname>
-			<description><![CDATA[<a href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>
-				Do not manually enter Addresses(es). <br />Do not use 'pfB_' in the 'IP Network Type' Alias name.]]>
-			</description>
-			<size>21</size>
-			<type>aliases</type>
-			<typealiases>network</typealiases>
-			<dontdisplayname/>
-			<usecolspan2/>
-			<combinefields/>
 		</field>
 		<field>
 			<fielddescr>Invert</fielddescr>
 			<fieldname>autonot</fieldname>
-			<sethelp><![CDATA[<strong>Invert</strong> - Option to invert the sense of the match.<br />
-					ie - Not (!) Destination Address(es)]]>
-			</sethelp>
 			<type>checkbox</type>
-			<dontdisplayname/>
-			<usecolspan2/>
+			<sethelp>Invert</sethelp>
+			<combinefields/>
+		</field>
+		<field>
+			<fieldname>aliasdest</fieldname>
+			<fielddescr>Custom Destination</fielddescr>
+			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>
+				Do not manually enter Addresses(es). <br />Do not use 'pfB_' in the 'IP Network Type' Alias name.<br />
+				Select 'invert' to invert the sense of the match. ie - Not (!) Destination Address(es)]]>
+			</description>
+			<width>6</width>
+			<type>aliases</type>
+			<typealiases>network</typealiases>
 			<combinefields>end</combinefields>
 		</field>
 		<field>
@@ -423,7 +425,6 @@
 				<option><name>UDP</name><value>udp</value></option>
 				<option><name>TCP/UDP</name><value>tcp/udp</value></option>
 			</options>
-			<size>4</size>
 			<default_value></default_value>
 		</field>
 		<field>
@@ -432,7 +433,7 @@
 		</field>
 		<field>
 			<type>info</type>
-			<description><![CDATA[<font color='red'>Note: </font>&nbsp;Custom List can be used in <strong>ONE</strong> of two ways:<br />
+			<description><![CDATA[<span class="text-danger">Note: </span>&nbsp;Custom List can be used in <strong>ONE</strong> of two ways:<br />
 				<ul>1. IPv4 addresses entered directly into the custom list, as per the required format.
 				<br />2. Domain names or AS numbers, which will be converted into their respective IPv4 addresses.</ul>]]>
 			</description>
@@ -440,7 +441,7 @@
 		<field>
 			<fieldname>whois_convert</fieldname>
 			<sethelp><![CDATA[Select to enable 'Domain/AS' conversion.
-				<font color='red'>DO NOT</font> mix IPs with Domains/ASs in this custom list.]]>
+				<span class="text-danger">DO NOT</span> mix IPs with Domains/ASs in this custom list.]]>
 			</sethelp>
 			<fielddescr>Enable Domain/AS</fielddescr>
 			<type>checkbox</type>
@@ -465,8 +466,8 @@
 				Configure the 'update frequency', so that it does not <strong>abuse</strong> these free services.</ul>]]>
 			</description>
 			<type>textarea</type>
-			<cols>50</cols>
-			<rows>10</rows>
+			<cols>70</cols>
+			<rows>15</rows>
 			<encoding>base64</encoding>
 		</field>
 		<field>
@@ -481,11 +482,6 @@
 				<option><name>Default</name><value>disabled</value></option>
 				<option><name>Update Custom List</name><value>enabled</value></option>
 			</options>
-		</field>
-		<field>
-			<name><![CDATA[<center>Click to SAVE Settings and/or Rule Edits. &emsp; Changes are Applied via CRON or
-				'Force Update'</center>]]></name>
-			<type>listtopic</type>
 		</field>
 	</fields>
 	<custom_php_validation_command>

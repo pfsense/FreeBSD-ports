@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	firefox
-PORTVERSION=	38.4.0
+PORTVERSION=	38.5.2
 CATEGORIES=	www
 MASTER_SITES=	MOZILLA/${PORTNAME:S|-i18n||}/releases/${DISTVERSION}esr/linux-i686/xpi \
-		MOZILLA/${PORTNAME:S|-i18n||}/candidates/${DISTVERSION}esr-candidates/build2/linux-i686/xpi
+		MOZILLA/${PORTNAME:S|-i18n||}/candidates/${DISTVERSION}esr-candidates/build1/linux-i686/xpi
 PKGNAMEPREFIX=
 PKGNAMESUFFIX=	-esr-i18n
 DISTFILES=	${FIREFOX_I18N_:S/$/.xpi/}
@@ -63,7 +63,7 @@ do-extract:
 	${CAT} ${PLISTF} | ${SORT} >> ${PLIST}
 
 do-install:
-	@${MKDIR} ${STAGEDIR}${XPI_LIBDIR} ${STAGEDIR}${XPI_SLDIRS_ALL}
+	@${MKDIR} ${STAGEDIR}${XPI_LIBDIR}
 	cd ${WRKSRC}; ${PAX} -rw . ${STAGEDIR}${XPI_LIBDIR}
 	${CHMOD} -R a+rX,go-w ${STAGEDIR}${XPI_LIBDIR}/${WDIR}/
 	@for e in ${STAGEDIR}${XPI_LIBDIR}/${WDIR}; do \
@@ -74,7 +74,7 @@ do-install:
 	@${ECHO_CMD} '@exec ${INSTALL} -d ${XPI_SLDIRS_ALL:S,^${PREFIX},%D,}' ${_A}
 	@${ECHO_CMD} '@exec for _dir in ${XPI_LINKFARMS} ; { \
 		${LN} -sf ${XPI_LIBDIR}/${WDIR} $$_dir/ ${_Q}; }' ${_A}
-	@${ECHO_CMD} '@unexec for _dir in ${XPI_LINKFARMS} ${XPI_LIBDIR}; { ${RM} -f $$_dir/${WDIR} ; }' ${_A}
+	@${ECHO_CMD} '@unexec for _dir in ${XPI_LINKFARMS}; { ${RM} -f $$_dir/${WDIR} ; }' ${_A}
 
 post-patch:
 	${FIND} ${WRKSRC} -name install.rdf -print0 | \

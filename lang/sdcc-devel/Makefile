@@ -1,12 +1,13 @@
 # $FreeBSD$
 
 PORTNAME=	sdcc
-PORTVERSION=	3.4.3.2015.05.09
+PORTVERSION=	3.5.5.2015.11.06
+PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	SF/sdcc/snapshot_builds/sdcc-src/ \
 		http://tijl.fastmail.com/mirror/
 PKGNAMESUFFIX=	-devel
-DISTNAME=	${PORTNAME}-src-20150509-9230
+DISTNAME=	${PORTNAME}-src-20151106-9386
 
 MAINTAINER=	tijl@FreeBSD.org
 COMMENT=	Small Device C Compiler
@@ -34,7 +35,7 @@ Z80_DESC=	Zilog Z80/Z180/GBZ80, Rabbit 2000/3000, Toshiba TLCS-90
 
 CONFIGURE_ARGS=	--disable-avr --disable-install-libbfd --disable-werror \
 		--disable-st7 docdir=${DOCSDIR} sdcc_cv_c_fms_extensions=no
-CONFIGURE_ENV=	ARCH=""
+NOPRECIOUSMAKEVARS=	yes
 PORTDATA=	*
 PORTDOCS=	*
 WRKSRC=		${WRKDIR}/sdcc
@@ -65,6 +66,8 @@ post-patch:
 	@${REINPLACE_CMD} '/install:/s/:.*/:/' \
 		${WRKSRC}/Makefile.in \
 		${WRKSRC}/support/sdbinutils/libiberty/Makefile.in
+	@${REINPLACE_CMD} '/^SUBDIRS =/s/doc//' \
+		${WRKSRC}/support/sdbinutils/bfd/Makefile.in
 .if ! ${PORT_OPTIONS:MDOCS}
 	@${REINPLACE_CMD} 's, [a-z-]*doc,,' \
 		${WRKSRC}/Makefile.in \

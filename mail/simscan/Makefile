@@ -3,11 +3,11 @@
 
 PORTNAME=	simscan
 PORTVERSION=	1.4.0
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	mail security
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	lippe@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast Content/Anti-virus Scanner for qmail Written in C
 
 USES=		qmail:build
@@ -115,7 +115,7 @@ CONFIGURE_ARGS+=--enable-qmail-queue=${QMAIL_QUEUE}
 PORTDOCS=	AUTHORS ChangeLog README TODO
 
 if ! ${TEST} -f ${QMAIL_QUEUE}; then \
-	${ECHO_MSG} "Unable to found qmail-queue binary trying '${QMAIL_QUEUE}'.";  \
+	${ECHO_MSG} "Unable to find qmail-queue binary trying '${QMAIL_QUEUE}'.";  \
 	${ECHO_MSG} "Please set QMAIL_PREFIX to your qmail installation directory !"; \
 	exit 1; \
 fi

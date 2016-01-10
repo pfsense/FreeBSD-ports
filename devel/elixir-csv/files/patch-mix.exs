@@ -1,10 +1,12 @@
---- mix.exs.orig	2015-07-11 17:38:59 UTC
+--- mix.exs.orig	2015-10-17 21:00:59 UTC
 +++ mix.exs
-@@ -6,7 +6,6 @@ defmodule CSV.Mixfile do
+@@ -5,8 +5,7 @@ defmodule CSV.Mixfile do
+     [
          app: :csv,
-         version: "1.0.1",
-         elixir: "~> 1.0.0 or ~> 1.1-dev",
+         version: "1.2.1",
+-        elixir: "~> 1.1.0",
 -        deps: deps,
++        elixir: "~> 1.0",
          package: package,
          docs: &docs/0,
          name: "CSV",

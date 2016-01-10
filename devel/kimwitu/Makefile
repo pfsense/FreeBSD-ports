@@ -4,7 +4,8 @@
 PORTNAME=	kimwitu
 PORTVERSION=	4.6.1
 CATEGORIES=	devel
-MASTER_SITES=	http://www.sourcefiles.org/Programming/Compilers/Object-Oriented/
+MASTER_SITES=	http://fmt.cs.utwente.nl/kimwitu/ftp/ \
+		http://www.sourcefiles.org/Programming/Compilers/Object-Oriented/
 DISTNAME=	kc-distr.V${PORTVERSION:S/./_/g}
 
 MAINTAINER=	ports@FreeBSD.org

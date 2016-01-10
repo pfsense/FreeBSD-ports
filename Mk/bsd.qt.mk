@@ -173,11 +173,13 @@ CONFIGURE_ARGS+=-verbose
 . if ${QT_DIST} == "base" || ${_QT_VERSION:M4*}
 .  if ${_QT_VERSION:M4*}
 _EXTRA_PATCHES_QT4=	${.CURDIR:H:H}/devel/${_QT_RELNAME}/files/extrapatch-src-corelib-global-qglobal.h
+.  else
+_EXTRA_PATCHES_QT5=	${.CURDIR:H:H}/devel/${_QT_RELNAME}/files/extrapatch-src_corelib_global_qcompilerdetection.h
 .  endif
 EXTRA_PATCHES?=	${.CURDIR:H:H}/devel/${_QT_RELNAME}/files/extrapatch-configure \
 		${.CURDIR:H:H}/devel/${_QT_RELNAME}/files/extrapatch-config.tests-unix-compile.test \
 		${.CURDIR:H:H}/devel/${_QT_RELNAME}/files/extrapatch-libtool \
-		${_EXTRA_PATCHES_QT4}
+		${_EXTRA_PATCHES_QT4} ${_EXTRA_PATCHES_QT5}
 . endif
 
 # Override settings installed in qconfig.h and *.pri files. The flags will be
@@ -207,16 +209,6 @@ QMAKE_ARGS+=	QT_CONFIG-="${QT_CONFIG:M-*:O:u:C/^-//}"
 PLIST_SUB+=		SHORTVER=${_QT_VERSION:R} \
 				FULLVER=${_QT_VERSION:C/-.*//}
 .endif # defined(QT_DIST)
-
-.if !defined(QT_NONSTANDARD)
-CONFIGURE_ENV+=	QTDIR="${QT_PREFIX}" QMAKE="${QMAKE}" \
-				MOC="${MOC}" RCC="${RCC}" UIC="${UIC}" \
-				QMAKESPEC="${QMAKESPEC}"
-CONFIGURE_ARGS+=--with-qt-includes=${QT_INCDIR} \
-				--with-qt-libraries=${QT_LIBDIR} \
-				--with-extra-includes=${LOCALBASE}/include \
-				--with-extra-libs=${LOCALBASE}/lib
-.endif # !defined(QT_NONSTANDARD)
 
 .if ${_QT_VERSION:M4*}
 QT_BINDIR_REL?=	bin
@@ -286,6 +278,16 @@ PLIST_SUB+=		QT_${dir}DIR="${QT_${dir}DIR_REL}"
 .if defined(_POSTMKINCLUDED) && !defined(Qt_Post_Include)
 
 Qt_Post_Include=	bsd.qt.mk
+
+.if !defined(QT_NONSTANDARD)
+CONFIGURE_ENV+=	QTDIR="${QT_PREFIX}" QMAKE="${QMAKE}" \
+				MOC="${MOC}" RCC="${RCC}" UIC="${UIC}" \
+				QMAKESPEC="${QMAKESPEC}"
+CONFIGURE_ARGS+=--with-qt-includes=${QT_INCDIR} \
+				--with-qt-libraries=${QT_LIBDIR} \
+				--with-extra-includes=${LOCALBASE}/include \
+				--with-extra-libs=${LOCALBASE}/lib
+.endif # !defined(QT_NONSTANDARD)
 
 _USE_QT_ALL=	assistant clucene dbus declarative designer gui help \
 				imageformats linguist linguisttools multimedia network opengl pixeltool \
@@ -604,15 +606,24 @@ post-configure: qmake-configure
 .  endif
 . endif # ${QT_DIST} == "base"
 
+pre-configure: qt5-pre-configure
+qt5-pre-configure:
 # Qt 5.3.2 introduced a check in mkspecs/features/create_cmake.prf that
 # requires tests/auto/cmake to be present, otherwise the configure stage will
 # fail.
 # Since we cannot extract tests/auto/cmake/ and exclude tests/ at the same
 # time, we have to disable the check in a cache file (the only way to get this
 # value through to the configure script in qtbase).
-pre-configure: qt5-pre-configure
-qt5-pre-configure:
 	${ECHO_CMD} 'CMAKE_MODULE_TESTS = -' > ${WRKSRC}/.qmake.cache
+# We piggyback on QMAKE_LIBDIR_FLAGS to make sure -L${WRKSRC}/lib is passed to
+# the linker before -L/usr/local/lib. By default, the opposite happens, which
+# is a problem when a Qt port is being upgraded, since an existing library
+# would end up being picked up instead of those built in ${WRKSRC}/lib. Since
+# qmake appends the value of QMAKE_LIBDIR to QMAKE_LIBDIR_FLAGS, we can use the
+# latter to get the linker path order right. qmake is smart enough to strip
+# occurrences of ${WRKSRC}/lib from .pc and .prl files when installing them.
+# See QTBUG-40825 and ports bugs 194088, 195105 and 198720.
+	${ECHO_CMD} 'QMAKE_LIBDIR_FLAGS = -L${WRKSRC}/lib' >> ${WRKSRC}/.qmake.cache
 
 pre-install: qt-pre-install
 qt-pre-install:

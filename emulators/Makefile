@@ -111,7 +111,6 @@
     SUBDIR += pearpc
     SUBDIR += pipelight
     SUBDIR += ppsspp
-    SUBDIR += ppsspp-devel
     SUBDIR += py-gns3-converter
     SUBDIR += q4wine
     SUBDIR += qemu
@@ -155,6 +154,7 @@
     SUBDIR += vmips
     SUBDIR += vmsbackup
     SUBDIR += vmw
+    SUBDIR += vpcs
     SUBDIR += vxtools
     SUBDIR += wine
     SUBDIR += wine-devel

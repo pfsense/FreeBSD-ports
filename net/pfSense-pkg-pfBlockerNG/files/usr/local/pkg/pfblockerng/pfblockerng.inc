@@ -195,9 +195,7 @@ function pfb_global() {
 	$pfb['dnsbl_port_ssl']	= $pfb['dnsblconfig']['pfb_dnsport_ssl'];	// Lighttpd web server https port setting
 	$pfb['dnsbl_alexa']	= $pfb['dnsblconfig']['alexa_enable'];		// Alexa whitelist
 
-	// Restore previous download on failure (default to 'on')
-	$pfb['restore']		= $pfb['config']['restore_feed'] != '' ? $pfb['config']['restore_feed'] : 'on';
-	// Max daily download failure threshold (default to '0')
+	// Max daily download failure threshold (default to '0' unlimited failures)
 	$pfb['skipfeed']	= $pfb['config']['skipfeed'] != '' ? $pfb['config']['skipfeed'] : 0;
 
 	if (isset($config['unbound']['enable'])) {
@@ -1068,7 +1066,7 @@ function find_reported_header($ip, $pfbfolder, $exclude=FALSE) {
 
 	// Query for any active pfBlockerNG CRON jobs
 	exec('/bin/ps -wax', $result_cron);
-	if (preg_grep("/pfblockerng[.]php\s+?(cron|update)/", $result_cron)) {
+	if (preg_grep("/pfblockerng[.]php\s+?(cron|update|updatednsbl)/", $result_cron)) {
 		return array('updating..', 'CRON Task');
 	}
 	return array('', 'no match', FALSE);
@@ -1350,15 +1348,13 @@ function pfb_download_failure($alias, $header, $pfbfolder, $vtype, $list_url) {
 		}
 	}
 
-	// On download failure, create file marker for subsequent download attempts
-	if ($pfb['restore'] == 'on' && $pfb['skipfeed'] != 0) {
-		// Call function to get all previous download fails
-		pfb_failures();
+	// Call function to get all previous download fails
+	pfb_failures();
 
-		if ($pfb['failed'][$header] <= $pfb['skipfeed']) {
-			touch("{$pfbfolder}/{$header}.fail");
-			return;
-		}
+	// On download failure, create file marker for subsequent download attempts. ('0' no download failure threshold)
+	if ($pfb['skipfeed'] == 0 || $pfb['failed'][$header] <= $pfb['skipfeed']) {
+		touch("{$pfbfolder}/{$header}.fail");
+		return;
 	}
 
 	unlink_if_exists("{$pfbfolder}/{$header}.fail");
@@ -1525,7 +1521,7 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $adest='', 
 				$rule['log'] = '';
 			}
 			$rule['created'] = array('time' => (int)microtime(true), 'username' => 'Auto');
-			$rule['match_outbound'][] = $rule;
+			$pfb['match_outbound'][] = $rule;
 			if ($action != 'Match_Both') {
 				break;
 			}
@@ -1777,6 +1773,7 @@ function sync_package_pfblockerng($cron='') {
 	// Reloads existing lists without downloading new lists when defined 'on'
 	$pfb['reuse'] = $pfb['config']['pfb_reuse'];
 	$pfb['reuse_dnsbl'] = '';
+	$pfb['updatednsbl'] = FALSE;	// Set flag to allow DNSBL Reload, only when called via background cmd.
 
 	// Define update process (update or reload)
 	switch ($cron) {
@@ -1794,6 +1791,7 @@ function sync_package_pfblockerng($cron='') {
 		case 'updatednsbl':
 			$pfb['reuse'] = '';
 			$pfb['reuse_dnsbl'] = 'on';
+			$pfb['updatednsbl'] = TRUE;
 			break;
 		case 'updateip':
 			$pfb['reuse'] = 'on';
@@ -2206,7 +2204,7 @@ function sync_package_pfblockerng($cron='') {
 									// Query for any active pfBlockerNG CRON jobs
 									$result_cron = array();
 									exec('/bin/ps -wax', $result_cron);
-									if (preg_grep("/pfblockerng[.]php\s+?(cron|update)/", $result_cron)) {
+									if (preg_grep("/pfblockerng[.]php\s+?(cron|update|updatednsbl)/", $result_cron)) {
 										$log = "\n ** DNSBL Reload Terminated due to active pfBlockerNG cron process\n";
 										pfb_logger("{$log}", 1);
 									} else {
@@ -2215,7 +2213,7 @@ function sync_package_pfblockerng($cron='') {
 											// Clear any existing pfBlockerNG Cron Jobs to avoid collision
 											install_cron_job('pfblockerng.php cron', false);
 											$cmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php";
-											mwexec_bg("${cmd} updatednsbl >> {$pfb['log']} 2>&1");
+											mwexec_bg("{$cmd} updatednsbl >> {$pfb['log']} 2>&1");
 										}
 									}
 								}
@@ -2295,6 +2293,17 @@ function sync_package_pfblockerng($cron='') {
 			$log = "\n\n===[  DNSBL Virtual IP and/or Ports are not defined. Exiting  ]======\n";
 			pfb_logger("{$log}", 1);
 			$dnsbl_error = TRUE;
+		}
+
+		if (!$pfb['updatednsbl']) {
+			// Determine if a DNSBL Reload is running
+			$result_cron = array();
+			exec('/bin/ps -wax', $result_cron);
+			if (preg_grep("/pfblockerng[.]php\s+?(updatednsbl)/", $result_cron)) {
+				$log = "\n ** DNSBL Update Terminated due to active pfBlockerNG cron process\n";
+				pfb_logger("{$log}", 1);
+				$dnsbl_error = TRUE;
+			}
 		}
 	}
 
@@ -3443,7 +3452,7 @@ function sync_package_pfblockerng($cron='') {
 										if (strpos($line, '-') !== FALSE) {
 											$matches = explode('-', $line);
 											if (count($matches) == 2) {
-												$a_cidr = ip_range_to_subnet_array_temp($matches[0],$matches[1]);
+												$a_cidr = ip_range_to_subnet_array($matches[0],$matches[1]);
 												if (!empty($a_cidr)) {
 													foreach ($a_cidr as $cidr) {
 														$cidr = sanitize_ipaddr($cidr, $custom);
@@ -3486,7 +3495,7 @@ function sync_package_pfblockerng($cron='') {
 										if (strpos($oline, '-') !== FALSE) {
 											// Network range 192.168.0.0-192.168.0.254
 											if (preg_match($pfb['range'], $oline, $matches)) {
-												$a_cidr = ip_range_to_subnet_array_temp($matches[1], $matches[2]);
+												$a_cidr = ip_range_to_subnet_array($matches[1], $matches[2]);
 												if (!empty($a_cidr)) {
 													foreach ($a_cidr as $cidr) {
 														$cidr = sanitize_ipaddr($cidr, $custom);

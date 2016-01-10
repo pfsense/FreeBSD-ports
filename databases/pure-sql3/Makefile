@@ -5,7 +5,7 @@ PORTNAME=	pure-sql3
 PORTVERSION=	0.4
 PORTREVISION=	4
 CATEGORIES=	databases
-MASTER_SITES=	https://cdn.bitbucket.org/purelang/pure-lang/downloads/
+MASTER_SITES=	https://bitbucket.org/purelang/pure-lang/downloads/
 DIST_SUBDIR=	pure
 
 MAINTAINER=	ports@FreeBSD.org

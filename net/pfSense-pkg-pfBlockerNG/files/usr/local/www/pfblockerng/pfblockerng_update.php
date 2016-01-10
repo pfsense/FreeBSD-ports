@@ -52,12 +52,12 @@ pfb_global();
 // Collect pfBlockerNG log file and post live output to terminal window.
 function pfbupdate_output($text) {
 	$text = str_replace("\n", "\\n", $text);
-	print ("\n<script type=\"text/javascript\">");
-	print ("\n//<![CDATA[");
-	print ("\nthis.document.forms[0].pfb_output.value = \"" . $text . "\";");
-	print ("\nthis.document.forms[0].pfb_output.scrollTop = this.document.forms[0].pfb_output.scrollHeight;");
-	print ("\n//]]>");
-	print ("\n</script>");
+	print("\n<script type=\"text/javascript\">");
+	print("\n//<![CDATA[");
+	print("\nthis.document.forms[0].pfb_output.value = \"" . $text . "\";");
+	print("\nthis.document.forms[0].pfb_output.scrollTop = this.document.forms[0].pfb_output.scrollHeight;");
+	print("\n//]]>");
+	print("\n</script>");
 	/* ensure that contents are written out */
 	ob_flush();
 }
@@ -66,11 +66,11 @@ function pfbupdate_output($text) {
 // Post status message to terminal window.
 function pfbupdate_status($status) {
 	$status = str_replace("\n", "\\n", $status);
-	print ("\n<script type=\"text/javascript\">");
-	print ("\n//<![CDATA[");
-	print ("\nthis.document.forms[0].pfb_status.value=\"" . $status . "\";");
-	print ("\n//]]>");
-	print ("\n</script>");
+	print("\n<script type=\"text/javascript\">");
+	print("\n//<![CDATA[");
+	print("\nthis.document.forms[0].pfb_status.value=\"" . $status . "\";");
+	print("\n//]]>");
+	print("\n</script>");
 	/* ensure that contents are written out */
 	ob_flush();
 }
@@ -82,9 +82,9 @@ function pfb_cron_update($type) {
 
 	// Query for any active pfBlockerNG CRON jobs
 	exec('/bin/ps -wx', $result_cron);
-	if (preg_grep("/pfblockerng[.]php\s+?(cron|update)/", $result_cron)) {
+	if (preg_grep("/pfblockerng[.]php\s+?(cron|update|updatednsbl)/", $result_cron)) {
 		pfbupdate_status(gettext("Force {$type} Terminated - Failed due to Active Running Task. Click 'View' for running process"));
-		header('Location: pfblockerng_update.php');
+		header('Location: /pfblockerng/pfblockerng_update.php');
 		exit;
 	}
 
@@ -238,22 +238,23 @@ $status .= '&emsp;</font></strong> time remaining.</font>';
 
 // Query for any active pfBlockerNG CRON jobs
 exec('/bin/ps -wax', $result_cron);
-if (preg_grep("/pfblockerng[.]php\s+?(cron|update)/", $result_cron)) {
+if (preg_grep("/pfblockerng[.]php\s+?(cron|update|updatednsbl)/", $result_cron)) {
 	$status .= '<font color="red">&emsp;&emsp;';
 	$status .= 'Active pfBlockerNG CRON JOB';
 	$status .= '</font>&emsp;<i class="fa fa-spinner fa-pulse fa-lg"></i>';
 }
-$status .= '<br />&emsp;<small><font color="red">Refresh to update current Status and time remaining.</font></small>';
+$status .= '<br />&emsp;<small><font color="red">Refresh to update current status and time remaining.</font></small>';
 
-$options  = '<dl class="dl-horizontal">';
+$options  = '<div id="infoblock"><dl class="dl-horizontal">';
 $options .= '	<dt>Update:</dt><dd>will download any new Alias/Lists.</dd>';
 $options .= '	<dt>Cron:</dt><dd>will download any Alias/Lists that are within the Frequency Setting (due for Update).</dd>';
 $options .= '	<dt>Reload:</dt><dd>will reload all Lists using the existing Downloaded files.<br />';
 $options .= '		This is useful when Lists are out of <q>sync</q> or Reputation changes were made.</dd>';
-$options .= '</dl>';
+$options .= '</dl></div>';
 
 // Create Form
 $form = new Form(false);
+$form->setAction('/pfblockerng/pfblockerng_update.php');
 
 $section = new Form_Section('Update Settings');
 $section->addInput(new Form_StaticText(
@@ -261,7 +262,7 @@ $section->addInput(new Form_StaticText(
 	'<small>'
 	. '<a href="/firewall_aliases.php" target="_blank">Firewall Alias</a>&emsp;'
 	. '<a href="/firewall_rules.php" target="_blank">Firewall Rules</a>&emsp;'
-	. '<a href="/diag_logs_filter.php" target="_blank">Firewall Logs</a></small>'
+	. '<a href="/status_logs_filter.php" target="_blank">Firewall Logs</a></small>'
 ));
 
 // Build Status section
@@ -275,10 +276,11 @@ $form->add($section);
 $group = new Form_Group('Force Options');
 $group->add(new Form_StaticText(
 	NULL,
-	'<font color="red">** AVOID ** </font>&nbsp;Running these <q>Force</q> options - when CRON is expected to RUN!'
+	'<font color="red">** AVOID ** </font>&nbsp;Running these <q>Force</q> options - when CRON is expected to RUN!&emsp;'
+	. $options
 ));
 
-$section->add($group)->setHelp('<div id="infoblock">' . $options . '</div>');
+$section->add($group);
 
 $group = new Form_Group('Select \'Force\' option');
 $group->add(new Form_Checkbox(
@@ -331,21 +333,18 @@ $group->add(new Form_Checkbox(
 	'DNSBL',
 	FALSE,
 	'DNSBL'
-))->displayAsRadio('pfb_reload_option_dnsbl')->setAttribute('title', 'Reload: DNSBL only.')->setWidth(2);
+))->displayAsRadio('pfb_reload_option_dnsbl')->setAttribute('title', 'Reload: DNSBL only.')->setWidth(1);
 $section->add($group);
 
 
 $group = new Form_Group(NULL);
 $btn_run = new Form_Button(
 	'run',
-	'Run'
-);
-
-$btn_run->removeClass('btn-primary')->addClass('btn-primary btn-xs');
-$group->add(new Form_StaticText(
+	'Run',
 	NULL,
-	$btn_run
-));
+	'fa-play-circle'
+);
+$btn_run->removeClass('btn-primary')->addClass('btn-primary btn-xs')->setWidth(1);
 
 // Alternate view/end view button text
 if (!isset($pconfig['log_view'])) {
@@ -364,14 +363,19 @@ if ($pconfig['log_view'] == 'View') {
 
 $btn_logview = new Form_Button(
 	'log_view',
-	$pconfig['log_view']
+	$pconfig['log_view'],
+	NULL,
+	'fa-play-circle-o'
 );
-$btn_logview->removeClass('btn-primary')->addClass('btn-primary btn-xs')->setAttribute('title', $btn_logview_title);
+$btn_logview->removeClass('btn-primary')->addClass('btn-primary btn-xs')->setWidth(1)
+	    ->setAttribute('title', $btn_logview_title);
 $group->add(new Form_StaticText(
 		NULL,
-		$btn_logview
+		$btn_run . '&emsp;' . $btn_logview
 ));
+
 $section->add($group);
+
 
 // Build 'textarea' windows
 $section = new Form_Section('Log');
@@ -388,6 +392,7 @@ $section->addInput(new Form_Textarea(
 	NULL
 ))->removeClass('form-control')->addClass('row-fluid col-sm-12')->setAttribute('rows', '30')->setAttribute('wrap', 'off')
   ->setAttribute('style', 'background:#fafafa;');
+
 $form->add($section);
 print($form);
 
@@ -417,6 +422,7 @@ if ($pfb['enable'] == 'on' && isset($pconfig['run']) && !empty($pconfig['pfb_for
 		pfb_cron_update(reload);
 	}
 }
+
 ?>
 
 <script type="text/javascript">

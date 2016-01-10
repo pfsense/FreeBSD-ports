@@ -3,7 +3,6 @@
 
     COMMENT = Ports for managing, installing, and developing FreeBSD ports and packages
 
-    SUBDIR += bpm
     SUBDIR += chucky
     SUBDIR += dialog4ports
     SUBDIR += dialog4ports-static
@@ -53,7 +52,6 @@
     SUBDIR += portsearch
     SUBDIR += portshaker
     SUBDIR += portshaker-config
-    SUBDIR += portsopt
     SUBDIR += portsreinstall
     SUBDIR += porttools
     SUBDIR += porttree
@@ -63,6 +61,7 @@
     SUBDIR += poudriere
     SUBDIR += poudriere-devel
     SUBDIR += psearch
+    SUBDIR += py-pytoport
     SUBDIR += symports
     SUBDIR += tinderbox
     SUBDIR += tinderbox-devel

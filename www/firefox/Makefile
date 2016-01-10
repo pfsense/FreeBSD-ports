@@ -2,8 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	firefox
-DISTVERSION=	43.0.1
+DISTVERSION=	43.0.3
 DISTVERSIONSUFFIX=.source
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	www ipv6
 MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}/source \
@@ -18,7 +19,7 @@ BUILD_DEPENDS=	nspr>=4.10.10:${PORTSDIR}/devel/nspr \
 		soundtouch>=1.8.0:${PORTSDIR}/audio/soundtouch \
 		harfbuzz>=0.9.42:${PORTSDIR}/print/harfbuzz \
 		graphite2>=1.2.4:${PORTSDIR}/graphics/graphite2 \
-		libvorbis>=1.3.5:${PORTSDIR}/audio/libvorbis \
+		libvorbis>=1.3.5,3:${PORTSDIR}/audio/libvorbis \
 		libvpx>=1.3.0:${PORTSDIR}/multimedia/libvpx \
 		sqlite3>=3.8.9:${PORTSDIR}/databases/sqlite3 \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:${PORTSDIR}/databases/py-sqlite3 \
@@ -40,8 +41,7 @@ MOZILLA_NAME=	Firefox
 USE_QT5=	# empty
 QT_NONSTANDARD=	yes
 USE_GL=		gl
-USES=		dos2unix tar:xz
-DOS2UNIX_FILES=	media/webrtc/trunk/webrtc/system_wrappers/source/spreadsortlib/spreadsort.hpp
+USES=		tar:xz
 
 FIREFOX_ICON=		${MOZILLA}.png
 FIREFOX_ICON_SRC=	${PREFIX}/lib/${MOZILLA}/browser/chrome/icons/default/default48.png
@@ -49,7 +49,7 @@ MOZ_OPTIONS=	--program-transform-name='s/firefox/${MOZILLA}/' \
 		--enable-application=browser \
 		--enable-official-branding
 
-OPTIONS_EXCLUDE=	LOGGING
+OPTIONS_EXCLUDE=	GSTREAMER LOGGING
 OPTIONS_DEFAULT=	GTK2
 
 OPTIONS_SINGLE+=	TOOLKIT

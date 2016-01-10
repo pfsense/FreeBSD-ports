@@ -8,10 +8,10 @@ CATEGORIES=	emulators
 MAINTAINER=	vg@FreeBSD.org
 COMMENT=	gem5 Simulator System
 
-BROKEN=		Uses removed MAP_NORESERVE
-
 BUILD_DEPENDS=	swig2.0:${PORTSDIR}/devel/swig20 \
 		scons:${PORTSDIR}/devel/scons
+
+BROKEN_i386=	does not build
 
 DATE=		20140422
 USE_GITHUB=	yes
@@ -25,6 +25,12 @@ USES=		gmake
 .if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
 IGNORE=	does not support FreeBSD versions < 10.0
 .endif
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|sys/termios.h|termios.h|' \
+		${WRKSRC}/src/base/vnc/vncserver.cc \
+		${WRKSRC}/src/dev/terminal.cc \
+		${WRKSRC}/util/term/term.c
 
 do-build:
 	cd ${WRKSRC} && ${GMAKE} -C util/term

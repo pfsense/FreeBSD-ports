@@ -47,7 +47,7 @@ do-install:
 		${STAGEDIR}${PREFIX}/include/pygobject-3.0/pygobject.h
 	${INSTALL_DATA} ${WRKSRC}/pygobject-3.0.pc \
 		${STAGEDIR}${PREFIX}/libdata/pkgconfig/pygobject-3.0.pc
-.else 
+.else
 PORTSCOUT=	ignore:1
 
 USE_GNOME+=	glib20 introspection
@@ -73,6 +73,13 @@ post-install:
 .endif
 
 .include <bsd.port.pre.mk>
+
+.if ${PYTHON_REL} < 3500
+PYOEXTENSION=	pyo
+.else
+PYOEXTENSION=	opt-1.pyc
+.endif
+PLIST_SUB+=	PYOEXTENSION=${PYOEXTENSION}
 
 UNAME_R!=	${UNAME} -r
 UNAME_M!=	${UNAME} -m

@@ -17,13 +17,13 @@ LICENSE=	ART10
 
 CONFLICTS=	filters-*
 
-USES=		perl5
+USES=		perl5 shebangfix
 USE_PERL5=	extract build run
+SHEBANG_FILES=	${PORTNAME}
 EXTRACT_CMD=	${GZCAT}
 EXTRACT_BEFORE_ARGS=
-EXTRACT_AFTER_ARGS=	> ${WRKDIR}/${PORTNAME}
+EXTRACT_AFTER_ARGS=	> ${WRKSRC}/${PORTNAME}
 NO_ARCH=	yes
-NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
 PLIST_FILES=	bin/kenny \
@@ -31,12 +31,11 @@ PLIST_FILES=	bin/kenny \
 
 POD2MAN?=	${LOCALBASE}/bin/pod2man
 
-post-extract:
-	@${REINPLACE_CMD} -e 's|/usr/bin/perl|${PERL}|' ${WRKSRC}/${PORTNAME}
-	@${POD2MAN} ${WRKDIR}/${PORTNAME} > ${WRKDIR}/${PORTNAME}.1
+do-build:
+	@${POD2MAN} ${WRKSRC}/${PORTNAME} > ${WRKSRC}/${PORTNAME}.1
 
 do-install:
-	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKDIR}/${PORTNAME}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_SCRIPT} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
 
 .include <bsd.port.mk>

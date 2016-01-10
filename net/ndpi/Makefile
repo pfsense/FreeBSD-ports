@@ -5,7 +5,7 @@ PORTNAME=	ndpi
 PORTVERSION=	1.5.1
 CATEGORIES=	net
 MASTER_SITES=	SF/ntop/nDPI
-DISTNAME=	libndpi-${PORTVERSION}
+DISTNAME=	nDPI-${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	NTOP-maintained superset of the popular OpenDPI library

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	freeradius
-DISTVERSION=	2.2.8
+DISTVERSION=	2.2.9
 CATEGORIES=	net
 MASTER_SITES=	ftp://ftp.freeradius.org/pub/freeradius/%SUBDIR%/ \
 		ftp://ftp.ntua.gr/pub/net/radius/freeradius/%SUBDIR%/ \
@@ -14,7 +14,8 @@ DISTNAME=	freeradius-server-${DISTVERSION}
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Free RADIUS server implementation
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libgdbm.so:${PORTSDIR}/databases/gdbm \
 		libltdl.so:${PORTSDIR}/devel/libltdl

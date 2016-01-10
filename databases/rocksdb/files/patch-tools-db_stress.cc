@@ -1,13 +1,11 @@
-Obtained from:	https://github.com/facebook/rocksdb/commit/4b0b0201c9abb7675413ce25e5044b1c9a8853c8
-
---- tools/db_stress.cc.orig	2015-08-31 18:23:39 UTC
+--- tools/db_stress.cc.orig	2015-11-17 21:52:04 UTC
 +++ tools/db_stress.cc
-@@ -222,7 +222,7 @@ DEFINE_int32(set_options_one_in, 0,
- DEFINE_int32(set_in_place_one_in, 0,
-              "With a chance of 1/N, toggle in place support option");
- 
--DEFINE_int64(cache_size, 2 * KB * KB * KB,
-+DEFINE_int64(cache_size, 2LL * KB * KB * KB,
-              "Number of bytes to use as a cache of uncompressed data.");
- 
- static bool ValidateInt32Positive(const char* flagname, int32_t value) {
+@@ -590,7 +590,7 @@ class Stats {
+             "", bytes_mb, rate, (100*writes_)/done_, done_);
+     fprintf(stdout, "%-12s: Wrote %ld times\n", "", writes_);
+     fprintf(stdout, "%-12s: Deleted %ld times\n", "", deletes_);
+-    fprintf(stdout, "%-12s: Single deleted %ld times\n", "", single_deletes_);
++    fprintf(stdout, "%-12s: Single deleted %zu times\n", "", single_deletes_);
+     fprintf(stdout, "%-12s: %ld read and %ld found the key\n", "",
+             gets_, founds_);
+     fprintf(stdout, "%-12s: Prefix scanned %ld times\n", "", prefixes_);

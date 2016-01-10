@@ -1,8 +1,8 @@
-# Created by: Torsten Zühlsdorff <ports@toco-domains.de>
+# Created by: Torsten Zuhlsdorff <ports@toco-domains.de>
 # $FreeBSD$
 
 PORTNAME=	actionpack
-PORTVERSION=	4.1.13
+PORTVERSION=	4.1.14
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	41
@@ -11,6 +11,7 @@ MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Action Controller and Action View of Rails MVC Framework
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
 
 RUN_DEPENDS=	rubygem-actionview41>=${PORTVERSION}:${PORTSDIR}/devel/rubygem-actionview41 \
 		rubygem-activesupport41>=${PORTVERSION}:${PORTSDIR}/devel/rubygem-activesupport41 \

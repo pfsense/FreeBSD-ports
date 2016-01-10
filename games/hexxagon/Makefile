@@ -4,7 +4,7 @@ PORTNAME=	hexxagon
 PORTVERSION=	1.0.1
 PORTREVISION=	3
 CATEGORIES=	games
-MASTER_SITES=	http://www.nesqi.se/hexxagon/hexxagon/download/
+MASTER_SITES=	http://www.nesqi.se/download/
 
 MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Strategy hexagon game

@@ -157,13 +157,10 @@ if ($_POST['view']&& $suricata_rules_upd_log_chk == 'yes') {
 if ($_POST['hide'])
 	$contents = "";
 
-$pgtitle = gettext("Suricata: Update Rules Set Files");
+$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Update Rules Set Files"));
 include_once("head.inc");
 ?>
 
-<body link="#000000" vlink="#000000" alink="#000000">
-
-<?php include("fbegin.inc"); ?>
 <?php
 	/* Display Alert message */
 	if ($input_errors) {
@@ -174,16 +171,14 @@ include_once("head.inc");
 		print_info_box($savemsg);
 	}
 ?>
+
 <form action="suricata_download_updates.php" enctype="multipart/form-data" method="post" name="iform" id="iform">
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tbody>
-<tr><td>
 <?php
-        $tab_array = array();
-        $tab_array[] = array(gettext("Interfaces"), false, "/suricata/suricata_interfaces.php");
-        $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_global.php");
-        $tab_array[] = array(gettext("Updates"), true, "/suricata/suricata_download_updates.php");
+	$tab_array = array();
+	$tab_array[] = array(gettext("Interfaces"), false, "/suricata/suricata_interfaces.php");
+	$tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_global.php");
+	$tab_array[] = array(gettext("Updates"), true, "/suricata/suricata_download_updates.php");
 	$tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php");
 	$tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
 	$tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
@@ -193,143 +188,107 @@ include_once("head.inc");
 	$tab_array[] = array(gettext("SID Mgmt"), false, "/suricata/suricata_sid_mgmt.php");
 	$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=suricata/suricata_sync.xml");
 	$tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
-        display_top_tabs($tab_array, true);
+	display_top_tabs($tab_array, true);
 ?>
-</td></tr>
-<tr>
-	<td>
-		<div id="mainarea">
-		<table id="maintable4" class="tabcont" width="100%" border="0" cellpadding="0" cellspacing="0">
-			<tbody>
-			<tr>
-				<td valign="top" class="listtopic" align="center"><?php echo gettext("INSTALLED RULE SET MD5 SIGNATURE");?></td>
-			</tr>
-			<tr>
-				<td align="center"><br/>
-				<table width="95%" border="0" cellpadding="2" cellspacing="2">
-					<thead>
-						<tr>
-							<th class="listhdrr"><?=gettext("Rule Set Name/Publisher");?></th>
-							<th class="listhdrr"><?=gettext("MD5 Signature Hash");?></th>
-							<th class="listhdrr"><?=gettext("MD5 Signature Date");?></th>
-						</tr>
-					</thead>
-					<tbody>
+
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("INSTALLED RULE SET MD5 SIGNATURE")?></h2></div>
+	<div class="panel-body">
+			<table class="table table-striped table-hover table-condensed">
+				<thead>
 					<tr>
-						<td align="center" class="vncell vexpl"><b><?=$et_name;?></b></td>
-						<td align="center" class="vncell vexpl"><? echo trim($emergingt_net_sig_chk_local);?></td>
-						<td align="center" class="vncell vexpl"><?php echo gettext($emergingt_net_sig_date);?></td>
+						<th><?=gettext("Rule Set Name/Publisher")?></th>
+						<th><?=gettext("MD5 Signature Hash")?></th>
+						<th><?=gettext("MD5 Signature Date")?></th>
 					</tr>
-					<tr>
-						<td align="center" class="vncell vexpl"><b>Snort VRT Rules</b></td>
-						<td align="center" class="vncell vexpl"><? echo trim($snort_org_sig_chk_local);?></td>
-						<td align="center" class="vncell vexpl"><?php echo gettext($snort_org_sig_date);?></td>
-					</tr>
-					<tr>
-						<td align="center" class="vncell vexpl"><b>Snort GPLv2 Community Rules</b></td>
-						<td align="center" class="vncell vexpl"><? echo trim($snort_community_sig_chk_local);?></td>
-						<td align="center" class="vncell vexpl"><?php echo gettext($snort_community_sig_sig_date);?></td>
-					</tr>
-					</tbody>
-				</table><br/>
-				</td>
-			</tr>
-			<tr>
-				<td valign="top" class="listtopic" align="center"><?php echo gettext("UPDATE YOUR RULE SET");?></td>
-			</tr>
-			<tr>
-				<td align="center">
-					<table width="45%" border="0" cellpadding="0" cellspacing="0">
-						<tbody>
-						<tr>
-							<td class="list" align="right"><strong><?php echo gettext("Last Update:");?></strong></td>
-							<td class="list" align="left"><?php echo $last_rule_upd_time;?></td>
-						</tr>
-						<tr>
-							<td class="list" align="right"><strong><?php echo gettext("Result:");?></strong></td>
-							<td class="list" align="left"><?php echo $last_rule_upd_status;?></td>
-						</tr>
-						</tbody>
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td align="center">
-					<?php if ($snortdownload != 'on' && $emergingthreats != 'on' && $etpro != 'on'): ?>
-						<br/><button disabled="disabled"><?=gettext("Check");?></button>&nbsp;&nbsp;&nbsp;&nbsp;
-						<button disabled="disabled"><?=gettext("Force");?></button>
-						<br/>
-						<p style="text-align:center;" class="vexpl">
-						<font class="red"><b><?php echo gettext("WARNING:");?></b></font>&nbsp;
-						<?php echo gettext('No rule types have been selected for download. ') . 
-						gettext('Visit the ') . '<a href="/suricata/suricata_global.php">Global Settings Tab</a>' . gettext(' to select rule types.'); ?>
-						<br/></p>
-					<?php else: ?>
-						<br/>
-						<input type="submit" value="<?=gettext("Update");?>" name="update" id="update" class="formbtn" 
-						title="<?php echo gettext("Check for and apply new update to enabled rule sets"); ?>"/>&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="submit" value="<?=gettext("Force");?>" name="force" id="force" class="formbtn" 
-						title="<?=gettext("Force an update of all enabled rule sets");?>" 
-						onclick="return confirm('<?=gettext("This will zero-out the MD5 hashes to force a fresh download of all enabled rule sets.  Click OK to continue or CANCEL to quit");?>');"/>
-						<br/><br/>
-					<?php endif; ?>
-				</td>
-			</tr>
-			<tr>
-				<td valign="top" class="listtopic" align="center"><?php echo gettext("MANAGE RULE SET LOG");?></td>
-			</tr>
-			<tr>
-				<td align="center" valign="middle" class="vexpl">
-					<?php if ($suricata_rules_upd_log_chk == 'yes'): ?>
-						<br/>
-					<?php if (!empty($contents)): ?>
-						<input type="submit" value="<?php echo gettext("Hide"); ?>" name="hide" id="hide" class="formbtn" 
-						title="<?php echo gettext("Hide rules update log"); ?>"/>
-					<?php else: ?>
-						<input type="submit" value="<?php echo gettext("View"); ?>" name="view" id="view" class="formbtn" 
-						title="<?php echo gettext("View rules update log"); ?>"/>
-					<?php endif; ?>
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="submit" value="<?php echo gettext("Clear"); ?>" name="clear" id="clear" class="formbtn" 
-						title="<?php echo gettext("Clear rules update log"); ?>" onClick="return confirm('Are you sure you want to delete the log contents?\nOK to confirm, or CANCEL to quit');"/>
-						<br/>
-					<?php else: ?>
-						<br/>
-						<button disabled='disabled'><?php echo gettext("View Log"); ?></button><br/><?php echo gettext("Log is empty."); ?><br/>
-					<?php endif; ?>
-					<br/><?php echo gettext("The log file is limited to 1024K in size and automatically clears when the limit is exceeded."); ?><br/><br/>
-				</td>
-			</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<td><b><?=$et_name?></b></td>
+					<td><? echo trim($emergingt_net_sig_chk_local)?></td>
+					<td><?=gettext($emergingt_net_sig_date)?></td>
+				</tr>
+				<tr>
+					<td><b>Snort VRT Rules</b></td>
+					<td><? echo trim($snort_org_sig_chk_local)?></td>
+					<td><?=gettext($snort_org_sig_date)?></td>
+				</tr>
+				<tr>
+					<td><b>Snort GPLv2 Community Rules</b></td>
+					<td><? echo trim($snort_community_sig_chk_local)?></td>
+					<td><?=gettext($snort_community_sig_sig_date)?></td>
+				</tr>
+				</tbody>
+			</table>
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("UPDATE YOUR RULE SET")?></h2></div>
+	<div class="panel-body">
+		<div class="content">	
+			<p>
+				<strong><?=gettext("Last Update:")?></strong> <?=$last_rule_upd_time?><br />
+				<strong><?=gettext("Result:")?></strong> <?=$last_rule_upd_status?>
+			</p>
+			<p>
+				<?php if ($snortdownload != 'on' && $emergingthreats != 'on' && $etpro != 'on'): ?>
+					<br/><button disabled="disabled"><?=gettext("Check")?></button>&nbsp;&nbsp;&nbsp;&nbsp;
+					<button disabled="disabled"><?=gettext("Force")?></button>
+					<br/>
+					<p style="text-align:center;">
+					<span class="text-danger"><strong><?=gettext("WARNING:")?></strong></span> 
+					<?=gettext('No rule types have been selected for download. ') . gettext('Visit the ') . '<a href="/suricata/suricata_global.php">Global Settings Tab</a>' . gettext(' to select rule types.'); ?></p>
+				<?php else: ?>
+					<br/>
+					<input type="submit" value="<?=gettext("Update")?>" name="update" id="update" class="formbtn" 
+					title="<?=gettext("Check for and apply new update to enabled rule sets"); ?>"/>&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="submit" value="<?=gettext("Force")?>" name="force" id="force" class="formbtn" 
+					title="<?=gettext("Force an update of all enabled rule sets")?>" 
+					onclick="return confirm('<?=gettext("This will zero-out the MD5 hashes to force a fresh download of all enabled rule sets.  Click OK to continue or CANCEL to quit")?>');"/>
+					<br/><br/>
+				<?php endif; ?>
+			</p>
+		</div>	
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("MANAGE RULE SET LOG")?></h2></div>
+	<div class="panel-body">
+		<div class="content">
+			<p>
+				<?php if ($suricata_rules_upd_log_chk == 'yes'): ?>
+				<?php if (!empty($contents)): ?>
+					<input type="submit" value="<?=gettext("Hide"); ?>" name="hide" id="hide" class="formbtn" 
+					title="<?=gettext("Hide rules update log"); ?>"/>
+				<?php else: ?>
+					<input type="submit" value="<?=gettext("View"); ?>" name="view" id="view" class="formbtn" 
+					title="<?=gettext("View rules update log"); ?>"/>
+				<?php endif; ?>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="submit" value="<?=gettext("Clear"); ?>" name="clear" id="clear" class="formbtn" 
+					title="<?=gettext("Clear rules update log"); ?>" onClick="return confirm('Are you sure you want to delete the log contents?\nOK to confirm, or CANCEL to quit');"/>
+					<br/>
+				<?php else: ?>
+					<button disabled='disabled'><?=gettext("View Log"); ?></button><br/><?=gettext("Log is empty."); ?><br/>
+				<?php endif; ?>
+				<br/><?=gettext("The log file is limited to 1024K in size and automatically clears when the limit is exceeded."); ?><br/><br/>
+			</p>
+
 			<?php if (!empty($contents)): ?>
-				<tr>
-					<td valign="top" class="listtopic" align="center"><?php echo gettext("RULE SET UPDATE LOG");?></td>
-				</tr>
-				<tr>
-					<td align="center">
-						<div style="background: #eeeeee; width:100%; height:100%;" id="textareaitem"><!-- NOTE: The opening *and* the closing textarea tag must be on the same line. -->
-							<textarea style="width:100%; height:100%;" readonly wrap="off" rows="24" cols="80" name="logtext"><?=$contents;?></textarea>
-						</div>
-					</td>
-				</tr>
+				<p><?=gettext("RULE SET UPDATE LOG")?></p>
+				
+				<div style="background: #eeeeee; width:100%; height:100%;" id="textareaitem"><!-- NOTE: The opening *and* the closing textarea tag must be on the same line. -->
+					<textarea style="width:100%; height:100%;" readonly wrap="off" rows="24" cols="80" name="logtext"><?=$contents?></textarea>
+				</div>
 			<?php endif; ?>
-			<tr>
-				<td align="center">
-					<span class="vexpl"><br/>
-					<span class="red"><b><?php echo gettext("NOTE:"); ?></b></span>
-					&nbsp;<a href="http://www.snort.org/" target="_blank"><?php echo gettext("Snort.org") . "</a>" . 
-					gettext(" and ") . "<a href=\"http://www.emergingthreats.net/\" target=\"_blank\">" . gettext("EmergingThreats.net") . "</a>" . 
-					gettext(" will go down from time to time. Please be patient."); ?></span><br/>
-				</td>
-			</tr>
-			</tbody>
-		</table>
 		</div>
-	</td>
-</tr>
-</tbody>
-</table>
-<!-- end of final table -->
+	</div>
+</div>
 </form>
-<?php include("fend.inc"); ?>
-</body>
-</html>
+
+<div class="infoblock">
+	<?=print_info_box('<strong>NOTE:</strong> <a href="http://www.snort.org/" target="_blank">Snort.org</a> and <a href="http://www.emergingthreats.net/" target="_blank">EmergingThreats.net</a> will go down from time to time. Please be patient.', info)?>
+</div>
+
+<?php include("foot.inc"); ?>
+

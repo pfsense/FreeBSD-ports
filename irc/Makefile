@@ -8,6 +8,7 @@
     SUBDIR += bip
     SUBDIR += bitchx
     SUBDIR += bitlbee
+    SUBDIR += bitlbee-facebook
     SUBDIR += bnc
     SUBDIR += bopm
     SUBDIR += cgiirc
@@ -48,7 +49,6 @@
     SUBDIR += iroffer-lamm
     SUBDIR += irssi
     SUBDIR += irssi-dcc_send_limiter
-    SUBDIR += irssi-devel
     SUBDIR += irssi-fish
     SUBDIR += irssi-otr
     SUBDIR += irssi-scripts
@@ -96,6 +96,7 @@
     SUBDIR += py-fishcrypt
     SUBDIR += py-gozerbot
     SUBDIR += py-irc
+    SUBDIR += py-limnoria
     SUBDIR += py-supybot
     SUBDIR += py-supybot-plugins
     SUBDIR += quassel
@@ -110,6 +111,7 @@
     SUBDIR += ruby-rica
     SUBDIR += ruby-rice
     SUBDIR += rubygem-cinch
+    SUBDIR += rubygem-cogbot
     SUBDIR += rubygem-lita-irc
     SUBDIR += rubygem-net-irc
     SUBDIR += scrollz
@@ -125,7 +127,6 @@
     SUBDIR += undernet-ircu
     SUBDIR += unreal
     SUBDIR += weechat
-    SUBDIR += weechat-devel
     SUBDIR += xaric
     SUBDIR += xchat
     SUBDIR += xchat-fish

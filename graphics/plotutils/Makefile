@@ -3,7 +3,7 @@
 
 PORTNAME=	plotutils
 PORTVERSION=	2.6
-PORTREVISION=	6
+PORTREVISION=	7
 PORTEPOCH=	1
 CATEGORIES=	graphics
 MASTER_SITES=	GNU
@@ -13,20 +13,16 @@ COMMENT=	Plotting library and toolkit
 
 LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
 
-USES=		gmake motif libtool	# parallel builds are broken with bmake(1)
+USES=		gmake libtool	# parallel builds are broken with bmake(1)
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-libplotter --enable-libxmi --with-motif
+CONFIGURE_ARGS=	--enable-libplotter --enable-libxmi
 USE_LDCONFIG=	yes
+USE_XORG=	xaw
+TEST_TARGET=	check
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 INFO=		libxmi plotutils
-
-test: build
-	@${SETENV} ${MAKE_ENV} ${MAKE_CMD} -C ${WRKSRC} ${_MAKE_JOBS} \
-		${MAKE_ARGS} check
-
-regression-test: test
 
 .include <bsd.port.mk>

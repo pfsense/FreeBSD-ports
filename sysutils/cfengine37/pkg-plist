@@ -247,6 +247,7 @@ sbin/rpmvercmp
 %%DOCSDIR%%/examples/process_restart.cf
 %%DOCSDIR%%/examples/process_restart_basic.cf
 %%DOCSDIR%%/examples/process_signalling.cf
+%%DOCSDIR%%/examples/processes_define_class_based_on_process_runtime.cf
 %%DOCSDIR%%/examples/product.cf
 %%DOCSDIR%%/examples/promise_knowledge.cf
 %%DOCSDIR%%/examples/promises.cf
@@ -349,9 +350,6 @@ sbin/rpmvercmp
 %%DOCSDIR%%/examples/win_registry.cf
 %%DOCSDIR%%/examples/win_schedule.cf
 %%DOCSDIR%%/examples/zenoss.cf
-@dir %%DOCSDIR%%/examples
-@dir %%DOCSDIR%%
-@dir libexec/cfengine
 @unexec rmdir "/var/cfengine/inputs" >/dev/null 2>&1 || :
 @unexec rmdir "/var/cfengine/modules" >/dev/null 2>&1 || :
 @unexec rmdir "/var/cfengine/outputs" >/dev/null 2>&1 || :

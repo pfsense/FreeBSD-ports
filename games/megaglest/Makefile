@@ -3,12 +3,12 @@
 
 PORTNAME=	megaglest
 PORTVERSION=	3.9.0.4
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	games
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}_3.9.0/
+MASTER_SITES=	SF/${PORTNAME}/archived/${PORTNAME}_3.9.0/
 DISTNAME=	${PORTNAME}-source-${PORTVERSION}
 
-MAINTAINER=	rnejdl@ringofsaturn.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open source 3D real-time strategy game
 
 LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl \
