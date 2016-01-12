@@ -191,15 +191,11 @@ if (!$input_errors) {
 	}
 }
 
-$pgtitle = gettext("Suricata: Global Settings");
+$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Global Settings"));
 include_once("head.inc");
-
 ?>
 
-<body link="#000000" vlink="#000000" alink="#000000">
-
 <?php
-include_once("fbegin.inc");
 
 /* Display Alert message, under form tag or no refresh */
 if ($input_errors)
@@ -207,10 +203,6 @@ if ($input_errors)
 
 ?>
 
-<form action="suricata_global.php" method="post" enctype="multipart/form-data" name="iform" id="iform">
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tbody>
-<tr><td>
 <?php
 	$tab_array = array();
 	$tab_array[] = array(gettext("Interfaces"), false, "/suricata/suricata_interfaces.php");
@@ -227,284 +219,214 @@ if ($input_errors)
 	$tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
 	display_top_tabs($tab_array, true);
 ?>
-</td></tr>
-<tr>
-	<td>
-	<div id="mainarea">
-	<table id="maintable" class="tabcont" width="100%" border="0" cellpadding="6" cellspacing="0">
-<tbody>
-<tr>
-	<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Please Choose The Type Of Rules You Wish To Download");?></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("Install ") . "<strong>" . gettext("Emerging Threats") . "</strong>" . gettext(" rules");?></td>
-	<td width="78%" class="vtable">
-		<table width="100%" border="0" cellpadding="2" cellspacing="0">
-			<tbody>
-			<tr>
-				<td valign="top" width="8%"><input name="enable_etopen_rules" type="checkbox" value="on" onclick="enable_et_rules();" 
-				<?php if ($config['installedpackages']['suricata']['config'][0]['enable_etopen_rules']=="on") echo "checked"; ?>/></td>
-				<td><span class="vexpl"><?php echo gettext("ETOpen is an open source set of Suricata rules whose coverage " .
-				"is more limited than ETPro."); ?></span></td>
-			</tr>
-			<tr>
-				<td valign="top" width="8%"><input name="enable_etpro_rules" type="checkbox" value="on" onclick="enable_pro_rules();" 
-				<?php if ($config['installedpackages']['suricata']['config'][0]['enable_etpro_rules']=="on") echo "checked"; ?>/></td>
-				<td><span class="vexpl"><?php echo gettext("ETPro for Suricata offers daily updates and extensive coverage of current malware threats."); ?></span></td>
-			</tr>
-		<tr>
-			<td>&nbsp;</td>
-			<td><a href="http://www.emergingthreats.net/solutions/etpro-ruleset/" target="_blank"><?php echo gettext("Sign Up for an ETPro Account"); ?> </a></td>
-		</tr>
-		<tr>
-			<td>&nbsp;</td>
-			<td class="vexpl"><?php echo "<span class='red'><strong>" . gettext("Note:") . "</strong></span>" . "&nbsp;" . 
-			gettext("The ETPro rules contain all of the ETOpen rules, so the ETOpen rules are not required and are disabled when the ETPro rules are selected."); ?></td>
-		</tr>
-		</tbody>
-		</table>
-		<table id="etpro_code_tbl" width="100%" border="0" cellpadding="2" cellspacing="0">
-		<tbody>
-		<tr>
-			<td colspan="2">&nbsp;</td>
-		</tr>
-		<tr>
-			<td colspan="2" valign="top"><b><span class="vexpl"><?php echo gettext("ETPro Subscription Configuration"); ?></span></b></td>
-		</tr>
-		<tr>
-			<td valign="top"><span class="vexpl"><strong><?php echo gettext("Code:"); ?></strong></span></td>
-			<td><input name="etprocode" type="text" class="formfld unknown" id="etprocode" size="52" 
-			value="<?=htmlspecialchars($pconfig['etprocode']);?>"/><br/>
-			<?php echo gettext("Obtain an ETPro subscription code and paste it here."); ?></td>
-		</tr>
-		</tbody>
-		</table>
-	</td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("Install ") . "<strong>" . gettext("Snort VRT") . "</strong>" . gettext(" rules");?></td>
-	<td width="78%" class="vtable">
-		<table width="100%" border="0" cellpadding="2" cellspacing="0">
-		<tbody>
-		<tr>
-			<td><input name="enable_vrt_rules" type="checkbox" id="enable_vrt_rules" value="on" onclick="enable_snort_vrt();" 
-			<?php if($pconfig['enable_vrt_rules']=='on') echo 'checked'; ?>/></td>
-			<td><span class="vexpl"><?php echo gettext("Snort VRT free Registered User or paid Subscriber rules"); ?></span></td>
-		<tr>
-			<td>&nbsp;</td>
-			<td><a href="https://www.snort.org/users/sign_up" target="_blank"><?php echo gettext("Sign Up for a free Registered User Rule Account"); ?> </a><br/>
-			<a href="https://www.snort.org/products" target="_blank">
-			<?php echo gettext("Sign Up for paid Sourcefire VRT Certified Subscriber Rules"); ?></a></td>
-		</tr>
-		</tbody>
-		</table>
-		<table id="snort_oink_code_tbl" width="100%" border="0" cellpadding="2" cellspacing="0">
-		<tbody>
-		<tr>
-			<td colspan="2" valign="top"><b><span class="vexpl"><?php echo gettext("Snort VRT Configuration"); ?></span></b></td>
-		</tr>
-		<tr>
-			<td valign="top" align="right"><span class="vexpl"><strong><?php echo gettext("Rules Filename:"); ?></strong></span>&nbsp;</td>
-			<td><input name="snort_rules_file" type="text" class="formfld unknown" id="snort_rules_file" size="52" 
-			value="<?=htmlspecialchars($pconfig['snort_rules_file']);?>"/><br/>
-			<?php echo gettext("Enter the rules tarball filename (filename only, do not include the URL.)"); ?>
-			<br/><span class="red"><strong><?php echo gettext("Example: ") . "</strong></span>" . gettext("snortrules-snapshot-2976.tar.gz");?><br/><br/></td>
-		</tr>
-		<tr>
-			<td valign="top" align="right"><span class="vexpl"><strong><?php echo gettext("Oinkmaster Code:"); ?></strong></span>&nbsp;</td>
-			<td><input name="oinkcode" type="text" class="formfld unknown" id="oinkcode" size="52" 
-			value="<?=htmlspecialchars($pconfig['oinkcode']);?>"/><br/>
-			<?php echo gettext("Obtain a snort.org Oinkmaster code and paste it here."); ?></td>
-		</tr>
-		</tbody>
-		</table>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("Install ") . "<strong>" . gettext("Snort Community") . "</strong>" . gettext(" rules");?></td>
-	<td width="78%" class="vtable">
-		<table width="100%" border="0" cellpadding="2" cellspacing="0">
-			<tbody>
-			<tr>
-				<td valign="top" width="8%"><input name="snortcommunityrules" type="checkbox" value="on"
-				<?php if ($config['installedpackages']['suricata']['config'][0]['snortcommunityrules']=="on") echo " checked";?>/></td>
-				<td class="vexpl"><?php echo gettext("The Snort Community Ruleset is a GPLv2 VRT certified ruleset that is distributed free of charge " . 
-				"without any VRT License restrictions.  This ruleset is updated daily and is a subset of the subscriber ruleset.");?>
-				<br/><br/><?php echo "<span class=\"red\"><strong>" . gettext("Note:  ") . "</strong></span>" . 
-				gettext("If you are a Snort VRT Paid Subscriber, the community ruleset is already built into your download of the ") . 
-				gettext("Snort VRT rules, and there is no benefit in adding this rule set.");?><br/></td>
-			</tr>
-			</tbody>
-		</table></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("Hide Deprecated Rules Categories"); ?></td>
-	<td width="78%" class="vtable"><input name="hide_deprecated_rules" id="hide_deprecated_rules" type="checkbox" value="yes" 
-		<?php if ($pconfig['hide_deprecated_rules']=="on") echo "checked"; ?> />
-		&nbsp;&nbsp;<?php echo gettext("Hide deprecated rules categories in the GUI and remove them from the configuration.  Default is ") . 
-		"<strong>" . gettext("Not Checked") . "</strong>" . gettext("."); ?></td>
-</tr>
-<tr>
-	<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Rules Update Settings"); ?></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("Update Interval"); ?></td>
-	<td width="78%" class="vtable">
-		<select name="autoruleupdate" class="formselect" id="autoruleupdate" onchange="enable_change_rules_upd()">
-		<?php
-		$interfaces3 = array('never_up' => gettext('NEVER'), '6h_up' => gettext('6 HOURS'), '12h_up' => gettext('12 HOURS'), '1d_up' => gettext('1 DAY'), '4d_up' => gettext('4 DAYS'), '7d_up' => gettext('7 DAYS'), '28d_up' => gettext('28 DAYS'));
-		foreach ($interfaces3 as $iface3 => $ifacename3): ?>
-		<option value="<?=$iface3;?>"
-		<?php if ($iface3 == $pconfig['autoruleupdate']) echo "selected"; ?>>
-			<?=htmlspecialchars($ifacename3);?></option>
-			<?php endforeach; ?>
-	</select>&nbsp;&nbsp;<?php echo gettext("Please select the interval for rule updates. Choosing ") . 
-	"<strong>" . gettext("NEVER") . "</strong>" . gettext(" disables auto-updates."); ?><br/><br/>
-	<?php echo "<span class=\"red\"><strong>" . gettext("Hint: ") . "</strong></span>" . gettext("in most cases, every 12 hours is a good choice."); ?></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("Update Start Time"); ?></td>
-	<td width="78%" class="vtable"><input type="text" class="formfld time" name="autoruleupdatetime" id="autoruleupdatetime" size="4" 
-	maxlength="5" value="<?=$pconfig['autoruleupdatetime'];?>" <?php if ($pconfig['autoruleupdate'] == "never_up") {echo "disabled";} ?>/>&nbsp;&nbsp;
-	<?php echo gettext("Enter the rule update start time in 24-hour format (HH:MM). Default is ") . "<strong>" . gettext("00:03") . "</strong>"; ?>.<br/><br/>
-	<?php echo gettext("Rules will update at the interval chosen above starting at the time specified here. For example, using the default " . 
-	"start time of 00:03 and choosing 12 Hours for the interval, the rules will update at 00:03 and 12:03 each day."); ?></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("Live Rule Swap on Update"); ?></td>
-	<td width="78%" class="vtable"><input name="live_swap_updates" id="live_swap_updates" type="checkbox" value="yes"
-	<?php if ($config['installedpackages']['suricata']['config'][0]['live_swap_updates']=="on") echo " checked"; ?>/>
-	&nbsp;<?php echo gettext("Enable \"Live Swap\" reload of rules after downloading an update.  Default is ") . "<strong>" . gettext("Not Checked") . "</strong>"; ?><br/><br/>
-	<?php echo gettext("When enabled, Suricata will perform a live load of the new rules following an update instead of a hard restart.  " . 
-	"If issues are encountered with live load, uncheck this option to perform a hard restart of all Suricata instances following an update."); ?></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("GeoIP DB Update"); ?></td>
-	<td width="78%" class="vtable"><input name="autogeoipupdate" id="autogeoipupdate" type="checkbox" value="yes"
-	<?php if ($config['installedpackages']['suricata']['config'][0]['autogeoipupdate']=="on") echo " checked"; ?>/>
-	&nbsp;<?php echo gettext("Enable downloading of free GeoIP Country Database updates.  Default is ") . "<strong>" . gettext("Checked") . "</strong>"; ?><br/><br/>
-	<?php echo gettext("When enabled, Suricata will automatically download updates for the free legacy GeoIP country database on the 8th of each month at midnight.") . 
-	"<br/><br/>" . gettext("If you have a subscription for more current GeoIP updates, uncheck this option and instead create your own process to place the required database files in " . 
-	SURICATA_PBI_BASEDIR . "share/GeoIP/."); ?></td>
-</tr>
-<tr>
-	<td colspan="2" valign="top" class="listtopic"><?php echo gettext("General Settings"); ?></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("Remove Blocked Hosts Interval"); ?></td>
-	<td width="78%" class="vtable">
-		<select name="rm_blocked" class="formselect" id="rm_blocked">
-		<?php
-		$interfaces3 = array('never_b' => gettext('NEVER'), '15m_b' => gettext('15 MINS'), '30m_b' => gettext('30 MINS'), '1h_b' => gettext('1 HOUR'), '3h_b' => gettext('3 HOURS'), '6h_b' => gettext('6 HOURS'), '12h_b' => gettext('12 HOURS'), '1d_b' => gettext('1 DAY'), '4d_b' => gettext('4 DAYS'), '7d_b' => gettext('7 DAYS'), '28d_b' => gettext('28 DAYS'));
-		foreach ($interfaces3 as $iface3 => $ifacename3): ?>
-			<option value="<?=$iface3;?>"
-			<?php if ($iface3 == $pconfig['rm_blocked']) echo "selected"; ?>>
-				<?=htmlspecialchars($ifacename3);?></option>
-		<?php endforeach; ?>
-		</select>&nbsp;
-	<?php echo gettext("Please select the amount of time you would like hosts to be blocked."); ?><br/><br/>
-	<?php echo "<span class=\"red\"><strong>" . gettext("Hint:") . "</strong></span>" . gettext(" in most cases, 1 hour is a good choice.");?></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("Log to System Log"); ?></td>
-	<td width="78%" class="vtable"><input name="log_to_systemlog" id="log_to_systemlog" type="checkbox" value="yes" onclick="toggle_log_to_systemlog();" 
-	<?php if ($config['installedpackages']['suricata']['config'][0]['log_to_systemlog']=="on") echo " checked"; ?>/>&nbsp;
-	<?php echo gettext("Copy Suricata messages to the firewall system log."); ?></td>
-</tr>
-	<tbody id="log_to_systemlog_rows">
-		<tr>
-			<td width="22%" valign="top" class="vncell"><?php echo gettext("Log Facility"); ?></td>
-			<td width="78%" class="vtable">
-				<select name="log_to_systemlog_facility" id="log_to_systemlog_facility" class="formselect">
-				<?php
-					$log_facility = array(  "auth", "authpriv", "daemon", "kern", "security", "syslog", "user", "local0",
-								"local1", "local2", "local3", "local4", "local5", "local6", "local7" );
-					foreach ($log_facility as $facility) {
-						$selected = "";
-						if ($facility == $pconfig['log_to_systemlog_facility'])
-							$selected = " selected";
-						echo "<option value='{$facility}'{$selected}>" . $facility . "</option>\n";
-					}
-				?></select>&nbsp;&nbsp;
-				<?php echo gettext("Select system log facility to use for reporting.  Default is ") . "<strong>" . gettext("local1") . "</strong>."; ?>
-			</td>
-		</tr>
-	</tbody>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("Keep Suricata Settings After Deinstall"); ?></td>
-	<td width="78%" class="vtable"><input name="forcekeepsettings" id="forcekeepsettings" type="checkbox" value="yes"
-	<?php if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings']=="on") echo " checked"; ?>/>&nbsp;
-	<?php echo gettext("Settings will not be removed during package deinstallation."); ?></td>
-</tr>
-<tr>
-	<td colspan="2" align="center"><input name="save" type="submit" class="formbtn" value="Save"/></td>
-</tr>
-<tr>
-	<td colspan="2" class="vexpl" align="center"><span class="red"><strong><?php echo gettext("Note:");?></strong>&nbsp;
-	</span><?php echo gettext("Changing any settings on this page will affect all Suricata-configured interfaces.");?></td>
-</tr>
-</tbody>
-	</table>
-</div><br/>
-</td></tr></tbody>
-</table>
-</form>
-<?php include("fend.inc"); ?>
 
-<script language="JavaScript">
-<!--
-function enable_snort_vrt() {
-	var endis = !(document.iform.enable_vrt_rules.checked);
-	if (endis)
-		document.getElementById("snort_oink_code_tbl").style.display = "none";
-	else
-		document.getElementById("snort_oink_code_tbl").style.display = "table";
-}
+<div id="container">
 
-function enable_et_rules() {
-	var endis = document.iform.enable_etopen_rules.checked;
-	if (endis) {
-		document.iform.enable_etpro_rules.checked = !(endis);
-		document.getElementById("etpro_code_tbl").style.display = "none";
+<?php
+
+$form = new Form;
+$section = new Form_Section('Please Choose The Type Of Rules You Wish To Download');
+$section->addInput(new Form_Checkbox(
+	'enable_etopen_rules',
+	'Install ETOpen Emerging Threats rules',
+	'ETOpen is an open source set of Suricata rules whose coverage is more limited than ETPro.',
+	$config['installedpackages']['suricata']['config'][0]['enable_etopen_rules'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'enable_etpro_rules',
+	'Install ETPro Emerging Threats rules',
+	'ETPro for Suricata offers daily updates and extensive coverage of current malware threats.',
+	$config['installedpackages']['suricata']['config'][0]['enable_etpro_rules'] == 'on' ? true:false,
+	'on'
+))->setHelp('The ETPro rules contain all of the ETOpen rules, so the ETOpen rules are not required and are disabled when the ETPro rules are selected. <a href="http://www.emergingthreats.net/solutions/etpro-ruleset/">Sign Up for an ETPro Account</a>');
+$section->addInput(new Form_Input(
+	'etprocode',
+	'ETPro Subscription Configuration Code',
+	'text',
+	$pconfig['etprocode']
+))->setHelp('Obtain an ETPro subscription code and paste it here.');
+$section->addInput(new Form_Checkbox(
+	'enable_vrt_rules',
+	'Install Snort VRT rules',
+	'Snort VRT free Registered User or paid Subscriber rules',
+	$pconfig['enable_vrt_rules'] == 'on' ? true:false,
+	'on'
+))->setHelp('<a href="https://www.snort.org/users/sign_up">Sign Up for a free Registered User Rule Account</a><br /><a href="http://www.emergingthreats.net/solutions/etpro-ruleset/https://www.snort.org/products">Sign Up for paid Sourcefire VRT Certified Subscriber Rules</a>');
+$section->addInput(new Form_Input(
+	'snort_rules_file',
+	'Snort VRT Rules Filename',
+	'text',
+	$pconfig['snort_rules_file']
+))->setHelp('Enter the rules tarball filename (filename only, do not include the URL.)<br />Example: snortrules-snapshot-2976.tar.gz');
+$section->addInput(new Form_Input(
+	'oinkcode',
+	'Snort VRT Oinkmaster Code',
+	'text',
+	$pconfig['oinkcode']
+))->setHelp('Obtain a snort.org Oinkmaster code and paste it here.');
+$section->addInput(new Form_Checkbox(
+	'snortcommunityrules',
+	'Install Snort Community rules',
+	'The Snort Community Ruleset is a GPLv2 VRT certified ruleset that is distributed free of charge without any VRT License restrictions. This ruleset is updated daily and is a subset of the subscriber ruleset.',
+	$config['installedpackages']['suricata']['config'][0]['snortcommunityrules'] == 'on' ? true:false,
+	'on'
+))->setHelp('If you are a Snort VRT Paid Subscriber, the community ruleset is already built into your download of the Snort VRT rules, and there is no benefit in adding this rule set.');
+$section->addInput(new Form_Checkbox(
+	'hide_deprecated_rules',
+	'Hide Deprecated Rules Categories',
+	'Hide deprecated rules categories in the GUI and remove them from the configuration. Default is Not Checked.',
+	$pconfig['hide_deprecated_rules'] == 'on' ? true:false,
+	'on'
+))->setHelp('If you are a Snort VRT Paid Subscriber, the community ruleset is already built into your download of the Snort VRT rules, and there is no benefit in adding this rule set.');
+$form->add($section);
+
+$section = new Form_Section('Rules Update Settings');
+$section->addInput(new Form_Select(
+	'autoruleupdate',
+	'Update Interval',
+	$pconfig['autoruleupdate'],
+	array('never_up' => gettext('NEVER'), '6h_up' => gettext('6 HOURS'), '12h_up' => gettext('12 HOURS'), 
+		  '1d_up' => gettext('1 DAY'), '4d_up' => gettext('4 DAYS'), '7d_up' => gettext('7 DAYS'), '28d_up' => gettext('28 DAYS'))
+))->setHelp('Please select the interval for rule updates. Choosing NEVER disables auto-updates.<br /><br />Hint: In most cases, every 12 hours is a good choice.');
+$section->addInput(new Form_Input(
+	'autoruleupdatetime',
+	'Update Start Time',
+	'text',
+	$pconfig['autoruleupdatetime']
+))->setHelp('Enter the rule update start time in 24-hour format (HH:MM). Default is 00:30.<br /><br />Rules will update at the interval chosen above starting at the time specified here. For example, using the default start time of 00:30 and choosing 12 Hours for the interval, the rules will update at 00:03 and 12:03 each day.');
+$section->addInput(new Form_Checkbox(
+	'live_swap_updates',
+	'Live Rule Swap on Update',
+	'Enable "Live Swap" reload of rules after downloading an update. Default is Not Checked',
+	$config['installedpackages']['suricata']['config'][0]['live_swap_updates'] == 'on' ? true:false,
+	'on'
+))->setHelp('When enabled, Suricata will perform a live load of the new rules following an update instead of a hard restart. If issues are encountered with live load, uncheck this option to perform a hard restart of all Suricata instances following an update.');
+$section->addInput(new Form_Checkbox(
+	'autogeoipupdate',
+	'GeoIP DB Update',
+	'Enable downloading of free GeoIP Country Database updates. Default is Checked',
+	$config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] == 'on' ? true:false,
+	'on'
+))->setHelp('When enabled, Suricata will automatically download updates for the free legacy GeoIP country database on the 8th of each month at midnight.<br /><br />If you have a subscription for more current GeoIP updates, uncheck this option and instead create your own process to place the required database files in /usr/local/share/GeoIP/.');
+$form->add($section);
+
+$section = new Form_Section('General Settings');
+$section->addInput(new Form_Select(
+	'rm_blocked',
+	'Remove Blocked Hosts Interval',
+	$pconfig['rm_blocked'],
+	array('never_b' => gettext('NEVER'), '15m_b' => gettext('15 MINS'), '30m_b' => gettext('30 MINS'), 
+		  '1h_b' => gettext('1 HOUR'), '3h_b' => gettext('3 HOURS'), '6h_b' => gettext('6 HOURS'), 
+		  '12h_b' => gettext('12 HOURS'), '1d_b' => gettext('1 DAY'), '4d_b' => gettext('4 DAYS'), 
+		  '7d_b' => gettext('7 DAYS'), '28d_b' => gettext('28 DAYS'))
+))->setHelp('Please select the amount of time you would like hosts to be blocked.<br /><br />Hint: in most cases, 1 hour is a good choice.');
+$section->addInput(new Form_Checkbox(
+	'log_to_systemlog',
+	'Log to System Log',
+	'Copy Suricata messages to the firewall system log.',
+	$config['installedpackages']['suricata']['config'][0]['log_to_systemlog'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Select(
+	'log_to_systemlog_facility',
+	'Log Facility',
+	$pconfig['log_to_systemlog_facility'],
+	array('authpriv' => gettext('authpriv'), 'daemon' => gettext('daemon'), 'kern' => gettext('kern'), 
+		  'security' => gettext('security'), 'syslog' => gettext('syslog'), 'user' => gettext('user'), 'local0' => gettext('local0'),
+		  'local1' => gettext('local1'), 'local2' => gettext('local2'), 'local3' => gettext('local3'), 'local4' => gettext('local4'),
+		  'local5' => gettext('local5'), 'local6' => gettext('local6'), 'local7' => gettext('local7'))
+))->setHelp('Select system log facility to use for reporting. Default is local1.');
+$section->addInput(new Form_Checkbox(
+	'forcekeepsettings',
+	'Keep Suricata Settings After Deinstall',
+	'Settings will not be removed during package deinstallation.',
+	$config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] == 'on' ? true:false,
+	'on'
+));
+$form->add($section);
+print $form;
+?>
+</div>
+
+<div class="infoblock">
+	<?=print_info_box('<strong>Note:</strong> Changing any settings on this page will affect all Suricata-configured interfaces.', info)?>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+events.push(function(){
+
+	function enable_snort_vrt() {
+		var hide = ! $('#enable_vrt_rules').prop('checked');
+		hideInput('snort_rules_file', hide);
+		hideInput('oinkcode', hide);
 	}
-}
 
-function enable_pro_rules() {
-	var endis = document.iform.enable_etpro_rules.checked;
-	if (endis) {
-		document.iform.enable_etopen_rules.checked = !(endis);
-		document.iform.etprocode.disabled = "";
-		document.getElementById("etpro_code_tbl").style.display = "table";
+	function enable_et_rules() {
+		var hide = $('#enable_etopen_rules').prop('checked');
+		if (hide && $('#enable_etpro_rules').prop('checked')) {
+			hideInput('etprocode', hide);
+			$('#enable_etpro_rules').prop('checked', false);
+		}
 	}
-	else {
-		document.iform.etprocode.disabled = "true";
-		document.getElementById("etpro_code_tbl").style.display = "none";
+
+	function enable_etpro_rules() {
+		var hide = ! $('#enable_etpro_rules').prop('checked');
+		hideInput('etprocode', hide);
+		if (!hide && $('#enable_etopen_rules').prop('checked'))
+			$('#enable_etopen_rules').prop('checked', false);
 	}
-}
 
-function enable_change_rules_upd() {
-	if (document.iform.autoruleupdate.selectedIndex == 0)
-		document.iform.autoruleupdatetime.disabled="true";
-	else
-		document.iform.autoruleupdatetime.disabled="";		
-}
+	function enable_change_rules_upd(val) {
+		if (val == 0)
+			disableInput('autoruleupdatetime', true);
+		else
+			disableInput('autoruleupdatetime', false);
+	}
 
-function toggle_log_to_systemlog() {
-	var endis = !document.iform.log_to_systemlog.checked;
-	if (endis)
-		document.getElementById("log_to_systemlog_rows").style.display="none";
-	else
-		document.getElementById("log_to_systemlog_rows").style.display="";
-}
+	function toggle_log_to_systemlog() {
+		var hide = ! $('#log_to_systemlog').prop('checked');
+		hideInput('log_to_systemlog_facility', hide);
+	}
 
-// Initialize the form controls state based on saved settings
-enable_snort_vrt();
-enable_et_rules();
-enable_pro_rules();
-enable_change_rules_upd();
-toggle_log_to_systemlog();
+	// ---------- Click checkbox handlers ---------------------------------------------------------
+	// When 'enable_vrt_rules' is clicked, toggle the Oinkmaster text control
+	$('#enable_vrt_rules').click(function() {
+		enable_snort_vrt();
+	});
 
-//-->
+	// When 'enable_etopen_rules' is clicked, uncheck ETPro and hide the ETPro Code text control
+	$('#enable_etopen_rules').click(function() {
+		enable_et_rules();
+	});
+
+	// When 'enable_etpro_rules' is clicked, uncheck ET Open checkbox control and show code
+	$('#enable_etpro_rules').click(function() {
+		enable_etpro_rules();
+	});
+
+	// When 'autoruleupdate' is set to never, disable 'autoruleupdatetime'
+	$('#autoruleupdate').on('change', function() {
+		enable_change_rules_upd(this.selectedIndex);
+	});
+
+	// When 'log_to_systemlog' is clicked, toggle 'log_to_systemlog_facility'
+	$('#log_to_systemlog').click(function() {
+		enable_change_rules_upd();
+	});
+
+	// ---------- On initial page load ------------------------------------------------------------
+	enable_snort_vrt();
+	enable_et_rules();
+	enable_etpro_rules();
+	enable_change_rules_upd($('#autoruleupdate').prop('selectedIndex'));
+	toggle_log_to_systemlog();
+
+});
+//]]>
 </script>
 
-</body>
-</html>
+<?php
+include("fend.inc");
+?>
