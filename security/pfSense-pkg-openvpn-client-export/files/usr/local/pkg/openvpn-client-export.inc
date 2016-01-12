@@ -40,7 +40,7 @@ require_once("util.inc");
 require_once("pfsense-utils.inc");
 
 global $current_openvpn_version, $current_openvpn_version_rev;
-$current_openvpn_version = "2.3.8";
+$current_openvpn_version = "2.3.10";
 $current_openvpn_version_rev = "01";
 
 function openvpn_client_export_deinstall() {
@@ -599,7 +599,7 @@ RunProgram="openvpn-postinstall.exe"
 	// create the final installer
 	$outfile = "{$tempdir}-install.exe";
 	chdir($g['tmp_path']);
-	exec("/bin/cat {$tempdir}/7zS.sfx {$tempdir}/7zipConfig {$tempdir}/archive.7z > {$outfile}");
+	exec("/bin/cat {$tempdir}/7zsd_All.sfx {$tempdir}/7zipConfig {$tempdir}/archive.7z > {$outfile}");
 
 	// cleanup
 	exec("/bin/rm -r {$tempdir}");
