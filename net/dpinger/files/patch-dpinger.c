@@ -1,4 +1,4 @@
---- dpinger.c.orig	2015-12-28 20:50:39 UTC
+--- dpinger.c.orig	2015-12-30 20:06:54 UTC
 +++ dpinger.c
 @@ -40,6 +40,9 @@
  
@@ -18,7 +18,7 @@
  #include <arpa/inet.h>
  
  #include <pthread.h>
-@@ -820,6 +824,70 @@ fatal(
+@@ -835,6 +839,70 @@ fatal(
  
  
  //
@@ -89,15 +89,27 @@
  // Parse command line arguments
  //
  static void
-@@ -1063,6 +1131,13 @@ main(
+@@ -1056,7 +1124,7 @@ main(
+     int                         pidfile_fd = -1;
+     pthread_t                   thread;
+     struct                      sigaction act;
+-    int                         r;
++    int                         r, ntries;
+ 
+     // Handle command line args
+     parse_args(argc, argv);
+@@ -1081,6 +1149,16 @@ main(
      // Bind our sockets to an address if requested
      if (bind_addr_len)
      {
 +        if (af_family == AF_INET6)
 +        {
-+            while (in_tentative())
++            ntries = 0;
++            // after 10s leave, bind() will fail
++            while (in_tentative() && ntries < 10)
 +            {
 +                sleep(1);
++                ntries++;
 +            }
 +        }
          r = bind(send_sock, (struct sockaddr *) &bind_addr, bind_addr_len);
