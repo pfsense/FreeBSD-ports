@@ -169,9 +169,8 @@ display_top_tabs($tab_array, true);
 	<div class="panel-heading"><h2 class="panel-title"><?=gettext('Configured Suppression Lists');?></h2></div>
 	<div class="table-responsive panel-body">
 		<form action="/suricata/suricata_suppress.php" method="post"><?php if ($savemsg) print_info_box($savemsg); ?>
-		<input type="hidden" name="list_id" id="list_id" value=""/>
+			<input type="hidden" name="list_id" id="list_id" value=""/>
 
-		<div id="mainarea">
 			<table id="maintable" class="table table-striped table-hover table-condensed">
 				<thead>
 					<tr>
@@ -227,7 +226,6 @@ display_top_tabs($tab_array, true);
 					</tr>
 				</tbody>
 			</table>
-		</div>
 		</form>
 	</div>
 </div>
