@@ -57,13 +57,13 @@ function suricata_is_passlist_used($list) {
 
 	/**********************************************
 	 * This function tests the provided Pass List *
-	 * to determine if it is assigned to an	   *
-	 * interface.								 *
-	 *											*
+	 * to determine if it is assigned to an	      *
+	 * interface.								  *
+	 *											  *
 	 * On Entry: $list -> Pass List name to test  *
-	 *											*
-	 * Returns: TRUE if Pass List is in use or	*
-	 *		  FALSE if not in use			   *
+	 *											  *
+	 * Returns: TRUE if Pass List is in use or	  *
+	 *		  FALSE if not in use			      *
 	 **********************************************/
 
 	global $config;
