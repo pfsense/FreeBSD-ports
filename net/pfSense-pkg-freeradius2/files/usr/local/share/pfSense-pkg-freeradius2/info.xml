@@ -9,7 +9,7 @@
 			On pfSense docs there is a how-to which could help you on porting users.]]></descr>
 		<pkginfolink>https://doc.pfsense.org/index.php/FreeRADIUS_2.x_package</pkginfolink>
 		<category>Services</category>
-		<version>1.6.20</version>
+		<version>1.7</version>
 		<status>RC</status>
 		<required_version>2.3</required_version>
 		<maintainer>nachtfalkeaw@web.de</maintainer>
