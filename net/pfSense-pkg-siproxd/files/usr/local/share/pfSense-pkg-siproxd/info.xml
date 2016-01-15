@@ -7,7 +7,7 @@
 		<category>Services</category>
 		<depends_on_package_pbi>siproxd-0.8.0_1-##ARCH##.pbi</depends_on_package_pbi>
 		<pkginfolink>https://doc.pfsense.org/index.php/Siproxd_package</pkginfolink>
-		<version>1.0.9</version>
+		<version>1.1</version>
 		<status>BETA</status>
 		<required_version>2.3</required_version>
 		<configurationfile>siproxd.xml</configurationfile>

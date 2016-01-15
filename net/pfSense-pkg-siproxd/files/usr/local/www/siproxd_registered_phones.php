@@ -71,90 +71,79 @@ for ($i = 0; $i < count($phonedata); $i++) {
 	}
 }
 
-$pgtitle = array(gettext("Status"), gettext("siproxd Registered Phones"));
+$pgtitle = array(gettext("Package"), gettext("siproxd"), gettext("Registered Phones"));
 require("head.inc");
+
+$tab_array = array();
+$tab_array[] = array(gettext("Settings"), false, "pkg_edit.php?xml=siproxd.xml");
+$tab_array[] = array(gettext("Users"), false, "pkg.php?xml=siproxdusers.xml");
+$tab_array[] = array(gettext("Registered Phones"), true, "siproxd_registered_phones.php");
+display_top_tabs($tab_array);
 ?>
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("Currently Registered Phones") . " (" . count($activephones) . ")"; ?></h2></div>
+	<div class="panel-body">
+		<div class="table-responsive">
+			<table class="table table-striped table-hover table-condensed">
+				<thead>
+					<tr>
+						<th colspan="5">Real Phone</th>
+						<th colspan="5">NAT Address</th>
+						<th colspan="4">Registered With</th>
+						<th colspan="2">&nbsp;</th>
+					</tr>
+					<tr>
+						<th>Type</th>
+						<th>User</th>
+						<th>Host</th>
+						<th>Port</th>
+						<th>&nbsp;</th>
+						<th>Type</th>
+						<th>User</th>
+						<th>Host</th>
+						<th>Port</th>
+						<th>&nbsp;</th>
+						<th>Type</th>
+						<th>User</th>
+						<th>Host</th>
+						<th>Port</th>
+						<th>&nbsp;</th>
+						<th>Expires</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php if (count($phonedata) == 0): ?>
+					<tr><td colspan="16" align="center">No Phone Data Found</td></tr>
+					<? elseif (count($activephones) == 0): ?>
+					<tr><td colspan="16" align="center">No Active Phones</td></tr>
+					<? else: ?>
+					<? foreach ($activephones as $phone): ?>
+					<tr>
+						<td align="center" class="listlr"><? echo ($phone['real']['type']) ? $phone['real']['type'] : "sip"; ?></td>
+						<td align="center" class="listr"><? echo ($phone['real']['user']) ? $phone['real']['user'] : "&nbsp;"; ?></td>
+						<td align="center" class="listr"><? echo ($phone['real']['host']) ? $phone['real']['host'] : "&nbsp;"; ?></td>
+						<td align="center" class="listr"><? echo ($phone['real']['port']) ? $phone['real']['port'] : "5060"; ?></td>
 
-<?php include("fbegin.inc"); ?>
+						<td align="center" class="list">&nbsp;</td>
+						<td align="center" class="listlr"><? echo ($phone['nat']['type']) ? $phone['nat']['type'] : "sip"; ?></td>
+						<td align="center" class="listr"><? echo ($phone['nat']['user']) ? $phone['nat']['user'] : "&nbsp;"; ?></td>
+						<td align="center" class="listr"><? echo ($phone['nat']['host']) ? $phone['nat']['host'] : "&nbsp;"; ?></td>
+						<td align="center" class="listr"><? echo ($phone['nat']['port']) ? $phone['nat']['port'] : "5060"; ?></td>
 
-<br />
+						<td align="center" class="list">&nbsp;</td>
+						<td align="center" class="listlr"><? echo ($phone['registered']['type']) ? $phone['registered']['type'] : "sip"; ?></td>
+						<td align="center" class="listr"><? echo ($phone['registered']['user']) ? $phone['registered']['user'] : "&nbsp;"; ?></td>
+						<td align="center" class="listr"><? echo ($phone['registered']['host']) ? $phone['registered']['host'] : "&nbsp;"; ?></td>
+						<td align="center" class="listr"><? echo ($phone['registered']['port']) ? $phone['registered']['port'] : "5060"; ?></td>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr><td>
-<?php
-	$tab_array = array();
-	$tab_array[] = array(gettext("Settings"), false, "pkg_edit.php?xml=siproxd.xml");
-	$tab_array[] = array(gettext("Users"), false, "pkg.php?xml=siproxdusers.xml");
-	$tab_array[] = array(gettext("Registered Phones"), true, "siproxd_registered_phones.php");
-	display_top_tabs($tab_array);
-?>
-</td></tr>
-
-<tr><td>
-	<div id="mainarea">
-		<table class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="0">
-		<thead>
-			<tr>
-				<td colspan="16" class="listtopic"><?php echo gettext("Currently Registered Phones") . " (" . count($activephones) . ")"; ?></td>
-			</tr>
-			<tr>
-				<th colspan="5">Real Phone</th>
-				<th colspan="5">NAT Address</th>
-				<th colspan="4">Registered With</th>
-				<th colspan="2">&nbsp;</th>
-			</tr>
-			<tr>
-				<th>Type</th>
-				<th>User</th>
-				<th>Host</th>
-				<th>Port</th>
-				<th>&nbsp;</th>
-				<th>Type</th>
-				<th>User</th>
-				<th>Host</th>
-				<th>Port</th>
-				<th>&nbsp;</th>
-				<th>Type</th>
-				<th>User</th>
-				<th>Host</th>
-				<th>Port</th>
-				<th>&nbsp;</th>
-				<th>Expires</th>
-			</tr>
-		</thead>
-
-			<?php if (count($phonedata) == 0): ?>
-			<tr><td colspan="16" align="center">No Phone Data Found</td></tr>
-			<? elseif (count($activephones) == 0): ?>
-			<tr><td colspan="16" align="center">No Active Phones</td></tr>
-			<? else: ?>
-			<? foreach ($activephones as $phone): ?>
-			<tr>
-				<td align="center" class="listlr"><? echo ($phone['real']['type']) ? $phone['real']['type'] : "sip"; ?></td>
-				<td align="center" class="listr"><? echo ($phone['real']['user']) ? $phone['real']['user'] : "&nbsp;"; ?></td>
-				<td align="center" class="listr"><? echo ($phone['real']['host']) ? $phone['real']['host'] : "&nbsp;"; ?></td>
-				<td align="center" class="listr"><? echo ($phone['real']['port']) ? $phone['real']['port'] : "5060"; ?></td>
-
-				<td align="center" class="list">&nbsp;</td>
-				<td align="center" class="listlr"><? echo ($phone['nat']['type']) ? $phone['nat']['type'] : "sip"; ?></td>
-				<td align="center" class="listr"><? echo ($phone['nat']['user']) ? $phone['nat']['user'] : "&nbsp;"; ?></td>
-				<td align="center" class="listr"><? echo ($phone['nat']['host']) ? $phone['nat']['host'] : "&nbsp;"; ?></td>
-				<td align="center" class="listr"><? echo ($phone['nat']['port']) ? $phone['nat']['port'] : "5060"; ?></td>
-
-				<td align="center" class="list">&nbsp;</td>
-				<td align="center" class="listlr"><? echo ($phone['registered']['type']) ? $phone['registered']['type'] : "sip"; ?></td>
-				<td align="center" class="listr"><? echo ($phone['registered']['user']) ? $phone['registered']['user'] : "&nbsp;"; ?></td>
-				<td align="center" class="listr"><? echo ($phone['registered']['host']) ? $phone['registered']['host'] : "&nbsp;"; ?></td>
-				<td align="center" class="listr"><? echo ($phone['registered']['port']) ? $phone['registered']['port'] : "5060"; ?></td>
-
-				<td align="center" class="list">&nbsp;</td>
-				<td align="center" class="listlr"><? echo date("m/d/Y h:i:sa", $phone['expires']); ?></td>
-			</tr>
-			<? endforeach; ?>
-			<? endif; ?>
-		</table>
+						<td align="center" class="list">&nbsp;</td>
+						<td align="center" class="listlr"><? echo date("m/d/Y h:i:sa", $phone['expires']); ?></td>
+					</tr>
+					<? endforeach; ?>
+					<? endif; ?>
+				</tbody>
+			</table>
+		</div>
 	</div>
-</td></tr>
-</table>
-
+</div>
 <?php include("foot.inc"); ?>
