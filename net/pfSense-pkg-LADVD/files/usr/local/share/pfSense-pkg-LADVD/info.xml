@@ -5,7 +5,7 @@
 		<descr><![CDATA[Send and decode link layer advertisements. Support for LLDP (Link Layer Discovery Protocol), CDP (Cisco Discovery Protocol), EDP (Extreme Discovery Protocol) and NDP (Nortel Discovery Protocol).]]></descr>
 		<website>https://github.com/sspans/ladvd</website>
 		<category>Network Management</category>
-		<version>1.0.4.3</version>
+		<version>1.1</version>
 		<status>BETA</status>
 		<depends_on_package_pbi>ladvd-1.0.4_1-##ARCH##.pbi</depends_on_package_pbi>
 		<config_file>https://packages.pfsense.org/packages/config/ladvd/ladvd.xml</config_file>

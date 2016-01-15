@@ -29,10 +29,6 @@
 	POSSIBILITY OF SUCH DAMAGE.
 */
 require("guiconfig.inc");
-
-$pgtitle = "LADVD: Status";
-include("head.inc");
-
 $control_script = "/usr/local/sbin/ladvdc";
 
 /* List all of the commands as an index. */
@@ -80,38 +76,29 @@ function doCmdT($title, $command) {
 	echo "</div>\n";
 }
 
-?>
+$pgtitle = array(gettext("Package"), gettext("LADVD"), gettext("Status"));
+include("head.inc");
 
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-<?php include("fbegin.inc"); ?>
-<?php if ($savemsg) print_info_box($savemsg); ?>
+if ($savemsg) {
+	print_info_box($savemsg);
+}
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-	<tr><td class="tabnavtbl">
-<?php
-	$tab_array = array();
-	$tab_array[] = array(gettext("General"), false, "/pkg_edit.php?xml=ladvd.xml&amp;id=0");
-	$tab_array[] = array(gettext("Status"), true, "/status_ladvd.php");
-	display_top_tabs($tab_array);
+$tab_array = array();
+$tab_array[] = array(gettext("General"), false, "/pkg_edit.php?xml=ladvd.xml&amp;id=0");
+$tab_array[] = array(gettext("Status"), true, "/status_ladvd.php");
+display_top_tabs($tab_array);
+
+defCmdT("LADVD Devices", "{$control_script}");
+defCmdT("LADVD Detailed decode", "{$control_script} -f");
+
 ?>
-	</td></tr>
-	<tr><td>
-		<div id="mainarea">
-		<table class="tabcont" width="100%" border="0" cellpadding="6" cellspacing="0">
-			<tr><td>
-<?php
-				defCmdT("LADVD Devices", "{$control_script}");
-				defCmdT("LADVD Detailed decode", "{$control_script} -f");
-?>
-			<div id="cmdspace" style="width:100%">
-				<?php listCmds(); ?>
-				<?php execCmds(); ?>
-			</div>
-			</td></tr>
-		</table>
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("LADVD Status Output"); ?></h2></div>
+	<div class="panel-body">
+		<div id="cmdspace" style="width:100%">
+			<?php listCmds(); ?>
+			<?php execCmds(); ?>
 		</div>
-	</td></tr>
-</table>
-<?php include("fend.inc"); ?>
-</body>
-</html>
+	</div>
+</div>
+<?php include("foot.inc"); ?>
