@@ -106,181 +106,124 @@ if (($_POST['submit'] == "Upload") && is_uploaded_file($_FILES['ulfile']['tmp_na
 	conf_mount_ro();
 }
 
-$pgtitle = "Backup: Files &amp; Directories";
+$pgtitle = array(gettext("Diagnostics"), gettext("Backup Files and Directories"), gettext("Settings"));
 include("head.inc");
 
-?>
-
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-<?php include("fbegin.inc"); ?>
-
-
-<?php
 if ($_GET["savemsg"]) {
 	print_info_box($_GET["savemsg"]);
 }
+
+$tab_array = array();
+$tab_array[] = array(gettext("Settings"), true, "/packages/backup/backup.php");
+$tab_array[] = array(gettext("Add"), false, "/packages/backup/backup_edit.php");
+display_top_tabs($tab_array);
 ?>
-
-<div id="mainlevel">
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr><td class="tabnavtbl">
-<?php
-
-	$tab_array = array();
-	$tab_array[] = array(gettext("Settings"), true, "/packages/backup/backup.php");
- 	display_top_tabs($tab_array);
-
-?>
-</td></tr>
-</table>
-
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-	<tr>
-	<td class="tabcont" >
-
-	<table width="100%" border="0" cellpadding="0" cellspacing="0">
-	<tr>
-		<td>Use this to tool to backup files and directories. The following directories are recommended for backup:
-			<table>
-				<tr><td></td><td></td></tr>
-				<tr><td><strong>pfSense Config</strong></td><td>/cf/conf</td></tr>
-				<tr><td><strong>RRD Graph Data Files</strong></td><td>/var/db/rrd</td></tr>
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title">Backups</h2></div>
+	<div class="panel-body">
+		<div class="table-responsive">
+			<table class="table table-hover">
+				<tr>
+					<td>Use this to tool to backup files and directories. The following directories are recommended for backup:
+						<table>
+							<tr><td><strong>pfSense Config:</strong></td><td>/cf/conf</td></tr>
+							<tr><td><strong>RRD Graph Data Files:</strong></td><td>/var/db/rrd</td></tr>
+						</table>
+					</td>
+				</tr>
 			</table>
-		</td>
-	</tr>
-	</table>
-
-	<br/>
-	<br/>
-
-	<div id="niftyOutter">
-	<form action="backup.php" method="post" enctype="multipart/form-data" name="frmUpload" onsubmit="">
-		<table width='690' cellpadding='0' cellspacing='0' border='0'>
-		<tr><td align='left' colspan='4'><strong>Upload and Restore</strong></td></tr>
-		<tr>
-			<td colspan='2'>Use this to upload and restore your backup file.</td>
-			<td align="right">File to upload:</td>
-			<td width='50%' valign="top" align='right' class="label">
-				<input name="ulfile" type="file" class="button" id="ulfile" />
-			</td>
-			<td valign="top" class="label">
-				<input name="submit" type="submit" class="button" id="upload" value="Upload" />
-			</td>
-		</tr>
-		</table>
-		<br />
-		<br />
-	</form>
+		</div>
 	</div>
-
-	<table width='690' cellpadding='0' cellspacing='0' border='0'>
-	<tr>
-		<td width='80%'>
-		<strong>Backup / Restore</strong><br />
-		The 'Backup' button compresses the directories that are listed below to /root/backup/pfsense.bak.tgz; after that it presents the file for download.<br />
-		If the backup file does not exist in /root/backup/pfsense.bak.tgz then the 'Restore' button will be hidden.<br /><br /><br />
-		</td>
-		<td width='20%' valign='middle' align='right'>
-			<input type='button' value='Backup' onclick="document.location.href='backup.php?a=download&amp;t=backup';" />
-			<?php
-				if (file_exists($backup_path)) {
-					echo "\t<input type='button' value='Restore' onclick=\"document.location.href='backup.php?a=other&amp;t=restore';\" />\n";
-				}
-			?>
-		</td>
-	</tr>
-	</table>
-	<br /><br />
-
-
-	<form action='backup.php' method='post' name='iform' id='iform'>
-
+	<div class="panel-heading"><h2 class="panel-title">Upload Archive</h2></div>
+	<div class="panel-body">
+		<div class="table-responsive">
+			<form action="backup.php" method="post" enctype="multipart/form-data" name="frmUpload" onsubmit="">
+				<table class="table table-hover">
+				<tr>
+					<td colspan="2">
+						Restore a backup by selecting the backup archive and clicking <strong>Upload</strong>.
+					</td>
+				</tr>
+				<tr>
+					<td>File to upload:</td>
+					<td>
+						<input name="ulfile" type="file" class="button" id="ulfile" />
+						<br />
+						<input name="submit" type="submit" class="button" id="upload" value="Upload" />
+					</td>
+				</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+	<div class="panel-heading"><h2 class="panel-title">Backup and Restore</h2></div>
+	<div class="panel-body">
+		<div class="table-responsive">
+			<form action="backup.php" method="post" enctype="multipart/form-data" name="frmUpload" onsubmit="">
+			<table class="table table-hover">
+				<tr>
+					<td>
+					The 'Backup' button compresses the directories that are listed below to /root/backup/pfsense.bak.tgz; after that it presents the file for download.<br />
+					If the backup file does not exist in /root/backup/pfsense.bak.tgz then the 'Restore' button will be hidden.
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type='button' value='Backup' onclick="document.location.href='backup.php?a=download&amp;t=backup';" />
+						<?php
+							if (file_exists($backup_path)) {
+								echo "\t<input type='button' value='Restore' onclick=\"document.location.href='backup.php?a=other&amp;t=restore';\" />\n";
+							}
+						?>
+					</td>
+				</tr>
+			</table>
+			</form>
+		</div>
+	</div>
+	<div class="panel-heading"><h2 class="panel-title">Backup Locations</h2></div>
+	<div class="panel-body">
+		<div class="table-responsive">
+			<form action="backup_edit.php" method="post" name="iform" id="iform">
+			<table class="table table-striped table-hover table-condensed">
+				<thead>
+					<tr>
+						<td width="20%">Name</td>
+						<td width="25%">Path</td>
+						<td width="5%">Enabled</td>
+						<td width="40%">Description</td>
+						<td width="10%">Actions</td>
+					</tr>
+				</thead>
+				<tbody>
 <?php
-if ($config_change == 1) {
-	write_config();
-	$config_change = 0;
-}
-?>
+$i = 0;
+if (count($a_backup) > 0):
+	foreach ($a_backup as $ent): ?>
+					<tr>
+						<td><?=$ent['name']?>&nbsp;</td>
+						<td><?=$ent['path']?>&nbsp;</td>
+						<td><? echo ($ent['enabled'] == "true") ? "Enabled" : "Disabled";?>&nbsp;</td>
+						<td><?=htmlspecialchars($ent['description'])?>&nbsp;</td>
+						<td>
+							<a href="backup_edit.php?id=<?=$i?>"><i class="fa fa-pencil" alt="edit"></i></a>
+							<a href="backup_edit.php?type=backup&amp;act=del&amp;id=<?=$i?>"><i class="fa fa-trash" alt="delete"></i></a>
+						</td>
+					</tr>
+<?	$i++;
+	endforeach;
+endif; ?>
+					<tr>
+						<td colspan="5"></td>
+						<td>
+							<a class="btn btn-small btn-success" href="backup_edit.php"><i class="fa fa-plus" alt="add"></i> Add</a>
+						</td>
+					</tr>
+				</tbody>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-	<tr>
-		<td width="20%" class="listhdrr">Name</td>
-		<td width="25%" class="listhdrr">Path</td>
-		<td width="5%" class="listhdrr">Enabled</td>
-		<td width="40%" class="listhdr">Description</td>
-		<td width="10%" class="list">
-			<table border="0" cellspacing="0" cellpadding="1">
-				<tr>
-					<td width="17"></td>
-					<td valign="middle"><a href="backup_edit.php"><img src="/themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif" alt="" width="17" height="17" border="0" /></a></td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-
-	<?php
-
-	$i = 0;
-	if (count($a_backup) > 0) {
-
-		foreach ($a_backup as $ent) {
-
-	?>
-	<tr>
-		<td class="listr" ondblclick="document.location='backup_edit.php?id=<?=$i;?>';">
-			<?=$ent['name'];?>&nbsp;
-		</td>
-		<td class="listr" ondblclick="document.location='backup_edit.php?id=<?=$i;?>';">
-			<?=$ent['path'];?>&nbsp;
-		</td>
-		<td class="listr" ondblclick="document.location='backup_edit.php?id=<?=$i;?>';">
-			<?=$ent['enabled'];?>&nbsp;
-		</td>
-		<td class="listbg" ondblclick="document.location='backup_edit.php?id=<?=$i;?>';">
-			<font color="#FFFFFF"><?=htmlspecialchars($ent['description']);?>&nbsp;</font>
-		</td>
-		<td valign="middle" nowrap="nowrap" class="list">
-			<table border="0" cellspacing="0" cellpadding="1">
-				<tr>
-					<td valign="middle"><a href="backup_edit.php?id=<?=$i;?>"><img src="/themes/<?= $g['theme']; ?>/images/icons/icon_e.gif" alt="" width="17" height="17" border="0" /></a></td>
-					<td><a href="backup_edit.php?type=backup&amp;act=del&amp;id=<?=$i;?>" onclick="return confirm('Do you really want to delete this?')"><img src="/themes/<?= $g['theme']; ?>/images/icons/icon_x.gif" alt="" width="17" height="17" border="0" /></a></td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<?php
-			$i++;
-		}
-	}
-	?>
-
-	<tr>
-		<td class="list" colspan="4"></td>
-		<td class="list">
-			<table border="0" cellspacing="0" cellpadding="1">
-				<tr>
-					<td width="17"></td>
-					<td valign="middle"><a href="backup_edit.php"><img src="/themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif" alt="" width="17" height="17" border="0" /></a></td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-
-	<tr>
-		<td class="list" colspan="3"></td>
-		<td class="list"></td>
-	</tr>
-</table>
-</form>
-
-<br />
-
-</td>
-</tr>
-</table>
-
+			</form>
+		</div>
+	</div>
 </div>
 
-<?php include("fend.inc"); ?>
-</body>
-</html>
+<?php include("foot.inc"); ?>
