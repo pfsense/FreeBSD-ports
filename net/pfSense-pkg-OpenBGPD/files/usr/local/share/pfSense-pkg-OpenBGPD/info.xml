@@ -6,7 +6,7 @@
 			&lt;strong&gt;WARNING! Installs files to the same place as Quagga OSPF. Installing both will result in a broken state, remove this package before installing Quagga OSPF.&lt;/strong&gt;]]></descr>
 		<category>Network Management</category>
 		<conflicts>Quagga_OSPF</conflicts>
-		<version>0.9.3.10</version>
+		<version>0.10</version>
 		<status>RELEASE</status>
 		<pkginfolink>https://doc.pfsense.org/index.php/OpenBGPD_package</pkginfolink>
 		<required_version>2.3</required_version>
