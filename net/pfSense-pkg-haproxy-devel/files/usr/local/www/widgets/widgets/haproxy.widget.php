@@ -36,8 +36,8 @@ $nocsrf = true;
 require_once("guiconfig.inc");
 require_once("pfsense-utils.inc");
 require_once("functions.inc");
-require_once("haproxy_socketinfo.inc");
-require_once("haproxy_gui.inc");
+require_once("haproxy/haproxy_socketinfo.inc");
+require_once("haproxy/haproxy_gui.inc");
 
 $first_time = false;
 if (!is_array($config["widgets"]["haproxy"])) {

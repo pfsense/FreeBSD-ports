@@ -9,7 +9,7 @@
 			&lt;strong&gt;As of pkg v0.33 switched to using 1.6 stable releases.&lt;/strong&gt;]]></descr>
 		<website>http://haproxy.1wt.eu/</website>
 		<category>Services</category>
-		<version>0.36</version>
+		<version>0.37</version>
 		<status>RELEASE</status>
 		<required_version>2.3</required_version>
 		<config_file>https://packages.pfsense.org/packages/config/haproxy-devel/haproxy.xml</config_file>
@@ -17,7 +17,6 @@
 		<run_depends>sbin/haproxy:net/haproxy</run_depends>
 		<port_category>net</port_category>
 		<conflicts>haproxy</conflicts>
-		<depends_on_package_pbi>haproxy-1.6.2_1-##ARCH##.pbi</depends_on_package_pbi>
 		<build_pbi>
 			<ports_before>security/openssl lang/lua53</ports_before>
 			<custom_name>haproxy</custom_name>

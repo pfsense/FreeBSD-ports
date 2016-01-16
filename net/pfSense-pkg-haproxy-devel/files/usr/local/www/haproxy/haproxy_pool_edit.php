@@ -31,10 +31,10 @@
 */
 $shortcut_section = "haproxy";
 require("guiconfig.inc");
-require_once("haproxy.inc");
-require_once("haproxy_utils.inc");
-require_once("haproxy_htmllist.inc");
-require_once("pkg_haproxy_tabs.inc");
+require_once("haproxy/haproxy.inc");
+require_once("haproxy/haproxy_utils.inc");
+require_once("haproxy/haproxy_htmllist.inc");
+require_once("haproxy/pkg_haproxy_tabs.inc");
 
 if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
 	$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
@@ -600,17 +600,10 @@ $section->addInput(new Form_Input('name', 'Name', 'text', $pconfig['name']
 ))->setHelp('');
 $section->addInput(new Form_StaticText(
 	'Server list', 
-'
-	<span style="float:right;">
-	Toggle serverlist help. <a onclick="toggleCSSdisplay(\'.haproxy_help_serverlist\');" title="' . gettext("Help") . '">
-	'. haproxyicon("help", gettext("Help")) . '
-	</a>
-	</span>
-'
-.
 $serverslist->Draw($a_servers).
 <<<EOT
-<table class="haproxy_help_serverlist" style="border:1px dashed green" cellspacing="0">
+	Field explanations: 
+	<table class="infoblock" style="border:1px dashed green" cellspacing="0">
 	<tr><td class="vncell">
 	Mode: </td><td class="vncell">Active: server will be used normally<br/>
 	Backup: server is only used in load balancing when all other non-backup servers are unavailable<br/>
@@ -734,44 +727,6 @@ $section->addInput(new Form_Checkbox(
 	Allow using whole URI including url parameters behind a question mark.'
 );
 
-$interfaces = get_configured_interface_with_descr();
-$section->addInput(new Form_StaticText(
-	'Transparent ClientIP', <<<EOT
-	<div class="alert alert-warning" role="alert">
-		<p>
-			WARNING Activating this option will load rules in IPFW and might interfere with CaptivePortal and possibly other services due 
-			to the way server return traffic must be 'captured' with a automatically created fwd rule. This also breaks directly accessing 
-			the (web)server on the ports configured above. Also a automatic sloppy pf rule is made to allow HAProxy to server traffic.<br/>
-			Workaround exists only by configuring a second port or IP on the destination server for direct access of the website.
-		</p>
-	</div>
-EOT
-.(new Form_Checkbox(
-	'transparent_clientip',
-	'',
-	"Use Client-IP to connect to backend servers.",
-	$pconfig['transparent_clientip']
-))->setHelp("By default, failed health check are logged if server is UP and successful health checks are logged if server is DOWN, so the amount of additional information is limited."
-)
-.
-(new Form_Select(
-	'transparent_interface',
-	'Health check method',
-	$pconfig['transparent_interface']?$pconfig['transparent_interface']:"lan",
-	$interfaces
-))->addClass("haproxy_transparent_clientip")->setHelp("Interface that will connect to the backend server. (this will generally be your LAN or OPT1(dmz) interface)")
-.
-<<<EOT
-	
-	Connect transparently to the backend server's so the connection seams to come straight from the client ip address.
-	To work properly this requires the reply traffic to pass through pfSense by means of correct routing.<br/>
-	When using IPv6 only routable ip addresses can be used, host names or link-local addresses (FE80) will not work.<br/>				
-	(uses the option "source 0.0.0.0 usesrc clientip" or "source ipv6@ usesrc clientip")
-	<br/><br/>
-	Note : When this is enabled for any backend HAProxy will run as 'root' instead of chrooting to a lower privileged user, this reduces security in case a vulnerability is found.
-EOT
-));
-
 $section->addInput(new Form_Input('advanced', 'Per server pass thru', 'text', $pconfig['advanced']
 ))->setHelp('NOTE: paste text into this box that you would like to pass thru. Applied to each "server" line.');
 
@@ -789,8 +744,8 @@ $section->addInput(new Form_StaticText(
 	'Access Control lists',
 	$htmllist_acls->Draw($pconfig['a_acl']).
 <<<EOT
-			<br/>
-				Example:
+			Acl's with the same name will be 'combined' using OR criteria, use these as condition for actions below. Example:
+			<div class="infoblock">
 				<table border='1' style='border-collapse:collapse'>
 					<tr>
 						<td><b>Name</b></td>
@@ -812,9 +767,8 @@ $section->addInput(new Form_StaticText(
 					</tr>
 				</table>
 			<br/>
-			acl's with the same name will be 'combined' using OR criteria.<br/>
-			For more information about ACL's please see <a href='http://haproxy.1wt.eu/download/1.5/doc/configuration.txt' target='_blank'>HAProxy Documentation</a> Section 7 - Using ACL's<br/><br/>
-			Actions should be added below to use the result of the acl as a conditional parameter.
+			For more information about ACL's please see <a href='http://haproxy.1wt.eu/download/1.5/doc/configuration.txt' target='_blank'>HAProxy Documentation</a> Section 7 - Using ACL's<br/>			Actions should be added below to use the result of the acl as a conditional parameter.
+			</div>
 EOT
 ));
 
@@ -822,7 +776,8 @@ $section->addInput(new Form_StaticText(
 	'Actions',
 	$htmllist_actions->Draw($pconfig['a_actionitems']).
 <<<EOT
-	<br/>Example:
+	Example:
+	<div class="infoblock">
 	<table border='1' style='border-collapse:collapse'>
 		<tr>
 			<td><b>Action</b></td>
@@ -840,6 +795,7 @@ $section->addInput(new Form_StaticText(
 			<td>addHeaderAcl</td>
 		</tr>
 	</table>
+	</div>
 EOT
 ));
 $form->add($section);
@@ -874,10 +830,10 @@ $section->addInput(new Form_Input('monitor_httpversion', 'Http check version', '
 ),"haproxy_check_http")->setHelp(<<<EOT
 	Defaults to "HTTP/1.0" if left blank.
 	Note that the Host field is mandatory in HTTP/1.1, and as a trick, it is possible to pass it
-	after "\r\n" following the version string like this:<br/>
-	&nbsp;&nbsp;&nbsp;&nbsp;"<i>HTTP/1.1\r\nHost:\ www</i>"<br/>
+	after "\\r\\n" following the version string like this:<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;<code>HTTP/1.1\\r\\nHost:\\ www</code><br/>
 	Also some hosts might require an accept parameter like this:<br/>
-	&nbsp;&nbsp;&nbsp;&nbsp;"<i>HTTP/1.0\r\nHost:\ webservername:8080\r\nAccept:\ */*</i>"
+	&nbsp;&nbsp;&nbsp;&nbsp;<code>HTTP/1.0\\r\\nHost:\\ webservername:8080\\r\\nAccept:\\ */*</code>
 EOT
 );
 $section->addInput(new Form_Input('monitor_username', 'Check with Username', 'text', $pconfig['monitor_username']
@@ -923,6 +879,43 @@ $section->addInput(new Form_Input('retries', 'Retries', 'text', $pconfig['retrie
 	set by the "retries" parameter.
 EOT
 );
+$interfaces = get_configured_interface_with_descr();
+$section->addInput(new Form_StaticText(
+	'Transparent ClientIP', <<<EOT
+	<div class="alert alert-warning" role="alert">
+		<p>
+			WARNING Activating this option will load rules in IPFW and might interfere with CaptivePortal and possibly other services due 
+			to the way server return traffic must be 'captured' with a automatically created fwd rule. This also breaks directly accessing 
+			the (web)server on the ports configured above. Also a automatic sloppy pf rule is made to allow HAProxy to server traffic.<br/>
+			Workaround exists only by configuring a second port or IP on the destination server for direct access of the website.
+		</p>
+	</div>
+EOT
+.(new Form_Checkbox(
+	'transparent_clientip',
+	'',
+	"Use Client-IP to connect to backend servers.",
+	$pconfig['transparent_clientip']
+))->setHelp("By default, failed health check are logged if server is UP and successful health checks are logged if server is DOWN, so the amount of additional information is limited."
+)
+.
+(new Form_Select(
+	'transparent_interface',
+	'',
+	$pconfig['transparent_interface']?$pconfig['transparent_interface']:"lan",
+	$interfaces
+))->addClass("haproxy_transparent_clientip")->setHelp("Interface that will connect to the backend server. (this will generally be your LAN or OPT1(dmz) interface)")
+.
+<<<EOT
+	
+	Connect transparently to the backend server's so the connection seams to come straight from the client ip address.
+	To work properly this requires the reply traffic to pass through pfSense by means of correct routing.<br/>
+	When using IPv6 only routable ip addresses can be used, host names or link-local addresses (FE80) will not work.<br/>				
+	(uses the option "source 0.0.0.0 usesrc clientip" or "source ipv6@ usesrc clientip")
+	<br/><br/>
+	Note : When this is enabled for any backend HAProxy will run as 'root' instead of chrooting to a lower privileged user, this reduces security in case a vulnerability is found.
+EOT
+));
 $form->add($section);
 
 $section = new Form_Section_class('Cookie persistence');
@@ -1002,7 +995,6 @@ $section->addInput(new Form_Input('email_to', 'Mail to', 'text', $pconfig['email
 
 $section = new Form_Section_class('Statistics');
 
-// TODO add show/hide class "haproxy_stats_visible"
 $section->addInput(new Form_Checkbox(
 	'stats_enabled',
 	'Stats Enabled',

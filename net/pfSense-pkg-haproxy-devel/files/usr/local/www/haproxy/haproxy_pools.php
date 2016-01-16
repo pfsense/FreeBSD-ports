@@ -31,9 +31,9 @@
 */
 $shortcut_section = "haproxy";
 require_once("guiconfig.inc");
-require_once("haproxy.inc");
-require_once("pkg_haproxy_tabs.inc");
-require_once("haproxy_gui.inc");
+require_once("haproxy/haproxy.inc");
+require_once("haproxy/haproxy_gui.inc");
+require_once("haproxy/pkg_haproxy_tabs.inc");
 
 if (!is_array($config['installedpackages']['haproxy']['ha_pools']['item'])) {
 	$config['installedpackages']['haproxy']['ha_pools']['item'] = array();
