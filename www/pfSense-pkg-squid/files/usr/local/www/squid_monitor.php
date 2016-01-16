@@ -34,64 +34,44 @@ require_once("/etc/inc/pkg-utils.inc");
 require_once("/etc/inc/globals.inc");
 require_once("guiconfig.inc");
 
-$pgtitle = "Status: Proxy Monitor";
+$pgtitle = array(gettext("Package"), gettext("Squid"), gettext("Monitor"));
 $shortcut_section = "squid";
 include("head.inc");
-include("fbegin.inc");
+
+if ($savemsg) {
+	print_info_box($savemsg);
+}
+
+$tab_array = array();
+if ($_REQUEST["menu"] == "reverse") {
+	$tab_array[] = array(gettext("General"), false, "/pkg_edit.php?xml=squid_reverse_general.xml&amp;id=0");
+	$tab_array[] = array(gettext("Web Servers"), false, "/pkg.php?xml=squid_reverse_peer.xml");
+	$tab_array[] = array(gettext("Mappings"), false, "/pkg.php?xml=squid_reverse_uri.xml");
+	$tab_array[] = array(gettext("Redirects"), false, "/pkg.php?xml=squid_reverse_redir.xml");
+	$tab_array[] = array(gettext("Real Time"), true, "/squid_monitor.php?menu=reverse");
+	$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=squid_reverse_sync.xml");
+} else {
+	$tab_array[] = array(gettext("General"), false, "/pkg_edit.php?xml=squid.xml&amp;id=0");
+	$tab_array[] = array(gettext("Remote Cache"), false, "/pkg.php?xml=squid_upstream.xml");
+	$tab_array[] = array(gettext("Local Cache"), false, "/pkg_edit.php?xml=squid_cache.xml&amp;id=0");
+	$tab_array[] = array(gettext("Antivirus"), false, "/pkg_edit.php?xml=squid_antivirus.xml&amp;id=0");
+	$tab_array[] = array(gettext("ACLs"), false, "/pkg_edit.php?xml=squid_nac.xml&amp;id=0");
+	$tab_array[] = array(gettext("Traffic Mgmt"), false, "/pkg_edit.php?xml=squid_traffic.xml&amp;id=0");
+	$tab_array[] = array(gettext("Authentication"), false, "/pkg_edit.php?xml=squid_auth.xml&amp;id=0");
+	$tab_array[] = array(gettext("Users"), false, "/pkg.php?xml=squid_users.xml");
+	$tab_array[] = array(gettext("Real Time"), true, "/squid_monitor.php");
+	$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=squid_sync.xml");
+}
+display_top_tabs($tab_array);
+
 ?>
 
-<?php if ($savemsg) print_info_box($savemsg); ?>
-
-<!-- Function to call programs logs -->
-<script type="text/javascript">
-//<![CDATA[
-	function showLog(content, url, program) {
-		new PeriodicalExecuter(function (pe) {
-			new Ajax.Updater(content, url, {
-				method: 'post',
-				asynchronous: true,
-				evalScripts: true,
-				parameters: {
-					maxlines: $('maxlines').getValue(),
-					strfilter: $('strfilter').getValue(),
-					program: program
-				}
-			})
-		}, 1)
-	}
-//]]>
-</script>
-<div id="mainlevel">
-	<table width="100%" border="0" cellpadding="0" cellspacing="0">
-	<tr><td>
-		<?php
-		$tab_array = array();
-		if ($_REQUEST["menu"] == "reverse") {
-			$tab_array[] = array(gettext("General"), false, "/pkg_edit.php?xml=squid_reverse_general.xml&amp;id=0");
-			$tab_array[] = array(gettext("Web Servers"), false, "/pkg.php?xml=squid_reverse_peer.xml");
-			$tab_array[] = array(gettext("Mappings"), false, "/pkg.php?xml=squid_reverse_uri.xml");
-			$tab_array[] = array(gettext("Redirects"), false, "/pkg.php?xml=squid_reverse_redir.xml");
-			$tab_array[] = array(gettext("Real Time"), true, "/squid_monitor.php?menu=reverse");
-			$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=squid_reverse_sync.xml");
-		} else {
-			$tab_array[] = array(gettext("General"), false, "/pkg_edit.php?xml=squid.xml&amp;id=0");
-			$tab_array[] = array(gettext("Remote Cache"), false, "/pkg.php?xml=squid_upstream.xml");
-			$tab_array[] = array(gettext("Local Cache"), false, "/pkg_edit.php?xml=squid_cache.xml&amp;id=0");
-			$tab_array[] = array(gettext("Antivirus"), false, "/pkg_edit.php?xml=squid_antivirus.xml&amp;id=0");
-			$tab_array[] = array(gettext("ACLs"), false, "/pkg_edit.php?xml=squid_nac.xml&amp;id=0");
-			$tab_array[] = array(gettext("Traffic Mgmt"), false, "/pkg_edit.php?xml=squid_traffic.xml&amp;id=0");
-			$tab_array[] = array(gettext("Authentication"), false, "/pkg_edit.php?xml=squid_auth.xml&amp;id=0");
-			$tab_array[] = array(gettext("Users"), false, "/pkg.php?xml=squid_users.xml");
-			$tab_array[] = array(gettext("Real Time"), true, "/squid_monitor.php");
-			$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=squid_sync.xml");
-		}
-		display_top_tabs($tab_array);
-	?>
-	</td></tr>
-	<tr><td>
-		<div id="mainarea" style="padding-top: 0px; padding-bottom: 0px; ">
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("Filtering"); ?></h2></div>
+	<div class="panel-body">
+		<div class="table-responsive">
 			<form id="paramsForm" name="paramsForm" method="post" action="">
-			<table class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="6">
+			<table class="table table-hover table-condensed">
 				<tbody>
 				<tr>
 					<td width="22%" valign="top" class="vncellreq">Max lines:</td>
@@ -107,7 +87,7 @@ include("fbegin.inc");
 						</select>
 						<br/>
 						<span class="vexpl">
-							<?=gettext("Max. lines to be displayed.");?>
+							<?=gettext("Max. lines to be displayed.")?>
 						</span>
 					</td>
 				</tr>
@@ -117,18 +97,22 @@ include("fbegin.inc");
 						<input name="strfilter" type="text" class="formfld search" id="strfilter" size="50" value="" />
 						<br/>
 						<span class="vexpl">
-							<?=gettext("Enter a grep-like string/pattern to filter the log entries.");?><br/>
-							<?=gettext("E.g.: username, IP address, URL.");?><br/>
-							<?=gettext("Use <strong>!</strong> to invert the sense of matching (to select non-matching lines).");?>
+							<?=gettext("Enter a grep-like string/pattern to filter the log entries.")?><br/>
+							<?=gettext("E.g.: username, IP address, URL.")?><br/>
+							<?=gettext("Use <strong>!</strong> to invert the sense of matching (to select non-matching lines).")?>
 						</span>
 					</td>
 				</tr>
 				</tbody>
 			</table>
 			</form>
+		</div>
+	</div>
 
-			<!-- Squid Access Table -->
-			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("Squid Access Table"); ?></h2></div>
+	<div class="panel-body">
+		<div class="table-responsive">
+			<table class="table table-hover table-condensed">
 				<tbody>
 				<tr><td>
 					<table class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -136,18 +120,19 @@ include("fbegin.inc");
 							<td colspan="6" class="listtopic" align="center"><?=gettext("Squid - Access Logs"); ?></td>
 						</tr></thead>
 						<tbody id="squidView">
-						<tr><td>
-							<script type="text/javascript">
-								showLog('squidView', 'squid_monitor_data.php', 'squid');
-							</script>
-						</td></tr>
+						<tr><td></td></tr>
 						</tbody>
 					</table>
 				</td></tr>
 				</tbody>
 			</table>
-			<!-- Squid Cache Table -->
-			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+		</div>
+	</div>
+
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("Squid Cache Table"); ?></h2></div>
+	<div class="panel-body">
+		<div class="table-responsive">
+			<table class="table table-hover table-condensed">
 				<tbody>
 				<tr><td>
 					<table class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -155,19 +140,20 @@ include("fbegin.inc");
 							<td colspan="2" class="listtopic" align="center"><?=gettext("Squid - Cache Logs"); ?></td>
 						</tr></thead>
 						<tbody id="squidCacheView">
-						<tr><td>
-							<script type="text/javascript">
-								showLog('squidCacheView', 'squid_monitor_data.php', 'squid_cache');
-							</script>
-						</td></tr>
+						<tr><td></td></tr>
 						</tbody>
 					</table>
 				</td></tr>
 				</tbody>
 			</table>
+		</div>
+	</div>
+
 <?php if ($_REQUEST["menu"] != "reverse") {?>
-			<!-- SquidGuard Table -->
-			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("SquidGuard Table"); ?></h2></div>
+	<div class="panel-body">
+		<div class="table-responsive">
+			<table class="table table-hover table-condensed">
 				<tbody>
 				<tr><td>
 					<table class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -175,17 +161,19 @@ include("fbegin.inc");
 							<td colspan="5" class="listtopic" align="center"><?=gettext("SquidGuard Logs"); ?></td>
 						</tr></thead>
 						<tbody id="sguardView">
-						<tr><td>
-							<script type="text/javascript">
-								showLog('sguardView', 'squid_monitor_data.php', 'sguard');
-							</script>
-						</td></tr>
+						<tr><td></td></tr>
 						</tbody>
 					</table>
 				</td></tr>
 				</tbody>
 			</table>
-			<!-- C-ICAP Virus Table -->
+		</div>
+	</div>
+
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("C-ICAP Virus Table"); ?></h2></div>
+	<div class="panel-body">
+		<div class="table-responsive">
+			<table class="table table-hover table-condensed">
 			<table width="100%" border="0" cellpadding="0" cellspacing="0">
 				<tbody>
 				<tr><td>
@@ -194,18 +182,19 @@ include("fbegin.inc");
 							<td colspan="6" class="listtopic" align="center"><?=gettext("C-ICAP - Virus Logs"); ?></td>
 						</tr></thead>
 						<tbody id="CICIAPVirusView">
-						<tr><td>
-							<script type="text/javascript">
-								showLog('CICIAPVirusView', 'squid_monitor_data.php', 'cicap_virus');
-							</script>
-						</td></tr>
+						<tr><td></td></tr>
 						</tbody>
 					</table>
 				</td></tr>
 				</tbody>
 			</table>
-			<!-- C-ICAP Access Table -->
-			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+		</div>
+	</div>
+
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("C-ICAP Access Table"); ?></h2></div>
+	<div class="panel-body">
+		<div class="table-responsive">
+			<table class="table table-hover table-condensed">
 				<tbody>
 				<tr><td>
 					<table class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -213,18 +202,19 @@ include("fbegin.inc");
 							<td colspan="2" class="listtopic" align="center"><?=gettext("C-ICAP - Access Logs"); ?></td>
 						</tr></thead>
 						<tbody id="CICAPAccessView">
-						<tr><td>
-							<script type="text/javascript">
-								showLog('CICAPAccessView', 'squid_monitor_data.php', 'cicap_access');
-							</script>
-						</td></tr>
+						<tr><td></td></tr>
 						</tbody>
 					</table>
 				</td></tr>
 				</tbody>
 			</table>
-			<!-- C-ICAP Server Table -->
-			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+		</div>
+	</div>
+
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("C-ICAP Server Table"); ?></h2></div>
+	<div class="panel-body">
+		<div class="table-responsive">
+			<table class="table table-hover table-condensed">
 				<tbody>
 				<tr><td>
 					<table class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -232,18 +222,19 @@ include("fbegin.inc");
 							<td colspan="2" class="listtopic" align="center"><?=gettext("C-ICAP - Server Logs"); ?></td>
 						</tr></thead>
 						<tbody id="CICAPServerView">
-						<tr><td>
-							<script type="text/javascript">
-								showLog('CICAPServerView', 'squid_monitor_data.php', 'cicap_server');
-							</script>
-						</td></tr>
+						<tr><td></td></tr>
 						</tbody>
 					</table>
 				</td></tr>
 				</tbody>
 			</table>
-			<!-- freshclam Table -->
-			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+		</div>
+	</div>
+
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("freshclam Table"); ?></h2></div>
+	<div class="panel-body">
+		<div class="table-responsive">
+			<table class="table table-hover table-condensed">
 				<tbody>
 				<tr><td>
 					<table class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -251,18 +242,19 @@ include("fbegin.inc");
 							<td colspan="1" class="listtopic" align="center"><?=gettext("ClamAV - freshclam Logs"); ?></td>
 						</tr></thead>
 						<tbody id="freshclamView">
-						<tr><td>
-							<script type="text/javascript">
-								showLog('freshclamView', 'squid_monitor_data.php', 'freshclam');
-							</script>
-						</td></tr>
+						<tr><td></td></tr>
 						</tbody>
 					</table>
 				</td></tr>
 				</tbody>
 			</table>
-			<!-- clamd Table -->
-			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+		</div>
+	</div>
+
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("clamd Table"); ?></h2></div>
+	<div class="panel-body">
+		<div class="table-responsive">
+			<table class="table table-hover table-condensed">
 				<tbody>
 				<tr><td>
 					<table class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -270,22 +262,54 @@ include("fbegin.inc");
 							<td colspan="1" class="listtopic" align="center"><?=gettext("ClamAV - clamd Logs"); ?></td>
 						</tr></thead>
 						<tbody id="clamdView">
-						<tr><td>
-							<script type="text/javascript">
-								showLog('clamdView', 'squid_monitor_data.php', 'clamd');
-							</script>
-						</td></tr>
+						<tr><td></td></tr>
 						</tbody>
 					</table>
 				</td></tr>
 				</tbody>
 			</table>
 		</div>
+	</div>
 <?php }?>
-	</td></tr>
-	</table>
 </div>
 
-<?php
-include("foot.inc");
-?>
+<!-- Function to call programs logs -->
+<script type="text/javascript">
+//<![CDATA[
+function showLog(content, url, program) {
+	jQuery.ajax(url,
+		{
+		type: 'post',
+		data: {
+			maxlines: $('#maxlines').val(),
+			strfilter: $('#strfilter').val(),
+			program: program,
+			content: content
+			},
+		success: function(ret){
+			$('#' + content).html(ret);
+			}
+		}
+		);
+}
+
+function updateAllLogs() {
+	showLog('squidView', 'squid_monitor_data.php', 'squid');
+	showLog('squidCacheView', 'squid_monitor_data.php', 'squid_cache');
+<?php if ($_REQUEST["menu"] != "reverse") {?>
+	showLog('sguardView', 'squid_monitor_data.php', 'sguard');
+	showLog('CICIAPVirusView', 'squid_monitor_data.php', 'cicap_virus');
+	showLog('CICAPAccessView', 'squid_monitor_data.php', 'cicap_access');
+	showLog('CICAPServerView', 'squid_monitor_data.php', 'cicap_server');
+	showLog('freshclamView', 'squid_monitor_data.php', 'freshclam');
+	showLog('clamdView', 'squid_monitor_data.php', 'clamd');
+<?php }?>
+	setTimeout(updateAllLogs, 5000);
+}
+
+events.push(function() {
+	updateAllLogs();
+});
+//]]>
+</script>
+<?php include("foot.inc"); ?>
