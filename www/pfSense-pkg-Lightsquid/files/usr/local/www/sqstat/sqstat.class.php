@@ -97,7 +97,7 @@ class squidstat {
 			$text .= '<META HTTP-EQUIV=Refresh CONTENT="' . $refresh . '; URL=' . $_SERVER["PHP_SELF"] . '?refresh=' . $refresh . '&config=' . $GLOBALS["config"] . '"/>';
 		}
 		$text .= '<title>SqStat ' . SQSTAT_VERSION . '</title>' . ($use_js ? '<script src="zhabascript.js" type="text/javascript"></script>' : '') . '</head>'
-		    . ($use_js ? '<body onload="jsInit();"><div id="dhtmltooltip"></div><img id="dhtmlpointer" src="arrow.gif">' : '<body>')
+		    . ($use_js ? '<body onload="jsInit();"><div id="dhtmltooltip"></div><i id="dhtmlpointer" class="fa fa-arrow-right"></i>' : '<body>')
 		    . $body . '</body></html>';
 		return $text;
 	}

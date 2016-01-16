@@ -6,7 +6,7 @@
 			&lt;strong&gt;Requires Squid3 package.&lt;/strong&gt;]]></descr>
 		<website>http://lightsquid.sf.net/</website>
 		<category>Network Management</category>
-		<version>2.44</version>
+		<version>2.5</version>
 		<maintainer>dv_serg@mail.ru</maintainer>
 		<build_options>lightsquid_SET_FORCE=GD;libgd_UNSET_FORCE=FONTCONFIG XPM;perl_UNSET_FORCE=MULTIPLICITY</build_options>
 		<status>RC</status>

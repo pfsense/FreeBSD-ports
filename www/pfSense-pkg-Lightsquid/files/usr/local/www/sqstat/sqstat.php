@@ -47,101 +47,6 @@ if ($_REQUEST['getactivity']) {
 }
 
 /*
- * HTML Page
- */
-
-$pgtitle = "Squid Proxy Server: Realtime Stats (SQStat)";
-
-require_once("head.inc");
-$csrf_token = csrf_get_tokens();
-?>
-
-<link href="sqstat.css" rel="stylesheet" type="text/css"/>
-<script type="text/javascript" src="/javascript/scriptaculous/prototype.js"></script>
-<script type="text/javascript" src="zhabascript.js"></script>
-
-<!-- AJAX script -->
-<script type="text/javascript">
-//<![CDATA[
-var intervalID = 0;
-
-function el(id) {
-	return document.getElementById(id);
-}
-
-function getactivity(action) {
-	var url = "<?php echo ($_SERVER["PHP_SELF"]); ?>";
-	var pars = "getactivity=yes" + "<? echo '&__csrf_magic='.$csrf_token ?>";
-
-	var myAjax = new Ajax.Request(url, {
-		method: 'post',
-		parameters: pars,
-		onComplete: activitycallback
-	});
-}
-
-function activitycallback(transport) {
-	if (200 == transport.status) {
-		result = transport.responseText;
-	}
-}
-
-function update_start() {
-	var cmax = parseInt(el('refresh').value);
-
-	update_stop();
-
-	if (cmax > 0) {
-		intervalID = window.setInterval('getactivity();', cmax * 1000);
-	}
-}
-
-function update_stop() {
-	window.clearInterval(intervalID);
-	intervalID = 0;
-}
-
-// pre-call
-window.setTimeout('update_start()', 150);
-
-//]]>
-</script>
-
-<!-- HTML start -->
-<?php include("fbegin.inc"); ?>
-
-<?php
-	// Prepare page data
-	$data = '';
-	sqstat_loadconfig();
-	if (sqstat_loadconfig() == 0) {
-		$data = $squidclass->query_exec();
-	}
-
-	if ($squidclass->errno == 0) {
-		$data = sqstat_resultHTML($data);
-	} else {
-		// error
-		$data = sqstat_errorHTML();
-	}
-?>
-
-<!-- Form -->
-<div id="sqstat_header" class="header">
-	<?php echo ( sqstat_headerHTML() ); ?>
-</div>
-
-<!-- Result table -->
-<div id="sqstat_result" class="result">
-	<?php echo ($data); ?>
-</div>
-
-<!-- HTML end -->
-<?php include("foot.inc"); ?>
-
-<?php
-
-/*
  * Functions
  */
 
@@ -157,15 +62,15 @@ function sqstat_AJAX_response( $request ) {
 	$data = $squidclass->query_exec();
 
 	$ver  = sqstat_serverInfoHTML();
-	$res .= "el('sqstat_serverver').innerHTML = '$ver';";
+	$res .= "$('#sqstat_serverver').html('{$ver}');";
 
 	$time = date("h:i:s d/m/Y");
-	$res .= "el('sqstat_updtime').innerHTML = '$time';";
+	$res .= "$('#sqstat_updtime').html({$time}');";
 
 	$data = sqstat_resultHTML( $data );
 	if ($squidclass->errno == 0) {
 		$data = sqstat_AJAX_prep($data);
-		$res .= "el('sqstat_result').innerHTML = '$data';";
+		$res .= "$('#sqstat_result').html('{$data}');";
 	} else {
 		// error
 		$res .= sqstat_AJAX_error(sqstat_errorHTML());
@@ -182,7 +87,7 @@ function sqstat_AJAX_prep($text) {
 
 function sqstat_AJAX_error($err) {
 	$err = sqstat_AJAX_prep($err);
-	$t .= "el('sqstat_result').innerHTML = '$err';";
+	$t .= "$('#sqstat_result').html('{$err}');";
 	return $t;
 }
 
@@ -377,5 +282,87 @@ function sqstat_loadconfig() {
 
 	return $squidclass->errno;
 }
+/*
+ * HTML Page
+ */
 
+$pgtitle = array(gettext("Package"), gettext("Squid"), gettext("Realtime Stats (SQStat)"));
+require_once("head.inc");
+$csrf_token = csrf_get_tokens();
 ?>
+
+<link href="sqstat.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="zhabascript.js"></script>
+
+<!-- HTML start -->
+<?php
+	// Prepare page data
+	$data = '';
+	sqstat_loadconfig();
+	if (sqstat_loadconfig() == 0) {
+		$data = $squidclass->query_exec();
+	}
+
+	if ($squidclass->errno == 0) {
+		$data = sqstat_resultHTML($data);
+	} else {
+		// error
+		$data = sqstat_errorHTML();
+	}
+?>
+
+<!-- Form -->
+<div id="sqstat_header" class="header">
+	<?=( sqstat_headerHTML() ); ?>
+</div>
+
+<!-- Result table -->
+<div id="sqstat_result" class="result">
+	<?=($data); ?>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var intervalID = 0;
+
+function getactivity(action) {
+	var url = "<?=($_SERVER["PHP_SELF"]); ?>";
+	var pars = "getactivity=yes" + "<? echo '&__csrf_magic='.$csrf_token ?>";
+
+	jQuery.ajax(url,
+		{
+		type: 'post',
+		data: pars,
+		success: activitycallback
+		}
+		);
+}
+
+function activitycallback(html) {
+	eval(html);
+}
+
+function update_start() {
+	var cmax = parseInt($('#refresh').val());
+
+	update_stop();
+
+	if (cmax > 0) {
+		intervalID = window.setInterval('getactivity();', cmax * 1000);
+	}
+}
+
+function update_stop() {
+	window.clearInterval(intervalID);
+	intervalID = 0;
+}
+
+// pre-call
+events.push(function() {
+	setTimeout('update_start()', 150);
+});
+
+//]]>
+</script>
+
+<?php include("foot.inc"); ?>
