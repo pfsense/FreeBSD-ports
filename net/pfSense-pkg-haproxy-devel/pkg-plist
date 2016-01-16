@@ -1,5 +1,5 @@
 pkg/haproxy_rules.inc
-pkg/haproxy/haproxy.xml
+pkg/haproxy.xml
 pkg/haproxy/haproxy.inc
 pkg/haproxy/haproxy_gui.inc
 pkg/haproxy/haproxy_socketinfo.inc
