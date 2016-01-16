@@ -28,7 +28,7 @@
 */
 require_once("authgui.inc");
 require_once("config.inc");
-require_once("haproxy_socketinfo.inc");
+require_once("haproxy/haproxy_socketinfo.inc");
 
 $pconfig = $config['installedpackages']['haproxy'];
 if (isset($_GET['haproxystats']) || isset($_GET['scope']) || (isset($_POST) && isset($_POST['action']))){
@@ -51,7 +51,7 @@ if (isset($_GET['haproxystats']) || isset($_GET['scope']) || (isset($_POST) && i
 			'content'=>http_build_query($_POST)
 		));
 		$context = stream_context_create($options);
-		$response = file_get_contents("http://127.0.0.1:{$pconfig['localstatsport']}/haproxy_stats.php?haproxystats=1".$request, false, $context);
+		$response = @file_get_contents("http://127.0.0.1:{$pconfig['localstatsport']}/haproxy/haproxy_stats.php?haproxystats=1".$request, false, $context);
 		if (is_array($http_response_header)){
 			foreach($http_response_header as $header){
 				if (strpos($header,"Refresh: ") == 0)
@@ -73,10 +73,10 @@ if (isset($_GET['showsticktablecontent']) || isset($_GET['showstatresolvers'])) 
 		header("Refresh: {$pconfig['localstats_sticktable_refreshtime']}");
 }
 $shortcut_section = "haproxy";
-require_once("haproxy.inc");
 require_once("certs.inc");
-require_once("haproxy_utils.inc");
-require_once("pkg_haproxy_tabs.inc");
+require_once("haproxy/haproxy.inc");
+require_once("haproxy/haproxy_utils.inc");
+require_once("haproxy/pkg_haproxy_tabs.inc");
 
 if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
 	$config['installedpackages']['haproxy']['ha_backends']['item'] = array();
@@ -161,7 +161,7 @@ if (isset($_GET['showstatresolvers'])){
 			<? $tables = haproxy_get_tables();
 			foreach($tables as $key => $table) { ?>
 			<tr>
-				<td class="listlr"><a href="/haproxy_stats.php?showsticktablecontent=<?=$key;?>"><?=$key;?></td>
+				<td class="listlr"><a href="/haproxy/haproxy_stats.php?showsticktablecontent=<?=$key;?>"><?=$key;?></td>
 				<td class="listr"><?=$table['type'];?></td>
 				<td class="listr"><?=$table['size'];?></td>
 				<td class="listr"><?=$table['used'];?></td>
@@ -176,7 +176,7 @@ if (isset($_GET['showstatresolvers'])){
 			<h2 class="panel-title"><?=gettext("HAProxy DNS statistics")?></h2>
 		</div>
 		<div class="table-responsive panel-body">
-			<a href="/haproxy_stats.php?showstatresolvers=globalresolvers" target="_blank">DNS statistics</a>
+			<a href="/haproxy/haproxy_stats.php?showstatresolvers=globalresolvers" target="_blank">DNS statistics</a>
 		</div>
 	</div>
 	<div class="panel panel-default">
@@ -184,11 +184,11 @@ if (isset($_GET['showstatresolvers'])){
 			<h2 class="panel-title"><?=gettext("HAProxy stats")?></h2>
 		</div>
 		<div class="table-responsive panel-body">
-			<a href="/haproxy_stats.php?haproxystats=1" target="_blank">Fullscreen stats page</a>
+			<a href="/haproxy/haproxy_stats.php?haproxystats=1" target="_blank">Fullscreen stats page</a>
 		</div>
 		<div class="table-responsive panel-body">
 		<? if (isset($pconfig['enable']) && $pconfig['localstatsport'] && is_numeric($pconfig['localstatsport'])){?>
-			<iframe id="frame_haproxy_stats" width="1000" height="1500" seamless src="/haproxy_stats.php?haproxystats=1<?=$request;?>"></iframe>
+			<iframe id="frame_haproxy_stats" width="1000" height="1500" seamless src="/haproxy/haproxy_stats.php?haproxystats=1<?=$request;?>"></iframe>
 		<? } else { ?>
 			<br/>
 			In the "Settings" configure a internal stats port and enable haproxy for this to be functional. Also make sure the service is running.<br/>

@@ -654,12 +654,12 @@ haproxy_start () {
         /usr/bin/env \
         PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
 		/usr/local/bin/php-cgi -q -d auto_prepend_file=config.inc <<ENDOFF
-		<?php
+<?php
 			require_once("globals.inc");		
 			require_once("functions.inc");
-			require_once("haproxy.inc");
+			require_once("haproxy/haproxy.inc");
 			haproxy_configure();
-		?>
+?>
 ENDOFF	
 }
 
@@ -668,12 +668,12 @@ haproxy_check () {
         /usr/bin/env \
         PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
 		/usr/local/bin/php-cgi -q -d auto_prepend_file=config.inc <<ENDOFF
-		<?php
+<?php
 			require_once("globals.inc");		
 			require_once("functions.inc");
-			require_once("haproxy.inc");
+			require_once("haproxy/haproxy.inc");
 			haproxy_check_run(0);
-		?>
+?>
 ENDOFF
 }
 
@@ -1546,7 +1546,7 @@ function haproxy_writeconf($configpath) {
 				fwrite ($fd, "\tstats refresh {$a_global['localstats_refreshtime']}\n");
 			}
 			fwrite ($fd, "\tstats admin if TRUE\n");
-			fwrite ($fd, "\tstats uri /haproxy_stats.php?haproxystats=1\n");
+			fwrite ($fd, "\tstats uri /haproxy/haproxy_stats.php?haproxystats=1\n");
 			fwrite ($fd, "\ttimeout client 5000\n");
 			fwrite ($fd, "\ttimeout connect 5000\n");
 			fwrite ($fd, "\ttimeout server 5000\n");
@@ -2126,8 +2126,7 @@ function haproxy_get_transparent_backends(){
 	return $transparent_backends;
 }
 
-function haproxy_generate_rules($type) {
-	// called by filter.inc when pfSense rules generation happens
+function haproxy_generate_rules_plugin($type) {
 	global $g, $config;
 	$rules = "";
 	switch($type) {
@@ -2226,18 +2225,23 @@ function haproxy_plugin_certificates($pluginparams) {
 		// return a array of used certificates.
 		foreach($config['installedpackages']['haproxy']['ha_backends']['item'] as &$frontend) {
 			if (get_frontend_uses_ssl($frontend)) {
-				if ($frontend['ssloffloadacl']){
-					$item = array();
-					$cert = $frontend['ssloffloadcert'];
-					$item['usedby'] = $frontend['name'];
-					$result['certificatelist'][$cert][] = $item;
-				}
-				if ($frontend['ssloffloadacladditional']){
-					foreach($frontend['ha_certificates']['item'] as $certref){
+				if ($frontend['secondary'] != 'yes' || $frontend['ssloffload'])
+					// primary or secondary with additional certs checkbox
+
+					if ($frontend['ssloffloadcert']){
 						$item = array();
-						$cert = $certref['ssl_certificate'];
+						$cert = $frontend['ssloffloadcert'];
 						$item['usedby'] = $frontend['name'];
 						$result['certificatelist'][$cert][] = $item;
+					}
+					if ($frontend['ha_certificates'] && is_array($frontend['ha_certificates']['item'])) {
+					foreach($frontend['ha_certificates']['item'] as $certref){
+						if ($certref['ssl_certificate']){
+							$item = array();
+							$cert = $certref['ssl_certificate'];
+							$item['usedby'] = $frontend['name'];
+							$result['certificatelist'][$cert][] = $item;
+						}
 					}
 				}
 			}
@@ -2255,7 +2259,7 @@ function haproxy_carpipismaster($ip) {
 		if ($ipaddress != $ip)
 			continue;
 
-		$carp_int = "{$carp['interface']}_vip{$carp['vhid']}";
+		$carp_int = "_vip{$carp['uniqid']}";
 		$status = get_carp_interface_status($carp_int);
 		return ($status == "MASTER");
 	}
@@ -2264,7 +2268,6 @@ function haproxy_carpipismaster($ip) {
 
 function haproxy_check_run($reload) {
 	global $config, $g, $haproxy_run_message;
-
 	$haproxylock = lock("haproxy", LOCK_EX);
 	$a_global = &$config['installedpackages']['haproxy'];
 	$configpath = "{$g['varetc_path']}/haproxy";

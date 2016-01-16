@@ -32,10 +32,10 @@
 */
 $shortcut_section = "haproxy";
 require("guiconfig.inc");
-require_once("haproxy.inc");
-require_once("haproxy_utils.inc");
-require_once("haproxy_htmllist.inc");
-require_once("pkg_haproxy_tabs.inc");
+require_once("haproxy/haproxy.inc");
+require_once("haproxy/haproxy_utils.inc");
+require_once("haproxy/haproxy_htmllist.inc");
+require_once("haproxy/pkg_haproxy_tabs.inc");
 
 /* Compatibility function for pfSense 2.0 */
 if (!function_exists("cert_get_purpose")) {	

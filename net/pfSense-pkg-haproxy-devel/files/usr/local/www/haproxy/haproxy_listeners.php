@@ -31,11 +31,11 @@
 */
 $shortcut_section = "haproxy";
 require_once("guiconfig.inc");
-require_once("haproxy.inc");
 require_once("certs.inc");
-require_once("haproxy_utils.inc");
-require_once("pkg_haproxy_tabs.inc");
-require_once("haproxy_gui.inc");
+require_once("haproxy/haproxy.inc");
+require_once("haproxy/haproxy_gui.inc");
+require_once("haproxy/haproxy_utils.inc");
+require_once("haproxy/pkg_haproxy_tabs.inc");
 
 $changedesc = "Services: HAProxy: Frontends";
 
@@ -208,7 +208,7 @@ if ($savemsg) {
 $display_apply = file_exists($d_haproxyconfdirty_path) ? "" : "none";
 echo "<div id='showapplysettings' style='display: {$display_apply};'>";
 print_info_box_np("The haproxy configuration has been changed.<br/>You must apply the changes in order for them to take effect.");
-echo "<br/></div>";
+echo "</div>";
 
 haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "frontend");
 
@@ -457,6 +457,7 @@ function js_callback(req) {
 events.push(function() {
 	$('[id^=Xmove_]').click(function (event) {
 		$('#' + event.target.id.slice(1)).click();
+		return false;
 	});
 	$('[id^=Xmove_]').css('cursor', 'pointer');
 

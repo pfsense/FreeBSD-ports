@@ -4,4 +4,4 @@ The Reliable, High Performance TCP/HTTP(S) Load Balancer.<br />
 			smart backend switching.<br /> <strong>As of pkg v0.33
 			switched to using 1.6 stable releases.</strong>
 
-WWW: https://doc.pfsense.org/index.php/haproxy_package
+WWW: https://github.com/PiBa-NL/pfsense-haproxy-package-doc/wiki
