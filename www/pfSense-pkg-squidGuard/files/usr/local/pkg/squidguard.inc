@@ -829,11 +829,11 @@ function make_grid_controls($type, $items, $enable_overtime = true) {
         $rstyle = "";
         $ha = "<div class='listtopic'>" .
               "<span onClick='document.getElementById(\"destrules\").style.display = \"block\";' style=\"cursor: pointer;\">" .
-              "<font size='-12'><big>Target Rules List (click here)</big>&nbsp;" .
-              "<img src='/themes/{$g['theme']}/images/icons/icon_pass.gif' title='Show rules'>&nbsp;" .
-              "</span>" .
-               "<span style=\"cursor: pointer;\">" .
-              "<img src='/themes/{$g['theme']}/images/icons/icon_block.gif' title='Hide rules' onClick='document.getElementById(\"destrules\").style.display = \"none\";'>" .
+              "<font size='-12'><big>Target Rules List</big>&nbsp;&nbsp;" .
+              "<i class=\"fa fa-plus-circle\"></i>" .
+              "</span>&nbsp;&nbsp;" .
+              "<span style=\"cursor: pointer;\">" .
+              "<i class=\"fa fa-minus-circle\" onClick='document.getElementById(\"destrules\").style.display = \"none\";'></i>" .
               "</span>" .
               "</div>";
         $res = "<hr>$ha<div id=\"destrules\" style='DISPLAY: none'>$res</div>";
