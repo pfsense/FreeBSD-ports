@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-haproxy-devel
-PORTVERSION=	0.37
+PORTVERSION=	0.38
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -39,6 +39,8 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/haproxy/haproxy.inc \
 		${STAGEDIR}${PREFIX}/pkg/haproxy
 	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/haproxy/haproxy_socket.sh \
+		${STAGEDIR}${PREFIX}/pkg/haproxy
+	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/haproxy/haproxy_sync.sh \
 		${STAGEDIR}${PREFIX}/pkg/haproxy
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/haproxy/haproxy_gui.inc \
 		${STAGEDIR}${PREFIX}/pkg/haproxy

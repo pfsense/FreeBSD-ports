@@ -121,7 +121,7 @@ class HaproxyHtmlList
 		if ($editable) {
 			$itemtype = $item['type'];
 			if ($itemtype == "select") {
-				$result .= echo_html_select($itemnamenr, $item['items'], $itemvalue,"-none available-","html_listitem_change(\"{$this->tablename}\",\"{$itemname}\",\"{$counter}\",this);", "width:{$item['size']}");
+				$result .= echo_html_select($itemnamenr, $item['items'], $itemvalue,"-none available-","html_listitem_change(\"{$this->tablename}\",\"{$itemname}\",\"{$counter}\",this);", "");
 			} elseif ($itemtype == "checkbox") {
 				$checked = $itemvalue=='yes' ? " checked" : "";
 				$result .= "<input onclick='html_listitem_change(\"{$this->tablename}\",\"{$itemname}\",\"{$counter}\",this);' name='$itemnamenr' id='$itemnamenr' type='checkbox'$checked value='yes' />";
@@ -262,14 +262,10 @@ class HaproxyHtmlList
 						$result .= "<tr id='tr_viewdetail_$counter'>";
 						$result .= <<<EOT
 							<td>
-							<div style="position:relative;float:right;width:11px;height:11px;">
+							<div id="htmltable_{$tablename}_{$counter}_details_off" style="position:relative;float:right;width:11px;height:11px;">
 							<a onclick="htmltable_toggle_details('{$tablename}','{$counter}','htmltable_{$tablename}_{$counter}_details')">
-								<img id="htmltable_{$tablename}_{$counter}_details_off" alt="Expand advanced server settings" 
-								src="tree/plus.gif" style="clip:rect(19px 13px 30px 2px); top:-19px;position:absolute;"/>
-							</a>
-							</div>
-							</td>
-EOT;
+EOT
+							. haproxyicon('expand','Expand advanced server settings') . '</a></div></td>';
 						$result .= "<td colspan='$colspan'>";
 						$itemnr = 0;
 						$result .= "<div id='htmltable_{$tablename}_{$counter}_details_view'>";
@@ -407,7 +403,7 @@ function haproxy_htmllist_js(){
 				seltext += "<option value='"+fieldvalueid+"'>"+fieldvalue['name']+"<\/option>";
 			}
 			
-			result="<select style='width:" + field['size'] + "'  name='" + tableId + field['name'] + rowId + 
+			result="<select name='" + tableId + field['name'] + rowId + 
 			"' id='" + tableId + field['name'] + rowId + "' "+
 			"onchange='html_listitem_change(\""+tableId+"\",\""+field['name']+"\",\""+rowId+"\",this);' " +
 			">" + seltext + "<\/select> ";
@@ -453,46 +449,20 @@ function haproxy_htmllist_js(){
 			fieldcount += 1;
 		}
 		td = d.createElement("td");
-		td.rowSpan = "1";
-		//td.setAttribute("class","list");
+		td.setAttribute("class","action-icons");
 		
-		// Recreate the button table.
-		btable = document.createElement("table");
-		btable.setAttribute("border", "0");
-		btable.setAttribute("cellspacing", "0");
-		btable.setAttribute("cellpadding", "1");
-		btbody = document.createElement("tbody");
-		btr = document.createElement("tr");
-		
-		btd = document.createElement("td");
-		btd.setAttribute("valign", "middle");
-		btd.innerHTML =
-			'<input name="'+tableId+'_rowindex[]" id="'+tableId+'_rowindex'+totalrows+'" class="hidden" value="'+totalrows+'" />' +
+		// Recreate the action icons.
+		var actions = "";
+		actions += '<input name="'+tableId+'_rowindex[]" id="'+tableId+'_rowindex'+totalrows+'" class="hidden" value="'+totalrows+'" />' +
 			'<a onclick="deleteRow(' + totalrows + ", '" + tableId + "'); return false;\" ><?=haproxyicon('delete','delete entry')?></a>";
-		btr.appendChild(btd);
-		
-		btd = document.createElement("td");
-		btd.setAttribute("valign", "middle");
-		btd.innerHTML = '<a onclick=\"dupRow(' + totalrows + ", '" + tableId + "'); return false;\" ><?=haproxyicon('clone','duplicate entry')?></a>";
-		btr.appendChild(btd);
-
+		actions += '<a onclick=\"dupRow(' + totalrows + ", '" + tableId + "'); return false;\" ><?=haproxyicon('clone','duplicate entry')?></a>";
 		
 		var tabledefinition = htmllist_get_select_items("tabledefinition", tableId);
 		if (tabledefinition && tabledefinition['keyfield'] == "") {
-			btd = document.createElement("td");
-			btd.setAttribute("valign", "middle");
-			btd.innerHTML = '<a onclick=\"moveRowUp(' + totalrows + ", '" + tableId + "'); return false;\" ><?=haproxyicon('moveup','move row up')?></a>";
-			btr.appendChild(btd);
-			
-			btd = document.createElement("td");
-			btd.setAttribute("valign", "middle");
-			btd.innerHTML = '<a onclick=\"moveRowDown(' + totalrows + ", '" + tableId + "'); return false;\" ><?=haproxyicon('movedown','move row down')?></a>";
-			btr.appendChild(btd);
+			actions += '<a onclick=\"moveRowUp(' + totalrows + ", '" + tableId + "'); return false;\" ><?=haproxyicon('moveup','move row up')?></a>";
+			actions += '<a onclick=\"moveRowDown(' + totalrows + ", '" + tableId + "'); return false;\" ><?=haproxyicon('movedown','move row down')?></a>";
 		}
-		
-		btbody.appendChild(btr);
-		btable.appendChild(btbody);
-		td.appendChild(btable);
+		td.innerHTML = actions;
 		tr.appendChild(td);
 		tbody.appendChild(tr); // add the edit row to the table
 		

@@ -1,7 +1,7 @@
 <?php
 /*
     haproxy.inc
-	Copyright (C) 2013-2015 PiBa-NL
+	Copyright (C) 2013-2016 PiBa-NL
 	Copyright (C) 2009 Scott Ullrich <sullrich@pfsense.com>
     Copyright (C) 2008 Remco Hoef
     All rights reserved.
@@ -1307,10 +1307,13 @@ function haproxy_check_and_run(&$messages, $reload) {
 	}
 	$ok = strstr($retval, "Configuration file is valid");
 	if ($ok && $reload) {
-		global $haproxy_run_message;
+		global $haproxy_run_message, $config;
 		rmdir_recursive($testpath);
 		$ok = haproxy_check_run(1) == 0;
 		$messages = $haproxy_run_message;
+		if ($ok && isset($config['installedpackages']['haproxy']['enablesync'])) {
+			mwexec_bg("/usr/local/pkg/haproxy/haproxy_sync.sh");
+		}
 	}
 	return $ok;
 }
@@ -2031,11 +2034,6 @@ function haproxy_writeconf($configpath) {
 	if ($input_errors) {
 		require_once("guiconfig.inc");
 		print_input_errors($input_errors);
-	} else {
-		// Only sync to xmlrpc backup machine if no errors are found in config
-		if (isset($config['installedpackages']['haproxy']['enablesync'])) {
-			haproxy_do_xmlrpc_sync();
-		}
 	}
 }
 
@@ -2403,7 +2401,7 @@ function haproxy_do_xmlrpc_sync() {
 	$syncinfo = array();
 	$syncinfo['sync_logname'] = "HAProxy";
 	$syncinfo['data'] = haproxy_xmlrpc_sync_prepare_config();
-	$syncinfo['sync_include'] = "/usr/local/pkg/haproxy.inc";	
+	$syncinfo['sync_include'] = "/usr/local/pkg/haproxy/haproxy.inc";	
 	$syncinfo['sync_done_execute'] = "haproxy_xmlrpc_sync_configure";	
 	xmlrpc_sync_execute($syncinfo);
 }
