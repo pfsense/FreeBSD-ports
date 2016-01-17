@@ -54,7 +54,7 @@ if (isset($_REQUEST['isAjax'])) {
 
 function doCmdT($command, $limit = "all", $filter = "", $header_size = 0) {
 	$grepline = "";
-	if (!empty($filter)) {
+	if (!empty($filter) && ($filter != "undefined")) {
 		$ini = ($header_size > 0 ? $header_size+1 : 1);
 		$grepline = " | /usr/bin/sed -e '{$ini},\$ { /" . escapeshellarg(htmlspecialchars($filter)) . "/!d; };'";
 	}

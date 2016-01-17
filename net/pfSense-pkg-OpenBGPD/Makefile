@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-OpenBGPD
-PORTVERSION=	0.10
+PORTVERSION=	0.11
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
