@@ -43,7 +43,7 @@
 	]]>
 	</copyright>
 	<name>squidreversegeneral</name>
-	<version>0.4.8</version>
+	<version>0.4.9</version>
 	<title>Reverse Proxy Server: General</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>
