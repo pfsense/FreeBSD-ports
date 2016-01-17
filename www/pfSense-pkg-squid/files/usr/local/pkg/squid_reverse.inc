@@ -4,7 +4,7 @@
 	part of pfSense (https://www.pfSense.org/)
 	Copyright (C) 2012 Martin Fuchs
 	Copyright (C) 2012-2014 Marcello Coutinho
-	Copyright (C) 2013 Gekkenhuis
+	Copyright (C) 2013-2015 Gekkenhuis
 	Copyright (C) 2015 ESF, LLC
 	All rights reserved.
 
@@ -101,7 +101,8 @@ function squid_resync_reverse() {
 			if ($crl != false) {
 				if (base64_decode($crl['text'])) {
 					file_put_contents(SQUID_CONFBASE . "/{$settings['reverse_ssl_clientcrl']}.crl", sq_text_area_decode($crl['text']));
-					$clientca_opts .= " crlfile=" . SQUID_CONFBASE . "/{$settings['reverse_ssl_clientcrl']}.crl sslflags=VERIFY_CRL";
+					$clientca_opts .= " crlfile=" . SQUID_CONFBASE . "/{$settings['reverse_ssl_clientcrl']}.crl";
+					$sslflags_https_port_iface = "sslflags=VERIFY_CRL";
 				}
 			}
 		}
@@ -119,7 +120,48 @@ function squid_resync_reverse() {
 	$https_defsite = (empty($settings['reverse_https_defsite']) ? $settings['reverse_external_fqdn'] : $settings['reverse_https_defsite']);
 
 	// Ignore Internal Certificate Validation
-	$sslflags = ($settings['reverse_ignore_ssl_valid'] == "on" ? "sslflags=DONT_VERIFY_PEER" : "");
+	$sslflags_cache_peer = ($settings['reverse_ignore_ssl_valid'] == "on" ? "sslflags=DONT_VERIFY_PEER" : "");
+
+	// Reverse Proxy HTTPS security settings
+	if (isset($settings["dhparams_size"])) {
+		if ($settings['dhparams_size'] == '2048' && file_exists("/etc/dh-parameters.2048")) {
+			$dhparams = "dhparams=/etc/dh-parameters.2048";
+		} else if ($settings['dhparams_size'] == '4096' && file_exists("/etc/dh-parameters.4096")) {
+			$dhparams = "dhparams=/etc/dh-parameters.4096";
+		}
+	} else if (file_exists("/etc/dh-parameters.2048")) {
+		// Fallback dhparams option
+		$dhparams = "dhparams=/etc/dh-parameters.2048";
+	}
+
+	// Without DHParams file and settings below squid will not work correct
+	if (isset($dhparams) && !empty($dhparams)) {
+		if ($settings['reverse_compatibility_mode'] == 'modern') {
+			// Modern
+			$ciphers = "cipher=ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK";
+			$options = "options=NO_SSLv2,NO_SSLv3,NO_TLSv1,SINGLE_DH_USE,CIPHER_SERVER_PREFERENCE";
+		} else if ($settings['reverse_compatibility_mode'] == 'intermediate') {
+			// Intermediate
+			$ciphers = "cipher=ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:ECDHE-RSA-DES-CBC3-SHA:ECDHE-ECDSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA";
+			$options = "options=NO_SSLv2,NO_SSLv3,SINGLE_DH_USE,CIPHER_SERVER_PREFERENCE";
+		}
+	}
+
+	if (!empty($settings['disable_session_reuse'])) {
+		// reverse_ssl_clientcrl doesn't set the sslflags on
+		// reverse_ip https_port so we cannot use the same variable
+		$sslflags_https_port_reverse = "sslflags=NO_SESSION_REUSE";
+	
+		// Check or the sslflags for the interface https_port
+		// are already set by reverse_ssl_clientcrl setting
+		if(!empty($sslflags_https_port_iface)) {
+			// Append the sslflags
+			$sslflags_https_port_iface .= ",NO_SESSION_REUSE";
+		} else {
+			// Set the sslflags
+			$sslflags_https_port_iface = $sslflags_https_port_reverse;
+		}
+	}
 
 	foreach (explode(",", $ifaces) as $i => $iface) {
 		$real_ifaces[] = squid_get_real_interface_address($iface);
@@ -130,7 +172,10 @@ function squid_resync_reverse() {
 			}
 			//HTTPS
 			if (!empty($settings['reverse_https'])) {
-				$conf .= "https_port {$real_ifaces[$i][0]}:{$https_port} accel cert={$reverse_crt} key={$reverse_key} {$clientca_opts} defaultsite={$https_defsite} vhost\n";
+				// Squid will fail when the line length exceeds 1024 characters, this can happen because of the long ciphersuite so break the line
+				$conf .= "https_port {$real_ifaces[$i][0]}:{$https_port} accel cert={$reverse_crt} key={$reverse_key} {$clientca_opts} {$sslflags_https_port_iface} {$dhparams} {$ciphers} \\\n";
+				$conf .= " {$options} defaultsite={$https_defsite} vhost\n";
+				$conf .= "\n";
 			}
 		}
 	}
@@ -144,7 +189,7 @@ function squid_resync_reverse() {
 			}
 			//HTTPS
 			if (!empty($settings['reverse_https'])) {
-				$conf .= "https_port {$reip}:{$https_port} accel cert={$reverse_crt} key={$reverse_key} defaultsite={$https_defsite} vhost\n";
+				$conf .= "https_port {$reip}:{$https_port} accel cert={$reverse_crt} key={$reverse_key} {$sslflags_https_port_reverse} {$dhparams} {$ciphers} {$options} defaultsite={$https_defsite} vhost\n";
 			}
 		}
 	}
@@ -156,7 +201,7 @@ function squid_resync_reverse() {
 			$casnr = 0;
 			foreach ($reverse_owa_ip as $reowaip) {
 				$casnr++;
-				$conf .= "cache_peer {$reowaip} parent 443 0 proxy-only no-query no-digest originserver login=PASSTHRU connection-auth=on ssl {$sslflags} front-end-https=on name=OWA_HOST_443_{$casnr}_pfs\n";
+				$conf .= "cache_peer {$reowaip} parent 443 0 proxy-only no-query no-digest originserver login=PASSTHRU connection-auth=on ssl {$sslflags_cache_peer} front-end-https=on name=OWA_HOST_443_{$casnr}_pfs\n";
 				$conf .= "cache_peer {$reowaip} parent 80 0 proxy-only no-query no-digest originserver login=PASSTHRU connection-auth=on name=OWA_HOST_80_{$casnr}_pfs\n";
 			}
 		}
@@ -169,7 +214,7 @@ function squid_resync_reverse() {
 				$conf_peer = "#{$rp['description']}\n";
 				$conf_peer .= "cache_peer {$rp['ip']} parent {$rp['port']} 0 proxy-only no-query no-digest originserver login=PASSTHRU connection-auth=on round-robin ";
 				if ($rp['protocol'] == 'HTTPS') {
-					$conf_peer .= "ssl {$sslflags} front-end-https=auto ";
+					$conf_peer .= "ssl {$sslflags_cache_peer} front-end-https=auto ";
 				}
 				$conf_peer .= "name=rvp_{$rp['name']}\n\n";
 
