@@ -52,9 +52,6 @@ if (isset($_REQUEST['isAjax'])) {
 	exit;
 }
 
-$pgtitle = array("OpenBGPD", "Status");
-include("head.inc");
-
 function doCmdT($command, $limit = "all", $filter = "", $header_size = 0) {
 	$grepline = "";
 	if (!empty($filter)) {
@@ -107,7 +104,7 @@ function showCmdT($idx, $data) {
 		echo "Display <select onchange=\"update_filter('{$idx}','{$data['header_size']}');\" name=\"{$idx}_limit\" id=\"{$idx}_limit\">\n";
 		foreach ($limit_options as $item)
 			echo "<option value='{$item}' " . ($item == $limit_default ? "selected" : "") . ">{$item}</option>\n";
-		echo "</select> <span name=\"{$idx}_count\" id=\"{$idx}_count\">items</span></td>\n";
+		echo "</select><span name=\"{$idx}_count\" id=\"{$idx}_count\">items</span></td>\n";
 		echo "<td class=\"listhdr\" align=\"right\" style=\"font-weight:bold;\">Filter expression: \n";
 		echo "<input type=\"text\" name=\"{$idx}_filter\" id=\"{$idx}_filter\" class=\"formfld search\" value=\"" . htmlspecialchars($_REQUEST["{$idx}_filter"]) . "\" size=\"30\" />\n";
 		echo "<input type=\"button\" class=\"formbtn\" value=\"Filter\" onclick=\"update_filter('{$idx}','{$data['header_size']}');\" />\n";
@@ -150,67 +147,81 @@ function execCmds() {
 	}
 }
 
+$pgtitle = array(gettext("Package"), gettext("OpenBGPD"), gettext("Status"));
+include("head.inc");
+
+if ($savemsg) {
+	print_info_box($savemsg);
+}
+
+$tab_array = array();
+$tab_array[] = array(gettext("Settings"), false, "/pkg_edit.php?xml=openbgpd.xml&id=0");
+$tab_array[] = array(gettext("Neighbors"), false, "/pkg.php?xml=openbgpd_neighbors.xml");
+$tab_array[] = array(gettext("Groups"), false, "/pkg.php?xml=openbgpd_groups.xml");
+$tab_array[] = array(gettext("Raw config"), false, "/openbgpd_raw.php");
+$tab_array[] = array(gettext("Status"), true, "/openbgpd_status.php");
+display_top_tabs($tab_array);
 ?>
 
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("OpenBGPd Status Output"); ?></h2></div>
+	<div class="panel-body">
+		<div id="cmdspace" style="width:100%">
+			<?php listCmds(); ?>
+			<?php execCmds(); ?>
+		</div>
+	</div>
+</div>
+
 <script type="text/javascript">
 //<![CDATA[
 
-	function update_count(cmd, header_size) {
-		var url = "openbgpd_status.php";
-		var params = "isAjax=true&count=true&cmd=" + cmd + "&header_size=" + header_size;
-		var myAjax = new Ajax.Request(
-			url,
-			{
-				method: 'post',
-				parameters: params,
-				onComplete: update_count_callback
-			});
-	}
-
-	function update_count_callback(transport) {
-		// First line contain field id to be updated
-		var responseTextArr = transport.responseText.split("\n");
-
-		document.getElementById(responseTextArr[0] + "_count").innerHTML = responseTextArr[1];
-	}
-
-	function update_filter(cmd, header_size) {
-		var url = "openbgpd_status.php";
-		var filter = "";
-		var limit = "all";
-		var limit_field = document.getElementById(cmd + "_limit");
-		if (limit_field) {
-			var index = limit_field.selectedIndex;
-			limit = limit_field.options[index].value;
-			filter = document.getElementById(cmd + "_filter").value;
+function update_count(cmd, header_size) {
+	var url = "openbgpd_status.php";
+	var params = "isAjax=true&count=true&cmd=" + cmd + "&header_size=" + header_size;
+	jQuery.ajax(url,
+		{
+		type: 'post',
+		data: params,
+		success: update_count_callback
 		}
-		var params = "isAjax=true&cmd=" + cmd + "&limit=" + limit + "&filter=" + filter + "&header_size=" + header_size;
-		var myAjax = new Ajax.Request(
-			url,
-			{
-				method: 'post',
-				parameters: params,
-				onComplete: update_filter_callback
-			});
+		);
+}
+
+function update_count_callback(html) {
+	// First line contain field id to be updated
+	var responseTextArr = html.split("\n");
+
+	$('#' + responseTextArr[0] + "_count").html(responseTextArr[1]);
+}
+
+function update_filter(cmd, header_size) {
+	var url = "openbgpd_status.php";
+	var filter = "";
+	var limit = "all";
+	var limit_field = $('#' + cmd + "_limit");
+	if (limit_field) {
+		limit = limit_field.val();
+		filter = $('#' + cmd + "_filter").val();
 	}
+	var params = "isAjax=true&cmd=" + cmd + "&limit=" + limit + "&filter=" + filter + "&header_size=" + header_size;
+	jQuery.ajax(url,
+		{
+		type: 'post',
+		data: params,
+		success: update_filter_callback
+		}
+		);
+}
 
-	function update_filter_callback(transport) {
-		// First line contain field id to be updated
-		var responseTextArr = transport.responseText.split("\n");
-		var id = responseTextArr.shift();
+function update_filter_callback(html) {
+	// First line contain field id to be updated
+	var responseTextArr = html.split("\n");
+	var id = responseTextArr.shift();
+	$('#' + id).html(responseTextArr.join("\n"));
+}
 
-		document.getElementById(id).textContent = responseTextArr.join("\n");
-	}
-
-//]]>
-</script>
-
-<?php include("fbegin.inc"); ?>
-
-<script type="text/javascript">
-//<![CDATA[
-
-	function exec_all_cmds() {
+function exec_all_cmds() {
 <?php
 		foreach ($commands as $idx => $command) {
 			if ($command['has_filter']) {
@@ -221,37 +232,10 @@ function execCmds() {
 ?>
 	}
 
-if (typeof jQuery == 'undefined')
-	document.observe('dom:loaded', function(){setTimeout('exec_all_cmds()', 5000);});
-else
+events.push(function(){
 	jQuery(document).ready(function(){setTimeout('exec_all_cmds()', 5000);});
-
+});
 //]]>
 </script>
-
-<?php if ($savemsg) print_info_box($savemsg); ?>
-
-<div id="mainlevel">
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<?php
-	$tab_array = array();
-	$tab_array[] = array(gettext("Settings"), false, "/pkg_edit.php?xml=openbgpd.xml&id=0");
-	$tab_array[] = array(gettext("Neighbors"), false, "/pkg.php?xml=openbgpd_neighbors.xml");
-	$tab_array[] = array(gettext("Groups"), false, "/pkg.php?xml=openbgpd_groups.xml");
-	$tab_array[] = array(gettext("Raw config"), false, "/openbgpd_raw.php");
-	$tab_array[] = array(gettext("Status"), true, "/openbgpd_status.php");
-	display_top_tabs($tab_array);
-?>
-</table>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-	<tr><td class="tabcont" >
-		<div id="cmdspace" style="width:100%">
-		<?php listCmds(); ?>
-
-		<?php execCmds(); ?>
-		</div>
-	</td></tr>
-</table>
-</div>
 
 <?php include("foot.inc"); ?>

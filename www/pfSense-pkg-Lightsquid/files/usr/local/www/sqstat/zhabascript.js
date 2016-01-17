@@ -24,7 +24,7 @@ var offsetdivfrompointerX = 10; //Customize x offset of tooltip DIV relative to 
 var offsetdivfrompointerY = 14; //Customize y offset of tooltip DIV relative to pointer image. Tip: Set it to (height_of_pointer_image-1).
 
 document.write('<div id="dhtmltooltip"></div>'); //write out tooltip DIV
-document.write('<img id="dhtmlpointer" src="arrow.gif">'); //write out pointer image
+document.write('<i id="dhtmlpointer" class="fa fa-arrow-right"></i>'); //write out pointer image
 
 if (ie || ns6) {
     var tipobj = document.all ? document.all.dhtmltooltip : document.getElementById ? document.getElementById("dhtmltooltip") : "";

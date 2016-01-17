@@ -46,7 +46,7 @@
 	<requirements>Describe your package requirements here</requirements>
 	<faq>Currently there are no FAQ items provided.</faq>
 	<name>freeradiuseapconf</name>
-	<version>2.2.0</version>
+	<version>1.7</version>
 	<title>FreeRADIUS: EAP</title>
 	<aftersaveredirect>pkg_edit.php?xml=freeradiuseapconf.xml&amp;id=0</aftersaveredirect>
 	<include_file>/usr/local/pkg/freeradius.inc</include_file>

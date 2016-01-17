@@ -356,20 +356,6 @@ function lightsquid_validate_input($post, &$input_errors) {
 		$input_errors[] = "Please, configure Log Store Directory in Squid package 'General' settings first.";
 	}
 
-	/* SqStat - check external cache managers
-	 * This check is only needed for Squid 2.7 packages, any Squid 3.x package allows localhost as cache manager by default
-	 */
-	$ifmgr = "127.0.0.1";
-	if (get_pkg_id("squid") !== -1) {
-		if (is_array($config['installedpackages']['squidnac']['config'])) {
-			$ext_cachemanager = ($config['installedpackages']['squidnac']['config'][0]['ext_cachemanager'] ?: "");
-		} else {
-			$ext_cachemanager = "";
-		}
-		if (strpos($ext_cachemanager, $ifmgr) === false) {
-			$input_errors[] = "Please, add '{$ifmgr}' to Squid - Access Control - External Cache-Managers first.";
-		}
-	}
 	/* SqStat - check that Squid listens on loopback unless the proxy is set as transparent (which makes it listen on localhost automatically) */
 	if (is_array($config['installedpackages']['squid']['config'])) {
 		$active_interfaces = ($config['installedpackages']['squid']['config'][0]['active_interface'] ?: "");

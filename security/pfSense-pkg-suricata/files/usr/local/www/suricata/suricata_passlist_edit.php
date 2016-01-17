@@ -193,162 +193,133 @@ if ($_POST['save']) {
 	}
 }
 
-$pgtitle = gettext("Suricata: Pass List Edit - {$pconfig['name']}");
+$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Pass List Edit"));
 include_once("head.inc");
-?>
 
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC" >
-
-<?php
-include("fbegin.inc");
-?>
-<script type="text/javascript" src="/javascript/autosuggest.js">
-</script>
-<script type="text/javascript" src="/javascript/suggestions.js">
-</script>
-<form action="suricata_passlist_edit.php" method="post" name="iform" id="iform">
-<input name="id" type="hidden" value="<?=$id;?>" />
-
-<?php
 if ($input_errors)
 	print_input_errors($input_errors);
 if ($savemsg)
 	print_info_box($savemsg);
+
+$tab_array = array();
+$tab_array[] = array(gettext("Interfaces"), false, "/suricata/suricata_interfaces.php");
+$tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_global.php");
+$tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
+$tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php");
+$tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Pass Lists"), true, "/suricata/suricata_passlist.php");
+$tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
+$tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$instanceid}");
+$tab_array[] = array(gettext("Logs Mgmt"), false, "/suricata/suricata_logs_mgmt.php");
+$tab_array[] = array(gettext("SID Mgmt"), false, "/suricata/suricata_sid_mgmt.php");
+$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=suricata/suricata_sync.xml");
+$tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
+display_top_tabs($tab_array, true);
 ?>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tbody>
-<tr><td>
+<script type="text/javascript" src="/javascript/autosuggest.js"></script>
+<script type="text/javascript" src="/javascript/suggestions.js"></script>
+
 <?php
-	$tab_array = array();
-	$tab_array[] = array(gettext("Interfaces"), false, "/suricata/suricata_interfaces.php");
-	$tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_global.php");
-	$tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
-	$tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php");
-	$tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
-	$tab_array[] = array(gettext("Pass Lists"), true, "/suricata/suricata_passlist.php");
-	$tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
-	$tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$instanceid}");
-	$tab_array[] = array(gettext("Logs Mgmt"), false, "/suricata/suricata_logs_mgmt.php");
-	$tab_array[] = array(gettext("SID Mgmt"), false, "/suricata/suricata_sid_mgmt.php");
-	$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=suricata/suricata_sync.xml");
-	$tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
-	display_top_tabs($tab_array, true);
+$form = new Form;
+$section = new Form_Section('General Information');
+$section->addInput(new Form_Input(
+	'name',
+	'Name',
+	'text',
+	$pconfig['name']
+))->setPattern('[a-zA-Z0-9_]+')->setHelp('The list name may only consist of the characters \'a-z, A-Z, 0-9 and _\'.');
+$section->addInput(new Form_Input(
+	'descr',
+	'Description',
+	'text',
+	$pconfig['descr']
+))->setHelp('You may enter a description here for your reference.');
+$form->add($section);
+
+$section = new Form_Section('Auto-Generated IP Addresses');
+$section->addInput(new Form_Checkbox(
+	'localnets',
+	'Local Networks',
+	'Add firewall Locally-Attached Networks to the list (excluding WAN).',
+	$pconfig['localnets'] == 'yes' ? true:false,
+	'yes'
+));
+$section->addInput(new Form_Checkbox(
+	'wanips',
+	'WAN IPs',
+	'Add WAN interface IPs to the list.',
+	$pconfig['wangips'] == 'yes' ? true:false,
+	'yes'
+));
+$section->addInput(new Form_Checkbox(
+	'wangateips',
+	'WAN Gateways',
+	'Add WAN Gateways to the list.',
+	$pconfig['wangateips'] == 'yes' ? true:false,
+	'yes'
+));
+$section->addInput(new Form_Checkbox(
+	'wandnsips',
+	'WAN DNS Servers',
+	'Add WAN DNS servers to the list.',
+	$pconfig['wandnsips'] == 'yes' ? true:false,
+	'yes'
+));
+$section->addInput(new Form_Checkbox(
+	'vips',
+	'Virtual IP Addresses',
+	'Add Virtual IP Addresses to the list.',
+	$pconfig['vips'] == 'yes' ? true:false,
+	'yes'
+));
+$section->addInput(new Form_Checkbox(
+	'vpnips',
+	'VPN Addresses',
+	'Add VPN Addresses to the list.',
+	$pconfig['vpnips'] == 'yes' ? true:false,
+	'yes'
+));
+$form->add($section);
+
+$section = new Form_Section('Custom IP Address from Configured Alias');
+$section->addInput(new Form_Input(
+	'address',
+	'Assigned Alias',
+	'text',
+	$pconfig['address']
+))->setHelp('Enter the name of an existing Alias.')->setAttribute('title', gettext(trim(filter_expand_alias($pconfig['address']))));
+$form->add($section);
+
+// Include the Pass List ID in a hidden form field with any $_POST
+if (isset($id)) {
+	$form->addGlobal(new Form_Input(
+		'id',
+		'id',
+		'hidden',
+		$id
+	));
+}
+
+print($form);
 ?>
-	</td>
-</tr>
-<tr><td><div id="mainarea">
-<table id="maintable" class="tabcont" width="100%" border="0" cellpadding="6" cellspacing="0">
-	<tbody>
-	<tr>
-		<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Add the name and " .
-		"description of the file."); ?></td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncellreq"><?php echo gettext("Name"); ?></td>
-		<td class="vtable"><input name="name" type="text" id="name" class="formfld unknown" 
-			size="40" value="<?=htmlspecialchars($pconfig['name']);?>" /> <br />
-		<span class="vexpl"> <?php echo gettext("The list name may only consist of the " .
-		"characters \"a-z, A-Z, 0-9 and _\"."); ?>&nbsp;&nbsp;<span class="red"><?php echo gettext("Note:"); ?> </span>
-		<?php echo gettext("No Spaces or dashes."); ?> </span></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Description"); ?></td>
-		<td width="78%" class="vtable"><input name="descr" type="text" class="formfld unknown" 
-			id="descr" size="40" value="<?=$pconfig['descr'];?>" /> <br />
-		<span class="vexpl"> <?php echo gettext("You may enter a description here for your " .
-		"reference (not parsed)."); ?> </span></td>
-	</tr>
-	<tr>
-		<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Add auto-generated IP Addresses."); ?></td>
-	</tr>
 
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Local Networks"); ?></td>
-		<td width="78%" class="vtable"><input name="localnets" type="checkbox"
-			id="localnets" size="40" value="yes"
-			<?php if($pconfig['localnets'] == 'yes'){ echo "checked";} if($pconfig['localnets'] == ''){ echo "checked";} ?> />
-		<span class="vexpl"> <?php echo gettext("Add firewall Local Networks to the list (excluding WAN)."); ?> </span></td>
-	</tr>
-
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("WAN IPs"); ?></td>
-		<td width="78%" class="vtable"><input name="wanips" type="checkbox"
-			id="wanips" size="40" value="yes"
-			<?php if($pconfig['wanips'] == 'yes'){ echo "checked";} if($pconfig['wanips'] == ''){ echo "checked";} ?> />
-		<span class="vexpl"> <?php echo gettext("Add WAN interface IPs to the list."); ?> </span></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("WAN Gateways"); ?></td>
-		<td width="78%" class="vtable"><input name="wangateips"
-			type="checkbox" id="wangateips" size="40" value="yes"
-			<?php if($pconfig['wangateips'] == 'yes'){ echo "checked";} if($pconfig['wangateips'] == ''){ echo "checked";} ?> />
-		<span class="vexpl"> <?php echo gettext("Add WAN Gateways to the list."); ?> </span></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("WAN DNS servers"); ?></td>
-		<td width="78%" class="vtable"><input name="wandnsips"
-			type="checkbox" id="wandnsips" size="40" value="yes"
-			<?php if($pconfig['wandnsips'] == 'yes'){ echo "checked";} if($pconfig['wandnsips'] == ''){ echo "checked";} ?> />
-		<span class="vexpl"> <?php echo gettext("Add WAN DNS servers to the list."); ?> </span></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Virtual IP Addresses"); ?></td>
-		<td width="78%" class="vtable"><input name="vips" type="checkbox"
-			id="vips" size="40" value="yes"
-			<?php if($pconfig['vips'] == 'yes'){ echo "checked";} if($pconfig['vips'] == ''){ echo "checked";} ?> />
-		<span class="vexpl"> <?php echo gettext("Add Virtual IP Addresses to the list."); ?> </span></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("VPNs"); ?></td>
-		<td width="78%" class="vtable"><input name="vpnips" type="checkbox"
-			id="vpnips" size="40" value="yes"
-			<?php if($pconfig['vpnips'] == 'yes'){ echo "checked";} if($pconfig['vpnips'] == ''){ echo "checked";} ?> />
-		<span class="vexpl"> <?php echo gettext("Add VPN Addresses to the list."); ?> </span></td>
-	</tr>
-	<tr>
-		<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Add custom IP Addresses from configured Aliases."); ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell">
-		<?php echo gettext("Assigned Aliases:"); ?>
-		</td>
-		<td width="78%" class="vtable">
-		<input autocomplete="off" name="address" type="text" class="formfldalias" id="address" size="30" value="<?=htmlspecialchars($pconfig['address']);?>"
-		title="<?=trim(filter_expand_alias($pconfig['address']));?>"/>&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="button" class="formbtns" value="Aliases" onclick="selectAlias();" 
-		title="<?php echo gettext("Select an existing IP alias");?>"/>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top">&nbsp;</td>
-		<td width="78%">
-			<input id="save" name="save" type="submit" class="formbtn" value="Save" />
-			<input id="cancel" name="cancel" type="submit" class="formbtn" value="Cancel" />
-		</td>
-	</tr>
-	</tbody>
-</table>
-</div>
-</td></tr></tbody>
-</table>
-</form>
 <script type="text/javascript">
 <?php
-        $isfirst = 0;
-        $aliases = "";
-        $addrisfirst = 0;
-        $aliasesaddr = "";
-        if(isset($config['aliases']['alias']) && is_array($config['aliases']['alias']))
-                foreach($config['aliases']['alias'] as $alias_name) {
+		$isfirst = 0;
+		$aliases = "";
+		$addrisfirst = 0;
+		$aliasesaddr = "";
+		if(isset($config['aliases']['alias']) && is_array($config['aliases']['alias']))
+				foreach($config['aliases']['alias'] as $alias_name) {
 			if ($alias_name['type'] != "host" && $alias_name['type'] != "network")
 				continue;
-                        if($addrisfirst == 1) $aliasesaddr .= ",";
-                        $aliasesaddr .= "'" . $alias_name['name'] . "'";
-                        $addrisfirst = 1;
-                }
+						if($addrisfirst == 1) $aliasesaddr .= ",";
+						$aliasesaddr .= "'" . $alias_name['name'] . "'";
+						$addrisfirst = 1;
+				}
 ?>
-        var addressarray=new Array(<?php echo $aliasesaddr; ?>);
+		var addressarray=new Array(<?=$aliasesaddr; ?>);
 
 function createAutoSuggest() {
 <?php
@@ -363,10 +334,10 @@ function selectAlias() {
 
 	// Scrape current form field values and add to
 	// the select alias URL as a query string.
-	var loc = '/suricata/suricata_select_alias.php?id=<?=$id;?>&act=import&type=host|network';
+	var loc = '/suricata/suricata_select_alias.php?id=<?=$id?>&act=import&type=host|network';
 	loc = loc + '&varname=address&multi_ip=yes';
-	loc = loc + '&returl=<?=urlencode($_SERVER['PHP_SELF']);?>';
-	loc = loc + '&uuid=<?=$passlist_uuid;?>';
+	loc = loc + '&returl=<?=urlencode($_SERVER['PHP_SELF'])?>';
+	loc = loc + '&uuid=<?=$passlist_uuid?>';
 
 	// Iterate over just the specific form fields we want to pass to
 	// the select alias URL.
@@ -382,6 +353,5 @@ function selectAlias() {
 setTimeout("createAutoSuggest();", 500);
 
 </script>
-<?php include("fend.inc"); ?>
-</body>
-</html>
+
+<?php include("foot.inc"); ?>

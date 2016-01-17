@@ -43,7 +43,7 @@
 	</copyright>
 	<description>Backup</description>
 	<name>Backup Settings</name>
-	<version>0.2.0</version>
+	<version>0.3</version>
 	<title>Settings</title>
 	<include_file>/usr/local/pkg/backup.inc</include_file>
 	<menu>

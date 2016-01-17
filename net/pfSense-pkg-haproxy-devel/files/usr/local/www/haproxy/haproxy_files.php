@@ -29,9 +29,9 @@
 */
 $shortcut_section = "haproxy";
 require_once("guiconfig.inc");
-require_once("haproxy.inc");
-require_once("pkg_haproxy_tabs.inc");
-require_once("haproxy_htmllist.inc");
+require_once("haproxy/haproxy.inc");
+require_once("haproxy/haproxy_htmllist.inc");
+require_once("haproxy/pkg_haproxy_tabs.inc");
 
 $a_files = &$config['installedpackages']['haproxy']['files']['item'];
 if (!is_array($a_files)) $a_files = array();

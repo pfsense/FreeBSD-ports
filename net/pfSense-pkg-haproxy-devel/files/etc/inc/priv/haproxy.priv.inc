@@ -33,18 +33,18 @@ $priv_list['page-service-haproxy']['name'] = "WebCfg - Services: HAProxy package
 $priv_list['page-service-haproxy']['descr'] = "Allow access to HAProxy package GUI";
 $priv_list['page-service-haproxy']['match'] = array();
 
-$priv_list['page-service-haproxy']['match'][] = "haproxy_files.php*";
-$priv_list['page-service-haproxy']['match'][] = "haproxy_global.php*";
-$priv_list['page-service-haproxy']['match'][] = "haproxy_listeners.php*";
-$priv_list['page-service-haproxy']['match'][] = "haproxy_listeners_edit.php*";
-$priv_list['page-service-haproxy']['match'][] = "haproxy_pool_edit.php*";
-$priv_list['page-service-haproxy']['match'][] = "haproxy_pools.php*";
-$priv_list['page-service-haproxy']['match'][] = "haproxy_templates.php*";
+$priv_list['page-service-haproxy']['match'][] = "haproxy/haproxy_files.php*";
+$priv_list['page-service-haproxy']['match'][] = "haproxy/haproxy_global.php*";
+$priv_list['page-service-haproxy']['match'][] = "haproxy/haproxy_listeners.php*";
+$priv_list['page-service-haproxy']['match'][] = "haproxy/haproxy_listeners_edit.php*";
+$priv_list['page-service-haproxy']['match'][] = "haproxy/haproxy_pool_edit.php*";
+$priv_list['page-service-haproxy']['match'][] = "haproxy/haproxy_pools.php*";
+$priv_list['page-service-haproxy']['match'][] = "haproxy/haproxy_templates.php*";
 
 $priv_list['page-service-haproxy-stats'] = array();
 $priv_list['page-service-haproxy-stats']['name'] = "WebCfg - Services: HAProxy package stats";
 $priv_list['page-service-haproxy-stats']['descr'] = "Allow access to HAProxy package GUI stats";
 $priv_list['page-service-haproxy-stats']['match'] = array();
-$priv_list['page-service-haproxy-stats']['match'][] = "haproxy_stats.php*";
+$priv_list['page-service-haproxy-stats']['match'][] = "haproxy/haproxy_stats.php*";
 
 ?>

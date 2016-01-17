@@ -32,10 +32,10 @@
 $shortcut_section = "haproxy";
 include_once("guiconfig.inc");
 include_once("globals.inc");
-require_once("haproxy.inc");
-require_once("haproxy_utils.inc");
-require_once("pkg_haproxy_tabs.inc");
-require_once("haproxy_htmllist.inc");
+require_once("haproxy/haproxy.inc");
+require_once("haproxy/haproxy_utils.inc");
+require_once("haproxy/haproxy_htmllist.inc");
+require_once("haproxy/pkg_haproxy_tabs.inc");
 
 $simplefields = array('localstats_refreshtime', 'localstats_sticktable_refreshtime', 'log-send-hostname', 'ssldefaultdhparam',
   'email_level', 'email_myhostname', 'email_from', 'email_to',
@@ -210,9 +210,9 @@ $section->addInput(new Form_StaticText(
 $maxfiles = `sysctl kern.maxfiles | awk '{ print $2 }'`;
 $maxfilesperproc = `sysctl kern.maxfilesperproc | awk '{ print $2 }'`;
 $memusage = trim(`ps auxw | grep haproxy | grep -v grep | awk '{ print $5 }'`);
-if ($memusage)
+if ($memusage) {
 	$memusage = "Current memory usage: <b>{$memusage} kB.</b><br/>";
-
+}
 	$group = new Form_Group("Maximum connections");
 	$group->add(new Form_Input(
 		'maxconn',
@@ -220,7 +220,7 @@ if ($memusage)
 		'text',
 		$pconfig['maxconn'],
 		array()
-	))->setWidth(5)->setHelp(<<<EOD
+	))->setIsRequired()->setWidth(5)->setHelp(<<<EOD
 Sets the maximum per-process number of concurrent connections to X.<br/>
 					<strong>NOTE:</strong> setting this value too high will result in HAProxy not being able to allocate enough memory.<br/>
 				{$memusage}
@@ -418,9 +418,11 @@ $section->addInput(new Form_Textarea (
 	'advanced',
 	'Custom options',
 	$pconfig['advanced']
-))->setRows($textrowcount)->setNoWrap()->setHelp('NOTE: paste text into this box that you would like to pass thru in the global settings area.');
+))->setRows($textrowcount)->addClass('advanced')->setNoWrap()
+->setHelp('NOTE: paste text into this box that you would like to pass thru in the global settings area.');
 $form->add($section);
-
+/*
+Not needed anymore in 2.3 ? When it is add exact testcase/reproduction of the originating issue..
 $section = new Form_Section('Recalculate certificate chain.');
 $btnclear = new Form_Button(
 	'calculate_certificate_chain',
@@ -438,7 +440,7 @@ $section->addInput(new Form_StaticText(
 EOD
 );
 $form->add($section);
-
+*/
 $section = new Form_Section('Configuration synchronization');
 $section->addInput(new Form_Checkbox(
 	'enablesync',

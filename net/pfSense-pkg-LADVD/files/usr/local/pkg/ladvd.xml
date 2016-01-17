@@ -44,7 +44,7 @@
 	</copyright>
 	<description>Link Layer Discovery Protocol</description>
 	<name>LADVD</name>
-	<version>1.0.4.3</version>
+	<version>1.1</version>
 	<category>Network Management</category>
 	<title>Services: LADVD</title>
 	<include_file>/usr/local/pkg/ladvd.inc</include_file>

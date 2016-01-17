@@ -60,8 +60,8 @@ elseif (isset($_GET['id']) && is_numericint($_GET['id']));
 	$id = htmlspecialchars($_GET['id'], ENT_QUOTES | ENT_HTML401);
 
 if (is_null($id)) {
-        header("Location: /suricata/suricata_interfaces.php");
-        exit;
+		header("Location: /suricata/suricata_interfaces.php");
+		exit;
 }
 
 if (isset($_POST['action']))
@@ -209,7 +209,7 @@ if ($_POST["save"] && !$input_errors) {
 	/* See if assigned interface is already in use */
 	if (isset($_POST['interface'])) {
 		foreach ($a_rule as $k => $v) {
-			if (($v['interface'] == $_POST['interface']) && ($id <> $k)) {
+			if (($v['interface'] == $_POST['interface']) && ($id != $k)) {
 				$input_errors[] = gettext("The '{$_POST['interface']}' interface is already assigned to another Suricata instance.");
 				break;
 			}
@@ -446,20 +446,21 @@ if ($_POST["save"] && !$input_errors) {
 		$pconfig = $_POST;
 }
 
+function suricata_get_config_lists($lists) {
+
+	// This returns the array of lists identified by $lists
+	// stored in the config file if one exists.
+	$result = array();
+	if (is_array($config['installedpackages']['snortglobal'][$lists]['item']))
+		$result = $config['installedpackages']['snortglobal'][$lists]['item'];
+	return $result;
+}
+
 $if_friendly = convert_friendly_interface_to_friendly_descr($pconfig['interface']);
-$pgtitle = gettext("Suricata: Interface {$if_friendly} - Edit Settings");
+
+$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Edit Interface Settings - {$if_friendly}"));
 include_once("head.inc");
-?>
 
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-
-<?php include("fbegin.inc");?>
-
-<form action="suricata_interfaces_edit.php<?php echo "?id=$id";?>" method="post" name="iform" id="iform">
-<input name="id" type="hidden" value="<?=$id;?>"/>
-<input name="action" type="hidden" value="<?=$action;?>"/>
-
-<?php
 /* Display Alert message */
 if ($input_errors) {
 	print_input_errors($input_errors);
@@ -467,829 +468,643 @@ if ($input_errors) {
 if ($savemsg) {
 	print_info_box($savemsg);
 }
+
+$tab_array = array();
+$tab_array[] = array(gettext("Interfaces"), true, "/suricata/suricata_interfaces.php");
+$tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_global.php");
+$tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
+$tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
+$tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
+$tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
+$tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$id}");
+$tab_array[] = array(gettext("Logs Mgmt"), false, "/suricata/suricata_logs_mgmt.php");
+$tab_array[] = array(gettext("SID Mgmt"), false, "/suricata/suricata_sid_mgmt.php");
+$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=suricata/suricata_sync.xml");
+$tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
+display_top_tabs($tab_array, true);
+
+$tab_array = array();
+$menu_iface=($if_friendly?substr($if_friendly,0,5)." ":"Iface ");
+$tab_array[] = array($menu_iface . gettext("Settings"), true, "/suricata/suricata_interfaces_edit.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Categories"), false, "/suricata/suricata_rulesets.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Rules"), false, "/suricata/suricata_rules.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Flow/Stream"), false, "/suricata/suricata_flow_stream.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("App Parsers"), false, "/suricata/suricata_app_parsers.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Variables"), false, "/suricata/suricata_define_vars.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/suricata/suricata_barnyard.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata_ip_reputation.php?id={$id}");
+display_top_tabs($tab_array, true);
+
+$form = new Form;
+
+$section = new Form_Section('General Settings');
+$section->addInput(new Form_Checkbox(
+	'enable',
+	'Enable',
+	'Checking this box enables Suricata inspection on the interface.',
+	$pconfig['enable'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Select(
+	'interface',
+	'Interface',
+	$pconfig['interface'],
+	$interfaces
+))->setHelp('Choose which interface this Suricata instance applies to. In most cases, you will want to use WAN here if this is the first Suricata-configured interface.');
+$section->addInput(new Form_Input(
+	'descr',
+	'Description',
+	'text',
+	$pconfig['descr']
+))->setHelp('Enter a meaningful description here for your reference. The default is the interface name.');
+$form->add($section);
+
+$section = new Form_Section('Logging Settings');
+$section->addInput(new Form_Checkbox(
+	'alertsystemlog',
+	'Send Alerts to System Log',
+	'Suricata will send Alerts from this interface to the firewall\'s system log.',
+	$pconfig['alertsystemlog'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Select(
+	'alertsystemlog_facility',
+	'Log Facility',
+	$pconfig['alertsystemlog_facility'],
+	array(  "auth", "authpriv", "daemon", "kern", "security", "syslog", "user", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7" )
+))->setHelp('Select system log Facility to use for reporting. Default is local1.');
+$section->addInput(new Form_Select(
+	'alertsystemlog_priority',
+	'Log Priority',
+	$pconfig['alertsystemlog_priority'],
+	array( "emerg", "crit", "alert", "err", "warning", "notice", "info" )
+))->setHelp('Select system log Priority (Level) to use for reporting. Default is notice.');
+$section->addInput(new Form_Checkbox(
+	'enable_dns_log',
+	'Enable DNS Log',
+	'Suricata will log DNS requests and replies for the interface. Default is Not Checked.',
+	$pconfig['enable_dns_log'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'append_dns_log',
+	'Append DNS Log',
+	'Suricata will append-to instead of clearing DNS log file when restarting. Default is Checked.',
+	$pconfig['append_dns_log'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'enable_stats_log',
+	'Enable Stats Log',
+	'Suricata will periodically log statistics for the interface. Default is Not Checked.',
+	$pconfig['enable_stats_log'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Input(
+	'stats_upd_interval',
+	'Stats Update Interval',
+	'text',
+	$pconfig['stats_upd_interval']
+))->setHelp('Enter the update interval in seconds for collection and logging of statistics. Default is 10.');
+$section->addInput(new Form_Checkbox(
+	'append_stats_log',
+	'Append Stats Log',
+	'Suricata will append-to instead of clearing statistics log file when restarting. Default is Not Checked.',
+	$pconfig['append_stats_log'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'enable_http_log',
+	'Enable HTTP Log',
+	'Suricata will log decoded HTTP traffic for the interface. Default is Checked.',
+	$pconfig['enable_http_log'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'append_http_log',
+	'Append HTTP Log',
+	'Suricata will append-to instead of clearing HTTP log file when restarting. Default is Checked.',
+	$pconfig['append_http_log'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'http_log_extended',
+	'Log Extended HTTP Info',
+	'Suricata will log extended HTTP information. Default is Checked.',
+	$pconfig['http_log_extended'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'enable_tls_log',
+	'Enable TLS Log',
+	'Suricata will log TLS handshake traffic for the interface. Default is Not Checked.',
+	$pconfig['enable_tls_log'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'tls_log_extended',
+	'Log Extended TLS Info',
+	'Suricata will log extended TLS info such as fingerprint. Default is Checked.',
+	$pconfig['tls_log_extended'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'enable_json_file_log',
+	'Enable Tracked-Files Log',
+	'Suricata will log tracked files in JavaScript Object Notation (JSON) format. Default is Not Checked.',
+	$pconfig['enable_json_file_log'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'append_json_file_log',
+	'Append Tracked-Files Log',
+	'Suricata will append-to instead of clearing Tracked Files log file when restarting. Default is Checked.',
+	$pconfig['append_json_file_log'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'enable_file_store',
+	'Enable File-Store',
+	'Suricata will extract and store files from application layer streams. Default is Not Checked. This will consume a significant amount of disk space on a busy network when enabled.',
+	$pconfig['enable_file_store'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'enable_pcap_log',
+	'Enable Packet Log',
+	'Suricata will log decoded packets for the interface in pcap-format. Default is Not Checked. This can consume a significant amount of disk space when enabled.',
+	$pconfig['enable_pcap_log'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Input(
+	'max_pcap_log_size',
+	'Max Packet Log File Size',
+	'text',
+	$pconfig['max_pcap_log_size']
+))->setHelp('Enter maximum size in MB for a packet log file. Default is 32. When the packet log file size reaches the set limit, it will be rotated and a new one created.');
+$section->addInput(new Form_Input(
+	'max_pcap_log_files',
+	'Max Packet Log Files',
+	'text',
+	$pconfig['max_pcap_log_files']
+))->setHelp('Enter maximum number of packet log files to maintain. Default is 1000. When the number of packet log files reaches the set limit, the oldest file will be overwritten.');
+$section->addInput(new Form_Checkbox(
+	'enable_eve_log',
+	'EVE JSON Log',
+	'Suricata will output selected info in JSON format to a single file or to syslog. Default is Not Checked.',
+	$pconfig['enable_eve_log'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Select(
+	'eve_output_type',
+	'EVE Output Type',
+	$pconfig['eve_output_type'],
+	array("file", "syslog")
+))->setHelp('Select EVE log output destination. Choosing FILE is suggested, and is the default value.');
+$group = new Form_Group('EVE Logged Info');
+$group->add(new Form_Checkbox(
+	'eve_log_alerts',
+	'Alerts',
+	'Alerts',
+	$pconfig['eve_log_alerts'] == 'on' ? true:false,
+	'on'
+));
+$group->add(new Form_Checkbox(
+	'eve_log_http',
+	'HTTP Traffic',
+	'HTTP Traffic',
+	$pconfig['eve_log_http'] == 'on' ? true:false,
+	'on'
+));
+$group->add(new Form_Checkbox(
+	'enable_eve_log',
+	'DNS Requests/Replies',
+	'DNS Requests/Replies',
+	$pconfig['enable_eve_log'] == 'on' ? true:false,
+	'on'
+));
+$group->add(new Form_Checkbox(
+	'eve_log_tls',
+	'TLS Handshakes',
+	'TLS Handshakes',
+	$pconfig['eve_log_tls'] == 'on' ? true:false,
+	'on'
+));
+$group->add(new Form_Checkbox(
+	'eve_log_files',
+	'Tracked Files',
+	'Tracked Files',
+	$pconfig['eve_log_files'] == 'on' ? true:false,
+	'on'
+));
+$group->add(new Form_Checkbox(
+	'eve_log_ssh',
+	'SSH Handshakes',
+	'SSH Handshakes',
+	$pconfig['eve_log_ssh'] == 'on' ? true:false,
+	'on'
+));
+$group->setHelp('Choose the information to log via EVE JSON output. Default is All Checked.');
+$section->add($group);
+$form->add($section);
+
+$section = new Form_Section('Alert Settings');
+$section->addInput(new Form_Checkbox(
+	'blockoffenders',
+	'Block Offenders',
+	'Checking this option will automatically block hosts that generate a Suricata alert.',
+	$pconfig['blockoffenders'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'blockoffenderskill',
+	'Kill States',
+	'Checking this option will kill firewall states for the blocked IP.',
+	$pconfig['blockoffenderskill'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Select(
+	'blockoffendersip',
+	'Which IP to Block',
+	$pconfig['blockoffendersip'],
+	array( 'src','dst','both' )
+))->setHelp('Select which IP extracted from the packet you wish to block. Choosing BOTH is suggested, and it is the default value.');
+$form->add($section);
+
+$section = new Form_Section('Detection Engine Settings');
+$section->addInput(new Form_Input(
+	'max_pending_packets',
+	'Max Pending Packets',
+	'text',
+	$pconfig['max_pending_packets']
+))->setHelp('Enter number of simultaneous packets to process. Default is 1024.<br/>This controls the number simultaneous packets the engine can handle. Setting this higher generally keeps the threads more busy. The minimum value is 1 and the maximum value is 65,000.<br />Warning: Setting this too high can lead to degradation and a possible system crash by exhausting available memory.');
+$section->addInput(new Form_Select(
+	'detect_eng_profile',
+	'Detect-Engine Profile',
+	$pconfig['detect_eng_profile'],
+	array('low' => 'Low', 'medium' => 'Medium', 'high' => 'High')
+))->setHelp('Choose a detection engine profile. Default is Medium.<br />MEDIUM is recommended for most systems because it offers a good balance between memory consumption and performance. LOW uses less memory, but it offers lower performance. HIGH consumes a large amount of memory, but it offers the highest performance.');
+$section->addInput(new Form_Select(
+	'mpm_algo',
+	'Pattern Matcher Algorithm',
+	$pconfig['mpm_algo'],
+	array('ac' => 'AC', 'ac-gfbs' => 'AC-GFBS', 'b2g' => 'B2G', 'b2gc' => 'B2GC', 'b2gm' => 'B2GM', 'b3g' => 'B3G', 'wumanber' => 'WUMANBER')
+))->setHelp('Choose a multi-pattern matcher (MPM) algorithm. AC is the default, and is the best choice for almost all systems.	');
+$section->addInput(new Form_Select(
+	'sgh_mpm_context',
+	'Signature Group Header MPM Context',
+	$pconfig['sgh_mpm_context'],
+	array('auto' => 'Auto', 'full' => 'Full', 'single' => 'Single')
+))->setHelp('Choose a Signature Group Header multi-pattern matcher context. Default is Auto.<br />AUTO means Suricata selects between Full and Single based on the MPM algorithm chosen. FULL means every Signature Group has its own MPM context. SINGLE means all Signature Groups share a single MPM context. Using FULL can improve performance at the expense of significant memory consumption.');
+$section->addInput(new Form_Input(
+	'inspect_recursion_limit',
+	'Inspection Recursion Limit',
+	'text',
+	$pconfig['inspect_recursion_limit']
+))->setHelp('Enter limit for recursive calls in content inspection code. Default is 3000.<br />When set to 0 an internal default is used. When left blank there is no recursion limit.');
+$section->addInput(new Form_Checkbox(
+	'delayed_detect',
+	'Delayed Detect',
+	'Suricata will build list of signatures after packet capture threads have started. Default is Not Checked.',
+	$pconfig['delayed_detect'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'intf_promisc_mode',
+	'Promiscuous Mode',
+	'Suricata will place the monitored interface in promiscuous mode when checked. Default is Checked.',
+	$pconfig['intf_promisc_mode'] == 'on' ? true:false,
+	'on'
+));
+$form->add($section);
+
+$section = new Form_Section('Networks Suricata Should Inspect and Protect');
+$group = new Form_Group('Home Net');
+$group->add(new Form_Select(
+	'homelistname',
+	'Home Net',
+	$pconfig['homelistname'],
+	suricata_get_config_lists('whitelist')
+))->setHelp('Choose the Home Net you want this interface to use.');
+$group->add(new Form_Button(
+	'btnHomeNet',
+	' ' . 'View List',
+	'#',
+	'fa-file-text-o'
+))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('data-toggle', 'modal')->setAttribute('data-target', '#homenet');
+$group->setHelp('Default Home Net adds only local networks, WAN IPs, Gateways, VPNs and VIPs.' . '<br />' .
+		'Create an Alias to hold a list of friendly IPs that the firewall cannot see or to customize the default Home Net.');
+$section->add($group);
+
+$group = new Form_Group('External Net');
+$group->add(new Form_Select(
+	'externallistname',
+	'External Net',
+	$pconfig['externallistname'],
+	suricata_get_config_lists('whitelist')
+))->setHelp('Choose the External Net you want this interface to use.');
+$group->add(new Form_Button(
+	'btnExternalNet',
+	' ' . 'View List',
+	'#',
+	'fa-file-text-o'
+))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('data-target', '#externalnet')->setAttribute('data-toggle', 'modal');
+$group->setHelp('External Net is networks that are not Home Net.  Most users should leave this setting at default.' . '<br />' .
+		'Create a Pass List and add an Alias to it, and then assign the Pass List here for custom External Net settings.');
+$section->add($group);
+
+$group = new Form_Group('Pass List');
+$group->addClass('passlist');
+$group->add(new Form_Select(
+	'whitelistname',
+	'Pass List',
+	$pconfig['whitelistname'],
+	suricata_get_config_lists('whitelist')
+))->setHelp('Choose the Pass List you want this interface to use. Addresses in a Pass List are never blocked. ');
+$group->add(new Form_Button(
+	'btnWhitelist',
+	' ' . 'View List',
+	'#',
+	'fa-file-text-o'
+))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('data-target', '#whitelist')->setAttribute('data-toggle', 'modal');
+$group->setHelp('The default Pass List adds local networks, WAN IPs, Gateways, VPNs and VIPs.  Create an Alias to customize.' . '<br />' .
+		'This option will only be used when block offenders is on.');
+$section->add($group);
+$form->add($section);
+
+// Add view HOME_NET modal pop-up
+$modal = new Modal('View HOME_NET', 'homenet', 'large', 'Close');
+$modal->addInput(new Form_Textarea (
+	'homenet_text',
+	'',
+	'...Loading...'
+))->removeClass('form-control')->addClass('row-fluid col-sm-10')->setAttribute('rows', '10')->setAttribute('wrap', 'off');
+$form->add($modal);
+
+// Add view EXTERNAL_NET modal pop-up
+$modal = new Modal('View EXTERNAL_NET', 'externalnet', 'large', 'Close');
+$modal->addInput(new Form_Textarea (
+	'externalnet_text',
+	'',
+	'...Loading...'
+))->removeClass('form-control')->addClass('row-fluid col-sm-10')->setAttribute('rows', '10')->setAttribute('wrap', 'off');
+$form->add($modal);
+
+// Add view PASS_LIST modal pop-up
+$modal = new Modal('View PASS LIST', 'whitelist', 'large', 'Close');
+$modal->addInput(new Form_Textarea (
+	'whitelist_text',
+	'',
+	'...Loading...'
+))->removeClass('form-control')->addClass('row-fluid col-sm-10')->setAttribute('rows', '10')->setAttribute('wrap', 'off');
+$form->add($modal);
+
+$section = new Form_Section('Alert Suppression and Filtering');
+$group = new Form_Group('Alert Suppression and Filtering');
+$group->add(new Form_Select(
+	'suppresslistname',
+	'Alert Suppression and Filtering',
+	$pconfig['suppresslistname'],
+	suricata_get_config_lists('suppress')
+))->setHelp('Choose the suppression or filtering file you want this interface to use. Default option disables suppression and filtering.');
+$group->add(new Form_Button(
+	'btnSuppressList',
+	' ' . 'View List',
+	'#',
+	'fa-file-text-o'
+))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('data-target', '#suppresslist')->setAttribute('data-toggle', 'modal');
+$section->add($group);
+$form->add($section);
+
+// Add view SUPPRESS_LIST modal pop-up
+$modal = new Modal('View Suppress List', 'suppresslist', 'large', 'Close');
+$modal->addInput(new Form_Textarea (
+	'suppresslist_text',
+	'',
+	'...Loading...'
+))->removeClass('form-control')->addClass('row-fluid col-sm-10')->setAttribute('rows', '10')->setAttribute('wrap', 'off');
+$form->add($modal);
+
+$section = new Form_Section('Arguments here will be automatically inserted into the Suricata configuration');
+$section->addInput(new Form_Textarea (
+	'configpassthru',
+	'Advanced Configuration Pass-Through',
+	$pconfig['configpassthru']
+))->setHelp('Enter any additional configuration parameters to add to the Snort configuration here, separated by a newline');
+$form->add($section);
+
+print($form);
 ?>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tbody>
-<tr><td>
-<?php
-    $tab_array = array();
-	$tab_array[] = array(gettext("Interfaces"), true, "/suricata/suricata_interfaces.php");
-	$tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_global.php");
-	$tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
-	$tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
-	$tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
-	$tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
-	$tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
-	$tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$id}");
-	$tab_array[] = array(gettext("Logs Mgmt"), false, "/suricata/suricata_logs_mgmt.php");
-	$tab_array[] = array(gettext("SID Mgmt"), false, "/suricata/suricata_sid_mgmt.php");
-	$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=suricata/suricata_sync.xml");
-	$tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
-	display_top_tabs($tab_array, true);
-	echo '</td></tr>';
-	echo '<tr><td class="tabnavtbl">';
-	$tab_array = array();
-	$menu_iface=($if_friendly?substr($if_friendly,0,5)." ":"Iface ");
-	$tab_array[] = array($menu_iface . gettext("Settings"), true, "/suricata/suricata_interfaces_edit.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Categories"), false, "/suricata/suricata_rulesets.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Rules"), false, "/suricata/suricata_rules.php?id={$id}");
-        $tab_array[] = array($menu_iface . gettext("Flow/Stream"), false, "/suricata/suricata_flow_stream.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("App Parsers"), false, "/suricata/suricata_app_parsers.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Variables"), false, "/suricata/suricata_define_vars.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/suricata/suricata_barnyard.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata_ip_reputation.php?id={$id}");
-	display_top_tabs($tab_array, true);
-?>
-</td></tr>
-<tr><td><div id="mainarea">
-<table id="maintable" class="tabcont" width="100%" border="0" cellpadding="6" cellspacing="0">
-	<tbody>
-	<tr>
-		<td colspan="2" class="listtopic"><?php echo gettext("General Settings"); ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncellreq"><?php echo gettext("Enable"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="enable" type="checkbox" value="on" <?php if ($pconfig['enable'] == "on") echo "checked"; ?> onClick="enable_change(false)"/> 
-			<?php echo gettext("Checking this box enables Suricata inspection on the interface."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncellreq"><?php echo gettext("Interface"); ?></td>
-		<td width="78%" class="vtable">
-			<select name="interface" class="formselect" tabindex="0">
-		<?php
-			foreach ($interfaces as $iface => $ifacename): ?>
-				<option value="<?=$iface;?>"
-			<?php if ($iface == $pconfig['interface']) echo " selected"; ?>><?=htmlspecialchars($ifacename);?>
-				</option>
-			<?php endforeach; ?>
-			</select>&nbsp;&nbsp;
-			<span class="vexpl"><?php echo gettext("Choose which interface this Suricata instance applies to."); ?><br/>
-			<span class="red"><?php echo gettext("Hint:"); ?></span>&nbsp;<?php echo gettext("In most cases, you'll want to use WAN here if this is the first Suricata-configured interface."); ?></span><br/></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncellreq"><?php echo gettext("Description"); ?></td>
-		<td width="78%" class="vtable"><input name="descr" type="text" 
-		class="formfld unknown" id="descr" size="40" value="<?=htmlspecialchars($pconfig['descr']); ?>"/> <br/>
-		<span class="vexpl"><?php echo gettext("Enter a meaningful description here for your reference.  The default is the interface name."); ?></span><br/></td>
-	</tr>
-<tr>
-	<td colspan="2" class="listtopic"><?php echo gettext("Logging Settings"); ?></td>
-</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Send Alerts to System Log"); ?></td>
-		<td width="78%" class="vtable"><input name="alertsystemlog" type="checkbox" value="on" onclick="toggle_system_log();" <?php if ($pconfig['alertsystemlog'] == "on") echo "checked"; ?>/>
-			<?php echo gettext("Suricata will send Alerts from this interface to the firewall's system log."); ?></td>
-	</tr>
-	<tbody id="alertsystemlog_rows">
-		<tr>
-			<td width="22%" valign="top" class="vncell"><?php echo gettext("Log Facility"); ?></td>
-			<td width="78%" class="vtable">
-				<select name="alertsystemlog_facility" id="alertsystemlog_facility" class="formselect">
-				<?php
-					$log_facility = array(  "auth", "authpriv", "daemon", "kern", "security", "syslog", "user", "local0",
-								"local1", "local2", "local3", "local4", "local5", "local6", "local7" );
-					foreach ($log_facility as $facility) {
-						$selected = "";
-						if ($facility == $pconfig['alertsystemlog_facility'])
-							$selected = " selected";
-						echo "<option value='{$facility}'{$selected}>" . $facility . "</option>\n";
-					}
-				?></select>&nbsp;&nbsp;
-				<?php echo gettext("Select system log Facility to use for reporting.  Default is ") . "<strong>" . gettext("local1") . "</strong>."; ?>
-			</td>
-		</tr>
-		<tr>
-			<td width="22%" valign="top" class="vncell"><?php echo gettext("Log Priority"); ?></td>
-			<td width="78%" class="vtable">
-				<select name="alertsystemlog_priority" id="alertsystemlog_priority" class="formselect">
-				<?php
-					$log_priority = array( "emerg", "crit", "alert", "err", "warning", "notice", "info" );
-					foreach ($log_priority as $priority) {
-						$selected = "";
-						if ($priority == $pconfig['alertsystemlog_priority'])
-							$selected = " selected";
-						echo "<option value='{$priority}'{$selected}>" . $priority . "</option>\n";
-					}
-				?></select>&nbsp;&nbsp;
-				<?php echo gettext("Select system log Priority (Level) to use for reporting.  Default is ") . "<strong>" . gettext("notice") . "</strong>."; ?>
-			</td>
-		</tr>
-	</tbody>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Enable DNS Log"); ?></td>
-		<td width="78%" class="vtable"><input name="enable_dns_log" type="checkbox" value="on" <?php if ($pconfig['enable_dns_log'] == "on") echo "checked"; ?> 
-			onClick="toggle_dns_log();" id="enable_dns_log"/>
-			<?php echo gettext("Suricata will log DNS requests and replies for the interface.  Default is ") . "<strong>" . gettext("Not Checked") . "</strong>."; ?>
-		</td>
-	</tr>
-	<tr id="dns_log_append_row">
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Append DNS Log"); ?></td>
-		<td width="78%" class="vtable"><input name="append_dns_log" type="checkbox" value="on" <?php if ($pconfig['append_dns_log'] == "on") echo "checked"; ?>/>
-			<?php echo gettext("Suricata will append-to instead of clearing DNS log file when restarting.  Default is ") . "<strong>" . gettext("Checked") . "</strong>."; ?></td>
-	</tr>
+<script type="text/javascript">
+//<![CDATA[
+events.push(function(){
 
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Enable Stats Log"); ?></td>
-		<td width="78%" class="vtable"><input name="enable_stats_log" type="checkbox" value="on" <?php if ($pconfig['enable_stats_log'] == "on") echo "checked"; ?> 
-			onClick="toggle_stats_log();" id="enable_stats_log"/>
-			<?php echo gettext("Suricata will periodically log statistics for the interface.  Default is ") . "<strong>" . gettext("Not Checked") . "</strong>."; ?>
-			<div id="stats_log_warning" style="display: none;"><br/><span class="red"><strong><?php echo gettext("Warning: ") . "</strong></span>" . 
-			gettext("The stats log file can become quite large, especially when append mode is enabled!"); ?></div></td>
-	</tr>
-	<tr id="stats_interval_row">
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Stats Update Interval"); ?></td>
-		<td width="78%" class="vtable"><input name="stats_upd_interval" type="text" 
-			class="formfld unknown" id="stats_upd_interval" size="8" value="<?=htmlspecialchars($pconfig['stats_upd_interval']); ?>"/>&nbsp;
-			<?php echo gettext("Enter the update interval in ") . "<strong>" . gettext("seconds") . "</strong>" . gettext(" for stats updating.  Default is ") . "<strong>" . 
-			gettext("10") . "</strong>."; ?><br/><?php echo gettext("Sets the update interval, in seconds, for the collection and logging of statistics.") ?></td>
-	</tr>
-	<tr id="stats_log_append_row">
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Append Stats Log"); ?></td>
-		<td width="78%" class="vtable"><input name="append_stats_log" type="checkbox" value="on" <?php if ($pconfig['append_stats_log'] == "on") echo "checked"; ?>/>
-			<?php echo gettext("Suricata will append-to instead of clearing statistics log file when restarting.  Default is ") . "<strong>" . gettext("Not Checked") . "</strong>."; ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Enable HTTP Log"); ?></td>
-		<td width="78%" class="vtable"><input name="enable_http_log" type="checkbox" value="on" <?php if ($pconfig['enable_http_log'] == "on") echo "checked"; ?> 
-			onClick="toggle_http_log()" id="enable_http_log"/>
-			<?php echo gettext("Suricata will log decoded HTTP traffic for the interface.  Default is ") . "<strong>" . gettext("Checked") . "</strong>."; ?></td>
-	</tr>
-	<tr id="http_log_append_row">
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Append HTTP Log"); ?></td>
-		<td width="78%" class="vtable"><input name="append_http_log" type="checkbox" value="on" <?php if ($pconfig['append_http_log'] == "on") echo "checked"; ?>/>
-			<?php echo gettext("Suricata will append-to instead of clearing HTTP log file when restarting.  Default is ") . "<strong>" . gettext("Checked") . "</strong>."; ?></td>
-	</tr>
-	<tr id="http_log_extended_row">
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Log Extended HTTP Info"); ?></td>
-		<td width="78%" class="vtable"><input name="http_log_extended" type="checkbox" value="on" <?php if ($pconfig['http_log_extended'] == "on") echo "checked"; ?>/>
-			<?php echo gettext("Suricata will log extended HTTP information.  Default is ") . "<strong>" . gettext("Checked") . "</strong>."; ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Enable TLS Log"); ?></td>
-		<td width="78%" class="vtable"><input name="enable_tls_log" type="checkbox" value="on" <?php if ($pconfig['enable_tls_log'] == "on") echo "checked"; ?> 
-			onClick="toggle_tls_log()" id="enable_tls_log"/>
-			<?php echo gettext("Suricata will log TLS handshake traffic for the interface.  Default is ") . "<strong>" . gettext("Not Checked") . "</strong>."; ?></td>
-	</tr>
-	<tr id="tls_log_extended_row">
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Log Extended TLS Info"); ?></td>
-		<td width="78%" class="vtable"><input name="tls_log_extended" type="checkbox" value="on" <?php if ($pconfig['tls_log_extended'] == "on") echo "checked"; ?>/>
-			<?php echo gettext("Suricata will log extended TLS info such as fingerprint.  Default is ") . "<strong>" . gettext("Checked") . "</strong>."; ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Enable Tracked-Files Log"); ?></td>
-		<td width="78%" class="vtable"><input name="enable_json_file_log" type="checkbox" value="on" <?php if ($pconfig['enable_json_file_log'] == "on") echo "checked"; ?> 
-			onClick="toggle_json_file_log()" id="enable_json_file_log"/>
-			<?php echo gettext("Suricata will log tracked files in JavaScript Object Notation (JSON) format.  Default is ") . "<strong>" . gettext("Not Checked") . "</strong>."; ?></td>
-	</tr>
-	<tr id="tracked_files_append_row">
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Append Tracked-Files Log"); ?></td>
-		<td width="78%" class="vtable"><input name="append_json_file_log" type="checkbox" value="on" <?php if ($pconfig['append_json_file_log'] == "on") echo "checked"; ?> 
-			id="append_json_file_log"/>
-			<?php echo gettext("Suricata will append-to instead of clearing Tracked Files log file when restarting.  Default is ") . "<strong>" . gettext("Checked") . "</strong>."; ?></td>
-	</tr>
-	<tr id="tracked_files_magic_row">
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Enable Logging Magic for Tracked-Files"); ?></td>
-		<td width="78%" class="vtable"><input name="enable_tracked_files_magic" type="checkbox" value="on" <?php if ($pconfig['enable_tracked_files_magic'] == "on") echo "checked"; ?> 
-			id="enable_tracked_files_magic"/>
-			<?php echo gettext("Suricata will force logging magic on all logged Tracked Files.  Default is ") . "<strong>" . gettext("Not Checked") . "</strong>."; ?></td>
-	</tr>
-	<tr id="tracked_files_md5_row">
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Enable MD5 for Tracked-Files"); ?></td>
-		<td width="78%" class="vtable"><input name="enable_tracked_files_md5" type="checkbox" value="on" <?php if ($pconfig['enable_tracked_files_md5'] == "on") echo "checked"; ?> 
-			id="enable_tracked_files_md5"/>
-			<?php echo gettext("Suricata will generate MD5 checksums for all logged Tracked Files.  Default is ") . "<strong>" . gettext("Not Checked") . "</strong>."; ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Enable File-Store"); ?></td>
-		<td width="78%" class="vtable"><input name="enable_file_store" type="checkbox" value="on" <?php if ($pconfig['enable_file_store'] == "on") echo "checked"; ?> 
-		onClick="toggle_file_store()" id="enable_file_store"/>
-			<?php echo gettext("Suricata will extract and store files from application layer streams.  Default is ") . "<strong>" . gettext("Not Checked") . "</strong>."; ?>
-			<div id="file_store_warning" style="display: none;"><br/><span class="red"><strong><?php echo gettext("Warning: ") . "</strong></span>" . 
-			gettext("This will consume a significant amount of disk space on a busy network when enabled!"); ?></div>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Enable Packet Log"); ?></td>
-		<td width="78%" class="vtable"><input name="enable_pcap_log" id="enable_pcap_log" type="checkbox" value="on" <?php if ($pconfig['enable_pcap_log'] == "on") echo "checked"; ?> 
-			onClick="toggle_pcap_log()"/>
-			<?php echo gettext("Suricata will log decoded packets for the interface in pcap-format.  Default is ") . "<strong>" . gettext("Not Checked") . "</strong>."; ?>
-			<div id="file_pcap_warning" style="display: none;"><br/><span class="red"><strong><?php echo gettext("Warning: ") . "</strong></span>" . 
-			gettext("This can consume a significant amount of disk space when enabled!"); ?></div>
-		</td>
-	</tr>
-	<tr id="pcap_log_size_row">
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Max Packet Log File Size"); ?></td>
-		<td width="78%" class="vtable"><input name="max_pcap_log_size" type="text" 
-			class="formfld unknown" id="max_pcap_log_size" size="8" value="<?=htmlspecialchars($pconfig['max_pcap_log_size']); ?>"/>&nbsp;
-			<?php echo gettext("Enter maximum size in ") . "<strong>" . gettext("MB") . "</strong>" . gettext(" for a packet log file.  Default is ") . "<strong>" . 
-			gettext("32") . "</strong>."; ?><br/><br/><?php echo gettext("When the packet log file size reaches the set limit, it will be rotated and a new one created.") ?></td>
-	</tr>
-	<tr id="pcap_log_max_row">
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Max Packet Log Files"); ?></td>
-		<td width="78%" class="vtable"><input name="max_pcap_log_files" type="text" 
-			class="formfld unknown" id="max_pcap_log_files" size="8" value="<?=htmlspecialchars($pconfig['max_pcap_log_files']); ?>"/>&nbsp;
-			<?php echo gettext("Enter maximum number of packet log files to maintain.  Default is ") . "<strong>" . 
-			gettext("1000") . "</strong>."; ?><br/><br/><?php echo gettext("When the number of packet log files reaches the set limit, the oldest file will be overwritten.") ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("EVE JSON Log"); ?></td>
-		<td width="78%" class="vtable"><input name="enable_eve_log" id="enable_eve_log" type="checkbox" value="on" <?php if ($pconfig['enable_eve_log'] == "on") echo "checked"; ?> 
-			onClick="toggle_eve_log()"/>
-			<?php echo gettext("Suricata will output selected info in JSON format to a single file or to syslog.  Default is ") . "<strong>" . gettext("Not Checked") . "</strong>."; ?>
-			<div id="file_eve_warning" style="display: none;"><br/><span class="red"><strong><?php echo gettext("Warning: ") . "</strong></span>" . 
-			gettext("This can consume a significant amount of disk space when enabled!"); ?></div>
-		</td>
-	</tr>
-	<tbody id="eve_log_option_rows">
-		<tr>
-			<td width="22%" valign="top" class="vncell"><?php echo gettext("EVE Output Type"); ?></td>
-			<td width="78%" class="vtable">
-				<select name="eve_output_type" class="formselect" id="eve_output_type"  onChange="eveOutSelect();" >
-				<?php
-					foreach (array("file", "syslog") as $btype) {
-						if ($btype == $pconfig['eve_output_type'])
-							echo "<option value='{$btype}' selected>";
-						else
-							echo "<option value='{$btype}'>";
-						echo htmlspecialchars($btype) . '</option>';
-					}
-				?> 
-				</select>&nbsp;&nbsp;
-				<?php echo gettext("Select EVE log output destination."); ?><br/>
-				<span class="red"><?php echo gettext("Hint:") . "</span>&nbsp;" . gettext("Choosing FILE is suggested, and is the default value."); ?><br/>
-			</td>
-		</tr>
-		<tr id="eve_systemlog_facility_row">
-			<td width="22%" valign="top" class="vncell"><?php echo gettext("EVE Syslog Facility"); ?></td>
-			<td width="78%" class="vtable">
-				<select name="eve_systemlog_facility" id="eve_systemlog_facility" class="formselect">
-				<?php
-					$log_facility = array(  "auth", "authpriv", "daemon", "kern", "security", "syslog", "user", "local0",
-								"local1", "local2", "local3", "local4", "local5", "local6", "local7" );
-					foreach ($log_facility as $facility) {
-						$selected = "";
-						if ($facility == $pconfig['eve_systemlog_facility'])
-							$selected = " selected";
-						echo "<option value='{$facility}'{$selected}>" . $facility . "</option>\n";
-					}
-				?></select>&nbsp;&nbsp;
-				<?php echo gettext("Select system log Facility to use for reporting by EVE.  Default is ") . "<strong>" . gettext("local1") . "</strong>."; ?>
-			</td>
-		</tr>
-		<tr id="eve_systemlog_priority_row">
-			<td width="22%" valign="top" class="vncell"><?php echo gettext("EVE Syslog Priority"); ?></td>
-			<td width="78%" class="vtable">
-				<select name="eve_systemlog_priority" id="eve_systemlog_priority" class="formselect">
-				<?php
-					$log_priority = array( "emerg", "crit", "alert", "err", "warning", "notice", "info" );
-					foreach ($log_priority as $priority) {
-						$selected = "";
-						if ($priority == $pconfig['eve_systemlog_priority'])
-							$selected = " selected";
-						echo "<option value='{$priority}'{$selected}>" . $priority . "</option>\n";
-					}
-				?></select>&nbsp;&nbsp;
-				<?php echo gettext("Select system log Priority (Level) to use for reporting by EVE.  Default is ") . "<strong>" . gettext("notice") . "</strong>."; ?>
-			</td>
-		</tr>
-		<tr>
-			<td width="22%" valign="top" class="vncell"><?php echo gettext("EVE Logged Info"); ?></td>
-			<td width="78%" class="vtable"><?php echo gettext("Choose the information to log via EVE JSON output.  Default is ") . "<strong>" . gettext("All Checked") . "</strong>."; ?><br/>
-				<table width="100%" cellpadding="0" cellspacing="0" border="0">
-					<tbody>
-					<tr>
-						<td class="vexpl"><input name="eve_log_alerts" id="eve_log_alerts" type="checkbox" value="on" 
-							<?php if ($pconfig['eve_log_alerts'] == "on") echo "checked"; ?>/>Alerts
-						</td>
-						<td class="vexpl"><input name="eve_log_http" id="eve_log_http" type="checkbox" value="on" 
-							<?php if ($pconfig['eve_log_http'] == "on") echo "checked"; ?>/>HTTP Traffic
-						</td>
-						<td class="vexpl"><input name="eve_log_dns" id="eve_log_dns" type="checkbox" value="on" 
-							<?php if ($pconfig['eve_log_dns'] == "on") echo "checked"; ?>/>DNS Requests/Replies
-						</td>
-					</tr>
-					<tr>
-						<td class="vexpl"><input name="eve_log_tls" id="eve_log_tls" type="checkbox" value="on" onClick="toggle_eve_tls();" 
-							<?php if ($pconfig['eve_log_tls'] == "on") echo "checked"; ?>/>TLS Handshakes
-						</td>
-						<td class="vexpl"><input name="eve_log_files" id="eve_log_files" type="checkbox" value="on" 
-							<?php if ($pconfig['eve_log_files'] == "on") echo "checked"; ?>/>Tracked Files
-						</td>
-						<td class="vexpl"><input name="eve_log_ssh" id="eve_log_ssh" type="checkbox" value="on" 
-							<?php if ($pconfig['eve_log_ssh'] == "on") echo "checked"; ?>/>SSH Handshakes
-						</td>
-					</tr>
-					</tbody>
-				</table>
-			</td>
-		</tr>
-	</tbody>
-<tr>
-	<td colspan="2" class="listtopic"><?php echo gettext("Alert Settings"); ?></td>
-</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Block Offenders"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="blockoffenders" id="blockoffenders" type="checkbox" value="on"
-			<?php if ($pconfig['blockoffenders'] == "on") echo "checked"; ?>
-			onClick="enable_blockoffenders()"/>
-			<?php echo gettext("Checking this option will automatically block hosts that generate a " . "Suricata alert."); ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Kill States"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="blockoffenderskill" id="blockoffenderskill" type="checkbox" value="on" <?php if ($pconfig['blockoffenderskill'] == "on") echo "checked"; ?>/>
-			<?php echo gettext("Checking this option will kill firewall states for the blocked IP."); ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Which IP to Block"); ?></td>
-		<td width="78%" class="vtable">
-			<select name="blockoffendersip" class="formselect" id="blockoffendersip">
-			<?php
-				foreach (array("src", "dst", "both") as $btype) {
-					if ($btype == $pconfig['blockoffendersip'])
-						echo "<option value='{$btype}' selected>";
-					else
-						echo "<option value='{$btype}'>";
-					echo htmlspecialchars($btype) . '</option>';
-				}
-			?>
-			</select>&nbsp;&nbsp;
-			<?php echo gettext("Select which IP extracted from the packet you wish to block."); ?><br/>
-			<span class="red"><?php echo gettext("Hint:") . "</span>&nbsp;" . gettext("Choosing BOTH is suggested, and it is the default value."); ?><br/>
-		</td>
-	</tr>
-<tr>
-	<td colspan="2" class="listtopic"><?php echo gettext("Detection Engine Settings"); ?></td>
-</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Max Pending Packets"); ?></td>
-		<td width="78%" class="vtable"><input name="max_pending_packets" type="text" 
-			class="formfld unknown" id="max_pending_packets" size="8" value="<?=htmlspecialchars($pconfig['max_pending_packets']); ?>"/>&nbsp;
-			<?php echo gettext("Enter number of simultaneous packets to process.  Default is ") . "<strong>" . 
-			gettext("1024") . "</strong>."; ?><br/><br/><?php echo gettext("This controls the number simultaneous packets the engine can handle. ") . 
-			gettext("Setting this higher generally keeps the threads more busy. The minimum value is 1 and the maximum value is 65,000. ") . "<br/><span class='red'><strong>" . 
-			gettext("Warning: ") . "</strong></span>" . gettext("Setting this too high can lead to degradation and a possible system crash by exhausting available memory.") ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Detect-Engine Profile"); ?></td>
-		<td width="78%" class="vtable">
-			<select name="detect_eng_profile" class="formselect" id="detect_eng_profile">
-				<?php
-					$interfaces2 = array('low' => 'Low', 'medium' => 'Medium', 'high' => 'High');
-					foreach ($interfaces2 as $iface2 => $ifacename2): ?>
-					<option value="<?=$iface2;?>"
-					<?php if ($iface2 == $pconfig['detect_eng_profile']) echo "selected"; ?>>
-					<?=htmlspecialchars($ifacename2);?></option>
-					<?php endforeach; ?>
-			</select>&nbsp;&nbsp;
-			<?php echo gettext("Choose a detection engine profile. ") . "<strong>" . gettext("Default") . 
-			"</strong>" . gettext(" is ") . "<strong>" . gettext("Medium") . "</strong>"; ?>.<br/><br/>
-			<?php echo gettext("MEDIUM is recommended for most systems because it offers a good " . 
-			"balance between memory consumption and performance.  LOW uses less memory, but it offers lower performance.  " . 
-			"HIGH consumes a large amount of memory, but it offers the highest performance."); ?>
-			<br/></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Pattern Matcher Algorithm"); ?></td>
-		<td width="78%" class="vtable">
-			<select name="mpm_algo" class="formselect" id="mpm_algo">
-				<?php
-					$interfaces2 = array('ac' => 'AC', 'ac-gfbs' => 'AC-GFBS', 'b2g' => 'B2G',
-							     'b2gc' => 'B2GC', 'b2gm' => 'B2GM', 'b3g' => 'B3G', 'wumanber' => 'WUMANBER');
-					foreach ($interfaces2 as $iface2 => $ifacename2): ?>
-					<option value="<?=$iface2;?>"
-					<?php if ($iface2 == $pconfig['mpm_algo']) echo "selected"; ?>>
-					<?=htmlspecialchars($ifacename2);?></option>
-				<?php endforeach; ?>
-			</select>&nbsp;&nbsp;
-			<?php echo gettext("Choose a multi-pattern matcher (MPM) algorithm. ") . "<strong>" . gettext("Default") . 
-			"</strong>" . gettext(" is ") . "<strong>" . gettext("AC") . "</strong>"; ?>.<br/><br/>
-			<?php echo gettext("AC is the default, and is the best choice for almost all systems."); ?>
-			<br/></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Signature Group Header MPM Context"); ?></td>
-		<td width="78%" class="vtable">
-			<select name="sgh_mpm_context" class="formselect" id="sgh_mpm_context">
-				<?php
-					$interfaces2 = array('auto' => 'Auto', 'full' => 'Full', 'single' => 'Single');
-					foreach ($interfaces2 as $iface2 => $ifacename2): ?>
-					<option value="<?=$iface2;?>"
-					<?php if ($iface2 == $pconfig['sgh_mpm_context']) echo "selected"; ?>>
-					<?=htmlspecialchars($ifacename2);?></option>
-					<?php endforeach; ?>
-			</select>&nbsp;&nbsp;
-			<?php echo gettext("Choose a Signature Group Header multi-pattern matcher context. ") . "<strong>" . gettext("Default") . 
-			"</strong>" . gettext(" is ") . "<strong>" . gettext("Auto") . "</strong>"; ?>.<br/><br/>
-			<?php echo gettext("AUTO means Suricata selects between Full and Single based on the MPM algorithm " . 
-			"chosen.  FULL means every Signature Group has its own MPM context.  SINGLE means all Signature Groups share a single MPM " . 
-			"context.  Using FULL can improve performance at the expense of significant memory consumption."); ?>
-			<br/></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Inspection Recursion Limit"); ?></td>
-		<td width="78%" class="vtable"><input name="inspect_recursion_limit" type="text" 
-			class="formfld unknown" id="inspect_recursion_limit" size="8" value="<?=htmlspecialchars($pconfig['inspect_recursion_limit']); ?>"/>&nbsp;
-			<?php echo gettext("Enter limit for recursive calls in content inspection code.  Default is ") . "<strong>" . 
-			gettext("3000") . "</strong>."; ?><br/><br/><?php echo gettext("When set to 0 an internal default is used.  When left blank there is no recursion limit.") ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Delayed Detect"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="delayed_detect" id="delayed_detect" type="checkbox" value="on"
-			<?php if ($pconfig['delayed_detect'] == "on") echo " checked"; ?>/>
-			<?php echo gettext("Suricata will build list of signatures after packet capture threads have started.  Default is ") . 
-			"<strong>" . gettext("Not Checked") . "</strong>."; ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Promiscuous Mode"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="intf_promisc_mode" id="intf_promisc_mode" type="checkbox" value="on"
-			<?php if ($pconfig['intf_promisc_mode'] == "on") echo " checked"; ?>/>
-			<?php echo gettext("Suricata will place the monitored interface in promiscuous mode when checked.  Default is ") . 
-			"<strong>" . gettext("Checked") . "</strong>."; ?></td>
-	</tr>
-	<tr>
-		<td colspan="2" class="listtopic"><?php echo gettext("Networks " . "Suricata Should Inspect and Protect"); ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Home Net"); ?></td>
-		<td width="78%" class="vtable">
-			<select name="homelistname" class="formselect" id="homelistname">
-				<?php
-					echo "<option value='default' >default</option>";
-					/* find Pass List names and filter by type */
-					if (is_array($suricataglob['passlist']['item'])) {
-						foreach ($suricataglob['passlist']['item'] as $value) {
-							$ilistname = $value['name'];
-							if ($ilistname == $pconfig['homelistname'])
-								echo "<option value='$ilistname' selected>";
-							else
-								echo "<option value='$ilistname'>";
-							echo htmlspecialchars($ilistname) . '</option>';
-						}
-					}
-				?>
-			</select>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" class="formbtns" value="View List"  
-			onclick="viewList('<?=$id;?>','homelistname','homenet')" id="btnHomeNet" 
-			title="<?php echo gettext("Click to view currently selected Home Net contents"); ?>"/>
-			<br/>
-			<span class="vexpl"><?php echo gettext("Choose the Home Net you want this interface to use.  Most users should choose 'default'."); ?></span>
-		 	<br/><br/>
-			<span class="red"><?php echo gettext("Note:"); ?></span>&nbsp;<?php echo gettext("Default Home " .
-			"Net adds only local networks, WAN IPs, Gateways, VPNs and VIPs."); ?><br/>
-			<span class="red"><?php echo gettext("Hint:"); ?></span>&nbsp;<?php echo gettext("Create an Alias to hold a list of " .
-			"friendly IPs that the firewall cannot see or to customize the default Home Net.  Assign the Alias to a Pass List, and " . 
-			"then assign that Pass List to Home Net."); ?><br/>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("External Net"); ?></td>
-		<td width="78%" class="vtable">
-			<select name="externallistname" class="formselect" id="externallistname">
-				<?php
-					echo "<option value='default' >default</option>";
-					/* find Pass List names and filter by type */
-					if (is_array($suricataglob['passlist']['item'])) {
-						foreach ($suricataglob['passlist']['item'] as $value) {
-							$ilistname = $value['name'];
-							if ($ilistname == $pconfig['externallistname'])
-								echo "<option value='$ilistname' selected>";
-							else
-								echo "<option value='$ilistname'>";
-							echo htmlspecialchars($ilistname) . '</option>';
-						}
-					}
-				?>
-			</select>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" class="formbtns" value="View List"  
-			onclick="viewList('<?=$id;?>','externallistname','externalnet')" id="btnExternalNet" 
-			title="<?php echo gettext("Click to view currently selected External Net contents"); ?>"/>
-			<br/>
-			<?php echo gettext("Choose the External Net you want this interface " .
-			"to use."); ?>&nbsp;<br/><br/>
-			<span class="red"><?php echo gettext("Note:"); ?></span>&nbsp;<?php echo gettext("Default " .
-			"External Net is networks that are not Home Net."); ?><br/>
-			<span class="red"><?php echo gettext("Hint:"); ?></span>&nbsp;<?php echo gettext("Most users should leave this " .
-			"setting at default.  Create an Alias for custom External Net settings."); ?><br/>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Pass List"); ?></td>
-		<td width="78%" class="vtable">
-			<select name="passlistname" class="formselect" id="passlistname">
-			<?php
-				/* find passlist names and filter by type, make sure to track by uuid */
-				echo "<option value='default' >default</option>\n";
-				if (is_array($suricataglob['passlist']['item'])) {
-					foreach ($suricataglob['passlist']['item'] as $value) {
-						if ($value['name'] == $pconfig['passlistname'])
-							echo "<option value='{$value['name']}' selected>";
-						else
-							echo "<option value='{$value['name']}'>";
-						echo htmlspecialchars($value['name']) . '</option>';
-					}
-				}
-			?>
-			</select>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" class="formbtns" value="View List" onclick="viewList('<?=$id;?>','passlistname','passlist')" 
-			id="btnPasslist" title="<?php echo gettext("Click to view currently selected Pass List contents"); ?>"/>
-			<br/>
-			<?php echo gettext("Choose the Pass List you want this interface to use.  Addresses in a Pass List are never blocked."); ?> <br/><br/>
-			<span class="red"><?php echo gettext("Note:"); ?></span>&nbsp;<?php echo gettext("This option will only be used when block offenders is on."); ?><br/>
-			<span class="red"><?php echo gettext("Hint:"); ?></span>&nbsp;<?php echo gettext("Default " .
-			"Pass List adds local networks, WAN IPs, Gateways, VPNs and VIPs.  Create an Alias to customize."); ?>
-		</td>
-	</tr>
-<tr>
-	<td colspan="2" class="listtopic"><?php echo gettext("Alert Suppression and Filtering"); ?></td>
-</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Alert Suppression"); ?></td>
-		<td width="78%" class="vtable">
-			<select name="suppresslistname" class="formselect" id="suppresslistname">
-		<?php
-			echo "<option value='default' >default</option>\n";
-			if (is_array($suricataglob['suppress']['item'])) {
-				$slist_select = $suricataglob['suppress']['item'];
-				foreach ($slist_select as $value) {
-					$ilistname = $value['name'];
-					if ($ilistname == $pconfig['suppresslistname'])
-						echo "<option value='$ilistname' selected>";
-					else
-						echo "<option value='$ilistname'>";
-					echo htmlspecialchars($ilistname) . '</option>';
-				}
+	function enable_blockoffenders() {
+		var hide = ! $('#blockoffenders').prop('checked');
+		hideCheckbox('blockoffenderskill', hide);
+		hideSelect('blockoffendersip', hide);
+		hideClass('passlist', hide);
+	}
+
+	function toggle_system_log() {
+		var hide = ! $('#alertsystemlog').prop('checked');
+		hideSelect('alertsystemlog_facility', hide);
+		hideSelect('alertsystemlog_priority', hide);
+	}
+
+	function toggle_dns_log() {
+		var hide = ! $('#enable_dns_log').prop('checked');
+		hideSelect('append_dns_log', hide);
+	}
+
+	function toggle_stats_log() {
+		var hide = ! $('#enable_stats_log').prop('checked');
+		hideSelect('stats_upd_interval', hide);
+	}
+/*
+	function toggle_http_log() {
+		var hide = ! $('#alertsystemlog').prop('checked');
+		hideSelect('alertsystemlog_facility', hide);
+	}
+
+	function toggle_tls_log() {
+		var hide = ! $('#alertsystemlog').prop('checked');
+		hideSelect('alertsystemlog_facility', hide);
+	}
+
+	function toggle_json_file_log() {
+		var hide = ! $('#alertsystemlog').prop('checked');
+		hideSelect('alertsystemlog_facility', hide);
+	}
+
+	function toggle_file_store() {
+		var hide = ! $('#alertsystemlog').prop('checked');
+		hideSelect('alertsystemlog_facility', hide);
+	}
+
+	function toggle_pcap_log() {
+		var hide = ! $('#alertsystemlog').prop('checked');
+		hideSelect('alertsystemlog_facility', hide);
+	}
+
+	function toggle_eve_log() {
+		var hide = ! $('#alertsystemlog').prop('checked');
+		hideSelect('alertsystemlog_facility', hide);
+	}
+
+	function toggle_eve_tls() {
+		var hide = ! $('#alertsystemlog').prop('checked');
+		hideSelect('alertsystemlog_facility', hide);
+	}
+	
+	*/
+
+	function enable_change() {
+		var hide = ! $('#enable').prop('checked');
+		disableInput('alertsystemlog', hide);
+		disableInput('alertsystemlog_facility', hide);
+		disableInput('alertsystemlog_priority', hide);
+		disableInput('blockoffenders', hide);
+		disableInput('blockoffenderskill', hide);
+		disableInput('blockoffendersip', hide);
+		disableInput('performance', hide);
+		disableInput('fpm_split_any_any', hide);
+		disableInput('fpm_search_optimize', hide);
+		disableInput('fpm_no_stream_inserts', hide);
+		disableInput('cksumcheck', hide);
+		disableInput('externallistname', hide);
+		disableInput('homelistname', hide);
+		disableInput('suppresslistname', hide);
+		disableInput('btnHomeNet', hide);
+		disableInput('btnExternalNet', hide);
+		disableInput('btnSuppressList', hide);
+		disableInput('whitelistname', hide);
+		disableInput('btnWhitelist', hide);
+		disableInput('configpassthru', hide);
+		//TODO: add more inputs to hide
+	}
+
+	function getListContents(listName, listType, ctrlID) {
+		var ajaxRequest;
+
+		ajaxRequest = $.ajax({
+			url: "/suricata/suricata_interfaces_edit.php",
+			type: "post",
+			data: { ajax: "ajax", 
+			        list: listName, 
+				type: listType, 
+				id: $('#id').val(), 
+				action: $('#action').val()
 			}
-		?>
-		</select>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" class="formbtns" value="View List" onclick="viewList('<?=$id;?>','suppresslistname', 'suppress')" 
-		id="btnSuppressList" title="<?php echo gettext("Click to view currently selected Suppression List contents"); ?>"/>
-		<br/>
-		<?php echo gettext("Choose the suppression or filtering file you " .
-		"want this interface to use."); ?> <br/>&nbsp;<br/><span class="red"><?php echo gettext("Note: ") . "</span>" . 
-		gettext("Default option disables suppression and filtering."); ?>
-		</td>
-	</tr>
-<tr>
-	<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Arguments here will " .
-	"be automatically inserted into the Suricata configuration"); ?></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("Advanced configuration pass-through"); ?></td>
-	<td width="78%" class="vtable">
-		<textarea style="width:98%; height:100%;" wrap="off" name="configpassthru" cols="60" rows="8" id="configpassthru"><?=htmlspecialchars($pconfig['configpassthru']);?></textarea>
-	</td>
-</tr>
-<tr>
-	<td colspan="2" align="center" valign="middle"><input name="save" type="submit" class="formbtn" value="Save" title="<?php echo 
-			gettext("Click to save settings and exit"); ?>"/>
-	</td>
-</tr>
-<tr>
-	<td colspan="2" align="center" valign="middle"><span class="vexpl"><span class="red"><strong><?php echo gettext("Note: ") . "</strong></span></span>" . 
-		gettext("Please save your settings before you attempt to start Suricata."); ?>	
-	</td>
-</tr>
-</tbody>
-</table>
-</div>
-</td></tr>
-</tbody>
-</table>
-</form>
+		});
 
-<script language="JavaScript">
+		// Display the results of the above ajax call
+		ajaxRequest.done(function (response, textStatus, jqXHR) {
 
-function toggle_system_log() {
-	var endis = !(document.iform.alertsystemlog.checked);
-	if (endis)
-		document.getElementById("alertsystemlog_rows").style.display="none";
-	else
-		document.getElementById("alertsystemlog_rows").style.display="";
-}
-
-function toggle_dns_log() {
-	var endis = !(document.iform.enable_dns_log.checked);
-	if (endis)
-		document.getElementById("dns_log_append_row").style.display="none";
-	else
-		document.getElementById("dns_log_append_row").style.display="table-row";
-}
-
-function enable_blockoffenders() {
-	var endis = !(document.iform.blockoffenders.checked);
-	document.iform.blockoffenderskill.disabled=endis;
-	document.iform.blockoffendersip.disabled=endis;
-	document.iform.passlistname.disabled=endis;
-	document.iform.btnPasslist.disabled=endis;
-}
-
-function toggle_stats_log() {
-	var endis = !(document.iform.enable_stats_log.checked);
-	if (endis) {
-		document.getElementById("stats_log_append_row").style.display="none";
-		document.getElementById("stats_interval_row").style.display="none";
-		document.getElementById("stats_log_warning").style.display="none";
+			// Write the list contents to the text control
+			$('#' + ctrlID).text(response);
+			$('#' + ctrlID).attr('readonly', true);
+		});
 	}
-	else {
-		document.getElementById("stats_log_append_row").style.display="table-row";
-		document.getElementById("stats_interval_row").style.display="table-row";
-		document.getElementById("stats_log_warning").style.display="inline";
-	}
-}
 
-function toggle_http_log() {
-	var endis = !(document.iform.enable_http_log.checked);
-	if (endis) {
-		document.getElementById("http_log_append_row").style.display="none";
-		document.getElementById("http_log_extended_row").style.display="none";
-	}
-	else {
-		document.getElementById("http_log_append_row").style.display="table-row";
-		document.getElementById("http_log_extended_row").style.display="table-row";
-	}
-}
+	// ---------- Event triggers fired after the VIEW LIST modals are shown -----------------------
+	$('#homenet').on('shown.bs.modal', function() {
+		getListContents($('#homelistname option:selected' ).text(), 'homenet', 'homenet_text');
+	});
 
-function toggle_tls_log() {
-	var endis = !(document.iform.enable_tls_log.checked);
-	if (endis)
-		document.getElementById("tls_log_extended_row").style.display="none";
-	else {
-		document.getElementById("tls_log_extended_row").style.display="table-row";
-		if (document.iform.enable_eve_log.checked && document.iform.eve_log_tls.checked) {
-			alert('Only one TLS log instance permitted...removing TLS log from EVE JSON output in order to enable standalone TLS logging.');
-			document.iform.eve_log_tls.checked = false;
-		}
-	}
-}
+	$('#externalnet').on('shown.bs.modal', function() {
+		getListContents($('#externallistname option:selected' ).text(), 'externalnet', 'externalnet_text');
+	});
 
-function toggle_json_file_log() {
-	var endis = !(document.iform.enable_json_file_log.checked);
-	if (endis) {
-		document.getElementById("tracked_files_append_row").style.display="none";
-		document.getElementById("tracked_files_magic_row").style.display="none";
-		document.getElementById("tracked_files_md5_row").style.display="none";
-	}
-	else {
-		document.getElementById("tracked_files_append_row").style.display="table-row";
-		document.getElementById("tracked_files_magic_row").style.display="table-row";
-		document.getElementById("tracked_files_md5_row").style.display="table-row";
-	}
-}
+	$('#whitelist').on('shown.bs.modal', function() {
+		getListContents($('#whitelistname option:selected' ).text(), 'passlist', 'whitelist_text');
+	});
 
-function toggle_file_store() {
-	var endis = !(document.iform.enable_file_store.checked);
-	if (endis) {
-		document.getElementById("file_store_warning").style.display="none";
-	}
-	else {
-		document.getElementById("file_store_warning").style.display="inline";
-	}
-}
+	$('#suppresslist').on('shown.bs.modal', function() {
+		getListContents($('#suppresslistname option:selected' ).text(), 'suppress', 'suppresslist_text');
+	});
 
-function toggle_pcap_log() {
-	var endis = !(document.iform.enable_pcap_log.checked);
-	if (endis) {
-		document.getElementById("pcap_log_size_row").style.display="none";
-		document.getElementById("pcap_log_max_row").style.display="none";
-		document.getElementById("file_pcap_warning").style.display="none";
-	}
-	else {
-		document.getElementById("pcap_log_size_row").style.display="table-row";
-		document.getElementById("pcap_log_max_row").style.display="table-row";
-		document.getElementById("file_pcap_warning").style.display="inline";
-	}
-}
+	// ---------- Click checkbox handlers ---------------------------------------------------------
+	// When 'enable' is clicked, disable/enable the form controls
+	$('#enable').click(function() {
+		enable_change();
+	});
 
-function toggle_eve_log() {
-	var endis = !(document.iform.enable_eve_log.checked);
-	if (endis) {
-		document.getElementById("eve_log_option_rows").style.display = "none";
-	}
-	else {
-		document.getElementById("eve_log_option_rows").style.display = "";
-		if (document.iform.enable_tls_log.checked)
-			document.iform.eve_log_tls.checked = false;
-	}
-}
+	// When 'alertsystemlog' is clicked, disable/enable associated form controls
+	$('#alertsystemlog').click(function() {
+		toggle_system_log();
+	});
+	
+	//
+	$('#enable_dns_log').click(function() {
+		toggle_dns_log();
+	});
 
-function toggle_eve_tls() {
-	if (document.iform.enable_tls_log.checked) {
-		alert('Only one TLS log instance permitted...removing standalone TLS output in order to add EVE JSON TLS output.');
-		document.iform.enable_tls_log.checked = false;
-	}
-}
+	//
+	$('#enable_stats_log').click(function() {
+		toggle_stats_log();
+	});
+/*
+	//
+	$('#alertsystemlog').click(function() {
+		toggle_http_log();
+	});
 
-function enable_change(enable_change) {
-	endis = !(document.iform.enable.checked || enable_change);
-	// make sure a default answer is called if this is invoked.
-	endis2 = (document.iform.enable);
-	document.iform.enable_stats_log.disabled = endis;
-	document.iform.stats_upd_interval.disabled = endis;
-	document.iform.append_stats_log.disabled = endis;
-	document.iform.enable_http_log.disabled = endis;
-	document.iform.append_http_log.disabled = endis;
-	document.iform.http_log_extended.disabled = endis;
-	document.iform.enable_tls_log.disabled = endis;
-	document.iform.tls_log_extended.disabled = endis;
-	document.iform.enable_json_file_log.disabled = endis;
-	document.iform.append_json_file_log.disabled = endis;
-	document.iform.enable_tracked_files_magic.disabled = endis;
-	document.iform.enable_tracked_files_md5.disabled = endis;
-	document.iform.enable_file_store.disabled = endis;
-	document.iform.enable_pcap_log.disabled = endis;
-	document.iform.max_pcap_log_size.disabled = endis;
-	document.iform.max_pcap_log_files.disabled = endis;
-	document.iform.eve_output_type.disabled = endis;
-	document.iform.enable_eve_log.disabled = endis;
-	document.iform.eve_log_alerts.disabled = endis;
-	document.iform.eve_log_http.disabled = endis;
-	document.iform.eve_log_dns.disabled = endis;
-	document.iform.eve_log_tls.disabled = endis;
-	document.iform.eve_log_files.disabled = endis;
-	document.iform.eve_log_ssh.disabled = endis;
-	document.iform.max_pending_packets.disabled = endis;
-	document.iform.detect_eng_profile.disabled = endis;
-	document.iform.mpm_algo.disabled = endis;
-	document.iform.sgh_mpm_context.disabled = endis;
-	document.iform.inspect_recursion_limit.disabled = endis;
-	document.iform.blockoffenders.disabled = endis;
-	document.iform.blockoffendersip.disabled=endis;
-	document.iform.blockoffenderskill.disabled=endis;
-	document.iform.alertsystemlog.disabled = endis;
-	document.iform.externallistname.disabled = endis;
-	document.iform.homelistname.disabled = endis;
-	document.iform.passlistname.disabled=endis;
-	document.iform.suppresslistname.disabled = endis;
-	document.iform.configpassthru.disabled = endis;
-	document.iform.btnHomeNet.disabled=endis;
-	document.iform.btnPasslist.disabled=endis;
-	document.iform.btnSuppressList.disabled=endis;
-	document.iform.delayed_detect.disabled=endis;
-	document.iform.intf_promisc_mode.disabled=endis;
-}
+	//
+	$('#alertsystemlog').click(function() {
+		toggle_tls_log();
+	});
 
-function wopen(url, name, w, h) {
-	// Fudge factors for window decoration space.
-	// In my tests these work well on all platforms & browsers.
-	w += 32;
-	h += 96;
- 	var win = window.open(url,
-  			name, 
-	  		'width=' + w + ', height=' + h + ', ' +
-  			'location=no, menubar=no, ' +
-  			'status=no, toolbar=no, scrollbars=yes, resizable=yes');
- 	win.resizeTo(w, h);
- 	win.focus();
-}
+	//
+	$('#alertsystemlog').click(function() {
+		toggle_json_file_log();
+	});
 
-function getSelectedValue(elemID) {
-	var ctrl = document.getElementById(elemID);
-	return ctrl.options[ctrl.selectedIndex].value;
-}
+	//
+	$('#alertsystemlog').click(function() {
+		toggle_file_store();
+	});
 
-function eveOutSelect() {
-	var ctrl = document.getElementById("eve_output_type");
-	if (ctrl.options[ctrl.selectedIndex].value == 'syslog') {
-		document.getElementById("eve_systemlog_facility_row").style.display = "table-row";
-		document.getElementById("eve_systemlog_priority_row").style.display = "table-row";
-	}
-	else {
-		document.getElementById("eve_systemlog_facility_row").style.display = "none";
-		document.getElementById("eve_systemlog_priority_row").style.display = "none";
-	}
-}
+	//
+	$('#alertsystemlog').click(function() {
+		toggle_pcap_log();
+	});
 
-function viewList(id, elemID, elemType) {
-	if (typeof elemType == "undefined") {
-		elemType = "passlist";
-	}
-	var url = "suricata_list_view.php?id=" + id + "&wlist=";
-	url = url + getSelectedValue(elemID) + "&type=" + elemType;
-	url = url + "&time=" + new Date().getTime();
-	wopen(url, 'PassListViewer', 640, 480);
-}
+	//
+	$('#alertsystemlog').click(function() {
+		toggle_eve_log();
+	});
 
-enable_change(false);
-//enable_blockoffenders();
-toggle_system_log();
-toggle_dns_log();
-toggle_stats_log();
-toggle_http_log();
-toggle_tls_log();
-toggle_json_file_log();
-toggle_file_store();
-toggle_pcap_log();
-toggle_eve_log();
-eveOutSelect();
+	//
+	$('#alertsystemlog').click(function() {
+		toggle_eve_tls();
+	});
+	*/
 
+	// When 'blockoffenders' is clicked, disable/enable associated form controls
+	$('#blockoffenders').click(function() {
+		enable_blockoffenders();
+	});
+
+	// ---------- On initial page load ------------------------------------------------------------
+	enable_change();
+	enable_blockoffenders();
+	toggle_system_log();
+	
+	toggle_dns_log();
+	toggle_stats_log();
+/*	toggle_http_log();
+	toggle_tls_log();
+	toggle_json_file_log();
+	toggle_file_store();
+	toggle_pcap_log();
+	toggle_eve_log();
+	toggle_eve_tls();
+	*/
+});
+//]]>
 </script>
-<?php include("fend.inc"); ?>
-</body>
-</html>
+
+<?php include("foot.inc"); ?>

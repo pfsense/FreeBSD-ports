@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squidguardgeneral</name>
-	<version>1.9.17</version>
+	<version>1.10</version>
 	<title>Proxy filter SquidGuard: General settings</title>
 	<include_file>/usr/local/pkg/squidguard.inc</include_file>
 	<!-- Installation -->
