@@ -100,7 +100,12 @@ $haproxy_icons = array(
 	'help' => array(
 		"faicon" => "fa-info-circle",
 		"icon" => "icon_help.gif",
+		"iconsize" => 11),
+	'expand' => array(
+		"faicon" => "fa-plus-square-o",
+		"icon" => "plus.gif",
 		"iconsize" => 11)
+
 );
 
 global $pf_version;
