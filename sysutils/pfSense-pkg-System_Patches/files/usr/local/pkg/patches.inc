@@ -214,15 +214,15 @@ function patch_remove_shellcmd() {
 	global $config;
 	$a_earlyshellcmd = &$config['system']['earlyshellcmd'];
 	if (is_array($a_earlyshellcmd)) {
-		$removed = false;
+		$removed = 0;
 		foreach ($a_earlyshellcmd as $idx => $cmd) {
 			if (stristr($cmd, "apply_patches.php")) {
 				unset($a_earlyshellcmd[$idx]);
-				$removed = true;
+				$removed++;
 			}
 		}
-		if ($removed) {
-			write_config("System Patches package removed existing early shellcmd: apply patches");
+		if ($removed > 0) {
+			write_config("System Patches package removed {$removed} existing early shellcmd(s): apply patches");
 		}
 	}
 }
