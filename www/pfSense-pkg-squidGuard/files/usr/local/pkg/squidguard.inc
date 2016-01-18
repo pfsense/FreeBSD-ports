@@ -473,7 +473,7 @@ function squidguard_before_form(&$pkg) {
             # Apply button
             case 'squidguard_enable':
                 $fld = &$pkg['fields']['field'][$i];
-                $fld['description'] .= make_grid_general_items();   # insert to description custom controls
+                $fld['sethelp'] .= make_grid_general_items();   # insert to description custom controls
             break;
         }
         $i++;
