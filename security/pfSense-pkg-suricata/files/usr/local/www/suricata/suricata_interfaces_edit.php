@@ -624,9 +624,23 @@ $section->addInput(new Form_Checkbox(
 	'on'
 ));
 $section->addInput(new Form_Checkbox(
+	'enable_tracked_files_magic',
+	'Enable Logging Magic for Tracked-Files',
+	'Suricata will force logging magic on all logged Tracked Files. Default is Not Checked.',
+	$pconfig['enable_tracked_files_magic'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'enable_tracked_files_md5',
+	'Enable MD5 for Tracked-Files',
+	'Suricata will generate MD5 checksums for all logged Tracked Files. Default is Not Checked.',
+	$pconfig['enable_tracked_files_md5'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
 	'enable_file_store',
 	'Enable File-Store',
-	'Suricata will extract and store files from application layer streams. Default is Not Checked. This will consume a significant amount of disk space on a busy network when enabled.',
+	'Suricata will extract and store files from application layer streams. Default is Not Checked. Warning: This will consume a significant amount of disk space on a busy network when enabled.',
 	$pconfig['enable_file_store'] == 'on' ? true:false,
 	'on'
 ));
@@ -678,10 +692,10 @@ $group->add(new Form_Checkbox(
 	'on'
 ));
 $group->add(new Form_Checkbox(
-	'enable_eve_log',
+	'eve_log_dns',
 	'DNS Requests/Replies',
 	'DNS Requests/Replies',
-	$pconfig['enable_eve_log'] == 'on' ? true:false,
+	$pconfig['eve_log_dns'] == 'on' ? true:false,
 	'on'
 ));
 $group->add(new Form_Checkbox(
@@ -706,7 +720,7 @@ $group->add(new Form_Checkbox(
 	'on'
 ));
 $group->setHelp('Choose the information to log via EVE JSON output. Default is All Checked.');
-$section->add($group);
+$section->add($group)->addClass('eve_log_info');
 $form->add($section);
 
 $section = new Form_Section('Alert Settings');
@@ -916,50 +930,44 @@ events.push(function(){
 
 	function toggle_dns_log() {
 		var hide = ! $('#enable_dns_log').prop('checked');
-		hideSelect('append_dns_log', hide);
+		hideCheckbox('append_dns_log', hide);
 	}
 
 	function toggle_stats_log() {
 		var hide = ! $('#enable_stats_log').prop('checked');
-		hideSelect('stats_upd_interval', hide);
+		hideInput('stats_upd_interval', hide);
+		hideCheckbox('append_stats_log', hide);
 	}
-/*
+
 	function toggle_http_log() {
-		var hide = ! $('#alertsystemlog').prop('checked');
-		hideSelect('alertsystemlog_facility', hide);
+		var hide = ! $('#enable_http_log').prop('checked');
+		hideCheckbox('append_http_log', hide);
+		hideCheckbox('http_log_extended', hide);
 	}
 
 	function toggle_tls_log() {
-		var hide = ! $('#alertsystemlog').prop('checked');
-		hideSelect('alertsystemlog_facility', hide);
+		var hide = ! $('#enable_tls_log').prop('checked');
+		hideCheckbox('tls_log_extended', hide);
 	}
 
 	function toggle_json_file_log() {
-		var hide = ! $('#alertsystemlog').prop('checked');
-		hideSelect('alertsystemlog_facility', hide);
-	}
-
-	function toggle_file_store() {
-		var hide = ! $('#alertsystemlog').prop('checked');
-		hideSelect('alertsystemlog_facility', hide);
+		var hide = ! $('#enable_json_file_log').prop('checked');
+		hideCheckbox('append_json_file_log', hide);
+		hideCheckbox('enable_tracked_files_magic', hide);
+		hideCheckbox('enable_tracked_files_md5', hide);
 	}
 
 	function toggle_pcap_log() {
-		var hide = ! $('#alertsystemlog').prop('checked');
-		hideSelect('alertsystemlog_facility', hide);
+		var hide = ! $('#enable_pcap_log').prop('checked');
+		hideInput('max_pcap_log_size', hide);
+		hideInput('max_pcap_log_files', hide);
 	}
 
 	function toggle_eve_log() {
-		var hide = ! $('#alertsystemlog').prop('checked');
-		hideSelect('alertsystemlog_facility', hide);
+		var hide = ! $('#enable_eve_log').prop('checked');
+		hideSelect('eve_output_type', hide);
+		hideClass('eve_log_info',hide);
 	}
-
-	function toggle_eve_tls() {
-		var hide = ! $('#alertsystemlog').prop('checked');
-		hideSelect('alertsystemlog_facility', hide);
-	}
-	
-	*/
 
 	function enable_change() {
 		var hide = ! $('#enable').prop('checked');
@@ -983,7 +991,33 @@ events.push(function(){
 		disableInput('whitelistname', hide);
 		disableInput('btnWhitelist', hide);
 		disableInput('configpassthru', hide);
-		//TODO: add more inputs to hide
+		disableInput('enable_dns_log', hide);
+		disableInput('append_dns_log', hide);
+		disableInput('enable_stats_log', hide);
+		disableInput('stats_upd_interval', hide);
+		disableInput('append_stats_log', hide);
+		disableInput('enable_http_log', hide);
+		disableInput('append_http_log', hide);
+		disableInput('http_log_extended', hide);
+		disableInput('enable_tls_log', hide);
+		disableInput('tls_log_extended', hide);
+		disableInput('enable_json_file_log', hide);
+		disableInput('append_json_file_log', hide);
+		disableInput('enable_tracked_files_magic', hide);
+		disableInput('enable_tracked_files_md5', hide);
+		disableInput('enable_file_store', hide);
+		disableInput('enable_pcap_log', hide);
+		disableInput('max_pcap_log_size', hide);
+		disableInput('max_pcap_log_files', hide);
+		disableInput('enable_eve_log', hide);
+		disableInput('eve_output_type', hide);
+		disableInput('eve_log_info', hide);
+		disableInput('eve_log_alerts', hide);
+		disableInput('eve_log_http', hide);
+		disableInput('eve_log_dns', hide);
+		disableInput('eve_log_tls', hide);
+		disableInput('eve_log_files', hide);
+		disableInput('eve_log_ssh', hide);
 	}
 
 	function getListContents(listName, listType, ctrlID) {
@@ -1027,63 +1061,45 @@ events.push(function(){
 	});
 
 	// ---------- Click checkbox handlers ---------------------------------------------------------
-	// When 'enable' is clicked, disable/enable the form controls
+	
+	/* When form control id is clicked, disable/enable it's associated form controls */
+	
 	$('#enable').click(function() {
 		enable_change();
 	});
 
-	// When 'alertsystemlog' is clicked, disable/enable associated form controls
 	$('#alertsystemlog').click(function() {
 		toggle_system_log();
 	});
 	
-	//
 	$('#enable_dns_log').click(function() {
 		toggle_dns_log();
 	});
 
-	//
 	$('#enable_stats_log').click(function() {
 		toggle_stats_log();
 	});
-/*
-	//
-	$('#alertsystemlog').click(function() {
+
+	$('#enable_http_log').click(function() {
 		toggle_http_log();
 	});
 
-	//
-	$('#alertsystemlog').click(function() {
+	$('#enable_tls_log').click(function() {
 		toggle_tls_log();
 	});
 
-	//
-	$('#alertsystemlog').click(function() {
+	$('#enable_json_file_log').click(function() {
 		toggle_json_file_log();
 	});
 
-	//
-	$('#alertsystemlog').click(function() {
-		toggle_file_store();
-	});
-
-	//
-	$('#alertsystemlog').click(function() {
+	$('#enable_pcap_log').click(function() {
 		toggle_pcap_log();
 	});
 
-	//
-	$('#alertsystemlog').click(function() {
+	$('#enable_eve_log').click(function() {
 		toggle_eve_log();
 	});
 
-	//
-	$('#alertsystemlog').click(function() {
-		toggle_eve_tls();
-	});
-	*/
-
-	// When 'blockoffenders' is clicked, disable/enable associated form controls
 	$('#blockoffenders').click(function() {
 		enable_blockoffenders();
 	});
@@ -1095,14 +1111,12 @@ events.push(function(){
 	
 	toggle_dns_log();
 	toggle_stats_log();
-/*	toggle_http_log();
+	toggle_http_log();
 	toggle_tls_log();
 	toggle_json_file_log();
-	toggle_file_store();
 	toggle_pcap_log();
 	toggle_eve_log();
-	toggle_eve_tls();
-	*/
+	
 });
 //]]>
 </script>
