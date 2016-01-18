@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>quagga_ospfd_interfaces</name>
-	<version>0.6.11</version>
+	<version>0.6.12</version>
 	<title>Services/Quagga OSPFd</title>
 	<include_file>/usr/local/pkg/quagga_ospfd.inc</include_file>
 	<aftersaveredirect>pkg.php?xml=quagga_ospfd_interfaces.xml</aftersaveredirect>
@@ -106,6 +106,20 @@
 			<source_name>name</source_name>
 			<source_value>value</source_value>
 			<required/>
+		</field>
+ 		<field>
+			<fielddescr>Network Type</fielddescr>
+			<fieldname>networktype</fieldname>
+			<description>Select OSPF Network Type of the interface.</description>
+			<type>select</type>
+			<default_value></default_value>
+			<options>
+				<option><value></value><name>Not specified (default)</name></option>
+				<option><value>broadcast</value><name>Broadcast</name></option>
+				<option><value>non-broadcast</value><name>Non-Broadcast</name></option>
+				<option><value>point-to-multipoint</value><name>Point-to-Multipoint</name></option>
+				<option><value>point-to-point</value><name>Point-to-Point</name></option>
+			</options>
 		</field>
 		<field>
 			<fielddescr>Metric</fielddescr>
