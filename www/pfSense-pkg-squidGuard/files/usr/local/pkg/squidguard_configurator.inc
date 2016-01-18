@@ -92,19 +92,11 @@ define('CONFIG_SG_HEADER', "
 # squid config options
 # ------------------------------------------------------------------------------
 
-$pf_version=substr(trim(file_get_contents("/etc/version")),0,3);
-
 define('REDIRECTOR_OPTIONS_REM',   '# squidGuard options');
 define('REDIRECT_CHILDREN_OPT',    'url_rewrite_children');
-if ($pf_version >= 2.2) { 
-   define('REDIRECTOR_PROGRAM_OPT',   'url_rewrite_program');
-   define('REDIRECT_BYPASS_OPT',      'url_rewrite_bypass');
-   define('REDIRECTOR_PROCESS_COUNT', '16 startup=8 idle=4 concurrency=0');
-} else {
-   define('REDIRECTOR_PROGRAM_OPT',   'redirect_program');
-   define('REDIRECT_BYPASS_OPT',      'redirector_bypass');
-   define('REDIRECTOR_PROCESS_COUNT', '5');
-}
+define('REDIRECTOR_PROGRAM_OPT',   'url_rewrite_program');
+define('REDIRECT_BYPASS_OPT',      'url_rewrite_bypass');
+define('REDIRECTOR_PROCESS_COUNT', '16 startup=8 idle=4 concurrency=0');
 
 # ------------------------------------------------------------------------------
 # squidguard config options
@@ -121,20 +113,8 @@ define('REDIRECT_URL_ARGS', '&a=%a&n=%n&i=%i&s=%s&t=%t&u=%u');
 # ------------------------------------------------------------------------------
 
 
-if ($pf_version == "2.0" || $pf_version == "2.2") {
-	if (file_exists('/usr/pbi/squidguard-squid3-' . php_uname("m")))
-		define('SQUIDGUARD_LOCALBASE', '/usr/pbi/squidguard-squid3-' . php_uname("m"));
-	else
-		define('SQUIDGUARD_LOCALBASE', '/usr/pbi/squidguard-' . php_uname("m"));
-} else
-	define('SQUIDGUARD_LOCALBASE','/usr/local');
-
-if (!defined('SQUID_LOCALBASE')) {
-	if ($pf_version == "2.0" || $pf_version == "2.2")
-		define('SQUID_LOCALBASE', '/usr/pbi/squid-' . php_uname("m"));
-	else
-		define('SQUID_LOCALBASE','/usr/local');
-}
+define('SQUIDGUARD_LOCALBASE','/usr/local');
+define('SQUID_LOCALBASE','/usr/local');
 
 define('SQUID_CONFIGFILE',              SQUID_LOCALBASE . '/etc/squid/squid.conf');
 define('TMP_DIR',                       '/var/tmp');
@@ -223,7 +203,7 @@ define('FLT_DEFAULT_ALL', 'all');
 define('FLT_NOTALLOWIP',  '!in-addr');
 
 # owner user name (squid system user - need for define rights access)
-define('OWNER_NAME', 'proxy');
+define('OWNER_NAME', 'squid');
 
 # Debug
 define('DEBUG_ON', 'true');
