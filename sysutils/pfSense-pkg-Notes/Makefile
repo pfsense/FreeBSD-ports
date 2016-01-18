@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-Notes
 PORTVERSION=	0.2.8
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty

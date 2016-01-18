@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-Backup
 PORTVERSION=	0.3
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty

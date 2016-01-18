@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-RRD_Summary
 PORTVERSION=	1.3.1
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty

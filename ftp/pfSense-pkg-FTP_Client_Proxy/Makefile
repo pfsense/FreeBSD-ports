@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-FTP_Client_Proxy
 PORTVERSION=	0.3
+PORTREVISION=	1
 CATEGORIES=	ftp
 MASTER_SITES=	# empty
 DISTFILES=	# empty

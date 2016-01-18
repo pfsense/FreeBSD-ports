@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-blinkled
 PORTVERSION=	0.4.6
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty

@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-Avahi
 PORTVERSION=	1.10.4
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty

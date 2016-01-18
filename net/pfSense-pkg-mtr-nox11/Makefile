@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-mtr-nox11
 PORTVERSION=	0.85.4
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty

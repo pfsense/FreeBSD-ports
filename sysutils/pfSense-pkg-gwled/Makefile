@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-gwled
 PORTVERSION=	0.2.3
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty

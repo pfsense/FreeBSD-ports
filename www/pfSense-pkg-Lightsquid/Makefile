@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-Lightsquid
 PORTVERSION=	2.5
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	# empty
 DISTFILES=	# empty

@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-iftop
 PORTVERSION=	0.17
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty

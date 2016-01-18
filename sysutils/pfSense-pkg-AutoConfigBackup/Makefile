@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-AutoConfigBackup
 PORTVERSION=	1.42
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
