@@ -10,10 +10,11 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package pfBlockerNG
 
-RUN_DEPENDS=	${LOCALBASE}/bin/geoiplookup:${PORTSDIR}/net/GeoIP \
-		${LOCALBASE}/bin/grepcidr:${PORTSDIR}/net-mgmt/grepcidr \
-		${LOCALBASE}/bin/aggregate:${PORTSDIR}/net-mgmt/aggregate \
-		${LOCALBASE}/bin/mwhois:${PORTSDIR}/net/whois
+RUN_DEPENDS=	${LOCALBASE}/bin/geoiplookup:net/GeoIP \
+		${LOCALBASE}/bin/grepcidr:net-mgmt/grepcidr \
+		${LOCALBASE}/bin/aggregate:net-mgmt/aggregate \
+		${LOCALBASE}/bin/mwhois:net/whois \
+		${LOCALBASE}/sbin/lighttpd:www/lighttpd
 
 NO_BUILD=	yes
 NO_MTREE=	yes
