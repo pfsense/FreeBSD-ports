@@ -486,6 +486,10 @@ print($form);
 
 ?>
 
+<div class="infoblock">
+	<?=print_info_box('<strong>Note:</strong> Changing any settings on this page will affect all Suricata-configured interfaces.', info)?>
+</div>
+
 <script language="JavaScript">
 //<![CDATA[
 events.push(function(){

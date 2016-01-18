@@ -911,6 +911,10 @@ $form->add($section);
 print($form);
 ?>
 
+<div class="infoblock">
+	<?=print_info_box('<strong>Note:</strong> Please save your settings before you attempt to start Suricata.', info)?>
+</div>
+
 <script type="text/javascript">
 //<![CDATA[
 events.push(function(){
