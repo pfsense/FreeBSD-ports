@@ -161,12 +161,12 @@
 		<field>
 			<fielddescr>Enable Offline Mode</fielddescr>
 			<fieldname>enable_offline</fieldname>
-			<description>
+			<description>Enable this option and the proxy server will never try to validate cached objects.</description>
+			<sethelp>
 				<![CDATA[
-				Enable this option and the proxy server will never try to validate cached objects.<br/>
 				Offline mode gives access to more cached information than normally allowed (e.g., expired cached versions where the origin server should have been contacted otherwise).
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
@@ -358,15 +358,15 @@
 		<field>
 			<fielddescr>Cache Dynamic Content</fielddescr>
 			<fieldname>cache_dynamic_content</fieldname>
-			<description>
+			<description>Select to enable caching of dynamic content.</description>
+			<sethelp>
 				<![CDATA[
-				Select to <a href="http://wiki.squid-cache.org/ConfigExamples/DynamicContent">enable caching of dynamic content.</a><br/>
-				With dynamic cache enabled, you can also apply refresh_patterns to sites like <a href="http://wiki.squid-cache.org/SquidFaq/WindowsUpdate">Windows Updates</a><br/><br/>
+				With <a href="http://wiki.squid-cache.org/ConfigExamples/DynamicContent">dynamic cache</a> enabled, you can also apply refresh_patterns to sites like <a href="http://wiki.squid-cache.org/SquidFaq/WindowsUpdate">Windows Updates</a><br/><br/>
 				<strong>Notes:</strong><br/>
 				- Squid wiki suggests setting 'Finish transfer if less than x KB remaining' on 'Traffic Mgmt' tab to -1 (but you can apply your own values to control cache).<br/>
 				- Set 'Maximum Download Size' on 'Traffic Mgmt' tab to a value that fits patterns your are applying.
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 			<size>10</size>
 		</field>

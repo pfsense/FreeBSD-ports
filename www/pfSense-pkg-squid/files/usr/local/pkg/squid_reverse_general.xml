@@ -81,15 +81,15 @@
 		<field>
 			<fielddescr>Reverse Proxy Interface(s)</fielddescr>
 			<fieldname>reverse_interface</fieldname>
-			<description>
+			<description>The interface(s) the reverse-proxy server will bind to (usually WAN).</description>
+			<sethelp>
 				<![CDATA[
-				The interface(s) the reverse-proxy server will bind to (usually WAN).<br/>
 				Use CTRL + click to select multiple interfaces.<br/><br/>
 				<strong><span class="errmsg">Important:</span><br/></strong>
 				<strong>To use Squid as a reverse proxy ONLY:</strong> After saving configuration here, you must tick the 'Enable Squid Proxy' checkbox under Services - Squid Proxy Server - General and click Save there.<br/>
 				<strong>To disable the reverse proxy ONLY (without disabling Squid completely):</strong> Unselect all 'Reverse Proxy Interface(s)', uncheck both 'Enable HTTP Reverse Proxy' and 'Enable HTTPS Reverse Proxy' below and click Save.
 				]]>
-			</description>
+			</sethelp>
 			<type>interfaces_selection</type>
 			<default_value>wan</default_value>
 			<multiple/>
@@ -128,12 +128,12 @@
 		<field>
 			<fielddescr>Enable HTTP Reverse Proxy</fielddescr>
 			<fieldname>reverse_http</fieldname>
-			<description>
+			<description>If checked, the proxy server will act in HTTP reverse mode.</description>
+			<sethelp>
 				<![CDATA[
-				If checked, the proxy server will act in HTTP reverse mode.<br/>
 				<strong><span class="errmsg">Important:</span> You must add a proper firewall rule with destination matching the 'Reverse Proxy Interface(s)' address.</strong>
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 			<enablefields>reverse_http_port,reverse_http_defsite</enablefields>
 			<default_value>off</default_value>
@@ -170,12 +170,12 @@
 		<field>
 			<fielddescr>Enable HTTPS Reverse Proxy</fielddescr>
 			<fieldname>reverse_https</fieldname>
-			<description>
+			<description>If checked, the proxy server will act in HTTPS reverse mode.</description>
+			<sethelp>
 				<![CDATA[
-				If checked, the proxy server will act in HTTPS reverse mode.<br/>
 				<strong><span class="errmsg">Important:</span> You must add a proper firewall rule with destination matching the 'Reverse Proxy Interface(s)' address.</strong>
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 			<enablefields>reverse_https_port,reverse_https_defsite,reverse_ssl_cert,reverse_int_ca,reverse_ignore_ssl_valid,reverse_check_clientca,reverse_owa</enablefields>
 			<default_value>off</default_value>
@@ -327,13 +327,13 @@
 		<field>  
 			<fielddescr>Disable session resumption (caching)</fielddescr>  
 			<fieldname>disable_session_reuse</fieldname>  
-			<description>  
+			<description>Don't allow session reuse.</description>
+			<sethelp>
 				<![CDATA[
-				Don't allow session reuse.<br/><br/>
 				The current recommendation for web servers is to enable session resumption and benefit from the performance improvement, but to restart servers daily when possible. This ensure that sessions get purged and ticket keys get renewed on a regular basis.<br/><br/>
 				<strong><span class="errmsg">Warning: </span>Disabling session resumption will increase the clients latency and the server load but can improve security for Perfect Forward Secrecy (DHE and ECDH).</strong>
-				]]>  
-			</description>  
+				]]>
+			</sethelp>
 			<type>checkbox</type>  
 			<default_value>off</default_value>  
 		</field>
@@ -375,34 +375,34 @@
 		<field>
 			<fielddescr>Enable MAPI HTTP</fielddescr>
 			<fieldname>reverse_owa_mapihttp</fieldname>
-			<description>
+			<description>If checked, MAPI over HTTP will be enabled.</description>
+			<sethelp>
 				<![CDATA[
-				If checked, MAPI over HTTP will be enabled.<br/>
 				<strong>This feature is only available with at least Microsoft Exchange 2013 SP1</strong>
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>Enable Exchange WebServices</fielddescr>
 			<fieldname>reverse_owa_webservice</fieldname>
-			<description>
+			<description>If checked, Exchange WebServices will be enabled.</description>
+			<sethelp>
 				<![CDATA[
-				If checked, Exchange WebServices will be enabled.<br/>
 				<strong>There are potential DoS side effects to its use. Please avoid unless really required.</strong>
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>Enable AutoDiscover</fielddescr>
 			<fieldname>reverse_owa_autodiscover</fieldname>
-			<description>
+			<description>If checked, AutoDiscover will be enabled.</description>
+			<sethelp>
 				<![CDATA[
-				If checked, AutoDiscover will be enabled.<br/>
 				<strong>You also should set up the autodiscover DNS record to point to you WAN IP.</strong>
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 	</fields>

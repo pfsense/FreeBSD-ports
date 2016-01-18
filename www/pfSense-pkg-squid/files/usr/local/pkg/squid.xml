@@ -42,7 +42,7 @@
 	]]>
 	</copyright>
 	<name>squid</name>
-	<version>0.4.8</version>
+	<version>0.4.10</version>
 	<title>Proxy Server: General Settings</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<menu>
@@ -251,23 +251,23 @@
 		<field>
 			<fielddescr>Enable Squid Proxy</fielddescr>
 			<fieldname>enable_squid</fieldname>
-			<description>
+			<description>Check to enable the Squid proxy.</description>
+			<sethelp>
 				<![CDATA[
-				Check to enable the Squid proxy.<br/>
 				<strong><span class="errmsg">Note:</span> If unchecked, ALL Squid services will be disabled and stopped.</strong>
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>Keep Settings/Data</fielddescr>
 			<fieldname>keep_squid_data</fieldname>
-			<description>
+			<description>If enabled, the settings, logs, cache, AV defs and other data will be preserved across package reinstalls.</description>
+			<sethelp>
 				<![CDATA[
-				If enabled, the settings, logs, cache, AV defs and other data will be preserved across package reinstalls.<br/>
 				<strong><span class="errmsg">Note:</span> If disabled, all settings and data will be wiped on package uninstall/reinstall/upgrade.</strong>
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 			<default_value>on</default_value>
 		</field>
@@ -313,12 +313,12 @@
 		<field>
 			<fielddescr>Allow Users on Interface</fielddescr>
 			<fieldname>allow_interface</fieldname>
-			<description>
+			<description>If checked, the users connected to the interface(s) selected in the 'Proxy interface(s)' field will be allowed to use the proxy.</description>
+			<sethelp>
 				<![CDATA[
-				If checked, the users connected to the interface(s) selected in the 'Proxy interface(s)' field will be allowed to use the proxy.<br/>
 				There will be no need to add the interface's subnet to the list of allowed subnets.
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 			<default_value>on</default_value>
 		</field>
@@ -372,13 +372,13 @@
 		<field>
 			<fielddescr>Transparent HTTP Proxy</fielddescr>
 			<fieldname>transparent_proxy</fieldname>
-			<description>
+			<description>Enable transparent mode to forward all requests for destination port 80 to the proxy server without any additional configuration being necessary.</description>
+			<sethelp>
 				<![CDATA[
-				Enable transparent mode to forward all requests for destination port 80 to the proxy server without any additional configuration being necessary.<br/>
 				<strong>Note:</strong> Transparent mode will filter SSL (port 443) if you enable man-in-the-middle options below.<br/>
 				In order to proxy both HTTP and HTTPS protocols without intercepting SSL connections, configure WPAD/PAC options on your DNS/DHCP servers.
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 			<enablefields>transparent_active_interface,private_subnet_proxy_off,defined_ip_proxy_off,defined_ip_proxy_off_dest</enablefields>
 		</field>
@@ -399,11 +399,12 @@
 		<field>
 			<fielddescr>Bypass Proxy for Private Address Destination</fielddescr>
 			<fieldname>private_subnet_proxy_off</fieldname>
-			<description>
+			<description>Do not forward traffic to Private Address Space (RFC 1918) destinations.</description>
+			<sethelp>
 				<![CDATA[
-				Do not forward traffic to Private Address Space (RFC 1918) <strong>destinations</strong> through the proxy server but let it pass directly through the firewall.
+				<strong>Destinations</strong> in Private Address Space (RFC 1918) are passed directly through the firewall, not through the proxy server.
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
@@ -542,12 +543,12 @@
 		<field>
 			<fielddescr>Enable Access Logging</fielddescr>
 			<fieldname>log_enabled</fieldname>
-			<description>
+			<description>This will enable the access log.</description>
+			<sethelp>
 				<![CDATA[
-				This will enable the <strong>access</strong> log.
-				<strong>Warning:</strong> Do not switch this on if you don't have much disk space left.
+				<strong>Warning:</strong> Do not enable if disk capacity is low.
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 			<enablefields>log_rotate</enablefields>
 		</field>
@@ -576,16 +577,16 @@
 		<field>
 			<fielddescr>Log Pages Denied by SquidGuard</fielddescr>
 			<fieldname>log_sqd</fieldname>
-			<description>
+			<description>Makes it possible for SquidGuard denied log to be included on Squid logs.</description>
+			<sethelp>
 				<![CDATA[
-				Makes it possible for SquidGuard denied log to be included on Squid logs.<br/>
 				<strong>Note: This option will only work if you include the code below in your sgerror.php file.</strong><br/>
 				This forces the client browser to send a second request to Squid with the denied string in URL.<br/><br/>
 				$sge_prefix = (preg_match("/\?/", $cl['u']) ? "&" : "?");<br/>
 				$str[] = '< iframe > src="'. $cl['u'] . $sge_prefix . 'sgr=ACCESSDENIED" width="1" height="1" > < /iframe >';<br/><br/>
 				<strong>Hint: You MUST remove extra spaces in the above iframe HTML tags.</strong>
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
