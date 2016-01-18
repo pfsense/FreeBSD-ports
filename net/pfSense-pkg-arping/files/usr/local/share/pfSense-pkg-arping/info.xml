@@ -13,9 +13,6 @@
 		<depends_on_package_pbi>arping-2.14_1-##ARCH##.pbi</depends_on_package_pbi>
 		<port_category>net</port_category>
 		<run_depends>sbin/arping:net/arping</run_depends>
-		<build_pbi>
-			<port>net/arping</port>
-		</build_pbi>
 		<pkginfolink>https://doc.pfsense.org/index.php/Arping</pkginfolink>
 	</package>
 </pfsensepkgs>

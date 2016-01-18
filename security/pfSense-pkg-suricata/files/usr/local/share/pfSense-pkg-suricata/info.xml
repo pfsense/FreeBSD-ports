@@ -12,10 +12,6 @@
 		<configurationfile>suricata.xml</configurationfile>
 		<port_category>security</port_category>
 		<run_depends>bin/suricata:security/suricata</run_depends>
-		<build_pbi>
-			<port>security/suricata</port>
-			<ports_after>security/barnyard2</ports_after>
-		</build_pbi>
 		<build_options>security_barnyard2_UNSET_FORCE=ODBC PGSQL PRELUDE;security_barnyard2_SET_FORCE=GRE IPV6 MPLS MYSQL PORT_PCAP BRO;security_suricata_SET_FORCE=IPFW PORTS_PCAP GEOIP JSON NSS LUAJIT HTP_PORT;security_suricata_UNSET_FORCE=PRELUDE TESTS SC LUA</build_options>
 		<depends_on_package_pbi>suricata-2.0.9-##ARCH##.pbi</depends_on_package_pbi>
 	</package>

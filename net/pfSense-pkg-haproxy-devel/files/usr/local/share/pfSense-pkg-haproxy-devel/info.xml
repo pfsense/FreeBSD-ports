@@ -17,11 +17,6 @@
 		<run_depends>sbin/haproxy:net/haproxy</run_depends>
 		<port_category>net</port_category>
 		<conflicts>haproxy</conflicts>
-		<build_pbi>
-			<ports_before>security/openssl lang/lua53</ports_before>
-			<custom_name>haproxy</custom_name>
-			<port>net/haproxy</port>
-		</build_pbi>
 		<build_options>WITH_OPENSSL_PORT=yes;net_haproxy_UNSET_FORCE=DPCRE;net_haproxy_SET_FORCE=OPENSSL SPCRE LUA CPU_AFFINITY</build_options>
 	</package>
 </pfsensepkgs>

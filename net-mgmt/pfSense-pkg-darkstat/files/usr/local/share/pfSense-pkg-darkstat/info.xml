@@ -14,8 +14,5 @@
 		<configurationfile>darkstat.xml</configurationfile>
 		<port_category>net-mgmt</port_category>
 		<run_depends>sbin/darkstat:net-mgmt/darkstat</run_depends>
-		<build_pbi>
-			<port>net-mgmt/darkstat</port>
-		</build_pbi>
 	</package>
 </pfsensepkgs>

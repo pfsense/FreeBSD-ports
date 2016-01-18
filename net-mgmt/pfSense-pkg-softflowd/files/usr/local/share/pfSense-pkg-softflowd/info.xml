@@ -15,8 +15,5 @@
 		<configurationfile>softflowd.xml</configurationfile>
 		<port_category>net-mgmt</port_category>
 		<run_depends>sbin/softflowd:net-mgmt/softflowd</run_depends>
-		<build_pbi>
-			<port>net-mgmt/softflowd</port>
-		</build_pbi>
 	</package>
 </pfsensepkgs>

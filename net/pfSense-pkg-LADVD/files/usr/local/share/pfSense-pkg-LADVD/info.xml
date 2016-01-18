@@ -11,9 +11,6 @@
 		<config_file>https://packages.pfsense.org/packages/config/ladvd/ladvd.xml</config_file>
 		<port_category>net</port_category>
 		<run_depends>sbin/ladvd:net/ladvd</run_depends>
-		<build_pbi>
-			<port>net/ladvd</port>
-		</build_pbi>
 		<required_version>2.2</required_version>
 		<configurationfile>ladvd.xml</configurationfile>
 	</package>

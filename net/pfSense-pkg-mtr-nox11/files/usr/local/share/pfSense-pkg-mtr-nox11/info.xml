@@ -14,9 +14,6 @@
 		<configurationfile>mtr-nox11.xml</configurationfile>
 		<port_category>net</port_category>
 		<run_depends>sbin/mtr:net/mtr-nox11</run_depends>
-		<build_pbi>
-			<port>net/mtr</port>
-		</build_pbi>
 		<build_options>mtr_UNSET_FORCE=X11</build_options>
 	</package>
 </pfsensepkgs>

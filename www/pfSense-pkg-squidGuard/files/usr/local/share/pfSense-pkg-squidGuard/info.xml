@@ -13,10 +13,6 @@
 		<depends_on_package_pbi>squidguard-1.4_7-##ARCH##.pbi</depends_on_package_pbi>
 		<port_category>www</port_category>
 		<run_depends>bin/squidGuard:www/squidguard</run_depends>
-		<build_pbi>
-			<ports_before>www/squid databases/db5 security/cyrus-sasl2</ports_before>
-			<port>www/squidguard</port>
-		</build_pbi>
 		<build_options>squidGuard_UNSET_FORCE=QUOTE_STRING;squidGuard_SET_FORCE=DNS_BL LDAP STRIP_NTDOMAIN;c-icap_UNSET_FORCE=IPV6;squid_UNSET_FORCE=AUTH_SMB AUTH_SQL DNS_HELPER FS_COSS ESI SNMP ECAP STACKTRACES STRICT_HTTP TP_IPF TP_IPFW VIA_DB DEBUG;squid_SET_FORCE=ARP_ACL AUTH_KERB AUTH_LDAP AUTH_NIS AUTH_SASL CACHE_DIGESTS DELAY_POOLS FOLLOW_XFF TP_PF MSSL_CRTD WCCP WCCPV2 FS_AUFS HTCP ICAP ICMP IDENT IPV6 KQUEUE LARGEFILE SSL SSL_CRTD</build_options>
 		<config_file>https://packages.pfsense.org/packages/config/squidGuard/squidguard.xml</config_file>
 		<configurationfile>squidguard.xml</configurationfile>

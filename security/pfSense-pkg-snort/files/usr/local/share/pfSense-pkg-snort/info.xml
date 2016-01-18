@@ -9,10 +9,6 @@
 		<run_depends>bin/snort:security/snort</run_depends>
 		<port_category>security</port_category>
 		<depends_on_package_pbi>snort-2.9.7.6-##ARCH##.pbi</depends_on_package_pbi>
-		<build_pbi>
-			<port>security/snort</port>
-			<ports_after>security/barnyard2</ports_after>
-		</build_pbi>
 		<build_options>security_barnyard2_UNSET_FORCE=ODBC PGSQL PRELUDE;security_barnyard2_SET_FORCE=GRE IPV6 MPLS MYSQL PORT_PCAP BRO;security_snort_SET_FORCE=BARNYARD PERFPROFILE SOURCEFIRE GRE IPV6 NORMALIZER APPID;security_snort_UNSET_FORCE=PULLEDPORK FILEINSPECT HA</build_options>
 		<config_file>https://packages.pfsense.org/packages/config/snort/snort.xml</config_file>
 		<version>3.2.9.1</version>
