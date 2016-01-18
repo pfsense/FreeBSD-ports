@@ -183,16 +183,11 @@ function bootup_apply_patches() {
 	$a_patches = &$config['installedpackages']['patches']['item'];
 
 	foreach ($a_patches as $patch) {
-		/* Skip the patch if it should not be automatically applied. */
-		if (!isset($patch['autoapply'])) {
-			continue;
-		}
-		/* If the patch can be reverted it is already applied, so skip it. */
-		if (!patch_test_revert($patch)) {
-			/* Only attempt to apply if it can be applied. */
-			if (patch_test_apply($patch)) {
-				patch_apply($patch);
-			}
+		/* Skip if it should not be automatically applied;
+		   only attempt to apply if it can be applied;
+		   and	if it can be reverted it is presumably already applied, so skip it. */
+		if (isset($patch['autoapply']) && patch_test_apply($patch) && !patch_test_revert($patch)) {  
+			patch_apply($patch);
 		}
 	}
 }
@@ -200,36 +195,35 @@ function bootup_apply_patches() {
 function patch_add_shellcmd() {
 	global $config;
 	$a_earlyshellcmd = &$config['system']['earlyshellcmd'];
-	if (!is_array($a_earlyshellcmd)) {
-		$a_earlyshellcmd = array();
-	}
 	$found = false;
-	foreach ($a_earlyshellcmd as $idx => $cmd) {
-		if (stristr($cmd, "apply_patches.php")) {
-			$found = true;
+	if (is_array($a_earlyshellcmd)) {
+		foreach ($a_earlyshellcmd as $idx => $cmd) {
+			if (stristr($cmd, "apply_patches.php")) {
+				$found = true;
+			}
 		}
 	}
 	if (!$found) {
+		// Implicitly creates array if needed
 		$a_earlyshellcmd[] = "/usr/local/bin/php-cgi -f /usr/local/bin/apply_patches.php";
-		write_config("System Patches package added a shellcmd");
+		write_config("System Patches package added an early shellcmd: apply patches");
 	}
 }
 
 function patch_remove_shellcmd() {
 	global $config;
 	$a_earlyshellcmd = &$config['system']['earlyshellcmd'];
-	if (!is_array($a_earlyshellcmd)) {
-		$a_earlyshellcmd = array();
-	}
-	$removed = false;
-	foreach ($a_earlyshellcmd as $idx => $cmd) {
-		if (stristr($cmd, "apply_patches.php")) {
-			unset($a_earlyshellcmd[$idx]);
-			$removed = true;
+	if (is_array($a_earlyshellcmd)) {
+		$removed = false;
+		foreach ($a_earlyshellcmd as $idx => $cmd) {
+			if (stristr($cmd, "apply_patches.php")) {
+				unset($a_earlyshellcmd[$idx]);
+				$removed = true;
+			}
 		}
-	}
-	if ($removed) {
-		write_config("System Patches package removed a shellcmd");
+		if ($removed) {
+			write_config("System Patches package removed existing early shellcmd: apply patches");
+		}
 	}
 }
 
