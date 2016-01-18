@@ -138,22 +138,22 @@
 			<size>5</size>
 		</field>
 		<field>
-			<fielddescr>
-				<![CDATA[
-				URIs<br/><br/>
-				Enter URL <strong>regex</strong> to match.<br/><br/>
-				<strong>Examples:</strong><br/>
-				.mydomain.com .mydomain.com/test<br/>
-				www.mydomain.com http://www.mydomain.com/ ^http://www.mydomain.com/.*$
-				]]>
-			</fielddescr>
 			<fieldname>none</fieldname>
 			<description>URI to publish.</description>
+			<fielddescr>URI</fielddescr>
 			<type>rowhelper</type>
 			<rowhelper>
 				<rowhelperfield>
 					<fieldname>uri</fieldname>
 					<type>input</type>
+					<fielddescr>
+						<![CDATA[
+						Enter URL <strong>regex</strong> to match.<br/><br/>
+						<strong>Examples:</strong><br/>
+						.mydomain.com .mydomain.com/test<br/>
+						www.mydomain.com http://www.mydomain.com/ ^http://www.mydomain.com/.*$
+						]]>
+					</fielddescr>
 					<size>70</size>
 					<required/>
 				</rowhelperfield>
