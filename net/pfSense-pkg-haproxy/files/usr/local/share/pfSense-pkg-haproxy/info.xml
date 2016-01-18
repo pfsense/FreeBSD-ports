@@ -8,16 +8,7 @@
 			This package implements the TCP, HTTP and HTTPS balancing features from haproxy.&lt;br /&gt;
 			Supports ACLs for smart backend switching.]]></descr>
 		<website>http://haproxy.1wt.eu/</website>
-		<category>Services</category>
 		<version>0.33</version>
-		<status>RELEASE</status>
-		<required_version>2.2</required_version>
-		<config_file>https://packages.pfsense.org/packages/config/haproxy1_5/haproxy.xml</config_file>
 		<configurationfile>haproxy.xml</configurationfile>
-		<run_depends>sbin/haproxy:net/haproxy</run_depends>
-		<port_category>net</port_category>
-		<conflicts>haproxy-devel</conflicts>
-		<depends_on_package_pbi>haproxy-devel-1.5.14-##ARCH##.pbi</depends_on_package_pbi>
-		<build_options>WITH_OPENSSL_PORT=yes;haproxy_UNSET_FORCE=DPCRE;haproxy_SET_FORCE=OPENSSL SPCRE</build_options>
 	</package>
 </pfsensepkgs>

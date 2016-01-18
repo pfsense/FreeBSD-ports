@@ -2,18 +2,9 @@
 <pfsensepkgs>
 	<package>
 		<name>mtr-nox11</name>
-		<maintainer>billm@pfsense.org</maintainer>
 		<descr><![CDATA[Enhanced traceroute replacement. mtr combines the functionality of the traceroute and ping programs in a single network diagnostic tool.]]></descr>
 		<website>http://www.bitwizard.nl/mtr/</website>
-		<category>Network Management</category>
-		<depends_on_package_pbi>mtr-0.85_1-##ARCH##.pbi</depends_on_package_pbi>
 		<version>0.85.4</version>
-		<status>RELEASE</status>
-		<required_version>2.2</required_version>
-		<config_file>https://packages.pfsense.org/packages/config/mtr-nox11/mtr-nox11.xml</config_file>
 		<configurationfile>mtr-nox11.xml</configurationfile>
-		<port_category>net</port_category>
-		<run_depends>sbin/mtr:net/mtr-nox11</run_depends>
-		<build_options>mtr_UNSET_FORCE=X11</build_options>
 	</package>
 </pfsensepkgs>

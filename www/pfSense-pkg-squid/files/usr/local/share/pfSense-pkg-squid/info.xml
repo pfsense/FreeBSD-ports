@@ -8,12 +8,7 @@
 			&lt;strong&gt;WARNING! This package bundles ClamAV that conflicts with 'Dansguardian', 'Mailscanner' and 'HAVP antivirus' packages! Installing these will result in a broken state.&lt;/strong&gt;]]></descr>
 		<pkginfolink>https://forum.pfsense.org/index.php?topic=100167.0</pkginfolink>
 		<website>http://www.squid-cache.org/</website>
-		<category>Services</category>
 		<version>0.4.11</version>
-		<status>RC</status>
-		<required_version>2.3</required_version>
-		<maintainer>marcellocoutinho@gmail.com fernando@netfilter.com.br seth.mos@dds.nl mfuchs77@googlemail.com jimp@pfsense.org</maintainer>
-		<build_options>c-icap_SET_FORCE=LARGE_FILES;squid_SET_FORCE=ARP_ACL AUTH_LDAP AUTH_NIS AUTH_SASL CACHE_DIGESTS DELAY_POOLS FOLLOW_XFF FS_AUFS FS_DISKD GSSAPI_MIT HTCP ICAP ICMP IDENT IPV6 KQUEUE LARGEFILE LAX_HTTP SNMP SSL SSL_CRTD TP_PF WCCP WCCPV2;squid_UNSET_FORCE=AUTH_SMB AUTH_SQL DEBUG DNS_HELPER ECAP ESI FS_ROCK GSSAPI_NONE GSSAPI_BASE GSSAPI_HEIMDAL STACKTRACES TP_IPF TP_IPFW VIA_DB</build_options>
 		<configurationfile>squid.xml</configurationfile>
 	</package>
 </pfsensepkgs>

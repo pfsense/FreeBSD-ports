@@ -2,16 +2,11 @@
 <pfsensepkgs>
 	<package>
 		<name>AutoConfigBackup</name>
-		<maintainer>coreteam@pfsense.org</maintainer>
 		<descr><![CDATA[Automatically backs up your pfSense configuration. All contents are encrypted before being sent to the server.&lt;br /&gt;
 			Requires Gold Subscription from &lt;a href=&quot;https://portal.pfsense.org&quot;&gt;pfSense Portal&lt;/a&gt;.]]></descr>
 		<website>https://portal.pfsense.org</website>
-		<category>Services</category>
 		<version>1.42</version>
-		<status>RELEASE</status>
-		<required_version>2.3</required_version>
 		<pkginfolink>https://doc.pfsense.org/index.php/AutoConfigBackup</pkginfolink>
-		<config_file>https://packages.pfsense.org/packages/config/autoconfigbackup/autoconfigbackup.xml</config_file>
 		<configurationfile>autoconfigbackup.xml</configurationfile>
 	</package>
 </pfsensepkgs>

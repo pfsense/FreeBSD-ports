@@ -4,10 +4,7 @@
 		<name>routed</name>
 		<website>https://packages.pfsense.org/</website>
 		<descr><![CDATA[RIP v1 and v2 daemon.]]></descr>
-		<category>Network Management</category>
 		<version>1.2.3</version>
-		<status>RELEASE</status>
-		<required_version>2.3</required_version>
 		<configurationfile>routed.xml</configurationfile>
 	</package>
 </pfsensepkgs>

@@ -3,17 +3,9 @@
 	<package>
 		<name>blinkled</name>
 		<descr><![CDATA[Allows you to use LEDs for monitoring network activity on supported platforms (ALIX, WRAP, Soekris, etc.)]]></descr>
-		<category>System</category>
 		<version>0.4.6</version>
-		<status>BETA</status>
-		<maintainer>jimp@pfsense.org</maintainer>
-		<required_version>2.2</required_version>
-		<config_file>https://packages.pfsense.org/packages/config/blinkled8/blinkled.xml</config_file>
 		<configurationfile>blinkled.xml</configurationfile>
 		<pkginfolink>https://doc.pfsense.org/index.php/BlinkLED_Package</pkginfolink>
 		<website>https://doc.pfsense.org/index.php/BlinkLED_Package</website>
-		<port_category>sysutils</port_category>
-		<run_depends>bin/blinkled:sysutils/blinkled</run_depends>
-		<depends_on_package_pbi>blinkled-0.1-##ARCH##.pbi</depends_on_package_pbi>
 	</package>
 </pfsensepkgs>

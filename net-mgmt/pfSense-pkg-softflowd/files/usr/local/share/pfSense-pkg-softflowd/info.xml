@@ -6,14 +6,7 @@
 		<descr><![CDATA[Softflowd is flow-based network traffic analyser capable of Cisco NetFlow data export.&lt;br/&gt;
 			Softflowd semi-statefully tracks traffic flows recorded by listening on a network interface or by reading a packet capture file. These flows may be reported via NetFlow to a collecting host or summarised within softflowd itself.&lt;br/&gt;
 			Softflowd supports Netflow versions 1, 5 and 9 and is fully IPv6-capable - it can track IPv6 flows and send export datagrams via IPv6. It also supports export to multicast groups, allowing for redundant flow collectors.&lt;br/&gt;]]></descr>
-		<category>Network Management</category>
-		<config_file>https://packages.pfsense.org/packages/config/softflowd/softflowd.xml</config_file>
-		<depends_on_package_pbi>softflowd-0.9.8_2-##ARCH##.pbi</depends_on_package_pbi>
 		<version>1.2.1</version>
-		<status>BETA</status>
-		<required_version>2.2</required_version>
 		<configurationfile>softflowd.xml</configurationfile>
-		<port_category>net-mgmt</port_category>
-		<run_depends>sbin/softflowd:net-mgmt/softflowd</run_depends>
 	</package>
 </pfsensepkgs>

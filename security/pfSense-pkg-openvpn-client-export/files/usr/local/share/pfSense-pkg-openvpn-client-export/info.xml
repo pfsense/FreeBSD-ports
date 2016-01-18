@@ -4,10 +4,7 @@
 		<name>OpenVPN Client Export Utility</name>
 		<internal_name>openvpn-client-export</internal_name>
 		<descr><![CDATA[Allows a pre-configured OpenVPN Windows Client or Mac OS X's Viscosity configuration bundle to be exported directly from pfSense.]]></descr>
-		<category>Security</category>
 		<version>1.3.6</version>
-		<status>RELEASE</status>
-		<required_version>2.3</required_version>
 		<configurationfile>openvpn-client-export.xml</configurationfile>
 	</package>
 </pfsensepkgs>

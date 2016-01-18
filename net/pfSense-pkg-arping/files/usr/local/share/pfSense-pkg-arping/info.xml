@@ -4,15 +4,8 @@
 		<name>arping</name>
 		<descr><![CDATA[Broadcasts a who-has ARP packet on the network and prints answers.]]></descr>
 		<website>http://www.habets.pp.se/synscan/programs.php?prog=arping</website>
-		<category>Network Management</category>
 		<version>1.2.1</version>
-		<status>RELEASE</status>
-		<required_version>2.2</required_version>
-		<config_file>https://packages.pfsense.org/packages/config/arping/arping.xml</config_file>
 		<configurationfile>arping.xml</configurationfile>
-		<depends_on_package_pbi>arping-2.14_1-##ARCH##.pbi</depends_on_package_pbi>
-		<port_category>net</port_category>
-		<run_depends>sbin/arping:net/arping</run_depends>
 		<pkginfolink>https://doc.pfsense.org/index.php/Arping</pkginfolink>
 	</package>
 </pfsensepkgs>

@@ -4,11 +4,7 @@
 		<name>syslog-ng</name>
 		<website>http://www.balabit.com/network-security/syslog-ng/</website>
 		<descr><![CDATA[Syslog-ng syslog server. This service is not intended to replace the default pfSense syslog server but rather acts as an independent syslog server.]]></descr>
-		<category>System</category>
 		<version>1.1.2</version>
-		<status>BETA</status>
-		<required_version>2.3</required_version>
-		<maintainer>laleger@gmail.com</maintainer>
 		<configurationfile>syslog-ng.xml</configurationfile>
 	</package>
 </pfsensepkgs>

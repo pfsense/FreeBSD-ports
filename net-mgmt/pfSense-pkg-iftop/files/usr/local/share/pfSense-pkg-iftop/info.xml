@@ -5,15 +5,7 @@
 		<pkginfolink>https://forum.pfsense.org/</pkginfolink>
 		<descr><![CDATA[Realtime interface monitor (console/shell only).]]></descr>
 		<website>http://www.ex-parrot.com/~pdw/iftop/</website>
-		<category>Network Management</category>
 		<version>0.17</version>
-		<status>BETA</status>
-		<required_version>2.2</required_version>
-		<config_file>https://packages.pfsense.org/packages/config/iftop/iftop.xml</config_file>
-		<maintainer>jimp@pfsense.org</maintainer>
 		<configurationfile>iftop.xml</configurationfile>
-		<port_category>net-mgmt</port_category>
-		<run_depends>sbin/iftop:net-mgmt/iftop</run_depends>
-		<depends_on_package_pbi>iftop-0.17-##ARCH##.pbi</depends_on_package_pbi>
 	</package>
 </pfsensepkgs>

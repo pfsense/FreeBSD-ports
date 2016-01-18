@@ -9,11 +9,7 @@
 			will result in change of the first version number.&lt;br /&gt;
 			More info in &lt;a href=&quot;http://www.zabbix.com/life_cycle_and_release_policy.php&quot;&gt;Zabbix Life Cycle and Release Policy&lt;/a&gt;.]]></descr>
 		<website>http://www.zabbix.com/product.php</website>
-		<category>Services</category>
 		<version>0.8.9</version>
-		<status>BETA</status>
-		<required_version>2.3</required_version>
 		<configurationfile>zabbix-proxy-lts.xml</configurationfile>
-		<maintainer>dbaio@bsd.com.br</maintainer>
 	</package>
 </pfsensepkgs>

@@ -8,11 +8,7 @@
 			This enables you to plug your laptop or computer into a network and instantly be able to view other people who you can chat with, find printers to print to or find files being shared.&lt;br/&gt;
 			In addition it supports some nifty things that have never been seen elsewhere like correct mDNS reflection across LAN segments.&lt;br/&gt;
 			Compatible technology is found in Apple MacOS X (branded ​Bonjour and sometimes Zeroconf).]]></descr>
-		<category>Network Management</category>
-		<build_options>avahi_UNSET_FORCE=GTK;cairo_UNSET_FORCE=X11 XCB</build_options>
 		<version>1.10.4</version>
-		<status>BETA</status>
-		<required_version>2.3</required_version>
 		<configurationfile>avahi.xml</configurationfile>
 		<after_install_info>Please visit Services - Avahi menu, enable the service and select which interfaces you do NOT wish Avahi to listen on. Save settings to start the service.</after_install_info>
 	</package>

@@ -3,13 +3,7 @@
 	<package>
 		<name>gwled</name>
 		<descr><![CDATA[Allows you to use LEDs for monitoring gateway status on supported platforms (ALIX, WRAP, Soekris, etc.)]]></descr>
-		<category>System</category>
 		<version>0.2.3</version>
-		<status>BETA</status>
-		<maintainer>jimp@pfsense.org</maintainer>
-		<port_category>sysutils</port_category>
-		<required_version>2.2</required_version>
-		<config_file>https://packages.pfsense.org/packages/config/gwled/gwled.xml</config_file>
 		<configurationfile>gwled.xml</configurationfile>
 	</package>
 </pfsensepkgs>

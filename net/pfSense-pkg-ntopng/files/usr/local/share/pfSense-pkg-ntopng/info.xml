@@ -4,10 +4,7 @@
 		<name>ntopng</name>
 		<website>http://www.ntop.org/</website>
 		<descr><![CDATA[ntopng (replaces ntop) is a network probe that shows network usage in a way similar to what top does for processes. In interactive mode, it displays the network status on the user's terminal. In Web mode it acts as a Web server, creating an HTML dump of the network status. It sports a NetFlow/sFlow emitter/collector, an HTTP-based client interface for creating ntop-centric monitoring applications, and RRD for persistently storing traffic statistics.]]></descr>
-		<category>Network Management</category>
 		<version>0.8.3</version>
-		<status>BETA</status>
-		<required_version>2.3</required_version>
 		<configurationfile>ntopng.xml</configurationfile>
 		<noembedded>true</noembedded>
 	</package>

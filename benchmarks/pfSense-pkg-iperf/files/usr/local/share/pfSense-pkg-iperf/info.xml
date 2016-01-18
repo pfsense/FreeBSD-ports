@@ -4,15 +4,8 @@
 		<name>iperf</name>
 		<website>http://www.freshports.org/benchmarks/iperf/</website>
 		<descr><![CDATA[Iperf is a tool for testing network throughput, loss, and jitter.]]></descr>
-		<category>Network Management</category>
-		<config_file>https://packages.pfsense.org/packages/config/iperf/iperf.xml</config_file>
-		<depends_on_package_pbi>iperf-2.0.5-##ARCH##.pbi</depends_on_package_pbi>
 		<version>2.0.5.4</version>
-		<status>RC</status>
 		<pkginfolink>https://doc.pfsense.org/index.php/Iperf_package</pkginfolink>
-		<required_version>2.2</required_version>
 		<configurationfile>iperf.xml</configurationfile>
-		<port_category>benchmarks</port_category>
-		<run_depends>bin/iperf:benchmarks/iperf</run_depends>
 	</package>
 </pfsensepkgs>

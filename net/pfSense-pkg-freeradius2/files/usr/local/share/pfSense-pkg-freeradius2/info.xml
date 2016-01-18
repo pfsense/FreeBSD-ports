@@ -8,12 +8,7 @@
 			FreeRADIUS and FreeRADIUS2 settings are not compatible so don't use them together or try to update.&lt;br /&gt;
 			On pfSense docs there is a how-to which could help you on porting users.]]></descr>
 		<pkginfolink>https://doc.pfsense.org/index.php/FreeRADIUS_2.x_package</pkginfolink>
-		<category>Services</category>
 		<version>1.7</version>
-		<status>RC</status>
-		<required_version>2.3</required_version>
-		<maintainer>nachtfalkeaw@web.de</maintainer>
 		<configurationfile>freeradius.xml</configurationfile>
-		<build_options>freeradius_SET_FORCE=KERBEROS MYSQL PGSQL PERL PYTHON LDAP SSL_PORT</build_options>
 	</package>
 </pfsensepkgs>
