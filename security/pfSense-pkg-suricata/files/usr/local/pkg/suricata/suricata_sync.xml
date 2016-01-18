@@ -43,7 +43,6 @@
 	]]>
 	</copyright>
 	<name>suricatasync</name>
-	<version>2.1.8</version>
 	<title>Suricata: XMLRPC Sync</title>
 	<include_file>/usr/local/pkg/suricata/suricata.inc</include_file>
 	<tabs>

@@ -44,7 +44,6 @@
 	]]>
 	</copyright>
 	<name>OpenVPN Client Export</name>
-	<version>1.3.6</version>
 	<title>OpenVPN Client Export</title>
 	<include_file>/usr/local/pkg/openvpn-client-export.inc</include_file>
 	<tabs>

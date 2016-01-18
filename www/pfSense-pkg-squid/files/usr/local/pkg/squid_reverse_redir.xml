@@ -42,7 +42,6 @@
 	]]>
 	</copyright>
 	<name>squidreverseredir</name>
-	<version>0.4.5</version>
 	<title>Reverse Proxy Server: Redirects</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>

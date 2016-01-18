@@ -43,7 +43,6 @@
 	<description>Automatically backs up your pfSense configuration. All contents are encrypted before being sent to the server. Requires Gold Subscription from https://portal.pfsense.org</description>
 	<requirements>pfSense Portal subscription</requirements>
 	<name>AutoConfigBackup</name>
-	<version>1.42</version>
 	<title>Diagnostics: Auto Configuration Backup</title>
 	<savetext>Change</savetext>
 	<include_file>/usr/local/pkg/autoconfigbackup.inc</include_file>

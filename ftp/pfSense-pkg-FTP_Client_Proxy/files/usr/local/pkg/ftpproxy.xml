@@ -41,7 +41,6 @@
 	]]>
 	</copyright>
 	<name>FTP Client Proxy</name>
-	<version>0.3</version>
 	<title>FTP Client Proxy</title>
 	<aftersaveredirect>pkg_edit.php?xml=ftpproxy.xml</aftersaveredirect>
 	<include_file>/usr/local/pkg/ftpproxy.inc</include_file>

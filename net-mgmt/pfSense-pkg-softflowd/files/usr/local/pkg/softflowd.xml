@@ -39,7 +39,6 @@
 	]]>
 	</copyright>
 	<name>softflowd</name>
-	<version>1.2.1</version>
 	<title>softflowd: Settings</title>
 	<aftersaveredirect>pkg_edit.php?xml=softflowd.xml&amp;id=0</aftersaveredirect>
 	<menu>

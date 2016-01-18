@@ -42,7 +42,6 @@
 	]]>
 	</copyright>
 	<name>squidnac</name>
-	<version>0.4.1</version>
 	<title>Proxy Server: Access Control</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>

@@ -42,7 +42,6 @@
 	]]>
 	</copyright>
 	<name>iperf</name>
-	<version>2.0.5.3</version>
 	<title>iperf: Server</title>
 	<savetext>Run iperf server</savetext>
 	<preoutput>yes</preoutput>

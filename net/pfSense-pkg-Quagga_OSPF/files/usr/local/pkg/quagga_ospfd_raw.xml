@@ -42,7 +42,6 @@
 	]]>
 	</copyright>
 	<name>quagga_ospfd_raw</name>
-	<version>0.6.12</version>
 	<title>Services/Quagga OSPFd</title>
 	<include_file>/usr/local/pkg/quagga_ospfd.inc</include_file>
 	<aftersaveredirect>pkg_edit.php?xml=quagga_ospfd_raw.xml&amp;id=0</aftersaveredirect>

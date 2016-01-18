@@ -41,7 +41,6 @@
 	]]>
 	</copyright>
 	<name>open-vm-tools</name>
-	<version>1280544.13</version>
 	<title>Open VM Tools</title>
 	<include_file>/usr/local/pkg/open-vm-tools.inc</include_file>
 	<additional_files_needed>

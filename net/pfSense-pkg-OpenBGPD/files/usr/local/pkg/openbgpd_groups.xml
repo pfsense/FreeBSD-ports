@@ -42,7 +42,6 @@
 	]]>
 	</copyright>
 	<name>OpenBGPDGroups</name>
-	<version>0.11</version>
 	<title>Services: OpenBGPD Groups</title>
 	<include_file>/usr/local/pkg/openbgpd.inc</include_file>
 	<tabs>

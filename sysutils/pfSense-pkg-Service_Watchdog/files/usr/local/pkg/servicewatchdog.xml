@@ -44,7 +44,6 @@
 	<description>Service Watchdog</description>
 	<faq>Monitors for stopped services and restarts them.</faq>
 	<name>Service Watchdog</name>
-	<version>1.8.2</version>
 	<title>Services: Service Watchdog</title>
 	<include_file>/usr/local/pkg/servicewatchdog.inc</include_file>
 	<menu>

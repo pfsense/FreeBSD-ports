@@ -37,7 +37,6 @@
 		]]>
 	</copyright>
 	<name>mailreport</name>
-	<version>2.4.1</version>
 	<title>Status: Email Reports</title>
 	<additional_files_needed>
 		<prefix>/usr/local/bin/</prefix>

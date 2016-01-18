@@ -42,7 +42,6 @@
 ]]>
 	</copyright>
 	<name>nmap</name>
-	<version>1.4.2</version>
 	<title>Diagnostics: NMap</title>
 	<savetext>Scan</savetext>
 	<preoutput>yes</preoutput>

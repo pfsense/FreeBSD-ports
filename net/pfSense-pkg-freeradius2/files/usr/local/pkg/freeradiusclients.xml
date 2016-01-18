@@ -45,7 +45,6 @@
 	<requirements>Describe your package requirements here</requirements>
 	<faq>Currently there are no FAQ items provided.</faq>
 	<name>freeradiusclients</name>
-	<version>1.7</version>
 	<title>FreeRADIUS: Clients</title>
 	<include_file>/usr/local/pkg/freeradius.inc</include_file>
 	<tabs>

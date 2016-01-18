@@ -42,7 +42,6 @@
 	]]>
 	</copyright>
 	<name>squidantivirus</name>
-	<version>0.4.6</version>
 	<title>Proxy Server: Antivirus</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>

@@ -41,7 +41,6 @@
 	]]>
 	</copyright>
 	<name>mtr</name>
-	<version>0.85.4</version>
 	<title>Diagnostics: mtr</title>
 	<savetext>Run mtr</savetext>
 	<preoutput>yes</preoutput>

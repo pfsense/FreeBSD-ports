@@ -42,7 +42,6 @@
 	]]>
 	</copyright>
 	<name>squidreversepeer</name>
-	<version>0.4.5</version>
 	<title>Reverse Proxy Server: Peers</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>

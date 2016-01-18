@@ -43,7 +43,6 @@
 	</copyright>
 	<description>Notes</description>
 	<name>Notes</name>
-	<version>0.2.8</version>
 	<title>Status: Notes</title>
 	<aftersaveredirect>/pkg.php?xml=notes.xml</aftersaveredirect>
 	<addedit_string>[notes] Successfully created/modified a note.</addedit_string>

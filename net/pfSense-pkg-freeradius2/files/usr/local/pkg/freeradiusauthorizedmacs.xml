@@ -45,7 +45,6 @@
 	<requirements>Describe your package requirements here</requirements>
 	<faq>Currently there are no FAQ items provided.</faq>
 	<name>freeradiusauthorizedmacs</name>
-	<version>1.7</version>
 	<title>FreeRADIUS: MACs</title>
 	<include_file>/usr/local/pkg/freeradius.inc</include_file>
 	<menu>

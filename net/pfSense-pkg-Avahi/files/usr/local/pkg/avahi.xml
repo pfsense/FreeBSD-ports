@@ -44,7 +44,6 @@
 	</copyright>
 	<title>Services: Avahi</title>
 	<name>avahi</name>
-	<version>1.10.4</version>
 	<include_file>/usr/local/pkg/avahi.inc</include_file>
 	<menu>
 		<name>Avahi</name>

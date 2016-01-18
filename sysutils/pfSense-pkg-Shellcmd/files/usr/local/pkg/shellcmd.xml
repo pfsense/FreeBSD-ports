@@ -42,7 +42,6 @@
 	]]>
 	</copyright>
 	<name>shellcmdsettings</name>
-	<version>1.0.2</version>
 	<title>Services: Shellcmd Settings</title>
 	<include_file>/usr/local/pkg/shellcmd.inc</include_file>
 	<aftersaveredirect>/pkg.php?xml=shellcmd.xml</aftersaveredirect>

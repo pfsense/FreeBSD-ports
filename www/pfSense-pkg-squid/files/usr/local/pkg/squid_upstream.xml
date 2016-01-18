@@ -42,7 +42,6 @@
 	]]>
 	</copyright>
 	<name>squidremote</name>
-	<version>0.4.5</version>
 	<title>Proxy Server: Remote Proxy Settings</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>

@@ -6,7 +6,6 @@
 	<requirements>Describe your package requirements here</requirements>
 	<faq>Currently there are no FAQ items provided.</faq>
 	<name>squidguarddefault</name>
-	<version>none</version>
 	<title>Proxy filter SquidGuard: Common Access Control List (ACL)</title>
 	<include_file>/usr/local/pkg/squidguard.inc</include_file>
 	<tabs>

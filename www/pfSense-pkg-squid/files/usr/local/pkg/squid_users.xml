@@ -42,7 +42,6 @@
 	]]>
 	</copyright>
 	<name>squidusers</name>
-	<version>0.4.1</version>
 	<title>Proxy Server: Local Users</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<delete_string>A proxy server user has been deleted.</delete_string>

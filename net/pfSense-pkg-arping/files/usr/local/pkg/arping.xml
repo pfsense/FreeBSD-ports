@@ -41,7 +41,6 @@
 	]]>
 	</copyright>
 	<name>arping</name>
-	<version>1.2.1</version>
 	<title>Diagnostics: ARPing</title>
 	<savetext>Run ARPing</savetext>
 	<preoutput>yes</preoutput>

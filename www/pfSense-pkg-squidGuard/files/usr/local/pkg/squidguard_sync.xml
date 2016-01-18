@@ -43,7 +43,6 @@
 	]]>
 	</copyright>
 	<name>squidguardsync</name>
-	<version>1.9.17</version>
 	<title>SquidGuard Proxy Filter: XMLRPC Sync</title>
 	<include_file>/usr/local/pkg/squidguard.inc</include_file>
 	<tabs>

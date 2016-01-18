@@ -39,7 +39,6 @@
 	]]>
 	</copyright>
 	<name>ntopng</name>
-	<version>0.8.3</version>
 	<title>Diagnostics: ntopng Settings</title>
 	<include_file>/usr/local/pkg/ntopng.inc</include_file>
 	<additional_files_needed>

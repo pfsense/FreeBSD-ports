@@ -42,7 +42,6 @@
 	]]>
 	</copyright>
 	<name>lightsquid</name>
-	<version>2.5</version>
 	<title>Squid Proxy Reports: Settings</title>
 	<category>Status</category>
 	<include_file>/usr/local/pkg/lightsquid.inc</include_file>

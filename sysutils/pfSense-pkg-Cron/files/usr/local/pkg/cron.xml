@@ -42,7 +42,6 @@
 	]]>
 	</copyright>
 	<name>cronsettings</name>
-	<version>0.3.6</version>
 	<title>Cron Settings</title>
 	<include_file>/usr/local/pkg/cron.inc</include_file>
 	<menu>

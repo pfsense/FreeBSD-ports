@@ -43,7 +43,6 @@
 	]]>
 	</copyright>
 	<name>freeradiussync</name>
-	<version>1.7</version>
 	<title>FreeRADIUS: XMLRPC Sync</title>
 	<include_file>/usr/local/pkg/freeradius.inc</include_file>
 	<menu>

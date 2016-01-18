@@ -42,7 +42,6 @@
 	]]>
 	</copyright>
 	<name>squidcache</name>
-	<version>0.4.3</version>
 	<title>Proxy Server: Cache Management</title>
 	<include_file>/usr/local/pkg/squid.inc</include_file>
 	<tabs>

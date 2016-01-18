@@ -45,7 +45,6 @@
 	<requirements>Describe your package requirements here</requirements>
 	<faq>Currently there are no FAQ items provided.</faq>
 	<name>freeradiusmodulesldap</name>
-	<version>1.7</version>
 	<title>FreeRADIUS: LDAP</title>
 	<aftersaveredirect>pkg_edit.php?xml=freeradiusmodulesldap.xml&amp;id=0</aftersaveredirect>
 	<include_file>/usr/local/pkg/freeradius.inc</include_file>

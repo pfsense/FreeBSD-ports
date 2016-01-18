@@ -42,7 +42,6 @@
 	]]>
 	</copyright>
 	<name>sudo</name>
-	<version>0.2.9</version>
 	<title>Sudo - Shell Command Privilege Delegation Utility</title>
 	<include_file>/usr/local/pkg/sudo.inc</include_file>
 	<menu>

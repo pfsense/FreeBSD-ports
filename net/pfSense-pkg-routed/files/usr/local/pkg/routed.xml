@@ -42,7 +42,6 @@
 	]]>
 	</copyright>
 	<name>routed</name>
-	<version>1.2.3</version>
 	<title>Services: RIP</title>
 	<include_file>/usr/local/pkg/routed.inc</include_file>
 	<aftersaveredirect>pkg_edit.php?xml=routed.xml</aftersaveredirect>
