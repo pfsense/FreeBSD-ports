@@ -5,7 +5,7 @@
 		<descr><![CDATA[LightSquid is a high performance web proxy reporting tool. Includes proxy realtime statistics (SQStat).
 			&lt;strong&gt;Requires Squid3 package.&lt;/strong&gt;]]></descr>
 		<website>http://lightsquid.sf.net/</website>
-		<version>2.5</version>
+		<version>%%PKGVERSION%%</version>
 		<configurationfile>lightsquid.xml</configurationfile>
 		<noembedded>true</noembedded>
 	</package>

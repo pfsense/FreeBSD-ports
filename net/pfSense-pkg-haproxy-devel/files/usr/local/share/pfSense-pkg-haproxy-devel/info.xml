@@ -8,7 +8,7 @@
 			Supports ACLs for smart backend switching.&lt;br /&gt;
 			&lt;strong&gt;As of pkg v0.33 switched to using 1.6 stable releases.&lt;/strong&gt;]]></descr>
 		<website>http://haproxy.1wt.eu/</website>
-		<version>0.39</version>
+		<version>%%PKGVERSION%%</version>
 		<configurationfile>haproxy.xml</configurationfile>
 	</package>
 </pfsensepkgs>

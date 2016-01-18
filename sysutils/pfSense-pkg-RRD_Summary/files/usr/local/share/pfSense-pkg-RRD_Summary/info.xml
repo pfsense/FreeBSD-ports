@@ -4,7 +4,7 @@
 		<name>RRD Summary</name>
 		<internal_name>RRD_Summary</internal_name>
 		<descr><![CDATA[RRD Summary Page, which will give a total amount of traffic passed In/Out during this and the previous month.]]></descr>
-		<version>1.3.1</version>
+		<version>%%PKGVERSION%%</version>
 		<configurationfile>rrd-summary.xml</configurationfile>
 	</package>
 </pfsensepkgs>

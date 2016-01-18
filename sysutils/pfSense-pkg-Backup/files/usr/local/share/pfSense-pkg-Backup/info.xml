@@ -3,7 +3,7 @@
 	<package>
 		<name>Backup</name>
 		<descr><![CDATA[Tool to Backup and Restore files and directories.]]></descr>
-		<version>0.3</version>
+		<version>%%PKGVERSION%%</version>
 		<configurationfile>backup.xml</configurationfile>
 	</package>
 </pfsensepkgs>

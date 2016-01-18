@@ -5,7 +5,7 @@
 		<internal_name>Quagga_OSPF</internal_name>
 		<descr><![CDATA[OSPF routing protocol using Quagga.&lt;br /&gt;
 			&lt;strong&gt;WARNING! Installs files to the same place as OpenBGPD. Installing both will break things.&lt;/strong&gt;]]></descr>
-		<version>0.6.12</version>
+		<version>%%PKGVERSION%%</version>
 		<configurationfile>quagga_ospfd.xml</configurationfile>
 	</package>
 </pfsensepkgs>

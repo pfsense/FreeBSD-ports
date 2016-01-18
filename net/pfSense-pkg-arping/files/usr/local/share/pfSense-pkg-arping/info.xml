@@ -4,7 +4,7 @@
 		<name>arping</name>
 		<descr><![CDATA[Broadcasts a who-has ARP packet on the network and prints answers.]]></descr>
 		<website>http://www.habets.pp.se/synscan/programs.php?prog=arping</website>
-		<version>1.2.1</version>
+		<version>%%PKGVERSION%%</version>
 		<configurationfile>arping.xml</configurationfile>
 		<pkginfolink>https://doc.pfsense.org/index.php/Arping</pkginfolink>
 	</package>

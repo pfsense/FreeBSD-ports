@@ -5,7 +5,7 @@
 		<descr><![CDATA[High performance web proxy URL filter.&lt;br/&gt;
 			&lt;strong&gt;Works with both Squid (2.7 legacy branch) and Squid3 (3.4 branch) packages.&lt;/strong&gt;]]></descr>
 		<website>http://www.squidGuard.org/</website>
-		<version>1.11</version>
+		<version>%%PKGVERSION%%</version>
 		<configurationfile>squidguard.xml</configurationfile>
 		<after_install_info>Please visit Services - SquidGuard Proxy Filter - Target Categories and set up at least one category there before enabling SquidGuard. See https://forum.pfsense.org/index.php?topic=94312.0 for details.</after_install_info>
 	</package>

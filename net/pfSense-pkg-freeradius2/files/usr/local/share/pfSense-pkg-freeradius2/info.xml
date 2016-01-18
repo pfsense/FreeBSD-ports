@@ -8,7 +8,7 @@
 			FreeRADIUS and FreeRADIUS2 settings are not compatible so don't use them together or try to update.&lt;br /&gt;
 			On pfSense docs there is a how-to which could help you on porting users.]]></descr>
 		<pkginfolink>https://doc.pfsense.org/index.php/FreeRADIUS_2.x_package</pkginfolink>
-		<version>1.7</version>
+		<version>%%PKGVERSION%%</version>
 		<configurationfile>freeradius.xml</configurationfile>
 	</package>
 </pfsensepkgs>

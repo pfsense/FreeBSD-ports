@@ -4,7 +4,7 @@
 		<name>suricata</name>
 		<website>http://suricata-ids.org/</website>
 		<descr><![CDATA[High Performance Network IDS, IPS and Security Monitoring engine by OISF.]]></descr>
-		<version>2.1.9.1</version>
+		<version>%%PKGVERSION%%</version>
 		<configurationfile>suricata.xml</configurationfile>
 	</package>
 </pfsensepkgs>

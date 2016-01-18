@@ -8,7 +8,7 @@
 			This package implements the TCP, HTTP and HTTPS balancing features from haproxy.&lt;br /&gt;
 			Supports ACLs for smart backend switching.]]></descr>
 		<website>http://haproxy.1wt.eu/</website>
-		<version>0.33</version>
+		<version>%%PKGVERSION%%</version>
 		<configurationfile>haproxy.xml</configurationfile>
 	</package>
 </pfsensepkgs>

@@ -4,7 +4,7 @@
 		<name>Notes</name>
 		<descr><![CDATA[Track things you want to note for this system.]]></descr>
 		<pkginfolink/>
-		<version>0.2.8</version>
+		<version>%%PKGVERSION%%</version>
 		<configurationfile>notes.xml</configurationfile>
 	</package>
 </pfsensepkgs>

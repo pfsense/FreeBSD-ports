@@ -3,7 +3,7 @@
 	<package>
 		<name>Shellcmd</name>
 		<descr><![CDATA[The shellcmd utility is used to manage commands on system startup.]]></descr>
-		<version>1.0.2</version>
+		<version>%%PKGVERSION%%</version>
 		<configurationfile>shellcmd.xml</configurationfile>
 	</package>
 </pfsensepkgs>

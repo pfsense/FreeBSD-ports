@@ -3,7 +3,7 @@
 	<package>
 		<name>Cron</name>
 		<descr><![CDATA[The cron utility is used to manage commands on a schedule.]]></descr>
-		<version>0.3.6</version>
+		<version>%%PKGVERSION%%</version>
 		<configurationfile>cron.xml</configurationfile>
 	</package>
 </pfsensepkgs>

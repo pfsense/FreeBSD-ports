@@ -84,5 +84,7 @@ do-install:
 		${STAGEDIR}${PREFIX}/www/pfblockerng/www
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
+	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
+		${STAGEDIR}${DATADIR}/info.xml
 
 .include <bsd.port.mk>
