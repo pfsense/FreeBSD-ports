@@ -100,6 +100,9 @@ function quagga_ospfd_install_conf() {
 			foreach ($config['installedpackages']['quaggaospfdinterfaces']['config'] as $conf) {
 				$realif = get_real_interface($conf['interface']);
 				$conffile .= "interface {$realif}\n" ;
+				if (!empty($conf['networktype'])) {
+					$conffile .= "  ip ospf network {$conf['networktype']}\n";
+				}
 				if (!empty($conf['metric'])) {
 					$conffile .= "  ip ospf cost {$conf['metric']}\n";
 				}
