@@ -2,7 +2,6 @@
 
 PORTNAME=	pfSense-pkg-squidGuard
 PORTVERSION=	1.12
-#PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	# empty
 DISTFILES=	# empty
