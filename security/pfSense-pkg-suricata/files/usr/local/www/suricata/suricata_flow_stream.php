@@ -149,7 +149,7 @@ if ($_POST['save_os_policy']) {
 		if ($_POST['policy']) { $engine['policy'] = $_POST['policy']; } else { $engine['policy'] = "bsd"; }
 
 		// Can only have one "all" Bind_To address
-		if ($engine['bind_to'] == "all" && $engine['name'] <> "default") {
+		if ($engine['bind_to'] == "all" && $engine['name'] != "default") {
 			$input_errors[] = gettext("Only one default OS-Policy Engine can be bound to all addresses.");
 			$add_edit_os_policy = true;
 			$pengcfg = $engine;
@@ -165,7 +165,7 @@ if ($_POST['save_os_policy']) {
 
 			/* Reorder the engine array to ensure the */
 			/* 'bind_to=all' entry is at the bottom   */
-			/* if it contains more than one entry.    */
+			/* if it contains more than one entry.	*/
 			if (count($a_nat[$id]['host_os_policy']['item']) > 1) {
 				$i = -1;
 				foreach ($a_nat[$id]['host_os_policy']['item'] as $f => $v) {
@@ -176,7 +176,7 @@ if ($_POST['save_os_policy']) {
 				}
 				/* Only relocate the entry if we  */
 				/* found it, and it's not already */
-				/* at the end.                    */
+				/* at the end.					*/
 				if ($i > -1 && ($i < (count($a_nat[$id]['host_os_policy']['item']) - 1))) {
 					$tmp = $a_nat[$id]['host_os_policy']['item'][$i];
 					unset($a_nat[$id]['host_os_policy']['item'][$i]);
@@ -312,8 +312,8 @@ elseif ($_POST['save'] || $_POST['apply']) {
 
 		/**************************************************/
 		/* If we have a valid rule ID, save configuration */
-		/* then update the suricata.conf file for this    */
-		/* interface.                                     */
+		/* then update the suricata.conf file for this	*/
+		/* interface.									 */
 		/**************************************************/
 		if (isset($id) && $a_nat[$id]) {
 			$a_nat[$id] = $natent;
@@ -431,63 +431,50 @@ elseif ($_POST['cancel_import_alias']) {
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($pconfig['interface']);
-$pgtitle = gettext("Suricata: Interface {$if_friendly} - Flow and Stream");
+$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Interface Flow and Stream - {$if_friendly}"));
 include_once("head.inc");
-?>
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
 
-<?php include("fbegin.inc");
 /* Display error message */
 if ($input_errors) {
 	print_input_errors($input_errors); // TODO: add checks
 }
-?>
 
-<form action="suricata_flow_stream.php" method="post" name="iform" id="iform">
-<input type="hidden" name="eng_id" id="eng_id" value="<?=$eng_id;?>"/>
-<input type="hidden" name="id" id="id" value="<?=$id;?>"/>
-
-<?php
 if ($savemsg) {
 	/* Display save message */
 	print_info_box($savemsg);
 }
+
+$tab_array = array();
+$tab_array[] = array(gettext("Interfaces"), true, "/suricata/suricata_interfaces.php");
+$tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_global.php");
+$tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
+$tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
+$tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
+$tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
+$tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$id}");
+$tab_array[] = array(gettext("Logs Mgmt"), false, "/suricata/suricata_logs_mgmt.php");
+$tab_array[] = array(gettext("SID Mgmt"), false, "/suricata/suricata_sid_mgmt.php");
+$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=suricata/suricata_sync.xml");
+$tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
+display_top_tabs($tab_array, true);
+
+$menu_iface=($if_friendly?substr($if_friendly,0,5)." ":"Iface ");
+$tab_array = array();
+$tab_array[] = array($menu_iface . gettext("Settings"), false, "/suricata/suricata_interfaces_edit.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Categories"), false, "/suricata/suricata_rulesets.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Rules"), false, "/suricata/suricata_rules.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Flow/Stream"), true, "/suricata/suricata_flow_stream.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("App Parsers"), false, "/suricata/suricata_app_parsers.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Variables"), false, "/suricata/suricata_define_vars.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/suricata/suricata_barnyard.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata_ip_reputation.php?id={$id}");
+display_top_tabs($tab_array, true);
 ?>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tbody>
-<tr><td>
-<?php
-	$tab_array = array();
-	$tab_array[] = array(gettext("Interfaces"), true, "/suricata/suricata_interfaces.php");
-	$tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_global.php");
-	$tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
-	$tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
-	$tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
-	$tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
-	$tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
-	$tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$id}");
-	$tab_array[] = array(gettext("Logs Mgmt"), false, "/suricata/suricata_logs_mgmt.php");
-	$tab_array[] = array(gettext("SID Mgmt"), false, "/suricata/suricata_sid_mgmt.php");
-	$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=suricata/suricata_sync.xml");
-	$tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
-	display_top_tabs($tab_array, true);
-	echo '</td></tr>';
-	echo '<tr><td>';
-	$menu_iface=($if_friendly?substr($if_friendly,0,5)." ":"Iface ");
-	$tab_array = array();
-	$tab_array[] = array($menu_iface . gettext("Settings"), false, "/suricata/suricata_interfaces_edit.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Categories"), false, "/suricata/suricata_rulesets.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Rules"), false, "/suricata/suricata_rules.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Flow/Stream"), true, "/suricata/suricata_flow_stream.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("App Parsers"), false, "/suricata/suricata_app_parsers.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Variables"), false, "/suricata/suricata_define_vars.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/suricata/suricata_barnyard.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata_ip_reputation.php?id={$id}");
-	display_top_tabs($tab_array, true);
-?>
-</td></tr>
-<tr><td><div id="mainarea">
+<form action="suricata_flow_stream.php" method="post" name="iform" id="iform">
+<input type="hidden" name="eng_id" id="eng_id" value="<?=$eng_id?>"/>
+<input type="hidden" name="id" id="id" value="<?=$id?>"/>
 
 <?php if ($importalias) : ?>
 	<?php include("/usr/local/www/suricata/suricata_import_aliases.php");
@@ -502,364 +489,277 @@ if ($savemsg) {
 	<?php include("/usr/local/www/suricata/suricata_os_policy_engine.php"); ?>
 
 <?php else: ?>
-
-<table id="maintable" class="tabcont" width="100%" border="0" cellpadding="6" cellspacing="0">
-	<tbody>
-	<tr>
-		<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Host-Specific Defrag and Stream Settings"); ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Host OS Policy Assignment"); ?></td>
-		<td width="78%" class="vtable">
-			<table width="95%" align="left" id="hostOSEnginesTable" style="table-layout: fixed;" border="0" cellspacing="0" cellpadding="0">
-				<colgroup>
-					<col width="45%" align="left">
-					<col width="45%" align="center">
-					<col width="10%" align="right">
-				</colgroup>
-			   <thead>
-				<tr>
-					<th class="listhdrr" axis="string"><?php echo gettext("Name");?></th>
-					<th class="listhdrr" axis="string"><?php echo gettext("Bind-To Address Alias");?></th>
-					<th class="list" align="right"><input type="image" name="import_alias[]" src="../themes/<?= $g['theme'];?>/images/icons/icon_import_alias.gif" width="17" 
-					height="17" border="0" title="<?php echo gettext("Import policy configuration from existing Aliases");?>"/>
-					<input type="image" name="add_os_policy[]" src="../themes/<?= $g['theme'];?>/images/icons/icon_plus.gif" width="17" 
-					height="17" border="0" title="<?php echo gettext("Add a new policy configuration");?>"/></th>
-				</tr>
-			   </thead>
-				<tbody>
-			<?php foreach ($pconfig['host_os_policy']['item'] as $f => $v): ?>
-				<tr>
-					<td class="listlr" align="left"><?=gettext($v['name']);?></td>
-					<td class="listbg" align="center"><?=gettext($v['bind_to']);?></td>
-					<td class="listt" align="right"><input type="image" name="edit_os_policy[]" value="<?=$f;?>" onclick="document.getElementById('eng_id').value='<?=$f;?>'" 
-					src="/themes/<?=$g['theme'];?>/images/icons/icon_e.gif" 
-					width="17" height="17" border="0" title="<?=gettext("Edit this policy configuration");?>"/>
-			<?php if ($v['bind_to'] <> "all") : ?> 
-					<input type="image" name="del_os_policy[]" value="<?=$f;?>" onclick="document.getElementById('eng_id').value='<?=$f;?>';return confirm('Are you sure you want to delete this entry?');" 
-					src="/themes/<?=$g['theme'];?>/images/icons/icon_x.gif" width="17" height="17" border="0" 
-					title="<?=gettext("Delete this policy configuration");?>"/>
-			<?php else : ?>
-					<img src="/themes/<?=$g['theme'];?>/images/icons/icon_x_d.gif" width="17" height="17" border="0" 
-					title="<?=gettext("Default policy configuration cannot be deleted");?>">
-			<?php endif ?>
-					</td>
-				</tr>
-			<?php endforeach; ?>
-				</tbody>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2" valign="top" class="listtopic"><?php echo gettext("IP Defragmentation"); ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Fragmentation Memory Cap"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="frag_memcap" type="text" class="formfld unknown" id="frag_memcap" size="9"
-			value="<?=htmlspecialchars($pconfig['frag_memcap']);?>">&nbsp;
-			<?php echo gettext("Max memory to be used for defragmentation.  Default is ") . 
-			"<strong>" . gettext("33,554,432") . "</strong>" . gettext(" bytes (32 MB)."); ?><br/><br/>
-			<?php echo gettext("Sets the maximum amount of memory, in bytes, to be used by the IP defragmentation engine."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Max Trackers");?></td>
-		<td width="78%" class="vtable"><input name="ip_max_trackers" type="text" class="formfld unknown" id="ip_max_trackers" size="9" value="<?=htmlspecialchars($pconfig['ip_max_trackers']);?>">&nbsp;
-		<?php echo gettext("Number of defragmented flows to follow.  Default is ") . 
-		"<strong>" . gettext("65,535") . "</strong>" . gettext(" fragments.");?><br/><br/>
-		<?php echo gettext("Sets the number of defragmented flows to follow for reassembly."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Max Fragments");?></td>
-		<td width="78%" class="vtable"><input name="ip_max_frags" type="text" class="formfld unknown" id="ip_max_frags" size="9" value="<?=htmlspecialchars($pconfig['ip_max_frags']);?>">&nbsp;
-		<?php echo gettext("Maximum number of IP fragments to hold.  Default is ") . "<strong>" . gettext("65,535") . "</strong>" . gettext(" fragments.");?><br/><br/>
-		<?php echo gettext("Sets the maximum number of IP fragments to retain in memory while awaiting reassembly."); ?><br/><br/>
-		<span class="red"><strong><?php echo gettext("Note: ") . "</strong></span>" . gettext("This must be equal to or greater than the Max Trackers value specified above."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Fragmentation Hash Table Size"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="frag_hash_size" type="text" class="formfld unknown" id="frag_hash_size" size="9"
-			value="<?=htmlspecialchars($pconfig['frag_hash_size']);?>">&nbsp;
-			<?php echo gettext("Hash Table size.  Default is ") . "<strong>" . gettext("65,536") . "</strong>" . gettext(" entries."); ?><br/><br/>
-			<?php echo gettext("Sets the size of the Hash Table used by the defragmentation engine."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Timeout");?></td>
-		<td width="78%" class="vtable"><input name="ip_frag_timeout" type="text" class="formfld unknown" id="ip_frag_timeout" size="9" value="<?=htmlspecialchars($pconfig['ip_frag_timeout']);?>">&nbsp;
-		<?php echo gettext("Max seconds to hold an IP fragement.  Default is ") . 
-		"<strong>" . gettext("60") . "</strong>" . gettext(" seconds.");?><br/><br/>
-		<?php echo gettext("Sets the number of seconds to hold an IP fragment in memory while awaiting the remainder of the packet to arrive."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Flow Manager Settings"); ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Flow Memory Cap"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="flow_memcap" type="text" class="formfld unknown" id="flow_memcap" size="9"
-			value="<?=htmlspecialchars($pconfig['flow_memcap']);?>">&nbsp;
-			<?php echo gettext("Max memory, in bytes, to be used by the flow engine.  Default is ") . 
-			"<strong>" . gettext("33,554,432") . "</strong>" . gettext(" bytes (32 MB)"); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Flow Hash Table Size"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="flow_hash_size" type="text" class="formfld unknown" id="flow_hash_size" size="9"
-			value="<?=htmlspecialchars($pconfig['flow_hash_size']);?>">&nbsp;
-			<?php echo gettext("Hash Table size used by the flow engine.  Default is ") . 
-			"<strong>" . gettext("65,536") . "</strong>" . gettext(" entries."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Preallocated Flows"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="flow_prealloc" type="text" class="formfld unknown" id="flow_prealloc" size="9"
-			value="<?=htmlspecialchars($pconfig['flow_prealloc']);?>">&nbsp;
-			<?php echo gettext("Number of preallocated flows ready for use.  Default is ") . 
-			"<strong>" . gettext("10,000") . "</strong>" . gettext(" flows."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Emergency Recovery"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="flow_emerg_recovery" type="text" class="formfld unknown" id="flow_emerg_recovery" size="9"
-			value="<?=htmlspecialchars($pconfig['flow_emerg_recovery']);?>">&nbsp;
-			<?php echo gettext("Percentage of preallocated flows to complete before exiting Emergency Mode.  Default is ") . 
-			"<strong>" . gettext("30%") . "</strong>."; ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Prune Flows"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="flow_prune" type="text" class="formfld unknown" id="flow_prune" size="9"
-			value="<?=htmlspecialchars($pconfig['flow_prune']);?>">&nbsp;
-			<?php echo gettext("Number of flows to prune in Emergency Mode when allocating a new flow.  Default is ") . 
-			"<strong>" . gettext("5") . "</strong>" . gettext(" flows."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Flow Timeout Settings"); ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("TCP Connections"); ?></td>
-		<td width="78%" class="vtable">
-			<table width="100%" cellspacing="4" cellpadding="0" border="0">
-				<tbody>
-				<tr>
-					<td class="vexpl"><input name="flow_tcp_new_timeout" type="text" class="formfld unknown" id="flow_tcp_new_timeout" 
-					size="9" value="<?=htmlspecialchars($pconfig['flow_tcp_new_timeout']);?>">&nbsp;
-					<?php echo gettext("New TCP connection timeout in seconds.  Default is ") . "<strong>" . gettext("60") . "</strong>."; ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="vexpl"><input name="flow_tcp_established_timeout" type="text" class="formfld unknown" id="flow_tcp_established_timeout" 
-					size="9" value="<?=htmlspecialchars($pconfig['flow_tcp_established_timeout']);?>">&nbsp;
-					<?php echo gettext("Established TCP connection timeout in seconds.  Default is ") . "<strong>" . gettext("3600") . "</strong>."; ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="vexpl"><input name="flow_tcp_closed_timeout" type="text" class="formfld unknown" id="flow_tcp_closed_timeout" 
-					size="9" value="<?=htmlspecialchars($pconfig['flow_tcp_closed_timeout']);?>">&nbsp;
-					<?php echo gettext("Closed TCP connection timeout in seconds.  Default is ") . "<strong>" . gettext("120") . "</strong>."; ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="vexpl"><input name="flow_tcp_emerg_new_timeout" type="text" class="formfld unknown" id="flow_tcp_emerg_new_timeout" 
-					size="9" value="<?=htmlspecialchars($pconfig['flow_tcp_emerg_new_timeout']);?>">&nbsp;
-					<?php echo gettext("Emergency New TCP connection timeout in seconds.  Default is ") . "<strong>" . gettext("10") . "</strong>."; ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="vexpl"><input name="flow_tcp_emerg_established_timeout" type="text" class="formfld unknown" id="flow_tcp_emerg_established_timeout" 
-					size="9" value="<?=htmlspecialchars($pconfig['flow_tcp_emerg_established_timeout']);?>">&nbsp;
-					<?php echo gettext("Emergency Established TCP connection timeout in seconds.  Default is ") . "<strong>" . gettext("300") . "</strong>."; ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="vexpl"><input name="flow_tcp_emerg_closed_timeout" type="text" class="formfld unknown" id="flow_tcp_emerg_closed_timeout" 
-					size="9" value="<?=htmlspecialchars($pconfig['flow_tcp_emerg_closed_timeout']);?>">&nbsp;
-					<?php echo gettext("Emergency Closed TCP connection timeout in seconds.  Default is ") . "<strong>" . gettext("20") . "</strong>."; ?>
-					</td>
-				</tr>
-				</tbody>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("UDP Connections"); ?></td>
-		<td width="78%" class="vtable">
-			<table width="100%" cellspacing="4" cellpadding="0" border="0">
-				<tbody>
-				<tr>
-					<td class="vexpl"><input name="flow_udp_new_timeout" type="text" class="formfld unknown" id="flow_udp_new_timeout" 
-					size="9" value="<?=htmlspecialchars($pconfig['flow_udp_new_timeout']);?>">&nbsp;
-					<?php echo gettext("New UDP connection timeout in seconds.  Default is ") . "<strong>" . gettext("30") . "</strong>."; ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="vexpl"><input name="flow_udp_established_timeout" type="text" class="formfld unknown" id="flow_udp_established_timeout" 
-					size="9" value="<?=htmlspecialchars($pconfig['flow_udp_established_timeout']);?>">&nbsp;
-					<?php echo gettext("Established UDP connection timeout in seconds.  Default is ") . "<strong>" . gettext("300") . "</strong>."; ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="vexpl"><input name="flow_udp_emerg_new_timeout" type="text" class="formfld unknown" id="flow_udp_emerg_new_timeout" 
-					size="9" value="<?=htmlspecialchars($pconfig['flow_udp_emerg_new_timeout']);?>">&nbsp;
-					<?php echo gettext("Emergency New UDP connection timeout in seconds.  Default is ") . "<strong>" . gettext("10") . "</strong>."; ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="vexpl"><input name="flow_udp_emerg_established_timeout" type="text" class="formfld unknown" id="flow_udp_emerg_established_timeout" 
-					size="9" value="<?=htmlspecialchars($pconfig['flow_udp_emerg_established_timeout']);?>">&nbsp;
-					<?php echo gettext("Emergency Established UDP connection timeout in seconds.  Default is ") . "<strong>" . gettext("100") . "</strong>."; ?>
-					</td>
-				</tr>
-				</tbody>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("ICMP Connections"); ?></td>
-		<td width="78%" class="vtable">
-			<table width="100%" cellspacing="4" cellpadding="0" border="0">
-				<tbody>
-				<tr>
-					<td class="vexpl"><input name="flow_icmp_new_timeout" type="text" class="formfld unknown" id="flow_icmp_new_timeout" 
-					size="9" value="<?=htmlspecialchars($pconfig['flow_icmp_new_timeout']);?>">&nbsp;
-					<?php echo gettext("New ICMP connection timeout in seconds.  Default is ") . "<strong>" . gettext("30") . "</strong>."; ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="vexpl"><input name="flow_icmp_established_timeout" type="text" class="formfld unknown" id="flow_icmp_established_timeout" 
-					size="9" value="<?=htmlspecialchars($pconfig['flow_icmp_established_timeout']);?>">&nbsp;
-					<?php echo gettext("Established ICMP connection timeout in seconds.  Default is ") . "<strong>" . gettext("300") . "</strong>."; ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="vexpl"><input name="flow_icmp_emerg_new_timeout" type="text" class="formfld unknown" id="flow_icmp_emerg_new_timeout" 
-					size="9" value="<?=htmlspecialchars($pconfig['flow_icmp_emerg_new_timeout']);?>">&nbsp;
-					<?php echo gettext("Emergency New ICMP connection timeout in seconds.  Default is ") . "<strong>" . gettext("10") . "</strong>."; ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="vexpl"><input name="flow_icmp_emerg_established_timeout" type="text" class="formfld unknown" id="flow_icmp_emerg_established_timeout" 
-					size="9" value="<?=htmlspecialchars($pconfig['flow_icmp_emerg_established_timeout']);?>">&nbsp;
-					<?php echo gettext("Emergency Established ICMP connection timeout in seconds.  Default is ") . "<strong>" . gettext("100") . "</strong>."; ?>
-					</td>
-				</tr>
-				</tbody>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Stream Engine Settings"); ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Stream Memory Cap"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="stream_memcap" type="text" class="formfld unknown" id="stream_memcap" size="9"
-			value="<?=htmlspecialchars($pconfig['stream_memcap']);?>">&nbsp;
-			<?php echo gettext("Max memory to be used by stream engine.  Default is ") . 
-			"<strong>" . gettext("67,108,864") . "</strong>" . gettext(" bytes (64MB)"); ?><br/><br/>
-			<?php echo gettext("Sets the maximum amount of memory, in bytes, to be used by the stream engine.  ");?><br/>
-			<span class="red"><strong><?php echo gettext("Note: ") . "</strong></span>" . 
-			gettext("This number will likely need to be increased beyond the default value in systems with more than 4 processor cores.  " . 
-			"If Suricata fails to start and logs a memory allocation error, increase this value in 4 MB chunks until Suricata starts successfully."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Preallocated Sessions"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="stream_prealloc_sessions" type="text" class="formfld unknown" id="stream_prealloc_sessions" size="9"
-			value="<?=htmlspecialchars($pconfig['stream_prealloc_sessions']);?>">&nbsp;
-			<?php echo gettext("Number of preallocated stream engine sessions.  Default is ") . 
-			"<strong>" . gettext("32,768") . "</strong>" . gettext(" sessions."); ?><br/><br/>
-			<?php echo gettext("Sets the number of stream engine sessions to preallocate.  This can be a performance enhancement."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Enable Mid-Stream Sessions"); ?></td>
-		<td width="78%" class="vtable"><input name="enable_midstream_sessions" type="checkbox" value="on" <?php if ($pconfig['enable_midstream_sessions'] == "on") echo "checked"; ?>>
-			<?php echo gettext("Suricata will pick up and track sessions mid-stream.  Default is ") . "<strong>" . gettext("Not Checked") . "</strong>."; ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Enable Async Streams"); ?></td>
-		<td width="78%" class="vtable"><input name="enable_async_sessions" type="checkbox" value="on" <?php if ($pconfig['enable_async_sessions'] == "on") echo "checked"; ?>>
-			<?php echo gettext("Suricata will track asynchronous one-sided streams.  Default is ") . "<strong>" . gettext("Not Checked") . "</strong>."; ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Reassembly Memory Cap"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="reassembly_memcap" type="text" class="formfld unknown" id="reassembly_memcap" size="9"
-			value="<?=htmlspecialchars($pconfig['reassembly_memcap']);?>">&nbsp;
-			<?php echo gettext("Max memory to be used for stream reassembly.  Default is ") . 
-			"<strong>" . gettext("67,108,864") . "</strong>" . gettext(" bytes (64MB)."); ?><br/><br/>
-			<?php echo gettext("Sets the maximum amount of memory, in bytes, to be used for stream reassembly."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Reassembly Depth"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="reassembly_depth" type="text" class="formfld unknown" id="reassembly_depth" size="9"
-			value="<?=htmlspecialchars($pconfig['reassembly_depth']);?>">&nbsp;
-			<?php echo gettext("Amount of a stream to reassemble.  Default is ") . 
-			"<strong>" . gettext("1,048,576") . "</strong>" . gettext(" bytes (1MB)."); ?><br/><br/>
-			<?php echo gettext("Sets the depth, in bytes, of a stream to be reassembled by the stream engine.") . "<br/>" . 
-			"<span class=\"red\"><strong>" . gettext("Note: ") . "</strong></span>" . gettext("Set to 0 (unlimited) to reassemble entire stream.  This is required for file extraction."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("To-Server Chunk Size"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="reassembly_to_server_chunk" type="text" class="formfld unknown" id="reassembly_to_server_chunk" size="9"
-			value="<?=htmlspecialchars($pconfig['reassembly_to_server_chunk']);?>">&nbsp;
-			<?php echo gettext("Size of raw stream chunks to inspect.  Default is ") . 
-			"<strong>" . gettext("2,560") . "</strong>" . gettext(" bytes."); ?><br/><br/>
-			<?php echo gettext("Sets the chunk size, in bytes, for raw stream inspection performed for 'to-server' traffic."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("To-Client Chunk Size"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="reassembly_to_client_chunk" type="text" class="formfld unknown" id="reassembly_to_client_chunk" size="9"
-			value="<?=htmlspecialchars($pconfig['reassembly_to_client_chunk']);?>">&nbsp;
-			<?php echo gettext("Amount of a stream to reassemble.  Default is ") . 
-			"<strong>" . gettext("2,560") . "</strong>" . gettext(" bytes."); ?><br/><br/>
-			<?php echo gettext("Sets the chunk size, in bytes, for raw stream inspection performed for 'to-client' traffic."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top">&nbsp;</td>
-		<td width="78%">
-			<input name="save" type="submit" class="formbtn" value="Save" title="<?php echo 
-			gettext("Save flow and stream settings"); ?>">
-			<input name="id" type="hidden" value="<?=$id;?>">&nbsp;&nbsp;&nbsp;&nbsp;
-			<input name="ResetAll" type="submit" class="formbtn" value="Reset" title="<?php echo 
-			gettext("Reset all settings to defaults") . "\" onclick=\"return confirm('" . 
-			gettext("WARNING:  This will reset ALL flow and stream settings to their defaults.  Click OK to continue or CANCEL to quit.") . 
-			"');\""; ?>></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top">&nbsp;</td>
-		<td width="78%"><span class="vexpl"><span class="red"><strong><?php echo gettext("Note: "); ?></strong></span></span>
-			<?php echo gettext("Please save your settings before you exit.  Changes will rebuild the rules file.  This "); ?>
-			<?php echo gettext("may take several seconds.  Suricata must also be restarted to activate any changes made on this screen."); ?></td>
-	</tr>
-	</tbody>
-</table>
+	
+	<div class="panel panel-default">
+		<div class="panel-heading"><h2 class="panel-title"><?=gettext("Host-Specific Defrag and Stream Settings")?></h2></div>
+		<div class="panel-body">
+			<div class="form-group">
+				<label class="col-sm-2 control-label">
+					<?=gettext("Host-Specific Defrag and Stream Settings"); ?>
+				</label>
+				<div class="col-sm-10">
+					<div class="table-responsive">
+						<table class="table table-striped table-hover table-condensed">
+							<thead>
+								<tr>
+									<th><?=gettext("Name")?></th>
+									<th><?=gettext("Bind-To Address Alias")?></th>
+									<th>
+										<input type="image" name="import_alias[]" src="/icon_import_alias.gif" width="17" height="17" border="0" title="<?=gettext("Import policy configuration from existing Aliases")?>"/>
+										<input type="image" name="add_os_policy[]" src="/icon_plus.gif" width="17" height="17" border="0" title="<?=gettext("Add a new policy configuration")?>"/>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php foreach ($pconfig['host_os_policy']['item'] as $f => $v): ?>
+									<tr>
+										<td><?=gettext($v['name'])?></td>
+										<td><?=gettext($v['bind_to'])?></td>
+										<td>
+											<input type="image" name="edit_os_policy[]" value="<?=$f?>" onclick="document.getElementById('eng_id').value='<?=$f?>'" src="/icon_e.gif" width="17" height="17" border="0" title="<?=gettext("Edit this policy configuration")?>"/>
+								<?php if ($v['bind_to'] != "all") : ?> 
+											<input type="image" name="del_os_policy[]" value="<?=$f?>" onclick="document.getElementById('eng_id').value='<?=$f?>';return confirm('Are you sure you want to delete this entry?');" src="/icon_x.gif" title="<?=gettext("Delete this policy configuration")?>"/>
+								<?php else : ?>
+											<img src="/icon_x_d.gif" title="<?=gettext("Default policy configuration cannot be deleted")?>">
+								<?php endif ?>
+										</td>
+									</tr>
+								<?php endforeach; ?>
+							</tbody>
+						</table>
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>
 
 <?php endif; ?>
 
-</div>
-</td></tr></tbody></table>
 </form>
-<?php include("fend.inc"); ?>
-</body>
-</html>
+
+<?php
+$form = new Form;
+
+$section = new Form_Section('IP Defragmentation');
+$section->addInput(new Form_Input(
+	'frag_memcap',
+	'Fragmentation Memory Cap',
+	'text',
+	$pconfig['frag_memcap']
+))->setHelp('Max memory to be used for defragmentation. Default is 33,554,432 bytes (32 MB). Sets the maximum amount of memory, in bytes, to be used by the IP defragmentation engine.');
+$section->addInput(new Form_Input(
+	'ip_max_trackers',
+	'Max Trackers',
+	'text',
+	$pconfig['ip_max_trackers']
+))->setHelp('Number of defragmented flows to follow. Default is 65,535 fragments. Sets the number of defragmented flows to follow for reassembly.');
+$section->addInput(new Form_Input(
+	'ip_max_frags',
+	'Max Fragments',
+	'text',
+	$pconfig['ip_max_frags']
+))->setHelp('Maximum number of IP fragments to hold. Default is 65,535 fragments. Sets the maximum number of IP fragments to retain in memory while awaiting reassembly. This must be equal to or greater than the Max Trackers value specified above.');
+$section->addInput(new Form_Input(
+	'frag_hash_size',
+	'Fragmentation Hash Table Size',
+	'text',
+	$pconfig['frag_hash_size']
+))->setHelp('Hash Table size. Default is 65,536 entries. Sets the size of the Hash Table used by the defragmentation engine.');
+$section->addInput(new Form_Input(
+	'ip_frag_timeout',
+	'Timeout',
+	'text',
+	$pconfig['ip_frag_timeout']
+))->setHelp('Max seconds to hold an IP fragement. Default is 60 seconds. Sets the number of seconds to hold an IP fragment in memory while awaiting the remainder of the packet to arrive.');
+$form->add($section);
+
+$section = new Form_Section('Flow Manager Settings');
+$section->addInput(new Form_Input(
+	'flow_memcap',
+	'Flow Memory Cap',
+	'text',
+	$pconfig['flow_memcap']
+))->setHelp('Max memory, in bytes, to be used by the flow engine. Default is 33,554,432 bytes (32 MB)');
+$section->addInput(new Form_Input(
+	'flow_hash_size',
+	'Flow Hash Table Size',
+	'text',
+	$pconfig['flow_hash_size']
+))->setHelp('Hash Table size used by the flow engine. Default is 65,536 entries.');
+$section->addInput(new Form_Input(
+	'flow_prealloc',
+	'Preallocated Flows',
+	'text',
+	$pconfig['flow_prealloc']
+))->setHelp('Number of preallocated flows ready for use. Default is 10,000 flows.');
+$section->addInput(new Form_Input(
+	'flow_emerg_recovery',
+	'Emergency Recovery',
+	'text',
+	$pconfig['flow_emerg_recovery']
+))->setHelp('Percentage of preallocated flows to complete before exiting Emergency Mode. Default is 30%.');
+$section->addInput(new Form_Input(
+	'flow_prune',
+	'Prune Flows',
+	'text',
+	$pconfig['flow_prune']
+))->setHelp('Number of flows to prune in Emergency Mode when allocating a new flow. Default is 5 flows.');
+$form->add($section);
+
+$section = new Form_Section('Flow Timeout Settings');
+$group = new Form_Group('TCP Connections');
+$group->add(new Form_Input(
+	'flow_tcp_new_timeout',
+	'Prune Flows',
+	'text',
+	$pconfig['flow_tcp_new_timeout']
+))->setHelp('New TCP connection timeout in seconds. Default is 60.');
+$group->add(new Form_Input(
+	'flow_tcp_established_timeout',
+	'Prune Flows',
+	'text',
+	$pconfig['flow_tcp_established_timeout']
+))->setHelp('Established TCP connection timeout in seconds. Default is 3600.');
+$group->add(new Form_Input(
+	'flow_tcp_closed_timeout',
+	'Prune Flows',
+	'text',
+	$pconfig['flow_tcp_closed_timeout']
+))->setHelp('Closed TCP connection timeout in seconds. Default is 120.');
+$group->add(new Form_Input(
+	'flow_tcp_emerg_new_timeout',
+	'Prune Flows',
+	'text',
+	$pconfig['flow_tcp_emerg_new_timeout']
+))->setHelp('Emergency New TCP connection timeout in seconds. Default is 10.');
+$group->add(new Form_Input(
+	'flow_tcp_emerg_established_timeout',
+	'Prune Flows',
+	'text',
+	$pconfig['flow_tcp_emerg_established_timeout']
+))->setHelp('Emergency Established TCP connection timeout in seconds. Default is 300.');
+$group->add(new Form_Input(
+	'flow_tcp_emerg_closed_timeout',
+	'Prune Flows',
+	'text',
+	$pconfig['flow_tcp_emerg_closed_timeout']
+))->setHelp('Emergency Closed TCP connection timeout in seconds. Default is 20.');
+$section->add($group);
+
+$group = new Form_Group('UDP Connections');
+$group->add(new Form_Input(
+	'flow_udp_new_timeout',
+	'Prune Flows',
+	'text',
+	$pconfig['flow_udp_new_timeout']
+))->setHelp('New UDP connection timeout in seconds. Default is 30.');
+$group->add(new Form_Input(
+	'flow_udp_established_timeout',
+	'Prune Flows',
+	'text',
+	$pconfig['flow_udp_established_timeout']
+))->setHelp('Established UDP connection timeout in seconds. Default is 300.');
+$group->add(new Form_Input(
+	'flow_udp_emerg_new_timeout',
+	'Prune Flows',
+	'text',
+	$pconfig['flow_udp_emerg_new_timeout']
+))->setHelp('Emergency New UDP connection timeout in seconds. Default is 10.');
+$group->add(new Form_Input(
+	'flow_udp_emerg_established_timeout',
+	'Prune Flows',
+	'text',
+	$pconfig['flow_udp_emerg_established_timeout']
+))->setHelp('Emergency Established UDP connection timeout in seconds. Default is 100.');
+$section->add($group);
+
+$group = new Form_Group('ICMP Connections');
+$group->add(new Form_Input(
+	'flow_icmp_new_timeout',
+	'Prune Flows',
+	'text',
+	$pconfig['flow_icmp_new_timeout']
+))->setHelp('New ICMP connection timeout in seconds. Default is 30.');
+$group->add(new Form_Input(
+	'flow_icmp_established_timeout',
+	'Prune Flows',
+	'text',
+	$pconfig['flow_icmp_established_timeout']
+))->setHelp('Established ICMP connection timeout in seconds. Default is 300.');
+$group->add(new Form_Input(
+	'flow_icmp_emerg_new_timeout',
+	'Prune Flows',
+	'text',
+	$pconfig['flow_icmp_emerg_new_timeout']
+))->setHelp('Emergency New ICMP connection timeout in seconds. Default is 10.');
+$group->add(new Form_Input(
+	'flow_icmp_emerg_established_timeout',
+	'Prune Flows',
+	'text',
+	$pconfig['flow_icmp_emerg_established_timeout']
+))->setHelp('Emergency Established ICMP connection timeout in seconds. Default is 100.');
+$section->add($group);
+$form->add($section);
+
+$section = new Form_Section('Stream Engine Settings');
+$section->addInput(new Form_Input(
+	'stream_memcap',
+	'Stream Memory Cap',
+	'text',
+	$pconfig['stream_memcap']
+))->setHelp('Max memory to be used by stream engine. Default is 67,108,864 bytes (64MB). Sets the maximum amount of memory, in bytes, to be used by the stream engine. This number will likely need to be increased beyond the default value in systems with more than 4 processor cores. If Suricata fails to start and logs a memory allocation error, increase this value in 4 MB chunks until Suricata starts successfully.');
+$section->addInput(new Form_Input(
+	'stream_prealloc_sessions',
+	'Preallocated Sessions',
+	'text',
+	$pconfig['stream_prealloc_sessions']
+))->setHelp('Number of preallocated stream engine sessions. Default is 32,768 sessions. Sets the number of stream engine sessions to preallocate. This can be a performance enhancement.');
+$section->addInput(new Form_Checkbox(
+	'enable_midstream_sessions',
+	'Enable Mid-Stream Sessions',
+	'Suricata will pick up and track sessions mid-stream. Default is Not Checked.',
+	$pconfig['enable_midstream_sessions'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'enable_async_sessions',
+	'Enable Async Streams',
+	'Suricata will track asynchronous one-sided streams. Default is Not Checked.',
+	$pconfig['enable_async_sessions'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Input(
+	'reassembly_memcap',
+	'Reassembly Memory Cap',
+	'text',
+	$pconfig['reassembly_memcap']
+))->setHelp('Max memory to be used for stream reassembly. Default is 67,108,864 bytes (64MB). Sets the maximum amount of memory, in bytes, to be used for stream reassembly.');
+$section->addInput(new Form_Input(
+	'reassembly_depth',
+	'Reassembly Depth',
+	'text',
+	$pconfig['reassembly_depth']
+))->setHelp('Amount of a stream to reassemble. Default is 1,048,576 bytes (1MB). Sets the depth, in bytes, of a stream to be reassembled by the stream engine. Set to 0 (unlimited) to reassemble entire stream. This is required for file extraction.');
+$section->addInput(new Form_Input(
+	'reassembly_to_server_chunk',
+	'To-Server Chunk Size',
+	'text',
+	$pconfig['reassembly_to_server_chunk']
+))->setHelp('Size of raw stream chunks to inspect. Default is 2,560 bytes. Sets the chunk size, in bytes, for raw stream inspection performed for \'to-server\' traffic.');
+$section->addInput(new Form_Input(
+	'reassembly_to_client_chunk',
+	'To-Client Chunk Size',
+	'text',
+	$pconfig['reassembly_to_client_chunk']
+))->setHelp('Amount of a stream to reassemble. Default is 2,560 bytes. Sets the chunk size, in bytes, for raw stream inspection performed for \'to-client\' traffic.');
+$form->add($section);
+
+print($form);
+?>
+
+<div class="infoblock">
+	<?=print_info_box('<strong>Note:</strong> Please save your settings before you exit. Changes will rebuild the rules file. This may take several seconds. Suricata must also be restarted to activate any changes made on this screen.', info)?>
+</div>
+
+<?php include("foot.inc"); ?>
+
