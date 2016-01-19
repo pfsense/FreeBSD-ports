@@ -1234,8 +1234,8 @@ function squid_resync_general() {
 	$pidfile = "{$piddir}/squid.pid";
 	if (!is_dir($piddir)) {
 		safe_mkdir($piddir, 0755);
-		squid_chown_recursive($piddir, SQUID_UID, 'wheel');
 	}
+	squid_chown_recursive($piddir, SQUID_UID, 'wheel');
 	$language = ($settings['error_language'] ? $settings['error_language'] : 'en');
 	$icondir = SQUID_CONFBASE . '/icons';
 	$hostname = ($settings['visible_hostname'] ? $settings['visible_hostname'] : 'localhost');
@@ -1245,8 +1245,8 @@ function squid_resync_general() {
 	if (!is_dir($logdir)) {
 		log_error("[squid] Creating Squid log dir '{$logdir}' ...");
 		safe_mkdir($logdir, 0755);
-		squid_chown_recursive($logdir, SQUID_UID, SQUID_GID);
 	}
+	squid_chown_recursive($logdir, SQUID_UID, SQUID_GID);
 	$logdir_cache = $logdir . '/cache.log';
 	$logdir_access = ($settings['log_enabled'] == 'on' ? $logdir . '/access.log' : '/dev/null');
 	$pinger_helper = ($settings['disable_pinger']) == 'on' ? 'off' : 'on';
