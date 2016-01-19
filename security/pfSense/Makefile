@@ -63,7 +63,7 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/clog:${PORTSDIR}/sysutils/clog \
 LIB_DEPENDS=	libltdl.so:${PORTSDIR}/devel/libltdl
 
 USE_PHP=	bz2 bcmath ctype curl dom filter gettext json mbstring \
-		mcrypt hash mysql opcache openssl pcntl pdo pdo_sqlite posix \
+		mcrypt hash opcache openssl pcntl pdo pdo_sqlite posix \
 		radius readline session shmop simplexml sockets sysvmsg sysvsem \
 		sysvshm sqlite3 tokenizer xml ldap zlib xmlreader xmlwriter
 
