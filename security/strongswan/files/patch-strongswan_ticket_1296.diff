@@ -1,0 +1,41 @@
+From f26cac2e68d31447bcae6d2af60330f7fc3329d4 Mon Sep 17 00:00:00 2001
+From: Tobias Brunner <tobias@strongswan.org>
+Date: Mon, 18 Jan 2016 17:33:29 +0100
+Subject: [PATCH] ike-sa-manager: Don't update entries for init messages after
+ unlocking segment
+
+If the retransmit of an initial message is processed concurrently with the
+original message it might not have been handled as intended as the
+thread processing the retransmit might not have seen the correct value
+of entry->processing set by the thread handling the original request.
+
+For IKEv1, i.e. without proper message IDs, there might still be races e.g.
+when receiving a retransmit of the initial IKE message while processing the
+initiator's second request.
+
+ #1296.
+---
+ src/libcharon/sa/ike_sa_manager.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/src/libcharon/sa/ike_sa_manager.c b/src/libcharon/sa/ike_sa_manager.c
+index 4625df5..3d15009 100644
+--- src/libcharon/sa/ike_sa_manager.c
++++ src/libcharon/sa/ike_sa_manager.c
+@@ -1288,14 +1288,13 @@ METHOD(ike_sa_manager_t, checkout_by_message, ike_sa_t*,
+ 						entry = entry_create();
+ 						entry->ike_sa = ike_sa;
+ 						entry->ike_sa_id = id;
++						entry->processing = get_message_id_or_hash(message);
++						entry->init_hash = hash;
+ 
+ 						segment = put_entry(this, entry);
+ 						entry->checked_out = TRUE;
+ 						unlock_single_segment(this, segment);
+ 
+-						entry->processing = get_message_id_or_hash(message);
+-						entry->init_hash = hash;
+-
+ 						DBG2(DBG_MGR, "created IKE_SA %s[%u]",
+ 							 ike_sa->get_name(ike_sa),
+ 							 ike_sa->get_unique_id(ike_sa));
