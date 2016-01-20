@@ -316,7 +316,7 @@ include_once("head.inc"); ?>
 					}else{
 						$check_performance = "unknown";
 					}
-					?><?=trtoupper($check_performance)?>
+					?><?=strtoupper($check_performance)?>
 					</td>
 					<td 
 					id="frd<?=$nnats?>" valign="middle" align="center" 
@@ -329,7 +329,7 @@ include_once("head.inc"); ?>
 					} else {
 						$check_blockoffenders = disabled;
 					}
-					?><?=trtoupper($check_blockoffenders)?>
+					?><?=strtoupper($check_blockoffenders)?>
 					</td>
 					<td 
 					id="frd<?=$nnats?>" valign="middle" 
