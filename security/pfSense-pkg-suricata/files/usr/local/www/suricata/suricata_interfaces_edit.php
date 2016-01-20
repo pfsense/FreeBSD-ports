@@ -908,6 +908,22 @@ $section->addInput(new Form_Textarea (
 ))->setHelp('Enter any additional configuration parameters to add to the Snort configuration here, separated by a newline');
 $form->add($section);
 
+if (isset($id)) {
+	$form->addGlobal(new Form_Input(
+		'id',
+		'id',
+		'hidden',
+		$id
+	));
+}
+if (isset($action)) {
+	$form->addGlobal(new Form_Input(
+		'action',
+		'action',
+		'hidden',
+		$action
+	));
+}
 print($form);
 ?>
 
