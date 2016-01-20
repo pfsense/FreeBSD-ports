@@ -59,85 +59,41 @@
 	save_os_policy --> Submit button for save operation and exit
 	cancel_os_policy --> Submit button to cancel operation and exit
  **************************************************************************************/
+
+$section = new Form_Section('Suricata Target-Based Host OS Policy Engine Configuration');
+$section->addInput(new Form_Input(
+	'policy_name',
+	'Policy Name',
+	'text',
+	$pengcfg['name']
+))->setHelp('Name or description for this engine. (Max 25 characters). Unique name or description for this engine configuration. Default value is default.');
+
+$group = new Form_Group('Bind-To IP Address Alias');
+$group->add(new Form_Input(
+	'policy_bind_to',
+	'Bind-To IP Address Alias',
+	'text',
+	$pengcfg['bind_to']
+))->setHelp('IP List to bind this engine to (Cannot be blank). This policy will apply for packets with destination addresses contained within this IP List. Supplied value must be a pre-configured Alias or the keyword "all".');
+$group->add(new Form_Button(
+	'select_alias',
+	'Aliases'
+))->removeClass('btn-primary')->addClass('btn-info');
+$section->add($group);
+
+$section->addInput(new Form_Select(
+	'policy',
+	'Target Policy',
+	$pengcfg['policy'],
+	array( 'bsd' => 'BSD', 'bsd-right' => 'BSD-Right', 'hpux10' => 'HPUX10', 'hpux11' => 'HPUX11', 'irix' => 'Irix', 'linux' => 'Linux', 'mac-os' => 'Mac-OS', 'old-linux' => 'Old-Linux', 'old-solaris' => 'Old-Solaris', 'solaris' => 'Solaris', 'vista' => 'Vista', 'windows' => 'Windows', 'windows2k3' => 'Windows2k3' )
+))->setHelp('Choose the OS target policy appropriate for the protected hosts. The default is BSD.');
+$form->add($section);
+
+print($form);
 ?>
 
-<table class="tabcont" width="100%" border="0" cellpadding="6" cellspacing="0">
-	<tbody>
-	<tr>
-		<td colspan="2" align="center" class="listtopic"><?php echo gettext("Suricata Target-Based Host OS Policy Engine Configuration"); ?></td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("Policy Name"); ?></td>
-		<td class="vtable">
-			<input name="policy_name" type="text" class="formfld unknown" id="policy_name" size="25" maxlength="25" 
-			value="<?=htmlspecialchars($pengcfg['name']);?>"<?php if (htmlspecialchars($pengcfg['name']) == " default") echo " readonly";?>/>&nbsp;
-			<?php if (htmlspecialchars($pengcfg['name']) <> "default") 
-					echo gettext("Name or description for this engine.  (Max 25 characters)");
-				else
-					echo "<span class=\"red\">" . gettext("The name for the 'default' engine is read-only.") . "</span>";?><br/>
-			<?php echo gettext("Unique name or description for this engine configuration.  Default value is ") . 
-			"<strong>" . gettext("default") . "</strong>"; ?>.<br/>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("Bind-To IP Address Alias"); ?></td>
-		<td class="vtable">
-		<?php if ($pengcfg['name'] <> "default") : ?>
-			<table width="95%" border="0" cellpadding="2" cellspacing="0">
-				<tbody>
-				<tr>
-					<td class="vexpl"><input name="policy_bind_to" type="text" class="formfldalias" id="policy_bind_to" size="32" 
-					value="<?=htmlspecialchars($pengcfg['bind_to']);?>" title="<?=trim(filter_expand_alias($pengcfg['bind_to']));?>" autocomplete="off"/>&nbsp;
-					<?php echo gettext("IP List to bind this engine to. (Cannot be blank)"); ?></td>
-					<td class="vexpl" align="right"><input type="submit" class="formbtns" name="select_alias" value="Aliases" 
-					title="<?php echo gettext("Select an existing IP alias");?>"/></td>
-				</tr>
-				<tr>
-					<td class="vexpl" colspan="2"><?php echo gettext("This policy will apply for packets with destination addresses contained within this IP List.");?></td>
-				</tr>
-				</tbody>
-			</table>
-			<span class="red"><strong><?php echo gettext("Note: ") . "</strong></span>" . gettext("Supplied value must be a pre-configured Alias or the keyword 'all'.");?>
-			&nbsp;&nbsp;&nbsp;&nbsp;
-		<?php else : ?>
-			<input name="policy_bind_to" type="text" class="formfldalias" id="policy_bind_to" size="32" 
-			value="<?=htmlspecialchars($pengcfg['bind_to']);?>" autocomplete="off" readonly>&nbsp;
-			<?php echo "<span class=\"red\">" . gettext("IP List for the default engine is read-only and must be 'all'.") . "</span>";?><br/>
-			<?php echo gettext("The default engine is required and will apply for packets with destination addresses not matching other engine IP Lists.");?><br/>
-		<?php endif ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Target Policy"); ?> </td>
-		<td width="78%" class="vtable">
-			<select name="policy" class="formselect" id="policy">
-			<?php
-			$profile = array( 'BSD', 'BSD-Right', 'HPUX10', 'HPUX11', 'Irix', 'Linux', 'Mac-OS', 'Old-Linux', 'Old-Solaris', 'Solaris', 'Vista', 'Windows', 'Windows2k3' );
-			foreach ($profile as $val): ?>
-			<option value="<?=strtolower($val);?>" 
-			<?php if (strtolower($val) == $pengcfg['policy']) echo "selected"; ?>>
-				<?=gettext($val);?></option>
-				<?php endforeach; ?>
-			</select>&nbsp;&nbsp;<?php echo gettext("Choose the OS target policy appropriate for the protected hosts.  The default is ") . 
-			"<strong>" . gettext("BSD") . "</strong>"; ?>.<br/><br/>
-			<?php echo gettext("Available OS targets are BSD, BSD-Right, HPUX10, HPUX11, Irix, Linux, Mac-OS, Old-Linux, Old-Solaris, Solaris, Vista, 'Windows' and Windows2k3."); ?><br/>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="bottom">&nbsp;</td>
-		<td width="78%" valign="bottom">
-			<input name="save_os_policy" id="save_os_policy" type="submit" class="formbtn" value=" Save " title="<?php echo 
-			gettext("Save OS policy engine settings and return to Flow/Stream tab"); ?>">
-			&nbsp;&nbsp;&nbsp;&nbsp;
-			<input name="cancel_os_policy" id="cancel_os_policy" type="submit" class="formbtn" value="Cancel" title="<?php echo 
-			gettext("Cancel changes and return to Flow/Stream tab"); ?>"></td>
-	</tr>
-	</tbody>
-</table>
-<script type="text/javascript" src="/javascript/autosuggest.js">
-</script>
-<script type="text/javascript" src="/javascript/suggestions.js">
-</script>
+<script type="text/javascript" src="/javascript/autosuggest.js"></script>
+<script type="text/javascript" src="/javascript/suggestions.js"></script>
 <script type="text/javascript">
 //<![CDATA[
 	var addressarray = <?= json_encode(get_alias_list(array("host", "network"))) ?>;
@@ -150,6 +106,5 @@ function createAutoSuggest() {
 
 setTimeout("createAutoSuggest();", 500);
 //]]>
-
 </script>
 

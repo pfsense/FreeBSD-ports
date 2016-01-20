@@ -472,30 +472,96 @@ $tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata
 display_top_tabs($tab_array, true);
 ?>
 
+<?php
+
+
+	if ($importalias) {
+
+		$form = new Form($svbtn);
+
+		$svbtn = new Form_Button(
+			'save_os_policy',
+			'Save OS Policy'
+		);
+
+		$form->addGlobal(new Form_Input(
+			'id',
+			'id',
+			'hidden',
+			$id
+		));
+
+		$form->addGlobal(new Form_Input(
+			'eng_id',
+			'eng_id',
+			'hidden',
+			$eng_id
+		));		
+
+		if ($selectalias) {
+			$form->addGlobal(new Form_Input(
+				'eng_name',
+				'eng_name',
+				'hidden',
+				$eng_name
+			));
+			$form->addGlobal(new Form_Input(
+				'eng_bind',
+				'eng_bind',
+				'hidden',
+				$eng_bind
+			));
+			$form->addGlobal(new Form_Input(
+				'eng_policy',
+				'eng_policy',
+				'hidden',
+				$eng_policy
+			));
+		}
+
+		include("/usr/local/www/suricata/suricata_import_aliases.php");
+
+	} elseif ($add_edit_os_policy) {
+
+		$svbtn = new Form_Button(
+			'save_os_policy',
+			'Save'
+		);		
+
+		$form = new Form($svbtn);
+
+		$form->addGlobal(new Form_Input(
+			'id',
+			'id',
+			'hidden',
+			$id
+		));
+
+		$form->addGlobal(new Form_Input(
+			'eng_id',
+			'eng_id',
+			'hidden',
+			$eng_id
+		));
+
+		$form->addGlobal(new Form_Button(
+			'cancel_os_policy',
+			'Cancel'
+		))->removeClass('btn-primary')->addClass('btn-warning');
+
+		include("/usr/local/www/suricata/suricata_os_policy_engine.php"); 
+
+	} else {
+?>
 <form action="suricata_flow_stream.php" method="post" name="iform" id="iform">
 <input type="hidden" name="eng_id" id="eng_id" value="<?=$eng_id?>"/>
 <input type="hidden" name="id" id="id" value="<?=$id?>"/>
-
-<?php if ($importalias) : ?>
-	<?php include("/usr/local/www/suricata/suricata_import_aliases.php");
-		if ($selectalias) {
-			echo '<input type="hidden" name="eng_name" value="' . $eng_name . '"/>';
-			echo '<input type="hidden" name="eng_bind" value="' . $eng_bind . '"/>';
-			echo '<input type="hidden" name="eng_policy" value="' . $eng_policy . '"/>';
-		}
-	 ?>
-
-<?php elseif ($add_edit_os_policy) : ?>
-	<?php include("/usr/local/www/suricata/suricata_os_policy_engine.php"); ?>
-
-<?php else: ?>
-	
 	<div class="panel panel-default">
 		<div class="panel-heading"><h2 class="panel-title"><?=gettext("Host-Specific Defrag and Stream Settings")?></h2></div>
 		<div class="panel-body">
 			<div class="form-group">
 				<label class="col-sm-2 control-label">
-					<?=gettext("Host-Specific Defrag and Stream Settings"); ?>
+					<?=gettext("Host OS Policy Assignment"); ?>
 				</label>
 				<div class="col-sm-10">
 					<div class="table-responsive">
@@ -505,8 +571,8 @@ display_top_tabs($tab_array, true);
 									<th><?=gettext("Name")?></th>
 									<th><?=gettext("Bind-To Address Alias")?></th>
 									<th>
-										<input type="image" name="import_alias[]" src="/icon_import_alias.gif" width="17" height="17" border="0" title="<?=gettext("Import policy configuration from existing Aliases")?>"/>
-										<input type="image" name="add_os_policy[]" src="/icon_plus.gif" width="17" height="17" border="0" title="<?=gettext("Add a new policy configuration")?>"/>
+										<input type="submit" name="import_alias[]" class="btn btn-sm btn-primary" title="<?=gettext("Import policy configuration from existing Aliases")?>" value="Import" />
+										<input type="submit" name="add_os_policy[]" class="btn btn-sm btn-success" title="<?=gettext("Add a new policy configuration")?>" value="Add"/>
 									</th>
 								</tr>
 							</thead>
@@ -516,11 +582,11 @@ display_top_tabs($tab_array, true);
 										<td><?=gettext($v['name'])?></td>
 										<td><?=gettext($v['bind_to'])?></td>
 										<td>
-											<input type="image" name="edit_os_policy[]" value="<?=$f?>" onclick="document.getElementById('eng_id').value='<?=$f?>'" src="/icon_e.gif" width="17" height="17" border="0" title="<?=gettext("Edit this policy configuration")?>"/>
+											<input type="submit" name="edit_os_policy[]" class="btn btn-sm btn-primary" value="Edit" onclick="document.getElementById('eng_id').value='<?=$f?>'" title="<?=gettext("Edit this policy configuration")?>"/>
 								<?php if ($v['bind_to'] != "all") : ?> 
-											<input type="image" name="del_os_policy[]" value="<?=$f?>" onclick="document.getElementById('eng_id').value='<?=$f?>';return confirm('Are you sure you want to delete this entry?');" src="/icon_x.gif" title="<?=gettext("Delete this policy configuration")?>"/>
+											<input type="submit" name="del_os_policy[]" class="btn btn-sm btn-danger" value="Delete" onclick="document.getElementById('eng_id').value='<?=$f?>';return confirm('Are you sure you want to delete this entry?');" title="<?=gettext("Delete this policy configuration")?>"/>
 								<?php else : ?>
-											<img src="/icon_x_d.gif" title="<?=gettext("Default policy configuration cannot be deleted")?>">
+								<input type="submit" name="del_os_policy[]" class="btn btn-sm btn-danger" value="Delete" title="<?=gettext("Default policy configuration cannot be deleted")?>" disabled/>
 								<?php endif ?>
 										</td>
 									</tr>
@@ -533,12 +599,25 @@ display_top_tabs($tab_array, true);
 		</div>
 	</div>
 
-<?php endif; ?>
-
 </form>
 
 <?php
-$form = new Form;
+
+$form = new Form();
+
+$form->addGlobal(new Form_Input(
+	'id',
+	'id',
+	'hidden',
+	$id
+));
+
+$form->addGlobal(new Form_Input(
+	'eng_id',
+	'eng_id',
+	'hidden',
+	$eng_id
+));
 
 $section = new Form_Section('IP Defragmentation');
 $section->addInput(new Form_Input(
@@ -760,6 +839,8 @@ print($form);
 <div class="infoblock">
 	<?=print_info_box('<strong>Note:</strong> Please save your settings before you exit. Changes will rebuild the rules file. This may take several seconds. Suricata must also be restarted to activate any changes made on this screen.', info)?>
 </div>
+
+<?php } ?>
 
 <?php include("foot.inc"); ?>
 

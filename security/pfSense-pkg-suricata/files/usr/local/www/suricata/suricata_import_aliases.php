@@ -53,7 +53,7 @@
 <?php	$selectablealias = false;
 	if (!is_array($a_aliases))
 		$a_aliases = array();
-	if ($mode <> "")
+	if ($mode != "")
 		echo '<input type="hidden" name="mode" id="mode" value="' . $mode . '"/>';
 	if ($selectalias == true) {
 		$fieldtype = "radio";
@@ -65,95 +65,95 @@
 	}
 ?>
 
-<table id="maintable" class="tabcont" width="100%" border="0" cellpadding="6" cellspacing="0">
-<tr>
-	<td class="listtopic" align="center"><?=$header;?></td>
-</tr>
-<tr>
-	<td>
-		<table id="sortabletable1" style="table-layout: fixed;" class="sortable" width="100%" border="0" cellpadding="0" cellspacing="0">
-			<colgroup>
-				<col width="5%" align="center">
-				<col width="25%" align="left" axis="string">
-				<col width="35%" align="left" axis="string">
-				<col width="35%" align="left" axis="string">
-			</colgroup>
-			<thead>
-			   <tr class="sortableHeaderRowIdentifier">
-				<th class="listhdrr sorttable_nosort"></th>
-				<th class="listhdrr" axis="string"><?=gettext("Alias Name"); ?></th>
-				<th class="listhdrr" axis="string"><?=gettext("Values"); ?></th>
-				<th class="listhdrr" axis="string"><?=gettext("Description"); ?></th>
-			   </tr>
-			</thead>
-		<tbody>
-		  <?php $i = 0; foreach ($a_aliases as $alias): ?>
-			<?php if ($alias['type'] <> "host" && $alias['type'] <> "network")
-				continue;
-			      if (isset($used[$alias['name']]))
-				continue;
-			      elseif (trim(filter_expand_alias($alias['name'])) == "") {
-				$textss = "<span class=\"gray\">";
-				$textse = "</span>";
-				$disable = true;
-			        $tooltip = gettext("Aliases representing a FQDN host cannot be used in Suricata Host OS Policy configurations.");
-			      }
-			      else {
-				$textss = "";
-				$textse = "";
-				$disable = "";
-				$selectablealias = true;
-			        $tooltip = gettext("Selected entries will be imported. Click to toggle selection of this entry.");
-			      }
-			?>
-			<?php if ($disable): ?>
-			<tr title="<?=$tooltip;?>">
-			  <td class="listlr" align="center"><img src="../themes/<?=$g['theme'];?>/images/icons/icon_block_d.gif" width="11" height"11" border="0"/>
-			<?php else: ?>
-			<tr>
-			  <td class="listlr" align="center"><input type="<?=$fieldtype;?>" name="aliastoimport[]" value="<?=htmlspecialchars($alias['name']);?>" title="<?=$tooltip;?>"/></td>
-			<?php endif; ?>
-			  <td class="listr" align="left"><?=$textss . htmlspecialchars($alias['name']) . $textse;?></td>
-			  <td class="listr" align="left">
-			      <?php
-				$tmpaddr = explode(" ", $alias['address']);
-				$addresses = implode(", ", array_slice($tmpaddr, 0, 10));
-				echo "{$textss}{$addresses}{$textse}";
-				if(count($tmpaddr) > 10) {
-					echo "...";
-				}
-			    ?>
-			  </td>
-			  <td class="listbg" align="left">
-			    <?=$textss . htmlspecialchars($alias['descr']) . $textse;?>&nbsp;
-			  </td>
-			</tr>
-		  <?php $i++; endforeach; ?>
-		</table>
-	</td>
-</tr>
-<?php if (!$selectablealias): ?>
-<tr>
-	<td align="center"><b><?php echo gettext("There are currently no defined Aliases eligible for import.");?></b></td>
-</tr>
-<tr>
-	<td align="center" valign="middle">
-	<input type="Submit" name="cancel_import_alias" value="Cancel" id="cancel_import_alias" class="formbtn" title="<?=gettext("Cancel import operation and return");?>"/>
-	</td>
-</tr>
-<?php else: ?>
-<tr>
-	<td align="center" valign="middle">
-	<input type="Submit" name="save_import_alias" value="Save" id="save_import_alias" class="formbtn" title="<?=gettext("Import selected item and return");?>"/>&nbsp;&nbsp;
-	<input type="Submit" name="cancel_import_alias" value="Cancel" id="cancel_import_alias" class="formbtn" title="<?=gettext("Cancel import operation and return");?>"/>
-	</td>
-</tr>
-<?php endif; ?>
-<tr>
-	<td>
-	<span class="vexpl"><span class="red"><strong><?=gettext("Note:"); ?><br></strong></span><?=gettext("Fully-Qualified Domain Name (FQDN) host Aliases cannot be used as Suricata configuration parameters.  Aliases resolving to a single FQDN value are disabled in the list above.  In the case of nested Aliases where one or more of the nested values is a FQDN host, the FQDN host will not be included in the {$title} configuration.");?></span>
-	</td>
-</tr>
-</table>
+<form action="suricata_flow_stream.php" method="post" name="iform" id="iform">
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?=$header?></h2></div>
+	<div class="panel-body">
+		<div class="table-responsive">
+			<table class="table table-striped table-hover table-condensed">
+				<thead>
+					<tr>
+						<th></th>
+						<th><?=gettext("Alias Name"); ?></th>
+						<th><?=gettext("Values"); ?></th>
+						<th><?=gettext("Description"); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+				  <?php $i = 0; foreach ($a_aliases as $alias): ?>
+					<?php if ($alias['type'] != "host" && $alias['type'] != "network")
+						continue;
+						  if (isset($used[$alias['name']]))
+						continue;
+						  elseif (trim(filter_expand_alias($alias['name'])) == "") {
+							$textss = "<span class=\"gray\">";
+							$textse = "</span>";
+							$disable = true;
+							$tooltip = gettext("Aliases representing a FQDN host cannot be used in Suricata Host OS Policy configurations.");
+						  }
+						  else {
+							$textss = "";
+							$textse = "";
+							$disable = "";
+							$selectablealias = true;
+							$tooltip = gettext("Selected entries will be imported. Click to toggle selection of this entry.");
+						  }
+					?>
+					<?php if ($disable): ?>
+					<tr title="<?=$tooltip?>">
+					  <td class="text-center">
+					  	<img src="/icon_block_d.gif" width="11" height"11" border="0"/>
+					<?php else: ?>
+					<tr>
+					  <td class="text-center">
+					  	<input type="<?=$fieldtype?>" name="aliastoimport[]" value="<?=htmlspecialchars($alias['name'])?>" title="<?=$tooltip?>"/>
+					  </td>
+					<?php endif; ?>
+					  <td>
+					  	<?=$textss . htmlspecialchars($alias['name']) . $textse?>
+					  </td>
+					  <td>
+						  <?php
+						$tmpaddr = explode(" ", $alias['address']);
+						$addresses = implode(", ", array_slice($tmpaddr, 0, 10));
+						echo "{$textss}{$addresses}{$textse}";
+						if(count($tmpaddr) > 10) {
+							echo "...";
+						}
+						?>
+					  </td>
+					  <td>
+						<?=$textss . htmlspecialchars($alias['descr']) . $textse?>
+					  </td>
+					</tr>
+				  <?php $i++; endforeach; ?>
+				<?php if (!$selectablealias): ?>
+					<tr>
+						<td colspan="4" class="text-center"><b><?=gettext("There are currently no defined Aliases eligible for import.")?></b></td>
+					</tr>
+					<tr>
+						<td colspan="4" class="text-center">
+							<input type="Submit" name="cancel_import_alias" value="Cancel" id="cancel_import_alias" class="btn btn-warning" title="<?=gettext("Cancel import operation and return")?>"/>
+						</td>
+					</tr>
+					<?php else: ?>
+					<tr>
+						<td colspan="4" class="text-center">
+							<input type="Submit" name="save_import_alias" value="Save" id="save_import_alias" class="formbtn" title="<?=gettext("Import selected item and return")?>"/>
+							<input type="Submit" name="cancel_import_alias" value="Cancel" id="cancel_import_alias" class="formbtn" title="<?=gettext("Cancel import operation and return")?>"/>
+						</td>
+					</tr>
+					<?php endif; ?>
+					<tr>
+						<td colspan="4">
+							<span class="text-danger"><strong><?=gettext("Note:"); ?></strong></span> <?=gettext("Fully-Qualified Domain Name (FQDN) host Aliases cannot be used as Suricata configuration parameters.  Aliases resolving to a single FQDN value are disabled in the list above.  In the case of nested Aliases where one or more of the nested values is a FQDN host, the FQDN host will not be included in the {$title} configuration.")?>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>	
+</form>
 
 
