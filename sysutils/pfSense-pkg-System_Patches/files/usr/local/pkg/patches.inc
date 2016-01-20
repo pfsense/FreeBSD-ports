@@ -194,6 +194,10 @@ function bootup_apply_patches() {
 
 function patch_add_shellcmd() {
 	global $config;
+
+	if (!isset($config['system']['earlyshellcmd'])) {
+	    $config['system']['earlyshellcmd'] = array();
+	}
 	$a_earlyshellcmd = &$config['system']['earlyshellcmd'];
 	$found = false;
 	if (is_array($a_earlyshellcmd)) {
@@ -212,6 +216,9 @@ function patch_add_shellcmd() {
 
 function patch_remove_shellcmd() {
 	global $config;
+	if (!isset($config['system']['earlyshellcmd'])) {
+	    $config['system']['earlyshellcmd'] = array();
+	}
 	$a_earlyshellcmd = &$config['system']['earlyshellcmd'];
 	if (is_array($a_earlyshellcmd)) {
 		$removed = 0;
