@@ -253,7 +253,6 @@
 			<description>
 				<![CDATA[
 				IP address used to determine the CARP status. When the VIP is in BACKUP status, quagga will not be started.<br />
-				NOTE: Requires changes to /etc/rc.carpmaster to start quagga and /etc/rc.carpbackup to stop quagga or it will not be fully effective.
 				]]>
 			</description>
 			<type>input</type>
