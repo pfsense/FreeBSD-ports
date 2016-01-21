@@ -125,6 +125,7 @@ elseif ($_POST['select_alias']) {
 	$eng_enable_uri_include_all = $_POST['enable_uri_include_all'];
 	$mode = "add_edit_libhtp_policy";
 }
+
 if ($_POST['save_libhtp_policy']) {
 	if ($_POST['eng_id'] != "") {
 		$eng_id = $_POST['eng_id'];
@@ -166,7 +167,7 @@ if ($_POST['save_libhtp_policy']) {
 		if ($_POST['enable_uri_include_all']) { $engine['uri-include-all'] = 'yes'; }else{ $engine['uri-include-all'] = 'no'; }
 
 		// Can only have one "all" Bind_To address
-		if ($engine['bind_to'] == "all" && $engine['name'] <> "default")
+		if ($engine['bind_to'] == "all" && $engine['name'] != "default")
 			$input_errors[] = gettext("Only one default OS-Policy Engine can be bound to all addresses.");
 
 		// if no errors, write new entry to conf
@@ -179,7 +180,7 @@ if ($_POST['save_libhtp_policy']) {
 
 			/* Reorder the engine array to ensure the */
 			/* 'bind_to=all' entry is at the bottom   */
-			/* if it contains more than one entry.    */
+			/* if it contains more than one entry.	  */
 			if (count($a_nat[$id]['libhtp_policy']['item']) > 1) {
 				$i = -1;
 				foreach ($a_nat[$id]['libhtp_policy']['item'] as $f => $v) {
@@ -190,7 +191,7 @@ if ($_POST['save_libhtp_policy']) {
 				}
 				/* Only relocate the entry if we  */
 				/* found it, and it's not already */
-				/* at the end.                    */
+				/* at the end.					  */
 				if ($i > -1 && ($i < (count($a_nat[$id]['libhtp_policy']['item']) - 1))) {
 					$tmp = $a_nat[$id]['libhtp_policy']['item'][$i];
 					unset($a_nat[$id]['libhtp_policy']['item'][$i]);
@@ -313,7 +314,7 @@ elseif ($_POST['save_import_alias']) {
 			}
 		}
 		else {
-			$input_errors[] = gettext("No entries were selected for import.  Please select one or more Aliases for import and click SAVE.");
+			$input_errors[] = gettext("No entries were selected for import. Please select one or more Aliases for import and click SAVE.");
 			$importalias = true;
 		}
 
@@ -410,8 +411,8 @@ elseif ($_POST['save'] || $_POST['apply']) {
 
 		/**************************************************/
 		/* If we have a valid rule ID, save configuration */
-		/* then update the suricata.conf file for this    */
-		/* interface.                                     */
+		/* then update the suricata.conf file for this	  */
+		/* interface.									  */
 		/**************************************************/
 		if (isset($id) && $a_nat[$id]) {
 			$a_nat[$id] = $natent;
@@ -436,402 +437,251 @@ elseif ($_POST['save'] || $_POST['apply']) {
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($pconfig['interface']);
-$pgtitle = gettext("Suricata: Interface {$if_friendly} - Application Layer Parsers");
+$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Application Layer Parsers - {$if_friendly}"));
 include_once("head.inc");
-?>
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
 
-<?php include("fbegin.inc");
-	/* Display error message */
-	if ($input_errors) {
-		print_input_errors($input_errors);
-	}
-?>
+/* Display error message */
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
 
-<form action="suricata_app_parsers.php" method="post" name="iform" id="iform">
-<input name="id" type="hidden" value="<?=$id;?>"/>
-<input type="hidden" name="eng_id" id="eng_id" value="<?=$eng_id;?>"/>
-
-<?php
 if ($savemsg) {
 	/* Display save message */
 	print_info_box($savemsg);
 }
+
+$tab_array = array();
+$tab_array[] = array(gettext("Interfaces"), true, "/suricata/suricata_interfaces.php");
+$tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_global.php");
+$tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
+$tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
+$tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
+$tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
+$tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$id}");
+$tab_array[] = array(gettext("Logs Mgmt"), false, "/suricata/suricata_logs_mgmt.php");
+$tab_array[] = array(gettext("SID Mgmt"), false, "/suricata/suricata_sid_mgmt.php");
+$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=suricata/suricata_sync.xml");
+$tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
+display_top_tabs($tab_array, true);
+
+$menu_iface=($if_friendly?substr($if_friendly,0,5)." ":"Iface ");
+$tab_array = array();
+$tab_array[] = array($menu_iface . gettext("Settings"), false, "/suricata/suricata_interfaces_edit.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Categories"), false, "/suricata/suricata_rulesets.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Rules"), false, "/suricata/suricata_rules.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Flow/Stream"), false, "/suricata/suricata_flow_stream.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("App Parsers"), true, "/suricata/suricata_app_parsers.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Variables"), false, "/suricata/suricata_define_vars.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/suricata/suricata_barnyard.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata_ip_reputation.php?id={$id}");
+display_top_tabs($tab_array, true);
 ?>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tbody>
-<tr><td>
+<form action="suricata_app_parsers.php" method="post" name="iform" id="iform" class="form-horizontal">
+	<input name="id" type="hidden" value="<?=$id?>"/>
+	<input type="hidden" name="eng_id" id="eng_id" value="<?=$eng_id?>"/>
+
 <?php
-	$tab_array = array();
-	$tab_array[] = array(gettext("Interfaces"), true, "/suricata/suricata_interfaces.php");
-	$tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_global.php");
-	$tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
-	$tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
-	$tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
-	$tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
-	$tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
-	$tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$id}");
-	$tab_array[] = array(gettext("Logs Mgmt"), false, "/suricata/suricata_logs_mgmt.php");
-	$tab_array[] = array(gettext("SID Mgmt"), false, "/suricata/suricata_sid_mgmt.php");
-	$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=suricata/suricata_sync.xml");
-	$tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
-	display_top_tabs($tab_array, true);
-	echo '</td></tr>';
-	echo '<tr><td>';
-	$menu_iface=($if_friendly?substr($if_friendly,0,5)." ":"Iface ");
-	$tab_array = array();
-	$tab_array[] = array($menu_iface . gettext("Settings"), false, "/suricata/suricata_interfaces_edit.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Categories"), false, "/suricata/suricata_rulesets.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Rules"), false, "/suricata/suricata_rules.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Flow/Stream"), false, "/suricata/suricata_flow_stream.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("App Parsers"), true, "/suricata/suricata_app_parsers.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Variables"), false, "/suricata/suricata_define_vars.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/suricata/suricata_barnyard.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata_ip_reputation.php?id={$id}");
-	display_top_tabs($tab_array, true);
+
+if ($importalias) {
+
+	include("/usr/local/www/suricata/suricata_import_aliases.php");
+
+	if ($selectalias) {
+		echo '<input type="hidden" name="eng_name" value="' . $eng_name . '"/>';
+		echo '<input type="hidden" name="eng_bind" value="' . $eng_bind . '"/>';
+		echo '<input type="hidden" name="eng_personality" value="' . $eng_personality . '"/>';
+		echo '<input type="hidden" name="eng_req_body_limit" value="' . $eng_req_body_limit . '"/>';
+		echo '<input type="hidden" name="eng_resp_body_limit" value="' . $eng_resp_body_limit . '"/>';
+		echo '<input type="hidden" name="eng_enable_double_decode_path" value="' . $eng_enable_double_decode_path . '"/>';
+		echo '<input type="hidden" name="eng_enable_double_decode_query" value="' . $eng_enable_double_decode_query . '"/>';
+		echo '<input type="hidden" name="eng_enable_uri_include_all" value="' . $eng_enable_uri_include_all . '"/>';
+	}
+
+} elseif ($add_edit_libhtp_policy) {
+
+	include("/usr/local/www/suricata/suricata_libhtp_policy_engine.php"); 
+
+} else {
+
+	$form = new Form(false);
+
+	$section = new Form_Section('Abstract Syntax One Settings');
+	$section->addInput(new Form_Input(
+		'asn1_max_frames',
+		'Asn1 Max Frames',
+		'text',
+		$pconfig['asn1_max_frames']
+	))->setHelp('Limit for max number of asn1 frames to decode. Default is 256 frames. To protect itself, Suricata will inspect only the maximum asn1 frames specified. Application layer protocols such as X.400 electronic mail, X.500 and LDAP directory services, H.323 (VoIP), and SNMP, use ASN.1 to describe the protocol data units (PDUs) they exchange.');
+	print($section);
+
+	$section = new Form_Section('DNS App-Layer Parser Settings');
+	$section->addInput(new Form_Input(
+		'dns_global_memcap',
+		'Global Memcap',
+		'text',
+		$pconfig['dns_global_memcap']
+	))->setHelp('Sets the global memcap limit for the DNS parser. Default is 16777216 bytes (16MB).');
+	$section->addInput(new Form_Input(
+		'dns_state_memcap',
+		'Flow/State Memcap',
+		'text',
+		$pconfig['dns_state_memcap']
+	))->setHelp('Sets per flow/state memcap limit for the DNS parser. Default is 524288 bytes (512KB).');
+	$section->addInput(new Form_Input(
+		'dns_request_flood_limit',
+		'Request Flood Limit',
+		'text',
+		$pconfig['dns_request_flood_limit']
+	))->setHelp('How many unreplied DNS requests are considered a flood. Default is 500 requests. If this limit is reached, \'app-layer-event:dns.flooded\' will match and alert.');
+	$section->addInput(new Form_Select(
+		'dns_parser_udp',
+		'UDP Parser',
+		$pconfig['dns_parser_udp'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose a fast pattern matcher algorithm.');
+	$section->addInput(new Form_Select(
+		'dns_parser_tcp',
+		'TCP Parser',
+		$pconfig['dns_parser_tcp'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose a fast pattern matcher algorithm.');
+	print($section);
+
+	$section = new Form_Section('Other App-Layer Parser Settings');
+	$section->addInput(new Form_Select(
+		'tls_parser',
+		'TLS Parser',
+		$pconfig['tls_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for TLS. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
+		'smtp_parser',
+		'SMTP Parser',
+		$pconfig['smtp_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for SMTP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
+		'imap_parser',
+		'IMAP Parser',
+		$pconfig['imap_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for IMAP. Default is detection-only. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
+		'ssh_parser',
+		'SSH Parser',
+		$pconfig['ssh_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for SSH. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
+		'ftp_parser',
+		'FTP Parser',
+		$pconfig['ftp_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for FTP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
+		'dcerpc_parser',
+		'DCERPC Parser',
+		$pconfig['dcerpc_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for DCERPC. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
+		'smb_parser',
+		'SMB Parser',
+		$pconfig['smb_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for SMB. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
+		'msn_parser',
+		'MSN Parser',
+		$pconfig['msn_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for MSN. Default is detection-only. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	print($section);
+
 ?>
-</td></tr>
-<tr><td><div id="mainarea">
 
-<?php if ($importalias) : ?>
-	<?php include("/usr/local/www/suricata/suricata_import_aliases.php");
-		if ($selectalias) {
-			echo '<input type="hidden" name="eng_name" value="' . $eng_name . '"/>';
-			echo '<input type="hidden" name="eng_bind" value="' . $eng_bind . '"/>';
-			echo '<input type="hidden" name="eng_personality" value="' . $eng_personality . '"/>';
-			echo '<input type="hidden" name="eng_req_body_limit" value="' . $eng_req_body_limit . '"/>';
-			echo '<input type="hidden" name="eng_resp_body_limit" value="' . $eng_resp_body_limit . '"/>';
-			echo '<input type="hidden" name="eng_enable_double_decode_path" value="' . $eng_enable_double_decode_path . '"/>';
-			echo '<input type="hidden" name="eng_enable_double_decode_query" value="' . $eng_enable_double_decode_query . '"/>';
-			echo '<input type="hidden" name="eng_enable_uri_include_all" value="' . $eng_enable_uri_include_all . '"/>';
-		}
-	?>
+	<div class="panel panel-default">
+		<div class="panel-heading"><h2 class="panel-title"><?=gettext('HTTP App-Layer Parser Settings');?></h2></div>
+		<div class="panel-body">
+			<div class="form-group">
+				<label class="col-sm-2 control-label">
+					<?=gettext("Memcap"); ?>
+				</label>
+				<div class="col-sm-10">
+					<input name="http_parser_memcap" type="text" class="form-control" id="http_parser_memcap" size="9" value="<?=htmlspecialchars($pconfig['http_parser_memcap'])?>">
+					<span class="help-block">Sets the memcap limit for the HTTP parser. Default is 67108864 bytes (64MB).</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">
+					<?=gettext("HTTP Parser"); ?>
+				</label>
+				<div class="col-sm-10">
+					<select name="http_parser" id="http_parser" class="form-control">
+						<?php
+							$opt = array(  "yes", "no", "detection-only" );
+							foreach ($opt as $val) {
+								$selected = "";
+								if ($val == $pconfig['http_parser'])
+									$selected = " selected";
+								echo "<option value='{$val}'{$selected}>" . $val . "</option>\n";
+							}
+						?>
+					</select>
+					<span class="help-block">Choose the parser/detection setting for HTTP. Default is yes. electing "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">
+					<?=gettext("Server Configurations"); ?>
+				</label>
+				<div class="col-sm-10">
+					<div class="table-responsive">
+						<table class="table table-striped table-hover table-condensed">
+							<thead>
+								<tr>
+									<th><?=gettext("Name")?></th>
+									<th><?=gettext("Bind-To Address Alias")?></th>
+									<th>
+										<input type="submit" name="import_alias" class="btn btn-sm btn-primary" title="<?=gettext("Import server configuration from existing Aliases")?>" value="Import"/>
+										<input type="submit" name="add_libhtp_policy" class="btn btn-sm btn-success" title="<?=gettext("Add a new server configuration")?>" value="Add">
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+							<?php foreach ($pconfig['libhtp_policy']['item'] as $f => $v): ?>
+								<tr>
+									<td><?=gettext($v['name'])?></td>
+									<td class="text-center"><?=gettext($v['bind_to'])?></td>
+									<td class="text-right">
+										<input type="submit" name="edit_libhtp_policy[]" value="Edit" class="btn btn-sm btn-primary" onclick="document.getElementById('eng_id').value='<?=$f?>'" title="<?=gettext("Edit this server configuration")?>"/>
+									<?php if ($v['bind_to'] != "all") : ?> 
+										<input type="submit" name="del_libhtp_policy[]" value="Delete" class="btn btn-sm btn-danger" onclick="document.getElementById('eng_id').value='<?=$f?>';return confirm('Are you sure you want to delete this entry?');" title="<?=gettext("Delete this server configuration")?>">
+									<?php else : ?>
+										<input type="submit" name="del_libhtp_policy[]" value="Delete" class="btn btn-sm btn-danger" title="<?=gettext("Delete this server configuration")?>" disabled>
+									<?php endif ?>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+							</tbody>
+						</table>
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>	
 
-<?php elseif ($add_edit_libhtp_policy) : ?>
-	<?php include("/usr/local/www/suricata/suricata_libhtp_policy_engine.php"); ?>
+	<div class="col-sm-10 col-sm-offset-2">
+		<button type="submit" id="save" name="save" value="Save" class="btn btn-primary" title="<?=gettext('Save App Parsers settings');?>">
+			<?=gettext('Save');?>
+		</button>
+	</div>
 
-<?php else: ?>
+<?php } ?>
 
-<table id="maintable" class="tabcont" width="100%" border="0" cellpadding="6" cellspacing="0">
-	<tbody>
-	<tr>
-
-		<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Abstract Syntax One Settings"); ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Asn1 Max Frames"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="asn1_max_frames" type="text" class="formfld unknown" id="asn1_max_frames" size="9"
-			value="<?=htmlspecialchars($pconfig['asn1_max_frames']);?>">&nbsp;
-			<?php echo gettext("Limit for max number of asn1 frames to decode.  Default is ") . 
-			"<strong>" . gettext("256") . "</strong>" . gettext(" frames."); ?><br/><br/>
-			<?php echo gettext("To protect itself, Suricata will inspect only the maximum asn1 frames specified.  ") . 
-			gettext("Application layer protocols such as X.400 electronic mail, X.500 and LDAP directory services, ") . 
-			gettext("H.323 (VoIP), and SNMP, use ASN.1 to describe the protocol data units (PDUs) they exchange."); ?>
-		</td>
-	</tr>
-
-	<tr>
-		<td colspan="2" valign="top" class="listtopic"><?php echo gettext("DNS App-Layer Parser Settings"); ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Global Memcap"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="dns_global_memcap" type="text" class="formfld unknown" id="dns_global_memcap" size="9"
-			value="<?=htmlspecialchars($pconfig['dns_global_memcap']);?>">&nbsp;
-			<?php echo gettext("Sets the global memcap limit for the DNS parser.  Default is ") . 
-			"<strong>" . gettext("16777216") . "</strong>" . gettext(" bytes (16MB)."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Flow/State Memcap"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="dns_state_memcap" type="text" class="formfld unknown" id="dns_state_memcap" size="9"
-			value="<?=htmlspecialchars($pconfig['dns_state_memcap']);?>">&nbsp;
-			<?php echo gettext("Sets per flow/state memcap limit for the DNS parser.  Default is ") . 
-			"<strong>" . gettext("524288") . "</strong>" . gettext(" bytes (512KB)."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Request Flood Limit"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="dns_request_flood_limit" type="text" class="formfld unknown" id="dns_request_flood_limit" size="9"
-			value="<?=htmlspecialchars($pconfig['dns_request_flood_limit']);?>">&nbsp;
-			<?php echo gettext("How many unreplied DNS requests are considered a flood.  Default is ") . 
-			"<strong>" . gettext("500") . "</strong>" . gettext(" requests."); ?><br/>
-			<?php echo gettext("If this limit is reached, 'app-layer-event:dns.flooded' will match and alert.  "); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("UDP Parser"); ?></td>
-		<td width="78%" class="vtable">
-			<select name="dns_parser_udp" id="dns_parser_udp" class="formselect">
-			<?php
-				$opt = array(  "yes", "no", "detection-only" );
-				foreach ($opt as $val) {
-					$selected = "";
-					if ($val == $pconfig['dns_parser_udp'])
-						$selected = " selected";
-					echo "<option value='{$val}'{$selected}>" . $val . "</option>\n";
-				}
-			?></select>&nbsp;&nbsp;
-			<?php echo gettext("Choose the parser/detection setting for UDP.  Default is ") . "<strong>" . gettext("yes") . "</strong>" . gettext("."); ?><br/>
-			<?php echo gettext("Selecting \"yes\" enables detection and parser, \"no\" disables both and \"detection-only\" disables parser."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("TCP Parser"); ?></td>
-		<td width="78%" class="vtable">
-			<select name="dns_parser_tcp" id="dns_parser_tcp" class="formselect">
-			<?php
-				$opt = array(  "yes", "no", "detection-only" );
-				foreach ($opt as $val) {
-					$selected = "";
-					if ($val == $pconfig['dns_parser_tcp'])
-						$selected = " selected";
-					echo "<option value='{$val}'{$selected}>" . $val . "</option>\n";
-				}
-			?></select>&nbsp;&nbsp;
-			<?php echo gettext("Choose the parser/detection setting for TCP.  Default is ") . "<strong>" . gettext("yes") . "</strong>" . gettext("."); ?><br/>
-			<?php echo gettext("Selecting \"yes\" enables detection and parser, \"no\" disables both and \"detection-only\" disables parser."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2" valign="top" class="listtopic"><?php echo gettext("HTTP App-Layer Parser Settings"); ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Memcap"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="http_parser_memcap" type="text" class="formfld unknown" id="http_parser_memcap" size="9"
-			value="<?=htmlspecialchars($pconfig['http_parser_memcap']);?>">&nbsp;
-			<?php echo gettext("Sets the memcap limit for the HTTP parser.  Default is ") . 
-			"<strong>" . gettext("67108864") . "</strong>" . gettext(" bytes (64MB)."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("HTTP Parser"); ?></td>
-		<td width="78%" class="vtable">
-			<select name="http_parser" id="http_parser" class="formselect">
-			<?php
-				$opt = array(  "yes", "no", "detection-only" );
-				foreach ($opt as $val) {
-					$selected = "";
-					if ($val == $pconfig['http_parser'])
-						$selected = " selected";
-					echo "<option value='{$val}'{$selected}>" . $val . "</option>\n";
-				}
-			?></select>&nbsp;&nbsp;
-			<?php echo gettext("Choose the parser/detection setting for HTTP.  Default is ") . "<strong>" . gettext("yes") . "</strong>" . gettext("."); ?><br/>
-			<?php echo gettext("Selecting \"yes\" enables detection and parser, \"no\" disables both and \"detection-only\" disables parser."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Server Configurations"); ?></td>
-		<td width="78%" class="vtable">
-			<table width="95%" align="left" id="libhtpEnginesTable" style="table-layout: fixed;" border="0" cellspacing="0" cellpadding="0">
-				<colgroup>
-					<col width="45%" align="left">
-					<col width="45%" align="center">
-					<col width="10%" align="right">
-				</colgroup>
-			   <thead>
-				<tr>
-					<th class="listhdrr" axis="string"><?php echo gettext("Name");?></th>
-					<th class="listhdrr" axis="string"><?php echo gettext("Bind-To Address Alias");?></th>
-					<th class="list" align="right"><input type="image" name="import_alias[]" src="../themes/<?= $g['theme'];?>/images/icons/icon_import_alias.gif" width="17" 
-					height="17" border="0" title="<?php echo gettext("Import server configuration from existing Aliases");?>"/>
-					<input type="image" name="add_libhtp_policy[]"  src="../themes/<?= $g['theme'];?>/images/icons/icon_plus.gif" width="17" 
-					height="17" border="0" title="<?php echo gettext("Add a new server configuration");?>"></th>
-				</tr>
-			   </thead>
-				<tbody>
-			<?php foreach ($pconfig['libhtp_policy']['item'] as $f => $v): ?>
-				<tr>
-					<td class="listlr" align="left"><?=gettext($v['name']);?></td>
-					<td class="listbg" align="center"><?=gettext($v['bind_to']);?></td>
-					<td class="listt" align="right"><input type="image" name="edit_libhtp_policy[]" value="<?=$f;?>" onclick="document.getElementById('eng_id').value='<?=$f;?>'" 
-					src="/themes/<?=$g['theme'];?>/images/icons/icon_e.gif" 
-					width="17" height="17" border="0" title="<?=gettext("Edit this server configuration");?>"/>
-			<?php if ($v['bind_to'] <> "all") : ?> 
-					<input type="image" name="del_libhtp_policy[]" value="<?=$f;?>" onclick="document.getElementById('eng_id').value='<?=$f;?>';return confirm('Are you sure you want to delete this entry?');" 
-					src="/themes/<?=$g['theme'];?>/images/icons/icon_x.gif" width="17" height="17" border="0" 
-					title="<?=gettext("Delete this server configuration");?>">
-			<?php else : ?>
-					<img src="/themes/<?=$g['theme'];?>/images/icons/icon_x_d.gif" width="17" height="17" border="0" 
-					title="<?=gettext("Default server configuration cannot be deleted");?>">
-			<?php endif ?>
-					</td>
-				</tr>
-			<?php endforeach; ?>
-				</tbody>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Other App-Layer Parser Settings"); ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("TLS Parser"); ?></td>
-		<td width="78%" class="vtable">
-			<select name="tls_parser" id="tls_parser" class="formselect">
-			<?php
-				$opt = array(  "yes", "no", "detection-only" );
-				foreach ($opt as $val) {
-					$selected = "";
-					if ($val == $pconfig['tls_parser'])
-						$selected = " selected";
-					echo "<option value='{$val}'{$selected}>" . $val . "</option>\n";
-				}
-			?></select>&nbsp;&nbsp;
-			<?php echo gettext("Choose the parser/detection setting for TLS.  Default is ") . "<strong>" . gettext("yes") . "</strong>" . gettext("."); ?><br/>
-			<?php echo gettext("Selecting \"yes\" enables detection and parser, \"no\" disables both and \"detection-only\" disables parser."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("SMTP Parser"); ?></td>
-		<td width="78%" class="vtable">
-			<select name="smtp_parser" id="smtp_parser" class="formselect">
-			<?php
-				$opt = array(  "yes", "no", "detection-only" );
-				foreach ($opt as $val) {
-					$selected = "";
-					if ($val == $pconfig['smtp_parser'])
-						$selected = " selected";
-					echo "<option value='{$val}'{$selected}>" . $val . "</option>\n";
-				}
-			?></select>&nbsp;&nbsp;
-			<?php echo gettext("Choose the parser/detection setting for SMTP.  Default is ") . "<strong>" . gettext("yes") . "</strong>" . gettext("."); ?><br/>
-			<?php echo gettext("Selecting \"yes\" enables detection and parser, \"no\" disables both and \"detection-only\" disables parser."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("IMAP Parser"); ?></td>
-		<td width="78%" class="vtable">
-			<select name="imap_parser" id="imap_parser" class="formselect">
-			<?php
-				$opt = array( "detection-only", "yes", "no" );
-				foreach ($opt as $val) {
-					$selected = "";
-					if ($val == $pconfig['imap_parser'])
-						$selected = " selected";
-					echo "<option value='{$val}'{$selected}>" . $val . "</option>\n";
-				}
-			?></select>&nbsp;&nbsp;
-			<?php echo gettext("Choose the parser/detection setting for IMAP.  Default is ") . "<strong>" . gettext("detection-only") . "</strong>" . gettext("."); ?><br/>
-			<?php echo gettext("Selecting \"yes\" enables detection and parser, \"no\" disables both and \"detection-only\" disables parser."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("SSH Parser"); ?></td>
-		<td width="78%" class="vtable">
-			<select name="ssh_parser" id="ssh_parser" class="formselect">
-			<?php
-				$opt = array(  "yes", "no", "detection-only" );
-				foreach ($opt as $val) {
-					$selected = "";
-					if ($val == $pconfig['ssh_parser'])
-						$selected = " selected";
-					echo "<option value='{$val}'{$selected}>" . $val . "</option>\n";
-				}
-			?></select>&nbsp;&nbsp;
-			<?php echo gettext("Choose the parser/detection setting for SSH.  Default is ") . "<strong>" . gettext("yes") . "</strong>" . gettext("."); ?><br/>
-			<?php echo gettext("Selecting \"yes\" enables detection and parser, \"no\" disables both and \"detection-only\" disables parser."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("FTP Parser"); ?></td>
-		<td width="78%" class="vtable">
-			<select name="ftp_parser" id="ftp_parser" class="formselect">
-			<?php
-				$opt = array(  "yes", "no", "detection-only" );
-				foreach ($opt as $val) {
-					$selected = "";
-					if ($val == $pconfig['ftp_parser'])
-						$selected = " selected";
-					echo "<option value='{$val}'{$selected}>" . $val . "</option>\n";
-				}
-			?></select>&nbsp;&nbsp;
-			<?php echo gettext("Choose the parser/detection setting for FTP.  Default is ") . "<strong>" . gettext("yes") . "</strong>" . gettext("."); ?><br/>
-			<?php echo gettext("Selecting \"yes\" enables detection and parser, \"no\" disables both and \"detection-only\" disables parser."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("DCERPC Parser"); ?></td>
-		<td width="78%" class="vtable">
-			<select name="dcerpc_parser" id="dcerpc_parser" class="formselect">
-			<?php
-				$opt = array(  "yes", "no", "detection-only" );
-				foreach ($opt as $val) {
-					$selected = "";
-					if ($val == $pconfig['dcerpc_parser'])
-						$selected = " selected";
-					echo "<option value='{$val}'{$selected}>" . $val . "</option>\n";
-				}
-			?></select>&nbsp;&nbsp;
-			<?php echo gettext("Choose the parser/detection setting for DCERPC.  Default is ") . "<strong>" . gettext("yes") . "</strong>" . gettext("."); ?><br/>
-			<?php echo gettext("Selecting \"yes\" enables detection and parser, \"no\" disables both and \"detection-only\" disables parser."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("SMB Parser"); ?></td>
-		<td width="78%" class="vtable">
-			<select name="smb_parser" id="smb_parser" class="formselect">
-			<?php
-				$opt = array(  "yes", "no", "detection-only" );
-				foreach ($opt as $val) {
-					$selected = "";
-					if ($val == $pconfig['smb_parser'])
-						$selected = " selected";
-					echo "<option value='{$val}'{$selected}>" . $val . "</option>\n";
-				}
-			?></select>&nbsp;&nbsp;
-			<?php echo gettext("Choose the parser/detection setting for SMB.  Default is ") . "<strong>" . gettext("yes") . "</strong>" . gettext("."); ?><br/>
-			<?php echo gettext("Selecting \"yes\" enables detection and parser, \"no\" disables both and \"detection-only\" disables parser."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("MSN Parser"); ?></td>
-		<td width="78%" class="vtable">
-			<select name="msn_parser" id="msn_parser" class="formselect">
-			<?php
-				$opt = array( "detection-only", "yes", "no" );
-				foreach ($opt as $val) {
-					$selected = "";
-					if ($val == $pconfig['msn_parser'])
-						$selected = " selected";
-					echo "<option value='{$val}'{$selected}>" . $val . "</option>\n";
-				}
-			?></select>&nbsp;&nbsp;
-			<?php echo gettext("Choose the parser/detection setting for MSN.  Default is ") . "<strong>" . gettext("detection-only") . "</strong>" . gettext("."); ?><br/>
-			<?php echo gettext("Selecting \"yes\" enables detection and parser, \"no\" disables both and \"detection-only\" disables parser."); ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top">&nbsp;</td>
-		<td width="78%">
-			<input name="save" type="submit" class="formbtn" value="Save" title="<?php echo 
-			gettext("Save flow and stream settings"); ?>"/>
-			&nbsp;&nbsp;&nbsp;&nbsp;
-			<input name="ResetAll" type="submit" class="formbtn" value="Reset" title="<?php echo 
-			gettext("Reset all settings to defaults") . "\" onclick=\"return confirm('" . 
-			gettext("WARNING:  This will reset ALL App Parsers settings to their defaults.  Click OK to continue or CANCEL to quit.") . 
-			"');\""; ?>/></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top">&nbsp;</td>
-		<td width="78%"><span class="vexpl"><span class="red"><strong><?php echo gettext("Note: "); ?></strong></span></span>
-			<?php echo gettext("Please save your settings before you exit.  Changes will rebuild the rules file.  This "); ?>
-			<?php echo gettext("may take several seconds.  Suricata must also be restarted to activate any changes made on this screen."); ?></td>
-	</tr>
-	</tbody>
-</table>
-
-<?php endif; ?>
-
-</div>
-</td></tr></tbody></table>
 </form>
-<?php include("fend.inc"); ?>
-</body>
-</html>
+
+<?php include("foot.inc"); ?>
+
