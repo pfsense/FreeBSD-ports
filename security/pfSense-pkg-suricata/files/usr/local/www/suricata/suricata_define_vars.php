@@ -50,8 +50,8 @@ if (isset($_POST['id']) && is_numericint($_POST['id']))
 elseif (isset($_GET['id']) && is_numericint($_GET['id']))
 	$id = htmlspecialchars($_GET['id']);
 if (is_null($id)) {
-        header("Location: /suricata/suricata_interfaces.php");
-        exit;
+		header("Location: /suricata/suricata_interfaces.php");
+		exit;
 }
 
 if (!is_array($config['installedpackages']['suricata']['rule'])) {
@@ -70,9 +70,9 @@ $suricata_servers = array (
 
 /* if user has defined a custom ssh port, use it */
 if(is_array($config['system']['ssh']) && isset($config['system']['ssh']['port']))
-        $ssh_port = $config['system']['ssh']['port'];
+		$ssh_port = $config['system']['ssh']['port'];
 else
-        $ssh_port = "22";
+		$ssh_port = "22";
 $suricata_ports = array(
 	"ftp_ports" => "21", 
 	"http_ports" => "80", 
@@ -154,131 +154,103 @@ if ($_POST) {
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($pconfig['interface']);
-$pgtitle = gettext("Suricata: Interface {$if_friendly} Variables - Servers and Ports");
+$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Interface Variables - {$if_friendly}"));
 include_once("head.inc");
 
-?>
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-
-<?php 
-include("fbegin.inc");
-?>
-
-<script type="text/javascript" src="/javascript/autosuggest.js">
-</script>
-<script type="text/javascript" src="/javascript/suggestions.js">
-</script>
-<form action="suricata_define_vars.php" method="post" name="iform" id="iform">
-
-<?php
 /* Display Alert message */
 if ($input_errors)
 	print_input_errors($input_errors);
 if ($savemsg)
 	print_info_box($savemsg);
+
+$tab_array = array();
+$tab_array[] = array(gettext("Interfaces"), true, "/suricata/suricata_interfaces.php");
+$tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_global.php");
+$tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
+$tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
+$tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
+$tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
+$tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$id}");
+$tab_array[] = array(gettext("Logs Mgmt"), false, "/suricata/suricata_logs_mgmt.php");
+$tab_array[] = array(gettext("SID Mgmt"), false, "/suricata/suricata_sid_mgmt.php");
+$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=suricata/suricata_sync.xml");
+$tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
+display_top_tabs($tab_array, true);
+
+$tab_array = array();
+$menu_iface=($if_friendly?substr($if_friendly,0,5)." ":"Iface ");
+$tab_array[] = array($menu_iface . gettext("Settings"), false, "/suricata/suricata_interfaces_edit.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Categories"), false, "/suricata/suricata_rulesets.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Rules"), false, "/suricata/suricata_rules.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Flow/Stream"), false, "/suricata/suricata_flow_stream.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("App Parsers"), false, "/suricata/suricata_app_parsers.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Variables"), true, "/suricata/suricata_define_vars.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/suricata/suricata_barnyard.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata_ip_reputation.php?id={$id}");
+display_top_tabs($tab_array, true);
+
+$form = new Form();
+
+$form->addGlobal(new Form_Input(
+	'id',
+	'id',
+	'hidden',
+	$id
+));
+
+$section = new Form_Section('Define Servers (IP variables)');
+foreach ($suricata_servers as $key => $server) {
+	if (strlen($server) > 40)
+		$server = substr($server, 0, 40) . "...";
+	$label = strtoupper($key);
+	$value = "";
+	$title = "";
+	if (!empty($pconfig["def_{$key}"])) {
+		$value = htmlspecialchars($pconfig["def_{$key}"]);
+		$title = trim(filter_expand_alias($pconfig["def_{$key}"]));
+	}
+
+	$section->addInput(new Form_Input(
+		$name,
+		$label,
+		'text',
+		$pconfig[$name]
+	))->setHelp('Default value: ' . $server . '. Leave blank for default value.');
+}
+$form->add($section);
+
+$section = new Form_Section('Define Ports (port variables)');
+foreach ($suricata_ports as $key => $server) {
+	if (strlen($server) > 40) {
+		$server = substr($server, 0, 40) . "...";
+	}
+	$label = strtoupper($key);
+	$name = "def_" . $key;
+	$value = "";
+	$title = "";
+	if (!empty($pconfig["def_{$key}"])) {
+		$value = htmlspecialchars($pconfig["def_{$key}"]);
+		$title = trim(filter_expand_alias($pconfig["def_{$key}"]));
+	}
+
+	$section->addInput(new Form_Input(
+		$name,
+		$label,
+		'text',
+		$pconfig[$name]
+	))->setHelp('Default value: ' . $server . '. Leave blank for default value.');
+
+}
+$form->add($section);
+
+print($form);
+
 ?>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tbody>
-<tr><td>
-<?php
-	$tab_array = array();
-	$tab_array[] = array(gettext("Interfaces"), true, "/suricata/suricata_interfaces.php");
-	$tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_global.php");
-	$tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
-	$tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
-	$tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
-	$tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
-	$tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
-	$tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$id}");
-	$tab_array[] = array(gettext("Logs Mgmt"), false, "/suricata/suricata_logs_mgmt.php");
-	$tab_array[] = array(gettext("SID Mgmt"), false, "/suricata/suricata_sid_mgmt.php");
-	$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=suricata/suricata_sync.xml");
-	$tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
-	display_top_tabs($tab_array, true);
-	echo '</td></tr>';
-	echo '<tr><td class="tabnavtbl">';
-	$tab_array = array();
-	$menu_iface=($if_friendly?substr($if_friendly,0,5)." ":"Iface ");
-	$tab_array[] = array($menu_iface . gettext("Settings"), false, "/suricata/suricata_interfaces_edit.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Categories"), false, "/suricata/suricata_rulesets.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Rules"), false, "/suricata/suricata_rules.php?id={$id}");
-        $tab_array[] = array($menu_iface . gettext("Flow/Stream"), false, "/suricata/suricata_flow_stream.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("App Parsers"), false, "/suricata/suricata_app_parsers.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Variables"), true, "/suricata/suricata_define_vars.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/suricata/suricata_barnyard.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata_ip_reputation.php?id={$id}");
-        display_top_tabs($tab_array, true);
-?>
-</td></tr>
-<tr>
-		<td><div id="mainarea">
-		<table id="maintable" class="tabcont" width="100%" border="0" cellpadding="6" cellspacing="0">
-		<tbody>
-		<tr>
-			<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Define Servers (IP variables)"); ?></td>
-		</tr>
-<?php
-		foreach ($suricata_servers as $key => $server):
-			if (strlen($server) > 40)
-				$server = substr($server, 0, 40) . "...";
-			$label = strtoupper($key);
-			$value = "";
-			$title = "";
-			if (!empty($pconfig["def_{$key}"])) {
-				$value = htmlspecialchars($pconfig["def_{$key}"]);
-				$title = trim(filter_expand_alias($pconfig["def_{$key}"]));
-			}
-?>
-			<tr>
-				<td width='30%' valign='top' class='vncell'><?php echo gettext("Define"); ?> <?=$label;?></td>
-				<td width="70%" class="vtable">
-					<input name="def_<?=$key;?>" size="40"
-					type="text" autocomplete="off" class="formfldalias" id="def_<?=$key;?>"
-					value="<?=$value;?>" title="<?=$title;?>"> <br/>
-				<span class="vexpl"><?php echo gettext("Default value:"); ?> "<?=$server;?>" <br/><?php echo gettext("Leave " .
-				"blank for default value."); ?></span>
-				</td>
-			</tr>
-<?php		endforeach; ?>
-		<tr>
-			<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Define Ports (port variables)"); ?></td>
-		</tr>
-<?php
-		foreach ($suricata_ports as $key => $server):
-			if (strlen($server) > 40)
-				$server = substr($server, 0, 40) . "...";
-			$label = strtoupper($key);
-			$value = "";
-			$title = "";
-			if (!empty($pconfig["def_{$key}"])) {
-				$value = htmlspecialchars($pconfig["def_{$key}"]);
-				$title = trim(filter_expand_alias($pconfig["def_{$key}"]));
-			}
-?>
-			<tr>
-				<td width='30%' valign='top' class='vncell'><?php echo gettext("Define"); ?> <?=$label;?></td>
-				<td width="70%" class="vtable">
-					<input name="def_<?=$key;?>" type="text" size="40" autocomplete="off" class="formfldalias" id="def_<?=$key;?>"
-					value="<?=$value;?>" title="<?=$title;?>"> <br/>
-				<span class="vexpl"><?php echo gettext("Default value:"); ?> "<?=$server;?>" <br/> <?php echo gettext("Leave " .
-				"blank for default value."); ?></span>
-				</td>
-			</tr>
-<?php		endforeach; ?>
-		<tr>
-			<td width="30%" valign="top">&nbsp;</td>
-			<td width="70%">
-				<input name="Submit" type="submit" class="formbtn" value="Save">
-				<input name="id" type="hidden" value="<?=$id;?>">
-			</td>
-		</tr>
-		</tbody>
-	</table>
-</div>
-</td></tr></tbody>
-</table>
-</form>
+<script type="text/javascript" src="/javascript/autosuggest.js"></script>
+<script type="text/javascript" src="/javascript/suggestions.js"></script>
+
 <script type="text/javascript">
 //<![CDATA[
 	var addressarray = <?= json_encode(get_alias_list(array("host", "network"))) ?>;
@@ -293,11 +265,8 @@ if ($savemsg)
 	?>
 	}
 
-setTimeout("createAutoSuggest();", 500);
-
+	setTimeout("createAutoSuggest();", 500);
 //]]>
 </script>
 
-<?php include("fend.inc"); ?>
-</body>
-</html>
+<?php include("foot.inc"); ?>
