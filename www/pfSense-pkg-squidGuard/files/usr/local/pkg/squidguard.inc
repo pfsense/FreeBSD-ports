@@ -1042,6 +1042,7 @@ function convert_pfxml_to_sgxml() {
 
     # store cfg cache
     $cfg_xml = dump_xml_config($sgxml, F_SQUIDGUARD);
+    safe_mkdir(dirname($sgxml[F_SGCONF_XML]));
     file_put_contents($sgxml[F_SGCONF_XML], $cfg_xml);
     conf_mount_ro();
 
