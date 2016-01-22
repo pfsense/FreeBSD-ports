@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
 <pfsensepkgs>
 	<package>
-		<name>haproxy-1_5</name>
-		<internal_name>haproxy</internal_name>
+		<name>haproxy</name>
 		<pkginfolink>https://doc.pfsense.org/index.php/haproxy_package</pkginfolink>
 		<descr><![CDATA[The Reliable, High Performance TCP/HTTP(S) Load Balancer.&lt;br /&gt;
 			This package implements the TCP, HTTP and HTTPS balancing features from haproxy.&lt;br /&gt;

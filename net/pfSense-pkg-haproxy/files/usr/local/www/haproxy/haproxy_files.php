@@ -29,9 +29,9 @@
 */
 $shortcut_section = "haproxy";
 require_once("guiconfig.inc");
-require_once("haproxy.inc");
-require_once("pkg_haproxy_tabs.inc");
-require_once("haproxy_htmllist.inc");
+require_once("haproxy/haproxy.inc");
+require_once("haproxy/haproxy_htmllist.inc");
+require_once("haproxy/pkg_haproxy_tabs.inc");
 
 $a_files = &$config['installedpackages']['haproxy']['files']['item'];
 if (!is_array($a_files)) $a_files = array();
@@ -42,15 +42,20 @@ if (!is_array($a_pools)) $a_pools = array();
 $fields_files = array();
 $fields_files[0]['name']="name";
 $fields_files[0]['columnheader']="Name";
-$fields_files[0]['colwidth']="30%";
+$fields_files[0]['colwidth']="20%";
 $fields_files[0]['type']="textbox";
 $fields_files[0]['size']="20";
-
-$fields_files[1]['name']="content";
-$fields_files[1]['columnheader']="content";
-$fields_files[1]['colwidth']="70%";
-$fields_files[1]['type']="textarea";
-$fields_files[1]['size']="70";
+$fields_files[1]['name']="type";
+$fields_files[1]['columnheader']="Type";
+$fields_files[1]['colwidth']="10%";
+$fields_files[1]['type']="select";
+$fields_files[1]['size']="10";
+$fields_files[1]['items']=$a_filestype;
+$fields_files[2]['name']="content";
+$fields_files[2]['columnheader']="content";
+$fields_files[2]['colwidth']="70%";
+$fields_files[2]['type']="textarea";
+$fields_files[2]['size']="70";
 
 $fileslist = new HaproxyHtmlList("table_files", $fields_files);
 $fileslist->keyfield = "name";
@@ -63,7 +68,7 @@ if ($_POST) {
 		if ($result)
 			unlink_if_exists($d_haproxyconfdirty_path);
 	} else {
-		$a_files = $fileslist->haproxy_htmllist_get_values($fields_files);
+		$a_files = $fileslist->haproxy_htmllist_get_values();
 		$filedupcheck = array();
 
 		foreach($a_files as $key => $file) {
@@ -77,7 +82,7 @@ if ($_POST) {
 		
 		// replace references in backends to renamed 'files'
 		foreach($a_pools as &$backend) {
-			if (is_arrayset($backend,'errorfiles','item'))
+			if (is_arrayset($backend,'errorfiles','item')) {
 				foreach($backend['errorfiles']['item'] as &$errorfile) {
 					$found = false;
 					foreach($a_files as $key => $file) {
@@ -86,9 +91,11 @@ if ($_POST) {
 							$found = true;
 						}
 					}
-					if (!$found)
+					if (!$found) {
 						$input_errors[] = "Errorfile marked for deletion: " . $errorfile['errorfile'] . " which is used in backend " . $backend['name'];
+					}
 				}
+			}
 		}
 		if (!$input_errors) {
 			// save config when no errors found
@@ -100,77 +107,62 @@ if ($_POST) {
 	}
 }
 
-$pf_version=substr(trim(file_get_contents("/etc/version")),0,3);
-	
-$pgtitle = "Services: HAProxy: Files";
+$pgtitle = array("Services", "HAProxy", "Files");
 include("head.inc");
-
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
+if ($savemsg) {
+	print_info_box($savemsg);
+}
+if (file_exists($d_haproxyconfdirty_path)) {
+	print_info_box_np("The haproxy configuration has been changed.<br/>You must apply the changes in order for them to take effect.");
+}
+haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "files");
+//haproxy_css();
 ?>
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-<?php include("fbegin.inc"); ?>
 <form action="haproxy_files.php" method="post">
-<?php if ($input_errors) print_input_errors($input_errors); ?>
-<?php if ($savemsg) print_info_box($savemsg); ?>
-<?php if (file_exists($d_haproxyconfdirty_path)): ?>
-<?php print_info_box_np("The haproxy configuration has been changed.<br/>You must apply the changes in order for them to take effect.");?><br/>
-<?php endif; ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-  <tr><td class="tabnavtbl">
-  <?php
-	haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "files");
-  ?>
-  </td></tr>
-  <tr>
-    <td>
-	<div id="mainarea">
-		<table class="tabcont" width="100%" border="0" cellpadding="0" cellspacing="0">
-		<tr>
-			<td>
-				Files can be used for errorfiles, that can return custom error pages in 
-				case haproxy reports a error (like no available backend). The content needs 
-				to be less than the buffer size which is typically 8kb.
-				There are 2 possible variables to use inside the template:
-				Put these variables in the content of the errorfile templates and they will be replaced by the actual errorcode / message. (include the curly braces around the text)<br/>
-				<b>{errorcode}</b> this represents the errorcode<br/>
-				<b>{errormsg}</b> this represents the human readable error<br/>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				&nbsp;
-			</td>
-		</tr>
-		<tr>
-			<td>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h2 class="panel-title"><?=gettext("Files")?></h2>
+		</div>
+	<div class="content">
+		<div class="table-responsive panel-body content">
+			Files can be used for errorfiles and lua scripts.<br/>
+			- Errorfiles can return custom error pages in 
+			case haproxy reports a error (like no available backend). The content needs 
+			to be less than the buffer size which is typically 8kb.
+			There are 2 possible variables to use inside the template:
+			Put these variables in the content of the errorfile templates and they will be replaced by the actual errorcode / message. (include the curly braces around the text)<br/>
+			<b>{errorcode}</b> this represents the errorcode<br/>
+			<b>{errormsg}</b> this represents the human readable error<br/>
+			- Lua files, can be used to implement custom fetches, service implementations and has several other options.<br/>
+			<a href="http://www.arpalert.org/src/haproxy-lua-api/1.6/">See the api for more information.</a>
+		</div>
+		<div class="table-responsive panel-body">
 			<?
 			$counter=0;
-			$fileslist->Draw($a_files);
+			echo $fileslist->Draw($a_files);
 			?>
-			</td>
-		</tr>
-			<tr>
-				<td>
-					&nbsp;
-				</td>
-			</tr>
-			<tr>
-				<td width="78%">
-					<input name="Submit" type="submit" class="formbtn" value="Save" onClick="enable_change(true)" />
-				</td>
-			</tr>
-		</table>
+		</div>
 	</div>
-	</table>
-	</form>
+		<div class="col-sm-2">
+		</div>
+		<div class="col-sm-8">
+			<br/><?=new Form_Button('save','Save');?>
+		</div>
+	</div>
+
+</form>
+<?
+haproxy_htmllist_js();
+?>
 <script type="text/javascript">
 	totalrows =  <?php echo $counter; ?>;
 <?
-	phparray_to_javascriptarray($fields_files,"fields_files",Array('/*','/*/name','/*/type','/*/size','/*/items','/*/items/*','/*/items/*/*','/*/items/*/*/name'));
+	$fileslist->outputjavascript();
 ?>
 </script>
 
 <?php
-haproxy_htmllist_js();
-include("fend.inc"); ?>
-</body>
-</html>
+include("foot.inc");
