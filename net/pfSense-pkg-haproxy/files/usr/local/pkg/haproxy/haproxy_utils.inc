@@ -122,11 +122,11 @@ function haproxy_get_bindable_interfaces($ipv="ipv4,ipv6", $interfacetype="any,l
 	// $bindable[key]['description'] can be shown to user in a selection box
 
 	global $config;
-	$ipverions = split(',',$ipv);
+	$ipversions = split(',',$ipv);
 	$interfacetypes= split(',',$interfacetype);
 
 	$bindable = array();
-	if (in_array("ipv4",$ipverions)){
+	if (in_array("ipv4",$ipversions)){
 		if (in_array('any',$interfacetypes)){
 			$item = array();
 			$item[ip] = '0.0.0.0';
@@ -187,7 +187,7 @@ function haproxy_get_bindable_interfaces($ipv="ipv4,ipv6", $interfacetype="any,l
 	if (!isset($config['system']['ipv6allow']))
 		return $bindable;// skip adding the IPv6 addresses if those are not 'allowed'
 	
-	if (in_array("ipv6",$ipverions)){
+	if (in_array("ipv6",$ipversions)){
 		if (in_array('any',$interfacetypes)){
 			$item = array();
 			$item[ip] = '::';
@@ -386,6 +386,27 @@ function haproxy_get_certificates($type = 'server,user', $get_includeWebCert=fal
 	return $certificates;
 }
 
+function haproxy_get_certificate_subjectAltNames($str_crt, $decode = true) {
+	if ($decode) {
+		$str_crt = base64_decode($str_crt);
+	}
+	$result = array();
+	$ext = openssl_x509_parse($str_crt, false);
+	$subjectAltName = $ext['extensions']['subjectAltName'];
+	$lines = explode('\n', $subjectAltName);
+	foreach($lines as $line) {
+		$items = explode(',', $line);
+		foreach($items as $item) {
+			$item = trim($item);
+			if (strpos($item, "DNS:") === 0) {
+				$DNSitem = substr($item, 4);
+				$result[] = $DNSitem;
+			}
+		}
+	}
+	return $result;
+}
+
 function haproxy_get_crls() {
 	global $config;
 	$certificates=array();
@@ -406,7 +427,8 @@ function haproxy_get_crls() {
 function phparray_to_javascriptarray_recursive($nestID, $path, $items, $nodeName, $includeitems) {
 	$offset = str_repeat('  ',$nestID);
 	$itemName = "item$nestID";
-	echo "{$offset}$nodeName = {};\n";
+	//echo "{$offset}$nodeName = {};\n";
+	echo "{$offset}$nodeName = Object.create(null);\n";
 	if (is_array($items))
 		foreach ($items as $key => $item)
 		{
@@ -457,17 +479,27 @@ function haproxy_js_select_options($keyvaluelist, $selected="") {
 }
 
 function echo_html_select($name, $keyvaluelist, $selected, $listEmptyMessage="", $onchangeEvent="", $style="") {
+	$result = "";
 	if (count($keyvaluelist)>0){
 		if ($onchangeEvent != "")
 			$onchangeEvent = " onchange='$onchangeEvent'";
 		if ($style != "")
 			$style = " style='$style'";
-		echo "<select name=\"$name\" id=\"$name\" class=\"formselect\"$onchangeEvent$style>";
-		echo haproxy_html_select_options($keyvaluelist, $selected);
-		echo "</select>";
+		$result .= "<select name=\"$name\" id=\"$name\" class=\"formselect\"$onchangeEvent$style>";
+		$result .= haproxy_html_select_options($keyvaluelist, $selected);
+		$result .= "</select>";
 	} else {
-		echo $listEmptyMessage;
+		$result .= $listEmptyMessage;
 	}
+	return $result;
+}
+
+function haproxy_keyvalue_array($hap_array) {
+	$result = array();
+	foreach($hap_array as $key => $item) {
+		$result[$key] = $item['name'];
+	}
+	return $result;
 }
 
 ?>

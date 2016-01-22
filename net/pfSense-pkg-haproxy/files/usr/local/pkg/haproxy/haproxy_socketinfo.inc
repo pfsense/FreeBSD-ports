@@ -40,14 +40,18 @@ $show_clients_traffic = "YES";
 function haproxy_socket_command($command){
 	$result = array();
 	if (file_exists("/tmp/haproxy.socket")) {
-		$socket = stream_socket_client('unix:///tmp/haproxy.socket', $errno, $errstr);
+		$socket = @stream_socket_client('unix:///tmp/haproxy.socket', $errno, $errstr);
 		if ($socket) {
 			fwrite($socket, "$command\n");
 			while (!feof($socket)) {
 				$result[] = fgets($socket);
 			}
 			fclose($socket);
+		} else {
+			echo "cannot open command socket, haproxy not running? ({$errstr})";
 		}
+	} else {
+		echo "haproxy command socket does not exist, haproxy not running?";
 	}
 	return $result;
 }

@@ -32,7 +32,6 @@
 require_once("functions.inc");
 require_once("pkg-utils.inc");
 require_once("notices.inc");
-require_once("util.inc");
 require_once("xmlrpc.inc");
 require_once("xmlrpc_client.inc");
 

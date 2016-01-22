@@ -3,4 +3,4 @@ The Reliable, High Performance TCP/HTTP(S) Load Balancer.<br />
 			balancing features from haproxy.<br /> Supports ACLs for
 			smart backend switching.
 
-WWW: https://doc.pfsense.org/index.php/haproxy_package
+WWW: https://github.com/PiBa-NL/pfsense-haproxy-package-doc/wiki
