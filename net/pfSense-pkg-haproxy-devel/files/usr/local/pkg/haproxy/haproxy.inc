@@ -660,7 +660,7 @@ haproxy_start () {
 			require_once("haproxy/haproxy.inc");
 			haproxy_configure();
 ?>
-ENDOFF	
+ENDOFF
 }
 
 haproxy_check () {
