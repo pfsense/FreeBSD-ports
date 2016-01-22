@@ -59,16 +59,16 @@ function defCmdT($title, $command) {
 function doCmdT($title, $command) {
 	echo "<div>\n";
 	echo "<a name=\"" . str_replace(' ', '_', $title) . "\" />\n";
-	echo "<table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
-	echo "<tr><td class=\"listtopic\">" . $title . "</td></tr>\n";
+	echo "<table class=\"table table-striped table-hover\">\n";
+	echo "<tr><td>" . $title . "</td></tr>\n";
 	/* no newline after pre */
-	echo "<tr><td class=\"listlr\"><pre>";
+	echo "<tr><td><pre>";
 
 	$execOutput = "";
 	$execStatus = "";
 	$fd = popen("{$command} 2>&1", "r");
 	while (($line = fgets($fd)) !== FALSE) {
-		echo htmlspecialchars($line, ENT_NOQUOTES);
+		echo wordwrap(htmlspecialchars($line, ENT_NOQUOTES), 130);
 	}
 	pclose($fd);
 	echo "</pre></td></tr>\n";
