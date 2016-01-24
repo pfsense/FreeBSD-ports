@@ -3,7 +3,7 @@
 	pfBlockerNG.widget.php
 
 	pfBlockerNG
-	Copyright (c) 2015 BBcan177@gmail.com
+	Copyright (c) 2016 BBcan177@gmail.com
 	All rights reserved.
 
 	Based Upon pfblocker :
@@ -12,8 +12,8 @@
 
 	Adapted From:
 	snort_alerts.widget.php
-	Copyright (c) 2015 Electric Sheep Fencing, LLC. All rights reserved.
-	Copyright (c) 2015 Bill Meeks
+	Copyright (c) 2016 Electric Sheep Fencing, LLC. All rights reserved.
+	Copyright (c) 2016 Bill Meeks
 
 	Javascript and Integration modifications by J. Nieuwenhuizen and J. Van Breedam
 
@@ -332,33 +332,31 @@ function pfBlockerNG_get_table($mode='') {
 
 // Status indicator if pfBlockerNG is enabled/disabled
 if ($pfb['enable'] == 'on') {
-	$mode = 'text-success';
+	$pfb_status = 'fa fa-check-circle text-success';
 	$pfb_msg = 'pfBlockerNG is Active.';
 
 	if ($pfb['config']['enable_dup'] == 'on') {
 		// Check Masterfile Database Sanity
 		$db_sanity = exec("{$pfb['grep']} 'Sanity check' {$pfb['logdir']}/pfblockerng.log | {$pfb['grep']} -o 'PASSED' | tail -1");
 		if ($db_sanity != 'PASSED') {
-			$mode = 'text-warning';
+			$pfb_status = 'fa fa-exclamation-circle text-warning';
 			$pfb_msg = 'pfBlockerNG deDuplication is out of sync. Perform a Force Reload to correct.';
 		}
 	}
 } else {
-	$mode = '';
+	$pfb_status = 'fa fa-times-circle text-danger';
 	$pfb_msg = 'pfBlockerNG is Disabled.';
 }
-$pfb_status = "fa fa-check-circle {$mode}";
 
 // Status indicator if DNSBL is actively running
 if ($pfb['dnsbl'] == 'on' && $pfb['unbound_state'] == 'on' && $pfb['enable'] == 'on' &&
     strpos(file_get_contents("{$pfb['dnsbldir']}/unbound.conf"), 'pfb_dnsbl') !== FALSE) {
-	$mode = 'text-success';
+	$dnsbl_status = 'fa fa-check-circle text-success';
 	$dnsbl_msg = 'DNSBL is Active.';
 } else {
-	$mode = '';
+	$dnsbl_status = 'fa fa-times-circle text-danger';
 	$dnsbl_msg = 'DNSBL is Disabled.';
 }
-$dnsbl_status = "fa fa-check-circle {$mode}";
 
 // Collect total IP/Cidr counts
 $dcount = exec("{$pfb['cat']} {$pfb['denydir']}/*.txt | {$pfb['grep']} -cv '^#\|^$\|^1\.1\.1\.1$'");
@@ -497,7 +495,7 @@ $entries = count($results);
 
 <!-- Widget customization settings wrench -->
 </div>
-<div class="panel-footer collapse">
+<div id="widget-<?=$widgetname?>_panel-footer" class="panel-footer collapse">
 
 <form action="/widgets/widgets/pfblockerng.widget.php" method="post" class="form-horizontal">
 	<div class="form-group">
