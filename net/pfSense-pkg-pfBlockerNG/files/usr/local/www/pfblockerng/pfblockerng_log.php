@@ -3,13 +3,13 @@
 	pfBlockerNG_Log.php
 
 	pfBlockerNG
-	Copyright (c) 2015 BBcan177@gmail.com
+	Copyright (c) 2016 BBcan177@gmail.com
 	All rights reserved.
 
 	Portions of this code are based on original work done for the
 	Snort package for pfSense from the following contributors:
 
-	Copyright (c) 2015 Electric Sheep Fencing, LLC. All rights reserved.
+	Copyright (c) 2016 Electric Sheep Fencing, LLC. All rights reserved.
 	Copyright (c) 2009 Robert Zelaya Sr. Developer
 	Copyright (c) 2005 Bill Marquette
 	Copyright (c) 2004-2005 Scott Ullrich
@@ -18,7 +18,7 @@
 	All rights reserved.
 
 	Adapted for Suricata by:
-	Copyright (c) 2015 Bill Meeks
+	Copyright (c) 2016 Bill Meeks
 	All rights reserved.
 
 	Javascript and Integration modifications by J. Nieuwenhuizen and J. Van Breedam
