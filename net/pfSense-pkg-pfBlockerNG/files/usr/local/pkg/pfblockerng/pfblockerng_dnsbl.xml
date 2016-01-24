@@ -294,7 +294,7 @@
 			<fielddescr>Custom Port</fielddescr>
 			<fieldname>aliasports_in</fieldname>
 			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=port">Click Here to add/edit Aliases</a>
-				Do not manually enter port numbers. <br />Do not use 'pfB_' in the Port Alias name.]]>
+				Do not manually enter port numbers.<br />Do not use 'pfB_' in the Port Alias name.]]>
 			</description>
 			<width>6</width>
 			<type>aliases</type>
@@ -320,7 +320,7 @@
 			<fieldname>aliasaddr_in</fieldname>
 			<fielddescr>Custom Destination</fielddescr>
 			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>
-				Do not manually enter Addresses(es). <br />Do not use 'pfB_' in the 'IP Network Type' Alias name.<br />
+				Do not manually enter Addresses(es).<br />Do not use 'pfB_' in the 'IP Network Type' Alias name.<br />
 				Select 'invert' to invert the sense of the match. ie - Not (!) Destination Address(es)]]>
 			</description>
 			<width>6</width>
@@ -387,7 +387,7 @@
 			<fielddescr>Custom Port</fielddescr>
 			<fieldname>aliasports_out</fieldname>
 			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=port">Click Here to add/edit Aliases</a>
-				Do not manually enter port numbers. <br />Do not use 'pfB_' in the Port Alias name.]]>
+				Do not manually enter port numbers.<br />Do not use 'pfB_' in the Port Alias name.]]>
 			</description>
 			<width>6</width>
 			<type>aliases</type>
@@ -413,7 +413,7 @@
 			<fieldname>aliasaddr_out</fieldname>
 			<fielddescr>Custom Destination</fielddescr>
 			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>
-				Do not manually enter Addresses(es). <br />Do not use 'pfB_' in the 'IP Network Type' Alias name.<br />
+				Do not manually enter Addresses(es).<br />Do not use 'pfB_' in the 'IP Network Type' Alias name.<br />
 				Select 'invert' to invert the sense of the match. ie - Not (!) Destination Address(es)]]>
 			</description>
 			<width>6</width>
