@@ -9,7 +9,7 @@
 	pfBlockerNG_dnsbl_lists.xml
 
 	pfBlockerNG
-	Copyright (c) 2015 BBcan177@gmail.com
+	Copyright (c) 2016 BBcan177@gmail.com
 	All rights reserved.
 
 */
@@ -160,7 +160,7 @@
 			<fieldname>InfoLists</fieldname>
 			<fielddescr>DNSBL Settings</fielddescr>
 			<type>info</type>
-			<description><![CDATA[<dl class="dl-horizontal">
+			<description><![CDATA[<div class="infoblock"><dl class="dl-horizontal">
 				<dt>Format:</dt><dd>Select the Format type:</dd>
 				<dt>State:</dt><dd>Select the run State:</dd>
 				<dt>Source:</dt><dd>Select the Source type:
@@ -175,7 +175,7 @@
 				<dt>Header/Label:</dt><dd>This field must be <u>unique.</u> This names the file and is referenced in the widget.
 					&emsp;(ie: hpHosts_ads,&emsp;hpHosts_partial)</dd>
 				<dt>Note:</dt><dd><strong>AdBlock Easylists <u>cannot</u> be used in this Tab.</strong></dd>
-			</dl>]]>
+			</dl></div>]]>
 			</description>
 		</field>
 		<field>
@@ -281,14 +281,15 @@
 		<field>
 			<name><![CDATA[Custom Block List]]></name>
 			<type>listtopic</type>
+			<collapse>closed</collapse>
 		</field>
 		<field>
 			<fielddescr>Custom Domain Name Block List</fielddescr>
 			<fieldname>custom</fieldname>
-			<description><![CDATA[No Regex Entries Allowed!<br /><br />
-				Enter one &emsp; <strong>'Domain Name'</strong> &emsp; per line<br /><br />
+			<description><![CDATA[No Regex Entries Allowed!
+				<div class="infoblock">Enter one &emsp; <strong>'Domain Name'</strong> &emsp; per line<br /><br />
 				You may use "<strong>#</strong>" after any Domain name to add comments. example ( ads.google.com # Block Google Ads )<br />
-				This List is stored as 'Base64' format in the config.xml file.]]>
+				This List is stored as 'Base64' format in the config.xml file.</div>]]>
 			</description>
 			<type>textarea</type>
 			<cols>80</cols>
