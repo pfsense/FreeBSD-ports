@@ -9,7 +9,7 @@
 	pfBlockerNG_dnsbl_easylist.xml
 
 	pfBlockerNG
-	Copyright (c) 2015 BBcan177@gmail.com
+	Copyright (c) 2016 BBcan177@gmail.com
 	All rights reserved.
 
 */
@@ -169,7 +169,7 @@
 					</options>
 				</rowhelperfield>
 				<rowhelperfield>
-					<fielddescr>Header</fielddescr>
+					<fielddescr>Header/Label</fielddescr>
 					<fieldname>header</fieldname>
 					<type>input</type>
 					<width>3</width>
