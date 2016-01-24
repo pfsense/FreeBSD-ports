@@ -1410,7 +1410,7 @@ function pfb_tracker($alias) {
 
 
 // Define firewall rule settings
-function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway='default',
+function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway_in='default', $agateway_out='default',
 	    $aaddrnot_in='', $adest_in='', $aports_in='', $aproto_in='', $anot_in='',
 	    $aaddrnot_out='', $asrc_out='', $aports_out='', $aproto_out='', $anot_out='') {
 
@@ -1449,8 +1449,8 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway='
 			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
 			}
-			if ($agateway != 'default') {
-				$rule['gateway'] = "{$agateway}";
+			if ($agateway_out != 'default') {
+				$rule['gateway'] = "{$agateway_out}";
 			}
 			$rule['created'] = array('time' => (int)microtime(true), 'username' => 'Auto');
 			$pfb['deny_outbound'][] = $rule;
@@ -1490,8 +1490,8 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway='
 			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
 			}
-			if ($agateway != 'default') {
-				$rule['gateway'] = "{$agateway}";
+			if ($agateway_in != 'default') {
+				$rule['gateway'] = "{$agateway_in}";
 			}
 			$rule['created'] = array('time' => (int)microtime(true), 'username' => 'Auto');
 			$pfb['deny_inbound'][] = $rule;
@@ -1527,8 +1527,8 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway='
 			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
 			}
-			if ($agateway != 'default') {
-				$rule['gateway'] = "{$agateway}";
+			if ($agateway_out != 'default') {
+				$rule['gateway'] = "{$agateway_out}";
 			}
 			$rule['created'] = array('time' => (int)microtime(true), 'username' => 'Auto');
 			$pfb['permit_outbound'][] = $rule;
@@ -1568,8 +1568,8 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway='
 			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
 			}
-			if ($agateway != 'default') {
-				$rule['gateway'] = "{$agateway}";
+			if ($agateway_in != 'default') {
+				$rule['gateway'] = "{$agateway_in}";
 			}
 			$rule['created'] = array('time' => (int)microtime(true), 'username' => 'Auto');
 			$pfb['permit_inbound'][] = $rule;
@@ -1603,8 +1603,8 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway='
 			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
 			}
-			if ($agateway != 'default') {
-				$rule['gateway'] = "{$agateway}";
+			if ($agateway_out != 'default') {
+				$rule['gateway'] = "{$agateway_out}";
 			}
 			$rule['created'] = array('time' => (int)microtime(true), 'username' => 'Auto');
 			$pfb['match_outbound'][] = $rule;
@@ -1642,8 +1642,8 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway='
 			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
 			}
-			if ($agateway != 'default') {
-				$rule['gateway'] = "{$agateway}";
+			if ($agateway_in != 'default') {
+				$rule['gateway'] = "{$agateway_in}";
 			}
 			$rule['created'] = array('time' => (int)microtime(true), 'username' => 'Auto');
 			$pfb['match_inbound'][] = $rule;
@@ -3012,7 +3012,7 @@ function sync_package_pfblockerng($cron='') {
 
 		// Define DNSBL_IP firewall rule settings
 		if ($pfb['dnsbl_ip'] != 'Alias_Deny') {
-			pfb_firewall_rule($pfb['dnsbl_ip'], 'pfB_DNSBLIP', '', $pfb['dnsblconfig']['aliaslog'], $pfbarr['agateway'],
+			pfb_firewall_rule($pfb['dnsbl_ip'], 'pfB_DNSBLIP', '', $pfb['dnsblconfig']['aliaslog'], $pfbarr['agateway_in'], $pfbarr['agateway_out'],
 			    $pfbarr['aaddrnot_in'], $pfbarr['aaddr_in'], $pfbarr['aports_in'], $pfbarr['aproto_in'], $pfbarr['anot_in'],
 			    $pfbarr['aaddrnot_out'], $pfbarr['aaddr_out'], $pfbarr['aports_out'], $pfbarr['aproto_out'], $pfbarr['anot_out']);
 		}
@@ -3303,9 +3303,9 @@ function sync_package_pfblockerng($cron='') {
 
 							// Define firewall rule settings
 							pfb_firewall_rule($continent_config['action'], $pfb_alias, $vtype, $continent_config['aliaslog'],
-							    $pfbarr['agateway'], $pfbarr['aaddrnot_in'], $pfbarr['aaddr_in'], $pfbarr['aports_in'],
-							    $pfbarr['aproto_in'], $pfbarr['anot_in'], $pfbarr['aaddrnot_out'], $pfbarr['aaddr_out'],
-							    $pfbarr['aports_out'], $pfbarr['aproto_out'], $pfbarr['anot_out']);
+							    $pfbarr['agateway_in'], $pfbarr['agateway_out'], $pfbarr['aaddrnot_in'], $pfbarr['aaddr_in'],
+							    $pfbarr['aports_in'], $pfbarr['aproto_in'], $pfbarr['anot_in'], $pfbarr['aaddrnot_out'],
+							    $pfbarr['aaddr_out'], $pfbarr['aports_out'], $pfbarr['aproto_out'], $pfbarr['anot_out']);
 						}
 						else {
 							// unlink Continent list
@@ -3873,7 +3873,7 @@ function sync_package_pfblockerng($cron='') {
 
 						// Define firewall rule settings
 						// Define firewall rule settings
-						pfb_firewall_rule($list['action'], $alias, '', $list['aliaslog'], $pfbarr['agateway'],
+						pfb_firewall_rule($list['action'], $alias, '', $list['aliaslog'], $pfbarr['agateway_in'], $pfbarr['agateway_out'],
 						    $pfbarr['aaddrnot_in'], $pfbarr['aaddr_in'], $pfbarr['aports_in'], $pfbarr['aproto_in'], $pfbarr['anot_in'],
 						    $pfbarr['aaddrnot_out'], $pfbarr['aaddr_out'], $pfbarr['aports_out'], $pfbarr['aproto_out'], $pfbarr['anot_out']);
 					}
