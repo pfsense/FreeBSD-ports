@@ -3,7 +3,7 @@
 	pfBlockerNG_threats.php
 
 	pfBlockerNG
-	Copyright (c) 2015 BBcan177@gmail.com
+	Copyright (c) 2016 BBcan177@gmail.com
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -177,6 +177,11 @@ include('head.inc');
 					<td><i class="fa fa-globe pull-right"></i></td>
 					<td><a target="_blank" href="https://www.c-sirt.org/en/incidents-on-domain/<?php echo $domain; ?>">
 						<?=gettext("C-SIRT");?></a></td>
+				</tr>
+				<tr>
+					<td><i class="fa fa-globe pull-right"></i></td>
+					<td><a target="_blank" href="https://safeweb.norton.com/report/show_mobile?name=<?php echo $domain; ?>">
+						<?=gettext("Norton Safe Web");?></a></td>
 				</tr>
 				<tr>
 					<td><i class="fa fa-globe pull-right"></i></td>
