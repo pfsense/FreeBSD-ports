@@ -9,7 +9,7 @@
 	pfBlockerNG_Top20.xml
 
 	pfBlockerNG
-	Copyright (c) 2015 BBcan177@gmail.com
+	Copyright (c) 2016 BBcan177@gmail.com
 	All rights reserved.
 
 	Based upon pfblocker for pfSense
@@ -165,7 +165,7 @@
 			<fielddescr><![CDATA[<strong><center>Top 20<br /> Spammer Countries</center></strong><br />
 				<center>Use CTRL&nbsp;+&nbsp;CLICK to select/unselect countries</center>]]>
 			</fielddescr>
-			<description><![CDATA[<center><br />IPv4 Countries</center>]]></description>
+			<description><![CDATA[<center>IPv4 Countries</center><br />]]></description>
 			<type>select</type>
 			<options>
 				<option><name>China-CN</name><value>CN</value></option>
@@ -195,7 +195,7 @@
 		</field>
 		<field>
 			<fieldname>countries6</fieldname>
-			<description><![CDATA[<br /><center>IPv6 Countries</center>]]></description>
+			<description><![CDATA[<center>IPv6 Countries</center><br />]]></description>
 			<type>select</type>
 			<options>
 				<option><name>China-CN</name><value>CN</value></option>
@@ -225,9 +225,8 @@
 		</field>
 		<field>
 			<fielddescr>List Action</fielddescr>
-			<description><![CDATA[<br />Default: <strong>Disabled</strong>
-				<div id="infoblock" name="listaction">
-				Select the <strong>Action</strong> for Firewall Rules on lists you have selected.<br /><br />
+			<description><![CDATA[Select the <strong>Action</strong> for Firewall Rules on lists you have selected.<br />
+				Default: <strong>Disabled</strong><div class="infoblock">
 				<strong><u>'Disabled' Rules:</u></strong> Disables selection and does nothing to selected Alias.<br /><br />
 
 				<strong><u>'Deny' Rules:</u></strong><br />
@@ -294,30 +293,37 @@
 		<field>
 			<name>Advanced Inbound Firewall Rule Settings</name>
 			<type>listtopic</type>
+			<collapse>closed</collapse>
 		</field>
 		<field>
 			<type>info</type>
 			<description><![CDATA[<span class="text-danger">Note:</span>&nbsp; In general, Auto-Rules are created as follows:<br />
 				<dl class="dl-horizontal">
-					<dt>Inbound</dt><dd>'any' port, 'any' protocol and 'any' destination</dd>
-					<dt>Outbound</dt><dd>'any' port, 'any' protocol and 'any' destination address in the lists</dd>
+					<dt>Inbound</dt><dd>'any' port, 'any' protocol, 'any' destination and 'any' gateway</dd>
 				</dl>
-				Configuring the Adv. Inbound Rule settings, will allow for more customization of the Inbound Auto-Rules.<br />
-				<strong>Select the pfSense 'Port' and/or 'Destination' Alias below:</strong>]]>
+				Configuring the Adv. Inbound Rule settings, will allow for more customization of the Inbound Auto-Rules.]]>
 			</description>
 		</field>
 		<field>
-			<fieldname>autoports</fieldname>
+			<fielddescr>Invert Source</fielddescr>
+			<fieldname>autoaddrnot_in</fieldname>
+			<sethelp><![CDATA[<strong>Invert</strong> - Option to invert the sense of the match.
+				ie - Not (!) Source Address(es)]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
 			<fielddescr>Custom Port</fielddescr>
+			<fieldname>autoports_in</fieldname>
 			<type>checkbox</type>
 			<sethelp>Enable</sethelp>
-			<enablefields>aliasports</enablefields>
+			<enablefields>aliasports_in</enablefields>
 			<combinefields>begin</combinefields>
 		</field>
 		<field>
-			<fieldname>aliasports</fieldname>
 			<fielddescr>Custom Port</fielddescr>
-			<description><![CDATA[<a target="_blank" href="/firegall_aliases.php?tab=port">Click Here to add/edit Aliases</a>
+			<fieldname>aliasports_in</fieldname>
+			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=port">Click Here to add/edit Aliases</a>
 				Do not manually enter port numbers. <br />Do not use 'pfB_' in the Port Alias name.]]>
 			</description>
 			<width>6</width>
@@ -326,22 +332,22 @@
 			<combinefields>end</combinefields>
 		</field>
 		<field>
-			<fieldname>autodest</fieldname>
 			<fielddescr>Custom Destination</fielddescr>
+			<fieldname>autoaddr_in</fieldname>
 			<type>checkbox</type>
 			<sethelp>Enable</sethelp>
-			<enablefields>aliasdest,autonot</enablefields>
+			<enablefields>aliasaddr_in,autonot_in</enablefields>
 			<combinefields>begin</combinefields>
 		</field>
 		<field>
 			<fielddescr>Invert</fielddescr>
-			<fieldname>autonot</fieldname>
+			<fieldname>autonot_in</fieldname>
 			<type>checkbox</type>
 			<sethelp>Invert</sethelp>
 			<combinefields/>
 		</field>
 		<field>
-			<fieldname>aliasdest</fieldname>
+			<fieldname>aliasaddr_in</fieldname>
 			<fielddescr>Custom Destination</fielddescr>
 			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>
 				Do not manually enter Addresses(es).<br />Do not use 'pfB_' in the 'IP Network Type' Alias name.<br />
@@ -354,7 +360,7 @@
 		</field>
 		<field>
 			<fielddescr>Custom Protocol</fielddescr>
-			<fieldname>autoproto</fieldname>
+			<fieldname>autoproto_in</fieldname>
 			<description><![CDATA[<strong>Default: any</strong><br />Select the Protocol used for Inbound Firewall Rule(s).<br />
 				Do not use 'any' with Adv. Inbound Rules as it will bypass these settings!]]></description>
 			<type>select</type>
@@ -365,6 +371,110 @@
 				<option><name>TCP/UDP</name><value>tcp/udp</value></option>
 			</options>
 			<default_value></default_value>
+		</field>
+		<field>
+			<fielddescr>Custom Gateway</fielddescr>
+			<fieldname>agateway_in</fieldname>
+			<description><![CDATA[Select alternate Gateway or keep 'default' setting.]]></description>
+			<type>select_source</type>
+			<source><![CDATA[$config['gateways']['gateway_item']]]></source>
+			<source_name>name</source_name>
+			<source_value>name</source_value>
+			<default_value>default</default_value>
+			<show_disable_value>default</show_disable_value>
+		</field>
+		<field>
+			<name>Advanced Outbound Firewall Rule Settings</name>
+			<type>listtopic</type>
+			<collapse>closed</collapse>
+		</field>
+		<field>
+			<type>info</type>
+			<description><![CDATA[<span class="text-danger">Note:</span>&nbsp; In general, Auto-Rules are created as follows:<br />
+				<dl class="dl-horizontal">
+					<dt>Outbound</dt><dd>'any' port, 'any' protocol, 'any' destination and 'any' gateway</dd>
+				</dl>
+				Configuring the Adv. Outbound Rule settings, will allow for more customization of the Outbound Auto-Rules.]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>Invert Source</fielddescr>
+			<fieldname>autoaddrnot_out</fieldname>
+			<sethelp><![CDATA[<strong>Invert</strong> - Option to invert the sense of the match.
+				ie - Not (!) Source Address(es)]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Custom Port</fielddescr>
+			<fieldname>autoports_out</fieldname>
+			<type>checkbox</type>
+			<sethelp>Enable</sethelp>
+			<enablefields>aliasports_out</enablefields>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Custom Port</fielddescr>
+			<fieldname>aliasports_out</fieldname>
+			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=port">Click Here to add/edit Aliases</a>
+				Do not manually enter port numbers.<br />Do not use 'pfB_' in the Port Alias name.]]>
+			</description>
+			<width>6</width>
+			<type>aliases</type>
+			<typealiases>port</typealiases>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Custom Destination</fielddescr>
+			<fieldname>autoaddr_out</fieldname>
+			<type>checkbox</type>
+			<sethelp>Enable</sethelp>
+			<enablefields>aliasaddr_out,autonot_out</enablefields>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Invert</fielddescr>
+			<fieldname>autonot_out</fieldname>
+			<type>checkbox</type>
+			<sethelp>Invert</sethelp>
+			<combinefields/>
+		</field>
+		<field>
+			<fieldname>aliasaddr_out</fieldname>
+			<fielddescr>Custom Destination</fielddescr>
+			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>
+				Do not manually enter Addresses(es).<br />Do not use 'pfB_' in the 'IP Network Type' Alias name.<br />
+				Select 'invert' to invert the sense of the match. ie - Not (!) Destination Address(es)]]>
+			</description>
+			<width>6</width>
+			<type>aliases</type>
+			<typealiases>network</typealiases>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Custom Protocol</fielddescr>
+			<fieldname>autoproto_out</fieldname>
+			<description><![CDATA[<strong>Default: any</strong><br />Select the Protocol used for Outbound Firewall Rule(s).<br />
+				Do not use 'any' with Adv. Outbound Rules as it will bypass these settings!]]></description>
+			<type>select</type>
+			<options>
+				<option><name>any</name><value></value></option>
+				<option><name>TCP</name><value>tcp</value></option>
+				<option><name>UDP</name><value>udp</value></option>
+				<option><name>TCP/UDP</name><value>tcp/udp</value></option>
+			</options>
+			<default_value></default_value>
+		</field>
+		<field>
+			<fielddescr>Custom Gateway</fielddescr>
+			<fieldname>agateway_out</fieldname>
+			<description><![CDATA[Select alternate Gateway or keep 'default' setting.]]></description>
+			<type>select_source</type>
+			<source><![CDATA[$config['gateways']['gateway_item']]]></source>
+			<source_name>name</source_name>
+			<source_value>name</source_value>
+			<default_value>default</default_value>
+			<show_disable_value>default</show_disable_value>
 		</field>
 	</fields>
 	<custom_php_validation_command>
