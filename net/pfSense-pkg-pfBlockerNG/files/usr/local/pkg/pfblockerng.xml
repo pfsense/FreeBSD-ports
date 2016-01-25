@@ -9,7 +9,7 @@
 	pfBlockerNG.xml
 
 	pfBlockerNG
-	Copyright (c) 2015 BBcan177@gmail.com
+	Copyright (c) 2016 BBcan177@gmail.com
 	All rights reserved.
 
 	Based upon pfblocker for pfSense
@@ -262,12 +262,12 @@
 		<field>
 			<fielddescr>Enable Suppression</fielddescr>
 			<fieldname>suppression</fieldname>
-			<sethelp><![CDATA[This will prevent Selected IPs from being blocked. Only for IPv4 lists (/32 and /24).
+			<sethelp><![CDATA[This will prevent Selected IPs from being blocked. Only for IPv4 lists (/32 and /24).<div class="infoblock">
 					Country blocking lists cannot be suppressed. This will also remove any RFC1918 addresses from all lists.<br /><br />
 					Alerts can be suppressed using the '+' icon in the Alerts tab and IPs added to the 'pfBlockerNGSuppress' alias
 					A blocked IP in a CIDR other than /32 or /24 will need a 'Whitelist alias' w/ list action: 'Permit Outbound' Firewall rule
 					<br /><br />Do not use the pfBlockerNGSuppress Alias in a Firewall Rule.
-					This alias is used during the cron download process only.]]>
+					This alias is used during the cron download process only.</div>]]>
 			</sethelp>
 			<type>checkbox</type>
 		</field>
@@ -403,10 +403,10 @@
 		<field>
 			<fielddescr>Rule Order</fielddescr>
 			<fieldname>pass_order</fieldname>
-			<description><![CDATA[Default Order:<strong> | pfB_Block/Reject | All other Rules | (original format)<br /></strong><br />
-				Select The '<strong>Order</strong>' of the Rules<br />
+			<description><![CDATA[Default Order:<strong> | pfB_Block/Reject | All other Rules | (original format)</strong>
+				<div class="infoblock">Select the '<strong>Order</strong>' of the Rules<br />
 				&emsp;Selecting 'original format', sets pfBlockerNG rules at the top of the Firewall TAB.<br />
-				&emsp;Selecting any other 'Order' will re-order <strong>all the rules to the format indicated!</strong>]]>
+				&emsp;Selecting any other 'Order' will re-order <strong>all the rules to the format indicated!</strong></div>]]>
 			</description>
 			<type>select</type>
 			<options>

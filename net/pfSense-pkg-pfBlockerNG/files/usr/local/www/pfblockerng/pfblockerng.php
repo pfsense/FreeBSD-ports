@@ -3,7 +3,7 @@
 	pfBlockerNG.php
 
 	pfBlockerNG
-	Copyright (c) 2015 BBcan177@gmail.com
+	Copyright (c) 2016 BBcan177@gmail.com
 	All rights reserved.
 
 	Based upon pfBlocker by
@@ -12,7 +12,7 @@
 
 	Hour Schedule Convertor code by
 	Snort Package
-	Copyright (c) 2015 Bill Meeks
+	Copyright (c) 2016 Bill Meeks
 
 	Redistribution and use in source and binary forms, with or without
 	modification, are permitted provided that the following conditions are met:
@@ -683,7 +683,7 @@ $xml = <<<EOF
 	pfblockerng_{$cont_name}.xml
 
 	pfBlockerNG
-	Copyright (C) 2015 BBcan177@gmail.com
+	Copyright (C) 2016 BBcan177@gmail.com
 	All rights reserved.
 
 	Based upon pfblocker for pfSense
@@ -849,14 +849,14 @@ EOF;
 // Adjust combinefields variable if IPv6 is empty.
 if (!empty (${'options6'})) {
 	$xml .= <<<EOF
-			<description><![CDATA[<center><br />IPv4 Countries</center>]]></description>
+			<description><![CDATA[<center>IPv4 Countries</center><br />]]></description>
 			<combinefields>begin</combinefields>
 		</field>
 
 EOF;
 } else {
 	$xml .= <<<EOF
-			<description><![CDATA[<br />IPv4 Countries]]></description>
+			<description><![CDATA[IPv4 Countries<br />]]></description>
 		</field>
 
 EOF;
@@ -867,7 +867,7 @@ if (!empty (${'options6'})) {
 	$xml .= <<<EOF
 		<field>
 			<fieldname>countries6</fieldname>
-			<description><![CDATA[<br /><center>IPv6 Countries</center>]]></description>
+			<description><![CDATA[<center>IPv6 Countries</center><br />]]></description>
 			<type>select</type>
 			<options>
 			${'options6'}
@@ -883,9 +883,8 @@ EOF;
 $xml .= <<<EOF
 		<field>
 			<fielddescr>List Action</fielddescr>
-			<description><![CDATA[<br />Default: <strong>Disabled</strong>
-				<div id="infoblock" name="listaction">
-				Select the <strong>Action</strong> for Firewall Rules on lists you have selected.<br /><br />
+			<description><![CDATA[Select the <strong>Action</strong> for Firewall Rules on lists you have selected.<br />
+				Default: <strong>Disabled</strong><div class="infoblock">
 				<strong><u>'Disabled' Rules:</u></strong> Disables selection and does nothing to selected Alias.<br /><br />
 
 				<strong><u>'Deny' Rules:</u></strong><br />
@@ -953,31 +952,38 @@ $xml .= <<<EOF
 		<field>
 			<name>Advanced Inbound Firewall Rule Settings</name>
 			<type>listtopic</type>
+			<collapse>closed</collapse>
 		</field>
 		<field>
 			<type>info</type>
 			<description><![CDATA[<span class="text-danger">Note:</span>&nbsp; In general, Auto-Rules are created as follows:<br />
 				<dl class="dl-horizontal">
-					<dt>Inbound</dt><dd>'any' port, 'any' protocol and 'any' destination</dd>
-					<dt>Outbound</dt><dd>'any' port, 'any' protocol and 'any' destination address in the lists</dd>
+					<dt>Inbound</dt><dd>'any' port, 'any' protocol, 'any' destination and 'any' gateway</dd>
 				</dl>
-				Configuring the Adv. Inbound Rule settings, will allow for more customization of the Inbound Auto-Rules.<br />
-				<strong>Select the pfSense 'Port' and/or 'Destination' Alias below:</strong>]]>
+				Configuring the Adv. Inbound Rule settings, will allow for more customization of the Inbound Auto-Rules.]]>
 			</description>
 		</field>
 		<field>
-			<fieldname>autoports</fieldname>
+			<fielddescr>Invert Source</fielddescr>
+			<fieldname>autoaddrnot_in</fieldname>
+			<sethelp><![CDATA[<strong>Invert</strong> - Option to invert the sense of the match.
+				ie - Not (!) Source Address(es)]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
 			<fielddescr>Custom Port</fielddescr>
+			<fieldname>autoports_in</fieldname>
 			<type>checkbox</type>
 			<sethelp>Enable</sethelp>
-			<enablefields>aliasports</enablefields>
+			<enablefields>aliasports_in</enablefields>
 			<combinefields>begin</combinefields>
 		</field>
 		<field>
-			<fieldname>aliasports</fieldname>
 			<fielddescr>Custom Port</fielddescr>
-			<description><![CDATA[<a target="_blank" href="/firegall_aliases.php?tab=port">Click Here to add/edit Aliases</a>
-				Do not manually enter port numbers. <br />Do not use 'pfB_' in the Port Alias name.]]>
+			<fieldname>aliasports_in</fieldname>
+			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=port">Click Here to add/edit Aliases</a>
+				Do not manually enter port numbers.<br />Do not use 'pfB_' in the Port Alias name.]]>
 			</description>
 			<width>6</width>
 			<type>aliases</type>
@@ -985,25 +991,25 @@ $xml .= <<<EOF
 			<combinefields>end</combinefields>
 		</field>
 		<field>
-			<fieldname>autodest</fieldname>
 			<fielddescr>Custom Destination</fielddescr>
+			<fieldname>autoaddr_in</fieldname>
 			<type>checkbox</type>
 			<sethelp>Enable</sethelp>
-			<enablefields>aliasdest,autonot</enablefields>
+			<enablefields>aliasaddr_in,autonot_in</enablefields>
 			<combinefields>begin</combinefields>
 		</field>
 		<field>
 			<fielddescr>Invert</fielddescr>
-			<fieldname>autonot</fieldname>
+			<fieldname>autonot_in</fieldname>
 			<type>checkbox</type>
 			<sethelp>Invert</sethelp>
 			<combinefields/>
 		</field>
 		<field>
-			<fieldname>aliasdest</fieldname>
+			<fieldname>aliasaddr_in</fieldname>
 			<fielddescr>Custom Destination</fielddescr>
 			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>
-				Do not manually enter Addresses(es). <br />Do not use 'pfB_' in the 'IP Network Type' Alias name.<br />
+				Do not manually enter Addresses(es).<br />Do not use 'pfB_' in the 'IP Network Type' Alias name.<br />
 				Select 'invert' to invert the sense of the match. ie - Not (!) Destination Address(es)]]>
 			</description>
 			<width>6</width>
@@ -1013,7 +1019,7 @@ $xml .= <<<EOF
 		</field>
 		<field>
 			<fielddescr>Custom Protocol</fielddescr>
-			<fieldname>autoproto</fieldname>
+			<fieldname>autoproto_in</fieldname>
 			<description><![CDATA[<strong>Default: any</strong><br />Select the Protocol used for Inbound Firewall Rule(s).<br />
 				Do not use 'any' with Adv. Inbound Rules as it will bypass these settings!]]></description>
 			<type>select</type>
@@ -1024,6 +1030,110 @@ $xml .= <<<EOF
 				<option><name>TCP/UDP</name><value>tcp/udp</value></option>
 			</options>
 			<default_value></default_value>
+		</field>
+		<field>
+			<fielddescr>Custom Gateway</fielddescr>
+			<fieldname>agateway_in</fieldname>
+			<description><![CDATA[Select alternate Gateway or keep 'default' setting.]]></description>
+			<type>select_source</type>
+			<source><![CDATA[\$config['gateways']['gateway_item']]]></source>
+			<source_name>name</source_name>
+			<source_value>name</source_value>
+			<default_value>default</default_value>
+			<show_disable_value>default</show_disable_value>
+		</field>
+		<field>
+			<name>Advanced Outbound Firewall Rule Settings</name>
+			<type>listtopic</type>
+			<collapse>closed</collapse>
+		</field>
+		<field>
+			<type>info</type>
+			<description><![CDATA[<span class="text-danger">Note:</span>&nbsp; In general, Auto-Rules are created as follows:<br />
+				<dl class="dl-horizontal">
+					<dt>Outbound</dt><dd>'any' port, 'any' protocol, 'any' destination and 'any' gateway</dd>
+				</dl>
+				Configuring the Adv. Outbound Rule settings, will allow for more customization of the Outbound Auto-Rules.]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>Invert Source</fielddescr>
+			<fieldname>autoaddrnot_out</fieldname>
+			<sethelp><![CDATA[<strong>Invert</strong> - Option to invert the sense of the match.
+				ie - Not (!) Source Address(es)]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Custom Port</fielddescr>
+			<fieldname>autoports_out</fieldname>
+			<type>checkbox</type>
+			<sethelp>Enable</sethelp>
+			<enablefields>aliasports_out</enablefields>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Custom Port</fielddescr>
+			<fieldname>aliasports_out</fieldname>
+			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=port">Click Here to add/edit Aliases</a>
+				Do not manually enter port numbers.<br />Do not use 'pfB_' in the Port Alias name.]]>
+			</description>
+			<width>6</width>
+			<type>aliases</type>
+			<typealiases>port</typealiases>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Custom Destination</fielddescr>
+			<fieldname>autoaddr_out</fieldname>
+			<type>checkbox</type>
+			<sethelp>Enable</sethelp>
+			<enablefields>aliasaddr_out,autonot_out</enablefields>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Invert</fielddescr>
+			<fieldname>autonot_out</fieldname>
+			<type>checkbox</type>
+			<sethelp>Invert</sethelp>
+			<combinefields/>
+		</field>
+		<field>
+			<fieldname>aliasaddr_out</fieldname>
+			<fielddescr>Custom Destination</fielddescr>
+			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>
+				Do not manually enter Addresses(es).<br />Do not use 'pfB_' in the 'IP Network Type' Alias name.<br />
+				Select 'invert' to invert the sense of the match. ie - Not (!) Destination Address(es)]]>
+			</description>
+			<width>6</width>
+			<type>aliases</type>
+			<typealiases>network</typealiases>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Custom Protocol</fielddescr>
+			<fieldname>autoproto_out</fieldname>
+			<description><![CDATA[<strong>Default: any</strong><br />Select the Protocol used for Outbound Firewall Rule(s).<br />
+				Do not use 'any' with Adv. Outbound Rules as it will bypass these settings!]]></description>
+			<type>select</type>
+			<options>
+				<option><name>any</name><value></value></option>
+				<option><name>TCP</name><value>tcp</value></option>
+				<option><name>UDP</name><value>udp</value></option>
+				<option><name>TCP/UDP</name><value>tcp/udp</value></option>
+			</options>
+			<default_value></default_value>
+		</field>
+		<field>
+			<fielddescr>Custom Gateway</fielddescr>
+			<fieldname>agateway_out</fieldname>
+			<description><![CDATA[Select alternate Gateway or keep 'default' setting.]]></description>
+			<type>select_source</type>
+			<source><![CDATA[\$config['gateways']['gateway_item']]]></source>
+			<source_name>name</source_name>
+			<source_value>name</source_value>
+			<default_value>default</default_value>
+			<show_disable_value>default</show_disable_value>
 		</field>
 	</fields>
 	<custom_php_validation_command>
@@ -1078,7 +1188,7 @@ $xmlrep = <<<EOF
 	pfBlockerNG_Reputation.xml
 
 	pfBlockerNG
-	Copyright (C) 2015 BBcan177@gmail.com
+	Copyright (C) 2016 BBcan177@gmail.com
 	All rights reserved.
 
 	Based upon pfblocker for pfSense
@@ -1169,7 +1279,7 @@ $xmlrep = <<<EOF
 	</tabs>
 	<fields>
 		<field>
-			<name>IPv4 Reputation Preface</name>
+			<name>IPv4 Reputation</name>
 			<type>listtopic</type>
 		</field>
 		<field>
@@ -1183,7 +1293,7 @@ $xmlrep = <<<EOF
 			<fielddescr><![CDATA[<strong>Why Reputation Matters:</strong>]]></fielddescr>
 			<type>info</type>
 			<description><![CDATA[By Enabling '<strong>Reputation</strong>', each Blocklist will be analyzed for Repeat Offenders in each IP Range.
-				<ul>Example: &emsp;x.x.x.1, x.x.x.2, x.x.x.3, x.x.x.4, x.x.x.5<br />
+				<div class="infoblock"><ul>Example: &emsp;x.x.x.1, x.x.x.2, x.x.x.3, x.x.x.4, x.x.x.5<br />
 				No. of <strong> Repeat Offending IPs </strong> [ &nbsp;<strong>5</strong>&nbsp; ], in a Blocklist within the same IP Range.</ul>
 				With '<strong>Reputation</strong> enabled, these 5 IPs will be removed and a single
 				<strong>x.x.x.0/24</strong> Block is used.<br />
@@ -1193,17 +1303,12 @@ $xmlrep = <<<EOF
 				You *may* experience some False Positives. Add any False Positive IPs manually to the<br />
 				<strong>pfBlockerNGSuppress Alias</strong> or use the "+" suppression Icon in the Alerts TAB<br /><br />
 				To help mitigate False Positives 'Countries' can be '<strong>Excluded</strong>' from this Process. (Refer to Country Code Settings)
-				<br /><br />Enabling <strong>De-Duplication</strong> is highly recommended before utilizing 'Reputation' processes.]]>
+				<br /><br />Enabling <strong>De-Duplication</strong> is highly recommended before utilizing 'Reputation' processes.</div>]]>
 			</description>
 		</field>
 		<field>
-			<name>Reputation Settings:</name>
-			<type>listtopic</type>
-		</field>
-		<field>
-			<fielddescr><![CDATA[<br /><strong>Individual List Reputation</strong><br /><br />]]></fielddescr>
+			<fielddescr><![CDATA[<strong>Individual List Reputation</strong>]]></fielddescr>
 			<type>info</type>
-			<description></description>
 		</field>
 		<field>
 			<fielddescr><![CDATA[Enable Max]]></fielddescr>
@@ -1227,21 +1332,21 @@ $xmlrep = <<<EOF
 			</options>
 		</field>
 		<field>
-			<fielddescr><![CDATA[<br /><strong>Collective List Reputation</strong><br /><br />]]></fielddescr>
+			<fielddescr><![CDATA[<strong>Collective List Reputation</strong>]]></fielddescr>
 			<type>info</type>
 			<description></description>
 		</field>
 		<field>
 			<type>info</type>
 			<description><![CDATA[Once all Blocklists are Downloaded, these two 'additional' processes <strong>[ pMax ] and [ dMax ]</strong><br />
-				Can be used to Further analyze for Repeat Offenders.<br />
+				Can be used to Further analyze for Repeat Offenders.<div class="infoblock">
 				<ul>Analyzing All Blocklists as a Whole:</ul>
 				<ul><strong>[ pMax ]</strong> will analyze for Repeat Offenders in each IP Range but will not use the Country Exclusion.<br />
 				Default is 50 IPs in any Range. Having 50 Repeat Offenders IPs in any Range will Block the entire Range.<br /><br /></ul>
 				<ul><strong>[ dMax ]</strong> will analyze for Repeat Offenders in each IP Range. Country Exclusions will be applied.<br />
 				Default is 5 IPs in any Range.</ul>
 				Note: <strong>MAX</strong> performs on individual Blocklists, while <strong>pMAX / dMAX</strong>
-				perform on all Lists together.<br />]]>
+				perform on all Lists together.</div>]]>
 			</description>
 		</field>
 		<field>
@@ -1294,8 +1399,8 @@ $xmlrep = <<<EOF
 		<field>
 			<type>info</type>
 			<description><![CDATA[When performing Queries for Repeat Offenders, you can choose to <strong>ignore</strong> Repeat Offenders in select
-				Countries. The Original Blocklisted IPs remain intact. All other Repeat Offending Country Ranges will be processed.<br /><br />
-				Define Repeat Offending Ranges [ <strong>Action</strong> ] Available settings are:<br />
+				Countries. The Original Blocklisted IPs remain intact. All other Repeat Offending Country Ranges will be processed.
+				<div class="infoblock">Define Repeat Offending Ranges [ <strong>Action</strong> ] Available settings are:<br />
 				<ul><strong>Ignore</strong>: Repeat Offenders that are in the 'ccwhite' category will be 'Ignored' (Default)</ul>
 				<ul><strong>Block:</strong> Repeat Offenders are set to Block the entire Repeat Offending Range(s)</ul>
 				<ul><strong>Match:</strong> Repeat Offenders are added to a 'Match' List which can be used in a Floating Match Rule<br />
@@ -1304,7 +1409,7 @@ $xmlrep = <<<EOF
 				'<strong>ccblack</strong>' are all other Countries that are not selected.<br /><br />
 				To use '<strong>Match</strong>' Lists, Create a new 'Alias'
 				and select one of the <strong>Action 'Match'</strong> Formats and<br /> enter the 'Localfile' as:
-				<ul>/var/db/pfblockerng/match/matchdedup.txt</ul>]]>
+				<ul>/var/db/pfblockerng/match/matchdedup.txt</ul></div>]]>
 			</description>
 		</field>
 		<field>
@@ -1349,6 +1454,7 @@ $xmlrep = <<<EOF
 		<field>
 			<name>Proofpoint ET IQRISK IPv4 Reputation</name>
 			<type>listtopic</type>
+			<collapse>closed</collapse>
 		</field>
 		<field>
 			<fielddescr>Subscription Pro. Blocklist</fielddescr>

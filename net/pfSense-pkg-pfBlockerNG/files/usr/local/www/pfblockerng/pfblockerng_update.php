@@ -3,7 +3,7 @@
 /* pfBlockerNG_Update.php
 
 	pfBlockerNG
-	Copyright (c) 2015 BBcan177@gmail.com
+	Copyright (c) 2016 BBcan177@gmail.com
 	All rights reserved.
 
 	Portions of this code are based on original work done for
@@ -11,7 +11,7 @@
 
 	pkg_mgr_install.php
 	Part of pfSense (https://www.pfsense.org)
-	Copyright (c) 2015 Electric Sheep Fencing, LLC. All rights reserved.
+	Copyright (c) 2016 Electric Sheep Fencing, LLC. All rights reserved.
 	Copyright (c) 2005 Colin Smith
 	Copyright (c) 2004-2005 Scott Ullrich
 	All rights reserved.
@@ -39,6 +39,9 @@
 	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
 */
+
+// Disable NGINX output buffering
+header("X-Accel-Buffering: no");
 
 require_once('guiconfig.inc');
 require_once('globals.inc');
@@ -245,7 +248,7 @@ if (preg_grep("/pfblockerng[.]php\s+?(cron|update|updatednsbl)/", $result_cron))
 }
 $status .= '<br />&emsp;<small><font color="red">Refresh to update current status and time remaining.</font></small>';
 
-$options  = '<div id="infoblock"><dl class="dl-horizontal">';
+$options  = '<div class="infoblock"><dl class="dl-horizontal">';
 $options .= '	<dt>Update:</dt><dd>will download any new Alias/Lists.</dd>';
 $options .= '	<dt>Cron:</dt><dd>will download any Alias/Lists that are within the Frequency Setting (due for Update).</dd>';
 $options .= '	<dt>Reload:</dt><dd>will reload all Lists using the existing Downloaded files.<br />';
@@ -340,7 +343,7 @@ $section->add($group);
 $group = new Form_Group(NULL);
 $btn_run = new Form_Button(
 	'run',
-	'Run',
+	' ' . 'Run',
 	NULL,
 	'fa-play-circle'
 );
@@ -348,16 +351,16 @@ $btn_run->removeClass('btn-primary')->addClass('btn-primary btn-xs')->setWidth(1
 
 // Alternate view/end view button text
 if (!isset($pconfig['log_view'])) {
-	$pconfig['log_view'] = 'View';
-} elseif($pconfig['log_view'] == 'View') {
-	$pconfig['log_view'] = 'End View' ;
+	$pconfig['log_view'] = ' View';
+} elseif($pconfig['log_view'] == ' View') {
+	$pconfig['log_view'] = ' End View' ;
 } else {
-	$pconfig['log_view'] = 'View';
+	$pconfig['log_view'] = ' View';
 }
 
 // Alternate view/end view title text
 $btn_logview_title = 'Click to End Log View';
-if ($pconfig['log_view'] == 'View') {
+if ($pconfig['log_view'] == ' View') {
 	$btn_logview_title = 'Click to View a running Cron Update.';
 }
 
@@ -398,7 +401,7 @@ print($form);
 
 // Execute the viewer output window
 if (isset($pconfig['log_view'])) {
-	if ($pconfig['log_view'] !== 'View') {
+	if ($pconfig['log_view'] !== ' View') {
 		pfbupdate_status(gettext("Log Viewing in progress.    ** Press 'END VIEW' to Exit ** "));
 		pfb_livetail($pfb['log'], 'view');
 	} else {

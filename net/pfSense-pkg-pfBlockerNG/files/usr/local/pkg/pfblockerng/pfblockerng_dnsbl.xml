@@ -9,7 +9,7 @@
 	pfBlockerNG_dnsbl.xml
 
 	pfBlockerNG
-	Copyright (c) 2015 BBcan177@gmail.com
+	Copyright (c) 2016 BBcan177@gmail.com
 	All rights reserved.
 
 */
@@ -115,7 +115,7 @@
 	</tabs>
 	<fields>
 		<field>
-			<name><![CDATA[DNS Block List Configuration &emsp; Run 'Force Update' to deploy new Settings.]]></name>
+			<name><![CDATA[DNSBL Configuration]]></name>
 			<type>listtopic</type>
 		</field>
 		<field>
@@ -128,7 +128,9 @@
 		</field>
 		<field>
 			<type>info</type>
-			<description><![CDATA[<span class="text-danger">Note: </span>DNSBL requires the DNS Resolver (Unbound) to be used as the DNS service.<br />
+			<fielddescr>Info</fielddescr>
+			<description><![CDATA[<div class="infoblock">
+				<span class="text-danger">Note: </span>DNSBL requires the DNS Resolver (Unbound) to be used as the DNS service.<br />
 				When a DNS request is made for a domain that is listed in DNSBL, the request is redirected to the Virtual IP address<br />
 				where an instance of Lighttpd Web Server will collect the packet statistics and push a '1x1' GIF image to the Browser.
 				If browsing is slow, check for Firewall LAN Rules/Limiters that might be blocking access to the DNSBL VIP.<br /><br />
@@ -139,7 +141,7 @@
 				<li>Browser Dev mode (F12) and goto 'Console' to review any error messages.</li>
 				<li>Execute the following command from pfSense Shell (Changing the interface 're1' to the pfSense Lan Interface):<br />
 				&emsp;<strong>tcpdump -nnvli re1 port 53 | grep -B1 'A 10.10.10.1'</strong></li>
-				<li>Packet capture software such as Wireshark.</li></ol>]]>
+				<li>Packet capture software such as Wireshark.</li></ol></div>]]>
 			</description>
 		</field>
 		<field>
@@ -196,13 +198,13 @@
 			<fielddescr>DNSBL Firewall Rule</fielddescr>
 			<fieldname>pfb_dnsbl_rule</fieldname>
 			<type>checkbox</type>
+			<sethelp><![CDATA[<div class="infoblock">This will create a 'Floating' Firewall rule to allow traffic from the Selected Interface(s) below
+				<br />to access the DNSBL VIP on the LAN interface. This is only required for multiple LAN Segments.</div>]]>
+			</sethelp>
 			<combinefields>begin</combinefields>
 		</field>
 		<field>
 			<fieldname>dnsbl_allow_int</fieldname>
-			<description><![CDATA[This will create a 'Floating' Firewall rule to allow traffic from the Selected Interface(s) below<br />
-				to access the DNSBL VIP on the LAN interface. This is only required for multiple LAN Segments.]]>
-			</description>
 			<type>interfaces_selection</type>
 			<width>7</width>
 			<hideinterfaceregex>wan</hideinterfaceregex>
@@ -219,8 +221,7 @@
 		</field>
 		<field>
 			<fielddescr>List Action</fielddescr>
-			<description><![CDATA[Default: <strong>Disabled</strong>
-				<div id="infoblock" name="listaction">
+			<description><![CDATA[Default: <strong>Disabled</strong><div class="infoblock">
 				Select the <strong>Action</strong> for Firewall Rules when any DNSBL Feed contain IP addresses.<br /><br />
 				<strong><u>'Disabled' Rule:</u></strong> Disables selection and does nothing to selected Alias.<br /><br />
 
@@ -262,31 +263,38 @@
 		<field>
 			<name>Advanced Inbound Firewall Rule Settings</name>
 			<type>listtopic</type>
+			<collapse>closed</collapse>
 		</field>
 		<field>
 			<type>info</type>
 			<description><![CDATA[<span class="text-danger">Note:</span>&nbsp; In general, Auto-Rules are created as follows:<br />
 				<dl class="dl-horizontal">
-					<dt>Inbound</dt><dd>'any' port, 'any' protocol and 'any' destination</dd>
-					<dt>Outbound</dt><dd>'any' port, 'any' protocol and 'any' destination address in the lists</dd>
+					<dt>Inbound</dt><dd>'any' port, 'any' protocol, 'any' destination and 'any' gateway</dd>
 				</dl>
-				Configuring the Adv. Inbound Rule settings, will allow for more customization of the Inbound Auto-Rules.<br />
-				<strong>Select the pfSense 'Port' and/or 'Destination' Alias below:</strong>]]>
+				Configuring the Adv. Inbound Rule settings, will allow for more customization of the Inbound Auto-Rules.]]>
 			</description>
 		</field>
 		<field>
-			<fieldname>autoports</fieldname>
+			<fielddescr>Invert Source</fielddescr>
+			<fieldname>autoaddrnot_in</fieldname>
+			<sethelp><![CDATA[<strong>Invert</strong> - Option to invert the sense of the match.
+				ie - Not (!) Source Address(es)]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
 			<fielddescr>Custom Port</fielddescr>
+			<fieldname>autoports_in</fieldname>
 			<type>checkbox</type>
 			<sethelp>Enable</sethelp>
-			<enablefields>aliasports</enablefields>
+			<enablefields>aliasports_in</enablefields>
 			<combinefields>begin</combinefields>
 		</field>
 		<field>
-			<fieldname>aliasports</fieldname>
 			<fielddescr>Custom Port</fielddescr>
-			<description><![CDATA[<a target="_blank" href="/firegall_aliases.php?tab=port">Click Here to add/edit Aliases</a>
-				Do not manually enter port numbers. <br />Do not use 'pfB_' in the Port Alias name.]]>
+			<fieldname>aliasports_in</fieldname>
+			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=port">Click Here to add/edit Aliases</a>
+				Do not manually enter port numbers.<br />Do not use 'pfB_' in the Port Alias name.]]>
 			</description>
 			<width>6</width>
 			<type>aliases</type>
@@ -294,25 +302,25 @@
 			<combinefields>end</combinefields>
 		</field>
 		<field>
-			<fieldname>autodest</fieldname>
 			<fielddescr>Custom Destination</fielddescr>
+			<fieldname>autoaddr_in</fieldname>
 			<type>checkbox</type>
 			<sethelp>Enable</sethelp>
-			<enablefields>aliasdest,autonot</enablefields>
+			<enablefields>aliasaddr_in,autonot_in</enablefields>
 			<combinefields>begin</combinefields>
 		</field>
 		<field>
 			<fielddescr>Invert</fielddescr>
-			<fieldname>autonot</fieldname>
+			<fieldname>autonot_in</fieldname>
 			<type>checkbox</type>
 			<sethelp>Invert</sethelp>
 			<combinefields/>
 		</field>
 		<field>
-			<fieldname>aliasdest</fieldname>
+			<fieldname>aliasaddr_in</fieldname>
 			<fielddescr>Custom Destination</fielddescr>
 			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>
-				Do not manually enter Addresses(es). <br />Do not use 'pfB_' in the 'IP Network Type' Alias name.<br />
+				Do not manually enter Addresses(es).<br />Do not use 'pfB_' in the 'IP Network Type' Alias name.<br />
 				Select 'invert' to invert the sense of the match. ie - Not (!) Destination Address(es)]]>
 			</description>
 			<width>6</width>
@@ -322,7 +330,7 @@
 		</field>
 		<field>
 			<fielddescr>Custom Protocol</fielddescr>
-			<fieldname>autoproto</fieldname>
+			<fieldname>autoproto_in</fieldname>
 			<description><![CDATA[<strong>Default: any</strong><br />Select the Protocol used for Inbound Firewall Rule(s).<br />
 				Do not use 'any' with Adv. Inbound Rules as it will bypass these settings!]]></description>
 			<type>select</type>
@@ -335,8 +343,113 @@
 			<default_value></default_value>
 		</field>
 		<field>
+			<fielddescr>Custom Gateway</fielddescr>
+			<fieldname>agateway_in</fieldname>
+			<description><![CDATA[Select alternate Gateway or keep 'default' setting.]]></description>
+			<type>select_source</type>
+			<source><![CDATA[$config['gateways']['gateway_item']]]></source>
+			<source_name>name</source_name>
+			<source_value>name</source_value>
+			<default_value>default</default_value>
+			<show_disable_value>default</show_disable_value>
+		</field>
+		<field>
+			<name>Advanced Outbound Firewall Rule Settings</name>
+			<type>listtopic</type>
+			<collapse>closed</collapse>
+		</field>
+		<field>
+			<type>info</type>
+			<description><![CDATA[<span class="text-danger">Note:</span>&nbsp; In general, Auto-Rules are created as follows:<br />
+				<dl class="dl-horizontal">
+					<dt>Outbound</dt><dd>'any' port, 'any' protocol, 'any' destination and 'any' gateway</dd>
+				</dl>
+				Configuring the Adv. Outbound Rule settings, will allow for more customization of the Outbound Auto-Rules.]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>Invert Source</fielddescr>
+			<fieldname>autoaddrnot_out</fieldname>
+			<sethelp><![CDATA[<strong>Invert</strong> - Option to invert the sense of the match.
+				ie - Not (!) Source Address(es)]]>
+			</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Custom Port</fielddescr>
+			<fieldname>autoports_out</fieldname>
+			<type>checkbox</type>
+			<sethelp>Enable</sethelp>
+			<enablefields>aliasports_out</enablefields>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Custom Port</fielddescr>
+			<fieldname>aliasports_out</fieldname>
+			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=port">Click Here to add/edit Aliases</a>
+				Do not manually enter port numbers.<br />Do not use 'pfB_' in the Port Alias name.]]>
+			</description>
+			<width>6</width>
+			<type>aliases</type>
+			<typealiases>port</typealiases>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Custom Destination</fielddescr>
+			<fieldname>autoaddr_out</fieldname>
+			<type>checkbox</type>
+			<sethelp>Enable</sethelp>
+			<enablefields>aliasaddr_out,autonot_out</enablefields>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Invert</fielddescr>
+			<fieldname>autonot_out</fieldname>
+			<type>checkbox</type>
+			<sethelp>Invert</sethelp>
+			<combinefields/>
+		</field>
+		<field>
+			<fieldname>aliasaddr_out</fieldname>
+			<fielddescr>Custom Destination</fielddescr>
+			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>
+				Do not manually enter Addresses(es).<br />Do not use 'pfB_' in the 'IP Network Type' Alias name.<br />
+				Select 'invert' to invert the sense of the match. ie - Not (!) Destination Address(es)]]>
+			</description>
+			<width>6</width>
+			<type>aliases</type>
+			<typealiases>network</typealiases>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fielddescr>Custom Protocol</fielddescr>
+			<fieldname>autoproto_out</fieldname>
+			<description><![CDATA[<strong>Default: any</strong><br />Select the Protocol used for Outbound Firewall Rule(s).<br />
+				Do not use 'any' with Adv. Outbound Rules as it will bypass these settings!]]></description>
+			<type>select</type>
+			<options>
+				<option><name>any</name><value></value></option>
+				<option><name>TCP</name><value>tcp</value></option>
+				<option><name>UDP</name><value>udp</value></option>
+				<option><name>TCP/UDP</name><value>tcp/udp</value></option>
+			</options>
+			<default_value></default_value>
+		</field>
+		<field>
+			<fielddescr>Custom Gateway</fielddescr>
+			<fieldname>agateway_out</fieldname>
+			<description><![CDATA[Select alternate Gateway or keep 'default' setting.]]></description>
+			<type>select_source</type>
+			<source><![CDATA[$config['gateways']['gateway_item']]]></source>
+			<source_name>name</source_name>
+			<source_value>name</source_value>
+			<default_value>default</default_value>
+			<show_disable_value>default</show_disable_value>
+		</field>
+		<field>
 			<name><![CDATA[Alexa Whitelist]]></name>
 			<type>listtopic</type>
+			<collapse>closed</collapse>
 		</field>
 		<field>
 			<fielddescr>Enable Alexa</fielddescr>
@@ -344,9 +457,9 @@
 			<sethelp><![CDATA[Alexa provides a <a target="_blank" href="https://aws.amazon.com/alexa-top-sites/">Top 1 million sites list.</a>
 				(Global 1 month average traffic ranking)<br />
 				Alexa can be used to whitelist the most popular domain names to avoid false positives.
-				To use this feature, select the number of 'Top Domains' to whitelist. You can also 'include' which TLDs to whitelist.<br />
+				To use this feature, select the number of 'Top Domains' to whitelist. You can also 'include' which TLDs to whitelist.
 
-				<br /><span class="text-danger">Recommendation: </span>
+				<div class="infoblock"><span class="text-danger">Recommendation: </span>
 				<ul>Alexa also contains the 'Top' AD Servers, so its recommended to configure the first DNSBL Alias with AD Server<br />
 				(ie. yoyo, Adaway...) based feeds. Alexa whitelisting can be disabled for this first defined Alias.<br /><br />
 				Generally, Alexa should be used for feeds that post full URLs like PhishTank, OpenPhish or MalwarePatrol.<br /><br />
@@ -354,7 +467,7 @@
 
 				The complete 'Top 1M list' can be downloaded from
 				<a target=_blank href="https://s3.amazonaws.com/alexa-static/top-1m.csv.zip">Here</a> (Database is free to use.)<br />
-				When enabled, this list will be automatically updated once per month along with the MaxMind Database.]]>
+				When enabled, this list will be automatically updated once per month along with the MaxMind Database.</div>]]>
 			</sethelp>
 			<type>checkbox</type>
 		</field>
@@ -549,17 +662,19 @@
 		<field>
 			<name>Custom Domain Suppression</name>
 			<type>listtopic</type>
+			<collapse>closed</collapse>
 		</field>
 		<field>
 			<fielddescr>Custom List</fielddescr>
 			<fieldname>suppression</fieldname>
-			<description><![CDATA[No Regex Entries Allowed!<br /><br />
+			<description><![CDATA[No Regex Entries Allowed!
+				<div class="infoblock"><br /><br />
 				Enter one &emsp; <strong>Domain Name</strong>&emsp; per line<br />
 				You may use "<strong>#</strong>" after any Domain name to add comments. example (google.com # Suppress Google.com)<br />
 				This List is stored as 'Base64' format in the config.xml file.<br /><br />
 				<span class="text-danger">Note: </span>These entries are only suppressed when Feeds are downloaded or on a
 				<span class="text-danger">'Force Reload'.</span><br />
-				Use the Alerts Tab '+' Suppression icon to immediately remove a domain from Unbound DNSBL.]]> 
+				Use the Alerts Tab '+' Suppression icon to immediately remove a domain from Unbound DNSBL.</div>]]> 
 			</description>
 			<type>textarea</type>
 			<cols>90</cols>

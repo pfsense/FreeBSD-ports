@@ -3,14 +3,14 @@
 	pfBlockerNG_Alerts.php
 
 	pfBlockerNG
-	Copyright (c) 2015 BBcan177@gmail.com
+	Copyright (c) 2016 BBcan177@gmail.com
 	All rights reserved.
 
 	Portions of this code are based on original work done for
 	pfSense from the following contributors:
 
 	Parts based on works from Snort_alerts.php
-	Copyright (c) 2015 Bill Meeks
+	Copyright (c) 2016 Bill Meeks
 	All rights reserved.
 
 	Javascript Hostname Lookup modifications by J. Nieuwenhuizen
