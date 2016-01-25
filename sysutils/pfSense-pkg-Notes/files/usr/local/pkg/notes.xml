@@ -84,6 +84,7 @@
 			<fieldname>title</fieldname>
 			<description>Enter the title.</description>
 			<type>input</type>
+			<required/>
 		</field>
 		<field>
 			<fielddescr>Category</fielddescr>
@@ -92,11 +93,7 @@
 			<type>input</type>
 		</field>
 		<field>
-			<fielddescr>
-				<![CDATA[
-				<strong>Notes</strong><br /><br />
-				]]>
-			</fielddescr>
+			<fielddescr>Notes</fielddescr>
 			<fieldname>notes</fieldname>
 			<description></description>
 			<type>textarea</type>
@@ -104,6 +101,7 @@
 			<size>30</size>
 			<cols>70</cols>
 			<rows>20</rows>
+			<required/>
 		</field>
 	</fields>
 </packagegui>
