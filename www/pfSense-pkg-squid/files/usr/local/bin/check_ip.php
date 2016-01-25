@@ -46,20 +46,12 @@ while (!feof(STDIN)) {
 	foreach ($files as $file) {
 		$cp_db = array();
 		$result = squid_cp_read_db($file);
-		foreach ($result as $rownum => $row) {
-			$cp_db[$rownum] = implode(",", $row);
-		}
-
-		$user = "";
 		//1419045939,1419045939,2000,2000,192.168.10.11,192.168.10.11,08:00:27:5c:e1:ee,08:00:27:5c:e1:ee,marcello,marcello,605a1f46e2d64556,605a1f46e2d64556,,,,,,,,,,,first,first
-		foreach ($cp_db as $cpl) {
-			$fields = explode(",", $cpl);
-			if ($fields[4] != "" && $fields[4] == $line) {
-				$user = $fields[8];
+		foreach ($result as $row) {
+			if ($row[4] != "" && $row[4] == $line) {
+				$answer = "OK user={$row[8]}";
+				break 2;
 			}
-		}
-		if ($user != "") {
-			$answer = "OK user={$user}";
 		}
 	}
 	fwrite(STDOUT, "{$answer}\n");
