@@ -89,12 +89,12 @@
 		<field>
 			<fielddescr>Keep Data/Settings</fielddescr>
 			<fieldname>keepdata</fieldname>
-			<description>
+			<description>Keep ntopng settings, graphs and traffic data. (Default: on)</description>
+			<sethelp>
 				<![CDATA[
-				Check this to keep ntopng settings, graphs and traffic data. (Default: on)<br />
 				<strong><span class="errmsg">Note:</span> If 'Keep Data/Settings' is disabled, all settings and data will be wiped on package uninstall/reinstall/upgrade!</strong>
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 			<default_value>on</default_value>
 		</field>
@@ -162,9 +162,9 @@
 		<field>
 			<fielddescr>Historical Data Storage</fielddescr>
 			<fieldname>dump_flows</fieldname>
-			<description>
+			<description>Enable historical data storage</description>
+			<sethelp>
 				<![CDATA[
-				Enable historical data storage.<br />
 				<strong><span class="errmsg">WARNING:</span> This feature consumes HUGE amount of disk space.</strong>
 				Also, browsing the historical data is VERY slow.<br />
 				The historical interface is considered <a href="http://www.gossamer-threads.com/lists/ntop/misc/37506#37506">abandoned by upstream</a>,
@@ -172,7 +172,7 @@
 				<input type="submit" name="Delete" value="Delete (Historical) Data" />
 				<strong><span class="errmsg">WARNING:</span> This will delete all ntopng graphs, traffic data and historical dump flows!
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
