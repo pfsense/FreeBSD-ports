@@ -409,7 +409,7 @@ if ($savemsg) {
 						<td width="85%">
 						<?php echo gettext("Connectivity blocks most major threats with few or no false positives.  " . 
 						"Balanced is a good starter policy.  It is speedy, has good base coverage level, and covers " . 
-						"most threats of the day.  It includes all rules in Connectivity." . 
+						"most threats of the day.  It includes all rules in Connectivity.  " . 
 						"Security is a stringent policy.  It contains everything in the first two " .
 						"plus policy-type rules such as Flash in an Excel file."); ?><br/></td>
 					   </tr>
