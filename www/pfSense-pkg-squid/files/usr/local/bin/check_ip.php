@@ -44,7 +44,6 @@ while (!feof(STDIN)) {
 	$files = glob("{$g['vardb_path']}/captive.*db");
 	$answer="ERR";
 	foreach ($files as $file) {
-		$cp_db = array();
 		$result = squid_cp_read_db($file);
 		//1419045939,1419045939,2000,2000,192.168.10.11,192.168.10.11,08:00:27:5c:e1:ee,08:00:27:5c:e1:ee,marcello,marcello,605a1f46e2d64556,605a1f46e2d64556,,,,,,,,,,,first,first
 		foreach ($result as $row) {
