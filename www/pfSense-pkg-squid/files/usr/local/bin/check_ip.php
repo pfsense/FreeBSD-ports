@@ -3,8 +3,8 @@
 /*
 	check_ip.php
 	part of pfSense (https://www.pfSense.org/)
-	Copyright (C) 2013-2015 Marcello Coutinho
-	Copyright (C) 2015 ESF, LLC
+	Copyright (C) 2013-2016 Marcello Coutinho
+	Copyright (C) 2016 ESF, LLC
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -41,37 +41,33 @@ if (!defined(STDOUT)) {
 }
 while (!feof(STDIN)) {
 	$line = trim(fgets(STDIN));
-}
-
-unset($cp_db);
-$files = scandir($g['vardb_path']);
-foreach ($files as $file) {
-	if (preg_match("/captive.*db/", $file)) {
-		$result = squid_cp_read_db("{$g['vardb_path']}/{$file}");
-		foreach ($result as $rownum => $row) {
-			$cp_db[$rownum] = implode(",", $row);
-		}
-	}
-
-	$usuario = "";
-	//1419045939,1419045939,2000,2000,192.168.10.11,192.168.10.11,08:00:27:5c:e1:ee,08:00:27:5c:e1:ee,marcello,marcello,605a1f46e2d64556,605a1f46e2d64556,,,,,,,,,,,first,first
-	if (is_array($cp_db)) {
-		foreach ($cp_db as $cpl) {
-			$fields = explode(",", $cpl);
-			if ($fields[4] != "" && $fields[4] == $line) {
-				$usuario = $fields[8];
+	unset($cp_db);
+	$files = scandir($g['vardb_path']);
+	$answer="ERR";
+	foreach ($files as $file) {
+		if (preg_match("/captive.*db/", $file)) {
+			$result = squid_cp_read_db("{$g['vardb_path']}/{$file}");
+			foreach ($result as $rownum => $row) {
+				$cp_db[$rownum] = implode(",", $row);
 			}
 		}
-	}
-	if ($usuario != "") {
-		$resposta = "OK user={$usuario}";
-	} else {
-		$resposta = "ERR";
-	}
-	fwrite(STDOUT, "{$resposta}\n");
-	unset($cp_db);
-}
 
+		$user = "";
+		//1419045939,1419045939,2000,2000,192.168.10.11,192.168.10.11,08:00:27:5c:e1:ee,08:00:27:5c:e1:ee,marcello,marcello,605a1f46e2d64556,605a1f46e2d64556,,,,,,,,,,,first,first
+		if (is_array($cp_db)) {
+			foreach ($cp_db as $cpl) {
+				$fields = explode(",", $cpl);
+				if ($fields[4] != "" && $fields[4] == $line) {
+					$user = $fields[8];
+				}
+			}
+		}
+		if ($user != "") {
+			$answer = "OK user={$user}";
+		}
+	}
+	fwrite(STDOUT, "{$answer}\n");
+}
 /* read captive portal DB into array */
 function squid_cp_read_db($file) {
 	$cpdb = array();
