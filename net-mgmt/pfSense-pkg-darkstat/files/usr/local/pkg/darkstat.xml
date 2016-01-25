@@ -78,7 +78,7 @@
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Interface(s) to capture traffic on</fielddescr>
+			<fielddescr>Capture Interfaces</fielddescr>
 			<fieldname>capture_interfaces</fieldname>
 			<description><![CDATA[
 				Capture traffic on the specified network interface(s).<br />
@@ -93,11 +93,11 @@
 			<required>true</required>
 		</field>
 		<field>
-			<fielddescr>Darkstat web interface should listen on</fielddescr>
+			<fielddescr>Web Interface Binding</fielddescr>
 			<fieldname>bind_interfaces</fieldname>
 			<description>
 				<![CDATA[
-				Bind the web interface to IP address(es) of the specified interface(s).<br />
+				Bind the web interface to the IP address(es) of the specified interface(s).<br />
 				(The default is to listen on all interfaces.)
 				]]>
 			</description>
@@ -122,71 +122,62 @@
 		</field>
 		-->
 		<field>
-			<fielddescr>Enable the "local network" feature</fielddescr>
+			<fielddescr>Local Network Traffic</fielddescr>
 			<fieldname>localnetworkenable</fieldname>
-			<description>
-				<![CDATA[
-				All traffic entering or leaving this network will be graphed.<br />
-				(The default behaviour is to only graph traffic to and from the local host.)
-				]]>
-			</description>
+			<description>All traffic entering or leaving this network will be graphed.</description>
+			<sethelp>Enables the "local network" feature in darkstat. The default behaviour is to only graph traffic to and from the local host.</sethelp>
 			<type>checkbox</type>
 			<enablefields>localnetworkonly</enablefields>
 			<disablefields>localnetworkonly</disablefields>
 			</field>
 		<field>
-			<fielddescr>Make the web interface ONLY display hosts on the "local network"</fielddescr>
+			<fielddescr>Local Networks Only</fielddescr>
 			<fieldname>localnetworkonly</fieldname>
-			<description>
-				<![CDATA[
-				If the "local network" feature is enabled above, the web interface<br />
-				will only display hosts on the "local network" defined below.
-				]]>
-			</description>
+			<description>Limit the web interface display to only hosts on the "local network"</description>
+			<sethelp>If the "local network" feature is enabled above, the web interface will only display hosts on the "local network" defined below.</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Define a "local network"</fielddescr>
+			<fielddescr>Local Network</fielddescr>
 			<fieldname>localnetwork</fieldname>
-			<description>Traffic from/to the network/netmask of the selected interface will be considered as "local network".</description>
+			<description>The network/netmask of the selected interface will be considered the "local network" for displaying traffic using the previous options.</description>
 			<type>interfaces_selection</type>
 			<hideinterfaceregex>(wan|loopback)</hideinterfaceregex>
 		</field>
 		<field>
-			<fielddescr>Do not use promiscuous mode to capture</fielddescr>
+			<fielddescr>No Promiscuous Mode</fielddescr>
 			<fieldname>nopromisc</fieldname>
-			<description>
+			<description>Do not use promiscuous mode to capture traffic.</description>
+			<sethelp>
 				<![CDATA[
-				Note that an interface may already be in promiscuous mode,<br />
-				or may later enter promiscuous mode, due to circumstances beyond darkstat's control.<br />
-				<strong>This cannot be used when the "local network" feature is enabled above.</strong>
+				Note that an interface may already be in promiscuous mode, or may later enter promiscuous mode,
+				due to circumstances beyond the control of darkstat.<br />
+				<strong>This cannot be used when the "local network" feature is enabled.</strong>
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Do not resolve IPs to host names</fielddescr>
+			<fielddescr>Disable DNS Resolution</fielddescr>
 			<fieldname>nodns</fieldname>
-			<description>
-				<![CDATA[
-				This can significantly reduce memory footprint on small systems,<br />
-				as an extra process is created for DNS resolution.
-				]]>
-			</description>
+			<description>Do not resolve IP addresses to host names in output data.</description>
+			<sethelp>Skipping DNS lookups can significantly increase processing speed and also reduces the memory footprint on small systems.</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Do not display MAC addresses in the hosts table</fielddescr>
+			<fielddescr>Disable MAC Display</fielddescr>
+			<description>Do not display MAC addresses in the hosts table</description>
 			<fieldname>nomacs</fieldname>
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Do not display the last seen time in the hosts table</fielddescr>
+			<fielddescr>Disable Seen Time</fielddescr>
+			<description>Do not display the last seen time in the hosts table</description>
 			<fieldname>nolastseen</fieldname>
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Maximum hosts count</fielddescr>
+			<fielddescr>Maximum Hosts Count</fielddescr>
 			<fieldname>hostsmax</fieldname>
 			<description>
 				<![CDATA[
@@ -199,7 +190,7 @@
 			<size>5</size>
 		</field>
 		<field>
-			<fielddescr>Maximum number of hosts to keep</fielddescr>
+			<fielddescr>Maximum Hosts to Keep</fielddescr>
 			<fieldname>hostskeep</fieldname>
 			<description>
 				<![CDATA[
@@ -212,7 +203,7 @@
 			<size>5</size>
 		</field>
 		<field>
-			<fielddescr>Maximum ports count</fielddescr>
+			<fielddescr>Maximum Ports Count</fielddescr>
 			<fieldname>portsmax</fieldname>
 			<description>
 				<![CDATA[
@@ -225,7 +216,7 @@
 			<size>5</size>
 		</field>
 		<field>
-			<fielddescr>Maximum number of ports to keep</fielddescr>
+			<fielddescr>Maximum Ports to Keep</fielddescr>
 			<fieldname>portskeep</fieldname>
 			<description>
 				<![CDATA[
@@ -237,7 +228,7 @@
 			<size>5</size>
 		</field>
 		<field>
-			<fielddescr>Advanced traffic filtering options</fielddescr>
+			<fielddescr>Advanced Filtering Options</fielddescr>
 			<fieldname>advfilter</fieldname>
 			<description>
 				<![CDATA[
