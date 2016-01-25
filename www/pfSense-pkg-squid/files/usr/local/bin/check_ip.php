@@ -41,15 +41,13 @@ if (!defined(STDOUT)) {
 }
 while (!feof(STDIN)) {
 	$line = trim(fgets(STDIN));
-	$files = scandir($g['vardb_path']);
 	$cp_db = array();
+	$files = glob("{$g['vardb_path']}/captive.*db");
 	$answer="ERR";
 	foreach ($files as $file) {
-		if (preg_match("/captive.*db/", $file)) {
-			$result = squid_cp_read_db("{$g['vardb_path']}/{$file}");
-			foreach ($result as $rownum => $row) {
-				$cp_db[$rownum] = implode(",", $row);
-			}
+		$result = squid_cp_read_db($file);
+		foreach ($result as $rownum => $row) {
+			$cp_db[$rownum] = implode(",", $row);
 		}
 
 		$user = "";
