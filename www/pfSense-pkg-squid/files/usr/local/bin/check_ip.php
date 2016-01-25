@@ -41,8 +41,8 @@ if (!defined(STDOUT)) {
 }
 while (!feof(STDIN)) {
 	$line = trim(fgets(STDIN));
-	unset($cp_db);
 	$files = scandir($g['vardb_path']);
+	$cp_db = array();
 	$answer="ERR";
 	foreach ($files as $file) {
 		if (preg_match("/captive.*db/", $file)) {
@@ -54,12 +54,10 @@ while (!feof(STDIN)) {
 
 		$user = "";
 		//1419045939,1419045939,2000,2000,192.168.10.11,192.168.10.11,08:00:27:5c:e1:ee,08:00:27:5c:e1:ee,marcello,marcello,605a1f46e2d64556,605a1f46e2d64556,,,,,,,,,,,first,first
-		if (is_array($cp_db)) {
-			foreach ($cp_db as $cpl) {
-				$fields = explode(",", $cpl);
-				if ($fields[4] != "" && $fields[4] == $line) {
-					$user = $fields[8];
-				}
+		foreach ($cp_db as $cpl) {
+			$fields = explode(",", $cpl);
+			if ($fields[4] != "" && $fields[4] == $line) {
+				$user = $fields[8];
 			}
 		}
 		if ($user != "") {
