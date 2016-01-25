@@ -1840,7 +1840,8 @@ function squid_resync_auth() {
 				$conf .= "auth_param basic program ". SQUID_LOCALBASE . "/libexec/squid/basic_radius_auth -w {$settings['radius_secret']} -h {$settings['auth_server']} $port\n";
 				break;
 			case 'cp':
-				$conf .= "external_acl_type check_cp children-startup={$processes} ttl={$auth_ttl} %SRC " . SQUID_BASE . "/bin/check_ip.php\n";
+				$helpers_num = "children-startup=" . (int) ($processes/2) . " children-max={$processes} children-idle=" . (int) ($processes/3);
+				$conf .= "external_acl_type check_cp {$helpers_num} ttl={$auth_ttl} %SRC " . SQUID_BASE . "/bin/check_ip.php\n";
 				$conf .= "acl password external check_cp\n";
 				break;
 			case 'msnt':
