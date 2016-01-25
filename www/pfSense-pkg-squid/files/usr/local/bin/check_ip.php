@@ -41,10 +41,10 @@ if (!defined(STDOUT)) {
 }
 while (!feof(STDIN)) {
 	$line = trim(fgets(STDIN));
-	$cp_db = array();
 	$files = glob("{$g['vardb_path']}/captive.*db");
 	$answer="ERR";
 	foreach ($files as $file) {
+		$cp_db = array();
 		$result = squid_cp_read_db($file);
 		foreach ($result as $rownum => $row) {
 			$cp_db[$rownum] = implode(",", $row);
