@@ -144,7 +144,7 @@ function sync_package_siproxd() {
 	$siproxd_pwfile = SIPROXD . '/etc/siproxd_passwd.cfg';
 	$siproxd_chroot = "/var/siproxd/";
 	$siproxd_bin = SIPROXD . '/sbin/siproxd';
-	$plugindir = SIPROXD . '/lib/siproxd';
+	$plugindir = SIPROXD . '/lib/siproxd/';
 
 	$fout = fopen($siproxd_conffile, "w");
 
