@@ -56,48 +56,53 @@
 	</additional_files_needed>
 	<fields>
 		<field>
-			<fielddescr>IP or Hostname</fielddescr>
+			<fielddescr>IP Address or Hostname</fielddescr>
 			<fieldname>hostname</fieldname>
-			<description>Enter the IP address or hostname that you would like to traceroute to.</description>
+			<description>Enter the IP address or hostname to which the traceroute will be performed.</description>
 			<type>input</type>
 			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Count</fielddescr>
 			<fieldname>count</fieldname>
-			<description>This is the number of pings to send, each one takes 1 second.</description>
+			<description>The number of pings to send. Each ping takes 1 second.</description>
 			<type>input</type>
-			<typehint>(Defaults to 10.)</typehint>
+			<default_value>10</default_value>
 		</field>
 		<field>
-			<fielddescr>No DNS Lookup</fielddescr>
+			<fielddescr>Disable DNS Lookup</fielddescr>
 			<fieldname>nodns</fieldname>
-			<description>Use this option to force mtr to display numeric IP numbers and not try to resolve the host names.</description>
+			<description>Display numeric IP addresses</description>
+			<sethelp>Forces MTR to display numeric IP addresses and disables reverse DNS resolution of host names.</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Show IPs</fielddescr>
+			<fielddescr>Show IP Addresses</fielddescr>
 			<fieldname>showips</fieldname>
-			<description>Use this option to tell mtr to display both the host names and numeric IP numbers.</description>
+			<description>Display both host names and IP addresses.</description>
+			<sethelp>Forces MTR to display both the host names resolved from DNS and numeric IP addresses.</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>Raw Output Format</fielddescr>
 			<fieldname>raw</fieldname>
-			<description>Use this option to tell mtr to use the raw output format.</description>
+			<description>Use the raw output format.</description>
+			<sethelp>Forces MTR to output the data without formatting, to store results for later analysis or parsing by an external program.</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>Interval</fielddescr>
 			<fieldname>interval</fieldname>
-			<description>Use this option to specify the positive number of seconds between ICMP ECHO requests.</description>
+			<description>The number of seconds between ICMP ECHO requests.</description>
+			<sethelp>Must be a positive integer</sethelp>
 			<type>input</type>
-			<typehint>(Default is 1 second.)</typehint>
+			<default_value>1</default_value>
 		</field>
 		<field>
 			<fielddescr>Use IPv4 only</fielddescr>
 			<fieldname>ipv4only</fieldname>
-			<description>Use this option to use IPv4 only.</description>
+			<description>Use only IPv4, disables IPv6</description>
+			<sethelp>Useful for forcing a hostname query to use the IPv4 DNS A record result rather than AAAA.</sethelp>
 			<type>checkbox</type>
 		</field>
 	</fields>
