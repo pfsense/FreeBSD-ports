@@ -155,6 +155,7 @@ static zend_function_entry pfSense_functions[] = {
     PHP_FE(pfSense_get_interface_addresses, NULL)
     PHP_FE(pfSense_getall_interface_addresses, NULL)
     PHP_FE(pfSense_get_interface_stats, NULL)
+    PHP_FE(pfSense_get_pf_rules, NULL)
     PHP_FE(pfSense_get_pf_stats, NULL)
     PHP_FE(pfSense_get_os_hw_data, NULL)
     PHP_FE(pfSense_get_os_kern_data, NULL)
@@ -2187,6 +2188,46 @@ PHP_FUNCTION(pfSense_get_interface_stats)
 	add_assoc_long(return_value, "outmcasts", (long)tmpd->ifi_omcasts);
 	add_assoc_long(return_value, "unsuppproto", (long)tmpd->ifi_noproto);
 	add_assoc_long(return_value, "mtu", (long)tmpd->ifi_mtu);
+}
+
+PHP_FUNCTION(pfSense_get_pf_rules) {
+	int dev;
+	struct pfioc_rule pr;
+	uint32_t mnr, nr;
+	zval *array;
+
+	if ((dev = open("/dev/pf", O_RDWR)) < 0)
+		RETURN_NULL();
+	memset(&pr, 0, sizeof(pr));
+	pr.rule.action = PF_PASS;
+	if (ioctl(dev, DIOCGETRULES, &pr)) {
+		close(dev);
+		RETURN_NULL();
+	}
+
+	mnr = pr.nr;
+	array_init(return_value);
+	for (nr = 0; nr < mnr; ++nr) {
+		pr.nr = nr;
+		if (ioctl(dev, DIOCGETRULE, &pr)) {
+			add_assoc_string(return_value, "error", strerror(errno), 1);
+			break;
+		}
+
+		ALLOC_INIT_ZVAL(array);
+		array_init(array);
+		add_assoc_long(array, "id", (long)pr.rule.nr);
+		add_assoc_long(array, "tracker", (long)pr.rule.cuid);
+		add_assoc_string(array, "label", pr.rule.label, 1);
+		add_assoc_long(array, "evaluations", (long)pr.rule.evaluations);
+		add_assoc_long(array, "packets", (long)(pr.rule.packets[0] + pr.rule.packets[1]));
+		add_assoc_long(array, "bytes", (long)(pr.rule.bytes[0] + pr.rule.bytes[1]));
+		add_assoc_long(array, "states", (long)pr.rule.u_states_cur);
+		add_assoc_long(array, "pid", (long)pr.rule.cpid);
+		add_assoc_long(array, "state creations", (long)pr.rule.u_states_tot);
+		add_index_zval(return_value, pr.rule.nr, array);
+	}
+	close(dev);
 }
 
 PHP_FUNCTION(pfSense_get_pf_stats) {
