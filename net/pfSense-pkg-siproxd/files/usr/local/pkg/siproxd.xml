@@ -214,9 +214,10 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Enable Proxy Authentication</fielddescr>
+			<fielddescr>Proxy Authentication</fielddescr>
 			<fieldname>authentication</fieldname>
-			<description>If checked, clients will be forced to authenticate themselves at the proxy (for registration only).</description>
+			<description>Enable Proxy Authentication</description>
+			<sethelp>If checked, clients will be forced to authenticate themselves at the proxy (for registration only).</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
@@ -238,23 +239,25 @@
 		<field>
 			<fielddescr>Expedited RTP Forwarding</fielddescr>
 			<fieldname>expeditedforwarding</fieldname>
-			<description>
+			<description>Enable DSCP tagging of RTP traffic</description>
+			<sethelp>
 				<![CDATA[
 				This service is designed to allow ISPs to offer a service with attributes similar to a "leased line".<br />
 				This service offers the ULTIMATE IN LOW LOSS, LOW LATENCY AND LOW JITTER by ensuring that there is always sufficient room in output queues for the contracted expedited forwarding traffic.
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>Expedited SIP Forwarding</fielddescr>
 			<fieldname>expeditedsipforwarding</fieldname>
-			<description>
+			<description>Enable DSCP tagging of SIP traffic</description>
+			<sethelp>
 				<![CDATA[
 				This service is designed to allow ISPs to offer a service with attributes similar to a "leased line".<br />
 				This service offers the ULTIMATE IN LOW LOSS, LOW LATENCY AND LOW JITTER by ensuring that there is always sufficient room in output queues for the contracted expedited forwarding traffic.
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
@@ -284,14 +287,15 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Enable Fix Bogus Via Networks Plugin</fielddescr>
+			<fielddescr>Enable Bogus Via Plugin</fielddescr>
 			<fieldname>plugin_fix_bogus_via</fieldname>
-			<description>
+			<description>Enable the Fix Bogus Via Networks Plugin</description>
+			<sethelp>
 				<![CDATA[
-				Incoming (from public network) SIP messages are checked for broken SIP Via headers.<br />
-				If the IP address in the latest Via Header is part of the list below, it will be replaced by the IP where the SIP message has been received from.
+				When enabled, incoming (from public network) SIP messages are checked for broken SIP Via headers.<br />
+				If the IP address in the latest Via Header is part of the list below, it will be replaced by the IP address where the SIP message has been received from.
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
@@ -310,9 +314,10 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Enable STUN Plugin</fielddescr>
+			<fielddescr>STUN Plugin</fielddescr>
 			<fieldname>plugin_stun</fieldname>
-			<description>Uses an external STUN server to determine the public IP address of siproxd. Useful for "in-front-of-NAT-router" scenarios.</description>
+			<description>Enable STUN Plugin</description>
+			<sethelp>Uses an external STUN server to determine the public IP address of siproxd. Useful for "in-front-of-NAT-router" scenarios.</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
