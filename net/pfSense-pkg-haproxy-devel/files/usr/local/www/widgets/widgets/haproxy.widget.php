@@ -104,7 +104,7 @@ if ($show_clients == "YES") {
 if (!$getupdatestatus) {
 ?>
 <div id="haproxy_content">
-<?
+<?php
 }
 
 echo "<table style=\"padding-top:0px; padding-bottom:0px; padding-left:0px; padding-right:0px\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">";
@@ -216,8 +216,6 @@ echo "</table>";
 if (!$getupdatestatus)
 {
 	echo "</div>";
-?>
-<?
 }
 
 if ($getupdatestatus) {
