@@ -659,7 +659,7 @@ if [ ! -f /var/db/clamav/main.cvd -a ! -f /var/db/clamav/main.cld ]; then
         exit 1
 fi
 
-{$squid_base}/bin/clamd --config-file="{$squid_base}/local/etc/clamd.conf"
+{$squid_base}/sbin/clamd --config-file="{$squid_base}/etc/clamd.conf"
 
 EOD;
 
