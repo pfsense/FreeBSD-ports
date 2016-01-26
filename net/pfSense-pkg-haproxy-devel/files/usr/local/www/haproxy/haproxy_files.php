@@ -116,10 +116,9 @@ if ($savemsg) {
 	print_info_box($savemsg);
 }
 if (file_exists($d_haproxyconfdirty_path)) {
-	print_info_box_np("The haproxy configuration has been changed.<br/>You must apply the changes in order for them to take effect.");
+	print_apply_box(sprintf(gettext("The haproxy configuration has been changed.%sYou must apply the changes in order for them to take effect."), "<br/>"));
 }
 haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "files");
-//haproxy_css();
 ?>
 <form action="haproxy_files.php" method="post">
 	<div class="panel panel-default">
@@ -140,7 +139,7 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "files");
 			<a href="http://www.arpalert.org/src/haproxy-lua-api/1.6/">See the api for more information.</a>
 		</div>
 		<div class="table-responsive panel-body">
-			<?
+			<?php
 			$counter=0;
 			echo $fileslist->Draw($a_files);
 			?>
@@ -154,12 +153,12 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "files");
 	</div>
 
 </form>
-<?
+<?php
 haproxy_htmllist_js();
 ?>
 <script type="text/javascript">
 	totalrows =  <?php echo $counter; ?>;
-<?
+<?php
 	$fileslist->outputjavascript();
 ?>
 </script>
