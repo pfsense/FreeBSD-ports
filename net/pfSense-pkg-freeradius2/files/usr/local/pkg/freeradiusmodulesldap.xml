@@ -101,16 +101,29 @@
 			<type>listtopic</type>
 		</field>		
 		<field>
-			<fielddescr>Enable LDAP For Authorization</fielddescr>
+			<fielddescr>LDAP Authorization Support</fielddescr>
 			<fieldname>varmodulesldapenableauthorize</fieldname>
-			<description><![CDATA[This enables LDAP in authorize section. The ldap module will set Auth-Type to LDAP if it has not already been set. (Default: unchecked)]]></description>
+			<description>Enable LDAP For Authorization (Default: unchecked)</description>
+			<sethelp>
+				<![CDATA[
+				Enables LDAP in the authorize section.
+				The ldap module will set Auth-Type to LDAP if it has not already been set.
+				]]>
+			</sethelp>
 			<type>checkbox</type>
 			<enablefields>varmodulesldapenabletlssupport,varmodulesldap2failover,varmodulesldap2enableauthenticate,varmodulesldapkeepaliveinterval,varmodulesldapkeepaliveprobes,varmodulesldapkeepaliveidle,varmodulesldapmsadcompatibilityenable,varmodulesldapnettimeout,varmodulesldaptimelimit,varmodulesldaptimeout,varmodulesldapldapconnectionsnumber,varmodulesldapbasefilter,varmodulesldapfilter,varmodulesldapbasedn,varmodulesldappassword,varmodulesldapidentity,varmodulesldapserver,varmodulesldap2enableauthorize,varmodulesldap2enableauthenticate,varmodulesldap2server,varmodulesldap2identity,varmodulesldap2password,varmodulesldap2basedn,varmodulesldap2filter,varmodulesldap2basefilter,varmodulesldap2ldapconnectionsnumber,varmodulesldap2timeout,varmodulesldap2timelimit,varmodulesldap2nettimeout,varmodulesldap2msadcompatibilityenable,varmodulesldap2dmiscenable,varmodulesldap2groupenable,varmodulesldap2keepaliveidle,varmodulesldap2keepaliveprobes,varmodulesldap2keepaliveinterval</enablefields>
 		</field>
 		<field>
-			<fielddescr>Enable LDAP For Authentication</fielddescr>
+			<fielddescr>LDAP Authentication Support</fielddescr>
 			<fieldname>varmodulesldapenableauthenticate</fieldname>
-			<description><![CDATA[This enables LDAP in authenticate section. Note that this means "check plain-text password against the ldap database", which means that EAP won't work, as it does not supply a plain-text password.]]></description>
+			<description>Enable LDAP For Authentication</description>
+			<sethelp>
+				<![CDATA[
+				Enables LDAP in the authenticate section.
+				Note that this means "check plain-text password against the ldap database", which means that EAP won't work,
+				as it does not supply a plain-text password.
+				]]>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
@@ -221,9 +234,10 @@
 					</options>
 		</field>
 		<field>
-			<fielddescr>Enable Misc Configuration - SERVER 1</fielddescr>
+			<fielddescr>Misc Configuration - SERVER 1</fielddescr>
 			<fieldname>varmodulesldapdmiscenable</fieldname>
-			<description><![CDATA[By default the below options are not active in the configuration. (Default: unchecked)]]></description>
+			<description>Enable Miscellaneous Configuration for Server 1 (Default: unchecked)</description>
+			<sethelp>By default the options below are not active in the configuration.</sethelp>
 			<type>checkbox</type>
 			<enablefields>varmodulesldapdefaultprofile,varmodulesldapprofileattribute,varmodulesldapaccessattr</enablefields>
 		</field>
@@ -256,9 +270,10 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Enable Group Membership Options</fielddescr>
+			<fielddescr>Group Membership Options</fielddescr>
 			<fieldname>varmodulesldapgroupenable</fieldname>
-			<description><![CDATA[By default the below options are not active in the configuration. (Default: unchecked)]]></description>
+			<description>Enable Group Membership Options (Default: unchecked)</description>
+			<sethelp>By default the options below are not active in the configuration.</sethelp>
 			<type>checkbox</type>
 			<enablefields>varmodulesldapaccessattrusedforallow,varmodulesldapdoxlat,varmodulesldapcomparecheckitems,varmodulesldapgroupmembershipattribute,varmodulesldapgroupmembershipfilter,varmodulesldapgroupnameattribute</enablefields>
 		</field>
@@ -352,9 +367,14 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Enable TSL support</fielddescr>
+			<fielddescr>TLS support</fielddescr>
 			<fieldname>varmodulesldapenabletlssupport</fieldname>
-			<description><![CDATA[Enable TLS support for LDAP server 1. If enabled then certs in ../raddb/certs/ will be checked against the certs on LDAP.]]></description>
+			<description>Enable TLS support for LDAP server 1</description>
+			<sethelp>
+				<![CDATA[
+				If enabled, certs in ../raddb/certs/ will be checked against the certs on LDAP.
+				]]>
+			</sethelp>
 			<type>checkbox</type>
 			<enablefields>ssl_ca_cert1,ssl_server_cert1,varmodulesldaprequirecert</enablefields>
 		</field>
@@ -422,14 +442,27 @@
 		<field>
 			<fielddescr>Enable LDAP For Authorization</fielddescr>
 			<fieldname>varmodulesldap2enableauthorize</fieldname>
-			<description><![CDATA[This enables LDAP in authorize section. The ldap module will set Auth-Type to LDAP if it has not already been set. (Default: unchecked)]]></description>
+			<description>Enable LDAP For Authorization (Default: unchecked)</description>
+			<sethelp>
+				<![CDATA[
+				Enables LDAP in the authorize section.
+				The ldap module will set Auth-Type to LDAP if it has not already been set.
+				]]>
+			</sethelp>
 			<type>checkbox</type>
 			<enablefields>varmodulesldap2enabletlssupport,varmodulesldap2enableauthenticate,varmodulesldap2server,varmodulesldap2identity,varmodulesldap2password,varmodulesldap2basedn,varmodulesldap2filter,varmodulesldap2basefilter,varmodulesldap2ldapconnectionsnumber,varmodulesldap2timeout,varmodulesldap2timelimit,varmodulesldap2nettimeout,varmodulesldap2msadcompatibilityenable,varmodulesldap2dmiscenable,varmodulesldap2groupenable,varmodulesldap2keepaliveidle,varmodulesldap2keepaliveprobes,varmodulesldap2keepaliveinterval</enablefields>
 		</field>
 		<field>
 			<fielddescr>Enable LDAP For Authentication</fielddescr>
 			<fieldname>varmodulesldap2enableauthenticate</fieldname>
-			<description><![CDATA[This enables LDAP in authenticate section. Note that this means "check plain-text password against the ldap database", which means that EAP won't work, as it does not supply a plain-text password.]]></description>
+			<description>Enable LDAP For Authentication</description>
+			<sethelp>
+				<![CDATA[
+				Enables LDAP in the authenticate section.
+				Note that this means "check plain-text password against the ldap database", which means that EAP won't work,
+				as it does not supply a plain-text password.
+				]]>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
@@ -540,9 +573,10 @@
 					</options>
 		</field>
 		<field>
-			<fielddescr>Enable Misc Configuration</fielddescr>
+			<fielddescr>Misc Configuration</fielddescr>
 			<fieldname>varmodulesldap2dmiscenable</fieldname>
-			<description><![CDATA[By default the below options are not active in the configuration. (Default: unchecked)]]></description>
+			<description>Enable Miscellaneous Configuration for Server 2 (Default: unchecked)</description>
+			<sethelp>By default the options below are not active in the configuration.</sethelp>
 			<type>checkbox</type>
 			<enablefields>varmodulesldap2defaultprofile,varmodulesldap2profileattribute,varmodulesldap2accessattr</enablefields>
 		</field>
@@ -577,7 +611,8 @@
 		<field>
 			<fielddescr>Enable Group Membership Options</fielddescr>
 			<fieldname>varmodulesldap2groupenable</fieldname>
-			<description><![CDATA[By default the below options are not active in the configuration. (Default: unchecked)]]></description>
+			<description>Enable Group Membership Options (Default: unchecked)</description>
+			<sethelp>By default the options below are not active in the configuration.</sethelp>
 			<type>checkbox</type>
 			<enablefields>varmodulesldap2accessattrusedforallow,varmodulesldap2doxlat,varmodulesldap2comparecheckitems,varmodulesldap2groupmembershipattribute,varmodulesldap2groupmembershipfilter,varmodulesldap2groupnameattribute</enablefields>
 		</field>
@@ -671,9 +706,14 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Enable TSL support</fielddescr>
+			<fielddescr>TLS Support</fielddescr>
 			<fieldname>varmodulesldap2enabletlssupport</fieldname>
-			<description><![CDATA[Enable TLS support for LDAP server 1. If enabled then certs in ../raddb/certs/ will be checked against the certs on LDAP.]]></description>
+			<description>Enable TLS support for LDAP server 2</description>
+			<sethelp>
+				<![CDATA[
+				If enabled, certs in ../raddb/certs/ will be checked against the certs on LDAP.
+				]]>
+			</sethelp>
 			<type>checkbox</type>
 			<enablefields>ssl_ca_cert2,ssl_server_cert2,varmodulesldap2requirecert</enablefields>
 		</field>

@@ -248,14 +248,15 @@
 			</options>
 		</field>
 		<field>
-			<fielddescr>Enable One-Time-Password for this user</fielddescr>
+			<fielddescr>One-Time-Password</fielddescr>
 			<fieldname>varusersmotpenable</fieldname>
-			<description>
+			<description>Enable One-Time-Password for this user</description>
+			<sethelp>
 				<![CDATA[
 				This enables the possibility to authenticate against an username and an one-time-password. The client to generate OTP can be installed on various mobile device plattforms like Android and more.<br/><br/>
 				<b>IMPORTANT:</b> You need to enabled mOTP first in FreeRADIUS => Settings (Default: unchecked)
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 			<enablefields>varusersmotpinitsecret,varusersmotppin,varusersmotpoffset</enablefields>
 		</field>

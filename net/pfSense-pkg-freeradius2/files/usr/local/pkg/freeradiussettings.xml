@@ -314,9 +314,15 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Enable Mobile-One-Time-Password</fielddescr>
+			<fielddescr>Mobile-One-Time-Password</fielddescr>
 			<fieldname>varsettingsmotpenable</fieldname>
-			<description><![CDATA[This enables the possibility to authenticate using a username and one-time-password. The client which generates OTP can be installed on various mobile device plattforms like Android and more. (Default: unchecked)]]></description>
+			<description>Enable Mobile-One-Time-Password Support (Default: unchecked)</description>
+			<sethelp>
+				<![CDATA[
+				This enables the possibility to authenticate using a username and one-time-password.
+				The client which generates OTP can be installed on various mobile device plattforms like Android and more.
+				]]>
+			</sethelp>
 			<type>checkbox</type>
 			<enablefields>varsettingsmotptimespan,varsettingsmotppasswordattempts,varsettingsmotpchecksumtype,varsettingsmotptokenlength</enablefields>
 		</field>
@@ -358,15 +364,28 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Enable Plain MAC Auth</fielddescr>
+			<fielddescr>Plain MAC Auth</fielddescr>
 			<fieldname>varsettingsenablemacauth</fieldname>
-			<description><![CDATA[This enables plain MAC auth. The Calling-Station-Id in an Access-Request is first checked against an authorized_macs list before all other authorization methods.	If your NAS is not able to convert the MAC in a 802.1X format then you could enable this. If you do not need this leave this disabled. (Default: unchecked)]]></description>
+			<description>Enable Plain MAC Authentication (Default: unchecked)</description>
+			<sethelp>
+				<![CDATA[
+				The Calling-Station-Id in an Access-Request is first checked against an authorized_macs list before all other authorization methods.
+				If the NAS is not able to convert the MAC address in a 802.1X format then this can be enabled.
+				Leave this disabled unless it is absolutely necessary.
+				]]>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>Disable Acct_Unique</fielddescr>
 			<fieldname>varsettingsenableacctunique</fieldname>
-			<description><![CDATA[This disables the "rlm_acct_unique" module in FreeRADIUS "preacct" section. By default this module is enabled but it causes some problems with counters. So if you use "Amount of Download/Upload/Time" then leave this checked. (Default: unchecked)]]></description>
+			<description>Disable the "rlm_acct_unique" module in FreeRADIUS "preacct" section. (Default: unchecked)</description>
+			<sethelp>
+				<![CDATA[
+				By default this module is enabled but it causes some problems with counters.
+				So if you use "Amount of Download/Upload/Time" then leave this checked.
+				]]>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 	</fields>

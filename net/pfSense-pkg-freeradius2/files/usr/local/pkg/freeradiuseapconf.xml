@@ -102,9 +102,15 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Disable weak EAP types</fielddescr>
+			<fielddescr>Weak EAP types</fielddescr>
 			<fieldname>vareapconfdisableweakeaptypes</fieldname>
-			<description><![CDATA[Here you can disable the weak EAP types MD5, GTC and LEAP. Check this to only allow stronger EAP types like TLS, TTLS, PEAP, MSCHAPv2 should be allowed. This option does not affect the "tunneled EAP sessions".]]></description>
+			<description>Disable weak EAP types MD5, GTC and LEAP</description>
+			<sethelp>
+				<![CDATA[
+				When enabled, only stronger EAP types like TLS, TTLS, PEAP, and MSCHAPv2 are allowed.
+				This option does not affect tunneled EAP sessions.
+				]]>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
@@ -166,10 +172,17 @@
 		<field>
 			<fielddescr>Choose Cert Manager</fielddescr>
 			<fieldname>vareapconfchoosecertmanager</fieldname>
-			<description><![CDATA[Choose your Cert manager. By default it is the freeradius cert manager because the server needs some default certs to start service. For more information take al look at "Certificates"-Tab.<br>
-									To use the firewall's built-in Certificate Manager you have to create a CA and an Server Certificate first. (SYSTEM -> Cert Manager).<br><br>
-									<b>unchecked</b>: FreeRADIUS Cert Manager (not recommended) (Default: unchecked)<br>
-									<b>checked</b>: Firewall Cert Manager (recommended)]]></description>
+			<description>Use pfSense Certificate Management (Default: unchecked)</description>
+			<sethelp>
+				<![CDATA[
+				Selects which system will manage certificates.
+				By default it is the freeradius cert manager because the server needs some default certs to start services.
+				For more information take al look at the Certificates Tab.<br>
+				To use the built-in Certificate Manager on pfSense, first create a CA and a Server Certificate at System > Cert Manager.<br><br>
+				<b>unchecked</b>: FreeRADIUS Cert Manager (not recommended)<br>
+				<b>checked</b>: Firewall Cert Manager (recommended)
+				]]>
+			</sethelp>
 			<type>checkbox</type>
 			<enablefields>ssl_ca_cert,ssl_ca_crl,ssl_server_cert</enablefields>
 		</field>
@@ -256,7 +269,8 @@
 		<field>
 			<fielddescr>Check Cert Issuer</fielddescr>
 			<fieldname>vareapconfenablecheckcertissuer</fieldname>
-			<description><![CDATA[If this is enabled then the server/client certificate must match the CA issuer. (Default: unchecked)]]></description>
+			<description>Validate the certificate aginst the CA (Default: unchecked)</description>
+			<sethelp>When enabled the server/client certificate must match the CA issuer.</sethelp>
 			<type>checkbox</type>
 			<enablefields>vareapconfcountry,vareapconfstate,vareapconfcity,vareapconforganization,vareapconfemail,vareapconfcommonname</enablefields>
 		</field>
@@ -299,7 +313,12 @@
 		<field>
 			<fielddescr>Check Client Certificate CN</fielddescr>
 			<fieldname>vareapconfenablecheckcertcn</fieldname>
-			<description><![CDATA[If this is enabled then the common name of the client certificate must match the username you set in <b>FreeRADIUS => Users</b>. (Default: unchecked)]]></description>
+			<description>Validate the Client Certificate Common Name (Default: unchecked)</description>
+			<sethelp>
+				<![CDATA[
+				When enabled, the Common Name of the client certificate must match the username set in <b>FreeRADIUS => Users</b>.
+				]]>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 		
