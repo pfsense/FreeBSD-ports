@@ -93,38 +93,41 @@
 		<field>
 			<fielddescr>-P0</fielddescr>
 			<fieldname>noping</fieldname>
-			<description>
+			<description>Do not attempt to ping hosts before scanning</description>
+			<sethelp>
 				<![CDATA[
-				Do not try to ping hosts at all before scanning them. This allows the scanning of networks that don't allow ICMP echo requests (or responses) through their firewall.<br/>
+				This allows the scanning of networks that don't allow ICMP echo requests (or responses) through their firewall.<br/>
 				microsoft.com is an example of such a network, and thus you should always use -P0 or -PT80 when port scanning microsoft.com.<br/>
 				Note the "ping" in this context may involve more than the traditional ICMP echo request packet. Nmap supports many such probes, including arbitrary combinations of TCP, UDP, and ICMP probes.<br/>
 				By default, Nmap sends an ICMP echo request and a TCP ACK packet to port 80.
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>-sV</fielddescr>
 			<fieldname>servicever</fieldname>
-			<description>
+			<description>Attempt to identify service versions</description>
+			<sethelp>
 				<![CDATA[
-				Try to identify service versions. After TCP and/or UDP ports are discovered using one of the other scan methods, version detection communicates with those ports to try and determine more about what is actually running.<br/>
+				After TCP and/or UDP ports are discovered using one of the other scan methods, version detection communicates with those ports to try and determine more about what is actually running.<br/>
 				A file called nmap-service-probes is used to determine the best probes for detecting various services and the match strings to expect.<br/>
 				Nmap tries to determine the service protocol (e.g. ftp, ssh, telnet, http), the application name (e.g. ISC Bind, Apache httpd, Solaris telnetd), the version number, and sometimes miscellaneous details like whether an X server is open to connections or the SSH protocol version).
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>-O</fielddescr>
 			<fieldname>osdetect</fieldname>
-			<description>
+			<description>Enable Operating System detection</description>
+			<sethelp>
 				<![CDATA[
-				Turn on OS detection. This option activates remote host identification via TCP/IP fingerprinting.<br/>
-				In other words, it uses a bunch of techniques to detect subtleties in the underlying operating system network stack of the computers you are scanning.<br/>
-				It uses this information to create a "fingerprint" which it compares with its database of known OS fingerprints (the nmap-os-fingerprints file) to decide what type of system you are scanning.
+				Activates remote host identification via TCP/IP fingerprinting.<br/>
+				In other words, it uses techniques to detect subtleties in the underlying operating system network stack of the computers being scanned.<br/>
+				It uses this information to create a "fingerprint" which it compares with its database of known OS fingerprints (the nmap-os-fingerprints file) to determine the operating system of the target host.
 				]]>
-			</description>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 	</fields>
