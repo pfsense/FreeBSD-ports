@@ -224,9 +224,9 @@ icap_client_username_header X-Authenticated-User
 icap_preview_enable on
 icap_preview_size 1024
 
-icap_service service_avi_req reqmod_precache icap://[::1]:1344/squid_clamav bypass=off
+icap_service service_avi_req reqmod_precache icap://127.0.0.1:1344/squid_clamav bypass=off
 adaptation_access service_avi_req allow all
-icap_service service_avi_resp respmod_precache icap://[::1]:1344/squid_clamav bypass=on
+icap_service service_avi_resp respmod_precache icap://127.0.0.1:1344/squid_clamav bypass=on
 adaptation_access service_avi_resp allow all
 
 EOF;
@@ -659,7 +659,7 @@ if [ ! -f /var/db/clamav/main.cvd -a ! -f /var/db/clamav/main.cld ]; then
         exit 1
 fi
 
-{$squid_base}/bin/clamd --config-file="{$squid_base}/local/etc/clamd.conf"
+{$squid_base}/sbin/clamd --config-file="{$squid_base}/etc/clamd.conf"
 
 EOD;
 
