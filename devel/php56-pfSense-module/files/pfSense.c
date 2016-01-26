@@ -1884,7 +1884,7 @@ PHP_FUNCTION(pfSense_ngctl_name) {
 	}
 
 	/* Send message */
-	if (NgNameNode(PFSENSE_G(csock), ifname, newifname) < 0)
+	if (NgNameNode(PFSENSE_G(csock), ifname, "%s", newifname) < 0)
 		RETURN_NULL();
 
 	RETURN_TRUE;
