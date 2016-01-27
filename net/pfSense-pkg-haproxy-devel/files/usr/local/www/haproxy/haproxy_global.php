@@ -209,7 +209,7 @@ $section->addInput(new Form_StaticText(
 
 $maxfiles = `sysctl kern.maxfiles | awk '{ print $2 }'`;
 $maxfilesperproc = `sysctl kern.maxfilesperproc | awk '{ print $2 }'`;
-$memusage = trim(`ps auxw | grep haproxy | grep -v grep | awk '{ print $5 }'`);
+$memusage = trim(`ps auxw | grep "haproxy -f" | grep -v grep | awk '{ print $5 }'`);
 if ($memusage) {
 	$memusage = "Current memory usage: <b>{$memusage} kB.</b><br/>";
 }
