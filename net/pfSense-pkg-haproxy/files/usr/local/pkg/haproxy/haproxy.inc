@@ -441,89 +441,6 @@ function haproxy_version() {
 	return $haproxy_version;
 }
 
-function haproxy_css() {
-	if (!file_exists("/usr/local/www/bootstrap"))
-		return;
-	// quick fix to look a bit decent on bootstrapped pfSense..
-	echo <<<EOD
-<style type="text/css">
-.listtopic {
-	border-right: 1px solid #999999;
-	font-size: 11px;
-	background-color: #990000;
-	padding-right: 16px;
-	padding-left: 6px;
-	color: #FFFFFF;
-	font-weight: bold;
-	padding-top: 5px;
-	padding-bottom: 5px;
-}
-.tabcont {
-	background-color: #DDDDDD;
-	padding-right: 12px;
-	padding-left: 12px;
-	padding-top: 12px;
-	padding-bottom: 12px;
-}
-.vtable {
-	border-bottom: 1px solid #999999;
-}
-.vncell {
-	background-color: #DDDDDD;
-	padding-right: 20px;
-	padding-left: 8px;
-	border-bottom: 1px solid #999999;
-}
-.vncellreq {
-	background-color: #DDDDDD;
-	padding-right: 20px;
-	padding-left: 8px;
-	font-weight: bold;
-	border-bottom: 1px solid #999999;
-}
-.listhdrr {
-	background-color: #BBBBBB;
-	padding-right: 6px;
-	padding-left: 6px;
-	font-weight: bold;
-	border-right: 1px solid #999999;
-	border-bottom: 1px solid #999999;
-	font-size: 11px;
-	padding-top: 5px;
-	padding-bottom: 5px;
-}
-.listr {
-	background-color: #FFFFFF;
-	border-right: 1px solid #999999;
-	border-bottom: 1px solid #999999;
-	font-size: 11px;
-	padding-right: 6px;
-	padding-left: 6px;
-	padding-top: 4px;
-	padding-bottom: 4px;
-}
-.listlr {
-	background-color: #FFFFFF;
-	border-right: 1px solid #999999;
-	border-bottom: 1px solid #999999;
-	border-left: 1px solid #999999;
-	font-size: 11px;
-	padding-right: 6px;
-	padding-left: 6px;
-	padding-top: 4px;
-	padding-bottom: 4px;
-}
-.tabcont {
-	background-color: #DDDDDD;
-	padding-right: 12px;
-	padding-left: 12px;
-	padding-top: 12px;
-	padding-bottom: 12px;
-}
-</style>
-EOD;
-}
-
 function haproxy_portoralias_to_list($port_or_alias) {
 	// input: a port or aliasname: 80 https MyPortAlias
 	// returns: a array of ports and portranges 80 443 8000:8010
@@ -1805,7 +1722,6 @@ function haproxy_writeconf($configpath) {
 			
 			$transparent_clientip = false;
 			foreach ($bind['config'] as $frontend) {
-				//todo: check also use_backend actions
 				if (frontend_usetransparentbackend($frontend)) {
 					$transparent_clientip = true;
 					break;

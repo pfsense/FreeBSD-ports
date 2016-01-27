@@ -53,8 +53,9 @@ if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
 
 $a_backend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 $a_pools = &$config['installedpackages']['haproxy']['ha_pools']['item'];
-if (!is_array($a_pools))
+if (!is_array($a_pools)) {
 	$a_pools = array();
+}
 uasort($a_pools, haproxy_compareByName);
 
 global $simplefields;
@@ -65,13 +66,15 @@ $simplefields = array('name','desc','status','secondary','primary_frontend','typ
 	'socket-stats',
 	'dontlognull','dontlog-normal','log-separate-errors','log-detailed');
 
-if (isset($_POST['id']))
+if (isset($_POST['id'])) {
 	$id = $_POST['id'];
-else
+} else {
 	$id = $_GET['id'];
+}
 
-if (isset($_GET['dup']))
+if (isset($_GET['dup'])) {
 	$id = $_GET['dup'];
+}
 
 $id = get_frontend_id($id);
 
@@ -299,8 +302,9 @@ if (isset($id) && $a_backend[$id]) {
 	$pconfig['a_errorfiles']=&$a_backend[$id]['a_errorfiles']['item'];
 	
 	$pconfig['advanced'] = base64_decode($a_backend[$id]['advanced']);
-	foreach($simplefields as $stat)
+	foreach($simplefields as $stat) {
 		$pconfig[$stat] = $a_backend[$id][$stat];
+	}
 }
 
 if (isset($_GET['dup'])) {
@@ -327,32 +331,36 @@ if ($_POST) {
 		$reqdfieldsn = explode(",", "Name");
 	}
 	
-	$pf_version=substr(trim(file_get_contents("/etc/version")),0,3);
-	if ($pf_version < 2.1)
-		$input_errors = eval('do_input_validation($_POST, $reqdfields, $reqdfieldsn, &$input_errors); return $input_errors;');
-	else
-		do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
+	$pf_version=substr(trim(file_get_contents("/etc/version")), 0, 3);
+	do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
 
-	if (preg_match("/[^a-zA-Z0-9\.\-_]/", $_POST['name']))
+	if (preg_match("/[^a-zA-Z0-9\.\-_]/", $_POST['name'])) {
 		$input_errors[] = "The field 'Name' contains invalid characters.";
+	}
 
 	if ($pconfig['secondary'] != "yes") {
-		if ($_POST['max_connections'] && !is_numeric($_POST['max_connections']))
+		if ($_POST['max_connections'] && !is_numeric($_POST['max_connections'])) {
 			$input_errors[] = "The field 'Max connections' value is not a number.";
+		}
 
 		$ports = split(",", $_POST['port'] . ",");
-		foreach($ports as $port)
-			if ($port && !is_numeric($port) && !is_portoralias($port))
+		foreach($ports as $port) {
+			if ($port && !is_numeric($port) && !is_portoralias($port)) {
 				$input_errors[] = "The field 'Port' value '".htmlspecialchars($port)."' is not a number or alias thereof.";
+			}
+		}
 
-		if ($_POST['client_timeout'] !== "" && !is_numeric($_POST['client_timeout']))
+		if ($_POST['client_timeout'] !== "" && !is_numeric($_POST['client_timeout'])) {
 			$input_errors[] = "The field 'Client timeout' value is not a number.";
+		}
 	}
 
 	/* Ensure that our pool names are unique */
-	for ($i=0; isset($config['installedpackages']['haproxy']['ha_backends']['item'][$i]); $i++)
-		if (($_POST['name'] == $config['installedpackages']['haproxy']['ha_backends']['item'][$i]['name']) && ($i != $id))
+	for ($i=0; isset($config['installedpackages']['haproxy']['ha_backends']['item'][$i]); $i++) {
+		if (($_POST['name'] == $config['installedpackages']['haproxy']['ha_backends']['item'][$i]['name']) && ($i != $id)) {
 			$input_errors[] = "This frontend name has already been used. Frontend names must be unique. $i != $id";
+		}
+	}
 
 	$a_actionitems = $htmllist_actions->haproxy_htmllist_get_values();
 	$pconfig['a_actionitems'] = $a_actionitems;
@@ -376,36 +384,44 @@ if ($_POST) {
 		$acl_value = $acl['value'];
 
 		$acltype = haproxy_find_acl($acl['expression']);
-		if (preg_match("/[^a-zA-Z0-9\.\-_]/", $acl_name))
+		if (preg_match("/[^a-zA-Z0-9\.\-_]/", $acl_name)) {
 			$input_errors[] = "The field 'Name' contains invalid characters.";
+		}
 
-		if (!isset($acltype['novalue']))
-			if (!preg_match("/.{1,}/", $acl_value))
+		if (!isset($acltype['novalue'])) {
+			if (!preg_match("/.{1,}/", $acl_value)) {
 				$input_errors[] = "The field 'Value' is required.";
+			}
+		}
 
-		if (!preg_match("/.{2,}/", $acl_name))
+		if (!preg_match("/.{2,}/", $acl_name)) {
 			$input_errors[] = "The field 'Name' is required with at least 2 characters.";
+		}
 	}
 	foreach($a_extaddr as $extaddr) {
 		$ports = explode(",",$extaddr['extaddr_port']);
 		foreach($ports as $port){
-			if ($port && !is_numeric($port) && !is_portoralias($port))
+			if ($port && !is_numeric($port) && !is_portoralias($port)) {
 				$input_errors[] = "The field 'Port' value '".htmlspecialchars($port)."' is not a number or alias thereof.";
+			}
 		}
 	
 		if ($extaddr['extaddr'] == 'custom') {
 			$extaddr_custom = $extaddr['extaddr_custom'];
-			if (empty($extaddr_custom) || (!is_ipaddroralias($extaddr_custom)))
+			if (empty($extaddr_custom) || (!is_ipaddroralias($extaddr_custom))) {
 				$input_errors[] = sprintf(gettext("%s is not a valid source IP address or alias."),$extaddr_custom);
+			}
 		}
 	}
 	if (!$input_errors) {
 		$backend = array();
-		if(isset($id) && $a_backend[$id])
+		if(isset($id) && $a_backend[$id]) {
 			$backend = $a_backend[$id];
+		}
 			
-		if($backend['name'] != "")
+		if($backend['name'] != "") {
 			$changedesc .= " modified '{$backend['name']}' pool:";
+		}
 			
 		// update references to this primary frontend
 		if ($backend['name'] != $_POST['name']) {
@@ -416,8 +432,9 @@ if ($_POST) {
 			}
 		}
 		
-		foreach($simplefields as $stat)
+		foreach($simplefields as $stat) {
 			update_if_changed($stat, $backend[$stat], $_POST[$stat]);
+		}
 		
 		update_if_changed("advanced", $backend['advanced'], base64_encode($_POST['advanced']));
 		$backend['ha_acls']['item'] = $a_acl;
@@ -451,8 +468,9 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "frontend");
 
 $counter = 0;
 
-if (!isset($_GET['dup']))
+if (!isset($_GET['dup'])) {
 	$excludefrontend = $pconfig['name'];
+}
 $primaryfrontends = get_haproxy_frontends($excludefrontend);
 
 ?>
@@ -467,7 +485,7 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 
 <script type="text/javascript">
 	function htmllist_get_select_options(tableId, fieldname, itemstable) {
-		if (tableId == 'table_acls' && fieldname == 'expression') {
+		if (tableId === 'table_acls' && fieldname === 'expression') {
 			var type;
 			var secondary = d.getElementById("secondary");
 			var primary_frontend = d.getElementById("primary_frontend");		
@@ -479,9 +497,8 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 			result = Object.create(null);
 			for (var key in itemstable) {
 				newitem = itemstable[key];
-				if (newitem['mode'] == type || newitem['mode'] == "") {
+				if (newitem['mode'] === type || newitem['mode'] === "") {
 					result[key] = newitem;
-					result[key]['name'] = result[key]['name'];
 				}
 			}
 			return result;
@@ -577,9 +594,10 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 		}
 	}
 </script>
-<?php if ($input_errors) print_input_errors($input_errors); ?>
-
-<?
+<?php
+if ($input_errors) {
+	print_input_errors($input_errors); 
+}
 $form = new Form;
 
 $section = new Form_Section_class("Edit HAProxy Frontend");
@@ -938,7 +956,7 @@ var address_array = <?= json_encode(get_alias_list(array("host", "network", "ope
 events.push(function() {
 
 
-<?
+<?php
 	// On gui descriptions when a closetype has been selected..
 	phparray_to_javascriptarray($a_closetypes, "closetypes", Array('/*', '/*/name', '/*/descr'));
 	
@@ -993,11 +1011,11 @@ events.push(function() {
 });
 
 	function table_acls_listitem_change(tableId, fieldId, rowNr, field) {
-		if (fieldId = "toggle_details") {
+		if (fieldId === "toggle_details") {
 			fieldId = "expression";
 			field = d.getElementById(tableId+"expression"+rowNr);
 		}
-		if (fieldId = "expression") {
+		if (fieldId === "expression") {
 			var actiontype = field.value;
 			
 			var table = d.getElementById(tableId);
@@ -1007,7 +1025,7 @@ events.push(function() {
 				for(var fieldkey in fields){
 					var fieldname = fields[fieldkey]['name'];
 					var rowid = "tr_edititemdetails_"+rowNr+"_"+actionkey+fieldname;
-					if (actionkey == actiontype) {
+					if (actionkey === actiontype) {
 						$("#"+rowid).removeClass("hidden");
 					} else {
 						$("#"+rowid).addClass("hidden");
@@ -1018,11 +1036,11 @@ events.push(function() {
 	}
 	
 	function table_actions_listitem_change(tableId, fieldId, rowNr, field) {
-		if (fieldId = "toggle_details") {
+		if (fieldId === "toggle_details") {
 			fieldId = "action";
 			field = d.getElementById(tableId+"action"+rowNr);
 		}
-		if (fieldId = "action") {
+		if (fieldId === "action") {
 			var actiontype = field.value;
 			
 			var table = d.getElementById(tableId);
@@ -1032,7 +1050,7 @@ events.push(function() {
 				for(var fieldkey in fields){
 					var fieldname = fields[fieldkey]['name'];
 					var rowid = "tr_edititemdetails_"+rowNr+"_"+actionkey+fieldname;
-					if (actionkey == actiontype) {
+					if (actionkey === actiontype) {
 						$("#"+rowid).removeClass("hidden");
 					} else {
 						$("#"+rowid).addClass("hidden");
@@ -1054,13 +1072,13 @@ events.push(function() {
 			}
 			
 			function table_extaddr_listitem_change(tableId, fieldId, rowNr, field) {
-				if (fieldId == "extaddr" || fieldId == "") {
+				if (fieldId === "extaddr" || fieldId === "") {
 					field = field || document.getElementById(tableId+"extaddr"+rowNr);
 					customEdit = document.getElementById(tableId+"extaddr_custom"+rowNr);
-					customdisabled = field.value == "custom" ? 0 : 1;
+					customdisabled = field.value === "custom" ? 0 : 1;
 					customEdit.disabled = customdisabled;
 				}
-				if (fieldId == "extaddr_ssl") {
+				if (fieldId === "extaddr_ssl") {
 					updatevisibility();
 				}
 			}
