@@ -224,7 +224,7 @@ if ($savemsg) {
 	print_info_box($savemsg);
 }
 if (file_exists($d_haproxyconfdirty_path)) {
-	print_info_box_np("The haproxy configuration has been changed.<br/>You must apply the changes in order for them to take effect.");
+	print_apply_box(sprintf(gettext("The haproxy configuration has been changed.%sYou must apply the changes in order for them to take effect."), "<br/>"));
 }
 haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "templates");
 ?>

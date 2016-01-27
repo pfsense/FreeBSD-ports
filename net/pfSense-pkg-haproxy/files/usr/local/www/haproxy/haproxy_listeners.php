@@ -104,8 +104,9 @@ if ($_POST) {
 
 	if ($_POST['apply']) {
 		$result = haproxy_check_and_run($savemsg, true);
-		if ($result)
+		if ($result) {
 			unlink_if_exists($d_haproxyconfdirty_path);
+		}
 	} elseif ($_POST['del_x']) {
 		/* delete selected rules */
 		$deleted = false;
@@ -207,7 +208,7 @@ if ($savemsg) {
 
 $display_apply = file_exists($d_haproxyconfdirty_path) ? "" : "none";
 echo "<div id='showapplysettings' style='display: {$display_apply};'>";
-print_info_box_np("The haproxy configuration has been changed.<br/>You must apply the changes in order for them to take effect.");
+print_apply_box(sprintf(gettext("The haproxy configuration has been changed.%sYou must apply the changes in order for them to take effect."), "<br/>"));
 echo "</div>";
 
 haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "frontend");
@@ -237,7 +238,7 @@ function js_callback(req) {
 	}
 }
 </script>
-<?
+<?php
 	
 	function sort_sharedfrontends(&$a, &$b) {
 		// make sure the 'primary frontend' is the first in the array, after that sort by name.
@@ -280,7 +281,7 @@ function js_callback(req) {
 					</tr>
 				</thead>
 				<tbody class="user-entries">
-<?
+<?php
 		$textgray = "";
 		$first = true;		
 		$last_frontend_shared = false;
@@ -310,7 +311,7 @@ function js_callback(req) {
 				  <?endif?>
 				  </td>
 				  <td>
-					<?
+					<?php
 						if ($frontend['status']=='disabled'){
 							$iconfn = "disabled";
 						} else {
@@ -321,7 +322,7 @@ function js_callback(req) {
 					</a>
 				  </td>
 				  <td>
-					<? 
+					<?php
 					$acls = get_frontend_acls($frontend);
 					$isaclset = "";
 					foreach ($acls as $acl) {
@@ -361,7 +362,7 @@ function js_callback(req) {
 					<?=$frontend['desc'];?>
 				  </td>
 				  <td>
-				    <?
+				    <?php
 						$first = true;
 						foreach($frontend['ipport'] as $addr) {
 							//if (!$first)
@@ -377,7 +378,7 @@ function js_callback(req) {
 					?>
 				  </td>
 				  <td>
-				  <?
+				  <?php
 					if ($frontend['type'] == 'http') {
 						$mainfrontend = get_primaryfrontend($frontend);
 						$sslused = get_frontend_uses_ssl($mainfrontend);
@@ -392,7 +393,7 @@ function js_callback(req) {
 				  ?>
 				  </td>
 				  <td>
-					<?
+					<?php
 					if (is_array($frontend['a_actionitems']['item'])) {
 						foreach ($frontend['a_actionitems']['item'] as $actionitem) {
 							if ($actionitem['action'] == "use_backend") {

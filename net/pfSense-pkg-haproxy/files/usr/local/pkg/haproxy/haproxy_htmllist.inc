@@ -757,7 +757,7 @@ function hideElement(element, hide) {
 //]]>
 </script>
 
-<?
+<?php
 }
 
 ?>
