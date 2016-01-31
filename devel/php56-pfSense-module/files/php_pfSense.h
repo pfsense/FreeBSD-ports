@@ -101,6 +101,7 @@ PHP_MSHUTDOWN_FUNCTION(pfSense_socket_close);
 PHP_FUNCTION(pfSense_get_interface_info);
 PHP_FUNCTION(pfSense_get_interface_stats);
 PHP_FUNCTION(pfSense_get_pf_rules);
+PHP_FUNCTION(pfSense_get_pf_states);
 PHP_FUNCTION(pfSense_get_pf_stats);
 PHP_FUNCTION(pfSense_get_os_hw_data);
 PHP_FUNCTION(pfSense_get_os_kern_data);

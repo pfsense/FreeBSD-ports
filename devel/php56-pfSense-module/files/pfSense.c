@@ -90,6 +90,48 @@ IS ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+#include <sys/endian.h>
+#include <sys/ioctl.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/sysctl.h>
+
+#include <arpa/inet.h>
+#include <net/ethernet.h>
+#include <net/if.h>
+#include <net/if_bridgevar.h>
+#include <net/if_dl.h>
+#include <net/if_mib.h>
+#include <net/if_types.h>
+#include <net/if_var.h>
+#include <net/if_vlan_var.h>
+#include <net/pfvar.h>
+#include <net/route.h>
+#include <netgraph/ng_message.h>
+#include <netgraph/ng_ether.h>
+#include <netinet/if_ether.h>
+#include <netinet/in.h>
+#include <netinet/in_var.h>
+#include <netinet/ip_fw.h>
+#include <netinet/tcp_fsm.h>
+#include <netinet6/in6_var.h>
+
+#include <vm/vm_param.h>
+
+#include <fcntl.h>
+#include <glob.h>
+#include <inttypes.h>
+#include <ifaddrs.h>
+#include <libgen.h>
+#include <netgraph.h>
+#include <netdb.h>
+#include <poll.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
+#include <termios.h>
+#include <unistd.h>
+
 #define IS_EXT_MODULE
 
 #ifdef HAVE_CONFIG_H
@@ -99,52 +141,6 @@ IS ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "php.h"
 #include "php_ini.h"
 #include "php_pfSense.h"
-
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <ifaddrs.h>
-#include <net/ethernet.h>
-#include <net/if_types.h>
-#include <net/if.h>
-#include <net/if_var.h>
-#include <net/if_vlan_var.h>
-#include <net/if_dl.h>
-#include <net/if_mib.h>
-#include <net/if_bridgevar.h>
-#include <netinet/in.h>
-#include <netinet/in_var.h>
-#include <netinet6/in6_var.h>
-#include <net/pfvar.h>
-#include <net/route.h>
-
-#include <netinet/ip_fw.h>
-#include <sys/ioctl.h>
-#include <sys/sysctl.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <net/ethernet.h>
-#include <netinet/if_ether.h>
-
-#include <netgraph/ng_message.h>
-#include <netgraph/ng_ether.h>
-
-#include <netinet/ip_fw.h>
-
-#include <vm/vm_param.h>
-
-#include <fcntl.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <strings.h>
-
-#include <glob.h>
-#include <termios.h>
-#include <poll.h>
-
-#include <netgraph.h>
-#include <netdb.h>
-#include <libgen.h>
 
 int pfSense_dhcpd;
 
@@ -156,6 +152,7 @@ static zend_function_entry pfSense_functions[] = {
     PHP_FE(pfSense_getall_interface_addresses, NULL)
     PHP_FE(pfSense_get_interface_stats, NULL)
     PHP_FE(pfSense_get_pf_rules, NULL)
+    PHP_FE(pfSense_get_pf_states, NULL)
     PHP_FE(pfSense_get_pf_stats, NULL)
     PHP_FE(pfSense_get_os_hw_data, NULL)
     PHP_FE(pfSense_get_os_kern_data, NULL)
@@ -275,6 +272,168 @@ prefix(void *val, int size)
 		if (name[byte])
 			return(0);
 	return (plen);
+}
+
+static int
+get_pf_states(int dev, struct pfioc_states *ps)
+{
+	char *inbuf, *newinbuf;
+	unsigned int len;
+
+	len = 0;
+	inbuf = newinbuf = NULL;
+	memset(ps, 0, sizeof(*ps));
+	for (;;) {
+		ps->ps_len = len;
+		if (len) {
+			newinbuf = realloc(inbuf, len);
+			if (newinbuf == NULL)
+				return (-1);
+			ps->ps_buf = inbuf = newinbuf;
+		}
+		if (ioctl(dev, DIOCGETSTATES, ps) < 0) {
+			free(inbuf);
+			return (-1);
+		}
+		if (ps->ps_len == 0)
+			break;		/* no states */
+		if (ps->ps_len + sizeof(struct pfioc_states) < len)
+			break;
+		if (len == 0 && ps->ps_len != 0)
+			len = ps->ps_len;
+		len *= 2;
+	}
+
+	if (ps->ps_len == 0)
+		free(inbuf);
+
+	return (0);
+}
+
+static int
+unmask(struct pf_addr *m, sa_family_t af)
+{
+	int i = 31, j = 0, b = 0;
+	uint32_t tmp;
+
+	while (j < 4 && m->addr32[j] == 0xffffffff) {
+		b += 32;
+		j++;
+	}
+	if (j < 4) {
+		tmp = ntohl(m->addr32[j]);
+		for (i = 31; tmp & (1 << i); --i)
+			b++;
+	}
+	return (b);
+}
+
+static void
+pf_print_addr(struct pf_addr_wrap *addr, sa_family_t af, char *buf, size_t bufsz)
+{
+	char tmp[512];
+
+	memset(tmp, 0, sizeof(tmp));
+	switch (addr->type) {
+	case PF_ADDR_DYNIFTL:
+		strlcat(buf, "(", bufsz);
+		strlcat(buf, addr->v.ifname, bufsz);
+		if (addr->iflags & PFI_AFLAG_NETWORK)
+			strlcat(buf, ":network", bufsz);
+		if (addr->iflags & PFI_AFLAG_BROADCAST)
+			strlcat(buf, ":broadcast", bufsz);
+		if (addr->iflags & PFI_AFLAG_PEER)
+			strlcat(buf, ":peer", bufsz);
+		if (addr->iflags & PFI_AFLAG_NOALIAS)
+			strlcat(buf, ":0", bufsz);
+		if (addr->p.dyncnt <= 0)
+			strlcat(buf, ":*", bufsz);
+		else {
+			printf(tmp, sizeof(tmp) - 1, ":%d", addr->p.dyncnt);
+			strlcat(buf, tmp, bufsz);
+		}
+		strlcat(buf, ")", bufsz);
+		break;
+	case PF_ADDR_TABLE:
+		if (addr->p.tblcnt == -1)
+			snprintf(tmp, sizeof(tmp) - 1, "<%s:*>", addr->v.tblname);
+		else
+			snprintf(tmp, sizeof(tmp) - 1, "<%s:%d>", addr->v.tblname,
+			    addr->p.tblcnt);
+		strlcat(buf, tmp, bufsz);
+		return;
+	case PF_ADDR_RANGE:
+		if (inet_ntop(af, &addr->v.a.addr, tmp, sizeof(tmp)) == NULL)
+			strlcat(buf, "?", bufsz);
+		else
+			strlcat(buf, tmp, bufsz);
+		strlcat(buf, " - ", bufsz);
+		if (inet_ntop(af, &addr->v.a.mask, tmp, sizeof(tmp)) == NULL)
+			strlcat(buf, "?", bufsz);
+		else
+			strlcat(buf, tmp, bufsz);
+		break;
+	case PF_ADDR_ADDRMASK:
+		if (PF_AZERO(&addr->v.a.addr, AF_INET6) &&
+		    PF_AZERO(&addr->v.a.mask, AF_INET6))
+			strlcat(buf, "any", bufsz);
+		else {
+			if (inet_ntop(af, &addr->v.a.addr, tmp,
+			    sizeof(tmp)) == NULL)
+				strlcat(buf, "?", bufsz);
+			else
+				strlcat(buf, tmp, bufsz);
+		}
+		break;
+	case PF_ADDR_NOROUTE:
+		strlcat(buf, "no-route", bufsz);
+		return;
+	case PF_ADDR_URPFFAILED:
+		strlcat(buf, "urpf-failed", bufsz);
+		return;
+	default:
+		strlcat(buf, "?", bufsz);
+		return;
+	}
+
+	/* mask if not _both_ address and mask are zero */
+	if (addr->type != PF_ADDR_RANGE &&
+	    !(PF_AZERO(&addr->v.a.addr, AF_INET6) &&
+	    PF_AZERO(&addr->v.a.mask, AF_INET6))) {
+		int bits = unmask(&addr->v.a.mask, af);
+
+		if (bits != (af == AF_INET ? 32 : 128)) {
+			snprintf(tmp, sizeof(tmp) - 1, "/%d", bits);
+			strlcat(buf, tmp, bufsz);
+		}
+	}
+}
+
+static void
+pf_print_host(struct pf_addr *addr, u_int16_t port, sa_family_t af, char *buf,
+	size_t bufsz)
+{
+	char tmp[128];
+	struct pf_addr_wrap aw;
+
+	memset(&aw, 0, sizeof(aw));
+	aw.v.a.addr = *addr;
+	if (af == AF_INET)
+		aw.v.a.mask.addr32[0] = 0xffffffff;
+	else {
+		memset(&aw.v.a.mask, 0xff, sizeof(aw.v.a.mask));
+		af = AF_INET6;
+	}
+	pf_print_addr(&aw, af, buf, bufsz);
+
+	if (port) {
+		memset(tmp, 0, sizeof(tmp));
+		if (af == AF_INET)
+			snprintf(tmp, sizeof(tmp) - 1, ":%u", ntohs(port));
+		else
+			snprintf(tmp, sizeof(tmp) - 1, "[%u]", ntohs(port));
+		strlcat(buf, tmp, bufsz);
+	}
 }
 
 PHP_MINIT_FUNCTION(pfSense_socket)
@@ -2227,6 +2386,236 @@ PHP_FUNCTION(pfSense_get_pf_rules) {
 		add_assoc_long(array, "state creations", (long)pr.rule.u_states_tot);
 		add_index_zval(return_value, pr.rule.nr, array);
 	}
+	close(dev);
+}
+
+PHP_FUNCTION(pfSense_get_pf_states) {
+	char buf[128], *key;
+	int dev, filter_if, filter_rl, found, i, min, sec;
+	struct pfioc_states ps;
+	struct pfsync_state *s;
+	struct pfsync_state_peer *src, *dst;
+	struct pfsync_state_key *sk, *nk;
+	struct protoent *p;
+	uint32_t expire, creation;
+	uint64_t bytes[2], id, packets[2];
+	unsigned int key_len;
+	unsigned long index;
+	zval *array, **data1, **data2, *zvar;
+	HashTable *hash1, *hash2;
+	HashPosition h1p, h2p;
+
+	filter_if = filter_rl = 0;
+	zvar = NULL;
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|z", &zvar) == FAILURE)
+		RETURN_NULL();
+	if (zvar != NULL && Z_TYPE_P(zvar) == IS_ARRAY) {
+		hash1 = Z_ARRVAL_P(zvar);
+		for (zend_hash_internal_pointer_reset_ex(hash1, &h1p);
+		    zend_hash_get_current_data_ex(hash1, (void**)&data1, &h1p) == SUCCESS;
+		    zend_hash_move_forward_ex(hash1, &h1p)) {
+			if (zend_hash_get_current_key_ex(hash1, &key, &key_len,
+			    &index, 0, &h1p) != HASH_KEY_IS_LONG ||
+			    Z_TYPE_PP(data1) != IS_ARRAY) {
+				RETURN_NULL();
+			}
+			hash2 = Z_ARRVAL_PP(data1);
+			zend_hash_internal_pointer_reset_ex(hash2, &h2p);
+			if (zend_hash_get_current_data_ex(hash2, (void**)&data2, &h2p) != SUCCESS)
+				RETURN_NULL();
+
+			if (zend_hash_get_current_key_ex(hash2, &key, &key_len,
+			    &index, 0, &h2p) != HASH_KEY_IS_STRING) {
+				RETURN_NULL();
+			}
+			if (key_len == 10 && strcasecmp(key, "interface") == 0 &&
+			    Z_TYPE_PP(data2) == IS_STRING) {
+				filter_if = 1;
+			} else if (key_len == 7 && strcasecmp(key, "ruleid") == 0 &&
+			    Z_TYPE_PP(data2) == IS_LONG) {
+				filter_rl = 1;
+			} else
+				RETURN_NULL();
+		}
+		if (filter_if && filter_rl)
+			RETURN_NULL();
+	}
+
+	if ((dev = open("/dev/pf", O_RDWR)) < 0)
+		RETURN_NULL();
+	if (get_pf_states(dev, &ps) == -1) {
+		close(dev);
+		RETURN_NULL();
+	}
+	if (ps.ps_len == 0) {
+		free(ps.ps_buf);
+		close(dev);
+		RETURN_NULL();
+	}
+
+	s = ps.ps_states;
+	array_init(return_value);
+	for (i = 0; i < ps.ps_len; i += sizeof(*s), s++) {
+		if (filter_if || filter_rl) {
+			found = 0;
+			hash1 = Z_ARRVAL_P(zvar);
+			for (zend_hash_internal_pointer_reset_ex(hash1, &h1p);
+			    zend_hash_get_current_data_ex(hash1, (void**)&data1, &h1p) == SUCCESS;
+			    zend_hash_move_forward_ex(hash1, &h1p)) {
+				hash2 = Z_ARRVAL_PP(data1);
+				zend_hash_internal_pointer_reset_ex(hash2, &h2p);
+				if (zend_hash_get_current_data_ex(hash2, (void**)&data2, &h2p) != SUCCESS) {
+					free(ps.ps_buf);
+					close(dev);
+					RETURN_NULL();
+				}
+				if (filter_if) {
+					if (strcasecmp(s->ifname, Z_STRVAL_PP(data2)) == 0)
+						found = 1;
+				} else if (filter_rl) {
+					if (ntohl(s->rule) != -1 &&
+					    (long)ntohl(s->rule) == Z_LVAL_PP(data2)) {
+						found = 1;
+					}
+				}
+			}
+			if (!found)
+				continue;
+		}
+
+		ALLOC_INIT_ZVAL(array);
+		array_init(array);
+
+	        if (s->direction == PF_OUT) {
+			src = &s->src;
+			dst = &s->dst;
+			sk = &s->key[PF_SK_STACK];
+			nk = &s->key[PF_SK_WIRE];
+			if (s->proto == IPPROTO_ICMP || s->proto == IPPROTO_ICMPV6)
+				sk->port[0] = nk->port[0];
+		} else {
+			src = &s->dst;
+			dst = &s->src;
+			sk = &s->key[PF_SK_WIRE];
+			nk = &s->key[PF_SK_STACK];
+			if (s->proto == IPPROTO_ICMP || s->proto == IPPROTO_ICMPV6)
+				sk->port[1] = nk->port[1];
+		}
+
+		add_assoc_string(array, "if", s->ifname, 1);
+		if ((p = getprotobynumber(s->proto)) != NULL)
+			add_assoc_string(array, "proto", p->p_name, 1);
+		else
+			add_assoc_long(array, "proto", (long)s->proto);
+		add_assoc_string(array, "direction",
+		    ((s->direction == PF_OUT) ? "out" : "in"), 1);
+
+		memset(buf, 0, sizeof(buf));
+		pf_print_host(&nk->addr[1], nk->port[1], s->af, buf, sizeof(buf));
+		add_assoc_string(array, ((s->direction == PF_OUT) ? "src" : "dst"), buf, 1);
+
+		if (PF_ANEQ(&nk->addr[1], &sk->addr[1], s->af) ||
+		    nk->port[1] != sk->port[1]) {
+			memset(buf, 0, sizeof(buf));
+			pf_print_host(&sk->addr[1], sk->port[1], s->af, buf,
+			    sizeof(buf));
+			add_assoc_string(array,
+			    ((s->direction == PF_OUT) ? "src-orig" : "dst-orig"), buf, 1);
+		}
+
+		memset(buf, 0, sizeof(buf));
+		pf_print_host(&nk->addr[0], nk->port[0], s->af, buf, sizeof(buf));
+		add_assoc_string(array, ((s->direction == PF_OUT) ? "dst" : "src"), buf, 1);
+
+		if (PF_ANEQ(&nk->addr[0], &sk->addr[0], s->af) ||
+		    nk->port[0] != sk->port[0]) {
+			memset(buf, 0, sizeof(buf));
+			pf_print_host(&sk->addr[0], sk->port[0], s->af, buf,
+			    sizeof(buf));
+			add_assoc_string(array,
+			    ((s->direction == PF_OUT) ? "dst-orig" : "src-orig"), buf, 1);
+		}
+
+		if (s->proto == IPPROTO_TCP) {
+			if (src->state <= TCPS_TIME_WAIT &&
+			    dst->state <= TCPS_TIME_WAIT) {
+				snprintf(buf, sizeof(buf) - 1, "%s:%s",
+				    tcpstates[src->state], tcpstates[dst->state]);
+				add_assoc_string(array, "state", buf, 1);
+			} else if (src->state == PF_TCPS_PROXY_SRC ||
+			    dst->state == PF_TCPS_PROXY_SRC)
+				add_assoc_string(array, "state", "PROXY:SRC", 1);
+			else if (src->state == PF_TCPS_PROXY_DST ||
+			    dst->state == PF_TCPS_PROXY_DST)
+				add_assoc_string(array, "state", "PROXY:DST", 1);
+			else {
+				snprintf(buf, sizeof(buf) - 1,
+				    "<BAD STATE LEVELS %u:%u>",
+				    src->state, dst->state);
+				add_assoc_string(array, "state", buf, 1);
+			}
+		} else if (s->proto == IPPROTO_UDP && src->state < PFUDPS_NSTATES &&
+		    dst->state < PFUDPS_NSTATES) {
+			const char *states[] = PFUDPS_NAMES;
+
+			snprintf(buf, sizeof(buf) - 1, "%s:%s",
+			    states[src->state], states[dst->state]);
+			add_assoc_string(array, "state", buf, 1);
+		} else if (s->proto != IPPROTO_ICMP && src->state < PFOTHERS_NSTATES &&
+		    dst->state < PFOTHERS_NSTATES) {
+			/* XXX ICMP doesn't really have state levels */
+			const char *states[] = PFOTHERS_NAMES;
+
+			snprintf(buf, sizeof(buf) - 1, "%s:%s",
+			    states[src->state], states[dst->state]);
+			add_assoc_string(array, "state", buf, 1);
+
+		} else {
+			snprintf(buf, sizeof(buf) - 1, "%u:%u", src->state, dst->state);
+			add_assoc_string(array, "state", buf, 1);
+		}
+
+		creation = ntohl(s->creation);
+		sec = creation % 60;
+		creation /= 60;
+		min = creation % 60;
+		creation /= 60;
+		snprintf(buf, sizeof(buf) - 1, "%.2u:%.2u:%.2u", creation, min, sec);
+		add_assoc_string(array, "age", buf, 1);
+		expire = ntohl(s->expire);
+		sec = expire % 60;
+		expire /= 60;
+		min = expire % 60;
+		expire /= 60;
+		snprintf(buf, sizeof(buf) - 1, "%.2u:%.2u:%.2u", expire, min, sec);
+		add_assoc_string(array, "expires in", buf, 1);
+
+		bcopy(s->packets[0], &packets[0], sizeof(uint64_t));
+		bcopy(s->packets[1], &packets[1], sizeof(uint64_t));
+		bcopy(s->bytes[0], &bytes[0], sizeof(uint64_t));
+		bcopy(s->bytes[1], &bytes[1], sizeof(uint64_t));
+		add_assoc_long(array, "packets total",
+		    (long)(be64toh(packets[0]) + be64toh(packets[1])));
+		add_assoc_long(array, "packets in", (long)be64toh(packets[0]));
+		add_assoc_long(array, "packets out", (long)be64toh(packets[1]));
+		add_assoc_long(array, "bytes total",
+		    (long)(be64toh(bytes[0]) + be64toh(bytes[1])));
+		add_assoc_long(array, "bytes in", (long)be64toh(bytes[0]));
+		add_assoc_long(array, "bytes out", (long)be64toh(bytes[1]));
+		if (ntohl(s->anchor) != -1)
+			add_assoc_long(array, "anchor", (long)ntohl(s->anchor));
+		if (ntohl(s->rule) != -1)
+			add_assoc_long(array, "rule", (long)ntohl(s->rule));
+
+		bcopy(&s->id, &id, sizeof(uint64_t));
+		snprintf(buf, sizeof(buf) - 1, "%016jx", (uintmax_t)be64toh(id));
+		add_assoc_string(array, "id", buf, 1);
+		snprintf(buf, sizeof(buf) - 1, "%08x", ntohl(s->creatorid));
+		add_assoc_string(array, "creatorid", buf, 1);
+
+		add_next_index_zval(return_value, array);
+	}
+	free(ps.ps_buf);
 	close(dev);
 }
 

@@ -16,7 +16,7 @@ LIB_DEPENDS=	libvici.so:${PORTSDIR}/security/strongswan
 USE_PHP=	yes
 USE_PHPEXT=	yes
 
-CFLAGS+=	-I/usr/local/include -I. -DIPFW_FUNCTIONS
+CFLAGS+=	-I/usr/local/include -I. -DIPFW_FUNCTIONS -DTCPSTATES
 
 CONFIGURE_ARGS=	--enable-pfSense
 
