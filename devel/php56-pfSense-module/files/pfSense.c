@@ -231,7 +231,6 @@ static int
 pfi_get_ifaces(int dev, const char *filter, struct pfi_kif *buf, int *size)
 {
 	struct pfioc_iface io;
-	caddr_t buff[sizeof(struct pfi_kif) + 1] = { 0 };
 
 	bzero(&io, sizeof io);
 	if (filter != NULL)
@@ -952,7 +951,7 @@ PHP_FUNCTION(pfSense_ipfw_Tableaction)
 	ipfw_table_xentry *xent;
 	socklen_t size;
 	long mask = 0, table = 0, pipe = 0, zone = 0;
-	char *ip, *mac = NULL, *p;
+	char *ip, *mac = NULL;
 	int ip_len, addrlen, mac_len = 0;
 	long action = IP_FW_TABLE_XADD;
 	int err;
@@ -1026,7 +1025,7 @@ PHP_FUNCTION(pfSense_ipfw_Tableaction)
 	} option;
 	socklen_t size;
 	long mask = 0, table = 0, pipe = 0;
-	char *ip, *zone, *mac = NULL, *p;
+	char *ip, *zone, *mac = NULL;
 	int ip_len, zone_len, mac_len = 0;
 	long action = IP_FW_TABLE_ADD;
 	int err;
@@ -1037,7 +1036,6 @@ PHP_FUNCTION(pfSense_ipfw_Tableaction)
 
 	memset(&option, 0, sizeof(option));
 	sprintf(option.context, "%s", zone);
-
 
 	if (action != IP_FW_TABLE_DEL && action != IP_FW_TABLE_ADD && action != IP_FW_TABLE_ZERO_ENTRY_STATS)
 		RETURN_FALSE;
@@ -1077,10 +1075,9 @@ PHP_FUNCTION(pfSense_ipfw_getTablestats)
 	ipfw_table_xentry *xent;
 	socklen_t size;
 	long mask = 0, table = 0, zone = 0;
-	char *ip, *mac = NULL, *p;
+	char *ip, *mac = NULL;
 	int ip_len, addrlen, mac_len = 0;
 	long action = IP_FW_TABLE_XADD;
-	int err;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "llls|sl", &zone, &action, &table, &ip, &ip_len, &mac, &mac_len, &mask) == FAILURE) {
 		RETURN_FALSE;
@@ -1447,12 +1444,11 @@ PHP_FUNCTION(pfSense_ip_to_mac)
 PHP_FUNCTION(pfSense_getall_interface_addresses)
 {
 	struct ifaddrs *ifdata, *mb;
-	struct if_data *md;
 	struct sockaddr_in *tmp;
 	struct sockaddr_in6 *tmp6;
 	char outputbuf[132];
 	char *ifname;
-	int ifname_len, s;
+	int ifname_len;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ifname, &ifname_len) == FAILURE)
 		RETURN_NULL();
@@ -1517,7 +1513,7 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 	struct ifreq ifr;
 	char outputbuf[128];
 	char *ifname;
-	int ifname_len, s, addresscnt = 0, addresscnt6 = 0;
+	int ifname_len, addresscnt = 0, addresscnt6 = 0;
 	zval *caps;
 	zval *encaps;
 
@@ -1890,9 +1886,8 @@ PHP_FUNCTION(pfSense_interface_listget) {
 
 PHP_FUNCTION(pfSense_interface_create) {
 	char *ifname;
-	int ifname_len, len;
+	int ifname_len;
 	struct ifreq ifr;
-	struct vlanreq params;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ifname, &ifname_len) == FAILURE) {
 		RETURN_NULL();
@@ -2122,7 +2117,6 @@ PHP_FUNCTION(pfSense_vlan_create) {
 PHP_FUNCTION(pfSense_interface_getmtu) {
 	char *ifname;
 	int ifname_len;
-	long mtu;
 	struct ifreq ifr;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ifname, &ifname_len) == FAILURE) {
@@ -2130,7 +2124,6 @@ PHP_FUNCTION(pfSense_interface_getmtu) {
 	}
 	memset(&ifr, 0, sizeof(ifr));
 	strlcpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
-	ifr.ifr_mtu = (int) mtu;
 	if (ioctl(PFSENSE_G(s), SIOCGIFMTU, (caddr_t)&ifr) < 0)
 		RETURN_NULL();
 	array_init(return_value);
@@ -2215,15 +2208,12 @@ PHP_FUNCTION(pfSense_get_interface_info)
 {
 	struct ifaddrs *ifdata, *mb;
 	struct if_data *tmpd;
-	struct sockaddr_in *tmp;
-	struct sockaddr_dl *tmpdl;
-	struct pfi_kif kif = { 0 };
+	struct pfi_kif kif = { { 0 } };
 	int size = 1, found = 0;
 	char *ifname;
 	int ifname_len;
-	int i = 0, error = 0;
+	int error = 0;
 	int dev;
-	char *pf_status;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ifname, &ifname_len) == FAILURE) {
 		RETURN_NULL();
@@ -2308,7 +2298,7 @@ PHP_FUNCTION(pfSense_get_interface_stats)
 	struct ifmibdata ifmd;
 	struct if_data *tmpd;
 	char *ifname;
-	int ifname_len, error;
+	int ifname_len;
 	int name[6];
 	size_t len;
 	unsigned int ifidx;
@@ -2622,7 +2612,7 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 PHP_FUNCTION(pfSense_get_pf_stats) {
 	struct pf_status status;
 	time_t runtime;
-	unsigned sec, min, hrs, day = runtime;
+	unsigned sec, min, hrs, day;
 	char statline[80];
 	char buf[PF_MD5_DIGEST_LENGTH * 2 + 1];
 	static const char hex[] = "0123456789abcdef";
@@ -2709,6 +2699,7 @@ PHP_FUNCTION(pfSense_get_pf_stats) {
 
 		runtime = time(NULL) - status.since;
 		if (status.since) {
+			day = runtime;
 			sec = day % 60;
 			day /= 60;
 			min = day % 60;
@@ -2909,7 +2900,7 @@ errormodem:
 }
 
 PHP_FUNCTION(pfSense_get_os_hw_data) {
-	int i, mib[4], idata;
+	int mib[4], idata;
 	size_t len;	
 	char *data;
 
@@ -2977,7 +2968,7 @@ PHP_FUNCTION(pfSense_get_os_hw_data) {
 }
 
 PHP_FUNCTION(pfSense_get_os_kern_data) {
-	int i, mib[4], idata;
+	int mib[4], idata;
 	size_t len;
 	char *data;
 	struct timeval bootime;

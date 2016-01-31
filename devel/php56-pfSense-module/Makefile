@@ -17,6 +17,7 @@ USE_PHP=	yes
 USE_PHPEXT=	yes
 
 CFLAGS+=	-I/usr/local/include -I. -DIPFW_FUNCTIONS -DTCPSTATES
+CFLAGS+=	-Wall -Wredundant-decls -Wnested-externs -Winline
 
 CONFIGURE_ARGS=	--enable-pfSense
 
