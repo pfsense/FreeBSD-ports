@@ -22,13 +22,13 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/clog:${PORTSDIR}/sysutils/clog \
 		${LOCALBASE}/bin/links:${PORTSDIR}/www/links \
 		${LOCALBASE}/bin/rrdtool:${PORTSDIR}/databases/rrdtool12 \
 		${LOCALBASE}/sbin/expiretable:${PORTSDIR}/security/expiretable \
-		${LOCALBASE}/sbin/dhclient:${PORTSDIR}/net/isc-dhcp42-client \
+		${LOCALBASE}/sbin/dhclient:${PORTSDIR}/net/isc-dhcp43-client \
 		${LOCALBASE}/sbin/dhcpleases:${PORTSDIR}/sysutils/dhcpleases \
 		${LOCALBASE}/sbin/dhcpleases6:${PORTSDIR}/sysutils/dhcpleases6 \
 		${LOCALBASE}/sbin/choparp:${PORTSDIR}/net-mgmt/choparp \
-		${LOCALBASE}/sbin/dhcpd:${PORTSDIR}/net/isc-dhcp42-server \
+		${LOCALBASE}/sbin/dhcpd:${PORTSDIR}/net/isc-dhcp43-server \
 		${LOCALBASE}/sbin/check_reload_status:${PORTSDIR}/sysutils/check_reload_status \
-		${LOCALBASE}/sbin/dhcrelay:${PORTSDIR}/net/isc-dhcp42-relay \
+		${LOCALBASE}/sbin/dhcrelay:${PORTSDIR}/net/isc-dhcp43-relay \
 		${LOCALBASE}/sbin/dhcp6c:${PORTSDIR}/net/dhcp6 \
 		${LOCALBASE}/sbin/dnsmasq:${PORTSDIR}/dns/dnsmasq \
 		${LOCALBASE}/sbin/igmpproxy:${PORTSDIR}/net/igmpproxy \
