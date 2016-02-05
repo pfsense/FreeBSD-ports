@@ -146,7 +146,7 @@ return {
 					end
 				end
 			end
-
+--[[ disable swap warning
 			if num_swap_subparts > 0 and num_dumponable == 0 then
 				if not App.ui:confirm(_(
 				    "Note: none of the swap subpartitions that "	..
@@ -162,6 +162,7 @@ return {
 					return false
 				end
 			end
+--]]
 		end
 
 		return true
