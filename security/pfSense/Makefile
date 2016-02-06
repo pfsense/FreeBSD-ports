@@ -30,7 +30,7 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/clog:${PORTSDIR}/sysutils/clog \
 		${LOCALBASE}/sbin/check_reload_status:${PORTSDIR}/sysutils/check_reload_status \
 		${LOCALBASE}/sbin/dhcrelay:${PORTSDIR}/net/isc-dhcp43-relay \
 		${LOCALBASE}/sbin/dhcp6c:${PORTSDIR}/net/dhcp6 \
-		${LOCALBASE}/sbin/dnsmasq:${PORTSDIR}/dns/dnsmasq \
+		${LOCALBASE}/sbin/dnsmasq:${PORTSDIR}/dns/dnsmasq-devel \
 		${LOCALBASE}/sbin/igmpproxy:${PORTSDIR}/net/igmpproxy \
 		${LOCALBASE}/sbin/filterdns:${PORTSDIR}/net/filterdns \
 		${LOCALBASE}/sbin/filterlog:${PORTSDIR}/sysutils/filterlog \
