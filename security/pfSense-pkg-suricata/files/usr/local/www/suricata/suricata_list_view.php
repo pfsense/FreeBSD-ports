@@ -34,11 +34,22 @@ global $g, $config;
 
 $contents = '';
 
-if (isset($_GET['id']) && is_numericint($_GET['id']))
-	$id = htmlspecialchars($_GET['id']);
+if ($_REQUEST['ajax'] == 'ajax') {
+	if (isset($_REQUEST['id']) && is_numericint($_REQUEST['id'])) {
+		$id = htmlspecialchars($_REQUEST['id']);
+	}
 
-$wlist = htmlspecialchars($_GET['wlist']);
-$type = htmlspecialchars($_GET['type']);
+	$wlist = htmlspecialchars($_REQUEST['wlist']);
+	$type = htmlspecialchars($_REQUEST['type']);	
+} else {
+	if (isset($_GET['id']) && is_numericint($_GET['id'])) {
+		$id = htmlspecialchars($_GET['id']);
+	}
+
+	$wlist = htmlspecialchars($_GET['wlist']);
+	$type = htmlspecialchars($_GET['type']);
+}
+
 $title = "List";
 
 if (isset($id) && isset($wlist)) {
@@ -78,12 +89,15 @@ if (isset($id) && isset($wlist)) {
 else
 	$contents = gettext("\n\nERROR -- Supplied interface or List entity is not valid!");
 
+if ($_REQUEST['ajax'] == 'ajax') {
+	print($contents);
+} else {
+
+// Probably won't need this after the whole package is converted to Bootstrap
 $pgtitle = array(gettext("Suricata"), gettext($title . " Viewer"));
 ?>
 
 <?php include("head.inc");?>
-
-<body link="#000000" vlink="#000000" alink="#000000">
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
 <tr>
@@ -113,3 +127,5 @@ $pgtitle = array(gettext("Suricata"), gettext($title . " Viewer"));
 </table>
 </body>
 </html>
+<?php }
+

@@ -96,6 +96,7 @@ if (isset($id) && $a_rule[$id]) {
 	if (empty($pconfig['uuid']))
 		$pconfig['uuid'] = $suricata_uuid;
 }
+
 // Must be a new interface, so try to pick next available physical interface to use
 elseif (isset($id) && !isset($a_rule[$id])) {
 	$ifaces = get_configured_interface_list();
@@ -189,6 +190,7 @@ if (strcasecmp($action, 'dup') == 0) {
 			break;
 		}
 	}
+
 	if (count($ifrules) == count($ifaces)) {
 		$input_errors[] = gettext("No more available interfaces to configure for Suricata!");
 		$interfaces = array();
@@ -200,6 +202,11 @@ if (strcasecmp($action, 'dup') == 0) {
 	unset($pconfig['passlistname']);
 	unset($pconfig['homelistname']);
 	unset($pconfig['externallistname']);
+}
+
+if ($_REQUEST['ajax'] == 'ajax') {
+	print("At least we got that straight!");
+	exit;
 }
 
 if ($_POST["save"] && !$input_errors) {
@@ -447,13 +454,19 @@ if ($_POST["save"] && !$input_errors) {
 }
 
 function suricata_get_config_lists($lists) {
+	global $suricataglob;
 
-	// This returns the array of lists identified by $lists
-	// stored in the config file if one exists.
-	$result = array();
-	if (is_array($config['installedpackages']['snortglobal'][$lists]['item']))
-		$result = $config['installedpackages']['snortglobal'][$lists]['item'];
-	return $result;
+	$list = array();
+
+	if (is_array($suricataglob[$lists]['item'])) {
+		$slist_select = $suricataglob[$lists]['item'];
+		foreach ($slist_select as $value) {
+			$ilistname = $value['name'];
+			$list[$ilistname] = htmlspecialchars($ilistname);
+		}
+	}
+
+	return(['default' => 'default'] + $list);
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($pconfig['interface']);
@@ -506,21 +519,25 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['enable'] == 'on' ? true:false,
 	'on'
 ));
+
 $section->addInput(new Form_Select(
 	'interface',
 	'Interface',
 	$pconfig['interface'],
 	$interfaces
 ))->setHelp('Choose which interface this Suricata instance applies to. In most cases, you will want to use WAN here if this is the first Suricata-configured interface.');
+
 $section->addInput(new Form_Input(
 	'descr',
 	'Description',
 	'text',
 	$pconfig['descr']
 ))->setHelp('Enter a meaningful description here for your reference. The default is the interface name.');
+
 $form->add($section);
 
 $section = new Form_Section('Logging Settings');
+
 $section->addInput(new Form_Checkbox(
 	'alertsystemlog',
 	'Send Alerts to System Log',
@@ -528,18 +545,21 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['alertsystemlog'] == 'on' ? true:false,
 	'on'
 ));
+
 $section->addInput(new Form_Select(
 	'alertsystemlog_facility',
 	'Log Facility',
 	$pconfig['alertsystemlog_facility'],
 	array(  "auth", "authpriv", "daemon", "kern", "security", "syslog", "user", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7" )
 ))->setHelp('Select system log Facility to use for reporting. Default is local1.');
+
 $section->addInput(new Form_Select(
 	'alertsystemlog_priority',
 	'Log Priority',
 	$pconfig['alertsystemlog_priority'],
 	array( "emerg", "crit", "alert", "err", "warning", "notice", "info" )
 ))->setHelp('Select system log Priority (Level) to use for reporting. Default is notice.');
+
 $section->addInput(new Form_Checkbox(
 	'enable_dns_log',
 	'Enable DNS Log',
@@ -547,6 +567,7 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['enable_dns_log'] == 'on' ? true:false,
 	'on'
 ));
+
 $section->addInput(new Form_Checkbox(
 	'append_dns_log',
 	'Append DNS Log',
@@ -554,6 +575,7 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['append_dns_log'] == 'on' ? true:false,
 	'on'
 ));
+
 $section->addInput(new Form_Checkbox(
 	'enable_stats_log',
 	'Enable Stats Log',
@@ -561,12 +583,14 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['enable_stats_log'] == 'on' ? true:false,
 	'on'
 ));
+
 $section->addInput(new Form_Input(
 	'stats_upd_interval',
 	'Stats Update Interval',
 	'text',
 	$pconfig['stats_upd_interval']
 ))->setHelp('Enter the update interval in seconds for collection and logging of statistics. Default is 10.');
+
 $section->addInput(new Form_Checkbox(
 	'append_stats_log',
 	'Append Stats Log',
@@ -574,6 +598,7 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['append_stats_log'] == 'on' ? true:false,
 	'on'
 ));
+
 $section->addInput(new Form_Checkbox(
 	'enable_http_log',
 	'Enable HTTP Log',
@@ -581,6 +606,7 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['enable_http_log'] == 'on' ? true:false,
 	'on'
 ));
+
 $section->addInput(new Form_Checkbox(
 	'append_http_log',
 	'Append HTTP Log',
@@ -588,6 +614,7 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['append_http_log'] == 'on' ? true:false,
 	'on'
 ));
+
 $section->addInput(new Form_Checkbox(
 	'http_log_extended',
 	'Log Extended HTTP Info',
@@ -602,6 +629,7 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['enable_tls_log'] == 'on' ? true:false,
 	'on'
 ));
+
 $section->addInput(new Form_Checkbox(
 	'tls_log_extended',
 	'Log Extended TLS Info',
@@ -609,6 +637,7 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['tls_log_extended'] == 'on' ? true:false,
 	'on'
 ));
+
 $section->addInput(new Form_Checkbox(
 	'enable_json_file_log',
 	'Enable Tracked-Files Log',
@@ -616,6 +645,7 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['enable_json_file_log'] == 'on' ? true:false,
 	'on'
 ));
+
 $section->addInput(new Form_Checkbox(
 	'append_json_file_log',
 	'Append Tracked-Files Log',
@@ -623,6 +653,7 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['append_json_file_log'] == 'on' ? true:false,
 	'on'
 ));
+
 $section->addInput(new Form_Checkbox(
 	'enable_tracked_files_magic',
 	'Enable Logging Magic for Tracked-Files',
@@ -644,6 +675,7 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['enable_file_store'] == 'on' ? true:false,
 	'on'
 ));
+
 $section->addInput(new Form_Checkbox(
 	'enable_pcap_log',
 	'Enable Packet Log',
@@ -651,18 +683,21 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['enable_pcap_log'] == 'on' ? true:false,
 	'on'
 ));
+
 $section->addInput(new Form_Input(
 	'max_pcap_log_size',
 	'Max Packet Log File Size',
 	'text',
 	$pconfig['max_pcap_log_size']
 ))->setHelp('Enter maximum size in MB for a packet log file. Default is 32. When the packet log file size reaches the set limit, it will be rotated and a new one created.');
+
 $section->addInput(new Form_Input(
 	'max_pcap_log_files',
 	'Max Packet Log Files',
 	'text',
 	$pconfig['max_pcap_log_files']
 ))->setHelp('Enter maximum number of packet log files to maintain. Default is 1000. When the number of packet log files reaches the set limit, the oldest file will be overwritten.');
+
 $section->addInput(new Form_Checkbox(
 	'enable_eve_log',
 	'EVE JSON Log',
@@ -670,13 +705,16 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['enable_eve_log'] == 'on' ? true:false,
 	'on'
 ));
+
 $section->addInput(new Form_Select(
 	'eve_output_type',
 	'EVE Output Type',
 	$pconfig['eve_output_type'],
 	array("file", "syslog")
 ))->setHelp('Select EVE log output destination. Choosing FILE is suggested, and is the default value.');
+
 $group = new Form_Group('EVE Logged Info');
+
 $group->add(new Form_Checkbox(
 	'eve_log_alerts',
 	'Alerts',
@@ -684,6 +722,7 @@ $group->add(new Form_Checkbox(
 	$pconfig['eve_log_alerts'] == 'on' ? true:false,
 	'on'
 ));
+
 $group->add(new Form_Checkbox(
 	'eve_log_http',
 	'HTTP Traffic',
@@ -691,6 +730,7 @@ $group->add(new Form_Checkbox(
 	$pconfig['eve_log_http'] == 'on' ? true:false,
 	'on'
 ));
+
 $group->add(new Form_Checkbox(
 	'eve_log_dns',
 	'DNS Requests/Replies',
@@ -698,6 +738,7 @@ $group->add(new Form_Checkbox(
 	$pconfig['eve_log_dns'] == 'on' ? true:false,
 	'on'
 ));
+
 $group->add(new Form_Checkbox(
 	'eve_log_tls',
 	'TLS Handshakes',
@@ -705,6 +746,7 @@ $group->add(new Form_Checkbox(
 	$pconfig['eve_log_tls'] == 'on' ? true:false,
 	'on'
 ));
+
 $group->add(new Form_Checkbox(
 	'eve_log_files',
 	'Tracked Files',
@@ -712,6 +754,7 @@ $group->add(new Form_Checkbox(
 	$pconfig['eve_log_files'] == 'on' ? true:false,
 	'on'
 ));
+
 $group->add(new Form_Checkbox(
 	'eve_log_ssh',
 	'SSH Handshakes',
@@ -719,11 +762,15 @@ $group->add(new Form_Checkbox(
 	$pconfig['eve_log_ssh'] == 'on' ? true:false,
 	'on'
 ));
+
 $group->setHelp('Choose the information to log via EVE JSON output. Default is All Checked.');
+
 $section->add($group)->addClass('eve_log_info');
+
 $form->add($section);
 
 $section = new Form_Section('Alert Settings');
+
 $section->addInput(new Form_Checkbox(
 	'blockoffenders',
 	'Block Offenders',
@@ -731,6 +778,7 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['blockoffenders'] == 'on' ? true:false,
 	'on'
 ));
+
 $section->addInput(new Form_Checkbox(
 	'blockoffenderskill',
 	'Kill States',
@@ -738,12 +786,14 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['blockoffenderskill'] == 'on' ? true:false,
 	'on'
 ));
+
 $section->addInput(new Form_Select(
 	'blockoffendersip',
 	'Which IP to Block',
 	$pconfig['blockoffendersip'],
 	array( 'src','dst','both' )
 ))->setHelp('Select which IP extracted from the packet you wish to block. Choosing BOTH is suggested, and it is the default value.');
+
 $form->add($section);
 
 $section = new Form_Section('Detection Engine Settings');
@@ -752,31 +802,40 @@ $section->addInput(new Form_Input(
 	'Max Pending Packets',
 	'text',
 	$pconfig['max_pending_packets']
-))->setHelp('Enter number of simultaneous packets to process. Default is 1024.<br/>This controls the number simultaneous packets the engine can handle. Setting this higher generally keeps the threads more busy. The minimum value is 1 and the maximum value is 65,000.<br />Warning: Setting this too high can lead to degradation and a possible system crash by exhausting available memory.');
+))->setHelp('Enter number of simultaneous packets to process. Default is 1024.<br/>This controls the number simultaneous packets the engine can handle. ' . 
+			'Setting this higher generally keeps the threads more busy. The minimum value is 1 and the maximum value is 65,000.<br />' .
+			'Warning: Setting this too high can lead to degradation and a possible system crash by exhausting available memory.');
+
 $section->addInput(new Form_Select(
 	'detect_eng_profile',
 	'Detect-Engine Profile',
 	$pconfig['detect_eng_profile'],
 	array('low' => 'Low', 'medium' => 'Medium', 'high' => 'High')
-))->setHelp('Choose a detection engine profile. Default is Medium.<br />MEDIUM is recommended for most systems because it offers a good balance between memory consumption and performance. LOW uses less memory, but it offers lower performance. HIGH consumes a large amount of memory, but it offers the highest performance.');
+))->setHelp('Choose a detection engine profile. Default is Medium.<br />MEDIUM is recommended for most systems because it offers a good balance between memory consumption and performance. ' .
+			'LOW uses less memory, but it offers lower performance. HIGH consumes a large amount of memory, but it offers the highest performance.');
+
 $section->addInput(new Form_Select(
 	'mpm_algo',
 	'Pattern Matcher Algorithm',
 	$pconfig['mpm_algo'],
 	array('ac' => 'AC', 'ac-gfbs' => 'AC-GFBS', 'b2g' => 'B2G', 'b2gc' => 'B2GC', 'b2gm' => 'B2GM', 'b3g' => 'B3G', 'wumanber' => 'WUMANBER')
 ))->setHelp('Choose a multi-pattern matcher (MPM) algorithm. AC is the default, and is the best choice for almost all systems.	');
+
 $section->addInput(new Form_Select(
 	'sgh_mpm_context',
 	'Signature Group Header MPM Context',
 	$pconfig['sgh_mpm_context'],
 	array('auto' => 'Auto', 'full' => 'Full', 'single' => 'Single')
-))->setHelp('Choose a Signature Group Header multi-pattern matcher context. Default is Auto.<br />AUTO means Suricata selects between Full and Single based on the MPM algorithm chosen. FULL means every Signature Group has its own MPM context. SINGLE means all Signature Groups share a single MPM context. Using FULL can improve performance at the expense of significant memory consumption.');
+))->setHelp('Choose a Signature Group Header multi-pattern matcher context. Default is Auto.<br />AUTO means Suricata selects between Full and Single based on the MPM algorithm chosen. ' .
+			'FULL means every Signature Group has its own MPM context. SINGLE means all Signature Groups share a single MPM context. Using FULL can improve performance at the expense of significant memory consumption.');
+
 $section->addInput(new Form_Input(
 	'inspect_recursion_limit',
 	'Inspection Recursion Limit',
 	'text',
 	$pconfig['inspect_recursion_limit']
 ))->setHelp('Enter limit for recursive calls in content inspection code. Default is 3000.<br />When set to 0 an internal default is used. When left blank there is no recursion limit.');
+
 $section->addInput(new Form_Checkbox(
 	'delayed_detect',
 	'Delayed Detect',
@@ -784,6 +843,7 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['delayed_detect'] == 'on' ? true:false,
 	'on'
 ));
+
 $section->addInput(new Form_Checkbox(
 	'intf_promisc_mode',
 	'Promiscuous Mode',
@@ -791,64 +851,81 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['intf_promisc_mode'] == 'on' ? true:false,
 	'on'
 ));
+
 $form->add($section);
 
 $section = new Form_Section('Networks Suricata Should Inspect and Protect');
+
 $group = new Form_Group('Home Net');
+
 $group->add(new Form_Select(
 	'homelistname',
 	'Home Net',
 	$pconfig['homelistname'],
 	suricata_get_config_lists('whitelist')
 ))->setHelp('Choose the Home Net you want this interface to use.');
+
 $group->add(new Form_Button(
 	'btnHomeNet',
 	' ' . 'View List',
 	'#',
 	'fa-file-text-o'
 ))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('data-toggle', 'modal')->setAttribute('data-target', '#homenet');
+
 $group->setHelp('Default Home Net adds only local networks, WAN IPs, Gateways, VPNs and VIPs.' . '<br />' .
 		'Create an Alias to hold a list of friendly IPs that the firewall cannot see or to customize the default Home Net.');
+
 $section->add($group);
 
 $group = new Form_Group('External Net');
+
 $group->add(new Form_Select(
 	'externallistname',
 	'External Net',
 	$pconfig['externallistname'],
 	suricata_get_config_lists('whitelist')
 ))->setHelp('Choose the External Net you want this interface to use.');
+
 $group->add(new Form_Button(
 	'btnExternalNet',
 	' ' . 'View List',
 	'#',
 	'fa-file-text-o'
 ))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('data-target', '#externalnet')->setAttribute('data-toggle', 'modal');
+
 $group->setHelp('External Net is networks that are not Home Net.  Most users should leave this setting at default.' . '<br />' .
 		'Create a Pass List and add an Alias to it, and then assign the Pass List here for custom External Net settings.');
+
 $section->add($group);
 
 $group = new Form_Group('Pass List');
+
 $group->addClass('passlist');
+
 $group->add(new Form_Select(
 	'whitelistname',
 	'Pass List',
 	$pconfig['whitelistname'],
 	suricata_get_config_lists('whitelist')
 ))->setHelp('Choose the Pass List you want this interface to use. Addresses in a Pass List are never blocked. ');
+
 $group->add(new Form_Button(
 	'btnWhitelist',
 	' ' . 'View List',
 	'#',
 	'fa-file-text-o'
 ))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('data-target', '#whitelist')->setAttribute('data-toggle', 'modal');
+
 $group->setHelp('The default Pass List adds local networks, WAN IPs, Gateways, VPNs and VIPs.  Create an Alias to customize.' . '<br />' .
-		'This option will only be used when block offenders is on.');
+				'This option will only be used when block offenders is on.');
+
 $section->add($group);
+
 $form->add($section);
 
 // Add view HOME_NET modal pop-up
 $modal = new Modal('View HOME_NET', 'homenet', 'large', 'Close');
+
 $modal->addInput(new Form_Textarea (
 	'homenet_text',
 	'',
@@ -858,20 +935,30 @@ $form->add($modal);
 
 // Add view EXTERNAL_NET modal pop-up
 $modal = new Modal('View EXTERNAL_NET', 'externalnet', 'large', 'Close');
+
 $modal->addInput(new Form_Textarea (
 	'externalnet_text',
 	'',
 	'...Loading...'
-))->removeClass('form-control')->addClass('row-fluid col-sm-10')->setAttribute('rows', '10')->setAttribute('wrap', 'off');
+))->removeClass('form-control')
+  ->addClass('row-fluid col-sm-10')
+  ->setAttribute('rows', '10')
+  ->setAttribute('wrap', 'off');
+
 $form->add($modal);
 
 // Add view PASS_LIST modal pop-up
 $modal = new Modal('View PASS LIST', 'whitelist', 'large', 'Close');
+
 $modal->addInput(new Form_Textarea (
 	'whitelist_text',
 	'',
 	'...Loading...'
-))->removeClass('form-control')->addClass('row-fluid col-sm-10')->setAttribute('rows', '10')->setAttribute('wrap', 'off');
+))->removeClass('form-control')
+  ->addClass('row-fluid col-sm-10')
+  ->setAttribute('rows', '10')
+  ->setAttribute('wrap', 'off');
+
 $form->add($modal);
 
 $section = new Form_Section('Alert Suppression and Filtering');
@@ -882,22 +969,30 @@ $group->add(new Form_Select(
 	$pconfig['suppresslistname'],
 	suricata_get_config_lists('suppress')
 ))->setHelp('Choose the suppression or filtering file you want this interface to use. Default option disables suppression and filtering.');
+
 $group->add(new Form_Button(
 	'btnSuppressList',
 	' ' . 'View List',
 	'#',
 	'fa-file-text-o'
-))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('data-target', '#suppresslist')->setAttribute('data-toggle', 'modal');
+))->removeClass('btn-primary')
+  ->addClass('btn-info btn-sm')
+  ->setAttribute('data-target', '#suppresslist')
+  ->setAttribute('data-toggle', 'modal');
+
 $section->add($group);
+
 $form->add($section);
 
 // Add view SUPPRESS_LIST modal pop-up
 $modal = new Modal('View Suppress List', 'suppresslist', 'large', 'Close');
+
 $modal->addInput(new Form_Textarea (
 	'suppresslist_text',
 	'',
 	'...Loading...'
 ))->removeClass('form-control')->addClass('row-fluid col-sm-10')->setAttribute('rows', '10')->setAttribute('wrap', 'off');
+
 $form->add($modal);
 
 $section = new Form_Section('Arguments here will be automatically inserted into the Suricata configuration');
@@ -906,6 +1001,7 @@ $section->addInput(new Form_Textarea (
 	'Advanced Configuration Pass-Through',
 	$pconfig['configpassthru']
 ))->setHelp('Enter any additional configuration parameters to add to the Snort configuration here, separated by a newline');
+
 $form->add($section);
 
 if (isset($id)) {
@@ -990,73 +1086,73 @@ events.push(function(){
 	}
 
 	function enable_change() {
-		var hide = ! $('#enable').prop('checked');
-		disableInput('alertsystemlog', hide);
-		disableInput('alertsystemlog_facility', hide);
-		disableInput('alertsystemlog_priority', hide);
-		disableInput('blockoffenders', hide);
-		disableInput('blockoffenderskill', hide);
-		disableInput('blockoffendersip', hide);
-		disableInput('performance', hide);
-		disableInput('fpm_split_any_any', hide);
-		disableInput('fpm_search_optimize', hide);
-		disableInput('fpm_no_stream_inserts', hide);
-		disableInput('cksumcheck', hide);
-		disableInput('externallistname', hide);
-		disableInput('homelistname', hide);
-		disableInput('suppresslistname', hide);
-		disableInput('btnHomeNet', hide);
-		disableInput('btnExternalNet', hide);
-		disableInput('btnSuppressList', hide);
-		disableInput('whitelistname', hide);
-		disableInput('btnWhitelist', hide);
-		disableInput('configpassthru', hide);
-		disableInput('enable_dns_log', hide);
-		disableInput('append_dns_log', hide);
-		disableInput('enable_stats_log', hide);
-		disableInput('stats_upd_interval', hide);
-		disableInput('append_stats_log', hide);
-		disableInput('enable_http_log', hide);
-		disableInput('append_http_log', hide);
-		disableInput('http_log_extended', hide);
-		disableInput('enable_tls_log', hide);
-		disableInput('tls_log_extended', hide);
-		disableInput('enable_json_file_log', hide);
-		disableInput('append_json_file_log', hide);
-		disableInput('enable_tracked_files_magic', hide);
-		disableInput('enable_tracked_files_md5', hide);
-		disableInput('enable_file_store', hide);
-		disableInput('enable_pcap_log', hide);
-		disableInput('max_pcap_log_size', hide);
-		disableInput('max_pcap_log_files', hide);
-		disableInput('enable_eve_log', hide);
-		disableInput('eve_output_type', hide);
-		disableInput('eve_log_info', hide);
-		disableInput('eve_log_alerts', hide);
-		disableInput('eve_log_http', hide);
-		disableInput('eve_log_dns', hide);
-		disableInput('eve_log_tls', hide);
-		disableInput('eve_log_files', hide);
-		disableInput('eve_log_ssh', hide);
+		var disable = ! $('#enable').prop('checked');
+
+		disableInput('alertsystemlog', disable);
+		disableInput('alertsystemlog_facility', disable);
+		disableInput('alertsystemlog_priority', disable);
+		disableInput('blockoffenders', disable);
+		disableInput('blockoffenderskill', disable);
+		disableInput('blockoffendersip', disable);
+		disableInput('performance', disable);
+		disableInput('fpm_split_any_any', disable);
+		disableInput('fpm_search_optimize', disable);
+		disableInput('fpm_no_stream_inserts', disable);
+		disableInput('cksumcheck', disable);
+		disableInput('externallistname', disable);
+		disableInput('homelistname', disable);
+		disableInput('suppresslistname', disable);
+		disableInput('btnHomeNet', disable);
+		disableInput('btnExternalNet', disable);
+		disableInput('btnSuppressList', disable);
+		disableInput('whitelistname', disable);
+		disableInput('btnWhitelist', disable);
+		disableInput('configpassthru', disable);
+		disableInput('enable_dns_log', disable);
+		disableInput('append_dns_log', disable);
+		disableInput('enable_stats_log', disable);
+		disableInput('stats_upd_interval', disable);
+		disableInput('append_stats_log', disable);
+		disableInput('enable_http_log', disable);
+		disableInput('append_http_log', disable);
+		disableInput('http_log_extended', disable);
+		disableInput('enable_tls_log', disable);
+		disableInput('tls_log_extended', disable);
+		disableInput('enable_json_file_log', disable);
+		disableInput('append_json_file_log', disable);
+		disableInput('enable_tracked_files_magic', disable);
+		disableInput('enable_tracked_files_md5', disable);
+		disableInput('enable_file_store', disable);
+		disableInput('enable_pcap_log', disable);
+		disableInput('max_pcap_log_size', disable);
+		disableInput('max_pcap_log_files', disable);
+		disableInput('enable_eve_log', disable);
+		disableInput('eve_output_type', disable);
+		disableInput('eve_log_info', disable);
+		disableInput('eve_log_alerts', disable);
+		disableInput('eve_log_http', disable);
+		disableInput('eve_log_dns', disable);
+		disableInput('eve_log_tls', disable);
+		disableInput('eve_log_files', disable);
+		disableInput('eve_log_ssh', disable);
 	}
 
+	// Call the list viewing page and write what it returns to the modal text area
 	function getListContents(listName, listType, ctrlID) {
 		var ajaxRequest;
 
 		ajaxRequest = $.ajax({
-			url: "/suricata/suricata_interfaces_edit.php",
+			url: "/suricata/suricata_list_view.php",
 			type: "post",
-			data: { ajax: "ajax", 
-			        list: listName, 
-				type: listType, 
-				id: $('#id').val(), 
-				action: $('#action').val()
+			data: { ajax: 	"ajax",
+			        wlist: 	listName,
+					type: 	listType,
+					id: 	"<?=$id?>"
 			}
 		});
 
 		// Display the results of the above ajax call
 		ajaxRequest.done(function (response, textStatus, jqXHR) {
-
 			// Write the list contents to the text control
 			$('#' + ctrlID).text(response);
 			$('#' + ctrlID).attr('readonly', true);
@@ -1077,7 +1173,7 @@ events.push(function(){
 	});
 
 	$('#suppresslist').on('shown.bs.modal', function() {
-		getListContents($('#suppresslistname option:selected' ).text(), 'suppress', 'suppresslist_text');
+		getListContents($('#suppresslistname option:selected').text(), 'suppress', 'suppresslist_text');
 	});
 
 	// ---------- Click checkbox handlers ---------------------------------------------------------
@@ -1128,7 +1224,6 @@ events.push(function(){
 	enable_change();
 	enable_blockoffenders();
 	toggle_system_log();
-	
 	toggle_dns_log();
 	toggle_stats_log();
 	toggle_http_log();
