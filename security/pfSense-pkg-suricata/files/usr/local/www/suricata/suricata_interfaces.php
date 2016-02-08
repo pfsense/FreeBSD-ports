@@ -147,6 +147,7 @@ if ($_POST['toggle']) {
 }
 $suri_bin_ver = SURICATA_BIN_VERSION;
 $suri_pkg_ver = SURICATA_PKG_VER;
+
 $pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Interfaces"));
 include_once("head.inc"); ?>
 
@@ -183,16 +184,6 @@ include_once("head.inc"); ?>
 			<form action="suricata_interfaces.php" method="post" enctype="multipart/form-data" name="iform" id="iform">
 			<input type="hidden" name="id" id="id" value="">
 			<table id="maintable" class="table table-striped table-hover table-condensed">
-				<colgroup>
-					<col width="3%" align="center">
-					<col width="12%">
-					<col width="14%">
-					<col width="120" align="center">
-					<col width="65" align="center">
-					<col width="14%">
-					<col>
-					<col width="20" align="center">
-				</colgroup>
 				<thead>
 				<tr id="frheader">
 					<th>&nbsp;</th>
@@ -202,23 +193,7 @@ include_once("head.inc"); ?>
 					<th><?=gettext("Block"); ?></th>
 					<th><?=gettext("Barnyard2"); ?></th>
 					<th><?=gettext("Description"); ?></th>
-					<th>
-						<?php if ($id_gen < count($ifaces)): ?>
-							<a href="suricata_interfaces_edit.php?id=<?=$id_gen?>">
-								<i class="fa fa-lg fa-plus" title="<?=gettext('Add Suricata interface mapping')?>"></i>
-							</a>
-						<?php else: ?>
-							<img src="/icon_plus_d.gif" 
-							title="<?=gettext('No available interfaces for a new Suricata mapping')?>">
-						<?php endif; ?>
-						<?php if ($id_gen == 0): ?>
-							<img src="/icon_x_d.gif" width="17" height="17" " border="0">
-						<?php else: ?>
-							<input name="del" type="image" src="/icon_x.gif" 
-							width="17" height="17" title="<?=gettext("Delete selected Suricata interface mapping(s)"); ?>"
-							onclick="return intf_del()">
-						<?php endif; ?>
-					</th>
+					<th></th>
 				</tr>
 				</thead>
 				<tbody>
@@ -346,47 +321,28 @@ include_once("head.inc"); ?>
 					</td>
 					<td valign="middle" 
 					ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
-					<font color="#ffffff"><?=htmlspecialchars($natent['descr'])?>&nbsp;</font>
+					<?=htmlspecialchars($natent['descr'])?>
 					</td>
-					<td valign="middle" nowrap>
+					<td>
 						<a href="suricata_interfaces_edit.php?id=<?=$i?>">
-						<img src="/icon_e.gif"
-						width="17" height="17" border="0" title="<?=gettext('Edit this Suricata interface mapping'); ?>"></a>
+							<i class="fa fa-pencil"	title="<?=gettext('Edit this Suricata interface mapping'); ?>"></i>
+						</a>
+
 						<?php if ($id_gen < count($ifaces)): ?>
 							<a href="suricata_interfaces_edit.php?id=<?=$i?>&action=dup">
-							<img src="/icon_plus.gif"
-							width="17" height="17" border="0" title="<?=gettext('Add new interface mapping based on this one'); ?>"></a>
+								<i class="fa fa-plus" title="<?=gettext('Add new interface mapping based on this one'); ?>"></i>
+							</a>
 						<?php else: ?>
-							<img src="/icon_plus_d.gif" 
-							title="<?=gettext('No available interfaces for a new Suricata mapping')?>">
+							<i class="fa fa-times" title="<?=gettext('No available interfaces for a new Suricata mapping')?>"></i>
 						<?php endif; ?>
 					</td>	
 				</tr>
 				<?php $i++; $nnats++; endforeach; ob_end_flush(); ?>
 				<tr>
 					<td></td>
-					<td colspan="6">
-						<?php if ($no_rules_footnote): ?><br><img src="../themes/<?= $g['theme']; ?>/images/icons/icon_frmfld_imp.png" width="15" height="15" border="0">
-							<span class="red">&nbsp;&nbsp; <?=gettext("WARNING: Marked interface currently has no rules defined for Suricata"); ?></span>
-						<?php else: ?>&nbsp;
+					<td colspan="7">
+						<?php if ($no_rules_footnote): ?><span class="text-danger"><?=gettext("WARNING: Marked interface currently has no rules defined for Suricata"); ?></span>
 						<?php endif; ?>					 
-					</td>
-					<td>
-						<?php if ($id_gen < count($ifaces)): ?>
-							<a href="suricata_interfaces_edit.php?id=<?=$id_gen?>">
-								<i class="fa fa-lg fa-plus" title="<?=gettext('Add Suricata interface mapping')?>"></i>
-							</a>
-						<?php else: ?>
-							<img src="/icon_plus_d.gif" 
-							title="<?=gettext('No available interfaces for a new Suricata mapping')?>">
-						<?php endif; ?>
-						<?php if ($id_gen == 0): ?>
-							<img src="/icon_x_d.gif" width="17" height="17" " border="0">
-						<?php else: ?>
-							<input name="del" type="image" src="/icon_x.gif" 
-							width="17" height="17" title="<?=gettext("Delete selected Suricata interface mapping(s)"); ?>"
-							onclick="return intf_del()">
-						<?php endif; ?>
 					</td>
 				</tr>
 				</tbody>
@@ -396,29 +352,29 @@ include_once("head.inc"); ?>
 	</div>
 </div>
 
+<nav class="action-buttons">
+	<?php if ($id_gen < count($ifaces)): ?>
+		<a href="suricata_interfaces_edit.php?id=<?=$id_gen?>" class="btn btn-sm btn-success" title="<?=gettext('Add Suricata interface mapping')?>">
+			<i class="fa fa-plus icon-embed-btn" ></i><?=gettext("Add")?>
+		</a>
+	<?php endif; ?>
+
+	<?php if ($id_gen != 0): ?>
+		<button name="del" class="btn btn-sm btn-danger" 
+		title="<?=gettext("Delete selected Suricata interface mapping(s)"); ?>"
+		onclick="return intf_del()"><?=gettext("Delete")?><i class="fa fa-trash icon-embed-btn"></i></button>
+	<?php endif; ?>
+</nav>
 
 <div class="infoblock">
-	<?=print_info_box('<div class="row">
-							<div class="col-md-12">
-								<p>This is where you can see an overview of all your interface settings. Please configure the parameters on the <strong>Global Settings</strong> tab before adding an interface.</p>
-								<p><strong>Warning: New settings will not take effect until interface restart</strong></p>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-6">
-								<p>
-									Click on the <i class="fa fa-lg fa-plus" alt="Add Icon"></i> icon to add an interface.<br/>
-									Click on the <i class="fa fa-lg fa-pencil" alt="Edit Icon"></i> icon to edit an interface and settings.<br/>
-									Click on the <i class="fa fa-lg fa-trash" alt="Delete Icon"></i> icon to delete an interface and settings.
-								</p>
-							</div>
-							<div class="col-md-6">
-								<p>
-									<i class="fa fa-lg fa-play" alt="Running"></i> <i class="fa fa-lg fa-times" alt="Not Running"></i> icons will show current suricata and barnyard2 status<br/>
-									Click on the status icons to toggle suricata and barnyard2 status.
-								</p>
-							</div>
-						</div>', info)?>
+	<?=print_info_box(sprintf(gettext('This is where you can see an overview of all your interface settings. Please configure the parameters on the %sGlobal Settings%s tab before adding an interface.
+		%sWarning:%s New settings will not take effect until interface restart
+
+		<p>
+			The %s icons indicate current suricata and barnyard2 status.&nbsp;
+			Click on the status icons to toggle suricata and barnyard2 status.
+		</p>'), "<strong>", "</strong>", "<strong>", "</strong>", '&nbsp;<i class="fa fa-lg fa-play" alt="Running"></i>&nbsp;<i class="fa fa-lg fa-times" alt="Not Running"></i>'), info, false);
+?>
 </div>
 
 <script type="text/javascript">
@@ -441,5 +397,5 @@ function intf_del() {
 </script>
 
 <?php
-include("fend.inc");
+include("foot.inc");
 ?>
