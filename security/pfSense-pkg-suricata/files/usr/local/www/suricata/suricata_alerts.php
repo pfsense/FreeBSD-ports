@@ -815,7 +815,7 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 				if (!suricata_is_alert_globally_suppressed($supplist, $fields['gid'], $fields['sid']) && 
 				    !isset($supplist[$fields['gid']][$fields['sid']]['by_src'][$fields['src']])) {
 					$alert_ip_src .= "&nbsp;<i class=\"fa fa-plus-square-o\" name='addsuppress_srcip[]' onClick=\"encRuleSig('{$fields['gid']}','{$fields['sid']}','{$fields['src']}','{$alert_descr}');\" ";
-					$alert_ip_src .= "title=" . gettext("Add this alert to the Suppress List and track by_src IP") . "></i>";	
+					$alert_ip_src .= "title=" . gettext("Add this alert to the Suppress List and track by_src IP") . "></i>";
 				}
 				elseif (isset($supplist[$fields['gid']][$fields['sid']]['by_src'][$fields['src']])) {
 					$alert_ip_src .= '&nbsp;<i class="fa fa-info-circle" ';
@@ -850,17 +850,17 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 				if (!suricata_is_alert_globally_suppressed($supplist, $fields['gid'], $fields['sid']) && 
 				    !isset($supplist[$fields['gid']][$fields['sid']]['by_dst'][$fields['dst']])) {
 					$alert_ip_dst .= "&nbsp;<i class=\"fa fa-plus-square-o\" name='addsuppress_dstip[]' onClick=\"encRuleSig('{$fields['gid']}','{$fields['sid']}','{$fields['dst']}','{$alert_descr}');\" ";
-					$alert_ip_dst .= "title='" . gettext("Add this alert to the Suppress List and track by_dst IP") . "' style=\"cursor: pointer;\"></i>";	
+					$alert_ip_dst .= "title='" . gettext("Add this alert to the Suppress List and track by_dst IP") . "' style=\"cursor: pointer;\"></i>";
 				}
 				elseif (isset($supplist[$fields['gid']][$fields['sid']]['by_dst'][$fields['dst']])) {
 					$alert_ip_src .= '&nbsp;<i class="fa fa-info-circle" ';
-					$alert_ip_dst .= "title='" . gettext("This alert track by_dst IP is already in the Suppress List") . "'></i>";	
+					$alert_ip_dst .= "title='" . gettext("This alert track by_dst IP is already in the Suppress List") . "'></i>";
 				}
 
 				/* Add icon for auto-removing from Blocked Table if required */
 				if (isset($tmpblocked[$fields['dst']])) {
 					$alert_ip_dst .= "&nbsp;<i class=\"fa fa-times text-danger\" name='unblock[]' onClick=\"document.getElementById('ip').value='{$fields['dst']}';\" ";
-					$alert_ip_dst .= "title='" . gettext("Remove host from Blocked Table") . "' style=\"cursor: pointer;\"></i>"; 
+					$alert_ip_dst .= "title='" . gettext("Remove host from Blocked Table") . "' style=\"cursor: pointer;\"></i>";
 				}
 			}
 			else {
@@ -874,11 +874,11 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 			$alert_sid_str = "{$fields['gid']}:{$fields['sid']}";
 			if (!suricata_is_alert_globally_suppressed($supplist, $fields['gid'], $fields['sid'])) {
 				$sidsupplink = "<i class=\"fa fa-plus-square-o\"  name='addsuppress[]' onClick=\"encRuleSig('{$fields['gid']}','{$fields['sid']}','','{$alert_descr}');\" ";
-				$sidsupplink .= "title='" . gettext("Add this alert to the Suppress List") . "' style=\"cursor: pointer;\"></i>";	
+				$sidsupplink .= "title='" . gettext("Add this alert to the Suppress List") . "' style=\"cursor: pointer;\"></i>";
 			}
 			else {
 				$sidsupplink .= '&nbsp;<i class="fa fa-info-circle" ';
-				$sidsupplink .= "title='" . gettext("This alert is already in the Suppress List") . "'></i>";	
+				$sidsupplink .= "title='" . gettext("This alert is already in the Suppress List") . "'></i>";
 			}
 			/* Add icon for toggling rule state */
 			if (isset($disablesid[$fields['gid']][$fields['sid']])) {
