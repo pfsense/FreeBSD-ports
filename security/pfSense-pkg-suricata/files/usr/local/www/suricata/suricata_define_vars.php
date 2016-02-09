@@ -200,12 +200,17 @@ $form->addGlobal(new Form_Input(
 ));
 
 $section = new Form_Section('Define Servers (IP variables)');
+
 foreach ($suricata_servers as $key => $server) {
-	if (strlen($server) > 40)
+	if (strlen($server) > 40) {
 		$server = substr($server, 0, 40) . "...";
+	}
+
+	$name = "def_" . $key;
 	$label = strtoupper($key);
 	$value = "";
 	$title = "";
+
 	if (!empty($pconfig["def_{$key}"])) {
 		$value = htmlspecialchars($pconfig["def_{$key}"]);
 		$title = trim(filter_expand_alias($pconfig["def_{$key}"]));
@@ -225,10 +230,12 @@ foreach ($suricata_ports as $key => $server) {
 	if (strlen($server) > 40) {
 		$server = substr($server, 0, 40) . "...";
 	}
+
 	$label = strtoupper($key);
 	$name = "def_" . $key;
 	$value = "";
 	$title = "";
+
 	if (!empty($pconfig["def_{$key}"])) {
 		$value = htmlspecialchars($pconfig["def_{$key}"]);
 		$title = trim(filter_expand_alias($pconfig["def_{$key}"]));
@@ -248,24 +255,26 @@ print($form);
 
 ?>
 
-<script type="text/javascript" src="/javascript/autosuggest.js"></script>
-<script type="text/javascript" src="/javascript/suggestions.js"></script>
-
 <script type="text/javascript">
 //<![CDATA[
+events.push(function() {
 	var addressarray = <?= json_encode(get_alias_list(array("host", "network"))) ?>;
 	var portsarray  = <?= json_encode(get_alias_list("port")) ?>;
 
 	function createAutoSuggest() {
 	<?php
+
 		foreach ($suricata_servers as $key => $server)
-			echo " var objAlias{$key} = new AutoSuggestControl(document.getElementById('def_{$key}'), new StateSuggestions(addressarray));\n";
+			echo '$("#def_' . $key . '").autocomplete({source: addressarray});' . "\n";
+
 		foreach ($suricata_ports as $key => $server)
-			echo "var pobjAlias{$key} = new AutoSuggestControl(document.getElementById('def_{$key}'), new StateSuggestions(portsarray));\n";
+			echo '$("#def_' . $key . '").autocomplete({source: portsarray});' . "\n";
 	?>
 	}
 
-	setTimeout("createAutoSuggest();", 500);
+	setTimeout(createAutoSuggest, 500);
+
+});
 //]]>
 </script>
 
