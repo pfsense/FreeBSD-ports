@@ -184,7 +184,7 @@ display_top_tabs($tab_array, true);
 					<?php $i = 0; foreach ($a_suppress as $list): ?>
 					<?php
 						if (suricata_suppresslist_used($list['name'])) {
-							$icon = "<img src=\"/themes/{$g['theme']}/images/icons/icon_frmfld_pwd.png\" title=\"" . gettext("List is in use by an instance") . "\"/>";
+							$icon = "&nbsp;<i class=\"fa fa-info-circle\" style=\"cursor: pointer;\" title=\"" . gettext("List is in use by an instance") . "\"></i>";
 						}
 						else
 							$icon = "";
@@ -204,31 +204,30 @@ display_top_tabs($tab_array, true);
 								<i class="fa fa-pencil fa-lg" title="<?=gettext("Edit Suppress List"); ?>"></i>
 							</a>
 							<?php if (suricata_suppresslist_used($list['name'])) : ?>
-							<a href="/suricata/suricata_interfaces_edit.php?id=<?=uricata_find_suppresslist_interface($list['name'])?>">
-								<i class="fa fa-caret-square-o-right fa-lg" title="<?=gettext("Goto first instance associated with this Suppress List")?>"></i>
+							<a href="/suricata/suricata_interfaces_edit.php?id=<?=suricata_find_suppresslist_interface($list['name'])?>">
+								<i class="fa fa-caret-square-o-right" title="<?=gettext('Goto first instance associated with this Suppress List')?>" style="cursor: pointer;"?></i>
 							</a>
 							<?php endif; ?>
 						</td>
 					</tr>
 					<?php $i++; endforeach; ?>
-					<tr>
-						<td colspan="4" class="text-right">
-							<a href="suricata_suppress_edit.php?id=<?=$id_gen?>" role="button" class="btn btn-sm btn-success" title="<?=gettext('add a new suppression list');?>">
-								<i class="fa fa-plus icon-embed-btn"></i> <?=gettext("Add");?>
-							</a>
-							<?php if (count($a_suppress) > 0): ?>
-							<button type="submit" name="del_btn" id="del_btn" class="btn btn-danger btn-sm" title="<?=gettext('Delete Selected Items');?>">
-								<i class="fa fa-trash icon-embed-btn"></i>
-								<?=gettext('Delete');?>
-							</button>
-							<?php endif; ?>
-						</td>
-					</tr>
 				</tbody>
 			</table>
-		</form>
+		</div>
 	</div>
-</div>
+	<nav class="action-buttons">
+		<a href="suricata_suppress_edit.php?id=<?=$id_gen?>" class="btn btn-sm btn-success" title="<?=gettext('Add a new suppression list');?>">
+			<i class="fa fa-plus icon-embed-btn"></i> <?=gettext("Add");?>
+		</a>
+		<?php if (count($a_suppress) > 0): ?>
+		<button type="submit" name="del_btn" id="del_btn" class="btn btn-danger btn-sm" title="<?=gettext('Delete Selected Items');?>">
+			<i class="fa fa-trash icon-embed-btn"></i>
+			<?=gettext('Delete');?>
+		</button>
+		<?php endif; ?>
+	</nav>
+</form>
+
 
 <div class="infoblock">
 	<?=print_info_box('<p><strong>Note:</strong> Here you can create event filtering and suppression for your Suricata package rules.</p><p>Please note that you must restart a running Interface so that changes can take effect.</p><p>You cannot delete a Suppress List that is currently assigned to a Suricata interface (instance).</p><p>You must first unassign the Suppress List on the Interface Edit tab.</p>', info)?>
