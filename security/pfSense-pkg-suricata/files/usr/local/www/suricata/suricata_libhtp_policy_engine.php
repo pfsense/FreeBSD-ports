@@ -65,12 +65,11 @@
 	cancel_libhtp_policy --> Submit button to cancel operation and exit
  **************************************************************************************/
 
-$svbtn = new Form_Button(
+
+$form = new Form(new Form_Button(
 	'save_libhtp_policy',
 	'Save'
-);		
-
-$form = new Form($svbtn);
+));
 
 $section = new Form_Section('Suricata Target-Based HTTP Server Policy Configuration');
 $section->addInput(new Form_Input(

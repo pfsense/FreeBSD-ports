@@ -49,7 +49,7 @@ if (isset($_GET['id']) && is_numericint($_GET['id']))
 
 // If we were not passed a valid index ID, close the pop-up and exit
 if (is_null($id)) {
-	echo '<html><body link="#000000" vlink="#000000" alink="#000000">';
+	echo '<html><body>';
 	echo '<script language="javascript" type="text/javascript">';
 	echo 'window.close();</script>';
 	echo '</body></html>';
@@ -122,13 +122,11 @@ else
 	$input_errors[] = gettext("Unable to open file: {$displayfile}");
 
 $pgtitle = array(gettext("Suricata"), gettext("Rules File Viewer"));
-?>
 
-<?php include("head.inc");?>
+include("head.inc");
 
-<body link="#000000" vlink="#000000" alink="#000000">
-<?php if ($savemsg) print_info_box($savemsg); ?>
-<?php // include("fbegin.inc");?>
+if ($savemsg)
+	print_info_box($savemsg); ?>
 
 <form action="suricata_rules_edit.php" method="post">
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
