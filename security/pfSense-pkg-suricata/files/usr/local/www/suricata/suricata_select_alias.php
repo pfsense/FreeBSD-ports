@@ -70,10 +70,10 @@ else
 
 // Make sure we have a valid VARIABLE name
 // and ALIAS TYPE, or else bail out.
-//if (is_null($type) || is_null($varname)) {
-//	header("Location: {$referrer}?{$querystr}");
-//	exit;
-//}
+if (is_null($type) || is_null($varname)) {
+	header("Location: {$referrer}?{$querystr}");
+	exit;
+}
 
 // Used to track if any selectable Aliases are found
 $selectablealias = false;
