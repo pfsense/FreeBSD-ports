@@ -36,7 +36,7 @@ $target = htmlspecialchars($_GET['target']);
 		</td>
 		<td><b><?=$path;?></b></td>
 		<td class="fbClose" align="right">
-			<img onClick="$('<?=$container;?>').hide();" border="0" src="/filebrowser/images/icon_cancel.gif" alt="Close" title="Close" />
+			<img onClick="$('#<?=$container;?>').hide();" border="0" src="/filebrowser/images/icon_cancel.gif" alt="Close" title="Close" />
 		</td>
 	</tr>
 	<tr>

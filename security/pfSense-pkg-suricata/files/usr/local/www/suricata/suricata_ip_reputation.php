@@ -172,14 +172,47 @@ if ($_POST['save'] || $_POST['apply']) {
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
-$pgtitle = gettext("Suricata: Interface {$if_friendly} IP Reputation Preprocessor");
+
+$pgtitle = array(gettext("Suricata"), $if_friendly, gettext("IP Reputation Preprocessor"));
 include_once("head.inc");
 
-?>
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
+if (is_subsystem_dirty('suricata_iprep') && !$input_errors) {
+	print_info_box_np(gettext("A change has been made to IP List file assignments.") . "<br/>" . gettext("You must apply the change in order for it to take effect."));
+}
 
-<?php 
-include("fbegin.inc"); 
+/* Display Alert message */
+if ($input_errors)
+	print_input_errors($input_errors);
+
+if ($savemsg)
+	print_info_box($savemsg);
+
+$tab_array = array();
+$tab_array[] = array(gettext("Interfaces"), true, "/suricata/suricata_interfaces.php");
+$tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_global.php");
+$tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
+$tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
+$tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
+$tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
+$tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$id}");
+$tab_array[] = array(gettext("Logs Mgmt"), false, "/suricata/suricata_logs_mgmt.php");
+$tab_array[] = array(gettext("SID Mgmt"), false, "/suricata/suricata_sid_mgmt.php");
+$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=suricata/suricata_sync.xml");
+$tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
+display_top_tabs($tab_array, true);
+
+$tab_array = array();
+$menu_iface=($if_friendly?substr($if_friendly,0,5)." ":"Iface ");
+$tab_array[] = array($menu_iface . gettext("Settings"), false, "/suricata/suricata_interfaces_edit.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Categories"), false, "/suricata/suricata_rulesets.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Rules"), false, "/suricata/suricata_rules.php?id={$id}");
+    $tab_array[] = array($menu_iface . gettext("Flow/Stream"), false, "/suricata/suricata_flow_stream.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("App Parsers"), false, "/suricata/suricata_app_parsers.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Variables"), false, "/suricata/suricata_define_vars.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/suricata/suricata_barnyard.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("IP Rep"), true, "/suricata/suricata_ip_reputation.php?id={$id}");
+display_top_tabs($tab_array, true);
 ?>
 
 <form action="suricata_ip_reputation.php" method="post" name="iform" id="iform" >
@@ -188,53 +221,7 @@ include("fbegin.inc");
 <input name="iplist" id="iplist" type="hidden" value="" />
 <input name="list_id" id="list_id" type="hidden" value="" />
 
-<?php if (is_subsystem_dirty('suricata_iprep') && !$input_errors): ?><p>
-<?php print_info_box_np(gettext("A change has been made to IP List file assignments.") . "<br/>" . gettext("You must apply the change in order for it to take effect."));?>
-<?php endif; ?>
-<?php
-/* Display Alert message */
-if ($input_errors)
-	print_input_errors($input_errors);
-if ($savemsg)
-	print_info_box($savemsg);
-?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-	<tbody>
-	<tr>
-		<td>
-		<?php
-		$tab_array = array();
-		$tab_array[] = array(gettext("Interfaces"), true, "/suricata/suricata_interfaces.php");
-		$tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_global.php");
-		$tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
-		$tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
-		$tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
-		$tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
-		$tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
-		$tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$id}");
-		$tab_array[] = array(gettext("Logs Mgmt"), false, "/suricata/suricata_logs_mgmt.php");
-		$tab_array[] = array(gettext("SID Mgmt"), false, "/suricata/suricata_sid_mgmt.php");
-		$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=suricata/suricata_sync.xml");
-		$tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
-		display_top_tabs($tab_array, true);
-		echo '</td></tr>';
-		echo '<tr><td class="tabnavtbl">';
-		$tab_array = array();
-		$menu_iface=($if_friendly?substr($if_friendly,0,5)." ":"Iface ");
-		$tab_array[] = array($menu_iface . gettext("Settings"), false, "/suricata/suricata_interfaces_edit.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("Categories"), false, "/suricata/suricata_rulesets.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("Rules"), false, "/suricata/suricata_rules.php?id={$id}");
-	        $tab_array[] = array($menu_iface . gettext("Flow/Stream"), false, "/suricata/suricata_flow_stream.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("App Parsers"), false, "/suricata/suricata_app_parsers.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("Variables"), false, "/suricata/suricata_define_vars.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/suricata/suricata_barnyard.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("IP Rep"), true, "/suricata/suricata_ip_reputation.php?id={$id}");
-		display_top_tabs($tab_array, true);
-		?>
-		</td>
-	</tr>
-	<tr>
-		<td><div id="mainarea">
+<div id="mainarea">
 			<table id="maintable" class="tabcont" width="100%" border="0" cellpadding="6" cellspacing="0">
 				<tbody>
 			<?php if ($g['platform'] == "nanobsd") : ?>
@@ -254,24 +241,24 @@ if ($savemsg)
 				</tr>
 				<tr>
 					<td width="22%" valign="top" class="vncell"><?php echo gettext("Host Memcap"); ?></td>
-					<td width="78%" class="vtable"><input name="host_memcap" type="text" 
+					<td width="78%" class="vtable"><input name="host_memcap" type="text"
 					class="formfld unknown" id="host_memcap" size="8" value="<?=htmlspecialchars($pconfig['host_memcap']); ?>"/>&nbsp;
-					<?php echo gettext("Host table memory cap in bytes.  Default is ") . "<strong>" . 
-					gettext("16777216") . "</strong>" . gettext(" (16 MB).  Min value is 1048576 (1 MB)."); ?><br/><br/><?php echo gettext("When using large IP Reputation Lists, this value may need to be increased " . 
+					<?php echo gettext("Host table memory cap in bytes.  Default is ") . "<strong>" .
+					gettext("16777216") . "</strong>" . gettext(" (16 MB).  Min value is 1048576 (1 MB)."); ?><br/><br/><?php echo gettext("When using large IP Reputation Lists, this value may need to be increased " .
 					"to avoid exhausting Host Table memory.") ?></td>
 				</tr>
 				<tr>
 					<td width="22%" valign="top" class="vncell"><?php echo gettext("Host Hash Size"); ?></td>
-					<td width="78%" class="vtable"><input name="host_hash_size" type="text" 
+					<td width="78%" class="vtable"><input name="host_hash_size" type="text"
 					class="formfld unknown" id="host_hash_size" size="8" value="<?=htmlspecialchars($pconfig['host_hash_size']); ?>"/>&nbsp;
-					<?php echo gettext("Host Hash Size in bytes.  Default is ") . "<strong>" . 
+					<?php echo gettext("Host Hash Size in bytes.  Default is ") . "<strong>" .
 					gettext("4096") . "</strong>" . gettext(".  Min value is 1024."); ?><br/><br/><?php echo gettext("When using large IP Reputation Lists, this value may need to be increased."); ?></td>
 				</tr>
 				<tr>
 					<td width="22%" valign="top" class="vncell"><?php echo gettext("Host Preallocations"); ?></td>
-					<td width="78%" class="vtable"><input name="host_prealloc" type="text" 
+					<td width="78%" class="vtable"><input name="host_prealloc" type="text"
 					class="formfld unknown" id="host_prealloc" size="8" value="<?=htmlspecialchars($pconfig['host_prealloc']); ?>"/>&nbsp;
-					<?php echo gettext("Number of Host Table entries to preallocate.  Default is ") . "<strong>" . 
+					<?php echo gettext("Number of Host Table entries to preallocate.  Default is ") . "<strong>" .
 					gettext("1000") . "</strong>" . gettext(".  Min value is 10."); ?><br/><br/><?php echo gettext("Increasing this value may slightly improve performance when using large IP Reputation Lists."); ?></td>
 				</tr>
 				<tr>
@@ -282,27 +269,20 @@ if ($savemsg)
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Assign Categories File"); ?></td>
+					<td colspan="2" ><?php echo gettext("Assign Categories File"); ?></td>
 				</tr>
 				<tr>
-					<td width="22%" valign='top' class='vncell'><?php echo gettext("Categories File"); ?>
+					<td><?php echo gettext("Categories File"); ?>
 					</td>
-					<td width="78%" class="vtable">
+					<td>
 					<!-- iprep_catlist_chooser -->
 					<div id="iprep_catlistChooser" name="iprep_catlistChooser" style="display:none; border:1px dashed gray; width:98%;"></div>
-						<table width="95%" border="0" cellpadding="2" cellspacing="0">
-							<colgroup>
-								<col style="text-align:left;">
-								<col style="width: 30%; text-align:left;">
-								<col style="width: 17px;">
-							</colgroup>
+						<table>
 							<thead>
 								<tr>
-									<th class="listhdrr"><?php echo gettext("Categories Filename"); ?></th>
-									<th class="listhdrr"><?php echo gettext("Modification Time"); ?></th>
-									<th class="list" align="left" valign="middle"><img style="cursor:pointer;" name="iprep_catlist_add" id="iprep_catlist_add" 
-									src="../themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif" width="17" 
-									height="17" border="0" title="<?php echo gettext('Assign a Categories file');?>"/></th>
+									<th><?php echo gettext("Categories Filename"); ?></th>
+									<th><?php echo gettext("Modification Time"); ?></th>
+									<th><i style="cursor:pointer;" class="fa fa-plus" name="iprep_catlist_add" id="iprep_catlist_add"  title="<?php echo gettext('Assign a Categories file');?>"/></i></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -318,41 +298,34 @@ if ($savemsg)
 								<tr>
 									<td class="<?=$class;?>"><?=htmlspecialchars($pconfig['iprep_catlist']);?></td>
 									<td class="<?=$class;?>" align="center"><?=$filedate;?></td>
-									<td class="list"><input type="image" name="iprep_catlist_del[]" id="iprep_catlist_del[]" onClick="document.getElementById('list_id').value='0';" 
-									src="../themes/<?= $g['theme']; ?>/images/icons/icon_x.gif" width="17" height="17" 
-									border="0" title="<?php echo gettext('Remove this Categories file');?>"/></td>
+									<td><i name="iprep_catlist_del[]" id="iprep_catlist_del[]" onClick="document.getElementById('list_id').value='0';" class="fa fa-times" title="<?php echo gettext('Remove this Categories file');?>"></i></td>
 								</tr>
 							<?php endif; ?>
 								<tr>
-									<td colspan="2" class="vexpl"><span class="red"><strong><?=gettext("Note: ");?></strong></span>
-									<?=gettext("change to Categories File assignment is immediately saved.");?></td>
+									<td colspan="2">
+										<span class="red"><strong><?=gettext("Note: ");?></strong></span>
+										<?=gettext("change to Categories File assignment is immediately saved.");?>
+									</td>
 								</tr>
 							</tbody>
 						</table>
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Assign IP Reputation Lists"); ?></td>
+					<td colspan="2"><?php echo gettext("Assign IP Reputation Lists"); ?></td>
 				</tr>
 				<tr>
-					<td width="22%" valign='top' class='vncell'><?php echo gettext("IP Reputation Files"); ?>
+					<td><?php echo gettext("IP Reputation Files"); ?>
 					</td>
-					<td width="78%" class="vtable">
-						<table width="95%" border="0" cellpadding="2" cellspacing="0">
+					<td>
+						<table>
 					<!-- iplist_chooser -->
 					<div id="iplistChooser" name="iplistChooser" style="display:none; border:1px dashed gray; width:98%;"></div>
-							<colgroup>
-								<col style="text-align:left;">
-								<col style="width: 30%; text-align:left;">
-								<col style="width: 17px;">
-							</colgroup>
 							<thead>
 								<tr>
-									<th class="listhdrr"><?php echo gettext("IP Reputation List Filename"); ?></th>
-									<th class="listhdrr"><?php echo gettext("Modification Time"); ?></th>
-									<th class="list" align="left" valign="middle"><img style="cursor:pointer;" name="iplist_add" id="iplist_add" 
-									src="../themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif" width="17" height="17" 
-									border="0" title="<?php echo gettext('Assign a whitelist file');?>"/></th>
+									<th><?php echo gettext("IP Reputation List Filename"); ?></th>
+									<th><?php echo gettext("Modification Time"); ?></th>
+									<th><i style="cursor:pointer;" name="iplist_add" id="iplist_add" class="fa fa-plus" title="<?php echo gettext('Assign a whitelist file');?>"></i></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -368,13 +341,12 @@ if ($savemsg)
 								<tr>
 									<td class="<?=$class;?>"><?=htmlspecialchars($f);?></td>
 									<td class="<?=$class;?>" align="center"><?=$filedate;?></td>
-									<td class="list"><input type="image" name="iplist_del[]" id="iplist_del[]" onClick="document.getElementById('list_id').value='<?=$k;?>';" 
-									src="../themes/<?= $g['theme']; ?>/images/icons/icon_x.gif" width="17" height="17" 
-									border="0" title="<?php echo gettext('Remove this whitelist file');?>"/></td>
+									<td><i name="iplist_del[]" id="iplist_del[]" onClick="document.getElementById('list_id').value='<?=$k;?>';"
+									class="fa fa-times" title="<?php echo gettext('Remove this whitelist file');?>"></i></td>
 								</tr>
 							<?php endforeach; ?>
 								<tr>
-									<td colspan="2" class="vexpl"><span class="red"><strong><?=gettext("Note: ");?></strong></span>
+									<td colspan="2"><span class="red"><strong><?=gettext("Note: ");?></strong></span>
 									<?=gettext("changes to IP Reputation List assignments are immediately saved.");?></td>
 								</tr>
 							</tbody>
@@ -385,13 +357,20 @@ if ($savemsg)
 				</tbody>
 			</table>
 		</div>
-		</td>
-	</tr>
-	</tbody>
-</table>
+
 
 <?php if ($g['platform'] != "nanobsd") : ?>
 <script type="text/javascript">
+//<![CDATA[
+events.push(function() {
+
+$('#iprep_catlist_add').click(function() {
+	iprep_catlistChoose();
+});
+
+//				effect.Appear("iprep_catlistChooser", { duration: 0.25 });
+
+/*
 Event.observe(
 	window, "load",
 	function() {
@@ -412,43 +391,56 @@ Event.observe(
 		);
 	}
 );
-
+*/
 function iprep_catlistChoose() {
-	Effect.Appear("iprep_catlistChooser", { duration: 0.25 });
-	if($("fbCurrentDir"))
-		$("fbCurrentDir").innerHTML = "Loading ...";
+//	effect.Appear("iprep_catlistChooser", { duration: 0.25 });
 
-	new Ajax.Request(
+	if($("fbCurrentDir")) {
+		$("#iprep_catlistChooser").html("Loading ...");
+		$("#iprep_catlistChooser").show();
+	}
+
+	$.ajax(
 		"/suricata/suricata_iprep_list_browser.php?container=iprep_catlistChooser&target=iplist&val=" + new Date().getTime(),
-		{ method: "get", onComplete: iprep_catlistComplete }
+		{
+			type: 'get',
+			complete: iprep_catlistComplete
+		}
 	);
+
 }
 
 function iplistChoose() {
-	Effect.Appear("iplistChooser", { duration: 0.25 });
+	effect.Appear("iplistChooser", { duration: 0.25 });
 	if($("fbCurrentDir"))
 		$("fbCurrentDir").innerHTML = "Loading ...";
 
 	new Ajax.Request(
 		"/suricata/suricata_iprep_list_browser.php?container=iplistChooser&target=iplist&val=" + new Date().getTime(),
-		{ method: "get", onComplete: iplistComplete }
+		{
+			type: "get",
+			complete: iplistComplete
+		}
 	);
 }
 
 function iprep_catlistComplete(req) {
-	$("iprep_catlistChooser").innerHTML = req.responseText;
+	$("#iprep_catlistChooser").html(req.responseText);
 
 	var actions = {
-		fbClose: function() { $("iprep_catlistChooser").hide();                    },
-		fbFile:  function() { $("iplist").value = this.id;
-				      $("mode").value = 'iprep_catlist_add';
-				      document.getElementById('iform').submit();
-				    }
+		fbClose: function() {
+			$("#iprep_catlistChooser").hide();
+		},
+
+		fbFile:  function() { $("#iplist").val(this.id);
+			$("#mode").val('iprep_catlist_add');
+			$('form').submit();
+		}
 	}
 
 	for(var type in actions) {
-		var elem = $("iprep_catlistChooser");
-		var list = elem.getElementsByClassName(type);
+		var elem = $("#iprep_catlistChooser");
+		var list = $('.type');
 		for (var i=0; i<list.length; i++) {
 			Event.observe(list[i], "click", actions[type]);
 			list[i].style.cursor = "pointer";
@@ -457,15 +449,21 @@ function iprep_catlistComplete(req) {
 }
 
 function iplistComplete(req) {
+
 	$("iplistChooser").innerHTML = req.responseText;
 
 	var actions = {
-		fbClose: function() { $("iplistChooser").hide();                    },
-		fbFile:  function() { $("iplist").value = this.id;
-				      $("mode").value = 'iplist_add';
-				      document.getElementById('iform').submit();
-				    }
+		fbClose: function() {
+			$("iplistChooser").hide();
+		},
+
+		fbFile:  function() {
+			$("iplist").value = this.id;
+		    $("mode").value = 'iplist_add';
+		    $('form').submit();
+		 }
 	}
+
 
 	for(var type in actions) {
 		var elem = $("iplistChooser");
@@ -476,11 +474,12 @@ function iplistComplete(req) {
 		}
 	}
 }
-
+});
+//]]>
 </script>
 <?php endif; ?>
 
 </form>
-<?php include("fend.inc"); ?>
-</body>
-</html>
+<?php include("foot.inc");
+?>
+
