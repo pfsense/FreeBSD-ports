@@ -419,6 +419,10 @@ host_dns(struct thread_data *hostd, int forceupdate)
 		if (res->ai_family == AF_INET) {
 			if (debug > 9)
 				syslog(LOG_WARNING, "\t\tfound entry %s for %s", inet_ntop(res->ai_family, res->ai_addr->sa_data + 2, buffer, sizeof buffer), TABLENAME(hostd->tablename));
+			if (hostd->mask > 32) {
+				syslog(LOG_WARNING, "\t\tinvalid mask for %s/%d", inet_ntop(res->ai_family, res->ai_addr->sa_data + 2, buffer, sizeof buffer), hostd->mask);
+				hostd->mask = 32;
+			}
 		}
 		if(res->ai_family == AF_INET6) {
 			if (debug > 9)
@@ -731,6 +735,10 @@ check_hostname(void *arg)
 				added = 1;
 				in.sin_family = AF_INET;
 				in.sin_len = sizeof(in);
+				if (thrd->mask > 32) {
+					syslog(LOG_WARNING, "invalid mask for %s/%d", thrd->hostname, thrd->mask);
+					thrd->mask = 32;
+				}
 				error = add_table_entry(thrd, (struct sockaddr *)&in, 1);
 			} else if (added == 0 && is_ipaddrv6(thrd->hostname, &in6) == 1) {
 				error = add_table_entry(thrd, (struct sockaddr *)&in6, 1);
