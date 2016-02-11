@@ -83,7 +83,7 @@ foreach($files as $file):
 		<td></td>
 		<td class="fbFile vexpl" id="<?=$fqpn;?>" align="left">
 			<?php $filename = str_replace("//","/", "{$path}/{$file}"); ?>
-			<div onClick="$('<?=$target;?>').value='<?=$filename?>'; $('<?=$container;?>').hide();">
+			<div onClick="$('#<?=$target;?>').val('<?=$filename?>'); $('#<?=$container;?>').hide();">
 				<img src="/filebrowser/images/file_<?=$type;?>.gif" alt="" title="">
 				&nbsp;<?=$file;?>
 			</div>

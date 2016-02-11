@@ -116,6 +116,11 @@ if ($_POST['iprep_catlist_del']) {
 	$pconfig['iplist_files'] = $a_nat[$id]['iplist_files'];
 }
 
+/*
+if ($_POST) {
+	print_r($_POST); exit;
+}
+*/
 if ($_POST['iplist_del'] && is_numericint($_POST['list_id'])) {
 	$pconfig = $_POST;
 	unset($a_nat[$id]['iplist_files']['item'][$_POST['list_id']]);
@@ -177,7 +182,7 @@ $pgtitle = array(gettext("Suricata"), $if_friendly, gettext("IP Reputation Prepr
 include_once("head.inc");
 
 if (is_subsystem_dirty('suricata_iprep') && !$input_errors) {
-	print_info_box_np(gettext("A change has been made to IP List file assignments.") . "<br/>" . gettext("You must apply the change in order for it to take effect."));
+	print_apply_box(gettext("A change has been made to IP List file assignments.") . "<br/>" . gettext("You must apply the change in order for it to take effect."));
 }
 
 /* Display Alert message */
@@ -298,7 +303,9 @@ display_top_tabs($tab_array, true);
 								<tr>
 									<td class="<?=$class;?>"><?=htmlspecialchars($pconfig['iprep_catlist']);?></td>
 									<td class="<?=$class;?>" align="center"><?=$filedate;?></td>
-									<td><i name="iprep_catlist_del[]" id="iprep_catlist_del[]" onClick="document.getElementById('list_id').value='0';" class="fa fa-times" title="<?php echo gettext('Remove this Categories file');?>"></i></td>
+									<td><button class="btn btn-xs btn-danger" name="iprep_catlist_del[]" id="iprep_catlist_del[]" onClick="$('#list_id').val('0');" class="fa fa-times" title="<?php echo gettext('Remove this Categories file');?>">
+									<i class="fa fa-times"></i><?=gettext("Delete")?></button>
+									</td>
 								</tr>
 							<?php endif; ?>
 								<tr>
@@ -329,22 +336,32 @@ display_top_tabs($tab_array, true);
 								</tr>
 							</thead>
 							<tbody>
-							<?php foreach($pconfig['iplist_files']['item'] as $k => $f):
-									$class = "listr";
-									if (!file_exists("{$iprep_path}{$f}")) {
-										$filedate = gettext("Unknown -- file missing");
-										$class .= " red";
-									}
-									else
-										$filedate = date('M-d Y   g:i a', filemtime("{$iprep_path}{$f}"));
-							 ?>
-								<tr>
-									<td class="<?=$class;?>"><?=htmlspecialchars($f);?></td>
-									<td class="<?=$class;?>" align="center"><?=$filedate;?></td>
-									<td><i name="iplist_del[]" id="iplist_del[]" onClick="document.getElementById('list_id').value='<?=$k;?>';"
-									class="fa fa-times" title="<?php echo gettext('Remove this whitelist file');?>"></i></td>
-								</tr>
-							<?php endforeach; ?>
+							<?php
+
+								if (is_array($pconfig['iplist_files']['item'])) :
+									foreach($pconfig['iplist_files']['item'] as $k => $f) :
+										$class = "listr";
+										if (!file_exists("{$iprep_path}{$f}")) {
+											$filedate = gettext("Unknown -- file missing");
+											$class .= " red";
+										}
+										else
+											$filedate = date('M-d Y   g:i a', filemtime("{$iprep_path}{$f}"));
+								 ?>
+									<tr>
+										<td class="<?=$class;?>"><?=htmlspecialchars($f);?></td>
+										<td class="<?=$class;?>" align="center"><?=$filedate;?></td>
+										<td>
+											<button class="btn btn-xs btn-danger" name="iplist_del[]" id="iplist_del[]" onClick="$('#list_id').val(<?=$k;?>);" class="fa fa-times" title="<?php echo gettext('Remove this IP reputation file');?>">
+											<i class="fa fa-times"></i><?=gettext("Delete")?></button>
+										</td>
+	<!--
+										<td><i name="iplist_del[]" id="iplist_del[]" onClick="document.getElementById('list_id').value='<?=$k;?>';"
+										class="fa fa-times" title="<?php echo gettext('Remove this whitelist file');?>"></i></td> -->
+									</tr>
+								<?php endforeach;
+								endif;
+	?>
 								<tr>
 									<td colspan="2"><span class="red"><strong><?=gettext("Note: ");?></strong></span>
 									<?=gettext("changes to IP Reputation List assignments are immediately saved.");?></td>
@@ -360,6 +377,7 @@ display_top_tabs($tab_array, true);
 
 
 <?php if ($g['platform'] != "nanobsd") : ?>
+
 <script type="text/javascript">
 //<![CDATA[
 events.push(function() {
@@ -368,33 +386,11 @@ $('#iprep_catlist_add').click(function() {
 	iprep_catlistChoose();
 });
 
-//				effect.Appear("iprep_catlistChooser", { duration: 0.25 });
+$('#iplist_add').click(function() {
+	iplistChoose();
+});
 
-/*
-Event.observe(
-	window, "load",
-	function() {
-		Event.observe(
-			"iprep_catlist_add", "click",
-			function() {
-				Effect.Appear("iprep_catlistChooser", { duration: 0.25 });
-				iprep_catlistChoose();
-			}
-		);
-
-		Event.observe(
-			"iplist_add", "click",
-			function() {
-				Effect.Appear("iplistChooser", { duration: 0.25 });
-				iplistChoose();
-			}
-		);
-	}
-);
-*/
 function iprep_catlistChoose() {
-//	effect.Appear("iprep_catlistChooser", { duration: 0.25 });
-
 	if($("fbCurrentDir")) {
 		$("#iprep_catlistChooser").html("Loading ...");
 		$("#iprep_catlistChooser").show();
@@ -411,11 +407,11 @@ function iprep_catlistChoose() {
 }
 
 function iplistChoose() {
-	effect.Appear("iplistChooser", { duration: 0.25 });
 	if($("fbCurrentDir"))
-		$("fbCurrentDir").innerHTML = "Loading ...";
+		$("#iplistChooser").html("Loading ...");
+		$("#iplistChooser").show();
 
-	new Ajax.Request(
+	$.ajax(
 		"/suricata/suricata_iprep_list_browser.php?container=iplistChooser&target=iplist&val=" + new Date().getTime(),
 		{
 			type: "get",
@@ -432,46 +428,46 @@ function iprep_catlistComplete(req) {
 			$("#iprep_catlistChooser").hide();
 		},
 
-		fbFile:  function() { $("#iplist").val(this.id);
+		fbFile:  function() {
+			$("#iprep_catlist").val(this.id);
 			$("#mode").val('iprep_catlist_add');
-			$('form').submit();
+			$(form).submit();
 		}
 	}
 
 	for(var type in actions) {
-		var elem = $("#iprep_catlistChooser");
-		var list = $('.type');
-		for (var i=0; i<list.length; i++) {
-			Event.observe(list[i], "click", actions[type]);
-			list[i].style.cursor = "pointer";
-		}
+		$("#iprep_catlistChooser ." + type).each(
+			function() {
+				$(this).click(actions[type]);
+				$(this).css("cursor","pointer");
+			}
+		);
 	}
 }
 
 function iplistComplete(req) {
 
-	$("iplistChooser").innerHTML = req.responseText;
+	$("#iplistChooser").html(req.responseText);
 
 	var actions = {
 		fbClose: function() {
-			$("iplistChooser").hide();
+			$("#iplistChooser").hide();
 		},
 
 		fbFile:  function() {
-			$("iplist").value = this.id;
-		    $("mode").value = 'iplist_add';
-		    $('form').submit();
+			$("#iplist").val(this.id);
+		    $("#mode").val('iplist_add');
+		    $(form).submit();
 		 }
 	}
 
-
 	for(var type in actions) {
-		var elem = $("iplistChooser");
-		var list = elem.getElementsByClassName(type);
-		for (var i=0; i<list.length; i++) {
-			Event.observe(list[i], "click", actions[type]);
-			list[i].style.cursor = "pointer";
-		}
+		$("#iplistChooser ." + type).each(
+			function() {
+				$(this).click(actions[type]);
+				$(this).css("cursor","pointer");
+			}
+		);
 	}
 }
 });
