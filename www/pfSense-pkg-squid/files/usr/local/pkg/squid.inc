@@ -51,7 +51,8 @@ $shortcut_section = "squid";
 define('SQUID_BASE', '/usr/local');
 define('SQUID_LOCALBASE', '/usr/local');
 define('SQUID_UID', 'squid');
-define('SQUID_GID', 'squid');
+define('SQUID_GID', 'proxy');
+define('SQUID_EXTRA_GID', 'squid');
 define('SQUID_CONFBASE', SQUID_LOCALBASE .'/etc/squid');
 define('SQUID_CONFFILE', SQUID_CONFBASE . '/squid.conf');
 define('SQUID_ACLDIR', '/var/squid/acl');
@@ -435,6 +436,24 @@ function squid_restart_services() {
 	}
 }
 
+/*
+ * Change the squid OS user to match what is required for squid to run and have
+ * access to the files and devices it needs. See #5869
+ */
+function squid_fixup_user() {
+	$squid_userinfo = posix_getpwnam(SQUID_UID);
+	$squid_groupinfo = posix_getgrgid($squid_userinfo['gid']);
+	$squid_exgrpinfo = posix_getgrnam(SQUID_EXTRA_GID);
+
+	/* If the squid user group is not what we want, fix it. */
+	if ($squid_groupinfo['name'] != SQUID_GID) {
+		mwexec('/usr/sbin/pw usermod -n ' . escapeshellarg(SQUID_UID) . ' -g ' . escapeshellarg(SQUID_GID));
+	}
+	/* Ensure the squid user is also a member of the desired 'extra' group */
+	if (!in_array(SQUID_UID, $squid_exgrpinfo['members'])) {
+		mwexec('/usr/sbin/pw groupmod -n ' . escapeshellarg(SQUID_EXTRA_GID) . ' -m ' . escapeshellarg(SQUID_UID));
+	}
+}
 
 /*
  * Squid package install/uninstall
@@ -450,6 +469,9 @@ function squid_install_command() {
 	if ($g['platform'] == "nanobsd") {
 		$config['installedpackages']['squidcache']['config'][0]['harddisk_cache_system'] = 'null';
 	}
+
+	// Fix user/group entry permissions
+	squid_fixup_user();
 
 	// migrate configuration from old versions
 	squid_upgrade_config();
@@ -1954,6 +1976,10 @@ function squid_resync($via_rpc = "no") {
 	}
 
 	conf_mount_rw();
+
+	// Fix user/group entry permissions
+	squid_fixup_user();
+
 	foreach (array(SQUID_CONFBASE, SQUID_ACLDIR, SQUID_SSL_DB) as $dir) {
 		safe_mkdir($dir, 0755);
 		squid_chown_recursive($dir, SQUID_UID, SQUID_GID);
