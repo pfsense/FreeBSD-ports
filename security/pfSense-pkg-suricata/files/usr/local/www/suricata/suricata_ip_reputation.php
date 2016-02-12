@@ -116,11 +116,6 @@ if ($_POST['iprep_catlist_del']) {
 	$pconfig['iplist_files'] = $a_nat[$id]['iplist_files'];
 }
 
-/*
-if ($_POST) {
-	print_r($_POST); exit;
-}
-*/
 if ($_POST['iplist_del'] && is_numericint($_POST['list_id'])) {
 	$pconfig = $_POST;
 	unset($a_nat[$id]['iplist_files']['item'][$_POST['list_id']]);
@@ -130,7 +125,7 @@ if ($_POST['iplist_del'] && is_numericint($_POST['list_id'])) {
 	$pconfig['iprep_catlist'] = $a_nat[$id]['iprep_catlist'];
 }
 
-if ($_POST['save'] || $_POST['apply']) {
+if ($_POST['save']) {
 
 	$pconfig['iprep_catlist'] = $a_nat[$id]['iprep_catlist'];
 	$pconfig['iplist_files'] = $a_nat[$id]['iplist_files'];
@@ -151,7 +146,6 @@ if ($_POST['save'] || $_POST['apply']) {
 
 	// If no errors write to conf
 	if (!$input_errors) {
-
 		$a_nat[$id]['enable_iprep'] = $_POST['enable_iprep'] ? 'on' : 'off';
 		$a_nat[$id]['host_memcap'] = str_replace(",", "", $_POST['host_memcap']);
 		$a_nat[$id]['host_hash_size'] = str_replace(",", "", $_POST['host_hash_size']);
@@ -171,18 +165,15 @@ if ($_POST['save'] || $_POST['apply']) {
 		// Sync to configured CARP slaves if any are enabled
 		suricata_sync_on_changes();
 
-		// We have saved changes and done a soft restart, so clear "dirty" flag
-		clear_subsystem_dirty('suricata_iprep');
+		$savemsg = gettext("IP reputation system changes have been saved");
 	}
 }
-
-$if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
 
 $pgtitle = array(gettext("Suricata"), $if_friendly, gettext("IP Reputation Preprocessor"));
 include_once("head.inc");
 
-if (is_subsystem_dirty('suricata_iprep') && !$input_errors) {
-	print_apply_box(gettext("A change has been made to IP List file assignments.") . "<br/>" . gettext("You must apply the change in order for it to take effect."));
+if ($g['platform'] == "nanobsd") {
+	$input_errors[] = gettext("IP Reputation is not supported on NanoBSD installs");
 }
 
 /* Display Alert message */
@@ -190,7 +181,7 @@ if ($input_errors)
 	print_input_errors($input_errors);
 
 if ($savemsg)
-	print_info_box($savemsg);
+	print_info_box($savemsg, 'success');
 
 $tab_array = array();
 $tab_array[] = array(gettext("Interfaces"), true, "/suricata/suricata_interfaces.php");
@@ -218,162 +209,139 @@ $tab_array[] = array($menu_iface . gettext("Variables"), false, "/suricata/suric
 $tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/suricata/suricata_barnyard.php?id={$id}");
 $tab_array[] = array($menu_iface . gettext("IP Rep"), true, "/suricata/suricata_ip_reputation.php?id={$id}");
 display_top_tabs($tab_array, true);
+
+$form = new Form();
+
+$section = new Form_Section('IP Reputation Configuration');
+
+$section->addInput(new Form_Checkbox(
+	'enable_iprep',
+	'Enable',
+	'Use IP Reputation Lists on this interface. Default is NOT Checked.',
+	$pconfig['reverse'],
+	'on'
+));
+
+$section->addInput(new Form_Input(
+	'host_memcap',
+	'Host Memcap',
+	'number',
+	$pconfig['host_memcap'],
+	['min' => '1048576']
+))->setHelp('Host table memory cap in bytes. Default is 16777216 (16 MB). Min value is 1048576 (1 MB)');
+
+$section->addInput(new Form_Input(
+	'host_hash_size',
+	'Host Hash Size',
+	'number',
+	$pconfig['host_hash_size'],
+	['min' => '1024']
+))->setHelp('	Host Hash Size in bytes. Default is 4096. Min value is 1024');
+
+$section->addInput(new Form_Input(
+	'host_prealloc',
+	'Host Preallocations',
+	'number',
+	$pconfig['host_prealloc'],
+	['min' => '10']
+))->setHelp('Number of Host Table entries to preallocate. Default is 1000. Min value is 10<br /> ' .
+			'Increasing this value may slightly improve performance when using large IP Reputation Lists');
+
+$form->add($section);
+
+$form->addGlobal(new Form_Input('id', null, 'hidden', $id));
+$form->addGlobal(new Form_Input('mode', null, 'hidden'));
+$form->addGlobal(new Form_Input('iplist', null, 'hidden'));
+$form->addGlobal(new Form_Input('list_id', null, 'hidden'));
+
+print($form);
 ?>
 
-<form action="suricata_ip_reputation.php" method="post" name="iform" id="iform" >
-<input name="id" type="hidden" value="<?=$id;?>" />
-<input type="hidden" id="mode" name="mode" value="" />
-<input name="iplist" id="iplist" type="hidden" value="" />
-<input name="list_id" id="list_id" type="hidden" value="" />
-
-<div id="mainarea">
-			<table id="maintable" class="tabcont" width="100%" border="0" cellpadding="6" cellspacing="0">
-				<tbody>
-			<?php if ($g['platform'] == "nanobsd") : ?>
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("Assign Categories File")?></h2></div>
+	<div class="panel-body">
+		<!-- iprep_catlist_chooser -->
+		<div id="iprep_catlistChooser" name="iprep_catlistChooser" style="display:none; border:1px dashed gray; width:98%;" class="table-responsive"></div>
+		<table class="table table-hover table-condensed">
+			<thead>
 				<tr>
-					<td colspan="2" class="listtopic"><?php echo gettext("IP Reputation is not supported on NanoBSD installs"); ?></td>
+					<th class="col-sm-6"><?=gettext("Categories Filename")?></th>
+					<th class="col-sm-4"><?=gettext("Modification Time")?></th>
+					<th><?=gettext("Action")?></th>
 				</tr>
-			<?php else: ?>
+			</thead>
+			<tbody>
+			<?php if (!empty($pconfig['iprep_catlist'])) :
+					if (!file_exists("{$iprep_path}{$pconfig['iprep_catlist']}")) {
+						$filedate = gettext("Unknown -- file missing");
+					}
+					else
+						$filedate = date('M-d Y   g:i a', filemtime("{$iprep_path}{$pconfig['iprep_catlist']}"));
+			 ?>
 				<tr>
-					<td colspan="2" valign="top" class="listtopic"><?php echo gettext("IP Reputation Configuration"); ?></td>
-				</tr>
-				<tr>
-					<td width="22%" valign='top' class='vncell'><?php echo gettext("Enable"); ?>
-					</td>
-					<td width="78%" class="vtable"><input name="enable_iprep" type="checkbox" value="on" <?php if ($pconfig['enable_iprep'] == "on") echo "checked"; ?>/>
-					<?php echo gettext("Use IP Reputation Lists on this interface.  Default is ") . "<strong>" . gettext("Not Checked.") . "</strong>"; ?>
-					</td>
-				</tr>
-				<tr>
-					<td width="22%" valign="top" class="vncell"><?php echo gettext("Host Memcap"); ?></td>
-					<td width="78%" class="vtable"><input name="host_memcap" type="text"
-					class="formfld unknown" id="host_memcap" size="8" value="<?=htmlspecialchars($pconfig['host_memcap']); ?>"/>&nbsp;
-					<?php echo gettext("Host table memory cap in bytes.  Default is ") . "<strong>" .
-					gettext("16777216") . "</strong>" . gettext(" (16 MB).  Min value is 1048576 (1 MB)."); ?><br/><br/><?php echo gettext("When using large IP Reputation Lists, this value may need to be increased " .
-					"to avoid exhausting Host Table memory.") ?></td>
-				</tr>
-				<tr>
-					<td width="22%" valign="top" class="vncell"><?php echo gettext("Host Hash Size"); ?></td>
-					<td width="78%" class="vtable"><input name="host_hash_size" type="text"
-					class="formfld unknown" id="host_hash_size" size="8" value="<?=htmlspecialchars($pconfig['host_hash_size']); ?>"/>&nbsp;
-					<?php echo gettext("Host Hash Size in bytes.  Default is ") . "<strong>" .
-					gettext("4096") . "</strong>" . gettext(".  Min value is 1024."); ?><br/><br/><?php echo gettext("When using large IP Reputation Lists, this value may need to be increased."); ?></td>
-				</tr>
-				<tr>
-					<td width="22%" valign="top" class="vncell"><?php echo gettext("Host Preallocations"); ?></td>
-					<td width="78%" class="vtable"><input name="host_prealloc" type="text"
-					class="formfld unknown" id="host_prealloc" size="8" value="<?=htmlspecialchars($pconfig['host_prealloc']); ?>"/>&nbsp;
-					<?php echo gettext("Number of Host Table entries to preallocate.  Default is ") . "<strong>" .
-					gettext("1000") . "</strong>" . gettext(".  Min value is 10."); ?><br/><br/><?php echo gettext("Increasing this value may slightly improve performance when using large IP Reputation Lists."); ?></td>
-				</tr>
-				<tr>
-					<td width="22%" valign="top" class="vncell">&nbsp;</td>
-					<td width="78%" class="vtable">
-					<input name="save" type="submit" class="formbtn" value="Save" title="<?=gettext("Save IP Reputation configuration");?>" />
-					&nbsp;&nbsp;<?=gettext("Click to save configuration settings and live-reload the running Suricata configuration.");?>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2" ><?php echo gettext("Assign Categories File"); ?></td>
-				</tr>
-				<tr>
-					<td><?php echo gettext("Categories File"); ?>
-					</td>
-					<td>
-					<!-- iprep_catlist_chooser -->
-					<div id="iprep_catlistChooser" name="iprep_catlistChooser" style="display:none; border:1px dashed gray; width:98%;"></div>
-						<table>
-							<thead>
-								<tr>
-									<th><?php echo gettext("Categories Filename"); ?></th>
-									<th><?php echo gettext("Modification Time"); ?></th>
-									<th><i style="cursor:pointer;" class="fa fa-plus" name="iprep_catlist_add" id="iprep_catlist_add"  title="<?php echo gettext('Assign a Categories file');?>"/></i></th>
-								</tr>
-							</thead>
-							<tbody>
-							<?php if (!empty($pconfig['iprep_catlist'])) :
-									$class = "listr";
-									if (!file_exists("{$iprep_path}{$pconfig['iprep_catlist']}")) {
-										$filedate = gettext("Unknown -- file missing");
-										$class .= " red";
-									}
-									else
-										$filedate = date('M-d Y   g:i a', filemtime("{$iprep_path}{$pconfig['iprep_catlist']}"));
-							 ?>
-								<tr>
-									<td class="<?=$class;?>"><?=htmlspecialchars($pconfig['iprep_catlist']);?></td>
-									<td class="<?=$class;?>" align="center"><?=$filedate;?></td>
-									<td><button class="btn btn-xs btn-danger" name="iprep_catlist_del[]" id="iprep_catlist_del[]" onClick="$('#list_id').val('0');" class="fa fa-times" title="<?php echo gettext('Remove this Categories file');?>">
-									<i class="fa fa-times"></i><?=gettext("Delete")?></button>
-									</td>
-								</tr>
-							<?php endif; ?>
-								<tr>
-									<td colspan="2">
-										<span class="red"><strong><?=gettext("Note: ");?></strong></span>
-										<?=gettext("change to Categories File assignment is immediately saved.");?>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2"><?php echo gettext("Assign IP Reputation Lists"); ?></td>
-				</tr>
-				<tr>
-					<td><?php echo gettext("IP Reputation Files"); ?>
-					</td>
-					<td>
-						<table>
-					<!-- iplist_chooser -->
-					<div id="iplistChooser" name="iplistChooser" style="display:none; border:1px dashed gray; width:98%;"></div>
-							<thead>
-								<tr>
-									<th><?php echo gettext("IP Reputation List Filename"); ?></th>
-									<th><?php echo gettext("Modification Time"); ?></th>
-									<th><i style="cursor:pointer;" name="iplist_add" id="iplist_add" class="fa fa-plus" title="<?php echo gettext('Assign a whitelist file');?>"></i></th>
-								</tr>
-							</thead>
-							<tbody>
-							<?php
-
-								if (is_array($pconfig['iplist_files']['item'])) :
-									foreach($pconfig['iplist_files']['item'] as $k => $f) :
-										$class = "listr";
-										if (!file_exists("{$iprep_path}{$f}")) {
-											$filedate = gettext("Unknown -- file missing");
-											$class .= " red";
-										}
-										else
-											$filedate = date('M-d Y   g:i a', filemtime("{$iprep_path}{$f}"));
-								 ?>
-									<tr>
-										<td class="<?=$class;?>"><?=htmlspecialchars($f);?></td>
-										<td class="<?=$class;?>" align="center"><?=$filedate;?></td>
-										<td>
-											<button class="btn btn-xs btn-danger" name="iplist_del[]" id="iplist_del[]" onClick="$('#list_id').val(<?=$k;?>);" class="fa fa-times" title="<?php echo gettext('Remove this IP reputation file');?>">
-											<i class="fa fa-times"></i><?=gettext("Delete")?></button>
-										</td>
-	<!--
-										<td><i name="iplist_del[]" id="iplist_del[]" onClick="document.getElementById('list_id').value='<?=$k;?>';"
-										class="fa fa-times" title="<?php echo gettext('Remove this whitelist file');?>"></i></td> -->
-									</tr>
-								<?php endforeach;
-								endif;
-	?>
-								<tr>
-									<td colspan="2"><span class="red"><strong><?=gettext("Note: ");?></strong></span>
-									<?=gettext("changes to IP Reputation List assignments are immediately saved.");?></td>
-								</tr>
-							</tbody>
-						</table>
+					<td><?=htmlspecialchars($pconfig['iprep_catlist']);?></td>
+					<td> <?=$filedate;?></td>
+					<td><button class="btn btn-xs btn-danger" name="iprep_catlist_delX" id="iprep_catlist_delX" title="<?=gettext('Remove this Categories file');?>">
+					<i class="fa fa-times"></i><?=gettext("Delete")?></button>
 					</td>
 				</tr>
 			<?php endif; ?>
-				</tbody>
-			</table>
-		</div>
+			</tbody>
+		</table>
+	</div>
+</div>
+<nav class="action-buttons">
+	<button class="btn btn-xs btn-success" name="iprep_catlist_add" id="iprep_catlist_add"  title="<?=gettext('Assign a Categories file');?>"><?=gettext("Add")?><i class="fa fa-plus"></i></button>
+</nav>
+
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("Assign IP Reputation Lists")?></h2></div>
+	<div class="panel-body ">
+		<!-- iprep_catlist_chooser -->
+		<div id="iplistChooser" name="iplistChooser" style="display:none; border:1px dashed gray; width:98%;" class="table-responsive"></div>
+		<table class="table table-hover table-condensed">
+				<!-- iplist_chooser -->
+
+						<thead>
+							<tr>
+								<th class="col-sm-6"><?php echo gettext("IP Reputation List Filename"); ?></th>
+								<th class="col-sm-4"><?php echo gettext("Modification Time"); ?></th>
+								<th><?=gettext("Action")?></th>
+							</tr>
+						</thead>
+						<tbody>
+<?php
+						if (is_array($pconfig['iplist_files']['item'])) :
+							foreach($pconfig['iplist_files']['item'] as $k => $f) :
+								if (!file_exists("{$iprep_path}{$f}")) {
+									$filedate = gettext("Unknown -- file missing");
+								}
+								else
+									$filedate = date('M-d Y   g:i a', filemtime("{$iprep_path}{$f}"));
+						 ?>
+							<tr>
+								<td><?=htmlspecialchars($f);?></td>
+								<td><?=$filedate;?></td>
+								<td>
+									<button class="btn btn-xs btn-danger" name="iplist_delX[]" id="iplist_delX[]" value="<?=$k;?>" title="<?php echo gettext('Remove this IP reputation file');?>">
+									<i class="fa fa-times"></i><?=gettext("Delete")?></button>
+								</td>
+							</tr>
+<?php 							endforeach;
+						endif;
+?>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<nav class="action-buttons">
+	<button class="btn btn-xs btn-success" name="iplist_add" id="iplist_add" class="fa fa-plus" title="<?php echo gettext('Assign a whitelist file');?>"><?=gettext("Add")?><i class="fa fa-plus"></i></button>
+</nav>
 
 
 <?php if ($g['platform'] != "nanobsd") : ?>
@@ -382,14 +350,31 @@ display_top_tabs($tab_array, true);
 //<![CDATA[
 events.push(function() {
 
+// Adding a new reputation category file
 $('#iprep_catlist_add').click(function() {
 	iprep_catlistChoose();
 });
 
+// Adding a new IP reputation file
 $('#iplist_add').click(function() {
 	iplistChoose();
 });
 
+// Delete a reputation file
+$('[id^=iplist_delX]').click(function() {
+	$('#list_id').val($(this).val());
+	$('<input name="iplist_del[]" id="iplist_del[]" type="hidden" value="0"/>').appendTo($(form));
+	$(form).submit();
+});
+
+// Delete a reptation category file
+$('#iprep_catlist_delX').click(function() {
+	$('#list_id').val('0');
+	$('<input name="iprep_catlist_del[]" id="iprep_catlist_del[]" type="hidden" value="0"/>').appendTo($(form));
+	$(form).submit();
+});
+
+// Fetch category list information via AJAX
 function iprep_catlistChoose() {
 	if($("fbCurrentDir")) {
 		$("#iprep_catlistChooser").html("Loading ...");
@@ -406,6 +391,7 @@ function iprep_catlistChoose() {
 
 }
 
+// Fetch IP list information via AJAX
 function iplistChoose() {
 	if($("fbCurrentDir"))
 		$("#iplistChooser").html("Loading ...");
@@ -420,6 +406,7 @@ function iplistChoose() {
 	);
 }
 
+// Update the category display, adding the action handlers to each entry
 function iprep_catlistComplete(req) {
 	$("#iprep_catlistChooser").html(req.responseText);
 
@@ -445,8 +432,8 @@ function iprep_catlistComplete(req) {
 	}
 }
 
+// Update the IP list display, adding the action handlers to each entry
 function iplistComplete(req) {
-
 	$("#iplistChooser").html(req.responseText);
 
 	var actions = {
@@ -475,7 +462,6 @@ function iplistComplete(req) {
 </script>
 <?php endif; ?>
 
-</form>
 <?php include("foot.inc");
 ?>
 
