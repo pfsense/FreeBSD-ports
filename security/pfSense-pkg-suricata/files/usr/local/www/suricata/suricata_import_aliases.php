@@ -138,9 +138,9 @@
 					</tr>
 					<?php else: ?>
 					<tr>
-						<td colspan="4" class="text-center">
-							<input type="Submit" name="save_import_alias" value="Save" id="save_import_alias" class="formbtn" title="<?=gettext("Import selected item and return")?>"/>
-							<input type="Submit" name="cancel_import_alias" value="Cancel" id="cancel_import_alias" class="formbtn" title="<?=gettext("Cancel import operation and return")?>"/>
+						<td colspan="4" >
+							<input type="Submit" name="save_import_alias" value="Save" id="save_import_alias" class="btn btn-primary" title="<?=gettext("Import selected item and return")?>"/>
+							<input type="Submit" name="cancel_import_alias" value="Cancel" id="cancel_import_alias" class="btn btn-default" title="<?=gettext("Cancel import operation and return")?>"/>
 						</td>
 					</tr>
 					<?php endif; ?>
@@ -153,7 +153,7 @@
 			</table>
 		</div>
 	</div>
-</div>	
+</div>
 </form>
 
 
