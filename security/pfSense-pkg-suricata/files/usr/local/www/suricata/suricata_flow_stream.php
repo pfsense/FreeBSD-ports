@@ -1,43 +1,64 @@
 <?php
 /*
- * suricata_flow_stream.php
- * part of pfSense
- *
- * Significant portions of this code are based on original work done
- * for the Snort package for pfSense from the following contributors:
- * 
- * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
- * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
- * Copyright (C) 2006 Scott Ullrich
- * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2012 Ermal Luci
- * All rights reserved.
- *
- * Adapted for Suricata by:
- * Copyright (C) 2015 Bill Meeks
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
-
- * 1. Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
- * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
- * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
- * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- */
+* suricata_flow_stream.php
+*
+*  Copyright (c)  2004-2016  Electric Sheep Fencing, LLC. All rights reserved.
+*
+*  Redistribution and use in source and binary forms, with or without modification,
+*  are permitted provided that the following conditions are met:
+*
+*  1. Redistributions of source code must retain the above copyright notice,
+*      this list of conditions and the following disclaimer.
+*
+*  2. Redistributions in binary form must reproduce the above copyright
+*      notice, this list of conditions and the following disclaimer in
+*      the documentation and/or other materials provided with the
+*      distribution.
+*
+*  3. All advertising materials mentioning features or use of this software
+*      must display the following acknowledgment:
+*      "This product includes software developed by the pfSense Project
+*       for use in the pfSense software distribution. (http://www.pfsense.org/).
+*
+*  4. The names "pfSense" and "pfSense Project" must not be used to
+*       endorse or promote products derived from this software without
+*       prior written permission. For written permission, please contact
+*       coreteam@pfsense.org.
+*
+*  5. Products derived from this software may not be called "pfSense"
+*      nor may "pfSense" appear in their names without prior written
+*      permission of the Electric Sheep Fencing, LLC.
+*
+*  6. Redistributions of any form whatsoever must retain the following
+*      acknowledgment:
+*
+*  "This product includes software developed by the pfSense Project
+*  for use in the pfSense software distribution (http://www.pfsense.org/).
+*
+*  THIS SOFTWARE IS PROVIDED BY THE pfSense PROJECT ``AS IS'' AND ANY
+*  EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+*  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+*  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE pfSense PROJECT OR
+*  ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+*  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+*  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+*  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+*  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+*  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+*  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+*  OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+*
+* Portions of this code are based on original work done for the Snort package for pfSense by the following contributors:
+*
+* Copyright (C) 2003-2004 Manuel Kasper
+* Copyright (C) 2005 Bill Marquette
+* Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
+* Copyright (C) 2009 Robert Zelaya Sr. Developer
+* Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
+* Copyright (C) 2014 Bill Meeks
+*
+*/
 
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
@@ -69,7 +90,7 @@ $a_nat = &$config['installedpackages']['suricata']['rule'];
 
 $host_os_policy_engine_next_id = count($a_nat[$id]['host_os_policy']['item']);
 
-// Build a lookup array of currently used engine 'bind_to' Aliases 
+// Build a lookup array of currently used engine 'bind_to' Aliases
 // so we can screen matching Alias names from the list.
 $used = array();
 foreach ($a_nat[$id]['host_os_policy']['item'] as $v)
@@ -124,7 +145,7 @@ if ($_POST['save_os_policy']) {
 		// Grab all the POST values and save in new temp array
 		$engine = array();
 		$policy_name = trim($_POST['policy_name']);
-		if ($policy_name) { 
+		if ($policy_name) {
 			$engine['name'] = $policy_name;
 		}
 		else {
@@ -188,7 +209,7 @@ if ($_POST['save_os_policy']) {
 			write_config();
 			$pconfig['host_os_policy']['item'] = $a_nat[$id]['host_os_policy']['item'];
 		}
-	}	
+	}
 }
 elseif ($_POST['add_os_policy']) {
 	$add_edit_os_policy = true;
@@ -252,7 +273,7 @@ elseif ($_POST['ResetAll']) {
 
 	// The default 'stream_memcap' value must be calculated as follows:
 	// 216 * prealloc_sessions * number of threads = memory use in bytes
-	// 64 MB is a decent all-around default, but some setups need more. 
+	// 64 MB is a decent all-around default, but some setups need more.
 	$pconfig['stream_prealloc_sessions'] = '32768';
 	$pconfig['stream_memcap'] = '67108864';
 	$pconfig['reassembly_memcap'] = '67108864';
@@ -384,8 +405,8 @@ elseif ($_POST['save_import_alias']) {
 
 		// if no errors, write new entry to conf
 		if (!$input_errors) {
-			// Reorder the engine array to ensure the 
-			// 'bind_to=all' entry is at the bottom if 
+			// Reorder the engine array to ensure the
+			// 'bind_to=all' entry is at the bottom if
 			// the array contains more than one entry.
 			if (count($a_nat[$id]['host_os_policy']['item']) > 1) {
 				$i = -1;
@@ -395,8 +416,8 @@ elseif ($_POST['save_import_alias']) {
 						break;
 					}
 				}
-				// Only relocate the entry if we 
-				// found it, and it's not already 
+				// Only relocate the entry if we
+				// found it, and it's not already
 				// at the end.
 				if ($i > -1 && ($i < (count($a_nat[$id]['host_os_policy']['item']) - 1))) {
 					$tmp = $a_nat[$id]['host_os_policy']['item'][$i];
@@ -496,7 +517,7 @@ display_top_tabs($tab_array, true);
 			'eng_id',
 			'hidden',
 			$eng_id
-		));		
+		));
 
 		if ($selectalias) {
 			$form->addGlobal(new Form_Input(
@@ -526,7 +547,7 @@ display_top_tabs($tab_array, true);
 		$svbtn = new Form_Button(
 			'save_os_policy',
 			'Save'
-		);		
+		);
 
 		$form = new Form($svbtn);
 
@@ -549,7 +570,7 @@ display_top_tabs($tab_array, true);
 			'Cancel'
 		))->removeClass('btn-primary')->addClass('btn-warning');
 
-		include("/usr/local/www/suricata/suricata_os_policy_engine.php"); 
+		include("/usr/local/www/suricata/suricata_os_policy_engine.php");
 
 	} else {
 ?>
@@ -583,7 +604,7 @@ display_top_tabs($tab_array, true);
 										<td><?=gettext($v['bind_to'])?></td>
 										<td>
 											<input type="submit" name="edit_os_policy[]" class="btn btn-sm btn-primary" value="Edit" onclick="document.getElementById('eng_id').value='<?=$f?>'" title="<?=gettext("Edit this policy configuration")?>"/>
-								<?php if ($v['bind_to'] != "all") : ?> 
+								<?php if ($v['bind_to'] != "all") : ?>
 											<input type="submit" name="del_os_policy[]" class="btn btn-sm btn-danger" value="Delete" onclick="document.getElementById('eng_id').value='<?=$f?>';return confirm('Are you sure you want to delete this entry?');" title="<?=gettext("Delete this policy configuration")?>"/>
 								<?php else : ?>
 								<input type="submit" name="del_os_policy[]" class="btn btn-sm btn-danger" value="Delete" title="<?=gettext("Default policy configuration cannot be deleted")?>" disabled/>
@@ -593,7 +614,7 @@ display_top_tabs($tab_array, true);
 								<?php endforeach; ?>
 							</tbody>
 						</table>
-					</div>	
+					</div>
 				</div>
 			</div>
 		</div>

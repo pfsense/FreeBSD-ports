@@ -1,42 +1,64 @@
 <?php
 /*
- * suricata_interfaces.php
- *
- * Significant portions of this code are based on original work done
- * for the Snort package for pfSense from the following contributors:
- * 
- * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
- * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
- * Copyright (C) 2006 Scott Ullrich
- * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2012 Ermal Luci
- * All rights reserved.
- *
- * Adapted for Suricata by:
- * Copyright (C) 2014 Bill Meeks
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
-
- * 1. Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
- * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
- * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
- * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- */
+* suricata_interfaces.php
+*
+*  Copyright (c)  2004-2016  Electric Sheep Fencing, LLC. All rights reserved.
+*
+*  Redistribution and use in source and binary forms, with or without modification,
+*  are permitted provided that the following conditions are met:
+*
+*  1. Redistributions of source code must retain the above copyright notice,
+*      this list of conditions and the following disclaimer.
+*
+*  2. Redistributions in binary form must reproduce the above copyright
+*      notice, this list of conditions and the following disclaimer in
+*      the documentation and/or other materials provided with the
+*      distribution.
+*
+*  3. All advertising materials mentioning features or use of this software
+*      must display the following acknowledgment:
+*      "This product includes software developed by the pfSense Project
+*       for use in the pfSense software distribution. (http://www.pfsense.org/).
+*
+*  4. The names "pfSense" and "pfSense Project" must not be used to
+*       endorse or promote products derived from this software without
+*       prior written permission. For written permission, please contact
+*       coreteam@pfsense.org.
+*
+*  5. Products derived from this software may not be called "pfSense"
+*      nor may "pfSense" appear in their names without prior written
+*      permission of the Electric Sheep Fencing, LLC.
+*
+*  6. Redistributions of any form whatsoever must retain the following
+*      acknowledgment:
+*
+*  "This product includes software developed by the pfSense Project
+*  for use in the pfSense software distribution (http://www.pfsense.org/).
+*
+*  THIS SOFTWARE IS PROVIDED BY THE pfSense PROJECT ``AS IS'' AND ANY
+*  EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+*  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+*  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE pfSense PROJECT OR
+*  ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+*  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+*  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+*  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+*  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+*  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+*  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+*  OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+*
+* Portions of this code are based on original work done for the Snort package for pfSense by the following contributors:
+*
+* Copyright (C) 2003-2004 Manuel Kasper
+* Copyright (C) 2005 Bill Marquette
+* Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
+* Copyright (C) 2009 Robert Zelaya Sr. Developer
+* Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
+* Copyright (C) 2014 Bill Meeks
+*
+*/
 
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
@@ -73,18 +95,18 @@ if ($_POST['del_x']) {
 			unset($a_nat[$rulei]);
 		}
 		conf_mount_ro();
-	  
+
 		/* If all the Suricata interfaces are removed, then unset the config array. */
 		if (empty($a_nat))
 			unset($a_nat);
 
 		write_config("Suricata pkg: deleted one or more Suricata interfaces.");
 		sleep(2);
-	  
+
 		conf_mount_rw();
 		sync_suricata_package_config();
 		conf_mount_ro();
-	  
+
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -259,15 +281,15 @@ include_once("head.inc"); ?>
 					<td>
 					<input type="checkbox" id="frc<?=$nnats?>" name="rule[]" value="<?=$i?>" onClick="fr_bgcolor('<?=$nnats?>')" style="margin: 0; padding: 0;">
 					</td>
-					<td valign="middle" 
-					id="frd<?=$nnats?>" 
+					<td valign="middle"
+					id="frd<?=$nnats?>"
 					ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
 					<?php
 						echo $natend_friendly;
 					?>
 					</td>
-					<td valign="middle"   
-					id="frd<?=$nnats?>"  
+					<td valign="middle"
+					id="frd<?=$nnats?>"
 					ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
 					<?php
 					$check_suricata_info = $config['installedpackages']['suricata']['rule'][$nnats]['enable'];
@@ -281,8 +303,8 @@ include_once("head.inc"); ?>
 						echo gettext("DISABLED");
 					?>
 					</td>
-					<td 
-					id="frd<?=$nnats?>" valign="middle" align="center" 
+					<td
+					id="frd<?=$nnats?>" valign="middle" align="center"
 					ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
 					<?php
 					$check_performance_info = $config['installedpackages']['suricata']['rule'][$nnats]['mpm_algo'];
@@ -293,8 +315,8 @@ include_once("head.inc"); ?>
 					}
 					?><?=strtoupper($check_performance)?>
 					</td>
-					<td 
-					id="frd<?=$nnats?>" valign="middle" align="center" 
+					<td
+					id="frd<?=$nnats?>" valign="middle" align="center"
 					ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
 					<?php
 					$check_blockoffenders_info = $config['installedpackages']['suricata']['rule'][$nnats]['blockoffenders'];
@@ -306,8 +328,8 @@ include_once("head.inc"); ?>
 					}
 					?><?=strtoupper($check_blockoffenders)?>
 					</td>
-					<td 
-					id="frd<?=$nnats?>" valign="middle" 
+					<td
+					id="frd<?=$nnats?>" valign="middle"
 					ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
 					<?php
 					$check_suricatabarnyardlog_info = $config['installedpackages']['suricata']['rule'][$nnats]['barnyard_enable'];
@@ -319,7 +341,7 @@ include_once("head.inc"); ?>
 						echo gettext("DISABLED");
 					?>
 					</td>
-					<td valign="middle" 
+					<td valign="middle"
 					ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
 					<?=htmlspecialchars($natent['descr'])?>
 					</td>
@@ -335,14 +357,14 @@ include_once("head.inc"); ?>
 						<?php else: ?>
 							<i class="fa fa-times" title="<?=gettext('No available interfaces for a new Suricata mapping')?>"></i>
 						<?php endif; ?>
-					</td>	
+					</td>
 				</tr>
 				<?php $i++; $nnats++; endforeach; ob_end_flush(); ?>
 				<tr>
 					<td></td>
 					<td colspan="7">
 						<?php if ($no_rules_footnote): ?><span class="text-danger"><?=gettext("WARNING: Marked interface currently has no rules defined for Suricata"); ?></span>
-						<?php endif; ?>					 
+						<?php endif; ?>
 					</td>
 				</tr>
 				</tbody>
@@ -360,7 +382,7 @@ include_once("head.inc"); ?>
 	<?php endif; ?>
 
 	<?php if ($id_gen != 0): ?>
-		<button name="del" class="btn btn-sm btn-danger" 
+		<button name="del" class="btn btn-sm btn-danger"
 		title="<?=gettext("Delete selected Suricata interface mapping(s)"); ?>"
 		onclick="return intf_del()"><?=gettext("Delete")?><i class="fa fa-trash icon-embed-btn"></i></button>
 	<?php endif; ?>

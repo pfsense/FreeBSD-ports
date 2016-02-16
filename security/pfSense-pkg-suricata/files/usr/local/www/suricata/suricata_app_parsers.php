@@ -1,44 +1,63 @@
 <?php
 /*
  * suricata_app_parsers.php
- * part of pfSense
- *
- * Significant portions of this code are based on original work done
- * for the Snort package for pfSense from the following contributors:
- * 
- * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
- * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
- * Copyright (C) 2006 Scott Ullrich
- * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2012 Ermal Luci
- * All rights reserved.
- *
- * Adapted for Suricata by:
- * Copyright (C) 2014 Bill Meeks
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
-
- * 1. Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
- * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
- * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
- * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- */
-
+*  Copyright (c)  2004-2016  Electric Sheep Fencing, LLC. All rights reserved.
+*
+*  Redistribution and use in source and binary forms, with or without modification,
+*  are permitted provided that the following conditions are met:
+*
+*  1. Redistributions of source code must retain the above copyright notice,
+*      this list of conditions and the following disclaimer.
+*
+*  2. Redistributions in binary form must reproduce the above copyright
+*      notice, this list of conditions and the following disclaimer in
+*      the documentation and/or other materials provided with the
+*      distribution.
+*
+*  3. All advertising materials mentioning features or use of this software
+*      must display the following acknowledgment:
+*      "This product includes software developed by the pfSense Project
+*       for use in the pfSense software distribution. (http://www.pfsense.org/).
+*
+*  4. The names "pfSense" and "pfSense Project" must not be used to
+*       endorse or promote products derived from this software without
+*       prior written permission. For written permission, please contact
+*       coreteam@pfsense.org.
+*
+*  5. Products derived from this software may not be called "pfSense"
+*      nor may "pfSense" appear in their names without prior written
+*      permission of the Electric Sheep Fencing, LLC.
+*
+*  6. Redistributions of any form whatsoever must retain the following
+*      acknowledgment:
+*
+*  "This product includes software developed by the pfSense Project
+*  for use in the pfSense software distribution (http://www.pfsense.org/).
+*
+*  THIS SOFTWARE IS PROVIDED BY THE pfSense PROJECT ``AS IS'' AND ANY
+*  EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+*  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+*  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE pfSense PROJECT OR
+*  ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+*  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+*  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+*  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+*  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+*  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+*  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+*  OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+*
+* Portions of this code are based on original work done for the Snort package for pfSense by the following contributors:
+*
+* Copyright (C) 2003-2004 Manuel Kasper
+* Copyright (C) 2005 Bill Marquette
+* Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
+* Copyright (C) 2009 Robert Zelaya Sr. Developer
+* Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
+* Copyright (C) 2014 Bill Meeks
+*
+*/
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
 
@@ -70,7 +89,7 @@ $a_nat = &$config['installedpackages']['suricata']['rule'];
 
 $libhtp_engine_next_id = count($a_nat[$id]['libhtp_policy']['item']);
 
-// Build a lookup array of currently used engine 'bind_to' Aliases 
+// Build a lookup array of currently used engine 'bind_to' Aliases
 // so we can screen matching Alias names from the list.
 $used = array();
 foreach ($a_nat[$id]['libhtp_policy']['item'] as $v)
@@ -84,9 +103,9 @@ if (isset($id) && $a_nat[$id]) {
 	// See if Host-OS policy engine array is configured and use
 	// it; otherwise create a default engine configuration.
 	if (empty($pconfig['libhtp_policy']['item'])) {
-		$default = array( "name" => "default", "bind_to" => "all", "personality" => "IDS", 
-				  "request-body-limit" => 4096, "response-body-limit" => 4096, 
-				  "double-decode-path" => "no", "double-decode-query" => "no", 
+		$default = array( "name" => "default", "bind_to" => "all", "personality" => "IDS",
+				  "request-body-limit" => 4096, "response-body-limit" => 4096,
+				  "double-decode-path" => "no", "double-decode-query" => "no",
 				  "uri-include-all" => "no" );
 		$pconfig['libhtp_policy']['item'] = array();
 		$pconfig['libhtp_policy']['item'][] = $default;
@@ -133,7 +152,7 @@ if ($_POST['save_libhtp_policy']) {
 		// Grab all the POST values and save in new temp array
 		$engine = array();
 		$policy_name = trim($_POST['policy_name']);
-		if ($policy_name) { 
+		if ($policy_name) {
 			$engine['name'] = $policy_name;
 		}
 		else
@@ -207,12 +226,12 @@ if ($_POST['save_libhtp_policy']) {
 			$add_edit_libhtp_policy = true;
 			$pengcfg = $engine;
 		}
-	}	
+	}
 }
 elseif ($_POST['add_libhtp_policy']) {
 	$add_edit_libhtp_policy = true;
-	$pengcfg = array( "name" => "engine_{$libhtp_engine_next_id}", "bind_to" => "", "personality" => "IDS", 
-			  "request-body-limit" => "4096", "response-body-limit" => "4096", 
+	$pengcfg = array( "name" => "engine_{$libhtp_engine_next_id}", "bind_to" => "", "personality" => "IDS",
+			  "request-body-limit" => "4096", "response-body-limit" => "4096",
 			  "double-decode-path" => "no", "double-decode-query" => "no", "uri-include-all" => "no" );
 	$eng_id = $libhtp_engine_next_id;
 }
@@ -301,8 +320,8 @@ elseif ($_POST['save_import_alias']) {
 		}
 	}
 	else {
-		$engine = array( "name" => "", "bind_to" => "", "personality" => "IDS", 
-				 "request-body-limit" => "4096", "response-body-limit" => "4096", 
+		$engine = array( "name" => "", "bind_to" => "", "personality" => "IDS",
+				 "request-body-limit" => "4096", "response-body-limit" => "4096",
 				 "double-decode-path" => "no", "double-decode-query" => "no", "uri-include-all" => "no" );
 
 		// See if anything was checked to import
@@ -320,8 +339,8 @@ elseif ($_POST['save_import_alias']) {
 
 		// if no errors, write new entry to conf
 		if (!$input_errors) {
-			// Reorder the engine array to ensure the 
-			// 'bind_to=all' entry is at the bottom if 
+			// Reorder the engine array to ensure the
+			// 'bind_to=all' entry is at the bottom if
 			// the array contains more than one entry.
 			if (count($a_nat[$id]['libhtp_policy']['item']) > 1) {
 				$i = -1;
@@ -331,8 +350,8 @@ elseif ($_POST['save_import_alias']) {
 						break;
 					}
 				}
-				// Only relocate the entry if we 
-				// found it, and it's not already 
+				// Only relocate the entry if we
+				// found it, and it's not already
 				// at the end.
 				if ($i > -1 && ($i < (count($a_nat[$id]['libhtp_policy']['item']) - 1))) {
 					$tmp = $a_nat[$id]['libhtp_policy']['item'][$i];
@@ -501,7 +520,7 @@ if ($importalias) {
 
 } elseif ($add_edit_libhtp_policy) {
 
-	include("/usr/local/www/suricata/suricata_libhtp_policy_engine.php"); 
+	include("/usr/local/www/suricata/suricata_libhtp_policy_engine.php");
 
 } else {
 
@@ -657,7 +676,7 @@ if ($importalias) {
 									<td class="text-center"><?=gettext($v['bind_to'])?></td>
 									<td class="text-right">
 										<input type="submit" name="edit_libhtp_policy[]" value="Edit" class="btn btn-sm btn-primary" onclick="document.getElementById('eng_id').value='<?=$f?>'" title="<?=gettext("Edit this server configuration")?>"/>
-									<?php if ($v['bind_to'] != "all") : ?> 
+									<?php if ($v['bind_to'] != "all") : ?>
 										<input type="submit" name="del_libhtp_policy[]" value="Delete" class="btn btn-sm btn-danger" onclick="document.getElementById('eng_id').value='<?=$f?>';return confirm('Are you sure you want to delete this entry?');" title="<?=gettext("Delete this server configuration")?>">
 									<?php else : ?>
 										<input type="submit" name="del_libhtp_policy[]" value="Delete" class="btn btn-sm btn-danger" title="<?=gettext("Delete this server configuration")?>" disabled>
@@ -667,11 +686,11 @@ if ($importalias) {
 							<?php endforeach; ?>
 							</tbody>
 						</table>
-					</div>	
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>	
+	</div>
 
 	<div class="col-sm-10 col-sm-offset-2">
 		<button type="submit" id="save" name="save" value="Save" class="btn btn-primary" title="<?=gettext('Save App Parsers settings');?>">

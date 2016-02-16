@@ -1,43 +1,64 @@
 <?php
 /*
- * suricata_download_updates.php
- * part of pfSense
- *
- * Significant portions of this code are based on original work done
- * for the Snort package for pfSense from the following contributors:
- * 
- * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
- * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
- * Copyright (C) 2006 Scott Ullrich
- * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2012 Ermal Luci
- * All rights reserved.
- *
- * Adapted for Suricata by:
- * Copyright (C) 2014 Bill Meeks
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
-
- * 1. Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
- * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
- * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
- * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- */
+* suricata_download_updates.php
+*
+*  Copyright (c)  2004-2016  Electric Sheep Fencing, LLC. All rights reserved.
+*
+*  Redistribution and use in source and binary forms, with or without modification,
+*  are permitted provided that the following conditions are met:
+*
+*  1. Redistributions of source code must retain the above copyright notice,
+*      this list of conditions and the following disclaimer.
+*
+*  2. Redistributions in binary form must reproduce the above copyright
+*      notice, this list of conditions and the following disclaimer in
+*      the documentation and/or other materials provided with the
+*      distribution.
+*
+*  3. All advertising materials mentioning features or use of this software
+*      must display the following acknowledgment:
+*      "This product includes software developed by the pfSense Project
+*       for use in the pfSense software distribution. (http://www.pfsense.org/).
+*
+*  4. The names "pfSense" and "pfSense Project" must not be used to
+*       endorse or promote products derived from this software without
+*       prior written permission. For written permission, please contact
+*       coreteam@pfsense.org.
+*
+*  5. Products derived from this software may not be called "pfSense"
+*      nor may "pfSense" appear in their names without prior written
+*      permission of the Electric Sheep Fencing, LLC.
+*
+*  6. Redistributions of any form whatsoever must retain the following
+*      acknowledgment:
+*
+*  "This product includes software developed by the pfSense Project
+*  for use in the pfSense software distribution (http://www.pfsense.org/).
+*
+*  THIS SOFTWARE IS PROVIDED BY THE pfSense PROJECT ``AS IS'' AND ANY
+*  EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+*  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+*  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE pfSense PROJECT OR
+*  ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+*  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+*  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+*  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+*  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+*  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+*  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+*  OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+*
+* Portions of this code are based on original work done for the Snort package for pfSense by the following contributors:
+*
+* Copyright (C) 2003-2004 Manuel Kasper
+* Copyright (C) 2005 Bill Marquette
+* Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
+* Copyright (C) 2009 Robert Zelaya Sr. Developer
+* Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
+* Copyright (C) 2014 Bill Meeks
+*
+*/
 
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
@@ -136,7 +157,7 @@ if ($_POST['force']) {
 
 	// Revert file system to R/O.
 	conf_mount_ro();
-	
+
 	// Go download the updates
 	header("Location: /suricata/suricata_download_rules.php");
 	exit;
@@ -225,7 +246,7 @@ include_once("head.inc");
 <div class="panel panel-default">
 	<div class="panel-heading"><h2 class="panel-title"><?=gettext("UPDATE YOUR RULE SET")?></h2></div>
 	<div class="panel-body">
-		<div class="content">	
+		<div class="content">
 			<p>
 				<strong><?=gettext("Last Update:")?></strong> <?=$last_rule_upd_time?><br />
 				<strong><?=gettext("Result:")?></strong> <?=$last_rule_upd_status?>
@@ -236,19 +257,19 @@ include_once("head.inc");
 					<button disabled="disabled"><?=gettext("Force")?></button>
 					<br/>
 					<p style="text-align:center;">
-					<span class="text-danger"><strong><?=gettext("WARNING:")?></strong></span> 
+					<span class="text-danger"><strong><?=gettext("WARNING:")?></strong></span>
 					<?=gettext('No rule types have been selected for download. ') . gettext('Visit the ') . '<a href="/suricata/suricata_global.php">Global Settings Tab</a>' . gettext(' to select rule types.'); ?></p>
 				<?php else: ?>
 					<br/>
-					<input type="submit" value="<?=gettext("Update")?>" name="update" id="update" class="formbtn" 
+					<input type="submit" value="<?=gettext("Update")?>" name="update" id="update" class="formbtn"
 					title="<?=gettext("Check for and apply new update to enabled rule sets"); ?>"/>&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="submit" value="<?=gettext("Force")?>" name="force" id="force" class="formbtn" 
-					title="<?=gettext("Force an update of all enabled rule sets")?>" 
+					<input type="submit" value="<?=gettext("Force")?>" name="force" id="force" class="formbtn"
+					title="<?=gettext("Force an update of all enabled rule sets")?>"
 					onclick="return confirm('<?=gettext("This will zero-out the MD5 hashes to force a fresh download of all enabled rule sets.  Click OK to continue or CANCEL to quit")?>');"/>
 					<br/><br/>
 				<?php endif; ?>
 			</p>
-		</div>	
+		</div>
 	</div>
 </div>
 <div class="panel panel-default">
@@ -258,14 +279,14 @@ include_once("head.inc");
 			<p>
 				<?php if ($suricata_rules_upd_log_chk == 'yes'): ?>
 				<?php if (!empty($contents)): ?>
-					<input type="submit" value="<?=gettext("Hide"); ?>" name="hide" id="hide" class="formbtn" 
+					<input type="submit" value="<?=gettext("Hide"); ?>" name="hide" id="hide" class="formbtn"
 					title="<?=gettext("Hide rules update log"); ?>"/>
 				<?php else: ?>
-					<input type="submit" value="<?=gettext("View"); ?>" name="view" id="view" class="formbtn" 
+					<input type="submit" value="<?=gettext("View"); ?>" name="view" id="view" class="formbtn"
 					title="<?=gettext("View rules update log"); ?>"/>
 				<?php endif; ?>
 					&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="submit" value="<?=gettext("Clear"); ?>" name="clear" id="clear" class="formbtn" 
+					<input type="submit" value="<?=gettext("Clear"); ?>" name="clear" id="clear" class="formbtn"
 					title="<?=gettext("Clear rules update log"); ?>" onClick="return confirm('Are you sure you want to delete the log contents?\nOK to confirm, or CANCEL to quit');"/>
 					<br/>
 				<?php else: ?>
@@ -276,7 +297,7 @@ include_once("head.inc");
 
 			<?php if (!empty($contents)): ?>
 				<p><?=gettext("RULE SET UPDATE LOG")?></p>
-				
+
 				<div style="background: #eeeeee; width:100%; height:100%;" id="textareaitem"><!-- NOTE: The opening *and* the closing textarea tag must be on the same line. -->
 					<textarea style="width:100%; height:100%;" readonly wrap="off" rows="24" cols="80" name="logtext"><?=$contents?></textarea>
 				</div>
