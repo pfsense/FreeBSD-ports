@@ -458,20 +458,22 @@ function build_cat_list() {
 }
 
 function build_actions() {
-	global $currentruleset;
+	global $currentruleset, $id;
 
 	$actions  = '<dl class="dl-horizontal responsive">';
 	$actions .= '<dt>';
-	$actions .= '<a name="resetcategory[]" type="button" title="' . gettext("Click to remove enable/disable changes for rules in the selected category only") . '">';
+	$actions .= '<a name="resetcategory" type="sbutton" title="' . gettext("Click to remove enable/disable changes for rules in the selected category only") . '"';
+	$actions .= 'onClick="submitAction(' . '\'resetcategory[]\'' . ')">';
 	$actions .= '<i class="fa fa-times icon-pointer"></i>';
 	$actions .= '</a>';
 	$actions .= '</dt><dd>';
 	$actions .= gettext("Remove Enable/Disable changes in the selected category.");
 	$actions .= '</dd>';
 
-	$actions  .= '<dl class="dl-horizontal responsive">';
+	$actions .= '<dl class="dl-horizontal responsive">';
 	$actions .= '<dt>';
-	$actions .= '<a name="resetall[]" type="button" title="' . gettext("Click to remove enable/disable changes for rules in all categories") . '">';
+	$actions .= '<a name="resetall" type="button" title="' . gettext("Click to remove enable/disable changes for rules in all categories") . '"';
+	$actions .= 'onClick="submitAction(' . '\'resetall[]\'' . ')">';
 	$actions .= '<i class="fa fa-times icon-pointer"></i>';
 	$actions .= '</a>';
 	$actions .= '</dt><dd>';
@@ -479,7 +481,8 @@ function build_actions() {
 	$actions .= '</dd>';
 
 	$actions .= '<dt>';
-	$actions .= '<a name="diasble_all[]" type="button" title="' . gettext("Disable all rules in the selected Category") . '">';
+	$actions .= '<a name="diasble_all" type="button" title="' . gettext("Disable all rules in the selected Category") . '"';
+	$actions .= 'onClick="submitAction(' . '\'diasble_all[]\'' . ')">';
 	$actions .= '<i class="fa fa-arrow-down icon-pointer"></i>';
 	$actions .= '</a>';
 	$actions .= '</dt><dd>';
@@ -487,7 +490,8 @@ function build_actions() {
 	$actions .= '</dd>';
 
 	$actions .= '<dt>';
-	$actions .= '<a name="enable_all[]" type="button" title="' . gettext("Enable all rules in the current Category") . '">';
+	$actions .= '<a name="enable_all" type="button" title="' . gettext("Enable all rules in the current Category") . '"';
+	$actions .= 'onClick="submitAction(' . '\'enable_all[]\'' . ')">';
 	$actions .= '<i class="fa fa-arrow-up icon-pointer"></i>';
 	$actions .= '</a>';
 	$actions .= '</dt><dd>';
@@ -496,7 +500,7 @@ function build_actions() {
 
 	$actions .= '<dt>';
 	$actions .= '<a href="javascript: void(0)"';
-	$actions .= 'onclick="wopen(\'suricata_rules_edit.php?id=<?=$id;?>&openruleset=' . $currentruleset . '\'FileViewer\',\'800\',\'600\')"'  . 'title="' . gettext("View full file contents for the current Category") . '">';
+	$actions .= 'onclick="wopen(\'suricata_rules_edit.php?id=' . $id . '&openruleset=' . $currentruleset . '\',\'FileViewer\')"'  . 'title="' . gettext("View full file contents for the current Category") . '">';
 	$actions .= '<i class="fa fa-folder-open-o icon-pointer"></i>';
 	$actions .= '</a>';
 	$actions .= '</dt><dd>';
@@ -507,24 +511,22 @@ function build_actions() {
 
 	if ($currentruleset == 'Auto-Flowbit Rules') {
 		$actions .= '<span class="text-danger"' . '<b>' . gettext('WARNING: ') . '</b></span>' .
-							gettext('You should not disable flowbit rules!  Add Suppress List entries for them instead by ') .
-							'<a href="suricata_rules_flowbits.php?id=' . $id . '" title="' . gettext('Add Suppress List entry for Flowbit Rule') . '">' .
-							gettext("clicking here") . '.</a>';
+			gettext('You should not disable flowbit rules!  Add Suppress List entries for them instead by ') .
+			'<a href="suricata_rules_flowbits.php?id=' . $id . '" title="' . gettext('Add Suppress List entry for Flowbit Rule') . '">' .
+			gettext("clicking here") . '.</a>';
 	}
 
 	return($actions);
 }
 
-include_once("head.inc");
-
 $if_friendly = convert_friendly_interface_to_friendly_descr($pconfig['interface']);
 $pgtitle = array(gettext("Suricata"), gettext("Interface ") . $if_friendly, gettext("Rules: ") . $currentruleset);
+include_once("head.inc");
 
 if (is_subsystem_dirty('suricata_rules')) {
-	print_alert_box(gettext("A change has been made to a rule state.") . "<br/>" . gettext("Click APPLY when finished to send the changes to the running configuration."));
+	print_apply_box(gettext("A change has been made to a rule state.") . "<br/>" . gettext("Click APPLY when finished to send the changes to the running configuration."));
 }
 
-/* Display error or save messages if present */
 if ($input_errors) {
 	print_input_errors($input_errors);
 }
@@ -730,30 +732,30 @@ print($form);
 					}
 				       echo "</td>
 
-				       <td class=\"listr\" style=\"text-align:center;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer',800,600);\">
+				       <td class=\"listr\" style=\"text-align:center;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer');\">
 						{$textss}{$gid}{$textse}
 				       </td>
-				       <td class=\"listr\" style=\"text-align:center;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer',800,600);\">
+				       <td class=\"listr\" style=\"text-align:center;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer');\">
 						<a href=\"javascript: void(0)\"
-						onclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer',800,600);\"
+						onclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer');\"
 						title='{$sid_tooltip}'>{$textss}{$sid}{$textse}</a>
 				       </td>
-				       <td class=\"listr\" style=\"text-align:center;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer',800,600);\">
+				       <td class=\"listr\" style=\"text-align:center;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer');\">
 						{$textss}{$protocol}{$textse}
 				       </td>
-				       <td class=\"listr ellipsis\" nowrap style=\"text-align:center;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer',800,600);\">
+				       <td class=\"listr ellipsis\" nowrap style=\"text-align:center;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer');\">
 						{$srcspan}{$source}</span>
 				       </td>
-				       <td class=\"listr ellipsis\" nowrap style=\"text-align:center;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer',800,600);\">
+				       <td class=\"listr ellipsis\" nowrap style=\"text-align:center;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer');\">
 						{$srcprtspan}{$source_port}</span>
 				       </td>
-				       <td class=\"listr ellipsis\" nowrap style=\"text-align:center;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer',800,600);\">
+				       <td class=\"listr ellipsis\" nowrap style=\"text-align:center;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer');\">
 						{$dstspan}{$destination}</span>
 				       </td>
-				       <td class=\"listr ellipsis\" nowrap style=\"text-align:center;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer',800,600);\">
+				       <td class=\"listr ellipsis\" nowrap style=\"text-align:center;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer');\">
 					       {$dstprtspan}{$destination_port}</span>
 				       </td>
-					<td class=\"listbg\" style=\"word-wrap:break-word; whitespace:pre-line;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer',800,600);\">
+					<td class=\"listbg\" style=\"word-wrap:break-word; whitespace:pre-line;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer');\">
 						{$textss}{$message}{$textse}
 				       </td>
 				</tr>";
@@ -790,24 +792,24 @@ print($form);
 
 <!-- </form> -->
 <script language="javascript" type="text/javascript">
+
+function submitAction(nm) {
+	$('<input type="hidden" name="' + nm + '"/>').appendTo(form);
+	$(form).submit();
+}
+
 function go()
 {
 	$('#openruleset').val($('#selectbox').val());
 	$(form).submit();
 }
 
-function wopen(url, name, w, h)
+function wopen(url, name)
 {
-// Fudge factors for window decoration space.
-// In my tests these work well on all platforms & browsers.
-    w += 32;
-    h += 96;
     var win = window.open(url,
         name,
-       'width=' + w + ', height=' + h + ', ' +
        'location=no, menubar=no, ' +
        'status=no, toolbar=no, scrollbars=yes, resizable=yes');
-    win.resizeTo(w, h);
     win.focus();
 }
 

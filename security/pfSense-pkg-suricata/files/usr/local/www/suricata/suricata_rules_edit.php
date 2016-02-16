@@ -4,7 +4,7 @@
  *
  * Significant portions of this code are based on original work done
  * for the Snort package for pfSense from the following contributors:
- * 
+ *
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2006 Scott Ullrich
@@ -108,6 +108,7 @@ elseif (isset($_GET['sid']) && is_numericint($_GET['sid']) && isset($_GET['gid']
 		$rules_map = suricata_load_rules_map("{$suricatacfgdir}rules/suricata.rules");
 	else
 		$rules_map = suricata_load_rules_map("{$suricatadir}rules/{$file}");
+
 	$contents = $rules_map[$_GET['gid']][trim($_GET['sid'])]['rule'];
 	$wrap_flag = "soft";
 }
@@ -126,36 +127,31 @@ $pgtitle = array(gettext("Suricata"), gettext("Rules File Viewer"));
 include("head.inc");
 
 if ($savemsg)
-	print_info_box($savemsg); ?>
+	print_info_box($savemsg);
 
-<form action="suricata_rules_edit.php" method="post">
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr>
-	<td class="tabcont">
-		<table width="100%" cellpadding="0" cellspacing="6" bgcolor="#eeeeee">
-		<tr>
-			<td class="pgtitle" colspan="2">Suricata: Rules Viewer</td>
-		</tr>
-		<tr>
-			<td width="20%">
-				<input type="button" class="formbtn" value="Close" onclick="window.close()"/>
-			</td>
-			<td align="right">
-				<b><?php echo gettext("Rules File: ") . '</b>&nbsp;' . $displayfile; ?>&nbsp;&nbsp;&nbsp;&nbsp;
-			</td>
-		</tr>
-		<tr>
-			<td valign="top" class="label" colspan="2">
-			<div style="background: #eeeeee; width:100%; height:100%;" id="textareaitem"><!-- NOTE: The opening *and* the closing textarea tag must be on the same line. -->
-			<textarea style="width:100%; height:100%;" wrap="<?=$wrap_flag?>" rows="33" cols="80" name="code2"><?=$contents;?></textarea>
-			</div>
-			</td>
-		</tr>
-		</table>
-	</td>
-</tr>
-</table>
-</form>
-<?php // include("fend.inc");?>
-</body>
-</html>
+$form = new Form(false);
+
+$section = new Form_Section('Rulrs file: ' . $displayfile);
+
+$btnclear = new Form_Button(
+	'close',
+	'Close'
+);
+
+$btnclear->removeClass('btn-primary')->addClass('btn-default');
+$btnclear->setType('button');
+$btnclear->setOnclick('window.close()');
+
+$section->addInput($btnclear);
+
+$section->addInput(new Form_Textarea(
+	'textareaitem',
+	'Rule file',
+	$contents
+ ))->setRows(40)->setNoWrap()->setCols(90)->removeClass("form-control");
+
+$form->add($section);
+
+print($form);
+
+include("foot.inc");?>
