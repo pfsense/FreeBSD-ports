@@ -172,7 +172,7 @@ function haproxy_get_bindable_interfaces($ipv="ipv4,ipv6", $interfacetype="any,l
 		}
 		if (in_array('ipalias',$interfacetypes)){
 			$aliaslist = get_configured_vip_list('inet', VIP_IPALIAS);
-			foreach ($aliaslist as $aliasip => $aliasif){
+			foreach ($aliaslist as $aliasif => $aliasip){
 				$item = array();
 				$item['ip'] = $aliasip;
 				$item['name'] = $aliasip." (".get_vip_descr($aliasip).")";
@@ -229,7 +229,7 @@ function haproxy_get_bindable_interfaces($ipv="ipv4,ipv6", $interfacetype="any,l
 		}
 		if (in_array('ipalias',$interfacetypes)){
 			$aliaslist = get_configured_vip_list('inet6', VIP_IPALIAS);
-			foreach ($aliaslist as $aliasip => $aliasif){
+			foreach ($aliaslist as $aliasif => $aliasip){
 				$item = array();
 				$item['ip'] = $aliasip;
 				$item['name'] = $aliasip." (".get_vip_descr($aliasip).")";
