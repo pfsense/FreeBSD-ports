@@ -493,7 +493,6 @@ include_once("head.inc"); ?>
 	events.push(function() {
 		$('[id^=Xldel_]').click(function (event) {
 			if(confirm("<?=gettext('Delete this Suricata interface mapping?')?>")) {
-				$(this).parent('tr').remove();
 				$('#' + event.target.id.slice(1)).click();
 			}
 		});
