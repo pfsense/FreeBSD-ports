@@ -74,8 +74,10 @@ if ($_POST['id'])
 else
 	$id = 0;
 
-if (!is_array($config['installedpackages']['suricata']['rule']))
+if (!is_array($config['installedpackages']['suricata']['rule'])) {
 	$config['installedpackages']['suricata']['rule'] = array();
+}
+
 $a_nat = &$config['installedpackages']['suricata']['rule'];
 $id_gen = count($config['installedpackages']['suricata']['rule']);
 
@@ -277,12 +279,15 @@ include_once("head.inc"); ?>
 
 				/* If no interfaces are defined, then turn off the "no rules" warning */
 				$no_rules_footnote = false;
-				if ($id_gen == 0)
-					$no_rules = false;
-				else
-					$no_rules = true;
 
-				foreach ($a_nat as $natent): ?>
+				if ($id_gen == 0) {
+					$no_rules = false;
+				} else {
+					$no_rules = true;
+				}
+
+				foreach ($a_nat as $natent):
+?>
 				<tr id="fr<?=$nnats?>">
 <?php
 					$icon_suricata_msg = 'default';
@@ -291,6 +296,7 @@ include_once("head.inc"); ?>
 					$if_real = get_real_interface($natent['interface']);
 					$natend_friendly= convert_friendly_interface_to_friendly_descr($natent['interface']);
 					$suricata_uuid = $natent['uuid'];
+
 					if (!suricata_is_running($suricata_uuid, $if_real)){
 						$icon_suricata_msg = 'Click to start Suricata on ' . $natend_friendly;
 					}
@@ -307,31 +313,41 @@ include_once("head.inc"); ?>
 
 					/* See if interface has any rules defined and set boolean flag */
 					$no_rules = true;
-					if (isset($natent['customrules']) && !empty($natent['customrules']))
+
+					if (isset($natent['customrules']) && !empty($natent['customrules'])) {
 						$no_rules = false;
-					if (isset($natent['rulesets']) && !empty($natent['rulesets']))
+					}
+
+					if (isset($natent['rulesets']) && !empty($natent['rulesets'])) {
 						$no_rules = false;
-					if (isset($natent['ips_policy']) && !empty($natent['ips_policy']))
+					}
+
+					if (isset($natent['ips_policy']) && !empty($natent['ips_policy'])) {
 						$no_rules = false;
+					}
+
 					/* Do not display the "no rules" warning if interface disabled */
-					if ($natent['enable'] == "off")
+					if ($natent['enable'] == "off") {
 						$no_rules = false;
-					if ($no_rules)
+					}
+
+					if ($no_rules) {
 						$no_rules_footnote = true;
+					}
 ?>
 					<td>
-					<input type="checkbox" id="frc<?=$nnats?>" name="rule[]" value="<?=$i?>" onClick="fr_bgcolor('<?=$nnats?>')" style="margin: 0; padding: 0;">
+						<input type="checkbox" id="frc<?=$nnats?>" name="rule[]" value="<?=$i?>" onClick="fr_bgcolor('<?=$nnats?>')" style="margin: 0; padding: 0;">
 					</td>
-					<td valign="middle"
-					id="frd<?=$nnats?>"
+					<td id="frd<?=$nnats?>"
 					ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
 <?php
 						echo $natend_friendly;
 ?>
 					</td>
+
 					<td id="frd<?=$nnats?>"
 					ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
-					<?php
+<?php
 					$check_suricata_info = $config['installedpackages']['suricata']['rule'][$nnats]['enable'];
 
 					if ($check_suricata_info == "on") {
@@ -353,14 +369,17 @@ include_once("head.inc"); ?>
 					<td
 					id="frd<?=$nnats?>"
 					ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
-					<?php
+<?php
 					$check_performance_info = $config['installedpackages']['suricata']['rule'][$nnats]['mpm_algo'];
+
 					if ($check_performance_info != "") {
 						$check_performance = $check_performance_info;
 					}else{
 						$check_performance = "unknown";
 					}
-					?><?=strtoupper($check_performance)?>
+
+?>
+						<?=strtoupper($check_performance)?>
 					</td>
 
 					<td
@@ -368,13 +387,15 @@ include_once("head.inc"); ?>
 					ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
 					<?php
 					$check_blockoffenders_info = $config['installedpackages']['suricata']['rule'][$nnats]['blockoffenders'];
+
 					if ($check_blockoffenders_info == "on")
 					{
 						$check_blockoffenders = enabled;
 					} else {
 						$check_blockoffenders = disabled;
 					}
-					?><?=strtoupper($check_blockoffenders)?>
+?>
+					<?=strtoupper($check_blockoffenders)?>
 					</td>
 
 					<td id="frd<?=$nnats?>" ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
@@ -395,6 +416,7 @@ include_once("head.inc"); ?>
 					<td ondblclick="document.location='suricata_interfaces_edit.php?id=<?=$nnats?>';">
 					<?=htmlspecialchars($natent['descr'])?>
 					</td>
+
 					<td>
 						<a href="suricata_interfaces_edit.php?id=<?=$nnats;?>" class="fa fa-pencil icon-primary" title="<?=gettext('Edit this Suricata interface mapping');?>"></a>
 						<?php if ($id_gen < count($ifaces)): ?>
