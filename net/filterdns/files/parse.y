@@ -107,11 +107,8 @@ dnsrule		: ftype STRING STRING pipe command {
 				thr->hostname = strdup($2);
 				if ((p = strrchr(thr->hostname, '/')) != NULL) {
 					thr->mask = strtol(p+1, &q, 0);
-					if(thr->mask == 32)
-						thr->mask6 = 128;
-					if(thr->mask <32)
-						thr->mask6 = thr->mask *2;
-					if (!q || *q || thr->mask > 32 || q == (p+1)) {
+					thr->mask6 = thr->mask;
+					if (!q || *q || thr->mask > 128 || q == (p+1)) {
 						syslog(LOG_WARNING, "invalid netmask '%s' for hostname %s\n", p, thr->hostname);
 						YYERROR;
 					}

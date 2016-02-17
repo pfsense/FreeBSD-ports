@@ -1,42 +1,64 @@
 <?php
 /*
- * suricata_rulesets.php
- *
- * Significant portions of this code are based on original work done
- * for the Snort package for pfSense from the following contributors:
- * 
- * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
- * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
- * Copyright (C) 2006 Scott Ullrich
- * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2012 Ermal Luci
- * All rights reserved.
- *
- * Adapted for Suricata by:
- * Copyright (C) 2014 Bill Meeks
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
-
- * 1. Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
- * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
- * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
- * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- */
+*  suricata_rulesets.php
+*
+*  Copyright (c)  2004-2016  Electric Sheep Fencing, LLC. All rights reserved.
+*
+*  Redistribution and use in source and binary forms, with or without modification,
+*  are permitted provided that the following conditions are met:
+*
+*  1. Redistributions of source code must retain the above copyright notice,
+*      this list of conditions and the following disclaimer.
+*
+*  2. Redistributions in binary form must reproduce the above copyright
+*      notice, this list of conditions and the following disclaimer in
+*      the documentation and/or other materials provided with the
+*      distribution.
+*
+*  3. All advertising materials mentioning features or use of this software
+*      must display the following acknowledgment:
+*      "This product includes software developed by the pfSense Project
+*       for use in the pfSense software distribution. (http://www.pfsense.org/).
+*
+*  4. The names "pfSense" and "pfSense Project" must not be used to
+*       endorse or promote products derived from this software without
+*       prior written permission. For written permission, please contact
+*       coreteam@pfsense.org.
+*
+*  5. Products derived from this software may not be called "pfSense"
+*      nor may "pfSense" appear in their names without prior written
+*      permission of the Electric Sheep Fencing, LLC.
+*
+*  6. Redistributions of any form whatsoever must retain the following
+*      acknowledgment:
+*
+*  "This product includes software developed by the pfSense Project
+*  for use in the pfSense software distribution (http://www.pfsense.org/).
+*
+*  THIS SOFTWARE IS PROVIDED BY THE pfSense PROJECT ``AS IS'' AND ANY
+*  EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+*  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+*  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE pfSense PROJECT OR
+*  ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+*  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+*  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+*  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+*  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+*  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+*  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+*  OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+*
+* Portions of this code are based on original work done for the Snort package for pfSense by the following contributors:
+*
+* Copyright (C) 2003-2004 Manuel Kasper
+* Copyright (C) 2005 Bill Marquette
+* Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
+* Copyright (C) 2009 Robert Zelaya Sr. Developer
+* Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
+* Copyright (C) 2014 Bill Meeks
+*
+*/
 
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
@@ -47,12 +69,13 @@ $suricatadir = SURICATADIR;
 $flowbit_rules_file = FLOWBITS_FILENAME;
 
 // Array of default events rules for Suricata
-$default_rules = array( "decoder-events.rules", "dns-events.rules", "files.rules", "http-events.rules", 
+$default_rules = array( "decoder-events.rules", "dns-events.rules", "files.rules", "http-events.rules",
 			"smtp-events.rules", "stream-events.rules", "tls-events.rules" );
 
 if (!is_array($config['installedpackages']['suricata']['rule'])) {
 	$config['installedpackages']['suricata']['rule'] = array();
 }
+
 $a_nat = &$config['installedpackages']['suricata']['rule'];
 
 if (isset($_POST['id']) && is_numericint($_POST['id']))
@@ -91,16 +114,15 @@ elseif ($etpro == 'on') {
 }
 else
 	$et_type = "Emerging Threats";
+
 if (empty($test))
 	$no_emerging_files = true;
 $test = glob("{$suricatadir}rules/" . VRT_FILE_PREFIX . "*.rules");
 if (empty($test))
 	$no_snort_files = true;
+
 if (!file_exists("{$suricatadir}rules/" . GPL_FILE_PREFIX . "community.rules"))
 	$no_community_files = true;
-
-if (($snortdownload != 'on') || ($a_nat[$id]['ips_policy_enable'] != 'on'))
-	$policy_select_disable = "disabled";
 
 // If a Snort VRT policy is enabled and selected, remove all Snort VRT
 // rules from the configured rule sets to allow automatic selection.
@@ -167,8 +189,7 @@ if ($_POST["save"]) {
 
 	// Sync to configured CARP slaves if any are enabled
 	suricata_sync_on_changes();
-}
-elseif ($_POST['unselectall']) {
+} elseif ($_POST['unselectall']) {
 	if ($_POST['ips_policy_enable'] == "on") {
 		$a_nat[$id]['ips_policy_enable'] = 'on';
 		$a_nat[$id]['ips_policy'] = $_POST['ips_policy'];
@@ -191,8 +212,7 @@ elseif ($_POST['unselectall']) {
 		$savemsg .= gettext("Only the rules included in the selected IPS Policy will be used.");
 	else
 		$savemsg .= gettext("There currently are no inspection rules enabled for this Suricata instance!");
-}
-elseif ($_POST['selectall']) {
+} elseif ($_POST['selectall']) {
 	if ($_POST['ips_policy_enable'] == "on") {
 		$a_nat[$id]['ips_policy_enable'] = 'on';
 		$a_nat[$id]['ips_policy'] = $_POST['ips_policy'];
@@ -238,35 +258,10 @@ elseif ($_POST['selectall']) {
 // if auto-SID Mgmt is enabled.
 $cat_mods = suricata_sid_mgmt_auto_categories($a_nat[$id], FALSE);
 
-// See if we have any Auto-Flowbit rules and enable
-// the VIEW button if we do.
-if ($pconfig['autoflowbits'] == 'on') {
-	if (file_exists("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/{$flowbit_rules_file}") &&
-	    filesize("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/{$flowbit_rules_file}") > 0) {
-		$btn_view_flowb_rules = " title=\"" . gettext("View flowbit-required rules") . "\"";
-	}
-	else
-		$btn_view_flowb_rules = " disabled";
-}
-else
-	$btn_view_flowb_rules = " disabled";
-
 $if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
-$pgtitle = gettext("Suricata IDS: Interface {$if_friendly} - Categories");
+$pgtitle = array(gettext("Suricata IDS"), gettext(" Interface {$if_friendly} - Categories"));
 include_once("head.inc");
-?>
 
-<body link="#000000" vlink="#000000" alink="#000000">
-
-<?php
-include("fbegin.inc"); 
-?>
-
-<form action="suricata_rulesets.php" method="post" name="iform" id="iform">
-<input type="hidden" name="id" id="id" value="<?=$id;?>" />
-
-<?php
-/* Display message */
 if ($input_errors) {
 	print_input_errors($input_errors);
 }
@@ -274,176 +269,179 @@ if ($input_errors) {
 if ($savemsg) {
 	print_info_box($savemsg);
 }
-?>
 
+$tab_array = array();
+$tab_array[] = array(gettext("Interfaces"), true, "/suricata/suricata_interfaces.php");
+$tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_global.php");
+$tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
+$tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
+$tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
+$tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
+$tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
+$tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$id}");
+$tab_array[] = array(gettext("Logs Mgmt"), false, "/suricata/suricata_logs_mgmt.php");
+$tab_array[] = array(gettext("SID Mgmt"), false, "/suricata/suricata_sid_mgmt.php");
+$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=suricata/suricata_sync.xml");
+$tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
+display_top_tabs($tab_array, true);
+
+$menu_iface=($if_friendly?substr($if_friendly,0,5)." ":"Iface ");
+$tab_array = array();
+$tab_array[] = array($menu_iface . gettext("Settings"), false, "/suricata/suricata_interfaces_edit.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Categories"), true, "/suricata/suricata_rulesets.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Rules"), false, "/suricata/suricata_rules.php?id={$id}");
+    $tab_array[] = array($menu_iface . gettext("Flow/Stream"), false, "/suricata/suricata_flow_stream.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("App Parsers"), false, "/suricata/suricata_app_parsers.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Variables"), false, "/suricata/suricata_define_vars.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/suricata/suricata_barnyard.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata_ip_reputation.php?id={$id}");
+display_top_tabs($tab_array, true);
+
+$isrulesfolderempty = glob("{$suricatadir}rules/*.rules");
+$iscfgdirempty = array();
+
+if (file_exists("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/custom.rules")) {
+	$iscfgdirempty = (array)("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/custom.rules");
+}
+
+if (empty($isrulesfolderempty)):
+	print_info_box(sprintf(gettext("# The rules directory is empty:  %s%srules%s"), '<strong>', $suricatadir,'</strong>') . "<br/><br/>" .
+		gettext("Please go to the ") . '<a href="suricata_download_updates.php"><strong>' . gettext("Updates") .
+		'</strong></a>' . gettext(" tab to download the rules configured on the ") .
+		'<a href="suricata_interfaces_global.php"><strong>' . gettext("Global") .
+		'</strong></a>' . gettext(" tab."), 'warning');
+
+else:
+	$form = new Form();
+
+	$section = new Form_Section("Automatic flowbit resolution");
+
+	$section->addInput(new Form_Checkbox(
+		'autoflowbits',
+		'Resolve Flowbits',
+		'Auto-enable rules required for checked flowbits',
+		($pconfig['autoflowbits'] == "on" || empty($pconfig['autoflowbits'])),
+		'on'
+	))->setHelp(' Default is Checked. Suricata will examine the enabled rules in your chosen rule categories for checked flowbits. ' .
+					'Any rules that set these dependent flowbits will be automatically enabled and added to the list of files in the interface rules directory.');
+
+	$viewbtn = new Form_Button(
+		'View',
+		'View'
+	);
+
+	$viewbtn->setOnclick('parent.location=\'suricata_rules_flowbits.php?id=' . $id . "'")
+	  ->removeClass('btn-primary')->addClass('btn-success')
+	  ->setHelp('Click to view auto-enabled rules required to satisfy flowbit dependencies' . '<br /><br />' .
+	  			'<span class="text-danger"><strong>' . gettext('Note:  ') . '</strong></span>' .
+	  			gettext('Auto-enabled rules generating unwanted alerts should have their GID:SID added to the Suppression List for the interface.'))
+	  	 ->setType("button");
+
+	// See if we have any Auto-Flowbit rules and enable
+	// the VIEW button if we do.
+	if ($pconfig['autoflowbits'] == 'on') {
+		if (file_exists("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/{$flowbit_rules_file}") &&
+		    filesize("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/{$flowbit_rules_file}") > 0) {
+			$viewbtn->setTitle(gettext("View flowbit-required rules"));
+		}
+		else
+			$viewbtn->setDisabled();
+	}
+	else
+		$viewbtn->setDisabled();
+
+	$section->addInput(new Form_StaticText(
+		'View rules',
+		$viewbtn
+	));
+
+	$form->add($section);
+
+	if (true || $snortdownload == 'on') {
+
+		$section = new Form_Section("Snort IPS Policy selection");
+
+		$chkips = new Form_Checkbox(
+			'ips_policy_enable',
+			'Use IPS Policy',
+			'Use rules from one of three pre-defined Snort IPS policies',
+			($a_nat[$id]['ips_policy_enable'] == "on"),
+			'om'
+		);
+
+		$chkips->setHelp('<span class="text-danger"><strong>' . gettext("Note:  ") . '</strong></span>' . gettext('You must be using the Snort VRT rules to use this option.' . '<br />' .
+					'Selecting this option disables manual selection of Snort VRT categories in the list below, ' .
+						'although Emerging Threats categories may still be selected if enabled on the Global Settings tab.  ' .
+						'These will be added to the pre-defined Snort IPS policy rules from the Snort VRT.'));
+
+
+		if (($snortdownload != 'on') || ($a_nat[$id]['ips_policy_enable'] != 'on')) {
+			// $chkips->setDisabled();
+		}
+
+		$section->addInput($chkips);
+
+		$section->addInput(new Form_Select(
+			'ips_policy',
+			'IPS Policy Selection',
+			$pconfig['ips_policy'],
+			array(
+				'connected' => 'Conected',
+				'balanced'  => 'Balanced',
+				'security'  => 'Security')
+			))->setHelp('Connectivity blocks most major threats with few or no false positives. Balanced is a good starter policy. ' .
+						'It is speedy, has good base coverage level, and covers most threats of the day. It includes all rules in Connectivity. Security is a stringent policy. ' .
+						'It contains everything in the first two plus policy-type rules such as Flash in an Excel file.');
+
+		$form->add($section);
+	}
+
+	$form->addGlobal(new Form_Input(
+		'id',
+		null,
+		'hidden',
+		$id
+	));
+
+	if ($no_community_files)
+		$msg_community = "NOTE: Snort Community Rules have not been downloaded.  Perform a Rules Update to enable them.";
+	else
+		$msg_community = "Snort GPLv2 Community Rules (VRT certified)";
+
+	$community_rules_file = GPL_FILE_PREFIX . "community.rules";
+
+	if ($snortcommunitydownload == 'on') {
+		echo gettext("Enabled");
+		echo gettext('Ruleset: Snort GPLv2 Community Rules');
+		if (isset($cat_mods[$community_rules_file])) {
+			if ($cat_mods[$community_rules_file] == 'enabled') {
+				$section->addInput(new Form_StaticText(
+					'',
+					gettext("Enabled") . "    " . gettext('Ruleset: Snort GPLv2 Community Rules')
+				));
+
+				if (isset($cat_mods[$community_rules_file])) {
+
+				}
+			}
+		}
+	}
+
+	print($form);
+
+
+
+	?>
+
+<form action="suricata_rulesets.php" method="post" name="iform" id="iform">
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tbody>
-<tr><td>
-<?php    
-	$tab_array = array();
-	$tab_array[] = array(gettext("Interfaces"), true, "/suricata/suricata_interfaces.php");
-	$tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_global.php");
-	$tab_array[] = array(gettext("Updates"), false, "/suricata/suricata_download_updates.php");
-	$tab_array[] = array(gettext("Alerts"), false, "/suricata/suricata_alerts.php?instance={$id}");
-	$tab_array[] = array(gettext("Blocks"), false, "/suricata/suricata_blocked.php");
-	$tab_array[] = array(gettext("Pass Lists"), false, "/suricata/suricata_passlist.php");
-	$tab_array[] = array(gettext("Suppress"), false, "/suricata/suricata_suppress.php");
-	$tab_array[] = array(gettext("Logs View"), false, "/suricata/suricata_logs_browser.php?instance={$id}");
-	$tab_array[] = array(gettext("Logs Mgmt"), false, "/suricata/suricata_logs_mgmt.php");
-	$tab_array[] = array(gettext("SID Mgmt"), false, "/suricata/suricata_sid_mgmt.php");
-	$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=suricata/suricata_sync.xml");
-	$tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
-	display_top_tabs($tab_array, true);
-	echo '</td></tr>';
-	echo '<tr><td class="tabnavtbl">';
-	$menu_iface=($if_friendly?substr($if_friendly,0,5)." ":"Iface ");
-	$tab_array = array();
-	$tab_array[] = array($menu_iface . gettext("Settings"), false, "/suricata/suricata_interfaces_edit.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Categories"), true, "/suricata/suricata_rulesets.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Rules"), false, "/suricata/suricata_rules.php?id={$id}");
-        $tab_array[] = array($menu_iface . gettext("Flow/Stream"), false, "/suricata/suricata_flow_stream.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("App Parsers"), false, "/suricata/suricata_app_parsers.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Variables"), false, "/suricata/suricata_define_vars.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/suricata/suricata_barnyard.php?id={$id}");
-	$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata_ip_reputation.php?id={$id}");
-	display_top_tabs($tab_array, true);
-?>
-</td></tr>
+	<tbody>
+
 <tr>
 	<td>
 	<div id="mainarea">
 	<table id="maintable" class="tabcont" width="100%" border="0" cellpadding="0" cellspacing="0">
 	<tbody>
-<?php 
-	$isrulesfolderempty = glob("{$suricatadir}rules/*.rules");
-	$iscfgdirempty = array();
-	if (file_exists("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/custom.rules"))
-		$iscfgdirempty = (array)("{$suricatadir}suricata_{$suricata_uuid}_{$if_real}/rules/custom.rules"); ?>
-<?php if (empty($isrulesfolderempty)): ?>
-		<tr>
-			<td class="vexpl"><br/>
-		<?php printf(gettext("# The rules directory is empty:  %s%srules%s"), '<strong>',$suricatadir,'</strong>'); ?> <br/><br/>
-		<?php echo gettext("Please go to the ") . '<a href="suricata_download_updates.php"><strong>' . gettext("Updates") . 
-			'</strong></a>' . gettext(" tab to download the rules configured on the ") . 
-			'<a href="suricata_interfaces_global.php"><strong>' . gettext("Global") . 
-			'</strong></a>' . gettext(" tab."); ?>
-			</td>
-		</tr>
-<?php else: ?>
-		<tr>
-			<td>
-			<table width="100%" border="0" cellpadding="0" cellspacing="0">
-			<tbody>
-			<tr>
-				<td colspan="4" class="listtopic"><?php echo gettext("Automatic flowbit resolution"); ?><br/></td>
-			</tr>
-			<tr>
-				<td colspan="4" style="vertical-align: middle;" class="listn">
-					<table width="100%" border="0" cellpadding="2" cellspacing="0">
-					   <tbody>
-					   <tr>
-						<td width="15%" class="listn"><?php echo gettext("Resolve Flowbits"); ?></td>
-						<td width="85%"><input name="autoflowbits" id="autoflowbitrules" type="checkbox" value="on" 
-						<?php if ($pconfig['autoflowbits'] == "on" || empty($pconfig['autoflowbits'])) echo "checked"; ?>/>
-						&nbsp;&nbsp;<span class="vexpl"><?php echo gettext("If checked, Suricata will auto-enable rules required for checked flowbits.  ");
-						echo gettext("The Default is "); ?><strong><?php echo gettext("Checked."); ?></strong></span></td>
-					   </tr>
-					   <tr>
-						<td width="15%" class="vncell">&nbsp;</td>
-						<td width="85%" class="vtable">
-						<?php echo gettext("Suricata will examine the enabled rules in your chosen " .
-						"rule categories for checked flowbits.  Any rules that set these dependent flowbits will " .
-						"be automatically enabled and added to the list of files in the interface rules directory."); ?><br/></td>
-					   </tr>
-					   <tr>
-						<td width="15%" class="listn"><?php echo gettext("Auto Flowbit Rules"); ?></td>
-						<td width="85%"><input type="button" class="formbtns" value="View" onclick="parent.location='suricata_rules_flowbits.php?id=<?=$id;?>'" <?php echo $btn_view_flowb_rules; ?>/>
-						&nbsp;&nbsp;<span class="vexpl"><?php echo gettext("Click to view auto-enabled rules required to satisfy flowbit dependencies"); ?></span></td>
-					   </tr>
-					   <tr>
-						<td width="15%">&nbsp;</td>
-						<td width="85%">
-						<?php echo "<span class=\"red\"><strong>" . gettext("Note:  ") . "</strong></span>" . gettext("Auto-enabled rules generating unwanted alerts should have their GID:SID added to the Suppression List for the interface."); ?>
-						<br/></td>
-					   </tr>
-					   </tbody>
-					</table>
-				</td>
-			</tr>
-
-		<?php if ($snortdownload == 'on'): ?>
-			<tr>
-				<td colspan="4" class="listtopic"><?php echo gettext("Snort IPS Policy selection"); ?><br/></td>
-			</tr>
-			<tr>
-				<td colspan="4" style="vertical-align: middle;" class="listn">
-					<table width="100%" border="0" cellpadding="2" cellspacing="0">
-					   <tbody>
-					   <tr>
-						<td width="15%" class="listn"><?php echo gettext("Use IPS Policy"); ?></td>
-						<td width="85%"><input name="ips_policy_enable" id="ips_policy_enable" type="checkbox" value="on" <?php if ($a_nat[$id]['ips_policy_enable'] == "on") echo "checked"; ?>
-						<?php if ($snortdownload != "on") echo "disabled" ?> onClick="enable_change()"/>&nbsp;&nbsp;<span class="vexpl">
-						<?php echo gettext("If checked, Suricata will use rules from one of three pre-defined Snort IPS policies."); ?></span></td>
-					   </tr>
-					   <tr>
-						<td width="15%" class="vncell" id="ips_col1">&nbsp;</td>
-						<td width="85%" class="vtable" id="ips_col2">
-  						<?php echo "<span class=\"red\"><strong>" . gettext("Note:  ") . "</strong></span>" . gettext("You must be using the Snort VRT rules to use this option."); ?>
-						<?php echo gettext("Selecting this option disables manual selection of Snort VRT categories in the list below, " .
-						"although Emerging Threats categories may still be selected if enabled on the Global Settings tab.  " .
-						"These will be added to the pre-defined Snort IPS policy rules from the Snort VRT."); ?><br/></td>
-					   </tr>
-					   </tbody>
-					   <tbody id="ips_controls">
-					   <tr>
-						<td width="15%" class="listn"><?php echo gettext("IPS Policy Selection"); ?></td>
-						<td width="85%"><select name="ips_policy" class="formselect" <?=$policy_select_disable?> >
-									<option value="connectivity" <?php if ($pconfig['ips_policy'] == "connected") echo "selected"; ?>><?php echo gettext("Connectivity"); ?></option>
-									<option value="balanced" <?php if ($pconfig['ips_policy'] == "balanced") echo "selected"; ?>><?php echo gettext("Balanced"); ?></option>
-									<option value="security" <?php if ($pconfig['ips_policy'] == "security") echo "selected"; ?>><?php echo gettext("Security"); ?></option>
-								</select>
-						&nbsp;&nbsp;<span class="vexpl"><?php echo gettext("Snort IPS policies are:  Connectivity, Balanced or Security."); ?></span></td>
-					   </tr>
-					   <tr>
-						<td width="15%">&nbsp;</td>
-						<td width="85%">
-						<?php echo gettext("Connectivity blocks most major threats with few or no false positives.  " . 
-						"Balanced is a good starter policy.  It is speedy, has good base coverage level, and covers " . 
-						"most threats of the day.  It includes all rules in Connectivity.  " . 
-						"Security is a stringent policy.  It contains everything in the first two " .
-						"plus policy-type rules such as Flash in an Excel file."); ?><br/></td>
-					   </tr>
-					   </tbody>
-					</table>
-				</td>
-			</tr>
-		<?php endif; ?>
-			<tr>
-				<td colspan="4" class="listtopic"><?php echo gettext("Select the rulesets Suricata will load at startup"); ?><br/></td>
-			</tr>
-			<tr>
-				<td colspan="4">
-					<table width="95%" style="margin-left: auto; margin-right: auto;" border="0" cellpadding="2" cellspacing="0">
-						<tbody>
-						<tr height="32px">
-							<td style="vertical-align: middle;"><input value="Select All" class="formbtns" type="submit" name="selectall" id="selectall" title="<?php echo gettext("Add all to enforcing rules"); ?>"/></td>
-							<td style="vertical-align: middle;"><input value="Unselect All" class="formbtns" type="submit" name="unselectall" id="unselectall" title="<?php echo gettext("Remove all from enforcing rules"); ?>"/></td>
-							<td style="vertical-align: middle;"><input value=" Save " class="formbtns" type="submit" name="save" id="save" title="<?php echo gettext("Save changes to enforcing rules and rebuild"); ?>"/></td>
-							<td style="vertical-align: middle;"><span class="vexpl"><?php echo gettext("Click to save changes and auto-resolve flowbit rules (if option is selected above)"); ?></span></td>
-						</tr>
-					<?php if (!empty($cat_mods)): ?>
-						<tr height="20px">
-							<td colspan="4" style="vertical-align: middle;"><img style="vertical-align: text-top;" src="../themes/<?=$g['theme'];?>/images/icons/icon_advanced.gif" width="11" height="11" border="0" />
-							<?=gettext("- Category is auto-enabled by SID Mgmt conf files");?>&nbsp;&nbsp;&nbsp;
-							<img style="opacity: 0.4; filter: alpha(opacity=40); vertical-align: text-top;" src="../themes/<?=$g['theme'];?>/images/icons/icon_advanced.gif" width="11" height="11" border="0" />
-							<?=gettext("- Category is auto-disabled by SID Mgmt conf files");?></td>
-						</tr>
-					<?php endif; ?>
-						</tbody>
-					</table>
-				</td>
-			</tr>
-
 			<?php if ($no_community_files)
 				$msg_community = "NOTE: Snort Community Rules have not been downloaded.  Perform a Rules Update to enable them.";
 			      else
@@ -636,7 +634,8 @@ if ($savemsg) {
 </table>
 </form>
 <?php
-include("fend.inc");
+
+include("foot.inc");
 ?>
 
 <script language="javascript" type="text/javascript">
@@ -648,7 +647,7 @@ function wopen(url, name, w, h)
 w += 32;
 h += 96;
  var win = window.open(url,
-  name, 
+  name,
   'width=' + w + ', height=' + h + ', ' +
   'location=no, menubar=no, ' +
   'status=no, toolbar=no, scrollbars=yes, resizable=yes');
@@ -658,12 +657,14 @@ h += 96;
 
 function enable_change()
 {
+	if ($('#ips_policy_enable')) {
+		var endis = !($('#ips_policy_enable').prop('checked'));
 
-	if (document.getElementById("ips_policy_enable")) {
-		var endis = !(document.iform.ips_policy_enable.checked);
-		document.iform.ips_policy.disabled=endis;
-
+		hideInput('ips_policy', endis);
+		$('$ips_controls').attr('disabled', endis);
+/*
 		if (endis) {
+			$('$ips_controls').attr('disabled', endis;)
 			document.getElementById("ips_controls").style.display="none";
 			document.getElementById("ips_col1").className="";
 			document.getElementById("ips_col2").className="";
@@ -673,14 +674,15 @@ function enable_change()
 			document.getElementById("ips_col1").className="vncell";
 			document.getElementById("ips_col2").className="vtable";
 		}
+*/
 	}
-	for (var i = 0; i < document.iform.elements.length; i++) {
-		if (document.iform.elements[i].type == 'checkbox') {
-			var str = document.iform.elements[i].value;
-			if (str.substr(0,6) == "snort_")
-				document.iform.elements[i].disabled = !(endis);
-		}
-	}
+
+	$('[type=checkbox]').each(function() {
+		var str = this.value;
+
+		if (str.substr(0,6) == "snort_")
+			this.attr('disabled', !endis);
+	});
 }
 
 // Set initial state of dynamic HTML form controls
@@ -688,5 +690,3 @@ enable_change();
 
 </script>
 
-</body>
-</html>

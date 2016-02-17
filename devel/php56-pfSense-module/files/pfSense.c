@@ -2380,7 +2380,7 @@ PHP_FUNCTION(pfSense_get_pf_rules) {
 }
 
 PHP_FUNCTION(pfSense_get_pf_states) {
-	char buf[128], *key;
+	char buf[128], *filter, *key;
 	int dev, filter_if, filter_rl, found, i, min, sec;
 	struct pfioc_states ps;
 	struct pfsync_state *s;
@@ -2395,6 +2395,7 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 	HashTable *hash1, *hash2;
 	HashPosition h1p, h2p;
 
+	filter = NULL;
 	filter_if = filter_rl = 0;
 	zvar = NULL;
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|z", &zvar) == FAILURE)
@@ -2407,7 +2408,7 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 			if (zend_hash_get_current_key_ex(hash1, &key, &key_len,
 			    &index, 0, &h1p) != HASH_KEY_IS_LONG ||
 			    Z_TYPE_PP(data1) != IS_ARRAY) {
-				RETURN_NULL();
+				continue;
 			}
 			hash2 = Z_ARRVAL_PP(data1);
 			zend_hash_internal_pointer_reset_ex(hash2, &h2p);
@@ -2416,7 +2417,7 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 
 			if (zend_hash_get_current_key_ex(hash2, &key, &key_len,
 			    &index, 0, &h2p) != HASH_KEY_IS_STRING) {
-				RETURN_NULL();
+				continue;
 			}
 			if (key_len == 10 && strcasecmp(key, "interface") == 0 &&
 			    Z_TYPE_PP(data2) == IS_STRING) {
@@ -2424,8 +2425,10 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 			} else if (key_len == 7 && strcasecmp(key, "ruleid") == 0 &&
 			    Z_TYPE_PP(data2) == IS_LONG) {
 				filter_rl = 1;
-			} else
-				RETURN_NULL();
+			} else if (key_len == 7 && strcasecmp(key, "filter") == 0 &&
+			    Z_TYPE_PP(data2) == IS_STRING) {
+				filter = Z_STRVAL_PP(data2);
+			}
 		}
 		if (filter_if && filter_rl)
 			RETURN_NULL();
@@ -2473,9 +2476,6 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 				continue;
 		}
 
-		ALLOC_INIT_ZVAL(array);
-		array_init(array);
-
 	        if (s->direction == PF_OUT) {
 			src = &s->src;
 			dst = &s->dst;
@@ -2492,10 +2492,16 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 				sk->port[1] = nk->port[1];
 		}
 
+		found = 0;
+		ALLOC_INIT_ZVAL(array);
+		array_init(array);
+
 		add_assoc_string(array, "if", s->ifname, 1);
-		if ((p = getprotobynumber(s->proto)) != NULL)
+		if ((p = getprotobynumber(s->proto)) != NULL) {
 			add_assoc_string(array, "proto", p->p_name, 1);
-		else
+			if (filter != NULL && strstr(p->p_name, filter))
+				found = 1;
+		} else
 			add_assoc_long(array, "proto", (long)s->proto);
 		add_assoc_string(array, "direction",
 		    ((s->direction == PF_OUT) ? "out" : "in"), 1);
@@ -2503,6 +2509,8 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 		memset(buf, 0, sizeof(buf));
 		pf_print_host(&nk->addr[1], nk->port[1], s->af, buf, sizeof(buf));
 		add_assoc_string(array, ((s->direction == PF_OUT) ? "src" : "dst"), buf, 1);
+		if (filter != NULL && !found && strstr(buf, filter))
+			found = 1;
 
 		if (PF_ANEQ(&nk->addr[1], &sk->addr[1], s->af) ||
 		    nk->port[1] != sk->port[1]) {
@@ -2511,11 +2519,15 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 			    sizeof(buf));
 			add_assoc_string(array,
 			    ((s->direction == PF_OUT) ? "src-orig" : "dst-orig"), buf, 1);
+			if (filter != NULL && !found && strstr(buf, filter))
+				found = 1;
 		}
 
 		memset(buf, 0, sizeof(buf));
 		pf_print_host(&nk->addr[0], nk->port[0], s->af, buf, sizeof(buf));
 		add_assoc_string(array, ((s->direction == PF_OUT) ? "dst" : "src"), buf, 1);
+		if (filter != NULL && !found && strstr(buf, filter))
+			found = 1;
 
 		if (PF_ANEQ(&nk->addr[0], &sk->addr[0], s->af) ||
 		    nk->port[0] != sk->port[0]) {
@@ -2524,6 +2536,8 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 			    sizeof(buf));
 			add_assoc_string(array,
 			    ((s->direction == PF_OUT) ? "dst-orig" : "src-orig"), buf, 1);
+			if (filter != NULL && !found && strstr(buf, filter))
+				found = 1;
 		}
 
 		if (s->proto == IPPROTO_TCP) {
@@ -2532,6 +2546,11 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 				snprintf(buf, sizeof(buf) - 1, "%s:%s",
 				    tcpstates[src->state], tcpstates[dst->state]);
 				add_assoc_string(array, "state", buf, 1);
+				if (filter != NULL && !found &&
+				    (strstr(tcpstates[src->state], filter) ||
+				    strstr(tcpstates[dst->state], filter))) {
+					found = 1;
+				}
 			} else if (src->state == PF_TCPS_PROXY_SRC ||
 			    dst->state == PF_TCPS_PROXY_SRC)
 				add_assoc_string(array, "state", "PROXY:SRC", 1);
@@ -2551,6 +2570,12 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 			snprintf(buf, sizeof(buf) - 1, "%s:%s",
 			    states[src->state], states[dst->state]);
 			add_assoc_string(array, "state", buf, 1);
+
+			if (filter != NULL && !found &&
+			    (strstr(states[src->state], filter) ||
+			    strstr(states[dst->state], filter))) {
+				found = 1;
+			}
 		} else if (s->proto != IPPROTO_ICMP && src->state < PFOTHERS_NSTATES &&
 		    dst->state < PFOTHERS_NSTATES) {
 			/* XXX ICMP doesn't really have state levels */
@@ -2560,9 +2585,19 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 			    states[src->state], states[dst->state]);
 			add_assoc_string(array, "state", buf, 1);
 
+			if (filter != NULL && !found &&
+			    (strstr(states[src->state], filter) ||
+			    strstr(states[dst->state], filter))) {
+				found = 1;
+			}
 		} else {
 			snprintf(buf, sizeof(buf) - 1, "%u:%u", src->state, dst->state);
 			add_assoc_string(array, "state", buf, 1);
+		}
+
+		if (filter != NULL && !found) {
+			zval_dtor(array);
+			continue;
 		}
 
 		creation = ntohl(s->creation);

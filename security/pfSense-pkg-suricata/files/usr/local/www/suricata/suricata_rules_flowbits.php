@@ -1,42 +1,64 @@
 <?php
 /*
- * suricata_rules_flowbits.php
- *
- * Portions of this code are based on original work done for the
- * Snort package for pfSense from the following contributors:
- * 
- * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
- * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
- * Copyright (C) 2006 Scott Ullrich
- * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2012 Ermal Luci
- * All rights reserved.
- *
- * Adapted for Suricata by:
- * Copyright (C) 2014 Bill Meeks
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
-
- * 1. Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
- * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
- * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
- * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- */
+*  suricata_rules_flowbits.php
+*
+*  Copyright (c)  2004-2016  Electric Sheep Fencing, LLC. All rights reserved.
+*
+*  Redistribution and use in source and binary forms, with or without modification,
+*  are permitted provided that the following conditions are met:
+*
+*  1. Redistributions of source code must retain the above copyright notice,
+*      this list of conditions and the following disclaimer.
+*
+*  2. Redistributions in binary form must reproduce the above copyright
+*      notice, this list of conditions and the following disclaimer in
+*      the documentation and/or other materials provided with the
+*      distribution.
+*
+*  3. All advertising materials mentioning features or use of this software
+*      must display the following acknowledgment:
+*      "This product includes software developed by the pfSense Project
+*       for use in the pfSense software distribution. (http://www.pfsense.org/).
+*
+*  4. The names "pfSense" and "pfSense Project" must not be used to
+*       endorse or promote products derived from this software without
+*       prior written permission. For written permission, please contact
+*       coreteam@pfsense.org.
+*
+*  5. Products derived from this software may not be called "pfSense"
+*      nor may "pfSense" appear in their names without prior written
+*      permission of the Electric Sheep Fencing, LLC.
+*
+*  6. Redistributions of any form whatsoever must retain the following
+*      acknowledgment:
+*
+*  "This product includes software developed by the pfSense Project
+*  for use in the pfSense software distribution (http://www.pfsense.org/).
+*
+*  THIS SOFTWARE IS PROVIDED BY THE pfSense PROJECT ``AS IS'' AND ANY
+*  EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+*  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+*  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE pfSense PROJECT OR
+*  ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+*  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+*  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+*  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+*  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+*  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+*  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+*  OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+*
+* Portions of this code are based on original work done for the Snort package for pfSense by the following contributors:
+*
+* Copyright (C) 2003-2004 Manuel Kasper
+* Copyright (C) 2005 Bill Marquette
+* Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
+* Copyright (C) 2009 Robert Zelaya Sr. Developer
+* Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
+* Copyright (C) 2014 Bill Meeks
+*
+*/
 
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
@@ -51,6 +73,7 @@ $supplist = array();
 if (!is_array($config['installedpackages']['suricata']['rule'])) {
 	$config['installedpackages']['suricata']['rule'] = array();
 }
+
 $a_nat = &$config['installedpackages']['suricata']['rule'];
 
 if (isset($_POST['id']) && is_numericint($_POST['id']))
@@ -136,6 +159,7 @@ if ($_POST['addsuppress'] && is_numeric($_POST['sid']) && is_numeric($_POST['gid
 			}
 		}
 	}
+
 	if ($found_list) {
 		write_config();
 		$rebuild_rules = false;
@@ -155,15 +179,15 @@ if ($_POST['addsuppress'] && is_numeric($_POST['sid']) && is_numeric($_POST['gid
 $supplist = suricata_load_suppress_sigs($a_nat[$id]);
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
-$pgtitle = gettext("Suricata: Interface {$if_friendly} - Flowbit Rules");
+
+$pgtitle = array(gettext("Suricata"), $if_friendly, gettext("Flowbit Rules"));
+
 include_once("head.inc");
 
-?>
 
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC" >
-<?php
-include("fbegin.inc");
-if ($input_errors) print_input_errors($input_errors);
+if ($input_errors)
+	print_input_errors($input_errors);
+
 if ($savemsg)
 	print_info_box($savemsg);
 ?>
@@ -172,69 +196,18 @@ if ($savemsg)
 <input type="hidden" name="referrer" value="<?=$referrer;?>"/>
 <input type="hidden" name="sid" id="sid" value=""/>
 <input type="hidden" name="gid" id="gid" value=""/>
-<div id="boxarea">
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr>
-<td class="tabcont">
-<table width="100%" border="0" cellpadding="6" cellspacing="0">
-	<tr>
-		<td valign="middle" class="listtopic"><?php echo gettext("Auto-Generated Flowbit-Required Rules"); ?></td>
-	</tr>
-	<tr>
-		<td width="78%" class="vncell">
-		<?php echo gettext("The rules listed below are required to be included in the rules set ") . 
-		gettext("because they set flowbits that are checked and relied upon by rules in the enforcing rules set.  ") . 
-		gettext("If these dependent flowbits are not set, then some of your chosen rules may not fire.  ") . 
-		gettext("Enabling all the rules that set these dependent flowbits ensures your chosen rules fire as intended.  ") . 
-		gettext("Most flowbits rules contain the \"noalert\" keyword to prevent an alert from firing ") . 
-		gettext("when the flowbit is detected.  For those flowbit rules that do not contain the \"noalert\" option, click the ") . 
-		gettext("icon displayed beside the Signature ID (SID) to add the alert to the Suppression List if desired."); ?></td> 
-	</tr>
-	<tr>
-		<td valign="middle" class="listtopic"><?php echo gettext("Flowbit-Required Rules for {$if_friendly}"); ?></td>
-	</tr>
-	<tr>
-		<td width="78%" class="vncell">
-			<table width="100%" border="0" cellspacing="2" cellpadding="0">
-				<tr>
-					<td width="17px"><img src="../themes/<?=$g['theme']?>/images/icons/icon_plus.gif" width='12' height='12' border='0'/></td>
-					<td><span class="vexpl"><?php echo gettext("Alert is Not Suppressed"); ?></span></td>
-					<td rowspan="3" align="right"><input id="cancel" name="cancel" type="submit" class="formbtn" <?php 
-					echo "value=\"" . gettext("Return") . "\" title=\"" . gettext("Return to previous page") . "\""; ?>/>
-					<input name="id" type="hidden" value="<?=$id;?>" /></td>
-				</tr>
-				<tr>
-					<td width="17px"><img src="../themes/<?=$g['theme']?>/images/icons/icon_plus_d.gif" width='12' height='12' border='0'/></td>
-					<td><span class="vexpl"><?php echo gettext("Alert has been Suppressed"); ?></span></td>
-				</tr>
-				<tr>
-					<td width="17px"> </td>
-					<td colspan="2" class="vexpl"><?php echo "<span class=\"red\"><strong>" . 
-					gettext("Note:  ") . "</strong></span>". gettext("the icon is only ") . 
-					gettext("displayed for flowbit rules without the \"noalert\" option."); ?></td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td>
-		<table id="myTable" width="100%" class="sortable" style="table-layout: fixed;" border="0" cellpadding="0" cellspacing="0">
-			<colgroup>
-				<col width="11%" axis="number">
-				<col width="52" axis="string">
-				<col width="14%" axis="string">
-				<col width="14%" axis="string">
-				<col width="24%" axis="string">
-				<col axis="string">
-			</colgroup>
+
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("Flowbit-Required Rules for {$if_friendly}")?></h2></div>
+	<div class="panel-body table-responsive">
+		<table class="table table-hover table-striped table-condensed">
 			<thead>
-			   <tr class="sortableHeaderRowIdentifier">
-				<th class="listhdrr" axis="number"><?php echo gettext("SID"); ?></th>
-				<th class="listhdrr" axis="string"><?php echo gettext("Proto"); ?></th>
-				<th class="listhdrr" axis="string"><?php echo gettext("Source"); ?></th>
-				<th class="listhdrr" axis="string"><?php echo gettext("Destination"); ?></th>
-				<th class="listhdrr" axis="string"><?php echo gettext("Flowbits"); ?></th>
-				<th class="listhdrr" axis="string"><?php echo gettext("Message"); ?></th>
+			    <th><?=gettext("SID"); ?></th>
+				<th><?=gettext("Proto"); ?></th>
+				<th><?=gettext("Source"); ?></th>
+				<th><?=gettext("Destination"); ?></th>
+				<th><?=gettext("Flowbits"); ?></th>
+				<th><?=gettext("Message"); ?></th>
 			   </tr>
 			<thead>
 			<tbody>
@@ -260,27 +233,24 @@ if ($savemsg)
 								$supplink = "";
 							else {
 								if (!isset($supplist[$gid][$sid])) {
-									$supplink = "<input type=\"image\" name=\"addsuppress[]\" onClick=\"document.getElementById('sid').value='{$sid}';";
+									$supplink = "<i name=\"addsuppress[]\" onClick=\"document.getElementById('sid').value='{$sid}';";
 									$supplink .= "document.getElementById('gid').value='{$gid}';\" ";
-									$supplink .= "src=\"../themes/{$g['theme']}/images/icons/icon_plus.gif\" ";
-									$supplink .= "width='12' height='12' border='0' title='";
-									$supplink .= gettext("Click to add to Suppress List") . "'/>";
+									$supplink .= 'title="' . gettext("Click to add to Suppress List") .  '" class="fa fa-plus"></i>';
 								}
 								else {
-									$supplink = "<img src=\"../themes/{$g['theme']}/images/icons/icon_plus_d.gif\" ";
-									$supplink .= "width='12' height='12' border='0' title='";
-									$supplink .= gettext("Alert has been suppressed") . "'/>";
+									$supplink = '<i class="fa fa-times" title="' .
+									$supplink .= gettext("Alert has been suppressed") . '"></i>';
 								}
 							}
 
 							// Use "echo" to write the table HTML row-by-row.
-							echo "<tr>" . 
-								"<td class=\"listr\" style=\"sorttable_customkey:{$sid};\" sorttable_customkey=\"{$sid}\">{$sid}&nbsp;{$supplink}</td>" . 
-								"<td class=\"listr\" style=\"text-align:center;\">{$protocol}</td>" . 
-								"<td class=\"listr ellipsis\" nowrap style=\"text-align:center;\"><span title=\"{$rule_content[2]}\">{$source}</span></td>" . 
-								"<td class=\"listr ellipsis\" nowrap style=\"text-align:center;\"><span title=\"{$rule_content[5]}\">{$destination}</span></td>" . 
-								"<td class=\"listr\" style=\"word-wrap:break-word; word-break:normal;\">{$flowbits}</td>" . 
-								"<td class=\"listbg\" style=\"word-wrap:break-word; word-break:normal;\">{$message}</td>" . 
+							echo "<tr>" .
+								"<td>{$sid}&nbsp;{$supplink}</td>" .
+								"<td>{$protocol}</td>" .
+								"<td><span title=\"{$rule_content[2]}\">{$source}</span></td>" .
+								"<td><span title=\"{$rule_content[5]}\">{$destination}</span></td>" .
+								"<td style=\"word-wrap:break-word; word-break:normal;\">{$flowbits}</td>" .
+								"<td style=\"word-wrap:break-word; word-break:normal;\">{$message}</td>" .
 							"</tr>";
 							$count++;
 						}
@@ -289,22 +259,27 @@ if ($savemsg)
 				?>
 			</tbody>
 		</table>
-		</td>
-	</tr>
-	<?php if ($count > 20): ?>
-	<tr>
-		<td align="center" valign="middle">
-			<input id="cancel" name="cancel" type="submit" class="formbtn" <?php 
-			echo "value=\"" . gettext("Return") . "\" title=\"" . gettext("Return to previous page") . "\""; ?>/>
-		</td>
-	</tr>
-	<?php endif; ?>
-</table>
-</td>
-</tr>
-</table>
+	</div>
 </div>
+
 </form>
-<?php include("fend.inc"); ?>
-</body>
-</html>
+
+<div class="infoblock blockopen">
+<?php
+print_info_box(gettext("The rules listed below are required to be included in the rules set ") .
+	gettext("because they set flowbits that are checked and relied upon by rules in the enforcing rules set.  ") .
+	gettext("If these dependent flowbits are not set, then some of your chosen rules may not fire.  ") .
+	gettext("Enabling all the rules that set these dependent flowbits ensures your chosen rules fire as intended.  ") .
+	gettext("Most flowbits rules contain the \"noalert\" keyword to prevent an alert from firing ") .
+	gettext("when the flowbit is detected.  For those flowbit rules that do not contain the \"noalert\" option, click the ") .
+	gettext("icon displayed beside the Signature ID (SID) to add the alert to the Suppression List if desired.") . '<br /><br />' .
+	'<dl class="dl-horizontal responsive">' .
+		'<dt>' . gettext("Legend") . '</dt>		<dd></dd>' .
+		'<dt><i class="fa fa-plus"></i></dt>	<dd>' . gettext("Alert is Not Suppressed") . 	'</dd>' .
+		'<dt><i class="fa fa-times"></i></dt>	<dd>' . gettext("Alert has been Suppressed") . 	'</dd>' .
+	'</dl>', 'info', false);
+
+?>
+</div>
+<?php include("foot.inc"); ?>
+

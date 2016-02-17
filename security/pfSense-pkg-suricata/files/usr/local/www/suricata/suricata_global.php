@@ -1,43 +1,64 @@
 <?php
 /*
- * suricata_global.php
- * part of pfSense
- *
- * Significant portions of this code are based on original work done
- * for the Snort package for pfSense from the following contributors:
- * 
- * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
- * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
- * Copyright (C) 2006 Scott Ullrich
- * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2012 Ermal Luci
- * All rights reserved.
- *
- * Adapted for Suricata by:
- * Copyright (C) 2014 Bill Meeks
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
-
- * 1. Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
- * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
- * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
- * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- */
+* suricata_global.php
+*
+*  Copyright (c)  2004-2016  Electric Sheep Fencing, LLC. All rights reserved.
+*
+*  Redistribution and use in source and binary forms, with or without modification,
+*  are permitted provided that the following conditions are met:
+*
+*  1. Redistributions of source code must retain the above copyright notice,
+*      this list of conditions and the following disclaimer.
+*
+*  2. Redistributions in binary form must reproduce the above copyright
+*      notice, this list of conditions and the following disclaimer in
+*      the documentation and/or other materials provided with the
+*      distribution.
+*
+*  3. All advertising materials mentioning features or use of this software
+*      must display the following acknowledgment:
+*      "This product includes software developed by the pfSense Project
+*       for use in the pfSense software distribution. (http://www.pfsense.org/).
+*
+*  4. The names "pfSense" and "pfSense Project" must not be used to
+*       endorse or promote products derived from this software without
+*       prior written permission. For written permission, please contact
+*       coreteam@pfsense.org.
+*
+*  5. Products derived from this software may not be called "pfSense"
+*      nor may "pfSense" appear in their names without prior written
+*      permission of the Electric Sheep Fencing, LLC.
+*
+*  6. Redistributions of any form whatsoever must retain the following
+*      acknowledgment:
+*
+*  "This product includes software developed by the pfSense Project
+*  for use in the pfSense software distribution (http://www.pfsense.org/).
+*
+*  THIS SOFTWARE IS PROVIDED BY THE pfSense PROJECT ``AS IS'' AND ANY
+*  EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+*  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+*  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE pfSense PROJECT OR
+*  ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+*  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+*  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+*  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+*  HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+*  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+*  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+*  OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+*
+* Portions of this code are based on original work done for the Snort package for pfSense by the following contributors:
+*
+* Copyright (C) 2003-2004 Manuel Kasper
+* Copyright (C) 2005 Bill Marquette
+* Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
+* Copyright (C) 2009 Robert Zelaya Sr. Developer
+* Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
+* Copyright (C) 2014 Bill Meeks
+*
+*/
 
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
@@ -280,7 +301,7 @@ $section->addInput(new Form_Select(
 	'autoruleupdate',
 	'Update Interval',
 	$pconfig['autoruleupdate'],
-	array('never_up' => gettext('NEVER'), '6h_up' => gettext('6 HOURS'), '12h_up' => gettext('12 HOURS'), 
+	array('never_up' => gettext('NEVER'), '6h_up' => gettext('6 HOURS'), '12h_up' => gettext('12 HOURS'),
 		  '1d_up' => gettext('1 DAY'), '4d_up' => gettext('4 DAYS'), '7d_up' => gettext('7 DAYS'), '28d_up' => gettext('28 DAYS'))
 ))->setHelp('Please select the interval for rule updates. Choosing NEVER disables auto-updates.<br /><br />Hint: In most cases, every 12 hours is a good choice.');
 $section->addInput(new Form_Input(
@@ -310,9 +331,9 @@ $section->addInput(new Form_Select(
 	'rm_blocked',
 	'Remove Blocked Hosts Interval',
 	$pconfig['rm_blocked'],
-	array('never_b' => gettext('NEVER'), '15m_b' => gettext('15 MINS'), '30m_b' => gettext('30 MINS'), 
-		  '1h_b' => gettext('1 HOUR'), '3h_b' => gettext('3 HOURS'), '6h_b' => gettext('6 HOURS'), 
-		  '12h_b' => gettext('12 HOURS'), '1d_b' => gettext('1 DAY'), '4d_b' => gettext('4 DAYS'), 
+	array('never_b' => gettext('NEVER'), '15m_b' => gettext('15 MINS'), '30m_b' => gettext('30 MINS'),
+		  '1h_b' => gettext('1 HOUR'), '3h_b' => gettext('3 HOURS'), '6h_b' => gettext('6 HOURS'),
+		  '12h_b' => gettext('12 HOURS'), '1d_b' => gettext('1 DAY'), '4d_b' => gettext('4 DAYS'),
 		  '7d_b' => gettext('7 DAYS'), '28d_b' => gettext('28 DAYS'))
 ))->setHelp('Please select the amount of time you would like hosts to be blocked.<br /><br />Hint: in most cases, 1 hour is a good choice.');
 $section->addInput(new Form_Checkbox(
@@ -326,7 +347,7 @@ $section->addInput(new Form_Select(
 	'log_to_systemlog_facility',
 	'Log Facility',
 	$pconfig['log_to_systemlog_facility'],
-	array('authpriv' => gettext('authpriv'), 'daemon' => gettext('daemon'), 'kern' => gettext('kern'), 
+	array('authpriv' => gettext('authpriv'), 'daemon' => gettext('daemon'), 'kern' => gettext('kern'),
 		  'security' => gettext('security'), 'syslog' => gettext('syslog'), 'user' => gettext('user'), 'local0' => gettext('local0'),
 		  'local1' => gettext('local1'), 'local2' => gettext('local2'), 'local3' => gettext('local3'), 'local4' => gettext('local4'),
 		  'local5' => gettext('local5'), 'local6' => gettext('local6'), 'local7' => gettext('local7'))

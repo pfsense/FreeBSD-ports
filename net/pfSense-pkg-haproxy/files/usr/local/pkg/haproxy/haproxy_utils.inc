@@ -161,26 +161,22 @@ function haproxy_get_bindable_interfaces($ipv="ipv4,ipv6", $interfacetype="any,l
 			}
 		}
 		if (in_array('carp',$interfacetypes)){
-			$carplist = get_configured_carp_interface_list();
+			$carplist = get_configured_vip_list('inet', VIP_CARP);
 			foreach ($carplist as $carpif => $carpip){
-				if (is_ipaddrv4($carpip)){
-					$item = array();
-					$item['ip'] = $carpip;
-					$item['name'] = $carpip." (".get_vip_descr($carpip).")";
-					$bindable[$carpip] = $item;
-				}
+				$item = array();
+				$item['ip'] = $carpip;
+				$item['name'] = $carpip." (".get_vip_descr($carpip).")";
+				$bindable[$carpip] = $item;
 			}
 
 		}
 		if (in_array('ipalias',$interfacetypes)){
-			$aliaslist = get_configured_ip_aliases_list();
-			foreach ($aliaslist as $aliasip => $aliasif){
-				if (is_ipaddrv4($aliasip)){
-					$item = array();
-					$item['ip'] = $aliasip;
-					$item['name'] = $aliasip." (".get_vip_descr($aliasip).")";
-					$bindable[$aliasip.'_ipv4'] = $item;	
-				}
+			$aliaslist = get_configured_vip_list('inet', VIP_IPALIAS);
+			foreach ($aliaslist as $aliasif => $aliasip){
+				$item = array();
+				$item['ip'] = $aliasip;
+				$item['name'] = $aliasip." (".get_vip_descr($aliasip).")";
+				$bindable[$aliasip.'_ipv4'] = $item;
 			}
 		}
 	}
@@ -222,26 +218,22 @@ function haproxy_get_bindable_interfaces($ipv="ipv4,ipv6", $interfacetype="any,l
 			}
 		}		
 		if (in_array('carp',$interfacetypes)){
-			$carplist = get_configured_carp_interface_list();
+			$carplist = get_configured_vip_list('inet6', VIP_CARP);
 			foreach ($carplist as $carpif => $carpip){
-				if (is_ipaddrv6($carpip)){
-					$item = array();
-					$item['ip'] = $carpip;
-					$item['name'] = $carpip." (".get_vip_descr($carpip).")";
-					$bindable[$carpip] = $item;
-				}
+				$item = array();
+				$item['ip'] = $carpip;
+				$item['name'] = $carpip." (".get_vip_descr($carpip).")";
+				$bindable[$carpip] = $item;
 			}
 
 		}
 		if (in_array('ipalias',$interfacetypes)){
-			$aliaslist = get_configured_ip_aliases_list();
-			foreach ($aliaslist as $aliasip => $aliasif){
-				if (is_ipaddrv6($aliasip)){
-					$item = array();
-					$item['ip'] = $aliasip;
-					$item['name'] = $aliasip." (".get_vip_descr($aliasip).")";
-					$bindable[$aliasip] = $item;	
-				}
+			$aliaslist = get_configured_vip_list('inet6', VIP_IPALIAS);
+			foreach ($aliaslist as $aliasif => $aliasip){
+				$item = array();
+				$item['ip'] = $aliasip;
+				$item['name'] = $aliasip." (".get_vip_descr($aliasip).")";
+				$bindable[$aliasip] = $item;
 			}
 		}
 	}
