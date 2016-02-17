@@ -457,7 +457,7 @@ include_once("head.inc"); ?>
 									Click on the <i class="fa fa-lg fa-repeat" alt="Start"></i> or <i class="fa fa-lg fa-stop-circle-o" alt="Stop"></i> icons to start/stop Suricata and Barnyard2.
 								</p>
 							</div>
-						</div>', info)?>
+						</div>', info, false)?>
 </div>
 
 <script type="text/javascript">
