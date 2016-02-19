@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	strongswan
-DISTVERSION=	5.4.0dr5
-PORTREVISION=	1
+DISTVERSION=	5.4.0dr6
 CATEGORIES=	security
 MASTER_SITES=	http://download.strongswan.org/ \
 		http://download2.strongswan.org/

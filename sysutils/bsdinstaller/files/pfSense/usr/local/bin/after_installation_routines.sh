@@ -41,7 +41,7 @@ cp -r /pkgs /mnt
 if [ -f /mnt/boot.config ]; then
 	/usr/sbin/pkg -c /mnt add -fq /pkgs/${product}-default-config-serial-[0-9]*.txz
 else
-	/usr/sbin/pkg -c /mnt add -fq /pkgs/pfSense-default-config-[0-9]*.txz
+	/usr/sbin/pkg -c /mnt add -fq /pkgs/${product}-default-config-[0-9]*.txz
 fi
 rm -rf /mnt/pkgs
 
