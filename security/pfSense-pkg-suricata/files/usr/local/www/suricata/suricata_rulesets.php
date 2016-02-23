@@ -452,7 +452,7 @@ else:
 							<i class="fa fa-adn text-success" title="<?=gettext('Auto-disabled by settings on SID Mgmt tab'); ?>"></i>
 						</td>
 						<td colspan="5">
-							<a href='snort_rules.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>'><?=gettext('{$msg_community}');?></a>
+							<a href='suricata_rules.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>'><?=gettext('{$msg_community}');?></a>
 						</td>
 					</tr>
 				<?php else: ?>
@@ -471,7 +471,7 @@ else:
 						<input type="checkbox" name="toenable[]" value="<?=$community_rules_file;?>" checked="checked"/>
 					</td>
 					<td colspan="5">
-						<a href='snort_rules.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>'><?php echo gettext("{$msg_community}"); ?></a>
+						<a href='suricata_rules.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>'><?php echo gettext("{$msg_community}"); ?></a>
 					</td>
 				</tr>
 			<?php else: ?>
@@ -601,7 +601,7 @@ else:
 						if (empty($CHECKED))
 							echo $file;
 						else
-							echo "<a href='snort_rules.php?id={$id}&openruleset=" . urlencode($file) . "'>{$file}</a>\n";
+							echo "<a href='suricata_rules.php?id={$id}&openruleset=" . urlencode($file) . "'>{$file}</a>\n";
 						echo "</td>\n";
 					} else
 						echo "<td colspan='2'><br/></td>\n";
