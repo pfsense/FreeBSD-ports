@@ -249,14 +249,16 @@
 		</field>
 		<field>
 			<fielddescr>CARP Status IP</fielddescr>
-			<fieldname>carpstatusip</fieldname>
+			<fieldname>carpstatusvid</fieldname>
 			<description>
 				<![CDATA[
-				IP address used to determine the CARP status. When the VIP is in BACKUP status, quagga will not be started.<br />
+				Used to determine the CARP status. When the CARP IP is in BACKUP status, quagga will not be started.<br />
 				]]>
 			</description>
-			<type>input</type>
-			<size>25</size>
+			<type>select_source</type>
+			<source><![CDATA[quagga_ospfd_get_carp_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
 		</field>
 	</fields>
 	<custom_php_resync_config_command>
