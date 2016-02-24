@@ -42,8 +42,9 @@ function quagga_ospfd_get_carp_list() {
 	$list[] = array("name" => "none", "value" => "none");
 
 	$carplist = get_configured_vip_list("all", VIP_CARP);
-	foreach ($carplist as $vid => $vip) {
-		$list[] = array("name" => $vip, "value" => $vid);
+	foreach ($carplist as $vid => $vaddr) {
+		$vip = get_configured_vip($vid);
+		$list[] = array("name" => "$vaddr (vhid: {$vip['vhid']})", "value" => $vid);
 	}
 
 	return ($list);
@@ -288,7 +289,7 @@ function quagga_ospfd_install_conf() {
 		$vhid = escapeshellarg("vhid {$vip['vhid']}");
 		$carp_ip_status_check = <<<EOF
 
-CARP_STATUS=`/sbin/ifconfig $carpcheckinterface | /usr/bin/grep 'carp:' | /usr/bin/grep $vhid | /usr/bin/awk '{print \$2;}'`
+CARP_STATUS=`/sbin/ifconfig {$carpcheckinterface} | /usr/bin/grep 'carp:' | /usr/bin/grep {$vhid} | /usr/bin/awk '{print \$2;}'`
 if [ \${CARP_STATUS} != "MASTER" ]; then
 	exit;
 fi
