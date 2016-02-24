@@ -35,6 +35,20 @@ require_once("util.inc");
 define('PKG_BGPD_CONFIG_BASE', '/var/etc/openbgpd');
 define('PKG_BGPD_BIN','/usr/local/sbin');
 
+function openbgpd_get_carp_list() {
+
+	$list = array();
+	$list[] = array("name" => "none", "value" => "none");
+
+	$carplist = get_configured_vip_list("all", VIP_CARP);
+	foreach ($carplist as $vid => $vaddr) {
+		$vip = get_configured_vip($vid);
+		$list[] = array("name" => "$vaddr (vhid: {$vip['vhid']})", "value" => $vid);
+	}
+
+	return ($list);
+}
+
 function openbgpd_install_conf() {
 	global $config, $g;
 	$pkg_bin = PKG_BGPD_BIN;
@@ -188,22 +202,17 @@ function openbgpd_install_conf() {
 	unset($conffile);
 
 	$carp_ip_status_check = "";
-	if (is_ipaddr($openbgpd_conf['carpstatusip'])) {
-		if (is_array($config['virtualip']['vip'])) {
-			foreach ($config['virtualip']['vip'] as $vip) {
-				if (($vip['mode'] == "carp") && ($vip['subnet'] == $openbgpd_conf['carpstatusip'])) {
-					$carpcheckinterface = escapeshellarg(get_real_interface($vip['interface']));
-					$vhid = escapeshellarg($vip['vhid']);
-					$carp_ip_status_check = <<<EOF
+	if (isset($openbgpd_conf['carpstatusvid']) && $openbgpd_conf['carpstatusvid'] != "none") {
+		$vip = get_configured_vip($openbgpd_conf['carpstatusvid']);
+		$carpcheckinterface = escapeshellarg(get_real_interface($vip['interface']));
+		$vhid = escapeshellarg("vhid {$vip['vhid']}");
+		$carp_ip_status_check = <<<EOF
 
-CARP_STATUS=`/sbin/ifconfig {$carpcheckinterface} | /usr/bin/grep 'carp:' | /usr/bin/grep 'vhid {$vhid}' | /usr/bin/awk '{print \$2;}'`
+CARP_STATUS=`/sbin/ifconfig {$carpcheckinterface} | /usr/bin/grep 'carp:' | /usr/bin/grep {$vhid} | /usr/bin/awk '{print \$2;}'`
 if [ \${CARP_STATUS} != "MASTER" ]; then
 	exit;
 fi
 EOF;
-				}
-			}
-		}
 	}
 
 	// Create rc.d file
@@ -235,8 +244,8 @@ EOF;
 	// Is bgpd process running? If so, reload, else start.
 
 	// Kick off newly created rc.d script
-	if (is_ipaddr($openbgpd_conf['carpstatusip'])) {
-		$status = openbgpd_get_carp_status_by_ip($openbgpd_conf['carpstatusip']);
+	if (isset($openbgpd_conf['carpstatusvid']) && $openbgpd_conf['carpstatusvid'] != "none") {
+		$status = get_carp_interface_status($openbgpd_conf['carpstatusvid']);
 		switch (strtoupper($status)) {
 			// Stop the service if the VIP is in BACKUP or INIT state.
 			case "BACKUP":
@@ -395,21 +404,6 @@ function is_openbgpd_running() {
 	}
 }
 
-function openbgpd_get_carp_status_by_ip($ipaddr) {
-	$iface = trim(find_carp_interface($ipaddr));
-	if ($iface) {
-		$status = get_carp_interface_status($iface);
-		// If there is no status for that interface, return null.
-		if (!$status) {
-			$status = null;
-		}
-	} else {
-		// If there is no VIP by that IP, return null.
-		$status = null;
-	}
-	return $status;
-}
-
 function openbgpd_plugin_carp($pluginparams) {
 	global $config;
 	require_once("service-utils.inc");
@@ -424,15 +418,13 @@ function openbgpd_plugin_carp($pluginparams) {
 		return null;
 	}
 	/* If there is no properly configured CARP status check IP, then stop */
-	if (!is_ipaddr($openbgpd_conf['carpstatusip'])) {
+	if (!isset($openbgpd_conf['carpstatusvid']) || $openbgpd_conf['carpstatusvid'] == "none") {
 		return null;
 	}
 	list($vhid, $iface) = explode("@", trim($pluginparams['interface']));
 	$friendly = convert_real_interface_to_friendly_interface_name($iface);
-	$carp_iface = "{$friendly}_vip${vhid}";
-
-	/* If this CARP transition is not from the IP address to check, then stop. */
-	if (get_interface_ip($carp_iface) != $openbgpd_conf['carpstatusip']) {
+	$vip = get_configured_vip($openbgpd_conf['carpstatusvid']);
+	if ($vip['vhid'] != $vhid || $vip['interface'] != $friendly) {
 		return null;
 	}
 

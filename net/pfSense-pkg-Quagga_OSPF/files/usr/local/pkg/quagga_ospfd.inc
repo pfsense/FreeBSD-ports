@@ -36,6 +36,20 @@ require_once("util.inc");
 
 define('PKG_QUAGGA_CONFIG_BASE', '/var/etc/quagga');
 
+function quagga_ospfd_get_carp_list() {
+
+	$list = array();
+	$list[] = array("name" => "none", "value" => "none");
+
+	$carplist = get_configured_vip_list("all", VIP_CARP);
+	foreach ($carplist as $vid => $vaddr) {
+		$vip = get_configured_vip($vid);
+		$list[] = array("name" => "$vaddr (vhid: {$vip['vhid']})", "value" => $vid);
+	}
+
+	return ($list);
+}
+
 function quagga_ospfd_get_interfaces() {
 	global $config;
 	$interfaces = get_configured_interface_with_descr();
@@ -269,22 +283,17 @@ function quagga_ospfd_install_conf() {
 	fclose($fd);
 
 	$carp_ip_status_check = "";
-	if (is_ipaddr($ospfd_conf['carpstatusip'])) {
-		if (is_array($config['virtualip']['vip'])) {
-			foreach ($config['virtualip']['vip'] as $vip) {
-				if (($vip['mode'] == "carp") && ($vip['subnet'] == $ospfd_conf['carpstatusip'])) {
-					$carpcheckinterface = escapeshellarg(get_real_interface($vip['interface']));
-					$vhid = escapeshellarg($vip['vhid']);
-					$carp_ip_status_check = <<<EOF
+	if (isset($ospfd_conf['carpstatusvid']) && $ospfd_conf['carpstatusvid'] != "none") {
+		$vip = get_configured_vip($ospfd_conf['carpstatusvid']);
+		$carpcheckinterface = escapeshellarg(get_real_interface($vip['interface']));
+		$vhid = escapeshellarg("vhid {$vip['vhid']}");
+		$carp_ip_status_check = <<<EOF
 
-CARP_STATUS=`/sbin/ifconfig {$carpcheckinterface} | /usr/bin/grep 'carp:' | /usr/bin/grep 'vhid {$vhid}' | /usr/bin/awk '{print \$2;}'`
+CARP_STATUS=`/sbin/ifconfig {$carpcheckinterface} | /usr/bin/grep 'carp:' | /usr/bin/grep {$vhid} | /usr/bin/awk '{print \$2;}'`
 if [ \${CARP_STATUS} != "MASTER" ]; then
 	exit;
 fi
 EOF;
-				}
-			}
-		}
 	}
 
 
@@ -329,8 +338,8 @@ EOF;
 	mwexec("/bin/chmod u+rw,go-rw {$quagga_config_base}/zebra.conf");
 
 	// Kick off newly created rc.d script
-	if (is_ipaddr($ospfd_conf['carpstatusip'])) {
-		$status = quagga_get_carp_status_by_ip($ospfd_conf['carpstatusip']);
+	if (isset($ospfd_conf['carpstatusvid']) && $ospfd_conf['carpstatusvid'] != "none") {
+		$status = get_carp_interface_status($ospfd_conf['carpstatusvid']);
 		switch (strtoupper($status)) {
 			// Stop the service if the VIP is in BACKUP or INIT state.
 			case "BACKUP":
@@ -393,21 +402,6 @@ function quagga_ospfd_validate_input() {
 	}
 }
 
-function quagga_get_carp_status_by_ip($ipaddr) {
-	$iface = trim(find_carp_interface($ipaddr));
-	if ($iface) {
-		$status = get_carp_interface_status($iface);
-		// If there is no status for that interface, return null.
-		if (!$status) {
-			$status = null;
-		}
-	} else {
-		// If there is no VIP by that IP, return null.
-		$status = null;
-	}
-	return $status;
-}
-
 function quagga_ospfd_plugin_carp($pluginparams) {
 	global $config;
 	require_once("service-utils.inc");
@@ -422,15 +416,13 @@ function quagga_ospfd_plugin_carp($pluginparams) {
 		return null;
 	}
 	/* If there is no properly configured CARP status check IP, then stop */
-	if (!is_ipaddr($ospfd_conf['carpstatusip'])) {
+	if (!isset($ospfd_conf['carpstatusvid']) || $ospfd_conf['carpstatusvid'] == "none") {
 		return null;
 	}
 	list($vhid, $iface) = explode("@", trim($pluginparams['interface']));
 	$friendly = convert_real_interface_to_friendly_interface_name($iface);
-	$carp_iface = "{$friendly}_vip${vhid}";
-
-	/* If this CARP transition is not from the IP address to check, then stop. */
-	if (get_interface_ip($carp_iface) != $ospfd_conf['carpstatusip']) {
+	$vip = get_configured_vip($ospfd_conf['carpstatusvid']);
+	if ($vip['vhid'] != $vhid || $vip['interface'] != $friendly) {
 		return null;
 	}
 

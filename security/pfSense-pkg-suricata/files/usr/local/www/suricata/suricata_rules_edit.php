@@ -98,7 +98,7 @@ if ($file == "Auto-Flowbit Rules")
 elseif ($file == "suricata.rules")
 	$displayfile = "Currently Active Rules";
 else
-	$displayfile = $file;
+	$displayfile = strip_tags($file);
 
 // Read the contents of the argument passed to us.
 // It may be an IPS policy string, an individual SID,
@@ -153,7 +153,7 @@ if ($savemsg)
 
 $form = new Form(false);
 
-$section = new Form_Section('Rulrs file: ' . $displayfile);
+$section = new Form_Section('Rules file: ' . $displayfile);
 
 $btnclear = new Form_Button(
 	'close',

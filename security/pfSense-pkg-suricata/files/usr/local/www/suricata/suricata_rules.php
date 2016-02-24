@@ -484,7 +484,7 @@ function build_actions() {
 
 	$actions  = '<dl class="dl-horizontal responsive">';
 	$actions .= '<dt>';
-	$actions .= '<a name="resetcategory" type="sbutton" title="' . gettext("Click to remove enable/disable changes for rules in the selected category only") . '"';
+	$actions .= '<a name="resetcategory" type="button" title="' . gettext("Click to remove enable/disable changes for rules in the selected category only") . '" ';
 	$actions .= 'onClick="submitAction(' . '\'resetcategory[]\'' . ')">';
 	$actions .= '<i class="fa fa-times icon-pointer"></i>';
 	$actions .= '</a>';
@@ -494,7 +494,7 @@ function build_actions() {
 
 	$actions .= '<dl class="dl-horizontal responsive">';
 	$actions .= '<dt>';
-	$actions .= '<a name="resetall" type="button" title="' . gettext("Click to remove enable/disable changes for rules in all categories") . '"';
+	$actions .= '<a name="resetall" type="button" title="' . gettext("Click to remove enable/disable changes for rules in all categories") . '" ';
 	$actions .= 'onClick="submitAction(' . '\'resetall[]\'' . ')">';
 	$actions .= '<i class="fa fa-times icon-pointer"></i>';
 	$actions .= '</a>';
@@ -503,7 +503,7 @@ function build_actions() {
 	$actions .= '</dd>';
 
 	$actions .= '<dt>';
-	$actions .= '<a name="diasble_all" type="button" title="' . gettext("Disable all rules in the selected Category") . '"';
+	$actions .= '<a name="diasble_all" type="button" title="' . gettext("Disable all rules in the selected Category") . '" ';
 	$actions .= 'onClick="submitAction(' . '\'diasble_all[]\'' . ')">';
 	$actions .= '<i class="fa fa-arrow-down icon-pointer"></i>';
 	$actions .= '</a>';
@@ -512,7 +512,7 @@ function build_actions() {
 	$actions .= '</dd>';
 
 	$actions .= '<dt>';
-	$actions .= '<a name="enable_all" type="button" title="' . gettext("Enable all rules in the current Category") . '"';
+	$actions .= '<a name="enable_all" type="button" title="' . gettext("Enable all rules in the current Category") . '" ';
 	$actions .= 'onClick="submitAction(' . '\'enable_all[]\'' . ')">';
 	$actions .= '<i class="fa fa-arrow-up icon-pointer"></i>';
 	$actions .= '</a>';
@@ -699,24 +699,24 @@ print($form);
 						$managed_count++;
 					}
 					elseif (isset($disablesid[$gid][$sid])) {
-						$iconb = "fa-hand-stop-o";
+						$iconb = "fa-user-times text-danger";
 						$disable_cnt++;
 						$user_disable_cnt++;
 						$title = gettext("Disabled by user. Click to toggle to enabled state");
 					}
 					elseif (($v['disabled'] == 1) && (!isset($enablesid[$gid][$sid]))) {
-						$iconb = "fa-times";
+						$iconb = "fa-times text-danger";
 						$disable_cnt++;
 						$title = gettext("Disabled by default. Click to toggle to enabled state");
 					}
 					elseif (isset($enablesid[$gid][$sid])) {
-						$iconb = "fa-hand-stop-o";
+						$iconb = "fa-user-plus text-success";
 						$enable_cnt++;
 						$user_enable_cnt++;
 						$title = gettext("Enabled by user. Click to toggle to disabled state");
 					}
 					else {
-						$iconb = "fa-times";
+						$iconb = "fa-check text-success";
 						$enable_cnt++;
 						$title = gettext("Enabled by default. Click to toggle to disabled state");
 					}
@@ -741,46 +741,58 @@ print($form);
 					$message = suricata_get_msg($v['rule']);
 					$sid_tooltip = gettext("View the raw text for this rule");
 
+					// Add word break opportunities to allow this long string to break
+					$destination = str_replace('.', '.<wbr>', $destination);
+					echo "<tr>\n";
 					echo "<td>";
 
 					if ($v['managed'] == 1) {
 						echo '<i class="fa ' . $iconb. '" title="' . $title . '"></i>';
 					}
 					else {
-						echo '<a id="rule_' . $gid . '_' . $sid . '" href="#" onClick="document.getElementById(\'sid\').value=' . $sid . ';
-						document.getElementById(\'gid\').value=\'' . $gid . '\';" title="' . $title . '" name="toggle[]"/>
-						<i class="fa ' . $iconb . '"></i>
-						</a>';
-					}
-				       echo "</td>
 
-				       <td class=\"listr\" style=\"text-align:center;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer');\">
-						{$textss}{$gid}{$textse}
+?>
+						<i class="fa <?=$iconb?> icon-pointer" title="<?=$title?>" onclick='toggleRule("<?=$sid?>", "<?=$gid?>");'></i>
+<?php
+					}
+				       echo "</td>";
+?>
+
+				       <td ondblclick="wopen('suricata_rules_edit.php?id=<?=$id?>&openruleset=<?=$ruleset?>&sid=<?=$sid?>&gid=<?=$gid?>','FileViewer');">
+						<?=$textss?><?=$gid?><?=$textse?>
 				       </td>
-				       <td class=\"listr\" style=\"text-align:center;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer');\">
-						<a href=\"javascript: void(0)\"
-						onclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer');\"
-						title='{$sid_tooltip}'>{$textss}{$sid}{$textse}</a>
+
+				       <td ondblclick="wopen('suricata_rules_edit.php?id=<?=$id?>&openruleset=<?=$ruleset?>&sid=<?=$sid?>&gid=<?=$gid?>','FileViewer');">
+						<a href="javascript: void(0)"
+						onclick="wopen('suricata_rules_edit.php?id=<?=$id?>&openruleset=<?=$ruleset?>&sid=<?=$sid?>&gid=<?=$gid?>','FileViewer');"
+						title="<?=$sid_tooltip?>"><?=$textss?><?=$sid?><?=$textse?></a>
 				       </td>
-				       <td class=\"listr\" style=\"text-align:center;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer');\">
-						{$textss}{$protocol}{$textse}
+
+				       <td ondblclick="wopen('suricata_rules_edit.php?id=<?=$id?>&openruleset=<?=$ruleset?>&sid=<?=$sid?>&gid=<?=$gid?>','FileViewer');">
+						<?=$textss?><?=$protocol?><?=$textse?>
 				       </td>
-				       <td class=\"listr ellipsis\" nowrap style=\"text-align:center;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer');\">
-						{$srcspan}{$source}</span>
+
+				       <td ondblclick="wopen('suricata_rules_edit.php?id=<?=$id?>&openruleset=<?=$ruleset?>&sid=<?=$sid?>&gid=<?=$gid?>','FileViewer');">
+						<?=$srcspan?><?=$source?></span>
 				       </td>
-				       <td class=\"listr ellipsis\" nowrap style=\"text-align:center;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer');\">
-						{$srcprtspan}{$source_port}</span>
+
+				       <td ondblclick="wopen('suricata_rules_edit.php?id=<?=$id?>&openruleset=<?=$ruleset?>&sid=<?=$sid?>&gid=<?=$gid?>','FileViewer');">
+						<?=$srcprtspan?><?=$source_port?></span>
 				       </td>
-				       <td class=\"listr ellipsis\" nowrap style=\"text-align:center;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer');\">
-						{$dstspan}{$destination}</span>
+
+				       <td ondblclick="wopen('suricata_rules_edit.php?id=<?=$id?>&openruleset=<?=$ruleset?>&sid=<?=$sid?>&gid=<?=$gid?>','FileViewer');">
+						<?=$dstspan?><?=$destination?></span>
 				       </td>
-				       <td class=\"listr ellipsis\" nowrap style=\"text-align:center;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer');\">
-					       {$dstprtspan}{$destination_port}</span>
+
+				       <td ondblclick="wopen('suricata_rules_edit.php?id=<?=$id?>&openruleset=<?=$ruleset?>&sid=<?=$sid?>&gid=<?=$gid?>','FileViewer');">
+					       <?=$dstprtspan?><?=$destination_port?></span>
 				       </td>
-					<td class=\"listbg\" style=\"word-wrap:break-word; whitespace:pre-line;\" ondblclick=\"wopen('suricata_rules_edit.php?id={$id}&openruleset={$ruleset}&sid={$sid}&gid={$gid}','FileViewer');\">
-						{$textss}{$message}{$textse}
+
+						<td style="word-wrap:break-word; whitespace:pre-line;" ondblclick="wopen('suricata_rules_edit.php?id=<?=$id?>&openruleset=<?=$ruleset?>&sid=<?=$sid?>&gid=<?=$gid?>','FileViewer');">
+							<?=$textss?><?=$message?><?=$textse?>
 				       </td>
-				</tr>";
+				</tr>
+<?php
 					$counter++;
 				}
 			}
@@ -814,6 +826,14 @@ print($form);
 
 <!-- </form> -->
 <script language="javascript" type="text/javascript">
+
+function toggleRule(sid, gid) {
+	$('#sid').val(sid);
+	$('#gid').val(gid);
+	$('<input name="toggle[]" />').appendTo($(form));
+	$(form).submit();
+
+}
 
 function submitAction(nm) {
 	$('<input type="hidden" name="' + nm + '"/>').appendTo(form);
