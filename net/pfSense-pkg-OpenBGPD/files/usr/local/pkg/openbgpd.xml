@@ -156,7 +156,7 @@
 			<fieldname>carpstatusvid</fieldname>
 			<description>
 				<![CDATA[
-				Used to determine the CARP status. When the CARP vhid is in BACKUP status, quagga will not be started.<br />
+				Used to determine the CARP status. When the CARP vhid is in BACKUP status, bgpd will not be started.<br />
 				]]>
 			</description>
 			<type>select_source</type>
