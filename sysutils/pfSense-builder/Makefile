@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-builder
-DISTVERSION=	2.3-ALPHA-20150909
+PORTVERSION=	2.3
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -22,7 +22,8 @@ RUN_DEPENDS=	${LOCALBASE}/bin/git:${PORTSDIR}/devel/git \
 		${LOCALBASE}/sbin/sssd:${PORTSDIR}/security/sssd \
 		${LOCALBASE}/lib/pam_ldap.so:${PORTSDIR}/security/pam_ldap \
 		${LOCALBASE}/lib/pam_mkhomedir.so:${PORTSDIR}/security/pam_mkhomedir \
-		${LOCALBASE}/bin/gtar:${PORTSDIR}/archivers/gtar
+		${LOCALBASE}/bin/gtar:${PORTSDIR}/archivers/gtar \
+		${LOCALBASE}/bin/xml:${PORTSDIR}/textproc/xmlstarlet
 
 LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
 
