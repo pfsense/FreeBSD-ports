@@ -17,26 +17,6 @@ thttpd_location="/scripts/thttpd"
 
 touch /etc/rc.conf
 
-get_config_xml()
-{
-	if [ -r $1/conf/config.xml ]; then
-		echo -n "[config.xml on $1]"
-		# Now that we have found config.xml lets mount
-		# the device in nullfs under /cf/conf and /conf
-		mount_nullfs /tmp/mnt/cf /cf
-		mount_nullfs /tmp/mnt/cf/conf /conf
-		if [ ! -r /cf/conf/config.xml ]; then
-			echo
-			echo "Something went wrong.  Launching shell!";
-			/bin/sh
-		fi
-		echo
-		return 0
-	else
-		return 1
-	fi
-}
-
 look_for_config_xml_config_msdos()
 {
 	mkdir -p /tmp/mnt/cf
@@ -53,8 +33,11 @@ look_for_config_xml_config_msdos()
 			/bin/mkdir -p /var/db/pfi/
 			/usr/bin/touch /var/db/pfi/capable_${try_device}
 			# look for config.xml, if its found return 0
-			if get_config_xml /tmp/mnt/cf /dev/$try_device; then
-			    return 0
+			if [ -r /tmp/mnt/cf/conf/config.xml ]; then
+				echo "done."
+				return 0
+			else
+				umount -f /tmp/mnt/cf >/dev/null 2>&1
 			fi
 		fi
 	done
