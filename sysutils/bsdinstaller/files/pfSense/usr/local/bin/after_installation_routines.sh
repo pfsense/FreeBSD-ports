@@ -45,6 +45,13 @@ else
 fi
 rm -rf /mnt/pkgs
 
+# Copy config.xml to proper place, respecting pfi first
+if [ -r /tmp/mnt/cf/conf/config.xml ]; then
+	cp /tmp/mnt/cf/conf/config.xml /mnt/cf/conf/config.xml
+else
+	cp /mnt/conf.default/config.xml /mnt/cf/conf/config.xml
+fi
+
 # If the platform is vmware, lets do some fixups.
 if [ -f /var/IS_VMWARE ]; then
 	echo "" >> /mnt/etc/sysctl.conf
