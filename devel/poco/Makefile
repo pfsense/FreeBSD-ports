@@ -11,11 +11,10 @@ COMMENT=	C++ libraries with a network/internet focus
 
 LICENSE=	BSL
 
-BROKEN_FreeBSD_9_i386=	does not build
-
 CONFLICTS=	poco-ssl-[0-9]*
 
 USES=		gmake tar:bzip2
+ALL_TARGET=	poco
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix=${PREFIX} --config=FreeBSD
 USE_LDCONFIG=	yes
