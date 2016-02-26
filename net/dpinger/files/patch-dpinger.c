@@ -1,4 +1,4 @@
---- dpinger.c.orig	2016-02-01 21:21:46 UTC
+--- dpinger.c.orig	2016-02-26 04:09:30 UTC
 +++ dpinger.c
 @@ -40,6 +40,9 @@
  
@@ -18,7 +18,7 @@
  #include <arpa/inet.h>
  
  #include <pthread.h>
-@@ -883,6 +887,70 @@ fatal(
+@@ -880,6 +884,70 @@ fatal(
  
  
  //
@@ -89,16 +89,15 @@
  // Parse command line arguments
  //
  static void
-@@ -1134,7 +1202,7 @@ main(
-     pthread_t                   thread;
-     struct                      sigaction act;
+@@ -1133,6 +1201,7 @@ main(
      int                         buflen = PACKET_BUFLEN;
--    int                         r;
-+    int                         r, ntries;
+     ssize_t                     rs;
+     int                         r;
++    int                         ntries;
  
      // Handle command line args
      parse_args(argc, argv);
-@@ -1161,6 +1229,16 @@ main(
+@@ -1159,6 +1228,16 @@ main(
      // Bind our sockets to an address if requested
      if (bind_addr_len)
      {
