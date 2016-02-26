@@ -117,6 +117,7 @@ else
 
 if (empty($test))
 	$no_emerging_files = true;
+
 $test = glob("{$suricatadir}rules/" . VRT_FILE_PREFIX . "*.rules");
 if (empty($test))
 	$no_snort_files = true;
@@ -606,8 +607,8 @@ else:
 					} else
 						echo "<td colspan='2'><br/></td>\n";
 
-					if (!empty($suricatarules[$j])) {
-						$file = $suricatarules[$j];
+					if (!empty($snortrules[$j])) {
+						$file = $snortrules[$j];
 						echo "<td>";
 						if(is_array($enabled_rulesets_array)) {
 							if (!empty($disable_vrt_rules))
