@@ -34,6 +34,7 @@ require_once('pfsense-utils.inc');
 require_once('pkg-utils.inc');
 require_once('filter.inc');
 require_once('service-utils.inc');
+require_once('certs.inc');
 
 if (file_exists('/usr/local/pkg/squid.inc')) {
 	require_once('/usr/local/pkg/squid.inc');
@@ -46,7 +47,7 @@ define('LIGHTSQUID_BASE', '/usr/local');
 // configuration settings !-- CHECK THIS --!
 define('LS_CONFIGPATH',			LIGHTSQUID_BASE . '/etc/lightsquid');
 define('LS_CONFIGFILE',			'lightsquid.cfg');
-define('LS_CONFIGFILE_DIST',		'lightsquid.cfg.dist');
+define('LS_CONFIGFILE_DIST',		'lightsquid.cfg.sample');
 define('LS_WWWPATH',			LIGHTSQUID_BASE . '/www/lightsquid');
 define('LS_TEMPLATEPATH',		LS_WWWPATH . '/tpl');
 define('LS_LANGPATH',			LIGHTSQUID_BASE . '/share/lightsquid/lang');
@@ -101,6 +102,9 @@ function lightsquid_install() {
 	// create lightsquid reports directory
 	lightsquid_create_reportdir();
 
+	// Create web server config dir
+	safe_mkdir("/var/etc/lightsquid");
+
 	// template symlinks
 	foreach (array('novopf', 'novosea') as $tpl) {
 		if (is_dir(LS_TEMPLATEPATH . '/' . $tpl)) {
@@ -108,7 +112,23 @@ function lightsquid_install() {
 		}
 		symlink('/usr/local/share/lightsquid/tpl/' . $tpl, LS_TEMPLATEPATH . '/' . $tpl);
 	}
-	symlink("/usr/local/www/themes", "/usr/local/www/sqstat/themes");
+
+	update_status("\nRemove any existing and create link for lightsquid lighttpd executable...");
+	unlink_if_exists('/usr/local/sbin/lighttpd_ls');
+	link('/usr/local/sbin/lighttpd', '/usr/local/sbin/lighttpd_ls');
+
+	update_status(" done.\nCreating Lightsquid web server start-up script...");
+	lightsquid_write_rcfile();
+	update_status(" done.\n");
+
+	update_status("Creating lightsquid web server config ...");
+	lightsquid_write_webconfig();
+	update_status(" done.\n");
+
+	update_status("Starting lightsquid lighttpd Service...");
+	restart_service('lightsquid_web');
+	update_status(" done.\n");
+
 }
 
 function lightsquid_deinstall() {
@@ -117,8 +137,193 @@ function lightsquid_deinstall() {
 	if (is_dir("/usr/local/www/sqstat/")) {
 		mwexec("/bin/rm -rf /usr/local/www/sqstat/");
 	}
+	if (is_dir("/var/etc/lightsquid/")) {
+		mwexec("/bin/rm -rf /var/etc/lightsquid/");
+	}
+	unlink_if_exists('/usr/local/sbin/lighttpd_ls');
 }
 
+function lightsquid_write_rcfile() {
+	$rc = array();
+	$rc['file'] = 'lighttpd_ls.sh';
+	$rc['start'] = <<<EOF
+# Start Lightsquid lighttpd webserver
+	if [ -f /var/etc/lightsquid/lighttpd_ls.conf ]; then
+		/usr/local/sbin/lighttpd_ls -f /var/etc/lightsquid/lighttpd_ls.conf
+	fi
+EOF;
+
+	$rc['stop'] = <<<EOF
+# Terminate lightsquid Lighttpd webserver, if found.
+	pidnum="$(/bin/pgrep lighttpd_ls)"
+	if [ ! -z "\${pidnum}" ]; then
+		/usr/bin/killall lighttpd_ls
+	fi
+EOF;
+
+	write_rcfile($rc);
+}
+
+function lightsquid_write_webconfig() {
+	global $config;
+	$lighttpd_ls_auth_path = "/var/etc/lightsquid/.passwd";
+	$lighttpd_ls_cert_path = "/var/etc/lightsquid/cert.pem";
+
+	if (is_array($config['installedpackages']['lightsquid']['config'][0])) {
+		$lightsquid_config = $config['installedpackages']['lightsquid']['config'][0];
+	} else {
+		return;
+	}
+
+	if (empty($lightsquid_config['lighttpd_ls_port'])) {
+		$lightsquid_config['lighttpd_ls_port'] = "7445";
+	}
+	if (empty($lightsquid_config['lighttpd_ls_user'])) {
+		$lightsquid_config['lighttpd_ls_user'] = "admin";
+	}
+	if (empty($lightsquid_config['lighttpd_ls_password'])) {
+		$lightsquid_config['lighttpd_ls_password'] = "pfsense";
+	}
+
+	touch($lighttpd_ls_auth_path);
+	chmod($lighttpd_ls_auth_path, 0600);
+	file_put_contents($lighttpd_ls_auth_path, "{$lightsquid_config['lighttpd_ls_user']}:{$lightsquid_config['lighttpd_ls_password']}");
+
+	$lighttpd_ls_conf = <<<EOF
+#
+# Lightsquid lighttpd configuration file
+#
+server.bind			= "0.0.0.0"
+server.port			= "{$lightsquid_config['lighttpd_ls_port']}"
+server.event-handler		= "freebsd-kqueue"
+server.network-backend		= "freebsd-sendfile"
+server.dir-listing		= "disable"
+server.document-root		= "/usr/local/www/lightsquid/"
+server.errorlog			= "/var/log/lighttpd_lightsquid.log"
+server.pid-file			= "/var/run/lighttpd_ls.pid"
+server.modules			= ( "mod_access", "mod_fastcgi", "mod_rewrite", "mod_auth", "mod_cgi" )
+
+server.indexfiles		= ( "index.php", "index.html", "index.htm", "default.htm", "index.cgi" )
+
+mimetype.assign			= (
+	".pdf"		=>	"application/pdf",
+	".sig"		=>	"application/pgp-signature",
+	".spl"		=>	"application/futuresplash",
+	".class"	=>	"application/octet-stream",
+	".ps"		=>	"application/postscript",
+	".torrent"	=>	"application/x-bittorrent",
+	".dvi"		=>	"application/x-dvi",
+	".gz"		=>	"application/x-gzip",
+	".pac"		=>	"application/x-ns-proxy-autoconfig",
+	".swf"		=>	"application/x-shockwave-flash",
+	".tar.gz"	=>	"application/x-tgz",
+	".tgz"		=>	"application/x-tgz",
+	".tar"		=>	"application/x-tar",
+	".zip"		=>	"application/zip",
+	".mp3"		=>	"audio/mpeg",
+	".m3u"		=>	"audio/x-mpegurl",
+	".wma"		=>	"audio/x-ms-wma",
+	".wax"		=>	"audio/x-ms-wax",
+	".ogg"		=>	"audio/x-wav",
+	".wav"		=>	"audio/x-wav",
+	".gif"		=>	"image/gif",
+	".jpg"		=>	"image/jpeg",
+	".jpeg"		=>	"image/jpeg",
+	".png"		=>	"image/png",
+	".svg"		=>	"image/svg+xml",
+	".xbm"		=>	"image/x-xbitmap",
+	".xpm"		=>	"image/x-xpixmap",
+	".xwd"		=>	"image/x-xwindowdump",
+	".css"		=>	"text/css",
+	".html"		=>	"text/html",
+	".htm"		=>	"text/html",
+	".js"		=>	"text/javascript",
+	".asc"		=>	"text/plain",
+	".c"		=>	"text/plain",
+	".conf"		=>	"text/plain",
+	".text"		=>	"text/plain",
+	".txt"		=>	"text/plain",
+	".dtd"		=>	"text/xml",
+	".xml"		=>	"text/xml",
+	".mpeg"		=>	"video/mpeg",
+	".mpg"		=>	"video/mpeg",
+	".mov"		=>	"video/quicktime",
+	".qt"		=>	"video/quicktime",
+	".avi"		=>	"video/x-msvideo",
+	".asf"		=>	"video/x-ms-asf",
+	".asx"		=>	"video/x-ms-asf",
+	".wmv"		=>	"video/x-ms-wmv",
+	".bz2"		=>	"application/x-bzip",
+	".tbz"		=>	"application/x-bzip-compressed-tar",
+	".tar.bz2"	=>	"application/x-bzip-compressed-tar"
+ )
+
+
+url.access-deny			= ( "~", ".inc" )
+fastcgi.server			= ( ".php" => ( "localhost" => ( "socket" => "/var/run/php-fpm.socket", "broken-scriptfilename" => "enable" ) ) )
+cgi.assign			= ( ".cgi" => "" )
+
+debug.log-condition-handling	= "enable"
+
+auth.backend = "plain"
+auth.backend.plain.userfile = "{$lighttpd_ls_auth_path}"
+
+auth.require = ( "/" =>
+	(
+	"method" => "basic",
+	"realm" => "Password Required",
+	"require" => "valid-user"
+	)
+)
+EOF;
+
+if (!isset($lightsquid_config['lighttpd_ls_ssl']) || ($lightsquid_config['lighttpd_ls_ssl'] == "on")) {
+	// Write out cert
+	$lscert =& lookup_cert($config['system']['webgui']['ssl-certref']);
+	if (!is_array($lscert) || !$lscert['crt'] || !$lscert['prv']) {
+		$lscert = system_webgui_create_certificate();
+	}
+	$cert = base64_decode($lscert['crt']);
+	$key = base64_decode($lscert['prv']);
+	$ca = ca_chain($lscert);
+	$cert = str_replace("\r", "", $cert);
+	$key = str_replace("\r", "", $key);
+	$cert = str_replace("\n\n", "\n", $cert);
+	$key = str_replace("\n\n", "\n", $key);
+	if (!empty($cert) && !empty($key)) {
+		$fd = fopen($lighttpd_ls_cert_path, "w");
+		if (!$fd) {
+			printf(gettext("Error: cannot open certificate file in lightsquid_write_webconfig().%s"), "\n");
+			return 1;
+		}
+		chmod($lighttpd_ls_cert_path, 0600);
+		if (!empty($ca)) {
+			$cert_chain = $cert . "\n" . $ca;
+		} else {
+			$cert_chain = $cert;
+		}
+		fwrite($fd, $cert_chain);
+		fwrite($fd, $key);
+		fclose($fd);
+	}
+
+	// Add SSL config
+	$lighttpd_ls_conf .= <<<EOF
+
+ssl.engine		= "enable"
+ssl.pemfile		= "{$lighttpd_ls_cert_path}"
+ssl.use-sslv2		= "disable"
+ssl.use-sslv3		= "disable"
+ssl.honor-cipher-order	= "enable"
+ssl.cipher-list		= "AES128+EECDH:AES256+EECDH:AES128+EDH:AES256+EDH:AES128-SHA:AES256-SHA:!aNULL:!eNULL:!DSS"
+
+EOF;
+}
+
+	@file_put_contents('/var/etc/lightsquid/lighttpd_ls.conf', $lighttpd_ls_conf, LOCK_EX);
+	unset($lighttpd_ls_conf);
+
+}
 
 /*
  * Package configuration routines
@@ -127,6 +332,7 @@ function lightsquid_resync() {
 	global $config;
 
 	lightsquid_create_reportdir();
+	safe_mkdir("/var/etc/lightsquid");
 	mwexec("/bin/chmod -R u+w " . LIGHTSQUID_BASE . "/etc/lightsquid");
 
 	// Set up variables for configuration update
@@ -212,6 +418,8 @@ function lightsquid_resync() {
 
 	// Set up scheduled reports updates
 	lightsquid_setup_cron(true);
+	lightsquid_write_webconfig();
+	restart_service('lightsquid_web');
 }
 
 /*
@@ -322,6 +530,25 @@ function lightsquid_create_reportdir() {
  */
 function lightsquid_validate_input($post, &$input_errors) {
 	global $config;
+
+	if (empty($lightsquid_config['lighttpd_ls_port'])) {
+		$lightsquid_config['lighttpd_ls_port'] = "7445";
+	}
+	if (!isset($lightsquid_config['lighttpd_ls_ssl']) || ($lightsquid_config['lighttpd_ls_ssl'] == "on")) {
+		$navto_url = "https://";
+	} else {
+		$navto_url = "http://";
+	}
+	$navto_url .= $_SERVER['HTTP_HOST'] . ":" . $lightsquid_config['lighttpd_ls_port'];
+
+	if ($post['navto_lightsquid'] == 'Open Lightsquid') {
+		header("Location: {$navto_url}/");
+		exit;
+	}
+	if ($post['navto_sqstat'] == 'Open sqstat') {
+		header("Location: /sqstat/sqstat.php");
+		exit;
+	}
 	/* Manual reports refresh; only allow to run if the configuration file exists already! */
 	if ($post['refreshnow'] == 'Refresh now' || $post['refreshfull'] == 'Refresh full') {
 		$lsconf_file = LS_CONFIGPATH . "/" . LS_CONFIGFILE;

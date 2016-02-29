@@ -56,15 +56,13 @@
 			<url>/pkg_edit.php?xml=lightsquid.xml</url>
 			<active/>
 		</tab>
-		<tab>
-			<text>Lightsquid Report</text>
-			<url>/lightsquid/index.cgi</url>
-		</tab>
-		<tab>
-			<text>Proxy Status</text>
-			<url>/sqstat/sqstat.php</url>
-		</tab>
 	</tabs>
+	<service>
+		<name>lightsquid_web</name>
+		<rcfile>lighttpd_ls.sh</rcfile>
+		<executable>lighttpd_ls</executable>
+		<description>Lightsquid Web Server</description>
+	</service>
 	<additional_files_needed>
 	       <prefix>/usr/local/pkg/</prefix>
 	       <item>https://packages.pfsense.org/packages/config/lightsquid/lightsquid.inc</item>
@@ -265,6 +263,55 @@
 				]]>
 			</description>
 		</field>
+		<field>
+			<name>Web Service Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Lightsquid Web Port</fielddescr>
+			<fieldname>lighttpd_ls_port</fieldname>
+			<description>Port the lighttpd web server for lightsquid will listen on. (Default: 7445)</description>
+			<type>input</type>
+			<size>5</size>
+			<default_value>7445</default_value>
+		</field>
+		<field>
+			<fielddescr>Lightsquid Web SSL</fielddescr>
+			<fieldname>lighttpd_ls_ssl</fieldname>
+			<description>Use SSL for Lightsquid Web Access</description>
+			<sethelp>This option configures the lightsquid web server to use SSL and uses the WebGUI HTTPS certificate.</sethelp>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+
+		<field>
+			<fielddescr>Lightsquid Web User</fielddescr>
+			<fieldname>lighttpd_ls_user</fieldname>
+			<description>Username used to access lighttpd. (Default: admin)</description>
+			<type>input</type>
+			<size>5</size>
+			<default_value>admin</default_value>
+		</field>
+		<field>
+			<fielddescr>Lightsquid Web Password</fielddescr>
+			<fieldname>lighttpd_ls_password</fieldname>
+			<description>Password used to access lighttpd. (Default: pfsense)</description>
+			<type>password</type>
+			<size>5</size>
+			<default_value>pfsense</default_value>
+		</field>
+		<field>
+			<type>info</type>
+			<fielddescr>Links</fielddescr>
+			<description>
+				<![CDATA[
+				<input type="submit" name="navto_lightsquid" id="navto_lightsquid" value="Open Lightsquid" />
+				<input type="submit" name="navto_sqstat" id="navto_sqstat" value="Open sqstat" />
+				]]>
+			</description>
+		</field>
+
+
 		<field>
 			<name>Report Template Settings</name>
 			<type>listtopic</type>
