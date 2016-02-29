@@ -10,7 +10,7 @@
  *
  * modified for the pfsense snort package
  * Copyright (C) 2009-2010 Robert Zelaya.
- * Copyright (C) 2014 Bill Meeks
+ * Copyright (C) 2015 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -70,6 +70,11 @@ function is_validwhitelistname($name) {
 	return false;
 }
 
+if ($_POST['cancel']) {
+	header("Location: /snort/snort_interfaces_suppress.php");
+	exit;
+}
+
 if (isset($id) && $a_suppress[$id]) {
 
 	/* old settings */
@@ -98,10 +103,10 @@ if ($_POST['save']) {
 		do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
 
 	if(strtolower($_POST['name']) == "defaultwhitelist")
-		$input_errors[] = "Whitelist file names may not be named defaultwhitelist.";
+		$input_errors[] = "Suppression List files may not be named defaultwhitelist.";
 
 	if (is_validwhitelistname($_POST['name']) == false)
-		$input_errors[] = "Whitelist file name may only consist of the characters \"a-z, A-Z, 0-9 and _\". Note: No Spaces or dashes. Press Cancel to reset.";
+		$input_errors[] = "Suppression List name may only consist of the characters \"a-z, A-Z, 0-9 and _\". Note: No Spaces or dashes. Press Cancel to reset.";
 
 	/* check for name conflicts */
 	foreach ($a_suppress as $s_list) {
@@ -109,7 +114,7 @@ if ($_POST['save']) {
 			continue;
 
 		if ($s_list['name'] == $_POST['name']) {
-			$input_errors[] = "A whitelist file name with this name already exists.";
+			$input_errors[] = "A Suppression List file with this name already exists.";
 			break;
 		}
 	}
@@ -139,101 +144,86 @@ if ($_POST['save']) {
 	}
 }
 
-$pgtitle = gettext("Snort: Suppression List Edit - {$a_suppress[$id]['name']}");
+$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Suppression List Edit"));
 include_once("head.inc");
 
-?>
-
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-
-<?php
-include("fbegin.inc");
 if ($input_errors)
 	print_input_errors($input_errors);
 if ($savemsg)
 	print_info_box($savemsg);
 
-?>
-<form action="/snort/snort_interfaces_suppress_edit.php" name="iform" id="iform" method="post">
-<input name="id" type="hidden" value="<?=$id;?>"/>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr><td>
-<?php
-        $tab_array = array();
-        $tab_array[0] = array(gettext("Snort Interfaces"), false, "/snort/snort_interfaces.php");
-        $tab_array[1] = array(gettext("Global Settings"), false, "/snort/snort_interfaces_global.php");
-        $tab_array[2] = array(gettext("Updates"), false, "/snort/snort_download_updates.php");
-        $tab_array[3] = array(gettext("Alerts"), false, "/snort/snort_alerts.php");
-        $tab_array[4] = array(gettext("Blocked"), false, "/snort/snort_blocked.php");
-	$tab_array[5] = array(gettext("Pass Lists"), false, "/snort/snort_passlist.php");
-        $tab_array[6] = array(gettext("Suppress"), true, "/snort/snort_interfaces_suppress.php");
-	$tab_array[7] = array(gettext("IP Lists"), false, "/snort/snort_ip_list_mgmt.php");
-	$tab_array[8] = array(gettext("SID Mgmt"), false, "/snort/snort_sid_mgmt.php");
-	$tab_array[9] = array(gettext("Log Mgmt"), false, "/snort/snort_log_mgmt.php");
-	$tab_array[10] = array(gettext("Sync"), false, "/pkg_edit.php?xml=snort/snort_sync.xml");
-        display_top_tabs($tab_array, true);
-?>
-</td></tr>
-<tr><td><div id="mainarea">
-<table id="maintable" class="tabcont" width="100%" border="0" cellpadding="6" cellspacing="0">
-<tr>
-	<td colspan="2" class="listtopic">Add the name and description of the file.</td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncellreq"><?php echo gettext("Name"); ?></td>
-	<td width="78%" class="vtable"><input name="name" type="text" id="name" 
-		class="formfld unknown" size="40" value="<?=htmlspecialchars($pconfig['name']);?>" /> <br />
-	<span class="vexpl"> <?php echo gettext("The list name may only consist of the " .
-	"characters \"a-z, A-Z, 0-9 and _\"."); ?>&nbsp;&nbsp;<span class="red"><?php echo gettext("Note:"); ?> </span>
-	<?php echo gettext("No Spaces or dashes."); ?> </span></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("Description"); ?></td>
-	<td width="78%" class="vtable"><input name="descr" type="text" 
-		class="formfld unknown" id="descr" size="40" value="<?=$pconfig['descr'];?>" /> <br />
-	<span class="vexpl"> <?php echo gettext("You may enter a description here for your " .
-	"reference (not parsed)."); ?> </span></td>
-</tr>
-<tr>
-	<td colspan="2" align="center" height="30px">
-				<font size="2"><span class="red"><strong><?php echo gettext("NOTE:"); ?></strong></span></font>
-				<font color='#000000'>&nbsp;<?php echo gettext("The threshold keyword " .
-				"is deprecated as of version 2.8.5. Use the event_filter keyword " .
-				"instead."); ?></font>
-	</td>
-</tr>
-<tr>
-	<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Apply suppression or " .
-	"filters to rules. Valid keywords are 'suppress', 'event_filter' and 'rate_filter'."); ?></td>
-</tr>
-<tr>
-<td colspan="2" valign="top" class="vncell"><b><?php echo gettext("Example 1;"); ?></b>
-		suppress gen_id 1, sig_id 1852, track by_src, ip 10.1.1.54<br/>
-		<b><?php echo gettext("Example 2;"); ?></b> event_filter gen_id 1, sig_id 1851, type limit,
-		track by_src, count 1, seconds 60<br/>
-		<b><?php echo gettext("Example 3;"); ?></b> rate_filter gen_id 135, sig_id 1, track by_src,
-		count 100, seconds 1, new_action log, timeout 10</td>
-</tr>
-<tr>
-	<td colspan="2" class="vtable"><textarea wrap="off" style="width:100%; height:100%;" 
-		name="suppresspassthru" cols="90" rows="26" id="suppresspassthru" class="formpre"><?=htmlspecialchars($pconfig['suppresspassthru']);?></textarea>
-	</td>
-</tr>
-<tr>
-	<td colspan="2"><input id="save" name="save" type="submit" 
-		class="formbtn" value="Save" />&nbsp;&nbsp;<input id="cancelbutton" 
-		name="cancelbutton" type="button" class="formbtn" value="Cancel" 
-		onclick="history.back();"/>
-	</td>
-</tr>
-</table>
-</div>
-</td></tr>
-</table>
-</form>
-<?php include("fend.inc"); ?>
-<script type="text/javascript">
-Rounded("div#redbox","all","#FFF","#E0E0E0","smooth");
-</script>
-</body>
-</html>
+$tab_array = array();
+$tab_array[] = array(gettext("Snort Interfaces"), false, "/snort/snort_interfaces.php");
+$tab_array[] = array(gettext("Global Settings"), false, "/snort/snort_interfaces_global.php");
+$tab_array[] = array(gettext("Updates"), false, "/snort/snort_download_updates.php");
+$tab_array[] = array(gettext("Alerts"), false, "/snort/snort_alerts.php");
+$tab_array[] = array(gettext("Blocked"), false, "/snort/snort_blocked.php");
+$tab_array[] = array(gettext("Pass Lists"), false, "/snort/snort_passlist.php");
+$tab_array[] = array(gettext("Suppress"), true, "/snort/snort_interfaces_suppress.php");
+$tab_array[] = array(gettext("IP Lists"), false, "/snort/snort_ip_list_mgmt.php");
+$tab_array[] = array(gettext("SID Mgmt"), false, "/snort/snort_sid_mgmt.php");
+$tab_array[] = array(gettext("Log Mgmt"), false, "/snort/snort_log_mgmt.php");
+$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=snort/snort_sync.xml");
+display_top_tabs($tab_array, true);
+
+$form = new Form(FALSE);
+$section = new Form_Section('General Information');
+$section->addInput(new Form_Input(
+	'name',
+	'Name',
+	'text',
+	$pconfig['name']
+))->setPattern('[a-zA-Z0-9_]+')->setHelp('The list name may only consist of the characters \'a-z, A-Z, 0-9 and _\'.');
+$section->addInput(new Form_Input(
+	'descr',
+	'Description',
+	'text',
+	$pconfig['descr']
+))->setHelp('You may enter a description here for your reference.');
+$form->add($section);
+
+$content_help = 'Valid keywords are \'suppress\', \'event_filter\' and \'rate_filter\'.' . '<br />';
+$content_help .= 'Example 1: suppress gen_id 1, sig_id 1852, track by_src, ip 10.1.1.54' . '<br />';
+$content_help .= 'Example 2: event_filter gen_id 1, sig_id 1851, type limit, track by_src, count 1, seconds 60' . '<br />';
+$content_help .= 'Example 3: rate_filter gen_id 135, sig_id 1, track by_src, count 100, seconds 1, new_action log, timeout 10';
+$section = new Form_Section('Suppression List Content');
+$section->addInput(new Form_Textarea (
+	'suppresspassthru',
+	'Suppression Rules',
+	$pconfig['suppresspassthru']
+))->setHelp($content_help)->setAttribute('rows', 16);
+$form->add($section);
+
+$section = new Form_Section('');
+$btnsave = new Form_Button(
+	'save',
+	'Save',
+	null,
+	'fa-save'
+);
+$btncancel = new Form_Button(
+	'cancel',
+	'Cancel'
+);
+$btnsave->addClass('btn-primary')->addClass('btn-default');
+$btncancel->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-warning');
+
+$section->addInput(new Form_StaticText(
+	null,
+	$btnsave . $btncancel
+));
+$form->add($section);
+
+// Include the Pass List ID in a hidden form field with any $_POST
+if (isset($id)) {
+	$form->addGlobal(new Form_Input(
+		'id',
+		'id',
+		'hidden',
+		$id
+	));
+}
+
+print($form);
+include("foot.inc");?>
+

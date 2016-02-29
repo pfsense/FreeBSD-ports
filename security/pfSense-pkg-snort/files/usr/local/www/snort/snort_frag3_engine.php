@@ -1,7 +1,7 @@
 <?php
 /*
  * snort_frag3_engine.php
- * Copyright (C) 2013-2014 Bill Meeks
+ * Copyright (C) 2013-2016 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -85,7 +85,7 @@ else {
 		$pconfig['min_frag_len'] = 0;
 }
 
-if ($_POST['Cancel']) {
+if ($_POST['cancel']) {
 	header("Location: /snort/snort_preprocessors.php?id={$id}#frag3_row");
 	exit;
 }
@@ -187,213 +187,190 @@ if ($_POST['save']) {
 		/* Now write the new engine array to conf */
 		write_config("Snort pkg: modified frag3 engine settings.");
 
-		// We have saved a preproc config change, so set "dirty" flag
-		mark_subsystem_dirty('snort_preprocessors');
-
 		header("Location: /snort/snort_preprocessors.php?id={$id}#frag3_row");
 		exit;
 	}
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($config['installedpackages']['snortglobal']['rule'][$id]['interface']);
-$pgtitle = gettext("Snort: Interface {$if_friendly} Frag3 Preprocessor Engine");
-include_once("head.inc");
+$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Frag3 Preprocessor Engine"), gettext("{$if_friendly}"));
+include("head.inc");
 
-?>
-
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC" >
-
-<?php
-include("fbegin.inc");
 if ($input_errors) print_input_errors($input_errors);
 if ($savemsg)
 	print_info_box($savemsg);
+
+$form = new Form(FALSE);
+$section = new Form_Section('Snort Target-Based IP Defragmentation Engine Configuration');
+
+$engine_name = new Form_Input(
+	'frag3_name',
+	'Engine Name',
+	'text',
+	$pconfig['name']
+);
+if ($pconfig['name'] <> "default") {
+	$engine_name->setHelp('Enter a unique name or description for this engine.  (Max 25 characters)');
+}
+else {
+	$engine_name->setReadonly()->setHelp('The name for the default engine is read-only.');
+}
+$section->addInput($engine_name);
+
+if ($pconfig['name'] <> "default") {
+	$bind_to = new Form_Input(
+		'frag3_bind_to',
+		'',
+		'text',
+		$pconfig['bind_to']
+	);
+	$bind_to->setAttribute('title', trim(filter_expand_alias($pconfig['bind_to'])));
+	$bind_to->setHelp('IP List to bind this engine to. (Cannot be blank)');
+	$btnaliases = new Form_Button(
+		'btnSelectAlias',
+		' ' . 'Aliases',
+		'snort_select_alias.php?id=' . $id . '&eng_id=<?=' . $eng_id . '&type=host|network&varname=bind_to&act=import&multi_ip=yes&returl=' . urlencode($_SERVER['PHP_SELF']),
+		'fa-search-plus'
+	);
+	$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
+	$btnaliases->setAttribute('title', gettext("Select an existing IP alias"));
+	$group = new Form_Group('Bind-To IP Address Alias');
+	$group->add($bind_to);
+	$group->add($btnaliases);
+	$group->setHelp(gettext("Supplied value must be a pre-configured Alias or the keyword 'all'."));
+	$section->add($group);
+}
+else {
+	$section->addInput( new Form_Input(
+		'frag3_bind_to',
+		'Bind-To IP Address Alias',
+		'text',
+		$pconfig['bind_to']
+	))->setReadonly()->setHelp('The default engine is required and only runs for packets with destination addresses not matching other engine IP Lists.');
+}
+
+$section->addInput(new Form_Select(
+	'frag3_policy',
+	'Target Policy',
+	$pconfig['policy'],
+	array( 'bsd' => 'BSD', 'bsd-right' => 'BSD-Right', 'first' => 'First', 'last' => 'Last', 'linux' => 'Linux', 'solaris' => 'Solaris', 'windows' => 'Windows' )
+))->setHelp('Choose the IP fragmentation target policy appropriate for the protected hosts.  The default is BSD.');
+
+$section->addInput( new Form_Input(
+	'frag3_timeout',
+	'Timeout',
+	'number',
+	$pconfig['timeout']
+))->setHelp(sprintf(gettext('Timeout period in seconds for fragments in the engine.%sFragments in the engine for longer than this period will be automatically dropped.  Default value is 60.'),'<br/>'));
+
+$group = new Form_Group('Minimum Time-to-Live');
+$group->add(new Form_Input(
+	'frag3_min_ttl',
+	'',
+	'number',
+	$pconfig['min_ttl']
+))->setHelp('Minimum acceptable TTL for a fragment in the engine.  The accepted range for this option is 1 - 255.  Default value is 1.');
+$section->add($group);
+
+$group = new Form_Group('Detect Anomalies');
+$group->add(new Form_Checkbox(
+	'frag3_detect_anomalies',
+	'',
+	'Use Frag3 Engine to detect fragment anomalies.  Default is checked.',
+	$pconfig['detect_anomalies'] == 'on' ? true:false,
+	'on'
+))->setHelp('In order to customize the Overlap Limit and Minimum Fragment Length parameters for this engine, Anomaly Detection must be enabled.');
+$section->add($group);
+
+$frag3_in = new Form_Input(
+	'frag3_overlap_limit',
+	'Overlap Limit',
+	'number',
+	$pconfig['overlap_limit']
+);
+$frag3_in->setAttribute('min', '0');
+$frag3_in->setHelp(sprintf(gettext('Minimum is 0 (unlimited).  Values greater than zero set the overlap limit.%sThis sets the limit for the number of overlapping fragments allowed per packet.'),'<br/>'));
+$section->addInput($frag3_in);
+
+$frag3_in = new Form_Input(
+	'frag3_min_frag_len',
+	'Minimum Fragment Length',
+	'number',
+	$pconfig['min_frag_len']
+);
+$frag3_in->setAttribute('min', '0');
+$frag3_in->setHelp(sprintf(gettext('Minimum is 0 (check is disabled).  Values greater than zero enable the check.%sThis defines smallest fragment (payload) that should be considered valid.  Fragments smaller than or equal to this limit are considered malicious.'),'<br/>'));
+$section->addInput($frag3_in);
+
+$btnsave = new Form_Button(
+	'save',
+	'Save',
+	null,
+	'fa-save'
+);
+$btncancel = new Form_Button(
+	'cancel',
+	'Cancel'
+);
+$btnsave->addClass('btn-primary')->addClass('btn-default')->setAttribute('title', 'Save Frag3 engine settings and return to Preprocessors tab');
+$btncancel->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-warning')->setAttribute('title', 'Cancel changes and return to Preprocessors tab');
+
+$section->addInput(new Form_StaticText(
+	null,
+	$btnsave . $btncancel
+));
+
+
+$form->add($section);
+
+$form->addGlobal(new Form_Input(
+	'id',
+	'id',
+	'hidden',
+	$id
+));
+$form->addGlobal(new Form_Input(
+	'eng_id',
+	'eng_id',
+	'hidden',
+	$eng_id
+));
+
+print($form);
 ?>
 
-<form action="snort_frag3_engine.php" method="post" name="iform" id="iform">
-<input name="id" type="hidden" value="<?=$id?>">
-<input name="eng_id" type="hidden" value="<?=$eng_id?>">
-<div id="boxarea">
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr>
-<td class="tabcont">
-<table width="100%" border="0" cellpadding="6" cellspacing="0">
-	<tr>
-		<td colspan="2" valign="middle" class="listtopic"><?php echo gettext("Snort Target-Based IP Defragmentation Engine Configuration"); ?></td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("Engine Name"); ?></td>
-		<td class="vtable">
-			<input name="frag3_name" type="text" class="formfld unknown" id="frag3_name" size="25" maxlength="25" 
-			value="<?=htmlspecialchars($pconfig['name']);?>"<?php if (htmlspecialchars($pconfig['name']) == "default") echo "readonly";?>>&nbsp;
-			<?php if (htmlspecialchars($pconfig['name']) <> "default") 
-					echo gettext("Name or description for this engine.  (Max 25 characters)");
-				else
-					echo "<span class=\"red\">" . gettext("The name for the 'default' engine is read-only.") . "</span>";?><br/>
-			<?php echo gettext("Unique name or description for this engine configuration.  Default value is ") . 
-			"<strong>" . gettext("default") . "</strong>"; ?>.<br/>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("Bind-To IP Address Alias"); ?></td>
-		<td class="vtable">
-		<?php if ($pconfig['name'] <> "default") : ?>
-			<table width="95%" border="0" cellpadding="2" cellspacing="0">
-				<tr>
-					<td class="vexpl"><input name="frag3_bind_to" type="text" class="formfldalias" id="frag3_bind_to" size="32" 
-					value="<?=htmlspecialchars($pconfig['bind_to']);?>" title="<?=trim(filter_expand_alias($pconfig['bind_to']));?>" autocomplete="off">&nbsp;
-					<?php echo gettext("IP List to bind this engine to. (Cannot be blank)"); ?></td>
-					<td class="vexpl" align="right"><input type="button" class="formbtns" value="Aliases" onclick="parent.location='snort_select_alias.php?id=<?=$id;?>&eng_id=<?=$eng_id;?>&type=host|network&varname=bind_to&act=import&multi_ip=yes&returl=<?=urlencode($_SERVER['PHP_SELF']);?>'" 
-					title="<?php echo gettext("Select an existing IP alias");?>"/></td>
-				</tr>
-				<tr>
-					<td class="vexpl" colspan="2"><?php echo gettext("This engine will only run for packets with destination addresses contained within this IP List.");?></td>
-				</tr>
-			</table>
-			<span class="red"><strong><?php echo gettext("Note: ") . "</strong></span>" . gettext("Supplied value must be a pre-configured Alias or the keyword 'all'.");?>
-			&nbsp;&nbsp;&nbsp;&nbsp;
-		<?php else : ?>
-			<input name="frag3_bind_to" type="text" class="formfldalias" id="frag3_bind_to" size="32" 
-			value="<?=htmlspecialchars($pconfig['bind_to']);?>" autocomplete="off" readonly>&nbsp;
-			<?php echo "<span class=\"red\">" . gettext("IP List for the default engine is read-only and must be 'all'.") . "</span>";?><br/>
-			<?php echo gettext("The default engine is required and only runs for packets with destination addresses not matching other engine IP Lists.");?><br/>
-		<?php endif ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Target Policy"); ?> </td>
-		<td width="78%" class="vtable">
-			<select name="frag3_policy" class="formselect" id="policy">
-			<?php
-			$profile = array( 'BSD', 'BSD-Right', 'First', 'Last', 'Linux', 'Solaris', 'Windows' );
-			foreach ($profile as $val): ?>
-			<option value="<?=strtolower($val);?>" 
-			<?php if (strtolower($val) == $pconfig['policy']) echo "selected"; ?>>
-				<?=gettext($val);?></option>
-				<?php endforeach; ?>
-			</select>&nbsp;&nbsp;<?php echo gettext("Choose the IP fragmentation target policy appropriate for the protected hosts.  The default is ") . 
-			"<strong>" . gettext("BSD") . "</strong>"; ?>.<br/><br/>
-			<?php echo gettext("Available OS targets are BSD, BSD-Right, First, Last, Linux, Solaris and Windows."); ?><br/>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("Timeout"); ?></td>
-		<td class="vtable">
-			<input name="frag3_timeout" type="text" class="formfld unknown" id="frag3_timeout" size="6" 
-			value="<?=htmlspecialchars($pconfig['timeout']);?>">
-			<?php echo gettext("Timeout period in seconds for fragments in the engine."); ?><br/><br/>
-			<?php echo gettext("Fragments in the engine for longer than this period will be automatically dropped.  Default value is ") . 
-			"<strong>" . gettext("60 ") . "</strong>" . gettext("seconds."); ?><br/>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("Minimum Time-to-Live"); ?></td>
-		<td class="vtable">
-			<input name="frag3_min_ttl" type="text" class="formfld unknown" id="frag3_min_ttl" size="6" 
-			value="<?=htmlspecialchars($pconfig['min_ttl']);?>">
-			<?php echo gettext("Minimum acceptable TTL for a fragment in the engine."); ?><br/><br/>
-			<?php echo gettext("The accepted range for this option is 1 - 255.  Default value is ") . 
-			"<strong>" . gettext("1") . "</strong>"; ?>.<br/>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Detect Anomalies"); ?></td>
-		<td width="78%" class="vtable"><input name="frag3_detect_anomalies" id="frag3_detect_anomalies" type="checkbox" value="on"  
-			<?php if ($pconfig['detect_anomalies']=="on") echo "checked "; ?> onclick="frag3_enable_change();">
-			<?php echo gettext("Use Frag3 Engine to detect fragment anomalies.  Default is ") . 
-			"<strong>" . gettext("Checked") . "</strong>"; ?>.<br/><br/>
-			<span class="red"><strong><?php echo gettext("Note: ") . "</strong></span>" . 
-			gettext("In order to customize the Overlap Limit and Minimum Fragment Length parameters for this engine, Anomaly Detection must be enabled."); ?>
-		</td>
-	</tr>
-	<tr id="frag3_overlaplimit_row">
-		<td valign="top" class="vncell"><?php echo gettext("Overlap Limit"); ?></td>
-		<td class="vtable">
-			<input name="frag3_overlap_limit" type="text" class="formfld unknown" id="frag3_overlap_limit" size="6" 
-			value="<?=htmlspecialchars($pconfig['overlap_limit']);?>">
-			<?php echo gettext("Minimum is ") . "<strong>0</strong>" . gettext(" (unlimited).  Values greater than zero set the overlapped limit."); ?><br/><br/>
-			<?php echo gettext("Sets the limit for the number of overlapping fragments allowed per packet.  Default value is ") .
-			"<strong>0</strong>" . gettext(" (unlimited)."); ?><br/>
-		</td>
-	</tr>
-	<tr id="frag3_minfraglen_row">
-		<td valign="top" class="vncell"><?php echo gettext("Minimum Fragment Length"); ?></td>
-		<td class="vtable">
-			<input name="frag3_min_frag_len" type="text" class="formfld unknown" id="frag3_min_frag_len" size="6" 
-			value="<?=htmlspecialchars($pconfig['min_frag_len']);?>">
-			<?php echo gettext("Minimum is ") . "<strong>0</strong>" . gettext(" (check is disabled).  Values greater than zero enable the check."); ?><br/><br/>
-			<?php echo gettext("Defines smallest fragment size (payload size) that should be considered valid.  " . 
-			"Fragments smaller than or equal to this limit are considered malicious.  Default value is ") .
-			"<strong>0</strong>" . gettext(" (check is disabled)."); ?><br/>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="bottom">&nbsp;</td>
-		<td width="78%" valign="bottom">
-			<input name="save" id="save" type="submit" class="formbtn" value=" Save " title="<?php echo 
-			gettext("Save Frag3 engine settings and return to Preprocessors tab"); ?>">
-			&nbsp;&nbsp;&nbsp;&nbsp;
-			<input name="Cancel" id="cancel" type="submit" class="formbtn" value="Cancel" title="<?php echo 
-			gettext("Cancel changes and return to Preprocessors tab"); ?>"></td>
-	</tr>
-</table>
-</td>
-</tr>
-</table>
-</div>
-</form>
-<?php include("fend.inc"); ?>
-</body>
-<script type="text/javascript" src="/javascript/autosuggest.js">
-</script>
-<script type="text/javascript" src="/javascript/suggestions.js">
-</script>
 <script type="text/javascript">
+//<![CDATA[
 
-function frag3_enable_change() {
-	var endis = !(document.iform.frag3_detect_anomalies.checked);
+	function frag3_enable_change() {
+		var hide = ! $('#frag3_detect_anomalies').prop('checked');
 
-	// Hide the "frag3_overlap_limit and frag3_min_frag_len" rows if frag3_detect_anomablies disabled
-	if (endis) {
-		document.getElementById("frag3_overlaplimit_row").style.display="none";
-		document.getElementById("frag3_minfraglen_row").style.display="none";
+		// Hide the "frag3_overlap_limit and frag3_min_frag_len" rows if frag3_detect_anomablies disabled
+		disableInput('frag3_overlap_limit', hide);
+		disableInput('frag3_min_frag_len', hide);
 	}
-	else {
-		document.getElementById("frag3_overlaplimit_row").style.display="table-row";
-		document.getElementById("frag3_minfraglen_row").style.display="table-row";
-	}
-}
 
-// Set initial state of form controls
-frag3_enable_change();
+events.push(function() {
 
-<?php
-	$isfirst = 0;
-	$aliases = "";
-	$addrisfirst = 0;
-	$aliasesaddr = "";
-	if(isset($config['aliases']['alias']) && is_array($config['aliases']['alias']))
-		foreach($config['aliases']['alias'] as $alias_name) {
-			if ($alias_name['type'] != "host" && $alias_name['type'] != "network")
-				continue;
-			// Skip any Aliases that resolve to an empty string
-			if (trim(filter_expand_alias($alias_name['name'])) == "")
-				continue;
-			if($addrisfirst == 1) $aliasesaddr .= ",";
-			$aliasesaddr .= "'" . $alias_name['name'] . "'";
-			$addrisfirst = 1;
-		}
-?>
-	var addressarray=new Array(<?php echo $aliasesaddr; ?>);
+	// ---------- Autocomplete --------------------------------------------------------------------
 
-function createAutoSuggest() {
-<?php
-	echo "objAlias = new AutoSuggestControl(document.getElementById('frag3_bind_to'), new StateSuggestions(addressarray));\n";
-?>
-}
+	var addressarray = <?= json_encode(get_alias_list(array("host", "network", "openvpn"))) ?>;
 
-setTimeout("createAutoSuggest();", 500);
+	$('#frag3_bind_to').autocomplete({
+		source: addressarray
+	});
 
+	//-- click handlers ---------------------------------------------------
+	$('#frag3_detect_anomalies').click(function() {
+		frag3_enable_change();
+	});
+
+	// Set initial state of form controls
+	frag3_enable_change();
+
+});
+//]]>
 </script>
 
-</html>
+<?php include("foot.inc"); ?>
+

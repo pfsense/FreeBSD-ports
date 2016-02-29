@@ -3,7 +3,7 @@
     snort_alerts.widget.php
     Copyright (C) 2009 Jim Pingle
     mod 24-07-2012
-    mod 28-02-2014 by Bill Meeks
+    mod 29-02-2016 by Bill Meeks
 
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions are met:
@@ -183,16 +183,7 @@ function snort_widget_get_alerts() {
 }
 ?>
 
-<input type="hidden" id="snort_alerts-config" name="snort_alerts-config" value="" />
-<div id="snort_alerts-settings" class="widgetconfigdiv" style="display:none;">
-	<form action="/widgets/widgets/snort_alerts.widget.php" method="post" name="iformd">
-		Enter number of recent alerts to display (default is 5)<br/>
-		<input type="text" size="5" name="widget_snort_display_lines" class="formfld unknown" id="widget_snort_display_lines" value="<?= $config['widgets']['widget_snort_display_lines'] ?>" />
-		&nbsp;&nbsp;<input id="submitd" name="submitd" type="submit" class="formbtn" value="Save" />
-    </form>
-</div>
-
-<table id="snort-alert-tbl" width="100%" border="0" cellspacing="0" cellpadding="0" style="table-layout: fixed;">
+<table  class="table table-hover table-striped table-condensed" style="table-layout: fixed;">
 	<colgroup>
 		<col style="width: 24%;" />
 		<col style="width: 38%;" />
@@ -200,9 +191,9 @@ function snort_widget_get_alerts() {
 	</colgroup>
 	<thead>
 		<tr>
-			<th class="widgetsubheader"><?=gettext("IF/Date");?></th>
-			<th class="widgetsubheader"><?=gettext("Src/Dst Address");?></th>
-			<th class="widgetsubheader"><?=gettext("Description");?></th>
+			<th><?=gettext("IF/Date");?></th>
+			<th><?=gettext("Src/Dst Address");?></th>
+			<th><?=gettext("Description");?></th>
 		</tr>
 	</thead>
 	<tbody id="snort-alert-entries">
@@ -224,6 +215,17 @@ function snort_widget_get_alerts() {
 	?>
 	</tbody>
 </table>
+
+<!-- close the body we're wrapped in and add a configuration-panel -->
+</div>
+
+<div id="widget-<?=$widgetname?>_panel-footer" class="panel-footer collapse">
+	<input type="hidden" id="snort_alerts-config" name="snort_alerts-config" value="" />
+		<form action="/widgets/widgets/snort_alerts.widget.php" method="post" name="iformd" class="form-horizontal">
+			Enter number of recent alerts to display (default is 5)<br/>
+			<input type="text" size="5" name="widget_snort_display_lines" class="form-control" id="widget_snort_display_lines" value="<?= $config['widgets']['widget_snort_display_lines'] ?>" />
+			&nbsp;&nbsp;<input id="submitd" name="submitd" type="submit" class="formbtn" value="Save" />
+		</form>
 
 <script type="text/javascript">
 //<![CDATA[

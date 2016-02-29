@@ -33,15 +33,10 @@
 
 require_once("pfsense-utils.inc");
 require_once("config.inc");
-require_once("globals.inc");
 require_once("functions.inc");
 require_once("service-utils.inc");
 require_once("pkg-utils.inc");
 require_once("filter.inc");
-require_once("notices.inc");
-require_once("util.inc");
-require_once("xmlrpc.inc");
-require_once("xmlrpc_client.inc");
 require("/usr/local/pkg/snort/snort_defs.inc");
 
 // Snort GUI needs some extra PHP memory space to manipulate large rules arrays
@@ -819,7 +814,7 @@ function snort_snortloglimit_install_cron($should_install=TRUE) {
 	// Else install the new or updated cron job by removing the
 	// existing job first, then installing the new or updated job.
 	install_cron_job("snort_check_cron_misc.inc", false);
-	install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php-cgi -f /usr/local/pkg/snort/snort_check_cron_misc.inc", $should_install, "*/5");
+	install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php -f /usr/local/pkg/snort/snort_check_cron_misc.inc", $should_install, "*/5");
 }
 
 function snort_rm_blocked_install_cron($should_install) {
@@ -1008,7 +1003,7 @@ function snort_rules_up_install_cron($should_install) {
 	}
 
 	// Construct the basic cron command task
-	$command = "/usr/bin/nice -n20 /usr/local/bin/php-cgi -f /usr/local/pkg/snort/snort_check_for_rule_updates.php";
+	$command = "/usr/bin/nice -n20 /usr/local/bin/php -f /usr/local/pkg/snort/snort_check_for_rule_updates.php";
 
 	// If there are no changes in the cron job command string from the existing job, then exit
 	if (snort_cron_job_exists($command, TRUE, $snort_rules_up_min, $snort_rules_up_hr, $snort_rules_up_mday, $snort_rules_up_month, $snort_rules_up_wday, "root"))
@@ -4034,7 +4029,7 @@ EOD;
 	/* Now assemble a command to execute the         */
 	/* previously sent PHP file in the background.   */
 	/*************************************************/
-	$execcmd = "exec(\"/usr/local/bin/php-cgi -f '/tmp/snort_sync_cmds.php' > /dev/null 2>&1 &\");";
+	$execcmd = "exec(\"/usr/local/bin/php -f '/tmp/snort_sync_cmds.php' > /dev/null 2>&1 &\");";
 	$params2 = array(
 		XML_RPC_encode($password),
 		XML_RPC_encode($execcmd)
