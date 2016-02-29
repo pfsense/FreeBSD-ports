@@ -254,7 +254,7 @@ $section->addInput(new Form_Checkbox(
 	'ETPro for Suricata offers daily updates and extensive coverage of current malware threats.',
 	$config['installedpackages']['suricata']['config'][0]['enable_etpro_rules'] == 'on' ? true:false,
 	'on'
-))->setHelp('The ETPro rules contain all of the ETOpen rules, so the ETOpen rules are not required and are disabled when the ETPro rules are selected. <a href="http://www.emergingthreats.net/solutions/etpro-ruleset/">Sign Up for an ETPro Account</a>');
+))->setHelp('The ETPro rules contain all of the ETOpen rules, so the ETOpen rules are not required and are disabled when the ETPro rules are selected. <a href="https://www.proofpoint.com/us/solutions/products/threat-intelligence/ET-Pro-Ruleset">Sign Up for an ETPro Account</a>');
 $section->addInput(new Form_Input(
 	'etprocode',
 	'ETPro Subscription Configuration Code',
