@@ -254,7 +254,8 @@ foreach ($rule as &$r) {
 				"unlimited_decompress" => "on", "inspect_gzip" => "on", "normalize_cookies" =>"on", 
 				"normalize_headers" => "on", "normalize_utf" => "on", "normalize_javascript" => "on", 
 				"allow_proxy_use" => "off", "inspect_uri_only" => "off", "max_javascript_whitespaces" => 200,
-				"post_depth" => -1, "max_headers" => 0, "max_spaces" => 0, "max_header_length" => 0, "ports" => "default" );
+				"post_depth" => -1, "max_headers" => 0, "max_spaces" => 0, "max_header_length" => 0, "ports" => "default",
+				"decompress_swf" => "off", "decompress_pdf" => "off" );
 
 		// Ensure sensible default values exist for global HTTP_INSPECT parameters
 		if (empty($pconfig['http_inspect']))

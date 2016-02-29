@@ -48,6 +48,9 @@ config event_queue: max_queue 8 log 5 order_events content_length
 # Configure to show year in timestamps
 config show_year
 
+# Configure IPv6 address logging in unified2 extra data
+config log_ipv6_extra_data
+
 # Configure protocol aware flushing #
 # For more information see README.stream5 #
 {$paf_max_pdu_config}
