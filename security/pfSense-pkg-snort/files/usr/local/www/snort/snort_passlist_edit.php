@@ -71,7 +71,6 @@ if (isset($id) && isset($a_passlist[$id])) {
 	$pconfig['address'] = $a_passlist[$id]['address'];
 	$pconfig['descr'] = html_entity_decode($a_passlist[$id]['descr']);
 	$pconfig['localnets'] = $a_passlist[$id]['localnets'];
-//	$pconfig['wanips'] = $a_passlist[$id]['wanips'];
 	$pconfig['wangateips'] = $a_passlist[$id]['wangateips'];
 	$pconfig['wandnsips'] = $a_passlist[$id]['wandnsips'];
 	$pconfig['vips'] = $a_passlist[$id]['vips'];
@@ -87,7 +86,6 @@ if ($_GET['act'] == "import") {
 	$pconfig['address'] = htmlspecialchars($_GET['address']);
 	$pconfig['descr'] = htmlspecialchars($_GET['descr']);
 	$pconfig['localnets'] = htmlspecialchars($_GET['localnets'])? 'yes' : 'no';
-//	$pconfig['wanips'] = htmlspecialchars($_GET['wanips'])? 'yes' : 'no';
 	$pconfig['wangateips'] = htmlspecialchars($_GET['wangateips'])? 'yes' : 'no';
 	$pconfig['wandnsips'] = htmlspecialchars($_GET['wandnsips'])? 'yes' : 'no';
 	$pconfig['vips'] = htmlspecialchars($_GET['vips'])? 'yes' : 'no';
@@ -132,11 +130,7 @@ if ($_POST['save']) {
 	$reqdfields = explode(" ", "name");
 	$reqdfieldsn = explode(",", "Name");
 
-	$pf_version=substr(trim(file_get_contents("/etc/version")),0,3);
-	if ($pf_version < 2.1)
-		$input_errors = eval('do_input_validation($_POST, $reqdfields, $reqdfieldsn, &$input_errors); return $input_errors;');
-	else
-		do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
+	do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
 
 	if(strtolower($_POST['name']) == "defaultpasslist")
 		$input_errors[] = gettext("Pass List file names may not be named defaultpasslist.");
@@ -168,7 +162,6 @@ if ($_POST['save']) {
 		$p_list['name'] = $_POST['name'];
 		$p_list['uuid'] = $passlist_uuid;
 		$p_list['localnets'] = $_POST['localnets']? 'yes' : 'no';
-//		$p_list['wanips'] = $_POST['wanips']? 'yes' : 'no';
 		$p_list['wangateips'] = $_POST['wangateips']? 'yes' : 'no';
 		$p_list['wandnsips'] = $_POST['wandnsips']? 'yes' : 'no';
 		$p_list['vips'] = $_POST['vips']? 'yes' : 'no';
@@ -193,178 +186,137 @@ if ($_POST['save']) {
 	}
 }
 
-$pgtitle = gettext("Snort: Pass List Edit - {$pconfig['name']}");
+$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Pass List Edit"));
 include_once("head.inc");
-?>
 
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC" >
-
-<?php
-include("fbegin.inc");
 if ($input_errors)
 	print_input_errors($input_errors);
 if ($savemsg)
 	print_info_box($savemsg);
+
+$tab_array = array();
+$tab_array[] = array(gettext("Snort Interfaces"), false, "/snort/snort_interfaces.php");
+$tab_array[] = array(gettext("Global Settings"), false, "/snort/snort_interfaces_global.php");
+$tab_array[] = array(gettext("Updates"), false, "/snort/snort_download_updates.php");
+$tab_array[] = array(gettext("Alerts"), false, "/snort/snort_alerts.php");
+$tab_array[] = array(gettext("Blocked"), false, "/snort/snort_blocked.php");
+$tab_array[] = array(gettext("Pass Lists"), true, "/snort/snort_passlist.php");
+$tab_array[] = array(gettext("Suppress"), false, "/snort/snort_interfaces_suppress.php");
+$tab_array[] = array(gettext("IP Lists"), false, "/snort/snort_ip_list_mgmt.php");
+$tab_array[] = array(gettext("SID Mgmt"), false, "/snort/snort_sid_mgmt.php");
+$tab_array[] = array(gettext("Log Mgmt"), false, "/snort/snort_log_mgmt.php");
+$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=snort/snort_sync.xml");
+display_top_tabs($tab_array,true);
+
+$form = new Form(FALSE);
+$section = new Form_Section('General Information');
+$section->addInput(new Form_Input(
+	'name',
+	'Name',
+	'text',
+	$pconfig['name']
+))->setPattern('[a-zA-Z0-9_]+')->setHelp('The list name may only consist of the characters \'a-z, A-Z, 0-9 and _\'.');
+$section->addInput(new Form_Input(
+	'descr',
+	'Description',
+	'text',
+	$pconfig['descr']
+))->setHelp('You may enter a description here for your reference.');
+$form->add($section);
+
+$section = new Form_Section('Auto-Generated IP Addresses');
+$section->addInput(new Form_Checkbox(
+	'localnets',
+	'Local Networks',
+	'Add firewall Locally-Attached Networks to the list (excluding WAN).',
+	$pconfig['localnets'] == 'yes' ? true:false,
+	'yes'
+));
+$section->addInput(new Form_Checkbox(
+	'wangateips',
+	'WAN Gateways',
+	'Add WAN Gateways to the list.',
+	$pconfig['wangateips'] == 'yes' ? true:false,
+	'yes'
+));
+$section->addInput(new Form_Checkbox(
+	'wandnsips',
+	'WAN DNS Servers',
+	'Add WAN DNS servers to the list.',
+	$pconfig['wandnsips'] == 'yes' ? true:false,
+	'yes'
+));
+$section->addInput(new Form_Checkbox(
+	'vips',
+	'Virtual IP Addresses',
+	'Add Virtual IP Addresses to the list.',
+	$pconfig['vips'] == 'yes' ? true:false,
+	'yes'
+));
+$section->addInput(new Form_Checkbox(
+	'vpnips',
+	'VPN Addresses',
+	'Add VPN Addresses to the list.',
+	$pconfig['vpnips'] == 'yes' ? true:false,
+	'yes'
+));
+$form->add($section);
+
+$section = new Form_Section('Custom IP Address from Configured Alias');
+$section->addInput(new Form_Input(
+	'address',
+	'Assigned Alias',
+	'text',
+	$pconfig['address']
+))->setHelp('Enter the name of an existing Alias.')->setAttribute('title', trim(filter_expand_alias($pconfig['address'])));
+$form->add($section);
+
+$section = new Form_Section('');
+$btnsave = new Form_Button(
+	'save',
+	'Save',
+	null,
+	'fa-save'
+);
+$btncancel = new Form_Button(
+	'cancel',
+	'Cancel'
+);
+$btnsave->addClass('btn-primary')->addClass('btn-default');
+$btncancel->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-warning');
+
+$section->addInput(new Form_StaticText(
+	null,
+	$btnsave . $btncancel
+));
+$form->add($section);
+
+// Include the Pass List ID in a hidden form field with any $_POST
+if (isset($id)) {
+	$form->addGlobal(new Form_Input(
+		'id',
+		'id',
+		'hidden',
+		$id
+	));
+}
+
+print($form);
 ?>
-<script type="text/javascript" src="/javascript/autosuggest.js">
-</script>
-<script type="text/javascript" src="/javascript/suggestions.js">
-</script>
-<form action="snort_passlist_edit.php" method="post" name="iform" id="iform">
-<input name="id" type="hidden" value="<?=$id;?>" />
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr><td>
-<?php
-        $tab_array = array();
-        $tab_array[0] = array(gettext("Snort Interfaces"), false, "/snort/snort_interfaces.php");
-        $tab_array[1] = array(gettext("Global Settings"), false, "/snort/snort_interfaces_global.php");
-        $tab_array[2] = array(gettext("Updates"), false, "/snort/snort_download_updates.php");
-        $tab_array[3] = array(gettext("Alerts"), false, "/snort/snort_alerts.php");
-        $tab_array[4] = array(gettext("Blocked"), false, "/snort/snort_blocked.php");
-        $tab_array[5] = array(gettext("Pass Lists"), true, "/snort/snort_passlist.php");
-        $tab_array[6] = array(gettext("Suppress"), false, "/snort/snort_interfaces_suppress.php");
-	$tab_array[7] = array(gettext("IP Lists"), false, "/snort/snort_ip_list_mgmt.php");
-	$tab_array[8] = array(gettext("SID Mgmt"), false, "/snort/snort_sid_mgmt.php");
-	$tab_array[9] = array(gettext("Log Mgmt"), false, "/snort/snort_log_mgmt.php");
-	$tab_array[10] = array(gettext("Sync"), false, "/pkg_edit.php?xml=snort/snort_sync.xml");
-        display_top_tabs($tab_array,true);
-?>
-	</td>
-</tr>
-<tr><td><div id="mainarea">
-<table id="maintable" class="tabcont" width="100%" border="0" cellpadding="6" cellspacing="0">
-	<tr>
-		<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Add the name and " .
-		"description of the file."); ?></td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncellreq"><?php echo gettext("Name"); ?></td>
-		<td class="vtable"><input name="name" type="text" id="name" class="formfld unknown" 
-			size="40" value="<?=htmlspecialchars($pconfig['name']);?>" /> <br />
-		<span class="vexpl"> <?php echo gettext("The list name may only consist of the " .
-		"characters \"a-z, A-Z, 0-9 and _\"."); ?>&nbsp;&nbsp;<span class="red"><?php echo gettext("Note:"); ?> </span>
-		<?php echo gettext("No Spaces or dashes."); ?> </span></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Description"); ?></td>
-		<td width="78%" class="vtable"><input name="descr" type="text" class="formfld unknown" 
-			id="descr" size="40" value="<?=$pconfig['descr'];?>" /> <br />
-		<span class="vexpl"> <?php echo gettext("You may enter a description here for your " .
-		"reference (not parsed)."); ?> </span></td>
-	</tr>
-	<tr>
-		<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Add auto-generated IP Addresses."); ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Local Networks"); ?></td>
-		<td width="78%" class="vtable"><input name="localnets" type="checkbox"
-			id="localnets" size="40" value="yes"
-			<?php if($pconfig['localnets'] == 'yes'){ echo "checked";} if($pconfig['localnets'] == ''){ echo "checked";} ?> />
-		<span class="vexpl"> <?php echo gettext("Add firewall Local Networks to the list (excluding WAN)."); ?> </span></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("WAN Gateways"); ?></td>
-		<td width="78%" class="vtable"><input name="wangateips"
-			type="checkbox" id="wangateips" size="40" value="yes"
-			<?php if($pconfig['wangateips'] == 'yes'){ echo "checked";} if($pconfig['wangateips'] == ''){ echo "checked";} ?> />
-		<span class="vexpl"> <?php echo gettext("Add WAN Gateways to the list."); ?> </span></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("WAN DNS servers"); ?></td>
-		<td width="78%" class="vtable"><input name="wandnsips"
-			type="checkbox" id="wandnsips" size="40" value="yes"
-			<?php if($pconfig['wandnsips'] == 'yes'){ echo "checked";} if($pconfig['wandnsips'] == ''){ echo "checked";} ?> />
-		<span class="vexpl"> <?php echo gettext("Add WAN DNS servers to the list."); ?> </span></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Virtual IP Addresses"); ?></td>
-		<td width="78%" class="vtable"><input name="vips" type="checkbox"
-			id="vips" size="40" value="yes"
-			<?php if($pconfig['vips'] == 'yes'){ echo "checked";} if($pconfig['vips'] == ''){ echo "checked";} ?> />
-		<span class="vexpl"> <?php echo gettext("Add Virtual IP Addresses to the list."); ?> </span></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("VPNs"); ?></td>
-		<td width="78%" class="vtable"><input name="vpnips" type="checkbox"
-			id="vpnips" size="40" value="yes"
-			<?php if($pconfig['vpnips'] == 'yes'){ echo "checked";} if($pconfig['vpnips'] == ''){ echo "checked";} ?> />
-		<span class="vexpl"> <?php echo gettext("Add VPN Addresses to the list."); ?> </span></td>
-	</tr>
-	<tr>
-		<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Add custom IP Addresses from configured Aliases."); ?></td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell">
-		<?php echo gettext("Assigned Aliases:"); ?>
-		</td>
-		<td width="78%" class="vtable">
-		<input autocomplete="off" name="address" type="text" class="formfldalias" id="address" size="30" value="<?=htmlspecialchars($pconfig['address']);?>"
-		title="<?=trim(filter_expand_alias($pconfig['address']));?>"/>&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="button" class="formbtns" value="Aliases" onclick="selectAlias();" 
-		title="<?php echo gettext("Select an existing IP alias");?>"/>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top">&nbsp;</td>
-		<td width="78%">
-			<input id="save" name="save" type="submit" class="formbtn" value="Save" />
-			<input id="cancel" name="cancel" type="submit" class="formbtn" value="Cancel" />
-		</td>
-	</tr>
-</table>
-</div>
-</td></tr>
-</table>
-</form>
+
 <script type="text/javascript">
-<?php
-        $isfirst = 0;
-        $aliases = "";
-        $addrisfirst = 0;
-        $aliasesaddr = "";
-        if(isset($config['aliases']['alias']) && is_array($config['aliases']['alias']))
-                foreach($config['aliases']['alias'] as $alias_name) {
-			if ($alias_name['type'] != "host" && $alias_name['type'] != "network")
-				continue;
-                        if($addrisfirst == 1) $aliasesaddr .= ",";
-                        $aliasesaddr .= "'" . $alias_name['name'] . "'";
-                        $addrisfirst = 1;
-                }
-?>
-        var addressarray=new Array(<?php echo $aliasesaddr; ?>);
+//<![CDATA[
+events.push(function() {
 
-function createAutoSuggest() {
-<?php
-	echo "objAlias = new AutoSuggestControl(document.getElementById('address'), new StateSuggestions(addressarray));\n";
-?>
-}
+	// ---------- Autocomplete --------------------------------------------------------------------
 
-setTimeout("createAutoSuggest();", 500);
+	var addressarray = <?= json_encode(get_alias_list(array("host", "network", "openvpn"))) ?>;
 
-function selectAlias() {
-
-	var loc;
-	var fields = [ "name", "descr", "localnets", "wanips", "wangateips", "wandnsips", "vips", "vpnips", "address" ];
-
-	// Scrape current form field values and add to
-	// the select alias URL as a query string.
-	var loc = 'snort_select_alias.php?id=<?=$id;?>&act=import&type=host|network';
-	loc = loc + '&varname=address&multi_ip=yes';
-	loc = loc + '&returl=<?=urlencode($_SERVER['PHP_SELF']);?>';
-	loc = loc + '&uuid=<?=$passlist_uuid;?>';
-
-	// Iterate over just the specific form fields we want to pass to
-	// the select alias URL.
-	fields.forEach(function(entry) {
-		var tmp = $(entry).serialize();
-		if (tmp.length > 0)
-			loc = loc + '&' + tmp;
+	$('#address').autocomplete({
+		source: addressarray
 	});
-	
-	window.parent.location = loc; 
-}
-
+});
+//]]>
 </script>
-<?php include("fend.inc"); ?>
-</body>
-</html>
+<?php include("foot.inc"); ?>
+

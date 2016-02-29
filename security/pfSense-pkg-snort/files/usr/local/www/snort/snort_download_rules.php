@@ -1,10 +1,12 @@
 <?php
+/* $Id$ */
 /*
  * snort_download_rules.php
  *
  * Copyright (C) 2006 Scott Ullrich
  * Copyright (C) 2009 Robert Zelaya
  * Copyright (C) 2011-2012 Ermal Luci
+ * Copyright (C) 2015 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,70 +31,50 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-require_once("guiconfig.inc");
+require("guiconfig.inc");
 require_once("functions.inc");
-require_once("service-utils.inc");
 require_once("/usr/local/pkg/snort/snort.inc");
 
 global $g;
 
-$pgtitle = "Services: Snort: Update Rules";
-include("head.inc");
+$pgtitle = array(gettext("Services: Snort"), gettext("Update Rules"));
+include_once("head.inc");
+if ($input_errors)
+	print_input_errors($input_errors);
+
+if ($savemsg) {
+	print_info_box($savemsg, 'success');
+}
+
 ?>
 
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-
-<?php include("fbegin.inc"); ?>
-
-<form action="/snort/snort_download_updates.php" method="GET">
-
-<table width="100%" border="0" cellpadding="6" cellspacing="0">
-	<tr>
-		<td align="center"><div id="boxarea">
-		<table id="maintable" class="tabcont"  width="100%" border="0" cellpadding="6" cellspacing="0">
-			<tr>
-				<td class="tabcont" align="center">
-				<table width="420" border="0" cellpadding="0" cellspacing="0">
-					<tr>
-						<td style="background:url('../themes/<?= $g['theme']; ?>/images/misc/bar_left.gif')" height="15" width="5"></td>
-						<td style="background:url('../themes/<?= $g['theme']; ?>/images/misc/bar_gray.gif')" height="15" width="410">
-						<table id="progholder" width='410' cellpadding='0' cellspacing='0'>
-							<tr>
-								<td align="left"><img border='0' src='../themes/<?= $g['theme']; ?>/images/misc/bar_blue.gif'
-								width='0' height='15' name='progressbar' id='progressbar' alt='' /></td
-							</tr>
-						</table></td>
-						<td style="background:url('../themes/<?= $g['theme']; ?>/images/misc/bar_right.gif')" height="15" width="5"></td>
-					</tr>
-				</table>
-				</td>
-			</tr>
-			<tr>
-				<td class="tabcont" align="center">
-				<!-- status box -->
-				<textarea cols="85" rows="1" name="status" id="status" wrap="soft"><?=gettext("Initializing..."); ?>.</textarea>
-				<!-- command output box -->
-				<textarea cols="85" rows="12" name="output" id="output" wrap="soft"></textarea>
-				</td>
-			</tr>
-			<tr>
-				<td class="tabcont" align="center" valign="middle"><input type="submit" name="return" id="return" Value="Return"></td>
-			</tr>
-		</table>
-		</div>
-		</td>
-	</tr>
-</table>
+<form action="/snort/snort_download_updates.php" method="post" class="form-horizontal">
+<div class="panel panel-default">
+	<div class="panel-body">
+		<br />
+			<div class="progress">
+				<div id="progressbar" class="progress-bar progress-bar-striped" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 1%"></div>
+			</div>
+			<div class="panel-heading">
+				<div id="status"></div>
+			</div>
+			<div class="content">
+				<textarea rows="15" class="form-control" id="output"></textarea>
+			</div>
+	</div>
+	<div class="panel-footer">
+		<input type="submit" class="btn btn-info" name="btnReturn" id="btnReturn" value="Return"/>
+	</div>
+</div>
 </form>
-<?php include("fend.inc");?>
-</body>
-</html>
+
 <?php
 
 $snort_gui_include = true;
 include("/usr/local/pkg/snort/snort_check_for_rule_updates.php");
 
 /* hide progress bar and lets end this party */
-echo "\n<script type=\"text/javascript\">document.progressbar.style.visibility='hidden';\n</script>";
-
+echo "\n<script type=\"text/javascript\">document.getElementById('progressbar').style.visibility='hidden';\n</script>";
 ?>
+<?php include("foot.inc"); ?>
+

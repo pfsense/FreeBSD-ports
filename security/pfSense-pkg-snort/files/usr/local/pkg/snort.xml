@@ -45,6 +45,7 @@
 	</copyright>
 	<description>Snort IDS/IPS Package</description>
 	<name>Snort</name>
+	<version>3.2.9.1</version>
 	<title>Services: Snort IDS</title>
 	<include_file>/usr/local/pkg/snort/snort.inc</include_file>
 	<menu>
@@ -139,10 +140,6 @@
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/www/snort/</prefix>
-		<item>https://packages.pfsense.org/packages/config/snort/snort_rules_edit.php</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/snort/</prefix>
 		<item>https://packages.pfsense.org/packages/config/snort/snort_rulesets.php</item>
 	</additional_files_needed>
 	<additional_files_needed>
@@ -164,10 +161,6 @@
 	<additional_files_needed>
 		<prefix>/usr/local/www/snort/</prefix>
 		<item>https://packages.pfsense.org/packages/config/snort/snort_interfaces_suppress_edit.php</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/snort/</prefix>
-		<item>https://packages.pfsense.org/packages/config/snort/snort_list_view.php</item>
 	</additional_files_needed>
 	<additional_files_needed>
 		<prefix>/usr/local/www/snort/</prefix>

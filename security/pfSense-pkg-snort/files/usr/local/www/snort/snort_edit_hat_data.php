@@ -3,7 +3,7 @@
  * snort_edit_hat_data.php
  * Copyright (C) 2004 Scott Ullrich
  * Copyright (C) 2011-2012 Ermal Luci
- * Copyright (C) 2013-2014 Bill Meeks
+ * Copyright (C) 2013-2016 Bill Meeks
  * All rights reserved.
  *
  * originially part of m0n0wall (http://m0n0.ch/wall)
@@ -88,49 +88,67 @@ if ($_POST['save']) {
 	$pconfig['host_attribute_data'] = $_POST['host_attribute_data'];
 }
 
-
 $if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
-$pgtitle = gettext("Snort: Interface {$if_friendly} - Host Attribute Table Data");
+$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Host Attribute Table Data"), gettext("{$if_friendly}"));
 include_once("head.inc");
 
-?>
-
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC" >
-
-<?php
-include("fbegin.inc");
 if ($input_errors)
 	print_input_errors($input_errors);
 if ($savemsg)
 	print_info_box($savemsg);
-?>
-<form action="snort_edit_hat_data.php" method="post" name="iform" id="iform">
-<div id="boxarea">
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr>
-<td class="tabcont">
-<table width="100%" border="0" cellpadding="6" cellspacing="0">
-	<tr>
-		<td valign="middle" class="listtopic"><?php echo gettext("Edit Host Attribute Table Data"); ?></td>
-	</tr>
-	<tr>
-		<td>
-		<input type='hidden' name='id' value='<?=$id;?>'>
-		<textarea wrap="off" cols="80" rows="35" name="host_attribute_data" id="host_attribute_data" style="width:99%; height:100%;"><?=htmlspecialchars($pconfig['host_attribute_data']);?></textarea></td>
-	</tr>
-	<tr>
-		<td>
-			<input name="save" type="submit" class="formbtn" value="<?php echo gettext(" Save "); ?>" title=" <?php echo gettext("Save Host Attribute data"); ?>"/>&nbsp;&nbsp;
-			<input type="button" class="formbtn" value=" <?php echo gettext("Return"); ?>" onclick="parent.location='snort_preprocessors.php?id=<?=$id;?>'" title="<?php echo gettext("Return to Preprocessors tab"); ?>"/>&nbsp;&nbsp;
-			<input name="clear" type="submit" class="formbtn" id="clear" value="<?php echo gettext("Clear"); ?>" onclick="return confirm('<?php echo gettext("This will erase all Host Attribute data for the interface.  Are you sure?"); ?>')" title="<?php echo gettext("Deletes all Host Attribute data"); ?>"/>
-		</td>
-	</tr>
-</table>
-</td>
-</tr>
-</table>
-</div>
-</form>
-<?php include("fend.inc"); ?>
-</body>
-</html>
+
+$form = new Form(FALSE);
+$section = new Form_Section('Edit Host Attribute Table Data');
+$section->addInput(new Form_Textarea (
+	'host_attribute_data',
+	'Host Attribute Table Data',
+	$pconfig['host_attribute_data']
+))->setHelp('Type or paste in the Host Atttribute Table data for this Snort interface instance and then click SAVE.')->setRows('25')->setNoWrap()->setAttribute('wrap', 'off');
+
+// Create some customized Form buttons
+$btnsave = new Form_Button(
+	'save',
+	'Save',
+	null,
+	'fa-save'
+);
+$btnreturn = new Form_Button(
+	'',
+	'Return',
+	'snort_preprocessors.php?id=' . $id,
+	'fa-backward'
+);
+$btnclear = new Form_Button(
+	'clear',
+	'Clear',
+	null,
+	'fa-trash'
+);
+
+// Customize the class and attributes for the buttons
+$btnsave->addClass('btn-primary')->addClass('btn-default');
+$btnsave->setAttribute('title', gettext('Save Host Attribute data'));
+$btnreturn->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success');
+$btnreturn->setAttribute('title', gettext("Return to Preprocessors tab"));
+$btnclear->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-danger');
+$btnclear->setAttribute('title', gettext("Deletes all Host Attribute data"));
+
+// Add the customized buttons to StaticText control for display
+$section->addInput(new Form_StaticText(
+	null,
+	$btnsave . $btnreturn . $btnclear
+));
+
+$form->add($section);
+
+$form->addGlobal(new Form_Input(
+	'id',
+	'id',
+	'hidden',
+	$id
+));
+
+print($form);
+
+include("foot.inc"); ?>
+

@@ -5,7 +5,7 @@
  *
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2008-2009 Robert Zelaya.
- * Copyright (C) 2014 Bill Meeks
+ * Copyright (C) 2014-2016 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -163,161 +163,126 @@ if ($_POST['save']) {
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
-$pgtitle = gettext("Snort: Interface {$if_friendly} Variables - Servers and Ports");
-include_once("head.inc");
+$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Interface Servers and Ports Variables - {$if_friendly}"));
+include("head.inc");
 
-?>
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-
-<?php 
-include("fbegin.inc"); 
 /* Display Alert message */
 if ($input_errors)
 	print_input_errors($input_errors); // TODO: add checks
 if ($savemsg)
 	print_info_box($savemsg);
-?>
 
-<script type="text/javascript" src="/javascript/autosuggest.js">
-</script>
-<script type="text/javascript" src="/javascript/suggestions.js">
-</script>
-<form action="snort_define_servers.php" method="post" name="iform" id="iform">
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr><td>
-<?php
-		$tab_array = array();
-		$tab_array[0] = array(gettext("Snort Interfaces"), true, "/snort/snort_interfaces.php");
-		$tab_array[1] = array(gettext("Global Settings"), false, "/snort/snort_interfaces_global.php");
-		$tab_array[2] = array(gettext("Updates"), false, "/snort/snort_download_updates.php");
-		$tab_array[3] = array(gettext("Alerts"), false, "/snort/snort_alerts.php?instance={$id}");
-		$tab_array[4] = array(gettext("Blocked"), false, "/snort/snort_blocked.php");
-		$tab_array[5] = array(gettext("Pass Lists"), false, "/snort/snort_passlist.php");
-		$tab_array[6] = array(gettext("Suppress"), false, "/snort/snort_interfaces_suppress.php");
-		$tab_array[7] = array(gettext("IP Lists"), false, "/snort/snort_ip_list_mgmt.php");
-		$tab_array[8] = array(gettext("SID Mgmt"), false, "/snort/snort_sid_mgmt.php");
-		$tab_array[9] = array(gettext("Log Mgmt"), false, "/snort/snort_log_mgmt.php");
-		$tab_array[10] = array(gettext("Sync"), false, "/pkg_edit.php?xml=snort/snort_sync.xml");
-		display_top_tabs($tab_array, true);
-		echo '</td></tr>';
-		echo '<tr><td class="tabnavtbl">';
-		$menu_iface=($if_friendly?substr($if_friendly,0,5)." ":"Iface ");
-		$tab_array = array();
-		$tab_array[] = array($menu_iface . gettext(" Settings"), false, "/snort/snort_interfaces_edit.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("Categories"), false, "/snort/snort_rulesets.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("Rules"), false, "/snort/snort_rules.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("Variables"), true, "/snort/snort_define_servers.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("Preprocs"), false, "/snort/snort_preprocessors.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/snort/snort_barnyard.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/snort/snort_ip_reputation.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("Logs"), false, "/snort/snort_interface_logs.php?id={$id}");
-		display_top_tabs($tab_array, true);
-?>
-</td></tr>
-<tr>
-		<td><div id="mainarea">
-		<table id="maintable" class="tabcont" width="100%" border="0" cellpadding="6" cellspacing="0">
-		<tr>
-			<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Define Servers (IP variables)"); ?></td>
-		</tr>
-<?php
-		foreach ($snort_servers as $key => $server):
-			if (strlen($server) > 40)
-				$server = substr($server, 0, 40) . "...";
-			$label = strtoupper($key);
-			$value = "";
-			$title = "";
-			if (!empty($pconfig["def_{$key}"])) {
-				$value = htmlspecialchars($pconfig["def_{$key}"]);
-				$title = trim(filter_expand_alias($pconfig["def_{$key}"]));
-			}
-?>
-			<tr>
-				<td width='30%' valign='top' class='vncell'><?php echo gettext("Define"); ?> <?=$label;?></td>
-				<td width="70%" class="vtable">
-					<input name="def_<?=$key;?>" size="40"
-					type="text" autocomplete="off" class="formfldalias" id="def_<?=$key;?>"
-					value="<?=$value;?>" title="<?=$title;?>"> <br/>
-				<span class="vexpl"><?php echo gettext("Default value:"); ?> "<?=$server;?>" <br/><?php echo gettext("Leave " .
-				"blank for default value."); ?></span>
-				</td>
-			</tr>
-<?php		endforeach; ?>
-		<tr>
-			<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Define Ports (port variables)"); ?></td>
-		</tr>
-<?php
-		foreach ($snort_ports as $key => $server):
-			if (strlen($server) > 40)
-				$server = substr($server, 0, 40) . "...";
-			$label = strtoupper($key);
-			$value = "";
-			$title = "";
-			if (!empty($pconfig["def_{$key}"])) {
-				$value = htmlspecialchars($pconfig["def_{$key}"]);
-				$title = trim(filter_expand_alias($pconfig["def_{$key}"]));
-			}
-?>
-			<tr>
-				<td width='30%' valign='top' class='vncell'><?php echo gettext("Define"); ?> <?=$label;?></td>
-				<td width="70%" class="vtable">
-					<input name="def_<?=$key;?>" type="text" size="40" autocomplete="off" class="formfldalias" id="def_<?=$key;?>"
-					value="<?=$value;?>" title="<?=$title;?>"> <br/>
-				<span class="vexpl"><?php echo gettext("Default value:"); ?> "<?=$server;?>" <br/> <?php echo gettext("Leave " .
-				"blank for default value."); ?></span>
-				</td>
-			</tr>
-<?php		endforeach; ?>
-		<tr>
-			<td width="30%" valign="top">&nbsp;</td>
-			<td width="70%">
-				<input name="save" type="submit" class="formbtn" value="Save">
-				<input name="id" type="hidden" value="<?=$id;?>">
-			</td>
-		</tr>
-	</table>
-</div>
-</td></tr>
-</table>
-</form>
-<script type="text/javascript">
-<?php
-        $isfirst = 0;
-        $aliases = "";
-        $addrisfirst = 0;
-        $portisfirst = 0;
-        $aliasesaddr = "";
-        $aliasesports = "";
-        if(isset($config['aliases']['alias']) && is_array($config['aliases']['alias']))
-                foreach($config['aliases']['alias'] as $alias_name) {
-                        if ($alias_name['type'] == "host" || $alias_name['type'] == "network") {
-				if($addrisfirst == 1) $aliasesaddr .= ",";
-				$aliasesaddr .= "'" . $alias_name['name'] . "'";
-				$addrisfirst = 1;
-			} else if ($alias_name['type'] == "port") {
-				if($portisfirst == 1) $aliasesports .= ",";
-				$aliasesports .= "'" . $alias_name['name'] . "'";
-				$portisfirst = 1;
-			}
-                }
-?>
+$tab_array = array();
+$tab_array[] = array(gettext("Snort Interfaces"), true, "/snort/snort_interfaces.php");
+$tab_array[] = array(gettext("Global Settings"), false, "/snort/snort_interfaces_global.php");
+$tab_array[] = array(gettext("Updates"), false, "/snort/snort_download_updates.php");
+$tab_array[] = array(gettext("Alerts"), false, "/snort/snort_alerts.php?instance={$id}");
+$tab_array[] = array(gettext("Blocked"), false, "/snort/snort_blocked.php");
+$tab_array[] = array(gettext("Pass Lists"), false, "/snort/snort_passlist.php");
+$tab_array[] = array(gettext("Suppress"), false, "/snort/snort_interfaces_suppress.php");
+$tab_array[] = array(gettext("IP Lists"), false, "/snort/snort_ip_list_mgmt.php");
+$tab_array[] = array(gettext("SID Mgmt"), false, "/snort/snort_sid_mgmt.php");
+$tab_array[] = array(gettext("Log Mgmt"), false, "/snort/snort_log_mgmt.php");
+$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=snort/snort_sync.xml");
+display_top_tabs($tab_array, true);
+$menu_iface=($if_friendly?substr($if_friendly,0,5)." ":"Iface ");
+$tab_array = array();
+$tab_array[] = array($menu_iface . gettext(" Settings"), false, "/snort/snort_interfaces_edit.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Categories"), false, "/snort/snort_rulesets.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Rules"), false, "/snort/snort_rules.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Variables"), true, "/snort/snort_define_servers.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Preprocs"), false, "/snort/snort_preprocessors.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/snort/snort_barnyard.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/snort/snort_ip_reputation.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Logs"), false, "/snort/snort_interface_logs.php?id={$id}");
+display_top_tabs($tab_array, true);
 
-        var addressarray=new Array(<?php echo $aliasesaddr; ?>);
-        var portsarray=new Array(<?php echo $aliasesports; ?>);
+$form = new Form();
 
-function createAutoSuggest() {
-<?php
-	foreach ($snort_servers as $key => $server)
-		echo "objAlias{$key} = new AutoSuggestControl(document.getElementById('def_{$key}'), new StateSuggestions(addressarray));\n";
-	foreach ($snort_ports as $key => $server)
-		echo "pobjAlias{$key} = new AutoSuggestControl(document.getElementById('def_{$key}'), new StateSuggestions(portsarray));\n";
-?>
+$form->addGlobal(new Form_Input(
+	'id',
+	'id',
+	'hidden',
+	$id
+));
+
+$section = new Form_Section('Define Servers (IP variables)');
+
+foreach ($snort_servers as $key => $server) {
+	if (strlen($server) > 40) {
+		$server = substr($server, 0, 40) . "...";
+	}
+
+	$name = "def_" . $key;
+	$label = strtoupper($key);
+	$value = "";
+	$title = "";
+
+	if (!empty($pconfig["def_{$key}"])) {
+		$value = htmlspecialchars($pconfig["def_{$key}"]);
+		$title = trim(filter_expand_alias($pconfig["def_{$key}"]));
+	}
+
+	$section->addInput(new Form_Input(
+		$name,
+		$label,
+		'text',
+		$pconfig[$name]
+	))->setHelp('Default value: ' . $server . '. Leave blank for default value.');
 }
+$form->add($section);
 
-setTimeout("createAutoSuggest();", 500);
+$section = new Form_Section('Define Ports (port variables)');
+foreach ($snort_ports as $key => $server) {
+	if (strlen($server) > 40) {
+		$server = substr($server, 0, 40) . "...";
+	}
 
+	$label = strtoupper($key);
+	$name = "def_" . $key;
+	$value = "";
+	$title = "";
+
+	if (!empty($pconfig["def_{$key}"])) {
+		$value = htmlspecialchars($pconfig["def_{$key}"]);
+		$title = trim(filter_expand_alias($pconfig["def_{$key}"]));
+	}
+
+	$section->addInput(new Form_Input(
+		$name,
+		$label,
+		'text',
+		$pconfig[$name]
+	))->setHelp('Default value: ' . $server . '. Leave blank for default value.');
+
+}
+$form->add($section);
+
+print($form);
+
+?>
+
+<script type="text/javascript">
+//<![CDATA[
+events.push(function() {
+	var addressarray = <?= json_encode(get_alias_list(array("host", "network"))) ?>;
+	var portsarray  = <?= json_encode(get_alias_list("port")) ?>;
+
+	function createAutoSuggest() {
+	<?php
+
+		foreach ($snort_servers as $key => $server)
+			echo '$("#def_' . $key . '").autocomplete({source: addressarray});' . "\n";
+
+		foreach ($snort_ports as $key => $server)
+			echo '$("#def_' . $key . '").autocomplete({source: portsarray});' . "\n";
+	?>
+	}
+
+	setTimeout(createAutoSuggest, 500);
+
+});
+//]]>
 </script>
 
-<?php include("fend.inc"); ?>
-</body>
-</html>
+<?php include("foot.inc"); ?>

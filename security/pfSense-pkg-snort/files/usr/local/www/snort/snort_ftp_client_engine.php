@@ -1,7 +1,7 @@
 <?php
 /*
  * snort_ftp_client_engine.php
- * Copyright (C) 2013-2014 Bill Meeks
+ * Copyright (C) 2013-2016 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -73,7 +73,7 @@ if (empty($a_nat[$eng_id])) {
 else
 	$pconfig = $a_nat[$eng_id];
 
-if ($_POST['Cancel']) {
+if ($_POST['cancel']) {
 	// Clear and close out any session variable we created
 	session_start();
 	unset($_SESSION['ftp_client_import']);
@@ -218,218 +218,230 @@ if ($_POST['save']) {
 		/* Now write the new engine array to conf */
 		write_config("Snort pkg: modified ftp_telnet_client engine settings.");
 
-		// We have saved a preproc config change, so set "dirty" flag
-		mark_subsystem_dirty('snort_preprocessors');
-
 		header("Location: /snort/snort_preprocessors.php?id={$id}#ftp_telnet_row_ftp_proto_opts");
 		exit;
 	}
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($config['installedpackages']['snortglobal']['rule'][$id]['interface']);
-$pgtitle = gettext("Snort: Interface {$if_friendly} - FTP Preprocessor Client Engine");
-include_once("head.inc");
+$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("FTP Preprocessor Client Engine"), gettext("{$if_friendly}"));
+include("head.inc");
 
-?>
-
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC" >
-
-<?php
-include("fbegin.inc");
 if ($input_errors) print_input_errors($input_errors);
 if ($savemsg)
 	print_info_box($savemsg);
+
+$form = new Form(FALSE);
+$section = new Form_Section('Snort Target-Based FTP Client Engine Configuration');
+
+$engine_name = new Form_Input(
+	'ftp_name',
+	'Engine Name',
+	'text',
+	$pconfig['name']
+);
+if ($pconfig['name'] <> "default") {
+	$engine_name->setHelp('Enter a unique name or description for this engine.  (Max 25 characters)');
+}
+else {
+	$engine_name->setReadonly()->setHelp('The name for the default engine is read-only.');
+}
+$section->addInput($engine_name);
+
+if ($pconfig['name'] <> "default") {
+	$bind_to = new Form_Input(
+		'ftp_bind_to',
+		'',
+		'text',
+		$pconfig['bind_to']
+	);
+	$bind_to->setAttribute('title', trim(filter_expand_alias($pconfig['bind_to'])));
+	$bind_to->setHelp('IP List to bind this engine to. (Cannot be blank)');
+	$btnaliases = new Form_Button(
+		'btnSuppressList',
+		' ' . 'Aliases',
+		'snort_select_alias.php?id=' . $id . '&eng_id=<?=' . $eng_id . '&type=host|network&varname=bind_to&act=import&multi_ip=yes&returl=' . urlencode($_SERVER['PHP_SELF']),
+		'fa-search-plus'
+	);
+	$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
+	$btnaliases->setAttribute('title', gettext("Select an existing IP alias"));
+	$group = new Form_Group('Bind-To IP Address Alias');
+	$group->add($bind_to);
+	$group->add($btnaliases);
+	$group->setHelp(gettext("Supplied value must be a pre-configured Alias or the keyword 'all'."));
+	$section->add($group);
+}
+else {
+	$section->addInput( new Form_Input(
+		'ftp_bind_to',
+		'Bind-To IP Address Alias',
+		'text',
+		$pconfig['bind_to']
+	))->setReadonly()->setHelp('The default engine is required and only runs for packets with destination addresses not matching other engine IP Lists.');
+}
+
+$section->addInput(new Form_Checkbox(
+	'ftp_telnet_cmds',
+	'Detect Telnet Commands',
+	'Alert when Telnet commands are seen on the FTP command channel.  Default is Not Checked.',
+	$pconfig['telnet_cmds'] == 'yes' ? true:false,
+	'yes'
+));
+
+$section->addInput(new Form_Checkbox(
+	'ftp_ignore_telnet_erase_cmds',
+	'Ignore Telnet Erase Commands',
+	'Ignore Telnet escape sequences for erase character and erase line when normalizing FTP command channel.  Default is Checked.',
+	$pconfig['ignore_telnet_erase_cmds'] == 'yes' ? true:false,
+	'yes'
+));
+
+$frag3_in = new Form_Input(
+	'ftp_max_resp_len',
+	'Maximum Response Length',
+	'number',
+	$pconfig['max_resp_len']
+);
+$frag3_in->setAttribute('min', '0');
+$frag3_in->setHelp(sprintf(gettext('Max FTP command response length accepted by client.  Enter 0 to disable.  Default is 256%sThis specifies the maximum allowed response length to an FTP command accepted by the client.  It can be used as a basic buffer overflow detection.'),'<br/>'));
+$section->addInput($frag3_in);
+
+$section->addInput(new Form_Checkbox(
+	'ftp_client_bounce_detect',
+	'Bounce Detection',
+	'Enable detection and alerting of FTP bounce attacks.  Default is Checked.',
+	$pconfig['bounce'] == 'yes' ? true:false,
+	'yes'
+));
+
+$bind_to = new Form_Input(
+	'ftp_client_bounce_to_net',
+	'',
+	'text',
+	$pconfig['bounce_to_net']
+);
+$bind_to->setAttribute('title', trim(filter_expand_alias($pconfig['bounce_to_net'])));
+$bind_to->setHelp('Default is blank.  Supplied value must be a pre-configured IP Alias.');
+$btnaliases = new Form_Button(
+	'btnSelectAlias',
+	' ' . 'Aliases',
+	'snort_select_alias.php?id=' . $id . '&eng_id=<?=' . $eng_id . '&type=host|network&varname=bounce_to_net&act=import&returl=' . urlencode($_SERVER['PHP_SELF']),
+	'fa-search-plus'
+);
+$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
+$btnaliases->setAttribute('title', gettext("Select an existing IP alias"));
+$group = new Form_Group('Bounce-To Address');
+$group->add($bind_to);
+$group->add($btnaliases);
+$section->add($group);
+
+$bind_to = new Form_Input(
+	'ftp_client_bounce_to_port',
+	'',
+	'text',
+	$pconfig['bounce_to_port']
+);
+$bind_to->setAttribute('title', trim(filter_expand_alias($pconfig['bounce_to_port'])));
+$bind_to->setHelp('Default is blank.  Supplied value must be a pre-configured Port Alias.');
+$btnaliases = new Form_Button(
+	'btnSelectAlias',
+	' ' . 'Aliases',
+	'snort_select_alias.php?id=' . $id . '&eng_id=<?=' . $eng_id . '&type=port&varname=bounce_to_port&act=import&returl=' . urlencode($_SERVER['PHP_SELF']),
+	'fa-search-plus'
+);
+$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
+$btnaliases->setAttribute('title', gettext("Select an existing port alias"));
+$group = new Form_Group('Bounce-To Port');
+$group->add($bind_to);
+$group->add($btnaliases);
+$section->add($group);
+
+$msg = '<span class="help-block">' . gettext("When the Bounce Detection option is enabled, this allows the PORT command to use the address and port (or inclusive port range) specified above ");
+$msg .= gettext("without generating an alert.  It can be used with proxied FTP connections where the FTP data channel is different from the client.") . '</span>';
+$msg .= '<br/><span class="text-info"><b>' . gettext("Note: ") . '</b>' . gettext("Supplied value must be a pre-configured Alias or left blank.  ");
+$msg .= gettext("Leave these settings at their defaults unless you are proxying FTP connections.") . '</span>';
+$section->addInput( new Form_StaticText (
+	null,
+	$msg
+));
+
+$btnsave = new Form_Button(
+	'save',
+	'Save',
+	null,
+	'fa-save'
+);
+$btncancel = new Form_Button(
+	'cancel',
+	'Cancel'
+);
+$btnsave->addClass('btn-primary')->addClass('btn-default')->setAttribute('title', 'Save FTP Client engine settings and return to Preprocessors tab');
+$btncancel->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-warning')->setAttribute('title', 'Cancel changes and return to Preprocessors tab');
+
+$section->addInput(new Form_StaticText(
+	null,
+	$btnsave . $btncancel
+));
+
+$form->add($section);
+
+$form->addGlobal(new Form_Input(
+	'id',
+	'id',
+	'hidden',
+	$id
+));
+$form->addGlobal(new Form_Input(
+	'eng_id',
+	'eng_id',
+	'hidden',
+	$eng_id
+));
+
+print($form);
+
 ?>
 
-<form action="snort_ftp_client_engine.php" method="post" name="iform" id="iform">
-<input name="id" type="hidden" value="<?=$id?>">
-<input name="eng_id" type="hidden" value="<?=$eng_id?>">
-<div id="boxarea">
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr>
-<td class="tabcont">
-<table width="100%" border="0" cellpadding="6" cellspacing="0">
-	<tr>
-		<td colspan="2" valign="middle" class="listtopic"><?php echo gettext("Snort Target-Based FTP Client Engine Configuration"); ?></td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("Engine Name"); ?></td>
-		<td class="vtable">
-			<input name="ftp_name" type="text" class="formfld unknown" id="ftp_name" size="25" maxlength="25" 
-			value="<?=htmlspecialchars($pconfig['name']);?>"<?php if (htmlspecialchars($pconfig['name']) == "default") echo "readonly";?>>&nbsp;
-			<?php if (htmlspecialchars($pconfig['name']) <> "default") 
-					echo gettext("Name or description for this engine.  (Max 25 characters)");
-				else
-					echo "<span class=\"red\">" . gettext("The name for the 'default' engine is read-only.") . "</span>";?><br/>
-			<?php echo gettext("Unique name or description for this engine configuration.  Default value is ") . 
-			"<strong>" . gettext("default") . "</strong>"; ?>.<br/>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("Bind-To IP Address Alias"); ?></td>
-		<td class="vtable">
-		<?php if ($pconfig['name'] <> "default") : ?>
-			<table width="95%" border="0" cellpadding="2" cellspacing="0">
-				<tr>
-					<td class="vexpl"><input name="ftp_bind_to" type="text" class="formfldalias" id="ftp_bind_to" size="32" 
-					value="<?=htmlspecialchars($pconfig['bind_to']);?>" title="<?=trim(filter_expand_alias($pconfig['bind_to']));?>" autocomplete="off" >&nbsp;
-					<?php echo gettext("IP List to bind this engine to. (Cannot be blank)"); ?></td>
-					<td align="right"><input type="button" class="formbtns" value="Aliases" onclick="parent.location='snort_select_alias.php?id=<?=$id;?>&eng_id=<?=$eng_id;?>&type=host|network&varname=bind_to&act=import&returl=<?=urlencode($_SERVER['PHP_SELF']);?>'" 
-					title="<?php echo gettext("Select an existing IP alias");?>"/></td>
-				</tr>
-				<tr>
-					<td class="vexpl" colspan="2"><?php echo gettext("This engine will only run for packets with destination addresses contained within the IP List.");?>.<br/><br/>
-					<span class="red"><strong><?php echo gettext("Note: ") . "</strong></span>" . gettext("Supplied value must be a pre-configured Alias or the keyword 'all'.");?></td>
-				</tr>
-			</table>
-		<?php else : ?>
-			<input name="ftp_bind_to" type="text" class="formfldalias" id="ftp_bind_to" size="32" 
-			value="<?=htmlspecialchars($pconfig['bind_to']);?>" autocomplete="off" readonly>&nbsp;
-			<?php echo "<span class=\"red\">" . gettext("IP address for the default engine is read-only and must be 'all'.") . "</span>";?><br/>
-			<?php echo gettext("The default engine is required and only runs for packets with destination addresses not matching other engine IP addresses.");?><br/>
-		<?php endif ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Detect Telnet Commands"); ?></td>
-		<td width="78%" class="vtable"><input name="ftp_telnet_cmds" id="ftp_telnet_cmds" type="checkbox" value="on"  
-			<?php if ($pconfig['telnet_cmds']=="yes") echo "checked "; ?>>
-			<?php echo gettext("Alert when Telnet commands are seen on the FTP command channel.  Default is ") . 
-			"<strong>" . gettext("Not Checked") . "</strong>"; ?>.<br/>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Ignore Telnet Erase Commands"); ?></td>
-		<td width="78%" class="vtable"><input name="ftp_ignore_telnet_erase_cmds" id="ftp_ignore_telnet_erase_cmds" type="checkbox" value="on"  
-			<?php if ($pconfig['ignore_telnet_erase_cmds']=="yes") echo "checked "; ?>>
-			<?php echo gettext("Ignore Telnet escape sequences for erase character and erase line when normalizing FTP command channel.") . "<br/>" . 
-			gettext("Default is ") . "<strong>" . gettext("Checked") . "</strong>"; ?>.<br/>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("Maximum Response Length"); ?></td>
-		<td class="vtable">
-			<input name="ftp_max_resp_len" type="text" class="formfld unknown" id="ftp_max_resp_len" size="6" 
-			value="<?=htmlspecialchars($pconfig['max_resp_len']);?>">
-			<?php echo gettext("Max FTP command response length accepted by client.  Enter ") . "<strong>" . gettext("0") . "</strong>" . 
-			gettext(" to disable.  Default is ") . "<strong>" . gettext("256.") . "</strong>";?><br/>
-			<?php echo gettext("Specifies the maximum allowed response length to an FTP command accepted by the client.  It can be used as ") . 
-			gettext("a basic buffer overflow detection.");?><br/>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Bounce Detection"); ?></td>
-		<td width="78%" class="vtable"><input name="ftp_client_bounce_detect" type="checkbox" value="on" 
-			<?php if ($pconfig['bounce']=="yes") echo "checked"; ?> onclick="ftp_client_bounce_enable_change();">
-		<?php echo gettext("Enable detection and alerting of FTP bounce attacks.  Default is ") . 
-		"<strong>" . gettext("Checked") . "</strong>"; ?>.</td>
-	</tr>
-	<tr id="ftp_client_row_bounce_to">
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Bounce-To Configuration"); ?></td>
-		<td width="78%" class="vtable">
-			<table border="0" cellpadding="2" cellspacing="0">
-			   <tr>
-				<td class="vexpl"><strong><?php echo gettext("Bounce-To Address:"); ?></strong></td>
-				<td class="vexpl"><input name="ftp_client_bounce_to_net" type="text" class="formfldalias" id="ftp_client_bounce_to_net" size="20" 
-					value="<?=htmlspecialchars($pconfig['bounce_to_net']);?>" title="<?=trim(filter_expand_alias($pconfig['bounce_to_net']));?>" autocomplete="off"><span class="vexpl">&nbsp;
-					<?php echo gettext("Default is ") . "<strong>" . gettext("blank") . "</strong>.";?></span>
-				</td>
-				<td class="vexpl">&nbsp;&nbsp;<input type="button" class="formbtns" value="Aliases" onclick="parent.location='snort_select_alias.php?id=<?=$id;?>&eng_id=<?=$eng_id;?>&type=host|network&varname=bounce_to_net&act=import&returl=<?=urlencode($_SERVER['PHP_SELF']);?>'"  
-					title="<?php echo gettext("Select an existing IP alias");?>"/>
-				</td>
-			   </tr>
-			   <tr>
-				<td class="vexpl"><strong><?php echo gettext("Bounce-To Port:"); ?></strong></td>
-				<td class="vexpl"><input name="ftp_client_bounce_to_port" type="text" class="formfldalias" id="ftp_client_bounce_to_port" size="20" 
-					value="<?=htmlspecialchars($pconfig['bounce_to_port']);?>" title="<?=trim(filter_expand_alias($pconfig['bounce_to_port']));?>" autocomplete="off"><span class="vexpl">&nbsp;
-					<?php echo gettext("Default is ") . "<strong>" . gettext("blank") . "</strong>.";?></span>
-				</td>
-				<td class="vexpl">&nbsp;&nbsp;<input type="button" class="formbtns" value="Aliases" onclick="parent.location='snort_select_alias.php?id=<?=$id;?>&eng_id=<?=$eng_id;?>&type=port&varname=bounce_to_port&act=import&returl=<?=urlencode($_SERVER['PHP_SELF']);?>'"  
-					title="<?php echo gettext("Select an existing port alias");?>"/>
-				</td>
-			   </tr>
-			</table>
-			<?php echo gettext("When the Bounce option is enabled, this allows the PORT command to use the address and port (or inclusive port range) ") . 
-			gettext("specified without generating an alert.  It can be used with proxied FTP connections where the FTP data channel is different from the client.");?><br/><br/>
-			<span class="red"><strong><?php echo gettext("Note: ") . "</strong></span>" . 
-			gettext("Supplied value must be a pre-configured Alias or left blank.");?><br/>
-			<span class="red"><?php echo gettext("Hint: ") . "</span>" . gettext("Leave these settings at their defaults unless you are proxying FTP connections.");?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="bottom">&nbsp;</td>
-		<td width="78%" valign="bottom">
-			<input name="save" id="save" type="submit" class="formbtn" value=" Save " title="<?php echo 
-			gettext("Save ftp engine settings and return to Preprocessors tab"); ?>">
-			&nbsp;&nbsp;&nbsp;&nbsp;
-			<input name="Cancel" id="cancel" type="submit" class="formbtn" value="Cancel" title="<?php echo 
-			gettext("Cancel changes and return to Preprocessors tab"); ?>"></td>
-	</tr>
-</table>
-</td>
-</tr>
-</table>
-</div>
-</form>
-<?php include("fend.inc"); ?>
-</body>
-<script type="text/javascript" src="/javascript/autosuggest.js">
-</script>
-<script type="text/javascript" src="/javascript/suggestions.js">
-</script>
 <script type="text/javascript">
+//<![CDATA[
 
-<?php
-	$isfirst = 0;
-	$aliases = "";
-	$addrisfirst = 0;
-	$portisfirst = 0;
-	$aliasesaddr = "";
-	$aliasesport = "";
-	if(isset($config['aliases']['alias']) && is_array($config['aliases']['alias']))
-		foreach($config['aliases']['alias'] as $alias_name) {
-			// Skip any Aliases that resolve to an empty string
-			if (trim(filter_expand_alias($alias_name['name'])) == "")
-				continue;
-			if ($alias_name['type'] == "host" || $alias_name['type'] == "network") {
-				if($addrisfirst == 1) $aliasesaddr .= ",";
-				$aliasesaddr .= "'" . $alias_name['name'] . "'";
-				$addrisfirst = 1;
-			}
-			elseif ($alias_name['type'] == "port") {
-				if($portisfirst == 1) $aliasesport .= ",";
-				$aliasesport .= "'" . $alias_name['name'] . "'";
-				$portisfirst = 1;
-			}
-		}
+	function ftp_client_bounce_enable_change() {
+		var hide = ! $('#ftp_client_bounce_detect').prop('checked');
 
-?>
-	var addressarray=new Array(<?php echo $aliasesaddr; ?>);
-	var portarray=new Array(<?php echo $aliasesport; ?>);
+		// Disable the "ftp_client_bounce_to_net and ftp_client_bounce_to_port" controls if 
+		// ftp bounce detection is disabled.
+		disableInput('ftp_client_bounce_to_net', hide);
+		disableInput('ftp_client_bounce_to_port', hide);
+	}
 
-function createAutoSuggest() {
-<?php
-	echo "objAliasBindTo = new AutoSuggestControl(document.getElementById('ftp_bind_to'), new StateSuggestions(addressarray));\n";
-	echo "objAliasBounceNet = new AutoSuggestControl(document.getElementById('ftp_client_bounce_to_net'), new StateSuggestions(addressarray));\n";
-	echo "objAliasBouncePort = new AutoSuggestControl(document.getElementById('ftp_client_bounce_to_port'), new StateSuggestions(portarray));\n";
+events.push(function() {
 
+	// ---------- Autocomplete --------------------------------------------------------------------
 
-?>
-}
+	var addressarray = <?= json_encode(get_alias_list(array("host", "network", "openvpn"))) ?>;
+	var portarray = <?= json_encode(get_alias_list("port")) ?>;
 
-setTimeout("createAutoSuggest();", 500);
+	$('#ftp_bind_to').autocomplete({
+		source: addressarray
+	});
+	$('#ftp_client_bounce_to_net').autocomplete({
+		source: addressarray
+	});
+	$('#ftp_client_bounce_to_port').autocomplete({
+		source: portarray
+	});
 
-function ftp_client_bounce_enable_change() {
-	var endis = !(document.iform.ftp_client_bounce_detect.checked);
-	if (endis)
-		document.getElementById("ftp_client_row_bounce_to").style.display="none";
-	else
-		document.getElementById("ftp_client_row_bounce_to").style.display="table-row";
-}
+	//-- click handlers ---------------------------------------------------
+	$('#ftp_client_bounce_detect').click(function() {
+		ftp_client_bounce_enable_change();
+	});
 
-// Set initial state of form controls
-ftp_client_bounce_enable_change();
+	// Set initial state of form controls
+	ftp_client_bounce_enable_change();
 
+});
+//]]>
 </script>
 
-</html>
+<?php include("foot.inc"); ?>
+

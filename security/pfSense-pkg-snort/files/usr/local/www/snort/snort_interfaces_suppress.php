@@ -10,6 +10,7 @@
  *
  * modified for the pfsense snort package
  * Copyright (C) 2009-2010 Robert Zelaya.
+ * Copyright (C) 2015 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -68,117 +69,145 @@ function snort_suppresslist_used($supplist) {
 	return false;
 }
 
-if ($_POST['del']) {
-	if ($a_suppress[$_POST['list_id']] && is_numericint($_POST['list_id'])) {
-		/* make sure list is not being referenced by any Snort interfaces */
+if (isset($_POST['del_btn'])) {
+	$need_save = false;
+	if (is_array($_POST['del']) && count($_POST['del'])) {
+		foreach ($_POST['del'] as $itemi) {
+			/* make sure list is not being referenced by any interface */
+			if (snort_suppresslist_used($a_suppress[$_POST['list_id']]['name'])) {
+				$input_errors[] = gettext("Suppression List '{$a_suppress[$itemi]['name']}' is currently assigned to a Snort interface and cannot be deleted.  Unassign it from all Snort interfaces first.");
+			} else {
+				unset($a_suppress[$itemi]);
+				$need_save = true;
+			}
+		}
+		if ($need_save) {
+			write_config("Snort pkg: deleted SUPPRESSION LIST.");
+			conf_mount_rw();
+			sync_snort_package_config();
+			conf_mount_ro();
+			header("Location: /snort/snort_interfaces_suppress.php");
+			return;
+		}
+	}
+}
+else {
+	unset($delbtn_list);
+	$need_save = false;
+
+	foreach ($_POST as $pn => $pd) {
+		if (preg_match("/cdel_(\d+)/", $pn, $matches)) {
+			$delbtn_list = $matches[1];
+		}
+	}
+	if (is_numeric($delbtn_list) && $a_suppress[$delbtn_list]) {
 		if (snort_suppresslist_used($a_suppress[$_POST['list_id']]['name'])) {
-			$input_errors[] = gettext("ERROR -- Suppress List is currently assigned to a Snort interface and cannot be removed!  Unassign it from all Snort interfaces first.");
+			$input_errors[] = gettext("This Suppression List '{$$a_suppress[$delbtn_list]['name']}' is currently assigned to a Snort interface and cannot be deleted.  Unassign it from all Snort interfaces first.");
 		}
 		else {
-			unset($a_suppress[$_POST['list_id']]);
-			write_config("Snort pkg: deleted a Suppress List.");
+			unset($a_suppress[$delbtn_list]);
+			write_config("Snort pkg: deleted SUPPRESSION LIST.");
+			conf_mount_rw();
+			sync_snort_package_config();
+			conf_mount_ro();
 			header("Location: /snort/snort_interfaces_suppress.php");
-			exit;
+			return;
 		}
 	}
 }
 
-$pgtitle = gettext("Snort: Suppression Lists");
+$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Suppression Lists"));
 include_once("head.inc");
-
-?>
-
-<body link="#000000" vlink="#000000" alink="#000000">
-
-<?php
-include_once("fbegin.inc");
 if ($input_errors) {
 	print_input_errors($input_errors);
 }
-
 if ($savemsg)
 	print_info_box($savemsg);
+
+$tab_array = array();
+$tab_array[] = array(gettext("Snort Interfaces"), false, "/snort/snort_interfaces.php");
+$tab_array[] = array(gettext("Global Settings"), false, "/snort/snort_interfaces_global.php");
+$tab_array[] = array(gettext("Updates"), false, "/snort/snort_download_updates.php");
+$tab_array[] = array(gettext("Alerts"), false, "/snort/snort_alerts.php");
+$tab_array[] = array(gettext("Blocked"), false, "/snort/snort_blocked.php");
+$tab_array[] = array(gettext("Pass Lists"), false, "/snort/snort_passlist.php");
+$tab_array[] = array(gettext("Suppress"), true, "/snort/snort_interfaces_suppress.php");
+$tab_array[] = array(gettext("IP Lists"), false, "/snort/snort_ip_list_mgmt.php");
+$tab_array[] = array(gettext("SID Mgmt"), false, "/snort/snort_sid_mgmt.php");
+$tab_array[] = array(gettext("Log Mgmt"), false, "/snort/snort_log_mgmt.php");
+$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=snort/snort_sync.xml");
+display_top_tabs($tab_array, true);
 ?>
 
 <form action="/snort/snort_interfaces_suppress.php" method="post">
 <input type="hidden" name="list_id" id="list_id" value=""/>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr><td>
-<?php
-        $tab_array = array();
-        $tab_array[0] = array(gettext("Snort Interfaces"), false, "/snort/snort_interfaces.php");
-        $tab_array[1] = array(gettext("Global Settings"), false, "/snort/snort_interfaces_global.php");
-        $tab_array[2] = array(gettext("Updates"), false, "/snort/snort_download_updates.php");
-        $tab_array[3] = array(gettext("Alerts"), false, "/snort/snort_alerts.php");
-        $tab_array[4] = array(gettext("Blocked"), false, "/snort/snort_blocked.php");
-	$tab_array[5] = array(gettext("Pass Lists"), false, "/snort/snort_passlist.php");
-        $tab_array[6] = array(gettext("Suppress"), true, "/snort/snort_interfaces_suppress.php");
-	$tab_array[7] = array(gettext("IP Lists"), false, "/snort/snort_ip_list_mgmt.php");
-	$tab_array[8] = array(gettext("SID Mgmt"), false, "/snort/snort_sid_mgmt.php");
-	$tab_array[9] = array(gettext("Log Mgmt"), false, "/snort/snort_log_mgmt.php");
-	$tab_array[10] = array(gettext("Sync"), false, "/pkg_edit.php?xml=snort/snort_sync.xml");
-        display_top_tabs($tab_array, true);
-?>
-</td>
-</tr>
-<tr><td><div id="mainarea">
-<table id="maintable" class="tabcont" width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr>
-	<td width="30%" class="listhdrr"><?php echo gettext("File Name"); ?></td>
-	<td width="60%" class="listhdr"><?php echo gettext("Description"); ?></td>
-	<td width="10%" class="list"></td>
-</tr>
-<?php $i = 0; foreach ($a_suppress as $list): ?>
-<tr>
-	<td class="listlr"
-		ondblclick="document.location='snort_interfaces_suppress_edit.php?id=<?=$i;?>';">
-		<?=htmlspecialchars($list['name']);?></td>
-	<td class="listbg"
-		ondblclick="document.location='snort_interfaces_suppress_edit.php?id=<?=$i;?>';">
-	<font color="#FFFFFF"> <?=htmlspecialchars($list['descr']);?>&nbsp;</font>
-	</td>
 
-	<td valign="middle" nowrap class="list">
-	<table border="0" cellspacing="0" cellpadding="1">
-		<tr>
-			<td valign="middle"><a href="snort_interfaces_suppress_edit.php?id=<?=$i;?>">
-				<img src="/themes/<?= $g['theme']; ?>/images/icons/icon_e.gif" 
-				width="17" height="17" border="0" title="<?php echo gettext("Edit Suppress List"); ?>"></a></td>
-			<td><input type="image" name="del[]" 
-				onclick="document.getElementById('list_id').value='<?=$i;?>';return confirm('<?=gettext("Do you really want to delete this Suppress List?");?>');" 
-				src="/themes/<?= $g['theme']; ?>/images/icons/icon_x.gif" width="17" height="17" border="0" 
-				title="<?=gettext("Delete Suppress List");?>"/></td>
-		</tr>
-	</table>
-	</td>
-</tr>
-<?php $i++; endforeach; ?>
-<tr>
-	<td class="list" colspan="2"></td>
-	<td  class="list">
-	<table border="0" cellspacing="0" cellpadding="1">
-		<tr>
-			<td valign="middle" width="17">&nbsp;</td>
-			<td valign="middle"><a
-				href="snort_interfaces_suppress_edit.php?id=<?php echo $id_gen;?> "><img
-				src="/themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif"
-				width="17" height="17" border="0" title="<?php echo gettext("Add a new list"); ?>"></a></td>
-		</tr>
-	</table>
-	</td>
-</tr>
-</table>
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext('Configured Suppression Lists');?></h2></div>
+
+	<div id="mainarea" class="table-responsive panel-body">
+		<table id="maintable" class="table table-striped table-hover table-condensed">
+			<thead>
+			<tr>
+				<th>&nbsp;</th>
+				<th>List Name</th>
+				<th>Description</th>
+				<th>Actions</th>
+			</tr>
+			</thead>
+			<tbody>
+		<?php $i = 0; foreach ($a_suppress as $list): ?>
+			<tr>
+				<td><input type="checkbox" id="frc<?=$i?>" name="del[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$i?>')" /></td>
+				<td ondblclick="document.location='snort_interfaces_suppress_edit.php?id=<?=$i;?>';"><?=htmlspecialchars($list['name']);?></td>
+				<td ondblclick="document.location='snort_interfaces_suppress_edit.php?id=<?=$i;?>';"><?=htmlspecialchars($list['descr']);?>&nbsp;</td>
+				<td style="cursor: pointer;"><a href="snort_interfaces_suppress_edit.php?id=<?=$i;?>" class="fa fa-pencil" title="<?=gettext('Edit Suppression List');?>"></a>
+				<a class="fa fa-trash no-confirm" id="Xcdel_<?=$i?>" title="<?=gettext('Delete Suppression List'); ?>"></a>
+				<button style="display: none;" class="btn btn-xs btn-warning" type="submit" id="cdel_<?=$i?>" name="cdel_<?=$i?>" value="cdel_<?=$i?>" title="<?=gettext('Delete Suppression List'); ?>">Delete Suppression List</button></td>
+			</tr>
+		<?php $i++; endforeach; ?>
+			</tbody>
+		</table>
+	</div>
+	<nav class="action-buttons">
+		<a href="snort_interfaces_suppress_edit.php?id=<?php echo $id_gen;?>" role="button" class="btn btn-sm btn-success" title="<?=gettext('add a new suppression list');?>">
+			<i class="fa fa-plus icon-embed-btn"></i>
+			<?=gettext("Add");?>
+		</a>
+		<?php if (count($a_suppress) > 0): ?>
+			<button type="submit" name="del_btn" id="del_btn" class="btn btn-danger btn-sm" title="<?=gettext('Delete Selected Items');?>">
+				<i class="fa fa-trash icon-embed-btn"></i>
+				<?=gettext('Delete');?>
+			</button>
+		<?php endif; ?>
+	</nav>
 </div>
-</td></tr>
-<tr>
-	<td colspan="3" width="100%"><br/><span class="vexpl"><span class="red"><strong><?php echo gettext("Note:"); ?></strong></span>
-	<p><?php echo gettext("Here you can create event filtering and " .
-	"suppression for your snort package rules."); ?><br/><br/>
-	<?php echo gettext("Please note that you must restart a running Interface so that changes can " .
-	"take effect."); ?></p></span></td>
-</tr>
-</table>
 </form>
-<?php include("fend.inc"); ?>
-</body>
-</html>
+
+<div class="infoblock">
+	<div class="alert alert-info clearfix" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<div class="pull-left">
+			<dl class="dl-horizontal responsive">
+				<dt><?=gettext('Notes:');?></dt><dd></dd>
+				<dt><?=gettext('1.');?></dt><dd><?=gettext('Here you can create event filtering and suppression for your Snort package rules.');?></dd>
+				<dt><?=gettext('2.');?></dt><dd><?=gettext('Please note that you must restart a running Interface so that changes can take effect.');?></dd>
+			</dl>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+
+events.push(function() {
+	$('[id^=Xcdel_]').click(function (event) {
+		if(confirm("<?=gettext('Delete this Suppression List entry?')?>")) {
+			$('#' + event.target.id.slice(1)).click();
+		}
+	});
+});
+
+//]]>
+</script>
+<?php include("foot.inc"); ?>
+

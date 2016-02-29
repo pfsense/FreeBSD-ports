@@ -1,7 +1,7 @@
 <?php
 /*
  * snort_ftp_server_engine.php
- * Copyright (C) 2013-2014 Bill Meeks
+ * Copyright (C) 2013-2016 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -74,7 +74,7 @@ if (empty($a_nat[$eng_id])) {
 else
 	$pconfig = $a_nat[$eng_id];
 
-if ($_POST['Cancel']) {
+if ($_POST['cancel']) {
 	// Clear and close out any session variable we created
 	session_start();
 	unset($_SESSION['ftp_server_import']);
@@ -189,196 +189,188 @@ if ($_POST['save']) {
 		/* Now write the new engine array to conf */
 		write_config("Snort pkg: modified ftp_telnet_server engine settings.");
 
-		// We have saved a preproc config change, so set "dirty" flag
-		mark_subsystem_dirty('snort_preprocessors');
-
 		header("Location: /snort/snort_preprocessors.php?id={$id}#ftp_telnet_row_ftp_proto_opts");
 		exit;
 	}
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($config['installedpackages']['snortglobal']['rule'][$id]['interface']);
-$pgtitle = gettext("Snort: Interface {$if_friendly} - FTP Preprocessor Server Engine");
-include_once("head.inc");
+$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("FTP Preprocessor Server Engine"), gettext("{$if_friendly}"));
+include("head.inc");
 
-?>
-
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC" >
-
-<?php
-include("fbegin.inc");
 if ($input_errors) print_input_errors($input_errors);
 if ($savemsg)
 	print_info_box($savemsg);
+
+$form = new Form(FALSE);
+$section = new Form_Section('Snort Target-Based FTP Server Engine Configuration');
+
+$engine_name = new Form_Input(
+	'ftp_name',
+	'Engine Name',
+	'text',
+	$pconfig['name']
+);
+if ($pconfig['name'] <> "default") {
+	$engine_name->setHelp('Enter a unique name or description for this engine.  (Max 25 characters)');
+}
+else {
+	$engine_name->setReadonly()->setHelp('The name for the default engine is read-only.');
+}
+$section->addInput($engine_name);
+
+if ($pconfig['name'] <> "default") {
+	$bind_to = new Form_Input(
+		'ftp_bind_to',
+		'',
+		'text',
+		$pconfig['bind_to']
+	);
+	$bind_to->setAttribute('title', trim(filter_expand_alias($pconfig['bind_to'])));
+	$bind_to->setHelp('IP List to bind this engine to. (Cannot be blank)');
+	$btnaliases = new Form_Button(
+		'btnSuppressList',
+		' ' . 'Aliases',
+		'snort_select_alias.php?id=' . $id . '&eng_id=<?=' . $eng_id . '&type=host|network&varname=bind_to&act=import&multi_ip=yes&returl=' . urlencode($_SERVER['PHP_SELF']),
+		'fa-search-plus'
+	);
+	$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
+	$btnaliases->setAttribute('title', gettext("Select an existing IP alias"));
+	$group = new Form_Group('Bind-To IP Address Alias');
+	$group->add($bind_to);
+	$group->add($btnaliases);
+	$group->setHelp(gettext("Supplied value must be a pre-configured Alias or the keyword 'all'."));
+	$section->add($group);
+}
+else {
+	$section->addInput( new Form_Input(
+		'ftp_bind_to',
+		'Bind-To IP Address Alias',
+		'text',
+		$pconfig['bind_to']
+	))->setReadonly()->setHelp('The default engine is required and only runs for packets with destination addresses not matching other engine IP Lists.');
+}
+
+$bind_to = new Form_Input(
+	'ftp_ports',
+	'',
+	'text',
+	$pconfig['ports']
+);
+$bind_to->setAttribute('title', trim(filter_expand_alias($pconfig['ports'])));
+$bind_to->setHelp('Specify which ports to check for FTP data.  Default value is <em>default</em>');
+$btnaliases = new Form_Button(
+	'btnSelectAlias',
+	' ' . 'Aliases',
+	'snort_select_alias.php?id=' . $id . '&eng_id=<?=' . $eng_id . '&type=port&varname=ports&act=import&returl=' . urlencode($_SERVER['PHP_SELF']),
+	'fa-search-plus'
+);
+$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
+$btnaliases->setAttribute('title', gettext("Select an existing port alias"));
+$group = new Form_Group('Ports');
+$group->add($bind_to);
+$group->add($btnaliases);
+$msg = gettext("Using <em>default</em> will include the FTP Ports defined on the ") . '<a href="snort_define_servers.php?id={$id}" title="';
+$msg .= gettext("Go to {$if_friendly} Variables tab to define custom port variables") . '">' . gettext("VARIABLES") . '</a>';
+$msg .= gettext(" tab.  Specific ports for this server can be specified here using a pre-defined Alias.") . '<br/>';
+$msg .= gettext("NOTE:  Supplied value must be a pre-configured Alias or the keyword 'default'.");
+$group->setHelp($msg);
+$section->add($group);
+
+$section->addInput(new Form_Checkbox(
+	'ftp_telnet_cmds',
+	'Detect Telnet Commands',
+	'Alert when Telnet commands are seen on the FTP command channel.  Default is Not Checked.',
+	$pconfig['telnet_cmds'] == 'yes' ? true:false,
+	'yes'
+));
+
+$section->addInput(new Form_Checkbox(
+	'ftp_ignore_telnet_erase_cmds',
+	'Ignore Telnet Erase Commands',
+	'Ignore Telnet escape sequences for erase character and erase line when normalizing FTP command channel.  Default is Checked.',
+	$pconfig['ignore_telnet_erase_cmds'] == 'yes' ? true:false,
+	'yes'
+));
+
+$group = new Form_Group('Ignore Data Channel');
+$group->add(new Form_Checkbox(
+	'ftp_ignore_data_chan',
+	'',
+	'Force Snort to ignore the FTP data channel connections.  Default is Not Checked.',
+	$pconfig['ignore_data_chan'] == 'yes' ? true:false,
+	'yes'
+))->setHelp('When checked, NO INSPECTION other than state will be performed on the data channel.  Enabling this option can improve performance for large FTP transfers from trusted servers.');
+$section->add($group);
+
+$section->addInput( new Form_Input(
+	'ftp_def_max_param_len',
+	'Default Max Allowed Parameter Length',
+	'number',
+	$pconfig['def_max_param_len']
+))->setAttribute('min', '0')->setHelp('Default allowed maximum parameter length for an FTP command.  Enter 0 to disable.  Default is 100.<br/>This specifies the maximum allowed parameter length for and FTP command.  It can be used as a basic buffer overflow detection.');
+
+$btnsave = new Form_Button(
+	'save',
+	'Save',
+	null,
+	'fa-save'
+);
+$btncancel = new Form_Button(
+	'cancel',
+	'Cancel'
+);
+$btnsave->addClass('btn-primary')->addClass('btn-default')->setAttribute('title', 'Save FTP Server engine settings and return to Preprocessors tab');
+$btncancel->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-warning')->setAttribute('title', 'Cancel changes and return to Preprocessors tab');
+
+$section->addInput(new Form_StaticText(
+	null,
+	$btnsave . $btncancel
+));
+
+$form->add($section);
+
+$form->addGlobal(new Form_Input(
+	'id',
+	'id',
+	'hidden',
+	$id
+));
+$form->addGlobal(new Form_Input(
+	'eng_id',
+	'eng_id',
+	'hidden',
+	$eng_id
+));
+
+print($form);
+
 ?>
 
-<form action="snort_ftp_server_engine.php" method="post" name="iform" id="iform">
-<input name="id" type="hidden" value="<?=$id?>">
-<input name="eng_id" type="hidden" value="<?=$eng_id?>">
-<div id="boxarea">
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr>
-<td class="tabcont">
-<table width="100%" border="0" cellpadding="6" cellspacing="0">
-	<tr>
-		<td colspan="2" valign="middle" class="listtopic"><?php echo gettext("Snort Target-Based FTP Server Engine Configuration"); ?></td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("Engine Name"); ?></td>
-		<td class="vtable">
-			<input name="ftp_name" type="text" class="formfld unknown" id="ftp_name" size="25" maxlength="25" 
-			value="<?=htmlspecialchars($pconfig['name']);?>"<?php if (htmlspecialchars($pconfig['name']) == "default") echo "readonly";?>>&nbsp;
-			<?php if (htmlspecialchars($pconfig['name']) <> "default") 
-					echo gettext("Name or description for this engine.  (Max 25 characters)");
-				else
-					echo "<span class=\"red\">" . gettext("The name for the 'default' engine is read-only.") . "</span>";?><br/>
-			<?php echo gettext("Unique name or description for this engine configuration.  Default value is ") . 
-			"<strong>" . gettext("default") . "</strong>"; ?>.<br/>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("Bind-To IP Address Alias"); ?></td>
-		<td class="vtable">
-		<?php if ($pconfig['name'] <> "default") : ?>
-			<table width="95%" border="0" cellpadding="2" cellspacing="0">
-				<tr>
-					<td class="vexpl"><input name="ftp_bind_to" type="text" class="formfldalias" id="ftp_bind_to" size="32" 
-					value="<?=htmlspecialchars($pconfig['bind_to']);?>" title="<?=trim(filter_expand_alias($pconfig['bind_to']));?>" autocomplete="off">&nbsp;
-					<?php echo gettext("IP List to bind this engine to. (Cannot be blank)"); ?></td>
-					<td align="right"><input type="button" class="formbtns" value="Aliases" onclick="parent.location='snort_select_alias.php?id=<?=$id;?>&eng_id=<?=$eng_id;?>&type=host|network&varname=bind_to&act=import&returl=<?=urlencode($_SERVER['PHP_SELF']);?>'" 
-					title="<?php echo gettext("Select an existing IP alias");?>"/></td>
-				</tr>
-				<tr>
-					<td class="vexpl" colspan="2"><?php echo gettext("This engine will only run for packets with destination addresses contained within the IP List.");?>.</td>
-				</tr>
-			</table><br/>
-			<span class="red"><strong><?php echo gettext("Note: ") . "</strong></span>" . gettext("Supplied value must be a pre-configured Alias or the keyword 'all'.");?>
-		<?php else : ?>
-			<input name="ftp_bind_to" type="text" class="formfldalias" id="ftp_bind_to" size="32" 
-			value="<?=htmlspecialchars($pconfig['bind_to']);?>" autocomplete="off" readonly>&nbsp;
-			<?php echo "<span class=\"red\">" . gettext("IP address for the default engine is read-only and must be 'all'.") . "</span>";?><br/>
-			<?php echo gettext("The default engine is required and only runs for packets with destination addresses not matching other engine IP addresses.");?><br/>
-		<?php endif ?>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("Ports"); ?></td>
-		<td class="vtable">
-			<table width="95%" border="0" cellpadding="2" cellspacing="0">
-				<tr>
-					<td class="vexpl"><input name="ftp_ports" type="text" class="formfldalias" id="ftp_ports" size="25" 
-					value="<?=htmlspecialchars($pconfig['ports']);?>" title="<?=trim(filter_expand_alias($pconfig['ports']));?>">
-					<?php echo gettext("Specifiy which ports to check for FTP data.");?></td>
-					<td align="right"><input type="button" class="formbtns" value="Aliases" onclick="parent.location='snort_select_alias.php?id=<?=$id;?>&eng_id=<?=$eng_id;?>&type=port&varname=ports&act=import'" 
-					title="<?php echo gettext("Select an existing port alias");?>"/></td>
-				</tr>
-				<tr>
-					<td class="vexpl" colspan="2"><?php echo gettext("Default value is '") . "<strong>" . gettext("'default'") . "</strong>" . 
-					gettext("  Using 'default' will include the FTP Ports defined on the ") . "<a href='snort_define_servers.php?id={$id}' title=\"" . 
-					gettext("Go to {$if_friendly} Variables tab to define custom port variables") . "\">" . gettext("VARIABLES") . "</a>" . 
-					gettext(" tab.  Specific ports for this server can be specified here using a pre-defined Alias.");?></td>
-				</tr>
-			</table><br/>
-			<span class="red"><strong><?php echo gettext("Note: ") . "</strong></span>" . gettext("Supplied value must be a pre-configured Alias or the keyword 'default'.");?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Detect Telnet Commands"); ?></td>
-		<td width="78%" class="vtable"><input name="ftp_telnet_cmds" id="ftp_telnet_cmds" type="checkbox" value="on"  
-			<?php if ($pconfig['telnet_cmds']=="yes") echo "checked "; ?>>
-			<?php echo gettext("Alert when Telnet commands are seen on the FTP command channel.  Default is ") . 
-			"<strong>" . gettext("Not Checked") . "</strong>"; ?>.<br/>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Ignore Telnet Erase Commands"); ?></td>
-		<td width="78%" class="vtable"><input name="ftp_ignore_telnet_erase_cmds" id="ftp_ignore_telnet_erase_cmds" type="checkbox" value="on"  
-			<?php if ($pconfig['ignore_telnet_erase_cmds']=="yes") echo "checked "; ?>>
-			<?php echo gettext("Ignore Telnet escape sequences for erase character and erase line when normalizing FTP command channel.  Default is ") . 
-			"<strong>" . gettext("Checked") . "</strong>"; ?>.<br/>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Ignore Data Channel"); ?></td>
-		<td width="78%" class="vtable"><input name="ftp_ignore_data_chan" id="ftp_ignore_data_chan" type="checkbox" value="on"  
-			<?php if ($pconfig['ignore_data_chan']=="yes") echo "checked "; ?>>
-			<?php echo gettext("Force Snort to ignore the FTP data channel connections.  Default is ") . 
-			"<strong>" . gettext("Not Checked") . "</strong>"; ?>.<br/><br/>
-			<span class="red"><strong><?php echo gettext("Warning: ") . "</strong></span>" . gettext("When checked, NO INSPECTION other than state will be ") . 
-			gettext("performed on the data channel.  Enabling this option can improve performance for large FTP transfers from trusted servers.");?>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("Default Max Allowed Parameter Length"); ?></td>
-		<td class="vtable">
-			<input name="ftp_def_max_param_len" type="text" class="formfld unknown" id="ftp_def_max_param_len" size="6" 
-			value="<?=htmlspecialchars($pconfig['def_max_param_len']);?>">
-			<?php echo gettext("Default allowed maximum parameter length for command.  Enter ") . "<strong>" . gettext("0") . "</strong>" . 
-			gettext(" to disable.  Default is ") . "<strong>" . gettext("100.") . "</strong>";?><br/>
-			<?php echo gettext("Specifies the maximum allowed parameter length for and FTP command.  It can be used as a ") . 
-			gettext("basic buffer overflow detection.");?><br/>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="bottom">&nbsp;</td>
-		<td width="78%" valign="bottom">
-			<input name="save" id="save" type="submit" class="formbtn" value=" Save " title="<?php echo 
-			gettext("Save ftp engine settings and return to Preprocessors tab"); ?>">
-			&nbsp;&nbsp;&nbsp;&nbsp;
-			<input name="Cancel" id="cancel" type="submit" class="formbtn" value="Cancel" title="<?php echo 
-			gettext("Cancel changes and return to Preprocessors tab"); ?>"></td>
-	</tr>
-</table>
-</td>
-</tr>
-</table>
-</div>
-</form>
-<?php include("fend.inc"); ?>
-</body>
-<script type="text/javascript" src="/javascript/autosuggest.js">
-</script>
-<script type="text/javascript" src="/javascript/suggestions.js">
-</script>
 <script type="text/javascript">
+//<![CDATA[
 
-<?php
-	$isfirst = 0;
-	$aliases = "";
-	$addrisfirst = 0;
-	$portisfirst = 0;
-	$aliasesaddr = "";
-	$aliasesport = "";
-	if(isset($config['aliases']['alias']) && is_array($config['aliases']['alias']))
-		foreach($config['aliases']['alias'] as $alias_name) {
-			// Skip any Aliases that resolve to an empty string
-			if (trim(filter_expand_alias($alias_name['name'])) == "")
-				continue;
-			if ($alias_name['type'] == "host" || $alias_name['type'] == "network") {
-				if($addrisfirst == 1) $aliasesaddr .= ",";
-				$aliasesaddr .= "'" . $alias_name['name'] . "'";
-				$addrisfirst = 1;
-			}
-			elseif ($alias_name['type'] == "port") {
-				if($portisfirst == 1) $aliasesport .= ",";
-				$aliasesport .= "'" . $alias_name['name'] . "'";
-				$portisfirst = 1;
-			}
-		}
-
-?>
 	var addressarray=new Array(<?php echo $aliasesaddr; ?>);
 	var portarray=new Array(<?php echo $aliasesport; ?>);
 
-function createAutoSuggest() {
-<?php
-	echo "objAlias = new AutoSuggestControl(document.getElementById('ftp_bind_to'), new StateSuggestions(addressarray));\n";
-	echo "objAliasPort = new AutoSuggestControl(document.getElementById('ftp_ports'), new StateSuggestions(portarray));\n";
-?>
-}
+events.push(function() {
 
-setTimeout("createAutoSuggest();", 500);
+	// ---------- Autocomplete --------------------------------------------------------------------
 
+	var addressarray = <?= json_encode(get_alias_list(array("host", "network", "openvpn"))) ?>;
+	var portarray = <?= json_encode(get_alias_list("port")) ?>;
+
+	$('#ftp_bind_to').autocomplete({
+		source: addressarray
+	});
+	$('#ftp_ports').autocomplete({
+		source: portarray
+	});
+
+});
+
+//]]>
 </script>
 
-</html>
+<?php include("foot.inc"); ?>
+
