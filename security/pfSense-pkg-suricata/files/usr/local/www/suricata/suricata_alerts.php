@@ -107,10 +107,14 @@ function suricata_add_supplist_entry($suppress) {
 
 	global $config, $a_instance, $instanceid;
 
-	if (!is_array($config['installedpackages']['suricata']['suppress']))
+	if (!is_array($config['installedpackages']['suricata']['suppress'])) {
 		$config['installedpackages']['suricata']['suppress'] = array();
-	if (!is_array($config['installedpackages']['suricata']['suppress']['item']))
+	}
+
+	if (!is_array($config['installedpackages']['suricata']['suppress']['item'])) {
 		$config['installedpackages']['suricata']['suppress']['item'] = array();
+	}
+
 	$a_suppress = &$config['installedpackages']['suricata']['suppress']['item'];
 
 	$found_list = false;
@@ -389,7 +393,7 @@ if ($_POST['togglesid'] && is_numeric($_POST['sidid']) && is_numeric($_POST['gen
 	$savemsg = gettext("The state for rule {$gid}:{$sid} has been modified.  Suricata is 'live-reloading' the new rules list.  Please wait at least 15 secs for the process to complete before toggling additional rules.");
 }
 
-if ($_POST['delete']) {
+if ($_POST['clear']) {
 	suricata_post_delete_logs($suricata_uuid);
 	$fd = @fopen("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/alerts.log", "w+");
 	if ($fd)
@@ -509,7 +513,7 @@ $group->add(new Form_Button(
   ->setHelp('All log files will be saved');
 
 $group->add(new Form_Button(
-	'delete',
+	'clear',
 	'Clear',
 	null,
 	'fa-trash'
@@ -834,8 +838,8 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 				/* Add icons for auto-adding to Suppress List if appropriate */
 				if (!suricata_is_alert_globally_suppressed($supplist, $fields['gid'], $fields['sid']) &&
 				    !isset($supplist[$fields['gid']][$fields['sid']]['by_src'][$fields['src']])) {
-					$alert_ip_src .= "&nbsp;<i class=\"fa fa-plus-square-o\" name='addsuppress_srcip[]' onClick=\"encRuleSig('{$fields['gid']}','{$fields['sid']}','{$fields['src']}','{$alert_descr}');\" ";
-					$alert_ip_src .= "title=" . gettext("Add this alert to the Suppress List and track by_src IP") . "></i>";
+					$alert_ip_src .= "&nbsp;&nbsp;<i class=\"fa fa-plus-square-o icon-pointer\" title=\"" . gettext('Add this alert to the Suppress List and track by_src IP') . '"';
+					$alert_ip_src .= " onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','{$fields[6]}','{$alert_descr}');$('#mode').val('addsuppress_srcip');$('#formalert').submit();\"></i>";
 				}
 				elseif (isset($supplist[$fields['gid']][$fields['sid']]['by_src'][$fields['src']])) {
 					$alert_ip_src .= '&nbsp;<i class="fa fa-info-circle" ';
@@ -943,20 +947,24 @@ include("foot.inc");
 ?>
 
 <script type="text/javascript">
+//<![CDATA[
+
+//-- This function stuffs the passed GID, SID and other values into
+//-- hidden Form Fields for postback.
 function encRuleSig(rulegid,rulesid,srcip,ruledescr) {
 
-	// This function stuffs the passed GID, SID
-	// and other values into hidden Form Fields
-	// for postback.
-	if (typeof srcipip == "undefined")
-		var srcipip = "";
-	if (typeof ruledescr == "undefined")
-		var ruledescr = "";
+	if (typeof srcipip === 'undefined') {
+		var srcipip = '';
+	}
 
-	document.getElementById("sidid").value = rulesid;
-	document.getElementById("gen_id").value = rulegid;
-	document.getElementById("ip").value = srcip;
-	document.getElementById("descr").value = ruledescr;
+	if (typeof ruledescr === 'undefined'){
+		var ruledescr = '';
+	}
+
+	$('#sidid').val(rulesid);
+	$('#gen_id').val(rulegid);
+	$('#ip').val(srcip);
+	$('#descr').val(ruledescr);
 }
 
 function enable_showFilter() {
@@ -1000,6 +1008,7 @@ function resolve_ip_callback(transport) {
 function htmlspecialchars(str) {
     return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
 }
+
 //]]>
 </script>
 
