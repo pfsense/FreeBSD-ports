@@ -532,6 +532,11 @@ function lightsquid_validate_input($post, &$input_errors) {
 	global $config;
 
 	if ($post['navto_lightsquid'] == 'Open Lightsquid') {
+		if (is_array($config['installedpackages']['lightsquid']['config'][0])) {
+			$lightsquid_config = $config['installedpackages']['lightsquid']['config'][0];
+		} else {
+			return;
+		}
 		list($server_host, $server_port) = explode(':', $_SERVER['HTTP_HOST']);
 		if (empty($lightsquid_config['lighttpd_ls_port'])) {
 			$lightsquid_config['lighttpd_ls_port'] = "7445";
