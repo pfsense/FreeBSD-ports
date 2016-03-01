@@ -1,16 +1,16 @@
 # Created by: Alexander Logvinov <info@logvinov.com>
-# $FreeBSD$
+# $FreeBSD: head/www/lightsquid/Makefile 409887 2016-03-01 18:15:22Z garga $
 
 PORTNAME=	lightsquid
 PORTVERSION=	1.8
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	www
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Light and fast web based squid proxy traffic analyser
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/doc/gnugpl.txt
 
 USES=		perl5 shebangfix tar:tgz
