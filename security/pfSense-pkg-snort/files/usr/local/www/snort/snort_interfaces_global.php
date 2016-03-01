@@ -1,11 +1,12 @@
 <?php
+/* $Id$ */
 /*
  * snort_interfaces_global.php
  * part of pfSense
  *
  * Copyright (C) 2003-2006 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2011-2012 Ermal Luci
- * Copyright (C) 2014 Bill Meeks
+ * Copyright (C) 2015 Bill Meeks
  * All rights reserved.
  *
  * Copyright (C) 2008-2009 Robert Zelaya
@@ -182,311 +183,259 @@ if (!$input_errors) {
 	}
 }
 
-$pgtitle = gettext("Snort: Global Settings");
-include_once("head.inc");
+$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Global Settings"));
+include("head.inc");
 
-?>
-
-<body link="#000000" vlink="#000000" alink="#000000">
-
-<?php
-include_once("fbegin.inc");
-
-if($pfsense_stable == 'yes')
-	echo '<p class="pgtitle">' . $pgtitle . '</p>';
-
-/* Display Alert message, under form tag or no refresh */
 if ($input_errors)
 	print_input_errors($input_errors);
 
+if ($savemsg) {
+	print_info_box($savemsg, 'success');
+}
+
+$form = new Form(new Form_Button(
+	'save',
+	'Save'
+));
+
+$section = new Form_Section('Snort Vulnerability Research Team (VRT) Rules');
+$section->addInput(new Form_Checkbox(
+	'snortdownload',
+	'Enable Snort VRT',
+	'Click to enable download of Snort VRT free Registered User or paid Subscriber rules',
+	$pconfig['snortdownload'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_StaticText(
+	null,
+	'<a href="https://www.snort.org/users/sign_up" target="_blank">' . 'Sign Up for a free Registered User Rule Account' . '</a><br/><a href="https://www.snort.org/products" target="_blank">' . 'Sign Up for paid Sourcefire VRT Certified Subscriber Rules' . '</a>'
+));
+$section->addInput(new Form_Input(
+	'oinkmastercode',
+	'Snort Oinkmaster Code',
+	'text',
+	$pconfig['oinkmastercode']
+))->setHelp('Obtain a snort.org Oinkmaster code and paste it here. (Paste the code only and not the URL!)');
+
+$form->add($section);
+
+$section = new Form_Section('Snort GPLv2 Community Rules');
+$section->addInput(new Form_Checkbox(
+	'snortcommunityrules',
+	'Enable Snort GPLv2',
+	'Click to enable download of Snort GPLv2 Community rules',
+	$pconfig['snortcommunityrules'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_StaticText(
+	null,
+	'The Snort Community Ruleset is a GPLv2 VRT certified ruleset that is distributed free of charge without any VRT License restrictions.  This ruleset is updated daily and is a subset of the subscriber ruleset.'
+));
+
+$form->add($section);
+
+
+$section = new Form_Section('Emerging Threats (ET) Rules');
+$section->addInput(new Form_Checkbox(
+	'emergingthreats',
+	'Enable ET Open',
+	'Click to enable download of Emerging Threats Open rules',
+	$pconfig['emergingthreats'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_StaticText(
+	null,
+	'ETOpen is an open source set of Snort rules whose coverage is more limited than ETPro.'
+));
+
+$section->addInput(new Form_Checkbox(
+	'emergingthreats_pro',
+	'Enable ET Pro',
+	'Click to enable download of Emerging Threats Pro rules',
+	$pconfig['emergingthreats_pro'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_StaticText(
+	null,
+	'<a href="https://www.proofpoint.com/us/solutions/products/threat-intelligence/ET-Pro-Ruleset" target="_blank">' . 'Sign Up for an ETPro Account' . '</a><br/>' . 'ETPro for Snort offers daily updates and extensive coverage of current malware threats.'
+));
+$section->addInput(new Form_Input(
+	'etpro_code',
+	'ETPro Code',
+	'text',
+	$pconfig['etpro_code']
+))->setHelp('Obtain an ETPro subscription code and paste it here. (Paste the code only and not the URL!)');
+
+$form->add($section);
+
+$section = new Form_Section('Sourcefire OpenAppID Detectors');
+$section->addInput(new Form_Checkbox(
+	'openappid_detectors',
+	'Enable OpenAppID',
+	'Click to enable download of Sourcefire OpenAppID Detectors',
+	$pconfig['openappid_detectors'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_StaticText(
+	null,
+	'The OpenAppID package contains the application signatures required by the AppID preprocessor.'
+));
+$section->addInput(new Form_StaticText(
+	'OpenAppID Version',
+	$openappid_ver
+));
+
+$form->add($section);
+
+$section = new Form_Section('Rules Update Settings');
+$section->addInput(new Form_Select(
+	'autorulesupdate7',
+	'Update Interval',
+	$pconfig['autorulesupdate7'],
+	array('never_up' => gettext('NEVER'), '6h_up' => gettext('6 HOURS'), '12h_up' => gettext('12 HOURS'), 
+		  '1d_up' => gettext('1 DAY'), '4d_up' => gettext('4 DAYS'), '7d_up' => gettext('7 DAYS'), '28d_up' => gettext('28 DAYS'))
+))->setHelp('Please select the interval for rule updates. Choosing NEVER disables auto-updates.');
+$section->addInput(new Form_Input(
+	'rule_update_starttime',
+	'Update Start Time',
+	'text',
+	$pconfig['rule_update_starttime']
+))->setHelp('Enter the rule update start time in 24-hour format (HH:MM).  Default is 00:05.  ' . 
+			'Rules will update at the interval chosen above starting at the time specified here. ' . 
+			'For example, using the default start time of 00:05 and choosing 12 Hours for the interval, ' . 
+			'the rules will update at 00:05 and 12:05 each day.');
+$section->addInput(new Form_Checkbox(
+	'hide_deprecated_rules',
+	'Hide Deprecated Rules Categories',
+	'Click to hide deprecated rules categories in the GUI and remove them from the configuration.  ' . 
+	'Default is not checked.',
+	$pconfig['hide_deprecated_rules'] == 'on' ? true:false,
+	'on'
+));
+
+$form->add($section);
+
+$section = new Form_Section('General Settings');
+$section->addInput(new Form_Select(
+	'rm_blocked',
+	'Remove Blocked Hosts Interval',
+	$pconfig['rm_blocked'],
+	array('never_b' => gettext('NEVER'), '15m_b' => gettext('15 MINS'), '30m_b' => gettext('30 MINS'), 
+		  '1h_b' => gettext('1 HOUR'), '3h_b' => gettext('3 HOURS'), '6h_b' => gettext('6 HOURS'), 
+		  '12h_b' => gettext('12 HOURS'), '1d_b' => gettext('1 DAY'), '4d_b' => gettext('4 DAYS'), 
+		  '7d_b' => gettext('7 DAYS'), '28d_b' => gettext('28 DAYS'))
+))->setHelp('Please select the amount of time you would like hosts to be blocked.  In most cases, one hour is a good choice.');
+$section->addInput(new Form_Checkbox(
+	'clearblocks',
+	'Remove Blocked Hosts After Deinstall',
+	'Click to clear all blocked hosts added by Snort when removing the package.',
+	$pconfig['clearblocks'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'forcekeepsettings',
+	'Keep Snort Settings After Deinstall',
+	'Click to retain Snort settings after package removal.',
+	$pconfig['forcekeepsettings'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'verbose_logging',
+	'Startup/Shutdown Logging',
+	'Click to output detailed messages to the system log when Snort is starting and stopping.  Default is not checked.',
+	$pconfig['verbose_logging'] == 'on' ? true:false,
+	'on'
+));
+
+$form->add($section);
+
+
+$tab_array = array();
+	$tab_array[] = array(gettext("Snort Interfaces"), false, "/snort/snort_interfaces.php");
+	$tab_array[] = array(gettext("Global Settings"), true, "/snort/snort_interfaces_global.php");
+	$tab_array[] = array(gettext("Updates"), false, "/snort/snort_download_updates.php");
+	$tab_array[] = array(gettext("Alerts"), false, "/snort/snort_alerts.php");
+	$tab_array[] = array(gettext("Blocked"), false, "/snort/snort_blocked.php");
+	$tab_array[] = array(gettext("Pass Lists"), false, "/snort/snort_passlist.php");
+	$tab_array[] = array(gettext("Suppress"), false, "/snort/snort_interfaces_suppress.php");
+	$tab_array[] = array(gettext("IP Lists"), false, "/snort/snort_ip_list_mgmt.php");
+	$tab_array[] = array(gettext("SID Mgmt"), false, "/snort/snort_sid_mgmt.php");
+	$tab_array[] = array(gettext("Log Mgmt"), false, "/snort/snort_log_mgmt.php");
+	$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=snort/snort_sync.xml");
+display_top_tabs($tab_array, true);
+
+print($form);
 ?>
 
-<form action="snort_interfaces_global.php" method="post" enctype="multipart/form-data" name="iform" id="iform">
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr><td>
-<?php
-        $tab_array = array();
-        $tab_array[0] = array(gettext("Snort Interfaces"), false, "/snort/snort_interfaces.php");
-        $tab_array[1] = array(gettext("Global Settings"), true, "/snort/snort_interfaces_global.php");
-        $tab_array[2] = array(gettext("Updates"), false, "/snort/snort_download_updates.php");
-        $tab_array[3] = array(gettext("Alerts"), false, "/snort/snort_alerts.php");
-        $tab_array[4] = array(gettext("Blocked"), false, "/snort/snort_blocked.php");
-	$tab_array[5] = array(gettext("Pass Lists"), false, "/snort/snort_passlist.php");
-        $tab_array[6] = array(gettext("Suppress"), false, "/snort/snort_interfaces_suppress.php");
-	$tab_array[7] = array(gettext("IP Lists"), false, "/snort/snort_ip_list_mgmt.php");
-	$tab_array[8] = array(gettext("SID Mgmt"), false, "/snort/snort_sid_mgmt.php");
-	$tab_array[9] = array(gettext("Log Mgmt"), false, "/snort/snort_log_mgmt.php");
-	$tab_array[10] = array(gettext("Sync"), false, "/pkg_edit.php?xml=snort/snort_sync.xml");
-        display_top_tabs($tab_array, true);
-?>
-</td></tr>
-<tr>
-	<td>
-	<div id="mainarea">
-	<table id="maintable" class="tabcont" width="100%" border="0" cellpadding="6" cellspacing="0">
-<tr>
-	<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Please Choose The Type Of Rules You Wish To Download");?></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("Install ") . "<strong>" . gettext("Snort VRT") . "</strong>" . gettext(" rules");?></td>
-	<td width="78%" class="vtable">
-		<table width="100%" border="0" cellpadding="2" cellspacing="0">
-		<tr>
-			<td><input name="snortdownload" type="checkbox" id="snortdownload" value="on" onclick="enable_snort_vrt();" 
-			<?php if($pconfig['snortdownload']=='on') echo 'checked'; ?> /></td>
-			<td><span class="vexpl"><?php echo gettext("Snort VRT free Registered User or paid Subscriber rules"); ?></span></td>
-		<tr>
-			<td>&nbsp;</td>
-			<td><a href="https://www.snort.org/users/sign_up" target="_blank"><?php echo gettext("Sign Up for a free Registered User Rule Account"); ?> </a><br/>
-			<a href="https://www.snort.org/products" target="_blank">
-			<?php echo gettext("Sign Up for paid Sourcefire VRT Certified Subscriber Rules"); ?></a></td>
-		</tr>
-		</table>
-		<table id="snort_oink_code_tbl" width="100%" border="0" cellpadding="2" cellspacing="0">
-		<tr>
-			<td colspan="2">&nbsp;</td>
-		</tr>
-		<tr>
-			<td colspan="2" valign="top"><b><span class="vexpl"><?php echo gettext("Snort VRT Oinkmaster Configuration"); ?></span></b></td>
-		</tr>
-		<tr>
-			<td valign="top"><span class="vexpl"><strong><?php echo gettext("Code:"); ?></strong></span></td>
-			<td><input name="oinkmastercode" type="text" 
-				class="formfld unknown" id="oinkmastercode" size="52" 
-				value="<?=htmlspecialchars($pconfig['oinkmastercode']);?>" /><br/>
-			<?php echo gettext("Obtain a snort.org Oinkmaster code and paste it here."); ?></td>
-		</tr>
-		</table>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("Install ") . "<strong>" . gettext("Snort Community") . "</strong>" . gettext(" rules");?></td>
-	<td width="78%" class="vtable">
-		<table width="100%" border="0" cellpadding="2" cellspacing="0">
-			<tr>
-				<td valign="top" width="8%"><input name="snortcommunityrules" type="checkbox" value="on" 
-				<?php if ($pconfig['snortcommunityrules']=="on") echo "checked";?> /></td>
-				<td class="vexpl"><?php echo gettext("The Snort Community Ruleset is a GPLv2 VRT certified ruleset that is distributed free of charge " . 
-				"without any VRT License restrictions.  This ruleset is updated daily and is a subset of the subscriber ruleset.");?>
-				<br/><br/><?php echo "<span class=\"red\"><strong>" . gettext("Note:  ") . "</strong></span>" . 
-				gettext("If you are a Snort VRT Paid Subscriber, the community ruleset is already built into your download of the ") . 
-				gettext("Snort VRT rules, and there is no benefit in adding this rule set.");?><br/></td>
-			</tr>
-		</table></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("Install ") . "<strong>" . gettext("Emerging Threats") . "</strong>" . gettext(" rules");?></td>
-	<td width="78%" class="vtable">
-		<table width="100%" border="0" cellpadding="2" cellspacing="0">
-			<tr>
-				<td valign="top" width="8%"><input name="emergingthreats" type="checkbox" value="on" onclick="enable_et_rules();" 
-				<?php if ($pconfig['emergingthreats']=="on") echo "checked"; ?> /></td>
-				<td><span class="vexpl"><?php echo gettext("ETOpen is an open source set of Snort rules whose coverage " .
-				"is more limited than ETPro."); ?></span></td>
-			</tr>
-			<tr>
-				<td valign="top" width="8%"><input name="emergingthreats_pro" type="checkbox" value="on" onclick="enable_etpro_rules();" 
-				<?php if ($pconfig['emergingthreats_pro']=="on") echo "checked"; ?>/></td>
-				<td><span class="vexpl"><?php echo gettext("ETPro for Snort offers daily updates and extensive coverage of current malware threats."); ?></span></td>
-			</tr>
-		<tr>
-			<td>&nbsp;</td>
-			<td><a href="http://www.emergingthreats.net/solutions/etpro-ruleset/" target="_blank"><?php echo gettext("Sign Up for an ETPro Account"); ?> </a></td>
-		</tr>
-		<tr>
-			<td>&nbsp;</td>
-			<td class="vexpl"><?php echo "<span class='red'><strong>" . gettext("Note:") . "</strong></span>" . "&nbsp;" . 
-			gettext("The ETPro rules contain all of the ETOpen rules, so the ETOpen rules are not required and are automatically disabled when the ETPro rules are selected."); ?></td>
-		</tr>
-		</table>
-		<table id="etpro_code_tbl" width="100%" border="0" cellpadding="2" cellspacing="0">
-		<tr>
-			<td colspan="2">&nbsp;</td>
-		</tr>
-		<tr>
-			<td colspan="2" valign="top"><b><span class="vexpl"><?php echo gettext("ETPro Subscription Configuration"); ?></span></b></td>
-		</tr>
-		<tr>
-			<td valign="top"><span class="vexpl"><strong><?php echo gettext("Code:"); ?></strong></span></td>
-			<td><input name="etpro_code" type="text"
-				class="formfld unknown" id="etpro_code" size="52"
-				value="<?=htmlspecialchars($pconfig['etpro_code']);?>"/><br/>
-			<?php echo gettext("Obtain an ETPro subscription code and paste it here."); ?></td>
-		</tr>
-		</table>
-	</td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("Install ") . "<strong>" . gettext("OpenAppID") . "</strong>" . gettext(" detectors");?></td>
-	<td width="78%" class="vtable">
-		<table width="100%" border="0" cellpadding="2" cellspacing="0">
-			<tr>
-				<td valign="top" width="8%"><input name="openappid_detectors" type="checkbox" value="on" onclick="enable_openappid_dnload();" 
-				<?php if ($pconfig['openappid_detectors']=="on") echo "checked";?> /></td>
-				<td class="vexpl"><?php echo gettext("The OpenAppID package contains the application signatures required by " . 
-				"the AppID preprocessor.");?>
-				<br/><br/><?php echo "<span class=\"red\"><strong>" . gettext("Note:  ") . "</strong></span>" . 
-				gettext("You must enable download of the OpenAppID detectors package in order to utilize the Application ID ") . 
-				gettext("preprocessor and any user-provided application detection rules.  Once enabled, go to the ") . 
-				"<a href='/snort/snort_download_updates.php'>" . gettext("UPDATES") . "</a>" . gettext(" tab and click to download updates.");?></td>
-			</tr>
-			<tbody id="openappid_rows">
-			<tr>
-				<td class="vexpl" colspan="2"><br/><strong><?=gettext("OpenAppID Detection Package");?></strong></td>
-			</tr>
-			<tr>
-				<td class="vexpl" valign="top"><strong><?=gettext("VER:");?></strong></td>
-				<td class="vexpl"><?=htmlspecialchars($openappid_ver);?></td>
-			</tr>
-			</tbody>
-		</table>
-	</td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("Hide Deprecated Rules Categories"); ?></td>
-	<td width="78%" class="vtable"><input name="hide_deprecated_rules" id="hide_deprecated_rules" type="checkbox" value="yes" 
-		<?php if ($pconfig['hide_deprecated_rules']=="on") echo "checked"; ?> />
-		&nbsp;&nbsp;<?php echo gettext("Hide deprecated rules categories in the GUI and remove them from the configuration.  Default is ") . 
-		"<strong>" . gettext("Not Checked") . "</strong>" . gettext("."); ?></td>
-</tr>
-<tr>
-	<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Rules Update Settings"); ?></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("Update Interval"); ?></td>
-	<td width="78%" class="vtable">
-		<select name="autorulesupdate7" class="formselect" id="autorulesupdate7" onchange="enable_change_rules_upd()">
-		<?php
-		$interfaces3 = array('never_up' => gettext('NEVER'), '6h_up' => gettext('6 HOURS'), '12h_up' => gettext('12 HOURS'), '1d_up' => gettext('1 DAY'), '4d_up' => gettext('4 DAYS'), '7d_up' => gettext('7 DAYS'), '28d_up' => gettext('28 DAYS'));
-		foreach ($interfaces3 as $iface3 => $ifacename3): ?>
-		<option value="<?=$iface3;?>"
-		<?php if ($iface3 == $pconfig['autorulesupdate7']) echo "selected"; ?> />
-			<?=htmlspecialchars($ifacename3);?></option>
-			<?php endforeach; ?>
-	</select><span class="vexpl">&nbsp;&nbsp;<?php echo gettext("Please select the interval for rule updates. Choosing ") . 
-	"<strong>" . gettext("NEVER") . "</strong>" . gettext(" disables auto-updates."); ?><br/><br/>
-	<?php echo "<span class=\"red\"><strong>" . gettext("Hint: ") . "</strong></span>" . gettext("in most cases, every 12 hours is a good choice."); ?></span></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("Update Start Time"); ?></td>
-	<td width="78%" class="vtable"><input type="text" class="formfld time" name="rule_update_starttime" id="rule_update_starttime" size="4" 
-	maxlength="5" value="<?=htmlspecialchars($pconfig['rule_update_starttime']);?>" <?php if ($pconfig['autorulesupdate7'] == "never_up") {echo "disabled";} ?> /><span class="vexpl">&nbsp;&nbsp;
-	<?php echo gettext("Enter the rule update start time in 24-hour format (HH:MM). ") . "<strong>" . 
-	gettext("Default") . "&nbsp;</strong>" . gettext("is ") . "<strong>" . gettext("00:05") . "</strong></span>"; ?>.<br/><br/>
-	<?php echo gettext("Rules will update at the interval chosen above starting at the time specified here. For example, using the default " . 
-	"start time of 00:05 and choosing 12 Hours for the interval, the rules will update at 00:05 and 12:05 each day."); ?></td>
-</tr>
-<tr>
-	<td colspan="2" valign="top" class="listtopic"><?php echo gettext("General Settings"); ?></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("Remove Blocked Hosts Interval"); ?></td>
-	<td width="78%" class="vtable">
-		<select name="rm_blocked" class="formselect" id="rm_blocked">
-		<?php
-		$interfaces3 = array('never_b' => gettext('NEVER'), '15m_b' => gettext('15 MINS'), '30m_b' => gettext('30 MINS'), '1h_b' => gettext('1 HOUR'), '3h_b' => gettext('3 HOURS'), '6h_b' => gettext('6 HOURS'), '12h_b' => gettext('12 HOURS'), '1d_b' => gettext('1 DAY'), '4d_b' => gettext('4 DAYS'), '7d_b' => gettext('7 DAYS'), '28d_b' => gettext('28 DAYS'));
-		foreach ($interfaces3 as $iface3 => $ifacename3): ?>
-		<option value="<?=$iface3;?>"
-		<?php if ($iface3 == $pconfig['rm_blocked']) echo "selected"; ?> />
-			<?=htmlspecialchars($ifacename3);?></option>
-			<?php endforeach; ?>
-	</select>&nbsp;
-	<?php echo gettext("Please select the amount of time you would like hosts to be blocked."); ?><br/><br/>
-	<?php echo "<span class=\"red\"><strong>" . gettext("Hint:") . "</strong></span>" . gettext(" in most cases, 1 hour is a good choice.");?></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("Remove Blocked Hosts After Deinstall"); ?></td>
-	<td width="78%" class="vtable"><input name="clearblocks" id="clearblocks" type="checkbox" value="yes" 
-	<?php if ($pconfig['clearblocks']=="on") echo " checked"; ?> />&nbsp;
-	<?php echo gettext("All blocked hosts added by Snort will be removed during package deinstallation."); ?></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("Keep Snort Settings After Deinstall"); ?></td>
-	<td width="78%" class="vtable"><input name="forcekeepsettings"
-		id="forcekeepsettings" type="checkbox" value="yes" 
-		<?php if ($pconfig['forcekeepsettings']=="on") echo "checked"; ?> />
-		&nbsp;&nbsp;<?php echo gettext("Settings will not be removed during package deinstallation."); ?></td>
-</tr>
-<tr>
-	<td width="22%" valign="top" class="vncell"><?php echo gettext("Startup/Shutdown Logging"); ?></td>
-	<td width="78%" class="vtable"><input name="verbose_logging"
-		id="verbose_logging" type="checkbox" value="yes" 
-		<?php if ($pconfig['verbose_logging']=="on") echo "checked"; ?> />
-		&nbsp;&nbsp;<?php echo gettext("Output detailed messages to the system log when Snort is starting and stopping.  Default is ") . 
-		"<strong>" . gettext("Not Checked") . "</strong>" . gettext("."); ?></td>
-</tr>
-<tr>
-	<td width="22%" valign="top">
-	<td width="78%">
-		<input name="save" type="submit" class="formbtn" value="Save" />
-	</td>
-</tr>
-<tr>
-	<td width="22%" valign="top">&nbsp;</td>
-	<td width="78%" class="vexpl"><span class="red"><strong><?php echo gettext("Note:");?></strong>&nbsp;
-	</span><?php echo gettext("Changing any settings on this page will affect all Snort-configured interfaces.");?></td>
-</tr>
-	</table>
-</div><br/>
-</td></tr>
-</table>
-</form>
-<?php include("fend.inc"); ?>
+<script type="text/javascript">
+//<![CDATA[
+events.push(function(){
 
-<script language="JavaScript">
-<!--
-function enable_snort_vrt() {
-	var endis = !(document.iform.snortdownload.checked);
-	if (endis)
-		document.getElementById("snort_oink_code_tbl").style.display = "none";
-	else
-		document.getElementById("snort_oink_code_tbl").style.display = "table";
-}
-
-function enable_et_rules() {
-	var endis = document.iform.emergingthreats.checked;
-	if (endis) {
-		document.iform.emergingthreats_pro.checked = !(endis);
-		document.getElementById("etpro_code_tbl").style.display = "none";
+	function enable_snort_vrt() {
+		var hide = ! $('#snortdownload').prop('checked');
+		hideInput('oinkmastercode', hide);
 	}
-}
 
-function enable_etpro_rules() {
-	var endis = document.iform.emergingthreats_pro.checked;
-	if (endis) {
-		document.iform.emergingthreats.checked = !(endis);
-		document.iform.etpro_code.disabled = "";
-		document.getElementById("etpro_code_tbl").style.display = "table";
+	function enable_et_rules() {
+		var hide = $('#emergingthreats').prop('checked');
+		if (hide && $('#emergingthreats_pro').prop('checked')) {
+			hideInput('etpro_code', hide);
+			$('#emergingthreats_pro').prop('checked', false);
+		}
 	}
-	else {
-		document.iform.etpro_code.disabled = "true";
-		document.getElementById("etpro_code_tbl").style.display = "none";
+
+	function enable_etpro_rules() {
+		var hide = ! $('#emergingthreats_pro').prop('checked');
+		hideInput('etpro_code', hide);
+		if (!hide && $('#emergingthreats').prop('checked'))
+			$('#emergingthreats').prop('checked', false);
 	}
-}
 
-function enable_change_rules_upd() {
-	if (document.iform.autorulesupdate7.selectedIndex == 0)
-		document.iform.rule_update_starttime.disabled="true";
-	else
-		document.iform.rule_update_starttime.disabled="";		
-}
+	function enable_openappid_dnload() {
+		var hide = ! $('#openappid_detectors').prop('checked');
+	}
 
-function enable_openappid_dnload() {
-	var endis = document.iform.openappid_detectors.checked;
-	if (endis)
-		document.getElementById("openappid_rows").style.display = "";
-	else
-		document.getElementById("openappid_rows").style.display = "none";
-}
+	function enable_change_rules_upd(val) {
+		if (val == 0)
+			disableInput('rule_update_starttime', true);
+		else
+			disableInput('rule_update_starttime', false);
+	}
 
-// Initialize the form controls state based on saved settings
-enable_snort_vrt();
-enable_et_rules();
-enable_etpro_rules();
-enable_change_rules_upd();
-enable_openappid_dnload();
+	// ---------- Click checkbox handlers ---------------------------------------------------------
+	// When 'enable' is clicked, disable/enable the Oinkmaster text control
+	$('#snortdownload').click(function() {
+		enable_snort_vrt();
+	});
 
-//-->
+	// When 'emergingthreats' is clicked, uncheck ETPro and disable the ETPro Code text control
+	$('#emergingthreats').click(function() {
+		enable_et_rules();
+	});
+
+	// When 'emergingthreats_pro' is clicked, uncheck ET checkbox control
+	$('#emergingthreats_pro').click(function() {
+		enable_etpro_rules();
+	});
+
+	// When 'openappid_detectors' is clicked, toggle hidden state of version static text control
+	$('#openappid_detectors').click(function() {
+		enable_etpro_rules();
+	});
+
+	$('#autorulesupdate7').on('change', function() {
+		enable_change_rules_upd(this.selectedIndex);
+	});
+
+	// ---------- On initial page load ------------------------------------------------------------
+	enable_snort_vrt();
+	enable_et_rules();
+	enable_etpro_rules();
+	enable_change_rules_upd($('#autorulesupdate7').prop('selectedIndex'));
+	enable_openappid_dnload();
+
+});
+//]]>
 </script>
 
-</body>
-</html>
+<?php include("foot.inc"); ?>

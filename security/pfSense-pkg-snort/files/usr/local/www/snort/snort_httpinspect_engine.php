@@ -1,7 +1,7 @@
 <?php
 /*
  * snort_httpinspect_engine.php
- * Copyright (C) 2013-2015 Bill Meeks
+ * Copyright (C) 2013-2016 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -66,7 +66,7 @@ if (empty($a_nat[$eng_id])) {
 		      "unlimited_decompress" => "on", "inspect_gzip" => "on", "normalize_cookies" =>"on", "normalize_headers" => "on", 
 		      "normalize_utf" => "on", "normalize_javascript" => "on", "allow_proxy_use" => "off", "inspect_uri_only" => "off", 
 		      "max_javascript_whitespaces" => 200, "post_depth" => -1, "max_headers" => 0, "max_spaces" => 0, 
-		      "max_header_length" => 0, "ports" => "default", "decompress_swf" => "off", "decompress_pdf" => "off" );
+		      "max_header_length" => 0, "ports" => "default" );
 	// See if this is initial entry and set to "default" if true
 	if ($eng_id < 1) {
 		$def['name'] = "default";
@@ -124,13 +124,9 @@ else {
 		$pconfig['max_spaces'] = 0;
 	if (empty($pconfig['max_header_length']))
 		$pconfig['max_header_length'] = 0;
-	if (empty($pconfig['decompress_swf']))
-		$pconfig['decompress_swf'] = "off";
-	if (empty($pconfig['decompress_pdf']))
-		$pconfig['decompress_pdf'] = "off";
 }
 
-if ($_POST['Cancel']) {
+if ($_POST['cancel']) {
 	// Clear and close out any session variable we created
 	session_start();
 	unset($_SESSION['http_inspect_import']);
@@ -263,8 +259,6 @@ if ($_POST['save']) {
 	$engine['normalize_javascript'] = $_POST['httpinspect_normalize_javascript'] ? 'on' : 'off';
 	$engine['allow_proxy_use'] = $_POST['httpinspect_allow_proxy_use'] ? 'on' : 'off';
 	$engine['inspect_uri_only'] = $_POST['httpinspect_inspect_uri_only'] ? 'on' : 'off';
-	$engine['decompress_swf'] = $_POST['httpinspect_decompress_swf'] ? 'on' : 'off';
-	$engine['decompress_pdf'] = $_POST['httpinspect_decompress_pdf'] ? 'on' : 'off';
 
 	// Can only have one "all" Bind_To address
 	if ($engine['bind_to'] == "all" && $engine['name'] <> "default") {
@@ -304,469 +298,385 @@ if ($_POST['save']) {
 		// Now write the new engine array to conf
 		write_config("Snort pkg: modified http_inspect engine settings.");
 
-		// We have saved a preproc config change, so set "dirty" flag
-		mark_subsystem_dirty('snort_preprocessors');
-
 		header("Location: /snort/snort_preprocessors.php?id={$id}#httpinspect_row");
 		exit;
 	}
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($config['installedpackages']['snortglobal']['rule'][$id]['interface']);
-$pgtitle = gettext("Snort: {$if_friendly} - HTTP_Inspect Preprocessor Engine");
-include_once("head.inc");
+$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("HTTP_Inspect Preprocessor Engine"), gettext("{$if_friendly}"));
+include("head.inc");
 
-?>
-
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC" >
-
-<?php
-include("fbegin.inc");
 if ($input_errors) print_input_errors($input_errors);
 if ($savemsg)
 	print_info_box($savemsg);
+
+$form = new Form(FALSE);
+$section = new Form_Section('Snort HTTP Inspection Server Configuration');
+
+$engine_name = new Form_Input(
+	'httpinspect_name',
+	'Engine Name',
+	'text',
+	$pconfig['name']
+);
+if ($pconfig['name'] <> "default") {
+	$engine_name->setHelp('Enter a unique name or description for this engine.  (Max 25 characters)');
+}
+else {
+	$engine_name->setReadonly()->setHelp('The name for the default engine is read-only.');
+}
+$section->addInput($engine_name);
+
+if ($pconfig['name'] <> "default") {
+	$bind_to = new Form_Input(
+		'httpinspect_bind_to',
+		'',
+		'text',
+		$pconfig['bind_to']
+	);
+	$bind_to->setAttribute('title', trim(filter_expand_alias($pconfig['bind_to'])));
+	$bind_to->setHelp('IP List to bind this engine to. (Cannot be blank)');
+	$btnaliases = new Form_Button(
+		'btnSuppressList',
+		' ' . 'Aliases',
+		'snort_select_alias.php?id=' . $id . '&eng_id=<?=' . $eng_id . '&type=host|network&varname=bind_to&act=import&multi_ip=yes&returl=' . urlencode($_SERVER['PHP_SELF']),
+		'fa-search-plus'
+	);
+	$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
+	$btnaliases->setAttribute('title', gettext("Select an existing IP alias"));
+	$group = new Form_Group('Bind-To IP Address Alias');
+	$group->add($bind_to);
+	$group->add($btnaliases);
+	$group->setHelp(gettext("Supplied value must be a pre-configured Alias or the keyword 'all'."));
+	$section->add($group);
+}
+else {
+	$section->addInput( new Form_Input(
+		'httpinspect_bind_to',
+		'Bind-To IP Address Alias',
+		'text',
+		$pconfig['bind_to']
+	))->setReadonly()->setHelp('The default engine is required and only runs for packets with destination addresses not matching other engine IP Lists.');
+}
+
+$bind_to = new Form_Input(
+	'httpinspect_ports',
+	'',
+	'text',
+	$pconfig['ports']
+);
+$bind_to->setAttribute('title', trim(filter_expand_alias($pconfig['ports'])));
+$bind_to->setHelp('Specify which ports to check for HTTP data.  Default value is <em>default</em>');
+$btnaliases = new Form_Button(
+	'btnSelectAlias',
+	' ' . 'Aliases',
+	'snort_select_alias.php?id=' . $id . '&eng_id=<?=' . $eng_id . '&type=port&varname=ports&act=import&returl=' . urlencode($_SERVER['PHP_SELF']),
+	'fa-search-plus'
+);
+$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
+$btnaliases->setAttribute('title', gettext("Select an existing port alias"));
+$group = new Form_Group('Ports');
+$group->add($bind_to);
+$group->add($btnaliases);
+$msg = gettext("Using <em>default</em> will include the HTTP Ports defined on the ") . '<a href="snort_define_servers.php?id={$id}" title="';
+$msg .= gettext("Go to {$if_friendly} Variables tab to define custom port variables") . '">' . gettext("VARIABLES") . '</a>';
+$msg .= gettext(" tab.  Specific ports for this server can be specified here using a pre-defined Alias.") . '<br/>';
+$msg .= gettext("NOTE:  Supplied value must be a pre-configured Alias or the keyword 'default'.");
+$group->setHelp($msg);
+$section->add($group);
+
+$section->addInput(new Form_Select(
+	'httpinspect_server_profile',
+	'Server Profile',
+	$pconfig['server_profile'],
+	array( 'all' => 'All', 'apache' => 'Apache', 'iis' => 'IIS', 'iis4_0' => 'IIS4_0', 'iis5_0' => 'IIS5_0' )
+))->setHelp('Choose the profile type of the protected web server.  The default is All.  IIS_4.0 and IIS_5.0 are identical to IIS except they alert on the double decoding vulnerability present in those versions.');
+
+$section->addInput(new Form_Checkbox(
+	'httpinspect_no_alerts',
+	'No Alerts',
+	'Disable Alerts from this engine configuration. Default is Not Checked.',
+	$pconfig['no_alerts'] == 'on' ? true:false,
+	'on'
+));
+
+$group = new Form_Group('Allow Proxy Use');
+$group->add(new Form_Checkbox(
+	'httpinspect_allow_proxy_use',
+	'',
+	'Allow proxy use on this server.  Default is Not Checked.',
+	$pconfig['allow_proxy_use'] == 'on' ? true:false,
+	'on'
+))->setHelp('This prevents proxy alerts for this server.  The global option Proxy_Alert must also be enabled, otherwise this setting does nothing.');
+$section->add($group);
+
+$section->addInput(new Form_Checkbox(
+	'httpinspect_enable_xff',
+	'XFF/True-Client-IP',
+	'Log original client IP present in X-Forwarded-For or True-Client-IP HTTP headers. Default is Not Checked.',
+	$pconfig['enable_xff'] == 'on' ? true:false,
+	'on'
+));
+
+$section->addInput(new Form_Checkbox(
+	'httpinspect_log_uri',
+	'URI Logging',
+	'Parse URI data from the HTTP request and log it with other session data. Default is Not Checked.',
+	$pconfig['log_uri'] == 'on' ? true:false,
+	'on'
+));
+
+$section->addInput(new Form_Checkbox(
+	'httpinspect_log_hostname',
+	'Hostname Logging',
+	'Parse Hostname data from the HTTP request and log it with other session data. Default is Not Checked.',
+	$pconfig['log_hostname'] == 'on' ? true:false,
+	'on'
+));
+
+$section->addInput(new Form_Checkbox(
+	'httpinspect_enable_cookie',
+	'Cookie Extraction/Inspection',
+	'Enable HTTP cookie extraction and inspection. Default is Checked.',
+	$pconfig['enable_cookie'] == 'on' ? true:false,
+	'on'
+));
+
+$group = new Form_Group('Inspect URI Only');
+$group->add(new Form_Checkbox(
+	'httpinspect_inspect_uri_only',
+	'',
+	'Inspect only URI portion of HTTP requests. This is a performance enhancement.  Default is Not Checked.',
+	$pconfig['inspect_uri_only'] == 'on' ? true:false,
+	'on'
+))->setHelp('If this option is used without any uricontent rules, then no inspection will take place. The URI is only inspected with uricontent rules, and if there are none available, then there is nothing to inspect.');
+$section->add($group);
+
+$section->addInput(new Form_Checkbox(
+	'httpinspect_extended_response_inspection',
+	'Extended Response Inspection',
+	'Enable extended response inspection to thoroughly inspect the HTTP response. Default is Checked.',
+	$pconfig['extended_response_inspection'] == 'on' ? true:false,
+	'on'
+));
+
+$section->addInput(new Form_Checkbox(
+	'httpinspect_normalize_javascript',
+	'Normalize Javascript',
+	'Enable Javascript normalization in HTTP response body. Default is Checked.',
+	$pconfig['normalize_javascript'] == 'on' ? true:false,
+	'on'
+));
+
+$section->addInput( new Form_Input(
+	'httpinspect_max_javascript_whitespaces',
+	'Maximum Javascript Whitespaces',
+	'number',
+	$pconfig['max_javascript_whitespaces']
+))->setAttribute('min', '0')->setAttribute('max', '65535')->setHelp('Maximum consecutive whitespaces allowed in Javascript obfuscated data.  Minimum is 1 and maximum is 65535.  Zero disables this alert.  Default is 200.<br/>This specifies the maximum allowed parameter length for and FTP command.  It can be used as a basic buffer overflow detection.');
+
+$section->addInput(new Form_Checkbox(
+	'httpinspect_inspect_gzip',
+	'Inspect gzip',
+	'Uncompress and inspect compressed data in HTTP response. Default is Checked.',
+	$pconfig['inspect_gzip'] == 'on' ? true:false,
+	'on'
+));
+
+$section->addInput(new Form_Checkbox(
+	'httpinspect_unlimited_decompress',
+	'Unlimited Decompress',
+	'Decompress unlimited gzip data (across multiple packets). Default is Checked.',
+	$pconfig['unlimited_decompress'] == 'on' ? true:false,
+	'on'
+));
+
+$section->addInput(new Form_Checkbox(
+	'httpinspect_normalize_cookies',
+	'Normalize Cookies',
+	'Normalize HTTP cookie fields. Default is Checked.',
+	$pconfig['normalize_cookies'] == 'on' ? true:false,
+	'on'
+));
+
+$section->addInput(new Form_Checkbox(
+	'httpinspect_normalize_utf',
+	'Normalize UTF',
+	'Normalize HTTP response body character sets to 8-bit encoding. Default is Checked.',
+	$pconfig['normalize_utf'] == 'on' ? true:false,
+	'on'
+));
+
+$section->addInput(new Form_Checkbox(
+	'httpinspect_normalize_headers',
+	'Normalize Headers',
+	'Normalize HTTP Header fields. Default is Checked.',
+	$pconfig['normalize_headers'] == 'on' ? true:false,
+	'on'
+));
+
+$group = new Form_Group('Server Flow Depth');
+$group->add( new Form_Input(
+	'httpinspect_server_flow_depth',
+	'',
+	'number',
+	$pconfig['server_flow_depth']
+))->setAttribute('min', '-1')->setAttribute('max', '65535')->setHelp('Amount of HTTP server response payload to inspect.  Minimum is -1 and maximum is 65535.  -1 disables HTTP inspect and 0 enables all HTTP inspect.  Default is 1460.');
+$group->setHelp('Snort\'s performance may increase by adjusting this value. Setting this value too low may cause false negatives. Values above 0 are specified in bytes.  Recommended setting is maximum (1460).');
+$section->add($group);
+
+$group = new Form_Group('Client Flow Depth');
+$group->add( new Form_Input(
+	'httpinspect_client_flow_depth',
+	'',
+	'number',
+	$pconfig['client_flow_depth']
+))->setAttribute('min', '-1')->setAttribute('max', '1460')->setHelp('Amount of raw HTTP client request payload to inspect.  Minimum is -1 and maximum is 1460.  -1 disables HTTP inspect and 0 enables all HTTP inspect.  Default is 65535.');
+$group->setHelp('Snort\'s performance may increase by adjusting this value. Setting this value too low may cause false negatives. Values above 0 are specified in bytes.  Recommended setting is maximum (65535).');
+$section->add($group);
+
+$group = new Form_Group('Post Depth');
+$group->add( new Form_Input(
+	'httpinspect_post_depth',
+	'',
+	'number',
+	$pconfig['post_depth']
+))->setAttribute('min', '-1')->setAttribute('max', '65495')->setHelp('Amount of data to inspect in client post message.  Minimum is -1 and maximum is 65495.  -1 ignores all post data and 0 inspects all post data.  Default is -1.');
+$group->setHelp('Snort\'s performance may increase by adjusting this value. Values above 0 are specified in bytes.  Recommended setting is -1 (ignore all post data.');
+$section->add($group);
+
+$group = new Form_Group('Max Headers');
+$group->add( new Form_Input(
+	'httpinspect_max_headers',
+	'',
+	'number',
+	$pconfig['max_headers']
+))->setAttribute('min', '0')->setAttribute('max', '1024')->setHelp('Sets the maximum number of HTTP client request header fields allowed.  Minimum is 0 and maximum is 65535.  Zero disables this alert.  Default is 0.');
+$group->setHelp('Requests that contain more HTTP headers than this value will cause a <em>Max Header</em> alert.');
+$section->add($group);
+
+$group = new Form_Group('Max Header Length');
+$group->add( new Form_Input(
+	'httpinspect_max_header_length',
+	'',
+	'number',
+	$pconfig['max_header_length']
+))->setAttribute('min', '0')->setAttribute('max', '65535')->setHelp('Sets the maximum length allowed for an HTTP client request header field.  Minimum is 0 and maximum is 1024.  Zero disables this alert.  Default is 0.');
+$group->setHelp('Requests that exceed this limit will cause a <em>Long Header</em> alert.');
+$section->add($group);
+
+$group = new Form_Group('Max Spaces');
+$group->add( new Form_Input(
+	'httpinspect_max_spaces',
+	'',
+	'number',
+	$pconfig['max_spaces']
+))->setAttribute('min', '0')->setAttribute('max', '65535')->setHelp('Sets the maximum number of whitespaces allowed with HTTP client request line folding.  Minimum is 0 and maximum is 1024.  Zero disables this alert.  Default is 0.');
+$group->setHelp('Request headers folded with whitespaces equal to or greater than this value will cause a <em>Whitespace Saturation</em> alert.');
+$section->add($group);
+
+$btnsave = new Form_Button(
+	'save',
+	'Save',
+	null,
+	'fa-save'
+);
+$btncancel = new Form_Button(
+	'cancel',
+	'Cancel'
+);
+$btnsave->addClass('btn-primary')->addClass('btn-default')->setAttribute('title', 'Save HTTP Inspect engine settings and return to Preprocessors tab');
+$btncancel->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-warning')->setAttribute('title', 'Cancel changes and return to Preprocessors tab');
+
+$section->addInput(new Form_StaticText(
+	null,
+	$btnsave . $btncancel
+));
+
+$form->add($section);
+
+$form->addGlobal(new Form_Input(
+	'id',
+	'id',
+	'hidden',
+	$id
+));
+$form->addGlobal(new Form_Input(
+	'eng_id',
+	'eng_id',
+	'hidden',
+	$eng_id
+));
+
+print($form);
+
 ?>
-
-<form action="snort_httpinspect_engine.php" method="post" name="iform" id="iform">
-<input name="id" type="hidden" value="<?=$id?>">
-<input name="eng_id" type="hidden" value="<?=$eng_id?>">
-<div id="boxarea">
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr>
-<td class="tabcont">
-<table width="100%" border="0" cellpadding="6" cellspacing="0">
-	<tr>
-		<td colspan="2" valign="middle" class="listtopic"><?php echo gettext("HTTP Inspection Server Configuration"); ?></td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("Engine Name"); ?></td>
-		<td class="vtable">
-			<input name="httpinspect_name" type="text" class="formfld unknown" id="httpinspect_name" size="25" maxlength="25" 
-			value="<?=htmlspecialchars($pconfig['name']);?>"<?php if (htmlspecialchars($pconfig['name']) == "default") echo " readonly";?>>&nbsp;
-			<?php if (htmlspecialchars($pconfig['name']) <> "default") 
-					echo gettext("Name or description for this engine.  (Max 25 characters)");
-				else
-					echo "<span class=\"red\">" . gettext("The name for the 'default' engine is read-only.") . "</span>";?><br/>
-			<?php echo gettext("Unique name or description for this engine configuration.  Default value is ") . 
-			"<strong>" . gettext("default") . "</strong>"; ?>.<br/>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("Bind-To IP Address Alias"); ?></td>
-		<td class="vtable">
-		<?php if ($pconfig['name'] <> "default") : ?>
-			<table width="95%" border="0" cellpadding="2" cellspacing="0">
-				<tr>
-					<td class="vexpl"><input name="httpinspect_bind_to" type="text" class="formfldalias" id="httpinspect_bind_to" size="32" 
-					value="<?=htmlspecialchars($pconfig['bind_to']);?>" title="<?=trim(filter_expand_alias($pconfig['bind_to']));?>" autocomplete="off">&nbsp;
-					<?php echo gettext("IP List to bind this engine to. (Cannot be blank)"); ?></td>
-					<td align="right"><input type="button" class="formbtns" value="Aliases" onclick="parent.location='snort_select_alias.php?id=<?=$id;?>&eng_id=<?=$eng_id;?>&type=host|network&varname=bind_to&act=import&multi_ip=yes&returl=<?=urlencode($_SERVER['PHP_SELF']);?>'" 
-					title="<?php echo gettext("Select an existing IP alias");?>"/></td>
-				</tr>
-				<tr>
-					<td class="vexpl" colspan="2"><?php echo gettext("This engine will only run for packets with destination addresses contained within this IP List.");?></td>
-				</tr>
-			</table><br/>
-			<span class="red"><strong><?php echo gettext("Note: ") . "</strong></span>" . gettext("Supplied value must be a pre-configured Alias or the keyword 'all'.");?>
-		<?php else : ?>
-			<input name="httpinspect_bind_to" type="text" class="formfldalias" id="httpinspect_bind_to" size="32" 
-			value="<?=htmlspecialchars($pconfig['bind_to']);?>" autocomplete="off" readonly>&nbsp;
-			<?php echo "<span class=\"red\">" . gettext("IP List for the default engine is read-only and must be 'all'.") . "</span>";?><br/>
-			<?php echo gettext("The default engine is required and only runs for packets with destination addresses not matching other engine IP Lists.");?><br/>
-		<?php endif ?>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("Ports"); ?></td>
-		<td class="vtable">
-			<table width="95%" border="0" cellpadding="2" cellspacing="0">
-				<tr>
-					<td class="vexpl"><input name="httpinspect_ports" type="text" class="formfldalias" id="httpinspect_ports" size="25" 
-					value="<?=htmlspecialchars($pconfig['ports']);?>" title="<?=trim(filter_expand_alias($pconfig['ports']));?>">
-					<?php echo gettext("Specifiy which ports to check for HTTP data.");?></td>
-					<td align="right"><input type="button" class="formbtns" value="Aliases" onclick="parent.location='snort_select_alias.php?id=<?=$id;?>&eng_id=<?=$eng_id;?>&type=port&varname=ports&act=import&returl=<?=urlencode($_SERVER['PHP_SELF']);?>'" 
-					title="<?php echo gettext("Select an existing port alias");?>"/></td>
-				</tr>
-				<tr>
-					<td class="vexpl" colspan="2"><?php echo gettext("Default value is '") . "<strong>" . gettext("'default'.  ") . "</strong>";?>
-					<?php echo gettext("Using 'default' will include the HTTP Ports defined on the ") . "<a href='snort_define_servers.php?id={$id}' title=\"" . 
-					gettext("Go to {$if_friendly} Variables tab to define custom port variables") . "\">" . gettext("VARIABLES") . "</a>" . 
-					gettext(" tab.  Specific ports for this server can be specified here using a pre-defined Alias.");?></td>
-				</tr>
-			</table><br/>
-			<span class="red"><strong><?php echo gettext("Note: ") . "</strong></span>" . gettext("Supplied value must be a pre-configured Alias or the keyword 'default'.");?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Server Profile");?> </td>
-		<td width="78%" class="vtable">
-			<select name="httpinspect_server_profile" class="formselect" id="httpinspect_server_profile">
-			<?php
-			$profile = array('All', 'Apache', 'IIS', 'IIS4_0', 'IIS5_0');
-			foreach ($profile as $val): ?>
-			<option value="<?=strtolower($val);?>"
-			<?php if (strtolower($val) == $pconfig['server_profile']) echo "selected"; ?>>
-				<?=gettext($val);?></option>
-				<?php endforeach;?>
-			</select>&nbsp;&nbsp;<?php echo gettext("Choose the profile type of the protected web server.  The default is ") . 
-			"<strong>" . gettext("All") . "</strong>";?><br/>
-			<?php echo gettext("IIS_4.0 and IIS_5.0 are identical to IIS except they alert on the ") . 
-			gettext("double decoding vulnerability present in those versions.");?><br/>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("No Alerts");?></td>
-		<td width="78%" class="vtable"><input name="httpinspect_no_alerts" 
-			type="checkbox" value="on" id="httpinspect_no_alerts"  
-			<?php if ($pconfig['no_alerts']=="on") echo "checked";?>>
-			<?php echo gettext("Disable Alerts from this engine configuration. Default is ");?>
- 			<strong><?php echo gettext("Not Checked");?></strong>.</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Allow Proxy Use");?></td>
-		<td width="78%" class="vtable"><input name="httpinspect_allow_proxy_use" 
-			type="checkbox" value="on" id="httpinspect_allow_proxy_use" 
-			<?php if ($pconfig['allow_proxy_use']=="on") echo "checked";?>>
-			<?php echo gettext("Allow proxy use on this server. " .
-				"Default is ");?>
-			<strong><?php echo gettext("Not Checked");?></strong>.<br/><br/>
-			<span class="red"><strong><?php echo gettext("Note: ") . "</strong></span>" . 
-			gettext("This prevents proxy alerts for this server.  The global option Proxy_Alert must also be " . 
-			"enabled, otherwise this setting does nothing.");?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("XFF/True-Client-IP");?></td>
-		<td width="78%" class="vtable"><input name="httpinspect_enable_xff" 
-			type="checkbox" value="on" id="httpinspect_enable_xff"  
-			<?php if ($pconfig['enable_xff']=="on") echo "checked";?>>
-			<?php echo gettext("Log original client IP present in X-Forwarded-For or True-Client-IP " .
-				"HTTP headers.  Default is ");?>
-			<strong><?php echo gettext("Not Checked");?></strong>.</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("URI Logging"); ?></td>
-		<td width="78%" class="vtable"><input name="httpinspect_log_uri" 
-			type="checkbox" value="on" id="hhttpinspect_log_uri"  
-			<?php if ($pconfig['log_uri']=="on") echo "checked"; ?>>
-			<?php echo gettext("Parse URI data from the HTTP request and log it with other session data." .
-				"  Default is "); ?>
-			<strong><?php echo gettext("Not Checked");?></strong>.</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Hostname Logging");?></td>
-		<td width="78%" class="vtable"><input name="httpinspect_log_hostname" 
-			type="checkbox" value="on" id="httpinspect_log_hostname"  
-			<?php if ($pconfig['log_hostname']=="on") echo "checked";?>>
-			<?php echo gettext("Parse Hostname data from the HTTP request and log it with other session data." .
-				"  Default is ");?>
-			<strong><?php echo gettext("Not Checked");?></strong>.</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Cookie Extraction/Inspection");?></td>
-		<td width="78%" class="vtable"><input name="httpinspect_enable_cookie" 
-			type="checkbox" value="on" id="httpinspect_enable_cookie" 
-			<?php if ($pconfig['enable_cookie']=="on") echo "checked";?>>
-			<?php echo gettext("Enable HTTP cookie extraction and inspection. " .
-				"Default is ");?>
-			<strong><?php echo gettext("Checked");?></strong>.</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Inspect URI Only");?></td>
-		<td width="78%" class="vtable"><input name="httpinspect_inspect_uri_only" 
-			type="checkbox" value="on" id="httpinspect_inspect_uri_only" 
-			<?php if ($pconfig['inspect_uri_only']=="on") echo "checked";?>>
-			<?php echo gettext("Inspect only URI portion of HTTP requests. This is a performance enhancement. " .
-				"Default is ");?>
-			<strong><?php echo gettext("Not Checked");?></strong>.<br/><br/>
-			<span class="red"><strong><?php echo gettext("Note: ") . "</strong></span>" . 
-			gettext("If this option is used without any uricontent rules, then no inspection will take place. " . 
-			"The URI is only inspected with uricontent rules, and if there are none available, then there is nothing to inspect.");?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Extended Response Inspection");?></td>
-		<td width="78%" class="vtable"><input name="httpinspect_extended_response_inspection" 
-			type="checkbox" value="on" id="httpinspect_extended_response_inspection" onclick="extended_response_enable_change();" 
-			<?php if ($pconfig['extended_response_inspection']=="on") echo "checked";?>>
-			<?php echo gettext("Enable extended response inspection to thoroughly inspect the HTTP response. " .
-				"Default is ");?>
-			<strong><?php echo gettext("Checked");?></strong>.</td>
-	</tr>
-	<tr id="httpinspect_normalizejavascript_row">
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Normalize Javascript");?></td>
-		<td width="78%" class="vtable"><input name="httpinspect_normalize_javascript" 
-			type="checkbox" value="on" id="httpinspect_normalize_javascript" onclick="normalize_javascript_enable_change();" 
-			<?php if ($pconfig['normalize_javascript']=="on") echo "checked";?>>
-			<?php echo gettext("Enable Javascript normalization in HTTP response body. " .
-				"Default is ");?>
-			<strong><?php echo gettext("Checked");?></strong>.</td>
-	</tr>
-	<tr id="httpinspect_maxjavascriptwhitespaces_row">
-		<td valign="top" class="vncell"><?php echo gettext("Maximum Javascript Whitespaces"); ?></td>
-		<td class="vtable">
-			<table width="95%" border="0" cellpadding="2" cellspacing="0">
-				<tr>
-					<td valign="top"><input name="httpinspect_max_javascript_whitespaces" type="text" class="formfld unknown"
-					id="httpinspect_max_javascript_whitespaces" size="6" 
-					value="<?=htmlspecialchars($pconfig['max_javascript_whitespaces']);?>"></td>
-					<td class="vexpl" valign="top"><?php echo gettext("Maximum consecutive whitespaces allowed in Javascript obfuscated data.  ");?>
-					<?php echo gettext("Minimum is ") . "<strong>" . gettext("1") . "</strong>" . gettext(" and maximum is ") . 
-					"<strong>" . gettext("65535") . "</strong>" . gettext("  (") . "<strong>" . gettext("0") . 
-					"</strong>" . gettext(" disables this alert). "). gettext("The default value is ") . 
-					"<strong>" . gettext("200") . "</strong>."?></td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr id="httpinspect_inspectgzip_row">
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Inspect gzip");?></td>
-		<td width="78%" class="vtable"><input name="httpinspect_inspect_gzip" 
-			type="checkbox" value="on" id="httpinspect_inspect_gzip" onclick="httpinspect_inspectgzip_enable_change();" 
-			<?php if ($pconfig['inspect_gzip']=="on") echo "checked";?>>
-			<?php echo gettext("Uncompress and inspect compressed data in HTTP response. " .
-				"Default is ");?>
-			<strong><?php echo gettext("Checked");?></strong>.</td>
-	</tr>
-	<tr id="httpinspect_unlimiteddecompress_row">
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Unlimited Decompress");?></td>
-		<td width="78%" class="vtable"><input name="httpinspect_unlimited_decompress" 
-			type="checkbox" value="on" id="httpinspect_unlimited_decompress" 
-			<?php if ($pconfig['unlimited_decompress']=="on") echo "checked";?>>
-			<?php echo gettext("Decompress unlimited gzip data (across multiple packets). Default is ");?> 
-			<strong><?php echo gettext("Checked");?></strong>.</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Decompress SWF");?></td>
-		<td width="78%" class="vtable"><input name="httpinspect_decompress_swf" 
-			type="checkbox" value="on" id="httpinspect_decompress_swf" 
-			<?php if ($pconfig['decompress_swf']=="on") echo "checked";?>>
-			<?php echo gettext("Uncompress and inspect Shockwave Flash data in HTTP response. " .
-				"Default is ");?>
-			<strong><?php echo gettext("Not Checked");?></strong>.</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Decompress PDF");?></td>
-		<td width="78%" class="vtable"><input name="httpinspect_decompress_pdf" 
-			type="checkbox" value="on" id="httpinspect_decompress_pdf" 
-			<?php if ($pconfig['decompress_pdf']=="on") echo "checked";?>>
-			<?php echo gettext("Uncompress and inspect PDF data in HTTP response. " .
-				"Default is ");?>
-			<strong><?php echo gettext("Not Checked");?></strong>.</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Normalize Cookies");?></td>
-		<td width="78%" class="vtable"><input name="httpinspect_normalize_cookies" 
-			type="checkbox" value="on" id="httpinspect_normalize_cookies" 
-			<?php if ($pconfig['normalize_cookies']=="on") echo "checked";?>>
-			<?php echo gettext("Normalize HTTP cookie fields. " .
-				"Default is ");?>
-			<strong><?php echo gettext("Checked");?></strong>.</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Normalize UTF");?></td>
-		<td width="78%" class="vtable"><input name="httpinspect_normalize_utf" 
-			type="checkbox" value="on" id="httpinspect_normalize_utf" 
-			<?php if ($pconfig['normalize_utf']=="on") echo "checked";?>>
-			<?php echo gettext("Normalize HTTP response body character sets to 8-bit encoding. " .
-				"Default is ");?>
-			<strong><?php echo gettext("Checked");?></strong>.</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Normalize Headers");?></td>
-		<td width="78%" class="vtable"><input name="httpinspect_normalize_headers" 
-			type="checkbox" value="on" id="httpinspect_normalize_headers" 
-			<?php if ($pconfig['normalize_headers']=="on") echo "checked";?>>
-			<?php echo gettext("Normalize HTTP Header fields. " .
-				"Default is ");?>
-			<strong><?php echo gettext("Checked");?></strong>.</td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("Server Flow Depth"); ?></td>
-		<td class="vtable">
-			<input name="httpinspect_server_flow_depth" type="text" class="formfld unknown" 
-			id="httpinspect_server_flow_depth" size="6" 
-			value="<?=htmlspecialchars($pconfig['server_flow_depth']);?>">&nbsp;<strong><?php echo gettext("-1") . 
-			"</strong>" . gettext(" to ") . "<strong>" . gettext("65535") . "</strong> " . gettext("(") . "<strong>" . 
-			gettext("-1") . "</strong>" . gettext(" disables HTTP inspect, ") . "<strong>" . gettext("0") . "</strong>" . 
-			gettext(" enables all HTTP inspect).");?><br/><br/>
-			<?php echo gettext("Amount of HTTP server response payload to inspect. Snort's performance " .
-			"may increase by adjusting this value. Setting this value too low may cause false negatives. ") . 
-			gettext("Values above 0 are specified in bytes.  Recommended setting is maximum (65535). " . 
-			"Default value is ") . "<strong>" . gettext("65535") . "</strong>.";?>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("Client Flow Depth"); ?></td>
-		<td class="vtable">
-			<input name="httpinspect_client_flow_depth" type="text" class="formfld unknown" 
-			id="httpinspect_client_flow_depth" size="6" 
-			value="<?=htmlspecialchars($pconfig['client_flow_depth']);?>">&nbsp;<strong><?php echo gettext("-1") . "</strong>" . 
-			gettext(" to ") . "<strong>" . gettext("1460") . "</strong>" . gettext(" (") . "<strong>" . gettext("-1") . 
-			"</strong>" . gettext(" disables HTTP inspect, ") . "<strong>" . gettext("0") . "</strong>" . 
-			gettext(" enables all HTTP inspect).");?><br/><br/>
-			<?php echo gettext("Amount of raw HTTP client request payload to inspect. Snort's " .
-			"performance may increase by adjusting this value. Setting this value too low may cause false negatives. ");?>
-			<?php echo gettext("Values above 0 are specified in bytes.  Recommended setting is maximum (1460). " . 
-			"Default value is ") . "<strong>" . gettext("1460") . "</strong>.";?>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("Post Depth"); ?></td>
-		<td class="vtable">
-			<input name="httpinspect_post_depth" type="text" class="formfld unknown" 
-			id="httpinspect_post_depth" size="6" 
-			value="<?=htmlspecialchars($pconfig['post_depth']);?>">&nbsp;<strong><?php echo gettext("-1") . "</strong>" . 
-			gettext(" to ") . "<strong>" . gettext("65495") . "</strong>" . gettext(" (") . "<strong>" . gettext("-1") . 
-			"</strong>" . gettext(" ignores all post data, ") . "<strong>" . gettext("0") . "</strong>" . 
-			gettext(" inspects all post data).");?><br/><br/>
-			<?php echo gettext("Amount of data to inspect in client post message. Snort's performance may " .
-			"increase by adjusting this value. Values above 0 are specified in bytes.  ") . 
-			gettext("Default value is ") . "<strong>" . gettext("-1") . "</strong>.";?>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("Max Headers"); ?></td>
-		<td class="vtable">
-			<input name="httpinspect_max_headers" type="text" class="formfld unknown" 
-			id="httpinspect_max_headers" size="6" 
-			value="<?=htmlspecialchars($pconfig['max_headers']);?>">&nbsp;<strong><?php echo gettext("1") . "</strong>" . 
-			gettext(" to ") . "<strong>" . gettext("1024") . "</strong>" . gettext(" (") . "<strong>" . gettext("0") . 
-			"</strong>" . gettext(" disables the alert).");?><br/><br/>
-			<?php echo gettext("Sets the maximum number of HTTP client request header fields allowed.  Requests that " .
-			"contain more HTTP headers than this value will cause a \"Max Header\" alert. ") . 
-			gettext("Default value is ") . "<strong>" . gettext("0") . "</strong>.";?>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("Max Header Length"); ?></td>
-		<td class="vtable">
-			<input name="httpinspect_max_header_length" type="text" class="formfld unknown" 
-			id="httpinspect_max_header_length" size="6" 
-			value="<?=htmlspecialchars($pconfig['max_header_length']);?>">&nbsp;<strong><?php echo gettext("1") . "</strong>" . 
-			gettext(" to ") . "<strong>" . gettext("65535") . "</strong>" . gettext(" (") . "<strong>" . gettext("0") . 
-			"</strong>" . gettext(" disables the alert).");?><br/><br/>
-			<?php echo gettext("This sets the maximum length allowed for an HTTP client request header field. " .
-			"Requests that exceed this limit well cause a \"Long Header\" alert. ") .  
-			gettext("Default value is ") . "<strong>" . gettext("0") . "</strong>.";?>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("Max Spaces"); ?></td>
-		<td class="vtable">
-			<input name="httpinspect_max_spaces" type="text" class="formfld unknown" 
-			id="httpinspect_max_spaces" size="6" 
-			value="<?=htmlspecialchars($pconfig['max_spaces']);?>">&nbsp;<strong><?php echo gettext("1") . "</strong>" . 
-			gettext(" to ") . "<strong>" . gettext("65535") . "</strong>" . gettext(" (") . "<strong>" . gettext("0") . 
-			"</strong>" . gettext(" disables the alert).");?><br/><br/>
-			<?php echo gettext("This sets the maximum number of whitespaces allowed with HTTP client request line folding. " .
-			"Request headers folded with whitespaces equal to or greater than this value will cause a \"Whitespace Saturation\" alert. ") . 
-			gettext("Default value is ") . "<strong>" . gettext("0") . "</strong>.";?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="bottom">&nbsp;</td>
-		<td width="78%" valign="bottom">
-			<input name="save" id="save" type="submit" class="formbtn" value=" Save " title="<?php echo 
-			gettext("Save httpinspect engine settings and return to Preprocessors tab"); ?>">
-			&nbsp;&nbsp;&nbsp;&nbsp;
-			<input name="Cancel" id="cancel" type="submit" class="formbtn" value="Cancel" title="<?php echo 
-			gettext("Cancel changes and return to Preprocessors tab"); ?>"></td>
-	</tr>
-</table>
-</td>
-</tr>
-</table>
-</div>
-</form>
-
-<script type="text/javascript" src="/javascript/autosuggest.js">
-</script>
-
-<script type="text/javascript" src="/javascript/suggestions.js">
-</script>
 
 <script type="text/javascript">
+//<![CDATA[
 
-function extended_response_enable_change() {
-	var endis = !(document.iform.httpinspect_extended_response_inspection.checked);
+	function extended_response_enable_change() {
+		var hide = ! $('#httpinspect_extended_response_inspection').prop('checked');
 
-	// Hide the "httpinspect_inspectgzip and httpinspect_normalizejavascript" rows if httpinspect_extended_response_inspection disabled
-	if (endis) {
-		document.getElementById("httpinspect_inspectgzip_row").style.display="none";
-		document.getElementById("httpinspect_unlimiteddecompress_row").style.display="none";
-		document.getElementById("httpinspect_normalizejavascript_row").style.display="none";
-		document.getElementById("httpinspect_maxjavascriptwhitespaces_row").style.display="none";
+		// Hide the "httpinspect_inspectgzip, httpinspect_normalize_javascript, 
+		// httpinspect_unlimited_decompress httpinspect_max_javascript_whitespaces" 
+		// if httpinspect_extended_response_inspection disabled.
+		disableInput('httpinspect_inspect_gzip', hide);
+		disableInput('httpinspect_normalize_javascript', hide);
+		disableInput('httpinspect_unlimited_decompress', hide);
+		disableInput('httpinspect_max_javascript_whitespaces', hide);
 	}
-	else {
-		document.getElementById("httpinspect_inspectgzip_row").style.display="table-row";
-		document.getElementById("httpinspect_unlimiteddecompress_row").style.display="table-row";
-		document.getElementById("httpinspect_normalizejavascript_row").style.display="table-row";
-		document.getElementById("httpinspect_maxjavascriptwhitespaces_row").style.display="table-row";
+
+	function httpinspect_inspectgzip_enable_change() {
+		var hide = ! $('#httpinspect_inspect_gzip').prop('checked');
+
+		// Hide the "httpinspect_unlimited_decompress" if httpinspect_inspect_gzip disabled
+		disableInput('httpinspect_unlimited_decompress', hide);
 	}
-}
 
-function httpinspect_inspectgzip_enable_change() {
-	var endis = !(document.iform.httpinspect_inspect_gzip.checked);
-	// Hide the "httpinspect_unlimited_decompress" row if httpinspect_inspect_gzip disabled
-	if (endis)
-		document.getElementById("httpinspect_unlimiteddecompress_row").style.display="none";
-	else
-		document.getElementById("httpinspect_unlimiteddecompress_row").style.display="table-row";
-}
+	function normalize_javascript_enable_change() {
+		var hide = ! $('#httpinspect_normalize_javascript').prop('checked');
 
-function normalize_javascript_enable_change() {
-	var endis = !(document.iform.httpinspect_normalize_javascript.checked);
+		// Hide the "httpinspect_max_javascript_whitespaces" if httpinspect_normalize_javascript disabled
+		disableInput('httpinspect_max_javascript_whitespaces', hide);
+	}
 
-	// Hide the "httpinspect_maxjavascriptwhitespaces" row if httpinspect_normalize_javascript disabled
-	if (endis)
-		document.getElementById("httpinspect_maxjavascriptwhitespaces_row").style.display="none";
-	else
-		document.getElementById("httpinspect_maxjavascriptwhitespaces_row").style.display="table-row";
-}
+events.push(function() {
 
-// Set initial state of form controls
-extended_response_enable_change();
-normalize_javascript_enable_change();
-httpinspect_inspectgzip_enable_change();
+	// ---------- Autocomplete --------------------------------------------------------------------
 
-<?php
-	$isfirst = 0;
-	$aliases = "";
-	$addrisfirst = 0;
-	$portisfirst = 0;
-	$aliasesaddr = "";
-	$aliasesport = "";
-	if(isset($config['aliases']['alias']) && is_array($config['aliases']['alias']))
-		foreach($config['aliases']['alias'] as $alias_name) {
-			// Skip any Aliases that resolve to an empty string
-			if (trim(filter_expand_alias($alias_name['name'])) == "")
-				continue;
-			if ($alias_name['type'] == "host" || $alias_name['type'] == "network") {
-				if($addrisfirst == 1) $aliasesaddr .= ",";
-				$aliasesaddr .= "'" . $alias_name['name'] . "'";
-				$addrisfirst = 1;
-			}
-			elseif ($alias_name['type'] == "port") {
-				if($portisfirst == 1) $aliasesport .= ",";
-				$aliasesport .= "'" . $alias_name['name'] . "'";
-				$portisfirst = 1;
-			}
-		}
-?>
-	var addressarray=new Array(<?php echo $aliasesaddr; ?>);
-	var portarray=new Array(<?php echo $aliasesport; ?>);
+	var addressarray = <?= json_encode(get_alias_list(array("host", "network", "openvpn"))) ?>;
+	var portarray = <?= json_encode(get_alias_list(array("port"))) ?>;
 
-function createAutoSuggest() {
-<?php
-	echo "objAliasAddr = new AutoSuggestControl(document.getElementById('httpinspect_bind_to'), new StateSuggestions(addressarray));\n";
-	echo "objAliasPort = new AutoSuggestControl(document.getElementById('httpinspect_ports'), new StateSuggestions(portarray));\n";
-?>
-}
+	$('#httpinspect_bind_to').autocomplete({
+		source: addressarray
+	});
 
-setTimeout("createAutoSuggest();", 500);
+	$('#httpinspect_ports').autocomplete({
+		source: portarray
+	});
 
+	//-- click handlers ---------------------------------------------------
+	$('#httpinspect_extended_response_inspection').click(function() {
+		extended_response_enable_change();
+	});
+
+	$('#httpinspect_inspect_gzip').click(function() {
+		httpinspect_inspectgzip_enable_change();
+	});
+
+	$('#httpinspect_normalize_javascript').click(function() {
+		normalize_javascript_enable_change();
+	});
+
+	// Set initial state of form controls
+	extended_response_enable_change();
+	normalize_javascript_enable_change();
+	httpinspect_inspectgzip_enable_change();
+
+});
+//]]>
 </script>
-<?php include("fend.inc");?>
-</body>
-</html>
+<?php include("foot.inc");?>
+

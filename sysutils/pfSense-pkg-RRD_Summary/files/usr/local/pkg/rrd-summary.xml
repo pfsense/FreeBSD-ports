@@ -50,12 +50,4 @@
 		<section>Status</section>
 		<url>/status_rrd_summary.php</url>
 	</menu>
-	<additional_files_needed>
-		<prefix>/etc/inc/priv/</prefix>
-		<item>https://packages.pfsense.org/packages/config/rrd-summary/rrd-summary.priv.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/</prefix>
-		<item>https://packages.pfsense.org/packages/config/rrd-summary/status_rrd_summary.php</item>
-	</additional_files_needed>
 </packagegui>

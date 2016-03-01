@@ -56,191 +56,13 @@
 			<url>/pkg_edit.php?xml=lightsquid.xml</url>
 			<active/>
 		</tab>
-		<tab>
-			<text>Lightsquid Report</text>
-			<url>/lightsquid/index.cgi</url>
-		</tab>
-		<tab>
-			<text>Proxy Status</text>
-			<url>/sqstat/sqstat.php</url>
-		</tab>
 	</tabs>
-	<additional_files_needed>
-	       <prefix>/usr/local/pkg/</prefix>
-	       <item>https://packages.pfsense.org/packages/config/lightsquid/lightsquid.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-	       <prefix>/etc/inc/priv/</prefix>
-	       <item>https://packages.pfsense.org/packages/config/lightsquid/lightsquid.priv.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-	       <prefix>/usr/local/www/sqstat/</prefix>
-	       <item>https://packages.pfsense.org/packages/config/lightsquid/sqstat.class.php</item>
-	</additional_files_needed>
-	<additional_files_needed>
-	       <prefix>/usr/local/www/sqstat/</prefix>
-	       <item>https://packages.pfsense.org/packages/config/lightsquid/sqstat.php</item>
-	</additional_files_needed>
-	<additional_files_needed>
-	       <prefix>/usr/local/www/sqstat/</prefix>
-	       <item>https://packages.pfsense.org/packages/config/lightsquid/sqstat.css</item>
-	</additional_files_needed>
-	<additional_files_needed>
-	       <prefix>/usr/local/www/sqstat/</prefix>
-	       <item>https://packages.pfsense.org/packages/config/lightsquid/zhabascript.js</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/bigfiles.html</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/day_detail.html</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/graph.html</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/group_detail.html</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novopf/images/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/images/datetime.png</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novopf/images/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/images/flag_red.png</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novopf/images/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/images/graph.png</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novopf/images/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/images/groups.png</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novopf/images/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/images/printer.png</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novopf/images/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/images/users.png</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/index.html</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/month_detail.html</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/print.css</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/screen.css</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/topsites.html</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/user_detail.html</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/user_month.html</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/user_time.html</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novopf/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novopf/whousesite.html</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/bigfiles.html</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/day_detail.html</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/graph.html</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/group_detail.html</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novosea/images/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/images/datetime.png</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novosea/images/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/images/flag_red.png</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novosea/images/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/images/graph.png</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novosea/images/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/images/groups.png</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novosea/images/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/images/printer.png</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novosea/images/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/images/users.png</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/index.html</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/month_detail.html</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/print.css</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/screen.css</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/topsites.html</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/user_detail.html</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/user_month.html</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/user_time.html</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/share/lightsquid/tpl/novosea/</prefix>
-		<item>https://packages.pfsense.org/packages/config/lightsquid/tpl/novosea/whousesite.html</item>
-	</additional_files_needed>
+	<service>
+		<name>lightsquid_web</name>
+		<rcfile>lighttpd_ls.sh</rcfile>
+		<executable>lighttpd_ls</executable>
+		<description>Lightsquid Web Server</description>
+	</service>
 	<fields>
 		<field>
 			<name>Instructions</name>
@@ -265,6 +87,55 @@
 				]]>
 			</description>
 		</field>
+		<field>
+			<name>Web Service Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Lightsquid Web Port</fielddescr>
+			<fieldname>lighttpd_ls_port</fieldname>
+			<description>Port the lighttpd web server for lightsquid will listen on. (Default: 7445)</description>
+			<type>input</type>
+			<size>5</size>
+			<default_value>7445</default_value>
+		</field>
+		<field>
+			<fielddescr>Lightsquid Web SSL</fielddescr>
+			<fieldname>lighttpd_ls_ssl</fieldname>
+			<description>Use SSL for Lightsquid Web Access</description>
+			<sethelp>This option configures the lightsquid web server to use SSL and uses the WebGUI HTTPS certificate.</sethelp>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+
+		<field>
+			<fielddescr>Lightsquid Web User</fielddescr>
+			<fieldname>lighttpd_ls_user</fieldname>
+			<description>Username used to access lighttpd. (Default: admin)</description>
+			<type>input</type>
+			<size>5</size>
+			<default_value>admin</default_value>
+		</field>
+		<field>
+			<fielddescr>Lightsquid Web Password</fielddescr>
+			<fieldname>lighttpd_ls_password</fieldname>
+			<description>Password used to access lighttpd. (Default: pfsense)</description>
+			<type>password</type>
+			<size>5</size>
+			<default_value>pfsense</default_value>
+		</field>
+		<field>
+			<type>info</type>
+			<fielddescr>Links</fielddescr>
+			<description>
+				<![CDATA[
+				<input type="submit" name="navto_lightsquid" id="navto_lightsquid" value="Open Lightsquid" />
+				<input type="submit" name="navto_sqstat" id="navto_sqstat" value="Open sqstat" />
+				]]>
+			</description>
+		</field>
+
+
 		<field>
 			<name>Report Template Settings</name>
 			<type>listtopic</type>

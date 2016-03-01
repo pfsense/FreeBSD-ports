@@ -5,7 +5,7 @@
  *
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2008-2009 Robert Zelaya.
- * Copyright (C) 2014 Bill Meeks
+ * Copyright (C) 2014-2016 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -128,6 +128,8 @@ if ($_POST['save']) {
 			$input_errors[] = gettext("You must provide a DB instance name when logging to a MySQL database.");
 		if (empty($_POST['barnyard_dbuser']))
 			$input_errors[] = gettext("You must provide a DB user login name when logging to a MySQL database.");
+		if ($_POST['barnyard_dbpwd'] != $_POST['barnyard_dbpwd_confirm'])
+			$input_errors[] = gettext("The MySQL database passwords do not match!");
 	}
 
 	// Validate Sensor Name contains no spaces
@@ -227,453 +229,347 @@ if ($_POST['save']) {
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
-$pgtitle = gettext("Snort: Interface {$if_friendly} - Barnyard2 Settings");
+$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Barnyard2 Settings"), gettext("{$if_friendly}"));
 include_once("head.inc");
 
+/* Display Alert message */
+if ($input_errors) {
+	print_input_errors($input_errors); // TODO: add checks
+}
+
+if ($savemsg) {
+	print_info_box($savemsg);
+}
+
+$tab_array = array();
+$tab_array[] = array(gettext("Snort Interfaces"), true, "/snort/snort_interfaces.php");
+$tab_array[] = array(gettext("Global Settings"), false, "/snort/snort_interfaces_global.php");
+$tab_array[] = array(gettext("Updates"), false, "/snort/snort_download_updates.php");
+$tab_array[] = array(gettext("Alerts"), false, "/snort/snort_alerts.php?instance={$id}");
+$tab_array[] = array(gettext("Blocked"), false, "/snort/snort_blocked.php");
+$tab_array[] = array(gettext("Pass Lists"), false, "/snort/snort_passlist.php");
+$tab_array[] = array(gettext("Suppress"), false, "/snort/snort_interfaces_suppress.php");
+$tab_array[] = array(gettext("IP Lists"), false, "/snort/snort_ip_list_mgmt.php");
+$tab_array[] = array(gettext("SID Mgmt"), false, "/snort/snort_sid_mgmt.php");
+$tab_array[] = array(gettext("Log Mgmt"), false, "/snort/snort_log_mgmt.php");
+$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=snort/snort_sync.xml");
+display_top_tabs($tab_array, true);
+$menu_iface=($if_friendly?substr($if_friendly,0,5)." ":"Iface ");
+$tab_array = array();
+$tab_array[] = array($menu_iface . gettext("Settings"), false, "/snort/snort_interfaces_edit.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Categories"), false, "/snort/snort_rulesets.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Rules"), false, "/snort/snort_rules.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Variables"), false, "/snort/snort_define_servers.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Preprocs"), false, "/snort/snort_preprocessors.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Barnyard2"), true, "/snort/snort_barnyard.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/snort/snort_ip_reputation.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Logs"), false, "/snort/snort_interface_logs.php?id={$id}");
+display_top_tabs($tab_array, true);
+
+$form = new Form(new Form_Button(
+	'save',
+	'Save'
+));
+
+$section = new Form_Section('General Barnyard2 Settings');
+$section->addInput(new Form_Checkbox(
+	'barnyard_enable',
+	'Enable Barnyard2',
+	'Enable barnyard2 for this interface. You will also need to enable at least one logging destination below.',
+	$pconfig['barnyard_enable'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'barnyard_show_year',
+	'Show Year',
+	'Enable the year being shown in timestamps.  Default value is checked.',
+	$pconfig['barnyard_show_year'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Select(
+	'unified2_log_limit',
+	'Unified2 Log Limit',
+	$pconfig['unified2_log_limit'],
+	$log_sizes
+))->setHelp('Choose a Unified2 Log file size limit. Default is 128K. This sets the maximum size for a Unified2 Log file before it is rotated and a new one created.');
+$section->addInput(new Form_Checkbox(
+	'barnyard_archive_enable',
+	'Archive Unified2 Logs',
+	'Enable the archiving of processed unified2 log files.  Default value is checked.',
+	$pconfig['barnyard_archive_enable'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Select(
+	'u2_archived_log_retention',
+	'Unified2 Archived Log Retention Period',
+	$pconfig['u2_archived_log_retention'],
+	$retentions
+))->setHelp('Choose retention period for archived Barnyard2 binary log files. Default is 7 days.  When finished processing a file, Barnyard2 moves it to an archive folder.  This setting determines how long files remain in the archive folder before they are automatically deleted.');
+$section->addInput(new Form_Checkbox(
+	'barnyard_dump_payload',
+	'Dump Payload',
+	'Enable dumping of application data from unified2 files.  Default value is Not Checked.',
+	$pconfig['barnyard_dump_payload'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'barnyard_obfuscate_ip',
+	'Obfuscate IP Addresses',
+	'Enable obfuscation of logged IP addresses.  Default value is Not Checked.',
+	$pconfig['barnyard_obfuscate_ip'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'barnyard_log_vlan_events',
+	'Log VLAN Events',
+	'Enable logging of VLAN event types in unified2 files.  Default value is Not Checked.',
+	$pconfig['barnyard_log_vlan_events'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'barnyard_log_mpls_events',
+	'Log MPLS Events',
+	'Enable logging of MPLS event types in unified2 files.  Default value is Not Checked.',
+	$pconfig['barnyard_log_mpls_events'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Input(
+	'barnyard_sensor_name',
+	'Sensor Name',
+	'text',
+	$pconfig['barnyard_sensor_name']
+))->setHelp('Unique name for this sensor.  Leave blank to use internal default.');
+$form->add($section);
+
+$section = new Form_Section('MySQL Database Output Settings');
+$section->addInput(new Form_Checkbox(
+	'barnyard_mysql_enable',
+	'Enable MySQL Database',
+	'Enable logging of alerts to a MySQL database instance. You will also have to provide the database credentials in the fields below.',
+	$pconfig['barnyard_mysql_enable'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Input(
+	'barnyard_dbhost',
+	'Database Host',
+	'text',
+	$pconfig['barnyard_dbhost']
+))->setHelp('Hostname or IP address of the MySQL database server.');
+$section->addInput(new Form_Input(
+	'barnyard_dbname',
+	'Database Name',
+	'text',
+	$pconfig['barnyard_dbname']
+))->setHelp('Instance or DB name of the MySQL database.');
+$section->addInput(new Form_Input(
+	'barnyard_dbuser',
+	'Database User Name',
+	'text',
+	$pconfig['barnyard_dbuser']
+))->setHelp('Username for the MySQL database.');
+$section->addPassword(new Form_Input(
+	'barnyard_dbpwd',
+	'Database User Password',
+	'text',
+	$pconfig['barnyard_dbpwd']
+))->setHelp('Password for the MySQL database user.');
+$section->addInput(new Form_Checkbox(
+	'barnyard_disable_sig_ref_tbl',
+	'Disable Signature Reference Table',
+	'Disable synchronization of sig_reference table in schema.  Default value is Not Checked.  This option will speedup the process when checked, plus it can help work around a "duplicate entry" error when running multiple Snort instances.',
+	$pconfig['barnyard_disable_sig_ref_tbl'] == 'on' ? true:false,
+	'on'
+));
+$form->add($section);
+
+$section = new Form_Section('Syslog Output Settings');
+$section->addInput(new Form_Checkbox(
+	'barnyard_syslog_enable',
+	'Enable Syslog',
+	'Enable logging of alerts to a local or remote syslog receiver.',
+	$pconfig['barnyard_syslog_enable'] == 'on' ? true:false,
+	'on'
+));
+
+$section->addInput(new Form_Select(
+	'barnyard_syslog_opmode',
+	'Operation Mode',
+	$pconfig['barnyard_syslog_opmode'],
+	array( "default" => "DEFAULT", "complete" => "COMPLETE" )
+))->setHelp('Select the level of detail to include when reporting. DEFAULT mode is compatible with the standard Snort syslog format. COMPLETE mode includes additional information such as the raw packet data (displayed in hex format).');
+$section->addInput(new Form_Checkbox(
+	'barnyard_syslog_local',
+	'Local Only',
+	'Enable logging of alerts to the local system only. This will send alert data to the local system only and overrides the host, port and protocol values below.',
+	$pconfig['barnyard_syslog_local'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Input(
+	'barnyard_syslog_rhost',
+	'Remote Host',
+	'text',
+	$pconfig['barnyard_syslog_rhost']
+))->setHelp('Hostname or IP address of remote syslog host');
+$section->addInput(new Form_Input(
+	'barnyard_syslog_dport',
+	'Remote Port',
+	'text',
+	$pconfig['barnyard_syslog_dport']
+))->setHelp('Port number for syslog on remote host. Default is 514.');
+$section->addInput(new Form_Select(
+	'barnyard_syslog_proto',
+	'Protocol',
+	$pconfig['barnyard_syslog_proto'],
+	array( "udp" => "UDP", "tcp" => "TCP" )
+))->setHelp('Select IP protocol to use for remote reporting. Default is UDP.');
+$section->addInput(new Form_Select(
+	'barnyard_syslog_facility',
+	'Log Facility',
+	$pconfig['barnyard_syslog_facility'],
+	array(  "LOG_AUTH" => "LOG_AUTH", "LOG_AUTHPRIV" => "LOG_AUTHPRIV", "LOG_DAEMON" => "LOG_DAEMON", "LOG_KERN" => "LOG_KERN", "LOG_SYSLOG" => "LOG_SYSLOG", "LOG_USER" => "LOG_USER", "LOG_LOCAL0" => "LOG_LOCAL0", "LOG_LOCAL1" => "LOG_LOCAL1", "LOG_LOCAL2" => "LOG_LOCAL2", "LOG_LOCAL3" => "LOG_LOCAL3", "LOG_LOCAL4" => "LOG_LOCAL4", "LOG_LOCAL5" => "LOG_LOCAL5", "LOG_LOCAL6" => "LOG_LOCAL6", "LOG_LOCAL7" => "LOG_LOCAL7" )
+))->setHelp('Select Syslog Facility to use for remote reporting. Default is LOG_LOCAL1.');
+$section->addInput(new Form_Select(
+	'barnyard_syslog_priority',
+	'Log Priority',
+	$pconfig['barnyard_syslog_priority'],
+	array( "LOG_EMERG" => "LOG_EMERG", "LOG_CRIT" => "LOG_CRIT", "LOG_ALERT" => "LOG_ALERT", "LOG_ERR" => "LOG_ERR", "LOG_WARNING" => "LOG_WARNING", "LOG_NOTICE" => "LOG_NOTICE", "LOG_INFO" => "LOG_INFO" )
+))->setHelp('Select Syslog Priority (Level) to use for remote reporting. Default is LOG_INFO.');
+$form->add($section);
+
+$section = new Form_Section('Bro-IDS Output Settings');
+$section->addInput(new Form_Checkbox(
+	'barnyard_bro_ids_enable',
+	'Enable Bro-IDS',
+	'Enable logging of alerts to a local or remote Bro-IDS receiver.',
+	$pconfig['barnyard_bro_ids_enable'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Input(
+	'barnyard_bro_ids_rhost',
+	'Remote Host',
+	'text',
+	$pconfig['barnyard_bro_ids_rhost']
+))->setHelp('Hostname or IP address of remote Bro-IDS host');
+$section->addInput(new Form_Input(
+	'barnyard_bro_ids_dport',
+	'Remote Port',
+	'text',
+	$pconfig['barnyard_bro_ids_dport']
+))->setHelp('Port number for Bro-IDS instance on remote host. Default is 47760.');
+$form->add($section);
+
+$section = new Form_Section('Advanced Settings');
+$section->addInput(new Form_Textarea (
+	'barnconfigpassthru',
+	'Advanced Configuration Pass-Through',
+	$pconfig['barnconfigpassthru']
+))->setHelp('Arguments entered here will be automatically inserted into the running barnyard2 configuration.');
+$form->add($section);
+
+print($form);
+
 ?>
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
 
-<?php include("fbegin.inc"); ?>
+<script type="text/javascript">
+//<![CDATA[
+events.push(function(){
 
-
-<?php
-	/* Display Alert message */
-	if ($input_errors) {
-		print_input_errors($input_errors); // TODO: add checks
+	function toggle_mySQL() {
+		var hide = ! $('#barnyard_mysql_enable').prop('checked');
+		hideInput('barnyard_dbhost', hide);
+		hideInput('barnyard_dbname', hide);
+		hideInput('barnyard_dbuser', hide);
+		hideInput('barnyard_dbpwd', hide);
+		hideCheckbox('barnyard_disable_sig_ref_tbl', hide);
 	}
 
-	if ($savemsg) {
-		print_info_box($savemsg);
+	function toggle_syslog() {
+		var hide = ! $('#barnyard_syslog_enable').prop('checked');
+		hideSelect('barnyard_syslog_opmode', hide);
+		hideCheckbox('barnyard_syslog_local', hide);
+		hideInput('barnyard_syslog_rhost', hide);
+		hideInput('barnyard_syslog_dport', hide);
+		hideSelect('barnyard_syslog_proto', hide);
+		hideSelect('barnyard_syslog_facility', hide);
+		hideSelect('barnyard_syslog_priority', hide);
 	}
 
-?>
-
-<form action="snort_barnyard.php" method="post" enctype="multipart/form-data" name="iform" id="iform">
-<input name="id" type="hidden" value="<?=$id;?>" /> </td>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr><td>
-<?php
-		$tab_array = array();
-		$tab_array[0] = array(gettext("Snort Interfaces"), true, "/snort/snort_interfaces.php");
-		$tab_array[1] = array(gettext("Global Settings"), false, "/snort/snort_interfaces_global.php");
-		$tab_array[2] = array(gettext("Updates"), false, "/snort/snort_download_updates.php");
-		$tab_array[3] = array(gettext("Alerts"), false, "/snort/snort_alerts.php?instance={$id}");
-		$tab_array[4] = array(gettext("Blocked"), false, "/snort/snort_blocked.php");
-		$tab_array[5] = array(gettext("Pass Lists"), false, "/snort/snort_passlist.php");
-		$tab_array[6] = array(gettext("Suppress"), false, "/snort/snort_interfaces_suppress.php");
-		$tab_array[7] = array(gettext("IP Lists"), false, "/snort/snort_ip_list_mgmt.php");
-		$tab_array[8] = array(gettext("SID Mgmt"), false, "/snort/snort_sid_mgmt.php");
-		$tab_array[9] = array(gettext("Log Mgmt"), false, "/snort/snort_log_mgmt.php");
-		$tab_array[10] = array(gettext("Sync"), false, "/pkg_edit.php?xml=snort/snort_sync.xml");
-		display_top_tabs($tab_array, true);
-		echo '</td></tr>';
-		echo '<tr><td>';
-		$menu_iface=($if_friendly?substr($if_friendly,0,5)." ":"Iface ");
-	        $tab_array = array();
-		$tab_array[] = array($menu_iface . gettext("Settings"), false, "/snort/snort_interfaces_edit.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("Categories"), false, "/snort/snort_rulesets.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("Rules"), false, "/snort/snort_rules.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("Variables"), false, "/snort/snort_define_servers.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("Preprocs"), false, "/snort/snort_preprocessors.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("Barnyard2"), true, "/snort/snort_barnyard.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/snort/snort_ip_reputation.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("Logs"), false, "/snort/snort_interface_logs.php?id={$id}");
-		display_top_tabs($tab_array, true);
-?>
-</td></tr>
-	<tr>
-		<td><div id="mainarea">
-		<table id="maintable" class="tabcont" width="100%" border="0" cellpadding="6" cellspacing="0">
-			<tr>
-				<td colspan="2" valign="top" class="listtopic"><?php echo gettext("General Barnyard2 " .
-				"Settings"); ?></td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncellreq"><?php echo gettext("Enable"); ?></td>
-				<td width="78%" class="vtable">
-					<input name="barnyard_enable" type="checkbox" value="on" <?php if ($pconfig['barnyard_enable'] == "on") echo "checked"; ?>  onClick="enable_change(false)"/>
-					<strong><?php echo gettext("Enable Barnyard2"); ?></strong><br/>
-					<?php echo gettext("This will enable barnyard2 for this interface. You will also to enable at least one logging destination below."); ?></td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Show Year"); ?></td>
-				<td width="78%" class="vtable">
-					<input name="barnyard_show_year" type="checkbox" value="on" <?php if ($pconfig['barnyard_show_year'] == "on") echo "checked"; ?>/>
-					<?php echo gettext("Enable the year being shown in timestamps.  Default value is ") . "<strong>" . gettext("Checked") . "</strong>"; ?>
-				</td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Unified2 Log Limit"); ?></td>
-				<td width="78%" class="vtable"><select name="unified2_log_limit" class="formselect" id="unified2_log_limit">
-					<?php foreach ($log_sizes as $k => $p): ?>
-						<option value="<?=$k;?>"
-						<?php if ($k == $pconfig['unified2_log_limit']) echo "selected"; ?>>
-							<?=htmlspecialchars($p);?></option>
-					<?php endforeach; ?>
-					</select>&nbsp;<?php echo gettext("Choose a Unified2 Log file size limit. Default is "); ?><strong><?=gettext("128 KB.");?></strong><br/><br/>
-					<?php echo gettext("This sets the maximum size for a Unified2 Log file before it is rotated and a new one created."); ?>
-				</td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Archive Unified2 Logs"); ?></td>
-				<td width="78%" class="vtable">
-					<input name="barnyard_archive_enable" type="checkbox" value="on" <?php if ($pconfig['barnyard_archive_enable'] == "on") echo "checked"; ?>/>
-					<?php echo gettext("Enable the archiving of processed unified2 log files.  Default value is ") . "<strong>" . gettext("Checked") . "</strong>"; ?><br/>
-					<?php echo gettext("Unified2 log files will be moved to an archive folder for subsequent cleanup when processed."); ?>
-				</td>
-			</tr>
-			<tr>
-				<td class="vncell" width="22%" valign="top"><?=gettext("Unified2 Archived Log Retention Period");?></td>
-				<td width="78%" class="vtable"><select name="u2_archived_log_retention" class="formselect" id="u2_archived_log_retention">
-					<?php foreach ($retentions as $k => $p): ?>
-						<option value="<?=$k;?>"
-						<?php if ($k == $pconfig['u2_archived_log_retention']) echo "selected"; ?>>
-								<?=htmlspecialchars($p);?></option>
-					<?php endforeach; ?>
-					</select>&nbsp;<?=gettext("Choose retention period for archived Barnyard2 binary log files. Default is ") . "<strong>" . gettext("7 days."). "</strong>";?><br/><br/>
-					<?=gettext("When Barnyard2 output is enabled, Snort writes event data to a binary format file that Barnyard2 reads and processes. ") . 
-					gettext("When finished processing a file, Barnyard2 moves it to an archive folder.  This setting determines how long files ") . 
-					gettext("remain in the archive folder before they are automatically deleted.");?>
-				</td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Dump Payload"); ?></td>
-				<td width="78%" class="vtable">
-					<input name="barnyard_dump_payload" type="checkbox" value="on" <?php if ($pconfig['barnyard_dump_payload'] == "on") echo "checked"; ?>/>
-					<?php echo gettext("Enable dumping of application data from unified2 files.  Default value is ") . "<strong>" . gettext("Not Checked") . "</strong>"; ?><br/>
-				</td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Obfuscate IP Addresses"); ?></td>
-				<td width="78%" class="vtable">
-					<input name="barnyard_obfuscate_ip" type="checkbox" value="on" <?php if ($pconfig['barnyard_obfuscate_ip'] == "on") echo "checked"; ?>/>
-					<?php echo gettext("Enable obfuscation of logged IP addresses.  Default value is ") . "<strong>" . gettext("Not Checked") . "</strong>"; ?>
-				</td>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Log VLAN Events"); ?></td>
-				<td width="78%" class="vtable">
-					<input name="barnyard_log_vlan_events" type="checkbox" value="on" <?php if ($pconfig['barnyard_log_vlan_events'] == "on") echo "checked"; ?>/>
-					<?php echo gettext("Enable logging of VLAN event types in unified2 files.  Default value is ") . "<strong>" . gettext("Not Checked") . "</strong>"; ?><br/>
-				</td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Log MPLS Events"); ?></td>
-				<td width="78%" class="vtable">
-					<input name="barnyard_log_mpls_events" type="checkbox" value="on" <?php if ($pconfig['barnyard_log_mpls_events'] == "on") echo "checked"; ?>/>
-					<?php echo gettext("Enable logging of MPLS event types in unified2 files.  Default value is ") . "<strong>" . gettext("Not Checked") . "</strong>"; ?><br/>
-				</td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Sensor Name"); ?></td>
-				<td width="78%" class="vtable">
-					<input name="barnyard_sensor_name" type="text" class="formfld unknown" 
-					id="barnyard_sensor_name" size="25" value="<?=htmlspecialchars($pconfig['barnyard_sensor_name']);?>"/>
-					&nbsp;<?php echo gettext("Unique name for this sensor.  Leave blank to use internal default."); ?>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" valign="top" class="listtopic"><?php echo gettext("MySQL Database Output Settings"); ?></td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Enable MySQL Database"); ?></td>
-				<td width="78%" class="vtable">
-					<input name="barnyard_mysql_enable" type="checkbox" value="on" <?php if ($pconfig['barnyard_mysql_enable'] == "on") echo "checked"; ?> 
-					onClick="toggle_mySQL()"/><?php echo gettext("Enable logging of alerts to a MySQL database instance"); ?><br/>
-					<?php echo gettext("You will also have to provide the database credentials in the fields below."); ?></td>
-			</tr>
-			<tbody id="mysql_config_rows">
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Database Host"); ?></td>
-				<td width="78%" class="vtable">
-					<input name="barnyard_dbhost" type="text" class="formfld host" 
-					id="barnyard_dbhost" size="25" value="<?=htmlspecialchars($pconfig['barnyard_dbhost']);?>"/>
-					&nbsp;<?php echo gettext("Hostname or IP address of the MySQL database server"); ?>
-				</td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Database Name"); ?></td>
-				<td width="78%" class="vtable">
-					<input name="barnyard_dbname" type="text" class="formfld unknown" 
-					id="barnyard_dbname" size="25" value="<?=htmlspecialchars($pconfig['barnyard_dbname']);?>"/>
-					&nbsp;<?php echo gettext("Instance or DB name of the MySQL database"); ?>
-				</td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Database User Name"); ?></td>
-				<td width="78%" class="vtable">
-					<input name="barnyard_dbuser" type="text" class="formfld user" 
-					id="barnyard_dbuser" size="25" value="<?=htmlspecialchars($pconfig['barnyard_dbuser']);?>"/>
-					&nbsp;<?php echo gettext("Username for the MySQL database"); ?>
-				</td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Database User Password"); ?></td>
-				<td width="78%" class="vtable">
-					<input name="barnyard_dbpwd" type="password" class="formfld pwd" 
-					id="barnyard_dbpwd" size="25" value="<?=htmlspecialchars($pconfig['barnyard_dbpwd']);?>"/>
-					&nbsp;<?php echo gettext("Password for the MySQL database user"); ?>
-				</td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Disable Signature Reference Table"); ?></td>
-				<td width="78%" class="vtable">
-					<input name="barnyard_disable_sig_ref_tbl" type="checkbox" value="on" <?php if ($pconfig['barnyard_disable_sig_ref_tbl'] == "on") echo "checked"; ?>/>
-					<?php echo gettext("Disable synchronization of sig_reference table in schema.  Default value is ") . "<strong>" . gettext("Not Checked") . "</strong>"; ?><br/>
-					<br/><?php echo gettext("This option will speedup the process when checked, plus it can help work around a 'duplicate entry' error when running multiple Snort instances."); ?>
-				</td>
-			</tr>
-			</tbody>
-			<tr>
-				<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Syslog Output Settings"); ?></td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Enable Syslog"); ?></td>
-				<td width="78%" class="vtable">
-					<input name="barnyard_syslog_enable" type="checkbox" value="on" <?php if ($pconfig['barnyard_syslog_enable'] == "on") echo "checked"; ?> 
-					onClick="toggle_syslog()"/>
-					<?php echo gettext("Enable logging of alerts to a syslog receiver"); ?><br/>
-					<?php echo gettext("This will send alert data to either a local or remote syslog receiver."); ?></td>
-			</tr>
-			<tbody id="syslog_config_rows">
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Operation Mode"); ?></td>
-				<td width="78%" class="vtable">
-					<input name="barnyard_syslog_opmode" type="radio" id="barnyard_syslog_opmode_default"  
-					value="default" <?php if ($pconfig['barnyard_syslog_opmode'] == 'default') echo "checked";?>/>
-					<?php echo gettext("DEFAULT"); ?>&nbsp;<input name="barnyard_syslog_opmode" type="radio" id="barnyard_syslog_opmode_complete" 
-					value="complete" <?php if ($pconfig['barnyard_syslog_opmode'] == 'complete') echo "checked";?>/>
-					<?php echo gettext("COMPLETE"); ?>&nbsp;&nbsp;
-					<?php echo gettext("Select the level of detail to include when reporting"); ?><br/><br/>
-					<?php echo gettext("DEFAULT mode is compatible with the standard Snort syslog format.  COMPLETE mode includes additional information such as the raw packet data (displayed in hex format)."); ?>
-				</td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Local Only"); ?></td>
-				<td width="78%" class="vtable">
-					<input name="barnyard_syslog_local" type="checkbox" value="on" <?php if ($pconfig['barnyard_syslog_local'] == "on") echo "checked"; ?> 
-					onClick="toggle_local_syslog()"/>
-					<?php echo gettext("Enable logging of alerts to the local system only"); ?><br/>
-					<?php echo gettext("This will send alert data to the local system only and overrides the host, port, and protocol values below."); ?></td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Remote Host"); ?></td>
-				<td width="78%" class="vtable">
-					<input name="barnyard_syslog_rhost" type="text" class="formfld host" 
-					id="barnyard_syslog_rhost" size="25" value="<?=htmlspecialchars($pconfig['barnyard_syslog_rhost']);?>"/>
-					&nbsp;<?php echo gettext("Hostname or IP address of remote syslog host"); ?>
-				</td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Remote Port"); ?></td>
-				<td width="78%" class="vtable">
-					<input name="barnyard_syslog_dport" type="text" class="formfld unknown" 
-					id="barnyard_syslog_dport" size="25" value="<?=htmlspecialchars($pconfig['barnyard_syslog_dport']);?>"/>
-					&nbsp;<?php echo gettext("Port number for syslog on remote host.  Default is ") . "<strong>" . gettext("514") . "</strong>."; ?>
-				</td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Protocol"); ?></td>
-				<td width="78%" class="vtable">
-					<input name="barnyard_syslog_proto" type="radio" id="barnyard_syslog_proto_udp"  
-					value="udp" <?php if ($pconfig['barnyard_syslog_proto'] == 'udp') echo "checked";?>/>
-					<?php echo gettext("UDP"); ?>&nbsp;<input name="barnyard_syslog_proto" type="radio" id="barnyard_syslog_proto_tcp" 
-					value="tcp" <?php if ($pconfig['barnyard_syslog_proto'] == 'tcp') echo "checked";?>/>
-					<?php echo gettext("TCP"); ?>&nbsp;&nbsp;
-					<?php echo gettext("Select IP protocol to use for remote reporting.  Default is ") . "<strong>" . gettext("UDP") . "</strong>."; ?>
-				</td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Log Facility"); ?></td>
-				<td width="78%" class="vtable">
-					<select name="barnyard_syslog_facility" id="barnyard_syslog_facility" class="formselect">
-					<?php
-						$log_facility = array(  "LOG_AUTH", "LOG_AUTHPRIV", "LOG_DAEMON", "LOG_KERN", "LOG_SYSLOG", "LOG_USER", "LOG_LOCAL1",
-									"LOG_LOCAL2", "LOG_LOCAL3", "LOG_LOCAL4", "LOG_LOCAL5", "LOG_LOCAL6", "LOG_LOCAL7" );
-						foreach ($log_facility as $facility) {
-							$selected = "";
-							if ($facility == $pconfig['barnyard_syslog_facility'])
-								$selected = " selected";
-							echo "<option value='{$facility}'{$selected}>" . $facility . "</option>\n";
-						}
-					?></select>&nbsp;&nbsp;
-					<?php echo gettext("Select Syslog Facility to use for reporting.  Default is ") . "<strong>" . gettext("LOG_USER") . "</strong>."; ?>
-				</td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Log Priority"); ?></td>
-				<td width="78%" class="vtable">
-					<select name="barnyard_syslog_priority" id="barnyard_syslog_priority" class="formselect">
-					<?php
-						$log_priority = array( "LOG_EMERG", "LOG_ALERT", "LOG_CRIT", "LOG_ERR", "LOG_WARNING", "LOG_NOTICE", "LOG_INFO" );
-						foreach ($log_priority as $priority) {
-							$selected = "";
-							if ($priority == $pconfig['barnyard_syslog_priority'])
-								$selected = " selected";
-							echo "<option value='{$priority}'{$selected}>" . $priority . "</option>\n";
-						}
-					?></select>&nbsp;&nbsp;
-					<?php echo gettext("Select Syslog Priority (Level) to use for reporting.  Default is ") . "<strong>" . gettext("LOG_INFO") . "</strong>."; ?>
-				</td>
-			</tr>
-			</tbody>
-			<tr>
-				<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Bro-IDS Output Settings"); ?></td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Enable Bro-IDS"); ?></td>
-				<td width="78%" class="vtable">
-					<input name="barnyard_bro_ids_enable" type="checkbox" value="on" <?php if ($pconfig['barnyard_bro_ids_enable'] == "on") echo "checked"; ?> 
-					onClick="toggle_bro_ids()"/>
-					<?php echo gettext("Enable logging of alerts to a Bro-IDS receiver"); ?><br/>
-					<?php echo gettext("This will send alert data to either a local or remote Bro-IDS receiver."); ?></td>
-			</tr>
-			<tbody id="bro_ids_config_rows">
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Remote Host"); ?></td>
-				<td width="78%" class="vtable">
-					<input name="barnyard_bro_ids_rhost" type="text" class="formfld host" 
-					id="barnyard_bro_ids_rhost" size="25" value="<?=htmlspecialchars($pconfig['barnyard_bro_ids_rhost']);?>"/>
-					&nbsp;<?php echo gettext("Hostname or IP address of remote Bro-IDS host"); ?>
-				</td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Remote Port"); ?></td>
-				<td width="78%" class="vtable">
-					<input name="barnyard_bro_ids_dport" type="text" class="formfld unknown" 
-					id="barnyard_bro_ids_dport" size="25" value="<?=htmlspecialchars($pconfig['barnyard_bro_ids_dport']);?>"/>
-					&nbsp;<?php echo gettext("Port number for Bro-IDS instance on remote host.  Default is ") . "<strong>" . gettext("47760") . "</strong>."; ?>
-				</td>
-			</tr>
-			</tbody>
-			<tr>
-				<td colspan="2" valign="top" class="listtopic"><?php echo gettext("Advanced Settings"); ?></td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Advanced configuration " .
-				"pass-through"); ?></td>
-				<td width="78%" class="vtable"><textarea name="barnconfigpassthru" style="width:95%;"
-					cols="65" rows="7" id="barnconfigpassthru" ><?=htmlspecialchars($pconfig['barnconfigpassthru']);?></textarea>
-				<br/>
-				<?php echo gettext("Arguments entered here will be automatically inserted into the running " .
-				"barnyard2 configuration."); ?></td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top">&nbsp;</td>
-				<td width="78%">
-					<input name="save" type="submit" class="formbtn" value="Save" title="<?=gettext("Save Barnyard2 configuration");?>" />
-			</tr>
-			<tr>
-				<td width="22%" valign="top">&nbsp;</td>
-				<td width="78%"><span class="vexpl"><span class="red"><strong><?php echo gettext("Note:"); ?></strong></span></span>
-				<br/>
-				<?php echo gettext("Remember to save your settings before you leave this tab."); ?> </td>
-			</tr>
-		</table>
-		</div>
-		</td>
-	</tr>
-</table>
-</form>
-
-<script language="JavaScript">
-function toggle_mySQL() {
-	var endis = !document.iform.barnyard_mysql_enable.checked;
-
-	document.iform.barnyard_dbhost.disabled = endis;
-	document.iform.barnyard_dbname.disabled = endis;
-	document.iform.barnyard_dbuser.disabled = endis;
-	document.iform.barnyard_dbpwd.disabled = endis;
-	document.iform.barnyard_disable_sig_ref_tbl.disabled = endis;
-
-	if (endis)
-		document.getElementById("mysql_config_rows").style.display = "none";
-	else
-		document.getElementById("mysql_config_rows").style.display = "";
-}
-
-function toggle_syslog() {
-	var endis = !document.iform.barnyard_syslog_enable.checked;
-
-	document.iform.barnyard_syslog_opmode_default.disabled = endis;
-	document.iform.barnyard_syslog_opmode_complete.disabled = endis;
-	document.iform.barnyard_syslog_local.disabled = endis;
-	document.iform.barnyard_syslog_rhost.disabled = endis;
-	document.iform.barnyard_syslog_dport.disabled = endis;
-	document.iform.barnyard_syslog_proto_udp.disabled = endis;
-	document.iform.barnyard_syslog_proto_tcp.disabled = endis;
-	document.iform.barnyard_syslog_facility.disabled = endis;
-	document.iform.barnyard_syslog_priority.disabled = endis;
-
-	if (endis)
-		document.getElementById("syslog_config_rows").style.display = "none";
-	else
-		document.getElementById("syslog_config_rows").style.display = "";
-}
-
-function toggle_local_syslog() {
-	var endis = document.iform.barnyard_syslog_local.checked;
-
-	if (document.iform.barnyard_syslog_enable.checked) {
-		document.iform.barnyard_syslog_rhost.disabled = endis;
-		document.iform.barnyard_syslog_dport.disabled = endis;
-		document.iform.barnyard_syslog_proto_udp.disabled = endis;
-		document.iform.barnyard_syslog_proto_tcp.disabled = endis;
+	function toggle_local_syslog() {
+		var hide = $('#barnyard_syslog_local').prop('checked');
+		disableInput('barnyard_syslog_rhost', hide);
+		disableInput('barnyard_syslog_dport', hide);
+		disableInput('barnyard_syslog_proto', hide);
 	}
-}
 
-function toggle_bro_ids() {
-	var endis = !document.iform.barnyard_bro_ids_enable.checked;
+	function toggle_bro_ids() {
+		var hide = ! $('#barnyard_bro_ids_enable').prop('checked');
+		hideInput('barnyard_bro_ids_rhost', hide);
+		hideInput('barnyard_bro_ids_dport', hide);
+	}
 
-	document.iform.barnyard_bro_ids_rhost.disabled = endis;
-	document.iform.barnyard_bro_ids_dport.disabled = endis;
+	function enable_change() {
+		var hide = ! $('#barnyard_enable').prop('checked');
+		disableInput('barnyard_archive_enable', hide);
+		disableInput('barnyard_show_year', hide);
+		disableInput('barnyard_dump_payload', hide);
+		disableInput('barnyard_obfuscate_ip', hide);
+		disableInput('barnyard_sensor_id', hide);
+		disableInput('barnyard_sensor_name', hide);
+		disableInput('barnyard_mysql_enable', hide);
+		disableInput('barnyard_dbhost', hide);
+		disableInput('barnyard_dbname', hide);
+		disableInput('barnyard_dbuser', hide);
+		disableInput('barnyard_dbpwd', hide);
+		disableInput('barnyard_disable_sig_ref_tbl', hide);
+		disableInput('barnyard_syslog_enable', hide);
+		disableInput('barnyard_syslog_opmode', hide);
+		disableInput('barnyard_syslog_local', hide);
+		disableInput('barnyard_syslog_rhost', hide);
+		disableInput('barnyard_syslog_dport', hide);
+		disableInput('barnyard_syslog_proto', hide);
+		disableInput('barnyard_syslog_facility', hide);
+		disableInput('barnyard_syslog_priority', hide);
+		disableInput('barnyard_bro_ids_enable', hide);
+		disableInput('barnyard_bro_ids_rhost', hide);
+		disableInput('barnyard_bro_ids_dport', hide);
+		disableInput('barnconfigpassthru', hide);
+	}
 
-	if (endis)
-		document.getElementById("bro_ids_config_rows").style.display = "none";
-	else
-		document.getElementById("bro_ids_config_rows").style.display = "";
-}
+	// ---------- Click checkbox handlers ---------------------------------------------------------
+	
+	/* When form control id is clicked, disable/enable it's associated form controls */
+	
+	$('#barnyard_enable').click(function() {
+		enable_change();
+	});
 
-function enable_change(enable_change) {
-	endis = !(document.iform.barnyard_enable.checked || enable_change);
-	// make sure a default answer is called if this is invoked.
-	endis2 = (document.iform.barnyard_enable);
-	document.iform.unified2_log_limit.disabled = endis;
-	document.iform.barnyard_archive_enable.disabled = endis;
-	document.iform.u2_archived_log_retention.disabled = endis;
-	document.iform.barnyard_show_year.disabled = endis;
-	document.iform.barnyard_dump_payload.disabled = endis;
-	document.iform.barnyard_obfuscate_ip.disabled = endis;
-	document.iform.barnyard_log_vlan_events.disabled = endis;
-	document.iform.barnyard_log_mpls_events.disabled = endis;
-	document.iform.barnyard_sensor_name.disabled = endis;
-	document.iform.barnyard_mysql_enable.disabled = endis;
-	document.iform.barnyard_dbhost.disabled = endis;
-	document.iform.barnyard_dbname.disabled = endis;
-	document.iform.barnyard_dbuser.disabled = endis;
-	document.iform.barnyard_dbpwd.disabled = endis;
-	document.iform.barnyard_disable_sig_ref_tbl.disabled = endis;
-	document.iform.barnyard_syslog_enable.disabled = endis;
-	document.iform.barnyard_syslog_local.disabled = endis;
-	document.iform.barnyard_syslog_opmode_default.disabled = endis;
-	document.iform.barnyard_syslog_opmode_complete.disabled = endis;
-	document.iform.barnyard_syslog_rhost.disabled = endis;
-	document.iform.barnyard_syslog_dport.disabled = endis;
-	document.iform.barnyard_syslog_proto_udp.disabled = endis;
-	document.iform.barnyard_syslog_proto_tcp.disabled = endis;
-	document.iform.barnyard_syslog_facility.disabled = endis;
-	document.iform.barnyard_syslog_priority.disabled = endis;
-	document.iform.barnyard_bro_ids_enable.disabled = endis;
-	document.iform.barnyard_bro_ids_rhost.disabled = endis;
-	document.iform.barnyard_bro_ids_dport.disabled = endis;
-	document.iform.barnconfigpassthru.disabled = endis;
-}
+	$('#barnyard_mysql_enable').click(function() {
+		toggle_mySQL();
+	});
+	
+	$('#barnyard_syslog_enable').click(function() {
+		toggle_syslog();
+	});
 
-enable_change(false);
-toggle_mySQL();
-toggle_syslog();
-toggle_local_syslog();
-toggle_bro_ids();
+	$('#barnyard_syslog_local').click(function() {
+		toggle_local_syslog();
+	});
+
+	$('#barnyard_bro_ids_enable').click(function() {
+		toggle_bro_ids();
+	});
+
+	// ---------- On initial page load ------------------------------------------------------------
+	enable_change();
+	
+	toggle_mySQL();
+	toggle_syslog();
+	toggle_local_syslog();
+	toggle_bro_ids();
+	
+});
+
+//]]>
 </script>
-<?php include("fend.inc"); ?>
-</body>
-</html>
+<?php include("foot.inc"); ?>
+

@@ -1,7 +1,7 @@
 <?php
 /*
  * snort_rules_flowbits.php
- * Copyright (C) 2013, 2014 Bill Meeks
+ * Copyright (C) 2013-2016 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,17 +53,19 @@ if (is_null($id)) {
 
 // Set who called us so we can return to the correct page with
 // the RETURN ('cancel') button.
-if (isset($_POST['referrer']) && strpos($_POST['referrer'], '://'.$_SERVER['SERVER_NAME'].'/') !== FALSE)
-	$referrer = $_POST['referrer'];
-else
+if (isset($_POST['referrer']) && !empty($_POST['referrer'])) {
+	$referrer = urldecode($_POST['referrer']);
+}
+else {
 	$referrer = $_SERVER['HTTP_REFERER'];
+}
 
 // Make sure a rule index ID is appended to the return URL
 if (strpos($referrer, "?id={$id}") === FALSE)
 	$referrer .= "?id={$id}";
 
 // If RETURN button clicked, exit to original calling page
-if ($_POST['cancel']) {
+if (isset($_POST['cancel'])) {
 	header("Location: {$referrer}");
 	exit;
 }
@@ -143,158 +145,138 @@ if ($_POST['addsuppress'] && is_numeric($_POST['sid']) && is_numeric($_POST['gid
 $supplist = snort_load_suppress_sigs($a_nat[$id]);
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
-$pgtitle = gettext("Snort: Interface {$if_friendly} - Flowbit Rules");
-include_once("head.inc");
+$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Flowbit Rules"), gettext("{$if_friendly}"));
+include("head.inc");
 
-?>
-
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC" >
-
-<?php
-include("fbegin.inc");
 if ($input_errors)
 	print_input_errors($input_errors);
 if ($savemsg)
 	print_info_box($savemsg);
 ?>
-<form action="snort_rules_flowbits.php" method="post" name="iform" id="iform">
+
+<form action="snort_rules_flowbits.php" method="post" enctype="multipart/form-data" class="form-horizontal" name="iform" id="iform">
 <input type="hidden" name="id" value="<?=$id;?>"/>
 <input type="hidden" name="referrer" value="<?=$referrer;?>"/>
 <input type="hidden" name="sid" id="sid" value=""/>
 <input type="hidden" name="gid" id="gid" value=""/>
-<div id="boxarea">
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr>
-<td class="tabcont">
-<table width="100%" border="0" cellpadding="6" cellspacing="0">
-	<tr>
-		<td valign="middle" class="listtopic"><?php echo gettext("Auto-Generated Flowbit-Required Rules"); ?></td>
-	</tr>
-	<tr>
-		<td width="78%" class="vncell">
-		<?php echo gettext("The rules listed below are required to be included in the rules set ") . 
-		gettext("because they set flowbits that are checked and relied upon by rules in the enforcing rules set.  ") . 
-		gettext("If these dependent flowbits are not set, then some of your chosen rules may not fire.  ") . 
-		gettext("Enabling all the rules that set these dependent flowbits ensures your chosen rules fire as intended.  ") . 
-		gettext("Most flowbits rules contain the \"noalert\" keyword to prevent an alert from firing ") . 
-		gettext("when the flowbit is detected.  For those flowbit rules that do not contain the \"noalert\" option, click the ") . 
-		gettext("icon displayed beside the Signature ID (SID) to add the alert to the Suppression List if desired."); ?></td> 
-	</tr>
-	<tr>
-		<td valign="middle" class="listtopic"><?php echo gettext("Flowbit-Required Rules for {$if_friendly}"); ?></td>
-	</tr>
-	<tr>
-		<td width="78%" class="vncell">
-			<table width="100%" border="0" cellspacing="2" cellpadding="0">
-				<tr>
-					<td width="17px"><img src="../themes/<?=$g['theme']?>/images/icons/icon_plus.gif" width='12' height='12' border='0'/></td>
-					<td><span class="vexpl"><?php echo gettext("Alert is Not Suppressed"); ?></span></td>
-					<td rowspan="3" align="right"><input id="cancel" name="cancel" type="submit" class="formbtn" <?php 
-					echo "value=\"" . gettext("Return") . "\" title=\"" . gettext("Return to previous page") . "\""; ?>/>
-					</td>
-				</tr>
-				<tr>
-					<td width="17px"><img src="../themes/<?=$g['theme']?>/images/icons/icon_plus_d.gif" width='12' height='12' border='0'/></td>
-					<td><span class="vexpl"><?php echo gettext("Alert has been Suppressed"); ?></span></td>
-				</tr>
-				<tr>
-					<td width="17px"> </td>
-					<td colspan="2" class="vexpl"><?php echo "<span class=\"red\"><strong>" . 
-					gettext("Note:  ") . "</strong></span>". gettext("the icon is only ") . 
-					gettext("displayed for flowbit rules without the \"noalert\" option."); ?></td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td>
-		<table id="myTable" width="100%" class="sortable" style="table-layout: fixed;" border="0" cellpadding="0" cellspacing="0">
-			<colgroup>
-				<col width="11%" axis="number">
-				<col width="54" axis="string">
-				<col width="14%" axis="string">
-				<col width="14%" axis="string">
-				<col width="24%" axis="string">
-				<col axis="string">
-			</colgroup>
-			<thead>
-			   <tr class="sortableHeaderRowIdentifier">
-				<th class="listhdrr" axis="number"><?php echo gettext("SID"); ?></th>
-				<th class="listhdrr" axis="string"><?php echo gettext("Proto"); ?></th>
-				<th class="listhdrr" axis="string"><?php echo gettext("Source"); ?></th>
-				<th class="listhdrr" axis="string"><?php echo gettext("Destination"); ?></th>
-				<th class="listhdrr" axis="string"><?php echo gettext("Flowbits"); ?></th>
-				<th class="listhdrr" axis="string"><?php echo gettext("Message"); ?></th>
-			   </tr>
-			<thead>
-			<tbody>
-				<?php
-					$count = 0;
-					foreach ($rules_map as $k1 => $rulem) {
-						foreach ($rulem as $k2 => $v) {
-							$sid = snort_get_sid($v['rule']);
-							$gid = snort_get_gid($v['rule']);
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("Auto-Generated Flowbit-Required Rules")?></h2></div>
+	<div class="panel-body">
+		<?php
+		print_callout('<p>' . gettext("The rules listed below are required to be included in the rules set ") . 
+			gettext("because they set flowbits that are checked and relied upon by rules in the enforcing rules set.  ") . 
+			gettext("If these dependent flowbits are not set, then some of your chosen rules may not fire.  ") . 
+			gettext("Enabling all the rules that set these dependent flowbits ensures your chosen rules fire as intended.  ") . 
+			gettext("Most flowbits rules contain the ") . '<em>noalert</em>' . gettext(" keyword to prevent an alert from firing ") . 
+			gettext("when the flowbit is detected.  For those flowbit rules that do not contain the ") . '<em>noalert</em>' . 
+			gettext(" option, click the ") . gettext("icon displayed beside the Signature ID (SID) to add the alert to the Suppression List if desired.") . 
+			'</p>', 'info', 'Note:');
+		?>
+	</div>
+</div>
 
-							// Pick off the first section of the rule (prior to the start of the MSG field),
-							// and then use a REGX split to isolate the remaining fields into an array.
-							$tmp = substr($v['rule'], 0, strpos($v['rule'], "("));
-							$tmp = trim(preg_replace('/^\s*#+\s*/', '', $tmp));
-							$rule_content = preg_split('/[\s]+/', $tmp);
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("Flowbit-Required Rules for {$if_friendly}")?></h2></div>
+	<div class="panel-body">
+		<div class="content pull-left">
+			<dl class="dl-horizontal">
+				<dt><i class="fa fa-plus-square-o"></i></dt><dd><?=gettext('Alert is not suppressed');?></dd>
+				<dt><i class="fa fa-info-circle"></i></dt><dd><?=gettext('Alert is suppressed');?><dd>
+				<dt></dt><dd class="text-info"><b><?=gettext('Note: ');?></b><?=gettext('Icons are only displayed for flowbit rules without the ' . '<em>noalert</em>' . ' option.');?></dd>
+			</dl>
+		</div>
+		<div class="content clearfix">
+			<button type="submit" class="btn btn-default btn-sm btn-success pull-right" id="cancel" name="cancel" title="<?=gettext('Return to previous page');?>">
+				<i class="fa fa-backward icon-embed-btn text-success"></i>
+				<?=gettext('Return'); ?>
+			</button>
+		</div>
+		<div class="table-responsive">
+			<table style="table-layout: fixed; width: 100%;" class="table table-striped table-hover table-condensed sortable-theme-bootstrap" data-sortable>
+				<colgroup>
+					<col width="11%">
+					<col width="5%">
+					<col width="14%">
+					<col width="14%">
+					<col width="24%">
+					<col>
+				</colgroup>
+				<thead>
+				   <tr class="sortableHeaderRowIdentifier text-nowrap">
+					<th data-sortable-type="numeric"><?=gettext("SID"); ?></th>
+					<th><?=gettext("Proto"); ?></th>
+					<th><?=gettext("Source"); ?></th>
+					<th><?=gettext("Destination"); ?></th>
+					<th><?=gettext("Flowbits"); ?></th>
+					<th><?=gettext("Message"); ?></th>
+				   </tr>
+				<thead>
+				<tbody>
+					<?php
+						$count = 0;
+						foreach ($rules_map as $k1 => $rulem) {
+							foreach ($rulem as $k2 => $v) {
+								$sid = snort_get_sid($v['rule']);
+								$gid = snort_get_gid($v['rule']);
 
-							$protocol = $rule_content[1];         //protocol
-							$source = $rule_content[2];           //source
-							$destination = $rule_content[5];      //destination
-							$message = snort_get_msg($v['rule']); // description
-							$flowbits = implode("; ", snort_get_flowbits($v['rule']));
-							if (strstr($flowbits, "noalert"))
-								$supplink = "";
-							else {
-								if (!isset($supplist[$gid][$sid])) {
-									$supplink = "<input type=\"image\" name=\"addsuppress[]\" onClick=\"document.getElementById('sid').value='{$sid}';";
-									$supplink .= "document.getElementById('gid').value='{$gid}';\" ";
-									$supplink .= "src=\"../themes/{$g['theme']}/images/icons/icon_plus.gif\" ";
-									$supplink .= "width='12' height='12' border='0' title='";
-									$supplink .= gettext("Click to add to Suppress List") . "'/>";
-								}
+								// Pick off the first section of the rule (prior to the start of the MSG field),
+								// and then use a REGX split to isolate the remaining fields into an array.
+								$tmp = substr($v['rule'], 0, strpos($v['rule'], "("));
+								$tmp = trim(preg_replace('/^\s*#+\s*/', '', $tmp));
+								$rule_content = preg_split('/[\s]+/', $tmp);
+
+								$protocol = $rule_content[1];         //protocol
+								$source = $rule_content[2];           //source
+								$destination = $rule_content[5];      //destination
+								$message = snort_get_msg($v['rule']); // description
+								$flowbits = implode("; ", snort_get_flowbits($v['rule']));
+								if (strstr($flowbits, "noalert"))
+									$supplink = "";
 								else {
-									$supplink = "<img src=\"../themes/{$g['theme']}/images/icons/icon_plus_d.gif\" ";
-									$supplink .= "width='12' height='12' border='0' title='";
-									$supplink .= gettext("Alert has been suppressed") . "'/>";
+									if (!isset($supplist[$gid][$sid])) {
+										$supplink = "<i class=\"fa fa-plus-square-o icon-pointer\" onClick=\"doAddSuppress('{$gid}','{$sid}');\"";
+										$supplink .= " title='" . gettext("Click to add to Suppress List") . "'></i>";
+									}
+									else {
+										$supplink = "<i class=\"fa fa-info-circle icon-pointer\" title='";
+										$supplink .= gettext("Alert has been suppressed") . "'></i>";
+									}
 								}
-							}
 
-							// Use "echo" to write the table HTML row-by-row.
-							echo "<tr>" . 
-								"<td class=\"listr\" style=\"sorttable_customkey:{$sid};\" sorttable_customkey=\"{$sid}\">{$sid}&nbsp;{$supplink}</td>" . 
-								"<td class=\"listr\" style=\"text-align:center;\">{$protocol}</td>" . 
-								"<td class=\"listr\" style=\"overflow: hidden; text-overflow: ellipsis; text-align:center;\" nowrap><span title=\"{$rule_content[2]}\">{$source}</span></td>" . 
-								"<td class=\"listr\" style=\"overflow: hidden; text-overflow: ellipsis; text-align:center;\" nowrap><span title=\"{$rule_content[5]}\">{$destination}</span></td>" . 
-								"<td class=\"listr\" style=\"word-wrap:break-word; word-break:normal;\">{$flowbits}</td>" . 
-								"<td class=\"listbg\" style=\"word-wrap:break-word; word-break:normal;\">{$message}</td>" . 
-							"</tr>";
-							$count++;
+								// Use "echo" to write the table HTML row-by-row.
+								echo "<tr>" . 
+									"<td >{$sid}&nbsp;{$supplink}</td>" . 
+									"<td>{$protocol}</td>" . 
+									"<td style=\"overflow: hidden; text-overflow: ellipsis;\" nowrap><span title=\"{$rule_content[2]}\">{$source}</span></td>" . 
+									"<td style=\"overflow: hidden; text-overflow: ellipsis;\" nowrap><span title=\"{$rule_content[5]}\">{$destination}</span></td>" . 
+									"<td style=\"word-wrap:break-word; word-break:normal;\">{$flowbits}</td>" . 
+									"<td style=\"word-wrap:break-word; word-break:normal;\">{$message}</td>" . 
+								"</tr>";
+								$count++;
+							}
 						}
-					}
-					unset($rulem, $v);
-				?>
-			</tbody>
-		</table>
-		</td>
-	</tr>
-	<?php if ($count > 20): ?>
-	<tr>
-		<td align="center" valign="middle">
-			<input id="cancel" name="cancel" type="submit" class="formbtn" <?php 
-			echo "value=\"" . gettext("Return") . "\" title=\"" . gettext("Return to previous page") . "\""; ?>/>
-		</td>
-	</tr>
-	<?php endif; ?>
-</table>
-</td>
-</tr>
-</table>
+						unset($rulem, $v);
+					?>
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>
 </form>
-<?php include("fend.inc"); ?>
-</body>
-</html>
+
+<script type="text/javascript">
+//<![CDATA[
+
+	//-- This function stuffs the passed GID, SID and other values into
+	//-- hidden Form Fields and posts the form.
+	function doAddSuppress(rulegid,rulesid) {
+		$('#sid').val(rulesid);
+		$('#gid').val(rulegid);
+		$('#iform').append('<input type="hidden" name="addsuppress" id="addsuppress" value="true">');
+		$('#iform').submit();
+	}
+//]]>
+</script>
+
+<?php include("foot.inc"); ?>
+

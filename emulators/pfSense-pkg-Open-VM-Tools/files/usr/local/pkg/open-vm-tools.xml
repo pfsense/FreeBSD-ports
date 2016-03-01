@@ -43,10 +43,6 @@
 	<name>open-vm-tools</name>
 	<title>Open VM Tools</title>
 	<include_file>/usr/local/pkg/open-vm-tools.inc</include_file>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/open-vm-tools_2/open-vm-tools.inc</item>
-	</additional_files_needed>
 	<service>
 		<name>vmware-guestd</name>
 		<rcfile>vmware-guestd.sh</rcfile>

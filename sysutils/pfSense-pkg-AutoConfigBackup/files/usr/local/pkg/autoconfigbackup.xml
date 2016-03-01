@@ -53,34 +53,6 @@
 		<section>Diagnostics</section>
 		<url>/autoconfigbackup.php</url>
 	</menu>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/write_config/</prefix>
-		<item>https://packages.pfsense.org/packages/config/autoconfigbackup/parse_config_upload.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/</prefix>
-		<item>https://packages.pfsense.org/packages/config/autoconfigbackup/autoconfigbackup.php</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/autoconfigbackup/autoconfigbackup.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/etc/inc/</prefix>
-		<item>https://packages.pfsense.org/packages/config/autoconfigbackup/crypt_acb.php</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/</prefix>
-		<item>https://packages.pfsense.org/packages/config/autoconfigbackup/autoconfigbackup_backup.php</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/write_config/</prefix>
-		<item>https://packages.pfsense.org/packages/config/autoconfigbackup/parse_config_upload.php</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/</prefix>
-		<item>https://packages.pfsense.org/packages/config/autoconfigbackup/autoconfigbackup_stats.php</item>
-	</additional_files_needed>
 	<tabs>
 		<tab>
 			<text>Settings</text>

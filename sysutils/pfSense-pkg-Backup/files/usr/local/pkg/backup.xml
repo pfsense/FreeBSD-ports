@@ -60,22 +60,6 @@
 		</tab>
 	</tabs>
 	<configpath>installedpackages->package->$packagename->configuration->backup</configpath>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/backup/backup.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/etc/inc/priv/</prefix>
-		<item>https://packages.pfsense.org/packages/config/backup/backup.priv.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/packages/backup/</prefix>
-		<item>https://packages.pfsense.org/packages/config/backup/backup.php</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/packages/backup/</prefix>
-		<item>https://packages.pfsense.org/packages/config/backup/backup_edit.php</item>
-	</additional_files_needed>
 	<custom_php_resync_config_command>
 		backup_sync_package();
 	</custom_php_resync_config_command>

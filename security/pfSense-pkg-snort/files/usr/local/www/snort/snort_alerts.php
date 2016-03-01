@@ -1,4 +1,5 @@
 <?php
+/* $Id$ */
 /*
  * snort_alerts.php
  * part of pfSense
@@ -8,7 +9,7 @@
  * Copyright (C) 2006 Scott Ullrich
  * Copyright (C) 2012 Ermal Luci
  * Copyright (C) 2014 Jim Pingle jim@pingle.org
- * Copyright (C) 2013,2014 Bill Meeks
+ * Copyright (C) 2015 Bill Meeks
  * All rights reserved.
  *
  * Modified for the Pfsense snort package v. 1.8+
@@ -179,16 +180,13 @@ $if_real = get_real_interface($a_instance[$instanceid]['interface']);
 $enablesid = snort_load_sid_mods($a_instance[$instanceid]['rule_sid_on']);
 $disablesid = snort_load_sid_mods($a_instance[$instanceid]['rule_sid_off']);
 
-// Grab pfSense version so we can refer to it later on this page
-$pfs_version=substr(trim(file_get_contents("/etc/version")),0,3);
-
 $pconfig = array();
 if (is_array($config['installedpackages']['snortglobal']['alertsblocks'])) {
 	$pconfig['arefresh'] = $config['installedpackages']['snortglobal']['alertsblocks']['arefresh'];
 	$pconfig['alertnumber'] = $config['installedpackages']['snortglobal']['alertsblocks']['alertnumber'];
 }
 
-if (empty($pconfig['alertnumber']) || !is_numeric($pconfig['alertnumber']))
+if (empty($pconfig['alertnumber']))
 	$pconfig['alertnumber'] = '250';
 if (empty($pconfig['arefresh']))
 	$pconfig['arefresh'] = 'off';
@@ -242,18 +240,15 @@ if ($_POST['save']) {
 	if (!is_array($config['installedpackages']['snortglobal']['alertsblocks']))
 		$config['installedpackages']['snortglobal']['alertsblocks'] = array();
 	$config['installedpackages']['snortglobal']['alertsblocks']['arefresh'] = $_POST['arefresh'] ? 'on' : 'off';
+	$config['installedpackages']['snortglobal']['alertsblocks']['alertnumber'] = $_POST['alertnumber'];
 
-	if (is_numeric($_POST['alertnumber'])) {
-		$config['installedpackages']['snortglobal']['alertsblocks']['alertnumber'] = $_POST['alertnumber'];
-		write_config("Snort pkg: updated ALERTS tab settings.");
-		header("Location: /snort/snort_alerts.php?instance={$instanceid}");
-		return;
-	} else {
-		$input_errors[] = gettext("Alert number must be numeric");
-	}
+	write_config("Snort pkg: updated ALERTS tab settings.");
+
+	header("Location: /snort/snort_alerts.php?instance={$instanceid}");
+	exit;
 }
 
-if ($_POST['todelete']) {
+if ($_POST['mode'] == 'todelete') {
 	$ip = "";
 	if($_POST['ip']) {
 		$ip = $_POST['ip'];
@@ -264,10 +259,10 @@ if ($_POST['todelete']) {
 	}
 }
 
-if (($_POST['addsuppress_srcip'] || $_POST['addsuppress_dstip'] || $_POST['addsuppress']) && is_numeric($_POST['sidid']) && is_numeric($_POST['gen_id'])) {
-	if ($_POST['addsuppress_srcip'])
+if (($_POST['mode'] == 'addsuppress_srcip' || $_POST['mode'] == 'addsuppress_dstip' || $_POST['mode'] == 'addsuppress') && is_numeric($_POST['sidid']) && is_numeric($_POST['gen_id'])) {
+	if ($_POST['mode'] == 'addsuppress_srcip')
 		$method = "by_src";
-	elseif ($_POST['addsuppress_dstip'])
+	elseif ($_POST['mode'] == 'addsuppress_dstip')
 		$method = "by_dst";
 	else
 		$method ="all";
@@ -313,7 +308,7 @@ if (($_POST['addsuppress_srcip'] || $_POST['addsuppress_dstip'] || $_POST['addsu
 	}
 }
 
-if ($_POST['togglesid'] && is_numeric($_POST['sidid']) && is_numeric($_POST['gen_id'])) {
+if ($_POST['mode'] == 'togglesid' && is_numeric($_POST['sidid']) && is_numeric($_POST['gen_id'])) {
 	// Get the GID and SID tags embedded in the clicked rule icon.
 	$gid = $_POST['gen_id'];
 	$sid= $_POST['sidid'];
@@ -374,7 +369,7 @@ if ($_POST['togglesid'] && is_numeric($_POST['sidid']) && is_numeric($_POST['gen
 	$savemsg = gettext("The state for rule {$gid}:{$sid} has been modified.  Snort is 'live-reloading' the new rules list.  Please wait at least 15 secs for the process to complete before toggling additional rules.");
 }
 
-if ($_POST['delete']) {
+if ($_POST['clear']) {
 	snort_post_delete_logs($snort_uuid);
 	file_put_contents("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert", "");
 	/* XXX: This is needed if snort is run as snort user */
@@ -412,40 +407,220 @@ if ($_POST['download']) {
 		$savemsg = gettext("An error occurred while creating archive");
 }
 
-/* Load up an array with the current Suppression List GID,SID values */
+// Load up an array with the current Suppression List GID,SID values
 $supplist = snort_load_suppress_sigs($a_instance[$instanceid], true);
 
-$pgtitle = gettext("Snort: Snort Alerts");
-include_once("head.inc");
-
-?>
-
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-<?php
-include_once("fbegin.inc");
-
-/* refresh every 60 secs */
-if ($pconfig['arefresh'] == 'on')
-	echo "<meta http-equiv=\"refresh\" content=\"60;url=/snort/snort_alerts.php?instance={$instanceid}\" />\n";
-
-/* Display Alert message */
-if ($input_errors) {
-	print_input_errors($input_errors); // TODO: add checks
+// Load up an array with the configured Snort interfaces
+$interfaces = array();
+foreach ($a_instance as $id => $instance) {
+	$interfaces[$id] = convert_friendly_interface_to_friendly_descr($instance['interface']);
 }
+
+$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Alerts"));
+include("head.inc");
+
+if ($input_errors)
+	print_input_errors($input_errors);
+
 if ($savemsg) {
-	print_info_box($savemsg);
+	print_info_box($savemsg, 'success');
 }
-?>
-<form action="/snort/snort_alerts.php" method="post" id="formalert">
-<input type="hidden" name="instance" id="instance" value="<?=$instanceid;?>"/>
-<input type="hidden" name="sidid" id="sidid" value=""/>
-<input type="hidden" name="gen_id" id="gen_id" value=""/>
-<input type="hidden" name="ip" id="ip" value=""/>
-<input type="hidden" name="descr" id="descr" value=""/>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr><td>
-<?php
-	$tab_array = array();
+
+$form = new Form(false);
+$form->setAttribute('name', 'formalert')->setAttribute('id', 'formalert');
+
+$section = new Form_Section('Alert Log View Settings');
+$group = new Form_Group('Interface to Inspect');
+$group->add(new Form_Select(
+	'instance',
+	'Instance to Inspect',
+	$pconfig['instance'],
+	$interfaces
+))->setHelp('Choose interface..');
+$group->add(new Form_Checkbox(
+	'arefresh',
+	'Refresh',
+	'Auto-refresh view',
+	$pconfig['arefresh'] == 'on' ? true:false,
+	'on'
+));
+$group->add(new Form_Input(
+	'alertnumber',
+	'Lines to Display',
+	'text',
+	$pconfig['alertnumber']
+))->setHelp('Alert lines to display.');
+$group->add(new Form_Button(
+	'save',
+	'Save',
+	null,
+	'fa-save'
+))->addClass('btn-primary btn-sm')->setAttribute('title', gettext('Save auto-refresh and view settings'));
+$section->add($group);
+
+$btn_dnload = new Form_Button(
+	'download',
+	'Download',
+	null,
+	'fa-download'
+);
+$btn_dnload->removeClass('btn-primary')->addClass('btn-success')->addClass('btn-sm')->setAttribute('title', gettext('Download interface log files as a gzip archive'));
+$btn_clear = new Form_Button(
+	'clear',
+	'Clear',
+	null,
+	'fa-trash'
+);
+$btn_clear->removeClass('btn-primary')->addClass('btn-danger')->addClass('btn-sm')->setAttribute('title', gettext('Clear all interface log files')); 
+
+$group = new Form_Group('Alert Log Actions');
+$group->add(new Form_StaticText(
+	null,
+	$btn_dnload . $btn_clear
+));
+$section->add($group);
+
+$form->add($section);
+
+// ========== BEGIN Log filter Panel =============================================================
+if ($filterlogentries) {
+	$section = new Form_Section('Alert Log View Filter', 'alertlogfilter', COLLAPSIBLE|SEC_OPEN);
+}
+else {
+	$section = new Form_Section('Alert Log View Filter', 'alertlogfilter', COLLAPSIBLE|SEC_CLOSED);
+}
+
+$group = new Form_Group('');
+$group->add(new Form_Input(
+	'filterlogentries_sourceipaddress',
+	null,
+	'text',
+	$filterfieldsarray[6]
+))->setHelp('Source IP Address');
+$group->add(new Form_Input(
+	'filterlogentries_sourceport',
+	null,
+	'text',
+	$filterfieldsarray[7]
+))->setHelp('Source Port');
+$group->add(new Form_Input(
+	'filterlogentries_destinationipaddress',
+	null,
+	'text',
+	$filterfieldsarray[8]
+))->setHelp('Destination IP Address');
+$group->add(new Form_Input(
+	'filterlogentries_destinationport',
+	null,
+	'text',
+	$filterfieldsarray[9]
+))->setHelp('Destination Port');
+$group->add(new Form_Input(
+	'filterlogentries_protocol',
+	null,
+	'text',
+	$filterfieldsarray[5]
+))->setHelp('Protocol');
+$section->add($group);
+
+$group = new Form_Group('');
+$group->add(new Form_Input(
+	'filterlogentries_time',
+	null,
+	'text',
+	$filterfieldsarray[0]
+))->setHelp('Date');
+$group->add(new Form_Input(
+	'filterlogentries_priority',
+	null,
+	'text',
+	$filterfieldsarray[12]
+))->setHelp('Priority');
+$group->add(new Form_Input(
+	'filterlogentries_gid',
+	null,
+	'text',
+	$filterfieldsarray[1]
+))->setHelp('GID');
+$group->add(new Form_Input(
+	'filterlogentries_sid',
+	null,
+	'text',
+	$filterfieldsarray[2]
+))->setHelp('SID');
+$section->add($group);
+
+$group = new Form_Group('');
+$group->add(new Form_Input(
+	'filterlogentries_description',
+	null,
+	'text',
+	$filterfieldsarray[4]
+))->setHelp('Description');
+$group->add(new Form_Input(
+	'filterlogentries_classification',
+	null,
+	'text',
+	$filterfieldsarray[11]
+))->setHelp('Classification');
+$group->add(new Form_Button(
+	'filterlogentries_submit',
+	' ' . 'Filter',
+	null,
+	'fa-filter'
+))->removeClass('btn-primary')->addClass('btn-success')->addClass('btn-sm');
+$group->add(new Form_Button(
+	'filterlogentries_clear',
+	' ' . 'Clear',
+	null,
+	'fa-trash-o'
+))->removeClass('btn-primary')->addClass('btn-warning')->addClass('btn-sm');
+
+$section->add($group);
+
+$form->add($section);
+// ========== END Log filter Panel =============================================================
+
+if (isset($instanceid)) {
+	$form->addGlobal(new Form_Input(
+		'instance',
+		'instance',
+		'hidden',
+		$instanceid
+	));
+}
+$form->addGlobal(new Form_Input(
+	'mode',
+	'mode',
+	'hidden',
+	''
+));
+$form->addGlobal(new Form_Input(
+	'sidid',
+	'sidid',
+	'hidden',
+	''
+));
+$form->addGlobal(new Form_Input(
+	'gen_id',
+	'gen_id',
+	'hidden',
+	''
+));
+$form->addGlobal(new Form_Input(
+	'ip',
+	'ip',
+	'hidden',
+	''
+));
+$form->addGlobal(new Form_Input(
+	'descr',
+	'descr',
+	'hidden',
+	''
+));
+
+$tab_array = array();
 	$tab_array[0] = array(gettext("Snort Interfaces"), false, "/snort/snort_interfaces.php");
 	$tab_array[1] = array(gettext("Global Settings"), false, "/snort/snort_interfaces_global.php");
 	$tab_array[2] = array(gettext("Updates"), false, "/snort/snort_download_updates.php");
@@ -457,178 +632,46 @@ if ($savemsg) {
 	$tab_array[8] = array(gettext("SID Mgmt"), false, "/snort/snort_sid_mgmt.php");
 	$tab_array[9] = array(gettext("Log Mgmt"), false, "/snort/snort_log_mgmt.php");
 	$tab_array[10] = array(gettext("Sync"), false, "/pkg_edit.php?xml=snort/snort_sync.xml");
-	display_top_tabs($tab_array, true);
+display_top_tabs($tab_array, true);
+
+print ($form);
+
 ?>
-</td></tr>
-<tr>
-	<td><div id="mainarea">
-		<table id="maintable" class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="6">
-			<tr>
-				<td colspan="2" class="listtopic"><?php echo gettext("Alert Log View Settings"); ?></td>
-			</tr>
-			<tr>
-				<td width="22%" class="vncell"><?php echo gettext('Instance to inspect'); ?></td>
-				<td width="78%" class="vtable">
-					<select name="instance" id="instance" class="formselect" onChange="document.getElementById('formalert').method='post';document.getElementById('formalert').submit()">
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h2 class="panel-title">
 			<?php
-				foreach ($a_instance as $id => $instance) {
-					$selected = "";
-					if ($id == $instanceid)
-						$selected = "selected";
-					echo "<option value='{$id}' {$selected}> (" . convert_friendly_interface_to_friendly_descr($instance['interface']) . ")&nbsp;{$instance['descr']}</option>\n";
-				}
+				if (!$filterfieldsarray)
+					printf(gettext("Last %s Alert Log Entries"), $pconfig['alertnumber']);
+				else
+					print($anentries. ' ' . gettext('Matched Log Entries') . ' ');
 			?>
-					</select>&nbsp;&nbsp;<?php echo gettext('Choose which instance alerts you want to inspect.'); ?>
-				</td>
-			<tr>
-				<td width="22%" class="vncell"><?php echo gettext('Save or Remove Logs'); ?></td>
-				<td width="78%" class="vtable">
-					<input name="download" type="submit" class="formbtns" value="Download" 
-					title="<?=gettext("Download interface log files as a gzip archive");?>"/>
-					&nbsp;<?php echo gettext('All log files will be saved.');?>&nbsp;&nbsp;
-					<input name="delete" type="submit" class="formbtns" value="Clear"
-					onclick="return confirm('Do you really want to remove all instance logs?')" title="<?=gettext("Clear all interface log files");?>"/>
-					&nbsp;<span class="red"><strong><?php echo gettext('Warning:'); ?></strong></span> <?php echo ' ' . gettext('all log files will be deleted.'); ?>
-				</td>
-			</tr>
-			<tr>
-				<td width="22%" class="vncell"><?php echo gettext('Auto Refresh and Log View'); ?></td>
-				<td width="78%" class="vtable">
-					<input name="save" type="submit" class="formbtns" value=" Save " title="<?=gettext("Save auto-refresh and view settings");?>"/>
-					&nbsp;<?php echo gettext('Refresh');?>&nbsp;&nbsp;<input name="arefresh" type="checkbox" value="on"
-					<?php if ($config['installedpackages']['snortglobal']['alertsblocks']['arefresh']=="on") echo "checked"; ?>/>
-					<?php printf(gettext('%sDefault%s is %sON%s.'), '<strong>', '</strong>', '<strong>', '</strong>'); ?>&nbsp;&nbsp;
-					<input name="alertnumber" type="text" class="formfld unknown" id="alertnumber" size="5" value="<?=htmlspecialchars($anentries);?>"/>
-					&nbsp;<?php printf(gettext('Enter number of log entries to view. %sDefault%s is %s250%s.'), '<strong>', '</strong>', '<strong>', '</strong>'); ?>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" class="listtopic"><?php echo gettext("Alert Log View Filter"); ?></td>
-			</tr>
-			<tr id="filter_enable_row" style="display:<?php if (!$filterlogentries) {echo "table-row;";} else {echo "none;";} ?>">
-				<td width="22%" class="vncell"><?php echo gettext('Alert Log Filter Options'); ?></td>
-				<td width="78%" class="vtable">
-					<input name="show_filter" id="show_filter" type="button" class="formbtns" value="<?=gettext("Show Filter");?>" onclick="enable_showFilter();" />
-					&nbsp;&nbsp;<?=gettext("Click to display advanced filtering options dialog");?>
-				</td>
-			</tr>
-			<tr id="filter_options_row" style="display:<?php if (!$filterlogentries) {echo "none;";} else {echo "table-row;";} ?>">
-				<td colspan="2">
-					<table width="100%" border="0" cellpadding="0" cellspacing="1" summary="action">
-						<tr>
-							<td valign="top">
-								<div align="center"><?=gettext("Date");?></div>
-								<div align="center"><input id="filterlogentries_time" name="filterlogentries_time" class="formfld search" type="text" size="10" value="<?= $filterfieldsarray[0] ?>" /></div>
-							</td>
-							<td valign="top">
-								<div align="center"><?=gettext("Source IP Address");?></div>
-								<div align="center"><input id="filterlogentries_sourceipaddress" name="filterlogentries_sourceipaddress" class="formfld search" type="text" size="28" value="<?= $filterfieldsarray[6] ?>" /></div>
-							</td>
-							<td valign="top">
-								<div align="center"><?=gettext("Source Port");?></div>
-								<div align="center"><input id="filterlogentries_sourceport" name="filterlogentries_sourceport" class="formfld search" type="text" size="5" value="<?= $filterfieldsarray[7] ?>" /></div>
-							</td>
-							<td valign="top">
-								<div align="center"><?=gettext("Description");?></div>
-								<div align="center"><input id="filterlogentries_description" name="filterlogentries_description" class="formfld search" type="text" size="28" value="<?= $filterfieldsarray[4] ?>" /></div>
-							</td>
-							<td valign="top">
-								<div align="center"><?=gettext("GID");?></div>
-								<div align="center"><input id="filterlogentries_gid" name="filterlogentries_gid" class="formfld search" type="text" size="6" value="<?= $filterfieldsarray[1] ?>" /></div>
-							</td>
-						</tr>
-						<tr>
-							<td valign="top">
-								<div align="center"><?=gettext("Priority");?></div>
-								<div align="center"><input id="filterlogentries_priority" name="filterlogentries_priority" class="formfld search" type="text" size="10" value="<?= $filterfieldsarray[12] ?>" /></div>
-							</td>
-							<td valign="top">
-								<div align="center"><?=gettext("Destination IP Address");?></div>
-								<div align="center"><input id="filterlogentries_destinationipaddress" name="filterlogentries_destinationipaddress" class="formfld search" type="text" size="28" value="<?= $filterfieldsarray[8] ?>" /></div>
-							</td>
-							<td valign="top">
-								<div align="center"><?=gettext("Destination Port");?></div>
-								<div align="center"><input id="filterlogentries_destinationport" name="filterlogentries_destinationport" class="formfld search" type="text" size="5" value="<?= $filterfieldsarray[9] ?>" /></div>
-							</td>
-							<td valign="top">
-								<div align="center"><?=gettext("Classification");?></div>
-								<div align="center"><input id="filterlogentries_classification" name="filterlogentries_classification" class="formfld search" type="text" size="28" value="<?= $filterfieldsarray[11] ?>" /></div>
-							</td>
-							<td valign="top">
-								<div align="center"><?=gettext("SID");?></div>
-								<div align="center"><input id="filterlogentries_sid" name="filterlogentries_sid" class="formfld search" type="text" size="6" value="<?= $filterfieldsarray[2] ?>" /></div>
-							</td>
-						</tr>
-						<tr>
-							<td valign="top">
-								<div align="center"><?=gettext("Protocol");?></div>
-								<div align="center"><input id="filterlogentries_protocol" name="filterlogentries_protocol" class="formfld search" type="text" size="10" value="<?= $filterfieldsarray[5] ?>" /></div>
-							</td>
-							<td valign="top">
-							</td>
-							<td valign="top">
-							</td>
-							<td colspan="2" style="vertical-align:bottom">
-								<div align="right"><input id="filterlogentries_submit" name="filterlogentries_submit" type="submit" class="formbtns" value="<?=gettext("Filter");?>" title="<?=gettext("Apply filter"); ?>" />
-								&nbsp;&nbsp;&nbsp;<input id="filterlogentries_clear" name="filterlogentries_clear" type="submit" class="formbtns" value="<?=gettext("Clear");?>" title="<?=gettext("Remove filter");?>" />
-								&nbsp;&nbsp;&nbsp;<input id="filterlogentries_hide" name="filterlogentries_hide" type="button" class="formbtns" value="<?=gettext("Hide");?>" onclick="enable_hideFilter();" title="<?=gettext("Hide filter options");?>" /></div>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="5" style="vertical-align:bottom">
-								&nbsp;<?printf(gettext('Matches %1$s regular expression%2$s.'), '<a target="_blank" href="http://www.php.net/manual/en/book.pcre.php">', '</a>');?>&nbsp;&nbsp;
-								<?=gettext("Precede with exclamation (!) as first character to exclude match.");?>&nbsp;&nbsp;
-							</td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-		<?php if ($filterlogentries) : ?>
-			<tr>
-				<td colspan="2" class="listtopic"><?php printf(gettext("Last %s Alert Entries"), htmlspecialchars($anentries)); ?>&nbsp;&nbsp;
-				<?php echo gettext("(Most recent listed first)  ** FILTERED VIEW **  clear filter to see all entries"); ?></td>
-			</tr>
-		<?php else: ?>
-			<tr>
-				<td colspan="2" class="listtopic"><?php printf(gettext("Last %s Alert Entries"), htmlspecialchars($anentries)); ?>&nbsp;&nbsp;
-				<?php echo gettext("(Most recent entries are listed first)"); ?></td>
-			</tr>
-		<?php endif; ?>
-	<tr>
-	<td width="100%" colspan="2">
-	<table id="myTable" style="table-layout: fixed;" width="100%" class="sortable" border="0" cellpadding="0" cellspacing="0">
-		<colgroup>
-			<col width="10%" align="center" axis="date">
-			<col width="40" align="center" axis="number">
-			<col width="52" align="center" axis="string">
-			<col width="10%" axis="string">
-			<col width="13%" align="center" axis="string">
-			<col width="7%" align="center" axis="string">
-			<col width="13%" align="center" axis="string">
-			<col width="7%" align="center" axis="string">
-			<col width="10%" align="center" axis="number">
-			<col axis="string">
-		</colgroup>
-		<thead>
-		   <tr class="sortableHeaderRowIdentifier">
-			<th class="listhdrr" axis="date"><?php echo gettext("Date"); ?></th>
-			<th class="listhdrr" axis="number"><?php echo gettext("Pri"); ?></th>
-			<th class="listhdrr" axis="string"><?php echo gettext("Proto"); ?></th>
-			<th class="listhdrr" axis="string"><?php echo gettext("Class"); ?></th>
-			<th class="listhdrr" axis="string"><?php echo gettext("Source"); ?></th>
-			<th class="listhdrr" axis="string"><?php echo gettext("SPort"); ?></th>
-			<th class="listhdrr" axis="string"><?php echo gettext("Destination"); ?></th>
-			<th class="listhdrr" axis="string"><?php echo gettext("DPort"); ?></th>
-			<th class="listhdrr" axis="number"><?php echo gettext("SID"); ?></th>
-			<th class="listhdrr" axis="string"><?php echo gettext("Description"); ?></th>
-		   </tr>
-		</thead>
-	<tbody>
+		</h2>
+	</div>
+	<div class="panel-body">
+	   <div class="table-responsive">
+		<table class="table table-striped table-hover table-condensed sortable-theme-bootstrap" data-sortable>
+			<thead>
+			   <tr class="sortableHeaderRowIdentifier text-nowrap">
+				<th data-sortable-type="date"><?=gettext("Date  "); ?></th>
+				<th data-sortable-type="numeric"><?=gettext("Pri   "); ?></th>
+				<th><?=gettext("Proto "); ?></th>
+				<th><?=gettext("Class "); ?></th>
+				<th><?=gettext("Source IP"); ?></th>
+				<th data-sortable-type="numeric"><?=gettext("SPort "); ?></th>
+				<th><?=gettext("Destination IP"); ?></th>
+				<th data-sortable-type="numeric"><?=gettext("DPort "); ?></th>
+				<th data-sortable-type="numeric"><?=gettext("SID   "); ?></th>
+				<th data-sortable-type="alpha"><?=gettext("Description"); ?></th>
+			   </tr>
+			</thead>
+		<tbody>
 	<?php
 
 /* make sure alert file exists */
 if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
-	exec("tail -n" . escapeshellarg($anentries) . " -r " . escapeshellarg("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert") . " > " . escapeshellarg("{$g['tmp_path']}/alert_{$snort_uuid}"));
+	exec("tail -{$anentries} -r {$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert > {$g['tmp_path']}/alert_{$snort_uuid}");
 	if (file_exists("{$g['tmp_path']}/alert_{$snort_uuid}")) {
 		$tmpblocked = array_flip(snort_get_blocked_ips());
 		$counter = 0;
@@ -656,99 +699,91 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 			$alert_proto = $fields[5];
 			/* IP SRC */
 			$alert_ip_src = $fields[6];
-			/* Add zero-width space as soft-break opportunity after each colon if we have an IPv6 address */
-			$alert_ip_src = str_replace(":", ":&#8203;", $alert_ip_src);
 
-			/* Add Reverse DNS lookup icons (two different links if pfSense version supports them) */
-			$alert_ip_src .= "<br/>";
-			$alert_ip_src .= "<img onclick=\"javascript:resolve_with_ajax('{$fields[6]}');\" title=\"";
-			$alert_ip_src .= gettext("Resolve host via reverse DNS lookup") . "\" border=\"0\" src=\"/themes/{$g['theme']}/images/icons/icon_log.gif\" alt=\"Icon Reverse Resolve with DNS\" ";
-			$alert_ip_src .= " style=\"cursor: pointer;\"/>";
+			/* Add Reverse DNS lookup icons */
+			$alert_ip_src .= '<br/>';
+			$alert_ip_src .= '<i class="fa fa-search icon-pointer" onclick="javascript:resolve_with_ajax(\'' . $fields[6] . '\');" title="' . gettext("Click to resolve") . '" alt="Reverse Resolve with DNS"></i>';
 
 			/* Add icons for auto-adding to Suppress List if appropriate */
 			if (!snort_is_alert_globally_suppressed($supplist, $fields[1], $fields[2]) && 
 			    !isset($supplist[$fields[1]][$fields[2]]['by_src'][$fields[6]])) {
-				$alert_ip_src .= "&nbsp;&nbsp;<input type='image' name='addsuppress_srcip[]' onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','{$fields[6]}','{$alert_descr}');\" ";
-				$alert_ip_src .= "src='../themes/{$g['theme']}/images/icons/icon_plus.gif' width='12' height='12' border='0' ";
-				$alert_ip_src .= "title='" . gettext("Add this alert to the Suppress List and track by_src IP") . "'>";	
+
+				$alert_ip_src .= "&nbsp;&nbsp;<i class=\"fa fa-plus-square-o icon-pointer\" title=\"" . gettext('Add this alert to the Suppress List and track by_src IP') . '"';
+				$alert_ip_src .= " onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','{$fields[6]}','{$alert_descr}');$('#mode').val('addsuppress_srcip');$('#formalert').submit();\"></i>";
 			}
 			elseif (isset($supplist[$fields[1]][$fields[2]]['by_src'][$fields[6]])) {
-				$alert_ip_src .= "&nbsp;&nbsp;<img src='../themes/{$g['theme']}/images/icons/icon_plus_d.gif' width='12' height='12' border='0' ";
-				$alert_ip_src .= "title='" . gettext("This alert track by_src IP is already in the Suppress List") . "'/>";	
+				$alert_ip_src .= '&nbsp;&nbsp;<i class="fa fa-info-circle"';
+				$alert_ip_src .= ' title="' . gettext("This alert track by_src IP is already in the Suppress List") . '"></i>';	
 			}
 			/* Add icon for auto-removing from Blocked Table if required */
 			if (isset($tmpblocked[$fields[6]])) {
-				$alert_ip_src .= "&nbsp;<input type='image' name='todelete[]' onClick=\"document.getElementById('ip').value='{$fields[6]}';\" ";
-				$alert_ip_src .= "src=\"../themes/{$g['theme']}/images/icons/icon_x.gif\" title=\"" . gettext("Remove host from Blocked Table") . "\" border=\"0\" width='12' height='12'>";
+				$alert_ip_src .= "&nbsp;&nbsp;<i class=\"fa fa-times icon-pointer text-danger\" onClick=\"$('#ip').val('{$fields[6]}');$('#mode').val('todelete');$('#formalert').submit();\"";
+				$alert_ip_src .= ' title="' . gettext("Remove host from Blocked Table") . '"></i>';
 			}
 			/* IP SRC Port */
 			$alert_src_p = $fields[7];
+
 			/* IP Destination */
 			$alert_ip_dst = $fields[8];
-			/* Add zero-width space as soft-break opportunity after each colon if we have an IPv6 address */
-			$alert_ip_dst = str_replace(":", ":&#8203;", $alert_ip_dst);
 
-			/* Add Reverse DNS lookup icons (two different links if pfSense version supports them) */
+			/* Add Reverse DNS lookup icons */
 			$alert_ip_dst .= "<br/>";
-			$alert_ip_dst .= "<img onclick=\"javascript:resolve_with_ajax('{$fields[8]}');\" title=\"";
-			$alert_ip_dst .= gettext("Resolve host via reverse DNS lookup") . "\" border=\"0\" src=\"/themes/{$g['theme']}/images/icons/icon_log.gif\" alt=\"Icon Reverse Resolve with DNS\" ";
-			$alert_ip_dst .= " style=\"cursor: pointer;\"/>";
+			$alert_ip_dst .= '<i class="fa fa-search icon-pointer" onclick="javascript:resolve_with_ajax(\'' . $fields[8] . '\');" title="' . gettext("Click to resolve") . '" alt="Reverse Resolve with DNS"></i>';
 
 			/* Add icons for auto-adding to Suppress List if appropriate */
 			if (!snort_is_alert_globally_suppressed($supplist, $fields[1], $fields[2]) && 
 			    !isset($supplist[$fields[1]][$fields[2]]['by_dst'][$fields[8]])) {
-				$alert_ip_dst .= "&nbsp;&nbsp;<input type='image' name='addsuppress_dstip[]' onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','{$fields[8]}','{$alert_descr}');\" ";
-				$alert_ip_dst .= "src='../themes/{$g['theme']}/images/icons/icon_plus.gif' width='12' height='12' border='0' ";
-				$alert_ip_dst .= "title='" . gettext("Add this alert to the Suppress List and track by_dst IP") . "'/>";	
+				$alert_ip_dst .= "&nbsp;&nbsp;<i class=\"fa fa-plus-square-o icon-pointer\" onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','{$fields[8]}','{$alert_descr}');$('#mode').val('addsuppress_dstip');$('#formalert').submit();\"";
+				$alert_ip_dst .= ' title="' . gettext("Add this alert to the Suppress List and track by_dst IP") . '"></i>';	
 			}
 			elseif (isset($supplist[$fields[1]][$fields[2]]['by_dst'][$fields[8]])) {
-				$alert_ip_dst .= "&nbsp;&nbsp;<img src='../themes/{$g['theme']}/images/icons/icon_plus_d.gif' width='12' height='12' border='0' ";
-				$alert_ip_dst .= "title='" . gettext("This alert track by_dst IP is already in the Suppress List") . "'/>";	
+				$alert_ip_dst .= '&nbsp;&nbsp;<i class="fa fa-info-circle"';
+				$alert_ip_dst .= ' title="' . gettext("This alert track by_dst IP is already in the Suppress List") . '"></i>';	
 			}
 			/* Add icon for auto-removing from Blocked Table if required */
 			if (isset($tmpblocked[$fields[8]])) {
-				$alert_ip_dst .= "&nbsp;<input type='image' name='todelete[]' onClick=\"document.getElementById('ip').value='{$fields[8]}';\" ";
-				$alert_ip_dst .= "src=\"../themes/{$g['theme']}/images/icons/icon_x.gif\" title=\"" . gettext("Remove host from Blocked Table") . "\" border=\"0\" width='12' height='12'>";
+				$alert_ip_dst .= "&nbsp;&nbsp;<i name=\"todelete[]\" class=\"fa fa-times icon-pointer text-danger\" onClick=\"$('#ip').val('{$fields[8]}');$('#mode').val('todelete');$('#formalert').submit();\" ";
+				$alert_ip_dst .= ' title="' . gettext("Remove host from Blocked Table") . '"></i>';
 			}
+
 			/* IP DST Port */
 			$alert_dst_p = $fields[9];
+
 			/* SID */
 			$alert_sid_str = "{$fields[1]}:{$fields[2]}";
 			if (!snort_is_alert_globally_suppressed($supplist, $fields[1], $fields[2])) {
-				$sidsupplink = "<input type='image' name='addsuppress[]' onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','','{$alert_descr}');\" ";
-				$sidsupplink .= "src='../themes/{$g['theme']}/images/icons/icon_plus.gif' width='12' height='12' border='0' ";
-				$sidsupplink .= "title='" . gettext("Add this alert to the Suppress List") . "'/>";	
+				$sidsupplink = "<i class=\"fa fa-plus-square-o icon-pointer\" onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','','{$alert_descr}');$('#mode').val('addsuppress');$('#formalert').submit();\"";
+				$sidsupplink .= ' title="' . gettext("Add this alert to the Suppress List") . '"></i>';	
 			}
 			else {
-				$sidsupplink = "<img src='../themes/{$g['theme']}/images/icons/icon_plus_d.gif' width='12' height='12' border='0' ";
-				$sidsupplink .= "title='" . gettext("This alert is already in the Suppress List") . "'/>";	
+				$sidsupplink = '<i class="fa fa-info-circle"';
+				$sidsupplink .= ' title="' . gettext("This alert is already in the Suppress List") . '"></i>';	
 			}
 			/* Add icon for toggling rule state */
 			if (isset($disablesid[$fields[1]][$fields[2]])) {
-				$sid_dsbl_link = "<input type='image' name='togglesid[]' onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','','');\" ";
-				$sid_dsbl_link .= "src='../themes/{$g['theme']}/images/icons/icon_reject.gif' width='11' height='11' border='0' ";
-				$sid_dsbl_link .= "title='" . gettext("Rule is forced to a disabled state. Click to remove the force-disable action from this rule.") . "'/>";
+				$sid_dsbl_link = "<i class=\"fa fa-times-circle icon-pointer text-warning\" onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','','');$('#mode').val('togglesid');$('#formalert').submit();\"";
+				$sid_dsbl_link .= ' title="' . gettext("Rule is forced to a disabled state. Click to remove the force-disable action from this rule.") . '"></i>';
 			}
 			else {
-				$sid_dsbl_link = "<input type='image' name='togglesid[]' onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','','');\" ";
-				$sid_dsbl_link .= "src='../themes/{$g['theme']}/images/icons/icon_block.gif' width='11' height='11' border='0' ";
-				$sid_dsbl_link .= "title='" . gettext("Force-disable this rule and remove it from current rules set.") . "'/>";
+				$sid_dsbl_link = "<i class=\"fa fa-times icon-pointer text-danger\" onClick=\"encRuleSig('{$fields[1]}','{$fields[2]}','','');$('#mode').val('togglesid');$('#formalert').submit();\"";
+				$sid_dsbl_link .= ' title="' . gettext("Force-disable this rule and remove it from current rules set.") . '"></i>';
 			}
+
 			/* DESCRIPTION */
 			$alert_class = $fields[11];
 
 			/* Write out a table row */
-			echo "<tr>
-				<td class='listr' align='center'>{$alert_date}<br/>{$alert_time}</td>
-				<td class='listr' align='center'>{$alert_priority}</td>
-				<td class='listr' align='center'>{$alert_proto}</td>
-				<td class='listr' style=\"word-wrap:break-word;\">{$alert_class}</td>
-				<td class='listr' align='center' style=\"sorttable_customkey:{$fields[6]};\" sorttable_customkey=\"{$fields[6]}\">{$alert_ip_src}</td>
-				<td class='listr' align='center'>{$alert_src_p}</td>
-				<td class='listr' align='center' style=\"sorttable_customkey:{$fields[8]};\" sorttable_customkey=\"{$fields[8]}\">{$alert_ip_dst}</td>
-				<td class='listr' align='center'>{$alert_dst_p}</td>
-				<td class='listr' align='center' style=\"sorttable_customkey:{$fields[2]};\" sorttable_customkey=\"{$fields[2]}\">{$alert_sid_str}<br/>{$sidsupplink}&nbsp;&nbsp;{$sid_dsbl_link}</td>
-				<td class='listbg' style=\"word-wrap:break-word;\">{$alert_descr}</td>
+			echo "<tr class=\"text-nowrap\">
+				<td>{$alert_date}<br/>{$alert_time}</td>
+				<td>{$alert_priority}</td>
+				<td style=\"word-wrap:break-word; white-space:normal\">{$alert_proto}</td>
+				<td style=\"word-wrap:break-word; white-space:normal\">{$alert_class}</td>
+				<td style=\"word-wrap:break-word; white-space:normal\">{$alert_ip_src}</td>
+				<td>{$alert_src_p}</td>
+				<td style=\"word-wrap:break-word; white-space:normal\">{$alert_ip_dst}</td>
+				<td>{$alert_dst_p}</td>
+				<td>{$alert_sid_str}<br/>{$sidsupplink}&nbsp;&nbsp;{$sid_dsbl_link}</td>
+				<td style=\"word-wrap:break-word; white-space:normal\">{$alert_descr}</td>
 				</tr>\n";
 			$counter++;
 		}
@@ -759,75 +794,65 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 ?>
 		</tbody>
 	</table>
-	</td>
-</tr>
-</table>
 </div>
-</td></tr>
-</table>
-</form>
-<?php
-include("fend.inc");
-?>
-<script type="text/javascript">
-function encRuleSig(rulegid,rulesid,srcip,ruledescr) {
+</div>
+</div>
 
-	// This function stuffs the passed GID, SID
-	// and other values into hidden Form Fields
-	// for postback.
-	if (typeof srcipip == "undefined")
-		var srcipip = "";
-	if (typeof ruledescr == "undefined")
-		var ruledescr = "";
-	document.getElementById("sidid").value = rulesid;
-	document.getElementById("gen_id").value = rulegid;
-	document.getElementById("ip").value = srcip;
-	document.getElementById("descr").value = ruledescr;
-}
-
-function enable_showFilter() {
-	document.getElementById("filter_enable_row").style.display="none";
-	document.getElementById("filter_options_row").style.display="table-row";
-}
-
-function enable_hideFilter() {
-	document.getElementById("filter_enable_row").style.display="table-row";
-	document.getElementById("filter_options_row").style.display="none";
-}
-
-</script>
-
-<!-- The following AJAX code was borrowed from the diag_logs_filter.php -->
-<!-- file in pfSense.  See copyright info at top of this page.          -->
 <script type="text/javascript">
 //<![CDATA[
-function resolve_with_ajax(ip_to_resolve) {
-	var url = "/snort/snort_alerts.php";
+
+	//-- This function stuffs the passed GID, SID and other values into
+	//-- hidden Form Fields for postback.
+	function encRuleSig(rulegid,rulesid,srcip,ruledescr) {
+		if (typeof srcipip === 'undefined')
+			var srcipip = '';
+		if (typeof ruledescr === 'undefined')
+			var ruledescr = '';
+		$('#sidid').val(rulesid);
+		$('#gen_id').val(rulegid);
+		$('#ip').val(srcip);
+		$('#descr').val(ruledescr);
+	}
+
+	//-- The following AJAX code was borrowed from the diag_logs_filter.php --
+	//-- file in pfSense.  See copyright info at top of this page.          --
+	function resolve_with_ajax(ip_to_resolve) {
+		var url = "/snort/snort_alerts.php";
 
 	jQuery.ajax(
 		url,
 		{
-			type: 'post',
+			method: 'post',
 			dataType: 'json',
 			data: {
 				resolve: ip_to_resolve,
 				},
 			complete: resolve_ip_callback
 		});
-}
 
-function resolve_ip_callback(transport) {
-	var response = jQuery.parseJSON(transport.responseText);
-	var msg = 'IP address "' + response.resolve_ip + '" resolves to\n';
-	alert(msg + 'host "' + htmlspecialchars(response.resolve_text) + '"');
-}
+	}
 
-// From http://stackoverflow.com/questions/5499078/fastest-method-to-escape-html-tags-as-html-entities
-function htmlspecialchars(str) {
-    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
-}
+	function resolve_ip_callback(transport) {
+		var response = jQuery.parseJSON(transport.responseText);
+		var msg = 'IP address "' + response.resolve_ip + '" resolves to\n';
+		alert(msg + 'host "' + htmlspecialchars(response.resolve_text) + '"');
+	}
+
+	// From http://stackoverflow.com/questions/5499078/fastest-method-to-escape-html-tags-as-html-entities
+	function htmlspecialchars(str) {
+		return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+	}
+
+events.push(function() {
+
+	//-- Click handlers ------------------------------------------------------
+	$('#instance').on('change', function() {
+		$('#formalert').submit();
+	});
+
+});
 //]]>
 </script>
 
-</body>
-</html>
+<?php include("foot.inc"); ?>
+

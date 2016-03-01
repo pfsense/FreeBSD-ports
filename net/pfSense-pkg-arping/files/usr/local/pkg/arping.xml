@@ -52,14 +52,6 @@
 		<section>Diagnostics</section>
 		<url>/pkg_edit.php?xml=arping.xml&amp;id=0</url>
 	</menu>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/arping/arping.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/etc/inc/priv/</prefix>
-		<item>https://packages.pfsense.org/packages/config/arping/arping.priv.inc</item>
-	</additional_files_needed>
 	<fields>
 		<field>
 			<fielddescr>IP, Hostname or MAC</fielddescr>

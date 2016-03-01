@@ -44,6 +44,7 @@
 	</copyright>
 	<description>Snort: XMLRPC Sync</description>
 	<name>snortsync</name>
+	<version>%%PKGVERSION%%</version>
 	<title>Snort: XMLRPC Sync</title>
 	<include_file>/usr/local/pkg/snort/snort.inc</include_file>
 	<tabs>
@@ -171,11 +172,11 @@
 					</options>
 				</rowhelperfield>
 				<rowhelperfield>
-					<fielddescr>IP Address/Hostname</fielddescr>
+					<fielddescr>IP-Address</fielddescr>
 					<fieldname>varsyncipaddress</fieldname>
-					<description><![CDATA[IP address or hostname of the destination host.]]></description>
+					<description><![CDATA[IP Address of the destination host.]]></description>
 					<type>input</type>
-					<size>40</size>
+					<size>15</size>
 				</rowhelperfield>
 				<rowhelperfield>
 					<fielddescr>Port</fielddescr>
@@ -201,6 +202,8 @@
 			</rowhelper>
 		</field>
 	</fields>
+	<custom_delete_php_command>
+	</custom_delete_php_command>	
 	<custom_php_resync_config_command>
 		write_config("Snort pkg: saved changes to XMLRPC sync configuration.");snort_sync_on_changes();
 	</custom_php_resync_config_command>

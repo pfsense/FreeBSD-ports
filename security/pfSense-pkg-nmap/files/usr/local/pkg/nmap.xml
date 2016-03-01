@@ -52,14 +52,6 @@
 		<section>Diagnostics</section>
 		<configfile>nmap.xml</configfile>
 	</menu>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/nmap/nmap.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/etc/inc/priv/</prefix>
-		<item>https://packages.pfsense.org/packages/config/nmap/nmap.priv.inc</item>
-	</additional_files_needed>
 	<fields>
 		<field>
 			<fielddescr>IP or Hostname</fielddescr>

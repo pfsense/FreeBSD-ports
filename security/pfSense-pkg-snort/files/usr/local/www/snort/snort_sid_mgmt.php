@@ -10,7 +10,7 @@
  * Copyright (C) 2006 Scott Ullrich
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
  * Copyright (C) 2012 Ermal Luci
- * Copyright (C) 2014 Bill Meeks
+ * Copyright (C) 2016 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -100,24 +100,50 @@ if (isset($_POST['upload'])) {
 		$input_errors[] = gettext("Failed to upload file {$_FILES["sidmods_fileup"]["name"]}");
 }
 
-if (isset($_POST['sidlist_delete']) && isset($_POST['sidlist_fname'])) {
-	if (!snort_is_sidmodslist_active(basename($_POST['sidlist_fname'])))
-		unlink_if_exists($sidmods_path . basename($_POST['sidlist_fname']));
-	else
-		$input_errors[] = gettext("This SID Mods List is currently assigned to an interface and cannot be deleted.");
-}
+if (isset($_POST['sidlist_action']) && isset($_POST['sidlist_fname'])) {
+	switch ($_POST['sidlist_action']) {
+		case 'delete':
+			if (!snort_is_sidmodslist_active(basename($_POST['sidlist_fname'])))
+				unlink_if_exists($sidmods_path . basename($_POST['sidlist_fname']));
+			else
+				$input_errors[] = gettext("This SID Mods List is currently assigned to an interface and cannot be deleted.");
+			break;
 
-if (isset($_POST['sidlist_edit']) && isset($_POST['sidlist_fname'])) {
-	$file = $sidmods_path . basename($_POST['sidlist_fname']);
-	$data = file_get_contents($file);
-	if ($data !== FALSE) {
-		$sidmodlist_data = htmlspecialchars($data);
-		$sidmodlist_edit_style = "display: table-row-group;";
-		$sidmodlist_name = basename($_POST['sidlist_fname']);
-		unset($data);
-	}
-	else {
-		$input_errors[] = gettext("An error occurred reading the file.");
+		case 'edit':
+			$file = $sidmods_path . basename($_POST['sidlist_fname']);
+			$data = file_get_contents($file);
+			if ($data !== FALSE) {
+				$sidmodlist_data = htmlspecialchars($data);
+				$sidmodlist_edit_style = "display: inline;";
+				$sidmodlist_name = basename($_POST['sidlist_fname']);
+				unset($data);
+			}
+			else {
+				$input_errors[] = gettext("An error occurred reading the file.");
+			}
+			break;
+
+		case 'download':
+			$file = $sidmods_path . basename($_POST['sidlist_fname']);
+			if (file_exists($file)) {
+				ob_start(); //important or other posts will fail
+				if (isset($_SERVER['HTTPS'])) {
+					header('Pragma: ');
+					header('Cache-Control: ');
+				} else {
+					header("Pragma: private");
+					header("Cache-Control: private, must-revalidate");
+				}
+				header("Content-Type: application/octet-stream");
+				header("Content-length: " . filesize($file));
+				header("Content-disposition: attachment; filename = " . basename($file));
+				ob_end_clean(); //important or other post will fail
+				readfile($file);
+			}
+			else
+				$savemsg = gettext("Unable to locate the file specified!");
+
+		default:
 	}
 }
 
@@ -191,28 +217,7 @@ if (isset($_POST['save_auto_sid_conf'])) {
 	}
 }
 
-if (isset($_POST['sidlist_dnload']) && isset($_POST['sidlist_fname'])) {
-	$file = $sidmods_path . basename($_POST['sidlist_fname']);
-	if (file_exists($file)) {
-		ob_start(); //important or other posts will fail
-		if (isset($_SERVER['HTTPS'])) {
-			header('Pragma: ');
-			header('Cache-Control: ');
-		} else {
-			header("Pragma: private");
-			header("Cache-Control: private, must-revalidate");
-		}
-		header("Content-Type: application/octet-stream");
-		header("Content-length: " . filesize($file));
-		header("Content-disposition: attachment; filename = " . basename($file));
-		ob_end_clean(); //important or other post will fail
-		readfile($file);
-	}
-	else
-		$savemsg = gettext("Unable to locate the file specified!");
-}
-
-if (isset($_POST['sidlist_dnload_all_x'])) {
+if (isset($_POST['sidlist_dnload_all'])) {
 	$save_date = date("Y-m-d-H-i-s");
 	$file_name = "snort_sid_conf_files_{$save_date}.tar.gz";
 	exec("cd {$sidmods_path} && /usr/bin/tar -czf {$g['tmp_path']}/{$file_name} *");
@@ -245,362 +250,284 @@ if (isset($_POST['sidlist_dnload_all_x'])) {
 $sidmodfiles = return_dir_as_array($sidmods_path);
 $sidmodselections = array_merge(Array( "None" ), $sidmodfiles);
 
-$pgtitle = gettext("Snort: SID Management");
+$pgtitle = array(gettext('Services'), gettext('Snort'), gettext('SID Management'));
 include_once("head.inc");
-
-?>
-
-<body link="#000000" vlink="#000000" alink="#000000">
-
-<?php
-include_once("fbegin.inc");
 
 /* Display Alert message, under form tag or no refresh */
 if ($input_errors)
 	print_input_errors($input_errors);
 ?>
 
-<form action="snort_sid_mgmt.php" method="post" enctype="multipart/form-data" name="iform" id="iform">
+<form action="snort_sid_mgmt.php" method="post" enctype="multipart/form-data" name="iform" id="iform" class="form-horizontal">
 <input type="hidden" name="MAX_FILE_SIZE" value="100000000" />
 <input type="hidden" name="sidlist_fname" id="sidlist_fname" value=""/>
+<input type="hidden" name="sidlist_action" id="sidlist_action" value=""/>
 
 <?php
 if ($savemsg) {
 	/* Display save message */
 	print_info_box($savemsg);
 }
+
+$tab_array = array();
+$tab_array[] = array(gettext("Snort Interfaces"), false, "/snort/snort_interfaces.php");
+$tab_array[] = array(gettext("Global Settings"), false, "/snort/snort_interfaces_global.php");
+$tab_array[] = array(gettext("Updates"), false, "/snort/snort_download_updates.php");
+$tab_array[] = array(gettext("Alerts"), false, "/snort/snort_alerts.php");
+$tab_array[] = array(gettext("Blocked"), false, "/snort/snort_blocked.php");
+$tab_array[] = array(gettext("Pass Lists"), false, "/snort/snort_passlist.php");
+$tab_array[] = array(gettext("Suppress"), false, "/snort/snort_interfaces_suppress.php");
+$tab_array[] = array(gettext("IP Lists"), false, "/snort/snort_ip_list_mgmt.php");
+$tab_array[] = array(gettext("SID Mgmt"), true, "/snort/snort_sid_mgmt.php");
+$tab_array[] = array(gettext("Log Mgmt"), false, "/snort/snort_log_mgmt.php");
+$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=snort/snort_sync.xml");
+display_top_tabs($tab_array, true);
+
+$section = new Form_Section('SID Management General Settings');
+if ($g['platform'] == "nanobsd") {
+	$section->addInput(new Form_StaticText(
+		null,
+		'SID auto-management is not supported on NanoBSD installs.'
+	))->addClass('text-danger');
+}
+else {
+	$group = new Form_Group('Remove Snort Logs On Package Uninstall');
+	$group->add(new Form_Checkbox(
+		'auto_manage_sids',
+		'',
+		'Enable automatic management of rule state and content using configuration files. Default is Not Checked.',
+		$pconfig['auto_manage_sids'] == 'on' ? true:false,
+		'on'
+	))->setHelp('Snort will automatically enable/disable/modify text rules upon each update using criteria specified in configuration files.  ' . 
+		'The supported configuration file format is the same as that used in the PulledPork and Oinkmaster enablesid.conf, disablesid.conf and ' . 
+		'modifysid.conf files.  You can either upload existing configuration files or create your own.');
+	$section->add($group);
+}
+print($section);
 ?>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-	<tbody>
-	<tr><td>
-	<?php
-		$tab_array = array();
-		$tab_array[0] = array(gettext("Snort Interfaces"), false, "/snort/snort_interfaces.php");
-		$tab_array[1] = array(gettext("Global Settings"), false, "/snort/snort_interfaces_global.php");
-		$tab_array[2] = array(gettext("Updates"), false, "/snort/snort_download_updates.php");
-		$tab_array[3] = array(gettext("Alerts"), false, "/snort/snort_alerts.php");
-		$tab_array[4] = array(gettext("Blocked"), false, "/snort/snort_blocked.php");
-		$tab_array[5] = array(gettext("Pass Lists"), false, "/snort/snort_passlist.php");
-		$tab_array[6] = array(gettext("Suppress"), false, "/snort/snort_interfaces_suppress.php");
-		$tab_array[7] = array(gettext("IP Lists"), false, "/snort/snort_ip_list_mgmt.php");
-		$tab_array[8] = array(gettext("SID Mgmt"), true, "/snort/snort_sid_mgmt.php");
-		$tab_array[9] = array(gettext("Log Mgmt"), false, "/snort/snort_log_mgmt.php");
-		$tab_array[10] = array(gettext("Sync"), false, "/pkg_edit.php?xml=snort/snort_sync.xml");
-		display_top_tabs($tab_array, true);
-	?>
-	</td></tr>
-	<tr><td>
-		<div id="mainarea">
-		<table id="maintable" class="tabcont" width="100%" border="0" cellpadding="6" cellspacing="0">
-			<tbody>
-		<?php if ($g['platform'] == "nanobsd") : ?>
-			<tr>
-				<td colspan="2" class="listtopic"><?php echo gettext("SID auto-management is not supported on NanoBSD installs"); ?></td>
-			</tr>
-		<?php else: ?>
-			<tr>
-				<td colspan="2" valign="top" class="listtopic"><?php echo gettext("General Settings"); ?></td>
-			</tr>
-			<tr>
-				<td width="22%" valign="top" class="vncell"><?php echo gettext("Enable Automatic SID State Management"); ?></td>
-				<td width="78%" class="vtable"><input type="checkbox" id="auto_manage_sids" name="auto_manage_sids" value="on" 
-				<?php if ($pconfig['auto_manage_sids'] == 'on') echo " checked"; ?> onclick="enable_sid_conf();" />&nbsp;<?=gettext("Enable automatic management of rule state ") . 
-				gettext("and content using configuration files.  Default is ") . "<strong>" . gettext("Not Checked") . "</strong>";?>.<br/><br/>
-				<?=gettext("Snort will automatically enable/disable/modify text rules upon each update using criteria specified in configuration files.  ") . 
-				gettext("The supported configuration file format is the same as that used in the PulledPork and Oinkmaster enablesid.conf, disablesid.conf and ") . 
-				gettext("modifysid.conf files.  You can either upload existing files or create your own."); ?>
-				</td>
-			</tr>
-			</tbody>
-			<tbody id="sid_conf_rows">
-			<tr>
-				<td  colspan="2" valign="top" class="listtopic"><?php echo gettext("SID Management Configuration Files"); ?></td>
-			</tr>
-			<tr>
-				<td colspan="2" class="vtable" align="center" >
-					<table width="100%" border="0" cellpadding="4" cellspacing="0">
-						<tbody id="uploader" style="display: none;">
-						<tr>
-							<td class="list"><br/><?php echo gettext("Click BROWSE to select a file to import, and then click UPLOAD.  Click CLOSE to quit."); ?></td>
-						</tr>
-						<tr>
-							<td class="list"><input type="file" name="sidmods_fileup" id="sidmods_fileup" class="formfld file" size="50" />
-								&nbsp;&nbsp;<input type="submit" name="upload" id="upload" value="<?=gettext("Upload");?>" 
-								title="<?=gettext("Upload selected SID mods list to firewall");?>"/>&nbsp;&nbsp;<input type="button" 
-								value="<?=gettext("Close");?>" onClick="document.getElementById('uploader').style.display='none';" /><br/></td>
-							<td class="list"></td>
-						</tr>
-						</tbody>
-						<tbody>
-						<tr>
-							<td>
-								<table id="maintable" width="100%" border="0" cellpadding="4" cellspacing="0">
-									<colgroup>
-										<col style="width: 45%;">
-										<col style="width: 25%;">
-										<col style="width: 15%;">
-										<col style="width: 15%;">
-									</colgroup>
-									<thead>
-										<tr>
-											<th class="listhdrr"><?php echo gettext("SID Mods List File Name"); ?></th>
-											<th class="listhdrr"><?php echo gettext("Last Modified Time"); ?></th>
-											<th class="listhdrr"><?php echo gettext("File Size"); ?></th>
-											<th class="list" align="left"><img style="cursor:pointer;" name="sidlist_new" id="sidlist_new" 
-											src="../themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif" width="17" 
-											height="17" border="0" title="<?php echo gettext('Create a new SID Mods List');?>" 
-											onClick="document.getElementById('sidlist_data').value=''; document.getElementById('sidlist_name').value=''; document.getElementById('sidlist_editor').style.display='table-row-group'; document.getElementById('sidlist_name').focus();" />
-											<img style="cursor:pointer;" name="sidlist_import" id="sidlist_import" 
-											onClick="document.getElementById('uploader').style.display='table-row-group';" 
-											src="../themes/<?= $g['theme']; ?>/images/icons/icon_import_alias.gif" width="17" 
-											height="17" border="0" title="<?php echo gettext('Import/Upload a SID Mods List');?>"/>
-											<input type="image" name="sidlist_dnload_all" id="sidlist_dnload_all" 
-											src="../tree/page-file_play.gif" width="16" height="16" border="0" 
-											title="<?php echo gettext('Download all SID Mods List files in a single gzip archive');?>"/>
-											</th>
-										</tr>
-									</thead>
-									<tbody>
-								<?php foreach ($sidmodfiles as $file): ?>
-									<tr>
-										<td class="listr"><?php echo gettext($file); ?></td>
-										<td class="listr"><?=date('M-d Y g:i a', filemtime("{$sidmods_path}{$file}")); ?></td>
-										<td class="listr"><?=format_bytes(filesize("{$sidmods_path}{$file}")); ?> </td>
-										<td class="list"><input type="image" name="sidlist_edit[]" id="sidlist_edit[]" 
-										onClick="document.getElementById('sidlist_fname').value='<?=$file;?>';" 
-										src="../themes/<?= $g['theme']; ?>/images/icons/icon_e.gif" width="17" 
-										height="17" border="0" title="<?php echo gettext('Edit this SID Mods List');?>"/>
-										<input type="image" name="sidlist_delete[]" id="sidlist_delete[]" 
-										onClick="document.getElementById('sidlist_fname').value='<?=$file;?>'; 
-										return confirm('<?=gettext("Are you sure you want to permanently delete this file?  Click OK to continue or CANCEL to quit.");?>');" 
-										src="../themes/<?= $g['theme']; ?>/images/icons/icon_x.gif" width="17" 
-										height="17" border="0" title="<?php echo gettext('Delete this SID Mods List');?>"/>
-										<input type="image" name="sidlist_dnload[]" id="sidlist_dnload[]" 
-										onClick="document.getElementById('sidlist_fname').value='<?=$file;?>';" 
-										src="../tree/page-file_play.gif" width="16" height="16" border="0" 
-										title="<?php echo gettext('Download this SID Mods List file');?>"/>
-										</td>
-									</tr>
-								<?php endforeach; ?>
-									</tbody>
-									<tbody id="sidlist_editor" style="<?=$sidmodlist_edit_style;?>">
-									<tr>
-										<td colspan="4">&nbsp;</td>
-									</tr>
-									<tr>
-										<td colspan="4"><strong><?=gettext("File Name: ");?></strong><input type="text" size="45" class="formfld file" id="sidlist_name" name="sidlist_name" value="<?=$sidmodlist_name;?>" />
-										&nbsp;&nbsp;<input type="submit" id="save" name="save" value="<?=gettext(" Save ");?>" title="<?=gettext("Save changes and close editor");?>" />
-										&nbsp;&nbsp;<input type="button" id="cancel" name="cancel" value="<?=gettext("Cancel");?>" onClick="document.getElementById('sidlist_editor').style.display='none';"  
-										title="<?=gettext("Abandon changes and quit editor");?>" /></td>
-									</tr>
-									<tr>
-										<td colspan="4">&nbsp;</td>
-									</tr>
-									<tr>
-										<td colspan="4"><textarea wrap="off" cols="80" rows="20" name="sidlist_data" id="sidlist_data" 
-										style="width:95%; height:100%;"><?=$sidmodlist_data;?></textarea>
-										</td>
-									</tr>
-									</tbody>
-									<tbody>
-									<tr>
-										<td colspan="3" class="vexpl"><br/><span class="red"><strong><?php echo gettext("Note:"); ?></strong></span>
-										<br/><?php echo gettext("SID Mods Lists are stored as local files on the firewall and their contents are " . 
-										"not saved as part of the firewall configuration file."); ?></td>
-										<td class="list"></td>
-									</tr>
-									<tr>
-										<td colspan="3" class="vexpl"><br/><strong><?php echo gettext("File List Controls:"); ?></strong><br/><br/>
-										&nbsp;&nbsp;<img src="../themes/<?= $g['theme']; ?>/images/icons/icon_plus.gif" width="17" height="17" border="0" />
-										&nbsp;<?=gettext("Opens the editor window to create a new SID Mods List.  You must provide a valid filename before saving.");?><br/>
-										&nbsp;&nbsp;<img src="../themes/<?= $g['theme']; ?>/images/icons/icon_import_alias.gif" width="17" height="17" border="0" />
-										&nbsp;<?=gettext("Opens the file upload control for uploading a new SID Mods List from your local machine.");?><br/>
-										&nbsp;&nbsp;<img src="../themes/<?= $g['theme']; ?>/images/icons/icon_e.gif" width="17" height="17" border="0" />
-										&nbsp;<?=gettext("Opens the SID Mods List in a text edit control for viewing or editing its contents.");?><br/>
-										&nbsp;&nbsp;<img src="../themes/<?= $g['theme']; ?>/images/icons/icon_x.gif" width="17" height="17" border="0" />
-										&nbsp;<?=gettext("Deletes the SID Mods List from the file system after confirmation.");?><br/>
-										&nbsp;&nbsp;<img src="../tree/page-file_play.gif" width="16" height="16" border="0" />
-										&nbsp;<?=gettext("Downloads the SID Mods List file to your local machine.");?><br/>
-										</td>
-										<td class="list"></td>
-									</tr>
-									</tbody>
-								</table>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td  colspan="2" valign="top" class="listtopic"><?php echo gettext("Interface SID Management File Assignments"); ?></td>
-			</tr>
-			<tr>
-				<td colspan="2" class="vtable" align="center" >
-					<table width="100%" border="0" cellpadding="2" cellspacing="0">
-						<tbody>
-						<tr>
-							<td>
-								<table width="100%" border="0" cellpadding="0" cellspacing="0">
-									<colgroup>
-										<col width="4%" align="center">
-										<col width="20" align="center">
-										<col width="16%" align="center">
-										<col width="20%" align="center">
-										<col width="20%" align="center">
-										<col width="20%" align="center">
-									</colgroup>
-									<thead>
-									   <tr>
-										<th class="listhdrr"><?=gettext("Rebuild"); ?></th>
-										<th class="listhdrr"><?=gettext("Interface"); ?></th>
-										<th class="listhdrr"><?=gettext("SID State Order"); ?></th>
-										<th class="listhdrr"><?=gettext("Enable SID File"); ?></th>
-										<th class="listhdrr"><?=gettext("Disable SID File"); ?></th>
-										<th class="listhdrr"><?=gettext("Modify SID File"); ?></th>
-									   </tr>
-									</thead>
-									<tbody>
-								   <?php foreach ($a_nat as $k => $natent): ?>
-									<tr>
-										<td class="listr" align="center">
-											<input type="checkbox" name="torestart[]" id="torestart[]" value="<?=$k;?>" title="<?=gettext("Apply new configuration and rebuild rules for this interface when saving");?>" />
-										</td>
-										<td class="listbg"><?=convert_friendly_interface_to_friendly_descr($natent['interface']); ?></td>
-										<td class="listr" align="center">
-											<select name="sid_state_order[<?=$k?>]" class="formselect" id="sid_state_order[<?=$k?>]">
-												<?php
-													foreach (array("disable_enable" => "Disable, Enable", "enable_disable" => "Enable, Disable") as $key => $order) {
-														if ($key == $natent['sid_state_order'])
-															echo "<option value='{$key}' selected>";
-														else
-															echo "<option value='{$key}'>";
-														echo htmlspecialchars($order) . '</option>';
-													}
-												?>
-											</select>
-										</td>
-										<td class="listr" align="center">
-											<select name="enable_sid_file[<?=$k?>]" class="formselect" id="enable_sid_file[<?=$k?>]">
-												<?php
-													foreach ($sidmodselections as $choice) {
-														if ($choice == $natent['enable_sid_file'])
-															echo "<option value='{$choice}' selected>";
-														else
-															echo "<option value='{$choice}'>";
-														echo htmlspecialchars(gettext($choice)) . '</option>';
-													}
-												?>
-											</select>
-										</td>
-										<td class="listr" align="center">
-											<select name="disable_sid_file[<?=$k?>]" class="formselect" id="disable_sid_file[<?=$k?>]">
-												<?php
-													foreach ($sidmodselections as $choice) {
-														if ($choice == $natent['disable_sid_file'])
-															echo "<option value='{$choice}' selected>";
-														else
-															echo "<option value='{$choice}'>";
-														echo htmlspecialchars(gettext($choice)) . '</option>';
-													}
-												?>
-											</select>
-										</td>
-										<td class="listr" align="center">
-											<select name="modify_sid_file[<?=$k?>]" class="formselect" id="modify_sid_file[<?=$k?>]">
-												<?php
-													foreach ($sidmodselections as $choice) {
-														if ($choice == $natent['modify_sid_file'])
-															echo "<option value='{$choice}' selected>";
-														else
-															echo "<option value='{$choice}'>";
-														echo htmlspecialchars(gettext($choice)) . '</option>';
-													}
-												?>
-											</select>
-										</td>
-									</tr>
-								   <?php endforeach; ?>
-									</tbody>
-								</table>
-							</td>
-						</tr>
-						<tr>
-							<td class="vexpl">&nbsp;
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<table width="100%" cellpadding="2" cellspacing="2" border="0">
-									<tbody>
-									<tr>
-										<td colspan="2" class="vexpl" style="text-align: bottom;"><strong><span class="red"><?=gettext("Notes:");?></span></strong></td>
-									</tr>
-									<tr>
-										<td class="vexpl" style="vertical-align: top;"><?=gettext("1.");?></td>
-										<td class="vexpl"><?=gettext("Check the box beside an interface to immediately apply new auto-SID management ") . 
-										gettext("changes and signal Snort to live-load the new rules for the interface when clicking SAVE; ") . 
-										gettext("otherwise only the new file assignments will be saved.");?>
-										</td>
-									</tr>
-									<tr>
-										<td class="vexpl" style="vertical-align: top;"><?=gettext("2.");?></td>
-										<td class="vexpl"><?=gettext("SID State Order controls the order in which enable and disable state modifications are performed.  ") . 
-										gettext("An example would be to disable an entire category and later enable only a rule or two from it.  In this case you would ") . 
-										gettext("choose 'disable,enable' for the State Order.  Note that the last action performed takes priority.");?>
-										</td>
-									</tr>
-									<tr>
-										<td class="vexpl" style="vertical-align: top;"><?=gettext("3.");?></td>
-										<td class="vexpl"><?=gettext("The Enable SID File, Disable SID File and Modify SID File controls specify which rule modification ") . 
-										gettext("files are run automatically for the interface.  Setting a file control to 'None' disables that modification.  ") . 
-										gettext("Setting all file controls for an interface to 'None' disables automatic SID state management for the interface.");?>
-										</td>
-									</tr>
-									</tbody>
-								</table>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</td>
-			</tr>
-			</tbody>
-			<tbody>
-			<tr>
-				<td colspan="2" class="vexpl" align="center"><input type="submit" id="save_auto_sid_conf" name="save_auto_sid_conf" class="formbtn" value="<?=gettext("Save");?>" title="<?=gettext("Save SID Management configuration");?>" />
-				&nbsp;&nbsp;<?=gettext("Remember to save changes before exiting this page"); ?>
-				</td>
-			</tr>
-		<?php endif; ?>
-			</tbody>
-		</table>
+<div id="sid-conf-rows">
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext('SID Management Configuration Files'); ?></h2></div>
+	<div class="panel-body">
+		<div id="uploader" class="row col-sm-12" style="display: none;">
+			<div class="col-sm-8">
+				<br/><?=gettext('Click BROWSE to select a file to import, and then click UPLOAD.  Click CLOSE to quit.'); ?>
+			</div>
+			<div class="col-sm-8">
+				<div class="form-group">
+					<input type="file" name="sidmods_fileup" id="sidmods_fileup" class="form-control" />
+					<button type="submit" class="btn btn-info btn-sm" name="upload" id="upload" title="<?=gettext('Upload selected SID mods list to firewall');?>">
+						<i class="fa fa-upload icon-embed-btn"></i>
+						<?=gettext('Upload');?>
+					</button>
+					<button type="button" class="btn btn-default btn-sm btn-warning" onClick="document.getElementById('uploader').style.display='none';" >
+						<?=gettext('Close');?>
+					</button>
+				</div>
+			</div>
 		</div>
-	</td></tr>
-	</tbody>
-</table>
-</form>
 
-<?php include("fend.inc"); ?>
+		<div class="table-responsive">
+			<table class="table table-striped table-hover table-condensed">
+				<thead>
+					<tr>
+						<th><?=gettext('SID Mods List File Name'); ?></th>
+						<th><?=gettext('Last Modified Time'); ?></th>
+						<th><?=gettext('File Size'); ?></th>
+						<th><?=gettext('Actions'); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+			<?php foreach ($sidmodfiles as $file): ?>
+					<tr>
+						<td><?=gettext($file); ?></td>
+						<td><?=date('M-d Y g:i a', filemtime("{$sidmods_path}{$file}")); ?></td>
+						<td><?=format_bytes(filesize("{$sidmods_path}{$file}")); ?> </td>
+						<td>
+							<a href="#" class="fa fa-pencil icon-primary" onclick="javascript:snort_sidlist_action('edit', '<?=$file; ?>');" title="<?=gettext('Edit this SID Mods List');?>"></a>
+							<a href="#" class="fa fa-trash icon-primary no-confirm" onclick="javascript:snort_sidlist_action('delete', '<?=$file; ?>');" title="<?=gettext('Delete this SID Mods List');?>"></a>
+							<a href="#" class="fa fa-download icon-primary" onclick="javascript:snort_sidlist_action('download', '<?=$file; ?>');" title="<?=gettext('Download this SID Mods List file');?>"></a>
+						</td>
+					</tr>
+			<?php endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+
+		<nav class="action-buttons">
+			<button type="button" class="btn btn-success btn-sm" title="<?=gettext('Create new SID Mods List');?>" 
+				onclick="document.getElementById('sidlist_data').value=''; document.getElementById('sidlist_name').value=''; document.getElementById('sidlist_editor').style.display='block'; document.getElementById('sidlist_name').focus();">
+				<i class="fa fa-plus icon-embed-btn"></i>
+				<?=gettext('Add');?>
+			</button>
+			<button type="button" class="btn btn-info btn-sm" title="<?=gettext('Upload a SID Mods List file');?>" onclick="document.getElementById('uploader').style.display='block';">
+				<i class="fa fa-upload icon-embed-btn"></i>
+				<?=gettext('Upload');?>
+			</button>
+			<button type="submit" class="btn btn-info btn-sm" id="sidlist_dnload_all" name="sidlist_dnload_all" title="<?=gettext('Download all SID Mods List files as gzip archive');?>">
+				<i class="fa fa-download icon-embed-btn"></i>
+				<?=gettext('Download');?>
+			</button>
+		</nav>
+
+		<div id="sidlist_editor" class="row col-sm-12" style="<?=$sidmodlist_edit_style;?>">
+			<div class="col-sm-9">
+				<div class="input-group">
+					<div class="input-group-addon"><strong><?=gettext('File Name: ');?></strong></div>
+					<input type="text" class="form-control" id="sidlist_name" name="sidlist_name" value="<?=gettext($sidmodlist_name);?>" />
+				</div>
+			</div>
+			<div class="col-sm-9">
+				<button type="submit" id="save" name="save" class="btn btn-primary btn-sm" title="<?=gettext('Save changes and close editor');?>">
+					<i class="fa fa-save icon-embed-btn"></i>
+					<?=gettext('Save'); ?>
+				</button>
+				<button type="button" class="btn btn-default btn-sm btn-warning" id="cancel" name="cancel" onClick="document.getElementById('sidlist_editor').style.display='none';" 
+					title="<?=gettext('Abandon changes and quit editor');?>">
+					<?=gettext('Cancel');?>
+				</button>
+			</div>
+			<div class="col-sm-9">
+				<textarea wrap="off" cols="" rows="12" name="sidlist_data" id="sidlist_data" class="form-control"><?=$sidmodlist_data;?></textarea>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?php echo gettext("Interface SID Management File Assignments"); ?></h2></div>
+	<div class="panel-body">
+		<div class="table-responsive">
+			<table class="table table-striped table-hover table-condensed">
+				<thead>
+				   <tr>
+					<th><?=gettext('Rebuild'); ?></th>
+					<th><?=gettext('Interface'); ?></th>
+					<th><?=gettext('SID State Order'); ?></th>
+					<th><?=gettext('Enable SID File'); ?></th>
+					<th><?=gettext('Disable SID File'); ?></th>
+					<th><?=gettext('Modify SID File'); ?></th>
+				   </tr>
+				</thead>
+				<tbody>
+				   <?php foreach ($a_nat as $k => $natent): ?>
+					<tr>
+						<td>
+							<input type="checkbox" name="torestart[]" id="torestart[]" value="<?=$k;?>" title="<?=gettext('Apply new configuration and rebuild rules for this interface when saving');?>" />
+						</td>
+						<td><?=convert_friendly_interface_to_friendly_descr($natent['interface']); ?></td>
+						<td>
+							<select name="sid_state_order[<?=$k?>]" class="form-control" id="sid_state_order[<?=$k?>]">
+								<?php
+									foreach (array("disable_enable" => "Disable, Enable", "enable_disable" => "Enable, Disable") as $key => $order) {
+										if ($key == $natent['sid_state_order'])
+											echo "<option value='{$key}' selected>";
+										else
+											echo "<option value='{$key}'>";
+										echo htmlspecialchars($order) . '</option>';
+									}
+								?>
+							</select>
+						</td>
+						<td>
+							<select name="enable_sid_file[<?=$k?>]" class="form-control" id="enable_sid_file[<?=$k?>]">
+								<?php
+									foreach ($sidmodselections as $choice) {
+										if ($choice == $natent['enable_sid_file'])
+											echo "<option value='{$choice}' selected>";
+										else
+											echo "<option value='{$choice}'>";
+										echo htmlspecialchars(gettext($choice)) . '</option>';
+									}
+								?>
+							</select>
+						</td>
+						<td>
+							<select name="disable_sid_file[<?=$k?>]" class="form-control" id="disable_sid_file[<?=$k?>]">
+								<?php
+									foreach ($sidmodselections as $choice) {
+										if ($choice == $natent['disable_sid_file'])
+											echo "<option value='{$choice}' selected>";
+										else
+											echo "<option value='{$choice}'>";
+										echo htmlspecialchars(gettext($choice)) . '</option>';
+									}
+								?>
+							</select>
+						</td>
+						<td>
+							<select name="modify_sid_file[<?=$k?>]" class="form-control" id="modify_sid_file[<?=$k?>]">
+								<?php
+									foreach ($sidmodselections as $choice) {
+										if ($choice == $natent['modify_sid_file'])
+											echo "<option value='{$choice}' selected>";
+										else
+											echo "<option value='{$choice}'>";
+										echo htmlspecialchars(gettext($choice)) . '</option>';
+									}
+								?>
+							</select>
+						</td>
+					</tr>
+				   <?php endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+</div>
+<div class="col-sm-10 col-sm-offset-2">
+	<button type="submit" id="save_auto_sid_conf" name="save_auto_sid_conf" class="btn btn-primary btn-sm" title="<?=gettext('Save SID Management configuration');?>">
+		<i class="fa fa-save icon-embed-btn"></i>
+		<?=gettext('Save');?>
+	</button>
+</div>
+
+</form>
 
 <?php if ($g['platform'] != "nanobsd") : ?>
 <script type="text/javascript">
+//<![CDATA[
 
-function enable_sid_conf() {
-	var endis = !document.iform.auto_manage_sids.checked;
-	if (endis) {
-		document.getElementById("sid_conf_rows").style.display = "none";
+	function snort_sidlist_action(action,list) {
+		$('#sidlist_action').val(action);
+		$('#sidlist_fname').val(list);
+		if (action == 'delete') {
+			if (confirm('Are you sure you want to delete this SID Mods List?'))
+				$('#iform').submit();
+		}
+		else {
+			$('#iform').submit();
+		}
 	}
-	else {
-		document.getElementById("sid_conf_rows").style.display = "";
+
+	function enable_sid_conf() {
+		var endis = !document.iform.auto_manage_sids.checked;
+		if (endis) {
+			document.getElementById("sid-conf-rows").style.display = "none";
+		}
+		else {
+			document.getElementById("sid-conf-rows").style.display = "block";
+		}
 	}
-}
 
-enable_sid_conf();
+events.push(function(){
 
+	// ---------- Click checkbox handlers -------------------------------------------------------
+	// When 'auto_manage_sids' is clicked, disable/enable the other page form controls
+	$('#auto_manage_sids').click(function() {
+		enable_sid_conf();
+	});
+
+	enable_sid_conf();
+
+});
+//]]>
 </script>
 <?php endif; ?>
 
-</body>
-</html>
+<?php
+include("foot.inc");
+?>
+

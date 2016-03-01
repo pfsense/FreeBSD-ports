@@ -102,54 +102,6 @@
 			<url>/pkg_edit.php?xml=freeradiussync.xml&amp;id=0</url>
 		</tab>
 	</tabs>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradius.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/etc/inc/priv/</prefix>
-		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradius.priv.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/</prefix>
-		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradius_view_config.php</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradiusclients.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradiussettings.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradiuseapconf.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradiussqlconf.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradiusinterfaces.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradiuscerts.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradiussync.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradiusmodulesldap.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/freeradius2/freeradiusauthorizedmacs.xml</item>
-	</additional_files_needed>
 	<adddeleteeditpagefields>
 		<columnitem>
 			<fielddescr>Username</fielddescr>

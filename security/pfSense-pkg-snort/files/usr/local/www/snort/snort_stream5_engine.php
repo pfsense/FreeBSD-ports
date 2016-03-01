@@ -1,7 +1,7 @@
 <?php
 /*
  * snort_stream5_engine.php
- * Copyright (C) 2013, 2014 Bill Meeks
+ * Copyright (C) 2013-2016 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -119,7 +119,7 @@ else {
 		$pconfig['ports_server'] = "none";
 }
 
-if ($_POST['Cancel']) {
+if ($_POST['cancel']) {
 	// Clear and close out any session variable we created
 	session_start();
 	unset($_SESSION['stream5_client_import']);
@@ -330,337 +330,326 @@ if ($_POST['save']) {
 		/* Now write the new engine array to conf */
 		write_config("Snort pkg: save modified stream5 engine.");
 
-		// We have saved a preproc config change, so set "dirty" flag
-		mark_subsystem_dirty('snort_preprocessors');
-
 		header("Location: /snort/snort_preprocessors.php?id={$id}#stream5_row");
 		exit;
 	}
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($config['installedpackages']['snortglobal']['rule'][$id]['interface']);
-$pgtitle = gettext("Snort: Interface {$if_friendly} - Stream5 Preprocessor TCP Engine");
-include_once("head.inc");
+$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Stream5 Preprocessor TCP Engine"), gettext("{$if_friendly}"));
+include("head.inc");
 
-?>
-
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC" >
-
-<?php
-include("fbegin.inc");
 if ($input_errors) print_input_errors($input_errors);
 if ($savemsg)
 	print_info_box($savemsg);
+
+$form = new Form(FALSE);
+$section = new Form_Section('Snort Stream5 Target-Based TCP Stream Reassembly Engine Configuration');
+
+$engine_name = new Form_Input(
+	'stream5_name',
+	'Engine Name',
+	'text',
+	$pconfig['name']
+);
+if ($pconfig['name'] <> "default") {
+	$engine_name->setHelp('Enter a unique name or description for this engine.  (Max 25 characters)');
+}
+else {
+	$engine_name->setReadonly()->setHelp('The name for the default engine is read-only.');
+}
+$section->addInput($engine_name);
+
+if ($pconfig['name'] <> "default") {
+	$bind_to = new Form_Input(
+		'stream5_bind_to',
+		'',
+		'text',
+		$pconfig['bind_to']
+	);
+	$bind_to->setAttribute('title', trim(filter_expand_alias($pconfig['bind_to'])));
+	$bind_to->setHelp('IP List to bind this engine to. (Cannot be blank)');
+	$btnaliases = new Form_Button(
+		'btnSuppressList',
+		' ' . 'Aliases',
+		'snort_select_alias.php?id=' . $id . '&eng_id=<?=' . $eng_id . '&type=host|network&varname=bind_to&act=import&multi_ip=yes&returl=' . urlencode($_SERVER['PHP_SELF']),
+		'fa-search-plus'
+	);
+	$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
+	$btnaliases->setAttribute('title', gettext("Select an existing IP alias"));
+	$group = new Form_Group('Bind-To IP Address Alias');
+	$group->add($bind_to);
+	$group->add($btnaliases);
+	$group->setHelp(gettext("Supplied value must be a pre-configured Alias or the keyword 'all'."));
+	$section->add($group);
+}
+else {
+	$section->addInput( new Form_Input(
+		'stream5_bind_to',
+		'Bind-To IP Address Alias',
+		'text',
+		$pconfig['bind_to']
+	))->setReadonly()->setHelp('The default engine is required and only runs for packets with destination addresses not matching other engine IP Lists.');
+}
+
+$section->addInput(new Form_Select(
+	'stream5_policy',
+	'TCP Target Policy',
+	$pconfig['policy'],
+	array( 'bsd' => 'BSD', 'first' => 'First', 'hpux' => 'HPUX', 'hpux10' => 'HPUX10', 'irix' => 'Irix', 'last' => 'Last', 
+		'linux' => 'Linux', 'macos' => 'MacOS', 'old-linux' => 'Old-Linux', 'solaris' => 'Solaris', 'vista' => 'Vista', 
+		'windows' => 'Windows', 'win2003' => 'Win2003' )
+))->setHelp('Choose the TCP target policy appropriate for the protected hosts.  The default is BSD.');
+
+$bind_to = new Form_Input(
+	'stream5_ports_client',
+	'',
+	'text',
+	$pconfig['ports_client']
+);
+$bind_to->setAttribute('title', trim(filter_expand_alias($pconfig['ports'])));
+$bind_to->setHelp('Specify which ports to check for HTTP data.  Default value is <em>default</em>');
+$btnaliases = new Form_Button(
+	'btnSelectAlias',
+	' ' . 'Aliases',
+	'snort_select_alias.php?id=' . $id . '&eng_id=<?=' . $eng_id . '&type=port&varname=ports_client&act=import&returl=' . urlencode($_SERVER['PHP_SELF']),
+	'fa-search-plus'
+);
+$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
+$btnaliases->setAttribute('title', gettext("Select an existing port alias"));
+$group = new Form_Group('TCP Target Client Ports');
+$group->add($bind_to);
+$group->add($btnaliases);
+$msg = gettext("Configures which side of the connection packets should be reassembled for based on the configured destination ports. "); 
+$msg .= gettext("Supplied value must be a pre-configured Alias or the keyword <em>default</em>, <em>all</em> or <em>none</em>.  Specific ports can be specified here using a pre-defined Alias.") . '<br/>';
+$msg .= gettext("Most users should leave these settings at their default values.");
+$group->setHelp($msg);
+$section->add($group);
+
+$bind_to = new Form_Input(
+	'stream5_ports_server',
+	'',
+	'text',
+	$pconfig['ports_server']
+);
+$bind_to->setAttribute('title', trim(filter_expand_alias($pconfig['ports'])));
+$bind_to->setHelp('Specify which ports to check for HTTP data.  Default value is <em>none</em>');
+$btnaliases = new Form_Button(
+	'btnSelectAlias',
+	' ' . 'Aliases',
+	'snort_select_alias.php?id=' . $id . '&eng_id=<?=' . $eng_id . '&type=port&varname=ports_server&act=import&returl=' . urlencode($_SERVER['PHP_SELF']),
+	'fa-search-plus'
+);
+$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
+$btnaliases->setAttribute('title', gettext("Select an existing port alias"));
+$group = new Form_Group('TCP Target Server Ports');
+$group->add($bind_to);
+$group->add($btnaliases);
+$msg = gettext("Configures which side of the connection packets should be reassembled for based on the configured destination ports. "); 
+$msg .= gettext("Supplied value must be a pre-configured Alias or the keyword <em>default</em>, <em>all</em> or <em>none</em>.  Specific ports can be specified here using a pre-defined Alias.") . '<br/>';
+$msg .= gettext("Most users should leave these settings at their default values.");
+$group->setHelp($msg);
+$section->add($group);
+
+$bind_to = new Form_Input(
+	'stream5_ports_both',
+	'',
+	'text',
+	$pconfig['ports_both']
+);
+$bind_to->setAttribute('title', trim(filter_expand_alias($pconfig['ports'])));
+$bind_to->setHelp('Specify which ports to check for HTTP data.  Default value is <em>default</em>');
+$btnaliases = new Form_Button(
+	'btnSelectAlias',
+	' ' . 'Aliases',
+	'snort_select_alias.php?id=' . $id . '&eng_id=<?=' . $eng_id . '&type=port&varname=ports_both&act=import&returl=' . urlencode($_SERVER['PHP_SELF']),
+	'fa-search-plus'
+);
+$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
+$btnaliases->setAttribute('title', gettext("Select an existing port alias"));
+$group = new Form_Group('TCP Target Ports (Both)');
+$group->add($bind_to);
+$group->add($btnaliases);
+$msg = gettext("Configures which side of the connection packets should be reassembled for based on the configured destination ports. "); 
+$msg .= gettext("Supplied value must be a pre-configured Alias or the keyword <em>default</em>, <em>all</em> or <em>none</em>.  Specific ports can be specified here using a pre-defined Alias.") . '<br/>';
+$msg .= gettext("Most users should leave these settings at their default values.");
+$group->setHelp($msg);
+$section->add($group);
+
+$section->addInput( new Form_Input(
+	'stream5_max_window',
+	'TCP Max Window',
+	'number',
+	$pconfig['max_window']
+))->setAttribute('min', '0')->setAttribute('max', '1073725440')->setHelp('TCP max window size.  Minimum is 1 and maximum is 1073725440.  Default is 0 (unlimited).<br/>This option is intended to prevent a DoS against Stream5 by an attacker using an abnormally large window, so using a value near the maximum is discouraged.');
+
+$section->addInput( new Form_Input(
+	'stream5_timeout',
+	'TCP Timeout',
+	'number',
+	$pconfig['timeout']
+))->setAttribute('min', '1')->setAttribute('max', '86400')->setHelp('TCP Session timeout in seconds.  Minimum is 1 and maximum is 86400 (approximately 1 day).  Default is 30.<br/>Sets the session reassembly timeout period (in seconds) for TCP packets.');
+
+$section->addInput( new Form_Input(
+	'stream5_max_queued_bytes',
+	'TCP Max Queued Bytes',
+	'number',
+	$pconfig['max_queued_bytes']
+))->setAttribute('min', '0')->setAttribute('max', '1073741824')->setHelp('TCP Session timeout in seconds.  Minimum is 1024 and maximum is 1073741824 (0 means Maximum).  Default is 1048576.<br/>This sets the number of bytes to be queued for reassembly of TCP sessions in memory.');
+
+$section->addInput( new Form_Input(
+	'stream5_max_queued_segs',
+	'TCP Max Queued Segs',
+	'number',
+	$pconfig['max_queued_segs']
+))->setAttribute('min', '0')->setAttribute('max', '1073741824')->setHelp('Number of segments to be queued for reassembly of TCP sessions.  Minimum is 2 and maximum is 1073741824 (0 means Maximum).  Default is 2621.<br/>This sets the number of segments to be queued for reassembly of TCP sessions in memory.');
+
+$section->addInput( new Form_Input(
+	'stream5_overlap_limit',
+	'TCP Overlap Limit',
+	'number',
+	$pconfig['overlap_limit']
+))->setAttribute('min', '0')->setAttribute('max', '255')->setHelp('Number of overlapping packets.  Minimum is 0 (unlimited) and maximum is 255.  Default is 0.<br/>This sets the limit for the number of overlapping packets.');
+
+$section->addInput(new Form_Checkbox(
+	'stream5_detect_anomalies',
+	'Detect TCP Anomalies',
+	'Detect TCP protocol anomalies. Default is Not Checked.',
+	$pconfig['detect_anomalies'] == 'on' ? true:false,
+	'on'
+));
+
+$group = new Form_Group('Check Session Hijacking');
+$group->add(new Form_Checkbox(
+	'stream5_check_session_hijacking',
+	'',
+	'Check for TCP session hijacking.  Default is Not Checked.',
+	$pconfig['check_session_hijacking'] == 'on' ? true:false,
+	'on'
+))->setHelp('This check validates the hardware (MAC) address from both sides of the connection - as established on the 3-way handshake - against subsequent packets received on the session.');
+$section->add($group);
+
+$section->addInput(new Form_Checkbox(
+	'stream5_require_3whs',
+	'Require 3-Way Handshake',
+	'Establish sessions only on completion of SYN/SYN-ACK/ACK handshake. Default is Not Checked.',
+	$pconfig['require_3whs'] == 'on' ? true:false,
+	'on'
+));
+
+$section->addInput( new Form_Input(
+	'stream5_3whs_startup_timeout',
+	'3-Way Handshake Startup Timeout',
+	'number',
+	$pconfig['startup_3whs_timeout']
+))->setAttribute('min', '0')->setAttribute('max', '86400')->setHelp('3-Way Handshake Startup Timeout in seconds.  Minimum is 0 and maximum is 86400 (1 day).  Default is 0.<br/>This allows a grace period for existing sessions to be considered established during that interval immediately after Snort is started.');
+
+$section->addInput(new Form_Checkbox(
+	'stream5_no_reassemble_async',
+	'Do Not Reassemble Async',
+	'Do not queue packets for reassembly if traffic has not been seen in both directions. Default is Not Checked.',
+	$pconfig['no_reassemble_async'] == 'on' ? true:false,
+	'on'
+));
+
+$section->addInput(new Form_Checkbox(
+	'stream5_use_static_footprint_sizes',
+	'Use Static Footprint Sizes',
+	'Emulate Stream4 behavior for flushing reassembled packets. Default is Not Checked.',
+	$pconfig['use_static_footprint_sizes'] == 'on' ? true:false,
+	'on'
+));
+
+$group = new Form_Group('Do Not Store Large TCP Packets');
+$group->add(new Form_Checkbox(
+	'stream5_dont_store_lg_pkts',
+	'',
+	'Do not queue large packets in reassembly buffer to increase performance.  Default is Not Checked.',
+	$pconfig['dont_store_lg_pkts'] == 'on' ? true:false,
+	'on'
+))->setHelp('Enabling this option could result in missed packets.  Recommended setting is not checked.');
+$section->add($group);
+
+$btnsave = new Form_Button(
+	'save',
+	'Save',
+	null,
+	'fa-save'
+);
+$btncancel = new Form_Button(
+	'cancel',
+	'Cancel'
+);
+$btnsave->addClass('btn-primary')->addClass('btn-default')->setAttribute('title', 'Save Stream5 engine settings and return to Preprocessors tab');
+$btncancel->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-warning')->setAttribute('title', 'Cancel changes and return to Preprocessors tab');
+
+$section->addInput(new Form_StaticText(
+	null,
+	$btnsave . $btncancel
+));
+
+$form->add($section);
+
+$form->addGlobal(new Form_Input(
+	'id',
+	'id',
+	'hidden',
+	$id
+));
+$form->addGlobal(new Form_Input(
+	'eng_id',
+	'eng_id',
+	'hidden',
+	$eng_id
+));
+
+print($form);
+
 ?>
 
-<form action="snort_stream5_engine.php" method="post" name="iform" id="iform">
-<input name="id" type="hidden" value="<?=$id?>">
-<input name="eng_id" type="hidden" value="<?=$eng_id?>">
-<div id="boxarea">
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr>
-<td class="tabcont">
-<table width="100%" border="0" cellpadding="6" cellspacing="0">
-	<tr>
-		<td colspan="2" valign="middle" class="listtopic"><?php echo gettext("Stream5 Target-Based TCP Stream Reassembly Engine Configuration"); ?></td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("TCP Engine Name"); ?></td>
-		<td class="vtable">
-			<input name="stream5_name" type="text" class="formfld unknown" id="stream5_name" size="25" maxlength="25" 
-			value="<?=htmlspecialchars($pconfig['name']);?>"<?php if (htmlspecialchars($pconfig['name']) == "default") echo "readonly";?>>&nbsp;
-			<?php if (htmlspecialchars($pconfig['name']) <> "default") 
-					echo gettext("Name or description for this engine.  (Max 25 characters)");
-				else
-					echo "<span class=\"red\">" . gettext("The name for the 'default' engine is read-only.") . "</span>";?><br/>
-			<?php echo gettext("Unique name or description for this engine configuration.  Default value is ") . 
-			"<strong>" . gettext("default") . "</strong>"; ?>.<br/>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("Bind-To IP Address"); ?></td>
-		<td class="vtable">
-		<?php if ($pconfig['name'] <> "default") : ?>
-			<table width="95%" border="0" cellpadding="2" cellspacing="0">
-				<tr>
-					<td class="vexpl"><input name="stream5_bind_to" type="text" class="formfldalias" id="stream5_bind_to" size="32" 
-					value="<?=htmlspecialchars($pconfig['bind_to']);?>" title="<?=trim(filter_expand_alias($pconfig['bind_to']));?>" autocomplete="off">&nbsp;
-					<?php echo gettext("IP address or network to bind this engine to."); ?></td>
-					<td align="right"><input type="button" class="formbtns" value="Aliases" onclick="parent.location='snort_select_alias.php?id=<?=$id;?>&eng_id=<?=$eng_id;?>&type=host|network&varname=bind_to&act=import&multi_ip=no&returl=<?=urlencode($_SERVER['PHP_SELF']);?>'" 
-					title="<?php echo gettext("Select an existing IP alias");?>"/></td>
-				</tr>
-				<tr>
-					<td class="vexpl" colspan="2"><?php echo gettext("This engine will only run for packets with the destination IP address specified.  Default value is ") . 
-					"<strong>" . gettext("all") . "</strong>" . gettext(".  Only a single IP address or single network in CIDR form may be specified.  ") . 
-					gettext("IP Lists are not allowed.");?></td>
-				</tr>
-			</table><br/>
-			<span class="red"><strong><?php echo gettext("Note: ") . "</strong></span>" . gettext("Supplied value must be a pre-configured Alias or the keyword 'all'.  ");?>
-		<?php else : ?>
-			<input name="stream5_bind_to" type="text" class="formfldalias" id="stream5_bind_to" size="32" 
-			value="<?=htmlspecialchars($pconfig['bind_to']);?>" autocomplete="off" readonly>&nbsp;
-			<?php echo "<span class=\"red\">" . gettext("IP List for the default engine is read-only and must be 'all'.") . "</span>";?><br/>
-			<?php echo gettext("The default engine is required and only runs for packets with destination addresses not matching other engine IP Lists.");?><br/>
-		<?php endif ?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("TCP Target Policy"); ?></td>
-		<td width="78%" class="vtable">
-			<select name="stream5_policy" class="formselect" id="stream5_policy"> 
-			<?php
-			$profile = array( 'BSD', 'First', 'HPUX', 'HPUX10', 'Irix', 'Last', 'Linux', 'MacOS', 'Old-Linux', 
-					 'Solaris', 'Vista', 'Windows', 'Win2003' );
-			foreach ($profile as $val): ?>
-			<option value="<?=strtolower($val);?>" 
-			<?php if (strtolower($val) == $pconfig['policy']) echo "selected"; ?>>
-				<?=gettext($val);?></option>
-				<?php endforeach; ?>
-			</select>&nbsp;&nbsp;<?php echo gettext("Choose the TCP target policy appropriate for the protected hosts.  The default is ") . 
-			"<strong>" . gettext("BSD") . "</strong>"; ?>.<br/><br/>
-			<?php echo gettext("Available OS targets are BSD, First, HPUX, HPUX10, Irix, Last, Linux, MacOS, Old Linux, Solaris, Vista, Windows, and Win2003 Server."); ?><br/>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("TCP Target Ports"); ?></td>
-		<td width="78%" class="vtable">
-			<table width="95%" border="0" cellpadding="2" cellspacing="0">
-			   <tr>
-				<td class="vexpl"><strong><?php echo gettext("Client:"); ?></strong></td>
-				<td class="vexpl"><input name="stream5_ports_client" type="text" class="formfldalias" id="stream5_ports_client" size="32" 
-					value="<?=htmlspecialchars($pconfig['ports_client']);?>" title="<?=trim(filter_expand_alias($pconfig['ports_client']));?>" autocomplete="off"><span class="vexpl">&nbsp;
-					<?php echo gettext("Default value is the keyword ") . "<strong>" . gettext("default") . "</strong>.";?></span>
-				</td>
-				<td align="right"><input type="button" class="formbtns" value="Aliases" onclick="parent.location='snort_select_alias.php?id=<?=$id;?>&eng_id=<?=$eng_id;?>&type=port&varname=ports_client&act=import&returl=<?=urlencode($_SERVER['PHP_SELF']);?>'"  
-					title="<?php echo gettext("Select an existing port alias");?>"/>
-				</td>
-			   </tr>
-			   <tr>
-				<td class="vexpl"><strong><?php echo gettext("Server:"); ?></strong></td>
-				<td class="vexpl"><input name="stream5_ports_server" type="text" class="formfldalias" id="stream5_ports_server" size="32" 
-					value="<?=htmlspecialchars($pconfig['ports_server']);?>" title="<?=trim(filter_expand_alias($pconfig['ports_server']));?>" autocomplete="off"><span class="vexpl">&nbsp;
-					<?php echo gettext("Default value is the keyword ") . "<strong>" . gettext("none") . "</strong>.";?></span>
-				</td>
-				<td align="right"><input type="button" class="formbtns" value="Aliases" onclick="parent.location='snort_select_alias.php?id=<?=$id;?>&eng_id=<?=$eng_id;?>&type=port&varname=ports_server&act=import&returl=<?=urlencode($_SERVER['PHP_SELF']);?>'"  
-					title="<?php echo gettext("Select an existing port alias");?>"/>
-				</td>
-			   </tr>
-			   <tr>
-				<td class="vexpl"><strong><?php echo gettext("Both:"); ?></strong></td>
-				<td class="vexpl"><input name="stream5_ports_both" type="text" class="formfldalias" id="stream5_ports_both" size="32" 
-					value="<?=htmlspecialchars($pconfig['ports_both']);?>" title="<?=trim(filter_expand_alias($pconfig['ports_both']));?>" autocomplete="off"><span class="vexpl">&nbsp;
-					<?php echo gettext("Default value is the keyword ") . "<strong>" . gettext("default") . "</strong>.";?></span>
-				</td>
-				<td align="right"><input type="button" class="formbtns" value="Aliases" onclick="parent.location='snort_select_alias.php?id=<?=$id;?>&eng_id=<?=$eng_id;?>&type=port&varname=ports_both&act=import&returl=<?=urlencode($_SERVER['PHP_SELF']);?>'"  
-					title="<?php echo gettext("Select an existing port alias");?>"/>
-				</td>
-			   </tr>
-			</table>
-			<br/><?php echo gettext("Configures which side of the connection packets should be reassembled for based on the configured destination ports.  See ");?>
-			<a href="http://www.snort.org/vrt/snort-conf-configurations/" target="_blank"><?php echo gettext("www.snort.org/vrt/snort-conf-configurations");?></a>
-			<?php echo gettext(" for the default configuration port values.");?><br/><br/>
-			<span class="red"><strong><?php echo gettext("Note: ") . "</strong></span>" . 
-			gettext("Supplied value must be a pre-configured Alias or the keyword 'default', 'all' or 'none'.");?><br/>
-			<span class="red"><?php echo gettext("Hint: ") . "</span>" . gettext("Most users should leave these settings at their default values.");?>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("TCP Max Window"); ?></td>
-		<td class="vtable">
-			<input name="stream5_max_window" type="text" class="formfld unknown" id="stream5_max_window" size="9" 
-			value="<?=htmlspecialchars($pconfig['max_window']);?>" maxlength="10">
-			<?php echo gettext("Maximum allowed TCP window.  Min is ") . "<strong>0</strong>" . gettext(" and max is ") . 
-			"<strong>1073725440</strong>" . gettext(" (65535 left shift 14)"); ?>.<br/><br/>
-			<?php echo gettext("Sets the TCP max window size.  Default value is ") .
-			"<strong>0</strong>" . gettext(" (unlimited).  This option is intended to prevent a DoS against Stream5 by " . 
-			"attacker using an abnormally large window, so using a value near the maximum is discouraged."); ?><br/>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("TCP Timeout"); ?></td>
-		<td class="vtable">
-			<input name="stream5_timeout" type="text" class="formfld unknown" id="stream5_timeout" size="9" 
-			value="<?=htmlspecialchars($pconfig['timeout']);?>" maxlength="5">
-			<?php echo gettext("TCP Session timeout in seconds.  Min is ") . "<strong>1</strong>" . gettext(" and max is ") . 
-			"<strong>86400</strong>" . gettext(" (approximately 1 day)"); ?>.<br/><br/>
-			<?php echo gettext("Sets the session reassembly timeout period for TCP packets.  Default value is ") .
-			"<strong>30</strong>" . gettext(" seconds."); ?><br/>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("TCP Max Queued Bytes"); ?></td>
-		<td class="vtable">
-			<input name="stream5_max_queued_bytes" type="text" class="formfld unknown" id="stream5_max_queued_bytes" size="9" 
-			value="<?=htmlspecialchars($pconfig['max_queued_bytes']);?>" maxlength="10">
-			<?php echo gettext("Minimum is ") . "<strong>" . gettext("1024") . "</strong>" . gettext(" and Maximum is ") . 
-			"<strong>" . gettext("1073741824") . "</strong>" . gettext("  (") . 
-			"<strong>" . gettext("0") . "</strong>" . gettext(" means Maximum)."); ?><br/><br/>
-			
-			<?php echo gettext("The number of bytes to be queued for reassembly of TCP sessions in " .
-			"memory. Default value is <strong>1048576</strong>"); ?>.<br/>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("TCP Max Queued Segs"); ?></td>
-		<td class="vtable">
-			<input name="stream5_max_queued_segs" type="text" class="formfld unknown" id="stream5_max_queued_segs" size="9" 
-			value="<?=htmlspecialchars($pconfig['max_queued_segs']);?>" maxlength="10">
-			<?php echo gettext("Minimum is ") . "<strong>" . gettext("2") . "</strong>" . gettext(" and Maximum is ") . 
-			"<strong>" . gettext("1073741824") . "</strong>" . gettext("  (") . 
-			"<strong>" . gettext("0") . "</strong>" . gettext(" means Maximum)");?>.<br/><br/>
-			<?php echo gettext("The number of segments to be queued for reassembly of TCP sessions " .
-			"in memory. Default value is <strong>2621</strong>"); ?>.<br/>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" class="vncell"><?php echo gettext("TCP Overlap Limit"); ?></td>
-		<td class="vtable">
-			<input name="stream5_overlap_limit" type="text" class="formfld unknown" id="stream5_overlap_limit" size="9" 
-			value="<?=htmlspecialchars($pconfig['overlap_limit']);?>" maxlength="3">
-			<?php echo gettext("Minimum is ") . "<strong>0</strong>" . gettext(" (unlimited) and Maximum is ") . "<strong>" . 
-			gettext("255") . "</strong>"; ?>.<br/><br/>
-			<?php echo gettext("Sets the limit for the number of overlapping packets.  Default value is ") .
-			"<strong>0</strong>" . gettext(" (unlimited)."); ?><br/>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Detect TCP Anomalies"); ?></td>
-		<td width="78%" class="vtable"><input name="stream5_detect_anomalies" id="stream5_detect_anomalies" type="checkbox" value="on"  
-			<?php if ($pconfig['detect_anomalies']=="on") echo "checked"; ?>>
-			<?php echo gettext("Detect TCP protocol anomalies.  Default is ") . 
-			"<strong>" . gettext("Not Checked") . "</strong>"; ?>.<br/>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Check Session Hijacking"); ?></td>
-		<td width="78%" class="vtable"><input name="stream5_check_session_hijacking" id="stream5_check_session_hijacking" type="checkbox" value="on"  
-			<?php if ($pconfig['check_session_hijacking']=="on") echo "checked"; ?>>
-			<?php echo gettext("Check for TCP session hijacking.  Default is ") . 
-			"<strong>" . gettext("Not Checked") . "</strong>"; ?>.<br/><br/>
-			<?php echo gettext("This check validates the hardware (MAC) address from both sides of the connection -- " . 
-			"as established on the 3-way handshake -- against subsequent packets received on the session.");?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Require 3-Way Handshake"); ?></td>
-		<td width="78%" class="vtable"><input name="stream5_require_3whs" type="checkbox" value="on" 
-			<?php if ($pconfig['require_3whs']=="on") echo "checked"; ?> onclick="stream5_3whs_enable_change();">
-			<?php echo gettext("Establish sessions only on completion of SYN/SYN-ACK/ACK handshake.  Default is ") . 
-			"<strong>" . gettext("Not Checked") . "</strong>"; ?>.<br/>
-		</td>
-	</tr>
-	<tr id="stream5_3whs_startuptimeout_row">
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("3-Way Handshake Startup Timeout"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="stream5_3whs_startup_timeout" type="text" class="formfld unknown" id="stream5_3whs_startup_timeout" size="9" 
-			value="<?=htmlspecialchars($pconfig['startup_3whs_timeout']);?>" maxlength="5">
-			<?php echo gettext("3-Way Handshake Startup Timeout in seconds.  Min is ") . "<strong>" . gettext("0") . "</strong>" . 
-			gettext(" and Max is ") . "<strong>" . gettext("86400") . "</strong>" . gettext(" (1 day).");?><br/><br/>
-			<?php echo gettext("This allows a grace period for existing sessions to be considered established during that " . 
-			"interval immediately after Snort is started.  The default is ") . "<strong>" . gettext("0") . 
-			"</strong>" . gettext(", (don't consider existing sessions established).");?>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Do Not Reassemble Async"); ?></td>
-		<td width="78%" class="vtable"><input name="stream5_no_reassemble_async" type="checkbox" value="on" 
-			<?php if ($pconfig['no_reassemble_async']=="on") echo "checked "; ?>>
-			<?php echo gettext("Do not queue packets for reassembly if traffic has not been seen in both directions.  Default is ") . 
-			"<strong>" . gettext("Not Checked") . "</strong>"; ?>.
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Use Static Footprint Sizes"); ?></td>
-		<td width="78%" class="vtable"><input name="stream5_use_static_footprint_sizes" id="stream5_use_static_footprint_sizes" type="checkbox" value="on"  
-			<?php if ($pconfig['use_static_footprint_sizes']=="on") echo "checked "; ?>>
-			<?php echo gettext("Emulate Stream4 behavior for flushing reassembled packets.  Default is ") . 
-			"<strong>" . gettext("Not Checked") . "</strong>"; ?>.<br/>
-		</td>
-	</tr>
-	<tr>
-		<td width="22%" valign="top" class="vncell"><?php echo gettext("Do Not Store Large TCP Packets"); ?></td>
-		<td width="78%" class="vtable">
-			<input name="stream5_dont_store_lg_pkts" type="checkbox" value="on" 
-			<?php if ($pconfig['dont_store_lg_pkts']=="on") echo "checked"; ?>>
-			<?php echo gettext("Do not queue large packets in reassembly buffer to increase performance.  Default is ") . 
-			"<strong>" . gettext("Not Checked") . "</strong>"; ?>.<br/><br/>
-			<?php echo "<span class=\"red\"><strong>" . gettext("Warning:  ") . "</strong></span>" . 
-			gettext("Enabling this option could result in missed packets.  Recommended setting is not checked."); ?>
-		</td>  
-	</tr>
-	<tr>
-		<td width="22%" valign="bottom">&nbsp;</td>
-		<td width="78%" valign="bottom">
-			<input name="save" id="save" type="submit" class="formbtn" value=" Save " title="<?php echo 
-			gettext("Save Stream5 engine settings and return to Preprocessors tab"); ?>">
-			&nbsp;&nbsp;&nbsp;&nbsp;
-			<input name="Cancel" id="cancel" type="submit" class="formbtn" value="Cancel" title="<?php echo 
-			gettext("Cancel changes and return to Preprocessors tab"); ?>"></td>
-	</tr>
-</table>
-</td>
-</tr>
-</table>
-</div>
-</form>
-<?php include("fend.inc"); ?>
-</body>
-<script type="text/javascript" src="/javascript/autosuggest.js">
-</script>
-<script type="text/javascript" src="/javascript/suggestions.js">
-</script>
 <script type="text/javascript">
+//<![CDATA[
 
-function stream5_3whs_enable_change() {
-	var endis = !(document.iform.stream5_require_3whs.checked);
+	function stream5_3whs_enable_change() {
+		var hide = ! $('#stream5_require_3whs').prop('checked');
 
-	// Hide the "3whs_startup_timeout" row if stream5_require_3whs disabled
-	if (endis)
-		document.getElementById("stream5_3whs_startuptimeout_row").style.display="none";
-	else
-		document.getElementById("stream5_3whs_startuptimeout_row").style.display="table-row";
-}
+		// Disable the "startup_3whs_timeout" row if stream5_require_3whs disabled
+		disableInput('stream5_3whs_startup_timeout', hide);
+	}
 
-<?php
-	$isfirst = 0;
-	$aliases = "";
-	$addrisfirst = 0;
-	$portisfirst = 0;
-	$aliasesaddr = "";
-	$aliasesport = "";
-	if(isset($config['aliases']['alias']) && is_array($config['aliases']['alias']))
-		foreach($config['aliases']['alias'] as $alias_name) {
-			// Skip any Aliases that resolve to an empty string
-			if (trim(filter_expand_alias($alias_name['name'])) == "")
-				continue;
-			if ($alias_name['type'] == "host" || $alias_name['type'] == "network") {
-				if($addrisfirst == 1) $aliasesaddr .= ",";
-				$aliasesaddr .= "'" . $alias_name['name'] . "'";
-				$addrisfirst = 1;
-			}
-			elseif ($alias_name['type'] == "port") {
-				if($portisfirst == 1) $aliasesport .= ",";
-				$aliasesport .= "'" . $alias_name['name'] . "'";
-				$portisfirst = 1;
-			}
-		}
+events.push(function() {
 
-?>
-	var addressarray=new Array(<?php echo $aliasesaddr; ?>);
-	var portarray=new Array(<?php echo $aliasesport; ?>);
+	// ---------- Autocomplete --------------------------------------------------------------------
 
-function createAutoSuggest() {
-<?php
-	echo "objAlias = new AutoSuggestControl(document.getElementById('stream5_bind_to'), new StateSuggestions(addressarray));\n";
-	echo "objAliasPortsClient = new AutoSuggestControl(document.getElementById('stream5_ports_client'), new StateSuggestions(portarray));\n";
-	echo "objAliasPortsServer = new AutoSuggestControl(document.getElementById('stream5_ports_server'), new StateSuggestions(portarray));\n";
-	echo "objAliasPortsBoth = new AutoSuggestControl(document.getElementById('stream5_ports_both'), new StateSuggestions(portarray));\n";
-?>
-}
+	var addressarray = <?= json_encode(get_alias_list(array("host", "network", "openvpn"))) ?>;
+	var portarray = <?= json_encode(get_alias_list(array("port"))) ?>;
 
-setTimeout("createAutoSuggest();", 500);
-stream5_3whs_enable_change();
+	$('#stream5_bind_to').autocomplete({
+		source: addressarray
+	});
 
+	$('#stream5_ports_client').autocomplete({
+		source: portarray
+	});
+
+	$('#stream5_ports_server').autocomplete({
+		source: portarray
+	});
+
+	$('#stream5_ports_both').autocomplete({
+		source: portarray
+	});
+
+	//-- click handlers ---------------------------------------------------
+	$('#stream5_require_3whs').click(function() {
+		stream5_3whs_enable_change();
+	});
+
+	// Set initial state of form controls
+	stream5_3whs_enable_change();
+
+});
+//]]>
 </script>
+<?php include("foot.inc"); ?>
 
-</html>

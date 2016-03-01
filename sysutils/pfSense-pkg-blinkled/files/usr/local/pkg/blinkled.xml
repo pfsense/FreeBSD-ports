@@ -51,14 +51,6 @@
 		<section>Interfaces</section>
 		<url>/pkg_edit.php?xml=blinkled.xml&amp;id=0</url>
 	</menu>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/blinkled8/blinkled.inc</item>
-		<prefix>/usr/local/pkg/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/blinkled8/blinkled.priv.inc</item>
-		<prefix>/etc/inc/priv/</prefix>
-	</additional_files_needed>
 	<service>
 		<name>blinkled</name>
 		<rcfile>blinkled.sh</rcfile>

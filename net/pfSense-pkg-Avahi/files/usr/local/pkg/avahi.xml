@@ -56,22 +56,6 @@
 		<executable>avahi-daemon</executable>
 		<description>Avahi Zeroconf/mDNS Daemon</description>
 	</service>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/avahi/avahi.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/etc/inc/priv/</prefix>
-		<item>https://packages.pfsense.org/packages/config/avahi/avahi.priv.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/etc/avahi/</prefix>
-		<item>https://packages.pfsense.org/packages/config/avahi/services/ssh.service</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/etc/avahi/</prefix>
-		<item>https://packages.pfsense.org/packages/config/avahi/services/sftp-ssh.service</item>
-	</additional_files_needed>
 	<fields>
 		<field>
 			<name>Server Options</name>

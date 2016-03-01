@@ -45,10 +45,6 @@
 	<title>Services/Quagga OSPFd</title>
 	<include_file>/usr/local/pkg/quagga_ospfd.inc</include_file>
 	<aftersaveredirect>pkg.php?xml=quagga_ospfd_interfaces.xml</aftersaveredirect>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/quagga_ospfd/quagga_ospfd.inc</item>
-	</additional_files_needed>
 	<menu>
 		<name>OSPF</name>
 		<tooltiptext>Modify Quagga ospfd Interface settings.</tooltiptext>

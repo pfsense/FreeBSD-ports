@@ -95,54 +95,6 @@
             <description><![CDATA[Proxy server filter Service]]></description>
             <executable>squidGuard</executable>
 	</service>
-	<additional_files_needed>
-            <prefix>/usr/local/pkg/</prefix>
-            <item>https://packages.pfsense.org/packages/config/squidGuard/squidguard.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-            <prefix>/etc/inc/priv/</prefix>
-            <item>https://packages.pfsense.org/packages/config/squidGuard/squidguard.priv.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-                <prefix>/usr/local/pkg/</prefix>
-                <item>https://packages.pfsense.org/packages/config/squidGuard/squidguard_configurator.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-            <prefix>/usr/local/pkg/</prefix>
-            <item>https://packages.pfsense.org/packages/config/squidGuard/squidguard_acl.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-            <prefix>/usr/local/pkg/</prefix>
-            <item>https://packages.pfsense.org/packages/config/squidGuard/squidguard_default.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-            <prefix>/usr/local/pkg/</prefix>
-            <item>https://packages.pfsense.org/packages/config/squidGuard/squidguard_dest.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-            <prefix>/usr/local/pkg/</prefix>
-            <item>https://packages.pfsense.org/packages/config/squidGuard/squidguard_rewr.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-            <prefix>/usr/local/pkg/</prefix>
-            <item>https://packages.pfsense.org/packages/config/squidGuard/squidguard_time.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-            <prefix>/usr/local/pkg/</prefix>
-            <item>https://packages.pfsense.org/packages/config/squidGuard/squidguard_sync.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-            <prefix>/usr/local/www/squidGuard/</prefix>
-            <item>https://packages.pfsense.org/packages/config/squidGuard/squidguard_log.php</item>
-	</additional_files_needed>
-	<additional_files_needed>
-            <prefix>/usr/local/www/squidGuard/</prefix>
-            <item>https://packages.pfsense.org/packages/config/squidGuard/squidguard_blacklist.php</item>
-	</additional_files_needed>
-	<additional_files_needed>
-            <prefix>/usr/local/www/</prefix>
-            <item>https://packages.pfsense.org/packages/config/squidGuard/sgerror.php</item>
-	</additional_files_needed>
 	<fields>
                 <field>
                         <fielddescr>Enable</fielddescr>

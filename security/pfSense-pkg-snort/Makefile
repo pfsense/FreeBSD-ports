@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-snort
 PORTVERSION=	3.2.9.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -137,6 +137,8 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
-		${STAGEDIR}${DATADIR}/info.xml
+		${STAGEDIR}${DATADIR}/info.xml \
+		${STAGEDIR}${PREFIX}/pkg/snort/snort_sync.xml \
+		${STAGEDIR}${PREFIX}/pkg/snort.xml
 
 .include <bsd.port.mk>

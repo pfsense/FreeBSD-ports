@@ -50,10 +50,6 @@
 		<section>Diagnostics</section>
 		<url>/pkg_edit.php?xml=mtr-nox11.xml</url>
 	</menu>
-	<additional_files_needed>
-		<prefix>/etc/inc/priv/</prefix>
-		<item>https://packages.pfsense.org/packages/config/mtr-nox11/mtr-nox11.priv.inc</item>
-	</additional_files_needed>
 	<fields>
 		<field>
 			<fielddescr>IP Address or Hostname</fielddescr>

@@ -49,19 +49,6 @@
 		<section>Interfaces</section>
 		<url>/pkg_edit.php?xml=gwled.xml&amp;id=0</url>
 	</menu>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/gwled/gwled.inc</item>
-		<prefix>/usr/local/pkg/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/gwled/gwled.priv.inc</item>
-		<prefix>/etc/inc/priv/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/bin/</prefix>
-		<chmod>0755</chmod>
-		<item>https://packages.pfsense.org/packages/config/gwled/gwled.php</item>
-	</additional_files_needed>
 	<!-- TODO: Make the gwled.sh script really usable for start/stop/restart -->
 	<service>
 		<name>gwled</name>

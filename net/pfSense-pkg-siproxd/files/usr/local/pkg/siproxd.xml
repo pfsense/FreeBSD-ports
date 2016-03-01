@@ -72,22 +72,6 @@
 			<url>/siproxd_registered_phones.php</url>
 		</tab>
 	</tabs>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/siproxd/siproxdusers.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/siproxd/siproxd.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/etc/inc/priv/</prefix>
-		<item>https://packages.pfsense.org/packages/config/siproxd/siproxd.priv.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/</prefix>
-		<item>https://packages.pfsense.org/packages/config/siproxd/siproxd_registered_phones.php</item>
-	</additional_files_needed>
 	<fields>
 		<field>
 			<fielddescr>Enable siproxd</fielddescr>

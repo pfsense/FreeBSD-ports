@@ -53,14 +53,6 @@
 		<configfile>shellcmd.xml</configfile>
 		<url>/pkg.php?xml=shellcmd.xml</url>
 	</menu>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/shellcmd/shellcmd.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/etc/inc/priv/</prefix>
-		<item>https://packages.pfsense.org/packages/config/shellcmd/shellcmd.priv.inc</item>
-	</additional_files_needed>
 	<adddeleteeditpagefields>
 		<columnitem>
 			<fielddescr>Command</fielddescr>

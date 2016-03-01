@@ -10,7 +10,7 @@
  * Copyright (C) 2006 Scott Ullrich
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
  * Copyright (C) 2012 Ermal Luci
- * Copyright (C) 2014 Bill Meeks
+ * Copyright (C) 2014-2016 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -88,180 +88,166 @@ if ($_POST['action'] == 'load') {
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($a_instance[$id]['interface']);
-$pgtitle = gettext("Snort: {$if_friendly} Logs");
-include_once("head.inc");
+$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Interface Logs"), gettext("{$if_friendly}"));
+include("head.inc");
 
-?>
-
-<body link="#000000" vlink="#000000" alink="#000000">
-
-<?php
-include_once("fbegin.inc");
 if ($input_errors) {
 	print_input_errors($input_errors);
 }
 
-?>
-<script type="text/javascript" src="/javascript/base64.js"></script>
-<script type="text/javascript">	
-	function loadFile() {
-		jQuery("#fileStatus").html("<?=gettext("Loading file"); ?> ...");
-		jQuery("#fileStatusBox").show(250);
-		jQuery("#filePathBox").show(250);
-		jQuery("#fbTarget").html("");
+if ($savemsg)
+	print_info_box($savemsg);
 
-		jQuery.ajax(
-			"<?=$_SERVER['SCRIPT_NAME'];?>", {
-				type: 'POST',
-				data: "id=" + jQuery("#id").val() + "&action=load&file=" + jQuery("#logFile").val(),
-				complete: loadComplete
-			}
+function build_logfile_list() {
+	global $snortlogdir;
+
+	$list = array();
+
+	$logs = array( "alert", "app-stats.log", "{$if_real}.stats" , "sid_changes.log" );
+	foreach ($logs as $log) {
+		$list[$snortlogdir . $log] = $log;
+	}
+
+	return($list);
+}
+
+$tab_array = array();
+$tab_array[] = array(gettext("Snort Interfaces"), true, "/snort/snort_interfaces.php");
+$tab_array[] = array(gettext("Global Settings"), false, "/snort/snort_interfaces_global.php");
+$tab_array[] = array(gettext("Updates"), false, "/snort/snort_download_updates.php");
+$tab_array[] = array(gettext("Alerts"), false, "/snort/snort_alerts.php?instance={$id}");
+$tab_array[] = array(gettext("Blocked"), false, "/snort/snort_blocked.php");
+$tab_array[] = array(gettext("Pass Lists"), false, "/snort/snort_passlist.php");
+$tab_array[] = array(gettext("Suppress"), false, "/snort/snort_interfaces_suppress.php");
+$tab_array[] = array(gettext("IP Lists"), false, "/snort/snort_ip_list_mgmt.php");
+$tab_array[] = array(gettext("SID Mgmt"), false, "/snort/snort_sid_mgmt.php");
+$tab_array[] = array(gettext("Log Mgmt"), false, "/snort/snort_log_mgmt.php");
+$tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=snort/snort_sync.xml");
+display_top_tabs($tab_array, true);
+$menu_iface=($if_friendly?substr($if_friendly,0,5)." ":"Iface ");
+$tab_array = array();
+$tab_array[] = array($menu_iface . gettext("Settings"), false, "/snort/snort_interfaces_edit.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Categories"), false, "/snort/snort_rulesets.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Rules"), false, "/snort/snort_rules.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Variables"), false, "/snort/snort_define_servers.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Preprocs"), false, "/snort/snort_preprocessors.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/snort/snort_barnyard.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/snort/snort_ip_reputation.php?id={$id}");
+$tab_array[] = array($menu_iface . gettext("Logs"), true, "/snort/snort_interface_logs.php?id={$id}");
+display_top_tabs($tab_array, true);
+
+$form = new Form(false);
+
+$section = new Form_Section('Log File Selection');
+$section->addInput(new Form_Select(
+	'logFile',
+	'Log File to View',
+	basename($logfile),
+	build_logfile_list()
+))->setHelp('Choose which log you want to view..');
+
+$section->addInput(new Form_StaticText(
+	'Log file contents',
+	'<span style="display:none; " id="fileStatusBox">' .
+	'<strong id="fileStatus"></strong>' .
+	'</span>' .
+	'<p style="display:none;" id="filePathBox">' .
+	'<strong >' . gettext("Log File Path") . '</strong>' . '</p>' .
+	'<span style="display:inline;" id="fbTarget"></span>' .
+	'<p style="padding-right:15px; display:none;" id="fileRefreshBtn">' . 
+		'<input type="button" class="btn btn-sm btn-info" name="refresh" id="refresh" value="Refresh" class="formbtn" onclick="loadFile();" title="<?=gettext("Refresh current display");?>' .
+	'</p>'
+));
+
+$form->add($section);
+
+if (isset($id)) {
+	$form->addGlobal(new Form_Input(
+		'id',
+		'id',
+		'hidden',
+		$id
+	));
+}
+
+print($form);
+?>
+
+<script type="text/javascript" src="/javascript/base64.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+events.push(function() {
+
+	function loadFile() {
+		$("#fileStatus").html("<?=gettext("Loading file"); ?> ...");
+		$("#fileStatusBox").show(250);
+		$("#filePathBox").show(250);
+		$("#fbTarget").html("");
+
+		$.ajax(
+				"<?=$_SERVER['SCRIPT_NAME'];?>", 
+				{
+					type: 'post',
+					data: {
+						id:  $("#id").val(),
+						action:    'load',
+						file: $("#logFile").val()
+					},
+					complete: loadComplete
+				}
 		);
 	}
 
 	function loadComplete(req) {
-		jQuery("#fileContent").show(250);
+		$("#fileContent").show(250);
 		var values = req.responseText.split("|");
 		values.shift(); values.pop();
 
 		if(values.shift() == "0") {
 			var file = values.shift();
-			var fileContent = Base64.decode(values.join("|"));
-			jQuery("#fileStatus").html("<?=gettext("File successfully loaded"); ?>.");
-			jQuery("#fbTarget").html(file);
-			jQuery("#fileRefreshBtn").show();
-			jQuery("#fileContent").prop("disabled", false);
-			jQuery("#fileContent").val(fileContent);
+			var fileContent = atob(values.join("|"));
+			$("#fileStatus").html("<?=gettext("File successfully loaded"); ?>.");
+			$("#fbTarget").html(file);
+			$("#fileRefreshBtn").show();
+			$("#fileContent").prop("disabled", false);
+			$("#fileContent").val(fileContent);
 		}
 		else {
-			jQuery("#fileStatus").html(values[0]);
-			jQuery("#fbTarget").html("");
-			jQuery("#fileRefreshBtn").hide();
-			jQuery("#fileContent").val("");
-			jQuery("#fileContent").prop("disabled", true);
+			$("#fileStatus").html(values[0]);
+			$("#fbTarget").html("");
+			$("#fileRefreshBtn").hide();
+			$("#fileContent").val("");
+			$("#fileContent").prop("disabled", true);
 		}
 	}
 
-</script>
+    $('#logFile').on('change', function() {
+        loadFile();
+    });
 
-<form action="/snort/snort_interface_logs.php" method="post" id="formbrowse">
-<input type="hidden" id="id" value="<?=$id;?>"/>
-<?php if ($savemsg) print_info_box($savemsg); ?>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
-	<tbody>
-	<tr><td>
-	<?php
-		$tab_array = array();
-		$tab_array[0] = array(gettext("Snort Interfaces"), true, "/snort/snort_interfaces.php");
-		$tab_array[1] = array(gettext("Global Settings"), false, "/snort/snort_interfaces_global.php");
-		$tab_array[2] = array(gettext("Updates"), false, "/snort/snort_download_updates.php");
-		$tab_array[3] = array(gettext("Alerts"), false, "/snort/snort_alerts.php?instance={$id}");
-		$tab_array[4] = array(gettext("Blocked"), false, "/snort/snort_blocked.php");
-		$tab_array[5] = array(gettext("Pass Lists"), false, "/snort/snort_passlist.php");
-		$tab_array[6] = array(gettext("Suppress"), false, "/snort/snort_interfaces_suppress.php");
-		$tab_array[7] = array(gettext("IP Lists"), false, "/snort/snort_ip_list_mgmt.php");
-		$tab_array[8] = array(gettext("SID Mgmt"), false, "/snort/snort_sid_mgmt.php");
-		$tab_array[9] = array(gettext("Log Mgmt"), false, "/snort/snort_log_mgmt.php");
-		$tab_array[10] = array(gettext("Sync"), false, "/pkg_edit.php?xml=snort/snort_sync.xml");
-		display_top_tabs($tab_array, true);
-		echo '</td></tr>';
-		echo '<tr><td>';
-		$menu_iface=($if_friendly?substr($if_friendly,0,5)." ":"Iface ");
-	        $tab_array = array();
-		$tab_array[] = array($menu_iface . gettext("Settings"), false, "/snort/snort_interfaces_edit.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("Categories"), false, "/snort/snort_rulesets.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("Rules"), false, "/snort/snort_rules.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("Variables"), false, "/snort/snort_define_servers.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("Preprocs"), false, "/snort/snort_preprocessors.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/snort/snort_barnyard.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/snort/snort_ip_reputation.php?id={$id}");
-		$tab_array[] = array($menu_iface . gettext("Logs"), true, "/snort/snort_interface_logs.php?id={$id}");
-		display_top_tabs($tab_array, true);
-	?>
-	</td>
-	</tr>
-	<tr>
-	<td><div id="mainarea">
-		<table id="maintable" class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="6">
-			<tbody>
-			<tr>
-				<td colspan="2" class="listtopic"><?php echo gettext("Log File Selections"); ?></td>
-			</tr>
-			<tr>
-				<td width="22%" class="vncell"><?php echo gettext('Log File to View'); ?></td>
-				<td width="78%" class="vtable">
-					<select name="logFile" id="logFile" class="formselect" onChange="loadFile();">
-			<?php
-				$logs = array( "alert", "app-stats.log", "{$if_real}.stats" , "sid_changes.log" );
-				foreach ($logs as $log) {
-					$selected = "";
-					if ($log == basename($logfile))
-						$selected = "selected";
-					echo "<option value='{$snortlogdir}{$log}' {$selected}>" . $log . "</option>\n";
-				}
-			?>
-					</select>&nbsp;&nbsp;<?php echo gettext('Choose which log you want to view.'); ?>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" class="listtopic"><?php echo gettext("Log File Contents"); ?></td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<table width="100%">
-						<tbody>
-						<tr>
-							<td width="75%">
-								<div style="display:none; " id="fileStatusBox">
-									<div class="list" style="padding-left:15px;">
-									<strong id="fileStatus"></strong>
-									</div>
-								</div>
-								<div style="padding-left:15px; display:none;" id="filePathBox">
-									<strong><?=gettext("Log File Path"); ?>:</strong>
-									<div class="list" style="display:inline;" id="fbTarget"></div>
-								</div>
-							</td>
-							<td align="right">
-								<div style="padding-right:15px; display:none;" id="fileRefreshBtn">
-									<input type="button" name="refresh" id="refresh" value="Refresh" class="formbtn" onclick="loadFile();" title="<?=gettext("Refresh current display");?>" />
-								</div>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<table width="100%">
-						<tbody>
-						<tr>
-							<td valign="top" class="label">
-							<div style="background:#eeeeee;" id="fileOutput">
-							<textarea id="fileContent" name="fileContent" style="width:100%;" rows="30" wrap="off" disabled></textarea>
-							</div>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</td>
-			</tr>
-			</tbody>
-		</table>
-	</div>
-	</td>
-	</tr>
-	</tbody>
-</table>
-</form>
+    $('#refresh').on('click', function() {
+        loadFile();
+    });
+
+});
+//]]>
+</script>
 
 <?php if(empty($_POST['file'])): ?>
 <script type="text/javascript">
+//<![CDATA[
 	document.getElementById("logFile").selectedIndex=-1;
+//]]>
 </script>
 <?php endif; ?>
 
-<?php include("fend.inc"); ?>
-</body>
-</html>
+<div class="panel panel-default" id="fileOutput">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext('Log Contents')?></h2></div>
+		<div class="panel-body">
+			<textarea id="fileContent" name="fileContent" style="width:100%;" rows="30" wrap="off" disabled></textarea>
+		</div>
+	</div>
+</div>
+
+<?php include("foot.inc"); ?>
+
