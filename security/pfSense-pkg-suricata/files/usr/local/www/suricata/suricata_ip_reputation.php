@@ -201,6 +201,7 @@ if ($_POST['save']) {
 	}
 }
 
+$if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
 $pgtitle = array(gettext("Suricata"), $if_friendly, gettext("IP Reputation Preprocessor"));
 include_once("head.inc");
 
