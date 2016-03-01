@@ -158,7 +158,7 @@ $section = new Form_Section('Logs Browser Selections');
 $section->addInput(new Form_Select(
 	'instance',
 	'Instance to View',
-	$id,
+	$instanceid,
 	build_instance_list()
 ))->setHelp('Choose which instance logs you want to view.');
 
@@ -176,11 +176,11 @@ $section->addInput(new Form_StaticText(
 	'<strong id="fileStatus"></strong>' .
 	'</span>' .
 	'<p style="display:none;" id="filePathBox">' .
-	'<strong >' . gettext("Log File Path") . '</strong>' . '</p>' .
-	'<span style="display:inline;" id="fbTarget"></span>' .
-	'<p style="padding-right:15px; display:none;" id="fileRefreshBtn">' .
-		'<input type="button" class="btn btn-sm btn-info" name="refresh" id="refresh" value="Refresh" class="formbtn" onclick="loadFile();" title="<?=gettext("Refresh current display");?>' .
-	'</p>'
+	'<strong>' . gettext("Log File Path") . '</strong>' . '</p>' . 
+	'<span style="display:inline;" id="fbTarget"></span>' . 
+	'<p style="padding-right:15px; display:none;" id="fileRefreshBtn">' . 
+		'<input type="button" class="btn btn-sm btn-info" name="refresh" id="refresh" value="Refresh" class="form-control" onclick="loadFile();" title="' . 
+		gettext("Refresh current display") . '"/>' . '</p>'
 ));
 
 $form->add($section);
@@ -190,8 +190,6 @@ print($form);
 
 <script>
 //<![CDATA[
-events.push(function() {
-
 	function loadFile() {
 		$("#fileStatus").html("<?=gettext("Loading file"); ?> ...");
 		$("#fileStatusBox").show(250);
@@ -235,13 +233,20 @@ events.push(function() {
 		}
 	}
 
+events.push(function() {
+
+    //-- Click handlers -----------------------------
     $('#logFile').on('change', function() {
+	$("#fbTarget").html("");
         loadFile();
     });
 
     $('#refresh').on('click', function() {
         loadFile();
     });
+
+    //-- Do initial page load -----------------------
+    loadFile();
 
 });
 //]]>
@@ -252,7 +257,6 @@ events.push(function() {
 		<div class="panel-body">
 			<textarea id="fileContent" name="fileContent" style="width:100%;" rows="30" wrap="off" disabled></textarea>
 		</div>
-	</div>
 </div>
 
 <?php include("foot.inc"); ?>
