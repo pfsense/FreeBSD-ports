@@ -58,27 +58,6 @@
 			<url>/vpn_openvpn_export_shared.php</url>
 		</tab>
 	</tabs>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/openvpn-client-export/openvpn-client-export.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://files.pfsense.org/packages/openvpn-client-export/openvpn-client-export-2.3.8.tgz</item>
-		<do_not_add_to_port/>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/</prefix>
-		<item>https://packages.pfsense.org/packages/config/openvpn-client-export/vpn_openvpn_export.php</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/</prefix>
-		<item>https://packages.pfsense.org/packages/config/openvpn-client-export/vpn_openvpn_export_shared.php</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/etc/inc/priv/</prefix>
-		<item>https://packages.pfsense.org/packages/config/openvpn-client-export/openvpnexport.inc</item>
-	</additional_files_needed>
 	<custom_php_deinstall_command>
 		openvpn_client_export_deinstall();
 	</custom_php_deinstall_command>

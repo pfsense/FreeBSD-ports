@@ -55,10 +55,6 @@
 		<description>Darkstat bandwidth monitoring daemon</description>
 	</service>
 	<configpath>installedpackages->package->$packagename->configuration->settings</configpath>
-	<additional_files_needed>
-		<prefix>/etc/inc/priv/</prefix>
-		<item>https://packages.pfsense.org/packages/config/darkstat/darkstat.priv.inc</item>
-	</additional_files_needed>
 	<tabs>
 		<tab>
 			<text>Darkstat Settings</text>

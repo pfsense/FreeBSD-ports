@@ -45,10 +45,6 @@
 	<title>Services/Quagga OSPFd</title>
 	<include_file>/usr/local/pkg/quagga_ospfd.inc</include_file>
 	<aftersaveredirect>pkg_edit.php?xml=quagga_ospfd_raw.xml&amp;id=0</aftersaveredirect>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>http://www.pfsense.com/packages/config/quagga_ospfd/quagga_ospfd.inc</item>
-	</additional_files_needed>
 	<menu>
 		<name>OSPF</name>
 		<tooltiptext>Modify Quagga RAW Config.</tooltiptext>

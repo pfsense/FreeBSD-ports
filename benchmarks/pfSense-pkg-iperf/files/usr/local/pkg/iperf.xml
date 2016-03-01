@@ -68,14 +68,6 @@
 			<url>/pkg_edit.php?xml=iperfserver.xml</url>
 		</tab>
 	</tabs>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/iperf/iperfserver.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/etc/inc/priv/</prefix>
-		<item>https://packages.pfsense.org/packages/config/iperf/iperf.priv.inc</item>
-	</additional_files_needed>
 	<fields>
 		<field>
 			<fielddescr>Server</fielddescr>

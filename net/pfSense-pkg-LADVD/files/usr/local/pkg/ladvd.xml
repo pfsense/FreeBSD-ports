@@ -47,18 +47,6 @@
 	<category>Network Management</category>
 	<title>Services: LADVD</title>
 	<include_file>/usr/local/pkg/ladvd.inc</include_file>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/ladvd/ladvd.inc</item>
-		<prefix>/usr/local/pkg/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<item>https://packages.pfsense.org/packages/config/ladvd/ladvd.priv.inc</item>
-		<prefix>/etc/inc/priv/</prefix>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/</prefix>
-		<item>https://packages.pfsense.org/packages/config/ladvd/status_ladvd.php</item>
-	</additional_files_needed>
 	<menu>
 		<name>LADVD</name>
 		<tooltiptext>Modify LADVD settings.</tooltiptext>

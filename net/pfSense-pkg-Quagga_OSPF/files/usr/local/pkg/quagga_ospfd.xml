@@ -45,31 +45,6 @@
 	<title>Services/Quagga OSPFd</title>
 	<include_file>/usr/local/pkg/quagga_ospfd.inc</include_file>
 	<aftersaveredirect>pkg_edit.php?xml=quagga_ospfd.xml&amp;id=0</aftersaveredirect>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/quagga_ospfd/quagga_ospfd.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/etc/inc/priv/</prefix>
-		<item>https://packages.pfsense.org/packages/config/quagga_ospfd/quagga_ospfd.priv.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/quagga_ospfd/quagga_ospfd_interfaces.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/quagga_ospfd/quagga_ospfd_raw.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/</prefix>
-		<item>https://packages.pfsense.org/packages/config/quagga_ospfd/status_ospfd.php</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/bin/</prefix>
-		<chmod>755</chmod>
-		<item>https://packages.pfsense.org/packages/config/quagga_ospfd/quaggactl</item>
-	</additional_files_needed>
 	<menu>
 		<name>Quagga OSPFd</name>
 		<section>Services</section>
