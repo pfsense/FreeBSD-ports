@@ -62,7 +62,7 @@ if (is_array($config['installedpackages']['squid']['config'][0]) && $config['ins
 		
 define('LS_SQUIDLOG',			'access.log');
 define('LS_IP2NAMEPATH',		LIGHTSQUID_BASE . '/libexec/lightsquid');
-define('CRONTAB_LS_TEMPLATE',		'/usr/bin/perl ' . LIGHTSQUID_BASE . '/www/lightsquid/lightparser.pl');
+define('CRONTAB_LS_TEMPLATE',		'/usr/local/bin/perl ' . LIGHTSQUID_BASE . '/www/lightsquid/lightparser.pl');
 
 // default values
 define('LS_DEF_IP2NAME',		'dns');
@@ -531,18 +531,17 @@ function lightsquid_create_reportdir() {
 function lightsquid_validate_input($post, &$input_errors) {
 	global $config;
 
-	if (empty($lightsquid_config['lighttpd_ls_port'])) {
-		$lightsquid_config['lighttpd_ls_port'] = "7445";
-	}
-	if (!isset($lightsquid_config['lighttpd_ls_ssl']) || ($lightsquid_config['lighttpd_ls_ssl'] == "on")) {
-		$navto_url = "https://";
-	} else {
-		$navto_url = "http://";
-	}
-	$navto_url .= $_SERVER['HTTP_HOST'] . ":" . $lightsquid_config['lighttpd_ls_port'];
-
 	if ($post['navto_lightsquid'] == 'Open Lightsquid') {
-		header("Location: {$navto_url}/");
+		list($server_host, $server_port) = explode(':', $_SERVER['HTTP_HOST']);
+		if (empty($lightsquid_config['lighttpd_ls_port'])) {
+			$lightsquid_config['lighttpd_ls_port'] = "7445";
+		}
+		if (!isset($lightsquid_config['lighttpd_ls_ssl']) || ($lightsquid_config['lighttpd_ls_ssl'] == "on")) {
+			$navto_proto = "https";
+		} else {
+			$navto_proto = "http";
+		}
+		header("Location: {$navto_proto}://{$server_host}:{$lightsquid_config['lighttpd_ls_port']}/");
 		exit;
 	}
 	if ($post['navto_sqstat'] == 'Open sqstat') {
