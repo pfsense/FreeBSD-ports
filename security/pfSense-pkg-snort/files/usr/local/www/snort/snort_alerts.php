@@ -167,6 +167,9 @@ if (isset($_POST['instance']) && is_numericint($_POST['instance']))
 	$instanceid = $_POST['instance'];
 elseif (isset($_GET['instance']) && is_numericint($_GET['instance']))
 	$instanceid = htmlspecialchars($_GET['instance']);
+elseif (isset($_POST['id']))
+	$instanceid = $_POST['id'];
+
 if (empty($instanceid) || !is_numericint($instanceid))
 	$instanceid = 0;
 
@@ -181,6 +184,7 @@ $enablesid = snort_load_sid_mods($a_instance[$instanceid]['rule_sid_on']);
 $disablesid = snort_load_sid_mods($a_instance[$instanceid]['rule_sid_off']);
 
 $pconfig = array();
+$pconfig['instance'] = $instanceid;
 if (is_array($config['installedpackages']['snortglobal']['alertsblocks'])) {
 	$pconfig['arefresh'] = $config['installedpackages']['snortglobal']['alertsblocks']['arefresh'];
 	$pconfig['alertnumber'] = $config['installedpackages']['snortglobal']['alertsblocks']['alertnumber'];
@@ -583,8 +587,8 @@ $form->add($section);
 
 if (isset($instanceid)) {
 	$form->addGlobal(new Form_Input(
-		'instance',
-		'instance',
+		'id',
+		'id',
 		'hidden',
 		$instanceid
 	));

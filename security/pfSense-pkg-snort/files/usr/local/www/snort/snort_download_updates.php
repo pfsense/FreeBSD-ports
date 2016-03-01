@@ -175,9 +175,6 @@ if ($savemsg) {
 	print_info_box($savemsg, 'success');
 }
 
-require_once('classes/Form.class.php');
-require_once('classes/Modal.class.php');
-
 $tab_array = array();
 	$tab_array[] = array(gettext("Snort Interfaces"), false, "/snort/snort_interfaces.php");
 	$tab_array[] = array(gettext("Global Settings"), false, "/snort/snort_interfaces_global.php");
