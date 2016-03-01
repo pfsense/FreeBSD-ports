@@ -459,12 +459,17 @@ if ($_POST['save'] && !$input_errors) {
 }
 
 function snort_get_config_lists($lists) {
+	global $config;
 
 	// This returns the array of lists identified by $lists
-	// stored in the config file if one exists.
+	// stored in the config file if one exists.  Always
+	// return at least the single entry, "default".
 	$result = array();
-	if (is_array($config['installedpackages']['snortglobal'][$lists]['item']))
-		$result = $config['installedpackages']['snortglobal'][$lists]['item'];
+	$result['default'] = 'default';
+	if (is_array($config['installedpackages']['snortglobal'][$lists]['item'])) {
+		foreach ($config['installedpackages']['snortglobal'][$lists]['item'] as $v)
+		$result[$v['name']] = $v['name'];
+	}
 	return $result;
 }
 

@@ -291,7 +291,7 @@ if ($g['platform'] == "nanobsd") {
 	))->addClass('text-danger');
 }
 else {
-	$group = new Form_Group('Remove Snort Logs On Package Uninstall');
+	$group = new Form_Group('Enable Automatic SID State Management');
 	$group->add(new Form_Checkbox(
 		'auto_manage_sids',
 		'',
