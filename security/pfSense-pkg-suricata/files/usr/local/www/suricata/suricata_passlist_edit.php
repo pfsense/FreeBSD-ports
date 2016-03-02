@@ -237,12 +237,7 @@ $tab_array[] = array(gettext("SID Mgmt"), false, "/suricata/suricata_sid_mgmt.ph
 $tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=suricata/suricata_sync.xml");
 $tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
 display_top_tabs($tab_array, true);
-?>
 
-<script type="text/javascript" src="/javascript/autosuggest.js"></script>
-<script type="text/javascript" src="/javascript/suggestions.js"></script>
-
-<?php
 $form = new Form;
 $section = new Form_Section('General Information');
 $section->addInput(new Form_Input(
@@ -327,27 +322,7 @@ print($form);
 ?>
 
 <script type="text/javascript">
-<?php
-		$isfirst = 0;
-		$aliases = "";
-		$addrisfirst = 0;
-		$aliasesaddr = "";
-		if(isset($config['aliases']['alias']) && is_array($config['aliases']['alias']))
-				foreach($config['aliases']['alias'] as $alias_name) {
-			if ($alias_name['type'] != "host" && $alias_name['type'] != "network")
-				continue;
-						if($addrisfirst == 1) $aliasesaddr .= ",";
-						$aliasesaddr .= "'" . $alias_name['name'] . "'";
-						$addrisfirst = 1;
-				}
-?>
-		var addressarray=new Array(<?=$aliasesaddr; ?>);
-
-function createAutoSuggest() {
-<?php
-	echo "objAlias = new AutoSuggestControl(document.getElementById('address'), new StateSuggestions(addressarray));\n";
-?>
-}
+//<![CDATA[
 
 function selectAlias() {
 
@@ -372,8 +347,17 @@ function selectAlias() {
 	window.parent.location = loc;
 }
 
-setTimeout("createAutoSuggest();", 500);
+events.push(function() {
 
+	// ---------- Autocomplete --------------------------------------------------------------------
+
+	var addressarray = <?= json_encode(get_alias_list(array("host", "network", "openvpn"))) ?>;
+
+	$('#address').autocomplete({
+		source: addressarray
+	});
+});
+//]]>
 </script>
 
 <?php include("foot.inc"); ?>
