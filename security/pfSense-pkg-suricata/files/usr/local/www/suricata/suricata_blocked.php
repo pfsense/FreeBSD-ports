@@ -396,10 +396,10 @@ print($form);
 			}
 		}
 		?>
-					</tbody>
-					<tfoot>
-						<tr>
-							<td colspan="4" style="text-align:center;" class="alert-info">
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="4" style="text-align:center;" class="alert-info">
 
 <?php	if (!empty($blocked_ips_array)) {
 			if ($counter > 1)
@@ -410,18 +410,12 @@ print($form);
 			print(gettext("There are currently no hosts being blocked by Suricata."));
 	}
 ?>
-							</td>
-						</tr>
-					</tfoot>
-				</table>
-			</div>
-		</div>
+						</td>
+					</tr>
+				</tfoot>
+		</table>
 	</div>
-</form>
-
-<?php
-include("foot.inc");
-?>
+</div>
 
 <!-- The following AJAX code was borrowed from the diag_logs_filter.php -->
 <!-- file in pfSense.  See copyright info at top of this page.          -->
@@ -454,4 +448,8 @@ function htmlspecialchars(str) {
 }
 //]]>
 </script>
+
+<?php
+include("foot.inc");
+?>
 
