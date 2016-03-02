@@ -951,10 +951,6 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 	</div>
 </div>
 
-<?php
-include("foot.inc");
-?>
-
 <script type="text/javascript">
 //<![CDATA[
 
@@ -1028,4 +1024,7 @@ events.push(function() {
 });
 //]]>
 </script>
+<?php
+include("foot.inc");
+?>
 
