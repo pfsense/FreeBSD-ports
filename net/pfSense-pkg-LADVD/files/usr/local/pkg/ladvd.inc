@@ -55,7 +55,7 @@ function ladvd_resync_config() {
 		return;
 	}
 
-	$cmdline = "";
+	$cmdline = "-r ";
 
 	if (!empty($ladvd_conf['autoenable'])) {
 		$cmdline .= "-a ";
@@ -94,7 +94,11 @@ function ladvd_resync_config() {
 	}
 
 	$ifaces = explode(",", $ladvd_conf['iface_array']);
-	$ifaces = array_map('get_real_interface', $ifaces);
+	$ifs = array();
+	foreach ($ifaces as $if) {
+		$ifs = array_merge($ifs, get_parent_physical_interface($if));
+	}
+	$ifaces = array_unique($ifs);
 	$cmdline .= implode(" ", $ifaces);
 
 	write_rcfile(array(
