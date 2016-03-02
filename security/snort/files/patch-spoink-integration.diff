@@ -1,6 +1,6 @@
-diff -urN ../snort-2.9.7.6.orig/src/output-plugins/Makefile.am ./src/output-plugins/Makefile.am
---- ../snort-2.9.7.6.orig/src/output-plugins/Makefile.am	2013-06-04 18:19:54.000000000 -0400
-+++ ./src/output-plugins/Makefile.am	2015-11-10 10:21:53.000000000 -0500
+diff -urN ../snort-2.9.8.0_orig/src/output-plugins/Makefile.am ./src/output-plugins/Makefile.am
+--- ../snort-2.9.8.0_orig/src/output-plugins/Makefile.am	2013-06-04 18:19:54.000000000 -0400
++++ ./src/output-plugins/Makefile.am	2016-03-02 11:46:04.000000000 -0500
 @@ -13,6 +13,7 @@
  spo_unified2.c spo_unified2.h \
  spo_log_ascii.c spo_log_ascii.h \
@@ -10,9 +10,9 @@ diff -urN ../snort-2.9.7.6.orig/src/output-plugins/Makefile.am ./src/output-plug
 +spo_pf.h spo_pf.c
  
  INCLUDES = @INCLUDES@
-diff -urN ../snort-2.9.7.6.orig/src/output-plugins/Makefile.in ./src/output-plugins/Makefile.in
---- ../snort-2.9.7.6.orig/src/output-plugins/Makefile.in	2015-08-28 02:53:36.000000000 -0400
-+++ ./src/output-plugins/Makefile.in	2015-11-10 10:21:53.000000000 -0500
+diff -urN ../snort-2.9.8.0_orig/src/output-plugins/Makefile.in ./src/output-plugins/Makefile.in
+--- ../snort-2.9.8.0_orig/src/output-plugins/Makefile.in	2015-11-20 12:11:56.000000000 -0500
++++ ./src/output-plugins/Makefile.in	2016-03-02 11:48:27.000000000 -0500
 @@ -101,7 +101,8 @@
  	spo_alert_unixsock.$(OBJEXT) spo_csv.$(OBJEXT) \
  	spo_log_null.$(OBJEXT) spo_log_tcpdump.$(OBJEXT) \
@@ -23,7 +23,7 @@ diff -urN ../snort-2.9.7.6.orig/src/output-plugins/Makefile.in ./src/output-plug
  libspo_a_OBJECTS = $(am_libspo_a_OBJECTS)
  AM_V_P = $(am__v_P_@AM_V@)
  am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
-@@ -313,7 +314,8 @@
+@@ -312,7 +313,8 @@
  spo_unified2.c spo_unified2.h \
  spo_log_ascii.c spo_log_ascii.h \
  spo_alert_sf_socket.h spo_alert_sf_socket.c \
@@ -33,12 +33,12 @@ diff -urN ../snort-2.9.7.6.orig/src/output-plugins/Makefile.in ./src/output-plug
  
  all: all-am
  
-diff -urN ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.c ./src/output-plugins/spo_pf.c
---- ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.c	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/output-plugins/spo_pf.c	2015-11-10 11:31:52.000000000 -0500
-@@ -0,0 +1,762 @@
+diff -urN ../snort-2.9.8.0_orig/src/output-plugins/spo_pf.c ./src/output-plugins/spo_pf.c
+--- ../snort-2.9.8.0_orig/src/output-plugins/spo_pf.c	1969-12-31 19:00:00.000000000 -0500
++++ ./src/output-plugins/spo_pf.c	2016-03-02 11:55:23.000000000 -0500
+@@ -0,0 +1,758 @@
 +/*
-+* Copyright (c) 2015  Bill Meeks
++* Copyright (c) 2016  Bill Meeks
 +* Copyright (c) 2012  Ermal Luci
 +* Copyright (c) 2006  Antonio Benojar <zz.stalker@gmail.com>
 +* Copyright (c) 2005  Antonio Benojar <zz.stalker@gmail.com>
@@ -126,14 +126,14 @@ diff -urN ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.c ./src/output-plugins
 +#define MAX_RTMSG_SIZE 2048
 +
 +struct ipwlist {
-+  sfip_t waddr;
++  sfaddr_t waddr;
 +  LIST_ENTRY(ipwlist) elem;
 +};
 +
 +LIST_HEAD(wlist_head, ipwlist);
 +
 +struct iflist {
-+  sfip_t ifaddr;
++  sfaddr_t ifaddr;
 +  LIST_ENTRY(iflist) elem;
 +};
 +
@@ -163,14 +163,14 @@ diff -urN ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.c ./src/output-plugins
 +void AlertPfRestart(struct _SnortConfig *, int, void *);
 +void *s2c_monitor_iface_changes(void *);
 +
-+static int s2c_parse_ifam_address(char *, sfip_t *, int);
-+static void s2c_iflist_maint(sfip_t *, struct iflist_head *, u_char);
++static int s2c_parse_ifam_address(char *, sfaddr_t *, int);
++static void s2c_iflist_maint(sfaddr_t *, struct iflist_head *, u_char);
 +static int s2c_pf_init(void);
-+static int s2c_pf_block(SpoAlertPfData *, snort_ip *);
++static int s2c_pf_block(SpoAlertPfData *, sfaddr_t *);
 +static int s2c_pf_intbl(int, char *, int);
 +static int s2c_parse_line(char *, FILE*);
 +static int s2c_parse_load_wl(FILE*, struct wlist_head*, int);
-+static int s2c_parse_search_wl(snort_ip *, struct wlist_head, struct iflist_head);
++static int s2c_parse_search_wl(sfaddr_t *, struct wlist_head, struct iflist_head);
 +static int s2c_parse_free_wl(struct wlist_head*);
 +static int s2c_init_iface_list(struct iflist_head*);
 +static int s2c_free_iface_list(struct iflist_head*);
@@ -205,7 +205,7 @@ diff -urN ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.c ./src/output-plugins
 +void AlertPf(Packet *p, const char *msg, void *arg, Event *event)
 +{
 +    SpoAlertPfData *data = (SpoAlertPfData *)arg;
-+    snort_ip *ip;
++    sfaddr_t *ip;
 +    
 +    // Must create the interface IP change monitoring thread here instead
 +    // of in the AlertPfInit() function because that function is called
@@ -252,7 +252,7 @@ diff -urN ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.c ./src/output-plugins
 +	ssize_t len;
 +	char msg[MAX_RTMSG_SIZE];
 +	char ifname[IFNAMSIZ];
-+	sfip_t addr;
++	sfaddr_t addr;
 +	struct rt_msghdr *rtm;
 +	struct ifa_msghdr *ifam;
 +
@@ -322,7 +322,7 @@ diff -urN ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.c ./src/output-plugins
 +}
 +
 +static int
-+s2c_parse_ifam_address(char *cp, sfip_t *ip, int len)
++s2c_parse_ifam_address(char *cp, sfaddr_t *ip, int len)
 +{
 +	struct sockaddr *sa;
 +
@@ -339,16 +339,14 @@ diff -urN ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.c ./src/output-plugins
 +			if (((struct sockaddr_in *)(void *)sa)->sin_addr.s_addr == INADDR_ANY)
 +				return 0;
 +			ip->family = AF_INET;
-+			ip->bits = 32;
-+			memcpy(&ip->ip32, &((struct sockaddr_in *)(void *)sa)->sin_addr.s_addr, sizeof(ip->ip32));
++			memcpy(&ip->ia32, &((struct sockaddr_in *)(void *)sa)->sin_addr.s_addr, sizeof(ip->ia32));
 +			return 1;
 +
 +		case AF_INET6:
 +			if (IN6_IS_ADDR_UNSPECIFIED(&((struct sockaddr_in6 *)(void *)sa)->sin6_addr))
 +				return 0;
 +			ip->family = AF_INET6;
-+			ip->bits = 128;
-+			memcpy(&ip->ip8, &((struct sockaddr_in6 *)(void *)sa)->sin6_addr.s6_addr, sizeof(ip->ip8));
++			memcpy(&ip->ia8, &((struct sockaddr_in6 *)(void *)sa)->sin6_addr.s6_addr, sizeof(ip->ia8));
 +			return 1;
 +
 +		default:
@@ -358,7 +356,7 @@ diff -urN ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.c ./src/output-plugins
 +}
 +
 +static void
-+s2c_iflist_maint(sfip_t *ip, struct iflist_head *head, u_char action) {
++s2c_iflist_maint(sfaddr_t *ip, struct iflist_head *head, u_char action) {
 +
 +	struct iflist *aux1, *aux2;	
 +
@@ -381,7 +379,7 @@ diff -urN ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.c ./src/output-plugins
 +				ErrorMessage("spo_pf -> s2c_iflist_maint() could not allocate memory for new Interface IP List entry.\n");
 +				break;
 +			}
-+			memcpy(&(ifl->ifaddr), ip, sizeof(sfip_t));
++			memcpy(&(ifl->ifaddr), ip, sizeof(sfaddr_t));
 +			LIST_INSERT_HEAD(head, ifl, elem);
 +			LogMessage("spo_pf -> added address %s to automatic interface IP Pass List.\n", sfip_to_str(ip));
 +			break;
@@ -524,7 +522,7 @@ diff -urN ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.c ./src/output-plugins
 +}
 +
 +static int
-+s2c_pf_block(SpoAlertPfData *data, snort_ip *net_addr) 
++s2c_pf_block(SpoAlertPfData *data, sfaddr_t *net_addr) 
 +{ 
 +	struct pfioc_table io; 
 +    	struct pfr_table table; 
@@ -543,7 +541,7 @@ diff -urN ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.c ./src/output-plugins
 +            
 +        strlcpy(table.pfrt_name, data->pftable, PF_TABLE_NAME_SIZE); 
 +        
-+        net_addr->family == AF_INET ? memcpy(&addr.pfra_ip4addr.s_addr, net_addr->ip32, sizeof(in_addr_t)) : memcpy(&addr.pfra_ip6addr, net_addr->ip8, sizeof(struct in6_addr));
++        net_addr->family == AF_INET ? memcpy(&addr.pfra_ip4addr.s_addr, net_addr->ia32, sizeof(in_addr_t)) : memcpy(&addr.pfra_ip6addr, net_addr->ia8, sizeof(struct in6_addr));
 +
 +        addr.pfra_af  = net_addr->family; 
 +        addr.pfra_net = net_addr->family == AF_INET ? 32 : 128;; 
@@ -563,9 +561,9 @@ diff -urN ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.c ./src/output-plugins
 +		memset(&psk.psk_src.addr.v.a.mask, 0xff, sizeof(psk.psk_src.addr.v.a.mask));
 +		psk.psk_af = net_addr->family;
 +		if (psk.psk_af == AF_INET)
-+			memcpy(&psk.psk_src.addr.v.a.addr.v4.s_addr, net_addr->ip32, sizeof(in_addr_t));
++			memcpy(&psk.psk_src.addr.v.a.addr.v4.s_addr, net_addr->ia32, sizeof(in_addr_t));
 +		else if (psk.psk_af == AF_INET6)
-+			memcpy(&psk.psk_src.addr.v.a.addr.v6, net_addr->ip8, sizeof(struct in6_addr));
++			memcpy(&psk.psk_src.addr.v.a.addr.v6, net_addr->ia8, sizeof(struct in6_addr));
 +		else
 +			return (-1);
 +
@@ -576,9 +574,9 @@ diff -urN ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.c ./src/output-plugins
 +		memset(&psk.psk_dst.addr.v.a.mask, 0xff, sizeof(psk.psk_dst.addr.v.a.mask));
 +		psk.psk_af = net_addr->family;
 +		if (psk.psk_af == AF_INET)
-+			memcpy(&psk.psk_dst.addr.v.a.addr.v4.s_addr, net_addr->ip32, sizeof(in_addr_t));
++			memcpy(&psk.psk_dst.addr.v.a.addr.v4.s_addr, net_addr->ia32, sizeof(in_addr_t));
 +		else if (psk.psk_af == AF_INET6)
-+			memcpy(&psk.psk_dst.addr.v.a.addr.v6, net_addr->ip8, sizeof(struct in6_addr));
++			memcpy(&psk.psk_dst.addr.v.a.addr.v6, net_addr->ia8, sizeof(struct in6_addr));
 +		else
 +			return (-1);
 +
@@ -690,7 +688,7 @@ diff -urN ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.c ./src/output-plugins
 +}
 +
 +static int
-+s2c_parse_search_wl(snort_ip *ip, struct wlist_head wl, struct iflist_head ifl)
++s2c_parse_search_wl(sfaddr_t *ip, struct wlist_head wl, struct iflist_head ifl)
 +{
 +	struct iflist *aux1;	
 +	struct ipwlist *aux2;	
@@ -732,7 +730,7 @@ diff -urN ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.c ./src/output-plugins
 +{
 +	struct iflist *ifl = NULL;
 +	struct ifaddrs *ifap, *ifa;
-+	sfip_t addr;
++	sfaddr_t addr;
 +
 +	LIST_INIT(head);
 +
@@ -743,15 +741,13 @@ diff -urN ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.c ./src/output-plugins
 +				switch (ifa->ifa_addr->sa_family) {
 +					case AF_INET:
 +						addr.family = AF_INET;
-+						addr.bits = 32;
-+						memcpy(&addr.ip32, &((struct sockaddr_in *)ifa->ifa_addr)->sin_addr.s_addr, sizeof(addr.ip32));
++						memcpy(&addr.ia32, &((struct sockaddr_in *)ifa->ifa_addr)->sin_addr.s_addr, sizeof(addr.ia32));
 +						LogMessage("spo_pf -> adding firewall interface %s IPv4 address %s to automatic interface IP Pass List.\n", ifa->ifa_name, sfip_to_str(&addr));
 +						break;
 +
 +					case AF_INET6:
 +						addr.family = AF_INET6;
-+						addr.bits = 128;
-+						memcpy(&addr.ip8, &((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr.s6_addr, sizeof(addr.ip8));
++						memcpy(&addr.ia8, &((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr.s6_addr, sizeof(addr.ia8));
 +						LogMessage("spo_pf -> adding firewall interface %s IPv6 address %s to automatic interface IP Pass List.\n", ifa->ifa_name, sfip_to_str(&addr));
 +						break;
 +
@@ -765,7 +761,7 @@ diff -urN ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.c ./src/output-plugins
 +					ErrorMessage("Could not allocate memory for Interface List entry.\n");
 +					continue;
 +				}
-+				memcpy(&(ifl->ifaddr), &addr, sizeof(sfip_t));
++				memcpy(&(ifl->ifaddr), &addr, sizeof(sfaddr_t));
 +				LIST_INSERT_HEAD(head, ifl, elem);		
 +			}
 +		}
@@ -799,8 +795,8 @@ diff -urN ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.c ./src/output-plugins
 +	}
 +}
 +
-diff -urN ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.h ./src/output-plugins/spo_pf.h
---- ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.h	1969-12-31 19:00:00.000000000 -0500
+diff -urN ../snort-2.9.8.0_orig/src/output-plugins/spo_pf.h ./src/output-plugins/spo_pf.h
+--- ../snort-2.9.8.0_orig/src/output-plugins/spo_pf.h	1969-12-31 19:00:00.000000000 -0500
 +++ ./src/output-plugins/spo_pf.h	2015-11-10 11:02:10.000000000 -0500
 @@ -0,0 +1,42 @@
 +/*
@@ -845,9 +841,9 @@ diff -urN ../snort-2.9.7.6.orig/src/output-plugins/spo_pf.h ./src/output-plugins
 +void AlertPfSetup(void);
 +
 +#endif 
-diff -urN ../snort-2.9.7.6.orig/src/plugbase.c ./src/plugbase.c
---- ../snort-2.9.7.6.orig/src/plugbase.c	2015-04-23 15:28:10.000000000 -0400
-+++ ./src/plugbase.c	2015-11-10 10:21:53.000000000 -0500
+diff -urN ../snort-2.9.8.0_orig/src/plugbase.c ./src/plugbase.c
+--- ../snort-2.9.8.0_orig/src/plugbase.c	2015-11-18 13:59:14.000000000 -0500
++++ ./src/plugbase.c	2016-03-02 14:30:01.000000000 -0500
 @@ -122,6 +122,7 @@
  #include "output-plugins/spo_csv.h"
  #include "output-plugins/spo_log_null.h"
