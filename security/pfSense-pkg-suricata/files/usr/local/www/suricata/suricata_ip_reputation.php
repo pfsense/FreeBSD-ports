@@ -201,6 +201,7 @@ if ($_POST['save']) {
 	}
 }
 
+$if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
 $pgtitle = array(gettext("Suricata"), $if_friendly, gettext("IP Reputation Preprocessor"));
 include_once("head.inc");
 
@@ -313,8 +314,8 @@ print($form);
 				<tr>
 					<td><?=htmlspecialchars($pconfig['iprep_catlist']);?></td>
 					<td> <?=$filedate;?></td>
-					<td><button class="btn btn-xs btn-danger" name="iprep_catlist_delX" id="iprep_catlist_delX" title="<?=gettext('Remove this Categories file');?>">
-					<i class="fa fa-times"></i><?=gettext("Delete")?></button>
+					<td><button class="btn btn-sm btn-danger" name="iprep_catlist_delX" id="iprep_catlist_delX" title="<?=gettext('Remove this Categories file');?>">
+					<i class="fa fa-times icon-embed-btn"></i><?=gettext("Delete")?></button>
 					</td>
 				</tr>
 			<?php endif; ?>
@@ -323,7 +324,10 @@ print($form);
 	</div>
 </div>
 <nav class="action-buttons">
-	<button class="btn btn-xs btn-success" name="iprep_catlist_add" id="iprep_catlist_add"  title="<?=gettext('Assign a Categories file');?>"><?=gettext("Add")?><i class="fa fa-plus"></i></button>
+	<button class="btn btn-sm btn-success" name="iprep_catlist_add" id="iprep_catlist_add"  title="<?=gettext('Assign a Categories file');?>">
+		<i class="fa fa-plus icon-embed-btn"></i>
+		<?=gettext("Add")?>
+	</button>
 </nav>
 
 <div class="panel panel-default">
@@ -332,47 +336,46 @@ print($form);
 		<!-- iprep_catlist_chooser -->
 		<div id="iplistChooser" name="iplistChooser" style="display:none; border:1px dashed gray; width:98%;" class="table-responsive"></div>
 		<table class="table table-hover table-condensed">
-				<!-- iplist_chooser -->
+			<!-- iplist_chooser -->
 
-						<thead>
-							<tr>
-								<th class="col-sm-6"><?php echo gettext("IP Reputation List Filename"); ?></th>
-								<th class="col-sm-4"><?php echo gettext("Modification Time"); ?></th>
-								<th><?=gettext("Action")?></th>
-							</tr>
-						</thead>
-						<tbody>
+				<thead>
+					<tr>
+						<th class="col-sm-6"><?php echo gettext("IP Reputation List Filename"); ?></th>
+						<th class="col-sm-4"><?php echo gettext("Modification Time"); ?></th>
+						<th><?=gettext("Action")?></th>
+					</tr>
+				</thead>
+				<tbody>
 <?php
-						if (is_array($pconfig['iplist_files']['item'])) :
-							foreach($pconfig['iplist_files']['item'] as $k => $f) :
-								if (!file_exists("{$iprep_path}{$f}")) {
-									$filedate = gettext("Unknown -- file missing");
-								}
-								else
-									$filedate = date('M-d Y   g:i a', filemtime("{$iprep_path}{$f}"));
-						 ?>
-							<tr>
-								<td><?=htmlspecialchars($f);?></td>
-								<td><?=$filedate;?></td>
-								<td>
-									<button class="btn btn-xs btn-danger" name="iplist_delX[]" id="iplist_delX[]" value="<?=$k;?>" title="<?php echo gettext('Remove this IP reputation file');?>">
-									<i class="fa fa-times"></i><?=gettext("Delete")?></button>
-								</td>
-							</tr>
-<?php 							endforeach;
-						endif;
+				if (is_array($pconfig['iplist_files']['item'])) :
+					foreach($pconfig['iplist_files']['item'] as $k => $f) :
+						if (!file_exists("{$iprep_path}{$f}")) {
+							$filedate = gettext("Unknown -- file missing");
+						}
+						else
+							$filedate = date('M-d Y   g:i a', filemtime("{$iprep_path}{$f}"));
+				 ?>
+					<tr>
+						<td><?=htmlspecialchars($f);?></td>
+						<td><?=$filedate;?></td>
+						<td>
+							<button class="btn btn-sm btn-danger" name="iplist_delX[]" id="iplist_delX[]" value="<?=$k;?>" title="<?php echo gettext('Remove this IP reputation file');?>">
+							<i class="fa fa-times icon-embed-btn"></i><?=gettext("Delete")?></button>
+						</td>
+					</tr>
+<?php 					endforeach;
+				endif;
 ?>
-						</tbody>
-					</table>
-				</td>
-			</tr>
-			</tbody>
+				</tbody>
 		</table>
 	</div>
 </div>
 
 <nav class="action-buttons">
-	<button class="btn btn-xs btn-success" name="iplist_add" id="iplist_add" class="fa fa-plus" title="<?php echo gettext('Assign a whitelist file');?>"><?=gettext("Add")?><i class="fa fa-plus"></i></button>
+	<button class="btn btn-sm btn-success" name="iplist_add" id="iplist_add" title="<?php echo gettext('Assign a whitelist file');?>">
+		<i class="fa fa-plus icon-embed-btn"></i>
+		<?=gettext("Add")?>
+	</button>
 </nav>
 
 
@@ -399,7 +402,7 @@ $('[id^=iplist_delX]').click(function() {
 	$(form).submit();
 });
 
-// Delete a reptation category file
+// Delete a reputation category file
 $('#iprep_catlist_delX').click(function() {
 	$('#list_id').val('0');
 	$('<input name="iprep_catlist_del[]" id="iprep_catlist_del[]" type="hidden" value="0"/>').appendTo($(form));

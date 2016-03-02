@@ -50,7 +50,7 @@ require_once("functions.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
 require("/usr/local/pkg/suricata/suricata_defs.inc");
 
-global $config, $g, $rebuild_rules, $pkg_interface, $suricata_gui_include, $static_output;
+global $config, $g, $rebuild_rules, $pkg_interface, $suricata_gui_include;
 
 /****************************************
  * Define any new constants here that   *
@@ -160,7 +160,7 @@ if ($cron_count > 0)
 // remake saved settings if previously flagged
 if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] == 'on') {
 	log_error(gettext("[Suricata] Saved settings detected... rebuilding installation with saved settings..."));
-	update_status(gettext("Saved settings detected..."));
+	update_status(gettext("Saved settings detected...") . "\n");
 
 	/****************************************************************/
 	/* Do test and fix for duplicate UUIDs if this install was      */
@@ -201,16 +201,14 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 	/****************************************************************/
 
 	/* Do one-time settings migration for new version configuration */
-	$static_output .= gettext("\nMigrating settings to new configuration...");
-	update_output_window($static_output);
+	update_status(gettext("Migrating settings to new configuration...") . "\n");
 	include('/usr/local/pkg/suricata/suricata_migrate_config.php');
-	$static_output .= gettext(" done.\n");
-	update_output_window($static_output);
+	update_status(gettext(" done.") . "\n");
 	log_error(gettext("[Suricata] Downloading and updating configured rule types..."));
 	if ($pkg_interface <> "console")
 		$suricata_gui_include = true;
 	include('/usr/local/pkg/suricata/suricata_check_for_rule_updates.php');
-	update_status(gettext("Generating suricata.yaml configuration file from saved settings..."));
+	update_status("\n" . gettext("Generating suricata.yaml configuration file from saved settings...") . "\n");
 	$rebuild_rules = true;
 	conf_mount_rw();
 
@@ -220,8 +218,7 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 		$if_real = get_real_interface($suricatacfg['interface']);
 		$suricata_uuid = $suricatacfg['uuid'];
 		$suricatacfgdir = "{$suricatadir}suricata_{$suricata_uuid}_{$if_real}";
-		$static_output .= gettext("Generating YAML configuration file for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . "...");
-		update_output_window($static_output);
+		update_status(gettext("Generating YAML configuration file for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . "..."));
 
 		// Pull in the PHP code that generates the suricata.yaml file
 		// variables that will be substituted further down below.
@@ -241,8 +238,7 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 		if ($suricatacfg['barnyard_enable'] == 'on')
 			suricata_generate_barnyard2_conf($suricatacfg, $if_real);
 
-		$static_output .= gettext(" done.\n");
-		update_output_window($static_output);
+		update_status(gettext(" done.") . "\n");
 	}
 
 	// create Suricata bootup file suricata.sh
@@ -265,8 +261,7 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 
 	$rebuild_rules = false;
 	if ($pkg_interface <> "console") {
-		$static_output .= gettext("Finished rebuilding Suricata configuration from saved settings.\n");
-		update_output_window($static_output);
+		update_status(gettext("Finished rebuilding Suricata configuration from saved settings.") . "\n");
 	}
 	log_error(gettext("[Suricata] Finished rebuilding installation from saved settings..."));
 
@@ -274,11 +269,8 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 	if (!$g['booting']) {
 		if ($pkg_interface <> "console") {
 			update_status(gettext("Starting Suricata using rebuilt configuration..."));
-			$static_output .= gettext("Starting Suricata using the rebuilt configuration...");
-			update_output_window($static_output);
 			mwexec_bg("{$rcdir}suricata.sh start");
-			$static_output .= gettext(" done.\n");
-			update_output_window($static_output);
+			update_status(gettext(" done.") . "\n");
 		}
 		else
 			mwexec_bg("{$rcdir}suricata.sh start");
@@ -300,7 +292,6 @@ write_config("Suricata pkg v{$config['installedpackages']['package'][get_pkg_id(
 // Done with post-install, so clear flag
 unset($g['suricata_postinstall']);
 log_error(gettext("[Suricata] Package post-installation tasks completed..."));
-update_status("");
 return true;
 
 ?>
