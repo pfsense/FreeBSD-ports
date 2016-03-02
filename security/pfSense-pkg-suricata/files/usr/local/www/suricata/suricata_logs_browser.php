@@ -201,7 +201,7 @@ print($form);
 				{
 					type: 'post',
 					data: {
-						instance:  $("#instance").val(),
+						instance:  $("#instance").find('option:selected').val(),
 						action:    'load',
 						file: $("#logFile").val()
 					},
@@ -241,19 +241,26 @@ events.push(function() {
         loadFile();
     });
 
+    $('#instance').on('change', function() {
+	$("#fbTarget").html("");
+        loadFile();
+    });
+
     $('#refresh').on('click', function() {
         loadFile();
     });
 
-    //-- Do initial page load -----------------------
-    loadFile();
+    //-- Show nothing on initial page load -----------
+<?php if(empty($_POST['file'])): ?>
+	document.getElementById("logFile").selectedIndex=-1;
+<?php endif; ?>
 
 });
 //]]>
 </script>
 
 <div class="panel panel-default" id="fileOutput">
-	<div class="panel-heading"><h2 class="panel-title"><?=gettext('Logs')?></h2></div>
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext('Log Contents')?></h2></div>
 		<div class="panel-body">
 			<textarea id="fileContent" name="fileContent" style="width:100%;" rows="30" wrap="off" disabled></textarea>
 		</div>
