@@ -63,5 +63,6 @@ $priv_list['page-status-monitoring']['name'] = "WebCfg - Status: Monitoring";
 $priv_list['page-status-monitoring']['descr'] = "Allow access to monitoring status page";
 $priv_list['page-status-monitoring']['match'] = array();
 $priv_list['page-status-monitoring']['match'][] = "status_monitoring.php*";
+$priv_list['page-status-monitoring']['match'][] = "rrd_fetch_json.php*";
 
 ?>

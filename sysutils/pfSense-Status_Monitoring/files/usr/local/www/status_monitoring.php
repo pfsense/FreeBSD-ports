@@ -61,6 +61,7 @@
 ###|*NAME=WebCfg - Status: Monitoring
 ###|*DESCR=Allow access to monitoring status page.
 ###|*MATCH=status_monitoring.php*
+###|*MATCH=rrd_fetch_json.php*
 ###|-PRIV
 
 require("guiconfig.inc");
