@@ -99,7 +99,7 @@ if ($savemsg)
 	print_info_box($savemsg);
 
 function build_logfile_list() {
-	global $snortlogdir;
+	global $snortlogdir, $if_real;
 
 	$list = array();
 
