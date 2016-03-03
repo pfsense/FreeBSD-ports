@@ -115,6 +115,7 @@ $unit_desc_lookup = array(
 
 //TODO make this a function for left and right
 if ($left != "null") {
+
 	//$rrd_info_array = rrd_info($rrd_location . $left . ".rrd");
 	//$left_step = $rrd_info_array['step'];
 	//$left_last_updated = $rrd_info_array['last_update'];
@@ -130,7 +131,6 @@ if ($left != "null") {
 
 	foreach ($ds_list as $ds_key_left => $ds) {
 
-		$ds_key = $ds_key_left - $ignored_left;
 		$data_list = $rrd_array['data'][$ds];
 		$ignore = $invert = $ninetyfifth = false;
 		$graph_type = "line";
@@ -172,34 +172,32 @@ if ($left != "null") {
 			$ignore = true;
 			break;
 		case "inpass":
-			//$graph_type = "area"; //TODO figure out why it breaks NVD3 legend/colors
 			$ninetyfifth = true;
 			break;
 		case "inpass6":
-			//$graph_type = "area"; //TODO figure out why it breaks NVD3 legend/colors
 			$ninetyfifth = true;
 			break;
 		case "outpass":
-			//$graph_type = "area"; //TODO figure out why it breaks NVD3 legend/colors
 			$invert = $invert_graph;
 			$ninetyfifth = true;
 			break;
 		case "outpass6":
-			//$graph_type = "area"; //TODO figure out why it breaks NVD3 legend/colors
 			$invert = $invert_graph;
 			$ninetyfifth = true;
 			break;
 		}
 
 		if (!$ignore) {
-			$obj[$ds_key_left]['key'] = $ds;
-			$obj[$ds_key_left]['type'] = $graph_type;
-			$obj[$ds_key_left]['format'] = "s";
-			$obj[$ds_key_left]['yAxis'] = 1;
-			$obj[$ds_key_left]['unit_acronym'] = $left_unit_acronym;
-			$obj[$ds_key_left]['unit_desc'] = $unit_desc_lookup[$left_unit_acronym];
-			$obj[$ds_key_left]['invert'] = $invert;
-			$obj[$ds_key_left]['ninetyfifth'] = $ninetyfifth;
+			$ds_key_left_adjusted = $ds_key_left - $ignored_left;
+
+			$obj[$ds_key_left_adjusted]['key'] = $ds;
+			$obj[$ds_key_left_adjusted]['type'] = $graph_type;
+			$obj[$ds_key_left_adjusted]['format'] = "s";
+			$obj[$ds_key_left_adjusted]['yAxis'] = 1;
+			$obj[$ds_key_left_adjusted]['unit_acronym'] = $left_unit_acronym;
+			$obj[$ds_key_left_adjusted]['unit_desc'] = $unit_desc_lookup[$left_unit_acronym];
+			$obj[$ds_key_left_adjusted]['invert'] = $invert;
+			$obj[$ds_key_left_adjusted]['ninetyfifth'] = $ninetyfifth;
 
 			$data = array();
 
@@ -211,7 +209,7 @@ if ($left != "null") {
 				}
 			}
 
-			$obj[$ds_key_left]['values'] = $data;
+			$obj[$ds_key_left_adjusted]['values'] = $data;
 
 		}
 	}
@@ -278,25 +276,25 @@ if ($left != "null") {
 		}
 
 		//add the new total lines to array
-		$obj[$ds_key_left]['key'] = "inpass total";
-		$obj[$ds_key_left]['type'] = "line";
-		$obj[$ds_key_left]['format'] = "s";
-		$obj[$ds_key_left]['yAxis'] = 1;
-		$obj[$ds_key_left]['unit_acronym'] = $left_unit_acronym;
-		$obj[$ds_key_left]['unit_desc'] = $unit_desc_lookup[$left_unit_acronym];
-		$obj[$ds_key_left]['invert'] = false;
-		$obj[$ds_key_left]['ninetyfifth'] = true;
-		$obj[$ds_key_left]['values'] = $inpass_total;
+		$obj[$ds_key_left_adjusted]['key'] = "inpass total";
+		$obj[$ds_key_left_adjusted]['type'] = "line";
+		$obj[$ds_key_left_adjusted]['format'] = "s";
+		$obj[$ds_key_left_adjusted]['yAxis'] = 1;
+		$obj[$ds_key_left_adjusted]['unit_acronym'] = $left_unit_acronym;
+		$obj[$ds_key_left_adjusted]['unit_desc'] = $unit_desc_lookup[$left_unit_acronym];
+		$obj[$ds_key_left_adjusted]['invert'] = false;
+		$obj[$ds_key_left_adjusted]['ninetyfifth'] = true;
+		$obj[$ds_key_left_adjusted]['values'] = $inpass_total;
 
-		$obj[$ds_key_left+1]['key'] = "outpass total";
-		$obj[$ds_key_left+1]['type'] = "line";
-		$obj[$ds_key_left+1]['format'] = "s";
-		$obj[$ds_key_left+1]['yAxis'] = 1;
-		$obj[$ds_key_left+1]['unit_acronym'] = $left_unit_acronym;
-		$obj[$ds_key_left+1]['unit_desc'] = $unit_desc_lookup[$left_unit_acronym];
-		$obj[$ds_key_left+1]['invert'] = $invert_graph;
-		$obj[$ds_key_left+1]['ninetyfifth'] = true;
-		$obj[$ds_key_left+1]['values'] = $outpass_total;
+		$obj[$ds_key_left_adjusted+1]['key'] = "outpass total";
+		$obj[$ds_key_left_adjusted+1]['type'] = "line";
+		$obj[$ds_key_left_adjusted+1]['format'] = "s";
+		$obj[$ds_key_left_adjusted+1]['yAxis'] = 1;
+		$obj[$ds_key_left_adjusted+1]['unit_acronym'] = $left_unit_acronym;
+		$obj[$ds_key_left_adjusted+1]['unit_desc'] = $unit_desc_lookup[$left_unit_acronym];
+		$obj[$ds_key_left_adjusted+1]['invert'] = $invert_graph;
+		$obj[$ds_key_left_adjusted+1]['ninetyfifth'] = true;
+		$obj[$ds_key_left_adjusted+1]['values'] = $outpass_total;
 	}
 }
 
@@ -320,10 +318,9 @@ if ($right != "null") {
 
 		if ($left != "null") {
 			//TODO make sure subtracting ignored_left is correct
-			$last_left_key = 1 + $ds_key_left - $ignored_left;
+			$last_left_key = 1 + $ds_key_left_adjusted;
 		}
 
-		$ds_key = $last_left_key + $ds_key_right - $ignored_right;
 		$data_list = $rrd_array['data'][$ds];
 		$ignore = $invert = $ninetyfifth = false;
 		$graph_type = "line";
@@ -365,34 +362,32 @@ if ($right != "null") {
 			$ignore = true;
 			break;
 		case "inpass":
-			//$graph_type = "area"; //TODO figure out why it breaks NVD3 legend/colors
 			$ninetyfifth = true;
 			break;
 		case "inpass6":
-			//$graph_type = "area"; //TODO figure out why it breaks NVD3 legend/colors
 			$ninetyfifth = true;
 			break;
 		case "outpass":
-			//$graph_type = "area"; //TODO figure out why it breaks NVD3 legend/colors
 			$invert = $invert_graph;
 			$ninetyfifth = true;
 			break;
 		case "outpass6":
-			//$graph_type = "area"; //TODO figure out why it breaks NVD3 legend/colors
 			$invert = $invert_graph;
 			$ninetyfifth = true;
 			break;
 		}
 
 		if (!$ignore) {
-			$obj[$ds_key]['key'] = $ds;
-			$obj[$ds_key]['type'] = $graph_type;
-			$obj[$ds_key]['format'] = "s";
-			$obj[$ds_key]['yAxis'] = 2;
-			$obj[$ds_key]['unit_acronym'] = $right_unit_acronym;
-			$obj[$ds_key]['unit_desc'] = $unit_desc_lookup[$right_unit_acronym];
-			$obj[$ds_key]['invert'] = $invert;
-			$obj[$ds_key]['ninetyfifth'] = $ninetyfifth;
+			$ds_key_right_adjusted = $last_left_key + $ds_key_right - $ignored_right;
+
+			$obj[$ds_key_right_adjusted]['key'] = $ds;
+			$obj[$ds_key_right_adjusted]['type'] = $graph_type;
+			$obj[$ds_key_right_adjusted]['format'] = "s";
+			$obj[$ds_key_right_adjusted]['yAxis'] = 2;
+			$obj[$ds_key_right_adjusted]['unit_acronym'] = $right_unit_acronym;
+			$obj[$ds_key_right_adjusted]['unit_desc'] = $unit_desc_lookup[$right_unit_acronym];
+			$obj[$ds_key_right_adjusted]['invert'] = $invert;
+			$obj[$ds_key_right_adjusted]['ninetyfifth'] = $ninetyfifth;
 
 			$data = array();
 
@@ -404,7 +399,7 @@ if ($right != "null") {
 				}
 			}
 
-			$obj[$ds_key]['values'] = $data;
+			$obj[$ds_key_right_adjusted]['values'] = $data;
 
 		}
 
@@ -473,25 +468,25 @@ if ($right != "null") {
 		}
 
 		//add the new total lines to array
-		$obj[$ds_key]['key'] = "inpass total";
-		$obj[$ds_key]['type'] = "line";
-		$obj[$ds_key]['format'] = "s";
-		$obj[$ds_key]['yAxis'] = 2;
-		$obj[$ds_key]['unit_acronym'] = $right_unit_acronym;
-		$obj[$ds_key]['unit_desc'] = $unit_desc_lookup[$right_unit_acronym];
-		$obj[$ds_key]['invert'] = false;
-		$obj[$ds_key]['ninetyfifth'] = true;
-		$obj[$ds_key]['values'] = $inpass_total;
+		$obj[$ds_key_right_adjusted]['key'] = "inpass total";
+		$obj[$ds_key_right_adjusted]['type'] = "line";
+		$obj[$ds_key_right_adjusted]['format'] = "s";
+		$obj[$ds_key_right_adjusted]['yAxis'] = 2;
+		$obj[$ds_key_right_adjusted]['unit_acronym'] = $right_unit_acronym;
+		$obj[$ds_key_right_adjusted]['unit_desc'] = $unit_desc_lookup[$right_unit_acronym];
+		$obj[$ds_key_right_adjusted]['invert'] = false;
+		$obj[$ds_key_right_adjusted]['ninetyfifth'] = true;
+		$obj[$ds_key_right_adjusted]['values'] = $inpass_total;
 
-		$obj[$ds_key+1]['key'] = "outpass total";
-		$obj[$ds_key+1]['type'] = "line";
-		$obj[$ds_key+1]['format'] = "s";
-		$obj[$ds_key+1]['yAxis'] = 2;
-		$obj[$ds_key+1]['unit_acronym'] = $right_unit_acronym;
-		$obj[$ds_key+1]['unit_desc'] = $unit_desc_lookup[$right_unit_acronym];
-		$obj[$ds_key+1]['invert'] = $invert_graph;
-		$obj[$ds_key+1]['ninetyfifth'] = true;
-		$obj[$ds_key+1]['values'] = $outpass_total;
+		$obj[$ds_key_right_adjusted+1]['key'] = "outpass total";
+		$obj[$ds_key_right_adjusted+1]['type'] = "line";
+		$obj[$ds_key_right_adjusted+1]['format'] = "s";
+		$obj[$ds_key_right_adjusted+1]['yAxis'] = 2;
+		$obj[$ds_key_right_adjusted+1]['unit_acronym'] = $right_unit_acronym;
+		$obj[$ds_key_right_adjusted+1]['unit_desc'] = $unit_desc_lookup[$right_unit_acronym];
+		$obj[$ds_key_right_adjusted+1]['invert'] = $invert_graph;
+		$obj[$ds_key_right_adjusted+1]['ninetyfifth'] = true;
+		$obj[$ds_key_right_adjusted+1]['values'] = $outpass_total;
 	}
 }
 
