@@ -203,18 +203,21 @@ if ($left != "null") {
 
 			$data = array();
 
+			$dataKeys = array_keys($data_list);
+			$lastDataKey = array_pop($dataKeys);
 			foreach ($data_list as $time => $value) {
-				$data[] = array($time*1000, $value);
+				if($time != $lastDataKey) {
+					$data[] = array($time*1000, $value);
+				}
 			}
 
 			$obj[$ds_key_left]['values'] = $data;
+
 		}
 	}
 
 	if ( ($left_pieces[1] === "traffic") || ($left_pieces[1] === "packets") ) {
-		//TODO add inpass and outpass and make two new "total" lines
 
-		//loop through array
 		foreach ($obj as $key => $value) {
 			//grab inpass and outpass attributes and values
 			if ($value['key'] === "inpass") {
@@ -263,7 +266,7 @@ if ($left != "null") {
 
 		}
 
-		//totals
+		//calulate the new total lines
 		$inpass_total = [];
 		foreach ($inpass_array as $key => $value) {
 			$inpass_total[] = array($key, $value + $inpass6_array[$key]);
@@ -274,7 +277,7 @@ if ($left != "null") {
 			$outpass_total[] = array($key, $value + $outpass6_array[$key]);
 		}
 
-		//add to array as total
+		//add the new total lines to array
 		$obj[$ds_key_left]['key'] = "inpass total";
 		$obj[$ds_key_left]['type'] = "line";
 		$obj[$ds_key_left]['format'] = "s";
@@ -393,8 +396,12 @@ if ($right != "null") {
 
 			$data = array();
 
+			$dataKeys = array_keys($data_list);
+			$lastDataKey = array_pop($dataKeys);
 			foreach ($data_list as $time => $value) {
-				$data[] = array($time*1000, $value);
+				if($time != $lastDataKey) {
+					$data[] = array($time*1000, $value);
+				}
 			}
 
 			$obj[$ds_key]['values'] = $data;
@@ -404,9 +411,7 @@ if ($right != "null") {
 	}
 
 	if ( ($right_pieces[1] === "traffic") || ($right_pieces[1] === "packets") ) {
-		//TODO add inpass and outpass and make two new "total" lines
 
-		//loop through array
 		foreach ($obj as $key => $value) {
 
 			//grab inpass and outpass attributes and values
@@ -456,7 +461,7 @@ if ($right != "null") {
 			}
 		}
 
-		//totals
+		//calculate the new total lines
 		$inpass_total = [];
 		foreach ($inpass_array as $key => $value) {
 			$inpass_total[] = array($key, $value + $inpass6_array[$key]);
@@ -467,7 +472,7 @@ if ($right != "null") {
 			$outpass_total[] = array($key, $value + $outpass6_array[$key]);
 		}
 
-		//add to array as total
+		//add the new total lines to array
 		$obj[$ds_key]['key'] = "inpass total";
 		$obj[$ds_key]['type'] = "line";
 		$obj[$ds_key]['format'] = "s";
