@@ -52,7 +52,7 @@ if (!is_array($config['installedpackages']['suricata']))
 	$config['installedpackages']['suricata'] = array();
 
 /* Get installed package version for display */
-$suricata_package_version = "{$config['installedpackages']['package'][get_pkg_id("suricata")]['version']}";
+$suricata_package_version = "{$config['installedpackages']['package'][get_package_id("suricata")]['version']}";
 
 // Define the installed package version
 if (!defined('SURICATA_PKG_VER'))
