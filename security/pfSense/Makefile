@@ -20,7 +20,6 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/clog:${PORTSDIR}/sysutils/clog \
 		${LOCALBASE}/bin/minicron:${PORTSDIR}/sysutils/minicron \
 		${LOCALBASE}/bin/voucher:${PORTSDIR}/sysutils/voucher \
 		${LOCALBASE}/bin/links:${PORTSDIR}/www/links \
-		${LOCALBASE}/bin/rrdtool:${PORTSDIR}/databases/rrdtool12 \
 		${LOCALBASE}/sbin/expiretable:${PORTSDIR}/security/expiretable \
 		${LOCALBASE}/sbin/dhclient:${PORTSDIR}/net/isc-dhcp43-client \
 		${LOCALBASE}/sbin/dhcpleases:${PORTSDIR}/sysutils/dhcpleases \
@@ -58,7 +57,8 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/clog:${PORTSDIR}/sysutils/clog \
 		${LOCALBASE}/sbin/unbound:${PORTSDIR}/dns/unbound \
 		${KMODDIR}/bwi_v3_ucode.ko:${PORTSDIR}/net/bwi-firmware-kmod \
 		${LOCALBASE}/bin/scponly:${PORTSDIR}/shells/scponly \
-		${LOCALBASE}/sbin/xinetd:${PORTSDIR}/security/xinetd
+		${LOCALBASE}/sbin/xinetd:${PORTSDIR}/security/xinetd \
+		${LOCALBASE}/www/status_monitoring.php:${PORTSDIR}/sysutils/pfSense-Status_Monitoring
 
 LIB_DEPENDS=	libltdl.so:${PORTSDIR}/devel/libltdl
 
