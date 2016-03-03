@@ -173,7 +173,6 @@ if (isset($id)) {
 print($form);
 ?>
 
-<script type="text/javascript" src="/javascript/base64.js"></script>
 <script type="text/javascript">
 //<![CDATA[
 events.push(function() {
