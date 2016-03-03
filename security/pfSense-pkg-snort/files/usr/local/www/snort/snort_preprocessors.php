@@ -521,7 +521,9 @@ if ($_POST['save']) {
 		if ($_POST['sf_appid_stats_period'] != "") { $natent['sf_appid_stats_period'] = $_POST['sf_appid_stats_period']; }else{ $natent['sf_appid_stats_period'] = "300"; }
 
 		// Set SDF inspection types
-		$natent['sdf_alert_data_type'] = implode(",",$_POST['sdf_alert_data_type']);
+		if (!empty($_POST['sdf_alert_data_type'])) {
+			$natent['sdf_alert_data_type'] = implode(",",$_POST['sdf_alert_data_type']);
+		}
 
 		$natent['perform_stat'] = $_POST['perform_stat'] ? 'on' : 'off';
 		$natent['host_attribute_table'] = $_POST['host_attribute_table'] ? 'on' : 'off';
