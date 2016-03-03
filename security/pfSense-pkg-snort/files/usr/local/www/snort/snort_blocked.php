@@ -335,15 +335,15 @@ print($form);
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="4">
+					<td colspan="4" style="text-align:center;" class="alert-info">
 						<?php	if (!empty($blocked_ips_array)) {
 							if ($counter > 1)
-								echo "{$counter}" . gettext(" host IP addresses are currently being blocked.");
+								print($counter . gettext(" host IP addresses are currently being blocked by Snort."));
 							else
-								echo "{$counter}" . gettext(" host IP address is currently being blocked.");
+								print($counter . gettext(" host IP address is currently being blocked Snort."));
 						}
 						else {
-							echo gettext("There are currently no hosts being blocked by Snort.");
+							print(gettext("There are currently no hosts being blocked by Snort."));
 						}
 						?>
 					</td>
