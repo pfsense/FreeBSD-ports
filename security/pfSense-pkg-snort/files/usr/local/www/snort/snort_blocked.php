@@ -61,7 +61,7 @@ if (isset($_POST['resolve'])) {
 	else
 		$response = array('resolve_ip' => $ip, 'resolve_text' => gettext("Cannot resolve"));
 	
-	echo json_encode(str_replace("\\","\\\\", $response)); // single escape chars can break JSON decode
+	print(json_encode(str_replace("\\","\\\\", $response))); // single escape chars can break JSON decode
 	exit;
 }
 # --- AJAX REVERSE DNS RESOLVE End ---
@@ -148,7 +148,7 @@ include("head.inc");
 
 /* refresh every 60 secs */
 if ($pconfig['brefresh'] == 'on')
-	echo "<meta http-equiv=\"refresh\" content=\"60;url=/snort/snort_blocked.php\" />\n";
+	print('<meta http-equiv="refresh" content="60;url=/snort/snort_blocked.php" />\n');
 
 /* Display Alert message */
 if ($input_errors) {
@@ -321,14 +321,14 @@ print($form);
 					$rdns_link .= "<i class=\"fa fa-search icon-pointer\" onclick=\"javascript:resolve_with_ajax('{$blocked_ip}');\" title=\"";
 					$rdns_link .= gettext("Resolve host via reverse DNS lookup") . "\" alt=\"Icon Reverse Resolve with DNS\"></i>";
 
-					/* use one echo to do the magic*/
-						echo "<tr class=\"text-nowrap\">
+					/* print the table row */
+						print("<tr class=\"text-nowrap\">
 							<td>{$counter}</td>
 							<td style=\"word-wrap:break-word; white-space:normal\">{$tmp_ip}<br/>{$rdns_link}</td>
 							<td style=\"word-wrap:break-word; white-space:normal\">{$blocked_desc}</td>
 							<td><i class=\"fa fa-times icon-pointer text-danger\" onClick=\"$('#ip').val('{$blocked_ip}');$('#mode').val('todelete');$('#formblock').submit();\" 
 							 title=\"" . gettext("Delete host from Blocked Table") . "\"></i></td>
-						</tr>\n";
+						</tr>\n");
 				}
 			}
 			?>
