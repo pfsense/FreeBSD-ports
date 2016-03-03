@@ -1,8 +1,8 @@
 # Created by: Dirk Froemberg <dirk@FreeBSD.org>
-# $FreeBSD$
+# $FreeBSD: head/security/snort/Makefile 405570 2016-01-08 16:50:34Z zi $
 
 PORTNAME=	snort
-PORTVERSION=	2.9.7.6
+PORTVERSION=	2.9.8.0
 CATEGORIES=	security
 MASTER_SITES=	https://snort.org/downloads/snort/ \
 		http://www.talosintel.com/downloads/ \
@@ -101,7 +101,7 @@ LIBNET_INCDIR=	${LIBNET_CFLAGS:M-I*:S/-I//}
 LIBNET_LIBDIR=	${LIBNET_LIBS:M-L*:S/-L//}
 
 CFLAGS+=	-fstack-protector
-CONFIGURE_ARGS+=--enable-reload --enable-pthread \
+CONFIGURE_ARGS+=--enable-reload \
 		--enable-mpls --enable-targetbased \
 		--enable-reload-error-restart \
 		--with-dnet-includes=${LIBNET_INCDIR} \
