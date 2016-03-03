@@ -108,7 +108,7 @@ safe_mkdir(SNORT_APPID_ODP_PATH);
 
 /* If installed, absorb the Snort Dashboard Widget into this package */
 /* by removing it as a separately installed package.                 */
-$pkgid = get_pkg_id("Dashboard Widget: Snort");
+$pkgid = get_package_id("Dashboard Widget: Snort");
 if ($pkgid >= 0) {
 	log_error(gettext("[Snort] Removing legacy 'Dashboard Widget: Snort' package because the widget is now part of the Snort package."));
 	unset($config['installedpackages']['package'][$pkgid]);
@@ -276,8 +276,8 @@ if (stristr($config['widgets']['sequence'], "snort_alerts-container") === FALSE)
 	$config['widgets']['sequence'] .= ",{$snort_widget_container}";
 
 /* Update Snort package version in configuration */
-$config['installedpackages']['snortglobal']['snort_config_ver'] = $config['installedpackages']['package'][get_pkg_id("snort")]['version'];
-write_config("Snort pkg v{$config['installedpackages']['package'][get_pkg_id("snort")]['version']}: post-install configuration saved.");
+$config['installedpackages']['snortglobal']['snort_config_ver'] = $config['installedpackages']['package'][get_package_id("snort")]['version'];
+write_config("Snort pkg v{$config['installedpackages']['package'][get_package_id("snort")]['version']}: post-install configuration saved.");
 
 /* Done with post-install, so clear flag */
 unset($g['snort_postinstall']);
