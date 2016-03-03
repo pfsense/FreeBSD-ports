@@ -134,6 +134,7 @@ if ($left != "null") {
 		$data_list = $rrd_array['data'][$ds];
 		$ignore = $invert = $ninetyfifth = false;
 		$graph_type = "line";
+		$unit_acronym = $left_unit_acronym;
 
 		//Overrides based on line name
 		switch($ds) {
@@ -146,22 +147,23 @@ if ($left != "null") {
 		case "system":
 			$ds = "system util.";
 			break;
-		case "Packet Loss":
-			$left_unit_acronym = "%";
+		case "loss":
+			$ds = "packet loss";
+			$unit_acronym = "%";
 			break;
 		case "processes":
-			$left_unit_acronym = "";
+			$unit_acronym = "";
 			break;
 		case "pfstates":
-			$left_unit_acronym = "";
+			$unit_acronym = "";
 			$ds = "Filter States";
 			break;
 		case "srcip":
-			$left_unit_acronym = "";
+			$unit_acronym = "";
 			$ds = "Source Addr.";
 			break;
 		case "dstip":
-			$left_unit_acronym = "";
+			$unit_acronym = "";
 			$ds = "Dest. Addr.";
 			break;
 		case "pfrate":
@@ -194,8 +196,8 @@ if ($left != "null") {
 			$obj[$ds_key_left_adjusted]['type'] = $graph_type;
 			$obj[$ds_key_left_adjusted]['format'] = "s";
 			$obj[$ds_key_left_adjusted]['yAxis'] = 1;
-			$obj[$ds_key_left_adjusted]['unit_acronym'] = $left_unit_acronym;
-			$obj[$ds_key_left_adjusted]['unit_desc'] = $unit_desc_lookup[$left_unit_acronym];
+			$obj[$ds_key_left_adjusted]['unit_acronym'] = $unit_acronym;
+			$obj[$ds_key_left_adjusted]['unit_desc'] = $unit_desc_lookup[$unit_acronym];
 			$obj[$ds_key_left_adjusted]['invert'] = $invert;
 			$obj[$ds_key_left_adjusted]['ninetyfifth'] = $ninetyfifth;
 
@@ -324,6 +326,7 @@ if ($right != "null") {
 		$data_list = $rrd_array['data'][$ds];
 		$ignore = $invert = $ninetyfifth = false;
 		$graph_type = "line";
+		$unit_acronym = $right_unit_acronym;
 
 		//Override acronym based on line name
 		switch($ds) {
@@ -336,22 +339,23 @@ if ($right != "null") {
 		case "system":
 			$ds = "system util.";
 			break;
-		case "Packet Loss":
-			$right_unit_acronym = "%";
+		case "loss":
+			$ds = "packet loss";
+			$unit_acronym = "%";
 			break;
 		case "processes":
-			$right_unit_acronym = "";
+			$unit_acronym = "";
 			break;
 		case "pfstates":
-			$right_unit_acronym = "";
+			$unit_acronym = "";
 			$ds = "Filter States";
 			break;
 		case "srcip":
-			$right_unit_acronym = "";
+			$unit_acronym = "";
 			$ds = "Source Addr.";
 			break;
 		case "dstip":
-			$right_unit_acronym = "";
+			$unit_acronym = "";
 			$ds = "Dest. Addr.";
 			break;
 		case "pfrate":
@@ -384,8 +388,8 @@ if ($right != "null") {
 			$obj[$ds_key_right_adjusted]['type'] = $graph_type;
 			$obj[$ds_key_right_adjusted]['format'] = "s";
 			$obj[$ds_key_right_adjusted]['yAxis'] = 2;
-			$obj[$ds_key_right_adjusted]['unit_acronym'] = $right_unit_acronym;
-			$obj[$ds_key_right_adjusted]['unit_desc'] = $unit_desc_lookup[$right_unit_acronym];
+			$obj[$ds_key_right_adjusted]['unit_acronym'] = $unit_acronym;
+			$obj[$ds_key_right_adjusted]['unit_desc'] = $unit_desc_lookup[$unit_acronym];
 			$obj[$ds_key_right_adjusted]['invert'] = $invert;
 			$obj[$ds_key_right_adjusted]['ninetyfifth'] = $ninetyfifth;
 
