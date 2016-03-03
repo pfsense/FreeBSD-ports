@@ -766,7 +766,6 @@ events.push(function() {
 			//custom tooltip contents
 			chart.interactiveLayer.tooltip.contentGenerator(function(data) {
 
-				var invertLines = ["outpass", "outpass6", "outpass total"];
 				var totals = false;
 				var inboundTotal = [];
 				var content = '<h3>' + d3.time.format('%Y-%m-%d %H:%M:%S')(new Date(data.value)) + '</h3><table><tbody>';
@@ -784,7 +783,7 @@ events.push(function() {
 						inboundTotal[tempKey] = v;
 					}
 
-					if ( ($("#invert").val()) && ($.inArray(tempKey, invertLines) >= 0) ) {
+					if ( ($("#invert").val() === "true") && tempKey.includes('outpass') ) {
 						var trueValue = 0 - data.series[v].value;
 					} else {
 						var trueValue = data.series[v].value;
