@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<packagegui>
+	<menu>
+		<name>Monitoring</name>
+		<section>Status</section>
+		<url>/status_monitoring.php</url>
+	</menu>
+</packagegui>
