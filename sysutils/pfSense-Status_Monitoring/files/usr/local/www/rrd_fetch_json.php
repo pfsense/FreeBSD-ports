@@ -147,6 +147,9 @@ if ($left != "null") {
 		case "system":
 			$ds = "system util.";
 			break;
+		case "stddev":
+			$ds = "stddev of delay";
+			break;	
 		case "loss":
 			$ds = "packet loss";
 			$unit_acronym = "%";
@@ -338,6 +341,9 @@ if ($right != "null") {
 			break;
 		case "system":
 			$ds = "system util.";
+			break;
+		case "stddev":
+			$ds = "stddev of delay";
 			break;
 		case "loss":
 			$ds = "packet loss";
