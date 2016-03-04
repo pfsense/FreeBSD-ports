@@ -45,21 +45,24 @@ $snortdir = SNORTDIR;
 $pconfig = array();
 
 // Grab saved settings from configuration
-$pconfig['enable_log_mgmt'] = $config['installedpackages']['snortglobal']['enable_log_mgmt'] == 'on' ? 'on' : 'off';
-$pconfig['clearlogs'] = $config['installedpackages']['snortglobal']['clearlogs'];
-$pconfig['snortloglimit'] = $config['installedpackages']['snortglobal']['snortloglimit'];
-$pconfig['snortloglimitsize'] = $config['installedpackages']['snortglobal']['snortloglimitsize'];
-$pconfig['alert_log_limit_size'] = $config['installedpackages']['snortglobal']['alert_log_limit_size'];
-$pconfig['alert_log_retention'] = $config['installedpackages']['snortglobal']['alert_log_retention'];
-$pconfig['stats_log_limit_size'] = $config['installedpackages']['snortglobal']['stats_log_limit_size'];
-$pconfig['stats_log_retention'] = $config['installedpackages']['snortglobal']['stats_log_retention'];
-$pconfig['sid_changes_log_limit_size'] = $config['installedpackages']['snortglobal']['sid_changes_log_limit_size'];
-$pconfig['sid_changes_log_retention'] = $config['installedpackages']['snortglobal']['sid_changes_log_retention'];
-$pconfig['event_pkts_log_limit_size'] = '0';
-$pconfig['event_pkts_log_retention'] = $config['installedpackages']['snortglobal']['event_pkts_log_retention'];
-$pconfig['appid_stats_log_limit_size'] = $config['installedpackages']['snortglobal']['appid_stats_log_limit_size'];
-$pconfig['appid_stats_log_retention'] = $config['installedpackages']['snortglobal']['appid_stats_log_retention'];
-
+if (isset($_POST['save']))
+	$pconfig = $_POST;
+else {
+	$pconfig['enable_log_mgmt'] = $config['installedpackages']['snortglobal']['enable_log_mgmt'] == "on" ? 'on' : 'off';
+	$pconfig['clearlogs'] = $config['installedpackages']['snortglobal']['clearlogs'] == "on" ? 'on' : 'off';
+	$pconfig['snortloglimit'] = $config['installedpackages']['snortglobal']['snortloglimit'] == "on" ? 'on' : 'off';
+	$pconfig['snortloglimitsize'] = $config['installedpackages']['snortglobal']['snortloglimitsize'];
+	$pconfig['alert_log_limit_size'] = $config['installedpackages']['snortglobal']['alert_log_limit_size'];
+	$pconfig['alert_log_retention'] = $config['installedpackages']['snortglobal']['alert_log_retention'];
+	$pconfig['stats_log_limit_size'] = $config['installedpackages']['snortglobal']['stats_log_limit_size'];
+	$pconfig['stats_log_retention'] = $config['installedpackages']['snortglobal']['stats_log_retention'];
+	$pconfig['sid_changes_log_limit_size'] = $config['installedpackages']['snortglobal']['sid_changes_log_limit_size'];
+	$pconfig['sid_changes_log_retention'] = $config['installedpackages']['snortglobal']['sid_changes_log_retention'];
+	$pconfig['event_pkts_log_limit_size'] = '0';
+	$pconfig['event_pkts_log_retention'] = $config['installedpackages']['snortglobal']['event_pkts_log_retention'];
+	$pconfig['appid_stats_log_limit_size'] = $config['installedpackages']['snortglobal']['appid_stats_log_limit_size'];
+	$pconfig['appid_stats_log_retention'] = $config['installedpackages']['snortglobal']['appid_stats_log_retention'];
+}
 // Load up some arrays with selection values (we use these later).
 // The keys in the $retentions array are the retention period
 // converted to hours.  The keys in the $log_sizes array are
@@ -101,7 +104,7 @@ if (!isset($pconfig['sid_changes_log_limit_size']))
 if (!isset($pconfig['appid_stats_log_limit_size']))
 	$pconfig['appid_stats_log_limit_size'] = "1000";
 
-if ($_POST['ResetAll']) {
+if (isset($_POST['ResetAll'])) {
 
 	// Reset all settings to their defaults
 	$pconfig['alert_log_retention'] = "336";
@@ -120,9 +123,9 @@ if ($_POST['ResetAll']) {
 	$savemsg = gettext("All log management settings on this page have been reset to their defaults.  Click APPLY if you wish to keep these new settings.");
 }
 
-if ($_POST["save"] || $_POST['apply']) {
+if (isset($_POST['save']) || isset($_POST['apply'])) {
 	if ($_POST['enable_log_mgmt'] != 'on') {
-		$config['installedpackages']['snortglobal']['enable_log_mgmt'] = $_POST['enable_log_mgmt'] ? 'on' :'off';
+		$config['installedpackages']['snortglobal']['enable_log_mgmt'] = 'off';
 		write_config("Snort pkg: saved updated configuration for LOGS MGMT.");
 		conf_mount_rw();
 		sync_snort_package_config();
@@ -144,9 +147,9 @@ if ($_POST["save"] || $_POST['apply']) {
 	}
 
 	if (!$input_errors) {
-		$config['installedpackages']['snortglobal']['enable_log_mgmt'] = $_POST['enable_log_mgmt'] ? 'on' :'off';
+		$config['installedpackages']['snortglobal']['enable_log_mgmt'] = $_POST['enable_log_mgmt'] ? 'on' : 'off';
 		$config['installedpackages']['snortglobal']['clearlogs'] = $_POST['clearlogs'] ? 'on' : 'off';
-		$config['installedpackages']['snortglobal']['snortloglimit'] = $_POST['snortloglimit'];
+		$config['installedpackages']['snortglobal']['snortloglimit'] = $_POST['snortloglimit'] ? 'on' : 'off';
 		$config['installedpackages']['snortglobal']['snortloglimitsize'] = $_POST['snortloglimitsize'];
 		$config['installedpackages']['snortglobal']['alert_log_limit_size'] = $_POST['alert_log_limit_size'];
 		$config['installedpackages']['snortglobal']['alert_log_retention'] = $_POST['alert_log_retention'];
@@ -210,14 +213,14 @@ $section->addInput(new Form_Checkbox(
 	'clearlogs',
 	'Remove Snort Logs On Package Uninstall',
 	'Snort log files will be removed when the Snort package is uninstalled.',
-	$config['installedpackages']['snortglobal']['clearlogs'] == 'on' ? true:false,
+	$pconfig['clearlogs'] == 'on' ? true:false,
 	'on'
 ));
 $section->addInput(new Form_Checkbox(
 	'enable_log_mgmt',
 	'Auto Log Management',
 	'Enable automatic unattended management of Snort logs using parameters specified below.',
-	$config['installedpackages']['snortglobal']['enable_log_mgmt'] == 'on' ? true:false,
+	$pconfig['enable_log_mgmt'] == 'on' ? true:false,
 	'on'
 ));
 print($section);

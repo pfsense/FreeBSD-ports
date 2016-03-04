@@ -34,7 +34,7 @@
 require_once("pfsense-utils.inc");
 require_once("config.inc");
 require_once("functions.inc");
-require_once("service-utils.inc");
+require_once("service-utils.inc"); // Need this to get RCFILEPREFIX definition
 require_once("pkg-utils.inc");
 require_once("filter.inc");
 require("/usr/local/pkg/snort/snort_defs.inc");
@@ -3685,11 +3685,11 @@ function snort_remove_dead_rules() {
 	$cats = array();
 
 	// If there is no "deprecated_rules" file, then exit
-	if (!file_exists("{$rulesdir}deprecated_rules"))
+	if (!file_exists("/usr/local/pkg/snort/deprecated_rules"))
 		return;
 
 	// Open a SplFileObject to read in deprecated rules
-	$file = new SplFileObject("{$rulesdir}/deprecated_rules");
+	$file = new SplFileObject("/usr/local/pkg/snort/deprecated_rules");
 	$file->setFlags(SplFileObject::READ_AHEAD | SplFileObject::SKIP_EMPTY | SplFileObject::DROP_NEW_LINE);
 	while (!$file->eof()) {
 		$line = $file->fgets();

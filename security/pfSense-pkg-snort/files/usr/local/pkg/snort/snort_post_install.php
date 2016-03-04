@@ -5,7 +5,7 @@
  * Copyright (C) 2006 Scott Ullrich
  * Copyright (C) 2009-2010 Robert Zelaya
  * Copyright (C) 2011-2012 Ermal Luci
- * Copyright (C) 2013-2014 Bill Meeks
+ * Copyright (C) 2013-2016 Bill Meeks
  * part of pfSense
  * All rights reserved.
  *
@@ -40,6 +40,7 @@
 
 require_once("config.inc");
 require_once("functions.inc");
+require_once("service-utils.inc"); // Need this to get RCFILEPREFIX constant
 require_once("/usr/local/pkg/snort/snort.inc");
 require("/usr/local/pkg/snort/snort_defs.inc");
 
@@ -67,6 +68,9 @@ if(is_process_running("barnyard")) {
 	unlink_if_exists("{$g['varrun_path']}/barnyard2_*.pid");
 }
 
+// Remove any LCK files for Snort that might have been left behind
+unlink_if_exists("{$g['varrun_path']}/snort_pkg_starting.lck");
+
 /* Set flag for post-install in progress */
 $g['snort_postinstall'] = true;
 
@@ -84,9 +88,6 @@ conf_mount_rw();
 @rename("{$snortdir}/reference.config-sample", "{$snortdir}/reference.config");
 @rename("{$snortdir}/gen-msg.map-sample", "{$snortdir}/gen-msg.map");
 //@rename("{$snortdir}/attribute_table.dtd-sample", "{$snortdir}/attribute_table.dtd");
-
-/* Move deprecated_rules file to SNORTDIR/rules directory */
-@rename("/usr/local/pkg/snort/deprecated_rules", "{$snortdir}/rules/deprecated_rules");
 
 /* fix up the preprocessor rules filenames from a PBI package install */
 $preproc_rules = array("decoder.rules", "preprocessor.rules", "sensitive-data.rules");
@@ -141,8 +142,8 @@ if ($cron_count > 0)
 
 /* remake saved settings */
 if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
-	log_error(gettext("[Snort] Saved settings detected... rebuilding installation with saved settings..."));
-	update_status(gettext("Saved settings detected..."));
+	log_error(gettext("[Snort] Saved settings detected... rebuilding installation with saved settings."));
+	update_status(gettext("Saved settings detected.") . "\n");
 
 	/****************************************************************/
 	/* Do test and fix for duplicate UUIDs if this install was      */
@@ -180,16 +181,12 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 	/****************************************************************/
 
 	/* Do one-time settings migration for new multi-engine configurations */
-	$static_output .= gettext("\nMigrating settings to new configuration...");
-	update_output_window($static_output);
+	update_status(gettext("Migrating settings to new configuration..."));
 	include('/usr/local/pkg/snort/snort_migrate_config.php');
-	$static_output .= gettext(" done.\n");
-	update_output_window($static_output);
-	log_error(gettext("[Snort] Downloading and updating configured rule sets..."));
-	if ($pkg_interface <> "console")
-		$snort_gui_include = true;
+	update_status(gettext(" done.") . "\n");
+	log_error(gettext("[Snort] Downloading and updating configured rule sets."));
 	include('/usr/local/pkg/snort/snort_check_for_rule_updates.php');
-	update_status(gettext("Generating snort.conf configuration file from saved settings..."));
+	update_status(gettext("Generating snort.conf configuration file from saved settings.") . "\n");
 	$rebuild_rules = true;
 	conf_mount_rw();
 
@@ -199,8 +196,7 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 		$if_real = get_real_interface($snortcfg['interface']);
 		$snort_uuid = $snortcfg['uuid'];
 		$snortcfgdir = "{$snortdir}/snort_{$snort_uuid}_{$if_real}";
-		$static_output .= gettext("Generating configuration for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . "...");
-		update_output_window($static_output);
+		update_status(gettext("Generating configuration for " . convert_friendly_interface_to_friendly_descr($snortcfg['interface']) . "..."));
 
 		// Pull in the PHP code that generates the snort.conf file
 		// variables that will be substituted further down below.
@@ -227,16 +223,13 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 		if ($snortcfg['barnyard_enable'] == 'on')
 			snort_generate_barnyard2_conf($snortcfg, $if_real);
 
-		$static_output .= gettext(" done.\n");
-		update_output_window($static_output);
+		update_status(gettext(" done.") . "\n");
 	}
 
 	/* create snort bootup file snort.sh */
-	$static_output .= gettext("Generating snort.sh script in {$rcdir}...");
-	update_output_window($static_output);
+	update_status(gettext("Generating snort.sh script in {$rcdir}..."));
 	snort_create_rc();
-	$static_output .= gettext(" done.\n");
-	update_output_window($static_output);
+	update_status(gettext(" done.") . "\n");
 
 	/* Set Log Limit, Block Hosts Time and Rules Update Time */
 	snort_snortloglimit_install_cron(true);
@@ -249,22 +242,8 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 		$config['widgets']['sequence'] .= "," . $config['installedpackages']['snortglobal']['dashboard_widget'];
 
 	$rebuild_rules = false;
-	if ($pkg_interface <> "console")
-		update_output_window(gettext("Finished rebuilding Snort configuration files..."));
-	log_error(gettext("[Snort] Finished rebuilding installation from saved settings..."));
-
-	/* Only try to start Snort if not in reboot */
-	if (!($g['booting'])) {
-		if ($pkg_interface <> "console") {
-			update_status(gettext("Starting Snort using rebuilt configuration..."));
-			$static_output .= gettext("Starting Snort as a background task using the rebuilt configuration... ");
-			mwexec_bg("{$rcdir}snort.sh start");
-			update_output_window($static_output);
-		}
-		else
-			mwexec_bg("{$rcdir}snort.sh start");
-	}
-	update_status("");
+	update_status(gettext("Finished rebuilding Snort configuration files.") . "\n");
+	log_error(gettext("[Snort] Finished rebuilding installation from saved settings."));
 }
 
 /* We're finished with conf partition mods, return to read-only */

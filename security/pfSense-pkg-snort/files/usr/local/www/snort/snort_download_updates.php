@@ -143,33 +143,30 @@ if (isset($_POST['clear'])) {
 	$savemsg = gettext("Snort Rules Update logfile has been cleared.");
 }
 
-if (isset($_POST['update'])) {
-	header("Location: /snort/snort_download_rules.php");
-	exit;
-}
+if (isset($_POST['mode'])) {
+//	header("Location: /snort/snort_download_rules.php");
 
-if ($_POST['force']) {
-	// Mount file system R/W since we need to remove files
-	conf_mount_rw();
+	if ($_POST['mode'] == 'force') {
+		// Mount file system R/W since we need to remove files
+		conf_mount_rw();
 
-	// Remove the existing MD5 signature files to force a download
-	unlink_if_exists("{$snortdir}/{$emergingthreats_filename}.md5");
-	unlink_if_exists("{$snortdir}/{$snort_community_rules_filename}.md5");
-	unlink_if_exists("{$snortdir}/{$snort_rules_file}.md5");
-	unlink_if_exists("{$snortdir}/{$snort_openappid_filename}.md5");
+		// Remove the existing MD5 signature files to force a download
+		unlink_if_exists("{$snortdir}/{$emergingthreats_filename}.md5");
+		unlink_if_exists("{$snortdir}/{$snort_community_rules_filename}.md5");
+		unlink_if_exists("{$snortdir}/{$snort_rules_file}.md5");
+		unlink_if_exists("{$snortdir}/{$snort_openappid_filename}.md5");
 
-	// Revert file system to R/O.
-	conf_mount_ro();
+		// Revert file system to R/O.
+		conf_mount_ro();
+	}
 	
 	// Go download the updates
-	header("Location: /snort/snort_download_rules.php");
+	include("/usr/local/pkg/snort/snort_check_for_rule_updates.php");
 	exit;
 }
 
 $pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Update Rules"));
 include("head.inc");
-if ($input_errors)
-	print_input_errors($input_errors);
 
 if ($savemsg) {
 	print_info_box($savemsg, 'success');
@@ -192,52 +189,48 @@ display_top_tabs($tab_array, true);
 
 <div class="panel panel-default">
 	<div class="panel-heading"><h2 class="panel-title"><?=gettext("Installed Rule Set MD5 Signature")?></h2></div>
-		<div id="mainarea" class="table-responsive panel-body">
-
-				<table class="table table-striped table-condensed">
-					<thead>
-						<tr>
-							<th><?=gettext("Rule Set Name/Publisher");?></th>
-							<th><?=gettext("MD5 Signature Hash");?></th>
-							<th><?=gettext("MD5 Signature Date");?></th>
-						</tr>
-					</thead>
-					<tbody>
+	<div class="panel-body">
+		<div class="content table-responsive">
+			<table class="table table-striped table-condensed">
+				<thead>
 					<tr>
-						<td><?=gettext("Snort VRT Rules");?></td>
-						<td><? echo trim($snort_org_sig_chk_local);?></td>
-						<td><?php echo gettext($snort_org_sig_date);?></td>
+						<th><?=gettext("Rule Set Name/Publisher");?></th>
+						<th><?=gettext("MD5 Signature Hash");?></th>
+						<th><?=gettext("MD5 Signature Date");?></th>
 					</tr>
-					<tr>
-						<td><?=gettext("Snort GPLv2 Community Rules");?></td>
-						<td><? echo trim($snort_community_sig_chk_local);?></td>
-						<td><?php echo gettext($snort_community_sig_date);?></td>
-					</tr>
-					<tr>
-						<td><?=$et_name;?></td>
-						<td><? echo trim($emergingt_net_sig_chk_local);?></td>
-						<td><?php echo gettext($emergingt_net_sig_date);?></td>
-					</tr>
-					<tr>
-						<td><?=gettext("Snort OpenAppID Detectors");?></td>
-						<td><? echo trim($openappid_detectors_sig_chk_local);?></td>
-						<td><?php echo gettext($openappid_detectors_sig_date);?></td>
-					</tr>
-					</tbody>
-				</table>
+				</thead>
+				<tbody>
+				<tr>
+					<td><?=gettext("Snort VRT Rules");?></td>
+					<td><?=trim($snort_org_sig_chk_local);?></td>
+					<td><?=gettext($snort_org_sig_date);?></td>
+				</tr>
+				<tr>
+					<td><?=gettext("Snort GPLv2 Community Rules");?></td>
+					<td><?=trim($snort_community_sig_chk_local);?></td>
+					<td><?=gettext($snort_community_sig_date);?></td>
+				</tr>
+				<tr>
+					<td><?=$et_name;?></td>
+					<td><?=trim($emergingt_net_sig_chk_local);?></td>
+					<td><?=gettext($emergingt_net_sig_date);?></td>
+				</tr>
+				<tr>
+					<td><?=gettext("Snort OpenAppID Detectors");?></td>
+					<td><?=trim($openappid_detectors_sig_chk_local);?></td>
+					<td><?=gettext($openappid_detectors_sig_date);?></td>
+				</tr>
+				</tbody>
+			</table>
 		</div>
+	</div>
 </div>
 
 <?php
 
 $form = new Form(false);
-
 $section = new Form_Section('Update Your Rule Set');
 $group = new Form_Group('Last Update');
-$group->add(new Form_StaticText(
-	'',
-	$last_rule_upd_time
-));
 
 if (stristr('success', $last_rule_upd_status)) {
 	$last_rule_upd_status = '<span class="bg-success text-capitalize">' . $last_rule_upd_status . '</span>';
@@ -248,25 +241,25 @@ else {
 
 $group->add(new Form_StaticText(
 	'',
-	'Result: ' . $last_rule_upd_status
+	$last_rule_upd_time . '<span class="col-sm-offset-1"><b>Result: </b>' . $last_rule_upd_status . '</span>'
 ));
 $section->add($group);
 
 $group = new Form_Group('Update Rules');
 $group->add(new Form_Button(
 	'update',
-	' ' . 'Update Rules',
-	'/snort/snort_download_rules.php',
+	'Update Rules',
+	'#',
 	'fa-check'
-))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm');
+))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('title', gettext("Check for and install only new updates"));
 $group->add(new Form_Button(
 	'force',
-	' ' . 'Force Update',
-	null,
+	'Force Update',
+	'#',
 	'fa-download'
 ))->removeClass('btn-primary')->addClass('btn-warning')->addClass('btn-sm')->setAttribute('title', gettext("Force an update of all enabled rule sets"));
 $group->setHelp('Click UPDATE RULES to check for and automatically apply any new posted updates for selected rules packages.  Clicking FORCE UPDATE ' . 
-				'will zero out the MD5 hashes and force the download and application of the latest versions of the enabled rules packages.');
+		'will zero out the MD5 hashes and force the download and application of the latest versions of the enabled rules packages.');
 $section->add($group);
 
 $form->add($section);
@@ -276,14 +269,14 @@ $group = new Form_Group('');
 
 $group->add(new Form_Button(
 	'view',
-	' ' . 'View Log',
+	'View Log',
 	'#',
 	'fa-file-text-o'
 ))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('title', gettext('View rules update log'))->setAttribute('data-target', '#vwupdlog')->setAttribute('data-toggle', 'modal');
 
 $group->add(new Form_Button(
 	'clear',
-	' ' . 'Clear Log',
+	'Clear Log',
 	null,
 	'fa-trash'
 ))->removeClass('btn-primary')->addClass('btn-danger')->addClass('btn-sm')->setAttribute('title', gettext('Clear rules update log'));
@@ -314,6 +307,15 @@ $modal->addInput(new Form_Textarea (
 ))->removeClass('form-control')->addClass('row-fluid col-sm-10')->setAttribute('rows', '10')->setAttribute('wrap', 'off');
 $form->add($modal);
 
+// Create a Modal Dialog for displaying a spinning icon "please wait" message while
+// updating the rule sets
+$modal = new Modal('Rules Update Task', 'updrulesdlg', false, 'Close');
+$modal->addInput(new Form_StaticText (
+	null,
+	'Checking for updated rule sets may take a while ... please wait ' . '<i class="content fa fa-spinner fa-pulse fa-lg text-center text-info"></i>'
+));
+$form->add($modal);
+
 $form->add($section);
 
 print($form);
@@ -341,8 +343,40 @@ events.push(function(){
 		});
 	}
 
+	function doRuleUpdates(mode) {
+		var ajaxRequest;
+		if (typeof mode == "undefined") {
+			var mode = "update";
+		}
+
+		// Show the "please wait" modal
+		$('#updrulesdlg').modal('show');
+
+		ajaxRequest = $.ajax({
+			url: "/snort/snort_download_updates.php",
+			type: "post",
+			data: { mode: mode }
+		});
+
+		// Deal with the results of the above ajax call
+		ajaxRequest.done(function (response, textStatus, jqXHR) {
+
+			// Close the "please wait" modal
+			$('#updrulesdlg').modal('hide');
+		});
+	}
+
 	$('#vwupdlog').on('shown.bs.modal', function() {
 		getRuleUpdateLog();
+	});
+
+	//-- Click handlers ---------------------------------
+	$('#update').click(function() {
+		doRuleUpdates('update');
+	});
+
+	$('#force').click(function() {
+		doRuleUpdates('force');
 	});
 
 });
