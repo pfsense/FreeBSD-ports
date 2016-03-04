@@ -84,74 +84,90 @@ chdir($rrddbpath);
 $databases = glob("*.rrd");
 chdir($home);
 
-$system = $packets = $quality = $traffic = [];
+print_r($databases);
+
+$config['rrd']['category'] = "left=system-processor&right=null&start=&end=&timePeriod=-1d&invert=true";
+
+echo "<h1>".$config['rrd']['category']."</h1>";
+
+$system = $packets = $quality = $traffic = $captiveportal = $ntpd = $queues = $queuedrops = $dhcpd = [];
 
 //populate arrays for dropdowns based on rrd filenames
 foreach ($databases as $db) {
+
 	$db_name = substr($db, 0, -4);
 	$db_arr = explode("-", $db_name);
 
 	if ($db_arr[0] === "system") {
+
 		switch($db_arr[1]) {
-		case "states":
-			$system[$db_name] = "States";
-			break;
-		case "memory":
-			$system[$db_name] = "Memory";
-			break;
-		case "processor":
-			$system[$db_name] = "Processor";
-			break;
-		case "mbuf":
-			$system[$db_name] = "Mbuf Clusters";
-			break;
-		default:
-			$system[$db_name] = $db_arr[1];
-			break;
+			case "states":
+				$system[$db_name] = "States";
+				break;
+			case "memory":
+				$system[$db_name] = "Memory";
+				break;
+			case "processor":
+				$system[$db_name] = "Processor";
+				break;
+			case "mbuf":
+				$system[$db_name] = "Mbuf Clusters";
+				break;
+			default:
+				$system[$db_name] = $db_arr[1];
+				break;
 		}
+
 	}
 
 	if ($db_arr[1] === "traffic") {
-		switch($db_arr[0]) {
-		case "ipsec":
-			$traffic[$db_name] = "IPsec";
-			break;
-		case "wan":
-			$traffic[$db_name] = "WAN";
-			break;
-		default:
-			$traffic[$db_name] = $db_arr[0];
-			break;
+
+		$friendly = convert_friendly_interface_to_friendly_descr($db_arr[0]);
+
+		if (empty($friendly)) {
+			$friendly = $db_arr[0];
 		}
+
+		$traffic[$db_name] = $friendly;
+
 	}
 
 	if ($db_arr[1] === "packets") {
-		switch($db_arr[0]) {
-		case "ipsec":
-			$packets[$db_name] = "IPsec";
-			break;
-		case "wan":
-			$packets[$db_name] = "WAN";
-			break;
-		default:
-			$packets[$db_name] = $db_arr[0];
-			break;
+
+		$friendly = convert_friendly_interface_to_friendly_descr($db_arr[0]);
+
+		if (empty($friendly)) {
+			$friendly = $db_arr[0];
 		}
+
+		$packets[$db_name] = $friendly;
+
 	}
 
 	if ($db_arr[1] === "quality") {
-		switch($db_arr[0]) {
-		case "ipsec":
-			$quality[$db_name] = "IPsec";
-			break;
-		case "wan":
-			$quality[$db_name] = "WAN";
-			break;
-		default:
-			$quality[$db_name] = $db_arr[0];
-			break;
-		}
+		$quality[$db_name] = $db_arr[0];
 	}
+
+	if ($db_arr[1] === "queues") {
+		$queues[$db_name] = convert_friendly_interface_to_friendly_descr($db_arr[0]);
+	}
+
+	if ($db_arr[1] === "queuedrops") {
+		$queuedrops[$db_name] = convert_friendly_interface_to_friendly_descr($db_arr[0]);
+	}
+
+	if ($db_arr[0] === "captiveportal") {
+		$captiveportal[$db_name] = $db_arr[1] . "-" . $db_arr[2]; //TODO make $db_arr[2] pretty
+	}
+
+	if ($db_arr[0] === "ntpd") {
+		$ntpd[$db_name] = "NTP";
+	}
+
+	if ($db_arr[1] === "dhcpd") {
+		$dhcpd[$db_name] = convert_friendly_interface_to_friendly_descr($db_arr[0]);
+	}
+
 }
 
 $pgtitle = array(gettext("Status"), gettext("Monitoring"));
@@ -181,6 +197,23 @@ include("head.inc");
 						<option value="traffic">Traffic</option>
 						<option value="packets">Packets</option>
 						<option value="quality">Quality</option>
+						<?php
+						if(!empty($captiveportal)) {
+							echo '<option value="captiveportal">Captive Portal</option>';
+						}
+						if(!empty($ntpd)) {
+							echo '<option value="ntpd">NTP</option>';
+						}
+						if(!empty($queues)) {
+							echo '<option value="queues">Queues</option>';
+						}
+						if(!empty($queuedrops)) {
+							echo '<option value="queuedrops">Queuedrops</option>';
+						}
+						if(!empty($dhcpd)) {
+							echo '<option value="dhcpd">DHCP</option>';
+						}
+						?>
 						<option value="none">None</option>
 					</select>
 
@@ -207,6 +240,23 @@ include("head.inc");
 						<option value="traffic">Traffic</option>
 						<option value="packets">Packets</option>
 						<option value="quality">Quality</option>
+						<?php
+						if(!empty($captiveportal)) {
+							echo '<option value="captiveportal">Captive Portal</option>';
+						}
+						if(!empty($ntpd)) {
+							echo '<option value="ntpd">NTP</option>';
+						}
+						if(!empty($queues)) {
+							echo '<option value="queues">Queues</option>';
+						}
+						if(!empty($queuedrops)) {
+							echo '<option value="queuedrops">Queuedrops</option>';
+						}
+						if(!empty($dhcpd)) {
+							echo '<option value="dhcpd">DHCP</option>';
+						}
+						?>
 						<option value="none" selected>None</option>
 					</select>
 
@@ -408,6 +458,91 @@ events.push(function() {
 			?>
 			};
 			break;
+		case "captiveportal":
+			$("#graph-left").empty().prop( "disabled", false );
+			var newOptions = {
+			<?php
+				$terms = count($captiveportal);
+
+				foreach ($captiveportal as $key => $val) {
+
+					$terms--;
+					$str = '"' . $key . '" : "' . $val . '"';
+					if ($terms) {  $str .= ",\n"; }
+					echo $str . "\n";
+
+				}
+			?>
+			};
+			break;
+		case "ntpd":
+			$("#graph-left").empty().prop( "disabled", false );
+			var newOptions = {
+			<?php
+				$terms = count($ntpd);
+
+				foreach ($ntpd as $key => $val) {
+
+					$terms--;
+					$str = '"' . $key . '" : "' . $val . '"';
+					if ($terms) {  $str .= ",\n"; }
+					echo $str . "\n";
+
+				}
+			?>
+			};
+			break;
+		case "queues":
+			$("#graph-left").empty().prop( "disabled", false );
+			var newOptions = {
+			<?php
+				$terms = count($queues);
+
+				foreach ($queues as $key => $val) {
+
+					$terms--;
+					$str = '"' . $key . '" : "' . $val . '"';
+					if ($terms) {  $str .= ",\n"; }
+					echo $str . "\n";
+
+				}
+			?>
+			};
+			break;
+		case "queuedrops":
+			$("#graph-left").empty().prop( "disabled", false );
+			var newOptions = {
+			<?php
+				$terms = count($queuedrops);
+
+				foreach ($queuedrops as $key => $val) {
+
+					$terms--;
+					$str = '"' . $key . '" : "' . $val . '"';
+					if ($terms) {  $str .= ",\n"; }
+					echo $str . "\n";
+
+				}
+			?>
+			};
+			break;
+		case "dhcpd":
+			$("#graph-left").empty().prop( "disabled", false );
+			var newOptions = {
+			<?php
+				$terms = count($dhcpd);
+
+				foreach ($dhcpd as $key => $val) {
+
+					$terms--;
+					$str = '"' . $key . '" : "' . $val . '"';
+					if ($terms) {  $str .= ",\n"; }
+					echo $str . "\n";
+
+				}
+			?>
+			};
+			break;
 		case "none":
 			$("#graph-left").empty().prop( "disabled", true );
 			break;
@@ -480,6 +615,91 @@ events.push(function() {
 				$terms = count($quality);
 
 				foreach ($quality as $key => $val) {
+
+					$terms--;
+					$str = '"' . $key . '" : "' . $val . '"';
+					if ($terms) {  $str .= ",\n"; }
+					echo $str . "\n";
+
+				}
+			?>
+			};
+			break;
+		case "captiveportal":
+			$("#graph-right").empty().prop( "disabled", false );
+			var newOptions = {
+			<?php
+				$terms = count($captiveportal);
+
+				foreach ($captiveportal as $key => $val) {
+
+					$terms--;
+					$str = '"' . $key . '" : "' . $val . '"';
+					if ($terms) {  $str .= ",\n"; }
+					echo $str . "\n";
+
+				}
+			?>
+			};
+			break;
+		case "ntpd":
+			$("#graph-right").empty().prop( "disabled", false );
+			var newOptions = {
+			<?php
+				$terms = count($ntpd);
+
+				foreach ($ntpd as $key => $val) {
+
+					$terms--;
+					$str = '"' . $key . '" : "' . $val . '"';
+					if ($terms) {  $str .= ",\n"; }
+					echo $str . "\n";
+
+				}
+			?>
+			};
+			break;
+		case "queues":
+			$("#graph-right").empty().prop( "disabled", false );
+			var newOptions = {
+			<?php
+				$terms = count($queues);
+
+				foreach ($queues as $key => $val) {
+
+					$terms--;
+					$str = '"' . $key . '" : "' . $val . '"';
+					if ($terms) {  $str .= ",\n"; }
+					echo $str . "\n";
+
+				}
+			?>
+			};
+			break;
+		case "queuedrops":
+			$("#graph-right").empty().prop( "disabled", false );
+			var newOptions = {
+			<?php
+				$terms = count($queuedrops);
+
+				foreach ($queuedrops as $key => $val) {
+
+					$terms--;
+					$str = '"' . $key . '" : "' . $val . '"';
+					if ($terms) {  $str .= ",\n"; }
+					echo $str . "\n";
+
+				}
+			?>
+			};
+			break;
+		case "dhcpd":
+			$("#graph-right").empty().prop( "disabled", false );
+			var newOptions = {
+			<?php
+				$terms = count($dhcpd);
+
+				foreach ($dhcpd as $key => $val) {
 
 					$terms--;
 					$str = '"' . $key . '" : "' . $val . '"';
