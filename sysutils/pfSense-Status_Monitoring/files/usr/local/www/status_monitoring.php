@@ -84,7 +84,7 @@ chdir($rrddbpath);
 $databases = glob("*.rrd");
 chdir($home);
 
-$system = $packets = $quality = $traffic = $captiveportal = $ntpd = $queues = $queuedrops = $dhcpd = [];
+$system = $packets = $quality = $traffic = $captiveportal = $ntpd = $queues = $queuedrops = $dhcpd = $vpnusers = [];
 
 //populate arrays for dropdowns based on rrd filenames
 foreach ($databases as $db) {
@@ -119,7 +119,21 @@ foreach ($databases as $db) {
 		$friendly = convert_friendly_interface_to_friendly_descr($db_arr[0]);
 
 		if (empty($friendly)) {
-			$friendly = $db_arr[0];
+			if(substr($db_arr[0], 0, 5) === "ovpns") {
+				
+				foreach ($config['openvpn']["openvpn-server"] as $id => $setting) {
+
+					if($config['openvpn']["openvpn-server"][$id]['vpnid'] === substr($db_arr[0],5)) {
+						$friendly = "OpenVPN Server: " . htmlspecialchars($config['openvpn']["openvpn-server"][$id]['description']);
+					}
+
+				}
+
+				if (empty($friendly)) { $friendly = "OpenVPN Server: " . $db_arr[0]; }
+
+			} else {
+				$friendly = $db_arr[0];
+			}
 		}
 
 		$traffic[$db_name] = $friendly;
@@ -131,7 +145,21 @@ foreach ($databases as $db) {
 		$friendly = convert_friendly_interface_to_friendly_descr($db_arr[0]);
 
 		if (empty($friendly)) {
-			$friendly = $db_arr[0];
+			if(substr($db_arr[0], 0, 5) === "ovpns") {
+				
+				foreach ($config['openvpn']["openvpn-server"] as $id => $setting) {
+
+					if($config['openvpn']["openvpn-server"][$id]['vpnid'] === substr($db_arr[0],5)) {
+						$friendly = "OpenVPN Server: " . htmlspecialchars($config['openvpn']["openvpn-server"][$id]['description']);
+					}
+
+				}
+
+				if (empty($friendly)) { $friendly = "OpenVPN Server: " . $db_arr[0]; }
+
+			} else {
+				$friendly = $db_arr[0];
+			}
 		}
 
 		$packets[$db_name] = $friendly;
@@ -160,6 +188,31 @@ foreach ($databases as $db) {
 
 	if ($db_arr[1] === "dhcpd") {
 		$dhcpd[$db_name] = convert_friendly_interface_to_friendly_descr($db_arr[0]);
+	}
+
+	if ($db_arr[1] === "vpnusers") {
+
+		$friendly = convert_friendly_interface_to_friendly_descr($db_arr[0]);
+
+		if (empty($friendly)) {
+			if(substr($db_arr[0], 0, 5) === "ovpns") {
+				
+				foreach ($config['openvpn']["openvpn-server"] as $id => $setting) {
+
+					if($config['openvpn']["openvpn-server"][$id]['vpnid'] === substr($db_arr[0],5)) {
+						$friendly = "OpenVPN Server: " . htmlspecialchars($config['openvpn']["openvpn-server"][$id]['description']);
+					}
+
+				}
+
+				if (empty($friendly)) { $friendly = "OpenVPN Server: " . $db_arr[0]; }
+
+			} else {
+				$friendly = $db_arr[0];
+			}
+		}
+
+		$vpnusers[$db_name] = $friendly;
 	}
 
 }
@@ -207,6 +260,9 @@ include("head.inc");
 						if(!empty($dhcpd)) {
 							echo '<option value="dhcpd">DHCP</option>';
 						}
+						if(!empty($vpnusers)) {
+							echo '<option value="vpnusers">VPN Users</option>';
+						}
 						?>
 						<option value="none">None</option>
 					</select>
@@ -249,6 +305,9 @@ include("head.inc");
 						}
 						if(!empty($dhcpd)) {
 							echo '<option value="dhcpd">DHCP</option>';
+						}
+						if(!empty($vpnusers)) {
+							echo '<option value="vpnusers">VPN Users</option>';
 						}
 						?>
 						<option value="none" selected>None</option>
@@ -537,6 +596,23 @@ events.push(function() {
 			?>
 			};
 			break;
+		case "vpnusers":
+			$("#graph-left").empty().prop( "disabled", false );
+			var newOptions = {
+			<?php
+				$terms = count($vpnusers);
+
+				foreach ($vpnusers as $key => $val) {
+
+					$terms--;
+					$str = '"' . $key . '" : "' . $val . '"';
+					if ($terms) {  $str .= ",\n"; }
+					echo $str . "\n";
+
+				}
+			?>
+			};
+			break;
 		case "none":
 			$("#graph-left").empty().prop( "disabled", true );
 			break;
@@ -704,6 +780,23 @@ events.push(function() {
 			?>
 			};
 			break;
+		case "vpnusers":
+			$("#graph-right").empty().prop( "disabled", false );
+			var newOptions = {
+			<?php
+				$terms = count($vpnusers);
+
+				foreach ($vpnusers as $key => $val) {
+
+					$terms--;
+					$str = '"' . $key . '" : "' . $val . '"';
+					if ($terms) {  $str .= ",\n"; }
+					echo $str . "\n";
+
+				}
+			?>
+			};
+			break;
 		case "none":
 			$("#graph-right").empty().prop( "disabled", true );
 			break;
@@ -797,7 +890,7 @@ events.push(function() {
 			d3.select('#chart svg')
 				.append("text")
 				.attr("x", 150)
-				.attr("y", 8)
+				.attr("y", 11)
 				.attr("id", "left-title")
 				.text("Left Axis: " + leftTitle);
 
@@ -818,7 +911,7 @@ events.push(function() {
 			d3.select('#chart svg')
 				.append("text")
 				.attr("x", 150)
-				.attr("y", 26)
+				.attr("y", 28)
 				.attr("id", "right-title")
 				.text("Right Axis: " + rightTitle);
 
