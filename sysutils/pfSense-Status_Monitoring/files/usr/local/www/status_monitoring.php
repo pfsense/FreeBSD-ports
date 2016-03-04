@@ -737,7 +737,7 @@ events.push(function() {
 			d3.select('#chart svg')
 				.append("text")
 				.attr("x", 150)
-				.attr("y", 8)
+				.attr("y", 11)
 				.attr("id", "left-title")
 				.text("Left Axis: " + leftTitle);
 
@@ -759,7 +759,7 @@ events.push(function() {
 			d3.select('#chart svg')
 				.append("text")
 				.attr("x", 150)
-				.attr("y", 26)
+				.attr("y", 28)
 				.attr("id", "right-title")
 				.text("Right Axis: " + rightTitle);
 
