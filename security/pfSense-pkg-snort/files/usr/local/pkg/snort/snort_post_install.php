@@ -40,6 +40,7 @@
 
 require_once("config.inc");
 require_once("functions.inc");
+require_once("service-utils.inc"); // Need this to get RCFILEPREFIX constant
 require_once("/usr/local/pkg/snort/snort.inc");
 require("/usr/local/pkg/snort/snort_defs.inc");
 
@@ -66,6 +67,9 @@ if(is_process_running("barnyard")) {
 	// Delete any leftover barnyard2 PID files in /var/run
 	unlink_if_exists("{$g['varrun_path']}/barnyard2_*.pid");
 }
+
+// Remove any LCK files for Snort that might have been left behind
+unlink_if_exists("{$g['varrun_path']}/snort_pkg_starting.lck");
 
 /* Set flag for post-install in progress */
 $g['snort_postinstall'] = true;
@@ -105,7 +109,7 @@ safe_mkdir(SNORT_APPID_ODP_PATH);
 
 /* If installed, absorb the Snort Dashboard Widget into this package */
 /* by removing it as a separately installed package.                 */
-$pkgid = get_pkg_id("Dashboard Widget: Snort");
+$pkgid = get_package_id("Dashboard Widget: Snort");
 if ($pkgid >= 0) {
 	log_error(gettext("[Snort] Removing legacy 'Dashboard Widget: Snort' package because the widget is now part of the Snort package."));
 	unset($config['installedpackages']['package'][$pkgid]);
@@ -138,8 +142,8 @@ if ($cron_count > 0)
 
 /* remake saved settings */
 if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
-	log_error(gettext("[Snort] Saved settings detected... rebuilding installation with saved settings..."));
-	update_status(gettext("Saved settings detected...") . "\n");
+	log_error(gettext("[Snort] Saved settings detected... rebuilding installation with saved settings."));
+	update_status(gettext("Saved settings detected.") . "\n");
 
 	/****************************************************************/
 	/* Do test and fix for duplicate UUIDs if this install was      */
@@ -180,10 +184,9 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 	update_status(gettext("Migrating settings to new configuration..."));
 	include('/usr/local/pkg/snort/snort_migrate_config.php');
 	update_status(gettext(" done.") . "\n");
-	log_error(gettext("[Snort] Downloading and updating configured rule sets..."));
+	log_error(gettext("[Snort] Downloading and updating configured rule sets."));
 	include('/usr/local/pkg/snort/snort_check_for_rule_updates.php');
-	update_status(gettext(" done.") . "\n");
-	update_status(gettext("Generating snort.conf configuration file from saved settings...") . "\n");
+	update_status(gettext("Generating snort.conf configuration file from saved settings.") . "\n");
 	$rebuild_rules = true;
 	conf_mount_rw();
 
@@ -239,15 +242,8 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 		$config['widgets']['sequence'] .= "," . $config['installedpackages']['snortglobal']['dashboard_widget'];
 
 	$rebuild_rules = false;
-	update_status(gettext("Finished rebuilding Snort configuration files...") . "\n");
-	log_error(gettext("[Snort] Finished rebuilding installation from saved settings..."));
-
-	/* Only try to start Snort if not in reboot */
-	if (!($g['booting'])) {
-		update_status(gettext("Starting Snort using rebuilt configuration..."));
-		mwexec_bg("{$rcdir}snort.sh start");
-		update_status(gettext(" done.") . "\n");
-	}
+	update_status(gettext("Finished rebuilding Snort configuration files.") . "\n");
+	log_error(gettext("[Snort] Finished rebuilding installation from saved settings."));
 }
 
 /* We're finished with conf partition mods, return to read-only */
@@ -259,8 +255,8 @@ if (stristr($config['widgets']['sequence'], "snort_alerts-container") === FALSE)
 	$config['widgets']['sequence'] .= ",{$snort_widget_container}";
 
 /* Update Snort package version in configuration */
-$config['installedpackages']['snortglobal']['snort_config_ver'] = $config['installedpackages']['package'][get_pkg_id("snort")]['version'];
-write_config("Snort pkg v{$config['installedpackages']['package'][get_pkg_id("snort")]['version']}: post-install configuration saved.");
+$config['installedpackages']['snortglobal']['snort_config_ver'] = $config['installedpackages']['package'][get_package_id("snort")]['version'];
+write_config("Snort pkg v{$config['installedpackages']['package'][get_package_id("snort")]['version']}: post-install configuration saved.");
 
 /* Done with post-install, so clear flag */
 unset($g['snort_postinstall']);
