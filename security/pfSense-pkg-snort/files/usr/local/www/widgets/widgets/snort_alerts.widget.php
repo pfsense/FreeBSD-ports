@@ -83,7 +83,7 @@ if (isset($_GET['getNewAlerts'])) {
 	$s_alerts = snort_widget_get_alerts();
 	$counter = 0;
 	foreach ($s_alerts as $a) {
-		$response .= $a['instanceid'] . " " . $a['dateonly'] . "||" . $a['timeonly'] . "||" . $a['src'] . "||";
+		$response .= $a['instanceid'] . "||" . $a['dateonly'] . " " . $a['timeonly'] . "||" . $a['src'] . "||";
 		$response .= $a['dst'] . "||" . $a['msg'] . "\n";
 		$counter++;
 		if($counter >= $snort_nentries)
@@ -134,7 +134,7 @@ function snort_widget_get_alerts() {
 						continue;
 
 					// Get the Snort interface this alert was received from
-					$snort_alerts[$counter]['instanceid'] = strtoupper($a_instance[$instanceid]['interface']);
+					$snort_alerts[$counter]['instanceid'] = convert_friendly_interface_to_friendly_descr($a_instance[$instanceid]['interface']);
 
 					// "fields[0]" is the complete timestamp in ASCII form. Convert
 					// to a UNIX timestamp so we can use it for various date and
@@ -191,7 +191,7 @@ function snort_widget_get_alerts() {
 	</colgroup>
 	<thead>
 		<tr>
-			<th><?=gettext("IF/Date");?></th>
+			<th><?=gettext("Interface/Time");?></th>
 			<th><?=gettext("Src/Dst Address");?></th>
 			<th><?=gettext("Description");?></th>
 		</tr>
@@ -202,12 +202,21 @@ function snort_widget_get_alerts() {
 		$counter=0;
 		if (is_array($snort_alerts)) {
 			foreach ($snort_alerts as $alert) {
-				$alertRowClass = $counter % 2 ? $alertRowEvenClass : $alertRowOddClass;
-				echo("	<tr class='" . $alertRowClass . "'>
-				<td class='listMRr'>" . $alert['instanceid'] . "&nbsp;" . $alert['dateonly'] . "<br/>" . $alert['timeonly'] . "</td>
-				<td class='listMRr' style='overflow: hidden; text-overflow: ellipsis;' nowrap><div style='display:inline;' title='" . $alert['src'] . "'>" . $alert['src'] . "</div><br/><div style='display:inline;' title='" . $alert['dst'] . "'>" . $alert['dst'] . "</div></td>
-				<td class='listMRr'><div style='display: fixed; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.2em; max-height: 2.4em; overflow: hidden; text-overflow: ellipsis;' title='{$alert['msg']}'>" . $alert['msg'] . "</div></td></tr>");
-				$counter++;
+	?>			
+				<tr>
+					<td style="overflow: hidden; text-overflow: ellipsis;" nowrap><?=$alert['instanceid']; ?><br/>
+						<?=$alert['dateonly']; ?> <?=$alert['timeonly']; ?>
+					</td>
+					<td style="overflow: hidden; text-overflow: ellipsis;" nowrap>
+						<div style="display:inline;" title="<?=$alert['src']; ?>"><?=$alert['src']; ?></div><br/>
+						<div style="display:inline;" title="<?=$alert['dst']; ?>"><?=$alert['dst']; ?></div>
+					</td>
+					<td><div style="display: fixed; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; 
+						line-height: 1.2em; max-height: 2.4em; overflow: hidden; text-overflow: ellipsis;" 
+						title="<?=$alert['msg']; ?>"><?=$alert['msg']; ?></div>
+					</td>
+				</tr>
+	<?php			$counter++;
 				if($counter >= $snort_nentries)
 					break;
 			}
@@ -222,18 +231,23 @@ function snort_widget_get_alerts() {
 <div id="widget-<?=$widgetname?>_panel-footer" class="panel-footer collapse">
 	<input type="hidden" id="snort_alerts-config" name="snort_alerts-config" value="" />
 		<form action="/widgets/widgets/snort_alerts.widget.php" method="post" name="iformd" class="form-horizontal">
-			Enter number of recent alerts to display (default is 5)<br/>
-			<input type="text" size="5" name="widget_snort_display_lines" class="form-control" id="widget_snort_display_lines" value="<?= $config['widgets']['widget_snort_display_lines'] ?>" />
-			&nbsp;&nbsp;<input id="submitd" name="submitd" type="submit" class="formbtn" value="Save" />
+			<div class="form-group">
+				<label for="widget_snort_display_lines" class="col-sm-4 control-label"><?=gettext('Alerts to Display:')?></label>
+				<div class="col-sm-3">
+					<input type="number" name="widget_snort_display_lines" class="form-control" id="widget_snort_display_lines" 
+					value="<?= $config['widgets']['widget_snort_display_lines'] ?>" placeholder="5" min="1" max="20" />
+				</div>
+				<div class="col-sm-3">
+					<button id="submitd" name="submitd" type="submit" class="btn btn-sm btn-primary"><?=gettext('Save')?></button>
+				</div>
+			</div>
 		</form>
 
 <script type="text/javascript">
 //<![CDATA[
 <!-- needed in the snort_alerts.js file code -->
-	var snortupdateDelay = 10000; // update every 10 seconds
+	var snortupdateDelay = 5000; // update every 5 seconds
 	var snort_nentries = <?=$snort_nentries;?>; // number of alerts to display (5 is default)
-	var snortWidgetRowEvenClass = "<?=$alertRowEvenClass;?>"; // allows alternating background
-	var snortWidgetRowOddClass = "<?=$alertRowOddClass;?>"; // allows alternating background
 
 <!-- needed to display the widget settings menu -->
 	selectIntLink = "snort_alerts-configure";

@@ -226,9 +226,8 @@ if ($savemsg)
 <div class="panel panel-default">
 	<div class="panel-heading"><h2 class="panel-title"><?=gettext("Interface Settings Overview")?></h2></div>
 	<div class="panel-body">
-		<div class="table-responsive">
-
-	<table id="maintable" class="table table-striped table-hover table-condensed">
+		<div class=" content table-responsive">
+			<table id="maintable" class="table table-striped table-hover table-condensed">
 				<thead>
 				<tr id="frheader">
 					<th>&nbsp;</th>

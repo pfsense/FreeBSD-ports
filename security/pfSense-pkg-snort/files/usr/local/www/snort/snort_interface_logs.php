@@ -99,7 +99,7 @@ if ($savemsg)
 	print_info_box($savemsg);
 
 function build_logfile_list() {
-	global $snortlogdir;
+	global $snortlogdir, $if_real;
 
 	$list = array();
 
@@ -173,7 +173,6 @@ if (isset($id)) {
 print($form);
 ?>
 
-<script type="text/javascript" src="/javascript/base64.js"></script>
 <script type="text/javascript">
 //<![CDATA[
 events.push(function() {

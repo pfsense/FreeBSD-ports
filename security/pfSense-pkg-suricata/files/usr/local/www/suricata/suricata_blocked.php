@@ -381,17 +381,15 @@ print($form);
 				$tmp_ip = str_replace(":", ":&#8203;", $block_ip_str);
 				/* Add reverse DNS lookup icons */
 				$rdns_link = "";
-				$rdns_link .= "<img onclick=\"javascript:resolve_with_ajax('{$block_ip_str}');\" title=\"";
-				$rdns_link .= gettext("Resolve host via reverse DNS lookup") . "\" border=\"0\" src=\"/themes/{$g['theme']}/images/icons/icon_log.gif\" alt=\"Icon Reverse Resolve with DNS\" ";
-				$rdns_link.= " style=\"cursor: pointer;\"/>";
+				$rdns_link .= "<i class=\"fa fa-search icon-pointer\" onclick=\"javascript:resolve_with_ajax('{$blocked_ip}');\" title=\"";
+				$rdns_link .= gettext("Resolve host via reverse DNS lookup") . "\" alt=\"Icon Reverse Resolve with DNS\"></i>";
 				/* use one echo to do the magic*/
-					echo "<tr>
-						<td align=\"center\" valign=\"middle\" class=\"listr\">{$counter}</td>
-						<td align=\"center\" valign=\"middle\" class=\"listr\">{$tmp_ip}<br/>{$rdns_link}</td>
-						<td valign=\"middle\" class=\"listr\">{$blocked_desc}</td>
-						<td align=\"center\" valign=\"middle\" class=\"listr\">
-						<input type=\"image\" name=\"todelete[]\" onClick=\"document.getElementById('ip').value='{$block_ip_str}';\"
-						src=\"../themes/{$g['theme']}/images/icons/icon_x.gif\" title=\"" . gettext("Delete host from Blocked Table") . "\" border=\"0\" /></td>
+					echo "<tr class=\"text-nowrap\">
+						<td>{$counter}</td>
+						<td style=\"word-wrap:break-word; white-space:normal\">{$tmp_ip}<br/>{$rdns_link}</td>
+						<td style=\"word-wrap:break-word; white-space:normal\">{$blocked_desc}</td>
+						<td><i class=\"fa fa-times icon-pointer text-danger\" onClick=\"$('#ip').val('{$blocked_ip}');$('#mode').val('todelete');$('#formblock').submit();\"
+						 title=\"" . gettext("Delete host from Blocked Table") . "\"></i></td>
 					</tr>\n";
 			}
 		}

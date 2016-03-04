@@ -67,14 +67,15 @@
 require("guiconfig.inc");
 require_once("filter.inc");
 require("shaper.inc");
-require_once("rrd.inc");
 
 unset($input_errors);
 
-// if the rrd graphs are not enabled redirect to settings page
+/* if the rrd graphs are not enabled redirect to settings page
 if (!isset($config['rrd']['enable'])) {
-	header("Location: status_rrd_graph_settings.php");
+	//TODO handle this scenario without settings page
+	header("Location: status_rrd_graph_settings.php"); //TODO make settings page
 }
+*/
 
 //grab rrd filenames
 $home = getcwd();
@@ -576,6 +577,16 @@ events.push(function() {
 				return d3.format('s')(d)
 			}).axisLabel(leftLabel).tickPadding(5).showMaxMin(false);
 
+			//add left title
+			d3.select('#chart svg #left-title').remove();
+			var leftTitle = $("#category-left option:selected").text() + " -- " + $("#graph-left option:selected").text();
+			d3.select('#chart svg')
+				.append("text")
+				.attr("x", 150)
+				.attr("y", 8)
+				.attr("id", "left-title")
+				.text("Left Axis: " + leftTitle);
+
 			//y axis description by rrd database
 			var gright = $( "#graph-right" ).val();
 			if (gright) {
@@ -586,6 +597,16 @@ events.push(function() {
 			chart.yAxis2.tickFormat(function(d) {
 				return d3.format('s')(d)
 			}).axisLabel(rightLabel).tickPadding(5).showMaxMin(false);
+
+			//add right title
+			d3.select('#chart svg #right-title').remove();
+			var rightTitle = $("#category-right option:selected").text() + " -- " + $("#graph-right option:selected").text();
+			d3.select('#chart svg')
+				.append("text")
+				.attr("x", 150)
+				.attr("y", 26)
+				.attr("id", "right-title")
+				.text("Right Axis: " + rightTitle);
 
 			d3.select('#chart svg')
 			    .datum(data)
@@ -711,6 +732,15 @@ events.push(function() {
 				return d3.format('s')(d)
 			}).axisLabel(leftLabel).tickPadding(5).showMaxMin(false);
 
+			//add left title
+			var leftTitle = $("#category-left option:selected").text() + " -- " + $("#graph-left option:selected").text();
+			d3.select('#chart svg')
+				.append("text")
+				.attr("x", 150)
+				.attr("y", 11)
+				.attr("id", "left-title")
+				.text("Left Axis: " + leftTitle);
+
 			//TODO format y axis by rrd database
 
 			//y axis description by rrd database
@@ -724,10 +754,18 @@ events.push(function() {
 				return d3.format('s')(d)
 			}).axisLabel(rightLabel).tickPadding(5).showMaxMin(false);
 
+			//add right title
+			var rightTitle = $("#category-right option:selected").text() + " -- " + $("#graph-right option:selected").text();
+			d3.select('#chart svg')
+				.append("text")
+				.attr("x", 150)
+				.attr("y", 28)
+				.attr("id", "right-title")
+				.text("Right Axis: " + rightTitle);
+
 			//custom tooltip contents
 			chart.interactiveLayer.tooltip.contentGenerator(function(data) {
 
-				var invertLines = ["outpass", "outpass6", "outpass total"];
 				var totals = false;
 				var inboundTotal = [];
 				var content = '<h3>' + d3.time.format('%Y-%m-%d %H:%M:%S')(new Date(data.value)) + '</h3><table><tbody>';
@@ -745,7 +783,7 @@ events.push(function() {
 						inboundTotal[tempKey] = v;
 					}
 
-					if ( ($("#invert").val()) && ($.inArray(tempKey, invertLines) >= 0) ) {
+					if ( ($("#invert").val() === "true") && tempKey.includes('outpass') ) {
 						var trueValue = 0 - data.series[v].value;
 					} else {
 						var trueValue = data.series[v].value;

@@ -115,6 +115,7 @@ $unit_desc_lookup = array(
 
 //TODO make this a function for left and right
 if ($left != "null") {
+
 	//$rrd_info_array = rrd_info($rrd_location . $left . ".rrd");
 	//$left_step = $rrd_info_array['step'];
 	//$left_last_updated = $rrd_info_array['last_update'];
@@ -130,10 +131,10 @@ if ($left != "null") {
 
 	foreach ($ds_list as $ds_key_left => $ds) {
 
-		$ds_key = $ds_key_left - $ignored_left;
 		$data_list = $rrd_array['data'][$ds];
 		$ignore = $invert = $ninetyfifth = false;
 		$graph_type = "line";
+		$unit_acronym = $left_unit_acronym;
 
 		//Overrides based on line name
 		switch($ds) {
@@ -146,22 +147,26 @@ if ($left != "null") {
 		case "system":
 			$ds = "system util.";
 			break;
-		case "Packet Loss":
-			$left_unit_acronym = "%";
+		case "stddev":
+			$ds = "stddev of delay";
+			break;	
+		case "loss":
+			$ds = "packet loss";
+			$unit_acronym = "%";
 			break;
 		case "processes":
-			$left_unit_acronym = "";
+			$unit_acronym = "";
 			break;
 		case "pfstates":
-			$left_unit_acronym = "";
+			$unit_acronym = "";
 			$ds = "Filter States";
 			break;
 		case "srcip":
-			$left_unit_acronym = "";
+			$unit_acronym = "";
 			$ds = "Source Addr.";
 			break;
 		case "dstip":
-			$left_unit_acronym = "";
+			$unit_acronym = "";
 			$ds = "Dest. Addr.";
 			break;
 		case "pfrate":
@@ -172,49 +177,50 @@ if ($left != "null") {
 			$ignore = true;
 			break;
 		case "inpass":
-			//$graph_type = "area"; //TODO figure out why it breaks NVD3 legend/colors
 			$ninetyfifth = true;
 			break;
 		case "inpass6":
-			//$graph_type = "area"; //TODO figure out why it breaks NVD3 legend/colors
 			$ninetyfifth = true;
 			break;
 		case "outpass":
-			//$graph_type = "area"; //TODO figure out why it breaks NVD3 legend/colors
 			$invert = $invert_graph;
 			$ninetyfifth = true;
 			break;
 		case "outpass6":
-			//$graph_type = "area"; //TODO figure out why it breaks NVD3 legend/colors
 			$invert = $invert_graph;
 			$ninetyfifth = true;
 			break;
 		}
 
 		if (!$ignore) {
-			$obj[$ds_key_left]['key'] = $ds;
-			$obj[$ds_key_left]['type'] = $graph_type;
-			$obj[$ds_key_left]['format'] = "s";
-			$obj[$ds_key_left]['yAxis'] = 1;
-			$obj[$ds_key_left]['unit_acronym'] = $left_unit_acronym;
-			$obj[$ds_key_left]['unit_desc'] = $unit_desc_lookup[$left_unit_acronym];
-			$obj[$ds_key_left]['invert'] = $invert;
-			$obj[$ds_key_left]['ninetyfifth'] = $ninetyfifth;
+			$ds_key_left_adjusted = $ds_key_left - $ignored_left;
+
+			$obj[$ds_key_left_adjusted]['key'] = $ds;
+			$obj[$ds_key_left_adjusted]['type'] = $graph_type;
+			$obj[$ds_key_left_adjusted]['format'] = "s";
+			$obj[$ds_key_left_adjusted]['yAxis'] = 1;
+			$obj[$ds_key_left_adjusted]['unit_acronym'] = $unit_acronym;
+			$obj[$ds_key_left_adjusted]['unit_desc'] = $unit_desc_lookup[$unit_acronym];
+			$obj[$ds_key_left_adjusted]['invert'] = $invert;
+			$obj[$ds_key_left_adjusted]['ninetyfifth'] = $ninetyfifth;
 
 			$data = array();
 
+			$dataKeys = array_keys($data_list);
+			$lastDataKey = array_pop($dataKeys);
 			foreach ($data_list as $time => $value) {
-				$data[] = array($time*1000, $value);
+				if($time != $lastDataKey) {
+					$data[] = array($time*1000, $value);
+				}
 			}
 
-			$obj[$ds_key_left]['values'] = $data;
+			$obj[$ds_key_left_adjusted]['values'] = $data;
+
 		}
 	}
 
 	if ( ($left_pieces[1] === "traffic") || ($left_pieces[1] === "packets") ) {
-		//TODO add inpass and outpass and make two new "total" lines
 
-		//loop through array
 		foreach ($obj as $key => $value) {
 			//grab inpass and outpass attributes and values
 			if ($value['key'] === "inpass") {
@@ -263,7 +269,7 @@ if ($left != "null") {
 
 		}
 
-		//totals
+		//calulate the new total lines
 		$inpass_total = [];
 		foreach ($inpass_array as $key => $value) {
 			$inpass_total[] = array($key, $value + $inpass6_array[$key]);
@@ -274,26 +280,26 @@ if ($left != "null") {
 			$outpass_total[] = array($key, $value + $outpass6_array[$key]);
 		}
 
-		//add to array as total
-		$obj[$ds_key_left]['key'] = "inpass total";
-		$obj[$ds_key_left]['type'] = "line";
-		$obj[$ds_key_left]['format'] = "s";
-		$obj[$ds_key_left]['yAxis'] = 1;
-		$obj[$ds_key_left]['unit_acronym'] = $left_unit_acronym;
-		$obj[$ds_key_left]['unit_desc'] = $unit_desc_lookup[$left_unit_acronym];
-		$obj[$ds_key_left]['invert'] = false;
-		$obj[$ds_key_left]['ninetyfifth'] = true;
-		$obj[$ds_key_left]['values'] = $inpass_total;
+		//add the new total lines to array
+		$obj[$ds_key_left_adjusted]['key'] = "inpass total";
+		$obj[$ds_key_left_adjusted]['type'] = "line";
+		$obj[$ds_key_left_adjusted]['format'] = "s";
+		$obj[$ds_key_left_adjusted]['yAxis'] = 1;
+		$obj[$ds_key_left_adjusted]['unit_acronym'] = $left_unit_acronym;
+		$obj[$ds_key_left_adjusted]['unit_desc'] = $unit_desc_lookup[$left_unit_acronym];
+		$obj[$ds_key_left_adjusted]['invert'] = false;
+		$obj[$ds_key_left_adjusted]['ninetyfifth'] = true;
+		$obj[$ds_key_left_adjusted]['values'] = $inpass_total;
 
-		$obj[$ds_key_left+1]['key'] = "outpass total";
-		$obj[$ds_key_left+1]['type'] = "line";
-		$obj[$ds_key_left+1]['format'] = "s";
-		$obj[$ds_key_left+1]['yAxis'] = 1;
-		$obj[$ds_key_left+1]['unit_acronym'] = $left_unit_acronym;
-		$obj[$ds_key_left+1]['unit_desc'] = $unit_desc_lookup[$left_unit_acronym];
-		$obj[$ds_key_left+1]['invert'] = $invert_graph;
-		$obj[$ds_key_left+1]['ninetyfifth'] = true;
-		$obj[$ds_key_left+1]['values'] = $outpass_total;
+		$obj[$ds_key_left_adjusted+1]['key'] = "outpass total";
+		$obj[$ds_key_left_adjusted+1]['type'] = "line";
+		$obj[$ds_key_left_adjusted+1]['format'] = "s";
+		$obj[$ds_key_left_adjusted+1]['yAxis'] = 1;
+		$obj[$ds_key_left_adjusted+1]['unit_acronym'] = $left_unit_acronym;
+		$obj[$ds_key_left_adjusted+1]['unit_desc'] = $unit_desc_lookup[$left_unit_acronym];
+		$obj[$ds_key_left_adjusted+1]['invert'] = $invert_graph;
+		$obj[$ds_key_left_adjusted+1]['ninetyfifth'] = true;
+		$obj[$ds_key_left_adjusted+1]['values'] = $outpass_total;
 	}
 }
 
@@ -317,13 +323,13 @@ if ($right != "null") {
 
 		if ($left != "null") {
 			//TODO make sure subtracting ignored_left is correct
-			$last_left_key = 1 + $ds_key_left - $ignored_left;
+			$last_left_key = 1 + $ds_key_left_adjusted;
 		}
 
-		$ds_key = $last_left_key + $ds_key_right - $ignored_right;
 		$data_list = $rrd_array['data'][$ds];
 		$ignore = $invert = $ninetyfifth = false;
 		$graph_type = "line";
+		$unit_acronym = $right_unit_acronym;
 
 		//Override acronym based on line name
 		switch($ds) {
@@ -336,22 +342,26 @@ if ($right != "null") {
 		case "system":
 			$ds = "system util.";
 			break;
-		case "Packet Loss":
-			$right_unit_acronym = "%";
+		case "stddev":
+			$ds = "stddev of delay";
+			break;
+		case "loss":
+			$ds = "packet loss";
+			$unit_acronym = "%";
 			break;
 		case "processes":
-			$right_unit_acronym = "";
+			$unit_acronym = "";
 			break;
 		case "pfstates":
-			$right_unit_acronym = "";
+			$unit_acronym = "";
 			$ds = "Filter States";
 			break;
 		case "srcip":
-			$right_unit_acronym = "";
+			$unit_acronym = "";
 			$ds = "Source Addr.";
 			break;
 		case "dstip":
-			$right_unit_acronym = "";
+			$unit_acronym = "";
 			$ds = "Dest. Addr.";
 			break;
 		case "pfrate":
@@ -362,51 +372,51 @@ if ($right != "null") {
 			$ignore = true;
 			break;
 		case "inpass":
-			//$graph_type = "area"; //TODO figure out why it breaks NVD3 legend/colors
 			$ninetyfifth = true;
 			break;
 		case "inpass6":
-			//$graph_type = "area"; //TODO figure out why it breaks NVD3 legend/colors
 			$ninetyfifth = true;
 			break;
 		case "outpass":
-			//$graph_type = "area"; //TODO figure out why it breaks NVD3 legend/colors
 			$invert = $invert_graph;
 			$ninetyfifth = true;
 			break;
 		case "outpass6":
-			//$graph_type = "area"; //TODO figure out why it breaks NVD3 legend/colors
 			$invert = $invert_graph;
 			$ninetyfifth = true;
 			break;
 		}
 
 		if (!$ignore) {
-			$obj[$ds_key]['key'] = $ds;
-			$obj[$ds_key]['type'] = $graph_type;
-			$obj[$ds_key]['format'] = "s";
-			$obj[$ds_key]['yAxis'] = 2;
-			$obj[$ds_key]['unit_acronym'] = $right_unit_acronym;
-			$obj[$ds_key]['unit_desc'] = $unit_desc_lookup[$right_unit_acronym];
-			$obj[$ds_key]['invert'] = $invert;
-			$obj[$ds_key]['ninetyfifth'] = $ninetyfifth;
+			$ds_key_right_adjusted = $last_left_key + $ds_key_right - $ignored_right;
+
+			$obj[$ds_key_right_adjusted]['key'] = $ds;
+			$obj[$ds_key_right_adjusted]['type'] = $graph_type;
+			$obj[$ds_key_right_adjusted]['format'] = "s";
+			$obj[$ds_key_right_adjusted]['yAxis'] = 2;
+			$obj[$ds_key_right_adjusted]['unit_acronym'] = $unit_acronym;
+			$obj[$ds_key_right_adjusted]['unit_desc'] = $unit_desc_lookup[$unit_acronym];
+			$obj[$ds_key_right_adjusted]['invert'] = $invert;
+			$obj[$ds_key_right_adjusted]['ninetyfifth'] = $ninetyfifth;
 
 			$data = array();
 
+			$dataKeys = array_keys($data_list);
+			$lastDataKey = array_pop($dataKeys);
 			foreach ($data_list as $time => $value) {
-				$data[] = array($time*1000, $value);
+				if($time != $lastDataKey) {
+					$data[] = array($time*1000, $value);
+				}
 			}
 
-			$obj[$ds_key]['values'] = $data;
+			$obj[$ds_key_right_adjusted]['values'] = $data;
 
 		}
 
 	}
 
 	if ( ($right_pieces[1] === "traffic") || ($right_pieces[1] === "packets") ) {
-		//TODO add inpass and outpass and make two new "total" lines
 
-		//loop through array
 		foreach ($obj as $key => $value) {
 
 			//grab inpass and outpass attributes and values
@@ -456,7 +466,7 @@ if ($right != "null") {
 			}
 		}
 
-		//totals
+		//calculate the new total lines
 		$inpass_total = [];
 		foreach ($inpass_array as $key => $value) {
 			$inpass_total[] = array($key, $value + $inpass6_array[$key]);
@@ -467,26 +477,26 @@ if ($right != "null") {
 			$outpass_total[] = array($key, $value + $outpass6_array[$key]);
 		}
 
-		//add to array as total
-		$obj[$ds_key]['key'] = "inpass total";
-		$obj[$ds_key]['type'] = "line";
-		$obj[$ds_key]['format'] = "s";
-		$obj[$ds_key]['yAxis'] = 2;
-		$obj[$ds_key]['unit_acronym'] = $right_unit_acronym;
-		$obj[$ds_key]['unit_desc'] = $unit_desc_lookup[$right_unit_acronym];
-		$obj[$ds_key]['invert'] = false;
-		$obj[$ds_key]['ninetyfifth'] = true;
-		$obj[$ds_key]['values'] = $inpass_total;
+		//add the new total lines to array
+		$obj[$ds_key_right_adjusted]['key'] = "inpass total";
+		$obj[$ds_key_right_adjusted]['type'] = "line";
+		$obj[$ds_key_right_adjusted]['format'] = "s";
+		$obj[$ds_key_right_adjusted]['yAxis'] = 2;
+		$obj[$ds_key_right_adjusted]['unit_acronym'] = $right_unit_acronym;
+		$obj[$ds_key_right_adjusted]['unit_desc'] = $unit_desc_lookup[$right_unit_acronym];
+		$obj[$ds_key_right_adjusted]['invert'] = false;
+		$obj[$ds_key_right_adjusted]['ninetyfifth'] = true;
+		$obj[$ds_key_right_adjusted]['values'] = $inpass_total;
 
-		$obj[$ds_key+1]['key'] = "outpass total";
-		$obj[$ds_key+1]['type'] = "line";
-		$obj[$ds_key+1]['format'] = "s";
-		$obj[$ds_key+1]['yAxis'] = 2;
-		$obj[$ds_key+1]['unit_acronym'] = $right_unit_acronym;
-		$obj[$ds_key+1]['unit_desc'] = $unit_desc_lookup[$right_unit_acronym];
-		$obj[$ds_key+1]['invert'] = $invert_graph;
-		$obj[$ds_key+1]['ninetyfifth'] = true;
-		$obj[$ds_key+1]['values'] = $outpass_total;
+		$obj[$ds_key_right_adjusted+1]['key'] = "outpass total";
+		$obj[$ds_key_right_adjusted+1]['type'] = "line";
+		$obj[$ds_key_right_adjusted+1]['format'] = "s";
+		$obj[$ds_key_right_adjusted+1]['yAxis'] = 2;
+		$obj[$ds_key_right_adjusted+1]['unit_acronym'] = $right_unit_acronym;
+		$obj[$ds_key_right_adjusted+1]['unit_desc'] = $unit_desc_lookup[$right_unit_acronym];
+		$obj[$ds_key_right_adjusted+1]['invert'] = $invert_graph;
+		$obj[$ds_key_right_adjusted+1]['ninetyfifth'] = true;
+		$obj[$ds_key_right_adjusted+1]['values'] = $outpass_total;
 	}
 }
 
