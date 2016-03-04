@@ -217,6 +217,7 @@ stream:
   prealloc-sessions: {$stream_prealloc_sessions}
   midstream: {$stream_enable_midstream}
   async-oneside: {$stream_enable_async}
+  max-synack-queued: {$max_synack_queued}
 
 reassembly:
   memcap: {$reassembly_memcap}

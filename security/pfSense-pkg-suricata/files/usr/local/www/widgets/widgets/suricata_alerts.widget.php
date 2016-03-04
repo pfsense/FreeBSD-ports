@@ -56,7 +56,7 @@
 * Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
 * Copyright (C) 2009 Robert Zelaya Sr. Developer
 * Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
-* Copyright (C) 2014 Bill Meeks
+* Copyright (C) 2016 Bill Meeks
 *
 */
 
@@ -121,7 +121,7 @@ if (isset($_GET['getNewAlerts'])) {
 	$suri_alerts = suricata_widget_get_alerts();
 	$counter = 0;
 	foreach ($suri_alerts as $a) {
-		$response .= $a['instanceid'] . " " . $a['dateonly'] . "||" . $a['timeonly'] . "||" . $a['src'] . "||";
+		$response .= $a['instanceid'] . "||" . $a['dateonly'] . " " . $a['timeonly'] . "||" . $a['src'] . "||";
 		$response .= $a['dst'] . "||" . $a['msg'] . "\n";
 		$counter++;
 		if($counter >= $suri_nentries) {
@@ -223,7 +223,18 @@ function suricata_widget_get_alerts() {
 
 					// Create a DateTime object from the event timestamp that
 					// we can use to easily manipulate output formats.
-					$event_tm = date_create_from_format("m/d/Y-H:i:s.u", $fields[0]);
+					if (($event_tm = date_create_from_format("m/d/Y-H:i:s.u", $fields[0])) !== FALSE) {
+						$suricata_alerts[$counter]['timestamp'] = strval(date_timestamp_get($event_tm));
+						$suricata_alerts[$counter]['timeonly'] = date_format($event_tm, "H:i:s");
+						$suricata_alerts[$counter]['dateonly'] = date_format($event_tm, "M d");
+					}
+					else {
+						// For some reason the event timestamp was invalid, 
+						// set some default empty values for the fields.
+						$suricata_alerts[$counter]['timestamp'] = 0;
+						$suricata_alerts[$counter]['timeonly'] = ' ';
+						$suricata_alerts[$counter]['dateonly'] = ' ';
+					}
 
 					// Check the 'CATEGORY' field for the text "(null)" and
 					// substitute "No classtype defined".
@@ -232,9 +243,6 @@ function suricata_widget_get_alerts() {
 					}
 
 					$suricata_alerts[$counter]['instanceid'] = strtoupper(convert_friendly_interface_to_friendly_descr($a_instance[$instanceid]['interface']));
-					$suricata_alerts[$counter]['timestamp'] = strval(date_timestamp_get($event_tm));
-					$suricata_alerts[$counter]['timeonly'] = date_format($event_tm, "H:i:s");
-					$suricata_alerts[$counter]['dateonly'] = date_format($event_tm, "M d");
 					$suricata_alerts[$counter]['msg'] = $fields['msg'];
 
 					// Add square brackets around any IPv6 address
@@ -279,11 +287,16 @@ function suricata_widget_get_alerts() {
 ?>
 
 <table class="table table-hover table-striped table-condensed">
+	<colgroup>
+		<col style="width: 24%;" />
+		<col style="width: 38%;" />
+		<col style="width: 38%;" />
+	</colgroup>
 	<thead>
 		<tr>
-			<th><?=gettext("IF/Date")?></th>
-			<th><?=gettext("Src/Dst Address")?></th>
-			<th><?=gettext("Description")?></th>
+			<th><?=gettext("Interface/Time");?></th>
+			<th><?=gettext("Src/Dst Address");?></th>
+			<th><?=gettext("Description");?></th>
 		</tr>
 	</thead>
 	<tbody id="suricata-alert-entries">
@@ -292,11 +305,22 @@ function suricata_widget_get_alerts() {
 		$counter=0;
 		if (is_array($suricata_alerts)) {
 			foreach ($suricata_alerts as $alert) {
-				$evenRowClass = $counter % 2 ? " listMReven" : " listMRodd";
-				echo("	<tr>\n
-				<td>" . $alert['instanceid'] . " " . $alert['dateonly'] . "<br/>" . $alert['timeonly'] . "</td>
-				<td><div style='display:inline;' title='" . $alert['src'] . "'>" . $alert['src'] . "</div><br/><div style='display:inline;' title='" . $alert['dst'] . "'>" . $alert['dst'] . "</div></td>
-				<td><div style='display: fixed; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.2em; max-height: 2.4em; overflow: hidden; text-overflow: ellipsis;' title='{$alert['msg']}'>" . $alert['msg'] . "</div></td>\n</tr>");
+	?>
+				<tr>
+					<td style="overflow: hidden; text-overflow: ellipsis;" nowrap><?=$alert['instanceid']; ?><br/>
+						<?=$alert['dateonly']; ?> <?=$alert['timeonly']; ?>
+					</td>
+					<td style="overflow: hidden; text-overflow: ellipsis;" nowrap>
+						<div style="display:inline;" title="<?=$alert['src']; ?>"><?=$alert['src']; ?></div><br/>
+						<div style="display:inline;" title="<?=$alert['dst']; ?>"><?=$alert['dst']; ?></div>
+					</td>
+					<td>
+						<div style="display: fixed; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; 
+							line-height: 1.2em; max-height: 2.4em; overflow: hidden; text-overflow: ellipsis;" 
+							title="<?=$alert['msg']; ?>"><?=$alert['msg']; ?></div>
+					</td>
+				</tr>
+	<?php
 				$counter++;
 
 				if($counter >= $suri_nentries) {
@@ -312,18 +336,24 @@ function suricata_widget_get_alerts() {
 </div>
 
 <div id="widget-<?=$widgetname?>_panel-footer" class="panel-footer collapse">
-	<input type="hidden" id="suricata_alerts-config" name="suricata_alerts-config" value=""/>
-
-	<form action="/widgets/widgets/suricata_alerts.widget.php" method="post" name="iformd">
-		Enter number of recent alerts to display (default is 5)<br/>
-		<input type="text" size="5" name="widget_suricata_display_lines" class="formfld unknown" id="widget_suricata_display_lines" value="<?= $config['widgets']['widget_suricata_display_lines'] ?>" />
-		&nbsp;&nbsp;<input id="submitd" name="submitd" type="submit" class="formbtn" value="Save" />
-    </form>
+	<input type="hidden" id="suricata_alerts-config" name="suricata_alerts-config" value="" />
+		<form action="/widgets/widgets/suricata_alerts.widget.php" method="post" name="iformd" class="form-horizontal">
+			<div class="form-group">
+				<label for="widget_suricata_display_lines" class="col-sm-4 control-label"><?=gettext('Alerts to Display:')?></label>
+				<div class="col-sm-3">
+					<input type="number" name="widget_suricata_display_lines" class="form-control" id="widget_suricata_display_lines" 
+					value="<?= $config['widgets']['widget_suricata_display_lines'] ?>" placeholder="5" min="1" max="20" />
+				</div>
+				<div class="col-sm-3">
+					<button id="submitd" name="submitd" type="submit" class="btn btn-sm btn-primary"><?=gettext('Save')?></button>
+				</div>
+			</div>
+		</form>
 
 
 <script type="text/javascript">
 //<![CDATA[
-	var suricataupdateDelay = 10000; // update every 10 seconds
+	var suricataupdateDelay = 50000; // update every 5 seconds
 	var suri_nentries = <?php echo $suri_nentries; ?>; // default is 5
 //]]>
 </script>

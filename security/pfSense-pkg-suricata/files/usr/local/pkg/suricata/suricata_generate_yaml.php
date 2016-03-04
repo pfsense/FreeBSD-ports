@@ -544,6 +544,11 @@ if (!empty($suricatacfg['reassembly_to_client_chunk']))
 else
 	$reassembly_to_client_chunk = "2560";
 
+if (!empty($suricatacfg['max_synack_queued']))
+	$max_synack_queued = $suricatacfg['max_synack_queued'];
+else
+	$max_synack_queued = "5";
+
 if ($suricatacfg['enable_midstream_sessions'] == 'on')
 	$stream_enable_midstream = "true";
 else
