@@ -409,6 +409,7 @@ if ($_POST["save"] && !$input_errors) {
 			$natent['reassembly_depth'] = '1048576';
 			$natent['reassembly_to_server_chunk'] = '2560';
 			$natent['reassembly_to_client_chunk'] = '2560';
+			$natent['max_synack_queued'] = '5';
 			$natent['enable_midstream_sessions'] = 'off';
 			$natent['enable_async_sessions'] = 'off';
 			$natent['delayed_detect'] = 'off';

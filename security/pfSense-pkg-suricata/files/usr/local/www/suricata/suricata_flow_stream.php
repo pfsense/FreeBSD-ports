@@ -282,6 +282,7 @@ elseif ($_POST['ResetAll']) {
 	$pconfig['reassembly_to_client_chunk'] = '2560';
 	$pconfig['enable_midstream_sessions'] = 'off';
 	$pconfig['enable_async_sessions'] = 'off';
+	$pconfig['max_synack_queued'] = '5';
 
 	/* Log a message at the top of the page to inform the user */
 	$savemsg = gettext("All flow and stream settings have been reset to their defaults.  Click APPLY to save the changes.");
@@ -330,6 +331,7 @@ elseif ($_POST['save'] || $_POST['apply']) {
 		if ($_POST['reassembly_depth'] != "") { $natent['reassembly_depth'] = $_POST['reassembly_depth']; }else{ $natent['reassembly_depth'] = "1048576"; }
 		if ($_POST['reassembly_to_server_chunk'] != "") { $natent['reassembly_to_server_chunk'] = $_POST['reassembly_to_server_chunk']; }else{ $natent['reassembly_to_server_chunk'] = "2560"; }
 		if ($_POST['reassembly_to_client_chunk'] != "") { $natent['reassembly_to_client_chunk'] = $_POST['reassembly_to_client_chunk']; }else{ $natent['reassembly_to_client_chunk'] = "2560"; }
+		if ($_POST['max_synack_queued'] != "") { $natent['max_synack_queued'] = $_POST['max_synack_queued']; }else{ $natent['max_synack_queued'] = "5"; }
 
 		/**************************************************/
 		/* If we have a valid rule ID, save configuration */
@@ -852,6 +854,12 @@ $section->addInput(new Form_Input(
 	'text',
 	$pconfig['reassembly_to_client_chunk']
 ))->setHelp('Amount of a stream to reassemble. Default is 2,560 bytes. Sets the chunk size, in bytes, for raw stream inspection performed for \'to-client\' traffic.');
+$section->addInput(new Form_Input(
+	'max_synack_queued',
+	'Max different SYN/ACKs to queue',
+	'number',
+	$pconfig['max_synack_queued']
+))->setHelp('Sets max number of extra SYN/ACKs Suricata will queue and delay judgement on while awaiting proper ACK for 3-way handshake. Default is 5.');
 $form->add($section);
 
 print($form);
