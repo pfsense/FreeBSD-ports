@@ -84,12 +84,6 @@ chdir($rrddbpath);
 $databases = glob("*.rrd");
 chdir($home);
 
-print_r($databases);
-
-$config['rrd']['category'] = "left=system-processor&right=null&start=&end=&timePeriod=-1d&invert=true";
-
-echo "<h1>".$config['rrd']['category']."</h1>";
-
 $system = $packets = $quality = $traffic = $captiveportal = $ntpd = $queues = $queuedrops = $dhcpd = [];
 
 //populate arrays for dropdowns based on rrd filenames
