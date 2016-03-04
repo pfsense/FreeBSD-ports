@@ -34,7 +34,7 @@
 require_once("pfsense-utils.inc");
 require_once("config.inc");
 require_once("functions.inc");
-require_once("service-utils.inc");
+require_once("service-utils.inc"); // Need this to get RCFILEPREFIX definition
 require_once("pkg-utils.inc");
 require_once("filter.inc");
 require("/usr/local/pkg/snort/snort_defs.inc");
