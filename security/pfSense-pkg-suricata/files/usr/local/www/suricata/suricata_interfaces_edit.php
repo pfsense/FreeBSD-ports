@@ -56,7 +56,7 @@
 * Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
 * Copyright (C) 2009 Robert Zelaya Sr. Developer
 * Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
-* Copyright (C) 2014 Bill Meeks
+* Copyright (C) 2016 Bill Meeks
 *
 */
 
@@ -233,7 +233,7 @@ if ($_REQUEST['ajax'] == 'ajax') {
 	exit;
 }
 
-if ($_POST["save"] && !$input_errors) {
+if (isset($_POST["save"]) && !$input_errors) {
 	if (!isset($_POST['interface']))
 		$input_errors[] = gettext("Choosing an Interface is mandatory!");
 
@@ -575,15 +575,17 @@ $section->addInput(new Form_Select(
 	'alertsystemlog_facility',
 	'Log Facility',
 	$pconfig['alertsystemlog_facility'],
-	array(  "auth", "authpriv", "daemon", "kern", "security", "syslog", "user", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7" )
-))->setHelp('Select system log Facility to use for reporting. Default is local1.');
+	array(  "auth" => "AUTH", "authpriv" => "AUTHPRIV", "daemon" => "DAEMON", "kern" => "KERN", "security" => "SECURITY", 
+		"syslog" => "SYSLOG", "user" => "USER", "local0" => "LOCAL0", "local1" => "LOCAL1", "local2" => "LOCAL2", 
+		"local3" => "LOCAL3", "local4" => "LOCAL4", "local5" => "LOCAL5", "local6" => "LOCAL6", "local7" => "LOCAL7" )
+))->setHelp('Select system log Facility to use for reporting. Default is LOCAL1.');
 
 $section->addInput(new Form_Select(
 	'alertsystemlog_priority',
 	'Log Priority',
 	$pconfig['alertsystemlog_priority'],
-	array( "emerg", "crit", "alert", "err", "warning", "notice", "info" )
-))->setHelp('Select system log Priority (Level) to use for reporting. Default is notice.');
+	array( "emerg" => "EMERG", "crit" => "CRIT", "alert" => "ALERT", "err" => "ERR", "warning" => "WARNING", "notice" => "NOTICE", "info" => "INFO" )
+))->setHelp('Select system log Priority (Level) to use for reporting. Default is NOTICE.');
 
 $section->addInput(new Form_Checkbox(
 	'enable_dns_log',
@@ -735,7 +737,7 @@ $section->addInput(new Form_Select(
 	'eve_output_type',
 	'EVE Output Type',
 	$pconfig['eve_output_type'],
-	array("file", "syslog")
+	array("file" => "FILE", "syslog" => "SYSLOG")
 ))->setHelp('Select EVE log output destination. Choosing FILE is suggested, and is the default value.');
 
 $group = new Form_Group('EVE Logged Info');
@@ -758,8 +760,8 @@ $group->add(new Form_Checkbox(
 
 $group->add(new Form_Checkbox(
 	'eve_log_dns',
-	'DNS Requests/Replies',
-	'DNS Requests/Replies',
+	'DNS Traffic',
+	'DNS Traffic',
 	$pconfig['eve_log_dns'] == 'on' ? true:false,
 	'on'
 ));
@@ -816,7 +818,7 @@ $section->addInput(new Form_Select(
 	'blockoffendersip',
 	'Which IP to Block',
 	$pconfig['blockoffendersip'],
-	array( 'src','dst','both' )
+	array( 'src' => 'SRC', 'dst' => 'DST', 'both' => 'BOTH' )
 ))->setHelp('Select which IP extracted from the packet you wish to block. Choosing BOTH is suggested, and it is the default value.');
 
 $form->add($section);
