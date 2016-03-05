@@ -16,8 +16,8 @@ function suricata_alerts_fetch_new_rules_callback(callback_data) {
 		var line = '';
 		line =  '<td style="overflow: hidden; text-overflow: ellipsis;" nowrap>';
 		line += row_split[0] + '<br/>' + row_split[1] + '</td>';		
-		line += '<td style="overflow: hidden; text-overflow: ellipsis;" nowrap>;
-		line += '<div style="display:inline;" title="' + row_split[2] + '">' + row_split[2] + '</div><br/>;
+		line += '<td style="overflow: hidden; text-overflow: ellipsis;" nowrap>';
+		line += '<div style="display:inline;" title="' + row_split[2] + '">' + row_split[2] + '</div><br/>';
 		line += '<div style="display:inline;" title="' + row_split[3] + '">' + row_split[3] + '</div></td>';
 		line += '<td><div style="display: fixed; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.2em; max-height: 2.4em; overflow: hidden; text-overflow: ellipsis;" title="' + row_split[4] + '">' + row_split[4] + '</div></td>';
 		new_data_to_add[new_data_to_add.length] = line;
