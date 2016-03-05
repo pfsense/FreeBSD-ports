@@ -121,10 +121,14 @@ foreach ($databases as $db) {
 		if (empty($friendly)) {
 			if(substr($db_arr[0], 0, 5) === "ovpns") {
 				
-				foreach ($config['openvpn']["openvpn-server"] as $id => $setting) {
+				if (is_array($config['openvpn']["openvpn-server"])) {
 
-					if($config['openvpn']["openvpn-server"][$id]['vpnid'] === substr($db_arr[0],5)) {
-						$friendly = "OpenVPN Server: " . htmlspecialchars($config['openvpn']["openvpn-server"][$id]['description']);
+					foreach ($config['openvpn']["openvpn-server"] as $id => $setting) {
+
+						if($config['openvpn']["openvpn-server"][$id]['vpnid'] === substr($db_arr[0],5)) {
+							$friendly = "OpenVPN Server: " . htmlspecialchars($config['openvpn']["openvpn-server"][$id]['description']);
+						}
+
 					}
 
 				}
@@ -146,11 +150,15 @@ foreach ($databases as $db) {
 
 		if (empty($friendly)) {
 			if(substr($db_arr[0], 0, 5) === "ovpns") {
-				
-				foreach ($config['openvpn']["openvpn-server"] as $id => $setting) {
 
-					if($config['openvpn']["openvpn-server"][$id]['vpnid'] === substr($db_arr[0],5)) {
-						$friendly = "OpenVPN Server: " . htmlspecialchars($config['openvpn']["openvpn-server"][$id]['description']);
+				if (is_array($config['openvpn']["openvpn-server"])) {
+				
+					foreach ($config['openvpn']["openvpn-server"] as $id => $setting) {
+
+						if($config['openvpn']["openvpn-server"][$id]['vpnid'] === substr($db_arr[0],5)) {
+							$friendly = "OpenVPN Server: " . htmlspecialchars($config['openvpn']["openvpn-server"][$id]['description']);
+						}
+
 					}
 
 				}
@@ -197,10 +205,14 @@ foreach ($databases as $db) {
 		if (empty($friendly)) {
 			if(substr($db_arr[0], 0, 5) === "ovpns") {
 				
-				foreach ($config['openvpn']["openvpn-server"] as $id => $setting) {
+				if (is_array($config['openvpn']["openvpn-server"])) {
 
-					if($config['openvpn']["openvpn-server"][$id]['vpnid'] === substr($db_arr[0],5)) {
-						$friendly = "OpenVPN Server: " . htmlspecialchars($config['openvpn']["openvpn-server"][$id]['description']);
+					foreach ($config['openvpn']["openvpn-server"] as $id => $setting) {
+
+						if($config['openvpn']["openvpn-server"][$id]['vpnid'] === substr($db_arr[0],5)) {
+							$friendly = "OpenVPN Server: " . htmlspecialchars($config['openvpn']["openvpn-server"][$id]['description']);
+						}
+
 					}
 
 				}
@@ -354,7 +366,10 @@ include("head.inc");
 	</div>
 </form>
 
-<p><button id="update" class="btn btn-primary">Update</button></p>
+<p>
+	<button id="update" class="btn btn-primary">Update</button>
+	<span id="loading-msg">Loading Graph...</span>
+</p>
 
 <div class="panel panel-default">
 	<div class="panel-heading">
@@ -828,6 +843,8 @@ events.push(function() {
 	}
 
 	$( "#update" ).click(function() {
+		$("#chart").hide();
+		$("#loading-msg").show();
 		redraw_graph(getOptions());
 	});
 
@@ -843,8 +860,11 @@ events.push(function() {
 	function redraw_graph(options) {
 
 		d3.json("rrd_fetch_json.php")
-		    .header("Content-Type", "application/x-www-form-urlencoded")
-		    .post(options, function(error, data) {
+			.header("Content-Type", "application/x-www-form-urlencoded")
+			.post(options, function(error, data) {
+
+			$("#chart").show();
+			$("#loading-msg").hide();
 
 			if (error) {
 				return console.warn(error);
@@ -916,10 +936,10 @@ events.push(function() {
 				.text("Right Axis: " + rightTitle);
 
 			d3.select('#chart svg')
-			    .datum(data)
-			    .transition()
-			    .duration(500)
-			    .call(chart);
+				.datum(data)
+				.transition()
+				.duration(500)
+				.call(chart);
 
 			chart.update();
 
@@ -954,10 +974,6 @@ events.push(function() {
 			var avg = d3.sum(summary)/summary.length;
 			var last = summary[summary.length-1];
 
-			if (avg < 1) {
-				avg = 1;
-			}
-
 			// TODO make function
 			var formatted_avg = d3.formatPrefix(avg);
 			var formatted_min = d3.formatPrefix(min);
@@ -987,8 +1003,11 @@ events.push(function() {
 	var chart;
 
 	d3.json("rrd_fetch_json.php")
-	    .header("Content-Type", "application/x-www-form-urlencoded")
-	    .post(getOptions(), function(error, json) {
+		.header("Content-Type", "application/x-www-form-urlencoded")
+		.post(getOptions(), function(error, json) {
+
+		$("#chart").show();
+		$("#loading-msg").hide();
 
 		if (error) {
 			return console.warn(error);
@@ -1001,6 +1020,7 @@ events.push(function() {
 		var data = json;
 
 		data.map(function(series) {
+
 			series.values = series.values.map(function(d) {
 				if (series.invert) {
 					return { x: d[0], y: 0 - d[1] }
@@ -1008,14 +1028,17 @@ events.push(function() {
 					return { x: d[0], y: d[1] }
 				}
 			});
+
 			return series;
+
 		});
 
 		nv.addGraph(function() {
+
 			chart = nv.models.multiChart()
-			    .color(d3.scale.category20().range())
-			    .useInteractiveGuideline(true)
-			    .margin({top: 160, right:100, left:100, bottom: 50});
+				.color(d3.scale.category20().range())
+				.useInteractiveGuideline(true)
+				.margin({top: 160, right:100, left:100, bottom: 50});
 
 			var timePeriod = $( "#time-period" ).val();
 			var timeFormat = timeLookup[timePeriod];
@@ -1041,6 +1064,7 @@ events.push(function() {
 
 			//add left title
 			var leftTitle = $("#category-left option:selected").text() + " -- " + $("#graph-left option:selected").text();
+			
 			d3.select('#chart svg')
 				.append("text")
 				.attr("x", 150)
@@ -1090,13 +1114,20 @@ events.push(function() {
 						inboundTotal[tempKey] = v;
 					}
 
-					if ( ($("#invert").val() === "true") && tempKey.includes('outpass') ) {
+					if ( ($("#invert").val() === "true") && (tempKey.includes('outpass') || tempKey.includes('packet loss')) ) {
 						var trueValue = 0 - data.series[v].value;
 					} else {
 						var trueValue = data.series[v].value;
 					}
 
-					content += '<tr><td class="legend-color-guide"><div style="background-color: ' + data.series[v].color + '"></div></td><td>' + data.series[v].key + '</td><td class="value"><strong>' + d3.format(',')(trueValue.toFixed(2)) + '</strong></td></tr>';
+					//change decimal places to round to if a really small number
+					if(trueValue < .001) {
+						var adjustedTrueValue = d3.format(',')(trueValue.toFixed(6)); //TODO dynamically calculate number of zeros after decimal and base off that
+					} else {
+						var adjustedTrueValue = d3.format(',')(trueValue.toFixed(2));
+					}
+
+					content += '<tr><td class="legend-color-guide"><div style="background-color: ' + data.series[v].color + '"></div></td><td>' + data.series[v].key + '</td><td class="value"><strong>' + adjustedTrueValue + '</strong></td></tr>';
 				}
 
 				content += '</tbody></table>';

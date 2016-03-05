@@ -352,7 +352,7 @@ $section->addInput(new Form_Input(
 	'Sensor Name',
 	'text',
 	$pconfig['barnyard_sensor_name']
-))->setHelp('Number of defragmented flow for reassembly.');
+))->setHelp('Unique name to use for this sensor. (Optional).');
 $section->addInput(new Form_Checkbox(
 	'barnyard_xff_logging',
 	'X-Forwarded-For Logging',

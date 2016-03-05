@@ -56,7 +56,7 @@
 * Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
 * Copyright (C) 2009 Robert Zelaya Sr. Developer
 * Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
-* Copyright (C) 2014 Bill Meeks
+* Copyright (C) 2016 Bill Meeks
 *
 */
 
@@ -144,6 +144,8 @@ elseif (isset($id) && !isset($a_rule[$id])) {
 // Set defaults for any empty key parameters
 if (empty($pconfig['blockoffendersip']))
 	$pconfig['blockoffendersip'] = "both";
+if (empty($pconfig['blockoffenderskill']))
+	$pconfig['blockoffenderskill'] = "on";
 if (empty($pconfig['max_pending_packets']))
 	$pconfig['max_pending_packets'] = "1024";
 if (empty($pconfig['detect_eng_profile']))
@@ -231,7 +233,7 @@ if ($_REQUEST['ajax'] == 'ajax') {
 	exit;
 }
 
-if ($_POST["save"] && !$input_errors) {
+if (isset($_POST["save"]) && !$input_errors) {
 	if (!isset($_POST['interface']))
 		$input_errors[] = gettext("Choosing an Interface is mandatory!");
 
@@ -311,7 +313,7 @@ if ($_POST["save"] && !$input_errors) {
 		if ($_POST['mpm_algo']) $natent['mpm_algo'] = $_POST['mpm_algo']; else unset($natent['mpm_algo']);
 		if ($_POST['sgh_mpm_context']) $natent['sgh_mpm_context'] = $_POST['sgh_mpm_context']; else unset($natent['sgh_mpm_context']);
 		if ($_POST['blockoffenders'] == "on") $natent['blockoffenders'] = 'on'; else $natent['blockoffenders'] = 'off';
-		if ($_POST['blockoffenderskill'] == "on") $natent['blockoffenderskill'] = 'on'; else unset($natent['blockoffenderskill']);
+		if ($_POST['blockoffenderskill'] == "on") $natent['blockoffenderskill'] = 'on'; else $natent['blockoffenderskill'] = 'off';
 		if ($_POST['blockoffendersip']) $natent['blockoffendersip'] = $_POST['blockoffendersip']; else unset($natent['blockoffendersip']);
 		if ($_POST['passlistname']) $natent['passlistname'] =  $_POST['passlistname']; else unset($natent['passlistname']);
 		if ($_POST['homelistname']) $natent['homelistname'] =  $_POST['homelistname']; else unset($natent['homelistname']);
@@ -407,6 +409,7 @@ if ($_POST["save"] && !$input_errors) {
 			$natent['reassembly_depth'] = '1048576';
 			$natent['reassembly_to_server_chunk'] = '2560';
 			$natent['reassembly_to_client_chunk'] = '2560';
+			$natent['max_synack_queued'] = '5';
 			$natent['enable_midstream_sessions'] = 'off';
 			$natent['enable_async_sessions'] = 'off';
 			$natent['delayed_detect'] = 'off';
@@ -572,15 +575,17 @@ $section->addInput(new Form_Select(
 	'alertsystemlog_facility',
 	'Log Facility',
 	$pconfig['alertsystemlog_facility'],
-	array(  "auth", "authpriv", "daemon", "kern", "security", "syslog", "user", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7" )
-))->setHelp('Select system log Facility to use for reporting. Default is local1.');
+	array(  "auth" => "AUTH", "authpriv" => "AUTHPRIV", "daemon" => "DAEMON", "kern" => "KERN", "security" => "SECURITY", 
+		"syslog" => "SYSLOG", "user" => "USER", "local0" => "LOCAL0", "local1" => "LOCAL1", "local2" => "LOCAL2", 
+		"local3" => "LOCAL3", "local4" => "LOCAL4", "local5" => "LOCAL5", "local6" => "LOCAL6", "local7" => "LOCAL7" )
+))->setHelp('Select system log Facility to use for reporting. Default is LOCAL1.');
 
 $section->addInput(new Form_Select(
 	'alertsystemlog_priority',
 	'Log Priority',
 	$pconfig['alertsystemlog_priority'],
-	array( "emerg", "crit", "alert", "err", "warning", "notice", "info" )
-))->setHelp('Select system log Priority (Level) to use for reporting. Default is notice.');
+	array( "emerg" => "EMERG", "crit" => "CRIT", "alert" => "ALERT", "err" => "ERR", "warning" => "WARNING", "notice" => "NOTICE", "info" => "INFO" )
+))->setHelp('Select system log Priority (Level) to use for reporting. Default is NOTICE.');
 
 $section->addInput(new Form_Checkbox(
 	'enable_dns_log',
@@ -732,7 +737,7 @@ $section->addInput(new Form_Select(
 	'eve_output_type',
 	'EVE Output Type',
 	$pconfig['eve_output_type'],
-	array("file", "syslog")
+	array("file" => "FILE", "syslog" => "SYSLOG")
 ))->setHelp('Select EVE log output destination. Choosing FILE is suggested, and is the default value.');
 
 $group = new Form_Group('EVE Logged Info');
@@ -755,8 +760,8 @@ $group->add(new Form_Checkbox(
 
 $group->add(new Form_Checkbox(
 	'eve_log_dns',
-	'DNS Requests/Replies',
-	'DNS Requests/Replies',
+	'DNS Traffic',
+	'DNS Traffic',
 	$pconfig['eve_log_dns'] == 'on' ? true:false,
 	'on'
 ));
@@ -804,7 +809,7 @@ $section->addInput(new Form_Checkbox(
 $section->addInput(new Form_Checkbox(
 	'blockoffenderskill',
 	'Kill States',
-	'Checking this option will kill firewall states for the blocked IP.',
+	'Checking this option will kill firewall states for the blocked IP.  Default is Checked.',
 	$pconfig['blockoffenderskill'] == 'on' ? true:false,
 	'on'
 ));
@@ -813,7 +818,7 @@ $section->addInput(new Form_Select(
 	'blockoffendersip',
 	'Which IP to Block',
 	$pconfig['blockoffendersip'],
-	array( 'src','dst','both' )
+	array( 'src' => 'SRC', 'dst' => 'DST', 'both' => 'BOTH' )
 ))->setHelp('Select which IP extracted from the packet you wish to block. Choosing BOTH is suggested, and it is the default value.');
 
 $form->add($section);
@@ -1022,7 +1027,7 @@ $section->addInput(new Form_Textarea (
 	'configpassthru',
 	'Advanced Configuration Pass-Through',
 	$pconfig['configpassthru']
-))->setHelp('Enter any additional configuration parameters to add to the Snort configuration here, separated by a newline');
+))->setHelp('Enter any additional configuration parameters to add to the Suricata configuration here, separated by a newline');
 
 $form->add($section);
 

@@ -153,6 +153,7 @@ if ($left != "null") {
 		case "loss":
 			$ds = "packet loss";
 			$unit_acronym = "%";
+			$invert = $invert_graph;
 			break;
 		case "processes":
 			$unit_acronym = "";
@@ -348,6 +349,7 @@ if ($right != "null") {
 		case "loss":
 			$ds = "packet loss";
 			$unit_acronym = "%";
+			$invert = $invert_graph;
 			break;
 		case "processes":
 			$unit_acronym = "";

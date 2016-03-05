@@ -272,7 +272,7 @@ print($form);
 			<thead>
 			   <tr class="sortableHeaderRowIdentifier">
 				<th class="listhdrr" axis="number">#</th>
-				<th class="listhdrr" axis="string"><?php echo gettext("IP"); ?></th>
+				<th class="listhdrr" axis="string"><?php echo gettext("Blocked IP"); ?></th>
 				<th class="listhdrr" axis="string"><?php echo gettext("Alert Description"); ?></th>
 				<th class="listhdrr sorttable_nosort"><?php echo gettext("Remove"); ?></th>
 			   </tr>
@@ -381,7 +381,7 @@ print($form);
 				$tmp_ip = str_replace(":", ":&#8203;", $block_ip_str);
 				/* Add reverse DNS lookup icons */
 				$rdns_link = "";
-				$rdns_link .= "<i class=\"fa fa-search icon-pointer\" onclick=\"javascript:resolve_with_ajax('{$blocked_ip}');\" title=\"";
+				$rdns_link .= "<i class=\"fa fa-search icon-pointer\" onclick=\"javascript:resolve_with_ajax('{$block_ip_str}');\" title=\"";
 				$rdns_link .= gettext("Resolve host via reverse DNS lookup") . "\" alt=\"Icon Reverse Resolve with DNS\"></i>";
 				/* use one echo to do the magic*/
 					echo "<tr class=\"text-nowrap\">

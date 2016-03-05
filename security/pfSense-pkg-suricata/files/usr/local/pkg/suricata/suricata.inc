@@ -3252,11 +3252,11 @@ function suricata_remove_dead_rules() {
 	$cats = array();
 
 	// If there is no "deprecated_rules" file, then exit
-	if (!file_exists("{$rulesdir}deprecated_rules"))
+	if (!file_exists("/usr/local/pkg/suricata/deprecated_rules"))
 		return;
 
 	// Open a SplFileObject to read in deprecated rules
-	$file = new SplFileObject("{$rulesdir}deprecated_rules");
+	$file = new SplFileObject("/usr/local/pkg/suricata/deprecated_rules");
 	$file->setFlags(SplFileObject::READ_AHEAD | SplFileObject::SKIP_EMPTY | SplFileObject::DROP_NEW_LINE);
 	while (!$file->eof()) {
 		$line = $file->fgets();
