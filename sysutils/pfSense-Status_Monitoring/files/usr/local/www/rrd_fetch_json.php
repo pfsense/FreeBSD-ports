@@ -66,6 +66,8 @@ $right = $_POST['right'];
 $start = $_POST['start'];
 $end = $_POST['end'];
 $timePeriod = $_POST['timePeriod'];
+$resolution = $_POST['resolution'];
+$graphtype = $_POST['graphtype'];
 $invert_graph = ($_POST['invert'] === 'true');
 
 //Figure out the type of information stored in RRD database
@@ -73,7 +75,7 @@ $left_pieces = explode("-", $left);
 $right_pieces = explode("-", $right);
 
 //Build RRD options bases on settings
-$rrd_options = array( 'AVERAGE', '-r', '900' );
+$rrd_options = array( 'AVERAGE', '-r', $resolution );
 
 if ($start > 0) {
 	array_push($rrd_options, '-s', '1445816765047', '-e', '1456184765047');
@@ -133,7 +135,7 @@ if ($left != "null") {
 
 		$data_list = $rrd_array['data'][$ds];
 		$ignore = $invert = $ninetyfifth = false;
-		$graph_type = "line";
+		$graph_type = $graphtype;
 		$unit_acronym = $left_unit_acronym;
 
 		//Overrides based on line name
@@ -283,7 +285,7 @@ if ($left != "null") {
 
 		//add the new total lines to array
 		$obj[$ds_key_left_adjusted]['key'] = "inpass total";
-		$obj[$ds_key_left_adjusted]['type'] = "line";
+		$obj[$ds_key_left_adjusted]['type'] = $graphtype;
 		$obj[$ds_key_left_adjusted]['format'] = "s";
 		$obj[$ds_key_left_adjusted]['yAxis'] = 1;
 		$obj[$ds_key_left_adjusted]['unit_acronym'] = $left_unit_acronym;
@@ -293,7 +295,7 @@ if ($left != "null") {
 		$obj[$ds_key_left_adjusted]['values'] = $inpass_total;
 
 		$obj[$ds_key_left_adjusted+1]['key'] = "outpass total";
-		$obj[$ds_key_left_adjusted+1]['type'] = "line";
+		$obj[$ds_key_left_adjusted+1]['type'] = $graphtype;
 		$obj[$ds_key_left_adjusted+1]['format'] = "s";
 		$obj[$ds_key_left_adjusted+1]['yAxis'] = 1;
 		$obj[$ds_key_left_adjusted+1]['unit_acronym'] = $left_unit_acronym;
@@ -310,7 +312,7 @@ if ($right != "null") {
 	//$right_step = $rrd_info_array['step'];
 	//$right_last_updated = $rrd_info_array['last_update'];
 
-	$rrd_array = rrd_fetch($rrd_location . $right . ".rrd", array('AVERAGE', '-r', '900', '-s', $timePeriod ));
+	$rrd_array = rrd_fetch($rrd_location . $right . ".rrd", array('AVERAGE', '-r', $resolution, '-s', $timePeriod ));
 
 	if (!($rrd_array)) {
 		die ('{ "error" : "There was an error loading the Right Y Axis." }');
@@ -329,7 +331,7 @@ if ($right != "null") {
 
 		$data_list = $rrd_array['data'][$ds];
 		$ignore = $invert = $ninetyfifth = false;
-		$graph_type = "line";
+		$graph_type = $graphtype;
 		$unit_acronym = $right_unit_acronym;
 
 		//Override acronym based on line name
@@ -481,7 +483,7 @@ if ($right != "null") {
 
 		//add the new total lines to array
 		$obj[$ds_key_right_adjusted]['key'] = "inpass total";
-		$obj[$ds_key_right_adjusted]['type'] = "line";
+		$obj[$ds_key_right_adjusted]['type'] = $graphtype;
 		$obj[$ds_key_right_adjusted]['format'] = "s";
 		$obj[$ds_key_right_adjusted]['yAxis'] = 2;
 		$obj[$ds_key_right_adjusted]['unit_acronym'] = $right_unit_acronym;
@@ -491,7 +493,7 @@ if ($right != "null") {
 		$obj[$ds_key_right_adjusted]['values'] = $inpass_total;
 
 		$obj[$ds_key_right_adjusted+1]['key'] = "outpass total";
-		$obj[$ds_key_right_adjusted+1]['type'] = "line";
+		$obj[$ds_key_right_adjusted+1]['type'] = $graphtype;
 		$obj[$ds_key_right_adjusted+1]['format'] = "s";
 		$obj[$ds_key_right_adjusted+1]['yAxis'] = 2;
 		$obj[$ds_key_right_adjusted+1]['unit_acronym'] = $right_unit_acronym;
