@@ -250,7 +250,7 @@ include("head.inc");
 				<label class="col-sm-2 control-label">
 					Left Axis
 				</label>
-				<div class="col-sm-5">
+				<div class="col-sm-4">
 					<select class="form-control" id="category-left" name="category-left">
 						<option value="system" selected>System</option>
 						<option value="traffic">Traffic</option>
@@ -296,7 +296,7 @@ include("head.inc");
 				<label class="col-sm-2 control-label">
 					Right Axis
 				</label>
-				<div class="col-sm-5">
+				<div class="col-sm-4">
 					<select class="form-control" id="category-right" name="category-right">
 						<option value="system">System</option>
 						<option value="traffic">Traffic</option>
@@ -338,7 +338,7 @@ include("head.inc");
 				<label class="col-sm-2 control-label">
 					Options
 				</label>
-				<div class="col-sm-5">
+				<div class="col-sm-2">
 					<select class="form-control" id="time-period" name="time-period">
 						<option value="-4y">4 Years</option>
 						<option value="-1y">1 Year</option>
@@ -353,7 +353,26 @@ include("head.inc");
 
 					<span class="help-block">Time Period</span>
 				</div>
-				<div class="col-sm-5">
+				<div class="col-sm-2">
+					<select class="form-control" id="resolution" name="resolution">
+						<option value="86400">1 Day</option>
+						<option value="3600">1 Hour</option>
+						<option value="300" selected>5 Minutes</option>
+						<option value="60" disabled>1 Minute</option>
+					</select>
+
+					<span class="help-block">Resolution</span>
+				</div>
+				<div class="col-sm-2">
+					<select class="form-control" id="graph-type" name="graph-type">
+						<option value="hard-code" disabled>Disabled until figure out out how to clear lines/bars of previous type so they don't overlay.</option>
+						<option value="bar" disabled>Bar</option>
+						<option value="line" selected>Line</option>
+					</select>
+
+					<span class="help-block">Graph Type</span>
+				</div>
+				<div class="col-sm-2">
 					<select class="form-control" id="invert" name="invert">
 						<option value="true" selected>On</option>
 						<option value="false">Off</option>
@@ -823,6 +842,64 @@ events.push(function() {
 
 	});
 
+	$('#time-period').on('change', function() {
+
+	switch(this.value) {
+		case "-3m":
+		case "-1y":
+		case "-4y":
+			$("#resolution").empty().prop( "disabled", false );
+			$("#resolution").append('<option value="86400" selected>1 Day</option>');
+			$("#resolution").append('<option value="3600" disabled>1 Hour</option>');
+			$("#resolution").append('<option value="300" disabled>5 Minutes</option>');
+			$("#resolution").append('<option value="60" disabled>1 Minute</option>');
+			break;
+		case "-1m":
+			$("#resolution").empty().prop( "disabled", false );
+			$("#resolution").append('<option value="86400" selected>1 Day</option>');
+			$("#resolution").append('<option value="3600">1 Hour</option>');
+			$("#resolution").append('<option value="300" disabled>5 Minutes</option>');
+			$("#resolution").append('<option value="60" disabled>1 Minute</option>');
+			break;
+		case "-1w":
+			$("#resolution").empty().prop( "disabled", false );
+			$("#resolution").append('<option value="86400">1 Day</option>');
+			$("#resolution").append('<option value="3600" selected>1 Hour</option>');
+			$("#resolution").append('<option value="300" disabled>5 Minutes</option>');
+			$("#resolution").append('<option value="60" disabled>1 Minute</option>');
+			break;
+		case "-1d":
+		case "-2d":
+			$("#resolution").empty().prop( "disabled", false );
+			$("#resolution").append('<option value="86400">1 Day</option>');
+			$("#resolution").append('<option value="3600">1 Hour</option>');
+			$("#resolution").append('<option value="300" selected>5 Minutes</option>');
+			$("#resolution").append('<option value="60" disabled>1 Minute</option>');
+			break;
+		case "-8h":
+			$("#resolution").empty().prop( "disabled", false );
+			$("#resolution").append('<option value="86400">1 Day</option>');
+			$("#resolution").append('<option value="3600">1 Hour</option>');
+			$("#resolution").append('<option value="300" selected>5 Minutes</option>');
+			$("#resolution").append('<option value="60">1 Minute</option>');
+			break;
+		case "-1h":
+			$("#resolution").empty().prop( "disabled", false );
+			$("#resolution").append('<option value="86400">1 Day</option>');
+			$("#resolution").append('<option value="3600">1 Hour</option>');
+			$("#resolution").append('<option value="300">5 Minutes</option>');
+			$("#resolution").append('<option value="60" selected>1 Minute</option>');
+			break;
+		default:
+			$("#resolution").empty().prop( "disabled", false );
+			$("#resolution").append('<option value="86400">1 Day</option>');
+			$("#resolution").append('<option value="3600">1 Hour</option>');
+			$("#resolution").append('<option value="300" selected>5 Minutes</option>');
+			$("#resolution").append('<option value="60">1 Minute</option>');
+			break;
+		}
+	});
+
 	/***
 	**
 	** Grab graphing options on submit
@@ -835,9 +912,11 @@ events.push(function() {
 		var startDate = ""; //$( "#start-date" ).val(); //TODO make human readable and convert to timestamp
 		var endDate = ""; //$( "#end-date" ).val(); //TODO make human readable and convert to timestamp
 		var timePeriod = $( "#time-period" ).val();
+		var resolution = $( "#resolution" ).val();
+		var graphtype = $( "#graph-type" ).val();
 		var invert = $( "#invert" ).val();
 
-		var graphOptions = 'left=' + graphLeft + '&right=' + graphRight + '&start=' + startDate + '&end=' + endDate + '&timePeriod=' + timePeriod + '&invert=' + invert ;
+		var graphOptions = 'left=' + graphLeft + '&right=' + graphRight + '&start=' + startDate + '&end=' + endDate + '&timePeriod=' + timePeriod + '&resolution=' + resolution + '&graphtype=' + graphtype + '&invert=' + invert ;
 
 		return graphOptions;
 	}
