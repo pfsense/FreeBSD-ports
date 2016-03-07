@@ -878,14 +878,14 @@ events.push(function() {
 			break;
 		case "-8h":
 			$("#resolution").empty().prop( "disabled", false );
-			$("#resolution").append('<option value="86400">1 Day</option>');
+			$("#resolution").append('<option value="86400" disable>1 Day</option>');
 			$("#resolution").append('<option value="3600">1 Hour</option>');
 			$("#resolution").append('<option value="300" selected>5 Minutes</option>');
 			$("#resolution").append('<option value="60">1 Minute</option>');
 			break;
 		case "-1h":
 			$("#resolution").empty().prop( "disabled", false );
-			$("#resolution").append('<option value="86400">1 Day</option>');
+			$("#resolution").append('<option value="86400" disable>1 Day</option>');
 			$("#resolution").append('<option value="3600">1 Hour</option>');
 			$("#resolution").append('<option value="300">5 Minutes</option>');
 			$("#resolution").append('<option value="60" selected>1 Minute</option>');
