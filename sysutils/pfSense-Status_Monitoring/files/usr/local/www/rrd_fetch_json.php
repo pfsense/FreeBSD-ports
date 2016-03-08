@@ -91,7 +91,7 @@ $graph_unit_lookup = array(
 	"traffic"   => "b/s",
 	"packets"   => "pps",
 	"states"    => "cps",
-	"quality"   => "ms",
+	"quality"   => "s",
 	"processor" => "%",
 	"memory"    => "%"
 );
@@ -110,7 +110,7 @@ $unit_desc_lookup = array(
 	"b/s" => "Bits Per Second",
 	"pps" => "Packets Per Second",
 	"cps" => "Changes Per Second",
-	"ms"  => "Milliseconds",
+	"s"  => "Seconds",
 	"%"   => "Percent",
 	""    => ""
 );
@@ -137,6 +137,7 @@ if ($left != "null") {
 		$ignore = $invert = $ninetyfifth = false;
 		$graph_type = $graphtype;
 		$unit_acronym = $left_unit_acronym;
+		$multiplier = 1;
 
 		//Overrides based on line name
 		switch($ds) {
@@ -150,7 +151,10 @@ if ($left != "null") {
 			$ds = "system util.";
 			break;
 		case "stddev":
-			$ds = "stddev of delay";
+			$ds = "delay std. dev.";
+			break;
+		case "delay":
+			$ds = "delay average";
 			break;	
 		case "loss":
 			$ds = "packet loss";
@@ -162,18 +166,18 @@ if ($left != "null") {
 			break;
 		case "pfstates":
 			$unit_acronym = "";
-			$ds = "Filter States";
+			$ds = "filter states";
 			break;
 		case "srcip":
 			$unit_acronym = "";
-			$ds = "Source Addr.";
+			$ds = "source addr.";
 			break;
 		case "dstip":
 			$unit_acronym = "";
-			$ds = "Dest. Addr.";
+			$ds = "dest. addr.";
 			break;
 		case "pfrate":
-			$ds = "State Changes";
+			$ds = "state changes";
 			break;
 		case "pfnat":
 			$ignored_left++;
@@ -181,17 +185,21 @@ if ($left != "null") {
 			break;
 		case "inpass":
 			$ninetyfifth = true;
+			$multiplier = 8;
 			break;
 		case "inpass6":
 			$ninetyfifth = true;
+			$multiplier = 8;
 			break;
 		case "outpass":
 			$invert = $invert_graph;
 			$ninetyfifth = true;
+			$multiplier = 8;
 			break;
 		case "outpass6":
 			$invert = $invert_graph;
 			$ninetyfifth = true;
+			$multiplier = 8;
 			break;
 		}
 
@@ -213,7 +221,7 @@ if ($left != "null") {
 			$lastDataKey = array_pop($dataKeys);
 			foreach ($data_list as $time => $value) {
 				if($time != $lastDataKey) {
-					$data[] = array($time*1000, $value);
+					$data[] = array($time*1000, $value*$multiplier);
 				}
 			}
 
@@ -333,6 +341,7 @@ if ($right != "null") {
 		$ignore = $invert = $ninetyfifth = false;
 		$graph_type = $graphtype;
 		$unit_acronym = $right_unit_acronym;
+		$multiplier = 1;
 
 		//Override acronym based on line name
 		switch($ds) {
@@ -346,7 +355,10 @@ if ($right != "null") {
 			$ds = "system util.";
 			break;
 		case "stddev":
-			$ds = "stddev of delay";
+			$ds = "delay std. dev.";
+			break;
+		case "delay":
+			$ds = "delay average";
 			break;
 		case "loss":
 			$ds = "packet loss";
@@ -358,18 +370,18 @@ if ($right != "null") {
 			break;
 		case "pfstates":
 			$unit_acronym = "";
-			$ds = "Filter States";
+			$ds = "filter states";
 			break;
 		case "srcip":
 			$unit_acronym = "";
-			$ds = "Source Addr.";
+			$ds = "source addr.";
 			break;
 		case "dstip":
 			$unit_acronym = "";
-			$ds = "Dest. Addr.";
+			$ds = "dest. addr.";
 			break;
 		case "pfrate":
-			$ds = "State Changes";
+			$ds = "state changes";
 			break;
 		case "pfnat":
 			$ignored_right++;
@@ -377,17 +389,21 @@ if ($right != "null") {
 			break;
 		case "inpass":
 			$ninetyfifth = true;
+			$multiplier = 8;
 			break;
 		case "inpass6":
 			$ninetyfifth = true;
+			$multiplier = 8;
 			break;
 		case "outpass":
 			$invert = $invert_graph;
 			$ninetyfifth = true;
+			$multiplier = 8;
 			break;
 		case "outpass6":
 			$invert = $invert_graph;
 			$ninetyfifth = true;
+			$multiplier = 8;
 			break;
 		}
 
@@ -409,7 +425,7 @@ if ($right != "null") {
 			$lastDataKey = array_pop($dataKeys);
 			foreach ($data_list as $time => $value) {
 				if($time != $lastDataKey) {
-					$data[] = array($time*1000, $value);
+					$data[] = array($time*1000, $value*$multiplier);
 				}
 			}
 
