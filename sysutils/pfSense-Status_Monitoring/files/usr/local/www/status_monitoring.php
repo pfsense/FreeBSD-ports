@@ -250,7 +250,7 @@ include("head.inc");
 				<label class="col-sm-2 control-label">
 					Left Axis
 				</label>
-				<div class="col-sm-4">
+				<div class="col-sm-5">
 					<select class="form-control" id="category-left" name="category-left">
 						<option value="system" selected>System</option>
 						<option value="traffic">Traffic</option>
@@ -296,7 +296,7 @@ include("head.inc");
 				<label class="col-sm-2 control-label">
 					Right Axis
 				</label>
-				<div class="col-sm-4">
+				<div class="col-sm-5">
 					<select class="form-control" id="category-right" name="category-right">
 						<option value="system">System</option>
 						<option value="traffic">Traffic</option>
@@ -365,12 +365,10 @@ include("head.inc");
 				</div>
 				<div class="col-sm-2">
 					<select class="form-control" id="graph-type" name="graph-type">
-						<option value="hard-code" disabled>Disabled until figure out out how to clear lines/bars of previous type so they don't overlay.</option>
-						<option value="bar" disabled>Bar</option>
 						<option value="line" selected>Line</option>
 					</select>
 
-					<span class="help-block">Graph Type</span>
+					<span class="help-block">Graph Type (Disabled)</span>
 				</div>
 				<div class="col-sm-2">
 					<select class="form-control" id="invert" name="invert">
@@ -428,7 +426,7 @@ include("head.inc");
 <div class="infoblock">
 	<div class="alert alert-info clearfix" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		<div class="pull-left">
-			<p>This tool allows you to compare RRD databases on two different y axes.</p>
+			<p>This tool allows you to compare RRD databases on two different Y axes.</p>
 
 			<p>You can click on the line labels in the legend to toggle that lines visability. A single click toggles it's visability and a double click hides all the other lines, except for that one.</p>
 		</div>
@@ -450,7 +448,7 @@ events.push(function() {
 		"mbuf": "utilization, percent",
 		"packets": "packets / sec",
 		"vpnusers": "drink",
-		"quality": "ms / %",
+		"quality": "seconds / %",
 		"traffic": "bits / sec"
 	};
 
@@ -477,179 +475,179 @@ events.push(function() {
 	$('#category-left').on('change', function() {
 
 		switch(this.value) {
-		case "system":
-			$("#graph-left").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($system);
+			case "system":
+				$("#graph-left").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($system);
 
-				foreach ($system as $key => $val) {
+					foreach ($system as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "traffic":
-			$("#graph-left").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($traffic);
+					}
+				?>
+				};
+				break;
+			case "traffic":
+				$("#graph-left").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($traffic);
 
-				foreach ($traffic as $key => $val) {
+					foreach ($traffic as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "packets":
-			$("#graph-left").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($packets);
+					}
+				?>
+				};
+				break;
+			case "packets":
+				$("#graph-left").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($packets);
 
-				foreach ($packets as $key => $val) {
+					foreach ($packets as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "quality":
-			$("#graph-left").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($quality);
+					}
+				?>
+				};
+				break;
+			case "quality":
+				$("#graph-left").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($quality);
 
-				foreach ($quality as $key => $val) {
+					foreach ($quality as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "captiveportal":
-			$("#graph-left").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($captiveportal);
+					}
+				?>
+				};
+				break;
+			case "captiveportal":
+				$("#graph-left").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($captiveportal);
 
-				foreach ($captiveportal as $key => $val) {
+					foreach ($captiveportal as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "ntpd":
-			$("#graph-left").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($ntpd);
+					}
+				?>
+				};
+				break;
+			case "ntpd":
+				$("#graph-left").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($ntpd);
 
-				foreach ($ntpd as $key => $val) {
+					foreach ($ntpd as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "queues":
-			$("#graph-left").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($queues);
+					}
+				?>
+				};
+				break;
+			case "queues":
+				$("#graph-left").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($queues);
 
-				foreach ($queues as $key => $val) {
+					foreach ($queues as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "queuedrops":
-			$("#graph-left").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($queuedrops);
+					}
+				?>
+				};
+				break;
+			case "queuedrops":
+				$("#graph-left").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($queuedrops);
 
-				foreach ($queuedrops as $key => $val) {
+					foreach ($queuedrops as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "dhcpd":
-			$("#graph-left").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($dhcpd);
+					}
+				?>
+				};
+				break;
+			case "dhcpd":
+				$("#graph-left").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($dhcpd);
 
-				foreach ($dhcpd as $key => $val) {
+					foreach ($dhcpd as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "vpnusers":
-			$("#graph-left").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($vpnusers);
+					}
+				?>
+				};
+				break;
+			case "vpnusers":
+				$("#graph-left").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($vpnusers);
 
-				foreach ($vpnusers as $key => $val) {
+					foreach ($vpnusers as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "none":
-			$("#graph-left").empty().prop( "disabled", true );
-			break;
+					}
+				?>
+				};
+				break;
+			case "none":
+				$("#graph-left").empty().prop( "disabled", true );
+				break;
 		}
 
 		$.each(newOptions, function(value,key) {
@@ -661,179 +659,179 @@ events.push(function() {
 	$('#category-right').on('change', function() {
 
 		switch(this.value) {
-		case "system":
-			$("#graph-right").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($system);
+			case "system":
+				$("#graph-right").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($system);
 
-				foreach ($system as $key => $val) {
+					foreach ($system as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "traffic":
-			$("#graph-right").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($traffic);
+					}
+				?>
+				};
+				break;
+			case "traffic":
+				$("#graph-right").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($traffic);
 
-				foreach ($traffic as $key => $val) {
+					foreach ($traffic as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "packets":
-			$("#graph-right").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($packets);
+					}
+				?>
+				};
+				break;
+			case "packets":
+				$("#graph-right").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($packets);
 
-				foreach ($packets as $key => $val) {
+					foreach ($packets as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "quality":
-			$("#graph-right").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($quality);
+					}
+				?>
+				};
+				break;
+			case "quality":
+				$("#graph-right").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($quality);
 
-				foreach ($quality as $key => $val) {
+					foreach ($quality as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "captiveportal":
-			$("#graph-right").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($captiveportal);
+					}
+				?>
+				};
+				break;
+			case "captiveportal":
+				$("#graph-right").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($captiveportal);
 
-				foreach ($captiveportal as $key => $val) {
+					foreach ($captiveportal as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "ntpd":
-			$("#graph-right").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($ntpd);
+					}
+				?>
+				};
+				break;
+			case "ntpd":
+				$("#graph-right").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($ntpd);
 
-				foreach ($ntpd as $key => $val) {
+					foreach ($ntpd as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "queues":
-			$("#graph-right").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($queues);
+					}
+				?>
+				};
+				break;
+			case "queues":
+				$("#graph-right").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($queues);
 
-				foreach ($queues as $key => $val) {
+					foreach ($queues as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "queuedrops":
-			$("#graph-right").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($queuedrops);
+					}
+				?>
+				};
+				break;
+			case "queuedrops":
+				$("#graph-right").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($queuedrops);
 
-				foreach ($queuedrops as $key => $val) {
+					foreach ($queuedrops as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "dhcpd":
-			$("#graph-right").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($dhcpd);
+					}
+				?>
+				};
+				break;
+			case "dhcpd":
+				$("#graph-right").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($dhcpd);
 
-				foreach ($dhcpd as $key => $val) {
+					foreach ($dhcpd as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "vpnusers":
-			$("#graph-right").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($vpnusers);
+					}
+				?>
+				};
+				break;
+			case "vpnusers":
+				$("#graph-right").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($vpnusers);
 
-				foreach ($vpnusers as $key => $val) {
+					foreach ($vpnusers as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "none":
-			$("#graph-right").empty().prop( "disabled", true );
-			break;
+					}
+				?>
+				};
+				break;
+			case "none":
+				$("#graph-right").empty().prop( "disabled", true );
+				break;
 		}
 
 		$.each(newOptions, function(value,key) {
@@ -844,60 +842,61 @@ events.push(function() {
 
 	$('#time-period').on('change', function() {
 
-	switch(this.value) {
-		case "-3m":
-		case "-1y":
-		case "-4y":
-			$("#resolution").empty().prop( "disabled", false );
-			$("#resolution").append('<option value="86400" selected>1 Day</option>');
-			$("#resolution").append('<option value="3600" disabled>1 Hour</option>');
-			$("#resolution").append('<option value="300" disabled>5 Minutes</option>');
-			$("#resolution").append('<option value="60" disabled>1 Minute</option>');
-			break;
-		case "-1m":
-			$("#resolution").empty().prop( "disabled", false );
-			$("#resolution").append('<option value="86400" selected>1 Day</option>');
-			$("#resolution").append('<option value="3600">1 Hour</option>');
-			$("#resolution").append('<option value="300" disabled>5 Minutes</option>');
-			$("#resolution").append('<option value="60" disabled>1 Minute</option>');
-			break;
-		case "-1w":
-			$("#resolution").empty().prop( "disabled", false );
-			$("#resolution").append('<option value="86400">1 Day</option>');
-			$("#resolution").append('<option value="3600" selected>1 Hour</option>');
-			$("#resolution").append('<option value="300" disabled>5 Minutes</option>');
-			$("#resolution").append('<option value="60" disabled>1 Minute</option>');
-			break;
-		case "-1d":
-		case "-2d":
-			$("#resolution").empty().prop( "disabled", false );
-			$("#resolution").append('<option value="86400">1 Day</option>');
-			$("#resolution").append('<option value="3600">1 Hour</option>');
-			$("#resolution").append('<option value="300" selected>5 Minutes</option>');
-			$("#resolution").append('<option value="60" disabled>1 Minute</option>');
-			break;
-		case "-8h":
-			$("#resolution").empty().prop( "disabled", false );
-			$("#resolution").append('<option value="86400" disabled>1 Day</option>');
-			$("#resolution").append('<option value="3600">1 Hour</option>');
-			$("#resolution").append('<option value="300" selected>5 Minutes</option>');
-			$("#resolution").append('<option value="60">1 Minute</option>');
-			break;
-		case "-1h":
-			$("#resolution").empty().prop( "disabled", false );
-			$("#resolution").append('<option value="86400" disabled>1 Day</option>');
-			$("#resolution").append('<option value="3600">1 Hour</option>');
-			$("#resolution").append('<option value="300">5 Minutes</option>');
-			$("#resolution").append('<option value="60" selected>1 Minute</option>');
-			break;
-		default:
-			$("#resolution").empty().prop( "disabled", false );
-			$("#resolution").append('<option value="86400">1 Day</option>');
-			$("#resolution").append('<option value="3600">1 Hour</option>');
-			$("#resolution").append('<option value="300" selected>5 Minutes</option>');
-			$("#resolution").append('<option value="60">1 Minute</option>');
-			break;
-		}
+		switch(this.value) {
+			case "-3m":
+			case "-1y":
+			case "-4y":
+				$("#resolution").empty().prop( "disabled", false );
+				$("#resolution").append('<option value="86400" selected>1 Day</option>');
+				$("#resolution").append('<option value="3600" disabled>1 Hour</option>');
+				$("#resolution").append('<option value="300" disabled>5 Minutes</option>');
+				$("#resolution").append('<option value="60" disabled>1 Minute</option>');
+				break;
+			case "-1m":
+				$("#resolution").empty().prop( "disabled", false );
+				$("#resolution").append('<option value="86400" selected>1 Day</option>');
+				$("#resolution").append('<option value="3600">1 Hour</option>');
+				$("#resolution").append('<option value="300" disabled>5 Minutes</option>');
+				$("#resolution").append('<option value="60" disabled>1 Minute</option>');
+				break;
+			case "-1w":
+				$("#resolution").empty().prop( "disabled", false );
+				$("#resolution").append('<option value="86400">1 Day</option>');
+				$("#resolution").append('<option value="3600" selected>1 Hour</option>');
+				$("#resolution").append('<option value="300" disabled>5 Minutes</option>');
+				$("#resolution").append('<option value="60" disabled>1 Minute</option>');
+				break;
+			case "-1d":
+			case "-2d":
+				$("#resolution").empty().prop( "disabled", false );
+				$("#resolution").append('<option value="86400">1 Day</option>');
+				$("#resolution").append('<option value="3600">1 Hour</option>');
+				$("#resolution").append('<option value="300" selected>5 Minutes</option>');
+				$("#resolution").append('<option value="60" disabled>1 Minute</option>');
+				break;
+			case "-8h":
+				$("#resolution").empty().prop( "disabled", false );
+				$("#resolution").append('<option value="86400" disabled>1 Day</option>');
+				$("#resolution").append('<option value="3600">1 Hour</option>');
+				$("#resolution").append('<option value="300" selected>5 Minutes</option>');
+				$("#resolution").append('<option value="60">1 Minute</option>');
+				break;
+			case "-1h":
+				$("#resolution").empty().prop( "disabled", false );
+				$("#resolution").append('<option value="86400" disabled>1 Day</option>');
+				$("#resolution").append('<option value="3600">1 Hour</option>');
+				$("#resolution").append('<option value="300">5 Minutes</option>');
+				$("#resolution").append('<option value="60" selected>1 Minute</option>');
+				break;
+			default:
+				$("#resolution").empty().prop( "disabled", false );
+				$("#resolution").append('<option value="86400">1 Day</option>');
+				$("#resolution").append('<option value="3600">1 Hour</option>');
+				$("#resolution").append('<option value="300" selected>5 Minutes</option>');
+				$("#resolution").append('<option value="60">1 Minute</option>');
+				break;
+			}
+			
 	});
 
 	/***
@@ -980,7 +979,7 @@ events.push(function() {
 			}
 
 			chart.yAxis1.tickFormat(function(d) {
-				return d3.format('s')(d)
+				return d3.format('.2s')(d)
 			}).axisLabel(leftLabel).tickPadding(5).showMaxMin(false);
 
 			//add left title
@@ -1001,7 +1000,7 @@ events.push(function() {
 			}
 
 			chart.yAxis2.tickFormat(function(d) {
-				return d3.format('s')(d)
+				return d3.format('.2s')(d)
 			}).axisLabel(rightLabel).tickPadding(5).showMaxMin(false);
 
 			//add right title
@@ -1200,7 +1199,7 @@ events.push(function() {
 					}
 
 					//change decimal places to round to if a really small number
-					if(trueValue < .001) {
+					if(trueValue < .01) {
 						var adjustedTrueValue = d3.format(',')(trueValue.toFixed(6)); //TODO dynamically calculate number of zeros after decimal and base off that
 					} else {
 						var adjustedTrueValue = d3.format(',')(trueValue.toFixed(2));
