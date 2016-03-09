@@ -1,5 +1,5 @@
 # Created by: Patrick Tracanelli <eksffa@freebsdbrasil.com.br>
-# $FreeBSD: head/security/suricata/Makefile 408015 2016-02-04 07:58:46Z koobs $
+# $FreeBSD$
 
 PORTNAME=	suricata
 PORTVERSION=	3.0
