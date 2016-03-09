@@ -788,7 +788,7 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 			$fields['time'] = substr($buf, 0, strpos($buf, '  '));
 
 			// Field 1 is the rule action (value is '**' when mode is not inline IPS)
-			if (preg_match('/\[([A-Z]+)\]\s/i', $buf, $tmp)) {
+			if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' && preg_match('/\[([A-Z]+)\]\s/i', $buf, $tmp)) {
 				$fields['action'] = trim($tmp[1]);
 			}
 			else {
