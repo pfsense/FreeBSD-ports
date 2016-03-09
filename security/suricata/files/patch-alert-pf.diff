@@ -1,43 +1,44 @@
-diff -ruN ../suricata-2.0.9.orig/src/Makefile.am ./src/Makefile.am
---- ../suricata-2.0.9.orig/src/Makefile.am	2015-09-25 10:18:34.000000000 -0400
-+++ ./src/Makefile.am	2015-10-30 17:35:11.000000000 -0400
-@@ -10,6 +10,7 @@
+diff -ruN ../suricata-3.0.orig/src/Makefile.am ./src/Makefile.am
+--- ../suricata-3.0.orig/src/Makefile.am	2016-03-04 08:12:34.000000000 -0500
++++ ./src/Makefile.am	2016-01-06 19:44:31.000000000 -0500
+@@ -9,6 +9,7 @@
+ suricata_SOURCES = \
  alert-debuglog.c alert-debuglog.h \
  alert-fastlog.c alert-fastlog.h \
- alert-pcapinfo.c alert-pcapinfo.h \
 +alert-pf.c alert-pf.h \
  alert-prelude.c alert-prelude.h \
  alert-syslog.c alert-syslog.h \
  alert-unified2-alert.c alert-unified2-alert.h \
-diff -ruN ../suricata-2.0.9.orig/src/Makefile.in ./src/Makefile.in
---- ../suricata-2.0.9.orig/src/Makefile.in	2015-09-25 10:18:56.000000000 -0400
-+++ ./src/Makefile.in	2015-10-30 17:35:11.000000000 -0400
-@@ -99,6 +99,7 @@
+diff -ruN ../suricata-3.0.orig/src/Makefile.in ./src/Makefile.in
+--- ../suricata-3.0.orig/src/Makefile.in	2016-03-04 08:12:52.000000000 -0500
++++ ./src/Makefile.in	2016-01-06 19:48:45.000000000 -0500
+@@ -99,7 +99,7 @@
+ am__installdirs = "$(DESTDIR)$(bindir)"
+ PROGRAMS = $(bin_PROGRAMS)
  am_suricata_OBJECTS = alert-debuglog.$(OBJEXT) alert-fastlog.$(OBJEXT) \
- 	alert-pcapinfo.$(OBJEXT) alert-prelude.$(OBJEXT) \
- 	alert-syslog.$(OBJEXT) alert-unified2-alert.$(OBJEXT) \
-+	alert-pf.$(OBJEXT) \
- 	app-layer.$(OBJEXT) app-layer-dcerpc.$(OBJEXT) \
- 	app-layer-dcerpc-udp.$(OBJEXT) \
+-	alert-prelude.$(OBJEXT) alert-syslog.$(OBJEXT) \
++	alert-prelude.$(OBJEXT) alert-syslog.$(OBJEXT) alert-pf.$(OBJEXT) \
+ 	alert-unified2-alert.$(OBJEXT) app-layer.$(OBJEXT) \
+ 	app-layer-dcerpc.$(OBJEXT) app-layer-dcerpc-udp.$(OBJEXT) \
  	app-layer-detect-proto.$(OBJEXT) \
-@@ -521,6 +522,7 @@
+@@ -555,6 +555,7 @@
+ suricata_SOURCES = \
  alert-debuglog.c alert-debuglog.h \
  alert-fastlog.c alert-fastlog.h \
- alert-pcapinfo.c alert-pcapinfo.h \
 +alert-pf.c alert-pf.h \
  alert-prelude.c alert-prelude.h \
  alert-syslog.c alert-syslog.h \
  alert-unified2-alert.c alert-unified2-alert.h \
-@@ -1017,6 +1019,7 @@
+@@ -1099,6 +1100,7 @@
+ 
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alert-debuglog.Po@am__quote@
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alert-fastlog.Po@am__quote@
- @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alert-pcapinfo.Po@am__quote@
 +@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alert-pf.Po@am__quote@
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alert-prelude.Po@am__quote@
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alert-syslog.Po@am__quote@
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alert-unified2-alert.Po@am__quote@
-diff -ruN ../suricata-2.0.9.orig/src/alert-pf.c ./src/alert-pf.c
---- ../suricata-2.0.9.orig/src/alert-pf.c	1969-12-31 19:00:00.000000000 -0500
+diff -ruN ../suricata-3.0.orig/src/alert-pf.c ./src/alert-pf.c
+--- ../suricata-3.0.orig/src/alert-pf.c	1969-12-31 19:00:00.000000000 -0500
 +++ ./src/alert-pf.c	2015-11-04 22:48:45.000000000 -0500
 @@ -0,0 +1,1072 @@
 +/* Copyright (C) 2007-2014 Open Information Security Foundation
@@ -58,7 +59,7 @@ diff -ruN ../suricata-2.0.9.orig/src/alert-pf.c ./src/alert-pf.c
 + *
 + * Portions of this module are based on previous works of the following:
 + *
-+ * Copyright (c) 2015  Bill Meeks
++ * Copyright (c) 2016  Bill Meeks
 + * Copyright (c) 2012  Ermal Luci
 + * Copyright (c) 2006  Antonio Benojar <zz.stalker@gmail.com>
 + * Copyright (c) 2005  Antonio Benojar <zz.stalker@gmail.com>
@@ -1112,8 +1113,8 @@ diff -ruN ../suricata-2.0.9.orig/src/alert-pf.c ./src/alert-pf.c
 +    return TM_ECODE_OK;
 +}
 +
-diff -ruN ../suricata-2.0.9.orig/src/alert-pf.h ./src/alert-pf.h
---- ../suricata-2.0.9.orig/src/alert-pf.h	1969-12-31 19:00:00.000000000 -0500
+diff -ruN ../suricata-3.0.orig/src/alert-pf.h ./src/alert-pf.h
+--- ../suricata-3.0.orig/src/alert-pf.h	1969-12-31 19:00:00.000000000 -0500
 +++ ./src/alert-pf.h	2015-11-04 22:52:05.000000000 -0500
 @@ -0,0 +1,61 @@
 +/* Copyright (C) 2007-2010 Open Information Security Foundation
@@ -1134,7 +1135,7 @@ diff -ruN ../suricata-2.0.9.orig/src/alert-pf.h ./src/alert-pf.h
 + *
 + * Portions of this module are based on previous works of the following:
 + *
-+ * Copyright (c) 2015  Bill Meeks
++ * Copyright (c) 2016  Bill Meeks
 + * Copyright (c) 2012  Ermal Luci
 + * Copyright (c) 2006  Antonio Benojar <zz.stalker@gmail.com>
 + * Copyright (c) 2005  Antonio Benojar <zz.stalker@gmail.com>
@@ -1177,21 +1178,21 @@ diff -ruN ../suricata-2.0.9.orig/src/alert-pf.h ./src/alert-pf.h
 +
 +#endif /* __ALERT_PF_H__ */
 +
-diff -ruN ../suricata-2.0.9.orig/src/suricata.c ./src/suricata.c
---- ../suricata-2.0.9.orig/src/suricata.c	2015-09-25 10:18:34.000000000 -0400
-+++ ./src/suricata.c	2015-10-30 17:35:11.000000000 -0400
-@@ -78,6 +78,7 @@
+diff -ruN ../suricata-3.0.orig/src/suricata.c ./src/suricata.c
+--- ../suricata-3.0.orig/src/suricata.c	2016-03-04 08:12:34.000000000 -0500
++++ ./src/suricata.c	2016-01-06 19:40:34.000000000 -0500
+@@ -77,6 +77,7 @@
+ #include "alert-debuglog.h"
  #include "alert-prelude.h"
  #include "alert-syslog.h"
- #include "alert-pcapinfo.h"
 +#include "alert-pf.h"
  #include "output-json-alert.h"
  
- #include "log-droplog.h"
-@@ -792,6 +793,10 @@
- 
- void RegisterAllModules()
- {
+ #include "output-json-flow.h"
+@@ -806,6 +807,10 @@
+     /* managers */
+     TmModuleFlowManagerRegister();
+     TmModuleFlowRecyclerRegister();
 +    /* alert pf */
 +    TmModuleAlertPfRegister();
 +    TmModuleAlertPfIPv4Register();
@@ -1199,10 +1200,10 @@ diff -ruN ../suricata-2.0.9.orig/src/suricata.c ./src/suricata.c
      /* nfq */
      TmModuleReceiveNFQRegister();
      TmModuleVerdictNFQRegister();
-diff -ruN ../suricata-2.0.9.orig/src/tm-modules.c ./src/tm-modules.c
---- ../suricata-2.0.9.orig/src/tm-modules.c	2015-09-25 10:18:34.000000000 -0400
-+++ ./src/tm-modules.c	2015-10-30 17:35:11.000000000 -0400
-@@ -215,6 +215,9 @@
+diff -ruN ../suricata-3.0.orig/src/tm-modules.c ./src/tm-modules.c
+--- ../suricata-3.0.orig/src/tm-modules.c	2016-03-04 08:12:34.000000000 -0500
++++ ./src/tm-modules.c	2016-01-06 19:52:55.000000000 -0500
+@@ -221,6 +221,9 @@
          CASE_CODE (TMM_LOGDROPLOG);
          CASE_CODE (TMM_ALERTSYSLOG4);
          CASE_CODE (TMM_ALERTSYSLOG6);
@@ -1212,10 +1213,10 @@ diff -ruN ../suricata-2.0.9.orig/src/tm-modules.c ./src/tm-modules.c
          CASE_CODE (TMM_RESPONDREJECT);
          CASE_CODE (TMM_LOGDNSLOG);
          CASE_CODE (TMM_LOGHTTPLOG);
-diff -ruN ../suricata-2.0.9.orig/src/tm-threads-common.h ./src/tm-threads-common.h
---- ../suricata-2.0.9.orig/src/tm-threads-common.h	2015-09-25 10:18:34.000000000 -0400
-+++ ./src/tm-threads-common.h	2015-10-30 17:35:11.000000000 -0400
-@@ -78,6 +78,9 @@
+diff -ruN ../suricata-3.0.orig/src/tm-threads-common.h ./src/tm-threads-common.h
+--- ../suricata-3.0.orig/src/tm-threads-common.h	2016-03-04 08:12:34.000000000 -0500
++++ ./src/tm-threads-common.h	2016-01-06 19:53:59.000000000 -0500
+@@ -81,6 +81,9 @@
      TMM_DECODEMPIPE,
      TMM_RECEIVENAPATECH,
      TMM_DECODENAPATECH,
@@ -1224,4 +1225,4 @@ diff -ruN ../suricata-2.0.9.orig/src/tm-threads-common.h ./src/tm-threads-common
 +    TMM_ALERTPF6,
      TMM_PACKETLOGGER,
      TMM_TXLOGGER,
-     TMM_FILELOGGER,
+     TMM_STATSLOGGER,
