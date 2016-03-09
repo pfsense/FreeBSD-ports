@@ -13,7 +13,7 @@
  * All rights reserved.
  *
  * Adapted for Suricata by:
- * Copyright (C) 2014 Bill Meeks
+ * Copyright (C) 2016 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -60,8 +60,9 @@ if (is_service_running("suricata"))
 killbyname("suricata");
 sleep(1);
 
-// Delete any leftover suricata PID files in /var/run
+// Delete any leftover suricata PID or LCK files in /var/run
 unlink_if_exists("{$g['varrun_path']}/suricata_*.pid");
+unlink_if_exists("{$g['varrun_path']}/suricata*.lck");
 
 /* Make sure all active Barnyard2 processes are terminated */
 /* Log a message only if a running process is detected     */
@@ -96,10 +97,26 @@ if (!is_subsystem_dirty('mount')) {
 	$mounted_rw = TRUE;
 }
 
-/* Remove the Suricata GUI app directories */
-rmdir_recursive("/usr/local/pkg/suricata");
-rmdir_recursive("/usr/local/www/suricata");
-rmdir_recursive("/usr/local/etc/suricata");
+/*********************************************************/
+/* Remove files we placed in the Suricata etc directory. */
+/* pkgng will clean up the base install files.           */
+/*********************************************************/
+unlink_if_exists("{$suricatadir}*.gz.md5");
+unlink_if_exists("{$suricatadir}gen-msg.map");
+unlink_if_exists("{$suricatadir}unicode.map");
+unlink_if_exists("{$suricatadir}classification.config");
+unlink_if_exists("{$suricatadir}reference.config");
+unlink_if_exists("{$suricatadir}rules/" . VRT_FILE_PREFIX . "*.rules");
+unlink_if_exists("{$suricatadir}rules/" . ET_OPEN_FILE_PREFIX . "*.rules");
+unlink_if_exists("{$suricatadir}rules/" . ET_OPEN_FILE_PREFIX . "*.txt");
+unlink_if_exists("{$suricatadir}rules/" . ET_PRO_FILE_PREFIX . "*.rules");
+unlink_if_exists("{$suricatadir}rules/" . ET_PRO_FILE_PREFIX . "*.txt");
+unlink_if_exists("{$suricatadir}rules/" . GPL_FILE_PREFIX . "*.rules");
+if (is_array($config['installedpackages']['suricata']['rule'])) {
+	foreach ($config['installedpackages']['suricata']['rule'] as $suricatacfg) {
+		rmdir_recursive("{$suricatadir}suricata_" . $suricatacfg['uuid'] . "_" . get_real_interface($suricatacfg['interface']));
+	}
+}
 
 /* Remove our associated Dashboard widget config and files. */
 /* If "save settings" is enabled, then save old widget      */
@@ -121,9 +138,6 @@ if (!empty($widgets)) {
 	}
 	$config['widgets']['sequence'] = implode(",", $widgetlist);
 }
-unlink_if_exists("/usr/local/www/widgets/include/widget-suricata.inc");
-unlink_if_exists("/usr/local/www/widgets/widgets/suricata_alerts.widget.php");
-unlink_if_exists("/usr/local/www/widgets/javascript/suricata_alerts.js");
 
 /*******************************************************/
 /* We're finished with conf partition mods, return to  */
