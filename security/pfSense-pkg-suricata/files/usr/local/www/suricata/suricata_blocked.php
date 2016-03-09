@@ -56,7 +56,7 @@
 * Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
 * Copyright (C) 2009 Robert Zelaya Sr. Developer
 * Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
-* Copyright (C) 2014 Bill Meeks
+* Copyright (C) 2016 Bill Meeks
 *
 */
 
@@ -268,13 +268,18 @@ print($form);
 <div class="panel panel-default">
 	<div class="panel-heading"><h2 class="panel-title"><?=sprintf(gettext("Last %s Hosts Blocked by Suricata"), $bnentries)?></h2></div>
 	<div class="panel-body table-responsive">
+		<div class="content table-responsive">
+			<span class="text-info"><b><?=gettext('Note: ');?></b><?=gettext('Only blocked IP addresses from Legacy Mode interfaces are shown! ' . 
+			'For inline IPS mode interfaces, dropped IP addresses are ');?><span class="text-danger"><?=gettext('highlighted ');?></span>
+			<?=gettext('on the ALERTS tab.');?></span>
+		</div>
 		<table class="table table-striped table-hover table-condensed sortable-theme-bootstrap" data-sortable>
 			<thead>
 			   <tr class="sortableHeaderRowIdentifier">
-				<th class="listhdrr" axis="number">#</th>
-				<th class="listhdrr" axis="string"><?php echo gettext("Blocked IP"); ?></th>
-				<th class="listhdrr" axis="string"><?php echo gettext("Alert Description"); ?></th>
-				<th class="listhdrr sorttable_nosort"><?php echo gettext("Remove"); ?></th>
+				<th ><?=gettext("#");?></th>
+				<th><?=gettext("Blocked IP"); ?></th>
+				<th><?=gettext("Alert Description"); ?></th>
+				<th><?=gettext("Remove"); ?></th>
 			   </tr>
 			</thead>
 		<tbody>
@@ -383,14 +388,16 @@ print($form);
 				$rdns_link = "";
 				$rdns_link .= "<i class=\"fa fa-search icon-pointer\" onclick=\"javascript:resolve_with_ajax('{$block_ip_str}');\" title=\"";
 				$rdns_link .= gettext("Resolve host via reverse DNS lookup") . "\" alt=\"Icon Reverse Resolve with DNS\"></i>";
+		?>
 				/* use one echo to do the magic*/
-					echo "<tr class=\"text-nowrap\">
-						<td>{$counter}</td>
-						<td style=\"word-wrap:break-word; white-space:normal\">{$tmp_ip}<br/>{$rdns_link}</td>
-						<td style=\"word-wrap:break-word; white-space:normal\">{$blocked_desc}</td>
-						<td><i class=\"fa fa-times icon-pointer text-danger\" onClick=\"$('#ip').val('{$blocked_ip}');$('#mode').val('todelete');$('#formblock').submit();\"
-						 title=\"" . gettext("Delete host from Blocked Table") . "\"></i></td>
-					</tr>\n";
+				<tr class="text-nowrap">
+					<td><?=$counter;?></td>
+					<td style="word-wrap:break-word; white-space:normal"><?=$tmp_ip;?><br/><?=$rdns_link;?></td>
+					<td style="word-wrap:break-word; white-space:normal"><?=$blocked_desc;?></td>
+					<td><i class="fa fa-times icon-pointer text-danger" onClick="$('#ip').val('{$blocked_ip}');$('#mode').val('todelete');$('#formblock').submit();" 
+					 title="<?=gettext("Delete host from Blocked Table");?>"></i></td>
+				</tr>
+		<?php
 			}
 		}
 		?>
