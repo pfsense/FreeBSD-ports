@@ -356,7 +356,7 @@ $section->addInput(new Form_Checkbox(
 	'forcekeepsettings',
 	'Keep Suricata Settings After Deinstall',
 	'Settings will not be removed during package deinstallation.',
-	$pconfig == 'on' ? true:false,
+	$pconfig['forcekeepsettings'] == 'on' ? true:false,
 	'on'
 ));
 $form->add($section);
