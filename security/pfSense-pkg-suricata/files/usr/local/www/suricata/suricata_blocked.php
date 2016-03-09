@@ -94,7 +94,7 @@ if (isset($_POST['resolve'])) {
 }
 # --- AJAX REVERSE DNS RESOLVE End ---
 
-if ($_POST['todelete']) {
+if ($_POST['mode'] == 'todelete') {
 	$ip = "";
 	if ($_POST['ip'])
 		$ip = $_POST['ip'];
@@ -204,6 +204,7 @@ display_top_tabs($tab_array, true);
 
 
 $form = new Form(false);
+$form->setAttribute('id', 'formblock');
 
 $section = new Form_Section('Blocked Hosts Log View Settings');
 
@@ -257,7 +258,19 @@ $form->add($section);
 
 $form->addGlobal(new Form_Input(
 	'id',
-	null,
+	id,
+	'hidden',
+	''
+));
+$form->addGlobal(new Form_Input(
+	'ip',
+	ip,
+	'hidden',
+	''
+));
+$form->addGlobal(new Form_Input(
+	'mode',
+	mode,
 	'hidden',
 	''
 ));
@@ -389,12 +402,11 @@ print($form);
 				$rdns_link .= "<i class=\"fa fa-search icon-pointer\" onclick=\"javascript:resolve_with_ajax('{$block_ip_str}');\" title=\"";
 				$rdns_link .= gettext("Resolve host via reverse DNS lookup") . "\" alt=\"Icon Reverse Resolve with DNS\"></i>";
 		?>
-				/* use one echo to do the magic*/
 				<tr class="text-nowrap">
 					<td><?=$counter;?></td>
 					<td style="word-wrap:break-word; white-space:normal"><?=$tmp_ip;?><br/><?=$rdns_link;?></td>
 					<td style="word-wrap:break-word; white-space:normal"><?=$blocked_desc;?></td>
-					<td><i class="fa fa-times icon-pointer text-danger" onClick="$('#ip').val('{$blocked_ip}');$('#mode').val('todelete');$('#formblock').submit();" 
+					<td><i class="fa fa-times icon-pointer text-danger" onClick="$('#ip').val('<?=$block_ip_str;?>');$('#mode').val('todelete');$('#formblock').submit();" 
 					 title="<?=gettext("Delete host from Blocked Table");?>"></i></td>
 				</tr>
 		<?php
