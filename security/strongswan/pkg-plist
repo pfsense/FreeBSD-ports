@@ -2,10 +2,6 @@ lib/ipsec/libcharon.a
 lib/ipsec/libcharon.la
 lib/ipsec/libcharon.so
 lib/ipsec/libcharon.so.0
-lib/ipsec/libhydra.a
-lib/ipsec/libhydra.la
-lib/ipsec/libhydra.so
-lib/ipsec/libhydra.so.0
 lib/ipsec/libstrongswan.a
 lib/ipsec/libstrongswan.la
 lib/ipsec/libstrongswan.so
@@ -420,7 +416,6 @@ man/man8/charon-cmd.8.gz
 @sample %%ETCDIR%%.d/charon/xcbc.conf.sample
 @sample %%ETCDIR%%.d/starter.conf.sample
 lib/ipsec/libcharon.so.0.0.0
-lib/ipsec/libhydra.so.0.0.0
 lib/ipsec/libstrongswan.so.0.0.0
 lib/ipsec/libtls.so.0.0.0
 @dir etc/ipsec.d/aacerts

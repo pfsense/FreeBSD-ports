@@ -535,6 +535,8 @@ reopen:
 
 		cleanup();
 		//syslog(LOG_INFO, "Cleaned up.");
+	} else {
+		system(command);
 	}
 
 	/* Initialise kevent structure */

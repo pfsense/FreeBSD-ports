@@ -13,7 +13,7 @@
  * All rights reserved.
  *
  * Adapted for Suricata by:
- * Copyright (C) 2015 Bill Meeks
+ * Copyright (C) 2016 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,18 +43,11 @@ require_once("service-utils.inc");
 require_once("/usr/local/pkg/suricata/suricata.inc");
 require_once("/usr/local/pkg/suricata/suricata_defs.inc");
 
-global $g, $pkg_interface, $suricata_gui_include, $rebuild_rules, $static_output;
+global $g, $suricata_gui_include, $rebuild_rules;
 
 $suricatadir = SURICATADIR;
 $suricatalogdir = SURICATALOGDIR;
 $mounted_rw = FALSE;
-
-/* Save the state of $pkg_interface so we can restore it */
-$pkg_interface_orig = $pkg_interface;
-if ($suricata_gui_include)
-	$pkg_interface = "";
-else
-	$pkg_interface = "console";
 
 /* define checks */
 $oinkid = $config['installedpackages']['suricata']['config'][0]['oinkcode'];
@@ -184,22 +177,11 @@ function suricata_download_file_url($url, $file_out) {
 		if (!$ch)
 			return false;
 		curl_setopt($ch, CURLOPT_FILE, $fout);
-
-		// NOTE: required to suppress errors from XMLRPC due to progress bar output
-		// and to prevent useless spam from rules update cron job execution.  This
-		// prevents progress bar output during package sync and rules update cron task. 
-		if ($g['suricata_sync_in_progress'] || $pkg_interface == "console")
-			curl_setopt($ch, CURLOPT_HEADER, false);
-		else {
-			curl_setopt($ch, CURLOPT_HEADERFUNCTION, 'read_header');
-			curl_setopt($ch, CURLOPT_WRITEFUNCTION, 'read_body');
-		}
-
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 Chrome/43.0.2357.65 Safari/537.36");
 		curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, "TLSv1.2, TLSv1");
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 0);
 
@@ -264,20 +246,18 @@ function suricata_check_rule_md5($file_url, $file_dst, $desc = "") {
 	/*           error occurred.                              */
 	/**********************************************************/
 
-	global $pkg_interface, $last_curl_error, $update_errors, $static_output;
+	global $pkg_interface, $last_curl_error, $update_errors;
 
 	$suricatadir = SURICATADIR;
 	$filename_md5 = basename($file_dst);
 
-	if ($pkg_interface <> "console")
-		update_status(gettext("Downloading {$desc} md5 file..."));
+	update_status(gettext("Downloading {$desc} md5 file..."));
 	error_log(gettext("\tDownloading {$desc} md5 file {$filename_md5}...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 	$rc = suricata_download_file_url($file_url, $file_dst);
 
 	// See if download from URL was successful
 	if ($rc === true) {
-		if ($pkg_interface <> "console")
-			update_status(gettext("Done downloading {$filename_md5}."));
+		update_status(gettext(" done.") . "\n");
 		error_log("\tChecking {$desc} md5 file...\n", 3, SURICATA_RULES_UPD_LOGFILE);
 
 		// check md5 hash in new file against current file to see if new download is posted
@@ -285,8 +265,7 @@ function suricata_check_rule_md5($file_url, $file_dst, $desc = "") {
 			$md5_check_new = file_get_contents($file_dst);
 			$md5_check_old = file_get_contents("{$suricatadir}{$filename_md5}");
 			if ($md5_check_new == $md5_check_old) {
-				if ($pkg_interface <> "console")
-					update_status(gettext("{$desc} are up to date..."));
+				update_status(gettext("{$desc} are up to date.") . "\n");
 				log_error(gettext("[Suricata] {$desc} are up to date..."));
 				error_log(gettext("\t{$desc} are up to date.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 				return false;
@@ -299,16 +278,12 @@ function suricata_check_rule_md5($file_url, $file_dst, $desc = "") {
 	else {
 		error_log(gettext("\t{$desc} md5 download failed.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		$suricata_err_msg = gettext("Server returned error code {$rc}.");
-		if ($pkg_interface <> "console") {
-			update_status(gettext("{$desc} md5 error ... Server returned error code {$rc} ..."));
-			$static_output .= gettext("{$desc} will not be updated.\n\t{$suricata_err_msg}");
-			update_output_window($static_output); 
-		}
+		update_status(gettext("{$desc} md5 error ... Server returned error code {$rc}") . "\n");
+		update_status(gettext("{$desc} will not be updated.") . "\n");
 		log_error(gettext("[Suricata] {$desc} md5 download failed..."));
 		log_error(gettext("[Suricata] Server returned error code {$rc}..."));
 		error_log(gettext("\t{$suricata_err_msg}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
-		if ($pkg_interface == "console")
-			error_log(gettext("\tServer error message was: {$last_curl_error}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+		error_log(gettext("\tServer error message was: {$last_curl_error}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		error_log(gettext("\t{$desc} will not be updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		$update_errors = true;
 		return false;
@@ -334,13 +309,12 @@ function suricata_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 	/*           FALSE if download was not successful.        */
 	/**********************************************************/
 
-	global $pkg_interface, $last_curl_error, $update_errors, $static_output;
+	global $pkg_interface, $last_curl_error, $update_errors;
 
 	$suricatadir = SURICATADIR;
 	$filename = basename($file_dst);
 
-	if ($pkg_interface <> "console")
-		update_status(gettext("There is a new set of {$desc} posted. Downloading..."));
+	update_status(gettext("There is a new set of {$desc} posted. Downloading..."));
 	log_error(gettext("[Suricata] There is a new set of {$desc} posted. Downloading {$filename}..."));
 	error_log(gettext("\tThere is a new set of {$desc} posted.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 	error_log(gettext("\tDownloading file '{$filename}'...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
@@ -348,18 +322,14 @@ function suricata_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 
 	// See if the download from the URL was successful
 	if ($rc === true) {
-		if ($pkg_interface <> "console")
-			update_status(gettext("Done downloading {$desc} file."));
-		log_error("[Suricata] {$desc} file update downloaded successfully");
+		update_status(gettext(" done.") . "\n");
+		log_error("[Suricata] {$desc} file update downloaded successfully.");
 		error_log(gettext("\tDone downloading rules file.\n"),3, SURICATA_RULES_UPD_LOGFILE);
 	
 		// Test integrity of the rules file.  Turn off update if file has wrong md5 hash
 		if ($file_md5 != trim(md5_file($file_dst))){
-			if ($pkg_interface <> "console") {
-				$static_output .= gettext("{$desc} file MD5 checksum failed!\n");
-				update_output_window($static_output);
-			}
-			log_error(gettext("[Suricata] {$desc} file download failed.  Bad MD5 checksum..."));
+			$update_status(gettext("{$desc} file MD5 checksum failed!") . "\n");
+			log_error(gettext("[Suricata] {$desc} file download failed.  Bad MD5 checksum."));
         	        log_error(gettext("[Suricata] Downloaded File MD5: " . md5_file($file_dst)));
 			log_error(gettext("[Suricata] Expected File MD5: {$file_md5}"));
 			error_log(gettext("\t{$desc} file download failed.  Bad MD5 checksum.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
@@ -372,14 +342,10 @@ function suricata_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 		return true;
 	}
 	else {
-		if ($pkg_interface <> "console") {
-			$static_output .= gettext("{$desc} file download failed!\n");
-			update_output_window($static_output);
-		}
-		log_error(gettext("[Suricata] {$desc} file download failed... server returned error '{$rc}'..."));
+		update_status(gettext("{$desc} file download failed!") . "\n");
+		log_error(gettext("[Suricata] {$desc} file download failed... server returned error '{$rc}'."));
 		error_log(gettext("\t{$desc} file download failed.  Server returned error {$rc}.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
-		if ($pkg_interface == "console")
-			error_log(gettext("\tThe error text was: {$last_curl_error}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
+		error_log(gettext("\tThe error text was: {$last_curl_error}\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		error_log(gettext("\t{$desc} will not be updated.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		$update_errors = true;
 		return false;
@@ -454,11 +420,7 @@ if ($snortcommunityrules == 'on') {
 if ($emergingthreats == 'on') {
 	safe_mkdir("{$tmpfname}/emerging");
 	if (file_exists("{$tmpfname}/{$emergingthreats_filename}")) {
-		if ($pkg_interface <> "console") {
-			update_status(gettext("Extracting {$et_name} rules..."));
-			$static_output .= gettext("Installing {$et_name} rules...");
-			update_output_window($static_output);
-		}
+		update_status(gettext("Installing {$et_name} rules..."));
 		error_log(gettext("\tExtracting and installing {$et_name} rules...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		exec("/usr/bin/tar xzf {$tmpfname}/{$emergingthreats_filename} -C {$tmpfname}/emerging rules/");
 
@@ -509,15 +471,9 @@ if ($emergingthreats == 'on') {
 
 		/*  Copy emergingthreats md5 sig to Suricata dir */
 		if (file_exists("{$tmpfname}/{$emergingthreats_filename_md5}")) {
-			if ($pkg_interface <> "console")
-				update_status(gettext("Copying md5 signature to Suricata directory..."));
 			@copy("{$tmpfname}/{$emergingthreats_filename_md5}", "{$suricatadir}{$emergingthreats_filename_md5}");
 		}
-		if ($pkg_interface <> "console") {
-			update_status(gettext("Extraction of {$et_name} rules completed..."));
-			$static_output .= gettext(" done.\n");
-			update_output_window($static_output);
-		}
+		update_status(gettext(" done.") . "\n");
 		error_log(gettext("\tInstallation of {$et_name} rules completed.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		rmdir_recursive("{$tmpfname}/emerging");
 	}
@@ -529,12 +485,7 @@ if ($snortdownload == 'on') {
 		/* Remove the old Snort rules files */
 		$vrt_prefix = VRT_FILE_PREFIX;
 		unlink_if_exists("{$suricatadir}rules/{$vrt_prefix}*.rules");
-
-		if ($pkg_interface <> "console") {
-			update_status(gettext("Extracting Snort VRT rules..."));
-			$static_output .= gettext("Installing Sourcefire VRT rules...");
-			update_output_window($static_output);
-		}
+		update_status(gettext("Installing Sourcefire VRT rules..."));
 		error_log(gettext("\tExtracting and installing Snort VRT rules...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 
 		/* extract snort.org rules and add prefix to all snort.org files */
@@ -555,9 +506,6 @@ if ($snortdownload == 'on') {
 		rmdir_recursive("{$tmpfname}/snortrules");
 
 		/* extract base etc files */
-		if ($pkg_interface <> "console") {
-		        update_status(gettext("Extracting Snort VRT config and map files..."));
-		}
 		exec("/usr/bin/tar xzf {$tmpfname}/{$snort_filename} -C {$tmpfname} etc/");
 		foreach (array("classification.config", "reference.config", "gen-msg.map", "unicode.map") as $file) {
 			if (file_exists("{$tmpfname}/etc/{$file}"))
@@ -565,15 +513,9 @@ if ($snortdownload == 'on') {
 		}
 		rmdir_recursive("{$tmpfname}/etc");
 		if (file_exists("{$tmpfname}/{$snort_filename_md5}")) {
-			if ($pkg_interface <> "console")
-				update_status(gettext("Copying md5 signature to Suricata directory..."));
 			@copy("{$tmpfname}/{$snort_filename_md5}", "{$suricatadir}{$snort_filename_md5}");
 		}
-		if ($pkg_interface <> "console") {
-			update_status(gettext("Extraction of Snort VRT rules completed..."));
-			$static_output .= gettext(" done.\n");
-			update_output_window($static_output);
-		}
+		update_status(gettext(" done.") . "\n");
 		error_log(gettext("\tInstallation of Snort VRT rules completed.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 	}
 }
@@ -582,11 +524,7 @@ if ($snortdownload == 'on') {
 if ($snortcommunityrules == 'on') {
 	safe_mkdir("{$tmpfname}/community");
 	if (file_exists("{$tmpfname}/{$snort_community_rules_filename}")) {
-		if ($pkg_interface <> "console") {
-			update_status(gettext("Extracting Snort GPLv2 Community Rules..."));
-			$static_output .= gettext("Installing Snort GPLv2 Community Rules...");
-			update_output_window($static_output);
-		}
+		update_status(gettext("Installing Snort GPLv2 Community Rules..."));
 		error_log(gettext("\tExtracting and installing Snort GPLv2 Community Rules...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		exec("/usr/bin/tar xzf {$tmpfname}/{$snort_community_rules_filename} -C {$tmpfname}/community/");
 
@@ -602,15 +540,9 @@ if ($snortcommunityrules == 'on') {
 		}
 		/*  Copy snort community md5 sig to suricata dir */
 		if (file_exists("{$tmpfname}/{$snort_community_rules_filename_md5}")) {
-			if ($pkg_interface <> "console")
-				update_status(gettext("Copying md5 signature to suricata directory..."));
 			@copy("{$tmpfname}/{$snort_community_rules_filename_md5}", "{$suricatadir}{$snort_community_rules_filename_md5}");
 		}
-		if ($pkg_interface <> "console") {
-			update_status(gettext("Extraction of Snort GPLv2 Community Rules completed..."));
-			$static_output .= gettext(" done.\n");
-			update_output_window($static_output);
-		}
+		update_status(gettext(" done.") . "\n");
 		error_log(gettext("\tInstallation of Snort GPLv2 Community Rules completed.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		rmdir_recursive("{$tmpfname}/community");
 	}
@@ -638,8 +570,6 @@ function suricata_apply_customizations($suricatacfg, $if_real) {
 
 if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules == 'on') {
 
-	if ($pkg_interface <> "console")
-		update_status(gettext('Copying new config and map files...'));
 	error_log(gettext("\tCopying new config and map files...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 
 	/******************************************************************/
@@ -688,23 +618,15 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 			if (!is_dir("{$suricatadir}suricata_{$value['uuid']}_{$if_real}/rules"))
 				safe_mkdir("{$suricatadir}suricata_{$value['uuid']}_{$if_real}/rules");
 			$tmp = "Updating rules configuration for: " . convert_friendly_interface_to_friendly_descr($value['interface']) . " ...";
-			if ($pkg_interface <> "console"){
-				update_status(gettext($tmp));
-				$static_output .= $tmp;
-				update_output_window($static_output);
-			}
+			update_status(gettext($tmp));
 			suricata_apply_customizations($value, $if_real);
 			$tmp = "\t" . $tmp . "\n";
 			error_log($tmp, 3, SURICATA_RULES_UPD_LOGFILE);
-			$static_output .= gettext(" done.\n");
-			update_output_window($static_output);
+			update_status(gettext(" done.") . "\n");
 		}
 	}
 	else {
-		if ($pkg_interface <> "console") {
-			$static_output .= gettext("Warning:  No interfaces configured for Suricata were found!\nNo interfaces currently have Suricata configured and enabled on them.");
-		        update_output_window($static_output);
-		}
+		update_status(gettext("Warning:  No interfaces configured for Suricata were found!") . "\n");
 		error_log(gettext("\tWarning:  No interfaces configured for Suricata were found...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 	}
 
@@ -718,30 +640,22 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 		// See if "Live Reload" is configured and signal each Suricata instance
 		// if enabled, else just do a hard restart of all the instances.
 		if ($config['installedpackages']['suricata']['config'][0]['live_swap_updates'] == 'on') {
-			if ($pkg_interface <> "console") {
-				update_status(gettext('Signaling Suricata to live-load the new set of rules...'));
-			}
+			update_status(gettext('Signaling Suricata to live-load the new set of rules...'));
 			log_error(gettext("[Suricata] Live-Reload of rules from auto-update is enabled..."));
 			error_log(gettext("\tLive-Reload of updated rules is enabled...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 			foreach ($config['installedpackages']['suricata']['rule'] as $value) {
 				suricata_reload_config($value);
 				error_log(gettext("\tLive swap of updated rules requested for " . convert_friendly_interface_to_friendly_descr($value['interface']) . ".\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 			}
+			update_status(gettext(" done.") . "\n");
 			log_error(gettext("[Suricata] Live-Reload of updated rules completed..."));
 			error_log(gettext("\tLive-Reload of the updated rules is complete.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		}
 		else {
-			if ($pkg_interface <> "console") {
-				update_status(gettext('Restarting Suricata to activate the new set of rules...'));
-				$static_output .= gettext("Restarting Suricata...");
-				update_output_window($static_output);
-			}
+			update_status(gettext('Restarting Suricata to activate the new set of rules...'));
 			error_log(gettext("\tRestarting Suricata to activate the new set of rules...\n"), 3, SURICATA_RULES_UPD_LOGFILE);
        			restart_service("suricata");
-			if ($pkg_interface <> "console") {
-				$static_output .= gettext(" done.\n");
-				update_output_window($static_output);
-			}
+			update_status(gettext(" done.") . "\n");
 			log_error(gettext("[Suricata] Suricata has restarted with your new set of rules..."));
 			error_log(gettext("\tSuricata has restarted with your new set of rules.\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 		}
@@ -750,30 +664,18 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 
 // Remove old $tmpfname files
 if (is_dir("{$tmpfname}")) {
-	if ($pkg_interface <> "console") {
-		update_status(gettext("Cleaning up after rules extraction..."));
-		$static_output .= gettext("Removing {$tmpfname} directory...");
-		update_output_window($static_output);
-	}
+	update_status(gettext("Cleaning up after rules extraction..."));
 	rmdir_recursive("{$tmpfname}");
-	$static_output .= gettext(" done.\n");
-	update_output_window($static_output);
+	update_status(gettext(" done.") . "\n");
 }
 
-if ($pkg_interface <> "console") {
-	update_status(gettext("The Rules update has finished..."));
-	$static_output .= gettext("Rules update task complete.\n");
-	update_output_window($static_output);
-}
+update_status(gettext("The Rules update has finished.") . "\n");
 log_error(gettext("[Suricata] The Rules update has finished."));
 error_log(gettext("The Rules update has finished.  Time: " . date("Y-m-d H:i:s"). "\n\n"), 3, SURICATA_RULES_UPD_LOGFILE);
 
 /* Remount filesystem read-only if we changed it in this module */
 if ($mounted_rw == TRUE)
 	conf_mount_ro();
-
-// Restore the state of $pkg_interface
-$pkg_interface = $pkg_interface_orig;
 
 /* Save this update status to the configuration file */
 if ($update_errors)

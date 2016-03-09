@@ -161,7 +161,7 @@ if ($savemsg) {
 	print_info_box($savemsg, 'success');
 }
 ?>
-<? print_info_box(gettext("This page allows adding patches, either from the official code repository or ones pasted in from e-mail or other sources. <br />Use with caution!"), 'warning'); ?>
+<? print_info_box(gettext("This page allows adding patches, either from the official code repository or pasted in from e-mail or other sources. <br />Use with caution!"), 'warning'); ?>
 
 <form name="mainform" method="post">
 	<?php if (!empty($fulldetail)): ?>

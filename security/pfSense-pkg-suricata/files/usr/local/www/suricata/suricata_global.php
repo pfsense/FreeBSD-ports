@@ -56,7 +56,7 @@
 * Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
 * Copyright (C) 2009 Robert Zelaya Sr. Developer
 * Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
-* Copyright (C) 2014 Bill Meeks
+* Copyright (C) 2016 Bill Meeks
 *
 */
 
@@ -73,21 +73,21 @@ if (!empty($_POST)) {
 	$pconfig = $_POST;
 }
 else {
-	$pconfig['enable_vrt_rules'] = $config['installedpackages']['suricata']['config'][0]['enable_vrt_rules'];
+	$pconfig['enable_vrt_rules'] = $config['installedpackages']['suricata']['config'][0]['enable_vrt_rules'] == "on" ? 'on' : 'off';
 	$pconfig['oinkcode'] = $config['installedpackages']['suricata']['config'][0]['oinkcode'];
 	$pconfig['etprocode'] = $config['installedpackages']['suricata']['config'][0]['etprocode'];
-	$pconfig['enable_etopen_rules'] = $config['installedpackages']['suricata']['config'][0]['enable_etopen_rules'];
-	$pconfig['enable_etpro_rules'] = $config['installedpackages']['suricata']['config'][0]['enable_etpro_rules'];
+	$pconfig['enable_etopen_rules'] = $config['installedpackages']['suricata']['config'][0]['enable_etopen_rules'] == "on" ? 'on' : 'off';
+	$pconfig['enable_etpro_rules'] = $config['installedpackages']['suricata']['config'][0]['enable_etpro_rules'] == "on" ? 'on' : 'off';
 	$pconfig['rm_blocked'] = $config['installedpackages']['suricata']['config'][0]['rm_blocked'];
 	$pconfig['autoruleupdate'] = $config['installedpackages']['suricata']['config'][0]['autoruleupdate'];
 	$pconfig['autoruleupdatetime'] = $config['installedpackages']['suricata']['config'][0]['autoruleupdatetime'];
-	$pconfig['live_swap_updates'] = $config['installedpackages']['suricata']['config'][0]['live_swap_updates'];
-	$pconfig['log_to_systemlog'] = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog'];
+	$pconfig['live_swap_updates'] = $config['installedpackages']['suricata']['config'][0]['live_swap_updates'] == "on" ? 'on' : 'off';
+	$pconfig['log_to_systemlog'] = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog'] == "on" ? 'on' : 'off';
 	$pconfig['log_to_systemlog_facility'] = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog_facility'];
-	$pconfig['forcekeepsettings'] = $config['installedpackages']['suricata']['config'][0]['forcekeepsettings'];
-	$pconfig['snortcommunityrules'] = $config['installedpackages']['suricata']['config'][0]['snortcommunityrules'];
+	$pconfig['forcekeepsettings'] = $config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] == "on" ? 'on' : 'off';
+	$pconfig['snortcommunityrules'] = $config['installedpackages']['suricata']['config'][0]['snortcommunityrules'] == "on" ? 'on' : 'off';
 	$pconfig['snort_rules_file'] = $config['installedpackages']['suricata']['config'][0]['snort_rules_file'];
-	$pconfig['autogeoipupdate'] = $config['installedpackages']['suricata']['config'][0]['autogeoipupdate'];
+	$pconfig['autogeoipupdate'] = $config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] == "on" ? 'on' : 'off';
 	$pconfig['hide_deprecated_rules'] = $config['installedpackages']['suricata']['config'][0]['hide_deprecated_rules'] == "on" ? 'on' : 'off';
 }
 
@@ -245,14 +245,14 @@ $section->addInput(new Form_Checkbox(
 	'enable_etopen_rules',
 	'Install ETOpen Emerging Threats rules',
 	'ETOpen is an open source set of Suricata rules whose coverage is more limited than ETPro.',
-	$config['installedpackages']['suricata']['config'][0]['enable_etopen_rules'] == 'on' ? true:false,
+	$pconfig['enable_etopen_rules'] == 'on' ? true:false,
 	'on'
 ));
 $section->addInput(new Form_Checkbox(
 	'enable_etpro_rules',
 	'Install ETPro Emerging Threats rules',
 	'ETPro for Suricata offers daily updates and extensive coverage of current malware threats.',
-	$config['installedpackages']['suricata']['config'][0]['enable_etpro_rules'] == 'on' ? true:false,
+	$pconfig['enable_etpro_rules'] == 'on' ? true:false,
 	'on'
 ))->setHelp('The ETPro rules contain all of the ETOpen rules, so the ETOpen rules are not required and are disabled when the ETPro rules are selected. <a href="https://www.proofpoint.com/us/solutions/products/threat-intelligence/ET-Pro-Ruleset">Sign Up for an ETPro Account</a>');
 $section->addInput(new Form_Input(
@@ -273,7 +273,7 @@ $section->addInput(new Form_Input(
 	'Snort VRT Rules Filename',
 	'text',
 	$pconfig['snort_rules_file']
-))->setHelp('Enter the rules tarball filename (filename only, do not include the URL.)<br />Example: snortrules-snapshot-2976.tar.gz');
+))->setHelp('Enter the rules tarball filename (filename only, do not include the URL.)<br />Example: snortrules-snapshot-2980.tar.gz');
 $section->addInput(new Form_Input(
 	'oinkcode',
 	'Snort VRT Oinkmaster Code',
@@ -284,7 +284,7 @@ $section->addInput(new Form_Checkbox(
 	'snortcommunityrules',
 	'Install Snort Community rules',
 	'The Snort Community Ruleset is a GPLv2 VRT certified ruleset that is distributed free of charge without any VRT License restrictions. This ruleset is updated daily and is a subset of the subscriber ruleset.',
-	$config['installedpackages']['suricata']['config'][0]['snortcommunityrules'] == 'on' ? true:false,
+	$pconfig['snortcommunityrules'] == 'on' ? true:false,
 	'on'
 ))->setHelp('If you are a Snort VRT Paid Subscriber, the community ruleset is already built into your download of the Snort VRT rules, and there is no benefit in adding this rule set.');
 $section->addInput(new Form_Checkbox(
@@ -314,14 +314,14 @@ $section->addInput(new Form_Checkbox(
 	'live_swap_updates',
 	'Live Rule Swap on Update',
 	'Enable "Live Swap" reload of rules after downloading an update. Default is Not Checked',
-	$config['installedpackages']['suricata']['config'][0]['live_swap_updates'] == 'on' ? true:false,
+	$pconfig['live_swap_updates'] == 'on' ? true:false,
 	'on'
 ))->setHelp('When enabled, Suricata will perform a live load of the new rules following an update instead of a hard restart. If issues are encountered with live load, uncheck this option to perform a hard restart of all Suricata instances following an update.');
 $section->addInput(new Form_Checkbox(
 	'autogeoipupdate',
 	'GeoIP DB Update',
 	'Enable downloading of free GeoIP Country Database updates. Default is Checked',
-	$config['installedpackages']['suricata']['config'][0]['autogeoipupdate'] == 'on' ? true:false,
+	$pconfig['autogeoipupdate'] == 'on' ? true:false,
 	'on'
 ))->setHelp('When enabled, Suricata will automatically download updates for the free legacy GeoIP country database on the 8th of each month at midnight.<br /><br />If you have a subscription for more current GeoIP updates, uncheck this option and instead create your own process to place the required database files in /usr/local/share/GeoIP/.');
 $form->add($section);
@@ -340,23 +340,23 @@ $section->addInput(new Form_Checkbox(
 	'log_to_systemlog',
 	'Log to System Log',
 	'Copy Suricata messages to the firewall system log.',
-	$config['installedpackages']['suricata']['config'][0]['log_to_systemlog'] == 'on' ? true:false,
+	$pconfig['log_to_systemlog'] == 'on' ? true:false,
 	'on'
 ));
 $section->addInput(new Form_Select(
 	'log_to_systemlog_facility',
 	'Log Facility',
 	$pconfig['log_to_systemlog_facility'],
-	array('authpriv' => gettext('authpriv'), 'daemon' => gettext('daemon'), 'kern' => gettext('kern'),
-		  'security' => gettext('security'), 'syslog' => gettext('syslog'), 'user' => gettext('user'), 'local0' => gettext('local0'),
-		  'local1' => gettext('local1'), 'local2' => gettext('local2'), 'local3' => gettext('local3'), 'local4' => gettext('local4'),
-		  'local5' => gettext('local5'), 'local6' => gettext('local6'), 'local7' => gettext('local7'))
-))->setHelp('Select system log facility to use for reporting. Default is local1.');
+	array('authpriv' => gettext('AUTHPRIV'), 'daemon' => gettext('DAEMON'), 'kern' => gettext('KERN'),
+		'security' => gettext('SECURITY'), 'syslog' => gettext('SYSLOG'), 'user' => gettext('USER'), 'local0' => gettext('LOCAL0'),
+		'local1' => gettext('LOCAL1'), 'local2' => gettext('LOCAL2'), 'local3' => gettext('LOCAL3'), 'local4' => gettext('LOCAL4'),
+		'local5' => gettext('LOCAL5'), 'local6' => gettext('LOCAL6'), 'local7' => gettext('LOCAL7'))
+))->setHelp('Select system log facility to use for reporting. Default is LOCAL1.');
 $section->addInput(new Form_Checkbox(
 	'forcekeepsettings',
 	'Keep Suricata Settings After Deinstall',
 	'Settings will not be removed during package deinstallation.',
-	$config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] == 'on' ? true:false,
+	$pconfig == 'on' ? true:false,
 	'on'
 ));
 $form->add($section);
@@ -428,7 +428,7 @@ events.push(function(){
 
 	// When 'log_to_systemlog' is clicked, toggle 'log_to_systemlog_facility'
 	$('#log_to_systemlog').click(function() {
-		enable_change_rules_upd();
+		toggle_log_to_systemlog();
 	});
 
 	// ---------- On initial page load ------------------------------------------------------------

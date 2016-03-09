@@ -66,6 +66,8 @@ $right = $_POST['right'];
 $start = $_POST['start'];
 $end = $_POST['end'];
 $timePeriod = $_POST['timePeriod'];
+$resolution = $_POST['resolution'];
+$graphtype = $_POST['graphtype'];
 $invert_graph = ($_POST['invert'] === 'true');
 
 //Figure out the type of information stored in RRD database
@@ -73,7 +75,7 @@ $left_pieces = explode("-", $left);
 $right_pieces = explode("-", $right);
 
 //Build RRD options bases on settings
-$rrd_options = array( 'AVERAGE', '-r', '900' );
+$rrd_options = array( 'AVERAGE', '-r', $resolution );
 
 if ($start > 0) {
 	array_push($rrd_options, '-s', '1445816765047', '-e', '1456184765047');
@@ -89,7 +91,7 @@ $graph_unit_lookup = array(
 	"traffic"   => "b/s",
 	"packets"   => "pps",
 	"states"    => "cps",
-	"quality"   => "ms",
+	"quality"   => "s",
 	"processor" => "%",
 	"memory"    => "%"
 );
@@ -108,7 +110,7 @@ $unit_desc_lookup = array(
 	"b/s" => "Bits Per Second",
 	"pps" => "Packets Per Second",
 	"cps" => "Changes Per Second",
-	"ms"  => "Milliseconds",
+	"s"  => "Seconds",
 	"%"   => "Percent",
 	""    => ""
 );
@@ -133,8 +135,9 @@ if ($left != "null") {
 
 		$data_list = $rrd_array['data'][$ds];
 		$ignore = $invert = $ninetyfifth = false;
-		$graph_type = "line";
+		$graph_type = $graphtype;
 		$unit_acronym = $left_unit_acronym;
+		$multiplier = 1;
 
 		//Overrides based on line name
 		switch($ds) {
@@ -148,29 +151,33 @@ if ($left != "null") {
 			$ds = "system util.";
 			break;
 		case "stddev":
-			$ds = "stddev of delay";
+			$ds = "delay std. dev.";
+			break;
+		case "delay":
+			$ds = "delay average";
 			break;	
 		case "loss":
 			$ds = "packet loss";
 			$unit_acronym = "%";
+			$invert = $invert_graph;
 			break;
 		case "processes":
 			$unit_acronym = "";
 			break;
 		case "pfstates":
 			$unit_acronym = "";
-			$ds = "Filter States";
+			$ds = "filter states";
 			break;
 		case "srcip":
 			$unit_acronym = "";
-			$ds = "Source Addr.";
+			$ds = "source addr.";
 			break;
 		case "dstip":
 			$unit_acronym = "";
-			$ds = "Dest. Addr.";
+			$ds = "dest. addr.";
 			break;
 		case "pfrate":
-			$ds = "State Changes";
+			$ds = "state changes";
 			break;
 		case "pfnat":
 			$ignored_left++;
@@ -178,17 +185,21 @@ if ($left != "null") {
 			break;
 		case "inpass":
 			$ninetyfifth = true;
+			$multiplier = 8;
 			break;
 		case "inpass6":
 			$ninetyfifth = true;
+			$multiplier = 8;
 			break;
 		case "outpass":
 			$invert = $invert_graph;
 			$ninetyfifth = true;
+			$multiplier = 8;
 			break;
 		case "outpass6":
 			$invert = $invert_graph;
 			$ninetyfifth = true;
+			$multiplier = 8;
 			break;
 		}
 
@@ -210,7 +221,7 @@ if ($left != "null") {
 			$lastDataKey = array_pop($dataKeys);
 			foreach ($data_list as $time => $value) {
 				if($time != $lastDataKey) {
-					$data[] = array($time*1000, $value);
+					$data[] = array($time*1000, $value*$multiplier);
 				}
 			}
 
@@ -282,7 +293,7 @@ if ($left != "null") {
 
 		//add the new total lines to array
 		$obj[$ds_key_left_adjusted]['key'] = "inpass total";
-		$obj[$ds_key_left_adjusted]['type'] = "line";
+		$obj[$ds_key_left_adjusted]['type'] = $graphtype;
 		$obj[$ds_key_left_adjusted]['format'] = "s";
 		$obj[$ds_key_left_adjusted]['yAxis'] = 1;
 		$obj[$ds_key_left_adjusted]['unit_acronym'] = $left_unit_acronym;
@@ -292,7 +303,7 @@ if ($left != "null") {
 		$obj[$ds_key_left_adjusted]['values'] = $inpass_total;
 
 		$obj[$ds_key_left_adjusted+1]['key'] = "outpass total";
-		$obj[$ds_key_left_adjusted+1]['type'] = "line";
+		$obj[$ds_key_left_adjusted+1]['type'] = $graphtype;
 		$obj[$ds_key_left_adjusted+1]['format'] = "s";
 		$obj[$ds_key_left_adjusted+1]['yAxis'] = 1;
 		$obj[$ds_key_left_adjusted+1]['unit_acronym'] = $left_unit_acronym;
@@ -309,7 +320,7 @@ if ($right != "null") {
 	//$right_step = $rrd_info_array['step'];
 	//$right_last_updated = $rrd_info_array['last_update'];
 
-	$rrd_array = rrd_fetch($rrd_location . $right . ".rrd", array('AVERAGE', '-r', '900', '-s', $timePeriod ));
+	$rrd_array = rrd_fetch($rrd_location . $right . ".rrd", array('AVERAGE', '-r', $resolution, '-s', $timePeriod ));
 
 	if (!($rrd_array)) {
 		die ('{ "error" : "There was an error loading the Right Y Axis." }');
@@ -328,8 +339,9 @@ if ($right != "null") {
 
 		$data_list = $rrd_array['data'][$ds];
 		$ignore = $invert = $ninetyfifth = false;
-		$graph_type = "line";
+		$graph_type = $graphtype;
 		$unit_acronym = $right_unit_acronym;
+		$multiplier = 1;
 
 		//Override acronym based on line name
 		switch($ds) {
@@ -343,29 +355,33 @@ if ($right != "null") {
 			$ds = "system util.";
 			break;
 		case "stddev":
-			$ds = "stddev of delay";
+			$ds = "delay std. dev.";
+			break;
+		case "delay":
+			$ds = "delay average";
 			break;
 		case "loss":
 			$ds = "packet loss";
 			$unit_acronym = "%";
+			$invert = $invert_graph;
 			break;
 		case "processes":
 			$unit_acronym = "";
 			break;
 		case "pfstates":
 			$unit_acronym = "";
-			$ds = "Filter States";
+			$ds = "filter states";
 			break;
 		case "srcip":
 			$unit_acronym = "";
-			$ds = "Source Addr.";
+			$ds = "source addr.";
 			break;
 		case "dstip":
 			$unit_acronym = "";
-			$ds = "Dest. Addr.";
+			$ds = "dest. addr.";
 			break;
 		case "pfrate":
-			$ds = "State Changes";
+			$ds = "state changes";
 			break;
 		case "pfnat":
 			$ignored_right++;
@@ -373,17 +389,21 @@ if ($right != "null") {
 			break;
 		case "inpass":
 			$ninetyfifth = true;
+			$multiplier = 8;
 			break;
 		case "inpass6":
 			$ninetyfifth = true;
+			$multiplier = 8;
 			break;
 		case "outpass":
 			$invert = $invert_graph;
 			$ninetyfifth = true;
+			$multiplier = 8;
 			break;
 		case "outpass6":
 			$invert = $invert_graph;
 			$ninetyfifth = true;
+			$multiplier = 8;
 			break;
 		}
 
@@ -405,7 +425,7 @@ if ($right != "null") {
 			$lastDataKey = array_pop($dataKeys);
 			foreach ($data_list as $time => $value) {
 				if($time != $lastDataKey) {
-					$data[] = array($time*1000, $value);
+					$data[] = array($time*1000, $value*$multiplier);
 				}
 			}
 
@@ -479,7 +499,7 @@ if ($right != "null") {
 
 		//add the new total lines to array
 		$obj[$ds_key_right_adjusted]['key'] = "inpass total";
-		$obj[$ds_key_right_adjusted]['type'] = "line";
+		$obj[$ds_key_right_adjusted]['type'] = $graphtype;
 		$obj[$ds_key_right_adjusted]['format'] = "s";
 		$obj[$ds_key_right_adjusted]['yAxis'] = 2;
 		$obj[$ds_key_right_adjusted]['unit_acronym'] = $right_unit_acronym;
@@ -489,7 +509,7 @@ if ($right != "null") {
 		$obj[$ds_key_right_adjusted]['values'] = $inpass_total;
 
 		$obj[$ds_key_right_adjusted+1]['key'] = "outpass total";
-		$obj[$ds_key_right_adjusted+1]['type'] = "line";
+		$obj[$ds_key_right_adjusted+1]['type'] = $graphtype;
 		$obj[$ds_key_right_adjusted+1]['format'] = "s";
 		$obj[$ds_key_right_adjusted+1]['yAxis'] = 2;
 		$obj[$ds_key_right_adjusted+1]['unit_acronym'] = $right_unit_acronym;

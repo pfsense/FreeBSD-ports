@@ -56,7 +56,7 @@
 * Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
 * Copyright (C) 2009 Robert Zelaya Sr. Developer
 * Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
-* Copyright (C) 2014 Bill Meeks
+* Copyright (C) 2016 Bill Meeks
 *
 */
 
@@ -97,6 +97,16 @@ if (isset($id) && isset($a_passlist[$id])) {
 	$pconfig['wandnsips'] = $a_passlist[$id]['wandnsips'];
 	$pconfig['vips'] = $a_passlist[$id]['vips'];
 	$pconfig['vpnips'] = $a_passlist[$id]['vpnips'];
+}
+
+if (isset($id) && !isset($a_passlist[$id])) {
+	/* This is a new list, so set sensible defaults */
+	$pconfig['localnets'] = 'yes';
+	$pconfig['wanips'] = 'yes';
+	$pconfig['wangateips'] = 'yes';
+	$pconfig['wandnsips'] = 'yes';
+	$pconfig['vips'] = 'yes';
+	$pconfig['vpnips'] = 'yes';
 }
 
 // Check for returned "selected alias" if action is import
@@ -266,7 +276,7 @@ $section->addInput(new Form_Checkbox(
 	'wanips',
 	'WAN IPs',
 	'Add WAN interface IPs to the list.',
-	$pconfig['wangips'] == 'yes' ? true:false,
+	$pconfig['wanips'] == 'yes' ? true:false,
 	'yes'
 ));
 $section->addInput(new Form_Checkbox(

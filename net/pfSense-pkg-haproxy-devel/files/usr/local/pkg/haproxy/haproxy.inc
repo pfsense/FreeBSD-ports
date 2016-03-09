@@ -618,8 +618,8 @@ EOD;
 
 require_once("globals.inc");		
 require_once("functions.inc");
-require_once("haproxy.inc");
-require_once("haproxy_socketinfo.inc");
+require_once("haproxy/haproxy.inc");
+require_once("haproxy/haproxy_socketinfo.inc");
 haproxy_updateocsp();
 
 ?>

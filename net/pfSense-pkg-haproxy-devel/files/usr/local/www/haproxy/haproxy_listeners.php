@@ -135,8 +135,9 @@ if ($_POST) {
 		// TODO: this. is. nasty.
 		unset($delbtn, $delbtnp2, $movebtn, $movebtnp2, $togglebtn, $togglebtnp2);
 		foreach ($_POST as $pn => $pd) {
+			// if name contains a dot its replaced in $POST key value by a underscore while $pd can be an array for some values..
 			if (preg_match("/move_(.+)/", $pn, $matches)) {
-				$movebtn = $matches[1];
+				$movebtn = substr($pd, 5);
 			}
 		}
 		//
@@ -457,7 +458,7 @@ function js_callback(req) {
 //<![CDATA[
 events.push(function() {
 	$('[id^=Xmove_]').click(function (event) {
-		$('#' + event.target.id.slice(1)).click();
+		$('[id="'+event.target.id.slice(1)+'"]').click();
 		return false;
 	});
 	$('[id^=Xmove_]').css('cursor', 'pointer');

@@ -84,74 +84,149 @@ chdir($rrddbpath);
 $databases = glob("*.rrd");
 chdir($home);
 
-$system = $packets = $quality = $traffic = [];
+$system = $packets = $quality = $traffic = $captiveportal = $ntpd = $queues = $queuedrops = $dhcpd = $vpnusers = [];
 
 //populate arrays for dropdowns based on rrd filenames
 foreach ($databases as $db) {
+
 	$db_name = substr($db, 0, -4);
 	$db_arr = explode("-", $db_name);
 
 	if ($db_arr[0] === "system") {
+
 		switch($db_arr[1]) {
-		case "states":
-			$system[$db_name] = "States";
-			break;
-		case "memory":
-			$system[$db_name] = "Memory";
-			break;
-		case "processor":
-			$system[$db_name] = "Processor";
-			break;
-		case "mbuf":
-			$system[$db_name] = "Mbuf Clusters";
-			break;
-		default:
-			$system[$db_name] = $db_arr[1];
-			break;
+			case "states":
+				$system[$db_name] = "States";
+				break;
+			case "memory":
+				$system[$db_name] = "Memory";
+				break;
+			case "processor":
+				$system[$db_name] = "Processor";
+				break;
+			case "mbuf":
+				$system[$db_name] = "Mbuf Clusters";
+				break;
+			default:
+				$system[$db_name] = $db_arr[1];
+				break;
 		}
+
 	}
 
 	if ($db_arr[1] === "traffic") {
-		switch($db_arr[0]) {
-		case "ipsec":
-			$traffic[$db_name] = "IPsec";
-			break;
-		case "wan":
-			$traffic[$db_name] = "WAN";
-			break;
-		default:
-			$traffic[$db_name] = $db_arr[0];
-			break;
+
+		$friendly = convert_friendly_interface_to_friendly_descr($db_arr[0]);
+
+		if (empty($friendly)) {
+			if(substr($db_arr[0], 0, 5) === "ovpns") {
+				
+				if (is_array($config['openvpn']["openvpn-server"])) {
+
+					foreach ($config['openvpn']["openvpn-server"] as $id => $setting) {
+
+						if($config['openvpn']["openvpn-server"][$id]['vpnid'] === substr($db_arr[0],5)) {
+							$friendly = "OpenVPN Server: " . htmlspecialchars($config['openvpn']["openvpn-server"][$id]['description']);
+						}
+
+					}
+
+				}
+
+				if (empty($friendly)) { $friendly = "OpenVPN Server: " . $db_arr[0]; }
+
+			} else {
+				$friendly = $db_arr[0];
+			}
 		}
+
+		$traffic[$db_name] = $friendly;
+
 	}
 
 	if ($db_arr[1] === "packets") {
-		switch($db_arr[0]) {
-		case "ipsec":
-			$packets[$db_name] = "IPsec";
-			break;
-		case "wan":
-			$packets[$db_name] = "WAN";
-			break;
-		default:
-			$packets[$db_name] = $db_arr[0];
-			break;
+
+		$friendly = convert_friendly_interface_to_friendly_descr($db_arr[0]);
+
+		if (empty($friendly)) {
+			if(substr($db_arr[0], 0, 5) === "ovpns") {
+
+				if (is_array($config['openvpn']["openvpn-server"])) {
+				
+					foreach ($config['openvpn']["openvpn-server"] as $id => $setting) {
+
+						if($config['openvpn']["openvpn-server"][$id]['vpnid'] === substr($db_arr[0],5)) {
+							$friendly = "OpenVPN Server: " . htmlspecialchars($config['openvpn']["openvpn-server"][$id]['description']);
+						}
+
+					}
+
+				}
+
+				if (empty($friendly)) { $friendly = "OpenVPN Server: " . $db_arr[0]; }
+
+			} else {
+				$friendly = $db_arr[0];
+			}
 		}
+
+		$packets[$db_name] = $friendly;
+
 	}
 
 	if ($db_arr[1] === "quality") {
-		switch($db_arr[0]) {
-		case "ipsec":
-			$quality[$db_name] = "IPsec";
-			break;
-		case "wan":
-			$quality[$db_name] = "WAN";
-			break;
-		default:
-			$quality[$db_name] = $db_arr[0];
-			break;
-		}
+		$quality[$db_name] = $db_arr[0];
 	}
+
+	if ($db_arr[1] === "queues") {
+		$queues[$db_name] = convert_friendly_interface_to_friendly_descr($db_arr[0]);
+	}
+
+	if ($db_arr[1] === "queuedrops") {
+		$queuedrops[$db_name] = convert_friendly_interface_to_friendly_descr($db_arr[0]);
+	}
+
+	if ($db_arr[0] === "captiveportal") {
+		$captiveportal[$db_name] = $db_arr[1] . "-" . $db_arr[2]; //TODO make $db_arr[2] pretty
+	}
+
+	if ($db_arr[0] === "ntpd") {
+		$ntpd[$db_name] = "NTP";
+	}
+
+	if ($db_arr[1] === "dhcpd") {
+		$dhcpd[$db_name] = convert_friendly_interface_to_friendly_descr($db_arr[0]);
+	}
+
+	if ($db_arr[1] === "vpnusers") {
+
+		$friendly = convert_friendly_interface_to_friendly_descr($db_arr[0]);
+
+		if (empty($friendly)) {
+			if(substr($db_arr[0], 0, 5) === "ovpns") {
+				
+				if (is_array($config['openvpn']["openvpn-server"])) {
+
+					foreach ($config['openvpn']["openvpn-server"] as $id => $setting) {
+
+						if($config['openvpn']["openvpn-server"][$id]['vpnid'] === substr($db_arr[0],5)) {
+							$friendly = "OpenVPN Server: " . htmlspecialchars($config['openvpn']["openvpn-server"][$id]['description']);
+						}
+
+					}
+
+				}
+
+				if (empty($friendly)) { $friendly = "OpenVPN Server: " . $db_arr[0]; }
+
+			} else {
+				$friendly = $db_arr[0];
+			}
+		}
+
+		$vpnusers[$db_name] = $friendly;
+	}
+
 }
 
 $pgtitle = array(gettext("Status"), gettext("Monitoring"));
@@ -181,6 +256,26 @@ include("head.inc");
 						<option value="traffic">Traffic</option>
 						<option value="packets">Packets</option>
 						<option value="quality">Quality</option>
+						<?php
+						if(!empty($captiveportal)) {
+							echo '<option value="captiveportal">Captive Portal</option>';
+						}
+						if(!empty($ntpd)) {
+							echo '<option value="ntpd">NTP</option>';
+						}
+						if(!empty($queues)) {
+							echo '<option value="queues">Queues</option>';
+						}
+						if(!empty($queuedrops)) {
+							echo '<option value="queuedrops">Queuedrops</option>';
+						}
+						if(!empty($dhcpd)) {
+							echo '<option value="dhcpd">DHCP</option>';
+						}
+						if(!empty($vpnusers)) {
+							echo '<option value="vpnusers">VPN Users</option>';
+						}
+						?>
 						<option value="none">None</option>
 					</select>
 
@@ -207,6 +302,26 @@ include("head.inc");
 						<option value="traffic">Traffic</option>
 						<option value="packets">Packets</option>
 						<option value="quality">Quality</option>
+						<?php
+						if(!empty($captiveportal)) {
+							echo '<option value="captiveportal">Captive Portal</option>';
+						}
+						if(!empty($ntpd)) {
+							echo '<option value="ntpd">NTP</option>';
+						}
+						if(!empty($queues)) {
+							echo '<option value="queues">Queues</option>';
+						}
+						if(!empty($queuedrops)) {
+							echo '<option value="queuedrops">Queuedrops</option>';
+						}
+						if(!empty($dhcpd)) {
+							echo '<option value="dhcpd">DHCP</option>';
+						}
+						if(!empty($vpnusers)) {
+							echo '<option value="vpnusers">VPN Users</option>';
+						}
+						?>
 						<option value="none" selected>None</option>
 					</select>
 
@@ -223,7 +338,7 @@ include("head.inc");
 				<label class="col-sm-2 control-label">
 					Options
 				</label>
-				<div class="col-sm-5">
+				<div class="col-sm-2">
 					<select class="form-control" id="time-period" name="time-period">
 						<option value="-4y">4 Years</option>
 						<option value="-1y">1 Year</option>
@@ -238,7 +353,24 @@ include("head.inc");
 
 					<span class="help-block">Time Period</span>
 				</div>
-				<div class="col-sm-5">
+				<div class="col-sm-2">
+					<select class="form-control" id="resolution" name="resolution">
+						<option value="86400">1 Day</option>
+						<option value="3600">1 Hour</option>
+						<option value="300" selected>5 Minutes</option>
+						<option value="60" disabled>1 Minute</option>
+					</select>
+
+					<span class="help-block">Resolution</span>
+				</div>
+				<div class="col-sm-2">
+					<select class="form-control" id="graph-type" name="graph-type">
+						<option value="line" selected>Line</option>
+					</select>
+
+					<span class="help-block">Graph Type (Disabled)</span>
+				</div>
+				<div class="col-sm-2">
 					<select class="form-control" id="invert" name="invert">
 						<option value="true" selected>On</option>
 						<option value="false">Off</option>
@@ -251,7 +383,10 @@ include("head.inc");
 	</div>
 </form>
 
-<p><button id="update" class="btn btn-primary">Update</button></p>
+<p>
+	<button id="update" class="btn btn-primary">Update</button>
+	<span id="loading-msg">Loading Graph...</span>
+</p>
 
 <div class="panel panel-default">
 	<div class="panel-heading">
@@ -291,7 +426,7 @@ include("head.inc");
 <div class="infoblock">
 	<div class="alert alert-info clearfix" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		<div class="pull-left">
-			<p>This tool allows you to compare RRD databases on two different y axes.</p>
+			<p>This tool allows you to compare RRD databases on two different Y axes.</p>
 
 			<p>You can click on the line labels in the legend to toggle that lines visability. A single click toggles it's visability and a double click hides all the other lines, except for that one.</p>
 		</div>
@@ -313,7 +448,7 @@ events.push(function() {
 		"mbuf": "utilization, percent",
 		"packets": "packets / sec",
 		"vpnusers": "drink",
-		"quality": "ms / %",
+		"quality": "seconds / %",
 		"traffic": "bits / sec"
 	};
 
@@ -340,77 +475,179 @@ events.push(function() {
 	$('#category-left').on('change', function() {
 
 		switch(this.value) {
-		case "system":
-			$("#graph-left").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($system);
+			case "system":
+				$("#graph-left").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($system);
 
-				foreach ($system as $key => $val) {
+					foreach ($system as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "traffic":
-			$("#graph-left").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($traffic);
+					}
+				?>
+				};
+				break;
+			case "traffic":
+				$("#graph-left").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($traffic);
 
-				foreach ($traffic as $key => $val) {
+					foreach ($traffic as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "packets":
-			$("#graph-left").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($packets);
+					}
+				?>
+				};
+				break;
+			case "packets":
+				$("#graph-left").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($packets);
 
-				foreach ($packets as $key => $val) {
+					foreach ($packets as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "quality":
-			$("#graph-left").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($quality);
+					}
+				?>
+				};
+				break;
+			case "quality":
+				$("#graph-left").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($quality);
 
-				foreach ($quality as $key => $val) {
+					foreach ($quality as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "none":
-			$("#graph-left").empty().prop( "disabled", true );
-			break;
+					}
+				?>
+				};
+				break;
+			case "captiveportal":
+				$("#graph-left").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($captiveportal);
+
+					foreach ($captiveportal as $key => $val) {
+
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
+
+					}
+				?>
+				};
+				break;
+			case "ntpd":
+				$("#graph-left").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($ntpd);
+
+					foreach ($ntpd as $key => $val) {
+
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
+
+					}
+				?>
+				};
+				break;
+			case "queues":
+				$("#graph-left").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($queues);
+
+					foreach ($queues as $key => $val) {
+
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
+
+					}
+				?>
+				};
+				break;
+			case "queuedrops":
+				$("#graph-left").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($queuedrops);
+
+					foreach ($queuedrops as $key => $val) {
+
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
+
+					}
+				?>
+				};
+				break;
+			case "dhcpd":
+				$("#graph-left").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($dhcpd);
+
+					foreach ($dhcpd as $key => $val) {
+
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
+
+					}
+				?>
+				};
+				break;
+			case "vpnusers":
+				$("#graph-left").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($vpnusers);
+
+					foreach ($vpnusers as $key => $val) {
+
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
+
+					}
+				?>
+				};
+				break;
+			case "none":
+				$("#graph-left").empty().prop( "disabled", true );
+				break;
 		}
 
 		$.each(newOptions, function(value,key) {
@@ -422,83 +659,244 @@ events.push(function() {
 	$('#category-right').on('change', function() {
 
 		switch(this.value) {
-		case "system":
-			$("#graph-right").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($system);
+			case "system":
+				$("#graph-right").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($system);
 
-				foreach ($system as $key => $val) {
+					foreach ($system as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "traffic":
-			$("#graph-right").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($traffic);
+					}
+				?>
+				};
+				break;
+			case "traffic":
+				$("#graph-right").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($traffic);
 
-				foreach ($traffic as $key => $val) {
+					foreach ($traffic as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "packets":
-			$("#graph-right").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($packets);
+					}
+				?>
+				};
+				break;
+			case "packets":
+				$("#graph-right").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($packets);
 
-				foreach ($packets as $key => $val) {
+					foreach ($packets as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "quality":
-			$("#graph-right").empty().prop( "disabled", false );
-			var newOptions = {
-			<?php
-				$terms = count($quality);
+					}
+				?>
+				};
+				break;
+			case "quality":
+				$("#graph-right").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($quality);
 
-				foreach ($quality as $key => $val) {
+					foreach ($quality as $key => $val) {
 
-					$terms--;
-					$str = '"' . $key . '" : "' . $val . '"';
-					if ($terms) {  $str .= ",\n"; }
-					echo $str . "\n";
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
 
-				}
-			?>
-			};
-			break;
-		case "none":
-			$("#graph-right").empty().prop( "disabled", true );
-			break;
+					}
+				?>
+				};
+				break;
+			case "captiveportal":
+				$("#graph-right").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($captiveportal);
+
+					foreach ($captiveportal as $key => $val) {
+
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
+
+					}
+				?>
+				};
+				break;
+			case "ntpd":
+				$("#graph-right").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($ntpd);
+
+					foreach ($ntpd as $key => $val) {
+
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
+
+					}
+				?>
+				};
+				break;
+			case "queues":
+				$("#graph-right").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($queues);
+
+					foreach ($queues as $key => $val) {
+
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
+
+					}
+				?>
+				};
+				break;
+			case "queuedrops":
+				$("#graph-right").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($queuedrops);
+
+					foreach ($queuedrops as $key => $val) {
+
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
+
+					}
+				?>
+				};
+				break;
+			case "dhcpd":
+				$("#graph-right").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($dhcpd);
+
+					foreach ($dhcpd as $key => $val) {
+
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
+
+					}
+				?>
+				};
+				break;
+			case "vpnusers":
+				$("#graph-right").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($vpnusers);
+
+					foreach ($vpnusers as $key => $val) {
+
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
+
+					}
+				?>
+				};
+				break;
+			case "none":
+				$("#graph-right").empty().prop( "disabled", true );
+				break;
 		}
 
 		$.each(newOptions, function(value,key) {
 			$("#graph-right").append('<option value="' + value + '">' + key + '</option>');
 		});
 
+	});
+
+	$('#time-period').on('change', function() {
+
+		switch(this.value) {
+			case "-3m":
+			case "-1y":
+			case "-4y":
+				$("#resolution").empty().prop( "disabled", false );
+				$("#resolution").append('<option value="86400" selected>1 Day</option>');
+				$("#resolution").append('<option value="3600" disabled>1 Hour</option>');
+				$("#resolution").append('<option value="300" disabled>5 Minutes</option>');
+				$("#resolution").append('<option value="60" disabled>1 Minute</option>');
+				break;
+			case "-1m":
+				$("#resolution").empty().prop( "disabled", false );
+				$("#resolution").append('<option value="86400" selected>1 Day</option>');
+				$("#resolution").append('<option value="3600">1 Hour</option>');
+				$("#resolution").append('<option value="300" disabled>5 Minutes</option>');
+				$("#resolution").append('<option value="60" disabled>1 Minute</option>');
+				break;
+			case "-1w":
+				$("#resolution").empty().prop( "disabled", false );
+				$("#resolution").append('<option value="86400">1 Day</option>');
+				$("#resolution").append('<option value="3600" selected>1 Hour</option>');
+				$("#resolution").append('<option value="300" disabled>5 Minutes</option>');
+				$("#resolution").append('<option value="60" disabled>1 Minute</option>');
+				break;
+			case "-1d":
+			case "-2d":
+				$("#resolution").empty().prop( "disabled", false );
+				$("#resolution").append('<option value="86400">1 Day</option>');
+				$("#resolution").append('<option value="3600">1 Hour</option>');
+				$("#resolution").append('<option value="300" selected>5 Minutes</option>');
+				$("#resolution").append('<option value="60" disabled>1 Minute</option>');
+				break;
+			case "-8h":
+				$("#resolution").empty().prop( "disabled", false );
+				$("#resolution").append('<option value="86400" disabled>1 Day</option>');
+				$("#resolution").append('<option value="3600">1 Hour</option>');
+				$("#resolution").append('<option value="300" selected>5 Minutes</option>');
+				$("#resolution").append('<option value="60">1 Minute</option>');
+				break;
+			case "-1h":
+				$("#resolution").empty().prop( "disabled", false );
+				$("#resolution").append('<option value="86400" disabled>1 Day</option>');
+				$("#resolution").append('<option value="3600">1 Hour</option>');
+				$("#resolution").append('<option value="300">5 Minutes</option>');
+				$("#resolution").append('<option value="60" selected>1 Minute</option>');
+				break;
+			default:
+				$("#resolution").empty().prop( "disabled", false );
+				$("#resolution").append('<option value="86400">1 Day</option>');
+				$("#resolution").append('<option value="3600">1 Hour</option>');
+				$("#resolution").append('<option value="300" selected>5 Minutes</option>');
+				$("#resolution").append('<option value="60">1 Minute</option>');
+				break;
+			}
+			
 	});
 
 	/***
@@ -513,14 +911,18 @@ events.push(function() {
 		var startDate = ""; //$( "#start-date" ).val(); //TODO make human readable and convert to timestamp
 		var endDate = ""; //$( "#end-date" ).val(); //TODO make human readable and convert to timestamp
 		var timePeriod = $( "#time-period" ).val();
+		var resolution = $( "#resolution" ).val();
+		var graphtype = $( "#graph-type" ).val();
 		var invert = $( "#invert" ).val();
 
-		var graphOptions = 'left=' + graphLeft + '&right=' + graphRight + '&start=' + startDate + '&end=' + endDate + '&timePeriod=' + timePeriod + '&invert=' + invert ;
+		var graphOptions = 'left=' + graphLeft + '&right=' + graphRight + '&start=' + startDate + '&end=' + endDate + '&timePeriod=' + timePeriod + '&resolution=' + resolution + '&graphtype=' + graphtype + '&invert=' + invert ;
 
 		return graphOptions;
 	}
 
 	$( "#update" ).click(function() {
+		$("#chart").hide();
+		$("#loading-msg").show();
 		redraw_graph(getOptions());
 	});
 
@@ -536,8 +938,11 @@ events.push(function() {
 	function redraw_graph(options) {
 
 		d3.json("rrd_fetch_json.php")
-		    .header("Content-Type", "application/x-www-form-urlencoded")
-		    .post(options, function(error, data) {
+			.header("Content-Type", "application/x-www-form-urlencoded")
+			.post(options, function(error, data) {
+
+			$("#chart").show();
+			$("#loading-msg").hide();
 
 			if (error) {
 				return console.warn(error);
@@ -574,7 +979,7 @@ events.push(function() {
 			}
 
 			chart.yAxis1.tickFormat(function(d) {
-				return d3.format('s')(d)
+				return d3.format('.2s')(d)
 			}).axisLabel(leftLabel).tickPadding(5).showMaxMin(false);
 
 			//add left title
@@ -583,7 +988,7 @@ events.push(function() {
 			d3.select('#chart svg')
 				.append("text")
 				.attr("x", 150)
-				.attr("y", 8)
+				.attr("y", 11)
 				.attr("id", "left-title")
 				.text("Left Axis: " + leftTitle);
 
@@ -595,7 +1000,7 @@ events.push(function() {
 			}
 
 			chart.yAxis2.tickFormat(function(d) {
-				return d3.format('s')(d)
+				return d3.format('.2s')(d)
 			}).axisLabel(rightLabel).tickPadding(5).showMaxMin(false);
 
 			//add right title
@@ -604,15 +1009,15 @@ events.push(function() {
 			d3.select('#chart svg')
 				.append("text")
 				.attr("x", 150)
-				.attr("y", 26)
+				.attr("y", 28)
 				.attr("id", "right-title")
 				.text("Right Axis: " + rightTitle);
 
 			d3.select('#chart svg')
-			    .datum(data)
-			    .transition()
-			    .duration(500)
-			    .call(chart);
+				.datum(data)
+				.transition()
+				.duration(500)
+				.call(chart);
 
 			chart.update();
 
@@ -647,10 +1052,6 @@ events.push(function() {
 			var avg = d3.sum(summary)/summary.length;
 			var last = summary[summary.length-1];
 
-			if (avg < 1) {
-				avg = 1;
-			}
-
 			// TODO make function
 			var formatted_avg = d3.formatPrefix(avg);
 			var formatted_min = d3.formatPrefix(min);
@@ -680,8 +1081,11 @@ events.push(function() {
 	var chart;
 
 	d3.json("rrd_fetch_json.php")
-	    .header("Content-Type", "application/x-www-form-urlencoded")
-	    .post(getOptions(), function(error, json) {
+		.header("Content-Type", "application/x-www-form-urlencoded")
+		.post(getOptions(), function(error, json) {
+
+		$("#chart").show();
+		$("#loading-msg").hide();
 
 		if (error) {
 			return console.warn(error);
@@ -694,6 +1098,7 @@ events.push(function() {
 		var data = json;
 
 		data.map(function(series) {
+
 			series.values = series.values.map(function(d) {
 				if (series.invert) {
 					return { x: d[0], y: 0 - d[1] }
@@ -701,14 +1106,17 @@ events.push(function() {
 					return { x: d[0], y: d[1] }
 				}
 			});
+
 			return series;
+
 		});
 
 		nv.addGraph(function() {
+
 			chart = nv.models.multiChart()
-			    .color(d3.scale.category20().range())
-			    .useInteractiveGuideline(true)
-			    .margin({top: 160, right:100, left:100, bottom: 50});
+				.color(d3.scale.category20().range())
+				.useInteractiveGuideline(true)
+				.margin({top: 160, right:100, left:100, bottom: 50});
 
 			var timePeriod = $( "#time-period" ).val();
 			var timeFormat = timeLookup[timePeriod];
@@ -734,6 +1142,7 @@ events.push(function() {
 
 			//add left title
 			var leftTitle = $("#category-left option:selected").text() + " -- " + $("#graph-left option:selected").text();
+			
 			d3.select('#chart svg')
 				.append("text")
 				.attr("x", 150)
@@ -783,13 +1192,20 @@ events.push(function() {
 						inboundTotal[tempKey] = v;
 					}
 
-					if ( ($("#invert").val() === "true") && tempKey.includes('outpass') ) {
+					if ( ($("#invert").val() === "true") && (tempKey.includes('outpass') || tempKey.includes('packet loss')) ) {
 						var trueValue = 0 - data.series[v].value;
 					} else {
 						var trueValue = data.series[v].value;
 					}
 
-					content += '<tr><td class="legend-color-guide"><div style="background-color: ' + data.series[v].color + '"></div></td><td>' + data.series[v].key + '</td><td class="value"><strong>' + d3.format(',')(trueValue.toFixed(2)) + '</strong></td></tr>';
+					//change decimal places to round to if a really small number
+					if(trueValue < .01) {
+						var adjustedTrueValue = d3.format(',')(trueValue.toFixed(6)); //TODO dynamically calculate number of zeros after decimal and base off that
+					} else {
+						var adjustedTrueValue = d3.format(',')(trueValue.toFixed(2));
+					}
+
+					content += '<tr><td class="legend-color-guide"><div style="background-color: ' + data.series[v].color + '"></div></td><td>' + data.series[v].key + '</td><td class="value"><strong>' + adjustedTrueValue + '</strong></td></tr>';
 				}
 
 				content += '</tbody></table>';

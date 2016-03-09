@@ -491,6 +491,14 @@ foreach ($rule as &$r) {
 		$updated_cfg = true;
 	}
 
+	/**********************************************************/
+	/* Create new interface stream setting if not set         */
+	/**********************************************************/
+	if (empty($pconfig['max_synack_queued'])) {
+		$pconfig['max_synack_queued'] = "5";
+		$updated_cfg = true;
+	}
+
 	// Save the new configuration data into the $config array pointer
 	$r = $pconfig;
 }
@@ -499,8 +507,8 @@ unset($r);
 
 // Write out the new configuration to disk if we changed anything
 if ($updated_cfg)
-	log_error("[Suricata] Settings successfully migrated to new configuration format...");
+	log_error("[Suricata] Settings successfully migrated to new configuration format.");
 else
-	log_error("[Suricata] Configuration version is current...");
+	log_error("[Suricata] Configuration version is current.");
 
 ?>

@@ -56,7 +56,7 @@
 * Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
 * Copyright (C) 2009 Robert Zelaya Sr. Developer
 * Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
-* Copyright (C) 2014 Bill Meeks
+* Copyright (C) 2016 Bill Meeks
 *
 */
 
@@ -71,8 +71,8 @@ $pconfig = array();
 
 // Grab saved settings from configuration
 $pconfig['enable_log_mgmt'] = $config['installedpackages']['suricata']['config'][0]['enable_log_mgmt'] == 'on' ? 'on' : 'off';
-$pconfig['clearlogs'] = $config['installedpackages']['suricata']['config'][0]['clearlogs'];
-$pconfig['suricataloglimit'] = $config['installedpackages']['suricata']['config'][0]['suricataloglimit'];
+$pconfig['clearlogs'] = $config['installedpackages']['suricata']['config'][0]['clearlogs'] == 'on' ? 'on' : 'off';
+$pconfig['suricataloglimit'] = $config['installedpackages']['suricata']['config'][0]['suricataloglimit'] == 'on' ? 'on' : 'off';
 $pconfig['suricataloglimitsize'] = $config['installedpackages']['suricata']['config'][0]['suricataloglimitsize'];
 $pconfig['alert_log_limit_size'] = $config['installedpackages']['suricata']['config'][0]['alert_log_limit_size'];
 $pconfig['alert_log_retention'] = $config['installedpackages']['suricata']['config'][0]['alert_log_retention'];
@@ -164,7 +164,7 @@ if (!isset($pconfig['eve_log_limit_size']))
 if (!isset($pconfig['sid_changes_log_limit_size']))
 	$pconfig['sid_changes_log_limit_size'] = "250";
 
-if ($_POST['ResetAll']) {
+if (isset($_POST['ResetAll'])) {
 
 	// Reset all settings to their defaults
 	$pconfig['alert_log_retention'] = "336";
@@ -195,7 +195,7 @@ if ($_POST['ResetAll']) {
 	$savemsg = gettext("All log management settings on this page have been reset to their defaults.  Click APPLY if you wish to keep these new settings.");
 }
 
-if ($_POST["save"] || $_POST['apply']) {
+if (isset($_POST['save']) || isset($_POST['apply'])) {
 	if ($_POST['enable_log_mgmt'] != 'on') {
 		$config['installedpackages']['suricata']['config'][0]['enable_log_mgmt'] = $_POST['enable_log_mgmt'] ? 'on' :'off';
 		write_config("Suricata pkg: saved updated configuration for LOGS MGMT.");
@@ -225,7 +225,7 @@ if ($_POST["save"] || $_POST['apply']) {
 	if (!$input_errors) {
 		$config['installedpackages']['suricata']['config'][0]['enable_log_mgmt'] = $_POST['enable_log_mgmt'] ? 'on' :'off';
 		$config['installedpackages']['suricata']['config'][0]['clearlogs'] = $_POST['clearlogs'] ? 'on' : 'off';
-		$config['installedpackages']['suricata']['config'][0]['suricataloglimit'] = $_POST['suricataloglimit'];
+		$config['installedpackages']['suricata']['config'][0]['suricataloglimit'] = $_POST['suricataloglimit'] ? 'on' :'off';
 		$config['installedpackages']['suricata']['config'][0]['suricataloglimitsize'] = $_POST['suricataloglimitsize'];
 		$config['installedpackages']['suricata']['config'][0]['alert_log_limit_size'] = $_POST['alert_log_limit_size'];
 		$config['installedpackages']['suricata']['config'][0]['alert_log_retention'] = $_POST['alert_log_retention'];

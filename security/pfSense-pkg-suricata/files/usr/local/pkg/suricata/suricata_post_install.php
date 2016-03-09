@@ -13,7 +13,7 @@
  * All rights reserved.
  *
  * Adapted for Suricata by:
- * Copyright (C) 2015 Bill Meeks
+ * Copyright (C) 2016 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -99,6 +99,9 @@ if(is_process_running("barnyard")) {
 // Set flag for post-install in progress
 $g['suricata_postinstall'] = true;
 
+// Remove any LCK files for Suricata that might have been left behind
+unlink_if_exists("{$g['varrun_path']}/suricata_pkg_starting.lck");
+
 // Mount file system read/write so we can modify some files
 conf_mount_rw();
 
@@ -130,10 +133,6 @@ if ($config['installedpackages']['suricata']['config'][0]['et_iqrisk_enable'] ==
 	install_cron_job("/usr/bin/nice -n20 /usr/local/bin/php-cgi -f /usr/local/pkg/suricata/suricata_etiqrisk_update.php", TRUE, 0, "*/6", "*", "*", "*", "root");
 }
 
-// Move deprecated_rules file to SURICATADIR/rules directory
-@rename("/usr/local/pkg/suricata/deprecated_rules", "{$suricatadir}rules/deprecated_rules");
-
-
 /*********************************************************/
 /* START OF BUG FIX CODE                                 */
 /*                                                       */
@@ -159,7 +158,7 @@ if ($cron_count > 0)
 
 // remake saved settings if previously flagged
 if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] == 'on') {
-	log_error(gettext("[Suricata] Saved settings detected... rebuilding installation with saved settings..."));
+	log_error(gettext("[Suricata] Saved settings detected... rebuilding installation with saved settings."));
 	update_status(gettext("Saved settings detected...") . "\n");
 
 	/****************************************************************/
@@ -204,11 +203,9 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 	update_status(gettext("Migrating settings to new configuration...") . "\n");
 	include('/usr/local/pkg/suricata/suricata_migrate_config.php');
 	update_status(gettext(" done.") . "\n");
-	log_error(gettext("[Suricata] Downloading and updating configured rule types..."));
-	if ($pkg_interface <> "console")
-		$suricata_gui_include = true;
+	log_error(gettext("[Suricata] Downloading and updating configured rule types."));
 	include('/usr/local/pkg/suricata/suricata_check_for_rule_updates.php');
-	update_status("\n" . gettext("Generating suricata.yaml configuration file from saved settings...") . "\n");
+	update_status(gettext("Generating suricata.yaml configuration file from saved settings.") . "\n");
 	$rebuild_rules = true;
 	conf_mount_rw();
 
@@ -260,21 +257,8 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 	}
 
 	$rebuild_rules = false;
-	if ($pkg_interface <> "console") {
-		update_status(gettext("Finished rebuilding Suricata configuration from saved settings.") . "\n");
-	}
-	log_error(gettext("[Suricata] Finished rebuilding installation from saved settings..."));
-
-	// Only try to start Suricata if not in reboot
-	if (!$g['booting']) {
-		if ($pkg_interface <> "console") {
-			update_status(gettext("Starting Suricata using rebuilt configuration..."));
-			mwexec_bg("{$rcdir}suricata.sh start");
-			update_status(gettext(" done.") . "\n");
-		}
-		else
-			mwexec_bg("{$rcdir}suricata.sh start");
-	}
+	update_status(gettext("Finished rebuilding Suricata configuration from saved settings.") . "\n");
+	log_error(gettext("[Suricata] Finished rebuilding installation from saved settings."));
 }
 
 // If this is first install and "forcekeepsettings" is empty,
@@ -291,7 +275,7 @@ write_config("Suricata pkg v{$config['installedpackages']['package'][get_package
 
 // Done with post-install, so clear flag
 unset($g['suricata_postinstall']);
-log_error(gettext("[Suricata] Package post-installation tasks completed..."));
+log_error(gettext("[Suricata] Package post-installation tasks completed."));
 return true;
 
 ?>

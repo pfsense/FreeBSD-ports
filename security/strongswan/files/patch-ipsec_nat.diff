@@ -61,9 +61,9 @@ diff -ruN ../strongswan-5.3.0.orig/src/libcharon/plugins/stroke/stroke_config.c 
  				}
  				if (ts)
  				{
-diff -ruN ../strongswan-5.3.0.orig/src/libhydra/plugins/kernel_pfkey/kernel_pfkey_ipsec.c ./src/libhydra/plugins/kernel_pfkey/kernel_pfkey_ipsec.c
---- ../strongswan-5.3.0.orig/src/libhydra/plugins/kernel_pfkey/kernel_pfkey_ipsec.c	2015-03-31 12:42:35.000000000 -0500
-+++ ./src/libhydra/plugins/kernel_pfkey/kernel_pfkey_ipsec.c	2015-03-31 12:42:40.000000000 -0500
+diff -ruN ../strongswan-5.3.0.orig/src/libcharon/plugins/kernel_pfkey/kernel_pfkey_ipsec.c ./src/libcharon/plugins/kernel_pfkey/kernel_pfkey_ipsec.c
+--- ../strongswan-5.3.0.orig/src/libcharon/plugins/kernel_pfkey/kernel_pfkey_ipsec.c	2015-03-31 12:42:35.000000000 -0500
++++ ./src/libcharon/plugins/kernel_pfkey/kernel_pfkey_ipsec.c	2015-03-31 12:42:40.000000000 -0500
 @@ -509,8 +509,8 @@
  		.direction = dir,
  	);

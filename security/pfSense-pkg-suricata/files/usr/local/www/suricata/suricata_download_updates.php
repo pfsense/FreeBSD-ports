@@ -56,7 +56,7 @@
 * Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
 * Copyright (C) 2009 Robert Zelaya Sr. Developer
 * Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
-* Copyright (C) 2014 Bill Meeks
+* Copyright (C) 2016 Bill Meeks
 *
 */
 
@@ -140,26 +140,22 @@ if ($_POST['clear']) {
 		unlink_if_exists("{$suricata_rules_upd_log}");
 }
 
-if ($_POST['update']) {
-	// Go see if new updates for rule sets are available
-	header("Location: /suricata/suricata_download_rules.php");
-	exit;
-}
+if (isset($_POST['mode'])) {
+	if ($_POST['mode'] == 'force') {
+		// Mount file system R/W since we need to remove files
+		conf_mount_rw();
 
-if ($_POST['force']) {
-	// Mount file system R/W since we need to remove files
-	conf_mount_rw();
+		// Remove the existing MD5 signature files to force a download
+		unlink_if_exists("{$suricatadir}{$emergingthreats_filename}.md5");
+		unlink_if_exists("{$suricatadir}{$snort_community_rules_filename}.md5");
+		unlink_if_exists("{$suricatadir}{$snort_rules_file}.md5");
 
-	// Remove the existing MD5 signature files to force a download
-	unlink_if_exists("{$suricatadir}{$emergingthreats_filename}.md5");
-	unlink_if_exists("{$suricatadir}{$snort_community_rules_filename}.md5");
-	unlink_if_exists("{$suricatadir}{$snort_rules_file}.md5");
-
-	// Revert file system to R/O.
-	conf_mount_ro();
-
+		// Revert file system to R/O.
+		conf_mount_ro();
+	}
+	
 	// Go download the updates
-	header("Location: /suricata/suricata_download_rules.php");
+	include("/usr/local/pkg/suricata/suricata_check_for_rule_updates.php");
 	exit;
 }
 
@@ -193,7 +189,7 @@ include_once("head.inc");
 	}
 ?>
 
-<form action="suricata_download_updates.php" enctype="multipart/form-data" method="post" name="iform" id="iform">
+<form action="suricata_download_updates.php" enctype="multipart/form-data" class="form-horizontal" method="post" name="iform" id="iform">
 
 <?php
 	$tab_array = array();
@@ -213,34 +209,36 @@ include_once("head.inc");
 ?>
 
 <div class="panel panel-default">
-	<div class="panel-heading"><h2 class="panel-title"><?=gettext("INSTALLED RULE SET MD5 SIGNATURE")?></h2></div>
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("INSTALLED RULE SET MD5 SIGNATURES")?></h2></div>
 	<div class="panel-body">
-			<table class="table table-striped table-hover table-condensed">
+		<div class="content table-responsive">
+			<table class="table table-striped table-condensed">
 				<thead>
 					<tr>
-						<th><?=gettext("Rule Set Name/Publisher")?></th>
-						<th><?=gettext("MD5 Signature Hash")?></th>
-						<th><?=gettext("MD5 Signature Date")?></th>
+						<th><?=gettext("Rule Set Name/Publisher");?></th>
+						<th><?=gettext("MD5 Signature Hash");?></th>
+						<th><?=gettext("MD5 Signature Date");?></th>
 					</tr>
 				</thead>
 				<tbody>
 				<tr>
-					<td><b><?=$et_name?></b></td>
-					<td><? echo trim($emergingt_net_sig_chk_local)?></td>
-					<td><?=gettext($emergingt_net_sig_date)?></td>
+					<td><b><?=$et_name;?></b></td>
+					<td><?=trim($emergingt_net_sig_chk_local);?></td>
+					<td><?=gettext($emergingt_net_sig_date);?></td>
 				</tr>
 				<tr>
-					<td><b>Snort VRT Rules</b></td>
-					<td><? echo trim($snort_org_sig_chk_local)?></td>
-					<td><?=gettext($snort_org_sig_date)?></td>
+					<td><b><?=gettext("Snort VRT Rules");?></b></td>
+					<td><?=trim($snort_org_sig_chk_local);?></td>
+					<td><?=gettext($snort_org_sig_date);?></td>
 				</tr>
 				<tr>
-					<td><b>Snort GPLv2 Community Rules</b></td>
-					<td><? echo trim($snort_community_sig_chk_local)?></td>
-					<td><?=gettext($snort_community_sig_sig_date)?></td>
+					<td><b><?=gettext("Snort GPLv2 Community Rules");?></b></td>
+					<td><?=trim($snort_community_sig_chk_local);?></td>
+					<td><?=gettext($snort_community_sig_sig_date);?></td>
 				</tr>
 				</tbody>
 			</table>
+		</div>
 	</div>
 </div>
 <div class="panel panel-default">
@@ -248,24 +246,34 @@ include_once("head.inc");
 	<div class="panel-body">
 		<div class="content">
 			<p>
-				<strong><?=gettext("Last Update:")?></strong> <?=$last_rule_upd_time?><br />
-				<strong><?=gettext("Result:")?></strong> <?=$last_rule_upd_status?>
+				<strong><?=gettext("Last Update:");?></strong> <?=$last_rule_upd_time;?><br />
+				<strong><?=gettext("Result:");?></strong> <?=$last_rule_upd_status?>
 			</p>
 			<p>
 				<?php if ($snortdownload != 'on' && $emergingthreats != 'on' && $etpro != 'on'): ?>
-					<br/><button disabled="disabled"><?=gettext("Check")?></button>&nbsp;&nbsp;&nbsp;&nbsp;
-					<button disabled="disabled"><?=gettext("Force")?></button>
+					<br/><button class="btn btn-primary" disabled="disabled">
+						<i class="fa fa-check icon-embed-btn"></i>
+						<?=gettext("Update"); ?>
+					</button>&nbsp;&nbsp;&nbsp;&nbsp;
+					<button class="btn btn-warning" disabled="disabled">
+						<i class="fa fa-download icon-embed-btn"></i>
+						<?=gettext("Force"); ?>
+					</button>
 					<br/>
 					<p style="text-align:center;">
 					<span class="text-danger"><strong><?=gettext("WARNING:")?></strong></span>
 					<?=gettext('No rule types have been selected for download. ') . gettext('Visit the ') . '<a href="/suricata/suricata_global.php">Global Settings Tab</a>' . gettext(' to select rule types.'); ?></p>
 				<?php else: ?>
 					<br/>
-					<input type="submit" value="<?=gettext("Update")?>" name="update" id="update" class="formbtn"
-					title="<?=gettext("Check for and apply new update to enabled rule sets"); ?>"/>&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="submit" value="<?=gettext("Force")?>" name="force" id="force" class="formbtn"
-					title="<?=gettext("Force an update of all enabled rule sets")?>"
-					onclick="return confirm('<?=gettext("This will zero-out the MD5 hashes to force a fresh download of all enabled rule sets.  Click OK to continue or CANCEL to quit")?>');"/>
+					<button name="update" id="update" class="btn btn-primary" 
+						title="<?=gettext("Check for and apply new update to enabled rule sets"); ?>">
+						<i class="fa fa-check icon-embed-btn"></i>
+						<?=gettext("Update"); ?>
+					</button>&nbsp;&nbsp;&nbsp;&nbsp;
+					<button name="force" id="force" class="btn btn-warning" title="<?=gettext("Force an update of all enabled rule sets")?>">
+						<i class="fa fa-download icon-embed-btn"></i>
+						<?=gettext("Force"); ?>
+					</button>
 					<br/><br/>
 				<?php endif; ?>
 			</p>
@@ -279,18 +287,27 @@ include_once("head.inc");
 			<p>
 				<?php if ($suricata_rules_upd_log_chk == 'yes'): ?>
 				<?php if (!empty($contents)): ?>
-					<input type="submit" value="<?=gettext("Hide"); ?>" name="hide" id="hide" class="formbtn"
-					title="<?=gettext("Hide rules update log"); ?>"/>
+					<button type="submit" value="<?=gettext("Hide"); ?>" name="hide" id="hide" class="btn btn-info" title="<?=gettext("Hide rules update log"); ?>">
+						<i class="fa fa-close icon-embed-btn"></i>
+						<?=gettext("Hide"); ?>
+					</button>
 				<?php else: ?>
-					<input type="submit" value="<?=gettext("View"); ?>" name="view" id="view" class="formbtn"
-					title="<?=gettext("View rules update log"); ?>"/>
+					<button type="submit" value="<?=gettext("View"); ?>" name="view" id="view" class="btn btn-info" title="<?=gettext("View rules update log"); ?>">
+						<i class="fa fa-file-text-o icon-embed-btn"></i>
+						<?=gettext("View"); ?>
+					</button>
 				<?php endif; ?>
 					&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="submit" value="<?=gettext("Clear"); ?>" name="clear" id="clear" class="formbtn"
-					title="<?=gettext("Clear rules update log"); ?>" onClick="return confirm('Are you sure you want to delete the log contents?\nOK to confirm, or CANCEL to quit');"/>
+					<button type="submit" value="<?=gettext("Clear"); ?>" name="clear" id="clear" class="btn btn-danger" title="<?=gettext("Clear rules update log"); ?>">
+						<i class="fa fa-trash icon-embed-btn"></i>
+						<?=gettext("Clear"); ?>
+					</button>
 					<br/>
 				<?php else: ?>
-					<button disabled='disabled'><?=gettext("View Log"); ?></button><br/><?=gettext("Log is empty."); ?><br/>
+					<button class="btn btn-info icon-embed-btn" disabled='disabled'>
+						<i class="fa fa-file-text-o icon-embed-btn"></i>
+						<?=gettext("View Log"); ?>
+					</button><br/><?=gettext("Log is empty."); ?><br/>
 				<?php endif; ?>
 				<br/><?=gettext("The log file is limited to 1024K in size and automatically clears when the limit is exceeded."); ?><br/><br/>
 			</p>
@@ -298,8 +315,8 @@ include_once("head.inc");
 			<?php if (!empty($contents)): ?>
 				<p><?=gettext("RULE SET UPDATE LOG")?></p>
 
-				<div style="background: #eeeeee; width:100%; height:100%;" id="textareaitem"><!-- NOTE: The opening *and* the closing textarea tag must be on the same line. -->
-					<textarea style="width:100%; height:100%;" readonly wrap="off" rows="24" cols="80" name="logtext"><?=$contents?></textarea>
+				<div style="background: #eeeeee; width:100%; height:100%;" id="textareaitem">
+					<textarea style="width:100%; height:100%;" readonly wrap="off" rows="20" cols="80" name="logtext"><?=$contents?></textarea>
 				</div>
 			<?php endif; ?>
 		</div>
@@ -307,9 +324,62 @@ include_once("head.inc");
 </div>
 </form>
 
+<?php
+
+// Create a Modal Dialog for displaying a spinning icon "please wait" message while
+// updating the rule sets
+$form = new Form(FALSE);
+$modal = new Modal('Rules Update Task', 'updrulesdlg', false, 'Close');
+$modal->addInput(new Form_StaticText (
+	null,
+	'Checking for updated rule sets may take a while ... please wait ' . '<i class="content fa fa-spinner fa-pulse fa-lg text-center text-info"></i>'
+));
+$form->add($modal);
+print($form);
+?>
+
 <div class="infoblock">
 	<?=print_info_box('<strong>NOTE:</strong> <a href="http://www.snort.org/" target="_blank">Snort.org</a> and <a href="http://www.emergingthreats.net/" target="_blank">EmergingThreats.net</a> will go down from time to time. Please be patient.', info)?>
 </div>
+
+<script type="text/javascript">
+//<![CDATA[
+events.push(function(){
+
+	function doRuleUpdates(mode) {
+		var ajaxRequest;
+		if (typeof mode == "undefined") {
+			var mode = "update";
+		}
+
+		// Show the "please wait" modal
+		$('#updrulesdlg').modal('show');
+
+		ajaxRequest = $.ajax({
+			url: "/suricata/suricata_download_updates.php",
+			type: "post",
+			data: { mode: mode }
+		});
+
+		// Deal with the results of the above ajax call
+		ajaxRequest.done(function (response, textStatus, jqXHR) {
+
+			// Close the "please wait" modal
+			$('#updrulesdlg').modal('hide');
+		});
+	}
+	//-- Click handlers ---------------------------------
+	$('#update').click(function() {
+		doRuleUpdates('update');
+	});
+
+	$('#force').click(function() {
+		doRuleUpdates('force');
+	});
+
+});
+//]]>
+</script>
 
 <?php include("foot.inc"); ?>
 
