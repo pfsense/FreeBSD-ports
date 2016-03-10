@@ -44,7 +44,6 @@
 	<requirements>pfSense Portal subscription</requirements>
 	<name>AutoConfigBackup</name>
 	<title>Diagnostics: Auto Configuration Backup</title>
-	<savetext>Change</savetext>
 	<include_file>/usr/local/pkg/autoconfigbackup.inc</include_file>
 	<aftersaveredirect>pkg_edit.php?xml=autoconfigbackup.xml&amp;id=0</aftersaveredirect>
 	<menu>

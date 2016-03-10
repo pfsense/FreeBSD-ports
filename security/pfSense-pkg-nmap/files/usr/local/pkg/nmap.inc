@@ -86,7 +86,7 @@ function nmap_custom_add_php_command() {
 	$nmap_options .= " " . escapeshellarg($_POST['hostname']);
 	echo "<strong>Running: /usr/local/bin/nmap {$nmap_options}</strong><br />";
 	system("/usr/local/bin/nmap" . $nmap_options);
-	echo "<br /><br /><input class=\"formbtn\" type=\"button\" value=\"Back to NMap\" onclick=\"history.back()\" />";
+	echo '<br /><br /><button class="btn btn-info" type="button" value="' . gettext("Back to NMap") . '" onclick="history.back()"><i class="fa fa-undo icon-embed-btn"></i> ' . gettext("Back to NMap") . '</button>';
 }
 
 function nmap_get_interfaces() {

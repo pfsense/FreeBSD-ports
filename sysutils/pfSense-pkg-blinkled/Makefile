@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-blinkled
-PORTVERSION=	0.4.6
-PORTREVISION=	1
+PORTVERSION=	0.4.7
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty

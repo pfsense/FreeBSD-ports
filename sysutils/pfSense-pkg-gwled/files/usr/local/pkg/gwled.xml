@@ -41,7 +41,6 @@
 	</copyright>
 	<title>Interfaces: Gateway Status LEDs</title>
 	<name>gwled</name>
-	<savetext>Save</savetext>
 	<include_file>/usr/local/pkg/gwled.inc</include_file>
 	<menu>
 		<name>Gateway Status LEDs</name>

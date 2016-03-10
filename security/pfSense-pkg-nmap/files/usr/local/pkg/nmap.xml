@@ -44,6 +44,8 @@
 	<name>nmap</name>
 	<title>Diagnostics: NMap</title>
 	<savetext>Scan</savetext>
+	<saveicon>fa-rss</saveicon>
+	<savebtnclass>btn-primary</savebtnclass>
 	<preoutput>yes</preoutput>
 	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/nmap.inc</include_file>

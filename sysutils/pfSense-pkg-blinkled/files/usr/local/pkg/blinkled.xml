@@ -43,7 +43,6 @@
 	</copyright>
 	<title>Interfaces: Assign LEDs</title>
 	<name>blinkled</name>
-	<savetext>Save</savetext>
 	<include_file>/usr/local/pkg/blinkled.inc</include_file>
 	<menu>
 		<name>Assign LEDs</name>

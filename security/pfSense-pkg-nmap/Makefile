@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-nmap
-PORTVERSION=	1.4.3
-PORTREVISION=	1
+PORTVERSION=	1.4.4
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
