@@ -9,7 +9,7 @@
 /*
 	suricata.xml
 	part of pfSense (https://www.pfSense.org/)
-	Copyright (C) 2014-2015 Bill Meeks
+	Copyright (C) 2014-2016 Bill Meeks
 	All rights reserved.
 */
 /* ====================================================================================== */
@@ -63,11 +63,11 @@
 		include_once("/usr/local/pkg/suricata/suricata_post_install.php");
 		]]>
 	</custom_php_install_command>
-	<custom_php_deinstall_command>
+	<custom_php_pre_deinstall_command>
 		<![CDATA[
 		include_once("/usr/local/pkg/suricata/suricata_uninstall.php");
 		]]>
-	</custom_php_deinstall_command>
+	</custom_php_pre_deinstall_command>
 	<custom_php_resync_config_command>
 		sync_suricata_package_config();
 	</custom_php_resync_config_command>

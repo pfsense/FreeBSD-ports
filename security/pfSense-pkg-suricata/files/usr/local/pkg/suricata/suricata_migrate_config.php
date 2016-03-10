@@ -2,7 +2,7 @@
 /*
  * suricata_migrate_config.php
  *
- * Copyright (C) 2014 Bill Meeks
+ * Copyright (C) 2016 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -496,6 +496,14 @@ foreach ($rule as &$r) {
 	/**********************************************************/
 	if (empty($pconfig['max_synack_queued'])) {
 		$pconfig['max_synack_queued'] = "5";
+		$updated_cfg = true;
+	}
+
+	/**********************************************************/
+	/* Create new interface IPS mode setting if not set       */
+	/**********************************************************/
+	if (empty($pconfig['ips_mode'])) {
+		$pconfig['ips_mode'] = "ips_mode_legacy";
 		$updated_cfg = true;
 	}
 

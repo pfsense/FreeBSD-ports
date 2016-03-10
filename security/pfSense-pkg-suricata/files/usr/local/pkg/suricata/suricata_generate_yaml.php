@@ -13,7 +13,7 @@
  * All rights reserved.
  *
  * Adapted for Suricata by:
- * Copyright (C) 2014 Bill Meeks
+ * Copyright (C) 2016 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -164,7 +164,7 @@ else
 	$intf_promisc_mode = "no";
 
 // Add interface-specific blocking settings
-if ($suricatacfg['blockoffenders'] == 'on')
+if ($suricatacfg['blockoffenders'] == 'on' && $suricatacfg['ips_mode'] == 'ips_mode_legacy')
 	$suri_blockoffenders = "yes";
 else
 	$suri_blockoffenders = "no";
@@ -780,5 +780,33 @@ if (!empty($config['installedpackages']['suricata']['config'][0]['log_to_systeml
 	$suricata_use_syslog_facility = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog'];
 else
 	$suricata_use_syslog_facility = "local1";
+
+// Configure IPS operational mode
+if ($suricatacfg['ips_mode'] == 'ips_mode_inline') {
+	// Note -- Netmap promiscuous mode logic is backwards from pcap
+	$netmap_intf_promisc_mode = $intf_promisc_mode == 'yes' ? 'no' : 'yes';
+	$suricata_ips_mode = <<<EOD
+# Netmap
+netmap:
+ - interface: default
+   threads: auto
+   copy-mode: ips
+   disable-promisc: {$netmap_intf_promisc_mode}
+   checksum-checks: auto
+ - interface: {$if_real}
+   copy-iface: {$if_real}+
+ - interface: {$if_real}+
+   copy-iface: {$if_real}
+EOD;
+}
+else {
+	$suricata_ips_mode = <<<EOD
+# PCAP
+pcap:
+  - interface: {$if_real}
+    checksum-checks: auto
+    promisc: {$intf_promisc_mode}
+EOD;
+}
 
 ?>

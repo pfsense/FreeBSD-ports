@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-suricata
-PORTVERSION=	2.1.9.1
-PORTREVISION=	9
+PORTVERSION=	3.0
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -133,6 +132,8 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}/var/db/suricata/sidmods/enablesid-sample.conf \
 		${STAGEDIR}/var/db/suricata/sidmods
 	${INSTALL_DATA} ${FILESDIR}/var/db/suricata/sidmods/modifysid-sample.conf \
+		${STAGEDIR}/var/db/suricata/sidmods
+	${INSTALL_DATA} ${FILESDIR}/var/db/suricata/sidmods/dropsid-sample.conf \
 		${STAGEDIR}/var/db/suricata/sidmods
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}

@@ -56,7 +56,7 @@
 * Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
 * Copyright (C) 2009 Robert Zelaya Sr. Developer
 * Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
-* Copyright (C) 2014 Bill Meeks
+* Copyright (C) 2016 Bill Meeks
 *
 */
 
@@ -241,7 +241,12 @@ if ($_POST['filterlogentries_submit']) {
 	// Note the order of these fields must match the order decoded from the alerts log
 	$filterfieldsarray = array();
 	$filterfieldsarray['time'] = $_POST['filterlogentries_time'] ? $_POST['filterlogentries_time'] : null;
-	$filterfieldsarray['action'] = null;
+	if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline') {
+		$filterfieldsarray['action'] = $_POST['filterlogentries_action'] ? $_POST['filterlogentries_action'] : null;
+	}
+	else {
+		$filterfieldsarray['action'] = null;
+	}
 	$filterfieldsarray['gid'] = $_POST['filterlogentries_gid'] ? $_POST['filterlogentries_gid'] : null;
 	$filterfieldsarray['sid'] = $_POST['filterlogentries_sid'] ? $_POST['filterlogentries_sid'] : null;
 	$filterfieldsarray['rev'] = null;
@@ -553,7 +558,12 @@ $section->add($group);
 $form->add($section);
 
 // ========== Log filter Panel =============================================================
-$section = new Form_Section("Alert Log View Filter", "alertfilter", COLLAPSIBLE|SEC_CLOSED);
+if ($filterlogentries && count($filterfieldsarray)) {
+	$section = new Form_Section("Alert Log View Filter", "alertfilter", COLLAPSIBLE|SEC_OPEN);
+}
+else {
+	$section = new Form_Section("Alert Log View Filter", "alertfilter", COLLAPSIBLE|SEC_CLOSED);
+}
 
 $group = new Form_Group('');
 
@@ -642,6 +652,16 @@ $group->add(new Form_Input(
 	$filterfieldsarray['proto']
 ))->setHelp("Protocol");
 
+if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline') {
+	$group->add(new Form_Checkbox(
+		'filterlogentries_action',
+		'Dropped',
+		null,
+		$filterfieldsarray['action'] == "Drop" ? true:false,
+		'Drop'
+	))->setHelp('Dropped');
+}
+
 $group->add(new Form_Button(
 	'filterlogentries_submit',
 	'Filter',
@@ -712,6 +732,12 @@ if ($filterlogentries && count($filterfieldsarray)) {
 <div class="panel panel-default">
 	<div class="panel-heading"><h2 class="panel-title"><?=sprintf($sectitle, $anentries)?></h2></div>
 	<div class="panel-body table-responsive">
+	<?php if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline') : ?>
+		<div class="content table-responsive">
+			<span class="text-info"><b><?=gettext('Note: ');?></b><?=gettext('Alerts triggered by DROP rules that resulted in dropped (blocked) packets are shown with ');?>
+			<span class="text-danger"><?=gettext('highlighted ');?></span><?=gettext('rows below.');?><span>
+		</div>
+	<?php endif; ?>
 		<table class="table table-striped table-hover table-condensed">
 			<thead>
 			   <tr>
@@ -761,8 +787,13 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 			// Field 0 is the event timestamp
 			$fields['time'] = substr($buf, 0, strpos($buf, '  '));
 
-			// Field 1 is currently not used, so set to NULL
-			$fields['action'] = null;
+			// Field 1 is the rule action (value is '**' when mode is not inline IPS)
+			if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' && preg_match('/\[([A-Z]+)\]\s/i', $buf, $tmp)) {
+				$fields['action'] = trim($tmp[1]);
+			}
+			else {
+				$fields['action'] = null;
+			}
 
 			// The regular expression match below returns an array as follows:
 			// [2] => GID, [3] => SID, [4] => REV, [5] => MSG, [6] => CLASSIFICATION, [7] = PRIORITY
@@ -924,20 +955,24 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 			}
 			/* DESCRIPTION */
 			$alert_class = $fields['class'];
-
-			echo "<tr>
-				<td>{$alert_date}<br/>{$alert_time}</td>
-				<td>{$alert_priority}</td>
-				<td>{$alert_proto}</td>
-				<td style=\"word-wrap:break-word;\">{$alert_class}</td>
-				<td>{$alert_ip_src}</td>
-				<td>{$alert_src_p}</td>
-				<td>{$alert_ip_dst}</td>
-				<td>{$alert_dst_p}</td>
-				<td>{$alert_sid_str}<br/>{$sidsupplink}&nbsp;&nbsp;{$sid_dsbl_link}</td>
-				<td>{$alert_descr}</td>
-				</tr>\n";
-
+	?>
+	<?php if ($fields['action']) : ?>
+			<tr class="text-danger">
+	<?php else : ?>
+			<tr>
+	<?php endif; ?>
+				<td><?=$alert_date;?><br/><?=$alert_time;?></td>
+				<td><?=$alert_priority;?></td>
+				<td><?=$alert_proto;?></td>
+				<td style="word-wrap:break-word;"><?=$alert_class;?></td>
+				<td><?=$alert_ip_src;?></td>
+				<td><?=$alert_src_p;?></td>
+				<td><?=$alert_ip_dst;?></td>
+				<td><?=$alert_dst_p;?></td>
+				<td><?=$alert_sid_str;?><br/><?=$sidsupplink;?>&nbsp;&nbsp;<?=$sid_dsbl_link;?></td>
+				<td><?=$alert_descr;?></td>
+			</tr>
+	<?php
 			$counter++;
 		}
 		unset($fields, $buf, $tmp);
@@ -945,7 +980,7 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 		unlink_if_exists("{$g['tmp_path']}/alerts_suricata{$suricata_uuid}");
 	}
 }
-?>
+	?>
 			</tbody>
 		</table>
 	</div>

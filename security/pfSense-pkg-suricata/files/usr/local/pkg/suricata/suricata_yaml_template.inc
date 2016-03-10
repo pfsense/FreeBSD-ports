@@ -134,7 +134,6 @@ detect-engine:
   - profile: {$detect_eng_profile}
   - sgh-mpm-context: {$sgh_mpm_ctx}
   - inspection-recursion-limit: {$inspection_recursion_limit}
-  - rule-reload: true
   - delayed-detect: {$delayed_detect}
 
 # Suricata is multi-threaded. Here the threading can be influenced.
@@ -255,18 +254,11 @@ logging:
       facility: {$suricata_use_syslog_facility}
       format: "[%i] <%d> -- "
 
-pcap:
-  - interface: {$if_real}
-    checksum-checks: auto
-    promisc: {$intf_promisc_mode}
+# IPS Mode Configuration
+{$suricata_ips_mode}
 
-# For FreeBSD ipfw(8) divert(4) support.
-#   ipfw add 100 divert 8000 ip from any to any
-#
-# The 8000 above should be the same number you passed on the command
-# line, i.e. -d 8000
-#
-#ipfw:
+legacy:
+  uricontent: enabled
 
 default-rule-path: {$suricatacfgdir}/rules
 rule-files:

@@ -146,6 +146,8 @@ if (empty($pconfig['blockoffendersip']))
 	$pconfig['blockoffendersip'] = "both";
 if (empty($pconfig['blockoffenderskill']))
 	$pconfig['blockoffenderskill'] = "on";
+if (empty($pconfig['ips_mode']))
+	$pconfig['ips_mode'] = 'ips_mode_legacy';
 if (empty($pconfig['max_pending_packets']))
 	$pconfig['max_pending_packets'] = "1024";
 if (empty($pconfig['detect_eng_profile']))
@@ -313,6 +315,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['mpm_algo']) $natent['mpm_algo'] = $_POST['mpm_algo']; else unset($natent['mpm_algo']);
 		if ($_POST['sgh_mpm_context']) $natent['sgh_mpm_context'] = $_POST['sgh_mpm_context']; else unset($natent['sgh_mpm_context']);
 		if ($_POST['blockoffenders'] == "on") $natent['blockoffenders'] = 'on'; else $natent['blockoffenders'] = 'off';
+		if ($_POST['ips_mode']) $natent['ips_mode'] = $_POST['ips_mode']; else unset($natent['ips_mode']);
 		if ($_POST['blockoffenderskill'] == "on") $natent['blockoffenderskill'] = 'on'; else $natent['blockoffenderskill'] = 'off';
 		if ($_POST['blockoffendersip']) $natent['blockoffendersip'] = $_POST['blockoffendersip']; else unset($natent['blockoffendersip']);
 		if ($_POST['passlistname']) $natent['passlistname'] =  $_POST['passlistname']; else unset($natent['passlistname']);
@@ -796,7 +799,7 @@ $section->add($group)->addClass('eve_log_info');
 
 $form->add($section);
 
-$section = new Form_Section('Alert Settings');
+$section = new Form_Section('Alert and Block Settings');
 
 $section->addInput(new Form_Checkbox(
 	'blockoffenders',
@@ -805,6 +808,20 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['blockoffenders'] == 'on' ? true:false,
 	'on'
 ));
+
+$group = new Form_Group('IPS Mode');
+$group->add(new Form_Select(
+	'ips_mode',
+	'IPS Mode',
+	$pconfig['ips_mode'],
+	array( "ips_mode_legacy" => "Legacy Mode", "ips_mode_inline" => "Inline Mode" )
+))->setHelp('Select blocking mode operation.  Legacy Mode inspects copies of packets while Inline Mode inserts the Suricata inspection engine ' . 
+		'into the network stack between the NIC and the OS. Default is Legacy Mode.');
+$group->setHelp('Legacy Mode uses the PCAP engine to generate copies of packets for inspection as they traverse the interface.  Some "leakage" of packets will occur before ' . 
+		'Suricata can determine if the traffic matches a rule and should be blocked.  Inline mode instead intercepts and inspects packets before they are handed ' . 
+		'off to the host network stack for further processing.  Packets matching DROP rules are simply discarded (dropped) and not passed to the host ' . 
+		'network stack.  No leakage of packets occurs with Inline Mode.  Note that Inline Mode only works with NIC drivers which support Netmap.');
+$section->add($group);
 
 $section->addInput(new Form_Checkbox(
 	'blockoffenderskill',
@@ -1062,7 +1079,12 @@ events.push(function(){
 		var hide = ! $('#blockoffenders').prop('checked');
 		hideCheckbox('blockoffenderskill', hide);
 		hideSelect('blockoffendersip', hide);
+		hideSelect('ips_mode', hide);
 		hideClass('passlist', hide);
+		if ($('#ips_mode').val() == 'ips_mode_inline') {
+			hideCheckbox('blockoffenderskill', true);
+			hideSelect('blockoffendersip', true);
+		}
 	}
 
 	function toggle_system_log() {
@@ -1245,6 +1267,17 @@ events.push(function(){
 
 	$('#blockoffenders').click(function() {
 		enable_blockoffenders();
+	});
+
+	$('#ips_mode').on('change', function() {
+		if ($('#ips_mode').val() == 'ips_mode_inline') {
+			hideCheckbox('blockoffenderskill', true);
+			hideSelect('blockoffendersip', true);
+		}
+		else {
+			hideCheckbox('blockoffenderskill', false);
+			hideSelect('blockoffendersip', false);
+		}
 	});
 
 	// ---------- On initial page load ------------------------------------------------------------

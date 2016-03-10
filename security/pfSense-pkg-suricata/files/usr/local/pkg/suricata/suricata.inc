@@ -13,7 +13,7 @@
  * All rights reserved.
  *
  * Adapted for Suricata by:
- * Copyright (C) 2014 Bill Meeks
+ * Copyright (C) 2016 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -126,8 +126,9 @@ function suricata_start($suricatacfg, $if_real) {
 	$suricatabindir = SURICATA_PBI_BINDIR;
 
 	if ($suricatacfg['enable'] == 'on') {
+		$run_mode = $suricatacfg['ips_mode'] == 'ips_mode_inline' ? '--netmap' : '-i ' . $if_real;
 		log_error("[Suricata] Suricata START for {$suricatacfg['descr']}({$if_real})...");
-		mwexec_bg("{$suricatabindir}suricata -i {$if_real} -D -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/suricata.yaml --pidfile {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
+		mwexec_bg("{$suricatabindir}suricata {$run_mode} -D -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/suricata.yaml --pidfile {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
 	}
 	else
 		return;
@@ -2060,7 +2061,8 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 	/*                  tokens                    */
 	/*      $action ==> modification action for   */
 	/*                  matching SID targets:     */
-	/*                  'enable' or 'disable'     */
+	/*                  'enable', 'disable' or    */
+	/*		    'drop'.
 	/* $log_results ==> [optional] 'yes' to log   */
 	/*                   results to $log_file     */
 	/*    $log_file ==> full path and filename    */
@@ -2076,6 +2078,7 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 	/**********************************************/
 
 	$sids = array();
+	$log_action = '';
 
 	// If no rules in $rule_map or mods in $sid_mods,
 	// then nothing to do.
@@ -2083,13 +2086,19 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 		return $sids;
 
 	// Validate the action keyword as we only accept
-	// 'enable' and 'disable' as valid.
+	// 'enable', 'disable' and 'drop' as valid.
 	switch ($action) {
 
 		case "enable":
+			$log_action = 'enabled';
 			break;
 
 		case "disable":
+			$log_action = 'disabled';
+			break;
+
+		case "drop":
+			$log_action = 'drop';
 			break;
 
 		default:
@@ -2097,7 +2106,9 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 			return $sids;
 	}
 
-	// Walk the SID mod tokens and decode each one
+	// Walk the SID mod tokens and decode each one.
+	// Place all matching GID:SID combos along with
+	// the requestion $action into our $sids[] array.
 	foreach ($sid_mods as $tok) {
 		$matches = array();
 		// Test the SID token for a GID:SID range
@@ -2183,8 +2194,9 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 		}
 	}
 
-	// Change state of all the matching GID:SID pairs we found
-	// above in the $rule_map array passed to us.
+	// Now walk our $sids[] array populated above and change
+	// the state or action of all the matching GID:SID pairs 
+	// in the $rule_map array passed to us.
 	$modcount = $changecount = 0;
 	$counter = count($sids, COUNT_RECURSIVE) - count($sids);
 
@@ -2208,13 +2220,29 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 					$changecount++;
 					$modcount++;
 				}
+				elseif ($action == 'drop' && $rule_map[$k1][$k2]['action'] != 'drop') {
+					if ($rule_map[$k1][$k2]['disabled'] == 1) {
+						$tmp = ltrim($rule_map[$k1][$k2]['rule'], " \t#");
+					}
+					else {
+						$tmp = $rule_map[$k1][$k2]['rule'];
+					}
+					if ($tmp = preg_replace('/^alert/', 'drop', $tmp)) {
+						$rule_map[$k1][$k2]['rule'] = $tmp;
+						$rule_map[$k1][$k2]['disabled'] = 0;
+						$rule_map[$k1][$k2]['action'] = 'drop';
+						$rule_map[$k1][$k2]['managed'] = 1;
+						$changecount++;
+						$modcount++;
+					}
+				}
 			}
 		}
 	}
 
 	if ($log_results == TRUE && !empty($log_file)) {
 		error_log(gettext("    Found {$modcount} matching SIDs in the active rules.\n"), 3, $log_file);
-		error_log(gettext("    Changed state for {$changecount} SIDs to '{$action}d'.\n"), 3, $log_file);
+		error_log(gettext("    Changed state for {$changecount} SIDs to '{$log_action}'.\n"), 3, $log_file);
 	}
 
 	// Return the array of matching SIDs
@@ -2454,13 +2482,61 @@ function suricata_process_modifysid(&$rule_map, $suricatacfg, $log_results = FAL
 	unset($sid_mods);
 }
 
+function suricata_process_dropsid(&$rule_map, $suricatacfg, $log_results = FALSE, $log_file = NULL) {
+
+	/**********************************************/
+	/* This function loads and processes the file */
+	/* specified by 'drop_sid_file' for the       */
+	/* interface.  The file is assumed to be a    */
+	/* valid dropsid.conf file containing         */
+	/* instructions for modifying the action for  */
+	/* matching rule SIDs.                        */
+	/*                                            */
+	/*     $rule_map ==> reference to array of    */
+	/*                   current rules            */
+	/*  $suricatacfg ==> interface config params  */
+	/*  $log_results ==> [optional] 'yes' to log  */
+	/*                   results to $log_file     */
+	/*     $log_file ==> full path and filename   */
+	/*                   of log file to write to  */
+	/*                                            */
+	/*     On Return ==> suitably modified        */
+	/*                   $rule_map array          */
+	/**********************************************/
+
+	$suricata_sidmods_dir = SURICATA_SID_MODS_PATH;
+	$suricatalogdir = SURICATALOGDIR;
+	$sid_mods = array();
+
+	// If no rules in $rule_map, then nothing to do
+	if (empty($rule_map))
+		return;
+
+	// Attempt to open the 'drop_sid_file' for the interface
+	if (!file_exists("{$suricata_sidmods_dir}{$suricatacfg['drop_sid_file']}")) {
+		log_error(gettext("[Suricata] Error - unable to open 'drop_sid_file' \"{$suricatacfg['drop_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
+		return;
+	}
+	else
+		$sid_mods = suricata_parse_sidconf_file("{$suricata_sidmods_dir}{$suricatacfg['drop_sid_file']}");
+
+	if (!empty($sid_mods))
+		suricata_modify_sid_state($rule_map, $sid_mods, "drop", $log_results, $log_file);
+	elseif ($log_results == TRUE && !empty($log_file)) {
+		error_log(gettext("WARNING: no valid SID match tokens found in file \"{$suricatacfg['drop_sid_file']}\".\n"), 3, $log_file);
+	}
+
+	unset($sid_mods);
+}
+
 function suricata_auto_sid_mgmt(&$rule_map, $suricatacfg, $log_results = FALSE) {
 
 	/**************************************************/
 	/* This function modifies the rules in the        */
 	/* passed rule_map array based on values in the   */
 	/* files 'enable_sid_file', 'disable_sid_file'    */
-	/* and 'modify_sid_file' for the interface.       */
+	/* 'modify_sid_file' abd 'drop_sid_file' for      */
+	/* the interface.                                 */
 	/*                                                */
 	/* If auto-mgmt of SIDs is enabled via the        */
 	/* settings on the UPDATE RULES tab, then the     */
@@ -2490,7 +2566,7 @@ function suricata_auto_sid_mgmt(&$rule_map, $suricatacfg, $log_results = FALSE) 
 	// for the interface.
 	if ($config['installedpackages']['suricata']['config'][0]['auto_manage_sids'] == 'on' &&
 	    (!empty($suricatacfg['disable_sid_file']) || !empty($suricatacfg['enable_sid_file']) || 
-	    !empty($suricatacfg['modify_sid_file']))) {
+	    !empty($suricatacfg['modify_sid_file']) || !empty($suricatacfg['drop_sid_file']))) {
 		if ($log_results == TRUE) {
 			error_log(gettext("********************************************************\n"), 3, $log_file);
 			error_log(gettext("Starting auto SID management for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) ."\n"), 3, $log_file);
@@ -2514,6 +2590,11 @@ function suricata_auto_sid_mgmt(&$rule_map, $suricatacfg, $log_results = FALSE) 
 						error_log(gettext("Processing modify_sid file: {$suricatacfg['modify_sid_file']}\n"), 3, $log_file);
 					suricata_process_modifysid($rule_map, $suricatacfg, $log_results, $log_file);
 				}
+				if (!empty($suricatacfg['drop_sid_file'])) {
+					if ($log_results == TRUE)
+						error_log(gettext("Processing drop_sid file: {$suricatacfg['drop_sid_file']}\n"), 3, $log_file);
+					suricata_process_dropsid($rule_map, $suricatacfg, $log_results, $log_file);
+				}
 				$result = TRUE;
 				break;
 
@@ -2532,6 +2613,11 @@ function suricata_auto_sid_mgmt(&$rule_map, $suricatacfg, $log_results = FALSE) 
 					if ($log_results == TRUE)
 						error_log(gettext("Processing modify_sid file: {$suricatacfg['modify_sid_file']}\n"), 3, $log_file);
 					suricata_process_modifysid($rule_map, $suricatacfg, $log_results, $log_file);
+				}
+				if (!empty($suricatacfg['drop_sid_file'])) {
+					if ($log_results == TRUE)
+						error_log(gettext("Processing drop_sid file: {$suricatacfg['drop_sid_file']}\n"), 3, $log_file);
+					suricata_process_dropsid($rule_map, $suricatacfg, $log_results, $log_file);
 				}
 				$result = TRUE;
 				break;
@@ -2923,6 +3009,7 @@ function suricata_create_rc() {
 			continue;
 		$suricata_uuid = $value['uuid'];
 		$if_real = get_real_interface($value['interface']);
+		$run_mode = $value['ips_mode'] == 'ips_mode_inline' ? '--netmap' : '-i ' . $if_real;
 
 		$start_barnyard = <<<EOE
 
@@ -2978,14 +3065,14 @@ EOE;
 
 	## Start suricata on {$value['descr']} ({$if_real}) ##
 	if [ ! -f {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid ]; then
-		pid=`/bin/pgrep -fn "suricata -i {$if_real} "`
+		pid=`/bin/pgrep -fn "suricata {$run_mode} -D -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/suricata.yaml "`
 	else
 		pid=`/bin/pgrep -F {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid`
 	fi
 
 	if [ -z \$pid ]; then
 		/usr/bin/logger -p daemon.info -i -t SuricataStartup "Suricata START for {$value['descr']}({$suricata_uuid}_{$if_real})..."
-		{$suricatabindir}suricata -i {$if_real} -D -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/suricata.yaml --pidfile {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid > /dev/null 2>&1
+		{$suricatabindir}suricata {$run_mode} -D -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/suricata.yaml --pidfile {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid > /dev/null 2>&1
 	fi
 
 	sleep 1
@@ -3010,7 +3097,7 @@ EOE;
 			/bin/rm {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid
 		fi
 	else
-		pid=`/bin/pgrep -fn "suricata -i {$if_real} "`
+		pid=`/bin/pgrep -fn "suricata {$run_mode} -D -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/suricata.yaml "`
 		if [ ! -z \$pid ]; then
 			/usr/bin/logger -p daemon.info -i -t SuricataStartup "Suricata STOP for {$value['descr']}({$suricata_uuid}_{$if_real})..."
 			/bin/pkill -TERM -fn "suricata -i {$if_real} "
