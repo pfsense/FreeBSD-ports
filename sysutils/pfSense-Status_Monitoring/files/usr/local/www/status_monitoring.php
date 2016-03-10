@@ -1198,6 +1198,16 @@ events.push(function() {
 						var trueValue = data.series[v].value;
 					}
 
+					valueUnits = "";
+					if (tempKey.includes('delay')) {
+						trueValue *= 1000;	// Show delay values in same units as graph axis.  Fewer digits is human friendlier.
+						valueUnits = "m";
+					}
+
+					if (tempKey.includes('packet loss')) {
+						valueUnits = "%";
+					}
+
 					//change decimal places to round to if a really small number
 					if(trueValue < .01) {
 						var adjustedTrueValue = d3.format(',')(trueValue.toFixed(6)); //TODO dynamically calculate number of zeros after decimal and base off that
