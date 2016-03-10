@@ -56,7 +56,7 @@
 * Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
 * Copyright (C) 2009 Robert Zelaya Sr. Developer
 * Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
-* Copyright (C) 2014 Bill Meeks
+* Copyright (C) 2016 Bill Meeks
 *
 */
 
@@ -99,8 +99,10 @@ $group->add(new Form_Input(
 ))->setHelp('IP List to bind this engine to (Cannot be blank). This policy will apply for packets with destination addresses contained within this IP List. Supplied value must be a pre-configured Alias or the keyword "all".');
 $group->add(new Form_Button(
 	'select_alias',
-	'Aliases'
-))->removeClass('btn-primary')->addClass('btn-info');
+	'Aliases',
+	null,
+	'fa-upload'
+))->removeClass('btn-primary')->addClass('btn-sm btn-success');
 $section->add($group);
 
 $section->addInput(new Form_Select(
@@ -114,8 +116,6 @@ $form->add($section);
 print($form);
 ?>
 
-<script type="text/javascript" src="/javascript/autosuggest.js"></script>
-<script type="text/javascript" src="/javascript/suggestions.js"></script>
 <script type="text/javascript">
 //<![CDATA[
 	var addressarray = <?= json_encode(get_alias_list(array("host", "network"))) ?>;

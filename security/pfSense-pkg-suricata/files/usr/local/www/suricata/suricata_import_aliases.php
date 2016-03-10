@@ -56,7 +56,7 @@
 * Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
 * Copyright (C) 2009 Robert Zelaya Sr. Developer
 * Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
-* Copyright (C) 2014 Bill Meeks
+* Copyright (C) 2016 Bill Meeks
 *
 */
 
@@ -161,33 +161,46 @@
 					  </td>
 					</tr>
 				  <?php $i++; endforeach; ?>
-				<?php if (!$selectablealias): ?>
-					<tr>
-						<td colspan="4" class="text-center"><b><?=gettext("There are currently no defined Aliases eligible for import.")?></b></td>
-					</tr>
-					<tr>
-						<td colspan="4" class="text-center">
-							<input type="Submit" name="cancel_import_alias" value="Cancel" id="cancel_import_alias" class="btn btn-warning" title="<?=gettext("Cancel import operation and return")?>"/>
-						</td>
-					</tr>
-					<?php else: ?>
-					<tr>
-						<td colspan="4" >
-							<input type="Submit" name="save_import_alias" value="Save" id="save_import_alias" class="btn btn-primary" title="<?=gettext("Import selected item and return")?>"/>
-							<input type="Submit" name="cancel_import_alias" value="Cancel" id="cancel_import_alias" class="btn btn-default" title="<?=gettext("Cancel import operation and return")?>"/>
-						</td>
-					</tr>
-					<?php endif; ?>
-					<tr>
-						<td colspan="4">
-							<span class="text-danger"><strong><?=gettext("Note:"); ?></strong></span> <?=gettext("Fully-Qualified Domain Name (FQDN) host Aliases cannot be used as Suricata configuration parameters.  Aliases resolving to a single FQDN value are disabled in the list above.  In the case of nested Aliases where one or more of the nested values is a FQDN host, the FQDN host will not be included in the {$title} configuration.")?>
-						</td>
 					</tr>
 				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="4">
+							<div class="infoblock blockopen">
+							<?=print_info_box("<b>" . gettext("Note: ") . "</b>" . gettext("Fully-Qualified Domain Name (FQDN) host Aliases cannot be used as " . 
+							"Suricata configuration parameters. Aliases resolving to a single FQDN value are disabled in the list above.  " . 
+							"In the case of nested Aliases where one or more of the nested values is a FQDN host, the FQDN host will not " . 
+							"be included in the {$title} configuration."), "info", false);?>
+							</div>
+						</td>
+					</tr>
+				</tfoot>
 			</table>
+		</div>
+
+		<div class="content table-responsive">
+			<?php if (!$selectablealias): ?>
+				<div class="text-center">
+					<b><?=gettext("There are currently no defined Aliases eligible for import.")?></b>
+				</div>
+				<div class="text-center">
+					<button type="Submit" name="cancel_import_alias" value="Cancel" id="cancel_import_alias" class="btn btn-warning" title="<?=gettext("Cancel import operation and return")?>">
+						<?=gettext("Cancel"); ?>
+					</button>
+				</div>
+			<?php else: ?>
+				<div class="text-left">
+					<button type="Submit" name="save_import_alias" value="Save" id="save_import_alias" class="btn btn-primary" title="<?=gettext("Import selected item and return")?>">
+						<i class="fa fa-save icon-embed-btn"></i>
+						<?=gettext("Save"); ?>
+					</button>
+					<button type="Submit" name="cancel_import_alias" value="Cancel" id="cancel_import_alias" class="btn btn-warning" title="<?=gettext("Cancel import operation and return")?>">
+						<?=gettext("Cancel"); ?>
+					</button>
+				</div>
+			<?php endif; ?>
 		</div>
 	</div>
 </div>
 </form>
-
 

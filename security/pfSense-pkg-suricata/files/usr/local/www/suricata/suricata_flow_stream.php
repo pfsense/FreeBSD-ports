@@ -56,7 +56,7 @@
 * Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
 * Copyright (C) 2009 Robert Zelaya Sr. Developer
 * Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
-* Copyright (C) 2014 Bill Meeks
+* Copyright (C) 2016 Bill Meeks
 *
 */
 
@@ -497,15 +497,16 @@ display_top_tabs($tab_array, true);
 
 <?php
 
-
 	if ($importalias) {
-
-		$form = new Form($svbtn);
-
 		$svbtn = new Form_Button(
 			'save_os_policy',
-			'Save OS Policy'
+			'Save OS Policy',
+			null,
+			'fa-save'
 		);
+		$svbtn->addClass("btn-primary");
+
+		$form = new Form($svbtn);
 
 		$form->addGlobal(new Form_Input(
 			'id',
@@ -548,8 +549,11 @@ display_top_tabs($tab_array, true);
 
 		$svbtn = new Form_Button(
 			'save_os_policy',
-			'Save'
+			'Save',
+			null,
+			'fa-save'
 		);
+		$svbtn->addClass("btn-primary");
 
 		$form = new Form($svbtn);
 
@@ -594,8 +598,14 @@ display_top_tabs($tab_array, true);
 									<th><?=gettext("Name")?></th>
 									<th><?=gettext("Bind-To Address Alias")?></th>
 									<th>
-										<input type="submit" name="import_alias[]" class="btn btn-sm btn-primary" title="<?=gettext("Import policy configuration from existing Aliases")?>" value="Import" />
-										<input type="submit" name="add_os_policy[]" class="btn btn-sm btn-success" title="<?=gettext("Add a new policy configuration")?>" value="Add"/>
+										<button type="submit" name="import_alias[]" class="btn btn-sm btn-primary" title="<?=gettext("Import policy configuration from existing Aliases")?>" value="Import">
+											<i class="fa fa-upload icon-embed-btn"></i>
+											<?=gettext("Import"); ?>
+										</button>
+										<button type="submit" name="add_os_policy[]" class="btn btn-sm btn-success" title="<?=gettext("Add a new policy configuration")?>" value="Add">
+											<i class="fa fa-plus icon-embed-btn"></i>
+											<?=gettext("Add"); ?>
+										</button>
 									</th>
 								</tr>
 							</thead>
@@ -605,11 +615,20 @@ display_top_tabs($tab_array, true);
 										<td><?=gettext($v['name'])?></td>
 										<td><?=gettext($v['bind_to'])?></td>
 										<td>
-											<input type="submit" name="edit_os_policy[]" class="btn btn-sm btn-primary" value="Edit" onclick="document.getElementById('eng_id').value='<?=$f?>'" title="<?=gettext("Edit this policy configuration")?>"/>
+											<button type="submit" name="edit_os_policy[]" class="btn btn-sm btn-primary" value="Edit" onclick="document.getElementById('eng_id').value='<?=$f?>'" title="<?=gettext("Edit this policy configuration")?>">
+												<i class="fa fa-pencil icon-embed-btn"></i>
+												<?=gettext("Edit"); ?>
+											</button>
 								<?php if ($v['bind_to'] != "all") : ?>
-											<input type="submit" name="del_os_policy[]" class="btn btn-sm btn-danger" value="Delete" onclick="document.getElementById('eng_id').value='<?=$f?>';return confirm('Are you sure you want to delete this entry?');" title="<?=gettext("Delete this policy configuration")?>"/>
+											<button type="submit" name="del_os_policy[]" class="btn btn-sm btn-danger" value="Delete" onclick="document.getElementById('eng_id').value='<?=$f?>';return confirm('Are you sure you want to delete this entry?');" title="<?=gettext("Delete this policy configuration")?>">
+												<i class="fa fa-trash icon-embed-btn"></i>
+												<?=gettext("Delete"); ?>
+											</button>
 								<?php else : ?>
-								<input type="submit" name="del_os_policy[]" class="btn btn-sm btn-danger" value="Delete" title="<?=gettext("Default policy configuration cannot be deleted")?>" disabled/>
+											<button type="submit" name="del_os_policy[]" class="btn btn-sm btn-danger" value="Delete" title="<?=gettext("Default policy configuration cannot be deleted")?>" disabled>
+												<i class="fa fa-trash icon-embed-btn"></i>
+												<?=gettext("Delete"); ?>
+											</button>
 								<?php endif ?>
 										</td>
 									</tr>

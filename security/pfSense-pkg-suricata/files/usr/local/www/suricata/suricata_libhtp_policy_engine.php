@@ -56,7 +56,7 @@
 * Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
 * Copyright (C) 2009 Robert Zelaya Sr. Developer
 * Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
-* Copyright (C) 2014 Bill Meeks
+* Copyright (C) 2016 Bill Meeks
 *
 */
 
@@ -88,10 +88,7 @@
  **************************************************************************************/
 
 
-$form = new Form(new Form_Button(
-	'save_libhtp_policy',
-	'Save'
-));
+$form = new Form(false);
 
 $section = new Form_Section('Suricata Target-Based HTTP Server Policy Configuration');
 $section->addInput(new Form_Input(
@@ -152,6 +149,13 @@ $section->addInput(new Form_Checkbox(
 	'on'
 ));
 $form->add($section);
+
+$form->addGlobal(new Form_Button(
+	'save_libhtp_policy',
+	'Save',
+	null,
+	'fa-save'
+))->addClass("btn-primary");
 
 $form->addGlobal(new Form_Button(
 	'cancel_libhtp_policy',

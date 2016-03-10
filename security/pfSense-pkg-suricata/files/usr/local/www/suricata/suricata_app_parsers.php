@@ -55,7 +55,7 @@
 * Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
 * Copyright (C) 2009 Robert Zelaya Sr. Developer
 * Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
-* Copyright (C) 2014 Bill Meeks
+* Copyright (C) 2016 Bill Meeks
 *
 */
 require_once("guiconfig.inc");
@@ -664,8 +664,14 @@ if ($importalias) {
 									<th><?=gettext("Name")?></th>
 									<th><?=gettext("Bind-To Address Alias")?></th>
 									<th>
-										<input type="submit" name="import_alias" class="btn btn-sm btn-primary" title="<?=gettext("Import server configuration from existing Aliases")?>" value="Import"/>
-										<input type="submit" name="add_libhtp_policy" class="btn btn-sm btn-success" title="<?=gettext("Add a new server configuration")?>" value="Add">
+										<button type="submit" name="import_alias" class="btn btn-sm btn-primary" title="<?=gettext("Import server configuration from existing Aliases")?>" value="Import">
+											<i class="fa fa-upload icon-embed-btn"></i>
+											<?=gettext("Import"); ?>
+										</button>
+										<button type="submit" name="add_libhtp_policy" class="btn btn-sm btn-success" title="<?=gettext("Add a new server configuration")?>" value="Add">
+											<i class="fa fa-plus icon-embed-btn"></i>
+											<?=gettext("Add"); ?>
+										</button>
 									</th>
 								</tr>
 							</thead>
@@ -675,11 +681,22 @@ if ($importalias) {
 									<td><?=gettext($v['name'])?></td>
 									<td class="text-center"><?=gettext($v['bind_to'])?></td>
 									<td class="text-right">
-										<input type="submit" name="edit_libhtp_policy[]" value="Edit" class="btn btn-sm btn-primary" onclick="document.getElementById('eng_id').value='<?=$f?>'" title="<?=gettext("Edit this server configuration")?>"/>
+										<button type="submit" name="edit_libhtp_policy[]" value="Edit" class="btn btn-sm btn-primary" onclick="document.getElementById('eng_id').value='<?=$f?>'" title="<?=gettext("Edit this server configuration")?>">
+											<i class="fa fa-pencil icon-embed-btn"></i>
+											<?=gettext("Edit"); ?>
+
+										</button>
 									<?php if ($v['bind_to'] != "all") : ?>
-										<input type="submit" name="del_libhtp_policy[]" value="Delete" class="btn btn-sm btn-danger" onclick="document.getElementById('eng_id').value='<?=$f?>';return confirm('Are you sure you want to delete this entry?');" title="<?=gettext("Delete this server configuration")?>">
+										<button type="submit" name="del_libhtp_policy[]" value="Delete" class="btn btn-sm btn-danger" onclick="document.getElementById('eng_id').value='<?=$f?>';return confirm('Are you sure you want to delete this entry?');" title="<?=gettext("Delete this server configuration")?>">
+											<i class="fa fa-trash icon-embed-btn"></i>
+											<?=gettext("Delete"); ?>
+
+										</button>
 									<?php else : ?>
-										<input type="submit" name="del_libhtp_policy[]" value="Delete" class="btn btn-sm btn-danger" title="<?=gettext("Delete this server configuration")?>" disabled>
+										<button type="submit" name="del_libhtp_policy[]" value="Delete" class="btn btn-sm btn-danger" title="<?=gettext("Delete this server configuration")?>" disabled>
+											<i class="fa fa-trash icon-embed-btn"></i>
+											<?=gettext("Delete"); ?>
+										</button>
 									<?php endif ?>
 									</td>
 								</tr>
@@ -694,6 +711,7 @@ if ($importalias) {
 
 	<div class="col-sm-10 col-sm-offset-2">
 		<button type="submit" id="save" name="save" value="Save" class="btn btn-primary" title="<?=gettext('Save App Parsers settings');?>">
+			<i class="fa fa-save icon-embed-btn"></i>
 			<?=gettext('Save');?>
 		</button>
 	</div>
