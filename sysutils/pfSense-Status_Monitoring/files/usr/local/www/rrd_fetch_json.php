@@ -60,7 +60,7 @@ header('Content-Type: application/json');
 
 $rrd_location = "/var/db/rrd/";
 
-//TODO security checks
+//TODO security/validation checks
 $left = $_POST['left'];
 $right = $_POST['right'];
 $start = $_POST['start'];
@@ -138,6 +138,7 @@ if ($left != "null") {
 		$graph_type = $graphtype;
 		$unit_acronym = $left_unit_acronym;
 		$multiplier = 1;
+		$format = "f";
 
 		//Overrides based on line name
 		switch($ds) {
@@ -186,20 +187,24 @@ if ($left != "null") {
 		case "inpass":
 			$ninetyfifth = true;
 			$multiplier = 8;
+			$format = "s";
 			break;
 		case "inpass6":
 			$ninetyfifth = true;
 			$multiplier = 8;
+			$format = "s";
 			break;
 		case "outpass":
 			$invert = $invert_graph;
 			$ninetyfifth = true;
 			$multiplier = 8;
+			$format = "s";
 			break;
 		case "outpass6":
 			$invert = $invert_graph;
 			$ninetyfifth = true;
 			$multiplier = 8;
+			$format = "s";
 			break;
 		}
 
@@ -208,7 +213,7 @@ if ($left != "null") {
 
 			$obj[$ds_key_left_adjusted]['key'] = $ds;
 			$obj[$ds_key_left_adjusted]['type'] = $graph_type;
-			$obj[$ds_key_left_adjusted]['format'] = "s";
+			$obj[$ds_key_left_adjusted]['format'] = $format;
 			$obj[$ds_key_left_adjusted]['yAxis'] = 1;
 			$obj[$ds_key_left_adjusted]['unit_acronym'] = $unit_acronym;
 			$obj[$ds_key_left_adjusted]['unit_desc'] = $unit_desc_lookup[$unit_acronym];
@@ -235,13 +240,12 @@ if ($left != "null") {
 		foreach ($obj as $key => $value) {
 			//grab inpass and outpass attributes and values
 			if ($value['key'] === "inpass") {
-				$inpass_array = [];
-
+				$left_inpass_array = array();
 				//loop through values and use time
 				foreach ($value['values'] as $datapoint) {
 					$y_point = $datapoint[1];
 					if (is_nan($y_point)) { $y_point = 0; }
-					$inpass_array[$datapoint[0]] = $y_point;
+					$left_inpass_array[$datapoint[0]/1000] = $y_point;
 				}
 			}
 
@@ -252,7 +256,7 @@ if ($left != "null") {
 				foreach ($value['values'] as $datapoint6) {
 					$y_point = $datapoint6[1];
 					if (is_nan($y_point)) { $y_point = 0; }
-					$inpass6_array[$datapoint6[0]] = $y_point;
+					$inpass6_array[$datapoint6[0]/1000] = $y_point;
 				}
 			}
 
@@ -263,7 +267,7 @@ if ($left != "null") {
 				foreach ($value['values'] as $datapoint) {
 					$y_point = $datapoint[1];
 					if (is_nan($y_point)) { $y_point = 0; }
-					$outpass_array[$datapoint[0]] = $y_point;
+					$outpass_array[$datapoint[0]/1000] = $y_point;
 				}
 			}
 
@@ -274,7 +278,7 @@ if ($left != "null") {
 				foreach ($value['values'] as $datapoint6) {
 					$y_point = $datapoint6[1];
 					if (is_nan($y_point)) { $y_point = 0; }
-					$outpass6_array[$datapoint6[0]] = $y_point;
+					$outpass6_array[$datapoint6[0]/1000] = $y_point;
 				}
 			}
 
@@ -282,13 +286,13 @@ if ($left != "null") {
 
 		//calulate the new total lines
 		$inpass_total = [];
-		foreach ($inpass_array as $key => $value) {
-			$inpass_total[] = array($key, $value + $inpass6_array[$key]);
+		foreach ($left_inpass_array as $key => $value) {
+			$inpass_total[] = array($key*1000, $value + $inpass6_array[$key]);
 		}
 
 		$outpass_total = [];
 		foreach ($outpass_array as $key => $value) {
-			$outpass_total[] = array($key, $value + $outpass6_array[$key]);
+			$outpass_total[] = array($key*1000, $value + $outpass6_array[$key]);
 		}
 
 		//add the new total lines to array
@@ -302,15 +306,17 @@ if ($left != "null") {
 		$obj[$ds_key_left_adjusted]['ninetyfifth'] = true;
 		$obj[$ds_key_left_adjusted]['values'] = $inpass_total;
 
-		$obj[$ds_key_left_adjusted+1]['key'] = "outpass total";
-		$obj[$ds_key_left_adjusted+1]['type'] = $graphtype;
-		$obj[$ds_key_left_adjusted+1]['format'] = "s";
-		$obj[$ds_key_left_adjusted+1]['yAxis'] = 1;
-		$obj[$ds_key_left_adjusted+1]['unit_acronym'] = $left_unit_acronym;
-		$obj[$ds_key_left_adjusted+1]['unit_desc'] = $unit_desc_lookup[$left_unit_acronym];
-		$obj[$ds_key_left_adjusted+1]['invert'] = $invert_graph;
-		$obj[$ds_key_left_adjusted+1]['ninetyfifth'] = true;
-		$obj[$ds_key_left_adjusted+1]['values'] = $outpass_total;
+		$ds_key_left_adjusted += 1;
+
+		$obj[$ds_key_left_adjusted]['key'] = "outpass total";
+		$obj[$ds_key_left_adjusted]['type'] = $graphtype;
+		$obj[$ds_key_left_adjusted]['format'] = "s";
+		$obj[$ds_key_left_adjusted]['yAxis'] = 1;
+		$obj[$ds_key_left_adjusted]['unit_acronym'] = $left_unit_acronym;
+		$obj[$ds_key_left_adjusted]['unit_desc'] = $unit_desc_lookup[$left_unit_acronym];
+		$obj[$ds_key_left_adjusted]['invert'] = $invert_graph;
+		$obj[$ds_key_left_adjusted]['ninetyfifth'] = true;
+		$obj[$ds_key_left_adjusted]['values'] = $outpass_total;
 	}
 }
 
@@ -342,6 +348,7 @@ if ($right != "null") {
 		$graph_type = $graphtype;
 		$unit_acronym = $right_unit_acronym;
 		$multiplier = 1;
+		$format = "f";
 
 		//Override acronym based on line name
 		switch($ds) {
@@ -390,20 +397,24 @@ if ($right != "null") {
 		case "inpass":
 			$ninetyfifth = true;
 			$multiplier = 8;
+			$format = "s";
 			break;
 		case "inpass6":
 			$ninetyfifth = true;
 			$multiplier = 8;
+			$format = "s";
 			break;
 		case "outpass":
 			$invert = $invert_graph;
 			$ninetyfifth = true;
 			$multiplier = 8;
+			$format = "s";
 			break;
 		case "outpass6":
 			$invert = $invert_graph;
 			$ninetyfifth = true;
 			$multiplier = 8;
+			$format = "s";
 			break;
 		}
 
@@ -412,7 +423,7 @@ if ($right != "null") {
 
 			$obj[$ds_key_right_adjusted]['key'] = $ds;
 			$obj[$ds_key_right_adjusted]['type'] = $graph_type;
-			$obj[$ds_key_right_adjusted]['format'] = "s";
+			$obj[$ds_key_right_adjusted]['format'] = $format;
 			$obj[$ds_key_right_adjusted]['yAxis'] = 2;
 			$obj[$ds_key_right_adjusted]['unit_acronym'] = $unit_acronym;
 			$obj[$ds_key_right_adjusted]['unit_desc'] = $unit_desc_lookup[$unit_acronym];
@@ -508,15 +519,17 @@ if ($right != "null") {
 		$obj[$ds_key_right_adjusted]['ninetyfifth'] = true;
 		$obj[$ds_key_right_adjusted]['values'] = $inpass_total;
 
-		$obj[$ds_key_right_adjusted+1]['key'] = "outpass total";
-		$obj[$ds_key_right_adjusted+1]['type'] = $graphtype;
-		$obj[$ds_key_right_adjusted+1]['format'] = "s";
-		$obj[$ds_key_right_adjusted+1]['yAxis'] = 2;
-		$obj[$ds_key_right_adjusted+1]['unit_acronym'] = $right_unit_acronym;
-		$obj[$ds_key_right_adjusted+1]['unit_desc'] = $unit_desc_lookup[$right_unit_acronym];
-		$obj[$ds_key_right_adjusted+1]['invert'] = $invert_graph;
-		$obj[$ds_key_right_adjusted+1]['ninetyfifth'] = true;
-		$obj[$ds_key_right_adjusted+1]['values'] = $outpass_total;
+		$ds_key_right_adjusted += 1;
+
+		$obj[$ds_key_right_adjusted]['key'] = "outpass total";
+		$obj[$ds_key_right_adjusted]['type'] = $graphtype;
+		$obj[$ds_key_right_adjusted]['format'] = "s";
+		$obj[$ds_key_right_adjusted]['yAxis'] = 2;
+		$obj[$ds_key_right_adjusted]['unit_acronym'] = $right_unit_acronym;
+		$obj[$ds_key_right_adjusted]['unit_desc'] = $unit_desc_lookup[$right_unit_acronym];
+		$obj[$ds_key_right_adjusted]['invert'] = $invert_graph;
+		$obj[$ds_key_right_adjusted]['ninetyfifth'] = true;
+		$obj[$ds_key_right_adjusted]['values'] = $outpass_total;
 	}
 }
 
