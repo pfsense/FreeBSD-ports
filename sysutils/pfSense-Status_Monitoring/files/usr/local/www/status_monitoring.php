@@ -383,16 +383,12 @@ include("head.inc");
 	</div>
 </form>
 
-<p>
-	<button id="update" class="btn btn-primary">Update</button>
-	<span id="loading-msg">Loading Graph...</span>
-</p>
-
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<h2 class="panel-title">Interactive Graph</h2>
 	</div>
 	<div class="panel-body">
+		<span id="loading-msg">Loading Graph...</span>
 		<div id="chart-error" class="alert alert-danger" style="display: none;"></div>
 		<div id="chart" class="with-3d-shadow with-transitions">
 			<svg></svg> <!-- TODO add loading symbol -->
@@ -654,6 +650,11 @@ events.push(function() {
 			$("#graph-left").append('<option value="' + value + '">' + key + '</option>');
 		});
 
+		update_graph();
+	});
+
+	$('#graph-left').on('change', function() {
+		update_graph();
 	});
 
 	$('#category-right').on('change', function() {
@@ -838,6 +839,11 @@ events.push(function() {
 			$("#graph-right").append('<option value="' + value + '">' + key + '</option>');
 		});
 
+		update_graph();
+	});
+
+	$('#graph-right').on('change', function() {
+		update_graph();
 	});
 
 	$('#time-period').on('change', function() {
@@ -896,8 +902,37 @@ events.push(function() {
 				$("#resolution").append('<option value="60">1 Minute</option>');
 				break;
 			}
-			
+
+		update_graph();
 	});
+
+	$('#resolution').on('change', function() {
+		update_graph();
+	});
+
+	$('#graph-type').on('change', function() {
+		update_graph();
+	});
+
+	$('#invert').on('change', function() {
+		update_graph();
+	});
+
+	$( "#update" ).click(function() {
+		update_graph();
+	});
+
+	var auto_update;
+	var update_interval;
+	update_graph();
+
+	function update_graph() {
+		clearInterval(auto_update);
+		update_interval = $( "#resolution" ).val() * 1000 / 4;	// Update 4 times per resolution period.
+		auto_update = setInterval(update_graph, update_interval);
+
+		redraw_graph(getOptions());
+	}
 
 	/***
 	**
@@ -919,12 +954,6 @@ events.push(function() {
 
 		return graphOptions;
 	}
-
-	$( "#update" ).click(function() {
-		$("#chart").hide();
-		$("#loading-msg").show();
-		redraw_graph(getOptions());
-	});
 
 	/***
 	**
