@@ -1201,11 +1201,11 @@ events.push(function() {
 					valueUnits = "";
 					if (tempKey.includes('delay')) {
 						trueValue *= 1000;	// Show delay values in same units as graph axis.  Fewer digits is human friendlier.
-						valueUnits = "m";
+						valueUnits = " ms";
 					}
 
 					if (tempKey.includes('packet loss')) {
-						valueUnits = "%";
+						valueUnits = " %";
 					}
 
 					//change decimal places to round to if a really small number
@@ -1216,6 +1216,7 @@ events.push(function() {
 					}
 
 					content += '<tr><td class="legend-color-guide"><div style="background-color: ' + data.series[v].color + '"></div></td><td>' + data.series[v].key + '</td><td class="value"><strong>' + adjustedTrueValue + '</strong></td></tr>';
+					content += '<tr><td class="legend-color-guide"><div style="background-color: ' + data.series[v].color + '"></div></td><td>' + data.series[v].key + '</td><td class="value"><strong>' + adjustedTrueValue + valueUnits + '</strong></td></tr>';
 				}
 
 				content += '</tbody></table>';
