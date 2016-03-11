@@ -1273,7 +1273,7 @@ events.push(function() {
 				chart = nv.models.multiChart()
 					.color(d3.scale.category20().range())
 					.useInteractiveGuideline(true)
-					.margin({top: 160, right:100, left:100, bottom: 50});
+					.margin({top: 160, right:100, left:100, bottom: 80});
 
 				var timePeriod = $( "#time-period" ).val();
 				var timeFormat = timeLookup[timePeriod];
@@ -1334,7 +1334,7 @@ events.push(function() {
 				d3.select('#chart svg')
 					.append("text")
 					.attr("x", 100)
-					.attr("y", 400)
+					.attr("y", 415)
 					.attr("id", "system-name")
 					.text(systemName);
 
@@ -1343,7 +1343,7 @@ events.push(function() {
 				d3.select('#chart svg')
 					.append("text")
 					.attr("x", 330)
-					.attr("y", 400)
+					.attr("y", 415)
 					.attr("id", "time-period")
 					.text("Time Period: " + timePeriod);
 
@@ -1352,7 +1352,7 @@ events.push(function() {
 				d3.select('#chart svg')
 					.append("text")
 					.attr("x", 530)
-					.attr("y", 400)
+					.attr("y", 415)
 					.attr("id", "resolution")
 					.text("Resolution: " + Resolution);
 
@@ -1361,7 +1361,7 @@ events.push(function() {
 				d3.select('#chart svg')
 					.append("text")
 					.attr("x", 755)
-					.attr("y", 400)
+					.attr("y", 415)
 					.attr("id", "current-date")
 					.text(currentDate);
 
