@@ -381,6 +381,7 @@ include("head.inc");
 				<div class="col-sm-2">
 					<select class="form-control" id="auto-update" name="auto-update">
 						<option value="0" selected>Off</option>
+						<option value="-1">Settings Change</option>
 						<option value="15">15 Seconds</option>
 						<option value="60">1 Minute</option>
 						<option value="300">5 Minutes</option>
@@ -942,6 +943,9 @@ events.push(function() {
 	update_graph();
 
 	function update_graph(force) {
+		if ($( "#auto-update" ).val() == "-1") {
+			force = true;
+		}
 		clearInterval(auto_update);
 		update_interval = $( "#auto-update" ).val() * 1000;
 		if (update_interval > 0) {
