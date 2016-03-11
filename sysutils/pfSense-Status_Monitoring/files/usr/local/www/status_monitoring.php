@@ -378,17 +378,32 @@ include("head.inc");
 
 					<span class="help-block">Inverse</span>
 				</div>
+				<div class="col-sm-2">
+					<select class="form-control" id="auto-update" name="auto-update">
+						<option value="0" selected>Off</option>
+						<option value="15">15 Seconds</option>
+						<option value="60">1 Minute</option>
+						<option value="300">5 Minutes</option>
+						<option value="600">10 Minutes</option>
+					</select>
+
+					<span class="help-block">Auto Update</span>
+				</div>
 			</div>
 		</div>
 	</div>
 </form>
+
+<p>
+	<button id="update" class="btn btn-primary">Update</button>
+	<span id="loading-msg">Loading Graph...</span>
+</p>
 
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<h2 class="panel-title">Interactive Graph</h2>
 	</div>
 	<div class="panel-body">
-		<span id="loading-msg">Loading Graph...</span>
 		<div id="chart-error" class="alert alert-danger" style="display: none;"></div>
 		<div id="chart" class="with-3d-shadow with-transitions">
 			<svg></svg> <!-- TODO add loading symbol -->
@@ -919,19 +934,22 @@ events.push(function() {
 	});
 
 	$( "#update" ).click(function() {
-		update_graph();
+		update_graph(true);
 	});
 
 	var auto_update;
 	var update_interval;
 	update_graph();
 
-	function update_graph() {
+	function update_graph(force) {
 		clearInterval(auto_update);
-		update_interval = $( "#resolution" ).val() * 1000 / 4;	// Update 4 times per resolution period.
-		auto_update = setInterval(update_graph, update_interval);
-
-		redraw_graph(getOptions());
+		update_interval = $( "#auto-update" ).val() * 1000;
+		if (update_interval > 0) {
+			auto_update = setInterval(update_graph, update_interval);
+			redraw_graph(getOptions());
+		} else if (force) {
+			redraw_graph(getOptions());
+		}
 	}
 
 	/***
