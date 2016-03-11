@@ -288,6 +288,7 @@ if ($savemsg) {
 <link href="/vendor/nvd3/nv.d3.css" media="screen, projection" rel="stylesheet" type="text/css">
 
 <form class="form-horizontal collapse <?=$panel_state?> auto-submit" method="post" action="/status_monitoring.php" id="monitoring-settings-form">
+	<div class="panel panel-default" id="monitoring-settings-panel">
 		<div class="panel-heading">
 			<h2 class="panel-title"><?=gettext("Settings"); ?>
 				<span class="widget-heading-icon">
