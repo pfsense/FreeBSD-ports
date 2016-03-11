@@ -314,7 +314,7 @@ $group->add(new Form_Button(
 	'btnSelectAlias',
 	'Aliases',
 	'javascript:selectAlias();',
-	'fa-upload'
+	'fa-search-plus'
 ))->removeClass('btn-default')->addClass('btn-sm btn-success')->setAttribute('title', gettext('View and select from available aliases'));
 $section->add($group);
 $form->add($section);
