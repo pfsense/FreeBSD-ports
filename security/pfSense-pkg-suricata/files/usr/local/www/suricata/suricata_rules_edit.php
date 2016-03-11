@@ -56,7 +56,7 @@
 * Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
 * Copyright (C) 2009 Robert Zelaya Sr. Developer
 * Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
-* Copyright (C) 2014 Bill Meeks
+* Copyright (C) 2016 Bill Meeks
 *
 */
 
@@ -160,7 +160,7 @@ $btnclear = new Form_Button(
 	'Close'
 );
 
-$btnclear->removeClass('btn-primary')->addClass('btn-default');
+$btnclear->addClass('btn-primary');
 $btnclear->setType('button');
 $btnclear->setOnclick('window.close()');
 
