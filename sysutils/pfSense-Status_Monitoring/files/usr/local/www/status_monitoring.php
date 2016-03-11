@@ -1100,6 +1100,46 @@ events.push(function() {
 				.attr("id", "right-title")
 				.text("Right Axis: " + rightTitle);
 
+			//add system name
+			d3.select('#chart svg #system-name').remove();
+			var systemName = '<?=htmlspecialchars($config['system']['hostname'] . "." . $config['system']['domain']); ?>';
+			d3.select('#chart svg')
+				.append("text")
+				.attr("x", 20)
+				.attr("y", 385)
+				.attr("id", "system-name")
+				.text(systemName);
+
+			//add time period
+			d3.select('#chart svg #time-period').remove();
+			var timePeriod = $("#time-period option:selected").text();
+			d3.select('#chart svg')
+				.append("text")
+				.attr("x", 250)
+				.attr("y", 385)
+				.attr("id", "time-period")
+				.text("Time Period: " + timePeriod);
+
+			//add resolution
+			d3.select('#chart svg #resolution').remove();
+			var Resolution = $("#resolution option:selected").text();
+			d3.select('#chart svg')
+				.append("text")
+				.attr("x", 450)
+				.attr("y", 385)
+				.attr("id", "resolution")
+				.text("Resolution: " + Resolution);
+
+			//add current date
+			d3.select('#chart svg #current-date').remove();
+			var currentDate = d3.time.format('%a %b %d %H:%M:%S %Y GMT%Z')(new Date());
+			d3.select('#chart svg')
+				.append("text")
+				.attr("x", 675)
+				.attr("y", 385)
+				.attr("id", "current-date")
+				.text(currentDate);
+
 			d3.select('#chart svg')
 				.datum(data)
 				.transition()
@@ -1288,6 +1328,42 @@ events.push(function() {
 					.attr("y", 28)
 					.attr("id", "right-title")
 					.text("Right Axis: " + rightTitle);
+
+				//add system name
+				var systemName = '<?=htmlspecialchars($config['system']['hostname'] . "." . $config['system']['domain']); ?>';
+				d3.select('#chart svg')
+					.append("text")
+					.attr("x", 20)
+					.attr("y", 385)
+					.attr("id", "system-name")
+					.text(systemName);
+
+				//add time period
+				var timePeriod = $("#time-period option:selected").text();
+				d3.select('#chart svg')
+					.append("text")
+					.attr("x", 250)
+					.attr("y", 385)
+					.attr("id", "time-period")
+					.text("Time Period: " + timePeriod);
+
+				//add resolution
+				var Resolution = $("#resolution option:selected").text();
+				d3.select('#chart svg')
+					.append("text")
+					.attr("x", 450)
+					.attr("y", 385)
+					.attr("id", "resolution")
+					.text("Resolution: " + Resolution);
+
+				//add current date
+				var currentDate = d3.time.format('%a %b %d %H:%M:%S %Y GMT%Z')(new Date());
+				d3.select('#chart svg')
+					.append("text")
+					.attr("x", 675)
+					.attr("y", 385)
+					.attr("id", "current-date")
+					.text(currentDate);
 
 				//custom tooltip contents
 				chart.interactiveLayer.tooltip.contentGenerator(function(data) {
