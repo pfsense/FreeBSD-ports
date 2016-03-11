@@ -44,20 +44,4 @@
 		<section>Status</section>
 		<url>/status_mail_report.php</url>
 	</menu>
-	<custom_php_deinstall_command>
-	<![CDATA[
-		exec("rm /usr/local/bin/mail_reports_generate.php");
-		exec("rm /usr/local/etc/mail_reports.inc");
-		exec("rm /usr/local/etc/phpmailer/PHPMailerAutoload.php");
-		exec("rm /usr/local/etc/phpmailer/class.phpmailer.php");
-		exec("rm /usr/local/etc/phpmailer/class.pop3.php");
-		exec("rm /usr/local/etc/phpmailer/class.smtp.php");
-		exec("rmdir /usr/local/etc/phpmailer");
-		exec("rm /usr/local/www/status_mail_report.php");
-		exec("rm /usr/local/www/status_mail_report_edit.php");
-		exec("rm /usr/local/www/status_mail_report_add_cmd.php");
-		exec("rm /usr/local/www/status_mail_report_add_log.php");
-		exec("rm /usr/local/www/status_mail_report_add_graph.php");
-	]]>
-	</custom_php_deinstall_command>
 </packagegui>

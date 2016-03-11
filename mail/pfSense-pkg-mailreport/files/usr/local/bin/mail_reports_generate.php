@@ -64,15 +64,9 @@ if (is_array($thisreport['log']) && is_array($thisreport['log']['row']))
 else
 	$logs = array();
 
-if (is_array($thisreport['row']))
-	$graphs = $thisreport['row'];
-else
-	$graphs = array();
-
 // If there is nothing to do, bail!
 if ((!is_array($cmds) || !(count($cmds) > 0))
-	&& (!is_array($logs) || !(count($logs) > 0))
-	&& (!is_array($graphs) || !(count($graphs) > 0)))
+	&& (!is_array($logs) || !(count($logs) > 0)))
 	return;
 
 // Print report header
@@ -97,15 +91,6 @@ foreach ($logs as $log) {
 	$logtext .= "<pre>\n";
 	$logtext .= implode("\n", mail_report_get_log($log['logfile'], $lines, $filter));
 	$logtext .= "\n</pre>";
-}
-
-// For each graph, print a header and the graph
-$attach = array();
-foreach ($graphs as $thisgraph) {
-	$dates = get_dates($thisgraph['period'], $thisgraph['timespan']);
-	$start = $dates['start'];
-	$end = $dates['end'];
-	$attach[] = mail_report_generate_graph($thisgraph['graph'], $thisgraph['style'], $thisgraph['timespan'], $start, $end);
 }
 
 mail_report_send($thisreport['descr'], $cmdtext, $logtext, $attach);
