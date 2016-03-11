@@ -259,6 +259,19 @@ foreach ($databases as $db) {
 
 }
 
+## Get the configured options for Show/Hide monitoring settings panel.
+$monitoring_settings_form_hidden = isset($config['system']['webgui']['statusmonitoringsettingspanel']) ? false : true;
+
+if ($monitoring_settings_form_hidden) {
+	$panel_state = 'out';
+	$panel_body_state = 'in';
+} else {
+	$panel_state = 'in';
+	$panel_body_state = 'in';
+}
+
+$status_monitoring = true;
+
 $pgtitle = array(gettext("Status"), gettext("Monitoring"));
 
 include("head.inc");
@@ -274,12 +287,17 @@ if ($savemsg) {
 
 <link href="/vendor/nvd3/nv.d3.css" media="screen, projection" rel="stylesheet" type="text/css">
 
-<form class="form-horizontal auto-submit" method="post" action="/status_monitoring.php">
-	<div class="panel panel-default">
+<form class="form-horizontal collapse <?=$panel_state?> auto-submit" method="post" action="/status_monitoring.php" id="monitoring-settings-form">
 		<div class="panel-heading">
-			<h2 class="panel-title">Settings</h2>
+			<h2 class="panel-title"><?=gettext("Settings"); ?>
+				<span class="widget-heading-icon">
+					<a data-toggle="collapse" href="#monitoring-settings-panel_panel-body">
+						<i class="fa fa-plus-circle"></i>
+					</a>
+				</span>
+			</h2>
 		</div>
-		<div class="panel-body">
+		<div id="monitoring-settings-panel_panel-body" class="panel-body collapse <?=$panel_body_state?>">
 			<div class="form-group">
 				<label class="col-sm-2 control-label">
 					Left Axis
@@ -440,16 +458,12 @@ if ($savemsg) {
 	</div>
 </form>
 
-<p>
-	<button id="update" class="btn btn-primary">Update</button>
-	<span id="loading-msg">Loading Graph...</span>
-</p>
-
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<h2 class="panel-title">Interactive Graph</h2>
 	</div>
 	<div class="panel-body">
+		<span id="loading-msg">Loading Graph...</span>
 		<div id="chart-error" class="alert alert-danger" style="display: none;"></div>
 		<div id="chart" class="with-3d-shadow with-transitions">
 			<svg></svg>
