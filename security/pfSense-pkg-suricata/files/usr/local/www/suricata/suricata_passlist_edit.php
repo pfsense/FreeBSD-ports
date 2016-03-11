@@ -248,7 +248,7 @@ $tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=suricata/suricat
 $tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
 display_top_tabs($tab_array, true);
 
-$form = new Form;
+$form = new Form(FALSE);
 $section = new Form_Section('General Information');
 $section->addInput(new Form_Input(
 	'name',
@@ -270,13 +270,6 @@ $section->addInput(new Form_Checkbox(
 	'Local Networks',
 	'Add firewall Locally-Attached Networks to the list (excluding WAN).',
 	$pconfig['localnets'] == 'yes' ? true:false,
-	'yes'
-));
-$section->addInput(new Form_Checkbox(
-	'wanips',
-	'WAN IPs',
-	'Add WAN interface IPs to the list.',
-	$pconfig['wanips'] == 'yes' ? true:false,
 	'yes'
 ));
 $section->addInput(new Form_Checkbox(
@@ -310,12 +303,40 @@ $section->addInput(new Form_Checkbox(
 $form->add($section);
 
 $section = new Form_Section('Custom IP Address from Configured Alias');
-$section->addInput(new Form_Input(
+$group = new Form_Group('Assigned Alias');
+$group->add(new Form_Input(
 	'address',
 	'Assigned Alias',
 	'text',
 	$pconfig['address']
-))->setHelp('Enter the name of an existing Alias.')->setAttribute('title', gettext(trim(filter_expand_alias($pconfig['address']))));
+))->setHelp('Enter the name of an existing Alias.')->setAttribute('title', trim(filter_expand_alias($pconfig['address'])));
+$group->add(new Form_Button(
+	'btnSelectAlias',
+	'Aliases',
+	'javascript:selectAlias();',
+	'fa-upload'
+))->removeClass('btn-default')->addClass('btn-sm btn-success')->setAttribute('title', gettext('View and select from available aliases'));
+$section->add($group);
+$form->add($section);
+
+$section = new Form_Section('');
+$btnsave = new Form_Button(
+	'save',
+	'Save',
+	null,
+	'fa-save'
+);
+$btncancel = new Form_Button(
+	'cancel',
+	'Cancel'
+);
+$btnsave->addClass('btn-primary')->addClass('btn-default');
+$btncancel->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-warning');
+
+$section->addInput(new Form_StaticText(
+	null,
+	$btnsave . $btncancel
+));
 $form->add($section);
 
 // Include the Pass List ID in a hidden form field with any $_POST
@@ -341,20 +362,20 @@ function selectAlias() {
 
 	// Scrape current form field values and add to
 	// the select alias URL as a query string.
-	var loc = '/suricata/suricata_select_alias.php?id=<?=$id?>&act=import&type=host|network';
+	var loc = '/suricata/suricata_select_alias.php?id=<?=$id;?>&act=import&type=host|network';
 	loc = loc + '&varname=address&multi_ip=yes';
-	loc = loc + '&returl=<?=urlencode($_SERVER['PHP_SELF'])?>';
-	loc = loc + '&uuid=<?=$passlist_uuid?>';
+	loc = loc + '&returl=<?=urlencode($_SERVER['PHP_SELF']);?>';
+	loc = loc + '&uuid=<?=$passlist_uuid;?>';
 
 	// Iterate over just the specific form fields we want to pass to
 	// the select alias URL.
 	fields.forEach(function(entry) {
-		var tmp = $(entry).serialize();
+		var tmp = $('#' + entry).serialize();
 		if (tmp.length > 0)
 			loc = loc + '&' + tmp;
 	});
-
-	window.parent.location = loc;
+	
+	window.parent.location = loc; 
 }
 
 events.push(function() {
@@ -369,5 +390,5 @@ events.push(function() {
 });
 //]]>
 </script>
-
 <?php include("foot.inc"); ?>
+
