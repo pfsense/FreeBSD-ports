@@ -455,6 +455,14 @@ if ($savemsg) {
 					<button class="btn btn-danger" type="submit" value="true" name="ResetRRD" id="ResetRRD" style="display:none;">Reset RRD Data</button>
 				</div>
 			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">
+					&nbsp;
+				</label>
+				<div class="checkbox col-sm-2">
+					<button class="btn btn-primary update-graph" type="button">Update Graph</button>
+				</div>
+			</div>
 		</div>
 	</div>
 </form>
@@ -464,7 +472,7 @@ if ($savemsg) {
 		<h2 class="panel-title">Interactive Graph</h2>
 	</div>
 	<div class="panel-body">
-		<span id="loading-msg">Loading Graph...</span>
+		<div class="alert alert-info" id="loading-msg">Loading Graph...</div>
 		<div id="chart-error" class="alert alert-danger" style="display: none;"></div>
 		<div id="chart" class="with-3d-shadow with-transitions">
 			<svg></svg>
@@ -992,7 +1000,7 @@ events.push(function() {
 		return graphOptions;
 	}
 
-	$( "#update" ).click(function() {
+	$( ".update-graph" ).click(function() {
 		$("#chart").hide();
 		$("#loading-msg").show();
 		redraw_graph(getOptions());
