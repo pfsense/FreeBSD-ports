@@ -434,8 +434,11 @@ if ($savemsg) {
 			</div>
 			<div class="form-group">
 				<label class="col-sm-2 control-label">
-					Settings
+					Actions
 				</label>
+				<div class="checkbox col-sm-2">
+					<button class="btn btn-primary update-graph" type="button">Update Graph</button>
+				</div>
 				<div class="checkbox col-sm-2">
 					<button class="btn btn-default" type="button" value="true" name="settings" id="settings">Show Settings</button>
 				</div>
@@ -453,14 +456,6 @@ if ($savemsg) {
 				</div>
 				<div class="col-sm-2">
 					<button class="btn btn-danger" type="submit" value="true" name="ResetRRD" id="ResetRRD" style="display:none;">Reset RRD Data</button>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-2 control-label">
-					&nbsp;
-				</label>
-				<div class="checkbox col-sm-2">
-					<button class="btn btn-primary update-graph" type="button">Update Graph</button>
 				</div>
 			</div>
 		</div>
