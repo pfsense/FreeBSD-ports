@@ -1333,8 +1333,8 @@ events.push(function() {
 				var systemName = '<?=htmlspecialchars($config['system']['hostname'] . "." . $config['system']['domain']); ?>';
 				d3.select('#chart svg')
 					.append("text")
-					.attr("x", 20)
-					.attr("y", 385)
+					.attr("x", 100)
+					.attr("y", 400)
 					.attr("id", "system-name")
 					.text(systemName);
 
@@ -1342,8 +1342,8 @@ events.push(function() {
 				var timePeriod = $("#time-period option:selected").text();
 				d3.select('#chart svg')
 					.append("text")
-					.attr("x", 250)
-					.attr("y", 385)
+					.attr("x", 330)
+					.attr("y", 400)
 					.attr("id", "time-period")
 					.text("Time Period: " + timePeriod);
 
@@ -1351,8 +1351,8 @@ events.push(function() {
 				var Resolution = $("#resolution option:selected").text();
 				d3.select('#chart svg')
 					.append("text")
-					.attr("x", 450)
-					.attr("y", 385)
+					.attr("x", 530)
+					.attr("y", 400)
 					.attr("id", "resolution")
 					.text("Resolution: " + Resolution);
 
@@ -1360,8 +1360,8 @@ events.push(function() {
 				var currentDate = d3.time.format('%a %b %d %H:%M:%S %Y GMT%Z')(new Date());
 				d3.select('#chart svg')
 					.append("text")
-					.attr("x", 675)
-					.attr("y", 385)
+					.attr("x", 755)
+					.attr("y", 400)
 					.attr("id", "current-date")
 					.text(currentDate);
 
