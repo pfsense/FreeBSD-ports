@@ -437,22 +437,22 @@ if ($savemsg) {
 					Settings
 				</label>
 				<div class="checkbox col-sm-2">
-					<button class="btn btn-default" type="button" value="true" name="settings" id="settings">Show Settings</button>
+					<button class="btn btn-info" type="button" value="true" name="settings" id="settings"><i class="fa fa-cog fa-lg"></i> Display Advanced</button>
 				</div>
 				<div class="checkbox col-sm-2">
-					<button class="btn btn-primary" type="submit" value="true" name="defaults" id="defaults" disabled style="display:none;">Save As Defaults</button>
+					<button class="btn btn-primary" type="submit" value="true" name="defaults" id="defaults" disabled style="display:none;"><i class="fa fa-save fa-lg"></i> Save As Defaults</button>
 				</div>
 				<div class="col-sm-2">
 					<?php
 					if ($pconfig['enable']) {
-						echo '<button class="btn btn-danger" type="submit" value="false" name="enable" id="enable" style="display:none;">Disable RRD Graphing</button>';
+						echo '<button class="btn btn-danger" type="submit" value="false" name="enable" id="enable" style="display:none;"><i class="fa fa-ban fa-lg"></i> Disable RRD Graphing</button>';
 					} else {
-						echo '<button class="btn btn-success" type="submit" value="true" name="enable" id="enable" style="display:none;">Enable RRD Graphing</button>';
+						echo '<button class="btn btn-success" type="submit" value="true" name="enable" id="enable" style="display:none;"><i class="fa fa-check fa-lg"></i> Enable RRD Graphing</button>';
 					}
 					?>
 				</div>
 				<div class="col-sm-2">
-					<button class="btn btn-danger" type="submit" value="true" name="ResetRRD" id="ResetRRD" style="display:none;">Reset RRD Data</button>
+					<button class="btn btn-danger" type="submit" value="true" name="ResetRRD" id="ResetRRD" style="display:none;"><i class="fa fa-trash fa-lg"></i> Reset RRD Data</button>
 				</div>
 			</div>
 			<div class="form-group">
@@ -460,7 +460,7 @@ if ($savemsg) {
 					&nbsp;
 				</label>
 				<div class="checkbox col-sm-2">
-					<button class="btn btn-primary update-graph" type="button">Update Graph</button>
+					<button class="btn btn-primary update-graph" type="button"><i class="fa fa-refresh fa-lg"></i> Update Graphs</button>
 				</div>
 			</div>
 		</div>
@@ -1007,7 +1007,7 @@ events.push(function() {
 	});
 
 	$( "#settings" ).click(function() {
-		($(this).text() === "Show Settings") ? $(this).text("Hide Settings") : $(this).text("Show Settings");
+		($(this).text().trim() === 'Display Advanced') ? $(this).html('<i class="fa fa-cog fa-lg"></i> Hide Advanced') : $(this).html('<i class="fa fa-cog fa-lg"></i> Display Advanced');
 		$("#defaults").toggle();
 		$("#enable").toggle();
 		$("#ResetRRD").toggle();
