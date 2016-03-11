@@ -90,20 +90,37 @@ $section->addInput(new Form_Input(
 	$pengcfg['name']
 ))->setHelp('Name or description for this engine. (Max 25 characters). Unique name or description for this engine configuration. Default value is default.');
 
-$group = new Form_Group('Bind-To IP Address Alias');
-$group->add(new Form_Input(
-	'policy_bind_to',
-	'Bind-To IP Address Alias',
-	'text',
-	$pengcfg['bind_to']
-))->setHelp('IP List to bind this engine to (Cannot be blank). This policy will apply for packets with destination addresses contained within this IP List. Supplied value must be a pre-configured Alias or the keyword "all".');
-$group->add(new Form_Button(
-	'select_alias',
-	'Aliases',
-	null,
-	'fa-upload'
-))->removeClass('btn-primary')->addClass('btn-sm btn-success');
-$section->add($group);
+if ($pengcfg['name'] <> "default") {
+	$bind_to = new Form_Input(
+		'policy_bind_to',
+		'',
+		'text',
+		$pengcfg['bind_to']
+	);
+	$bind_to->setAttribute('title', trim(filter_expand_alias($pconfig['bind_to'])));
+	$bind_to->setHelp('IP List to bind this engine to. (Cannot be blank)');
+	$btnaliases = new Form_Button(
+		'select_alias',
+		' ' . 'Aliases',
+		null,
+		'fa-search-plus'
+	);
+	$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
+	$btnaliases->setAttribute('title', gettext("Select an existing IP alias"));
+	$group = new Form_Group('Bind-To IP Address Alias');
+	$group->add($bind_to);
+	$group->add($btnaliases);
+	$group->setHelp(gettext("Supplied value must be a pre-configured Alias or the keyword 'all'."));
+	$section->add($group);
+}
+else {
+	$section->addInput( new Form_Input(
+		'policy_bind_to',
+		'Bind-To IP Address Alias',
+		'text',
+		$pengcfg['bind_to']
+	))->setReadonly()->setHelp('The default engine is required and only runs for packets with destination addresses not matching other engine IP Lists.');
+}
 
 $section->addInput(new Form_Select(
 	'policy',
