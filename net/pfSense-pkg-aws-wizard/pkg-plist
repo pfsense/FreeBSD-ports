@@ -1,0 +1,672 @@
+/etc/inc/aws/Aws/Common/Aws.php
+/etc/inc/aws/Aws/Common/Client/AbstractClient.php
+/etc/inc/aws/Aws/Common/Client/AwsClientInterface.php
+/etc/inc/aws/Aws/Common/Client/ClientBuilder.php
+/etc/inc/aws/Aws/Common/Client/DefaultClient.php
+/etc/inc/aws/Aws/Common/Client/ExpiredCredentialsChecker.php
+/etc/inc/aws/Aws/Common/Client/ThrottlingErrorChecker.php
+/etc/inc/aws/Aws/Common/Client/UploadBodyListener.php
+/etc/inc/aws/Aws/Common/Client/UserAgentListener.php
+/etc/inc/aws/Aws/Common/Command/AwsQueryVisitor.php
+/etc/inc/aws/Aws/Common/Command/JsonCommand.php
+/etc/inc/aws/Aws/Common/Command/QueryCommand.php
+/etc/inc/aws/Aws/Common/Command/XmlResponseLocationVisitor.php
+/etc/inc/aws/Aws/Common/Credentials/AbstractCredentialsDecorator.php
+/etc/inc/aws/Aws/Common/Credentials/AbstractRefreshableCredentials.php
+/etc/inc/aws/Aws/Common/Credentials/CacheableCredentials.php
+/etc/inc/aws/Aws/Common/Credentials/Credentials.php
+/etc/inc/aws/Aws/Common/Credentials/CredentialsInterface.php
+/etc/inc/aws/Aws/Common/Credentials/RefreshableInstanceProfileCredentials.php
+/etc/inc/aws/Aws/Common/Enum.php
+/etc/inc/aws/Aws/Common/Enum/ClientOptions.php
+/etc/inc/aws/Aws/Common/Enum/DateFormat.php
+/etc/inc/aws/Aws/Common/Enum/Region.php
+/etc/inc/aws/Aws/Common/Enum/Size.php
+/etc/inc/aws/Aws/Common/Enum/Time.php
+/etc/inc/aws/Aws/Common/Enum/UaString.php
+/etc/inc/aws/Aws/Common/Exception/AwsExceptionInterface.php
+/etc/inc/aws/Aws/Common/Exception/BadMethodCallException.php
+/etc/inc/aws/Aws/Common/Exception/DomainException.php
+/etc/inc/aws/Aws/Common/Exception/ExceptionFactoryInterface.php
+/etc/inc/aws/Aws/Common/Exception/ExceptionListener.php
+/etc/inc/aws/Aws/Common/Exception/InstanceProfileCredentialsException.php
+/etc/inc/aws/Aws/Common/Exception/InvalidArgumentException.php
+/etc/inc/aws/Aws/Common/Exception/LogicException.php
+/etc/inc/aws/Aws/Common/Exception/MultipartUploadException.php
+/etc/inc/aws/Aws/Common/Exception/NamespaceExceptionFactory.php
+/etc/inc/aws/Aws/Common/Exception/OutOfBoundsException.php
+/etc/inc/aws/Aws/Common/Exception/OverflowException.php
+/etc/inc/aws/Aws/Common/Exception/Parser/AbstractJsonExceptionParser.php
+/etc/inc/aws/Aws/Common/Exception/Parser/DefaultXmlExceptionParser.php
+/etc/inc/aws/Aws/Common/Exception/Parser/ExceptionParserInterface.php
+/etc/inc/aws/Aws/Common/Exception/Parser/JsonQueryExceptionParser.php
+/etc/inc/aws/Aws/Common/Exception/Parser/JsonRestExceptionParser.php
+/etc/inc/aws/Aws/Common/Exception/RequiredExtensionNotLoadedException.php
+/etc/inc/aws/Aws/Common/Exception/RuntimeException.php
+/etc/inc/aws/Aws/Common/Exception/ServiceResponseException.php
+/etc/inc/aws/Aws/Common/Exception/TransferException.php
+/etc/inc/aws/Aws/Common/Exception/UnexpectedValueException.php
+/etc/inc/aws/Aws/Common/Facade/Facade.php
+/etc/inc/aws/Aws/Common/Facade/FacadeInterface.php
+/etc/inc/aws/Aws/Common/Facade/facade-classes.php
+/etc/inc/aws/Aws/Common/Hash/ChunkHash.php
+/etc/inc/aws/Aws/Common/Hash/ChunkHashInterface.php
+/etc/inc/aws/Aws/Common/Hash/HashUtils.php
+/etc/inc/aws/Aws/Common/Hash/TreeHash.php
+/etc/inc/aws/Aws/Common/HostNameUtils.php
+/etc/inc/aws/Aws/Common/InstanceMetadata/InstanceMetadataClient.php
+/etc/inc/aws/Aws/Common/InstanceMetadata/Waiter/ServiceAvailable.php
+/etc/inc/aws/Aws/Common/Iterator/AwsResourceIterator.php
+/etc/inc/aws/Aws/Common/Iterator/AwsResourceIteratorFactory.php
+/etc/inc/aws/Aws/Common/Model/MultipartUpload/AbstractTransfer.php
+/etc/inc/aws/Aws/Common/Model/MultipartUpload/AbstractTransferState.php
+/etc/inc/aws/Aws/Common/Model/MultipartUpload/AbstractUploadBuilder.php
+/etc/inc/aws/Aws/Common/Model/MultipartUpload/AbstractUploadId.php
+/etc/inc/aws/Aws/Common/Model/MultipartUpload/AbstractUploadPart.php
+/etc/inc/aws/Aws/Common/Model/MultipartUpload/TransferInterface.php
+/etc/inc/aws/Aws/Common/Model/MultipartUpload/TransferStateInterface.php
+/etc/inc/aws/Aws/Common/Model/MultipartUpload/UploadIdInterface.php
+/etc/inc/aws/Aws/Common/Model/MultipartUpload/UploadPartInterface.php
+/etc/inc/aws/Aws/Common/Resources/aws-config.php
+/etc/inc/aws/Aws/Common/Resources/sdk1-config.php
+/etc/inc/aws/Aws/Common/Signature/AbstractSignature.php
+/etc/inc/aws/Aws/Common/Signature/EndpointSignatureInterface.php
+/etc/inc/aws/Aws/Common/Signature/SignatureInterface.php
+/etc/inc/aws/Aws/Common/Signature/SignatureListener.php
+/etc/inc/aws/Aws/Common/Signature/SignatureV2.php
+/etc/inc/aws/Aws/Common/Signature/SignatureV3Https.php
+/etc/inc/aws/Aws/Common/Signature/SignatureV4.php
+/etc/inc/aws/Aws/Common/Waiter/AbstractResourceWaiter.php
+/etc/inc/aws/Aws/Common/Waiter/AbstractWaiter.php
+/etc/inc/aws/Aws/Common/Waiter/CallableWaiter.php
+/etc/inc/aws/Aws/Common/Waiter/CompositeWaiterFactory.php
+/etc/inc/aws/Aws/Common/Waiter/ConfigResourceWaiter.php
+/etc/inc/aws/Aws/Common/Waiter/ResourceWaiterInterface.php
+/etc/inc/aws/Aws/Common/Waiter/WaiterClassFactory.php
+/etc/inc/aws/Aws/Common/Waiter/WaiterConfig.php
+/etc/inc/aws/Aws/Common/Waiter/WaiterConfigFactory.php
+/etc/inc/aws/Aws/Common/Waiter/WaiterFactoryInterface.php
+/etc/inc/aws/Aws/Common/Waiter/WaiterInterface.php
+/etc/inc/aws/Aws/Ec2/CopySnapshotListener.php
+/etc/inc/aws/Aws/Ec2/Ec2Client.php
+/etc/inc/aws/Aws/Ec2/Enum/ContainerFormat.php
+/etc/inc/aws/Aws/Ec2/Enum/DiskImageFormat.php
+/etc/inc/aws/Aws/Ec2/Enum/DomainType.php
+/etc/inc/aws/Aws/Ec2/Enum/ExportEnvironment.php
+/etc/inc/aws/Aws/Ec2/Enum/HypervisorType.php
+/etc/inc/aws/Aws/Ec2/Enum/ImageState.php
+/etc/inc/aws/Aws/Ec2/Enum/InstanceAttributeName.php
+/etc/inc/aws/Aws/Ec2/Enum/InstanceStateName.php
+/etc/inc/aws/Aws/Ec2/Enum/InstanceType.php
+/etc/inc/aws/Aws/Ec2/Enum/PlacementGroupState.php
+/etc/inc/aws/Aws/Ec2/Enum/PlacementStrategy.php
+/etc/inc/aws/Aws/Ec2/Enum/ResourceType.php
+/etc/inc/aws/Aws/Ec2/Enum/RouteOrigin.php
+/etc/inc/aws/Aws/Ec2/Enum/RuleAction.php
+/etc/inc/aws/Aws/Ec2/Enum/SnapshotAttributeName.php
+/etc/inc/aws/Aws/Ec2/Enum/SnapshotState.php
+/etc/inc/aws/Aws/Ec2/Enum/SpotInstanceType.php
+/etc/inc/aws/Aws/Ec2/Enum/VirtualizationType.php
+/etc/inc/aws/Aws/Ec2/Enum/VolumeAttachmentState.php
+/etc/inc/aws/Aws/Ec2/Enum/VolumeAttributeName.php
+/etc/inc/aws/Aws/Ec2/Enum/VolumeState.php
+/etc/inc/aws/Aws/Ec2/Enum/VolumeType.php
+/etc/inc/aws/Aws/Ec2/Enum/VpcAttributeName.php
+/etc/inc/aws/Aws/Ec2/Exception/Ec2Exception.php
+/etc/inc/aws/Aws/Ec2/Iterator/DescribeInstancesIterator.php
+/etc/inc/aws/Aws/Ec2/Resources/ec2-2014-05-01.php
+/etc/inc/aws/Aws/LICENSE.md
+/etc/inc/aws/Aws/NOTICE.md
+/etc/inc/aws/Doctrine/Common/Cache/ApcCache.php
+/etc/inc/aws/Doctrine/Common/Cache/ArrayCache.php
+/etc/inc/aws/Doctrine/Common/Cache/Cache.php
+/etc/inc/aws/Doctrine/Common/Cache/CacheProvider.php
+/etc/inc/aws/Doctrine/Common/Cache/CouchbaseCache.php
+/etc/inc/aws/Doctrine/Common/Cache/FileCache.php
+/etc/inc/aws/Doctrine/Common/Cache/FilesystemCache.php
+/etc/inc/aws/Doctrine/Common/Cache/MemcacheCache.php
+/etc/inc/aws/Doctrine/Common/Cache/MemcachedCache.php
+/etc/inc/aws/Doctrine/Common/Cache/MongoDBCache.php
+/etc/inc/aws/Doctrine/Common/Cache/PhpFileCache.php
+/etc/inc/aws/Doctrine/Common/Cache/RedisCache.php
+/etc/inc/aws/Doctrine/Common/Cache/RiakCache.php
+/etc/inc/aws/Doctrine/Common/Cache/Version.php
+/etc/inc/aws/Doctrine/Common/Cache/WinCacheCache.php
+/etc/inc/aws/Doctrine/Common/Cache/XcacheCache.php
+/etc/inc/aws/Doctrine/Common/Cache/ZendDataCache.php
+/etc/inc/aws/Guzzle/Batch/AbstractBatchDecorator.php
+/etc/inc/aws/Guzzle/Batch/Batch.php
+/etc/inc/aws/Guzzle/Batch/BatchBuilder.php
+/etc/inc/aws/Guzzle/Batch/BatchClosureDivisor.php
+/etc/inc/aws/Guzzle/Batch/BatchClosureTransfer.php
+/etc/inc/aws/Guzzle/Batch/BatchCommandTransfer.php
+/etc/inc/aws/Guzzle/Batch/BatchDivisorInterface.php
+/etc/inc/aws/Guzzle/Batch/BatchInterface.php
+/etc/inc/aws/Guzzle/Batch/BatchRequestTransfer.php
+/etc/inc/aws/Guzzle/Batch/BatchSizeDivisor.php
+/etc/inc/aws/Guzzle/Batch/BatchTransferInterface.php
+/etc/inc/aws/Guzzle/Batch/Exception/BatchTransferException.php
+/etc/inc/aws/Guzzle/Batch/ExceptionBufferingBatch.php
+/etc/inc/aws/Guzzle/Batch/FlushingBatch.php
+/etc/inc/aws/Guzzle/Batch/HistoryBatch.php
+/etc/inc/aws/Guzzle/Batch/NotifyingBatch.php
+/etc/inc/aws/Guzzle/Cache/AbstractCacheAdapter.php
+/etc/inc/aws/Guzzle/Cache/CacheAdapterFactory.php
+/etc/inc/aws/Guzzle/Cache/CacheAdapterInterface.php
+/etc/inc/aws/Guzzle/Cache/ClosureCacheAdapter.php
+/etc/inc/aws/Guzzle/Cache/DoctrineCacheAdapter.php
+/etc/inc/aws/Guzzle/Cache/NullCacheAdapter.php
+/etc/inc/aws/Guzzle/Cache/Zf1CacheAdapter.php
+/etc/inc/aws/Guzzle/Cache/Zf2CacheAdapter.php
+/etc/inc/aws/Guzzle/Common/AbstractHasDispatcher.php
+/etc/inc/aws/Guzzle/Common/Collection.php
+/etc/inc/aws/Guzzle/Common/Event.php
+/etc/inc/aws/Guzzle/Common/Exception/BadMethodCallException.php
+/etc/inc/aws/Guzzle/Common/Exception/ExceptionCollection.php
+/etc/inc/aws/Guzzle/Common/Exception/GuzzleException.php
+/etc/inc/aws/Guzzle/Common/Exception/InvalidArgumentException.php
+/etc/inc/aws/Guzzle/Common/Exception/RuntimeException.php
+/etc/inc/aws/Guzzle/Common/Exception/UnexpectedValueException.php
+/etc/inc/aws/Guzzle/Common/FromConfigInterface.php
+/etc/inc/aws/Guzzle/Common/HasDispatcherInterface.php
+/etc/inc/aws/Guzzle/Common/ToArrayInterface.php
+/etc/inc/aws/Guzzle/Common/Version.php
+/etc/inc/aws/Guzzle/Http/AbstractEntityBodyDecorator.php
+/etc/inc/aws/Guzzle/Http/CachingEntityBody.php
+/etc/inc/aws/Guzzle/Http/Client.php
+/etc/inc/aws/Guzzle/Http/ClientInterface.php
+/etc/inc/aws/Guzzle/Http/Curl/CurlHandle.php
+/etc/inc/aws/Guzzle/Http/Curl/CurlMulti.php
+/etc/inc/aws/Guzzle/Http/Curl/CurlMultiInterface.php
+/etc/inc/aws/Guzzle/Http/Curl/CurlMultiProxy.php
+/etc/inc/aws/Guzzle/Http/Curl/CurlVersion.php
+/etc/inc/aws/Guzzle/Http/Curl/RequestMediator.php
+/etc/inc/aws/Guzzle/Http/EntityBody.php
+/etc/inc/aws/Guzzle/Http/EntityBodyInterface.php
+/etc/inc/aws/Guzzle/Http/Exception/BadResponseException.php
+/etc/inc/aws/Guzzle/Http/Exception/ClientErrorResponseException.php
+/etc/inc/aws/Guzzle/Http/Exception/CouldNotRewindStreamException.php
+/etc/inc/aws/Guzzle/Http/Exception/CurlException.php
+/etc/inc/aws/Guzzle/Http/Exception/HttpException.php
+/etc/inc/aws/Guzzle/Http/Exception/MultiTransferException.php
+/etc/inc/aws/Guzzle/Http/Exception/RequestException.php
+/etc/inc/aws/Guzzle/Http/Exception/ServerErrorResponseException.php
+/etc/inc/aws/Guzzle/Http/Exception/TooManyRedirectsException.php
+/etc/inc/aws/Guzzle/Http/IoEmittingEntityBody.php
+/etc/inc/aws/Guzzle/Http/Message/AbstractMessage.php
+/etc/inc/aws/Guzzle/Http/Message/EntityEnclosingRequest.php
+/etc/inc/aws/Guzzle/Http/Message/EntityEnclosingRequestInterface.php
+/etc/inc/aws/Guzzle/Http/Message/Header.php
+/etc/inc/aws/Guzzle/Http/Message/Header/CacheControl.php
+/etc/inc/aws/Guzzle/Http/Message/Header/HeaderCollection.php
+/etc/inc/aws/Guzzle/Http/Message/Header/HeaderFactory.php
+/etc/inc/aws/Guzzle/Http/Message/Header/HeaderFactoryInterface.php
+/etc/inc/aws/Guzzle/Http/Message/Header/HeaderInterface.php
+/etc/inc/aws/Guzzle/Http/Message/Header/Link.php
+/etc/inc/aws/Guzzle/Http/Message/MessageInterface.php
+/etc/inc/aws/Guzzle/Http/Message/PostFile.php
+/etc/inc/aws/Guzzle/Http/Message/PostFileInterface.php
+/etc/inc/aws/Guzzle/Http/Message/Request.php
+/etc/inc/aws/Guzzle/Http/Message/RequestFactory.php
+/etc/inc/aws/Guzzle/Http/Message/RequestFactoryInterface.php
+/etc/inc/aws/Guzzle/Http/Message/RequestInterface.php
+/etc/inc/aws/Guzzle/Http/Message/Response.php
+/etc/inc/aws/Guzzle/Http/Mimetypes.php
+/etc/inc/aws/Guzzle/Http/QueryAggregator/CommaAggregator.php
+/etc/inc/aws/Guzzle/Http/QueryAggregator/DuplicateAggregator.php
+/etc/inc/aws/Guzzle/Http/QueryAggregator/PhpAggregator.php
+/etc/inc/aws/Guzzle/Http/QueryAggregator/QueryAggregatorInterface.php
+/etc/inc/aws/Guzzle/Http/QueryString.php
+/etc/inc/aws/Guzzle/Http/ReadLimitEntityBody.php
+/etc/inc/aws/Guzzle/Http/RedirectPlugin.php
+/etc/inc/aws/Guzzle/Http/Resources/cacert.pem
+/etc/inc/aws/Guzzle/Http/StaticClient.php
+/etc/inc/aws/Guzzle/Http/Url.php
+/etc/inc/aws/Guzzle/Inflection/Inflector.php
+/etc/inc/aws/Guzzle/Inflection/InflectorInterface.php
+/etc/inc/aws/Guzzle/Inflection/MemoizingInflector.php
+/etc/inc/aws/Guzzle/Inflection/PreComputedInflector.php
+/etc/inc/aws/Guzzle/Iterator/AppendIterator.php
+/etc/inc/aws/Guzzle/Iterator/ChunkedIterator.php
+/etc/inc/aws/Guzzle/Iterator/FilterIterator.php
+/etc/inc/aws/Guzzle/Iterator/MapIterator.php
+/etc/inc/aws/Guzzle/Iterator/MethodProxyIterator.php
+/etc/inc/aws/Guzzle/Log/AbstractLogAdapter.php
+/etc/inc/aws/Guzzle/Log/ArrayLogAdapter.php
+/etc/inc/aws/Guzzle/Log/ClosureLogAdapter.php
+/etc/inc/aws/Guzzle/Log/LogAdapterInterface.php
+/etc/inc/aws/Guzzle/Log/MessageFormatter.php
+/etc/inc/aws/Guzzle/Log/MonologLogAdapter.php
+/etc/inc/aws/Guzzle/Log/PsrLogAdapter.php
+/etc/inc/aws/Guzzle/Log/Zf1LogAdapter.php
+/etc/inc/aws/Guzzle/Log/Zf2LogAdapter.php
+/etc/inc/aws/Guzzle/Parser/Cookie/CookieParser.php
+/etc/inc/aws/Guzzle/Parser/Cookie/CookieParserInterface.php
+/etc/inc/aws/Guzzle/Parser/Message/AbstractMessageParser.php
+/etc/inc/aws/Guzzle/Parser/Message/MessageParser.php
+/etc/inc/aws/Guzzle/Parser/Message/MessageParserInterface.php
+/etc/inc/aws/Guzzle/Parser/Message/PeclHttpMessageParser.php
+/etc/inc/aws/Guzzle/Parser/ParserRegistry.php
+/etc/inc/aws/Guzzle/Parser/UriTemplate/PeclUriTemplate.php
+/etc/inc/aws/Guzzle/Parser/UriTemplate/UriTemplate.php
+/etc/inc/aws/Guzzle/Parser/UriTemplate/UriTemplateInterface.php
+/etc/inc/aws/Guzzle/Parser/Url/UrlParser.php
+/etc/inc/aws/Guzzle/Parser/Url/UrlParserInterface.php
+/etc/inc/aws/Guzzle/Plugin/Async/AsyncPlugin.php
+/etc/inc/aws/Guzzle/Plugin/Backoff/AbstractBackoffStrategy.php
+/etc/inc/aws/Guzzle/Plugin/Backoff/AbstractErrorCodeBackoffStrategy.php
+/etc/inc/aws/Guzzle/Plugin/Backoff/BackoffLogger.php
+/etc/inc/aws/Guzzle/Plugin/Backoff/BackoffPlugin.php
+/etc/inc/aws/Guzzle/Plugin/Backoff/BackoffStrategyInterface.php
+/etc/inc/aws/Guzzle/Plugin/Backoff/CallbackBackoffStrategy.php
+/etc/inc/aws/Guzzle/Plugin/Backoff/ConstantBackoffStrategy.php
+/etc/inc/aws/Guzzle/Plugin/Backoff/CurlBackoffStrategy.php
+/etc/inc/aws/Guzzle/Plugin/Backoff/ExponentialBackoffStrategy.php
+/etc/inc/aws/Guzzle/Plugin/Backoff/HttpBackoffStrategy.php
+/etc/inc/aws/Guzzle/Plugin/Backoff/LinearBackoffStrategy.php
+/etc/inc/aws/Guzzle/Plugin/Backoff/ReasonPhraseBackoffStrategy.php
+/etc/inc/aws/Guzzle/Plugin/Backoff/TruncatedBackoffStrategy.php
+/etc/inc/aws/Guzzle/Plugin/Cache/CacheKeyProviderInterface.php
+/etc/inc/aws/Guzzle/Plugin/Cache/CachePlugin.php
+/etc/inc/aws/Guzzle/Plugin/Cache/CacheStorageInterface.php
+/etc/inc/aws/Guzzle/Plugin/Cache/CallbackCanCacheStrategy.php
+/etc/inc/aws/Guzzle/Plugin/Cache/CanCacheStrategyInterface.php
+/etc/inc/aws/Guzzle/Plugin/Cache/DefaultCacheKeyProvider.php
+/etc/inc/aws/Guzzle/Plugin/Cache/DefaultCacheStorage.php
+/etc/inc/aws/Guzzle/Plugin/Cache/DefaultCanCacheStrategy.php
+/etc/inc/aws/Guzzle/Plugin/Cache/DefaultRevalidation.php
+/etc/inc/aws/Guzzle/Plugin/Cache/DenyRevalidation.php
+/etc/inc/aws/Guzzle/Plugin/Cache/RevalidationInterface.php
+/etc/inc/aws/Guzzle/Plugin/Cache/SkipRevalidation.php
+/etc/inc/aws/Guzzle/Plugin/Cookie/Cookie.php
+/etc/inc/aws/Guzzle/Plugin/Cookie/CookieJar/ArrayCookieJar.php
+/etc/inc/aws/Guzzle/Plugin/Cookie/CookieJar/CookieJarInterface.php
+/etc/inc/aws/Guzzle/Plugin/Cookie/CookieJar/FileCookieJar.php
+/etc/inc/aws/Guzzle/Plugin/Cookie/CookiePlugin.php
+/etc/inc/aws/Guzzle/Plugin/Cookie/Exception/InvalidCookieException.php
+/etc/inc/aws/Guzzle/Plugin/CurlAuth/CurlAuthPlugin.php
+/etc/inc/aws/Guzzle/Plugin/ErrorResponse/ErrorResponseExceptionInterface.php
+/etc/inc/aws/Guzzle/Plugin/ErrorResponse/ErrorResponsePlugin.php
+/etc/inc/aws/Guzzle/Plugin/ErrorResponse/Exception/ErrorResponseException.php
+/etc/inc/aws/Guzzle/Plugin/History/HistoryPlugin.php
+/etc/inc/aws/Guzzle/Plugin/Log/LogPlugin.php
+/etc/inc/aws/Guzzle/Plugin/Md5/CommandContentMd5Plugin.php
+/etc/inc/aws/Guzzle/Plugin/Md5/Md5ValidatorPlugin.php
+/etc/inc/aws/Guzzle/Plugin/Mock/MockPlugin.php
+/etc/inc/aws/Guzzle/Plugin/Oauth/OauthPlugin.php
+/etc/inc/aws/Guzzle/Service/AbstractConfigLoader.php
+/etc/inc/aws/Guzzle/Service/Builder/ServiceBuilder.php
+/etc/inc/aws/Guzzle/Service/Builder/ServiceBuilderInterface.php
+/etc/inc/aws/Guzzle/Service/Builder/ServiceBuilderLoader.php
+/etc/inc/aws/Guzzle/Service/CachingConfigLoader.php
+/etc/inc/aws/Guzzle/Service/Client.php
+/etc/inc/aws/Guzzle/Service/ClientInterface.php
+/etc/inc/aws/Guzzle/Service/Command/AbstractCommand.php
+/etc/inc/aws/Guzzle/Service/Command/ClosureCommand.php
+/etc/inc/aws/Guzzle/Service/Command/CommandInterface.php
+/etc/inc/aws/Guzzle/Service/Command/CreateResponseClassEvent.php
+/etc/inc/aws/Guzzle/Service/Command/DefaultRequestSerializer.php
+/etc/inc/aws/Guzzle/Service/Command/DefaultResponseParser.php
+/etc/inc/aws/Guzzle/Service/Command/Factory/AliasFactory.php
+/etc/inc/aws/Guzzle/Service/Command/Factory/CompositeFactory.php
+/etc/inc/aws/Guzzle/Service/Command/Factory/ConcreteClassFactory.php
+/etc/inc/aws/Guzzle/Service/Command/Factory/FactoryInterface.php
+/etc/inc/aws/Guzzle/Service/Command/Factory/MapFactory.php
+/etc/inc/aws/Guzzle/Service/Command/Factory/ServiceDescriptionFactory.php
+/etc/inc/aws/Guzzle/Service/Command/LocationVisitor/Request/AbstractRequestVisitor.php
+/etc/inc/aws/Guzzle/Service/Command/LocationVisitor/Request/BodyVisitor.php
+/etc/inc/aws/Guzzle/Service/Command/LocationVisitor/Request/HeaderVisitor.php
+/etc/inc/aws/Guzzle/Service/Command/LocationVisitor/Request/JsonVisitor.php
+/etc/inc/aws/Guzzle/Service/Command/LocationVisitor/Request/PostFieldVisitor.php
+/etc/inc/aws/Guzzle/Service/Command/LocationVisitor/Request/PostFileVisitor.php
+/etc/inc/aws/Guzzle/Service/Command/LocationVisitor/Request/QueryVisitor.php
+/etc/inc/aws/Guzzle/Service/Command/LocationVisitor/Request/RequestVisitorInterface.php
+/etc/inc/aws/Guzzle/Service/Command/LocationVisitor/Request/ResponseBodyVisitor.php
+/etc/inc/aws/Guzzle/Service/Command/LocationVisitor/Request/XmlVisitor.php
+/etc/inc/aws/Guzzle/Service/Command/LocationVisitor/Response/AbstractResponseVisitor.php
+/etc/inc/aws/Guzzle/Service/Command/LocationVisitor/Response/BodyVisitor.php
+/etc/inc/aws/Guzzle/Service/Command/LocationVisitor/Response/HeaderVisitor.php
+/etc/inc/aws/Guzzle/Service/Command/LocationVisitor/Response/JsonVisitor.php
+/etc/inc/aws/Guzzle/Service/Command/LocationVisitor/Response/ReasonPhraseVisitor.php
+/etc/inc/aws/Guzzle/Service/Command/LocationVisitor/Response/ResponseVisitorInterface.php
+/etc/inc/aws/Guzzle/Service/Command/LocationVisitor/Response/StatusCodeVisitor.php
+/etc/inc/aws/Guzzle/Service/Command/LocationVisitor/Response/XmlVisitor.php
+/etc/inc/aws/Guzzle/Service/Command/LocationVisitor/VisitorFlyweight.php
+/etc/inc/aws/Guzzle/Service/Command/OperationCommand.php
+/etc/inc/aws/Guzzle/Service/Command/OperationResponseParser.php
+/etc/inc/aws/Guzzle/Service/Command/RequestSerializerInterface.php
+/etc/inc/aws/Guzzle/Service/Command/ResponseClassInterface.php
+/etc/inc/aws/Guzzle/Service/Command/ResponseParserInterface.php
+/etc/inc/aws/Guzzle/Service/ConfigLoaderInterface.php
+/etc/inc/aws/Guzzle/Service/Description/Operation.php
+/etc/inc/aws/Guzzle/Service/Description/OperationInterface.php
+/etc/inc/aws/Guzzle/Service/Description/Parameter.php
+/etc/inc/aws/Guzzle/Service/Description/SchemaFormatter.php
+/etc/inc/aws/Guzzle/Service/Description/SchemaValidator.php
+/etc/inc/aws/Guzzle/Service/Description/ServiceDescription.php
+/etc/inc/aws/Guzzle/Service/Description/ServiceDescriptionInterface.php
+/etc/inc/aws/Guzzle/Service/Description/ServiceDescriptionLoader.php
+/etc/inc/aws/Guzzle/Service/Description/ValidatorInterface.php
+/etc/inc/aws/Guzzle/Service/Exception/CommandException.php
+/etc/inc/aws/Guzzle/Service/Exception/CommandTransferException.php
+/etc/inc/aws/Guzzle/Service/Exception/DescriptionBuilderException.php
+/etc/inc/aws/Guzzle/Service/Exception/InconsistentClientTransferException.php
+/etc/inc/aws/Guzzle/Service/Exception/ResponseClassException.php
+/etc/inc/aws/Guzzle/Service/Exception/ServiceBuilderException.php
+/etc/inc/aws/Guzzle/Service/Exception/ServiceNotFoundException.php
+/etc/inc/aws/Guzzle/Service/Exception/ValidationException.php
+/etc/inc/aws/Guzzle/Service/Resource/AbstractResourceIteratorFactory.php
+/etc/inc/aws/Guzzle/Service/Resource/CompositeResourceIteratorFactory.php
+/etc/inc/aws/Guzzle/Service/Resource/MapResourceIteratorFactory.php
+/etc/inc/aws/Guzzle/Service/Resource/Model.php
+/etc/inc/aws/Guzzle/Service/Resource/ResourceIterator.php
+/etc/inc/aws/Guzzle/Service/Resource/ResourceIteratorApplyBatched.php
+/etc/inc/aws/Guzzle/Service/Resource/ResourceIteratorClassFactory.php
+/etc/inc/aws/Guzzle/Service/Resource/ResourceIteratorFactoryInterface.php
+/etc/inc/aws/Guzzle/Service/Resource/ResourceIteratorInterface.php
+/etc/inc/aws/Guzzle/Stream/PhpStreamRequestFactory.php
+/etc/inc/aws/Guzzle/Stream/Stream.php
+/etc/inc/aws/Guzzle/Stream/StreamInterface.php
+/etc/inc/aws/Guzzle/Stream/StreamRequestFactoryInterface.php
+/etc/inc/aws/Monolog/Formatter/ChromePHPFormatter.php
+/etc/inc/aws/Monolog/Formatter/FormatterInterface.php
+/etc/inc/aws/Monolog/Formatter/GelfMessageFormatter.php
+/etc/inc/aws/Monolog/Formatter/JsonFormatter.php
+/etc/inc/aws/Monolog/Formatter/LineFormatter.php
+/etc/inc/aws/Monolog/Formatter/LogstashFormatter.php
+/etc/inc/aws/Monolog/Formatter/NormalizerFormatter.php
+/etc/inc/aws/Monolog/Formatter/WildfireFormatter.php
+/etc/inc/aws/Monolog/Handler/AbstractHandler.php
+/etc/inc/aws/Monolog/Handler/AbstractProcessingHandler.php
+/etc/inc/aws/Monolog/Handler/AmqpHandler.php
+/etc/inc/aws/Monolog/Handler/BufferHandler.php
+/etc/inc/aws/Monolog/Handler/ChromePHPHandler.php
+/etc/inc/aws/Monolog/Handler/CouchDBHandler.php
+/etc/inc/aws/Monolog/Handler/CubeHandler.php
+/etc/inc/aws/Monolog/Handler/DoctrineCouchDBHandler.php
+/etc/inc/aws/Monolog/Handler/FingersCrossed/ActivationStrategyInterface.php
+/etc/inc/aws/Monolog/Handler/FingersCrossed/ErrorLevelActivationStrategy.php
+/etc/inc/aws/Monolog/Handler/FingersCrossedHandler.php
+/etc/inc/aws/Monolog/Handler/FirePHPHandler.php
+/etc/inc/aws/Monolog/Handler/GelfHandler.php
+/etc/inc/aws/Monolog/Handler/GroupHandler.php
+/etc/inc/aws/Monolog/Handler/HandlerInterface.php
+/etc/inc/aws/Monolog/Handler/MailHandler.php
+/etc/inc/aws/Monolog/Handler/MissingExtensionException.php
+/etc/inc/aws/Monolog/Handler/MongoDBHandler.php
+/etc/inc/aws/Monolog/Handler/NativeMailerHandler.php
+/etc/inc/aws/Monolog/Handler/NullHandler.php
+/etc/inc/aws/Monolog/Handler/PushoverHandler.php
+/etc/inc/aws/Monolog/Handler/RavenHandler.php
+/etc/inc/aws/Monolog/Handler/RedisHandler.php
+/etc/inc/aws/Monolog/Handler/RotatingFileHandler.php
+/etc/inc/aws/Monolog/Handler/SocketHandler.php
+/etc/inc/aws/Monolog/Handler/StreamHandler.php
+/etc/inc/aws/Monolog/Handler/SwiftMailerHandler.php
+/etc/inc/aws/Monolog/Handler/SyslogHandler.php
+/etc/inc/aws/Monolog/Handler/TestHandler.php
+/etc/inc/aws/Monolog/Handler/ZendMonitorHandler.php
+/etc/inc/aws/Monolog/Logger.php
+/etc/inc/aws/Monolog/Processor/IntrospectionProcessor.php
+/etc/inc/aws/Monolog/Processor/MemoryPeakUsageProcessor.php
+/etc/inc/aws/Monolog/Processor/MemoryProcessor.php
+/etc/inc/aws/Monolog/Processor/MemoryUsageProcessor.php
+/etc/inc/aws/Monolog/Processor/PsrLogMessageProcessor.php
+/etc/inc/aws/Monolog/Processor/WebProcessor.php
+/etc/inc/aws/Psr/Log/AbstractLogger.php
+/etc/inc/aws/Psr/Log/InvalidArgumentException.php
+/etc/inc/aws/Psr/Log/LogLevel.php
+/etc/inc/aws/Psr/Log/LoggerAwareInterface.php
+/etc/inc/aws/Psr/Log/LoggerAwareTrait.php
+/etc/inc/aws/Psr/Log/LoggerInterface.php
+/etc/inc/aws/Psr/Log/LoggerTrait.php
+/etc/inc/aws/Psr/Log/NullLogger.php
+/etc/inc/aws/Psr/Log/Test/LoggerInterfaceTest.php
+/etc/inc/aws/Symfony/Component/ClassLoader/ApcClassLoader.php
+/etc/inc/aws/Symfony/Component/ClassLoader/ApcUniversalClassLoader.php
+/etc/inc/aws/Symfony/Component/ClassLoader/ClassCollectionLoader.php
+/etc/inc/aws/Symfony/Component/ClassLoader/ClassLoader.php
+/etc/inc/aws/Symfony/Component/ClassLoader/ClassMapGenerator.php
+/etc/inc/aws/Symfony/Component/ClassLoader/DebugClassLoader.php
+/etc/inc/aws/Symfony/Component/ClassLoader/DebugUniversalClassLoader.php
+/etc/inc/aws/Symfony/Component/ClassLoader/MapClassLoader.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/ApcUniversalClassLoaderTest.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/ClassCollectionLoaderTest.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/ClassLoaderTest.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/ClassMapGeneratorTest.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/Namespaced/Bar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/Namespaced/Baz.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/Namespaced/Foo.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/Namespaced/FooBar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/Pearlike/Bar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/Pearlike/Baz.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/Pearlike/Foo.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/alpha/Apc/ApcPrefixCollision/A/Bar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/alpha/Apc/ApcPrefixCollision/A/Foo.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/alpha/Apc/NamespaceCollision/A/Bar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/alpha/Apc/NamespaceCollision/A/Foo.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/beta/Apc/ApcPrefixCollision/A/B/Bar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/beta/Apc/ApcPrefixCollision/A/B/Foo.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/beta/Apc/NamespaceCollision/A/B/Bar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/beta/Apc/NamespaceCollision/A/B/Foo.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/fallback/Apc/Pearlike/FooBar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/fallback/Namespaced/FooBar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/ClassesWithParents/A.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/ClassesWithParents/ATrait.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/ClassesWithParents/B.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/ClassesWithParents/BTrait.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/ClassesWithParents/CInterface.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/ClassesWithParents/CTrait.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/ClassesWithParents/D.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/ClassesWithParents/E.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/ClassesWithParents/GInterface.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Namespaced/Bar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Namespaced/Baz.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Namespaced/Foo.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Namespaced/WithComments.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Namespaced2/Bar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Namespaced2/Baz.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Namespaced2/Foo.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Pearlike/Bar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Pearlike/Baz.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Pearlike/Foo.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Pearlike/WithComments.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Pearlike2/Bar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Pearlike2/Baz.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Pearlike2/Foo.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/alpha/NamespaceCollision/A/Bar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/alpha/NamespaceCollision/A/Foo.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/alpha/NamespaceCollision/C/Bar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/alpha/NamespaceCollision/C/Foo.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/alpha/PrefixCollision/A/Bar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/alpha/PrefixCollision/A/Foo.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/alpha/PrefixCollision/C/Bar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/alpha/PrefixCollision/C/Foo.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/beta/NamespaceCollision/A/B/Bar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/beta/NamespaceCollision/A/B/Foo.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/beta/NamespaceCollision/C/B/Bar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/beta/NamespaceCollision/C/B/Foo.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/beta/PrefixCollision/A/B/Bar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/beta/PrefixCollision/A/B/Foo.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/beta/PrefixCollision/C/B/Bar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/beta/PrefixCollision/C/B/Foo.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/classmap/SomeClass.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/classmap/SomeInterface.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/classmap/SomeParent.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/classmap/multipleNs.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/classmap/notAClass.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/classmap/sameNsMultipleClasses.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/deps/traits.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/fallback/Namespaced/FooBar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/fallback/Namespaced2/FooBar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/fallback/Pearlike/FooBar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/fallback/Pearlike2/FooBar.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/includepath/Foo.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/php5.4/traits.php
+/etc/inc/aws/Symfony/Component/ClassLoader/Tests/UniversalClassLoaderTest.php
+/etc/inc/aws/Symfony/Component/ClassLoader/UniversalClassLoader.php
+/etc/inc/aws/Symfony/Component/ClassLoader/WinCacheClassLoader.php
+/etc/inc/aws/Symfony/Component/ClassLoader/XcacheClassLoader.php
+/etc/inc/aws/Symfony/Component/EventDispatcher/ContainerAwareEventDispatcher.php
+/etc/inc/aws/Symfony/Component/EventDispatcher/Debug/TraceableEventDispatcherInterface.php
+/etc/inc/aws/Symfony/Component/EventDispatcher/Event.php
+/etc/inc/aws/Symfony/Component/EventDispatcher/EventDispatcher.php
+/etc/inc/aws/Symfony/Component/EventDispatcher/EventDispatcherInterface.php
+/etc/inc/aws/Symfony/Component/EventDispatcher/EventSubscriberInterface.php
+/etc/inc/aws/Symfony/Component/EventDispatcher/GenericEvent.php
+/etc/inc/aws/Symfony/Component/EventDispatcher/ImmutableEventDispatcher.php
+/etc/inc/aws/Symfony/Component/EventDispatcher/Tests/ContainerAwareEventDispatcherTest.php
+/etc/inc/aws/Symfony/Component/EventDispatcher/Tests/EventDispatcherTest.php
+/etc/inc/aws/Symfony/Component/EventDispatcher/Tests/EventTest.php
+/etc/inc/aws/Symfony/Component/EventDispatcher/Tests/GenericEventTest.php
+/etc/inc/aws/Symfony/Component/EventDispatcher/Tests/ImmutableEventDispatcherTest.php
+/etc/inc/aws/aws-autoloader.php
+pkg/aws_wizard.xml
+%%DATADIR%%/info.xml
+share/pfSense/menu/pfSense-pkg-aws-wizard.xml
+www/wizards/vpc_vpn_wizard.inc
+www/wizards/vpc_vpn_wizard.xml
+@dir /etc/inc/aws/Aws/Common/Client
+@dir /etc/inc/aws/Aws/Common/Command
+@dir /etc/inc/aws/Aws/Common/Credentials
+@dir /etc/inc/aws/Aws/Common/Enum
+@dir /etc/inc/aws/Aws/Common/Exception/Parser
+@dir /etc/inc/aws/Aws/Common/Exception
+@dir /etc/inc/aws/Aws/Common/Facade
+@dir /etc/inc/aws/Aws/Common/Hash
+@dir /etc/inc/aws/Aws/Common/InstanceMetadata/Waiter
+@dir /etc/inc/aws/Aws/Common/InstanceMetadata
+@dir /etc/inc/aws/Aws/Common/Iterator
+@dir /etc/inc/aws/Aws/Common/Model/MultipartUpload
+@dir /etc/inc/aws/Aws/Common/Model
+@dir /etc/inc/aws/Aws/Common/Resources
+@dir /etc/inc/aws/Aws/Common/Signature
+@dir /etc/inc/aws/Aws/Common/Waiter
+@dir /etc/inc/aws/Aws/Common
+@dir /etc/inc/aws/Aws/Ec2/Enum
+@dir /etc/inc/aws/Aws/Ec2/Exception
+@dir /etc/inc/aws/Aws/Ec2/Iterator
+@dir /etc/inc/aws/Aws/Ec2/Resources
+@dir /etc/inc/aws/Aws/Ec2
+@dir /etc/inc/aws/Aws
+@dir /etc/inc/aws/Doctrine/Common/Cache
+@dir /etc/inc/aws/Doctrine/Common
+@dir /etc/inc/aws/Doctrine
+@dir /etc/inc/aws/Guzzle/Batch/Exception
+@dir /etc/inc/aws/Guzzle/Batch
+@dir /etc/inc/aws/Guzzle/Cache
+@dir /etc/inc/aws/Guzzle/Common/Exception
+@dir /etc/inc/aws/Guzzle/Common
+@dir /etc/inc/aws/Guzzle/Http/Curl
+@dir /etc/inc/aws/Guzzle/Http/Exception
+@dir /etc/inc/aws/Guzzle/Http/Message/Header
+@dir /etc/inc/aws/Guzzle/Http/Message
+@dir /etc/inc/aws/Guzzle/Http/QueryAggregator
+@dir /etc/inc/aws/Guzzle/Http/Resources
+@dir /etc/inc/aws/Guzzle/Http
+@dir /etc/inc/aws/Guzzle/Inflection
+@dir /etc/inc/aws/Guzzle/Iterator
+@dir /etc/inc/aws/Guzzle/Log
+@dir /etc/inc/aws/Guzzle/Parser/Cookie
+@dir /etc/inc/aws/Guzzle/Parser/Message
+@dir /etc/inc/aws/Guzzle/Parser/UriTemplate
+@dir /etc/inc/aws/Guzzle/Parser/Url
+@dir /etc/inc/aws/Guzzle/Parser
+@dir /etc/inc/aws/Guzzle/Plugin/Async
+@dir /etc/inc/aws/Guzzle/Plugin/Backoff
+@dir /etc/inc/aws/Guzzle/Plugin/Cache
+@dir /etc/inc/aws/Guzzle/Plugin/Cookie/CookieJar
+@dir /etc/inc/aws/Guzzle/Plugin/Cookie/Exception
+@dir /etc/inc/aws/Guzzle/Plugin/Cookie
+@dir /etc/inc/aws/Guzzle/Plugin/CurlAuth
+@dir /etc/inc/aws/Guzzle/Plugin/ErrorResponse/Exception
+@dir /etc/inc/aws/Guzzle/Plugin/ErrorResponse
+@dir /etc/inc/aws/Guzzle/Plugin/History
+@dir /etc/inc/aws/Guzzle/Plugin/Log
+@dir /etc/inc/aws/Guzzle/Plugin/Md5
+@dir /etc/inc/aws/Guzzle/Plugin/Mock
+@dir /etc/inc/aws/Guzzle/Plugin/Oauth
+@dir /etc/inc/aws/Guzzle/Plugin
+@dir /etc/inc/aws/Guzzle/Service/Builder
+@dir /etc/inc/aws/Guzzle/Service/Command/Factory
+@dir /etc/inc/aws/Guzzle/Service/Command/LocationVisitor/Request
+@dir /etc/inc/aws/Guzzle/Service/Command/LocationVisitor/Response
+@dir /etc/inc/aws/Guzzle/Service/Command/LocationVisitor
+@dir /etc/inc/aws/Guzzle/Service/Command
+@dir /etc/inc/aws/Guzzle/Service/Description
+@dir /etc/inc/aws/Guzzle/Service/Exception
+@dir /etc/inc/aws/Guzzle/Service/Resource
+@dir /etc/inc/aws/Guzzle/Service
+@dir /etc/inc/aws/Guzzle/Stream
+@dir /etc/inc/aws/Guzzle
+@dir /etc/inc/aws/Monolog/Formatter
+@dir /etc/inc/aws/Monolog/Handler/FingersCrossed
+@dir /etc/inc/aws/Monolog/Handler
+@dir /etc/inc/aws/Monolog/Processor
+@dir /etc/inc/aws/Monolog
+@dir /etc/inc/aws/Psr/Log/Test
+@dir /etc/inc/aws/Psr/Log
+@dir /etc/inc/aws/Psr
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/Namespaced
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/Pearlike
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/alpha/Apc/ApcPrefixCollision/A
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/alpha/Apc/ApcPrefixCollision
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/alpha/Apc/NamespaceCollision/A
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/alpha/Apc/NamespaceCollision
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/alpha/Apc
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/alpha
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/beta/Apc/ApcPrefixCollision/A/B
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/beta/Apc/ApcPrefixCollision/A
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/beta/Apc/ApcPrefixCollision
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/beta/Apc/NamespaceCollision/A/B
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/beta/Apc/NamespaceCollision/A
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/beta/Apc/NamespaceCollision
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/beta/Apc
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/beta
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/fallback/Apc/Pearlike
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/fallback/Apc
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/fallback/Namespaced
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc/fallback
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Apc
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/ClassesWithParents
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Namespaced
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Namespaced2
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Pearlike
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/Pearlike2
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/alpha/NamespaceCollision/A
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/alpha/NamespaceCollision/C
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/alpha/NamespaceCollision
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/alpha/PrefixCollision/A
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/alpha/PrefixCollision/C
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/alpha/PrefixCollision
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/alpha
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/beta/NamespaceCollision/A/B
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/beta/NamespaceCollision/A
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/beta/NamespaceCollision/C/B
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/beta/NamespaceCollision/C
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/beta/NamespaceCollision
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/beta/PrefixCollision/A/B
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/beta/PrefixCollision/A
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/beta/PrefixCollision/C/B
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/beta/PrefixCollision/C
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/beta/PrefixCollision
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/beta
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/classmap
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/deps
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/fallback/Namespaced
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/fallback/Namespaced2
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/fallback/Pearlike
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/fallback/Pearlike2
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/fallback
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/includepath
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures/php5.4
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests/Fixtures
+@dir /etc/inc/aws/Symfony/Component/ClassLoader/Tests
+@dir /etc/inc/aws/Symfony/Component/ClassLoader
+@dir /etc/inc/aws/Symfony/Component/EventDispatcher/Debug
+@dir /etc/inc/aws/Symfony/Component/EventDispatcher/Tests
+@dir /etc/inc/aws/Symfony/Component/EventDispatcher
+@dir /etc/inc/aws/Symfony/Component
+@dir /etc/inc/aws/Symfony
+@dir /etc/inc/aws
+@dir /etc/inc

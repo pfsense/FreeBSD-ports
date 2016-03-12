@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>aws-vpc-wizard</name>
+		<pkginfolink>https://doc.pfsense.org/index.php/aws-vpc-wizard</pkginfolink>
+		<descr><![CDATA[AWS VPC Wizard.&lt;br /&gt;
+			This package implements a wizard for configuring AWS VPC instances on a pfSense firewall.&lt;br /&gt; ]]></descr>
+		<website>http://www.netgate.com/docs/aws-vpn-appliance/vpc-wizard-guide.html</website>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>aws_wizard.xml</configurationfile>
+	</package>
+</pfsensepkgs>
