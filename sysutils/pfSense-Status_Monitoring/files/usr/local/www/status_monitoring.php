@@ -408,7 +408,7 @@ if ($savemsg) {
 						<option value="86400">1 Day</option>
 						<option value="3600">1 Hour</option>
 						<option value="300" selected>5 Minutes</option>
-						<option value="60" disabled>1 Minute</option>
+						<option value="60">1 Minute</option>
 					</select>
 
 					<span class="help-block">Resolution</span>
