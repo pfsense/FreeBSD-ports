@@ -408,7 +408,7 @@ if ($savemsg) {
 						<option value="86400">1 Day</option>
 						<option value="3600">1 Hour</option>
 						<option value="300" selected>5 Minutes</option>
-						<option value="60">1 Minute</option>
+						<option value="60" disabled>1 Minute</option>
 					</select>
 
 					<span class="help-block">Resolution</span>
@@ -918,8 +918,12 @@ events.push(function() {
 	});
 
 	$('#time-period').on('change', function() {
+		valid_resolutions(this.value);
+		update_graph();
+	});
 
-		switch(this.value) {
+	function valid_resolutions(timePeriod) {
+		switch(timePeriod) {
 			case "-3m":
 			case "-1y":
 			case "-4y":
@@ -974,7 +978,7 @@ events.push(function() {
 				break;
 			}
 			
-	});
+	}
 
 	/***
 	**
@@ -1138,6 +1142,7 @@ events.push(function() {
 
 			if(currentOption[0] === "timePeriod") {
 				$( "#time-period" ).val(currentOption[1]);
+				valid_resolutions($( "#time-period" ).val());
 			}
 
 			if(currentOption[0] === "resolution") {
