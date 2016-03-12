@@ -1344,10 +1344,10 @@ events.push(function() {
 				var formatted_max = d3.formatPrefix(max);
 				var formatted_last = d3.formatPrefix(last);
 
-				var avg_value = formatted_avg.scale(avg).toFixed() + ' ' + formatted_avg.symbol + units;
-				var min_value = formatted_min.scale(min).toFixed() + ' ' + formatted_min.symbol + units;
-				var max_value = formatted_max.scale(max).toFixed() + ' ' + formatted_max.symbol + units;
-				var last_value = formatted_last.scale(last).toFixed() + ' ' + formatted_last.symbol + units;
+				var avg_value = formatted_avg.scale(avg).toFixed(2) + ' ' + formatted_avg.symbol + units;
+				var min_value = formatted_min.scale(min).toFixed(2) + ' ' + formatted_min.symbol + units;
+				var max_value = formatted_max.scale(max).toFixed(2) + ' ' + formatted_max.symbol + units;
+				var last_value = formatted_last.scale(last).toFixed(2) + ' ' + formatted_last.symbol + units;
 			} else {
 				var avg_value = d3.format(".2f")(avg) + ' ' + units;
 				var min_value = d3.format(".2f")(min) + ' ' + units;
@@ -1359,7 +1359,7 @@ events.push(function() {
 				var ninetyFifth = d3.quantile(summary.sort(), .95);
 				var formatted_95th = d3.formatPrefix(ninetyFifth);
 
-				var ninetyfifthVal = formatted_95th.scale(ninetyFifth).toFixed() + ' ' + formatted_95th.symbol + units;
+				var ninetyfifthVal = formatted_95th.scale(ninetyFifth).toFixed(2) + ' ' + formatted_95th.symbol + units;
 			} else {
 				var ninetyfifthVal = "";
 			}
