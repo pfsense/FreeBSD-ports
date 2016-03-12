@@ -1366,6 +1366,9 @@ events.push(function() {
 
 			$('#summary tbody').append('<tr><th>' + d.key + '</th><td>' + min_value + '</td><td>' + avg_value + '</td><td>' + max_value + '</td><td>' + last_value + '</td><td>' + ninetyfifthVal + '</td></tr>');
 
+			//store each lines units in local storage so it can be accessed in the tooltip
+			localStorage.setItem(d.key, d.unit_acronym);
+
 		});
 
 		$('acronym').tooltip();
@@ -1527,7 +1530,7 @@ events.push(function() {
 					var totals = false;
 					var inboundTotal = [];
 					var content = '<h3>' + d3.time.format('%Y-%m-%d %H:%M:%S')(new Date(data.value)) + '</h3><table><tbody>';
-
+					
 					for ( var v = 0; v < data.series.length; v++ ){
 
 						if (data.series[v].key.includes('right axis')) {
@@ -1554,7 +1557,7 @@ events.push(function() {
 							var adjustedTrueValue = d3.format(',')(trueValue.toFixed(2));
 						}
 
-						content += '<tr><td class="legend-color-guide"><div style="background-color: ' + data.series[v].color + '"></div></td><td>' + data.series[v].key + '</td><td class="value"><strong>' + adjustedTrueValue + '</strong></td></tr>';
+						content += '<tr><td class="legend-color-guide"><div style="background-color: ' + data.series[v].color + '"></div></td><td>' + data.series[v].key + '</td><td class="value"><strong>' + adjustedTrueValue + " " + localStorage.getItem(tempKey) + '</strong></td></tr>';
 					}
 
 					content += '</tbody></table>';
