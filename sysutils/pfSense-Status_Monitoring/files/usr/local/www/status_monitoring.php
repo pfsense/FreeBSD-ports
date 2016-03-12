@@ -95,19 +95,16 @@ if ($_POST['ResetRRD']) {
 	$savemsg = "RRD data has been cleared. New RRD files have been generated.";
 }
 
+//old config that needs to be updated
+if(strpos($config['rrd']['category'], '&resolution') === false) {
+	$config['rrd']['category'] = "left=system-processor&right=&start=&end=&timePeriod=-1d&resolution=300&graphtype=line&invert=true";
+	write_config();
+}
+
+//save new defaults
 if ($_POST['defaults']) {
-	$defaults = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&start=&end=&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['inverse'];
-	echo $_POST['graph-left']."<br />";
-	echo $_POST['graph-right']."<br />";
-	echo $_POST['category-left']."<br />";
-	echo $_POST['category-right']."<br />";
-	echo $_POST['time-period']."<br />";
-	echo $_POST['resolution']."<br />";
-	echo $_POST['graph-type']."<br />";
-	echo $_POST['inverse']."<br />";
-	echo $defaults;
-	//$config['rrd']['category'] = $defaults;
-	//write_config();
+	$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&start=&end=&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert'];
+	write_config();
 	$savemsg = "The changes have been applied successfully.";
 }
 
@@ -436,31 +433,31 @@ if ($savemsg) {
 				<label class="col-sm-2 control-label">
 					Settings
 				</label>
-				<div class="checkbox col-sm-2">
-					<button class="btn btn-info" type="button" value="true" name="settings" id="settings"><i class="fa fa-cog fa-lg"></i> Display Advanced</button>
+				<div class="col-sm-2">
+					<button class="btn btn-sm btn-info" type="button" value="true" name="settings" id="settings"><i class="fa fa-cog fa-lg"></i> Display Advanced</button>
 				</div>
-				<div class="checkbox col-sm-2">
-					<button class="btn btn-primary" type="submit" value="true" name="defaults" id="defaults" disabled style="display:none;"><i class="fa fa-save fa-lg"></i> Save As Defaults</button>
+				<div class="col-sm-2">
+					<button class="btn btn-sm btn-primary" type="submit" value="true" name="defaults" id="defaults" style="display:none;"><i class="fa fa-save fa-lg"></i> Save As Defaults</button>
 				</div>
 				<div class="col-sm-2">
 					<?php
 					if ($pconfig['enable']) {
-						echo '<button class="btn btn-danger" type="submit" value="false" name="enable" id="enable" style="display:none;"><i class="fa fa-ban fa-lg"></i> Disable RRD Graphing</button>';
+						echo '<button class="btn btn-sm btn-danger" type="submit" value="false" name="enable" id="enable" style="display:none;"><i class="fa fa-ban fa-lg"></i> Disable RRD Graphing</button>';
 					} else {
-						echo '<button class="btn btn-success" type="submit" value="true" name="enable" id="enable" style="display:none;"><i class="fa fa-check fa-lg"></i> Enable RRD Graphing</button>';
+						echo '<button class="btn btn-sm btn-success" type="submit" value="true" name="enable" id="enable" style="display:none;"><i class="fa fa-check fa-lg"></i> Enable RRD Graphing</button>';
 					}
 					?>
 				</div>
 				<div class="col-sm-2">
-					<button class="btn btn-danger" type="submit" value="true" name="ResetRRD" id="ResetRRD" style="display:none;"><i class="fa fa-trash fa-lg"></i> Reset RRD Data</button>
+					<button class="btn btn-sm btn-danger" type="submit" value="true" name="ResetRRD" id="ResetRRD" style="display:none;"><i class="fa fa-trash fa-lg"></i> Reset RRD Data</button>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-2 control-label">
 					&nbsp;
 				</label>
-				<div class="checkbox col-sm-2">
-					<button class="btn btn-primary update-graph" type="button"><i class="fa fa-refresh fa-lg"></i> Update Graphs</button>
+				<div class="col-sm-2">
+					<button class="btn btn-sm btn-primary update-graph" type="button"><i class="fa fa-refresh fa-lg"></i> Update Graphs</button>
 				</div>
 			</div>
 		</div>
@@ -1000,6 +997,167 @@ events.push(function() {
 		return graphOptions;
 	}
 
+	function applySettings(defaults) {
+
+		var allOptions = defaults.split("&");
+
+		allOptions.forEach(function(entry) {
+			
+			var currentOption = entry.split("=");
+
+			if(currentOption[0] === "left") {
+				
+				var rrdDb = currentOption[1].split("-");
+
+				if(rrdDb[0]) {
+
+					if (rrdDb[0] === "system") {
+						$( "#category-left" ).val(rrdDb[0]).change();
+						$( "#graph-left" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "traffic") {
+						$( "#category-left" ).val(rrdDb[1]).change();
+						$( "#graph-left" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "packets") {
+						$( "#category-left" ).val(rrdDb[1]).change();
+						$( "#graph-left" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "quality") {
+						$( "#category-left" ).val(rrdDb[1]).change();
+						$( "#graph-left" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "queues") {
+						$( "#category-left" ).val(rrdDb[1]).change();
+						$( "#graph-left" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "queuedrops") {
+						$( "#category-left" ).val(rrdDb[1]).change();
+						$( "#graph-left" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[0] === "captiveportal") {
+						$( "#category-left" ).val(rrdDb[0]).change();
+						$( "#graph-left" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[0] === "ntpd") {
+						$( "#category-left" ).val(rrdDb[0]).change();
+						$( "#graph-left" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "dhcpd") {
+						$( "#category-left" ).val(rrdDb[1]).change();
+						$( "#graph-left" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "vpnusers") {
+						$( "#category-left" ).val(rrdDb[1]).change();
+						$( "#graph-left" ).val(currentOption[1]);
+					}
+
+				} else {
+					$( "#category-left" ).val("none").change();
+				}
+
+			}
+
+			if(currentOption[0] === "right") {
+				
+				var rrdDb = currentOption[1].split("-");
+				
+				if(rrdDb[0]) {
+
+					if (rrdDb[0] === "system") {
+						$( "#category-right" ).val(rrdDb[0]).change();
+						$( "#graph-right" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "traffic") {
+						$( "#category-right" ).val(rrdDb[1]).change();
+						$( "#graph-right" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "packets") {
+						$( "#category-right" ).val(rrdDb[1]).change();
+						$( "#graph-right" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "quality") {
+						$( "#category-right" ).val(rrdDb[1]).change();
+						$( "#graph-right" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "queues") {
+						$( "#category-right" ).val(rrdDb[1]).change();
+						$( "#graph-right" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "queuedrops") {
+						$( "#category-right" ).val(rrdDb[1]).change();
+						$( "#graph-right" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[0] === "captiveportal") {
+						$( "#category-right" ).val(rrdDb[0]).change();
+						$( "#graph-right" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[0] === "ntpd") {
+						$( "#category-right" ).val(rrdDb[0]).change();
+						$( "#graph-right" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "dhcpd") {
+						$( "#category-right" ).val(rrdDb[1]).change();
+						$( "#graph-right" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "vpnusers") {
+						$( "#category-right" ).val(rrdDb[1]).change();
+						$( "#graph-right" ).val(currentOption[1]);
+					}
+
+				} else {
+					$( "#category-right" ).val("none").change();
+				}
+			}
+
+			if(currentOption[0] === "start") {
+				//nothing for now
+			}
+
+			if(currentOption[0] === "end") {
+				//nothing for now
+			}
+
+			if(currentOption[0] === "timePeriod") {
+				$( "#time-period" ).val(currentOption[1]);
+			}
+
+			if(currentOption[0] === "resolution") {
+				$( "#resolution" ).val(currentOption[1]);
+			}
+
+			if(currentOption[0] === "graphtype") {
+				$( "#graph-type" ).val(currentOption[1]);
+			}
+
+			if(currentOption[0] === "invert") {
+				$( "#invert" ).val(currentOption[1]);
+			}
+
+		}, this);
+
+	}
+
+	applySettings("<?php echo $pconfig['category']; ?>");
+
 	$( ".update-graph" ).click(function() {
 		$("#chart").hide();
 		$("#loading-msg").show();
@@ -1105,8 +1263,8 @@ events.push(function() {
 			var systemName = '<?=htmlspecialchars($config['system']['hostname'] . "." . $config['system']['domain']); ?>';
 			d3.select('#chart svg')
 				.append("text")
-				.attr("x", 20)
-				.attr("y", 385)
+				.attr("x", 100)
+				.attr("y", 415)
 				.attr("id", "system-name")
 				.text(systemName);
 
@@ -1115,8 +1273,8 @@ events.push(function() {
 			var timePeriod = $("#time-period option:selected").text();
 			d3.select('#chart svg')
 				.append("text")
-				.attr("x", 250)
-				.attr("y", 385)
+				.attr("x", 330)
+				.attr("y", 415)
 				.attr("id", "time-period")
 				.text("Time Period: " + timePeriod);
 
@@ -1125,8 +1283,8 @@ events.push(function() {
 			var Resolution = $("#resolution option:selected").text();
 			d3.select('#chart svg')
 				.append("text")
-				.attr("x", 450)
-				.attr("y", 385)
+				.attr("x", 530)
+				.attr("y", 415)
 				.attr("id", "resolution")
 				.text("Resolution: " + Resolution);
 
@@ -1135,8 +1293,8 @@ events.push(function() {
 			var currentDate = d3.time.format('%a %b %d %H:%M:%S %Y GMT%Z')(new Date());
 			d3.select('#chart svg')
 				.append("text")
-				.attr("x", 675)
-				.attr("y", 385)
+				.attr("x", 755)
+				.attr("y", 415)
 				.attr("id", "current-date")
 				.text(currentDate);
 
