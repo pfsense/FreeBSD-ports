@@ -95,13 +95,13 @@ if ($_POST['ResetRRD']) {
 
 //old config that needs to be updated
 if(strpos($config['rrd']['category'], '&resolution') === false) {
-	$config['rrd']['category'] = "left=system-processor&right=&start=&end=&timePeriod=-1d&resolution=300&graphtype=line&invert=true";
+	$config['rrd']['category'] = "left=system-processor&right=&start=&end=&timePeriod=-1d&resolution=300&graphtype=line&invert=true&autoUpdate=0";
 	write_config();
 }
 
 //save new defaults
 if ($_POST['defaults']) {
-	$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&start=&end=&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert'];
+	$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&start=&end=&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert']."&autoUpdate=".$_POST['auto-update'];
 	write_config();
 	$savemsg = "The changes have been applied successfully.";
 }
@@ -426,6 +426,18 @@ if ($savemsg) {
 
 					<span class="help-block">Inverse</span>
 				</div>
+				<div class="col-sm-2">
+					<select class="form-control" id="auto-update" name="auto-update">
+						<option value="0" selected>Off</option>
+						<option value="-1">Settings Change</option>
+						<option value="15">15 Seconds</option>
+						<option value="60">1 Minute</option>
+						<option value="300">5 Minutes</option>
+						<option value="600">10 Minutes</option>
+					</select>
+
+					<span class="help-block">Auto Update</span>
+				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-2 control-label">
@@ -729,6 +741,11 @@ events.push(function() {
 			$("#graph-left").append('<option value="' + value + '">' + key + '</option>');
 		});
 
+		update_graph();
+	});
+
+	$('#graph-left').on('change', function() {
+		update_graph();
 	});
 
 	$('#category-right').on('change', function() {
@@ -913,11 +930,57 @@ events.push(function() {
 			$("#graph-right").append('<option value="' + value + '">' + key + '</option>');
 		});
 
+		update_graph();
+	});
+
+	$('#graph-right').on('change', function() {
+		update_graph();
 	});
 
 	$('#time-period').on('change', function() {
+		valid_resolutions(this.value);
+		update_graph();
+	});
 
-		switch(this.value) {
+	$('#resolution').on('change', function() {
+		update_graph();
+	});
+
+	$('#graph-type').on('change', function() {
+		update_graph();
+	});
+
+	$('#invert').on('change', function() {
+		update_graph();
+	});
+
+	$('#auto-update').on('change', function() {
+		update_graph();
+	});
+
+	$( ".update-graph" ).click(function() {
+		update_graph(true);
+	});
+
+	var auto_update;
+	var update_interval;
+
+	function update_graph(force) {
+		if ($( "#auto-update" ).val() == "-1") {
+			force = true;
+		}
+		clearInterval(auto_update);
+		update_interval = $( "#auto-update" ).val() * 1000;
+		if (update_interval > 0) {
+			auto_update = setInterval(update_graph, update_interval);
+			redraw_graph(getOptions());
+		} else if (force) {
+			redraw_graph(getOptions());
+		}
+	}
+
+	function valid_resolutions(timePeriod) {
+		switch(timePeriod) {
 			case "-3m":
 			case "-1y":
 			case "-4y":
@@ -971,8 +1034,7 @@ events.push(function() {
 				$("#resolution").append('<option value="60">1 Minute</option>');
 				break;
 			}
-			
-	});
+	}
 
 	/***
 	**
@@ -988,9 +1050,10 @@ events.push(function() {
 		var timePeriod = $( "#time-period" ).val();
 		var resolution = $( "#resolution" ).val();
 		var graphtype = $( "#graph-type" ).val();
+		var autoUpdate = $( "#auto-update" ).val();
 		var invert = $( "#invert" ).val();
 
-		var graphOptions = 'left=' + graphLeft + '&right=' + graphRight + '&start=' + startDate + '&end=' + endDate + '&timePeriod=' + timePeriod + '&resolution=' + resolution + '&graphtype=' + graphtype + '&invert=' + invert ;
+		var graphOptions = 'left=' + graphLeft + '&right=' + graphRight + '&start=' + startDate + '&end=' + endDate + '&timePeriod=' + timePeriod + '&resolution=' + resolution + '&graphtype=' + graphtype + '&invert=' + invert + '&autoUpdate=' + autoUpdate ;
 
 		return graphOptions;
 	}
@@ -1150,17 +1213,19 @@ events.push(function() {
 				$( "#invert" ).val(currentOption[1]);
 			}
 
+			if(currentOption[0] === "autoUpdate") {
+				$( "#auto-update" ).val(currentOption[1]);
+				if (currentOption[1] > 0) {
+					update_interval = $( "#auto-update" ).val() * 1000;
+					auto_update = setInterval(update_graph, update_interval);
+				}
+			}
+
 		}, this);
 
 	}
 
 	applySettings("<?php echo $pconfig['category']; ?>");
-
-	$( ".update-graph" ).click(function() {
-		$("#chart").hide();
-		$("#loading-msg").show();
-		redraw_graph(getOptions());
-	});
 
 	$( "#settings" ).click(function() {
 		($(this).text().trim() === 'Display Advanced') ? $(this).html('<i class="fa fa-cog fa-lg"></i> Hide Advanced') : $(this).html('<i class="fa fa-cog fa-lg"></i> Display Advanced');
