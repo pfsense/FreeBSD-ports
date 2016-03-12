@@ -43,6 +43,7 @@
 	<name>mtr</name>
 	<title>Diagnostics: mtr</title>
 	<savetext>Run mtr</savetext>
+	<saveicon>fa-rss</saveicon>
 	<preoutput>yes</preoutput>
 	<donotsave>true</donotsave>
 	<menu>
@@ -109,8 +110,8 @@
 	$int_interval = (is_numeric($_POST['interval']) ? (abs(intval($_POST['interval']))) : 1);
 
 	if (!is_hostname($_POST['hostname']) && !is_ipaddr($_POST['hostname'])) {
-		echo "<strong><span class='errmsg'>ERROR:</span> No valid IP or Hostname given. Fix this and try again!</strong>\n";
-		echo "\n<input class='formbtn' type='button' value='Back to mtr' onclick='history.back()'>";
+		echo "<strong><span class='errmsg'>ERROR:</span> Invalid target hostname or IP address.</strong>\n\n";
+		echo '<br/><button class="btn btn-info" type="button" value="' . gettext("Back to mtr") . '" onclick="history.back()"><i class="fa fa-undo icon-embed-btn"></i> ' . gettext("Back to mtr") . '</button>';
 		die();
 	}
 
@@ -134,7 +135,7 @@
 	$mtr_options .= " " . $_POST['hostname'];
 	echo "Running mtr $mtr_options:\n\n";
 	system("/usr/local/sbin/mtr" . $mtr_options);
-	echo "\n<input class='formbtn' type='button' value='Back to mtr' onclick='history.back()'>";
+	echo '<br/><button class="btn btn-info" type="button" value="' . gettext("Back to mtr") . '" onclick="history.back()"><i class="fa fa-undo icon-embed-btn"></i> ' . gettext("Back to mtr") . '</button>';
 	]]>
 	</custom_add_php_command>
 </packagegui>

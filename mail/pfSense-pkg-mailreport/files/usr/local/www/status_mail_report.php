@@ -100,7 +100,6 @@ include("head.inc");
 					<th><?=gettext("Schedule")?></th>
 					<th><?=gettext("Commands")?></th>
 					<th><?=gettext("Logs")?></th>
-					<th><?=gettext("Graphs")?></th>
 					<th><?=gettext("Actions")?></th>
 				</thead>
 				<tbody class="services">
@@ -119,9 +118,6 @@ include("head.inc");
 			</td>
 			<td onclick="fr_toggle(<?=$i?>)" id="frd<?=$i?>" ondblclick="document.location='status_mail_report_edit.php?id=<?=$i?>';">
 				<?=count($mailreport['log']['row']); ?>
-			</td>
-			<td onclick="fr_toggle(<?=$i?>)" id="frd<?=$i?>" ondblclick="document.location='status_mail_report_edit.php?id=<?=$i?>';">
-				<?=count($mailreport['row']); ?>
 			</td>
 			<td style="cursor: pointer;">
 				<a class="fa fa-pencil" href="status_mail_report_edit.php?id=<?=$i?>" title="<?=gettext("Edit Report"); ?>"></a>
@@ -155,7 +151,7 @@ include("head.inc");
 
 events.push(function() {
 	$('[id^=Xdel_]').click(function (event) {
-		if(confirm("<?=gettext('Delete this patch entry?')?>")) {
+		if(confirm("<?=gettext('Delete this report?')?>")) {
 			$('#' + event.target.id.slice(1)).click();
 		}
 	});

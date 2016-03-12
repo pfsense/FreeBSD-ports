@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-mailreport
-PORTVERSION=	2.4.1
-PORTREVISION=	2
+PORTVERSION=	3.0
 CATEGORIES=	mail
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -48,8 +47,6 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/status_mail_report_add_cmd.php \
 		${STAGEDIR}${PREFIX}/www
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/status_mail_report_add_log.php \
-		${STAGEDIR}${PREFIX}/www
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/status_mail_report_add_graph.php \
 		${STAGEDIR}${PREFIX}/www
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}

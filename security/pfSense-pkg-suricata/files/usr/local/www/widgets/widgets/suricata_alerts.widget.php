@@ -111,7 +111,7 @@ function suricata_sksort(&$array, $subkey="id", $sort_ascending=false) {
 
 /* check if suricata widget variable is set */
 $suri_nentries = $config['widgets']['widget_suricata_display_lines'];
-if (!isset($suri_nentries) || $suri_nentries < 0) {
+if (empty($suri_nentries) || $suri_nentries < 0) {
 	$suri_nentries = 5;
 }
 
@@ -142,7 +142,7 @@ if(isset($_POST['widget_suricata_display_lines'])) {
 // Read "$suri_nentries" worth of alerts from the top of the alerts.log file
 function suricata_widget_get_alerts() {
 
-	global $config, $a_instance, $suri_nentries;
+	global $g, $config, $a_instance, $suri_nentries;
 	$suricata_alerts = array();
 
 	/* read log file(s) */
@@ -154,10 +154,10 @@ function suricata_widget_get_alerts() {
 
 		// make sure alert file exists, then grab the most recent {$suri_nentries} from it
 		// and write them to a temp file.
-		if (file_exists("/var/log/suricata/suricata_{$if_real}{$suricata_uuid}/alerts.log")) {
-			exec("tail -{$suri_nentries} -r /var/log/suricata/suricata_{$if_real}{$suricata_uuid}/alerts.log > /tmp/surialerts_{$suricata_uuid}");
+		if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid}/alerts.log")) {
+			exec("/usr/bin/tail -{$suri_nentries} -r {$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid}/alerts.log > {$g['tmp_path']}/surialerts_{$suricata_uuid}");
 
-			if (file_exists("/tmp/surialerts_{$suricata_uuid}")) {
+			if (file_exists("{$g['tmp_path']}/surialerts_{$suricata_uuid}")) {
 
 				/*************** FORMAT without CSV patch -- ALERT -- ***********************************************************************************/
 				/* Line format: timestamp  action[**] [gid:sid:rev] msg [**] [Classification: class] [Priority: pri] {proto} src:srcport -> dst:dstport */
@@ -169,8 +169,8 @@ function suricata_widget_get_alerts() {
 				/*              0          1           2   3   4    5                         6                 7                                       */
 				/************** *************************************************************************************************************************/
 
-				if (!$fd = fopen("/tmp/surialerts_{$suricata_uuid}", "r")) {
-					log_error(gettext("[Suricata Widget] Failed to open file /tmp/surialerts_{$suricata_uuid}"));
+				if (!$fd = fopen("{$g['tmp_path']}/surialerts_{$suricata_uuid}", "r")) {
+					log_error(gettext("[Suricata Widget] Failed to open file {$g['tmp_path']}/surialerts_{$suricata_uuid}"));
 					continue;
 				}
 
@@ -268,7 +268,7 @@ function suricata_widget_get_alerts() {
 					$counter++;
 				};
 				fclose($fd);
-				@unlink("/tmp/surialerts_{$suricata_uuid}");
+				@unlink("{$g['tmp_path']}/surialerts_{$suricata_uuid}");
 			};
 		};
 	};
@@ -353,7 +353,7 @@ function suricata_widget_get_alerts() {
 
 <script type="text/javascript">
 //<![CDATA[
-	var suricataupdateDelay = 50000; // update every 5 seconds
+	var suricataupdateDelay = 5000; // update every 5 seconds
 	var suri_nentries = <?php echo $suri_nentries; ?>; // default is 5
 //]]>
 </script>

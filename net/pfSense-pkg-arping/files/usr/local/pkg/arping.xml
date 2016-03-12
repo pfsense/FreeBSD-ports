@@ -43,6 +43,8 @@
 	<name>arping</name>
 	<title>Diagnostics: ARPing</title>
 	<savetext>Run ARPing</savetext>
+	<saveicon>fa-rss</saveicon>
+	<savebtnclass>btn-primary</savebtnclass>
 	<preoutput>yes</preoutput>
 	<donotsave>true</donotsave>
 	<include_file>/usr/local/pkg/arping.inc</include_file>
@@ -54,9 +56,9 @@
 	</menu>
 	<fields>
 		<field>
-			<fielddescr>IP, Hostname or MAC</fielddescr>
+			<fielddescr>Target</fielddescr>
 			<fieldname>pinghost</fieldname>
-			<description>Enter the hostname, IP or MAC address to ARPing.</description>
+			<description>Enter the hostname, IP address, or MAC address to ARPing.</description>
 			<type>input</type>
 			<required>true</required>
 		</field>

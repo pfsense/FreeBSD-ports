@@ -2,7 +2,7 @@
 <pfsensepkgs>
 	<package>
 		<name>mailreport</name>
-		<descr><![CDATA[Allows you to setup periodic e-mail reports containing command output, log file contents, and RRD graphs.]]></descr>
+		<descr><![CDATA[Allows you to setup periodic e-mail reports containing command output and log file contents.]]></descr>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>mailreport.xml</configurationfile>
 	</package>

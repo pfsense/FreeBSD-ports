@@ -56,7 +56,7 @@
 * Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
 * Copyright (C) 2009 Robert Zelaya Sr. Developer
 * Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
-* Copyright (C) 2014 Bill Meeks
+* Copyright (C) 2016 Bill Meeks
 *
 */
 
@@ -109,6 +109,9 @@ function suricata_is_sidmodslist_active($sidlist) {
 			return TRUE;
 		}
 		if ($rule['modify_sid_file'] == $sidlist) {
+			return TRUE;
+		}
+		if ($rule['drop_sid_file'] == $sidlist) {
 			return TRUE;
 		}
 	}
@@ -186,6 +189,14 @@ if (isset($_POST['save_auto_sid_conf'])) {
 			continue;
 		}
 		$a_nat[$k]['modify_sid_file'] = $v;
+	}
+
+	foreach ($_POST['drop_sid_file'] as $k => $v) {
+		if ($v == "None") {
+			unset($a_nat[$k]['drop_sid_file']);
+			continue;
+		}
+		$a_nat[$k]['drop_sid_file'] = $v;
 	}
 
 	// Write the new configuration
@@ -319,7 +330,7 @@ display_top_tabs($tab_array, true);
 						<input type="checkbox" id="auto_manage_sids" name="auto_manage_sids" value="on"
 						<?php if ($pconfig['auto_manage_sids'] == 'on') echo " checked"; ?>
 						onclick="enable_sid_conf();" />
-						<?=gettext("Enable automatic management of rule state nd content using configuration files.")?>
+						<?=gettext("Enable automatic management of rule state and content using configuration files.")?>
 					</label>
 					<span class="help-block">
 						<?=sprintf(gettext("If  Default is %sNot Checked%s "), "<strong>", "</strong>") .
@@ -467,6 +478,7 @@ display_top_tabs($tab_array, true);
 					<th><?=gettext("Enable SID File")?></th>
 					<th><?=gettext("Disable SID File")?></th>
 					<th><?=gettext("Modify SID File")?></th>
+					<th><?=gettext("Drop SID File")?></th>
 				   </tr>
 				</thead>
 				<tbody>
@@ -523,6 +535,20 @@ display_top_tabs($tab_array, true);
 							<?php
 								foreach ($sidmodselections as $choice) {
 									if ($choice == $natent['modify_sid_file'])
+										echo "<option value='{$choice}' selected>";
+									else
+										echo "<option value='{$choice}'>";
+
+									echo htmlspecialchars(gettext($choice)) . '</option>';
+								}
+							?>
+						</select>
+					</td>
+					<td>
+						<select name="drop_sid_file[<?=$k?>]" class="form-control" id="drop_sid_file[<?=$k?>]">
+							<?php
+								foreach ($sidmodselections as $choice) {
+									if ($choice == $natent['drop_sid_file'])
 										echo "<option value='{$choice}' selected>";
 									else
 										echo "<option value='{$choice}'>";

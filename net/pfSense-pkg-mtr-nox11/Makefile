@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-mtr-nox11
-PORTVERSION=	0.85.5
+PORTVERSION=	0.85.6
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty

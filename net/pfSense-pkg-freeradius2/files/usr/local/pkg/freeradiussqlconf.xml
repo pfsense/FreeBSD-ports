@@ -108,7 +108,7 @@
 				<![CDATA[
 				Enable this to allow connections from FreeRADIUS to a SQL database.<br>
 				At least one of the following options <strong>must be enabled</strong>: Authorization, Accounting, Session, Post-Auth.
-				]>
+				]]>
 			</sethelp>
 			<type>checkbox</type>
 			<enablefields>varsqlconf2failover,varsqlconf2includeenable,varsqlconfenableauthorize,varsqlconfenableaccounting,varsqlconfenablesession,varsqlconfenablepostauth,varsqlconfdatabase,varsqlconfserver,varsqlconfport,varsqlconflogin,varsqlconfpassword,varsqlconfradiusdb,varsqlconfaccttable1,varsqlconfaccttable2,varsqlconfpostauthtable,varsqlconfauthchecktable,varsqlconfauthreplytable,varsqlconfgroupchecktable,varsqlconfgroupreplytable,varsqlconfusergrouptable,varsqlconfreadgroups,varsqlconfdeletestalesessions,varsqlconfsqltrace,varsqlconfnumsqlsocks,varsqlconfconnectfailureretrydelay,varsqlconflifetime,varsqlconfmaxqueries,varsqlconfreadclients,varsqlconfnastable</enablefields>
@@ -381,7 +381,7 @@
 				<![CDATA[
 				Enable this to allow connections from FreeRADIUS to a SQL database.<br>
 				At least one of the following options <strong>must be enabled</strong>: Authorization, Accounting, Session, Post-Auth.
-				]>
+				]]>
 			</sethelp>
 			<type>checkbox</type>
 			<enablefields>varsqlconf2enableauthorize,varsqlconf2enableaccounting,varsqlconf2enablesession,varsqlconf2enablepostauth,varsqlconf2database,varsqlconf2server,varsqlconf2port,varsqlconf2login,varsqlconf2password,varsqlconf2radiusdb,varsqlconf2accttable1,varsqlconf2accttable2,varsqlconf2postauthtable,varsqlconf2authchecktable,varsqlconf2authreplytable,varsqlconf2groupchecktable,varsqlconf2groupreplytable,varsqlconf2usergrouptable,varsqlconf2readgroups,varsqlconf2deletestalesessions,varsqlconf2sqltrace,varsqlconf2numsqlsocks,varsqlconf2connectfailureretrydelay,varsqlconf2lifetime,varsqlconf2maxqueries,varsqlconf2readclients,varsqlconf2nastable</enablefields>

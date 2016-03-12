@@ -1163,8 +1163,10 @@ function freeradius_get_ca_certs() {
 	$ca_arr = array();
 	$ca_arr[] = array('refid' => 'none', 'descr' => 'none');
 
-	foreach ($config['ca'] as $ca) {
-		$ca_arr[] = array('refid' => $ca['refid'], 'descr' => $ca['descr']);
+	if (is_array($config['ca'])) {
+		foreach ($config['ca'] as $ca) {
+			$ca_arr[] = array('refid' => $ca['refid'], 'descr' => $ca['descr']);
+		}
 	}
 	return $ca_arr;
 }
@@ -1175,8 +1177,10 @@ function freeradius_get_ca_crl() {
 	$crl_arr = array();
 	$crl_arr[] = array('refid' => 'none', 'descr' => 'none');
 
-	foreach ($config['crl'] as $crl) {
-		$crl_arr[] = array('refid' => $crl['refid'], 'descr' => $crl['descr']);
+	if (is_array($config['crl'])) {
+		foreach ($config['crl'] as $crl) {
+			$crl_arr[] = array('refid' => $crl['refid'], 'descr' => $crl['descr']);
+		}
 	}
 	return $crl_arr;
 }
@@ -1187,8 +1191,10 @@ function freeradius_get_server_certs() {
 	$cert_arr = array();
 	$cert_arr[] = array('refid' => 'none', 'descr' => 'none');
 
-	foreach ($config['cert'] as $cert) {
-		$cert_arr[] = array('refid' => $cert['refid'], 'descr' => $cert['descr']);
+	if (is_array($config['cert'])) {
+		foreach ($config['cert'] as $cert) {
+			$cert_arr[] = array('refid' => $cert['refid'], 'descr' => $cert['descr']);
+		}
 	}
 	return $cert_arr;
 }

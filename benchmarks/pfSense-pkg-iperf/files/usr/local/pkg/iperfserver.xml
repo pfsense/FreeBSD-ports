@@ -44,6 +44,8 @@
 	<name>iperf</name>
 	<title>iperf: Server</title>
 	<savetext>Run iperf server</savetext>
+	<saveicon>fa-play-circle</saveicon>
+	<savebtnclass>btn-success</savebtnclass>
 	<preoutput>yes</preoutput>
 	<donotsave>true</donotsave>
 	<menu>
@@ -145,6 +147,7 @@
 		}
 		$iperf_options .= " -s";
 		mwexec_bg("/usr/local/bin/iperf" . $iperf_options);
+		echo '<br /><br /><button class="btn btn-info" type="button" value="' . gettext("Back to iperf server") . '" onclick="history.back()"><i class="fa fa-undo icon-embed-btn"></i> ' . gettext("Back to iperf server") . '</button>';
 	]]>
 	</custom_add_php_command>
 </packagegui>

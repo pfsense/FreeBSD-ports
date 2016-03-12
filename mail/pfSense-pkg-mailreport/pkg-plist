@@ -9,7 +9,6 @@ www/status_mail_report.php
 www/status_mail_report_edit.php
 www/status_mail_report_add_cmd.php
 www/status_mail_report_add_log.php
-www/status_mail_report_add_graph.php
 %%DATADIR%%/info.xml
 @dir /etc/inc
 @dir /etc/inc/phpmailer

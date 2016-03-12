@@ -44,6 +44,7 @@
 	<name>iperf</name>
 	<title>iperf: Client</title>
 	<savetext>Run iperf client</savetext>
+	<saveicon>fa-rss</saveicon>
 	<preoutput>yes</preoutput>
 	<donotsave>true</donotsave>
 	<menu>
@@ -165,6 +166,7 @@
 		}
 		$iperf_options .= " -c " . escapeshellarg($_POST['hostname']);
 		system("/usr/local/bin/iperf" . $iperf_options);
+		echo '<br /><br /><button class="btn btn-info" type="button" value="' . gettext("Back to iperf client") . '" onclick="history.back()"><i class="fa fa-undo icon-embed-btn"></i> ' . gettext("Back to iperf client") . '</button>';
 	]]>
 	</custom_add_php_command>
 </packagegui>

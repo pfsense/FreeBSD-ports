@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-iperf
-PORTVERSION=	2.0.5.4
-PORTREVISION=	1
+PORTVERSION=	2.0.5.5
 CATEGORIES=	benchmarks
 MASTER_SITES=	# empty
 DISTFILES=	# empty
