@@ -1198,15 +1198,16 @@ events.push(function() {
 						var trueValue = data.series[v].value;
 					}
 
-					valueUnits = "";
-					if (tempKey.includes('delay')) {
+					valueUnits = ' ';
+					if (tempKey.includes('delay average') || tempKey.includes('delay std. dev.')) {
 						trueValue *= 1000;	// Show delay values in same units as graph axis.  Fewer digits is human friendlier.
-						valueUnits = " ms";
+						valueUnits += 'ms';
+					} else if (tempKey.includes('packet loss')) {
+						valueUnits += '%';
+					} else {
+						valueUnits = '';
 					}
 
-					if (tempKey.includes('packet loss')) {
-						valueUnits = " %";
-					}
 
 					//change decimal places to round to if a really small number
 					if(trueValue < .01) {
