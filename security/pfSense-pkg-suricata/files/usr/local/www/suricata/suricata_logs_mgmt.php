@@ -298,15 +298,15 @@ $form = new Form;
 $section = new Form_Section('General Settings');
 $section->addInput(new Form_Checkbox(
 	'clearlogs',
-	'Remove Snort Logs On Package Uninstall',
-	'Snort log files will be removed when the Snort package is uninstalled.',
+	'Remove Suricata Logs On Package Uninstall',
+	'Suricata log files will be removed when the Suricata package is uninstalled.',
 	$config['installedpackages']['suricata']['config'][0]['clearlogs'] == 'on' ? true:false,
 	'on'
 ));
 $section->addInput(new Form_Checkbox(
 	'enable_log_mgmt',
 	'Auto Log Management',
-	'Enable automatic unattended management of Snort logs using parameters specified below.',
+	'Enable automatic unattended management of Suricata logs using parameters specified below.',
 	$config['installedpackages']['suricata']['config'][0]['enable_log_mgmt'] == 'on' ? true:false,
 	'on'
 ));
@@ -325,7 +325,7 @@ $section->addInput(new Form_Input(
 	'Log Limit Size in MB',
 	'text',
 	$pconfig['suricataloglimitsize']
-))->setHelp('This setting imposes a hard-limit on the combined log directory size of all Snort interfaces.  When the size limit set is reached, rotated logs for all interfaces will be removed, and any active logs pruned to zero-length.   (default is 20% of available free disk space)');
+))->setHelp('This setting imposes a hard-limit on the combined log directory size of all Suricata interfaces.  When the size limit set is reached, rotated logs for all interfaces will be removed, and any active logs pruned to zero-length.   (default is 20% of available free disk space)');
 $form->add($section);
 
 $section = new Form_Section("Log Size and Retention Limits");
@@ -553,7 +553,7 @@ events.push(function(){
 		enable_change();
 	});
 
-	// When 'snortloglimit_on' is clicked, disable/enable the other page form controls
+	// When 'suricataloglimit_on' is clicked, disable/enable the other page form controls
 	$('#suricataloglimit').click(function() {
 		enable_change_dirSize();
 	});
