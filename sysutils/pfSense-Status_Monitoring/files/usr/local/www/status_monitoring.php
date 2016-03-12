@@ -68,21 +68,48 @@ require("guiconfig.inc");
 require_once("filter.inc");
 require("shaper.inc");
 
-unset($input_errors);
-
-/* if the rrd graphs are not enabled redirect to settings page
-if (!isset($config['rrd']['enable'])) {
-	//TODO handle this scenario without settings page
-	header("Location: status_rrd_graph_settings.php"); //TODO make settings page
-}
-*/
-
 //grab rrd filenames
 $home = getcwd();
 $rrddbpath = "/var/db/rrd/";
 chdir($rrddbpath);
 $databases = glob("*.rrd");
 chdir($home);
+
+if($_POST['enable']) {
+	if(($_POST['enable'] === 'false')) { 
+		unset($config['rrd']['enable']); 
+	} else {
+		$config['rrd']['enable'] = true;
+	}
+	write_config();
+
+	$retval = 0;
+	$retval = enable_rrd_graphing();
+	$savemsg = get_std_save_message($retval); 
+}
+
+if ($_POST['ResetRRD']) {
+	mwexec('/bin/rm /var/db/rrd/*');
+	enable_rrd_graphing();
+	setup_gateways_monitor();
+	$savemsg = "RRD data has been cleared. New RRD files have been generated.";
+}
+
+//old config that needs to be updated
+if(strpos($config['rrd']['category'], '&resolution') === false) {
+	$config['rrd']['category'] = "left=system-processor&right=&start=&end=&timePeriod=-1d&resolution=300&graphtype=line&invert=true&autoUpdate=0";
+	write_config();
+}
+
+//save new defaults
+if ($_POST['defaults']) {
+	$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&start=&end=&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert']."&autoUpdate=".$_POST['auto-update'];
+	write_config();
+	$savemsg = "The changes have been applied successfully.";
+}
+
+$pconfig['enable'] = isset($config['rrd']['enable']);
+$pconfig['category'] = $config['rrd']['category'];
 
 $system = $packets = $quality = $traffic = $captiveportal = $ntpd = $queues = $queuedrops = $dhcpd = $vpnusers = [];
 
@@ -229,9 +256,26 @@ foreach ($databases as $db) {
 
 }
 
+## Get the configured options for Show/Hide monitoring settings panel.
+$monitoring_settings_form_hidden = isset($config['system']['webgui']['statusmonitoringsettingspanel']) ? false : true;
+
+if ($monitoring_settings_form_hidden) {
+	$panel_state = 'out';
+	$panel_body_state = 'in';
+} else {
+	$panel_state = 'in';
+	$panel_body_state = 'in';
+}
+
+$status_monitoring = true;
+
 $pgtitle = array(gettext("Status"), gettext("Monitoring"));
 
 include("head.inc");
+
+if ($savemsg) {
+	print_info_box($savemsg, 'success');
+}
 
 ?>
 
@@ -240,12 +284,18 @@ include("head.inc");
 
 <link href="/vendor/nvd3/nv.d3.css" media="screen, projection" rel="stylesheet" type="text/css">
 
-<form class="form-horizontal auto-submit" method="post" action="/status_graph.php?if=wan"><input type="hidden" name="__csrf_magic" value="sid:1f9306cd710f4110c117a7c9d792153199338441,1456357903">
-	<div class="panel panel-default">
+<form class="form-horizontal collapse <?=$panel_state?> auto-submit" method="post" action="/status_monitoring.php" id="monitoring-settings-form">
+	<div class="panel panel-default" id="monitoring-settings-panel">
 		<div class="panel-heading">
-			<h2 class="panel-title">Settings</h2>
+			<h2 class="panel-title"><?=gettext("Settings"); ?>
+				<span class="widget-heading-icon">
+					<a data-toggle="collapse" href="#monitoring-settings-panel_panel-body">
+						<i class="fa fa-plus-circle"></i>
+					</a>
+				</span>
+			</h2>
 		</div>
-		<div class="panel-body">
+		<div id="monitoring-settings-panel_panel-body" class="panel-body collapse <?=$panel_body_state?>">
 			<div class="form-group">
 				<label class="col-sm-2 control-label">
 					Left Axis
@@ -391,23 +441,50 @@ include("head.inc");
 					<span class="help-block">Auto Update</span>
 				</div>
 			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">
+					Settings
+				</label>
+				<div class="col-sm-2">
+					<button class="btn btn-sm btn-info" type="button" value="true" name="settings" id="settings"><i class="fa fa-cog fa-lg"></i> Display Advanced</button>
+				</div>
+				<div class="col-sm-2">
+					<button class="btn btn-sm btn-primary" type="submit" value="true" name="defaults" id="defaults" style="display:none;"><i class="fa fa-save fa-lg"></i> Save As Defaults</button>
+				</div>
+				<div class="col-sm-2">
+					<?php
+					if ($pconfig['enable']) {
+						echo '<button class="btn btn-sm btn-danger" type="submit" value="false" name="enable" id="enable" style="display:none;"><i class="fa fa-ban fa-lg"></i> Disable RRD Graphing</button>';
+					} else {
+						echo '<button class="btn btn-sm btn-success" type="submit" value="true" name="enable" id="enable" style="display:none;"><i class="fa fa-check fa-lg"></i> Enable RRD Graphing</button>';
+					}
+					?>
+				</div>
+				<div class="col-sm-2">
+					<button class="btn btn-sm btn-danger" type="submit" value="true" name="ResetRRD" id="ResetRRD" style="display:none;"><i class="fa fa-trash fa-lg"></i> Reset RRD Data</button>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">
+					&nbsp;
+				</label>
+				<div class="col-sm-2">
+					<button class="btn btn-sm btn-primary update-graph" type="button"><i class="fa fa-refresh fa-lg"></i> Update Graphs</button>
+				</div>
+			</div>
 		</div>
 	</div>
 </form>
-
-<p>
-	<button id="update" class="btn btn-primary">Update</button>
-	<span id="loading-msg">Loading Graph...</span>
-</p>
 
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<h2 class="panel-title">Interactive Graph</h2>
 	</div>
 	<div class="panel-body">
+		<div class="alert alert-info" id="loading-msg">Loading Graph...</div>
 		<div id="chart-error" class="alert alert-danger" style="display: none;"></div>
 		<div id="chart" class="with-3d-shadow with-transitions">
-			<svg></svg> <!-- TODO add loading symbol -->
+			<svg></svg>
 		</div>
 	</div>
 </div>
@@ -934,13 +1011,16 @@ events.push(function() {
 		update_graph();
 	});
 
-	$( "#update" ).click(function() {
+	$('#auto-update').on('change', function() {
+		update_graph();
+	});
+
+	$( ".update-graph" ).click(function() {
 		update_graph(true);
 	});
 
 	var auto_update;
 	var update_interval;
-	update_graph();
 
 	function update_graph(force) {
 		if ($( "#auto-update" ).val() == "-1") {
@@ -970,12 +1050,189 @@ events.push(function() {
 		var timePeriod = $( "#time-period" ).val();
 		var resolution = $( "#resolution" ).val();
 		var graphtype = $( "#graph-type" ).val();
+		var autoUpdate = $( "#auto-update" ).val();
 		var invert = $( "#invert" ).val();
 
-		var graphOptions = 'left=' + graphLeft + '&right=' + graphRight + '&start=' + startDate + '&end=' + endDate + '&timePeriod=' + timePeriod + '&resolution=' + resolution + '&graphtype=' + graphtype + '&invert=' + invert ;
+		var graphOptions = 'left=' + graphLeft + '&right=' + graphRight + '&start=' + startDate + '&end=' + endDate + '&timePeriod=' + timePeriod + '&resolution=' + resolution + '&graphtype=' + graphtype + '&invert=' + invert + '&autoUpdate=' + autoUpdate ;
 
 		return graphOptions;
 	}
+
+	function applySettings(defaults) {
+
+		var allOptions = defaults.split("&");
+
+		allOptions.forEach(function(entry) {
+			
+			var currentOption = entry.split("=");
+
+			if(currentOption[0] === "left") {
+				
+				var rrdDb = currentOption[1].split("-");
+
+				if(rrdDb[0]) {
+
+					if (rrdDb[0] === "system") {
+						$( "#category-left" ).val(rrdDb[0]).change();
+						$( "#graph-left" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "traffic") {
+						$( "#category-left" ).val(rrdDb[1]).change();
+						$( "#graph-left" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "packets") {
+						$( "#category-left" ).val(rrdDb[1]).change();
+						$( "#graph-left" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "quality") {
+						$( "#category-left" ).val(rrdDb[1]).change();
+						$( "#graph-left" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "queues") {
+						$( "#category-left" ).val(rrdDb[1]).change();
+						$( "#graph-left" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "queuedrops") {
+						$( "#category-left" ).val(rrdDb[1]).change();
+						$( "#graph-left" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[0] === "captiveportal") {
+						$( "#category-left" ).val(rrdDb[0]).change();
+						$( "#graph-left" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[0] === "ntpd") {
+						$( "#category-left" ).val(rrdDb[0]).change();
+						$( "#graph-left" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "dhcpd") {
+						$( "#category-left" ).val(rrdDb[1]).change();
+						$( "#graph-left" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "vpnusers") {
+						$( "#category-left" ).val(rrdDb[1]).change();
+						$( "#graph-left" ).val(currentOption[1]);
+					}
+
+				} else {
+					$( "#category-left" ).val("none").change();
+				}
+
+			}
+
+			if(currentOption[0] === "right") {
+				
+				var rrdDb = currentOption[1].split("-");
+				
+				if(rrdDb[0]) {
+
+					if (rrdDb[0] === "system") {
+						$( "#category-right" ).val(rrdDb[0]).change();
+						$( "#graph-right" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "traffic") {
+						$( "#category-right" ).val(rrdDb[1]).change();
+						$( "#graph-right" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "packets") {
+						$( "#category-right" ).val(rrdDb[1]).change();
+						$( "#graph-right" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "quality") {
+						$( "#category-right" ).val(rrdDb[1]).change();
+						$( "#graph-right" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "queues") {
+						$( "#category-right" ).val(rrdDb[1]).change();
+						$( "#graph-right" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "queuedrops") {
+						$( "#category-right" ).val(rrdDb[1]).change();
+						$( "#graph-right" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[0] === "captiveportal") {
+						$( "#category-right" ).val(rrdDb[0]).change();
+						$( "#graph-right" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[0] === "ntpd") {
+						$( "#category-right" ).val(rrdDb[0]).change();
+						$( "#graph-right" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "dhcpd") {
+						$( "#category-right" ).val(rrdDb[1]).change();
+						$( "#graph-right" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "vpnusers") {
+						$( "#category-right" ).val(rrdDb[1]).change();
+						$( "#graph-right" ).val(currentOption[1]);
+					}
+
+				} else {
+					$( "#category-right" ).val("none").change();
+				}
+			}
+
+			if(currentOption[0] === "start") {
+				//nothing for now
+			}
+
+			if(currentOption[0] === "end") {
+				//nothing for now
+			}
+
+			if(currentOption[0] === "timePeriod") {
+				$( "#time-period" ).val(currentOption[1]);
+			}
+
+			if(currentOption[0] === "resolution") {
+				$( "#resolution" ).val(currentOption[1]);
+			}
+
+			if(currentOption[0] === "graphtype") {
+				$( "#graph-type" ).val(currentOption[1]);
+			}
+
+			if(currentOption[0] === "invert") {
+				$( "#invert" ).val(currentOption[1]);
+			}
+
+			if(currentOption[0] === "autoUpdate") {
+				$( "#auto-update" ).val(currentOption[1]);
+				if (currentOption[1] > 0) {
+					update_interval = $( "#auto-update" ).val() * 1000;
+					auto_update = setInterval(update_graph, update_interval);
+				}
+			}
+
+		}, this);
+
+	}
+
+	applySettings("<?php echo $pconfig['category']; ?>");
+
+	$( "#settings" ).click(function() {
+		($(this).text().trim() === 'Display Advanced') ? $(this).html('<i class="fa fa-cog fa-lg"></i> Hide Advanced') : $(this).html('<i class="fa fa-cog fa-lg"></i> Display Advanced');
+		$("#defaults").toggle();
+		$("#enable").toggle();
+		$("#ResetRRD").toggle();
+	});
 
 	/***
 	**
@@ -1064,6 +1321,46 @@ events.push(function() {
 				.attr("id", "right-title")
 				.text("Right Axis: " + rightTitle);
 
+			//add system name
+			d3.select('#chart svg #system-name').remove();
+			var systemName = '<?=htmlspecialchars($config['system']['hostname'] . "." . $config['system']['domain']); ?>';
+			d3.select('#chart svg')
+				.append("text")
+				.attr("x", 100)
+				.attr("y", 415)
+				.attr("id", "system-name")
+				.text(systemName);
+
+			//add time period
+			d3.select('#chart svg #time-period').remove();
+			var timePeriod = $("#time-period option:selected").text();
+			d3.select('#chart svg')
+				.append("text")
+				.attr("x", 330)
+				.attr("y", 415)
+				.attr("id", "time-period")
+				.text("Time Period: " + timePeriod);
+
+			//add resolution
+			d3.select('#chart svg #resolution').remove();
+			var Resolution = $("#resolution option:selected").text();
+			d3.select('#chart svg')
+				.append("text")
+				.attr("x", 530)
+				.attr("y", 415)
+				.attr("id", "resolution")
+				.text("Resolution: " + Resolution);
+
+			//add current date
+			d3.select('#chart svg #current-date').remove();
+			var currentDate = d3.time.format('%a %b %d %H:%M:%S %Y GMT%Z')(new Date());
+			d3.select('#chart svg')
+				.append("text")
+				.attr("x", 755)
+				.attr("y", 415)
+				.attr("id", "current-date")
+				.text(currentDate);
+
 			d3.select('#chart svg')
 				.datum(data)
 				.transition()
@@ -1086,9 +1383,12 @@ events.push(function() {
 			var summary = [];
 			var units = "";
 
+			if (d.unit_acronym) {
+				units = '<acronym data-toggle="tooltip" title="' + d.unit_desc + '">' + d.unit_acronym + '</acronym>';
+			}
+
 			for ( var v = 0; v < d.values.length; v++ ){
 
-				//account for inversions
 				if (d.invert) {
 					//flip back to positive
 					summary.push(0 - d.values[v].y);
@@ -1098,19 +1398,26 @@ events.push(function() {
 
 			}
 
+			var avg = d3.sum(summary)/summary.length;
 			var min = d3.min(summary);
 			var max = d3.max(summary);
-			var avg = d3.sum(summary)/summary.length;
 			var last = summary[summary.length-1];
 
-			// TODO make function
-			var formatted_avg = d3.formatPrefix(avg);
-			var formatted_min = d3.formatPrefix(min);
-			var formatted_max = d3.formatPrefix(max);
-			var formatted_last = d3.formatPrefix(last);
+			if(d.format === "s") {
+				var formatted_avg = d3.formatPrefix(avg);
+				var formatted_min = d3.formatPrefix(min);
+				var formatted_max = d3.formatPrefix(max);
+				var formatted_last = d3.formatPrefix(last);
 
-			if (d.unit_acronym) {
-				units = '<acronym data-toggle="tooltip" title="' + d.unit_desc + '">' + d.unit_acronym + '</acronym>';
+				var avg_value = formatted_avg.scale(avg).toFixed() + ' ' + formatted_avg.symbol + units;
+				var min_value = formatted_min.scale(min).toFixed() + ' ' + formatted_min.symbol + units;
+				var max_value = formatted_max.scale(max).toFixed() + ' ' + formatted_max.symbol + units;
+				var last_value = formatted_last.scale(last).toFixed() + ' ' + formatted_last.symbol + units;
+			} else {
+				var avg_value = d3.format(".2f")(avg) + ' ' + units;
+				var min_value = d3.format(".2f")(min) + ' ' + units;
+				var max_value = d3.format(".2f")(max) + ' ' + units;
+				var last_value = d3.format(".2f")(last) + ' ' + units;
 			}
 
 			if (d.ninetyfifth) {
@@ -1122,7 +1429,7 @@ events.push(function() {
 				var ninetyfifthVal = "";
 			}
 
-			$('#summary tbody').append('<tr><th>' + d.key + '</th><td>' + formatted_min.scale(min).toFixed() + ' ' + formatted_min.symbol + units + '</td><td>' + formatted_avg.scale(avg).toFixed() + ' ' + formatted_avg.symbol + units + '</td><td>' + formatted_max.scale(max).toFixed() + ' ' + formatted_max.symbol + units + '</td><td>' + formatted_last.scale(last).toFixed() + ' ' + formatted_last.symbol + units + '</td><td>' + ninetyfifthVal + '</td></tr>');
+			$('#summary tbody').append('<tr><th>' + d.key + '</th><td>' + min_value + '</td><td>' + avg_value + '</td><td>' + max_value + '</td><td>' + last_value + '</td><td>' + ninetyfifthVal + '</td></tr>');
 
 		});
 
@@ -1131,156 +1438,215 @@ events.push(function() {
 
 	var chart;
 
-	d3.json("rrd_fetch_json.php")
-		.header("Content-Type", "application/x-www-form-urlencoded")
-		.post(getOptions(), function(error, json) {
+	<?php
+	if ($pconfig['enable']) { 
+		echo 'var rrdEnabled = true;';
+	} else {
+		echo 'var rrdEnabled = false;';
+	}
+	?>
 
-		$("#chart").show();
+	if(!rrdEnabled) {
+
 		$("#loading-msg").hide();
+		$("#chart").hide();
+		$("#chart-error").show().html('<strong>Error</strong>: RRD graphs are not enabled. Enable in the Settings above.');
 
-		if (error) {
-			return console.warn(error);
-		}
+	} else {
 
-		if (json.error) {
-			return console.warn(json.error);
-		}
+		d3.json("rrd_fetch_json.php")
+			.header("Content-Type", "application/x-www-form-urlencoded")
+			.post(getOptions(), function(error, json) {
 
-		var data = json;
+			$("#chart").show();
+			$("#loading-msg").hide();
 
-		data.map(function(series) {
-
-			series.values = series.values.map(function(d) {
-				if (series.invert) {
-					return { x: d[0], y: 0 - d[1] }
-				} else {
-					return { x: d[0], y: d[1] }
-				}
-			});
-
-			return series;
-
-		});
-
-		nv.addGraph(function() {
-
-			chart = nv.models.multiChart()
-				.color(d3.scale.category20().range())
-				.useInteractiveGuideline(true)
-				.margin({top: 160, right:100, left:100, bottom: 50});
-
-			var timePeriod = $( "#time-period" ).val();
-			var timeFormat = timeLookup[timePeriod];
-
-			chart.xAxis.tickFormat(function(d) {
-				return d3.time.format(timeFormat)(new Date(d));
-			}).tickPadding(15);
-
-			//TODO format y axis by rrd database
-
-			//TODO add option to match axis scales?
-
-			//y axis description by rrd database
-			var gleft = $( "#graph-left" ).val();
-			if (gleft) {
-				var gLeftSplit = gleft.split("-");
-				var leftLabel = rrdLookup[gLeftSplit[1]];
+			if (error) {
+				$("#chart").hide();
+				$("#chart-error").show().html('<strong>Error</strong>: ' + error);
+				return console.warn(error);
 			}
 
-			chart.yAxis1.tickFormat(function(d) {
-				return d3.format('s')(d)
-			}).axisLabel(leftLabel).tickPadding(5).showMaxMin(false);
-
-			//add left title
-			var leftTitle = $("#category-left option:selected").text() + " -- " + $("#graph-left option:selected").text();
-			
-			d3.select('#chart svg')
-				.append("text")
-				.attr("x", 150)
-				.attr("y", 11)
-				.attr("id", "left-title")
-				.text("Left Axis: " + leftTitle);
-
-			//TODO format y axis by rrd database
-
-			//y axis description by rrd database
-			var gright = $( "#graph-right" ).val();
-			if (gright) {
-				var gRightSplit = gright.split("-");
-				var rightLabel = rrdLookup[gRightSplit[1]];
+			if (json.error) {
+				$("#chart").hide();
+				$("#chart-error").show().html('<strong>Error</strong>: ' + json.error);
+				return console.warn(json.error);
 			}
 
-			chart.yAxis2.tickFormat(function(d) {
-				return d3.format('s')(d)
-			}).axisLabel(rightLabel).tickPadding(5).showMaxMin(false);
+			var data = json;
 
-			//add right title
-			var rightTitle = $("#category-right option:selected").text() + " -- " + $("#graph-right option:selected").text();
-			d3.select('#chart svg')
-				.append("text")
-				.attr("x", 150)
-				.attr("y", 28)
-				.attr("id", "right-title")
-				.text("Right Axis: " + rightTitle);
+			data.map(function(series) {
 
-			//custom tooltip contents
-			chart.interactiveLayer.tooltip.contentGenerator(function(data) {
-
-				var totals = false;
-				var inboundTotal = [];
-				var content = '<h3>' + d3.time.format('%Y-%m-%d %H:%M:%S')(new Date(data.value)) + '</h3><table><tbody>';
-
-				for ( var v = 0; v < data.series.length; v++ ){
-
-					if (data.series[v].key.includes('right axis')) {
-						var tempKey = data.series[v].key.slice(0, -13);
+				series.values = series.values.map(function(d) {
+					if (series.invert) {
+						return { x: d[0], y: 0 - d[1] }
 					} else {
-						var tempKey = data.series[v].key;
+						return { x: d[0], y: d[1] }
 					}
+				});
 
-					if ( tempKey.includes('inpass') || tempKey.includes('outpass') ) {
-						totals = true;
-						inboundTotal[tempKey] = v;
-					}
+				return series;
 
-					if ( ($("#invert").val() === "true") && (tempKey.includes('outpass') || tempKey.includes('packet loss')) ) {
-						var trueValue = 0 - data.series[v].value;
-					} else {
-						var trueValue = data.series[v].value;
-					}
+			});
 
-					//change decimal places to round to if a really small number
-					if(trueValue < .01) {
-						var adjustedTrueValue = d3.format(',')(trueValue.toFixed(6)); //TODO dynamically calculate number of zeros after decimal and base off that
-					} else {
-						var adjustedTrueValue = d3.format(',')(trueValue.toFixed(2));
-					}
+			nv.addGraph(function() {
 
-					content += '<tr><td class="legend-color-guide"><div style="background-color: ' + data.series[v].color + '"></div></td><td>' + data.series[v].key + '</td><td class="value"><strong>' + adjustedTrueValue + '</strong></td></tr>';
+				chart = nv.models.multiChart()
+					.color(d3.scale.category20().range())
+					.useInteractiveGuideline(true)
+					.margin({top: 160, right:100, left:100, bottom: 80});
+
+				var timePeriod = $( "#time-period" ).val();
+				var timeFormat = timeLookup[timePeriod];
+
+				chart.xAxis.tickFormat(function(d) {
+					return d3.time.format(timeFormat)(new Date(d));
+				}).tickPadding(15);
+
+				//TODO format y axis by rrd database
+
+				//TODO add option to match axis scales?
+
+				//y axis description by rrd database
+				var gleft = $( "#graph-left" ).val();
+				if (gleft) {
+					var gLeftSplit = gleft.split("-");
+					var leftLabel = rrdLookup[gLeftSplit[1]];
 				}
 
-				content += '</tbody></table>';
+				chart.yAxis1.tickFormat(function(d) {
+					return d3.format('s')(d)
+				}).axisLabel(leftLabel).tickPadding(5).showMaxMin(false);
 
-				return content;
+				//add left title
+				var leftTitle = $("#category-left option:selected").text() + " -- " + $("#graph-left option:selected").text();
+				
+				d3.select('#chart svg')
+					.append("text")
+					.attr("x", 150)
+					.attr("y", 11)
+					.attr("id", "left-title")
+					.text("Left Axis: " + leftTitle);
+
+				//TODO format y axis by rrd database
+
+				//y axis description by rrd database
+				var gright = $( "#graph-right" ).val();
+				if (gright) {
+					var gRightSplit = gright.split("-");
+					var rightLabel = rrdLookup[gRightSplit[1]];
+				}
+
+				chart.yAxis2.tickFormat(function(d) {
+					return d3.format('s')(d)
+				}).axisLabel(rightLabel).tickPadding(5).showMaxMin(false);
+
+				//add right title
+				var rightTitle = $("#category-right option:selected").text() + " -- " + $("#graph-right option:selected").text();
+				d3.select('#chart svg')
+					.append("text")
+					.attr("x", 150)
+					.attr("y", 28)
+					.attr("id", "right-title")
+					.text("Right Axis: " + rightTitle);
+
+				//add system name
+				var systemName = '<?=htmlspecialchars($config['system']['hostname'] . "." . $config['system']['domain']); ?>';
+				d3.select('#chart svg')
+					.append("text")
+					.attr("x", 100)
+					.attr("y", 415)
+					.attr("id", "system-name")
+					.text(systemName);
+
+				//add time period
+				var timePeriod = $("#time-period option:selected").text();
+				d3.select('#chart svg')
+					.append("text")
+					.attr("x", 330)
+					.attr("y", 415)
+					.attr("id", "time-period")
+					.text("Time Period: " + timePeriod);
+
+				//add resolution
+				var Resolution = $("#resolution option:selected").text();
+				d3.select('#chart svg')
+					.append("text")
+					.attr("x", 530)
+					.attr("y", 415)
+					.attr("id", "resolution")
+					.text("Resolution: " + Resolution);
+
+				//add current date
+				var currentDate = d3.time.format('%a %b %d %H:%M:%S %Y GMT%Z')(new Date());
+				d3.select('#chart svg')
+					.append("text")
+					.attr("x", 755)
+					.attr("y", 415)
+					.attr("id", "current-date")
+					.text(currentDate);
+
+				//custom tooltip contents
+				chart.interactiveLayer.tooltip.contentGenerator(function(data) {
+
+					var totals = false;
+					var inboundTotal = [];
+					var content = '<h3>' + d3.time.format('%Y-%m-%d %H:%M:%S')(new Date(data.value)) + '</h3><table><tbody>';
+
+					for ( var v = 0; v < data.series.length; v++ ){
+
+						if (data.series[v].key.includes('right axis')) {
+							var tempKey = data.series[v].key.slice(0, -13);
+						} else {
+							var tempKey = data.series[v].key;
+						}
+
+						if ( tempKey.includes('inpass') || tempKey.includes('outpass') ) {
+							totals = true;
+							inboundTotal[tempKey] = v;
+						}
+
+						if ( ($("#invert").val() === "true") && (tempKey.includes('outpass') || tempKey.includes('packet loss')) ) {
+							var trueValue = 0 - data.series[v].value;
+						} else {
+							var trueValue = data.series[v].value;
+						}
+
+						//change decimal places to round to if a really small number
+						if(trueValue < .01) {
+							var adjustedTrueValue = d3.format(',')(trueValue.toFixed(6)); //TODO dynamically calculate number of zeros after decimal and base off that
+						} else {
+							var adjustedTrueValue = d3.format(',')(trueValue.toFixed(2));
+						}
+
+						content += '<tr><td class="legend-color-guide"><div style="background-color: ' + data.series[v].color + '"></div></td><td>' + data.series[v].key + '</td><td class="value"><strong>' + adjustedTrueValue + '</strong></td></tr>';
+					}
+
+					content += '</tbody></table>';
+
+					return content;
+
+				});
+
+				d3.select('#chart svg')
+				   .datum(data)
+				   .transition()
+				   .duration(500)
+				   .call(chart);
+
+				nv.utils.windowResize(function(){
+					chart.update();
+				});
+
+				calculate_summary(data);
+
+				return chart;
 
 			});
-
-			d3.select('#chart svg')
-			   .datum(data)
-			   .transition()
-			   .duration(500)
-			   .call(chart);
-
-			nv.utils.windowResize(function(){
-				chart.update();
-			});
-
-			calculate_summary(data);
-
-			return chart;
-
 		});
-	});
+
+	}
+
 });
 //]]>
 </script>
