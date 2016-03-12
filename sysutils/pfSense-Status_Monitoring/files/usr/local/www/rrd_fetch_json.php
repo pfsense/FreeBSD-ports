@@ -363,9 +363,11 @@ if ($right != "null") {
 			break;
 		case "stddev":
 			$ds = "delay std. dev.";
+			$multiplier = 1000;
 			break;
 		case "delay":
 			$ds = "delay average";
+			$multiplier = 1000;
 			break;
 		case "loss":
 			$ds = "packet loss";
