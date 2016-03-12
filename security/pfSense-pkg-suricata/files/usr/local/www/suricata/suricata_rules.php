@@ -593,12 +593,12 @@ $group->add(new Form_Button(
 ))->setAttribute('title', gettext('Enable all rules in the currently selected category'))->addClass('btn-sm btn-success');
 if ($currentruleset == 'Auto-Flowbit Rules') {
 	$msg = '<b>' . gettext('Note: ') . '</b>' . gettext('You should not disable flowbit rules!  Add Suppress List entries for them instead by ');
-	$msg .= '<a href="snort_rules_flowbits.php?id=' . $id . '" title="' . gettext('Add Suppress List entry for Flowbit Rule') . '">';
+	$msg .= '<a href="suricata_rules_flowbits.php?id=' . $id . '" title="' . gettext('Add Suppress List entry for Flowbit Rule') . '">';
 	$msg .= gettext('clicking here.') . '</a>';
-	$group->setHelp('When finished, click APPLY to save and send any SID enable/disable changes made on this tab to Snort.<br/>' . $msg);
+	$group->setHelp('When finished, click APPLY to save and send any SID enable/disable changes made on this tab to Suricata.<br/>' . $msg);
 }
 else {
-	$group->setHelp('When finished, click APPLY to save and send any SID enable/disable changes made on this tab to Snort.');
+	$group->setHelp('When finished, click APPLY to save and send any SID enable/disable changes made on this tab to Suricata.');
 }
 $section->add($group);
 
