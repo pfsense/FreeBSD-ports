@@ -404,6 +404,9 @@ if ($right != "null") {
 			$multiplier = 8;
 			$format = "s";
 			break;
+		case "max":
+			$format = "s";
+			break;
 		case "inpass6":
 			$ninetyfifth = true;
 			$multiplier = 8;
