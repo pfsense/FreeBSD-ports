@@ -89,7 +89,7 @@ $graph_unit_lookup = array(
 	"traffic"   => "b/s",
 	"packets"   => "pps",
 	"states"    => "cps",
-	"quality"   => "s",
+	"quality"   => "ms",
 	"processor" => "%",
 	"memory"    => "%"
 );
@@ -108,7 +108,7 @@ $unit_desc_lookup = array(
 	"b/s" => "Bits Per Second",
 	"pps" => "Packets Per Second",
 	"cps" => "Changes Per Second",
-	"s"  => "Seconds",
+	"ms"  => "Milliseconds",
 	"%"   => "Percent",
 	""    => ""
 );
@@ -151,9 +151,11 @@ if ($left != "null") {
 			break;
 		case "stddev":
 			$ds = "delay std. dev.";
+			$multiplier = 1000;
 			break;
 		case "delay":
 			$ds = "delay average";
+			$multiplier = 1000;
 			break;	
 		case "loss":
 			$ds = "packet loss";

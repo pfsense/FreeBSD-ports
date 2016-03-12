@@ -523,7 +523,7 @@ events.push(function() {
 		"mbuf": "utilization, percent",
 		"packets": "packets / sec",
 		"vpnusers": "drink",
-		"quality": "seconds / %",
+		"quality": "milliseconds / %",
 		"traffic": "bits / sec"
 	};
 
