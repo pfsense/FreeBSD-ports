@@ -1135,7 +1135,7 @@ events.push(function() {
 			}
 
 			if(currentOption[0] === "timePeriod") {
-				$( "#time-period" ).val(currentOption[1]);
+				$( "#time-period" ).val(currentOption[1]).change();
 			}
 
 			if(currentOption[0] === "resolution") {
