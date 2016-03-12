@@ -82,6 +82,19 @@
 	cancel_os_policy --> Submit button to cancel operation and exit
  **************************************************************************************/
 
+$form->addGlobal(new Form_Input(
+	'id',
+	'id',
+	'hidden',
+	$id
+));
+$form->addGlobal(new Form_Input(
+	'eng_id',
+	'eng_id',
+	'hidden',
+	$eng_id
+));
+
 $section = new Form_Section('Suricata Target-Based Host OS Policy Engine Configuration');
 $section->addInput(new Form_Input(
 	'policy_name',
@@ -101,7 +114,7 @@ if ($pengcfg['name'] <> "default") {
 	$bind_to->setHelp('IP List to bind this engine to. (Cannot be blank)');
 	$btnaliases = new Form_Button(
 		'select_alias',
-		' ' . 'Aliases',
+		'Aliases',
 		null,
 		'fa-search-plus'
 	);
@@ -130,20 +143,31 @@ $section->addInput(new Form_Select(
 ))->setHelp('Choose the OS target policy appropriate for the protected hosts. The default is BSD.');
 $form->add($section);
 
+$form->addGlobal(new Form_Button(
+	'save_os_policy',
+	'Save',
+	null,
+	'fa-save'
+))->addClass("btn-primary");
+
+$form->addGlobal(new Form_Button(
+	'cancel_os_policy',
+	'Cancel',
+	null
+))->removeClass("btn-primary")->addClass("btn-warning");
+
 print($form);
 ?>
 
 <script type="text/javascript">
 //<![CDATA[
+events.push(function() {
 	var addressarray = <?= json_encode(get_alias_list(array("host", "network"))) ?>;
 
-function createAutoSuggest() {
-	<?php
-		echo "\tvar objAlias = new AutoSuggestControl(document.getElementById('policy_bind_to'), new StateSuggestions(addressarray));\n";
-	?>
-}
-
-setTimeout("createAutoSuggest();", 500);
+	$('#policy_bind_to').autocomplete({
+		source: addressarray
+	});
+});
 //]]>
 </script>
 
