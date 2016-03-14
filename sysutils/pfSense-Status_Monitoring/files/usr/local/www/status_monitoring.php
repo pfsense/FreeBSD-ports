@@ -109,7 +109,7 @@ if ($_POST['defaults']) {
 $pconfig['enable'] = isset($config['rrd']['enable']);
 $pconfig['category'] = $config['rrd']['category'];
 
-$system = $packets = $quality = $traffic = $captiveportal = $ntpd = $queues = $queuedrops = $dhcpd = $vpnusers = [];
+$system = $packets = $quality = $traffic = $captiveportal = $ntpd = $queues = $queuedrops = $dhcpd = $vpnusers = $wireless = $cellular = [];
 
 //populate arrays for dropdowns based on rrd filenames
 foreach ($databases as $db) {
@@ -201,6 +201,14 @@ foreach ($databases as $db) {
 
 	if ($db_arr[1] === "quality") {
 		$quality[$db_name] = $db_arr[0];
+	}
+
+	if ($db_arr[1] === "wireless") {
+		$wireless[$db_name] = convert_friendly_interface_to_friendly_descr($db_arr[0]);
+	}
+
+	if ($db_arr[1] === "cellular") {
+		$cellular[$db_name] = convert_friendly_interface_to_friendly_descr($db_arr[0]);
 	}
 
 	if ($db_arr[1] === "queues") {
@@ -323,6 +331,12 @@ if ($savemsg) {
 						if(!empty($vpnusers)) {
 							echo '<option value="vpnusers">VPN Users</option>';
 						}
+						if(!empty($cellular)) {
+							echo '<option value="cellular">Cellular</option>';
+						}
+						if(!empty($wireless)) {
+							echo '<option value="wireless">Wireless</option>';
+						}
 						?>
 						<option value="none">None</option>
 					</select>
@@ -368,6 +382,12 @@ if ($savemsg) {
 						}
 						if(!empty($vpnusers)) {
 							echo '<option value="vpnusers">VPN Users</option>';
+						}
+						if(!empty($cellular)) {
+							echo '<option value="cellular">Cellular</option>';
+						}
+						if(!empty($wireless)) {
+							echo '<option value="wireless">Wireless</option>';
 						}
 						?>
 						<option value="none" selected>None</option>
@@ -515,16 +535,38 @@ events.push(function() {
 
 	//lookup axis labels based on graph name
 	var rrdLookup = {
-		"states": "states, ip",
-		"throughput": "bits / sec",
+		"states": "States, IP",
+		"throughput": "Bits Per Second",
 		"cpu": "building",
-		"processor": "utilization, number",
-		"memory": "utilization, percent",
-		"mbuf": "utilization, percent",
-		"packets": "packets / sec",
-		"vpnusers": "drink",
-		"quality": "milliseconds / %",
-		"traffic": "bits / sec"
+		"processor": "Utilization, Number",
+		"memory": "Utilization, Percent",
+		"mbuf": "Utilization, Percent",
+		"packets": "Packets Per Second",
+		"vpnusers": "Users",
+		"quality": "Milliseconds, Percent",
+		"traffic": "Bits Per Second",
+		"queue" : "Bits Per Second",
+		"queuedrops" : "Drops Per Second",
+		"wireless" : "snr / channel / rate",
+		"cellular" : "Signal"
+	};
+
+	//lookup axis formating based on graph name
+	var formatLookup = {
+		"states": ".2s",
+		"throughput": ".2s",
+		"cpu": ".2s",
+		"processor": ".2s",
+		"memory": ".2s",
+		"mbuf": ".2s",
+		"packets": ".2s",
+		"vpnusers": ".2s",
+		"quality": ".2f",
+		"traffic": ".2s",
+		"queue" : ".2s",
+		"queuedrops" : ".2s",
+		"wireless" : ".2s",
+		"cellular" : ".2s"
 	};
 
 	//lookup timeformats based on time period
@@ -720,6 +762,40 @@ events.push(function() {
 				?>
 				};
 				break;
+			case "wireless":
+				$("#graph-left").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($wireless);
+
+					foreach ($wireless as $key => $val) {
+
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
+
+					}
+				?>
+				};
+				break;
+			case "cellular":
+				$("#graph-left").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($cellular);
+
+					foreach ($cellular as $key => $val) {
+
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
+
+					}
+				?>
+				};
+				break;
 			case "none":
 				$("#graph-left").empty().prop( "disabled", true );
 				break;
@@ -904,6 +980,40 @@ events.push(function() {
 				?>
 				};
 				break;
+			case "wireless":
+				$("#graph-right").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($wireless);
+
+					foreach ($wireless as $key => $val) {
+
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
+
+					}
+				?>
+				};
+				break;
+			case "cellular":
+				$("#graph-right").empty().prop( "disabled", false );
+				var newOptions = {
+				<?php
+					$terms = count($cellular);
+
+					foreach ($cellular as $key => $val) {
+
+						$terms--;
+						$str = '"' . $key . '" : "' . $val . '"';
+						if ($terms) {  $str .= ",\n"; }
+						echo $str . "\n";
+
+					}
+				?>
+				};
+				break;
 			case "none":
 				$("#graph-right").empty().prop( "disabled", true );
 				break;
@@ -1059,6 +1169,16 @@ events.push(function() {
 						$( "#graph-left" ).val(currentOption[1]);
 					}
 
+					if (rrdDb[1] === "wireless") {
+						$( "#category-left" ).val(rrdDb[1]).change();
+						$( "#graph-left" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "cellular") {
+						$( "#category-left" ).val(rrdDb[1]).change();
+						$( "#graph-left" ).val(currentOption[1]);
+					}
+
 				} else {
 					$( "#category-left" ).val("none").change();
 				}
@@ -1117,6 +1237,16 @@ events.push(function() {
 					}
 
 					if (rrdDb[1] === "vpnusers") {
+						$( "#category-right" ).val(rrdDb[1]).change();
+						$( "#graph-right" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "wireless") {
+						$( "#category-right" ).val(rrdDb[1]).change();
+						$( "#graph-right" ).val(currentOption[1]);
+					}
+
+					if (rrdDb[1] === "cellular") {
 						$( "#category-right" ).val(rrdDb[1]).change();
 						$( "#graph-right" ).val(currentOption[1]);
 					}
@@ -1219,10 +1349,15 @@ events.push(function() {
 			if (gleft) {
 				var gLeftSplit = gleft.split("-");
 				var leftLabel = rrdLookup[gLeftSplit[1]];
+				var leftAxisFormat = formatLookup[gLeftSplit[1]];
+			}
+
+			if(!leftAxisFormat) {
+				leftAxisFormat = ".2s";
 			}
 
 			chart.yAxis1.tickFormat(function(d) {
-				return d3.format('.2s')(d)
+				return d3.format(leftAxisFormat)(d)
 			}).axisLabel(leftLabel).tickPadding(5).showMaxMin(false);
 
 			//add left title
@@ -1240,10 +1375,15 @@ events.push(function() {
 			if (gright) {
 				var gRightSplit = gright.split("-");
 				var rightLabel = rrdLookup[gRightSplit[1]];
+				var rightAxisFormat = formatLookup[gRightSplit[1]];
+			}
+
+			if(!rightAxisFormat) {
+				rightAxisFormat = ".2s";
 			}
 
 			chart.yAxis2.tickFormat(function(d) {
-				return d3.format('.2s')(d)
+				return d3.format(rightAxisFormat)(d)
 			}).axisLabel(rightLabel).tickPadding(5).showMaxMin(false);
 
 			//add right title
@@ -1450,10 +1590,15 @@ events.push(function() {
 				if (gleft) {
 					var gLeftSplit = gleft.split("-");
 					var leftLabel = rrdLookup[gLeftSplit[1]];
+					var leftAxisFormat = formatLookup[gLeftSplit[1]];
+				}
+
+				if(!leftAxisFormat) {
+					leftAxisFormat = ".2s";
 				}
 
 				chart.yAxis1.tickFormat(function(d) {
-					return d3.format('s')(d)
+					return d3.format('leftAxisFormat')(d)
 				}).axisLabel(leftLabel).tickPadding(5).showMaxMin(false);
 
 				//add left title
@@ -1473,10 +1618,15 @@ events.push(function() {
 				if (gright) {
 					var gRightSplit = gright.split("-");
 					var rightLabel = rrdLookup[gRightSplit[1]];
+					var rightAxisFormat = formatLookup[gRightSplit[1]];
+				}
+
+				if(!rightAxisFormat) {
+					rightAxisFormat = ".2s";
 				}
 
 				chart.yAxis2.tickFormat(function(d) {
-					return d3.format('s')(d)
+					return d3.format(rightAxisFormat)(d)
 				}).axisLabel(rightLabel).tickPadding(5).showMaxMin(false);
 
 				//add right title
