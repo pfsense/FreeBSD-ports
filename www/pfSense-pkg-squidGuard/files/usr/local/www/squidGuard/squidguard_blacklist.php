@@ -195,9 +195,9 @@ display_top_tabs($tab_array);
 					<br><u id="progress_text" name="progress_text">0 %</u>
 					<input class="formfld unknown" size="70" id="blacklist_url" name="blacklist_url" value= '<?="$blacklist_url"; ?>' > &nbsp
 					<br><br>
-					<i class="btn btn-xs btn-success" id="blacklist_download_start" name="blacklist_download_start" onclick="getactivity('download');">Download</i>
-					<i class="btn btn-xs btn-warning" id="blacklist_download_cancel" name="blacklist_download_cancel" onclick="getactivity('cancel');">Cancel</i>
-					<i class="btn btn-xs btn-xs" id="blacklist_restore_default" name="blacklist_restore_default" onclick="getactivity('restore_default');">Restore Default</i>
+					<button class="btn btn-success" id="blacklist_download_start"  name="blacklist_download_start"  onclick="getactivity('download');"><i class="fa fa-download icon-embed-btn"></i>Download</button>
+					<button class="btn btn-warning" id="blacklist_download_cancel" name="blacklist_download_cancel" onclick="getactivity('cancel');"><i class="fa fa-times-circle icon-embed-btn"></i>Cancel</button>
+					<button class="btn btn-info"    id="blacklist_restore_default" name="blacklist_restore_default" onclick="getactivity('restore_default');"><i class="fa fa-undo icon-embed-btn"></i>Restore Default</button>
 					<br><br>
 					Enter FTP or HTTP path to the blacklist archive here.
 					<br><br>
@@ -205,10 +205,16 @@ display_top_tabs($tab_array);
 				</tr>
 				<tr id='update_state_cls' name='update_state_cls' style='display:none;'>
 					<td>
-					<span  style="cursor: pointer;">
-					<i class="fa fa-times-circle" onClick="getactivity('clear_log');" title='Clear Log and Close'></i>
-					</span>
-					&nbsp; <big><b>Blacklist update Log</b></big>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2 class="panel-title">
+								<span  style="cursor: pointer;">
+									<i class="fa fa-times-circle" onClick="getactivity('clear_log');" title='Clear Log and Close'></i>
+								</span>
+								Blacklist update Log
+							</h2>
+						</div>
+					</div>
 					</td>
 				</tr>
 				<tr id='update_state_row' name='update_state_row'>

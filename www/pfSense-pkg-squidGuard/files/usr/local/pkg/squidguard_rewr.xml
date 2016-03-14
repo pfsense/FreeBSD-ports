@@ -70,9 +70,7 @@
 			<size>100</size>
 		</field>
 		<field>
-			<fielddescr>
-				&lt;b&gt;Rewrite rule.&lt;/b&gt;&lt;br&gt;
-				Define how url will be replaced.</fielddescr>
+			<fielddescr>Rewrite rules</fielddescr>
 			<type>rowhelper</type>
 			<rowhelper>
 				<rowhelperfield>
