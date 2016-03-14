@@ -92,8 +92,9 @@ $graph_unit_lookup = array(
 	"quality"   => "ms",
 	"processor" => "%",
 	"memory"    => "%",
-	"wireless"    => "dBi",
-	"cellular"    => "dB"
+	"wireless"  => "dBi",
+	"mbuf"      => "",
+	"cellular"  => "dB"
 );
 
 $left_unit_acronym = $graph_unit_lookup[$left_pieces[1]];

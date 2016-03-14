@@ -556,8 +556,8 @@ events.push(function() {
 		"states": ".2s",
 		"throughput": ".2s",
 		"cpu": ".2s",
-		"processor": ".2s",
-		"memory": ".2s",
+		"processor": ".2f",
+		"memory": ".2f",
 		"mbuf": ".2s",
 		"packets": ".2s",
 		"vpnusers": ".2s",
@@ -1598,7 +1598,7 @@ events.push(function() {
 				}
 
 				chart.yAxis1.tickFormat(function(d) {
-					return d3.format('leftAxisFormat')(d)
+					return d3.format(leftAxisFormat)(d)
 				}).axisLabel(leftLabel).tickPadding(5).showMaxMin(false);
 
 				//add left title
