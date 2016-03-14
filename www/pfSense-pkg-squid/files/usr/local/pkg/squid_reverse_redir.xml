@@ -139,16 +139,8 @@
 			<required/>
 		</field>
 		<field>
-			<fielddescr>
-				<![CDATA[
-				Blocked Domains<br/><br/>
-				Enter the domains to match here.<br/>
-				<strong>Example:</strong> example.com sub.example.com www.example.com<br/><br/>
-				<strong>Do NOT enter http:// or https:// here!</strong> Only the hostname is required.
-				]]>
-			</fielddescr>
+			<fielddescr>Blocked Domains</fielddescr>
 			<fieldname>none</fieldname>
-			<description>Domains to redirect for.</description>
 			<type>rowhelper</type>
 			<rowhelper>
 				<rowhelperfield>
@@ -156,6 +148,14 @@
 					<type>input</type>
 					<size>60</size>
 					<required/>
+					<fielddescr>
+						<![CDATA[
+						Enter the domains to match here.<br/><br/>
+						<strong>Example:</strong> example.com sub.example.com www.example.com<br/><br/>
+						<strong>Do NOT enter http:// or https:// here!</strong> Only the hostname is required.
+						Domains to redirect for.
+						]]>
+					</fielddescr>
 				</rowhelperfield>
 			</rowhelper>
 		</field>

@@ -90,18 +90,58 @@ if ($savemsg) {
 			<table class="table table-hover table-condensed">
 				<thead>
 				<tr>
-					<th><input type="button" onClick="get_freeradius_file('radiusd');" id='btn_radiusd' value="radiusd.conf"></th>
-					<th><input type="button" onClick="get_freeradius_file('eap');" id='btn_eap' value="eap.conf"></th>
-					<th><input type="button" onClick="get_freeradius_file('sql');" id='btn_sql' value="sql.conf"></th>
-					<th><input type="button" onClick="get_freeradius_file('clients');" id='btn_clients' value="clients.conf"></th>
-					<th><input type="button" onClick="get_freeradius_file('users');" id='btn_users' value="users"></th>
-					<th><input type="button" onClick="get_freeradius_file('macs');" id='btn_macs' value="macs"></th>
-					<th><input type="button" onClick="get_freeradius_file('virtual-server-default');" id='btn_virtual-server-default' value="virtual-server-default"></th>
-					<th><input type="button" onClick="get_freeradius_file('ca');" id='btn_ca' value="ca.cnf"></th>
-					<th><input type="button" onClick="get_freeradius_file('server');" id='btn_server' value="server.cnf"></th>
-					<th><input type="button" onClick="get_freeradius_file('client');" id='btn_client' value="client.cnf"></th>
-					<th><input type="button" onClick="get_freeradius_file('index');" id='btn_index' value="index.txt"></th>
-					<th><input type="button" onClick="get_freeradius_file('ldap');" id='btn_ldap' value="ldap"></th>
+					<th class="text-center">
+						<div class="btn-group">
+							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('radiusd');" id='btn_radiusd' value="radiusd.conf">
+								<i class="fa fa-file-text-o"></i>
+								radiusd.conf
+							</button>
+							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('eap');" id='btn_eap' value="eap.conf">
+								<i class="fa fa-file-text-o"></i>
+								eap.conf
+							</button>
+							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('sql');" id='btn_sql' value="sql.conf">
+								<i class="fa fa-file-text-o"></i>
+								sql.conf
+							</button>
+							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('clients');" id='btn_clients' value="clients.conf">
+								<i class="fa fa-file-text-o"></i>
+								clients.conf
+							</button>
+							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('users');" id='btn_users' value="users">
+								<i class="fa fa-file-text-o"></i>
+								users
+							</button>
+							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('macs');" id='btn_macs' value="macs">
+								<i class="fa fa-file-text-o"></i>
+								macs
+							</button>
+							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('virtual-server-default');" id='btn_virtual-server-default' value="virtual-server-default">
+								<i class="fa fa-file-text-o"></i>
+								virtual-server-default
+							</button>
+							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('ca');" id='btn_ca' value="ca.cnf">
+								<i class="fa fa-file-text-o"></i>
+								ca.cnf
+							</button>
+							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('server');" id='btn_server' value="server.cnf">
+								<i class="fa fa-file-text-o"></i>
+								server.cnf
+							</button>
+							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('client');" id='btn_client' value="client.cnf">
+								<i class="fa fa-file-text-o"></i>
+								client.cnf
+							</button>
+							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('index');" id='btn_index' value="index.txt">
+								<i class="fa fa-file-text-o"></i>
+								index.txt
+							</button>
+							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('ldap');" id='btn_ldap' value="ldap">
+								<i class="fa fa-file-text-o"></i>
+								ldap
+							</button>
+						</div>
+					</th>
 				</tr>
 				</thead>
 				<tbody>

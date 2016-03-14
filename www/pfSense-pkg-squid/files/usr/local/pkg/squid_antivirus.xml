@@ -124,8 +124,9 @@
 				When enabled, the options below no longer have any effect.<br/>
 				You must edit the configuration files directly in the 'Advanced Features'.<br/>
 				<strong><span class="errmsg">Warning:</span> Only enable this if you know what are you doing.</strong><br/><br/>
-				After enabling manual configuration, click <input name='load_advanced' id='load_advanced' type='submit' value='Load Advanced' /> button once to load default configuration files.
-				To disable manual configuration again, select 'disabled' and click 'Save' button.
+				<button class="btn btn-info btn-sm" name='load_advanced' id='load_advanced' type='submit' value='Load Advanced'><i class="fa fa-file-text-o icon-embed-btn"></i> Load Advanced</button>
+				After enabling manual configuration, click this once to load default configuration files.<br/><br/>
+				To disable manual configuration again, select 'disabled' and click 'Save'.
 				]]>
 			</description>
 			<type>select</type>
@@ -176,8 +177,8 @@
 				<![CDATA[
 				Optionally, you can schedule ClamAV definitions updates via cron.<br/>
 				Select the desired frequency here.<br/><br/>
-				<input name='update_av' id='update_av' type='submit' value='Update AV' />
-				Click the button to update AV databases now.<br/>
+				<button class="btn btn-success btn-sm" name='update_av' id='update_av' type='submit' value='Update AV'><i class="fa fa-refresh icon-embed-btn"></i>Update AV</button>
+				Click to update AV databases now.<br/>
 				<strong>Note: This will take a while.</strong> Check freshclam log on the <a href="squid_monitor.php">'Real Time' tab</a> for progress information.
 				]]>
 			</description>
