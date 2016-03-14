@@ -129,8 +129,8 @@
 			<fielddescr>Links</fielddescr>
 			<description>
 				<![CDATA[
-				<input type="submit" class="btn btn-primary" name="navto_lightsquid" id="navto_lightsquid" value="Open Lightsquid" />
-				<input type="submit" class="btn btn-primary" name="navto_sqstat" id="navto_sqstat" value="Open sqstat" />
+				<button type="submit" class="btn btn-info" name="navto_lightsquid" id="navto_lightsquid" value="Open Lightsquid"><i class="fa fa-sign-in icon-embed-btn"></i>Open Lightsquid</button>
+				<button type="submit" class="btn btn-info" name="navto_sqstat" id="navto_sqstat" value="Open sqstat"><i class="fa fa-sign-in icon-embed-btn"></i>Open sqstat</button>
 				]]>
 			</description>
 		</field>
@@ -268,8 +268,8 @@
 			<fielddescr>Manual Refresh</fielddescr>
 			<description>
 				<![CDATA[
-				<input type="submit" class="btn btn-primary" name="refreshnow" id="refreshnow" value="Refresh now" /> will (re)parse today's entries only in Squid's current access.log.<br/><br/>
-				<input type="submit" class="btn btn-primary" name="refreshfull" id="refreshfull" value="Refresh full" /> will (re)parse all entries in all Squid's access logs, including the rotated ones.
+				<button type="submit" class="btn btn-primary" name="refreshnow" id="refreshnow" value="Refresh Now"><i class="fa fa-refresh icon-embed-btn"></i>Refresh</button> will (re)parse today's entries only in Squid's current access.log.<br/><br/>
+				<button type="submit" class="btn btn-warning" name="refreshfull" id="refreshfull" value="Refresh Full"><i class="fa fa-retweet icon-embed-btn"></i>Refresh Full</button> will (re)parse all entries in all Squid's access logs, including the rotated ones.
 				<strong>Note: This may take long time to finish!</strong><br/><br/>
 				Press a button above to start background refresh (this will take some time).<br/>
 				]]>
