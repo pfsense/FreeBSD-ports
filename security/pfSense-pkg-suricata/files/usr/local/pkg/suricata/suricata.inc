@@ -2137,7 +2137,7 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 		}
 		// Test the SID token for the PCRE: keyword
 		elseif (preg_match('/(^pcre\:)(.+)/i', $tok, $matches)) {
-			$regex = '/' . preg_quote($matches[2], '/') . '/i';
+			$regex = '/' . $matches[2] . '/i';
 
 			// Now search through the $rule_map in the 'rule'
 			// element for any matches to the regex and get
@@ -2152,7 +2152,7 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 		}
 		// Test the SID token for the MS reference keyword
 		elseif (preg_match('/^MS\d+-.+/i', $tok, $matches)) {
-			$regex = "/" . preg_quote($matches[0], '/') . "/i";
+			$regex = "/" . $matches[0] . "/i";
 
 			// Now search through the $rule_map in the 'rule'
 			// element for any matches to the regex and get
