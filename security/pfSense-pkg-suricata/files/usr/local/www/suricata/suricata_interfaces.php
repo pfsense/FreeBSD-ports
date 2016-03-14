@@ -478,7 +478,7 @@ include_once("head.inc"); ?>
 							<div class="col-md-6">
 								<p>
 									<i class="fa fa-lg fa-check-circle" alt="Running"></i> <i class="fa fa-lg fa-times" alt="Not Running"></i> icons will show current Suricata and barnyard2 status<br/>
-									Click on the <i class="fa fa-lg fa-repeat" alt="Start"></i> or <i class="fa fa-lg fa-stop-circle-o" alt="Stop"></i> icons to start/stop Suricata and Barnyard2.
+									Click the <i class="fa fa-lg fa-play-circle" alt="Start"></i> or <i class="fa fa-lg fa-repeat" alt="Restart"></i> or <i class="fa fa-lg fa-stop-circle-o" alt="Stop"></i> icons to start/restart/stop Suricata and Barnyard2.
 								</p>
 							</div>
 						</div>', info, false)?>

@@ -56,7 +56,7 @@
 * Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
 * Copyright (C) 2009 Robert Zelaya Sr. Developer
 * Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
-* Copyright (C) 2014 Bill Meeks
+* Copyright (C) 2016 Bill Meeks
 *
 */
 
@@ -95,6 +95,14 @@ if ($_POST['action'] == 'load') {
 			$data = base64_encode($data);
 			echo "|0|{$logfile}|{$data}|";
 		}
+	}
+
+	exit;
+}
+
+if ($_POST['action'] == 'clear') {
+	if (basename($logfile) == "sid_changes.log") {
+		file_put_contents($logfile, "");
 	}
 
 	exit;
@@ -164,23 +172,27 @@ $section->addInput(new Form_Select(
 
 $section->addInput(new Form_Select(
 	'logFile',
-	'Log file to View',
+	'Log File to View',
 	basename($logfile),
 	build_logfile_list()
 ))->setHelp('Choose which log you want to view..');
 
+// Build the HTML text to display in the StaticText control
+$staticContent = '<span style="display:none; " id="fileStatusBox">' .
+		'<strong id="fileStatus"></strong>' .
+		'</span>' .
+		'<p style="display:none;" id="filePathBox">' .
+		'<strong>' . gettext("Log File Path: ") . '</strong>' . '<span style="display:inline;" id="fbTarget"></span>' . '</p>' . 
+		'<p style="padding-right:15px; display:none;" id="fileRefreshBtn">' . 
+		'<button type="button" class="btn btn-sm btn-info" name="refresh" id="refresh" onclick="loadFile();" title="' . 
+		gettext("Refresh current display") . '"><i class="fa fa-repeat icon-embed-btn"></i>' . gettext("Refresh") . '</button>&nbsp;&nbsp;' . 
+		'<button type="button" class="btn btn-sm btn-danger hidden no-confirm" name="fileClearBtn" id="fileClearBtn" ' . 
+		'onclick="clearFile();" title="' . gettext("Clear selected log file contents") . '"><i class="fa fa-trash icon-embed-btn"></i>' . 
+		gettext("Clear") . '</button></p>';
 
 $section->addInput(new Form_StaticText(
-	'Log file contents',
-	'<span style="display:none; " id="fileStatusBox">' .
-	'<strong id="fileStatus"></strong>' .
-	'</span>' .
-	'<p style="display:none;" id="filePathBox">' .
-	'<strong>' . gettext("Log File Path") . '</strong>' . '</p>' . 
-	'<span style="display:inline;" id="fbTarget"></span>' . 
-	'<p style="padding-right:15px; display:none;" id="fileRefreshBtn">' . 
-		'<input type="button" class="btn btn-sm btn-info" name="refresh" id="refresh" value="Refresh" class="form-control" onclick="loadFile();" title="' . 
-		gettext("Refresh current display") . '"/>' . '</p>'
+	'Status/Result',
+	$staticContent
 ));
 
 $form->add($section);
@@ -218,19 +230,51 @@ print($form);
 		if(values.shift() == "0") {
 			var file = values.shift();
 			var fileContent = atob(values.join("|"));
+			$("#fileStatus").removeClass("text-danger");
+			$("#fileStatus").addClass("text-success");
 			$("#fileStatus").html("<?=gettext("File successfully loaded"); ?>.");
+			$("#fbTarget").removeClass("text-danger");
 			$("#fbTarget").html(file);
 			$("#fileRefreshBtn").show();
+			if (basename(file) == "sid_changes.log") {
+				$("#fileClearBtn").removeClass("hidden");
+			}
+			else {
+				$("#fileClearBtn").addClass("hidden");
+			}
 			$("#fileContent").prop("disabled", false);
 			$("#fileContent").val(fileContent);
 		}
 		else {
+			$("#fileStatus").addClass("text-danger");
 			$("#fileStatus").html(values[0]);
-			$("#fbTarget").html("");
+			$("#fbTarget").addClass("text-danger");
+			$("#fbTarget").html("<?=gettext("Not Available"); ?>");
 			$("#fileRefreshBtn").hide();
 			$("#fileContent").val("");
 			$("#fileContent").prop("disabled", true);
 		}
+	}
+
+	function clearFile() {
+		if (confirm("<?=gettext('Are you sure want to erase the log contents?'); ?>")) {
+			$.ajax(
+				"<?=$_SERVER['SCRIPT_NAME'];?>",
+				{
+					type: 'post',
+					data: {
+						instance:  $("#instance").find('option:selected').val(),
+						action:    'clear',
+						file: $("#logFile").val()
+					},
+				}
+			);
+			$("#fileContent").val("");
+		}
+	}
+
+	function basename(path) {
+		return path.replace( /\\/g, '/' ).replace( /.*\//, '' );
 	}
 
 events.push(function() {
@@ -262,7 +306,7 @@ events.push(function() {
 <div class="panel panel-default" id="fileOutput">
 	<div class="panel-heading"><h2 class="panel-title"><?=gettext('Log Contents')?></h2></div>
 		<div class="panel-body">
-			<textarea id="fileContent" name="fileContent" style="width:100%;" rows="30" wrap="off" disabled></textarea>
+			<textarea id="fileContent" name="fileContent" style="width:100%;" rows="20" wrap="off" disabled></textarea>
 		</div>
 </div>
 

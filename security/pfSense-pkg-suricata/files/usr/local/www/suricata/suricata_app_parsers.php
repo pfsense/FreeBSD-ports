@@ -55,7 +55,7 @@
 * Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
 * Copyright (C) 2009 Robert Zelaya Sr. Developer
 * Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
-* Copyright (C) 2014 Bill Meeks
+* Copyright (C) 2016 Bill Meeks
 *
 */
 require_once("guiconfig.inc");
@@ -123,6 +123,7 @@ if (isset($id) && $a_nat[$id]) {
 // "selectalias", when true, displays radio buttons to limit
 // multiple selections.
 if ($_POST['import_alias']) {
+	$eng_id = $libhtp_engine_next_id;
 	$importalias = true;
 	$selectalias = false;
 	$title = "HTTP Server Policy";
@@ -191,7 +192,7 @@ if ($_POST['save_libhtp_policy']) {
 
 		// if no errors, write new entry to conf
 		if (!$input_errors) {
-			if (isset($eng_id) && $a_nat[$id]['libhtp_policy']['item'][$eng_id]) {
+			if (isset($eng_id) && isset($a_nat[$id]['libhtp_policy']['item'][$eng_id])) {
 				$a_nat[$id]['libhtp_policy']['item'][$eng_id] = $engine;
 			}
 			else
@@ -220,7 +221,14 @@ if ($_POST['save_libhtp_policy']) {
 
 			// Now write the new engine array to conf
 			write_config("Suricata pkg: saved updated HTTP server configuration for " . convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']));
-			$pconfig['libhtp_policy']['item'] = $a_nat[$id]['libhtp_policy']['item'];
+			$add_edit_libhtp_policy = false;
+			header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
+			header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
+			header( 'Cache-Control: no-store, no-cache, must-revalidate' );
+			header( 'Cache-Control: post-check=0, pre-check=0', false );
+			header( 'Pragma: no-cache' );
+			header("Location: suricata_app_parsers.php?id=$id");
+			exit;
 		}
 		else {
 			$add_edit_libhtp_policy = true;
@@ -250,10 +258,18 @@ elseif ($_POST['del_libhtp_policy']) {
 		unset($natent['libhtp_policy']['item'][$_POST['eng_id']]);
 		$pconfig = $natent;
 	}
-	if (isset($id) && $a_nat[$id]) {
+	if (isset($id) && isset($a_nat[$id])) {
 		$a_nat[$id] = $natent;
 		write_config("Suricata pkg: deleted a HTTP server configuration for " . convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']));
 	}
+	$add_edit_libhtp_policy = false;
+	header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
+	header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
+	header( 'Cache-Control: no-store, no-cache, must-revalidate' );
+	header( 'Cache-Control: post-check=0, pre-check=0', false );
+	header( 'Pragma: no-cache' );
+	header("Location: suricata_app_parsers.php?id=$id");
+	exit;
 }
 elseif ($_POST['cancel_libhtp_policy']) {
 	$add_edit_libhtp_policy = false;
@@ -364,6 +380,13 @@ elseif ($_POST['save_import_alias']) {
 			// Write the new engine array to config file
 			write_config("Suricata pkg: saved an updated HTTP server configuration for " . convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']));
 			$importalias = false;
+			header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
+			header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
+			header( 'Cache-Control: no-store, no-cache, must-revalidate' );
+			header( 'Cache-Control: post-check=0, pre-check=0', false );
+			header( 'Pragma: no-cache' );
+			header("Location: suricata_app_parsers.php?id=$id");
+			exit;
 		}
 	}
 }
@@ -497,26 +520,27 @@ $tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata
 display_top_tabs($tab_array, true);
 ?>
 
-<form action="suricata_app_parsers.php" method="post" name="iform" id="iform" class="form-horizontal">
-	<input name="id" type="hidden" value="<?=$id?>"/>
-	<input type="hidden" name="eng_id" id="eng_id" value="<?=$eng_id?>"/>
-
 <?php
 
 if ($importalias) {
 
-	include("/usr/local/www/suricata/suricata_import_aliases.php");
+	print('<form action="suricata_app_parsers.php" method="post" name="iform" id="iform" class="form-horizontal">');
+	print('<input name="id" type="hidden" value="' . $id . '"/>');
+	print('<input type="hidden" name="eng_id" id="eng_id" value="' . $eng_id . '"/>');
 
 	if ($selectalias) {
-		echo '<input type="hidden" name="eng_name" value="' . $eng_name . '"/>';
-		echo '<input type="hidden" name="eng_bind" value="' . $eng_bind . '"/>';
-		echo '<input type="hidden" name="eng_personality" value="' . $eng_personality . '"/>';
-		echo '<input type="hidden" name="eng_req_body_limit" value="' . $eng_req_body_limit . '"/>';
-		echo '<input type="hidden" name="eng_resp_body_limit" value="' . $eng_resp_body_limit . '"/>';
-		echo '<input type="hidden" name="eng_enable_double_decode_path" value="' . $eng_enable_double_decode_path . '"/>';
-		echo '<input type="hidden" name="eng_enable_double_decode_query" value="' . $eng_enable_double_decode_query . '"/>';
-		echo '<input type="hidden" name="eng_enable_uri_include_all" value="' . $eng_enable_uri_include_all . '"/>';
+		print('<input type="hidden" name="eng_name" value="' . $eng_name . '"/>');
+		print('<input type="hidden" name="eng_bind" value="' . $eng_bind . '"/>');
+		print('<input type="hidden" name="eng_personality" value="' . $eng_personality . '"/>');
+		print('<input type="hidden" name="eng_req_body_limit" value="' . $eng_req_body_limit . '"/>');
+		print('<input type="hidden" name="eng_resp_body_limit" value="' . $eng_resp_body_limit . '"/>');
+		print('<input type="hidden" name="eng_enable_double_decode_path" value="' . $eng_enable_double_decode_path . '"/>');
+		print('<input type="hidden" name="eng_enable_double_decode_query" value="' . $eng_enable_double_decode_query . '"/>');
+		print('<input type="hidden" name="eng_enable_uri_include_all" value="' . $eng_enable_uri_include_all . '"/>');
 	}
+
+	include("/usr/local/www/suricata/suricata_import_aliases.php");
+	print('</form>');
 
 } elseif ($add_edit_libhtp_policy) {
 
@@ -524,7 +548,9 @@ if ($importalias) {
 
 } else {
 
-	$form = new Form(false);
+	print('<form action="suricata_app_parsers.php" method="post" name="iform" id="iform" class="form-horizontal">');
+	print('<input name="id" type="hidden" value="' . $id . '"/>');
+	print('<input type="hidden" name="eng_id" id="eng_id" value=""/>');
 
 	$section = new Form_Section('Abstract Syntax One Settings');
 	$section->addInput(new Form_Input(
@@ -664,8 +690,14 @@ if ($importalias) {
 									<th><?=gettext("Name")?></th>
 									<th><?=gettext("Bind-To Address Alias")?></th>
 									<th>
-										<input type="submit" name="import_alias" class="btn btn-sm btn-primary" title="<?=gettext("Import server configuration from existing Aliases")?>" value="Import"/>
-										<input type="submit" name="add_libhtp_policy" class="btn btn-sm btn-success" title="<?=gettext("Add a new server configuration")?>" value="Add">
+										<button type="submit" name="import_alias" class="btn btn-sm btn-primary" title="<?=gettext("Import server configuration from existing Aliases")?>" value="Import">
+											<i class="fa fa-upload icon-embed-btn"></i>
+											<?=gettext("Import"); ?>
+										</button>
+										<button type="submit" name="add_libhtp_policy" class="btn btn-sm btn-success" title="<?=gettext("Add a new server configuration")?>" value="Add">
+											<i class="fa fa-plus icon-embed-btn"></i>
+											<?=gettext("Add"); ?>
+										</button>
 									</th>
 								</tr>
 							</thead>
@@ -675,11 +707,20 @@ if ($importalias) {
 									<td><?=gettext($v['name'])?></td>
 									<td class="text-center"><?=gettext($v['bind_to'])?></td>
 									<td class="text-right">
-										<input type="submit" name="edit_libhtp_policy[]" value="Edit" class="btn btn-sm btn-primary" onclick="document.getElementById('eng_id').value='<?=$f?>'" title="<?=gettext("Edit this server configuration")?>"/>
+										<button type="submit" name="edit_libhtp_policy" value="Edit" class="btn btn-sm btn-primary" onclick="$('#eng_id').val('<?=$f?>')" title="<?=gettext("Edit this server configuration")?>">
+											<i class="fa fa-pencil icon-embed-btn"></i>
+											<?=gettext("Edit"); ?>
+										</button>
 									<?php if ($v['bind_to'] != "all") : ?>
-										<input type="submit" name="del_libhtp_policy[]" value="Delete" class="btn btn-sm btn-danger" onclick="document.getElementById('eng_id').value='<?=$f?>';return confirm('Are you sure you want to delete this entry?');" title="<?=gettext("Delete this server configuration")?>">
+										<button type="submit" name="del_libhtp_policy" value="Delete" class="btn btn-sm btn-danger" onclick="$('#eng_id').val('<?=$f?>');" title="<?=gettext("Delete this server configuration")?>">
+											<i class="fa fa-trash icon-embed-btn"></i>
+											<?=gettext("Delete"); ?>
+										</button>
 									<?php else : ?>
-										<input type="submit" name="del_libhtp_policy[]" value="Delete" class="btn btn-sm btn-danger" title="<?=gettext("Delete this server configuration")?>" disabled>
+										<button type="submit" name="del_libhtp_policy" value="Delete" class="btn btn-sm btn-danger" title="<?=gettext("Delete this server configuration")?>" disabled>
+											<i class="fa fa-trash icon-embed-btn"></i>
+											<?=gettext("Delete"); ?>
+										</button>
 									<?php endif ?>
 									</td>
 								</tr>
@@ -694,13 +735,14 @@ if ($importalias) {
 
 	<div class="col-sm-10 col-sm-offset-2">
 		<button type="submit" id="save" name="save" value="Save" class="btn btn-primary" title="<?=gettext('Save App Parsers settings');?>">
+			<i class="fa fa-save icon-embed-btn"></i>
 			<?=gettext('Save');?>
 		</button>
 	</div>
 
-<?php } ?>
-
 </form>
+
+<?php } ?>
 
 <?php include("foot.inc"); ?>
 

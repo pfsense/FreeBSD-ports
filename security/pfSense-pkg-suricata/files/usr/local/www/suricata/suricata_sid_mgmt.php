@@ -330,13 +330,13 @@ display_top_tabs($tab_array, true);
 						<input type="checkbox" id="auto_manage_sids" name="auto_manage_sids" value="on"
 						<?php if ($pconfig['auto_manage_sids'] == 'on') echo " checked"; ?>
 						onclick="enable_sid_conf();" />
-						<?=gettext("Enable automatic management of rule state and content using configuration files.")?>
+						<?=gettext("Enable automatic management of rule state and content using configuration files.  Default is Not Checked.")?>
 					</label>
 					<span class="help-block">
-						<?=sprintf(gettext("If  Default is %sNot Checked%s "), "<strong>", "</strong>") .
-						gettext("Suricata will automatically enable/disable/modify text rules upon each update using criteria specified in configuration files.  ") .
-						gettext("The supported configuration file format is the same as that used in the PulledPork and Oinkmaster enablesid.conf, disablesid.conf and ") .
-						gettext("modifysid.conf files.  You can either upload existing files or create your own."); ?>
+						<?=gettext("When checked, Suricata will automatically enable/disable/modify text rules upon each update using criteria ") . 
+						gettext("specified in configuration files.  The supported configuration file format is the same as that used ") . 
+						gettext("by PulledPork and Oinkmaster.  See the included sample conf files for usage examples.  ") . 
+						gettext("Either upload existing files to the firewall or create new ones by clicking ADD below."); ?>
 					</span>
 				</div>
 			</div>
@@ -424,18 +424,22 @@ display_top_tabs($tab_array, true);
 							<span aria-hidden="true">&times;</span>
 						</button>
 
-						<h3 class="modal-title" id="myModalLabel"><?=gettext("SID editor")?></h3>
+						<h3 class="modal-title" id="myModalLabel"><?=gettext("SID Auto-Management File Editor")?></h3>
 					</div>
 
 					<div class="modal-body">
 						<?=gettext("File Name: ");?>
 						<input type="text" size="45" class="form-control file" id="sidlist_name" name="sidlist_name" value="<?=$sidmodlist_name;?>" /><br />
-						<input type="submit" class="btn btn-sm btn-primary" id="save" name="save" value="<?=gettext(" Save ");?>" title="<?=gettext("Save changes and close editor");?>" />
-						<input type="button" class="btn btn-sm btn-default" id="cancel" name="cancel" value="<?=gettext("Cancel");?>" data-dismiss="modal" title="<?=gettext("Abandon changes and quit editor");?>" /><br /><br />
+						<button type="submit" class="btn btn-sm btn-primary" id="save" name="save" value="<?=gettext("Save");?>" title="<?=gettext("Save changes and close editor");?>">
+							<i class="fa fa-save icon-embed-btn"></i>
+							<?=gettext("Save");?>
+						</button>
+						<button type="button" class="btn btn-sm btn-warning" id="cancel" name="cancel" value="<?=gettext("Cancel");?>" data-dismiss="modal" title="<?=gettext("Abandon changes and quit editor");?>">
+							<?=gettext("Cancel");?>
+						</button><br /><br />
 
 						<textarea class="form-control" wrap="off" cols="80" rows="20" name="sidlist_data" id="sidlist_data"
 						><?=$sidmodlist_data;?></textarea>
-
 
 						<?php echo gettext("Note:"); ?></strong>
 						<br/><?php echo gettext("SID Mods Lists are stored as local files on the firewall and their contents are " .
@@ -454,17 +458,16 @@ display_top_tabs($tab_array, true);
 		</button>
 
 		<button data-toggle="modal" data-target="#uploader" role="button" aria-expanded="false" type="button" name="sidlist_import" id="sidlist_import" class="btn btn-info btn-sm" title="<?=gettext('Import/upload SID Mods List');?>">
-			<i class="fa fa-download icon-embed-btn"></i>
+			<i class="fa fa-upload icon-embed-btn"></i>
 			<?=gettext("Import")?>
 		</button>
 
 		<button type="input" name="sidlist_dnload_all" id="sidlist_dnload_all" class="btn btn-info btn-sm" title="<?=gettext('Download all SID Mods List files in a single gzip archive');?>">
-			<i class="fa fa-cloud-download icon-embed-btn"></i>
+			<i class="fa fa-download icon-embed-btn"></i>
 			<?=gettext("Download")?>
 		</button>
 
 	</nav>
-
 
 	<div class="panel panel-default">
 		<div class="panel-heading"><h2 class="panel-title"><?=gettext("Interface SID Management File Assignments")?></h2></div>
@@ -565,7 +568,10 @@ display_top_tabs($tab_array, true);
 			</div>
 		</div>
 
-		<input type="submit" id="save_auto_sid_conf" name="save_auto_sid_conf" class="btn btn-primary" value="<?=gettext("Save");?>" title="<?=gettext("Save SID Management configuration");?>" />
+		<button type="submit" id="save_auto_sid_conf" name="save_auto_sid_conf" class="btn btn-primary" value="<?=gettext("Save");?>" title="<?=gettext("Save SID Management configuration");?>" >
+			<i class="fa fa-save icon-embed-btn"></i>
+			<?=gettext("Save");?>
+		</button>
 		&nbsp;&nbsp;<?=gettext("Remember to save changes before exiting this page"); ?>
 
 </form>
@@ -575,16 +581,16 @@ display_top_tabs($tab_array, true);
 <?php
 	print_info_box(
 		'<p>' .
-			gettext("Check the box beside an interface to immediately apply new auto-SID management changes and signal Suricata to live-load the new rules for the interface when clicking Save; " .
-					"otherwise only the new file assignments will be saved.") .
+			gettext("Check the box beside an interface to immediately apply new auto-SID management changes and signal Suricata to live-load the new rules for the interface when clicking Save; " . 
+				"otherwise only the new file assignments will be saved.") .
 		'</p>' .
 		'<p>' .
-			gettext("SID State Order controls the order in which enable and disable state modifications are performed. An example would be to disable an entire category and later enable only a rule or two from it. " .
-					" In this case you would choose 'disable,enable' for the State Order.  Note that the last action performed takes priority.") .
+			gettext("SID State Order controls the order in which enable and disable state modifications are performed. An example would be to disable an entire category and later enable only a rule or two from it. " . 
+				" In this case you would choose 'disable,enable' for the State Order.  Note that the last action performed takes priority.") .
 		'</p>' .
 		'<p>' .
-			gettext("The Enable SID File, Disable SID File and Modify SID File controls specify which rule modification files are run automatically for the interface.  Setting a file control to 'None' disables that modification.  " .
-					"Setting all file controls for an interface to 'None' disables automatic SID state management for the interface.") .
+			gettext("The Enable SID File, Disable SID File, Modify SID File and Drop SID File drop-down controls specify which rule modification files are run automatically for the interface.  Setting a file control to 'None' disables that modification. " . 
+				"Setting all file controls for an interface to 'None' disables automatic SID state management for the interface.") .
 		'</p>', 'info', false);
 ?>
 </div>
@@ -612,7 +618,7 @@ events.push(function() {
 		$(form).submit();
 	});
 
-	// If hte user is editing a file, open the modal on page load
+	// If the user is editing a file, open the modal on page load
 <?php if ($sidmodlist_edit_style == "show") : ?>
 	$("#sidlist_editor").modal('show');
 <?php endif ?>
@@ -622,6 +628,4 @@ events.push(function() {
 
 <?php
 include("foot.inc"); ?>
-
-
 

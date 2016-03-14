@@ -56,7 +56,7 @@
 * Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
 * Copyright (C) 2009 Robert Zelaya Sr. Developer
 * Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
-* Copyright (C) 2014 Bill Meeks
+* Copyright (C) 2016 Bill Meeks
 *
 */
 
@@ -77,9 +77,9 @@ function suricata_suppresslist_used($supplist) {
 	/****************************************************************/
 	/* This function tests if the passed Suppress List is currently */
 	/* assigned to an interface.  It returns TRUE if the list is	*/
-	/* in use.													  */
-	/*															  */
-	/* Returns:  TRUE if list is in use, else FALSE				 */
+	/* in use.							*/
+	/*								*/
+	/* Returns:  TRUE if list is in use, else FALSE			*/
 	/****************************************************************/
 
 	global $config;
@@ -99,10 +99,10 @@ function suricata_find_suppresslist_interface($supplist) {
 	/****************************************************************/
 	/* This function finds the first (if more than one) interface   */
 	/* configured to use the passed Suppress List and returns the   */
-	/* index of the interface in the ['rule'] config array.		 */
-	/*															  */
-	/* Returns: index of interface in ['rule'] config array or	  */
-	/*		  FALSE if no interface found.						*/
+	/* index of the interface in the ['rule'] config array.		*/
+	/*								*/
+	/* Returns: index of interface in ['rule'] config array or	*/
+	/*		  FALSE if no interface found.			*/
 	/****************************************************************/
 
 	global $config;
