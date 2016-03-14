@@ -333,7 +333,11 @@ $useaddrlist = array(
 
 if (is_array($config['dyndnses']['dyndns'])) {
 	foreach ($config['dyndnses']['dyndns'] as $ddns) {
-		$useaddrlist[$ddns["host"]] = $ddns["host"];
+		if ($ddns['type'] == 'namecheap') {
+			$useaddrlist[$ddns["host"] . '.' . $ddns["domainname"]] = $ddns["host"] . '.' . $ddns["domainname"];
+		} else {
+			$useaddrlist[$ddns["host"]] = $ddns["host"];
+		}
 	}
 }
 if (is_array($config['dnsupdates']['dnsupdate'])) {
