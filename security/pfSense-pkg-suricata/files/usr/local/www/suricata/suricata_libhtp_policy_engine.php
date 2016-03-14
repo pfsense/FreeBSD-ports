@@ -56,7 +56,7 @@
 * Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
 * Copyright (C) 2009 Robert Zelaya Sr. Developer
 * Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
-* Copyright (C) 2014 Bill Meeks
+* Copyright (C) 2016 Bill Meeks
 *
 */
 
@@ -88,9 +88,18 @@
  **************************************************************************************/
 
 
-$form = new Form(new Form_Button(
-	'save_libhtp_policy',
-	'Save'
+$form = new Form(false);
+$form->addGlobal(new Form_Input(
+	'id',
+	'id',
+	'hidden',
+	$id
+));
+$form->addGlobal(new Form_Input(
+	'eng_id',
+	'eng_id',
+	'hidden',
+	$eng_id
 ));
 
 $section = new Form_Section('Suricata Target-Based HTTP Server Policy Configuration');
@@ -100,12 +109,39 @@ $section->addInput(new Form_Input(
 	'text',
 	$pengcfg['name']
 ))->setHelp('Name or description for this engine. (Max 25 characters). Unique name or description for this engine configuration. Default value is default.');
-$section->addInput(new Form_Input(
-	'policy_bind_to',
-	'Bind-To IP Address Alias',
-	'text',
-	$pengcfg['bind_to']
-))->setHelp('IP List to bind this engine to. (Cannot be blank). This policy will apply for packets with destination addresses contained within this IP List. Supplied value must be a pre-configured Alias or the keyword "all".');
+
+if ($pengcfg['name'] <> "default") {
+	$bind_to = new Form_Input(
+		'policy_bind_to',
+		'',
+		'text',
+		$pengcfg['bind_to']
+	);
+	$bind_to->setAttribute('title', trim(filter_expand_alias($pconfig['bind_to'])));
+	$bind_to->setHelp('IP List to bind this engine to. (Cannot be blank)');
+	$btnaliases = new Form_Button(
+		'select_alias',
+		'Aliases',
+		null,
+		'fa-search-plus'
+	);
+	$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
+	$btnaliases->setAttribute('title', gettext("Select an existing IP alias"));
+	$group = new Form_Group('Bind-To IP Address Alias');
+	$group->add($bind_to);
+	$group->add($btnaliases);
+	$group->setHelp(gettext("Supplied value must be a pre-configured Alias or the keyword 'all'."));
+	$section->add($group);
+}
+else {
+	$section->addInput( new Form_Input(
+		'policy_bind_to',
+		'Bind-To IP Address Alias',
+		'text',
+		$pengcfg['bind_to']
+	))->setReadonly()->setHelp('The default engine is required and only runs for packets with destination addresses not matching other engine IP Lists.');
+}
+
 $section->addInput(new Form_Select(
 	'personality',
 	'Target Web Server Personality',
@@ -134,47 +170,51 @@ $section->addInput(new Form_Checkbox(
 	'enable_double_decode_path',
 	'Double-Decode Path',
 	'Suricata will double-decode path section of the URI. Default is Not Checked.',
-	$pengcfg['double-decode-path'] == 'on' ? true:false,
-	'on'
+	$pengcfg['double-decode-path'] == 'yes' ? true:false,
+	'yes'
 ));
 $section->addInput(new Form_Checkbox(
 	'enable_double_decode_query',
 	'Double-Decode Query',
 	'Suricata will double-decode query string section of the URI. Default is Not Checked.',
-	$pengcfg['double-decode-query'] == 'on' ? true:false,
-	'on'
+	$pengcfg['double-decode-query'] == 'yes' ? true:false,
+	'yes'
 ));
 $section->addInput(new Form_Checkbox(
 	'enable_uri_include_all',
 	'URI Include-All',
 	'Include all parts of the URI. Default is Not Checked. By default the "scheme", username/password, hostname and port are excluded from inspection. Enabling this option adds all of them to the normalized uri. This was the default in Suricata versions prior to 2.0.',
-	$pengcfg['uri-include-all'] == 'on' ? true:false,
-	'on'
+	$pengcfg['uri-include-all'] == 'yes' ? true:false,
+	'yes'
 ));
 $form->add($section);
 
 $form->addGlobal(new Form_Button(
+	'save_libhtp_policy',
+	'Save',
+	null,
+	'fa-save'
+))->addClass("btn-primary");
+
+$form->addGlobal(new Form_Button(
 	'cancel_libhtp_policy',
-	'Cancel'
+	'Cancel',
+	null
 ))->removeClass('btn-primary')->addClass('btn-warning');
 
 print($form);
 
 ?>
 
-<script type="text/javascript" src="/javascript/autosuggest.js"></script>
-<script type="text/javascript" src="/javascript/suggestions.js"></script>
 <script type="text/javascript">
 //<![CDATA[
-var addressarray = <?= json_encode(get_alias_list(array("host", "network"))) ?>;
+events.push(function() {
+	var addressarray = <?= json_encode(get_alias_list(array("host", "network"))) ?>;
 
-function createAutoSuggest() {
-<?php
-	echo "\tvar objAlias = new AutoSuggestControl(document.getElementById('policy_bind_to'), new StateSuggestions(addressarray));\n";
-?>
-}
-
-setTimeout("createAutoSuggest();", 500);
-
+	$('#policy_bind_to').autocomplete({
+		source: addressarray
+	});
+});
+//]]>
 </script>
 

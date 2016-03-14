@@ -56,7 +56,7 @@
 * Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
 * Copyright (C) 2009 Robert Zelaya Sr. Developer
 * Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
-* Copyright (C) 2014 Bill Meeks
+* Copyright (C) 2016 Bill Meeks
 *
 */
 
@@ -252,7 +252,7 @@ if (isset($_POST['toggle']) && is_numeric($_POST['sid']) && is_numeric($_POST['g
 	// Set a scroll-to anchor location
 	$anchor = "rule_{$gid}_{$sid}";
 }
-elseif ($_POST['disable_all'] && !empty($rules_map)) {
+elseif (isset($_POST['disable_all']) && !empty($rules_map)) {
 
 	// Mark all rules in the currently selected category "disabled".
 	foreach (array_keys($rules_map) as $k1) {
@@ -293,7 +293,7 @@ elseif ($_POST['disable_all'] && !empty($rules_map)) {
 
 	write_config("Suricata pkg: disabled all rules in category {$currentruleset} for {$a_rule[$id]['interface']}.");
 }
-elseif ($_POST['enable_all'] && !empty($rules_map)) {
+elseif (isset($_POST['enable_all']) && !empty($rules_map)) {
 
 	// Mark all rules in the currently selected category "enabled".
 	foreach (array_keys($rules_map) as $k1) {
@@ -333,7 +333,7 @@ elseif ($_POST['enable_all'] && !empty($rules_map)) {
 
 	write_config("Suricata pkg: enable all rules in category {$currentruleset} for {$a_rule[$id]['interface']}.");
 }
-elseif ($_POST['resetcategory'] && !empty($rules_map)) {
+elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 
 	// Reset any modified SIDs in the current rule category to their defaults.
 	foreach (array_keys($rules_map) as $k1) {
@@ -375,7 +375,7 @@ elseif ($_POST['resetcategory'] && !empty($rules_map)) {
 
 	write_config("Suricata pkg: remove enablesid/disablesid changes for category {$currentruleset} on {$a_rule[$id]['interface']}.");
 }
-elseif ($_POST['resetall'] && !empty($rules_map)) {
+elseif (isset($_POST['resetall']) && !empty($rules_map)) {
 
 	// Remove all modified SIDs from config.xml and save the changes.
 	unset($a_rule[$id]['rule_sid_on']);
@@ -387,7 +387,7 @@ elseif ($_POST['resetall'] && !empty($rules_map)) {
 	/* Update the config.xml file. */
 	write_config("Suricata pkg: remove all enablesid/disablesid changes for {$a_rule[$id]['interface']}.");
 }
-elseif ($_POST['clear']) {
+elseif (isset($_POST['clear'])) {
 	unset($a_rule[$id]['customrules']);
 	write_config("Suricata pkg: clear all custom rules for {$a_rule[$id]['interface']}.");
 	$rebuild_rules = true;
@@ -400,11 +400,11 @@ elseif ($_POST['clear']) {
 	// Sync to configured CARP slaves if any are enabled
 	suricata_sync_on_changes();
 }
-elseif ($_POST['cancel']) {
+elseif (isset($_POST['cancel'])) {
 	$pconfig['customrules'] = base64_decode($a_rule[$id]['customrules']);
 	clear_subsystem_dirty('suricata_rules');
 }
-elseif ($_POST['save']) {
+elseif (isset($_POST['save'])) {
 	$pconfig['customrules'] = $_POST['customrules'];
 	if ($_POST['customrules'])
 		$a_rule[$id]['customrules'] = base64_encode(str_replace("\r\n", "\n", $_POST['customrules']));
@@ -423,7 +423,7 @@ elseif ($_POST['save']) {
 	// Sync to configured CARP slaves if any are enabled
 	suricata_sync_on_changes();
 }
-elseif ($_POST['apply']) {
+elseif (isset($_POST['apply'])) {
 
 	/* Save new configuration */
 	write_config("Suricata pkg: new rules configuration for {$a_rule[$id]['interface']}.");
@@ -479,68 +479,6 @@ function build_cat_list() {
 	return(['custom.rules' => 'custom.rules'] + $list);
 }
 
-function build_actions() {
-	global $currentruleset, $id;
-
-	$actions  = '<dl class="dl-horizontal responsive">';
-	$actions .= '<dt>';
-	$actions .= '<a name="resetcategory" type="button" title="' . gettext("Click to remove enable/disable changes for rules in the selected category only") . '" ';
-	$actions .= 'onClick="submitAction(' . '\'resetcategory[]\'' . ')">';
-	$actions .= '<i class="fa fa-times icon-pointer"></i>';
-	$actions .= '</a>';
-	$actions .= '</dt><dd>';
-	$actions .= gettext("Remove Enable/Disable changes in the selected category.");
-	$actions .= '</dd>';
-
-	$actions .= '<dl class="dl-horizontal responsive">';
-	$actions .= '<dt>';
-	$actions .= '<a name="resetall" type="button" title="' . gettext("Click to remove enable/disable changes for rules in all categories") . '" ';
-	$actions .= 'onClick="submitAction(' . '\'resetall[]\'' . ')">';
-	$actions .= '<i class="fa fa-times icon-pointer"></i>';
-	$actions .= '</a>';
-	$actions .= '</dt><dd>';
-	$actions .= gettext("Remove all Enable/Disable changes in all Categories");
-	$actions .= '</dd>';
-
-	$actions .= '<dt>';
-	$actions .= '<a name="diasble_all" type="button" title="' . gettext("Disable all rules in the selected Category") . '" ';
-	$actions .= 'onClick="submitAction(' . '\'diasble_all[]\'' . ')">';
-	$actions .= '<i class="fa fa-arrow-down icon-pointer"></i>';
-	$actions .= '</a>';
-	$actions .= '</dt><dd>';
-	$actions .= gettext("Disable all rules in the current Category");
-	$actions .= '</dd>';
-
-	$actions .= '<dt>';
-	$actions .= '<a name="enable_all" type="button" title="' . gettext("Enable all rules in the current Category") . '" ';
-	$actions .= 'onClick="submitAction(' . '\'enable_all[]\'' . ')">';
-	$actions .= '<i class="fa fa-arrow-up icon-pointer"></i>';
-	$actions .= '</a>';
-	$actions .= '</dt><dd>';
-	$actions .= gettext("Enable all rules in the current Category");
-	$actions .= '</dd>';
-
-	$actions .= '<dt>';
-	$actions .= '<a href="javascript: void(0)" ';
-	$actions .= 'onclick="wopen(\'suricata_rules_edit.php?id=' . $id . '&openruleset=' . $currentruleset . '\',\'FileViewer\')"'  . ' title="' . gettext("View full file contents for the current Category") . '">';
-	$actions .= '<i class="fa fa-folder-open-o icon-pointer"></i>';
-	$actions .= '</a>';
-	$actions .= '</dt><dd>';
-	$actions .= gettext("View full file contents for the current Category");
-	$actions .= '</dd>';
-
-	$actions .= '</dl>';
-
-	if ($currentruleset == 'Auto-Flowbit Rules') {
-		$actions .= '<span class="text-danger"' . '<b>' . gettext('WARNING: ') . '</b></span>' . 
-			gettext('You should not disable flowbit rules!  Add Suppress List entries for them instead by ') . 
-			'<a href="suricata_rules_flowbits.php?id=' . $id . '" title="' . gettext('Add Suppress List entry for Flowbit Rule') . '">' . 
-			gettext("clicking here") . '.</a>';
-	}
-
-	return($actions);
-}
-
 $if_friendly = convert_friendly_interface_to_friendly_descr($pconfig['interface']);
 $pgtitle = array(gettext("Suricata"), gettext("Interface ") . $if_friendly, gettext("Rules: ") . $currentruleset);
 include_once("head.inc");
@@ -585,16 +523,24 @@ $tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata
 display_top_tabs($tab_array, true);
 
 $form = new Form(false);
+$form->setAttribute('id', 'iform');
 
 $section = new Form_Section("Available rule categories");
-
-$section->addInput(new Form_Select(
+$group = new Form_Group("Category");
+$group->add(new Form_Select(
 	'selectbox',
 	'Category',
 	$currentruleset,
 	build_cat_list()
 ))->setHelp("Select the rule category to view.")
   ->setOnchange("go();");
+$group->add(new Form_Button(
+	'',
+	'View All',
+	'javascript:wopen(\'suricata_rules_edit.php?id=' . $id . '&openruleset=' . $currentruleset . '\',\'FileViewer\');',
+	'fa-file-text-o'
+))->removeClass("btn-default")->addClass("btn-sm btn-success")->setAttribute('title', gettext("View raw text for all rules in selected category"));
+$section->add($group);
 
 if ($currentruleset == 'custom.rules') {
 
@@ -613,19 +559,48 @@ if ($currentruleset == 'custom.rules') {
 } else {
 	$form->add($section);
 
-	$section = new Form_Section("Rule Signature ID (SID) Enable/Disable Overrides");
-
-	$section->addInput(new Form_StaticText(
-		'Rule actions',
-		build_actions()
-	));
-
-	$section->addInput(new Form_Button(
-		'apply',
-		'Apply'
-	))->setHelp('Click Apply to send any SID enable/disable changes made on this tab to the running Suricata process.')
-	  ->removeClass('btn-primary')
-	  ->addClass('btn-success btn-sm');
+$section = new Form_Section('Rule Signature ID (SID) Enable/Disable Overrides');
+$group = new Form_Group('SID Actions');
+$group->add(new Form_Button(
+	'apply',
+	'Apply',
+	null,
+	'fa-save'
+))->setAttribute('title', gettext('Apply changes made on this tab and rebuild the interface rules'))->addClass('btn-primary btn-sm');
+$group->add(new Form_Button(
+	'resetall',
+	'Reset All',
+	null,
+	'fa-repeat'
+))->setAttribute('title', gettext('Remove user overrides for all rule categories'))->addClass('btn-sm btn-warning');
+$group->add(new Form_Button(
+	'resetcategory',
+	'Reset Current',
+	null,
+	'fa-repeat'
+))->setAttribute('title', gettext('Remove user overrides for only the currently selected category'))->addClass('btn-sm btn-warning');
+$group->add(new Form_Button(
+	'disable_all',
+	'Disable All',
+	null,
+	'fa-times-circle-o'
+))->setAttribute('title', gettext('Disable all rules in the currently selected category'))->addClass('btn-sm btn-danger');
+$group->add(new Form_Button(
+	'enable_all',
+	'Enable All',
+	null,
+	'fa-check-circle-o'
+))->setAttribute('title', gettext('Enable all rules in the currently selected category'))->addClass('btn-sm btn-success');
+if ($currentruleset == 'Auto-Flowbit Rules') {
+	$msg = '<b>' . gettext('Note: ') . '</b>' . gettext('You should not disable flowbit rules!  Add Suppress List entries for them instead by ');
+	$msg .= '<a href="suricata_rules_flowbits.php?id=' . $id . '" title="' . gettext('Add Suppress List entry for Flowbit Rule') . '">';
+	$msg .= gettext('clicking here.') . '</a>';
+	$group->setHelp('When finished, click APPLY to save and send any SID enable/disable changes made on this tab to Suricata.<br/>' . $msg);
+}
+else {
+	$group->setHelp('When finished, click APPLY to save and send any SID enable/disable changes made on this tab to Suricata.');
+}
+$section->add($group);
 
 	$form->add($section);
 }
@@ -671,12 +646,14 @@ print($form);
 						<td style="padding-left: 8px;"><i class="fa fa-check-circle-o text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Default Enabled');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-check-circle text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Enabled by user');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-adn text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Auto-enabled by SID Mgmt');?></small></td>
+						<td style="padding-left: 8px;"><i class="fa fa-adn text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Action and/or content modified by SID Mgmt');?></small></td>
 					</tr>
 					<tr>
 						<td></td>
 						<td style="padding-left: 8px;"><i class="fa fa-times-circle-o text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Default Disabled');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-times-circle text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Disabled by user');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-adn text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Auto-disabled by SID Mgmt');?></small></td>
+						<td></td>
 					</tr>
 				</tbody>
 			</table>
@@ -684,7 +661,7 @@ print($form);
 
 		<table  style="table-layout: fixed; width: 100%;" class="table table-striped table-hover table-condensed">
 			<colgroup>
-				<col width="3%">
+				<col width="5%">
 				<col width="4%">
 				<col width="9%">
 				<col width="5%">
@@ -696,15 +673,15 @@ print($form);
 			</colgroup>
 			<thead>
 			   <tr>
-				<th>Icon</th>
-				<th><?=gettext("GID")?></th>
-				<th><?=gettext("SID")?></th>
-				<th><?=gettext("Proto")?></th>
-				<th><?=gettext("Source")?></th>
-				<th><?=gettext("SPort")?></th>
-				<th><?=gettext("Destination")?></th>
-				<th><?=gettext("DPort")?></th>
-				<th><?=gettext("Message")?></th>
+				<th><?=gettext("State");?></th>
+				<th><?=gettext("GID");?></th>
+				<th><?=gettext("SID");?></th>
+				<th><?=gettext("Proto");?></th>
+				<th><?=gettext("Source");?></th>
+				<th><?=gettext("SPort");?></th>
+				<th><?=gettext("Destination");?></th>
+				<th><?=gettext("DPort");?></th>
+				<th><?=gettext("Message");?></th>
 			   </tr>
 			</thead>
 			<tbody>
@@ -718,23 +695,20 @@ print($form);
 							$style = "";
 
 							if ($v['managed'] == 1) {
-								if ($v['disabled'] == 1) {
+								if ($v['disabled'] == 1 && $v['state_toggled'] == 1) {
 									$textss = '<span class="text-muted">';
 									$textse = '</span>';
-									$style= 'style="opacity: 0.4; filter: alpha(opacity=40);"';
-									$iconb_class = 'class="fa fa-adn text-danger text-left"';
+									$iconm_class = 'class="fa fa-adn text-danger text-left"';
 									$title = gettext("Auto-disabled by settings on SID Mgmt tab");
 								}
-								else {
+								elseif ($v['disabled'] == 0 && $v['state_toggled'] == 1) {
 									$textss = $textse = "";
-									$ruleset = "suricata.rules";
-									$iconb_class = 'class="fa fa-adn text-success text-left"';
-									$title = gettext("Auto-managed by settings on SID Mgmt tab");
+									$iconm_class = 'class="fa fa-adn text-success text-left"';
+									$title = gettext("Auto-enabled by settings on SID Mgmt tab");
 								}
-								$iconb = "icon_advanced.gif";
 								$managed_count++;
 							}
-							elseif (isset($disablesid[$gid][$sid])) {
+							if (isset($disablesid[$gid][$sid])) {
 								$textss = "<span class=\"text-muted\">";
 								$textse = "</span>";
 								$disable_cnt++;
@@ -742,7 +716,7 @@ print($form);
 								$iconb_class = 'class="fa fa-times-circle text-danger text-left"';
 								$title = gettext("Disabled by user. Click to toggle to enabled state");
 							}
-							elseif (($v['disabled'] == 1) && (!isset($enablesid[$gid][$sid]))) {
+							elseif (($v['disabled'] == 1) && ($v['state_toggled'] == 0) && (!isset($enablesid[$gid][$sid]))) {
 								$textss = "<span class=\"text-muted\">";
 								$textse = "</span>";
 								$disable_cnt++;
@@ -783,48 +757,46 @@ print($form);
 							$destination_port = $rule_content[6]; //destination port field
 							$message = suricata_get_msg($v['rule']); // description field
 							$sid_tooltip = gettext("View the raw text for this rule");
-
-							echo "<tr class=\"text-nowrap\"><td>{$textss}";
-							if ($v['managed'] == 1) {
-								echo "<i {$iconb_class} title='{$title}'</i>{$textse}";
-							}
-							else {
-								echo "<a id=\"rule_{$gid}_{$sid}\" href='#' onClick=\"toggleRule('{$sid}', '{$gid}');\" 
-								{$iconb_class} title=\"{$title}\"></a>{$textse}";
-							}
-							echo "</td>";
 				?>
-							       <td ondblclick="wopen('suricata_rules_edit.php?id=<?=$id?>&openruleset=<?=$ruleset?>&sid=<?=$sid?>&gid=<?=$gid?>','FileViewer');">
+							<tr class="text-nowrap">
+								<td><?=$textss; ?>
+									<a id="rule_<?=$gid; ?>_<?=$sid; ?>" href="#" onClick="toggleRule('<?=$sid; ?>', '<?=$gid; ?>');" 
+									<?=$iconb_class; ?> title="<?=$title; ?>"></a><?=$textse; ?>
+				<?php if ($v['managed'] == 1 && $v['modified'] == 1) : ?>
+								<i class="fa fa-adn text-warning text-left" title="<?=gettext('Action or content modified by settings on SID Mgmt tab'); ?>"></i><?=$textse; ?>
+				<?php endif; ?>
+								</td>
+							       <td ondblclick="showRuleContents('<?=base64_encode($v['rule']);?>');">
 									<?=$textss . $gid . $textse;?>
 							       </td>
-							       <td ondblclick="wopen('suricata_rules_edit.php?id=<?=$id?>&openruleset=<?=$ruleset?>&sid=<?=$sid?>&gid=<?=$gid?>','FileViewer');">
+							       <td ondblclick="showRuleContents('<?=base64_encode($v['rule']);?>');">
 									<a href="javascript: void(0)" 
-									onclick="wopen('suricata_rules_edit.php?id=<?=$id?>&openruleset=<?=$ruleset?>&sid=<?=$sid?>&gid=<?=$gid?>','FileViewer');" 
+									onclick="showRuleContents('<?=base64_encode($v['rule']);?>');" 
 									title="<?=$sid_tooltip;?>"><?=$textss . $sid . $textse;?></a>
 							       </td>
-							       <td ondblclick="wopen('suricata_rules_edit.php?id=<?=$id?>&openruleset=<?=$ruleset?>&sid=<?=$sid?>&gid=<?=$gid?>','FileViewer');">
+							       <td ondblclick="showRuleContents('<?=base64_encode($v['rule']);?>');">
 									<?=$textss . $protocol . $textse;?>
 							       </td>
-							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="wopen('suricata_rules_edit.php?id=<?=$id?>&openruleset=<?=$ruleset?>&sid=<?=$sid?>&gid=<?=$gid?>','FileViewer');">
+							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=base64_encode($v['rule']);?>');">
 									<?=$srcspan . $source;?></span>
 							       </td>
-							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="wopen('suricata_rules_edit.php?id=<?=$id?>&openruleset=<?=$ruleset?>&sid=<?=$sid?>&gid=<?=$gid?>','FileViewer');">
+							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=base64_encode($v['rule']);?>');">
 									<?=$srcprtspan . $source_port;?></span>
 							       </td>
-							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="wopen('suricata_rules_edit.php?id=<?=$id?>&openruleset=<?=$ruleset?>&sid=<?=$sid?>&gid=<?=$gid?>','FileViewer');">
+							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=base64_encode($v['rule']);?>');">
 									<?=$dstspan . $destination;?></span>
 							       </td>
-							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="wopen('suricata_rules_edit.php?id=<?=$id?>&openruleset=<?=$ruleset?>&sid=<?=$sid?>&gid=<?=$gid?>','FileViewer');">
+							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=base64_encode($v['rule']);?>');">
 								       <?=$dstprtspan . $destination_port;?></span>
 							       </td>
-								<td style="word-wrap:break-word; white-space:normal" ondblclick="wopen('suricata_rules_edit.php?id=<?=$id?>&openruleset=<?=$ruleset?>&sid=<?=$sid?>&gid=<?=$gid?>','FileViewer');">
+								<td style="word-wrap:break-word; white-space:normal" ondblclick="showRuleContents('<?=base64_encode($v['rule']);?>');">
 									<?=$textss . $message . $textse;?>
 							       </td>
-					</tr>
+							</tr>
 				<?php
-					$counter++;
+							$counter++;
+						}
 					}
-				}
 				unset($rulem, $v);
 				?>
 		    </tbody>
@@ -846,27 +818,38 @@ print($form);
 	</div>
 </div>
 
-<!-- </form> -->
+<?php
+// Create a Modal object to display text of user-clicked rules
+$form = new Form(FALSE);
+$modal = new Modal('View Rules Text', 'rulesviewer', 'large', 'Close');
+$modal->addInput(new Form_StaticText (
+	'Category',
+	'<div class="text-left" id="modal_rule_category"></div>'
+));
+$modal->addInput(new Form_Textarea (
+	'rulesviewer_text',
+	'Rule Text',
+	'...Loading...'
+))->removeClass('form-control')->addClass('row-fluid col-sm-10')->setAttribute('rows', '10')->setAttribute('wrap', 'soft');
+$form->add($modal);
+print($form);
+?>
+
 <script language="javascript" type="text/javascript">
+//<![CDATA[
 
 function toggleRule(sid, gid) {
 	$('#sid').val(sid);
 	$('#gid').val(gid);
 	$('#openruleset').val($('#selectbox').val());
-	$('<input name="toggle" value="1" />').appendTo($(form));
-	$(form).submit();
-
-}
-
-function submitAction(nm) {
-	$('<input type="hidden" name="' + nm + '"/>').appendTo(form);
-	$(form).submit();
+	$('<input name="toggle" value="1" />').appendTo($('#iform'));
+	$('#iform').submit();
 }
 
 function go()
 {
 	$('#openruleset').val($('#selectbox').val());
-	$(form).submit();
+	$('#iform').submit();
 }
 
 function wopen(url, name)
@@ -878,6 +861,15 @@ function wopen(url, name)
     win.focus();
 }
 
+function showRuleContents(content) {
+		// Show the modal dialog with rule text
+		$('#rulesviewer').modal('show');
+		$('#modal_rule_category').html($('#selectbox').val());
+		$('#rulesviewer_text').text(atob(content));
+		$('#rulesviewer_text').attr('readonly', true);
+}
+
+//]]>
 </script>
 
 <?php include("foot.inc"); ?>

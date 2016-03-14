@@ -56,7 +56,7 @@
 * Copyright (C) 2006 Scott Ullrich (copyright assigned to ESF)
 * Copyright (C) 2009 Robert Zelaya Sr. Developer
 * Copyright (C) 2012 Ermal Luci  (copyright assigned to ESF)
-* Copyright (C) 2014 Bill Meeks
+* Copyright (C) 2016 Bill Meeks
 *
 */
 
@@ -121,6 +121,7 @@ if (isset($id) && $a_nat[$id]) {
 // "selectalias", when true, displays radio buttons to limit
 // multiple selections.
 if ($_POST['import_alias']) {
+	$eng_id = $host_os_policy_engine_next_id;
 	$importalias = true;
 	$selectalias = false;
 	$title = "Host Operating System Policy";
@@ -207,7 +208,13 @@ if ($_POST['save_os_policy']) {
 
 			// Now write the new engine array to conf
 			write_config();
-			$pconfig['host_os_policy']['item'] = $a_nat[$id]['host_os_policy']['item'];
+			header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
+			header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
+			header( 'Cache-Control: no-store, no-cache, must-revalidate' );
+			header( 'Cache-Control: post-check=0, pre-check=0', false );
+			header( 'Pragma: no-cache' );
+			header("Location: suricata_flow_stream.php?id=$id");
+			exit;
 		}
 	}
 }
@@ -235,6 +242,13 @@ elseif ($_POST['del_os_policy']) {
 		$a_nat[$id] = $natent;
 		write_config();
 	}
+	header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
+	header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
+	header( 'Cache-Control: no-store, no-cache, must-revalidate' );
+	header( 'Cache-Control: post-check=0, pre-check=0', false );
+	header( 'Pragma: no-cache' );
+	header("Location: suricata_flow_stream.php?id=$id");
+	exit;
 }
 elseif ($_POST['cancel_os_policy']) {
 	$add_edit_os_policy = false;
@@ -433,6 +447,13 @@ elseif ($_POST['save_import_alias']) {
 			write_config();
 			$importalias = false;
 			$selectalias = false;
+			header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
+			header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
+			header( 'Cache-Control: no-store, no-cache, must-revalidate' );
+			header( 'Cache-Control: post-check=0, pre-check=0', false );
+			header( 'Pragma: no-cache' );
+			header("Location: suricata_flow_stream.php?id=$id");
+			exit;
 		}
 	}
 }
@@ -496,89 +517,33 @@ display_top_tabs($tab_array, true);
 ?>
 
 <?php
-
-
 	if ($importalias) {
 
-		$form = new Form($svbtn);
-
-		$svbtn = new Form_Button(
-			'save_os_policy',
-			'Save OS Policy'
-		);
-
-		$form->addGlobal(new Form_Input(
-			'id',
-			'id',
-			'hidden',
-			$id
-		));
-
-		$form->addGlobal(new Form_Input(
-			'eng_id',
-			'eng_id',
-			'hidden',
-			$eng_id
-		));
+		print('<form action="suricata_flow_stream.php" method="post" name="iform" id="iform" class="form-horizontal">');
+		print('<input type="hidden" name="eng_id" id="eng_id" value="<?=$eng_id?>"/>');
+		print('<input type="hidden" name="id" id="id" value="<?=$id?>"/>');
 
 		if ($selectalias) {
-			$form->addGlobal(new Form_Input(
-				'eng_name',
-				'eng_name',
-				'hidden',
-				$eng_name
-			));
-			$form->addGlobal(new Form_Input(
-				'eng_bind',
-				'eng_bind',
-				'hidden',
-				$eng_bind
-			));
-			$form->addGlobal(new Form_Input(
-				'eng_policy',
-				'eng_policy',
-				'hidden',
-				$eng_policy
-			));
+			print('<input type="hidden" name="eng_name" value="' . $eng_name . '"/>');
+			print('<input type="hidden" name="eng_bind" value="' . $eng_bind . '"/>');
+			print('<input type="hidden" name="eng_policy" value="' . $eng_policy . '"/>');
 		}
 
 		include("/usr/local/www/suricata/suricata_import_aliases.php");
+		print('</form>');
 
 	} elseif ($add_edit_os_policy) {
 
-		$svbtn = new Form_Button(
-			'save_os_policy',
-			'Save'
-		);
-
-		$form = new Form($svbtn);
-
-		$form->addGlobal(new Form_Input(
-			'id',
-			'id',
-			'hidden',
-			$id
-		));
-
-		$form->addGlobal(new Form_Input(
-			'eng_id',
-			'eng_id',
-			'hidden',
-			$eng_id
-		));
-
-		$form->addGlobal(new Form_Button(
-			'cancel_os_policy',
-			'Cancel'
-		))->removeClass('btn-primary')->addClass('btn-warning');
-
+		$form = new Form(false);
 		include("/usr/local/www/suricata/suricata_os_policy_engine.php");
 
 	} else {
 ?>
-<form action="suricata_flow_stream.php" method="post" name="iform" id="iform">
+
+<form action="suricata_flow_stream.php" method="post" name="iform" id="iform" class="form-horizontal">
 <input type="hidden" name="eng_id" id="eng_id" value="<?=$eng_id?>"/>
 <input type="hidden" name="id" id="id" value="<?=$id?>"/>
+
 	<div class="panel panel-default">
 		<div class="panel-heading"><h2 class="panel-title"><?=gettext("Host-Specific Defrag and Stream Settings")?></h2></div>
 		<div class="panel-body">
@@ -594,8 +559,14 @@ display_top_tabs($tab_array, true);
 									<th><?=gettext("Name")?></th>
 									<th><?=gettext("Bind-To Address Alias")?></th>
 									<th>
-										<input type="submit" name="import_alias[]" class="btn btn-sm btn-primary" title="<?=gettext("Import policy configuration from existing Aliases")?>" value="Import" />
-										<input type="submit" name="add_os_policy[]" class="btn btn-sm btn-success" title="<?=gettext("Add a new policy configuration")?>" value="Add"/>
+										<button type="submit" name="import_alias[]" class="btn btn-sm btn-primary" title="<?=gettext("Import policy configuration from existing Aliases")?>" value="Import">
+											<i class="fa fa-upload icon-embed-btn"></i>
+											<?=gettext("Import"); ?>
+										</button>
+										<button type="submit" name="add_os_policy[]" class="btn btn-sm btn-success" title="<?=gettext("Add a new policy configuration")?>" value="Add">
+											<i class="fa fa-plus icon-embed-btn"></i>
+											<?=gettext("Add"); ?>
+										</button>
 									</th>
 								</tr>
 							</thead>
@@ -605,11 +576,20 @@ display_top_tabs($tab_array, true);
 										<td><?=gettext($v['name'])?></td>
 										<td><?=gettext($v['bind_to'])?></td>
 										<td>
-											<input type="submit" name="edit_os_policy[]" class="btn btn-sm btn-primary" value="Edit" onclick="document.getElementById('eng_id').value='<?=$f?>'" title="<?=gettext("Edit this policy configuration")?>"/>
+											<button type="submit" name="edit_os_policy[]" class="btn btn-sm btn-primary" value="Edit" onclick="document.getElementById('eng_id').value='<?=$f?>'" title="<?=gettext("Edit this policy configuration")?>">
+												<i class="fa fa-pencil icon-embed-btn"></i>
+												<?=gettext("Edit"); ?>
+											</button>
 								<?php if ($v['bind_to'] != "all") : ?>
-											<input type="submit" name="del_os_policy[]" class="btn btn-sm btn-danger" value="Delete" onclick="document.getElementById('eng_id').value='<?=$f?>';return confirm('Are you sure you want to delete this entry?');" title="<?=gettext("Delete this policy configuration")?>"/>
+											<button type="submit" name="del_os_policy[]" class="btn btn-sm btn-danger" value="Delete" onclick="document.getElementById('eng_id').value='<?=$f?>';" title="<?=gettext("Delete this policy configuration")?>">
+												<i class="fa fa-trash icon-embed-btn"></i>
+												<?=gettext("Delete"); ?>
+											</button>
 								<?php else : ?>
-								<input type="submit" name="del_os_policy[]" class="btn btn-sm btn-danger" value="Delete" title="<?=gettext("Default policy configuration cannot be deleted")?>" disabled/>
+											<button type="submit" name="del_os_policy[]" class="btn btn-sm btn-danger" value="Delete" title="<?=gettext("Default policy configuration cannot be deleted")?>" disabled>
+												<i class="fa fa-trash icon-embed-btn"></i>
+												<?=gettext("Delete"); ?>
+											</button>
 								<?php endif ?>
 										</td>
 									</tr>

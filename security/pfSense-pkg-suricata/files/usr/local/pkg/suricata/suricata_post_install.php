@@ -42,7 +42,7 @@
 /* This module is called once during the Suricata package installation to   */
 /* perform required post-installation setup.  It should only be executed    */
 /* from the Package Manager process via the custom-post-install hook in     */
-/* the snort.xml package configuration file.                                */
+/* the suricata.xml package configuration file.                                */
 /****************************************************************************/
 
 require_once("config.inc");

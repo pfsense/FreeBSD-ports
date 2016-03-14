@@ -1220,18 +1220,22 @@ function suricata_load_rules_map($rules_path) {
 	 *  map[gid][sid]['rule']['category']['action']['disabled']['managed']['flowbits']
 	 *
 	 *  where:
-	 *   gid      = Generator ID from rule, or 1 if general text 
-	 *              rule
-	 *   sid      = Signature ID from rule
-         *   rule     = Complete rule text
-	 *   category = File name of file containing the rule
-	 *   action   = alert, drop, reject or pass
-	 *   disabled = 1 if rule is disabled (commented out), 0 if 
-	 *              rule is enabled
-	 *    managed = 1 if rule is auto-managed by SID MGMT process,
-	 *              0 if not auto-managed 
-	 *   flowbits = Array of applicable flowbits if rule contains 
-	 *              flowbits options
+	 *   gid           = Generator ID from rule, or 1 if general text 
+	 *                   rule
+	 *   sid           = Signature ID from rule
+         *   rule          = Complete rule text
+	 *   category      = File name of file containing the rule
+	 *   action        = alert, drop, reject or pass
+	 *   disabled      = 1 if rule is disabled (commented out), 0 if 
+	 *                   rule is enabled
+	 *   managed       = 1 if rule is auto-managed by SID MGMT process,
+	 *                   0 if not auto-managed 
+	 *   state_toggled = 1 if rule was toggled by SID MGMT process,
+	 *                   0 if not toggled
+	 *   modified      = 1 if rule action or content is modified by SID MGMT process,
+	 *                   0 if not modified
+	 *   flowbits      = Array of applicable flowbits if rule contains 
+	 *                   flowbits options
 	 ************************************************************************************/
 
 	// First check if we were passed a directory, a single file
@@ -1315,6 +1319,8 @@ function suricata_load_rules_map($rules_path) {
 				$map_ref[$gid][$sid] = array();
 			$map_ref[$gid][$sid]['rule'] = $rule;
 			$map_ref[$gid][$sid]['category'] = basename($file, ".rules");
+			$map_ref[$gid][$sid]['state_toggled'] = 0;
+			$map_ref[$gid][$sid]['modified'] = 0;
 
 			// Grab the rule action
 			$matches = array();
@@ -1801,11 +1807,12 @@ function suricata_sid_mgmt_auto_categories($suricatacfg, $log_results = FALSE) {
 	$sid_mods = array();
 	$enables = array();
 	$disables = array();
+	$drops = array();
 
 	// Check if auto-mgmt of SIDs is enabled, exit if not
 	if ($config['installedpackages']['suricata']['config'][0]['auto_manage_sids'] != 'on')
 		return array();
-	if (empty($suricatacfg['disable_sid_file']) && empty($suricatacfg['enable_sid_file']))
+	if (empty($suricatacfg['disable_sid_file']) && empty($suricatacfg['enable_sid_file']) && empty($suricatacfg['drop_sid_file']))
 		return array();
 
 	// Configure the interface's logging subdirectory if log results is enabled
@@ -2210,6 +2217,7 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 					$rule_map[$k1][$k2]['rule'] = ltrim($rule_map[$k1][$k2]['rule'], " \t#");
 					$rule_map[$k1][$k2]['disabled'] = 0;
 					$rule_map[$k1][$k2]['managed'] = 1;
+					$rule_map[$k1][$k2]['state_toggled'] = 1;
 					$changecount++;
 					$modcount++;
 				}
@@ -2217,21 +2225,16 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 					$rule_map[$k1][$k2]['rule'] = "# " . $rule_map[$k1][$k2]['rule'];
 					$rule_map[$k1][$k2]['disabled'] = 1;
 					$rule_map[$k1][$k2]['managed'] = 1;
+					$rule_map[$k1][$k2]['state_toggled'] = 1;
 					$changecount++;
 					$modcount++;
 				}
 				elseif ($action == 'drop' && $rule_map[$k1][$k2]['action'] != 'drop') {
-					if ($rule_map[$k1][$k2]['disabled'] == 1) {
-						$tmp = ltrim($rule_map[$k1][$k2]['rule'], " \t#");
-					}
-					else {
-						$tmp = $rule_map[$k1][$k2]['rule'];
-					}
-					if ($tmp = preg_replace('/^alert/', 'drop', $tmp)) {
+					if ($tmp = preg_replace('/alert/', 'drop', $rule_map[$k1][$k2]['rule'], 1)) {
 						$rule_map[$k1][$k2]['rule'] = $tmp;
-						$rule_map[$k1][$k2]['disabled'] = 0;
 						$rule_map[$k1][$k2]['action'] = 'drop';
 						$rule_map[$k1][$k2]['managed'] = 1;
+						$rule_map[$k1][$k2]['modified'] = 1;
 						$changecount++;
 						$modcount++;
 					}
