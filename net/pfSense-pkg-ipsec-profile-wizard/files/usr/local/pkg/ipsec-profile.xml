@@ -4,7 +4,7 @@
 <packagegui>
 	<copyright>
 <![CDATA[
-	ipsec-profile-wizard.xml
+	ipsec-profile.xml
 	Copyright (C) 2014-2016 Rubicon Communications, LLC
 
 	All rights reserved.
@@ -18,6 +18,6 @@
 		<name>IPSec Profile</name>
 		<tooltiptext>IPSec Profile Setup Wizard</tooltiptext>
 		<section>VPN</section>
-		<url>"/ipsec-profile-wizard.php</url>
+		<url>vpn_ipsec_profile.php</url>
 	</menu>
 </packagegui>
