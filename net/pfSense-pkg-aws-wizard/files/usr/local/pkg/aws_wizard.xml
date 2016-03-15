@@ -10,14 +10,14 @@
 	All rights reserved.
 	]]>
 	</copyright>
-	<description>AWS VPC Connection Wizard</description>
+	<description>AWS VPC &reg; VPN Connection Wizard</description>
 	<name>AWS VPC Wizard</name>
 	<category>VPN</category>
-	<title>VPN: AWS VPN Setup Wizard</title> 
+	<title>VPN: AWS VPN Connection Wizard</title> 
 	<menu>
-		<name>VPN</name>
-		<tooltiptext>AWS VPC Setup Wizard</tooltiptext>
+		<name>AWS VPC VPN Wizard</name>
+		<tooltiptext>AWS VPC Connection Wizard</tooltiptext>
 		<section>VPN</section>
-		<url>"/wizard.php?xml=vpc_vpn_wizard.xml</url>
+		<url>/wizard.php?xml=vpc_vpn_wizard.xml</url>
 	</menu>
 </packagegui>

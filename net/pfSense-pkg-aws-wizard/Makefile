@@ -9,7 +9,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	PfSense package AWS VPC Wizard
+COMMENT=	PfSense package AWS VPC VPN Connection Wizard
 
 #RUN_DEPENDS=	${LOCALBASE}/sbin/ladvd:${PORTSDIR}/net/ladvd
 
