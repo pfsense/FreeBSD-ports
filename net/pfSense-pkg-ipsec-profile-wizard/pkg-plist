@@ -1,0 +1,6 @@
+/etc/inc/priv/ipsec-profile.priv.inc
+pkg/ipsec-profile.xml
+%%DATADIR%%/info.xml
+www/vpn_ipsec_profile.php
+@dir /etc/inc/priv
+@dir /etc/inc
