@@ -941,7 +941,7 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 				$sidsupplink .= ' title="' . gettext("Add this alert to the Suppress List") . '"></i>';
 			}
 			else {
-				$sidsupplink .= '&nbsp;<i class="fa fa-info-circle" ';
+				$sidsupplink = '&nbsp;<i class="fa fa-info-circle" ';
 				$sidsupplink .= "title='" . gettext("This alert is already in the Suppress List") . "'></i>";
 			}
 			/* Add icon for toggling rule state */

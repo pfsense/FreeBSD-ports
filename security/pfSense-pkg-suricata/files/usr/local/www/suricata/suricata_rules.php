@@ -698,17 +698,17 @@ print($form);
 								if ($v['disabled'] == 1 && $v['state_toggled'] == 1) {
 									$textss = '<span class="text-muted">';
 									$textse = '</span>';
-									$iconm_class = 'class="fa fa-adn text-danger text-left"';
+									$iconb_class = 'class="fa fa-adn text-danger text-left"';
 									$title = gettext("Auto-disabled by settings on SID Mgmt tab");
 								}
 								elseif ($v['disabled'] == 0 && $v['state_toggled'] == 1) {
 									$textss = $textse = "";
-									$iconm_class = 'class="fa fa-adn text-success text-left"';
+									$iconb_class = 'class="fa fa-adn text-success text-left"';
 									$title = gettext("Auto-enabled by settings on SID Mgmt tab");
 								}
 								$managed_count++;
 							}
-							if (isset($disablesid[$gid][$sid])) {
+							elseif (isset($disablesid[$gid][$sid])) {
 								$textss = "<span class=\"text-muted\">";
 								$textse = "</span>";
 								$disable_cnt++;
