@@ -191,11 +191,30 @@ display_top_tabs($tab_array);
 			<table class="table table-hover table-condensed">
 				<thead>
 				<tr>
-					<th><i class="btn btn-xs btn-warning" id="hd_blocklog" name="hd_blocklog" onclick="getactivity('blocklog');"><?= gettext("Blocked") ?></i></th>
-					<th><i class="btn btn-xs btn-warning" id="hd_guilog" name="hd_guilog" onclick="getactivity('guilog');"><?= gettext("Filter GUI log") ?></i></th>
-					<th><i class="btn btn-xs btn-warning" id="hd_filterlog" name="hd_filterlog" onclick="getactivity('filterlog');"><?= gettext("Filter log") ?></i></th>
-					<th><i class="btn btn-xs btn-warning" id="hd_proxyconf" name="hd_proxyconf" onclick="getactivity('proxyconf');"><?= gettext("Proxy config") ?></i></th>
-					<th><i class="btn btn-xs btn-warning" id="hd_filterconf" name="hd_filterconf" onclick="getactivity('filterconf');"><?= gettext("Filter config") ?></i></th>
+					<th class="text-center">
+						<div class="btn-group">
+							<button type="button" class="btn btn-xs btn-default" id="hd_blocklog" name="hd_blocklog" onclick="getactivity('blocklog');">
+								<i class="fa fa-file-text-o"></i>
+								<?= gettext("Blocked") ?>
+							</button>
+							<button type="button" class="btn btn-xs btn-default" id="hd_guilog" name="hd_guilog" onclick="getactivity('guilog');">
+								<i class="fa fa-file-text-o"></i>
+								<?= gettext("Filter GUI log") ?>
+							</button>
+							<button type="button" class="btn btn-xs btn-default" id="hd_filterlog" name="hd_filterlog" onclick="getactivity('filterlog');">
+								<i class="fa fa-file-text-o"></i>
+								<?= gettext("Filter log") ?>
+							</button>
+							<button type="button" class="btn btn-xs btn-default" id="hd_proxyconf" name="hd_proxyconf" onclick="getactivity('proxyconf');">
+								<i class="fa fa-file-text-o"></i>
+								<?= gettext("Proxy config") ?>
+							</button>
+							<button type="button" class="btn btn-xs btn-default" id="hd_filterconf" name="hd_filterconf" onclick="getactivity('filterconf');">
+								<i class="fa fa-file-text-o"></i>
+								<?= gettext("Filter config") ?>
+							</button>
+						</div>
+					</th>
 				</tr>
 				</thead>
 				<tbody>

@@ -91,7 +91,10 @@ $graph_unit_lookup = array(
 	"states"    => "cps",
 	"quality"   => "ms",
 	"processor" => "%",
-	"memory"    => "%"
+	"memory"    => "%",
+	"wireless"  => "dBi",
+	"mbuf"      => "",
+	"cellular"  => "dB"
 );
 
 $left_unit_acronym = $graph_unit_lookup[$left_pieces[1]];
@@ -110,6 +113,8 @@ $unit_desc_lookup = array(
 	"cps" => "Changes Per Second",
 	"ms"  => "Milliseconds",
 	"%"   => "Percent",
+	"Mb"  => "Megabit",
+	"dBi" => "Decibels Relative to Isotropic",
 	""    => ""
 );
 
@@ -208,6 +213,12 @@ if ($left != "null") {
 			$ninetyfifth = true;
 			$multiplier = 8;
 			$format = "s";
+			break;
+		case "rate":
+			$unit_acronym = "Mb";
+			break;
+		case "channel":
+			$unit_acronym = "";
 			break;
 		}
 
@@ -423,6 +434,12 @@ if ($right != "null") {
 			$ninetyfifth = true;
 			$multiplier = 8;
 			$format = "s";
+			break;
+		case "rate":
+			$unit_acronym = "Mb";
+			break;
+		case "channel":
+			$unit_acronym = "";
 			break;
 		}
 

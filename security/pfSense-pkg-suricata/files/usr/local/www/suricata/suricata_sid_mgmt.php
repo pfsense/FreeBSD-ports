@@ -284,19 +284,6 @@ $sidmodselections = array_merge(Array( "None" ), $sidmodfiles);
 $pgtitle = gettext("Suricata: SID Management");
 include_once("head.inc");
 
-if ($g['platform'] == "nanobsd") {
-	$input_errors[] = gettext("SID auto-management is not supported on NanoBSD installs");
-}
-
-/* Display Alert message, under form tag or no refresh */
-if ($input_errors) {
-	print_input_errors($input_errors);
-}
-
-if ($savemsg) {
-	print_info_box($savemsg, 'success');
-}
-
 $tab_array = array();
 $tab_array[] = array(gettext("Interfaces"), false, "/suricata/suricata_interfaces.php");
 $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_global.php");
@@ -312,7 +299,21 @@ $tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=suricata/suricat
 $tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
 display_top_tabs($tab_array, true);
 
+if ($g['platform'] == "nanobsd") {
+	$input_errors[] = gettext("SID auto-management is not supported on NanoBSD installs");
+}
+
+/* Display Alert message, under form tag or no refresh */
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
+
+if ($savemsg) {
+	print_info_box($savemsg, 'success');
+}
+
 ?>
+
 <form action="suricata_sid_mgmt.php" method="post" enctype="multipart/form-data" name="iform" id="iform">
 	<input type="hidden" name="MAX_FILE_SIZE" value="100000000" />
 	<input type="hidden" name="sidlist_fname" id="sidlist_fname" value=""/>

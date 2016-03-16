@@ -147,9 +147,12 @@ display_top_tabs($tab_array);
 				<tr>
 					<td>File to upload:</td>
 					<td>
-						<input name="ulfile" type="file" class="button" id="ulfile" />
+						<input name="ulfile" type="file" class="btn btn-info" id="ulfile" />
 						<br />
-						<input name="submit" type="submit" class="button" id="upload" value="Upload" />
+						<button name="submit" type="submit" class="btn btn-primary" id="upload" value="Upload">
+							<i class="fa fa-upload icon-embed-btn"></i>
+							Upload
+						</button>
 					</td>
 				</tr>
 				</table>
@@ -169,12 +172,16 @@ display_top_tabs($tab_array);
 				</tr>
 				<tr>
 					<td>
-						<input type='button' value='Backup' onclick="document.location.href='backup.php?a=download&amp;t=backup';" />
-						<?php
-							if (file_exists($backup_path)) {
-								echo "\t<input type='button' value='Restore' onclick=\"document.location.href='backup.php?a=other&amp;t=restore';\" />\n";
-							}
-						?>
+						<button type='button' class="btn btn-primary" value='Backup' onclick="document.location.href='backup.php?a=download&amp;t=backup';">
+							<i class="fa fa-download icon-embed-btn"></i>
+							Backup
+						</button>
+						<?php	if (file_exists($backup_path)) { ?>
+								<button type="button" class="btn btn-warning" value="Restore" onclick="document.location.href='backup.php?a=other&amp;t=restore';">
+									<i class="fa fa-undo icon-embed-btn"></i>
+									Restore
+								</button>
+						<?php 	} ?>
 					</td>
 				</tr>
 			</table>

@@ -674,43 +674,43 @@ function squidguard_before_form_dest(&$pkg) {
 # -----------------------------------------------------------------------------
 # make_grid_general_items
 # -----------------------------------------------------------------------------
-function make_grid_general_items($id = '')
-{
-    global $squidguard_config;
+function make_grid_general_items($id = '') {
+	global $squidguard_config;
 
-    $bg_color = "bgcolor='#dddddd'";
-    $res = '';
-    $res .= "<table width='100%'>";
+	$bg_color = 'bgcolor="#dddddd"';
+	$res = '';
+	$res .= '<table width="100%">';
 
-    if ($id === '') {
-        # Apply
-        $res .= "<tr $bg_color><td><big>For saving configuration YOU need click button 'Save' on bottom of page</big></td></tr>
-                 <tr><td><big>After changing configuration squidGuard you must <b><span style='color: #800000;'>apply all changes</span></b></big></td></tr>
-                 <tr><td><input name='submit' type='submit' value='Apply'></td></tr>";
+	if ($id === '') {
+		# Apply
+		$res .= '<tr $bg_color><td><big>The Save button at the bottom of this page must be clicked to save configuration changes.</big></td></tr>';
+		$res .= '<tr><td><big>To activate squidGuard configuration changes, <b><span style="color: #800000;">the Apply button must be clicked.</span></b></big></td></tr>';
+		$res .= '<tr><td><button class="btn btn-success btn-sm" name="submit" type="submit" value="Apply"><i class="fa fa-check icon-embed-btn"></i>Apply</button><br/><br/></td></tr>';
 
-        # service state
-        $sgstate = "<span style='color: #800000;'>STOPPED</span>";
-        if (is_service_running("squidGuard"))
-            $sgstate = "<span style='color: #008000;'>STARTED</span>";
+		# service state
+		$sgstate = '<span style="color: #800000;">STOPPED</span>';
+		if (is_service_running("squidGuard")) {
+			$sgstate = '<span style="color: #008000;">STARTED</span>';
+		}
+		if (is_blacklist_update_started()) {
+			$sgstate .= '<br><span style="color: #800000;">Wait: Blacklists update started. New data will be available soon.<br>After upgrade, check the configuration.</span>';
+		}
+		$res .= "<tr {$bg_color}><td><big>SquidGuard service state: <b>{$sgstate}</b></big></td></tr>";
+	}
 
-        if (is_blacklist_update_started())
-            $sgstate .= "<br><span style='color: #800000;'>Wait: began updating the blacklist. New data will be available after some time.<br>After the upgrade, it is necessary to check the configuration.</span>";
-        $res .= "<tr $bg_color><td><big>SquidGuard service state: <b>$sgstate</b></big></td></tr>";
-    }
-
-    $res .= "</table>";
-    return $res;
+	$res .= "</table>";
+	return $res;
 }
 
 # -----------------------------------------------------------------------------
 # make_grid_blacklist
 # -----------------------------------------------------------------------------
 function make_grid_blacklist() {
-    $res = '';
-    # button 'Upload URL' and button 'Restore last blacklist'
-    $res = "<hr><input name='submit' value='" . BLACKLIST_BTN_URL  . "' type='submit'>";
-    $res .= "&nbsp;<input name='submit' value='" . BLACKLIST_BTN_DEFAULT  . "' type='submit'>";
-    return $res;
+	$res = '';
+	# button 'Upload URL' and button 'Restore last blacklist'
+	$res = '<hr><button class="btn btn-primary btn-sm" name="submit" value="' . BLACKLIST_BTN_URL  . '" type="submit"><i class="fa fa-upload icon-embed-btn"></i>' . BLACKLIST_BTN_URL  . '</button>';
+	$res .= '&nbsp;<button class="btn btn-info btn-sm" name="submit" value="' . BLACKLIST_BTN_DEFAULT  . '" type="submit"><i class="fa fa-undo icon-embed-btn"></i>' . BLACKLIST_BTN_DEFAULT  . '</button>';
+	return $res;
 }
 
 # -----------------------------------------------------------------------------
@@ -827,16 +827,23 @@ function make_grid_controls($type, $items, $enable_overtime = true) {
         $res .= "<table cellspacing='0' width='100%'> $thdr $tbl </table>";
 
         $rstyle = "";
-        $ha = "<div class='listtopic'>" .
-              "<span onClick='document.getElementById(\"destrules\").style.display = \"block\";' style=\"cursor: pointer;\">" .
-              "<font size='-12'><big>Target Rules List</big>&nbsp;&nbsp;" .
-              "<i class=\"fa fa-plus-circle\"></i>" .
-              "</span>&nbsp;&nbsp;" .
-              "<span style=\"cursor: pointer;\">" .
-              "<i class=\"fa fa-minus-circle\" onClick='document.getElementById(\"destrules\").style.display = \"none\";'></i>" .
-              "</span>" .
-              "</div>";
-        $res = "<hr>$ha<div id=\"destrules\" style='DISPLAY: none'>$res</div>";
+	$ha = <<<EOF
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h2 class="panel-title">
+			<span onClick="document.getElementById('destrules').style.display = 'block';" style="cursor: pointer;">
+				Target Rules List
+				<i class="fa fa-plus-circle"></i>
+			</span>
+			<span style="cursor: pointer;">
+				<i class="fa fa-minus-circle" onClick="document.getElementById('destrules').style.display = 'none';"></i>
+			</span>
+		</h2>
+	</div>
+</div>
+
+EOF;
+	$res = "<hr>{$ha}<div id=\"destrules\" style=\"DISPLAY: none\">{$res}</div>";
 
     }
     return $res;

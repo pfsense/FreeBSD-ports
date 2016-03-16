@@ -319,6 +319,7 @@ else:
 <form action="/suricata/suricata_rulesets.php" method="post" enctype="multipart/form-data" name="iform" id="iform" class="form-horizontal">
 <input type="hidden" name="id" id="id" value="<?=$id;?>" />
 <?php
+
 	$section = new Form_Section("Automatic flowbit resolution");
 
 	$section->addInput(new Form_Checkbox(
@@ -663,16 +664,8 @@ else:
 
 <script language="javascript" type="text/javascript">
 //<![CDATA[
-events.push(function() {
-	function wopen(url, name, w, h)
-	{
-		var win = window.open(url,
-			name,
-			'location=no, menubar=no, ' +
-			'status=no, toolbar=no, scrollbars=yes, resizable=yes');
 
-		win.focus();
-	}
+events.push(function() {
 
 	function enable_change()
 	{
@@ -680,16 +673,24 @@ events.push(function() {
 
 		hideInput('ips_policy', endis);
 
-		$('[type=checkbox]').each(function() {
-			var str = this.value;
+		$('input[type="checkbox"]').each(function() {
+			var str = $(this).val();
 
-			if (str.substr(0,6) == "snort_")
-				this.attr('disabled', !endis);
+			if (str.substr(0,6) == "snort_") {
+				$(this).attr('disabled', !endis);
+			}
 		});
 	}
 
+	//------- Click handlers -----------------------------------------
+	// 
+	$('#ips_policy_enable').click(function() {
+		enable_change();
+	});
+
 	// Set initial state of dynamic HTML form controls
 	enable_change();
+
 });
 //]]>
 </script>
