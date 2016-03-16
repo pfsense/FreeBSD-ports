@@ -1,8 +1,6 @@
 <?php
 
 require("guiconfig.inc");
-require("interfaces.inc");
-require("certs.inc");
 
 global $config;
 
