@@ -963,19 +963,34 @@ events.push(function() {
 	});
 
 	var auto_update;
-	var update_interval;
 
 	function update_graph(force) {
+
+		clearTimeout(auto_update);
+
 		if ($( "#auto-update" ).val() == "-1") {
 			force = true;
 		}
-		clearInterval(auto_update);
-		update_interval = $( "#auto-update" ).val() * 1000;
-		if (update_interval > 0) {
-			auto_update = setInterval(update_graph, update_interval);
+
+		if (force || $( "#auto-update" ).val() > 0) {
 			redraw_graph(getOptions());
-		} else if (force) {
-			redraw_graph(getOptions());
+		}
+
+		if ( $( "#auto-update" ).val() > 0) {
+
+			update_interval = $( "#auto-update" ).val();
+
+			// Ensure graph update happens at end of the minute so RRD will have a data point for the current minute and graph doesn't end with 0 value.
+			// This is a hack that can probably be fix in a better fashion once start and end times are implemented.
+			seconds = new Date().getSeconds();
+			update_interval -= seconds + 1;
+
+			if (update_interval <= 0 || seconds >= 59) {
+				update_interval = $( "#auto-update" ).val();
+			}
+			// End hack.
+
+			auto_update = setTimeout(update_graph, update_interval * 1000);
 		}
 	}
 
@@ -1061,6 +1076,10 @@ events.push(function() {
 	function applySettings(defaults) {
 
 		var allOptions = defaults.split("&");
+
+		// Make sure autoUpdate is the last item in the options list so it is last to be processed and potentially enabled before all the other options have been applied.
+		// Set the auto update option to 0 so that multiple redraw_graph calls are not fired off while other options are being applied/changed.
+		$( "#auto-update" ).val("0").change();
 
 		allOptions.forEach(function(entry) {
 			
@@ -1214,11 +1233,7 @@ events.push(function() {
 			}
 
 			if(currentOption[0] === "autoUpdate") {
-				$( "#auto-update" ).val(currentOption[1]);
-				if (currentOption[1] > 0) {
-					update_interval = $( "#auto-update" ).val() * 1000;
-					auto_update = setInterval(update_graph, update_interval);
-				}
+				$( "#auto-update" ).val(currentOption[1]).change();
 			}
 
 		}, this);
