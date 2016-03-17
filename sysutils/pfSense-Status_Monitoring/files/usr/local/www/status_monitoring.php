@@ -1581,8 +1581,6 @@ events.push(function() {
 					return d3.time.format(timeFormat)(new Date(d));
 				}).tickPadding(15);
 
-				//TODO format y axis by rrd database
-
 				//TODO add option to match axis scales?
 
 				//y axis description by rrd database
@@ -1610,8 +1608,6 @@ events.push(function() {
 					.attr("y", 11)
 					.attr("id", "left-title")
 					.text("Left Axis: " + leftTitle);
-
-				//TODO format y axis by rrd database
 
 				//y axis description by rrd database
 				var gright = $( "#graph-right" ).val();
