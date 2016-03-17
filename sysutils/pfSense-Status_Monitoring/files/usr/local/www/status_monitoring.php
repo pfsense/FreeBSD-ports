@@ -1114,6 +1114,8 @@ events.push(function() {
 	**
 	***/
 
+	var graphOptions_previous;
+
 	function getOptions() {
 		var graphLeft = $( "#graph-left" ).val();
 		var graphRight = $( "#graph-right" ).val();
@@ -1125,6 +1127,12 @@ events.push(function() {
 		var invert = $( "#invert" ).val();
 
 		var graphOptions = 'left=' + graphLeft + '&right=' + graphRight + '&start=' + startDate + '&end=' + endDate + '&timePeriod=' + timePeriod + '&resolution=' + resolution + '&graphtype=' + graphtype + '&invert=' + invert ;
+
+		// If graph options have changed, un-select any quick link.
+		if (graphOptions != graphOptions_previous) {
+			selected_quicklink(null);
+		}
+		graphOptions_previous = graphOptions;
 
 		return graphOptions;
 	}
