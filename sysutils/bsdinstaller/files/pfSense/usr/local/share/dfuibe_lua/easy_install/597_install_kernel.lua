@@ -129,32 +129,31 @@ return {
 	    extensible = "false"
 	})
 
-	if response.action_id != "Default" then
-		local cmds = CmdChain.new()
-		if is_adi then
-			cmds:add("echo -S115200 -h >> /mnt/boot.config")
-		else
-			cmds:add("echo -S115200 -D >> /mnt/boot.config")
-			cmds:add("echo 'boot_multicons=\"YES\"' >> /mnt/boot/loader.conf")
-		end
-		cmds:add("echo 'boot_serial=\"YES\"' >> /mnt/boot/loader.conf")
-		if is_adi then
-			cmds:add("echo 'console=\"comconsole\"' >> /mnt/boot/loader.conf")
-		else
-			cmds:add("echo 'console=\"comconsole,vidconsole\"' >> /mnt/boot/loader.conf")
-		end
-		cmds:add("echo 'comconsole_speed=\"115200\"' >> /mnt/boot/loader.conf")
-		if is_adi then
-			cmds:add("echo 'comconsole_port=\"0x2F8\"' >> /mnt/boot/loader.conf")
-			cmds:add("echo 'hint.uart.0.flags=\"0x00\"' >> /mnt/boot/loader.conf")
-			cmds:add("echo 'hint.uart.1.flags=\"0x10\"' >> /mnt/boot/loader.conf")
-		end
-		cmds:add("echo 'kern.ipc.nmbclusters=\"1000000\"' >> /mnt/boot/loader.conf.local")
-		cmds:add("echo 'kern.ipc.nmbjumbop=\"524288\"' >> /mnt/boot/loader.conf.local")
-		cmds:add("echo 'kern.ipc.nmbjumbo9=\"524288\"' >> /mnt/boot/loader.conf.local")
-
-		cmds:execute()
+	local cmds = CmdChain.new()
+	if is_adi then
+		cmds:add("echo -S115200 -h >> /mnt/boot.config")
+	else
+		cmds:add("echo -S115200 -D >> /mnt/boot.config")
+		cmds:add("echo 'boot_multicons=\"YES\"' >> /mnt/boot/loader.conf")
 	end
+	cmds:add("echo 'boot_serial=\"YES\"' >> /mnt/boot/loader.conf")
+	if is_adi then
+		cmds:add("echo 'console=\"comconsole\"' >> /mnt/boot/loader.conf")
+	else
+		cmds:add("echo 'console=\"comconsole,vidconsole\"' >> /mnt/boot/loader.conf")
+	end
+	cmds:add("echo 'comconsole_speed=\"115200\"' >> /mnt/boot/loader.conf")
+	if is_adi then
+		cmds:add("echo 'comconsole_port=\"0x2F8\"' >> /mnt/boot/loader.conf")
+		cmds:add("echo 'hint.uart.0.flags=\"0x00\"' >> /mnt/boot/loader.conf")
+		cmds:add("echo 'hint.uart.1.flags=\"0x10\"' >> /mnt/boot/loader.conf")
+	end
+	cmds:add("echo 'kern.ipc.nmbclusters=\"1000000\"' >> /mnt/boot/loader.conf.local")
+	cmds:add("echo 'kern.ipc.nmbjumbop=\"524288\"' >> /mnt/boot/loader.conf.local")
+	cmds:add("echo 'kern.ipc.nmbjumbo9=\"524288\"' >> /mnt/boot/loader.conf.local")
+
+	cmds:execute()
+
 	App.state.netgate_model = response.action_id
 
 	return step:next()
