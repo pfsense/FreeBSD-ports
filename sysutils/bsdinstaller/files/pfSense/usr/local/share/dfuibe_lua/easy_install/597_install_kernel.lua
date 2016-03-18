@@ -148,8 +148,10 @@ return {
 			cmds:add("echo 'comconsole_port=\"0x2F8\"' >> /mnt/boot/loader.conf")
 			cmds:add("echo 'hint.uart.0.flags=\"0x00\"' >> /mnt/boot/loader.conf")
 			cmds:add("echo 'hint.uart.1.flags=\"0x10\"' >> /mnt/boot/loader.conf")
-			cmds:add("echo 'kern.ipc.nmbclusters=\"1000000\"' >> /mnt/boot/loader.conf.local")
 		end
+		cmds:add("echo 'kern.ipc.nmbclusters=\"1000000\"' >> /mnt/boot/loader.conf.local")
+		cmds:add("echo 'kern.ipc.nmbjumbop=\"524288\"' >> /mnt/boot/loader.conf.local")
+		cmds:add("echo 'kern.ipc.nmbjumbo9=\"524288\"' >> /mnt/boot/loader.conf.local")
 
 		cmds:execute()
 	end
