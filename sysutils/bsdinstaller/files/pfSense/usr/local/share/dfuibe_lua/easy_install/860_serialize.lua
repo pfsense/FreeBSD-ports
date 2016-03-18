@@ -94,7 +94,7 @@ local response = App.ui:present({
                    {
                        id = "coupon",
                        name = _("coupon"),
-                       short_desc = _("Regsiter serial number for support coupon")
+                       short_desc = _("Register serial number for support coupon")
                    },
                    {
                        id = "builder",
