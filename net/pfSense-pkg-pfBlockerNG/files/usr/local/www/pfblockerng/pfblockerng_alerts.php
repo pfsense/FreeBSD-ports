@@ -3,7 +3,7 @@
 	pfBlockerNG_Alerts.php
 
 	pfBlockerNG
-	Copyright (c) 2016 BBcan177@gmail.com
+	Copyright (c) 2015-2016 BBcan177@gmail.com
 	All rights reserved.
 
 	Portions of this code are based on original work done for
@@ -81,6 +81,18 @@ $alertrefresh	= $pfb['aglobal']['alertrefresh'] != '' ? $pfb['aglobal']['alertre
 $hostlookup	= $pfb['aglobal']['hostlookup'] != '' ? $pfb['aglobal']['hostlookup'] : 'on';
 foreach ($aglobal_array as $type => $value) {
 	${"$type"} = $pfb['aglobal'][$type] != '' ? $pfb['aglobal'][$type] : $value;
+}
+
+// Collect DNSBL suppression list
+$pfb['dsupp'] = &$config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['suppression'];
+$dnssupp_ex = array();
+$suppression = pfbng_text_area_decode($pfb['dnsblconfig']['suppression'], TRUE);
+if (isset($suppression)) {
+	foreach ($suppression as $dnssupp) {
+		// Create 1) array for the suppressed domains 2) A string with the domain and comment text
+		$dnssupp_ex[] = $dnssupp[0];
+		$dnssupp_dat .= "{$dnssupp[0]}{$dnssupp[1]}\r\n";
+	}
 }
 
 // Save Alerts tab customizations
@@ -251,21 +263,46 @@ if ($_POST['addsuppress']) {
 if ($_POST['addsuppressdom']) {
 	$domain		= htmlspecialchars($_POST['domain']);
 	$domainparse	= str_replace('.', '\.', $domain);
-	$pfb['dsupp']	= &$config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['suppression'];
 
-	// Collect existing suppression list
-	$dnssupp_ex = collectsuppression();
+	// Query for Domain in Unbound DNSBL file.
+	$dnsbl_query = exec("/usr/bin/grep -Hm1 ' \"{$domainparse} 60 IN A' {$pfb['dnsbl_file']}.conf");
 
-	// Query for domain in Unbound DNSBL file.
-	$dnsbl_query = exec("/usr/bin/grep -Hm1 ' \"{$domain} 60 IN A' {$pfb['dnsbl_file']}.conf");
+	// Query Domain for CNAME(s)
+	exec("/usr/bin/drill {$domain} @8.8.8.8 | /usr/bin/awk '/CNAME/ {sub(\"\.$\", \"\", $5); print $5;}'", $cname_list);
+	if (!empty($cname_list)) {
+		$cname = array();
+		$dnsbl_query = 'Found';
+
+		foreach ($cname_list as $query) {
+			$cname[] = $query;
+		}
+	}
 
 	// Save new suppress domain to suppress list.
 	if (empty($dnsbl_query)) {
-		$savemsg = gettext("Domain: [ {$domain} ] does not exist in the Unbound Resolver DNSBL");
+		$savemsg = gettext("Domain: [ ") . "{$domain}" . gettext(" ] does not exist in the Unbound Resolver DNSBL");
 		exec("/usr/local/sbin/unbound-control -c {$pfb['dnsbldir']}/unbound.conf flush {$domain}.");
-	} else {
-		// Remove domain from Unbound resolver pfb_dnsbl.conf file
-		exec("{$pfb['sed']} -i '' '/ \"{$domain} 60 IN A/d' {$pfb['dnsbl_file']}.conf");
+	}
+	else {
+		if (is_array($cname)) {
+			// Remove Domain and CNAME(s) in Unbound resolver pfb_dnsbl.conf file
+			$removed	= "{$domain} | ";
+			$supp_string	= "{$domain}\r\n";
+			exec("{$pfb['sed']} -i '' '/ \"{$domain} 60 IN A/d' {$pfb['dnsbl_file']}.conf");
+
+			foreach ($cname as $name) {
+				$removed	.= "{$name} | ";
+				$supp_string	.= "{$name} # CNAME for ({$domain})\r\n";
+				exec("{$pfb['sed']} -i '' '/ \"{$name} 60 IN A/d' {$pfb['dnsbl_file']}.conf");
+			}
+			$savemsg = gettext("Removed - Domain|CNAME(s) | ") . "{$removed}"
+				. gettext("from Unbound Resolver DNSBL. You may need to flush your browsers DNS Cache");
+		}
+		else {
+			// Remove domain from Unbound resolver pfb_dnsbl.conf file
+			exec("{$pfb['sed']} -i '' '/ \"{$domain} 60 IN A/d' {$pfb['dnsbl_file']}.conf");
+			$savemsg = gettext("Removed Domain: [ ") . "{$domain}" . gettext(" ] from Resolver DNSBL. You may need to flush your browsers DNS Cache");
+		}
 
 		$cache_dumpfile = '/var/tmp/unbound_cache';
 		unlink_if_exists("{$cache_dumpfile}");
@@ -279,16 +316,24 @@ if ($_POST['addsuppressdom']) {
 		}
 
 		exec("/usr/local/sbin/unbound-control -c {$pfb['dnsbldir']}/unbound.conf flush {$domain}");
+		if (is_array($cname)) {
+			foreach ($cname as $name) {
+				exec("/usr/local/sbin/unbound-control -c {$pfb['dnsbldir']}/unbound.conf flush {$name}");
+			}
+		}
 
 		if (!in_array($domain, $dnssupp_ex)) {
-			$dnssupp_ex[]	= $domain;
-			$dnssupp_new	= base64_encode(implode("\n", $dnssupp_ex));
-			$pfb['dsupp']	= "{$dnssupp_new}";
+			if (is_array($cname)) {
+				$dnssupp_dat .= "{$supp_string}";
+			} else {
+				$dnssupp_dat .= "{$domain}";
+			}
+			$pfb['dsupp'] = base64_encode($dnssupp_dat);
 			write_config("pfBlockerNG: Added {$domain} to DNSBL suppress list");
 		}
-		$savemsg = gettext("Removed Domain: [ {$domain} ] from Unbound Resolver DNSBL. You may need to flush your browsers DNS Cache");
 	}
 }
+
 
 // Collect pfBlockerNG rule names and tracker ids
 $rule_list = array();
@@ -459,20 +504,8 @@ if (isset($pf_int)) {
 	$local_hosts = array_merge($local_hosts, array_flip(array_filter($pf_int)));
 }
 
+
 // FUNCTION DEFINITIONS
-
-
-// Collect existing suppression list
-function collectsuppression() {
-	global $pfb;
-	$dnssupp_ex = array();
-
-	$custom_list = pfbng_text_area_decode($pfb['dnsblconfig']['suppression']);
-	if (!empty($custom_list)) {
-		$dnssupp_ex = array_filter( explode("\n", pfbng_text_area_decode($pfb['dnsblconfig']['suppression'])));
-	}
-	return ($dnssupp_ex);
-}
 
 
 // Host resolve function lookup
@@ -780,10 +813,10 @@ $group->add(new Form_Input(
 
 $group->add(new Form_Input(
 	'filterlogentries_srcport',
-	'Source Port',
-	'number',
+	'Source:Port',
+	'text',
 	$filterfieldsarray[9]
-))->setAttribute('title', 'Enter filter \'Source Port\'.');
+))->setAttribute('title', 'Enter filter \'Source:Port\'.');
 
 $group->add(new Form_Input(
 	'filterlogentries_int',
@@ -810,15 +843,15 @@ $group->add(new Form_Input(
 
 $group->add(new Form_Input(
 	'filterlogentries_dstport',
-	'Destination Port',
-	'number',
+	'Destination:Port',
+	'text',
 	$filterfieldsarray[10]
-))->setAttribute('title', 'Enter filter \'Destination Port\'.');
+))->setAttribute('title', 'Enter filter \'Destination:Port\'.');
 
 $group->add(new Form_Input(
 	'filterlogentries_proto',
 	'Protocol',
-	'number',
+	'text',
 	$filterfieldsarray[6]
 ))->setAttribute('title', 'Enter filter \'Protocol\'.');
 $section->add($group);
@@ -836,7 +869,7 @@ if ($pfb['dnsbl'] == 'on') {
 $group = new Form_Group(NULL);
 $btnsubmit = new Form_Button(
 	'filterlogentries_submit',
-	' ' . gettext('Apply Filter'),
+	gettext('Apply Filter'),
 	NULL,
 	'fa-filter'
 	);
@@ -844,7 +877,7 @@ $btnsubmit->removeClass('btn-primary')->addClass('btn-primary btn-xs');
 
 $btnclear = new Form_Button(
 	'filterlogentries_clear',
-	' ' . gettext('Clear Filter'),
+	gettext('Clear Filter'),
 	NULL,
 	'fa-filter fa-rotate-180'
 	);
@@ -852,8 +885,8 @@ $btnclear->removeClass('btn-primary')->addClass('btn-primary btn-xs');
 
 $group->add(new Form_StaticText(
 	'',
-	$btnsubmit . '&emsp;' . $btnclear
-	. '&emsp;<div id="infoblock">'
+	$btnsubmit . $btnclear
+	. '&emsp;<div class="infoblock">'
 	. '<h6>Regex Style Matching Only! <a href="http://regexr.com/" target="_blank">Regular Expression Help link</a>. '
 	. 'Precede with exclamation (!) as first character to exclude match.)</h6>'
 	. '<h6>Example: ( ^80$ - Match Port 80, ^80$|^8080$ - Match both port 80 & 8080 )</h6>'
@@ -1019,8 +1052,6 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 			$alert_dom = '<a class="fa fa-info icon-pointer icon-primary" title="Click for Threat Source Lookup." ' .
 					'href="/pfblockerng/pfblockerng_threats.php?domain=' . $aline[2] . '"></a>';
 
-			// Collect existing suppression list
-			$dnssupp_ex = collectsuppression();
 			if (!in_array($pfbalertdnsbl[8], $dnssupp_ex)) {
 				$supp_dom = '<i class="fa fa-plus icon-pointer icon-primary" id="DNSBLSUP' . $domain . '"' .
 						'" title="' . $supp_dom_txt . '"></i>';
@@ -1162,12 +1193,18 @@ if (!empty($fields_array[$type]) && !empty($rule_list) && $type != 'DNSBL') {
 					$pfb_match[2] = '';
 				}
 				else {
-					// Report specific ET IQRisk details
-					if ($pfb['et_header'] && strpos($pfb_query, "{$et_header}") !== FALSE) {
-						$pfbfolder = "{$pfb['etdir']}/*";
-					}
-
 					$pfb_query = find_reported_header($host, $pfbfolder, FALSE);
+
+					// Report specific ET IQRisk details
+					if ($pfb['et_header'] && strpos($pfb_query[1], "{$et_header}") !== FALSE) {
+						$ET_orig = $pfb_query;
+						$pfb_query = find_reported_header($host, "{$pfb['etdir']}/*", FALSE);
+
+						// On 'no match', ET IQRisk category is unknown.
+						if ($pfb_query[1] == 'no match') {
+							$pfb_query = $ET_orig;
+						}
+					}
 
 					// Split list column into two lines.
 					$pfb_match[1] = "{$pfb_query[1]}";
