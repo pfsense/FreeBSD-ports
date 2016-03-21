@@ -3,7 +3,7 @@
 /* pfBlockerNG_Update.php
 
 	pfBlockerNG
-	Copyright (c) 2016 BBcan177@gmail.com
+	Copyright (c) 2015-2016 BBcan177@gmail.com
 	All rights reserved.
 
 	Portions of this code are based on original work done for
@@ -343,7 +343,7 @@ $section->add($group);
 $group = new Form_Group(NULL);
 $btn_run = new Form_Button(
 	'run',
-	' ' . 'Run',
+	'Run',
 	NULL,
 	'fa-play-circle'
 );
@@ -351,16 +351,16 @@ $btn_run->removeClass('btn-primary')->addClass('btn-primary btn-xs')->setWidth(1
 
 // Alternate view/end view button text
 if (!isset($pconfig['log_view'])) {
-	$pconfig['log_view'] = ' View';
-} elseif($pconfig['log_view'] == ' View') {
-	$pconfig['log_view'] = ' End View' ;
+	$pconfig['log_view'] = 'View';
+} elseif($pconfig['log_view'] == 'View') {
+	$pconfig['log_view'] = 'End View' ;
 } else {
-	$pconfig['log_view'] = ' View';
+	$pconfig['log_view'] = 'View';
 }
 
 // Alternate view/end view title text
 $btn_logview_title = 'Click to End Log View';
-if ($pconfig['log_view'] == ' View') {
+if ($pconfig['log_view'] == 'View') {
 	$btn_logview_title = 'Click to View a running Cron Update.';
 }
 
@@ -374,7 +374,7 @@ $btn_logview->removeClass('btn-primary')->addClass('btn-primary btn-xs')->setWid
 	    ->setAttribute('title', $btn_logview_title);
 $group->add(new Form_StaticText(
 		NULL,
-		$btn_run . '&emsp;' . $btn_logview
+		$btn_run . $btn_logview
 ));
 
 $section->add($group);
@@ -401,7 +401,7 @@ print($form);
 
 // Execute the viewer output window
 if (isset($pconfig['log_view'])) {
-	if ($pconfig['log_view'] !== ' View') {
+	if ($pconfig['log_view'] !== 'View') {
 		pfbupdate_status(gettext("Log Viewing in progress.    ** Press 'END VIEW' to Exit ** "));
 		pfb_livetail($pfb['log'], 'view');
 	} else {
