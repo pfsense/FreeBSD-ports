@@ -683,7 +683,7 @@ $xml = <<<EOF
 	pfblockerng_{$cont_name}.xml
 
 	pfBlockerNG
-	Copyright (C) 2016 BBcan177@gmail.com
+	Copyright (C) 2015-2016 BBcan177@gmail.com
 	All rights reserved.
 
 	Based upon pfblocker for pfSense
@@ -1188,7 +1188,7 @@ $xmlrep = <<<EOF
 	pfBlockerNG_Reputation.xml
 
 	pfBlockerNG
-	Copyright (C) 2016 BBcan177@gmail.com
+	Copyright (C) 2015-2016 BBcan177@gmail.com
 	All rights reserved.
 
 	Based upon pfblocker for pfSense
