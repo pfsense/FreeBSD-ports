@@ -3,7 +3,7 @@
 
 PORTNAME=	bsdinstaller
 PORTVERSION=	2.0.11
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -91,10 +91,10 @@ PLIST_FILES+=	/scripts/lua_installer \
 		share/dfuibe_lua/easy_install/500_install_os.lua \
 		share/dfuibe_lua/easy_install/597_install_kernel.lua \
 		share/dfuibe_lua/easy_install/598_install_bootblocks.lua \
-		share/dfuibe_lua/easy_install/599_after_installation_tasks.lua \
 		share/dfuibe_lua/easy_install/900_reboot.lua \
 		share/dfuibe_lua/easy_install/main.lua \
 		share/dfuibe_lua/install/597_install_kernel.lua \
+		share/dfuibe_lua/easy_install/860_serializer.lua \
 		share/dfuibe_lua/install/599_after_installation_tasks.lua
 
 PLIST_DIRSTRY+=	/scripts
