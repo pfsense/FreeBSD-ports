@@ -232,6 +232,9 @@ add-plist-phpext:
 	@${ECHO_CMD} "@exec echo extension=${PHP_MODNAME}.so >> %D/etc/php/extensions.ini" \
 		>> ${TMPPLIST}
 .endif
+	# XXX: pfSense workaround to keep extensions sorted
+	@${ECHO_CMD} "@exec sort -u -o %D/etc/php/extensions.ini %D/etc/php/extensions.ini" \
+		>> ${TMPPLIST}
 	@${ECHO_CMD} "@unexec cp %D/etc/php/extensions.ini %D/etc/php/extensions.ini.orig" \
 		>> ${TMPPLIST}
 .if defined(USE_ZENDEXT)
