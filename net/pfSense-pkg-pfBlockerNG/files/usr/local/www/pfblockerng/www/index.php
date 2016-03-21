@@ -3,7 +3,7 @@
 	index.php
 
 	pfBlockerNG (DNSBL)
-	Copyright (c) 2016 BBcan177@gmail.com
+	Copyright (c) 2015-2016 BBcan177@gmail.com
 	All rights reserved.
 */
 header("Cache-Control: private, no-store, no-cache, must-revalidate, max-age=0");
