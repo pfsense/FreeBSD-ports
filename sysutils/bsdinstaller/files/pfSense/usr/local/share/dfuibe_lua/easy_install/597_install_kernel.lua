@@ -30,6 +30,7 @@ return {
     effect = function(step)
 	local datasets_list = {}
 	local actions_list = {}
+	local actions {}
 	
 	local is_adi = (os.execute("/bin/kenv -q smbios.system.product | /usr/bin/egrep -q 'RCC-VE|DFFv2|RCC'") == 0)
 
@@ -115,7 +116,7 @@ return {
 	    id = "install_kernel",
 	    name = _("Install Kernel"),
 	    short_desc = _(
-		"You may now wish to install a custom Kernel configuration. ",
+		"Please specify the model of the system being installed. ",
 		App.conf.product.name, App.conf.product.name),
 	    long_desc = _(
 	        "",
