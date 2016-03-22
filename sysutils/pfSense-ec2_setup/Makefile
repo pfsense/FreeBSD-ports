@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-ec2_setup
-PORTVERSION=	0.1
+PORTVERSION=	0.2
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -16,8 +16,6 @@ NO_MTREE=	yes
 PLIST_SUB=	PORTNAME=${PORTNAME}
 PLIST_FILES=	sbin/ec2_setup.php
 USE_PHP=	yes
-
-RUN_DEPENDS=	${LOCALBASE}/www/openvpn_connect_profile.php:${PORTSDIR}/sysutils/pfSense-openvpn_connect_profile
 
 do-extract:
 	${MKDIR} ${WRKSRC}

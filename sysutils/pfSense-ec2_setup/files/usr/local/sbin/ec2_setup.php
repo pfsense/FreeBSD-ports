@@ -31,8 +31,13 @@ function retrieveMetaData($url) {
 
 
 function retrieveSSHKey() {
+	global $g;
 
-	$url = "http://169.254.169.254/latest/meta-data/public-keys/0/openssh-key";
+	if ($g['default-config-flavor'] == "openstack-csm") {
+		$url = "http://169.254.169.254/latest/meta-data/public-ipv4";
+	} else {
+		$url = "http://169.254.169.254/latest/meta-data/public-keys/0/openssh-key";
+	}
 	return(retrieveMetaData($url));
 }
 
@@ -366,11 +371,23 @@ function initialSystemConfig() {
 	write_config();
 }
 
-if ($g['default-config-flavor'] == "ec2" && $argv[1] == 'start') {
-	if (isset($config['system']['doinitialsetup']))
-		initialSystemConfig();
-	$publicIP = retrievePublicIP();
-	writeOpenVPNConfig($publicIP);
+if ($argv[1] == 'start') {
+	switch ($g['default-config-flavor']) {
+	case "ec2":
+	case "ec2-csm":
+	case "openstack-csm":
+		if (isset($config['system']['doinitialsetup']))
+			initialSystemConfig();
+		break;
+	}
+
+	switch ($g['default-config-flavor']) {
+	case "ec2":
+	case "ec2-csm":
+		$publicIP = retrievePublicIP();
+		writeOpenVPNConfig($publicIP);
+		break;
+	}
 }
 
 ?>
