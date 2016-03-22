@@ -306,7 +306,7 @@ function writeOpenVPNConfig($publicIP) {
 
 
 function initialSystemConfig() {
-	global $config;
+	global $config, $g;
 
 	/* admin user should exist already, exit if it doesnt */
 	if (!(is_array($config['system']['user']) && isset($config['system']['user'][0]))) {
@@ -345,8 +345,10 @@ function initialSystemConfig() {
 	}
 	local_user_set($admin_user);
 
-	/* add a disabled remote access OpenVPN server */
-	addOpenVPNServer();
+	if ($g['default-config-flavor'] == "ec2") {
+		/* add a disabled remote access OpenVPN server */
+		addOpenVPNServer();
+	}
 
 	if (isset($user_data['mgmtnet']))
 		configureMgmtNetRules($user_data['mgmtnet']);
