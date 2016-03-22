@@ -1,0 +1,50 @@
+#!/usr/local/bin/php -f
+<?php
+
+/* Usage: set-pfsense-sshkey <user_name> <ssh_pub_key>
+ *
+ * Set the input ssh key in the config.xml for a user and add to their home dir
+ */
+
+require_once('config.inc');
+require_once('auth.inc');
+
+if (!isset($config['system']['user']) || !is_array($config['system']['user']))
+	$config['system']['user'] = array();
+
+$a_user = &$config['system']['user'];
+$user_config = array();
+$groups = array();
+
+if (empty($argv[1])) {
+	exit(1);
+}
+
+/* if the user doesn't exist, exit */
+$existing_id = -1;
+foreach ($a_user as $userid => $userent) {
+	if ($argv[1] == $userent['name']) {
+		$user_config = &$userent;
+		$existing_id = $userid;
+		break;
+	}
+}
+
+if ($existing_id == -1) {
+        exit(1);
+}
+
+/* if no key was passed in as an argument, don't do anything */
+if (empty($argv[2])) { 
+	exit(0);
+}
+
+$key = $argv[2];
+$user_config['authorizedkeys'] = base64_encode($key);
+local_user_set($user_config);
+$a_user[$existing_id] = $user_config;
+write_config();
+
+exit(0);
+
+?>

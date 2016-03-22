@@ -1,0 +1,50 @@
+#!/usr/local/bin/php
+<?php
+
+/* Usage: set-pfsense-hostname <hostname>
+ *
+ * Set system hostname on running system and in pfsense xml config 
+ */
+
+require_once('functions.inc');
+require_once('system.inc');
+require_once('config.inc');
+
+if (empty($argv[1])) {
+        return 1;
+}
+
+$hostname = $argv[1];
+$domainname = "cloudapp.net";
+
+if (!is_hostname($hostname)) {
+	echo "Invalid hostname supplied: $hostname\n";
+	return 1;
+}
+
+$config_changed = false;
+
+if ($config['system']['hostname'] != $hostname) {
+	$config['system']['hostname'] = $hostname;
+	$config_changed = true;
+}
+
+if ($config['system']['domain'] != $domainname) {
+	$config['system']['domain'] = $domainname;
+	$config_changed = true;
+}
+
+$public_ip = resolve_retry("$hostname.$domainname");
+if ($public_ip && !is_private_ip($public_ip)) {
+	file_put_contents("/var/db/natted_hn0_ip", $public_ip);
+}
+
+if ($config_changed) {
+	write_config();
+	system_hostname_configure();
+	system_hosts_generate();
+}
+
+return 0;
+
+?>

@@ -1,0 +1,92 @@
+#!/usr/local/bin/php
+<?php
+
+/* Usage: add-pfsense-user <user_name> <expire_date> <ssh_pub_key> <password>
+ *
+ * Adds a user to the pfSense system config with privileges similar to those
+ * that the Azure waagent script attempts to add to a stock FreeBSD/Linux
+ * instance.
+ */
+
+require_once('config.inc');
+require_once('auth.inc');
+
+if (!isset($config['system']['user']) || !is_array($config['system']['user']))
+	$config['system']['user'] = array();
+
+$a_user = &$config['system']['user'];
+$user_config = array();
+$groups = array();
+
+if (empty($argv[1])) {
+	exit(1);
+}
+
+/* if a user exists with this users name, use the existing data for that
+ * user and just update the password and ssh key if one was passed in */
+$existing_id = -1;
+foreach ($a_user as $userid => $userent) {
+	if ($argv[1] == $userent['name']) {
+		$user_config = &$userent;
+		$existing_id = $userid;
+		break;
+	}
+}
+if ($argv[1] == "root") {
+	$existing_id = 0;
+	$user_config = array(
+		'uid' => 0,
+		'name' => 'root'
+	);
+}
+
+$changed_creds = false;
+
+if (!empty($argv[3])) { 
+	$user_config['authorizedkeys'] = base64_encode($argv[3]);
+	local_user_set($user_config);
+	$changed_creds = true;
+}
+
+if (!empty($argv[4])) {
+	local_user_set_password($user_config, $argv[4]);
+	local_user_set($user_config);
+	if ($existing_id != -1  &&  $user_config['name'] != 'root') {
+		$a_user[$existing_id] = $user_config;
+	}
+	$changed_creds = true;
+}
+
+if ($existing_id == -1) {
+	$user_config['name'] = $argv[1];
+	$user_config['descr'] = 'Auto Added account';
+	$user_config['groupname'] = 'admins';
+	$user_config['scope'] = 'system';
+	$user_config['priv'] = [ 'user-shell-access' ];
+	$user_config['uid'] = $config['system']['nextuid']++;
+
+	if (!empty($argv[2])) {
+		try {
+			$exp_dt = new DateTime($argv[2]);
+			$user_config['expires'] =  $exp_dt->format("m/d/Y");
+		} catch (Exception $ex) {
+			;
+		}
+	}
+	local_user_set($user_config);
+	$a_user[] = $user_config;
+	$groups = [ 'all', 'admins' ];
+	local_user_set_groups($user_config, $groups);
+	$changed_creds = true;
+}
+
+if ($changed_creds) {
+	if ($existing_id != -1) {
+		$a_user[$existing_id] = $user_config;
+	}
+	write_config();
+}
+
+exit(0);
+
+?>
