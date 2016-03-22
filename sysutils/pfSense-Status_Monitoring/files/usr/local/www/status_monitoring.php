@@ -1381,7 +1381,7 @@ events.push(function() {
 			$("#chart").show();
 			$("#loading-msg").hide();
 
-			//clear previous svg so it can be redawn from scratch
+			//clear previous svg so it can be drawn from scratch
 			d3.select("svg").remove();
 			d3.select('#chart').append('svg');
 
