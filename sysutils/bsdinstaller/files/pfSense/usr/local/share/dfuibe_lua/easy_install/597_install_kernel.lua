@@ -30,7 +30,7 @@ return {
     effect = function(step)
 	local datasets_list = {}
 	local actions_list = {}
-	local actions {}
+	local actions = {}
 	
 	local is_adi = (os.execute("/bin/kenv -q smbios.system.product | /usr/bin/egrep -q 'RCC-VE|DFFv2|RCC'") == 0)
 
