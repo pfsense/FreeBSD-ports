@@ -1,10 +1,6 @@
 #!/usr/local/bin/php -f
 <?php
 
-# PROVIDE: ec2_setup
-# REQUIRE: NETWORKING
-# BEFORE: LOGIN
-
 require("globals.inc");
 require("config.inc");
 require("auth.inc");
