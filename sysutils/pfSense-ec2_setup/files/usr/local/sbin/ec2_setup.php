@@ -9,7 +9,6 @@ require("certs.inc");
 require("openvpn.inc");
 
 function retrieveMetaData($url) {
-
 	if (!$url)
 		return;
 
@@ -25,7 +24,6 @@ function retrieveMetaData($url) {
 	return($metadata);
 }
 
-
 function retrieveSSHKey() {
 	global $g;
 
@@ -38,7 +36,6 @@ function retrieveSSHKey() {
 }
 
 function retrieveUserData() {
-
 	$url = "http://169.254.169.254/latest/user-data/";
 	$user_data = retrieveMetaData($url);
 
@@ -56,11 +53,9 @@ function retrieveUserData() {
 	}
 
 	return($ud);
-
 }
 
 function retrievePublicIP() {
-
 	$wanintf = get_real_wan_interface();
 	$macaddr = get_interface_mac($wanintf);
 	if (!$macaddr)
@@ -79,7 +74,6 @@ function retrievePublicIP() {
 }
 
 function generateRandomPassword($length = 15) {
-
 	/* get some random bytes. use them as offsets into the space of
            printable ascii characters. 32-126 is the printable characters.
 	   Omit 32 itself since it might be confusing if there is a space
@@ -100,7 +94,6 @@ function generateRandomPassword($length = 15) {
 }
 
 function addCA() {
-
 	global $config;
 	if (!is_array($config['ca']))
 		$config['ca'] = array();
@@ -139,7 +132,6 @@ function addCA() {
 }
 
 function addServerCert($caref) {
-
 	global $config;
 
 	if (!is_array($config['cert']))
@@ -182,7 +174,6 @@ function addServerCert($caref) {
 }
 
 function addOpenVPNServer() {
-
 	global $config;
 
 	if (!is_array($config['openvpn']['openvpn-server']))
@@ -233,7 +224,6 @@ function addOpenVPNServer() {
 }
 
 function configureMgmtNetRules($mgmtnet) {
-
 	global $config;
 
 	/*
@@ -275,7 +265,6 @@ function configureMgmtNetRules($mgmtnet) {
 }
 
 function writeOpenVPNConfig($publicIP) {
-
 	global $config, $g;
 
 	/* check if the first openvpn server is the automatically generated
@@ -317,7 +306,6 @@ function writeOpenVPNConfig($publicIP) {
 
 
 function initialSystemConfig() {
-
 	global $config;
 
 	/* admin user should exist already, exit if it doesnt */
