@@ -455,6 +455,9 @@ if ($savemsg) {
 					<button class="btn btn-sm btn-info" type="button" value="true" name="settings" id="settings"><i class="fa fa-cog fa-lg"></i> Display Advanced</button>
 				</div>
 				<div class="col-sm-2">
+					<button class="btn btn-sm btn-primary" type="button" value="csv" name="export" id="export" style="display:none;"><i class="fa fa-download fa-lg"></i> Export As CSV</button>
+				</div>
+				<div class="col-sm-2">
 					<button class="btn btn-sm btn-primary" type="submit" value="true" name="defaults" id="defaults" style="display:none;"><i class="fa fa-save fa-lg"></i> Save As Defaults</button>
 				</div>
 				<div class="col-sm-2">
@@ -1294,9 +1297,70 @@ events.push(function() {
 
 	$( "#settings" ).click(function() {
 		($(this).text().trim() === 'Display Advanced') ? $(this).html('<i class="fa fa-cog fa-lg"></i> Hide Advanced') : $(this).html('<i class="fa fa-cog fa-lg"></i> Display Advanced');
+		$("#export").toggle();
 		$("#defaults").toggle();
 		$("#enable").toggle();
 		$("#ResetRRD").toggle();
+	});
+
+	$( "#export" ).click(function() {
+
+		var csv = ","; //skip first csv column in header row
+		var csvArray = [];
+
+		d3.json("rrd_fetch_json.php")
+			.header("Content-Type", "application/x-www-form-urlencoded")
+			.post(getOptions(), function(error, json) {
+
+				if (error) {
+					$("#chart").hide();
+					$("#chart-error").show().html('<strong>Error</strong>: ' + error);
+					return console.warn(error);
+				}
+
+				if (json.error) {
+					$("#chart").hide();
+					$("#chart-error").show().html('<strong>Error</strong>: ' + json.error);
+					return console.warn(json.error);
+				}
+
+				var index = 0;
+				
+				json.forEach(function(event) {
+					
+					//create header row
+					csv += event.key + ",";
+
+					var count = 0;
+
+					event.values.forEach(function(event) {
+
+						if(index > 0) {
+							csvArray[count] = csvArray[count] + "," + event[1];
+						} else {
+							csvArray[count] = event[0] + "," + event[1];
+						}
+
+						count++;
+
+					});
+
+					index++;
+
+				});
+
+				//end header row
+				csv += "\n";
+
+				//fill with values
+				csvArray.forEach(function(event) {
+					csv += event + "\n";
+				});
+
+				window.open("data:text/csv;charset=utf-8," + escape(csv));
+
+			});
+
 	});
 
 	/***

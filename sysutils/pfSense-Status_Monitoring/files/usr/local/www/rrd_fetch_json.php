@@ -54,7 +54,9 @@
 	OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-header('Content-Type: application/json');
+$nocsrf = true;
+
+require("guiconfig.inc");
 
 $rrd_location = "/var/db/rrd/";
 
@@ -560,6 +562,7 @@ if ($right != "null") {
 	}
 }
 
+header('Content-Type: application/json');
 echo json_encode($obj,JSON_PRETTY_PRINT|JSON_PARTIAL_OUTPUT_ON_ERROR|JSON_NUMERIC_CHECK);
 
 ?>
