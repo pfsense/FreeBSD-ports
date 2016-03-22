@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<packagegui>
+	<menu>
+		<name>OpenVPN Profile</name>
+		<section>VPN</section>
+		<url>/openvpn_connect_profile.php</url>
+	</menu>
+</packagegui>
