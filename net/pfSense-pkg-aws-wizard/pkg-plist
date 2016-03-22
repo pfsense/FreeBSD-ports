@@ -523,7 +523,6 @@
 /etc/inc/aws/aws-autoloader.php
 pkg/aws_wizard.xml
 %%DATADIR%%/info.xml
-share/pfSense/menu/pfSense-pkg-aws-wizard.xml
 www/wizards/vpc_vpn_wizard.inc
 www/wizards/vpc_vpn_wizard.xml
 @dir /etc/inc/aws/Aws/Common/Client
