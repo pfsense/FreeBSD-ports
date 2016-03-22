@@ -2,7 +2,7 @@
 
 require("guiconfig.inc");
 
-$profileDir   = '%%DATADIR%%';
+$profileDir   = '/usr/local/libdata/vpn-profile';
 $ovpnProfile = 'remote-access-openvpn.ovpn';
 
 if (file_exists("$profileDir/$ovpnProfile")) {
