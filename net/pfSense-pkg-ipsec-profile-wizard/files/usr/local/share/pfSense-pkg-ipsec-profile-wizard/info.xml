@@ -1,11 +1,10 @@
 <?xml version="1.0"?>
 <pfsensepkgs>
 	<package>
-		<name>IPSec Profile Wizard</name>
-		<name>ipsec-profile-wizard</name>
+		<name>IPsec Profile Wizard</name>
 		<pkginfolink>https://doc.pfsense.org/index.php/ipsec-profile</pkginfolink>
-		<descr><![CDATA[IPSec profile wizard for IOS Clients&lt;br /&gt;
-			This package implements a wizard for generating ipsec client profiles for IOS devicesl.&lt;br /&gt; ]]></descr>
+		<descr><![CDATA[IPsec profile wizard for IOS Clients&lt;br /&gt;
+			This package implements a wizard for generating IPsec client profiles for IOS devices.&lt;br /&gt; ]]></descr>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>ipsec-profile.xml</configurationfile>
 	</package>
