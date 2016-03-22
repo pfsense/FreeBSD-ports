@@ -34,7 +34,7 @@ return {
 	local is_adi = (os.execute("/bin/kenv -q smbios.system.product | /usr/bin/egrep -q 'RCC-VE|DFFv2|RCC'") == 0)
 
 	if is_adi then
- 		actions = { 
+ 		actions_list = { 
 	                {
 	                    id = "SG-2220",
 	                    name = _("SG-2220")
