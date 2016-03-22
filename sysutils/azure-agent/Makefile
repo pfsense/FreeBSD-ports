@@ -11,6 +11,7 @@ LICENSE=	APACHE20
 
 RUN_DEPENDS=	python:${PORTSDIR}/lang/python \
 		sudo:${PORTSDIR}/security/sudo \
+		bash:${PORTSDIR}/shells/bash \
 		${PYTHON_PKGNAMEPREFIX}pyasn1>=0:${PORTSDIR}/devel/py-pyasn1 \
 		${LOCALBASE}/share/certs/ca-root-nss.crt:${PORTSDIR}/security/ca_root_nss
 
