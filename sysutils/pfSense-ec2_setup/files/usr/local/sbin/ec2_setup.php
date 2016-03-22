@@ -35,7 +35,7 @@ function retrieveSSHKey() {
 	$url = "http://169.254.169.254/latest/meta-data/public-keys/0/openssh-key";
 	return(retrieveMetaData($url));
 }
- 
+
 function retrieveUserData() {
 
 	$url = "http://169.254.169.254/latest/user-data/";
@@ -76,7 +76,7 @@ function retrievePublicIP() {
 
 	return;
 }
-	
+
 function generateRandomPassword($length = 15) {
 
 	/* get some random bytes. use them as offsets into the space of
@@ -89,7 +89,7 @@ function generateRandomPassword($length = 15) {
 	$random_bytes = str_split(openssl_random_pseudo_bytes($length));
 
 	for ($i = 0; $i < $length; $i++) {
-		
+
 		$offset = ord($random_bytes[$i]) % $range_size;
 		$password .= chr(33 + $offset);
 
@@ -151,7 +151,7 @@ function addServerCert($caref) {
 	$cert_cfg['digest_alg'] = 'sha256';
 	$cert_cfg['type'] = 'server';
 	$cert_cfg['lifetime'] = 3650;
-	
+
 	$dn['countryName']         = 'US';
 	$dn['stateOrProvinceName'] = 'TX';
 	$dn['localityName']        = 'Austin';
@@ -282,9 +282,9 @@ function writeOpenVPNConfig($publicIP) {
 	if (!is_array($config['openvpn']['openvpn-server']) ||
 	    !isset($config['openvpn']['openvpn-server'][0]['description']) ||
 	    ($config['openvpn']['openvpn-server'][0]['description'] !=
-	     'Netgate Auto Remote Access VPN')) 
+	     'Netgate Auto Remote Access VPN'))
 		return;
-	
+
 	$cfgDir             = "/usr/local/libdata/vpn-profile";
 	$ovpnCfgFile        = "remote-access-openvpn.ovpn";
 	$cfgTemplateDir     = "/usr/local/share/{$g['product_name']}-openvpn-connect-profile";
@@ -296,7 +296,7 @@ function writeOpenVPNConfig($publicIP) {
 	$newOvpnCfg = file_get_contents("$cfgTemplateDir/$ovpnCfgFile");
 	if (!isset($newOvpnCfg))
 		return;
-		
+
 	$newOvpnCfg = str_replace('__PUBLIC_IP__', $publicIP, $newOvpnCfg);
 	$ca = $config['ca'][0]['crt'];
 	if ($ca) {
