@@ -1623,7 +1623,7 @@ events.push(function() {
 			}
 
 			if (d.ninetyfifth) {
-				var ninetyFifth = d3.quantile(summary.sort(), .95);
+				var ninetyFifth = d3.quantile(summary.sort(function(a,b) { return a - b; }), .95);
 				var formatted_95th = d3.formatPrefix(ninetyFifth);
 
 				var ninetyfifthVal = formatted_95th.scale(ninetyFifth).toFixed(2) + ' ' + formatted_95th.symbol + units;
