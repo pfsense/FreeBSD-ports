@@ -357,23 +357,21 @@ function initialSystemConfig() {
 	write_config();
 }
 
-if ($argv[1] == 'start') {
-	switch ($g['default-config-flavor']) {
-	case "ec2":
-	case "ec2-csm":
-	case "openstack-csm":
-		if (isset($config['system']['doinitialsetup']))
-			initialSystemConfig();
-		break;
-	}
+switch ($g['default-config-flavor']) {
+case "ec2":
+case "ec2-csm":
+case "openstack-csm":
+	if (isset($config['system']['doinitialsetup']))
+		initialSystemConfig();
+	break;
+}
 
-	switch ($g['default-config-flavor']) {
-	case "ec2":
-	case "ec2-csm":
-		$publicIP = retrievePublicIP();
-		writeOpenVPNConfig($publicIP);
-		break;
-	}
+switch ($g['default-config-flavor']) {
+case "ec2":
+case "ec2-csm":
+	$publicIP = retrievePublicIP();
+	writeOpenVPNConfig($publicIP);
+	break;
 }
 
 ?>
