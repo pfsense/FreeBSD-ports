@@ -537,6 +537,8 @@ if ($right != "null") {
 			$outpass_total[] = array($key, $value + $outpass6_array[$key]);
 		}
 
+		$ds_key_right_adjusted += 1;
+
 		//add the new total lines to array
 		$obj[$ds_key_right_adjusted]['key'] = "inpass total";
 		$obj[$ds_key_right_adjusted]['type'] = $graphtype;
