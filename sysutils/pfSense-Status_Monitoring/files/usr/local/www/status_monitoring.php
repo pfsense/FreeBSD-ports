@@ -1381,9 +1381,9 @@ events.push(function() {
 			$("#chart").show();
 			$("#loading-msg").hide();
 
-			//clear previous svg so it can be drawn from scratch
-			d3.select("svg").remove();
-			d3.select('#chart').append('svg');
+			d3.select("svg").remove(); //delete previous svg so it can be drawn from scratch
+			d3.select("div[id^=nvtooltip-]").remove(); //delete previous tooltip in case it gets hung
+			d3.select('#chart').append('svg'); //re-add blank svg so it and be drawn on
 
 			if (error) {
 				$("#chart").hide();
