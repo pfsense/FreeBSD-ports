@@ -1292,7 +1292,7 @@ events.push(function() {
 	$( ".update-graph" ).click(function() {
 		$("#chart").hide();
 		$("#loading-msg").show();
-		redraw_graph(getOptions());
+		draw_graph(getOptions());
 	});
 
 	$( "#settings" ).click(function() {
@@ -1372,236 +1372,18 @@ events.push(function() {
 	**
 	***/
 
-	function redraw_graph(options) {
+	function draw_graph(options) {
 
 		d3.json("rrd_fetch_json.php")
 			.header("Content-Type", "application/x-www-form-urlencoded")
-			.post(options, function(error, data) {
+			.post(options, function(error, json) {
 
 			$("#chart").show();
 			$("#loading-msg").hide();
 
-			if (error) {
-				return console.warn(error);
-			}
-
-			if (data.error) {
-				$("#chart-error").show().html('<strong>Error</strong>: ' + data.error);
-				return console.error(data.error);
-			}
-
-			data.map(function(series) {
-				series.values = series.values.map(function(d) {
-					if (series.invert) {
-						return { x: d[0], y: 0 - d[1] }
-					} else {
-						return { x: d[0], y: d[1] }
-					}
-				});
-				return series;
-			});
-
-			var timePeriod = $( "#time-period" ).val();
-			var timeFormat = timeLookup[timePeriod];
-
-			chart.xAxis.tickFormat(function(d) {
-				return d3.time.format(timeFormat)(new Date(d));
-			}).tickPadding(15);
-
-			//y axis description by rrd database
-			var gleft = $( "#graph-left" ).val();
-			if (gleft) {
-				var gLeftSplit = gleft.split("-");
-				var leftLabel = rrdLookup[gLeftSplit[1]];
-				var leftAxisFormat = formatLookup[gLeftSplit[1]];
-			}
-
-			if(!leftAxisFormat) {
-				leftAxisFormat = ".2s";
-			}
-
-			chart.yAxis1.tickFormat(function(d) {
-				return d3.format(leftAxisFormat)(d)
-			}).axisLabel(leftLabel).tickPadding(5).showMaxMin(false);
-
-			//add left title
-			d3.select('#chart svg #left-title').remove();
-			var leftTitle = $("#category-left option:selected").text() + " -- " + $("#graph-left option:selected").text();
-			d3.select('#chart svg')
-				.append("text")
-				.attr("x", 150)
-				.attr("y", 11)
-				.attr("id", "left-title")
-				.text("Left Axis: " + leftTitle);
-
-			//y axis description by rrd database
-			var gright = $( "#graph-right" ).val();
-			if (gright) {
-				var gRightSplit = gright.split("-");
-				var rightLabel = rrdLookup[gRightSplit[1]];
-				var rightAxisFormat = formatLookup[gRightSplit[1]];
-			}
-
-			if(!rightAxisFormat) {
-				rightAxisFormat = ".2s";
-			}
-
-			chart.yAxis2.tickFormat(function(d) {
-				return d3.format(rightAxisFormat)(d)
-			}).axisLabel(rightLabel).tickPadding(5).showMaxMin(false);
-
-			//add right title
-			d3.select('#chart svg #right-title').remove();
-			var rightTitle = $("#category-right option:selected").text() + " -- " + $("#graph-right option:selected").text();
-			d3.select('#chart svg')
-				.append("text")
-				.attr("x", 150)
-				.attr("y", 28)
-				.attr("id", "right-title")
-				.text("Right Axis: " + rightTitle);
-
-			//add system name
-			d3.select('#chart svg #system-name').remove();
-			var systemName = '<?=htmlspecialchars($config['system']['hostname'] . "." . $config['system']['domain']); ?>';
-			d3.select('#chart svg')
-				.append("text")
-				.attr("x", 100)
-				.attr("y", 415)
-				.attr("id", "system-name")
-				.text(systemName);
-
-			//add time period
-			d3.select('#chart svg #time-period').remove();
-			var timePeriod = $("#time-period option:selected").text();
-			d3.select('#chart svg')
-				.append("text")
-				.attr("x", 330)
-				.attr("y", 415)
-				.attr("id", "time-period")
-				.text("Time Period: " + timePeriod);
-
-			//add resolution
-			d3.select('#chart svg #resolution').remove();
-			var Resolution = $("#resolution option:selected").text();
-			d3.select('#chart svg')
-				.append("text")
-				.attr("x", 530)
-				.attr("y", 415)
-				.attr("id", "resolution")
-				.text("Resolution: " + Resolution);
-
-			//add current date
-			d3.select('#chart svg #current-date').remove();
-			var currentDate = d3.time.format('%a %b %d %H:%M:%S %Y GMT%Z')(new Date());
-			d3.select('#chart svg')
-				.append("text")
-				.attr("x", 755)
-				.attr("y", 415)
-				.attr("id", "current-date")
-				.text(currentDate);
-
-			d3.select('#chart svg')
-				.datum(data)
-				.transition()
-				.duration(500)
-				.call(chart);
-
-			chart.update();
-
-			calculate_summary(data);
-
-		});
-
-	}
-
-	function calculate_summary(data) {
-
-		$('#summary tbody').empty();
-
-		data.forEach (function(d, i) {
-			var summary = [];
-			var units = "";
-
-			if (d.unit_acronym) {
-				units = '<acronym data-toggle="tooltip" title="' + d.unit_desc + '">' + d.unit_acronym + '</acronym>';
-			}
-
-			for ( var v = 0; v < d.values.length; v++ ){
-
-				if (d.invert) {
-					//flip back to positive
-					summary.push(0 - d.values[v].y);
-				} else {
-					summary.push(d.values[v].y);
-				}
-
-			}
-
-			var avg = d3.sum(summary)/summary.length;
-			var min = d3.min(summary);
-			var max = d3.max(summary);
-			var last = summary[summary.length-1];
-
-			if(d.format === "s") {
-				var formatted_avg = d3.formatPrefix(avg);
-				var formatted_min = d3.formatPrefix(min);
-				var formatted_max = d3.formatPrefix(max);
-				var formatted_last = d3.formatPrefix(last);
-
-				var avg_value = formatted_avg.scale(avg).toFixed(2) + ' ' + formatted_avg.symbol + units;
-				var min_value = formatted_min.scale(min).toFixed(2) + ' ' + formatted_min.symbol + units;
-				var max_value = formatted_max.scale(max).toFixed(2) + ' ' + formatted_max.symbol + units;
-				var last_value = formatted_last.scale(last).toFixed(2) + ' ' + formatted_last.symbol + units;
-			} else {
-				var avg_value = d3.format(".2f")(avg) + ' ' + units;
-				var min_value = d3.format(".2f")(min) + ' ' + units;
-				var max_value = d3.format(".2f")(max) + ' ' + units;
-				var last_value = d3.format(".2f")(last) + ' ' + units;
-			}
-
-			if (d.ninetyfifth) {
-				var ninetyFifth = d3.quantile(summary.sort(), .95);
-				var formatted_95th = d3.formatPrefix(ninetyFifth);
-
-				var ninetyfifthVal = formatted_95th.scale(ninetyFifth).toFixed(2) + ' ' + formatted_95th.symbol + units;
-			} else {
-				var ninetyfifthVal = "";
-			}
-
-			$('#summary tbody').append('<tr><th>' + d.key + '</th><td>' + min_value + '</td><td>' + avg_value + '</td><td>' + max_value + '</td><td>' + last_value + '</td><td>' + ninetyfifthVal + '</td></tr>');
-
-			//store each lines units in local storage so it can be accessed in the tooltip
-			localStorage.setItem(d.key, d.unit_acronym);
-
-		});
-
-		$('acronym').tooltip();
-	}
-
-	var chart;
-
-	<?php
-	if ($pconfig['enable']) { 
-		echo 'var rrdEnabled = true;';
-	} else {
-		echo 'var rrdEnabled = false;';
-	}
-	?>
-
-	if(!rrdEnabled) {
-
-		$("#loading-msg").hide();
-		$("#chart").hide();
-		$("#chart-error").show().html('<strong>Error</strong>: RRD graphs are not enabled. Enable in the Settings above.');
-
-	} else {
-
-		d3.json("rrd_fetch_json.php")
-			.header("Content-Type", "application/x-www-form-urlencoded")
-			.post(getOptions(), function(error, json) {
-
-			$("#chart").show();
-			$("#loading-msg").hide();
+			//clear previous svg so it can be drawn from scratch
+			d3.select("svg").remove();
+			d3.select('#chart').append('svg');
 
 			if (error) {
 				$("#chart").hide();
@@ -1792,6 +1574,92 @@ events.push(function() {
 
 			});
 		});
+
+	}
+
+	function calculate_summary(data) {
+
+		$('#summary tbody').empty();
+
+		data.forEach (function(d, i) {
+			var summary = [];
+			var units = "";
+
+			if (d.unit_acronym) {
+				units = '<acronym data-toggle="tooltip" title="' + d.unit_desc + '">' + d.unit_acronym + '</acronym>';
+			}
+
+			for ( var v = 0; v < d.values.length; v++ ){
+
+				if (d.invert) {
+					//flip back to positive
+					summary.push(0 - d.values[v].y);
+				} else {
+					summary.push(d.values[v].y);
+				}
+
+			}
+
+			var avg = d3.sum(summary)/summary.length;
+			var min = d3.min(summary);
+			var max = d3.max(summary);
+			var last = summary[summary.length-1];
+
+			if(d.format === "s") {
+				var formatted_avg = d3.formatPrefix(avg);
+				var formatted_min = d3.formatPrefix(min);
+				var formatted_max = d3.formatPrefix(max);
+				var formatted_last = d3.formatPrefix(last);
+
+				var avg_value = formatted_avg.scale(avg).toFixed(2) + ' ' + formatted_avg.symbol + units;
+				var min_value = formatted_min.scale(min).toFixed(2) + ' ' + formatted_min.symbol + units;
+				var max_value = formatted_max.scale(max).toFixed(2) + ' ' + formatted_max.symbol + units;
+				var last_value = formatted_last.scale(last).toFixed(2) + ' ' + formatted_last.symbol + units;
+			} else {
+				var avg_value = d3.format(".2f")(avg) + ' ' + units;
+				var min_value = d3.format(".2f")(min) + ' ' + units;
+				var max_value = d3.format(".2f")(max) + ' ' + units;
+				var last_value = d3.format(".2f")(last) + ' ' + units;
+			}
+
+			if (d.ninetyfifth) {
+				var ninetyFifth = d3.quantile(summary.sort(), .95);
+				var formatted_95th = d3.formatPrefix(ninetyFifth);
+
+				var ninetyfifthVal = formatted_95th.scale(ninetyFifth).toFixed(2) + ' ' + formatted_95th.symbol + units;
+			} else {
+				var ninetyfifthVal = "";
+			}
+
+			$('#summary tbody').append('<tr><th>' + d.key + '</th><td>' + min_value + '</td><td>' + avg_value + '</td><td>' + max_value + '</td><td>' + last_value + '</td><td>' + ninetyfifthVal + '</td></tr>');
+
+			//store each lines units in local storage so it can be accessed in the tooltip
+			localStorage.setItem(d.key, d.unit_acronym);
+
+		});
+
+		$('acronym').tooltip();
+	}
+
+	var chart;
+
+	<?php
+	if ($pconfig['enable']) { 
+		echo 'var rrdEnabled = true;';
+	} else {
+		echo 'var rrdEnabled = false;';
+	}
+	?>
+
+	if(!rrdEnabled) {
+
+		$("#loading-msg").hide();
+		$("#chart").hide();
+		$("#chart-error").show().html('<strong>Error</strong>: RRD graphs are not enabled. Enable in the Settings above.');
+
+	} else {
+
+		draw_graph(getOptions());
 
 	}
 
