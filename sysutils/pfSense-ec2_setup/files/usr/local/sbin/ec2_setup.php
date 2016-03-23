@@ -277,7 +277,7 @@ function writeOpenVPNConfig($publicIP) {
 
 	$cfgDir             = "/usr/local/libdata/vpn-profile";
 	$ovpnCfgFile        = "remote-access-openvpn.ovpn";
-	$cfgTemplateDir     = "/usr/local/share/{$g['product_name']}-openvpn-connect-profile";
+	$cfgTemplateDir     = "/usr/local/share/{$g['product_name']}-openvpn_connect_profile";
 
 	if (!file_exists($cfgDir))
 		mkdir($cfgDir, 0755, true);
