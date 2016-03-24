@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-azure
-PORTVERSION=	0.1
+PORTVERSION=	0.2
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -32,7 +32,7 @@ do-install:
 		${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/sbin/waagent \
 		${STAGEDIR}${PREFIX}/sbin
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/etc/rc.d/waagent.sh \
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/etc/rc.d/waagent.sh \
 		${STAGEDIR}${PREFIX}/etc/rc.d
 	${INSTALL_DATA} ${FILESDIR}/etc/waagent.conf \
 		${STAGEDIR}/etc
