@@ -10,13 +10,13 @@
 	All rights reserved.
 	]]>
 	</copyright>
-	<description>IPSec Profile Wizard</description>
-	<name>IPSec Profile Wizard</name>
+	<description>IPsec Profile Wizard</description>
+	<name>IPsec Profile Wizard</name>
 	<category>VPN</category>
-	<title>VPN: IPSec Profile Setup Wizard</title> 
+	<title>VPN: IPsec Profile Setup Wizard</title> 
 	<menu>
-		<name>IPSec Profile</name>
-		<tooltiptext>IPSec Profile Setup Wizard</tooltiptext>
+		<name>IPsec Profile</name>
+		<tooltiptext>IPsec Profile Setup Wizard</tooltiptext>
 		<section>VPN</section>
 		<url>vpn_ipsec_profile.php</url>
 	</menu>

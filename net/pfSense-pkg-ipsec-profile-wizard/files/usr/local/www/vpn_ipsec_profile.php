@@ -53,7 +53,7 @@ function get_vpn_type($iketype) {
 	if ($iketype == "ikev2") {
 		$vpnType = "IKEv2";
 	} else {
-		$vpnType = "IPSec";
+		$vpnType = "IPsec";
 	}
 	return $vpnType;
 }
@@ -202,7 +202,7 @@ function generate_vpn($phase1, $profId, $payloadUuid, $certUuid, $user) {
 }
 
 
-/* IPSec (IKEv1) specific settings */
+/* IPsec (IKEv1) specific settings */
 function generate_ikev1($phase1, $user, $authMethod, $extendedAuth) {
 
 	if ($authMethod == 'SharedSecret') {
@@ -402,7 +402,7 @@ function generate_ike($phase1, $profId, $certUuid, $user) {
 
 	$ike = get_vpn_type($phase1['iketype']);
 
-	if ($ike == "IPSec") {
+	if ($ike == "IPsec") {
 		$certAuthMethods = ["xauth_rsa_server",
 			"rsasig"];
 		$extendedAuthMethods = ["hybrid_rsa_server", "xauth_rsa_server",
@@ -449,7 +449,7 @@ function generate_ike($phase1, $profId, $certUuid, $user) {
 	}
 
 	/* generate the pieces that are specific to the IKE version */
-	if ($ike == "IPSec") {
+	if ($ike == "IPsec") {
 		$ikeDict = generate_ikev1($phase1, $user, $authMethod, $extendedAuth);
 	} else {
 		$ikeDict = generate_ikev2($phase1, $user, $authMethod, $extendedAuth, $realAddr);
