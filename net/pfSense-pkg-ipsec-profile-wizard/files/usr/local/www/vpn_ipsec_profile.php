@@ -53,7 +53,7 @@ function get_vpn_type($iketype) {
 	if ($iketype == "ikev2") {
 		$vpnType = "IKEv2";
 	} else {
-		$vpnType = "IPsec";
+		$vpnType = "IPSec";
 	}
 	return $vpnType;
 }
