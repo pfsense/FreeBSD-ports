@@ -253,15 +253,15 @@ function pfbng_text_area_decode($text, $mode=FALSE) {
 			if (substr(trim($line), 0, 1) != '#' && !empty($line)) {
 				if (strpos($line, '#') !== FALSE) {
 					if ($mode) {
-						$custom[] = preg_split('/(?=#)/', $line);
+						$custom[] = preg_split('/\s+(?=#)/', trim($line));
 					} else {
 						$custom .= trim(strstr($line, '#', TRUE)) . "\n";
 					}
 				} else {
 					if ($mode) {
-						$custom[][0] = $line;
+						$custom[][0] = trim($line);
 					} else {
-						$custom .= $line . "\n";
+						$custom .= trim($line) . "\n";
 					}
 				}
 			}
