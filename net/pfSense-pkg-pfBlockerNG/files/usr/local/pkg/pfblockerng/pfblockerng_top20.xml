@@ -9,7 +9,7 @@
 	pfBlockerNG_Top20.xml
 
 	pfBlockerNG
-	Copyright (c) 2016 BBcan177@gmail.com
+	Copyright (c) 2015-2016 BBcan177@gmail.com
 	All rights reserved.
 
 	Based upon pfblocker for pfSense
@@ -417,7 +417,7 @@
 			<fielddescr>Custom Port</fielddescr>
 			<fieldname>aliasports_out</fieldname>
 			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=port">Click Here to add/edit Aliases</a>
-				Do not manually enter port numbers.<br />Do not use 'pfB_' in the Port Alias name.]]>
+				Do not manually enter port numbers. <br />Do not use 'pfB_' in the Port Alias name.]]>
 			</description>
 			<width>6</width>
 			<type>aliases</type>

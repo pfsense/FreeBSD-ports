@@ -3,7 +3,7 @@
 	pfBlockerNG.php
 
 	pfBlockerNG
-	Copyright (c) 2016 BBcan177@gmail.com
+	Copyright (c) 2015-2016 BBcan177@gmail.com
 	All rights reserved.
 
 	Based upon pfBlocker by
@@ -683,7 +683,7 @@ $xml = <<<EOF
 	pfblockerng_{$cont_name}.xml
 
 	pfBlockerNG
-	Copyright (C) 2016 BBcan177@gmail.com
+	Copyright (C) 2015-2016 BBcan177@gmail.com
 	All rights reserved.
 
 	Based upon pfblocker for pfSense
@@ -1188,7 +1188,7 @@ $xmlrep = <<<EOF
 	pfBlockerNG_Reputation.xml
 
 	pfBlockerNG
-	Copyright (C) 2016 BBcan177@gmail.com
+	Copyright (C) 2015-2016 BBcan177@gmail.com
 	All rights reserved.
 
 	Based upon pfblocker for pfSense
@@ -1465,7 +1465,7 @@ $xmlrep = <<<EOF
 					<ul>https://rules.emergingthreatspro.com/XXXXXXXXXXXXXXXX/reputation/iprepdata.txt.gz</ul>
 					Select the <strong>ET IQRisk'</strong> format. The URL should use the .gz File Type.<br />
 					Enter your "ETPRO" code in URL. Further information can be found @
-					<a target="_blank" href="http://emergingthreats.net/solutions/iqrisk-suite/">ET IQRisk IP Reputation</a><br /><br />
+					<a target="_blank" href="https://www.proofpoint.com/us/solutions/products/threat-intelligence">Proofpoint IQRisk</a><br /><br />
 					To use <strong>'Match'</strong> Lists, Create a new 'Alias' and select one of the <strong>
 					Action 'Match'</strong> Formats and <br />
 					enter the 'Localfile' as: <ul>/var/db/pfblockerng/match/ETMatch.txt</ul>

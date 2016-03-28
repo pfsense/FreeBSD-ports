@@ -3,7 +3,7 @@
 	pfBlockerNG.widget.php
 
 	pfBlockerNG
-	Copyright (c) 2016 BBcan177@gmail.com
+	Copyright (c) 2015-2016 BBcan177@gmail.com
 	All rights reserved.
 
 	Based Upon pfblocker :
@@ -461,9 +461,7 @@ $entries = count($results);
 				<i class="<?=$dnsbl_status?>" title="<?=gettext($dnsbl_msg)?>"></i>
 			</td>
 			<td>
-				<?php if ($scount != 0): ?>
-					<?=("<small>DNSBL:<strong>{$scount}</strong></small>")?>
-				<?php endif; ?>
+				<?=("<small>DNSBL:<strong>{$scount}</strong></small>")?>
 			</td>
 			<td></td><td></td><td></td><td></td>
 			<td>

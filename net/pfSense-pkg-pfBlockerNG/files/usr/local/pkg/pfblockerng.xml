@@ -9,7 +9,7 @@
 	pfBlockerNG.xml
 
 	pfBlockerNG
-	Copyright (c) 2016 BBcan177@gmail.com
+	Copyright (c) 2015-2016 BBcan177@gmail.com
 	All rights reserved.
 
 	Based upon pfblocker for pfSense
@@ -248,19 +248,19 @@
 			<combinefields>end</combinefields>
 		</field>
 		<field>
-			<fielddescr>Enable De-Duplication</fielddescr>
+			<fielddescr>De-Duplication</fielddescr>
 			<fieldname>enable_dup</fieldname>
 			<type>checkbox</type>
 			<description>Only used for IPv4 Deny Lists</description>
 		</field>
 		<field>
-			<fielddescr>Enable CIDR Aggregation</fielddescr>
+			<fielddescr>CIDR Aggregation</fielddescr>
 			<fieldname>enable_agg</fieldname>
 			<type>checkbox</type>
 			<description>Optimise CIDRs (not recommended for slow systems with large lists)</description>
 		</field>
 		<field>
-			<fielddescr>Enable Suppression</fielddescr>
+			<fielddescr>Suppression</fielddescr>
 			<fieldname>suppression</fieldname>
 			<sethelp><![CDATA[This will prevent Selected IPs from being blocked. Only for IPv4 lists (/32 and /24).<div class="infoblock">
 					Country blocking lists cannot be suppressed. This will also remove any RFC1918 addresses from all lists.<br /><br />
@@ -272,11 +272,11 @@
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Global Enable Logging</fielddescr>
+			<fielddescr>Global Logging</fielddescr>
 			<fieldname>enable_log</fieldname>
 			<type>checkbox</type>
-			<description>Firewall Rule logging - Enable Global logging to [ Status: System Logs: FIREWALL Log ]
-				This overrides any log settings in the Alias tabs.
+			<description><![CDATA[Firewall Rule logging - Enable Global logging to [ Status: System Logs: FIREWALL Log ]<br />
+				This overrides any log settings in the Continent/IPv4/6 Alias tabs. (DNSBL not included)]]>
 			</description>
 		</field>
 		<field>
@@ -310,7 +310,7 @@
 			<fielddescr>Logfile Size</fielddescr>
 			<fieldname>log_maxlines</fieldname>
 			<description><![CDATA[Default: <strong>20000</strong><br />
-				Select number of Lines to keep in the pfblockerng.log and dnsbl.log files]]>
+				Select number of Lines to keep in the pfblockerng.log, geoip.log, extras.log and dnsbl.log files]]>
 			</description>
 			<type>select</type>
 			<options>
@@ -457,10 +457,7 @@
 		</field>
 		<field>
 			<fielddescr>Support</fielddescr>
-			<description><![CDATA[<u>If you like this package, please support the developer</u>.&emsp;&emsp;
-				<a class="fa fa-cc-paypal fa-2x" title="Your support is appreciated. Thank you!" target="_blank"
-					href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RHZUKWX2Y85ZA"> support</a>]]>
-			</description>
+			<description><![CDATA[pfBlockerNG is developed by BBcan177, and can be reached at&emsp; [ bbcan177 'at' gmail 'dot' com ]]]></description>
 			<type>info</type>
 		</field>
 	</fields>
