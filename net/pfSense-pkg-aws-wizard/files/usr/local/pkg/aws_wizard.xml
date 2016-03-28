@@ -10,7 +10,7 @@
 	All rights reserved.
 	]]>
 	</copyright>
-	<description>AWS VPC &reg; VPN Connection Wizard</description>
+	<description><![CDATA[AWS VPC &reg; VPN Connection Wizard]]></description>
 	<name>AWS VPC Wizard</name>
 	<category>VPN</category>
 	<title>VPN: AWS VPN Connection Wizard</title> 
