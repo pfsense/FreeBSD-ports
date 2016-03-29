@@ -1174,7 +1174,7 @@ function step4_submitphpaction() {
 function step5_submitphpaction() {
 
 	refreshDirtyConfigs();
-	header("Location: diag_ipsec.php");
+	header("Location: status_ipsec.php");
 	exit;
 
 }
