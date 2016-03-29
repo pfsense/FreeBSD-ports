@@ -1,0 +1,365 @@
+<?php
+/*
+	acme_accountkeys.php
+	part of pfSense (https://www.pfsense.org/)
+	Copyright (C) 2016 PiBa-NL
+	All rights reserved.
+
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+
+namespace pfsense_pkg\acme;
+
+$shortcut_section = "acme";
+require_once("guiconfig.inc");
+require_once("certs.inc");
+require_once("acme/acme.inc");
+require_once("acme/acme_gui.inc");
+require_once("acme/acme_utils.inc");
+require_once("acme/pkg_acme_tabs.inc");
+
+$changedesc = "Services: Acme: Accountkeys";
+
+if (!is_array($config['installedpackages']['acme']['accountkeys']['item'])) {
+	$config['installedpackages']['acme']['accountkeys']['item'] = array();
+}
+$a_certifcates = &$config['installedpackages']['acme']['accountkeys']['item'];
+
+function array_moveitemsbefore(&$items, $before, $selected) {
+	// generic function to move array items before the set item by their numeric indexes.
+	
+	$a_new = array();
+	/* copy all entries < $before and not selected */
+	for ($i = 0; $i < $before; $i++) {
+		if (!in_array($i, $selected)) {
+			$a_new[] = $items[$i];
+		}
+	}
+	/* copy all selected entries */
+	for ($i = 0; $i < count($items); $i++) {
+		if ($i == $before) {
+			continue;
+		}
+		if (in_array($i, $selected)) {
+			$a_new[] = $items[$i];
+		}
+	}
+	/* copy $before entry */
+	if ($before < count($items)) {
+		$a_new[] = $items[$before];
+	}
+	/* copy all entries > $before and not selected */
+	for ($i = $before+1; $i < count($items); $i++) {
+		if (!in_array($i, $selected)) {
+			$a_new[] = $items[$i];
+		}
+	}
+	if (count($a_new) > 0) {
+		$items = $a_new;
+	}
+}
+
+if($_POST['action'] == "toggle") {
+	$id = $_POST['id'];
+	echo "$id|";
+	if (isset($a_certifcates[get_certificate_id($id)])) {
+		$frontent = &$a_certifcates[get_certificate_id($id)];
+		if ($frontent['status'] != "disabled"){
+			$frontent['status'] = 'disabled';
+			echo "0|";
+		}else{
+			$frontent['status'] = 'active';
+			echo "1|";
+		}
+		$changedesc .= " set frontend '$id' status to: {$frontent['status']}";
+		
+		touch($d_acmeconfdirty_path);
+		write_config($changedesc);
+	}
+	echo "ok|";
+	exit;
+}
+if($_POST['action'] == "renew") {
+	$id = $_POST['id'];
+	echo $id . "\n";
+	if (isset($a_certifcates[get_certificate_id($id)])) {
+		renew_certificate($id, true);
+	}
+	exit;
+}
+
+if ($_POST) {
+	$pconfig = $_POST;
+
+	if ($_POST['apply']) {
+		$result = haproxy_check_and_run($savemsg, true);
+		if ($result) {
+			unlink_if_exists($d_acmeconfdirty_path);
+		}
+	} elseif ($_POST['del_x']) {
+		/* delete selected rules */
+		$deleted = false;
+		if (is_array($_POST['rule']) && count($_POST['rule'])) {
+			$selected = array();
+			foreach($_POST['rule'] as $selection) {
+				$selected[] = get_certificate_id($selection);
+			}
+			foreach ($selected as $itemnr) {
+				unset($a_certifcates[$itemnr]);
+				$deleted = true;
+			}
+			if ($deleted) {
+				if (write_config("Acme, deleting certificate(s)")) {
+					//mark_subsystem_dirty('filter');
+					touch($d_acmeconfdirty_path);
+				}
+			}
+			header("Location: acme_certificates.php");
+			exit;
+		}
+	} else {	
+
+		// from '\src\usr\local\www\vpn_ipsec.php'
+		/* yuck - IE won't send value attributes for image buttons, while Mozilla does - so we use .x/.y to find move button clicks instead... */
+		// TODO: this. is. nasty.
+		unset($delbtn, $delbtnp2, $movebtn, $movebtnp2, $togglebtn, $togglebtnp2);
+		foreach ($_POST as $pn => $pd) {
+			if (preg_match("/move_(.+)/", $pn, $matches)) {
+				$movebtn = $matches[1];
+			}
+		}
+		//
+		
+		/* move selected p1 entries before this */
+		if (isset($movebtn) && is_array($_POST['rule']) && count($_POST['rule'])) {
+			$moveto = get_frontend_id($movebtn);
+			$selected = array();
+			foreach($_POST['rule'] as $selection) {
+				$selected[] = get_frontend_id($selection);
+			}
+			array_moveitemsbefore($a_certifcates, $moveto, $selected);
+		
+			touch($d_acmeconfdirty_path);
+			write_config($changedesc);			
+		}
+	}
+} else {
+	$result = null;//haproxy_check_config($retval);
+	if ($result) {
+		$savemsg = gettext($result);
+	}
+}
+
+if ($_GET['act'] == "del") {
+	$id = $_GET['id'];
+	$id = get_certificate_id($id);
+	if (isset($a_certifcates[$id])) {
+		if (!$input_errors) {
+			unset($a_certifcates[$id]);
+			$changedesc .= " Frontend delete";
+			write_config($changedesc);
+			touch($d_acmeconfdirty_path);
+		}
+		header("Location: acme_certificates.php");
+		exit;
+	}
+}
+
+$pgtitle = array("Services", "Acme", "Accountkeys");
+include("head.inc");
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
+if ($savemsg) {
+	print_info_box($savemsg);
+}
+
+/*$display_apply = file_exists($d_acmeconfdirty_path) ? "" : "none";
+echo "<div id='showapplysettings' style='display: {$display_apply};'>";
+print_apply_box(sprintf(gettext("The configuration has been changed.%sYou must apply the changes in order for them to take effect."), "<br/>"));
+echo "</div>";
+*/
+?>
+<div id="renewoutputbox" class="alert alert-success clearfix hidden" role="alert">
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		<span aria-hidden="true">×</span>
+	</button>
+	<div id="renewoutput" class="pull-left">
+	</div>
+</div>
+
+<?php
+display_top_tabs_active($acme_tab_array['acme'], "frontend");
+?>
+<form action="acme_certificates.php" method="post">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h2 class="panel-title">Certificates</h2>
+		</div>
+		<div id="mainarea" class="table-responsive panel-body">
+			<table class="table table-hover table-striped table-condensed">
+				<thead>
+					<tr>
+						<th></th>
+						<th width="30%">Name</th>
+						<th width="20%">Description</th>
+						<th>CA</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody class="user-entries">
+<?php
+		foreach ($a_certifcates as $certificate) {
+			$certificatename = $certificate['name'];
+			?>
+			<tr id="fr<?=$certificatename;?>" <?=$display?> onClick="fr_toggle('<?=$certificatename;?>')" ondblclick="document.location='acme_accountkeys_edit.php?id=<?=$certificatename;?>';">
+				<td>
+					<input type="checkbox" id="frc<?=$certificatename;?>" onClick="fr_toggle('<?=$certificatename;?>')" name="rule[]" value="<?=$certificatename;?>"/>
+					<a class="fa fa-anchor" id="Xmove_<?=$certificatename?>" title="<?=gettext("Move checked entries to here")?>"></a>
+				</td>
+			  <td>
+				<?=$certificate['name'];?>
+			  </td>
+			  <td>
+				<?=$certificate['desc'];?>
+			  </td>
+			  <td>
+				<?=$certificate['acmeserver'];?>
+			  </td>
+			  <td class="action-icons">
+				<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=$certificatename?>" name="move_<?=$certificatename?>" value="move_<?=$certificatename?>"></button>
+				<a href="acme_accountkeys_edit.php?id=<?=$certificatename;?>">
+					<?=acmeicon("edit", gettext("edit frontend"))?>
+				</a>
+				<a href="acme_accountkeys.php?act=del&amp;id=<?=$certificatename;?>" onclick="return confirm('Do you really want to delete this entry?')">
+					<?=acmeicon("delete", gettext("delete frontend"))?>
+				</a>
+				<a href="acme_accountkeys_edit.php?dup=<?=$certificatename;?>">
+					<?=acmeicon("clone", gettext("clone frontend"))?>
+				</a>
+			  </td>
+			</tr><?php
+		}
+?>				
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<nav class="action-buttons">
+		<a href="acme_accountkeys_edit.php" role="button" class="btn btn-sm btn-success" title="<?=gettext('Add backend to the end of the list')?>">
+			<i class="fa fa-level-down icon-embed-btn"></i>
+			<?=gettext("Add");?>
+		</a>
+		<button name="del_x" type="submit" class="btn btn-danger btn-sm" value="<?=gettext("Delete selected backends"); ?>" title="<?=gettext('Delete selected backends')?>">
+			<i class="fa fa-trash icon-embed-btn no-confirm"></i>
+			<?=gettext("Delete"); ?>
+		</button>
+		<button type="submit" id="order-store" name="order-store" class="btn btn-sm btn-primary" value="store changes" disabled title="<?=gettext('Save backend order')?>">
+			<i class="fa fa-save icon-embed-btn no-confirm"></i>
+			<?=gettext("Save")?>
+		</button>
+	</nav>
+</form>
+
+<script type="text/javascript">
+//<![CDATA[
+
+function set_content(elementid, image) {
+	var item = document.getElementById(elementid);
+	item.innerHTML = image;
+}
+
+function js_callbackrenew(data) {
+	$('#renewoutputbox').removeClass("hidden");
+	$('#renewoutput').html(data);
+}
+
+function js_callback(req_content) {
+	
+	showapplysettings.style.display = 'block';
+	if(req_content !== '') {
+		var itemsplit = req_content.split("|");
+		buttonid = itemsplit[0];
+		enabled = parseInt(itemsplit[1]);
+		if (enabled === 1){
+			img = "<?=acmeicon("enabled", gettext("click to toggle enable/disable this certificate renewal"))?>";
+		} else {
+			img = "<?=acmeicon("disabled", gettext("click to toggle enable/disable this certificate renewal"))?>";
+		}
+		set_content('btn_'+buttonid, img);
+	}
+}
+
+function renewcertificate($id) {
+	$('#'+"btnrenewicon_"+$id).removeClass("fa-check").addClass("fa-cog fa-spin");
+	
+	ajaxRequest = $.ajax({
+		url: "",
+		type: "post",
+		data: { id: $id, action: "renew"},
+		success: function(data) {
+			js_callbackrenew(data);
+		}
+	});
+}
+
+function togglerow($id) {
+	ajaxRequest = $.ajax({
+		url: "",
+		type: "post",
+		data: { id: $id, action: "toggle"},
+		success: function(data) {
+			js_callback(data);
+		}
+	});
+}
+
+events.push(function() {
+	
+	$('#clearallnotices').click(function() {
+		ajaxRequest = $.ajax({
+			url: "/index.php",
+			type: "post",
+			data: { closenotice: "all"},
+			success: function() {
+				window.location = window.location.href;
+			},
+			failure: function() {
+				alert("Error clearing notices!");
+			}
+		});
+	});
+	
+	$('[id^=Xmove_]').click(function (event) {
+		$('#' + event.target.id.slice(1)).click();
+		return false;
+	});
+	$('[id^=Xmove_]').css('cursor', 'pointer');
+
+	// Check all of the rule checkboxes so that their values are posted
+	$('#order-store').click(function () {
+	   $('[id^=frc]').prop('checked', true);
+	});
+});
+//]]>
+</script>
+<?php include("foot.inc");

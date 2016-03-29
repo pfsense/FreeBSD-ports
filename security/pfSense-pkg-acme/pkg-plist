@@ -1,0 +1,15 @@
+pkg/acme.xml
+pkg/acme/acme.inc
+pkg/acme/acme_gui.inc
+pkg/acme/acme_htmllist.inc
+pkg/acme/acme_utils.inc
+pkg/acme/lescript.inc
+pkg/acme/pkg_acme_tabs.inc
+www/acme/acme_accountkeys.php
+www/acme/acme_accountkeys_edit.php
+www/acme/acme_certificates.php
+www/acme/acme_certificates_edit.php
+www/acme/acme_generalsettings.php
+/etc/inc/priv/acme.priv.inc
+%%DATADIR%%/info.xml
+@dir /etc/inc/priv
