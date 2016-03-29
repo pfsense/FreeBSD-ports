@@ -3,7 +3,7 @@
 	pfBlockerNG_extra.inc
 
 	pfBlockerNG
-	Copyright (c) 2015 BBcan177@gmail.com
+	Copyright (c) 2015-2016 BBcan177@gmail.com
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
