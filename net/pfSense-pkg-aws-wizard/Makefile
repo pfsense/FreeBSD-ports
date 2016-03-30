@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-aws-wizard
 PORTVERSION=	0.5
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -9,6 +10,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	PfSense package AWS VPC VPN Connection Wizard
+
+LICENSE=	ESF
 
 NO_BUILD=	yes
 NO_MTREE=	yes
