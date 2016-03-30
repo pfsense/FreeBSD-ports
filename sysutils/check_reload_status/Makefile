@@ -2,13 +2,16 @@
 
 PORTNAME=	check_reload_status
 PORTVERSION=	0.0.6
+PORTREVISION=	1
 CATEGORIES?=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# none
 EXTRACT_ONLY=	# empty
 
-MAINTAINER?=	eri@pfsense.org
-COMMENT?=	run various pfSense scripts on event.
+MAINTAINER=	coreteam@pfsense.org
+COMMENT=	run various pfSense scripts on event.
+
+LICENSE=	ESF
 
 WHERE=		sbin
 PLIST_FILES=	${WHERE}/${PORTNAME} ${WHERE}/pfSctl ${WHERE}/fcgicli

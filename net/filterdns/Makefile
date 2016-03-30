@@ -1,6 +1,6 @@
 PORTNAME=	filterdns
 PORTVERSION=	1.0
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# none
@@ -8,6 +8,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	luiz@netgate.com
 COMMENT=	filterdns
+
+LICENSE=	ESF
 
 WHERE=		sbin
 PLIST_FILES=    ${WHERE}/${PORTNAME}
