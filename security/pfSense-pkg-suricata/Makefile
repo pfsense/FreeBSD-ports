@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-suricata
 PORTVERSION=	3.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +13,8 @@ COMMENT=	pfSense package suricata
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/bin/suricata:${PORTSDIR}/security/suricata
+RUN_DEPENDS=	${LOCALBASE}/bin/suricata:${PORTSDIR}/security/suricata \
+		${LOCALBASE}/bin/barnyard2:${PORTSDIR}/security/barnyard2
 
 NO_BUILD=	yes
 NO_MTREE=	yes
