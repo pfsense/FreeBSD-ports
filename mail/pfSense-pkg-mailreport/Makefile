@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-mailreport
 PORTVERSION=	3.0
+PORTREVISION=	1
 CATEGORIES=	mail
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -9,6 +10,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package mailreport
+
+LICENSE=	ESF
 
 NO_BUILD=	yes
 NO_MTREE=	yes

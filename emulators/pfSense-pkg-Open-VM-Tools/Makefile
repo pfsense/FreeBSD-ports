@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-Open-VM-Tools
 PORTVERSION=	1280544.13
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	emulators
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -10,6 +10,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package Open-VM-Tools
+
+LICENSE=	ESF
 
 RUN_DEPENDS=	${LOCALBASE}/bin/vmtoolsd:${PORTSDIR}/emulators/open-vm-tools-nox11
 

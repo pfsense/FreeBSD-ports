@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-AutoConfigBackup
 PORTVERSION=	1.43
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -9,6 +10,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package AutoConfigBackup
+
+LICENSE=	ESF
 
 NO_BUILD=	yes
 NO_MTREE=	yes

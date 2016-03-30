@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-pfBlockerNG
 PORTVERSION=	2.0.8
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -9,6 +10,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package pfBlockerNG
+
+LICENSE=	ESF
 
 RUN_DEPENDS=	${LOCALBASE}/bin/geoiplookup:net/GeoIP \
 		${LOCALBASE}/bin/grepcidr:net-mgmt/grepcidr \

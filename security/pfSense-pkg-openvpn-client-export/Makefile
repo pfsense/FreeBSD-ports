@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-openvpn-client-export
 PORTVERSION=	1.3.7
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -9,6 +10,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package openvpn-client-export
+
+LICENSE=	ESF
 
 RUN_DEPENDS=	${LOCALBASE}/share/openvpn/client-export/template/config-import:${PORTSDIR}/security/openvpn-client-export \
 		${LOCALBASE}/bin/zip:${PORTSDIR}/archivers/zip \

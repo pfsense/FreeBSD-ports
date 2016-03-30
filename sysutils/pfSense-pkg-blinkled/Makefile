@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-blinkled
 PORTVERSION=	0.4.7
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -9,6 +10,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package blinkled
+
+LICENSE=	ESF
 
 RUN_DEPENDS=	${LOCALBASE}/bin/blinkled:${PORTSDIR}/sysutils/blinkled
 

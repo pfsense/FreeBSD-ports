@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-builder
 PORTVERSION=	2.3
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -9,6 +10,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	renato@pfsense.com
 COMMENT?=	Meta package to install pfSense builder required ports
+
+LICENSE=	ESF
 
 RUN_DEPENDS=	${LOCALBASE}/bin/git:${PORTSDIR}/devel/git \
 		${LOCALBASE}/bin/curl:${PORTSDIR}/ftp/curl \

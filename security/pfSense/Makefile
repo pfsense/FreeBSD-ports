@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense
 DISTVERSION=	2.3
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -9,6 +10,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	renato@pfsense.com
 COMMENT?=	Meta package to install pfSense required ports
+
+LICENSE=	ESF
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/clog:${PORTSDIR}/sysutils/clog \
 		${LOCALBASE}/bin/rate:${PORTSDIR}/net-mgmt/rate \

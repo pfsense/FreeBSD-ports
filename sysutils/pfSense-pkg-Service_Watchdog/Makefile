@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-Service_Watchdog
 PORTVERSION=	1.8.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -10,6 +10,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package Service_Watchdog
+
+LICENSE=	ESF
 
 NO_BUILD=	yes
 NO_MTREE=	yes
