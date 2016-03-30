@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-nmap
 PORTVERSION=	1.4.4
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -9,6 +10,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package nmap
+
+LICENSE=	ESF
 
 RUN_DEPENDS=	${LOCALBASE}/bin/nmap:${PORTSDIR}/security/nmap
 

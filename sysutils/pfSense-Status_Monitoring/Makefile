@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-Status_Monitoring
 PORTVERSION=	0.9.8
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -9,6 +10,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense Status Monitoring
+
+LICENSE=	ESF
 
 NO_BUILD=	yes
 NO_MTREE=	yes

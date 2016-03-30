@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-iperf
 PORTVERSION=	2.0.5.5
+PORTREVISION=	1
 CATEGORIES=	benchmarks
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -9,6 +10,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package iperf
+
+LICENSE=	ESF
 
 RUN_DEPENDS=	${LOCALBASE}/bin/iperf:${PORTSDIR}/benchmarks/iperf
 

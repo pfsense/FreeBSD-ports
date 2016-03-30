@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-freeradius2
 PORTVERSION=	1.7.3
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -9,6 +10,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package freeradius2
+
+LICENSE=	ESF
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/radiusd:${PORTSDIR}/net/freeradius2 \
 		${LOCALBASE}/bin/bash:${PORTSDIR}/shells/bash

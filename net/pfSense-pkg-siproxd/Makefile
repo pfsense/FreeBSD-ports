@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-siproxd
 PORTVERSION=	1.1.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -10,6 +10,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package siproxd
+
+LICENSE=	ESF
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/siproxd:${PORTSDIR}/net/siproxd
 

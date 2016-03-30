@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-arping
 PORTVERSION=	1.2.2
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -9,6 +10,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package arping
+
+LICENSE=	ESF
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/arping:${PORTSDIR}/net/arping
 

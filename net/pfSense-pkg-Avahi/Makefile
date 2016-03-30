@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-Avahi
 PORTVERSION=	1.11
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -9,6 +10,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package Avahi
+
+LICENSE=	ESF
 
 LIB_DEPENDS=	libavahi-core.so:${PORTSDIR}/net/avahi-app
 

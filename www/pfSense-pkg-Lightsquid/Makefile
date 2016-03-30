@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-Lightsquid
 PORTVERSION=	3.0.3
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -9,6 +10,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package Lightsquid
+
+LICENSE=	ESF
 
 RUN_DEPENDS=	${LOCALBASE}/libexec/lightsquid/ip2name.list:${PORTSDIR}/www/lightsquid \
 		${LOCALBASE}/sbin/lighttpd:www/lighttpd

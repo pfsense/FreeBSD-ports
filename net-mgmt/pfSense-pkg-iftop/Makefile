@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-iftop
 PORTVERSION=	0.17
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -10,6 +10,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package iftop
+
+LICENSE=	ESF
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/iftop:${PORTSDIR}/net-mgmt/iftop
 

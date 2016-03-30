@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-squidGuard
 PORTVERSION=	1.14
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -9,6 +10,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package squidGuard
+
+LICENSE=	ESF
 
 RUN_DEPENDS=	${LOCALBASE}/bin/squidGuard:${PORTSDIR}/www/squidguard
 

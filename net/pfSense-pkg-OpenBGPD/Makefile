@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-OpenBGPD
 PORTVERSION=	0.11
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -10,6 +10,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package OpenBGPD
+
+LICENSE=	ESF
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/bgpctl:${PORTSDIR}/net/openbgpd
 

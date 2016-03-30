@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-ntopng
 PORTVERSION=	0.8.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -10,6 +10,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package ntopng
+
+LICENSE=	ESF
 
 RUN_DEPENDS=	${LOCALBASE}/bin/ntopng:${PORTSDIR}/net/ntopng \
 		${LOCALBASE}/bin/redis-cli:${PORTSDIR}/databases/redis \

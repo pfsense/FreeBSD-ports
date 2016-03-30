@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-sudo
 PORTVERSION=	0.2.9
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -10,6 +10,8 @@ EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package sudo
+
+LICENSE=	ESF
 
 RUN_DEPENDS=	${LOCALBASE}/bin/sudo:${PORTSDIR}/security/sudo
 
