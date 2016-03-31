@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	bsdinstaller
-PORTVERSION=	2.0.12
+PORTVERSION=	2.0.13
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty

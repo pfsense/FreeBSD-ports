@@ -48,6 +48,7 @@ rm -rf /mnt/pkgs
 # Copy config.xml to proper place, respecting pfi first
 if [ -r /tmp/mnt/cf/conf/config.xml ]; then
 	cp /tmp/mnt/cf/conf/config.xml /mnt/cf/conf/config.xml
+	rm /mnt/cf/conf/trigger_initial_wizard
 else
 	cp /mnt/conf.default/config.xml /mnt/cf/conf/config.xml
 fi
