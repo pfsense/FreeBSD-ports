@@ -510,6 +510,11 @@ if ($savemsg) {
 	print_info_box($savemsg);
 }
 
+if ($pconfig['enable'] == 'on' && $pconfig['ips_mode'] == 'ips_mode_inline' && (!isset($config['system']['disablechecksumoffloading']) || !isset($config['system']['disablesegmentationoffloading']) || !isset($config['system']['disablelargereceiveoffloading']))) {
+	print_info_box(gettext('IPS inline mode requires that Hardware Checksum, Hardware TCP Segmentation and Hardware Large Receive Offloading ' .
+				'all be disabled on the ') . '<b>' . gettext('System > Advanced > Networking ') . '</b>' . gettext('tab.'));
+}
+
 $tab_array = array();
 $tab_array[] = array(gettext("Interfaces"), true, "/suricata/suricata_interfaces.php");
 $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_global.php");
