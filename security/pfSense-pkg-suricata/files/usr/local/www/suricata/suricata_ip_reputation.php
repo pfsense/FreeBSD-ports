@@ -251,7 +251,7 @@ $section->addInput(new Form_Checkbox(
 	'enable_iprep',
 	'Enable',
 	'Use IP Reputation Lists on this interface. Default is NOT Checked.',
-	$pconfig['reverse'],
+	$pconfig['enable_iprep'],
 	'on'
 ));
 
