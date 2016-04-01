@@ -724,13 +724,11 @@ print($section);
 								$sid = $k2;
 								$gid = $k1;
 								$ruleset = $currentruleset;
-								$style = "";
 
 								if ($v['managed'] == 1) {
 									if ($v['disabled'] == 1) {
 										$textss = '<span class="text-muted">';
 										$textse = '</span>';
-										$style= 'style="opacity: 0.4; filter: alpha(opacity=40);"';
 										$iconb_class = 'class="fa fa-adn text-danger text-left"';
 										$title = gettext("Auto-disabled by settings on SID Mgmt tab");
 									}
@@ -792,43 +790,42 @@ print($section);
 								$destination_port = $rule_content[6]; //destination port field
 								$message = snort_get_msg($v['rule']); // description field
 								$sid_tooltip = gettext("View the raw text for this rule");
-
-								echo "<tr class=\"text-nowrap\"><td>{$textss}";
-								if ($v['managed'] == 1) {
-									echo "<i {$iconb_class} title='{$title}'</i>{$textse}";
-								}
-								else {
-									echo "<a id=\"rule_{$gid}_{$sid}\" href='#' onClick=\"doToggle('{$gid}', '{$sid}');\" 
-									{$iconb_class} title=\"{$title}\"></a>{$textse}";
-								}
-							       echo "</td>
-							       <td ondblclick=\"getRuleFileContents('{$currentruleset}','{$gid}','{$sid}');\">
-									{$textss}{$gid}{$textse}
+					?>
+							<tr class="text-nowrap">
+								<td><?=$textss; ?>
+						<?php if ($v['managed'] == 1) : ?>
+									<i <?=$iconb_class; ?> title="<?=$title; ?>"</i><?=$textse; ?>
+						<?php else : ?>
+									<a id="rule_<?=$gid; ?>_<?=$sid; ?>" href="#" onClick="doToggle('<?=$gid; ?>', '<?=$sid; ?>');" 
+									<?=$iconb_class; ?> title="<?=$title; ?>"></a><?=$textse; ?>
+						<?php endif; ?>
 							       </td>
-							       <td ondblclick=\"getRuleFileContents('{$currentruleset}','{$gid}','{$sid}');\">
-									<a href=\"javascript: void(0)\" 
-									onclick=\"getRuleFileContents('{$currentruleset}','{$gid}','{$sid}');\" 
-									title='{$sid_tooltip}'>{$textss}{$sid}{$textse}</a>
+							       <td ondblclick="getRuleFileContents('<?=$gid; ?>','<?=$sid; ?>');">
+									<?=$textss . $gid . $textse; ?>
 							       </td>
-							       <td ondblclick=\"getRuleFileContents('{$currentruleset}','{$gid}','{$sid}');\">
-									{$textss}{$protocol}{$textse}
+							       <td ondblclick="getRuleFileContents('<?=$gid; ?>','<?=$sid; ?>');">
+									<a href="javascript: void(0)" 
+									onclick="getRuleFileContents('<?=$gid; ?>','<?=$sid; ?>');" 
+									title="<?=$sid_tooltip; ?>"><?=$textss . $sid . $textse; ?></a>
 							       </td>
-							       <td style=\"text-overflow: ellipsis; overflow: hidden; white-space:no-wrap\" ondblclick=\"getRuleFileContents('{$currentruleset}','{$gid}','{$sid}');\">
-									{$srcspan}{$source}</span>
+							       <td ondblclick="getRuleFileContents('<?=$gid; ?>','<?=$sid; ?>');">
+									<?=$textss . $protocol . $textse; ?>
 							       </td>
-							       <td style=\"text-overflow: ellipsis; overflow: hidden; white-space:no-wrap\" ondblclick=\"getRuleFileContents('{$currentruleset}','{$gid}','{$sid}');\">
-									{$srcprtspan}{$source_port}</span>
+							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="getRuleFileContents('<?=$gid; ?>','<?=$sid; ?>');">
+									<?=$srcspan . $source; ?></span>
 							       </td>
-							       <td style=\"text-overflow: ellipsis; overflow: hidden; white-space:no-wrap\" ondblclick=\"getRuleFileContents('{$currentruleset}','{$gid}','{$sid}');\">
-									{$dstspan}{$destination}</span>
+							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="getRuleFileContents('<?=$gid; ?>','<?=$sid; ?>');">
+									<?=$srcprtspan . $source_port; ?></span>
 							       </td>
-							       <td style=\"text-overflow: ellipsis; overflow: hidden; white-space:no-wrap\" ondblclick=\"getRuleFileContents('{$currentruleset}','{$gid}','{$sid}');\">
-								       {$dstprtspan}{$destination_port}</span>
+							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="getRuleFileContents('<?=$gid; ?>','<?=$sid; ?>');">
+									<?=$dstspan . $destination; ?></span>
 							       </td>
-								<td style=\"word-wrap:break-word; white-space:normal\" ondblclick=\"getRuleFileContents('{$currentruleset}','{$gid}','{$sid}');\">
-									{$textss}{$message}{$textse}
-							       </td>";
-						?>
+							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="getRuleFileContents('<?=$gid; ?>','<?=$sid; ?>');">
+								       <?=$dstprtspan . $destination_port; ?></span>
+							       </td>
+								<td style="word-wrap:break-word; white-space:normal" ondblclick="getRuleFileContents('<?=$gid; ?>','<?=$sid; ?>');">
+									<?=$textss . $message . $textse; ?>
+							       </td>
 							</tr>
 						<?php
 								$counter++;
@@ -866,7 +863,6 @@ print($section);
 								foreach ($rules_map as $k1 => $rulem) {
 									foreach ($rulem as $k2 => $v) {
 										$ruleset = $currentruleset;
-										$style = "";
 										$sid = snort_get_sid($v['rule']);
 										$gid = snort_get_gid($v['rule']);
 
@@ -874,13 +870,12 @@ print($section);
 											if ($v['disabled'] == 1) {
 												$textss = "<span class=\"text-muted\">";
 												$textse = "</span>";
-												$style= "style=\"opacity: 0.4; filter: alpha(opacity=40);\"";
 												$iconb_class = 'class="fa fa-adn text-danger text-left"';
 												$title = gettext("Auto-disabled by settings on SID Mgmt tab");
 											}
 											else {
 												$textss = $textse = "";
-												$ruleset = "suricata.rules";
+												$ruleset = "snort.rules";
 												$iconb_class = 'class="fa fa-adn text-success text-left"';
 												$title = gettext("Auto-managed by settings on SID Mgmt tab");
 											}
@@ -925,35 +920,34 @@ print($section);
 											$policy = implode("<br/>", $matches[1]);
 										else
 											$policy = "none";
-
-										echo "<tr class=\"text-nowrap\"><td>{$textss}";
-										if ($v['managed'] == 1) {
-											echo "<i {$iconb_class} title='{$title}'</i>{$textse}";
-										}
-										else {
-											echo "<a id=\"rule_{$gid}_{$sid}\" href='#' onClick=\"doToggle('{$gid}, {$sid})';\" 
-											{$iconb_class} title=\"{$title}\"</a>{$textse}";
-										}
-									       echo "</td>
-									       <td ondblclick=\"getRuleFileContents('{$currentruleset}','{$gid}','{$sid}');\">
-											{$textss}{$gid}{$textse}
+							?>
+									<tr class="text-nowrap">
+										<td><?=$textss; ?>
+								<?php if ($v['managed'] == 1) : ?>
+											<i {$iconb_class} title='{$title}'</i>{$textse}";
+								<?php else : ?>
+											<a id="rule_<?=$gid; ?>_<?=$sid; ?>" href="#" onClick="doToggle('<?=$gid; ?>', '<?=$sid; ?>');" 
+											<?=$iconb_class; ?> title="<?=$title; ?>"</a><?=$textse; ?>
+								<?php endif; ?>
 									       </td>
-									       <td ondblclick=\"getRuleFileContents('{$currentruleset}','{$gid}','{$sid}');\">
-											<a href=\"javascript: void(0)\" 
-											onclick=\"getRuleFileContents('{$currentruleset}','{$gid}','{$sid}');\" 
-											title='{$sid_tooltip}'>{$textss}{$sid}{$textse}</a>
+									       <td ondblclick="getRuleFileContents('<?=$gid; ?>','<?=$sid; ?>');">
+											<?=$textss . $gid . $textse; ?>
 									       </td>
-										<td ondblclick=\"getRuleFileContents('{$currentruleset}','{$gid}','{$sid}');\">
-											{$textss}{$classtype}</span>
+									       <td ondblclick="getRuleFileContents('<?=$gid; ?>','<?=$sid; ?>');">
+											<a href="javascript: void(0)" 
+											onclick="getRuleFileContents('<?=$gid; ?>','<?=$sid; ?>');" 
+											title="<?=$sid_tooltip; ?>"><?=$textss . $sid . $textse; ?></a>
+									       </td>
+										<td ondblclick="getRuleFileContents('<?=$gid; ?>','<?=$sid; ?>');">
+											<?=$textss . $classtype; ?></span>
 							       			</td>
-							       			<td ondblclick=\"getRuleFileContents('{$currentruleset}','{$gid}','{$sid}');\">
-								       			{$textss}{$policy}</span>
+							       			<td ondblclick="getRuleFileContents('<?=$gid; ?>','<?=$sid; ?>');">
+								       			<?=$textss . $policy; ?></span>
 								       		</td>
-										<td style=\"word-wrap:break-word; white-space:normal\" ondblclick=\"getRuleFileContents('{$currentruleset}','{$gid}','{$sid}');\">
-											{$textss}{$message}{$textse}
-							       			</td>";
-									?>
-									   	</tr>
+										<td style="word-wrap:break-word; white-space:normal" ondblclick="getRuleFileContents('<?=$gid; ?>','<?=$sid; ?>');">
+											<?=$textss . $message . $textse; ?>
+							       			</td>
+									</tr>
 							<?php
 										$counter++;
 									}
@@ -973,8 +967,8 @@ print($section);
 	<div class="panel-body">
 		<div class="text-info content">
 			<b><?=gettext("Total Rules: ");?></b><?=gettext($counter);?>&nbsp;&nbsp;&nbsp;&nbsp; 
-			<b><?=gettext("Enabled: ");?></b><?=gettext($enable_cnt);?>&nbsp;&nbsp;&nbsp;&nbsp;
-			<b><?=gettext("Disabled: ");?></b><?=gettext($disable_cnt);?>&nbsp;&nbsp;&nbsp;&nbsp;
+			<b><?=gettext("Default Enabled: ");?></b><?=gettext($enable_cnt);?>&nbsp;&nbsp;&nbsp;&nbsp;
+			<b><?=gettext("Default Disabled: ");?></b><?=gettext($disable_cnt);?>&nbsp;&nbsp;&nbsp;&nbsp;
 			<b><?=gettext("User Enabled: ");?></b><?=gettext($user_enable_cnt);?>&nbsp;&nbsp;&nbsp;&nbsp;
 			<b><?=gettext("User Disabled: ");?></b><?=gettext($user_disable_cnt);?>&nbsp;&nbsp;&nbsp;&nbsp;
 			<b><?=gettext("Auto-Managed: ");?></b><?=gettext($managed_count);?>
@@ -1009,7 +1003,7 @@ print($form);
 		$('#iform').submit();
 	}
 
-	function getRuleFileContents(ruleset, gid, sid) {
+	function getRuleFileContents(gid, sid) {
 		var ajaxRequest;
 
 		ajaxRequest = $.ajax({
@@ -1017,7 +1011,7 @@ print($form);
 			type: "post",
 			data: { ajax: "ajax", 
 				id: $('#id').val(),
-				openruleset: ruleset,
+				openruleset: $('#selectbox').val(),
 				gid: gid,
 				sid: sid
 			}
