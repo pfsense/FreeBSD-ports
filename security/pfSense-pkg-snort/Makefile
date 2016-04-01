@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-snort
 PORTVERSION=	3.2.9.1
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +13,8 @@ COMMENT=	pfSense package snort
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/bin/snort:${PORTSDIR}/security/snort
+RUN_DEPENDS=	${LOCALBASE}/bin/snort:${PORTSDIR}/security/snort \ 
+		${LOCALBASE}/bin/barnyard2:${PORTSDIR}/security/barnyard2
 
 NO_BUILD=	yes
 NO_MTREE=	yes
