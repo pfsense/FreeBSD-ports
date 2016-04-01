@@ -328,7 +328,7 @@ function suricata_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 	
 		// Test integrity of the rules file.  Turn off update if file has wrong md5 hash
 		if ($file_md5 != trim(md5_file($file_dst))){
-			$update_status(gettext("{$desc} file MD5 checksum failed!") . "\n");
+			update_status(gettext("{$desc} file MD5 checksum failed!") . "\n");
 			log_error(gettext("[Suricata] {$desc} file download failed.  Bad MD5 checksum."));
         	        log_error(gettext("[Suricata] Downloaded File MD5: " . md5_file($file_dst)));
 			log_error(gettext("[Suricata] Expected File MD5: {$file_md5}"));
