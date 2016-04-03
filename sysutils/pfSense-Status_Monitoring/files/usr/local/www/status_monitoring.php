@@ -85,6 +85,21 @@ chdir($rrddbpath);
 $databases = glob("*.rrd");
 chdir($home);
 
+if ($_POST && $_POST['quicklinks']) {
+
+	$quicklinks_string = preg_replace('/\*c\^o\#m\?m\@a\*$/', '', $_POST['quicklinks']);
+	$quicklinks_strings = explode('*c^o#m?m@a*', $quicklinks_string);
+
+	foreach ($quicklinks_strings as $quicklink_string) {
+		$quicklink = explode('*c^o#l?o@n*', $quicklink_string);
+		$quicklinks[$quicklink[0]] = array('title' => $quicklink[1], 'category' => $quicklink[2]);
+	}
+
+	$config['rrd']['quicklinks'] = $quicklinks;
+
+	write_config($desc = gettext("Status Monitoring Quick Links Saved (backup, no sync): "), $backup = true, $write_config_only = true);
+}
+
 if($_POST['enable']) {
 	if(($_POST['enable'] === 'false')) { 
 		unset($config['rrd']['enable']); 
@@ -120,6 +135,11 @@ if ($_POST['defaults']) {
 
 $pconfig['enable'] = isset($config['rrd']['enable']);
 $pconfig['category'] = $config['rrd']['category'];
+
+if ($_POST && $_POST['selected_quicklink']) {
+	$selected_quicklink = $_POST['selected_quicklink'];
+	$pconfig['category'] = $config['rrd']['quicklinks'][$selected_quicklink]['category'];
+}
 
 $system = $packets = $quality = $traffic = $captiveportal = $ntpd = $queues = $queuedrops = $dhcpd = $vpnusers = $wireless = $cellular = [];
 
@@ -525,10 +545,58 @@ if ($savemsg) {
 
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<h2 class="panel-title">Interactive Graph</h2>
+		<h2 class="panel-title" style="display:inline-block">
+			Interactive Graph
+		</h2>
+		<span class="alert" id="loading-msg">Loading Graph...</span>
+<?php
+		if (is_array($config['rrd']['quicklinks'])) {
+			$quicklinks_visibility = "visible";
+		} else {
+			$quicklinks_visibility = "invisible";
+		}
+?>
+		<ul class="pull-right context-links list-inline" style="padding-left:16px">
+			<li>
+				<a id="quicklinks_save" class="invisible" >
+					<i class="fa fa-save icon-pointer" title="Save the Quick Links Configuration"></i>
+				</a>
+			</li>
+			<li>
+				<a id="quicklink_delete" class="<?=$quicklinks_visibility?>" >
+					<i class="fa fa-trash icon-pointer" title="Delete the Selected Quick Link"></i>
+				</a>
+			</li>
+			<li>
+				<a id="quicklink_add">
+					<i class="fa fa-plus icon-pointer" title="Add Quick Link for Current Graph"></i>
+				</a>
+			</li>
+		</ul>
+
+		<ul id="quicklinks_list" class="pull-right context-links list-inline" style="padding-left:16px">
+<?php
+		if (is_array($config['rrd']['quicklinks'])) {
+			foreach ($config['rrd']['quicklinks'] as $key => $quicklink) {
+?>
+			<li>
+				<a id="<?=$key?>" title="<?=$quicklink['title']?>" data-category="<?=$quicklink['category']?>" >
+					<i class="fa fa-bar-chart icon-pointer"></i>
+				</a>
+			</li>
+<?php
+			}
+		}
+?>
+		</ul>
+
+		<ul class="pull-right context-links list-inline" style="padding-left:16px">
+			<li>
+				<a id="quicklinktitle"></a>
+			</li>
+		</ul>
 	</div>
 	<div class="panel-body">
-		<div class="alert alert-info" id="loading-msg">Loading Graph...</div>
 		<div id="chart-error" class="alert alert-danger" style="display: none;"></div>
 		<div id="chart" class="with-3d-shadow with-transitions">
 			<svg></svg>
@@ -569,9 +637,31 @@ if ($savemsg) {
 	</div>
 </div>
 
+<div class="hidden" id="quicklinksSequence">
+	<form action="/status_monitoring.php" method="post" id="quicklinksSequence_form" name="quicklinksForm">
+		<input type="hidden" name="quicklinks" value="" />
+		<input type="hidden" name="selected_quicklink" value="" />
+	</form>
+</div>
+
 <script type="text/javascript">
 
 //<![CDATA[
+
+function updateQuicklinks() {
+	var quicklinks = '';
+
+	$( "#quicklinks_list [id^=quicklink]" ).each(function(idx, quicklink) {
+		quicklinks += quicklink.id + '*c^o#l?o@n*' + quicklink.title + '*c^o#l?o@n*' + quicklink.dataset.category + '*c^o#m?m@a*';
+
+		if ($(quicklink).prop('selected')) {
+			$('input[name=selected_quicklink]', $('#quicklinksSequence_form')).val(quicklink.id);
+		}
+	});
+
+	$('input[name=quicklinks]', $('#quicklinksSequence_form')).val(quicklinks);
+}
+
 events.push(function() {
 
 	//lookup axis labels based on graph name
@@ -799,6 +889,8 @@ events.push(function() {
 	***/
 
 	//TODO work in more validation
+	var graphOptions_previous;
+
 	function getOptions() {
 		var error = "There was an error getting the options.";
 
@@ -830,6 +922,12 @@ events.push(function() {
 		}
 
 		var graphOptions = 'left=' + graphLeft + '&right=' + graphRight + '&start=' + start + '&end=' + end + '&resolution=' + resolution + '&timePeriod=' + timePeriod + '&graphtype=' + graphtype + '&invert=' + invert ;
+
+		// If graph options have changed, un-select any quick link.
+		if (graphOptions != graphOptions_previous) {
+			selected_quicklink(null);
+		}
+		graphOptions_previous = graphOptions;
 
 		return graphOptions;
 	}
@@ -1039,6 +1137,119 @@ events.push(function() {
 			});
 
 	});
+
+	// Load graph of clicked quick link.
+	// Using long form .on() delegated event here because click event is not bound to dynamically added elements (quick links).  Thus the short form .click() does not work.
+	$( '#quicklinks_list' ).on( "click", "[id^=quicklink]", function() {
+		if ($(this).attr('data-category')) {
+			$("#loading-msg").show();
+			applySettings($(this).attr('data-category').trim());
+			draw_graph(getOptions());
+			selected_quicklink(this);
+		}
+	});
+
+	// Make quick links sortable.
+	$('#quicklinks_list').sortable({
+		cursor: 'grabbing',
+		update: function(event, ui) {
+			reindex_quicklinks(ui.item.parent('ul'));
+		}
+	});
+
+	// Add quick link for the current graph settings.
+	$('#quicklink_add').click(function () {
+		title = prompt("Enter a title for the quick link.", "");
+		$( "#selectedquicklinktitle" ).text(title);
+
+		id = 'quicklink999';
+		graph_settings = getOptions();
+		quicklink_list_item_html = '<li class="ui-sortable-handle"><a id="' + id + '" title="' + title + '" data-category="' + graph_settings + '" ><i class="fa fa-bar-chart icon-pointer"></i></a></li>';
+
+		$(quicklink_list_item_html)
+		.appendTo($( "#quicklinks_list" ));
+
+		_this = $( "#quicklinks_list #" + id );
+		selected_quicklink(_this);
+
+		reindex_quicklinks($( "#quicklinks_list" ));
+	});
+
+	// Delete the selected quick link from the quick links list.
+	$('#quicklink_delete').click(function () {
+		$( "#quicklinks_list [id^=quicklink]" ).each(function() {
+			if ($(this).prop('selected')) {
+				$(this).parent().remove('li');
+				$( "#quicklinktitle" ).text("");
+				reindex_quicklinks($( "#quicklinks_list" ));
+			}
+		});
+	});
+
+	// Save quick links changes to the config, clear dirty flag, and suppress save icon.
+	$( "#quicklinks_save" ).click(function() {
+		updateQuicklinks();
+		dirty = false;
+		$( "#quicklinks_save" ).removeClass("visible");
+		$( "#quicklinks_save" ).addClass("invisible");
+		$('[name=quicklinksForm]').submit();
+	});
+
+	// Provide a warning message if the user tries to leave the page with unsaved changes.
+	$(window).bind('beforeunload', function(){
+		if (dirty) {
+			return ("<?=gettext('You have unsaved quick link changes.')?>");
+		} else {
+			return undefined;
+		}
+	});
+
+	// Style the selected and unselected quick links.
+	function selected_quicklink(selected) {
+		unselectedquicklinkcolor = 'silver';
+		selectedquicklinkcolor = $( "#quicklink_add" ).css("color");
+
+		$( "#quicklinks_list [id^=quicklink]" ).css("color", unselectedquicklinkcolor);
+		$(selected).css("color", selectedquicklinkcolor);
+
+		$( "#quicklinks_list [id^=quicklink]" ).prop('selected', false);
+		$(selected).prop('selected', true);
+
+		$( "#quicklinktitle" ).text($(selected).attr("title"));
+	}
+
+	// Do on page load to set initial quick links styling.
+	if ("<?=$selected_quicklink?>") {	// Returning to the previous selected quick link (ex: after save).
+		_this = $( "#quicklinks_list #<?=$selected_quicklink?>" );
+		_this.prop('selected', true);
+		selected_quicklink(_this);
+	} else {							// Before any quick link is selected.
+		selected_quicklink(null);
+	}
+
+	// Re-index the quick links order and mark dirty.
+	function reindex_quicklinks(section) {
+		var row = 0;
+
+		// Quick links may have all been deleted.  So conceal the delete icon until at least one quick link is detected.
+		$( "#quicklink_delete").removeClass("visible");
+		$( "#quicklink_delete").addClass("invisible");
+
+		section.find('a').each(function() {
+			if(this.id) {
+				$(this).attr("id", "quicklink" + row);
+				row++;
+
+				// Quick links exist (detected).  So display the delete icon.
+				$( "#quicklink_delete").removeClass("invisible");
+				$( "#quicklink_delete").addClass("visible");
+			}
+		});
+		// Quick links changes have been made.  So display the save icon.
+		$( "#quicklinks_save" ).removeClass("invisible");
+		$( "#quicklinks_save" ).addClass("visible");
+		dirty = true;
+	}
 
 	/***
 	**
