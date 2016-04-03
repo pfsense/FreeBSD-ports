@@ -107,7 +107,7 @@ if ($_POST['ResetRRD']) {
 
 //old config that needs to be updated
 if(strpos($config['rrd']['category'], '&resolution') === false) {
-	$config['rrd']['category'] = "left=system-processor&right=&resolution=300&timePeriod=-1d&startDate=&endDate=&startTime=0&endTime=0&graphtype=line&invert=true";
+	$config['rrd']['category'] = "left=system-processor&right=&resolution=300&timePeriod=-1d&startDate=&endDate=&startTime=0&endTime=0&graphtype=line&invert=true&autoUpdate=0";
 	write_config();
 }
 
@@ -116,7 +116,7 @@ if ($_POST['defaults']) {
 	// Time period setting change applies valid resolutions and selects the default resolution of the time period.
 	// Time period setting needs to be before resolution so that the time period default doesn't override the page load default resolution.
 	// Time period setting needs to be before custom start/end date/time so those will be enabled before applying their setting.
-	$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert'];
+	$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert']."&autoUpdate=".$_POST['auto-update'];
 	write_config();
 	$savemsg = "The changes have been applied successfully.";
 }
@@ -462,6 +462,18 @@ if ($savemsg) {
 
 					<span class="help-block">Inverse</span>
 				</div>
+				<div class="col-sm-2">
+					<select class="form-control" id="auto-update" name="auto-update">
+						<option value="0" selected>Off</option>
+						<option value="-1">Settings Change</option>
+						<option value="15">15 Seconds</option>
+						<option value="60">1 Minute</option>
+						<option value="300">5 Minutes</option>
+						<option value="600">10 Minutes</option>
+					</select>
+
+					<span class="help-block">Auto Update</span>
+				</div>
 			</div>
 			<div class="form-group" id="custom-time" style="display:none;">
 				<label class="col-sm-2 control-label">
@@ -528,10 +540,12 @@ if ($savemsg) {
 
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<h2 class="panel-title">Interactive Graph</h2>
+		<h2 class="panel-title" style="display:inline-block">
+			Interactive Graph
+		</h2>
+		<span class="alert" id="loading-msg">Loading Graph...</span>
 	</div>
 	<div class="panel-body">
-		<div class="alert alert-info" id="loading-msg">Loading Graph...</div>
 		<div id="chart-error" class="alert alert-danger" style="display: none;"></div>
 		<div id="monitoring-chart" class="d3-chart">
 			<svg></svg>
@@ -645,6 +659,11 @@ events.push(function() {
 	$('select[id^="category-"]').on('change', function() {
 
 		var categoryId = this.id.split("-");
+		update_graph();
+	});
+
+	$('#graph-left').on('change', function() {
+		update_graph();
 
 		switch(this.value) {
 			case "system":
@@ -704,6 +723,11 @@ events.push(function() {
 			$("#graph-" + categoryId[1]).append('<option value="' + value + '">' + key + '</option>');
 		});
 
+		update_graph();
+	});
+
+	$('#graph-right').on('change', function() {
+		update_graph();
 	});
 
 	$('#time-period').on('change', function() {
@@ -713,8 +737,65 @@ events.push(function() {
 		$( "#end-date" ).prop( "disabled", true );
 		$( "#start-time" ).prop( "disabled", true );
 		$( "#end-time" ).prop( "disabled", true );
+		valid_resolutions(this.value);
+		update_graph();
+	});
 
-		switch(this.value) {
+	$('#resolution').on('change', function() {
+		update_graph();
+	});
+
+	$('#graph-type').on('change', function() {
+		update_graph();
+	});
+
+	$('#invert').on('change', function() {
+		update_graph();
+	});
+
+	$('#auto-update').on('change', function() {
+		update_graph();
+	});
+
+	$( ".update-graph" ).click(function() {
+		update_graph(true);
+	});
+
+	var auto_update;
+
+	function update_graph(force) {
+
+		clearTimeout(auto_update);
+
+		if ($( "#auto-update" ).val() == "-1") {
+			force = true;
+		}
+
+		if (force || $( "#auto-update" ).val() > 0) {
+			$("#loading-msg").show();
+			draw_graph(getOptions());
+		}
+
+		if ( $( "#auto-update" ).val() > 0) {
+
+			update_interval = $( "#auto-update" ).val();
+
+			// Ensure graph update happens at end of the minute so RRD will have a data point for the current minute and graph doesn't end with 0 value.
+			// This is a hack that can probably be fix in a better fashion once start and end times are implemented.
+			seconds = new Date().getSeconds();
+			update_interval -= seconds + 1;
+
+			if (update_interval <= 0 || seconds >= 59) {
+				update_interval = $( "#auto-update" ).val();
+			}
+			// End hack.
+
+			auto_update = setTimeout(update_graph, update_interval * 1000);
+		}
+	}
+
+	function valid_resolutions(timePeriod) {
+		switch(timePeriod) {
 			case "-3m":
 			case "-1y":
 			case "-4y":
@@ -776,8 +857,7 @@ events.push(function() {
 				$("#resolution").append('<option value="60">1 Minute</option>');
 				break;
 			}
-			
-	});
+	}
 
 	function convertToEpoch(datestring) {
 		var parts = datestring.match(/(\d{2})\/(\d{2})\/(\d{4})\:(\d{1,2})/);
@@ -808,6 +888,7 @@ events.push(function() {
 		var timePeriod = $( "#time-period" ).val();
 		var resolution = $( "#resolution" ).val();
 		var graphtype = $( "#graph-type" ).val();
+		var autoUpdate = $( "#auto-update" ).val();
 		var invert = $( "#invert" ).val();
 		var start = '';
 		var end = '';
@@ -826,7 +907,7 @@ events.push(function() {
 			}
 		}
 
-		var graphOptions = 'left=' + graphLeft + '&right=' + graphRight + '&start=' + start + '&end=' + end + '&resolution=' + resolution + '&timePeriod=' + timePeriod + '&graphtype=' + graphtype + '&invert=' + invert ;
+		var graphOptions = 'left=' + graphLeft + '&right=' + graphRight + '&start=' + start + '&end=' + end + '&resolution=' + resolution + '&timePeriod=' + timePeriod + '&graphtype=' + graphtype + '&invert=' + invert + '&autoUpdate=' + autoUpdate ;
 
 		return graphOptions;
 	}
@@ -846,6 +927,10 @@ events.push(function() {
 	function applySettings(defaults) {
 
 		var allOptions = defaults.split("&");
+
+		// Make sure autoUpdate is the last item in the options list so it is last to be processed and potentially enabled before all the other options have been applied.
+		// Set the auto update option to 0 so that multiple draw_graph calls are not fired off while other options are being applied/changed.
+		$( "#auto-update" ).val("0").change();
 
 		allOptions.forEach(function(entry) {
 			
@@ -955,19 +1040,17 @@ events.push(function() {
 				$( "#invert" ).val(currentOption[1]);
 			}
 
+			if(currentOption[0] === "autoUpdate") {
+				$( "#auto-update" ).val(currentOption[1]).change();
+			}
+
 		}, this);
 
 	}
 
 	applySettings("<?php echo $pconfig['category']; ?>");
 
-	$( ".update-graph" ).click(function() {
-		$("#monitoring-chart").hide();
-		$("#loading-msg").show();
 		$("#chart-error").hide();
-		draw_graph(getOptions());
-	});
-
 	$( "#settings" ).click(function() {
 		($(this).text().trim() === 'Display Advanced') ? $(this).html('<i class="fa fa-cog fa-lg"></i> Hide Advanced') : $(this).html('<i class="fa fa-cog fa-lg"></i> Display Advanced');
 		$("#export").toggle();
@@ -1351,7 +1434,9 @@ events.push(function() {
 
 	} else {
 
-		draw_graph(getOptions());
+		if ( $( "#auto-update" ).val() == 0) {	// If auto-update is enabled then it will draw the graph.  Don't draw the graph twice.
+			draw_graph(getOptions());
+		}
 
 	}
 
