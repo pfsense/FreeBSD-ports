@@ -81,7 +81,8 @@ return {
 		success = false
 		if FileName.is_file("/tmp/hdrescue/cf/conf/config.xml") then
 			cmds = CmdChain.new()
-			cmds:add("${root}bin/cp /tmp/hdrescue/cf/conf/config.xml /cf/conf/config.xml");
+			cmds:add("${root}bin/mkdir -p /tmp/mnt/cf/conf");
+			cmds:add("${root}bin/cp /tmp/hdrescue/cf/conf/config.xml /tmp/mnt/cf/conf/config.xml");
 			cmds:add{
 			cmdline = "${root}sbin/umount /tmp/hdrescue",
 			replacements = {
@@ -89,9 +90,6 @@ return {
 					disk1 = disk1
 				}
 			}
-			if FileName.is_file("/tmp/config.cache") then
-				cmds:add("${root}bin/rm /tmp/config.cache");
-			end
 		    if cmds:execute() then
 				success = true
 		    end

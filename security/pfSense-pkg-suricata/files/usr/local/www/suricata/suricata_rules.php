@@ -194,6 +194,19 @@ suricata_auto_sid_mgmt($rules_map, $a_rule[$id], FALSE);
 $enablesid = suricata_load_sid_mods($a_rule[$id]['rule_sid_on']);
 $disablesid = suricata_load_sid_mods($a_rule[$id]['rule_sid_off']);
 
+/* Process AJAX request to view content of a specific rule */
+if ($_POST['action'] == 'loadRule') {
+	if (isset($_POST['gid']) && isset($_POST['sid'])) {
+		$gid = $_POST['gid'];
+		$sid = $_POST['sid'];
+		print(base64_encode($rules_map[$gid][$sid]['rule']));
+	}
+	else {
+		print(base64_encode(gettext('Invalid rule signature - no matching rule was found!')));
+	}
+	exit;
+}
+
 if (isset($_POST['toggle']) && is_numeric($_POST['sid']) && is_numeric($_POST['gid']) && !empty($rules_map)) {
 
 	// Get the GID:SID tags embedded in the clicked rule icon.
@@ -694,6 +707,8 @@ print($form);
 							$ruleset = $currentruleset;
 							$style = "";
 
+							// Determine which icons to display in the first column for rule state.
+							// See if the rule is auto-managed by the SID MGMT tab feature
 							if ($v['managed'] == 1) {
 								if ($v['disabled'] == 1 && $v['state_toggled'] == 1) {
 									$textss = '<span class="text-muted">';
@@ -708,7 +723,8 @@ print($form);
 								}
 								$managed_count++;
 							}
-							elseif (isset($disablesid[$gid][$sid])) {
+							// See if the rule is in our list of user-disabled overrides
+							if (isset($disablesid[$gid][$sid])) {
 								$textss = "<span class=\"text-muted\">";
 								$textse = "</span>";
 								$disable_cnt++;
@@ -716,13 +732,7 @@ print($form);
 								$iconb_class = 'class="fa fa-times-circle text-danger text-left"';
 								$title = gettext("Disabled by user. Click to toggle to enabled state");
 							}
-							elseif (($v['disabled'] == 1) && ($v['state_toggled'] == 0) && (!isset($enablesid[$gid][$sid]))) {
-								$textss = "<span class=\"text-muted\">";
-								$textse = "</span>";
-								$disable_cnt++;
-								$iconb_class = 'class="fa fa-times-circle-o text-danger text-left"';
-								$title = gettext("Disabled by default. Click to toggle to enabled state");
-							}
+							// See if the rule is in our list of user-enabled overrides
 							elseif (isset($enablesid[$gid][$sid])) {
 								$textss = $textse = "";
 								$enable_cnt++;
@@ -730,7 +740,16 @@ print($form);
 								$iconb_class = 'class="fa fa-check-circle text-success text-left"';
 								$title = gettext("Enabled by user. Click to toggle to disabled state");
 							}
-							else {
+							// These last two checks handle normal cases of default-enabled or default disabled rules
+							// with no user overrides.
+							elseif (($v['disabled'] == 1) && ($v['state_toggled'] == 0) && (!isset($enablesid[$gid][$sid]))) {
+								$textss = "<span class=\"text-muted\">";
+								$textse = "</span>";
+								$disable_cnt++;
+								$iconb_class = 'class="fa fa-times-circle-o text-danger text-left"';
+								$title = gettext("Disabled by default. Click to toggle to enabled state");
+							}
+							elseif ($v['disabled'] == 0 && $v['state_toggled'] == 0) {
 								$textss = $textse = "";
 								$enable_cnt++;
 								$iconb_class = 'class="fa fa-check-circle-o text-success text-left"';
@@ -766,30 +785,30 @@ print($form);
 								<i class="fa fa-adn text-warning text-left" title="<?=gettext('Action or content modified by settings on SID Mgmt tab'); ?>"></i><?=$textse; ?>
 				<?php endif; ?>
 								</td>
-							       <td ondblclick="showRuleContents('<?=base64_encode($v['rule']);?>');">
+							       <td ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
 									<?=$textss . $gid . $textse;?>
 							       </td>
-							       <td ondblclick="showRuleContents('<?=base64_encode($v['rule']);?>');">
+							       <td ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
 									<a href="javascript: void(0)" 
-									onclick="showRuleContents('<?=base64_encode($v['rule']);?>');" 
+									onclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');" 
 									title="<?=$sid_tooltip;?>"><?=$textss . $sid . $textse;?></a>
 							       </td>
-							       <td ondblclick="showRuleContents('<?=base64_encode($v['rule']);?>');">
+							       <td ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
 									<?=$textss . $protocol . $textse;?>
 							       </td>
-							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=base64_encode($v['rule']);?>');">
+							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
 									<?=$srcspan . $source;?></span>
 							       </td>
-							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=base64_encode($v['rule']);?>');">
+							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
 									<?=$srcprtspan . $source_port;?></span>
 							       </td>
-							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=base64_encode($v['rule']);?>');">
+							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
 									<?=$dstspan . $destination;?></span>
 							       </td>
-							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=base64_encode($v['rule']);?>');">
+							       <td style="text-overflow: ellipsis; overflow: hidden; white-space:no-wrap" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
 								       <?=$dstprtspan . $destination_port;?></span>
 							       </td>
-								<td style="word-wrap:break-word; white-space:normal" ondblclick="showRuleContents('<?=base64_encode($v['rule']);?>');">
+								<td style="word-wrap:break-word; white-space:normal" ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
 									<?=$textss . $message . $textse;?>
 							       </td>
 							</tr>
@@ -809,8 +828,8 @@ print($form);
 	<div class="panel-body">
 		<div class="text-info content">
 			<b><?=gettext("Total Rules: ");?></b><?=gettext($counter);?>&nbsp;&nbsp;&nbsp;&nbsp; 
-			<b><?=gettext("Enabled: ");?></b><?=gettext($enable_cnt);?>&nbsp;&nbsp;&nbsp;&nbsp;
-			<b><?=gettext("Disabled: ");?></b><?=gettext($disable_cnt);?>&nbsp;&nbsp;&nbsp;&nbsp;
+			<b><?=gettext("Default Enabled: ");?></b><?=gettext($enable_cnt);?>&nbsp;&nbsp;&nbsp;&nbsp;
+			<b><?=gettext("Default Disabled: ");?></b><?=gettext($disable_cnt);?>&nbsp;&nbsp;&nbsp;&nbsp;
 			<b><?=gettext("User Enabled: ");?></b><?=gettext($user_enable_cnt);?>&nbsp;&nbsp;&nbsp;&nbsp;
 			<b><?=gettext("User Disabled: ");?></b><?=gettext($user_disable_cnt);?>&nbsp;&nbsp;&nbsp;&nbsp;
 			<b><?=gettext("Auto-Managed: ");?></b><?=gettext($managed_count);?>
@@ -861,11 +880,28 @@ function wopen(url, name)
     win.focus();
 }
 
-function showRuleContents(content) {
+function showRuleContents(gid, sid) {
 		// Show the modal dialog with rule text
 		$('#rulesviewer').modal('show');
 		$('#modal_rule_category').html($('#selectbox').val());
-		$('#rulesviewer_text').text(atob(content));
+
+		$.ajax(
+			"<?=$_SERVER['SCRIPT_NAME'];?>",
+			{
+				type: 'post',
+				data: {
+					sid:         sid,
+					gid:         gid,
+					openruleset: $('#selectbox').val(),
+					action:      'loadRule'
+				},
+				complete: loadComplete
+			}
+		);
+}
+
+function loadComplete(req) {
+		$('#rulesviewer_text').text(atob(req.responseText));
 		$('#rulesviewer_text').attr('readonly', true);
 }
 
