@@ -668,8 +668,7 @@ $section = new Form_Section_class("Default backend, access control lists and act
 
 $section->addInput(new Form_StaticText(
 	'Access Control lists',
-	"Use these to replace the error pages that haproxy can generate by custom pages created on the files tab.
-	For example haproxy will generate a 503 error page when no backend is available, you can replace that page here.<br/>".
+	"Use these to define criteria that will be used with actions defined below to perform them only when certain conditions are met.<br/>".
 	$htmllist_acls->Draw($pconfig['a_acl'])
 ))->setHelp(<<<EOT
 	Example:
@@ -704,8 +703,7 @@ EOT
 
 $section->addInput(new Form_StaticText(
 	'Actions',
-	"Use these to replace the error pages that haproxy can generate by custom pages created on the files tab.
-	For example haproxy will generate a 503 error page when no backend is available, you can replace that page here.<br/>".
+	"Use these to select the backend to use or perform other actions like calling a lua script, blocking certain requests or others available.<br/>".
 	$htmllist_actions->Draw($pconfig['a_actionitems'])
 ))->setHelp(<<<EOT
 	Example:
