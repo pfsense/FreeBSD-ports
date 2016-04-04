@@ -1200,7 +1200,7 @@ events.push(function() {
 	// Provide a warning message if the user tries to leave the page with unsaved changes.
 	$(window).bind('beforeunload', function(){
 		if (dirty) {
-			return ("<?=gettext('You have unsaved quick link changes.')?>");
+			return ("<?=gettext('One or more quick links have been changed but have not yet been saved.')?>");
 		} else {
 			return undefined;
 		}
