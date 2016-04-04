@@ -2473,7 +2473,15 @@ function sync_package_pfblockerng($cron='') {
 			}
 
 			// Rebuild DNSBL database or DNSBL statistics if files are not found
-			if (!file_exists("{$pfb['dnsbl_file']}.conf") || !file_exists($pfb['dnsbl_info'])) {
+			$dnsbl_missing = FALSE;
+			if (!file_exists("{$pfb['dnsbl_file']}.conf")) {
+				$dnsbl_missing = TRUE;
+			}
+			if (!file_exists("{$pfb['dnsbl_info']}")) {
+				$dnsbl_missing = TRUE;
+			}
+
+			if ($dnsbl_missing) {
 				$log = "Missing DNSBL stats and/or Unbound DNSBL conf file - Rebuilding\n";
 				pfb_logger("{$log}", 1);
 				$pfb['reuse_dnsbl'] = 'on';
@@ -3146,7 +3154,7 @@ function sync_package_pfblockerng($cron='') {
 	}
 	else {
 		// When DNSBL is enabled and no Aliases are defined, or all Aliases are Disabled. Set flag to clear out Unbound pfb_dnsbl.conf file.
-		if (empty($lists_dnsbl_all)) {
+		if (empty($lists_dnsbl_all) && !$pfb['save']) {
 			pfb_logger("\nClearing all DNSBL Feeds... ", 1);
 			$pfb['domain_clear'] = TRUE;
 			$pfb_output = @fopen("{$pfb['dnsbl_file']}.conf", 'w');
