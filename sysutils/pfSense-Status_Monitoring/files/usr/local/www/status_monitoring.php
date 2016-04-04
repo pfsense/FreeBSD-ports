@@ -1144,7 +1144,7 @@ events.push(function() {
 		if ($(this).attr('data-category')) {
 			$("#loading-msg").show();
 			applySettings($(this).attr('data-category').trim());
-			if ( $( "#auto-update" ).val() == 0) {	// If auto-update is enabled then it will draw the graph.  Don't draw the graph twice.
+			if ( !$( "#auto-update" ).length || $( "#auto-update" ).val() == 0) {	// If auto-update is enabled then it will draw the graph.  Don't draw the graph twice.
 				draw_graph(getOptions());
 			}
 			selected_quicklink(this);
