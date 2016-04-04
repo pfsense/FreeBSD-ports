@@ -412,63 +412,65 @@ $entries = count($results);
 	<!-- Print Status header -->
 	<table class="table table-condensed">
 		<thead>
-			<th width=" 5%"><!-- Status icon    --></th>
-			<th width="17%"><!-- IP/DNSBL count --></th>
-			<th width="17%"><!-- Permit count   --></th>
-			<th width="17%"><!-- Match count    --></th>
-			<th width="17%"><!-- Native count   --></th>
-			<th width="17%"><!-- Supp count     --></th>
-			<th width="10%"><!-- Icons          --></th>
+			<tr>
+				<th width=" 5%"><!-- Status icon    --></th>
+				<th width="17%"><!-- IP/DNSBL count --></th>
+				<th width="17%"><!-- Permit count   --></th>
+				<th width="17%"><!-- Match count    --></th>
+				<th width="17%"><!-- Native count   --></th>
+				<th width="17%"><!-- Supp count     --></th>
+				<th width="10%"><!-- Icons          --></th>
+			</tr>
 		</thead>
 		<tbody>
-		<tr>
-			<td>
-				<i class="<?=$pfb_status?>" title="<?=gettext($pfb_msg)?>"></i>
-			</td>
-			<td>
-				<?php if ($dcount != 0): ?>
-					<?=("<small>Deny:<strong>{$dcount}</strong></small>")?>
-				<?php endif; ?>
-			</td>
-			<td>
-				<?php if ($pcount != 0): ?>
-					<?=("<small>Permit:<strong>{$pcount}</strong></small>")?>
-				<?php endif; ?>
-			</td>
-			<td>
-				<?php if ($mcount != 0): ?>
-					<?=("<small>Match:<strong>{$mcount}</strong></small>")?>
-				<?php endif; ?>
-			<td>
-				<?php if ($ncount != 0): ?>
-					<?=("<small>Native:<strong>{$ncount}</strong></small>")?>
-				<?php endif; ?>
-			</td>
-			<td>
-				<?php if ($pfbsupp_cnt != 0): ?>
-					<?=("<small>Supp:<strong>{$pfbsupp_cnt}</strong></small>")?>
-				<?php endif; ?>
-			</td>
-			<td>
-				<a target="_blank" href="pfblockerng/pfblockerng_log.php" title="<?=gettext("Click to open Logs tab")?>">
-					<i class="fa fa-info-circle"></i></a>&nbsp;
-			</td>
-		</tr>
+			<tr>
+				<td>
+					<i class="<?=$pfb_status?>" title="<?=gettext($pfb_msg)?>"></i>
+				</td>
+				<td>
+					<?php if ($dcount != 0): ?>
+						<?=("<small>Deny:<strong>{$dcount}</strong></small>")?>
+					<?php endif; ?>
+				</td>
+				<td>
+					<?php if ($pcount != 0): ?>
+						<?=("<small>Permit:<strong>{$pcount}</strong></small>")?>
+					<?php endif; ?>
+				</td>
+				<td>
+					<?php if ($mcount != 0): ?>
+						<?=("<small>Match:<strong>{$mcount}</strong></small>")?>
+					<?php endif; ?>
+				<td>
+					<?php if ($ncount != 0): ?>
+						<?=("<small>Native:<strong>{$ncount}</strong></small>")?>
+					<?php endif; ?>
+				</td>
+				<td>
+					<?php if ($pfbsupp_cnt != 0): ?>
+						<?=("<small>Supp:<strong>{$pfbsupp_cnt}</strong></small>")?>
+					<?php endif; ?>
+				</td>
+				<td>
+					<a target="_blank" href="pfblockerng/pfblockerng_log.php" title="<?=gettext("Click to open Logs tab")?>">
+						<i class="fa fa-info-circle"></i></a>&nbsp;
+				</td>
+			</tr>
 
-		<?php if ($pfb['dnsbl'] == 'on'): ?>	<!--Enable DNSBL widget statistics if enabled-->
-		<tr>
-			<td>
-				<i class="<?=$dnsbl_status?>" title="<?=gettext($dnsbl_msg)?>"></i>
-			</td>
-			<td>
-				<?=("<small>DNSBL:<strong>{$scount}</strong></small>")?>
-			</td>
-			<td></td><td></td><td></td><td></td>
-			<td>
-				<i class="fa fa-trash icon-pointer" id="pfblockerngdnsblclearicon" title="<?=gettext("Clear DNSBL Packets")?>"></i>
-			</td>
-		</tr>
-		<?php endif; ?>
+			<?php if ($pfb['dnsbl'] == 'on'): ?>	<!--Enable DNSBL widget statistics if enabled-->
+			<tr>
+				<td>
+					<i class="<?=$dnsbl_status?>" title="<?=gettext($dnsbl_msg)?>"></i>
+				</td>
+				<td>
+					<?=("<small>DNSBL:<strong>{$scount}</strong></small>")?>
+				</td>
+				<td></td><td></td><td></td><td></td>
+				<td>
+					<i class="fa fa-trash icon-pointer" id="pfblockerngdnsblclearicon" title="<?=gettext("Clear DNSBL Packets")?>"></i>
+				</td>
+			</tr>
+			<?php endif; ?>
 		</tbody>
 	</table>
 
@@ -582,12 +584,12 @@ events.push(function() {
 	};
 	$('body').popover({ selector: '[data-popover]', trigger: 'click hover', placement: 'right', delay: {show: 50, hide: 400}});
 
-	$('[id^=pfblockerngackicon').click(function(event) {
+	$('[id^=pfblockerngackicon]').click(function(event) {
 		$('#pfblockerngack').val('true');
 		$('#formicons').submit();
 	});
 
-	$('[id^=pfblockerngdnsblclearicon').click(function(event) {
+	$('[id^=pfblockerngdnsblclearicon]').click(function(event) {
 		$('#pfblockerngdnsblclear').val('true');
 		$('#formicons').submit();
 	});

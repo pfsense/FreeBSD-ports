@@ -51,6 +51,9 @@ if (empty($pconfig['blertnumber']))
 else
 	$bnentries = $pconfig['blertnumber'];
 
+if (empty($pconfig['brefresh']))
+	$bnentries = 'on';
+
 # --- AJAX REVERSE DNS RESOLVE Start ---
 if (isset($_POST['resolve'])) {
 	$ip = strtolower($_POST['resolve']);
@@ -148,7 +151,7 @@ include("head.inc");
 
 /* refresh every 60 secs */
 if ($pconfig['brefresh'] == 'on')
-	print('<meta http-equiv="refresh" content="60;url=/snort/snort_blocked.php" />\n');
+	print '<meta http-equiv="refresh" content="60;url=/snort/snort_blocked.php" />';
 
 /* Display Alert message */
 if ($input_errors) {
