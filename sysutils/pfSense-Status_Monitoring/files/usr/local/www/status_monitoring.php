@@ -1434,7 +1434,7 @@ events.push(function() {
 
 	} else {
 
-		if ( $( "#auto-update" ).val() == 0) {	// If auto-update is enabled then it will draw the graph.  Don't draw the graph twice.
+		if ( !$( "#auto-update" ).length || $( "#auto-update" ).val() == 0) {	// If auto-update is enabled then it will draw the graph.  Don't draw the graph twice.
 			draw_graph(getOptions());
 		}
 
