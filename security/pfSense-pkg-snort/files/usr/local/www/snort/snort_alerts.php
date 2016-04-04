@@ -423,6 +423,10 @@ foreach ($a_instance as $id => $instance) {
 $pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Alerts"));
 include("head.inc");
 
+/* refresh every 60 secs */
+if ($pconfig['arefresh'] == 'on')
+	print '<meta http-equiv="refresh" content="60;url=/snort/snort_alerts.php?instance=' . $instanceid . '" />';
+
 if ($input_errors)
 	print_input_errors($input_errors);
 

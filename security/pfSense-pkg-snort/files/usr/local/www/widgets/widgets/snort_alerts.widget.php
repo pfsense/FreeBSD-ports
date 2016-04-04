@@ -248,11 +248,6 @@ function snort_widget_get_alerts() {
 <!-- needed in the snort_alerts.js file code -->
 	var snortupdateDelay = 5000; // update every 5 seconds
 	var snort_nentries = <?=$snort_nentries;?>; // number of alerts to display (5 is default)
-
-<!-- needed to display the widget settings menu -->
-	selectIntLink = "snort_alerts-configure";
-	textlink = document.getElementById(selectIntLink);
-	textlink.style.display = "inline";
 //]]>
 </script>
 

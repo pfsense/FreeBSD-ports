@@ -144,8 +144,6 @@ if (isset($_POST['clear'])) {
 }
 
 if (isset($_POST['mode'])) {
-//	header("Location: /snort/snort_download_rules.php");
-
 	if ($_POST['mode'] == 'force') {
 		// Mount file system R/W since we need to remove files
 		conf_mount_rw();
@@ -162,7 +160,15 @@ if (isset($_POST['mode'])) {
 	
 	// Go download the updates
 	include("/usr/local/pkg/snort/snort_check_for_rule_updates.php");
-	exit;
+
+	// Reload the page to update displayed values
+	header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
+	header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
+	header( 'Cache-Control: no-store, no-cache, must-revalidate' );
+	header( 'Cache-Control: post-check=0, pre-check=0', false );
+	header( 'Pragma: no-cache' );
+	header("Location: /snort/snort_download_updates.php");
+	return;
 }
 
 $pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Update Rules"));
