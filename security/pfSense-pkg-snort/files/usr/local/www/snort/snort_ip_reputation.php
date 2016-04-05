@@ -254,7 +254,7 @@ if (is_subsystem_dirty('snort_iprep')) {
 	$msg .= sprintf(gettext('A change has been made to blacklist or whitelist file assignments.%sYou must apply the changes in order for them to take effect.'), '<br/>');
 	$msg .= '</div>';
 	$msg .= '<div class="pull-right"><button type="submit" class="btn btn-default btn-warning" name="apply" value="Apply Changes">Apply Changes</button></div>';
-	echo '<div class="alert-warning clearfix" role="alert">' . $msg . '<br/></div>';
+	print '<div class="alert-warning clearfix" role="alert">' . $msg . '<br/></div>';
 }
 
 if ($g['platform'] == "nanobsd") {
@@ -331,15 +331,15 @@ else {
 			<table class="table table-condensed">
 				<tbody>
 				<tr>
-					<td><b><?php echo gettext("Blacklist Files"); ?></b></td>
+					<td><b><?=gettext("Blacklist Files"); ?></b></td>
 					<td>
 					<!-- blist_chooser -->
 					<div id="blistChooser" name="blistChooser" style="display:none; border:1px dashed gray; width:98%;"></div>
 						<table class="table table-striped table-hover table-condensed">
 							<thead>
 								<tr>
-									<th><?php echo gettext("Blacklist Filename"); ?></th>
-									<th><?php echo gettext("Modification Time"); ?></th>
+									<th><?=gettext("Blacklist Filename"); ?></th>
+									<th><?=gettext("Modification Time"); ?></th>
 									<th><button type="button" class="btn btn-sm btn-success" name="blist_add" id="blist_add" title="<?=gettext('Assign a blacklist file');?>">
 										<i class="fa fa-plus icon-embed-btn"></i>
 										<?=gettext("Add");?></button>
@@ -361,7 +361,7 @@ else {
 									<td <?=$class;?>><?=$filedate;?></td>
 									<td>
 										<i class="fa fa-trash icon-pointer text-info" onClick="$('#list_id').val('<?=$k;?>');$('#mode').val('blist_del');$('#iform').submit();" 
-									 	title="<?php echo gettext('Remove this blacklist file');?>"></i>
+									 	title="<?=gettext('Remove this blacklist file');?>"></i>
 									</td>
 								</tr>
 							<?php endforeach; ?>
@@ -376,15 +376,15 @@ else {
 					</td>
 				</tr>
 				<tr>
-					<td><b><?php echo gettext("Whitelist Files"); ?></b></td>
+					<td><b><?=gettext("Whitelist Files"); ?></b></td>
 					<td>
 					<!-- wlist_chooser -->
 					<div id="wlistChooser" name="wlistChooser" style="display:none; border:1px dashed gray; width:98%;"></div>
 						<table class="table table-striped table-hover table-condensed">
 							<thead>
 								<tr>
-									<th><?php echo gettext("Whitelist Filename"); ?></th>
-									<th><?php echo gettext("Modification Time"); ?></th>
+									<th><?=gettext("Whitelist Filename"); ?></th>
+									<th><?=gettext("Modification Time"); ?></th>
 									<th><button type="button" class="btn btn-sm btn-success" name="wlist_add" id="wlist_add" title="<?=gettext('Assign a whitelist file');?>">
 										<i class="fa fa-plus icon-embed-btn"></i>
 										<?=gettext("Add");?></button>
@@ -404,9 +404,9 @@ else {
 								<tr>
 									<td <?=$class;?>><?=htmlspecialchars($f);?></td>
 									<td <?=$class;?>><?=$filedate;?></td>
-									<td class="list">
-										<input type="i class="fa fa-trash icon-pointer text-info" onClick="$('#list_id').val('<?=$k;?>');$('#mode').val('wlist_del');$('#iform').submit();" 
-										title="<?php echo gettext('Remove this whitelist file');?>"></i>
+									<td>
+										<i class="fa fa-trash icon-pointer text-info" onClick="$('#list_id').val('<?=$k;?>');$('#mode').val('wlist_del');$('#iform').submit();" 
+										title="<?=gettext('Remove this whitelist file');?>"></i>
 									</td>
 								</tr>
 							<?php endforeach; ?>
@@ -497,7 +497,7 @@ events.push(function(){
 
 			fbFile:  function() {
 				$("#iplist").val(this.id);
-				$("#mode").val('blist_add');
+				$("#mode").val('wlist_add');
 				$(form).submit();
 			 }
 		}
