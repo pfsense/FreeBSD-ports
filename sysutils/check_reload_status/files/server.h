@@ -166,7 +166,7 @@ static struct command c_service2[] = {
         { NTPD, NON, "ntpd", NULL,
                 { "/usr/bin/killall ntpd; /bin/sleep 3; /usr/local/sbin/ntpd -s -f /var/etc/ntpd.conf", NULL, "Starting nptd", AGGREGATE } },
         { PACKAGES, NON, "packages", NULL,
-                { "/etc/rc.start_packages", NULL, "Starting packages", AGGREGATE | FCGICMD } },
+                { "/etc/rc.start_packages", NULL, "Starting packages", FCGICMD } },
         { SSHD, NON, "sshd", NULL,
                 { "/etc/sshd", NULL, "starting sshd", AGGREGATE | FCGICMD } },
         { WEBGUI, NON, "webgui", NULL,
