@@ -5,7 +5,7 @@
  * Copyright (C) 2006 Scott Ullrich
  * Copyright (C) 2009-2010 Robert Zelaya
  * Copyright (C) 2011-2012 Ermal Luci
- * Copyright (C) 2013,2014 Bill Meeks
+ * Copyright (C) 2013-2016 Bill Meeks
  * part of pfSense
  * All rights reserved.
  *
@@ -37,6 +37,7 @@ require_once("functions.inc");
 require_once("service-utils.inc"); // Need this to get RCFILEPREFIX definition
 require_once("pkg-utils.inc");
 require_once("filter.inc");
+require_once("xmlrpc_client.inc");
 require("/usr/local/pkg/snort/snort_defs.inc");
 
 // Snort GUI needs some extra PHP memory space to manipulate large rules arrays
