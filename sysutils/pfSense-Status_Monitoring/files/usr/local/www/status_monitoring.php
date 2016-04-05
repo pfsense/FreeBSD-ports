@@ -578,10 +578,19 @@ if ($savemsg) {
 <?php
 		if (is_array($config['rrd']['quicklinks'])) {
 			foreach ($config['rrd']['quicklinks'] as $key => $quicklink) {
+
+				$graphOptions_strings = explode('&', $quicklink['category']);
+
+				foreach ($graphOptions_strings as $graphOption_string) {
+					$graphOption = explode('=', $graphOption_string);
+					$graphOptions[$graphOption[0]] = $graphOption[1];
+				}
+
+				$quicklink_icon = 'fa-' . $graphOptions['graphtype'] . '-chart';
 ?>
 			<li>
 				<a id="<?=$key?>" title="<?=$quicklink['title']?>" data-category="<?=$quicklink['category']?>" >
-					<i class="fa fa-bar-chart icon-pointer"></i>
+					<i class="fa <?=$quicklink_icon?> icon-pointer"></i>
 				</a>
 			</li>
 <?php
@@ -1166,7 +1175,9 @@ events.push(function() {
 
 		id = 'quicklink999';
 		graph_settings = getOptions();
-		quicklink_list_item_html = '<li class="ui-sortable-handle"><a id="' + id + '" title="' + title + '" data-category="' + graph_settings + '" ><i class="fa fa-bar-chart icon-pointer"></i></a></li>';
+		quicklink_icon = 'fa-' + $( "#graph-type" ).val() + '-chart';
+
+		quicklink_list_item_html = '<li class="ui-sortable-handle"><a id="' + id + '" title="' + title + '" data-category="' + graph_settings + '" ><i class="fa ' + quicklink_icon + ' icon-pointer"></i></a></li>';
 
 		$(quicklink_list_item_html)
 		.appendTo($( "#quicklinks_list" ));
