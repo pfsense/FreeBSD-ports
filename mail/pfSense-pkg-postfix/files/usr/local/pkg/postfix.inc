@@ -277,44 +277,6 @@ function sync_package_postfix($via_rpc = "no") {
 	// check cron
 	check_cron();
 	
-	// check logging
-	if ($postfix_config['log_to']) {
-			switch($postfix_config['log_to']) {
-				case 'maillog':
-					system("/usr/bin/touch /var/log/maillog");
-					$mail_syslog = "mail.crit;";
-				break;
-				case 'none':
-					$mail_syslog = "mail.crit;";
-				break;
-				default:
-					$mail_syslog = 'mail.*;';
-				break;
-			}
-            #update /etc/inc/system.inc
-            $sys_log_file = '/etc/inc/system.inc';
-            $sys_log = file($sys_log_file);
-            $new_sys_log = "";
-            $found_mail=0;
-            foreach ($sys_log as $line) {
-            	$new_line=preg_replace('/mail.(.|crit);/',$mail_syslog,$line);
-            	if (preg_match('/mail.*system.log/',$line) && $postfix_config['log_to'] == "maillog") {
-            		$new_sys_log .= 'mail.*'."\t\t\t\t\t\t".'/var/log/maillog'."\n";
-            	}
-            	if (preg_match('/maillog/',$line)) {
-            		$new_line = "";
-            	}
-            	$new_sys_log .= $new_line;
-            }
-            $pfsense_version = preg_replace("/\s/","",file_get_contents("/etc/version"));
-            if (!file_exists('/root/'.$pfsense_version.'.system.inc.backup')) {
-            	copy ($sys_log_file,'/root/'.$pfsense_version.'.system.inc.backup');
-            }
-            file_put_contents($sys_log_file,$new_sys_log, LOCK_EX);
-            // restart syslog daemon
-            system_syslogd_start();
-		}
-
 	#check_debug
 	if ($postfix_config['debug_list'] && $postfix_config['debug_list'] != "") {
 	$check_debug  = "\n#Debugging postfix\n";
