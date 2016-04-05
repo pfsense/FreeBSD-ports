@@ -446,10 +446,11 @@ if ($savemsg) {
 				</div>
 				<div class="col-sm-2">
 					<select class="form-control" id="graph-type" name="graph-type">
+						<option value="bar">Bar</option>
 						<option value="line" selected>Line</option>
 					</select>
 
-					<span class="help-block">Type (Disabled)</span>
+					<span class="help-block">Graph Type</span>
 				</div>
 				<div class="col-sm-2">
 					<select class="form-control" id="invert" name="invert">
