@@ -134,11 +134,13 @@ if ($_POST['defaults']) {
 }
 
 $pconfig['enable'] = isset($config['rrd']['enable']);
-$pconfig['category'] = $config['rrd']['category'];
 
+// Load specified quick link or default graph
 if ($_POST && $_POST['selected_quicklink']) {
 	$selected_quicklink = $_POST['selected_quicklink'];
 	$pconfig['category'] = $config['rrd']['quicklinks'][$selected_quicklink]['category'];
+} else {
+	$pconfig['category'] = $config['rrd']['category'];
 }
 
 $system = $packets = $quality = $traffic = $captiveportal = $ntpd = $queues = $queuedrops = $dhcpd = $vpnusers = $wireless = $cellular = [];
