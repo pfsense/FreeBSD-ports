@@ -446,6 +446,7 @@ if ($savemsg) {
 				</div>
 				<div class="col-sm-2">
 					<select class="form-control" id="graph-type" name="graph-type">
+						<option value="area">Area</option>
 						<option value="bar">Bar</option>
 						<option value="line" selected>Line</option>
 					</select>
