@@ -526,7 +526,7 @@ if ($savemsg) {
 		<div class="pull-left">
 			<p>This tool allows comparison of RRD databases on two different Y axes.</p>
 
-			<p>Graph data series visibility can be toggled by clicking on the data series labels in the legend. A single click toggles visibility and a double click hides all the others, except for that one.</p>
+			<p>Graph data series visibility can be toggled by clicking on the labels in the legend. A single click toggles visibility and a double click hides all the others, except for that one.</p>
 		</div>
 	</div>
 </div>
