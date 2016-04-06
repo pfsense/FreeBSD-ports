@@ -524,9 +524,9 @@ if ($savemsg) {
 <div class="infoblock">
 	<div class="alert alert-info clearfix" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		<div class="pull-left">
-			<p>This tool allows you to compare RRD databases on two different Y axes.</p>
+			<p>This tool allows comparison of RRD databases on two different Y axes.</p>
 
-			<p>You can click on the line labels in the legend to toggle that lines visability. A single click toggles it's visability and a double click hides all the other lines, except for that one.</p>
+			<p>Graph data series visibility can be toggled by clicking on the data series labels in the legend. A single click toggles visibility and a double click hides all the others, except for that one.</p>
 		</div>
 	</div>
 </div>
