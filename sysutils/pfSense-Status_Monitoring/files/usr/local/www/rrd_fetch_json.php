@@ -96,6 +96,8 @@ $graph_unit_lookup = array(
 	"memory"    => "%",
 	"wireless"  => "dBi",
 	"mbuf"      => "",
+	"dhcpd"     => "",
+	"vpnusers"  => "",
 	"cellular"  => "dB"
 );
 
@@ -220,6 +222,12 @@ if ($left != "null") {
 			$unit_acronym = "Mb";
 			break;
 		case "channel":
+			$unit_acronym = "";
+			break;
+		case "concurrentusers":
+			$unit_acronym = "";
+			break;
+		case "loggedinusers":
 			$unit_acronym = "";
 			break;
 		}
@@ -443,6 +451,12 @@ if ($right != "null") {
 			$unit_acronym = "Mb";
 			break;
 		case "channel":
+			$unit_acronym = "";
+			break;
+		case "concurrentusers":
+			$unit_acronym = "";
+			break;
+		case "loggedinusers":
 			$unit_acronym = "";
 			break;
 		}
