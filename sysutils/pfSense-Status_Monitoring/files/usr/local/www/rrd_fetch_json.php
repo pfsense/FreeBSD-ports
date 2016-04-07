@@ -88,18 +88,20 @@ $left_unit_acronym = $right_unit_acronym = "";
 
 //Set units based on RRD database name
 $graph_unit_lookup = array(
-	"traffic"   => "b/s",
-	"packets"   => "pps",
-	"states"    => "cps",
-	"quality"   => "ms",
-	"processor" => "%",
-	"memory"    => "%",
-	"wireless"  => "dBi",
-	"mbuf"      => "",
-	"dhcpd"     => "",
-	"ntpd"      => "",
-	"vpnusers"  => "",
-	"cellular"  => "dB"
+	"traffic"	=> "b/s",
+	"packets"	=> "pps",
+	"states"	=> "cps",
+	"quality"	=> "ms",
+	"processor"	=> "%",
+	"memory"	=> "%",
+	"wireless"	=> "dBi",
+	"mbuf"		=> "",
+	"dhcpd"		=> "",
+	"ntpd"		=> "",
+	"vpnusers"	=> "",
+	"queues"	=> "b/s",
+	"queuedrops"	=> "drops",
+	"cellular"	=> "dB"
 );
 
 $left_unit_acronym = $graph_unit_lookup[$left_pieces[1]];
