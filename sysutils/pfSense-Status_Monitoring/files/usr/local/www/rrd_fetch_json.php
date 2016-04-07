@@ -472,6 +472,17 @@ if ($right != "null") {
 		case "loggedinusers":
 			$unit_acronym = "";
 			break;
+		case "offset":
+		case "sjit":
+		case "cjit":
+		case "wander":
+		case "disp":
+			$unit_acronym = "ms";
+			break;
+		case "freq":
+			$unit_acronym = "";
+			break;
+		}
 		}
 
 		if (!$ignore) {
