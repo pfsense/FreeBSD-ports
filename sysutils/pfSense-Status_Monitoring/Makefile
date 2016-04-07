@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-Status_Monitoring
 PORTVERSION=	1.0
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
