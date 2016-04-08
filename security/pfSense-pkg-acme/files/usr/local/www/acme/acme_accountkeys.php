@@ -42,7 +42,7 @@ $changedesc = "Services: Acme: Accountkeys";
 if (!is_array($config['installedpackages']['acme']['accountkeys']['item'])) {
 	$config['installedpackages']['acme']['accountkeys']['item'] = array();
 }
-$a_certifcates = &$config['installedpackages']['acme']['accountkeys']['item'];
+$a_accountkeys = &$config['installedpackages']['acme']['accountkeys']['item'];
 
 function array_moveitemsbefore(&$items, $before, $selected) {
 	// generic function to move array items before the set item by their numeric indexes.
@@ -98,14 +98,6 @@ if($_POST['action'] == "toggle") {
 	echo "ok|";
 	exit;
 }
-if($_POST['action'] == "renew") {
-	$id = $_POST['id'];
-	echo $id . "\n";
-	if (isset($a_certifcates[get_certificate_id($id)])) {
-		renew_certificate($id, true);
-	}
-	exit;
-}
 
 if ($_POST) {
 	$pconfig = $_POST;
@@ -121,19 +113,19 @@ if ($_POST) {
 		if (is_array($_POST['rule']) && count($_POST['rule'])) {
 			$selected = array();
 			foreach($_POST['rule'] as $selection) {
-				$selected[] = get_certificate_id($selection);
+				$selected[] = get_accountkey_id($selection);
 			}
 			foreach ($selected as $itemnr) {
-				unset($a_certifcates[$itemnr]);
+				unset($a_accountkeys[$itemnr]);
 				$deleted = true;
 			}
 			if ($deleted) {
-				if (write_config("Acme, deleting certificate(s)")) {
+				if (write_config("Acme, deleting accountkey(s)")) {
 					//mark_subsystem_dirty('filter');
 					touch($d_acmeconfdirty_path);
 				}
 			}
-			header("Location: acme_certificates.php");
+			header("Location: acme_accountkeys.php");
 			exit;
 		}
 	} else {	
@@ -151,12 +143,12 @@ if ($_POST) {
 		
 		/* move selected p1 entries before this */
 		if (isset($movebtn) && is_array($_POST['rule']) && count($_POST['rule'])) {
-			$moveto = get_frontend_id($movebtn);
+			$moveto = get_accountkey_id($movebtn);
 			$selected = array();
 			foreach($_POST['rule'] as $selection) {
-				$selected[] = get_frontend_id($selection);
+				$selected[] = get_accountkey_id($selection);
 			}
-			array_moveitemsbefore($a_certifcates, $moveto, $selected);
+			array_moveitemsbefore($a_accountkeys, $moveto, $selected);
 		
 			touch($d_acmeconfdirty_path);
 			write_config($changedesc);			
@@ -171,15 +163,15 @@ if ($_POST) {
 
 if ($_GET['act'] == "del") {
 	$id = $_GET['id'];
-	$id = get_certificate_id($id);
-	if (isset($a_certifcates[$id])) {
+	$id = get_accountkey_id($id);
+	if (isset($a_accountkeys[$id])) {
 		if (!$input_errors) {
-			unset($a_certifcates[$id]);
-			$changedesc .= " Frontend delete";
+			unset($a_accountkeys[$id]);
+			$changedesc .= " Accountkey delete";
 			write_config($changedesc);
 			touch($d_acmeconfdirty_path);
 		}
-		header("Location: acme_certificates.php");
+		header("Location: acme_accountkeys.php");
 		exit;
 	}
 }
@@ -210,10 +202,10 @@ echo "</div>";
 <?php
 display_top_tabs_active($acme_tab_array['acme'], "frontend");
 ?>
-<form action="acme_certificates.php" method="post">
+<form action="acme_accountkeys.php" method="post">
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<h2 class="panel-title">Certificates</h2>
+			<h2 class="panel-title">Account keys</h2>
 		</div>
 		<div id="mainarea" class="table-responsive panel-body">
 			<table class="table table-hover table-striped table-condensed">
@@ -228,32 +220,32 @@ display_top_tabs_active($acme_tab_array['acme'], "frontend");
 				</thead>
 				<tbody class="user-entries">
 <?php
-		foreach ($a_certifcates as $certificate) {
-			$certificatename = $certificate['name'];
+		foreach ($a_accountkeys as $accountkey) {
+			$accountname = $accountkey['name'];
 			?>
-			<tr id="fr<?=$certificatename;?>" <?=$display?> onClick="fr_toggle('<?=$certificatename;?>')" ondblclick="document.location='acme_accountkeys_edit.php?id=<?=$certificatename;?>';">
+			<tr id="fr<?=$accountname;?>" <?=$display?> onClick="fr_toggle('<?=$accountname;?>')" ondblclick="document.location='acme_accountkeys_edit.php?id=<?=$accountname;?>';">
 				<td>
-					<input type="checkbox" id="frc<?=$certificatename;?>" onClick="fr_toggle('<?=$certificatename;?>')" name="rule[]" value="<?=$certificatename;?>"/>
-					<a class="fa fa-anchor" id="Xmove_<?=$certificatename?>" title="<?=gettext("Move checked entries to here")?>"></a>
+					<input type="checkbox" id="frc<?=$accountname;?>" onClick="fr_toggle('<?=$accountname;?>')" name="rule[]" value="<?=$accountname;?>"/>
+					<a class="fa fa-anchor" id="Xmove_<?=$accountname?>" title="<?=gettext("Move checked entries to here")?>"></a>
 				</td>
 			  <td>
-				<?=$certificate['name'];?>
+				<?=$accountkey['name'];?>
 			  </td>
 			  <td>
-				<?=$certificate['desc'];?>
+				<?=$accountkey['desc'];?>
 			  </td>
 			  <td>
-				<?=$certificate['acmeserver'];?>
+				<?=$accountkey['acmeserver'];?>
 			  </td>
 			  <td class="action-icons">
-				<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=$certificatename?>" name="move_<?=$certificatename?>" value="move_<?=$certificatename?>"></button>
-				<a href="acme_accountkeys_edit.php?id=<?=$certificatename;?>">
+				<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=$accountname?>" name="move_<?=$accountname?>" value="move_<?=$accountname?>"></button>
+				<a href="acme_accountkeys_edit.php?id=<?=$accountname;?>">
 					<?=acmeicon("edit", gettext("edit frontend"))?>
 				</a>
-				<a href="acme_accountkeys.php?act=del&amp;id=<?=$certificatename;?>" onclick="return confirm('Do you really want to delete this entry?')">
+				<a href="acme_accountkeys.php?act=del&amp;id=<?=$accountname;?>" onclick="return confirm('Do you really want to delete this entry?')">
 					<?=acmeicon("delete", gettext("delete frontend"))?>
 				</a>
-				<a href="acme_accountkeys_edit.php?dup=<?=$certificatename;?>">
+				<a href="acme_accountkeys_edit.php?dup=<?=$accountname;?>">
 					<?=acmeicon("clone", gettext("clone frontend"))?>
 				</a>
 			  </td>
@@ -307,19 +299,6 @@ function js_callback(req_content) {
 		}
 		set_content('btn_'+buttonid, img);
 	}
-}
-
-function renewcertificate($id) {
-	$('#'+"btnrenewicon_"+$id).removeClass("fa-check").addClass("fa-cog fa-spin");
-	
-	ajaxRequest = $.ajax({
-		url: "",
-		type: "post",
-		data: { id: $id, action: "renew"},
-		success: function(data) {
-			js_callbackrenew(data);
-		}
-	});
 }
 
 function togglerow($id) {

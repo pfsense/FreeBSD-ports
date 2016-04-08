@@ -146,10 +146,10 @@ if ($_POST) {
 		
 		/* move selected p1 entries before this */
 		if (isset($movebtn) && is_array($_POST['rule']) && count($_POST['rule'])) {
-			$moveto = get_frontend_id($movebtn);
+			$moveto = get_certificate_id($movebtn);
 			$selected = array();
 			foreach($_POST['rule'] as $selection) {
-				$selected[] = get_frontend_id($selection);
+				$selected[] = get_certificate_id($selection);
 			}
 			array_moveitemsbefore($a_certifcates, $moveto, $selected);
 		

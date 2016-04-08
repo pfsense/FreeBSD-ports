@@ -2,6 +2,7 @@ pkg/acme.xml
 pkg/acme/acme.inc
 pkg/acme/acme_gui.inc
 pkg/acme/acme_htmllist.inc
+pkg/acme/acme_serverconnectors.inc
 pkg/acme/acme_utils.inc
 pkg/acme/lescript.inc
 pkg/acme/pkg_acme_tabs.inc

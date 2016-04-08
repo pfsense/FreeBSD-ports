@@ -26,7 +26,18 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-namespace pfsense_pkg\acme;
+namespace { // global code
+	function acme_plugin_certificates($pluginparams) {
+		$result = array();
+		if ($pluginparams['type'] == 'certificates' && $pluginparams['event'] == 'used_certificates') {
+			$result['pkgname'] = "Acme";
+			$result['certificatelist'] = array();
+		}
+		return $result;
+	}
+}
+
+namespace pfsense_pkg\acme {
 
 /* include all configuration functions */
 require_once("functions.inc");
@@ -35,10 +46,11 @@ require_once("notices.inc");
 require_once("util.inc");
 require_once("acme_utils.inc");
 require_once("lescript.inc");
+require_once("acme/acme_serverconnectors.inc");
 
 $d_acmeconfdirty_path = $g['varrun_path'] . "/acme.conf.dirty";
 #region global array item definitions..
-// <editor-fold>
+// <editor-fold desc="global array item definitions">
 
 $a_enabledisable = array();
 $a_enabledisable['enable'] = array('name' => 'Enabled');
@@ -61,15 +73,11 @@ $acme_domain_validation_method['webroot'] = array(name => "local webroot folder"
 			'description' =>"Folder the acme challenge response is written to for example: /usr/local/www/.well-known/acme-challenge/"
 		)
 	));
-
-/*
-$acme_domain_validation_method['ftpwebroot'] = array(name => "ftpwebroot",
+$acme_domain_validation_method['ftpwebroot'] = array(name => "FTP webroot",
 	'fields' => array(
-		'server' => array('name'=>"ftpserver",'columnheader'=>"Server",'type'=>"textbox",'size'=>"50",
-			'description' =>"Hostname of FTP server to connect to for example ftp://www.webserver.tld"
-		),
-		'method' => array('name'=>"method",'columnheader'=>"Method",'type'=>"textbox",'size'=>"50",
-			'description' =>"Method (scp/sftp/ftp/other) to connect to the remote server"
+		'ftpserver' => array('name'=>"ftpserver",'columnheader'=>"Server",'type'=>"textbox",'size'=>"50",
+			'description' =>"Hostname of FTP server to connect to for example: ftps://www.webserver.tld "
+			. "currently ftps(passive) and sftp are supported."
 		),
 		'username' => array('name'=>"username",'columnheader'=>"Username",'type'=>"textbox",'size'=>"50",
 			'description' =>"Username for the remote server"
@@ -81,13 +89,12 @@ $acme_domain_validation_method['ftpwebroot'] = array(name => "ftpwebroot",
 			'description' =>"Folder the acme challenge response is written to for default: /.well-known/acme-challenge/"
 		)
 	));
-$acme_domain_validation_method['http-post'] = array(name => "http-post",
+/*$acme_domain_validation_method['http-post'] = array(name => "http-post",
 	'fields' => array(
 		'url' => array('name'=>"url",'columnheader'=>"Url",'type'=>"textbox",'size'=>"50",
 			'description' =>"Url the challenge file is posted to, the webserver there must store and reply to the request when the acme servers perform the request for the file from /.well-known/acme-challenge/"
 		)
-	));
-*/
+	));*/
 
 $acme_newcertificateactions = array();
 $acme_newcertificateactions['shellcommand'] = array(name => "shell command");
@@ -121,7 +128,7 @@ function acme_custom_php_deinstall_command() {
 }
 
 function acme_custom_php_install_command() {
-	global $g, $config, $static_output;
+	global $static_output;
 	$static_output .= "Acme, running acme_custom_php_install_command()\n";
 	update_output_window($static_output);
 
@@ -159,7 +166,7 @@ EOD;
 function get_itembyname($a_array, $name) {
 	$i = 0;
 	if (is_array($a_array)) {
-		foreach ($a_array as $key => $item) {
+		foreach ($a_array as $item) {
 			if ($item['name'] == $name) {
 				return $i;
 			}
@@ -186,7 +193,7 @@ function get_certificate_id($name) {
 	$a_certificates = &$config['installedpackages']['acme']['certificates']['item'];
 	$i = 0;
 	if (is_array($a_certificates)) {
-		foreach ($a_certificates as $key => $certificate) {
+		foreach ($a_certificates as $certificate) {
 			if ($certificate['name'] == $name) {
 				return $i;
 			}
@@ -206,7 +213,7 @@ function & get_certificate($name) {
 	return null;
 }
 
-	function createAcmeAccountKey(){
+	function createAcmeAccountKey() {
 		$certificatename = "acme_account_key";
 		$cert = lookup_cert_by_name($certificatename);
 		if (!is_array($cert)) {
@@ -223,8 +230,7 @@ function & get_certificate($name) {
 			write_config($changedesc);
 		}
 	}
-	function generateAccountKey()
-    {
+	function generateAccountKey() {
         $res = openssl_pkey_new(array(
             "private_key_type" => OPENSSL_KEYTYPE_RSA,
             "private_key_bits" => 4096,
@@ -240,7 +246,7 @@ function & get_certificate($name) {
 		$le = \Analogic\ACME\Lescript::createWithCustomEvents($ca, $logger);
 		return $le;
 	}
-	function renew_all_certificates(){
+	function renew_all_certificates() {
 		global $config;
 		$a_global = &$config['installedpackages']['acme'];
 
@@ -300,42 +306,53 @@ function & get_certificate($name) {
 				}
 			}
 			syslog(LOG_NOTICE, "Acme, certificate renewed: {$id}");
-			
 		}
 	}
 	class acme_handler {
 		public $path = "";
 		public $certificateinfo = null;
+		private $ftp = null;
 		function chalenge_response_put($domain, $token, $payload){
+			echo "\nchalenge_response_put\n";
 			foreach($this->certificateinfo['a_domainlist']['item'] as $domainitem) {
 				if($domainitem['name'] == $domain){
 					$domain_info = $domainitem;
 				}
 			}
-			//echo "<br/><br/><br/><br/><br/><br/>domain_info({$domain})<br/>";
-			//print_r($domain_info);
 			if ($domain_info['method'] == 'webroot') {
-				//echo "<br/>USING WEBROOT";
 				$directory = $domain_info['webrootfolder'];
 				if(!file_exists($directory) && !@mkdir($directory, 0755, true)) {
 					throw new \RuntimeException("Couldn't create directory to expose challenge: ${tokenPath}");
 				}
 				$tokenPath = $directory . "/" . $token;
-				//echo "<br/>Saving token in:".$tokenPath;
 				file_put_contents($tokenPath, $payload);
 			}
+			if ($domain_info['method'] == 'ftpwebroot') {
+				echo "FTP\n";
+				$this->ftp = new FTPConnection($domain_info['ftpwebrootftpserver']);
+				$this->ftp->login($domain_info['ftpwebrootusername'], $domain_info['ftpwebrootpassword']);
+				$directory = $domain_info['ftpwebrootfolder'];
+				$tokenPath = $directory . "/" . $token;
+				$this->ftp->mkdir($directory);
+				$this->ftp->uploadData($payload, $tokenPath);
+			}
 		}
-		function chalenge_response_cleanup($domain, $token){
+		function chalenge_response_cleanup($domain, $token) {
 			foreach($this->certificateinfo['a_domainlist']['item'] as $domainitem) {
 				if($domainitem['name'] == $domain){
 					$domain_info = $domainitem;
 				}
 			}
 			if ($domain_info['method'] == 'webroot') {
-				@unlink($tokenPath);
+				$tokenfile = $domain_info['webrootfolder'] . "/" . $token;
+				@unlink($tokenfile);
+			}
+			if ($domain_info['method'] == 'ftpwebroot') {
+				$tokenfile = $domain_info['ftpwebrootfolder'] . "/" . $token;
+				$this->ftp->deleteFile($tokenfile);
 			}
 		}
-		function getCertificatePSK(){
+		function getCertificatePSK() {
 			$certificatename = "acme_cert_" . $this->certificateinfo['name'];
 			$cert = lookup_cert_by_name($certificatename);
 			if (!is_array($cert)) {
@@ -345,14 +362,12 @@ function & get_certificate($name) {
 				$cert['refid'] = uniqid();
 				$cert['descr'] = $certificatename;
 				$accountkey = generateAccountKey();
-				//cert_import($cert, $accountkey['crt'], $accountkey['prv']);
-				//$cert['crt'] = base64_encode($crt_str);
 				$cert['prv'] = base64_encode($accountkey['prv']);
 				$a_cert[] = $cert;
 			}
 			return base64_decode($cert['prv']);
 		}
-		function storeCertificate($certificates){
+		function storeCertificate($certificates) {
 			$certificatename = "acme_cert_" . $this->certificateinfo['name'];
 			global $config;
 			if (is_array($config['cert'])) {
@@ -367,7 +382,7 @@ function & get_certificate($name) {
 					}
 				}
 			}
-			// store chain to.?.
+			//TODO: store chain to.?.
 			//$cert = lookup_cert_by_name($certificatename);
 
 			//if (is_array($cert)) {
@@ -381,25 +396,17 @@ function & get_certificate($name) {
 	}
 	
 	function registerAcmeAccountKey($ca, $key) {
-		//public $ca = 'https://acme-v01.api.letsencrypt.org';
-		//$ca = 'https://acme-staging.api.letsencrypt.org'; // testing
-		
-		//$certificatename = "acme_account_key";
-		//$cert = lookup_cert_by_name($certificatename);
-		//$key = $cert['prv'];
-		
-		//echo "<br/><br/><br/><br/><br/>ACME result:<br/>";
 		$logger = new Logger();
 		$le = \Analogic\ACME\Lescript::createWithCustomEvents($ca, $logger);
-		//$le->setPrivateKey(base64_decode($key));
 		$le->setPrivateKey($key);
 		$result = $le->postNewReg();
-		//print_r($result);
-		//echo "</pre>";
+		return $result;
 	}
+	
 	class Logger { 
 		function __call($name, $arguments) { 
 			echo date('Y-m-d H:i:s')." [$name] ${arguments[0]}\n";
 		}
 	}
-?>
+
+}

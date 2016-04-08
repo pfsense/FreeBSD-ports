@@ -62,9 +62,9 @@
 	</plugins>
 	<configpath>installedpackages->acme->config</configpath>
 	<custom_php_install_command>
-		pfsense_pkg\acme\acme_custom_php_install_command();
+		acme_custom_php_install_command();
 	</custom_php_install_command>
 	<custom_php_deinstall_command>
-		pfsense_pkg\acme\acme_custom_php_deinstall_command();
+		acme_custom_php_deinstall_command();
 	</custom_php_deinstall_command>
 </packagegui>

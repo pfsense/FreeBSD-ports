@@ -31,6 +31,8 @@
   be moved to the general pfSense php library for possible easy use by other parts of pfSense
 */
 
+namespace pfsense_pkg\acme;
+
 require_once("config.inc");
 
 if(!function_exists('ifset')){

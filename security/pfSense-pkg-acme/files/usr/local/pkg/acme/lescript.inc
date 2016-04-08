@@ -141,50 +141,48 @@ class Lescript
             /*file_put_contents($tokenPath, $payload);
             chmod($tokenPath, 0644);*/
 			$this->callback->chalenge_response_put($domain, $challenge['token'], $payload);
-			
-            // 3. verification process itself
-            // -------------------------------
+			// 3. verification process itself
+			// -------------------------------
 
-            $uri = "http://${domain}/.well-known/acme-challenge/${challenge['token']}";
+			$uri = "http://${domain}/.well-known/acme-challenge/${challenge['token']}";
 
-            $this->log("Token for $domain saved at $tokenPath and should be available at $uri");
+			$this->log("Token for $domain saved at $tokenPath and should be available at $uri");
 
-            // simple self check
-            if($payload !== trim(@file_get_contents($uri))) {
-                throw new \RuntimeException("Please check $uri - token not available");
-            }
+			// simple self check
+			if($payload !== trim(@file_get_contents($uri))) {
+				throw new \RuntimeException("Please check $uri - token not available");
+			}
 
-            $this->log("Sending request to challenge");
+			$this->log("Sending request to challenge");
 
-            // send request to challenge
-            $result = $this->signedRequest(
-                $challenge['uri'],
-                array(
-                    "resource" => "challenge",
-                    "type" => "http-01",
-                    "keyAuthorization" => $payload,
-                    "token" => $challenge['token']
-                )
-            );
+			// send request to challenge
+			$result = $this->signedRequest(
+				$challenge['uri'],
+				array(
+					"resource" => "challenge",
+					"type" => "http-01",
+					"keyAuthorization" => $payload,
+					"token" => $challenge['token']
+				)
+			);
 
-            // waiting loop
-            do {
-                if(empty($result['status']) || $result['status'] == "invalid") {
-                    throw new \RuntimeException("Verification ended with error: ".json_encode($result));
-                }
-                $ended = !($result['status'] === "pending");
+			// waiting loop
+			do {
+				if(empty($result['status']) || $result['status'] == "invalid") {
+					throw new \RuntimeException("Verification ended with error: ".json_encode($result));
+				}
+				$ended = !($result['status'] === "pending");
 
-                if(!$ended) {
-                    $this->log("Verification pending, sleeping 1s");
-                    sleep(1);
-                }
+				if(!$ended) {
+					$this->log("Verification pending, sleeping 1s");
+					sleep(1);
+				}
 
-                $result = $this->client->get($location);
+				$result = $this->client->get($location);
 
-            } while (!$ended);
+			} while (!$ended);
 
-            $this->log("Verification ended with status: ${result['status']}");
-            //@unlink($tokenPath);
+			$this->log("Verification ended with status: ${result['status']}");
 			$this->callback->chalenge_response_cleanup($domain, $challenge['token']);
         }
 

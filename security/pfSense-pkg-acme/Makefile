@@ -10,7 +10,7 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	PiBa-NL
 COMMENT=	pfSense package acme
 
-RUN_DEPENDS=
+RUN_DEPENDS=	${PORTSDIR}/ftp/php56-ftp
 
 CONFLICTS=	
 
@@ -37,6 +37,8 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/acme_gui.inc \
 		${STAGEDIR}${PREFIX}/pkg/acme
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/acme_htmllist.inc \
+		${STAGEDIR}${PREFIX}/pkg/acme
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/acme_serverconnectors.inc \
 		${STAGEDIR}${PREFIX}/pkg/acme
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/acme_utils.inc \
 		${STAGEDIR}${PREFIX}/pkg/acme
