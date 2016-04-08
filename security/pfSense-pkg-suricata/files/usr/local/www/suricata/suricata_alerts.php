@@ -215,7 +215,7 @@ if (is_array($config['installedpackages']['suricata']['alertsblocks'])) {
 if (empty($pconfig['alertnumber']))
 	$pconfig['alertnumber'] = '250';
 if (empty($pconfig['arefresh']))
-	$pconfig['arefresh'] = 'off';
+	$pconfig['arefresh'] = 'on';
 $anentries = $pconfig['alertnumber'];
 
 # --- AJAX REVERSE DNS RESOLVE Start ---
@@ -336,7 +336,7 @@ if (($_POST['mode'] == 'addsuppress_srcip' || $_POST['mode'] == 'addsuppress_dst
 		$input_errors[] = gettext("Suppress List '{$a_instance[$instanceid]['suppresslistname']}' is defined for this interface, but it could not be found!");
 }
 
-if ($_POST['togglesid'] && is_numeric($_POST['sidid']) && is_numeric($_POST['gen_id'])) {
+if ($_POST['mode'] == 'togglesid' && is_numeric($_POST['sidid']) && is_numeric($_POST['gen_id'])) {
 	// Get the GID and SID tags embedded in the clicked rule icon.
 	$gid = $_POST['gen_id'];
 	$sid= $_POST['sidid'];
@@ -439,7 +439,7 @@ if ($_POST['download']) {
 /* Load up an array with the current Suppression List GID,SID values */
 $supplist = suricata_load_suppress_sigs($a_instance[$instanceid], true);
 
-$pgtitle = array(gettext("Suricata"), gettext("Alerts"));
+$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Alerts"));
 
 function build_instance_list() {
 	global $a_instance;
@@ -471,7 +471,7 @@ include_once("head.inc");
 
 /* refresh every 60 secs */
 if ($pconfig['arefresh'] == 'on')
-	echo "<meta http-equiv=\"refresh\" content=\"60;url=/suricata/suricata_alerts.php?instance={$instanceid}\" />\n";
+	print '<meta http-equiv="refresh" content="60;url=/suricata/suricata_alerts.php?instance=' . $instanceid . '" />';
 
 /* Display Alert message */
 if ($input_errors) {
@@ -524,7 +524,7 @@ $group->add(new Form_Button(
 	null,
 	'fa-trash'
 ))->removeClass('btn-default')->addClass('btn-danger btn-sm')
-  ->setHelp('All log files will be saved');
+  ->setHelp('All log files will be cleared');
 
 $section->add($group);
 
@@ -544,14 +544,14 @@ $group->add(new Form_Checkbox(
 	'Refresh',
 	($config['installedpackages']['suricata']['alertsblocks']['arefresh'] == "on"),
 	'on'
-))->setHelp('Deault is ON');
+))->setHelp('Default is ON');
 
 $group->add(new Form_Input(
 	'alertnumber',
 	'Alert Entries',
 	'number',
 	$anentries
-	))->setHelp('Number of log entries to view. Default is 250');
+	))->setHelp('Number of alerts to display. Default is 250');
 
 $section->add($group);
 
@@ -738,19 +738,19 @@ if ($filterlogentries && count($filterfieldsarray)) {
 			<span class="text-danger"><?=gettext('highlighted ');?></span><?=gettext('rows below.');?><span>
 		</div>
 	<?php endif; ?>
-		<table class="table table-striped table-hover table-condensed">
+		<table class="table table-striped table-hover table-condensed sortable-theme-bootstrap" data-sortable>
 			<thead>
-			   <tr>
-				<th><?=gettext("Date"); ?></th>
-				<th><?=gettext("Pri"); ?></th>
+			   <tr class="sortableHeaderRowIdentifier text-nowrap">
+				<th data-sortable-type="date"><?=gettext("Date"); ?></th>
+				<th data-sortable-type="numeric"><?=gettext("Pri"); ?></th>
 				<th><?=gettext("Proto"); ?></th>
 				<th><?=gettext("Class"); ?></th>
 				<th><?=gettext("Src"); ?></th>
-				<th><?=gettext("SPort"); ?></th>
+				<th data-sortable-type="numeric"><?=gettext("SPort"); ?></th>
 				<th><?=gettext("Dst"); ?></th>
-				<th><?=gettext("DPort"); ?></th>
-				<th><?=gettext("GID:SID"); ?></th>
-				<th><?=gettext("Description"); ?></th>
+				<th data-sortable-type="numeric"><?=gettext("DPort"); ?></th>
+				<th data-sortable-type="numeric"><?=gettext("GID:SID"); ?></th>
+				<th data-sortable-type="alpha"><?=gettext("Description"); ?></th>
 			   </tr>
 			</thead>
 			<tbody>
@@ -871,7 +871,7 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 				/* Add zero-width space as soft-break opportunity after each colon if we have an IPv6 address */
 				$alert_ip_src = str_replace(":", ":&#8203;", $alert_ip_src);
 				/* Add Reverse DNS lookup icon */
-				$alert_ip_src .= '&nbsp;&nbsp;<i class="fa fa-search" onclick="javascript:resolve_with_ajax(\'' . $fields['src'] . '\');" title="';
+				$alert_ip_src .= '<br /><i class="fa fa-search" onclick="javascript:resolve_with_ajax(\'' . $fields['src'] . '\');" title="';
 				$alert_ip_src .= gettext("Resolve host via reverse DNS lookup") . "\"  alt=\"Icon Reverse Resolve with DNS\" ";
 				$alert_ip_src .= " style=\"cursor: pointer;\"></i>";
 				/* Add icons for auto-adding to Suppress List if appropriate */
@@ -906,7 +906,7 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 				/* Add zero-width space as soft-break opportunity after each colon if we have an IPv6 address */
 				$alert_ip_dst = str_replace(":", ":&#8203;", $alert_ip_dst);
 				/* Add Reverse DNS lookup icons */
-				$alert_ip_dst .= "&nbsp;&nbsp;<i class=\"fa fa-search\" onclick=\"javascript:resolve_with_ajax('{$fields['dst']}');\" title=\"";
+				$alert_ip_dst .= "<br /><i class=\"fa fa-search\" onclick=\"javascript:resolve_with_ajax('{$fields['dst']}');\" title=\"";
 				$alert_ip_dst .= gettext("Resolve host via reverse DNS lookup") . "\" alt=\"Icon Reverse Resolve with DNS\" ";
 				$alert_ip_dst .= " style=\"cursor: pointer;\"></i>";
 
@@ -917,13 +917,13 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 					$alert_ip_dst .= ' title="' . gettext("Add this alert to the Suppress List and track by_dst IP") . '"></i>';
 				}
 				elseif (isset($supplist[$fields['gid']][$fields['sid']]['by_dst'][$fields['dst']])) {
-					$alert_ip_src .= '&nbsp;<i class="fa fa-info-circle" ';
-					$alert_ip_dst .= "title='" . gettext("This alert track by_dst IP is already in the Suppress List") . "'></i>";
+					$alert_ip_dst .= '&nbsp;<i class="fa fa-info-circle" ';
+					$alert_ip_dst .= 'title="' . gettext("This alert track by_dst IP is already in the Suppress List") . '"></i>';
 				}
 
 				/* Add icon for auto-removing from Blocked Table if required */
 				if (isset($tmpblocked[$fields['dst']])) {
-					$alert_ip_dst .= "&nbsp;&nbsp;<i name=\"todelete[]\" class=\"fa fa-times icon-pointer text-danger\" onClick=\"$('#ip').val('{$fields['dst']}');$('#mode').val('todelete');$('#formalert').submit();\" ";
+					$alert_ip_dst .= '&nbsp;&nbsp;<i name="todelete[]" class="fa fa-times icon-pointer text-danger" onClick="$(\'#ip\').val(\'' . $fields['dst'] . '\');$(\'#mode\').val(\'todelete\');$(\'#formalert\').submit();" ';
 					$alert_ip_dst .= ' title="' . gettext("Remove host from Blocked Table") . '"></i>';
 				}
 			}
@@ -963,14 +963,14 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 	<?php endif; ?>
 				<td><?=$alert_date;?><br/><?=$alert_time;?></td>
 				<td><?=$alert_priority;?></td>
-				<td><?=$alert_proto;?></td>
-				<td style="word-wrap:break-word;"><?=$alert_class;?></td>
-				<td><?=$alert_ip_src;?></td>
+				<td style="word-wrap:break-word; white-space:normal"><?=$alert_proto;?></td>
+				<td style="word-wrap:break-word; white-space:normal"><?=$alert_class;?></td>
+				<td style="word-wrap:break-word; white-space:normal"><?=$alert_ip_src;?></td>
 				<td><?=$alert_src_p;?></td>
-				<td><?=$alert_ip_dst;?></td>
+				<td style="word-wrap:break-word; white-space:normal"><?=$alert_ip_dst;?></td>
 				<td><?=$alert_dst_p;?></td>
 				<td><?=$alert_sid_str;?><br/><?=$sidsupplink;?>&nbsp;&nbsp;<?=$sid_dsbl_link;?></td>
-				<td><?=$alert_descr;?></td>
+				<td style="word-wrap:break-word; white-space:normal"><?=$alert_descr;?></td>
 			</tr>
 	<?php
 			$counter++;
