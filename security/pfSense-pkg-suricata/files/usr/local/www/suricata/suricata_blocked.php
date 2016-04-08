@@ -74,10 +74,12 @@ if (!is_array($config['installedpackages']['suricata']['alertsblocks']))
 $pconfig['brefresh'] = $config['installedpackages']['suricata']['alertsblocks']['brefresh'];
 $pconfig['blertnumber'] = $config['installedpackages']['suricata']['alertsblocks']['blertnumber'];
 
-if (empty($pconfig['blertnumber']))
+if (empty($pconfig['blertnumber'])) {
 	$bnentries = '500';
-else
-	$bnentries = $pconfig['blertnumber'];
+}
+if (empty($pconfig['brefresh'])) {
+	$pconfig['brefresh'] = 'on';
+}
 
 # --- AJAX REVERSE DNS RESOLVE Start ---
 if (isset($_POST['resolve'])) {
@@ -171,12 +173,12 @@ if ($_POST['save'])
 
 }
 
-$pgtitle = array(gettext("Suricata"), gettext("Blocked Hosts"));
+$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Blocked Hosts"));
 include_once("head.inc");
 
 /* refresh every 60 secs */
 if ($pconfig['brefresh'] == 'on') {
-	echo "<meta http-equiv=\"refresh\" content=\"60;url=/suricata/suricata_blocked.php\" />\n";
+	print '<meta http-equiv="refresh" content="60;url=/suricata/suricata_blocked.php" />';
 }
 
 /* Display Alert message */
@@ -224,7 +226,7 @@ $group->add(new Form_Button(
 	null,
 	'fa-trash'
 ))->removeClass('btn-default')->addClass('btn-danger btn-sm')
-  ->setHelp('All blocked hosts will be saved');
+  ->setHelp('All blocked hosts will be cleared');
 
 $section->add($group);
 
