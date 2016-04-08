@@ -108,7 +108,7 @@ if ($_POST['action'] == 'clear') {
 	exit;
 }
 
-$pgtitle = gettext("Suricata: Logs Browser");
+$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Logs View"));
 include_once("head.inc");
 
 if ($input_errors) {
