@@ -156,7 +156,10 @@ if (isset($_POST['mode'])) {
 	
 	// Go download the updates
 	include("/usr/local/pkg/suricata/suricata_check_for_rule_updates.php");
-	exit;
+
+	// Reload the page to update displayed values
+	print '<script type="text/javascript">window.location = "/suricata/suricata_download_updates.php";</script>';
+	return;
 }
 
 /* check for logfile */
