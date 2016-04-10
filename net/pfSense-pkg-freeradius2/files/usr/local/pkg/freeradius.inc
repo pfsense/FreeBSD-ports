@@ -87,8 +87,9 @@ function freeradius_install_command() {
 	if (!file_exists("/var/log/radutmp")) { exec("touch /var/log/radutmp");	}
 	if (!file_exists("/var/log/radwtmp")) {	exec("touch /var/log/radwtmp");	}
 	exec("chown -R root:wheel " . FREERADIUS_ETC . "/raddb /var/log/radacct");
-	if (file_exists($frlib))
+	if (file_exists($frlib)) {
 		exec("chown -R root:wheel {$frlib}");
+	}
 
 	// creating a backup file of the original policy.conf no matter if user checked this or not
 	if (!file_exists(FREERADIUS_ETC . "/raddb/policy.conf.backup")) {
