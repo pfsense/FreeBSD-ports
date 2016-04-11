@@ -1,4 +1,4 @@
-High performance web proxy cache (3.4 branch). It combines Squid as a proxy
+High performance web proxy cache (3.5 branch). It combines Squid as a proxy
 server with its capabilities of acting as a HTTP / HTTPS reverse proxy.
 It includes an Exchange-Web-Access (OWA) Assistant, SSL filtering and 
 antivirus integration via C-ICAP.
