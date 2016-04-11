@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	octave-forge-netcdf
-PORTVERSION=	1.0.7
+PORTVERSION=	1.0.9
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -17,7 +17,7 @@ OCTSRC=		${OCTAVE_PKGNAME}
 
 WRKSRC=		${WRKDIR}/${OCTSRC}/src
 
-LIB_DEPENDS+=	libnetcdf.so:${PORTSDIR}/science/netcdf
+LIB_DEPENDS+=	libnetcdf.so:science/netcdf
 
 .include "${.CURDIR}/../../Mk/bsd.octave.mk"
 

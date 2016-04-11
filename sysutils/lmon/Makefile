@@ -13,9 +13,9 @@ COMMENT=	Near-realtime log monitoring tool, sends alerts on hits and misses
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	p5-Config-IniFiles>=0:${PORTSDIR}/devel/p5-Config-IniFiles \
-		p5-Mail-Sendmail>=0:${PORTSDIR}/mail/p5-Mail-Sendmail \
-		p5-File-Tail>=0:${PORTSDIR}/devel/p5-File-Tail
+RUN_DEPENDS=	p5-Config-IniFiles>=0:devel/p5-Config-IniFiles \
+		p5-Mail-Sendmail>=0:mail/p5-Mail-Sendmail \
+		p5-File-Tail>=0:devel/p5-File-Tail
 
 USES=		perl5 shebangfix tar:tgz
 SHEBANG_FILES=	control.pl lmon.pl
@@ -36,8 +36,12 @@ do-install:
 	@${REINPLACE_CMD} -E -e "s@^(user=).*@\1\"root\"@;s@^(lmonhome=).*@\1\"${PREFIX}/${PORTNAME}\"@" ${WRKSRC}/examples/lmon.init
 	${INSTALL_SCRIPT} ${WRKSRC}/examples/lmon.init \
 		${STAGEDIR}${PREFIX}/etc/rc.d/lmon.sh.sample
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
+
+do-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/examples/*.rules ${STAGEDIR}${EXAMPLESDIR}
 

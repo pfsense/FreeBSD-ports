@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	libressl
-PORTVERSION=	2.2.5
+PORTVERSION=	2.2.6
 CATEGORIES=	security devel
 MASTER_SITES=	OPENBSD/LibreSSL
 
-MAINTAINER=	vsevolod@FreeBSD.org
+MAINTAINER=	brnrd@FreeBSD.org
 COMMENT=	Free version of the SSL/TLS protocol forked from OpenSSL
 
 LICENSE=	BSD4CLAUSE
@@ -18,11 +18,11 @@ OPTIONS_DEFINE=	MAN3
 OPTIONS_DEFAULT=	MAN3
 MAN3_DESC=	Install API manpages (section 3)
 
-CONFLICTS?=	openssl-[0-9]* \
-		libressl-devel-[0-9]*
+CONFLICTS?=	libressl-devel-[0-9]* \
+		openssl-[0-9]* \
+		openssl-devel-[0-9]*
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-silent-rules
 USES=		cpe libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
 
@@ -38,5 +38,8 @@ CONFIGURE_TARGET=	x86_64-portbld-${OPSYS:tl}${OSREL}
 post-install-MAN3-off:
 	${RM} -rf ${STAGEDIR}/${PREFIX}/man/man3
 	${REINPLACE_CMD} -e '/^man\/man3/d' ${TMPPLIST}
+
+post-install:
+	${RM} -rf ${STAGEDIR}/${PREFIX}/etc/ssl/cert.pem
 
 .include <bsd.port.post.mk>

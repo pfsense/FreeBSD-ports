@@ -389,7 +389,6 @@ misc/utf8locale||2009-01-05|Part of the base system since FreeBSD 5.3
 lang/gcc41-withgcjawt||2009-01-06|Removed
 java/gjdoc||2009-01-06|Removed
 java/ecj-bootstrap||2009-01-06|Removed
-audio/dream||2009-01-06|Has expired: Needs DRM enabled in FAAD
 emulators/mupen64plus-sound||2009-01-06|No supported anymore by mupen64plus team
 misc/heyu||2009-01-07|Has expired: no longer under development, use misc/heyu2
 sysutils/pkill||2009-01-07|Part of the base system since FreeBSD 5.3
@@ -2337,7 +2336,6 @@ korean/linuxdoc-sgml||2011-08-01|Has expired: Looks like abandonware, no more pu
 korean/mod_url||2011-08-01|Has expired: Looks like abandonware, no more public distfiles
 korean/nh2ps||2011-08-01|Has expired: Looks like abandonware, no more public distfiles
 korean/pinetreefonts||2011-08-01|Has expired: No more public distfile
-mail/bincimap||2011-08-01|Has expired: No more public distfile
 mail/cmail||2011-08-01|Has expired: No more public distfile
 math/qgfe||2011-08-01|Has expired: Looks like abandonware, no more public distfiles
 misc/ewipe||2011-08-01|Has expired: Looks like abandonware, no more public distfiles
@@ -4587,7 +4585,6 @@ lang/klogoturtle||2013-07-26|Has expired: Depends on Qt 3.x
 mail/kcheckgmail||2013-07-26|Has expired: Depends on Qt 3.x
 math/digitizer||2013-07-26|Has expired: Depends on Qt 3.x
 math/fung-calc||2013-07-26|Has expired: Depends on Qt 3.x
-math/k3dsurf||2013-07-26|Has expired: Depends on Qt 3.x
 math/koctave||2013-07-26|Has expired: Depends on Qt 3.x
 math/kseg||2013-07-26|Has expired: Depends on Qt 3.x
 math/pgcalc||2013-07-26|Has expired: Depends on Qt 3.x
@@ -4756,8 +4753,6 @@ textproc/kbedic||2013-07-26|Has expired: Depends on Qt 3.x
 textproc/skim||2013-07-26|Has expired: Depends on Qt 3.x
 textproc/uim-kde||2013-07-26|Has expired: Depends on Qt 3.x
 textproc/uim-qt||2013-07-26|Has expired: Depends on Qt 3.x
-textproc/xxdiff||2013-07-26|Has expired: Depends on Qt 3.x
-textproc/xxdiff-scripts||2013-07-26|Has expired: Depends on Qt 3.x
 ukrainian/kde3-i18n||2013-07-26|Has expired: Depends on Qt 3.x
 vietnamese/kde3-i18n||2013-07-26|Has expired: Depends on Qt 3.x
 www/kdewebdev||2013-07-26|Has expired: Depends on Qt 3.x
@@ -4887,7 +4882,6 @@ graphics/phpsview||2013-09-01|Has expired: Broken on FreeBSD 8 and newer
 misc/usbrh||2013-09-01|Has expired: Broken on FreeBSD 8 and newer
 net/atmsupport||2013-09-01|Has expired: Broken on FreeBSD 8 and newer
 comms/ib-kmod||2013-09-01|Has expired: Broken on FreeBSD 8 and newer
-net/libproxy-mozjs||2013-09-01|Has expired: Does not work with newer libxul
 www/helixplugin||2013-09-01|Has expired: Does not work with newer libxul
 deskutils/chmsee||2013-09-01|Has expired: Does not work with newer libxul
 www/moonshine||2013-09-01|Has expired: Does not work with newer libxul
@@ -5272,7 +5266,6 @@ science/omnetpp||2013-12-05|Has expired: depends on expired textproc/libxml
 textproc/libxml||2013-12-05|Has expired: No release since 2002, no support from upstream
 deskutils/taskjuggler|deskutils/rubygem-taskjuggler|2013-12-05|Rename to match our rubygems naming
 www/clickheat||2013-12-07|Has expired: No more activity since 2011
-security/pdfcrack||2013-12-08|Has expired: Not active since several years
 security/rarcrack||2013-12-08|Has expired: Not active since several years
 java/subversion-java|java/java-subversion|2013-12-08|Rename to reflect subversion child port naming scheme
 games/flare|games/flare-game|2013-12-10|Flare port was split into engine and game counterparts, as upstream did
@@ -5293,7 +5286,6 @@ net/freeswitch-core||2013-12-20|Has expired: Broken for more than 6 months
 misc/freeswitch-pizzademo||2013-12-20|Has expired: Depends on expired net/freeswitch-core
 misc/freeswitch-scripts||2013-12-20|Has expired: Depends on expired net/freeswitch-core
 www/p5-HTML-Webmake||2013-12-20|Has expired: Depends on expired textproc/p5-XML-Sablotron
-net/freeswitch||2013-12-20|Has expired: Depends on expired net/freeswitch-core
 games/blue|games/bluemoon|2013-12-21|Rename to match upstream naming
 devel/ruby-cvs||2013-12-22|Has expired: Broken for more than 6 months
 devel/hs-reactive||2013-12-22|Has expired: Broken for more than 6 months
@@ -5647,7 +5639,6 @@ print/abntex||2014-03-10|Has expired: No more public distfiles
 sysutils/monkeytail||2014-03-10|Has expired: No more public distfiles
 dns/dns_mre||2014-03-10|Has expired: No more public distfiles
 japanese/libjcode||2014-03-10|Has expired: No more public distfiles
-sysutils/jailutils||2014-03-10|Has expired: No more public distfiles
 net/freeswitch-vanilla-devel||2014-03-10|Has expired: No more public distfiles
 sysutils/hdup||2014-03-10|Has expired: No more public distfiles
 x11/settitle||2014-03-10|Has expired: No more public distfiles
@@ -5819,7 +5810,6 @@ www/vtiger||2014-03-30|Has expired: No more public distfiles
 net/linux-nx-client||2014-03-30|Has expired: No more public distfiles
 emulators/extract-xiso||2014-03-30|Has expired: No more public distfiles
 www/trac-wantedpages||2014-03-30|Has expired: No more public distfiles
-www/trac-ldap||2014-03-30|Has expired: No more public distfiles
 www/trac-codetags||2014-03-30|Has expired: No more public distfiles
 www/trac-addcomment||2014-03-30|Has expired: No more public distfiles
 www/trac-nav||2014-03-30|Has expired: No more public distfiles
@@ -5916,7 +5906,6 @@ cad/chipmunk||2014-04-11|Has expired: Unmaintained since 1999
 graphics/comix||2014-04-11|Has expired: Insists on installing in /usr/local, and uses nautilus2 which is deprecated
 www/mambo||2014-04-11|Has expired: Broken for more than 6 months
 devel/lua-rds-parser||2014-04-11|Has expired: Broken for more than 6 months
-editors/the||2014-04-11|Has expired: Unmaintained since 1999
 japanese/exmh2||2014-04-11|Has expired: Unmaintained since 1999
 net/freewais-sf||2014-04-11|Has expired: Unmaintained since 1999
 editors/elvis||2014-04-11|Has expired: Unmaintained since 1999
@@ -5951,7 +5940,6 @@ mail/althea||2014-04-13|Has expired: Unmaintained since 2001
 graphics/claraocr||2014-04-13|Has expired: Unmaintained since 2001
 graphics/qvplay||2014-04-13|Has expired: Unmaintained since 2001
 print/guitartex||2014-04-13|Has expired: Unmaintained since 2001
-print/pnm2ppa||2014-04-13|Has expired: Unmaintained since 2001
 graphics/opendis||2014-04-13|Has expired: Unmaintained since 2001
 net/gnome-mud||2014-04-13|Has expired: Unmaintained since 2001
 graphics/maverik||2014-04-13|Has expired: Unmaintained since 2001
@@ -6079,7 +6067,6 @@ java/linux-sun-jdk16||2014-05-11|Has expired: Unsupported and known for multiple
 ports-mgmt/pver||2014-05-11|Has expired: does not support pkgng
 databases/firebird20-client|databases/firebird25-client|2014-05-11|Firebird 2.0 is EOLed
 databases/firebird20-server|databases/firebird25-server|2014-05-11|Firebird 2.0 is EOLed
-archivers/star||2014-05-15|Has expired: Depends on deprecated smake
 editors/ved||2014-05-15|Has expired: Depends on deprecated smake
 japanese/chasen||2014-05-15|Has expired: Unmaintained since 2001
 www/openx|www/revive-adserver|2014-05-15|Upstream obsolete, forked
@@ -6553,7 +6540,6 @@ devel/entity||2014-09-01|Not staged
 devel/flowdesigner||2014-09-01|Not staged
 devel/gjstest||2014-09-01|Not staged
 devel/jzmq||2014-09-01|Not staged
-devel/libparserutils||2014-09-01|Not staged
 devel/libslave||2014-09-01|Not staged
 devel/linux-kmod-compat||2014-09-01|Not staged
 devel/ml-doc||2014-09-01|Not staged
@@ -6609,7 +6595,6 @@ graphics/mingplot||2014-09-01|Not staged
 graphics/orca||2014-09-01|Not staged
 graphics/php5-chartdirector||2014-09-01|Not staged
 graphics/ruby-rmagick||2014-09-01|Not staged
-graphics/sane-epkowa||2014-09-01|Not staged
 graphics/uDrawGraph||2014-09-01|Not staged
 graphics/visionworkbench||2014-09-01|Not staged
 irc/bobot++||2014-09-01|Not staged
@@ -6630,7 +6615,6 @@ java/jc||2014-09-01|Not staged
 java/poseidon||2014-09-01|Not staged
 lang/Sather||2014-09-01|Not staged
 lang/gnustep-guile||2014-09-01|Not staged
-lang/haskell-mode.el||2014-09-01|Not staged
 lang/hiphop-php||2014-09-01|Not staged
 lang/lush||2014-09-01|Not staged
 lang/metaocaml||2014-09-01|Not staged
@@ -6731,7 +6715,6 @@ net-mgmt/nagios-portaudit||2014-09-01|Not staged
 net-mgmt/nagios-silfreed-plugins||2014-09-01|Not staged
 net-mgmt/nagiostat||2014-09-01|Not staged
 net-mgmt/netams-front||2014-09-01|Not staged
-net-mgmt/openvmps||2014-09-01|Not staged
 net-mgmt/ramond||2014-09-01|Not staged
 net-mgmt/rancid-devel||2014-09-01|Not staged
 net-mgmt/satellite||2014-09-01|Not staged
@@ -6866,7 +6849,6 @@ sysutils/eroaster||2014-09-01|Not staged
 sysutils/freqsdwn||2014-09-01|Not staged
 sysutils/gnomebaker||2014-09-01|Not staged
 sysutils/ispman||2014-09-01|Not staged
-sysutils/jailadmin||2014-09-01|Not staged
 sysutils/jailuser||2014-09-01|Not staged
 sysutils/linux-afaapps||2014-09-01|Not staged
 sysutils/netident||2014-09-01|Not staged
@@ -7287,7 +7269,6 @@ sysutils/rubygem-hiera-puppet||2014-12-01|Has expired: Has been incorporated int
 sysutils/rubygem-hiera-json||2014-12-01|Has expired: Has been incorporated into hiera
 databases/memcachedb||2014-12-01|Has expired: Depends on deprecated Berkeley DB version, needs porting to DB_SITE
 games/djgame2||2014-12-01|Has expired: Online servers gone, game is not playable
-devel/creduce||2014-12-01|Has expired: Unmaintained and depends on ancient LLVM 3.2
 lang/clay||2014-12-01|Has expired: No development since July 2013, depends on obsolete clang-3.2
 textproc/libodfgen|textproc/libodfgen01|2014-12-02|Replaced by newer version
 graphics/libetonyek|graphics/libetonyek01|2014-12-02|Replaced by newer version
@@ -8027,7 +8008,6 @@ astro/dgpsip||2015-11-28|Has expired: Broken for more than 6 months
 databases/pecl-handlersocket||2015-11-28|Has expired: Broken for more than 6 months
 audio/cymbaline||2015-11-28|Has expired: Broken for more than 6 months
 french/dico||2015-11-28|Has expired: Broken for more than 6 months
-comms/qpage||2015-11-28|Has expired: Broken for more than 6 months
 audio/sonice||2015-11-28|Has expired: Broken for more than 6 months
 cad/geda-symbols||2015-11-28|Has expired: Broken for more than 6 months
 databases/java-mybatis||2015-11-28|Has expired: Broken for more than 6 months
@@ -8086,11 +8066,206 @@ security/burpsuite||2015-12-30|Has expired: Broken for more than 6 months
 net/remmina-plugin-rdp||2015-12-30|Has expired: Broken for more than 6 months
 dns/bind10|dns/bundy|2015-12-31|Has expired: Is not developed any more, use dns/bundy
 lang/perl5.16||2015-12-31|Has expired: Unsupported, please upgrade to a more recent version of Perl
+devel/py-distutils-extra|devel/py-python-distutils-extra|2015-12-31|Renamed to match upstream naming
 irc/irssi-devel||2016-01-01|Has expired: Older than irc/irssi
 multimedia/spotify-websocket-api||2016-01-01|Has expired: login fails due to protocol changes
 net-mgmt/unifi2|net-mgmt/unifi3|2016-01-01|Has expired: Unifi 2.x is EoL. Please upgrade to net-mgmt/unifi3
 misc/kde4-l10n-th||2016-01-01|Has expired: Upstream ceased maintainance of this translation
 misc/kde4-l10n-tg||2016-01-01|Has expired: Upstream ceased maintainance of this translation
 misc/kde4-l10n-si||2016-01-01|Has expired: Upstream ceased maintainance of this translation
+games/supertux-devel|games/supertux2|2016-01-05|Renamed along with update to new stable release
+games/duke3d-data||2016-01-06|Incorporated into games/eduke32
+devel/msp430-gdb|devel/gcc-msp430-ti-toolchain|2016-01-08|Has expired: Obsolete. Please, use devel/gcc-msp430-ti-toolchain
+devel/msp430-gcc|devel/gcc-msp430-ti-toolchain|2016-01-08|Has expired: Obsolete. Please, use devel/gcc-msp430-ti-toolchain
+devel/msp430mcu|devel/gcc-msp430-ti-toolchain|2016-01-08|Has expired: Obsolete. Please, use devel/gcc-msp430-ti-toolchain
+devel/msp430-libc|devel/gcc-msp430-ti-toolchain|2016-01-08|Has expired: Obsolete. Please, use devel/gcc-msp430-ti-toolchain
+devel/msp430-binutils|devel/gcc-msp430-ti-toolchain|2016-01-08|Has expired: Obsolete. Please, use devel/gcc-msp430-ti-toolchain
+devel/e_dbus||2016-01-15|Has expired: Not used anymore by x11-wm/enlightenment
+www/xpi-locale-switcher||2016-01-15|Has expired: incompatible with Firefox 34 (and later presumably)
+textproc/py-gettext|textproc/py-python-gettext|2016-01-16|Renamed to match upstream name
+archivers/jzip.org||2016-01-24|Has expired: Abandoned, outdated (no updates since 2003)
+databases/mywwwatcher||2016-01-25|Has expired: PHP 5.4 EOL reached
+databases/php5-creole||2016-01-25|Has expired: PHP 5.4 EOL reached
+databases/php5-propel||2016-01-25|Has expired: PHP 5.4 EOL reached
+deskutils/fengoffice||2016-01-25|Has expired: PHP 5.4 EOL reached
+devel/simpletest||2016-01-25|Has expired: PHP 5.4 EOL reached
+graphics/php5-swfed||2016-01-25|Has expired: PHP 5.4 EOL reached
+sysutils/loganalyzer||2016-01-25|Has expired: PHP 5.4 EOL reached
+textproc/simplehtmldom||2016-01-25|Has expired: PHP 5.4 EOL reached
+www/autoindex2||2016-01-25|Has expired: PHP 5.4 EOL reached
+www/cakephp11||2016-01-25|Has expired: PHP 5.4 EOL reached
+www/cakephp13||2016-01-25|Has expired: PHP 5.4 EOL reached
+www/cakephp21||2016-01-25|Has expired: PHP 5.4 EOL reached
+www/cakephp22||2016-01-25|Has expired: PHP 5.4 EOL reached
+www/cakephp23||2016-01-25|Has expired: PHP 5.4 EOL reached
+www/fluxcms||2016-01-25|Has expired: PHP 5.4 EOL reached
+www/fusionpbx||2016-01-25|Has expired: PHP 5.4 EOL reached
+www/jawstats||2016-01-25|Has expired: PHP 5.4 EOL reached
+www/ojs2||2016-01-25|Has expired: PHP 5.4 EOL reached
+www/webcalendar||2016-01-25|Has expired: PHP 5.4 EOL reached
+devel/i386-linux-binutils||2016-01-26|Not any usage in the ports tree
+devel/py-msgpack|devel/py-msgpack-python|2016-01-28|Renamed to match upstream naming
+www/xpi-bookmarkdd||2016-01-30|Has expired, incompatible with Firefox 34+
+databases/php5-redis||2016-01-30|Has expired: PHP 5.4 EOL reached, use databases/php55-redis or databases/php56-redis instead
 audio/linux-c6-pulseaudio-libs-glib2||2016-01-31|Integrated into audio/linux-c6-pulseaudio-libs
-pronto||2016-02-18|No release since 2002 http://www.muhri.net/pronto/page.php3?node=news
+devel/pdcurses-the||2016-02-01|Has expired: Seperate port is no longer needed, see PR
+www/py-django17||2016-02-01|Has expired: End of extended support: December 1, 2015
+www/codeigniter22|www/codeigniter|2016-02-01|Has expired: Codeigniter 2.2.x reached its End of Life on 31 October 2015. Please update to the current version
+java/wildfly80||2016-02-01|Has expired: Fully EOL when version 8.2 was released
+java/wildfly81||2016-02-01|Has expired: Fully EOL when version 9.0 was released
+mail/phpmailer2|mail/phpmailer|2016-02-01|Has expired: Obsolete, use mail/phpmailer instead
+cad/pycam|cad/py-pycam|2016-02-02|Add py- prefix to directory name
+lang/python32||2016-02-02|Has expired: Full EOL reached. Please update to Python 3.5
+devel/py-setuptools32||2016-02-02|Has expired: Full EOL reached. Please update to Python 3.5
+databases/py32-gdbm||2016-02-02|Has expired: Full EOL reached. Please update to Python 3.5
+databases/py32-sqlite3||2016-02-02|Has expired: Full EOL reached. Please update to Python 3.5
+x11-toolkits/py32-tkinter||2016-02-02|Has expired: Full EOL reached. Please update to Python 3.5
+sysutils/puppet|sysutils/puppet38|2016-02-05|Renamed
+devel/etcdctl|devel/etcd|2016-02-06|Has expired: etcdctl is now part of etcd, following the change from the upstream
+graphics/py-graphviz|graphics/py-pygraphviz|2016-02-07|Renamed to match upstream (PyPI) name
+security/polarssl||2016-02-07|Has expired: Upstream is ending support for 1.2.x
+multimedia/xbmc-addon-pvr||2016-02-12|Has expired: Does not work with multimedia/kodi 15.x and newer
+security/py-openid|security/py-python-openid|2016-02-13|Renamed to match upstream (PyPI) name
+ports-mgmt/tinderbox-devel|ports-mgmt/tinderbox|2016-02-14|Has expired: use newer stable version (ports-mgmt/tinderbox)
+deskutils/alacarte||2016-02-14|Not part of GNOME anymore
+deskutils/gnome-shell-extension-calculator||2016-02-14|Obsolete. gnome-calculator provides the functionality since GNOME 3.14
+archivers/php5-bz2||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+archivers/php5-phar||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+archivers/php5-zip||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+archivers/php5-zlib||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+converters/php5-iconv||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+converters/php5-mbstring||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+converters/php5-recode||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+databases/php5-dba||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+databases/php5-interbase||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+databases/php5-mssql||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+databases/php5-mysql||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+databases/php5-mysqli||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+databases/php5-odbc||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+databases/php5-pdo||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+databases/php5-pdo_dblib||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+databases/php5-pdo_firebird||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+databases/php5-pdo_mysql||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+databases/php5-pdo_odbc||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+databases/php5-pdo_pgsql||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+databases/php5-pdo_sqlite||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+databases/php5-pgsql||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+databases/php5-sqlite3||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+databases/php5-sybase_ct||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+devel/php5-gettext||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+devel/php5-json||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+devel/php5-pcntl||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+devel/php5-readline||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+devel/php5-shmop||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+devel/php5-sysvmsg||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+devel/php5-sysvsem||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+devel/php5-sysvshm||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+devel/php5-tokenizer||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+ftp/php5-curl||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+ftp/php5-ftp||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+graphics/php5-exif||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+graphics/php5-gd||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+lang/php5||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+lang/php5-extensions||2016-02-14|PHP 5.4 EOL reached
+mail/php5-imap||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+math/php5-bcmath||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+math/php5-gmp||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+misc/php5-calendar||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+net/php5-ldap||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+net/php5-soap||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+net/php5-sockets||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+net/php5-xmlrpc||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+net-mgmt/php5-snmp||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+security/php5-filter||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+security/php5-hash||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+security/php5-mcrypt||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+security/php5-openssl||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+sysutils/php5-fileinfo||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+sysutils/php5-posix||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+textproc/php5-ctype||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+textproc/php5-dom||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+textproc/php5-pspell||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+textproc/php5-simplexml||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+textproc/php5-wddx||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+textproc/php5-xml||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+textproc/php5-xmlreader||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+textproc/php5-xmlwriter||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+textproc/php5-xsl||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+www/mod_php5||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+www/pecl-zendopcache||2016-02-14|PHP 5.4 EOL reached
+www/php5-session||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+www/php5-tidy||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
+mail/pronto||2016-02-18|No release since 2002 http://www.muhri.net/pronto/page.php3?node=news
+russian/muttprint||2016-02-25|The Russian translation is included in print/muttprint
+security/openssh-portable-devel|security/openssh-portable|2016-02-29|Outdated and insecure, use the main port
+audio/audacious-dumb||2016-02-29|Has expired: Broken for more than 6 months
+net/ntopng||2016-02-29|Has expired: Broken for more than 6 months
+audio/rezound||2016-02-29|Has expired: Broken for more than 6 months
+net/rubygem-amqp067|net/rubygem-bunny|2016-02-29|Has expired: Upstream prefers net/rubygem-bunny
+devel/py-unittestplus||2016-02-29|Has expired: Tarballs and upstream website disappeared
+net/samba4||2016-03-02|Has expired: not supported by the upstream
+net/isc-dhcp42-client|net/isc-dhcp43-client|2016-03-02|Has expired: isc-dhcp 4.2 is End of Life
+net/isc-dhcp41-relay|net/isc-dhcp43-relay|2016-03-02|Has expired: isc-dhcp 4.1 is now End of Life
+net/isc-dhcp42-relay|net/isc-dhcp43-relay|2016-03-02|Has expired: isc-dhcp 4.2 is End of Life
+net/isc-dhcp41-client|net/isc-dhcp43-client|2016-03-02|Has expired: isc-dhcp 4.1 is now End of Life
+net/isc-dhcp42-server|net/isc-dhcp43-server|2016-03-02|Has expired: isc-dhcp 4.2 is End of Life
+devel/pear-IO_Bit||2016-03-02|Has expired: Unsupported upstream
+graphics/pear-IO_SWF||2016-03-02|Has expired: Unsupported upstream
+math/k3dsurf|math/mathmod|2016-03-04|K3DSurf was the previous release, based on Qt3, MathMod is the new one, based on Qt5
+databases/mysql-workbench52||2016-03-05|Has expired: Broken for more than 6 months
+math/geogebra-i18n|math/geogebra|2016-03-06|Portname simplified
+devel/seed||2016-03-06|Has expired: No longer used
+devel/seed3||2016-03-06|Has expired: No longer used
+audio/waheela||2016-03-06|Has expired: Distfiles unavailable and no updates in 6 years
+sysutils/logstash-contrib||2016-03-06|Has expired: Upstream now distributing plugins separately: see https://github.com/logstash-plugins
+devel/p5-DateTime-Event-SolarTerm|devel/p5-DateTime-Astro|2016-03-07|Has been part of DateTime-Astro for a long time
+devel/p5-DateTime-Util-Astro|devel/p5-DateTime-Astro|2016-03-07|Has been part of DateTime-Astro for a long time
+security/regripperplugins||2016-03-07|Merged into security/regripper
+textproc/elasticsearch-plugin-marvel2|textproc/elasticsearch2-plugin-marvel|2016-03-10|Rename to match other Elasticsearch 2 plugins
+print/cups-base|print/cups|2016-03-11|Merged
+print/cups-client|print/cups|2016-03-11|Merged
+print/cups-image|print/cups|2016-03-11|Merged
+print/cups-pstoraster|print/cups-filters|2016-03-11|Obsolete
+russian/MT||2016-03-13|Has expired: Reached it's EOL in September 2015
+www/MT||2016-03-13|Has expired: Reached it's EOL in September 2015
+security/openvas-libnasl|security/openvas-libraries|2016-03-17|Merged
+security/openvas-server|security/openvas-scanner|2016-03-17|Renamed
+security/openvas-plugins|security/openvas-scanner|2016-03-17|Merged
+security/openvas-client||2016-03-17|Discontinued, try security/greenbone-security-assistant
+devel/py-icu|devel/py-pyicu|2016-03-19|Renamed to match upstream (PyPI) name
+www/eaccelerator||2016-03-20|Has expired: cannot be installed: doesn't work with lang/php56 port (doesn't support PHP 5.5 5.6 70)
+devel/pecl-inclued||2016-03-20|Has expired: cannot be installed: doesn't work with lang/php56 port (doesn't support PHP 5.5 5.6 70)
+security/pecl-taint||2016-03-20|Has expired: cannot be installed: doesn't work with lang/php56 port (doesn't support PHP 5.5 5.6 70)
+net/libnids-libnet11|net/libnids|2016-03-20|Same content
+lang/cloudabi-clang|devel/cloudabi-toolchain|2016-03-21|Merged
+graphics/hugin-devel||2016-03-22|overtaken by released version
+graphics/hugin-2016||2016-03-22|overtaken by released version
+net/rubygem-omniauth-cas3||2016-03-28|Removed
+textproc/libvisio||2016-03-28|No longer used by other ports: use textproc/libvisio01 instead
+textproc/libe-book00||2016-03-28|No longer used by other ports: use textproc/libe-book instead
+graphics/libtxc_dxtn|graphics/s2tc|2016-03-29|Superseded by graphics/s2tc
+devel/erlang-ssl_verify_hostname|devel/erlang-ssl_verify_fun|2016-03-28|Project renamed
+www/session2||2016-03-29|Has expired: That is a part of Quixote webapp framework we no longer have in ports
+www/py-django-pipeline14||2016-03-29|Has expired: This port depends upon expired www/py-django16 and have no consumers
+textproc/libwpd||2016-03-29|Has expired: Not used any more
+graphics/libwpg||2016-03-29|Has expired: Not used any more
+textproc/libwps02||2016-03-29|Has expired: Not used any more
+textproc/libabw00||2016-03-29|Has expired: Not used any more
+databases/cassandra||2016-03-29|Has expired: 1.2.x has reached EOL, upgrade to a supported version of Cassandra
+databases/rubygem-after_commit_queue-rails41|databases/rubygem-after_commit_queue|2016-03-31|Has expired: Rails 4.1 is no longer supported - please switch to Rails 4.2
+textproc/rubygem-jekyll-assets1|textproc/rubygem-jekyll-assets|2016-03-31|Has expired: Use textproc/rubygem-jekyll-assets instead
+devel/rubygem-sprockets-rails-rails41|devel/rubygem-sprockets-rails|2016-03-31|Has expired: Rails 4.1 is no longer supported - please switch to Rails 4.2
+mail/rubygem-actionmailer41|mail/rubygem-actionmailer4|2016-03-31|Has expired: Rails 4.1 is no longer supported - please switch to Rails 4.2
+databases/rubygem-activemodel41|databases/rubygem-activemodel4|2016-03-31|Has expired: Rails 4.1 is no longer supported - please switch to Rails 4.2
+devel/rubygem-activesupport41|devel/rubygem-activesupport4|2016-03-31|Has expired: Rails 4.1 is no longer supported - please switch to Rails 4.2
+www/rubygem-actionpack41|www/rubygem-actionpack4|2016-03-31|Has expired: Rails 4.1 is no longer supported - please switch to Rails 4.2
+devel/rubygem-actionview41|devel/rubygem-actionview|2016-03-31|Has expired: Rails 4.1 is no longer supported - please switch to Rails 4.2
+databases/rubygem-paranoia-rails41|databases/rubygem-paranoia|2016-03-31|Has expired: Rails 4.1 is no longer supported - please switch to Rails 4.2
+databases/rubygem-activerecord41|databases/rubygem-activerecord4|2016-03-31|Has expired: Rails 4.1 is no longer supported - please switch to Rails 4.2
+textproc/rubygem-sass-rails4-rails41|textproc/rubygem-sass-rails4|2016-03-31|Has expired: Rails 4.1 is no longer supported - please switch to Rails 4.2
+www/rubygem-turbolinks-rails41|www/rubygem-turbolinks|2016-03-31|Has expired: Rails 4.1 is no longer supported - please switch to Rails 4.2
+devel/rubygem-omniauth_crowd-rails41|devel/rubygem-omniauth_crowd|2016-03-31|Has expired: Rails 4.1 is no longer supported - please switch to Rails 4.2
+devel/rubygem-coffee-rails41|devel/rubygem-coffee-rails4|2016-03-31|Has expired: Rails 4.1 is no longer supported - please switch to Rails 4.2
+www/rubygem-railties41|www/rubygem-railties4|2016-03-31|Has expired: Rails 4.1 is no longer supported - please switch to Rails 4.2
+devel/rubygem-jbuilder-rails41|devel/rubygem-jbuilder|2016-03-31|Has expired: Rails 4.1 is no longer supported - please switch to Rails 4.2
+textproc/py-genshi-devel|textproc/py-genshi|2016-03-31|Has expired: The port is no longer updated and behind the main genshi port

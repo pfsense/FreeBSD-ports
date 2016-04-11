@@ -3,7 +3,7 @@
 
 PORTNAME=	vtk
 PORTVERSION=	6.2.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math graphics
 MASTER_SITES=	http://www.vtk.org/files/release/${VTK_SHORT_VER}/
 PKGNAMESUFFIX=	6
@@ -14,10 +14,10 @@ COMMENT=	The Visualization Toolkit
 
 LICENSE=	BSD3CLAUSE
 
-LIB_DEPENDS=	libtiff.so:${PORTSDIR}/graphics/tiff \
-    		libpng.so:${PORTSDIR}/graphics/png \
-		libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libexpat.so:${PORTSDIR}/textproc/expat2
+LIB_DEPENDS=	libtiff.so:graphics/tiff \
+		libpng.so:graphics/png \
+		libfreetype.so:print/freetype2 \
+		libexpat.so:textproc/expat2
 
 #
 # TODO
@@ -37,7 +37,7 @@ DATADIR=	${PREFIX}/share/vtk-${VTK_SHORT_VER}
 
 # Options
 OPTIONS_DEFINE=	DESIGNER DOCS OSMESA EXAMPLES SHARED
-OPTIONS_DEFAULT=SHARED
+OPTIONS_DEFAULT=PYTHON SHARED
 #OPTIONS_DEFAULT=MPI Qt JAVA PYTHON TCLTK DESIGNER
 OSMESA_DESC=	Use Mesa for off-screen rendering
 DESIGNER_DESC=	Build the Qt Designer plugin
@@ -63,7 +63,6 @@ OPTIONS_RADIO_Qt=	QT4 QT5
 Qt_DESC=	Qt GUI support
 QT4_DESC=	Qt 4 toolkit support
 QT5_DESC=	Qt 5 toolkit support
-
 
 CMAKE_ARGS+=	-DVTK_INSTALL_LIBRARY_DIR=lib/vtk-${VTK_SHORT_VER} \
 		-DVTK_INSTALL_ARCHIVE_DIR=lib/vtk-${VTK_SHORT_VER} \
@@ -100,7 +99,7 @@ CMAKE_ARGS+=	-DVTK_Group_${g}:BOOL=OFF
 .endfor
 
 .if ${PORT_OPTIONS:MOSMESA}
-LIB_DEPENDS+=	libOSMesa.so:${PORTSDIR}/graphics/libosmesa
+LIB_DEPENDS+=	libOSMesa.so:graphics/libosmesa
 CMAKE_ARGS+=	-DVTK_OPENGL_HAS_OSMESA:BOOL=ON \
 		-DOSMESA_INCLUDE_DIR:PATH=${LOCALBASE}/include/Mesa \
 		-DOSMESA_LIBRARY:FILEPATH=${LOCALBASE}/lib/libOSMesa.so \
@@ -119,7 +118,7 @@ CMAKE_ARGS+=	-DBUILD_EXAMPLES:BOOL=ON
 .endif
 
 .if ${PORT_OPTIONS:MMPI}
-LIB_DEPENDS+=	libmpi.so:${PORTSDIR}/net/openmpi
+LIB_DEPENDS+=	libmpi.so:net/openmpi
 CMAKE_ARGS+=	-DMPIEXEC=${LOCALBASE}/mpi/openmpi/bin/mpiexec
 PLIST_SUB+=	MPI=""
 .else
@@ -168,24 +167,24 @@ CMAKE_ARGS+=	-DQT_DESIGNER_PLUGIN:BOOL=OFF
 CATEGORIES+=	java
 USE_JAVA=	yes
 CMAKE_ARGS+=	-DVTK_WRAP_JAVA:BOOL=ON \
-    		-DJAVA_INCLUDE_PATH:PATH=${JAVA_HOME}/include \
+		-DJAVA_INCLUDE_PATH:PATH=${JAVA_HOME}/include \
 		-DJAVA_AWT_LIBRARY:PATH=${JAVA_HOME}/jre/lib/${ARCH}/libjawt.so \
 		-DJAVA_JVM_LIBRARY:PATH=${JAVA_HOME}/jre/lib/${ATCH}/libjava.so
 PLIST_SUB+=	JAVA=""
 .else
 CMAKE_ARGS+=	-DVTK_WRAP_JAVA:BOOL=OFF \
-    		-DModule_vtkWrappingJava:BOOL=OFF
+		-DModule_vtkWrappingJava:BOOL=OFF
 PLIST_SUB+=	JAVA="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MPYTHON}
 USES+=		python
 CMAKE_ARGS+=	-DVTK_WRAP_PYTHON:BOOL=ON \
-    		-DVTK_INSTALL_PYTHON_MODULE_DIR:STRING=${PYTHONPREFIX_SITELIBDIR} \
+		-DVTK_INSTALL_PYTHON_MODULE_DIR:STRING=${PYTHONPREFIX_SITELIBDIR} \
 		-DModule_vtkRenderingMatplotlib:BOOL=ON \
 		-DModule_vtkPythonInterpreter:BOOL=ON
 PLIST_SUB+=	PYTHON=""
-RUN_DEPENDS+=	${PYTHON_SITELIBDIR}/matplotlib/__init__.py:${PORTSDIR}/math/py-matplotlib
+RUN_DEPENDS+=	${PYTHON_SITELIBDIR}/matplotlib/__init__.py:math/py-matplotlib
 .else
 CMAKE_ARGS+=	-DVTK_WRAP_PYTHON:BOOL=OFF
 PLIST_SUB+=	PYTHON="@comment "
@@ -194,14 +193,14 @@ PLIST_SUB+=	PYTHON="@comment "
 .if ${PORT_OPTIONS:MTCLTK}
 USES+=		tk
 CMAKE_ARGS+=	-DVTK_WRAP_TCL:BOOL=ON \
-    		-DVTK_Group_Tk:BOOL=ON \
+		-DVTK_Group_Tk:BOOL=ON \
 		-DTCL_INCLUDE_PATH:PATH=${TCL_INCLUDEDIR} \
 		-DTK_INCLUDE_PATH:PATH=${TK_INCLUDEDIR}  \
 		-DVTK_INSTALL_TCL_DIR=lib/vtk-${VTK_SHORT_VER}
 PLIST_SUB+=	TCLTK=""
 .else
 CMAKE_ARGS+=	-DVTK_WRAP_TCL:BOOL=OFF \
-    		-DVTK_Group_Tk:BOOL=OFF
+		-DVTK_Group_Tk:BOOL=OFF
 PLIST_SUB+=	TCLTK="@comment "
 .endif
 
@@ -213,7 +212,7 @@ PLIST_SUB+=	WRAP="@comment "
 
 .if ${PORT_OPTIONS:MDOCS}
 CMAKE_ARGS+=	-DBUILD_DOCUMENTATION:BOOL=ON
-BUILD_DEPENDS+=	doxygen:${PORTSDIR}/devel/doxygen
+BUILD_DEPENDS+=	doxygen:devel/doxygen
 .else
 CMAKE_ARGS+=	-DBUILD_DOCUMENTATION:BOOL=OFF
 .endif

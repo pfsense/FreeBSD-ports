@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	epsilon
-PORTVERSION=	0.7.0
+PORTVERSION=	0.7.1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +13,7 @@ COMMENT=	Set of Python utility modules used by DivMod projects
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/OpenSSL/__init__.py:${PORTSDIR}/security/py-openssl
+RUN_DEPENDS=	${PYTHON_SITELIBDIR}/OpenSSL/__init__.py:security/py-openssl
 
 CONFLICTS=	brlcad-[0-9]*
 USES=		python twisted

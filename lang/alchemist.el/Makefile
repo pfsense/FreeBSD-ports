@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	alchemist.el
-PORTVERSION=	1.6.0
+PORTVERSION=	1.7.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	lang
 
@@ -10,7 +10,7 @@ COMMENT=	Elixir Tooling Integration Into Emacs
 
 LICENSE=	GPLv3
 
-RUN_DEPENDS=	elixir-mode.el>=0:${PORTSDIR}/lang/elixir-mode.el
+RUN_DEPENDS=	elixir-mode.el>=0:lang/elixir-mode.el
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	tonini

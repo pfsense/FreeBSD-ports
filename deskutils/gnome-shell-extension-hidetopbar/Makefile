@@ -2,19 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=	gnome-shell-extension-hidetopbar
-PORTVERSION=	0.0.0.20150613
+PORTVERSION=	0.0.0.20151025
 CATEGORIES=	deskutils gnome
 DIST_SUBDIR=	gnome3
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Hide the topbar except in overview mode
 
-BUILD_DEPENDS=	gnome-shell>=0:${PORTSDIR}/x11/gnome-shell \
-		gsettings-desktop-schemas>=3.12.0:${PORTSDIR}/devel/gsettings-desktop-schemas
-RUN_DEPENDS=	gnome-shell>=0:${PORTSDIR}/x11/gnome-shell \
-		gsettings-desktop-schemas>=3.12.0:${PORTSDIR}/devel/gsettings-desktop-schemas
+BUILD_DEPENDS=	gnome-shell>=0:x11/gnome-shell \
+		gsettings-desktop-schemas>=3.12.0:devel/gsettings-desktop-schemas
+RUN_DEPENDS=	gnome-shell>=0:x11/gnome-shell \
+		gsettings-desktop-schemas>=3.12.0:devel/gsettings-desktop-schemas
 
-USES=		gettext gmake pkgconfig tar:xz
+USES=		gettext gmake gnome pkgconfig tar:xz
 USE_GNOME=	glib20
 USE_GITHUB=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -23,7 +23,7 @@ GLIB_SCHEMAS=	org.gnome.shell.extensions.hidetopbar.gschema.xml
 
 GH_ACCOUNT=	mlutfy
 GH_PROJECT=	hidetopbar
-GH_TAGNAME=	9758a91
+GH_TAGNAME=	2a899bf
 
 PKGMESSAGE=	../gnome-shell-extra-extensions/pkg-message.slaves
 

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nordlicht
-PORTVERSION=	0.4.0
+PORTVERSION=	0.4.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	multimedia
 
@@ -10,11 +10,12 @@ MAINTAINER=	t@tobik.me
 COMMENT=	Create moodbars from video files
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-BUILD_DEPENDS=	help2man:${PORTSDIR}/misc/help2man
-LIB_DEPENDS=	libavcodec.so:${PORTSDIR}/multimedia/ffmpeg \
-		libpopt.so:${PORTSDIR}/devel/popt \
-		libpng.so:${PORTSDIR}/graphics/png
+BUILD_DEPENDS=	help2man:misc/help2man
+LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
+		libpopt.so:devel/popt \
+		libpng.so:graphics/png
 
 USE_GITHUB=	yes
 

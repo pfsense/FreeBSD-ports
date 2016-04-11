@@ -5,6 +5,7 @@
 
     SUBDIR += SoXt
     SUBDIR += Xaw3d
+    SUBDIR += Xmt
     SUBDIR += attica
     SUBDIR += bakery
     SUBDIR += blt
@@ -33,6 +34,7 @@
     SUBDIR += gnustep-gui
     SUBDIR += granite
     SUBDIR += gstreamer-plugins-pango
+    SUBDIR += gstreamer1-plugins-gtksink
     SUBDIR += gstreamer1-plugins-pango
     SUBDIR += gtk-sharp-beans
     SUBDIR += gtk-sharp10
@@ -117,11 +119,15 @@
     SUBDIR += movingmotif
     SUBDIR += mowitz
     SUBDIR += mygui
+    SUBDIR += mygui-dummy
+    SUBDIR += mygui-ogre
+    SUBDIR += mygui-opengl
     SUBDIR += neXtaw
     SUBDIR += nucleo
     SUBDIR += ocaml-lablgtk2
     SUBDIR += ocaml-labltk
     SUBDIR += open-motif
+    SUBDIR += osm-gps-map
     SUBDIR += otk
     SUBDIR += p5-Alien-wxWidgets
     SUBDIR += p5-Glade2
@@ -205,7 +211,6 @@
     SUBDIR += py-wxPython28-common
     SUBDIR += py-wxPython30
     SUBDIR += py-xlib
-    SUBDIR += py32-tkinter
     SUBDIR += py33-tkinter
     SUBDIR += py34-tkinter
     SUBDIR += py35-tkinter
@@ -213,10 +218,12 @@
     SUBDIR += qt4-declarative
     SUBDIR += qt4-gui
     SUBDIR += qt4pas
+    SUBDIR += qt5-canvas3d
     SUBDIR += qt5-declarative
     SUBDIR += qt5-gui
     SUBDIR += qt5-quick
     SUBDIR += qt5-quickcontrols
+    SUBDIR += qt5-uiplugin
     SUBDIR += qt5-widgets
     SUBDIR += qtada
     SUBDIR += qwt5
@@ -232,6 +239,7 @@
     SUBDIR += rubygem-pango
     SUBDIR += rubygem-poppler
     SUBDIR += rubygem-vte
+    SUBDIR += rubygem-vte3
     SUBDIR += scintilla
     SUBDIR += sdl_pango
     SUBDIR += shared-desktop-ontologies

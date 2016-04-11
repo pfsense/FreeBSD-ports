@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	emby-server
-PORTVERSION=	3.0.5781.2
-PORTREVISION=	1
+PORTVERSION=	3.0.5911
 CATEGORIES=	multimedia
 
 MAINTAINER=	woodsb02@gmail.com
@@ -12,8 +11,8 @@ COMMENT=	Home media server built using mono and other open source technologies
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-LIB_DEPENDS=	libavformat.so:${PORTSDIR}/multimedia/ffmpeg \
-		libsqlite3.so:${PORTSDIR}/databases/sqlite3
+LIB_DEPENDS=	libavformat.so:multimedia/ffmpeg \
+		libsqlite3.so:databases/sqlite3
 
 CONFLICTS_INSTALL=	mediabrowser
 
@@ -29,10 +28,10 @@ SUB_LIST=	PORTNAME=${PORTNAME} USER=${USERS} GROUP=${GROUPS} RC_NAME=${RC_NAME}
 USERS=		emby
 GROUPS=		emby
 
-OPTIONS_DEFINE=		X11
-OPTIONS_DEFAULT=	X11
-X11_LIB_DEPENDS=	libMagickWand-6.so:${PORTSDIR}/graphics/ImageMagick
-X11_LIB_DEPENDS_OFF=	libMagickWand-6.so:${PORTSDIR}/graphics/ImageMagick-nox11
+OPTIONS_DEFINE=	X11
+OPTIONS_DEFAULT=X11
+X11_LIB_DEPENDS=libMagickWand-6.so:graphics/ImageMagick
+X11_LIB_DEPENDS_OFF=libMagickWand-6.so:graphics/ImageMagick-nox11
 
 do-build:
 	(cd ${WRKSRC} && \

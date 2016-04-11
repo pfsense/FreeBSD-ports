@@ -6,11 +6,13 @@ PORTVERSION=	2016.72
 CATEGORIES=	security ipv6
 MASTER_SITES=	http://matt.ucc.asn.au/dropbear/releases/
 
-MAINTAINER=	pkubaj@riseup.net
+MAINTAINER=	pkubaj@anongoth.pl
 COMMENT=	SSH 2 server, designed to be usable in small memory environments
 
 GNU_CONFIGURE=	yes
-USES=	gmake tar:bzip2
+USES=		cpe gmake tar:bzip2
+CPE_VENDOR=	matt_johnston
+CPE_PRODUCT=	dropbear_ssh_server
 
 USE_RC_SUBR=	${PORTNAME}
 

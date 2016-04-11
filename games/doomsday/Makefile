@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	doomsday
-PORTVERSION=	1.15.6
+PORTVERSION=	1.15.8
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	SF/deng/Doomsday%20Engine/${PORTVERSION}
 DISTNAME=	${PORTNAME}-stable-${PORTVERSION}
@@ -12,10 +13,10 @@ COMMENT=	Enhanced Doom, Heretic, and Hexen source port
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	zip:${PORTSDIR}/archivers/zip
-LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl \
-		libassimp.so:${PORTSDIR}/multimedia/assimp
-RUN_DEPENDS=	timidity:${PORTSDIR}/audio/timidity
+BUILD_DEPENDS=	zip:archivers/zip
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libassimp.so:multimedia/assimp
+RUN_DEPENDS=	timidity:audio/timidity
 
 USE_GL=		gl glu
 USE_LDCONFIG=	yes

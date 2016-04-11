@@ -10,11 +10,12 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Rogue-like game with easy ADOM-like user interface
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake tar:bzip2
-MAKE_ARGS+=	VERSION=${PORTVERSION} DATA_DIR=${DATADIR}/
+USES=		gmake ncurses tar:bzip2
+MAKE_ARGS=	VERSION=${PORTVERSION} DATA_DIR=${DATADIR}/ \
+		LIBS="${LDFLAGS} -lncurses"
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 PLIST_FILES=	bin/${PORTNAME}

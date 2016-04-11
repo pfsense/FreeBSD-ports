@@ -11,7 +11,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:R}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple window manager for X
 
-BUILD_DEPENDS=	makedepend:${PORTSDIR}/devel/makedepend
+BUILD_DEPENDS=	makedepend:devel/makedepend
 
 USE_XORG=	x11 xext xmu
 ALL_TARGET=	depend wm2
@@ -20,6 +20,8 @@ OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/wm2 ${STAGEDIR}${PREFIX}/bin
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	libexplain
 PORTVERSION=	1.3.${PATCHLEVEL}
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION:R}
 DISTNAME=	${PORTNAME}-${PORTVERSION:R}
@@ -11,11 +11,11 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:R}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library which may be used to explain Unix and Linux system call errors
 
-LICENSE=	LGPL3 # or later
+LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	gsed:${PORTSDIR}/textproc/gsed
-RUN_DEPENDS=	lsof:${PORTSDIR}/sysutils/lsof
+BUILD_DEPENDS=	gsed:textproc/gsed
+RUN_DEPENDS=	lsof:sysutils/lsof
 
 USES=		bison gettext ghostscript:build gmake iconv libtool:build
 GNU_CONFIGURE=	yes

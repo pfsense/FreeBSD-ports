@@ -13,9 +13,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Three-dimensional fractal creator (X11 GUI)
 
 BROKEN=		unfetchable
-LICENSE=	GPLv2 # (or later)
+LICENSE=	GPLv2+
 
-LIB_DEPENDS=	libfltk.so:${PORTSDIR}/x11-toolkits/fltk
+LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk
 
 OPTIONS_DEFINE=	OPTIMIZED_CFLAGS DOCS
 

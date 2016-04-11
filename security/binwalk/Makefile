@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	binwalk
-PORTVERSION=	2.0.2
+PORTVERSION=	2.1.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security python
 
@@ -13,10 +13,9 @@ LICENSE=	MIT
 USES=		python
 USE_GITHUB=	yes
 GH_ACCOUNT=	devttys0
-GH_TAGNAME=	38218b
 USE_PYTHON=	autoplist distutils
 
-RUN_DEPENDS=	7z:${PORTSDIR}/archivers/p7zip \
-		cabextract:${PORTSDIR}/archivers/cabextract
+RUN_DEPENDS=	7z:archivers/p7zip \
+		cabextract:archivers/cabextract
 
 .include <bsd.port.mk>

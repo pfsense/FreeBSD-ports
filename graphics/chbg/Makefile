@@ -10,9 +10,9 @@ MASTER_SITES=	SF
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Change Background Picture with time period
 
-LICENSE=	GPLv2 # (or later)
+LICENSE=	GPLv2+
 
-LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS=	libpng.so:graphics/png
 
 USES=		gmake gettext pathfix tar:tgz
 USE_GNOME=	gdkpixbuf

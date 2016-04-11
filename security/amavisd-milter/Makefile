@@ -3,14 +3,14 @@
 
 PORTNAME=	amavisd-milter
 PORTVERSION=	1.6.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	security mail
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	rx@rx.cz
 COMMENT=	Milter for amavisd-new
 
-RUN_DEPENDS=	amavisd:${PORTSDIR}/security/amavisd-new
+RUN_DEPENDS=	amavisd:security/amavisd-new
 
 ##
 # Use the following quirks to choose which sendmail to use (ports or system):

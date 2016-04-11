@@ -18,13 +18,9 @@ LICENSE_GROUP=	MIT UIUC
 LICENSE_NAME_UIUC=	University of Illinois/NCSA Open Source License
 LICENSE_PERMS_UIUC=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-LIB_DEPENDS=	libcxxrt.so:${PORTSDIR}/devel/libcxxrt
-
 USES+=		cmake:outsource compiler:c++11-lang
 USE_LDCONFIG=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib
-
-.include <bsd.port.options.mk>
 
 .if exists(/usr/lib/libcxxrt.so)
 CXXRT_INCS=	/usr/include/c++/v1/
@@ -32,7 +28,10 @@ CXXRT_LIB=	/usr/lib/libcxxrt.so
 .else
 CXXRT_INCS=	${LOCALBASE}/include/cxxrt/
 CXXRT_LIB=	${LOCALBASE}/lib/libcxxrt.so
+LIB_DEPENDS+=	libcxxrt.so:devel/libcxxrt
 .endif
+
+.include <bsd.port.options.mk>
 
 CMAKE_ARGS=	-DLIBCXX_CXX_ABI=libcxxrt -DLIBCXX_LIBCXXRT_INCLUDE_PATHS=${CXXRT_INCS}
 
@@ -45,7 +44,7 @@ SVN_REV!=       LC_ALL=C svn info http://llvm.org/svn/llvm-project/ | ${GREP} Re
 .endif
 
 .if defined(BOOTSTRAP) || defined(SVN_FETCH)
-FETCH_DEPENDS+= svn:${PORTSDIR}/devel/subversion
+FETCH_DEPENDS+= svn:devel/subversion
 
 post-patch:
 	# remove .orig files because they can get installed in stagedir

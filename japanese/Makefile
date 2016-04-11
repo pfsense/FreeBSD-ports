@@ -22,6 +22,7 @@
     SUBDIR += bible_names-fpw
     SUBDIR += bookview
     SUBDIR += bugzilla44
+    SUBDIR += bugzilla50
     SUBDIR += calligra-l10n
     SUBDIR += canna-lib
     SUBDIR += canna-server
@@ -160,6 +161,9 @@
     SUBDIR += man-doc
     SUBDIR += mecab
     SUBDIR += mecab-ipadic
+    SUBDIR += mecab-ipadic-eucjp
+    SUBDIR += mecab-ipadic-sjis
+    SUBDIR += mecab-ipadic-utf8
     SUBDIR += mg
     SUBDIR += mh
     SUBDIR += migemo

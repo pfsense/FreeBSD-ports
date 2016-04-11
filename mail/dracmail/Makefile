@@ -13,6 +13,7 @@ COMMENT=	DracMail is a webmail interface built using PHP
 
 USE_PHP+=	mysql imap dom tidy iconv mbstring
 USE_MYSQL=	yes
+IGNORE_WITH_PHP=	70
 NO_BUILD=	yes
 
 SUB_FILES=	pkg-message
@@ -23,7 +24,7 @@ OPTIONS_DEFAULT=APACHE
 
 PGSQL_USE=	PHP=pgsql
 APACHE_USE=	APACHE_RUN=22+
-LIGHTTPD_RUN_DEPENDS=	lighttpd:${PORTSDIR}/www/lighttpd
+LIGHTTPD_RUN_DEPENDS=	lighttpd:www/lighttpd
 
 post-extract:
 	@${MKDIR} ${WRKSRC}

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dhcpd-pools
-PORTVERSION=	2.27
+PORTVERSION=	2.28
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}
 
@@ -12,7 +12,7 @@ COMMENT=	Tool to analyze isc-dhcp pool usage based on leases
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	${LOCALBASE}/include/uthash.h:${PORTSDIR}/devel/uthash
+BUILD_DEPENDS=	${LOCALBASE}/include/uthash.h:devel/uthash
 
 USES=		charsetfix shebangfix tar:xz
 SHEBANG_FILES=	contrib/snmptest.pl
@@ -23,7 +23,8 @@ CONFIGURE_ARGS=	--with-dhcpd-conf=${LOCALBASE}/etc/dhcpd.conf \
 MAKE_JOBS_UNSAFE=	yes
 
 PLIST_FILES=	bin/dhcpd-pools \
-		man/man1/dhcpd-pools.1.gz
+		man/man1/dhcpd-pools.1.gz \
+		%%DATADIR%%/nagios.conf
 PORTDATA=	dhcpd-pools.cgi snmptest.pl
 
 post-patch:

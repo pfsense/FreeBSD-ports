@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	opengrm-ngram
-PORTVERSION=	1.2.1
+PORTVERSION=	1.2.2
 CATEGORIES=	textproc
 MASTER_SITES=	http://openfst.cs.nyu.edu/twiki/pub/GRM/NGramDownload/
 
@@ -11,7 +11,7 @@ COMMENT=	Library for making n-gram language models encoded as weighted FSTs
 
 LICENSE=	APACHE20
 
-LIB_DEPENDS=	libfst.so:${PORTSDIR}/math/openfst
+LIB_DEPENDS=	libfst.so:math/openfst
 
 USES=		compiler:c++11-lib libtool
 USE_LDCONFIG=	yes

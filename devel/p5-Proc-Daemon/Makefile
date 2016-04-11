@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Proc-Daemon
-PORTVERSION=	0.21
+PORTVERSION=	0.23
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -13,7 +13,7 @@ COMMENT=	Perl module that provides a method to daemonify a Perl script
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual
 
-TEST_DEPENDS=	p5-Proc-ProcessTable>0:${PORTSDIR}/devel/p5-Proc-ProcessTable
+TEST_DEPENDS=	p5-Proc-ProcessTable>0:devel/p5-Proc-ProcessTable
 
 USES=		perl5
 USE_PERL5=	configure

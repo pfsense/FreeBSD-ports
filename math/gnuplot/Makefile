@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	gnuplot
-PORTVERSION=	5.0.1
-PORTREVISION=	1
+PORTVERSION=	5.0.3
 CATEGORIES=	math graphics
 MASTER_SITES=	SF
 
@@ -20,6 +19,8 @@ CONFIGURE_ARGS+=--with-readline=gnu \
 		--without-lisp-files \
 		--without-tutorial \
 		--with-bitmap-terminals \
+		--with-gpic \
+		--with-mif \
 		--with-latex \
 		--with-qt=no \
 		ac_cv_prog_KPSEXPAND=${LOCALBASE}/bin/kpsexpand \
@@ -39,17 +40,17 @@ WX_DESC=		wxWidgets (formerly wxWindows) support
 OPTIONS_DEFAULT=CAIRO GD WX X11
 OPTIONS_SUB=	yes
 
-CAIRO_LIB_DEPENDS=	libcairo.so:${PORTSDIR}/graphics/cairo
+CAIRO_LIB_DEPENDS=	libcairo.so:graphics/cairo
 CAIRO_USE=	GNOME=pango
 CAIRO_CONFIGURE_WITH=	cairo
 
-GD_LIB_DEPENDS=	libgd.so:${PORTSDIR}/graphics/gd
+GD_LIB_DEPENDS=	libgd.so:graphics/gd
 GD_CONFIGURE_ON=	--with-gd=${LOCALBASE}
 GD_CONFIGURE_OFF+=	--without-gd
 
 GRIDBOX_CONFIGURE_OFF=	--disable-h3d-quadtree --enable-h3d-gridbox
 
-PDF_LIB_DEPENDS=	libpdf.so:${PORTSDIR}/print/pdflib
+PDF_LIB_DEPENDS=	libpdf.so:print/pdflib
 PDF_CONFIGURE_ON=	--with-pdf=${LOCALBASE}
 PDF_CONFIGURE_OFF=	--without-pdf
 

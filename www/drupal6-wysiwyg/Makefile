@@ -12,7 +12,7 @@ COMMENT=	Allows implementation of WYSIWYG editors for editing Drupal content
 TINYMCEDIR=	www/tinymce
 
 # we support either tinymce2 or tinymce3
-RUN_DEPENDS+=	${LOCALBASE}/${TINYMCEDIR}/changelog.txt:${PORTSDIR}/www/tinymce3
+RUN_DEPENDS+=	${LOCALBASE}/${TINYMCEDIR}/changelog.txt:www/tinymce3
 
 PLIST_FILES+=	${DRUPAL_MODDIR}/tinymce
 
@@ -65,6 +65,7 @@ MODULE_DIRS=	editors/css editors/js editors plugins/break/images \
 		plugins/break/langs plugins/break plugins translations
 
 DOC_FILES=	CHANGELOG.txt README.txt LICENSE.txt
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	${LN} -s ${PREFIX}/${TINYMCEDIR} ${STAGEDIR}${PREFIX}/${DRUPAL_MODDIR}

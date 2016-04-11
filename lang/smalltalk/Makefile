@@ -10,10 +10,10 @@ MASTER_SITES=	GNU
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	GNU Smalltalk
 
-BUILD_DEPENDS=	zip:${PORTSDIR}/archivers/zip \
-		gawk:${PORTSDIR}/lang/gawk
-LIB_DEPENDS=	libgdbm.so:${PORTSDIR}/databases/gdbm \
-		libcairo.so:${PORTSDIR}/graphics/cairo
+BUILD_DEPENDS=	zip:archivers/zip \
+		gawk:lang/gawk
+LIB_DEPENDS=	libgdbm.so:databases/gdbm \
+		libcairo.so:graphics/cairo
 
 OPTIONS_DEFINE=	TK PGSQL SDL
 OPTIONS_DEFAULT=TK PGSQL SDL
@@ -24,9 +24,8 @@ PGSQL_USES=	pgsql
 SDL_USE=	SDL=image,mixer,sdl,sound,ttf
 
 USES=		execinfo gmake iconv libtool localbase makeinfo pkgconfig \
-		shebangfix tar:xz
+		shebangfix sqlite tar:xz
 USE_GNOME=	pango
-USE_SQLITE=	yes
 USE_XORG=	ice xi xmu
 USE_GL=		gl glut
 GNU_CONFIGURE=	yes

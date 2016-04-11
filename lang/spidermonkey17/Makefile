@@ -11,18 +11,18 @@ DISTNAME=	js-${DISTVERSION}
 MAINTAINER=	citric@cubicone.tmetic.com
 COMMENT=	Standalone JavaScript interpreter from the Mozilla project
 
-LIB_DEPENDS=	libnspr4.so:${PORTSDIR}/devel/nspr
+LIB_DEPENDS=	libnspr4.so:devel/nspr
 
 CONFLICTS=	njs-[0-9]*
 
 MAKE_ARGS+=	JS_THREADSAFE=YES \
-		PROG_LIBS="-lreadline -ltermcap -lm -lpthread" \
+		PROG_LIBS="-lreadline -lncurses -lm -lpthread" \
 		LDFLAGS="-L${LOCALBASE}/lib"
 CFLAGS+=	-I${LOCALBASE}/include/nspr
 
 BROKEN_sparc64=		Does not build on sparc64: fails to link
 
-USES=		gmake readline
+USES=		gmake ncurses readline
 MAKEFILE=	Makefile.ref
 ALL_TARGET=	${OPSYS}`${UNAME} -r`_DBG.OBJ/js
 MAKE_ENV+=	CCC="${CXX}"

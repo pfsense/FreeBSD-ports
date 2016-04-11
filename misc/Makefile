@@ -23,6 +23,7 @@
     SUBDIR += bestfit
     SUBDIR += bibletime
     SUBDIR += biblical-curse
+    SUBDIR += binclock
     SUBDIR += biosfont-demos
     SUBDIR += birthday
     SUBDIR += bogosort
@@ -360,9 +361,9 @@
     SUBDIR += pear-Text_Figlet
     SUBDIR += pecl-timezonedb
     SUBDIR += pfm
-    SUBDIR += php5-calendar
     SUBDIR += php55-calendar
     SUBDIR += php56-calendar
+    SUBDIR += php70-calendar
     SUBDIR += phraze
     SUBDIR += pinfo
     SUBDIR += pipe
@@ -380,6 +381,9 @@
     SUBDIR += py-qt4-doc
     SUBDIR += py-qt5-demo
     SUBDIR += py-qt5-doc
+    SUBDIR += py-spdx
+    SUBDIR += py-spdx-lookup
+    SUBDIR += py-tqdm
     SUBDIR += py-yolk
     SUBDIR += pylize
     SUBDIR += pypanda
@@ -390,6 +394,7 @@
     SUBDIR += qt4-l10n
     SUBDIR += qt4-qtconfig
     SUBDIR += qt4-qtdemo
+    SUBDIR += qt5-l10n
     SUBDIR += qt5ct
     SUBDIR += quotes
     SUBDIR += raspberrypi-userland
@@ -415,6 +420,7 @@
     SUBDIR += shc
     SUBDIR += shuffle
     SUBDIR += shuffle-db
+    SUBDIR += seabios
     SUBDIR += since
     SUBDIR += skyutils
     SUBDIR += sloccount
@@ -438,6 +444,7 @@
     SUBDIR += termatrix
     SUBDIR += terraform
     SUBDIR += teseq
+    SUBDIR += teslams
     SUBDIR += tkcron
     SUBDIR += tkinfo
     SUBDIR += tkregexp

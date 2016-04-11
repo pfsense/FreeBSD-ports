@@ -2,13 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	milter-greylist
-PORTVERSION=	4.5.12
-PORTREVISION=	1
+PORTVERSION=	4.6.a1
+PORTREVISION=	2
 CATEGORIES=	mail
 MASTER_SITES=	ftp://ftp.espci.fr/pub/milter-greylist/ \
 		http://fossies.org/unix/privat/ \
 		ftp://ftpmirror.uk/freebsd-ports/milter-greylist/
 PKGNAMESUFFIX=	-devel
+DISTNAME=	${PORTNAME}-4.6a1
 
 MAINTAINER= 	freebsd-ports@dan.me.uk
 COMMENT=	Unstable (dev) greylist milter for sendmail and postfix
@@ -22,16 +23,19 @@ USES=		tar:tgz
 
 MAKE_JOBS_UNSAFE=	yes
 
-OPTIONS_DEFINE=	SPF GEOIP CURL LDAP P0F POSTFIX DOCS EXAMPLES
+OPTIONS_DEFINE=	DKIM SPF GEOIP CURL LDAP P0F POSTFIX DOCS EXAMPLES
+OPTIONS_DEFAULT=DKIM SPF GEOIP CURL EXAMPLES
+DKIM_DESC=	Include DKIM support
 SPF_DESC=	Include SPF support
 CURL_DESC=	curl support
 P0F_DESC=	P0F support
 POSTFIX_DESC=	Use Postfix instead of Sendmail
 
-P0F_RUN_DEPENDS+=	p0f:${PORTSDIR}/net-mgmt/p0f
-SPF_BUILD_DEPENDS=	libspf2>=1.2.5:${PORTSDIR}/mail/libspf2
-CURL_BUILD_DEPENDS+=	curl>=7.18:${PORTSDIR}/ftp/curl
-GEOIP_BUILD_DEPENDS=	GeoIP>=1.4.4:${PORTSDIR}/net/GeoIP
+DKIM_BUILD_DEPENDS+=	opendkim>=0:mail/opendkim
+P0F_RUN_DEPENDS+=	p0f:net-mgmt/p0f
+SPF_BUILD_DEPENDS=	libspf2>=1.2.5:mail/libspf2
+CURL_BUILD_DEPENDS+=	curl>=7.18:ftp/curl
+GEOIP_BUILD_DEPENDS=	GeoIP>=1.4.4:net/GeoIP
 
 POSTFIX_CONFIGURE_ENABLE=	postfix
 P0F_CONFIGURE_ENABLE=		p0f306
@@ -49,9 +53,9 @@ P0F_CONFIGURE_ENABLE=		p0f306
 # installed port preference over it.
 ##
 
-##
-# If you have a reentrant resolver (starting with RELENG_5_2) you can use SPF
-##
+.if ${PORT_OPTIONS:MDKIM}
+CONFIGURE_ARGS+=	--with-libopendkim=${LOCALBASE}
+.endif
 
 .if ${PORT_OPTIONS:MSPF}
 CONFIGURE_ARGS+=	--with-libspf2=${LOCALBASE}

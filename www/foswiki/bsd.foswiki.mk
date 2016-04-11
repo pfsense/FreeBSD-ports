@@ -24,7 +24,7 @@ FWDIR?=		${WWWDIR}
 PKGNAMEPREFIX?=	foswiki-
 PNAME=		${PORTNAME}
 FILESDIR?=	${.CURDIR}/../foswiki/files
-BUILD_DEPENDS+=	foswiki>=0:${PORTSDIR}/www/foswiki
+BUILD_DEPENDS+=	foswiki>=0:www/foswiki
 FWDIR?=		${WWWDIR}
 .endif
 
@@ -49,13 +49,6 @@ make-dist:
 		${FIND} . -type d -empty | ${SED} -e 's|$$|/.keep_me|' | \
 		${XARGS} ${TOUCH} && \
 		${TAR} cjvf ${DISTNAME}.tar.bz2 ${DISTNAME}
-
-create-plist:	extract
-	@${FIND} -s ${WRKSRC} -not -type d |\
-		${SED} -e 's|^${WRKSRC}|%%FWDIR%%|' > ${PLIST}
-	@${FIND} -ds ${WRKSRC} -type d -not -name ${DISTNAME} | \
-		${SED} -e "s,^${WRKSRC},@dirrm %%FWDIR%%," >> ${PLIST}
-	@${ECHO_CMD} '@dirrm %%FWDIR%%' >> ${PLIST}
 
 do-install:
 	@${INSTALL} -d ${STAGEDIR}${FWDIR}/
@@ -99,7 +92,7 @@ make-port:
 	echo >> Makefile &&\
 	echo 'COMMENT=	' >> Makefile &&\
 	echo >> Makefile &&\
-	echo 'BUILD_DEPENDS=	foswiki>=0:${PORTSDIR}/www/foswiki' >> Makefile &&\
+	echo 'BUILD_DEPENDS=	foswiki>=0:www/foswiki' >> Makefile &&\
 	echo >> Makefile &&\
 	echo '.include "$${.CURDIR}/../foswiki/bsd.foswiki.mk"' >> Makefile &&\
 	echo '.include <bsd.port.mk>' >> Makefile &&\

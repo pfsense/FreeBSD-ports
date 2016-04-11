@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	PEAR_PackageFileManager
-PORTVERSION=	1.7.0
+PORTVERSION=	1.7.2
 CATEGORIES=	devel www pear
 
 MAINTAINER=	miwi@FreeBSD.org
@@ -14,7 +14,7 @@ PEAR_XML_TREE_DESC=	PEAR::XML_Tree support
 
 USES=	pear
 
-PEAR_PHP_COMPATINFO_RUN_DEPENDS=	${PEARDIR}/PHP/CompatInfo.php:${PORTSDIR}/devel/pear-PHP_CompatInfo
-PEAR_XML_TREE_RUN_DEPENDS=	${PEARDIR}/XML/Tree.php:${PORTSDIR}/devel/pear-XML_Tree
+PEAR_PHP_COMPATINFO_RUN_DEPENDS=	${PEARDIR}/PHP/CompatInfo.php:devel/pear-PHP_CompatInfo
+PEAR_XML_TREE_RUN_DEPENDS=	${PEARDIR}/XML/Tree.php:devel/pear-XML_Tree
 
 .include <bsd.port.mk>

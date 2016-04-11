@@ -9,7 +9,7 @@ MASTER_SITES=	http://BSDforge.com/projects/source/net/dbeacon/
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Distributed multicast beacon server
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 
 USES=		gmake
 

@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	libbson
-PORTVERSION=	1.1.9
+PORTVERSION=	1.3.4
 CATEGORIES=	devel
 
-MAINTAINER=	waitman@waitman.net
+MAINTAINER=	ports@bsdserwis.com
 COMMENT=	BSON utility library
 
 LICENSE=	APACHE20

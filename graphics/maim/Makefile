@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	maim
-PORTVERSION=	3.4.46
+PORTVERSION=	3.4.47
 DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics
 
@@ -10,7 +10,7 @@ COMMENT=	Screenshot utility with performance improvements over scrot
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libImlib2.so:${PORTSDIR}/graphics/imlib2
+LIB_DEPENDS=	libImlib2.so:graphics/imlib2
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	naelstrof

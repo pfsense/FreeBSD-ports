@@ -5,7 +5,7 @@ PORTVERSION=	2.23.8
 PORTREVISION=	3
 CATEGORIES+=	www
 MASTER_SITES=	ftp://ftp.mrunix.net/pub/webalizer/:main \
-MASTER_SITES=	ftp://ftp.mrunix.net/pub/webalizer/geodb/:geodb \
+		ftp://ftp.mrunix.net/pub/webalizer/geodb/:geodb \
 		ftp://ftp.dinoex.de/pub/FreeBSD/distfiles/:main \
 		http://flags.blogpotato.de/zip/:flags
 PKGNAMESUFFIX?=	${WEBALIZER_SUFFIX}${PKGNAMESUFFIX2}
@@ -51,11 +51,11 @@ DISTFILES+=	webalizer-geodb-20150901.tgz:geodb
 
 # slave ports override with languages specific gd
 .if !defined(LIB_DEPENDS)
-LIB_DEPENDS+=	libgd.so:${PORTSDIR}/${GD_PORT}
+LIB_DEPENDS+=	libgd.so:${GD_PORT}
 .endif
 
 .if ${PORT_OPTIONS:MGEOIP}
-LIB_DEPENDS+=	libGeoIP.so:${PORTSDIR}/net/GeoIP
+LIB_DEPENDS+=	libGeoIP.so:net/GeoIP
 .endif
 
 .if ${PORT_OPTIONS:MGEODB}

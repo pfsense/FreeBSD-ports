@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ndpi
-PORTVERSION=	1.5.1
+PORTVERSION=	1.7
 CATEGORIES=	net
 MASTER_SITES=	SF/ntop/nDPI
 DISTNAME=	nDPI-${PORTVERSION}
@@ -12,7 +12,7 @@ COMMENT=	NTOP-maintained superset of the popular OpenDPI library
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libjson-c.so:${PORTSDIR}/devel/json-c
+LIB_DEPENDS=	libjson-c.so:devel/json-c
 
 CONFIGURE_ARGS=	--with-pic
 CPPFLAGS+=	-I${LOCALBASE}/include/json-c
@@ -20,10 +20,14 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 LIBS+=		-ljson-c
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-USES=	 	libtool pathfix pkgconfig compiler:c++11-lang
-WRKSRC=		${WRKDIR}/libndpi-${PORTVERSION}
+USES=	 	alias autoreconf libtool pathfix pkgconfig compiler:c++11-lang
+WRKSRC=		${WRKDIR}/nDPI-${PORTVERSION}
 INSTALL_TARGET=	install-strip
 
-PLIST_SUB=	MAJOR_VER=${PORTVERSION}
+PLIST_SUB=	MAJOR_VER=${PORTVERSION}.0
+
+post-patch:
+	${REINPLACE_CMD} 's|$$(libdir)|$$(libdir)data|' \
+		${WRKSRC}/Makefile.am
 
 .include <bsd.port.mk>

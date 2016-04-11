@@ -15,12 +15,13 @@ COMMENT=	Google JsonNet for PHP
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libjsonnet.so:${PORTSDIR}/devel/jsonnet
+LIB_DEPENDS=	libjsonnet.so:devel/jsonnet
 
 USES=		tar:tgz
 USE_PHP=	json
 USE_PHPEXT=	yes
 USE_PHP_BUILD=	yes
 CONFIGURE_ARGS=	--with-jsonnet=${LOCALBASE}
+IGNORE_WITH_PHP=	70
 
 .include <bsd.port.mk>

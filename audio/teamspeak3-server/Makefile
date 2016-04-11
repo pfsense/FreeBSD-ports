@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	teamspeak3-server
-PORTVERSION=	3.0.11.4
+PORTVERSION=	3.0.12.3
 PORTEPOCH=	1
 CATEGORIES=	audio net
 MASTER_SITES=	http://dl.4players.de/ts/releases/${PORTVERSION}/ \
 		http://teamspeak.gameserver.gamed.de/ts3/releases/${PORTVERSION}/
-DISTNAME=	${PORTNAME}_freebsd-${TEAMSPEAK_ARCH}-${PORTVERSION}
+DISTNAME=	${PORTNAME}_freebsd_${TEAMSPEAK_ARCH}-${PORTVERSION}
 
-MAINTAINER=	hirner@bitfire.at
+MAINTAINER=	ultima1252@gmail.com
 COMMENT=	Server side of the TeamSpeak group voice chat system
 
 LICENSE=	teamspeak
@@ -17,10 +17,15 @@ LICENSE_NAME=	TeamSpeak 3.x End User License Agreement
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	no-dist-mirror no-dist-sell no-pkg-mirror no-pkg-sell
 
+USES=		tar:bz2
 NO_BUILD=	yes
 USE_LDCONFIG=	${LIBDIR}
 USE_RC_SUBR=	teamspeak
 SUB_FILES=	pkg-message
+
+# see release note
+# http://forum.teamspeak.com/threads/123250-TeamSpeak-3-Server-3-0-12-3-released
+BROKEN_FreeBSD_9=	No longer starts on 9.x
 
 RESTRICTED=	No redistribution
 ONLY_FOR_ARCHS=	amd64 i386
@@ -45,11 +50,11 @@ OPTIONS_DEFINE=	DOCS
 
 .if ${ARCH} ==	"i386"
 TEAMSPEAK_ARCH=	x86
-WRKSRC=	${WRKDIR}/${PORTNAME}_freebsd-${TEAMSPEAK_ARCH}
+WRKSRC=	${WRKDIR}/${PORTNAME}_freebsd_${TEAMSPEAK_ARCH}
 .endif
 .if ${ARCH} ==	"amd64"
 TEAMSPEAK_ARCH=	amd64
-WRKSRC=	${WRKDIR}/${PORTNAME}_freebsd-${TEAMSPEAK_ARCH}
+WRKSRC=	${WRKDIR}/${PORTNAME}_freebsd_${TEAMSPEAK_ARCH}
 .endif
 
 DBDIR=	/var/db/teamspeak
@@ -58,8 +63,7 @@ LIBDIR=	${PREFIX}/lib/teamspeak/server
 LIBEXECDIR=	${PREFIX}/libexec
 LOGDIR=	/var/log/teamspeak
 SHAREDIR=	${PREFIX}/share/teamspeak/server
-PORTDOCS=	ts3_serverquery_manual.pdf \
-		permissiondoc.txt \
+PORTDOCS=	permissiondoc.txt \
 		privilegekey_guide.txt \
 		server_quickstart.txt \
 		server_upgrade.txt \
@@ -75,8 +79,8 @@ do-install:
 	${INSTALL_LIB} ${WRKSRC}/*.so ${STAGEDIR}${LIBDIR}
 	${INSTALL_LIB} ${WRKSRC}/redist/*.so* ${STAGEDIR}${LIBDIR}
 
-	${INSTALL_PROGRAM} ${WRKSRC}/ts3server_freebsd_${TEAMSPEAK_ARCH} \
-		${STAGEDIR}${LIBEXECDIR}/teamspeak_server
+	${INSTALL_PROGRAM} ${WRKSRC}/ts3server \
+		${STAGEDIR}${LIBEXECDIR}/
 
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .	for DOCFILE in ${PORTDOCS}

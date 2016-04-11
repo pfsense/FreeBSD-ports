@@ -15,9 +15,10 @@ COMMENT=	Curses-based media player with vim-like keybinds
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	mplayer:${PORTSDIR}/multimedia/mplayer
-LIB_DEPENDS=	libtag.so:${PORTSDIR}/audio/taglib
+RUN_DEPENDS=	mplayer:multimedia/mplayer
+LIB_DEPENDS=	libtag.so:audio/taglib
 
+USES=		ncurses
 ALL_TARGET=	vitunes
 PLIST_FILES=	bin/vitunes man/man1/${PORTNAME}.1.gz
 

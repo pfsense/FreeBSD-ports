@@ -11,9 +11,9 @@ MASTER_SITES=	SF/${PORTNAME}/Source%20Releases/
 MAINTAINER=	nemysis@FreeBSD.org
 COMMENT=	Implementation of the arcade classic Puzznic
 
-LICENSE=	GPLv3 # or later
+LICENSE=	GPLv3+
 
-LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS=	libpng.so:graphics/png
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-src
 

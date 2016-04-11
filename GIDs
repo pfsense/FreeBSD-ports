@@ -97,6 +97,7 @@ monetdb:*:156:
 barman:*:157:
 pootle:*:158:
 nocat:*:159:
+_ypldap:*:160:
 sfs:*:171:
 agk:*:172:
 polipo:*:173:
@@ -125,6 +126,7 @@ yate:*:204:
 gnugk:*:205:
 gini:*:206:
 _mixminion:*:207:
+gogs:*:209:
 shoutcast:*:210:
 git:*:211:
 hg:*:212:
@@ -135,6 +137,7 @@ bs:*:220:
 rtpproxy:*:222:
 postgrey:*:225:
 sqlgrey:*:226:
+_hfm:*:227:
 kismet:*:229:
 aprsd:*:240:
 tnc:*:241:
@@ -240,6 +243,9 @@ munin:*:842:
 dahdi:*:843:asterisk
 subsonic:*:844:
 sogod:*:846:
+domoticz:*:847:
+graylog:*:848:
+guacamole:*:899:
 fossy:*:901:www
 scanlogd:*:902:
 _ocserv:*:903:

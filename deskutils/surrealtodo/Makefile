@@ -16,6 +16,7 @@ USE_MYSQL=	yes
 NO_BUILD=	yes
 WWWOWN=		www
 WWWGRP=		${WWWOWN}
+IGNORE_WITH_PHP=	70
 
 PKGMESSAGE=	${WRKDIR}/${PORTNAME}/pkg-message
 SUB_FILES=	pkg-message
@@ -34,7 +35,7 @@ USE_PHP+=	pgsql
 USE_APACHE_RUN=	22
 .endif
 .if ${PORT_OPTIONS:MLIGHTTPD}
-RUN_DEPENDS+=	lighttpd:${PORTSDIR}/www/lighttpd
+RUN_DEPENDS+=	lighttpd:www/lighttpd
 .endif
 
 do-install:

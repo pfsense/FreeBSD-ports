@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tdiary
-PORTVERSION=	4.0.5
+PORTVERSION=	4.2.1
 CATEGORIES?=	www ruby
 MASTER_SITES=	http://www.tdiary.org/download/
 DISTNAME=	${PORTNAME}-full-v${PORTVERSION}
@@ -11,11 +11,13 @@ MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Web-based diary system (like weblog) written in Ruby
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-fastimage>=1.6.3:${PORTSDIR}/graphics/rubygem-fastimage \
-		rubygem-hikidoc>=0.1.0:${PORTSDIR}/textproc/rubygem-hikidoc \
-		rubygem-multi_json>=1.10.1:${PORTSDIR}/devel/rubygem-multi_json \
-		rubygem-rack>=0:${PORTSDIR}/www/rubygem-rack
+RUN_DEPENDS=	rubygem-emot>=0.0.4:textproc/rubygem-emot \
+		rubygem-fastimage>=1.8.1:graphics/rubygem-fastimage \
+		rubygem-hikidoc>=0.1.0:textproc/rubygem-hikidoc \
+		rubygem-mail>=2.6.3:mail/rubygem-mail \
+		rubygem-sprockets3>=3.5.2:devel/rubygem-sprockets3
 
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -48,7 +50,7 @@ PLIST_SUB=	TDIARY_SCRIPT=${TDIARY_SCRIPT} \
 SUB_FILES=	pkg-message tdiaryinst.rb
 SUB_LIST+=	TDIARY_LANG=${TDIARY_LANG} \
 		TDIARY_SCRIPT=${TDIARY_SCRIPT}
-WRKSRC=		${WRKDIR}/${PORTNAME}-v${PORTVERSION}.1
+WRKSRC=		${WRKDIR}/${PORTNAME}-v${PORTVERSION}
 DOCSDIR=	${PREFIX}/share/doc/${PKGBASE}
 WWWDIR=		${PREFIX}/www/${PKGBASE}
 
@@ -69,14 +71,13 @@ pre-patch:
 	@${RM} ${WRKSRC}/.travis.yml
 	@${RM} ${WRKSRC}/Gemfile
 	@${RM} ${WRKSRC}/Gemfile.lock
-	@${RM} ${WRKSRC}/LICENSE
 	@${RM} ${WRKSRC}/Procfile
 	@${RM} ${WRKSRC}/Rakefile
 	@${RM} ${WRKSRC}/config.ru
 	@${RM} ${WRKSRC}/tdiary.gemspec
 	@${RM} ${WRKSRC}/tmp/.gitkeep
 	@${RM} -rf ${WRKSRC}/.bundle
-	@${RM} -r ${WRKSRC}/misc/lib/bundler-1.7.2
+	@${RM} -r ${WRKSRC}/misc/lib/bundler-1.11.2
 	@${RM} -r ${WRKSRC}/public
 	@${RM} -r ${WRKSRC}/spec
 	@${RM} -r ${WRKSRC}/test
@@ -84,27 +85,29 @@ pre-patch:
 	@${MV} ${WRKSRC}/ChangeLog ${WRKSRC}/doc
 	@${MV} ${WRKSRC}/README.md ${WRKSRC}/doc
 
-post-patch:
-	@${RUBY} -i -pe "sub %r|(.*< ::Rack::Request)|, %Q|\trequire 'rack'\n\\\1|" ${WRKSRC}/tdiary/request.rb
-
 pre-install:
 	@${SED} -e 's,#!/usr/bin/env ruby,#!${RUBY},' \
 		${WRKDIR}/tdiaryinst.rb > ${WRKDIR}/${TDIARY_SCRIPT}
 	@${REINPLACE_CMD} '/#!\/usr\/bin\/env ruby/d' ${WRKSRC}/misc/convert2.rb
 	@${REINPLACE_CMD} '/#!\/usr\/bin\/env ruby/d' ${WRKSRC}/misc/migrate.rb
+	@${FIND} ${WRKSRC} -name "*.orig" -delete
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/${TDIARY_SCRIPT} ${STAGEDIR}${PREFIX}/bin
-	@-${MKDIR} ${STAGEDIR}${WWWDIR}
-	${TAR} --exclude "doc" -C ${WRKSRC} -cf - . | ${TAR} --unlink -C ${STAGEDIR}${WWWDIR} -xf -
-	@${INSTALL} -d ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${WWWDIR}
+	${TAR} --exclude doc --exclude LICENSE -C ${WRKSRC} -cf - . | ${TAR} --unlink -C ${STAGEDIR}${WWWDIR} -xf -
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC}/doc && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 
 x-generate-plist: stage
 	${ECHO_CMD} bin/%%TDIARY_SCRIPT%% > pkg-plist.new
+	${ECHO_CMD} @owner %%WWWOWN%% >> pkg-plist.new
+	${ECHO_CMD} @group %%WWWGRP%% >> pkg-plist.new
 	${FIND} ${STAGEDIR}${WWWDIR} -type f -o -type l | ${SORT} | ${SED} -e 's,${STAGEDIR}${WWWDIR},%%WWWDIR%%,g' >> pkg-plist.new
-	${FIND} ${STAGEDIR}${WWWDIR} -type d -depth | ${SORT} -r | ${SED} -e 's,${STAGEDIR}${WWWDIR},@dirrm %%WWWDIR%%,g' >> pkg-plist.new
-	${ECHO_CMD} @exec mkdir -p %D/%%WWWDIR%%/tmp >> pkg-plist.new
-	${ECHO_CMD} @exec chown -R %%WWWOWN%%:%%WWWGRP%% %D/%%WWWDIR%% >> pkg-plist.new
+	${FIND} ${STAGEDIR}${WWWDIR} -type d -depth | ${SORT} -r | ${SED} -e 's,${STAGEDIR}${WWWDIR},@dir %%WWWDIR%%,g' >> pkg-plist.new
+	${ECHO_CMD} @owner >> pkg-plist.new
+	${ECHO_CMD} @group >> pkg-plist.new
 
 .include <bsd.port.mk>

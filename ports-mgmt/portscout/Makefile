@@ -3,7 +3,7 @@
 
 PORTNAME=	portscout
 PORTVERSION=	0.8.1
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	ports-mgmt
 MASTER_SITES=	http://mirror.inerd.com/FreeBSD/distfiles/${PORTNAME}/ \
 		http://www.atarininja.org/~wxs/distfiles/ \
@@ -14,14 +14,14 @@ COMMENT=	Tool to scan for new versions of FreeBSD ports
 
 LICENSE=	BSD2CLAUSE
 
-RUN_DEPENDS=	p5-DBI>=0:${PORTSDIR}/databases/p5-DBI \
-		p5-Proc-Queue>=0:${PORTSDIR}/devel/p5-Proc-Queue \
-		p5-Net>=0:${PORTSDIR}/net/p5-Net \
-		p5-URI>=0:${PORTSDIR}/net/p5-URI \
-		p5-XML-XPath>=0:${PORTSDIR}/textproc/p5-XML-XPath \
-		p5-MIME-Lite>=0:${PORTSDIR}/mail/p5-MIME-Lite \
-		p5-libwww>=0:${PORTSDIR}/www/p5-libwww \
-		p5-JSON>0:${PORTSDIR}/converters/p5-JSON
+RUN_DEPENDS=	p5-DBI>=0:databases/p5-DBI \
+		p5-Proc-Queue>=0:devel/p5-Proc-Queue \
+		p5-Net>=0:net/p5-Net \
+		p5-URI>=0:net/p5-URI \
+		p5-XML-XPath>=0:textproc/p5-XML-XPath \
+		p5-MIME-Lite>=0:mail/p5-MIME-Lite \
+		p5-libwww>=0:www/p5-libwww \
+		p5-JSON>0:converters/p5-JSON
 
 OPTIONS_DEFINE=		DOCS HTTPS
 OPTIONS_DEFAULT=	HTTPS PGSQL
@@ -37,13 +37,13 @@ SHEBANG_FILES=	${WRKSRC}/portscout.pl
 
 PORTDOCS=	UPDATING portscout-portconfig.txt xml-datasrc-example.xml
 
-HTTPS_RUN_DEPENDS=	p5-LWP-Protocol-https>=0:${PORTSDIR}/www/p5-LWP-Protocol-https
+HTTPS_RUN_DEPENDS=	p5-LWP-Protocol-https>=0:www/p5-LWP-Protocol-https
 
-SQLITE_USE=		SQLITE=3
-SQLITE_RUN_DEPENDS=	p5-DBD-SQLite>=0:${PORTSDIR}/databases/p5-DBD-SQLite
+SQLITE_USES=		sqlite
+SQLITE_RUN_DEPENDS=	p5-DBD-SQLite>=0:databases/p5-DBD-SQLite
 
 PGSQL_USES=		pgsql
-PGSQL_RUN_DEPENDS=	p5-DBD-Pg>=0:${PORTSDIR}/databases/p5-DBD-Pg
+PGSQL_RUN_DEPENDS=	p5-DBD-Pg>=0:databases/p5-DBD-Pg
 
 .include <bsd.port.options.mk>
 
@@ -60,7 +60,7 @@ post-extract:
 	@${CP} ${FILESDIR}/files-Portscout-SiteHandler-GitHub.pm ${WRKSRC}/Portscout/SiteHandler/GitHub.pm
 	@${CP} ${FILESDIR}/files-Portscout-SiteHandler-PyPI.pm ${WRKSRC}/Portscout/SiteHandler/PyPI.pm
 
-post-patch:
+pre-install:
 .if ${PORT_OPTIONS:MSQLITE}
 	@${REINPLACE_CMD} 's/^\([^#]*DBI:Pg.*\)$$/#\1/g' ${WRKSRC}/portscout.conf
 	@${REINPLACE_CMD} 's/^#\(.*DBI:SQLite.*\)$$/\1/g' ${WRKSRC}/portscout.conf

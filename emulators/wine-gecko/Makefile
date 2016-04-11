@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	wine-gecko
-DISTVERSION=	2.21
+DISTVERSION=	2.40
 CATEGORIES=	emulators
 MASTER_SITES=	SF/wine/Wine%20Gecko/${DISTVERSION}
 DISTNAME=	wine_gecko-${DISTVERSION}-x86
 EXTRACT_SUFX=	.msi
 EXTRACT_ONLY=
 
-MAINTAINER=	dbn@FreeBSD.org
+MAINTAINER=	gerald@FreeBSD.org
 COMMENT=	Gecko Layout Engine for Wine (HTML support)
 
 LICENSE=	MPL GPLv2 GPLv3 LGPL21 LGPL3

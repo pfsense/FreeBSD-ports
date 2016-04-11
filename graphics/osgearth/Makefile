@@ -12,17 +12,16 @@ COMMENT=	osgEarth is a C++ terrain rendering toolkit for OpenSceneGraph
 
 LICENSE=	LGPL3
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/minizip:${PORTSDIR}/archivers/minizip
-LIB_DEPENDS=	libosg.so:${PORTSDIR}/graphics/osg \
-		libgdal.so:${PORTSDIR}/graphics/gdal \
-		libcurl.so:${PORTSDIR}/ftp/curl
+BUILD_DEPENDS=	${LOCALBASE}/bin/minizip:archivers/minizip
+LIB_DEPENDS=	libosg.so:graphics/osg \
+		libgdal.so:graphics/gdal \
+		libcurl.so:ftp/curl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	gwaldron
 
 USE_LDCONFIG=	YES
-USE_SQLITE=	3
-USES=		cmake gmake pkgconfig
+USES=		cmake gmake pkgconfig sqlite
 PLIST_SUB=	OSGVERSION=3.2.1
 
 CMAKE_ARGS+=	-DCMAKE_INCLUDE_PATH:PATH=${LOCALBASE}/include \

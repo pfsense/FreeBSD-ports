@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	zbackup
-PORTVERSION=	1.4.1
+PORTVERSION=	1.4.4
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/zbackup/zbackup/archive/
 DISTNAME=	${PORTVERSION}
@@ -11,8 +11,8 @@ COMMENT=	Versatile deduplicating backup tool
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libprotobuf.so:${PORTSDIR}/devel/protobuf \
-		liblzo2.so:${PORTSDIR}/archivers/lzo2
+LIB_DEPENDS=	libprotobuf.so:devel/protobuf \
+		liblzo2.so:archivers/lzo2
 
 USES=		alias cmake
 

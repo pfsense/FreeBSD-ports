@@ -13,11 +13,12 @@ COMMENT=	PHP wrapper for the libdrizzle library
 
 LICENSE=	PHP301
 
-LIB_DEPENDS=	libdrizzle.so:${PORTSDIR}/databases/libdrizzle
+LIB_DEPENDS=	libdrizzle.so:databases/libdrizzle
 
 USES=		tar:tgz
 USE_PHP=	yes
 USE_PHPEXT=	yes
+IGNORE_WITH_PHP=	70
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

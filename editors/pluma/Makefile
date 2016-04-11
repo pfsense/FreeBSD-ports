@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pluma
-PORTVERSION=	1.10.2
+PORTVERSION=	1.12.2
 CATEGORIES=	editors mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -10,11 +10,11 @@ DIST_SUBDIR=	mate
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Small but powerful text editor for MATE Desktop Environment
 
-BUILD_DEPENDS=	itstool:${PORTSDIR}/textproc/itstool \
-		${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:${PORTSDIR}/misc/iso-codes
-LIB_DEPENDS=	libenchant.so:${PORTSDIR}/textproc/enchant \
-		libsoup-2.4.so:${PORTSDIR}/devel/libsoup
-RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:${PORTSDIR}/misc/iso-codes
+BUILD_DEPENDS=	itstool:textproc/itstool \
+		${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes
+LIB_DEPENDS=	libenchant.so:textproc/enchant \
+		libsoup-2.4.so:devel/libsoup
+RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes
 
 PORTSCOUT=	limitw:1,even
 
@@ -39,5 +39,7 @@ SHEBANG_FILES=	${WRKSRC}/plugins/externaltools/data/search-recursive.tool.in \
 GLIB_SCHEMAS=	org.mate.pluma.gschema.xml \
 		org.mate.pluma.plugins.filebrowser.gschema.xml \
 		org.mate.pluma.plugins.time.gschema.xml
+
+PLIST_SUB+=	PYTHON=""
 
 .include <bsd.port.mk>

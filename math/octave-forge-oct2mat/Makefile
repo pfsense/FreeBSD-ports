@@ -3,7 +3,7 @@
 
 PORTNAME=	octave-forge-oct2mat
 PORTVERSION=	1.0.7
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
 
-RUN_DEPENDS+=	${TARBALLS_DIR}/io.tar.gz:${PORTSDIR}/math/octave-forge-io
+RUN_DEPENDS+=	${TARBALLS_DIR}/io.tar.gz:math/octave-forge-io
 
 .include "${.CURDIR}/../../Mk/bsd.octave.mk"
 .include <bsd.port.mk>

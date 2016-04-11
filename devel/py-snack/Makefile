@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	snack
-PORTVERSION=	0.52.17
+PORTVERSION=	0.52.18
 CATEGORIES=	devel
 MASTER_SITES=	https://fedorahosted.org/releases/n/e/newt/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,9 +12,11 @@ COMMENT=	Not Eriks Windowing Toolkit Python bindings
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libslang.so:${PORTSDIR}/devel/libslang2 \
-		libpopt.so:${PORTSDIR}/devel/popt \
-		libnewt.so:${PORTSDIR}/devel/newt
+BROKEN=		conflicts with devel/newt
+
+LIB_DEPENDS=	libslang.so:devel/libslang2 \
+		libpopt.so:devel/popt \
+		libnewt.so:devel/newt
 
 OPTIONS_DEFINE=	EXAMPLES
 
@@ -37,6 +39,9 @@ post-patch: apply-slist
 		${WRKSRC}/peanuts.py
 
 post-install:
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/_snack.so
+
+post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_SCRIPT} ${PORTEXAMPLES:S,^,${WRKSRC}/,} ${STAGEDIR}${EXAMPLESDIR}
 

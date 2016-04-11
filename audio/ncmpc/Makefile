@@ -9,10 +9,10 @@ MASTER_SITES=	http://www.musicpd.org/download/ncmpc/0/
 MAINTAINER=	henrik@affekt.org
 COMMENT=	Ncurses client for the musicpd
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libmpdclient.so:${PORTSDIR}/audio/libmpdclient
+LIB_DEPENDS=	libmpdclient.so:audio/libmpdclient
 
 GNU_CONFIGURE=	yes
 USE_GNOME=	glib20

@@ -17,14 +17,14 @@ COMMENT=	Open source Mathematics software
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
-BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash \
-		convert:${PORTSDIR}/graphics/ImageMagick \
-		ffmpeg:${PORTSDIR}/multimedia/ffmpeg \
-		automake:${PORTSDIR}/devel/automake \
-		autoconf:${PORTSDIR}/devel/autoconf
-LIB_DEPENDS=	libatlas.so:${PORTSDIR}/math/atlas \
-		liblapack.so:${PORTSDIR}/math/lapack
-RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash
+BUILD_DEPENDS=	bash:shells/bash \
+		convert:graphics/ImageMagick \
+		ffmpeg:multimedia/ffmpeg \
+		automake:devel/automake \
+		autoconf:devel/autoconf
+LIB_DEPENDS=	libatlas.so:math/atlas \
+		liblapack.so:math/lapack
+RUN_DEPENDS=	bash:shells/bash
 
 pre-extract:
 	@${ECHO_MSG}
@@ -91,9 +91,7 @@ post-install:
 	@${FIND} -s ${STAGED_SAGE_DIR} -not -type d | \
 		${SED} -e 's#${STAGEDIR}${PREFIX}/##' >> ${TMPPLIST}
 	@${FIND} -s ${STAGED_SAGE_DIR} -type d -empty | \
-		${SED} -e 's#${STAGEDIR}${PREFIX}/#@exec ${MKDIR} %D/#' >> ${TMPPLIST}
-	@${FIND} -s ${STAGED_SAGE_DIR} -type d -depth | \
-		${SED} -e 's#${STAGEDIR}${PREFIX}/#@dirrm #' >> ${TMPPLIST}
+		${SED} -e 's#${STAGEDIR}${PREFIX}/#@dir #' >> ${TMPPLIST}
 
 .include <bsd.port.pre.mk>
 

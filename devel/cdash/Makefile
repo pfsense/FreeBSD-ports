@@ -3,6 +3,7 @@
 
 PORTNAME=	cdash
 PORTVERSION=	2.2.3
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://www.cdash.org/wp-content/uploads/2014/11/
 DISTNAME=	CDash-2-2-3
@@ -16,8 +17,8 @@ LICENSE_FILE=	${WRKSRC}/License.txt
 USES=		dos2unix cmake:outsource zip
 DOS2UNIX_GLOB=	*.php *.xml *.xsl *.txt
 CMAKE_ARGS=	-DCDASH_DB_NAME:STRING=cdash \
-   		-DCDASH_DB_LOGIN:STRING=cdash \
-   		-DCDASH_DB_TYPE:STRING=${DB_TYPE}
+		-DCDASH_DB_LOGIN:STRING=cdash \
+		-DCDASH_DB_TYPE:STRING=${DB_TYPE}
 USE_PHP=	curl gd pdo session xsl zlib
 NO_ARCH=	yes
 
@@ -34,7 +35,7 @@ OPTIONS_DEFAULT=MYSQL
 
 .if ${PORT_OPTIONS:MMYSQL}
 USE_MYSQL=	yes
-USE_PHP+=	mysql pdo_mysql
+USE_PHP+=	pdo_mysql
 DB_TYPE=	mysql
 .endif
 

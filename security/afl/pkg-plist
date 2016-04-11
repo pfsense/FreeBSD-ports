@@ -1,11 +1,16 @@
+bin/afl-analyze
 bin/afl-clang
 bin/afl-clang++
+%%LLVM_SUB%%%%LLVM%%bin/afl-clang-fast
+%%LLVM_SUB%%%%LLVM%%bin/afl-clang-fast++
+%%LLVM_SUB%%%%LLVM%%lib/afl/afl-llvm-pass.so
+%%LLVM_SUB%%%%LLVM%%lib/afl/afl-llvm-rt.o
 %%MINIMIZE_CORPUS%%bin/afl-cmin
 bin/afl-fuzz
 bin/afl-g++
 bin/afl-gcc
 bin/afl-gotcpu
-%%PLOT_SUPPORT%%bin/afl-plot
+bin/afl-plot
 bin/afl-showmap
 bin/afl-tmin
 bin/afl-whatsup
@@ -72,3 +77,4 @@ lib/afl/as
 %%PORTDOCS%%%%DOCSDIR%%/sister_projects.txt
 %%PORTDOCS%%%%DOCSDIR%%/status_screen.txt
 %%PORTDOCS%%%%DOCSDIR%%/technical_details.txt
+%%PORTDOCS%%%%DOCSDIR%%/QuickStartGuide.txt

@@ -14,12 +14,13 @@ COMMENT=	PHP client library to communicate with the MogileFS storage
 
 LICENSE=	BSD
 
-LIB_DEPENDS=	libneon.so:${PORTSDIR}/www/neon
+LIB_DEPENDS=	libneon.so:www/neon
 
 USE_PHP=	yes
 USE_PHP_BUILD=	spl
 USE_PHPIZE=	yes
 USE_PHPEXT=	yes
+IGNORE_WITH_PHP=	70
 
 post-extract:
 	@${REINPLACE_CMD} -e 's#/usr/local#${LOCALBASE}#g' ${WRKSRC}/config.m4

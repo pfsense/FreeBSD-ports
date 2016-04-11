@@ -1,4 +1,4 @@
-# Created by: Olivier Cochard-Labbe <olivier@cochard.me>
+# Created by: Olivier Cochard-Labbe <olivier@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	gns3
@@ -8,18 +8,18 @@ CATEGORIES=	emulators
 MASTER_SITES=	SF/gns-3/GNS3/${PORTVERSION}
 DISTNAME=	GNS3-${PORTVERSION}-src
 
-MAINTAINER=	olivier@cochard.me
+MAINTAINER=	olivier@FreeBSD.org
 COMMENT=	Graphical Cisco network simulator
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/PyQt4/QtGui.so:${PORTSDIR}/x11-toolkits/py-qt4-gui \
-		${PYTHON_SITELIBDIR}/PyQt4/QtSvg.so:${PORTSDIR}/graphics/py-qt4-svg \
-		${PYTHON_SITELIBDIR}/PyQt4/QtNetwork.so:${PORTSDIR}/net/py-qt4-network \
-		dynamips:${PORTSDIR}/emulators/dynamips-community \
-		dynagen:${PORTSDIR}/emulators/dynagen \
-		xdotool:${PORTSDIR}/x11/xdotool
+RUN_DEPENDS=	${PYTHON_SITELIBDIR}/PyQt4/QtGui.so:x11-toolkits/py-qt4-gui \
+		${PYTHON_SITELIBDIR}/PyQt4/QtSvg.so:graphics/py-qt4-svg \
+		${PYTHON_SITELIBDIR}/PyQt4/QtNetwork.so:net/py-qt4-network \
+		dynamips:emulators/dynamips-community \
+		dynagen:emulators/dynagen \
+		xdotool:x11/xdotool
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-legacy-GNS3-${PORTVERSION}
 

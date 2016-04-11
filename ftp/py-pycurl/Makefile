@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pycurl
-PORTVERSION=	7.19.5.3
-PORTREVISION=	1
+PORTVERSION=	7.21.5
 CATEGORIES=	ftp python
 MASTER_SITES=	CHEESESHOP \
 		http://pycurl.sourceforge.net/download/ \
@@ -16,7 +15,7 @@ COMMENT=	Python interface to libcurl
 LICENSE=	LGPL21 MIT
 LICENSE_COMB=	dual
 
-LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
+LIB_DEPENDS=	libcurl.so:ftp/curl
 
 USE_PYTHON=	autoplist concurrent distutils
 USES=		python

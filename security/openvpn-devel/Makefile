@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	openvpn
-DISTVERSION=	201548
+DISTVERSION=	201607
 CATEGORIES=	security net
 MASTER_SITES=	ftp://ftp.secure-computing.net/pub/FreeBSD/ports/openvpn-devel/ \
 		ftp://ftp2.secure-computing.net/pub/FreeBSD/ports/openvpn-devel/
@@ -27,7 +27,7 @@ CPPFLAGS+=		-I${LOCALBASE}/include
 LDFLAGS+=		-L${LOCALBASE}/lib
 
 OPTIONS_DEFINE=		PW_SAVE PKCS11 EASYRSA LZO DOCS EXAMPLES
-OPTIONS_DEFAULT=	EASYRSA OPENSSL LZO 
+OPTIONS_DEFAULT=	EASYRSA OPENSSL LZO
 OPTIONS_SINGLE=		SSL
 OPTIONS_SINGLE_SSL=	OPENSSL POLARSSL
 PW_SAVE_DESC=		Interactive passwords may be read from a file
@@ -36,21 +36,20 @@ PKCS11_DESC=		Use security/pkcs11-helper
 EASYRSA_DESC=		Install security/easy-rsa RSA helper package
 POLARSSL_DESC=		SSL/TLS support via PolarSSL
 
-EASYRSA_RUN_DEPENDS=	easy-rsa>=0:${PORTSDIR}/security/easy-rsa
+EASYRSA_RUN_DEPENDS=	easy-rsa>=0:security/easy-rsa
 
-PKCS11_LIB_DEPENDS=	libpkcs11-helper.so:${PORTSDIR}/security/pkcs11-helper
+PKCS11_LIB_DEPENDS=	libpkcs11-helper.so:security/pkcs11-helper
 PKCS11_CONFIGURE_ENABLE=	pkcs11
 
 PW_SAVE_CONFIGURE_ENABLE=	password-save
 
-POLARSSL_LIB_DEPENDS=	libmbedtls.so.9:${PORTSDIR}/security/polarssl13
+POLARSSL_LIB_DEPENDS=	libmbedtls.so.9:security/polarssl13
 POLARSSL_CONFIGURE_ON=	--with-crypto-library=polarssl
 POLARSSL_USE_OFF=	openssl=yes
 POLARSSL_CONFIGURE_OFF+=--with-crypto-library=openssl
 
-LZO_LIB_DEPENDS=	liblzo2.so:${PORTSDIR}/archivers/lzo2
+LZO_LIB_DEPENDS=	liblzo2.so:archivers/lzo2
 LZO_CONFIGURE_ENABLE=	lzo
-
 
 USE_RC_SUBR=	openvpn
 USE_LDCONFIG=	${PREFIX}/lib

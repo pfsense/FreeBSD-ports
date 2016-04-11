@@ -12,13 +12,13 @@ COMMENT=	Emails posts from subscribed RSS/Atom newsfeeds
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}feedparser>=5.0.1:${PORTSDIR}/textproc/py-feedparser \
-		${PYTHON_PKGNAMEPREFIX}html2text>=3.0.1:${PORTSDIR}/textproc/py-html2text
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}feedparser>=5.0.1:textproc/py-feedparser \
+		${PYTHON_PKGNAMEPREFIX}html2text>=3.0.1:textproc/py-html2text
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	wking
 
-USES=		python:3.2+
+USES=		python:3.3+
 USE_PYTHON=	distutils autoplist
 
 CONFLICTS_INSTALL=	py*-rss2email-2.*

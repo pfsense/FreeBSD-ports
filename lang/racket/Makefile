@@ -16,9 +16,9 @@ DIST_SUBDIR=	${PORTNAME}/${PORTVERSION}
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Interactive, integrated, graphical Scheme programming environment
 
-LIB_DEPENDS=	libffi.so:${PORTSDIR}/devel/libffi	\
-		libcairo.so:${PORTSDIR}/graphics/cairo	\
-		libpng.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS=	libffi.so:devel/libffi	\
+		libcairo.so:graphics/cairo	\
+		libpng.so:graphics/png
 
 MAKE_JOBS_UNSAFE=yes
 
@@ -35,10 +35,9 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
 
 WRKSRC=		${WRKDIR}/racket-${PORTVERSION}/src
-USES=		iconv jpeg libtool tar:tgz
+USES=		iconv jpeg libtool sqlite tar:tgz
 USE_LDCONFIG=	yes
 USE_GNOME=	pango
-USE_SQLITE=	3
 
 ONLY_FOR_ARCHS=	i386 amd64
 

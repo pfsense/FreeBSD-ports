@@ -25,7 +25,7 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MGDBM}
-LIB_DEPENDS+=	libgdbm.so:${PORTSDIR}/databases/gdbm
+LIB_DEPENDS+=	libgdbm.so:databases/gdbm
 .else
 CONFIGURE_ARGS+=	--without-gdbm
 .endif
@@ -37,7 +37,7 @@ CONFIGURE_ARGS+=	--without-mysql
 .endif
 
 .if ${PORT_OPTIONS:MSQLITE2}
-USE_SQLITE=	2
+USES+=		sqlite:2
 .else
 CONFIGURE_ARGS+=	--without-sqlite
 .endif

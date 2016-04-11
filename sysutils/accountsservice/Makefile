@@ -9,11 +9,11 @@ MASTER_SITES=	http://www.freedesktop.org/software/${PORTNAME}/
 MAINTAINER=	kwm@FreeBSD.org
 COMMENT=	D-Bus interface for user account query and manipulation
 
-LICENSE=	GPLv3 # or later
+LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libdbus-glib-1.so:${PORTSDIR}/devel/dbus-glib \
-		libpolkit-gobject-1.so:${PORTSDIR}/sysutils/polkit
+LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib \
+		libpolkit-gobject-1.so:sysutils/polkit
 
 USE_GNOME=	glib20 intlhack introspection:build libxslt
 USES=		cpe gettext gmake libtool pathfix pkgconfig tar:xz

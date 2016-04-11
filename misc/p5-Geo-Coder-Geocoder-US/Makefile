@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Geo-Coder-Geocoder-US
-PORTVERSION=	0.005
+PORTVERSION=	0.006
 CATEGORIES=	misc geography perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -13,10 +13,12 @@ COMMENT=	Geocode a location using http://geocoder.us/
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-Text-CSV>=0:${PORTSDIR}/textproc/p5-Text-CSV \
-		p5-URI>=0:${PORTSDIR}/net/p5-URI \
-		p5-libwww>=0:${PORTSDIR}/www/p5-libwww
+BUILD_DEPENDS=	p5-Text-CSV>=0:textproc/p5-Text-CSV \
+		p5-URI>=0:net/p5-URI \
+		p5-libwww>=0:www/p5-libwww
 RUN_DEPENDS:=	${BUILD_DEPENDS}
+
+DEPRECATED=	http://geocoder.us/ disappeared in late 2015
 
 PORTSCOUT=	limit:^[0-9\.]*$$
 

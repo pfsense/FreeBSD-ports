@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=		hitch
+PORTVERSION=		1.1.1
 DISTVERSIONPREFIX=	${PORTNAME}-
-DISTVERSION=		1.0.0-beta1
 CATEGORIES=		security
 
 MAINTAINER=		zi@FreeBSD.org
@@ -11,7 +11,8 @@ COMMENT=		TLS proxy to forward connections to an unencrypted backend
 
 LICENSE=		BSD2CLAUSE
 
-LIB_DEPENDS=		libev.so:${PORTSDIR}/devel/libev
+BUILD_DEPENDS=		rst2man:textproc/py-docutils
+LIB_DEPENDS=		libev.so:devel/libev
 
 USERS=			nobody
 GROUPS=			nobody
@@ -25,9 +26,6 @@ CPPFLAGS+=		-I${LOCALBASE}/include
 LDFLAGS+=		-L${LOCALBASE}/lib
 USE_GITHUB=		yes
 GH_ACCOUNT=		varnish
-
-post-patch:
-	${REINPLACE_CMD} 's|stud|${PORTNAME}|g' ${WRKSRC}/*.* ${WRKSRC}/src/*
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc

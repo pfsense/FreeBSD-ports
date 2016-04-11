@@ -10,7 +10,7 @@ MASTER_SITES=	http://www.mailavenger.org/dist/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Anti-spam SMTP server
 
-LICENSE=	GPLv2 # or later (though COPYING is GPLv3)
+LICENSE=	GPLv2+ # though COPYING is GPLv3
 
 USE_BDB=	42+
 USE_OPENSSL=	yes
@@ -30,7 +30,7 @@ CONFIGURE_ARGS=	--enable-ssl=${OPENSSLBASE} \
 OPTIONS_DEFINE=	SASL DOCS
 
 SASL_CONFIGURE_ON=	--enable-sasl
-SASL_LIB_DEPENDS=	libsasl2.so:${PORTSDIR}/security/cyrus-sasl2
+SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 
 post-patch:
 	@${REINPLACE_CMD} -e \

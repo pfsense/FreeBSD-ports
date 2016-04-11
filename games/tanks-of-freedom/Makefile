@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tanks-of-freedom
-PORTVERSION=	0.3.7
+PORTVERSION=	0.4.0.3
 DISTVERSIONSUFFIX=-beta
 CATEGORIES=	games
 
@@ -12,7 +12,7 @@ COMMENT=	Indie Turn Based Strategy in Isometric Pixel Art
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-RUN_DEPENDS=	godot:${PORTSDIR}/devel/godot
+RUN_DEPENDS=	godot:devel/godot
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	w84death

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	skype-call-recorder
-PORTVERSION=	0.8
+PORTVERSION=	0.11
 CATEGORIES=	audio
 MASTER_SITES=	http://atdot.ch/scr/files/${PORTVERSION}/
 
@@ -11,9 +11,9 @@ COMMENT=	Skype call recorder
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libmp3lame.so:${PORTSDIR}/audio/lame \
-		libid3.so:${PORTSDIR}/audio/id3lib \
-		libvorbisenc.so:${PORTSDIR}/audio/libvorbis
+LIB_DEPENDS=	libmp3lame.so:audio/lame \
+		libid3.so:audio/id3lib \
+		libvorbisenc.so:audio/libvorbis
 
 USES=		cmake
 USE_QT4=	corelib dbus gui network \
@@ -24,8 +24,8 @@ PLIST_FILES=	bin/skype-call-recorder \
 		share/icons/hicolor/128x128/apps/skype-call-recorder.png
 
 post-patch:
-	@${REINPLACE_CMD} -e 's,VORBISENC_LIBRARY},& -logg -lvorbis,' \
-		-e '/CMAKE_CXX_FLAGS_RELEASE/d' ${WRKSRC}/CMakeLists.txt
+	@${REINPLACE_CMD} -e '/CMAKE_CXX_FLAGS_RELEASE/d' \
+		${WRKSRC}/CMakeLists.txt
 	@${REINPLACE_CMD} -e 's,date --utc,TZ=UTC date,' \
 		${WRKSRC}/makeversion
 

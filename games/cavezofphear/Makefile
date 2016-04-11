@@ -11,12 +11,12 @@ DISTNAME=	phear-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Boulder Dash / Digger-like game written using ncurses
 
-LICENSE=	GPLv3 # (or later)
+LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_WRKSRC=	${WRKDIR}/${DISTNAME}/src
 
-USES=		gmake tar:bzip2
+USES=		gmake ncurses tar:bzip2
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}"
 ALL_TARGET=	phear
 

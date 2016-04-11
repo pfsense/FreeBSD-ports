@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	opusfile
-PORTVERSION=	0.6
-PORTREVISION=	1
+PORTVERSION=	0.7
 CATEGORIES=	audio
 MASTER_SITES=	http://downloads.xiph.org/releases/opus/ \
 		MOZILLA/opus
@@ -13,8 +12,8 @@ COMMENT=	Opus playback library
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libogg.so:${PORTSDIR}/audio/libogg \
-		libopus.so:${PORTSDIR}/audio/opus
+LIB_DEPENDS=	libogg.so:audio/libogg \
+		libopus.so:audio/opus
 
 USES=		autoreconf gmake libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
@@ -29,16 +28,17 @@ OPTIONS_DEFINE=	DOXYGEN DOCS
 OPTIONS_DEFAULT=	# empty
 
 DOXYGEN_CONFIGURE_ENABLE=	doc
-DOXYGEN_BUILD_DEPENDS=	doxygen:${PORTSDIR}/devel/doxygen
+DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen
 
+CONFIGURE_ARGS+=	--disable-examples
 INSTALL_TARGET=	install-strip
 
 post-patch:
-	@${REINPLACE_CMD} -e 's| @openssl@||' \
-		${WRKSRC}/opusfile.pc.in  ${WRKSRC}/opusurl.pc.in
-	@${REINPLACE_CMD} -e '/libopusurl_la_SOURCES/s/http.c/& src\/ftime.c/' \
-		-e '/dist_doc_DATA/s/COPYING//' \
-		${WRKSRC}/Makefile.am
+	@${GREP} -l '@openssl@' ${WRKSRC}/opusurl.pc.in | \
+		${XARGS} ${REINPLACE_CMD} -e 's| @openssl@||'
+	@${GREP} -L 'src/ftime.c' ${WRKSRC}/Makefile.am | \
+		${XARGS} ${REINPLACE_CMD} -e '/dist_doc_DATA/s/COPYING//' \
+		-e '/libopusurl_la_SOURCES/s|= \(src/http\.c\)|= src/ftime.c \1|'
 	@${CP} ${FILESDIR}/ftime.c ${WRKSRC}/src/
 
 post-install-DOXYGEN-on:

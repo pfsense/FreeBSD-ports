@@ -1,10 +1,9 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
 # $FreeBSD$
-#   $MCom: ports/trunk/x11-toolkits/pango/Makefile 19945 2014-10-15 05:41:04Z gusi $
 
 PORTNAME=	pango
-PORTVERSION=	1.36.8
-PORTREVISION?=	2
+PORTVERSION=	1.38.0
+PORTREVISION?=	0
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome2
@@ -16,17 +15,17 @@ USES=		tar:xz
 
 .if !defined(REFERENCE_PORT)
 
-BUILD_DEPENDS=	fontconfig>=2.10.91:${PORTSDIR}/x11-fonts/fontconfig \
-		cairo>=1.12.10,2:${PORTSDIR}/graphics/cairo
-LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libharfbuzz.so:${PORTSDIR}/print/harfbuzz \
-		libfontconfig.so:${PORTSDIR}/x11-fonts/fontconfig
-RUN_DEPENDS=	xorg-fonts-truetype>0:${PORTSDIR}/x11-fonts/xorg-fonts-truetype \
-		${FONTENCOD}:${PORTSDIR}/x11-fonts/encodings
+BUILD_DEPENDS=	fontconfig>=2.10.91:x11-fonts/fontconfig \
+		cairo>=1.12.10,2:graphics/cairo
+LIB_DEPENDS=	libfreetype.so:print/freetype2 \
+		libharfbuzz.so:print/harfbuzz \
+		libfontconfig.so:x11-fonts/fontconfig
+RUN_DEPENDS=	xorg-fonts-truetype>0:x11-fonts/xorg-fonts-truetype \
+		${FONTENCOD}:x11-fonts/encodings
 
 PORTSCOUT=	limitw:1,even
 
-USES+=		gettext gmake libtool pathfix pkgconfig
+USES+=		gettext gmake gnome libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 USE_GNOME=	cairo glib20 introspection:build referencehack
@@ -35,7 +34,7 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
 
 VERSION=	1.8.0
-LIBVERSION=     0.3600.8
+LIBVERSION=	0.3800.0
 PLIST_SUB+=     VERSION=${VERSION} LIBVERSION=${LIBVERSION}
 
 FONTSCALE=	${LOCALBASE}/share/fonts/TTF/luximb.ttf

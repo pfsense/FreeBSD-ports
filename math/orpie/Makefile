@@ -12,9 +12,9 @@ COMMENT=	Fullscreen RPN calculator for the console
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libgsl.so:${PORTSDIR}/math/gsl
+LIB_DEPENDS=	libgsl.so:math/gsl
 
-USES=		gmake
+USES=		gmake ncurses
 USE_OCAML=	yes
 USE_OCAML_CAMLP4=yes
 GNU_CONFIGURE=	yes

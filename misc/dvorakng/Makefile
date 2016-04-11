@@ -10,10 +10,10 @@ MASTER_SITES=	http://www.free.of.pl/n/nopik/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dvorak typing tutor
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		tar:bzip2
+USES=		ncurses tar:bzip2
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 MAKE_ARGS=	CC="${CC}" CXX="${CXX}" CFLAGS="${CFLAGS} ${CPPFLAGS}" \

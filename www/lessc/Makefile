@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lessc
-PORTVERSION=	2.5.0
+PORTVERSION=	2.5.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www devel
 
@@ -11,8 +11,8 @@ COMMENT=	Javascript CSS pre-processor
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	npm>=0:${PORTSDIR}/www/npm
-RUN_DEPENDS=	npm>=0:${PORTSDIR}/www/npm
+BUILD_DEPENDS=	npm>=0:www/npm
+RUN_DEPENDS=	npm>=0:www/npm
 
 NO_BUILD=	yes
 USE_GITHUB=	yes

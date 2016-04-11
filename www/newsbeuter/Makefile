@@ -13,20 +13,20 @@ COMMENT=	RSS feed reader for the text console
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libstfl.so:${PORTSDIR}/devel/stfl \
-		libcurl.so:${PORTSDIR}/ftp/curl \
-		libjson-c.so:${PORTSDIR}/devel/json-c
+LIB_DEPENDS=	libstfl.so:devel/stfl \
+		libcurl.so:ftp/curl \
+		libjson-c.so:devel/json-c
 
 OPTIONS_DEFINE=	PODCAST
 OPTIONS_DEFAULT=PODCAST
 OPTIONS_SUB=	yes
 PODCAST_DESC=	Podcast client (podbeuter)
 
-USES=		compiler:c++11-lib gettext gmake iconv:translit ncurses perl5 pkgconfig shebangfix
+USES=		compiler:c++11-lib gettext gmake iconv:translit ncurses perl5 \
+		pkgconfig sqlite shebangfix
 USE_CXXSTD=	gnu++11
 USE_PERL5=	build
 SHEBANG_FILES=	txt2h.pl
-USE_SQLITE=	yes
 USE_GNOME=	libxml2
 
 .include <bsd.port.pre.mk>

@@ -9,10 +9,10 @@ MASTER_SITES=	https://launchpad.net/pastebinit/trunk/${PORTVERSION}/+download/
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Command line utility for pastebing
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}configobj>=4.3.2:${PORTSDIR}/devel/py-configobj
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}configobj>=4.3.2:devel/py-configobj
 
 USES=		python:run shebangfix tar:bzip2
 SHEBANG_FILES=	pastebinit

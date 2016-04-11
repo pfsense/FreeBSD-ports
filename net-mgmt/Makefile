@@ -17,6 +17,7 @@
     SUBDIR += bandwidthd
     SUBDIR += bgpq
     SUBDIR += bgpq3
+    SUBDIR += bgpuma
     SUBDIR += bpft
     SUBDIR += braa
     SUBDIR += bsnmp-jails
@@ -28,6 +29,7 @@
     SUBDIR += ccnet
     SUBDIR += cdpd
     SUBDIR += cdpr
+    SUBDIR += cdpsnarf
     SUBDIR += centreon-clib
     SUBDIR += check_ipmi_sensor
     SUBDIR += check_logfiles
@@ -44,6 +46,7 @@
     SUBDIR += coovachilli
     SUBDIR += cowpatty
     SUBDIR += cricket
+    SUBDIR += crmsh
     SUBDIR += darkstat
     SUBDIR += devmon
     SUBDIR += devmon-templates
@@ -126,6 +129,7 @@
     SUBDIR += nagios-check_relayd_status
     SUBDIR += nagios-check_smartmon
     SUBDIR += nagios-check_tftp
+    SUBDIR += nagios-check_zpools
     SUBDIR += nagios-geom
     SUBDIR += nagios-openldap-plugins
     SUBDIR += nagios-pf-plugin
@@ -186,11 +190,13 @@
     SUBDIR += ocsinventory-ng
     SUBDIR += omping
     SUBDIR += openlldp
+    SUBDIR += openvmps
     SUBDIR += p0f
     SUBDIR += p0f2
     SUBDIR += p5-AnyEvent-SNMP
     SUBDIR += p5-BigIP-iControl
     SUBDIR += p5-Cflow
+    SUBDIR += p5-Cisco-CopyConfig
     SUBDIR += p5-Cisco-Reconfig
     SUBDIR += p5-Data-Validate-IP
     SUBDIR += p5-FusionInventory-Agent
@@ -251,9 +257,9 @@
     SUBDIR += pandorafms_server
     SUBDIR += percona-monitoring-plugins
     SUBDIR += pftabled
-    SUBDIR += php5-snmp
     SUBDIR += php55-snmp
     SUBDIR += php56-snmp
+    SUBDIR += php70-snmp
     SUBDIR += phpip
     SUBDIR += phpipam
     SUBDIR += phpweathermap
@@ -268,6 +274,7 @@
     SUBDIR += py-ipy
     SUBDIR += py-pyang
     SUBDIR += py-pysmi
+    SUBDIR += py-pyzabbix
     SUBDIR += py-snmp4
     SUBDIR += py-snmp4-apps
     SUBDIR += py-snmp4-mibs
@@ -308,6 +315,7 @@
     SUBDIR += statsd
     SUBDIR += statsite
     SUBDIR += subcalc
+    SUBDIR += super_mediator
     SUBDIR += sx
     SUBDIR += sysmon
     SUBDIR += tcpreplay
@@ -339,5 +347,9 @@
     SUBDIR += zabbix24-frontend
     SUBDIR += zabbix24-proxy
     SUBDIR += zabbix24-server
+    SUBDIR += zabbix3-agent
+    SUBDIR += zabbix3-frontend
+    SUBDIR += zabbix3-proxy
+    SUBDIR += zabbix3-server
 
 .include <bsd.port.subdir.mk>

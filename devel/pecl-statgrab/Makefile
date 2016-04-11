@@ -14,10 +14,11 @@ DIST_SUBDIR=	PECL
 MAINTAINER=	tdb@FreeBSD.org
 COMMENT=	PECL extension to retrieve information from libstatgrab
 
-LIB_DEPENDS=	libstatgrab0.so:${PORTSDIR}/devel/libstatgrab0
+LIB_DEPENDS=	libstatgrab0.so:devel/libstatgrab0
 
 USE_PHP=	yes
 USE_PHPEXT=	yes
+IGNORE_WITH_PHP=	70
 
 CONFIGURE_ARGS=	--with-statgrab=${LOCALBASE}
 

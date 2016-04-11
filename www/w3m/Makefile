@@ -3,16 +3,16 @@
 
 PORTNAME=	w3m
 PORTVERSION=	0.5.3
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES+=	www ipv6
 MASTER_SITES=	SF/w3m/w3m/w3m-${PORTVERSION}
 
 MAINTAINER?=	nobutaka@FreeBSD.org
 COMMENT?=	Pager/text-based WWW browser
 
-USES=		perl5
+USES=		pkgconfig perl5
 USE_OPENSSL=	yes
-LIB_DEPENDS=	libgc.so:${PORTSDIR}/devel/boehm-gc
+LIB_DEPENDS=	libgc.so:devel/boehm-gc
 
 MAKE_JOBS_UNSAFE=	yes
 

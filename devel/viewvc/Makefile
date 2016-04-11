@@ -3,6 +3,7 @@
 
 PORTNAME=	viewvc
 PORTVERSION=	1.1.24
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	http://www.viewvc.org/ \
 		LOCAL/ohauer
@@ -29,12 +30,12 @@ MODPYTHON35_DESC=	Enable mod_python35 support
 MYSQL_DESC=		Bonsai-like repository query facilities
 
 APACHE_USE=		APACHE_RUN=22+
-LIGHTTPD_RUN_DEPENDS=	lighttpd:${PORTSDIR}/www/lighttpd
-MODPYTHON33_RUN_DEPENDS=${APACHE_PKGNAMEPREFIX}mod_python33>=3.3:${PORTSDIR}/www/mod_python33
-MODPYTHON35_RUN_DEPENDS=${APACHE_PKGNAMEPREFIX}mod_python35>=3.5:${PORTSDIR}/www/mod_python35
-MODWSGI_RUN_DEPENDS=	${APACHE_PKGNAMEPREFIX}mod_wsgi4>=4.4.13:${PORTSDIR}/www/mod_wsgi4
-SVN_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}subversion>=0:${PORTSDIR}/devel/py-subversion
-MYSQL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MySQLdb>=0:${PORTSDIR}/databases/py-MySQLdb
+LIGHTTPD_RUN_DEPENDS=	lighttpd:www/lighttpd
+MODPYTHON33_RUN_DEPENDS=${APACHE_PKGNAMEPREFIX}mod_python33>=3.3:www/mod_python33
+MODPYTHON35_RUN_DEPENDS=${APACHE_PKGNAMEPREFIX}mod_python35>=3.5:www/mod_python35
+MODWSGI_RUN_DEPENDS=	${APACHE_PKGNAMEPREFIX}mod_wsgi4>=4.4.13:www/mod_wsgi4
+SVN_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}subversion>=0:devel/py-subversion
+MYSQL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MySQLdb>=0:databases/py-MySQLdb
 
 .include <bsd.port.options.mk>
 
@@ -46,7 +47,7 @@ SUB_LIST=	PYTHON_CMD=${PYTHON_CMD} \
 		ECHO=${ECHO} EGREP=${EGREP} TOUCH=${TOUCH} \
 		CHOWN=${CHOWN} RM=${RM:Q}
 
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}pygments>=1.6:${PORTSDIR}/textproc/py-pygments
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}pygments>=1.6:textproc/py-pygments
 
 pre-everything::
 .if ${PORT_OPTIONS:MAPMOD} && !${PORT_OPTIONS:MAPACHE}
@@ -63,7 +64,7 @@ post-patch:
 		${WRKSRC}/bin/standalone.py
 # to much files, use own shebangfix
 	${FIND} ${WRKSRC} -type f | ${GREP} -v -e 'png' -e 'images' \
-		| ${XARGS} ${REINPLACE_CMD} -i '' \
+		| ${XARGS} ${SED} -i '' \
 		-e '1s|^\#![[:space:]]*/usr/bin/env python|\#!${PYTHON_CMD}|' \
 		-e '1s|^\#![[:space:]]*/usr/bin/python|\#!${PYTHON_CMD}|'
 

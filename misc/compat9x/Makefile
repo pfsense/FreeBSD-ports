@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	compat9x
-PORTVERSION=	9.3.903000.20151116
+PORTVERSION=	9.3.903000.20160128
 CATEGORIES=	misc
 MASTER_SITES=	LOCAL/des
 PKGNAMESUFFIX=	-${ARCH}
@@ -25,7 +25,7 @@ IGNORE=		is for FreeBSD 9.x and newer
 .endif
 
 .if ${OSVERSION} >= 1100000
-RUN_DEPENDS=	compat10x-${ARCH}>=0:${PORTSDIR}/misc/compat10x
+RUN_DEPENDS=	compat10x-${ARCH}>=0:misc/compat10x
 .endif
 
 .if ${ARCH} == amd64

@@ -10,9 +10,9 @@ DISTNAME=	RemoteDesk-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Graphical interface to rdesktop
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 
-RUN_DEPENDS=	rdesktop:${PORTSDIR}/net/rdesktop
+RUN_DEPENDS=	rdesktop:net/rdesktop
 
 USES=		gnustep
 USE_GNUSTEP=	back build

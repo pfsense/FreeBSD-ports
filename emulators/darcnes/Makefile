@@ -27,7 +27,7 @@ OPTIONS_SINGLE_BACKEND=	X11 GTK1 SVGALIB
 OPTIONS_DEFAULT=X11
 BACKEND_DESC=	GUI backend
 
-.include <bsd.port.pre.mk>
+.include <bsd.port.options.mk>
 
 .if ${ARCH} != "i386" || defined(WITHOUT_X86_ASM)
 MAKE_ARGS+=	C_ONLY=-DC_ONLY
@@ -42,7 +42,7 @@ PKGNAMESUFFIX=	-gtk
 .endif
 
 .if ${PORT_OPTIONS:MSVGALIB}
-LIB_DEPENDS+=	libvga.so:${PORTSDIR}/graphics/svgalib
+LIB_DEPENDS+=	libvga.so:graphics/svgalib
 MAKE_ARGS+=	TARGET=Linux_svgalib
 PKGNAMESUFFIX=	-svgalib
 .endif
@@ -59,4 +59,4 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/readme ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

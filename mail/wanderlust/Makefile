@@ -14,11 +14,11 @@ MAINTAINER=	nobutaka@FreeBSD.org
 COMMENT?=	Yet another message interface on Emacsen
 
 USE_EMACS=	yes
+NO_ARCH=	yes
 
 CONFLICTS=	wanderlust-*-2.15.*
 
 OPTIONS_DEFINE=	DOCS
-OPTIONS_DEFAULT=DOCS
 
 .include <bsd.port.pre.mk>
 .include <bsd.port.options.mk>
@@ -31,16 +31,16 @@ MIMEUI_PRODUCT=	semi
 MIMEUI_VERSION=	1.14
 MIMEUI_COOKIE=	${MIMEUI_PRODUCT}-${EMACS_PORT_NAME}-${MIMEUI_VERSION}.FreeBSD-packages
 
-BUILD_DEPENDS=	${LOCALBASE}/share/semi/${MIMEUI_COOKIE}:${PORTSDIR}/editors/${MIMEUI_PORT_NAME}
-RUN_DEPENDS=	${LOCALBASE}/share/semi/${MIMEUI_COOKIE}:${PORTSDIR}/editors/${MIMEUI_PORT_NAME}
+BUILD_DEPENDS=	${LOCALBASE}/share/semi/${MIMEUI_COOKIE}:editors/${MIMEUI_PORT_NAME}
+RUN_DEPENDS=	${LOCALBASE}/share/semi/${MIMEUI_COOKIE}:editors/${MIMEUI_PORT_NAME}
 
 .if (${EMACS_NAME} == "emacs") && (${EMACS_MAJOR_VER} == 23)
-RUN_DEPENDS+=	${LOCALBASE}/${EMACS_VERSION_SITE_LISPDIR}/x-face-e21.el:${PORTSDIR}/mail/x-face-e21
+RUN_DEPENDS+=	${LOCALBASE}/${EMACS_VERSION_SITE_LISPDIR}/x-face-e21.el:mail/x-face-e21
 .endif
 
 .if exists(${EMACS_W3M_LISP_FILE})
-BUILD_DEPENDS+=	${EMACS_W3M_LISP_FILE}:${PORTSDIR}/www/${EMACS_W3M_PORT_NAME}
-RUN_DEPENDS+=	${EMACS_W3M_LISP_FILE}:${PORTSDIR}/www/${EMACS_W3M_PORT_NAME}
+BUILD_DEPENDS+=	${EMACS_W3M_LISP_FILE}:www/${EMACS_W3M_PORT_NAME}
+RUN_DEPENDS+=	${EMACS_W3M_LISP_FILE}:www/${EMACS_W3M_PORT_NAME}
 SHIMBUN=	""
 .else
 SHIMBUN=	"@comment "
@@ -109,9 +109,6 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/elmo/elmo-shimbun.el ${STAGEDIR}${PREFIX}/${EMACS_VERSION_SITE_LISPDIR}/wl
 .endif
 .endif
-.if ${PORT_OPTIONS:MDOCS}
-	${MAKE} install-docs
-.endif
 	${MAKE} install-samples
 	${MAKE} install-utils
 .if defined(EMACS_PACKAGESDIR)
@@ -119,7 +116,7 @@ post-install:
 .endif
 
 # local targets
-install-docs:
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${PREFIX}/${PORTDOCDIR}
 	${MKDIR} ${STAGEDIR}${PREFIX}/${PORTDOCDIR_JA}
 .for i in ${DOCS}

@@ -9,9 +9,9 @@ MASTER_SITES=	SF/${PORTNAME}/stable/${PORTVERSION}%20%28beta%29
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Text web browser, ambitious, in active development
 
-RUN_DEPENDS=	wget:${PORTSDIR}/ftp/wget
+RUN_DEPENDS=	wget:ftp/wget
 
-USES=		gmake
+USES=		gmake ncurses
 GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/netrik \

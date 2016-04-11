@@ -10,9 +10,9 @@ MASTER_SITES=	SF
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Show a scrolling 'Matrix' like screen
 
-LICENSE=	GPLv1 # or later; COPYING is GPLv2
+LICENSE=	GPLv1+ # though COPYING is GPLv2
 
-USES=		gmake
+USES=		gmake ncurses
 GNU_CONFIGURE=	yes
 
 PORTDOCS=	ChangeLog README TODO

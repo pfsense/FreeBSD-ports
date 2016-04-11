@@ -2,20 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	cmark
-PORTVERSION=	0.22.0
+PORTVERSION=	0.25.2
 CATEGORIES=	textproc
 
 MAINTAINER=	t@tobik.me
 COMMENT=	CommonMark parsing and rendering library and program in C
 
 LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	jgm
 
 USES=		cmake:outsource
+USE_LDCONFIG=	yes
 
-post-patch:
-	${REINPLACE_CMD} -i "" 's|share/||g' ${WRKSRC}/man/CMakeLists.txt
+CMAKE_ARGS=	-DCMAKE_INSTALL_MANDIR=${MANPREFIX}/man
 
 .include <bsd.port.mk>

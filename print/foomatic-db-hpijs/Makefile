@@ -10,11 +10,11 @@ MASTER_SITES=	LOCAL/lofi
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Foomatic data for the HPIJS printer drivers
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	${LOCALBASE}/share/foomatic/db/oldprinterids:${PORTSDIR}/print/foomatic-db
-RUN_DEPENDS=	${LOCALBASE}/share/foomatic/db/oldprinterids:${PORTSDIR}/print/foomatic-db
+BUILD_DEPENDS=	${LOCALBASE}/share/foomatic/db/oldprinterids:print/foomatic-db
+RUN_DEPENDS=	${LOCALBASE}/share/foomatic/db/oldprinterids:print/foomatic-db
 
 GNU_CONFIGURE=	yes
 USES=		gmake perl5

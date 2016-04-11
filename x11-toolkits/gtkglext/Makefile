@@ -11,7 +11,7 @@ DIST_SUBDIR=	gnome2
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OpenGL extension to GTK+
 
-LICENSE=	LGPL21 # or later
+LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB
 
 GNU_CONFIGURE=	yes
@@ -30,7 +30,7 @@ post-patch:
 		's|-DGTK_DISABLE_DEPRECATED||g ; \
 		 s|-DGDK_DISABLE_DEPRECATED||g'
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/docs/reference/gtkglext/html/* ${STAGEDIR}${DOCSDIR}/
 

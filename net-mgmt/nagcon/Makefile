@@ -5,18 +5,18 @@ PORTNAME=	nagcon
 PORTVERSION=	0.0.30
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://www.vanheusden.com/nagcon/
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	rand@meridian-enviro.com
 COMMENT=	Nagios console monitor
 
-LIB_DEPENDS=	libstrfunc.so:${PORTSDIR}/devel/libstrfunc
+LIB_DEPENDS=	libstrfunc.so:devel/libstrfunc
 
 PLIST_FILES=	bin/nagcon
 
 CFILES=		error.c
 CPPFILES=	utils.cpp br.cpp nc.cpp pl.cpp
 
+USES=		ncurses tar:tgz
 CFLAGS+=	-DVERSION=\"${PORTVERSION}\" -I${LOCALBASE}/include
 LDFLAGS+=	-lncurses -lstdc++ -L${LOCALBASE}/lib -lstrfunc
 

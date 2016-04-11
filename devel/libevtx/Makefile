@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libevtx
-DISTVERSION=	alpha-20151206
+DISTVERSION=	alpha-20160107
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/libyal/libevtx/releases/download/${PORTVERSION:E}/ \
 		LOCAL/antoine
@@ -12,7 +12,7 @@ COMMENT=	Library and tooling to access the Windows XML Event Log (EVTX) format
 
 LICENSE=	LGPL3
 
-LIB_DEPENDS=	libregf.so:${PORTSDIR}/devel/libregf
+LIB_DEPENDS=	libregf.so:devel/libregf
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-python --with-libintl-prefix=${LOCALBASE} --with-libregf=${LOCALBASE}

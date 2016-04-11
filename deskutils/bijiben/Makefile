@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	bijiben
-PORTVERSION=	3.16.2
+PORTVERSION=	3.18.2
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -10,15 +10,15 @@ DIST_SUBDIR=	gnome3
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Note editor designed to remain simple to use
 
-BUILD_DEPENDS=	itstool:${PORTSDIR}/textproc/itstool
-LIB_DEPENDS=	libtracker-control-1.0.so:${PORTSDIR}/sysutils/tracker \
-		libgoa-1.0.so:${PORTSDIR}/net/gnome-online-accounts \
-		libwebkitgtk-3.0.so:${PORTSDIR}/www/webkit-gtk3 \
-		libclutter-gtk-1.0.so:${PORTSDIR}/graphics/clutter-gtk3
+BUILD_DEPENDS=	itstool:textproc/itstool
+LIB_DEPENDS=	libtracker-control-1.0.so:sysutils/tracker \
+		libgoa-1.0.so:net/gnome-online-accounts \
+		libwebkitgtk-3.0.so:www/webkit-gtk3 \
+		libclutter-gtk-1.0.so:graphics/clutter-gtk3
 
 PORTSCOUT=	limitw:1,even
 
-USES=		desktop-file-utils gettext gmake libtool \
+USES=		desktop-file-utils gettext gmake gnome libtool \
 		pathfix pkgconfig shared-mime-info tar:xz
 USE_LDCONFIG=	yes
 USE_GNOME=	evolutiondataserver3 gnomedesktop3 gtk30 intlhack \

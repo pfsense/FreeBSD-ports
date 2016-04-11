@@ -2,6 +2,7 @@
 
 PORTNAME=	facter
 PORTVERSION=	3.1.3
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://downloads.puppetlabs.com/facter/
 
@@ -11,8 +12,8 @@ COMMENT=	Cross-platform library for retrieving facts from OS
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libboost_system.so:${PORTSDIR}/devel/boost-libs \
-		libyaml-cpp.so:${PORTSDIR}/devel/yaml-cpp
+LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
+		libyaml-cpp.so:devel/yaml-cpp
 
 PLIST_SUB+=	PORTVERSION="${PORTVERSION}"
 

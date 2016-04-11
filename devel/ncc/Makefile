@@ -10,9 +10,12 @@ MASTER_SITES=	http://students.ceid.upatras.gr/~sxanth/ncc/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Program analysis tool and call-graph navigator
 
+LICENSE=	ART10
+LICENSE_FILE=	${WRKSRC}/doc/LICENSE
+
 ALL_TARGET=	# empty
 MAKE_ARGS+=	CC="${CXX}" LCFLAGS="${CFLAGS}"
-USES=		python:run
+USES=		ncurses python:run
 CFLAGS+=	-DNOGNU='\"${PREFIX}/include/ncc/nognu\"' -fpermissive
 
 PLIST_FILES=	bin/ncc bin/nccnav bin/nccnavi bin/ncc-gengraph.py \
@@ -27,6 +30,8 @@ OPTIONS_DEFINE=	DOCS
 post-patch:
 	@${REINPLACE_CMD} -e '/NOGNU/d' ${WRKSRC}/config.h
 	@${REINPLACE_CMD} -e '/#include <alloca.h>/d' ${WRKSRC}/dbstree.h
+	@${REINPLACE_CMD} -e 's|-lncurses|$$(CFLAGS) $$(LDFLAGS) -lncurses|' \
+		${WRKSRC}/nccnav/Makefile
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/objdir/ncc ${STAGEDIR}${PREFIX}/bin
@@ -42,6 +47,8 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/include/ncc
 	${INSTALL_DATA}	${WRKSRC}/doc/nognu ${STAGEDIR}${PREFIX}/include/ncc
 	${INSTALL_MAN} ${WRKSRC}/ncc.1 ${STAGEDIR}${MANPREFIX}/man/man1
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/* ${STAGEDIR}${DOCSDIR}
 

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	megatools
-PORTVERSION=	1.9.95
+PORTVERSION=	1.9.96
 CATEGORIES=	net
 MASTER_SITES=	http://megatools.megous.com/builds/
 
@@ -12,8 +12,8 @@ COMMENT=	Tools for MEGA.CO.NZ cloud drive
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
-RUN_DEPENDS=	glib-networking>=2.32.0:${PORTSDIR}/net/glib-networking
+LIB_DEPENDS=	libcurl.so:ftp/curl
+RUN_DEPENDS=	glib-networking>=2.32.0:net/glib-networking
 
 CONFIGURE_ENV=	OPENSSL_CFLAGS="-I${OPENSSLINC}" \
 		OPENSSL_LIBS="-L${OPENSSLLIB} -lcrypto -lssl"

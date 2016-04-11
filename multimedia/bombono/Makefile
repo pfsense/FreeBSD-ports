@@ -3,7 +3,7 @@
 
 PORTNAME=	bombono
 PORTVERSION=	1.2.2
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-dvd/${PORTVERSION:R}
 DISTNAME=	${PORTNAME}-dvd-${PORTVERSION}
@@ -11,20 +11,23 @@ DISTNAME=	${PORTNAME}-dvd-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	DVD authoring program
 
-BUILD_DEPENDS=	gm:${PORTSDIR}/graphics/GraphicsMagick
-LIB_DEPENDS=	libgtkmm-2.4.so:${PORTSDIR}/x11-toolkits/gtkmm24 \
-		libxml++-2.6.so:${PORTSDIR}/textproc/libxml++26 \
-		liblavfile.so:${PORTSDIR}/multimedia/mjpegtools \
-		libdvdread.so:${PORTSDIR}/multimedia/libdvdread \
-		libavcodec.so:${PORTSDIR}/multimedia/ffmpeg \
-		libboost_filesystem.so:${PORTSDIR}/devel/boost-libs
-RUN_DEPENDS=	gm:${PORTSDIR}/graphics/GraphicsMagick \
-		enca:${PORTSDIR}/converters/enca \
-		growisofs:${PORTSDIR}/sysutils/dvd+rw-tools \
-		toolame:${PORTSDIR}/audio/toolame
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gettext pkgconfig scons tar:bzip2
-USE_GCC=	any
+BUILD_DEPENDS=	gm:graphics/GraphicsMagick
+LIB_DEPENDS=	libxml++-2.6.so:textproc/libxml++26 \
+		liblavfile.so:multimedia/mjpegtools \
+		libdvdread.so:multimedia/libdvdread \
+		libavcodec.so:multimedia/ffmpeg \
+		libboost_filesystem.so:devel/boost-libs
+RUN_DEPENDS=	gm:graphics/GraphicsMagick \
+		enca:converters/enca \
+		growisofs:sysutils/dvd+rw-tools \
+		toolame:audio/toolame
+
+USES=		desktop-file-utils gettext pkgconfig scons shared-mime-info \
+		tar:bzip2
+USE_GNOME=	gtkmm24
 INSTALLS_ICONS=	yes
 
 CXXFLAGS+=	-I${LOCALBASE}/include
@@ -34,14 +37,16 @@ MAKE_ARGS=	DVDREAD_INCLUDE=${LOCALBASE}/include \
 		CXXFLAGS="${CXXFLAGS}" LDFLAGS="${LDFLAGS}" \
 		CC="${CC}" CXX="${CXX}" USE_EXT_BOOST=true
 
-.include <bsd.port.pre.mk>
+.include <bsd.port.options.mk>
 
 .if ${OPSYS} == FreeBSD && ${OSVERSION} > 1000023
-BROKEN=		does not build on 10.x+
+USES+=		compiler:gcc-c++11-lib
 .endif
 
 post-install:
-	cd ${WRKSRC}/docs/man/man1 && ${INSTALL_MAN} bombono-dvd.1 \
-		mpeg2demux.1 ${STAGEDIR}${MANPREFIX}/man/man1
+.for i in bombono-dvd mpeg2demux
+	${INSTALL_MAN} ${WRKSRC}/docs/man/man1/${i}.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${i}
+.endfor
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

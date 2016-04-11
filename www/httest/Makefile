@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	httest
-PORTVERSION=	2.4.14
+PORTVERSION=	2.4.16
 CATEGORIES=	www
 MASTER_SITES=	SF/htt/htt${PORTVERSION:R}/${PORTNAME}-${PORTVERSION}
 
@@ -11,8 +11,8 @@ COMMENT=	HTTP Test Tool
 
 LICENSE=	APACHE20
 
-LIB_DEPENDS=	libapr-1.so:${PORTSDIR}/devel/apr1 \
-		libpcre.so:${PORTSDIR}/devel/pcre
+LIB_DEPENDS=	libapr-1.so:devel/apr1 \
+		libpcre.so:devel/pcre
 
 OPTIONS_DEFINE=	EXAMPLES
 

@@ -14,10 +14,11 @@ COMMENT=	PECL extension that implements a Z39.50 client
 
 LICENSE=	PHP301
 
-LIB_DEPENDS=	libyaz.so:${PORTSDIR}/net/yaz
+LIB_DEPENDS=	libyaz.so:net/yaz
 
 USE_PHP=	yes
 USE_PHPEXT=	yes
+IGNORE_WITH_PHP=	70
 
 CONFIGURE_ARGS=	--with-yaz=${LOCALBASE}
 

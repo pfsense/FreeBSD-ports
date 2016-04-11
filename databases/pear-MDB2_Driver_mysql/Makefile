@@ -10,11 +10,12 @@ COMMENT=	PEAR MySQL MDB2 driver
 
 LICENSE=	BSD3CLAUSE
 
-BUILD_DEPENDS=	pear-MDB2>=0:${PORTSDIR}/databases/pear-MDB2
+BUILD_DEPENDS=	pear-MDB2>=0:databases/pear-MDB2
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 NO_ARCH=	yes
 USES=		pear
 USE_PHP=	mysql
+IGNORE_WITH_PHP=	70
 
 .include <bsd.port.mk>

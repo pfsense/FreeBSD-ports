@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gtkhtml
-PORTVERSION=	4.8.5
+PORTVERSION=	4.10.0
 CATEGORIES=	www gnome
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	4
@@ -11,12 +11,12 @@ DIST_SUBDIR=	gnome3
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Lightweight HTML rendering/printing/editing engine
 
-BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:${PORTSDIR}/misc/iso-codes
-LIB_DEPENDS=	libsoup-2.4.so:${PORTSDIR}/devel/libsoup \
-		libenchant.so:${PORTSDIR}/textproc/enchant
-RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:${PORTSDIR}/misc/iso-codes
+BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes
+LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
+		libenchant.so:textproc/enchant
+RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes
 
-USES=		gettext gmake libtool pathfix pkgconfig tar:xz
+USES=		gettext gmake gnome libtool pathfix pkgconfig tar:xz
 USE_XORG=	xinerama xi xrandr xcursor xcomposite xdamage xproto
 USE_GNOME=	gnomeprefix intlhack gtk30
 USE_LDCONFIG=	yes
