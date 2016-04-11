@@ -1,1 +1,7 @@
-Please visit Services - Avahi menu, enable the service and select which interfaces you do NOT wish Avahi to listen on. Save settings to start the service.
+************************************************************************
+
+Please visit Services - Avahi menu, enable the service and select which
+interfaces you do NOT wish Avahi to listen on.  Save settings to start
+the service.
+
+************************************************************************
