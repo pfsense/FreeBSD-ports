@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	Horde_Mail
-PORTVERSION=	2.6.2
+PORTVERSION=	2.6.3
 PORTREVISION=	1
 CATEGORIES=	mail www pear
 
@@ -17,6 +17,6 @@ USE_HORDE_RUN=	Horde_Exception \
 #USE_HORDE_RUN+=	Horde_Mime
 
 # Optional but we want it
-RUN_DEPENDS+=	${PEARDIR}/Net/SMTP.php:${PORTSDIR}/net/pear-Net_SMTP
+RUN_DEPENDS+=	${PEARDIR}/Net/SMTP.php:net/pear-Net_SMTP
 
 .include <bsd.port.mk>

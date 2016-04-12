@@ -21,7 +21,7 @@ SUB_FILES=	llvm-wrapper.sh
 SUB_LIST=	LLVM_PREFIX="${LLVM_PREFIX}" LLVM_SUFFIX="${LLVM_SUFFIX}"
 
 CMAKE_INSTALL_PREFIX=	${LLVM_PREFIX}
-CMAKE_ARGS=	-DBUILD_SHARED_LIBS=ON
+CMAKE_ARGS=
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	llvm-mirror
@@ -58,7 +58,7 @@ LLD_DESC=		Install lld, the LLVM linker
 LLD_GH_PROJECT=		lld:lld
 LLD_GH_TAGNAME=		${LLD_COMMIT}:lld
 LLDB_DESC=		Install lldb, the LLVM debugger (ignored on 9.x)
-LLDB_BUILD_DEPENDS=	swig:${PORTSDIR}/devel/swig13
+LLDB_BUILD_DEPENDS=	swig:devel/swig13
 LLDB_GH_PROJECT=	lldb:lldb
 LLDB_GH_TAGNAME=	${LLDB_COMMIT}:lldb
 OPENMP_DESC=		Install libomp, the LLVM OpenMP runtime library
@@ -67,11 +67,11 @@ OPENMP_GH_PROJECT=	openmp:openmp
 OPENMP_GH_TAGNAME=	${OPENMP_COMMIT}:openmp
 GOLD_DESC=		Build the LLVM Gold plugin for LTO
 GOLD_CMAKE_ON=		-DLLVM_BINUTILS_INCDIR=${LOCALBASE}/include
-GOLD_BUILD_DEPENDS=	ld.gold:${PORTSDIR}/devel/binutils
+GOLD_BUILD_DEPENDS=	ld.gold:devel/binutils
 
 OPTIONS_SUB=	yes
 
-DOCS_BUILD_DEPENDS=		sphinx-build:${PORTSDIR}/textproc/py-sphinx
+DOCS_BUILD_DEPENDS=		sphinx-build:textproc/py-sphinx
 
 LLVM_RELEASE=	3.8.0
 
@@ -148,20 +148,10 @@ MAN1SRCS+=	clang.1 \
 CLANG_PATTERN=	(c-index-test|clang|scan-|Reporter.py|ScanView.py|scanview.css|sorttable.js|startfile.py|-analyzer)
 .endif
 
-.if ${PORT_OPTIONS:MEXTRAS}
-COMMANDS+=	${EXTRAS_COMMANDS}
-.endif
-
 .if ${PORT_OPTIONS:MLIT}
 MAN1SRCS+=	lit.1 FileCheck.1
 _USES_PYTHON=	python
 LIT_COMMANDS=	lit llvm-lit FileCheck
-.endif
-
-.if ${PORT_OPTIONS:MLLD}
-COMMANDS+=	lld \
-		lld-link
-PORTDOCS+=	lld
 .endif
 
 .if ${PORT_OPTIONS:MLLDB}
@@ -192,10 +182,27 @@ NOT_FOR_ARCH=	ia64
 
 .include <bsd.port.pre.mk>
 
+.if ${PORT_OPTIONS:MEXTRAS}
+.if ${OPSYS} != "FreeBSD" || ${COMPILER_TYPE} == clang
+COMMANDS+=	${EXTRAS_COMMANDS}
+MAN1SRCS+=	extraclangtools.1
+PORTDOCS+=	clang-tools
+.endif
+.endif
+
+.if ${PORT_OPTIONS:MLLD}
+.if ${OPSYS} != "FreeBSD" || ${COMPILER_TYPE} == clang
+COMMANDS+=	lld \
+		lld-link
+PORTDOCS+=	lld
+.endif
+.endif
+
 .if ${OPSYS} == "FreeBSD" && ${COMPILER_TYPE} != clang
 # Evil hack around gcc48 not providing a usable c++11 environment on 9.x
 PLIST_SUB:=	${PLIST_SUB:NEXTRAS=*} EXTRAS="@comment "
 PLIST_SUB:=	${PLIST_SUB:NLLDB=*} LLDB="@comment "
+PLIST_SUB:=	${PLIST_SUB:NLLD=*} LLD="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MLLDB} && ${PYTHON_REL} >= 3000
@@ -211,7 +218,9 @@ post-extract-EXTRAS-on:
 .endif
 
 post-extract-LLD-on:
+.if ${OPSYS} != "FreeBSD" || ${COMPILER_TYPE} == clang
 	${MV} ${WRKSRC_lld} ${PATCH_WRKSRC}/tools/lld
+.endif
 
 post-extract-LLDB-on:
 .if ${OPSYS} != "FreeBSD" || ${COMPILER_TYPE} == clang

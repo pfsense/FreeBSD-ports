@@ -15,16 +15,16 @@ COMMENT=	Old-school bomb-dropping Deathmatch
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	${LOCALBASE}/include/argp.h:${PORTSDIR}/devel/argp-standalone \
-		asciidoc:${PORTSDIR}/textproc/asciidoc \
-		docbook-xml>0:${PORTSDIR}/textproc/docbook-xml \
-		xsltproc:${PORTSDIR}/textproc/libxslt \
-		docbook-xsl>=0:${PORTSDIR}/textproc/docbook-xsl
-LIB_DEPENDS=	libxml2.so:${PORTSDIR}/textproc/libxml2
+BUILD_DEPENDS=	${LOCALBASE}/include/argp.h:devel/argp-standalone \
+		asciidoc:textproc/asciidoc \
+		docbook-xml>0:textproc/docbook-xml \
+		xsltproc:textproc/libxslt \
+		docbook-xsl>=0:textproc/docbook-xsl
+LIB_DEPENDS=	libxml2.so:textproc/libxml2
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	chazomaticus
-GH_TAGNAME=	21292f0
+GH_TAGNAME=	ded6410
 
 USES=		autoreconf compiler:c++11-lang gmake pkgconfig lua:52
 USE_SDL=	image2 sdl2 ttf2

@@ -2,16 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	gnome-shell-extension-weather
-PORTVERSION=	0.0.0.20150421
+PORTVERSION=	0.0.0.20151011
 CATEGORIES=	deskutils gnome
 DIST_SUBDIR=	gnome3
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Weather extension for the GNOME3 shell
 
-RUN_DEPENDS=	gnome-shell>=0:${PORTSDIR}/x11/gnome-shell
+RUN_DEPENDS=	gnome-shell>=0:x11/gnome-shell
 
-USES=		autoreconf gettext gmake libtool pkgconfig tar:xz
+USES=		autoreconf gettext gmake gnome libtool pkgconfig tar:xz
 USE_GNOME=	glib20 intlhack
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
@@ -20,7 +20,7 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 GH_ACCOUNT=	Neroth
-GH_TAGNAME=	746debe
+GH_TAGNAME=	5c44f2f
 
 PKGMESSAGE=	../gnome-shell-extra-extensions/pkg-message.slaves
 

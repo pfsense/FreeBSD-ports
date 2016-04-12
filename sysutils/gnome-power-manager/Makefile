@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gnome-power-manager
-PORTVERSION=	3.16.1
+PORTVERSION=	3.18.0
 CATEGORIES=	sysutils gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -10,11 +10,11 @@ DIST_SUBDIR=	gnome3
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Power management system for the GNOME Desktop
 
-LIB_DEPENDS=	libupower-glib.so:${PORTSDIR}/sysutils/upower
+LIB_DEPENDS=	libupower-glib.so:sysutils/upower
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gmake libtool pathfix pkgconfig tar:xz
+USES=		gettext gmake gnome libtool pathfix pkgconfig tar:xz
 INSTALLS_ICONS=	yes
 USE_GNOME=	gtk30 intlhack
 GNU_CONFIGURE=	yes
@@ -30,8 +30,8 @@ OPTIONS_DEFINE=	MANPAGES
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MMANPAGES} || defined(PACKAGE_BUILDING)
-BUILD_DEPENDS+=	docbook2html:${PORTSDIR}/textproc/docbook-utils \
-		docbook-sgml>0:${PORTSDIR}/textproc/docbook-sgml
+BUILD_DEPENDS+=	docbook2html:textproc/docbook-utils \
+		docbook-sgml>0:textproc/docbook-sgml
 PLIST_SUB+=	MAN=""
 .else
 PLIST_SUB+=	MAN="@comment "

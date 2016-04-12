@@ -3,7 +3,7 @@
 
 PORTNAME=	nspluginwrapper
 PORTVERSION=	1.4.4
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	www linux emulators
 MASTER_SITES=	http://nspluginwrapper.org/download/ \
 		LOCAL/jkim \
@@ -15,7 +15,7 @@ COMMENT=	Compatibility plugin for Mozilla NPAPI plugins
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
+LIB_DEPENDS=	libcurl.so:ftp/curl
 
 CONFLICTS=	nspluginwrapper-1.3.*
 
@@ -59,6 +59,8 @@ PLIST_SUB+=	HOST_AMD64="@comment "
 post-patch:
 	${REINPLACE_CMD} -e 's,%%LOCALBASE%%,${LOCALBASE},g' \
 	    ${WRKSRC}/src/npw-config.c
+	${REINPLACE_CMD} -e 's,A-Z,:upper:,g; s,a-z,:lower:,g' \
+	    ${WRKSRC}/configure ${WRKSRC}/src/npw-viewer.sh
 
 post-install:
 	${MKDIR} ${STAGEDIR}${LIBDIR}/i386/linux

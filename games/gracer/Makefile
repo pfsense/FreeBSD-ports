@@ -10,12 +10,12 @@ MASTER_SITES=	SF
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	3D motor sport simulator
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:${PORTSDIR}/x11-toolkits/plib
-LIB_DEPENDS=	libgif.so:${PORTSDIR}/graphics/giflib \
-		libpng.so:${PORTSDIR}/graphics/png
+BUILD_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib
+LIB_DEPENDS=	libgif.so:graphics/giflib \
+		libpng.so:graphics/png
 
 USE_GL=		glut
 USES=		gmake jpeg localbase perl5 tcl:84

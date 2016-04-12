@@ -2,10 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	getdns
-PORTVERSION=	0.3.3
+PORTVERSION=	0.9.0
+PORTREVISION=	2
 CATEGORIES=	dns ipv6
 MASTER_SITES=	https://getdnsapi.net/dist/ \
-    		https://mirrors.rit.edu/zi/ \
+		https://mirrors.rit.edu/zi/ \
 		http://getdnsapi.net/dist/ \
 		http://mirrors.rit.edu/zi/
 
@@ -15,10 +16,10 @@ COMMENT=	Modern asynchronous DNS API
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libexpat.so:${PORTSDIR}/textproc/expat2 \
-    		libidn.so:${PORTSDIR}/dns/libidn \
-		libldns.so:${PORTSDIR}/dns/ldns \
-		libunbound.so:${PORTSDIR}/dns/unbound
+LIB_DEPENDS=	libexpat.so:textproc/expat2 \
+		libidn.so:dns/libidn \
+		libldns.so:dns/ldns \
+		libunbound.so:dns/unbound
 
 USES=		libtool
 USE_LDCONFIG=	yes
@@ -36,28 +37,31 @@ LIBEV_DESC=	Build with libev extension
 LIBUV_DESC=	Build with libuv extension
 LIBEVENT_DESC=	Build with libevent extension
 
-LIBEV_LIB_DEPENDS=	libev.so:${PORTSDIR}/devel/libev
+LIBEV_LIB_DEPENDS=	libev.so:devel/libev
 LIBEV_CONFIGURE_WITH=	libev
-LIBUV_LIB_DEPENDS=	libuv.so:${PORTSDIR}/devel/libuv
+LIBUV_LIB_DEPENDS=	libuv.so:devel/libuv
 LIBUV_CONFIGURE_WITH=	libuv
-LIBEVENT_LIB_DEPENDS=	libevent.so:${PORTSDIR}/devel/libevent2
+LIBEVENT_LIB_DEPENDS=	libevent.so:devel/libevent2
 LIBEVENT_CONFIGURE_WITH=libevent
 
 .include <bsd.port.options.mk>
 
+.include <bsd.port.pre.mk>
+
+.if ${OSVERSION} <= 1000000
+CONFIGURE_ARGS+=	--disable-gost
+.endif
+
 post-patch:
+	${REINPLACE_CMD} -e 's|libdir)/pkgconfig|prefix)/libdata/pkgconfig|' \
+		${WRKSRC}/Makefile.in
 	${REINPLACE_CMD} -Ee 's,^(sharedoc = ).*,\1${WRKDIR}/doc,' \
-	    	-e '/echo .\*\*\*/d' ${WRKSRC}/Makefile.in
+		-e '/echo .\*\*\*/d' ${WRKSRC}/Makefile.in
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS} || ${PORT_OPTIONS:MEXAMPLES}
-	${MKDIR} ${WRKDIR}/examples
-	${MV} ${WRKSRC}/spec/${PORTNAME}*gz ${WRKDIR}/examples/${PORTNAME}.tgz
-.endif
 .if ${PORT_OPTIONS:MEXAMPLES}
-	(cd ${WRKDIR}/examples && ${TAR} --strip-components=1 -xf ${PORTNAME}.tgz)
-	(cd ${WRKDIR}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}/)
+	(cd ${WRKSRC}/spec/example && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}/)
 .endif
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libgetdns.so.*
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

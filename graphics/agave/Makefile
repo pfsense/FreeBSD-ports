@@ -10,10 +10,10 @@ MASTER_SITES=	http://download.gna.org/colorscheme/releases/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Color scheme builder for the GNOME desktop
 
-LICENSE=	GPLv2 # (or later)
+LICENSE=	GPLv2+
 
-LIB_DEPENDS=	libboost_thread.so:${PORTSDIR}/devel/boost-libs \
-		libglademm-2.4.so:${PORTSDIR}/devel/libglademm24
+LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
+		libglademm-2.4.so:devel/libglademm24
 
 USES=		gettext gmake pathfix pkgconfig tar:bzip2
 USE_GNOME=	gconfmm26 gnomedocutils gnomeprefix gtkmm24 intltool

@@ -10,10 +10,10 @@ DISTNAME=	${PORTNAME:S/lib//}-${DISTVERSION}-Source
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Awesome music visualiser
 
-LICENSE=	LGPL21 # or later
+LICENSE=	LGPL21+
 
-LIB_DEPENDS=	libftgl.so:${PORTSDIR}/graphics/ftgl \
-		libfreetype.so:${PORTSDIR}/print/freetype2
+LIB_DEPENDS=	libftgl.so:graphics/ftgl \
+		libfreetype.so:print/freetype2
 
 USES=		cmake localbase
 CMAKE_ARGS=	-DUSE_OPENMP=OFF # openmp breaks build on 11.x

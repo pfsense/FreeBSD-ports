@@ -2,15 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	pcmanx
-PORTVERSION=	1.2
+PORTVERSION=	1.3
 CATEGORIES=	chinese net gnome
-MASTER_SITES=	http://pcmanx-gtk2.googlecode.com/files/
+MASTER_SITES=	https://github.com/pcman-bbs/${PORTNAME}/releases/download/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-gtk2-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	BBS client using GTK+ 2.x
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USE_GNOME=	gtk20 intlhack
@@ -40,7 +40,7 @@ DEBUG_CONFIGURE_ENABLE=		debug
 DOCKLET_CONFIGURE_ENABLE=	docklet
 NOTIFIER_CONFIGURE_ENABLE=	notifier
 LIBNOTIFY_CONFIGURE_ENABLE=	libnotify
-LIBNOTIFY_LIB_DEPENDS=		libnotify.so:${PORTSDIR}/devel/libnotify
+LIBNOTIFY_LIB_DEPENDS=		libnotify.so:devel/libnotify
 NANCY_CONFIGURE_ENABLE=		nancy
 MOUSE_CONFIGURE_ENABLE=		mouse
 EXTERNAL_CONFIGURE_ENABLE=	external

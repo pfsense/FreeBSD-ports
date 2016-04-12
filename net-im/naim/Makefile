@@ -12,7 +12,7 @@ COMMENT=	Console ncurses-based AIM, ICQ, IRC, and Lily client
 LICENSE=	GPLv2
 
 GNU_CONFIGURE=	yes
-USES=	tar:bzip2
+USES=		ncurses tar:bzip2
 
 PORTDOCS=	FAQ README commands.txt keyboard.txt
 
@@ -32,7 +32,7 @@ CONFIGURE_ARGS+=	--without-pkgdocdir
 .endif
 
 .if ${PORT_OPTIONS:MDETACH}
-RUN_DEPENDS=	screen:${PORTSDIR}/sysutils/screen
+RUN_DEPENDS=	screen:sysutils/screen
 CONFIGURE_ARGS+=	--enable-detach
 .endif
 

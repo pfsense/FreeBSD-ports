@@ -3,6 +3,7 @@
 
 PORTNAME=	octave-forge-ocs
 PORTVERSION=	0.1.5
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -17,7 +18,7 @@ OCTSRC=		${OCTAVE_PKGNAME}
 
 WRKSRC=		${WRKDIR}/${OCTSRC}/src
 
-RUN_DEPENDS+=	${TARBALLS_DIR}/odepkg.tar.gz:${PORTSDIR}/math/octave-forge-odepkg
+RUN_DEPENDS+=	${TARBALLS_DIR}/odepkg.tar.gz:math/octave-forge-odepkg
 
 .include "${.CURDIR}/../../Mk/bsd.octave.mk"
 

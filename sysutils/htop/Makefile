@@ -2,33 +2,29 @@
 # $FreeBSD$
 
 PORTNAME=	htop
-PORTVERSION=	1.0.3
+PORTVERSION=	2.0.1
 CATEGORIES=	sysutils
-MASTER_SITES=	http://hisham.hm/htop/releases/${PORTVERSION}/
 
 MAINTAINER=	gaod@hychen.org
 COMMENT=	Better top(1) - interactive process viewer
 
 LICENSE=	GPLv2
 
-OPTIONS_DEFINE=	LSOF
-OPTIONS_DEFAULT=LSOF
-
-NOT_FOR_ARCHS=	ia64 powerpc sparc64
+RUN_DEPENDS=	lsof:sysutils/lsof
 
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib -lexecinfo
 
-CONFIGURE_ARGS=	--with-proc=/compat/linux/proc --enable-unicode
-USES=		autoreconf ncurses libtool execinfo python:2,build
-
-LSOF_RUN_DEPENDS=	lsof:${PORTSDIR}/sysutils/lsof
-
-post-patch:
-	@${REINPLACE_CMD} -e 's:/usr/bin/python:${PYTHON_CMD}:' ${WRKSRC}/scripts/MakeHeader.py
-
-pre-configure:
-	@[ -f /compat/linux/proc/stat ] || { ${CAT} ${PKGMESSAGE}; ${FALSE}; }
+CONFIGURE_ARGS=	--enable-unicode
+USES=		autoreconf execinfo libtool ncurses python:2,build shebangfix
+SHEBANG_LANG=	python2
+SHEBANG_FILES=	scripts/MakeHeader.py
+USE_GITHUB=	yes
+GH_ACCOUNT=	hishamhm
+PLIST_FILES=	bin/htop \
+		man/man1/htop.1.gz \
+		share/applications/htop.desktop \
+		share/pixmaps/htop.png
 
 .include <bsd.port.mk>

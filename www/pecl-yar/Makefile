@@ -19,13 +19,14 @@ USE_PHP=	json curl
 USE_PHPEXT=	yes
 USE_PHPIZE=	yes
 USE_PHP_BUILD=	yes
+IGNORE_WITH_PHP=	70
 
 CFLAGS+=	-I${LOCALBASE}/include
 CONFIGURE_ARGS=	--with-php-config=${PREFIX}/bin/php-config
 
 OPTIONS_DEFINE=	MSGPACK
 MSGPACK_DESC=	Enable MSGPACK module
-MSGPACK_BUILD_DEPENDS=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/msgpack.so:${PORTSDIR}/devel/pecl-msgpack
-MSGPACK_RUN_DEPENDS=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/msgpack.so:${PORTSDIR}/devel/pecl-msgpack
+MSGPACK_BUILD_DEPENDS=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/msgpack.so:devel/pecl-msgpack
+MSGPACK_RUN_DEPENDS=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/msgpack.so:devel/pecl-msgpack
 
 .include <bsd.port.mk>

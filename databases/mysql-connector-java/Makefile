@@ -3,7 +3,7 @@
 
 
 PORTNAME=	mysql-connector-java
-PORTVERSION=	5.1.37
+PORTVERSION=	5.1.38
 CATEGORIES=	databases java
 MASTER_SITES=	MYSQL/Connector-J
 
@@ -12,7 +12,7 @@ COMMENT=	MySQL Connector/J: JDBC interface for MySQL
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	${JAVALIBDIR}/log4j.jar:${PORTSDIR}/devel/log4j
+RUN_DEPENDS=	${JAVALIBDIR}/log4j.jar:devel/log4j
 
 USES=		cpe
 CPE_VENDOR=	oracle
@@ -29,7 +29,7 @@ EXTRADOCS=	CHANGES docs/connector-j.html docs/connector-j.pdf
 JARFILE=	${DISTNAME}-bin.jar
 JDCLASSPATH=	${SRCDIR}:${CLASSPATH}
 
-PLIST_FILES=	%%JAVAJARDIR%%/${DESTJARFILE}
+PLIST_FILES=	${JAVAJARDIR}/${DESTJARFILE}
 
 OPTIONS_DEFINE=	DOCS
 

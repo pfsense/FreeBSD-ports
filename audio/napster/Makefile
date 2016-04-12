@@ -11,11 +11,12 @@ COMMENT?=	MP3 sharing, search, and chat client for the OpenNAP network
 
 CONFLICTS?=	ru-nap-*
 
+USES=		ncurses
 GNU_CONFIGURE=	yes
 
 OPTIONS_DEFINE=	DOCS
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for file in NEWS README doc/napster.txt doc/userguide.html
 	${INSTALL_DATA} ${WRKSRC}/${file} ${STAGEDIR}${DOCSDIR}

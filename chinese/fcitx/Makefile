@@ -21,10 +21,10 @@ COMMENT=	Flexible Input Method Framework
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:${PORTSDIR}/misc/iso-codes
-LIB_DEPENDS=	libdbus-1.so:${PORTSDIR}/devel/dbus \
-		libicuuc.so:${PORTSDIR}/devel/icu
-RUN_DEPENDS=	xdg-open:${PORTSDIR}/devel/xdg-utils
+BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes
+LIB_DEPENDS=	libdbus-1.so:devel/dbus \
+		libicuuc.so:devel/icu
+RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
 SUB_FILES=	pkg-message
 SUB_LIST+=	PORTSDIR=${PORTSDIR}
@@ -35,7 +35,7 @@ USE_GNOME=	pango intltool libxml2 introspection
 USE_XORG=	x11 xext xkbfile
 USE_LDCONFIG=	yes
 USES=		tar:xz cmake desktop-file-utils execinfo gettext iconv:wchar_t \
-		pathfix pkgconfig shared-mime-info
+		pkgconfig shared-mime-info
 INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=	GTK2 GTK3 QT4 OPENCC TPUNC DOCS
@@ -89,7 +89,7 @@ PLIST_SUB+=	QT4="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MOPENCC}
-LIB_DEPENDS+=	libopencc.so:${PORTSDIR}/chinese/opencc
+LIB_DEPENDS+=	libopencc.so:chinese/opencc
 .else
 CMAKE_ARGS+=	-DENABLE_OPENCC=OFF
 .endif

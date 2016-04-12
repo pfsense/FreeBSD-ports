@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Test-Exception
-PORTVERSION=	0.41
+PORTVERSION=	0.43
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -13,7 +13,7 @@ COMMENT=	Test functions for exception based code
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-Sub-Uplevel>=0.18:${PORTSDIR}/devel/p5-Sub-Uplevel
+BUILD_DEPENDS=	p5-Sub-Uplevel>=0.18:devel/p5-Sub-Uplevel
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 NO_ARCH=	yes

@@ -9,11 +9,11 @@ CATEGORIES=	astro geography
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Correlate digital camera photos with GPS data in GPX format
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libexiv2.so:${PORTSDIR}/graphics/exiv2 \
-		libgtkmm-2.4.so:${PORTSDIR}/x11-toolkits/gtkmm24
+LIB_DEPENDS=	libexiv2.so:graphics/exiv2 \
+		libgtkmm-2.4.so:x11-toolkits/gtkmm24
 
 USES=		gmake pkgconfig
 USE_GNOME=	libxml2

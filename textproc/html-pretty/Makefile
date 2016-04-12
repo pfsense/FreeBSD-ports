@@ -12,25 +12,23 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	HTML and SGML prettyprinter and text-to-HTML/SGML converter
 
 LICENSE=	PD
-LICENSE_NAME=	Public Domain
 LICENSE_FILE=	${WRKSRC}/COPYING
-LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 GNU_CONFIGURE=	yes
 
 PORTDOCS=	*
 
-DOCFILES=	AUTHORS BUGS COPYING ChangeLog NEWS README THANKS
+OPTIONS_DEFINE=	DOCS
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/html
-	${INSTALL_DATA} ${WRKSRC}/*.html \
+	${INSTALL_DATA} ${WRKSRC}/*.html ${WRKSRC}/Docs/*.html \
 		${STAGEDIR}${DOCSDIR}/html
-	${INSTALL_DATA} ${WRKSRC}/Docs/*.html \
-		${STAGEDIR}${DOCSDIR}/html
-	for docfile in ${DOCFILES}; do \
-		${INSTALL_DATA} ${WRKSRC}/$$docfile ${STAGEDIR}${DOCSDIR}/; \
-	done
+.for f in AUTHORS BUGS ChangeLog NEWS README THANKS
+	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}/
+.endfor
 
 .include <bsd.port.mk>

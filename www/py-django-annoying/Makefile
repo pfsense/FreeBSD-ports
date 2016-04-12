@@ -2,15 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	django-annoying
-PORTVERSION=	0.8.4
-DISTVERSIONPREFIX=	release-
+PORTVERSION=	0.8.7
+DISTVERSIONPREFIX=	v
 CATEGORIES=	www python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	cs@FreeBSD.org
-COMMENT=	Application to eliminate annoying things in the Django framework
+COMMENT=	Eliminate annoying things in the Django framework
 
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/django/bin/django-admin.py:${PORTSDIR}/www/py-django
+RUN_DEPENDS=	${PYTHON_SITELIBDIR}/django/bin/django-admin.py:www/py-django18
 
 USE_GITHUB=	yes
 

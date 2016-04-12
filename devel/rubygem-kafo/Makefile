@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	kafo
-PORTVERSION=	0.6.12
+PORTVERSION=	0.7.2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -12,19 +12,20 @@ COMMENT=	Ruby framework to create installers
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	rubygem-clamp>=0.6.2:${PORTSDIR}/devel/rubygem-clamp \
-		rubygem-highline>=1.6.21:${PORTSDIR}/devel/rubygem-highline \
-		rubygem-logging>=1.8.1:${PORTSDIR}/devel/rubygem-logging \
-		rubygem-powerbar>=1.0.11:${PORTSDIR}/devel/rubygem-powerbar \
-		rubygem-kafo_parsers>=0.0.3:${PORTSDIR}/devel/rubygem-kafo_parsers \
-		gsed:${PORTSDIR}/textproc/gsed
+RUN_DEPENDS=	gsed:textproc/gsed \
+		rubygem-ansi>=0:devel/rubygem-ansi \
+		rubygem-clamp>=0.6.2:devel/rubygem-clamp \
+		rubygem-highline>=1.6.21:devel/rubygem-highline \
+		rubygem-kafo_parsers>=0:devel/rubygem-kafo_parsers \
+		rubygem-kafo_wizards>=0:devel/rubygem-kafo_wizards \
+		rubygem-logging>=0:devel/rubygem-logging \
+		rubygem-powerbar>=0:devel/rubygem-powerbar
 
-USES=		cpe
 NO_ARCH=	yes
-
 USE_RUBY=	yes
 USE_RUBYGEMS=	yes
 RUBYGEM_AUTOPLIST=	yes
+USES=		cpe
 
 CPE_VENDOR=	theforeman
 

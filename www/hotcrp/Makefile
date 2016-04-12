@@ -2,14 +2,15 @@
 
 PORTNAME=	hotcrp
 PORTVERSION=	2.94
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	http://www.read.seas.harvard.edu/~kohler/hotcrp/
 
 MAINTAINER=	kevlo@FreeBSD.org
 COMMENT=	Web based conference management software
 
-RUN_DEPENDS=	pdftohtml:${PORTSDIR}/graphics/poppler-utils \
-		zip:${PORTSDIR}/archivers/zip
+RUN_DEPENDS=	pdftohtml:graphics/poppler-utils \
+		zip:archivers/zip
 
 USE_PHP=	mysqli gd session ctype
 USE_MYSQL=	server

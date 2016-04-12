@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	decorator
-PORTVERSION=	3.4.0
-PORTREVISION=	1
+PORTVERSION=	4.0.9
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,8 +11,14 @@ MAINTAINER=	dsh@wizard.volgograd.ru
 COMMENT=	Better living through Python with decorators
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 USES=		python
 USE_PYTHON=	distutils autoplist
+
+NO_ARCH=	yes
+
+do-test:
+	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
 
 .include <bsd.port.mk>

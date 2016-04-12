@@ -1,4 +1,4 @@
-# Created by: Jui-Nan Lin <jnlin@csie.nctu.edu.tw>
+# Created by: Jui-Nan Lin <jnlin@freebsd.cs.nctu.edu.tw>
 # $FreeBSD$
 
 PORTNAME=	Net-Amazon-Route53
@@ -8,18 +8,18 @@ CATEGORIES=	dns perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	jnlin@csie.nctu.edu.tw
+MAINTAINER=	jnlin@freebsd.cs.nctu.edu.tw
 COMMENT=	Manage your DNS entries on Amazon's Route53 service
 
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-Crypt-SSLeay>=0:${PORTSDIR}/security/p5-Crypt-SSLeay \
-		p5-Digest-HMAC>=0:${PORTSDIR}/security/p5-Digest-HMAC \
-		p5-HTML-Parser>=0:${PORTSDIR}/www/p5-HTML-Parser \
-		p5-Mouse>=0:${PORTSDIR}/devel/p5-Mouse \
-		p5-XML-Bare>=0:${PORTSDIR}/textproc/p5-XML-Bare \
-		p5-libwww>=0:${PORTSDIR}/www/p5-libwww
+BUILD_DEPENDS=	p5-Crypt-SSLeay>=0:security/p5-Crypt-SSLeay \
+		p5-Digest-HMAC>=0:security/p5-Digest-HMAC \
+		p5-HTML-Parser>=0:www/p5-HTML-Parser \
+		p5-Mouse>=0:devel/p5-Mouse \
+		p5-XML-Bare>=0:textproc/p5-XML-Bare \
+		p5-libwww>=0:www/p5-libwww
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 CONFLICTS=	py[23][0-9]-boto-devel-[0-9]*

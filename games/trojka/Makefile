@@ -3,6 +3,7 @@
 
 PORTNAME=	trojka
 PORTVERSION=	1.0
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	ftp://ftp.funet.fi/pub/unix/games/
 DISTNAME=	${PORTNAME}
@@ -12,9 +13,9 @@ COMMENT=	Game of skill
 
 LICENSE=	TROJKA
 LICENSE_NAME=	Trojka Copyright
-LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-SUB_FILES=	pkg-message
+USES=		ncurses
 
 .include <bsd.port.mk>

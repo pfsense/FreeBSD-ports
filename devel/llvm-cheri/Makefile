@@ -10,8 +10,7 @@ COMMENT=	LLVM and Clang with support for the CHERI architecture
 
 LLVM_SUFFIX=	-cheri
 LLVM_PREFIX=	${PREFIX}/llvm${LLVM_SUFFIX}
-COMMAND_PREFIX=	cheri-unknown-freebsd-
-COMMAND_SUFFIX=
+COMMAND_SUFFIX=	${LLVM_SUFFIX}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${LLVM_SUFFIX}
 DATADIR=	${PREFIX}/share/${PORTNAME}${LLVM_SUFFIX}
 
@@ -22,7 +21,8 @@ SUB_FILES=	llvm-wrapper.sh
 SUB_LIST=	LLVM_PREFIX="${LLVM_PREFIX}" LLVM_SUFFIX="${LLVM_SUFFIX}"
 
 CMAKE_INSTALL_PREFIX=	${LLVM_PREFIX}
-CMAKE_ARGS=	-DBUILD_SHARED_LIBS=ON
+CMAKE_ARGS=	-DBUILD_SHARED_LIBS=ON \
+		-DLLVM_DEFAULT_TARGET_TRIPLE=cheri-unknown-freebsd
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	CTSRD-CHERI
@@ -46,13 +46,13 @@ DOCS_CMAKE_ON=		-DLLVM_ENABLE_SPHINX=ON \
 DOCS_PLIST_FILES=	${MAN1SRCS:S|^|man/man1/|:S|.1$|${LLVM_SUFFIX}.1.gz|}
 LIT_DESC=		Install lit and FileCheck test tools
 LLDB_DESC=		Install lldb, the LLVM debugger (ignore on 9.x)
-LLDB_BUILD_DEPENDS=	swig:${PORTSDIR}/devel/swig13
+LLDB_BUILD_DEPENDS=	swig:devel/swig13
 LLDB_GH_PROJECT=	lldb:lldb
 LLDB_GH_TAGNAME=	${LLDB_COMMIT}:lldb
 
 OPTIONS_SUB=	yes
 
-DOCS_BUILD_DEPENDS=		sphinx-build:${PORTSDIR}/textproc/py-sphinx
+DOCS_BUILD_DEPENDS=		sphinx-build:textproc/py-sphinx
 
 LLVM_RELEASE=	${PORTVERSION:C/\.r[0-9]*//}
 PLIST_SUB+=	LLVM_RELEASE=${LLVM_RELEASE}

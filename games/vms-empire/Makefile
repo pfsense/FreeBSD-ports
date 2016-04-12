@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	vms-empire
-PORTVERSION=	1.13
+PORTVERSION=	1.14
 CATEGORIES=	games
 MASTER_SITES=	http://www.catb.org/~esr/vms-empire/
 
@@ -11,6 +11,8 @@ COMMENT=	Simulation of a full-scale war between two emperors
 
 LICENSE=	GPLv2
 
+USES=		ncurses
+MAKE_ARGS=	LIBS="${LDFLAGS} -lncurses"
 PORTDOCS=	AUTHORS BUGS HACKING NEWS README
 OPTIONS_DEFINE=	DOCS
 

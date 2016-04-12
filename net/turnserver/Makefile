@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	turnserver
-PORTVERSION=	4.5.0.2
-PORTREVISION=	1
+PORTVERSION=	4.5.0.3
 CATEGORIES=	net
 MASTER_SITES=	http://turnserver.open-sys.org/downloads/v${PORTVERSION}/:prog \
 		http://turnserver.open-sys.org/downloads/extradocs/:xdocs \
@@ -18,7 +17,7 @@ COMMENT=	STUN/TURN Server; IPv6, DTLS support; RFCs 5389, 5766, 6062, 6156
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libevent.so:${PORTSDIR}/devel/libevent2
+LIB_DEPENDS=	libevent.so:devel/libevent2
 
 CONFLICTS=	libevent-1.*
 
@@ -94,7 +93,7 @@ CONFIGURE_ENG+=	TURN_NO_MONGO=1
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MSQLITE}
-USE_SQLITE=	yes
+USES+=		sqlite
 .else
 CONFIGURE_ENV+=	TURN_NO_SQLITE=1
 .endif
@@ -112,7 +111,7 @@ CONFIGURE_ENV+=	TURN_NO_MYSQL=1
 .endif
 
 .if ${PORT_OPTIONS:MREDIS}
-LIB_DEPENDS+=	libhiredis.so:${PORTSDIR}/databases/hiredis
+LIB_DEPENDS+=	libhiredis.so:databases/hiredis
 .else
 CONFIGURE_ENV+=	TURN_NO_HIREDIS=1
 .endif

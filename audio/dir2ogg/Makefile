@@ -10,13 +10,13 @@ MASTER_SITES=	http://jak-linux.org/projects/dir2ogg/${PORTVERSION:R}/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command-line {wav,mp3,m4a} to ogg converter
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	faad:${PORTSDIR}/audio/faad \
-		mutagen-inspect:${PORTSDIR}/audio/py-mutagen \
-		mplayer:${PORTSDIR}/multimedia/mplayer \
-		oggenc:${PORTSDIR}/audio/vorbis-tools
+RUN_DEPENDS=	faad:audio/faad \
+		mutagen-inspect:audio/py-mutagen \
+		mplayer:multimedia/mplayer \
+		oggenc:audio/vorbis-tools
 
 USES=		python:2,run shebangfix
 

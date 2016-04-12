@@ -14,14 +14,17 @@ COMMENT=	Python module that communicates with Transmission through JSON-RPC
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:${PORTSDIR}/devel/py-six
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six
 
 USES=		python
 USE_PYTHON=	autoplist concurrent distutils
+NO_ARCH=	yes
 
 PORTDOCS=	*
 
-post-install:
+OPTIONS_DEFINE=	DOCS
+
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 

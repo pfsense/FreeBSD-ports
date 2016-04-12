@@ -40,6 +40,7 @@
     SUBDIR += encodings
     SUBDIR += fantasque-sans-mono
     SUBDIR += farsifonts
+    SUBDIR += fifteen
     SUBDIR += fira
     SUBDIR += fntsample
     SUBDIR += font-adobe-100dpi
@@ -162,6 +163,7 @@
     SUBDIR += suxus
     SUBDIR += symbola
     SUBDIR += terminus-font
+    SUBDIR += terminus-ttf
     SUBDIR += tkfont
     SUBDIR += tlwg-ttf
     SUBDIR += tmu

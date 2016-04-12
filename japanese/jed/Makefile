@@ -15,13 +15,14 @@ DIST_SUBDIR=	jed
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SLang-based text editor (w/ Japanese support)
 
-LIB_DEPENDS=	libslang.so:${PORTSDIR}/japanese/libslang
+LIB_DEPENDS=	libslang.so:japanese/libslang
 
 VERSION=	0.99.8
 JP_VERSION=	067
 
+USES=		ncurses
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	JED_ROOT="${JED_ROOT}" X_EXTRA_LIBS="-lcurses"
+CONFIGURE_ENV=	JED_ROOT="${JED_ROOT}" X_EXTRA_LIBS="-lncurses"
 CONFIGURE_ARGS=	--enable-x-locale=no
 ALL_TARGET=	${BINSTUFF} getmail
 MAKE_JOBS_UNSAFE=	yes
@@ -37,7 +38,7 @@ OPTIONS_SUB=	yes
 CANNA_DESC=		Canna support
 CANNA_CONFIGURE_ON=	--with-canna=yes
 CANNA_CONFIGURE_OFF=	--with-canna=no
-CANNA_LIB_DEPENDS=	libcanna.so:${PORTSDIR}/japanese/canna-lib
+CANNA_LIB_DEPENDS=	libcanna.so:japanese/canna-lib
 
 X11_USE=	XORG=x11,xext,xt
 

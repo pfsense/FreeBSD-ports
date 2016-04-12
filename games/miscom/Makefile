@@ -10,8 +10,10 @@ DISTNAME=	${PORTNAME}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Atari "Missile Command" clone
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		ncurses
 
 ALL_TARGET=	# empty
 

@@ -11,10 +11,9 @@ COMMENT=	Blog server
 
 LICENSE=	BSD3CLAUSE
 
-RUN_DEPENDS=	munger:${PORTSDIR}/lang/munger
+USES=		sqlite
+RUN_DEPENDS=	munger:lang/munger
 
 DATADIR=	${PREFIX}/share/ephemera
-
-USE_SQLITE=	3
 
 .include <bsd.port.mk>

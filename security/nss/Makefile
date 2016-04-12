@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nss
-PORTVERSION=	3.22.2
+PORTVERSION=	3.23
 #DISTVERSIONSUFFIX=	-with-ckbi-1.98
 CATEGORIES=	security
 MASTER_SITES=	MOZILLA/security/${PORTNAME}/releases/${DISTNAME:tu:C/[-.]/_/g}_RTM/src
@@ -10,11 +10,11 @@ MASTER_SITES=	MOZILLA/security/${PORTNAME}/releases/${DISTNAME:tu:C/[-.]/_/g}_RT
 MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	Libraries to support development of security-enabled applications
 
-BUILD_DEPENDS=	zip:${PORTSDIR}/archivers/zip \
-		nspr>=4.12:${PORTSDIR}/devel/nspr \
-		sqlite3>=3.7.15:${PORTSDIR}/databases/sqlite3
-LIB_DEPENDS=	libnspr4.so:${PORTSDIR}/devel/nspr \
-		libsqlite3.so:${PORTSDIR}/databases/sqlite3
+BUILD_DEPENDS=	zip:archivers/zip \
+		nspr>=4.12:devel/nspr \
+		sqlite3>=3.7.15:databases/sqlite3
+LIB_DEPENDS=	libnspr4.so:devel/nspr \
+		libsqlite3.so:databases/sqlite3
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/nss
 
@@ -54,9 +54,9 @@ BINS=		${DIST}/${OPSYS}${OSREL}_OPT.OBJ
 BINS=		${DIST}/${OPSYS}${OSREL}_DBG.OBJ
 .endif
 
-.if ${ARCH} == amd64
+.if ${OPSYS} == FreeBSD && ${ARCH} == amd64
 USE_BINUTILS=	# intel-gcm.s
-CFLAGS+=	-B${LOCALBASE}/bin
+CC+=	-B${LOCALBASE}/bin
 .endif
 
 check regression-test test:
@@ -85,17 +85,17 @@ post-patch:
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/include/nss/nss ${STAGEDIR}${PREFIX}/lib/nss
 	${FIND} ${DIST}/public/nss -type l \
-	    	-exec ${INSTALL_DATA} {} ${STAGEDIR}${PREFIX}/include/nss/nss \;
+		-exec ${INSTALL_DATA} {} ${STAGEDIR}${PREFIX}/include/nss/nss \;
 	${INSTALL_LIB} ${BINS}/lib/*.so.1 \
 		${STAGEDIR}${PREFIX}/lib/nss
 	${INSTALL_DATA} ${BINS}/lib/libcrmf.a \
-	    	${STAGEDIR}${PREFIX}/lib/nss
+		${STAGEDIR}${PREFIX}/lib/nss
 .for bin in ${INSTALL_BINS}
 	${INSTALL_PROGRAM} ${BINS}/bin/${bin} \
 		${STAGEDIR}${PREFIX}/bin
 .endfor
 	cd ${BINS}/lib && \
-	    	${TAR} -cf - *.so | ${TAR} --unlink -C ${STAGEDIR}${PREFIX}/lib/nss -xf -
+		${TAR} -cf - *.so | ${TAR} --unlink -C ${STAGEDIR}${PREFIX}/lib/nss -xf -
 	${INSTALL_SCRIPT} ${WRKDIR}/nss-config ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_DATA} ${WRKDIR}/nss.pc ${STAGEDIR}${PREFIX}/libdata/pkgconfig
 

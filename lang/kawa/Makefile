@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	kawa
-PORTVERSION=	2.0
+PORTVERSION=	2.1
 CATEGORIES=	lang scheme java
 MASTER_SITES=	GNU
 
@@ -11,7 +11,7 @@ COMMENT=	Java-based Scheme implementation
 
 LICENSE=	MIT
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/makeinfo:${PORTSDIR}/print/texinfo
+BUILD_DEPENDS=	${LOCALBASE}/bin/makeinfo:print/texinfo
 
 USES=		gmake readline
 USE_JAVA=	yes

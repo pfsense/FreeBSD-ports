@@ -5,15 +5,15 @@ PORTNAME=	volta
 PORTVERSION=	0.3.0
 PORTREVISION=	1
 CATEGORIES=	www
-MASTER_SITES=	http://dl.dropbox.com/u/7234177/Releases/ \
-		http://projects.martini.nu/volta/chrome/site/
+MASTER_SITES=	https://bitbucket.org/mahlon/volta/downloads/ \
+		http://dl.dropbox.com/u/7234177/Releases/
 
 MAINTAINER=	mahlon@martini.nu
 COMMENT=	High performance, low resource URI rewriter for Squid
 
 LICENSE=	BSD3CLAUSE
 
-LIB_DEPENDS=	libcdb.so:${PORTSDIR}/databases/tinycdb
+LIB_DEPENDS=	libcdb.so:databases/tinycdb
 
 USES=		gmake pkgconfig lua tar:tgz
 ALL_TARGET=	${PORTNAME}

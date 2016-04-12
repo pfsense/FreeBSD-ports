@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mate-desktop
-PORTVERSION=	1.10.2
+PORTVERSION=	1.12.1
 CATEGORIES=	x11 mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -10,8 +10,8 @@ DIST_SUBDIR=	mate
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Additional UI API for MATE
 
-BUILD_DEPENDS=	itstool:${PORTSDIR}/textproc/itstool
-LIB_DEPENDS=	libstartup-notification-1.so:${PORTSDIR}/x11/startup-notification
+BUILD_DEPENDS=	itstool:textproc/itstool
+LIB_DEPENDS=	libstartup-notification-1.so:x11/startup-notification
 
 PORTSCOUT=	limitw:1,even
 

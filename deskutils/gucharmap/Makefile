@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gucharmap
-PORTVERSION=	3.16.2
+PORTVERSION=	3.18.2
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -10,14 +10,14 @@ DIST_SUBDIR=	gnome3
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Unicode/ISO10646 character map and font viewer
 
-LICENSE=	GPLv3 # or later
+LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	itstool:${PORTSDIR}/textproc/itstool
+BUILD_DEPENDS=	itstool:textproc/itstool
 
 PORTSCOUT=	limitw:1,even
 
-USES=		desktop-file-utils gettext gmake libtool pathfix \
+USES=		desktop-file-utils gettext gmake gnome libtool pathfix \
 		pkgconfig tar:xz
 USE_GNOME=	gnomeprefix gtk30 intlhack introspection:build
 GNU_CONFIGURE=	yes

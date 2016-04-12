@@ -2,14 +2,14 @@
 # $FreeBSD$
 #    $MCom: ports/net/libproxy-python/Makefile,v 1.1 2011/01/12 13:10:54 kwm Exp $
 
-PORTREVISION=	1
+PORTREVISION=	0
 CATEGORIES=	net lang
 PKGNAMESUFFIX=	-python
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	python binding for libproxy
 
-RUN_DEPENDS=	libproxy>=${PORTVERSION}:${PORTSDIR}/net/libproxy
+RUN_DEPENDS=	libproxy>=${PORTVERSION}:net/libproxy
 
 MASTERDIR=	${.CURDIR}/../libproxy
 DESCR=		${.CURDIR}/pkg-descr

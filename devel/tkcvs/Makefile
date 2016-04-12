@@ -7,13 +7,13 @@ CATEGORIES=	devel
 MASTER_SITES=	SF \
 		http://www.twobarleycorns.net/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Tcl/Tk frontends to CVS and Subversion
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-RUN_DEPENDS=	tkdiff:${PORTSDIR}/textproc/tkdiff
+RUN_DEPENDS=	tkdiff:textproc/tkdiff
 
 NO_BUILD=	yes
 NO_ARCH=	yes

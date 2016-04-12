@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	virt-viewer
-PORTVERSION=	2.0
-PORTREVISION=	2
+PORTVERSION=	3.1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://virt-manager.org/download/sources/${PORTNAME}/
 
@@ -12,12 +11,12 @@ COMMENT=	Provides a graphical viewer for a guest OS display
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	xml2-config:${PORTSDIR}/textproc/libxml2 \
-		intltoolize:${PORTSDIR}/textproc/intltool \
-		spice-protocol>=0.12.7:${PORTSDIR}/devel/spice-protocol
-LIB_DEPENDS=	libvirt.so:${PORTSDIR}/devel/libvirt \
-		libgtk-vnc-2.0.so:${PORTSDIR}/net/gtk-vnc \
-		libspice-client-glib-2.0.so:${PORTSDIR}/deskutils/spice-gtk
+BUILD_DEPENDS=	xml2-config:textproc/libxml2 \
+		intltoolize:textproc/intltool \
+		spice-protocol>=0.12.7:devel/spice-protocol
+LIB_DEPENDS=	libvirt.so:devel/libvirt \
+		libgtk-vnc-2.0.so:net/gtk-vnc \
+		libspice-client-glib-2.0.so:deskutils/spice-gtk
 
 USE_OPENSSL=yes
 WITH_OPENSSL_PORT=yes

@@ -12,10 +12,10 @@ DISTNAME=	gkrellm-mailwatch-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GKrellM mailwatch plugin
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 
-BUILD_DEPENDS=	${LOCALBASE}/include/gkrellm2/gkrellm.h:${PORTSDIR}/sysutils/gkrellm2
-RUN_DEPENDS=	gkrellm:${PORTSDIR}/sysutils/gkrellm2
+BUILD_DEPENDS=	${LOCALBASE}/include/gkrellm2/gkrellm.h:sysutils/gkrellm2
+RUN_DEPENDS=	gkrellm:sysutils/gkrellm2
 
 WRKSRC=		${WRKDIR}/gkrellm-mailwatch
 

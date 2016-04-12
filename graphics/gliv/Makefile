@@ -10,10 +10,10 @@ MASTER_SITES=	http://guichaz.free.fr/gliv/files/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Image viewer that uses Gdk-Pixbuf and OpenGL
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libgtkglext-x11-1.0.so:${PORTSDIR}/x11-toolkits/gtkglext
+LIB_DEPENDS=	libgtkglext-x11-1.0.so:x11-toolkits/gtkglext
 
 USE_GNOME=	gnomeprefix gtk20
 USE_GL=		yes

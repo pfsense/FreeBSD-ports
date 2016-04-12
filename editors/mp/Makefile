@@ -9,7 +9,7 @@ MASTER_SITES=	http://triptico.com/download/mp/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Programming text editor
 
-LICENSE=	GPLv2 # (or later)
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		iconv ncurses
@@ -29,7 +29,7 @@ NLS_USES=		gettext
 NLS_CONFIGURE_WITH=	gettext
 GTK2_USE=		gnome=gtk20
 GTK3_USE=		gnome=gtk30
-PCRE_LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
+PCRE_LIB_DEPENDS=	libpcre.so:devel/pcre
 PCRE_CONFIGURE_WITH=	pcre
 QT4_USE=		qt4=corelib,gui,moc_build
 QT4_CONFIGURE_ENV=	CPP="${CXX}" CCLINK="${CXX}"
@@ -69,6 +69,7 @@ post-patch:
 		's|<ncursesw/|<| ; \
 		 s|-I/usr/local/include|| ; \
 		 s|-L/usr/local/lib|| ; \
+		 s|-lncursesw|${LDFLAGS} -lncursesw| ; \
 		 /gtk+/s|3.0|${CONFOPT_GTK}.0| ; \
 		 /OK/s|3.0|${CONFOPT_GTK}.0| ; \
 		 /CONFOPT_GTK/s|3|${CONFOPT_GTK}|' ${WRKSRC}/config.sh

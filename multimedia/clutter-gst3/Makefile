@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	clutter-gst
-PORTVERSION=	3.0.10
+PORTVERSION=	3.0.14
 CATEGORIES=	multimedia
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	3
@@ -10,9 +10,9 @@ PKGNAMESUFFIX=	3
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Clutter GStreamer integration
 
-LIB_DEPENDS=	libclutter-1.0.so:${PORTSDIR}/graphics/clutter
+LIB_DEPENDS=	libclutter-1.0.so:graphics/clutter
 
-USES=		gmake libtool pathfix pkgconfig tar:xz
+USES=		gmake gnome libtool pathfix pkgconfig tar:xz
 USE_GNOME=	gnomeprefix introspection:build
 GNU_CONFIGURE=	yes
 USE_GL=		gl

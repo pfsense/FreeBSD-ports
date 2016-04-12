@@ -3,16 +3,16 @@
 
 PORTNAME=	font2svg
 PORTVERSION=	1.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	print
-MASTER_SITES=	http://www.gdv.uni-hannover.de/~peinecke/font2svg/
+MASTER_SITES=	http://BSDforge.com/projects/source/print/font2svg/
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	All font to svg-font converter
+MAINTAINER=	portmaster@BSDforge.com
+COMMENT=	All fonts to svg-font converter
 
-BROKEN=		unfetchable
+LICENSE=	GPLv2
 
-RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash
+RUN_DEPENDS=	bash:shells/bash
 
 USES=		ghostscript:run
 NO_BUILD=	yes

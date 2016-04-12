@@ -3,7 +3,7 @@
 
 PORTNAME=	gnome-shell-extension-backslide
 PORTVERSION=	0.0.0.20140520
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	https://bitbucket.org/LukasKnuth/backslide/get/
 DISTFILES=	7e36a49fc5e1.zip
@@ -12,14 +12,14 @@ DIST_SUBDIR=	gnome3
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Gnome-shell extension for background slideshow
 
-BUILD_DEPENDS=	gnome-shell>=0:${PORTSDIR}/x11/gnome-shell \
-		gsettings-desktop-schemas>=3.12.0:${PORTSDIR}/devel/gsettings-desktop-schemas
-RUN_DEPENDS=	gnome-shell>=0:${PORTSDIR}/x11/gnome-shell \
-		gsettings-desktop-schemas>=3.12.0:${PORTSDIR}/devel/gsettings-desktop-schemas
+BUILD_DEPENDS=	gnome-shell>=0:x11/gnome-shell \
+		gsettings-desktop-schemas>=3.12.0:devel/gsettings-desktop-schemas
+RUN_DEPENDS=	gnome-shell>=0:x11/gnome-shell \
+		gsettings-desktop-schemas>=3.12.0:devel/gsettings-desktop-schemas
 
 WRKSRC=		${WRKDIR}/LukasKnuth-backslide-7e36a49fc5e1
 
-USES=		gettext gmake pkgconfig tar:xz
+USES=		gettext gmake gnome pkgconfig tar:xz
 USE_GNOME=	glib20
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

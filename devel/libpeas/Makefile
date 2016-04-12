@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	libpeas
-PORTVERSION=	1.14.0
-PORTREVISION?=	1
+PORTVERSION=	1.16.0
+PORTREVISION?=	0
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -11,18 +11,18 @@ DIST_SUBDIR=	gnome3
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT?=	Next evolution of the Gedit plugins engine
 
-BUILD_DEPENDS=	valac:${PORTSDIR}/lang/vala
+BUILD_DEPENDS=	valac:lang/vala
 
 LIBPEAS_SLAVE?=	no
 
 .if ${LIBPEAS_SLAVE} == no
 PORTSCOUT=	limitw:1,even
 .else
-LIB_DEPENDS+=	libpeas-1.0.so:${PORTSDIR}/devel/libpeas
+LIB_DEPENDS+=	libpeas-1.0.so:devel/libpeas
 PORTSCOUT=	ignore:1
 .endif
 
-USES=		gettext gmake libtool pathfix pkgconfig tar:xz
+USES=		gettext gmake gnome libtool pathfix pkgconfig tar:xz
 USE_GNOME=	gtk30 intlhack introspection:build
 USE_LDCONFIG=	yes
 INSTALLS_ICONS=	yes

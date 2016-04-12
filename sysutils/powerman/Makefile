@@ -10,10 +10,10 @@ MASTER_SITES=	https://github.com/chaos/powerman/releases/download/${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool for doing remote power control
 
-LICENSE=	GPLv2 # (or later)
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
+LIB_DEPENDS=	libcurl.so:ftp/curl
 
 USES=		libtool perl5 shebangfix
 SHEBANG_FILES=	heartbeat/powerman

@@ -3,27 +3,26 @@
 
 PORTNAME=	sentinel
 PORTVERSION=	1.7b
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	mail
 MASTER_SITES=	SF/smfilter/${PORTNAME}/Sentinel%20${PORTVERSION}
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Sendmail milter API implementation
 
-LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
+LIB_DEPENDS=	libpcre.so:devel/pcre
 
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	NOSUBJECT DOCS
+
+NOSUBJECT_DESC=		do not decode subject
+NOSUBJECT_CFLAGS=	-DDO_NOT_DECODE_SUBJECT
 
 .include <bsd.port.pre.mk>
 
 .include "${PORTSDIR}/mail/sendmail/bsd.milter.mk"
-
-.if defined(WITHOUT_SENTINEL_DECODE_SUBJECT)
-CFLAGS+=	-DDO_NOT_DECODE_SUBJECT
-.endif
 
 do-build:
 	(cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} \

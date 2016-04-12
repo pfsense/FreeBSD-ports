@@ -4,7 +4,7 @@
 PORTNAME=	openxcom
 PORTVERSION=	1.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -13,7 +13,7 @@ COMMENT=	Open-source reimplementation of the original X-Com
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-LIB_DEPENDS=	libyaml-cpp.so:${PORTSDIR}/devel/yaml-cpp
+LIB_DEPENDS=	libyaml-cpp.so:devel/yaml-cpp
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	SupSuper

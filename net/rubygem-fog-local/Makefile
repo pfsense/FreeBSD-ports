@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	fog-local
-PORTVERSION=	0.2.1
+PORTVERSION=	0.3.0
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
@@ -12,7 +12,7 @@ COMMENT=	Module for the 'fog' gem to support local filesystem storage
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-RUN_DEPENDS=	rubygem-fog-core>=1.27:${PORTSDIR}/devel/rubygem-fog-core
+RUN_DEPENDS=	rubygem-fog-core>=1.27:devel/rubygem-fog-core
 
 NO_ARCH=	yes
 USE_RUBY=	yes

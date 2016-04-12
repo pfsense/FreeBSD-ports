@@ -7,6 +7,6 @@ mDNS/DNS-SD protocol suite.<br/>
 			nifty things that have never been seen elsewhere like
 			correct mDNS reflection across LAN segments.<br/>
 			Compatible technology is found in Apple MacOS X (branded
-			​Bonjour and sometimes Zeroconf).
+			Bonjour and sometimes Zeroconf).
 
 WWW: https://doc.pfsense.org/index.php/Avahi_package

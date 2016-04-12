@@ -3,24 +3,22 @@
 
 PORTNAME=	pyspatialite
 PORTVERSION=	3.0.1
+DISTVERSIONSUFFIX=	-alpha-0
 PORTREVISION=	7
 CATEGORIES=	databases python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	CHEESESHOP/source/p/${PORTNAME}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-DISTNAME=	${PORTNAME}-${PORTVERSION}-alpha-0
 
 MAINTAINER=	coder@tuxfamily.org
 COMMENT=	DB-API 2.0 interface for SQLite 3.x with Spatialite
 
-BROKEN=		unfetchable
-
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libspatialite.so:${PORTSDIR}/databases/spatialite \
-		libgeos_c.so:${PORTSDIR}/graphics/geos \
-		libproj.so:${PORTSDIR}/graphics/proj \
-		libfreexl.so:${PORTSDIR}/textproc/freexl
+LIB_DEPENDS=	libspatialite.so:databases/spatialite \
+		libgeos_c.so:graphics/geos \
+		libproj.so:graphics/proj \
+		libfreexl.so:textproc/freexl
 
 OPTIONS_DEFINE=	DOCS
 

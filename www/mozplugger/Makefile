@@ -2,15 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	mozplugger
-PORTVERSION=	2.1.4
-PORTREVISION=	1
+PORTVERSION=	2.1.6
 CATEGORIES=	www
 MASTER_SITES=	http://mozplugger.mozdev.org/files/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Framework for loading web content in external viewers
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes

@@ -10,11 +10,11 @@ MASTER_SITES=	BERLIOS/gringotts.berlios
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library for encapsulating/safekeeping data in encrypted/compressed form
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libmcrypt.so:${PORTSDIR}/security/libmcrypt \
-		libmhash.so:${PORTSDIR}/security/mhash
+LIB_DEPENDS=	libmcrypt.so:security/libmcrypt \
+		libmhash.so:security/mhash
 
 USES=		tar:bzip2 libtool
 GNU_CONFIGURE=	yes

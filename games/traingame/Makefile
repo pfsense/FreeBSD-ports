@@ -9,12 +9,12 @@ CATEGORIES=	games
 MAINTAINER=	nemysis@FreeBSD.org
 COMMENT=	Game about Trains
 
-LICENSE=	GPLv3 # or later
+LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
-LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libxerces-c.so:${PORTSDIR}/textproc/xerces-c3 \
-		libboost_filesystem.so:${PORTSDIR}/devel/boost-libs
+LIB_DEPENDS=	libfreetype.so:print/freetype2 \
+		libxerces-c.so:textproc/xerces-c3 \
+		libboost_filesystem.so:devel/boost-libs
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	nickg
@@ -37,6 +37,10 @@ ICON_SIZES=	22x22 32x32 48x48 64x64 72x72 96x96 128x128 192x192
 
 SUB_FILES=	${PORTNAME} pkg-message
 
+post-patch:
+	@${REINPLACE_CMD} -e 's|[io]fstream|std::&|g' \
+		${WRKSRC}/src/*.cpp ${WRKSRC}/include/*.hpp
+
 do-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_SCRIPT} ${WRKSRC}/${PORTNAME}-map.sh ${STAGEDIR}${PREFIX}/bin/${PORTNAME}-map
@@ -55,9 +59,11 @@ do-install:
 	${LN} -sf ${PREFIX}/share/icons/hicolor/48x48/apps/${PORTNAME}.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/
 
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
+post-install:
 	@${ECHO_CMD}
 	@${ECHO_CMD} ===============================================================================
 	@${ECHO_CMD}

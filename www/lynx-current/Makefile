@@ -12,12 +12,12 @@ DISTNAME=	${PORTNAME}${PORTVERSION:S/p/pre./:S/d/dev./}
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	Non-graphical, text-based World-Wide Web client
 
-RUN_DEPENDS=	${LOCALBASE}/etc/mime.types:${PORTSDIR}/misc/mime-support
+RUN_DEPENDS=	${LOCALBASE}/etc/mime.types:misc/mime-support
 
 CONFLICTS_INSTALL=	lynx-2.8.[0-8].* ja-lynx-[0-9]*
 
 WRKSRC=		${WRKDIR}/${DISTNAME}
-USES=		cpe iconv shebangfix tar:bzip2
+USES=		cpe iconv ncurses shebangfix tar:bzip2
 USE_OPENSSL=	yes
 SHEBANG_FILES=	samples/mailto-form.pl
 GNU_CONFIGURE=	yes
@@ -53,7 +53,7 @@ OPTIONS_SUB=	yes
 NLS_USES=	gettext
 NLS_CONFIGURE_ENABLE=	nls
 
-IDN_LIB_DEPENDS=	libidn.so:${PORTSDIR}/dns/libidn
+IDN_LIB_DEPENDS=	libidn.so:dns/libidn
 IDN_CONFIGURE_ENABLE=	idna
 
 post-patch:

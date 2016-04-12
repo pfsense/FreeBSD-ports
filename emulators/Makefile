@@ -98,6 +98,7 @@
     SUBDIR += mupen64plus-video-glide64mk2
     SUBDIR += mupen64plus-video-rice
     SUBDIR += mupen64plus-video-z64
+    SUBDIR += nestopia
     SUBDIR += nonpareil
     SUBDIR += o2em
     SUBDIR += ods2reader
@@ -110,10 +111,13 @@
     SUBDIR += pcsxr
     SUBDIR += pearpc
     SUBDIR += pipelight
+    SUBDIR += playonbsd
     SUBDIR += ppsspp
     SUBDIR += py-gns3-converter
     SUBDIR += q4wine
     SUBDIR += qemu
+    SUBDIR += qemu-cheri
+    SUBDIR += qemu-cheri128
     SUBDIR += qemu-devel
     SUBDIR += qemu-launcher
     SUBDIR += qemu-sbruno

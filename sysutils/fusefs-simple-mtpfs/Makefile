@@ -9,9 +9,9 @@ PKGNAMEPREFIX=	fusefs-
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Simple MTP fuse filesystem driver
 
-LICENSE=	GPLv2 # or any later version
+LICENSE=	GPLv2+
 
-LIB_DEPENDS=	libmtp.so:${PORTSDIR}/multimedia/libmtp
+LIB_DEPENDS=	libmtp.so:multimedia/libmtp
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	phatina

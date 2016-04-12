@@ -10,14 +10,18 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-devel/${PORTNAME}-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool to detect connectivity between network segments
 
-RUN_DEPENDS=	p5-Net-PcapUtils>=0:${PORTSDIR}/net/p5-Net-PcapUtils \
-		p5-NetPacket>=0:${PORTSDIR}/net/p5-NetPacket \
-		p5-Mail-Sendmail>=0:${PORTSDIR}/mail/p5-Mail-Sendmail \
-		p5-Net-RawIP>=0:${PORTSDIR}/net/p5-Net-RawIP \
-		p5-IO-Interface>=0:${PORTSDIR}/net/p5-IO-Interface \
-		p5-NetAddr-IP>0:${PORTSDIR}/net-mgmt/p5-NetAddr-IP
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+RUN_DEPENDS=	p5-Net-PcapUtils>=0:net/p5-Net-PcapUtils \
+		p5-NetPacket>=0:net/p5-NetPacket \
+		p5-Mail-Sendmail>=0:mail/p5-Mail-Sendmail \
+		p5-Net-RawIP>=0:net/p5-Net-RawIP \
+		p5-IO-Interface>=0:net/p5-IO-Interface \
+		p5-NetAddr-IP>0:net-mgmt/p5-NetAddr-IP
 
 NO_BUILD=	yes
+NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 USES=		perl5 shebangfix tar:tgz
@@ -28,7 +32,7 @@ PORTDOCS=	BUGS README TODO
 
 OPTIONS_DEFINE=	DOCS
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 

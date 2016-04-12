@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gnome-mines
-PORTVERSION=	3.16.1
+PORTVERSION=	3.18.2
 CATEGORIES=	games gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -10,12 +10,12 @@ DIST_SUBDIR=	gnome3
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Gnome minesweeper
 
-BUILD_DEPENDS=	vala:${PORTSDIR}/lang/vala \
-		itstool:${PORTSDIR}/textproc/itstool
+BUILD_DEPENDS=	vala:lang/vala \
+		itstool:textproc/itstool
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gmake pathfix pkgconfig tar:xz
+USES=		gettext gmake gnome pathfix pkgconfig tar:xz
 USE_GNOME=	gtk30 intlhack librsvg2 libxml2:build
 INSTALLS_ICONS=	yes
 GNU_CONFIGURE=	yes

@@ -2,7 +2,7 @@
 
 PORTNAME=	spamilter
 PORTVERSION=	0.60
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	mail
 MASTER_SITES=	http://www.wanlink.com/spamilter/download/
 
@@ -38,7 +38,7 @@ LIBSPF_DESC=	build with libspf
 
 SMTP_AFTER_POP3_CONFIGURE_ON=	--with-popauth
 PAM_CONFIGURE_ON=	--with-pam
-LIBSPF_BUILD_DEPENDS=	${LOCALBASE}/lib/libspf.a:${PORTSDIR}/mail/libspf
+LIBSPF_BUILD_DEPENDS=	${LOCALBASE}/lib/libspf.a:mail/libspf
 LIBSPF_CONFIGURE_ON=	--with-libspf ${LOCALBASE}
 LIBSPF_CFLAGS=		-I${LOCALBASE}/include
 LIBSPF_LDFLAGS=		-L${LOCALBASE}/lib
@@ -69,9 +69,9 @@ post-install:
 .for i in ${BINFILES}
 	${INSTALL_SCRIPT} ${WRKSRC}/${i} ${STAGEDIR}${PREFIX}/bin/
 .endfor
-.if ${PORT_OPTIONS:MDOCS}
+
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOCSFILES:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}/
-.endif
 
 .include <bsd.port.mk>

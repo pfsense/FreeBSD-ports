@@ -10,11 +10,11 @@ MASTER_SITES=	GNOME/sources/gazpacho/0.7
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GUI builder for the GTK+ toolkit
 
-LICENSE=	LGPL21 # or later (source mentions LGPL20+)
+LICENSE=	LGPL21+ # source mentions LGPL20+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${LOCALBASE}/bin/kiwi-i18n:${PORTSDIR}/x11-toolkits/py-kiwi
-BUILD_DEPENDS=	${LOCALBASE}/bin/kiwi-i18n:${PORTSDIR}/x11-toolkits/py-kiwi
+RUN_DEPENDS=	${LOCALBASE}/bin/kiwi-i18n:x11-toolkits/py-kiwi
+BUILD_DEPENDS=	${LOCALBASE}/bin/kiwi-i18n:x11-toolkits/py-kiwi
 
 USES=		desktop-file-utils gettext python
 USE_GNOME=	pygtk2

@@ -162,12 +162,7 @@ if (isset($_POST['mode'])) {
 	include("/usr/local/pkg/snort/snort_check_for_rule_updates.php");
 
 	// Reload the page to update displayed values
-	header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
-	header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
-	header( 'Cache-Control: no-store, no-cache, must-revalidate' );
-	header( 'Cache-Control: post-check=0, pre-check=0', false );
-	header( 'Pragma: no-cache' );
-	header("Location: /snort/snort_download_updates.php");
+	print '<script type="text/javascript">window.location = "/snort/snort_download_updates.php";</script>';
 	return;
 }
 

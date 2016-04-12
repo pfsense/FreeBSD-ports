@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	giflib
-PORTVERSION=	5.1.2
-PORTREVISION=	2
+PORTVERSION=	5.1.3
+PORTREVISION=	0
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}
 
@@ -24,16 +24,20 @@ INSTALL_TARGET=	install-strip
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MDOCBOOK} && ${PORT_OPTIONS:MDOCS}
-BUILD_DEPENDS+=	xmlto:${PORTSDIR}/textproc/xmlto \
-		docbook-xml>0:${PORTSDIR}/textproc/docbook-xml
+BUILD_DEPENDS+=	xmlto:textproc/xmlto \
+		docbook-xml>0:textproc/docbook-xml
 .else
 CONFIGURE_ENV+=	have_xmlto=no
 .endif
 
-.if ${OSVERSION} >= 1100072
+.if ${OPSYS} == FreeBSD
+.  if ${OSVERSION} >= 1100072
 EXTRA_PATCHES=	${FILESDIR}/extra-patch-unbundle-reallocarray
-.else
+.  else
 EXTRA_PATCHES=	${FILESDIR}/extra-patch-hide-reallocarray
+.  endif
+.elif ${OPSYS} == DragonFly
+EXTRA_PATCHES=	${FILESDIR}/extra-patch-hide-reallocarray-dfly
 .endif
 
 post-install:

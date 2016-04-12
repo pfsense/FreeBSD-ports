@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	uftp
-PORTVERSION=	4.7
+PORTVERSION=	4.9.1
 PORTEPOCH=	1
 CATEGORIES=	ftp
-MASTER_SITES=	http://uftp-multicast.sourceforge.net/downloads/
-EXTRACT_SUFX=	.tar
+MASTER_SITES=	SF/uftp-multicast/source-tar
 
 MAINTAINER=	demon@FreeBSD.org
 COMMENT=	Multicast capable FTP client and server

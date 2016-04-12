@@ -22,8 +22,8 @@ WRKSRC=		${WRKDIR}/${LLVM_NAME}
 BUILD_WRKSRC=	${WRKSRC}/tools/clang
 INSTALL_WRKSRC=	${WRKSRC}/tools/clang
 
-BUILD_DEPENDS+=	llc${LLVM_SUFFIX}:${PORTSDIR}/devel/llvm${LLVM_SUFFIX}
-RUN_DEPENDS+=	llc${LLVM_SUFFIX}:${PORTSDIR}/devel/llvm${LLVM_SUFFIX}
+BUILD_DEPENDS+=	llc${LLVM_SUFFIX}:devel/llvm${LLVM_SUFFIX}
+RUN_DEPENDS+=	llc${LLVM_SUFFIX}:devel/llvm${LLVM_SUFFIX}
 
 LLVM_SUFFIX=	${PORTVERSION:S/.//g}
 LLVM_PREFIX=	${PREFIX}/llvm${LLVM_SUFFIX}
@@ -191,12 +191,6 @@ build-plist:
 	${FIND} ${STAGEDIR}${DOCSDIR} -type f | \
 	    ${SED} -e 's|${STAGEDIR}${DOCSDIR}|%%PORTDOCS%%%%DOCSDIR%%|' | \
 	    ${SORT} >> ${PLIST}
-	${FIND} ${PLIST_DIR_LIST:S|^|${STAGEDIR}${LLVM_PREFIX}/|} -type d | \
-	    ${SED} -e 's|${STAGEDIR}${PREFIX}/|@dirrm |' | \
-	    ${SORT} -r >> ${PLIST}
-	${FIND} ${STAGEDIR}${DOCSDIR} -type d | ${SORT} -r | \
-	    ${SED} -e 's|${STAGEDIR}${DOCSDIR}|%%PORTDOCS%%@dirrm %%DOCSDIR%%|' \
-	    >> ${PLIST}
 
 .if make(svn-patch)
 .if !defined(PATCH_REV)

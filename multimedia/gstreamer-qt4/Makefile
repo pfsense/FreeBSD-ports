@@ -9,13 +9,13 @@ MASTER_SITES=	http://gstreamer.freedesktop.org/src/qt-${PORTNAME}/
 PKGNAMESUFFIX=	-qt4
 DISTNAME=	qt-${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt4 bindings for GStreamer multimedia library
 
-LICENSE=	LGPL21 # or later
+LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libboost_thread.so:${PORTSDIR}/devel/boost-libs
+LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
 
 USES=		bison cmake gmake pkgconfig tar:bzip2
 USE_LDCONFIG=	yes

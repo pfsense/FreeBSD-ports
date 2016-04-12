@@ -12,7 +12,7 @@ MASTERDIR=	${SLAVEDIR}/../wine-devel
 PKGINSTALL=	${SLAVEDIR}/files/pkg-install
 PKGDEINSTALL=	${PKGINSTALL}
 
-RUN_DEPENDS=	dri>0:${PORTSDIR}/graphics/dri
+RUN_DEPENDS=	dri>0:graphics/dri
 
 CONFLICTS_INSTALL?=	wine-[0-9]* wine-staging-[0-9]* wine-devel-[0-9]* \
 			i386-wine-[0-9]* i386-wine-staging-[0-9]*
@@ -72,10 +72,6 @@ post-install-script:
 			echo lib32/$${i##*/} >> ${TMPPLIST} ; \
 		fi ; \
 	done
-	echo '@dirrm lib32/.libGL/dri' >> ${TMPPLIST}
-	echo '@dirrm lib32/.libGL' >> ${TMPPLIST}
-	echo '@dirrmtry lib32' >> ${TMPPLIST}; \
-	echo '@dirrm bin32' >> ${TMPPLIST}
 	# Install nvidia patching script
 	${INSTALL_SCRIPT} ${SLAVEDIR}/files/nvidia.sh ${STAGEDIR}${DATADIR}/patch-nvidia.sh
 	echo ${DATADIR:S|$(PREFIX)/||}/patch-nvidia.sh >> ${TMPPLIST}

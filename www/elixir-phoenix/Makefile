@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	phoenix
-PORTVERSION=	1.1.1
+PORTVERSION=	1.1.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 PKGNAMEPREFIX=	elixir-
@@ -18,8 +18,8 @@ GH_ACCOUNT=	phoenixframework
 OPTIONS_DEFINE=	COWBOY
 COWBOY_DESC=	Use Cowboy library
 
-COWBOY_BUILD_DEPENDS=	erlang-cowboy>=0:${PORTSDIR}/www/erlang-cowboy
-COWBOY_RUN_DEPENDS=	erlang-cowboy>=0:${PORTSDIR}/www/erlang-cowboy
+COWBOY_BUILD_DEPENDS=	erlang-cowboy>=0:www/erlang-cowboy
+COWBOY_RUN_DEPENDS=	erlang-cowboy>=0:www/erlang-cowboy
 
 .include <bsd.port.options.mk>
 

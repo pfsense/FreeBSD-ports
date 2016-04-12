@@ -9,7 +9,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}
 MAINTAINER=	yamagi@yamagi.org
 COMMENT=	Qt 4 chess database application
 
-LICENSE=	GPLv2 # (or later)
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		desktop-file-utils qmake shared-mime-info tar:tgz
@@ -24,9 +24,9 @@ PLIST_FILES=	bin/chessx \
 OPTIONS_DEFINE=	STOCKFISH CRAFTY
 
 STOCKFISH_DESC=	Install Stockfish Chess Engine
-STOCKFISH_RUN_DEPENDS=	stockfish:${PORTSDIR}/games/stockfish
+STOCKFISH_RUN_DEPENDS=	stockfish:games/stockfish
 
 CRAFTY_DESC=	Install Crafty Chess Application
-CRAFTY_RUN_DEPENDS=	crafty:${PORTSDIR}/games/crafty
+CRAFTY_RUN_DEPENDS=	crafty:games/crafty
 
 .include <bsd.port.mk>

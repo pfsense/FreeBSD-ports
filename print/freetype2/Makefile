@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	freetype2
-PORTVERSION=	2.6.2
+PORTVERSION=	2.6.3
 CATEGORIES=	print
 MASTER_SITES=	http://savannah.nongnu.org/download/freetype/ \
 		SF/freetype/${PORTNAME}/${PORTVERSION:C/^([0-9]+\.[0-9]+\.[0-9]+).*/\1/}/ \
@@ -32,7 +32,7 @@ PNG_DESC=		Png compressed OpenType embedded bitmaps support
 
 LCD_FILTERING_CFLAGS=	-DFT_CONFIG_OPTION_SUBPIXEL_RENDERING
 
-PNG_LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
+PNG_LIB_DEPENDS=	libpng.so:graphics/png
 PNG_CONFIGURE_OFF=	--without-png
 
 pre-patch:

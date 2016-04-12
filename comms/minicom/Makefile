@@ -11,16 +11,16 @@ MASTER_SITES=	https://alioth.debian.org/frs/download.php/file/3977/ \
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	MS-DOS Telix serial communication program "workalike"
 
-RUN_DEPENDS=	lrz:${PORTSDIR}/comms/lrzsz
+RUN_DEPENDS=	lrz:comms/lrzsz
 
 OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_SUB=	yes
 NLS_USES=	gettext
 NLS_CONFIGURE_ENABLE=	nls
 
-USES=		iconv
+USES=		iconv ncurses
 CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib ${ICONV_LIB} -lcurses
+LIBS+=		-L${LOCALBASE}/lib ${ICONV_LIB} -lncurses
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--enable-dfl-baud=57600 \
 			--sysconfdir=${PREFIX}/etc/minicom \

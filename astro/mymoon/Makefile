@@ -11,12 +11,12 @@ MASTER_SITES=	http://makemebad.net/geek/codes/${PORTNAME}/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Show latitude and longitude of the moon
 
-LIB_DEPENDS=	libnova.so:${PORTSDIR}/astro/libnova
+LIB_DEPENDS=	libnova.so:astro/libnova
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 GNU_CONFIGURE=	yes
-USES=		gmake
+USES=		gmake ncurses
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

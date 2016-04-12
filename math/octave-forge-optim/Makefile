@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	octave-forge-optim
-PORTVERSION=	1.4.1
+PORTVERSION=	1.5.0
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -14,7 +14,9 @@ OCTSRC=		${DISTNAME}
 
 WRKSRC=		${WRKDIR}/${OCTSRC}/src
 
-RUN_DEPENDS+=	${TARBALLS_DIR}/struct.tar.gz:${PORTSDIR}/math/octave-forge-struct
+RUN_DEPENDS+=	${TARBALLS_DIR}/struct.tar.gz:math/octave-forge-struct
+
+GNU_CONFIGURE=	yes
 
 .include "${.CURDIR}/../../Mk/bsd.octave.mk"
 

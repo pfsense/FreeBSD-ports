@@ -3,7 +3,7 @@
 
 PORTNAME=	bogom
 PORTVERSION=	1.9.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	mail
 MASTER_SITES=	http://www.usebox.net/jjm/bogom/ \
 		http://blackshell.usebox.net/bogom/
@@ -12,10 +12,10 @@ PKGNAMEPREFIX=	milter-
 MAINTAINER=	victor@bsdes.net
 COMMENT=	Simple sendmail milter to interface bogofilter
 
-RUN_DEPENDS=	bogofilter:${PORTSDIR}/mail/bogofilter
+RUN_DEPENDS=	bogofilter:mail/bogofilter
 
 .if !exists(/usr/lib/libmilter.so)
-LIB_DEPENDS=	libmilter.so:${PORTSDIR}/mail/sendmail
+LIB_DEPENDS=	libmilter.so:mail/libmilter
 LDFLAGS+=	-L${LOCALBASE}/lib
 CFLAGS+=	-I${LOCALBASE}/include
 .endif

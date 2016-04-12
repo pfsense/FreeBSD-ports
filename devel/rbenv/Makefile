@@ -1,9 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	rbenv
-PORTVERSION=	0.4.0
+PORTVERSION=	1.0.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
 CATEGORIES=	devel ruby
 
 MAINTAINER=	meta+ports@vmeta.jp
@@ -11,7 +10,7 @@ COMMENT=	Manage multiple versions of ruby
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash
+RUN_DEPENDS=	bash:shells/bash
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	sstephenson

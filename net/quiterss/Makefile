@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	quiterss
-PORTVERSION=	0.18.2
+PORTVERSION=	0.18.4
 CATEGORIES=	net
 MASTER_SITES=	http://quiterss.org/files/${PORTVERSION}/
 DISTNAME=	QuiteRSS-${PORTVERSION}-src
@@ -15,8 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 NO_WRKSUBDIR=	yes
 
-USES=		desktop-file-utils pkgconfig qmake:outsource
-USE_SQLITE=	yes
+USES=		desktop-file-utils pkgconfig qmake:outsource sqlite
 INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=		DEBUG

@@ -10,10 +10,10 @@ MASTER_SITES=	http://mbays.freeshell.org/kuklomenos/src/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple but challenging abstract shoot-em-up game
 
-LICENSE=	GPLv3 # or later
+LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
+LIB_DEPENDS=	libcurl.so:ftp/curl
 
 OPTIONS_DEFINE=	VORBIS
 OPTIONS_DEFAULT=	VORBIS
@@ -25,7 +25,7 @@ GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-lpthread -L${LOCALBASE}/lib
 
-VORBIS_LIB_DEPENDS=	libvorbis.so:${PORTSDIR}/audio/libvorbis
+VORBIS_LIB_DEPENDS=	libvorbis.so:audio/libvorbis
 VORBIS_CONFIGURE_ENABLE=	sound
 
 post-patch:

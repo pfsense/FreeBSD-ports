@@ -9,7 +9,7 @@ MASTER_SITES=	http://tph.tuwien.ac.at/~oemer/tgz/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Quantum computer simulator
 
-LICENSE=	GPLv2 # (or later)
+LICENSE=	GPLv2+
 
 USES=		bison gmake readline tar:tgz
 
@@ -19,7 +19,7 @@ PORTDATA=	*
 OPTIONS_DEFINE=		PLOTUTILS
 
 PLOTUTILS_DESC=		Plotting support via plotutils
-PLOTUTILS_LIB_DEPENDS=	libplotter.so:${PORTSDIR}/graphics/plotutils
+PLOTUTILS_LIB_DEPENDS=	libplotter.so:graphics/plotutils
 PLOTUTILS_CXXFLAGS=	-I${LOCALBASE}/include -DQCL_PLOT
 PLOTUTILS_LDFLAGS=	-L${LOCALBASE}/lib -lplotter
 

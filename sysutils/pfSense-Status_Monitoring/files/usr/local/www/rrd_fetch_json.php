@@ -97,6 +97,7 @@ $graph_unit_lookup = array(
 	"wireless"  => "dBi",
 	"mbuf"      => "",
 	"dhcpd"     => "",
+	"ntpd"      => "",
 	"vpnusers"  => "",
 	"cellular"  => "dB"
 );
@@ -228,6 +229,16 @@ if ($left != "null") {
 			$unit_acronym = "";
 			break;
 		case "loggedinusers":
+			$unit_acronym = "";
+			break;
+		case "offset":
+		case "sjit":
+		case "cjit":
+		case "wander":
+		case "disp":
+			$unit_acronym = "ms";
+			break;
+		case "freq":
 			$unit_acronym = "";
 			break;
 		}

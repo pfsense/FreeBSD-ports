@@ -1,6 +1,6 @@
---- peach.pas.orig	2015-08-10 00:54:42.122935000 -0500
-+++ peach.pas	2015-08-10 00:56:11.788970000 -0500
-@@ -4320,6 +4320,7 @@
+--- peach.pas	2016-01-27 13:08:24.382120000 -0500
++++ peach.pas	2016-01-27 13:17:34.207034000 -0500
+@@ -4445,6 +4445,7 @@
    APPLICATION5  = '';
    APPLICATION6  = '';
    APPLICATION7  = '';
@@ -8,7 +8,7 @@
    {$ENDIF}
    {$IFDEF NETBSD}
    EXEEXT        = '';
-@@ -4330,6 +4331,7 @@
+@@ -4455,6 +4456,7 @@
    APPLICATION5  = '';
    APPLICATION6  = '';
    APPLICATION7  = '';
@@ -16,7 +16,7 @@
    {$ENDIF}
    {$IFDEF DARWIN}
    EXEEXT        = '';
-@@ -4340,6 +4342,7 @@
+@@ -4465,6 +4467,7 @@
    APPLICATION5  = '';
    APPLICATION6  = '';
    APPLICATION7  = '';

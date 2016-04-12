@@ -3,13 +3,14 @@
 
 PORTNAME=	spamass-milter
 PORTVERSION=	0.4.0
+PORTREVISION=	1
 CATEGORIES=	mail
 MASTER_SITES=	SAVANNAH/spamass-milt
 
 MAINTAINER=	bmah@FreeBSD.org
 COMMENT=	Sendmail Milter (mail filter) plugin for SpamAssassin
 
-BUILD_DEPENDS=	spamc:${PORTSDIR}/mail/spamassassin
+BUILD_DEPENDS=	spamc:mail/spamassassin
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 LICENSE=	GPLv2

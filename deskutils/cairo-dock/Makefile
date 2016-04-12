@@ -10,12 +10,12 @@ COMMENT=	Cairo-Dock is a light and eye-candy dock
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libcairo.so:${PORTSDIR}/graphics/cairo \
-		libcurl.so:${PORTSDIR}/ftp/curl \
-		libdbus-glib-1.so:${PORTSDIR}/devel/dbus-glib \
-		libgtkglext-x11-1.0.so:${PORTSDIR}/x11-toolkits/gtkglext
-RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash \
-		sox:${PORTSDIR}/audio/sox
+LIB_DEPENDS=	libcairo.so:graphics/cairo \
+		libcurl.so:ftp/curl \
+		libdbus-glib-1.so:devel/dbus-glib \
+		libgtkglext-x11-1.0.so:x11-toolkits/gtkglext
+RUN_DEPENDS=	bash:shells/bash \
+		sox:audio/sox
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Cairo-Dock
@@ -25,7 +25,7 @@ GNU_CONFIGURE=	yes
 USE_GNOME=	glib20 gtk30 librsvg2 libxml2
 USE_LDCONFIG=	yes
 USE_XORG=	xrender xtst
-USES=		cmake gettext pathfix pkgconfig
+USES=		cmake gettext pkgconfig
 LDFLAGS+=	-L${LOCALBASE}/lib
 CMAKE_ARGS+=	-Dinstall-pc-path:STRING="${LOCALBASE}/libdata/pkgconfig"
 CMAKE_ARGS+=	-DROOT_PREFIX:PATH=${STAGEDIR}

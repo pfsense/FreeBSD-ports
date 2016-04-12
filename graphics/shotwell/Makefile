@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	shotwell
-PORTVERSION=	0.22.0
-PORTREVISION=	2
+PORTVERSION=	0.22.0.99
 CATEGORIES=	graphics gnome
-MASTER_SITES=	GNOME/sources/shotwell/${PORTVERSION:R}
+#MASTER_SITES=	GNOME/sources/shotwell/${PORTVERSION:R}
+MASTER_SITES=	http://rainbow-runner.nl/freebsd/
 
 MAINTAINER=	cmt@burggraben.net
 COMMENT=	Open source photo manager for GNOME
@@ -13,23 +13,23 @@ COMMENT=	Open source photo manager for GNOME
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	vala>=0.20.1:${PORTSDIR}/lang/vala \
-		bash:${PORTSDIR}/shells/bash
-LIB_DEPENDS=	libdbus-glib-1.so:${PORTSDIR}/devel/dbus-glib \
-		libgee-0.8.so:${PORTSDIR}/devel/libgee \
-		libjson-glib-1.0.so:${PORTSDIR}/devel/json-glib \
-		libsoup-2.4.so:${PORTSDIR}/devel/libsoup \
-		libgexiv2.so:${PORTSDIR}/graphics/gexiv2 \
-		libexif.so:${PORTSDIR}/graphics/libexif \
-		libgphoto2.so:${PORTSDIR}/graphics/libgphoto2 \
-		libwebkitgtk-3.0.so:${PORTSDIR}/www/webkit-gtk3 \
-		libunique-1.0.so:${PORTSDIR}/x11-toolkits/unique \
-		libraw.so:${PORTSDIR}/graphics/libraw \
-		librest-0.7.so:${PORTSDIR}/devel/librest
+BUILD_DEPENDS=	vala>=0.20.1:lang/vala \
+		bash:shells/bash
+LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib \
+		libgee-0.8.so:devel/libgee \
+		libjson-glib-1.0.so:devel/json-glib \
+		libsoup-2.4.so:devel/libsoup \
+		libgexiv2.so:graphics/gexiv2 \
+		libexif.so:graphics/libexif \
+		libgphoto2.so:graphics/libgphoto2 \
+		libwebkit2gtk-4.0.so:www/webkit2-gtk3 \
+		libunique-1.0.so:x11-toolkits/unique \
+		libraw.so:graphics/libraw \
+		librest-0.7.so:devel/librest
 
-USES=		shebangfix gettext desktop-file-utils gmake pkgconfig tar:xz
+USES=		shebangfix gettext desktop-file-utils gmake pkgconfig sqlite \
+		tar:xz
 USE_GNOME=	dconf gtk30 gnomedocutils
-USE_SQLITE=	3
 USE_GSTREAMER1=	yes
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix=${PREFIX} --disable-icon-update

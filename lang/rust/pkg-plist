@@ -16,8 +16,11 @@ lib/librustc_driver-%%RUST_VSN_HASH%%.so
 lib/librustc_front-%%RUST_VSN_HASH%%.so
 lib/librustc_lint-%%RUST_VSN_HASH%%.so
 lib/librustc_llvm-%%RUST_VSN_HASH%%.so
+lib/librustc_metadata-%%RUST_VSN_HASH%%.so
 lib/librustc_mir-%%RUST_VSN_HASH%%.so
+lib/librustc_passes-%%RUST_VSN_HASH%%.so
 lib/librustc_platform_intrinsics-%%RUST_VSN_HASH%%.so
+lib/librustc_plugin-%%RUST_VSN_HASH%%.so
 lib/librustc_privacy-%%RUST_VSN_HASH%%.so
 lib/librustc_resolve-%%RUST_VSN_HASH%%.so
 lib/librustc_trans-%%RUST_VSN_HASH%%.so
@@ -26,6 +29,7 @@ lib/librustdoc-%%RUST_VSN_HASH%%.so
 lib/libserialize-%%RUST_VSN_HASH%%.so
 lib/libstd-%%RUST_VSN_HASH%%.so
 lib/libsyntax-%%RUST_VSN_HASH%%.so
+lib/libsyntax_ext-%%RUST_VSN_HASH%%.so
 lib/libterm-%%RUST_VSN_HASH%%.so
 lib/libtest-%%RUST_VSN_HASH%%.so
 lib/rustlib/components
@@ -66,8 +70,11 @@ lib/rustlib/%%RUST_TARGET%%/lib/librustc_driver-%%RUST_VSN_HASH%%.so
 lib/rustlib/%%RUST_TARGET%%/lib/librustc_front-%%RUST_VSN_HASH%%.so
 lib/rustlib/%%RUST_TARGET%%/lib/librustc_lint-%%RUST_VSN_HASH%%.so
 lib/rustlib/%%RUST_TARGET%%/lib/librustc_llvm-%%RUST_VSN_HASH%%.so
+lib/rustlib/%%RUST_TARGET%%/lib/librustc_metadata-%%RUST_VSN_HASH%%.so
 lib/rustlib/%%RUST_TARGET%%/lib/librustc_mir-%%RUST_VSN_HASH%%.so
+lib/rustlib/%%RUST_TARGET%%/lib/librustc_passes-%%RUST_VSN_HASH%%.so
 lib/rustlib/%%RUST_TARGET%%/lib/librustc_platform_intrinsics-%%RUST_VSN_HASH%%.so
+lib/rustlib/%%RUST_TARGET%%/lib/librustc_plugin-%%RUST_VSN_HASH%%.so
 lib/rustlib/%%RUST_TARGET%%/lib/librustc_privacy-%%RUST_VSN_HASH%%.so
 lib/rustlib/%%RUST_TARGET%%/lib/librustc_resolve-%%RUST_VSN_HASH%%.so
 lib/rustlib/%%RUST_TARGET%%/lib/librustc_trans-%%RUST_VSN_HASH%%.so
@@ -79,6 +86,7 @@ lib/rustlib/%%RUST_TARGET%%/lib/libserialize-%%RUST_VSN_HASH%%.so
 lib/rustlib/%%RUST_TARGET%%/lib/libstd-%%RUST_VSN_HASH%%.rlib
 lib/rustlib/%%RUST_TARGET%%/lib/libstd-%%RUST_VSN_HASH%%.so
 lib/rustlib/%%RUST_TARGET%%/lib/libsyntax-%%RUST_VSN_HASH%%.so
+lib/rustlib/%%RUST_TARGET%%/lib/libsyntax_ext-%%RUST_VSN_HASH%%.so
 lib/rustlib/%%RUST_TARGET%%/lib/libterm-%%RUST_VSN_HASH%%.rlib
 lib/rustlib/%%RUST_TARGET%%/lib/libterm-%%RUST_VSN_HASH%%.so
 lib/rustlib/%%RUST_TARGET%%/lib/libtest-%%RUST_VSN_HASH%%.rlib

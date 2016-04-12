@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	DiagrammeR
-PORTVERSION=	0.8.1
+PORTVERSION=	0.8.2
 CATEGORIES=	graphics
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
@@ -11,10 +11,11 @@ COMMENT=	Create Diagrams and Flowcharts Using R
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	R-cran-htmlwidgets>=0.5:${PORTSDIR}/www/R-cran-htmlwidgets \
-		R-cran-rstudioapi>=0.3.1:${PORTSDIR}/devel/R-cran-rstudioapi \
-		R-cran-stringr>=1.0.0:${PORTSDIR}/textproc/R-cran-stringr \
-		R-cran-visNetwork>=0.0.1:${PORTSDIR}/graphics/R-cran-visNetwork
+RUN_DEPENDS=	R-cran-htmlwidgets>=0.5:www/R-cran-htmlwidgets \
+		R-cran-rstudioapi>=0.3.1:devel/R-cran-rstudioapi \
+		R-cran-stringr>=1.0.0:textproc/R-cran-stringr \
+		R-cran-visNetwork>=0.1.2:graphics/R-cran-visNetwork \
+		R-cran-scales>=0.3.0:graphics/R-cran-scales
 
 USES=	cran:auto-plist
 

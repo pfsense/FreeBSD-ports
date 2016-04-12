@@ -2,16 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	pcre
-PORTVERSION=	7.1.5
+PORTVERSION=	7.2.3
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	ocaml-
 
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	Perl compatible regular expressions for Objective Caml
 
-LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
+LIB_DEPENDS=	libpcre.so:devel/pcre
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mmottl

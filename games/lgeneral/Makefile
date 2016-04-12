@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lgeneral
-PORTVERSION=	1.3.0
+PORTVERSION=	1.3.1
 PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME} \
@@ -13,7 +13,8 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:DEFAULT \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Turn-based strategy engine inspired by Panzer General
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN_powerpc=	does not install
 BROKEN_sparc64=	does not install

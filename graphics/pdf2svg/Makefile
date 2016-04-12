@@ -3,7 +3,7 @@
 
 PORTNAME=	pdf2svg
 PORTVERSION=	0.2.3
-PORTREVISION=	1
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics
 
@@ -13,7 +13,7 @@ COMMENT=	Convert PDF to SVG
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libpoppler-glib.so:${PORTSDIR}/graphics/poppler-glib
+LIB_DEPENDS=	libpoppler-glib.so:graphics/poppler-glib
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	db9052

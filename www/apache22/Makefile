@@ -11,9 +11,9 @@ DIST_SUBDIR=	apache22
 MAINTAINER?=	apache@FreeBSD.org
 COMMENT?=	Version 2.2.x of Apache web server with ${WITH_MPM} MPM.
 
-LIB_DEPENDS=	libexpat.so:${PORTSDIR}/textproc/expat2 \
-		libapr-1.so:${PORTSDIR}/devel/apr1 \
-		libpcre.so:${PORTSDIR}/devel/pcre
+LIB_DEPENDS=	libexpat.so:textproc/expat2 \
+		libapr-1.so:devel/apr1 \
+		libpcre.so:devel/pcre
 
 CONFLICTS_INSTALL=	caudium14-1.* \
 		apache-*-2.2.* apache22-*-2.2.* \
@@ -188,9 +188,9 @@ post-install:
 # strip returns an error for non binary files, but we have a big mix
 	-${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/* 2>/dev/null
 	-${STRIP_CMD} ${STAGEDIR}${PREFIX}/libexec/apache22/mod_*.so
-.if ${PORT_OPTIONS:MLOG_FORENSIC}
+
+post-install-LOG_FORENSIC-on:
 	${INSTALL_SCRIPT} ${WRKSRC}/support/check_forensic ${STAGEDIR}${PREFIX}/sbin
-.endif
 
 # maintainer only, check for new modules
 modlist: extract

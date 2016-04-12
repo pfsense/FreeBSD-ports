@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	octave-forge-struct
-PORTVERSION=	1.0.11
+PORTVERSION=	1.0.12
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -16,6 +16,8 @@ LICENSE_FILE=	${WRKDIR}/${OCTSRC}/COPYING
 OCTSRC=		${DISTNAME}
 
 WRKSRC=		${WRKDIR}/${OCTSRC}/src
+
+GNU_CONFIGURE=	yes
 
 .include "${.CURDIR}/../../Mk/bsd.octave.mk"
 

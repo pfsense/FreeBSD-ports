@@ -11,15 +11,15 @@ MAINTAINER=	mono@FreeBSD.org
 COMMENT=	Music management and playback for gnome
 
 # Could do without bash, but it's brought in by gnome anyway.
-BUILD_DEPENDS=	p5-XML-Parser>=0:${PORTSDIR}/textproc/p5-XML-Parser \
-		bash:${PORTSDIR}/shells/bash
-RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash
+BUILD_DEPENDS=	p5-XML-Parser>=0:textproc/p5-XML-Parser \
+		bash:shells/bash
+RUN_DEPENDS=	bash:shells/bash
 
-LIB_PC_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/dbus-sharp-glib-1.0.pc:${PORTSDIR}/devel/dbus-sharp-glib \
-		${LOCALBASE}/libdata/pkgconfig/taglib-sharp.pc:${PORTSDIR}/audio/taglib-sharp \
-		${LOCALBASE}/libdata/pkgconfig/mono-zeroconf.pc:${PORTSDIR}/net/mono-zeroconf \
-		${LOCALBASE}/libdata/pkgconfig/mono-addins.pc:${PORTSDIR}/devel/mono-addins \
-		${LOCALBASE}/libdata/pkgconfig/notify-sharp.pc:${PORTSDIR}/devel/notify-sharp
+LIB_PC_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/dbus-sharp-glib-1.0.pc:devel/dbus-sharp-glib \
+		${LOCALBASE}/libdata/pkgconfig/taglib-sharp.pc:audio/taglib-sharp \
+		${LOCALBASE}/libdata/pkgconfig/mono-zeroconf.pc:net/mono-zeroconf \
+		${LOCALBASE}/libdata/pkgconfig/mono-addins.pc:devel/mono-addins \
+		${LOCALBASE}/libdata/pkgconfig/notify-sharp.pc:devel/notify-sharp
 
 # For now, remove APPLEDEV since it is broken
 OPTIONS_DEFINE=	DOCS BPMDETECT GIO MTP WEBKIT YOUTUBE
@@ -33,14 +33,13 @@ YOUTUBE_DESC=	Build and/or install the Youtube extension
 OPTIONS_DEFAULT=BPMDETECT GIO MTP WEBKIT YOUTUBE
 
 USES=		desktop-file-utils gmake libtool mono pathfix perl5 \
-		pkgconfig shared-mime-info tar:xz
+		pkgconfig shared-mime-info sqlite tar:xz
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 USE_GNOME=	gnomedocutils gnomesharp20 gtksharp20 intltool
 USE_GSTREAMER=	cdparanoia
 USE_LDCONFIG=	${PREFIX}/lib/${PORTNAME:C/-.*//}
 USE_XORG=	xrandr xxf86vm
-USE_SQLITE=	yes
 INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip
 CONFIGURE_TARGET=	--build=${ARCH}-portbld-freebsd${OSREL}
@@ -64,7 +63,7 @@ INSTALL=	/usr/bin/install
 
 .if ${PORT_OPTIONS:MGIO}
 CONFIGURE_ARGS+=--enable-gio
-LIB_PC_DEPENDS+=${LOCALBASE}/libdata/pkgconfig/gtk-sharp-beans-2.0.pc:${PORTSDIR}/x11-toolkits/gtk-sharp-beans
+LIB_PC_DEPENDS+=${LOCALBASE}/libdata/pkgconfig/gtk-sharp-beans-2.0.pc:x11-toolkits/gtk-sharp-beans
 PLIST_SUB+=	OPT_GIO=""
 .else
 CONFIGURE_ARGS+=--disable-gio
@@ -85,7 +84,7 @@ USE_GSTREAMER+=	soundtouch
 
 .if ${PORT_OPTIONS:MAPPLEDEV}
 CONFIGURE_ARGS+=--enable-appledevice
-LIB_PC_DEPENDS+=${LOCALBASE}/libdata/pkgconfig/libgpodsharp.pc:${PORTSDIR}/audio/libgpod
+LIB_PC_DEPENDS+=${LOCALBASE}/libdata/pkgconfig/libgpodsharp.pc:audio/libgpod
 BROKEN=		Missing dependency
 PLIST_SUB+=	APPLEDEV=""
 .else
@@ -95,7 +94,7 @@ PLIST_SUB+=	APPLEDEV="@comment "
 
 .if ${PORT_OPTIONS:MMTP}
 CONFIGURE_ARGS+=--enable-mtp
-LIB_PC_DEPENDS+=${LOCALBASE}/libdata/pkgconfig/libmtp.pc:${PORTSDIR}/multimedia/libmtp
+LIB_PC_DEPENDS+=${LOCALBASE}/libdata/pkgconfig/libmtp.pc:multimedia/libmtp
 PLIST_SUB+=	OPT_MTP=""
 .else
 CONFIGURE_ARGS+=--disable-mtp
@@ -104,7 +103,7 @@ PLIST_SUB+=	OPT_MTP="@comment "
 
 .if ${PORT_OPTIONS:MWEBKIT}
 CONFIGURE_ARGS+=--enable-webkit
-LIB_PC_DEPENDS+=${LOCALBASE}/libdata/pkgconfig/webkit-sharp-1.0.pc:${PORTSDIR}/www/webkit-sharp
+LIB_PC_DEPENDS+=${LOCALBASE}/libdata/pkgconfig/webkit-sharp-1.0.pc:www/webkit-sharp
 PLIST_SUB+=	OPT_WEBKIT=""
 .else
 CONFIGURE_ARGS+=--disable-webkit
@@ -113,7 +112,7 @@ PLIST_SUB+=	OPT_WEBKIT="@comment "
 
 .if ${PORT_OPTIONS:MYOUTUBE}
 CONFIGURE_ARGS+=--enable-youtube
-LIB_PC_DEPENDS+=${LOCALBASE}/libdata/pkgconfig/gdata-sharp-youtube.pc:${PORTSDIR}/devel/google-gdata
+LIB_PC_DEPENDS+=${LOCALBASE}/libdata/pkgconfig/gdata-sharp-youtube.pc:devel/google-gdata
 PLIST_SUB+=	OPT_YOUTUBE=""
 .else
 CONFIGURE_ARGS+=--disable-youtube

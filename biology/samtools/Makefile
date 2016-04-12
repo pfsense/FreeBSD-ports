@@ -11,13 +11,13 @@ COMMENT=	Tools for manipulating next-generation sequencing data
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	htslib>=1.3:${PORTSDIR}/biology/htslib
-LIB_DEPENDS=	libhts.so:${PORTSDIR}/biology/htslib
-TEST_DEPENDS=	bash:${PORTSDIR}/shells/bash
+BUILD_DEPENDS=	htslib>=1.3:biology/htslib
+LIB_DEPENDS=	libhts.so:biology/htslib
+TEST_DEPENDS=	bash:shells/bash
 
 USE_GITHUB=	yes
 
-USES=		autoreconf gmake perl5 shebangfix
+USES=		autoreconf gmake ncurses perl5 shebangfix
 USE_PERL5=	test
 GNU_CONFIGURE=	yes
 SUB_FILES=	pkg-message

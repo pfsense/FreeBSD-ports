@@ -11,12 +11,12 @@ DISTNAME=	PyPanel-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Desktop panel written in Python
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libImlib2.so:${PORTSDIR}/graphics/imlib2
-BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/Xlib/X.py:${PORTSDIR}/x11-toolkits/py-xlib
+LIB_DEPENDS=	libfreetype.so:print/freetype2 \
+		libImlib2.so:graphics/imlib2
+BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/Xlib/X.py:x11-toolkits/py-xlib
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		python

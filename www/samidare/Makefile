@@ -14,7 +14,7 @@ COMMENT=	Web page update checker written in Ruby
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-RUN_DEPENDS=	${RUBY_SITELIBDIR}/htree.rb:${PORTSDIR}/textproc/ruby-htree
+RUN_DEPENDS=	${RUBY_SITELIBDIR}/htree.rb:textproc/ruby-htree
 
 USES=	gmake
 USE_RUBY=	yes
@@ -28,6 +28,9 @@ ALL_TARGET=	${PORTNAME}
 PLIST_FILES=	bin/samidare man/man1/samidare.1.gz
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
+
+BROKEN_RUBY22=	yes
+BROKEN_RUBY23=	yes
 
 post-build:
 	@${REINPLACE_CMD} -e '1d' ${BUILD_WRKSRC}/${PORTNAME}

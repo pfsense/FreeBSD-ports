@@ -11,10 +11,10 @@ MASTER_SITES=	http://www.iua.upf.es/~mdeboer/resorama/jigzo/ \
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	OpenGL jigsaw puzzle game
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/GPL.txt
 
-LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS=	libpng.so:graphics/png
 
 USES=		gmake jpeg tar:tgz
 USE_SDL=	sdl mixer

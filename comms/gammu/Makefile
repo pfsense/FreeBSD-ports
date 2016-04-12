@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gammu
-PORTVERSION=	1.36.8
+PORTVERSION=	1.37.0
 CATEGORIES=	comms
 MASTER_SITES=	http://dl.cihar.com/gammu/releases/ \
 		http://dl.cihar.com.nyud.net/gammu/releases/
@@ -13,8 +13,7 @@ COMMENT=	GNU All Mobile Management Utilities
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
-RUN_DEPENDS=	cdialog:${PORTSDIR}/devel/cdialog
+LIB_DEPENDS=	libcurl.so:ftp/curl
 
 CONFLICTS=	gammu-devel-[1-9]* gammu-python-[1-9]*
 
@@ -31,7 +30,7 @@ PORTDOCS=	*
 
 OPTIONS_DEFINE=	BASH
 
-BASH_BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash
+BASH_BUILD_DEPENDS=	bash:shells/bash
 BASH_RUN_DEPENDS=	${BASH_BUILD_DEPENDS}
 BASH_PLIST_FILES=	etc/bash_completion.d/gammu
 BASH_EXTRA_PATCHES_OFF=	${FILESDIR}/extra-patch-contrib_CMakeLists.txt

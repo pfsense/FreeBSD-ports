@@ -7,7 +7,7 @@ PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	SF
 
-MAINTAINER=	steve.polyack@intermedix.com
+MAINTAINER=	zi@FreeBSD.org
 COMMENT=	CLI to manage IPMI systems
 
 LICENSE=	BSD3CLAUSE
@@ -45,7 +45,7 @@ CONFIGURE_ARGS+=	--disable-intf-open
 
 DOCS_EXTRA_PATCHES_OFF=	${PATCHDIR}/extra-patch-Makefile.in
 
-FREEIPMI_LIB_DEPENDS=	libfreeipmi.so:${PORTSDIR}/sysutils/freeipmi
+FREEIPMI_LIB_DEPENDS=	libfreeipmi.so:sysutils/freeipmi
 FREEIPMI_CPPFLAGS=	-I${LOCALBASE}/include
 FREEIPMI_LDFLAGS=	-L${LOCALBASE}/lib
 FREEIPMI_CONFIGURE_ENABLE=	intf-free

@@ -4,15 +4,15 @@
 PORTREVISION=	0
 CATEGORIES=	multimedia
 
-COMMENT=	Ugly gstreamer-plugins
+COMMENT=	GStreamer-plugins set of good-quality plug-ins that might have distribution problems
 
 GST_PLUGIN=	ugly
 GST_PLUGIN_SUFFIX=	-ugly
 
 MASTERDIR=	${.CURDIR}/../../multimedia/gstreamer1-plugins
 
-BUILD_DEPENDS+=	gstreamer1-plugins>=${GST1_VERSION}${GST1_MINIMAL_VERSION}:${PORTSDIR}/multimedia/gstreamer1-plugins
-RUN_DEPENDS+=	gstreamer1-plugins>=${GST1_VERSION}${GST1_MINIMAL_VERSION}:${PORTSDIR}/multimedia/gstreamer1-plugins
+BUILD_DEPENDS+=	gstreamer1-plugins>=${GST1_VERSION}${GST1_MINIMAL_VERSION}:multimedia/gstreamer1-plugins
+RUN_DEPENDS+=	gstreamer1-plugins>=${GST1_VERSION}${GST1_MINIMAL_VERSION}:multimedia/gstreamer1-plugins
 
 DIST=	ugly
 UGLY_GST_DIRS=	gst po gst-libs

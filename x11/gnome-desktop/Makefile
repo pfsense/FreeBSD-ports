@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gnome-desktop
-PORTVERSION=	3.16.2
+PORTVERSION=	3.18.2
+PORTREVISION=	1
 CATEGORIES=	x11 gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -12,22 +13,20 @@ COMMENT=	Additional UI API for GNOME 3
 
 USES=		tar:xz
 
-.if defined(REFERENCE_PORT)
-PORTSCOUT=	ignore:1
-.else
+.if !defined(REFERENCE_PORT)
 PORTSCOUT=	limitw:1,even
 
-BUILD_DEPENDS=	iso-codes>=0:${PORTSDIR}/misc/iso-codes \
-		gsettings-desktop-schemas>=0:${PORTSDIR}/devel/gsettings-desktop-schemas \
-		xkeyboard-config>=0:${PORTSDIR}/x11/xkeyboard-config \
-		libxkbfile>=0:${PORTSDIR}/x11/libxkbfile \
-		itstool:${PORTSDIR}/textproc/itstool
-RUN_DEPENDS=	iso-codes>=0:${PORTSDIR}/misc/iso-codes \
-		gsettings-desktop-schemas>=0:${PORTSDIR}/devel/gsettings-desktop-schemas \
-		xkeyboard-config>=0:${PORTSDIR}/x11/xkeyboard-config \
-		libxkbfile>=0:${PORTSDIR}/x11/libxkbfile
+BUILD_DEPENDS=	iso-codes>=0:misc/iso-codes \
+		gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas \
+		xkeyboard-config>=0:x11/xkeyboard-config \
+		libxkbfile>=0:x11/libxkbfile \
+		itstool:textproc/itstool
+RUN_DEPENDS=	iso-codes>=0:misc/iso-codes \
+		gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas \
+		xkeyboard-config>=0:x11/xkeyboard-config \
+		libxkbfile>=0:x11/libxkbfile
 
-USES+=		bison gettext gmake libtool pathfix pkgconfig python:3
+USES+=		bison gettext gmake gnome libtool pathfix pkgconfig python:3
 USE_GNOME=	gtk30 intlhack introspection:build referencehack
 USE_XORG=	x11 xrandr xext
 USE_LDCONFIG=	yes

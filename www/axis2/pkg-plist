@@ -1,56 +1,71 @@
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/XmlSchema-1.4.7.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/XmlSchema-LICENSE.txt
+%%APPHOME%%/webapps/axis2/WEB-INF/classes/META-INF/LICENSE
+%%APPHOME%%/webapps/axis2/WEB-INF/classes/META-INF/NOTICE
+%%APPHOME%%/webapps/axis2/WEB-INF/classes/commons-logging.properties
+%%APPHOME%%/webapps/axis2/WEB-INF/classes/log4j.properties
+%%APPHOME%%/webapps/axis2/WEB-INF/classes/org/apache/axis2/transport/http/AxisAdminServlet.class
+%%APPHOME%%/webapps/axis2/WEB-INF/classes/org/apache/axis2/webapp/AdminAgent.class
+%%APPHOME%%/webapps/axis2/WEB-INF/classes/org/apache/axis2/webapp/AxisAdminServlet.class
+%%APPHOME%%/webapps/axis2/WEB-INF/conf/axis2.policy.%%CONF_EXT%%
+%%APPHOME%%/webapps/axis2/WEB-INF/conf/axis2.xml.%%CONF_EXT%%
+%%APPHOME%%/webapps/axis2/WEB-INF/conf/commons-logging.properties.%%CONF_EXT%%
+%%APPHOME%%/webapps/axis2/WEB-INF/conf/log4j.properties.%%CONF_EXT%%
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/xmlschema-core-LICENSE.txt
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/activation-1.1.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/activation-LICENSE.txt
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/antlr-2-LICENSE.txt
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/antlr-2.7.7.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/apache-mime4j-core-0.7.2.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/apache-mime4j-core-LICENSE.txt
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axiom-api-1.2.13.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axiom-api-LICENSE.txt
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axiom-dom-1.2.13.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axiom-dom-LICENSE.txt
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axiom-impl-1.2.13.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axiom-impl-LICENSE.txt
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axiom-LICENSE.txt
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axiom-api-1.2.17.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axiom-dom-1.2.17.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axiom-impl-1.2.17.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axiom-jaxb-1.2.17.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-LICENSE.txt
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-adb-1.6.2.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-adb-codegen-1.6.2.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-ant-plugin-1.6.2.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-clustering-1.6.2.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-codegen-1.6.2.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-corba-1.6.2.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-fastinfoset-1.6.2.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-java2wsdl-1.6.2.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-jaxbri-1.6.2.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-jaxws-1.6.2.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-jibx-1.6.2.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-json-1.6.2.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-kernel-1.6.2.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-metadata-1.6.2.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-mtompolicy-1.6.2.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-saaj-1.6.2.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-soapmonitor-servlet-1.6.2.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-spring-1.6.2.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-transport-http-1.6.2.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-transport-local-1.6.2.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-xmlbeans-1.6.2.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/bcel-5.1.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-adb-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-adb-codegen-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-ant-plugin-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-clustering-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-codegen-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-corba-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-fastinfoset-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-java2wsdl-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-jaxbri-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-jaxws-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-jibx-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-json-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-kernel-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-metadata-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-mtompolicy-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-saaj-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-soapmonitor-servlet-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-spring-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-transport-base-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-transport-http-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-transport-jms-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-transport-local-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-transport-mail-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-transport-tcp-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-transport-udp-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-transport-xmpp-%%PORTVERSION%%.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/axis2-xmlbeans-%%PORTVERSION%%.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/bcel-LICENSE.txt
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/bcel-findbugs-6.0.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/commons-cli-1.2.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/commons-cli-LICENSE.txt
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/commons-codec-1.3.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/commons-codec-LICENSE.txt
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/commons-fileupload-1.2.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/commons-fileupload-1.3.1.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/commons-fileupload-LICENSE.txt
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/commons-httpclient-3.1.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/commons-httpclient-LICENSE.txt
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/commons-io-1.4.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/commons-io-2.1.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/commons-io-LICENSE.txt
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/commons-logging-1.1.1.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/commons-logging-LICENSE.txt
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/endorsed/geronimo-jaxws_2.2_spec-1.0.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/endorsed/geronimo-saaj_1.3_spec-1.0.1.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/endorsed/jaxb-api-2.1.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/endorsed/jaxb-api-2.2.6.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/geronimo-annotation-LICENSE.txt
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/geronimo-annotation_1.0_spec-1.1.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/geronimo-jaxws-LICENSE.txt
@@ -63,27 +78,31 @@
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/geronimo-stax-api_1.0_spec-1.0.1.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/geronimo-ws-metadata-LICENSE.txt
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/geronimo-ws-metadata_2.0_spec-1.1.2.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/httpcore-4.0.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/gson-2.1.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/gson-LICENSE.txt
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/httpclient-4.2.1.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/httpclient-LICENSE.txt
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/httpcore-4.2.1.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/httpcore-LICENSE.txt
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/jalopy-1.5rc3.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/jalopy-LICENSE.txt
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/jaxb-api-2.1.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/jaxb-api-2.2.6.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/jaxb-api-LICENSE.txt
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/jaxb-impl-2.1.7.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/jaxb-impl-2.2.6.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/jaxb-impl-LICENSE.txt
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/jaxb-xjc-2.1.7.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/jaxb-xjc-2.2.6.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/jaxb-xjc-LICENSE.txt
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/jaxen-1.1.1.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/jaxen-1.1.6.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/jaxen-LICENSE.txt
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/jaxws-tools-2.1.3.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/jaxws-tools-2.2.6.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/jaxws-tools-LICENSE.txt
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/jettison-1.0-RC2.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/jettison-1.3.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/jettison-LICENSE.txt
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/jibx-bind-1.2.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/jibx-bind-LICENSE.txt
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/jibx-run-1.2.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/jibx-run-LICENSE.txt
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/jsr311-api-1.0.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/jsr311-api-1.1.1.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/jsr311-api-LICENSE.txt
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/juli-6.0.16.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/juli-LICENSE.txt
@@ -91,41 +110,36 @@
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/log4j-LICENSE.txt
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/mail-1.4.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/mail-LICENSE.txt
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/mex-1.6.2-impl.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/neethi-3.0.2.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/mex-%%PORTVERSION%%-impl.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/neethi-3.0.3.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/neethi-LICENSE.txt
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/regexp-1.2.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/regexp-LICENSE.txt
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/stax2-api-3.1.1.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/stax2-api.LICENSE.txt
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/tribes-6.0.16.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/tribes-LICENSE.txt
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/woden-api-1.0M9.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/woden-api-LICENSE.txt
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/woden-impl-commons-1.0M9.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/woden-impl-commons-LICENSE.txt
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/woden-impl-dom-1.0M9.jar
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/woden-impl-dom-LICENSE.txt
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/woden-core-LICENSE.txt
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/woden-core-1.0M10.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/woodstox-core-asl-4.2.0.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/woodstox-core-asl-LICENSE.txt
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/wsdl4j-1.6.2.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/wsdl4j-LICENSE.txt
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/wstx-LICENSE.txt
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/wstx-asl-3.2.9.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/xalan-2.7.0.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/xalan-LICENSE.txt
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/xml-resolver-1.2.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/xml-resolver-LICENSE.txt
-%%APPHOME%%/webapps/axis2/WEB-INF/lib/xmlbeans-2.3.0.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/xmlbeans-2.5.0.jar
 %%APPHOME%%/webapps/axis2/WEB-INF/lib/xmlbeans-LICENSE.txt
-@sample %%APPHOME%%/webapps/axis2/WEB-INF/conf/axis2.policy.sample
-@sample %%APPHOME%%/webapps/axis2/WEB-INF/conf/axis2.xml.sample
-@sample %%APPHOME%%/webapps/axis2/WEB-INF/conf/commons-logging.properties.sample
-@sample %%APPHOME%%/webapps/axis2/WEB-INF/conf/log4j.properties.sample
-%%APPHOME%%/webapps/axis2/WEB-INF/classes/META-INF/LICENSE
-%%APPHOME%%/webapps/axis2/WEB-INF/classes/META-INF/NOTICE
-%%APPHOME%%/webapps/axis2/WEB-INF/classes/commons-logging.properties
-%%APPHOME%%/webapps/axis2/WEB-INF/classes/log4j.properties
-%%APPHOME%%/webapps/axis2/WEB-INF/classes/org/apache/axis2/transport/http/AxisAdminServlet.class
-%%APPHOME%%/webapps/axis2/WEB-INF/classes/org/apache/axis2/webapp/AdminAgent.class
-%%APPHOME%%/webapps/axis2/WEB-INF/classes/org/apache/axis2/webapp/AxisAdminServlet.class
-@sample %%APPHOME%%/webapps/axis2/WEB-INF/web.xml.sample
+%%APPHOME%%/webapps/axis2/WEB-INF/lib/xmlschema-core-2.2.1.jar
+%%APPHOME%%/webapps/axis2/WEB-INF/modules/addressing-%%PORTVERSION%%.mar
+%%APPHOME%%/webapps/axis2/WEB-INF/modules/mex-%%PORTVERSION%%.mar
+%%APPHOME%%/webapps/axis2/WEB-INF/modules/modules.list
+%%APPHOME%%/webapps/axis2/WEB-INF/modules/mtompolicy-%%PORTVERSION%%.mar
+%%APPHOME%%/webapps/axis2/WEB-INF/modules/ping-%%PORTVERSION%%.mar
+%%APPHOME%%/webapps/axis2/WEB-INF/modules/scripting-%%PORTVERSION%%.mar
+%%APPHOME%%/webapps/axis2/WEB-INF/modules/soapmonitor-%%PORTVERSION%%.mar
+%%APPHOME%%/webapps/axis2/WEB-INF/services/services.list
+%%APPHOME%%/webapps/axis2/WEB-INF/services/version.aar
+%%APPHOME%%/webapps/axis2/WEB-INF/web.xml.%%CONF_EXT%%
 %%APPHOME%%/webapps/axis2/axis2-web/ActivateService.jsp
 %%APPHOME%%/webapps/axis2/axis2-web/EngageToServiceGroup.jsp
 %%APPHOME%%/webapps/axis2/axis2-web/Error/AuthError.html
@@ -159,6 +173,7 @@
 %%APPHOME%%/webapps/axis2/axis2-web/images/axis.jpg
 %%APPHOME%%/webapps/axis2/axis2-web/images/axis_l.jpg
 %%APPHOME%%/webapps/axis2/axis2-web/include/adminfooter.inc
+%%APPHOME%%/webapps/axis2/axis2-web/include/adminfooter.jsp
 %%APPHOME%%/webapps/axis2/axis2-web/include/adminheader.inc
 %%APPHOME%%/webapps/axis2/axis2-web/include/adminheader.jsp
 %%APPHOME%%/webapps/axis2/axis2-web/include/footer.inc
@@ -177,12 +192,114 @@
 %%APPHOME%%/webapps/axis2/axis2-web/viewServiceContext.jsp
 %%APPHOME%%/webapps/axis2/axis2-web/viewServiceGroupContext.jsp
 %%APPHOME%%/webapps/axis2/axis2-web/viewphases.jsp
-%%APPHOME%%/webapps/axis2/WEB-INF/modules/addressing-1.6.2.mar
-%%APPHOME%%/webapps/axis2/WEB-INF/modules/mex-1.6.2.mar
-%%APPHOME%%/webapps/axis2/WEB-INF/modules/modules.list
-%%APPHOME%%/webapps/axis2/WEB-INF/modules/mtompolicy-1.6.2.mar
-%%APPHOME%%/webapps/axis2/WEB-INF/modules/ping-1.6.2.mar
-%%APPHOME%%/webapps/axis2/WEB-INF/modules/scripting-1.6.2.mar
-%%APPHOME%%/webapps/axis2/WEB-INF/modules/soapmonitor-1.6.2.mar
-%%APPHOME%%/webapps/axis2/WEB-INF/services/services.list
-%%APPHOME%%/webapps/axis2/WEB-INF/services/version.aar
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/databinding/client/src/%%CONF_EXT%%s/databinding
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/databinding/docs
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/databinding/service/src/%%CONF_EXT%%s/databinding
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/faulthandling/client/src/example
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/faulthandling/docs
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/faulthandling/service/src/example
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/java_first_jaxws/src/main/demo/hw/server
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/java_first_jaxws/src/webapp/WEB-INF/classes
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/jaxws-addressbook/src/org/apache/axis2/jaxws/addressbook
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/jaxws-calculator/resources/META-INF
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/jaxws-calculator/src/org/apache/axis2/jaxws/calculator/client
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/jaxws-dynamic/resources/wsdl
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/jaxws-dynamic/src/org/apache/axis2/jaxws/%%CONF_EXT%%/dynamic
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/jaxws-interop/resources/META-INF
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/jaxws-interop/src/com/microsoft/schemas/_2003/_10/serialization
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/jaxws-interop/src/org/apache/axis2/jaxws/interop
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/jaxws-interop/src/org/datacontract/schemas/_2004/_07/system
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/jaxws-interop/src/org/tempuri
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/jaxws-%%CONF_EXT%%s/src/main/org/apache/axis2/jaxws/%%CONF_EXT%%s/client/echo
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/jaxws-%%CONF_EXT%%s/src/main/org/apache/axis2/jaxws/%%CONF_EXT%%s/client/mtom
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/jaxws-%%CONF_EXT%%s/src/main/org/apache/axis2/jaxws/%%CONF_EXT%%s/client/ping
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/jaxws-%%CONF_EXT%%s/src/main/org/apache/axis2/jaxws/%%CONF_EXT%%s/echo
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/jaxws-%%CONF_EXT%%s/src/main/org/apache/axis2/jaxws/%%CONF_EXT%%s/handler
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/jaxws-%%CONF_EXT%%s/src/main/org/apache/axis2/jaxws/%%CONF_EXT%%s/mtom
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/jaxws-%%CONF_EXT%%s/src/main/org/apache/axis2/jaxws/%%CONF_EXT%%s/ping
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/jaxws-%%CONF_EXT%%s/src/main/org/apache/axis2/jaxws/%%CONF_EXT%%s/servlet
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/jaxws-%%CONF_EXT%%s/src/webapp/WEB-INF/classes/org/apache/axis2/jaxws/%%CONF_EXT%%s/echo
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/jaxws-%%CONF_EXT%%s/src/webapp/WEB-INF/jsp
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/jaxws-%%CONF_EXT%%s/src/webapp/WEB-INF/wsdl
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/jaxws-version/resources/META-INF
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/jaxws-version/src/%%CONF_EXT%%/jaxws
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/json/resources
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/json/src/META-INF
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/json/src/%%CONF_EXT%%/json/client
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/json/src/%%CONF_EXT%%/json/service
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/mtom/resources
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/mtom/src/%%CONF_EXT%%/mtom/client
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/mtom/src/%%CONF_EXT%%/mtom/service
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/pojo/src/META-INF
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/pojo/src/%%CONF_EXT%%/addressbook/adbclient
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/pojo/src/%%CONF_EXT%%/addressbook/entry
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/pojo/src/%%CONF_EXT%%/addressbook/rpcclient
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/pojo/src/%%CONF_EXT%%/addressbook/service
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/pojoguide/src/META-INF
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/pojoguide/src/%%CONF_EXT%%/pojo/data
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/pojoguide/src/%%CONF_EXT%%/pojo/rpcclient
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/pojoguide/src/%%CONF_EXT%%/pojo/service
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/pojoguidespring/src/META-INF
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/pojoguidespring/src/client
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/pojoguidespring/src/lib
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/pojoguidespring/src/%%CONF_EXT%%/spring/bean
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/pojoguidespring/src/%%CONF_EXT%%/spring/service
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/quickstart/resources/META-INF
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/quickstart/src/%%CONF_EXT%%s/quickstart/service/pojo
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/quickstartadb/resources/META-INF
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/quickstartadb/src/%%CONF_EXT%%s/quickstart/clients
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/quickstartadb/src/%%CONF_EXT%%s/quickstart/service/adb
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/quickstartaxiom/resources/META-INF
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/quickstartaxiom/src/%%CONF_EXT%%s/quickstart/clients
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/quickstartaxiom/src/%%CONF_EXT%%s/quickstart/service/axiom
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/quickstartjibx/resources/META-INF
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/quickstartjibx/src/%%CONF_EXT%%s/quickstart/clients
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/quickstartjibx/src/%%CONF_EXT%%s/quickstart/service/jibx
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/quickstartxmlbeans/resources/META-INF
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/quickstartxmlbeans/src/%%CONF_EXT%%s/quickstart/clients
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/quickstartxmlbeans/src/%%CONF_EXT%%s/quickstart/service/xmlbeans
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/servicelifecycle/doc
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/servicelifecycle/src/META-INF
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/servicelifecycle/src/client
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/servicelifecycle/src/%%CONF_EXT%%/servicelifecycle/bean
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/soapwithattachments/resources/META-INF
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/soapwithattachments/src/%%CONF_EXT%%/soapwithattachments/client
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/soapwithattachments/src/%%CONF_EXT%%/soapwithattachments/service
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/transport/https-%%CONF_EXT%%/httpsClient/src/main/java/org/apache/axis2/examples/httpsclient
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/transport/https-%%CONF_EXT%%/httpsService/src/main/java/org/apache/axis2/examples/httpsservice
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/transport/https-%%CONF_EXT%%/httpsService/src/main/webapp/WEB-INF/services/SimpleService/META-INF
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/transport/jms-%%CONF_EXT%%/jmsService/src/main/java/org/apache/axis2/examples/jmsservice
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/transport/jms-%%CONF_EXT%%/jmsService/src/main/resources/services/SimpleService/META-INF
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/userguide/conf
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/userguide/src/userguide/clients
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/userguide/src/userguide/example1/META-INF
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/userguide/src/userguide/example2/META-INF
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/userguide/src/userguide/example3/META-INF
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/userguide/src/userguide/loggingmodule/META-INF
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/version/src/%%CONF_EXT%%/axisversion/META-INF
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/wsdl
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/yahoojsonsearch/resources
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/yahoojsonsearch/src/%%CONF_EXT%%/yahooservices/JSONSearch
+%%PORTEXAMPLES%%@dir %%EXAMPLESDIR%%/yahoorestsearch/src/%%CONF_EXT%%/yahooservices/RESTSearch
+@dir %%APPHOME%%/webapps/axis2/WEB-INF/classes/META-INF
+@dir %%APPHOME%%/webapps/axis2/WEB-INF/classes/org/apache/axis2/transport/http
+@dir %%APPHOME%%/webapps/axis2/WEB-INF/classes/org/apache/axis2/transport
+@dir %%APPHOME%%/webapps/axis2/WEB-INF/classes/org/apache/axis2/webapp
+@dir %%APPHOME%%/webapps/axis2/WEB-INF/classes/org/apache/axis2
+@dir %%APPHOME%%/webapps/axis2/WEB-INF/classes/org/apache
+@dir %%APPHOME%%/webapps/axis2/WEB-INF/classes/org
+@dir %%APPHOME%%/webapps/axis2/WEB-INF/classes
+@dir %%APPHOME%%/webapps/axis2/WEB-INF/conf
+@dir %%APPHOME%%/webapps/axis2/WEB-INF/lib/endorsed
+@dir %%APPHOME%%/webapps/axis2/WEB-INF/lib
+@dir %%APPHOME%%/webapps/axis2/WEB-INF/modules
+@dir %%APPHOME%%/webapps/axis2/WEB-INF/services
+@dir %%APPHOME%%/webapps/axis2/WEB-INF
+@dir %%APPHOME%%/webapps/axis2/axis2-web/Error
+@dir %%APPHOME%%/webapps/axis2/axis2-web/css
+@dir %%APPHOME%%/webapps/axis2/axis2-web/images
+@dir %%APPHOME%%/webapps/axis2/axis2-web/include
+@dir %%APPHOME%%/webapps/axis2/axis2-web
+@dir %%APPHOME%%/webapps/axis2
+@dir %%APPHOME%%/webapps
+@dir %%APPHOME%%

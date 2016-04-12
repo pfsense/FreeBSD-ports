@@ -3,6 +3,7 @@
 
 PORTNAME=	pdf
 PORTVERSION=	1.16.0
+PORTREVISION=	1
 CATEGORIES=	graphics enlightenment
 MASTER_SITES=	http://download.enlightenment.org/rel/libs/${PKGNAMEPREFIX:S/-//}/
 PKGNAMEPREFIX=	evas_generic_loaders-
@@ -13,8 +14,8 @@ COMMENT=	Additional loader for Evas (pdf)
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libefl.so:${PORTSDIR}/devel/efl \
-		libpoppler.so:${PORTSDIR}/graphics/poppler
+LIB_DEPENDS=	libefl.so:devel/efl \
+		libpoppler.so:graphics/poppler
 
 DIST_SUBDIR=	enlightenment
 GNU_CONFIGURE=	yes

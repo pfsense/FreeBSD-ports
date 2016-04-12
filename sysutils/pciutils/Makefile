@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pciutils
-PORTVERSION=	3.4.0
+PORTVERSION=	3.4.1
 CATEGORIES=	sysutils
 MASTER_SITES=	KERNEL_ORG/software/utils/pciutils \
 		ftp://atrey.karlin.mff.cuni.cz/pub/linux/pci/ \
@@ -14,8 +14,8 @@ COMMENT=	PCI configuration utilities
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libpci.so:${PORTSDIR}/devel/libpci
-RUN_DEPENDS=	${LOCALBASE}/share/pciids/pci.ids:${PORTSDIR}/misc/pciids
+LIB_DEPENDS=	libpci.so:devel/libpci
+RUN_DEPENDS=	${LOCALBASE}/share/pciids/pci.ids:misc/pciids
 
 ALL_TARGET=	lspci lspci.8 setpci setpci.8
 CPPFLAGS+=	-fPIC

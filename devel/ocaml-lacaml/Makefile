@@ -2,18 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	lacaml
-PORTVERSION=	7.2.6
-DISTVERSIONPREFIX=	v
+PORTVERSION=	8.0.7
 CATEGORIES=	devel
+MASTER_SITES=	https://github.com/mmottl/lacaml/releases/download/%SUBDIR%/
+MASTER_SITE_SUBDIR=	${PORTVERSION:S/^/v/}
 PKGNAMEPREFIX=	ocaml-
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OCaml interface to BLAS and LAPACK libraries
 
 LICENSE=	LGPL21
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	mmottl
+LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
 USE_OCAML=	yes
 USE_OCAML_FINDLIB=yes
@@ -47,15 +46,18 @@ post-patch:
 		 s|%%LOCALBASE%%|${LOCALBASE}|' ${WRKSRC}/myocamlbuild.ml
 
 post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${OCAML_SITELIBDIR}/lacaml/*.cmxs
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${OCAML_SITELIBDIR}/lacaml/*.so
+
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for i in AUTHORS.txt CHANGES.txt README.md TODO.md
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${i} \
 		${STAGEDIR}${DOCSDIR})
 .endfor
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+
+post-install-EXAMPLES-on:
 	@(cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . \
 		${STAGEDIR}${EXAMPLESDIR})
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${OCAML_SITELIBDIR}/lacaml/*.cmxs
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/${OCAML_SITELIBDIR}/lacaml/*.so
 
 .include <bsd.port.mk>

@@ -1,11 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	meta1
-PORTVERSION=	1.1.0a.1.0
-DISTVERSION=	1.1.Alpha1.0
-PORTREVISION=	2
+PORTVERSION=	1.1.0a.2.0
+DISTVERSION=	1.1.Alpha2.0
+PORTREVISION=	0
 CATEGORIES=	mail ipv6
-MASTER_SITES=	http://www.MeTA1.org/download/.alpha/authpar/
+MASTER_SITES=	http://www.MeTA1.org/download/.alpha/dane1/
 PKGNAMESUFFIX?=	${TLS_SUFFIX}${SASL_SUFFIX}${BERKELEYDB_SUFFIX}${PMILTER_SUFFIX}${PKGNAMESUFFIX2}
 
 MAINTAINER=	dinoex@FreeBSD.org
@@ -57,11 +57,11 @@ SASL2AUTHD_DESC=	Enable plaintext authentication via SASL2
 PMILTER_CONFIGURE_ENABLE=	pmilter
 DKIM_CONFIGURE_ENABLE=	DKIM
 MSP_CONFIGURE_ENABLE=	msp
-SASL2_LIB_DEPENDS=	libsasl2.so:${PORTSDIR}/security/cyrus-sasl2
+SASL2_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 SASL2_CONFIGURE_ENABLE=	SASL
 SASL2_CONFIGURE_ON=	--with-sasl-incdir=${LOCALBASE}/include \
 			--with-sasl-libdir=${LOCALBASE}/lib
-SASL2AUTHD_RUN_DEPENDS=	${LOCALBASE}/sbin/saslauthd:${PORTSDIR}/security/cyrus-sasl2-saslauthd
+SASL2AUTHD_RUN_DEPENDS=	${LOCALBASE}/sbin/saslauthd:security/cyrus-sasl2-saslauthd
 TLS_CONFIGURE_ENABLE=	TLS
 
 .include <bsd.port.options.mk>

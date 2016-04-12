@@ -10,14 +10,14 @@ MASTER_SITES=	http://research.wand.net.nz/software/libtrace/
 MAINTAINER=	matt@peterson.org
 COMMENT=	C library for network packet capture and processing
 
-LIB_DEPENDS=	libpcap.so:${PORTSDIR}/net/libpcap
+LIB_DEPENDS=	libpcap.so:net/libpcap
 
 CONFIGURE_ARGS=	--with-libpcap=${LOCALBASE} \
 		libtrace_doxygen=false
 
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-USES=		gmake libtool
+USES=		gmake libtool ncurses
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 .include <bsd.port.mk>

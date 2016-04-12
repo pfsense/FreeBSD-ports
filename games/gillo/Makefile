@@ -11,12 +11,12 @@ DISTNAME=	${PORTNAME}-${DISTVERSION}-src
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Players are cars throwing a magnetic fuzzy ball into a goal
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	${JAM}:${PORTSDIR}/devel/jam \
-		${LOCALBASE}/lib/libode.a:${PORTSDIR}/devel/ode \
-		${LOCALBASE}/lib/libplibsg.a:${PORTSDIR}/x11-toolkits/plib
+BUILD_DEPENDS=	${JAM}:devel/jam \
+		${LOCALBASE}/lib/libode.a:devel/ode \
+		${LOCALBASE}/lib/libplibsg.a:x11-toolkits/plib
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

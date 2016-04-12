@@ -3,6 +3,7 @@
 
 PORTNAME=	octave-forge-fpl
 PORTVERSION=	1.3.5
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -15,7 +16,7 @@ LICENSE_FILE=	${WRKDIR}/${OCTSRC}/COPYING
 # It is usually ${OCTAVE_PKGNAME} or ${DISTNAME}.
 OCTSRC=		${OCTAVE_PKGNAME}
 
-RUN_DEPENDS+=	dx:${PORTSDIR}/graphics/opendx
+RUN_DEPENDS+=	dx:graphics/opendx
 
 .include "${.CURDIR}/../../Mk/bsd.octave.mk"
 

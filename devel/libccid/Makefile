@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	ccid
-PORTVERSION=	1.4.21
+PORTVERSION=	1.4.22
 CATEGORIES=	devel
-MASTER_SITES=	https://alioth.debian.org/frs/download.php/file/4148/
+MASTER_SITES=	https://alioth.debian.org/frs/download.php/file/4162/
 
 MAINTAINER=	arved@FreeBSD.org
 COMMENT=	Generic USB CCID (Chip/Smart Card Interface Devices) driver
@@ -12,7 +12,7 @@ COMMENT=	Generic USB CCID (Chip/Smart Card Interface Devices) driver
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libpcsclite.so:${PORTSDIR}/devel/pcsc-lite
+LIB_DEPENDS=	libpcsclite.so:devel/pcsc-lite
 
 USES=		perl5 pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes

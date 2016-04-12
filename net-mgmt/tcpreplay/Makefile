@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tcpreplay
-PORTVERSION=	4.1.0
+PORTVERSION=	4.1.1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF
 
@@ -11,7 +11,7 @@ COMMENT=	Tool to replay saved packet capture files
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	pcapnav-config:${PORTSDIR}/net/libpcapnav
+BUILD_DEPENDS=	pcapnav-config:net/libpcapnav
 
 GNU_CONFIGURE=	yes
 

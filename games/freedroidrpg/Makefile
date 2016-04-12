@@ -11,7 +11,7 @@ DISTNAME=	${SF_NAME}-${PORTVERSION}
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Modification of the classical Freedroid engine into an RPG
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN_sparc64=	does not configure
@@ -39,8 +39,8 @@ BACKTRACE_VARS=			STRIP= # empty
 OPENGL_USE=			GL=gl
 OPENGL_CONFIGURE_ENABLE=	opengl
 
-SOUND_LIB_DEPENDS=		libvorbis.so:${PORTSDIR}/audio/libvorbis \
-				libogg.so:${PORTSDIR}/audio/libogg
+SOUND_LIB_DEPENDS=		libvorbis.so:audio/libvorbis \
+				libogg.so:audio/libogg
 SOUND_CONFIGURE_ENABLE=		sound
 SOUND_USE=			SDL=mixer
 NLS_USES=			gettext

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	libvisio
-PORTVERSION=	0.1.3
+PORTVERSION=	0.1.5
 CATEGORIES=	textproc devel
 MASTER_SITES=	http://dev-www.libreoffice.org/src/${PORTNAME}/
 PKGNAMESUFFIX=	01
@@ -12,9 +12,9 @@ COMMENT=	Library and tools for parsing the visio file format structure
 LICENSE=	LGPL21 MPL GPLv2
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	${LOCALBASE}/include/boost/spirit/include/classic_core.hpp:${PORTSDIR}/devel/boost-libs
-LIB_DEPENDS=	libicui18n.so:${PORTSDIR}/devel/icu \
-		librevenge-0.0.so:${PORTSDIR}/textproc/librevenge
+BUILD_DEPENDS=	${LOCALBASE}/include/boost/spirit/include/classic_core.hpp:devel/boost-libs
+LIB_DEPENDS=	libicui18n.so:devel/icu \
+		librevenge-0.0.so:textproc/librevenge
 
 CONFIGURE_ARGS=	--disable-tests --disable-werror --without-docs
 CPPFLAGS+=	-I${LOCALBASE}/include

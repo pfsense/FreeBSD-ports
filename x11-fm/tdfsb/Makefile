@@ -10,10 +10,10 @@ MASTER_SITES=	http://www.determinate.net/webdata/data/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	3D filesystem browser
 
-LICENSE=	GPLv2 GPLv3
-LICENSE_COMB=	dual
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libsmpeg.so:${PORTSDIR}/multimedia/smpeg
+LIB_DEPENDS=	libsmpeg.so:multimedia/smpeg
 
 USE_GL=		glut
 USE_SDL=	image sdl
@@ -37,6 +37,8 @@ do-build:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 

@@ -2,21 +2,25 @@
 # $FreeBSD$
 
 PORTNAME=	openocd
-PORTVERSION=	0.7.0
-PORTREVISION=	3
+PORTVERSION=	0.9.0
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Open On-Chip Debugger
 
+BUILD_DEPENDS=	${LOCALBASE}/bin/makeinfo:print/texinfo
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--disable-werror
+CONFIGURE_ENV=	MAKEINFO=${LOCALBASE}/bin/makeinfo
+
+BROKEN_FreeBSD_9=	libusb does not install pkgconfig files
 
 OPTIONS_DEFINE=	DOC JIMTCL VERBOSE JTAG_IO USB_IO PARPORT DUMMY FT2232 FTDI \
 	USBBLASTER EP93XX AT91RM9200 PRESTO USBPROG JLINK VSLLINK RLINK ULINK \
 	ARMJTAGEW BUSPIRATE TIICDI STLINK OSBDM OPENDOUS SYSFSGPIO RMTBITBANG \
-	MINIDRIVER
+	MINIDRIVER CMSISDAP
 OPTIONS_DEFAULT=DOC JIMTCL PARPORT DUMMY FT2232 FTDI USBBLASTER EP93XX \
 	AT91RM9200 PRESTO USBPROG JLINK VSLLINK RLINK ULINK ARMJTAGEW \
 	BUSPIRATE STLINK OSBDM OPENDOUS RMTBITBANG
@@ -48,8 +52,9 @@ OPENDOUS=	Support EStick/OpenDous Programmer
 SYSFSGPIO=	Support Programming via sysfs GPIOs
 RMTBITBANG_DESC=Support Remote-Bitbang Driver
 MINIDRIVER_DESC=Dummy minidriver only (will exclude others!)
+CMSISDAP_DESC=Support for CMSIS-DAP Compliant Debugger
 
-USES=		gmake libtool tar:bzip2
+USES=		gmake libtool pkgconfig tar:bzip2
 CFLAGS+=	-I${LOCALBASE}/include -L${LOCALBASE}/lib
 INFO=		openocd
 
@@ -115,14 +120,15 @@ CONFIGURE_ARGS+=	--disable-dummy
 .endif
 
 .if ${PORT_OPTIONS:MFT2232}
-CONFIGURE_ARGS+=	--enable-ft2232_libftdi
+CONFIGURE_ARGS+=	--enable-legacy-ft2232_libftdi
 WITH_LIBFTDI=		yes
 .else
-CONFIGURE_ARGS+=	--disable-ft2232_libftdi
+CONFIGURE_ARGS+=	--disable-legacy-ft2232_libftdi
 .endif
 
 .if ${PORT_OPTIONS:MFTDI}
 CONFIGURE_ARGS+=	--enable-ftdi
+WITH_LIBFTDI=		yes
 .else
 CONFIGURE_ARGS+=	--disable-ftdi
 .endif
@@ -271,12 +277,19 @@ CONFIGURE_ARGS+=	--enable-minidriver-dummy
 CONFIGURE_ARGS+=	--disable-minidriver-dummy
 .endif
 
+.if ${PORT_OPTIONS:MCMSISDAP}
+CONFIGURE_ARGS+=	--enable-cmsis-dap
+LIB_DEPENDS+=		libhidapi.so:comms/hidapi
+.else
+CONFIGURE_ARGS+=	--disable-cmsis-dap
+.endif
+
 .if defined(WITH_LIBFTDI)
-LIB_DEPENDS+=		libftdi.so:${PORTSDIR}/devel/libftdi
+LIB_DEPENDS+=		libftdi.so:devel/libftdi
 .endif
 
 .if ${PORT_OPTIONS:MDOXYGEN}
-BUILD_DEPENDS+=		doxygen:${PORTSDIR}/devel/doxygen
+BUILD_DEPENDS+=		doxygen:devel/doxygen
 .endif
 
 .include <bsd.port.mk>

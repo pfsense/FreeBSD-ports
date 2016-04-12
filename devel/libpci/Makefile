@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libpci
-PORTVERSION=	3.4.0
+PORTVERSION=	3.4.1
 CATEGORIES=	devel
 MASTER_SITES=	KERNEL_ORG/software/utils/pciutils \
 		ftp://atrey.karlin.mff.cuni.cz/pub/linux/pci/ \
@@ -14,7 +14,7 @@ COMMENT=	PCI configuration space I/O made easy
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	${LOCALBASE}/share/pciids/pci.ids:${PORTSDIR}/misc/pciids
+RUN_DEPENDS=	${LOCALBASE}/share/pciids/pci.ids:misc/pciids
 
 ALL_TARGET=	lib/libpci.a
 CPPFLAGS+=	-fPIC

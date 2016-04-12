@@ -10,7 +10,7 @@ MASTER_SITES=	SF/${PORTNAME}/Tar.Gz_Bz2%20Archive/${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tiny Vector and Matrix template library
 
-LICENSE=	LGPL21 # (or later)
+LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 OPTIONS_DEFINE=	CPPUNIT DEBUG DOCS EXAMPLES
@@ -22,7 +22,7 @@ CONFIGURE_ARGS=	--with-cxx=${CXX}
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MCPPUNIT}
-LIB_DEPENDS+=	libcppunit.so:${PORTSDIR}/devel/cppunit
+LIB_DEPENDS+=	libcppunit.so:devel/cppunit
 CONFIGURE_ARGS+=	--with-cppunit-prefix=${LOCALBASE}
 .else
 CONFIGURE_ENV+=	ac_cv_path_CPPUNIT_CONFIG=no
