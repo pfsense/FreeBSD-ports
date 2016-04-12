@@ -36,7 +36,7 @@ require_once("globals.inc");
 define('ZABBIX_AGENT_BASE', '/usr/local');
 
 function php_deinstall_zabbix_agent_lts() {
-	unlink_if_exists(ZABBIX_AGENT_BASE . "/etc/zabbix22/zabbix_agentd.conf");
+	unlink_if_exists(ZABBIX_AGENT_BASE . "/etc/zabbix3/zabbix_agentd.conf");
 	unlink_if_exists("/var/log/zabbix-agent-lts/zabbix_agentd_lts.log");
 	unlink_if_exists("/var/run/zabbix-agent-lts/zabbix_agentd_lts.pid");
 
@@ -151,7 +151,7 @@ StartAgents={$StartAgents}
 {$UserParams}
 
 EOF;
-			file_put_contents(ZABBIX_AGENT_BASE . "/etc/zabbix22/zabbix_agentd.conf", strtr($zbagent_conf_file, array("\r" => "")));
+			file_put_contents(ZABBIX_AGENT_BASE . "/etc/zabbix3/zabbix_agentd.conf", strtr($zbagent_conf_file, array("\r" => "")));
 		}
 	}
 
@@ -203,8 +203,8 @@ EOF;
 
 	// Check startup script files
 	// Create a few directories and ensure the sample files are in place
-	if (!is_dir(ZABBIX_AGENT_BASE . "/etc/zabbix22")) {
-		mwexec("/bin/mkdir -p " . ZABBIX_AGENT_BASE . "/etc/zabbix22");
+	if (!is_dir(ZABBIX_AGENT_BASE . "/etc/zabbix3")) {
+		mwexec("/bin/mkdir -p " . ZABBIX_AGENT_BASE . "/etc/zabbix3");
 	}
 
 	$dir_checks = <<< EOF
