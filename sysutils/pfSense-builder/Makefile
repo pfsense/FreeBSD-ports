@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-builder
-PORTVERSION=	2.3
-PORTREVISION=	1
+PORTVERSION=	2.4
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
