@@ -522,7 +522,7 @@ if ($savemsg) {
 </div>
 
 <div class="infoblock">
-	<div class="alert alert-info clearfix" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	<div class="alert alert-info clearfix" role="alert">
 		<div class="pull-left">
 			<p>This tool allows comparison of RRD databases on two different Y axes.</p>
 
