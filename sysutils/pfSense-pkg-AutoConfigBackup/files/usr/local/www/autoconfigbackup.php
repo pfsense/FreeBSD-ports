@@ -199,8 +199,9 @@ if ($_REQUEST['newver'] != "") {
 			$savemsg = "Successfully reverted the pfSense configuration to revision " . urldecode($_REQUEST['newver']) . ".";
 			$savemsg .= <<<EOF
 			<br />
-		<form action="reboot.php" method="post">
+		<form action="diag_reboot.php" method="post">
 			Reboot the firewall to full activate changes?
+			<input name="override" type="hidden" value="yes" />
 			<input name="Submit" type="submit" class="formbtn" value=" Yes " />
 		</form>
 EOF;
