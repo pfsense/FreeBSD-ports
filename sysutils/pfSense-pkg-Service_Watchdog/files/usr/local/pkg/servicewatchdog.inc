@@ -106,7 +106,12 @@ function servicewatchdog_check_services() {
 	}
 	$a_pwservices = &$config['installedpackages']['servicewatchdog']['item'];
 
-	foreach ($a_pwservices as $svc) {
+	foreach ($a_pwservices as $idx => $svc) {
+		// apinger became dpinger in pfSense 2.3
+		if ($svc['name'] == 'apinger') {
+			$a_pwservices[$idx]['name'] = $svc['name'] = 'dpinger';
+			write_config(gettext("Service Watchdog updated service apinger to dpinger"));
+		}
 		if (!get_service_status($svc)) {
 			$descr = strlen($svc['description']) > 50 ? substr($svc['description'], 0, 50) . "..." : $svc['description'];
 			$error_message = "Service Watchdog detected service {$svc['name']} stopped. Restarting {$svc['name']} ({$descr})";
