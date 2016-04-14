@@ -51,10 +51,6 @@
 		<section>Services</section>
 		<url>/acme/acme_certificates.php</url>
 	</menu>
-	<service>
-		<name>Acme</name>
-		<description>Automated Certificate Management Environment</description>
-	</service>	
 	<plugins>
 		<item>
 			<type>plugin_certificates</type>
