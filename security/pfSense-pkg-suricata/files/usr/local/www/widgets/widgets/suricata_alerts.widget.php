@@ -273,12 +273,8 @@ function suricata_widget_get_alerts() {
 		};
 	};
 
-	// Sort the alerts array
-	if (isset($config['syslog']['reverse'])) {
-		suricata_sksort($suricata_alerts, 'timestamp', false);
-	} else {
-		suricata_sksort($suricata_alerts, 'timestamp', true);
-	}
+	// Sort the alerts array by timestamp descending (newest first)
+	suricata_sksort($suricata_alerts, 'timestamp', false);
 
 	return $suricata_alerts;
 }
