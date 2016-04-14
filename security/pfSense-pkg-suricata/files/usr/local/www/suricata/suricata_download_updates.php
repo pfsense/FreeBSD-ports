@@ -307,7 +307,7 @@ include_once("head.inc");
 					</button>
 					<br/>
 				<?php else: ?>
-					<button class="btn btn-info icon-embed-btn" disabled='disabled'>
+					<button class="btn btn-info" disabled>
 						<i class="fa fa-file-text-o icon-embed-btn"></i>
 						<?=gettext("View Log"); ?>
 					</button><br/><?=gettext("Log is empty."); ?><br/>
