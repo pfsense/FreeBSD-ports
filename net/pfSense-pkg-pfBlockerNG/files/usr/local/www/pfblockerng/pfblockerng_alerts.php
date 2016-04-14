@@ -776,7 +776,7 @@ $group->add(new Form_Checkbox(
 
 $btn_save = new Form_Button(
 	'save',
-	'Save',
+	'Save Settings',
 	NULL,
 	'fa-save'
 );
