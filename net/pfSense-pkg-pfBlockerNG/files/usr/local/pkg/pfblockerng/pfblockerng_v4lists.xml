@@ -487,7 +487,7 @@
 			<combinefields>end</combinefields>
 		</field>
 		<field>
-			<fielddescr>Custom Destination</fielddescr>
+			<fielddescr>Custom Source</fielddescr>
 			<fieldname>autoaddr_out</fieldname>
 			<type>checkbox</type>
 			<sethelp>Enable</sethelp>
@@ -503,10 +503,10 @@
 		</field>
 		<field>
 			<fieldname>aliasaddr_out</fieldname>
-			<fielddescr>Custom Destination</fielddescr>
+			<fielddescr>Custom Source</fielddescr>
 			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>
 				Do not manually enter Addresses(es).<br />Do not use 'pfB_' in the 'IP Network Type' Alias name.<br />
-				Select 'invert' to invert the sense of the match. ie - Not (!) Destination Address(es)]]>
+				Select 'invert' to invert the sense of the match. ie - Not (!) Source Address(es)]]>
 			</description>
 			<width>6</width>
 			<type>aliases</type>
