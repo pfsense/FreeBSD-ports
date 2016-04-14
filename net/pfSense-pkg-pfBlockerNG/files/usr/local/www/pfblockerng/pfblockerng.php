@@ -64,19 +64,16 @@ $pfb['extras'][2]['url']	= 'http://geolite.maxmind.com/download/geoip/database/G
 $pfb['extras'][2]['file_dwn']	= 'GeoIPCountryCSV.zip';
 $pfb['extras'][2]['file']	= 'GeoIPCountryWhois.csv';
 $pfb['extras'][2]['folder']	= "{$pfb['geoipshare']}";
-$pfb['extras'][2]['install']	= TRUE;		// Flag for package installation
 
 $pfb['extras'][3]['url']	= 'http://dev.maxmind.com/static/csv/codes/country_continent.csv';
 $pfb['extras'][3]['file_dwn']	= 'country_continent.csv';
 $pfb['extras'][3]['file']	= 'country_continent.csv';
 $pfb['extras'][3]['folder']	= "{$pfb['geoipshare']}";
-$pfb['extras'][3]['install']	= TRUE;		// Flag for package installation
 
 $pfb['extras'][4]['url']	= 'http://geolite.maxmind.com/download/geoip/database/GeoIPv6.csv.gz';
 $pfb['extras'][4]['file_dwn']	= 'GeoIPv6.csv.gz';
 $pfb['extras'][4]['file']	= 'GeoIPv6.csv';
 $pfb['extras'][4]['folder']	= "{$pfb['geoipshare']}";
-$pfb['extras'][4]['install']	= TRUE;		// Flag for package installation
 
 $pfb['extras'][5]['url']	= 'https://s3.amazonaws.com/alexa-static/top-1m.csv.zip';
 $pfb['extras'][5]['file_dwn']	= 'top-1m.csv.zip';
@@ -101,6 +98,7 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'bu', 'u
 			sync_package_pfblockerng('cron');
 			break;
 		case 'dc':		// Update Extras - MaxMind/Alexa database files
+			$pfb['maxmind_install'] = TRUE;
 
 			// If 'General Tab' skip MaxMind download setting if checked, only download binary updates for Reputation/Alerts page.
 			if (!empty($pfb['cc'])) {
@@ -112,9 +110,12 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'bu', 'u
 				unset($pfb['extras'][5]);
 			}
 
-			pfblockerng_download_extras();
-			pfblockerng_uc_countries();
-			pfblockerng_get_countries();
+			// Proceed with conversion of MaxMind files on download success
+			if (pfblockerng_download_extras()) {
+				pfblockerng_uc_countries();
+				pfblockerng_get_countries();
+			}
+			unset($pfb['maxmind_install']);
 			break;
 		case 'bu':		// Update MaxMind binary database files only.
 			unset($pfb['extras'][2], $pfb['extras'][3], $pfb['extras'][4], $pfb['extras'][5]);
@@ -288,7 +289,7 @@ function pfblockerng_download_extras($timeout=600) {
 
 			// On install, if error found when downloading MaxMind Continent lists
 			// Return error to install process to download archive from pfSense package repo
-			if ($feed['install']) {
+			if ($pfb['maxmind_install']) {
 				$pfberror = TRUE;
 			}
 		}
@@ -498,6 +499,10 @@ function pfblockerng_uc_countries() {
 	$cont_array[6]['iso']		= 'A1,A2';
 	$cont_array[6]['file4'] 	= "{$pfb['ccdir']}/Proxy_Satellite_v4.txt";
 	$cont_array[6]['file6'] 	= "{$pfb['ccdir']}/Proxy_Satellite_v6.txt";
+
+	// Patch for missing CCodes
+	$cont_array[0]['iso'] .= 'SS';
+	$cont_array[3]['iso'] .= 'BQ,CW,SX';
 
 	sort($cont_array);
 
@@ -1084,7 +1089,7 @@ $xml .= <<<EOF
 			<combinefields>end</combinefields>
 		</field>
 		<field>
-			<fielddescr>Custom Destination</fielddescr>
+			<fielddescr>Custom Source</fielddescr>
 			<fieldname>autoaddr_out</fieldname>
 			<type>checkbox</type>
 			<sethelp>Enable</sethelp>
@@ -1100,10 +1105,10 @@ $xml .= <<<EOF
 		</field>
 		<field>
 			<fieldname>aliasaddr_out</fieldname>
-			<fielddescr>Custom Destination</fielddescr>
+			<fielddescr>Custom Source</fielddescr>
 			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>
 				Do not manually enter Addresses(es).<br />Do not use 'pfB_' in the 'IP Network Type' Alias name.<br />
-				Select 'invert' to invert the sense of the match. ie - Not (!) Destination Address(es)]]>
+				Select 'invert' to invert the sense of the match. ie - Not (!) Source Address(es)]]>
 			</description>
 			<width>6</width>
 			<type>aliases</type>
