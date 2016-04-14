@@ -995,12 +995,6 @@ function sanitize_ipaddr($ipaddr, $custom) {
 
 	// Exclude private/reserved IPs when suppression is enabled (bypass exclusion for custom lists)
 	if ($pfb['supp'] == 'on' && !$custom) {
-
-		// Remove 'loopback', '0.0.0.0', and IPs ending with '255'
-		if ($ip[0] == 127 || $ip[0] == 0 || empty($ip[0]) || $ip[3] == 255) {
-			return;
-		}
-
 		if (!filter_var($ip_final, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== FALSE) {
 			return;
 		}
