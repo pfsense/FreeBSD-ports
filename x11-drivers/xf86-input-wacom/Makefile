@@ -2,17 +2,17 @@
 
 PORTNAME=	xf86-input-wacom
 PORTVERSION=	0.32.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-drivers
 MASTER_SITES=	SF/linuxwacom/${PORTNAME}
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	X.Org Wacom tablet driver
 
-LICENSE=	GPLv2 # or any later version
+LICENSE=	GPLv2+
 
-BUILD_DEPENDS=	v4l_compat>=1.0.20110603:${PORTSDIR}/multimedia/v4l_compat
-RUN_DEPENDS=	webcamd>=3.1.0.1:${PORTSDIR}/multimedia/webcamd
+BUILD_DEPENDS=	v4l_compat>=1.0.20110603:multimedia/v4l_compat
+RUN_DEPENDS=	webcamd>=3.1.0.1:multimedia/webcamd
 
 USES=		tar:bzip2 pathfix pkgconfig libtool
 USE_XORG=	xrandr xinerama
@@ -37,10 +37,6 @@ post-patch:
 		-e 's/dir=.*xorg-server/& \
 			--define-variable prefix="$$prefix"/' \
 		${WRKSRC}/configure
-
-# XXX adjust MatchProduct to whatever Xorg/devd reports
-	@${REINPLACE_CMD} -e '/^SUBDIRS/s/ conf//' \
-		${WRKSRC}/Makefile.in
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/X11/xorg.conf.d

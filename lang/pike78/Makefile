@@ -2,7 +2,7 @@
 
 PORTNAME=	pike78
 PORTVERSION=	${PIKEVERSION}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	lang
 MASTER_SITES=	http://pike.ida.liu.se/pub/pike/all/${PORTVERSION}/ \
 		ftp://pike.ida.liu.se/pub/pike/beta/${PORTVERSION}/ \
@@ -13,11 +13,11 @@ DISTNAME=	Pike-v${PORTVERSION}
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	Dynamic programming language with a syntax similar to C++
 
-LIB_DEPENDS=	libtiff.so:${PORTSDIR}/graphics/tiff \
-		libgdbm.so:${PORTSDIR}/databases/gdbm \
-		libpcre.so:${PORTSDIR}/devel/pcre \
-		libgmp.so:${PORTSDIR}/math/gmp \
-		libnettle.so:${PORTSDIR}/security/nettle
+LIB_DEPENDS=	libtiff.so:graphics/tiff \
+		libgdbm.so:databases/gdbm \
+		libpcre.so:devel/pcre \
+		libgmp.so:math/gmp \
+		libnettle.so:security/nettle
 
 CONFLICTS=	pike7[26]-[0-9]*
 
@@ -25,9 +25,9 @@ OPTIONS_DEFINE=	TTF FREETYPE MYSQL PGSQL
 OPTIONS_DEFAULT=TTF FREETYPE MYSQL
 NO_OPTIONS_SORT=yes
 TTF_DESC?=		Enable FreeType 1 (libttf) font rendering engine
-TTF_LIB_DEPENDS=	libttf.so:${PORTSDIR}/print/freetype
+TTF_LIB_DEPENDS=	libttf.so:print/freetype
 TTF_CONFIGURE_WITH=	ttflib
-FREETYPE_LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2
+FREETYPE_LIB_DEPENDS=	libfreetype.so:print/freetype2
 FREETYPE_CONFIGURE_WITH=freetype
 MYSQL_USE=		mysql=yes
 MYSQL_CONFIGURE_WITH=	mysql
@@ -109,10 +109,7 @@ post-install:
 	${INSTALL_MAN} ${WRKSRC}/man/pike.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
 	@cd ${STAGEDIR}${PREFIX} && \
 		(${FIND} pike/${PORTVERSION} ! -type d && \
-		${FIND} pike/${PORTVERSION} -type d -empty -delete && \
-		${FIND} -d pike/${PORTVERSION} -type d | \
-		${SED} 's,^,@dirrm ,' && \
-		${ECHO_CMD} '@unexec rmdir %D/pike 2>/dev/null || true' \
+		${FIND} pike/${PORTVERSION} -type d -empty -delete \
 		) >> ${TMPPLIST}
 
 verify:

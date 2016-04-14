@@ -3,7 +3,7 @@
 
 PORTNAME=	dk-milter
 PORTVERSION=	1.0.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	mail
 MASTER_SITES=	SF/${PORTNAME}/DomainKeys%20Milter/${PORTVERSION}
 
@@ -25,9 +25,9 @@ WITH_SENDMAIL_BASE=	yes
 PKGMESSAGE=	pkg-message.postfix
 
 .if defined(WITH_POSTFIX_CURRENT)
-RUN_DEPENDS+=	${LOCALBASE}/libexec/postfix/smtpd:${PORTSDIR}/mail/postfix-current
+RUN_DEPENDS+=	${LOCALBASE}/libexec/postfix/smtpd:mail/postfix-current
 .else
-RUN_DEPENDS+=	${LOCALBASE}/libexec/postfix/smtpd:${PORTSDIR}/mail/postfix
+RUN_DEPENDS+=	${LOCALBASE}/libexec/postfix/smtpd:mail/postfix
 .endif
 .endif
 

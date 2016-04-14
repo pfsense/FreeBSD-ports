@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ayam
-PORTVERSION=	1.22
+PORTVERSION=	1.23
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/Ayam/${PORTVERSION}
 DISTNAME=	${PORTNAME}${PORTVERSION}.src
@@ -15,9 +15,9 @@ LICENSE_NAME=	Ayam License
 LICENSE_FILE=	${WRKSRC}/../License.txt
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-LIB_DEPENDS=	libaqsis_util.so:${PORTSDIR}/graphics/aqsis \
-		libtiff.so:${PORTSDIR}/graphics/tiff
-RUN_DEPENDS=	xdg-open:${PORTSDIR}/devel/xdg-utils
+LIB_DEPENDS=	libaqsis_util.so:graphics/aqsis \
+		libtiff.so:graphics/tiff
+RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
 WRKSRC=		${WRKDIR}/${PORTNAME}/src
 
@@ -97,7 +97,8 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${WRKDIR}/${PORTNAME}/lib/ayam-splash.gif \
 		${STAGEDIR}${DATADIR}
-# docs
+
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR} \
 		${STAGEDIR}${DOCSDIR}/html \
 		${STAGEDIR}${DOCSDIR}/html/pics

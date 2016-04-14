@@ -11,7 +11,7 @@ DISTFILES=	bl25-src${EXTRACT_SUFX} bl25-linux-x86${EXTRACT_SUFX}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	BlockOut II is an adaptation of the original Blockout DOS game
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 
 ONLY_FOR_ARCHS=	i386 amd64
 
@@ -19,7 +19,7 @@ USE_SDL=	mixer sdl
 USES=		gmake dos2unix
 DOS2UNIX_FILES=	${WRKSRC}/ImageLib/src/gif/gif.h \
 		${WRKSRC}/ImageLib/src/gif/gif.cpp ${WRKSRC}/BlockOut/*.cpp
-LIB_DEPENDS+=	libasound.so:${PORTSDIR}/audio/alsa-lib
+LIB_DEPENDS+=	libasound.so:audio/alsa-lib
 USE_GL=		gl glu
 
 WRKSRC=		${WRKDIR}/BL_SRC

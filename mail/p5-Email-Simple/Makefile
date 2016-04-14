@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	Email-Simple
-PORTVERSION=	2.208
+PORTVERSION=	2.210
 CATEGORIES=	mail perl5
 MASTER_SITES=	CPAN
-MASTER_SITE_SUBDIR=	CPAN:RJBS
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
@@ -14,10 +13,11 @@ COMMENT=	Simple parsing of RFC2822 message format and headers
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-Email-Date-Format>=0:${PORTSDIR}/mail/p5-Email-Date-Format
+BUILD_DEPENDS=	p5-Email-Date-Format>=0:mail/p5-Email-Date-Format
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	configure
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

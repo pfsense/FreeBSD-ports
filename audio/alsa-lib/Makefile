@@ -2,15 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	alsa-lib
-PORTVERSION=	1.1.0
+PORTVERSION=	1.1.1
 CATEGORIES=	audio
-MASTER_SITES=	ALSA/lib \
+MASTER_SITES=	ftp://ftp.alsa-project.org/pub/lib/ \
 		GENTOO
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	ALSA compatibility library
 
-LICENSE=	LGPL21 # or any later version
+LICENSE=	LGPL21+
 
 USES=		cpe libtool:keepla tar:bzip2
 USE_LDCONFIG=	yes

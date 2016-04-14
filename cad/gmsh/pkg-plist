@@ -12,6 +12,7 @@ include/gmsh/CellComplex.h
 include/gmsh/Chain.h
 include/gmsh/ChainComplex.h
 include/gmsh/ColorTable.h
+include/gmsh/CondNumBasis.h
 include/gmsh/Context.h
 include/gmsh/ElementType.h
 include/gmsh/FuncSpaceData.h
@@ -55,6 +56,7 @@ include/gmsh/MPyramid.h
 include/gmsh/MQuadrangle.h
 include/gmsh/MTetrahedron.h
 include/gmsh/MTriangle.h
+include/gmsh/MTrihedron.h
 include/gmsh/MVertex.h
 include/gmsh/MVertexBoundaryLayerData.h
 include/gmsh/MeshOpt.h
@@ -84,6 +86,7 @@ include/gmsh/OptHomObjContribCADDist.h
 include/gmsh/OptHomObjContribMetricMin.h
 include/gmsh/OptHomObjContribScaledJac.h
 include/gmsh/OptHomRun.h
+include/gmsh/Options.h
 include/gmsh/PView.h
 include/gmsh/PViewData.h
 include/gmsh/PViewDataGModel.h
@@ -101,8 +104,10 @@ include/gmsh/STensor3.h
 include/gmsh/SVector3.h
 include/gmsh/StringUtils.h
 include/gmsh/SuperEl.h
+include/gmsh/ThinLayer.h
 include/gmsh/VertexArray.h
 include/gmsh/Voronoi3D.h
+include/gmsh/adaptiveData.h
 include/gmsh/bezierBasis.h
 include/gmsh/boundaryLayersData.h
 include/gmsh/cartesian.h
@@ -195,7 +200,9 @@ man/man1/gmsh.1.gz
 %%PORTDOCS%%%%DOCSDIR%%/demos/tower.i4
 %%PORTDOCS%%%%DOCSDIR%%/demos/tower.i5
 %%PORTDOCS%%%%DOCSDIR%%/demos/transfinite.geo
+%%PORTDOCS%%%%DOCSDIR%%/demos/view_groups.geo
 %%PORTDOCS%%%%DOCSDIR%%/tutorial/bgmesh.pos
+%%PORTDOCS%%%%DOCSDIR%%/tutorial/image.png
 %%PORTDOCS%%%%DOCSDIR%%/tutorial/t1.geo
 %%PORTDOCS%%%%DOCSDIR%%/tutorial/t10.geo
 %%PORTDOCS%%%%DOCSDIR%%/tutorial/t11.geo

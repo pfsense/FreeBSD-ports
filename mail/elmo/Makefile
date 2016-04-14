@@ -15,7 +15,7 @@ CONFLICTS=	elmo-devel-[0-9]*
 OPTIONS_DEFINE=	NLS
 
 GNU_CONFIGURE=	yes
-USES=		iconv shebangfix perl5
+USES=		iconv ncurses shebangfix perl5
 USE_OPENSSL=	yes
 USE_PERL5=	run
 SHEBANG_FILES=	src/elmoconf.pl
@@ -32,7 +32,7 @@ NLS_USES=	gettext
 OPTIONS_SUB=	yes
 
 .if exists(${LOCALBASE}/lib/libgpgme.so) || defined(WITH_GPGME)
-LIB_DEPENDS+=	libgpgme.so:${PORTSDIR}/security/gpgme
+LIB_DEPENDS+=	libgpgme.so:security/gpgme
 .else
 pre-everything::
 	@${ECHO_CMD}

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mad
-PORTVERSION=	0.8
+PORTVERSION=	0.9
 DISTVERSIONPREFIX=	version/
 CATEGORIES=	audio python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,10 +10,10 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python module that provides the MPEG Audio Decoder interface
 
-LICENSE=	LGPL20 # or later
+LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libmad.so:${PORTSDIR}/audio/libmad
+LIB_DEPENDS=	libmad.so:audio/libmad
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	jaqx0r
@@ -27,6 +27,6 @@ do-configure:
 		--prefix ${LOCALBASE}
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/madmodule.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/mad.so
 
 .include <bsd.port.mk>

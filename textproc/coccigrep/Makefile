@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	coccigrep
-PORTVERSION=	1.13
+PORTVERSION=	1.16
 DISTVERSIONPREFIX=	v
 CATEGORIES=	textproc
 
@@ -11,7 +11,7 @@ COMMENT=	Semantic grep for the C language
 
 LICENSE=	GPLv3
 
-RUN_DEPENDS=	spatch:${PORTSDIR}/devel/coccinelle
+RUN_DEPENDS=	spatch:devel/coccinelle
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	regit

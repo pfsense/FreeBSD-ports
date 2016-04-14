@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	joe
-PORTVERSION=	4.1
+PORTVERSION=	4.2
 PORTEPOCH=	1
 CATEGORIES?=	editors
 MASTER_SITES=	SF/joe-editor/JOE%20sources/joe-${PORTVERSION}
@@ -12,8 +12,8 @@ COMMENT=	Joe's Own Editor
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	aspell:${PORTSDIR}/textproc/aspell
-RUN_DEPENDS=	aspell:${PORTSDIR}/textproc/aspell
+BUILD_DEPENDS=	aspell:textproc/aspell
+RUN_DEPENDS=	aspell:textproc/aspell
 
 OPTIONS_DEFINE=	DOCS
 

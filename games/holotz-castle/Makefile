@@ -14,7 +14,7 @@ EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}-src${EXTRACT_SUFX} \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Platform game with high doses of mystery
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-src
@@ -39,7 +39,7 @@ SOLUTIONS_DESC=	Solutions for Holotz's Castle
 
 OPTIONS_SUB=	yes
 
-SOLUTIONS_RUN_DEPENDS=	mplayer:${PORTSDIR}/multimedia/mplayer
+SOLUTIONS_RUN_DEPENDS=	mplayer:multimedia/mplayer
 
 .include <bsd.port.options.mk>
 

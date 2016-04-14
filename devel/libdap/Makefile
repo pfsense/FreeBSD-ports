@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libdap
-PORTVERSION=	3.16.0
+PORTVERSION=	3.17.0
 CATEGORIES=	devel
 MASTER_SITES=	http://www.opendap.org/pub/source/ \
 		LOCAL/sunpoet
@@ -13,9 +13,9 @@ COMMENT=	SDK which contains an implementation of DAP 2.0 and 3.1
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl \
-		libuuid.so:${PORTSDIR}/misc/e2fsprogs-libuuid \
-		libxml2.so:${PORTSDIR}/textproc/libxml2
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libuuid.so:misc/e2fsprogs-libuuid \
+		libxml2.so:textproc/libxml2
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip

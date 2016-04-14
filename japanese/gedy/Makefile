@@ -15,8 +15,8 @@ COMMENT=	GNOME Edy Viewer
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	rubygem-gtk2>0:${PORTSDIR}/x11-toolkits/rubygem-gtk2 \
-		${RUBY_SITEARCHLIBDIR}/pasori.so:${PORTSDIR}/devel/libpafe-ruby
+RUN_DEPENDS=	rubygem-gtk2>0:x11-toolkits/rubygem-gtk2 \
+		${RUBY_SITEARCHLIBDIR}/pasori.so:devel/libpafe-ruby
 
 USE_RUBY=		yes
 USES=		shebangfix
@@ -27,6 +27,7 @@ EXTRACT_CMD=		${CP}
 EXTRACT_BEFORE_ARGS=	-p
 EXTRACT_AFTER_ARGS=	.
 NO_WRKSUBDIR=		yes
+NO_ARCH=		yes
 NO_BUILD=		yes
 
 PLIST_FILES=	bin/${PORTNAME}

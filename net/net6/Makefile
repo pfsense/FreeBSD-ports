@@ -3,18 +3,18 @@
 
 PORTNAME=	net6
 PORTVERSION=	1.3.14
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net devel
 MASTER_SITES=	http://releases.0x539.de/net6/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Network access framework for IPv4/IPv6
 
-LICENSE=	LGPL20 # or later (COPYING is LGPL21)
+LICENSE=	LGPL20+ # though COPYING is LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libsigc-2.0.so:${PORTSDIR}/devel/libsigc++20 \
-		libgnutls.so:${PORTSDIR}/security/gnutls
+LIB_DEPENDS=	libsigc-2.0.so:devel/libsigc++20 \
+		libgnutls.so:security/gnutls
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip

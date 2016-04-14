@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	yelp
-PORTVERSION=	3.16.1
+PORTVERSION=	3.18.1
 CATEGORIES=	x11 gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -13,14 +13,14 @@ COMMENT=	Help browser for the GNOME 3 desktop
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	yelp-xsl>=0:${PORTSDIR}/textproc/yelp-xsl \
-		itstool:${PORTSDIR}/textproc/itstool
-LIB_DEPENDS=	libwebkitgtk-3.0.so:${PORTSDIR}/www/webkit-gtk3
-RUN_DEPENDS=	yelp-xsl>=0:${PORTSDIR}/textproc/yelp-xsl
+BUILD_DEPENDS=	yelp-xsl>=0:textproc/yelp-xsl \
+		itstool:textproc/itstool
+LIB_DEPENDS=	libwebkit2gtk-4.0.so:www/webkit2-gtk3
+RUN_DEPENDS=	yelp-xsl>=0:textproc/yelp-xsl
 
 PORTSCOUT=	limitw:1,even
 
-USES=		desktop-file-utils gettext gmake libtool pathfix \
+USES=		desktop-file-utils gettext gmake gnome libtool pathfix \
 		pkgconfig tar:xz
 USE_XORG=	x11 ice
 USE_GNOME=	gtk30 intlhack libxml2 libxslt

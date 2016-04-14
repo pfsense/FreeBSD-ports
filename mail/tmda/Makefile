@@ -11,7 +11,7 @@ MASTER_SITES=	ftp://tmda.net/pub/tmda/releases/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python-based SPAM reduction system
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		python shebangfix tar:tgz
@@ -22,12 +22,12 @@ NO_ARCH=	yes
 DOCS=		CODENAMES CRYPTO README THANKS NEWS UPGRADE
 SAMPLES=	tmda.el tofmipd.sysconfig vtmdarc
 SCRIPTS=	collectaddys def2html printcdb printdbm sendit.sh \
-	 	smtp-check-sender tofmipd.init tofmipd.sysconfig \
+		smtp-check-sender tofmipd.init tofmipd.sysconfig \
 		update-internaldomains vadduser-tmda vmailmgr-vdir.sh \
 		vpopmail-vdir.sh wrapfd3.sh
 
 OPTIONS_DEFINE=	CDB DOCS EXAMPLES
-CDB_RUN_DEPENDS=${PYTHON_SITELIBDIR}/cdbmodule.so:${PORTSDIR}/databases/py-cdb
+CDB_RUN_DEPENDS=${PYTHON_SITELIBDIR}/cdbmodule.so:databases/py-cdb
 
 do-build:
 	cd ${WRKSRC} && ${PYTHON_CMD} ./compileall

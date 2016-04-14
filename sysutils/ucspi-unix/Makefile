@@ -5,16 +5,14 @@ PORTNAME=	ucspi-unix
 PORTVERSION=	0.36
 PORTREVISION=	5
 CATEGORIES=	sysutils
-MASTER_SITES=	http://untroubled.org/${PORTNAME}/
+MASTER_SITES=	http://untroubled.org/${PORTNAME}/archive/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Unix-domain socket client-server command-line tools
 
-BROKEN=		unfetchable
-
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	${BGLIBS_LIB}/libbg.a:${PORTSDIR}/devel/bglibs
+BUILD_DEPENDS=	${BGLIBS_LIB}/libbg.a:devel/bglibs
 
 BGLIBS_INC=	${LOCALBASE}/include/bglibs
 BGLIBS_LIB=	${LOCALBASE}/lib/bglibs

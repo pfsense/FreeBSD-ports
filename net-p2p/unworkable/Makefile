@@ -10,7 +10,9 @@ MASTER_SITES=	GOOGLE_CODE
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free BitTorrent Implementation
 
-LIB_DEPENDS=	libevent.so:${PORTSDIR}/devel/libevent2
+LICENSE=	MIT
+
+LIB_DEPENDS=	libevent.so:devel/libevent2
 
 USES=		scons
 USE_OPENSSL=	yes
@@ -20,7 +22,7 @@ WRKSRC=		${WRKDIR}/${PORTNAME}
 PLIST_FILES=	bin/unworkable man/man1/unworkable.1.gz
 
 post-extract:
-	${REINPLACE_CMD} -e 's#/usr/local#${LOCALBASE}#g' \
+	@${REINPLACE_CMD} -e 's#/usr/local#${LOCALBASE}#g' \
 		${WRKSRC}/SConstruct
 
 do-install:

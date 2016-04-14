@@ -3,7 +3,7 @@
 
 PORTNAME=	octave-forge-econometrics
 PORTVERSION=	1.1.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -18,7 +18,7 @@ OCTSRC=		${OCTAVE_PKGNAME}
 
 WRKSRC=		${WRKDIR}/${OCTSRC}/src
 
-RUN_DEPENDS+=	${TARBALLS_DIR}/optim.tar.gz:${PORTSDIR}/math/octave-forge-optim
+RUN_DEPENDS+=	${TARBALLS_DIR}/optim.tar.gz:math/octave-forge-optim
 
 .include "${.CURDIR}/../../Mk/bsd.octave.mk"
 

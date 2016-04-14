@@ -10,8 +10,11 @@ MASTER_SITES=	http://www.vsound.org/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utility for capturing audio streams from programs with OSS output
 
-BUILD_DEPENDS=	sox:${PORTSDIR}/audio/sox
-RUN_DEPENDS=	sox:${PORTSDIR}/audio/sox
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+BUILD_DEPENDS=	sox:audio/sox
+RUN_DEPENDS=	sox:audio/sox
 
 USES=		alias libtool
 GNU_CONFIGURE=	yes
@@ -19,8 +22,10 @@ GNU_CONFIGURE=	yes
 OPTIONS_DEFINE=	DOCS
 
 post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/vsound/libvsound.so
+
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/vsound/libvsound.so
 
 .include <bsd.port.mk>

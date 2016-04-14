@@ -12,7 +12,7 @@ COMMENT=	Tools to access CP/M disks and disk images
 
 LICENSE=	GPLv3
 
-USES=	desthack
+USES=		desthack ncurses
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--bindir=${STAGEDIR}${PREFIX}/sbin \
 		--datarootdir=${DATADIR}
@@ -23,14 +23,14 @@ LIBDSK_DESC=	Access to disks and disk images support
 
 LIBDSK_CONFIGURE_ON=	--with-libdsk=${LOCALBASE}
 LIBDSK_CONFIGURE_OFF=	--with-libdsk=''
-LIBDSK_LIB_DEPENDS=	libdsk.so:${PORTSDIR}/emulators/libdsk
+LIBDSK_LIB_DEPENDS=	libdsk.so:emulators/libdsk
 
 # remove unneeded getopt*.c
 # remove curses from all but fsed.cpm
 # fixes for stage
 post-patch:
 	@${REINPLACE_CMD} -e 's|getopt$$(OBJEXT)||g; s|getopt1$$(OBJEXT)||g' \
-		-e 's|\($$(CC).*fsed.cpm$$(OBJEXT).*$$(DEVICEOBJ)\)|\1 -lcurses|' \
+		-e 's|\($$(CC).*fsed.cpm$$(OBJEXT).*$$(DEVICEOBJ)\)|\1 -lncurses|' \
 		-e '/^CFLAGS=/s|@CFLAGS@|@CFLAGS@ -DDISKDEFS=\\"@datarootdir@/diskdefs\\" -DFORMAT=\\"$$(DEFFORMAT)\\"|' \
 		-e 's|diskdefs @datarootdir@/diskdefs|diskdefs $$(DESTDIR)@datarootdir@/diskdefs|' \
 		${WRKSRC}/Makefile.in

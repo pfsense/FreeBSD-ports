@@ -13,14 +13,12 @@ DISTNAME=	ncbi-blast-${PORTVERSION}+-src
 MAINTAINER=	bacon4000@gmail.com
 COMMENT=	NCBI implementation of Basic Local Alignment Search Tool
 
-LICENSE=	Public_domain
-LICENSE_NAME=	Public Domain
+LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/scripts/projects/blast/LICENSE
-LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre \
-		libbz2.so:${PORTSDIR}/archivers/bzip2
-RUN_DEPENDS=	p5-List-MoreUtils>=0:${PORTSDIR}/lang/p5-List-MoreUtils
+LIB_DEPENDS=	libpcre.so:devel/pcre \
+		libbz2.so:archivers/bzip2
+RUN_DEPENDS=	p5-List-MoreUtils>=0:lang/p5-List-MoreUtils
 
 WRKSRC=		${WRKDIR}/${DISTNAME}/c++
 

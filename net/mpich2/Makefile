@@ -17,8 +17,8 @@ LICENSE_NAME=	MPICH
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash
-RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash
+BUILD_DEPENDS=	bash:shells/bash
+RUN_DEPENDS=	bash:shells/bash
 
 GNU_CONFIGURE=	yes
 USES=		execinfo libtool:keepla localbase fortran perl5 \
@@ -55,7 +55,6 @@ MAKE_ENV=	CCACHE_DISABLE=yes PACKAGE=${PORTNAME}
 NOCCACHE=	yes
 
 CONFLICTS=	lam-7.* mpd-[0-9]* mpiexec-0.*
-MAKE_JOBS_UNSAFE=	yes
 
 VERSO=		8.0.1
 VERSOM=		${VERSO:R:R}

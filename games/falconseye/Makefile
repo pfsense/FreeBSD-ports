@@ -11,11 +11,12 @@ DISTNAME=	nethack_source_331_jtp_${PORTVERSION:S/.//g}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	NetHack derivative
 
-RUN_DEPENDS=	timidity:${PORTSDIR}/audio/timidity
+RUN_DEPENDS=	timidity:audio/timidity
 
-USES=		perl5 zip
+USES=		ncurses perl5 zip
 DATADIR=	${PREFIX}/share/falconseyedir
 MAKE_ENV=	NHDIR="${DATADIR}" NETHACKCONFIG="${NETHACKCONFIG}"
+MAKE_ARGS=	WINTTYLIB="-lncurses"
 NETHACKCONFIG=	${FILESDIR}/x-config
 USE_SDL=	sdl
 USE_PERL5=	build

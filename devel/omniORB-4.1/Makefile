@@ -11,7 +11,7 @@ PKGNAMESUFFIX=	41
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Robust high performance CORBA ORB for C++ and Python
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 CONFLICTS=	omniORB-4.2.*
@@ -39,7 +39,7 @@ BINS=	catior convertior genior nameclt omkdepend omniMapper omniNames omnicpp
 pre-configure:
 	${REINPLACE_CMD} -e 's#-O2#${CFLAGS}#g' ${WRKSRC}/mk/beforeauto.mk.in
 	${REINPLACE_CMD} -e 's#%%STAGEDIR%%%%PREFIX%%#${STAGEDIR}${PREFIX}#g' \
-	       	${WRKSRC}/contrib/pkgconfig/GNUmakefile.in
+		${WRKSRC}/contrib/pkgconfig/GNUmakefile.in
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lib*.so \

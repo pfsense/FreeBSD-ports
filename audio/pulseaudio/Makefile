@@ -5,8 +5,7 @@
 # PORTREVISION bumps of depending ports.
 
 PORTNAME=	pulseaudio
-PORTVERSION=	6.0
-PORTREVISION=	2
+PORTVERSION=	8.0
 CATEGORIES=	audio
 MASTER_SITES=	http://freedesktop.org/software/pulseaudio/releases/
 
@@ -16,21 +15,21 @@ COMMENT=	Sound server for UNIX
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LGPL
 
-LIB_DEPENDS=	libsndfile.so:${PORTSDIR}/audio/libsndfile \
-		libspeexdsp.so:${PORTSDIR}/audio/speexdsp \
-		libfftw3.so:${PORTSDIR}/math/fftw3 \
-		libfftw3f.so:${PORTSDIR}/math/fftw3-float \
-		liborc-0.4.so:${PORTSDIR}/devel/orc \
-		libjson-c.so:${PORTSDIR}/devel/json-c \
-		libdbus-1.so:${PORTSDIR}/devel/dbus \
-		libltdl.so:${PORTSDIR}/devel/libltdl \
-		libck-connector.so:${PORTSDIR}/sysutils/consolekit
+LIB_DEPENDS=	libsndfile.so:audio/libsndfile \
+		libspeexdsp.so:audio/speexdsp \
+		libfftw3.so:math/fftw3 \
+		libfftw3f.so:math/fftw3-float \
+		liborc-0.4.so:devel/orc \
+		libjson-c.so:devel/json-c \
+		libdbus-1.so:devel/dbus \
+		libltdl.so:devel/libltdl \
+		libck-connector.so:sysutils/consolekit
 
 USE_GNOME=	glib20 intltool
 USE_XORG=	x11 sm xtst ice
 USE_LDCONFIG=	yes
-USES=		cpe execinfo gettext gmake libtool pathfix pkgconfig \
-		shebangfix tar:xz
+USES=		cpe compiler:c11 execinfo gettext gmake gnome libtool \
+		pathfix pkgconfig shebangfix tar:xz
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	PTHREAD_LIBS="-lpthread" \
 		OPENSSL_CFLAGS="-I/usr/include" \
@@ -64,18 +63,18 @@ OPTIONS_SUB=	yes
 OPTIONS_DEFINE=	JACK AVAHI GCONF ALSA SIMD BASH ZSH
 OPTIONS_DEFAULT=AVAHI SIMD
 JACK_CONFIGURE_ENABLE=	jack
-JACK_LIB_DEPENDS=	libjack.so:${PORTSDIR}/audio/jack
+JACK_LIB_DEPENDS=	libjack.so:audio/jack
 AVAHI_CONFIGURE_ENABLE=	avahi
-AVAHI_LIB_DEPENDS=	libavahi-client.so:${PORTSDIR}/net/avahi-app
+AVAHI_LIB_DEPENDS=	libavahi-client.so:net/avahi-app
 GCONF_CONFIGURE_ENABLE=	gconf
 GCONF_USE=	GNOME=gconf2
 ALSA_CONFIGURE_ENABLE=	alsa
-ALSA_LIB_DEPENDS=	libasound.so:${PORTSDIR}/audio/alsa-lib
+ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 SIMD_CONFIGURE_ENABLE=	orc
-SIMD_LIB_DEPENDS=	liborc-0.4.so:${PORTSDIR}/devel/orc
+SIMD_LIB_DEPENDS=	liborc-0.4.so:devel/orc
 ZSH_CONFIGURE_OFF=	--without-zsh-completion-dir
 
-PULSE_VERSION=	${PORTVERSION}
+PULSE_VERSION=	${PORTVERSION:C/^([0-9]+\.[0-9]+).*/\1/}
 PLIST_SUB=	PULSE_VERSION=${PULSE_VERSION}
 
 post-patch:
@@ -91,7 +90,8 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/src/${ii} \
 		${STAGEDIR}${PREFIX}/etc/pulse/${ii}.sample
 .endfor
+
 post-install-BASH-off:
-	@${RM} -rf ${STAGEDIR}${PREFIX}/etc/bash_completion.d
+	@${RM} -rf ${STAGEDIR}${PREFIX}/share/bash-completion
 
 .include <bsd.port.mk>

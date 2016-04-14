@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	llvm
-DISTVERSION=	3.7.0
-PORTREVISION=	6
+DISTVERSION=	3.7.1
+PORTREVISION=	1
 CATEGORIES=	devel lang
 MASTER_SITES=	http://llvm.org/${PRE_}releases/${LLVM_RELEASE}/${RCDIR}
 DISTNAME=	${PORTNAME}-${DISTVERSION}.src
@@ -40,6 +40,7 @@ OPTIONS_SUB=	yes
 CLANG_DESC=	Build clang
 CLANG_EXTRA_PATCHES= \
 	${PATCHDIR}/clang-patch-fformat_extensions.diff \
+	${PATCHDIR}/clang-patch-static-analizer.diff \
 	${PATCHDIR}/clang-patch-tools_clang_lib_Headers_CMakeLists.txt \
 	${PATCHDIR}/clang-patch-tools_clang_tools_clang-format_clang-format.py \
 	${PATCHDIR}/clang-patch-svn-250416
@@ -63,13 +64,13 @@ LIT_DESC=		Install lit and FileCheck test tools
 LLD_DESC=		Install lld, the LLVM linker
 LLD_DISTFILES=		lld-${DISTVERSION}.src${EXTRACT_SUFX}
 LLDB_DESC=		Install lldb, the LLVM debugger (ignored on 9.x)
-LLDB_BUILD_DEPENDS=	swig:${PORTSDIR}/devel/swig13
+LLDB_BUILD_DEPENDS=	swig:devel/swig13
 LLDB_DISTFILES=		lldb-${DISTVERSION}.src${EXTRACT_SUFX}
 OPENMP_DESC=		Install libomp, the LLVM OpenMP runtime library
 OPENMP_DISTFILES=	openmp-${DISTVERSION}.src${EXTRACT_SUFX}
 GOLD_DESC=		Build the LLVM Gold plugin for LTO
 GOLD_CMAKE_ON=		-DLLVM_BINUTILS_INCDIR=${LOCALBASE}/include
-GOLD_BUILD_DEPENDS=	ld.gold:${PORTSDIR}/devel/binutils
+GOLD_BUILD_DEPENDS=	ld.gold:devel/binutils
 
 # Emulate USE_GITHUB's ${WRKSRC_tag} to reduce diffs to ../llvm-devel
 .for option in CLANG COMPILER_RT EXTRAS LLD LLDB OPENMP
@@ -78,7 +79,7 @@ WRKSRC_${option:tl}=		${WRKDIR}/${${option}_DISTFILES:S/${EXTRACT_SUFX}//}
 
 OPTIONS_SUB=	yes
 
-DOCS_BUILD_DEPENDS=		sphinx-build:${PORTSDIR}/textproc/py-sphinx
+DOCS_BUILD_DEPENDS=		sphinx-build:textproc/py-sphinx
 
 PLIST_SUB+=	LLVM_RELEASE=${LLVM_RELEASE}
 
@@ -144,8 +145,12 @@ COMMANDS+=	clang \
 		clang-check \
 		clang-cpp \
 		clang-format \
-		clang-tblgen
-MAN1SRCS+=	clang.1
+		clang-tblgen \
+		scan-build \
+		scan-view
+MAN1SRCS+=	clang.1 \
+		scan-build.1
+CLANG_PATTERN=	(c-index-test|clang|scan-|Reporter.py|ScanView.py|scanview.css|sorttable.js|startfile.py|-analyzer)
 .endif
 
 .if ${PORT_OPTIONS:MEXTRAS}
@@ -236,7 +241,7 @@ NOT_FOR_ARCH=	ia64
 
 .if ${PYTHON_REL} < 3400
 LLDB_BUILD_DEPENDS+= \
-	${PYTHON_PKGNAMEPREFIX}enum34>0:${PORTSDIR}/devel/py-enum34
+	${PYTHON_PKGNAMEPREFIX}enum34>0:devel/py-enum34
 .endif
 
 .if ${PORT_OPTIONS:MLLDB} && ${PYTHON_REL} >= 3000
@@ -256,6 +261,21 @@ EXTRA_PATCHES+= \
 
 post-extract-CLANG-on:
 	${MV} ${WRKSRC_clang} ${PATCH_WRKSRC}/tools/clang
+	${MKDIR} ${PATCH_WRKSRC}/tools/clang/tools/scan-view/share
+	cd ${PATCH_WRKSRC}/tools/clang/tools/scan-view && \
+	    ${MV} Resources/bugcatcher.ico Resources/FileRadar.scpt \
+	    Resources/GetRadarVersion.scpt share
+	${RM} ${PATCH_WRKSRC}/tools/clang/tools/scan-build/sorttable.js
+	${RM} ${PATCH_WRKSRC}/tools/clang/tools/scan-build/scanview.css
+	${RM} ${PATCH_WRKSRC}/tools/clang/tools/scan-build/set-xcode-analyzer
+	${RM} ${PATCH_WRKSRC}/tools/clang/tools/scan-build/scan-build.1
+	${RM} ${PATCH_WRKSRC}/tools/clang/tools/scan-build/scan-build.*
+	${RM} ${PATCH_WRKSRC}/tools/clang/tools/scan-build/ccc-analyzer.*
+	${RM} ${PATCH_WRKSRC}/tools/clang/tools/scan-build/c++-analyzer.*
+	${RM} ${PATCH_WRKSRC}/tools/clang/tools/scan-view/Reporter.py
+	${RM} ${PATCH_WRKSRC}/tools/clang/tools/scan-view/ScanView.py
+	${RM} ${PATCH_WRKSRC}/tools/clang/tools/scan-view/scan-view
+	${RM} ${PATCH_WRKSRC}/tools/clang/tools/scan-view/startfile.py
 
 post-extract-EXTRAS-on:
 	${MV} ${WRKSRC_extras} ${PATCH_WRKSRC}/tools/clang/tools/extra
@@ -359,7 +379,7 @@ build-plist:
 	    ${SED} -e 's|${STAGEDIR}${PYTHON_SITELIBDIR}|%%LIT%%%%PYTHON_SITELIBDIR%%|' | \
 	    ${SORT} >> ${PLIST}.tmp
 	awk '{ \
-	    if ($$0 ~ /clang/ && $$0 !~ /(omp.h|libclang_rt|sanitizer|blacklist.txt|${EXTRAS_PATTERN})/) {printf "%%%%CLANG%%%%"} \
+	    if ($$0 ~ /${CLANG_PATTERN}/ && $$0 !~ /(omp.h|libclang_rt|sanitizer|blacklist.txt|${EXTRAS_PATTERN})/) {printf "%%%%CLANG%%%%"} \
 	    if ($$0 ~ /(sanitizer|blacklist.txt)/) {printf "%%%%COMPILER_RT%%%%"} \
 	    if ($$0 ~ /(${EXTRAS_PATTERN})/) {printf "%%%%EXTRAS%%%%"} \
 	    if ($$0 ~ /lld/ && $$0 !~ /lldb/) {printf "%%%%LLD%%%%"} \
@@ -407,5 +427,16 @@ svn-patch-lldb:
 	svn diff -c ${PATCH_REV} ${_LLVM_BASE} | \
 	    sed -E -e 's;^(---|\+\+\+) ;\1 tools/lldb/;' >> ${_PATCH_FILE}
 .endif
+.if make(svn-patch-llvm)
+.if !defined(PATCH_REV)
+.error svn-patch-llvm requires that PATCH_REV be set
+.endif
+_PATCH_FILE=${FILESDIR}/patch-llvm-svn-${PATCH_REV}
+_LLVM_BASE=http://llvm.org/svn/llvm-project/llvm/trunk
+svn-patch-llvm:
+	svn log -c ${PATCH_REV} ${_LLVM_BASE} >> ${_PATCH_FILE}
+	svn diff -c ${PATCH_REV} ${_LLVM_BASE} >> ${_PATCH_FILE}
+.endif
+
 
 .include <bsd.port.post.mk>

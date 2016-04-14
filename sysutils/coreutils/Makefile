@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	coreutils
-PORTVERSION=	8.23
+PORTVERSION=	8.25
 CATEGORIES=	sysutils textproc
 MASTER_SITES=	GNU
 
@@ -36,7 +36,7 @@ OPTIONS_DEFAULT=NLS
 OPTIONS_SUB=	yes
 NLS_USES=	gettext
 NLS_CONFIGURE_ENABLE=	nls
-GMP_LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp
+GMP_LIB_DEPENDS=	libgmp.so:math/gmp
 GMP_CONFIGURE_WITH=	gmp
 
 post-build:
@@ -45,7 +45,7 @@ post-build:
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/g* \
-		${STAGEDIR}${PREFIX}/libexec/coreutils/glibstdbuf.so
+		${STAGEDIR}${PREFIX}/libexec/coreutils/libstdbuf.so
 
 #regression-test: build
 #	(cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} check)

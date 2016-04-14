@@ -9,8 +9,8 @@ COMMENT=	Levigo is a Go wrapper for LevelDB
 
 LICENSE=	MIT
 
-BUILD_DEPENDS=	go:${PORTSDIR}/lang/go
-LIB_DEPENDS=	libleveldb.so:${PORTSDIR}/databases/leveldb
+BUILD_DEPENDS=	go:lang/go
+LIB_DEPENDS=	libleveldb.so:databases/leveldb
 
 ONLY_FOR_ARCHS=	i386 amd64
 
@@ -19,8 +19,6 @@ USES=		compiler
 USE_GITHUB=	yes
 GH_ACCOUNT=	jmhodges
 GH_TAGNAME=	1ddad808d4
-
-BROKEN_FreeBSD_8=	Build has leftover /readelf.core, PR 194986
 
 .include <bsd.port.pre.mk>
 

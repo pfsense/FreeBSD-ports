@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	openbor
-PORTVERSION=	3.0.r4163
-PORTREVISION=	3
+PORTVERSION=	3.0.r4167
 CATEGORIES=	games
 MASTER_SITES=	LOCAL/jbeich \
 		https://svn.code.sf.net/p/${PORTNAME}/engine/engine/:svn
@@ -12,8 +11,8 @@ COMMENT=	Moddable fighting game engine (aka Beats of Rage)
 
 LICENSE=	BSD3CLAUSE
 
-LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
-		libvpx.so:${PORTSDIR}/multimedia/libvpx
+LIB_DEPENDS=	libpng.so:graphics/png \
+		libvpx.so:multimedia/libvpx
 
 USES=		dos2unix gmake pkgconfig tar:xz
 USE_SDL=	gfx2
@@ -40,19 +39,20 @@ OPTIONS_DEFAULT=	${MACHINE_CPU:tu:MSOFTFP:S/SOFTFP/TREMOR/}
 OPTIONS_DEFINE_i386=	MMX
 OPTIONS_DEFAULT_i386=	MMX # runtime detection
 
-MMX_BUILD_DEPENDS=	yasm:${PORTSDIR}/devel/yasm
+MMX_BUILD_DEPENDS=	yasm:devel/yasm
 MMX_MAKE_ARGS=		BUILD_MMX=1
 
-TREMOR_LIB_DEPENDS=	libvorbisidec.so:${PORTSDIR}/audio/libtremor
+TREMOR_LIB_DEPENDS=	libvorbisidec.so:audio/libtremor
 TREMOR_MAKE_ARGS=	BUILD_TREMOR=1 BUILD_VORBIS=""
-TREMOR_LIB_DEPENDS_OFF=	libvorbisfile.so:${PORTSDIR}/audio/libvorbis
+TREMOR_LIB_DEPENDS_OFF=	libvorbisfile.so:audio/libvorbis
 
 #
 # To update snapshot: make makesum BOOTSTRAP=
 # Specific snapshot:  make makesum SVN_FETCH= PORTVERSION=1.0.r1234
 #
 .if defined(BOOTSTRAP)
-# XXX _MASTER_SITES_svn isn't defined yet
+# XXX SED and _MASTER_SITES_svn aren't defined yet
+SED?=		/usr/bin/sed
 SVN_REV!=	${SETENV} LC_ALL=C svn info \
 			${MASTER_SITES:M*\:svn:S/:svn//} | \
 		${SED} -n 's/^Last Changed Rev: //p'
@@ -62,13 +62,14 @@ SVN_REV?=	${PORTVERSION:E:S/r//}
 .endif
 
 .if defined(BOOTSTRAP) || defined(SVN_FETCH)
-FETCH_DEPENDS+=	svn:${PORTSDIR}/devel/subversion
+FETCH_DEPENDS+=	svn:devel/subversion
 
 do-fetch:
 	${MKDIR} ${WRKDIR}
 	svn export -r${SVN_REV} ${_MASTER_SITES_svn} ${WRKSRC}
 	(cd ${WRKDIR} && ${TAR} cJvf \
-		${_DISTDIR}/${DISTNAME}${EXTRACT_SUFX} ${DISTNAME})
+		${_DISTDIR}/${DISTNAME}${EXTRACT_SUFX} \
+		--uid 0 --gid 0 ${DISTNAME})
 	${REINPLACE_CMD} -i '' '/^PORTVERSION=/s/r.*/r${SVN_REV}/' \
 		${MASTERDIR}/Makefile
 . if ${USER} == ${MAINTAINER:C/@.*//}

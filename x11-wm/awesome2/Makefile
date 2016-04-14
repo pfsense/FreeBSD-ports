@@ -11,14 +11,15 @@ DISTNAME=	awesome-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tiling window manager initially based on a dwm code rewriting
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	asciidoc:${PORTSDIR}/textproc/asciidoc \
-		xmlto:${PORTSDIR}/textproc/xmlto
-LIB_DEPENDS=	libconfuse.so:${PORTSDIR}/devel/libconfuse \
-		libcairo.so:${PORTSDIR}/graphics/cairo \
-		libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libImlib2.so:${PORTSDIR}/graphics/imlib2
+BUILD_DEPENDS=	asciidoc:textproc/asciidoc \
+		xmlto:textproc/xmlto
+LIB_DEPENDS=	libconfuse.so:devel/libconfuse \
+		libcairo.so:graphics/cairo \
+		libfreetype.so:print/freetype2 \
+		libImlib2.so:graphics/imlib2
 
 USES=		iconv pkgconfig python:build
 GNU_CONFIGURE=	yes
@@ -59,13 +60,13 @@ post-configure:
 			      /^doc_DATA/s/=.*$$/=/g' \
 		${WRKSRC}/Makefile
 
-post-install:
-	@${ECHO_MSG} "installing additional documentation to ${DOCSDIR}"
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for doc in ${PORTDOCS}
 	${INSTALL_DATA} ${WRKSRC}/${doc} ${STAGEDIR}${DOCSDIR}
 .endfor
-	@${ECHO_MSG} "installing example config file to ${EXAMPLESDIR}"
+
+post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 .for example in ${PORTEXAMPLES}
 	${INSTALL_DATA} ${WRKSRC}/${example} ${STAGEDIR}${EXAMPLESDIR}

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	glib-networking
-PORTVERSION=	2.44.0
+PORTVERSION=	2.46.1
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome2
@@ -10,19 +11,19 @@ DIST_SUBDIR=	gnome2
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Network-related giomodules for glib
 
-BUILD_DEPENDS=	ca_root_nss>=0:${PORTSDIR}/security/ca_root_nss \
-		gsettings-desktop-schemas>=0:${PORTSDIR}/devel/gsettings-desktop-schemas
-LIB_DEPENDS=	libgnutls.so:${PORTSDIR}/security/gnutls \
-		libgcrypt.so:${PORTSDIR}/security/libgcrypt \
-		libp11-kit.so:${PORTSDIR}/security/p11-kit \
-		libdbus-1.so:${PORTSDIR}/devel/dbus \
-		libproxy.so:${PORTSDIR}/net/libproxy
-RUN_DEPENDS=	ca_root_nss>=0:${PORTSDIR}/security/ca_root_nss \
-		gsettings-desktop-schemas>=0:${PORTSDIR}/devel/gsettings-desktop-schemas
+BUILD_DEPENDS=	ca_root_nss>=0:security/ca_root_nss \
+		gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas
+LIB_DEPENDS=	libgnutls.so:security/gnutls \
+		libgcrypt.so:security/libgcrypt \
+		libp11-kit.so:security/p11-kit \
+		libdbus-1.so:devel/dbus \
+		libproxy.so:net/libproxy
+RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss \
+		gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gmake libtool pathfix pkgconfig tar:xz
+USES=		gettext gmake gnome libtool pathfix pkgconfig tar:xz
 USE_GNOME=	glib20 intltool
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-ca-certificates=${LOCALBASE}/share/certs/ca-root-nss.crt

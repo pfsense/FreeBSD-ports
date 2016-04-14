@@ -2,20 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	flowgrind
-PORTVERSION=	0.7.1
+PORTVERSION=	0.7.5
 DISTVERSIONPREFIX=	${PORTNAME}-
-PORTREVISION=	1
 CATEGORIES=	benchmarks
 
-MAINTAINER=	lars@eggert.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Measure throughput and other metrics for TCP
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	pcap-config:${PORTSDIR}/net/libpcap
-LIB_DEPENDS=	libpcap.so:${PORTSDIR}/net/libpcap \
-		libgsl.so:${PORTSDIR}/math/gsl \
-		libxmlrpc.so:${PORTSDIR}/net/xmlrpc-c
+BUILD_DEPENDS=	pcap-config:net/libpcap
+LIB_DEPENDS=	libpcap.so:net/libpcap \
+		libgsl.so:math/gsl \
+		libxmlrpc.so:net/xmlrpc-c
 
 USE_GITHUB=	yes
 

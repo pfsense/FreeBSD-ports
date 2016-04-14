@@ -15,12 +15,12 @@ COMMENT=	Extension to interact with Apple Push Notification Service
 
 LICENSE=	PHP301
 
-LIB_DEPENDS=	libcapn.so:${PORTSDIR}/net/libcapn
+LIB_DEPENDS=	libcapn.so:net/libcapn
 
 USE_PHP=	yes
 USE_PHPIZE=	yes
 USE_PHPEXT=	yes
 CONFIGURE_ARGS=	--with-apn=${LOCALBASE}
-IGNORE_WITH_PHP=52
+IGNORE_WITH_PHP=	70
 
 .include <bsd.port.mk>

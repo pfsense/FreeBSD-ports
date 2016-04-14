@@ -3,7 +3,7 @@
 
 PORTNAME=	lame
 PORTVERSION=	3.99.5
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}/3.99
 
@@ -24,7 +24,7 @@ OPTIONS_DEFINE=	DOCS
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == "i386"
-BUILD_DEPENDS+=	nasm:${PORTSDIR}/devel/nasm
+BUILD_DEPENDS+=	nasm:devel/nasm
 .endif
 
 post-patch:

@@ -4,7 +4,7 @@
 #
 # Feature:	makeinfo
 # Usage:	USES=makeinfo
-# Valid ARGS:	build (default, implicit), run, both
+# Valid ARGS:	none
 #
 # MAINTAINER: portmgr@FreeBSD.org
 
@@ -16,7 +16,7 @@ IGNORE=	USES=makeinfo - expects no arguments
 .endif
 
 .if !exists(/usr/bin/makeinfo)
-BUILD_DEPENDS+=	makeinfo:${PORTSDIR}/print/texinfo
+BUILD_DEPENDS+=	makeinfo:print/texinfo
 .endif
 
 .endif

@@ -3,6 +3,7 @@
 
 PORTNAME=	octave-forge-sockets
 PORTVERSION=	1.2.0
+PORTREVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -17,7 +18,7 @@ OCTSRC=		octave-${DISTNAME}
 
 WRKSRC=		${WRKDIR}/${OCTSRC}/src
 
-BUILD_DEPENDS+=	gsed:${PORTSDIR}/textproc/gsed
+BUILD_DEPENDS+=	gsed:textproc/gsed
 
 .include "${.CURDIR}/../../Mk/bsd.octave.mk"
 

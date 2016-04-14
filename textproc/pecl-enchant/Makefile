@@ -13,13 +13,13 @@ COMMENT=	Libenchant Binder that Support Near All Spelling Tools
 
 LICENSE=	PHP30
 
-LIB_DEPENDS=	libenchant.so:${PORTSDIR}/textproc/enchant
+LIB_DEPENDS=	libenchant.so:textproc/enchant
 
 USES=		tar:tgz
 USE_PHP=	yes
 USE_PHPEXT=	yes
 PHP_MODNAME=	${PORTNAME}
-IGNORE_WITH_PHP=	5 56
+IGNORE_WITH_PHP=	56 70
 CONFIGURE_ARGS+=	--with-enchant=${LOCALBASE}
 
 .include <bsd.port.mk>

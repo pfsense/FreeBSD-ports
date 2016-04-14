@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mate-applets
-PORTVERSION=	1.10.3
+PORTVERSION=	1.12.1
 PORTREVISION=	1
 CATEGORIES=	x11 mate
 MASTER_SITES=	MATE
@@ -11,16 +11,15 @@ DIST_SUBDIR=	mate
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Applets components for the MATE Desktop Environment
 
-BUILD_DEPENDS=	itstool:${PORTSDIR}/textproc/itstool
-LIB_DEPENDS=	libgtop-2.0.so:${PORTSDIR}/devel/libgtop \
-		libxklavier.so:${PORTSDIR}/x11/libxklavier \
-		libdbus-1.so:${PORTSDIR}/devel/dbus \
-		libdbus-glib-1.so:${PORTSDIR}/devel/dbus-glib \
-		libpolkit-gobject-1.so:${PORTSDIR}/sysutils/polkit \
-		libhal.so:${PORTSDIR}/sysutils/hal \
-		libupower-glib.so:${PORTSDIR}/sysutils/upower \
-		libnotify.so:${PORTSDIR}/devel/libnotify
-RUN_DEPENDS=	gucharmap:${PORTSDIR}/deskutils/gucharmap
+BUILD_DEPENDS=	itstool:textproc/itstool
+LIB_DEPENDS=	libgtop-2.0.so:devel/libgtop \
+		libxklavier.so:x11/libxklavier \
+		libdbus-1.so:devel/dbus \
+		libdbus-glib-1.so:devel/dbus-glib \
+		libpolkit-gobject-1.so:sysutils/polkit \
+		libhal.so:sysutils/hal \
+		libupower-glib.so:sysutils/upower \
+		libnotify.so:devel/libnotify
 
 PORTSCOUT=	limitw:1,even
 
@@ -32,7 +31,7 @@ USE_GNOME=	gdkpixbuf2 gtksourceview2 introspection:build \
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes
-CONFIGURE_ARGS=	--disable-networkmanager
+CONFIGURE_ARGS=	--with-gtk=2.0
 CONFIGURE_ENV=	OS_SYS="/usr/include"
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-lpthread -L${LOCALBASE}/lib
@@ -45,8 +44,8 @@ GLIB_SCHEMAS=	org.mate.panel.applet.charpick.gschema.xml \
 		org.mate.panel.applet.timer.gschema.xml \
 		org.mate.stickynotes.gschema.xml
 
-FIX_APPLETS=	accessx-status battstat charpick drivemount geyes \
-		invest-applet/data multiload stickynotes trashapplet
+FIX_APPLETS=	accessx-status battstat \
+		invest-applet/data stickynotes trashapplet
 
 .include <bsd.port.pre.mk>
 
@@ -75,6 +74,10 @@ post-patch:
 .for dir in ${FIX_APPLETS}
 	@${REINPLACE_CMD} -e 's|@LIBEXECDIR@/|@LIBEXECDIR@/mate-|g' \
 		${WRKSRC}/${dir}/org.mate.*
+.endfor
+.for dir in command timerapplet
+	@${REINPLACE_CMD} -e 's|(libexecdir)/|(libexecdir)/mate-|g' \
+		${WRKSRC}/${dir}/Makefile.in
 .endfor
 
 .include <bsd.port.post.mk>

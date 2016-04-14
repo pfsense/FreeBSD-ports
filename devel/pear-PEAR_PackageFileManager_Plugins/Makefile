@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	PEAR_PackageFileManager_Plugins
-PORTVERSION=	1.0.2
+PORTVERSION=	1.0.4
 CATEGORIES=	devel www pear
 
 MAINTAINER=	miwi@FreeBSD.org
 COMMENT=	The plugins for PEAR_PackageFileManager
 
-BUILD_DEPENDS=	${PEARDIR}/XML/Serializer.php:${PORTSDIR}/devel/pear-XML_Serializer
-RUN_DEPENDS=	${PEARDIR}/XML/Serializer.php:${PORTSDIR}/devel/pear-XML_Serializer
+BUILD_DEPENDS=	${PEARDIR}/XML/Serializer.php:devel/pear-XML_Serializer
+RUN_DEPENDS=	${PEARDIR}/XML/Serializer.php:devel/pear-XML_Serializer
 
 LICENSE=	BSD2CLAUSE
 

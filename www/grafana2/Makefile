@@ -2,6 +2,7 @@
 
 PORTNAME=	grafana2
 PORTVERSION=	2.6.0
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 
@@ -10,7 +11,7 @@ COMMENT=	Dashboard and graph editor for Graphite, InfluxDB & OpenTSDB
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/go:${PORTSDIR}/lang/go
+BUILD_DEPENDS=	${LOCALBASE}/bin/go:lang/go
 
 ONLY_FOR_ARCHS=	i386 amd64
 
@@ -32,7 +33,7 @@ GH_PROJECT=	grafana mysql:mysql aws-sdk-go:aws_sdk_go ini:ini \
 	amqp:amqp redis:redis macaron:macaron toml:toml go-spew:go_spew \
 	goconvey:goconvey asn1-ber:asn1_ber pq:pq binding:binding \
 	unidecode:unidecode ldap:ldap com:com oauth2:oauth2
-GH_TAGNAME=	${DISTVERSIONPREFIX}${PORTVERSION} \
+GH_TAGNAME=	\
 	v1.2-26-g9543750:mysql 972f0c5:net v1.0.0:aws_sdk_go \
 	v0-16-g1772191:ini 31e841d:session f1ac7f4:gls c58fcf0:oauth2 \
 	v1:bufio go1.0-cutoff-13-g19eeca3:pq v0.1.0-21-g056c9bc:toml \
@@ -151,13 +152,9 @@ do-install:
 	${MKDIR} ${STAGEDIR}${GRAFANAHOMEDIR}/data/log
 	${INSTALL_DATA} ${WRKSRC}/src/github.com/${GH_ACCOUNT}/grafana/conf/defaults.ini \
 	${STAGEDIR}${GRAFANAHOMEDIR}/conf/defaults.ini
-	${INSTALL_DATA} ${WRKDIR}/grafana2.conf ${STAGEDIR}${PREFIX}/etc/grafana2.conf
+	${INSTALL_DATA} ${WRKDIR}/grafana2.conf ${STAGEDIR}${PREFIX}/etc/grafana2.conf.sample
 
 .include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 900044 && ${ARCH} == i386
-BROKEN=	Does not build
-.endif
 
 # golang assumes that if clang is in use, it is called "clang" and not "cc". If
 # it's called "cc", go fails.

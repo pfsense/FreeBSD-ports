@@ -2,7 +2,7 @@
 
 PORTNAME=	icingaweb2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.1.0
+DISTVERSION=	2.2.0
 CATEGORIES=	net-mgmt www
 
 MAINTAINER=	lme@FreeBSD.org
@@ -11,7 +11,7 @@ COMMENT=	Next generation web interface for Icinga 1 and 2
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=        ${LOCALBASE}/share/ZendFramework/bin/classmap_generator.php:${PORTSDIR}/www/zend-framework
+RUN_DEPENDS=        ${LOCALBASE}/share/ZendFramework/bin/classmap_generator.php:www/zend-framework
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	icinga
@@ -29,9 +29,10 @@ SUB_LIST=	WWWDIR=${WWWDIR} \
 PLIST_SUB=	WWWOWN=${WWWOWN} \
 		WWWGRP=${WWWGRP}
 
-OPTIONS_DEFINE=		LDAP MYSQL PGSQL
-OPTIONS_DEFAULT=	LDAP MYSQL PGSQL
+OPTIONS_DEFINE=		NLS LDAP MYSQL PGSQL
+OPTIONS_DEFAULT=	NLS LDAP MYSQL PGSQL
 
+NLS_USES=	gettext
 PGSQL_USE=	PHP=pdo_pgsql
 MYSQL_USE=	PHP=pdo_mysql
 LDAP_USE=	PHP=ldap

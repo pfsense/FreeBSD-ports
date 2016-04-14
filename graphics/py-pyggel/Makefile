@@ -14,16 +14,13 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	koalative@gmail.com
 COMMENT=	Python Graphical Game Engine and Libraries
 
-LICENSE=	LGPL3 Public_Domain
+LICENSE=	LGPL3 PD
 LICENSE_COMB=	dual
-LICENSE_NAME_Public_Domain=	Public Domain
-LICENSE_TEXT_Public_Domain=	Public Domain
-LICENSE_PERMS_Public_Domain=dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 RUN_DEPENDS=	${PYNUMPY} \
 		${PYGAME} \
-		${PYTHON_PKGNAMEPREFIX}opengl>=0:${PORTSDIR}/graphics/py-opengl \
-		${PYTHON_PKGNAMEPREFIX}pillow>=0:${PORTSDIR}/graphics/py-pillow
+		${PYTHON_PKGNAMEPREFIX}opengl>=0:graphics/py-opengl \
+		${PYTHON_PKGNAMEPREFIX}pillow>=0:graphics/py-pillow
 
 USES=		dos2unix python:2 zip
 DOS2UNIX_GLOB=	*.mtl *.py *.txt

@@ -12,12 +12,12 @@ DISTNAME=	${PORTNAME}-gaf-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GPL Electronic Design Automation tools
 
-LICENSE=	GPLv2 # (or later)
+LICENSE=	GPLv2+
 
-LIB_DEPENDS=	libstroke.so:${PORTSDIR}/devel/libstroke \
-		libguile.so:${PORTSDIR}/lang/guile
-RUN_DEPENDS=	gawk:${PORTSDIR}/lang/gawk\
-		m4>=1.4.11:${PORTSDIR}/devel/m4
+LIB_DEPENDS=	libstroke.so:devel/libstroke \
+		libguile.so:lang/guile
+RUN_DEPENDS=	gawk:lang/gawk\
+		m4>=1.4.11:devel/m4
 
 USES=		desktop-file-utils gettext gmake libtool pathfix perl5 \
 		pkgconfig python:run shared-mime-info shebangfix

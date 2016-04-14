@@ -12,23 +12,23 @@ DISTNAME=	firefox-${DISTVERSION}esr.source
 MAINTAINER?=	gecko@FreeBSD.org
 COMMENT?=	Mozilla runtime package that can be used to bootstrap XUL+XPCOM apps
 
-BUILD_DEPENDS=	nspr>=4.10.10:${PORTSDIR}/devel/nspr \
-		nss>=3.19.2.1:${PORTSDIR}/security/nss \
-		libevent2>=2.0.21_2:${PORTSDIR}/devel/libevent2 \
-		soundtouch>=1.8.0:${PORTSDIR}/audio/soundtouch \
-		harfbuzz>=0.9.34:${PORTSDIR}/print/harfbuzz \
-		graphite2>=1.2.4:${PORTSDIR}/graphics/graphite2 \
-		libvorbis>=1.3.5,3:${PORTSDIR}/audio/libvorbis \
-		libvpx>=1.3.0:${PORTSDIR}/multimedia/libvpx \
-		sqlite3>=3.8.9:${PORTSDIR}/databases/sqlite3 \
-		${PYTHON_PKGNAMEPREFIX}sqlite3>0:${PORTSDIR}/databases/py-sqlite3 \
-		v4l_compat>0:${PORTSDIR}/multimedia/v4l_compat \
-		autoconf-2.13:${PORTSDIR}/devel/autoconf213 \
-		zip:${PORTSDIR}/archivers/zip \
-		unzip:${PORTSDIR}/archivers/unzip
-#		opus>=1.1:${PORTSDIR}/audio/opus \
+BUILD_DEPENDS=	nspr>=4.10.10:devel/nspr \
+		nss>=3.19.2.1:security/nss \
+		libevent2>=2.0.21_2:devel/libevent2 \
+		soundtouch>=1.8.0:audio/soundtouch \
+		harfbuzz>=0.9.34:print/harfbuzz \
+		graphite2>=1.2.4:graphics/graphite2 \
+		libvorbis>=1.3.5,3:audio/libvorbis \
+		libvpx>=1.3.0:multimedia/libvpx \
+		sqlite3>=3.8.9:databases/sqlite3 \
+		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3 \
+		v4l_compat>0:multimedia/v4l_compat \
+		autoconf-2.13:devel/autoconf213 \
+		zip:archivers/zip \
+		unzip:archivers/unzip
+#		opus>=1.1:audio/opus \
 
-LIB_DEPENDS=	libv4l2.so:${PORTSDIR}/multimedia/libv4l
+LIB_DEPENDS=	libv4l2.so:multimedia/libv4l
 
 WRKSRC=		${WRKDIR}/mozilla-esr38
 CONFLICTS_INSTALL=	libxul-1.9.*
@@ -56,26 +56,9 @@ OPTIONS_SINGLE+=	TOOLKIT
 OPTIONS_SINGLE_TOOLKIT=	GTK2 GTK3
 
 .include "${.CURDIR}/../../www/firefox/Makefile.options"
-.include <bsd.port.pre.mk>
 
 .if ${USE_MOZILLA:M-nss}
 MOZ_PKGCONFIG_FILES+=	mozilla-nss
-.endif
-
-.if ${PORT_OPTIONS:MALSA}
-RUN_DEPENDS+=	alsa-lib>=1.0.27.2_1:${PORTSDIR}/audio/alsa-lib
-.endif
-
-.if ! ${PORT_OPTIONS:MBUNDLED_CAIRO}
-BUILD_DEPENDS+=	cairo>=1.12.16_1,2:${PORTSDIR}/graphics/cairo
-.endif
-
-.if ${PORT_OPTIONS:MGSTREAMER}
-RUN_DEPENDS+=	gstreamer1-libav>=1.2.4_1:${PORTSDIR}/multimedia/gstreamer1-libav
-.endif
-
-.if ${PORT_OPTIONS:MGTK3}
-BUILD_DEPENDS+=	gtk3>=3.14.6:${PORTSDIR}/x11-toolkits/gtk30
 .endif
 
 post-patch:
@@ -94,4 +77,4 @@ post-build:
 		s|%%MOZ_LIBDIR%%|${PREFIX}/lib/${MOZILLA}|g" \
 		${WRKSRC}/xulrunner/installer/*.pc.in || ${TRUE}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	django-ldapdb
 PORTVERSION=	0.3.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,8 +13,8 @@ COMMENT=	Support for django models over LDAP
 
 LICENSE=	BSD2CLAUSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django>=1.6.0:${PORTSDIR}/www/py-django \
-		${PYTHON_PKGNAMEPREFIX}ldap>=2.0:${PORTSDIR}/net/py-ldap
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django18>=1.6.0:www/py-django18 \
+		${PYTHON_PKGNAMEPREFIX}ldap>=2.0:net/py-ldap
 
 USES=		python
 USE_PYTHON=	distutils autoplist

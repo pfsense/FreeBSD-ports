@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	notification-daemon
-PORTVERSION=	3.16.1
+PORTVERSION=	3.18.1
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME
 
@@ -12,13 +12,13 @@ COMMENT=	Send small notifications to your desktop
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libdbus-1.so:${PORTSDIR}/devel/dbus \
-		libcanberra-gtk3.so:${PORTSDIR}/audio/libcanberra-gtk3
+LIB_DEPENDS=	libdbus-1.so:devel/dbus \
+		libcanberra-gtk3.so:audio/libcanberra-gtk3
 
 PORTSCOUT=	limitw:1,even
 
-USE_GNOME=	gnomeprefix intlhack gtk30
-USES=		gettext gmake pathfix pkgconfig tar:xz
+USE_GNOME=	gnomeprefix gtk30
+USES=		gettext gmake gnome pathfix pkgconfig tar:xz
 USE_XORG=	x11
 INSTALLS_ICONS=	yes
 GNU_CONFIGURE=	yes

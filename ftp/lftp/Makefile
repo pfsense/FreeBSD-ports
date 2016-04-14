@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	lftp
-PORTVERSION=	4.6.4
+PORTVERSION=	4.6.5
+PORTREVISION=	1
 CATEGORIES=	ftp ipv6
 MASTER_SITES=	http://lftp.yar.ru/ftp/ \
 		http://lftp.yar.ru/ftp/old/ \
@@ -18,16 +19,10 @@ COMMENT=	Shell-like command line ftp client
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libexpat.so:${PORTSDIR}/textproc/expat2
+LIB_DEPENDS=	libexpat.so:textproc/expat2
 
-USES=		charsetfix iconv libtool readline shebangfix
-
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
+USES=		charsetfix iconv libtool localbase readline shebangfix
 GNU_CONFIGURE=	yes
-# XXX FreeBSD 9.x has posix_fallocate() for OSVERSION > 900035,
-# but is missing the required POSIX_FADV_* macros
-CONFIGURE_ENV=	i_cv_posix_fallocate_works=no
 
 PORTDOCS=	AUTHORS BUGS ChangeLog FAQ FEATURES INSTALL \
 		MIRRORS NEWS README README.debug-levels README.modules \
@@ -47,7 +42,7 @@ NLS_CONFIGURE_ENABLE=	nls
 OPENSSL_CONFIGURE_WITH=	openssl
 OPENSSL_USE=	OPENSSL=yes
 GNUTLS_CONFIGURE_WITH=	gnutls
-GNUTLS_LIB_DEPENDS=	libgnutls.so:${PORTSDIR}/security/gnutls
+GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 GNUTLS_USES=	pkgconfig
 
 .include <bsd.port.options.mk>

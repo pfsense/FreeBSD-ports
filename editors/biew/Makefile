@@ -16,7 +16,7 @@ LICENSE=	GPLv2
 ONLY_FOR_ARCHS=	amd64 i386 ia64
 ONLY_FOR_ARCHS_REASON=	no targets defined in Makefile
 
-USES=		dos2unix gmake iconv tar:bzip2
+USES=		dos2unix gmake iconv ncurses tar:bzip2
 DOS2UNIX_FILES=	${PORTDOCS:S,^,doc/,}
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--cc="${CC}" --with-extraincdir="${LOCALBASE}/include" \
@@ -37,7 +37,7 @@ SLANG_DESC=	Use S-Lang based display renderer
 BROKEN_powerpc=		Does not compile
 BROKEN_sparc64=		Does not compile
 
-SLANG_LIB_DEPENDS=	libslang.so:${PORTSDIR}/devel/libslang2
+SLANG_LIB_DEPENDS=	libslang.so:devel/libslang2
 SLANG_CONFIGURE_ON=	--enable-slang
 SLANG_CONFIGURE_OFF=	--enable-curses
 

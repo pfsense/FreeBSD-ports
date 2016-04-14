@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	google
-PORTVERSION=	1.7
-PORTREVISION=	1
+PORTVERSION=	1.9.1
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +12,7 @@ COMMENT=	Python bindings to the Google search engine
 
 LICENSE=	BSD2CLAUSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=4:${PORTSDIR}/www/py-beautifulsoup
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=4:www/py-beautifulsoup
 
 USES=		python
 USE_PYTHON=	autoplist distutils

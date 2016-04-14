@@ -11,9 +11,9 @@ DISTNAME=	gdb-${PORTVERSION}
 
 MAINTAINER=	joerg@FreeBSD.org
 COMMENT=	GNU GDB for the AVR target
-LIB_DEPENDS=	libexpat.so:${PORTSDIR}/textproc/expat2
+LIB_DEPENDS=	libexpat.so:textproc/expat2
 
-USES=		gmake tar:bzip2
+USES=		gmake ncurses tar:bzip2
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--target=avr --program-prefix=avr --disable-nls \

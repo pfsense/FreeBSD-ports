@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	hub
-PORTVERSION=	2.2.0
+PORTVERSION=	2.2.3
 DISTVERSIONPREFIX=v
 CATEGORIES=	devel
 
@@ -11,8 +11,8 @@ COMMENT=	Introduces git to GitHub
 
 LICENSE=	MIT
 
-BUILD_DEPENDS=	go:${PORTSDIR}/lang/go \
-		bash:${PORTSDIR}/shells/bash
+BUILD_DEPENDS=	go:lang/go \
+		bash:shells/bash
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	github

@@ -10,13 +10,13 @@ MASTER_SITES=	SF/kaffeine/current
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multimedia player based on KDE and VLC
 
-LICENSE=	GPLv2 # (or later)
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	v4l_compat>0:${PORTSDIR}/multimedia/v4l_compat
-LIB_DEPENDS=	libvlc.so:${PORTSDIR}/multimedia/vlc-qt4
+BUILD_DEPENDS=	v4l_compat>0:multimedia/v4l_compat
+LIB_DEPENDS=	libvlc.so:multimedia/vlc-qt4
 
-USES=		cmake cpe gettext gmake pkgconfig
+USES=		cmake cpe gettext pkgconfig
 USE_KDE4=	automoc4 kdelibs kdeprefix
 USE_QT4=	corelib dbus gui network phonon sql svg xml \
 		moc_build qmake_build rcc_build uic_build

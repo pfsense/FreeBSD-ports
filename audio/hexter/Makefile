@@ -9,13 +9,13 @@ MASTER_SITES=	SF/dssi/${PORTNAME}/${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	DSSI softsynth that models the sound generation of a Yamaha DX7
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libdssialsacompat.so:${PORTSDIR}/audio/libdssialsacompat \
-		liblo.so:${PORTSDIR}/audio/liblo \
-		libjack.so:${PORTSDIR}/audio/jack
-BUILD_DEPENDS=	${LOCALBASE}/include/dssi.h:${PORTSDIR}/audio/dssi
+LIB_DEPENDS=	libdssialsacompat.so:audio/libdssialsacompat \
+		liblo.so:audio/liblo \
+		libjack.so:audio/jack
+BUILD_DEPENDS=	${LOCALBASE}/include/dssi.h:audio/dssi
 
 USES=		gmake libtool pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes

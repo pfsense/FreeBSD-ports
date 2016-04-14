@@ -13,11 +13,11 @@ MASTER_SITES=	SF \
 MAINTAINER=	ecrist@secure-computing.net
 COMMENT=	Web-based tool for managing racks of equipment
 
-RUN_DEPENDS=	p5-DBI>=0:${PORTSDIR}/databases/p5-DBI \
-		p5-HTML-Template>=0:${PORTSDIR}/www/p5-HTML-Template \
-		p5-Spreadsheet-WriteExcel>=0:${PORTSDIR}/textproc/p5-Spreadsheet-WriteExcel \
-		p5-Net-DNS>=0:${PORTSDIR}/dns/p5-Net-DNS \
-		p5-HTML-Parser>=0:${PORTSDIR}/www/p5-HTML-Parser
+RUN_DEPENDS=	p5-DBI>=0:databases/p5-DBI \
+		p5-HTML-Template>=0:www/p5-HTML-Template \
+		p5-Spreadsheet-WriteExcel>=0:textproc/p5-Spreadsheet-WriteExcel \
+		p5-Net-DNS>=0:dns/p5-Net-DNS \
+		p5-HTML-Parser>=0:www/p5-HTML-Parser
 
 OPTIONS_DEFINE=	SQLITE MYSQL PGSQL INIT_DB SAMPLE
 OPTIONS_DEFAULT=	SQLITE INIT_DB SAMPLE
@@ -34,16 +34,16 @@ SUB_FILES=	pkg-message
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MSQLITE}
-USE_SQLITE=	yes
-RUN_DEPENDS+=	p5-DBD-SQLite>=0:${PORTSDIR}/databases/p5-DBD-SQLite
+USES+=		sqlite
+RUN_DEPENDS+=	p5-DBD-SQLite>=0:databases/p5-DBD-SQLite
 .endif
 .if ${PORT_OPTIONS:MMYSQL}
 USE_MYSQL=	yes
-RUN_DEPENDS+=	p5-DBD-mysql>=0:${PORTSDIR}/databases/p5-DBD-mysql
+RUN_DEPENDS+=	p5-DBD-mysql>=0:databases/p5-DBD-mysql
 .endif
 .if ${PORT_OPTIONS:MPGSQL}
 USES+=		pgsql
-RUN_DEPENDS+=	p5-DBD-Pg>=0:${PORTSDIR}/databases/p5-DBD-Pg
+RUN_DEPENDS+=	p5-DBD-Pg>=0:databases/p5-DBD-Pg
 .endif
 
 .if ${PORT_OPTIONS:MINIT_DB}
@@ -65,7 +65,7 @@ do-install:
 	cd ${WRKSRC}/perl && ${COPYTREE_SHARE} RackMonkey ${STAGEDIR}${WWWDIR}/
 	${MKDIR} ${WRKDIR}/build_conf; \
 	${CP} ${WRKSRC}/conf/rackmonkey.conf-default ${WRKDIR}/build_conf/rackmonkey.conf; \
-	if [ "${USE_SQLITE}" ]; then \
+	if [ "${USES:Msqlite}" ]; then \
 		${ECHO} "Building with SQLite............."; \
 		${SED} -i '' -e 's%dbconnect =%dbconnect = dbi:SQLite:dbname=${WWWDIR}/rackmonkey.db%' ${WRKDIR}/build_conf/rackmonkey.conf; \
 		if [ "${INIT_DB}" ]; then \

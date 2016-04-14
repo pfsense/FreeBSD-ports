@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	jsonnet
-PORTVERSION=	0.7.6
+PORTVERSION=	0.8.6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -20,12 +20,12 @@ USE_CXXSTD=	c++11
 USE_LDCONFIG=	yes
 
 ALL_TARGET=	jsonnet libjsonnet.so
-CXXFLAGS+=	-fPIC
+CXXFLAGS+=	-fPIC -Iinclude
 PLIST_FILES=	bin/jsonnet include/libjsonnet.h lib/libjsonnet.so
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_DATA} ${WRKSRC}/lib${PORTNAME}.h ${STAGEDIR}${PREFIX}/include
+	${INSTALL_DATA} ${WRKSRC}/include/lib${PORTNAME}.h ${STAGEDIR}${PREFIX}/include
 	${INSTALL_LIB} ${WRKSRC}/lib${PORTNAME}.so ${STAGEDIR}${PREFIX}/lib
 
 .include <bsd.port.mk>

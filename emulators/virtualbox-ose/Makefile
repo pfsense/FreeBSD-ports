@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	virtualbox-ose
-DISTVERSION=	4.3.34
-PORTREVISION=	1
+DISTVERSION=	4.3.36
 CATEGORIES=	emulators
 MASTER_SITES=	http://download.virtualbox.org/virtualbox/${DISTVERSION}/ \
 		http://tmp.chruetertee.ch/ \
@@ -18,16 +17,16 @@ COMMENT=	General-purpose full virtualizer for x86 hardware
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	yasm:${PORTSDIR}/devel/yasm \
-		xsltproc:${PORTSDIR}/textproc/libxslt \
-		kmk:${PORTSDIR}/devel/kBuild \
-		gtar:${PORTSDIR}/archivers/gtar \
-		cdrecord:${PORTSDIR}/sysutils/cdrtools
-LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
-		libxslt.so:${PORTSDIR}/textproc/libxslt \
-		libcurl.so:${PORTSDIR}/ftp/curl
-RUN_DEPENDS=	${LOCALBASE}/etc/rc.d/vboxnet:${PORTSDIR}/emulators/virtualbox-ose-kmod \
-		cdrecord:${PORTSDIR}/sysutils/cdrtools
+BUILD_DEPENDS=	yasm:devel/yasm \
+		xsltproc:textproc/libxslt \
+		kmk:devel/kBuild \
+		gtar:archivers/gtar \
+		cdrecord:sysutils/cdrtools
+LIB_DEPENDS=	libpng.so:graphics/png \
+		libxslt.so:textproc/libxslt \
+		libcurl.so:ftp/curl
+RUN_DEPENDS=	${LOCALBASE}/etc/rc.d/vboxnet:emulators/virtualbox-ose-kmod \
+		cdrecord:sysutils/cdrtools
 
 CPE_VENDOR=	oracle
 CPE_PRODUCT=	vm_virtualbox
@@ -62,7 +61,7 @@ VBOX_UTILS=	VBoxExtPackHelperApp VBoxNetAdpCtl VBoxNetDHCP VBoxSVC \
 VBOX_GUEST_VER=	${PORTVERSION}
 
 OPTIONS_DEFINE=	DBUS DEBUG GUESTADDITIONS MANUAL NLS PULSEAUDIO PYTHON \
-		QT4 UDPTUNNEL VDE VNC VPX WEBSERVICE X11
+		QT4 R0LOGGING UDPTUNNEL VDE VNC VPX WEBSERVICE X11
 OPTIONS_DEFAULT=	DBUS PYTHON QT4 UDPTUNNEL VNC WEBSERVICE X11
 OPTIONS_SUB=	yes
 
@@ -70,18 +69,19 @@ DEBUG_DESC=	Debug symbols, additional logs and assertions
 GUESTADDITIONS_DESC=	Build with Guest Additions
 MANUAL_DESC=	Build with user manual
 QT4_DESC=	Build with QT4 Frontend
+R0LOGGING_DESC=	Enable R0 logging
 UDPTUNNEL_DESC=	Build with UDP tunnel support
 VDE_DESC=	Build with VDE support
 VNC_DESC=	Build with VNC support
 VPX_DESC=	Use vpx for video capturing
 WEBSERVICE_DESC=	Build Webservice
 
-DBUS_LIB_DEPENDS=	libdbus-1.so:${PORTSDIR}/devel/dbus
-PULSEAUDIO_LIB_DEPENDS=	libpulse.so:${PORTSDIR}/audio/pulseaudio
-VNC_LIB_DEPENDS=	libvncserver.so:${PORTSDIR}/net/libvncserver
-VPX_LIB_DEPENDS=	libvpx.so:${PORTSDIR}/multimedia/libvpx
+DBUS_LIB_DEPENDS=	libdbus-1.so:devel/dbus
+PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
+VNC_LIB_DEPENDS=	libvncserver.so:net/libvncserver
+VPX_LIB_DEPENDS=	libvpx.so:multimedia/libvpx
 
-VDE_RUN_DEPENDS=	vde_switch:${PORTSDIR}/net/vde2
+VDE_RUN_DEPENDS=	vde_switch:net/vde2
 
 DBUS_CONFIGURE_OFF=	--disable-dbus
 DEBUG_CONFIGURE_ON=	--build-debug
@@ -125,8 +125,13 @@ BROKEN=		QT4 frontend requires X11 support. Run 'make config' again!
 
 .if ${PORT_OPTIONS:MDEBUG}
 KMK_BUILDTYPE=	debug
+KMK_FLAGS+=	BUILD_TYPE=debug
 .else
 KMK_BUILDTYPE=	release
+.endif
+
+.if ${PORT_OPTIONS:MR0LOGGING} && empty(PORT_OPTIONS:MDEBUG)
+BROKEN=		R0 logging requires debug build
 .endif
 
 .if ${PORT_OPTIONS:MGUESTADDITIONS}
@@ -162,7 +167,7 @@ VBOX_WITH_QT4=
 .endif
 
 .if ${PORT_OPTIONS:MWEBSERVICE}
-BUILD_DEPENDS+=	soapcpp2:${PORTSDIR}/devel/gsoap
+BUILD_DEPENDS+=	soapcpp2:devel/gsoap
 USE_RC_SUBR+=	vboxwebsrv
 VBOX_LINKS+=	vboxwebsrv
 VBOX_UTILS+=	vboxwebsrv webtest
@@ -192,12 +197,12 @@ PLIST_SUB+=	ARCH="${KMK_ARCH}"
 
 KMK_BUILDDIR=	${WRKSRC}/out/${KMK_ARCH}/${KMK_BUILDTYPE}
 KMK_CONFIG=	VBOX_LIBPATH_X11=${LOCALBASE} VBOX_FREEBSD_SRC=${SRC_BASE}/sys
-KMK_FLAGS=	-j${MAKE_JOBS_NUMBER}
+KMK_FLAGS+=	-j${MAKE_JOBS_NUMBER}
 
 .include <bsd.port.pre.mk>
 
 .if ${COMPILER_TYPE} == clang
-PATCH_DEPENDS+=	${LOCALBASE}/share/kBuild/tools/GXX3.kmk:${PORTSDIR}/devel/kBuild
+PATCH_DEPENDS+=	${LOCALBASE}/share/kBuild/tools/GXX3.kmk:devel/kBuild
 EXTRA_PATCHES+=	${PATCHDIR}/extrapatch-Config.kmk \
 		${PATCHDIR}/extrapatch-src-VBox-Devices-PC-ipxe-Makefile.kmk \
 		${PATCHDIR}/extrapatch-src-recompiler-Makefile.kmk
@@ -240,6 +245,9 @@ post-patch:
 	@${ECHO} 'VBOX_PATH_GSOAP_BIN = ${PREFIX}/bin' >> ${WRKSRC}/LocalConfig.kmk
 	@${ECHO} 'VBOX_PATH_GSOAP_IMPORT = ${PREFIX}/share/gsoap/import' >> ${WRKSRC}/LocalConfig.kmk
 	@${ECHO} 'VBOX_GCC_PEDANTIC_CXX = -Wshadow $(VBOX_GCC_WARN) -Wno-long-long' >> ${WRKSRC}/LocalConfig.kmk
+.endif
+.if ${PORT_OPTIONS:MR0LOGGING}
+	@${ECHO} 'VBOX_WITH_R0_LOGGING = 1' >> ${WRKSRC}/LocalConfig.kmk
 .endif
 .if ${COMPILER_TYPE} == clang
 	@${REINPLACE_CMD} -e 's| -finline-limit=8000||' \

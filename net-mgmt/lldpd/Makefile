@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lldpd
-PORTVERSION=	0.7.19
+PORTVERSION=	0.9.1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://media.luffy.cx/files/${PORTNAME}/ \
 		http://mirror.1labs.ch/${PORTNAME}/
@@ -12,7 +12,7 @@ COMMENT=	LLDP (802.1ab)/CDP/EDP/SONMP/FDP daemon and SNMP subagent
 
 LICENSE=	ISCL
 
-LIB_DEPENDS=	libevent.so:${PORTSDIR}/devel/libevent2
+LIB_DEPENDS=	libevent.so:devel/libevent2
 
 USES=		libtool
 USE_LDCONFIG=	yes
@@ -30,27 +30,29 @@ INSTALL_TARGET=	install-strip
 USERS=	_lldpd
 GROUPS=	_lldpd
 
-OPTIONS_DEFINE=		BASH DOCS DTRACE JSON PROPRIETARY READLINE SNMP XML ZSH
+OPTIONS_DEFINE=		BASH DOCS DTRACE JSON PIE PROPRIETARY READLINE SNMP XML ZSH
 OPTIONS_DEFAULT=	BASH JSON PROPRIETARY SNMP XML
 OPTIONS_SUB=	yes
 
 DTRACE_DESC=		DTrace support
 JSON_DESC=		JSON output support
+PIE_DESC=		Build PIE (position independant executables)
 PROPRIETARY_DESC=	Support proprietary protocols (CDP/EDP/FDP/SONMP)
 SNMP_DESC=		Enable the use of SNMP
 XML_DESC=		XML output support
 
 DTRACE_CONFIGURE_ENABLE=	dtrace
 JSON_CONFIGURE_WITH=		json
+PIE_CONFIGURE_ENABLE=		pie
 READLINE_CONFIGURE_WITH=	readline
 SNMP_CONFIGURE_WITH=		snmp
 XML_CONFIGURE_WITH=		xml
 PROPRIETARY_CONFIGURE_ENABLE=	cdp edp fdp sonmp
 
-JSON_LIB_DEPENDS=	libjansson.so:${PORTSDIR}/devel/jansson
+JSON_LIB_DEPENDS=	libjansson.so:devel/jansson
 JSON_USES=		pkgconfig
-SNMP_LIB_DEPENDS=	libnetsnmp.so:${PORTSDIR}/net-mgmt/net-snmp
-XML_LIB_DEPENDS=	libxml2.so:${PORTSDIR}/textproc/libxml2
+SNMP_LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
+XML_LIB_DEPENDS=	libxml2.so:textproc/libxml2
 
 post-install:
 	${INSTALL_DATA} ${FILESDIR}/README.bsd ${STAGEDIR}${DOCSDIR}

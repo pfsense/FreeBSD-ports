@@ -2,16 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	numpy
-PORTVERSION=	1.10.2
+PORTVERSION=	1.11.0
 PORTEPOCH=	1
 CATEGORIES=	math python
-MASTER_SITES=	http://docs.scipy.org/doc/${DISTNAME}/:doc \
-		CHEESESHOP:source \
-		SF:source
+MASTER_SITES=	CHEESESHOP:source \
+		SF/${PORTNAME}/NumPy/${PORTVERSION}/:doc
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTFILES=	numpy-${PORTVERSION:S/r/rc/}${EXTRACT_SUFX}:source \
-		numpy-ref-${DOCVERSION}.pdf:doc \
-		numpy-user-${DOCVERSION}.pdf:doc
+		reference.pdf:doc \
+		userguide.pdf:doc
 EXTRACT_ONLY=	numpy-${PORTVERSION:S/r/rc/}${EXTRACT_SUFX}
 
 MAINTAINER=	python@FreeBSD.org
@@ -36,16 +35,15 @@ TESTS_DESC=		Install test suite requirements
 PLIST_SUB=	PYTHON_VER=${PYTHON_VER}
 PORTDOCS=	*
 WRKSRC=		${WRKDIR}/${DISTNAME:S/r/rc/}
-DOCVERSION=	${PORTVERSION:S/2/1/}
 
 GCCLIBDIR_CMDS=	${FC} -print-file-name=libgfortran.so | ${SED} -e s/libgfortran.so//
 
 ATLAS_USES=	blaslapack:atlas
 NETLIB_USES=	blaslapack:netlib
-NETLIB_LIB_DEPENDS=	libcblas.so:${PORTSDIR}/math/cblas
+NETLIB_LIB_DEPENDS=	libcblas.so:math/cblas
 OPENBLAS_USES=	blaslapack:openblas
-SUITESPARSE_LIB_DEPENDS=libumfpack.so:${PORTSDIR}/math/suitesparse
-TESTS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>=0:${PORTSDIR}/devel/py-nose
+SUITESPARSE_LIB_DEPENDS=libumfpack.so:math/suitesparse
+TESTS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>=0:devel/py-nose
 
 .include <bsd.port.pre.mk>
 
@@ -97,7 +95,7 @@ post-install:
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${DISTDIR}/numpy-ref-${DOCVERSION}.pdf ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${DISTDIR}/numpy-user-${DOCVERSION}.pdf ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${DISTDIR}/reference.pdf ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${DISTDIR}/userguide.pdf ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.post.mk>

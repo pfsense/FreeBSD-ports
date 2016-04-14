@@ -2,43 +2,45 @@
 # $FreeBSD$
 
 PORTNAME=	MailScanner
-PORTVERSION=	4.84.6
+PORTVERSION=	4.85.2
 #PORTREVISION=	0
 CATEGORIES=	mail
-MASTER_SITES=	http://www.mailscanner.info/files/4/tar/
-DISTNAME=	${PORTNAME}-install-${PORTVERSION}-${PATCHLEVEL}
+MASTER_SITES=	https://s3.amazonaws.com/mailscanner/release/v4/tar/
+DISTNAME=	${PORTNAME}-${PORTVERSION}-${PATCHLEVEL}
 
 MAINTAINER=	kkobb@skylinecorp.com
 COMMENT=	Powerful virus/spam scanning framework for mail gateways
 
+LICENSE=	GPLv2
+
 BUILD_DEPENDS=	\
-	p5-IO-stringy>=0:${PORTSDIR}/devel/p5-IO-stringy \
-	p5-DBI>=0:${PORTSDIR}/databases/p5-DBI \
-	p5-Mail-Tools>=0:${PORTSDIR}/mail/p5-Mail-Tools \
-	p5-HTML-Tagset>=0:${PORTSDIR}/www/p5-HTML-Tagset \
-	p5-HTML-Parser>=0:${PORTSDIR}/www/p5-HTML-Parser \
-	p5-MIME-Tools>=0:${PORTSDIR}/mail/p5-MIME-Tools \
-	p5-Convert-TNEF>=0:${PORTSDIR}/converters/p5-Convert-TNEF \
-	p5-Convert-BinHex>=0:${PORTSDIR}/converters/p5-Convert-BinHex \
-	p5-Net-CIDR>=0:${PORTSDIR}/net-mgmt/p5-Net-CIDR \
-	p5-Net-Ident>=0:${PORTSDIR}/net/p5-Net-Ident \
-	p5-Archive-Zip>=0:${PORTSDIR}/archivers/p5-Archive-Zip \
-	p5-DBD-SQLite>=0:${PORTSDIR}/databases/p5-DBD-SQLite \
-	p5-DBI>=0:${PORTSDIR}/databases/p5-DBI \
-	p5-TimeDate>=0:${PORTSDIR}/devel/p5-TimeDate \
-	p5-Filesys-Df>=0:${PORTSDIR}/sysutils/p5-Filesys-Df \
-	p5-Sys-Hostname-Long>=0:${PORTSDIR}/sysutils/p5-Sys-Hostname-Long \
-	p5-OLE-Storage_Lite>=0:${PORTSDIR}/devel/p5-OLE-Storage_Lite \
-	p5-Sys-SigAction>=0:${PORTSDIR}/devel/p5-Sys-SigAction
+	p5-IO-stringy>=0:devel/p5-IO-stringy \
+	p5-DBI>=0:databases/p5-DBI \
+	p5-Mail-Tools>=0:mail/p5-Mail-Tools \
+	p5-HTML-Tagset>=0:www/p5-HTML-Tagset \
+	p5-HTML-Parser>=0:www/p5-HTML-Parser \
+	p5-MIME-Tools>=0:mail/p5-MIME-Tools \
+	p5-Convert-TNEF>=0:converters/p5-Convert-TNEF \
+	p5-Convert-BinHex>=0:converters/p5-Convert-BinHex \
+	p5-Net-CIDR>=0:net-mgmt/p5-Net-CIDR \
+	p5-Net-Ident>=0:net/p5-Net-Ident \
+	p5-Archive-Zip>=0:archivers/p5-Archive-Zip \
+	p5-DBD-SQLite>=0:databases/p5-DBD-SQLite \
+	p5-DBI>=0:databases/p5-DBI \
+	p5-TimeDate>=0:devel/p5-TimeDate \
+	p5-Filesys-Df>=0:sysutils/p5-Filesys-Df \
+	p5-Sys-Hostname-Long>=0:sysutils/p5-Sys-Hostname-Long \
+	p5-OLE-Storage_Lite>=0:devel/p5-OLE-Storage_Lite \
+	p5-Sys-SigAction>=0:devel/p5-Sys-SigAction
 
 RUN_DEPENDS:=	${BUILD_DEPENDS} \
-		bash:${PORTSDIR}/shells/bash \
-		tnef:${PORTSDIR}/converters/tnef \
-		wget:${PORTSDIR}/ftp/wget
+		bash:shells/bash \
+		tnef:converters/tnef \
+		wget:ftp/wget
 
 CONFLICTS=	MailScanner-devel-[0-9]*
 
-PATCHLEVEL=	1
+PATCHLEVEL=	3
 
 USES=		perl5 shebangfix
 SHEBANG_FILES=	bin/[^c]* bin/clean* \
@@ -65,31 +67,31 @@ OPTIONS_DEFAULT=	SPAMASSASSIN CLAMAV
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MSPAMASSASSIN}
-RUN_DEPENDS+=	spamassassin:${PORTSDIR}/mail/spamassassin
+RUN_DEPENDS+=	spamassassin:mail/spamassassin
 PLIST_SUB+=	SPAMASSASSIN=""
 .else
 PLIST_SUB+=	SPAMASSASSIN="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MCLAMAV}
-RUN_DEPENDS+=	clamscan:${PORTSDIR}/security/clamav
+RUN_DEPENDS+=	clamscan:security/clamav
 .endif
 
 .if ${PORT_OPTIONS:MCLAMAVMODULE}
-RUN_DEPENDS+=	p5-Mail-ClamAV>=0:${PORTSDIR}/mail/p5-Mail-ClamAV
+RUN_DEPENDS+=	p5-Mail-ClamAV>=0:mail/p5-Mail-ClamAV
 .endif
 
 .if ${PORT_OPTIONS:MCLAMAV} || ${PORT_OPTIONS:MCLAMAVMODULE}
-RUN_DEPENDS+=	unzip:${PORTSDIR}/archivers/unzip \
-		unrar:${PORTSDIR}/archivers/unrar \
-		zoo:${PORTSDIR}/archivers/zoo \
-		unarj:${PORTSDIR}/archivers/unarj \
-		unace:${PORTSDIR}/archivers/unace \
-		lha:${PORTSDIR}/archivers/lha
+RUN_DEPENDS+=	unzip:archivers/unzip \
+		unrar:archivers/unrar \
+		zoo:archivers/zoo \
+		unarj:archivers/unarj \
+		unace:archivers/unace \
+		lha:archivers/lha
 .endif
 
 .if ${PORT_OPTIONS:MBDC}
-RUN_DEPENDS+=	bdc:${PORTSDIR}/security/bdc
+RUN_DEPENDS+=	bdc:security/bdc
 .endif
 
 # backwards compatibility
@@ -105,7 +107,7 @@ PLIST_SUB+=	SPAMASSASSIN_SYMLINK=""
 SUB_LIST+=	WITHOUT_SPAMASSASSIN_SYMLINK=no
 .endif
 
-DOC_FILES=	INSTALL.FreeBSD README
+DOC_FILES=	README
 ETC_FILES=	MailScanner.conf filename.rules.conf \
 		archives.filename.rules.conf archives.filetype.rules.conf \
 		filetype.rules.conf spam.assassin.prefs.conf \

@@ -14,23 +14,23 @@ PKGNAMESUFFIX=	-esr
 MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	Web browser based on the browser portion of Mozilla
 
-BUILD_DEPENDS=	nspr>=4.10.10:${PORTSDIR}/devel/nspr \
-		nss>=3.19.2.1:${PORTSDIR}/security/nss \
-		libevent2>=2.0.21_2:${PORTSDIR}/devel/libevent2 \
-		soundtouch>=1.8.0:${PORTSDIR}/audio/soundtouch \
-		harfbuzz>=0.9.34:${PORTSDIR}/print/harfbuzz \
-		graphite2>=1.2.4:${PORTSDIR}/graphics/graphite2 \
-		libvorbis>=1.3.5,3:${PORTSDIR}/audio/libvorbis \
-		libvpx>=1.3.0:${PORTSDIR}/multimedia/libvpx \
-		sqlite3>=3.8.9:${PORTSDIR}/databases/sqlite3 \
-		${PYTHON_PKGNAMEPREFIX}sqlite3>0:${PORTSDIR}/databases/py-sqlite3 \
-		v4l_compat>0:${PORTSDIR}/multimedia/v4l_compat \
-		autoconf-2.13:${PORTSDIR}/devel/autoconf213 \
-		zip:${PORTSDIR}/archivers/zip \
-		unzip:${PORTSDIR}/archivers/unzip
-#		opus>=1.1:${PORTSDIR}/audio/opus \
+BUILD_DEPENDS=	nspr>=4.10.10:devel/nspr \
+		nss>=3.19.2.1:security/nss \
+		libevent2>=2.0.21_2:devel/libevent2 \
+		soundtouch>=1.8.0:audio/soundtouch \
+		harfbuzz>=0.9.34:print/harfbuzz \
+		graphite2>=1.2.4:graphics/graphite2 \
+		libvorbis>=1.3.5,3:audio/libvorbis \
+		libvpx>=1.3.0:multimedia/libvpx \
+		sqlite3>=3.8.9:databases/sqlite3 \
+		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3 \
+		v4l_compat>0:multimedia/v4l_compat \
+		autoconf-2.13:devel/autoconf213 \
+		zip:archivers/zip \
+		unzip:archivers/unzip
+#		opus>=1.1:audio/opus \
 
-LIB_DEPENDS=	libv4l2.so:${PORTSDIR}/multimedia/libv4l
+LIB_DEPENDS=	libv4l2.so:multimedia/libv4l
 
 USE_GECKO=	gecko
 CPE_PRODUCT=	${PORTNAME}_esr
@@ -56,25 +56,8 @@ OPTIONS_SINGLE+=	TOOLKIT
 OPTIONS_SINGLE_TOOLKIT=	GTK2 GTK3
 
 .include "${.CURDIR}/../../www/firefox/Makefile.options"
-.include <bsd.port.pre.mk>
 
 WRKSRC:=	${WRKDIR}/mozilla-esr38
-
-.if ${PORT_OPTIONS:MALSA}
-RUN_DEPENDS+=	alsa-lib>=1.0.27.2_1:${PORTSDIR}/audio/alsa-lib
-.endif
-
-.if ! ${PORT_OPTIONS:MBUNDLED_CAIRO}
-BUILD_DEPENDS+=	cairo>=1.12.16_1,2:${PORTSDIR}/graphics/cairo
-.endif
-
-.if ${PORT_OPTIONS:MGSTREAMER}
-RUN_DEPENDS+=	gstreamer1-libav>=1.2.4_1:${PORTSDIR}/multimedia/gstreamer1-libav
-.endif
-
-.if ${PORT_OPTIONS:MGTK3}
-BUILD_DEPENDS+=	gtk3>=3.14.6:${PORTSDIR}/x11-toolkits/gtk30
-.endif
 
 post-extract:
 	@${SED} -e 's|@FIREFOX_ICON@|${FIREFOX_ICON}|' -e 's|@MOZILLA@|${MOZILLA}|' \
@@ -96,4 +79,4 @@ post-install:
 	${INSTALL_DATA} ${WRKDIR}/${MOZILLA}.desktop ${STAGEDIR}${PREFIX}/share/applications/
 	${LN} -sf ${FIREFOX_ICON_SRC} ${STAGEDIR}${PREFIX}/share/pixmaps/${FIREFOX_ICON}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

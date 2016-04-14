@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mew
-PORTVERSION=	6.6
-PORTREVISION=	3
+PORTVERSION=	6.7
 CATEGORIES=	mail elisp
 MASTER_SITES=	http://www.mew.org/Release/
 PKGNAMESUFFIX=	-${EMACS_PORT_NAME}
@@ -17,9 +16,9 @@ LICENSE_FILE=	${WRKSRC}/00copyright
 OPTIONS_DEFINE=	DATABASE DOCS STUNNEL
 OPTIONS_DEFAULT=STUNNEL
 DATABASE_DESC=	Support database feature (with Ruby & Sqlite3)
-DATABASE_RUN_DEPENDS=	rubygem-sqlite3>=0:${PORTSDIR}/databases/rubygem-sqlite3
+DATABASE_RUN_DEPENDS=	rubygem-sqlite3>=0:databases/rubygem-sqlite3
 STUNNEL_DESC=	Support SSL feature using stunnel
-STUNNEL_RUN_DEPENDS=	stunnel>=0:${PORTSDIR}/security/stunnel
+STUNNEL_RUN_DEPENDS=	stunnel>=0:security/stunnel
 
 # emacs port setup
 USE_EMACS=	yes
@@ -38,7 +37,7 @@ DOCS_INFO=	mew.ja
 PORTDOCS=	00api 00changes.0 00changes.1 00changes.2 00changes.3 \
 		00changes.4.1 00changes.4.2 00changes.5.1 00changes.5.2 \
 		00changes.6.1 00changes.6.2 00changes.6.3 00changes.6.4 \
-		00changes.6.5 00changes.6.6 \
+		00changes.6.5 00changes.6.6 00changes.6.7 \
 		00diff 00readme dot.emacs dot.mew dot.theme
 
 post-install:

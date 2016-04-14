@@ -13,15 +13,16 @@ MASTER_SITES=	http://www.dsmit.com/cons/stable/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Test bed for `Cons' development
 
-LICENSE=	GPLv2 # (or later)
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${LOCALBASE}/bin/cons:${PORTSDIR}/devel/cons
-
-WRKSRC=		${WRKDIR}/cons-${PORTVERSION}/test
-NO_BUILD=	yes
+RUN_DEPENDS=	${LOCALBASE}/bin/cons:devel/cons
 
 USES=		perl5 tar:tgz
+WRKSRC=		${WRKDIR}/cons-${PORTVERSION}/test
+NO_BUILD=	yes
+NO_ARCH=	yes
+
 PLIST_SUB=	CONS_VER="${PORTVERSION}" CONS_TEST="${CONS_TEST}"
 
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME:S/-test//}-${PORTVERSION}/test
@@ -42,7 +43,7 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/${CONS_TEST}/t
 	${PERL} -e 'for (${TESTS}) {$$f=sprintf "t%04d.t", $$_;\
 		    $$x= "${INSTALL_DATA} ${WRKSRC}/t/$$f \
-		    	    ${STAGEDIR}${PREFIX}/lib/${CONS_TEST}/t";\
+			    ${STAGEDIR}${PREFIX}/lib/${CONS_TEST}/t";\
 		    printf "$$x\n"; system $$x;}'
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/${CONS_TEST}/Test/Cmd
 	${INSTALL_DATA} ${WRKSRC}/Test/Cmd.pm \
@@ -51,6 +52,8 @@ do-install:
 		${STAGEDIR}${PREFIX}/lib/${CONS_TEST}/Test/Cmd
 	${INSTALL_MAN} ${WRKSRC}/cons-test.1.gz \
 		${STAGEDIR}${MANPREFIX}/man/man1
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
 

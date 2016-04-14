@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	twig
-PORTVERSION=	1.23.1
+PORTVERSION=	1.23.3
 CATEGORIES=	www pear
 MASTER_SITES=	http://pear.twig-project.org/get/
 DISTNAME=	Twig-${PORTVERSION}
@@ -13,8 +13,8 @@ COMMENT=	Flexible, fast, and secure template engine for PHP
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PEARDIR}/.channels/pear.twig-project.org.reg:${PORTSDIR}/devel/pear-channel-twig
-RUN_DEPENDS=	${PEARDIR}/.channels/pear.twig-project.org.reg:${PORTSDIR}/devel/pear-channel-twig
+BUILD_DEPENDS=	${PEARDIR}/.channels/pear.twig-project.org.reg:devel/pear-channel-twig
+RUN_DEPENDS=	${PEARDIR}/.channels/pear.twig-project.org.reg:devel/pear-channel-twig
 
 USES=		pear
 PEAR_CHANNEL=	twig

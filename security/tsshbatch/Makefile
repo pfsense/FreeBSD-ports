@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tsshbatch
-PORTVERSION=	1.212
+PORTVERSION=	1.228
 CATEGORIES=	security python
 MASTER_SITES=	http://www.tundraware.com/Software/tsshbatch/
 
@@ -14,7 +14,7 @@ LICENSE_NAME=	tsshbatch
 LICENSE_FILE=	${WRKSRC}/tsshbatch-license.txt
 LICENSE_PERMS=	auto-accept
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}paramiko>=1.7.7.1:${PORTSDIR}/security/py-paramiko
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}paramiko>=1.7.7.1:security/py-paramiko
 
 USES=		python:run
 NO_ARCH=	yes

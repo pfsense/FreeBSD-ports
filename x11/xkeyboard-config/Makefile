@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	xkeyboard-config
-PORTVERSION=	2.16
+PORTVERSION=	2.17
 CATEGORIES=	x11
 MASTER_SITES=	XORG/individual/${XORG_CAT}/${PORTNAME}
 
@@ -10,7 +10,7 @@ COMMENT=	X Keyboard Configuration Database
 
 LICENSE=	MIT
 
-BUILD_DEPENDS=	xkbcomp:${PORTSDIR}/x11/xkbcomp
+BUILD_DEPENDS=	xkbcomp:x11/xkbcomp
 
 XORG_CAT=	data
 

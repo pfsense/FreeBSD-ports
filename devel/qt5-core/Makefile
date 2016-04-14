@@ -2,15 +2,14 @@
 
 PORTNAME=	core
 DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	3
 CATEGORIES=	devel
 PKGNAMEPREFIX=	qt5-
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt core non-graphical module
 
-LIB_DEPENDS=	libicui18n.so:${PORTSDIR}/devel/icu \
-		libpcre.so:${PORTSDIR}/devel/pcre
+LIB_DEPENDS=	libicui18n.so:devel/icu \
+		libpcre.so:devel/pcre
 
 USES=		execinfo
 USE_GNOME=	glib20

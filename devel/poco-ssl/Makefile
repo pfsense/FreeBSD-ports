@@ -10,7 +10,7 @@ MASTER_SITES=	SF/${PORTNAME}/sources/${PORTNAME}-${PORTVERSION}
 PKGNAMESUFFIX=	-ssl
 DISTNAME=	${PORTNAME}-${PORTVERSION}p1-all
 
-MAINTAINER=	wes@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C++ libraries with a network/internet focus (full version)
 
 LICENSE=	BSL
@@ -31,7 +31,7 @@ SAMPLES_DESC=	Build sample programs
 TEST_CONFIGURE_OFF=	--no-tests
 SAMPLES_CONFIGURE_OFF=	--no-samples
 
-ODBC_LIB_DEPENDS=	libodbc.so:${PORTSDIR}/databases/libiodbc
+ODBC_LIB_DEPENDS=	libodbc.so:databases/libiodbc
 ODBC_CONFIGURE_OFF=	--omit=Data/ODBC
 
 MYSQL_USE=		MYSQL=yes

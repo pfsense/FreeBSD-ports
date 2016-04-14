@@ -48,9 +48,9 @@ ZLIB_USE=	PHP=zlib
 
 .if ${PORT_OPTIONS:MIMAGICK}
 .if ${PORT_OPTIONS:MX11}
-RUN_DEPENDS+=	convert:${PORTSDIR}/graphics/ImageMagick
+RUN_DEPENDS+=	convert:graphics/ImageMagick
 .else
-RUN_DEPENDS+=	convert:${PORTSDIR}/graphics/ImageMagick-nox11
+RUN_DEPENDS+=	convert:graphics/ImageMagick-nox11
 .endif
 .endif
 
@@ -69,12 +69,5 @@ post-install:
 	@cd ${STAGEDIR}${PREFIX}; \
 		${FIND} * \( -type f -or -type l \) -path "${TYPO3WWW}/${TYPO3SRC}/*" | \
 		${SORT} >> ${TMPPLIST}
-#		${FIND} * \( -type f -or -type l \) \( -path "${TYPO3WWW}/${TYPO3SRC}/*" -and \
-#		-not -path "${TYPO3WWW}/${TYPO3SRC}/typo3/ext/*" \) | \
-#		${SORT} >> ${TMPPLIST}
-#	@cd ${STAGEDIR}${PREFIX}; \
-#		${FIND} * \( -type f -or -type l \) -path "${TYPO3WWW}/${TYPO3SRC}/typo3/ext/*" | \
-#		${SORT} | ${SED} -ne 's#^#@(${WWWOWN},${WWWGRP},) #p' >> ${TMPPLIST}
-#	@${ECHO} "@dir(${WWWOWN},${WWWGRP},) ${TYPO3WWW}/${TYPO3SRC}/typo3/ext" >> ${TMPPLIST}
 
 .include <bsd.port.mk>

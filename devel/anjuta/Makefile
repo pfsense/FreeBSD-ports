@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	anjuta
-PORTVERSION=	3.16.0
+PORTVERSION=	3.18.2
 PORTREVISION=	1
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
@@ -11,22 +11,22 @@ DIST_SUBDIR=	gnome3
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Integrated Development Environment for C and C++
 
-BUILD_DEPENDS=	autogen:${PORTSDIR}/devel/autogen \
-		itstool:${PORTSDIR}/textproc/itstool
-LIB_DEPENDS+=	libpcre.so:${PORTSDIR}/devel/pcre \
-		libgdl-3.so:${PORTSDIR}/x11-toolkits/gdl
-RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gnome-icon-theme.pc:${PORTSDIR}/misc/gnome-icon-theme \
-		autogen:${PORTSDIR}/devel/autogen \
-		automake>=0:${PORTSDIR}/devel/automake \
-		autoconf>=0:${PORTSDIR}/devel/autoconf \
-		libtool>=2.4:${PORTSDIR}/devel/libtool \
-		gdb>=7.3:${PORTSDIR}/devel/gdb \
-		gmake:${PORTSDIR}/devel/gmake \
-		yelp>=3.0.0:${PORTSDIR}/x11/yelp
+BUILD_DEPENDS=	autogen:devel/autogen \
+		itstool:textproc/itstool
+LIB_DEPENDS+=	libpcre.so:devel/pcre \
+		libgdl-3.so:x11-toolkits/gdl
+RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gnome-icon-theme.pc:misc/gnome-icon-theme \
+		autogen:devel/autogen \
+		automake>=0:devel/automake \
+		autoconf>=0:devel/autoconf \
+		libtool>=2.4:devel/libtool \
+		gdb>=7.10:devel/gdb \
+		gmake:devel/gmake \
+		yelp>=3.0.0:x11/yelp
 
 PORTSCOUT=	limitw:1,even
 
-USES=		bison desktop-file-utils gettext gmake libtool pathfix \
+USES=		bison desktop-file-utils gettext gmake gnome libtool pathfix \
 		perl5 pkgconfig:both python shared-mime-info shebangfix tar:xz
 SHEBANG_FILES=	plugins/project-wizard/templates/js_minimal/src/main.js \
 		plugins/tools/scripts/find-fixmes.pl \
@@ -45,6 +45,7 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS=	--with-symbol-db-shm=/tmp \
 		--disable-packagekit \
+		--disable-neon \
 		--enable-compile-warnings=minimum \
 		--enable-introspection=yes
 DOCSDIR=	share/doc/libanjuta
@@ -83,23 +84,24 @@ VALA_DESC=	Vala support
 GLADE_DESC=	Build glade plugin
 TERMINAL_DESC=	Build build-in terminal
 
-GLADE_LIB_DEPENDS=	libgladeui-2.so:${PORTSDIR}/devel/glade
+GLADE_LIB_DEPENDS=	libgladeui-2.so:devel/glade
 GLADE_CONFIGURE_ENABLE=	plugin-glade
 
 TERMINAL_USE=	GNOME=vte3
 TERMINAL_CONFIGURE_ENABLE=	plugin-terminal
 
-SVN_BUILD_DEPENDS=	svn:${PORTSDIR}/devel/subversion
-SVN_LIB_DEPENDS=	libapr-1.so:${PORTSDIR}/devel/apr1 \
-			libneon.so:${PORTSDIR}/www/neon
-SVN_RUN_DEPENDS=	svn:${PORTSDIR}/devel/subversion
+SVN_BUILD_DEPENDS=	svn:devel/subversion
+SVN_LIB_DEPENDS=	libapr-1.so:devel/apr1 \
+			libserf-1.so:www/serf
+SVN_RUN_DEPENDS=	svn:devel/subversion
 SVN_CONFIGURE_ENABLE=	plugin-subversion
 
-DEVHELP_LIB_DEPENDS=	libdevhelp-3.so:${PORTSDIR}/devel/devhelp
+DEVHELP_LIB_DEPENDS=	libdevhelp-3.so:devel/devhelp
 DEVHELP_CONFIGURE_ENBABLE=	plugin-devhelp
 
-VALA_BUILD_DEPENDS=	vala>=0.14.0:${PORTSDIR}/lang/vala
-VALA_RUN_DEPENDS=	vala>=0.14.0:${PORTSDIR}/lang/vala
+VALA_VER=		0.30
+VALA_BUILD_DEPENDS=	vala>=${VALA_VER}<${VALA_VER}.99:lang/vala
+VALA_RUN_DEPENDS=	vala>=${VALA_VER}<${VALA_VER}.99:lang/vala
 VALA_CONFIGURE_ENABLE=	vala
 
 post-patch:
@@ -108,6 +110,8 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${PREFIX}|g' \
 		${WRKSRC}/libanjuta/anjuta-utils.c
 	@${REINPLACE_CMD} -e 's|ac_ct_CXX" = "x"|CXX" = "x"|g' \
+		-e 's|libvala-0.28|libvala-${VALA_VER}|g' \
+		-e 's|valaver="-0.28"|valaver="-${VALA_VER}"|g' \
 		${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|values.h|limits.h|g' \
 		${WRKSRC}/plugins/project-wizard/property.h \
@@ -115,5 +119,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|-fprofile-arcs||g' \
 		${WRKSRC}/libanjuta/tests/Makefile.in \
 		${WRKSRC}/libanjuta/tests/Makefile.am
+	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${PREFIX}|g' \
+		${WRKSRC}/plugins/gdb/debugger.c
 
 .include <bsd.port.mk>

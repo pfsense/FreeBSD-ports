@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	curl
-PORTVERSION=	0.9.4
+PORTVERSION=	0.9.6
 CATEGORIES=	ftp
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
@@ -11,12 +11,12 @@ COMMENT=	Modern and Flexible Web Client for R
 
 LICENSE=	MIT
 
-BUILD_DEPENDS=	${LOCALBASE}/include/curl/curl.h:${PORTSDIR}/ftp/curl
-LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
+BUILD_DEPENDS=	${LOCALBASE}/include/curl/curl.h:ftp/curl
+LIB_DEPENDS=	libcurl.so:ftp/curl
 
 USES=	cran:auto-plist
 
 post-patch:
-	 @${REINPLACE_CMD} -e 's|bin/bash|bin/sh|' ${WRKSRC}/configure
+	@${REINPLACE_CMD} -e '/bin\//s|bash|sh|' ${WRKSRC}/configure
 
 .include <bsd.port.mk>

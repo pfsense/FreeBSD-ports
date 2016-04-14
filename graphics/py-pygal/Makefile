@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pygal
-PORTVERSION=	1.7.0
+PORTVERSION=	2.0.12
 CATEGORIES=	graphics python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,10 +12,10 @@ COMMENT=	Python svg graph plotting library
 
 LICENSE=	LGPL3
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=3.3.4:${PORTSDIR}/devel/py-lxml
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=3.3.4:devel/py-lxml
 
-# Python3 ready
+NO_ARCH=	yes
 USES=		python
-USE_PYTHON=	distutils autoplist
+USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

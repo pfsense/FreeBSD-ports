@@ -10,7 +10,7 @@ MASTER_SITES=	LOCAL/alepulver
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Quake II engine modification compatible with R1Q2
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/gnu.txt
 
 USES=		dos2unix gmake tar:bzip2
@@ -62,7 +62,7 @@ PLIST_SUB+=	GAME="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MGL}
-LIB_DEPENDS+=	libpng.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS+=	libpng.so:graphics/png
 USES+=		jpeg
 USE_GL=		gl
 ALL_TARGET+=	ref_newgl

@@ -10,7 +10,7 @@ MASTER_SITES=	http://download.savannah.nongnu.org/releases/bino/ http://levsha.m
 MAINTAINER=	i@levsha.me
 COMMENT=	3D video player with multi-display support
 
-LICENSE=	GPLv3 # or any later version
+LICENSE=	GPLv3+
 
 USES=		desktop-file-utils gmake pkgconfig tar:xz
 USE_GL=		glew
@@ -21,9 +21,9 @@ USE_QT4=	moc_build opengl rcc_build
 # no port fow equalizer now, lirc detecting not working
 CONFIGURE_ARGS+=	--without-equalizer --without-liblircclient --docdir=${DOCSDIR}
 
-LIB_DEPENDS+=	libass.so:${PORTSDIR}/multimedia/libass \
-		libavformat.so:${PORTSDIR}/multimedia/ffmpeg \
-		libopenal.so:${PORTSDIR}/audio/openal-soft
+LIB_DEPENDS+=	libass.so:multimedia/libass \
+		libavformat.so:multimedia/ffmpeg \
+		libopenal.so:audio/openal-soft
 
 INFO=	bino
 

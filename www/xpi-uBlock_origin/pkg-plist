@@ -20,6 +20,7 @@
 %%XPI_XPIDIR%%/assets/ublock/privacy.txt
 %%XPI_XPIDIR%%/assets/ublock/redirect-resources.txt
 %%XPI_XPIDIR%%/assets/ublock/redirect.txt
+%%XPI_XPIDIR%%/assets/ublock/resources.txt
 %%XPI_XPIDIR%%/assets/ublock/unbreak.txt
 %%XPI_XPIDIR%%/background.html
 %%XPI_XPIDIR%%/bootstrap.js
@@ -46,6 +47,7 @@
 %%XPI_XPIDIR%%/epicker.html
 %%XPI_XPIDIR%%/frameModule.js
 %%XPI_XPIDIR%%/frameScript.js
+%%XPI_XPIDIR%%/frameScript0.js
 %%XPI_XPIDIR%%/icon.png
 %%XPI_XPIDIR%%/img/browsericons/icon16-off.svg
 %%XPI_XPIDIR%%/img/browsericons/icon16.svg
@@ -90,6 +92,8 @@
 %%XPI_XPIDIR%%/js/scriptlets/cosmetic-survey.js
 %%XPI_XPIDIR%%/js/scriptlets/dom-inspector.js
 %%XPI_XPIDIR%%/js/scriptlets/element-picker.js
+%%XPI_XPIDIR%%/js/scriptlets/load-large-media-all.js
+%%XPI_XPIDIR%%/js/scriptlets/load-large-media-interactive.js
 %%XPI_XPIDIR%%/js/scriptlets/subscriber.js
 %%XPI_XPIDIR%%/js/settings.js
 %%XPI_XPIDIR%%/js/start.js
@@ -105,7 +109,6 @@
 %%XPI_XPIDIR%%/js/vapi-background.js
 %%XPI_XPIDIR%%/js/vapi-client.js
 %%XPI_XPIDIR%%/js/vapi-common.js
-%%XPI_XPIDIR%%/js/vapi-popup.js
 %%XPI_XPIDIR%%/js/whitelist.js
 %%XPI_XPIDIR%%/lib/publicsuffixlist.js
 %%XPI_XPIDIR%%/lib/punycode.js
@@ -115,10 +118,12 @@
 %%XPI_XPIDIR%%/locale/bn/messages.properties
 %%XPI_XPIDIR%%/locale/ca/messages.properties
 %%XPI_XPIDIR%%/locale/cs/messages.properties
+%%XPI_XPIDIR%%/locale/cv/messages.properties
 %%XPI_XPIDIR%%/locale/da/messages.properties
 %%XPI_XPIDIR%%/locale/de/messages.properties
 %%XPI_XPIDIR%%/locale/el/messages.properties
 %%XPI_XPIDIR%%/locale/en/messages.properties
+%%XPI_XPIDIR%%/locale/eo/messages.properties
 %%XPI_XPIDIR%%/locale/es/messages.properties
 %%XPI_XPIDIR%%/locale/et/messages.properties
 %%XPI_XPIDIR%%/locale/eu/messages.properties

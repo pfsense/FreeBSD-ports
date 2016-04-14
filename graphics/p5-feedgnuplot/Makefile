@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	feedgnuplot
-PORTVERSION=	1.36
+PORTVERSION=	1.37
 CATEGORIES=	graphics perl5
 MASTER_SITES=	http://search.cpan.org/CPAN/authors/id/D/DK/DKOGAN/
 PKGNAMEPREFIX=	p5-
@@ -12,10 +12,10 @@ COMMENT=	General purpose pipe-oriented plotting tool
 LICENSE=	ART10 GPLv3
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-String-ShellQuote>=0.50:${PORTSDIR}/textproc/p5-String-ShellQuote \
-		p5-IPC-Run>=0:${PORTSDIR}/devel/p5-IPC-Run
+BUILD_DEPENDS=	p5-String-ShellQuote>=0.50:textproc/p5-String-ShellQuote \
+		p5-IPC-Run>=0:devel/p5-IPC-Run
 RUN_DEPENDS:=	${BUILD_DEPENDS} \
-		gnuplot:${PORTSDIR}/math/gnuplot
+		gnuplot:math/gnuplot
 
 USES=		perl5
 USE_PERL5=	configure

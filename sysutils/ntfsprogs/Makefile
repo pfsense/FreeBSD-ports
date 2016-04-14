@@ -9,7 +9,7 @@ MASTER_SITES=	SF/linux-ntfs/NTFS%20Tools%20and%20Library/${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utilities and library to manipulate NTFS partitions
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 DEPRECATED=	Superseded by sysutils/fusefs-ntfs
@@ -42,12 +42,6 @@ SUB_FILES=	pkg-message
 WANT_GNOME=	yes
 .endif
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "i386"
-CFLAGS:=	${CFLAGS:C/-O.?/-O0/g}
-.endif
-
 .if ${PORT_OPTIONS:MGNOMEVFS2}
 CONFIGURE_ARGS+=--enable-gnome-vfs
 USE_GNOME=	gnomevfs2
@@ -57,19 +51,25 @@ CONFIGURE_ARGS+=--disable-gnome-vfs
 PLIST_SUB+=	GNOMEVFS2="@comment "
 .endif
 
+.include <bsd.port.pre.mk>
+
+.if ${ARCH} == "i386"
+CFLAGS:=	${CFLAGS:C/-O.?/-O0/g}
+.endif
+
 .if ${PORT_OPTIONS:MLOCK}
 CFLAGS+=	-DUSE_LOCK
 .endif
 
 .if ${PORT_OPTIONS:MUUID}
-LIB_DEPENDS+=	libuuid.so:${PORTSDIR}/misc/e2fsprogs-libuuid
+LIB_DEPENDS+=	libuuid.so:misc/e2fsprogs-libuuid
 CONFIGURE_ARGS+=--enable-uuid
 .else
 CONFIGURE_ARGS+=--disable-uuid
 .endif
 
 .if ${PORT_OPTIONS:MUBLIO}
-LIB_DEPENDS+=	libublio.so:${PORTSDIR}/devel/libublio
+LIB_DEPENDS+=	libublio.so:devel/libublio
 CFLAGS+=	-DUSE_UBLIO
 .else
 pre-everything::

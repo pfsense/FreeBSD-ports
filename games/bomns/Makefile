@@ -9,10 +9,10 @@ CATEGORIES=	games
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Best old-school Deathmatch game ever (only for two players)
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2
+LIB_DEPENDS=	libfreetype.so:print/freetype2
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	keithfancher

@@ -2,16 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	flwm
-PORTVERSION=	1.14
-PORTREVISION=	2
+PORTVERSION=	1.16
 CATEGORIES=	x11-wm
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The Fast Light Window Manager
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 
-LIB_DEPENDS=	libfltk.so:${PORTSDIR}/x11-toolkits/fltk-devel
+LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk-devel
 
 USES=		autoreconf gmake
 GNU_CONFIGURE=	yes

@@ -1,17 +1,17 @@
 # $FreeBSD$
 
+PORTREVISION=	0
 PKGNAMESUFFIX=	-gtk
-PORTREVISION=	5
 
 MAINTAINER=	crees@FreeBSD.org
 COMMENT=	Fast and lightweight GTK+3 BitTorrent client
 
 LIB_DEPENDS=	${GEN_LIB_DEPENDS} \
-		libnotify.so:${PORTSDIR}/devel/libnotify \
-		libdbus-glib-1.so:${PORTSDIR}/devel/dbus-glib
+		libnotify.so:devel/libnotify \
+		libdbus-glib-1.so:devel/dbus-glib
 
 RUN_DEPENDS=	${GEN_RUN_DEPENDS} \
-		xdg-open:${PORTSDIR}/devel/xdg-utils
+		xdg-open:devel/xdg-utils
 
 DESCR=		${.CURDIR}/pkg-descr
 MASTERDIR=	${.CURDIR}/../transmission-cli

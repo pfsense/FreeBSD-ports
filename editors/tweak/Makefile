@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tweak
-PORTVERSION=	3.01
+PORTVERSION=	3.02
 CATEGORIES=	editors
 MASTER_SITES=	http://www.chiark.greenend.org.uk/~sgtatham/${PORTNAME}/
 
@@ -12,7 +12,7 @@ COMMENT=	Efficient hex editor
 PLIST_FILES=	bin/tweak \
 		man/man1/tweak.1.gz
 
-USES=		uidfix
+USES=		ncurses uidfix
 MAKEFILE=	${FILESDIR}/Makefile.in
 MAKE_ENV+=	BINDIR="${LOCALBASE}/bin" MANDIR="${PREFIX}/man/man"
 

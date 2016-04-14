@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	mcmc-jags
-PORTVERSION=	3.4.0
-PORTREVISION=	4
+PORTVERSION=	4.0.0
 CATEGORIES=	math
 MASTER_SITES=	SF/mcmc-jags/JAGS/${S}.x/Source/:1 \
 		SF/mcmc-jags/Examples/${S}.x/:2 \
 		SF/mcmc-jags/Manuals/2.x/:3 \
 		SF/mcmc-jags/Manuals/${S}.x/:4
 DISTFILES=	JAGS-${PORTVERSION}${EXTRACT_SUFX}:1
+DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	${DISTFILES:M*[12]:C|:.*||}
 
 MAINTAINER=	bf@FreeBSD.org
@@ -18,14 +18,12 @@ COMMENT=	Just Another Gibbs Sampler
 LICENSE=	GPLv2
 
 GNU_CONFIGURE=	yes
-USES=		bison fortran gmake libtool
+USES=		bison compiler:features fortran gmake libtool localbase
+USE_GCC=	yes
 USE_LDCONFIG=	yes
 
-DIST_SUBDIR=	${PORTNAME}
 WRKSRC=		${WRKDIR}/JAGS-${PORTVERSION}
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 PLIST_SUB=	MODULEVERSION=${S}
 S=		${PORTVERSION:C|\..*||}
 
@@ -50,14 +48,14 @@ WITH_BLAS?=	reference
 .endif
 
 .if ${WITH_BLAS} == "atlas"
-LIB_DEPENDS+=	libatlas.so:${PORTSDIR}/math/atlas
+LIB_DEPENDS+=	libatlas.so:math/atlas
 CONFIGURE_ARGS=	--with-lapack="-lalapack -lptcblas" --with-blas="-lptf77blas"
 .elif ${WITH_BLAS} == "reference"
-LIB_DEPENDS+=	libblas.so:${PORTSDIR}/math/blas
-LIB_DEPENDS+=	liblapack.so:${PORTSDIR}/math/lapack
+LIB_DEPENDS+=	libblas.so:math/blas
+LIB_DEPENDS+=	liblapack.so:math/lapack
 CONFIGURE_ARGS=	--with-lapack="-llapack" --with-blas="-lblas"
 .else
-IGNORE=		: invalid value for WITH_BLAS: ${WITH_BLAS}
+IGNORE=		invalid value for WITH_BLAS: ${WITH_BLAS}
 .endif
 
 post-patch:
@@ -86,7 +84,7 @@ post-install:
 .endif
 
 .if defined(MAINTAINER_MODE)
-BUILD_DEPENDS+=	${LOCALBASE}/lib/R/library/coda/R/coda.rdb:${PORTSDIR}/math/R-cran-coda
+BUILD_DEPENDS+=	${LOCALBASE}/lib/R/library/coda/R/coda.rdb:math/R-cran-coda
 
 check test: install
 .for i in 1 2

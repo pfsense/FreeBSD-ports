@@ -12,21 +12,16 @@ MASTER_SITES=	http://kbrandt.sdf-eu.org/FreeBSD/distfiles/ \
 MAINTAINER=	kbrandt@sdf-eu.org
 COMMENT=	Tetris like game with multiplayer support
 
-LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		gmake tar:bzip2
+USES=		autoreconf gmake localbase tar:bzip2
 USE_SDL=	sdl
 USE_XORG=	x11 xau xdmcp
-USE_AUTOTOOLS=	autoconf autoheader
 GNU_CONFIGURE=	yes
-
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 
 PLIST_FILES=	bin/${PORTNAME} \
 		share/games/${PORTNAME}.res \
 		share/pixmaps/${PORTNAME}.xpm
-PLIST_DIRSTRY=	share/games
 
 DESKTOP_ENTRIES=	"Quadra" "${COMMENT}" \
 			"${PREFIX}/share/pixmaps/${PORTNAME}.xpm" \

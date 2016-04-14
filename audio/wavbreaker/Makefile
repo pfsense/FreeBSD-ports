@@ -10,12 +10,12 @@ MASTER_SITES=	SF
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Tool to split and merge wav files
 
-LICENSE=	GPLv2 # or any later version
+LICENSE=	GPLv2+
 
 OPTIONS_DEFINE=	PULSEAUDIO NLS
 OPTIONS_SUB=	yes
 
-PULSEAUDIO_LIB_DEPENDS=	libpulse.so:${PORTSDIR}/audio/pulseaudio
+PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 PULSEAUDIO_CONFIGURE_ENABLE=pulse
 NLS_USES=		gettext
 NLS_CONFIGURE_ENABLE=	nls

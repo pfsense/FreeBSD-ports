@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	hunspell
-PORTVERSION=	20131206
+PORTVERSION=	20151222
 CATEGORIES=	german textproc
 MASTER_SITES=	http://www.j3e.de/ispell/igerman98/dict/ \
 		LOCAL/sunpoet/${PORTNAME}
@@ -14,11 +14,12 @@ COMMENT=	German hunspell dictionaries
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	aspell:${PORTSDIR}/textproc/aspell \
-		hunspell:${PORTSDIR}/textproc/hunspell
+BUILD_DEPENDS=	aspell:textproc/aspell \
+		hunspell:textproc/hunspell
 
 USES=		gmake perl5 shebangfix tar:bzip2
 ALL_TARGET=	hunspell-all
+MAKE_ENV=	LANG=C LC_ALL=C
 NO_ARCH=	yes
 USE_PERL5=	build
 SHEBANG_FILES=	bin/*.pl

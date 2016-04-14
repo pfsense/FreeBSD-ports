@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	gb
-PORTVERSION=	0.3.1
+PORTVERSION=	0.4.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -10,7 +10,7 @@ COMMENT=	Project based build tool for Go
 
 LICENSE=	MIT
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/go:${PORTSDIR}/lang/go
+BUILD_DEPENDS=	${LOCALBASE}/bin/go:lang/go
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	constabulary

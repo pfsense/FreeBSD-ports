@@ -3,7 +3,7 @@
 
 PORTNAME=	octave-forge-gsl
 PORTVERSION=	1.0.8
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -12,7 +12,7 @@ COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libgsl.so:${PORTSDIR}/math/gsl
+LIB_DEPENDS=	libgsl.so:math/gsl
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV+=	HOME=${WRKSRC}

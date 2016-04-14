@@ -11,13 +11,12 @@ COMMENT=	Micro-benchmarking NoSQL storage
 
 LICENSE=	BSD2CLAUSE
 
-LIB_DEPENDS=	libleveldb.so:${PORTSDIR}/databases/leveldb
+LIB_DEPENDS=	libleveldb.so:databases/leveldb
 
-DATE=		20150822
+DATE=		20151214
 USES=		cmake tar:bzip2
 
-PLIST_FILES=	bin/nb \
-		etc/nosqlbench.conf.sample
+CONFLICTS=	tarantool-c
 
 BROKEN_powerpc64=	Does not build on powerpc64
 

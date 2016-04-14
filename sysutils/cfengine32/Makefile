@@ -17,11 +17,11 @@ CPE_VENDOR=	gnu
 
 FETCH_BEFORE_ARGS=	-o ${DISTDIR}/${DISTFILES}
 
-CONFLICTS=	cfengine-[2]* cfengine-3.[345]* cfengine-devel-*
+CONFLICTS=	cfengine-[2]* cfengine-3.[3-9]* cfengine-devel-*
 
 USE_RC_SUBR=	cf-execd cf-serverd
 
-LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
+LIB_DEPENDS=	libpcre.so:devel/pcre
 
 USES=		cpe libtool
 USE_BDB=	48+

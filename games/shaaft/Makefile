@@ -11,11 +11,13 @@ DISTNAME=	Shaaft-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OpenGL 3D falling block game similar to Blockout
 
-LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS=	libpng.so:graphics/png
 
 CONFLICTS=	criticalmass-*
 
-USES=	tar:bzip2
+BROKEN_sparc64=	does not compile
+
+USES=		tar:bzip2
 USE_SDL=	mixer image sdl
 USE_GL=		yes
 USE_GCC=	any
@@ -29,15 +31,8 @@ DATADIR=	${PREFIX}/share/Shaaft
 
 PLIST_FILES=	bin/Packer bin/shaaft %%DATADIR%%/resource.dat \
 		man/man6/shaaft.6.gz
-PLIST_DIRS=	%%DATADIR%%
 
 DESKTOP_ENTRIES="Shaaft" "" "" "${PORTNAME}" "" ""
-
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "sparc64"
-BROKEN=		Does not compile on sparc64
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|sdl-config|${SDL_CONFIG:T}|g ; \
@@ -49,4 +44,4 @@ post-patch:
 		's|SDL/SDL|SDL|g'
 	@${REINPLACE_CMD} -e 's|== 3|>= 3|' ${WRKSRC}/utils/hashMap.hpp
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

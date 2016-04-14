@@ -2,11 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	redis
-DISTVERSION=	3.0.5
-PORTREVISION=	2
+DISTVERSION=	3.2.0-rc3
 CATEGORIES=	databases
-MASTER_SITES=	http://download.redis.io/releases/
+MASTER_SITES=	https://github.com/antirez/redis/archive/
 PKGNAMESUFFIX=	-devel
+DISTNAME=	${DISTVERSION}
+DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	osa@FreeBSD.org
 COMMENT=	Persistent key-value database with built-in net interface
@@ -24,12 +25,14 @@ LUAJIT_DESC=	Use lang/luajit instead of builtin lua
 TESTS_DESC=	Install lang/tcl for redis unit tests
 TRIB_DESC=	Install redis-trib.rb (lang/ruby req.)
 
+WRKSRC=	${WRKDIR}/${PORTNAME}-${DISTVERSION}
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MTRIB}
 CATEGORIES+=	ruby
 USE_RUBY=	yes
-RUN_DEPENDS=	rubygem-redis>=2.2:${PORTSDIR}/databases/rubygem-redis
+RUN_DEPENDS=	rubygem-redis>=2.2:databases/rubygem-redis
 .endif
 
 .if ${PORT_OPTIONS:MLUA}
@@ -38,7 +41,7 @@ EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-src-Makefile.lua
 .endif
 
 .if ${PORT_OPTIONS:MLUAJIT}
-LIB_DEPENDS+=	libluajit-5.1.so:${PORTSDIR}/lang/luajit
+LIB_DEPENDS+=	libluajit-5.1.so:lang/luajit
 EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-src-Makefile.luajit
 .endif
 
@@ -59,7 +62,7 @@ CONFLICTS?=	redis-3.*
 USES+=		gmake
 MAKE_ENV=	"V=yo"
 USE_RC_SUBR=	redis sentinel
-BIN_FILES=	redis-benchmark redis-check-aof redis-check-dump \
+BIN_FILES=	redis-benchmark redis-check-aof redis-check-rdb \
 		redis-cli redis-sentinel redis-server
 
 PKGMESSAGE=	${WRKDIR}/pkg-message

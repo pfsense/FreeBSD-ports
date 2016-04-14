@@ -10,9 +10,9 @@ MASTER_SITES=	http://fph.altervista.org/prog/files/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ncurses Tetris clone which is harder than every other Tetris
 
-LICENSE=	GPLv3 # (or later)
+LICENSE=	GPLv3+
 
-LIB_DEPENDS=	libboost_program_options.so:${PORTSDIR}/devel/boost-libs
+LIB_DEPENDS=	libboost_program_options.so:devel/boost-libs
 
 USES=		gmake ncurses tar:tgz
 

@@ -18,7 +18,9 @@ COMMENT=	SSL and crypto library
 .error You have `USE_OPENSSL' variable defined either in environment or in make(1) arguments. Please undefine and try again.
 .endif
 
-CONFLICTS?=	libressl-*
+CONFLICTS?=	libressl-[0-9]* \
+		libressl-devel-[0-9]* \
+		openssl-devel-[0-9]*
 LICENSE=	OpenSSL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
@@ -52,7 +54,7 @@ EXPCIPHERS_DESC?=	Include experimental ciphers
 EC_DESC?=	Optimize NIST elliptic curves
 MAN3_DESC?=	Install API manpages (section 3)
 
-GMP_LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp
+GMP_LIB_DEPENDS=	libgmp.so:math/gmp
 
 MAKE_JOBS_UNSAFE=	yes
 NOPRECIOUSMAKEVARS=	Too many _MLINKS for fetch

@@ -12,13 +12,13 @@ DISTNAME=	squirrelmail-imap_proxy-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Caching IMAP proxy server
 
-LICENSE=	GPLv2 # (or later)
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 OPTIONS_DEFINE=	DOVECOT DOCS
 DOVECOT_DESC=	Use with dovecot2
 
-USES=		autoreconf tar:bzip2 pathfix
+USES=		autoreconf tar:bzip2 ncurses pathfix
 USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-openssl=${OPENSSLBASE}
@@ -34,7 +34,7 @@ SBIN=		in.imapproxyd pimpstat
 
 .if ${PORT_OPTIONS:MDOVECOT}
 SUB_LIST+=	DOVECOT="dovecot"
-RUN_DEPENDS+=	dovecot:${PORTSDIR}/mail/dovecot2
+RUN_DEPENDS+=	dovecot:mail/dovecot2
 .else
 SUB_LIST+=	DOVECOT=""
 .endif

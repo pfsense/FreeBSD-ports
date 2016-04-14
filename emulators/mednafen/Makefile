@@ -5,19 +5,17 @@ PORTVERSION=	0.9.33.2
 PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	emulators games
-MASTER_SITES=	SF/${PORTNAME}/Mednafen/${PORTVERSION}
+MASTER_SITES=	http://mednafen.fobby.net/releases/files/
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Portable multi-system emulator
 
-BROKEN=		unfetchable
-
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libcdio.so:${PORTSDIR}/sysutils/libcdio \
-		libsndfile.so:${PORTSDIR}/audio/libsndfile \
-		libvorbis.so:${PORTSDIR}/audio/libvorbis
+LIB_DEPENDS=	libcdio.so:sysutils/libcdio \
+		libsndfile.so:audio/libsndfile \
+		libvorbis.so:audio/libvorbis
 
 GNU_CONFIGURE=	yes
 USE_SDL=	sdl net
@@ -57,7 +55,7 @@ OPTIONS_SUB=	yes
 NLS_USES=	gettext
 NLS_CONFIGURE_ENABLE=nls
 
-JACK_LIB_DEPENDS=libjack.so:${PORTSDIR}/audio/jack
+JACK_LIB_DEPENDS=libjack.so:audio/jack
 JACK_CONFIGURE_ENABLE=jack
 
 GB_CONFIGURE_ENABLE=gb

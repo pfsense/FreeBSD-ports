@@ -3,6 +3,7 @@
 
 PORTNAME=	mpfr
 PORTVERSION=	3.1.3
+PORTREVISION=	1
 CATEGORIES=	math devel
 MASTER_SITES=	http://www.mpfr.org/mpfr-current/
 DIST_SUBDIR=	${DISTNAME}
@@ -15,14 +16,14 @@ COMMENT=	Library for multiple-precision floating-point computations
 
 LICENSE=	LGPL3
 
-#PATCH_DEPENDS=	gpatch:${PORTSDIR}/devel/patch
-LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp
+#PATCH_DEPENDS=	gpatch:devel/patch
+LIB_DEPENDS=	libgmp.so:math/gmp
 
 #PATCHLEVEL=	10
 #PATCHFILES!=	/usr/bin/jot -s " " -w patch%02d ${PATCHLEVEL} 1 ${PATCHLEVEL}
 #PATCH=		${LOCALBASE}/bin/gpatch
 
-USES=		libtool:keepla tar:xz
+USES=		libtool tar:xz
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-gmp=${LOCALBASE}
 

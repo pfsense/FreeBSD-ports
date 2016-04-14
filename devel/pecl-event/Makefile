@@ -13,7 +13,7 @@ COMMENT=	Provides interface to libevent library
 
 LICENSE=	PHP301
 
-LIB_DEPENDS=	libevent.so:${PORTSDIR}/devel/libevent2
+LIB_DEPENDS=	libevent.so:devel/libevent2
 
 USES=		tar:tgz
 USE_OPENSSL=	yes
@@ -22,6 +22,6 @@ USE_PHP=	sockets
 USE_PHP_BUILD=	yes
 USE_PHPEXT=	yes
 PHP_MODNAME=	event
-IGNORE_WITH_PHP=52 53
+IGNORE_WITH_PHP=	70
 
 .include <bsd.port.mk>

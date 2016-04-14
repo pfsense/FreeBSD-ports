@@ -11,9 +11,9 @@ COMMENT=	Apply rejected patches and perform word-wise diffs
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash
+BUILD_DEPENDS=	bash:shells/bash
 
-USES=		gmake compiler:nestedfct
+USES=		compiler:nestedfct gmake ncurses
 
 MAKE_ARGS+=	CFLAGS="${CFLAGS} -I. -Wall -Wstrict-prototypes -Wextra -Wno-unused-parameter"
 

@@ -31,7 +31,7 @@ _INCLUDE_USES_PGSQL_MK=	yes
 #	to add dependencies; use WANT_PGSQL as explained above
 #
 
-VALID_PGSQL_VER=	9.0 9.1 9.2 9.3 9.4
+VALID_PGSQL_VER=	9.0 9.1 9.2 9.3 9.4 9.5
 
 # Override non-default LIBVERS like this:
 #PGSQL99_LIBVER=6
@@ -85,7 +85,7 @@ _WANT_PGSQL_VER?=	${pgsql_ARGS}
 .  endif
 
 # Try to match default version, otherwise just take the first version
-# that matches
+# that matches. Prefer the installed version if it matches
 .  if !empty(_WANT_PGSQL_VER)
 .    for version in ${_WANT_PGSQL_VER}
 .      if ${PGSQL_DEFAULT} == ${version}
@@ -93,6 +93,13 @@ PGSQL_VER=	${version}
 .      endif
 PGSQL_VER?=	${version}
 .    endfor
+.    if defined(_PGSQL_VER)
+.      for v in ${_PGSQL_VER}
+.        if ${_WANT_PGSQL_VER:M$v} == ${_PGSQL_VER}
+PGSQL_VER=	${_PGSQL_VER}
+.        endif
+.      endfor
+.    endif
 .    if defined(_PGSQL_VER) && ${_PGSQL_VER} != ${PGSQL_VER}
 IGNORE?=	cannot install: the port wants postgresql-client version ${_WANT_PGSQL_VER} and you have version ${_PGSQL_VER} installed
 .    endif
@@ -122,12 +129,12 @@ IGNORE?=		cannot install: does not work with postgresql${PGSQL_VER_NODOT}-client
 .    endif # IGNORE_WITH_PGSQL
 
 .if !defined(WANT_PGSQL) || ${WANT_PGSQL} == lib
-LIB_DEPENDS+=	libpq.so.${PGSQL${PGSQL_VER_NODOT}_LIBVER}:${PORTSDIR}/databases/postgresql${PGSQL_VER_NODOT}-client
+LIB_DEPENDS+=	libpq.so.${PGSQL${PGSQL_VER_NODOT}_LIBVER}:databases/postgresql${PGSQL_VER_NODOT}-client
 .endif
 
 _USE_PGSQL_DEP=		client contrib docs pgtcl pltcl plperl server
 _USE_PGSQL_DEP_client=	psql
-_USE_PGSQL_DEP_contrib=	pgbench
+_USE_PGSQL_DEP_contrib=	vacuumlo
 _USE_PGSQL_DEP_docs=	postgresql${PGSQL_VER_NODOT}-docs>0
 _USE_PGSQL_DEP_pgtcl=	${LOCALBASE}/lib/pgtcl/pkgIndex.tcl
 _USE_PGSQL_DEP_plperl=	postgresql${PGSQL_VER_NODOT}-plperl>0
@@ -136,10 +143,10 @@ _USE_PGSQL_DEP_server=	postgres
 .    if defined(WANT_PGSQL)
 .      for depend in ${_USE_PGSQL_DEP}
 .        if ${WANT_PGSQL:M${depend}}
-BUILD_DEPENDS+=	${_USE_PGSQL_DEP_${depend}}:${PORTSDIR}/databases/postgresql${PGSQL_VER_NODOT}-${depend}
-RUN_DEPENDS+=	${_USE_PGSQL_DEP_${depend}}:${PORTSDIR}/databases/postgresql${PGSQL_VER_NODOT}-${depend}
+BUILD_DEPENDS+=	${_USE_PGSQL_DEP_${depend}}:databases/postgresql${PGSQL_VER_NODOT}-${depend}
+RUN_DEPENDS+=	${_USE_PGSQL_DEP_${depend}}:databases/postgresql${PGSQL_VER_NODOT}-${depend}
 .        elif ${WANT_PGSQL:M${depend}\:*}
-BUILD_DEPENDS+=	${NONEXISTENT}:${PORTSDIR}/databases/postgresql${PGSQL_VER_NODOT}-${depend}:${WANT_PGSQL:M${depend}\:*:C,^[^:]*\:,,}
+BUILD_DEPENDS+=	${NONEXISTENT}:databases/postgresql${PGSQL_VER_NODOT}-${depend}:${WANT_PGSQL:M${depend}\:*:C,^[^:]*\:,,}
 .        endif
 .      endfor
 .    endif

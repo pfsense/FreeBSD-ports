@@ -14,7 +14,9 @@ LLVM_PORTDIR=	${.CURDIR}/../llvm${LLVM_SUFFIX}
 
 USES=		cmake:outsource compiler:c++11-lib ninja
 
-BUILD_DEPENDS=	llvm-config${LLVM_SUFFIX}:${PORTSDIR}/devel/llvm${LLVM_SUFFIX}
+BROKEN=	relies on incompatible stdarg.h from clang
+
+BUILD_DEPENDS=	llvm-config${LLVM_SUFFIX}:devel/llvm${LLVM_SUFFIX}
 
 CMAKE_INSTALL_PREFIX=	${LLVM_PREFIX}/
 CMAKE_ARGS=	-DLLVM_CONFIG_PATH=${LOCALBASE}/bin/llvm-config${LLVM_SUFFIX}

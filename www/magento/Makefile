@@ -18,7 +18,7 @@ WRKSRC=		${WRKDIR}/magento
 OPTIONS_DEFINE=	OAUTH SESSIONS REDIS EXAMPLES
 OAUTH_DESC=	Depend on pecl-oauth for REST API
 SESSIONS_DESC=	Mark Cm/RedisSession module active
-REDIS_DESC=	Depend on php5-redis for faster redis backend
+REDIS_DESC=	Depend on php56-redis for faster redis backend
 #SNAPPY_DESC=	Use google snappy for Redis Cache compression
 
 NO_BUILD=	yes
@@ -26,14 +26,14 @@ MAGENTODIR?=	www/magento
 
 .include <bsd.port.options.mk>
 .if !empty(${PORT_OPTIONS:MOAUTH})
-RUN_DEPENDS+=	pecl-oauth>=1.2.3:${PORTSDIR}/net/pecl-oauth
+RUN_DEPENDS+=	pecl-oauth>=1.2.3:net/pecl-oauth
 .endif
 .if !empty(${PORT_OPTIONS:MREDIS})
-RUN_DEPENDS+=	php5-redis>=2.2.0:${PORTSDIR}/databases/php5-redis
+RUN_DEPENDS+=	php56-redis>=2.2.0:databases/php56-redis
 .endif
 # First need to submit the port
 #.if ${PORT_OPTIONS:MSNAPPY}
-#RUN_DEPENDS+=	php5-snappy>=0.0.2:${PORTSDIR}/archivers/php5-snappy
+#RUN_DEPENDS+=	php5-snappy>=0.0.2:archivers/php5-snappy
 #.endif
 
 .include <bsd.port.pre.mk>
@@ -45,17 +45,6 @@ PLIST_SUB+=	${SUB_LIST}
 
 post-patch:
 	@${RM} -f ${WRKSRC}/cron.sh ${WRKSRC}/.htaccess
-
-.ifdef MAINTAINER_MODE
-genplist: extract patch
-	@${FIND} -s ${WRKSRC} -type f | ${SED} \
-		-e 's,${WRKSRC},%%MAGENTODIR%%,' > ${PORTSDIR}/www/magento/pkg-plist.new
-	@${FIND} -s -d ${WRKSRC} -type d | ${SED} \
-		-e 's,${WRKSRC}/media,@dirrmtry %%MAGENTODIR%%/media,' \
-		-e 's,${WRKSRC}/var,@dirrmtry %%MAGENTODIR%%/var,' \
-		-e 's,${WRKSRC},@dirrm %%MAGENTODIR%%,' >> ${PORTSDIR}/www/magento/pkg-plist.new
-
-.endif
 
 do-install:
 	@cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/${MAGENTODIR}

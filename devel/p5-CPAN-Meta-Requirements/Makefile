@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	CPAN-Meta-Requirements
-PORTVERSION=	2.133
+PORTVERSION=	2.140
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -12,6 +12,7 @@ COMMENT=	Set of version requirements for a CPAN distribution
 
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 NO_ARCH=	yes
 USE_PERL5=	configure
@@ -20,7 +21,7 @@ USES=		perl5
 .include <bsd.port.pre.mk>
 
 .if ${PERL_LEVEL} < 501800
-TEST_DEPENDS+=	p5-CPAN-Meta>=2.120900:${PORTSDIR}/devel/p5-CPAN-Meta
+TEST_DEPENDS+=	p5-CPAN-Meta>=2.120900:devel/p5-CPAN-Meta
 .endif
 
 .include <bsd.port.post.mk>

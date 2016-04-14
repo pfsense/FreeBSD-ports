@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	squirrelmail-translations
-PORTVERSION=	20151031
+PORTVERSION=	20160216
 CATEGORIES=	mail www
 MASTER_SITES=	LOCAL/adamw/squirrelmail
 DISTNAME=	squirrelmail-${PORTVERSION}_0200-SVN.locales
@@ -13,10 +13,11 @@ COMMENT=	NLS translations for Squirrelmail (mail/squirrelmail)
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	squirrelmail>=${PORTVERSION}:${PORTSDIR}/mail/squirrelmail
+RUN_DEPENDS=	squirrelmail>=${PORTVERSION}:mail/squirrelmail
 
 USES=		tar:bzip2 gettext
 WRKSRC=		${WRKDIR}/squirrelmail.locales
+NO_ARCH=	yes
 
 # if you were using WITHOUT_WWWDIR, use SQUIRRELDIR=${PREFIX}/squirrelmail
 SQUIRRELDIR?=	${PREFIX}/www/squirrelmail

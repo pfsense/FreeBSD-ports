@@ -2,13 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	elixir
-PORTVERSION=	1.2.0
-PORTREVISION=	1
+PORTVERSION=	1.2.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	lang
 MASTER_SITES+=	http://github.com/elixir-lang/elixir/releases/download/${DISTVERSIONPREFIX}${PORTVERSION}/:doc
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
-		Docs.zip:doc
+DISTFILES=	Docs.zip:doc
 DIST_SUBDIR=	elixir/${PORTVERSION}
 
 MAINTAINER=	olgeni@FreeBSD.org
@@ -16,8 +14,8 @@ COMMENT=	Functional, meta-programming aware language built on top of Erlang VM
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	erlang>=17:${PORTSDIR}/lang/erlang
-RUN_DEPENDS=	erlang>=17:${PORTSDIR}/lang/erlang
+BUILD_DEPENDS=	erlang>=18:lang/erlang
+RUN_DEPENDS=	erlang>=18:lang/erlang
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	elixir-lang

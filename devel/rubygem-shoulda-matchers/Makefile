@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	shoulda-matchers
-PORTVERSION=	3.0.1
+PORTVERSION=	3.1.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -12,7 +12,7 @@ COMMENT=	Making tests easy on the fingers and eyes
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
 
-RUN_DEPENDS=	rubygem-activesupport4>=4.0.0:${PORTSDIR}/devel/rubygem-activesupport4
+RUN_DEPENDS=	rubygem-activesupport4>=4.0.0:devel/rubygem-activesupport4
 
 NO_ARCH=	yes
 USE_RUBY=	yes

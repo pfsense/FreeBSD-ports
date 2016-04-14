@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Parse-ErrorString-Perl
-PORTVERSION=	0.21
+PORTVERSION=	0.22
 CATEGORIES=	devel perl5
 PKGNAMEPREFIX=	p5-
 
@@ -12,11 +12,11 @@ COMMENT=	Parse error messages from the Perl interpreter
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-Class-XSAccessor>=0:${PORTSDIR}/devel/p5-Class-XSAccessor \
-		p5-Module-Install>0:${PORTSDIR}/devel/p5-Module-Install \
-		p5-Pod-POM>=0.27:${PORTSDIR}/textproc/p5-Pod-POM
+BUILD_DEPENDS=	p5-Class-XSAccessor>=0:devel/p5-Class-XSAccessor \
+		p5-Module-Install>0:devel/p5-Module-Install \
+		p5-Pod-POM>=0.27:textproc/p5-Pod-POM
 RUN_DEPENDS:=	${BUILD_DEPENDS}
-TEST_DEPENDS=	p5-Test-Differences>=0:${PORTSDIR}/devel/p5-Test-Differences
+TEST_DEPENDS=	p5-Test-Differences>=0:devel/p5-Test-Differences
 
 USES=		perl5
 USE_PERL5=	configure

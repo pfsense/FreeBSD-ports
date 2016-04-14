@@ -2,32 +2,31 @@
 
 PORTNAME=	gui
 DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	3
 CATEGORIES=	x11-toolkits graphics
 PKGNAMEPREFIX=	qt5-
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt graphical user interface module
 
-LIB_DEPENDS=	libdbus-1.so:${PORTSDIR}/devel/dbus \
-		libfontconfig.so:${PORTSDIR}/x11-fonts/fontconfig \
-		libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libharfbuzz.so:${PORTSDIR}/print/harfbuzz \
-		libpng.so:${PORTSDIR}/graphics/png \
-		libxcb.so:${PORTSDIR}/x11/libxcb \
-		libxcb-image.so:${PORTSDIR}/x11/xcb-util-image \
-		libxcb-keysyms.so:${PORTSDIR}/x11/xcb-util-keysyms \
-		libxcb-render-util.so:${PORTSDIR}/x11/xcb-util-renderutil \
-		libxcb-icccm.so:${PORTSDIR}/x11/xcb-util-wm \
-		libxkbcommon.so:${PORTSDIR}/x11/libxkbcommon
-RUN_DEPENDS=	xdg-open:${PORTSDIR}/devel/xdg-utils
+LIB_DEPENDS=	libdbus-1.so:devel/dbus \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
+		libharfbuzz.so:print/harfbuzz \
+		libpng.so:graphics/png \
+		libxcb.so:x11/libxcb \
+		libxcb-image.so:x11/xcb-util-image \
+		libxcb-keysyms.so:x11/xcb-util-keysyms \
+		libxcb-render-util.so:x11/xcb-util-renderutil \
+		libxcb-icccm.so:x11/xcb-util-wm \
+		libxkbcommon.so:x11/libxkbcommon
+RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
 USES=		jpeg
-USE_GL=		gl
+USE_GL=		gl egl
 USE_GNOME=	glib20
 USE_QT5=	core dbus qmake_build buildtools_build
 QT_DIST=	base
-USE_XORG=	x11 xi xrender
+USE_XORG=	ice sm x11 xi xrender
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	-no-eglfs \
 		-no-evdev \
@@ -50,6 +49,9 @@ MORE_WRKSRCS=	src/platformsupport \
 MORE_WRKSRCS+=	src/plugins/imageformats \
 		src/plugins/platforminputcontexts
 
+# openglextensions is the static library to use for further things like qtcanvas3d
+MORE_WRKSRCS+=	src/openglextensions
+
 QT_DEFINES=	ACCESSIBILITY DBUS FONTCONFIG FREETYPE GLIB \
 		IMAGEFORMAT_PNG OPENGL SHAPE XCB XKB XKBCOMMON XRENDER
 QT_CONFIG=	accessibility accessibility-atspi-bridge dbus \
@@ -59,8 +61,8 @@ QT_CONFIG=	accessibility accessibility-atspi-bridge dbus \
 
 # Inherited from Qt 4.
 .if defined(PACKAGE_BUILDING)
-RUN_DEPENDS+=	${LOCALBASE}/share/fonts/encodings/encodings.dir:${PORTSDIR}/x11-fonts/encodings \
-		xorg-fonts-truetype>0:${PORTSDIR}/x11-fonts/xorg-fonts-truetype
+RUN_DEPENDS+=	${LOCALBASE}/share/fonts/encodings/encodings.dir:x11-fonts/encodings \
+		xorg-fonts-truetype>0:x11-fonts/xorg-fonts-truetype
 .endif
 
 CFLAGS_powerpc64=	-mminimal-toc

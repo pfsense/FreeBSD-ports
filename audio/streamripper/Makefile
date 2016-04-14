@@ -15,13 +15,13 @@ COMMENT=	Splits SHOUTcast stream into tracks
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libmad.so:${PORTSDIR}/audio/libmad \
-		libtre.so:${PORTSDIR}/textproc/libtre
+LIB_DEPENDS=	libmad.so:audio/libmad \
+		libtre.so:textproc/libtre
 
 OPTIONS_DEFINE=	FAAD VORBIS
 OPTIONS_DEFAULT=FAAD VORBIS
 
-USES=		iconv pkgconfig
+USES=		iconv ncurses pkgconfig
 USE_GNOME=	glib20
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--without-included-libmad \
@@ -39,20 +39,25 @@ LDFLAGS+=	-Lcdk-${CDK_VERSION} -L${LOCALBASE}/lib
 CDK_VERSION=	5.0-20060507
 
 FAAD_CONFIGURE_OFF=	ac_cv_lib_faad_NeAACDecDecode2=no
-FAAD_LIB_DEPENDS=	libfaad.so:${PORTSDIR}/audio/faad
+FAAD_LIB_DEPENDS=	libfaad.so:audio/faad
 
 VORBIS_CONFIGURE_WITH=	ogg
-VORBIS_LIB_DEPENDS=	libvorbis.so:${PORTSDIR}/audio/libvorbis
+VORBIS_LIB_DEPENDS=	libvorbis.so:audio/libvorbis
 
 post-extract:
 	${MV} ${WRKDIR}/cdk-${CDK_VERSION} ${WRKSRC}
 
 post-patch:
 	@${REINPLACE_CMD} -e '/if test/s|==|=|g' ${WRKSRC}/configure
+#	avoid potential name conflict with ncurses
+	@${LN} -sv ${WRKSRC}/cdk-5.0-20060507/include/menu.h \
+		${WRKSRC}/cdk-5.0-20060507/include/cdkmenu.h
+	@${REINPLACE_CMD} -e "s|<menu.h>|<cdkmenu.h>|g" \
+		${WRKSRC}/cdk-5.0-20060507/include/cdk.h
 
 pre-configure:
 	(cd ${WRKSRC}/cdk-${CDK_VERSION} && ${SETENV} CC="${CC}" \
-		CFLAGS="${CFLAGS}" ${SH} ./configure)
+		CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}" ${SH} ./configure)
 
 pre-build:
 	(cd ${WRKSRC}/cdk-${CDK_VERSION} && ${SETENV} ${MAKE_ENV} \

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sylpheed
-PORTVERSION=	3.4.3
+PORTVERSION=	3.5.0
 PORTREVISION=	1
 CATEGORIES=	mail ipv6
 MASTER_SITES=	http://sylpheed.sraoss.jp/sylpheed/v${PORTVERSION:C/\.[^\.]*$//}/  \
@@ -14,7 +14,7 @@ COMMENT=	Lightweight, featureful, and fast GTK+ based e-mail client
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	dual
 
-RUN_DEPENDS=	${LOCALBASE}/etc/mime.types:${PORTSDIR}/misc/mime-support
+RUN_DEPENDS=	${LOCALBASE}/etc/mime.types:misc/mime-support
 
 USES=		gettext iconv gmake pkgconfig tar:bzip2 desktop-file-utils \
 		libtool
@@ -33,41 +33,44 @@ CONFIGURE_ARGS=	--enable-ipv6 \
 CONFLICTS=	sylpheed-1.[0-8]* sylpheed-2.[0-9]* sylpheed-gtk2-[0-9]*
 
 OPTIONS_DEFINE=	CA_BUNDLE COMPFACE CURL DOCS GPGME GTKSPELL JPILOT LDAP \
-		ONIGURUMA SSL
+		ONIGURUMA SSL HIDE_OSSIG
 
 CA_BUNDLE_DESC=	Include CA bundle for certificate verification
 COMPFACE_DESC=	X-Face support
 CURL_DESC=	libcurl dependency (remote update check)
 GPGME_DESC=	GnuPG support using GPGME
 GTKSPELL_DESC=	Spell checking support
+HIDE_OSSIG_DESC=Hide OS and GTK signature in mail header
 JPILOT_DESC=	JPilot support
 ONIGURUMA_DESC=	Oniguruma support
 
-OPTIONS_DEFAULT=CA_BUNDLE CURL GTKSPELL SSL
+OPTIONS_DEFAULT=CA_BUNDLE CURL GTKSPELL GPGME SSL
 
-CA_BUNDLE_RUN_DEPENDS=		${LOCALBASE}/share/certs/ca-root-nss.crt:${PORTSDIR}/security/ca_root_nss
+CA_BUNDLE_RUN_DEPENDS=		${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 CA_BUNDLE_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-libsylph_ssl.c
 
-COMPFACE_LIB_DEPENDS=		libcompface.so:${PORTSDIR}/mail/faces
+COMPFACE_LIB_DEPENDS=		libcompface.so:mail/faces
 COMPFACE_CONFIGURE_ENABLE=	compface
 
-CURL_RUN_DEPENDS=		curl:${PORTSDIR}/ftp/curl
+CURL_RUN_DEPENDS=		curl:ftp/curl
 
-GPGME_LIB_DEPENDS=		libgpgme.so:${PORTSDIR}/security/gpgme
-GPGME_RUN_DEPENDS=		gpg:${PORTSDIR}/security/gnupg
+GPGME_LIB_DEPENDS=		libgpgme.so:security/gpgme
+GPGME_RUN_DEPENDS=		gpg:security/gnupg
 GPGME_CONFIGURE_ENABLE=		gpgme
 
-GTKSPELL_LIB_DEPENDS=		libgtkspell.so:${PORTSDIR}/textproc/gtkspell
+GTKSPELL_LIB_DEPENDS=		libgtkspell.so:textproc/gtkspell
 GTKSPELL_CONFIGURE_ENABLE=	gtkspell
 
-JPILOT_LIB_DEPENDS=		libpisock.so:${PORTSDIR}/palm/pilot-link
-JPILOT_RUN_DEPENDS=		jpilot:${PORTSDIR}/palm/jpilot
+HIDE_OSSIG_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src_main.c
+
+JPILOT_LIB_DEPENDS=		libpisock.so:palm/pilot-link
+JPILOT_RUN_DEPENDS=		jpilot:palm/jpilot
 JPILOT_CONFIGURE_ENABLE=	jpilot
 
 LDAP_CONFIGURE_ENABLE=		ldap
 LDAP_USE=			openldap=yes
 
-ONIGURUMA_BUILD_DEPENDS=	${LOCALBASE}/lib/libonig.a:${PORTSDIR}/devel/oniguruma5
+ONIGURUMA_BUILD_DEPENDS=	${LOCALBASE}/lib/libonig.a:devel/oniguruma5
 ONIGURUMA_CONFIGURE_ENABLE=	oniguruma
 
 SSL_CONFIGURE_ENABLE=		ssl

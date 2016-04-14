@@ -2,21 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	gwyddion
-PORTVERSION=	2.43
+PORTVERSION=	2.44
 CATEGORIES=	science graphics
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Gtk2 based SPM data visualization and analysis tool
 
-LICENSE=	GPLv2 # (or later)
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libminizip.so:${PORTSDIR}/archivers/minizip \
-		libcfitsio.so:${PORTSDIR}/astro/cfitsio \
-		libIlmImf.so:${PORTSDIR}/graphics/OpenEXR \
-		libfftw3.so:${PORTSDIR}/math/fftw3 \
-		libgtkglext-x11-1.0.so:${PORTSDIR}/x11-toolkits/gtkglext
+LIB_DEPENDS=	libminizip.so:archivers/minizip \
+		libcfitsio.so:astro/cfitsio \
+		libIlmImf.so:graphics/OpenEXR \
+		libfftw3.so:math/fftw3 \
+		libgtkglext-x11-1.0.so:x11-toolkits/gtkglext
 
 USES=		desktop-file-utils gettext gmake libtool pathfix pkgconfig \
 		shared-mime-info tar:xz
@@ -48,7 +48,7 @@ PYTHON_CONFIGURE_WITH=	gtksourceview python
 RUBY_USE=		ruby=yes
 RUBY_CONFIGURE_WITH=	ruby
 UNIQUE_DESC=		Remote control backend support
-UNIQUE_LIB_DEPENDS=	libunique-1.0.so:${PORTSDIR}/x11-toolkits/unique
+UNIQUE_LIB_DEPENDS=	libunique-1.0.so:x11-toolkits/unique
 UNIQUE_CONFIGURE_WITH=	unique
 
 post-patch:

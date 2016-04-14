@@ -12,8 +12,8 @@ LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl \
-		libtorrent.so:${PORTSDIR}/net-p2p/libtorrent
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libtorrent.so:net-p2p/libtorrent
 
 BROKEN_arm=	does not configure on arm
 
@@ -24,7 +24,7 @@ XMLRPC_DESC=	Compile with xmlrpc-c support
 CONFIGURE_ARGS=	--disable-debug
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-pthread
-USES=		compiler:c++11-lang pkgconfig
+USES=		compiler:c++11-lang ncurses pkgconfig
 
 PLIST_FILES=	bin/rtorrent
 PORTDOCS=	README
@@ -34,7 +34,7 @@ SUB_FILES=	pkg-message
 IPV6_CONFIGURE_ENABLE=	ipv6
 XMLRPC_CONFIGURE_OFF=	--with-xmlrpc-c=no
 XMLRPC_CONFIGURE_ON=	--with-xmlrpc-c
-XMLRPC_LIB_DEPENDS=	libxmlrpc.so:${PORTSDIR}/net/xmlrpc-c-devel
+XMLRPC_LIB_DEPENDS=	libxmlrpc.so:net/xmlrpc-c-devel
 
 .include <bsd.port.options.mk>
 

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	archiveopteryx
-PORTVERSION=	3.2.99.20151201
+PORTVERSION=	3.2.99.20160129
 PORTREVISION=	0
 CATEGORIES=	mail
 PKGNAMESUFFIX=	-devel
@@ -12,12 +12,12 @@ COMMENT=	Advanced PostgreSQL-based IMAP/POP server
 
 LICENSE=	MIT
 
-BUILD_DEPENDS=	jam:${PORTSDIR}/devel/jam
+BUILD_DEPENDS=	jam:devel/jam
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	aox
 GH_PROJECT=	aox
-GH_TAGNAME=	b4fd1c3
+GH_TAGNAME=	e10c73a
 
 USES=		perl5 tar:bzip2 pgsql:9.1+
 USE_OPENSSL=	yes

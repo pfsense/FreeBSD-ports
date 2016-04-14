@@ -9,8 +9,10 @@
 # Maintained by: haskell@FreeBSD.org
 #
 
+PACKAGE=	${PORTNAME}-${PORTVERSION}
+
 .if !defined(METAPORT) && !defined(USE_GITHUB)
-MASTER_SITES?=	http://hackage.haskell.org/package/${PORTNAME}-${PORTVERSION}/:hackage
+MASTER_SITES?=	http://hackage.haskell.org/package/${PACKAGE}/:hackage
 DISTFILES?=	${DISTNAME}${EXTRACT_SUFX}:hackage
 EXTRACT_ONLY?=	${DISTNAME}${EXTRACT_SUFX}
 .endif
@@ -38,14 +40,15 @@ GHC_HADDOCK_CMD=${LOCALBASE}/bin/haddock-ghc-${GHC_VERSION}
 CABAL_DOCSDIR=		${PREFIX}/share/doc/cabal/ghc-${GHC_VERSION}
 CABAL_DOCSDIR_REL=	${CABAL_DOCSDIR:S,^${PREFIX}/,,}
 
-DATADIR=	${PREFIX}/share/cabal/ghc-${GHC_VERSION}/${DISTNAME}
-DOCSDIR=	${CABAL_DOCSDIR}/${DISTNAME}
-EXAMPLESDIR=	${PREFIX}/share/examples/cabal/ghc-${GHC_VERSION}/${DISTNAME}
+
+DATADIR=	${PREFIX}/share/cabal/ghc-${GHC_VERSION}/${PACKAGE}
+DOCSDIR=	${CABAL_DOCSDIR}/${PACKAGE}
+EXAMPLESDIR=	${PREFIX}/share/examples/cabal/ghc-${GHC_VERSION}/${PACKAGE}
 
 GHC_LIB_DOCSDIR_REL=	share/doc/ghc-${GHC_VERSION}/html/libraries
 
 CABAL_LIBDIR=		${PREFIX}/lib/cabal/ghc-${GHC_VERSION}
-CABAL_LIBSUBDIR=	${DISTNAME}
+CABAL_LIBSUBDIR=	${PACKAGE}
 CABAL_LIBDIR_REL=	${CABAL_LIBDIR:S,^${PREFIX}/,,}
 
 CONFIGURE_ARGS+=	--libdir=${CABAL_LIBDIR} --libsubdir=${CABAL_LIBSUBDIR}
@@ -70,19 +73,19 @@ TMPDIR?=	${WRKDIR}/tmp
 .endif
 
 .if !defined(STANDALONE) || ${PORT_OPTIONS:MDYNAMIC}
-BUILD_DEPENDS+=	ghc:${PORTSDIR}/lang/ghc
-BUILD_DEPENDS+=	ghc>=${GHC_VERSION}:${PORTSDIR}/lang/ghc
-RUN_DEPENDS+=	ghc:${PORTSDIR}/lang/ghc
-RUN_DEPENDS+=	ghc>=${GHC_VERSION}:${PORTSDIR}/lang/ghc
+BUILD_DEPENDS+=	ghc:lang/ghc
+BUILD_DEPENDS+=	ghc>=${GHC_VERSION}:lang/ghc
+RUN_DEPENDS+=	ghc:lang/ghc
+RUN_DEPENDS+=	ghc>=${GHC_VERSION}:lang/ghc
 .else
-BUILD_DEPENDS+=	ghc:${PORTSDIR}/lang/ghc
-BUILD_DEPENDS+=	ghc>=${GHC_VERSION}:${PORTSDIR}/lang/ghc
+BUILD_DEPENDS+=	ghc:lang/ghc
+BUILD_DEPENDS+=	ghc>=${GHC_VERSION}:lang/ghc
 .endif
 
 
 .if ${PORT_OPTIONS:MPCLANG}
-BUILD_DEPENDS+=	${LOCALBASE}/bin/clang${LLVM_VERSION}:${PORTSDIR}/lang/clang${LLVM_VERSION}
-RUN_DEPENDS+=	${LOCALBASE}/bin/clang${LLVM_VERSION}:${PORTSDIR}/lang/clang${LLVM_VERSION}
+BUILD_DEPENDS+=	${LOCALBASE}/bin/clang${LLVM_VERSION}:lang/clang${LLVM_VERSION}
+RUN_DEPENDS+=	${LOCALBASE}/bin/clang${LLVM_VERSION}:lang/clang${LLVM_VERSION}
 CC=		${LOCALBASE}/bin/clang${LLVM_VERSION}
 CXX=		${LOCALBASE}/bin/clang++${LLVM_VERSION}
 CPP=		${LOCALBASE}/bin/clang-cpp${LLVM_VERSION}
@@ -106,26 +109,26 @@ CONFIGURE_ARGS+=	--ghc-option=-fllvm \
 			--ghc-option=-pgmlo --ghc-option=${LOCALBASE}/bin/opt${LLVM_VERSION} \
 			--ghc-option=-pgmlc --ghc-option=${LOCALBASE}/bin/llc${LLVM_VERSION}
 
-BUILD_DEPENDS+=		${LOCALBASE}/bin/opt${LLVM_VERSION}:${PORTSDIR}/devel/llvm${LLVM_VERSION}
+BUILD_DEPENDS+=		${LOCALBASE}/bin/opt${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
 .endif
 
 .if defined(USE_ALEX)
-BUILD_DEPENDS+=	${ALEX_CMD}:${PORTSDIR}/devel/hs-alex
+BUILD_DEPENDS+=	${ALEX_CMD}:devel/hs-alex
 CONFIGURE_ARGS+=	 --with-alex=${ALEX_CMD}
 .endif
 
 .if defined(USE_HAPPY)
-BUILD_DEPENDS+=	${HAPPY_CMD}:${PORTSDIR}/devel/hs-happy
+BUILD_DEPENDS+=	${HAPPY_CMD}:devel/hs-happy
 CONFIGURE_ARGS+=	 --with-happy=${HAPPY_CMD}
 .endif
 
 .if defined(USE_C2HS)
-BUILD_DEPENDS+=	${C2HS_CMD}:${PORTSDIR}/devel/hs-c2hs
+BUILD_DEPENDS+=	${C2HS_CMD}:devel/hs-c2hs
 CONFIGURE_ARGS+=	--with-c2hs=${C2HS_CMD}
 .endif
 
 .if defined(EXECUTABLE)
-LIB_DEPENDS+=	libgmp.so:${PORTSDIR}/math/gmp
+LIB_DEPENDS+=	libgmp.so:math/gmp
 USES+=		iconv
 
 CONFIGURE_ARGS+=	--enable-executable-stripping
@@ -150,7 +153,7 @@ __u_h_r_version:=	${cabal_package:C/^[^<=>]*//g}
 .endif
 
 dependencies:=	${dependencies} \
-${HSPREFIX}${__u_h_r_package}${__u_h_r_version}:${PORTSDIR}/${__u_h_r_port}
+${HSPREFIX}${__u_h_r_package}${__u_h_r_version}:${__u_h_r_port}
 .endfor
 
 BUILD_DEPENDS+=	${dependencies}
@@ -161,11 +164,6 @@ RUN_DEPENDS+=	${dependencies}
 
 .endif
 
-.if defined(USE_GHC_NATIVE)
-USES+=		perl5
-USE_PERL5=	build
-.endif
-
 .if ${PORT_OPTIONS:MDOCS}
 .if !defined(XMLDOCS)
 
@@ -173,9 +171,8 @@ USE_PERL5=	build
 HADDOCK_OPTS=	# empty
 
 .if ${PORT_OPTIONS:MHSCOLOUR}
-BUILD_DEPENDS+=	HsColour:${PORTSDIR}/print/hs-hscolour
+BUILD_DEPENDS+=	HsColour:print/hs-hscolour
 
-HSCOLOUR_VERSION=	1.23
 HSCOLOUR_DATADIR=	${LOCALBASE}/share/cabal/ghc-${GHC_VERSION}/hscolour-${HSCOLOUR_VERSION}
 HADDOCK_OPTS+=		--hyperlink-source --hscolour-css=${HSCOLOUR_DATADIR}/hscolour.css
 .endif # HSCOLOUR
@@ -184,8 +181,8 @@ HADDOCK_OPTS+=		--hyperlink-source --hscolour-css=${HSCOLOUR_DATADIR}/hscolour.c
 .endif
 
 .if defined(XMLDOCS)
-BUILD_DEPENDS+=	docbook-xsl>0:${PORTSDIR}/textproc/docbook-xsl \
-		${LOCALBASE}/bin/xsltproc:${PORTSDIR}/textproc/libxslt
+BUILD_DEPENDS+=	docbook-xsl>0:textproc/docbook-xsl \
+		${LOCALBASE}/bin/xsltproc:textproc/libxslt
 
 USES+=		gmake
 
@@ -332,7 +329,7 @@ add-plist-cabal:
 .endif
 
 .if defined(HADDOCK_AVAILABLE) && ${PORT_OPTIONS:MDOCS}
-	@(${ECHO_CMD} '@unexec ${RM} ${LOCALBASE}/${GHC_LIB_DOCSDIR_REL}/${DISTNAME}' ; \
+	@(${ECHO_CMD} '@unexec ${RM} ${LOCALBASE}/${GHC_LIB_DOCSDIR_REL}/${PACKAGE}' ; \
 	  ${ECHO_CMD} '@unexec cd ${LOCALBASE}/${GHC_LIB_DOCSDIR_REL} && \
 	    ${RM} doc-index*.html && ./gen_contents_index') >> ${TMPPLIST}
 .endif
@@ -342,7 +339,7 @@ add-plist-cabal:
 .endif
 
 .if defined(HADDOCK_AVAILABLE) && ${PORT_OPTIONS:MDOCS}
-	@(${ECHO_CMD} '@exec ${LN} -s ${DOCSDIR}/html ${LOCALBASE}/${GHC_LIB_DOCSDIR_REL}/${DISTNAME} && \
+	@(${ECHO_CMD} '@exec ${LN} -s ${DOCSDIR}/html ${LOCALBASE}/${GHC_LIB_DOCSDIR_REL}/${PACKAGE} && \
 	  cd ${LOCALBASE}/${GHC_LIB_DOCSDIR_REL} && \
 	  ${RM} doc-index*.html && ./gen_contents_index') >> ${TMPPLIST}
 .endif

@@ -24,7 +24,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
 
 DIST_SUBDIR=	${PORTNAME}
-USES=		tar:bzip2 uidfix
+USES=		uidfix
 USE_RUBY=	yes
 
 USE_LDCONFIG=	${PREFIX}/lib/compat/pkg
@@ -43,7 +43,7 @@ INSTALL_TARGET+=	install-doc
 .endif
 
 # For PKG_DBDRIVER={bdb_btree,bdb_hash}
-RUN_DEPENDS+=	${RUBY_SITEARCHLIBDIR}/bdb.so:${PORTSDIR}/databases/ruby-bdb
+RUN_DEPENDS+=	${RUBY_SITEARCHLIBDIR}/bdb.so:databases/ruby-bdb
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/compat/pkg
