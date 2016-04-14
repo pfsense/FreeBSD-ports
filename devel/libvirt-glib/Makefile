@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libvirt-glib
-PORTVERSION=	0.2.2
+PORTVERSION=	0.2.3
 CATEGORIES=	devel
 MASTER_SITES=	ftp://libvirt.org/libvirt/glib/
 
@@ -11,7 +11,7 @@ COMMENT=	Glib bindings for Libvirt virtualization API
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libvirt.so:${PORTSDIR}/devel/libvirt
+LIB_DEPENDS=	libvirt.so:devel/libvirt
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-introspection

@@ -11,7 +11,7 @@ COMMENT=	Proxy/masquerading daemon for the SIP protocol
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libosip2.so:${PORTSDIR}/net/libosip2
+LIB_DEPENDS=	libosip2.so:net/libosip2
 
 # :keepla because port uses lt_dlopen
 USES=		libtool:keepla
@@ -24,8 +24,6 @@ PORTDOCS1=	AUTHORS ChangeLog README RELNOTES
 PORTDOCS2=	FAQ KNOWN_BUGS RFC3261_compliance.txt \
 		sample_cfg_budgetone.txt sample_cfg_x-lite.txt
 PORTDOCS=	${PORTDOCS1} ${PORTDOCS2}
-
-BROKEN_FreeBSD_8=	Problem with libosip2 during configure
 
 post-extract:
 .for docs in ${PORTDOCS2}

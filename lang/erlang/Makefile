@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	erlang
-PORTVERSION=	18.2.1
+PORTVERSION=	18.3
 PORTEPOCH=	3
 CATEGORIES=	lang parallel java
 MASTER_SITES=	http://www.erlang.org/download/:erlangorg		\
@@ -51,17 +51,17 @@ WX_DESC=	Enable WX application
 OPTIONS_DEFAULT=HIPE KQUEUE OPENSSL SCTP SMP THREADS
 OPTIONS_EXCLUDE_DragonFly=	HIPE SCTP
 
-ERL_RELEASE=	18.2.1
+ERL_RELEASE=	18.3
 
-USES=		gmake perl5
+USES=		gmake ncurses perl5
 USE_PERL5=	build
 USE_RC_SUBR=	epmd
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-EI_VSN=		3.8.1
-SNMP_VSN=	5.2.1
-TOOLS_VSN=	2.8.2
+EI_VSN=		3.8.2
+SNMP_VSN=	5.2.2
+TOOLS_VSN=	2.8.3
 
 .include <bsd.port.options.mk>
 
@@ -75,10 +75,6 @@ DOC_DISTFILES=	armstrong_thesis_2003.pdf:joe		\
 		mnesia_overview.pdf:publications	\
 		programming_rules.pdf:erlangse
 .endif
-
-# See http://wiki.freebsd.org/DTrace to learn how to enable DTrace
-# on your system. You will need to configure STRIP, WITH_CTF and
-# CFLAGS in your make.conf before building.
 
 # If you run Erlang and get a message resembling "WARNING: number of
 # probes fixed does not match the number of defined probes (54 != 132,
@@ -96,6 +92,8 @@ USE_GCC?=	yes
 
 .if ${PORT_OPTIONS:MDTRACE}
 CONFIGURE_ARGS+=--with-dynamic-trace=dtrace
+CFLAGS+=	-fno-omit-frame-pointer
+STRIP=
 .else
 CONFIGURE_ARGS+=--without-dynamic-trace
 .endif
@@ -140,7 +138,7 @@ CONFIGURE_ARGS+=--with-wx-config=${WX_CONFIG}
 
 .if ${PORT_OPTIONS:MODBC}
 CONFIGURE_ARGS+=--with-odbc
-LIB_DEPENDS+=	libodbc.so:${PORTSDIR}/databases/unixODBC
+LIB_DEPENDS+=	libodbc.so:databases/unixODBC
 .else
 CONFIGURE_ARGS+=--without-odbc
 .endif
@@ -207,6 +205,11 @@ pre-configure:
 	echo "disabled by port options" > ${WRKSRC}/lib/wx/SKIP
 .endif
 
+post-configure:
+.if ${PORT_OPTIONS:MODBC}
+	${RM} ${WRKSRC}/lib/odbc/SKIP
+.endif
+
 post-install:
 	${INSTALL_DATA} ${WRKDIR}/erlang.conf ${STAGEDIR}${PREFIX}/etc/man.d/erlang.conf
 	${LN} -sf ../lib/${ERLANG_LIB}/lib/erl_interface-${EI_VSN}/bin/erl_call ${STAGEDIR}${PREFIX}/bin/erl_call
@@ -219,7 +222,6 @@ post-install:
 .if ${PORT_OPTIONS:MDOCS}
 	${TAR} --unlink -xzpf ${DISTDIR}/${DIST_SUBDIR}/${ERLANG_DOCS} \
 		-C ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}
-
 	${INSTALL_DATA} ${WRKSRC}/lib/dialyzer/doc/*.txt \
 		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/dialyzer-*/doc/
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
@@ -244,13 +246,9 @@ post-install:
 .if ! ${PORT_OPTIONS:MWX}
 	${RM} -r ${STAGEDIR}${PREFIX}/lib/erlang/lib/wx-*
 .endif
+	${FIND} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/* -type d -empty -delete
 
 	${LN} -s ../lib/erlang/lib/snmp-${SNMP_VSN}/bin/snmpc ${STAGEDIR}${PREFIX}/bin/snmpc
-
-	@cd ${STAGEDIR}${PREFIX}; ${FIND} lib/${ERLANG_LIB}/* -type d -empty \
-		| ${SORT} \
-		| ${SED} -e 's#^#@dir #g' \
-		>> ${TMPPLIST}
 
 	@cd ${STAGEDIR}${PREFIX}; ${FIND} lib/${ERLANG_LIB}/* -type f -o -type l \
 		| ${SORT} \

@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	bsdec2-image-upload
-PORTVERSION=	1.0.1
-PORTREVISION=	1
+PORTVERSION=	1.0.2
 CATEGORIES=	net
 MASTER_SITES=	http://freebsd-ec2-dist.s3.amazonaws.com/
 
@@ -12,7 +11,7 @@ COMMENT=	Tool for creating Amazon EC2 AMIs
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
-RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:${PORTSDIR}/security/ca_root_nss
+RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 
 USES=		tar:tgz uidfix
 USE_OPENSSL=	yes

@@ -10,10 +10,10 @@ MASTER_SITES=	SF/djvu/DjVuLibre/${PORTVERSION:R}
 MAINTAINER=	bf@FreeBSD.org
 COMMENT=	DjVu base libraries and utilities
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libtiff.so:${PORTSDIR}/graphics/tiff
+LIB_DEPENDS=	libtiff.so:graphics/tiff
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	JPEG_CFLAGS="-I${LOCALBASE}/include" \
@@ -33,7 +33,7 @@ OPTIONS_DEFINE=		DOCS ANY2DJVU
 OPTIONS_SUB=		yes
 
 ANY2DJVU_DESC=		Install any2djvu script (requires curl)
-ANY2DJVU_RUN_DEPENDS=	curl:${PORTSDIR}/ftp/curl
+ANY2DJVU_RUN_DEPENDS=	curl:ftp/curl
 
 .include <bsd.port.options.mk>
 

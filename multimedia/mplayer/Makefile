@@ -3,7 +3,7 @@
 
 PORTNAME=	mplayer
 PORTVERSION=	${MPLAYER_PORT_VERSION}
-PORTREVISION=	3
+PORTREVISION=	1
 CATEGORIES=	multimedia audio
 
 MAINTAINER=	riggs@FreeBSD.org
@@ -11,14 +11,14 @@ COMMENT=	High performance media player supporting many formats
 
 .include "${.CURDIR}/../../multimedia/mplayer/Makefile.common"
 
-OPTIONS_DEFINE=	AALIB AMR_NB AMR_WB BLURAY CACA CDIO DEBUG DV \
+OPTIONS_DEFINE=	AALIB AMR_NB AMR_WB BLURAY CACA CDIO DEBUG DV DVDNAV \
 		ENCA FONTCONFIG FRIBIDI GIF GNUTLS GSM GUI IPV6 JACK \
 		LADSPA LIBMNG LIRC LZO NAS OCFLAGS OPENAL OPENGL \
 		OPENJPEG OPUS PULSEAUDIO REAL RTC RTMP \
-		SCHROEDINGER SDL SKINS SMB SVGALIB V4L VDPAU VPX \
+		SCHROEDINGER SDL SKINS SMB SPEEX SVGALIB V4L VDPAU VPX \
 		X11 X11DGA X11VM XINERAMA XVIDEO XVMC
 
-OPTIONS_DEFAULT=FONTCONFIG FRIBIDI GNUTLS IPV6 OCFLAGS OPENGL \
+OPTIONS_DEFAULT=DVDNAV FONTCONFIG FRIBIDI GNUTLS IPV6 OCFLAGS OPENGL \
 		SKINS X11 X11DGA X11VM XINERAMA XVIDEO
 
 OPTIONS_DEFINE_i386=	RTCPU
@@ -29,10 +29,11 @@ OPTIONS_DEFAULT_i386=	RTCPU VDPAU
 OPTIONS_DEFAULT_amd64=	RTCPU VDPAU
 OPTIONS_DEFAULT_powerpc=RTCPU
 
+DVDNAV_DESC?=	DVD navigation features support
 BLURAY_DESC?=	BluRay support
 ENCA_DESC?=	Charset conversion via enca
 LZO_DESC?=	External liblzo support
-OCFLAGS_DESC?=	Use optimized compiler flags
+OCFLAGS_DESC?=	${OPTIMIZED_CFLAGS_DESC}
 REAL_DESC?=	Enable realplayer plugin
 RTC_DESC?=	Add support for kernel real time clock
 RTCPU_DESC?=	Use runtime CPU detection
@@ -48,7 +49,7 @@ CONFFILES=	example.conf input.conf menu.conf dvb-menu.conf
 USES+=		iconv pkgconfig
 
 .include "${.CURDIR}/../../multimedia/mplayer/Makefile.optvars"
-.include <bsd.port.pre.mk>
+.include <bsd.port.options.mk>
 
 CONFIGURE_ARGS+=	--disable-arts \
 			--disable-directfb \
@@ -64,13 +65,11 @@ CONFIGURE_ARGS+=	--disable-arts \
 			--disable-musepack \
 			--disable-theora
 
-.include "${.CURDIR}/../../multimedia/mplayer/Makefile.options"
-
 .if ${PORT_OPTIONS:MGUI} && ${PORT_OPTIONS:MX11}
 PLIST_SUB+=	GMPLAYER=""
 DESKTOP_ENTRIES=	"MPlayer" "High performance media player" "mplayer" "gmplayer" "" false
 .if ${PORT_OPTIONS:MSKINS}
-RUN_DEPENDS+=	mplayer-skins>=0:${PORTSDIR}/multimedia/mplayer-skins
+RUN_DEPENDS+=	mplayer-skins>=0:multimedia/mplayer-skins
 .endif
 
 USE_GNOME+=	gtk20
@@ -115,6 +114,9 @@ CONFIGURE_ARGS+=--enable-xvmc --with-xvmclib=XvMCW
 CONFIGURE_ARGS+=--disable-x11
 .endif
 
+.include <bsd.port.pre.mk>
+.include "${.CURDIR}/../../multimedia/mplayer/Makefile.options"
+
 pre-everything::
 	@${ECHO_MSG} "N - O - T - E"
 	@${ECHO_MSG} ""
@@ -130,9 +132,6 @@ pre-everything::
 	@${ECHO_MSG} "or download them from"
 	@${ECHO_MSG} "http://www.mplayerhq.hu/"
 .endif
-
-pre-patch:
-	${MV} ${WRKDIR}/ffmpeg-${FFMPEG_VERSION} ${WRKSRC}/ffmpeg
 
 post-patch:
 	@${REINPLACE_CMD} \

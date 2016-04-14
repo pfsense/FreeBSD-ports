@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	octave-forge-mapping
-PORTVERSION=	1.2.0
+PORTVERSION=	1.2.1
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -13,12 +13,13 @@ LICENSE_FILE=	${WRKDIR}/${OCTSRC}/COPYING
 
 # OCTSRC is the name of the directory of the package.
 # It is usually ${OCTAVE_PKGNAME} or ${DISTNAME}.
-OCTSRC=		${OCTAVE_PKGNAME}
+OCTSRC=		${DISTNAME}
+
+WRKSRC=		${WRKDIR}/${OCTSRC}/src
+GNU_CONFIGURE=	yes
+ALL_TARGET=	# nada
 
 .include "${.CURDIR}/../../Mk/bsd.octave.mk"
-
-do-build:
-	@${DO_NADA}
 
 post-build:
 	${RM} -f ${WRKSRC}/Makefile ${WRKSRC}/configure

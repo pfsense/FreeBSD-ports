@@ -11,12 +11,11 @@ PKGNAMESUFFIX=	08
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	C library provides a Gtk+ widget to display rasterized maps/markers
 
-LIB_DEPENDS=	libclutter-gtk-0.10.so:${PORTSDIR}/graphics/clutter-gtk \
-		libsoup-gnome-2.4.so:${PORTSDIR}/devel/libsoup-gnome
+LIB_DEPENDS=	libclutter-gtk-0.10.so:graphics/clutter-gtk \
+		libsoup-gnome-2.4.so:devel/libsoup-gnome
 
-USES=		gmake libtool:keepla pathfix pkgconfig tar:bzip2
+USES=		gmake libtool:keepla pathfix pkgconfig sqlite tar:bzip2
 USE_GNOME=	gnomeprefix gtk20 introspection:build,run
-USE_SQLITE=	3
 USE_GL=		gl
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

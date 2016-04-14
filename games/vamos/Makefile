@@ -13,11 +13,11 @@ DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Automotive simulation framework
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libboost_date_time.so:${PORTSDIR}/devel/boost-libs \
-		libpng.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS=	libboost_date_time.so:devel/boost-libs \
+		libpng.so:graphics/png
 
 USES=		libtool openal:al,alut pkgconfig
 USE_XORG=	sm ice x11 xi xext xmu

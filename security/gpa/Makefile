@@ -12,10 +12,10 @@ COMMENT=	GTK2+ frontend for the GNU Privacy Guard
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libassuan.so:${PORTSDIR}/security/libassuan \
-		libgpgme.so:${PORTSDIR}/security/gpgme
-BUILD_DEPENDS=	gpgv2:${PORTSDIR}/security/gnupg
-RUN_DEPENDS=	gpgv2:${PORTSDIR}/security/gnupg
+LIB_DEPENDS=	libassuan.so:security/libassuan \
+		libgpgme.so:security/gpgme
+BUILD_DEPENDS=	gpgv2:security/gnupg
+RUN_DEPENDS=	gpgv2:security/gnupg
 
 USES=		gmake pkgconfig tar:bzip2
 USE_GNOME=	gtk20
@@ -31,10 +31,10 @@ OPTIONS_SUB=	yes
 NLS_USES=		gettext
 NLS_CONFIGURE_ENABLE=	nls
 
-.include <bsd.port.options.mk>
-
-.if !exists(${LOCALBASE}/bin/gpgsm)
-IGNORE=		requires gpgsm. (Re)Install security/gnupg with the GPGSM option ON
-.endif
+pre-configure:
+	@(if [ ! -e ${LOCALBASE}/bin/gpgsm ] ; then \
+	${ECHO_MSG} "gpa requires gpgsm. (Re)Install security/gnupg with the GPGSM option ON" ; \
+	exit 1; \
+	fi)
 
 .include <bsd.port.mk>

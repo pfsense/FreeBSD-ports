@@ -90,7 +90,7 @@ _GSTREAMER_PLUGINS+= \
 .if defined(USE_GSTREAMER1)
 _GSTREAMER_PLUGINS+= \
 		assrender bs2b chromaprint curl dtls dvdread editing-services \
-		hls kate libav libde265 modplug mpg123 openh264 openjpeg \
+		gtksink hls kate libav libde265 modplug mpg123 openh264 openjpeg \
 		png rsvg rtmp spandsp vpx webp x x265 ximagesrc zbar
 # vaapi?
 .endif
@@ -374,6 +374,8 @@ ximagesrc_DEPENDS=	x11/gstreamer-plugins-ximagesrc
 
 #-- x11-toolkits plugins section ------------------------------------------#
 
+gtksink_DEPENDS=	x11-toolkits/gstreamer-plugins-gtksink
+
 pango_DEPENDS=	x11-toolkits/gstreamer-plugins-pango
 
 #--------------------------------------------------------------------------#
@@ -391,8 +393,8 @@ ${ext}_GST_PREFIX?=	gstreamer-plugins-
 ${ext}_GST_VERSION?=	${GST_VERSION}${GST_MINOR_VERSION}
 ${ext}_NAME?=		${ext}
 . if ${_USE_GSTREAMER_ALL:M${ext}}!= "" && exists(${PORTSDIR}/${${ext}_DEPENDS})
-BUILD_DEPENDS+=	${${ext}_GST_PREFIX}${${ext}_NAME}>=${${ext}_GST_VERSION}:${PORTSDIR}/${${ext}_DEPENDS}
-RUN_DEPENDS+=	${${ext}_GST_PREFIX}${${ext}_NAME}>=${${ext}_GST_VERSION}:${PORTSDIR}/${${ext}_DEPENDS}
+BUILD_DEPENDS+=	${${ext}_GST_PREFIX}${${ext}_NAME}>=${${ext}_GST_VERSION}:${${ext}_DEPENDS}
+RUN_DEPENDS+=	${${ext}_GST_PREFIX}${${ext}_NAME}>=${${ext}_GST_VERSION}:${${ext}_DEPENDS}
 . else
 IGNORE=	cannot install: unknown gstreamer ${GST_VERSION} plugin -- ${ext}
 . endif
@@ -406,8 +408,8 @@ ${ext}_GST_VERSION?=	${GST1_VERSION}${GST1_MINIMAL_VERSION}
 ${ext}_NAME10?=		${ext}
 ${ext}_GST_DEPENDS?=	${${ext}_DEPENDS:S,gstreamer-,gstreamer1-,}
 . if ${_USE_GSTREAMER_ALL:M${ext}}!= "" && exists(${PORTSDIR}/${${ext}_GST_DEPENDS})
-BUILD_DEPENDS+=	${${ext}_GST_PREFIX}${${ext}_NAME10}>=${${ext}_GST_VERSION}:${PORTSDIR}/${${ext}_GST_DEPENDS}
-RUN_DEPENDS+=	${${ext}_GST_PREFIX}${${ext}_NAME10}>=${${ext}_GST_VERSION}:${PORTSDIR}/${${ext}_GST_DEPENDS}
+BUILD_DEPENDS+=	${${ext}_GST_PREFIX}${${ext}_NAME10}>=${${ext}_GST_VERSION}:${${ext}_GST_DEPENDS}
+RUN_DEPENDS+=	${${ext}_GST_PREFIX}${${ext}_NAME10}>=${${ext}_GST_VERSION}:${${ext}_GST_DEPENDS}
 . else
 IGNORE=	cannot install: unknown gstreamer ${GST1_VERSION} plugin -- ${ext}
 . endif

@@ -10,6 +10,57 @@ in the release notes and/or placed into UPDATING.
 
 All ports committers are allowed to commit to this file.
 
+20160402:
+AUTHOR: bapt@FreeBSD.org
+
+  Adding ${PORTSDIR} in dependency lines is no longer necessary meaning
+
+  RUN_DEPENDS=  foo:${PORTSDIR}/bar/foo
+
+  can now be written
+
+  RUN_DEPENDS=  foo:bar/foo
+
+  if the path after ':' is not absolute the framework will automatically
+  prepend ${PORTSDIR}/
+
+20160301:
+AUTHOR: mat@FreeBSD.org
+
+  Introduce GH_TUPLE.
+
+  GH_TUPLE allows one to put all the GH_{ACCOUNT,PROJECT,TAGNAME} into one
+  variable, in the form of account:project:tagname[:group].  It is helpful when
+  there are many submodules.
+
+20160207:
+AUTHOR: kwm@FreeBSD.org
+
+  The GNOME and MATE framework activation changed. To use the frameworks
+  now either gnome or mate needs to be added USES.
+
+  The usage of USE_GNOME, USE_MATE, INSTALLS_ICONS and for example
+  GLIB_SCHEMAS stays the same.
+
+  Like with USES, the use of USE_GNOME and so after bsd.port.pre.mk
+  is now forbidden.
+
+20160112:
+AUTHOR: amdmi3@FreeBSD.org
+
+  Support has been added for "or later" variants of GNU licenses
+  (e.g. LICENSE=GPLv2+) and for Public Domain (LICENSE=PD).
+
+  Complete list of new LICENSE values:
+
+  AGPLv3+ GPLv1+ GPLv2+ GPLv3+ GPLv3RLE+ LGPL20+ LGPL21+ LGPL3+ PD
+
+20160110:
+AUTHOR: bapt@FreeBSD.org
+
+  USE_FIREBIRD and USE_SQLITE has been replaced by USES=firebird and
+  USES=sqlite
+
 20151105:
 AUTHOR: mat@FreeBSD.org
 

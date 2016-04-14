@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	erlang
-PORTVERSION=	18.2.1
+PORTVERSION=	18.3
 CATEGORIES=	lang parallel java
 MASTER_SITES=	http://www.erlang.org/download/:erlangorg		\
 		http://erlang.stacken.kth.se/download/:erlangorg	\
@@ -20,7 +20,7 @@ MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Erlang interface for Java
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/bin/erl:${PORTSDIR}/lang/erlang
+RUN_DEPENDS=	${LOCALBASE}/bin/erl:lang/erlang
 
 WRKSRC=		${WRKDIR}/otp_src_${ERL_RELEASE}
 
@@ -30,9 +30,9 @@ MAKE_JOBS_UNSAFE=yes
 
 OPTIONS_DEFINE=	DOCS
 
-ERL_RELEASE=	18.2.1
+ERL_RELEASE=	18.3
 
-USES=		gmake perl5
+USES=		gmake ncurses perl5
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib

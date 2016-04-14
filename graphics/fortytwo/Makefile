@@ -2,7 +2,7 @@
 
 PORTNAME=	fortytwo
 PORTVERSION=	0.2.0
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	graphics gnustep
 MASTER_SITES=	SF/${PORTNAME}/FT%20%2842%29/${PORTVERSION}
 DISTFILES=	FT-${PORTVERSION}-src.tgz \
@@ -16,10 +16,10 @@ LICENSE=	LGPL21
 USES=		gnustep
 USE_GNUSTEP=	back build
 
-LIB_DEPENDS=	libEncore.so:${PORTSDIR}/devel/fortytwo-encore \
-		libBDB.so:${PORTSDIR}/databases/fortytwo-bdb
+LIB_DEPENDS=	libEncore.so:devel/fortytwo-encore \
+		libBDB.so:databases/fortytwo-bdb
 DEFAULT_LIBVERSION=	0.1
-USE_GNUSTEP_LDCONFIG=	${GNUSTEP_LOCAL_LIBRARIES}
+USE_LDCONFIG=	${GNUSTEP_LOCAL_LIBRARIES}
 USE_BDB=	43+
 
 WRKSRC=		${WRKDIR}/FT-${PORTVERSION}

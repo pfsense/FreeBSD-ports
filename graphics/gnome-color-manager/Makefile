@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gnome-color-manager
-PORTVERSION=	3.16.0
+PORTVERSION=	3.18.0
+PORTREVISION=	1
 CATEGORIES=	graphics gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -10,20 +11,20 @@ DIST_SUBDIR=	gnome3
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Session framework for the GNOME desktop to manage color profiles
 
-BUILD_DEPENDS=	docbook2man:${PORTSDIR}/textproc/docbook-utils \
-		itstool:${PORTSDIR}/textproc/itstool \
-		docbook-sgml>0:${PORTSDIR}/textproc/docbook-sgml
-LIB_DEPENDS=	liblcms2.so:${PORTSDIR}/graphics/lcms2 \
-		libcolord.so:${PORTSDIR}/graphics/colord \
-		libcolord-gtk.so:${PORTSDIR}/graphics/colord-gtk \
-		libcanberra-gtk3.so:${PORTSDIR}/audio/libcanberra-gtk3 \
-		libexif.so:${PORTSDIR}/graphics/libexif
+BUILD_DEPENDS=	docbook2man:textproc/docbook-utils \
+		itstool:textproc/itstool \
+		docbook-sgml>0:textproc/docbook-sgml
+LIB_DEPENDS=	liblcms2.so:graphics/lcms2 \
+		libcolord.so:graphics/colord \
+		libcolord-gtk.so:graphics/colord-gtk \
+		libcanberra-gtk3.so:audio/libcanberra-gtk3 \
+		libexif.so:graphics/libexif
 
 PORTSCOUT=	limitw:1,even
 
 USE_XORG=	xrandr
 USE_GNOME=	gnomedesktop3 gtk30 intlhack vte3
-USES=		desktop-file-utils gettext gmake pathfix pkgconfig tar:xz
+USES=		desktop-file-utils gettext gmake gnome pathfix pkgconfig tar:xz
 USE_LDCONFIG=	yes
 INSTALLS_ICONS=	yes
 GNU_CONFIGURE=	yes
@@ -39,7 +40,7 @@ RAW_DESC=	Enable RAW EXIF support
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MRAW}
-LIB_DEPENDS+=	libexiv2.so:${PORTSDIR}/graphics/exiv2
+LIB_DEPENDS+=	libexiv2.so:graphics/exiv2
 CONFIGURE_ARGS+=--enable-exiv=yes
 PLIST_SUB+=	RAW=""
 .else

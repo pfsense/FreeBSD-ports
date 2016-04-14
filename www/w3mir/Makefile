@@ -5,16 +5,14 @@ PORTNAME=	w3mir
 PORTVERSION=	1.0.10
 PORTREVISION=	3
 CATEGORIES=	www perl5
-MASTER_SITES=	http://langfeldt.net/w3mir/
+MASTER_SITES=	http://www.langfeldt.net/w3mir/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	All-purpose HTTP copying and mirroring tool
 
-BROKEN=		unfetchable
-
 LICENSE=	ART10
 
-BUILD_DEPENDS=	p5-libwww>=0:${PORTSDIR}/www/p5-libwww
+BUILD_DEPENDS=	p5-libwww>=0:www/p5-libwww
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5

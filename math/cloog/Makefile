@@ -3,6 +3,7 @@
 
 PORTNAME=	cloog
 PORTVERSION=	0.18.4
+PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	http://www.bastoul.net/cloog/pages/download/
 
@@ -11,8 +12,8 @@ COMMENT=	Code generator in the polyhedral model
 
 LICENSE=	LGPL21
 
-LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp \
-		libisl.so:${PORTSDIR}/devel/isl
+LIB_DEPENDS=	libgmp.so:math/gmp \
+		libisl.so:devel/isl
 
 USE_LDCONFIG=	yes
 USES=		libtool

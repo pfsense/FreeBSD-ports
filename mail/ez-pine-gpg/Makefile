@@ -11,9 +11,9 @@ DISTNAME=	${PORTNAME}_v${DISTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Set of scripts to use gpg with Pine
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 
-RUN_DEPENDS=	gpg:${PORTSDIR}/security/gnupg
+RUN_DEPENDS=	gpg:security/gnupg
 
 USES=		tar:tgz
 WRKSRC=		${WRKDIR}/${PORTNAME}

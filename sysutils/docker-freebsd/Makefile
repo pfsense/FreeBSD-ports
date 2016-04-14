@@ -11,12 +11,12 @@ COMMENT=	Docker containment system
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	go>=1.4:${PORTSDIR}/lang/go \
-		bash:${PORTSDIR}/shells/bash \
-		sqlite3:${PORTSDIR}/databases/sqlite3
-RUN_DEPENDS=	go>=1.4:${PORTSDIR}/lang/go \
-		bash:${PORTSDIR}/shells/bash \
-		sqlite3:${PORTSDIR}/databases/sqlite3
+BUILD_DEPENDS=	go>=1.4:lang/go \
+		bash:shells/bash \
+		sqlite3:databases/sqlite3
+RUN_DEPENDS=	go>=1.4:lang/go \
+		bash:shells/bash \
+		sqlite3:databases/sqlite3
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	kvasdopil
@@ -25,8 +25,6 @@ GH_TAGNAME=	582db78
 
 PLIST_FILES=	bin/docker
 USE_RC_SUBR=	docker
-
-BROKEN_FreeBSD_8=	This port works only on FreeBSD 9 and newer
 
 do-build:
 	@cd ${WRKSRC} && export AUTO_GOPATH=1 && export DOCKER_GITCOMMIT=${GH_TAGNAME} && ./hack/make.sh binary

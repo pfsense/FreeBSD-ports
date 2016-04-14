@@ -2,27 +2,25 @@
 # $FreeBSD$
 
 PORTNAME=	mythtv-frontend
-PORTVERSION=	0.27.0.20140121
-PORTREVISION=	6
+PORTVERSION=	0.27.5.20150616
 CATEGORIES=	multimedia
-MASTER_SITES=	http://people.freebsd.org/~decke/distfiles/
 
 MAINTAINER=	decke@FreeBSD.org
 COMMENT=	MythTV is a homebrew PVR project
 
-BUILD_DEPENDS=	${LOCALBASE}/include/linux/videodev2.h:${PORTSDIR}/multimedia/v4l_compat \
-		yasm:${PORTSDIR}/devel/yasm
-LIB_DEPENDS=	libmp3lame.so:${PORTSDIR}/audio/lame \
-		libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libtag.so:${PORTSDIR}/audio/taglib \
-		libxml2.so:${PORTSDIR}/textproc/libxml2
+BUILD_DEPENDS=	${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat \
+		yasm:devel/yasm
+LIB_DEPENDS=	libmp3lame.so:audio/lame \
+		libfreetype.so:print/freetype2 \
+		libtag.so:audio/taglib \
+		libxml2.so:textproc/libxml2
 
 CONFLICTS=	mythtv-[0-9]*
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	MythTV
 GH_PROJECT=	mythtv
-GH_TAGNAME=	5a5e1cd
+GH_TAGNAME=	ad97d24
 
 WRKSRC_SUBDIR=	${GH_PROJECT}
 
@@ -44,12 +42,13 @@ MAKE_ENV=	QTDIR="${QT_PREFIX}" \
 
 CPPFLAGS+=	${QTCPPFLAGS}
 CONFIGURE_ENV+=	QMAKESPEC="${QMAKESPEC}" MOC="${MOC}" \
-		QTDIR="${QT_PREFIX}"
+		QTDIR="${QT_PREFIX}" \
+		PKG_CONFIG_PATH="${LOCALBASE}/libdata/pkgconfig"
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 CONFIGURE_ARGS=	--prefix="${PREFIX}" --cc="${CC}" --cxx="${CXX}" --libxml2-path="${LOCALBASE}/include/libxml2" \
-		--disable-audio-alsa --disable-indev=alsa --disable-outdev=alsa --disable-firewire \
-		--disable-hdhomerun --disable-v4l2 --disable-ivtv --disable-hdpvr \
+		--disable-audio-alsa --disable-indev=alsa --disable-outdev=alsa --disable-mythlogserver \
+		--disable-firewire --disable-hdhomerun --disable-v4l2 --disable-ivtv --disable-hdpvr \
 		--disable-dvb --enable-opengl-video --without-bindings=perl,python,php
 
 QMAKESPEC?=	${LOCALBASE}/share/qt4/mkspecs/freebsd-g++
@@ -60,13 +59,13 @@ DESKTOP_ENTRIES="MythTV Frontend" "MythTV is a homebrew PVR project" "" \
 OPTIONS_DEFINE=	OPENGL JACK PULSEAUDIO VDPAU
 OPTIONS_DEFAULT=	OPENGL
 
-JACK_LIB_DEPENDS=	libjack.so:${PORTSDIR}/audio/jack
+JACK_LIB_DEPENDS=	libjack.so:audio/jack
 JACK_CONFIGURE_ENABLE=	audio-jack
 
-PULSEAUDIO_LIB_DEPENDS=	libpulse.so:${PORTSDIR}/audio/pulseaudio
+PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 PULSEAUDIO_CONFIGURE_ENABLE=	audio-pulseoutput
 
-VDPAU_LIB_DEPENDS=	libvdpau.so:${PORTSDIR}/multimedia/libvdpau
+VDPAU_LIB_DEPENDS=	libvdpau.so:multimedia/libvdpau
 VDPAU_CONFIGURE_ENABLE=	vdpau
 
 OPENGL_CONFIGURE_ENABLE=	opengl-video

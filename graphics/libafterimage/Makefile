@@ -11,12 +11,12 @@ DISTNAME=	libAfterImage-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Generic imaging library originally designed for AfterStep
 
-LICENSE=	LGPL21 # or later
+LICENSE=	LGPL21+
 
-LIB_DEPENDS=	libgif.so:${PORTSDIR}/graphics/giflib \
-		libpng.so:${PORTSDIR}/graphics/png \
-		libtiff.so:${PORTSDIR}/graphics/tiff \
-		libfreetype.so:${PORTSDIR}/print/freetype2
+LIB_DEPENDS=	libgif.so:graphics/giflib \
+		libpng.so:graphics/png \
+		libtiff.so:graphics/tiff \
+		libfreetype.so:print/freetype2
 
 USES=		jpeg pkgconfig tar:bzip2
 USE_XORG=	xext

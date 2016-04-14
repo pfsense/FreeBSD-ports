@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gnome-characters
-PORTVERSION=	3.16.2
+PORTVERSION=	3.18.1
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -12,11 +12,11 @@ COMMENT=	find and insert unusual characters for GNOME 3
 
 PORTSCOUT=	limitw:1,even
 
-BUILD_DEPENDS=	itstool:${PORTSDIR}/textproc/itstool
-LIB_DEPENDS=	libgjs.so:${PORTSDIR}/lang/gjs \
-		libunistring.so:${PORTSDIR}/devel/libunistring
+BUILD_DEPENDS=	itstool:textproc/itstool
+LIB_DEPENDS=	libgjs.so:lang/gjs \
+		libunistring.so:devel/libunistring
 
-USES=		gettext gmake libtool pathfix pkgconfig tar:xz
+USES=		gettext gmake gnome libtool pathfix pkgconfig tar:xz
 USE_LDCONFIG=	yes
 INSTALLS_ICONS=	yes
 USE_GNOME=	gtk30 intlhack introspection

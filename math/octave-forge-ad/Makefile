@@ -3,7 +3,7 @@
 
 PORTNAME=	octave-forge-ad
 PORTVERSION=	1.0.6
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -17,4 +17,7 @@ CONFIGURE_ENV+=	HOME=${WRKSRC}
 USES=		dos2unix
 
 .include "${.CURDIR}/../../Mk/bsd.octave.mk"
+
+BROKEN=		doesn't build
+
 .include <bsd.port.mk>

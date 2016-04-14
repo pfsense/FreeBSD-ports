@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gnupg
-PORTVERSION=	1.3.3
-PORTREVISION=	1
+PORTVERSION=	1.3.6
 CATEGORIES=	security
 MASTER_SITES=	http://pecl.php.net/get/
 PKGNAMEPREFIX=	pecl-
@@ -15,9 +14,10 @@ COMMENT=	PECL wrapper around the gpgme library
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libgpgme.so:${PORTSDIR}/security/gpgme
+LIB_DEPENDS=	libgpgme.so:security/gpgme
 
-CONFIGURE_ARGS=	--with-gnupg=${LOCALBASE}/include/gpgme
+CONFIGURE_ARGS=	--with-gnupg=${LOCALBASE}/include
+IGNORE_WITH_PHP=70
 USE_PHP=	yes
 USE_PHPEXT=	yes
 USES=		localbase tar:tgz

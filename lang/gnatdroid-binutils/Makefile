@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	binutils
-PORTVERSION=	2.25.1
-PORTREVISION?=	1
+PORTVERSION=	2.26
 CATEGORIES=	lang
 MASTER_SITES=	SOURCEWARE/binutils/releases
 PKGNAMEPREFIX=	gnatdroid-
@@ -14,9 +13,9 @@ COMMENT?=	Infrastructure for C/Ada Android cross-compiler (ARMv7)
 LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	${SYSROOT}>=19:${PORTSDIR}/lang/${SYSROOT} \
-		${LOCALBASE}/lib/libgmp.so:${PORTSDIR}/math/gmp \
-		${LOCALBASE}/lib/libmpfr.so:${PORTSDIR}/math/mpfr
+BUILD_DEPENDS=	${SYSROOT}>=19:lang/${SYSROOT} \
+		${LOCALBASE}/lib/libgmp.so:math/gmp \
+		${LOCALBASE}/lib/libmpfr.so:math/mpfr
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		gmake tar:bzip2

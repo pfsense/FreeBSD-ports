@@ -2,38 +2,32 @@
 # $FreeBSD$
 
 PORTNAME=	flightgear
-PORTVERSION=	3.4.0
-PORTREVISION=	1
+PORTVERSION=	2016.1.1
 CATEGORIES=	games
-# see http://www.flightgear.org/templates.js
-MASTER_SITES=	http://mirrors.ibiblio.org/flightgear/ftp/Source/ \
-		http://ftp.linux.kiev.ua/pub/mirrors/ftp.flightgear.org/flightgear/Source/ \
-		ftp://ftp.kingmont.com/flightsims/flightgear/Source/ \
-		ftp://ftp.de.flightgear.org/pub/fgfs/Source/ \
-		ftp://flightgear.wo0t.de/flightgear-ftp/ftp/Source/
+MASTER_SITES=	SF/flightgear/release-${PORTVERSION:R}
 
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	The FlightGear flight simulator
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
-		libboost_thread.so:${PORTSDIR}/devel/boost-libs \
-		libfltk.so:${PORTSDIR}/x11-toolkits/fltk \
-		libosg.so:${PORTSDIR}/graphics/osg \
-		libspeex.so:${PORTSDIR}/audio/speex
-BUILD_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:${PORTSDIR}/x11-toolkits/plib \
-		${LOCALBASE}/lib/libSimGearCore.a:${PORTSDIR}/devel/simgear
-RUN_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:${PORTSDIR}/x11-toolkits/plib \
-		${LOCALBASE}/lib/libSimGearCore.a:${PORTSDIR}/devel/simgear \
-		${LOCALBASE}/share/flightgear/version:${PORTSDIR}/games/flightgear-data
+LIB_DEPENDS=	libpng.so:graphics/png \
+		libboost_thread.so:devel/boost-libs \
+		libfltk.so:x11-toolkits/fltk \
+		libosg.so:graphics/osg \
+		libspeex.so:audio/speex
+BUILD_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib \
+		${LOCALBASE}/lib/libSimGearCore.a:devel/simgear
+RUN_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib \
+		${LOCALBASE}/lib/libSimGearCore.a:devel/simgear \
+		${LOCALBASE}/share/flightgear/version:games/flightgear-data
 
-USE_XORG=	ice sm x11 xext xft xi xinerama xt xmu
+USE_XORG=	ice sm x11 xext xft xi xinerama xmu xt
 USE_GL=		gl glu glut
-USE_SQLITE=	3
 USE_QT5=	core buildtools qmake widgets
 
-USES=		alias cpe dos2unix cmake compiler jpeg openal:al,alut tar:bzip2
+USES=		alias cmake compiler cpe dos2unix jpeg openal:al,alut sqlite \
+		tar:bzip2
 DOS2UNIX_REGEX=	.*\.(c|h|cxx|cpp|hxx|hpp)
 CMAKE_ARGS+=	-DENABLE_JS_SERVER:BOOL=ON \
 		-DSYSTEM_SQLITE:BOOL=ON \
@@ -44,7 +38,8 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 
 OPTIONS_DEFINE=	DBUS
 OPTIONS_DEFAULT=	DBUS
-DBUS_LIB_DEPENDS=	libdbus-1.so:${PORTSDIR}/devel/dbus
+DBUS_LIB_DEPENDS=	libdbus-1.so:devel/dbus
+DBUS_USES=	pkgconfig
 DBUS_CMAKE_ON=	-DUSE_DBUS:BOOL=ON
 DBUS_CMAKE_OFF=	-DUSE_DBUS:BOOL=OFF
 
@@ -55,7 +50,12 @@ DBUS_CMAKE_OFF=	-DUSE_DBUS:BOOL=OFF
 USE_GCC=	yes
 .endif
 
+post-patch:
+	${MV} "${WRKSRC}/src/GUI/ndb-small-icon .png" \
+		"${WRKSRC}/src/GUI/ndb-small-icon.png"
+
 post-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/utils/js_server/js_server ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/utils/js_server/js_server \
+		${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.post.mk>

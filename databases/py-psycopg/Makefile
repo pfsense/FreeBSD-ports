@@ -12,8 +12,11 @@ DISTNAME=	psycopg-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	High performance Python adapter for PostgreSQL
 
-RUN_DEPENDS=	${DATETIME_DEP}:${PORTSDIR}/lang/py-mx-base
-BUILD_DEPENDS=	${DATETIME_DEP}:${PORTSDIR}/lang/py-mx-base
+DEPRECATED=	This port is obsoleted by databases/py-psycopg2. Last consumer of it marked as deprecated
+EXPIRATION_DATE=	2016-03-25
+
+RUN_DEPENDS=	${DATETIME_DEP}:lang/py-mx-base
+BUILD_DEPENDS=	${DATETIME_DEP}:lang/py-mx-base
 
 USES=		gmake pgsql python
 GNU_CONFIGURE=	yes

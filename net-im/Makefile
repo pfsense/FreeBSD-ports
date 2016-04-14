@@ -14,6 +14,7 @@
     SUBDIR += coccinella
     SUBDIR += convey
     SUBDIR += corebird
+    SUBDIR += cutegram
     SUBDIR += echat
     SUBDIR += ejabberd
     SUBDIR += ekiga
@@ -62,6 +63,7 @@
     SUBDIR += libnice-gst010
     SUBDIR += libnice-gst1
     SUBDIR += libpurple
+    SUBDIR += libqtelegram-ae
     SUBDIR += libstrophe
     SUBDIR += libtelepathy
     SUBDIR += libyahoo2
@@ -145,6 +147,7 @@
     SUBDIR += qwit-devel
     SUBDIR += qxmpp
     SUBDIR += ramblercontacts
+    SUBDIR += ricochet
     SUBDIR += rubygem-earthquake
     SUBDIR += rubygem-hipchat
     SUBDIR += rubygem-lita
@@ -159,6 +162,7 @@
     SUBDIR += teamwords
     SUBDIR += telegram
     SUBDIR += telegram-purple
+    SUBDIR += telegramqml
     SUBDIR += telepathy-butterfly
     SUBDIR += telepathy-farsight
     SUBDIR += telepathy-farstream

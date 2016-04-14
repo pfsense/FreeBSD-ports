@@ -12,7 +12,7 @@ COMMENT=	Tool for backing up MySQL databases
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	p5-DBI>=1.48:${PORTSDIR}/databases/p5-DBI
+RUN_DEPENDS=	p5-DBI>=1.48:databases/p5-DBI
 
 OPTIONS_DEFINE=	APACHE LIGHTTPD
 OPTIONS_DEFAULT=APACHE
@@ -23,12 +23,13 @@ NO_BUILD=	yes
 USE_MYSQL=	yes
 USE_PHP=	ftp mysql session zlib
 USES=		cpe perl5 zip
+IGNORE_WITH_PHP=	70
 
 PLIST_SUB=	WWWGRP=${WWWGRP} WWWOWN=${WWWOWN}
 WRKSRC=		${WRKDIR}/msd${PORTVERSION}
 
 APACHE_USE=		APACHE_RUN=22+
-LIGHTTPD_RUN_DEPENDS=	${LOCALBASE}/sbin/lighttpd:${PORTSDIR}/www/lighttpd
+LIGHTTPD_RUN_DEPENDS=	${LOCALBASE}/sbin/lighttpd:www/lighttpd
 
 do-install:
 	${MKDIR} ${STAGEDIR}${WWWDIR}/

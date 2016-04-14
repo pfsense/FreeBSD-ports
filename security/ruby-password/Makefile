@@ -3,7 +3,7 @@
 
 PORTNAME=	password
 PORTVERSION=	0.5.3
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	security ruby
 MASTER_SITES=	http://www.caliban.org/files/ruby/
 PKGNAMEPREFIX=	${RUBY_PKGNAMEPREFIX}
@@ -14,15 +14,15 @@ MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Ruby library to create, verify, and manipulate passwords
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
-LIB_DEPENDS=	libcrack.so:${PORTSDIR}/security/cracklib
-RUN_DEPENDS=	rubygem-ruby-termios>=0:${PORTSDIR}/comms/rubygem-ruby-termios
+LIB_DEPENDS=	libcrack.so:security/cracklib
+RUN_DEPENDS=	rubygem-ruby-termios>=0:comms/rubygem-ruby-termios
 
 USE_RUBY=	yes
 USE_RUBY_EXTCONF=	yes
 RUBY_SHEBANG_FILES=	example/*
 SADIR=	lib/ruby/site_ruby/${RUBY_VER}/${RUBY_ARCH}
 
-CONFIGURE_ARGS=	--with-crack-dict="${LOCALBASE}/libdata/cracklib/pw_dict.pwd"
+CONFIGURE_ARGS=	--with-crack-dict="${LOCALBASE}/libdata/cracklib/cracklib-words.pwd"
 INSTALL_TARGET=	site-install
 MAKE_ARGS=	INSTALL_PROG="${INSTALL_PROGRAM}" \
 		INSTALL_DATA="${INSTALL_DATA}"

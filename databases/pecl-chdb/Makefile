@@ -13,15 +13,15 @@ COMMENT=	CHDB extension
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${LOCALBASE}/lib/libcmph.so:${PORTSDIR}/devel/cmph
-RUN_DEPENDS=	${LOCALBASE}/lib/libcmph.so:${PORTSDIR}/devel/cmph
+BUILD_DEPENDS=	${LOCALBASE}/lib/libcmph.so:devel/cmph
+RUN_DEPENDS=	${LOCALBASE}/lib/libcmph.so:devel/cmph
 
 USE_PHP=	yes
 USE_PHP_BUILD=	yes
 USE_PHPIZE=	yes
 USE_PHPEXT=	yes
 PHP_MODNAME=	chdb
-IGNORE_WITH_PHP=5
+IGNORE_WITH_PHP=	70
 
 CFLAGS+=	-L${LOCALBASE}/lib
 

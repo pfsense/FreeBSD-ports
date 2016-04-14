@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nsca-ng
-PORTVERSION=	1.2
+PORTVERSION=	1.4
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://www.nsca-ng.org/download/ http://www.nsca-ng.org/download/
 
@@ -12,10 +12,10 @@ COMMENT=	Nagios Service Check Acceptor
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libev.so:${PORTSDIR}/devel/libev
+LIB_DEPENDS=	libev.so:devel/libev
 
 .if !defined(PKGNAMESUFFIX)
-LIB_DEPENDS+=	libconfuse.so:${PORTSDIR}/devel/libconfuse
+LIB_DEPENDS+=	libconfuse.so:devel/libconfuse
 .endif
 
 CONFLICTS?=	nsca-2.* nsca27-2.*

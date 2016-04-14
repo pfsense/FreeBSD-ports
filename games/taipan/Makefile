@@ -3,14 +3,15 @@
 
 PORTNAME=	taipan
 PORTVERSION=	0.9
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	SUNSITE/games/textrpg
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Classic role-playing game from the 1980s
 
-MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}"
+USES=		ncurses
+MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}" LIBS="${LDFLAGS} -lncurses"
 
 PORTDOCS=	README
 PLIST_FILES=	bin/taipan

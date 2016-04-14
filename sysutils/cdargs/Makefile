@@ -10,9 +10,10 @@ MASTER_SITES=	http://www.skamphausen.de/downloads/cdargs/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Navigate the filesystem using a menu interface or a bookmark system
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=		ncurses
 GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/cdargs man/man1/cdargs.1.gz

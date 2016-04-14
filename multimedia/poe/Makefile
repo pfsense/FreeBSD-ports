@@ -10,9 +10,9 @@ DISTNAME=	Poe-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Vorbis comment editor for GNUstep
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 
-LIB_DEPENDS=	libvorbis.so:${PORTSDIR}/audio/libvorbis
+LIB_DEPENDS=	libvorbis.so:audio/libvorbis
 
 USES=		gnustep
 USE_GNUSTEP=	back build

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	rdoc
-PORTVERSION=	4.2.1
+PORTVERSION=	4.2.2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -12,7 +12,7 @@ LICENSE=	GPLv2 RUBY
 LICENSE_COMB=	dual
 LICENSE_FILE_RUBY=	${WRKSRC}/LICENSE.rdoc
 
-RUN_DEPENDS=	rubygem-json>=1.4:${PORTSDIR}/devel/rubygem-json
+RUN_DEPENDS=	rubygem-json>=1.4:devel/rubygem-json
 
 NO_ARCH=	yes
 USE_RUBY=	yes

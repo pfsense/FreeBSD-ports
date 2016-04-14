@@ -1,48 +1,37 @@
 # $FreeBSD$
 
 PORTNAME=	gitolite
-PORTVERSION=	3.6.1
-PORTREVISION=	1
+PORTVERSION=	3.6.5
+DISTVERSIONPREFIX=v
 PORTEPOCH=	1
 CATEGORIES=	devel
-MASTER_SITES=	GH \
-		LOCAL/milki \
-		LOCAL/tdb
+MASTER_SITES=	GH
 
-MAINTAINER=	milki@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Access control layer on top of git
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	git>=0:${PORTSDIR}/devel/git \
-		p5-JSON>=0:${PORTSDIR}/converters/p5-JSON
+RUN_DEPENDS=	git>=0:devel/git \
+		p5-JSON>=0:converters/p5-JSON
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	sitaramc
-GH_TAGNAME=	3455375
 
 CONFLICTS=	gitolite-[^3]*
 
 USES=		cpe perl5
-
 CPE_VENDOR=	sitaram_chamarty
+NO_ARCH=	yes
 
 SUB_FILES=	pkg-message
 
 OPTIONS_DEFINE=	GITUSER DOCS
+OPTIONS_SUB=	yes
 
 GITUSER_DESC=	Create git user as gitolite provider
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MGITUSER}
-USERS=		git
-GROUPS=		${USERS}
-PLIST_SUB+=	GITUSER=""
-.else
-PLIST_SUB+=	GITUSER="@comment "
-.endif
+GITUSER_VARS=	USERS=git GROUPS=git
 
 post-patch:
 	@${FIND} ${WRKSRC} \
@@ -53,7 +42,7 @@ post-patch:
 		-exec ${REINPLACE_CMD} -Ee 's|#!/bin/bash|#!${LOCALBASE}/bin/bash|' {} \;
 
 do-build:
-	echo "v${PORTVERSION}-0-g${GH_TAGNAME}" > ${WRKSRC}/src/VERSION
+	echo "${GH_TAGNAME}" > ${WRKSRC}/src/VERSION
 	${MKDIR} ${WRKSRC}/lib
 	${MV} ${WRKSRC}/src/lib/Gitolite ${WRKSRC}/lib/
 	${RMDIR} ${WRKSRC}/src/lib
@@ -69,8 +58,9 @@ do-install:
 	(cd ${WRKSRC}/lib && ${COPYTREE_SHARE} Gitolite ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}/)
 	${LN} -s ${PREFIX}/libexec/gitolite/gitolite ${STAGEDIR}${PREFIX}/bin/gitolite
 
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKSRC}/README.txt ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKSRC}/CHANGELOG ${STAGEDIR}${DOCSDIR}
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README.markdown ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/CHANGELOG ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

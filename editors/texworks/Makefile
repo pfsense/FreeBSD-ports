@@ -3,6 +3,7 @@
 
 PORTNAME=	texworks
 PORTVERSION=	0.4.6
+PORTREVISION=	1
 DISTVERSIONPREFIX=	release-
 CATEGORIES=	editors
 
@@ -11,8 +12,8 @@ COMMENT=	Simple TeX front-end program
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	hunspell:${PORTSDIR}/textproc/hunspell
-LIB_DEPENDS=	libpoppler-qt4.so:${PORTSDIR}/graphics/poppler-qt4
+BUILD_DEPENDS=	hunspell:textproc/hunspell
+LIB_DEPENDS=	libpoppler-qt4.so:graphics/poppler-qt4
 
 USES=		pkgconfig qmake
 USE_GITHUB=	yes

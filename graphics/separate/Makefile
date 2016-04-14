@@ -12,13 +12,12 @@ DISTNAME=	${PORTNAME}+-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	CMYK plugin for The GIMP
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-OPTIONS_DEFINE=	DOCS EXAMPLES
-
-BUILD_DEPENDS=	gccmakedep:${PORTSDIR}/devel/gccmakedep
-LIB_DEPENDS=	liblcms.so.1:${PORTSDIR}/graphics/lcms \
-		libgimp-2.0.so:${PORTSDIR}/graphics/gimp-app
+BUILD_DEPENDS=	gccmakedep:devel/gccmakedep
+LIB_DEPENDS=	liblcms.so.1:graphics/lcms \
+		libgimp-2.0.so:graphics/gimp-app
 
 USES=		gettext-tools gmake pkgconfig zip
 
@@ -35,10 +34,10 @@ PLIST_FILES+=	share/locale/${lang}/LC_MESSAGES/gimp20-separate.mo
 PORTDOCS=	README*
 PORTEXAMPLES=	qproof.scm qexport.scm
 
-MAKE_ENV+=	TARGETS="${BIN_TARGETS}" \
+MAKE_ENV=	TARGETS="${BIN_TARGETS}" \
 		PREFIX=${STAGEDIR}${PREFIX}
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-patch:
 	@${REINPLACE_CMD} \
@@ -53,15 +52,14 @@ do-install:
 .for lang in ${L10N_TARGETS}
 	${INSTALL_DATA} ${WRKSRC}/po/${lang}.gmo ${STAGEDIR}${PREFIX}/share/locale/${lang}/LC_MESSAGES/gimp20-separate.mo
 .endfor
-.if ${PORT_OPTIONS:MDOCS}
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
-.endif
-.if ${PORT_OPTIONS:MEXAMPLES}
+
+do-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	cd ${WRKSRC}/sample-scripts && \
-	    ${INSTALL_DATA} ${PORTEXAMPLES} ${STAGEDIR}${EXAMPLESDIR}
-.endif
-	@${CAT} pkg-message
+		${INSTALL_DATA} ${PORTEXAMPLES} ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

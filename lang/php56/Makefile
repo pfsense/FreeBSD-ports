@@ -19,7 +19,7 @@ NO_OPTIONS_SORT=yes
 .if !defined(PKGNAMESUFFIX)
 USE_AUTOTOOLS=	autoconf
 
-LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
+LIB_DEPENDS=	libpcre.so:devel/pcre
 
 CONFIGURE_ARGS+=--with-layout=GNU \
 		--localstatedir=/var \
@@ -52,7 +52,7 @@ MAILHEAD_DESC=	Enable mail header patch
 LINKTHR_DESC=	Link thread lib (for threaded extensions)
 ZTS_DESC=	Force Zend Thread Safety (ZTS) build
 
-CONFLICTS=	php53-5* php54-5* php55-5* php5-5*
+CONFLICTS=	php55-5* php70-*
 
 DESTDIRNAME=	INSTALL_ROOT
 

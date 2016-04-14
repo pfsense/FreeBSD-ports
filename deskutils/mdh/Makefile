@@ -10,7 +10,7 @@ MASTER_SITES=	http://www.gozer.org/programs/gtk/files/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GTK2-based toolbar, like a smaller GNOME panel
 
-LICENSE=	GPLv2 # (or later)
+LICENSE=	GPLv2+
 
 USE_GNOME=	gtk20
 USES=		gmake pkgconfig tar:bzip2
@@ -23,10 +23,10 @@ LIBS+=		-L${LOCALBASE}/lib -lX11
 OPTIONS_DEFINE=	CURL DOCS GTOP
 OPTIONS_DEFAULT=	CURL GTOP
 
-CURL_LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
+CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
 CURL_CONFIGURE_OFF=	--disable-curl
 
-GTOP_LIB_DEPENDS=	libgtop-2.0.so:${PORTSDIR}/devel/libgtop
+GTOP_LIB_DEPENDS=	libgtop-2.0.so:devel/libgtop
 GTOP_CONFIGURE_OFF=	--disable-gtop
 
 post-patch:

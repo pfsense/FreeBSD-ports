@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	dmd
-PKGNAMESUFFIX=	3
-PORTVERSION=	2.069.2
+PKGNAMESUFFIX=	2
+PORTVERSION=	2.070.2
 CATEGORIES=	lang
 MASTER_SITES=	http://ftp.digitalmars.com/
 DISTNAME=	dmd.${PORTVERSION}
@@ -65,7 +65,6 @@ post-patch:
 			  -e "s|\\\BR|.BR|"		\
 		${WRKDIR}/dmd2/man/man1/dmd.1		\
 		${WRKDIR}/dmd2/man/man5/dmd.conf.5
-	@${REINPLACE_CMD} -e '/^SYSCONFDIR=/s|/etc/|${PREFIX}/etc/|' ${WRKSRC}/posix.mak
 	@${REINPLACE_CMD} -e "s|%@P%/../../src/phobos|${MODULEDIR}|"	\
 			  -e "s|%@P%/../lib|${PREFIX}/lib|"		\
 			  -e "s|%@P%/../../src/druntime|${PREFIX}/include/d/druntime|"	\

@@ -1,4 +1,5 @@
 bin/tilda
+share/appdata/tilda.appdata.xml
 share/applications/tilda.desktop
 share/locale/bg/LC_MESSAGES/tilda.mo
 share/locale/ca/LC_MESSAGES/tilda.mo
@@ -26,4 +27,3 @@ share/pixmaps/tilda.png
 %%PORTDOCS%%%%DOCSDIR%%/HACKING.md
 %%PORTDOCS%%%%DOCSDIR%%/README.md
 %%PORTDOCS%%%%DOCSDIR%%/TODO.md
-%%PORTDOCS%%@dir %%DOCSDIR%%

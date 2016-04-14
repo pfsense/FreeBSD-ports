@@ -10,13 +10,14 @@ MASTER_SITES=	SF/radius-engine/ld21/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple game about escaping from work
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/License.txt
 
-BUILD_DEPENDS=	${LOCALBASE}/lib/libradius-engine.a:${PORTSDIR}/graphics/radius-engine
-LIB_DEPENDS=	liblua-5.1.so:${PORTSDIR}/lang/lua51 \
-		libpng.so:${PORTSDIR}/graphics/png \
-		libphysfs.so.1:${PORTSDIR}/devel/physfs
-RUN_DEPENDS=	zip:${PORTSDIR}/archivers/zip
+BUILD_DEPENDS=	${LOCALBASE}/lib/libradius-engine.a:graphics/radius-engine
+LIB_DEPENDS=	liblua-5.1.so:lang/lua51 \
+		libpng.so:graphics/png \
+		libphysfs.so.1:devel/physfs
+RUN_DEPENDS=	zip:archivers/zip
 
 USES=		pkgconfig
 USE_SDL=	sdl sound
@@ -28,12 +29,12 @@ PLIST_FILES=	bin/${PORTNAME} \
 		share/applications/${PORTNAME}.desktop \
 		share/pixmaps/${PORTNAME}.png \
 		%%DATADIR%%/${PORTNAME}.zip
-PLIST_DIRS=	%%DATADIR%%
 
 PORTDOCS=	ChangeLog
+
 OPTIONS_DEFINE=	DOCS
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 

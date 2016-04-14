@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	octave-forge-financial
-PORTVERSION=	0.4.0
-PORTREVISION=	5
+PORTVERSION=	0.5.0
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -14,9 +13,9 @@ LICENSE_FILE=	${WRKDIR}/${OCTSRC}/COPYING
 
 # OCTSRC is the name of the directory of the package.
 # It is usually ${OCTAVE_PKGNAME} or ${DISTNAME}.
-OCTSRC=		${OCTAVE_PKGNAME}
+OCTSRC=		${DISTNAME}
 
-RUN_DEPENDS+=	${TARBALLS_DIR}/io.tar.gz:${PORTSDIR}/math/octave-forge-io
+RUN_DEPENDS+=	${TARBALLS_DIR}/io.tar.gz:math/octave-forge-io
 
 .include "${.CURDIR}/../../Mk/bsd.octave.mk"
 

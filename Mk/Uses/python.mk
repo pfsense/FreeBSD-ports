@@ -6,29 +6,32 @@
 #
 # Feature:	python
 # Usage:	USES=python or USES=python:args
-# Valid ARGS:	<version>, build, run
+# Valid ARGS:	<version>, build, run, test
 #
 # version 	If your port requires only some set of Python versions, you
 # 		can set this to [min]-[max] or min+ or -max or as an
-# 		explicit version or as a meta port version (eg. 3.2-3.3 for
-# 		[min]-[max], 2.7+ or -3.2 for min+ and -max, 2.7 for an
+# 		explicit version or as a meta port version (eg. 3.3-3.4 for
+# 		[min]-[max], 2.7+ or -3.3 for min+ and -max, 2.7 for an
 # 		explicit version or 3 for a meta port version). Example:
 #
 #			USES=python:2.7		# Only use Python 2.7
-#			USES=python:3.2+	# Use Python 3.2 or newer
-#			USES=python:3.2-3.3	# Use Python 3.2 or 3.3
-#			USES=python:-3.2	# Use any Python up to 3.2
+#			USES=python:3.3+	# Use Python 3.3 or newer
+#			USES=python:3.3-3.4	# Use Python 3.3 or 3.4
+#			USES=python:-3.3	# Use any Python up to 3.3
 #			USES=python:2		# Use the Python 2 meta port
 #			USES=python		# Use the set default Python
 #						# version
 #
 # build		Indicates that Python is needed at build time and adds
-#		it as BUILD_DEPENDS.
+#		it to BUILD_DEPENDS.
 # run		Indicates that Python is needed at run time and adds
-#		it as RUN_DEPENDS.
+#		it to RUN_DEPENDS.
+# test		Indicates that Python is needed at test time and adds
+# 		it to TEST_DEPENDS.
 #
-# If build and run are omitted, Python will be added as BUILD_DEPENDS and
-# RUN_DEPENDS. PYTHON_NO_DEPENDS can be set to not add any dependencies.
+# If build, run and test are omitted, Python will be added as BUILD_DEPENDS,
+# RUN_DEPENDS and TEST_DEPENDS. PYTHON_NO_DEPENDS can be set to not add any
+# dependencies.
 #
 # Variables, which can be set by a user:
 #
@@ -191,8 +194,8 @@
 #	PYTHON_LIBDIR=${PYTHONPREFIX_LIBDIR:S;${PREFIX}/;;}
 #	PYTHON_PLATFORM=${PYTHON_PLATFORM}
 #	PYTHON_SITELIBDIR=${PYTHONPREFIX_SITELIBDIR:S;${PREFIX}/;;}
-#	PYTHON_VERSION=${PYTHON_VERSION}
 #	PYTHON_VER=${PYTHON_VER}
+#	PYTHON_VERSION=${PYTHON_VERSION}
 #
 #
 # Deprecated variables, which exist for compatibility and will be removed
@@ -217,7 +220,7 @@
 _INCLUDE_USES_PYTHON_MK=	yes
 
 # What Python version and what Python interpreters are currently supported?
-_PYTHON_VERSIONS=		2.7 3.4 3.5 3.3 3.2	# preferred first
+_PYTHON_VERSIONS=		2.7 3.4 3.5 3.3	# preferred first
 _PYTHON_PORTBRANCH=		2.7		# ${_PYTHON_VERSIONS:[1]}
 _PYTHON_BASECMD=		${LOCALBASE}/bin/python
 _PYTHON_RELPORTDIR=		${PORTSDIR}/lang/python
@@ -231,6 +234,7 @@ _PYTHON_FEATURE_${var:tu}=	yes
 # pollutes the build/run dependency detection
 .undef _PYTHON_BUILD_DEP
 .undef _PYTHON_RUN_DEP
+.undef _PYTHON_TEST_DEP
 _PYTHON_ARGS=		${python_ARGS:S/,/ /g}
 .if ${_PYTHON_ARGS:Mbuild}
 _PYTHON_BUILD_DEP=	yes
@@ -240,13 +244,18 @@ _PYTHON_ARGS:=		${_PYTHON_ARGS:Nbuild}
 _PYTHON_RUN_DEP=	yes
 _PYTHON_ARGS:=		${_PYTHON_ARGS:Nrun}
 .endif
+.if ${_PYTHON_ARGS:Mtest}
+_PYTHON_TEST_DEP=	yes
+_PYTHON_ARGS:=		${_PYTHON_ARGS:Ntest}
+.endif
 
-# The port does not specify a build or run dependency, assume both are
+# The port does not specify a build, run or test dependency, assume all are
 # required.
 .if !defined(_PYTHON_BUILD_DEP) && !defined(_PYTHON_RUN_DEP) && \
-    !defined(PYTHON_NO_DEPENDS)
+    !defined(_PYTHON_TEST_DEP) && !defined(PYTHON_NO_DEPENDS)
 _PYTHON_BUILD_DEP=	yes
 _PYTHON_RUN_DEP=	yes
+_PYTHON_TEST_DEP=	yes
 .endif
 
 # Determine version number of Python to use
@@ -318,10 +327,8 @@ _WANTS_META_PORT=	3
 # hint. Just warn maintainers, if the versions do not match
 # (_PYTHON_VERSION_NONSUPPORTED).
 _PYTHON_VERSION:=	${PYTHON_VERSION:S/^python//}
-_PYTHON_CMD=		${LOCALBASE}/bin/${PYTHON_VERSION}
 .else
 _PYTHON_VERSION:=	${PYTHON_DEFAULT_VERSION:S/^python//}
-_PYTHON_CMD=		${LOCALBASE}/bin/${PYTHON_DEFAULT_VERSION}
 .endif # defined(PYTHON_VERSION)
 
 # Validate Python version whether it meets the version restriction.
@@ -353,7 +360,6 @@ __VER=		${ver}
 	!(!empty(_PYTHON_VERSION_MAXIMUM) && ( \
 		${__VER} > ${_PYTHON_VERSION_MAXIMUM}))
 _PYTHON_VERSION=	${ver}
-_PYTHON_CMD=		${LOCALBASE}/bin/python${ver}
 .endif
 .endfor
 .if !defined(_PYTHON_VERSION)
@@ -366,7 +372,9 @@ IGNORE=		needs an unsupported version of Python
 # try to find a different one, if the passed version fits into
 # the supported version range.
 PYTHON_VERSION?=	python${_PYTHON_VERSION}
+.if !defined(PYTHON_NO_DEPENDS)
 DEPENDS_ARGS+=		PYTHON_VERSION=${PYTHON_VERSION}
+.endif
 
 # NOTE:
 #
@@ -457,8 +465,8 @@ UNIQUE_FIND_SUFFIX_FILES=	\
 _CURRENTPORT:=	${PKGNAMEPREFIX}${PORTNAME}${PKGNAMESUFFIX}
 .if defined(_PYTHON_FEATURE_DISTUTILS) && \
 	${_CURRENTPORT:S/${PYTHON_SUFFIX}$//} != ${PYTHON_PKGNAMEPREFIX}setuptools
-BUILD_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}setuptools${PYTHON_SUFFIX}>0:${PORTSDIR}/devel/py-setuptools${PYTHON_SUFFIX}
-RUN_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}setuptools${PYTHON_SUFFIX}>0:${PORTSDIR}/devel/py-setuptools${PYTHON_SUFFIX}
+BUILD_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}setuptools${PYTHON_SUFFIX}>0:devel/py-setuptools${PYTHON_SUFFIX}
+RUN_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}setuptools${PYTHON_SUFFIX}>0:devel/py-setuptools${PYTHON_SUFFIX}
 .endif
 
 # distutils support
@@ -544,9 +552,9 @@ CONFIGURE_ENV+=	PYTHON="${PYTHON_CMD}"
 CMAKE_ARGS+=	-DPython_ADDITIONAL_VERSIONS=${PYTHON_VER}
 
 # Python 3rd-party modules
-PYGAME=		${PYTHON_PKGNAMEPREFIX}game>0:${PORTSDIR}/devel/py-game
-PYNUMERIC=	${PYTHON_SITELIBDIR}/Numeric/Numeric.py:${PORTSDIR}/math/py-numeric
-PYNUMPY=	${PYTHON_SITELIBDIR}/numpy/core/numeric.py:${PORTSDIR}/math/py-numpy
+PYGAME=		${PYTHON_PKGNAMEPREFIX}game>0:devel/py-game
+PYNUMERIC=	${PYTHON_SITELIBDIR}/Numeric/Numeric.py:math/py-numeric
+PYNUMPY=	${PYTHON_SITELIBDIR}/numpy/core/numeric.py:math/py-numpy
 
 # dependencies
 .if defined(_PYTHON_BUILD_DEP)
@@ -559,6 +567,12 @@ BUILD_DEPENDS+=	python${_WANTS_META_PORT}:${_PYTHON_RELPORTDIR}${_WANTS_META_POR
 RUN_DEPENDS+=	${PYTHON_CMD}:${PYTHON_PORTSDIR}
 .if defined(_WANTS_META_PORT)
 RUN_DEPENDS+=	python${_WANTS_META_PORT}:${_PYTHON_RELPORTDIR}${_WANTS_META_PORT}
+.endif
+.endif
+.if defined(_PYTHON_TEST_DEP)
+TEST_DEPENDS+=	${PYTHON_CMD}:${PYTHON_PORTSDIR}
+.if defined(_WANTS_META_PORT)
+TEST_DEPENDS+=	python${_WANTS_META_PORT}:${_PYTHON_RELPORTDIR}${_WANTS_META_PORT}
 .endif
 .endif
 
@@ -574,8 +588,8 @@ PLIST_SUB+=	PYTHON_INCLUDEDIR=${PYTHONPREFIX_INCLUDEDIR:S;${PREFIX}/;;} \
 		PYTHON_LIBDIR=${PYTHONPREFIX_LIBDIR:S;${PREFIX}/;;} \
 		PYTHON_PLATFORM=${PYTHON_PLATFORM} \
 		PYTHON_SITELIBDIR=${PYTHONPREFIX_SITELIBDIR:S;${PREFIX}/;;} \
-		PYTHON_VERSION=python${_PYTHON_VERSION} \
-		PYTHON_VER=${PYTHON_VER}
+		PYTHON_VER=${PYTHON_VER} \
+		PYTHON_VERSION=python${_PYTHON_VERSION}
 
 _USES_POST+=	python
 .endif # _INCLUDE_USES_PYTHON_MK

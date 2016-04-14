@@ -1,21 +1,21 @@
 # $FreeBSD$
 
 PORTNAME=	aquaria
-PORTVERSION=	1.002
 DISTVERSIONPREFIX=	OSE-v
-PORTREVISION=	1
+DISTVERSION=	1.002-20
+DISTVERSIONSUFFIX=	-g6971e78
 CATEGORIES=	games
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Underwater 2D fantasy action-adventure (game engine)
 
-LICENSE=	GPLv2 # or any later version
+LICENSE=	GPLv2+
 
-BUILD_DEPENDS=	${LOCALBASE}/include/glm/glm.hpp:${PORTSDIR}/math/glm
-LIB_DEPENDS=	libvorbisfile.so:${PORTSDIR}/audio/libvorbis \
-		libftgl.so:${PORTSDIR}/graphics/ftgl \
-		libpng.so:${PORTSDIR}/graphics/png \
-		libtinyxml2.so:${PORTSDIR}/textproc/tinyxml2
+BUILD_DEPENDS=	${LOCALBASE}/include/glm/glm.hpp:math/glm
+LIB_DEPENDS=	libvorbisfile.so:audio/libvorbis \
+		libftgl.so:graphics/ftgl \
+		libpng.so:graphics/png \
+		libtinyxml2.so:textproc/tinyxml2
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	AquariaOSE

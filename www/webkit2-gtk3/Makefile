@@ -3,6 +3,7 @@
 
 PORTNAME=	webkit
 PORTVERSION=	2.8.5
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	http://webkitgtk.org/releases/
 PKGNAMESUFFIX=	2-gtk3
@@ -11,29 +12,28 @@ DISTNAME=	${PORTNAME}gtk-${PORTVERSION}
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Opensource browser engine using the GTK+ 3 toolkit
 
-BUILD_DEPENDS=	geoclue>=0:${PORTSDIR}/net/geoclue
-LIB_DEPENDS=	libenchant.so:${PORTSDIR}/textproc/enchant \
-		libfontconfig.so:${PORTSDIR}/x11-fonts/fontconfig \
-		libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libwebp.so:${PORTSDIR}/graphics/webp \
-		libpng.so:${PORTSDIR}/graphics/png \
-		libsecret-1.so:${PORTSDIR}/security/libsecret \
-		libicutu.so:${PORTSDIR}/devel/icu \
-		libharfbuzz.so:${PORTSDIR}/print/harfbuzz \
-		libsoup-2.4.so:${PORTSDIR}/devel/libsoup
-RUN_DEPENDS=	geoclue>=0:${PORTSDIR}/net/geoclue
+BUILD_DEPENDS=	geoclue>=0:net/geoclue
+LIB_DEPENDS=	libenchant.so:textproc/enchant \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
+		libwebp.so:graphics/webp \
+		libpng.so:graphics/png \
+		libsecret-1.so:security/libsecret \
+		libicutu.so:devel/icu \
+		libharfbuzz.so:print/harfbuzz \
+		libsoup-2.4.so:devel/libsoup
+RUN_DEPENDS=	geoclue>=0:net/geoclue
 
 PORTSCOUT=	limitw:1,even
 
 USE_GSTREAMER1=	yes
 USE_XORG=	x11 xext ice
 USES=		bison cmake compiler:c++11-lib gettext gmake gperf jpeg perl5 \
-		pkgconfig python:2 tar:xz
+		pkgconfig python:2 sqlite tar:xz
 USE_RUBY=	yes
 RUBY_NO_RUN_DEPENDS=yes
 USE_GNOME=	cairo gtk20 gtk30 introspection:build libxml2 libxslt
 USE_GL=		gl egl
-USE_SQLITE=	3
 USE_PERL5=	build
 USE_LDCONFIG=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -60,7 +60,7 @@ CFLAGS+=	-mminimal-toc
 .endif
 
 .if ${OSVERSION} < 1000033
-BUILD_DEPENDS+=	flex>=0:${PORTSDIR}/textproc/flex
+BUILD_DEPENDS+=	flex>=0:textproc/flex
 CONFIGURE_ENV+=	FLEX_PATH="${LOCALBASE}/bin/flex"
 .endif
 

@@ -12,10 +12,10 @@ COMMENT=	Geographic objects support for PostgreSQL databases
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libproj.so:${PORTSDIR}/graphics/proj \
-		libgeos.so:${PORTSDIR}/graphics/geos \
-		libjson-c.so:${PORTSDIR}/devel/json-c
-RUN_DEPENDS=	postmaster:${PORTSDIR}/databases/postgresql${PGSQL_VER_NODOT}-server
+LIB_DEPENDS=	libproj.so:graphics/proj \
+		libgeos.so:graphics/geos \
+		libjson-c.so:devel/json-c
+RUN_DEPENDS=	postmaster:databases/postgresql${PGSQL_VER_NODOT}-server
 
 CONFLICTS=	postgis-1.* postgis-2.0.*
 
@@ -41,10 +41,10 @@ LOADERGUI_CONFIGURE_WITH=	gui
 LOADERGUI_USE=	GNOME=gtk20
 RASTER_USES=	alias
 RASTER_CONFIGURE_WITH=	raster
-RASTER_LIB_DEPENDS=		libgdal.so:${PORTSDIR}/graphics/gdal
+RASTER_LIB_DEPENDS=		libgdal.so:graphics/gdal
 RASTER_CONFIGURE_ON=	--with-gdalconfig=${LOCALBASE}/bin/gdal-config
 TOPOLOGY_CONFIGURE_WITH=	topology
-SFCGAL_LIB_DEPENDS=	libSFCGAL.so:${PORTSDIR}/databases/sfcgal
+SFCGAL_LIB_DEPENDS=	libSFCGAL.so:databases/sfcgal
 SFCGAL_CONFIGURE_ON=	--with-sfcgal=${LOCALBASE}/bin/sfcgal-config
 SFCGAL_CONFIGURE_OFF=	--without-sfcgal
 
@@ -57,14 +57,14 @@ post-patch:
 pre-configure:
 	@${SH} ${PKGINSTALL} ${PORTNAME} PRE-INSTALL
 
-post-install: .SILENT
-	${MKDIR} ${STAGEDIR}/${DATADIR}/tiger_2011
-	(cd ${WRKSRC}/extras/tiger_geocoder/tiger_2011/ && ${COPYTREE_SHARE} \* ${STAGEDIR}/${DATADIR}/tiger_2011/ "! ( -name *\.orig -o -name *\.bak )" )
-	${MKDIR} ${STAGEDIR}/${DATADIR}/utils
-	(cd ${WRKSRC}/utils/ && ${COPYTREE_SHARE} \* ${STAGEDIR}/${DATADIR}/utils/ "! ( -name *\.orig -o -name *\.bak )" )
-	${STRIP_CMD} ${STAGEDIR}/${PREFIX}/bin/shp2pgsql
-	${STRIP_CMD} ${STAGEDIR}/${PREFIX}/bin/pgsql2shp
-	${STRIP_CMD} ${STAGEDIR}/${PREFIX}/lib/liblwgeom-${PORTVERSION}.so
-	${STRIP_CMD} ${STAGEDIR}/${PREFIX}/lib/postgresql/postgis-2.1.so
+post-install:
+	${MKDIR} ${STAGEDIR}${DATADIR}/tiger_2011
+	(cd ${WRKSRC}/extras/tiger_geocoder/tiger_2011/ && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/tiger_2011/ "! ( -name *\.orig -o -name *\.bak )" )
+	${MKDIR} ${STAGEDIR}${DATADIR}/utils
+	(cd ${WRKSRC}/utils/ && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/utils/ "! ( -name *\.orig -o -name *\.bak )" )
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/shp2pgsql
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/pgsql2shp
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/liblwgeom-${PORTVERSION}.so
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/postgresql/postgis-2.1.so
 
 .include <bsd.port.mk>

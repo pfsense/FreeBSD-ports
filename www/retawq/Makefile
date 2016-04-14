@@ -3,14 +3,14 @@
 
 PORTNAME=	retawq
 DISTVERSION=	0.2.6c
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	www ipv6
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-0.2.6c
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Interactive, multi-threaded web browser for text terminals
 
-USES=		gettext
+USES=		gettext ncurses
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--path-archprefix=${PREFIX} --path-prefix=${PREFIX} \
 		--enable-i18n --enable-local-cgi --enable-ipv6
@@ -31,7 +31,7 @@ OPTIONS_RADIO=	BACKEND
 BACKEND_DESC=	SSL Backend
 OPTIONS_RADIO_BACKEND=	OPENSSL GNUTLS
 
-GNUTLS_LIB_DEPENDS=	libgnutls.so:${PORTSDIR}/security/gnutls
+GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 GNUTLS_CONFIGURE_ON=	--set-tls=1
 
 OPENSSL_USE=		OPENSSL=yes

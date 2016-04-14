@@ -10,8 +10,9 @@ MASTER_SITES=	http://aitoweb.world.coocan.jp/skkfep/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SKK-like Kana-to-Kanji FrontEnd Processor
 
-RUN_DEPENDS=	ja-skk>0:${PORTSDIR}/japanese/skk
+RUN_DEPENDS=	ja-skk>0:japanese/skk
 
+USES=		ncurses
 CFLAGS+=	-Wno-return-type
 
 PLIST_FILES=	bin/skkfep man/man1/skkfep.1.gz

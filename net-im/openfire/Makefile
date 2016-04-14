@@ -2,18 +2,18 @@
 # $FreeBSD$
 
 PORTNAME=	openfire
-PORTVERSION=	3.10.2
+PORTVERSION=	4.0.2
 PORTEPOCH=	1
 CATEGORIES=	net-im java
 MASTER_SITES=	http://download.igniterealtime.org/openfire/
 DISTNAME=	${PORTNAME}_src_${PORTVERSION:S/./_/g}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	Enterprise instant messaging server
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${JAVAJARDIR}/slf4j-api.jar:${PORTSDIR}/devel/slf4j
+RUN_DEPENDS=	${JAVAJARDIR}/slf4j-api.jar:devel/slf4j
 
 OPTIONS_DEFINE=	DOCS PLUGINS
 OPTIONS_DEFAULT=PLUGINS
@@ -24,7 +24,7 @@ DOS2UNIX_FILES=	src/java/org/jivesoftware/openfire/server/ServerDialback.java
 USE_LDCONFIG=	yes
 USE_ANT=	yes
 USE_JAVA=	yes
-JAVA_VERSION=	1.7 # some plugins not available with later java, needs special handling
+JAVA_VERSION=	1.8
 
 CPE_VENDOR=	igniterealtime
 

@@ -11,10 +11,10 @@ MASTER_SITES=	http://josefsson.org/gnutls/releases/opencdk/
 MAINTAINER=	novel@FreeBSD.org
 COMMENT=	Open Crypto Development Kit
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libgcrypt.so:${PORTSDIR}/security/libgcrypt
+LIB_DEPENDS=	libgcrypt.so:security/libgcrypt
 
 GNU_CONFIGURE=	yes
 USES=		libtool pathfix pkgconfig tar:bzip2

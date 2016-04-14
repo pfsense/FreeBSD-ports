@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rubrica
-PORTVERSION=	2.0.12
-PORTREVISION=	2
+PORTVERSION=	2.1.6
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	BERLIOS
 DISTNAME=	${PORTNAME}2-${PORTVERSION}
@@ -13,8 +12,8 @@ COMMENT=	Addressbook for the GNOME 2 desktop
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libnotify.so:${PORTSDIR}/devel/libnotify
-RUN_DEPENDS=	gnome-icon-theme>=0:${PORTSDIR}/misc/gnome-icon-theme
+LIB_DEPENDS=	libnotify.so:devel/libnotify
+RUN_DEPENDS=	gnome-icon-theme>=0:misc/gnome-icon-theme
 
 USES=		desktop-file-utils gmake libtool pathfix pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes
@@ -26,7 +25,8 @@ GCONF_SCHEMAS=	rubrica2.schemas
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-LIBS+=		`pkg-config --libs gthread-2.0`
+LIBS+=		`pkg-config`
+LIBS+=		-lm -lgthread-2.0
 
 PORTDOCS=	*
 

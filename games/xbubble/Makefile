@@ -10,10 +10,10 @@ MASTER_SITES=	GENTOO
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Puzzle Bobble clone for Unix/X11 platforms
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS=	libpng.so:graphics/png
 
 USE_XORG=	x11 xmu
 GNU_CONFIGURE=	yes

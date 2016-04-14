@@ -10,7 +10,7 @@ MASTER_SITES=	http://www.yafc-ftp.com/downloads/
 MAINTAINER=	wg@FreeBSD.org
 COMMENT=	Yet another ftp client. Similar to ftp(1)
 
-LICENSE=	GPLv2 # (or later)
+LICENSE=	GPLv2+
 
 OPTIONS_DEFINE=	BASH EXAMPLES NLS SSH READLINE
 OPTIONS_DEFAULT=BASH NLS SSH
@@ -39,7 +39,7 @@ NLS_PLIST_FILES=	share/locale/de/LC_MESSAGES/yafc.mo \
 READLINE_USES=		readline
 READLINE_CONFIGURE_WITH=readline
 
-SSH_LIB_DEPENDS=	libssh.so:${PORTSDIR}/security/libssh
+SSH_LIB_DEPENDS=	libssh.so:security/libssh
 SSH_CONFIGURE_OFF=	--without-ssh
 
 BASH_CONFIGURE_ON=	--with-bash-completion=yes

@@ -11,15 +11,15 @@ EXTRACT_SUFX=	.tbz
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Qt client for the Monopd server
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/copying.txt
 
-LIB_DEPENDS=	libpthread-stubs.so:${PORTSDIR}/devel/libpthread-stubs \
-		libpcre.so:${PORTSDIR}/devel/pcre \
-		libpng.so:${PORTSDIR}/graphics/png \
-		libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libexpat.so:${PORTSDIR}/textproc/expat2 \
-		libfontconfig.so:${PORTSDIR}/x11-fonts/fontconfig
+LIB_DEPENDS=	libpthread-stubs.so:devel/libpthread-stubs \
+		libpcre.so:devel/pcre \
+		libpng.so:graphics/png \
+		libfreetype.so:print/freetype2 \
+		libexpat.so:textproc/expat2 \
+		libfontconfig.so:x11-fonts/fontconfig
 
 WRKSRC=		${WRKDIR}/Capitalism-${PORTVERSION}
 

@@ -2,7 +2,7 @@
 
 PORTNAME=	xetex
 PORTVERSION=	0.99992
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	print
 MASTER_SITES=	ftp://tug.org/historic/systems/texlive/2015/
 PKGNAMEPREFIX=	tex-
@@ -15,13 +15,13 @@ EXTRACT_ONLY=	texlive-${DISTVERSION_TEXLIVE_SOURCE}-source${EXTRACT_SUFX}
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	TeX System with Unicode and Modern Font Technologies
 
-LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libgraphite2.so:${PORTSDIR}/graphics/graphite2 \
-		libicuio.so:${PORTSDIR}/devel/icu \
-		libharfbuzz.so:${PORTSDIR}/print/harfbuzz \
-		libpng.so:${PORTSDIR}/graphics/png \
-		libpoppler.so:${PORTSDIR}/graphics/poppler \
-		libTECkit.so:${PORTSDIR}/textproc/teckit
+LIB_DEPENDS=	libfreetype.so:print/freetype2 \
+		libgraphite2.so:graphics/graphite2 \
+		libicuio.so:devel/icu \
+		libharfbuzz.so:print/harfbuzz \
+		libpng.so:graphics/png \
+		libpoppler.so:graphics/poppler \
+		libTECkit.so:textproc/teckit
 
 USES=		pkgconfig tar:xz
 USE_TEX=	kpathsea web2c texmf formats fmtutil

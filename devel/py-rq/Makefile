@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rq
-PORTVERSION=	0.5.5
+PORTVERSION=	0.5.6
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,8 +12,8 @@ COMMENT=	Simple library for creating background jobs, and processing them
 
 LICENSE=	BSD2CLAUSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}redis>=2.7:${PORTSDIR}/databases/py-redis \
-		${PYTHON_PKGNAMEPREFIX}click>=4.1:${PORTSDIR}/devel/py-click
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}redis>=2.7:databases/py-redis \
+		${PYTHON_PKGNAMEPREFIX}click>=4.1:devel/py-click
 
 USES=		python
 USE_PYTHON=	autoplist distutils

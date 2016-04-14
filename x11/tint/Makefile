@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	tint2
-PORTVERSION=	0.12.3
+PORTVERSION=	0.12.7
 CATEGORIES=	x11
-MASTER_SITES=	http://leigh123linux.fedorapeople.org/pub/${PORTNAME}/source/
+MASTER_SITES=	http://deponie.yamagi.org/freebsd/distfiles/tint/
 
 MAINTAINER=	yamagi@yamagi.org
 COMMENT=	Lightweight freedesktop-compliant panel/taskbar/systray/clock
@@ -11,10 +11,10 @@ COMMENT=	Lightweight freedesktop-compliant panel/taskbar/systray/clock
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libImlib2.so:${PORTSDIR}/graphics/imlib2 \
-		libstartup-notification-1.so:${PORTSDIR}/x11/startup-notification
+LIB_DEPENDS=	libImlib2.so:graphics/imlib2 \
+		libstartup-notification-1.so:x11/startup-notification
 
-USES=		alias cmake gettext pkgconfig
+USES=		alias cmake gettext pkgconfig tar:xz
 USE_GNOME=	glib20 gtk20 librsvg2 pango
 USE_XORG=	x11 xcomposite xdamage xinerama xrandr xrender
 

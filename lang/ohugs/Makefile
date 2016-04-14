@@ -15,15 +15,15 @@ OPTIONS_DEFINE=		X11
 
 .include <bsd.port.options.mk>
 
-LIB_DEPENDS=	libreadline.so.6:${PORTSDIR}/devel/readline
+LIB_DEPENDS=	libreadline.so.6:devel/readline
 .if empty(PORT_OPTIONS:MX11)
-LIB_DEPENDS=	libTix8.4.3.so:${PORTSDIR}/x11-toolkits/tix
+LIB_DEPENDS=	libTix8.4.3.so:x11-toolkits/tix
 .endif
 
 WRKSRC=		${WRKDIR}/${DISTNAME:S/.src//}
 BUILD_WRKSRC=	${WRKSRC}/src
-USES=		bison readline
-LDFLAGS+=	-lm -lreadline -ltermcap
+USES=		bison ncurses readline
+LDFLAGS+=	-lm -lreadline -lncurses
 
 .if ${PORT_OPTIONS:MX11}
 USES+=		tk

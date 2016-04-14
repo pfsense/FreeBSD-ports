@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	passenger
-PORTVERSION=	5.0.22
+PORTVERSION=	5.0.26
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMEPREFIX=	rubygem-
@@ -34,9 +34,9 @@ RUBYGEM_AUTOPLIST=	yes
 USE_APACHE=	22+
 .endif
 
-LIB_DEPENDS+=	libuv.so:${PORTSDIR}/devel/libuv \
-		libcurl.so:${PORTSDIR}/ftp/curl
-BUILD_DEPENDS+= rubygem-rack16>=0:${PORTSDIR}/www/rubygem-rack16
+LIB_DEPENDS+=	libuv.so:devel/libuv \
+		libcurl.so:ftp/curl
+BUILD_DEPENDS+= rubygem-rack16>=0:www/rubygem-rack16
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 SUB_LIST+=	GEM_LIB_DIR=${GEM_LIB_DIR} RUBY=${RUBY}

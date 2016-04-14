@@ -10,9 +10,9 @@ MASTER_SITES=	SF
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple application for managing personal data
 
-LICENSE=	GPLv2 # (or later)
+LICENSE=	GPLv2+
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycrypto>0:${PORTSDIR}/security/py-pycrypto
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycrypto>0:security/py-pycrypto
 
 NO_ARCH=	yes
 

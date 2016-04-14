@@ -9,15 +9,15 @@ CATEGORIES=	games
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	3D physics-based puzzle game
 
-LICENSE=	GPLv3 # or later
+LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libsqlite3.so:${PORTSDIR}/databases/sqlite3 \
-		libIrrlicht.so:${PORTSDIR}/x11-toolkits/irrlicht \
-		libvorbis.so:${PORTSDIR}/audio/libvorbis \
-		libogg.so:${PORTSDIR}/audio/libogg \
-		libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libBulletCollision.so:${PORTSDIR}/devel/bullet
+LIB_DEPENDS=	libsqlite3.so:databases/sqlite3 \
+		libIrrlicht.so:x11-toolkits/irrlicht \
+		libvorbis.so:audio/libvorbis \
+		libogg.so:audio/libogg \
+		libfreetype.so:print/freetype2 \
+		libBulletCollision.so:devel/bullet
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	jazztickets

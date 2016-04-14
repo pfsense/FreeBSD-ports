@@ -3,7 +3,7 @@
 PORTREVISION=	0
 CATEGORIES=	graphics
 
-COMMENT=	Gstreamer GL graphics plugin
+COMMENT=	GStreamer GL graphics plugin
 
 GST_PLUGIN=	gl
 DIST=		bad
@@ -18,5 +18,7 @@ pre-build:
 post-install:
 	@cd ${WRKSRC}/gst-libs/gst/gl && ${SETENV} DESTDIR=${STAGEDIR} \
 		INSTALL_TARGET=${INSTALL_TARGET} ${GMAKE} install
+	${INSTALL_DATA} ${WRKSRC}/pkgconfig/gstreamer-gl.pc \
+		${STAGEDIR}${PREFIX}/libdata/pkgconfig/gstreamer-gl-1.0.pc
 
 .include "${MASTERDIR}/Makefile"

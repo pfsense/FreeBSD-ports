@@ -2,27 +2,24 @@
 # $FreeBSD$
 
 PORTNAME=	zathura-djvu
-PORTVERSION=	0.2.4
-PORTREVISION=	1
+PORTVERSION=	0.2.5
 CATEGORIES=	graphics
 MASTER_SITES=	http://pwmt.org/projects/zathura/plugins/download/
 
 MAINTAINER=	alexander.4mail@gmail.com
 COMMENT=	DjVu support for zathura
 
-LICENSE=	zlib
-LICENSE_NAME=	zlib license
+LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/LICENSE
-LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
-LIB_DEPENDS=	libdjvulibre.so:${PORTSDIR}/graphics/djvulibre
-BUILD_DEPENDS=	zathura:${PORTSDIR}/graphics/zathura
-RUN_DEPENDS=	zathura:${PORTSDIR}/graphics/zathura
+LIB_DEPENDS=	libdjvulibre.so:graphics/djvulibre
+BUILD_DEPENDS=	zathura:graphics/zathura
+RUN_DEPENDS=	zathura:graphics/zathura
 
 PLIST_FILES=	lib/zathura/djvu.so share/applications/zathura-djvu.desktop
 
 USE_GNOME=	glib20 gtk30
-USES=		desktop-file-utils gmake pkgconfig
+USES=		compiler:c11 desktop-file-utils gmake pkgconfig
 
 PLIST_FILES=	lib/zathura/djvu.so \
 		share/applications/zathura-djvu.desktop

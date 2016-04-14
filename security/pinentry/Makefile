@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pinentry
-PORTVERSION=	0.9.5
+PORTVERSION=	0.9.7
 PORTREVISION?=	0
 CATEGORIES=	security
 MASTER_SITES=	GNUPG/pinentry
@@ -26,27 +26,23 @@ FRONTEND_DESC=	Default frontend
 
 TTY_DESC=	Console version
 PINENTRY_TTY=	pinentry-tty
-TTY_RUN_DEPENDS=	${PINENTRY_TTY}:${PORTSDIR}/security/pinentry-tty
+TTY_RUN_DEPENDS=	${PINENTRY_TTY}:security/pinentry-tty
 
 NCURSES_DESC=	Curses frontend
 PINENTRY_NCURSES=	pinentry-curses
-NCURSES_RUN_DEPENDS=	${PINENTRY_NCURSES}:${PORTSDIR}/security/pinentry-curses
+NCURSES_RUN_DEPENDS=	${PINENTRY_NCURSES}:security/pinentry-curses
 
 GTK2_DESC=	Gtk+ 2 frontend
 PINENTRY_GTK2=	pinentry-gtk-2
-GTK2_RUN_DEPENDS=	${PINENTRY_GTK2}:${PORTSDIR}/security/pinentry-gtk2
+GTK2_RUN_DEPENDS=	${PINENTRY_GTK2}:security/pinentry-gtk2
 
-.if exists(/usr/lib/libc++.so)
-QT4_DESC=	Qt 4 frontend (broken)
-.else
 QT4_DESC=	Qt 4 frontend
-.endif
-PINENTRY_QT4=	pinentry-qt4
-QT4_RUN_DEPENDS=	${PINENTRY_QT4}:${PORTSDIR}/security/pinentry-qt4
+PINENTRY_QT4=	pinentry-qt
+QT4_RUN_DEPENDS=	${PINENTRY_QT4}:security/pinentry-qt4
 
 GNOME3_DESC=	GNOME 3 frontend
 PINENTRY_GNOME3=	pinentry-gnome3
-GNOME3_RUN_DEPENDS=	${PINENTRY_GNOME3}:${PORTSDIR}/security/pinentry-gnome3
+GNOME3_RUN_DEPENDS=	${PINENTRY_GNOME3}:security/pinentry-gnome3
 
 .include <bsd.port.options.mk>
 
@@ -62,9 +58,9 @@ do-install:
 
 .else # !defined(PINENTRY_GUI)
 PKGNAMESUFFIX=	-${PINENTRY_GUI}
-LIB_DEPENDS=	libassuan.so:${PORTSDIR}/security/libassuan \
-		libgcrypt.so:${PORTSDIR}/security/libgcrypt \
-		libksba.so:${PORTSDIR}/security/libksba
+LIB_DEPENDS=	libassuan.so:security/libassuan \
+		libgcrypt.so:security/libgcrypt \
+		libksba.so:security/libksba
 
 USES+=		iconv gmake pkgconfig
 GNU_CONFIGURE=	yes
@@ -77,12 +73,12 @@ OPTIONS_DEFINE=	LIBSECRET
 
 LIBSECRET_DESC=	Saving the passphrase with libsecret
 LIBSECRET_CONFIGURE_ENABLE=	libsecret
-LIBSECRET_LIB_DEPENDS=	libsecret-1.so:${PORTSDIR}/security/libsecret
+LIBSECRET_LIB_DEPENDS=	libsecret-1.so:security/libsecret
 
 .if ${PINENTRY_GUI} == "gnome3"
 OPTIONS_SLAVE=	LIBSECRET
 USE_GNOME+=	gtk20
-LIB_DEPENDS+=	libgcr-base-3.so:${PORTSDIR}/security/gcr
+LIB_DEPENDS+=	libgcr-base-3.so:security/gcr
 PLIST_FILES=	bin/pinentry-gnome3
 .else
 CONFIGURE_ARGS+=--disable-pinentry-gnome3
@@ -90,14 +86,11 @@ CONFIGURE_ARGS+=--disable-pinentry-gnome3
 
 .if ${PINENTRY_GUI} == "qt4"
 USES+=		compiler:c++11-lib
-USE_CXXSTD=	c++11
-. if exists(/usr/lib/libc++.so)
-IGNORE=		does not compile with libc++
-. endif
 USE_QT4=	gui moc_build
-PLIST_FILES=	bin/pinentry-qt4
+PLIST_FILES=	bin/pinentry-qt
+CONFIGURE_ARGS+=--disable-pinentry-qt5
 .else
-CONFIGURE_ARGS+=--disable-pinentry-qt4
+CONFIGURE_ARGS+=--disable-pinentry-qt --disable-pinentry-qt5
 .endif
 
 .if ${PINENTRY_GUI} == "gtk2"
@@ -119,14 +112,6 @@ PLIST_FILES=	bin/pinentry-tty
 CONFIGURE_ARGS+=--enable-pinentry-tty
 .else
 CONFIGURE_ARGS+=--disable-pinentry-tty
-.endif
-
-pre-configure:
-.if ${PINENTRY_GUI} == "qt4"
-	cd ${WRKSRC}/qt4 && \
-		${MOC} pinentrydialog.h > pinentrydialog.moc && \
-		${MOC} qsecurelineedit.h > qsecurelineedit.moc && \
-		${MOC} pinentryconfirm.h > pinentryconfirm.moc
 .endif
 
 post-install:

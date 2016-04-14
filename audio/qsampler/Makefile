@@ -10,11 +10,11 @@ MASTER_SITES=	SF \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Qt-based front end to LinuxSampler
 
-LICENSE=	GPLv2 # (or later)
+LICENSE=	GPLv2+
 
-LIB_DEPENDS=	libgig.so:${PORTSDIR}/audio/libgig \
-		liblscp.so:${PORTSDIR}/audio/liblscp
-RUN_DEPENDS=	linuxsampler:${PORTSDIR}/audio/linuxsampler
+LIB_DEPENDS=	libgig.so:audio/libgig \
+		liblscp.so:audio/liblscp
+RUN_DEPENDS=	linuxsampler:audio/linuxsampler
 
 USES=		gmake pkgconfig shared-mime-info
 QT_NONSTANDARD=	yes

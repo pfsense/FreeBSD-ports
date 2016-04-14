@@ -11,10 +11,11 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Geographic objects support for PostgreSQL databases
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libgeos.so:${PORTSDIR}/graphics/geos \
-		libjson-c.so:${PORTSDIR}/devel/json-c \
-		libproj.so:${PORTSDIR}/graphics/proj
+LIB_DEPENDS=	libgeos.so:graphics/geos \
+		libjson-c.so:devel/json-c \
+		libproj.so:graphics/proj
 
 CONFLICTS_INSTALL=	postgis-1.* postgis-2.1.*
 
@@ -56,13 +57,13 @@ NLS_CONFIGURE_WITH=	gettext
 NLS_USES=		gettext
 RASTER_CONFIGURE_OFF=	--without-raster
 RASTER_CONFIGURE_ON=	--with-gdalconfig=${LOCALBASE}/bin/gdal-config --with-raster
-RASTER_LIB_DEPENDS=	libgdal.so:${PORTSDIR}/graphics/gdal
+RASTER_LIB_DEPENDS=	libgdal.so:graphics/gdal
 TOPOLOGY_CONFIGURE_WITH=topology
 
 post-install:
-	${MKDIR} ${STAGEDIR}/${DATADIR}/utils/ ${STAGEDIR}/${DATADIR}/tiger_2010/
-	cd ${WRKSRC}/utils/ && ${COPYTREE_SHARE} . ${STAGEDIR}/${DATADIR}/utils/
-	cd ${WRKSRC}/extras/tiger_geocoder/tiger_2010/ && ${COPYTREE_SHARE} . ${STAGEDIR}/${DATADIR}/tiger_2010/
-	${STRIP_CMD} ${STAGEDIR}/${PREFIX}/bin/* ${STAGEDIR}/${PREFIX}/lib/*.so ${STAGEDIR}/${PREFIX}/lib/postgresql/*.so
+	${MKDIR} ${STAGEDIR}${DATADIR}/utils/ ${STAGEDIR}${DATADIR}/tiger_2010/
+	cd ${WRKSRC}/utils/ && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/utils/
+	cd ${WRKSRC}/extras/tiger_geocoder/tiger_2010/ && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/tiger_2010/
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/* ${STAGEDIR}${PREFIX}/lib/*.so ${STAGEDIR}${PREFIX}/lib/postgresql/*.so
 
 .include <bsd.port.mk>

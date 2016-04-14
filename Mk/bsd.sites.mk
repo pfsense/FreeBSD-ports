@@ -48,12 +48,6 @@ MASTER_SITE_AFTERSTEP+= \
 	ftp://ftp.dti.ad.jp/pub/X/AfterStep/%SUBDIR%/
 .endif
 
-.if !defined(IGNORE_MASTER_SITE_ALSA)
-MASTER_SITE_ALSA+= \
-	http://alsa.cybermirror.org/%SUBDIR%/ \
-	ftp://ftp.alsa-project.org/pub/%SUBDIR%/
-.endif
-
 .if !defined(IGNORE_MASTER_SITE_APACHE)
 MASTER_SITE_APACHE+= \
 	http://www.apache.org/dist/%SUBDIR%/ \
@@ -452,7 +446,6 @@ MASTER_SITE_GCC+= \
 	http://gcc.cybermirror.org/%SUBDIR%/ \
 	http://gcc-uk.internet.bs/%SUBDIR%/ \
 	http://www.netgull.com/gcc/%SUBDIR%/ \
-	http://mirrors.webhostinggeeks.com/gcc/%SUBDIR%/ \
 	http://robotlab.itk.ppke.hu/gcc/%SUBDIR%/ \
 	http://gcc.fyxm.net/%SUBDIR%/ \
 	http://gcc.igor.onlinedirect.bg/%SUBDIR%/ \
@@ -518,12 +511,18 @@ MASTER_SITE_GENTOO+= \
 #                 Using the name of a branch here is incorrect. It is
 #                 possible to do GH_TAGNAME= GIT_HASH to do a snapshot.
 #                 default: ${DISTVERSION}
+# GH_TUPLE      - above shortened to account:project:tagname[:group]
 #
 .if defined(USE_GITHUB)
 .  if defined(GH_TAGNAME) && ${GH_TAGNAME} == master
 IGNORE?=	Using master as GH_TAGNAME is invalid. \
 		Must use a tag or commit hash so the upstream does \
 		not "reroll" as soon as the branch is updated
+.  endif
+.  if defined(GH_TUPLE)
+GH_ACCOUNT+=	${GH_TUPLE:C@^([^:]*):([^:]*):([^:]*)((:[^:]*)?)@\1\4@}
+GH_PROJECT+=	${GH_TUPLE:C@^([^:]*):([^:]*):([^:]*)((:[^:]*)?)@\2\4@}
+GH_TAGNAME+=	${GH_TUPLE:C@^([^:]*):([^:]*):([^:]*)((:[^:]*)?)@\3\4@}
 .  endif
 # We are cheating and using backend URLS for Github here. See ports/194898
 # comment #15 for explanation as to why and how to deal with it if it breaks.
@@ -629,12 +628,12 @@ _GITHUB_REV=	0
 DISTNAME:=	${DISTNAME}_GH${_GITHUB_REV}
 .  endif
 _GITHUB_EXTRACT_SUFX=	.tar.gz
+# Put the DEFAULT distfile first
+.  if !${USE_GITHUB:Mnodefault} && defined(_GITHUB_MUST_SET_DISTNAME)
+DISTFILES+=	${DISTNAME}${_GITHUB_EXTRACT_SUFX}
+.  endif
 # If there are non default groups
 .  if !empty(_GITHUB_GROUPS:NDEFAULT)
-# Put the DEFAULT distfile first
-.    if !${USE_GITHUB:Mnodefault}
-DISTFILES+=	${DISTNAME}${_GITHUB_EXTRACT_SUFX}
-.    endif
 # Then for each of the remaining groups, add DISTFILES and MASTER_SITES
 # entries with the correct group and create {WRKSRC,DISTNAME,DISTFILES}_group
 # helper variables.
@@ -1057,11 +1056,9 @@ MASTER_SITE_PGSQL+= \
 
 .if !defined(IGNORE_MASTER_SITE_PHP)
 MASTER_SITE_PHP+= \
-	http://dk1.php.net/%SUBDIR%/ \
 	http://de.php.net/%SUBDIR%/ \
 	http://es.php.net/%SUBDIR%/ \
 	http://fr.php.net/%SUBDIR%/ \
-	http://gr.php.net/%SUBDIR%/ \
 	http://it.php.net/%SUBDIR%/ \
 	http://jp.php.net/%SUBDIR%/ \
 	http://se.php.net/%SUBDIR%/ \
@@ -1126,8 +1123,7 @@ MASTER_SITE_RUBY+= \
 # See http://rubygems.org/pages/about
 .if !defined(IGNORE_MASTER_SITE_RUBYGEMS)
 MASTER_SITE_RUBYGEMS+= \
-	http://production.s3.rubygems.org/gems/%SUBDIR%/ \
-	http://production.cf.rubygems.org/gems/%SUBDIR%/
+	https://rubygems.global.ssl.fastly.net/gems/%SUBDIR%/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_SAMBA)

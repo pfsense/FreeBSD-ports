@@ -11,13 +11,14 @@ DISTNAME=	regutil126
 MAINTAINER=	bob@eager.cx
 COMMENT=	Implementation of IBM's RexxUtil function library for Regina
 
-BUILD_DEPENDS=	${LOCALBASE}/include/rexxsaa.h:${PORTSDIR}/lang/rexx-regina
+BUILD_DEPENDS=	${LOCALBASE}/include/rexxsaa.h:lang/rexx-regina
 
-USES=		zip
+USES=		ncurses zip
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 USE_LDCONFIG=	yes
 MAKEFILE=	Makefile.bsd
+MAKE_ARGS+=	PLIBS="${LDFLAGS:M-L*} -lncurses"
 
 SUB_FILES=	regutil.1 pkg-message
 

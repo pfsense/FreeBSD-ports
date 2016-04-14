@@ -2,7 +2,7 @@
 
 PORTNAME=	llvm
 PORTVERSION=	3.4.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel lang
 MASTER_SITES=	http://llvm.org/releases/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}.src
@@ -101,12 +101,12 @@ RELEASE_TYPE=		Release
 .endif
 
 .if ${PORT_OPTIONS:MCMAKE}
-BUILD_DEPENDS+=	cmake:${PORTSDIR}/devel/cmake
+BUILD_DEPENDS+=	cmake:devel/cmake
 PORTDATA+=	cmake
 .endif
 
 .if ${PORT_OPTIONS:MDOCS} || ${PORT_OPTIONS:MMANPAGES}
-BUILD_DEPENDS+=	sphinx-build:${PORTSDIR}/textproc/py-sphinx
+BUILD_DEPENDS+=	sphinx-build:textproc/py-sphinx
 .endif
 
 .if ${PORT_OPTIONS:MDOCS}
@@ -124,8 +124,8 @@ USES+=			python:build
 .endif
 
 .if ${PORT_OPTIONS:MLTOPLUGIN}
-BUILD_DEPENDS+=		ld.gold:${PORTSDIR}/devel/binutils
-RUN_DEPENDS+=		ld.gold:${PORTSDIR}/devel/binutils
+BUILD_DEPENDS+=		ld.gold:devel/binutils
+RUN_DEPENDS+=		ld.gold:devel/binutils
 CONFIGURE_ARGS+=	--with-binutils-include=${LOCALBASE}/include
 PLIST_FILES+=		llvm${LLVM_SUFFIX}/lib/LLVMgold.so
 .endif
@@ -141,6 +141,10 @@ PLIST_FILES+=	${MAN1SRCS:S|^|man/man1/|:S|.1$|${LLVM_SUFFIX}.1.gz|}
 NOT_FOR_ARCH=	ia64
 
 .include <bsd.port.pre.mk>
+
+.if ${ARCH} == "aarch64"
+BROKEN=		Does not compile on aarch64
+.endif
 
 .if ${ARCH} == "amd64"
 CONFIGURE_ARGS+=	--enable-pic --with-pic
@@ -262,17 +266,6 @@ build-plist:
 	${FIND} ${STAGEDIR}${DOCSDIR} -type f | \
 	    ${SED} -e 's|${STAGEDIR}${DOCSDIR}|%%PORTDOCS%%%%DOCSDIR%%|' | \
 	    ${SORT} >> ${PLIST}
-	${FIND} ${STAGEDIR}${LLVM_PREFIX} -type d | \
-	    ${SED} -e 's|${STAGEDIR}${PREFIX}/||' | \
-	    ${SORT} -r | ${SED} -e 's|^|@dirrm |' \
-	    -e 's|${LLVM_SUFFIX}|%%LLVM_SUFFIX%%|' >> ${PLIST}
-	echo "%%LIT%%@dirrm %%PYTHON_SITELIBDIR%%/lit%%LLVM_SUFFIX%%" >> \
-	    ${PLIST}
-	echo "%%LIT%%@dirrm %%PYTHON_SITELIBDIR%%/lit%%LLVM_SUFFIX%%/formats" >> \
-	    ${PLIST}
-	${FIND} ${STAGEDIR}${DOCSDIR} -type d | \
-	    ${SED} -e 's|${STAGEDIR}${DOCSDIR}|%%PORTDOCS%%@dirrm %%DOCSDIR%%|' | \
-	    ${SORT} -r >> ${PLIST}
 
 .if make(svn-patch)
 .if !defined(PATCH_REV)

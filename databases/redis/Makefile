@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	redis
-DISTVERSION=	3.0.5
-PORTREVISION=	2
+DISTVERSION=	3.0.7
 CATEGORIES=	databases
 MASTER_SITES=	http://download.redis.io/releases/
 
@@ -28,7 +27,7 @@ TRIB_DESC=	Install redis-trib.rb (lang/ruby req.)
 .if ${PORT_OPTIONS:MTRIB}
 CATEGORIES+=	ruby
 USE_RUBY=	yes
-RUN_DEPENDS=	rubygem-redis>=2.2:${PORTSDIR}/databases/rubygem-redis
+RUN_DEPENDS=	rubygem-redis>=2.2:databases/rubygem-redis
 .endif
 
 .if ${PORT_OPTIONS:MLUA}
@@ -37,7 +36,7 @@ EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-src-Makefile.lua
 .endif
 
 .if ${PORT_OPTIONS:MLUAJIT}
-LIB_DEPENDS+=	libluajit-5.1.so:${PORTSDIR}/lang/luajit
+LIB_DEPENDS+=	libluajit-5.1.so:lang/luajit
 EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-src-Makefile.luajit
 .endif
 

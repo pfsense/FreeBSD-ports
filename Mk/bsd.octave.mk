@@ -8,7 +8,6 @@
 # It is, in effect, a wrapper using the package handling already built
 # into math/octave.
 
-
 MASTER_SITES=	SF/octave/Octave%20Forge%20Packages/Individual%20Package%20Releases \
 		SF/octave/Octave%20Forge%20Packages/R2009-06-07 \
 		SF/octave/Octave%20Forge%20Packages/R2009-05-08
@@ -16,10 +15,10 @@ DISTNAME=	${OCTAVE_PKGNAME}-${PORTVERSION}
 
 bsd_octave_mk_MAINTAINER=	stephen@FreeBSD.org
 
-BUILD_DEPENDS+=	octave:${PORTSDIR}/math/octave
-RUN_DEPENDS+=	octave:${PORTSDIR}/math/octave \
-		${LOCALBASE}/libexec/octave/load-octave-pkg:${PORTSDIR}/math/octave-forge-base
-LIB_DEPENDS+=	libpcre.so:${PORTSDIR}/devel/pcre
+BUILD_DEPENDS+=	octave:math/octave
+RUN_DEPENDS+=	octave:math/octave \
+		${LOCALBASE}/libexec/octave/load-octave-pkg:math/octave-forge-base
+LIB_DEPENDS+=	libpcre.so:devel/pcre
 
 USES+=		fortran gmake
 

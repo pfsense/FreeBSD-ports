@@ -4,7 +4,7 @@
 
 PORTNAME=	solfege
 PORTVERSION=	3.22.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-stable/${PORTVERSION}
 PKGNAMESUFFIX=	-nosound
@@ -15,11 +15,10 @@ COMMENT=	Free ear training software
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	docbook-xsl>0:${PORTSDIR}/textproc/docbook-xsl \
-		txt2man:${PORTSDIR}/textproc/txt2man
+BUILD_DEPENDS=	docbook-xsl>0:textproc/docbook-xsl \
+		txt2man:textproc/txt2man
 
-USES=		display gettext gmake makeinfo pathfix pkgconfig python \
-		shebangfix
+USES=		gettext gmake makeinfo pathfix pkgconfig python shebangfix
 SHEBANG_FILES=	exercises/standard/lesson-files/bin/csound-play-harmonic-interval.sh
 USE_GNOME=	pygtk2
 GNU_CONFIGURE=	yes

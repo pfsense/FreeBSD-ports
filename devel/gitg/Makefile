@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gitg
-PORTVERSION=	3.18.0
+PORTVERSION=	3.19.6
 CATEGORIES=	devel deskutils gnome
 MASTER_SITES=	GNOME
 
@@ -12,19 +12,18 @@ COMMENT=	GTK-based git repository viewer
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN=		fails to build
-
-LIB_DEPENDS=	libjson-glib-1.0.so:${PORTSDIR}/devel/json-glib \
-		libgee-0.8.so:${PORTSDIR}/devel/libgee \
-		libgit2-glib-1.0.so:${PORTSDIR}/devel/libgit2-glib \
-		libpeas-1.0.so:${PORTSDIR}/devel/libpeas \
-		libgtkspell3-3.so:${PORTSDIR}/textproc/gtkspell3 \
-		libwebkit2gtk-3.0.so:${PORTSDIR}/www/webkit-gtk3
-BUILD_DEPENDS=	gsettings-desktop-schemas>=0:${PORTSDIR}/devel/gsettings-desktop-schemas \
-		valac:${PORTSDIR}/lang/vala
-RUN_DEPENDS=	gsettings-desktop-schemas>=0:${PORTSDIR}/devel/gsettings-desktop-schemas
+LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
+		libgee-0.8.so:devel/libgee \
+		libgit2-glib-1.0.so:devel/libgit2-glib \
+		libpeas-1.0.so:devel/libpeas \
+		libgtkspell3-3.so:textproc/gtkspell3 \
+		libsecret-1.so:security/libsecret
+BUILD_DEPENDS=	gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas \
+		valac:lang/vala
+RUN_DEPENDS=	gsettings-desktop-schemas>=0:devel/gsettings-desktop-schemas
 
 CONFLICTS=	gitg0-[0-9]*
+PORTSCOUT=	limitw:1,even
 
 USES=		compiler:c11 desktop-file-utils gmake libtool pathfix pkgconfig tar:xz
 GNU_CONFIGURE=	yes
@@ -47,6 +46,23 @@ NLS_USES=	gettext
 NLS_CONFIGURE_ENABLE=	nls
 PYTHON_USES=	python:3
 PYTHON_CONFIGURE_ENABLE=	python
+PYTHON_USE=	GNOME=py3gobject3
 PYTHON_PLIST_SUB=	PYTHON_SUFFIX=${PYTHON_SUFFIX}
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if defined(PYTHON_REL)
+.if ${PYTHON_REL} < 3500
+PYOEXTENSION=	pyo
+.else
+PYOEXTENSION=	opt-1.pyc
+.endif
+.endif
+
+PLIST_SUB+=	PYOEXTENSION=${PYOEXTENSION}
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|0.24.0|0.25.0|g' \
+		${WRKSRC}/configure
+
+.include <bsd.port.post.mk>

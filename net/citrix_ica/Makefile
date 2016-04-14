@@ -2,10 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	citrix_ica
-PORTVERSION=	13.2.1
+PORTVERSION=	13.3.0
+PORTREVISION=	1
 CATEGORIES=	net comms linux
 MASTER_SITES=	#
-DISTNAME=	linuxx86-13.2.1.328635
+DISTNAME=	linuxx86-${PORTVERSION}.344519
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Citrix(R) Presentation Server(TM) client
@@ -38,7 +39,7 @@ SUB_LIST=	CDIR=${CDIR}
 .include <bsd.port.pre.mk>
 
 .if !exists(${DISTDIR}/${DISTNAME}${EXTRACT_SUFX})
-IGNORE=May not be redistributed due to licensing. Please visit https://www.citrix.com/downloads/citrix-receiver/linux/receiver-for-linux-1321.html accept their license and download ${DISTFILES} into ${DISTDIR}
+IGNORE=May not be redistributed due to licensing. Please visit https://www.citrix.com/downloads/citrix-receiver/linux/ accept their license and download ${DISTFILES} into ${DISTDIR}
 .endif
 
 .if defined(ICA_CERTS)
@@ -61,9 +62,12 @@ pre-fetch:
 .endif
 
 post-patch:
-# linux syscall epoll_create is not yet implemented
-	@${REINPLACE_CMD} -e 's|^ClientAudio=On|ClientAudio=Off|' \
-		${WRKSRC}/linuxx86/linuxx86.cor/nls/*/module.ini
+# - linux syscall epoll_create is not yet implemented
+# - disable Flash redirection as it generates a deadlock in linux_sys_futex
+	@${REINPLACE_CMD} \
+		-e 's|^ClientAudio=On|ClientAudio=Off|' \
+		-e 's|^FlashV2=On|FlashV2=Off|' \
+			${WRKSRC}/linuxx86/linuxx86.cor/nls/*/module.ini
 
 do-install:
 	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${STAGEDIR}${PREFIX}|g' ${WRKSRC}/linuxx86/hinst

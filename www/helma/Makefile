@@ -9,7 +9,7 @@ MASTER_SITES=	http://adele.helma.org/download/helma/${PORTVERSION}/ \
 		LOCAL/decke
 DISTFILES=	helma-${PORTVERSION}.tar.gz helma-${PORTVERSION}-src.tar.gz
 
-MAINTAINER=	decke@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Web application framework for fast and efficient scripting
 
 LICENSE=	BSD3CLAUSE
@@ -41,7 +41,7 @@ OPTIONS_DEFINE=	MYSQL DOCS
 OPTIONS_SUB=	yes
 OPTIONS_DESC=	Install MySQL Connector for Java
 
-MYSQL_RUN_DEPENDS=	${JAVALIBDIR}/mysql-connector-java.jar:${PORTSDIR}/databases/mysql-connector-java
+MYSQL_RUN_DEPENDS=	${JAVALIBDIR}/mysql-connector-java.jar:databases/mysql-connector-java
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|JAVA_HOME=/usr/lib/j2sdk1.5-sun|JAVA_HOME=${JAVA_HOME}|' \

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	nano
-PORTVERSION=	2.5.0
+PORTVERSION=	2.5.3
 CATEGORIES=	editors
 MASTER_SITES=	http://www.nano-editor.org/dist/v${PORTVERSION:R}/ \
 		GNU
@@ -15,6 +15,7 @@ LICENSE=	GPLv3
 
 CONFLICTS=	nano-2*
 
+USES=		ncurses
 GNU_CONFIGURE=	yes
 
 CONFIGURE_ARGS+=	--docdir=${DOCSDIR} --enable-utf8

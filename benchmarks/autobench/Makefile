@@ -11,12 +11,12 @@ MASTER_SITES=	http://www.xenoclast.org/autobench/downloads/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Automating the process of benchmarking a web server
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENCE
 
-RUN_DEPENDS=	httperf:${PORTSDIR}/benchmarks/httperf \
-		gawk:${PORTSDIR}/lang/gawk \
-		gnuplot:${PORTSDIR}/math/gnuplot
+RUN_DEPENDS=	httperf:benchmarks/httperf \
+		gawk:lang/gawk \
+		gnuplot:math/gnuplot
 
 USES=		gmake perl5 shebangfix
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}" DEBUG_FLAGS= \

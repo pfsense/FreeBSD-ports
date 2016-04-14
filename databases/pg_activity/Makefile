@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pg_activity
-PORTVERSION=	1.2.0
+PORTVERSION=	1.3.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases python
 
@@ -11,8 +11,8 @@ COMMENT=	Htop like application for PostgreSQL server activity monitoring
 
 LICENSE=	BSD3CLAUSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psycopg2>=0:${PORTSDIR}/databases/py-psycopg2 \
-		${PYTHON_PKGNAMEPREFIX}psutil>=0:${PORTSDIR}/sysutils/py-psutil
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psycopg2>=0:databases/py-psycopg2 \
+		${PYTHON_PKGNAMEPREFIX}psutil>=0:sysutils/py-psutil
 
 OPTIONS_DEFINE=	DOCS
 

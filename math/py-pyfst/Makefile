@@ -12,9 +12,9 @@ COMMENT=	Python interface for the OpenFST library
 
 LICENSE=	APACHE20
 
-LIB_DEPENDS=	libfst.so:${PORTSDIR}/math/openfst
+LIB_DEPENDS=	libfst.so:math/openfst
 
-BROKEN_FreeBSD_9=	does not build
+BROKEN=	does not build
 
 USES=		compiler:c++11-lib python
 USE_PYTHON=	distutils autoplist

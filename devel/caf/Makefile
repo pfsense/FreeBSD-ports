@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	caf
-PORTVERSION=	0.14.1
-PORTREVISION=	1
+PORTVERSION=	0.14.5
 CATEGORIES=	devel
 
 MAINTAINER=	vallentin@icir.org
@@ -21,8 +20,6 @@ TEST_WRKSRC=	${BUILD_WRKSRC}
 USE_GITHUB=	yes
 GH_ACCOUNT=	actor-framework
 GH_PROJECT=	${GH_ACCOUNT}
-
-BROKEN_FreeBSD_8=	"undefined reference to `iswalpha_l'"
 
 OPTIONS_DEFINE=	DEBUG TEST STATIC
 OPTIONS_RADIO=	LOG_LEVEL
@@ -59,8 +56,8 @@ regression-test: test
 
 .if ${OSVERSION} < 1001000
 # require clang & libc++
-BUILD_DEPENDS+=	${LOCALBASE}/bin/clang34:${PORTSDIR}/lang/clang34 \
-		${LOCALBASE}/lib/c++/libstdc++.so:${PORTSDIR}/devel/libc++
+BUILD_DEPENDS+=	${LOCALBASE}/bin/clang34:lang/clang34 \
+		${LOCALBASE}/lib/c++/libstdc++.so:devel/libc++
 CXXFLAGS+=	-stdlib=libc++ -I${LOCALBASE}/include/c++/v1 -L${LOCALBASE}/lib
 .endif
 

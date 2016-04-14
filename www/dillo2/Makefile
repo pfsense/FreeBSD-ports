@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dillo
-PORTVERSION=	3.0.4.1
+PORTVERSION=	3.0.5
 CATEGORIES=	www ipv6
 MASTER_SITES=	http://www.dillo.org/download/ LOCAL/bf/dillo/ \
 		TEX_CTAN/language/hyph-utf8/tex/generic/hyph-utf8/patterns/txt/:hyphen
@@ -15,8 +15,8 @@ COMMENT=	Fast, small graphical Web browser built upon fltk
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libfltk.so:${PORTSDIR}/x11-toolkits/fltk
-RUN_DEPENDS=	wget:${PORTSDIR}/ftp/wget
+LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk
+RUN_DEPENDS=	wget:ftp/wget
 
 USES=		gmake iconv pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes

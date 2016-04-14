@@ -16,12 +16,13 @@ LICENSE=	PHP301
 
 OPTIONS_DEFINE=	RE2C
 RE2C_DESC=	Compile regular expression 2 C
-RE2C_RUN_DEPENDS=	re2c:${PORTSDIR}/devel/re2c
+RE2C_RUN_DEPENDS=	re2c:devel/re2c
 
 USE_PHP=	spl
 #USE_PHP_BUILD=	yes
 USE_PHPEXT=	yes
-USES=		tar:tgz tar:tgz
+USES=		tar:tgz
+IGNORE_WITH_PHP=	70
 
 CONFIGURE_ARGS=	--enable-spl-types
 CFLAGS+=	-I${LOCALBASE}/include

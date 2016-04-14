@@ -1,3 +1,4 @@
+@preunexec rm -rf %D/%%WWWDIR%%/optimize/* 2>&1 >/dev/null || true
 @sample etc/kibana.yml.sample
 %%WWWDIR%%/LICENSE.txt
 %%WWWDIR%%/README.txt
@@ -4355,6 +4356,10 @@
 %%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/css-list/package.json
 %%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/decamelize/index.js
 %%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/decamelize/license
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/decamelize/node_modules/escape-string-regexp/index.js
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/decamelize/node_modules/escape-string-regexp/license
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/decamelize/node_modules/escape-string-regexp/package.json
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/decamelize/node_modules/escape-string-regexp/readme.md
 %%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/decamelize/package.json
 %%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/decamelize/readme.md
 %%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/defined/.travis.yml
@@ -4425,9 +4430,9 @@
 %%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/color/node_modules/color-string/LICENSE
 %%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/color/node_modules/color-string/README.md
 %%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/color/node_modules/color-string/color-string.js
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/color/node_modules/color-string/node_modules/color-name/LICENSE
 %%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/color/node_modules/color-string/node_modules/color-name/README.md
-%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/color/node_modules/color-string/node_modules/color-name/UNLICENSE
-%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/color/node_modules/color-string/node_modules/color-name/index.json
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/color/node_modules/color-string/node_modules/color-name/index.js
 %%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/color/node_modules/color-string/node_modules/color-name/package.json
 %%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/color/node_modules/color-string/package.json
 %%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/color/package.json
@@ -4440,6 +4445,28 @@
 %%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/dist/lib/toLonghand.js
 %%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/dist/lib/toShorthand.js
 %%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/dist/lib/trimLeadingZero.js
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/color/CHANGELOG.md
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/color/LICENSE
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/color/README.md
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/color/index.js
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/color/node_modules/color-convert/.travis.yml
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/color/node_modules/color-convert/CHANGELOG.md
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/color/node_modules/color-convert/LICENSE
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/color/node_modules/color-convert/README.md
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/color/node_modules/color-convert/component.json
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/color/node_modules/color-convert/conversions.js
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/color/node_modules/color-convert/index.js
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/color/node_modules/color-convert/package.json
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/color/node_modules/color-string/CHANGELOG.md
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/color/node_modules/color-string/LICENSE
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/color/node_modules/color-string/README.md
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/color/node_modules/color-string/color-string.js
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/color/node_modules/color-string/node_modules/color-name/LICENSE
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/color/node_modules/color-string/node_modules/color-name/README.md
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/color/node_modules/color-string/node_modules/color-name/index.js
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/color/node_modules/color-string/node_modules/color-name/package.json
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/color/node_modules/color-string/package.json
+%%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/color/package.json
 %%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/css-color-names/Makefile
 %%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/css-color-names/README.md
 %%WWWDIR%%/node_modules/css-loader/node_modules/cssnano/node_modules/postcss-colormin/node_modules/colormin/node_modules/css-color-names/css-color-names.json
@@ -6889,6 +6916,10 @@
 %%WWWDIR%%/node_modules/jade/node_modules/uglify-js/node_modules/yargs/node_modules/cliui/package.json
 %%WWWDIR%%/node_modules/jade/node_modules/uglify-js/node_modules/yargs/node_modules/decamelize/index.js
 %%WWWDIR%%/node_modules/jade/node_modules/uglify-js/node_modules/yargs/node_modules/decamelize/license
+%%WWWDIR%%/node_modules/jade/node_modules/uglify-js/node_modules/yargs/node_modules/decamelize/node_modules/escape-string-regexp/index.js
+%%WWWDIR%%/node_modules/jade/node_modules/uglify-js/node_modules/yargs/node_modules/decamelize/node_modules/escape-string-regexp/license
+%%WWWDIR%%/node_modules/jade/node_modules/uglify-js/node_modules/yargs/node_modules/decamelize/node_modules/escape-string-regexp/package.json
+%%WWWDIR%%/node_modules/jade/node_modules/uglify-js/node_modules/yargs/node_modules/decamelize/node_modules/escape-string-regexp/readme.md
 %%WWWDIR%%/node_modules/jade/node_modules/uglify-js/node_modules/yargs/node_modules/decamelize/package.json
 %%WWWDIR%%/node_modules/jade/node_modules/uglify-js/node_modules/yargs/node_modules/decamelize/readme.md
 %%WWWDIR%%/node_modules/jade/node_modules/uglify-js/node_modules/yargs/node_modules/window-size/LICENSE-MIT
@@ -7201,16 +7232,6 @@
 %%WWWDIR%%/node_modules/js-yaml/node_modules/argparse/CHANGELOG.md
 %%WWWDIR%%/node_modules/js-yaml/node_modules/argparse/LICENSE
 %%WWWDIR%%/node_modules/js-yaml/node_modules/argparse/README.md
-%%WWWDIR%%/node_modules/js-yaml/node_modules/argparse/examples/arguments.js
-%%WWWDIR%%/node_modules/js-yaml/node_modules/argparse/examples/choice.js
-%%WWWDIR%%/node_modules/js-yaml/node_modules/argparse/examples/constants.js
-%%WWWDIR%%/node_modules/js-yaml/node_modules/argparse/examples/help.js
-%%WWWDIR%%/node_modules/js-yaml/node_modules/argparse/examples/nargs.js
-%%WWWDIR%%/node_modules/js-yaml/node_modules/argparse/examples/parents.js
-%%WWWDIR%%/node_modules/js-yaml/node_modules/argparse/examples/prefix_chars.js
-%%WWWDIR%%/node_modules/js-yaml/node_modules/argparse/examples/sub_commands.js
-%%WWWDIR%%/node_modules/js-yaml/node_modules/argparse/examples/sum.js
-%%WWWDIR%%/node_modules/js-yaml/node_modules/argparse/examples/testformatters.js
 %%WWWDIR%%/node_modules/js-yaml/node_modules/argparse/index.js
 %%WWWDIR%%/node_modules/js-yaml/node_modules/argparse/lib/action.js
 %%WWWDIR%%/node_modules/js-yaml/node_modules/argparse/lib/action/append.js
@@ -7233,6 +7254,7 @@
 %%WWWDIR%%/node_modules/js-yaml/node_modules/argparse/lib/help/added_formatters.js
 %%WWWDIR%%/node_modules/js-yaml/node_modules/argparse/lib/help/formatter.js
 %%WWWDIR%%/node_modules/js-yaml/node_modules/argparse/lib/namespace.js
+%%WWWDIR%%/node_modules/js-yaml/node_modules/argparse/lib/utils.js
 %%WWWDIR%%/node_modules/js-yaml/node_modules/argparse/node_modules/sprintf-js/.npmignore
 %%WWWDIR%%/node_modules/js-yaml/node_modules/argparse/node_modules/sprintf-js/LICENSE
 %%WWWDIR%%/node_modules/js-yaml/node_modules/argparse/node_modules/sprintf-js/README.md
@@ -8134,10 +8156,6 @@
 %%WWWDIR%%/node_modules/micromatch/node_modules/braces/node_modules/expand-range/node_modules/fill-range/node_modules/repeat-string/package.json
 %%WWWDIR%%/node_modules/micromatch/node_modules/braces/node_modules/expand-range/node_modules/fill-range/package.json
 %%WWWDIR%%/node_modules/micromatch/node_modules/braces/node_modules/expand-range/package.json
-%%WWWDIR%%/node_modules/micromatch/node_modules/braces/node_modules/lazy-cache/LICENSE
-%%WWWDIR%%/node_modules/micromatch/node_modules/braces/node_modules/lazy-cache/README.md
-%%WWWDIR%%/node_modules/micromatch/node_modules/braces/node_modules/lazy-cache/index.js
-%%WWWDIR%%/node_modules/micromatch/node_modules/braces/node_modules/lazy-cache/package.json
 %%WWWDIR%%/node_modules/micromatch/node_modules/braces/node_modules/preserve/.gitattributes
 %%WWWDIR%%/node_modules/micromatch/node_modules/braces/node_modules/preserve/.jshintrc
 %%WWWDIR%%/node_modules/micromatch/node_modules/braces/node_modules/preserve/.npmignore
@@ -8153,7 +8171,6 @@
 %%WWWDIR%%/node_modules/micromatch/node_modules/braces/node_modules/repeat-element/index.js
 %%WWWDIR%%/node_modules/micromatch/node_modules/braces/node_modules/repeat-element/package.json
 %%WWWDIR%%/node_modules/micromatch/node_modules/braces/package.json
-%%WWWDIR%%/node_modules/micromatch/node_modules/braces/utils.js
 %%WWWDIR%%/node_modules/micromatch/node_modules/expand-brackets/LICENSE
 %%WWWDIR%%/node_modules/micromatch/node_modules/expand-brackets/README.md
 %%WWWDIR%%/node_modules/micromatch/node_modules/expand-brackets/index.js
@@ -8161,22 +8178,10 @@
 %%WWWDIR%%/node_modules/micromatch/node_modules/extglob/LICENSE
 %%WWWDIR%%/node_modules/micromatch/node_modules/extglob/README.md
 %%WWWDIR%%/node_modules/micromatch/node_modules/extglob/index.js
-%%WWWDIR%%/node_modules/micromatch/node_modules/extglob/node_modules/ansi-green/LICENSE
-%%WWWDIR%%/node_modules/micromatch/node_modules/extglob/node_modules/ansi-green/index.js
-%%WWWDIR%%/node_modules/micromatch/node_modules/extglob/node_modules/ansi-green/node_modules/ansi-wrap/LICENSE
-%%WWWDIR%%/node_modules/micromatch/node_modules/extglob/node_modules/ansi-green/node_modules/ansi-wrap/README.md
-%%WWWDIR%%/node_modules/micromatch/node_modules/extglob/node_modules/ansi-green/node_modules/ansi-wrap/index.js
-%%WWWDIR%%/node_modules/micromatch/node_modules/extglob/node_modules/ansi-green/node_modules/ansi-wrap/package.json
-%%WWWDIR%%/node_modules/micromatch/node_modules/extglob/node_modules/ansi-green/package.json
-%%WWWDIR%%/node_modules/micromatch/node_modules/extglob/node_modules/ansi-green/readme.md
 %%WWWDIR%%/node_modules/micromatch/node_modules/extglob/node_modules/is-extglob/LICENSE
 %%WWWDIR%%/node_modules/micromatch/node_modules/extglob/node_modules/is-extglob/README.md
 %%WWWDIR%%/node_modules/micromatch/node_modules/extglob/node_modules/is-extglob/index.js
 %%WWWDIR%%/node_modules/micromatch/node_modules/extglob/node_modules/is-extglob/package.json
-%%WWWDIR%%/node_modules/micromatch/node_modules/extglob/node_modules/success-symbol/LICENSE
-%%WWWDIR%%/node_modules/micromatch/node_modules/extglob/node_modules/success-symbol/README.md
-%%WWWDIR%%/node_modules/micromatch/node_modules/extglob/node_modules/success-symbol/index.js
-%%WWWDIR%%/node_modules/micromatch/node_modules/extglob/node_modules/success-symbol/package.json
 %%WWWDIR%%/node_modules/micromatch/node_modules/extglob/package.json
 %%WWWDIR%%/node_modules/micromatch/node_modules/filename-regex/README.md
 %%WWWDIR%%/node_modules/micromatch/node_modules/filename-regex/index.js
@@ -8446,6 +8451,7 @@
 %%WWWDIR%%/node_modules/postcss-minify-selectors/node_modules/postcss-selector-parser/dist/selectors/universal.js
 %%WWWDIR%%/node_modules/postcss-minify-selectors/node_modules/postcss-selector-parser/dist/sortAscending.js
 %%WWWDIR%%/node_modules/postcss-minify-selectors/node_modules/postcss-selector-parser/dist/tokenize.js
+%%WWWDIR%%/node_modules/postcss-minify-selectors/node_modules/postcss-selector-parser/node_modules/flatten/LICENSE
 %%WWWDIR%%/node_modules/postcss-minify-selectors/node_modules/postcss-selector-parser/node_modules/flatten/README.md
 %%WWWDIR%%/node_modules/postcss-minify-selectors/node_modules/postcss-selector-parser/node_modules/flatten/index.js
 %%WWWDIR%%/node_modules/postcss-minify-selectors/node_modules/postcss-selector-parser/node_modules/flatten/package.json
@@ -9333,6 +9339,10 @@
 %%WWWDIR%%/node_modules/regenerator/node_modules/defs/node_modules/yargs/node_modules/cliui/package.json
 %%WWWDIR%%/node_modules/regenerator/node_modules/defs/node_modules/yargs/node_modules/decamelize/index.js
 %%WWWDIR%%/node_modules/regenerator/node_modules/defs/node_modules/yargs/node_modules/decamelize/license
+%%WWWDIR%%/node_modules/regenerator/node_modules/defs/node_modules/yargs/node_modules/decamelize/node_modules/escape-string-regexp/index.js
+%%WWWDIR%%/node_modules/regenerator/node_modules/defs/node_modules/yargs/node_modules/decamelize/node_modules/escape-string-regexp/license
+%%WWWDIR%%/node_modules/regenerator/node_modules/defs/node_modules/yargs/node_modules/decamelize/node_modules/escape-string-regexp/package.json
+%%WWWDIR%%/node_modules/regenerator/node_modules/defs/node_modules/yargs/node_modules/decamelize/node_modules/escape-string-regexp/readme.md
 %%WWWDIR%%/node_modules/regenerator/node_modules/defs/node_modules/yargs/node_modules/decamelize/package.json
 %%WWWDIR%%/node_modules/regenerator/node_modules/defs/node_modules/yargs/node_modules/decamelize/readme.md
 %%WWWDIR%%/node_modules/regenerator/node_modules/defs/node_modules/yargs/node_modules/os-locale/index.js
@@ -10620,6 +10630,10 @@
 %%WWWDIR%%/node_modules/webpack/node_modules/uglify-js/node_modules/yargs/node_modules/camelcase/readme.md
 %%WWWDIR%%/node_modules/webpack/node_modules/uglify-js/node_modules/yargs/node_modules/decamelize/index.js
 %%WWWDIR%%/node_modules/webpack/node_modules/uglify-js/node_modules/yargs/node_modules/decamelize/license
+%%WWWDIR%%/node_modules/webpack/node_modules/uglify-js/node_modules/yargs/node_modules/decamelize/node_modules/escape-string-regexp/index.js
+%%WWWDIR%%/node_modules/webpack/node_modules/uglify-js/node_modules/yargs/node_modules/decamelize/node_modules/escape-string-regexp/license
+%%WWWDIR%%/node_modules/webpack/node_modules/uglify-js/node_modules/yargs/node_modules/decamelize/node_modules/escape-string-regexp/package.json
+%%WWWDIR%%/node_modules/webpack/node_modules/uglify-js/node_modules/yargs/node_modules/decamelize/node_modules/escape-string-regexp/readme.md
 %%WWWDIR%%/node_modules/webpack/node_modules/uglify-js/node_modules/yargs/node_modules/decamelize/package.json
 %%WWWDIR%%/node_modules/webpack/node_modules/uglify-js/node_modules/yargs/node_modules/decamelize/readme.md
 %%WWWDIR%%/node_modules/webpack/node_modules/uglify-js/node_modules/yargs/node_modules/window-size/LICENSE-MIT
@@ -10843,34 +10857,6 @@
 %%WWWDIR%%/node_modules/whatwg-fetch/README.md
 %%WWWDIR%%/node_modules/whatwg-fetch/fetch.js
 %%WWWDIR%%/node_modules/whatwg-fetch/package.json
-%%WWWDIR%%/optimize/bundles/commons.bundle.js
-%%WWWDIR%%/optimize/bundles/commons.style.css
-%%WWWDIR%%/optimize/bundles/kibana.bundle.js
-%%WWWDIR%%/optimize/bundles/kibana.entry.js
-%%WWWDIR%%/optimize/bundles/kibana.style.css
-%%WWWDIR%%/optimize/bundles/node_modules/bootstrap/fonts/glyphicons-halflings-regular.eot
-%%WWWDIR%%/optimize/bundles/node_modules/bootstrap/fonts/glyphicons-halflings-regular.svg
-%%WWWDIR%%/optimize/bundles/node_modules/bootstrap/fonts/glyphicons-halflings-regular.ttf
-%%WWWDIR%%/optimize/bundles/node_modules/bootstrap/fonts/glyphicons-halflings-regular.woff
-%%WWWDIR%%/optimize/bundles/node_modules/bootstrap/fonts/glyphicons-halflings-regular.woff2
-%%WWWDIR%%/optimize/bundles/node_modules/font-awesome/fonts/fontawesome-webfont.eot
-%%WWWDIR%%/optimize/bundles/node_modules/font-awesome/fonts/fontawesome-webfont.svg
-%%WWWDIR%%/optimize/bundles/node_modules/font-awesome/fonts/fontawesome-webfont.ttf
-%%WWWDIR%%/optimize/bundles/node_modules/font-awesome/fonts/fontawesome-webfont.woff
-%%WWWDIR%%/optimize/bundles/node_modules/font-awesome/fonts/fontawesome-webfont.woff2
-%%WWWDIR%%/optimize/bundles/src/ui/public/images/elk.ico
-%%WWWDIR%%/optimize/bundles/src/ui/public/images/kibana.svg
-%%WWWDIR%%/optimize/bundles/src/ui/public/stringify/icons/cv.png
-%%WWWDIR%%/optimize/bundles/src/ui/public/stringify/icons/de.png
-%%WWWDIR%%/optimize/bundles/src/ui/public/stringify/icons/go.png
-%%WWWDIR%%/optimize/bundles/src/ui/public/stringify/icons/ne.png
-%%WWWDIR%%/optimize/bundles/src/ui/public/stringify/icons/ni.png
-%%WWWDIR%%/optimize/bundles/src/ui/public/stringify/icons/stop.png
-%%WWWDIR%%/optimize/bundles/src/ui/public/stringify/icons/us.png
-%%WWWDIR%%/optimize/bundles/statusPage.bundle.js
-%%WWWDIR%%/optimize/bundles/statusPage.entry.js
-%%WWWDIR%%/optimize/bundles/statusPage.style.css
-%%WWWDIR%%/optimize/bundles/webpack.records
 %%WWWDIR%%/package.json
 %%WWWDIR%%/src/cli/Command.js
 %%WWWDIR%%/src/cli/Log.js
@@ -11698,4 +11684,5 @@
 %%WWWDIR%%/webpackShims/ui-bootstrap.js
 @dir %%WWWDIR%%/installedPlugins
 @dir %%WWWDIR%%/node_modules/rimraf/node_modules
+@dir(www,www) %%WWWDIR%%/optimize
 @dir %%WWWDIR%%/src/ui/public/factories

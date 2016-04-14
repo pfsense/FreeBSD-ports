@@ -197,11 +197,21 @@ RUBY_PORTEPOCH=		1
 RUBY_PATCHLEVEL=	0
 RUBY22=			""	# PLIST_SUB helpers
 
+. elif ${RUBY_VER} == 2.3
+#
+# Ruby 2.3
+#
+RUBY_RELVERSION=	2.3.0
+RUBY_PORTREVISION=	0
+RUBY_PORTEPOCH=		1
+RUBY_PATCHLEVEL=	0
+RUBY23=			""	# PLIST_SUB helpers
+
 . else
 #
 # Other versions
 #
-IGNORE=	Only ruby 2.0, 2.1 and 2.2 are supported
+IGNORE=	Only ruby 2.0, 2.1, 2.2 and 2.3 are supported
 _INVALID_RUBY_VER=	1
 . endif
 .endif # defined(RUBY_VER)
@@ -211,6 +221,7 @@ _INVALID_RUBY_VER=	1
 RUBY20?=		"@comment "
 RUBY21?=		"@comment "
 RUBY22?=		"@comment "
+RUBY23?=		"@comment "
 
 .if defined(BROKEN_RUBY${RUBY_VER:R}${RUBY_VER:E})
 .if ${BROKEN_RUBY${RUBY_VER:R}${RUBY_VER:E}} == "yes"
@@ -305,9 +316,9 @@ RUBY_PORT?=		${RUBY_BASE_PORT}
 RUBY_RDTOOL_PORT?=	textproc/ruby-rdtool
 
 # Depends
-DEPEND_LIBRUBY?=	lib${RUBY_NAME}.so.${RUBY_SHLIBVER}:${PORTSDIR}/${RUBY_PORT}
-DEPEND_RUBY?=		${RUBY}:${PORTSDIR}/${RUBY_PORT}
-DEPEND_RUBY_RDTOOL?=	${RUBY_RD2}:${PORTSDIR}/${RUBY_RDTOOL_PORT}
+DEPEND_LIBRUBY?=	lib${RUBY_NAME}.so.${RUBY_SHLIBVER}:${RUBY_PORT}
+DEPEND_RUBY?=		${RUBY}:${RUBY_PORT}
+DEPEND_RUBY_RDTOOL?=	${RUBY_RD2}:${RUBY_RDTOOL_PORT}
 
 # Directories
 RUBY_LIBDIR?=		${_RUBY_SYSLIBDIR}/ruby/${RUBY_VER}
@@ -349,7 +360,8 @@ PLIST_SUB+=		${PLIST_RUBY_DIRS:C,DIR="(${LOCALBASE}|${PREFIX})/,DIR=",} \
 			RUBY_DEFAULT_SUFFIX="${RUBY_DEFAULT_SUFFIX}" \
 			RUBY20=${RUBY20} \
 			RUBY21=${RUBY21} \
-			RUBY22=${RUBY22}
+			RUBY22=${RUBY22} \
+			RUBY23=${RUBY23}
 
 .if defined(USE_RUBY_RDOC)
 MAKE_ENV+=	RUBY_RDOC=${RUBY_RDOC}
@@ -412,15 +424,15 @@ RUBY_FLAGS+=	-d
 #
 .if defined(USE_RUBYGEMS)
 
-BUILD_DEPENDS+=	${RUBYGEMBIN}:${PORTSDIR}/devel/ruby-gems
-RUN_DEPENDS+=	${RUBYGEMBIN}:${PORTSDIR}/devel/ruby-gems
+BUILD_DEPENDS+=	${RUBYGEMBIN}:devel/ruby-gems
+RUN_DEPENDS+=	${RUBYGEMBIN}:devel/ruby-gems
 
 PKGNAMEPREFIX?=	rubygem-
 EXTRACT_SUFX=	.gem
 EXTRACT_ONLY=
 DIST_SUBDIR=	rubygem
 
-EXTRACT_DEPENDS+=	${RUBYGEMBIN}:${PORTSDIR}/devel/ruby-gems
+EXTRACT_DEPENDS+=	${RUBYGEMBIN}:devel/ruby-gems
 GEMS_BASE_DIR=	lib/ruby/gems/${RUBY_VER}
 GEMS_DIR=	${GEMS_BASE_DIR}/gems
 DOC_DIR=	${GEMS_BASE_DIR}/doc
@@ -467,6 +479,7 @@ RUBYGEM_ARGS+=	--no-rdoc --no-ri
 RUBYGEM_ARGS+=	--rdoc --ri
 .endif
 
+.if !target(do-extract)
 do-extract:
 	@${SETENV} ${GEM_ENV} ${RUBYGEMBIN} unpack --target=${WRKDIR} ${DISTDIR}/${DIST_SUBDIR}/${GEMFILES}
 	@(cd ${BUILD_WRKSRC}; if ! ${SETENV} ${GEM_ENV} ${RUBYGEMBIN} spec --ruby ${DISTDIR}/${DIST_SUBDIR}/${GEMFILES} > ${GEMSPEC} ; then \
@@ -476,7 +489,9 @@ do-extract:
 			fi; \
 		${FALSE}; \
 		fi)
+.endif
 
+.if !target(do-build)
 do-build:
 	@(cd ${BUILD_WRKSRC}; if ! ${SETENV} ${GEM_ENV} ${RUBYGEMBIN} build --force ${GEMSPEC} ; then \
 		if [ -n "${BUILD_FAIL_MESSAGE}" ] ; then \
@@ -485,19 +500,25 @@ do-build:
 			fi; \
 		${FALSE}; \
 		fi)
+.endif
 
+.if !target(do-install)
 do-install:
 	(cd ${BUILD_WRKSRC}; ${SETENV} ${GEM_ENV} ${RUBYGEMBIN} install ${RUBYGEM_ARGS} ${GEMFILES} -- --build-args ${CONFIGURE_ARGS})
 	${RM} -r ${STAGEDIR}${PREFIX}/${GEMS_BASE_DIR}/build_info/
+	${FIND} ${STAGEDIR}${PREFIX}/${GEMS_BASE_DIR} -type f -name '*.so' -exec ${STRIP_CMD} {} +
+	${FIND} ${STAGEDIR}${PREFIX}/${GEMS_BASE_DIR} -type f \( -name mkmf.log -or -name gem_make.out \) -delete
+	${RM} -rf ${STAGEDIR}${PREFIX}/${GEM_LIB_DIR}/ext \
+		${STAGEDIR}${PREFIX}/${CACHE_DIR} 2> /dev/null || ${TRUE}
 	${RMDIR} ${STAGEDIR}${PREFIX}/${EXT_DIR} 2> /dev/null || ${TRUE}
 .if defined(NOPORTDOCS)
 	-@${RMDIR} ${STAGEDIR}${PREFIX}/${DOC_DIR}
+.endif
 .endif
 
 . if defined(RUBYGEM_AUTOPLIST)
 .  if !target(post-install-script)
 post-install-script:
-	@${ECHO} ${GEM_CACHE} >> ${TMPPLIST}
 	@${ECHO} ${GEM_SPEC} >> ${TMPPLIST}
 .if !defined(NOPORTDOCS)
 	@${FIND} -ds ${STAGEDIR}${PREFIX}/${DOC_DIR} -type f -print | ${SED} -E -e \
@@ -584,7 +605,7 @@ RUN_DEPENDS+=		${DEPEND_RUBY}
 .endif
 
 .if defined(USE_RAKE)
-BUILD_DEPENDS+=		${LOCALBASE}/bin/rake:${PORTSDIR}/devel/rubygem-rake
+BUILD_DEPENDS+=		${LOCALBASE}/bin/rake:devel/rubygem-rake
 RAKE_BIN=	${LOCALBASE}/bin/rake
 .endif
 

@@ -11,10 +11,10 @@ COMMENT=	Library for accessing the MusicBrainz cover art archive
 
 LICENSE=	LGPL20
 
-LIB_DEPENDS=	libjansson.so:${PORTSDIR}/devel/jansson \
-		libneon.so:${PORTSDIR}/www/neon
+LIB_DEPENDS=	libjansson.so:devel/jansson \
+		libneon.so:www/neon
 
-USES=		cmake
+USES=		cmake pathfix
 USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	metabrainz
@@ -23,8 +23,6 @@ GH_ACCOUNT=	metabrainz
 WRKSRC=		${WRKDIR}/${PORTNAME}-{PROJECT_VERSION}
 
 post-patch:
-	${REINPLACE_CMD} -e '/pkgconfig/s|$${LIB_INSTALL_DIR}|libdata|' \
-		 ${WRKSRC}/CMakeLists.txt
 	${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \
 		 ${WRKSRC}/cmake/modules/*.cmake
 

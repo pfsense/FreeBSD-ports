@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	libmetalink
-PORTVERSION=	0.1.2
-PORTREVISION=	2
+PORTVERSION=	0.1.3
 CATEGORIES=	misc
-MASTER_SITES=	https://launchpad.net/${PORTNAME}/trunk/${PORTVERSION}/+download/ \
+MASTER_SITES=	https://launchpad.net/${PORTNAME}/trunk/${PORTNAME}-${PORTVERSION}/+download/ \
 		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -22,18 +21,18 @@ GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 USE_LDCONFIG=	yes
-USES=		libtool localbase pathfix tar:bzip2
+USES=		libtool localbase pathfix tar:xz
 
 PORTEXAMPLES=	LibO_3.5.4_Win_x86_install_multi.msi.meta4 \
 		metalinkcat.c \
 		ubuntu-12.04-server-amd64.metalink
 
 EXPAT_CONFIGURE_WITH=	libexpat
-EXPAT_LIB_DEPENDS=	libexpat.so:${PORTSDIR}/textproc/expat2
+EXPAT_LIB_DEPENDS=	libexpat.so:textproc/expat2
 LIBXML2_CONFIGURE_WITH=	libxml2
 LIBXML2_CPPFLAGS=	-I${LOCALBASE}/include/libxml2
 LIBXML2_USE=		GNOME=libxml2
-TEST_BUILD_DEPENDS=	cunit>=2.1:${PORTSDIR}/devel/cunit
+TEST_BUILD_DEPENDS=	cunit>=2.1:devel/cunit
 
 post-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/

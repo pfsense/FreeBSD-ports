@@ -14,14 +14,14 @@ COMMENT=	PECL extension that wraps libshape
 
 LICENSE=	PHP30
 
-LIB_DEPENDS=	libshp.so:${PORTSDIR}/devel/shapelib
+LIB_DEPENDS=	libshp.so:devel/shapelib
 
 USES=		tar:tgz
 USE_PHP=	yes
 USE_PHP_BUILD=	yes
 USE_PHPEXT=	yes
 PHP_MODNAME=	shp
-IGNORE_WITH_PHP=	5 56
+IGNORE_WITH_PHP=	56 70
 
 CONFIGURE_ARGS+=	--with-shp=${LOCALBASE}
 

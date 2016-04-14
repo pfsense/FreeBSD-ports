@@ -10,17 +10,16 @@ DIST_SUBDIR=	KDE/${PORTVERSION}
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE download manager
 
-LIB_DEPENDS=	libgpgme.so:${PORTSDIR}/security/gpgme \
-		libktorrent.so:${PORTSDIR}/net-p2p/libktorrent \
-		libmms.so:${PORTSDIR}/net/libmms \
-		libqca.so:${PORTSDIR}/devel/qca \
-		libboost_thread.so:${PORTSDIR}/devel/boost-libs
+LIB_DEPENDS=	libgpgme.so:security/gpgme \
+		libktorrent.so:net-p2p/libktorrent \
+		libmms.so:net/libmms \
+		libqca.so:devel/qca \
+		libboost_thread.so:devel/boost-libs
 
-USE_SQLITE=	yes
 USE_KDE4=	kdelibs kdeprefix workspace libkonq \
 		nepomuk-core nepomuk-widgets automoc4 ontologies \
 		soprano
-USES=		cmake:outsource shebangfix tar:xz
+USES=		cmake:outsource shebangfix sqlite tar:xz
 SHEBANG_FILES=	conf/*.pl
 USE_QT4=	gui sql moc_build qmake_build rcc_build uic_build
 USE_LDCONFIG=	yes

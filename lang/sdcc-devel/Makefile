@@ -1,20 +1,19 @@
 # $FreeBSD$
 
 PORTNAME=	sdcc
-PORTVERSION=	3.5.5.2015.11.06
-PORTREVISION=	1
+PORTVERSION=	3.5.5.2016.02.20
 CATEGORIES=	lang
 MASTER_SITES=	SF/sdcc/snapshot_builds/sdcc-src/ \
 		http://tijl.fastmail.com/mirror/
 PKGNAMESUFFIX=	-devel
-DISTNAME=	${PORTNAME}-src-20151106-9386
+DISTNAME=	${PORTNAME}-src-20160220-9506
 
 MAINTAINER=	tijl@FreeBSD.org
 COMMENT=	Small Device C Compiler
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	${LOCALBASE}/include/boost/graph/adjacency_list.hpp:${PORTSDIR}/devel/boost-libs
+BUILD_DEPENDS=	${LOCALBASE}/include/boost/graph/adjacency_list.hpp:devel/boost-libs
 
 CONFLICTS_INSTALL=	sdcc-[0-9]*
 DESCR=		${PORTSDIR}/lang/sdcc/pkg-descr
@@ -35,7 +34,6 @@ Z80_DESC=	Zilog Z80/Z180/GBZ80, Rabbit 2000/3000, Toshiba TLCS-90
 
 CONFIGURE_ARGS=	--disable-avr --disable-install-libbfd --disable-werror \
 		--disable-st7 docdir=${DOCSDIR} sdcc_cv_c_fms_extensions=no
-NOPRECIOUSMAKEVARS=	yes
 PORTDATA=	*
 PORTDOCS=	*
 WRKSRC=		${WRKDIR}/sdcc
@@ -46,8 +44,8 @@ HC08_CONFIGURE_OFF=	--disable-hc08 --disable-hc08-port		\
 			--disable-s08-port
 MCS51_CONFIGURE_OFF=	--disable-51 --disable-mcs51-port		\
 			--disable-ds390-port --disable-ds400-port
-PIC_BUILD_DEPENDS=	gputils>=1.2.0:${PORTSDIR}/devel/gputils
-PIC_RUN_DEPENDS=	gpasm:${PORTSDIR}/devel/gputils
+PIC_BUILD_DEPENDS=	gputils>=1.2.0:devel/gputils
+PIC_RUN_DEPENDS=	gpasm:devel/gputils
 PIC_CONFIGURE_OFF=	--disable-pic14-port --disable-pic16-port
 STM8_CONFIGURE_OFF=	--disable-stm8 --disable-stm8-port
 UCSIM_CONFIGURE_OFF=	--disable-ucsim
@@ -68,6 +66,27 @@ post-patch:
 		${WRKSRC}/support/sdbinutils/libiberty/Makefile.in
 	@${REINPLACE_CMD} '/^SUBDIRS =/s/doc//' \
 		${WRKSRC}/support/sdbinutils/bfd/Makefile.in
+	@${REINPLACE_CMD} 's/[[:<:]]ARCH[[:>:]]/PICARCH/g' \
+		${WRKSRC}/device/lib/pic14/Makefile.common \
+		${WRKSRC}/device/lib/pic14/Makefile.in \
+		${WRKSRC}/device/lib/pic14/configure \
+		${WRKSRC}/device/lib/pic14/libm/Makefile.in \
+		${WRKSRC}/device/lib/pic14/libsdcc/enhanced/Makefile.in \
+		${WRKSRC}/device/lib/pic14/libsdcc/enhanced-no-xinst/Makefile.in \
+		${WRKSRC}/device/lib/pic14/libsdcc/regular/Makefile.in \
+		${WRKSRC}/device/lib/pic16/Makefile.in \
+		${WRKSRC}/device/lib/pic16/configure \
+		${WRKSRC}/device/lib/pic16/debug/Makefile.in \
+		${WRKSRC}/device/lib/pic16/libc/Makefile.in \
+		${WRKSRC}/device/lib/pic16/libio/Makefile.in \
+		${WRKSRC}/device/lib/pic16/libm/Makefile.in \
+		${WRKSRC}/device/lib/pic16/libsdcc/Makefile.in \
+		${WRKSRC}/device/lib/pic16/startup/Makefile.in \
+		${WRKSRC}/device/non-free/lib/pic14/Makefile.common.in \
+		${WRKSRC}/device/non-free/lib/pic14/Makefile.rules \
+		${WRKSRC}/device/non-free/lib/pic16/Makefile.in \
+		${WRKSRC}/device/non-free/lib/pic16/configure \
+		${WRKSRC}/device/non-free/lib/pic16/libdev/Makefile.in
 .if ! ${PORT_OPTIONS:MDOCS}
 	@${REINPLACE_CMD} 's, [a-z-]*doc,,' \
 		${WRKSRC}/Makefile.in \

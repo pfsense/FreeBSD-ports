@@ -1,27 +1,28 @@
 # $FreeBSD$
 
 PORTNAME=	renpy
-PORTVERSION=	6.99.8
+PORTVERSION=	6.99.10
 DISTVERSIONSUFFIX=-sdk
+PORTREVISION=	0
 CATEGORIES=	devel games
 MASTER_SITES=	http://www.renpy.org/dl/${PORTVERSION}/
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Framework for developing visual-novel type games
 
-LICENSE=	APACHE20 BSD3CLAUSE DejaVu LGPL21 MIT OFL11 ZLIB
+LICENSE=	APACHE20 BSD3CLAUSE DejaVu LGPL21+ MIT OFL11 ZLIB
 LICENSE_COMB=	multi
 LICENSE_NAME_DejaVu=	Bitstream Vera and Arev fonts license
 LICENSE_FILE_DejaVu=	${WRKSRC}/renpy/common/DejaVuSans.txt
 LICENSE_PERMS_DejaVu=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}game_sdl2>0:${PORTSDIR}/devel/py-game_sdl2 \
-		cython:${PORTSDIR}/lang/cython
-LIB_DEPENDS=	libfribidi.so:${PORTSDIR}/converters/fribidi \
-		libpng.so:${PORTSDIR}/graphics/png \
-		libavcodec.so:${PORTSDIR}/multimedia/ffmpeg \
-		libfreetype.so:${PORTSDIR}/print/freetype2
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}game_sdl2>=${PORTVERSION}:${PORTSDIR}/devel/py-game_sdl2
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}game_sdl2>0:devel/py-game_sdl2 \
+		cython:lang/cython
+LIB_DEPENDS=	libfribidi.so:converters/fribidi \
+		libpng.so:graphics/png \
+		libavcodec.so:multimedia/ffmpeg \
+		libfreetype.so:print/freetype2
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}game_sdl2>=${PORTVERSION}:devel/py-game_sdl2
 
 # Upstream tends to reroll distfiles before moving under /release/
 PORTSCOUT=	site:http://www.renpy.org/dl/release/
@@ -55,7 +56,7 @@ DIST_VARS=	LICENSE+="ART20 PSFL" \
 		PORTDATA+="lib renpy.app renpy.exe renpy.sh"
 EXAMPLES_VARS=	PORTDATA+="the_question tutorial"
 TKINTER_DESC=	Install Tkinter to allow choosing Projects Directory
-TKINTER_RUN_DEPENDS=${PYTHON_PKGNAMEPREFIX}tkinter>0:${PORTSDIR}/x11-toolkits/py-tkinter
+TKINTER_RUN_DEPENDS=${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter
 
 . for lic in FREETYPE LIBJPEG LIBPNG MSVCR90
 DIST_VARS+=	LICENSE+=${lic}

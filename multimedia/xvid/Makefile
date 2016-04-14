@@ -11,7 +11,7 @@ DISTNAME=	${PORTNAME}core-${PORTVERSION}
 MAINTAINER=	riggs@FreeBSD.org
 COMMENT=	Opensource MPEG-4 codec, based on OpenDivx
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKDIR}/xvidcore/LICENSE
 
 USES=		gmake
@@ -37,7 +37,7 @@ OPTIONS_DEFINE=	OPTIMIZED_CFLAGS
 CONFIGURE_TARGET=	x86_64-portbld-freebsd${OSREL}
 .endif
 .if ${ARCH} == "amd64" || ${ARCH} == "i386"
-BUILD_DEPENDS+=	nasm:${PORTSDIR}/devel/nasm
+BUILD_DEPENDS+=	nasm:devel/nasm
 .endif
 
 .if ${PORT_OPTIONS:MOPTIMIZED_CFLAGS}

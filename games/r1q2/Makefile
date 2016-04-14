@@ -11,14 +11,10 @@ DISTNAME=	${PORTNAME}-b${PORTVERSION}-src
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Enhanced Quake II client/server focusing on stability
 
-.if !exists(/usr/include/execinfo.h)
-LIB_DEPENDS=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo
-.endif
-
 ONLY_FOR_ARCHS=	i386 amd64
 ONLY_FOR_ARCHS_REASON=	sets the FPU rounding mode and precision (not available in fenv.h)
 
-USES=		dos2unix gmake zip
+USES=		dos2unix execinfo gmake zip
 NO_WRKSUBDIR=	yes
 BUILD_WRKSRC=	${WRKSRC}/binaries
 ALL_TARGET=	#
@@ -65,7 +61,7 @@ PLIST_SUB+=	GAME="@comment "
 USES+=		jpeg
 USE_GL=		gl
 USE_SDL=	sdl
-LIB_DEPENDS+=	libpng.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS+=	libpng.so:graphics/png
 ALL_TARGET+=	ref_gl
 PLIST_SUB+=	REF_GL=""
 .else

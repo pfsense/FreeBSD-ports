@@ -10,9 +10,9 @@ MASTER_SITES=	http://www.informatik.uni-koeln.de/abacus/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Branch-And-CUt System
 
-LICENSE=	LGPL21 # (or later)
+LICENSE=	LGPL21+
 
-LIB_DEPENDS=	libClp.so:${PORTSDIR}/math/coinmp
+LIB_DEPENDS=	libClp.so:math/coinmp
 
 NO_WRKSUBDIR=	yes
 
