@@ -383,114 +383,118 @@ $entries = count($results);
 <input type="hidden" name="pfblockerngack" id="pfblockerngack" value="">
 <input type="hidden" name="pfblockerngdnsblclear" id="pfblockerngdnsblclear" value="">
 
-	<!-- Print failed downloads (if any) -->
-	<?php if (!empty($results)): ?>
-		<ol><small>
+	<div class="table-responsive">
+		<!-- Print failed downloads (if any) -->
+		<?php if (!empty($results)): ?>
+			<ol style="white-space: nowrap; text-overflow: ellipsis;"><small>
 <?
-		$counter = 1;
-		foreach ($results as $result) {
-			if ($counter > $pfb['maxfails'] && $entries > $pfb['maxfails']) {
-				// To many errors stop displaying
-				print (($entries - $pfb['maxfails']) . gettext(' more error(s)...'));
-				break;
+			$counter = 1;
+			foreach ($results as $result) {
+				if ($counter > $pfb['maxfails'] && $entries > $pfb['maxfails']) {
+					// To many errors stop displaying
+					print (($entries - $pfb['maxfails']) . gettext(' more error(s)...'));
+					break;
+				}
+				if ($counter == 1) {
+					print ("<li>{$result}&emsp;<i class=\"fa fa-trash icon-pointer\" id=\"pfblockerngackicon\"
+							title=\"" . gettext("Clear Failed Downloads") . "\" ></i></li>");
+				} else {
+					print ("<li>{$result}</li>");
+				}
+				$counter++;
 			}
-			if ($counter == 1) {
-				print ("<li>{$result}&emsp;<i class=\"fa fa-trash icon-pointer\" id=\"pfblockerngackicon\"
-						title=\"" . gettext("Clear Failed Downloads") . "\" ></i></li>");
-			} else {
-				print ("<li>{$result}</li>");
-			}
-			$counter++;
-		}
 ?>
-		</small></ol>
-	<?php else: ?>
-		<!-- Print MaxMind version when failed downloads is null -->
-		<p><?="&emsp;<small>MaxMind: {$maxver}</small>"?></p>
-	<?php endif; ?>
+			</small></ol>
+		<?php else: ?>
+			<!-- Print MaxMind version when failed downloads is null -->
+			<p><?="&emsp;<small>MaxMind: {$maxver}</small>"?></p>
+		<?php endif; ?>
 
-	<!-- Print Status header -->
-	<table class="table table-condensed">
-		<thead>
-			<tr>
-				<th width=" 5%"><!-- Status icon    --></th>
-				<th width="17%"><!-- IP/DNSBL count --></th>
-				<th width="17%"><!-- Permit count   --></th>
-				<th width="17%"><!-- Match count    --></th>
-				<th width="17%"><!-- Native count   --></th>
-				<th width="17%"><!-- Supp count     --></th>
-				<th width="10%"><!-- Icons          --></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>
-					<i class="<?=$pfb_status?>" title="<?=gettext($pfb_msg)?>"></i>
-				</td>
-				<td>
-					<?php if ($dcount != 0): ?>
-						<?=("<small>Deny:<strong>{$dcount}</strong></small>")?>
-					<?php endif; ?>
-				</td>
-				<td>
-					<?php if ($pcount != 0): ?>
-						<?=("<small>Permit:<strong>{$pcount}</strong></small>")?>
-					<?php endif; ?>
-				</td>
-				<td>
-					<?php if ($mcount != 0): ?>
-						<?=("<small>Match:<strong>{$mcount}</strong></small>")?>
-					<?php endif; ?>
-				<td>
-					<?php if ($ncount != 0): ?>
-						<?=("<small>Native:<strong>{$ncount}</strong></small>")?>
-					<?php endif; ?>
-				</td>
-				<td>
-					<?php if ($pfbsupp_cnt != 0): ?>
-						<?=("<small>Supp:<strong>{$pfbsupp_cnt}</strong></small>")?>
-					<?php endif; ?>
-				</td>
-				<td>
-					<a target="_blank" href="pfblockerng/pfblockerng_log.php" title="<?=gettext("Click to open Logs tab")?>">
-						<i class="fa fa-info-circle"></i></a>&nbsp;
-				</td>
-			</tr>
+		<!-- Print Status header -->
+		<table class="table table-condensed">
+			<thead>
+				<tr>
+					<th width=" 5%"><!-- Status icon    --></th>
+					<th width="17%"><!-- IP/DNSBL count --></th>
+					<th width="17%"><!-- Permit count   --></th>
+					<th width="17%"><!-- Match count    --></th>
+					<th width="17%"><!-- Native count   --></th>
+					<th width="17%"><!-- Supp count     --></th>
+					<th width="10%"><!-- Icons          --></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<i class="<?=$pfb_status?>" title="<?=gettext($pfb_msg)?>"></i>
+					</td>
+					<td>
+						<?php if ($dcount != 0): ?>
+							<?=("<small>Deny:<strong>{$dcount}</strong></small>")?>
+						<?php endif; ?>
+					</td>
+					<td>
+						<?php if ($pcount != 0): ?>
+							<?=("<small>Permit:<strong>{$pcount}</strong></small>")?>
+						<?php endif; ?>
+					</td>
+					<td>
+						<?php if ($mcount != 0): ?>
+							<?=("<small>Match:<strong>{$mcount}</strong></small>")?>
+						<?php endif; ?>
+					<td>
+						<?php if ($ncount != 0): ?>
+							<?=("<small>Native:<strong>{$ncount}</strong></small>")?>
+						<?php endif; ?>
+					</td>
+					<td>
+						<?php if ($pfbsupp_cnt != 0): ?>
+							<?=("<small>Supp:<strong>{$pfbsupp_cnt}</strong></small>")?>
+						<?php endif; ?>
+					</td>
+					<td>
+						<a target="_blank" href="pfblockerng/pfblockerng_log.php" title="<?=gettext("Click to open Logs tab")?>">
+							<i class="fa fa-info-circle"></i></a>
+					</td>
+				</tr>
 
-			<?php if ($pfb['dnsbl'] == 'on'): ?>	<!--Enable DNSBL widget statistics if enabled-->
-			<tr>
-				<td>
-					<i class="<?=$dnsbl_status?>" title="<?=gettext($dnsbl_msg)?>"></i>
-				</td>
-				<td>
-					<?=("<small>DNSBL:<strong>{$scount}</strong></small>")?>
-				</td>
-				<td></td><td></td><td></td><td></td>
-				<td>
-					<i class="fa fa-trash icon-pointer" id="pfblockerngdnsblclearicon" title="<?=gettext("Clear DNSBL Packets")?>"></i>
-				</td>
-			</tr>
-			<?php endif; ?>
-		</tbody>
-	</table>
+				<?php if ($pfb['dnsbl'] == 'on'): ?>	<!--Enable DNSBL widget statistics if enabled-->
+				<tr>
+					<td>
+						<i class="<?=$dnsbl_status?>" title="<?=gettext($dnsbl_msg)?>"></i>
+					</td>
+					<td>
+						<?=("<small>DNSBL:<strong>{$scount}</strong></small>")?>
+					</td>
+					<td></td><td></td><td></td><td></td>
+					<td>
+						<i class="fa fa-trash icon-pointer" id="pfblockerngdnsblclearicon" title="<?=gettext("Clear DNSBL Packets")?>"></i>
+					</td>
+				</tr>
+				<?php endif; ?>
+			</tbody>
+		</table>
+	</div>
 
 	<!-- Print main table header -->
-	<table id="pfb-tbl" class="table table-striped table-hover table-condensed sortable-theme-bootstrap" data-sortable>
-		<thead>
-			<tr>
-				<th><?=gettext("Alias");?></th>
-				<th title="The count can be a mixture of Single IPs or CIDR values"><?=gettext("Count");?></th>
-				<th title="Packet Counts can be cleared by the pfSense filter_configure() function.
-					Make sure Rule Descriptions start with 'pfB_'"><?=gettext("Packets");?></th>
-				<th title="Last Update (Date/Time) of the Alias"><?=gettext("Updated");?></th>
-				<th><?=$pfb['down']?>&nbsp;<?=$pfb['up']?></th>
-			</tr>
-		</thead>
-		<tbody id="pfbNG-entries">
-			<!-- Print main table body, subsequent refresh by javascript function -->
-			<?=pfBlockerNG_get_table()?>
-		</tbody>
-	</table>
+	<div class="table-responsive">
+		<table id="pfb-tbl" class="table table-striped table-hover table-condensed sortable-theme-bootstrap" data-sortable>
+			<thead>
+				<tr>
+					<th><?=gettext("Alias");?></th>
+					<th title="The count can be a mixture of Single IPs or CIDR values"><?=gettext("Count");?></th>
+					<th title="Packet Counts can be cleared by the pfSense filter_configure() function.
+						Make sure Rule Descriptions start with 'pfB_'"><?=gettext("Packets");?></th>
+					<th title="Last Update (Date/Time) of the Alias"><?=gettext("Updated");?></th>
+					<th><?=$pfb['down']?>&nbsp;<?=$pfb['up']?></th>
+				</tr>
+			</thead>
+			<tbody id="pfbNG-entries">
+				<!-- Print main table body, subsequent refresh by javascript function -->
+				<?=pfBlockerNG_get_table()?>
+			</tbody>
+		</table>
+	</div>
 </form>
 
 <!-- Widget customization settings wrench -->
@@ -507,23 +511,24 @@ $entries = count($results);
 	</div>
 	<div class="form-group">
 		<label for="pfb_maxfails" class="col-sm-8 control-label">Enter number of download fails to display (default:3)</label>
-		<div class="col-sm-2">
+		<div class="col-sm-3">
 			<input type="number" name="pfb_maxfails" value="<?=$pfb['maxfails']?>"
 				min="1" max="20" class="form-control" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="pfb_maxpivot" class="col-sm-8 control-label">Enter 'max' Packets for Alerts Tab pivot (default:200)</label>
-		<div class="col-sm-2">
+		<div class="col-sm-3">
 			<input type="number" name="pfb_maxpivot" value="<?=$pfb['maxpivot']?>"
 				min="1" max="500" class="form-control" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="pfb_sortcolumn" class="col-sm-8 control-label">Enter Sort Column</label>
-		<div class="col-sm-3">
+		<div class="col-sm-4">
 			<select name="pfb_sortcolumn" class="form-control">
-			<?php foreach (array('none' => 'None', 'alias' => 'Alias', 'count' => 'Count', 'packets' => 'Packets', 'updated' => 'Updated')
+			<?php foreach (array('none' => gettext('None'), 'alias' => gettext('Alias'), 'count' => gettext('Count'),
+			    'packets' => gettext('Packets'), 'updated' => gettext('Updated'))
 				as $sort => $sorttype):?>
 				<option value="<?=$sort?>" <?=($sort == $pfb['sortcolumn'] ? 'selected' : '')?> ><?=$sorttype?></option>
 			<?php endforeach;?>
@@ -531,17 +536,19 @@ $entries = count($results);
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="pfb_sortdir" class="col-sm-8 control-label">Select sort direction</label>
-		<div class="col-sm-3">
+		<label for="pfb_sortdir" class="col-sm-8 control-label"><?=gettext('Select sort direction')?></label>
+		<div class="col-sm-4">
 			<label><input type="radio" name="pfb_sortdir" id="pfb_sortdir_asc" value="asc"
-				<?=($pfb['sortdir'] == "asc" ? 'checked' : '')?> />Ascending</label>
+				<?=($pfb['sortdir'] == "asc" ? 'checked' : '')?> /> <?=gettext('Ascending')?></label>
 			<label><input type="radio" name="pfb_sortdir" id="pfb_sortdir_des" value="des"
-				<?=($pfb['sortdir'] == "des" ? 'checked' : '')?> />Descending</label>
+				<?=($pfb['sortdir'] == "des" ? 'checked' : '')?> /> <?=gettext('Descending')?></label>
 		</div>
 	</div>
 	<div class="form-group">
-		<div class="col-sm-offset-6 col-sm-6">
-			<button type="submit" name="pfb_submit" class="btn btn-primary">Save</button>
+		<div class="col-sm-offset-4 col-sm-8">
+			<button type="submit" name="pfb_submit" id="pfb_submit" class="btn btn-primary">
+				<i class="fa fa-save icon-embed-btn"></i><?=gettext('Save Settings')?>
+			</button>
 		</div>
 	</div>
 </form>
