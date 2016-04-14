@@ -575,7 +575,7 @@ events.push(function() {
 		"memory": ".2f",
 		"mbuf": ".2s",
 		"packets": ".2s",
-		"vpnusers": ".2s",
+		"vpnusers": ".2f",
 		"quality": ".2f",
 		"traffic": ".2s",
 		"queue" : ".2s",
