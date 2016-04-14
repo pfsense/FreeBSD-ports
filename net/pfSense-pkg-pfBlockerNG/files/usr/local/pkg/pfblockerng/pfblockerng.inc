@@ -855,7 +855,7 @@ function pfb_validate_unbound($mode) {
 
 		// Reload Unbound Service
 		if (is_service_running('unbound')) {
-			pfb_logger('Restarting Unbound ...', 1);
+			pfb_logger('Reloading Unbound ...', 1);
 
 			$cache_dumpfile = '/var/tmp/unbound_cache';
 			unlink_if_exists("{$cache_dumpfile}");
