@@ -268,10 +268,10 @@ function upload_config($reasonm = "") {
 			}
 
 			if (!strstr($data, "500")) {
-				$notice_text = "An error occurred while uploading your pfSense configuration to portal.pfsense.org ({$data})";
+				$notice_text = "An error occurred while uploading your pfSense configuration to portal.pfsense.org (" . htmlspecialchars($data) . ")";
 				log_error($notice_text . " - " . $data);
 				file_notice("AutoConfigBackup", $notice_text, "Backup Failure", "/pkg_edit.php?xml=autoconfigbackup.xml&id=0");
-				update_filter_reload_status($notice_text . " - " . $data);
+				update_filter_reload_status($notice_text);
 			} else {
 				// Update last pfS backup time
 				$fd = fopen("/cf/conf/lastpfSbackup.txt", "w");
