@@ -66,6 +66,18 @@ require("guiconfig.inc");
 require_once("filter.inc");
 require("shaper.inc");
 
+function createOptions($dropdown) {
+	echo 'var newOptions = {' . "\n";
+	$terms = count($dropdown);
+	foreach ($dropdown as $key => $val) {
+		$terms--;
+		$str = '"' . $key . '" : "' . $val . '"';
+		if ($terms) {  $str .= ",\n"; }
+		echo "\t\t\t\t\t" . $str;
+	}
+	echo "\n\t\t\t\t" . '};' . "\n";
+}
+
 //grab rrd filenames
 $home = getcwd();
 $rrddbpath = "/var/db/rrd/";
@@ -591,439 +603,67 @@ events.push(function() {
 	**
 	***/
 
-	//TODO make this a function - call on page load
-	$('#category-left').on('change', function() {
+	//create the dropdown options for all the different graph types
+	$('select[id^="category-"]').on('change', function() {
+
+		var categoryId = this.id.split("-");
 
 		switch(this.value) {
 			case "system":
-				$("#graph-left").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($system);
-
-					foreach ($system as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
+				$("#graph-" + categoryId[1]).empty().prop( "disabled", false );
+				<?php createOptions($system); ?>
 				break;
 			case "traffic":
-				$("#graph-left").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($traffic);
-
-					foreach ($traffic as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
+				$("#graph-" + categoryId[1]).empty().prop( "disabled", false );
+				<?php createOptions($traffic); ?>
 				break;
 			case "packets":
-				$("#graph-left").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($packets);
-
-					foreach ($packets as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
+				$("#graph-" + categoryId[1]).empty().prop( "disabled", false );
+				<?php createOptions($packets); ?>
 				break;
 			case "quality":
-				$("#graph-left").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($quality);
-
-					foreach ($quality as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
+				$("#graph-" + categoryId[1]).empty().prop( "disabled", false );
+				<?php createOptions($quality); ?>
 				break;
 			case "captiveportal":
-				$("#graph-left").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($captiveportal);
-
-					foreach ($captiveportal as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
+				$("#graph-" + categoryId[1]).empty().prop( "disabled", false );
+				<?php createOptions($captiveportal); ?>
 				break;
 			case "ntpd":
-				$("#graph-left").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($ntpd);
-
-					foreach ($ntpd as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
+				$("#graph-" + categoryId[1]).empty().prop( "disabled", false );
+				<?php createOptions($ntpd); ?>
 				break;
 			case "queues":
-				$("#graph-left").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($queues);
-
-					foreach ($queues as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
+				$("#graph-" + categoryId[1]).empty().prop( "disabled", false );
+				<?php createOptions($queues); ?>
 				break;
 			case "queuedrops":
-				$("#graph-left").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($queuedrops);
-
-					foreach ($queuedrops as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
+				$("#graph-" + categoryId[1]).empty().prop( "disabled", false );
+				<?php createOptions($queuedrops); ?>
 				break;
 			case "dhcpd":
-				$("#graph-left").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($dhcpd);
-
-					foreach ($dhcpd as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
+				$("#graph-" + categoryId[1]).empty().prop( "disabled", false );
+				<?php createOptions($dhcpd); ?>
 				break;
 			case "vpnusers":
-				$("#graph-left").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($vpnusers);
-
-					foreach ($vpnusers as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
+				$("#graph-" + categoryId[1]).empty().prop( "disabled", false );
+				<?php createOptions($vpnusers); ?>
 				break;
 			case "wireless":
-				$("#graph-left").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($wireless);
-
-					foreach ($wireless as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
+				$("#graph-" + categoryId[1]).empty().prop( "disabled", false );
+				<?php createOptions($wireless); ?>
 				break;
 			case "cellular":
-				$("#graph-left").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($cellular);
-
-					foreach ($cellular as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
+				$("#graph-" + categoryId[1]).empty().prop( "disabled", false );
+				<?php createOptions($cellular); ?>
 				break;
 			case "none":
-				$("#graph-left").empty().prop( "disabled", true );
+				$("#graph-" + categoryId[1]).empty().prop( "disabled", true );
 				break;
 		}
 
 		$.each(newOptions, function(value,key) {
-			$("#graph-left").append('<option value="' + value + '">' + key + '</option>');
-		});
-
-	});
-
-	$('#category-right').on('change', function() {
-
-		switch(this.value) {
-			case "system":
-				$("#graph-right").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($system);
-
-					foreach ($system as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
-				break;
-			case "traffic":
-				$("#graph-right").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($traffic);
-
-					foreach ($traffic as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
-				break;
-			case "packets":
-				$("#graph-right").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($packets);
-
-					foreach ($packets as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
-				break;
-			case "quality":
-				$("#graph-right").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($quality);
-
-					foreach ($quality as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
-				break;
-			case "captiveportal":
-				$("#graph-right").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($captiveportal);
-
-					foreach ($captiveportal as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
-				break;
-			case "ntpd":
-				$("#graph-right").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($ntpd);
-
-					foreach ($ntpd as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
-				break;
-			case "queues":
-				$("#graph-right").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($queues);
-
-					foreach ($queues as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
-				break;
-			case "queuedrops":
-				$("#graph-right").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($queuedrops);
-
-					foreach ($queuedrops as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
-				break;
-			case "dhcpd":
-				$("#graph-right").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($dhcpd);
-
-					foreach ($dhcpd as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
-				break;
-			case "vpnusers":
-				$("#graph-right").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($vpnusers);
-
-					foreach ($vpnusers as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
-				break;
-			case "wireless":
-				$("#graph-right").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($wireless);
-
-					foreach ($wireless as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
-				break;
-			case "cellular":
-				$("#graph-right").empty().prop( "disabled", false );
-				var newOptions = {
-				<?php
-					$terms = count($cellular);
-
-					foreach ($cellular as $key => $val) {
-
-						$terms--;
-						$str = '"' . $key . '" : "' . $val . '"';
-						if ($terms) {  $str .= ",\n"; }
-						echo $str . "\n";
-
-					}
-				?>
-				};
-				break;
-			case "none":
-				$("#graph-right").empty().prop( "disabled", true );
-				break;
-		}
-
-		$.each(newOptions, function(value,key) {
-			$("#graph-right").append('<option value="' + value + '">' + key + '</option>');
+			$("#graph-" + categoryId[1]).append('<option value="' + value + '">' + key + '</option>');
 		});
 
 	});
@@ -1116,147 +756,76 @@ events.push(function() {
 			
 			var currentOption = entry.split("=");
 
-			if(currentOption[0] === "left") {
+			if(currentOption[0] === "left" || currentOption[0] === "right") {
 				
 				var rrdDb = currentOption[1].split("-");
 
 				if(rrdDb[0]) {
 
 					if (rrdDb[0] === "system") {
-						$( "#category-left" ).val(rrdDb[0]).change();
-						$( "#graph-left" ).val(currentOption[1]);
+						$( "#category-" + currentOption[0] ).val(rrdDb[0]).change();
+						$( "#graph-" + currentOption[0] ).val(currentOption[1]);
 					}
 
 					if (rrdDb[1] === "traffic") {
-						$( "#category-left" ).val(rrdDb[1]).change();
-						$( "#graph-left" ).val(currentOption[1]);
+						$( "#category-" + currentOption[0] ).val(rrdDb[1]).change();
+						$( "#graph-" + currentOption[0] ).val(currentOption[1]);
 					}
 
 					if (rrdDb[1] === "packets") {
-						$( "#category-left" ).val(rrdDb[1]).change();
-						$( "#graph-left" ).val(currentOption[1]);
+						$( "#category" + currentOption[0] ).val(rrdDb[1]).change();
+						$( "#graph-" + currentOption[0] ).val(currentOption[1]);
 					}
 
 					if (rrdDb[1] === "quality") {
-						$( "#category-left" ).val(rrdDb[1]).change();
-						$( "#graph-left" ).val(currentOption[1]);
+						$( "#category-" + currentOption[0] ).val(rrdDb[1]).change();
+						$( "#graph-" + currentOption[0] ).val(currentOption[1]);
 					}
 
 					if (rrdDb[1] === "queues") {
-						$( "#category-left" ).val(rrdDb[1]).change();
-						$( "#graph-left" ).val(currentOption[1]);
+						$( "#category-" + currentOption[0] ).val(rrdDb[1]).change();
+						$( "#graph-" + currentOption[0] ).val(currentOption[1]);
 					}
 
 					if (rrdDb[1] === "queuedrops") {
-						$( "#category-left" ).val(rrdDb[1]).change();
-						$( "#graph-left" ).val(currentOption[1]);
+						$( "#category-" + currentOption[0] ).val(rrdDb[1]).change();
+						$( "#graph-" + currentOption[0] ).val(currentOption[1]);
 					}
 
 					if (rrdDb[0] === "captiveportal") {
-						$( "#category-left" ).val(rrdDb[0]).change();
-						$( "#graph-left" ).val(currentOption[1]);
+						$( "#category-" + currentOption[0] ).val(rrdDb[0]).change();
+						$( "#graph-" + currentOption[0] ).val(currentOption[1]);
 					}
 
 					if (rrdDb[0] === "ntpd") {
-						$( "#category-left" ).val(rrdDb[0]).change();
-						$( "#graph-left" ).val(currentOption[1]);
+						$( "#category-" + currentOption[0] ).val(rrdDb[0]).change();
+						$( "#graph-" + currentOption[0] ).val(currentOption[1]);
 					}
 
 					if (rrdDb[1] === "dhcpd") {
-						$( "#category-left" ).val(rrdDb[1]).change();
-						$( "#graph-left" ).val(currentOption[1]);
+						$( "#category-" + currentOption[0] ).val(rrdDb[1]).change();
+						$( "#graph-" + currentOption[0] ).val(currentOption[1]);
 					}
 
 					if (rrdDb[1] === "vpnusers") {
-						$( "#category-left" ).val(rrdDb[1]).change();
-						$( "#graph-left" ).val(currentOption[1]);
+						$( "#category-" + currentOption[0] ).val(rrdDb[1]).change();
+						$( "#graph-" + currentOption[0] ).val(currentOption[1]);
 					}
 
 					if (rrdDb[1] === "wireless") {
-						$( "#category-left" ).val(rrdDb[1]).change();
-						$( "#graph-left" ).val(currentOption[1]);
+						$( "#category-" + currentOption[0] ).val(rrdDb[1]).change();
+						$( "#graph-" + currentOption[0] ).val(currentOption[1]);
 					}
 
 					if (rrdDb[1] === "cellular") {
-						$( "#category-left" ).val(rrdDb[1]).change();
-						$( "#graph-left" ).val(currentOption[1]);
+						$( "#category-" + currentOption[0] ).val(rrdDb[1]).change();
+						$( "#graph-" + currentOption[0] ).val(currentOption[1]);
 					}
 
 				} else {
-					$( "#category-left" ).val("none").change();
+					$( "#category-" + currentOption[0] ).val("none").change();
 				}
 
-			}
-
-			if(currentOption[0] === "right") {
-				
-				var rrdDb = currentOption[1].split("-");
-				
-				if(rrdDb[0]) {
-
-					if (rrdDb[0] === "system") {
-						$( "#category-right" ).val(rrdDb[0]).change();
-						$( "#graph-right" ).val(currentOption[1]);
-					}
-
-					if (rrdDb[1] === "traffic") {
-						$( "#category-right" ).val(rrdDb[1]).change();
-						$( "#graph-right" ).val(currentOption[1]);
-					}
-
-					if (rrdDb[1] === "packets") {
-						$( "#category-right" ).val(rrdDb[1]).change();
-						$( "#graph-right" ).val(currentOption[1]);
-					}
-
-					if (rrdDb[1] === "quality") {
-						$( "#category-right" ).val(rrdDb[1]).change();
-						$( "#graph-right" ).val(currentOption[1]);
-					}
-
-					if (rrdDb[1] === "queues") {
-						$( "#category-right" ).val(rrdDb[1]).change();
-						$( "#graph-right" ).val(currentOption[1]);
-					}
-
-					if (rrdDb[1] === "queuedrops") {
-						$( "#category-right" ).val(rrdDb[1]).change();
-						$( "#graph-right" ).val(currentOption[1]);
-					}
-
-					if (rrdDb[0] === "captiveportal") {
-						$( "#category-right" ).val(rrdDb[0]).change();
-						$( "#graph-right" ).val(currentOption[1]);
-					}
-
-					if (rrdDb[0] === "ntpd") {
-						$( "#category-right" ).val(rrdDb[0]).change();
-						$( "#graph-right" ).val(currentOption[1]);
-					}
-
-					if (rrdDb[1] === "dhcpd") {
-						$( "#category-right" ).val(rrdDb[1]).change();
-						$( "#graph-right" ).val(currentOption[1]);
-					}
-
-					if (rrdDb[1] === "vpnusers") {
-						$( "#category-right" ).val(rrdDb[1]).change();
-						$( "#graph-right" ).val(currentOption[1]);
-					}
-
-					if (rrdDb[1] === "wireless") {
-						$( "#category-right" ).val(rrdDb[1]).change();
-						$( "#graph-right" ).val(currentOption[1]);
-					}
-
-					if (rrdDb[1] === "cellular") {
-						$( "#category-right" ).val(rrdDb[1]).change();
-						$( "#graph-right" ).val(currentOption[1]);
-					}
-
-				} else {
-					$( "#category-right" ).val("none").change();
-				}
 			}
 
 			if(currentOption[0] === "start") {
