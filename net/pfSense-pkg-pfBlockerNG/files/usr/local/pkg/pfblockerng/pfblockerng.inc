@@ -3048,9 +3048,11 @@ function sync_package_pfblockerng($cron='') {
 		// Save alias statistics to file (Remove any feeds that are not referenced)
 		$handle = @fopen("{$pfb['dnsbl_info']}", 'w');
 		fwrite($handle, "# Keeping this file open in a file editor will interrupt DNSBL!\n");
-		foreach ($dnsbl_info as $alias) {
-			if (in_array($alias[0], $alias_dnsbl_all)) {
-				fputcsv($handle, $alias);
+		if (!empty($dnsbl_info)) {
+			foreach ($dnsbl_info as $alias) {
+				if (in_array($alias[0], $alias_dnsbl_all)) {
+					fputcsv($handle, $alias);
+				}
 			}
 		}
 		@fclose($handle);
