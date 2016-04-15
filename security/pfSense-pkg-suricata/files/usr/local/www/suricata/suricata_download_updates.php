@@ -141,7 +141,7 @@ if ($_POST['clear']) {
 }
 
 if ($_REQUEST['updatemode']) {
-	if ($_REQUES['updatemode'] == 'force') {
+	if ($_REQUEST['updatemode'] == 'force') {
 		// Mount file system R/W since we need to remove files
 		conf_mount_rw();
 
@@ -276,11 +276,11 @@ include_once("head.inc");
 			</p>
 			<p>
 				<?php if ($snortdownload != 'on' && $emergingthreats != 'on' && $etpro != 'on'): ?>
-					<br/><button class="btn btn-primary" disabled="disabled">
+					<br/><button class="btn btn-primary" disabled>
 						<i class="fa fa-check icon-embed-btn"></i>
 						<?=gettext("Update"); ?>
 					</button>&nbsp;&nbsp;&nbsp;&nbsp;
-					<button class="btn btn-warning" disabled="disabled">
+					<button class="btn btn-warning" disabled>
 						<i class="fa fa-download icon-embed-btn"></i>
 						<?=gettext("Force"); ?>
 					</button>
@@ -419,7 +419,7 @@ function doRuleUpdates(mode) {
 		$('#updbtn').toggleClass('fa-check fa-spinner');
 	}
 	if (mode == "force") {
-		$('#forcedbtn').toggleClass('fa-download fa-spinner');
+		$('#forcebtn').toggleClass('fa-download fa-spinner');
 	}
 
 	ajaxRequest1 = $.ajax({
