@@ -75,11 +75,12 @@ $pconfig['brefresh'] = $config['installedpackages']['suricata']['alertsblocks'][
 $pconfig['blertnumber'] = $config['installedpackages']['suricata']['alertsblocks']['blertnumber'];
 
 if (empty($pconfig['blertnumber'])) {
-	$bnentries = '500';
+	$pconfig['blertnumber'] = 500;
 }
 if (empty($pconfig['brefresh'])) {
 	$pconfig['brefresh'] = 'on';
 }
+$bnentries = $pconfig['blertnumber'];
 
 # --- AJAX REVERSE DNS RESOLVE Start ---
 if (isset($_POST['resolve'])) {
