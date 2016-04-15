@@ -213,10 +213,13 @@ if (is_array($config['installedpackages']['suricata']['alertsblocks'])) {
 }
 
 if (empty($pconfig['alertnumber']))
-	$pconfig['alertnumber'] = '250';
+	$pconfig['alertnumber'] = 250;
 if (empty($pconfig['arefresh']))
 	$pconfig['arefresh'] = 'on';
 $anentries = $pconfig['alertnumber'];
+if (!is_numeric($anentries)) {
+	$anentries = 250;
+}	
 
 # --- AJAX REVERSE DNS RESOLVE Start ---
 if (isset($_POST['resolve'])) {
