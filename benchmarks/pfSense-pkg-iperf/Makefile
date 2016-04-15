@@ -13,7 +13,7 @@ COMMENT=	pfSense package iperf
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/bin/iperf:${PORTSDIR}/benchmarks/iperf
+RUN_DEPENDS=	${LOCALBASE}/bin/iperf:benchmarks/iperf
 
 NO_BUILD=	yes
 NO_MTREE=	yes

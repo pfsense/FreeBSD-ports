@@ -13,11 +13,11 @@ COMMENT=	pfSense package ntopng
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/bin/ntopng:${PORTSDIR}/net/ntopng \
-		${LOCALBASE}/bin/redis-cli:${PORTSDIR}/databases/redis \
-		${LOCALBASE}/bin/gdbmtool:${PORTSDIR}/databases/gdbm \
-		${LOCALBASE}/share/fonts/webfonts/arial.ttf:${PORTSDIR}/x11-fonts/webfonts \
-		${LOCALBASE}/bin/acyclic:${PORTSDIR}/graphics/graphviz
+RUN_DEPENDS=	${LOCALBASE}/bin/ntopng:net/ntopng \
+		${LOCALBASE}/bin/redis-cli:databases/redis \
+		${LOCALBASE}/bin/gdbmtool:databases/gdbm \
+		${LOCALBASE}/share/fonts/webfonts/arial.ttf:x11-fonts/webfonts \
+		${LOCALBASE}/bin/acyclic:graphics/graphviz
 
 CONFLICTS=	pfSense-base-nanobsd-[0-9]*
 

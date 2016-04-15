@@ -13,10 +13,10 @@ COMMENT=	pfSense package squid
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/squid:${PORTSDIR}/www/squid \
-		${LOCALBASE}/libexec/squid/squid_radius_auth:${PORTSDIR}/www/squid_radius_auth \
-		${LOCALBASE}/lib/c_icap/virus_scan.so:${PORTSDIR}/www/c-icap-modules \
-		${LOCALBASE}/lib/c_icap/squidclamav.so:${PORTSDIR}/www/squidclamav
+RUN_DEPENDS=	${LOCALBASE}/sbin/squid:www/squid \
+		${LOCALBASE}/libexec/squid/squid_radius_auth:www/squid_radius_auth \
+		${LOCALBASE}/lib/c_icap/virus_scan.so:www/c-icap-modules \
+		${LOCALBASE}/lib/c_icap/squidclamav.so:www/squidclamav
 
 NO_BUILD=	yes
 NO_MTREE=	yes

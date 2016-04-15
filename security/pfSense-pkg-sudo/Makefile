@@ -13,7 +13,7 @@ COMMENT=	pfSense package sudo
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/bin/sudo:${PORTSDIR}/security/sudo
+RUN_DEPENDS=	${LOCALBASE}/bin/sudo:security/sudo
 
 NO_BUILD=	yes
 NO_MTREE=	yes

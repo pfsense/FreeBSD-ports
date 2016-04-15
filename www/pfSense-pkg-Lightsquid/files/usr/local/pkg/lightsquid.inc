@@ -554,13 +554,13 @@ function lightsquid_validate_input($post, &$input_errors) {
 		exit;
 	}
 	/* Manual reports refresh; only allow to run if the configuration file exists already! */
-	if ($post['refreshnow'] == 'Refresh now' || $post['refreshfull'] == 'Refresh full') {
+	if (!empty($post['refreshnow']) || !empty($post['refreshfull'])) {
 		$lsconf_file = LS_CONFIGPATH . "/" . LS_CONFIGFILE;
 		if (file_exists($lsconf_file)) {
-			if ($post['refreshnow'] == 'Refresh now') {
+			if (!empty($post['refreshnow'])) {
 				lightsquid_refresh_now();
 				return;
-			} elseif ($post['refreshfull'] == 'Refresh full') {
+			} elseif (!empty($post['refreshfull'])) {
 				lightsquid_refresh_full();
 				return;
 			}

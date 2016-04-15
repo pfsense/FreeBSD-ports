@@ -13,8 +13,8 @@ COMMENT=	pfSense package freeradius2
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/radiusd:${PORTSDIR}/net/freeradius2 \
-		${LOCALBASE}/bin/bash:${PORTSDIR}/shells/bash
+RUN_DEPENDS=	${LOCALBASE}/sbin/radiusd:net/freeradius2 \
+		${LOCALBASE}/bin/bash:shells/bash
 
 NO_BUILD=	yes
 NO_MTREE=	yes

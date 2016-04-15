@@ -13,9 +13,9 @@ COMMENT=	pfSense package openvpn-client-export
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/share/openvpn/client-export/template/config-import:${PORTSDIR}/security/openvpn-client-export \
-		${LOCALBASE}/bin/zip:${PORTSDIR}/archivers/zip \
-		${LOCALBASE}/bin/7z:${PORTSDIR}/archivers/p7zip
+RUN_DEPENDS=	${LOCALBASE}/share/openvpn/client-export/template/config-import:security/openvpn-client-export \
+		${LOCALBASE}/bin/zip:archivers/zip \
+		${LOCALBASE}/bin/7z:archivers/p7zip
 
 NO_BUILD=	yes
 NO_MTREE=	yes

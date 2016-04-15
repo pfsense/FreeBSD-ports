@@ -13,7 +13,7 @@ COMMENT=	pfSense package OpenBGPD
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/bgpctl:${PORTSDIR}/net/openbgpd
+RUN_DEPENDS=	${LOCALBASE}/sbin/bgpctl:net/openbgpd
 
 CONFLICTS=	pfSense-pkg-Quagga_OSPF-[0-9]*
 
