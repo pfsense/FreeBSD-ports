@@ -13,7 +13,7 @@ COMMENT=	pfSense package Avahi
 
 LICENSE=	ESF
 
-LIB_DEPENDS=	libavahi-core.so:${PORTSDIR}/net/avahi-app
+LIB_DEPENDS=	libavahi-core.so:net/avahi-app
 
 NO_BUILD=	yes
 NO_MTREE=	yes

@@ -13,7 +13,7 @@ COMMENT=	pfSense package softflowd
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/softflowd:${PORTSDIR}/net-mgmt/softflowd
+RUN_DEPENDS=	${LOCALBASE}/sbin/softflowd:net-mgmt/softflowd
 
 NO_BUILD=	yes
 NO_MTREE=	yes

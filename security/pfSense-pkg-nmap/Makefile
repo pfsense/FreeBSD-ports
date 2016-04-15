@@ -13,7 +13,7 @@ COMMENT=	pfSense package nmap
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/bin/nmap:${PORTSDIR}/security/nmap
+RUN_DEPENDS=	${LOCALBASE}/bin/nmap:security/nmap
 
 NO_BUILD=	yes
 NO_MTREE=	yes

@@ -13,8 +13,8 @@ COMMENT=	pfSense package snort
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/bin/snort:${PORTSDIR}/security/snort \
-		${LOCALBASE}/bin/barnyard2:${PORTSDIR}/security/barnyard2
+RUN_DEPENDS=	${LOCALBASE}/bin/snort:security/snort \
+		${LOCALBASE}/bin/barnyard2:security/barnyard2
 
 NO_BUILD=	yes
 NO_MTREE=	yes

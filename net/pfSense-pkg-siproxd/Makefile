@@ -13,7 +13,7 @@ COMMENT=	pfSense package siproxd
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/siproxd:${PORTSDIR}/net/siproxd
+RUN_DEPENDS=	${LOCALBASE}/sbin/siproxd:net/siproxd
 
 NO_BUILD=	yes
 NO_MTREE=	yes

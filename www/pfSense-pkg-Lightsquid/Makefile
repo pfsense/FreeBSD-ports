@@ -13,7 +13,7 @@ COMMENT=	pfSense package Lightsquid
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/libexec/lightsquid/ip2name.list:${PORTSDIR}/www/lightsquid \
+RUN_DEPENDS=	${LOCALBASE}/libexec/lightsquid/ip2name.list:www/lightsquid \
 		${LOCALBASE}/sbin/lighttpd:www/lighttpd
 
 CONFLICTS=	pfSense-base-nanobsd-[0-9]*
