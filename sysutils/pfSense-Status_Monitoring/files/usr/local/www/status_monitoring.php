@@ -1230,6 +1230,7 @@ events.push(function() {
 		$( "#quicklinks_list [id^=quicklink]" ).prop('selected', false);
 		$(selected).prop('selected', true);
 
+		$( "#quicklinktitle" ).text('');
 		$( "#quicklinktitle" ).text($(selected).attr("title"));
 	}
 
