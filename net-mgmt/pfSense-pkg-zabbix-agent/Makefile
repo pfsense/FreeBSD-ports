@@ -13,7 +13,7 @@ COMMENT=	pfSense package zabbix-agent
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/zabbix_agent:${PORTSDIR}/net-mgmt/zabbix22-agent
+RUN_DEPENDS=	${LOCALBASE}/sbin/zabbix_agent:net-mgmt/zabbix22-agent
 
 NO_BUILD=	yes
 NO_MTREE=	yes

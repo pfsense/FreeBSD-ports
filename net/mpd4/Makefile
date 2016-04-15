@@ -13,7 +13,7 @@ PKGNAMESUFFIX=	4
 MAINTAINER=	mav@FreeBSD.org
 COMMENT=	Multi-link PPP daemon based on netgraph(4)
 
-LIB_DEPENDS=	libpdel.so.0:${PORTSDIR}/devel/libpdel
+LIB_DEPENDS=	libpdel.so.0:devel/libpdel
 
 OPTIONS_DEFINE=	NG_IPACCT
 NG_IPACCT_DESC=	Use ng_ipacct kernel module from port
@@ -33,11 +33,11 @@ EXTRA_PATCHES+=files/patch9-auth.c.diff
 .endif
 
 .if ${PORT_OPTIONS:MNG_IPACCT}
-BUILD_DEPENDS+=	${LOCALBASE}/include/netgraph/ng_ipacct.h:${PORTSDIR}/net-mgmt/ng_ipacct
+BUILD_DEPENDS+=	${LOCALBASE}/include/netgraph/ng_ipacct.h:net-mgmt/ng_ipacct
 .if exists(${KMODDIR}/ng_ipacct.ko)
-RUN_DEPENDS+=	${KMODDIR}/ng_ipacct.ko:${PORTSDIR}/net-mgmt/ng_ipacct
+RUN_DEPENDS+=	${KMODDIR}/ng_ipacct.ko:net-mgmt/ng_ipacct
 .else
-RUN_DEPENDS+=	/boot/modules/ng_ipacct.ko:${PORTSDIR}/net-mgmt/ng_ipacct
+RUN_DEPENDS+=	/boot/modules/ng_ipacct.ko:net-mgmt/ng_ipacct
 .endif
 .endif
 

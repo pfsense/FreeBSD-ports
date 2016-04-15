@@ -13,7 +13,7 @@ COMMENT=	pfSense package arping
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/arping:${PORTSDIR}/net/arping
+RUN_DEPENDS=	${LOCALBASE}/sbin/arping:net/arping
 
 NO_BUILD=	yes
 NO_MTREE=	yes

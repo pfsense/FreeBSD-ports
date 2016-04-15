@@ -13,7 +13,7 @@ COMMENT=	pfSense package Open-VM-Tools
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/bin/vmtoolsd:${PORTSDIR}/emulators/open-vm-tools-nox11
+RUN_DEPENDS=	${LOCALBASE}/bin/vmtoolsd:emulators/open-vm-tools-nox11
 
 NO_BUILD=	yes
 NO_MTREE=	yes

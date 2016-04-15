@@ -13,7 +13,7 @@ COMMENT=	pfSense package Quagga_OSPF
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/watchquagga:${PORTSDIR}/net/quagga
+RUN_DEPENDS=	${LOCALBASE}/sbin/watchquagga:net/quagga
 
 CONFLICTS=	pfSense-pkg-OpenBGPD-[0-9]*
 

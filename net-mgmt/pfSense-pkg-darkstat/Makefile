@@ -13,7 +13,7 @@ COMMENT=	pfSense package darkstat
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/darkstat:${PORTSDIR}/net-mgmt/darkstat
+RUN_DEPENDS=	${LOCALBASE}/sbin/darkstat:net-mgmt/darkstat
 
 NO_BUILD=	yes
 NO_MTREE=	yes

@@ -13,7 +13,7 @@ COMMENT=	pfSense package zabbix-proxy
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/zabbix_proxy:${PORTSDIR}/net-mgmt/zabbix22-proxy
+RUN_DEPENDS=	${LOCALBASE}/sbin/zabbix_proxy:net-mgmt/zabbix22-proxy
 
 NO_BUILD=	yes
 NO_MTREE=	yes
