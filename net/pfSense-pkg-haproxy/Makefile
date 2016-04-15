@@ -12,7 +12,7 @@ COMMENT=	pfSense package haproxy
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/haproxy:${PORTSDIR}/net/haproxy
+RUN_DEPENDS=	${LOCALBASE}/sbin/haproxy:net/haproxy
 
 CONFLICTS=	pfSense-pkg-haproxy-devel-[0-9]*
 

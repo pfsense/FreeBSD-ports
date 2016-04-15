@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Lightsquid
-PORTVERSION=	3.0.3
-PORTREVISION=	1
+PORTVERSION=	3.0.4
 CATEGORIES=	www
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +12,7 @@ COMMENT=	pfSense package Lightsquid
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/libexec/lightsquid/ip2name.list:${PORTSDIR}/www/lightsquid \
+RUN_DEPENDS=	${LOCALBASE}/libexec/lightsquid/ip2name.list:www/lightsquid \
 		${LOCALBASE}/sbin/lighttpd:www/lighttpd
 
 CONFLICTS=	pfSense-base-nanobsd-[0-9]*

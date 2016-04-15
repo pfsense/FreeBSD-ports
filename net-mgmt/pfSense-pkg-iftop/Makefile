@@ -13,7 +13,7 @@ COMMENT=	pfSense package iftop
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/iftop:${PORTSDIR}/net-mgmt/iftop
+RUN_DEPENDS=	${LOCALBASE}/sbin/iftop:net-mgmt/iftop
 
 NO_BUILD=	yes
 NO_MTREE=	yes

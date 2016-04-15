@@ -13,7 +13,7 @@ COMMENT=	pfSense package LADVD
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/ladvd:${PORTSDIR}/net/ladvd
+RUN_DEPENDS=	${LOCALBASE}/sbin/ladvd:net/ladvd
 
 NO_BUILD=	yes
 NO_MTREE=	yes

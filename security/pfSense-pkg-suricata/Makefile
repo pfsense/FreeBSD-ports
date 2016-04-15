@@ -13,8 +13,8 @@ COMMENT=	pfSense package suricata
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/bin/suricata:${PORTSDIR}/security/suricata \
-		${LOCALBASE}/bin/barnyard2:${PORTSDIR}/security/barnyard2
+RUN_DEPENDS=	${LOCALBASE}/bin/suricata:security/suricata \
+		${LOCALBASE}/bin/barnyard2:security/barnyard2
 
 NO_BUILD=	yes
 NO_MTREE=	yes

@@ -11,7 +11,7 @@ PKGNAMESUFFIX=	-module
 MAINTAINER=	garga@pfsense.org
 COMMENT=	Library for getting useful info
 
-LIB_DEPENDS=	libvici.so:${PORTSDIR}/security/strongswan
+LIB_DEPENDS=	libvici.so:security/strongswan
 
 USE_PHP=	yes
 USE_PHPEXT=	yes

@@ -23,7 +23,7 @@ CFLAGS+=	-Wsystem-headers -Werror -Wall -Wno-format-y2k -W \
                 -Wunused-parameter -Wchar-subscripts -Winline \
                 -Wnested-externs -Wredundant-decls -Wno-pointer-sign    
 
-LIB_DEPENDS=	libevent.so:${PORTSDIR}/devel/libevent2
+LIB_DEPENDS=	libevent.so:devel/libevent2
 
 do-extract:
 	mkdir -p ${WRKSRC}

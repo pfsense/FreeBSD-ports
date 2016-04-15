@@ -12,22 +12,22 @@ COMMENT?=	Meta package to install pfSense builder required ports
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/bin/git:${PORTSDIR}/devel/git \
-		${LOCALBASE}/bin/curl:${PORTSDIR}/ftp/curl \
-		${LOCALBASE}/bin/rsync:${PORTSDIR}/net/rsync \
-		${LOCALBASE}/bin/screen:${PORTSDIR}/sysutils/screen \
-		${LOCALBASE}/bin/vmdktool:${PORTSDIR}/sysutils/vmdktool \
-		${LOCALBASE}/bin/salt:${PORTSDIR}/sysutils/py-salt \
-		${LOCALBASE}/bin/sudo:${PORTSDIR}/security/sudo \
-		${LOCALBASE}/sbin/nginx:${PORTSDIR}/www/nginx \
-		${LOCALBASE}/bin/qemu-arm-static:${PORTSDIR}/emulators/qemu-user-static \
-		${LOCALBASE}/sbin/sssd:${PORTSDIR}/security/sssd \
-		${LOCALBASE}/lib/pam_ldap.so:${PORTSDIR}/security/pam_ldap \
-		${LOCALBASE}/lib/pam_mkhomedir.so:${PORTSDIR}/security/pam_mkhomedir \
-		${LOCALBASE}/bin/gtar:${PORTSDIR}/archivers/gtar \
-		${LOCALBASE}/bin/xml:${PORTSDIR}/textproc/xmlstarlet
+RUN_DEPENDS=	${LOCALBASE}/bin/git:devel/git \
+		${LOCALBASE}/bin/curl:ftp/curl \
+		${LOCALBASE}/bin/rsync:net/rsync \
+		${LOCALBASE}/bin/screen:sysutils/screen \
+		${LOCALBASE}/bin/vmdktool:sysutils/vmdktool \
+		${LOCALBASE}/bin/salt:sysutils/py-salt \
+		${LOCALBASE}/bin/sudo:security/sudo \
+		${LOCALBASE}/sbin/nginx:www/nginx \
+		${LOCALBASE}/bin/qemu-arm-static:emulators/qemu-user-static \
+		${LOCALBASE}/sbin/sssd:security/sssd \
+		${LOCALBASE}/lib/pam_ldap.so:security/pam_ldap \
+		${LOCALBASE}/lib/pam_mkhomedir.so:security/pam_mkhomedir \
+		${LOCALBASE}/bin/gtar:archivers/gtar \
+		${LOCALBASE}/bin/xml:textproc/xmlstarlet
 
-LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
+LIB_DEPENDS=	libpcre.so:devel/pcre
 
 ONLY_FOR_ARCHS=	amd64 i386
 

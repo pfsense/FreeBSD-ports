@@ -13,7 +13,7 @@ COMMENT=	pfSense package squidGuard
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/bin/squidGuard:${PORTSDIR}/www/squidguard
+RUN_DEPENDS=	${LOCALBASE}/bin/squidGuard:www/squidguard
 
 NO_BUILD=	yes
 NO_MTREE=	yes

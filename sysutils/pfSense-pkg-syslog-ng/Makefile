@@ -13,7 +13,7 @@ COMMENT=	pfSense package syslog-ng
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/syslog-ng:${PORTSDIR}/sysutils/syslog-ng
+RUN_DEPENDS=	${LOCALBASE}/sbin/syslog-ng:sysutils/syslog-ng
 
 NO_BUILD=	yes
 NO_MTREE=	yes

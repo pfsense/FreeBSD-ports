@@ -13,7 +13,7 @@ COMMENT=	pfSense package blinkled
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/bin/blinkled:${PORTSDIR}/sysutils/blinkled
+RUN_DEPENDS=	${LOCALBASE}/bin/blinkled:sysutils/blinkled
 
 NO_BUILD=	yes
 NO_MTREE=	yes
