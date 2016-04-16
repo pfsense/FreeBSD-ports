@@ -169,16 +169,14 @@ if ($_REQUEST['updatemode']) {
 
 if ($_REQUEST['ajax'] == 'status') {
 	if (is_numeric($_REQUEST['pid'])) {
-		if (shell_exec("/bin/ps aux | grep " . $_REQUEST['pid'] . " | wc -l") > 0) {
+		// Check for the PID launched as the rules update task
+		$rc = shell_exec("/bin/ps -o pid= -p {$_REQUEST['pid']}");
+		if (!empty($rc) && $rc == $_REQUEST['pid']) {
 			print("RUNNING");
-			exit;
-		}
-		else {
+		} else {
 			print("DONE");
-			exit;
 		}
-	}
-	else {
+	} else {
 		print("DONE");
 	}
 	exit;
@@ -385,7 +383,6 @@ function checkUpdateStatus(pid) {
 	});
 
 	ajaxRequest2.done(function (response, textStatus, jqXHR) {
-		console.log("AJAX status is " + response);
 		if (response == "DONE") {
 			// Close the "please wait" modal
 			$('#updrulesdlg').modal('hide');
@@ -395,7 +392,6 @@ function checkUpdateStatus(pid) {
 			location.reload(true);
 		}
 		else {
-			$('#updrulesdlg').modal('show');
 			repeat = true;
 		}
 		if (repeat) {
