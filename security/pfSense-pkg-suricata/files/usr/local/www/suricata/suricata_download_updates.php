@@ -171,7 +171,7 @@ if ($_REQUEST['ajax'] == 'status') {
 	if (is_numeric($_REQUEST['pid'])) {
 		// Check for the PID launched as the rules update task
 		$rc = shell_exec("/bin/ps -o pid= -p {$_REQUEST['pid']}");
-		if (!empty($rc) && $rc == $_REQUEST['pid']) {
+		if (!empty($rc)) {
 			print("RUNNING");
 		} else {
 			print("DONE");
