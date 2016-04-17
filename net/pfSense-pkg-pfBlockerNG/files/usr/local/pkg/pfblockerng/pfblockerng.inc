@@ -4276,27 +4276,28 @@ function sync_package_pfblockerng($cron='') {
 					$new_rules[] = $cb_rules;
 				}
 			}
-		}
 
-		// Unset arrays
-		unset($pfb['permit_inbound'], $pfb['permit_outbound'], $pfb['deny_inbound'], $pfb['deny_outbound'], $pfb['match_inbound'], $pfb['match_outbound']);
-		unset($cb_rules, $other_rules, $fother_rules, $permit_rules, $fpermit_rules, $match_rules, $fmatch_rules);
+			// Unset arrays
+			unset($pfb['permit_inbound'], $pfb['permit_outbound'], $pfb['deny_inbound'],
+			    $pfb['deny_outbound'], $pfb['match_inbound'], $pfb['match_outbound']);
+			unset($cb_rules, $other_rules, $fother_rules, $permit_rules, $fpermit_rules, $match_rules, $fmatch_rules);
 
-		// Remove 'created' tag (New vs old rules array comparison)
-		foreach ($new_rules as $key => $rule) {
-			$new_rules_nocreated[] = $rule;
-			unset($new_rules_nocreated[$key]['created']);
-		}
+			// Remove 'created' tag (New vs old rules array comparison)
+			foreach ($new_rules as $key => $rule) {
+				$new_rules_nocreated[] = $rule;
+				unset($new_rules_nocreated[$key]['created']);
+			}
 
-		// Update config.xml, if changes required
-		if ($pfb['autorules'] && $orig_rules_nocreated != $new_rules_nocreated) {
-			$config['filter']['rule'] = $new_rules;
-			write_config('pfBlockerNG: saving Firewall rules');
+			// Update config.xml, if changes required
+			if ($pfb['autorules'] && $orig_rules_nocreated != $new_rules_nocreated) {
+				$config['filter']['rule'] = $new_rules;
+				write_config('pfBlockerNG: saving Firewall rules');
+			}
 		}
-	}
-	else {
-		$log = "\n\n{$message}\n";
-		pfb_logger("{$log}", 1);
+		else {
+			$log = "\n\n{$message}\n";
+			pfb_logger("{$log}", 1);
+		}
 	}
 
 	#################################
