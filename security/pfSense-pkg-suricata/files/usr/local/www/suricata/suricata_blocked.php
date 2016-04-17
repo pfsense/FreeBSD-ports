@@ -244,7 +244,7 @@ $group->add(new Form_Checkbox(
 	'Refresh',
 	(($config['installedpackages']['suricata']['alertsblocks']['brefresh']=="on") || ($config['installedpackages']['suricata']['alertsblocks']['brefresh']=='')),
 	'on'
-))->setHelp('Deault is ON');
+))->setHelp('Default is ON');
 
 $group->add(new Form_Input(
 	'blertnumber',
