@@ -376,7 +376,7 @@ if (isset($int_gateway)) {
 }
 
 // Collect virtual IP aliases for inbound/outbound list matching
-if (isset($config['virtualip']['vip'])) {
+if (is_array($config['virtualip']['vip'])) {
 	foreach ($config['virtualip']['vip'] as $list) {
 		if (!empty($list['subnet']) && !empty($list['subnet_bits'])) {
 			if ($list['subnet_bits'] >= 24) {
@@ -392,7 +392,7 @@ if (isset($config['virtualip']['vip'])) {
 }
 
 // Collect NAT IP addresses for inbound/outbound list matching
-if (isset($config['nat']['rule'])) {
+if (is_array($config['nat']['rule'])) {
 	foreach ($config['nat']['rule'] as $natent) {
 		$pfb_local[] = $natent['target'];
 
@@ -402,14 +402,14 @@ if (isset($config['nat']['rule'])) {
 }
 
 // Collect 1:1 NAT IP addresses for inbound/outbound list matching
-if (isset($config['nat']['onetoone'])) {
+if (is_array($config['nat']['onetoone'])) {
 	foreach ($config['nat']['onetoone'] as $onetoone) {
 		$pfb_local[] = $onetoone['source']['address'];
 	}
 }
 
 // Convert any 'Firewall Aliases' to IP address format
-if (isset($config['aliases']['alias'])) {
+if (is_array($config['aliases']['alias'])) {
 	for ($cnt = 0; $cnt <= count($pfb_local); $cnt++) {
 		foreach ($config['aliases']['alias'] as $i=> $alias) {
 			if (isset($alias['name']) && isset($pfb_local[$cnt])) {
@@ -422,7 +422,7 @@ if (isset($config['aliases']['alias'])) {
 }
 
 // Collect all interface addresses for inbound/outbound list matching
-if (isset($config['interfaces'])) {
+if (is_array($config['interfaces'])) {
 	foreach ($config['interfaces'] as $int) {
 		if ($int['ipaddr'] != 'dhcp') {
 			if (!empty($int['ipaddr']) && !empty($int['subnet'])) {
@@ -476,9 +476,9 @@ if (file_exists("{$leasesfile}")) {
 }
 
 // Collect static DHCP hostnames/IPs
-if (isset($config['dhcpd'])) {
+if (is_array($config['dhcpd'])) {
 	foreach ($config['dhcpd'] as $dhcp) {
-		if (isset($dhcp['staticmap'])) {
+		if (is_array($dhcp['staticmap'])) {
 			foreach ($dhcp['staticmap'] as $smap) {
 				$local_hosts[$smap['ipaddr']] = strtolower("{$smap['hostname']}");
 			}
@@ -488,7 +488,7 @@ if (isset($config['dhcpd'])) {
 
 // Collect Unbound Host overrides
 $hosts = $config['unbound']['hosts'];
-if (isset($hosts)) {
+if (is_array($hosts)) {
 	foreach ($hosts as $host) {
 		$local_hosts[$host['ip']] = strtolower("{$host['descr']}");
 	}
