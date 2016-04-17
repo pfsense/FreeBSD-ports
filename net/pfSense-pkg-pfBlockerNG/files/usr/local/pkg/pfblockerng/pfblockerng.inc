@@ -1511,6 +1511,9 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway_i
 			}
 			if ($agateway_out != 'default') {
 				$rule['gateway'] = "{$agateway_out}";
+				if ($pfb['float'] == 'on') {
+					$rule['direction'] = 'out';
+				}
 			}
 			$rule['created'] = array('time' => (int)microtime(true), 'username' => 'Auto');
 			$pfb['deny_outbound'][] = $rule;
@@ -1551,6 +1554,9 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway_i
 			}
 			if ($agateway_in != 'default') {
 				$rule['gateway'] = "{$agateway_in}";
+				if ($pfb['float'] == 'on') {
+					$rule['direction'] = 'in';
+				}
 			}
 			$rule['created'] = array('time' => (int)microtime(true), 'username' => 'Auto');
 			$pfb['deny_inbound'][] = $rule;
@@ -1587,6 +1593,9 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway_i
 			}
 			if ($agateway_out != 'default') {
 				$rule['gateway'] = "{$agateway_out}";
+				if ($pfb['float'] == 'on') {
+					$rule['direction'] = 'out';
+				}
 			}
 			$rule['created'] = array('time' => (int)microtime(true), 'username' => 'Auto');
 			$pfb['permit_outbound'][] = $rule;
@@ -1627,6 +1636,9 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway_i
 			}
 			if ($agateway_in != 'default') {
 				$rule['gateway'] = "{$agateway_in}";
+				if ($pfb['float'] == 'on') {
+					$rule['direction'] = 'in';
+				}
 			}
 			$rule['created'] = array('time' => (int)microtime(true), 'username' => 'Auto');
 			$pfb['permit_inbound'][] = $rule;
@@ -1661,6 +1673,7 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway_i
 			}
 			if ($agateway_out != 'default') {
 				$rule['gateway'] = "{$agateway_out}";
+				$rule['direction'] = 'out';
 			}
 			$rule['created'] = array('time' => (int)microtime(true), 'username' => 'Auto');
 			$pfb['match_outbound'][] = $rule;
@@ -1699,6 +1712,7 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway_i
 			}
 			if ($agateway_in != 'default') {
 				$rule['gateway'] = "{$agateway_in}";
+				$rule['direction'] = 'in';
 			}
 			$rule['created'] = array('time' => (int)microtime(true), 'username' => 'Auto');
 			$pfb['match_inbound'][] = $rule;
