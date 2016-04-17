@@ -1041,7 +1041,7 @@ $xml .= <<<EOF
 			<fieldname>agateway_in</fieldname>
 			<description><![CDATA[Select alternate Gateway or keep 'default' setting.]]></description>
 			<type>select_source</type>
-			<source><![CDATA[\$config['gateways']['gateway_item']]]></source>
+			<source><![CDATA[pfb_get_gateways()]]></source>
 			<source_name>name</source_name>
 			<source_value>name</source_value>
 			<default_value>default</default_value>
@@ -1134,7 +1134,7 @@ $xml .= <<<EOF
 			<fieldname>agateway_out</fieldname>
 			<description><![CDATA[Select alternate Gateway or keep 'default' setting.]]></description>
 			<type>select_source</type>
-			<source><![CDATA[\$config['gateways']['gateway_item']]]></source>
+			<source><![CDATA[pfb_get_gateways()]]></source>
 			<source_name>name</source_name>
 			<source_value>name</source_value>
 			<default_value>default</default_value>
