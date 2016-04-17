@@ -488,6 +488,23 @@ function pfb_cron_base_hour() {
 }
 
 
+// Collect 'gateway(s)' and 'gateway group(s)' for Adv. In/Outbound customizations
+function pfb_get_gateways() {
+	global $config;
+
+	$gateway = $gateway_item = $gateway_group = array();
+	if (is_array($config['gateways']['gateway_item'])) {
+		$gateway_item = $config['gateways']['gateway_item'];
+	}
+	if (is_array($config['gateways']['gateway_group'])) {
+		$gateway_group = $config['gateways']['gateway_group'];
+	}
+	$gateway = array_merge($gateway_item, $gateway_group);
+
+	return $gateway;
+}
+
+
 // Create suppression alias
 function pfb_create_suppression_alias() {
 	global $config;
