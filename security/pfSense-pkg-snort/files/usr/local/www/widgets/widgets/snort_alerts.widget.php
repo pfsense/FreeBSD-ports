@@ -172,12 +172,8 @@ function snort_widget_get_alerts() {
 		};
 	};
 
-	/* sort the alerts array */
-	if (isset($config['syslog']['reverse'])) {
-		sksort($snort_alerts, 'timestamp', false);
-	} else {
-		sksort($snort_alerts, 'timestamp', true);
-	};
+	/* Sort the alerts array in descending order (newewst first) */
+	sksort($snort_alerts, 'timestamp', false);
 
 	return $snort_alerts;
 }
