@@ -107,6 +107,20 @@ $snort_openappid_filename = SNORT_OPENAPPID_DNLD_FILENAME;
 $snort_openappid_filename_md5 = SNORT_OPENAPPID_DNLD_FILENAME . ".md5";
 $snort_openappid_url = SNORT_OPENAPPID_DNLD_URL;
 
+function snort_update_status($msg) {
+	/************************************************/
+	/* This function ensures we only output status  */
+	/* update string messages during the package    */
+	/* post-install phase.                          */
+	/************************************************/
+
+	global $g;
+
+	if ($g['snort_postinstall'] == true) {
+		update_status($msg);
+	}
+}
+
 function snort_download_file_url($url, $file_out) {
 
 	/************************************************/
@@ -121,7 +135,7 @@ function snort_download_file_url($url, $file_out) {
 	/* It provides logging of returned CURL errors. */
 	/************************************************/
 
-	global $g, $config, $last_curl_error, $fout, $ch, $file_size, $downloaded, $first_progress_update;
+	global $g, $config, $last_curl_error, $fout, $ch;
 
 	$rfc2616 = array(
 			100 => "100 Continue",
@@ -167,10 +181,6 @@ function snort_download_file_url($url, $file_out) {
 			505 => "505 HTTP Version Not Supported"
 		);
 
-	// Initialize required variables for the pfSense "read_body()" function
-	$file_size  = 1;
-	$downloaded = 1;
-	$first_progress_update = TRUE;
 	$last_curl_error = "";
 
 	$fout = fopen($file_out, "wb");
@@ -179,24 +189,21 @@ function snort_download_file_url($url, $file_out) {
 		if (!$ch)
 			return false;
 		curl_setopt($ch, CURLOPT_FILE, $fout);
-
-		// NOTE: required to suppress errors from XMLRPC due to progress bar output
-		// and to prevent useless spam from rules update cron job execution.  This
-		// prevents progress bar output during package sync and rules update cron task. 
-		if ($g['snort_sync_in_progress'])
-			curl_setopt($ch, CURLOPT_HEADER, false);
-		else {
-			curl_setopt($ch, CURLOPT_HEADERFUNCTION, 'read_header');
-			curl_setopt($ch, CURLOPT_WRITEFUNCTION, 'read_body');
-		}
-
+		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-		curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 Chrome/43.0.2357.65 Safari/537.36");
 		curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, "TLSv1.2, TLSv1");
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 0);
+
+		// Honor any system restrictions on sending USERAGENT info
+		if (!isset($config['system']['do_not_send_host_uuid'])) {
+			curl_setopt($ch, CURLOPT_USERAGENT, $g['product_name'] . '/' . $g['product_version'] . ' : ' . get_single_sysctl('kern.hostuuid'));
+		}
+		else {
+			curl_setopt($ch, CURLOPT_USERAGENT, $g['product_name'] . '/' . $g['product_version']);
+		}
 
 		// Use the system proxy server setttings if configured
 		if (!empty($config['system']['proxyurl'])) {
@@ -264,23 +271,23 @@ function snort_check_rule_md5($file_url, $file_dst, $desc = "") {
 	$snortdir = SNORTDIR;
 	$filename_md5 = basename($file_dst);
 
-	update_status(gettext("Downloading {$desc} md5 file..."));
+	snort_update_status(gettext("Downloading {$desc} md5 file..."));
 	error_log(gettext("\tDownloading {$desc} md5 file {$filename_md5}...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 	$rc = snort_download_file_url($file_url, $file_dst);
 
 	// See if download from URL was successful
 	if ($rc === true) {
-		update_status(gettext(" done.") . "\n");
+		snort_update_status(gettext(" done.") . "\n");
 		error_log("\tChecking {$desc} md5 file...\n", 3, SNORT_RULES_UPD_LOGFILE);
-		update_status(gettext("Checking {$desc} md5 file..."));
+		snort_update_status(gettext("Checking {$desc} md5 file..."));
 
 		// check md5 hash in new file against current file to see if new download is posted
 		if (file_exists("{$snortdir}/{$filename_md5}")) {
 			$md5_check_new = file_get_contents($file_dst);
 			$md5_check_old = file_get_contents("{$snortdir}/{$filename_md5}");
-			update_status(gettext(" done.") . "\n");
+			snort_update_status(gettext(" done.") . "\n");
 			if ($md5_check_new == $md5_check_old) {
-				update_status(gettext("{$desc} are current. No update required.") . "\n");
+				snort_update_status(gettext("{$desc} are current. No update required.") . "\n");
 				log_error(gettext("[Snort] {$desc} are up to date..."));
 				error_log(gettext("\t{$desc} are up to date.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 				return false;
@@ -289,15 +296,15 @@ function snort_check_rule_md5($file_url, $file_dst, $desc = "") {
 				return true;
 			}
 		}
-		update_status(gettext(" done.") . "\n");
+		snort_update_status(gettext(" done.") . "\n");
 		return true;
 	}
 	else {
 		error_log(gettext("\t{$desc} md5 download failed.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		$snort_err_msg = gettext("Server returned error code {$rc}.");
-		update_status(gettext(" FAILED!") . "\n");
-		update_status(gettext("{$desc} md5 error ... Server returned error code {$rc} ...") . "\n");
-		update_status(gettext("{$desc} will not be updated.\n{$snort_err_msg}") . "\n");
+		snort_update_status(gettext(" FAILED!") . "\n");
+		snort_update_status(gettext("{$desc} md5 error ... Server returned error code {$rc} ...") . "\n");
+		snort_update_status(gettext("{$desc} will not be updated.\n{$snort_err_msg}") . "\n");
 		log_error(gettext("[Snort] {$desc} md5 download failed..."));
 		log_error(gettext("[Snort] Server returned error code {$rc}..."));
 		error_log(gettext("\t{$snort_err_msg}\n"), 3, SNORT_RULES_UPD_LOGFILE);
@@ -332,7 +339,7 @@ function snort_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 	$snortdir = SNORTDIR;
 	$filename = basename($file_dst);
 
-	update_status(gettext("There is a new set of {$desc} posted.\nDownloading {$filename}..."));
+	snort_update_status(gettext("There is a new set of {$desc} posted.\nDownloading {$filename}..."));
 	log_error(gettext("[Snort] There is a new set of {$desc} posted. Downloading {$filename}..."));
 	error_log(gettext("\tThere is a new set of {$desc} posted.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 	error_log(gettext("\tDownloading file '{$filename}'...\n"), 3, SNORT_RULES_UPD_LOGFILE);
@@ -340,13 +347,13 @@ function snort_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 
 	// See if the download from the URL was successful
 	if ($rc === true) {
-		update_status(gettext(" done.") . "\n");
+		snort_update_status(gettext(" done.") . "\n");
 		log_error("[Snort] {$desc} file update downloaded successfully");
 		error_log(gettext("\tDone downloading rules file.\n"),3, SNORT_RULES_UPD_LOGFILE);
 	
 		// Test integrity of the rules file.  Turn off update if file has wrong md5 hash
 		if ($file_md5 != trim(md5_file($file_dst))){
-			update_status(gettext("{$desc} file MD5 checksum failed...") . "\n");
+			snort_update_status(gettext("{$desc} file MD5 checksum failed...") . "\n");
 			log_error(gettext("[Snort] {$desc} file download failed.  Bad MD5 checksum..."));
         	        log_error(gettext("[Snort] Downloaded File MD5: " . md5_file($file_dst)));
 			log_error(gettext("[Snort] Expected File MD5: {$file_md5}"));
@@ -360,13 +367,13 @@ function snort_fetch_new_rules($file_url, $file_dst, $file_md5, $desc = "") {
 		return true;
 	}
 	else {
-		update_status(gettext(" FAILED!") . "\n");
-		update_status(gettext("{$desc} file download failed... server returned error '{$rc}'.") . "\n");
+		snort_update_status(gettext(" FAILED!") . "\n");
+		snort_update_status(gettext("{$desc} file download failed... server returned error '{$rc}'.") . "\n");
 		log_error(gettext("[Snort] {$desc} file download failed... server returned error '{$rc}'..."));
 		error_log(gettext("\t{$desc} file download failed.  Server returned error {$rc}.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		error_log(gettext("\tThe error text was: {$last_curl_error}\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		error_log(gettext("\t{$desc} will not be updated.\n"), 3, SNORT_RULES_UPD_LOGFILE);
-		update_status(gettext("{$desc} will not be updated.") . "\n");
+		snort_update_status(gettext("{$desc} will not be updated.") . "\n");
 		$update_errors = true;
 		return false;
 	}
@@ -452,7 +459,7 @@ if ($emergingthreats == 'on') {
 /* Untar Snort rules file to tmp and install the rules */
 if ($snortdownload == 'on') {
 	if (file_exists("{$tmpfname}/{$snort_filename}")) {
-		update_status(gettext("Installing Sourcefire VRT rules..."));
+		snort_update_status(gettext("Installing Sourcefire VRT rules..."));
 
 		/* Currently, only FreeBSD-8-1, FreeBSD-9-0 and FreeBSD-10-0 precompiled SO rules exist from Snort.org */
 		/* Default to FreeBSD 8.1, and then test for FreeBSD 9.x  or FreeBSD 10.x */
@@ -521,10 +528,10 @@ if ($snortdownload == 'on') {
 		}
 		rmdir_recursive("{$tmpfname}/etc");
 		if (file_exists("{$tmpfname}/{$snort_filename_md5}")) {
-			update_status(gettext("Copying md5 signature to snort directory..."));
+			snort_update_status(gettext("Copying md5 signature to snort directory..."));
 			@copy("{$tmpfname}/{$snort_filename_md5}", "{$snortdir}/{$snort_filename_md5}");
 		}
-		update_status(gettext(" done.") . "\n");
+		snort_update_status(gettext(" done.") . "\n");
 		error_log(gettext("\tInstallation of Snort VRT rules completed.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 	}
 }
@@ -533,14 +540,14 @@ if ($snortdownload == 'on') {
 if ($openappid_detectors == 'on') {
 	// If we have a valid downloaded file, then first cleanup the old directory
 	if (file_exists("{$tmpfname}/{$snort_openappid_filename}")) {
-		update_status(gettext("Installing Snort OpenAppID detectors..."));
+		snort_update_status(gettext("Installing Snort OpenAppID detectors..."));
 		$snort_openappid_path = SNORT_APPID_ODP_PATH;
 		rmdir_recursive("{$snort_openappid_path}odp");
 		error_log(gettext("\tExtracting and installing Snort OpenAppID detectors...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		safe_mkdir(SNORT_APPID_ODP_PATH);
 		exec("/usr/bin/tar oxzf {$tmpfname}/{$snort_openappid_filename} -C {$snort_openappid_path}");
 		if (file_exists("{$tmpfname}/{$snort_openappid_filename_md5}")) {
-			update_status(gettext("Copying md5 signature to snort directory..."));
+			snort_update_status(gettext("Copying md5 signature to snort directory..."));
 			@copy("{$tmpfname}/{$snort_openappid_filename_md5}", "{$snortdir}/{$snort_openappid_filename_md5}");
 		}
 		if (!is_dir("{$snort_openappid_path}custom")) {
@@ -548,7 +555,7 @@ if ($openappid_detectors == 'on') {
 			safe_mkdir("{$snort_openappid_path}custom/lua");
 			touch("{$snort_openappid_path}custom/userappid.conf");
 		}
-		update_status(gettext(" done.") . "\n");
+		snort_update_status(gettext(" done.") . "\n");
 		unlink_if_exists("{$tmpfname}/{$snort_openappid_filename}");
 		error_log(gettext("\tInstallation of Snort OpenAppID detectors completed.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 	}
@@ -558,7 +565,7 @@ if ($openappid_detectors == 'on') {
 if ($snortcommunityrules == 'on') {
 	safe_mkdir("{$tmpfname}/community");
 	if (file_exists("{$tmpfname}/{$snort_community_rules_filename}")) {
-		update_status(gettext("Installing Snort GPLv2 Community Rules..."));
+		snort_update_status(gettext("Installing Snort GPLv2 Community Rules..."));
 		error_log(gettext("\tExtracting and installing Snort GPLv2 Community Rules...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		exec("/usr/bin/tar xzf {$tmpfname}/{$snort_community_rules_filename} -C {$tmpfname}/community/");
 
@@ -576,7 +583,7 @@ if ($snortcommunityrules == 'on') {
 		if (file_exists("{$tmpfname}/{$snort_community_rules_filename_md5}")) {
 			@copy("{$tmpfname}/{$snort_community_rules_filename_md5}", "{$snortdir}/{$snort_community_rules_filename_md5}");
 		}
-		update_status(gettext(" done.") . "\n");
+		snort_update_status(gettext(" done.") . "\n");
 		error_log(gettext("\tInstallation of Snort GPLv2 Community Rules completed.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		rmdir_recursive("{$tmpfname}/community/");
 	}
@@ -586,7 +593,7 @@ if ($snortcommunityrules == 'on') {
 if ($emergingthreats == 'on') {
 	safe_mkdir("{$tmpfname}/emerging");
 	if (file_exists("{$tmpfname}/{$emergingthreats_filename}")) {
-		update_status(gettext("Installing {$et_name} rules..."));
+		snort_update_status(gettext("Installing {$et_name} rules..."));
 		error_log(gettext("\tExtracting and installing {$et_name} rules...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		exec("/usr/bin/tar xzf {$tmpfname}/{$emergingthreats_filename} -C {$tmpfname}/emerging rules/");
 
@@ -627,10 +634,10 @@ if ($emergingthreats == 'on') {
 
 		/*  Copy emergingthreats md5 sig to snort dir */
 		if (file_exists("{$tmpfname}/{$emergingthreats_filename_md5}")) {
-			update_status(gettext("Copying md5 signature to snort directory..."));
+			snort_update_status(gettext("Copying md5 signature to snort directory..."));
 			@copy("{$tmpfname}/{$emergingthreats_filename_md5}", "{$snortdir}/{$emergingthreats_filename_md5}");
 		}
-		update_status(gettext(" done.") . "\n");
+		snort_update_status(gettext(" done.") . "\n");
 		error_log(gettext("\tInstallation of {$et_name} rules completed.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		rmdir_recursive("{$tmpfname}/emerging/");
 	}
@@ -714,7 +721,7 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 		foreach ($config['installedpackages']['snortglobal']['rule'] as $id => $value) {
 			$if_real = get_real_interface($value['interface']);
 			$tmp = "Updating rules configuration for: " . convert_friendly_interface_to_friendly_descr($value['interface']) . " ...";
-			update_status(gettext($tmp));
+			snort_update_status(gettext($tmp));
 
 			// Make sure the interface subdirectory and required sub-directories exists.
 			// We need to re-create them during a pkg reinstall for the intial rules set
@@ -737,11 +744,11 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 				$tmp .= convert_friendly_interface_to_friendly_descr($value['interface']) . "...\n";
 			}
 			error_log($tmp, 3, SNORT_RULES_UPD_LOGFILE);
-			update_status(gettext(" done.") . "\n");
+			snort_update_status(gettext(" done.") . "\n");
 		}
 	}
 	else {
-		update_status(gettext("Warning:  No interfaces configured for Snort were found...") . "\n");
+		snort_update_status(gettext("Warning:  No interfaces configured for Snort were found...") . "\n");
 		error_log(gettext("\tWarning:  No interfaces configured for Snort were found...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 	}
 
@@ -750,13 +757,13 @@ if ($snortdownload == 'on' || $emergingthreats == 'on' || $snortcommunityrules =
 
 	/* Restart snort if running, and not in post-install, so as to pick up the new rules. */
        	if (!$g['snort_postinstall'] && is_service_running("snort") && count($config['installedpackages']['snortglobal']['rule']) > 0) {
-		update_status(gettext('Restarting Snort to activate the new set of rules...'));
+		snort_update_status(gettext('Restarting Snort to activate the new set of rules...'));
 		error_log(gettext("\tRestarting Snort to activate the new set of rules...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		touch("{$g['varrun_path']}/snort_pkg_starting.lck");
 		snort_restart_all_interfaces(TRUE);
 		sleep(3);
 		unlink_if_exists("{$g['varrun_path']}/snort_pkg_starting.lck");
-		update_status(gettext(" done.") . "\n");
+		snort_update_status(gettext(" done.") . "\n");
        		log_error(gettext("[Snort] Snort has restarted with your new set of rules..."));
 		error_log(gettext("\tSnort has restarted with your new set of rules.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 	}
@@ -767,13 +774,13 @@ elseif ($openappid_detectors == 'on') {
 	/* Restart snort if running, and not in post-install, so as to pick up the detectors. */
 	/**************************************************************************************/
        	if (!$g['snort_postinstall'] && is_service_running("snort") && count($config['installedpackages']['snortglobal']['rule']) > 0) {
-		update_status(gettext('Restarting Snort to activate the new OpenAppID detectors...'));
+		snort_update_status(gettext('Restarting Snort to activate the new OpenAppID detectors...'));
 		error_log(gettext("\tRestarting Snort to activate the new OpenAppID detectors...\n"), 3, SNORT_RULES_UPD_LOGFILE);
 		touch("{$g['varrun_path']}/snort_pkg_starting.lck");
 		snort_restart_all_interfaces(TRUE);
 		sleep(2);
 		unlink_if_exists("{$g['varrun_path']}/snort_pkg_starting.lck");
-		update_status(gettext(" done.") . "\n");
+		snort_update_status(gettext(" done.") . "\n");
        		log_error(gettext("[Snort] Snort has restarted with your new set of OpenAppID detectors..."));
 		error_log(gettext("\tSnort has restarted with your new set of OpenAppID detectors.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 	}
@@ -781,12 +788,12 @@ elseif ($openappid_detectors == 'on') {
 
 /*  remove $tmpfname files */
 if (is_dir("{$tmpfname}")) {
-	update_status(gettext("Cleaning up temp dirs and files..."));
+	snort_update_status(gettext("Cleaning up temp dirs and files..."));
 	rmdir_recursive($tmpfname);
-	update_status(gettext(" done.") . "\n");
+	snort_update_status(gettext(" done.") . "\n");
 }
 
-update_status(gettext("The Rules update has finished.") . "\n");
+snort_update_status(gettext("The Rules update has finished.") . "\n");
 log_error(gettext("[Snort] The Rules update has finished."));
 error_log(gettext("The Rules update has finished.  Time: " . date("Y-m-d H:i:s"). "\n\n"), 3, SNORT_RULES_UPD_LOGFILE);
 
