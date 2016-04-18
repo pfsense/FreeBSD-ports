@@ -125,9 +125,9 @@ function squid_resync_reverse() {
 	// Reverse Proxy HTTPS security settings
 	if (isset($settings["dhparams_size"])) {
 		if ($settings['dhparams_size'] == '2048' && file_exists("/etc/dh-parameters.2048")) {
-			$dhparams = "dhparams=/etc/dh-parameters.2048";
+			$dhparams = "tls-dh=[secp521r1:secp384r1:secp256k1:prime256v1]:/etc/dh-parameters.2048";
 		} else if ($settings['dhparams_size'] == '4096' && file_exists("/etc/dh-parameters.4096")) {
-			$dhparams = "dhparams=/etc/dh-parameters.4096";
+			$dhparams = "tls-dh=[secp521r1:secp384r1:secp256k1:prime256v1]:/etc/dh-parameters.4096";
 		}
 	} else if (file_exists("/etc/dh-parameters.2048")) {
 		// Fallback dhparams option
