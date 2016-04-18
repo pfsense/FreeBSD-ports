@@ -6,7 +6,7 @@
  *
  * Copyright (C) 2004 Scott Ullrich
  * Copyright (C) 2011-2012 Ermal Luci
- * Copyright (C) 2015 Bill Meeks
+ * Copyright (C) 2016 Bill Meeks
  * All rights reserved.
  *
  * part of m0n0wall as reboot.php (http://m0n0.ch/wall)
@@ -125,13 +125,29 @@ if (file_exists("{$snortdir}/{$snort_openappid_filename}.md5") && $openappid_det
 	$openappid_detectors_sig_date = date(DATE_RFC850, filemtime("{$snortdir}/{$snort_openappid_filename}.md5"));
 }
 
+// Check status of the background rules update process (when launched)
+if ($_REQUEST['ajax'] == 'status') {
+	if (is_numeric($_REQUEST['pid'])) {
+		// Check for the PID launched as the rules update task
+		$rc = shell_exec("/bin/ps -o pid= -p {$_REQUEST['pid']}");
+		if (!empty($rc)) {
+			print("RUNNING");
+		} else {
+			print("DONE");
+		}
+	} else {
+		print("DONE");
+	}
+	exit;
+}
+
 // Load the Rules Update Logfile if requested
-if ($_REQUEST['ajax']) {
+if ($_REQUEST['ajax'] == 'getlog') {
 	if (file_exists(SNORT_RULES_UPD_LOGFILE)) {
 		$contents = file_get_contents(SNORT_RULES_UPD_LOGFILE);
 	}
 	else {
-		$contents = gettext("*** Rules Update logfile not found! ***");
+		$contents = gettext("*** Rules Update logfile is empty! ***");
 	}
 	print($contents);
 	exit;
@@ -158,12 +174,17 @@ if (isset($_POST['mode'])) {
 		conf_mount_ro();
 	}
 	
-	// Go download the updates
-	include("/usr/local/pkg/snort/snort_check_for_rule_updates.php");
+	// Launch a background process to download the updates
+	$upd_pid = 0;
+	$upd_pid = mwexec_bg("/usr/local/bin/php-cgi -f /usr/local/pkg/snort/snort_check_for_rule_updates.php");
+	print($upd_pid);
 
-	// Reload the page to update displayed values
-	print '<script type="text/javascript">window.location = "/snort/snort_download_updates.php";</script>';
-	return;
+	// If we failed to launch our background process, throw up an error for the user.
+	if ($upd_pid == 0) {
+		$input_errors[] = gettext("Failed to launch the background rules package update routine!  Rules update will not be done.");
+	} else {
+		exit;
+	}
 }
 
 $pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Update Rules"));
@@ -298,6 +319,7 @@ else {
 	));
 }
 $section->add($group);
+$form->add($section);
 
 // Create a Modal Dialog for displaying logfile contents when VIEW button is clicked
 $modal = new Modal('Rules Update Log', 'vwupdlog', 'large', 'Close');
@@ -313,59 +335,85 @@ $form->add($modal);
 $modal = new Modal('Rules Update Task', 'updrulesdlg', false, 'Close');
 $modal->addInput(new Form_StaticText (
 	null,
-	'Checking for updated rule sets may take a while ... please wait ' . '<i class="content fa fa-spinner fa-pulse fa-lg text-center text-info"></i>'
+	'Updating rule sets may take a while ... please wait for the process to complete.<br/><br/>This dialog will auto-close when the update is finished.<br/><br/>' . 
+	'<i class="content fa fa-spinner fa-pulse fa-lg text-center text-info"></i>'
 ));
 $form->add($modal);
-
-$form->add($section);
 
 print($form);
 ?>
 
 <script type="text/javascript">
 //<![CDATA[
-events.push(function(){
 
-	function getRuleUpdateLog() {
-		var ajaxRequest;
+function getRuleUpdateLog() {
+	var ajaxRequest3;
+	ajaxRequest3 = $.ajax({
+		url: "/snort/snort_download_updates.php",
+		type: "post",
+		data: { ajax: 'getlog' }
+	});
 
-		ajaxRequest = $.ajax({
-			url: "/snort/snort_download_updates.php",
-			type: "post",
-			data: { ajax: "ajax" }
-		});
+	ajaxRequest3.done(function (response, textStatus, jqXHR) {
+		// Write the log file to the "logtext" textarea
+		$('#logtext').text(response);
+		$('#logtext').attr('readonly', true);
+	});
+}
 
-		// Deal with the results of the above ajax call
-		ajaxRequest.done(function (response, textStatus, jqXHR) {
+function checkUpdateStatus(pid) {
+	//See if update process is still running
+	var repeat = true;
+	var ajaxRequest2;
+	ajaxRequest2 = $.ajax({
+		url: "snort_download_updates.php",
+		type: "post",
+		data: { ajax: 'status',
+			pid: pid
+		      }
+	});
 
-			// Write the log file to the "logtext" textarea
-			$('#logtext').text(response);
-			$('#logtext').attr('readonly', true);
-		});
-	}
-
-	function doRuleUpdates(mode) {
-		var ajaxRequest;
-		if (typeof mode == "undefined") {
-			var mode = "update";
-		}
-
-		// Show the "please wait" modal
-		$('#updrulesdlg').modal('show');
-
-		ajaxRequest = $.ajax({
-			url: "/snort/snort_download_updates.php",
-			type: "post",
-			data: { mode: mode }
-		});
-
-		// Deal with the results of the above ajax call
-		ajaxRequest.done(function (response, textStatus, jqXHR) {
-
+	ajaxRequest2.done(function (response, textStatus, jqXHR) {
+		if (response == "DONE") {
 			// Close the "please wait" modal
 			$('#updrulesdlg').modal('hide');
-		});
+			repeat = false;
+
+			// Reload the page to refresh displayed data
+			location.reload(true);
+		}
+		else {
+			repeat = true;
+		}
+		if (repeat) {
+			setTimeout(function(){
+				checkUpdateStatus(pid);
+				}, 1000);
+		}
+	});
+}
+
+function doRuleUpdates(mode) {
+	var ajaxRequest1;
+	if (typeof mode == "undefined") {
+		var mode = "update";
 	}
+
+	// Show the "please wait" modal
+	$('#updrulesdlg').modal('show');
+
+	ajaxRequest1 = $.ajax({
+		url: "/snort/snort_download_updates.php",
+		type: "post",
+		data: { mode: mode }
+	});
+
+	ajaxRequest1.done(function (response, textStatus, jqXHR) {
+		checkUpdateStatus(response);
+	});
+}
+
+events.push(function(){
 
 	$('#vwupdlog').on('shown.bs.modal', function() {
 		getRuleUpdateLog();
@@ -374,10 +422,12 @@ events.push(function(){
 	//-- Click handlers ---------------------------------
 	$('#update').click(function() {
 		doRuleUpdates('update');
+		return false;
 	});
 
 	$('#force').click(function() {
 		doRuleUpdates('force');
+		return false;
 	});
 
 });
