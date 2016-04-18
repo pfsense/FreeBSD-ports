@@ -407,7 +407,7 @@ $entries = count($results);
 			</small></ol>
 		<?php else: ?>
 			<!-- Print MaxMind version when failed downloads is null -->
-			<p><?="&emsp;<small>MaxMind: {$maxver}</small>"?></p>
+			<?="&emsp;<small>MaxMind: {$maxver}</small>"?>
 		<?php endif; ?>
 
 		<!-- Print Status header -->
