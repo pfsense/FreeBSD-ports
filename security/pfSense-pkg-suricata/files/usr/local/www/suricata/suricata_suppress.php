@@ -121,7 +121,7 @@ if (isset($_POST['del_btn'])) {
 	if (is_array($_POST['del']) && count($_POST['del'])) {
 		foreach ($_POST['del'] as $itemi) {
 			/* make sure list is not being referenced by any interface */
-			if (suricata_suppresslist_used($a_suppress[$_POST['list_id']]['name'])) {
+			if (suricata_suppresslist_used($a_suppress[$itemi]['name'])) {
 				$input_errors[] = gettext("Suppression List '{$a_suppress[$itemi]['name']}' is currently assigned to a Suricata interface and cannot be deleted.  Unassign it from all Suricata interfaces first.");
 			} else {
 				unset($a_suppress[$itemi]);
@@ -138,35 +138,10 @@ if (isset($_POST['del_btn'])) {
 		}
 	}
 }
-else {
-	unset($delbtn_list);
-	$need_save = false;
-
-	foreach ($_POST as $pn => $pd) {
-		if (preg_match("/cdel_(\d+)/", $pn, $matches)) {
-			$delbtn_list = $matches[1];
-		}
-	}
-	if (is_numeric($delbtn_list) && $a_suppress[$delbtn_list]) {
-		if (suricata_suppresslist_used($a_suppress[$_POST['list_id']]['name'])) {
-			$input_errors[] = gettext("This Suppression List '{$$a_suppress[$delbtn_list]['name']}' is currently assigned to a Suricata interface and cannot be deleted.  Unassign it from all Suricata interfaces first.");
-		}
-		else {
-			unset($a_suppress[$delbtn_list]);
-			write_config("suricata pkg: deleted SUPPRESSION LIST.");
-			conf_mount_rw();
-			sync_suricata_package_config();
-			conf_mount_ro();
-			header("Location: /suricata/suricata_suppress.php");
-			return;
-		}
-	}
-}
 
 $pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("Suppression Lists"));
 include_once("head.inc");
 
-if($pfsense_stable == 'yes'){echo '<p class="pgtitle">' . $pgtitle . '</p>';}
 if ($input_errors) {
 	print_input_errors($input_errors);
 }
@@ -213,7 +188,7 @@ display_top_tabs($tab_array, true);
 					?>
 					<tr>
 						<td>
-							<input type="checkbox" id="frc<?=$i?>" name="del[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$i?>')" />
+							<input type="checkbox" name="del[]" value="<?=$i?>" />
 						</td>
 						<td>
 							<?=htmlspecialchars($list['name'])?> <?=$icon?>
