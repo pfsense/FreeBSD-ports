@@ -1490,21 +1490,24 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway_i
 				$rule['direction'] = 'any';
 			}
 			$rule['descr'] = "{$pfb_alias}{$vtype}{$pfb['suffix']}";
-			if (!empty($asrc_out) && !empty($aports_out)) {
-				$rule['source'] = array('address' => "{$asrc_out}", 'port' => "{$aports_out}");
-			} elseif (!empty($asrc_out) && empty($aports_out)) {
+			if (!empty($asrc_out)) {
 				$rule['source'] = array('address' => "{$asrc_out}");
-			} elseif (empty($asrc_out) && !empty($aports_out)) {
-				$rule['source'] = array('any' => '', 'port' => "{$aports_out}");
 			} else {
 				$rule['source'] = array('any' => '');
 			}
 			if (!empty($asrc_out) && $anot_out == 'on') {
 				$rule['source']['not'] = '';
 			}
-			$rule['destination'] = array('address' => "{$pfb_alias}{$vtype}");
+			if (!empty($aports_out)) {
+				$rule['destination'] = array('address' => "{$pfb_alias}{$vtype}", 'port' => "{$aports_out}");
+			} else {
+				$rule['destination'] = array('address' => "{$pfb_alias}{$vtype}");
+			}
 			if ($aaddrnot_out == 'on') {
 				$rule['destination']['not'] = '';
+			}
+			if (!empty($aproto_out)) {
+				$rule['protocol'] = "{$aproto_out}";
 			}
 			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
@@ -1572,21 +1575,24 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway_i
 				$rule['direction'] = 'any';
 			}
 			$rule['descr'] = "{$pfb_alias}{$vtype}{$pfb['suffix']}";
-			if (!empty($asrc_out) && !empty($aports_out)) {
-				$rule['source'] = array('address' => "{$asrc_out}", 'port' => "{$aports_out}");
-			} elseif (!empty($asrc_out) && empty($aports_out)) {
+			if (!empty($asrc_out)) {
 				$rule['source'] = array('address' => "{$asrc_out}");
-			} elseif (empty($asrc_out) && !empty($aports_out)) {
-				$rule['source'] = array('any' => '', 'port' => "{$aports_out}");
 			} else {
 				$rule['source'] = array('any' => '');
 			}
 			if (!empty($asrc_out) && $anot_out == 'on') {
 				$rule['source']['not'] = '';
 			}
-			$rule['destination'] = array('address' => "{$pfb_alias}{$vtype}");
+			if (!empty($aports_out)) {
+				$rule['destination'] = array('address' => "{$pfb_alias}{$vtype}", 'port' => "{$aports_out}");
+			} else {
+				$rule['destination'] = array('address' => "{$pfb_alias}{$vtype}");
+			}
 			if ($aaddrnot_out == 'on') {
 				$rule['destination']['not'] = '';
+			}
+			if (!empty($aproto_out)) {
+				$rule['protocol'] = "{$aproto_out}";
 			}
 			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
@@ -1652,21 +1658,24 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway_i
 			}
 			$rule['direction'] = 'any';
 			$rule['descr'] = "{$pfb_alias}{$vtype}{$pfb['suffix']}";
-			if (!empty($asrc_out) && !empty($aports_out)) {
-				$rule['source'] = array('address' => "{$asrc_out}", 'port' => "{$aports_out}");
-			} elseif (!empty($asrc_out) && empty($aports_out)) {
+			if (!empty($asrc_out)) {
 				$rule['source'] = array('address' => "{$asrc_out}");
-			} elseif (empty($asrc_out) && !empty($aports_out)) {
-				$rule['source'] = array('any' => '', 'port' => "{$aports_out}");
 			} else {
 				$rule['source'] = array('any' => '');
 			}
 			if (!empty($asrc_out) && $anot_out == 'on') {
 				$rule['source']['not'] = '';
 			}
-			$rule['destination'] = array('address' => "{$pfb_alias}{$vtype}");
+			if (!empty($aports_out)) {
+				$rule['destination'] = array('address' => "{$pfb_alias}{$vtype}", 'port' => "{$aports_out}");
+			} else {
+				$rule['destination'] = array('address' => "{$pfb_alias}{$vtype}");
+			}
 			if ($aaddrnot_out == 'on') {
 				$rule['destination']['not'] = '';
+			}
+			if (!empty($aproto_out)) {
+				$rule['protocol'] = "{$aproto_out}";
 			}
 			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
