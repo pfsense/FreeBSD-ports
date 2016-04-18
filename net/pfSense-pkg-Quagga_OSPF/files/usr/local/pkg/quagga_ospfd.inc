@@ -113,6 +113,9 @@ function quagga_ospfd_install_conf() {
 		if (is_array($config['installedpackages']['quaggaospfdinterfaces']['config'])) {
 			foreach ($config['installedpackages']['quaggaospfdinterfaces']['config'] as $conf) {
 				$realif = get_real_interface($conf['interface']);
+				if (empty($realif)) {
+					continue;
+				}
 				$conffile .= "interface {$realif}\n" ;
 				if (!empty($conf['networktype'])) {
 					$conffile .= "  ip ospf network {$conf['networktype']}\n";
@@ -344,17 +347,17 @@ EOF;
 			// Stop the service if the VIP is in BACKUP or INIT state.
 			case "BACKUP":
 			case "INIT":
-				mwexec("/usr/local/etc/rc.d/quagga.sh stop");
+				mwexec_bg("/usr/local/etc/rc.d/quagga.sh stop");
 				break;
 			// Start the service if the VIP is MASTER state.
 			case "MASTER":
 			// Assume it's up if the status can't be determined.
 			default:
-				mwexec("/usr/local/etc/rc.d/quagga.sh restart");
+				mwexec_bg("/usr/local/etc/rc.d/quagga.sh restart");
 				break;
 		}
 	} else {
-		mwexec("/usr/local/etc/rc.d/quagga.sh restart");
+		mwexec_bg("/usr/local/etc/rc.d/quagga.sh restart");
 	}
 
 	// Back to RO mount for NanoBSD and friends
