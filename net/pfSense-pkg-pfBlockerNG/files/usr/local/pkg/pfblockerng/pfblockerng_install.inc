@@ -57,14 +57,15 @@ $pfb['maxmind'][4]['url']	= 'http://geolite.maxmind.com/download/geoip/database/
 $pfb['maxmind'][4]['file_dwn']	= 'GeoIPv6.csv.gz';
 $pfb['maxmind'][4]['file']	= 'GeoIPv6.csv';
 
-// Only download MaxMind Database if files do not exist.
+// Only download MaxMind Database if files do not exist.   ** ( Add temp. patch for 4 missing CCodes ) **
 $maxmind_verify = 0;
 $pfb['geoipshare'] = '/usr/local/share/GeoIP';
 if (!file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][0]['file']}") ||
     !file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][1]['file']}") ||
     !file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][2]['file']}") ||
     !file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][3]['file']}") ||
-    !file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][4]['file']}")) {
+    !file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][4]['file']}") ||
+    !file_exists('/usr/local/share/GeoIP/cc/BQ_v4.txt')) {
 
 	update_status("\nDownloading MaxMind Country databases. This may take a minute...\n");
 	foreach ($pfb['maxmind'] as $feed) {
@@ -109,7 +110,7 @@ if (!file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][0]['file']}") ||
 				$maxmind_verify += 1;
 			}
 			else {
-				update_status(" failed!\n");
+				update_status(" Failed!\n");
 				break;
 			}
 		}
@@ -118,26 +119,45 @@ if (!file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][0]['file']}") ||
 	}
 
 	if ($maxmind_verify != 5) {
-		update_status(" MaxMind download failed!\nFetching MaxMind archive from pfSense package repo...");
+		update_status("MaxMind download Failed! Fetching MaxMind archive from pfSense package repo...\n");
 		// Fetch archived MaxMind database
 		$url = 'https://packages.pfsense.org/packages/config/pfblockerng/countrycodes.tar.bz2';
-		exec("/usr/bin/fetch -o /tmp/countrycodes.tar.bz2 {$url}");
-		// Uncompress archived Country code file
-		exec("/usr/bin/tar -jx -C {$pfb['ccdir']} -f /tmp/countrycodes.tar.bz2");
-		update_status(" done.\n");
+		$retval = '';
+		exec("/usr/bin/fetch -o /tmp/countrycodes.tar.bz2 {$url}", $output, $retval);
+		if ($retval == 0) {
+			// Uncompress archived Country code file
+			$retval = '';
+			exec("/usr/bin/tar -jx -C {$pfb['ccdir']} -f /tmp/countrycodes.tar.bz2", $output, $retval);
+			if ($retval == 0) {
+				$maxmind_verify = 5;
+				update_status("Fetch done.\n");
+			} else {
+				update_status("Fetch Failed!\n");
+			}
+		}
+		else {
+			update_status(" Failed!\n");
+		}
 	}
 	else {
 		update_status("Downloading MaxMind Country databases... done.\n");
+	}
+
+	// Proceed with conversion of MaxMind files on download success
+	if ($maxmind_verify == 5) {
+		update_status("Converting MaxMind Country databases for pfBlockerNG.\n This may take a few minutes...\n");
+		pfblockerng_uc_countries();
+		update_status("Creating pfBlockerNG Continent XML files...\n");
+		pfblockerng_get_countries();
+	}
+	else {
+		update_status("\n\nMaxMind update has Failed! Please fix connectivity and re-install package again!\n\n");
 	}
 }
 else {
 	update_status("\nMaxMind Country databases previously downloaded.\n");
 }
 
-update_status("Converting MaxMind Country databases for pfBlockerNG.\n This may take a few minutes...\n");
-pfblockerng_uc_countries();
-update_status("Creating pfBlockerNG Continent XML files...\n");
-pfblockerng_get_countries();
 
 if ($pfb['keep'] == 'on' && isset($pfb['widgets']) && strpos($pfb['widgets'], 'pfblockerng-container') !== FALSE) {
 	update_status("Restoring previous pfBlockerNG Widget settings...");
