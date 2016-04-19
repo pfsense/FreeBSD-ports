@@ -977,7 +977,7 @@ $xml .= <<<EOF
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Custom Port</fielddescr>
+			<fielddescr>Custom DST Port</fielddescr>
 			<fieldname>autoports_in</fieldname>
 			<type>checkbox</type>
 			<sethelp>Enable</sethelp>
@@ -1062,15 +1062,15 @@ $xml .= <<<EOF
 			</description>
 		</field>
 		<field>
-			<fielddescr>Invert Source</fielddescr>
+			<fielddescr>Invert Destination</fielddescr>
 			<fieldname>autoaddrnot_out</fieldname>
 			<sethelp><![CDATA[<strong>Invert</strong> - Option to invert the sense of the match.
-				ie - Not (!) Source Address(es)]]>
+				ie - Not (!) Destination Address(es)]]>
 			</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Custom Port</fielddescr>
+			<fielddescr>Custom DST Port</fielddescr>
 			<fieldname>autoports_out</fieldname>
 			<type>checkbox</type>
 			<sethelp>Enable</sethelp>
