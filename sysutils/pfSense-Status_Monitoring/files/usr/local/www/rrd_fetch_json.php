@@ -74,7 +74,7 @@ $invert_graph = ($_POST['invert'] === 'true');
 $left_pieces = explode("-", $left);
 $right_pieces = explode("-", $right);
 
-if ($start > 0) {
+if ($timePeriod === "custom") {
 	$resolution = 300; //TODO calculate
 	$start = floor($start/$resolution) * $resolution;
 	$end = floor($end/$resolution) * $resolution;
