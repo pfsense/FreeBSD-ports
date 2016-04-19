@@ -140,8 +140,8 @@ if ($_POST['clear']) {
 		unlink_if_exists("{$suricata_rules_upd_log}");
 }
 
-if (isset($_POST['mode'])) {
-	if ($_POST['mode'] == 'force') {
+if ($_REQUEST['updatemode']) {
+	if ($_REQUEST['updatemode'] == 'force') {
 		// Mount file system R/W since we need to remove files
 		conf_mount_rw();
 
@@ -154,8 +154,31 @@ if (isset($_POST['mode'])) {
 		conf_mount_ro();
 	}
 	
-	// Go download the updates
-	include("/usr/local/pkg/suricata/suricata_check_for_rule_updates.php");
+	// Launch a background process to download the updates
+	$upd_pid = 0;
+	$upd_pid = mwexec_bg("/usr/local/bin/php -f /usr/local/pkg/suricata/suricata_check_for_rule_updates.php");
+	print($upd_pid);
+
+	// If we failed to launch our background process, throw up an error for the user.
+	if ($upd_pid == 0) {
+		$input_errors[] = gettext("Failed to launch the background rules package update routine!  Rules update will not be done.");
+	} else {
+		exit;
+	}
+}
+
+if ($_REQUEST['ajax'] == 'status') {
+	if (is_numeric($_REQUEST['pid'])) {
+		// Check for the PID launched as the rules update task
+		$rc = shell_exec("/bin/ps -o pid= -p {$_REQUEST['pid']}");
+		if (!empty($rc)) {
+			print("RUNNING");
+		} else {
+			print("DONE");
+		}
+	} else {
+		print("DONE");
+	}
 	exit;
 }
 
@@ -189,8 +212,6 @@ include_once("head.inc");
 	}
 ?>
 
-<form action="suricata_download_updates.php" enctype="multipart/form-data" class="form-horizontal" method="post" name="iform" id="iform">
-
 <?php
 	$tab_array = array();
 	$tab_array[] = array(gettext("Interfaces"), false, "/suricata/suricata_interfaces.php");
@@ -207,6 +228,8 @@ include_once("head.inc");
 	$tab_array[] = array(gettext("IP Lists"), false, "/suricata/suricata_ip_list_mgmt.php");
 	display_top_tabs($tab_array, true);
 ?>
+
+<form action="suricata_download_updates.php" enctype="multipart/form-data" class="form-horizontal" method="post" name="iform" id="iform">
 
 <div class="panel panel-default">
 	<div class="panel-heading"><h2 class="panel-title"><?=gettext("INSTALLED RULE SET MD5 SIGNATURES")?></h2></div>
@@ -251,11 +274,11 @@ include_once("head.inc");
 			</p>
 			<p>
 				<?php if ($snortdownload != 'on' && $emergingthreats != 'on' && $etpro != 'on'): ?>
-					<br/><button class="btn btn-primary" disabled="disabled">
+					<br/><button class="btn btn-primary" disabled>
 						<i class="fa fa-check icon-embed-btn"></i>
 						<?=gettext("Update"); ?>
 					</button>&nbsp;&nbsp;&nbsp;&nbsp;
-					<button class="btn btn-warning" disabled="disabled">
+					<button class="btn btn-warning" disabled>
 						<i class="fa fa-download icon-embed-btn"></i>
 						<?=gettext("Force"); ?>
 					</button>
@@ -267,11 +290,11 @@ include_once("head.inc");
 					<br/>
 					<button name="update" id="update" class="btn btn-primary" 
 						title="<?=gettext("Check for and apply new update to enabled rule sets"); ?>">
-						<i class="fa fa-check icon-embed-btn"></i>
+						<i id="updbtn" class="fa fa-check icon-embed-btn"></i>
 						<?=gettext("Update"); ?>
 					</button>&nbsp;&nbsp;&nbsp;&nbsp;
 					<button name="force" id="force" class="btn btn-warning" title="<?=gettext("Force an update of all enabled rule sets")?>">
-						<i class="fa fa-download icon-embed-btn"></i>
+						<i id="forcebtn" class="fa fa-download icon-embed-btn"></i>
 						<?=gettext("Force"); ?>
 					</button>
 					<br/><br/>
@@ -304,7 +327,7 @@ include_once("head.inc");
 					</button>
 					<br/>
 				<?php else: ?>
-					<button class="btn btn-info icon-embed-btn" disabled='disabled'>
+					<button class="btn btn-info" disabled>
 						<i class="fa fa-file-text-o icon-embed-btn"></i>
 						<?=gettext("View Log"); ?>
 					</button><br/><?=gettext("Log is empty."); ?><br/>
@@ -332,7 +355,8 @@ $form = new Form(FALSE);
 $modal = new Modal('Rules Update Task', 'updrulesdlg', false, 'Close');
 $modal->addInput(new Form_StaticText (
 	null,
-	'Checking for updated rule sets may take a while ... please wait ' . '<i class="content fa fa-spinner fa-pulse fa-lg text-center text-info"></i>'
+	'Updating rule sets may take a while ... please wait for the process to complete.<br/><br/>This dialog will auto-close when the update is finished.<br/><br/>' . 
+	'<i class="content fa fa-spinner fa-pulse fa-lg text-center text-info"></i>'
 ));
 $form->add($modal);
 print($form);
@@ -344,37 +368,79 @@ print($form);
 
 <script type="text/javascript">
 //<![CDATA[
-events.push(function(){
 
-	function doRuleUpdates(mode) {
-		var ajaxRequest;
-		if (typeof mode == "undefined") {
-			var mode = "update";
-		}
+function checkUpdateStatus(pid) {
+	//See if update process is still running
+	var repeat = true;
+	var ajaxRequest2;
+	var processID = pid;
+	ajaxRequest2 = $.ajax({
+		url: "suricata_download_updates.php",
+		type: "post",
+		data: { ajax: 'status',
+			pid: processID
+		      }
+	});
 
-		// Show the "please wait" modal
-		$('#updrulesdlg').modal('show');
-
-		ajaxRequest = $.ajax({
-			url: "/suricata/suricata_download_updates.php",
-			type: "post",
-			data: { mode: mode }
-		});
-
-		// Deal with the results of the above ajax call
-		ajaxRequest.done(function (response, textStatus, jqXHR) {
-
+	ajaxRequest2.done(function (response, textStatus, jqXHR) {
+		if (response == "DONE") {
 			// Close the "please wait" modal
 			$('#updrulesdlg').modal('hide');
-		});
+			repeat = false;
+
+			// Reload the page to refresh displayed data
+			location.reload(true);
+		}
+		else {
+			repeat = true;
+		}
+		if (repeat) {
+			setTimeout(function(){
+				checkUpdateStatus(pid);
+				}, 500);
+		}
+	});
+}
+
+function doRuleUpdates(mode) {
+	var ajaxRequest1;
+	if (typeof mode == "undefined") {
+		var mode = "update";
 	}
+
+	// Show the "please wait" modal
+	$('#updrulesdlg').modal('show');
+
+	if (mode == "update") {
+		$('#updbtn').toggleClass('fa-check fa-spinner');
+	}
+	if (mode == "force") {
+		$('#forcebtn').toggleClass('fa-download fa-spinner');
+	}
+
+	ajaxRequest1 = $.ajax({
+		url: "suricata_download_updates.php",
+		type: "post",
+		data: { updatemode: mode }
+	});
+
+	// Deal with the results of the above ajax call
+	ajaxRequest1.done(function (response, textStatus, jqXHR) {
+		checkUpdateStatus(response);
+	});
+}
+
+events.push(function(){
+
 	//-- Click handlers ---------------------------------
 	$('#update').click(function() {
 		doRuleUpdates('update');
+		return false;
 	});
 
 	$('#force').click(function() {
 		doRuleUpdates('force');
+		return false;
 	});
 
 });

@@ -488,6 +488,23 @@ function pfb_cron_base_hour() {
 }
 
 
+// Collect 'gateway(s)' and 'gateway group(s)' for Adv. In/Outbound customizations
+function pfb_get_gateways() {
+	global $config;
+
+	$gateway = $gateway_item = $gateway_group = array();
+	if (is_array($config['gateways']['gateway_item'])) {
+		$gateway_item = $config['gateways']['gateway_item'];
+	}
+	if (is_array($config['gateways']['gateway_group'])) {
+		$gateway_group = $config['gateways']['gateway_group'];
+	}
+	$gateway = array_merge($gateway_item, $gateway_group);
+
+	return $gateway;
+}
+
+
 // Create suppression alias
 function pfb_create_suppression_alias() {
 	global $config;
@@ -855,7 +872,7 @@ function pfb_validate_unbound($mode) {
 
 		// Reload Unbound Service
 		if (is_service_running('unbound')) {
-			pfb_logger('Restarting Unbound ...', 1);
+			pfb_logger('Reloading Unbound ...', 1);
 
 			$cache_dumpfile = '/var/tmp/unbound_cache';
 			unlink_if_exists("{$cache_dumpfile}");
@@ -995,12 +1012,6 @@ function sanitize_ipaddr($ipaddr, $custom) {
 
 	// Exclude private/reserved IPs when suppression is enabled (bypass exclusion for custom lists)
 	if ($pfb['supp'] == 'on' && !$custom) {
-
-		// Remove 'loopback', '0.0.0.0', and IPs ending with '255'
-		if ($ip[0] == 127 || $ip[0] == 0 || empty($ip[0]) || $ip[3] == 255) {
-			return;
-		}
-
 		if (!filter_var($ip_final, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== FALSE) {
 			return;
 		}
@@ -1479,27 +1490,33 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway_i
 				$rule['direction'] = 'any';
 			}
 			$rule['descr'] = "{$pfb_alias}{$vtype}{$pfb['suffix']}";
-			if (!empty($asrc_out) && !empty($aports_out)) {
-				$rule['source'] = array('address' => "{$asrc_out}", 'port' => "{$aports_out}");
-			} elseif (!empty($asrc_out) && empty($aports_out)) {
+			if (!empty($asrc_out)) {
 				$rule['source'] = array('address' => "{$asrc_out}");
-			} elseif (empty($asrc_out) && !empty($aports_out)) {
-				$rule['source'] = array('any' => '', 'port' => "{$aports_out}");
 			} else {
 				$rule['source'] = array('any' => '');
 			}
 			if (!empty($asrc_out) && $anot_out == 'on') {
 				$rule['source']['not'] = '';
 			}
-			$rule['destination'] = array('address' => "{$pfb_alias}{$vtype}");
+			if (!empty($aports_out)) {
+				$rule['destination'] = array('address' => "{$pfb_alias}{$vtype}", 'port' => "{$aports_out}");
+			} else {
+				$rule['destination'] = array('address' => "{$pfb_alias}{$vtype}");
+			}
 			if ($aaddrnot_out == 'on') {
 				$rule['destination']['not'] = '';
+			}
+			if (!empty($aproto_out)) {
+				$rule['protocol'] = "{$aproto_out}";
 			}
 			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
 			}
 			if ($agateway_out != 'default') {
 				$rule['gateway'] = "{$agateway_out}";
+				if ($pfb['float'] == 'on') {
+					$rule['direction'] = 'out';
+				}
 			}
 			$rule['created'] = array('time' => (int)microtime(true), 'username' => 'Auto');
 			$pfb['deny_outbound'][] = $rule;
@@ -1540,6 +1557,9 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway_i
 			}
 			if ($agateway_in != 'default') {
 				$rule['gateway'] = "{$agateway_in}";
+				if ($pfb['float'] == 'on') {
+					$rule['direction'] = 'in';
+				}
 			}
 			$rule['created'] = array('time' => (int)microtime(true), 'username' => 'Auto');
 			$pfb['deny_inbound'][] = $rule;
@@ -1555,27 +1575,33 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway_i
 				$rule['direction'] = 'any';
 			}
 			$rule['descr'] = "{$pfb_alias}{$vtype}{$pfb['suffix']}";
-			if (!empty($asrc_out) && !empty($aports_out)) {
-				$rule['source'] = array('address' => "{$asrc_out}", 'port' => "{$aports_out}");
-			} elseif (!empty($asrc_out) && empty($aports_out)) {
+			if (!empty($asrc_out)) {
 				$rule['source'] = array('address' => "{$asrc_out}");
-			} elseif (empty($asrc_out) && !empty($aports_out)) {
-				$rule['source'] = array('any' => '', 'port' => "{$aports_out}");
 			} else {
 				$rule['source'] = array('any' => '');
 			}
 			if (!empty($asrc_out) && $anot_out == 'on') {
 				$rule['source']['not'] = '';
 			}
-			$rule['destination'] = array('address' => "{$pfb_alias}{$vtype}");
+			if (!empty($aports_out)) {
+				$rule['destination'] = array('address' => "{$pfb_alias}{$vtype}", 'port' => "{$aports_out}");
+			} else {
+				$rule['destination'] = array('address' => "{$pfb_alias}{$vtype}");
+			}
 			if ($aaddrnot_out == 'on') {
 				$rule['destination']['not'] = '';
+			}
+			if (!empty($aproto_out)) {
+				$rule['protocol'] = "{$aproto_out}";
 			}
 			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
 			}
 			if ($agateway_out != 'default') {
 				$rule['gateway'] = "{$agateway_out}";
+				if ($pfb['float'] == 'on') {
+					$rule['direction'] = 'out';
+				}
 			}
 			$rule['created'] = array('time' => (int)microtime(true), 'username' => 'Auto');
 			$pfb['permit_outbound'][] = $rule;
@@ -1616,6 +1642,9 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway_i
 			}
 			if ($agateway_in != 'default') {
 				$rule['gateway'] = "{$agateway_in}";
+				if ($pfb['float'] == 'on') {
+					$rule['direction'] = 'in';
+				}
 			}
 			$rule['created'] = array('time' => (int)microtime(true), 'username' => 'Auto');
 			$pfb['permit_inbound'][] = $rule;
@@ -1629,27 +1658,31 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway_i
 			}
 			$rule['direction'] = 'any';
 			$rule['descr'] = "{$pfb_alias}{$vtype}{$pfb['suffix']}";
-			if (!empty($asrc_out) && !empty($aports_out)) {
-				$rule['source'] = array('address' => "{$asrc_out}", 'port' => "{$aports_out}");
-			} elseif (!empty($asrc_out) && empty($aports_out)) {
+			if (!empty($asrc_out)) {
 				$rule['source'] = array('address' => "{$asrc_out}");
-			} elseif (empty($asrc_out) && !empty($aports_out)) {
-				$rule['source'] = array('any' => '', 'port' => "{$aports_out}");
 			} else {
 				$rule['source'] = array('any' => '');
 			}
 			if (!empty($asrc_out) && $anot_out == 'on') {
 				$rule['source']['not'] = '';
 			}
-			$rule['destination'] = array('address' => "{$pfb_alias}{$vtype}");
+			if (!empty($aports_out)) {
+				$rule['destination'] = array('address' => "{$pfb_alias}{$vtype}", 'port' => "{$aports_out}");
+			} else {
+				$rule['destination'] = array('address' => "{$pfb_alias}{$vtype}");
+			}
 			if ($aaddrnot_out == 'on') {
 				$rule['destination']['not'] = '';
+			}
+			if (!empty($aproto_out)) {
+				$rule['protocol'] = "{$aproto_out}";
 			}
 			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
 			}
 			if ($agateway_out != 'default') {
 				$rule['gateway'] = "{$agateway_out}";
+				$rule['direction'] = 'out';
 			}
 			$rule['created'] = array('time' => (int)microtime(true), 'username' => 'Auto');
 			$pfb['match_outbound'][] = $rule;
@@ -1688,6 +1721,7 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway_i
 			}
 			if ($agateway_in != 'default') {
 				$rule['gateway'] = "{$agateway_in}";
+				$rule['direction'] = 'in';
 			}
 			$rule['created'] = array('time' => (int)microtime(true), 'username' => 'Auto');
 			$pfb['match_inbound'][] = $rule;
@@ -3054,9 +3088,11 @@ function sync_package_pfblockerng($cron='') {
 		// Save alias statistics to file (Remove any feeds that are not referenced)
 		$handle = @fopen("{$pfb['dnsbl_info']}", 'w');
 		fwrite($handle, "# Keeping this file open in a file editor will interrupt DNSBL!\n");
-		foreach ($dnsbl_info as $alias) {
-			if (in_array($alias[0], $alias_dnsbl_all)) {
-				fputcsv($handle, $alias);
+		if (!empty($dnsbl_info)) {
+			foreach ($dnsbl_info as $alias) {
+				if (in_array($alias[0], $alias_dnsbl_all)) {
+					fputcsv($handle, $alias);
+				}
 			}
 		}
 		@fclose($handle);
@@ -4280,27 +4316,28 @@ function sync_package_pfblockerng($cron='') {
 					$new_rules[] = $cb_rules;
 				}
 			}
-		}
 
-		// Unset arrays
-		unset($pfb['permit_inbound'], $pfb['permit_outbound'], $pfb['deny_inbound'], $pfb['deny_outbound'], $pfb['match_inbound'], $pfb['match_outbound']);
-		unset($cb_rules, $other_rules, $fother_rules, $permit_rules, $fpermit_rules, $match_rules, $fmatch_rules);
+			// Unset arrays
+			unset($pfb['permit_inbound'], $pfb['permit_outbound'], $pfb['deny_inbound'],
+			    $pfb['deny_outbound'], $pfb['match_inbound'], $pfb['match_outbound']);
+			unset($cb_rules, $other_rules, $fother_rules, $permit_rules, $fpermit_rules, $match_rules, $fmatch_rules);
 
-		// Remove 'created' tag (New vs old rules array comparison)
-		foreach ($new_rules as $key => $rule) {
-			$new_rules_nocreated[] = $rule;
-			unset($new_rules_nocreated[$key]['created']);
-		}
+			// Remove 'created' tag (New vs old rules array comparison)
+			foreach ($new_rules as $key => $rule) {
+				$new_rules_nocreated[] = $rule;
+				unset($new_rules_nocreated[$key]['created']);
+			}
 
-		// Update config.xml, if changes required
-		if ($pfb['autorules'] && $orig_rules_nocreated != $new_rules_nocreated) {
-			$config['filter']['rule'] = $new_rules;
-			write_config('pfBlockerNG: saving Firewall rules');
+			// Update config.xml, if changes required
+			if ($pfb['autorules'] && $orig_rules_nocreated != $new_rules_nocreated) {
+				$config['filter']['rule'] = $new_rules;
+				write_config('pfBlockerNG: saving Firewall rules');
+			}
 		}
-	}
-	else {
-		$log = "\n\n{$message}\n";
-		pfb_logger("{$log}", 1);
+		else {
+			$log = "\n\n{$message}\n";
+			pfb_logger("{$log}", 1);
+		}
 	}
 
 	#################################

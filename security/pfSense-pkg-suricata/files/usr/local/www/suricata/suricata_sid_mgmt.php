@@ -281,7 +281,7 @@ if (isset($_POST['sidlist_dnload_all'])) {
 $sidmodfiles = return_dir_as_array($sidmods_path);
 $sidmodselections = array_merge(Array( "None" ), $sidmodfiles);
 
-$pgtitle = gettext("Suricata: SID Management");
+$pgtitle = array(gettext("Services"), gettext("Suricata"), gettext("SID Management"));
 include_once("head.inc");
 
 $tab_array = array();

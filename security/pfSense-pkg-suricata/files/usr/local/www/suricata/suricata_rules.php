@@ -495,7 +495,15 @@ function build_cat_list() {
 $if_friendly = convert_friendly_interface_to_friendly_descr($pconfig['interface']);
 $pgtitle = array(gettext("Suricata"), gettext("Interface ") . $if_friendly, gettext("Rules: ") . $currentruleset);
 include_once("head.inc");
+?>
 
+<form action="/suricata/suricata_rules.php" method="post" enctype="multipart/form-data" class="form-horizontal" name="iform" id="iform">
+<input type='hidden' name='id' id='id' value='<?=$id;?>'/>
+<input type='hidden' name='openruleset' id='openruleset' value='<?=$currentruleset;?>'/>
+<input type='hidden' name='sid' id='sid' value=''/>
+<input type='hidden' name='gid' id='gid' value=''/>
+
+<?php
 if (is_subsystem_dirty('suricata_rules')) {
 	print_apply_box(gettext("A change has been made to a rule state.") . "<br/>" . gettext("Click APPLY when finished to send the changes to the running configuration."));
 }
@@ -535,43 +543,51 @@ $tab_array[] = array($menu_iface . gettext("Barnyard2"), false, "/suricata/suric
 $tab_array[] = array($menu_iface . gettext("IP Rep"), false, "/suricata/suricata_ip_reputation.php?id={$id}");
 display_top_tabs($tab_array, true);
 
-$form = new Form(false);
-$form->setAttribute('id', 'iform');
-
-$section = new Form_Section("Available rule categories");
+$section = new Form_Section("Available Rule Categories");
 $group = new Form_Group("Category");
 $group->add(new Form_Select(
 	'selectbox',
 	'Category',
 	$currentruleset,
 	build_cat_list()
-))->setHelp("Select the rule category to view.")
-  ->setOnchange("go();");
-$group->add(new Form_Button(
-	'',
-	'View All',
-	'javascript:wopen(\'suricata_rules_edit.php?id=' . $id . '&openruleset=' . $currentruleset . '\',\'FileViewer\');',
-	'fa-file-text-o'
-))->removeClass("btn-default")->addClass("btn-sm btn-success")->setAttribute('title', gettext("View raw text for all rules in selected category"));
+))->setHelp("Select the rule category to view and manage.");
+if ($currentruleset != 'custom.rules') {
+	$group->add(new Form_Button(
+		'',
+		'View All',
+		'javascript:wopen(\'/suricata/suricata_rules_edit.php?id=' . $id . '&openruleset=' . $currentruleset . '\',\'FileViewer\');',
+		'fa-file-text-o'
+	))->removeClass("btn-default")->addClass("btn-sm btn-success")->setAttribute('title', gettext("View raw text for all rules in selected category"));
+}
 $section->add($group);
+print($section);
 
-if ($currentruleset == 'custom.rules') {
+if ($currentruleset == 'custom.rules') :
+		$section = new Form_Section('Defined Custom Rules');
+		$section->addInput(new Form_Textarea(
+			'customrules',
+			'',
+			base64_decode($a_rule[$id]['customrules'])
+		))->addClass('row-fluid')->setRows('18')->setAttribute('wrap', 'off')->setAttribute('style', 'max-width: 100%; width: 100%;');
+		print($section);
+?>
+		<nav class="action-buttons">
+			<button type="submit" id="save" name="save" class="btn btn-primary btn-sm" title="<?=gettext('Save custom rules for this interface');?>">
+				<i class="fa fa-save icon-embed-btn"></i>
+				<?=gettext('Save');?>
+			</button>
+			<button type="submit" id="cancel" name="cancel" class="btn btn-warning btn-sm" title="<?=gettext('Cancel changes and return to last page');?>">
+				<?=gettext('Cancel');?>
+			</button>
+			<button type="submit" id="clear" name="clear" class="btn btn-danger btn-sm" title="<?=gettext('Deletes all custom rules for this interface');?>">
+				<i class="fa fa-trash icon-embed-btn"></i>
+				<?=gettext('Clear');?>
+			</button>
+		</nav>
 
-	$section->addInput(new Form_Textarea(
-		'customrules',
-		'Defined custom rules',
-		$pconfig['customrules']
-	))->setRows(40)->setNoWrap()->setCols(90)->removeClass("form-control");
+<?php else: ?>
 
-	$form->addGlobal(new Form_Button(
-		'clear',
-		'Clear'
-	))->removeClass("btn-primary")->addClass("btn-danger")->setAttribute("title", "clear these rules? This will erase all custom rules for the interface.");
-
-	$form->add($section);
-} else {
-	$form->add($section);
-
+<?php
 $section = new Form_Section('Rule Signature ID (SID) Enable/Disable Overrides');
 $group = new Form_Group('SID Actions');
 $group->add(new Form_Button(
@@ -606,45 +622,16 @@ $group->add(new Form_Button(
 ))->setAttribute('title', gettext('Enable all rules in the currently selected category'))->addClass('btn-sm btn-success');
 if ($currentruleset == 'Auto-Flowbit Rules') {
 	$msg = '<b>' . gettext('Note: ') . '</b>' . gettext('You should not disable flowbit rules!  Add Suppress List entries for them instead by ');
-	$msg .= '<a href="suricata_rules_flowbits.php?id=' . $id . '" title="' . gettext('Add Suppress List entry for Flowbit Rule') . '">';
+	$msg .= '<a href="/suricata/suricata_rules_flowbits.php?id=' . $id . '" title="' . gettext('Add Suppress List entry for Flowbit Rule') . '">';
 	$msg .= gettext('clicking here.') . '</a>';
-	$group->setHelp('When finished, click APPLY to save and send any SID enable/disable changes made on this tab to Suricata.<br/>' . $msg);
+	$group->setHelp('When finished, click APPLY to save and send any SID enable/disable changes made on this tab to Snort.<br/>' . $msg);
 }
 else {
-	$group->setHelp('When finished, click APPLY to save and send any SID enable/disable changes made on this tab to Suricata.');
+	$group->setHelp('When finished, click APPLY to save and send any SID enable/disable changes made on this tab to Snort.');
 }
 $section->add($group);
+print($section);
 
-	$form->add($section);
-}
-
-$form->addGlobal(new Form_Input(
-	'id',
-	null,
-	'hidden',
-	$id
-));
-
-$form->addGlobal(new Form_Input(
-	'openruleset',
-	null,
-	'hidden',
-	$currentruleset
-));
-$form->addGlobal(new Form_Input(
-	'sid',
-	null,
-	'hidden',
-	$sid
-));
-$form->addGlobal(new Form_Input(
-	'gid',
-	null,
-	'hidden',
-	$gid
-));
-
-print($form);
 ?>
 
 <div class="panel panel-default">
@@ -836,6 +823,9 @@ print($form);
 		</div>
 	</div>
 </div>
+<?php endif;?>
+
+</form>
 
 <?php
 // Create a Modal object to display text of user-clicked rules
@@ -862,12 +852,6 @@ function toggleRule(sid, gid) {
 	$('#gid').val(gid);
 	$('#openruleset').val($('#selectbox').val());
 	$('<input name="toggle" value="1" />').appendTo($('#iform'));
-	$('#iform').submit();
-}
-
-function go()
-{
-	$('#openruleset').val($('#selectbox').val());
 	$('#iform').submit();
 }
 
@@ -905,6 +889,30 @@ function loadComplete(req) {
 		$('#rulesviewer_text').attr('readonly', true);
 }
 
+events.push(function() {
+
+	function go()
+	{
+		var ruleset = $('#selectbox').find('option:selected').val();
+		if (ruleset) {
+			$('#openruleset').val(ruleset);
+			$('#iform').submit();
+		}
+	}
+
+	// ---------- Click handlers -------------------------------------------------------
+
+	$('#selectbox').on('change', function() {
+		go();
+	});
+
+	<?php if (!empty($anchor)): ?>
+		// Scroll the last enabled/disabled SID into view
+		window.location.hash = "<?=$anchor; ?>";
+		window.scrollBy(0,-60); 
+	<?php endif;?>
+
+});
 //]]>
 </script>
 
