@@ -46,13 +46,17 @@ if (!is_array($config['installedpackages']['snortglobal']['alertsblocks']))
 $pconfig['brefresh'] = $config['installedpackages']['snortglobal']['alertsblocks']['brefresh'];
 $pconfig['blertnumber'] = $config['installedpackages']['snortglobal']['alertsblocks']['blertnumber'];
 
-if (empty($pconfig['blertnumber']))
-	$bnentries = '500';
-else
+if (empty($pconfig['blertnumber'])) {
+	$pconfig['blertnumber'] = 500;
+	$bnentries = 500;
+}
+else {
 	$bnentries = $pconfig['blertnumber'];
+}
 
-if (empty($pconfig['brefresh']))
-	$bnentries = 'on';
+if (empty($pconfig['brefresh'])) {
+	$pconfig['brefresh'] = 'on';
+}
 
 # --- AJAX REVERSE DNS RESOLVE Start ---
 if (isset($_POST['resolve'])) {
@@ -216,7 +220,7 @@ $group->add(new Form_Checkbox(
 	'Refresh',
 	(($config['installedpackages']['snortglobal']['alertsblocks']['brefresh']=='on') || ($config['installedpackages']['snortglobal']['alertsblocks']['brefresh']=='')),
 	'on'
-))->setHelp('Deault is ON');
+))->setHelp('Default is ON');
 
 $group->add(new Form_Input(
 	'blertnumber',

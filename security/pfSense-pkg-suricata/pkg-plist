@@ -52,4 +52,6 @@ www/suricata/suricata_select_alias.php
 /var/db/suricata/sidmods/dropsid-sample.conf
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv
+@dir /etc/inc
 @dir /var/db/suricata/sidmods
+@dir /var/db/suricata

@@ -373,7 +373,7 @@
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Custom Port</fielddescr>
+			<fielddescr>Custom DST Port</fielddescr>
 			<fieldname>autoports_in</fieldname>
 			<type>checkbox</type>
 			<sethelp>Enable</sethelp>
@@ -437,7 +437,7 @@
 			<fieldname>agateway_in</fieldname>
 			<description><![CDATA[Select alternate Gateway or keep 'default' setting.]]></description>
 			<type>select_source</type>
-			<source><![CDATA[$config['gateways']['gateway_item']]]></source>
+			<source><![CDATA[pfb_get_gateways()]]></source>
 			<source_name>name</source_name>
 			<source_value>name</source_value>
 			<default_value>default</default_value>
@@ -458,15 +458,15 @@
 			</description>
 		</field>
 		<field>
-			<fielddescr>Invert Source</fielddescr>
+			<fielddescr>Invert Destination</fielddescr>
 			<fieldname>autoaddrnot_out</fieldname>
 			<sethelp><![CDATA[<strong>Invert</strong> - Option to invert the sense of the match.
-				ie - Not (!) Source Address(es)]]>
+				ie - Not (!) Destination Address(es)]]>
 			</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Custom Port</fielddescr>
+			<fielddescr>Custom DST Port</fielddescr>
 			<fieldname>autoports_out</fieldname>
 			<type>checkbox</type>
 			<sethelp>Enable</sethelp>
@@ -485,7 +485,7 @@
 			<combinefields>end</combinefields>
 		</field>
 		<field>
-			<fielddescr>Custom Destination</fielddescr>
+			<fielddescr>Custom Source</fielddescr>
 			<fieldname>autoaddr_out</fieldname>
 			<type>checkbox</type>
 			<sethelp>Enable</sethelp>
@@ -501,10 +501,10 @@
 		</field>
 		<field>
 			<fieldname>aliasaddr_out</fieldname>
-			<fielddescr>Custom Destination</fielddescr>
+			<fielddescr>Custom Source</fielddescr>
 			<description><![CDATA[<a target="_blank" href="/firewall_aliases.php?tab=ip">Click Here to add/edit Aliases</a>
 				Do not manually enter Addresses(es).<br />Do not use 'pfB_' in the 'IP Network Type' Alias name.<br />
-				Select 'invert' to invert the sense of the match. ie - Not (!) Destination Address(es)]]>
+				Select 'invert' to invert the sense of the match. ie - Not (!) Source Address(es)]]>
 			</description>
 			<width>6</width>
 			<type>aliases</type>
@@ -530,7 +530,7 @@
 			<fieldname>agateway_out</fieldname>
 			<description><![CDATA[Select alternate Gateway or keep 'default' setting.]]></description>
 			<type>select_source</type>
-			<source><![CDATA[$config['gateways']['gateway_item']]]></source>
+			<source><![CDATA[pfb_get_gateways()]]></source>
 			<source_name>name</source_name>
 			<source_value>name</source_value>
 			<default_value>default</default_value>

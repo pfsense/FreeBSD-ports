@@ -952,18 +952,18 @@ $group = new Form_Group('Pass List');
 $group->addClass('passlist');
 
 $group->add(new Form_Select(
-	'whitelistname',
+	'passlistname',
 	'Pass List',
-	$pconfig['whitelistname'],
-	suricata_get_config_lists('whitelist')
+	$pconfig['passlistname'],
+	suricata_get_config_lists('passlist')
 ))->setHelp('Choose the Pass List you want this interface to use. Addresses in a Pass List are never blocked. ');
 
 $group->add(new Form_Button(
-	'btnWhitelist',
+	'btnPasslist',
 	' ' . 'View List',
 	'#',
 	'fa-file-text-o'
-))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('data-target', '#whitelist')->setAttribute('data-toggle', 'modal');
+))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('data-target', '#passlist')->setAttribute('data-toggle', 'modal');
 
 $group->setHelp('The default Pass List adds local networks, WAN IPs, Gateways, VPNs and VIPs.  Create an Alias to customize.' . '<br />' .
 				'This option will only be used when block offenders is on.');
@@ -997,10 +997,10 @@ $modal->addInput(new Form_Textarea (
 $form->add($modal);
 
 // Add view PASS_LIST modal pop-up
-$modal = new Modal('View PASS LIST', 'whitelist', 'large', 'Close');
+$modal = new Modal('View PASS LIST', 'passlist', 'large', 'Close');
 
 $modal->addInput(new Form_Textarea (
-	'whitelist_text',
+	'passlist_text',
 	'',
 	'...Loading...'
 ))->removeClass('form-control')
@@ -1223,8 +1223,8 @@ events.push(function(){
 		getListContents($('#externallistname option:selected' ).text(), 'externalnet', 'externalnet_text');
 	});
 
-	$('#whitelist').on('shown.bs.modal', function() {
-		getListContents($('#whitelistname option:selected' ).text(), 'passlist', 'whitelist_text');
+	$('#passlist').on('shown.bs.modal', function() {
+		getListContents($('#passlistname option:selected' ).text(), 'passlist', 'passlist_text');
 	});
 
 	$('#suppresslist').on('shown.bs.modal', function() {

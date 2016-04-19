@@ -74,13 +74,13 @@ $invert_graph = ($_POST['invert'] === 'true');
 $left_pieces = explode("-", $left);
 $right_pieces = explode("-", $right);
 
-//Build RRD options bases on settings
-$rrd_options = array( 'AVERAGE', '-r', $resolution );
-
 if ($start > 0) {
-	array_push($rrd_options, '-s', '1445816765047', '-e', '1456184765047');
+	$resolution = 300; //TODO calculate
+	$start = floor($start/$resolution) * $resolution;
+	$end = floor($end/$resolution) * $resolution;
+	$rrd_options = array( 'AVERAGE', '-r', $resolution, '-s', $start, '-e', $end );
 } else {
-	array_push($rrd_options, '-s', $timePeriod);
+	$rrd_options = array( 'AVERAGE', '-r', $resolution, '-s', $timePeriod );
 }
 
 //Initialze

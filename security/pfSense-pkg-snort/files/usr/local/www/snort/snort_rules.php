@@ -440,11 +440,11 @@ elseif ($_POST['resetall'] && !empty($rules_map)) {
 	// We changed a rule state, remind user to apply the changes
 	mark_subsystem_dirty('snort_rules');
 }
-else if ($_POST['cancel']) {
+elseif (isset($_POST['cancel'])) {
 	$pconfig['customrules'] = base64_decode($a_rule[$id]['customrules']);
 	clear_subsystem_dirty('snort_rules');
 }
-elseif ($_POST['clear']) {
+elseif (isset($_POST['clear'])) {
 	unset($a_rule[$id]['customrules']);
 	write_config("Snort pkg: clear all custom rules for {$a_rule[$id]['interface']}.");
 	$rebuild_rules = true;
@@ -457,7 +457,7 @@ elseif ($_POST['clear']) {
 	// Sync to configured CARP slaves if any are enabled
 	snort_sync_on_changes();
 }
-elseif ($_POST['save']) {
+elseif (isset($_POST['save'])) {
 	$pconfig['customrules'] = $_POST['customrules'];
 	if ($_POST['customrules'])
 		$a_rule[$id]['customrules'] = base64_encode(str_replace("\r\n", "\n", $_POST['customrules']));
@@ -491,7 +491,7 @@ elseif ($_POST['save']) {
 	// Sync to configured CARP slaves if any are enabled
 	snort_sync_on_changes();
 }
-else if ($_POST['apply']) {
+elseif ($_POST['apply']) {
 	/* Save new configuration */
 	write_config("Snort pkg: save new rules configuration for {$a_rule[$id]['interface']}.");
 

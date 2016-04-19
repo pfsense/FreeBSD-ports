@@ -109,6 +109,8 @@ $log_sizes = array( '0' => gettext('NO LIMIT'), '50' => gettext('50 KB'), '150' 
 			'5000' => gettext("5 MB"), '10000' => gettext("10 MB") );
 
 // Set sensible defaults for any unset parameters
+if (empty($pconfig['enable_log_mgmt']))
+	$pconfig['enable_log_mgmt'] = 'on';
 if (empty($pconfig['suricataloglimit']))
 	$pconfig['suricataloglimit'] = 'on';
 if (empty($pconfig['suricataloglimitsize'])) {
@@ -299,15 +301,15 @@ $section = new Form_Section('General Settings');
 $section->addInput(new Form_Checkbox(
 	'clearlogs',
 	'Remove Suricata Logs On Package Uninstall',
-	'Suricata log files will be removed when the Suricata package is uninstalled.',
-	$config['installedpackages']['suricata']['config'][0]['clearlogs'] == 'on' ? true:false,
+	'Suricata log files will be removed when the Suricata package is uninstalled.  Default is not checked.',
+	$pconfig['clearlogs'] == 'on' ? true:false,
 	'on'
 ));
 $section->addInput(new Form_Checkbox(
 	'enable_log_mgmt',
 	'Auto Log Management',
-	'Enable automatic unattended management of Suricata logs using parameters specified below.',
-	$config['installedpackages']['suricata']['config'][0]['enable_log_mgmt'] == 'on' ? true:false,
+	'Enable automatic unattended management of Suricata logs using parameters specified below.  Default is checked.',
+	$pconfig['enable_log_mgmt'] == 'on' ? true:false,
 	'on'
 ));
 $form->add($section);
