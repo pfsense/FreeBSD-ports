@@ -5,7 +5,7 @@
  *
  * Copyright (C) 2008-2009 Robert Zelaya.
  * Copyright (C) 2011-2012 Ermal Luci
- * Copyright (C) 2015 Bill Meeks
+ * Copyright (C) 2016 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -468,7 +468,7 @@ function snort_get_config_lists($lists) {
 	$result['default'] = 'default';
 	if (is_array($config['installedpackages']['snortglobal'][$lists]['item'])) {
 		foreach ($config['installedpackages']['snortglobal'][$lists]['item'] as $v)
-		$result[$v['name']] = $v['name'];
+		$result[$v['name']] = gettext($v['name']);
 	}
 	return $result;
 }
@@ -525,14 +525,17 @@ $section->addInput(new Form_Select(
 	'alertsystemlog_facility',
 	'System Log Facility',
 	$pconfig['alertsystemlog_facility'],
-	array( 'log_auth','log_authpriv','log_daemon','log_user','log_local0','log_local1','log_local2','log_local3','log_local4','log_local5','log_local6','log_local7' )
-))->setHelp('Select system log Facility to use for reporting. Default is log_auth.');
+	array(  "log_auth" => gettext("LOG_AUTH"), "log_authpriv" => gettext("LOG_AUTHPRIV"), "log_daemon" => gettext("LOG_DAEMON"), "log_user" => gettext("LOG_USER"), 
+		"log_local0" => gettext("LOG_LOCAL0"), "log_local1" => gettext("LOG_LOCAL1"), "log_local2" => gettext("LOG_LOCAL2"), "log_local3" => gettext("LOG_LOCAL3"), 
+		"log_local4" => gettext("LOG_LOCAL4"), "log_local5" => gettext("LOG_LOCAL5"), "log_local6" => gettext("LOG_LOCAL6"), "log_local7" => gettext("LOG_LOCAL7") )
+))->setHelp('Select system log Facility to use for reporting. Default is LOG_AUTH.');
 $section->addInput(new Form_Select(
 	'alertsystemlog_priority',
 	'System Log Priority',
 	$pconfig['alertsystemlog_priority'],
-	array( 'log_emerg','log_crit','log_alert','log_err','log_warning','log_notice','log_info','log_debug' )
-))->setHelp('Select system log Priority (Level) to use for reporting. Default is log_alert.');
+	array(  'log_emerg' => gettext('LOG_EMERG'), 'log_crit' => gettext('LOG_CRIT'), 'log_alert' => gettext('LOG_ALERT'), 'log_err' => gettext('LOG_ERR'), 
+		'log_warning' => gettext('LOG_WARNING'), 'log_notice' => gettext('LOG_NOTICE'), 'log_info' => gettext('LOG_INFO'), 'log_debug' => gettext('LOG_DEBUG') )
+))->setHelp('Select system log Priority (Level) to use for reporting. Default is LOG_ALERT.');
 $section->addInput(new Form_Checkbox(
 	'blockoffenders7',
 	'Block Offenders',
@@ -551,7 +554,7 @@ $section->addInput(new Form_Select(
 	'blockoffendersip',
 	'Which IP to Block',
 	$pconfig['blockoffendersip'],
-	array( 'src','dst','both' )
+	array( 'src' => gettext('SRC'), 'dst' => gettext('DST'), 'both' => gettext('BOTH') )
 ))->setHelp('Select which IP extracted from the packet you wish to block');
 
 $form->add($section);
@@ -561,9 +564,9 @@ $section->addInput(new Form_Select(
 	'performance',
 	'Search Method',
 	$pconfig['performance'],
-	array('ac-bnfa' => 'AC-BNFA', 'ac-split' => 'AC-SPLIT', 'lowmem' => 'LOWMEM', 'ac-std' => 'AC-STD', 
-		  'ac' => 'AC', 'ac-nq' => 'AC-NQ', 'ac-bnfa-nq' => 'AC-BNFA-NQ', 'lowmem-nq' => 'LOWMEM-NQ', 
-		  'ac-banded' => 'AC-BANDED', 'ac-sparsebands' => 'AC-SPARSEBANDS', 'acs' => 'ACS')
+	array('ac-bnfa' => gettext('AC-BNFA'), 'ac-split' => gettext('AC-SPLIT'), 'lowmem' => gettext('LOWMEM'), 'ac-std' => gettext('AC-STD'), 
+		  'ac' => gettext('AC'), 'ac-nq' => gettext('AC-NQ'), 'ac-bnfa-nq' => gettext('AC-BNFA-NQ'), 'lowmem-nq' => gettext('LOWMEM-NQ'), 
+		  'ac-banded' => gettext('AC-BANDED'), 'ac-sparsebands' => gettext('AC-SPARSEBANDS'), 'acs' => gettext('ACS') )
 ))->setHelp('Choose a fast pattern matcher algorithm.');
 $section->addInput(new Form_Checkbox(
 	'fpm_split_any_any',
