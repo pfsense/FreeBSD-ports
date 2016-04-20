@@ -660,7 +660,7 @@
 			<multiple/>
 		</field>
 		<field>
-			<name>Custom Domain Suppression (Whitelist)</name>
+			<name>Custom Domain Whitelist</name>
 			<type>listtopic</type>
 			<collapse>closed</collapse>
 		</field>
