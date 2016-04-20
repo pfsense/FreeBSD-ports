@@ -44,7 +44,9 @@ require_once('services.inc');
 require_once('service-utils.inc');
 require_once('xmlrpc.inc');
 require_once('xmlrpc_client.inc');
-require_once('/usr/local/pkg/pfblockerng/pfblockerng_extra.inc');	// 'include functions' not yet merged into pfSense
+if (file_exists('/usr/local/pkg/pfblockerng/pfblockerng_extra.inc')) {
+	require_once('/usr/local/pkg/pfblockerng/pfblockerng_extra.inc');	// 'include functions' not yet merged into pfSense
+}
 
 global $g, $config, $pfb;
 
@@ -4456,10 +4458,12 @@ function sync_package_pfblockerng($cron='') {
 					if (isset($config['filter']['rule'])) {
 						foreach ($config['filter']['rule'] as $rule) {
 							if ($alias['name'] === $rule['source']['address'] || $alias['name'] === $rule['destination']['address']) {
-								if (isset($rule['source']['address'])) {
-									$tablesin[] = $rule['source']['address'];
-								} else {
-									$tablesout[] = $rule['destination']['address'];
+								if ($rule['type'] == 'block' || $rule['type'] == 'reject') {
+									if (isset($rule['source']['address']) && !isset($rule['source']['not'])) {
+										$tablesin[] = $rule['source']['address'];
+									} elseif (isset($rule['destination']['address']) && !isset($rule['destination']['not'])) {
+										$tablesout[] = $rule['destination']['address'];
+									}
 								}
 							}
 						}
@@ -4780,24 +4784,19 @@ function pfblockerng_validate_input($post, &$input_errors) {
 
 
 // Function to De-Install pfBlockerNG
-function pfblockerng_php_deinstall_command() {
+function pfblockerng_php_pre_deinstall_command() {
 	require_once('config.inc');
-	global $config, $pfb, $static_output;
+	global $config, $pfb;
 
 	// Set these two variables to disable pfBlockerNG on de-install
-	$pfb['save'] = TRUE;
-	$pfb['install'] = TRUE;
+	$pfb['save'] = $pfb['install'] = TRUE;
 
+	update_status("Removing pfBlockerNG...");
 	sync_package_pfblockerng();
-	rmdir_recursive('/usr/local/pkg/pfblockerng');
-	rmdir_recursive('/usr/local/www/pfblockerng');
-
-	// Clear any existing pfBlockerNG CRON jobs
-	install_cron_job('pfblockerng.php cron', false);
-	install_cron_job('pfblockerng.php dc', false);
 
 	// Maintain pfBlockerNG settings and database files if $pfb['keep'] is ON.
 	if ($pfb['keep'] != 'on') {
+		update_status(" Removing all customizations/data...");
 		// Remove pfBlockerNG log and DB folder
 		rmdir_recursive("{$pfb['dbdir']}");
 		rmdir_recursive("{$pfb['logdir']}");
@@ -4855,6 +4854,9 @@ function pfblockerng_php_deinstall_command() {
 		unlink_if_exists("{$pfb['dnsbl_info']}");
 		unlink_if_exists("{$pfb['aliasarchive']}");
 	}
+	else {
+		update_status(" All customizations/data will be retained...");
+	}
 
 	// Remove widget (code from Snort deinstall)
 	$pfb['widgets'] = $config['widgets']['sequence'];
@@ -4869,8 +4871,7 @@ function pfblockerng_php_deinstall_command() {
 		write_config('pfBlockerNG: Remove widget');
 	}
 
-	$static_output .= 'pfBlockerNG has been uninstalled.';
-	update_output_window($static_output);
+	update_status(" done.\n");
 }
 
 
