@@ -466,11 +466,11 @@
 		include_once('/usr/local/pkg/pfblockerng/pfblockerng_install.inc');
 		]]>
 	</custom_php_install_command>
-	<custom_php_deinstall_command>
+	<custom_php_pre_deinstall_command>
 		<![CDATA[
-		pfblockerng_php_deinstall_command();
+		pfblockerng_php_pre_deinstall_command();
 		]]>
-	</custom_php_deinstall_command>
+	</custom_php_pre_deinstall_command>
 	<custom_php_validation_command>
 		<![CDATA[
 		pfblockerng_validate_input($_POST, $input_errors);
