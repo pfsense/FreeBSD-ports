@@ -305,6 +305,7 @@ function zabbix_add_keyfile(& $data, $directive) {
 
 	file_put_contents($fpath, base64_decode($data));
 	@chmod($fpath, 0600);
+	@chown($fpath, "zabbix");
 }
 
 ?>
