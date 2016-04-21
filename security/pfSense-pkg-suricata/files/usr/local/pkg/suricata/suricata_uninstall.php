@@ -125,7 +125,7 @@ $widgets = $config['widgets']['sequence'];
 if (!empty($widgets)) {
 	$widgetlist = explode(",", $widgets);
 	foreach ($widgetlist as $key => $widget) {
-		if (strstr($widget, "suricata_alerts-container")) {
+		if (strstr($widget, "suricata_alerts")) {
 			if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] == 'on') {
 				$config['installedpackages']['suricata']['config'][0]['dashboard_widget'] = $widget;
 				if ($config['widgets']['widget_suricata_display_lines']) {
@@ -137,6 +137,7 @@ if (!empty($widgets)) {
 		}
 	}
 	$config['widgets']['sequence'] = implode(",", $widgetlist);
+	write_config("Suricata pkg removed Dashboard Alerts widget.");
 }
 
 /*******************************************************/
