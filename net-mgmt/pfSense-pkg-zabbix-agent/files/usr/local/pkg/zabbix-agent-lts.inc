@@ -163,7 +163,7 @@ function sync_package_zabbix_agent_lts() {
 				$TlsKEYfile = "TLSKeyFile=/usr/local/etc/zabbix3/zabbix_agentd.key";
 			}
 
-			if (! empty($zbagent_config['tlspskidentity']) {
+			if (! empty($zbagent_config['tlspskidentity']) ) {
 				$TLSPSKIdentity = "TLSPSKIdentity={$zbagent_config['tlspskidentity']}";
 			}
 
