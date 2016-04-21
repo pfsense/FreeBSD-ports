@@ -154,6 +154,8 @@ elseif (isset($id) && !isset($a_rule[$id])) {
 // Set defaults for empty key parameters
 if (empty($pconfig['blockoffendersip']))
 	$pconfig['blockoffendersip'] = "both";
+if (empty($pconfig['blockoffenderskill']))
+	$pconfig['blockoffenderskill'] = "on";
 if (empty($pconfig['performance']))
 	$pconfig['performance'] = "ac-bnfa";
 if (empty($pconfig['alertsystemlog_facility']))
@@ -248,7 +250,7 @@ if ($_POST['save'] && !$input_errors) {
 		if ($_POST['performance']) $natent['performance'] = $_POST['performance']; else  unset($natent['performance']);
 		/* if post = on use on off or rewrite the conf */
 		if ($_POST['blockoffenders7'] == "on") $natent['blockoffenders7'] = 'on'; else $natent['blockoffenders7'] = 'off';
-		if ($_POST['blockoffenderskill'] == "on") $natent['blockoffenderskill'] = 'on'; else unset($natent['blockoffenderskill']);
+		if ($_POST['blockoffenderskill'] == "on") $natent['blockoffenderskill'] = 'on'; else $natent['blockoffenderskill'] = 'off';
 		if ($_POST['blockoffendersip']) $natent['blockoffendersip'] = $_POST['blockoffendersip']; else unset($natent['blockoffendersip']);
 		if ($_POST['whitelistname']) $natent['whitelistname'] =  $_POST['whitelistname']; else unset($natent['whitelistname']);
 		if ($_POST['homelistname']) $natent['homelistname'] =  $_POST['homelistname']; else unset($natent['homelistname']);
@@ -546,7 +548,7 @@ $section->addInput(new Form_Checkbox(
 $section->addInput(new Form_Checkbox(
 	'blockoffenderskill',
 	'Kill States',
-	'Checking this option will kill firewall states for the blocked IP',
+	'Checking this option will kill firewall states for the blocked IP.  Default is checked.',
 	$pconfig['blockoffenderskill'] == 'on' ? true:false,
 	'on'
 ));
@@ -555,7 +557,7 @@ $section->addInput(new Form_Select(
 	'Which IP to Block',
 	$pconfig['blockoffendersip'],
 	array( 'src' => gettext('SRC'), 'dst' => gettext('DST'), 'both' => gettext('BOTH') )
-))->setHelp('Select which IP extracted from the packet you wish to block');
+))->setHelp('Select which IP extracted from the packet you wish to block.  Default is BOTH.');
 
 $form->add($section);
 
@@ -567,7 +569,7 @@ $section->addInput(new Form_Select(
 	array('ac-bnfa' => gettext('AC-BNFA'), 'ac-split' => gettext('AC-SPLIT'), 'lowmem' => gettext('LOWMEM'), 'ac-std' => gettext('AC-STD'), 
 		  'ac' => gettext('AC'), 'ac-nq' => gettext('AC-NQ'), 'ac-bnfa-nq' => gettext('AC-BNFA-NQ'), 'lowmem-nq' => gettext('LOWMEM-NQ'), 
 		  'ac-banded' => gettext('AC-BANDED'), 'ac-sparsebands' => gettext('AC-SPARSEBANDS'), 'acs' => gettext('ACS') )
-))->setHelp('Choose a fast pattern matcher algorithm.');
+))->setHelp('Choose a fast pattern matcher algorithm.  Default is AC-BNFA.');
 $section->addInput(new Form_Checkbox(
 	'fpm_split_any_any',
 	'Split ANY-ANY',
