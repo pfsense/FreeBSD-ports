@@ -32,6 +32,7 @@ require_once("util.inc");
 require_once("functions.inc");
 require_once("pkg-utils.inc");
 require_once("globals.inc");
+require_once("certs.inc");
 
 define('ZABBIX_AGENT_BASE', '/usr/local');
 
@@ -132,6 +133,44 @@ function sync_package_zabbix_agent_lts() {
 			$ListenIp = $zbagent_config['listenip'] ?: "0.0.0.0";
 			$ListenPort = $zbagent_config['listenport'] ?: "10050";
 			$TimeOut = $zbagent_config['timeout'] ?: "3";
+			$TLSConnect = $zbagent_config['tlsconnect'];
+			$TLSAccept = $zbagent_config['tlsaccept'] ?: "unencrypted";
+
+			if ($zbagent_config['tlscaso']) {
+				$TlsCAfile = "TLSCAFile=/usr/local/etc/ssl/cert.pem";
+			} else {
+				if ($zbagent_config['tlscafile'] != "none") {
+					$ca = lookup_ca($zbagent_config['tlscafile']);
+					zabbix_add_keyfile($ca['crt'], "ca");
+					$TlsCAfile = "TLSCAFile=/usr/local/etc/zabbix3/zabbix_agentd.ca";
+				}
+			}
+
+			if ($zbagent_config['tlscrlfile'] != "none") {
+				$crl = lookup_crl($zbagent_config['tlscrlfile']);
+				crl_update($crl);
+				zabbix_add_keyfile($crl['text'], "crl-verify");
+				$TlsCRLfile = "TLSCRLFile=/usr/local/etc/zabbix3/zabbix_agentd.crl-verify";
+			}
+
+			if ($zbagent_config['tlscertfile'] != "none") {
+				$cert = lookup_cert($zbagent_config['tlscertfile']);
+
+				zabbix_add_keyfile($cert['crt'], "cert");
+				$TlsCERTfile = "TLSCertFile=/usr/local/etc/zabbix3/zabbix_agentd.cert";
+
+				zabbix_add_keyfile($cert['prv'], "key");
+				$TlsKEYfile = "TLSKeyFile=/usr/local/etc/zabbix3/zabbix_agentd.key";
+			}
+
+			if (! empty($zbagent_config['tlspskidentity']) {
+				$TLSPSKIdentity = "TLSPSKIdentity={$zbagent_config['tlspskidentity']}";
+			}
+
+			if (! empty($zbagent_config['tlspskfile']) ) {
+				zabbix_add_keyfile($zbagent_config['tlspskfile'], "psk");
+				$TLSPSKFile = "TLSPSKFile=/usr/local/etc/zabbix3/zabbix_agentd.psk";
+			}
 
 			$zbagent_conf_file = <<< EOF
 Server={$zbagent_config['server']}
@@ -148,6 +187,14 @@ Timeout={$TimeOut}
 BufferSend={$BufferSend}
 BufferSize={$BufferSize}
 StartAgents={$StartAgents}
+TLSConnect={$TLSConnect}
+TLSAccept={$TLSAccept}
+{$TlsCAfile}
+{$TlsCRLfile}
+{$TlsCERTfile}
+{$TlsKEYfile}
+{$TLSPSKIdentity}
+{$TLSPSKFile}
 {$UserParams}
 
 EOF;
@@ -248,6 +295,16 @@ EOF;
 	}
 
 	conf_mount_ro();
+}
+
+// Based on openvpn_add_keyfile() function
+function zabbix_add_keyfile(& $data, $directive) {
+	global $g;
+
+	$fpath = "/usr/local/etc/zabbix3/zabbix_agentd.{$directive}";
+
+	file_put_contents($fpath, base64_decode($data));
+	@chmod($fpath, 0600);
 }
 
 ?>
