@@ -47,6 +47,8 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg/snort
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/snort/snort_post_install.php \
 		${STAGEDIR}${PREFIX}/pkg/snort
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/snort/snort_uninstall.php \
+		${STAGEDIR}${PREFIX}/pkg/snort
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/snort/snort_sync.xml \
 		${STAGEDIR}${PREFIX}/pkg/snort
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/snort/deprecated_rules \

@@ -4,6 +4,7 @@ pkg/snort/snort_check_cron_misc.inc
 pkg/snort/snort_conf_template.inc
 pkg/snort/snort_migrate_config.php
 pkg/snort/snort_post_install.php
+pkg/snort/snort_uninstall.php
 pkg/snort/snort_sync.xml
 pkg/snort/deprecated_rules
 www/snort/snort_alerts.php
