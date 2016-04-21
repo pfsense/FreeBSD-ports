@@ -911,7 +911,7 @@ $group->add(new Form_Select(
 	'homelistname',
 	'Home Net',
 	$pconfig['homelistname'],
-	suricata_get_config_lists('whitelist')
+	suricata_get_config_lists('passlist')
 ))->setHelp('Choose the Home Net you want this interface to use.');
 
 $group->add(new Form_Button(
@@ -932,7 +932,7 @@ $group->add(new Form_Select(
 	'externallistname',
 	'External Net',
 	$pconfig['externallistname'],
-	suricata_get_config_lists('whitelist')
+	suricata_get_config_lists('passlist')
 ))->setHelp('Choose the External Net you want this interface to use.');
 
 $group->add(new Form_Button(
@@ -1147,9 +1147,17 @@ events.push(function(){
 		disableInput('alertsystemlog_facility', disable);
 		disableInput('alertsystemlog_priority', disable);
 		disableInput('blockoffenders', disable);
+		disableInput('ips_mode', disable);
 		disableInput('blockoffenderskill', disable);
 		disableInput('blockoffendersip', disable);
 		disableInput('performance', disable);
+		disableInput('max_pending_packets', disable);
+		disableInput('detect_eng_profile', disable);
+		disableInput('inspect_recursion_limit', disable);
+		disableInput('mpm_algo', disable);
+		disableInput('sgh_mpm_context', disable);
+		disableInput('delayed_detect', disable);
+		disableInput('intf_promisc_mode', disable);
 		disableInput('fpm_split_any_any', disable);
 		disableInput('fpm_search_optimize', disable);
 		disableInput('fpm_no_stream_inserts', disable);
@@ -1160,8 +1168,8 @@ events.push(function(){
 		disableInput('btnHomeNet', disable);
 		disableInput('btnExternalNet', disable);
 		disableInput('btnSuppressList', disable);
-		disableInput('whitelistname', disable);
-		disableInput('btnWhitelist', disable);
+		disableInput('passlistname', disable);
+		disableInput('btnPasslist', disable);
 		disableInput('configpassthru', disable);
 		disableInput('enable_dns_log', disable);
 		disableInput('append_dns_log', disable);
