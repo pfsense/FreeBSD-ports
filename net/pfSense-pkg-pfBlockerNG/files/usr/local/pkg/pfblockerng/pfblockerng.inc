@@ -963,8 +963,8 @@ function pfblockerng_alexa() {
 				if (substr($aline[1], 0, 4) == 'www.') {
 					$aline[1] = substr($aline[1], 4);
 				}
-				fwrite($pfb_output, "local-data: \"www." . $aline[1] . " 60 IN A {$pfb['dnsbl_vip']}\"\n");
-				fwrite($pfb_output, "local-data: \"" . $aline[1] . " 60 IN A {$pfb['dnsbl_vip']}\"\n");
+				@fwrite($pfb_output, "local-data: \"www." . $aline[1] . " 60 IN A {$pfb['dnsbl_vip']}\"\n");
+				@fwrite($pfb_output, "local-data: \"" . $aline[1] . " 60 IN A {$pfb['dnsbl_vip']}\"\n");
 			}
 			else {
 				// Re-Increment $i count
@@ -1802,7 +1802,7 @@ function pfb_livetail($logfile, $mode) {
 
 	// Start at EOF
 	$lastpos_old = '';
-	$len = filesize("{$logfile}");
+	$len = @filesize("{$logfile}");
 
 	if ($mode == 'view') {
 		// Start at EOF ( - 15000)
@@ -1819,7 +1819,7 @@ function pfb_livetail($logfile, $mode) {
 	while (true) {
 		usleep(300000); //0.3s
 		clearstatcache(false, "{$logfile}");
-		$len = filesize("{$logfile}");
+		$len = @filesize("{$logfile}");
 		if ($len < $lastpos) {
 			//file deleted or reset
 			$lastpos = $len;
@@ -1828,12 +1828,12 @@ function pfb_livetail($logfile, $mode) {
 			if ($f === false) {
 				break;
 			}
-			fseek($f, $lastpos);
+			@fseek($f, $lastpos);
 
 			// 'Force Update/Cron/Reload'
 			if ($mode == 'force' || $mode == 'view') {
 				while (!feof($f)) {
-					$pfb_buffer = fread($f, 2048);
+					$pfb_buffer = @fread($f, 2048);
 					$pfb_output .= str_replace( array ("\r", "\")"), '', $pfb_buffer);
 					// Refresh on new lines only. This allows Scrolling.
 					if ($lastpos != $lastpos_old) {
@@ -1844,14 +1844,14 @@ function pfb_livetail($logfile, $mode) {
 					flush();
 
 				}
-				$lastpos = ftell($f);
+				$lastpos = @ftell($f);
 				@fclose($f);
 
 				// Capture remaining output
 				if ($mode != 'view' && strpos($pfb_output, 'UPDATE PROCESS ENDED') !== FALSE) {
 					$f = @fopen($pfb['log'], 'rb');
-					fseek($f, $lastpos);
-					$pfb_buffer = fread($f, 2048);
+					@fseek($f, $lastpos);
+					$pfb_buffer = @fread($f, 2048);
 					$pfb_output .= str_replace( "\r", '', $pfb_buffer);
 					pfbupdate_output($pfb_output);
 					clearstatcache(false, $pfb['log']);
@@ -1866,7 +1866,7 @@ function pfb_livetail($logfile, $mode) {
 			}
 			else {
 				// DNSBL Lighttpd 'dnsbl_error.log' conditional log parser
-				while (($pfb_buffer = fgets($f, 1024)) !== FALSE) {
+				while (($pfb_buffer = @fgets($f, 1024)) !== FALSE) {
 					if (strpos($pfb_buffer, 'HTTPhost') !== FALSE) {
 						$checkpos = 0;
 					}
@@ -1886,16 +1886,16 @@ function pfb_livetail($logfile, $mode) {
 							if (!empty($pfb_query)) {
 								// Increment DNSBL Alias counter
 								if (($handle = @fopen("{$pfb['dnsbl_info']}", 'r')) !== FALSE) {
-									flock($handle, LOCK_EX);
+									@flock($handle, LOCK_EX);
 									$pfb_output = @fopen("{$pfb['dnsbl_info']}.bk", 'w');
-									flock($pfb_output, LOCK_EX);
+									@flock($pfb_output, LOCK_EX);
 
 									// Find line with corresponding DNSBL Aliasname
 									while (($line = @fgetcsv($handle)) !== FALSE) {
 										if ($line[0] == $pfb_query) {
 											$line[3] += 1;
 										}
-										fputcsv($pfb_output, $line);
+										@fputcsv($pfb_output, $line);
 									}
 
 									@fclose($pfb_output);
@@ -1912,10 +1912,10 @@ function pfb_livetail($logfile, $mode) {
 
 				// Delete parsed logfile contents
 				clearstatcache(false, "{$logfile}");
-				$tlen = filesize("{$logfile}");
+				$tlen = @filesize("{$logfile}");
 				if ($tlen > $lastpos) {
 					$tlen = $tlen - $lastpos;
-					ftruncate($f, $tlen);
+					@ftruncate($f, $tlen);
 					@fclose($f);
 					$lastpos = $tlen;
 				}
@@ -3032,7 +3032,7 @@ function sync_package_pfblockerng($cron='') {
 						foreach ($lists_dnsbl_current as $clist) {
 							if (($handle = @fopen("{$pfbfolder}/{$clist}.txt", 'r')) !== FALSE) {
 								while (($line = @fgets($handle, 3072)) !== FALSE) {
-									fwrite($pfb_output, $line);
+									@fwrite($pfb_output, $line);
 								}
 							}
 							@fclose($handle);
@@ -3089,11 +3089,11 @@ function sync_package_pfblockerng($cron='') {
 
 		// Save alias statistics to file (Remove any feeds that are not referenced)
 		$handle = @fopen("{$pfb['dnsbl_info']}", 'w');
-		fwrite($handle, "# Keeping this file open in a file editor will interrupt DNSBL!\n");
+		@fwrite($handle, "# Keeping this file open in a file editor will interrupt DNSBL!\n");
 		if (!empty($dnsbl_info)) {
 			foreach ($dnsbl_info as $alias) {
 				if (in_array($alias[0], $alias_dnsbl_all)) {
-					fputcsv($handle, $alias);
+					@fputcsv($handle, $alias);
 				}
 			}
 		}
@@ -3129,7 +3129,7 @@ function sync_package_pfblockerng($cron='') {
 				foreach ($dnsbl_ip as $d_ip) {
 					if (($handle = @fopen("{$d_ip}", 'r')) !== FALSE) {
 						while (($line = @fgets($handle, 1024)) !== FALSE) {
-							fwrite($pfb_ips, $line);
+							@fwrite($pfb_ips, $line);
 						}
 					}
 					@fclose($handle);
@@ -3175,7 +3175,7 @@ function sync_package_pfblockerng($cron='') {
 			foreach ($lists_dnsbl_all as $current_list) {
 				if (($handle = @fopen("{$pfb['dnsdir']}/{$current_list}.txt", 'r')) !== FALSE) {
 					while (($line = @fgets($handle, 3072)) !== FALSE) {
-						fwrite($pfb_output, $line);
+						@fwrite($pfb_output, $line);
 					}
 				}
 				@fclose($handle);
@@ -3196,7 +3196,7 @@ function sync_package_pfblockerng($cron='') {
 			pfb_logger("\nClearing all DNSBL Feeds... ", 1);
 			$pfb['domain_clear'] = TRUE;
 			$pfb_output = @fopen("{$pfb['dnsbl_file']}.conf", 'w');
-			fwrite($pfb_output, '');
+			@fwrite($pfb_output, '');
 			@fclose($pfb_output);
 		}
 	}
