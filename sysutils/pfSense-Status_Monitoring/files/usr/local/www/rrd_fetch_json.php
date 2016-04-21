@@ -75,10 +75,17 @@ $left_pieces = explode("-", $left);
 $right_pieces = explode("-", $right);
 
 if ($timePeriod === "custom") {
-	$resolution = 300; //TODO calculate
+	//dates validation
+	if($end < $start) {
+		die ('{ "error" : "The start date must come before the end date." }');
+	} elseif ($end > time()) {
+		die ('{ "error" : "The end date can\'t be in the future." }');
+	}
+
+	$resolution = 60; //defaults to lowest resolution possible
 	$start = floor($start/$resolution) * $resolution;
 	$end = floor($end/$resolution) * $resolution;
-	$rrd_options = array( 'AVERAGE', '-r', $resolution, '-s', $start, '-e', $end );
+	$rrd_options = array( 'AVERAGE', '-r', $resolution, '-s', $start , '-e', $end );
 } else {
 	$rrd_options = array( 'AVERAGE', '-r', $resolution, '-s', $timePeriod );
 }
@@ -126,17 +133,18 @@ $unit_desc_lookup = array(
 //TODO make this a function for left and right
 if ($left != "null") {
 
-	//$rrd_info_array = rrd_info($rrd_location . $left . ".rrd");
+	$rrd_info_array = rrd_info($rrd_location . $left . ".rrd");
 	//$left_step = $rrd_info_array['step'];
 	//$left_last_updated = $rrd_info_array['last_update'];
 
 	$rrd_array = rrd_fetch($rrd_location . $left . ".rrd", $rrd_options);
 
 	if (!($rrd_array)) {
-		die ('{ "error" : "There was an error loading the Left Y Axis." }');
+		die ('{ "error" : "There was an error retrieving RRD data for the Left Y Axis." }');
 	}
 
 	$ds_list = array_keys ($rrd_array['data']);
+	$step = $rrd_array['step'];
 	$ignored_left = 0;
 
 	foreach ($ds_list as $ds_key_left => $ds) {
@@ -247,6 +255,7 @@ if ($left != "null") {
 			$ds_key_left_adjusted = $ds_key_left - $ignored_left;
 
 			$obj[$ds_key_left_adjusted]['key'] = $ds;
+			$obj[$ds_key_left_adjusted]['step'] = $step;
 			$obj[$ds_key_left_adjusted]['type'] = $graph_type;
 			$obj[$ds_key_left_adjusted]['format'] = $format;
 			$obj[$ds_key_left_adjusted]['yAxis'] = 1;
@@ -370,6 +379,7 @@ if ($right != "null") {
 	}
 
 	$ds_list = array_keys ($rrd_array['data']);
+	$step = $rrd_array['step'];
 	$ignored_right = 0;
 
 	foreach ($ds_list as $ds_key_right => $ds) {
@@ -476,6 +486,7 @@ if ($right != "null") {
 			$ds_key_right_adjusted = $last_left_key + $ds_key_right - $ignored_right;
 
 			$obj[$ds_key_right_adjusted]['key'] = $ds;
+			$obj[$ds_key_right_adjusted]['step'] = $step;
 			$obj[$ds_key_right_adjusted]['type'] = $graph_type;
 			$obj[$ds_key_right_adjusted]['format'] = $format;
 			$obj[$ds_key_right_adjusted]['yAxis'] = 2;
