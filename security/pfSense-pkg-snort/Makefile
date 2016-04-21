@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-snort
 PORTVERSION=	3.2.9.1
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -46,6 +46,8 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/snort/snort_migrate_config.php \
 		${STAGEDIR}${PREFIX}/pkg/snort
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/snort/snort_post_install.php \
+		${STAGEDIR}${PREFIX}/pkg/snort
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/snort/snort_uninstall.php \
 		${STAGEDIR}${PREFIX}/pkg/snort
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/snort/snort_sync.xml \
 		${STAGEDIR}${PREFIX}/pkg/snort
