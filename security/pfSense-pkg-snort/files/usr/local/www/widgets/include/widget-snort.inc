@@ -14,7 +14,7 @@ function widget_snort_uninstall() {
 	if (!empty($widgets)) {
 		$widgetlist = explode(",", $widgets);
 		foreach ($widgetlist as $key => $widget) {
-			if (strstr($widget, "snort_alerts-container"))
+			if (strstr($widget, "snort_alerts"))
 				unset($widgetlist[$key]);
 		}
 		$config['widgets']['sequence'] = implode(",", $widgetlist);
