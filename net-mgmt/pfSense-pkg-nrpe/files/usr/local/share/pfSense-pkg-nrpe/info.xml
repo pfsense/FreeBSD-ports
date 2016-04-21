@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>nrpe</name>
+		<descr><![CDATA[nrpe is used to execute Nagios plugins on remote hosts and report the results
+to the main Nagios server.]]></descr>
+		<website>http://www.nagios.org/</website>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>nrpe.xml</configurationfile>
+		<after_install_info>Please visit Services - Nrpe - for configurations</after_install_info>
+	</package>
+</pfsensepkgs>
