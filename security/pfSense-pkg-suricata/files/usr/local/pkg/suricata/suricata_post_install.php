@@ -248,7 +248,7 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 
 	// Restore the Dashboard Widget if it was previously enabled and saved
 	if (!empty($config['installedpackages']['suricata']['config'][0]['dashboard_widget']) && !empty($config['widgets']['sequence'])) {
-		if (strpos($config['widgets']['sequence'], "suricata_alerts-container") === FALSE)
+		if (strpos($config['widgets']['sequence'], "suricata_alerts") === FALSE)
 			$config['widgets']['sequence'] .= "," . $config['installedpackages']['suricata']['config'][0]['dashboard_widget'];
 	}
 	if (!empty($config['installedpackages']['suricata']['config'][0]['dashboard_widget_rows']) && !empty($config['widgets'])) {
