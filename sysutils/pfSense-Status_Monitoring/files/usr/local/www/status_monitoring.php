@@ -107,13 +107,13 @@ if ($_POST['ResetRRD']) {
 
 //old config that needs to be updated
 if(strpos($config['rrd']['category'], '&resolution') === false) {
-	$config['rrd']['category'] = "left=system-processor&right=&start=&end=&timePeriod=-1d&resolution=300&graphtype=line&invert=true";
+	$config['rrd']['category'] = "left=system-processor&right=&resolution=300&timePeriod=-1d&startDate=&endDate=&startTime=0&endTime=0&graphtype=line&invert=true";
 	write_config();
 }
 
 //save new defaults
 if ($_POST['defaults']) {
-	$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&start=&end=&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert'];
+	$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&resolution=".$_POST['resolution']."&timePeriod=".$_POST['time-period']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert'];
 	write_config();
 	$savemsg = "The changes have been applied successfully.";
 }
@@ -429,6 +429,7 @@ if ($savemsg) {
 						<option value="-1d" selected>1 Day</option>
 						<option value="-8h">8 Hours</option>
 						<option value="-1h">1 Hour</option>
+						<option value="custom">Custom</option>
 					</select>
 
 					<span class="help-block">Time Period</span>
@@ -448,7 +449,7 @@ if ($savemsg) {
 						<option value="line" selected>Line</option>
 					</select>
 
-					<span class="help-block">Graph Type (Disabled)</span>
+					<span class="help-block">Type (Disabled)</span>
 				</div>
 				<div class="col-sm-2">
 					<select class="form-control" id="invert" name="invert">
@@ -457,6 +458,31 @@ if ($savemsg) {
 					</select>
 
 					<span class="help-block">Inverse</span>
+				</div>
+			</div>
+			<div class="form-group" id="custom-time" style="display:none;">
+				<label class="col-sm-2 control-label">
+					Custom Period<br /><span class="badge" title="This feature is in BETA">BETA</span>
+				</label>
+				<div class="col-sm-2">
+					<input type="text" class="form-control" id="start-date" name="start-date" disabled>
+
+					<span class="help-block">Start Date <small>(MM/DD/YYYY)</small></span>
+				</div>
+				<div class="col-sm-2">
+					<input type="number" class="form-control" value="0" id="start-time" name="start-time" min="0" max="23" step="1" disabled>
+
+					<span class="help-block">Start Hour (0-23)</span>
+				</div>
+				<div class="col-sm-2">
+					<input type="text" class="form-control" id="end-date" name="end-date" disabled>
+
+					<span class="help-block">End Date <small>(MM/DD/YYYY)</small></span>
+				</div>
+				<div class="col-sm-2">
+					<input type="number" class="form-control" value="0" id="end-time" name="end-time" min="0" max="23" step="1" disabled>
+
+					<span class="help-block">End Hour (0-23)</span>
 				</div>
 			</div>
 			<div class="form-group">
@@ -594,7 +620,16 @@ events.push(function() {
 		"-2d": "%m/%d %H:%M",
 		"-1d": "%H:%M:%S",
 		"-8h": "%H:%M:%S",
-		"-1h": "%H:%M:%S"
+		"-1h": "%H:%M:%S",
+		"custom": "%Y-%m-%d"
+	};
+
+	//lookup human readable time based on number of seconds
+	var stepLookup = {
+		"60": "1 Minute",
+		"300": "5 Minutes",
+		"3600": "1 Hour",
+		"86400": "1 Day"
 	};
 
 	/***
@@ -669,6 +704,12 @@ events.push(function() {
 	});
 
 	$('#time-period').on('change', function() {
+		$( "#resolution" ).prop( "disabled", false );
+		$( "#custom-time" ).hide();
+		$( "#start-date" ).prop( "disabled", true );
+		$( "#end-date" ).prop( "disabled", true );
+		$( "#start-time" ).prop( "disabled", true );
+		$( "#end-time" ).prop( "disabled", true );
 
 		switch(this.value) {
 			case "-3m":
@@ -716,6 +757,14 @@ events.push(function() {
 				$("#resolution").append('<option value="300">5 Minutes</option>');
 				$("#resolution").append('<option value="60" selected>1 Minute</option>');
 				break;
+			case "custom":
+				$( "#resolution" ).empty().append('<option value="lowest">Lowest Possible</option>');
+				$( "#start-date" ).prop( "disabled", false );
+				$( "#end-date" ).prop( "disabled", false );
+				$( "#start-time" ).prop( "disabled", false );
+				$( "#end-time" ).prop( "disabled", false );
+				$( "#custom-time" ).show();
+				break;
 			default:
 				$("#resolution").empty().prop( "disabled", false );
 				$("#resolution").append('<option value="86400">1 Day</option>');
@@ -727,26 +776,70 @@ events.push(function() {
 			
 	});
 
+	function convertToEpoch(datestring) {
+		var parts = datestring.match(/(\d{2})\/(\d{2})\/(\d{4})\:(\d{1,2})/);
+
+		if(!parts || (parts[1].length > 2 || parts[2].length > 2 || parts[3].length > 4 || parts[4].length > 2)) {
+			return false;
+		}
+
+		return Date.UTC(parts[3], parts[1]-1, parts[2], parts[4]) / 1000;
+	}
+
 	/***
 	**
 	** Grab graphing options on submit
 	**
 	***/
 
+	//TODO work in more validation
 	function getOptions() {
+		var error = "There was an error getting the options.";
+
 		var graphLeft = $( "#graph-left" ).val();
 		var graphRight = $( "#graph-right" ).val();
-		var startDate = ""; //$( "#start-date" ).val(); //TODO make human readable and convert to timestamp
-		var endDate = ""; //$( "#end-date" ).val(); //TODO make human readable and convert to timestamp
+		var startDate = $( "#start-date" ).val();
+		var endDate = $( "#end-date" ).val();
+		var startTime = $( "#start-time" ).val();
+		var endTime = $( "#end-time" ).val();
 		var timePeriod = $( "#time-period" ).val();
 		var resolution = $( "#resolution" ).val();
 		var graphtype = $( "#graph-type" ).val();
 		var invert = $( "#invert" ).val();
+		var start = '';
+		var end = '';
 
-		var graphOptions = 'left=' + graphLeft + '&right=' + graphRight + '&start=' + startDate + '&end=' + endDate + '&timePeriod=' + timePeriod + '&resolution=' + resolution + '&graphtype=' + graphtype + '&invert=' + invert ;
+		//convert dates to epoch and validate
+		if(timePeriod === "custom" && startDate && endDate) { //TODO check if both are valid dates
+			start = convertToEpoch(startDate + ":" + startTime);
+			end = convertToEpoch(endDate + ":" + endTime);
+
+			if(!start || !end) {
+				error = "Invalid Date/Time in Custom Period."
+				$("#chart").hide();
+				$("#chart-error").show().html('<strong>Error</strong>: ' + error);
+				console.warn(error);
+				return false;
+			}
+		}
+
+		var graphOptions = 'left=' + graphLeft + '&right=' + graphRight + '&start=' + start + '&end=' + end + '&resolution=' + resolution + '&timePeriod=' + timePeriod + '&graphtype=' + graphtype + '&invert=' + invert ;
 
 		return graphOptions;
 	}
+
+	$( "#start-date" ).datepicker({
+      defaultDate: "-1w",
+      changeMonth: true,
+      changeYear: true,
+      maxDate: new Date
+    });
+
+    $( "#end-date" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      maxDate: new Date
+    });
 
 	function applySettings(defaults) {
 
@@ -828,16 +921,24 @@ events.push(function() {
 
 			}
 
-			if(currentOption[0] === "start") {
-				//nothing for now
-			}
-
-			if(currentOption[0] === "end") {
-				//nothing for now
-			}
-
 			if(currentOption[0] === "timePeriod") {
 				$( "#time-period" ).val(currentOption[1]).change();
+			}
+
+			if(currentOption[0] === "startDate") {
+				$( "#start-date" ).val(currentOption[1]);
+			}
+
+			if(currentOption[0] === "endDate") {
+				$( "#end-date" ).val(currentOption[1]);
+			}
+
+			if(currentOption[0] === "startTime") {
+				$( "#start-time" ).val(currentOption[1]);
+			}
+
+			if(currentOption[0] === "endTime") {
+				$( "#end-time" ).val(currentOption[1]);
 			}
 
 			if(currentOption[0] === "resolution") {
@@ -861,6 +962,7 @@ events.push(function() {
 	$( ".update-graph" ).click(function() {
 		$("#chart").hide();
 		$("#loading-msg").show();
+		$("#chart-error").hide();
 		draw_graph(getOptions());
 	});
 
@@ -942,6 +1044,11 @@ events.push(function() {
 	***/
 
 	function draw_graph(options) {
+
+		if(!options) {
+			$("#loading-msg").hide();
+			return false;
+		}
 
 		d3.json("rrd_fetch_json.php")
 			.header("Content-Type", "application/x-www-form-urlencoded")
@@ -1074,7 +1181,7 @@ events.push(function() {
 					.attr("x", 530)
 					.attr("y", 415)
 					.attr("id", "resolution")
-					.text("Resolution: " + Resolution);
+					.text("Resolution: " + stepLookup[data[0].step]);
 
 				//add current date
 				var currentDate = d3.time.format('%a %b %d %H:%M:%S %Y GMT%Z')(new Date());
@@ -1091,7 +1198,7 @@ events.push(function() {
 					var totals = false;
 					var inboundTotal = [];
 					var content = '<h3>' + d3.time.format('%Y-%m-%d %H:%M:%S')(new Date(data.value)) + '</h3><table><tbody>';
-					
+
 					for ( var v = 0; v < data.series.length; v++ ){
 
 						if (data.series[v].key.includes('right axis')) {
