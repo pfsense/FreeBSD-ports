@@ -106,11 +106,10 @@ unlink_if_exists("{$suricatadir}gen-msg.map");
 unlink_if_exists("{$suricatadir}unicode.map");
 unlink_if_exists("{$suricatadir}classification.config");
 unlink_if_exists("{$suricatadir}reference.config");
+unlink_if_exists("{$suricatadir}rules/*.txt");
 unlink_if_exists("{$suricatadir}rules/" . VRT_FILE_PREFIX . "*.rules");
 unlink_if_exists("{$suricatadir}rules/" . ET_OPEN_FILE_PREFIX . "*.rules");
-unlink_if_exists("{$suricatadir}rules/" . ET_OPEN_FILE_PREFIX . "*.txt");
 unlink_if_exists("{$suricatadir}rules/" . ET_PRO_FILE_PREFIX . "*.rules");
-unlink_if_exists("{$suricatadir}rules/" . ET_PRO_FILE_PREFIX . "*.txt");
 unlink_if_exists("{$suricatadir}rules/" . GPL_FILE_PREFIX . "*.rules");
 if (is_array($config['installedpackages']['suricata']['rule'])) {
 	foreach ($config['installedpackages']['suricata']['rule'] as $suricatacfg) {
