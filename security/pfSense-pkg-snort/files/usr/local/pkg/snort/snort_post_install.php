@@ -117,7 +117,7 @@ if ($pkgid >= 0) {
 }
 
 /* Define a default Dashboard Widget Container for Snort */
-$snort_widget_container = "snort_alerts-container:col2:close";
+$snort_widget_container = "snort_alerts:col2:open";
 
 /*********************************************************/
 /* START OF BUG FIX CODE                                 */
@@ -238,7 +238,7 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 
 	/* Restore the last Snort Dashboard Widget setting if none is set */
 	if (!empty($config['installedpackages']['snortglobal']['dashboard_widget']) && 
-	    stristr($config['widgets']['sequence'], "snort_alerts-container") === FALSE)
+	    stristr($config['widgets']['sequence'], "snort_alerts") === FALSE)
 		$config['widgets']['sequence'] .= "," . $config['installedpackages']['snortglobal']['dashboard_widget'];
 
 	$rebuild_rules = false;
@@ -251,7 +251,7 @@ conf_mount_ro();
 
 /* If an existing Snort Dashboard Widget container is not found, */
 /* then insert our default Widget Dashboard container.           */
-if (stristr($config['widgets']['sequence'], "snort_alerts-container") === FALSE)
+if (stristr($config['widgets']['sequence'], "snort_alerts") === FALSE)
 	$config['widgets']['sequence'] .= ",{$snort_widget_container}";
 
 /* Update Snort package version in configuration */

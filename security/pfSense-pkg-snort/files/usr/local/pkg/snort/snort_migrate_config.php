@@ -534,6 +534,29 @@ foreach ($rule as &$r) {
 		$updated_cfg = true;
 	}
 
+	// Check for and fix an incorrect value for <blockoffendersip>.
+	// The value should be a string and not the index of the string.
+	// This corrects for the impact of a Bootstrap conversion bug.
+	if ($pconfig['blockoffendersip'] == '0' || $pconfig['blockoffendersip'] == '1' || $pconfig['blockoffendersip'] == '2') {
+		switch ($pconfig['blockoffendersip']) {
+			case '0':
+				$pconfig['blockoffendersip'] = 'src';
+				break;
+
+			case '1':
+				$pconfig['blockoffendersip'] = 'dst';
+				break;
+
+			case '2':
+				$pconfig['blockoffendersip'] = 'both';
+				break;
+
+			default:
+				break;
+		}
+		$updated_cfg = true;
+	}
+
 	// Save the new configuration data into the $config array pointer
 	$r = $pconfig;
 }
