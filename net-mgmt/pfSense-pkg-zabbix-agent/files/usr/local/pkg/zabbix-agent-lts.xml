@@ -178,6 +178,107 @@
 			</description>
 		</field>
 		<field>
+			<name>TLS-RELATED Parameters</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>TLS Connect</fielddescr>
+			<fieldname>tlsconnect</fieldname>
+			<description>
+				<![CDATA[
+					How the agent should connect to server or proxy. Used for active checks.<br/>
+					Only one value can be specified:<br/>
+					<strong>unencrypted</strong> - connect without encryption<br/>
+					<strong>psk</strong>         - connect using TLS and a pre-shared key<br/>
+					<strong>cert</strong>        - connect using TLS and a certificate<br/>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>unencrypted</default_value>
+			<options>
+				<option><name>unencrypted</name><value>unencrypted</value></option>
+				<option><name>psk</name><value>psk</value></option>
+				<option><name>cert</name><value>cert</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>TLS Accept</fielddescr>
+			<fieldname>tlsaccept</fieldname>
+			<description>
+				<![CDATA[
+					What incoming connections to accept.<br/>
+					Multiple values can be specified:<br/>
+					<strong>unencrypted</strong> - connect without encryption<br/>
+					<strong>psk</strong>         - connect using TLS and a pre-shared key<br/>
+					<strong>cert</strong>        - connect using TLS and a certificate<br/>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>unencrypted</default_value>
+			<options>
+				<option><name>unencrypted</name><value>unencrypted</value></option>
+				<option><name>psk</name><value>psk</value></option>
+				<option><name>cert</name><value>cert</value></option>
+			</options>
+			<multiple/>
+			<size>3</size>
+		</field>
+		<field>
+			<fielddescr>TLS CA</fielddescr>
+			<fieldname>tlscafile</fieldname>
+			<description>Top-level CA certificate for peer certificate verification.</description>
+			<type>select_source</type>
+			<source><![CDATA[$config['ca']]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+			<show_disable_value>none</show_disable_value>
+			<default_value>none</default_value>
+		</field>
+		<field>
+			<fielddescr>TLS CA System</fielddescr>
+			<fieldname>tlscaso</fieldname>
+			<description>Use the CA certificate list from the operating system. This option overrides prior option.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>TLS CRL</fielddescr>
+			<fieldname>tlscrlfile</fieldname>
+			<description>List of revoked certificates.</description>
+			<type>select_source</type>
+			<source><![CDATA[$config['crl']]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+			<show_disable_value>none</show_disable_value>
+			<default_value>none</default_value>
+		</field>
+		<field>
+			<fielddescr>TLS Cert</fielddescr>
+			<fieldname>tlscertfile</fieldname>
+			<description>Agent certificate.</description>
+			<type>select_source</type>
+			<source><![CDATA[$config['cert']]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+			<show_disable_value>none</show_disable_value>
+			<default_value>none</default_value>
+		</field>
+		<field>
+			<fielddescr>TLS PSK Identity</fielddescr>
+			<fieldname>tlspskidentity</fieldname>
+			<description>Unique, case sensitive string used to identify the pre-shared key.</description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>TLS PSK</fielddescr>
+			<fieldname>tlspskfile</fieldname>
+			<encoding>base64</encoding>
+			<type>textarea</type>
+			<rows>5</rows>
+			<cols>50</cols>
+			<description></description>
+		</field>
+		<field>
 			<fielddescr>User Parameters</fielddescr>
 			<fieldname>userparams</fieldname>
 			<encoding>base64</encoding>
