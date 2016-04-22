@@ -176,6 +176,17 @@
 			<fielddescr>TLS CA</fielddescr>
 			<fieldname>tlscafile</fieldname>
 			<description>Top-level CA certificate for peer certificate verification.</description>
+			<type>select_source</type>
+			<source><![CDATA[$config['ca']]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+			<show_disable_value>none</show_disable_value>
+			<default_value>none</default_value>
+		</field>
+		<field>
+			<fielddescr>TLS CA System</fielddescr>
+			<fieldname>tlscaso</fieldname>
+			<description>Use the CA certificate list from the operating system. This option overrides prior option.</description>
 			<type>checkbox</type>
 		</field>
 		<field>
