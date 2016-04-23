@@ -4,6 +4,7 @@
 	part of pfSense (https://www.pfsense.org/)
 	Copyright (C) 2007 Ryan Wagoner <rswagoner@gmail.com>.
 	Copyright (C) 2015 ESF, LLC
+	Copyright (C) 2016 PiBa-NL
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -29,13 +30,14 @@
 */
 
 require("guiconfig.inc");
+require("nut.inc");
 global $nut_config;
 $nut_config = $config['installedpackages']['nut']['config'][0];
 
 /* functions */
 
 function secs2hms($secs) {
-	if ($secs < 0 ) {
+	if (empty($secs) || $secs < 0 ) {
 		return false;
 	}
 	$m = (int)($secs / 60); $s = $secs % 60;
@@ -44,7 +46,7 @@ function secs2hms($secs) {
 }
 
 function tblopen () {
-	print('<table width="100%" class="tabcont" cellspacing="0" cellpadding="6">'."\n");
+	print('<table class="table">'."\n");
 }
 
 function tblclose () {
@@ -71,7 +73,7 @@ EOD
 	."\n");
 }
 
-function tblrowbar ($name, $value, $symbol, $red, $yellow, $green) {
+function tblrowbar ($id, $name, $value, $symbol, $red, $yellow, $green) {
 	if (!$value) {
 		return;
 	}
@@ -106,20 +108,20 @@ function tblrowbar ($name, $value, $symbol, $red, $yellow, $green) {
 		$color = 'white';
 		$bgcolor = 'green';
 	}
-
-	print(<<<EOD
+?>
 <tr>
-	<td class="vncellreq" width="100px">{$name}</td>
+	<td class="vncellreq" width="100px"><?=$name?></td>
 	<td class="vtable">
-	<div style="width: 125px; height: 12px; border-top: thin solid gray; border-bottom: thin solid gray;">
-		<div style="width: {$value}{$symbol}; height: 12px; background-color: {$bgcolor};">
-			<div style="text-align: center; color: {$color}">{$value}{$symbol}</div>
+		<div style="background-color: <?=$color?>;padding:1px;" class="progress">
+			<div id="<?=$id?>PB" class="progress-bar progress-bar-striped" 
+				 role="progressbar" aria-valuenow="0" aria-valuemin="0" 
+				 aria-valuemax="100" style="width: 0%;background-color: <?=$bgcolor?>;">
+			</div>
 		</div>
-	</div>
+		<span id="<?=$id?>meter"><?=gettext('(Updating in 10 seconds)')?></span>
 	</td>
 <tr>
-EOD
-	."\n");
+<?php
 }
 
 /* defaults to this page but if no settings are present, redirect to setup page */
@@ -143,105 +145,48 @@ if ($savemsg) {
 	display_top_tabs($tab_array);
 ?>
 </table>
-<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	
+<table width="100%">
+	<tr>
+		<td width="50%" >
+<div class="panel panel-default" >
+	<div class="panel-heading">
+		<h2 class="panel-title">
+			Status
+		</h2>
+	</div>
+	<div class="panel-body">
+	
+<table class="table">
 <tr>
-	<td>
+	<td  style="min-width:300px">
 <?php
 	tblopen();
 
-	$running = ((int)exec('/bin/pgrep upsmon | /usr/bin/wc -l') > 0) ? true : false;
+	$ups = nut_get_data();
+	tblrow('Monitoring:', $ups['monitoring']);
 
-	if ($nut_config['monitor'] == 'local') {
-		tblrow('Monitoring:','Local UPS'); 
-		$cmd = "/usr/local/bin/upsc {$nut_config['name']}@localhost";
-	} elseif ($nut_config['monitor'] == 'remote') {
-		tblrow('Monitoring:','Remote UPS');
-		$cmd = "/usr/local/bin/upsc {$nut_config['remotename']}@{$nut_config['remoteaddr']}";
-	} elseif ($nut_config['monitor'] == 'snmp') {
-		tblrow('Monitoring:','SNMP UPS');
-		$cmd = "/usr/local/bin/upsc {$nut_config['snmpname']}@localhost";
+	if (isset($ups['error'])) {
+		tblrow('ERROR:', $ups['error']);
 	}
+	if ($ups) {
+		tblrow('Model:', $ups['status']['ups.model']);
 
-	if ($running) {
-		$handle = popen($cmd, 'r');
-	} elseif ($nut_config['monitor'] == 'snmp') {
-		tblrow('ERROR:','NUT is enabled, however the service is not running! The SNMP UPS may be unreachable.');
-	} else {
-		tblrow('ERROR:','NUT is enabled, however the service is not running!');
-	}
-	
-	if ($handle) {
-		$read = fread($handle, 4096);
-		pclose($handle);
-
-		$lines = explode("\n", $read);
-		$ups = array();
-		foreach($lines as $line) {
-			$line = explode(':', $line);
-			$ups[$line[0]] = trim($line[1]);
-		}
-
-		if (count($lines) == 1) {
-			tblrow('ERROR:', 'Data stale!');
-		}
-
-		tblrow('Model:', $ups['ups.model']);
-
-		$status = explode(' ', $ups['ups.status']);
-		foreach($status as $condition) {
-			if ($disp_status) {
-				$disp_status .= ', ';
-			}
-			switch ($condition) {
-				case 'WAIT':
-					$disp_status .= 'Waiting';
-					break;
-				case 'OFF':
-					$disp_status .= 'Off Line';
-					break;
-				case 'OL':
-					$disp_status .= 'On Line';
-					break;
-				case 'OB':
-					$disp_status .= 'On Battery';
-					break;
-				case 'TRIM':
-					$disp_status .= 'SmartTrim';
-					break;
-				case 'BOOST':
-					$disp_status .= 'SmartBoost';
-					break;
-				case 'OVER':
-					$disp_status .= 'Overload';
-					break;
-				case 'LB':
-					$disp_status .= 'Battery Low';
-					break;
-				case 'RB':
-					$disp_status .= 'Replace Battery';
-					break;
-				case 'CAL':
-					$disp_status .= 'Calibration';
-					break;
-				default:
-					$disp_status .= $condition;
-					break;
-			}
-		}
+		$disp_status = nut_status_to_text($ups['status']['ups.status']);
 		tblrow('Status:', $disp_status);
 
-		tblrowbar('Load:', $ups['ups.load'], '%', '100-80', '79-60', '59-0');
-		tblrowbar('Battery Charge:', $ups['battery.charge'], '%', '0-29' ,'30-79', '80-100');
+		tblrowbar('ups_load','Load:', $ups['status']['ups.load'], '%', '100-80', '79-60', '59-0');
+		tblrowbar('ups_charge','Battery Charge:', $ups['status']['battery.charge'], '%', '0-29' ,'30-79', '80-100');
 
 		tblclose();
 		tblopen();
 
-		tblrow('Runtime Remaining:', secs2hms($ups['battery.runtime']), '');
-		tblrow('Battery Voltage:', $ups['battery.voltage'], 'V');
-		tblrow('Input Voltage:', $ups['input.voltage'], 'V');
-		tblrow('Input Frequency:', $ups['input.frequency'], 'Hz');
-		tblrow('Output Voltage:', $ups['output.voltage'], 'V');
-		tblrow('Temperature:', $ups['ups.temperature'], '&deg;');
+		tblrow('Runtime Remaining:', secs2hms($ups['status']['battery.runtime']), '');
+		tblrow('Battery Voltage:', $ups['status']['battery.voltage'], 'V');
+		tblrow('Input Voltage:', $ups['status']['input.voltage'], 'V');
+		tblrow('Input Frequency:', $ups['status']['input.frequency'], 'Hz');
+		tblrow('Output Voltage:', $ups['status']['output.voltage'], 'V');
+		tblrow('Temperature:', $ups['status']['ups.temperature'], '&deg;');
 	}
 
 	tblclose();
@@ -250,5 +195,33 @@ if ($savemsg) {
 </tr>
 </table>
 </div>
+</div>
+</div>
+</td>
+<td>
+</td>
+</table>
 
+<script>
+	
+events.push(function() {
+	function setProgress(barName, percent) {
+		$('#' + barName + 'PB').css({width: percent + '%'}).attr('aria-valuenow', percent);
+		if ($('#' + barName + 'meter')) {
+			$('#' + barName + 'meter').html(percent + '%');
+		}
+	}	
+	<?php 
+	$upssatus = $ups['status'];
+	if ($upssatus['ups.load']) {
+		echo "\nsetProgress('ups_load', {$upssatus['ups.load']});";
+	}
+	if ($upssatus['battery.charge']) {
+		echo "\nsetProgress('ups_charge', {$upssatus['battery.charge']});";
+	}
+	?>
+});
+
+</script>
+	
 <?php include("foot.inc");

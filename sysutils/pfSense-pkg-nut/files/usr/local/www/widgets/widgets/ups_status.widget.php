@@ -29,6 +29,7 @@
 */
 require_once("guiconfig.inc"); // NOTE: maybe not needed (no GUI settings)? Remove if so.
 require_once("/usr/local/www/widgets/include/ups_status.inc");
+require_once('nut.inc');
 
 //called by showUPSData() (jQuery Ajax call) in ups_status.js
 if (isset($_GET["getUPSData"])) {
@@ -38,100 +39,16 @@ if (isset($_GET["getUPSData"])) {
 }
 
 function getUPSData() {
-
-	global $config;
+	$nut = nut_get_data();
 	$data = "";
-	$cmd = "";
-	$nut_config = $config['installedpackages']['nut']['config'][0];
-
-	if ($nut_config['monitor'] == "local") {
-		// "Monitoring" field - upsdata_array[0]
-		$data = gettext("Local UPS");
-		$cmd = "upsc {$nut_config['name']}@localhost";
-	} elseif ($nut_config['monitor'] == "remote") {
-		// "Monitoring" field - upsdata_array[0]
-		$data = gettext("Remote UPS");
-		$cmd = "upsc {$nut_config['remotename']}@{$nut_config['remoteaddr']}";
-	} elseif ($nut_config['monitor'] == "snmp") {
-		// "Monitoring" field - upsdata_array[0]
-		$data = gettext("SNMP UPS");
-		$cmd = "upsc {$nut_config['snmpname']}@localhost";
-	}
-
-	if (is_process_running('upsmon')) {
-		$handle = popen($cmd, 'r');
-		if ($handle) {
-			$read = fread($handle, 4096);
-			pclose($handle);
-			$lines = explode("\n", $read);
-			if (count($lines) == 1) {
-				$condition = gettext("Data stale!");
-			} else {
-				$ups = array();
-				foreach ($lines as $line) {
-					$line = explode(':', $line);
-					$ups[$line[0]] = trim($line[1]);
-				}
-			}
-		}
-	} else {
-		$condition = gettext("NUT enabled, but service not running!");
-		if ($nut_config['monitor'] == "snmp") {
-			$condition .= gettext("\nSNMP UPS may be unreachable.");
-		}
-	}
-	if (isset($condition)) {
-		// Return error description
-		return $condition;
-	}
+	$ups = $nut['status'];
 	// "Model" field - upsdata_array[1]
 	$data .= ":" . (($ups['ups.model'] != "") ? $ups['ups.model'] : gettext("n/a"));
 	// "Status" field - upsdata_array[2]
-	$status = explode(" ", $ups['ups.status']);
-	foreach($status as $condition) {
-		if($disp_status) $disp_status .= ", ";
-		switch ($condition) {
-			case "WAIT":
-				$disp_status .= gettext("Waiting");
-				break;
-			case "OFF":
-				$disp_status .= gettext("Off Line");
-				break;
-			case "OL":
-				$disp_status .= gettext("On Line");
-				break;
-			case "OB":
-				$disp_status .= gettext("On Battery");
-				break;
-			case "TRIM":
-				$disp_status .= gettext("SmartTrim");
-				break;
-			case "BOOST":
-				$disp_status .= gettext("SmartBoost");
-				break;
-			case "OVER":
-				$disp_status .= gettext("Overload");
-				break;
-			case "LB":
-				$disp_status .= gettext("Battery Low");
-				break;
-			case "RB":
-				$disp_status .= gettext("Replace Battery");
-				break;
-			case "CAL":
-				$disp_status .= gettext("Calibration");
-				break;
-			case "CHRG":
-				$disp_status .= gettext("Charging");
-				break;
-			default:
-				$disp_status .= $condition;
-				break;
-		}
-	}
+	$disp_status = nut_status_to_text($ups['ups.status']);
 	$data .= ":" . $disp_status;
 	// "Battery Charge" bars and field - upsdata_array[3]
-	$data .= ":" . $ups['battery.charge'] . "%";
+	$data .= ":" . $ups['battery.charge'];
 	// "Time Remaning" field - upsdata_array[4]
 	$secs = $ups['battery.runtime'];
 	if ($secs < 0 || $secs == "") {
@@ -152,11 +69,13 @@ function getUPSData() {
 		$data .= ":" . "";
 	}
 	// "Load" bars and field - upsdata_array[6]
-	$data .= ":" . $ups['ups.load'] . "%";
+	$data .= ":" . $ups['ups.load'];
 	// "Input Voltage" field - upsdata_array[7]
 	$data .= ":" . $ups['input.voltage'] . "&nbsp;V";
 	// "Output Voltage" field - upsdata_array[8]
 	$data .= ":" . $ups['output.voltage'] . "&nbsp;V";
+	$data .= ":" . $nut['status'];
+	$data .= ":" . $nut['error'];
 
 	return $data;
 
@@ -167,49 +86,59 @@ function getUPSData() {
 //<![CDATA[
 	//start showing ups data
 	//NOTE: the refresh interval will be reset to a proper value in showUPSData() (ups_status.js).
-	jQuery(document).ready(function() {
+	events.push(function() {
 		showUPSData();
 	});
 //]]>
 </script>
 
 <div id="UPSWidgetContainer">
-	<table id="ups_widget" bgcolor="#990000" width="100%" border="0" cellspacing="0" cellpadding="0" summary="UPS status">
+	<table width="100%" id="ups_widget" summary="UPS status">
 		<tr>
-			<td class="widgetsubheader" align="center"><strong><?php echo gettext("Monitoring"); ?></strong></td>
-			<td class="widgetsubheader" align="center"><strong><?php echo gettext("Model"); ?></strong></td>
-			<td class="widgetsubheader" align="center"><strong><?php echo gettext("Status"); ?></strong></td>
+			<th><?php echo gettext("Monitoring"); ?></th>
+			<th><?php echo gettext("Model"); ?></th>
+			<th><?php echo gettext("Status"); ?></th>
 		</tr>
 		<tr>
-			<td class="listlr" align="center" id="ups_monitoring"></td>
-			<td class="listr" align="center" id="ups_model"></td>
-			<td class="listr" align="center" id="ups__status"></td>
+			<td class="listlr" id="ups_monitoring"></td>
+			<td class="listr" id="ups_model"></td>
+			<td class="listr" id="ups_status"></td>
 		</tr>
 		<tr>
-			<td class="widgetsubheader" align="center"><?php echo gettext("Battery Charge"); ?></td>
-			<td class="widgetsubheader" align="center"><?php echo gettext("Time Remain"); ?></td>
-			<td class="widgetsubheader" align="center" id="ups_celltitle_VT"></td>
+			<th><?php echo gettext("Battery Charge"); ?></th>
+			<th><?php echo gettext("Time Remain"); ?></th>
+			<th id="ups_celltitle_VT"></th>
 		</tr>
 		<tr>
-			<td class="listlr" align="center" id="ups_charge">
-				<div class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar"><div id="ups_batmeter_graph" class="ui-progressbar-value ui-widget-header ui-corner-left"></div></div>
-				<span id="ups_batmeter"></span>
+			<td class="listlr" id="ups_charge">
+				<div style="background-color: <?=$color?>;padding:1px;" class="progress">
+					<div id="ups_chargePB" class="progress-bar progress-bar-striped" 
+						 role="progressbar" aria-valuenow="0" aria-valuemin="0" 
+						 aria-valuemax="100" style="width: 0%;">
+					</div>
+				</div>
+				<span id="ups_chargemeter"><?=gettext('(Updating in 10 seconds)')?></span>
 			</td>
-			<td class="listr" align="center" id="ups_runtime"></td>
-			<td class="listr" align="center" id="ups_bvoltage"></td>
+			<td class="listr" id="ups_runtime"></td>
+			<td class="listr" id="ups_bvoltage"></td>
 		</tr>
 		<tr>
-			<td class="widgetsubheader" align="center"><?php echo gettext("Load"); ?></td>
-			<td class="widgetsubheader" align="center"><?php echo gettext("Input Voltage"); ?></td>
-			<td class="widgetsubheader" align="center"><?php echo gettext("Output Voltage"); ?></td>
+			<th><?php echo gettext("Load"); ?></th>
+			<th><?php echo gettext("Input Voltage"); ?></th>
+			<th><?php echo gettext("Output Voltage"); ?></th>
 		</tr>
 		<tr>
-			<td class="listlr" align="center" id="ups_load">
-				<div class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar"><div id="ups_loadmeter_graph" class="ui-progressbar-value ui-widget-header ui-corner-left"></div></div>
-				<span id="ups_loadmeter"></span>
+			<td class="listlr" id="ups_load">
+				<div style="background-color: <?=$color?>;padding:1px;" class="progress">
+					<div id="ups_loadPB" class="progress-bar progress-bar-striped" 
+						 role="progressbar" aria-valuenow="0" aria-valuemin="0" 
+						 aria-valuemax="100" style="width: 0%;">
+					</div>
+				</div>
+				<span id="ups_loadmeter"><?=gettext('(Updating in 10 seconds)')?></span>
 			</td>
-			<td class="listr" align="center" id="ups_inputv"></td>
-			<td class="listr" align="center" id="ups_outputv"></td>
+			<td class="listr" id="ups_inputv"></td>
+			<td class="listr" id="ups_outputv"></td>
 		</tr>
 	</table>
 	<span id="ups_error_description"></span>

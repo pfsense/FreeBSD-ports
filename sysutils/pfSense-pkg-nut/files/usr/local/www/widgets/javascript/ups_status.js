@@ -49,16 +49,23 @@ function showUPSData() {
 	window.setTimeout(showUPSData, 11000);
 }
 
+function UPSWidgetSetProgress(barName, percent) {
+	$('#' + barName + 'PB').css({width: percent + '%'}).attr('aria-valuenow', percent);
+	if ($('#' + barName + 'meter')) {
+		$('#' + barName + 'meter').html(percent + '%');
+	}
+}	
+
 function updateUPSWidgetContent(upsData) {
 
 	upsdata_array = upsData.split(":");
 
-	if(upsdata_array.length > 1) {
+	if(!upsdata_array[10]) {
 		jQuery("#ups_monitoring").html(upsdata_array[0]);
 		jQuery("#ups_model").html(upsdata_array[1]);
-		jQuery("#ups__status").html(upsdata_array[2]);
-		jQuery("#ups_batmeter_graph").css('width', upsdata_array[3]);
-		jQuery("#ups_batmeter").html(upsdata_array[3]);
+		jQuery("#ups_status").html(upsdata_array[2]);
+		
+		UPSWidgetSetProgress("ups_charge", upsdata_array[3]);
 		jQuery("#ups_runtime").html(upsdata_array[4]);
 		// Change title to "Battery Voltage" or "Battery Temp"
 		if(upsdata_array[5].indexOf("V")) {
@@ -67,8 +74,7 @@ function updateUPSWidgetContent(upsData) {
 			jQuery("#ups_celltitle_VT").html("Battery Temp");
 		}
 		jQuery("#ups_bvoltage").html(upsdata_array[5]);
-		jQuery("#ups_loadmeter_graph").css('width', upsdata_array[6]);
-		jQuery("#ups_loadmeter").html(upsdata_array[6]);
+		UPSWidgetSetProgress("ups_load", upsdata_array[6]);
 		jQuery("#ups_inputv").html(upsdata_array[7]);
 		jQuery("#ups_outputv").html(upsdata_array[8]);
 		jQuery("#ups_widget").css('opacity', '1');
@@ -76,6 +82,6 @@ function updateUPSWidgetContent(upsData) {
 	} else {
 		// print error description ($condition variable from ups_status.widget.php)
 		jQuery("#ups_widget").css('opacity', '0.2');
-		jQuery("#ups_error_description").html("ERROR: " + upsdata_array[0]);
+		jQuery("#ups_error_description").html("ERROR: " + upsdata_array[10]);
 	}
 }

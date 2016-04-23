@@ -4,6 +4,7 @@
 	part of pfSense (https://www.pfsense.org/)
 	Copyright (C) 2007 Ryan Wagoner <rswagoner@gmail.com>
 	Copyright (C) 2015 ESF, LLC
+	Copyright (C) 2016 PiBa-NL
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -34,6 +35,121 @@
 
 	define('NUT_RCFILE', '/usr/local/etc/rc.d/nut.sh');
 	define('NUT_DIR','/usr/local/etc/nut');
+
+global $nut_config;
+$nut_config = $config['installedpackages']['nut']['config'][0];
+
+function nut_status_to_text($upsstatus) {
+	$status = explode(" ", $upsstatus);
+	foreach($status as $condition) {
+		if($disp_status) {
+			$disp_status .= ", ";
+		}
+		switch ($condition) {
+			case "WAIT":
+				$disp_status .= gettext("Waiting");
+				break;
+			case "OFF":
+				$disp_status .= gettext("Off Line");
+				break;
+			case "OL":
+				$disp_status .= gettext("On Line");
+				break;
+			case "OB":
+				$disp_status .= gettext("On Battery");
+				break;
+			case "TRIM":
+				$disp_status .= gettext("SmartTrim");
+				break;
+			case "BOOST":
+				$disp_status .= gettext("SmartBoost");
+				break;
+			case "OVER":
+				$disp_status .= gettext("Overload");
+				break;
+			case "LB":
+				$disp_status .= gettext("Battery Low");
+				break;
+			case "RB":
+				$disp_status .= gettext("Replace Battery");
+				break;
+			case "CAL":
+				$disp_status .= gettext("Calibration");
+				break;
+			case "CHRG":
+				$disp_status .= gettext("Charging");
+				break;
+			default:
+				$disp_status .= $condition;
+				break;
+		}
+	}
+	return $disp_status;
+}
+
+function nut_get_data() {	
+	global $nut_config;
+	$ups = array();
+	if (!$nut_config['monitor']) {
+		$ups['error'] = "NUT is disabled in settings";
+		return $ups;
+	}
+	$running = is_process_running('upsmon');
+
+	if ($nut_config['monitor'] == 'local') {
+		$ups['monitoring'] = 'Local UPS';
+		$cmd = "/usr/local/bin/upsc {$nut_config['name']}@localhost";
+	} elseif ($nut_config['monitor'] == 'remote') {
+		$ups['monitoring'] = 'Remote UPS';
+		$cmd = "/usr/local/bin/upsc {$nut_config['remotename']}@{$nut_config['remoteaddr']}";
+	} elseif ($nut_config['monitor'] == 'snmp') {
+		$ups['monitoring'] = 'SNMP UPS';
+		$cmd = "/usr/local/bin/upsc {$nut_config['snmpname']}@localhost";
+	}
+
+	if ($running) {
+		$handle = popen($cmd, 'r');
+	} elseif ($nut_config['monitor'] == 'snmp') {
+		$ups['error'] = 'NUT is enabled, however the service is not running! The SNMP UPS may be unreachable.';
+	} else {
+		$ups['error'] = 'NUT is enabled, however the service is not running!';
+		if ($nut_config['monitor'] == "snmp") {
+			$ups['error'] .= gettext("\nSNMP UPS may be unreachable.");
+		}
+	}
+	
+	if ($handle) {
+		$read = fread($handle, 4096);
+		pclose($handle);
+
+		$lines = explode("\n", $read);
+		foreach($lines as $line) {
+			$line = explode(':', $line);
+			$ups['status'][$line[0]] = trim($line[1]);
+		}
+		if (count($lines) == 1) {
+			$ups['error'] = 'Data stale!';
+		}
+/**
+// Testing values		
+	unset($ups['error']);
+	$ups['status']['ups.load'] = 69;
+	$ups['status']['battery.charge'] = 3;
+	
+	$ups['status']['ups.load'] = 9;
+	$ups['status']['battery.charge'] = 90;
+	
+	$ups['status']['battery.runtime'] = 10;
+	$ups['status']['battery.voltage'] = 11;
+	$ups['status']['input.voltage']   = 12;
+	$ups['status']['input.frequency'] = 13;
+	$ups['status']['output.voltage']  = 14;
+	$ups['status']['ups.temperature'] = 15;
+	$ups['status']['ups.status'] = "OL OVER";
+/**/
+	}
+	return $ups;
+}
 
 	function nut_config($name) {
 		global $config;
