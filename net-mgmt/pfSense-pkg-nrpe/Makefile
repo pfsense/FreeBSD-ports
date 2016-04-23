@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-nrpe
-PORTVERSION=	2.3
-PORTREVISION=	2
+PORTVERSION=	2.3.1
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +13,7 @@ COMMENT=	pfSense package nrpe
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/nrpe2:net-mgmt/nrpe
+RUN_DEPENDS=	${LOCALBASE}/sbin/nrpe2:net-mgmt/nrpe-ssl
 
 NO_BUILD=	yes
 NO_MTREE=	yes
