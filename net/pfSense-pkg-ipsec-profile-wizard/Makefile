@@ -2,14 +2,14 @@
 
 PORTNAME=	pfSense-pkg-ipsec-profile-wizard
 PORTVERSION=	0.9
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	PfSense package IPsec Profile Generation for iOS devices
+COMMENT=	PfSense package IPsec Profile Generation for Apple devices
 
 LICENSE=	ESF
 

@@ -15,8 +15,8 @@
 	<category>VPN</category>
 	<title>VPN: IPsec Profile Setup Wizard</title> 
 	<menu>
-		<name>IPsec Profile</name>
-		<tooltiptext>IPsec Profile Setup Wizard</tooltiptext>
+		<name>Apple IPsec Profile</name>
+		<tooltiptext>IPsec Profile Export</tooltiptext>
 		<section>VPN</section>
 		<url>vpn_ipsec_profile.php</url>
 	</menu>
