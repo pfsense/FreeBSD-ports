@@ -35,6 +35,7 @@
 
 	define('NUT_RCFILE', '/usr/local/etc/rc.d/nut.sh');
 	define('NUT_DIR','/usr/local/etc/nut');
+	define('nutlogfile',"/tmp/upsd_start.log");
 
 global $nut_config;
 $nut_config = $config['installedpackages']['nut']['config'][0];
@@ -133,14 +134,14 @@ function nut_get_data() {
 /**
 // Testing values		
 	unset($ups['error']);
-	$ups['status']['ups.load'] = 69;
-	$ups['status']['battery.charge'] = 3;
-	
+
+	$ups['status']['ups.model'] = "Test:Model";
 	$ups['status']['ups.load'] = 9;
 	$ups['status']['battery.charge'] = 90;
 	
 	$ups['status']['battery.runtime'] = 10;
 	$ups['status']['battery.voltage'] = 11;
+	
 	$ups['status']['input.voltage']   = 12;
 	$ups['status']['input.frequency'] = 13;
 	$ups['status']['output.voltage']  = 14;
@@ -224,6 +225,12 @@ function nut_get_data() {
 		/* add available serial ports */
 		for ($i = 0; $i < count($values); $i++) {
 			$field['options']['option'][] = array('name' => $names[$i], 'value' => $values[$i]);
+		}
+		
+		if (file_exists(nutlogfile)) {
+			global $savemsg;
+			$logfilecontent = file_get_contents(nutlogfile);
+			$savemsg = str_replace("\n","<br/>",$logfilecontent);
 		}
 	}
 
@@ -435,6 +442,7 @@ if [ `/bin/pgrep {$driver} | /usr/bin/wc -l` != 0 ]; then
 		/usr/local/sbin/upsmon {$name}@localhost
 	else
 		echo {$driver} failed to start
+		exit 1
 	fi
 EOD;
 
@@ -587,10 +595,18 @@ EOD;
 		return true;
 	}
 
+	function start_nut_service(&$output, &$err) {
+		// stdout to null errors to output.
+		$retval = exec(NUT_RCFILE . " start 2>&1", $output, $err);
+		return $retval;
+	}
+	
 	function sync_package_nut() {
 		global $g;
 
 		stop_service("nut");
+		
+		@unlink(nutlogfile);
 
 		/* create state path */
 		safe_mkdir("/var/db/nut", 0700);
@@ -608,10 +624,34 @@ EOD;
 		/* this prevents service from starting / stopping / starting on boot */
 		if ((function_exists("platform_booting")) && (!platform_booting()) && (nut_config('monitor'))) {
 			log_error("[nut] INFO: Starting service");
-			start_service("nut");
+
+			sync_package_nut_local();
+			$ret = start_nut_service($output, $err);
+			if ($err > 0) {
+				$content = "ERROR while starting service";
+				foreach($output as $line) {
+					$content .= "\n" . $line;
+				}			
+				file_put_contents(nutlogfile, $content);
+			}
+			
+			//$input_errors[] = print_r($ret,true);
+			//foreach($output as $line) {
+			//	$input_errors[] = print_r($line,true);
+			//}
+			//$input_errors[] = print_r($err,true);
 		} elseif ((!($g['booting'])) && (nut_config('monitor'))) {
 			log_error("[nut] INFO: Starting service");
-			start_service("nut");
+			
+			sync_package_nut_local();
+			$ret = start_nut_service($output, $err);
+			if ($err > 0) {
+				$content = "ERROR while starting service";
+				foreach($output as $line) {
+					$content .= "\n" . $line;
+				}			
+				file_put_contents(nutlogfile, $content);
+			}
 		} elseif (!$return && file_exists(NUT_RCFILE)) {
 			/* no parameters user does not want nut running */
 			/* lets stop the service and remove the rc file */

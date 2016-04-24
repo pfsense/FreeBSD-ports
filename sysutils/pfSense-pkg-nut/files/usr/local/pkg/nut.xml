@@ -43,7 +43,7 @@
 	<name>nut</name>
 	<title>Services: NUT</title>
 	<savetext>Save</savetext>
-	<aftersaveredirect>/status_nut.php</aftersaveredirect>
+	<!--aftersaveredirect>/status_nut.php</aftersaveredirect-->
 	<include_file>/usr/local/pkg/nut.inc</include_file>
 	<menu>
 		<name>NUT</name>

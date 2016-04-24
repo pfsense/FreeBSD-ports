@@ -50,9 +50,15 @@ function showUPSData() {
 }
 
 function UPSWidgetSetProgress(barName, percent) {
+	if (!$.isNumeric(percent)) {
+		percent = 0;
+	}
 	$('#' + barName + 'PB').css({width: percent + '%'}).attr('aria-valuenow', percent);
 	if ($('#' + barName + 'meter')) {
-		$('#' + barName + 'meter').html(percent + '%');
+		if (percent)
+			$('#' + barName + 'meter').html(percent + '%');
+		else
+			$('#' + barName + 'meter').html('n/a');
 	}
 }	
 
@@ -68,10 +74,12 @@ function updateUPSWidgetContent(upsData) {
 		UPSWidgetSetProgress("ups_charge", upsdata_array[3]);
 		jQuery("#ups_runtime").html(upsdata_array[4]);
 		// Change title to "Battery Voltage" or "Battery Temp"
-		if(upsdata_array[5].indexOf("V")) {
+		if(upsdata_array[5].indexOf("V") > 0) {
 			jQuery("#ups_celltitle_VT").html("Battery Voltage");
-		} else if(upsdata_array[5].indexOf("C")) {
+		} else if(upsdata_array[5].indexOf("C") > 0) {
 			jQuery("#ups_celltitle_VT").html("Battery Temp");
+		} else {
+			jQuery("#ups_celltitle_VT").html("");
 		}
 		jQuery("#ups_bvoltage").html(upsdata_array[5]);
 		UPSWidgetSetProgress("ups_load", upsdata_array[6]);

@@ -42,10 +42,14 @@ function getUPSData() {
 	$nut = nut_get_data();
 	$data = "";
 	$ups = $nut['status'];
+	$data = $nut['monitoring'];
 	// "Model" field - upsdata_array[1]
-	$data .= ":" . (($ups['ups.model'] != "") ? $ups['ups.model'] : gettext("n/a"));
+	$data .= ":" . (($ups['ups.model'] != "") ? str_replace(":", " ", $ups['ups.model']) : gettext("n/a"));
 	// "Status" field - upsdata_array[2]
 	$disp_status = nut_status_to_text($ups['ups.status']);
+	if (empty($disp_status)) {
+		$disp_status = "n/a";
+	}
 	$data .= ":" . $disp_status;
 	// "Battery Charge" bars and field - upsdata_array[3]
 	$data .= ":" . $ups['battery.charge'];
@@ -64,16 +68,24 @@ function getUPSData() {
 	if($ups['battery.voltage'] > 0) {
 		$data .= ":" . $ups['battery.voltage'] . "&nbsp;V";
 	} elseif ($ups['ups.temperature'] > 0) {
-		$data .= ":" . $ups['ups.temperature'] . "&#38;#176;C";
+		$data .= ":" . $ups['ups.temperature'] . "&nbsp;C";
 	} else {
 		$data .= ":" . "";
 	}
 	// "Load" bars and field - upsdata_array[6]
 	$data .= ":" . $ups['ups.load'];
 	// "Input Voltage" field - upsdata_array[7]
-	$data .= ":" . $ups['input.voltage'] . "&nbsp;V";
+	if ($ups['input.voltage']) {
+		$data .= ":" . $ups['input.voltage'] . "&nbsp;V";
+	} else {
+		$data .= ":" . "n/a";
+	}
 	// "Output Voltage" field - upsdata_array[8]
-	$data .= ":" . $ups['output.voltage'] . "&nbsp;V";
+	if ($ups['output.voltage']) {
+		$data .= ":" . $ups['output.voltage'] . "&nbsp;V";
+	} else {
+		$data .= ":" . "n/a";
+	}
 	$data .= ":" . $nut['status'];
 	$data .= ":" . $nut['error'];
 
@@ -92,54 +104,56 @@ function getUPSData() {
 //]]>
 </script>
 
-<div id="UPSWidgetContainer">
+<div id="UPSWidgetContainer" style="padding: 2px">
 	<table width="100%" id="ups_widget" summary="UPS status">
-		<tr>
-			<th><?php echo gettext("Monitoring"); ?></th>
-			<th><?php echo gettext("Model"); ?></th>
-			<th><?php echo gettext("Status"); ?></th>
-		</tr>
-		<tr>
-			<td class="listlr" id="ups_monitoring"></td>
-			<td class="listr" id="ups_model"></td>
-			<td class="listr" id="ups_status"></td>
-		</tr>
-		<tr>
-			<th><?php echo gettext("Battery Charge"); ?></th>
-			<th><?php echo gettext("Time Remain"); ?></th>
-			<th id="ups_celltitle_VT"></th>
-		</tr>
-		<tr>
-			<td class="listlr" id="ups_charge">
-				<div style="background-color: <?=$color?>;padding:1px;" class="progress">
-					<div id="ups_chargePB" class="progress-bar progress-bar-striped" 
-						 role="progressbar" aria-valuenow="0" aria-valuemin="0" 
-						 aria-valuemax="100" style="width: 0%;">
+		<tbody>
+			<tr>
+				<th><?php echo gettext("Monitoring"); ?></th>
+				<th><?php echo gettext("Model"); ?></th>
+				<th><?php echo gettext("Status"); ?></th>
+			</tr>
+			<tr>
+				<td class="listlr" id="ups_monitoring"></td>
+				<td class="listr" id="ups_model"></td>
+				<td class="listr" id="ups_status"></td>
+			</tr>
+			<tr>
+				<th><?php echo gettext("Battery Charge"); ?></th>
+				<th><?php echo gettext("Time Remain"); ?></th>
+				<th id="ups_celltitle_VT"></th>
+			</tr>
+			<tr>
+				<td class="listlr" id="ups_charge">
+					<div style="background-color: <?=$color?>;padding:1px;" class="progress">
+						<div id="ups_chargePB" class="progress-bar progress-bar-striped" 
+							 role="progressbar" aria-valuenow="0" aria-valuemin="0" 
+							 aria-valuemax="100" style="width: 0%;">
+						</div>
 					</div>
-				</div>
-				<span id="ups_chargemeter"><?=gettext('(Updating in 10 seconds)')?></span>
-			</td>
-			<td class="listr" id="ups_runtime"></td>
-			<td class="listr" id="ups_bvoltage"></td>
-		</tr>
-		<tr>
-			<th><?php echo gettext("Load"); ?></th>
-			<th><?php echo gettext("Input Voltage"); ?></th>
-			<th><?php echo gettext("Output Voltage"); ?></th>
-		</tr>
-		<tr>
-			<td class="listlr" id="ups_load">
-				<div style="background-color: <?=$color?>;padding:1px;" class="progress">
-					<div id="ups_loadPB" class="progress-bar progress-bar-striped" 
-						 role="progressbar" aria-valuenow="0" aria-valuemin="0" 
-						 aria-valuemax="100" style="width: 0%;">
+					<span id="ups_chargemeter"><?=gettext('(Updating in 10 seconds)')?></span>
+				</td>
+				<td class="listr" id="ups_runtime"></td>
+				<td class="listr" id="ups_bvoltage"></td>
+			</tr>
+			<tr>
+				<th><?php echo gettext("Load"); ?></th>
+				<th><?php echo gettext("Input Voltage"); ?></th>
+				<th><?php echo gettext("Output Voltage"); ?></th>
+			</tr>
+			<tr>
+				<td class="listlr" id="ups_load">
+					<div style="background-color: <?=$color?>;padding:1px;" class="progress">
+						<div id="ups_loadPB" class="progress-bar progress-bar-striped" 
+							 role="progressbar" aria-valuenow="0" aria-valuemin="0" 
+							 aria-valuemax="100" style="width: 0%;">
+						</div>
 					</div>
-				</div>
-				<span id="ups_loadmeter"><?=gettext('(Updating in 10 seconds)')?></span>
-			</td>
-			<td class="listr" id="ups_inputv"></td>
-			<td class="listr" id="ups_outputv"></td>
-		</tr>
+					<span id="ups_loadmeter"><?=gettext('(Updating in 10 seconds)')?></span>
+				</td>
+				<td class="listr" id="ups_inputv"></td>
+				<td class="listr" id="ups_outputv"></td>
+			</tr>
+		</tbody>
 	</table>
 	<span id="ups_error_description"></span>
 </div>
