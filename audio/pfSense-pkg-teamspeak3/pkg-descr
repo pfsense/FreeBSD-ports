@@ -1,0 +1,3 @@
+TeamSpeak 3 allows groups of people to speak over the Internet. 
+This port contains the TeamSpeak 3 server and a web GUI
+for managing the server settings using the PFSense web interface.

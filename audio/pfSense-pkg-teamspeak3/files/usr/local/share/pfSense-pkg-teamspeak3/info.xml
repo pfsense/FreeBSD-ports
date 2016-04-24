@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>teamspeak3</name>
+		<descr><![CDATA[TeamSpeak 3 allows groups of people to speak over the Internet.]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>teamspeak3.xml</configurationfile>
+	</package>
+</pfsensepkgs>

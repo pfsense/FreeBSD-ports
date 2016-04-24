@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ========================================================================== */
+/*
+	teamspeak3.xml
+	Copyright (C) 2016 Sander Peterse
+	All rights reserved.
+                                                                              */
+/* ========================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+	1.	Redistributions of source code must retain the above copyright notice,
+		this list of conditions and the following disclaimer.
+
+	2.	Redistributions in binary form must reproduce the above copyright
+		notice, this list of conditions and the following disclaimer in the
+ 		documentation and/or other materials provided with the distribution.
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+                                                                              */
+/* ========================================================================== */
+        ]]>
+	</copyright>
+	<description>TeamSpeak 3 Server</description>
+	<requirements></requirements>
+	<name>teamspeak3</name>
+	<version>3.0.12.3</version>
+	<title>TeamSpeak 3</title>
+	<include_file>/usr/local/pkg/teamspeak3.inc</include_file>
+	<menu>
+		<name>TeamSpeak 3</name>
+		<tooltiptext>Setup TeamSpeak 3 Server specific settings</tooltiptext>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=teamspeak3.xml&amp;id=0</url>
+	</menu>
+	<service>
+		<name>teamspeak</name>
+		<rcfile>teamspeak.sh</rcfile>
+		<executable>ts3server</executable>
+		<description>TeamSpeak 3 service</description>
+	</service>
+	<tabs>
+		<tab>
+			<text>Settings</text>
+			<url>/pkg_edit.php?xml=teamspeak3.xml&amp;id=0</url>
+			<active />
+		</tab>
+		<tab>
+			<text>Logs</text>
+			<url>/teamspeak3/teamspeak3_show_logs.php</url>
+		</tab>
+		<tab>
+			<text>Backup &amp; Restore</text>
+			<url>/teamspeak3/teamspeak3_backup_restore.php</url>
+		</tab>		
+	</tabs>
+	<fields>
+		<field>
+			<fielddescr>Interfaces</fielddescr>
+			<fieldname>serverinterfaces</fieldname>
+			<size>3</size>
+			<type>interfaces_selection</type>
+			<required>false</required>
+			<description>Select the interface to enable for the TeamSpeak 3
+				server.</description>
+			<showvirtualips>false</showvirtualips>
+			<showips>true</showips>
+			<showlistenall>true</showlistenall>
+		</field>
+		<field>
+			<fielddescr>Create allow rule</fielddescr>
+			<fieldname>createrule</fieldname>
+			<description>Check this box to allow this package to add firewall rules.
+				This allows the TeamSpeak 3 clients to connect to TeamSpeak 3 on 
+				this host.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Keep TeamSpeak 3 configuration after package removal</fielddescr>
+			<fieldname>keepfiles</fieldname>
+			<description>Check this box to prevent the removal of TeamSpeak 3 configuration in PFSense.</description>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+		<field>
+			<fielddescr>TeamSpeak 3 configuration (ts3server.ini)</fielddescr>
+			<fieldname>ts3serverconfig</fieldname>
+			<value></value>
+			<type>textarea</type>
+			<rows>5</rows>
+			<cols>50</cols>
+			<required>false</required>
+			<description>Additional TeamSpeak 3 configuration options can be
+				added or changed here. Please check the TeamSpeak 3 forum (&lt;a
+				href="http://forum.teamspeak.com/forum.php"
+				target="_blank"&gt;http://forum.teamspeak.com/forum.php&lt;/a&gt;)
+				for all available options.</description>
+			<encoding>base64</encoding>
+		</field>
+	</fields>	
+	
+	<!-- Custom commands used by install/remove/update process. -->
+	<custom_php_install_command>
+		teamspeak3_custom_php_install_command();
+	</custom_php_install_command>
+	<custom_php_resync_config_command>
+		teamspeak3_custom_php_resync_command();
+	</custom_php_resync_config_command>
+	<custom_php_pre_deinstall_command>
+		teamspeak3_custom_php_pre_deinstall_command();
+	</custom_php_pre_deinstall_command>
+	<filter_rules_needed>teamspeak3_generate_rules</filter_rules_needed>
+</packagegui>
