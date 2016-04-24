@@ -10,7 +10,7 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	PiBa-NL
 COMMENT=	pfSense package acme
 
-RUN_DEPENDS=	${PORTSDIR}/ftp/php56-ftp
+# LIB_DEPENDS= ftp.so:ftp/php56-ftp
 
 CONFLICTS=	
 
