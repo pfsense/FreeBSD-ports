@@ -226,6 +226,7 @@ if ($pconfig['logFile'] && ($pconfig['download'] || $pconfig['clear'])) {
 			}
 			@fpassthru($fd);
 			@fclose($fd);
+			exit;
 		}
 	}
 } else {
