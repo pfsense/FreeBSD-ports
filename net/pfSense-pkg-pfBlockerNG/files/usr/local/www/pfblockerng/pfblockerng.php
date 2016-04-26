@@ -341,6 +341,12 @@ function pfblockerng_sync_cron() {
 								continue;
 							}
 
+							// Attempt download, when a previous 'fail' file marker is found.
+							if (file_exists("{$pfbfolder}/{$header}.fail")) {
+								pfb_update_check($header, $row['url'], $pfbfolder, $pfborig, $pflex, $row['format']);
+								continue;
+							}
+
 							// Allow cURL SSL downgrade if user configured.
 							$pflex = FALSE;
 							if ($row['state'] == 'Flex') {
