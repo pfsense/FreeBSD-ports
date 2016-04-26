@@ -87,7 +87,6 @@ function pfb_cron_update($type) {
 	exec('/bin/ps -wx', $result_cron);
 	if (preg_grep("/pfblockerng[.]php\s+?(cron|update|updatednsbl)/", $result_cron)) {
 		pfbupdate_status(gettext("Force {$type} Terminated - Failed due to Active Running Task. Click 'View' for running process"));
-		header('Location: /pfblockerng/pfblockerng_update.php');
 		exit;
 	}
 
@@ -198,7 +197,7 @@ if ($pfb['enable'] == 'on') {
 					$cron_hour_begin = $line;
 				}
 				if (($line * 3600) + ($pfb['min'] * 60) > $currentdaysec) {
-						$cron_hour_next = $line;
+					$cron_hour_next = $line;
 					break;
 				}
 			}
@@ -252,7 +251,7 @@ $options  = '<div class="infoblock"><dl class="dl-horizontal">';
 $options .= '	<dt>Update:</dt><dd>will download any new Alias/Lists.</dd>';
 $options .= '	<dt>Cron:</dt><dd>will download any Alias/Lists that are within the Frequency Setting (due for Update).</dd>';
 $options .= '	<dt>Reload:</dt><dd>will reload all Lists using the existing Downloaded files.<br />';
-$options .= '		This is useful when Lists are out of <q>sync</q> or Reputation changes were made.</dd>';
+$options .= '	This is useful when Lists are out of <q>sync</q> or Reputation changes were made.</dd>';
 $options .= '</dl></div>';
 
 // Create Form
