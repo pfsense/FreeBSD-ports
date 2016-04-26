@@ -1514,7 +1514,7 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway_i
 			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
 			}
-			if ($agateway_out != 'default') {
+			if (!empty($agateway_out) && $agateway_out != 'default') {
 				$rule['gateway'] = "{$agateway_out}";
 				if ($pfb['float'] == 'on') {
 					$rule['direction'] = 'out';
@@ -1557,7 +1557,7 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway_i
 			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
 			}
-			if ($agateway_in != 'default') {
+			if (!empty($agateway_in) && $agateway_in != 'default') {
 				$rule['gateway'] = "{$agateway_in}";
 				if ($pfb['float'] == 'on') {
 					$rule['direction'] = 'in';
@@ -1599,7 +1599,7 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway_i
 			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
 			}
-			if ($agateway_out != 'default') {
+			if (!empty($agateway_out) && $agateway_out != 'default') {
 				$rule['gateway'] = "{$agateway_out}";
 				if ($pfb['float'] == 'on') {
 					$rule['direction'] = 'out';
@@ -1642,7 +1642,7 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway_i
 			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
 			}
-			if ($agateway_in != 'default') {
+			if (!empty($agateway_in) && $agateway_in != 'default') {
 				$rule['gateway'] = "{$agateway_in}";
 				if ($pfb['float'] == 'on') {
 					$rule['direction'] = 'in';
@@ -1682,7 +1682,7 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway_i
 			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
 			}
-			if ($agateway_out != 'default') {
+			if (!empty($agateway_out) && $agateway_out != 'default') {
 				$rule['gateway'] = "{$agateway_out}";
 				$rule['direction'] = 'out';
 			}
@@ -1721,7 +1721,7 @@ function pfb_firewall_rule($action, $pfb_alias, $vtype='', $pfb_log, $agateway_i
 			if ($pfb['config']['enable_log'] == 'on' || $pfb_log == 'enabled') {
 				$rule['log'] = '';
 			}
-			if ($agateway_in != 'default') {
+			if (!empty($agateway_in) && $agateway_in != 'default') {
 				$rule['gateway'] = "{$agateway_in}";
 				$rule['direction'] = 'in';
 			}
