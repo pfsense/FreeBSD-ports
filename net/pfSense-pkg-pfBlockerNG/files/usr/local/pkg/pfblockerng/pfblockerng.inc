@@ -294,7 +294,7 @@ function pfb_log_mgmt() {
 function pfb_logger($log, $logtype) {
 	global $g, $pfb;
 
-	$now = date('m/d/y G:i:s', time());
+	$now = date('m/d/y H:i:s', time());
 
 	// Only log timestamp if new
 	if (strpos($log, 'NOW') !== FALSE) {
@@ -1875,7 +1875,7 @@ function pfb_livetail($logfile, $mode) {
 						$line = strstr($pfb_buffer, ' ) compare', TRUE);
 						$line = ltrim(strstr($line, '] ( ', FALSE), '] ( ');
 						if (!empty($line)) {
-							$log = "DNSBL Reject HTTPS," . date('M d G:i:s', time()) . ",{$line}\n";
+							$log = "DNSBL Reject HTTPS," . date('M d H:i:s', time()) . ",{$line}\n";
 							@file_put_contents($pfb['dnslog'], $log, FILE_APPEND | LOCK_EX);
 
 							// Query DNSBL Alias for Domain list.
@@ -3040,7 +3040,7 @@ function sync_package_pfblockerng($cron='') {
 						@fclose($pfb_output);
 
 	 					// Update domain alias statistics
-						$dns_now = date('M d G:i', time());
+						$dns_now = date('M d H:i:s', time());
 						$pfbfound = FALSE;
 						foreach ($dnsbl_info as $key => $line) {
 							// Update existing alias stats
@@ -3069,7 +3069,7 @@ function sync_package_pfblockerng($cron='') {
 						}
 					}
 					if (!$pfbfound) {
-						$dns_now = date('M d G:i', time());
+						$dns_now = date('M d H:i:s', time());
 						$dnsbl_info[] = explode(',', "{$alias},{$dns_now},disabled,0");
 					}
 				}
