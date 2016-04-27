@@ -1,16 +1,15 @@
 # Created by: Sander Peterse <sander.peterse88@gmail.com>
 # $FreeBSD$
 
-PORTNAME=		pfSense-pkg-teamspeak3
+PORTNAME=	pfSense-pkg-teamspeak3
 PORTVERSION=	3.0.12.3
-PORTREVISION=	3
-CATEGORIES=		audio net
+CATEGORIES=	audio net
 MASTER_SITES=	# empty
-DISTFILES=		# empty
+DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=		coreteam@pfsense.org
-COMMENT=		Server side of the TeamSpeak group voice chat system for PFSense
+MAINTAINER=	coreteam@pfsense.org
+COMMENT=	Server side of the TeamSpeak group voice chat system for PFSense
 
 LICENSE=        ESF
 
