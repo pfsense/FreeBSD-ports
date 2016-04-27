@@ -640,6 +640,11 @@ if (!empty($snortcfg['pscan_ignore_scanners']) && is_alias($snortcfg['pscan_igno
 	$sf_pscan_ignore_scanners = trim(filter_expand_alias($snortcfg['pscan_ignore_scanners']));
 	$sf_pscan_ignore_scanners = preg_replace('/\s+/', ',', trim($sf_pscan_ignore_scanners));
 }
+$sf_pscan_ignore_scanned = "";
+if (!empty($snortcfg['pscan_ignore_scanned']) && is_alias($snortcfg['pscan_ignore_scanned'])) {
+	$sf_pscan_ignore_scanned = trim(filter_expand_alias($snortcfg['pscan_ignore_scanned']));
+	$sf_pscan_ignore_scanned = preg_replace('/\s+/', ',', trim($sf_pscan_ignore_scanned));
+}
 	
 $sf_portscan = <<<EOD
 # sf Portscan #
@@ -648,7 +653,8 @@ preprocessor sfportscan: \
 	proto  { {$sf_pscan_protocol} } \
 	memcap { {$sf_pscan_memcap} } \
 	sense_level { {$sf_pscan_sense_level} } \
-	ignore_scanners { {$sf_pscan_ignore_scanners} }
+	ignore_scanners { {$sf_pscan_ignore_scanners} } \
+	ignore_scanned { {$sf_pscan_ignore_scanned} }
 	
 EOD;
 
