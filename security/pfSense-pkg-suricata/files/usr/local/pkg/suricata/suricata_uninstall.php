@@ -106,11 +106,10 @@ unlink_if_exists("{$suricatadir}gen-msg.map");
 unlink_if_exists("{$suricatadir}unicode.map");
 unlink_if_exists("{$suricatadir}classification.config");
 unlink_if_exists("{$suricatadir}reference.config");
+unlink_if_exists("{$suricatadir}rules/*.txt");
 unlink_if_exists("{$suricatadir}rules/" . VRT_FILE_PREFIX . "*.rules");
 unlink_if_exists("{$suricatadir}rules/" . ET_OPEN_FILE_PREFIX . "*.rules");
-unlink_if_exists("{$suricatadir}rules/" . ET_OPEN_FILE_PREFIX . "*.txt");
 unlink_if_exists("{$suricatadir}rules/" . ET_PRO_FILE_PREFIX . "*.rules");
-unlink_if_exists("{$suricatadir}rules/" . ET_PRO_FILE_PREFIX . "*.txt");
 unlink_if_exists("{$suricatadir}rules/" . GPL_FILE_PREFIX . "*.rules");
 if (is_array($config['installedpackages']['suricata']['rule'])) {
 	foreach ($config['installedpackages']['suricata']['rule'] as $suricatacfg) {
@@ -125,7 +124,7 @@ $widgets = $config['widgets']['sequence'];
 if (!empty($widgets)) {
 	$widgetlist = explode(",", $widgets);
 	foreach ($widgetlist as $key => $widget) {
-		if (strstr($widget, "suricata_alerts-container")) {
+		if (strstr($widget, "suricata_alerts")) {
 			if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] == 'on') {
 				$config['installedpackages']['suricata']['config'][0]['dashboard_widget'] = $widget;
 				if ($config['widgets']['widget_suricata_display_lines']) {
@@ -137,6 +136,7 @@ if (!empty($widgets)) {
 		}
 	}
 	$config['widgets']['sequence'] = implode(",", $widgetlist);
+	write_config("Suricata pkg removed Dashboard Alerts widget.");
 }
 
 /*******************************************************/

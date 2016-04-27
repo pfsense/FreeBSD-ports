@@ -14,7 +14,7 @@ header("Content-Type: image/gif");
 echo base64_decode('R0lGODlhAQABAJAAAP8AAAAAACH5BAUQAAAALAAAAAABAAEAAAICBAEAOw==');
 
 // Record DNSBL HTTP Alert to logfile
-$datereq = date('M d H:i:s', $_SERVER['REQUEST_TIME']);
+$datereq = date('M d H:i:s', time());
 $req_agent = str_replace(',', '', "{$_SERVER['HTTP_REFERER']} | {$_SERVER['REQUEST_URI']} | {$_SERVER['HTTP_USER_AGENT']}");
 $log = htmlspecialchars("DNSBL Reject,{$datereq},{$_SERVER['HTTP_HOST']},{$_SERVER['REMOTE_ADDR']},{$req_agent}\n");
 if (!empty($log)) {

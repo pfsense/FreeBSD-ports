@@ -386,18 +386,14 @@ $entries = count($results);
 	<div class="table-responsive">
 		<!-- Print failed downloads (if any) -->
 		<?php if (!empty($results)): ?>
-			<ol style="white-space: nowrap; text-overflow: ellipsis;"><small>
+			<ol style="white-space: nowrap; text-overflow: ellipsis;
+				max-height: <?=($pfb['maxfails'] * 1.37) + 0.1;?>em; overflow-y: scroll;"><small>
 <?
 			$counter = 1;
 			foreach ($results as $result) {
-				if ($counter > $pfb['maxfails'] && $entries > $pfb['maxfails']) {
-					// To many errors stop displaying
-					print (($entries - $pfb['maxfails']) . gettext(' more error(s)...'));
-					break;
-				}
 				if ($counter == 1) {
 					print ("<li>{$result}&emsp;<i class=\"fa fa-trash icon-pointer\" id=\"pfblockerngackicon\"
-							title=\"" . gettext("Clear Failed Downloads") . "\" ></i></li>");
+						title=\"" . gettext("Clear Failed Downloads") . "\" ></i></li>");
 				} else {
 					print ("<li>{$result}</li>");
 				}

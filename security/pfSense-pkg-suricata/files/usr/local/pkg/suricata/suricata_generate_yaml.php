@@ -782,7 +782,7 @@ else
 	$suricata_use_syslog_facility = "local1";
 
 // Configure IPS operational mode
-if ($suricatacfg['ips_mode'] == 'ips_mode_inline') {
+if ($suricatacfg['ips_mode'] == 'ips_mode_inline' && $suricatacfg['blockoffenders'] == 'on') {
 	// Note -- Netmap promiscuous mode logic is backwards from pcap
 	$netmap_intf_promisc_mode = $intf_promisc_mode == 'yes' ? 'no' : 'yes';
 	$suricata_ips_mode = <<<EOD
