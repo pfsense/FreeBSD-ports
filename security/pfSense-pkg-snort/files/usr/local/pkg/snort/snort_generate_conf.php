@@ -652,7 +652,6 @@ if (!empty($snortcfg['pscan_ignore_scanned'])) {
 	} else {
           	$sf_pscan_ignore_scanned = $snortcfg['pscan_ignore_scanned'];
         }
-        $sf_pscan_ignore_scanned = "	ignore_scanned { {" . $sf_pscan_ignore_scanned . "} }";
 }
 
 $sf_portscan = <<<EOD
