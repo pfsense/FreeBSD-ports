@@ -2137,24 +2137,26 @@ function haproxy_plugin_certificates($pluginparams) {
 		$result['pkgname'] = "HAProxy";
 		$result['certificatelist'] = array();
 		// return a array of used certificates.
-		foreach($config['installedpackages']['haproxy']['ha_backends']['item'] as &$frontend) {
-			if (get_frontend_uses_ssl($frontend)) {
-				if ($frontend['secondary'] != 'yes' || $frontend['ssloffload'])
-					// primary or secondary with additional certs checkbox
-
-					if ($frontend['ssloffloadcert']){
-						$item = array();
-						$cert = $frontend['ssloffloadcert'];
-						$item['usedby'] = $frontend['name'];
-						$result['certificatelist'][$cert][] = $item;
-					}
-					if ($frontend['ha_certificates'] && is_array($frontend['ha_certificates']['item'])) {
-					foreach($frontend['ha_certificates']['item'] as $certref){
-						if ($certref['ssl_certificate']){
+		if (is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
+			foreach($config['installedpackages']['haproxy']['ha_backends']['item'] as &$frontend) {
+				if (get_frontend_uses_ssl($frontend)) {
+					if ($frontend['secondary'] != 'yes' || $frontend['ssloffload']) {
+						// primary or secondary with additional certs checkbox
+						if ($frontend['ssloffloadcert']){
 							$item = array();
-							$cert = $certref['ssl_certificate'];
+							$cert = $frontend['ssloffloadcert'];
 							$item['usedby'] = $frontend['name'];
 							$result['certificatelist'][$cert][] = $item;
+						}
+						if ($frontend['ha_certificates'] && is_array($frontend['ha_certificates']['item'])) {
+							foreach($frontend['ha_certificates']['item'] as $certref) {
+								if ($certref['ssl_certificate']) {
+									$item = array();
+									$cert = $certref['ssl_certificate'];
+									$item['usedby'] = $frontend['name'];
+									$result['certificatelist'][$cert][] = $item;
+								}
+							}
 						}
 					}
 				}
