@@ -1329,7 +1329,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 	$group = new Form_Group('Ignore Scanners');
 	$group->add($bind_to);
 	$group->add($btnaliases);
-	$group->setHelp('Ignores the specified entity as a source of scan alerts.  Entity must be a defined alias.');
+	$group->setHelp('Ignores the specified entity as a source of scan alerts.  Entity must be either a defined alias, or a commma seperated list of addresses with optional ports as ip[/cidr][port1 port2-port3].');
 	$section->add($group);
 	$bind_to = new Form_Input(
 		'pscan_ignore_scanned',
@@ -1338,7 +1338,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		$pconfig['pscan_ignore_scanned']
 	);
 	$bind_to->setAttribute('title', trim(filter_expand_alias($pconfig['pscan_ignore_scanned'])));
-	$bind_to->setHelp('Leave blank for default.  Default value is <em>blank</em>, which means ignore none.');
+	$bind_to->setHelp('Leave blank for default.  Default value is <em>blank</em>, meaning ignore none.');
 	$btnaliases = new Form_Button(
 		'btnSelectAlias',
 		' ' . 'Aliases',
@@ -1351,7 +1351,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 	$group = new Form_Group('Ignore Scanned');
 	$group->add($bind_to);
 	$group->add($btnaliases);
-	$group->setHelp('Ignores the specified entity as a destination of scan alerts.  Entity must be a defined alias.');
+	$group->setHelp('Ignores the specified entity as a destination of scan alerts.  Entity must be either a defined alias, or a commma seperated list of addresses with optional ports as ip[/cidr][port1 port2-port3].');
 	$section->add($group);
 	print($section);
 	//----- END Portscan settings -----
