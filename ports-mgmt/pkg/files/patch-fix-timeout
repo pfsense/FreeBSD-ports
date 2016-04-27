@@ -1,0 +1,80 @@
+diff --git a/libpkg/fetch.c b/libpkg/fetch.c
+index 8612549..179e3a4 100644
+--- libpkg/fetch.c
++++ libpkg/fetch.c
+@@ -35,6 +35,7 @@
+ #include <fcntl.h>
+ #include <errno.h>
+ #define _WITH_GETLINE
++#include <signal.h>
+ #include <stdio.h>
+ #include <string.h>
+ #include <fetch.h>
+@@ -48,6 +49,14 @@
+ #include "private/pkg.h"
+ #include "private/utils.h"
+ 
++static int	sigalrm = 0;	/* SIGALRM received */
++
++static void
++sigalrm_handler(int sig) {
++	if (sig == SIGALRM)
++		sigalrm = 1;
++}
++
+ static void
+ gethttpmirrors(struct pkg_repo *repo, const char *url) {
+ 	FILE *f;
+@@ -475,6 +484,7 @@ pkg_fetch_file_to_fd(struct pkg_repo *repo, const char *url, int dest,
+ 	size_t		 left = 0;
+ 	bool		 pkg_url_scheme = false;
+ 	struct sbuf	*fetchOpts = NULL;
++	struct sigaction sa;
+ 
+ 	max_retry = pkg_object_int(pkg_config_get("FETCH_RETRY"));
+ 	fetch_timeout = pkg_object_int(pkg_config_get("FETCH_TIMEOUT"));
+@@ -578,8 +588,8 @@ pkg_fetch_file_to_fd(struct pkg_repo *repo, const char *url, int dest,
+ 				sbuf_cat(fetchOpts, "6");
+ 		}
+ 
+-        if (debug_level >= 4)
+-            sbuf_cat(fetchOpts, "v");
++		if (debug_level >= 4)
++			sbuf_cat(fetchOpts, "v");
+ 
+ 		pkg_debug(1,"Fetch: fetching from: %s://%s%s%s%s with opts \"%s\"",
+ 		    u->scheme,
+@@ -591,15 +601,33 @@ pkg_fetch_file_to_fd(struct pkg_repo *repo, const char *url, int dest,
+ 
+ 		sbuf_finish(fetchOpts);
+ 
++		/* signal handling */
++		sa.sa_handler = sigalrm_handler;
++		sa.sa_flags = 0;
++		sigfillset(&sa.sa_mask);
++		sigaction(SIGALRM, &sa, NULL);
++
+ 		if (offset > 0)
+ 			u->offset = offset;
++		if (fetchTimeout > 0)
++			alarm(fetchTimeout);
+ 		remote = fetchXGet(u, &st, sbuf_data(fetchOpts));
++		if (fetchTimeout > 0)
++			alarm(0);
+ 		if (remote == NULL) {
+ 			if (fetchLastErrCode == FETCH_OK) {
+ 				retcode = EPKG_UPTODATE;
+ 				goto cleanup;
+ 			}
+ 			--retry;
++			if (sigalrm) {
++				if (retry <= 0) {
++					retcode = ETIMEDOUT;
++					goto cleanup;
++				} else {
++					sigalrm = 0;
++				}
++			}
+ 			if (retry <= 0 || fetchLastErrCode == FETCH_UNAVAIL) {
+ 				pkg_emit_error("%s: %s", url,
+ 				    fetchLastErrString);
