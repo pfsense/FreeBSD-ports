@@ -343,6 +343,8 @@ duplicate() {
 	echo '  ------------------------------'
 	printf "%-10s %-10s %-10s %-10s\n" "  ${counto}" "${countm}" "${countf}" " [ ${sanity} ]"
 	echo '  -----------------------------------------------------------------'
+
+	emptyfiles # Call emptyfiles function
 }
 
 

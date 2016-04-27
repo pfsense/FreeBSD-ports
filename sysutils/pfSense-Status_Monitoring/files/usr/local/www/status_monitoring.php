@@ -601,7 +601,7 @@ events.push(function() {
 		"memory": ".2f",
 		"mbuf": ".2s",
 		"packets": ".2s",
-		"vpnusers": ".2s",
+		"vpnusers": ".2f",
 		"quality": ".2f",
 		"traffic": ".2s",
 		"queue" : ".2s",
@@ -631,6 +631,12 @@ events.push(function() {
 		"3600": "1 Hour",
 		"86400": "1 Day"
 	};
+
+	//UTC offset and client/server timezone handing
+	var ServerUTCOffset = <?php echo date('Z') / 3600; ?>;
+	var xz = new Date();
+	var ClientUTCOffset = xz.getTimezoneOffset() / 60;
+	var tzOffset = (ClientUTCOffset + ServerUTCOffset) * 3600000;
 
 	/***
 	**
@@ -783,7 +789,7 @@ events.push(function() {
 			return false;
 		}
 
-		return Date.UTC(parts[3], parts[1]-1, parts[2], parts[4]) / 1000;
+		return (Date.UTC(parts[3], parts[1]-1, parts[2], parts[4]) / 1000) - (ServerUTCOffset*3600);
 	}
 
 	/***
@@ -1079,9 +1085,9 @@ events.push(function() {
 
 				series.values = series.values.map(function(d) {
 					if (series.invert) {
-						return { x: d[0], y: 0 - d[1] }
+						return { x: (d[0] + tzOffset), y: 0 - d[1] }
 					} else {
-						return { x: d[0], y: d[1] }
+						return { x: (d[0] + tzOffset), y: d[1] }
 					}
 				});
 

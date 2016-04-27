@@ -85,7 +85,7 @@ if ($timePeriod === "custom") {
 	$resolution = 60; //defaults to lowest resolution possible
 	$start = floor($start/$resolution) * $resolution;
 	$end = floor($end/$resolution) * $resolution;
-	$rrd_options = array( 'AVERAGE', '-r', $resolution, '-s', $start , '-e', $end );
+	$rrd_options = array( 'AVERAGE', '-r', $resolution, '-s', $start, '-e', $end );
 } else {
 	$rrd_options = array( 'AVERAGE', '-r', $resolution, '-s', $timePeriod );
 }

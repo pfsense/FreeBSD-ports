@@ -770,7 +770,7 @@ $group->add(new Form_Checkbox(
 	'hostlookup',
 	'Auto-Resolve',
 	NULL,
-	($hostookup == 'on' ? TRUE : FALSE),
+	($hostlookup == 'on' ? TRUE : FALSE),
 	'on'
 ))->setHelp('Auto-Resolve')->setAttribute('title', 'Select to \'Auto-Resolve\' Hosts.');
 

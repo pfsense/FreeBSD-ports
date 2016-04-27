@@ -60,7 +60,8 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/clog:sysutils/clog \
 		${KMODDIR}/bwi_v3_ucode.ko:net/bwi-firmware-kmod \
 		${LOCALBASE}/bin/scponly:shells/scponly \
 		${LOCALBASE}/sbin/xinetd:security/xinetd \
-		${LOCALBASE}/www/status_monitoring.php:sysutils/pfSense-Status_Monitoring
+		${LOCALBASE}/www/status_monitoring.php:sysutils/pfSense-Status_Monitoring \
+		${LOCALBASE}/bin/uclcmd:devel/uclcmd
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
