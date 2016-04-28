@@ -134,6 +134,7 @@ class HtmlList
 			} elseif ($itemtype ==  "fixedtext") {
 				$result .= $item['text'];
 			} else {
+				$itemvalue = htmlspecialchars($itemvalue, ENT_QUOTES);
 				$result .= "<input name='$itemnamenr' id='$itemnamenr' type='text' value='{$itemvalue}' />";
 			}
 		} else {

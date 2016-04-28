@@ -98,7 +98,7 @@ $acme_domain_validation_method['ftpwebroot'] = array(name => "FTP webroot",
 
 $acme_newcertificateactions = array();
 $acme_newcertificateactions['shellcommand'] = array(name => "shell command");
-//$acme_domain_validation_method['php command'] = array(name => "php command script");
+$acme_newcertificateactions['php_command'] = array(name => "php command script");
 
 // </editor-fold>
 #end
@@ -249,10 +249,11 @@ function & get_certificate($name) {
 	function renew_all_certificates() {
 		global $config;
 		$a_global = &$config['installedpackages']['acme'];
-
-		foreach($a_global['certificates']['item'] as $certificate) {
-			echo "Checking if renewal is needed for: {$certificate['name']}\n";
-			renew_certificate($certificate['name']);
+		if (is_array($a_global['certificates']['item'])) {
+			foreach($a_global['certificates']['item'] as $certificate) {
+				echo "Checking if renewal is needed for: {$certificate['name']}\n";
+				renew_certificate($certificate['name']);
+			}
 		}
 	}
 	
@@ -280,6 +281,9 @@ function & get_certificate($name) {
 			echo "Renewing certificate";
 			$domainstosign = array();
 			foreach($certificate['a_domainlist']['item'] as $domain) {
+				if ($domain['status'] == 'disable') {
+					continue;
+				}
 				$domainstosign[] = $domain['name'];
 			}
 			
@@ -298,11 +302,16 @@ function & get_certificate($name) {
 			$handler->path = "";
 			$le->callback = $handler;
 			$le->signDomains($domainstosign);
-			
-			foreach($certificate['a_actionlist']['item'] as $action) {
-				if ($action['method'] == "shellcommand") {
-					echo "Running {$action['command']}\n";
-					mwexec_bg($action['command']);
+			if (is_array($certificate['a_actionlist']['item'])) {
+				foreach($certificate['a_actionlist']['item'] as $action) {
+					if ($action['method'] == "shellcommand") {
+						echo "Running {$action['command']}\n";
+						mwexec_bg($action['command']);
+					}
+					if ($action['method'] == "php_command") {
+						echo "Running php {$action['command']}\n";
+						eval($action['command']);
+					}
 				}
 			}
 			syslog(LOG_NOTICE, "Acme, certificate renewed: {$id}");
@@ -320,12 +329,14 @@ function & get_certificate($name) {
 				}
 			}
 			if ($domain_info['method'] == 'webroot') {
+				echo "webroot\n";
 				$directory = $domain_info['webrootfolder'];
 				if(!file_exists($directory) && !@mkdir($directory, 0755, true)) {
 					throw new \RuntimeException("Couldn't create directory to expose challenge: ${tokenPath}");
 				}
 				$tokenPath = $directory . "/" . $token;
 				file_put_contents($tokenPath, $payload);
+				echo "put token at: {$tokenPath}\n";
 			}
 			if ($domain_info['method'] == 'ftpwebroot') {
 				echo "FTP\n";
@@ -356,14 +367,16 @@ function & get_certificate($name) {
 			$certificatename = "acme_cert_" . $this->certificateinfo['name'];
 			$cert = lookup_cert_by_name($certificatename);
 			if (!is_array($cert)) {
+				echo "\n getCertificatePSK creating new cert";
 				global $config;
 				$a_cert =& $config['cert'];
 				$cert = array();
 				$cert['refid'] = uniqid();
 				$cert['descr'] = $certificatename;
 				$accountkey = generateAccountKey();
-				$cert['prv'] = base64_encode($accountkey['prv']);
+				$cert['prv'] = base64_encode($accountkey);
 				$a_cert[] = $cert;
+				echo "\n{$cert['prv']}";
 			}
 			return base64_decode($cert['prv']);
 		}

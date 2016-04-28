@@ -100,7 +100,6 @@ class Lescript
         // ----------------------------
 
         foreach($domains as $domain) {
-
             // 1. getting available authentication options
             // -------------------------------------------
 
@@ -146,7 +145,7 @@ class Lescript
 
 			$uri = "http://${domain}/.well-known/acme-challenge/${challenge['token']}";
 
-			$this->log("Token for $domain saved at $tokenPath and should be available at $uri");
+			$this->log("Token for $domain should be available at $uri");
 
 			// simple self check
 			if($payload !== trim(@file_get_contents($uri))) {
@@ -347,7 +346,7 @@ keyUsage = nonRepudiation, digitalSignature, keyEncipherment');
         openssl_csr_export($csr, $csr);
         fclose($tmpConf);
 
-        file_put_contents($this->getDomainPath($domain)."/last.csr", $csr);
+        //file_put_contents($this->getDomainPath($domain)."/last.csr", $csr);
         preg_match('~REQUEST-----(.*)-----END~s', $csr, $matches);
 
         return trim(Base64UrlSafeEncoder::encode(base64_decode($matches[1])));
