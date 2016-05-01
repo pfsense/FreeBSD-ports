@@ -147,7 +147,7 @@
 		</field>
 		<field>
 			<fielddescr>Remote Access Address</fielddescr>
-			<description>&lt;strong&gt;NOTE: Previous versions of NUT supported internal ACLs, these no longer work. The new default is to bind to localhost ONLY - you should add NAT rules for the NUT port (3493) to allow remote access. This field no longer has any effect, but was left intact for reference.&lt;/strong&gt;</description>
+			<description>NOTE: Previous versions of NUT supported internal ACLs, these no longer work. The new default is to bind to localhost ONLY - you should add NAT rules for the NUT port (3493) to allow remote access. This field no longer has any effect, but was left intact for reference.</description>
 			<fieldname>allowaddr</fieldname>
 			<type>input</type>
 		</field>
@@ -166,12 +166,12 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>&lt;strong&gt;Local UPS Name&lt;/strong&gt;</fielddescr>
+			<fielddescr>Local UPS Name</fielddescr>
 			<fieldname>name</fieldname>
 			<type>input</type>
 		</field>
 		<field>
-			<fielddescr>&lt;strong&gt;Local UPS Model&lt;/strong&gt;</fielddescr>
+			<fielddescr>Local UPS Model</fielddescr>
 			<fieldname>driver</fieldname>
 			<description>If generic or cable specified in parenthesis you need to select the appropriate option below.</description>
 			<type>select</type>
@@ -499,7 +499,7 @@
 			</options>
 		</field>
 		<field>
-			<fielddescr>&lt;strong&gt;Local UPS Port&lt;/strong&gt;</fielddescr>
+			<fielddescr>Local UPS Port</fielddescr>
 			<fieldname>port</fieldname>
 			<type>select</type>
 			<options>
@@ -572,22 +572,22 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>&lt;strong&gt;SNMP UPS Name&lt;/strong&gt;</fielddescr>
+			<fielddescr>SNMP UPS Name</fielddescr>
 			<fieldname>snmpname</fieldname>
 			<type>input</type>
 		</field>
 		<field>
-			<fielddescr>&lt;strong&gt;SNMP UPS Address&lt;/strong&gt; &lt;br&gt;(ex: 192.168.1.10)</fielddescr>
+			<fielddescr>SNMP UPS Address</fielddescr>
 			<fieldname>snmpaddr</fieldname>
 			<type>input</type>
 		</field>
 		<field>
-			<fielddescr>SNMP UPS Community&lt;br&gt;(Def: public)</fielddescr>
+			<fielddescr>SNMP UPS Community (Default: public)</fielddescr>
 			<fieldname>snmpcommunity</fieldname>
 			<type>input</type>
 		</field>
 		<field>
-			<fielddescr>SNMP UPS Version&lt;br&gt;(Def: v2c)</fielddescr>
+			<fielddescr>SNMP UPS Version (Default: v2c)</fielddescr>
 			<fieldname>snmpversion</fieldname>
 			<type>select</type>
 			<options>
@@ -602,7 +602,7 @@
 			</options>
 		</field>
 		<field>
-			<fielddescr>SNMP UPS MIB&lt;br&gt;(Def: IETF)</fielddescr>
+			<fielddescr>SNMP UPS MIB (Default: IETF)</fielddescr>
 			<fieldname>snmpmib</fieldname>
 			<type>select</type>
 			<options>
@@ -633,12 +633,12 @@
 			</options>
 		</field>
 		<field>
-			<fielddescr>SNMP UPS Polling Freq&lt;br&gt;(Def: 30)</fielddescr>
+			<fielddescr>SNMP UPS Polling Freq (Default: 30)</fielddescr>
 			<fieldname>snmpfreq</fieldname>
 			<type>input</type>
 		</field>
 		<field>
-			<fielddescr>Disable transfer OIDs&lt;br&gt;(use on APCC Symmetras)</fielddescr>
+			<fielddescr>Disable transfer OIDs (use on APCC Symmetras)</fielddescr>
 			<fieldname>snmpdisabletransfer</fieldname>
 			<type>checkbox</type>
 		</field>
@@ -647,22 +647,22 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>&lt;strong&gt;Remote NUT UPS Name&lt;/strong&gt;</fielddescr>
+			<fielddescr>Remote NUT UPS Name</fielddescr>
 			<fieldname>remotename</fieldname>
 			<type>input</type>
 		</field>
 		<field>
-			<fielddescr>&lt;strong&gt;Remote NUT UPS Address&lt;/strong&gt; &lt;br&gt;(ex: 192.168.1.10)</fielddescr>
+			<fielddescr>Remote NUT UPS Address</fielddescr>
 			<fieldname>remoteaddr</fieldname>
 			<type>input</type>
 		</field>
 		<field>
-			<fielddescr>&lt;strong&gt;Remote NUT UPS User&lt;/strong&gt;</fielddescr>
+			<fielddescr>Remote NUT UPS User</fielddescr>
 			<fieldname>remoteuser</fieldname>
 			<type>input</type>
 		</field>
 		<field>
-			<fielddescr>&lt;strong&gt;Remote NUT UPS Password&lt;/strong&gt;</fielddescr>
+			<fielddescr>Remote NUT UPS Password</fielddescr>
 			<fieldname>remotepass</fieldname>
 			<type>password</type>
 		</field>
