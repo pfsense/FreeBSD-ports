@@ -9,7 +9,8 @@
 /*
 	nut.xml
 	part of pfSense (https://www.pfSense.org/)
-	Copyright (C) 2009-2016 ESF, LLC
+	Copyright (C) 2009-2015 ESF, LLC
+	Copyright (C) 2016 Sander Peterse <sander.peterse88@gmail.com>
 	All rights reserved.
 */
 /* ====================================================================================== */
@@ -44,13 +45,13 @@
 	<version>2.3.0</version>
 	<title>Services: NUT</title>
 	<savetext>Change</savetext>
-	<aftersaveredirect>/nut_status.php</aftersaveredirect>
+	<aftersaveredirect>/ups_status.php</aftersaveredirect>
 	<include_file>/usr/local/pkg/nut.inc</include_file>
 	<menu>
 		<name>NUT</name>
 		<tooltiptext>Set Network UPS Tools settings.</tooltiptext>
 		<section>Services</section>
-		<url>/nut_status.php</url>
+		<url>/ups_status.php</url>
 	</menu>
 	<service>
 		<name>nut</name>
@@ -60,8 +61,8 @@
 	</service>
 	<tabs>
 		<tab>
-			<text>NUT Status</text>
-			<url>/nut_status.php</url>
+			<text>UPS Status</text>
+			<url>/ups_status.php</url>
 		</tab>
 		<tab>
 			<text>NUT Settings</text>
@@ -675,8 +676,6 @@
 	<custom_php_resync_config_command>
 		sync_package_nut();	
 	</custom_php_resync_config_command>
-	<!-- Note: the 'pre' callback is used as we can't use 
-	custom_php_deinstall_command (it's not working in PFSense 2.3) -->
 	<custom_php_pre_deinstall_command>
 		deinstall_package_nut();
 	</custom_php_pre_deinstall_command>
