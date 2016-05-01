@@ -45,13 +45,13 @@ do-install:
 		${STAGEDIR}/etc/inc/priv
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/shortcuts/pkg_nut.inc \
 		${STAGEDIR}${PREFIX}/www/shortcuts
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/nut_status.php \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/ups_status.php \
 		${STAGEDIR}${PREFIX}/www
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/javascript/nut_ups_status.js \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/javascript/ups_status.js \
 		${STAGEDIR}${PREFIX}/www/widgets/javascript
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/widgets/nut_ups_status.widget.php \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/widgets/ups_status.widget.php \
 		${STAGEDIR}${PREFIX}/www/widgets/widgets
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/include/nut_ups_status.inc \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/include/ups_status.inc \
 		${STAGEDIR}${PREFIX}/www/widgets/include
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}

@@ -30,7 +30,7 @@
 global $shortcuts;
 
 $shortcuts['nut'] = array();
-$shortcuts['nut']['main'] = "/nut_status.php";
+$shortcuts['nut']['main'] = "/ups_status.php";
 $shortcuts['nut']['status'] = "/status_services.php";
 $shortcuts['nut']['service'] = "nut";
 ?>
