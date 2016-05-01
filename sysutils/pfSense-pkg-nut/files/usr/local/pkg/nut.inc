@@ -53,7 +53,7 @@ function nut_secs_to_hms($secs) {
 	return "{$h}h {$m}m {$s}s";
 }
 
-function nut_status_to_display_text($status, $html_colors=true) {	
+function nut_status_to_display_text($status) {	
 	$status = explode(' ', $status);
 	$ups_status_text = '';
 	foreach($status as $condition) {
