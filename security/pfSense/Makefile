@@ -77,6 +77,9 @@ NO_MTREE=	yes
 
 CONFLICTS=	pfSense-vmware-[0-9]*
 
+PLIST_FILES=	/etc/version.patch
+PLIST_DIRS=	/etc
+
 .include <bsd.port.pre.mk>
 
 .if (${ARCH} == "amd64" || ${ARCH} == "i386")
@@ -91,6 +94,8 @@ RUN_DEPENDS+=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/pfSense.so:devel/php56-pfSense-m
 		${PHPBASE}/lib/php/${PHP_EXT_DIR}/xdebug.so:devel/php-xdebug \
 		${PHPBASE}/lib/php/${PHP_EXT_DIR}/zmq.so:net/pecl-zmq
 
-do-install:	# empty
+do-install:
+	${MKDIR} ${STAGEDIR}/etc
+	${ECHO} ${PORTREVISION} > ${STAGEDIR}/etc/version.patch
 
 .include <bsd.port.post.mk>
