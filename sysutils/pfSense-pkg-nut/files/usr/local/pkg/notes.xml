@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	notes.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2008 Mark J Crane
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<description>Notes</description>
+	<name>Notes</name>
+	<title>Status: Notes</title>
+	<aftersaveredirect>/pkg.php?xml=notes.xml</aftersaveredirect>
+	<addedit_string>[notes] Successfully created/modified a note.</addedit_string>
+	<delete_string>[notes] Successfully deleted a note.</delete_string>
+	<menu>
+		<name>Notes</name>
+		<section>Status</section>
+		<configfile>notes.xml</configfile>
+		<url>/pkg.php?xml=notes.xml</url>
+	</menu>
+	<tabs>
+		<tab>
+			<text>Notes</text>
+			<url>/pkg.php?xml=notes.xml</url>
+			<active/>
+		</tab>
+	</tabs>
+	<configpath>installedpackages->package->$packagename->configuration->notes</configpath>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Title</fielddescr>
+			<fieldname>title</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Category</fielddescr>
+			<fieldname>category</fieldname>
+		</columnitem>
+	<addtext>Add a new note</addtext>
+	<edittext>Edit this note</edittext>
+	<deletetext>Delete this note</deletetext>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<fielddescr>Title</fielddescr>
+			<fieldname>title</fieldname>
+			<description>Enter the title.</description>
+			<type>input</type>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Category</fielddescr>
+			<fieldname>category</fieldname>
+			<description>Enter the category.</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Notes</fielddescr>
+			<fieldname>notes</fieldname>
+			<description></description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<size>30</size>
+			<cols>70</cols>
+			<rows>20</rows>
+			<required/>
+		</field>
+	</fields>
+</packagegui>
