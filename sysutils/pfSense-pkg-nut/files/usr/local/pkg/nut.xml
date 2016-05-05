@@ -80,7 +80,6 @@
 			<fielddescr>UPS Monitoring</fielddescr>
 			<fieldname>monitor</fieldname>
 			<type>select</type>
-			<required/>
 			<options>
 				<option>
 					<name>Disabled</name>
