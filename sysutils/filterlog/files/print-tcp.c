@@ -86,8 +86,11 @@ const struct tok ipproto_values[] = {
 #define TCPOPT_CCECHO           13      /* T/TCP CC options (rfc1644) */
 #define TCPOPT_SIGNATURE        19      /* Keyed MD5 (rfc2385) */
 #define    TCPOLEN_SIGNATURE            18
-#define TCPOPT_AUTH             20      /* Enhanced AUTH option */
+#define TCPOPT_SCPS             20      /* SCPS-TP (CCSDS 714.0-B-2) */
 #define TCPOPT_UTO              28      /* tcp user timeout (rfc5482) */
+#define TCPOPT_AUTH             29      /* Enhanced AUTH option (TCP-AO) (rfc5925) */
+
+/* https://www.iana.org/assignments/tcp-parameters/tcp-parameters.xhtml */
 
 struct tok tcp_option_values[] = {
         { TCPOPT_EOL, "eol" },
@@ -103,8 +106,9 @@ struct tok tcp_option_values[] = {
         { TCPOPT_CCNEW, "ccnew" },
         { TCPOPT_CCECHO, "" },
         { TCPOPT_SIGNATURE, "md5" },
-        { TCPOPT_AUTH, "enhanced auth" },
+        { TCPOPT_SCPS, "scps" },
         { TCPOPT_UTO, "uto" },
+        { TCPOPT_AUTH, "enhanced auth" },
         { 0, NULL }
 };
 
