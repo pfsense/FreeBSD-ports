@@ -86,8 +86,11 @@ const struct tok ipproto_values[] = {
 #define TCPOPT_CCECHO           13      /* T/TCP CC options (rfc1644) */
 #define TCPOPT_SIGNATURE        19      /* Keyed MD5 (rfc2385) */
 #define    TCPOLEN_SIGNATURE            18
-#define TCPOPT_AUTH             20      /* Enhanced AUTH option */
+#define TCPOPT_SCPS             20      /* SCPS-TP (CCSDS 714.0-B-2) */
 #define TCPOPT_UTO              28      /* tcp user timeout (rfc5482) */
+#define TCPOPT_AUTH             29      /* Enhanced AUTH option (TCP-AO) (rfc5925) */
+
+/* https://www.iana.org/assignments/tcp-parameters/tcp-parameters.xhtml */
 
 struct tok tcp_option_values[] = {
         { TCPOPT_EOL, "eol" },
@@ -103,8 +106,9 @@ struct tok tcp_option_values[] = {
         { TCPOPT_CCNEW, "ccnew" },
         { TCPOPT_CCECHO, "" },
         { TCPOPT_SIGNATURE, "md5" },
-        { TCPOPT_AUTH, "enhanced auth" },
+        { TCPOPT_SCPS, "scps" },
         { TCPOPT_UTO, "uto" },
+        { TCPOPT_AUTH, "enhanced auth" },
         { 0, NULL }
 };
 
@@ -183,12 +187,13 @@ tcp_print(struct sbuf *sbuf, register const u_char *bp, register u_int length,
          */
         if (hlen > sizeof(*tp)) {
                 register const u_char *cp;
-                register u_int opt, datalen;
-                register u_int len;
 
                 hlen -= sizeof(*tp);
                 cp = (const u_char *)tp + sizeof(*tp);
-                while (hlen > 0) {
+
+		while (hlen > 0) {
+			register u_int opt, len;
+
                         if (ch != '\0')
                                 sbuf_printf(sbuf, "%c", ch);
                         opt = *cp++;
@@ -201,19 +206,17 @@ tcp_print(struct sbuf *sbuf, register const u_char *bp, register u_int length,
                                 --hlen;		/* account for length byte */
                         }
                         --hlen;			/* account for type byte */
-                        datalen = 0;
+			register u_int datalen = 0;
 
                         sbuf_printf(sbuf, "%s", code2str(tcp_option_values, "Unknown Option %u", opt));
 
 			switch (opt) {
                         case TCPOPT_MAXSEG:
+                        case TCPOPT_UTO:
                                 datalen = 2;
                                 break;
                         case TCPOPT_WSCALE:
                                 datalen = 1;
-                                break;
-                        case TCPOPT_SACK:
-                                datalen = len - 2;
                                 break;
                         case TCPOPT_CC:
                         case TCPOPT_CCNEW:
@@ -228,19 +231,10 @@ tcp_print(struct sbuf *sbuf, register const u_char *bp, register u_int length,
                         case TCPOPT_SIGNATURE:
                                 datalen = TCP_SIGLEN;
                                 break;
-                        case TCPOPT_AUTH:
-                                datalen = len - 3;
-                                break;
                         case TCPOPT_EOL:
                         case TCPOPT_NOP:
                         case TCPOPT_SACKOK:
-                                /*
-                                 * Nothing interesting.
-                                 * fall through
-                                 */
-                                break;
-                        case TCPOPT_UTO:
-                                datalen = 2;
+				/* No data follows option */
                                 break;
                         default:
                                 datalen = len - 2;
@@ -251,18 +245,11 @@ tcp_print(struct sbuf *sbuf, register const u_char *bp, register u_int length,
                         cp += datalen;
                         hlen -= datalen;
 
-                        /* Check specification against observed length */
-                        ++datalen;			/* option octet */
-                        if (!ZEROLENOPT(opt))
-                                ++datalen;		/* size octet */
                         ch = ';';
                         if (opt == TCPOPT_EOL)
                                 break;
                 }
         }
-
-        if (length <= 0)
-                return;
 
         return;
  bad:
