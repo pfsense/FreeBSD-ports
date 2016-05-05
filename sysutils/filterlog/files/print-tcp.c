@@ -211,13 +211,11 @@ tcp_print(struct sbuf *sbuf, register const u_char *bp, register u_int length,
 
 			switch (opt) {
                         case TCPOPT_MAXSEG:
+                        case TCPOPT_UTO:
                                 datalen = 2;
                                 break;
                         case TCPOPT_WSCALE:
                                 datalen = 1;
-                                break;
-                        case TCPOPT_SACK:
-                                datalen = len - 2;
                                 break;
                         case TCPOPT_CC:
                         case TCPOPT_CCNEW:
@@ -232,19 +230,10 @@ tcp_print(struct sbuf *sbuf, register const u_char *bp, register u_int length,
                         case TCPOPT_SIGNATURE:
                                 datalen = TCP_SIGLEN;
                                 break;
-                        case TCPOPT_AUTH:
-                                datalen = len - 3;
-                                break;
                         case TCPOPT_EOL:
                         case TCPOPT_NOP:
                         case TCPOPT_SACKOK:
-                                /*
-                                 * Nothing interesting.
-                                 * fall through
-                                 */
-                                break;
-                        case TCPOPT_UTO:
-                                datalen = 2;
+				/* No data follows option */
                                 break;
                         default:
                                 datalen = len - 2;
@@ -255,18 +244,11 @@ tcp_print(struct sbuf *sbuf, register const u_char *bp, register u_int length,
                         cp += datalen;
                         hlen -= datalen;
 
-                        /* Check specification against observed length */
-                        ++datalen;			/* option octet */
-                        if (!ZEROLENOPT(opt))
-                                ++datalen;		/* size octet */
                         ch = ';';
                         if (opt == TCPOPT_EOL)
                                 break;
                 }
         }
-
-        if (length <= 0)
-                return;
 
         return;
  bad:
