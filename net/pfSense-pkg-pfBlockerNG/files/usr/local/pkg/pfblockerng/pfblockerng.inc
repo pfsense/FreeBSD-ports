@@ -4676,7 +4676,10 @@ function sync_package_pfblockerng($cron='') {
 		} elseif ($pfb['interval'] == 24) {
 			$pfb_hour = $pfb['24hour'];
 		} else {
-			$pfb_hour = implode(',', pfb_cron_base_hour());
+			$pfb_cronbase_hour = pfb_cron_base_hour();
+			if (is_array($pfb_cronbase_hour)) {
+				$pfb_hour = implode(',', $pfb_cronbase_hour);
+			}
 		}
 
 		$pfb_mday	= '*';
