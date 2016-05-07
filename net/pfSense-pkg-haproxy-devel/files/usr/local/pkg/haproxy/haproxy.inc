@@ -1489,9 +1489,12 @@ function haproxy_writeconf($configpath) {
 			foreach($a_resolvers as $resolver) {
 				fwrite ($fd, "\tnameserver {$resolver['name']} {$resolver['server']}:{$resolver['port']}\n");
 			}
-			fwrite ($fd, "\tresolve_retries {$a_global['resolver_retries']}\n");
-			fwrite ($fd, "\ttimeout retry {$a_global['resolver_timeoutretry']}\n");
-			fwrite ($fd, "\thold valid {$a_global['resolver_holdvalid']}\n");
+			$tmp = !empty($a_global['resolver_retries']) ? $a_global['resolver_retries'] : '3';
+			fwrite ($fd, "\tresolve_retries {$tmp}\n");
+			$tmp = !empty($a_global['resolver_timeoutretry']) ? $a_global['resolver_timeoutretry'] : '1s';
+			fwrite ($fd, "\ttimeout retry {$tmp}\n");
+			$tmp = !empty($a_global['resolver_holdvalid']) ? $a_global['resolver_holdvalid'] : '10s';
+			fwrite ($fd, "\thold valid {$tmp}\n");
 			fwrite ($fd, "\n");
 		}
 	}
@@ -2137,24 +2140,26 @@ function haproxy_plugin_certificates($pluginparams) {
 		$result['pkgname'] = "HAProxy";
 		$result['certificatelist'] = array();
 		// return a array of used certificates.
-		foreach($config['installedpackages']['haproxy']['ha_backends']['item'] as &$frontend) {
-			if (get_frontend_uses_ssl($frontend)) {
-				if ($frontend['secondary'] != 'yes' || $frontend['ssloffload'])
-					// primary or secondary with additional certs checkbox
-
-					if ($frontend['ssloffloadcert']){
-						$item = array();
-						$cert = $frontend['ssloffloadcert'];
-						$item['usedby'] = $frontend['name'];
-						$result['certificatelist'][$cert][] = $item;
-					}
-					if ($frontend['ha_certificates'] && is_array($frontend['ha_certificates']['item'])) {
-					foreach($frontend['ha_certificates']['item'] as $certref){
-						if ($certref['ssl_certificate']){
+		if (is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
+			foreach($config['installedpackages']['haproxy']['ha_backends']['item'] as &$frontend) {
+				if (get_frontend_uses_ssl($frontend)) {
+					if ($frontend['secondary'] != 'yes' || $frontend['ssloffload']) {
+						// primary or secondary with additional certs checkbox
+						if ($frontend['ssloffloadcert']){
 							$item = array();
-							$cert = $certref['ssl_certificate'];
+							$cert = $frontend['ssloffloadcert'];
 							$item['usedby'] = $frontend['name'];
 							$result['certificatelist'][$cert][] = $item;
+						}
+						if ($frontend['ha_certificates'] && is_array($frontend['ha_certificates']['item'])) {
+							foreach($frontend['ha_certificates']['item'] as $certref) {
+								if ($certref['ssl_certificate']) {
+									$item = array();
+									$cert = $certref['ssl_certificate'];
+									$item['usedby'] = $frontend['name'];
+									$result['certificatelist'][$cert][] = $item;
+								}
+							}
 						}
 					}
 				}
