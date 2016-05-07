@@ -184,7 +184,7 @@ if ($pfb['enable'] == 'on') {
 		}
 	}
 	elseif ($pfb['interval'] == 24) {
-		$cron_hour_next = $cron_hour_begin = !empty($pfb['24hour']) ?: '00';
+		$cron_hour_next = $cron_hour_begin = $pfb['24hour'] ?: '00';
 	}
 	else {
 		// Find next cron hour schedule
