@@ -1,0 +1,10 @@
+pkg/nut.xml
+pkg/nut.inc
+/etc/inc/priv/nut.priv.inc
+www/ups_status.php
+www/shortcuts/pkg_nut.inc
+www/widgets/javascript/ups_status.js
+www/widgets/widgets/ups_status.widget.php
+www/widgets/include/ups_status.inc
+%%DATADIR%%/info.xml
+@dir /etc/inc/priv
