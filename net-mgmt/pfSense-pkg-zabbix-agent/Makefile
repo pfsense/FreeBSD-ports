@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-zabbix-agent
 PORTVERSION=	0.8.9
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +13,7 @@ COMMENT=	pfSense package zabbix-agent
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/zabbix_agent:net-mgmt/zabbix22-agent
+RUN_DEPENDS=	${LOCALBASE}/sbin/zabbix_agentd:net-mgmt/zabbix3-agent
 
 NO_BUILD=	yes
 NO_MTREE=	yes
