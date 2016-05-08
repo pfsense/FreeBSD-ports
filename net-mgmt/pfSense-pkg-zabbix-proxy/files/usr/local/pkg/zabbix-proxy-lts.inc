@@ -32,11 +32,12 @@ require_once("util.inc");
 require_once("functions.inc");
 require_once("pkg-utils.inc");
 require_once("globals.inc");
+require_once("certs.inc");
 
 define('ZABBIX_PROXY_BASE', '/usr/local');
 
 function php_deinstall_zabbix_proxy_lts() {
-	unlink_if_exists(ZABBIX_PROXY_BASE . "/etc/zabbix22/zabbix_proxy_lts.conf");
+	unlink_if_exists(ZABBIX_PROXY_BASE . "/etc/zabbix3/zabbix_proxy_lts.conf");
 	unlink_if_exists("/var/log/zabbix-proxy-lts/zabbix_proxy_lts.log");
 	unlink_if_exists("/var/run/zabbix-proxy-lts/zabbix_proxy_lts.pid");
 
@@ -84,6 +85,44 @@ function sync_package_zabbix_proxy_lts() {
 		if ($zbproxy_config['proxyenabled'] == "on") {
 			$Mode = (is_numericint($zbproxy_config['proxymode']) ? $zbproxy_config['proxymode'] : 0);
 			$AdvancedParams = base64_decode($zbproxy_config['advancedparams']);
+			$TLSConnect = $zbproxy_config['tlsconnect'];
+			$TLSAccept = $zbproxy_config['tlsaccept'] ?: "unencrypted";
+
+			if ($zbproxy_config['tlscaso']) {
+				$TlsCAfile = "TLSCAFile=/usr/local/etc/ssl/cert.pem";
+			} else {
+				if ($zbproxy_config['tlscafile'] != "none") {
+					$ca = lookup_ca($zbproxy_config['tlscafile']);
+					zabbix_add_keyfile($ca['crt'], "ca");
+					$TlsCAfile = "TLSCAFile=/usr/local/etc/zabbix3/zabbix_proxy.ca";
+				}
+			}
+
+			if ($zbproxy_config['tlscrlfile'] != "none") {
+				$crl = lookup_crl($zbproxy_config['tlscrlfile']);
+				crl_update($crl);
+				zabbix_add_keyfile($crl['text'], "crl-verify");
+				$TlsCRLfile = "TLSCRLFile=/usr/local/etc/zabbix3/zabbix_proxy.crl-verify";
+			}
+
+			if ($zbproxy_config['tlscertfile'] != "none") {
+				$cert = lookup_cert($zbproxy_config['tlscertfile']);
+
+				zabbix_add_keyfile($cert['crt'], "cert");
+				$TlsCERTfile = "TLSCertFile=/usr/local/etc/zabbix3/zabbix_proxy.cert";
+
+				zabbix_add_keyfile($cert['prv'], "key");
+				$TlsKEYfile = "TLSKeyFile=/usr/local/etc/zabbix3/zabbix_proxy.key";
+			}
+
+			if (! empty($zbproxy_config['tlspskidentity']) ) {
+				$TLSPSKIdentity = "TLSPSKIdentity={$zbproxy_config['tlspskidentity']}";
+			}
+
+			if (! empty($zbproxy_config['tlspskfile']) ) {
+				zabbix_add_keyfile($zbproxy_config['tlspskfile'], "psk");
+				$TLSPSKFile = "TLSPSKFile=/usr/local/etc/zabbix3/zabbix_proxy.psk";
+			}
 
 			$zbproxy_conf_file = <<< EOF
 Server={$zbproxy_config['server']}
@@ -98,10 +137,18 @@ FpingLocation=/usr/local/sbin/fping
 # but if there was, the binary would likely also be in /usr/local/sbin.
 Fping6Location=/usr/local/sbin/fping6
 ProxyMode={$Mode}
+TLSConnect={$TLSConnect}
+TLSAccept={$TLSAccept}
+{$TlsCAfile}
+{$TlsCRLfile}
+{$TlsCERTfile}
+{$TlsKEYfile}
+{$TLSPSKIdentity}
+{$TLSPSKFile}
 {$AdvancedParams}
 
 EOF;
-			file_put_contents(ZABBIX_PROXY_BASE . "/etc/zabbix22/zabbix_proxy.conf", strtr($zbproxy_conf_file, array("\r" => "")));
+			file_put_contents(ZABBIX_PROXY_BASE . "/etc/zabbix3/zabbix_proxy.conf", strtr($zbproxy_conf_file, array("\r" => "")));
 		}
 	}
 
@@ -153,8 +200,8 @@ EOF;
 
 	// Check startup script files
 	// Create a few directories and ensure the sample files are in place
-	if (!is_dir(ZABBIX_PROXY_BASE . "/etc/zabbix22")) {
-		mwexec("/bin/mkdir -p " . ZABBIX_PROXY_BASE . "/etc/zabbix22");
+	if (!is_dir(ZABBIX_PROXY_BASE . "/etc/zabbix3")) {
+		mwexec("/bin/mkdir -p " . ZABBIX_PROXY_BASE . "/etc/zabbix3");
 	}
 
 	$dir_checks = <<< EOF
@@ -216,6 +263,16 @@ EOF;
 	}
 
 	conf_mount_ro();
+}
+
+// Based on openvpn_add_keyfile() function
+function zabbix_add_keyfile(& $data, $directive) {
+
+	$fpath = "/usr/local/etc/zabbix3/zabbix_proxy.{$directive}";
+
+	file_put_contents($fpath, base64_decode($data));
+	@chmod($fpath, 0600);
+	@chown($fpath, "zabbix");
 }
 
 ?>
