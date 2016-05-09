@@ -279,19 +279,43 @@ foreach($a_acltypes as $key => $action) {
 }
 
 function customdrawcell_actions($object, $item, $itemvalue, $editable, $itemname, $counter) {
+	$result = "";
 	if ($editable) {
-		$object->haproxy_htmllist_drawcell($item, $itemvalue, $editable, $itemname, $counter);
+		$result = $object->haproxy_htmllist_drawcell($item, $itemvalue, $editable, $itemname, $counter);
 	} else {
-		echo $itemvalue;
+		$result = $itemvalue;
 	}
+	return $result;
 }
 
+function fields_details_showfieldfunction($items, $action,  $itemname) {
+	if (is_array($items[$action]) && is_array($items[$action]['fields'])) {
+		foreach($items[$action]['fields'] as $item) {
+			if ($action . "" . $item['name'] == $itemname) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+function fields_acls_details_showfieldfunction($htmltable, $itemname, $values) {
+	$items = $htmltable->fields[1]['items'];
+	$action = $values['expression'];
+	return fields_details_showfieldfunction($items, $action, $itemname);
+}
 $htmllist_acls = new HaproxyHtmlList("table_acls", $fields_aclSelectionList);
 $htmllist_acls->fields_details = $fields_acl_details;
+$htmllist_acls->fields_details_showfieldfunction = fields_acls_details_showfieldfunction;
 $htmllist_acls->editmode = true;
 
+function fields_actions_details_showfieldfunction($htmltable, $itemname, $values) {
+	$items = $htmltable->fields[0]['items'];
+	$action = $values['action'];
+	return fields_details_showfieldfunction($items, $action, $itemname);
+}
 $htmllist_actions = new HaproxyHtmlList("table_actions", $fields_actions);
 $htmllist_actions->fields_details = $fields_actions_details;
+$htmllist_actions->fields_details_showfieldfunction = fields_actions_details_showfieldfunction;
 $htmllist_actions->keyfield = "name";
 
 
@@ -1081,7 +1105,7 @@ print $form;
 	</form>
 <br/>
 <script type="text/javascript">
-<?
+<?php
 	phparray_to_javascriptarray($fields_servers_details,"fields_details_servers",Array('/*','/*/name','/*/type'));
 	phparray_to_javascriptarray($a_checktypes,"checktypes",Array('/*','/*/name','/*/descr'));
 	phparray_to_javascriptarray($a_cookiemode,"cookiemode",Array('/*','/*/name','/*/descr'));
@@ -1098,16 +1122,16 @@ print $form;
 	$htmllist_acls->outputjavascript();
 	$htmllist_actions->outputjavascript();
 ?>
-	browser_InnerText_support = (document.getElementsByTagName("body")[0].innerText != undefined) ? true : false;
+	browser_InnerText_support = (document.getElementsByTagName("body")[0].innerText !== undefined) ? true : false;
 	
 	totalrows =  <?php echo $counter; ?>;
 	
 	function table_acls_listitem_change(tableId, fieldId, rowNr, field) {
-		if (fieldId = "toggle_details") {
+		if (fieldId === "toggle_details") {
 			fieldId = "expression";
 			field = d.getElementById(tableId+"expression"+rowNr);
 		}
-		if (fieldId = "expression") {
+		if (fieldId === "expression") {
 			var actiontype = field.value;
 			
 			var table = d.getElementById(tableId);
@@ -1119,7 +1143,7 @@ print $form;
 					var rowid = "tr_edititemdetails_"+rowNr+"_"+actionkey+fieldname;
 					var element = d.getElementById(rowid);
 					
-					if (actionkey == actiontype)
+					if (actionkey === actiontype)
 						element.style.display = '';
 					else
 						element.style.display = 'none';
@@ -1129,11 +1153,11 @@ print $form;
 	}
 	
 	function table_actions_listitem_change(tableId, fieldId, rowNr, field) {
-		if (fieldId = "toggle_details") {
+		if (fieldId === "toggle_details") {
 			fieldId = "action";
 			field = d.getElementById(tableId+"action"+rowNr);
 		}
-		if (fieldId = "action") {
+		if (fieldId === "action") {
 			var actiontype = field.value;
 			
 			var table = d.getElementById(tableId);
@@ -1145,7 +1169,7 @@ print $form;
 					var rowid = "tr_edititemdetails_"+rowNr+"_"+actionkey+fieldname;
 					var element = d.getElementById(rowid);
 					
-					if (actionkey == actiontype)
+					if (actionkey === actiontype)
 						element.style.display = '';
 					else
 						element.style.display = 'none';

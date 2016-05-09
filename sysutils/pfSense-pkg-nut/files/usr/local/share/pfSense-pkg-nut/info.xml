@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>nut</name>
+		<descr><![CDATA[Network UPS Tools]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>nut.xml</configurationfile>
+	</package>
+</pfsensepkgs>

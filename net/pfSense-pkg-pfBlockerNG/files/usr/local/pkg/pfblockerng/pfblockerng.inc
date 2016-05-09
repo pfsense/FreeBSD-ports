@@ -187,10 +187,10 @@ function pfb_global() {
 	$pfb['supp']		= $pfb['config']['suppression'];		// Enable Suppression
 	$pfb['logmax']		= $pfb['config']['log_maxlines'];		// Max lines in pfblockerng.log file
 	$pfb['cc']		= $pfb['config']['database_cc'];		// Disable Country database CRON updates
-	$pfb['min']		= $pfb['config']['pfb_min'];			// User defined CRON start minute
-	$pfb['hour']		= $pfb['config']['pfb_hour'];			// Start hour of the scheduler
-	$pfb['interval']	= $pfb['config']['pfb_interval'];		// Hour cycle for scheduler
-	$pfb['24hour']		= $pfb['config']['pfb_dailystart'];		// Start hour of the 'Once a day' schedule
+	$pfb['min']		= $pfb['config']['pfb_min']		?: '0';	// User defined CRON start minute
+	$pfb['hour']		= $pfb['config']['pfb_hour']		?: '0';	// Start hour of the scheduler
+	$pfb['interval']	= $pfb['config']['pfb_interval']	?: '1';	// Hour cycle for scheduler
+	$pfb['24hour']		= $pfb['config']['pfb_dailystart']	?: '0';	// Start hour of the 'Once a day' schedule
 	$pfb['iplocal']		= $config['interfaces']['lan']['ipaddr'];	// Lan IP address
 	$pfb['dnsbl']		= $pfb['dnsblconfig']['pfb_dnsbl'];		// Enabled state of DNSBL
 	$pfb['dnsbl_port']	= $pfb['dnsblconfig']['pfb_dnsport'];		// Lighttpd web server http port setting
@@ -3158,11 +3158,6 @@ function sync_package_pfblockerng($cron='') {
 			@file_put_contents("{$pfb['aliasdir']}/pfB_DNSBLIP.txt", "1.1.1.1\n", LOCK_EX);
 		}
 	}
-	else {
-		// Remove 'DNSBLIP' aliastable and files
-		exec("{$pfb['pfctl']} -t pfB_DNSBLIP -T kill 2>&1", $result);
-		unlink_if_exists("{$pfb['aliasdir']}/pfB_DNSBLIP.txt");
-	}
 
 	#########################################
 	#	UPDATE Unbound DNS Database	#
@@ -3261,10 +3256,6 @@ function sync_package_pfblockerng($cron='') {
 
 			// Remove DNSBL NAT, VIP and lighttpd service
 			pfb_create_dnsbl('disable');
-
-			// Remove 'DNSBL_IPs' aliastable
-			exec("{$pfb['pfctl']} -t pfB_DNSBLIP -T kill 2>&1", $result);
-			unlink_if_exists("{$pfb['aliasdir']}/pfB_DNSBLIP.txt");
 		}
 
 
@@ -4365,6 +4356,11 @@ function sync_package_pfblockerng($cron='') {
 			foreach ($pfb_tables as $pfb_table) {
 				exec("{$pfb['pfctl']} -t {$pfb_table} -T kill 2>&1", $result);
 			}
+		}
+
+		// When DNSBL is disabled and not during an installation.
+		if ($pfb['dnsbl'] == '' && !$pfb['install']) {
+			unlink_if_exists("{$pfb['aliasdir']}/pfB_DNSBLIP.txt");
 		}
 
 		filter_configure();		// Load filter_configure which will create the pfctl tables

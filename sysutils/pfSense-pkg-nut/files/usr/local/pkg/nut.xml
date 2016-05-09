@@ -1,0 +1,681 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	nut.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2009-2015 ESF, LLC
+	Copyright (C) 2016 Sander Peterse <sander.peterse88@gmail.com>
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<name>nut</name>
+	<version>2.3.0</version>
+	<title>Services: NUT</title>
+	<savetext>Change</savetext>
+	<aftersaveredirect>/ups_status.php</aftersaveredirect>
+	<include_file>/usr/local/pkg/nut.inc</include_file>
+	<menu>
+		<name>NUT</name>
+		<tooltiptext>Set Network UPS Tools settings.</tooltiptext>
+		<section>Services</section>
+		<url>/ups_status.php</url>
+	</menu>
+	<service>
+		<name>nut</name>
+		<rcfile>nut.sh</rcfile>
+		<executable>upsmon</executable>
+		<description>UPS monitoring daemon</description>
+	</service>
+	<tabs>
+		<tab>
+			<text>UPS Status</text>
+			<url>/ups_status.php</url>
+		</tab>
+		<tab>
+			<text>NUT Settings</text>
+			<url>/pkg_edit.php?xml=nut.xml</url>
+			<active/>
+		</tab>
+	</tabs>
+	<advanced_options>enabled</advanced_options>
+	<fields>
+		<field>
+			<name>General Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>UPS Monitoring</fielddescr>
+			<fieldname>monitor</fieldname>
+			<type>select</type>
+			<options>
+				<option>
+					<name>Disabled</name>
+					<value></value>
+				</option>
+				<option>
+					<name>Local UPS</name>
+					<value>local</value>
+				</option>
+				<option>
+					<name>Remote SNMP UPS</name>
+					<value>snmp</value>
+				</option>
+				<option>
+					<name>Remote NUT UPS</name>
+					<value>remote</value>
+				</option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Power Down Instead of Halt</fielddescr>
+			<fieldname>powerdown</fieldname>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>ups.conf options</fielddescr>
+			<fieldname>custom_upsconf</fieldname>
+			<description>Write there any custom options for ups.conf. All options must be separated by semi-colons (;).</description>
+			<type>textarea</type>
+			<cols>65</cols>
+			<rows>5</rows>
+			<advancedfield/>
+		</field>
+		<field>
+			<fielddescr>upsd.conf options</fielddescr>
+			<fieldname>custom_upsdconf</fieldname>
+			<description>Write there any custom options for upsd.conf. All options must be separated by semi-colons (;).</description>
+			<type>textarea</type>
+			<cols>65</cols>
+			<rows>5</rows>
+			<advancedfield/>
+		</field>
+		<field>
+			<fielddescr>upsd.users options</fielddescr>
+			<fieldname>custom_upsdusers</fieldname>
+			<description>Write there any custom options for upsd.users. All options must be separated by semi-colons (;).</description>
+			<type>textarea</type>
+			<cols>65</cols>
+			<rows>5</rows>
+			<advancedfield/>
+		</field>
+		<field>
+			<fielddescr>upsmon.conf options</fielddescr>
+			<fieldname>custom_upsmonconf</fieldname>
+			<description>Write there any custom options for upsmon.conf. All options must be separated by semi-colons (;).</description>
+			<type>textarea</type>
+			<cols>65</cols>
+			<rows>5</rows>
+			<advancedfield/>
+		</field>		
+		<field>
+			<name>Remote Access Settings - Used for Local and SNMP Types to allow access</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Remote Access Address</fielddescr>
+			<description>NOTE: Previous versions of NUT supported internal ACLs, these no longer work. The new default is to bind to localhost ONLY - you should add NAT rules for the NUT port (3493) to allow remote access. This field no longer has any effect, but was left intact for reference.</description>
+			<fieldname>allowaddr</fieldname>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Remote Access User</fielddescr>
+			<fieldname>allowuser</fieldname>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Remote Acces Password</fielddescr>
+			<fieldname>allowpass</fieldname>
+			<type>password</type>
+		</field>
+		<field>
+			<name>Local UPS Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Local UPS Name</fielddescr>
+			<fieldname>name</fieldname>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Local UPS Model</fielddescr>
+			<fieldname>driver</fieldname>
+			<description>If generic or cable specified in parenthesis you need to select the appropriate option below.</description>
+			<type>select</type>
+			<options>
+				<option>
+					<name>APC Back-UPS (Generic)</name>
+					<value>genericups00</value>
+				</option>
+				<option>
+					<name>APC Back-UPS RS (Generic)</name>
+					<value>genericups01</value>
+				</option>
+				<option>
+					<name>APC Back-UPS Pro (Cable)</name>
+					<value>apcsmart00</value>
+				</option>
+				<option>
+					<name>APC Smart-UPS (Cable)</name>
+					<value>apcsmart01</value>
+				</option>
+				<option>
+					<name>APC Matrix-UPS</name>
+					<value>apcsmart02</value>
+				</option>
+				<option>
+					<name>APC Masterswitch (Generic)</name>
+					<value>genericups02</value>
+				</option>
+				<option>
+					<name>APC Back-UPS USB</name>
+					<value>usbhid-ups00</value>
+				</option>
+				<option>
+					<name>APC Back-UPS LS USB</name>
+					<value>usbhid-ups01</value>
+				</option>
+				<option>
+					<name>APC Back-UPS ES USB</name>
+					<value>usbhid-ups02</value>
+				</option>
+				<option>
+					<name>APC Back-UPS RS USB</name>
+					<value>usbhid-ups03</value>
+				</option>
+				<option>
+					<name>APC Back-UPS Pro USB</name>
+					<value>usbhid-ups04</value>
+				</option>
+				<option>
+					<name>APC Smart-UPS USB</name>
+					<value>usbhid-ups05</value>
+				</option>
+				<option>
+					<name>Belkin Regulator Pro</name>
+					<value>belkin00</value>
+				</option>
+				<option>
+					<name>Belkin Universal UPS</name>
+					<value>belkinunv00</value>
+				</option>
+				<option>
+					<name>Belkin Universal UPS USB</name>
+					<value>usbhid-ups06</value>
+				</option>
+				<option>
+					<name>Best Power Fortress</name>
+					<value>bestups00</value>
+				</option>
+				<option>
+					<name>Best Power Fortress Telecom</name>
+					<value>bestups01</value>
+				</option>
+				<option>
+					<name>Best Power Axxium Rackmount</name>
+					<value>bestups02</value>
+				</option>
+				<option>
+					<name>Best Power Patriot Pro</name>
+					<value>bestups03</value>
+				</option>
+				<option>
+					<name>Best Power Patriot (Generic/Cable)</name>
+					<value>genericups03</value>
+				</option>
+				<option>
+					<name>Best Power Micro-Ferrups</name>
+					<value>bestuferrups00</value>
+				</option>
+				<option>
+					<name>Best Power Fortress/Ferrups</name>
+					<value>bestfcom00</value>
+				</option>
+				<option>
+					<name>Compaq R3000h</name>
+					<value>upscode200</value>
+				</option>
+				<option>
+					<name>Cyber Power Systems 320AVR</name>
+					<value>cyberpower00</value>
+				</option>
+				<option>
+					<name>Cyber Power Systems 500AVR</name>
+					<value>cyberpower01</value>
+				</option>
+				<option>
+					<name>Cyber Power Systems 650AVR</name>
+					<value>cyberpower02</value>
+				</option>
+				<option>
+					<name>Cyber Power Systems 700AVR</name>
+					<value>cyberpower03</value>
+				</option>
+				<option>
+					<name>Cyber Power Systems 800AVR</name>
+					<value>cyberpower04</value>
+				</option>
+				<option>
+					<name>Cyber Power Systems 850AVR</name>
+					<value>cyberpower05</value>
+				</option>
+				<option>
+					<name>Cyber Power Systems 900AVR</name>
+					<value>cyberpower06</value>
+				</option>
+				<option>
+					<name>Cyber Power Systems 1250AVR</name>
+					<value>cyberpower07</value>
+				</option>
+				<option>
+					<name>Cyber Power Systems 1500AVR</name>
+					<value>cyberpower08</value>
+				</option>
+				<option>
+					<name>Fiskars PowerRite MAX</name>
+					<value>upscode201</value>
+				</option>
+				<option>
+					<name>Fiskars PowerServer 10</name>
+					<value>upscode202</value>
+				</option>
+				<option>
+					<name>Fiskars PowerServer 30</name>
+					<value>upscode203</value>
+				</option>
+				<option>
+					<name>Fiskars 9200 UPS Information Unit</name>
+					<value>upscode204</value>
+				</option>
+				<option>
+					<name>Generic USB UPS (Blazer)</name>
+					<value>blazer_usb01</value>
+				</option>
+				<option>
+					<name>Inform GUARD Line Interactive</name>
+					<value>powercom00</value>
+				</option>
+				<option>
+					<name>Meta System HF Line</name>
+					<value>metasys00</value>
+				</option>
+				<option>
+					<name>Meta System HF Millennium</name>
+					<value>metasys01</value>
+				</option>
+				<option>
+					<name>Meta System HF TOP Line</name>
+					<value>metasys02</value>
+				</option>
+				<option>
+					<name>Meta System ECO Network</name>
+					<value>metasys03</value>
+				</option>
+				<option>
+					<name>Meta System ECO</name>
+					<value>metasys04</value>
+				</option>
+				<option>
+					<name>Meta System ally HF</name>
+					<value>metasys05</value>
+				</option>
+				<option>
+					<name>Meta System Megaline</name>
+					<value>metasys06</value>
+				</option>
+				<option>
+					<name>MGE UPS SYSTEMS NOVA AVR</name>
+					<value>mge-shut00</value>
+				</option>
+				<option>
+					<name>MGE UPS SYSTEMS Pulsar Ellipse</name>
+					<value>mge-shut01</value>
+				</option>
+				<option>
+					<name>MGE UPS SYSTEMS Ellipse Office</name>
+					<value>mge-shut02</value>
+				</option>
+				<option>
+					<name>MGE UPS SYSTEMS Pulsar EXtreme</name>
+					<value>mge-shut03</value>
+				</option>
+				<option>
+					<name>MGE UPS SYSTEMS Comet</name>
+					<value>mge-shut04</value>
+				</option>
+				<option>
+					<name>MGE UPS SYSTEMS Pulsar Esprit</name>
+					<value>mge-shut05</value>
+				</option>
+				<option>
+					<name>MGE UPS SYSTEMS Evolution</name>
+					<value>mge-shut06</value>
+				</option>
+				<option>
+					<name>MGE UPS SYSTEMS Comet USB</name>
+					<value>usbhid-ups07</value>
+				</option>
+				<option>
+					<name>MGE UPS SYSTEMS Protection Center USB</name>
+					<value>usbhid-ups08</value>
+				</option>
+				<option>
+					<name>MGE UPS SYSTEMS NOVA AVR USB</name>
+					<value>usbhid-ups09</value>
+				</option>
+				<option>
+					<name>MGE UPS SYSTEMS Pulsar Ellipse USB</name>
+					<value>usbhid-ups10</value>
+				</option>
+				<option>
+					<name>MGE UPS SYSTEMS Ellipse Office USB</name>
+					<value>usbhid-ups11</value>
+				</option>
+				<option>
+					<name>MGE UPS SYSTEMS Pulsar Evolution USB</name>
+					<value>usbhid-ups12</value>
+				</option>
+				<option>
+					<name>MGE UPS SYSTEMS Evolution USB</name>
+					<value>usbhid-ups13</value>
+				</option>
+				<option>
+					<name>MGE UPS SYSTEMS Pulsar USB</name>
+					<value>usbhid-ups14</value>
+				</option>
+				<option>
+					<name>MicroDowell B.Box BP</name>
+					<value>cpsups00</value>
+				</option>
+				<option>
+					<name>Microsol Solis</name>
+					<value>solis00</value>
+				</option>
+				<option>
+					<name>Microsol Rhino</name>
+					<value>rhino00</value>
+				</option>
+				<option>
+					<name>Mustek Various</name>
+					<value>megatec00</value>
+				</option>
+				<option>
+					<name>Mustek Powermust</name>
+					<value>megatec01</value>
+				</option>
+				<option>
+					<name>Mustek Powermust USB</name>
+					<value>megatec02</value>
+				</option>
+				<option>
+					<name>Powercom SMK</name>
+					<value>megatec03</value>
+				</option>
+				<option>
+					<name>Powercom ULT</name>
+					<value>megatec04</value>
+				</option>
+				<option>
+					<name>Powercom Trust</name>
+					<value>powercom01</value>
+				</option>
+				<option>
+					<name>Powercom Various</name>
+					<value>powercom02</value>
+				</option>
+				<option>
+					<name>Powerware 9110</name>
+					<value>upscode205</value>
+				</option>
+				<option>
+					<name>Powerware 9120</name>
+					<value>upscode206</value>
+				</option>
+				<option>
+					<name>Powerware 9150</name>
+					<value>upscode207</value>
+				</option>
+				<option>
+					<name>Powerware 9305</name>
+					<value>upscode208</value>
+				</option>
+				<option>
+					<name>Tripp-Lite SmartUPS</name>
+					<value>tripplite00</value>
+				</option>
+				<option>
+					<name>Tripp-Lite SmartOnline</name>
+					<value>tripplitesu00</value>
+				</option>
+				<option>
+					<name>Tripp-Lite AVR USB</name>
+					<value>usbhid-ups15</value>
+				</option>
+				<option>
+					<name>Tripp-Lite OMNI USB</name>
+					<value>usbhid-ups16</value>
+				</option>
+				<option>
+					<name>Tripp-Lite OMNIVUS USB</name>
+					<value>tripplite_usb00</value>
+				</option>
+				<option>
+					<name>Tripp-Lite SMART USB</name>
+					<value>tripplite_usb01</value>
+				</option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Local UPS Port</fielddescr>
+			<fieldname>port</fieldname>
+			<type>select</type>
+			<options>
+				<option>
+					<name>auto (USB only)</name>
+					<value>auto</value>
+				</option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Local UPS Generic Type</fielddescr>
+			<fieldname>upstype</fieldname>
+			<type>select</type>
+			<options>
+				<option>
+					<name></name>
+					<value></value>
+				</option>
+				<option>
+					<name>1 (APC Back-UPS using 940-0095A/C cables)</name>
+					<value>1 00</value>
+				</option>
+				<option>
+					<name>2 (APC Back-UPS using 940-0020B/C cables)</name>
+					<value>2 00</value>
+				</option>
+				<option>
+					<name>9 (APC Back-UPS using 940-0023A cable)</name>
+					<value>9 00</value>
+				</option>
+				<option>
+					<name>12 (APC Back-UPS Office using 940-0119A cable)</name>
+					<value>12 00</value>
+				</option>
+				<option>
+					<name>12 (APC Masterswitch using 940-0020 cable)</name>
+					<value>12 01</value>
+				</option>
+				<option>
+					<name>20 (APC Back-UPS RS)</name>
+					<value>20 00</value>
+				</option>
+				<option>
+					<name>6 (Best Power Patriot using INT51 cable)</name>
+					<value>6 00</value>
+				</option>
+			</options>
+		</field>	
+		<field>
+			<fielddescr>Local UPS Cable Type</fielddescr>
+			<fieldname>cable</fieldname>
+			<type>select</type>
+			<options>
+				<option>
+					<name></name>
+					<value></value>
+				</option>
+				<option>
+					<name>940-0095B (Gray Cable)</name>
+					<value>940-0095B 00</value>
+				</option>
+				<option>
+					<name>940-0024C (Black Cable)</name>
+					<value>940-0024C 00</value>
+				</option>
+			</options>
+		</field>
+		<field>
+			<name>Remote SNMP UPS Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>SNMP UPS Name</fielddescr>
+			<fieldname>snmpname</fieldname>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>SNMP UPS Address</fielddescr>
+			<fieldname>snmpaddr</fieldname>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>SNMP UPS Community (Default: public)</fielddescr>
+			<fieldname>snmpcommunity</fieldname>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>SNMP UPS Version (Default: v2c)</fielddescr>
+			<fieldname>snmpversion</fieldname>
+			<type>select</type>
+			<options>
+				<option>
+					<name>SNMP v2c</name>
+					<value>v2c</value>
+				</option>
+				<option>
+					<name>SNMP v1</name>
+					<value>v1</value>
+				</option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>SNMP UPS MIB (Default: IETF)</fielddescr>
+			<fieldname>snmpmib</fieldname>
+			<type>select</type>
+			<options>
+				<option>
+					<name>ietf</name>
+					<value>ietf</value>
+				</option>
+				<option>
+					<name>mge</name>
+					<value>mge</value>
+				</option>
+				<option>
+					<name>apcc</name>
+					<value>apcc</value>
+				</option>
+				<option>
+					<name>netvision</name>
+					<value>netvision</value>
+				</option>
+				<option>
+					<name>pw</name>
+					<value>pw</value>
+				</option>
+				<option>
+					<name>cyberpower</name>
+					<value>cyberpower</value>
+				</option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>SNMP UPS Polling Freq (Default: 30)</fielddescr>
+			<fieldname>snmpfreq</fieldname>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Disable transfer OIDs (use on APCC Symmetras)</fielddescr>
+			<fieldname>snmpdisabletransfer</fieldname>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<name>Remote NUT UPS Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Remote NUT UPS Name</fielddescr>
+			<fieldname>remotename</fieldname>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Remote NUT UPS Address</fielddescr>
+			<fieldname>remoteaddr</fieldname>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Remote NUT UPS User</fielddescr>
+			<fieldname>remoteuser</fieldname>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Remote NUT UPS Password</fielddescr>
+			<fieldname>remotepass</fieldname>
+			<type>password</type>
+		</field>
+	</fields>
+	<custom_php_command_before_form>
+		before_form_nut($pkg);
+	</custom_php_command_before_form>
+	<custom_php_validation_command>
+		validate_form_nut($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		sync_package_nut();	
+	</custom_php_resync_config_command>
+	<custom_php_pre_deinstall_command>
+		deinstall_package_nut();
+	</custom_php_pre_deinstall_command>
+</packagegui>
