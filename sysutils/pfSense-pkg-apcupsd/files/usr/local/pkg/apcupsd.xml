@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	apcupsd.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2013-2016 Danilo G. Baio <dbaio@bsd.com.br>
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<name>Apcupsd</name>
+	<title>Services: Apcupsd</title>
+	<addedit_string>Apcupsd configuration has been created/modified.</addedit_string>
+	<delete_string>Apcupsd configuration has been deleted.</delete_string>
+	<restart_command>/usr/local/etc/rc.d/apcupsd.sh restart</restart_command>
+	<include_file>/usr/local/pkg/apcupsd.inc</include_file>
+	<menu>
+		<name>Apcupsd</name>
+		<tooltiptext>Setup Apcupsd specific settings</tooltiptext>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=apcupsd.xml</url>
+	</menu>
+	<service>
+		<name>apcupsd</name>
+		<rcfile>apcupsd.sh</rcfile>
+		<executable>apcupsd</executable>
+		<description>APC UPS Daemon</description>
+	</service>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=apcupsd.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>apcupsd_status.php</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>General Configuration Parameters</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable</fielddescr>
+			<fieldname>apcupsdenabled</fieldname>
+			<description>Enable APC UPS Daemon service.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>UPS Name</fielddescr>
+			<fieldname>upsname</fieldname>
+			<description>Use this to give your UPS a name in log files and such.</description>
+			<type>input</type>
+			<size>60</size>
+			<required>true</required>
+		</field>
+		<field>
+			<fielddescr>UPS Cable</fielddescr>
+			<fieldname>upscable</fieldname>
+			<description>
+				<![CDATA[
+				Defines the type of cable connecting the UPS to your computer.<br /><br />
+				Possible generic choices for 'cable' are:<br />
+				simple, smart, ether, usb
+				<br /><br/>
+				Or a specific cable model number may be used:<br />
+				940-0119A, 940-0127A, 940-0128A, 940-0020B,<br />
+				940-0020C, 940-0023A, 940-0024B, 940-0024C,<br />
+				940-1524C, 940-0024G, 940-0095A, 940-0095B,<br />
+				940-0095C, M-04-02-2000
+				]]>
+			</description>
+			<type>input</type>
+			<size>60</size>
+			<required>true</required>
+		</field>
+		<field>
+			<fielddescr>UPS Type</fielddescr>
+			<fieldname>upstype</fieldname>
+			<description>
+				<![CDATA[
+				To get apcupsd to work, in addition to defining the cable above, you must also define a UPSTYPE, which corresponds to&nbsp;
+				the type of UPS you have (see the Description for more details). You must also specify a DEVICE, sometimes referred to as a port.<br />
+				For USB UPSes, please leave the DEVICE directive blank. For other UPS types, you must specify an appropriate port or address.<br /><br />
+				<table>
+				<tr>
+					<th style="text-align: left">UPSTYPE</th>
+					<th style="text-align: left">DEVICE</th>
+					<th style="text-align: left">Description</th>
+				</tr>
+				<tr>
+					<td>apcsmart</td>
+					<td>/dev/tty**</td>
+					<td>Newer serial character device, appropriate for SmartUPS models using a serial cable (not USB).</td>
+				</tr>
+				<tr>
+					<td>usb</td>
+					<td>BLANK</td>
+					<td>Most new UPSes are USB. A blank DEVICE setting enables autodetection, which is the best choice for most installations.</td>
+				</tr>
+				<tr>
+					<td>net</td>
+					<td>hostname:port</td>
+					<td>Network link to a master apcupsd through apcupsd's Network Information Server. This is used if the&nbsp;
+					UPS powering your computer is connected to a different computer for monitoring.</td>
+				</tr>
+				<tr>
+					<td>snmp</td>
+					<td>hostname:port:vendor:community</td>
+					<td>SNMP network link to an SNMP-enabled UPS device. Hostname is the ip address or hostname of the UPS on the network.<br />
+					Vendor can be can be "APC" or "APC_NOTRAP". "APC_NOTRAP" will disable SNMP trap catching; you usually want "APC".<br />
+					Port is usually 161. Community is usually "private".</td>
+				</tr>
+				<tr>
+					<td>dumb</td>
+					<td>/dev/tty**</td>
+					<td>Old serial character device for use with simple-signaling UPSes.</td>
+				</tr>
+				<tr>
+					<td>pcnet</td>
+					<td>ipaddr:username:passphrase:port</td>
+					<td>PowerChute Network Shutdown protocol which can be used as an alternative to SNMP with the AP9617 family of smart slot cards.<br />
+					ipaddr is the IP address of the UPS management card; username and passphrase are the credentials for which the card has been configured.<br />
+					Port is the port number on which to listen for messages from the UPS, normally 3052. If this parameter is empty or missing, the default of 3052 will be used.</td>
+				</tr>
+				</table>
+				]]>
+			</description>
+			<type>input</type>
+			<size>60</size>
+			<required>true</required>
+		</field>
+		<field>
+			<fielddescr>Device</fielddescr>
+			<fieldname>device</fieldname>
+			<description></description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>Poll Time</fielddescr>
+			<fieldname>polltime</fieldname>
+			<description>Interval (in seconds) at which apcupsd polls the UPS for status. (Default: 60)</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>60</default_value>
+		</field>
+		<field>
+			<fielddescr>Kill on Power Fail</fielddescr>
+			<fieldname>killonpowerfail</fieldname>
+			<description>Hibernate UPS on powerfail.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Lock File</fielddescr>
+			<fieldname>lockfile</fieldname>
+			<description>Path for device lock file. (Default: /var/tmp)</description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<name>Configuration parameters used during power failures</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>OnBattery Delay</fielddescr>
+			<fieldname>onbatterydelay</fieldname>
+			<description>Time in seconds from when a power failure is detected until we react to it with an onbattery event. (Default: 6)</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>6</default_value>
+		</field>
+		<field>
+			<fielddescr>Battery Level</fielddescr>
+			<fieldname>batterylevel</fieldname>
+			<description>If during a power failure, the remaining battery percentage (as reported by the UPS) is 
+			below or equal to BATTERYLEVEL, apcupsd will initiate a system shutdown. (Default: 5)</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>5</default_value>
+		</field>
+		<field>
+			<fielddescr>Minutes</fielddescr>
+			<fieldname>minutes</fieldname>
+			<description>If during a power failure, the remaining runtime in minutes (as calculated internally 
+			by the UPS) is below or equal to MINUTES, apcupsd, will initiate a system shutdown. (Default: 3)</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>3</default_value>
+		</field>
+		<field>
+			<fielddescr>Timeout</fielddescr>
+			<fieldname>timeout</fieldname>
+			<description>If during a power failure, the UPS has run on batteries for TIMEOUT many seconds 
+			or longer, apcupsd will initiate a system shutdown. A value of 0 (default) disables this timer.</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>0</default_value>
+		</field>
+		<field>
+			<fielddescr>Annoy</fielddescr>
+			<fieldname>annoy</fieldname>
+			<description>Time in seconds between annoying users to signoff prior to system shutdown. 0 disables. (Default: 300)</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>300</default_value>
+		</field>
+		<field>
+			<fielddescr>Annoy Delay</fielddescr>
+			<fieldname>annoydelay</fieldname>
+			<description>Initial delay after power failure before warning users to get off the system. (Default: 60)</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>60</default_value>
+		</field>
+		<field>
+			<fielddescr>Kill Delay</fielddescr>
+			<fieldname>killdelay</fieldname>
+			<description>
+				<![CDATA[
+				If KILLDELAY is non-zero, apcupsd will continue running after a shutdown has been requested, and after the specified time in seconds attempt to kill the power.<br />
+				This is for use on systems where apcupsd cannot regain control after a shutdown. 0 disables (default).
+				]]>
+				</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>0</default_value>
+		</field>
+		<field>
+			<name>Configuration statements for Network Information Server</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Net Server</fielddescr>
+			<fieldname>netserver</fieldname>
+			<description>If netstatus is on, a network information server process will be started for serving 
+			the STATUS and EVENT data over the network (used by CGI programs).</description>
+			<type>select</type>
+			<default_value>on</default_value>
+			<options>
+				<option><name>On</name><value>on</value></option>
+				<option><name>Off</name><value>off</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>NIS IP</fielddescr>
+			<fieldname>nisip</fieldname>
+			<description>
+				<![CDATA[
+				IP address on which NIS server will listen for incoming connections. Default value is 0.0.0.0 which means any incoming request will be serviced.<br />
+				Alternatively, you can configure this setting to any specific IP address of your server and NIS will listen for connections only on that interface.<br />
+				Use the loopback address (127.0.0.1) to accept connections only from the local machine.
+				]]>
+				</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>0.0.0.0</default_value>
+		</field>
+		<field>
+			<fielddescr>NIS Port</fielddescr>
+			<fieldname>nisport</fieldname>
+			<description>
+				<![CDATA[
+				Port to use for sending STATUS and EVENTS data over the network. It is not used unless NETSERVER is on. If you change this port,&nbsp;
+				you will need to change the corresponding value in the CGI directory and rebuild the CGI programs.<br />
+				(Default is 3551 as registered with the IANA.)
+				]]>
+				</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>3551</default_value>
+		</field>
+		<field>
+			<name>UPS Sharing Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>UPS Class</fielddescr>
+			<fieldname>upsclass</fieldname>
+			<description>Normally standalone unless you share an UPS using an APC ShareUPS card.</description>
+			<type>select</type>
+			<default_value>standalone</default_value>
+			<options>
+				<option><name>Standalone</name><value>standalone</value></option>
+				<option><name>Share Master</name><value>sharemaster</value></option>
+				<option><name>Share Slave</name><value>shareslave</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>UPS Mode</fielddescr>
+			<fieldname>upsmode</fieldname>
+			<description>Normally disable unless you share an UPS using an APC ShareUPS card.</description>
+			<type>select</type>
+			<default_value>disable</default_value>
+			<options>
+				<option><name>Disable</name><value>disable</value></option>
+				<option><name>Share</name><value>share</value></option>
+			</options>
+		</field>
+		<field>
+			<name>Notifications</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>E-mail notifications</fielddescr>
+			<fieldname>emailnotification</fieldname>
+			<description>
+				<![CDATA[
+				Choose how APCUpsd will send email notifications.<br /><br />
+				<strong>phpMailer</strong> - In order to receive e-mail notifications through phpMailer, you need to configure SMTP Email Notifications on Advanced/Notifications section,&nbsp;
+				and also install mailreport package.<br />
+				<br />
+				<strong>SMTP built-in</strong> - A simple SMTP mail client for apcupsd. It does not have smtp authentication of any kind.
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>phpmailer</default_value>
+			<options>
+				<option><name>phpMailer</name><value>phpmailer</value></option>
+				<option><name>SMTP built-in</name><value>smtpbuiltin</value></option>
+			</options>
+		</field>
+		<field>
+			<name>SMTP built-in settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>SMTP Host</fielddescr>
+			<fieldname>smtphost</fieldname>
+			<description></description>
+			<type>input</type>
+			<size>20</size>
+		</field>
+		<field>
+			<fielddescr>SMTP Port</fielddescr>
+			<fieldname>smtpport</fieldname>
+			<description></description>
+			<type>input</type>
+			<size>5</size>
+		</field>
+		<field>
+			<fielddescr>From</fielddescr>
+			<fieldname>smtpfrom</fieldname>
+			<description></description>
+			<type>input</type>
+			<size>20</size>
+		</field>
+		<field>
+			<fielddescr>To</fielddescr>
+			<fieldname>smtpto</fieldname>
+			<description></description>
+			<type>input</type>
+			<size>20</size>
+		</field>
+		<field>
+			<fielddescr>Cc</fielddescr>
+			<fieldname>smtpcc</fieldname>
+			<description></description>
+			<type>input</type>
+			<size>20</size>
+		</field>
+	</fields>
+	<custom_php_install_command>php_install_apcupsd();</custom_php_install_command>
+	<custom_php_validation_command>validate_input_apcupsd($_POST, $input_errors);</custom_php_validation_command>
+	<custom_php_resync_config_command>sync_package_apcupsd();</custom_php_resync_config_command>
+	<custom_php_deinstall_command>php_deinstall_apcupsd();</custom_php_deinstall_command>
+</packagegui>

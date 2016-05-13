@@ -1,0 +1,8 @@
+pkg/apcupsd.xml
+pkg/apcupsd.inc
+pkg/apcupsd.conf.php
+pkg/apcupsd_mail.php
+/etc/inc/priv/apcupsd.priv.inc
+www/apcupsd_status.php
+%%DATADIR%%/info.xml
+@dir /etc/inc/priv
