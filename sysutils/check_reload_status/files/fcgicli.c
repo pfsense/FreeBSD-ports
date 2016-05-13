@@ -27,7 +27,7 @@ static struct sockaddr_in sin;
 static int keepalive = 0;
 
 static int
-build_nvpair(struct sbuf *sb, const char *key, char *svalue)
+build_nvpair(struct sbuf *sb, const char *key, const char *svalue)
 {
 	int lkey, lvalue;
 
@@ -111,11 +111,12 @@ main(int argc, char **argv)
 	struct sbuf *sbtmp2, *sbtmp;
 	struct utsname uts;
 	int ch, ispost = 0, len, result;
-	char *data = NULL, *script = NULL, *socketpath, *mtype = NULL, *buf;
+	char *data = NULL, *script = NULL, *mtype = NULL, *buf;
+	const char *socketpath;
 
 	tzset();
 
-	socketpath = (char *)FCGI_SOCK_PATH;
+	socketpath = FCGI_SOCK_PATH;
 
 	while ((ch = getopt(argc, argv, "d:f:ks:o:")) != -1) {
 		switch (ch) {
@@ -175,7 +176,8 @@ main(int argc, char **argv)
 		if (connect(fcgisock, (struct sockaddr *)&sun, len) < 0)
 			errx(errno, "Could not connect to server(%s).", socketpath);
 	} else {
-		char *host, *port;
+		const char *host;
+		char *port;
 		if (!(port = strstr(socketpath, ":")))
 			errx(-1, "Need the port specified as host:port");
 
@@ -202,9 +204,9 @@ main(int argc, char **argv)
 	sbtmp2 = sbuf_new_auto();
 	if (sbtmp2 == NULL)
 		errx(-3, "Could not allocate memory\n");
-	build_nvpair(sbtmp2, "GATEWAY_INTERFACE", (char *)"FastCGI/1.0");
-	build_nvpair(sbtmp2, "REQUEST_METHOD", (char *)"GET");
-	build_nvpair(sbtmp2, "NO_HEADERS", (char *)"1");
+	build_nvpair(sbtmp2, "GATEWAY_INTERFACE", "FastCGI/1.0");
+	build_nvpair(sbtmp2, "REQUEST_METHOD", "GET");
+	build_nvpair(sbtmp2, "NO_HEADERS", "1");
 	sbtmp = sbuf_new_auto();
 	sbuf_printf(sbtmp, "/%s", basename(script));
 	sbuf_finish(sbtmp);

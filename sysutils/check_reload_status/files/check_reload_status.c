@@ -89,7 +89,7 @@ static int			fcgi_open_socket(struct runq *);
 static pid_t ppid = -1;
 static struct utsname uts;
 static int keepalive = 0;
-static char *fcgipath = (char *)FCGI_SOCK_PATH;
+static const char *fcgipath = FCGI_SOCK_PATH;
 
 static int
 prepare_packet(FCGI_Header *header, int type, int lcontent, int requestId)
@@ -105,7 +105,7 @@ prepare_packet(FCGI_Header *header, int type, int lcontent, int requestId)
 }
 
 static int
-build_nvpair(struct sbuf *sb, int lkey, int lvalue, const char *key, char *svalue)
+build_nvpair(struct sbuf *sb, int lkey, int lvalue, const char *key, const char *svalue)
 {
         if (lkey < 128)
                 sbuf_putc(sb, lkey);
@@ -209,12 +209,12 @@ parse_command(int fd, int argc, char **argv)
 {
 	struct command	*start = first_level;
 	struct command	*match = NULL;
-	char *errstring = (char *)"ERROR:\tvalid commands are:\n";
+	const char *errstring = "ERROR:\tvalid commands are:\n";
 
 	while (argc >= 0) {
 		match = match_command(start, *argv);
 		if (match == NULL) {
-			errstring = (char *)"ERROR:\tNo match found.\n";
+			errstring = "ERROR:\tNo match found.\n";
 			goto error3;
 		}
 
@@ -222,19 +222,19 @@ parse_command(int fd, int argc, char **argv)
 		argv++;
 
 		if (argc > 0 && match->next == NULL) {
-			errstring = (char *)"ERROR:\textra arguments passed.\n";
+			errstring = "ERROR:\textra arguments passed.\n";
 			goto error3;
 		}
 		if (argc < 0 && match->type != NON) {
 			if (match->next != NULL)
 				start = match->next;
-			errstring = (char *)"ERROR:\tincomplete command.\n";
+			errstring = "ERROR:\tincomplete command.\n";
 			goto error3;
 		}
 		if (argc == 0 && *argv == NULL && match->type != NON) {
 			if (match->next != NULL)
 				start = match->next;
-			errstring = (char *)"ERROR:\tincomplete command.\n";
+			errstring = "ERROR:\tincomplete command.\n";
 			goto error3;
 		}
 
@@ -320,9 +320,9 @@ fcgi_send_command(int fd __unused , short event __unused, void *arg)
 	sbuf_new(&sb, sbuf, 4096, 0);
 	/* TODO: Use hardcoded length instead of strlen allover later on */
 	/* TODO: Remove some env variables since might not be needed at all!!! */
-	build_nvpair(&sb, strlen("GATEWAY_INTERFACE"), strlen("FastCGI/1.0"), "GATEWAY_INTERFACE", (char *)"FastCGI/1.0");
-	build_nvpair(&sb, strlen("REQUEST_METHOD"), strlen("GET"), "REQUEST_METHOD", (char *)"GET");
-	build_nvpair(&sb, strlen("NO_HEADERS"), strlen("1"), "NO_HEADERS", (char *)"1");
+	build_nvpair(&sb, strlen("GATEWAY_INTERFACE"), strlen("FastCGI/1.0"), "GATEWAY_INTERFACE", "FastCGI/1.0");
+	build_nvpair(&sb, strlen("REQUEST_METHOD"), strlen("GET"), "REQUEST_METHOD", "GET");
+	build_nvpair(&sb, strlen("NO_HEADERS"), strlen("1"), "NO_HEADERS", "1");
 	build_nvpair(&sb, strlen("SCRIPT_FILENAME"), strlen(cmd->command), "SCRIPT_FILENAME", cmd->command);
 	p = strrchr(cmd->command, '/');
 	build_nvpair(&sb, strlen("SCRIPT_NAME"), strlen(p), "SCRIPT_NAME", p);
@@ -333,7 +333,7 @@ fcgi_send_command(int fd __unused , short event __unused, void *arg)
 		build_nvpair(&sb, strlen("QUERY_STRING"), strlen(cmd->params), "QUERY_STRING", cmd->params);
 		/* XXX: Hack in sight to avoid using another sbuf */
 		/* + 2 is for the / and ? added chars */
-		build_nvpair(&sb, strlen("REQUEST_URI"), strlen(p) + strlen(cmd->params) + 2, "REQUEST_URI", (char *)"/");
+		build_nvpair(&sb, strlen("REQUEST_URI"), strlen(p) + strlen(cmd->params) + 2, "REQUEST_URI", "/");
 		sbuf_printf(&sb, "%s?%s", p, cmd->params);
 	}
 	sbuf_finish(&sb);
