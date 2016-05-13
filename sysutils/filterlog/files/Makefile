@@ -9,7 +9,7 @@ INSTALL?=       /usr/bin/install
 
 OBJS=           print-ip.o print-ip6.o print-ip6opts.o print-icmp.o print-tcp.o print-mobility.c filterlog.o
 
-WARNS=          -Wsystem-headers -Werror -Wall -Wno-format-y2k -W \
+WARNS=          -Wsystem-headers -Wall -Wno-format-y2k -W \
                 -Wno-unused-parameter -Wstrict-prototypes \
                 -Wmissing-prototypes -Wpointer-arith -Wreturn-type \
                 -Wcast-qual -Wwrite-strings -Wswitch -Wshadow \
