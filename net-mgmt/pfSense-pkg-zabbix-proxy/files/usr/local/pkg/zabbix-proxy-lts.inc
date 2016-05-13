@@ -93,7 +93,7 @@ function sync_package_zabbix_proxy_lts() {
 			} else {
 				if ($zbproxy_config['tlscafile'] != "none") {
 					$ca = lookup_ca($zbproxy_config['tlscafile']);
-					zabbix_add_keyfile($ca['crt'], "ca");
+					zabbix_proxy_add_keyfile($ca['crt'], "ca");
 					$TlsCAfile = "TLSCAFile=/usr/local/etc/zabbix3/zabbix_proxy.ca";
 				}
 			}
@@ -101,17 +101,17 @@ function sync_package_zabbix_proxy_lts() {
 			if ($zbproxy_config['tlscrlfile'] != "none") {
 				$crl = lookup_crl($zbproxy_config['tlscrlfile']);
 				crl_update($crl);
-				zabbix_add_keyfile($crl['text'], "crl-verify");
+				zabbix_proxy_add_keyfile($crl['text'], "crl-verify");
 				$TlsCRLfile = "TLSCRLFile=/usr/local/etc/zabbix3/zabbix_proxy.crl-verify";
 			}
 
 			if ($zbproxy_config['tlscertfile'] != "none") {
 				$cert = lookup_cert($zbproxy_config['tlscertfile']);
 
-				zabbix_add_keyfile($cert['crt'], "cert");
+				zabbix_proxy_add_keyfile($cert['crt'], "cert");
 				$TlsCERTfile = "TLSCertFile=/usr/local/etc/zabbix3/zabbix_proxy.cert";
 
-				zabbix_add_keyfile($cert['prv'], "key");
+				zabbix_proxy_add_keyfile($cert['prv'], "key");
 				$TlsKEYfile = "TLSKeyFile=/usr/local/etc/zabbix3/zabbix_proxy.key";
 			}
 
@@ -120,7 +120,7 @@ function sync_package_zabbix_proxy_lts() {
 			}
 
 			if (! empty($zbproxy_config['tlspskfile']) ) {
-				zabbix_add_keyfile($zbproxy_config['tlspskfile'], "psk");
+				zabbix_proxy_add_keyfile($zbproxy_config['tlspskfile'], "psk");
 				$TLSPSKFile = "TLSPSKFile=/usr/local/etc/zabbix3/zabbix_proxy.psk";
 			}
 
@@ -266,7 +266,7 @@ EOF;
 }
 
 // Based on openvpn_add_keyfile() function
-function zabbix_add_keyfile(& $data, $directive) {
+function zabbix_proxy_add_keyfile(& $data, $directive) {
 
 	$fpath = "/usr/local/etc/zabbix3/zabbix_proxy.{$directive}";
 

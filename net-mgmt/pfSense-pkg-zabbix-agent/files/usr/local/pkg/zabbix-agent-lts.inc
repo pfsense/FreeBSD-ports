@@ -141,7 +141,7 @@ function sync_package_zabbix_agent_lts() {
 			} else {
 				if ($zbagent_config['tlscafile'] != "none") {
 					$ca = lookup_ca($zbagent_config['tlscafile']);
-					zabbix_add_keyfile($ca['crt'], "ca");
+					zabbix_agent_add_keyfile($ca['crt'], "ca");
 					$TlsCAfile = "TLSCAFile=/usr/local/etc/zabbix3/zabbix_agentd.ca";
 				}
 			}
@@ -149,17 +149,17 @@ function sync_package_zabbix_agent_lts() {
 			if ($zbagent_config['tlscrlfile'] != "none") {
 				$crl = lookup_crl($zbagent_config['tlscrlfile']);
 				crl_update($crl);
-				zabbix_add_keyfile($crl['text'], "crl-verify");
+				zabbix_agent_add_keyfile($crl['text'], "crl-verify");
 				$TlsCRLfile = "TLSCRLFile=/usr/local/etc/zabbix3/zabbix_agentd.crl-verify";
 			}
 
 			if ($zbagent_config['tlscertfile'] != "none") {
 				$cert = lookup_cert($zbagent_config['tlscertfile']);
 
-				zabbix_add_keyfile($cert['crt'], "cert");
+				zabbix_agent_add_keyfile($cert['crt'], "cert");
 				$TlsCERTfile = "TLSCertFile=/usr/local/etc/zabbix3/zabbix_agentd.cert";
 
-				zabbix_add_keyfile($cert['prv'], "key");
+				zabbix_agent_add_keyfile($cert['prv'], "key");
 				$TlsKEYfile = "TLSKeyFile=/usr/local/etc/zabbix3/zabbix_agentd.key";
 			}
 
@@ -168,7 +168,7 @@ function sync_package_zabbix_agent_lts() {
 			}
 
 			if (! empty($zbagent_config['tlspskfile']) ) {
-				zabbix_add_keyfile($zbagent_config['tlspskfile'], "psk");
+				zabbix_agent_add_keyfile($zbagent_config['tlspskfile'], "psk");
 				$TLSPSKFile = "TLSPSKFile=/usr/local/etc/zabbix3/zabbix_agentd.psk";
 			}
 
@@ -299,7 +299,7 @@ EOF;
 }
 
 // Based on openvpn_add_keyfile() function
-function zabbix_add_keyfile(& $data, $directive) {
+function zabbix_agent_add_keyfile(& $data, $directive) {
 
 	$fpath = "/usr/local/etc/zabbix3/zabbix_agentd.{$directive}";
 
