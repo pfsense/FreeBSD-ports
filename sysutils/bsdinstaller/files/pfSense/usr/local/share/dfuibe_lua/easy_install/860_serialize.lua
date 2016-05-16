@@ -1,5 +1,10 @@
 -- 960 register
 
+local is_buildroom = (os.execute("/usr/bin/grep -q 'option classless-routes 32,1,2,3,4,127,0,0,1' /var/db/dhclient.leases*") == 0)
+if not is_buildroom then
+	return step:next()
+end
+
 local get_version = function()
         for line in io.lines("/etc/version") do
                 pfversion = line

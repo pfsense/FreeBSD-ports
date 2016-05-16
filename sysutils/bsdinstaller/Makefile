@@ -3,6 +3,7 @@
 
 PORTNAME=	bsdinstaller
 PORTVERSION=	2.0.13
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
