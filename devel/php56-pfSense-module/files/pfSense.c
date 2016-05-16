@@ -528,16 +528,10 @@ PHP_MINIT_FUNCTION(pfSense_socket)
 	REGISTER_LONG_CONSTANT("IFBIF_PRIVATE", IFBIF_PRIVATE, CONST_PERSISTENT | CONST_CS);
 
 #ifdef IPFW_FUNCTIONS
-#if (__FreeBSD_version >= 1000000)
 	REGISTER_LONG_CONSTANT("IP_FW_TABLE_XADD", IP_FW_TABLE_XADD, CONST_PERSISTENT | CONST_CS);
 	REGISTER_LONG_CONSTANT("IP_FW_TABLE_XDEL", IP_FW_TABLE_XDEL, CONST_PERSISTENT | CONST_CS);
 	REGISTER_LONG_CONSTANT("IP_FW_TABLE_XLISTENTRY", IP_FW_TABLE_XLISTENTRY, CONST_PERSISTENT | CONST_CS);
 	REGISTER_LONG_CONSTANT("IP_FW_TABLE_XZEROENTRY", IP_FW_TABLE_XZEROENTRY, CONST_PERSISTENT | CONST_CS);
-#else
-	REGISTER_LONG_CONSTANT("IP_FW_TABLE_ADD", IP_FW_TABLE_ADD, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IP_FW_TABLE_DEL", IP_FW_TABLE_DEL, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IP_FW_TABLE_ZERO_ENTRY_STATS", IP_FW_TABLE_ZERO_ENTRY_STATS, CONST_PERSISTENT | CONST_CS);
-#endif
 #endif
 
 	return SUCCESS;
@@ -946,7 +940,6 @@ PHP_FUNCTION(pfSense_pipe_action)
 
 PHP_FUNCTION(pfSense_ipfw_Tableaction)
 {
-#if (__FreeBSD_version >= 1000000)
 	ip_fw3_opheader *op3;
 	ipfw_table_xentry *xent;
 	socklen_t size;
@@ -1018,59 +1011,10 @@ PHP_FUNCTION(pfSense_ipfw_Tableaction)
 	efree(op3);
 
 	RETURN_TRUE;
-#else
-	struct {
-		char context[64]; /* IP_FW_CTX_MAXNAME */
-		ipfw_table_entry ent;
-	} option;
-	socklen_t size;
-	long mask = 0, table = 0, pipe = 0;
-	char *ip, *zone, *mac = NULL;
-	int ip_len, zone_len, mac_len = 0;
-	long action = IP_FW_TABLE_ADD;
-	int err;
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "slls|lsl", &zone, &zone_len, &action, &table, &ip, &ip_len, &mask, &mac, &mac_len, &pipe) == FAILURE) {
-		RETURN_FALSE;
-	}
-
-	memset(&option, 0, sizeof(option));
-	sprintf(option.context, "%s", zone);
-
-	if (action != IP_FW_TABLE_DEL && action != IP_FW_TABLE_ADD && action != IP_FW_TABLE_ZERO_ENTRY_STATS)
-		RETURN_FALSE;
-
-	if (strchr(ip, ':')) {
-		if (!inet_pton(AF_INET6, ip, &option.ent.addr))
-			RETURN_FALSE;
-	} else if (!inet_pton(AF_INET, ip, &option.ent.addr)) {
-		RETURN_FALSE;
-	}
-
-	if (mask)
-		option.ent.masklen = (u_int8_t)mask;
-	else
-		option.ent.masklen = 32;
-	if (pipe)
-		option.ent.value = (u_int32_t)pipe;
-
-	if (mac_len > 0) {
-		if (ether_aton_r(mac, (struct ether_addr *)&option.ent.mac_addr) == NULL)
-			RETURN_FALSE;
-	}
-	size = sizeof(option);
-	option.ent.tbl = (u_int16_t)table;
-	err = setsockopt(PFSENSE_G(ipfw), IPPROTO_IP, (int)action, &option, size);
-	if (err < 0 && err != EEXIST)
-		RETURN_FALSE;
-
-	RETURN_TRUE;
-#endif
 }
 
 PHP_FUNCTION(pfSense_ipfw_getTablestats)
 {
-#if (__FreeBSD_version >= 1000000)
 	ip_fw3_opheader *op3;
 	ipfw_table_xentry *xent;
 	socklen_t size;
@@ -1139,46 +1083,6 @@ PHP_FUNCTION(pfSense_ipfw_getTablestats)
 	add_assoc_long(return_value, "dnpipe", xent->value);
 
 	efree(op3);
-#else
-	struct {
-		char context[64]; /* IP_FW_CTX_MAXNAME */
-		ipfw_table_entry ent;
-	} option;
-	socklen_t size;
-	long mask = 0, table = 0;
-	char *ip, *name;
-	int ip_len, name_len;
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sls|l", &name, &name_len, &table, &ip, &ip_len, &mask) == FAILURE) {
-		RETURN_FALSE;
-	}
-
-
-	memset(&option, 0, sizeof(option));
-	sprintf(option.context, "%s", name);
-
-	if (strchr(ip, ':')) {
-		if (!inet_pton(AF_INET6, ip, &option.ent.addr))
-			RETURN_FALSE;
-	} else if (!inet_pton(AF_INET, ip, &option.ent.addr)) {
-		RETURN_FALSE;
-	}
-
-	if (mask)
-		option.ent.masklen = (u_int8_t)mask;
-	else
-		option.ent.masklen = 32;
-	size = sizeof(option);
-	option.ent.tbl = (u_int16_t)table;
-	if (getsockopt(PFSENSE_G(ipfw), IPPROTO_IP, IP_FW_TABLE_GET_ENTRY, &option, &size) < 0)
-		RETURN_FALSE;
-
-	array_init(return_value);
-	add_assoc_long(return_value, "packets", pfSense_align_uint64(&option.ent.packets));
-	add_assoc_long(return_value, "bytes", pfSense_align_uint64(&option.ent.bytes));
-	add_assoc_long(return_value, "timestamp", option.ent.timestamp);
-	add_assoc_long(return_value, "dnpipe", option.ent.value);
-#endif
 }
 #endif
 
@@ -1591,11 +1495,6 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 			case IFT_PFSYNC:
 				add_assoc_string(return_value, "iftype", "virtual", 1);
 				break;
-#if (__FreeBSD_version < 1000000)
-			case IFT_CARP:
-				add_assoc_string(return_value, "iftype", "carp", 1);
-				break;
-#endif
 			default:
 				add_assoc_string(return_value, "iftype", "other", 1);
 			}
@@ -2698,10 +2597,6 @@ PHP_FUNCTION(pfSense_get_pf_stats) {
 		add_assoc_long(return_value, "srcnodessearch", (unsigned long long)status.scounters[SCNT_SRC_NODE_SEARCH]);
 		add_assoc_long(return_value, "srcnodesinsert", (unsigned long long)status.scounters[SCNT_SRC_NODE_INSERT]);
 		add_assoc_long(return_value, "srcnodesremovals", (unsigned long long)status.scounters[SCNT_SRC_NODE_REMOVALS]);
-
-#if (__FreeBSD_version < 1000000)
-		add_assoc_long(return_value, "stateid", (unsigned long long)status.stateid);
-#endif
 
 		add_assoc_long(return_value, "running", status.running);
 		add_assoc_long(return_value, "states", status.states);
