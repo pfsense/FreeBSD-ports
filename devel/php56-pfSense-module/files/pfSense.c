@@ -1583,7 +1583,9 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 				break;
 			case IFT_TUNNEL:
 			case IFT_GIF:
+#if (__FreeBSD_version < 1100000)
 			case IFT_FAITH:
+#endif
 			case IFT_ENC:
 			case IFT_PFLOG: 
 			case IFT_PFSYNC:
