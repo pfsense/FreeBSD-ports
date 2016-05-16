@@ -36,7 +36,7 @@ MAKE_ENV+=	__MAKE_CONF=/dev/null
 PLIST_FILES=	sbin/pftop man/man8/pftop.8.gz
 
 post-patch:
-.if ${OSVERSION} >= 1100000
+.if ${OSVERSION} >= 1000000
 	@${ECHO_MSG} "===> Applying FairQ/Codel patches to ${PORTNAME}."
 	@${CAT} ${FILESDIR}/extra-patch-fairq_codel.diff | \
 		${PATCH} ${PATCH_ARGS}

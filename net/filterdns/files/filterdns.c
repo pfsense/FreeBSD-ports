@@ -57,11 +57,7 @@
 static int interval = 30;
 static int dev = -1;
 static int debug = 0;
-#if (__FreeBSD_version >= 1000000)
 static int ipfwctx;
-#else
-static char *ipfwctx = NULL;
-#endif
 static char *file = NULL;
 static pthread_attr_t attr;
 static pthread_cond_t sig_condvar;
@@ -464,7 +460,6 @@ ipfw_tableentry(struct thread_data *ipfwd, struct sockaddr *address, int action)
 	static int s = -1;
 	int error, i = 3;
 
-#if (__FreeBSD_version >= 1000000)
 	struct _entry {
 		ip_fw3_opheader op3;
 		ipfw_table_xentry xent;
@@ -495,81 +490,16 @@ ipfw_tableentry(struct thread_data *ipfwd, struct sockaddr *address, int action)
 		}
 		entry.xent.len = offsetof(ipfw_table_xentry, k) + addrlen;
 		entry.op3.opcode = action == ADD ? IP_FW_TABLE_XADD : IP_FW_TABLE_XDEL;
+#if (__FreeBSD_version < 1100000) /* XXX: Missing ipfw patch on 11 */
 		entry.op3.ctxid = ipfwctx;
+#endif
 
 		if (setsockopt(s, IPPROTO_IP, IP_FW3, (void *)&entry, sizeof(entry)) < 0) {
 			error++;
 			continue;
 		}
 	}
-#else
-#if __FreeBSD_version >= 803000
-#ifndef	IP_FW_CTX_MAXNAME
-#define	IP_FW_CTX_MAXNAME	64
-#endif
-	struct _entry {
-		char ctxname[IP_FW_CTX_MAXNAME];
-		ipfw_table_entry ent;
-	} entry;
-#endif
 
-	error = 0;
-	while (i-- > 0) {
-#if __FreeBSD_version >= 803000
-		if (s == -1)
-			s = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
-		if (s < 0) {
-			error++;
-			continue;
-		}
-		if (address->sa_family != AF_INET) /* XXX */
-			return (0);
-		bzero(&entry, sizeof(entry));
-		entry.ent.masklen = ipfwd->mask;
-		entry.ent.tbl = ipfwd->tablenr;
-		entry.ent.addr = satosin(address)->sin_addr.s_addr;
-		entry.ent.value = ipfwd->pipe; /* XXX */
-
-
-		if (ipfwctx != NULL) {
-			sprintf(entry.ctxname, "%s", ipfwctx);
-			if (setsockopt(s, IPPROTO_IP, action == ADD ? IP_FW_TABLE_ADD : IP_FW_TABLE_DEL, (void *)&entry, sizeof(entry)) < 0) {
-				error++;
-				continue;
-			}
-		}
-#else
-		ipfw_table_entry ent;
-
-		if (s == -1)
-			s = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
-		if (s < 0) {
-			error++;
-			continue;
-		}
-		if (address->sa_family != AF_INET) /* XXX */
-			return (0);
-		bzero(&ent, sizeof(ent));
-		ent.masklen = ipfwd->mask;
-		ent.tbl = ipfwd->tablenr;
-		ent.addr = satosin(address)->sin_addr.s_addr;
-		ent.value = ipfwd->pipe; /* XXX */
-#ifndef IP_FW_CTX_SET
-#define	IP_FW_CTX_SET	92
-#endif
-		if (ipfwctx != NULL) {
-			if (setsockopt(s, IPPROTO_IP, IP_FW_CTX_SET, (void *)ipfwctx, strlen(ipfwctx)) < 0) {
-				error++;
-				continue;
-			}
-		}
-		if (setsockopt(s, IPPROTO_IP, action == ADD ? IP_FW_TABLE_ADD : IP_FW_TABLE_DEL, (void *)&ent, sizeof(ent)) < 0)
-			error++;
-		else
-			break;
-#endif
-	}
-#endif
 	return (error);
 }
 
@@ -992,11 +922,7 @@ int main(int argc, char *argv[]) {
 			pidfile = optarg;
 			break;
 		case 'y':
-#if (__FreeBSD_version >= 1000000)
 			ipfwctx = atoi(optarg);
-#else
-			ipfwctx = optarg;
-#endif
 			break;
 		case 'v':
 			printf("Version 1.2\n");

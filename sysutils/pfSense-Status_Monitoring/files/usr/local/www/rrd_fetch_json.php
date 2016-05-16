@@ -140,7 +140,7 @@ if ($left != "null") {
 	$rrd_array = rrd_fetch($rrd_location . $left . ".rrd", $rrd_options);
 
 	if (!($rrd_array)) {
-		die ('{ "error" : "There was an error retrieving RRD data for the Left Y Axis." }');
+		die ('{ "error" : "' . rrd_error() . '" }');
 	}
 
 	$ds_list = array_keys ($rrd_array['data']);
@@ -375,7 +375,7 @@ if ($right != "null") {
 	$rrd_array = rrd_fetch($rrd_location . $right . ".rrd", array('AVERAGE', '-r', $resolution, '-s', $timePeriod ));
 
 	if (!($rrd_array)) {
-		die ('{ "error" : "There was an error loading the Right Y Axis." }');
+		die ('{ "error" : "' . rrd_error() . '" }');
 	}
 
 	$ds_list = array_keys ($rrd_array['data']);

@@ -21,6 +21,7 @@ __FBSDID("$FreeBSD$");
 
 #include <sys/types.h>
 #include <sys/ioctl.h>
+#include <sys/param.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <sys/sbuf.h>
@@ -40,12 +41,21 @@ __FBSDID("$FreeBSD$");
 #include <syslog.h>
 #include <errno.h>
 
+#if defined(__FreeBSD__) && __FreeBSD_version >= 1100000
+#include <net/altq/altq.h>
+#include <net/altq/altq_cbq.h>
+#include <net/altq/altq_priq.h>
+#include <net/altq/altq_hfsc.h>
+#include <net/altq/altq_fairq.h>
+#include <net/altq/altq_codel.h>
+#else
 #include <altq/altq.h>
 #include <altq/altq_cbq.h>
 #include <altq/altq_priq.h>
 #include <altq/altq_hfsc.h>
 #include <altq/altq_fairq.h>
 #include <altq/altq_codel.h>
+#endif
 
 int      pfctl_show_altq(int, const char *, int, int);
 

@@ -7,6 +7,7 @@
  * in the LICENCE file provided within the distribution */
 
 #include <sys/types.h>
+#include <sys/param.h>
 #include <sys/socket.h>
 #include <net/if.h>
 #include <arpa/inet.h>
@@ -19,6 +20,7 @@
 #include <fcntl.h>
 #include <nlist.h>
 #include <sys/queue.h>
+#include <signal.h>
 #include <stdio.h>
 #include <string.h>
 #include <limits.h>
@@ -219,13 +221,23 @@ int getifstats(const char * ifname, struct ifdata * data)
 		}
 		if(strcmp(ifname, ifc.if_xname) == 0)
 		{
+#if defined(__FreeBSD__) && __FreeBSD_version >= 1100011
+			data->opackets = ifc.if_get_counter(&ifc, IFCOUNTER_OPACKETS);
+			data->ipackets = ifc.if_get_counter(&ifc, IFCOUNTER_IPACKETS);
+			data->obytes = ifc.if_get_counter(&ifc, IFCOUNTER_OBYTES);
+			data->ibytes = ifc.if_get_counter(&ifc, IFCOUNTER_IBYTES);
+			data->baudrate = ifc.if_baudrate;
+#else
 			data->opackets = ifc.if_data.ifi_opackets;
 			data->ipackets = ifc.if_data.ifi_ipackets;
 			data->obytes = ifc.if_data.ifi_obytes;
 			data->ibytes = ifc.if_data.ifi_ibytes;
 			data->baudrate = ifc.if_data.ifi_baudrate;
+#endif
 			kvm_close(kd);
 			return 0;
 		}
 	}
+
+	return -1;
 }
