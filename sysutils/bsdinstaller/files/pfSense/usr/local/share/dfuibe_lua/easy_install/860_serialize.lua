@@ -1,9 +1,6 @@
 -- 860 serializer
 
 local is_buildroom = (os.execute("/usr/bin/grep -q 'option classless-routes 32,1,2,3,4,127,0,0,1' /var/db/dhclient.leases*") == 0)
-if not is_buildroom then
-	return step:next()
-end
 
 local get_version = function()
 	for line in io.lines("/etc/version") do
@@ -57,6 +54,10 @@ return {   -- whole script
 	name = _("Serial Registration Step"),
 	-- req_state = {"storage"},
 	effect = function(step)
+
+		if not is_buildroom then
+			return step:next()
+		end
 
 		local response = App.ui:present({
 			id = "serial_register",
