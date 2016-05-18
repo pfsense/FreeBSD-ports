@@ -756,6 +756,26 @@ events.push(function() {
 		update_graph();
 	});
 
+	$('#start-date').on('change', function() {
+		valid_resolutions(this.value);
+		update_graph();
+	});
+
+	$('#end-date').on('change', function() {
+		valid_resolutions(this.value);
+		update_graph();
+	});
+
+	$('#start-time').on('change', function() {
+		valid_resolutions(this.value);
+		update_graph();
+	});
+
+	$('#end-time').on('change', function() {
+		valid_resolutions(this.value);
+		update_graph();
+	});
+
 	$( ".update-graph" ).click(function() {
 		update_graph(true);
 	});
