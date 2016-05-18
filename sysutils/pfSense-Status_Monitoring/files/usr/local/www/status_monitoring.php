@@ -659,11 +659,6 @@ events.push(function() {
 	$('select[id^="category-"]').on('change', function() {
 
 		var categoryId = this.id.split("-");
-		update_graph();
-	});
-
-	$('#graph-left').on('change', function() {
-		update_graph();
 
 		switch(this.value) {
 			case "system":
@@ -723,6 +718,10 @@ events.push(function() {
 			$("#graph-" + categoryId[1]).append('<option value="' + value + '">' + key + '</option>');
 		});
 
+		update_graph();
+	});
+
+	$('#graph-left').on('change', function() {
 		update_graph();
 	});
 
