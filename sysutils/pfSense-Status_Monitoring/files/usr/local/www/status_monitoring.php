@@ -788,6 +788,7 @@ events.push(function() {
 
 		if (force || $( "#auto-update" ).val() > 0) {
 			$("#loading-msg").show();
+			$("#chart-error").hide();
 			draw_graph(getOptions());
 		}
 
@@ -1065,7 +1066,6 @@ events.push(function() {
 
 	applySettings("<?php echo $pconfig['category']; ?>");
 
-		$("#chart-error").hide();
 	$( "#settings" ).click(function() {
 		($(this).text().trim() === 'Display Advanced') ? $(this).html('<i class="fa fa-cog fa-lg"></i> Hide Advanced') : $(this).html('<i class="fa fa-cog fa-lg"></i> Display Advanced');
 		$("#export").toggle();
