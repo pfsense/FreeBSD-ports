@@ -82,7 +82,7 @@ if ($timePeriod === "custom") {
 		die ('{ "error" : "The end date can\'t be in the future." }');
 	}
 
-	$resolution = 60; //defaults to highest resolution possible
+	$resolution = 60; //defaults to highest resolution available
 	$start = floor($start/$resolution) * $resolution;
 	$end = floor($end/$resolution) * $resolution;
 	$rrd_options = array( 'AVERAGE', '-r', $resolution, '-s', $start, '-e', $end );
