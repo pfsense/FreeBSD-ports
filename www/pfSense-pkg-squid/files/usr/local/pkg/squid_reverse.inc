@@ -189,7 +189,10 @@ function squid_resync_reverse() {
 			}
 			//HTTPS
 			if (!empty($settings['reverse_https'])) {
-				$conf .= "https_port {$reip}:{$https_port} accel cert={$reverse_crt} key={$reverse_key} {$sslflags_https_port_reverse} {$dhparams} {$ciphers} {$options} defaultsite={$https_defsite} vhost\n";
+				// Squid will fail when the line length exceeds 1024 characters, this can happen because of the long ciphersuite so break the line
+				$conf .= "https_port {$reip}:{$https_port} accel cert={$reverse_crt} key={$reverse_key} {$sslflags_https_port_reverse} {$dhparams} {$ciphers} \\\n";
+				$conf .= " {$options} defaultsite={$https_defsite} vhost\n";
+				$conf .= "\n";
 			}
 		}
 	}
