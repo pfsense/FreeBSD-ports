@@ -802,12 +802,16 @@ events.push(function() {
 	function getOptions() {
 		var error = "There was an error getting the options.";
 
+		var d = new Date();
+		var current_date = (((d.getMonth()+1)<10) ? "0" + (d.getMonth()+1) : (d.getMonth()+1)) + "/" + d.getDate() + "/" + d.getFullYear();
+		var current_time = d.getHours();
+
 		var graphLeft = $( "#graph-left" ).val();
 		var graphRight = $( "#graph-right" ).val();
-		var startDate = $( "#start-date" ).val();
-		var endDate = $( "#end-date" ).val();
-		var startTime = $( "#start-time" ).val();
-		var endTime = $( "#end-time" ).val();
+		var startDate = ($( "#start-date" ).val()) ? $( "#start-date" ).val() : current_date;
+		var endDate = ($( "#end-date" ).val()) ? $( "#end-date" ).val() : current_date;
+		var startTime = ($( "#start-time" ).val()) ? $( "#start-time" ).val() : current_time;
+		var endTime = ($( "#end-time" ).val()) ? $( "#end-time" ).val() : current_time;
 		var timePeriod = $( "#time-period" ).val();
 		var resolution = $( "#resolution" ).val();
 		var graphtype = $( "#graph-type" ).val();
@@ -816,7 +820,7 @@ events.push(function() {
 		var end = '';
 
 		//convert dates to epoch and validate
-		if(timePeriod === "custom" && startDate && endDate) { //TODO check if both are valid dates
+		if(timePeriod === "custom") { //TODO check if both are valid dates
 			start = convertToEpoch(startDate + ":" + startTime);
 			end = convertToEpoch(endDate + ":" + endTime);
 
@@ -828,6 +832,12 @@ events.push(function() {
 				return false;
 			}
 		}
+
+		// Restore date and time values so that saving as default will use the date/time values specified in settings rather than the calculated current date/time values.
+		startDate = $( "#start-date" ).val();
+		startTime = $( "#start-time" ).val();
+		endDate = $( "#end-date" ).val();
+		endTime = $( "#end-time" ).val();
 
 		var graphOptions = 'left=' + graphLeft + '&right=' + graphRight + '&start=' + start + '&end=' + end + '&resolution=' + resolution + '&timePeriod=' + timePeriod + '&graphtype=' + graphtype + '&invert=' + invert ;
 
