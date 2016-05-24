@@ -1,6 +1,6 @@
 <?php
 /*
-	nrpe2.priv.inc
+	bind.priv.inc
 	part of pfSense (http://www.pfSense.org/)
 	Copyright (C) 2015 ESF, LLC
 	All rights reserved.
@@ -28,10 +28,23 @@
 */
 global $priv_list;
 
-$priv_list['page-services-nrpe2'] = array();
-$priv_list['page-services-nrpe2']['name'] = "WebCfg - Services: nrpe2 package";
-$priv_list['page-services-nrpe2']['descr'] = "Allow access to nrpe2 package GUI";
-$priv_list['page-services-nrpe2']['match'] = array();
-$priv_list['page-services-nrpe2']['match'][] = "pkg_edit.php?xml=nrpe2.xml*";
+$priv_list['page-services-binddns'] = array();
+$priv_list['page-services-binddns']['name'] = "WebCfg - Services: BIND package";
+$priv_list['page-services-binddns']['descr'] = "Allow access to BIND package GUI";
+
+$priv_list['page-services-binddns']['match'] = array();
+$priv_list['page-services-binddns']['match'][] = "pkg.php?xml=bind.xml*";
+$priv_list['page-services-binddns']['match'][] = "pkg.php?xml=bind_acls.xml*";
+$priv_list['page-services-binddns']['match'][] = "pkg.php?xml=bind_sync.xml*";
+$priv_list['page-services-binddns']['match'][] = "pkg.php?xml=bind_views.xml*";
+$priv_list['page-services-binddns']['match'][] = "pkg.php?xml=bind_zones.xml*";
+
+$priv_list['page-services-binddns']['match'][] = "pkg_edit.php?xml=bind.xml*";
+$priv_list['page-services-binddns']['match'][] = "pkg_edit.php?xml=bind_acls.xml*";
+$priv_list['page-services-binddns']['match'][] = "pkg_edit.php?xml=bind_sync.xml*";
+$priv_list['page-services-binddns']['match'][] = "pkg_edit.php?xml=bind_views.xml*";
+$priv_list['page-services-binddns']['match'][] = "pkg_edit.php?xml=bind_zones.xml*";
+
+$priv_list['page-services-binddns']['match'][] = "widgets/widgets/bind.widget.php*";
 
 ?>
