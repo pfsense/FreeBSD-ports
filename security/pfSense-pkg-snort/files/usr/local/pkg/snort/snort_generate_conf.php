@@ -636,11 +636,24 @@ $sf_pscan_sense_level = "medium";
 if (!empty($snortcfg['pscan_sense_level']))
 	$sf_pscan_sense_level = $snortcfg['pscan_sense_level'];
 $sf_pscan_ignore_scanners = "\$HOME_NET";
-if (!empty($snortcfg['pscan_ignore_scanners']) && is_alias($snortcfg['pscan_ignore_scanners'])) {
-	$sf_pscan_ignore_scanners = trim(filter_expand_alias($snortcfg['pscan_ignore_scanners']));
-	$sf_pscan_ignore_scanners = preg_replace('/\s+/', ',', trim($sf_pscan_ignore_scanners));
+if (!empty($snortcfg['pscan_ignore_scanners'])) {
+	if (is_alias($snortcfg['pscan_ignore_scanners'])) {
+		$sf_pscan_ignore_scanners = trim(filter_expand_alias($snortcfg['pscan_ignore_scanners']));
+		$sf_pscan_ignore_scanners = preg_replace('/\s+/', ',', trim($sf_pscan_ignore_scanners));
+	} else {
+        	$sf_pscan_ignore_scanners = $snortcfg['pscan_ignore_scanners'];
+        }
 }
-	
+$sf_pscan_ignore_scanned = "";
+if (!empty($snortcfg['pscan_ignore_scanned'])) {
+	if (is_alias($snortcfg['pscan_ignore_scanned'])) {
+		$sf_pscan_ignore_scanned = trim(filter_expand_alias($snortcfg['pscan_ignore_scanned']));
+		$sf_pscan_ignore_scanned = preg_replace('/\s+/', ',', trim($sf_pscan_ignore_scanned));
+	} else {
+          	$sf_pscan_ignore_scanned = $snortcfg['pscan_ignore_scanned'];
+        }
+}
+
 $sf_portscan = <<<EOD
 # sf Portscan #
 preprocessor sfportscan: \
@@ -649,8 +662,21 @@ preprocessor sfportscan: \
 	memcap { {$sf_pscan_memcap} } \
 	sense_level { {$sf_pscan_sense_level} } \
 	ignore_scanners { {$sf_pscan_ignore_scanners} }
-	
 EOD;
+
+
+if (!empty($sf_pscan_ignore_scanned)) {
+	$sf_portscan .= <<<EOD
+ \
+	ignore_scanned { {$sf_pscan_ignore_scanned} }
+
+EOD;
+} else {
+	$sf_portscan .= <<<EOD
+
+
+EOD;
+}
 
 /* def ssh_preproc */
 

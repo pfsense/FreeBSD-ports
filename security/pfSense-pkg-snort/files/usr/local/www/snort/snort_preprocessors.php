@@ -262,6 +262,7 @@ if ($_GET['act'] == "import" && isset($_GET['varname']) && !empty($_GET['varvalu
 	// Retrieve previously typed values we passed to SELECT ALIAS page
 	$pconfig['sf_portscan'] = htmlspecialchars($_GET['sf_portscan'])? 'on' : 'off';
 	$pconfig['pscan_ignore_scanners'] = htmlspecialchars($_GET['pscan_ignore_scanners']);
+	$pconfig['pscan_ignore_scanned'] = htmlspecialchars($_GET['pscan_ignore_scanned']);
 	$pconfig['pscan_protocol'] = htmlspecialchars($_GET['pscan_protocol']);
 	$pconfig['pscan_type'] = htmlspecialchars($_GET['pscan_type']);
 	$pconfig['pscan_memcap'] = htmlspecialchars($_GET['pscan_memcap']);
@@ -368,6 +369,7 @@ if ($_POST['ResetAll']) {
 	$pconfig['pscan_type'] = "all";
 	$pconfig['pscan_sense_level'] = "medium";
 	$pconfig['pscan_ignore_scanners'] = "";
+	$pconfig['pscan_ignore_scanned'] = "";
 	$pconfig['pscan_memcap'] = '10000000';
 	$pconfig['dce_rpc_2'] = "on";
 	$pconfig['dns_preprocessor'] = "on";
@@ -469,10 +471,12 @@ if ($_POST['save']) {
 			$input_errors[] = gettext("The value for Application ID Stats Period must be between 60 and 3600.");
 	}
 
-	// Validate Portscan Ignore_Scanners parameter
-	if ($_POST['sf_portscan'] == 'on' && is_alias($_POST['pscan_ignore_scanners'])) {
-		if (trim(filter_expand_alias($_POST["def_{$key}"])) == "")
+	// Validate Portscan Ignore_Scanners/Scanned parameters
+	if ($_POST['sf_portscan'] == 'on') {
+        	if (is_alias($_POST['pscan_ignore_scanners']) && (trim(filter_expand_alias($_POST['pscan_ignore_scanners'])) == ""))
 			$input_errors[] = gettext("FQDN aliases are not supported in Snort for the PORTSCAN IGNORE_SCANNERS parameter.");
+		if (is_alias($_POST['pscan_ignore_scanned']) && (trim(filter_expand_alias($_POST['pscan_ignore_scanned'])) == ""))
+			$input_errors[] = gettext("FQDN aliases are not supported in Snort for the PORTSCAN IGNORE_SCANNED parameter.");
 	}
 
 	/* if no errors write to conf */
@@ -495,6 +499,7 @@ if ($_POST['save']) {
 		if ($_POST['pscan_memcap'] != "") { $natent['pscan_memcap'] = $_POST['pscan_memcap']; }else{ $natent['pscan_memcap'] = "10000000"; }
 		if ($_POST['pscan_sense_level'] != "") { $natent['pscan_sense_level'] = $_POST['pscan_sense_level']; }else{ $natent['pscan_sense_level'] = "medium"; }
 		if ($_POST['pscan_ignore_scanners'] != "") { $natent['pscan_ignore_scanners'] = $_POST['pscan_ignore_scanners']; }else{ $natent['pscan_ignore_scanners'] = ""; }
+		if ($_POST['pscan_ignore_scanned'] != "") { $natent['pscan_ignore_scanned'] = $_POST['pscan_ignore_scanned']; }else{ $natent['pscan_ignore_scanned'] = ""; }
 		if ($_POST['frag3_max_frags'] != "") { $natent['frag3_max_frags'] = $_POST['frag3_max_frags']; }else{ $natent['frag3_max_frags'] = "8192"; }
 		if ($_POST['frag3_memcap'] != "") { $natent['frag3_memcap'] = $_POST['frag3_memcap']; }else{ $natent['frag3_memcap'] = "4194304"; }
 		if ($_POST['ftp_telnet_inspection_type'] != "") { $natent['ftp_telnet_inspection_type'] = $_POST['ftp_telnet_inspection_type']; }else{ $natent['ftp_telnet_inspection_type'] = "stateful"; }
@@ -1316,11 +1321,33 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 	);
 	$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
 	$btnaliases->setAttribute('title', gettext("Select an existing IP alias"));
-	$btnaliases->setAttribute('onclick', 'selectAlias();');
+	$btnaliases->setAttribute('onclick', 'selectAlias(\'pscan_ignore_scanners\');');
 	$group = new Form_Group('Ignore Scanners');
 	$group->add($bind_to);
 	$group->add($btnaliases);
-	$group->setHelp('Ignores the specified entity as a source of scan alerts.  Entity must be a defined alias.');
+	$group->setHelp('Ignores the specified entity as a source of scan alerts.  Entity must be either a defined alias, or a commma seperated list of addresses with optional ports as ip[/cidr][port1 port2-port3].');
+	$section->add($group);
+	$bind_to = new Form_Input(
+		'pscan_ignore_scanned',
+		'',
+		'text',
+		$pconfig['pscan_ignore_scanned']
+	);
+	$bind_to->setAttribute('title', trim(filter_expand_alias($pconfig['pscan_ignore_scanned'])));
+	$bind_to->setHelp('Leave blank for default.  Default value is <em>blank</em>, meaning ignore none.');
+	$btnaliases = new Form_Button(
+		'btnSelectAlias',
+		' ' . 'Aliases',
+		'#',
+		'fa-search-plus'
+	);
+	$btnaliases->removeClass('btn-primary')->addClass('btn-default')->addClass('btn-success')->addClass('btn-sm');
+	$btnaliases->setAttribute('title', gettext("Select an existing IP alias"));
+	$btnaliases->setAttribute('onclick', 'selectAlias(\'pscan_ignore_scanned\');');
+	$group = new Form_Group('Ignore Scanned');
+	$group->add($bind_to);
+	$group->add($btnaliases);
+	$group->setHelp('Ignores the specified entity as a destination of scan alerts.  Entity must be either a defined alias, or a commma seperated list of addresses with optional ports as ip[/cidr][port1 port2-port3].');
 	$section->add($group);
 	print($section);
 	//----- END Portscan settings -----
@@ -2045,15 +2072,15 @@ print_callout('<p>' . gettext("Remember to save your changes before you exit thi
 		ftp_telnet_enable_change();
 	}
 
-	function selectAlias() {
+	function selectAlias(targetVar) {
 
 		var loc;
-		var fields = [ "#sf_portscan", "#pscan_protocol", "#pscan_type", "#pscan_sense_level", "#pscan_memcap", "#pscan_ignore_scanners" ];
+		var fields = [ "#sf_portscan", "#pscan_protocol", "#pscan_type", "#pscan_sense_level", "#pscan_memcap", "#pscan_ignore_scanners", "#pscan_ignore_scanned" ];
 
 		// Scrape current form field values and add to
 		// the select alias URL as a query string.
 		var loc = 'snort_select_alias.php?id=<?=$id;?>&act=import&type=host|network';
-		loc = loc + '&varname=pscan_ignore_scanners&multi_ip=yes';
+		loc = loc + '&varname=' + targetVar + '&multi_ip=yes';
 		loc = loc + '&returl=<?=urlencode($_SERVER['PHP_SELF']);?>';
 
 		// Iterate over just the specific form fields we want to pass to
@@ -2101,6 +2128,10 @@ events.push(function(){
 	var addressarray = <?= json_encode(get_alias_list(array("host", "network", "openvpn"))) ?>;
 
 	$('#pscan_ignore_scanners').autocomplete({
+		source: addressarray
+	});
+
+	$('#pscan_ignore_scanned').autocomplete({
 		source: addressarray
 	});
 
