@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	bind.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2013 Juliano Oliveira
+	Copyright (C) 2013 Adriano Brancher
+	Copyright (C) 2015 ESF, LLC
+	Copyright (C) 2016 Voleatech GmbH
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+	]]>
+	</copyright>
+	<name>bind</name>
+	<version>0.4.3</version>
+	<title>BIND: DNS Settings</title>
+	<include_file>/usr/local/pkg/bind.inc</include_file>
+	<menu>
+		<name>BIND DNS Server</name>
+		<tooltiptext>Modify BIND settings</tooltiptext>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=bind.xml</url>
+	</menu>
+	<service>
+		<name>named</name>
+		<rcfile>named.sh</rcfile>
+		<executable>named</executable>
+		<description>Domain Name Service</description>
+	</service>
+	<tabs>
+		<tab>
+			<text>Settings</text>
+			<url>/pkg_edit.php?xml=bind.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>ACLs</text>
+			<url>/pkg.php?xml=bind_acls.xml</url>
+		</tab>
+		<tab>
+			<text>Views</text>
+			<url>/pkg.php?xml=bind_views.xml</url>
+		</tab>
+		<tab>
+			<text>Zones</text>
+			<url>/pkg.php?xml=bind_zones.xml</url>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=bind_sync.xml</url>
+		</tab>
+
+	</tabs>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/bind/bind.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/bind/bind_views.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/bind/bind_zones.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/bind/bind_acls.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/bind/bind.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/etc/inc/priv/</prefix>
+		<item>https://packages.pfsense.org/packages/config/bind/bind.priv.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/bind/bind_sync.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/shortcuts/</prefix>
+		<item>https://packages.pfsense.org/packages/config/bind/pkg_bind.inc</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/widgets/widgets/</prefix>
+		<item>https://packages.pfsense.org/packages/config/bind/bind.widget.php</item>
+	</additional_files_needed>
+	<fields>
+		<field>
+			<type>listtopic</type>
+			<name>Daemon Settings</name>
+			<fieldname>temp01</fieldname>
+		</field>
+		<field>
+			<fielddescr>Enable BIND</fielddescr>
+			<fieldname>enable_bind</fieldname>
+			<description>Enable BIND DNS server.</description>
+			<sethelp>
+				Disable DNS Forwarder and Resolver services on selected interfaces before enabling BIND.
+			</sethelp>
+			<type>checkbox</type>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>IP Version</fielddescr>
+			<fieldname>bind_ip_version</fieldname>
+			<description>
+				<![CDATA[
+				Select IP transport version.<br />
+				This controls which transports are used when resolving queries.
+				]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>IPv4+IPv6</name><value></value></option>
+				<option><name>IPv4</name><value>-4</value></option>
+				<option><name>IPv6</name><value>-6</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Listen on</fielddescr>
+			<fieldname>listenon</fieldname>
+			<description>Choose the interfaces on which to enable BIND.</description>
+			<type>interfaces_selection</type>
+			<showlistenall/>
+			<showvirtualips/>
+			<multiple/>
+		</field>
+		<field>
+			<fielddescr>Enable Notify</fielddescr>
+			<fieldname>bind_notify</fieldname>
+			<description>Notify slave server after any update on master.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Hide Version</fielddescr>
+			<fieldname>bind_hide_version</fieldname>
+			<description>Hide the version of BIND (ignore queries for version.bind).</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Limit Memory Use</fielddescr>
+			<fieldname>bind_ram_limit</fieldname>
+			<description>Limits RAM use for DNS server (Recommended: 256M)</description>
+			<type>input</type>
+			<size>10</size>
+			<default_value>256M</default_value>
+		</field>
+		<field>
+			<type>listtopic</type>
+			<name>Logging Options</name>
+			<fieldname>temp01</fieldname>
+		</field>
+		<field>
+			<fielddescr>Enable Logging</fielddescr>
+			<fieldname>bind_logging</fieldname>
+			<description>
+				<![CDATA[
+				Enable BIND logs under Status > System logs, Resolver tab.
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Logging Severity</fielddescr>
+			<fieldname>log_severity</fieldname>
+			<description>
+				<![CDATA[
+				Choose logging level for selected categories.<br />
+				The value 'dynamic' means assume the global level defined by either the command line parameter -d or by running rndc trace.
+				]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>Critical</name><value>critical</value></option>
+				<option><name>Error</name><value>error</value></option>
+				<option><name>Warning</name><value>warning</value></option>
+				<option><name>Notice</name><value>Notice</value></option>
+				<option><name>Info</name><value>info</value></option>
+				<option><name>Debug level 1</name><value>debug 1</value></option>
+				<option><name>Debug level 3</name><value>debug 3</value></option>
+				<option><name>Debug level 5</name><value>debug 5</value></option>
+				<option><name>Dynamic</name><value>dynamic</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Logging Options</fielddescr>
+			<fieldname>log_options</fieldname>
+			<description>
+				<![CDATA[
+				Select categories to log.<br />
+				(Use CTRL + click to select/unselect.
+				]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option>
+					<name>Default - If this is the only category selected, it will log all categories except queries.</name>
+					<value>default</value>
+				</option>
+				<option>
+					<name>General - Anything that is not classified as any other item in this list defaults to this category.</name>
+					<value>general</value>
+				</option>
+				<option>
+					<name>Database - Messages relating to the databases used internally by the name server to store zone and cache data.</name>
+					<value>database</value>
+				</option>
+				<option>
+					<name>Security - Approval and denial of requests.</name>
+					<value>security</value>
+				</option>
+				<option>
+					<name>Config - Configuration file parsing and processing.</name>
+					<value>config</value>
+				</option>
+				<option>
+					<name>Resolver - Name resolution including recursive lookups.</name>
+					<value>resolver</value>
+				</option>
+				<option>
+					<name>Xfer-in - Details of zone transfers the server is receiving.</name>
+					<value>xfer-in</value>
+				</option>
+				<option>
+					<name>Xfer-out - Details of zone transfers the server is sending.</name>
+					<value>xfer-out</value>
+				</option>
+				<option>
+					<name>Notify - Logs all NOTIFY operations.</name>
+					<value>notify</value>
+				</option>
+				<option>
+					<name>Client - Processing of client requests.</name>
+					<value>client</value>
+				</option>
+				<option>
+					<name>Unmatched - No matching view clause or unrecognized class value.</name>
+					<value>unmatched</value>
+				</option>
+				<option>
+					<name>Queries - Logs all query transactions.</name>
+					<value>queries</value>
+				</option>
+				<option>
+					<name>Network - Logs all network operations.</name>
+					<value>network</value>
+				</option>
+				<option>
+					<name>Update - Logging of all dynamic update (DDNS) transactions.</name>
+					<value>update</value>
+				</option>
+				<option>
+					<name>Dispatch - Dispatching of incoming packets to the server modules.</name>
+					<value>dispatch</value>
+				</option>
+				<option>
+					<name>DNSSEC - DNSSEC and TSIG protocol processing.</name>
+					<value>dnssec</value>
+				</option>
+				<option>
+					<name>lame-servers - Misconfiguration in the delegation of domains discovered by BIND.</name>
+					<value>lame-servers</value>
+				</option>
+			</options>
+			<multiple/>
+			<size>18</size>
+		</field>
+		<field>
+			<type>listtopic</type>
+			<name>Response Rate Limit</name>
+			<fieldname>temp01</fieldname>
+		</field>
+		<field>
+			<fielddescr>Rate Limit</fielddescr>
+			<fieldname>rate_enabled</fieldname>
+			<description>Enable Rate Limit.</description>
+			<sethelp>
+				<![CDATA[
+						 See <a href="https://kb.isc.org/article/AA-01000/189/A-Quick-Introduction-to-Response-Rate-Limiting.html">A Quick Introduction to Response Rate Limiting</a> to prevent DOS attack.
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+			<enablefields>rate_limit,log_only</enablefields>
+		</field>
+		<field>
+			<fielddescr>Limit Action</fielddescr>
+			<fieldname>log_only</fieldname>
+			<description>Select what to do when a query reaches a limit.</description>
+			<type>select</type>
+			<options>
+				<option><name>Deny query</name><value>no</value></option>
+				<option><name>Log only</name><value>yes</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Limit</fielddescr>
+			<fieldname>rate_limit</fieldname>
+			<description>Set rate limit. (Default: 15)</description>
+			<type>input</type>
+			<size>10</size>
+		</field>
+		<field>
+			<type>listtopic</type>
+			<name>Forwarder Configuration</name>
+			<fieldname>temp01</fieldname>
+		</field>
+		<field>
+			<fielddescr>Enable Forwarding</fielddescr>
+			<fieldname>bind_forwarder</fieldname>
+			<description>Enable forwarding queries to other DNS servers listed below rather than this server performing its own recursion.</description>
+			<type>checkbox</type>
+			<enablefields>bind_forwarder_ips</enablefields>
+		</field>
+		<field>
+			<fielddescr>Forwarder IPs</fielddescr>
+			<fieldname>bind_forwarder_ips</fieldname>
+			<description>
+				<![CDATA[
+				Enter IPs of DNS servers to use for recursion. Separate by semi-colons (;).<br />
+				Applies only if Enable Forwarding is chosen.
+				]]>
+			</description>
+			<type>input</type>
+			<size>80</size>
+		</field>
+		<field>
+			<type>listtopic</type>
+			<name>Custom Options</name>
+			<fieldname>temp01</fieldname>
+		</field>
+		<field>
+			<fielddescr>Custom Options</fielddescr>
+			<fieldname>bind_custom_options</fieldname>
+			<description>
+				<![CDATA[
+				You can put your own custom options here, one per line. They'll be added to the configuration.<br />
+				They need to be <a href="http://www.freebsd.org/cgi/man.cgi?query=named.conf&apropos=0&sektion=0&manpath=FreeBSD+10.1-RELEASE+and+Ports&arch=default&format=html"named.conf</a> native settings.
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>65</cols>
+			<rows>5</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<type>listtopic</type>
+			<name>Global Settings</name>
+			<fieldname>temp01</fieldname>
+		</field>
+		<field>
+			<fielddescr>Global Settings</fielddescr>
+			<fieldname>bind_global_settings</fieldname>
+			<description>
+				<![CDATA[
+				You can put your own global settings here. They'll be added to the configuration.<br />
+				They need to be <a href="http://www.freebsd.org/cgi/man.cgi?query=named.conf&apropos=0&sektion=0&manpath=FreeBSD+10.1-RELEASE+and+Ports&arch=default&format=html"named.conf</a> native settings.
+				]]>
+			</description>
+			<type>textarea</type>
+			<cols>65</cols>
+			<rows>5</rows>
+			<encoding>base64</encoding>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		bind_sync();
+	</custom_php_resync_config_command>
+	<custom_php_install_command>
+		bind_write_rcfile();
+	</custom_php_install_command>
+</packagegui>

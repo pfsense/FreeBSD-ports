@@ -1,0 +1,11 @@
+pkg/bind.inc
+pkg/bind.xml
+pkg/bind_acls.xml
+pkg/bind_sync.xml
+pkg/bind_views.xml
+pkg/bind_zones.xml
+pkg/pkg_bind.inc
+www/widgets/widgets/bind.widget.php
+/etc/inc/priv/bind.priv.inc
+%%DATADIR%%/info.xml
+@dir /etc/inc/priv
