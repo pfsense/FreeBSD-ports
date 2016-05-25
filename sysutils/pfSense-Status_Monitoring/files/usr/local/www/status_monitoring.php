@@ -717,6 +717,10 @@ events.push(function() {
 		$( "#start-time" ).prop( "disabled", true );
 		$( "#end-time" ).prop( "disabled", true );
 
+		if (page_loading) {	// Save resolution of page load "applySettings".
+			resolution = $( "#resolution" ).val();
+		}
+
 		switch(this.value) {
 			case "-3m":
 			case "-1y":
@@ -779,7 +783,10 @@ events.push(function() {
 				$("#resolution").append('<option value="60">1 Minute</option>');
 				break;
 			}
-			
+
+			if (page_loading) {	// Restore resolution of page load "applySettings".
+				($( "#resolution" ).val(resolution));
+			}
 	});
 
 	function convertToEpoch(datestring) {
@@ -962,6 +969,8 @@ events.push(function() {
 		}, this);
 
 	}
+
+	var page_loading = true;
 
 	applySettings("<?php echo $pconfig['category']; ?>");
 
