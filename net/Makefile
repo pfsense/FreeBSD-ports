@@ -402,7 +402,6 @@
     SUBDIR += mosquitto
     SUBDIR += motsognir
     SUBDIR += mpd-l2tp-ipv6pd-client
-    SUBDIR += mpd4
     SUBDIR += mpd5
     SUBDIR += mpich
     SUBDIR += mpich2
