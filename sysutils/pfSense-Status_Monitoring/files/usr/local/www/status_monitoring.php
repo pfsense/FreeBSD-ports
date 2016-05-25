@@ -113,7 +113,10 @@ if(strpos($config['rrd']['category'], '&resolution') === false) {
 
 //save new defaults
 if ($_POST['defaults']) {
-	$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&resolution=".$_POST['resolution']."&timePeriod=".$_POST['time-period']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert'];
+	// Time period setting change applies valid resolutions and selects the default resolution of the time period.
+	// Time period setting needs to be before resolution so that the time period default doesn't override the page load default resolution.
+	// Time period setting needs to be before custom start/end date/time so those will be enabled before applying their setting.
+	$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert'];
 	write_config();
 	$savemsg = "The changes have been applied successfully.";
 }
