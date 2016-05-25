@@ -38,7 +38,6 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/clog:sysutils/clog \
 		${LOCALBASE}/sbin/nginx:www/nginx \
 		${LOCALBASE}/sbin/ssh_tunnel_shell:sysutils/ssh_tunnel_shell \
 		${LOCALBASE}/sbin/miniupnpd:net/miniupnpd \
-		${LOCALBASE}/sbin/mpd4:net/mpd4 \
 		${LOCALBASE}/sbin/mpd5:net/mpd5 \
 		${LOCALBASE}/sbin/openvpn:security/openvpn \
 		${LOCALBASE}/sbin/pftop:sysutils/pftop \
