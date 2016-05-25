@@ -1354,6 +1354,8 @@ events.push(function() {
 
 	}
 
+	page_loading = false;	// Page has finished loading now.
+
 });
 //]]>
 </script>
