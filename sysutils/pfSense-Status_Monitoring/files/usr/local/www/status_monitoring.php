@@ -1184,7 +1184,25 @@ events.push(function() {
 		$( "#selectedquicklinktitle" ).text(title);
 
 		id = 'quicklink999';
-		graph_settings = getOptions();
+
+		// Time period setting change applies valid resolutions and selects the default resolution of the time period.
+		// Time period setting needs to be before resolution so that the time period default doesn't override the page load default resolution.
+		// Time period setting needs to be before custom start/end date/time so those will be enabled before applying their setting.
+		graph_settings  = 'left=' + (($( "#graph-left" ).val()) ? $( "#graph-left" ).val() : '');
+		graph_settings += '&right=' + (($( "#graph-right" ).val()) ? $( "#graph-right" ).val() : '');
+		graph_settings += '&timePeriod=' + $( "#time-period" ).val();
+		graph_settings += '&resolution=' + $( "#resolution" ).val();
+		graph_settings += '&startDate=' + $( "#start-date" ).val();
+		graph_settings += '&endDate=' + $( "#end-date" ).val();
+		graph_settings += '&startTime=' + $( "#start-time" ).val();
+		graph_settings += '&endTime=' + $( "#end-time" ).val();
+		graph_settings += '&graphtype=' + $( "#graph-type" ).val();
+		graph_settings += '&invert=' + $( "#invert" ).val();
+
+		if ( $( "#auto-update" ).length ) {	// Include auto-update if installed.
+			graph_settings += '&autoUpdate=' + $( "#auto-update" ).val();
+		}
+
 		quicklink_icon = 'fa-' + $( "#graph-type" ).val() + '-chart';
 
 		quicklink_list_item_html = '<li class="ui-sortable-handle"><a id="' + id + '" title="' + title + '" data-category="' + graph_settings + '" ><i class="fa ' + quicklink_icon + ' icon-pointer"></i></a></li>';
