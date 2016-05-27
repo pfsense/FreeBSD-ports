@@ -833,13 +833,13 @@ events.push(function() {
 			}
 		}
 
+		var graphOptions = 'left=' + graphLeft + '&right=' + graphRight + '&start=' + start + '&end=' + end + '&resolution=' + resolution + '&timePeriod=' + timePeriod + '&graphtype=' + graphtype + '&invert=' + invert ;
+
 		// Restore date and time values so that saving as default will use the date/time values specified in settings rather than the calculated current date/time values.
 		startDate = $( "#start-date" ).val();
 		startTime = $( "#start-time" ).val();
 		endDate = $( "#end-date" ).val();
 		endTime = $( "#end-time" ).val();
-
-		var graphOptions = 'left=' + graphLeft + '&right=' + graphRight + '&start=' + start + '&end=' + end + '&resolution=' + resolution + '&timePeriod=' + timePeriod + '&graphtype=' + graphtype + '&invert=' + invert ;
 
 		return graphOptions;
 	}
