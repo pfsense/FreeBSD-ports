@@ -550,7 +550,7 @@ if ($savemsg) {
 		<h2 class="panel-title" style="display:inline-block">
 			Interactive Graph
 		</h2>
-		<span class="alert" id="loading-msg">Loading Graph...</span>
+		<span class="fa fa-spinner fa-pulse fa-lg fa-fw" id="loading-msg"></span>
 <?php
 		if (is_array($config['rrd']['quicklinks'])) {
 			$quicklinks_visibility = "visible";
