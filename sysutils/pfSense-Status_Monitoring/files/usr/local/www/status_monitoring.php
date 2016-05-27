@@ -904,7 +904,6 @@ events.push(function() {
 		var timePeriod = $( "#time-period" ).val();
 		var resolution = $( "#resolution" ).val();
 		var graphtype = $( "#graph-type" ).val();
-		var autoUpdate = $( "#auto-update" ).val();
 		var invert = $( "#invert" ).val();
 		var start = '';
 		var end = '';
@@ -923,7 +922,7 @@ events.push(function() {
 			}
 		}
 
-		var graphOptions = 'left=' + graphLeft + '&right=' + graphRight + '&start=' + start + '&end=' + end + '&resolution=' + resolution + '&timePeriod=' + timePeriod + '&graphtype=' + graphtype + '&invert=' + invert + '&autoUpdate=' + autoUpdate ;
+		var graphOptions = 'left=' + graphLeft + '&right=' + graphRight + '&start=' + start + '&end=' + end + '&resolution=' + resolution + '&timePeriod=' + timePeriod + '&graphtype=' + graphtype + '&invert=' + invert ;
 
 		return graphOptions;
 	}
