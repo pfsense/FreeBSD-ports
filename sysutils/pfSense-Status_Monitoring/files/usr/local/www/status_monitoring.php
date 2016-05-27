@@ -900,7 +900,7 @@ events.push(function() {
 	***/
 
 	//TODO work in more validation
-	var graphOptions_previous;
+	var settings_previous;
 
 	function getOptions() {
 		var error = "There was an error getting the options.";
@@ -934,11 +934,18 @@ events.push(function() {
 
 		var graphOptions = 'left=' + graphLeft + '&right=' + graphRight + '&start=' + start + '&end=' + end + '&resolution=' + resolution + '&timePeriod=' + timePeriod + '&graphtype=' + graphtype + '&invert=' + invert ;
 
-		// If graph options have changed, un-select any quick link.
-		if (graphOptions != graphOptions_previous) {
+		settings_current = 'left=' + graphLeft + '&right=' + graphRight + '&timePeriod=' + timePeriod + '&resolution=' + resolution + '&startDate=' + startDate + '&endDate=' + endDate + '&startTime=' + startTime + '&endTime=' + endTime + '&graphtype=' + graphtype + '&invert=' + invert ;
+
+		if ( $( "#auto-update" ).length ) {	// Include auto-update if installed.
+			settings_current += '&autoUpdate=' + $( "#auto-update" ).val();
+		}
+
+		// If graph settings have changed, un-select any quick link.
+		// If page is loading then the settings have not changed.
+		if ((settings_current != settings_previous) && !page_loading) {
 			selected_quicklink(null);
 		}
-		graphOptions_previous = graphOptions;
+		settings_previous = settings_current;
 
 		return graphOptions;
 	}
@@ -1072,6 +1079,7 @@ events.push(function() {
 
 	}
 
+	var page_loading = true;
 	applySettings("<?php echo $pconfig['category']; ?>");
 
 	$( ".update-graph" ).click(function() {
@@ -1571,6 +1579,8 @@ events.push(function() {
 		draw_graph(getOptions());
 
 	}
+
+	page_loading = false;	// Page has finished loading now.
 
 });
 //]]>
