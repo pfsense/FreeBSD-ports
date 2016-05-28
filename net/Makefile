@@ -454,6 +454,7 @@
     SUBDIR += ntimed
     SUBDIR += ntlmaps
     SUBDIR += ntop
+    SUBDIR += ntopng
     SUBDIR += ntp
     SUBDIR += ntp-devel
     SUBDIR += ntraceroute
