@@ -132,7 +132,6 @@
 				Disable DNS Forwarder and Resolver services on selected interfaces before enabling BIND.
 			</sethelp>
 			<type>checkbox</type>
-			<required/>
 		</field>
 		<field>
 			<fielddescr>IP Version</fielddescr>
