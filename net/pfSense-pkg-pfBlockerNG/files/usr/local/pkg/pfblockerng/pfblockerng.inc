@@ -4146,10 +4146,11 @@ function sync_package_pfblockerng($cron='') {
 
 			#################################################################################
 			#			PASS/MATCH RULES ORDER(p/m)				#
-			#  ORDER 0 - pfBlockerNG / All other Rules					#
-			#  ORDER 1 - pfSense (p/m) / pfBlockerNG (p/m) / pfBlockerNG Block/Reject	#
-			#  ORDER 2 - pfBlockerNG (p/m) / pfSense (p/m) / pfBlockerNG Block/Reject	#
-			#  ORDER 3 - pfBlockerNG (p/m) / pfBlockerNG Block/Reject / pfSense (p/m)	#
+			#  ORDER 0 |	pfB (all)	| All other	|				#
+			#  ORDER 1 |	pfSense (p/m)	| pfB (p/m)	| pfB (b/r) 	| pfSense (b/r)	#
+			#  ORDER 2 |	pfB (p/m)	| pfSense (p/m) | pfB (b/r)	| pfSense (b/r)	#
+			#  ORDER 3 |	pfB (p/m)	| pfB (b/r) 	| pfSense (p/m)	| pfSense (b/r)	#
+			#  ORDER 4 |	pfB (p/m)	| pfB (b/r)	| pfSense (b/r)	| pfSense (p/m)	#
 			#################################################################################
 
 			if ($pfb['float'] == '') {
@@ -4298,7 +4299,7 @@ function sync_package_pfblockerng($cron='') {
 				}
 			}
 
-			if ($pfb['float'] == 'on' && in_array($pfb['order'], array('order_0', 'order_3'))) {
+			if ($pfb['float'] == 'on' && in_array($pfb['order'], array('order_0', 'order_3', 'order_4'))) {
 				if ($pfb['order'] == 'order_0') {
 					$rule_order = array($fother_rules, $fpermit_rules, $fmatch_rules);
 				} else {
@@ -4317,12 +4318,22 @@ function sync_package_pfblockerng($cron='') {
 					$new_rules[] = $cb_rules;
 				}
 			}
+			if ($pfb['order'] == 'order_4' && !empty($other_rules)) {
+				foreach ($other_rules as $cb_rules) {
+					$new_rules[] = $cb_rules;
+				}
+			}
+			if ($pfb['order'] == 'order_4' && !empty($permit_rules)) {
+				foreach ($permit_rules as $cb_rules) {
+					$new_rules[] = $cb_rules;
+				}
+			}
 			if ($pfb['order'] == 'order_3' && !empty($permit_rules)) {
 				foreach ($permit_rules as $cb_rules) {
 					$new_rules[] = $cb_rules;
 				}
 			}
-			if (!empty($other_rules)) {
+			if ($pfb['order'] != 'order_4' && !empty($other_rules)) {
 				foreach ($other_rules as $cb_rules) {
 					$new_rules[] = $cb_rules;
 				}
