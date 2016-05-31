@@ -275,7 +275,7 @@
 			<fielddescr>Global Logging</fielddescr>
 			<fieldname>enable_log</fieldname>
 			<type>checkbox</type>
-			<description><![CDATA[Firewall Rule logging - Enable Global logging to [ Status: System Logs: FIREWALL Log ]<br />
+			<description><![CDATA[Firewall Rule logging - Enable Global logging to [ Status: System Logs: FIREWALL Log ].<br />
 				This overrides any log settings in the Continent/IPv4/6 Alias tabs. (DNSBL not included)]]>
 			</description>
 		</field>
