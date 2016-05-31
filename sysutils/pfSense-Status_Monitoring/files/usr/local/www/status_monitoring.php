@@ -812,8 +812,9 @@ events.push(function() {
 		var resolution = $( "#resolution" ).val();
 		var graphtype = $( "#graph-type" ).val();
 		var invert = $( "#invert" ).val();
-		var start = '';
-		var end = '';
+
+		var end = '-1min';				// Ensure RRD will have a data point for the end time so the graph, last, and minimum, doesn't end with zero (0) value.
+		var start = timePeriod + end;	// Maintain the time period duration.
 
 		//convert dates to epoch and validate
 		if(timePeriod === "custom" && startDate && endDate) { //TODO check if both are valid dates
