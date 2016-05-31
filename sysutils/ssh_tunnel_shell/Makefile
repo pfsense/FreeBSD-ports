@@ -2,6 +2,7 @@
 
 PORTNAME=	ssh_tunnel_shell
 PORTVERSION=	0.1
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# none
@@ -11,7 +12,6 @@ MAINTAINER=	garga@pfsense.org
 COMMENT=	SSH tunnel shell
 
 WHERE=		sbin
-PLIST_FILES=	${WHERE}/${PORTNAME}
 
 do-extract:
 	${MKDIR} ${WRKSRC}
