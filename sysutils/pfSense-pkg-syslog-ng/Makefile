@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-syslog-ng
 PORTVERSION=	1.1.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +13,8 @@ COMMENT=	pfSense package syslog-ng
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/syslog-ng:sysutils/syslog-ng
+RUN_DEPENDS=	${LOCALBASE}/sbin/syslog-ng:sysutils/syslog-ng \
+		${LOCALBASE}/sbin/logrotate:sysutils/logrotate
 
 NO_BUILD=	yes
 NO_MTREE=	yes
