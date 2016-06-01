@@ -275,7 +275,7 @@ foreach ($databases as $db) {
 }
 
 ## Get the configured options for Show/Hide monitoring settings panel.
-$monitoring_settings_form_hidden = isset($config['system']['webgui']['statusmonitoringsettingspanel']) ? false : true;
+$monitoring_settings_form_hidden = !$user_profile['webgui']['statusmonitoringsettingspanel'];
 
 if ($monitoring_settings_form_hidden) {
 	$panel_state = 'out';
