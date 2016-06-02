@@ -105,10 +105,15 @@ exitnow() {
 }
 
 
-# Function to restore aliasables from archive on reboot. ( NanoBSD and Ramdisk installations only )
+# Function to restore IP aliastables and DNSBL database from archive on reboot. ( NanoBSD and Ramdisk installations only )
 aliastables() {
 	if [ "${PLATFORM}" != 'pfSense' ] || [ ${USE_MFS_TMPVAR} -gt 0 ] || [ "${DISK_TYPE}" = 'md' ]; then
-		[ -f "${aliasarchive}" ] && cd "${pfsensealias}" && /usr/bin/tar -jxvf "${aliasarchive}"
+		if [ ! -d '/var/unbound' ]; then
+			mkdir '/var/unbound'
+			chown -f unbound:unbound /var/unbound
+			chgrp -f unbound /var/unbound
+		fi
+		[ -f "${aliasarchive}" ] && cd / && /usr/bin/tar -Pxvf "${aliasarchive}"
 	fi
 }
 
