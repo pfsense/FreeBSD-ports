@@ -275,7 +275,7 @@
 			<fielddescr>Global Logging</fielddescr>
 			<fieldname>enable_log</fieldname>
 			<type>checkbox</type>
-			<description><![CDATA[Firewall Rule logging - Enable Global logging to [ Status: System Logs: FIREWALL Log ]<br />
+			<description><![CDATA[Firewall Rule logging - Enable Global logging to [ Status: System Logs: FIREWALL Log ].<br />
 				This overrides any log settings in the Continent/IPv4/6 Alias tabs. (DNSBL not included)]]>
 			</description>
 		</field>
@@ -411,9 +411,10 @@
 			<type>select</type>
 			<options>
 				<option><name>| pfB_Block/Reject | All other Rules | (original format)</name><value>order_0</value></option>
-				<option><name>| pfSense Pass/Match | pfB_Pass/Match | pfB_Block/Reject |</name><value>order_1</value></option>
-				<option><name>| pfB_Pass/Match | pfSense Pass/Match | pfB_Block/Reject |</name><value>order_2</value></option>
-				<option><name>| pfB_Pass/Match | pfB_Block/Reject | pfSense Pass/Match |</name><value>order_3</value></option>
+				<option><name>| pfSense Pass/Match | pfB_Pass/Match | pfB_Block/Reject | pfSense Block/Reject |</name><value>order_1</value></option>
+				<option><name>| pfB_Pass/Match | pfSense Pass/Match | pfB_Block/Reject | pfSense Block/Reject |</name><value>order_2</value></option>
+				<option><name>| pfB_Pass/Match | pfB_Block/Reject | pfSense Pass/Match | pfSense Block/Reject |</name><value>order_3</value></option>
+				<option><name>| pfB_Pass/Match | pfB_Block/Reject | pfSense Block/Reject | pfSense Pass/Match |</name><value>order_4</value></option>
 			</options>
 			<default_value>order_0</default_value>
 		</field>

@@ -91,7 +91,7 @@ if (isset($suppression)) {
 	foreach ($suppression as $dnssupp) {
 		// Create 1) array for the suppressed domains 2) A string with the domain and comment text
 		$dnssupp_ex[] = $dnssupp[0];
-		$dnssupp_dat .= "{$dnssupp[0]}{$dnssupp[1]}\r\n";
+		$dnssupp_dat .= "{$dnssupp[0]} {$dnssupp[1]}\r\n";
 	}
 }
 

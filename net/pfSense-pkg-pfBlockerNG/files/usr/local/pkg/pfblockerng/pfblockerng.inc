@@ -255,7 +255,7 @@ function pfbng_text_area_decode($text, $mode=FALSE) {
 			if (substr(trim($line), 0, 1) != '#' && !empty($line)) {
 				if (strpos($line, '#') !== FALSE) {
 					if ($mode) {
-						$custom[] = preg_split('/\s+(?=#)/', trim($line));
+						$custom[] = array_map('trim', preg_split('/(?=#)/', $line));
 					} else {
 						$custom .= trim(strstr($line, '#', TRUE)) . "\n";
 					}
@@ -1072,12 +1072,12 @@ function find_reported_header($ip, $pfbfolder, $exclude=FALSE) {
 	$arr = $cidrs = array();
 
 	// Exclude MaxMind files for Alerts tab query; however include for Download failure queries.
-	$exclusion = "--exclude='pfB_*'";
 	if ($exclude) {
-		$exclusion = '';
+		exec("/usr/bin/find {$pfbfolder} ! -name 'pfB_*.txt' -type f | xargs grep '^{$query}\.'", $result);
+	} else {
+		exec("/usr/bin/grep '^{$query}\.' {$pfbfolder}", $result);
 	}
 
-	exec("/usr/bin/grep '^{$query}\.' {$exclusion} {$pfbfolder}", $result);
 	if (!empty($result)) {
 		foreach ($result as $line) {
 
@@ -1744,8 +1744,23 @@ function pfb_aliastables($mode) {
 		conf_mount_rw();
 		if ($mode == 'update') {
 			// Archive aliastable folder
-			exec("cd {$pfb['aliasdir']}; ls -A pfB_*.txt && /usr/bin/tar -jcvf {$pfb['aliasarchive']} pfB_*.txt >/dev/null 2>&1");
 			pfb_logger("\n\nArchiving Aliastable folder\n", 1);
+			$files_to_backup = '';
+			if (glob("{$pfb['aliasdir']}/pfB_*.txt")) {
+				$files_to_backup = "{$pfb['aliasdir']}/pfB_*.txt";
+			}
+
+			if ($pfb['dnsbl'] == 'on' && file_exists("{$pfb['dnsbl_file']}.conf")) {
+				$files_to_backup .= " {$pfb['dnsbl_file']}.conf";
+			}
+
+			// Archive IP Aliastables/Unbound DNSBL Database as required.
+			if (!empty($files_to_backup)) {
+				exec("/usr/bin/tar -jcvf {$pfb['aliasarchive']} {$files_to_backup} >/dev/null 2>&1");
+				pfb_logger("\n\nArchiving selected pfBlockerNG files.\n", 1);
+			} else {
+				pfb_logger("\n\nNo Files to archive.\n", 1);
+			}
 		}
 		elseif ($mode == 'conf') {
 
@@ -1937,7 +1952,9 @@ function sync_package_pfblockerng($cron='') {
 		if ($pfb['dnsbl'] == 'on') {
 			pfb_create_dnsbl('enable');
 		}
-		log_error('[pfBlockerNG] Sync terminated during boot process.');
+		$log = 'Sync terminated during boot process.';
+		pfb_logger("\n{$log}\nUPDATE PROCESS ENDED [ NOW ]\n", 1);
+		log_error("[pfBlockerNG] {$log}");
 		return;
 	}
 	syslog(LOG_NOTICE, '[pfBlockerNG] Starting cron process.');
@@ -2525,6 +2542,7 @@ function sync_package_pfblockerng($cron='') {
 
 			// Collect suppression list
 			$pfb_dnssupp = dnsbl_suppression();
+			$pfb_dnssupp[] = 'localhost.localdomain'; // Added due to SWC Feed
 
 			// Call Alexa whitelist process
 			if ($pfb['dnsbl_alexa'] == 'on') {
@@ -2704,7 +2722,7 @@ function sync_package_pfblockerng($cron='') {
 										// On 'category match', parse EasyList feed 
 										if (isset($easylist)) {
 											if (substr($line, 24, 19) == 'easylist_adservers.' ||
-											    substr($line, 27, 28) == 'easyprivacy_trackingservers.') {
+											    substr($line, 91, 28) == 'easyprivacy_trackingservers.') {
 												$e_found = TRUE;
 											}
 										}
@@ -2830,10 +2848,10 @@ function sync_package_pfblockerng($cron='') {
 											}
 
 											// Collect EasyPrivacy feed
-											elseif (substr($line, 27, 28) == 'easyprivacy_trackingservers.') {
+											elseif (substr($line, 91, 28) == 'easyprivacy_trackingservers.') {
 												if (in_array('epts', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
-											elseif (substr($line, 27, 42) == 'easyprivacy_trackingservers_international.') {
+											elseif (substr($line, 91, 42) == 'easyprivacy_trackingservers_international.') {
 												if (in_array('epti', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
 
@@ -4128,10 +4146,11 @@ function sync_package_pfblockerng($cron='') {
 
 			#################################################################################
 			#			PASS/MATCH RULES ORDER(p/m)				#
-			#  ORDER 0 - pfBlockerNG / All other Rules					#
-			#  ORDER 1 - pfSense (p/m) / pfBlockerNG (p/m) / pfBlockerNG Block/Reject	#
-			#  ORDER 2 - pfBlockerNG (p/m) / pfSense (p/m) / pfBlockerNG Block/Reject	#
-			#  ORDER 3 - pfBlockerNG (p/m) / pfBlockerNG Block/Reject / pfSense (p/m)	#
+			#  ORDER 0 |	pfB (all)	| All other	|				#
+			#  ORDER 1 |	pfSense (p/m)	| pfB (p/m)	| pfB (b/r) 	| pfSense (b/r)	#
+			#  ORDER 2 |	pfB (p/m)	| pfSense (p/m) | pfB (b/r)	| pfSense (b/r)	#
+			#  ORDER 3 |	pfB (p/m)	| pfB (b/r) 	| pfSense (p/m)	| pfSense (b/r)	#
+			#  ORDER 4 |	pfB (p/m)	| pfB (b/r)	| pfSense (b/r)	| pfSense (p/m)	#
 			#################################################################################
 
 			if ($pfb['float'] == '') {
@@ -4280,7 +4299,7 @@ function sync_package_pfblockerng($cron='') {
 				}
 			}
 
-			if ($pfb['float'] == 'on' && in_array($pfb['order'], array('order_0', 'order_3'))) {
+			if ($pfb['float'] == 'on' && in_array($pfb['order'], array('order_0', 'order_3', 'order_4'))) {
 				if ($pfb['order'] == 'order_0') {
 					$rule_order = array($fother_rules, $fpermit_rules, $fmatch_rules);
 				} else {
@@ -4299,12 +4318,22 @@ function sync_package_pfblockerng($cron='') {
 					$new_rules[] = $cb_rules;
 				}
 			}
+			if ($pfb['order'] == 'order_4' && !empty($other_rules)) {
+				foreach ($other_rules as $cb_rules) {
+					$new_rules[] = $cb_rules;
+				}
+			}
+			if ($pfb['order'] == 'order_4' && !empty($permit_rules)) {
+				foreach ($permit_rules as $cb_rules) {
+					$new_rules[] = $cb_rules;
+				}
+			}
 			if ($pfb['order'] == 'order_3' && !empty($permit_rules)) {
 				foreach ($permit_rules as $cb_rules) {
 					$new_rules[] = $cb_rules;
 				}
 			}
-			if (!empty($other_rules)) {
+			if ($pfb['order'] != 'order_4' && !empty($other_rules)) {
 				foreach ($other_rules as $cb_rules) {
 					$new_rules[] = $cb_rules;
 				}
@@ -4316,9 +4345,11 @@ function sync_package_pfblockerng($cron='') {
 			unset($cb_rules, $other_rules, $fother_rules, $permit_rules, $fpermit_rules, $match_rules, $fmatch_rules);
 
 			// Remove 'created' tag (New vs old rules array comparison)
-			foreach ($new_rules as $key => $rule) {
+			foreach ($new_rules as $rule) {
+				if (isset($rule['created'])) {
+					unset($rule['created']);
+				}
 				$new_rules_nocreated[] = $rule;
-				unset($new_rules_nocreated[$key]['created']);
 			}
 
 			// Update config.xml, if changes required

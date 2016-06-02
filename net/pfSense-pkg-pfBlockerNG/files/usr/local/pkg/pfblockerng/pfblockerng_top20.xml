@@ -184,7 +184,7 @@
 				<option><name>Spain-ES</name><value>ES</value></option>
 				<option><name>Vietnam-VN</name><value>VN</value></option>
 				<option><name>Argentina-AR</name><value>AR</value></option>
-				<option><name>Columbia-CO</name><value>CO</value></option>
+				<option><name>Colombia-CO</name><value>CO</value></option>
 				<option><name>Taiwan-TW</name><value>TW</value></option>
 				<option><name>Mexico-MX</name><value>MX</value></option>
 				<option><name>Chile-CL</name><value>CL</value></option>
@@ -214,10 +214,10 @@
 				<option><name>Spain-ES</name><value>ES</value></option>
 				<option><name>Vietnam-VN</name><value>VN</value></option>
 				<option><name>Argentina-AR</name><value>AR</value></option>
-				<option><name>Columbia-CO</name><value>CO</value></option>
+				<option><name>Colombia-CO</name><value>CO</value></option>
 				<option><name>Taiwan-TW</name><value>TW</value></option>
 				<option><name>Mexico-MX</name><value>MX</value></option>
-				<option><name>Chilie-CL</name><value>CL</value></option>
+				<option><name>Chile-CL</name><value>CL</value></option>
 			</options>
 			<size>20</size>
 			<multiple/>

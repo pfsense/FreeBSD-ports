@@ -186,15 +186,23 @@ $rc = array();
 $rc['file'] = 'dnsbl.sh';
 $rc['start'] = <<<EOF
 
+	# Check if DNSBL is enabled
+	dnsblcheck="\$(/usr/bin/grep '<pfb_dnsbl>' /conf/config.xml)"
+	if [ -z "\${dnsblcheck}" ]; then
+		exit
+	fi
+
 	# Start DNSBL Lighttpd webserver
 	if [ -f /var/unbound/pfb_dnsbl_lighty.conf ]; then
 		/usr/local/sbin/lighttpd_pfb -f /var/unbound/pfb_dnsbl_lighty.conf
 	fi
 
 	# Terminate DNSBL HTTPS Daemon if found
-	pidnum="$(/bin/ps -wax | /usr/bin/grep '[p]fblockerng.inc dnsbl' | /usr/bin/awk '{print $1}')"
+	pidnum="\$(/bin/ps -wax | /usr/bin/grep '[p]fblockerng.inc dnsbl' | /usr/bin/awk '{print \$1}')"
 	if [ ! -z "\${pidnum}" ]; then
-		/bin/kill -9 "\${pidnum}"
+		for i in \${pidnum}; do
+			/bin/kill -9 "\${i}"
+		done
 		/bin/sleep 2
 	fi
 
@@ -206,15 +214,17 @@ EOF;
 $rc['stop'] = <<<EOF
 
 	# Terminate DNSBL Lighttpd webserver, if found.
-	pidnum="$(/bin/pgrep lighttpd_pfb)"
+	pidnum="\$(/bin/pgrep lighttpd_pfb)"
 	if [ ! -z "\${pidnum}" ]; then
 		/usr/bin/killall lighttpd_pfb
 	fi
 
 	# Terminate DNSBL HTTPS Daemon, if found.
-	pidnum="$(/bin/ps -wax | /usr/bin/grep '[p]fblockerng.inc dnsbl' | /usr/bin/awk '{print $1}')"
+	pidnum="\$(/bin/ps -wax | /usr/bin/grep '[p]fblockerng.inc dnsbl' | /usr/bin/awk '{print \$1}')"
 	if [ ! -z "\${pidnum}" ]; then
-		/bin/kill -9 "\${pidnum}"
+		for i in \${pidnum}; do
+			/bin/kill -9 "\${i}"
+		done
 		/bin/sleep 2
 	fi
 
