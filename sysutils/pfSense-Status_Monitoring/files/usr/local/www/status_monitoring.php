@@ -803,7 +803,7 @@ events.push(function() {
 		var error = "There was an error getting the options.";
 
 		var d = new Date();
-		var current_date = (((d.getMonth()+1)<10) ? "0" + (d.getMonth()+1) : (d.getMonth()+1)) + "/" + d.getDate() + "/" + d.getFullYear();
+		var current_date = (((d.getMonth()+1)<10) ? "0" + (d.getMonth()+1) : (d.getMonth()+1)) + "/" + (((d.getDate())<10) ? "0" + (d.getDate()) : (d.getDate())) + "/" + d.getFullYear();
 		var current_time = d.getHours();
 
 		var graphLeft = $( "#graph-left" ).val();
