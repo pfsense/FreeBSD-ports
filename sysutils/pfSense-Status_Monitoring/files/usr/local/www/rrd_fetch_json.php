@@ -372,7 +372,7 @@ if ($right != "null") {
 	//$right_step = $rrd_info_array['step'];
 	//$right_last_updated = $rrd_info_array['last_update'];
 
-	$rrd_array = rrd_fetch($rrd_location . $left . ".rrd", $rrd_options);
+	$rrd_array = rrd_fetch($rrd_location . $right . ".rrd", $rrd_options);
 
 	if (!($rrd_array)) {
 		die ('{ "error" : "' . rrd_error() . '" }');
