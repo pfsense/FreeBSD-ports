@@ -764,7 +764,7 @@ events.push(function() {
 				$("#resolution").append('<option value="60" selected>1 Minute</option>');
 				break;
 			case "custom":
-				$( "#resolution" ).empty().append('<option value="lowest">Lowest Possible</option>');
+				$( "#resolution" ).empty().append('<option value="highest">Highest Available</option>');
 				$( "#start-date" ).prop( "disabled", false );
 				$( "#end-date" ).prop( "disabled", false );
 				$( "#start-time" ).prop( "disabled", false );
