@@ -1263,6 +1263,9 @@ events.push(function() {
 
 		$('#summary tbody').empty();
 
+		//clear localStorage between graph changes
+		localStorage.clear();
+
 		data.forEach (function(d, i) {
 			var summary = [];
 			var units = "";
