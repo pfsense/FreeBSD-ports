@@ -1231,7 +1231,7 @@ events.push(function() {
 							var adjustedTrueValue = d3.format(',')(trueValue.toFixed(2));
 						}
 
-						content += '<tr><td class="legend-color-guide"><div style="background-color: ' + data.series[v].color + '"></div></td><td>' + data.series[v].key + '</td><td class="value"><strong>' + adjustedTrueValue + " " + localStorage.getItem(tempKey) + '</strong></td></tr>';
+						content += '<tr><td class="legend-color-guide"><div style="background-color: ' + data.series[v].color + '"></div></td><td>' + data.series[v].key + '</td><td class="value"><strong>' + adjustedTrueValue + " " + localStorage.getItem(data.series[v].key) + '</strong></td></tr>';
 					}
 
 					content += '</tbody></table>';
@@ -1262,6 +1262,9 @@ events.push(function() {
 	function calculate_summary(data) {
 
 		$('#summary tbody').empty();
+
+		//clear localStorage between graph changes
+		localStorage.clear();
 
 		data.forEach (function(d, i) {
 			var summary = [];

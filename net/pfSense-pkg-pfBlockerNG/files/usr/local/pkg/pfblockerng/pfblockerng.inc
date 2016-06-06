@@ -2830,7 +2830,9 @@ function sync_package_pfblockerng($cron='') {
 										$line = trim($line);
 
 										// Parser for EasyList, enable collect of selected EasyList categories
-										if (isset($easylist) && strpos($line, '! *** easylist:') !== FALSE) {
+										if (isset($easylist) && (strpos($line, '! *** easylist:') !== FALSE) ||
+										    strpos($line, '! *** Fetched from:') !== FALSE) {
+										    	
 											// Skip all previous Easylist entries
 
 											// Collect EasyList feed
@@ -2860,7 +2862,7 @@ function sync_package_pfblockerng($cron='') {
 												break;
 											}
 											// End of useable EasyPrivacy feed
-											elseif (substr($line, 27, 23) == 'easyprivacy_thirdparty.') {
+											elseif (substr($line, 91, 23) == 'easyprivacy_thirdparty.') {
 												break;
 											}
 										}
