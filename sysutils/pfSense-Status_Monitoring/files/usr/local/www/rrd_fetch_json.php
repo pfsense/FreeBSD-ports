@@ -151,10 +151,6 @@ $unit_desc_lookup = array(
 //TODO make this a function for left and right
 if ($left != "null") {
 
-	$rrd_info_array = rrd_info($rrd_location . $left . ".rrd");
-	//$left_step = $rrd_info_array['step'];
-	//$left_last_updated = $rrd_info_array['last_update'];
-
 	$rrd_array = rrd_fetch($rrd_location . $left . ".rrd", $rrd_options);
 
 	if (!($rrd_array)) {
@@ -286,7 +282,7 @@ if ($left != "null") {
 			$data = array();
 
 			foreach ($data_list as $time => $value) {
-					$data[] = array($time*1000, $value*$multiplier);
+				$data[] = array($time*1000, $value*$multiplier);
 			}
 
 			$obj[$ds_key_left_adjusted]['values'] = $data;
@@ -382,10 +378,6 @@ if ($left != "null") {
 }
 
 if ($right != "null") {
-
-	//$rrd_info_array = rrd_info($rrd_location . $right . ".rrd");
-	//$right_step = $rrd_info_array['step'];
-	//$right_last_updated = $rrd_info_array['last_update'];
 
 	$rrd_array = rrd_fetch($rrd_location . $right . ".rrd", $rrd_options);
 
@@ -514,7 +506,7 @@ if ($right != "null") {
 			$data = array();
 
 			foreach ($data_list as $time => $value) {
-					$data[] = array($time*1000, $value*$multiplier);
+				$data[] = array($time*1000, $value*$multiplier);
 			}
 
 			$obj[$ds_key_right_adjusted]['values'] = $data;

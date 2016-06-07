@@ -634,8 +634,8 @@ events.push(function() {
 
 	//UTC offset and client/server timezone handing
 	var ServerUTCOffset = <?php echo date('Z') / 3600; ?>;
-	var xz = new Date();
-	var ClientUTCOffset = xz.getTimezoneOffset() / 60;
+	var ClientUTC = new Date();
+	var ClientUTCOffset = ClientUTC.getTimezoneOffset() / 60;
 	var tzOffset = (ClientUTCOffset + ServerUTCOffset) * 3600000;
 
 	/***
