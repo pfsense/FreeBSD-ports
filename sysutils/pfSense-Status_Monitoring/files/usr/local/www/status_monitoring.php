@@ -844,7 +844,6 @@ events.push(function() {
     $( "#end-date" ).datepicker({
       changeMonth: true,
       changeYear: true,
-      maxDate: new Date
     });
 
 	function applySettings(defaults) {
