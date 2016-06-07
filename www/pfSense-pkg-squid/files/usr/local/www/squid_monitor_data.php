@@ -140,7 +140,13 @@ if ($_POST) {
 				$logline = preg_split("/\|/", $logent);
 
 				// Apply time format
-				$logline[0] = date("d.m.Y H:i:s", strtotime($logline[0]));
+				$logline[0] = htmlspecialchars(date("d.m.Y H:i:s", strtotime($logline[0])));
+
+				// Don't trust these fields
+				$logline[1] = htmlentities($logline[1]);
+				$logline[2] = htmlentities($logline[2]);
+				$logline[4] = htmlentities($logline[4]);
+				$logline[5] = htmlentities($logline[5]);
 
 				// Word wrap the URL
 				$logline[3] = htmlentities($logline[3]);

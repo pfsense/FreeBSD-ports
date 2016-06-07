@@ -28,10 +28,19 @@
 	POSSIBILITY OF SUCH DAMAGE.
 */
 $VERSION = '6.10';
-$url = $_REQUEST['url'];
+$url = htmlspecialchars($_REQUEST['url']);
 $virus = ($_REQUEST['virus'] ? $_REQUEST['virus'] : $_REQUEST['malware']);
-$source = preg_replace("@/-@", "", $_REQUEST['source']);
-$user = $_REQUEST['user'];
+
+// Remove clamd infos
+$vp[0]="/stream: /";
+$vp[1]="/ FOUND/";
+$vr[0]="";
+$vr[1]="";
+
+$virus = htmlspecialchars(preg_replace($vp, $vr, $virus));
+
+$source = htmlspecialchars(preg_replace("@/-@", "", $_REQUEST['source']));
+$user = htmlspecialchars($_REQUEST['user']);
 
 $TITLE_VIRUS = "SquidClamav $VERSION: Virus detected!";
 $subtitle = 'Virus name';
@@ -44,13 +53,6 @@ if (preg_match("/Safebrowsing/", $virus)) {
 	$errorreturn = 'This page cannot be displayed';
 }
 
-// Remove clamd infos
-$vp[0]="/stream: /";
-$vp[1]="/ FOUND/";
-$vr[0]="";
-$vr[1]="";
-
-$virus = preg_replace($vp, $vr, $virus);
 error_log(date("Y-m-d H:i:s") . " | VIRUS FOUND | " . $virus . " | " . $url . " | " . $source . " | " . $user . "\n", 3, "/var/log/c-icap/virus.log");
 
 ?>
