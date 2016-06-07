@@ -1224,14 +1224,25 @@ events.push(function() {
 							var trueValue = data.series[v].value;
 						}
 
-						//change decimal places to round to if a really small number
-						if(trueValue < .01) {
-							var adjustedTrueValue = d3.format(',')(trueValue.toFixed(6)); //TODO dynamically calculate number of zeros after decimal and base off that
+						//format number as decimal or SI depending on attributes
+						if(localStorage.getItem(data.series[v].key+'-format') === "f") {
+
+							//change decimal places to round to if a really small number
+							if(trueValue < .01 && trueValue > 0) {
+								var adjustedTrueValue = d3.format('.6f')(trueValue) + ' '; //TODO dynamically calculate number of zeros after decimal and base off that
+							} else {
+								var adjustedTrueValue = d3.format('.2f')(trueValue) + ' ';
+							}
+
 						} else {
-							var adjustedTrueValue = d3.format(',')(trueValue.toFixed(2));
+
+							var formatted_value = d3.formatPrefix(trueValue);
+							adjustedTrueValue = formatted_value.scale(trueValue).toFixed(2) + ' ' + formatted_value.symbol;
+
 						}
 
-						content += '<tr><td class="legend-color-guide"><div style="background-color: ' + data.series[v].color + '"></div></td><td>' + data.series[v].key + '</td><td class="value"><strong>' + adjustedTrueValue + " " + localStorage.getItem(data.series[v].key) + '</strong></td></tr>';
+						content += '<tr><td class="legend-color-guide"><div style="background-color: ' + data.series[v].color + '"></div></td><td>' + data.series[v].key + '</td><td class="value"><strong>' + adjustedTrueValue + localStorage.getItem(data.series[v].key+'-unit') + '</strong></td></tr>';
+
 					}
 
 					content += '</tbody></table>';
@@ -1318,8 +1329,9 @@ events.push(function() {
 
 			$('#summary tbody').append('<tr><th>' + d.key + '</th><td>' + min_value + '</td><td>' + avg_value + '</td><td>' + max_value + '</td><td>' + last_value + '</td><td>' + ninetyfifthVal + '</td></tr>');
 
-			//store each lines units in local storage so it can be accessed in the tooltip
-			localStorage.setItem(d.key, d.unit_acronym);
+			//store each lines units and format in local storage so it can be accessed in the tooltip
+			localStorage.setItem(d.key+'-unit', d.unit_acronym);
+			localStorage.setItem(d.key+'-format', d.format);
 
 		});
 
