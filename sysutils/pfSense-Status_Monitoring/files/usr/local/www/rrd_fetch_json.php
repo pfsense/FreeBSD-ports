@@ -82,6 +82,14 @@ $invert_graph = ($_POST['invert'] === 'true');
 $left_pieces = explode("-", $left);
 $right_pieces = explode("-", $right);
 
+$rrd_info_array = rrd_info($rrd_location . $left . ".rrd");
+$left_last_updated = $rrd_info_array['last_update'];
+
+$rrd_info_array = rrd_info($rrd_location . $right . ".rrd");
+$right_last_updated = $rrd_info_array['last_update'];
+
+$last_updated = max($left_last_updated, $right_last_updated);
+
 if ($timePeriod === "custom") {
 
 	//dates validation
@@ -269,6 +277,7 @@ if ($left != "null") {
 
 			$obj[$ds_key_left_adjusted]['key'] = $ds;
 			$obj[$ds_key_left_adjusted]['step'] = $step;
+			$obj[$ds_key_left_adjusted]['last_updated'] = $last_updated*1000;
 			$obj[$ds_key_left_adjusted]['type'] = $graph_type;
 			$obj[$ds_key_left_adjusted]['format'] = $format;
 			$obj[$ds_key_left_adjusted]['yAxis'] = 1;
@@ -496,6 +505,7 @@ if ($right != "null") {
 
 			$obj[$ds_key_right_adjusted]['key'] = $ds;
 			$obj[$ds_key_right_adjusted]['step'] = $step;
+			$obj[$ds_key_right_adjusted]['last_updated'] = $last_updated*1000;
 			$obj[$ds_key_right_adjusted]['type'] = $graph_type;
 			$obj[$ds_key_right_adjusted]['format'] = $format;
 			$obj[$ds_key_right_adjusted]['yAxis'] = 2;
