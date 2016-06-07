@@ -60,6 +60,14 @@ require("guiconfig.inc");
 
 $rrd_location = "/var/db/rrd/";
 
+//lookup end time based on resolution (ensure resolution interval)
+$endLookup = array(
+	"60"    => "-2min",
+	"300"   => "-5min",
+	"3600"  => "-1hour",
+	"86400" => "-1day"
+);
+
 //TODO security/validation checks
 $left = $_POST['left'];
 $right = $_POST['right'];
@@ -75,6 +83,7 @@ $left_pieces = explode("-", $left);
 $right_pieces = explode("-", $right);
 
 if ($timePeriod === "custom") {
+
 	//dates validation
 	if($end < $start) {
 		die ('{ "error" : "The start date must come before the end date." }');
@@ -85,9 +94,13 @@ if ($timePeriod === "custom") {
 	$resolution = 60; //defaults to highest resolution available
 	$start = floor($start/$resolution) * $resolution;
 	$end = floor($end/$resolution) * $resolution;
+
 	$rrd_options = array( 'AVERAGE', '-r', $resolution, '-s', $start, '-e', $end );
+
 } else {
-	$rrd_options = array( 'AVERAGE', '-r', $resolution, '-s', $timePeriod );
+
+	$rrd_options = array( 'AVERAGE', '-r', $resolution, '-s', 'e'.$timePeriod, '-e', $endLookup[$resolution] );
+
 }
 
 //Initialze
@@ -266,12 +279,8 @@ if ($left != "null") {
 
 			$data = array();
 
-			$dataKeys = array_keys($data_list);
-			$lastDataKey = array_pop($dataKeys);
 			foreach ($data_list as $time => $value) {
-				if($time != $lastDataKey) {
 					$data[] = array($time*1000, $value*$multiplier);
-				}
 			}
 
 			$obj[$ds_key_left_adjusted]['values'] = $data;
@@ -497,12 +506,8 @@ if ($right != "null") {
 
 			$data = array();
 
-			$dataKeys = array_keys($data_list);
-			$lastDataKey = array_pop($dataKeys);
 			foreach ($data_list as $time => $value) {
-				if($time != $lastDataKey) {
 					$data[] = array($time*1000, $value*$multiplier);
-				}
 			}
 
 			$obj[$ds_key_right_adjusted]['values'] = $data;
