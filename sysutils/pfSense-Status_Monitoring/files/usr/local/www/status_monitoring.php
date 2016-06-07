@@ -1189,8 +1189,8 @@ events.push(function() {
 					.attr("id", "resolution")
 					.text("Resolution: " + stepLookup[data[0].step]);
 
-				//add current date
-				var currentDate = d3.time.format('%a %b %d %H:%M:%S %Y GMT%Z')(new Date());
+				//add last updated date
+				var currentDate = d3.time.format('%a %b %d %H:%M:%S %Y')(new Date(data[0].last_updated));
 				d3.select('#chart svg')
 					.append("text")
 					.attr("x", 755)
