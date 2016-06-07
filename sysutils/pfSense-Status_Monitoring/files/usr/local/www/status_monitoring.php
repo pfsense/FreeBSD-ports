@@ -113,7 +113,10 @@ if(strpos($config['rrd']['category'], '&resolution') === false) {
 
 //save new defaults
 if ($_POST['defaults']) {
-	$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&resolution=".$_POST['resolution']."&timePeriod=".$_POST['time-period']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert'];
+	// Time period setting change applies valid resolutions and selects the default resolution of the time period.
+	// Time period setting needs to be before resolution so that the time period default doesn't override the page load default resolution.
+	// Time period setting needs to be before custom start/end date/time so those will be enabled before applying their setting.
+	$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert'];
 	write_config();
 	$savemsg = "The changes have been applied successfully.";
 }
@@ -634,8 +637,8 @@ events.push(function() {
 
 	//UTC offset and client/server timezone handing
 	var ServerUTCOffset = <?php echo date('Z') / 3600; ?>;
-	var xz = new Date();
-	var ClientUTCOffset = xz.getTimezoneOffset() / 60;
+	var ClientUTC = new Date();
+	var ClientUTCOffset = ClientUTC.getTimezoneOffset() / 60;
 	var tzOffset = (ClientUTCOffset + ServerUTCOffset) * 3600000;
 
 	/***
@@ -844,7 +847,6 @@ events.push(function() {
     $( "#end-date" ).datepicker({
       changeMonth: true,
       changeYear: true,
-      maxDate: new Date
     });
 
 	function applySettings(defaults) {
@@ -1189,8 +1191,8 @@ events.push(function() {
 					.attr("id", "resolution")
 					.text("Resolution: " + stepLookup[data[0].step]);
 
-				//add current date
-				var currentDate = d3.time.format('%a %b %d %H:%M:%S %Y GMT%Z')(new Date());
+				//add last updated date
+				var currentDate = d3.time.format('%a %b %d %H:%M:%S %Y')(new Date(data[0].last_updated));
 				d3.select('#chart svg')
 					.append("text")
 					.attr("x", 755)
@@ -1224,14 +1226,25 @@ events.push(function() {
 							var trueValue = data.series[v].value;
 						}
 
-						//change decimal places to round to if a really small number
-						if(trueValue < .01) {
-							var adjustedTrueValue = d3.format(',')(trueValue.toFixed(6)); //TODO dynamically calculate number of zeros after decimal and base off that
+						//format number as decimal or SI depending on attributes
+						if(localStorage.getItem(data.series[v].key+'-format') === "f") {
+
+							//change decimal places to round to if a really small number
+							if(trueValue < .01 && trueValue > 0) {
+								var adjustedTrueValue = d3.format('.6f')(trueValue) + ' '; //TODO dynamically calculate number of zeros after decimal and base off that
+							} else {
+								var adjustedTrueValue = d3.format('.2f')(trueValue) + ' ';
+							}
+
 						} else {
-							var adjustedTrueValue = d3.format(',')(trueValue.toFixed(2));
+
+							var formatted_value = d3.formatPrefix(trueValue);
+							adjustedTrueValue = formatted_value.scale(trueValue).toFixed(2) + ' ' + formatted_value.symbol;
+
 						}
 
-						content += '<tr><td class="legend-color-guide"><div style="background-color: ' + data.series[v].color + '"></div></td><td>' + data.series[v].key + '</td><td class="value"><strong>' + adjustedTrueValue + " " + localStorage.getItem(data.series[v].key) + '</strong></td></tr>';
+						content += '<tr><td class="legend-color-guide"><div style="background-color: ' + data.series[v].color + '"></div></td><td>' + data.series[v].key + '</td><td class="value"><strong>' + adjustedTrueValue + localStorage.getItem(data.series[v].key+'-unit') + '</strong></td></tr>';
+
 					}
 
 					content += '</tbody></table>';
@@ -1318,8 +1331,9 @@ events.push(function() {
 
 			$('#summary tbody').append('<tr><th>' + d.key + '</th><td>' + min_value + '</td><td>' + avg_value + '</td><td>' + max_value + '</td><td>' + last_value + '</td><td>' + ninetyfifthVal + '</td></tr>');
 
-			//store each lines units in local storage so it can be accessed in the tooltip
-			localStorage.setItem(d.key, d.unit_acronym);
+			//store each lines units and format in local storage so it can be accessed in the tooltip
+			localStorage.setItem(d.key+'-unit', d.unit_acronym);
+			localStorage.setItem(d.key+'-format', d.format);
 
 		});
 
