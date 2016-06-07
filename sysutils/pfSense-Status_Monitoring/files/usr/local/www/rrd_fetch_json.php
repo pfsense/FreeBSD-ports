@@ -92,13 +92,10 @@ $last_updated = max($left_last_updated, $right_last_updated);
 
 if ($timePeriod === "custom") {
 
-	//dates validation
-	if($end < $start) {
-		die ('{ "error" : "The start date must come before the end date." }');
-	} elseif ($end > time()) {
-		die ('{ "error" : "The end date can\'t be in the future." }');
-	}
+	// make sure end time isn't later than last updated time entry
+	if( $end > $last_updated ) { $end = $last_updated; }
 
+	/* ensure resolution intreval */
 	$resolution = 60; //defaults to highest resolution available
 	$start = floor($start/$resolution) * $resolution;
 	$end = floor($end/$resolution) * $resolution;
