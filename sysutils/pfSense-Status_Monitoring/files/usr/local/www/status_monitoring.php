@@ -793,18 +793,11 @@ events.push(function() {
 		}
 
 		if ( $( "#auto-update" ).val() > 0) {
-
 			update_interval = $( "#auto-update" ).val();
 
-			// Ensure graph update happens at end of the minute so RRD will have a data point for the current minute and graph doesn't end with 0 value.
-			// This is a hack that can probably be fix in a better fashion once start and end times are implemented.
+			// Synchronize auto update to top of the minute (seconds = 0).  The soonest that RRD is certain to have a sample data point for the previous minute.
 			seconds = new Date().getSeconds();
-			update_interval -= seconds + 1;
-
-			if (update_interval <= 0 || seconds >= 59) {
-				update_interval = $( "#auto-update" ).val();
-			}
-			// End hack.
+			update_interval -= seconds;
 
 			auto_update = setTimeout(update_graph, update_interval * 1000);
 		}
