@@ -411,6 +411,13 @@ TargetSystemUI.configure_console = function(tab)
 	while not done do
 		form.actions = {
 			{
+			    id = "ok",
+			    name = tab.ok_desc or _("Accept these Settings"),
+			    effect = function()
+				return true
+			    end
+			},
+			{
 			    id = "vidfont",
 			    name = _("Change Video Font (%s)",
 				App.state.vidfont or _("default")),
@@ -435,13 +442,6 @@ TargetSystemUI.configure_console = function(tab)
 			    effect = function()
 				TargetSystemUI.set_keyboard_map(tab.ts)
 				return false
-			    end
-			},
-			{
-			    id = "ok",
-			    name = tab.ok_desc or _("Accept these Settings"),
-			    effect = function()
-				return true
 			    end
 			}
 		}
