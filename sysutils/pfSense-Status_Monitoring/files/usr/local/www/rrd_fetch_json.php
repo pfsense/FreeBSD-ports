@@ -61,11 +61,11 @@ require("guiconfig.inc");
 $rrd_location = "/var/db/rrd/";
 
 //lookup end time based on resolution (ensure resolution interval)
-$endLookup = array(
-	"60"    => "-1min",
-	"300"   => "-5min",
-	"3600"  => "-1hour",
-	"86400" => "-1day"
+$resolutionLookup = array(
+	"60"    => "1min",
+	"300"   => "5min",
+	"3600"  => "1hour",
+	"86400" => "1day"
 );
 
 //TODO security/validation checks
@@ -104,22 +104,29 @@ if(empty($right_last_updated)) {
 }
 
 if ($timePeriod === "custom") {
+	// Determine highest resolution available for requested time period
+	// Should be possible to determine programmaticly from the RRD header info array (rrd_info).
+	$rrd_options = array( 'AVERAGE', '-a', '-s', $start, '-e', $start );
+	$left_rrd_array  = rrd_fetch($rrd_location . $left  . ".rrd", $rrd_options);
+	$right_rrd_array = rrd_fetch($rrd_location . $right . ".rrd", $rrd_options);
+	$resolution = max($left_rrd_array['step'], $right_rrd_array['step']);
 
 	// make sure end time isn't later than last updated time entry
 	if( $end > $last_updated ) { $end = $last_updated; }
 
-	/* ensure resolution intreval */
-	$resolution = 60; //defaults to highest resolution available
-	$start = floor($start/$resolution) * $resolution;
-	$end = floor($end/$resolution) * $resolution;
+	// Minus resolution to prevent last value 0 (zero).
+	$end -= $resolution;
 
-	$rrd_options = array( 'AVERAGE', '-r', $resolution, '-s', $start, '-e', $end );
-
+	// make sure start time isn't later than end time
+	if ($start > $end) { $start = $end; }
 } else {
-
-	$rrd_options = array( 'AVERAGE', '-r', $resolution, '-s', 'e'.$timePeriod, '-e', $endLookup[$resolution] );
-
+	// Use end time reference in 'start' to retain time period length.
+	$start = 'end' . $timePeriod . '+'.$resolutionLookup[$resolution];
+	// Use the RRD last updated time as end, minus resolution to prevent last value 0 (zero).
+	$end = $last_updated . '-'.$resolutionLookup[$resolution];
 }
+
+$rrd_options = array( 'AVERAGE', '-a', '-r', $resolution, '-s', $start, '-e', $end );
 
 //Initialze
 $left_unit_acronym = $right_unit_acronym = "";
