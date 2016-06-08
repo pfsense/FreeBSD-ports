@@ -53,7 +53,11 @@ if (preg_match("/Safebrowsing/", $virus)) {
 	$errorreturn = 'This page cannot be displayed';
 }
 
-error_log(date("Y-m-d H:i:s") . " | VIRUS FOUND | " . $virus . " | " . $url . " | " . $source . " | " . $user . "\n", 3, "/var/log/c-icap/virus.log");
+error_log(date("Y-m-d H:i:s") . " | VIRUS FOUND | "
+	. str_replace('|', '', $virus) . " | "
+	. str_replace('|', '', $url) . " | "
+	. str_replace('|', '', $source) . " | "
+	. str_replace('|', '', $user) . "\n", 3, "/var/log/c-icap/virus.log");
 
 ?>
 <style type="text/css">
