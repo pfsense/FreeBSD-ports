@@ -82,15 +82,20 @@ $invert_graph = ($_POST['invert'] === 'true');
 $left_pieces = explode("-", $left);
 $right_pieces = explode("-", $right);
 
+$rrd_info_array = rrd_info($rrd_location . $left . ".rrd");
+$left_last_updated = $rrd_info_array['last_update'];
+
+$rrd_info_array = rrd_info($rrd_location . $right . ".rrd");
+$right_last_updated = $rrd_info_array['last_update'];
+
+$last_updated = max($left_last_updated, $right_last_updated);
+
 if ($timePeriod === "custom") {
 
-	//dates validation
-	if($end < $start) {
-		die ('{ "error" : "The start date must come before the end date." }');
-	} elseif ($end > time()) {
-		die ('{ "error" : "The end date can\'t be in the future." }');
-	}
+	// make sure end time isn't later than last updated time entry
+	if( $end > $last_updated ) { $end = $last_updated; }
 
+	/* ensure resolution intreval */
 	$resolution = 60; //defaults to highest resolution available
 	$start = floor($start/$resolution) * $resolution;
 	$end = floor($end/$resolution) * $resolution;
@@ -145,10 +150,6 @@ $unit_desc_lookup = array(
 
 //TODO make this a function for left and right
 if ($left != "null") {
-
-	$rrd_info_array = rrd_info($rrd_location . $left . ".rrd");
-	//$left_step = $rrd_info_array['step'];
-	//$left_last_updated = $rrd_info_array['last_update'];
 
 	$rrd_array = rrd_fetch($rrd_location . $left . ".rrd", $rrd_options);
 
@@ -269,6 +270,7 @@ if ($left != "null") {
 
 			$obj[$ds_key_left_adjusted]['key'] = $ds;
 			$obj[$ds_key_left_adjusted]['step'] = $step;
+			$obj[$ds_key_left_adjusted]['last_updated'] = $last_updated*1000;
 			$obj[$ds_key_left_adjusted]['type'] = $graph_type;
 			$obj[$ds_key_left_adjusted]['format'] = $format;
 			$obj[$ds_key_left_adjusted]['yAxis'] = 1;
@@ -280,7 +282,7 @@ if ($left != "null") {
 			$data = array();
 
 			foreach ($data_list as $time => $value) {
-					$data[] = array($time*1000, $value*$multiplier);
+				$data[] = array($time*1000, $value*$multiplier);
 			}
 
 			$obj[$ds_key_left_adjusted]['values'] = $data;
@@ -376,10 +378,6 @@ if ($left != "null") {
 }
 
 if ($right != "null") {
-
-	//$rrd_info_array = rrd_info($rrd_location . $right . ".rrd");
-	//$right_step = $rrd_info_array['step'];
-	//$right_last_updated = $rrd_info_array['last_update'];
 
 	$rrd_array = rrd_fetch($rrd_location . $right . ".rrd", $rrd_options);
 
@@ -496,6 +494,7 @@ if ($right != "null") {
 
 			$obj[$ds_key_right_adjusted]['key'] = $ds;
 			$obj[$ds_key_right_adjusted]['step'] = $step;
+			$obj[$ds_key_right_adjusted]['last_updated'] = $last_updated*1000;
 			$obj[$ds_key_right_adjusted]['type'] = $graph_type;
 			$obj[$ds_key_right_adjusted]['format'] = $format;
 			$obj[$ds_key_right_adjusted]['yAxis'] = 2;
@@ -507,7 +506,7 @@ if ($right != "null") {
 			$data = array();
 
 			foreach ($data_list as $time => $value) {
-					$data[] = array($time*1000, $value*$multiplier);
+				$data[] = array($time*1000, $value*$multiplier);
 			}
 
 			$obj[$ds_key_right_adjusted]['values'] = $data;
