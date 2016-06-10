@@ -92,6 +92,10 @@
 			<type>interfaces_selection</type>
 		</field>
 		<field>
+			<name>SIP Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
 			<fielddescr>Listening Port</fielddescr>
 			<fieldname>port</fieldname>
 			<description>
@@ -104,10 +108,131 @@
 			<default_value>5060</default_value>
 		</field>
 		<field>
+			<fielddescr>Allow Registration from</fielddescr>
+			<fieldname>hosts_allow_reg</fieldname>
+			<description>
+				<![CDATA[
+				List of etworks from which we accept registrations. Empty means, allow from everywhere. 
+				Note that registrations are <strong>ONLY</strong> allowed from INBOUND! 
+				(Default: allow all)
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Allow SIP Traffic from</fielddescr>
+			<fieldname>hosts_allow_sip</fieldname>
+			<description>
+				<![CDATA[
+				List of networks from which we accept SIP traffic. Empty means, allow from everywhere. 
+				(Default: allow all)
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Deny SIP Traffic from</fielddescr>
+			<fieldname>hosts_deny_sip</fieldname>
+			<description>
+				<![CDATA[
+				List of networks from which we deny SIP traffic. Empty means, no blocked networks. 
+				Note: The DENY list takes precedence over the ALLOW lists. 
+				(Default: no deny list)
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
 			<fielddescr>Default Expiration Timeout</fielddescr>
 			<fieldname>defaulttimeout</fieldname>
 			<description>If a REGISTER request does not contain an Expires header or expires= parameter, this number of seconds will be used and reported back to the UA in the answer.</description>
 			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>User-Agent Masquerading</fielddescr>
+			<fieldname>ua_string</fieldname>
+			<description>
+				<![CDATA[
+				Masquerade all User-Agent identifiers from local UAs with the string provided here.<br />
+				Empty means no substitution.
+				]]>
+			</description>
+			<sethelp>
+				<![CDATA[
+				Siproxd can masquerade the User Agent string of your local UAs.
+				Useful for Providers that do not work with some specific UAs
+				(e.g. sipcall.ch - it does not work if your outgoing SIP
+				traffic contains an Asterisk UA string...).
+				Default is to do no replacement.
+				]]>
+			</sethelp>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Use ;rport in via header</fielddescr>
+			<fieldname>use_rport</fieldname>
+			<description>
+				<![CDATA[
+				Add a ;rport targ to Via headers.<br />
+				May be required in some cases where you have a NAT router that remaps the source port 5060 
+				to something different and the registrar sends back the responses to port 5060.
+				]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>Do not add ;rport to via Header</name><value>0</value></option>
+				<option><name>Add ;rport to INCOMING via Header</name><value>1</value></option>
+				<option><name>Add ;rport to OUTGOING via Header</name><value>2</value></option>
+				<option><name>Add ;rport to OUTGOING and INCOMING via Headers</name><value>3</value></option>
+			</options>
+			<default_value>0</default_value>
+		</field>
+		<field>
+			<name>SIP over TCP Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>TCP Inactivity Timeout</fielddescr>
+			<fieldname>tcp_timeout</fieldname>
+			<description>
+				<![CDATA[
+				Inactivity timeout (seconds). After that an idling TCP connection is disconnected.<br />
+				NOTE: Making this too short may cause multiple parallel registrations for the same phone. 
+				This timeout must be set larger than the used registration interval.<br />
+				Default: 600 sec
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>600</default_value>
+		</field>
+		<field>
+			<fielddescr>TCP Connect Timeout</fielddescr>
+			<fieldname>tcp_connect_timeout</fieldname>
+			<description>
+				<![CDATA[
+				Defines how many msecs siproxd will wait for a successful connect when establishing 
+				an outgoing SIP signalling connection.<br />
+				This should be kept as short as possible as waiting for an TCP connection to establish 
+				is a BLOCKING operation - no other SIP messages are processed while waiting for a connect 
+				to succeed (RTP is not affected).<br />
+				Default: 500 msec
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>500</default_value>
+		</field>
+		<field>
+			<fielddescr>TCP Keepalive</fielddescr>
+			<fieldname>tcp_keepalive</fieldname>
+			<description>
+				<![CDATA[
+				For TCP SIP signalling, if > 0 empty SIP packets will be sent every 'n' seconds to keep 
+				the connection alive.<br />
+				Default is off.
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>0</default_value>
 		</field>
 		<field>
 			<name>RTP Settings</name>
@@ -162,38 +287,6 @@
 			<type>input</type>
 		</field>
 		<field>
-			<name>SIP over TCP Settings</name>
-			<type>listtopic</type>
-		</field>
-		<field>
-			<fielddescr>TCP Inactivity Timeout</fielddescr>
-			<fieldname>tcp_timeout</fieldname>
-			<description>
-				<![CDATA[
-				Inactivity timeout (seconds). After that an idling TCP connection is disconnected.<br />
-				NOTE: Making this too short may cause multiple parallel registrations for the same phone. This timeout must be set larger than the used registration interval.
-				]]>
-			</description>
-			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>TCP Connect Timeout</fielddescr>
-			<fieldname>tcp_connect_timeout</fieldname>
-			<description>
-				<![CDATA[
-				Defines How many msecs siproxd will wait for a successful connect when establishing an outgoing SIP signalling connection.<br />
-				This should be kept as short as possible as waiting for an TCP connection to establish is a BLOCKING operation - no SIP messages are processed while waiting for a connect to succeed (RTP is not affected).
-				]]>
-			</description>
-			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>TCP Keepalive</fielddescr>
-			<fieldname>tcp_keepalive</fieldname>
-			<description>For TCP SIP signalling, if > 0 empty SIP packets will be sent every 'n' seconds to keep the connection alive. Default is off.</description>
-			<type>input</type>
-		</field>
-		<field>
 			<name>Proxy Settings</name>
 			<type>listtopic</type>
 		</field>
@@ -221,9 +314,9 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Expedited RTP Forwarding</fielddescr>
-			<fieldname>expeditedforwarding</fieldname>
-			<description>Enable DSCP tagging of RTP traffic</description>
+			<fielddescr>Expedited SIP Forwarding</fielddescr>
+			<fieldname>expeditedsipforwarding</fieldname>
+			<description>Enable DSCP tagging of SIP traffic</description>
 			<sethelp>
 				<![CDATA[
 				This service is designed to allow ISPs to offer a service with attributes similar to a "leased line".<br />
@@ -233,9 +326,9 @@
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Expedited SIP Forwarding</fielddescr>
-			<fieldname>expeditedsipforwarding</fieldname>
-			<description>Enable DSCP tagging of SIP traffic</description>
+			<fielddescr>Expedited RTP Forwarding</fielddescr>
+			<fieldname>expeditedforwarding</fieldname>
+			<description>Enable DSCP tagging of RTP traffic</description>
 			<sethelp>
 				<![CDATA[
 				This service is designed to allow ISPs to offer a service with attributes similar to a "leased line".<br />
@@ -255,28 +348,28 @@
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Log Redirected Calls</fielddescr>
-			<fieldname>plugin_defaulttarget_log</fieldname>
-			<description>Log redirected calls.</description>
-			<type>checkbox</type>
-		</field>
-		<field>
 			<fielddescr>Default Target</fielddescr>
 			<fieldname>plugin_defaulttarget_target</fieldname>
 			<description>Target must be a full SIP URI with the syntax sip:user@host[:port]</description>
 			<type>input</type>
 		</field>
 		<field>
-			<name>Plugin Settings - Bogus VIA Networks</name>
+			<fielddescr>Log Redirected Calls</fielddescr>
+			<fieldname>plugin_defaulttarget_log</fieldname>
+			<description>Log redirected calls.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<name>Plugin Settings - Fix bogus VIA Headers</name>
 			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr>Enable Bogus Via Plugin</fielddescr>
 			<fieldname>plugin_fix_bogus_via</fieldname>
-			<description>Enable the Fix Bogus Via Networks Plugin</description>
+			<description>Enable the Fix Bogus Via Plugin</description>
 			<sethelp>
 				<![CDATA[
-				When enabled, incoming (from public network) SIP messages are checked for broken SIP Via headers.<br />
+				If enabled, incoming (from public network) SIP messages are checked for broken SIP Via headers.<br />
 				If the IP address in the latest Via Header is part of the list below, it will be replaced by the IP address where the SIP message has been received from.
 				]]>
 			</sethelp>
@@ -321,6 +414,122 @@
 			<fieldname>plugin_stun_period</fieldname>
 			<description>Period in seconds to request IP info from STUN server.</description>
 			<type>input</type>
+		</field>
+		<field>
+			<name>Plugin Settings - Fix DTAG</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable fix_DTAG Plugin</fielddescr>
+			<fieldname>plugin_fix_dtag</fieldname>
+			<description>Work around some issues with DTAG (Deutsche Telekom AG) as REGISTRAR.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>List of remote Networks to apply DTAG workaround</fielddescr>
+			<fieldname>plugin_fix_dtag_networks</fieldname>
+			<description>
+				<![CDATA[
+				Comma separated list of networks where DTAG REGISTRARs are located.<br />
+				Example: 217.0.23.100/32
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>217.0.23.100/32</default_value>
+		</field>
+		<field>
+			<name>Plugin Settings - Strip Headers</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable Strip Header Plugin</fielddescr>
+			<fieldname>plugin_stripheader</fieldname>
+			<description>Unconditionally strip the specified SIP header from the packet.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Header to remove (1)</fielddescr>
+			<fieldname>plugin_stripheader_remove1</fieldname>
+			<description>
+				<![CDATA[
+				Unconditionally strip the specified SIP header from the packet.
+				May be used to workaround IP fragmentation by removing "unimportant"
+				SIP headers - this is clearly a ugly hack but sometimes saves one
+				from headache.<br />
+				Format is &amp;lt;header&amp;gt;[:&amp;lt;value&amp;gt;], the :&amp;lt;value&amp;gt; part is optional - if not 
+				present the full header will be removed.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Header to remove (2)</fielddescr>
+			<fieldname>plugin_stripheader_remove2</fieldname>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Header to remove (3)</fielddescr>
+			<fieldname>plugin_stripheader_remove3</fieldname>
+			<type>input</type>
+		</field>
+		<field>
+			<name>Plugin Settings - Codec Filter</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable Codec Filter Plugin</fielddescr>
+                        <fieldname>plugin_codecfilter</fieldname>
+                        <description> Removes blacklisted codecs from any passing SDP payload in both (incoming and outgoing) directions.</description>
+                        <type>checkbox</type>
+                </field>
+		<field>
+			<fielddescr>Codec to remove (1)</fielddescr>
+			<fieldname>plugin_codecfilter_blacklist1</fieldname>
+			<description>
+				<![CDATA[
+				Removes blacklisted (plugin_codecfilter_blacklist) codecs 
+				from any passing SDP payload in both (incoming and outgoing)
+				directions. This allows the proxy to force the exclusion of
+				particular codecs in the negotiation between a local UA and a 
+				remote side.<br />
+				The match is done as case-insensitive substring match. The config 
+				string "726" would match the codecs "G726-32/800", "g726", etc.
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Codec to remove (2)</fielddescr>
+			<fieldname>plugin_codecfilter_blacklist2</fieldname>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr>Codec to remove (3)</fielddescr>
+			<fieldname>plugin_codecfilter_blacklist3</fieldname>
+			<type>input</type>
+		</field>
+		<field>
+			<name>Plugin Settings - Fix Anonymous Calls on Fritzboxes</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>fix_fbox_anoncall Plugin</fielddescr>
+			<fieldname>plugin_fix_fbox_anoncall</fieldname>
+			<description>Enable fix_fbox_anoncall Plugin</description>
+			<sethelp>Fixes incoming anonymous phone calls with local Fritzbox UAs</sethelp>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Local Networks to apply workaround</fielddescr>
+			<fieldname>plugin_fix_fbox_anoncall_networks</fieldname>
+			<description>
+				<![CDATA[
+				Comma separated list of local networks which contain Fritzbox UAs that need fixing.<br />
+				Example: 192.168.0.0/16,10.0.0.0/8,172.16.0.0/20
+				]]>
+			</description>
+			<type>input</type>
+			<default_value>192.168.0.0/16,10.0.0.0/8,172.16.0.0/20</default_value>
 		</field>
 		<field>
 			<name>Debug Options</name>
