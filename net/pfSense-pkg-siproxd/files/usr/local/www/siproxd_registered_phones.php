@@ -55,18 +55,31 @@ for ($i = 0; $i < count($phonedata); $i++) {
 	if ($active == "1") {
 		$phone = array();
 		$phone["expires"] = $expires;
-		$phone["real"]["type"] = $phonedata[++$i];
-		$phone["real"]["user"] = $phonedata[++$i];
-		$phone["real"]["host"] = $phonedata[++$i];
-		$phone["real"]["port"] = $phonedata[++$i];
-		$phone["nat"]["type"] = $phonedata[++$i];
-		$phone["nat"]["user"] = $phonedata[++$i];
-		$phone["nat"]["host"] = $phonedata[++$i];
-		$phone["nat"]["port"] = $phonedata[++$i];
-		$phone["registered"]["type"] = $phonedata[++$i];
-		$phone["registered"]["user"] = $phonedata[++$i];
-		$phone["registered"]["host"] = $phonedata[++$i];
-		$phone["registered"]["port"] = $phonedata[++$i];
+
+		list($type, $user_host, $port_tags) = explode (":", $phonedata[++$i]);
+		list($user, $host) = explode("@", $user_host);
+		list($port, $tags) = explode(";", $port_tags);
+		$phone["real"]["type"] = $type;
+		$phone["real"]["user"] = $user;
+		$phone["real"]["host"] = $host;
+		$phone["real"]["port"] = $port;
+
+		list($type, $user_host, $port_tags) = explode (":", $phonedata[++$i]);
+		list($user, $host) = explode("@", $user_host);
+		list($port, $tags) = explode(";", $port_tags);
+		$phone["nat"]["type"] = $type;
+		$phone["nat"]["user"] = $user;
+		$phone["nat"]["host"] = $host;
+		$phone["nat"]["port"] = $port;
+
+		list($type, $user_host, $port_tags) = explode (":", $phonedata[++$i]);
+		list($user, $host) = explode("@", $user_host);
+		list($port, $tags) = explode(";", $port_tags);
+		$phone["registered"]["type"] = $type;
+		$phone["registered"]["user"] = $user;
+		$phone["registered"]["host"] = $host;
+		$phone["registered"]["port"] = $port;
+
 		$activephones[] = $phone;
 	}
 }
