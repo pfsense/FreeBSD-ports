@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	tinc.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2012-2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<description>A self-contained VPN solution designed to connect multiple sites together in a secure way.</description>
+	<name>tinc</name>
+	<version>1.2.8</version>
+	<title>VPN: Tinc: Settings</title>
+	<include_file>/usr/local/pkg/tinc.inc</include_file>
+	<menu>
+		<name>tinc</name>
+		<section>VPN</section>
+		<configfile>tinc.xml</configfile>
+		<url>/pkg_edit.php?xml=tinc.xml</url>
+	</menu>
+	<menu>
+		<name>Tinc VPN</name>
+		<section>Status</section>
+		<url>/status_tinc.php</url>
+	</menu>
+	<service>
+		<name>tinc</name>
+		<rcfile>tinc.sh</rcfile>
+		<executable>tincd</executable>
+		<description>Tinc Mesh VPN</description>
+	</service>
+	<tabs>
+		<tab>
+			<text>Settings</text>
+			<url>/pkg_edit.php?xml=tinc.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Hosts</text>
+			<url>/pkg.php?xml=tinc_hosts.xml</url>
+		</tab>
+	</tabs>
+	<advanced_options>enabled</advanced_options>
+	<fields>
+		<field>
+			<name>Basic Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable Tinc VPN</fielddescr>
+			<fieldname>enable</fieldname>
+			<description>Check this to enable tinc mesh VPN.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Name</fielddescr>
+			<fieldname>name</fieldname>
+			<description>
+				<![CDATA[
+				This is the name which identifies this tinc daemon.<br />
+				It must be unique for the virtual private network this daemon will connect to.
+				]]>
+			</description>
+			<type>input</type>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Local IP</fielddescr>
+			<fieldname>localip</fieldname>
+			<description>
+				<![CDATA[
+				IP address of local tunnel interface.<br />
+				This is often the same IP as your routers LAN address. (Example: 192.168.2.1)
+				]]>
+			</description>
+			<type>input</type>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Local Subnet</fielddescr>
+			<fieldname>localsubnet</fieldname>
+			<description>
+				<![CDATA[
+				Subnet behind this router that should be advertised to the mesh.<br />
+				This is usually your LAN subnet. (Example: 192.168.2.0/24)
+				]]>
+			</description>
+			<type>input</type>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>VPN Netmask</fielddescr>
+			<fieldname>vpnnetmask</fieldname>
+			<description>
+				<![CDATA[
+				This is the netmask that defines what traffic is routed to the VPNs tunnel interface.<br />
+				It is usually broader then your local netmask. (Example: 255.255.0.0)
+				]]>
+			</description>
+			<type>input</type>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Address Family</fielddescr>
+			<fieldname>addressfamily</fieldname>
+			<description>
+				<![CDATA[
+				This option affects the address family of listening and outgoing sockets.<br />
+				If "Any" is selected, then - depending on the operating system - either both IPv4 and IPv6 or just IPv6 listening sockets will be created.
+				]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option>
+					<name>IPv4</name>
+					<value>ipv4</value>
+				</option>
+				<option>
+					<name>IPv6</name>
+					<value>ipv6</value>
+				</option>
+				<option>
+					<name>Any</name>
+					<value>any</value>
+				</option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>RSA Private Key</fielddescr>
+			<fieldname>cert_key</fieldname>
+			<description>
+				<![CDATA[
+				RSA private key used for this host. <strong>Include the BEGIN and END lines.</strong><br />
+				]]>
+				</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>7</rows>
+			<cols>70</cols>
+		</field>
+		<field>
+			<fielddescr>RSA Public Key</fielddescr>
+			<fieldname>cert_pub</fieldname>
+			<description>
+				<![CDATA[
+				RSA public key used for this host. <strong>Include the BEGIN and END lines.</strong><br />
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>7</rows>
+			<cols>70</cols>
+		</field>
+		<field>
+			<fielddescr>Generate RSA Key Pair</fielddescr>
+			<fieldname>gen_rsa</fieldname>
+			<description>This will generate a new RSA key pair in the fields above.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Extra Tinc Parameters</fielddescr>
+			<fieldname>extra</fieldname>
+			<description>
+				<![CDATA[
+				Anything entered here will be added at the end of the tinc.conf configuration file.<br />
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>8</rows>
+			<cols>70</cols>
+			<advancedfield/>
+		</field>
+		<field>
+			<fielddescr>Extra Host Parameters</fielddescr>
+			<fieldname>host_extra</fieldname>
+			<description>
+				<![CDATA[
+				Anything entered here will be added just prior to the public certiciate in the host configuration file for this machine.<br />
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>8</rows>
+			<cols>70</cols>
+			<advancedfield/>
+		</field>
+		<field>
+			<fielddescr>Interface Up Script</fielddescr>
+			<fieldname>tinc_up</fieldname>
+			<description>
+				<![CDATA[
+				This script is executed right after the tinc daemon has connected to the virtual network device.<br />
+				By default, a tinc-up file is created that brings up the tinc interface with the IP Address and Netmask specified above and adds it to the tinc interface group.<br />
+				<strong>Note: Entering a value here complely replaces the default script; be sure to bring up the interface in this script!</strong>
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>8</rows>
+			<cols>70</cols>
+			<advancedfield/>
+		</field>
+		<field>
+			<fielddescr>Interface Down Script</fielddescr>
+			<fieldname>tinc_down</fieldname>
+			<description>This script is executed right before the tinc daemon is going to close.</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>8</rows>
+			<cols>70</cols>
+			<advancedfield/>
+		</field>
+		<field>
+			<fielddescr>Host Up Script</fielddescr>
+			<fieldname>host_up</fieldname>
+			<description>This script is executed when any host becomes reachable.</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>8</rows>
+			<cols>70</cols>
+			<advancedfield/>
+		</field>
+		<field>
+			<fielddescr>Host Down Script</fielddescr>
+			<fieldname>host_down</fieldname>
+			<description>This script is executed when any host becomes unreachable.</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>8</rows>
+			<cols>70</cols>
+			<advancedfield/>
+		</field>
+		<field>
+			<fielddescr>Subnet Up Script</fielddescr>
+			<fieldname>subnet_up</fieldname>
+			<description>This script is executed when any subnet becomes reachable.</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>8</rows>
+			<cols>70</cols>
+			<advancedfield/>
+		</field>
+		<field>
+			<fielddescr>Subnet Down Script</fielddescr>
+			<fieldname>subnet_down</fieldname>
+			<description>This script is executed when any subnet becomes unreachable.</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>8</rows>
+			<cols>70</cols>
+			<advancedfield/>
+		</field>
+	</fields>
+	<custom_php_install_command>
+		tinc_install();
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		tinc_deinstall();
+	</custom_php_deinstall_command>
+	<custom_php_resync_config_command>
+		tinc_save();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		tinc_validate_input($_POST, $input_errors);
+	</custom_php_validation_command>
+</packagegui>
