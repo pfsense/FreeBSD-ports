@@ -62,7 +62,7 @@ $rrd_location = "/var/db/rrd/";
 
 //lookup end time based on resolution (ensure resolution interval)
 $endLookup = array(
-	"60"    => "-2min",
+	"60"    => "-1min",
 	"300"   => "-5min",
 	"3600"  => "-1hour",
 	"86400" => "-1day"
@@ -88,7 +88,20 @@ $left_last_updated = $rrd_info_array['last_update'];
 $rrd_info_array = rrd_info($rrd_location . $right . ".rrd");
 $right_last_updated = $rrd_info_array['last_update'];
 
-$last_updated = max($left_last_updated, $right_last_updated);
+//grab the older last updated time of the two databases
+if(empty($right_last_updated)) {
+
+	$last_updated = $left_last_updated;
+
+} elseif(empty($left_last_updated)) {
+
+	$last_updated = $right_last_updated;
+
+} else {
+
+	$last_updated = min($left_last_updated, $right_last_updated);
+
+}
 
 if ($timePeriod === "custom") {
 
