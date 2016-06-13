@@ -466,7 +466,7 @@ if ($savemsg) {
 					<select class="form-control" id="auto-update" name="auto-update">
 						<option value="0" selected>Off</option>
 						<option value="-1">Settings Change</option>
-						<option value="15">15 Seconds</option>
+						<option value="-2">Auto Sync</option>
 						<option value="60">1 Minute</option>
 						<option value="300">5 Minutes</option>
 						<option value="600">10 Minutes</option>
@@ -776,31 +776,77 @@ events.push(function() {
 		update_graph(true);
 	});
 
+	var step;
+	var last_updated;
 	var auto_update;
 
 	function update_graph(force) {
 
 		clearTimeout(auto_update);
 
-		if ($( "#auto-update" ).val() == "-1") {
-			force = true;
-		}
-
-		if (force || $( "#auto-update" ).val() > 0) {
+		if (force || $( "#auto-update" ).val() != "0") {
 			$("#loading-msg").show();
 			$("#chart-error").hide();
+			step = 0;
+			last_updated = 0;
 			draw_graph(getOptions());
+			update_graph_scheduler();
+		}
+	}
+
+	function update_graph_scheduler() {
+		// If auto update is not enabled, or is set to non scheduled setting, ensure not to schedule an auto update.
+		if (( $( "#auto-update" ).val() == "0") || ( $( "#auto-update" ).val() == "-1")) {
+			return false;
 		}
 
-		if ( $( "#auto-update" ).val() > 0) {
-			update_interval = $( "#auto-update" ).val();
+		var timesToWait = 15;
+		var wait_for_update = setInterval(function(){
+			timesToWait -= 1;
+			if (timesToWait < 1) { clearInterval(wait_for_update); }
 
-			// Synchronize auto update to top of the minute (seconds = 0).  The soonest that RRD is certain to have a sample data point for the previous minute.
-			seconds = new Date().getSeconds();
-			update_interval -= seconds;
+			if (step > 0 && last_updated > 0) {
+				clearInterval(wait_for_update);
 
-			auto_update = setTimeout(update_graph, update_interval * 1000);
-		}
+				var auto_update_interval = 0;
+
+				// Synchronize auto update with RRD resolution step and update interval, plus a cushion to ensure RRD has been updated.
+				if ( $( "#auto-update" ).val() == "-2") {		// Auto Sync option selected
+					var rrd_update_interval = 62;
+					var now = Math.floor(Date.now() / 1000);
+					var last_update = Math.floor(last_updated / 1000);
+					var last_step_boundary = (Math.floor(now / step) * step);
+
+					// Handle case in which the next update can be prior to the next step boundary.  Typically only happens on first pass when starting, or if update occurred on step boundary).
+					if (last_update <= last_step_boundary) {
+						var next_update = last_update + rrd_update_interval;
+						auto_update_interval = next_update - now;
+					} else {
+						var next_step_boundary = last_step_boundary + step;
+						var next_update_past_next_step_boundry = next_step_boundary + (rrd_update_interval - ((next_step_boundary - last_update) % rrd_update_interval));
+						auto_update_interval = next_update_past_next_step_boundry - now;
+					}
+
+					// Add 3 percent of step, clipped to a maximum of RRD update interval, as a cushion to allow for drift and ensure RRD update had time to complete.
+					auto_update_interval += Math.min((step / 33), rrd_update_interval);
+				}
+
+				// Synchronize auto update to top of the minute (seconds = 0).  The soonest that RRD is certain to have a sample data point for the previous minute.
+				if ( $( "#auto-update" ).val() > "0") {		// Specific update interval selected
+					auto_update_interval = ($( "#auto-update" ).val() - new Date().getSeconds());
+				}
+
+				// Keep auto update working if a condition results in an invalid auto update interval.  Such as RRD update fails to occur.
+				if (auto_update_interval < 1) {
+					auto_update_interval = now + rrd_update_interval;
+				}
+
+				// Schedule the graph auto update.
+				if (auto_update_interval > 0) {
+					auto_update = setTimeout(update_graph, auto_update_interval * 1000);
+				}
+			}
+		}, 1000);
 	}
 
 	function valid_resolutions(timePeriod) {
@@ -1166,6 +1212,9 @@ events.push(function() {
 			}
 
 			var data = json;
+
+			step = data[0].step;
+			last_updated = data[0].last_updated;
 
 			data.map(function(series) {
 
