@@ -613,18 +613,12 @@ events.push(function() {
 		"cellular" : ".2s"
 	};
 
-	//lookup timeformats based on time period
+	//lookup timeformats based on resolution
 	var timeLookup = {
-		"-4y": "%Y-%m-%d",
-		"-1y": "%Y-%m-%d",
-		"-3m": "%Y-%m-%d",
-		"-1m": "%Y-%m-%d",
-		"-1w": "%m/%d %H:%M",
-		"-2d": "%m/%d %H:%M",
-		"-1d": "%H:%M:%S",
-		"-8h": "%H:%M:%S",
-		"-1h": "%H:%M:%S",
-		"custom": "%Y-%m-%d"
+		"86400": "%Y-%m-%d",
+		"3600": "%m/%d %H:%M",
+		"300": "%H:%M:%S",
+		"60": "%H:%M:%S"
 	};
 
 	//lookup human readable time based on number of seconds
@@ -1104,8 +1098,7 @@ events.push(function() {
 					.useInteractiveGuideline(true)
 					.margin({top: 160, right:100, left:100, bottom: 80});
 
-				var timePeriod = $( "#time-period" ).val();
-				var timeFormat = timeLookup[timePeriod];
+				var timeFormat = timeLookup[data[0].step];
 
 				chart.xAxis.tickFormat(function(d) {
 					return d3.time.format(timeFormat)(new Date(d));
