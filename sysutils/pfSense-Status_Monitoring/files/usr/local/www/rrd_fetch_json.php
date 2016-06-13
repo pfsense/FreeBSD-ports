@@ -280,74 +280,129 @@ if ($left != "null") {
 			$obj[$ds_key_left_adjusted]['ninetyfifth'] = $ninetyfifth;
 
 			$data = array();
+			$raw_data = array();
+			$stats = array();
 
 			foreach ($data_list as $time => $value) {
-				$data[] = array($time*1000, $value*$multiplier);
+
+				$raw_data[] = array($time*1000, $value*$multiplier);
+
+				if(is_nan($value)) {
+
+					$data[] = array($time*1000, 0);
+
+				} else {
+
+					$data[] = array($time*1000, $value*$multiplier);
+					$stats[] = $value*$multiplier;
+
+				}
+				
 			}
 
+			$obj[$ds_key_left_adjusted]['min'] = min($stats);
+			$obj[$ds_key_left_adjusted]['max'] = max($stats);
+			$obj[$ds_key_left_adjusted]['avg'] = array_sum($stats) / count($stats);
 			$obj[$ds_key_left_adjusted]['values'] = $data;
+			$obj[$ds_key_left_adjusted]['raw'] = $raw_data;
 
 		}
 	}
 
+	/* calulate the total lines */
 	if ( ($left_pieces[1] === "traffic") || ($left_pieces[1] === "packets") ) {
 
 		foreach ($obj as $key => $value) {
+
 			//grab inpass and outpass attributes and values
 			if ($value['key'] === "inpass") {
-				$left_inpass_array = array();
+
+				$inpass_array = array();
+
 				//loop through values and use time
-				foreach ($value['values'] as $datapoint) {
-					$y_point = $datapoint[1];
-					if (is_nan($y_point)) { $y_point = 0; }
-					$left_inpass_array[$datapoint[0]/1000] = $y_point;
+				foreach ($value['raw'] as $datapoint) {
+
+					$inpass_array[$datapoint[0]/1000] = $datapoint[1]; //divide by thousand to avoid key size limitations
+
 				}
+
 			}
 
 			if ($value['key'] === "inpass6") {
+
 				$inpass6_array = [];
 
 				//loop through values and use time
-				foreach ($value['values'] as $datapoint6) {
-					$y_point = $datapoint6[1];
-					if (is_nan($y_point)) { $y_point = 0; }
-					$inpass6_array[$datapoint6[0]/1000] = $y_point;
+				foreach ($value['raw'] as $datapoint6) {
+
+					$inpass6_array[$datapoint6[0]/1000] = $datapoint6[1]; //divide by thousand to avoid key size limitations
+
 				}
+
 			}
 
 			if ($value['key'] === "outpass") {
+
 				$outpass_array = [];
 
 				//loop through values and use time
-				foreach ($value['values'] as $datapoint) {
-					$y_point = $datapoint[1];
-					if (is_nan($y_point)) { $y_point = 0; }
-					$outpass_array[$datapoint[0]/1000] = $y_point;
+				foreach ($value['raw'] as $datapoint) {
+
+					$outpass_array[$datapoint[0]/1000] = $datapoint[1]; //divide by thousand to avoid key size limitations
+
 				}
+
 			}
 
 			if ($value['key'] === "outpass6") {
+
 				$outpass6_array = [];
 
 				//loop through values and use time
-				foreach ($value['values'] as $datapoint6) {
-					$y_point = $datapoint6[1];
-					if (is_nan($y_point)) { $y_point = 0; }
-					$outpass6_array[$datapoint6[0]/1000] = $y_point;
+				foreach ($value['raw'] as $datapoint6) {
+
+					$outpass6_array[$datapoint6[0]/1000] = $datapoint6[1]; //divide by thousand to avoid key size limitations
+
 				}
+
 			}
 
 		}
 
-		//calulate the new total lines
+		/* add v4 and v6 together */
 		$inpass_total = [];
-		foreach ($left_inpass_array as $key => $value) {
-			$inpass_total[] = array($key*1000, $value + $inpass6_array[$key]);
+		$outpass_total = [];
+		$inpass_stats = [];
+		$outpass_stats = [];
+
+		foreach ($inpass_array as $key => $value) {
+
+			if(is_nan($value)) {
+
+				$inpass_total[] = array($key*1000, 0);
+
+			} else {
+
+				$inpass_total[] = array($key*1000, $value + $inpass6_array[$key]);
+				$inpass_stats[] = $value + $inpass6_array[$key];
+
+			}
+
 		}
 
-		$outpass_total = [];
 		foreach ($outpass_array as $key => $value) {
-			$outpass_total[] = array($key*1000, $value + $outpass6_array[$key]);
+
+			if(is_nan($value)) {
+
+				$outpass_total[] = array($key*1000, 0);
+
+			} else {
+
+				$outpass_total[] = array($key*1000, $value + $outpass6_array[$key]);
+				$outpass_stats[] = $value + $outpass6_array[$key];
+
+			}
+
 		}
 
 		$ds_key_left_adjusted += 1;
@@ -361,6 +416,9 @@ if ($left != "null") {
 		$obj[$ds_key_left_adjusted]['unit_desc'] = $unit_desc_lookup[$left_unit_acronym];
 		$obj[$ds_key_left_adjusted]['invert'] = false;
 		$obj[$ds_key_left_adjusted]['ninetyfifth'] = true;
+		$obj[$ds_key_left_adjusted]['min'] = min($inpass_stats);
+		$obj[$ds_key_left_adjusted]['max'] = max($inpass_stats);
+		$obj[$ds_key_left_adjusted]['avg'] = array_sum($inpass_stats) / count($inpass_stats);
 		$obj[$ds_key_left_adjusted]['values'] = $inpass_total;
 
 		$ds_key_left_adjusted += 1;
@@ -373,8 +431,17 @@ if ($left != "null") {
 		$obj[$ds_key_left_adjusted]['unit_desc'] = $unit_desc_lookup[$left_unit_acronym];
 		$obj[$ds_key_left_adjusted]['invert'] = $invert_graph;
 		$obj[$ds_key_left_adjusted]['ninetyfifth'] = true;
+		$obj[$ds_key_left_adjusted]['min'] = min($outpass_stats);
+		$obj[$ds_key_left_adjusted]['max'] = max($outpass_stats);
+		$obj[$ds_key_left_adjusted]['avg'] = array_sum($outpass_stats) / count($outpass_stats);
 		$obj[$ds_key_left_adjusted]['values'] = $outpass_total;
+
 	}
+
+	foreach ($obj as $key => &$value) {
+		unset($value['raw']);
+	}
+
 }
 
 if ($right != "null") {
@@ -503,78 +570,132 @@ if ($right != "null") {
 			$obj[$ds_key_right_adjusted]['invert'] = $invert;
 			$obj[$ds_key_right_adjusted]['ninetyfifth'] = $ninetyfifth;
 
+			$raw_data = array();
 			$data = array();
+			$stats = array();
 
 			foreach ($data_list as $time => $value) {
-				$data[] = array($time*1000, $value*$multiplier);
+
+				$raw_data[] = array($time*1000, $value*$multiplier);
+
+				if(is_nan($value)) {
+
+					$data[] = array($time*1000, 0);
+
+				} else {
+
+					$data[] = array($time*1000, $value*$multiplier);
+					$stats[] = $value*$multiplier;
+
+				}
+				
 			}
 
+			$obj[$ds_key_right_adjusted]['min'] = min($stats);
+			$obj[$ds_key_right_adjusted]['max'] = max($stats);
+			$obj[$ds_key_right_adjusted]['avg'] = array_sum($stats) / count($stats);
 			$obj[$ds_key_right_adjusted]['values'] = $data;
+			$obj[$ds_key_right_adjusted]['raw'] = $raw_data;
 
 		}
 
 	}
 
+	/* calculate the total lines */
 	if ( ($right_pieces[1] === "traffic") || ($right_pieces[1] === "packets") ) {
 
 		foreach ($obj as $key => $value) {
 
 			//grab inpass and outpass attributes and values
 			if ($value['key'] === "inpass") {
+
 				$inpass_array = [];
 
 				//loop through values and use time
-				foreach ($value['values'] as $datapoint) {
-					$y_point = $datapoint[1];
-					if (is_nan($y_point)) { $y_point = 0; }
-					$inpass_array[$datapoint[0]] = $y_point;
+				foreach ($value['raw'] as $datapoint) {
+
+					$inpass_array[$datapoint[0]/1000] = $datapoint[1]; //divide by thousand to avoid key size limitations
+
 				}
 
 			}
 
 			if ($value['key'] === "inpass6") {
+
 				$inpass6_array = [];
 
 				//loop through values and use time
-				foreach ($value['values'] as $datapoint6) {
-					$y_point = $datapoint6[1];
-					if (is_nan($y_point)) { $y_point = 0; }
-					$inpass6_array[$datapoint6[0]] = $y_point;
+				foreach ($value['raw'] as $datapoint6) {
+
+					$inpass6_array[$datapoint6[0]/1000] = $datapoint6[1]; //divide by thousand to avoid key size limitations
+
 				}
 			}
 
 			if ($value['key'] === "outpass") {
+
 				$outpass_array = [];
 
 				//loop through values and use time
-				foreach ($value['values'] as $datapoint) {
-					$y_point = $datapoint[1];
-					if (is_nan($y_point)) { $y_point = 0; }
-					$outpass_array[$datapoint[0]] = $y_point;
+				foreach ($value['raw'] as $datapoint) {
+
+					$outpass_array[$datapoint[0]/1000] = $datapoint[1]; //divide by thousand to avoid key size limitations
+
 				}
 			}
 
 			if ($value['key'] === "outpass6") {
+
 				$outpass6_array = [];
 
 				//loop through values and use time
-				foreach ($value['values'] as $datapoint6) {
-					$y_point = $datapoint6[1];
-					if (is_nan($y_point)) { $y_point = 0; }
-					$outpass6_array[$datapoint6[0]] = $y_point;
+				foreach ($value['raw'] as $datapoint6) {
+
+					$outpass6_array[$datapoint6[0]/1000] = $datapoint6[1]; //divide by thousand to avoid key size limitations
+
 				}
 			}
 		}
 
-		//calculate the new total lines
+		/* add v4 and v6 together */
 		$inpass_total = [];
+		$outpass_total = [];
+		$inpass_stats = [];
+		$outpass_stats = [];
+
 		foreach ($inpass_array as $key => $value) {
-			$inpass_total[] = array($key, $value + $inpass6_array[$key]);
+
+			//$inpass_total[] = array($key, $value + $inpass6_array[$key]);
+
+			if(is_nan($value)) {
+
+				$inpass_total[] = array($key*1000, 0);
+
+			} else {
+
+				$inpass_total[] = array($key*1000, $value + $inpass6_array[$key]);
+				$inpass_stats[] = $value + $inpass6_array[$key];
+
+			}
+
 		}
 
-		$outpass_total = [];
+		
 		foreach ($outpass_array as $key => $value) {
-			$outpass_total[] = array($key, $value + $outpass6_array[$key]);
+
+			//$outpass_total[] = array($key, $value + $outpass6_array[$key]);
+
+			if(is_nan($value)) {
+
+				$outpass_total[] = array($key*1000, 0);
+
+			} else {
+
+				$outpass_total[] = array($key*1000, $value + $outpass6_array[$key]);
+				$outpass_stats[] = $value + $outpass6_array[$key];
+
+			}
+
 		}
 
 		$ds_key_right_adjusted += 1;
@@ -588,6 +709,9 @@ if ($right != "null") {
 		$obj[$ds_key_right_adjusted]['unit_desc'] = $unit_desc_lookup[$right_unit_acronym];
 		$obj[$ds_key_right_adjusted]['invert'] = false;
 		$obj[$ds_key_right_adjusted]['ninetyfifth'] = true;
+		$obj[$ds_key_right_adjusted]['min'] = min($inpass_stats);
+		$obj[$ds_key_right_adjusted]['max'] = max($inpass_stats);
+		$obj[$ds_key_right_adjusted]['avg'] = array_sum($inpass_stats) / count($inpass_stats);
 		$obj[$ds_key_right_adjusted]['values'] = $inpass_total;
 
 		$ds_key_right_adjusted += 1;
@@ -600,8 +724,17 @@ if ($right != "null") {
 		$obj[$ds_key_right_adjusted]['unit_desc'] = $unit_desc_lookup[$right_unit_acronym];
 		$obj[$ds_key_right_adjusted]['invert'] = $invert_graph;
 		$obj[$ds_key_right_adjusted]['ninetyfifth'] = true;
+		$obj[$ds_key_right_adjusted]['min'] = min($outpass_stats);
+		$obj[$ds_key_right_adjusted]['max'] = max($outpass_stats);
+		$obj[$ds_key_right_adjusted]['avg'] = array_sum($outpass_stats) / count($outpass_stats);
 		$obj[$ds_key_right_adjusted]['values'] = $outpass_total;
+
 	}
+
+	foreach ($obj as $key => &$value) {
+		unset($value['raw']);
+	}
+
 }
 
 header('Content-Type: application/json');

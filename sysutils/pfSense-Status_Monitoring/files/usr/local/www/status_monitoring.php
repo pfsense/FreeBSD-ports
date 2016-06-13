@@ -1291,9 +1291,9 @@ events.push(function() {
 
 			}
 
-			var avg = d3.sum(summary)/summary.length;
-			var min = d3.min(summary);
-			var max = d3.max(summary);
+			var avg = d.avg;
+			var min = d.min;
+			var max = d.max;
 			var last = summary[summary.length-1];
 
 			if(d.format === "s") {
