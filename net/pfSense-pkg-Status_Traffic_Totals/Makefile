@@ -9,7 +9,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	Traffic Totals using the vnStat database. Shows up in Status > Traffic Totals
+COMMENT=	Traffic Totals using the vnStat database
 
 LICENSE=	ESF
 
