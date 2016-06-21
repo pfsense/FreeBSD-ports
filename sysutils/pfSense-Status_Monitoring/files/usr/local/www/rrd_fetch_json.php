@@ -451,8 +451,8 @@ if ($left != "null") {
 
 	}
 
-	foreach ($obj as $key => &$value) {
-		unset($value['raw']);
+	foreach ($obj as $raw_left_key => &$raw_left_value) {
+		unset($raw_left_value['raw']);
 	}
 
 }
@@ -620,7 +620,7 @@ if ($right != "null") {
 		foreach ($obj as $key => $value) {
 
 			//grab inpass and outpass attributes and values
-			if ($value['key'] === "inpass") {
+			if ($value['key'] === "inpass" && $value['yAxis'] === 2) {
 
 				$inpass_array = [];
 
@@ -633,7 +633,7 @@ if ($right != "null") {
 
 			}
 
-			if ($value['key'] === "inpass6") {
+			if ($value['key'] === "inpass6" && $value['yAxis'] === 2) {
 
 				$inpass6_array = [];
 
@@ -645,7 +645,7 @@ if ($right != "null") {
 				}
 			}
 
-			if ($value['key'] === "outpass") {
+			if ($value['key'] === "outpass" && $value['yAxis'] === 2) {
 
 				$outpass_array = [];
 
@@ -657,7 +657,7 @@ if ($right != "null") {
 				}
 			}
 
-			if ($value['key'] === "outpass6") {
+			if ($value['key'] === "outpass6" && $value['yAxis'] === 2) {
 
 				$outpass6_array = [];
 
@@ -678,8 +678,6 @@ if ($right != "null") {
 
 		foreach ($inpass_array as $key => $value) {
 
-			//$inpass_total[] = array($key, $value + $inpass6_array[$key]);
-
 			if(is_nan($value)) {
 
 				$inpass_total[] = array($key*1000, 0);
@@ -695,8 +693,6 @@ if ($right != "null") {
 
 		
 		foreach ($outpass_array as $key => $value) {
-
-			//$outpass_total[] = array($key, $value + $outpass6_array[$key]);
 
 			if(is_nan($value)) {
 
@@ -744,8 +740,8 @@ if ($right != "null") {
 
 	}
 
-	foreach ($obj as $key => &$value) {
-		unset($value['raw']);
+	foreach ($obj as $raw_right_key => &$raw_right_value) {
+		unset($raw_right_value['raw']);
 	}
 
 }
