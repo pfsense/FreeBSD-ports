@@ -191,18 +191,18 @@ display_top_tabs($tab_array);
 
 <link href="/vendor/nvd3/nv.d3.css" media="screen, projection" rel="stylesheet" type="text/css">
 
-<form class="form-horizontal <?=$panel_state?> auto-submit" method="post" action="/status_traffic_totals.php" id="-settings-form">
-	<div class="panel panel-default" id="-settings-panel">
+<form class="form-horizontal in auto-submit" method="post" action="/status_traffic_totals.php" id="traffic-totals-settings-form">
+	<div class="panel panel-default" id="traffic-totals-settings-panel">
 		<div class="panel-heading">
 			<h2 class="panel-title"><?=gettext("Settings"); ?>
 				<span class="widget-heading-icon">
-					<a data-toggle="collapse" href="#-settings-panel_panel-body">
+					<a data-toggle="collapse" href="#traffic-totals-settings-panel_panel-body">
 						<i class="fa fa-plus-circle"></i>
 					</a>
 				</span>
 			</h2>
 		</div>
-		<div id="-settings-panel_panel-body" class="panel-body <?=$panel_body_state?>">
+		<div id="traffic-totals-settings-panel_panel-body" class="panel-body in">
 			<div class="form-group">
 				<label class="col-sm-2 control-label">
 					Options
