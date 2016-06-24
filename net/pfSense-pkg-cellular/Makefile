@@ -1,32 +1,31 @@
 # $FreeBSD$
-# pkg-help formatted with fmt 59 63
 
-PORTNAME= pfSense-pkg-cellular
+PORTNAME=	pfSense-pkg-cellular
 PORTVERSION=	1.1.1
-PORTREVISION=	1
+#PORTREVISION=	1
 CATEGORIES=	net
-MASTER_SITES= # empty
-DISTFILES= # empty
-EXTRACT_ONLY= # empty
+MASTER_SITES=	# empty
+DISTFILES=	# empty
+EXTRACT_ONLY=	# empty
+
+RUN_DEPENDS=	${LOCALBASE}/bin/miniterm.py:comms/py-serial
 
 MAINTAINER=	tech@voleatech.de
 COMMENT=	Voleatech Cellular Module Interface
 
-RUN_DEPENDS= ${LOCALBASE}/bin/miniterm.py:comms/py-serial
-
 LICENSE=	ESF
 
-NO_BUILD= yes
-NO_MTREE= yes
+NO_BUILD=	yes
+NO_MTREE=	yes
 
-SUB_FILES=    pkg-install pkg-deinstall
-SUB_LIST=     PORTNAME=${PORTNAME}
+SUB_FILES=	pkg-install pkg-deinstall
+SUB_LIST=	PORTNAME=${PORTNAME}
 
-USES=           python
+USES=		python
 
 post-install:
 	@${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py ${STAGEDIR}/usr/local/sbin
-	mv ${STAGEDIR}/usr/local/sbin/cellular.pyc ${STAGEDIR}/usr/local/sbin/cellular
+	${MV} ${STAGEDIR}/usr/local/sbin/cellular.pyc ${STAGEDIR}/usr/local/sbin/cellular
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
