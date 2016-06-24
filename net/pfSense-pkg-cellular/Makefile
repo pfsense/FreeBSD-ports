@@ -54,7 +54,7 @@ do-install:
 	(cd ${WRKSRC}${PREFIX} \
 		&& ${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py \
 		-d ${PREFIX} -f sbin)
-	${MV} ${WRKSRC}${PREFIX}/sbin/cellular.pyc \
+	${INSTALL_DATA} ${WRKSRC}${PREFIX}/sbin/cellular.pyc \
 		${STAGEDIR}${PREFIX}/sbin/cellular
 
 .include <bsd.port.mk>
