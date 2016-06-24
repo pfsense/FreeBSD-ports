@@ -81,7 +81,9 @@ if (isset($_POST['getsignalstrength'])) {
 	<tbody>
 		<tr>
 			<td id="macaddr">
-				<div id="signal-strength"><div id="signal-strength-bars"></div></div>
+				<div id="signal-strength">
+					<div id="signal-strength-bars"></div>
+				</div>
 				<a id="ifname"></a>
 			</td>
 			<td id="status"></td>
