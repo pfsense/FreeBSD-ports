@@ -1,0 +1,9 @@
+pkg/cellular.inc
+pkg/cellular.xml
+pkg/pkg_cellular.inc
+@dir /var/etc/cellular
+www/widgets/widgets/cellular.widget.php
+/etc/inc/priv/cellular.priv.inc
+/usr/local/sbin/cellular
+%%DATADIR%%/info.xml
+@dir /etc/inc/priv

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	cellular.xml
+	part of voleatech lte cellular interface (https://www.pfSense.org/)
+	Copyright (C) 2016 Voleatech GmbH, Fabian Schweinfurth
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+	]]>
+	</copyright>
+	<name>Cellular</name>
+	<version>%%PKGVERSION%%</version>
+	<title>Cellular Modem Settings</title>
+	<include_file>/usr/local/pkg/cellular.inc</include_file>
+	<menu>
+		<name>Cellular Modem</name>
+		<tooltiptext>Modify Cellular Modem settings</tooltiptext>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=cellular.xml</url>
+	</menu>
+	<tabs>
+		<tab>
+			<text>Settings</text>
+			<url>/pkg_edit.php?xml=cellular.xml</url>
+			<active/>
+		</tab>
+	</tabs>
+	<additional_files_needed>
+		<prefix>/usr/local/pkg/</prefix>
+		<item>https://packages.pfsense.org/packages/config/cellular/cellular.xml</item>
+	</additional_files_needed>
+	<additional_files_needed>
+		<prefix>/usr/local/www/widgets/widgets/</prefix>
+		<item>https://packages.pfsense.org/packages/config/cellular/cellular.widget.php</item>
+	</additional_files_needed>
+	<fields>
+		<field>
+			<fielddescr>Source Port</fielddescr>
+			<fieldname>port</fieldname>
+			<description>Source Port for AT Commands</description>
+			<type>select_source</type>
+			<source><![CDATA[get_devices()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
+			<default_value>default</default_value>
+			<show_disable_value>default</show_disable_value>
+		</field>
+		<field>
+			<fielddescr>Baudrate</fielddescr>
+			<fieldname>baudrate</fieldname>
+			<type>select_source</type>
+			<source><![CDATA[get_baudrates()]]></source>
+			<source_name>name</source_name>
+			<source_value>name</source_value>
+			<default_value>default</default_value>
+			<show_disable_value>default</show_disable_value>
+			<description>Rate of data transmission</description>
+		</field>
+		<field>
+			<fielddescr>Timeout</fielddescr>
+			<fieldname>timeout</fieldname>
+			<type>input</type>
+			<description>Timeout for commands sent to Module</description>
+		</field>
+		<field>
+			<fielddescr>Custom Status AT Command</fielddescr>
+			<fieldname>statuscmd</fieldname>
+			<type>input</type>
+			<description>(without "AT" Part)</description>
+		</field>
+		<field>
+			<fielddescr>Info</fielddescr>
+			<fieldname>info</fieldname>
+			<type>info</type>
+			<description></description>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		cellular_sync();
+	</custom_php_resync_config_command>
+	<custom_php_global_functions>
+	  cellular_before_everything();
+	</custom_php_global_functions>
+</packagegui>
