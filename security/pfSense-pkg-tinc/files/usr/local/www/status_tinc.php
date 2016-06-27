@@ -67,7 +67,7 @@ function tinc_status_usr2() {
 	exec("{$clog_path} /var/log/tinc.log | sed -e 's/.*tinc\[.*\]: //'",$result);
 	$i = 0;
 	foreach ($result as $line) {
-		if (preg_match("/Statistics for Generic BSD tun device/",$line)) {
+		if (preg_match("/Statistics for Generic BSD (tun|tap) device/",$line)) {
 			$begin = $i;
 		}
 		if (preg_match("/End of subnet list./",$line)) {
@@ -76,6 +76,7 @@ function tinc_status_usr2() {
 		$i++;
 	}
 	$output="";
+	$i = 0;
 
         foreach ($result as $line) {
                 if ($i >= $begin && $i<= $end) {
