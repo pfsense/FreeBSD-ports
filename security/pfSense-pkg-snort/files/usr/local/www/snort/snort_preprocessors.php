@@ -1270,7 +1270,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		'pscan_protocol',
 		'Protocol',
 		$pconfig['pscan_protocol'],
-		array( 'all' => 'all', 'tcp' => 'tcp', 'icmp' => 'icmp', 'ip' => 'ip' )
+		array( 'all' => 'all', 'tcp' => 'tcp', 'udp' => 'udp', 'icmp' => 'icmp', 'ip' => 'ip' )
 	))->setHelp('Choose the Portscan protocol type to alert for (all, tcp, udp, icmp or ip).  The default is <em>all</em>.');
 	$group = new Form_Group('Scan Type');
 	$group->add(new Form_Select(
@@ -1325,7 +1325,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 	$group = new Form_Group('Ignore Scanners');
 	$group->add($bind_to);
 	$group->add($btnaliases);
-	$group->setHelp('Ignores the specified entity as a source of scan alerts.  Entity must be either a defined alias, or a commma seperated list of addresses with optional ports as ip[/cidr][port1 port2-port3].');
+	$group->setHelp('Ignores the specified entity as a source of scan alerts.  Entity must be either a defined alias, or a comma separated list of addresses with optional ports as ip[/cidr][port1 port2-port3].');
 	$section->add($group);
 	$bind_to = new Form_Input(
 		'pscan_ignore_scanned',
@@ -1347,7 +1347,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 	$group = new Form_Group('Ignore Scanned');
 	$group->add($bind_to);
 	$group->add($btnaliases);
-	$group->setHelp('Ignores the specified entity as a destination of scan alerts.  Entity must be either a defined alias, or a commma seperated list of addresses with optional ports as ip[/cidr][port1 port2-port3].');
+	$group->setHelp('Ignores the specified entity as a destination of scan alerts.  Entity must be either a defined alias, or a comma separated list of addresses with optional ports as ip[/cidr][port1 port2-port3].');
 	$section->add($group);
 	print($section);
 	//----- END Portscan settings -----
@@ -1526,7 +1526,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 	$section->addInput(new Form_Select(
 		'sdf_alert_data_type',
 		'Inspect For',
-		$pconfig['sdf_alert_data_type'],
+		explode(',', $pconfig['sdf_alert_data_type']),
 		array( 'Credit Card' => 'Credit Card', 'Email Addresses' => 'Email Addresses', 'U.S. Phone Numbers' => 'U.S. Phone Numbers', 'U.S. Social Security Numbers' => 'U.S. Social Security Numbers' ),
 		true
 	))->setHelp('Choose which types of sensitive data to detect.  Use CTRL + Click for multiple selections.');
