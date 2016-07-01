@@ -50,7 +50,7 @@ if (!defined("SNORT_BIN_VERSION")) {
 	if (!empty($snortver))
 		define("SNORT_BIN_VERSION", $snortver);
 	else
-		define("SNORT_BIN_VERSION", "2.9.8.0");
+		define("SNORT_BIN_VERSION", "2.9.8.3");
 }
 if (!defined("SNORT_SID_MODS_PATH"))
 	define('SNORT_SID_MODS_PATH', "{$g['vardb_path']}/snort/sidmods/");
