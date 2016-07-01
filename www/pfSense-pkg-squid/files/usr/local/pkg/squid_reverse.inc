@@ -483,7 +483,7 @@ function squid_validate_reverse($post, &$input_errors) {
 		}
 		if (is_port($port) && $port <= $portrange[1]) {
 			$input_errors[] = "'Reverse HTTP port' must contain a port number higher than net.inet.ip.portrange.reservedhigh sysctl value({$portrange[1]}).";
-			$input_errors[] = "To listen on low ports, change portrange.reservedhigh sysctl value to 0 in System: Advanced: System Tunables and restart Squid daemon.";
+			$input_errors[] = "To listen on low ports, change net.inet.ip.portrange.reservedhigh sysctl value to 0 in System: Advanced: System Tunables and restart Squid daemon.";
 		}
 		unset($port, $portrange);
 	}
@@ -496,7 +496,7 @@ function squid_validate_reverse($post, &$input_errors) {
 		}
 		if (!empty($port) && is_port($port) && $port <= $portrange[1]) {
 			$input_errors[] = "'Reverse HTTPS port' must contain a port number higher than net.inet.ip.portrange.reservedhigh sysctl value({$portrange[1]}).";
-			$input_errors[] = "To listen on low ports, change portrange.reservedhigh sysctl value to 0 in System: Advanced: System Tunables and restart Squid daemon.";
+			$input_errors[] = "To listen on low ports, change net.inet.ip.portrange.reservedhigh sysctl value to 0 in System: Advanced: System Tunables and restart Squid daemon.";
 		}
 		unset($port, $portrange);
 
