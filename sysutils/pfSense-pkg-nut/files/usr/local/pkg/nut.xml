@@ -324,6 +324,10 @@
 					<value>blazer_usb01</value>
 				</option>
 				<option>
+					<name>Generic USB UPS (Viewpower/qx)</name>
+					<value>nutdrv_qx01</value>
+				</option>
+				<option>
 					<name>Inform GUARD Line Interactive</name>
 					<value>powercom00</value>
 				</option>
