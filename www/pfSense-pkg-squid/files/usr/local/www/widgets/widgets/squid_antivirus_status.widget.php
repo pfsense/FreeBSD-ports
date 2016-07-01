@@ -41,7 +41,7 @@ define('PATH_CLAMDB', '/var/db/clamav');
 define('PATH_SQUID', SQUID_BASE . '/bin/squid');
 define('PATH_AVLOG', '/var/log/c-icap/virus.log');
 global $clamd_path, $cicap_cfg_path, $img;
-$clamd_path = SQUID_BASE . "/bin/clamd";
+$clamd_path = SQUID_BASE . "/sbin/clamd";
 $cicap_cfg_path = SQUID_LOCALBASE . "/bin/c-icap-config";
 $img = array();
 $img['up'] = "<img src='data:image/gif;base64,R0lGODlhCwALAIABACPcMP///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAh+QQBCgABACwAAAAACwALAAACFYwNpwi50eKK9NA722Puyf15GjgaBQA7' title='Service running' alt='' />";
