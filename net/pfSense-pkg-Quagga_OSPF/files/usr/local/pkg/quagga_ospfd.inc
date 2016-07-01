@@ -151,7 +151,7 @@ function quagga_ospfd_install_conf() {
 					$interface_subnet = 30;
 				}
 				$subnet = gen_subnet($interface_ip, $interface_subnet);
-				if (!empty($conf['acceptfilter'])) {
+				if (!empty($conf['acceptfilter']) && is_ipaddr($subnet) && is_numericint($interface_subnet)) {
 					$noaccept .= "ip prefix-list ACCEPTFILTER deny {$subnet}/{$interface_subnet}\n";
 				}
 				if (!empty($conf['interfacearea'])) {
