@@ -10,7 +10,7 @@
  *
  * modified for the pfsense snort package
  * Copyright (C) 2009-2010 Robert Zelaya.
- * Copyright (C) 2015 Bill Meeks
+ * Copyright (C) 2016 Bill Meeks
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -191,7 +191,7 @@ $section->addInput(new Form_Textarea (
 	'suppresspassthru',
 	'Suppression Rules',
 	$pconfig['suppresspassthru']
-))->setHelp($content_help)->setAttribute('rows', 16);
+))->setHelp($content_help)->setAttribute('rows', 16)->setAttribute('wrap', 'off');
 $form->add($section);
 
 $section = new Form_Section('');
