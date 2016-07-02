@@ -662,15 +662,15 @@ print ($form);
 		<table class="table table-striped table-hover table-condensed sortable-theme-bootstrap" data-sortable>
 			<thead>
 			   <tr class="sortableHeaderRowIdentifier text-nowrap">
-				<th data-sortable-type="date"><?=gettext("Date  "); ?></th>
-				<th data-sortable-type="numeric"><?=gettext("Pri   "); ?></th>
-				<th><?=gettext("Proto "); ?></th>
-				<th><?=gettext("Class "); ?></th>
+				<th data-sortable-type="date"><?=gettext("Date"); ?></th>
+				<th data-sortable-type="numeric"><?=gettext("Pri"); ?></th>
+				<th><?=gettext("Proto"); ?></th>
+				<th><?=gettext("Class"); ?></th>
 				<th><?=gettext("Source IP"); ?></th>
-				<th data-sortable-type="numeric"><?=gettext("SPort "); ?></th>
+				<th data-sortable-type="numeric"><?=gettext("SPort"); ?></th>
 				<th><?=gettext("Destination IP"); ?></th>
-				<th data-sortable-type="numeric"><?=gettext("DPort "); ?></th>
-				<th data-sortable-type="numeric"><?=gettext("SID   "); ?></th>
+				<th data-sortable-type="numeric"><?=gettext("DPort"); ?></th>
+				<th data-sortable-type="numeric"><?=gettext("SID"); ?></th>
 				<th data-sortable-type="alpha"><?=gettext("Description"); ?></th>
 			   </tr>
 			</thead>
@@ -698,6 +698,9 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 			$alert_time = substr($fields[0], strpos($fields[0], '-')+1, -8);
 			/* Date */
 			$alert_date = substr($fields[0], 0, strpos($fields[0], '-'));
+			if (($event_date = strtotime($alert_date)) !== false) {
+				$alert_date = date('Y-m-d', $event_date);
+			}
 			/* Description */
 			$alert_descr = $fields[4];
 			$alert_descr_url = urlencode($fields[4]);
@@ -781,18 +784,20 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 			$alert_class = $fields[11];
 
 			/* Write out a table row */
-			echo "<tr class=\"text-nowrap\">
-				<td>{$alert_date}<br/>{$alert_time}</td>
-				<td>{$alert_priority}</td>
-				<td style=\"word-wrap:break-word; white-space:normal\">{$alert_proto}</td>
-				<td style=\"word-wrap:break-word; white-space:normal\">{$alert_class}</td>
-				<td style=\"word-wrap:break-word; white-space:normal\">{$alert_ip_src}</td>
-				<td>{$alert_src_p}</td>
-				<td style=\"word-wrap:break-word; white-space:normal\">{$alert_ip_dst}</td>
-				<td>{$alert_dst_p}</td>
-				<td>{$alert_sid_str}<br/>{$sidsupplink}&nbsp;&nbsp;{$sid_dsbl_link}</td>
-				<td style=\"word-wrap:break-word; white-space:normal\">{$alert_descr}</td>
-				</tr>\n";
+?>
+			<tr class="text-nowrap">
+				<td><?=$alert_date; ?><br/><?=$alert_time; ?></td>
+				<td><?=$alert_priority; ?></td>
+				<td><?=$alert_proto; ?></td>
+				<td style="word-wrap:break-word; white-space:normal"><?=$alert_class; ?></td>
+				<td style="word-wrap:break-word; white-space:normal"><?=$alert_ip_src; ?></td>
+				<td><?=$alert_src_p; ?></td>
+				<td style="word-wrap:break-word; white-space:normal"><?=$alert_ip_dst;?></td>
+				<td><?=$alert_dst_p; ?></td>
+				<td><?=$alert_sid_str; ?><br/><?=$sidsupplink; ?>&nbsp;&nbsp;<?=$sid_dsbl_link; ?></td>
+				<td style="word-wrap:break-word; white-space:normal"><?=$alert_descr; ?></td>
+			</tr>
+<?php
 			$counter++;
 		}
 		fclose($fd);
