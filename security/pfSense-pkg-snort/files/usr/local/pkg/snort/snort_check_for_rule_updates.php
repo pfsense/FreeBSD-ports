@@ -192,8 +192,7 @@ function snort_download_file_url($url, $file_out) {
 		curl_setopt($ch, CURLOPT_HEADER, false);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, "TLSv1.2, TLSv1");
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $config['installedpackages']['snortglobal']['curl_no_verify_ssl_peer'] == "on" ? false : true);
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 0);
 
