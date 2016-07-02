@@ -291,16 +291,26 @@ print($form);
 						while (($fields = fgetcsv($fd, 1000, ',', '"')) !== FALSE) {
 							if(count($fields) < 13)
 								continue;
+
+							$alert_time = substr($fields[0], strpos($fields[0], '-')+1, -8);
+							$alert_date = substr($fields[0], 0, strpos($fields[0], '-'));
+
+							if (($event_timestamp = strtotime($alert_date . ' ' . $alert_time)) === false) {
+								$event_time = substr($fields[0], 0, -8);
+							}
+							else {
+								$event_time = date('Y-m-d H:i:s', $event_timestamp);
+							}
 					
 							if (isset($tmpblocked[$fields[6]])) {
 								if (!is_array($src_ip_list[$fields[6]]))
 									$src_ip_list[$fields[6]] = array();
-								$src_ip_list[$fields[6]][$fields[4]] = "{$fields[4]} - " . substr($fields[0], 0, -8);
+								$src_ip_list[$fields[6]][$fields[4]] = "{$fields[4]} -- " . $event_time;
 							}
 							if (isset($tmpblocked[$fields[8]])) {
 								if (!is_array($src_ip_list[$fields[8]]))
 									$src_ip_list[$fields[8]] = array();
-								$src_ip_list[$fields[8]][$fields[4]] = "{$fields[4]} - " . substr($fields[0], 0, -8);
+								$src_ip_list[$fields[8]][$fields[4]] = "{$fields[4]} -- " . $event_time;
 							}
 						}
 						fclose($fd);
