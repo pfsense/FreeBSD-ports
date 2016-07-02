@@ -62,6 +62,7 @@ else {
 	$pconfig['verbose_logging'] = $config['installedpackages']['snortglobal']['verbose_logging'] == "on" ? 'on' : 'off';
 	$pconfig['openappid_detectors'] = $config['installedpackages']['snortglobal']['openappid_detectors'] == "on" ? 'on' : 'off';
 	$pconfig['hide_deprecated_rules'] = $config['installedpackages']['snortglobal']['hide_deprecated_rules'] == "on" ? 'on' : 'off';
+	$pconfig['curl_no_verify_ssl_peer'] = $config['installedpackages']['snortglobal']['curl_no_verify_ssl_peer'] == "on" ? 'on' : 'off';
 }
 
 /* Set sensible values for any empty default params */
@@ -69,6 +70,8 @@ if (!isset($pconfig['rule_update_starttime']))
 	$pconfig['rule_update_starttime'] = '00:05';
 if (!isset($config['installedpackages']['snortglobal']['forcekeepsettings']))
 	$pconfig['forcekeepsettings'] = 'on';
+if (!isset($config['installedpackages']['snortglobal']['curl_no_verify_ssl_peer']))
+	$pconfig['curl_no_verify_ssl_peer'] = 'off';
 
 /* Grab OpenAppID version info if enabled and downloaded */
 if ($pconfig['openappid_detectors'] == "on") {
@@ -103,6 +106,7 @@ if (!$input_errors) {
 		$config['installedpackages']['snortglobal']['verbose_logging'] = $_POST['verbose_logging'] ? 'on' : 'off';
 		$config['installedpackages']['snortglobal']['openappid_detectors'] = $_POST['openappid_detectors'] ? 'on' : 'off';
 		$config['installedpackages']['snortglobal']['hide_deprecated_rules'] = $_POST['hide_deprecated_rules'] ? 'on' : 'off';
+		$config['installedpackages']['snortglobal']['curl_no_verify_ssl_peer'] = $_POST['curl_no_verify_ssl_peer'] ? 'on' : 'off';
 
 		// If any rule sets are being turned off, then remove them
 		// from the active rules section of each interface.  Start
@@ -310,6 +314,14 @@ $section->addInput(new Form_Checkbox(
 	'Click to hide deprecated rules categories in the GUI and remove them from the configuration.  ' . 
 	'Default is not checked.',
 	$pconfig['hide_deprecated_rules'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'curl_no_verify_ssl_peer',
+	'Disable SSL Peer Verification',
+	'Click to disable verification of SSL peers during rules updates.  This is commonly needed only for self-signed certificates.  ' . 
+	'Default is not checked.',
+	$pconfig['curl_no_verify_ssl_peer'] == 'on' ? true:false,
 	'on'
 ));
 
