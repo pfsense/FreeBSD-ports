@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	webkit-gtk2
-PORTVERSION=	3.0.7
-PORTREVISION=	1
+PORTVERSION=	3.0.8
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -17,7 +16,6 @@ RUN_DEPENDS=	rubygem-gobject-introspection>=${PORTVERSION}:devel/rubygem-gobject
 
 NO_ARCH=	yes
 USE_RUBY=	yes
-USE_RUBYGEMS=	yes
-RUBYGEM_AUTOPLIST=	yes
+USES=		gem
 
 .include <bsd.port.mk>

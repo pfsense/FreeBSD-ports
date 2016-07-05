@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	zimg
-PORTVERSION=	2.0.4
+PORTVERSION=	2.1
 DISTVERSIONPREFIX=	release-
 CATEGORIES=	graphics
 PKGNAMEPREFIX=	${GH_ACCOUNT}-
@@ -17,12 +17,14 @@ LICENSE_PERMS=	${_LICENSE_PERMS_DEFAULT}
 USE_GITHUB=	yes
 GH_ACCOUNT=	sekrit-twc
 
+CONFLICTS_INSTALL=	zimg-[0-9]* # include/zimg.h
+
 USES=		autoreconf compiler:c++11-lib gmake libtool pathfix
 EXTRACT_AFTER_ARGS=	--exclude test/extra
 PATHFIX_MAKEFILEIN=	Makefile.am
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-testapp
-CFLAGS+=	-D_GLIBCXX_USE_C99 -D_GLIBCXX_USE_C99_MATH_TR1 \
+CONFIGURE_ARGS=	--disable-silent-rules --enable-testapp
+CPPFLAGS+=	-D_GLIBCXX_USE_C99 -D_GLIBCXX_USE_C99_MATH_TR1 \
 		-D_DECLARE_C99_LDBL_MATH # XXX ports/193528
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
@@ -47,10 +49,6 @@ post-patch:
 	@${REINPLACE_CMD} -e 's/-O2 //' \
 		-e '/zimg-test/ { s/+=/=/; s/^noinst_/bin_/; } ' \
 		${WRKSRC}/Makefile.am
-	@${REINPLACE_CMD} -e 's/nullptr_t/std::&/' \
-		-e 's/off64_t/off_t/' \
-		${WRKSRC}/src/testcommon/json.* \
-		${WRKSRC}/src/testcommon/mmap.cpp
 
 pre-install-TEST-on: do-test
 

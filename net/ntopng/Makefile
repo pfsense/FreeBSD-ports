@@ -20,8 +20,7 @@ LIB_DEPENDS=	librrd.so:databases/rrdtool \
 
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-USES=	 	autoreconf cpe gmake libtool localbase pathfix pkgconfig sqlite
-USE_MYSQL=	yes
+USES=	 	autoreconf cpe gmake libtool localbase mysql pathfix pkgconfig sqlite
 SUB_FILES=	ntopng-geoipupdate.sh
 
 USERS=		ntopng

@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	file
-PORTVERSION=	5.25
+PORTVERSION=	5.28
 CATEGORIES=	sysutils
 MASTER_SITES=	ftp://ftp.astron.com/pub/file/ \
 		ftp://ftp.fu-berlin.de/unix/tools/file/
 
-MAINTAINER=	bf@FreeBSD.org
+MAINTAINER=	jharris@widomaker.com
 COMMENT=	Utility to determine file type
 
 LICENSE=	BSD2CLAUSE

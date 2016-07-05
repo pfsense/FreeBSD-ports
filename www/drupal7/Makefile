@@ -33,16 +33,9 @@ PKGMESSAGE=	${WRKDIR}/pkg-message
 
 PGSQL_USES=	pgsql
 PGSQL_USE=	PHP=pdo_pgsql
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MSQLITE3}
-USE_PHP+=	pdo_sqlite
-.endif
-.if ${PORT_OPTIONS:MMYSQL}
-USE_MYSQL=	yes
-USE_PHP+=	pdo_mysql
-.endif
+SQLITE3_USE=	PHP=pdo_sqlite
+MYSQL_USES=	mysql
+MYSQL_USE=	PHP=pdo_mysql
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DRUPAL_DIR}

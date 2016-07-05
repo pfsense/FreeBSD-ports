@@ -9,6 +9,8 @@ CATEGORIES=	net-p2p
 MAINTAINER=	myst3r10n@rocketmail.com
 COMMENT=	Alternative Bitcoin peer-to-peer currency client
 
+BROKEN=		Unfetchable
+
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
@@ -21,8 +23,7 @@ GH_TAGNAME=	96b098a
 
 USES=		desktop-file-utils gmake
 USE_OPENSSL=	yes
-USE_BDB=	yes
-WANT_BDB_VER=	48
+USE_BDB=	48
 USE_QT4=	corelib gui qmake_build linguisttools_build uic_build \
 		moc_build rcc_build
 

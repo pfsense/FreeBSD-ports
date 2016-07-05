@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	yacas
-PORTVERSION=	1.4.0
+PORTVERSION=	1.5.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	math
 
@@ -12,12 +12,21 @@ COMMENT=	Yet Another Computer Algebra System
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+OPTIONS_DEFINE=	DOCS
+DOCS_CMAKE_ON=	-DENABLE_DOCS:BOOL=ON -DDOCSDIR:STRING=${DOCSDIR_REL}
+DOCS_BUILD_DEPENDS=	sphinx-autogen:textproc/py-sphinx
+
+PORTDOCS=	*
+
+TEST_TARGET=	test
 TEST_DEPENDS=	bash:shells/bash
 
 USES=		cmake:outsource compiler:c++11-lib
 USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	grzegorzmazur
+
+PLIST_SUB=	SHLIB_VERSION=${PORTVERSION:S/.//}.0
 
 .include <bsd.port.pre.mk>
 
@@ -28,11 +37,8 @@ CXXFLAGS+=	-D_GLIBCXX_USE_C99
 post-patch:
 #	Can't use USES=shebangfix here, cause the path appears several
 #	times in the file.
-	@${REINPLACE_CMD} -e \
-		's| /bin/bash| ${LOCALBASE}/bin/bash|g' \
+	@${REINPLACE_CMD} -e 's| /bin/bash| ${LOCALBASE}/bin/bash|g' \
 		${WRKSRC}/tests/test-yacas
-
-do-test:
-	cd ${BUILD_WRKSRC} && ${MAKE} test
-
+	@${REINPLACE_CMD} -e '/^install/s|^|#|' \
+		${WRKSRC}/tests/CMakeLists.txt
 .include <bsd.port.post.mk>

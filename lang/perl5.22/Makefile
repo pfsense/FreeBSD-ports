@@ -3,7 +3,7 @@
 
 PORTNAME=	perl
 DISTVERSION=	${PERL_VERSION}
-PORTREVISION=	8
+PORTREVISION=	1
 CATEGORIES=	lang devel perl5
 MASTER_SITES=	CPAN/../../src/5.0 CPAN/../by-authors/id/S/SH/SHAY
 DIST_SUBDIR=	perl
@@ -18,7 +18,7 @@ LICENSE_FILE_GPLv1=	${WRKSRC}/Copying
 
 TEST_TARGET=	test_harness
 TEST_ENV=	${MAKE_ENV} TEST_JOBS=${MAKE_JOBS_NUMBER} \
-		LD_LIBRARY_PATH=${WRKSRC} COMPRESS_ZLIB_RUN_ALL=yes
+		LD_LIBRARY_PATH=${WRKSRC}
 
 OPTIONS_DEFINE=	DEBUG GDBM PERL_64BITINT PTHREAD \
 		MULTIPLICITY SITECUSTOMIZE
@@ -91,8 +91,11 @@ CONFIGURE_ARGS=	-sde -Dprefix=${PREFIX} \
 # lddlflags is used for all .so linking
 # shrpldflags is used for libperl.so, so remove all the extra bits inherited from lddlflags.
 CONFIGURE_ARGS+= \
-	-Alddlflags='-L${WRKSRC} -L${PREFIX}/${_ARCH_LIB}/CORE -Wl,-rpath=${PREFIX}/${_ARCH_LIB}/CORE -lperl' \
-	-Dshrpldflags='$$(LDDLFLAGS:N-L${WRKSRC}:N-L${PREFIX}/${_ARCH_LIB}/CORE:N-Wl,-rpath=${PREFIX}/${_ARCH_LIB}/CORE:N-lperl) -Wl,-soname,$$(LIBPERL:R)'
+	-Alddlflags='-L${WRKSRC} -L${PREFIX}/${_ARCH_LIB}/CORE -lperl' \
+	-Dshrpldflags='$$(LDDLFLAGS:N-L${WRKSRC}:N-L${PREFIX}/${_ARCH_LIB}/CORE:N-lperl) -Wl,-soname,$$(LIBPERL:R)'
+
+# Give a hint of where libperl.so can be found.
+USE_LDCONFIG=	${PREFIX}/${_ARCH_LIB}/CORE
 
 LOCALE_CLEANUP=	LANG="" LC_ALL="" LC_COLLATE="" LC_CTYPE="" \
 		LC_MESSAGES="" LC_MONETARY="" LC_NUMERIC="" \
@@ -109,7 +112,6 @@ SUB_LIST+=	PERL_VERSION=${PERL_VERSION} \
 		PERL_ARCH=${PERL_ARCH}
 
 SUB_FILES=	perl-man.conf
-
 
 INSTALL_TARGET=	install-strip
 
@@ -215,8 +217,6 @@ post-clean:
 	@${RM} ${_PERL5_DEFAULT_FILE}
 .endif
 
-.if !defined(MAKING_PATCHES)
-# make clean patch makepatch MAKING_PATCHES=
 post-patch:
 	${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \
 		${WRKSRC}/Configure ${WRKSRC}/hints/freebsd.sh
@@ -231,7 +231,6 @@ post-patch-PTHREAD-on:
 post-patch-PTHREAD-off:
 	${REINPLACE_CMD} -e 's|%%PTHREAD_LIBS%%||g;' \
 		${WRKSRC}/hints/freebsd.sh
-.endif
 
 post-build:
 	@${REINPLACE_CMD} -e '/^lddlflags/s|-L${WRKSRC} ||' \

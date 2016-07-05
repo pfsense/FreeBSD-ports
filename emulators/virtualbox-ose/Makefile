@@ -3,6 +3,7 @@
 
 PORTNAME=	virtualbox-ose
 DISTVERSION=	4.3.38
+PORTREVISION=	1
 CATEGORIES=	emulators
 MASTER_SITES=	http://download.virtualbox.org/virtualbox/${DISTVERSION}/ \
 		http://tmp.chruetertee.ch/ \
@@ -208,7 +209,7 @@ EXTRA_PATCHES+=	${PATCHDIR}/extrapatch-Config.kmk \
 		${PATCHDIR}/extrapatch-src-recompiler-Makefile.kmk
 .endif
 
-.if !defined(WITH_OPENSSL_BASE)
+.if ${SSL_DEFAULT} != base
 CONFIGURE_ARGS+=	--with-openssl-dir="${OPENSSLBASE}"
 .endif
 

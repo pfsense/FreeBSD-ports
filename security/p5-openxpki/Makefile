@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	openxpki
-PORTVERSION=	1.5.0
+PORTVERSION=	1.10.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security perl5
 PKGNAMEPREFIX=	p5-
@@ -114,21 +114,22 @@ post-stage:
 
 .include <bsd.port.pre.mk>
 
-.if defined(WITH_OPENSSL_PORT) && defined(OPENSSL_PORT) && ${OPENSSL_PORT} == security/libressl
+.if ${SSL_DEFAULT} == libressl
 IGNORE=	this version of OpenXPKI is not fully functional with LibreSSL library, use OpenSSL instead
 .endif
 
 OXLIB=	${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/OpenXPKI/OpenXPKI.so
 
 post-install:
-	${CHMOD} u+w ${OXLIB}
 	${STRIP_CMD} ${OXLIB}
-	${CHMOD} u-w ${OXLIB}
+
 post-install-EXAMPLES-on:
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	@(cd ${WRKSRC}/../.. && ${COPYTREE_SHARE} config ${STAGEDIR}${EXAMPLESDIR})
-	@(cd ${WRKSRC} && ${COPYTREE_SHARE} "htdocs cgi-bin" ${STAGEDIR}${EXAMPLESDIR})
+	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	(cd ${WRKSRC}/../.. && ${COPYTREE_SHARE} config ${STAGEDIR}${EXAMPLESDIR})
+	(cd ${WRKSRC} && ${COPYTREE_SHARE} "htdocs cgi-bin" ${STAGEDIR}${EXAMPLESDIR})
+
 post-install-DOCS-on:
-		@${MKDIR} ${STAGEDIR}${DOCSDIR}
-		@(cd ${WRKSRC}/../../doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	(cd ${WRKSRC}/../../doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
+
 .include <bsd.port.post.mk>

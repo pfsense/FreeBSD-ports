@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libvirt
-PORTVERSION=	1.3.2
-PORTREVISION=	1
+PORTVERSION=	1.3.5
 CATEGORIES=	devel
 MASTER_SITES=	http://libvirt.org/sources/ \
 		ftp://libvirt.org/libvirt/
@@ -22,7 +21,7 @@ BUILD_DEPENDS=	dnsmasq:dns/dnsmasq \
 RUN_DEPENDS=	dnsmasq:dns/dnsmasq \
 		dmidecode:sysutils/dmidecode
 
-OPTIONS_DEFINE=	DOCS GNUTLS NLS QEMU SASL
+OPTIONS_DEFINE=	DOCS GNUTLS NLS NSS QEMU SASL
 OPTIONS_DEFAULT=	GNUTLS
 OPTIONS_DEFINE_amd64=	XEN
 .if exists(/usr/sbin/bhyve)
@@ -30,11 +29,13 @@ OPTIONS_DEFINE_amd64+=	BHYVE
 OPTIONS_DEFAULT_amd64+=	BHYVE
 .else
 PLIST_SUB+=		BHYVE="@comment "
+SUB_LIST+=		BHYVE="@comment "
 CONFIGURE_ARGS+=	--without-bhyve
 .endif
 QEMU_DESC=	QEMU driver
 BHYVE_DESC=	bhyve driver
 XEN_DESC=	Xen support via libxl
+NSS_DESC=	Name Service Switch plugin
 
 OPTIONS_SUB=	yes
 
@@ -54,6 +55,8 @@ NLS_USES=	gettext
 NLS_CONFIGURE_ENABLE=	nls
 NLS_CONFIGURE_ON=	--with-libintl-prefix=${LOCALBASE}
 
+NSS_CONFIGURE_WITH=	nss-plugin
+
 SASL_CONFIGURE_WITH=	sasl
 SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 
@@ -72,8 +75,6 @@ CONFIGURE_ARGS+=	--without-avahi \
 		--without-udev \
 		--without-netcf \
 		--without-sysctl \
-		--without-lxc \
-		--without-uml \
 		--without-xen \
 		--without-login-shell \
 		--with-ssh2 \
@@ -98,6 +99,7 @@ PLIST_SUB+=	PORTVERSION="-${PORTVERSION}" \
 PORTDOCS=	*
 
 SUB_FILES=	pkg-message
+SUB_LIST+=	PORTVERSION="-${PORTVERSION}"
 
 .include <bsd.port.options.mk>
 
@@ -115,7 +117,7 @@ CONF_FILES=	\
 		virtlogd.conf
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|ln -s ../default.xml|true|' \
+	@${REINPLACE_CMD} -e 's|$$(LN_S) ../default.xml default.xml|true|' \
 			  -e 's|$$(DESTDIR)$$(confdir)/qemu/networks|${STAGEDIR}${EXAMPLESDIR}/networks|' \
 			  ${WRKSRC}/src/Makefile.in
 

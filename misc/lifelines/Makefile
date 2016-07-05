@@ -12,7 +12,7 @@ COMMENT=	Advanced genealogical system
 LICENSE=	MIT
 
 GNU_CONFIGURE=	yes
-USES=		autoreconf bison gmake iconv
+USES=		autoreconf bison gmake iconv ncurses
 
 MAKE_JOBS_UNSAFE=yes
 
@@ -24,7 +24,6 @@ MAKE_JOBS_UNSAFE=yes
 
 OPTIONS_DEFINE=		BUILDDOCS DOCS NLS
 OPTIONS_SUB=		yes
-OPTIONS_DEFAULT=	DOCS NLS
 BUILDDOCS_DESC=		Build documentation (requires docbook toolchain)
 DOCS_DESC=		Install documentation
 NLS_DESC=		Build with NLS support

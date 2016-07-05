@@ -54,6 +54,7 @@
     SUBDIR += aqsis
     SUBDIR += argyllcms
     SUBDIR += asciio
+    SUBDIR += aseprite
     SUBDIR += atril
     SUBDIR += atril-lite
     SUBDIR += autopano-sift-c
@@ -131,6 +132,7 @@
     SUBDIR += digikam-kde4
     SUBDIR += digikam-kde4-doc
     SUBDIR += digikam-kde4-l10n
+    SUBDIR += dilay
     SUBDIR += ditaa
     SUBDIR += djview4
     SUBDIR += djview4-qt4
@@ -174,7 +176,6 @@
     SUBDIR += exrtools
     SUBDIR += farbfeld
     SUBDIR += feh
-    SUBDIR += ffff
     SUBDIR += fig2sxd
     SUBDIR += figurine
     SUBDIR += flam3
@@ -333,6 +334,7 @@
     SUBDIR += gwenview-kde4
     SUBDIR += gx
     SUBDIR += hdr_tools
+    SUBDIR += hiptext
     SUBDIR += hobbes-icons-xpm
     SUBDIR += hppsmtools
     SUBDIR += hs-HGL
@@ -412,7 +414,7 @@
     SUBDIR += kipi-plugin-flashexport
     SUBDIR += kipi-plugin-flickrexport
     SUBDIR += kipi-plugin-galleryexport
-    SUBDIR += kipi-plugin-googledrive
+    SUBDIR += kipi-plugin-googleservices
     SUBDIR += kipi-plugin-gpssync
     SUBDIR += kipi-plugin-htmlexport
     SUBDIR += kipi-plugin-imageshackexport
@@ -428,7 +430,6 @@
     SUBDIR += kipi-plugin-metadataedit
     SUBDIR += kipi-plugin-panorama
     SUBDIR += kipi-plugin-photolayoutseditor
-    SUBDIR += kipi-plugin-picasawebexport
     SUBDIR += kipi-plugin-piwigoexport
     SUBDIR += kipi-plugin-printimages
     SUBDIR += kipi-plugin-rajceexport
@@ -475,7 +476,6 @@
     SUBDIR += libcaca
     SUBDIR += libcdr01
     SUBDIR += libchamplain
-    SUBDIR += libchamplain08
     SUBDIR += libdmtx
     SUBDIR += libdrm
     SUBDIR += libecwj2
@@ -544,7 +544,6 @@
     SUBDIR += linux-adobesvg
     SUBDIR += linux-c6-cairo
     SUBDIR += linux-c6-dri
-    SUBDIR += linux-c6-dri-compat
     SUBDIR += linux-c6-gdk-pixbuf2
     SUBDIR += linux-c6-glx-utils
     SUBDIR += linux-c6-jpeg
@@ -817,6 +816,8 @@
     SUBDIR += projectm-libvisual
     SUBDIR += pstoedit
     SUBDIR += pstoepsi
+    SUBDIR += py-PyOpenGL
+    SUBDIR += py-PyOpenGL-accelerate
     SUBDIR += py-PyX
     SUBDIR += py-PyX12
     SUBDIR += py-aafigure
@@ -824,6 +825,7 @@
     SUBDIR += py-blockdiag
     SUBDIR += py-blockdiagcontrib-cisco
     SUBDIR += py-cairo
+    SUBDIR += py-cairocffi
     SUBDIR += py-chart
     SUBDIR += py-django-easy-thumbnails
     SUBDIR += py-editobj
@@ -843,15 +845,13 @@
     SUBDIR += py-graph-dot
     SUBDIR += py-graphy
     SUBDIR += py-gvgen
-    SUBDIR += py-imaging
+    SUBDIR += py-imagesize
     SUBDIR += py-mcomix
     SUBDIR += py-ming
     SUBDIR += py-nwdiag
     SUBDIR += py-opencolorio
     SUBDIR += py-opencv
     SUBDIR += py-openexr
-    SUBDIR += py-opengl
-    SUBDIR += py-opengl-accelerate
     SUBDIR += py-openimageio
     SUBDIR += py-paint
     SUBDIR += py-pillow
@@ -881,6 +881,8 @@
     SUBDIR += py-wand
     SUBDIR += py-webcolors
     SUBDIR += py3-cairo
+    SUBDIR += py3-pillow
+    SUBDIR += py3-pygraphviz
     SUBDIR += pygts
     SUBDIR += pymorph
     SUBDIR += pysvg
@@ -921,7 +923,6 @@
     SUBDIR += rigsofrods-pagedgeometry
     SUBDIR += ristretto
     SUBDIR += ruby-gd
-    SUBDIR += ruby-gdal
     SUBDIR += ruby-image_size
     SUBDIR += ruby-imlib2
     SUBDIR += ruby-svg
@@ -1032,6 +1033,7 @@
     SUBDIR += uniconvw
     SUBDIR += unpaper
     SUBDIR += urt
+    SUBDIR += vapoursynth-waifu2x-w2xc
     SUBDIR += variety
     SUBDIR += vcg
     SUBDIR += viewnior

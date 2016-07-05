@@ -91,7 +91,6 @@
     SUBDIR += gauche
     SUBDIR += gawk
     SUBDIR += gcc
-    SUBDIR += gcc-aux
     SUBDIR += gcc-ecj45
     SUBDIR += gcc46
     SUBDIR += gcc47
@@ -100,8 +99,10 @@
     SUBDIR += gcc5
     SUBDIR += gcc5-aux
     SUBDIR += gcc5-devel
+    SUBDIR += gcc6
     SUBDIR += gcc6-aux
     SUBDIR += gcc6-devel
+    SUBDIR += gcc7-devel
     SUBDIR += gcl
     SUBDIR += gforth
     SUBDIR += ghc
@@ -175,8 +176,8 @@
     SUBDIR += modula3
     SUBDIR += mono
     SUBDIR += mono-basic
-    SUBDIR += moscow_ml
     SUBDIR += mosh
+    SUBDIR += mosml
     SUBDIR += mtasc
     SUBDIR += munger
     SUBDIR += nawk
@@ -239,6 +240,7 @@
     SUBDIR += perl5.18
     SUBDIR += perl5.20
     SUBDIR += perl5.22
+    SUBDIR += perl5.24
     SUBDIR += petite-chez
     SUBDIR += pfe
     SUBDIR += phantomjs
@@ -289,7 +291,6 @@
     SUBDIR += rexx-wrapper
     SUBDIR += rhino
     SUBDIR += rubinius
-    SUBDIR += ruby20
     SUBDIR += ruby21
     SUBDIR += ruby22
     SUBDIR += ruby23
@@ -331,6 +332,7 @@
     SUBDIR += starlogo
     SUBDIR += stldoc
     SUBDIR += swi-pl
+    SUBDIR += swift
     SUBDIR += tcbasic
     SUBDIR += tcc
     SUBDIR += tcl-manual
@@ -338,6 +340,7 @@
     SUBDIR += tcl84
     SUBDIR += tcl85
     SUBDIR += tcl86
+    SUBDIR += tcl87
     SUBDIR += tclX
     SUBDIR += tinypy
     SUBDIR += tolua

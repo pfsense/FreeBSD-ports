@@ -20,7 +20,7 @@ LIB_DEPENDS=	libboost_regex.so:devel/boost-libs \
 		libmythes-1.2.so:textproc/mythes
 
 MAJOR_VERSION=	2.1
-MINOR_VERSION=	4
+MINOR_VERSION=	5
 
 USES=		desktop-file-utils gmake iconv pkgconfig perl5 python:2 tar:xz
 USE_QT4=	corelib gui moc_build uic_build rcc_build
@@ -31,7 +31,7 @@ CONFIGURE_ARGS=	--without-included-boost \
 		--with-extra-prefix=${LOCALBASE}
 
 OPTIONS_DEFINE=		ASPELL ENCHANT HUNSPELL NLS
-OPTIONS_DEFAULT=	HUNSPELL NLS
+OPTIONS_DEFAULT=	HUNSPELL
 OPTIONS_SUB=		yes
 ENCHANT_DESC=		Spell checking using Enchant
 

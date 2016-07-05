@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	xymon
-PORTVERSION=	4.3.26
+PORTVERSION=	4.3.27
 PORTREVISION=	0
 CATEGORIES=	net-mgmt www
 MASTER_SITES=	SF/xymon/Xymon/${PORTVERSION}
@@ -37,5 +37,10 @@ CONFIG_FILES=	clientlaunch.cfg xymonclient.cfg localclient.cfg
 # Configure script is interactive
 do-configure:
 	${CP} ${FILESDIR}/Makefile ${WRKSRC}/
+
+post-install:
+	${MKDIR} ${STAGEDIR}${WWWDIR}/client/ext
+	${MKDIR} ${STAGEDIR}${WWWDIR}/client/logs
+	${MKDIR} ${STAGEDIR}${WWWDIR}/client/tmp
 
 .include <bsd.port.mk>

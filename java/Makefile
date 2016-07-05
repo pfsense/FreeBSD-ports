@@ -3,6 +3,7 @@
 
     COMMENT = Java language support
 
+    SUBDIR += aparapi
     SUBDIR += avis
     SUBDIR += berkeley-db
     SUBDIR += bluej
@@ -31,6 +32,7 @@
     SUBDIR += intellij
     SUBDIR += intellij-fsnotifier
     SUBDIR += intellij-pty4j
+    SUBDIR += intellij-pycharm
     SUBDIR += jad
     SUBDIR += jaf
     SUBDIR += jai
@@ -89,11 +91,10 @@
     SUBDIR += jtiger
     SUBDIR += jump
     SUBDIR += junit
+    SUBDIR += jxgrabkey
     SUBDIR += langspec
     SUBDIR += linux-oracle-jdk18
     SUBDIR += linux-oracle-jre18
-    SUBDIR += linux-sun-jdk17
-    SUBDIR += linux-sun-jre17
     SUBDIR += mmake
     SUBDIR += mx4j
     SUBDIR += netbeans
@@ -110,7 +111,6 @@
     SUBDIR += openjfx8-devel
     SUBDIR += phpeclipse
     SUBDIR += proguard
-    SUBDIR += rubygem-rjb
     SUBDIR += sablevm
     SUBDIR += sablevm-classpath
     SUBDIR += servingxml

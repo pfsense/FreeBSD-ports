@@ -11,8 +11,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	CVS-like Frontend to Perforce
 
 BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 ALL_TARGET=	c4
 
 OPTIONS_DEFINE=	DOCS

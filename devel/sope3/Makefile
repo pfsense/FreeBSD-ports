@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=		sope3
-PORTVERSION=		3.0.2
+PORTVERSION=		3.1.2
 CATEGORIES=		devel gnustep
 MASTER_SITES=		http://www.sogo.nu/files/downloads/SOGo/Sources/
 DISTNAME=		SOPE-${PORTVERSION}
 
-MAINTAINER=		acm@FreeBSD.org
+MAINTAINER=		euan@potensol.com
 COMMENT=		Extensive set of GNUstep web application frameworks
 
 LICENSE=		LGPL20
@@ -30,7 +30,7 @@ USES=			gmake gnustep
 USE_GNUSTEP=		base build
 USE_LDCONFIG=		${GNUSTEP_LOCAL_LIBRARIES}
 
-CONFLICTS=		sope-[0-9]*
+CONFLICTS=		sope2-[0-9]*
 
 SUB_LIST+=		GNUSTEP_LOCAL_TOOLS=${GNUSTEP_LOCAL_TOOLS} \
 			GNUSTEP_MAKEFILES=${GNUSTEP_MAKEFILES}
@@ -42,6 +42,9 @@ LDAP_USE=	OPENLDAP=client
 PGSQL_USES=	pgsql
 MYSQL_USE=	MYSQL=client
 MEMCACHED_RUN_DEPENDS=	${LOCALBASE}/bin/memcached:databases/memcached
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' ${WRKSRC}/configure
 
 post-patch-LDAP-off:
 	@${REINPLACE_CMD} -e '/checkLinking "ldap"/d' ${WRKSRC}/configure

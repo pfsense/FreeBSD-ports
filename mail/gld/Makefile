@@ -12,6 +12,8 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Greylisting daemon for Postfix
 
 BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
 
 USE_RC_SUBR=	gld
 HAS_CONFIGURE=	yes
@@ -28,13 +30,13 @@ LOCAL_DB_SERVER_DESC=	RUN_DEPEND also on selected DB server
 
 .if ${PORT_OPTIONS:MMYSQL}
 CONFIGURE_ARGS+=	--with-mysql=${LOCALBASE}
-USE_MYSQL=	yes
 .	if ${PORT_OPTIONS:MLOCAL_DB_SERVER}
-RUN_DEPENDS+=	mysql-server>=0:databases/mysql${MYSQL_VER}-server
 SUB_LIST+=	MYSQL=mysql
 SUB_LIST+=	PGSQL=
+USES+=	mysql:client,server
 .	else
 SUB_LIST+=	MYSQL=
+USES+=	mysql
 .	endif
 .endif
 

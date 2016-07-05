@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	git
-DISTVERSION=	2.7.4
-PORTREVISION=	1
+DISTVERSION=	2.9.0
 CATEGORIES=	devel
 MASTER_SITES=	KERNEL_ORG/software/scm/git
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
@@ -42,8 +41,8 @@ SHEBANG_FILES=	*.perl */*.perl */*/*.perl */*.pl */*/*.pl */*/*/*.pl \
 CONFIGURE_ARGS=	--enable-pthreads=-pthread ac_cv_header_libcharset_h=no
 
 OPTIONS_DEFINE=	GUI SVN GITWEB CONTRIB P4 CVS HTMLDOCS PERL ICONV CURL \
-		ETCSHELLS SEND_EMAIL NLS
-OPTIONS_DEFAULT=	CONTRIB P4 CVS PERL ICONV CURL ETCSHELLS SEND_EMAIL NLS
+		SEND_EMAIL NLS
+OPTIONS_DEFAULT=	CONTRIB P4 CVS PERL ICONV CURL SEND_EMAIL
 OPTIONS_SUB=	yes
 
 GITWEB_DESC=	Install gitweb
@@ -51,7 +50,6 @@ CONTRIB_DESC=	Install contributed scripts
 P4_DESC=	Enable Perforce support
 CVS_DESC=	Enable CVS support
 HTMLDOCS_DESC=	Install additional documentation
-ETCSHELLS_DESC=	Modify /etc/shells
 SEND_EMAIL_DESC=Enable the git-send-email(1) script
 
 NLS_USES=		gettext
@@ -64,7 +62,7 @@ PERL_RUN_DEPENDS=	p5-Error>=0:lang/p5-Error
 PERL_MAKE_ARGS_OFF=	NO_PERL=1
 
 SEND_EMAIL_IMPLIES=	PERL
-SEND_EMAIL_RUN_DEPENDS= p5-Net-SMTP-SSL>=0:mail/p5-Net-SMTP-SSL \
+SEND_EMAIL_RUN_DEPENDS=	p5-Net-SMTP-SSL>=0:mail/p5-Net-SMTP-SSL \
 			p5-Authen-SASL>=0:security/p5-Authen-SASL
 
 ICONV_USES=		iconv
@@ -99,7 +97,7 @@ CVS_RUN_DEPENDS=	cvsps:devel/cvsps
 .include <bsd.port.options.mk>
 
 # This is intentionally not exposed as an option.
-.ifndef (WITH_DEBUG)
+.if defined(STRIP) && ${STRIP} != ""
 ALL_TARGET=	all strip
 .endif
 

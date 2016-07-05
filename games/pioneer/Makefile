@@ -3,7 +3,6 @@
 
 PORTNAME=	pioneer
 PORTVERSION=	0.0.${GH_TAGNAME}
-PORTREVISION=	1
 CATEGORIES=	games
 
 MAINTAINER=	lightside@gmx.com
@@ -39,7 +38,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	pioneerspacesim
-GH_TAGNAME=	20160225
+GH_TAGNAME=	20160610
 
 USES=		autoreconf gmake pkgconfig
 USE_GL=		gl
@@ -48,7 +47,7 @@ USE_SDL=	image2 sdl2
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	PIONEER_DATA_DIR="${DATADIR}/data"
 CONFIGURE_ARGS=	--with-version="${GH_TAGNAME}"
-EXTRACT_AFTER_ARGS=	--exclude .gitignore
+EXTRACT_AFTER_ARGS=	--no-same-owner --no-same-permissions --exclude .gitignore
 
 PORTDATA=	data
 PORTDOCS=	AUTHORS.txt Changelog.txt Modelviewer.txt Quickstart.txt README.md
@@ -63,10 +62,12 @@ DESKTOP_ENTRIES="Pioneer" "${COMMENT}" \
 SUB_FILES=	pkg-message
 SUB_LIST=	QUICKSTART_PATH="${QUICKSTART_PATH}"
 
-OPTIONS_DEFINE=		DOCS MODELCOMPILER
+OPTIONS_DEFINE=		DOCS MODELCOMPILER PROFILER
 OPTIONS_DEFAULT=	MODELCOMPILER
 MODELCOMPILER_DESC=	Build/install modelcompiler tool
 MODELCOMPILER_PLIST_FILES=	bin/${PORTNAME}-modelcompiler
+PROFILER_DESC=		Build with internal profiler
+PROFILER_CONFIGURE_ON=	--enable-profiler
 
 .include <bsd.port.options.mk>
 
@@ -89,15 +90,27 @@ post-patch: .SILENT
 		${WRKSRC}/configure.ac
 	${REINPLACE_CMD} -e 's/std:://g' \
 		${WRKSRC}/src/Orbit.cpp
+	${REINPLACE_CMD} -e 's/std::to_string/to_string/g' \
+		${WRKSRC}/src/graphics/opengl/RendererGL.cpp
 
 post-patch-MODELCOMPILER-off: .SILENT
 	${REINPLACE_CMD} -e 's/pioneer modelcompiler/pioneer/' \
 		${WRKSRC}/src/Makefile.am
 
+post-patch-PROFILER-off: .SILENT
+	${REINPLACE_CMD} -e '/^SUBDIRS/s/ profiler//' \
+		${WRKSRC}/contrib/Makefile.am
+	${REINPLACE_CMD} -i '.p.bak' -e '/libjson.a/s| \\|| ; /libprofiler.a/d' \
+		${WRKSRC}/src/Makefile.am
+	${REINPLACE_CMD} -i '.p.bak' -e '/contrib\/profiler/d' \
+		${WRKSRC}/configure.ac
+
 post-install:
-	(cd ${WRKSRC} && ${COPYTREE_SHARE} "${PORTDOCS}" ${STAGEDIR}${DOCSDIR})
 	${INSTALL_DATA} ${WRKSRC}/application-icon/pngs/pioneer-256x256.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/${PORTNAME}.png
+
+post-install-DOCS-on:
+	(cd ${WRKSRC} && ${COPYTREE_SHARE} "${PORTDOCS}" ${STAGEDIR}${DOCSDIR})
 
 post-install-MODELCOMPILER-on:
 	${MV} ${STAGEDIR}${PREFIX}/bin/modelcompiler \

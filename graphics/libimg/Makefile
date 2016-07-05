@@ -3,7 +3,7 @@
 
 PORTNAME=	libimg
 PORTVERSION=	1.4.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES?=	graphics tk
 MASTER_SITES=	SF/tkimg/tkimg/${PORTVERSION:R}
 DISTNAME=	tkimg${PORTVERSION}
@@ -12,14 +12,17 @@ MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Library of image format handlers for Tk4.1 and later
 
 BUILD_DEPENDS=	dtplite:devel/tcllib
-LIB_DEPENDS=	libpng.so:graphics/png \
+LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
+		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
 
 PLIST_SUB+=	SHLIB_NAME="${SHLIB_NAME}" \
 		SHLIB_LINK="${SHLIB_LINK}"
 
 WRKSRC=		${WRKDIR}/tkimg${PORTVERSION:R}
-USES=		jpeg tk tar:bzip2
+USES=		autoreconf jpeg tk:tea tar:bzip2
+USE_XORG=	x11 xext xft xrender xscrnsaver
 
 # We don't need the bundled libraries:
 EXTRACT_AFTER_ARGS=	--exclude '*/libz/*' --exclude zlib \
@@ -27,8 +30,6 @@ EXTRACT_AFTER_ARGS=	--exclude '*/libz/*' --exclude zlib \
 		--exclude '*/compat/*' --exclude '*/libtiff/*' \
 		--exclude '*/libjpeg/*' --exclude '*/libpng/*'
 MAKE_ARGS+=	INSTALL_ROOT="${STAGEDIR}"
-USE_AUTOTOOLS=	autoconf
-CONFIGURE_ARGS=	--with-tcl="${TCL_LIBDIR}" --with-tk="${TK_LIBDIR}"
 CONFIGURE_ENV=	WRKDIR="${WRKDIR}"
 
 post-patch:
@@ -39,9 +40,6 @@ post-patch:
 .endfor
 
 post-configure:
-	# Do not link with X11 -- none of tkimg code uses X directly
-	${REINPLACE_CMD} -E -e 's,-L[^[:space:]]+[[:space:]]+-lX[^[:space:]]*,,g' \
-		${WRKSRC}/*/Makefile
 .for l in jpeg png tiff
 	# Link with -l$l
 	${REINPLACE_CMD} -E \

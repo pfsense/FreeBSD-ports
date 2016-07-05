@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	rspamd
-PORTVERSION=	1.2.1.b1.22032016
+PORTVERSION=	1.3.0.b3.30062016
 CATEGORIES=	mail
 PKGNAMESUFFIX=	-devel
 
@@ -14,14 +14,15 @@ LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libgmime-2.4.so:mail/gmime24 \
 		libevent.so:devel/libevent2 \
 		libluajit-5.1.so:lang/luajit
+BUILD_DEPENDS=	ragel:devel/ragel
 
 CONFLICTS_INSTALL=	rspamd
 
-RSPAMD_VERSION=	1.2.1
+RSPAMD_VERSION=	1.3.0
 USE_GITHUB=	yes
 GH_ACCOUNT=	vstakhov
 GH_PROJECT=	rspamd
-GH_TAGNAME=	c36fa8f
+GH_TAGNAME=	c2e7232
 
 OPTIONS_DEFINE=	GPERF REDIRECTOR HYPERSCAN
 GPERF_DESC=		google perf-tools profiling
@@ -43,7 +44,8 @@ CMAKE_ARGS+=	-DCONFDIR=${PREFIX}/etc/rspamd \
 		-DFORCE_GMIME24=yes \
 		-DLIBDIR=${PREFIX}/lib/rspamd \
 		-DNO_SHARED=ON \
-		-DDEBUG=ON
+		-DDEBUG=ON \
+		-DGIT_ID=${GH_TAGNAME}
 
 USES=		cmake:outsource gettext iconv pkgconfig tar:xz perl5 \
 		compiler:c11 sqlite

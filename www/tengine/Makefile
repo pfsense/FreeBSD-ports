@@ -94,7 +94,7 @@ OPTIONS_DEFINE=	\
 	XRID_HEADER \
 	XSS
 
-OPTIONS_DEFAULT=	IPV6 HTTP HTTP_CACHE HTTP_REWRITE HTTP_STATUS WWW
+OPTIONS_DEFAULT=	HTTP HTTP_CACHE HTTP_REWRITE HTTP_STATUS WWW
 
 DEBUGLOG_DESC=			Enable debug log (--with-debug)
 FILE_AIO_DESC=			Enable file aio
@@ -824,7 +824,7 @@ post-patch:
 pre-configure:
 .if ${PORT_OPTIONS:MMODSECURITY}
 	( cd ${WRKDIR}/modsecurity-apache_${NGINX_MODSECURITY_VERSION} && \
-		CC="${CC}" ./${CONFIGURE_SCRIPT} --enable-standalone-module && \
+		CC="${CC}" ${CONFIGURE_CMD} --enable-standalone-module && \
 		${MAKE} )
 .endif
 

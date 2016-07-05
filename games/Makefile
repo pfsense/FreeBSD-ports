@@ -14,6 +14,7 @@
     SUBDIR += 54321
     SUBDIR += 7kaa
     SUBDIR += CaribbeanStud
+    SUBDIR += cockatrice
     SUBDIR += HeroesOfMightAndMagic
     SUBDIR += KnightCap
     SUBDIR += abbayedesmorts
@@ -31,6 +32,7 @@
     SUBDIR += alephone
     SUBDIR += alephone-data
     SUBDIR += alephone-scenarios
+    SUBDIR += alex4
     SUBDIR += alienblaster
     SUBDIR += alienwave
     SUBDIR += allacrost
@@ -38,7 +40,6 @@
     SUBDIR += an
     SUBDIR += angband
     SUBDIR += anki
-    SUBDIR += annelid
     SUBDIR += antipolix
     SUBDIR += aop
     SUBDIR += apoolGL
@@ -850,6 +851,7 @@
     SUBDIR += rnd_jue
     SUBDIR += robocalypto
     SUBDIR += robocode
+    SUBDIR += robocode-naval
     SUBDIR += robotfindskitten
     SUBDIR += rockdodger
     SUBDIR += rocksndiamonds
