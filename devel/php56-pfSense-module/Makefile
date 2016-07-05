@@ -13,8 +13,7 @@ COMMENT=	Library for getting useful info
 
 LIB_DEPENDS=	libvici.so:security/strongswan
 
-USE_PHP=	yes
-USE_PHPEXT=	yes
+USES=		php:ext
 
 CFLAGS+=	-I/usr/local/include -I. -DIPFW_FUNCTIONS -DTCPSTATES
 CFLAGS+=	-Wall -Wredundant-decls -Wnested-externs -Winline
