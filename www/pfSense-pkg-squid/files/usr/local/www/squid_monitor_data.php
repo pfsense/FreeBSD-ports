@@ -269,8 +269,9 @@ function html_autowrap($cont) {
 // Show Squid Logs
 function fetch_log($log) {
 	global $filter, $program;
+	$log = escapeshellarg($log);
 	// Get data from form post
-	$lines = $_POST['maxlines'];
+	$lines = escapeshellarg(is_numeric($_POST['maxlines']) ? $_POST['maxlines'] : 50);
 	if (preg_match("/!/", htmlspecialchars($_POST['strfilter']))) {
 		$grep_arg = "-iv";
 	} else {
