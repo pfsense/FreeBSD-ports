@@ -18,8 +18,7 @@ OPTIONS_DEFAULT=IPFW
 
 IPFW_DESC=	Enable IPFW functions
 
-USE_PHP=	yes
-USE_PHPEXT=	yes
+USES=		php:ext
 
 CFLAGS+=	-I/usr/local/include -I. -DTCPSTATES
 CFLAGS+=	-Wall -Wredundant-decls -Wnested-externs -Winline
