@@ -6,7 +6,7 @@ PORTVERSION=	1.98.4
 CATEGORIES=	devel perl5
 MASTER_SITES=	LOCAL/bf/${PORTNAME}
 
-MAINTAINER=	bf@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Quickly generate sanity tests for the API of a C/C++ shared library
 
 LICENSE=	LGPL20 GPLv2
@@ -28,7 +28,6 @@ USE_GCC=	any
 
 NO_BUILD=	yes
 PLIST_FILES=	bin/${PORTNAME}.pl
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 OPTIONS_DEFINE=	DOCS
 

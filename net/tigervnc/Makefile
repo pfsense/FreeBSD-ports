@@ -40,7 +40,7 @@ USE_XORG+=	bigreqsproto compositeproto damageproto fixesproto fontsproto glproto
 CFLAGS+=	-fPIC
 
 OPTIONS_DEFINE=		GNUTLS NLS PAM VIEWER DOCS
-OPTIONS_DEFAULT=	GNUTLS NLS PAM VIEWER
+OPTIONS_DEFAULT=	GNUTLS PAM VIEWER
 VIEWER_DESC=		Build vncviewer
 
 .include <bsd.port.options.mk>
@@ -110,7 +110,7 @@ CONFIGURE_ARGS+=	\
 TIGERVNC_XORG_PATCH_VER=	117
 
 # import from x11-server/xorg-server/Makefile
-.ifdef WITH_OPENSSL_BASE
+.if ${SSL_DEFAULT} == base
 # The reason why I use this is cause openssl from base doesn't
 # install a .pc file and configure will fail trying to find it.
 # Setting both of those variables to a *non-empty* value by-passes

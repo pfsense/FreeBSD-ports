@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	beignet
-PORTVERSION=	1.1.1
+PORTVERSION=	1.1.2
 CATEGORIES=	lang
 MASTER_SITES=	https://01.org/sites/default/files/
 DISTVERSIONSUFFIX=	-source
@@ -10,11 +10,12 @@ DISTVERSIONSUFFIX=	-source
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	OpenCL library for Intel GPUs
 
-BUILD_DEPENDS=	clang${LLVMVER}:lang/clang${LLVMVER} \
+BUILD_DEPENDS=	clang${LLVMVER}:devel/llvm${LLVMVER} \
 		opencl>=0:devel/opencl
 LIB_DEPENDS=	libOpenCL.so:devel/ocl-icd \
 		libdrm.so:graphics/libdrm
-RUN_DEPENDS=	opencl>=0:devel/opencl
+RUN_DEPENDS=	opencl>=0:devel/opencl \
+		clang${LLVMVER}:devel/llvm${LLVMVER}
 
 WRKSRC=		${WRKDIR}/Beignet-${PORTVERSION}-Source
 
@@ -22,7 +23,7 @@ USES=		cmake gmake pkgconfig shebangfix
 USE_XORG=	sm ice x11 xext xfixes
 USE_GL=		gl
 SHEBANG_FILES=	src/git_sha1.sh backend/kernels/compile.sh
-LLVMVER=	36
+LLVMVER=	37
 
 CMAKE_ARGS+=	-DLLVM_CONFIG_EXECUTABLE=${LOCALBASE}/bin/llvm-config${LLVMVER}
 

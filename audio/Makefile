@@ -91,7 +91,6 @@
     SUBDIR += dcd
     SUBDIR += deadbeef
     SUBDIR += deadbeef-jack-plugin
-    SUBDIR += deadbeef-mpris-plugin
     SUBDIR += deadbeef-mpris2-plugin
     SUBDIR += deadbeef-musical-spectrum-plugin
     SUBDIR += deadbeef-playback-status-plugin
@@ -167,6 +166,7 @@
     SUBDIR += fluidsynth
     SUBDIR += fluidsynth-dssi
     SUBDIR += fmit
+    SUBDIR += forked-daapd
     SUBDIR += fpc-a52
     SUBDIR += fpc-mad
     SUBDIR += fpc-modplug
@@ -405,6 +405,7 @@
     SUBDIR += libsidplayfp
     SUBDIR += libsmf
     SUBDIR += libsndfile
+    SUBDIR += libsoxr
     SUBDIR += libtremor
     SUBDIR += libumidi
     SUBDIR += libvorbis
@@ -633,6 +634,7 @@
     SUBDIR += py-pylast
     SUBDIR += py-pyliblo
     SUBDIR += py-shout
+    SUBDIR += py-soundcloud
     SUBDIR += py-speex
     SUBDIR += py-tagpy
     SUBDIR += py-vorbis
@@ -688,6 +690,7 @@
     SUBDIR += sidplay
     SUBDIR += sidplay2
     SUBDIR += sidplayer
+    SUBDIR += simon
     SUBDIR += simplemod
     SUBDIR += siren
     SUBDIR += skype-call-recorder

@@ -100,9 +100,11 @@
     SUBDIR += bsdcrashtar
     SUBDIR += bsdhwmon
     SUBDIR += bsdinfo
+    SUBDIR += bsdisks
     SUBDIR += bsdmoted
     SUBDIR += bsdploy
     SUBDIR += bsdstats
+    SUBDIR += bstack
     SUBDIR += btsixad
     SUBDIR += bulk_extractor
     SUBDIR += burp
@@ -129,6 +131,7 @@
     SUBDIR += cfengine-masterfiles36
     SUBDIR += cfengine-masterfiles37
     SUBDIR += cfengine-masterfiles38
+    SUBDIR += cfengine-masterfiles39
     SUBDIR += cfengine22
     SUBDIR += cfengine32
     SUBDIR += cfengine33
@@ -137,6 +140,7 @@
     SUBDIR += cfengine36
     SUBDIR += cfengine37
     SUBDIR += cfengine38
+    SUBDIR += cfengine39
     SUBDIR += chgrep
     SUBDIR += cinnamon-control-center
     SUBDIR += cinnamon-settings-daemon
@@ -177,6 +181,7 @@
     SUBDIR += cramfs
     SUBDIR += crashme
     SUBDIR += createrepo
+    SUBDIR += cronic
     SUBDIR += cronolog
     SUBDIR += cronolog-devel
     SUBDIR += curly
@@ -273,6 +278,7 @@
     SUBDIR += fetchlog
     SUBDIR += ffs2recov
     SUBDIR += file
+    SUBDIR += filebeat
     SUBDIR += filedupe
     SUBDIR += filelight-kde4
     SUBDIR += fileprune
@@ -433,7 +439,9 @@
     SUBDIR += iat
     SUBDIR += inotify-tools
     SUBDIR += installwatch
+    SUBDIR += intel-nvmupdate
     SUBDIR += intel-pcm
+    SUBDIR += intel-qcu
     SUBDIR += iocage
     SUBDIR += iocage-devel
     SUBDIR += iogen
@@ -462,6 +470,7 @@
     SUBDIR += jdiskreport
     SUBDIR += jfbterm
     SUBDIR += jkill
+    SUBDIR += jobd
     SUBDIR += jps
     SUBDIR += jtop
     SUBDIR += jtopen
@@ -550,7 +559,11 @@
     SUBDIR += mcollective-nettest-client
     SUBDIR += mcollective-nettest-common
     SUBDIR += mcollective-nrpe-agent
+    SUBDIR += mcollective-nrpe-client
+    SUBDIR += mcollective-nrpe-common
     SUBDIR += mcollective-puppet-agent
+    SUBDIR += mcollective-puppet-client
+    SUBDIR += mcollective-puppet-common
     SUBDIR += mcollective-service-agent
     SUBDIR += mcollective-service-client
     SUBDIR += mcollective-service-common
@@ -617,6 +630,7 @@
     SUBDIR += nfsping
     SUBDIR += nitrogen
     SUBDIR += no-login
+    SUBDIR += nomad
     SUBDIR += npadmin
     SUBDIR += nrg2iso
     SUBDIR += ntfsprogs
@@ -707,6 +721,7 @@
     SUBDIR += p5-arclog
     SUBDIR += p5-reslog
     SUBDIR += packer
+    SUBDIR += packetbeat
     SUBDIR += pacman
     SUBDIR += paicc
     SUBDIR += pam_mount
@@ -771,6 +786,7 @@
     SUBDIR += polkit-kde
     SUBDIR += polkit-qt
     SUBDIR += polkit-qt5
+    SUBDIR += powerdxx
     SUBDIR += powerman
     SUBDIR += pp
     SUBDIR += pprotectd
@@ -844,6 +860,7 @@
     SUBDIR += qpxtool
     SUBDIR += qsynergy
     SUBDIR += qt5-qtpaths
+    SUBDIR += qtpass
     SUBDIR += quicksynergy
     SUBDIR += qzeitgeist
     SUBDIR += racktables
@@ -862,7 +879,6 @@
     SUBDIR += recoverdm
     SUBDIR += reed
     SUBDIR += rej
-    SUBDIR += relaunchd
     SUBDIR += relaxconf
     SUBDIR += rename
     SUBDIR += renameutils
@@ -893,6 +909,7 @@
     SUBDIR += rubygem-bundler_ext
     SUBDIR += rubygem-capistrano
     SUBDIR += rubygem-capistrano-ext
+    SUBDIR += rubygem-capistrano-harrow
     SUBDIR += rubygem-chef
     SUBDIR += rubygem-chef-api
     SUBDIR += rubygem-chef-zero
@@ -1014,7 +1031,6 @@
     SUBDIR += stow
     SUBDIR += stowES
     SUBDIR += stress
-    SUBDIR += su2
     SUBDIR += superiotool
     SUBDIR += swapd
     SUBDIR += swapexd
@@ -1029,9 +1045,6 @@
     SUBDIR += syslog-ng
     SUBDIR += syslog-ng-devel
     SUBDIR += syslog-ng-incubator
-    SUBDIR += syslog-ng-incubator03
-    SUBDIR += syslog-ng34
-    SUBDIR += syslog-ng35
     SUBDIR += syslog-ng36
     SUBDIR += syslog-ng37
     SUBDIR += syslogger
@@ -1058,6 +1071,8 @@
     SUBDIR += tkdvd
     SUBDIR += tlsdate
     SUBDIR += tm
+    SUBDIR += tmate
+    SUBDIR += tmate-slave
     SUBDIR += tmpreaper
     SUBDIR += tmpwatch
     SUBDIR += tmux
@@ -1081,6 +1096,7 @@
     SUBDIR += u-boot-cubox-hummingboard
     SUBDIR += u-boot-duovero
     SUBDIR += u-boot-pandaboard
+    SUBDIR += u-boot-pine64
     SUBDIR += u-boot-rpi
     SUBDIR += u-boot-rpi2
     SUBDIR += u-boot-utilite
@@ -1198,6 +1214,7 @@
     SUBDIR += xsysstats
     SUBDIR += xvidcap
     SUBDIR += yum
+    SUBDIR += zap
     SUBDIR += zbackup
     SUBDIR += zeitgeist
     SUBDIR += zeroer
@@ -1209,6 +1226,7 @@
     SUBDIR += zfs-stats
     SUBDIR += zfs-stats-lite
     SUBDIR += zfsnap
+    SUBDIR += zfsnap2
     SUBDIR += zfstools
     SUBDIR += zidrav
     SUBDIR += zisofs-tools

@@ -246,11 +246,14 @@
     SUBDIR += ifstat
     SUBDIR += ifstated
     SUBDIR += igmpproxy
+    SUBDIR += iipsrv
     SUBDIR += ilbc
     SUBDIR += imapproxy
+    SUBDIR += intel-ixl-kmod
     SUBDIR += iodine
     SUBDIR += ip2location
     SUBDIR += ip6_int
+    SUBDIR += ipdecap
     SUBDIR += ipgrab
     SUBDIR += iplog
     SUBDIR += ipsorc
@@ -259,7 +262,6 @@
     SUBDIR += ipxe
     SUBDIR += irrd
     SUBDIR += isboot-kmod
-    SUBDIR += isc-dhcp41-server
     SUBDIR += isc-dhcp43-client
     SUBDIR += isc-dhcp43-relay
     SUBDIR += isc-dhcp43-server
@@ -331,6 +333,7 @@
     SUBDIR += libnids
     SUBDIR += libnss-cache
     SUBDIR += libnss-mysql
+    SUBDIR += libnss-pgsql
     SUBDIR += liboauth
     SUBDIR += libopennet
     SUBDIR += liboping
@@ -395,6 +398,8 @@
     SUBDIR += miniupnpd
     SUBDIR += miredo
     SUBDIR += miruo
+    SUBDIR += mlvpn
+    SUBDIR += mobile-broadband-provider-info
     SUBDIR += mono-zeroconf
     SUBDIR += mopd
     SUBDIR += morebalance
@@ -414,6 +419,7 @@
     SUBDIR += nakenchat
     SUBDIR += nanomsg
     SUBDIR += nast
+    SUBDIR += nats
     SUBDIR += nbd-server
     SUBDIR += nc
     SUBDIR += ncp
@@ -458,6 +464,7 @@
     SUBDIR += ntopng
     SUBDIR += ntp
     SUBDIR += ntp-devel
+    SUBDIR += ntpa
     SUBDIR += ntraceroute
     SUBDIR += nusoap
     SUBDIR += nxproxy
@@ -466,7 +473,6 @@
     SUBDIR += ocserv
     SUBDIR += ohphone
     SUBDIR += olsrd
-    SUBDIR += omcmd
     SUBDIR += omnitty
     SUBDIR += onenetd
     SUBDIR += onioncat
@@ -501,6 +507,7 @@
     SUBDIR += p5-AddressBook
     SUBDIR += p5-Amazon-SQS-Simple
     SUBDIR += p5-AnyEvent-MPRPC
+    SUBDIR += p5-AnyEvent-MQTT
     SUBDIR += p5-AnyEvent-RabbitMQ
     SUBDIR += p5-AnyEvent-Twitter
     SUBDIR += p5-AnyEvent-Twitter-Stream
@@ -641,6 +648,7 @@
     SUBDIR += p5-Net-LimeLight-Purge
     SUBDIR += p5-Net-MAC
     SUBDIR += p5-Net-MAC-Vendor
+    SUBDIR += p5-Net-MQTT
     SUBDIR += p5-Net-Mosso-CloudFiles
     SUBDIR += p5-Net-MovableType
     SUBDIR += p5-Net-NBName
@@ -781,6 +789,7 @@
     SUBDIR += p5-Socks
     SUBDIR += p5-Sort-Key-IPv4
     SUBDIR += p5-Test-URI
+    SUBDIR += p5-TFTP
     SUBDIR += p5-URI
     SUBDIR += p5-URI-FromHash
     SUBDIR += p5-URI-Match
@@ -881,6 +890,7 @@
     SUBDIR += pecl-mosquitto
     SUBDIR += pecl-oauth
     SUBDIR += pecl-radius
+    SUBDIR += pecl-smbclient
     SUBDIR += pecl-yaz
     SUBDIR += pecl-yp
     SUBDIR += pecl-zmq
@@ -944,6 +954,7 @@
     SUBDIR += py-gntp
     SUBDIR += py-gspread
     SUBDIR += py-gspreadsheet
+    SUBDIR += py-haproxy-log-analysis
     SUBDIR += py-impacket
     SUBDIR += py-ipaddress
     SUBDIR += py-iplib
@@ -981,6 +992,7 @@
     SUBDIR += py-pynsq
     SUBDIR += py-pypcap
     SUBDIR += py-pysendfile
+    SUBDIR += py-pyshark
     SUBDIR += py-pysmb
     SUBDIR += py-pysocks
     SUBDIR += py-pystun
@@ -1133,6 +1145,7 @@
     SUBDIR += rubygem-oauth2
     SUBDIR += rubygem-octokit
     SUBDIR += rubygem-octopress-deploy
+    SUBDIR += rubygem-omniauth-auth0
     SUBDIR += rubygem-omniauth-azure-oauth2
     SUBDIR += rubygem-omniauth-facebook
     SUBDIR += rubygem-omniauth-github
@@ -1176,9 +1189,9 @@
     SUBDIR += samba-nmblookup
     SUBDIR += samba-smbclient
     SUBDIR += samba36
-    SUBDIR += samba41
     SUBDIR += samba42
     SUBDIR += samba43
+    SUBDIR += samba44
     SUBDIR += samplicator
     SUBDIR += sbd
     SUBDIR += scamper
@@ -1213,10 +1226,12 @@
     SUBDIR += smbldap-tools
     SUBDIR += smcroute
     SUBDIR += smm++
+    SUBDIR += sngrep
     SUBDIR += sniffit
     SUBDIR += sntop
     SUBDIR += sobby
     SUBDIR += socat
+    SUBDIR += sock
     SUBDIR += socketbind
     SUBDIR += socketpipe
     SUBDIR += socketw
@@ -1372,7 +1387,6 @@
     SUBDIR += xipmsg
     SUBDIR += xisp
     SUBDIR += xmlrpc-c
-    SUBDIR += xmlrpc-c-devel
     SUBDIR += xmlrpc-epi
     SUBDIR += xorp
     SUBDIR += xprobe
@@ -1393,6 +1407,7 @@
     SUBDIR += zeroconf-ioslave
     SUBDIR += zerotier
     SUBDIR += zillion
+    SUBDIR += zmap
     SUBDIR += zsync
 
 .include <bsd.port.subdir.mk>

@@ -1,15 +1,17 @@
 # Created by: Steven Kreuzer <steven@exit2shell.com>
 # $FreeBSD$
 
-PORTNAME=	DTraceToolkit
-PORTVERSION=	0.99
-PORTREVISION=	2
+PORTNAME=	dtrace-toolkit
+PORTVERSION=	1.0
 CATEGORIES=	sysutils
-MASTER_SITES=	http://www.brendangregg.com/DTraceToolkit/
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Collection of useful scripts for DTrace
 
+USE_GITHUB=	yes
+GH_ACCOUNT=	opendtrace
+GH_PROJECT=	toolkit
+GH_TAGNAME=	f36d00b
 USES=		shebangfix
 SHEBANG_LANG=	sh
 sh_OLD_CMD=	/usr/bin/sh ./sh

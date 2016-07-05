@@ -35,7 +35,7 @@ CONFIGURE_ARGS+=--with-layout=GNU \
 USE_GNOME=	libxml2
 
 OPTIONS_DEFINE+=CLI CGI FPM EMBED PHPDBG DEBUG DTRACE IPV6 MAILHEAD LINKTHR ZTS
-OPTIONS_DEFAULT=CLI CGI FPM IPV6 LINKTHR
+OPTIONS_DEFAULT=CLI CGI FPM LINKTHR
 # Bug 197128:  No ASM code for MIPS/MIPS64, disable FPM
 OPTIONS_EXCLUDE_mips=FPM
 OPTIONS_EXCLUDE_mips64=FPM
@@ -88,7 +88,7 @@ CONFIGURE_ARGS+=--enable-fpm \
 .endif
 
 .if defined(PKGNAMEPREFIX)
-USE_PHP=	yes
+USES+=	php
 PHP_DEFAULT=	5.6
 IGNORE_WITH_PHP=53 54 5
 USE_APACHE=	22+
@@ -188,6 +188,8 @@ post-build:
 	@${ECHO_CMD} "PHP_VERSION=${PORTVERSION}" >> ${WRKDIR}/php.conf
 	@${ECHO_CMD} "PHP_SAPI=${PHP_SAPI}" >> ${WRKDIR}/php.conf
 	@${ECHO_CMD} "PHP_EXT_INC=pcre spl" >> ${WRKDIR}/php.conf
+	@${ECHO_CMD} -n "PHP_EXT_DIR=" >> ${WRKDIR}/php.conf
+	@${SH} ${WRKSRC}/scripts/php-config --extension-dir | sed -ne 's,^${PREFIX}/lib/php/,,p' >> ${WRKDIR}/php.conf
 
 test: build
 	@(cd ${WRKSRC} && ${MAKE} test)

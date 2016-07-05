@@ -11,15 +11,14 @@ MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Event loop for Ruby
 
 BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_RUBY22=	yes
-
 NO_ARCH=	yes
 USE_RUBY=	yes
-USE_RAKE=	yes
 
 do-configure:
 	@cd ${WRKSRC} && ${RUBY} setup.rb config --prefix=${PREFIX}

@@ -2,16 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	rust
-PORTVERSION=	1.7.0
+PORTVERSION?=	1.9.0
 CATEGORIES=	lang
 MASTER_SITES=	http://static.rust-lang.org/dist/:src \
-		http://static.rust-lang.org/stage0-snapshots/:bootstrap
-DISTNAME=	${PORTNAME}c-${PORTVERSION}
-DISTFILES=	${RUST_SOURCE}:src \
-		${RUST_BOOT}:bootstrap
-EXTRACT_ONLY=	${RUST_SOURCE}
+		http://static.rust-lang.org/stage0-snapshots/:bootstrap \
+		https://github.com/dhuseby/rust-manual-snapshots/raw/master/:bootstrap
+DISTNAME?=	${PORTNAME}c-${PORTVERSION}
+DISTFILES?=	${DISTNAME}-src${EXTRACT_SUFX}:src
+DISTFILES+=	${RUST_BOOT}:bootstrap
+EXTRACT_ONLY?=	${DISTFILES:N*\:bootstrap:C/:.*//}
 
-MAINTAINER=	riggs@FreeBSD.org
+MAINTAINER?=	riggs@FreeBSD.org
 COMMENT=	Language with a focus on memory safety and concurrency
 
 LICENSE=	APACHE20 \
@@ -20,33 +21,34 @@ LICENSE_COMB=	dual
 # APACHE20 license is standard, see Templates/Licenses/APACHE20
 LICENSE_FILE_MIT=	${WRKSRC}/LICENSE-MIT
 
-ONLY_FOR_ARCHS=	amd64 i386
+ONLY_FOR_ARCHS?=	amd64 i386
 ONLY_FOR_ARCHS_REASON=	requires prebuilt bootstrap compiler
 
 BROKEN_FreeBSD_9=	Only compiles on FreeBSD 10 and 11
 
-DISTINFO_FILE=	${MASTERDIR}/distinfo.${ARCH}
+DISTINFO_FILE?=	${MASTERDIR}/distinfo.${ARCH}
 
 # FIXME: The bootstrapped rustc adds -L/usr/local/lib in front of
 # the LDFLAGS. When stage0's rustc is linked, it picks the installed
 # librust*so and fails.
-CONFLICTS_BUILD=	rust \
-			rust-nightly
-CONFLICTS_INSTALL=	rust-nightly
+CONFLICTS_BUILD?=	rust-nightly
+CONFLICTS_BUILD+=	${PKGBASE}
+CONFLICTS_INSTALL?=	rust-nightly
 
-RUST_SOURCE=	${DISTNAME}-src${EXTRACT_SUFX}
 RUST_BOOT=	rust-stage0-${RUST_BOOT_SIG_${ARCH}}.tar.bz2
 
-RUST_BOOT_SIG_x86_64=	2015-12-18-3391630-dragonfly-x86_64-e74d79488e88ac2de3bd03afd5959d2ae6e2b628
-RUST_BOOT_SIG_amd64=	2015-12-18-3391630-freebsd-x86_64-91724d4e655807a2a2e940ac50992ebeaac16ea9
-RUST_BOOT_SIG_i386=	2015-12-18-3391630-freebsd-i386-7e624c50494402e1feb14c743d659fbd71b448f5
+RUST_BOOT_SIG_x86_64?=	2016-03-18-235d774-dragonfly-x86_64-e790279a7b286ddf2e716ccd3bb1b7f0a386a5c7
+RUST_BOOT_SIG_amd64?=	2016-03-18-235d774-freebsd-x86_64-390b9a9f60f3d0d6a52c04d939a0355f572d03b3
+RUST_BOOT_SIG_i386?=	2016-03-18-235d774-freebsd-i386-b5a87e66e3e3eed5f0b68367ad22f25f0be2d4ea
 
 # Rust's libraries are named librustc_${component}-${RUST_VSN_HASH}.so.
 # The hash depends on Rust version and, if the channel is not "stable",
 # the channel name. See $(CFG_FILENAME_EXTRA) definition in mk/main.mk.
-RUST_VSN=	${PORTVERSION}
-RUST_CHANNEL=	stable
-RUST_VSN_HASH!=	/usr/bin/printf '%s' ${RUST_VSN} | /sbin/md5 -q | cut -c 1-8
+RUST_VSN=	${PORTVERSION:C/\.[0-9]{8}$//}
+.if defined(.PARSEDIR) # fixes |make describe| on 9.x (which is BROKEN)
+RUST_CHANNEL=	${PKGNAMESUFFIX:Ustable:S/^-//}
+.endif
+RUST_VSN_HASH!=	/usr/bin/printf '%s' ${RUST_VSN}${PKGNAMESUFFIX} | /sbin/md5 -q | cut -c 1-8
 PLIST_SUB+=	RUST_VSN_HASH=${RUST_VSN_HASH}
 
 # Rust's target arch string is different from *BSD arch strings
@@ -56,10 +58,11 @@ RUST_ARCH_i386=		i686
 RUST_TARGET=		${RUST_ARCH_${ARCH}}-unknown-${OPSYS:tl}
 PLIST_SUB+=	RUST_TARGET=${RUST_TARGET}
 
-USES=		gmake libedit python:2,build
+USES=		compiler gmake libedit python:2,build
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-valgrind --disable-docs \
-		--enable-clang --mandir=${MANPREFIX}/man \
+		${CHOSEN_COMPILER_TYPE:Mclang:C/.+/--enable-&/} \
+		--mandir=${MANPREFIX}/man \
 		--release-channel=${RUST_CHANNEL}
 
 .if defined(BATCH) || defined(PACKAGE_BUILDING)
@@ -145,6 +148,8 @@ post-install:
 		${RM} ${STAGEDIR}${PREFIX}/lib/rustlib/$$f.bak; \
 	done
 	@${RM} ${STAGEDIR}${PREFIX}/lib/rustlib/install.log
+# FIXME: Static libraries in lib/rustlib/*/lib/*.rlib are not stripped,
+# but they contain non-object files which make strip(1) unhappy.
 	@${STRIP_CMD} \
 		${STAGEDIR}${PREFIX}/bin/rustc \
 		${STAGEDIR}${PREFIX}/bin/rustdoc \

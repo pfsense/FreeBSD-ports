@@ -42,6 +42,7 @@
     SUBDIR += farsifonts
     SUBDIR += fifteen
     SUBDIR += fira
+    SUBDIR += firacode
     SUBDIR += fntsample
     SUBDIR += font-adobe-100dpi
     SUBDIR += font-adobe-75dpi
@@ -139,6 +140,7 @@
     SUBDIR += moveable-type-fonts
     SUBDIR += nexfontsel
     SUBDIR += noto
+    SUBDIR += noto-lite
     SUBDIR += nucleus
     SUBDIR += p5-Font-AFM
     SUBDIR += p5-Font-TTF

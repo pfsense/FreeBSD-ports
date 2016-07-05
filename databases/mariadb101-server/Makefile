@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME?=	mariadb
-PORTVERSION=	10.1.13
+PORTVERSION=	10.1.14
 CATEGORIES=	databases ipv6
 MASTER_SITES=	http://ftp.osuosl.org/pub/${SITESDIR}/ \
 		http://mirrors.supportex.net/${SITESDIR}/ \
@@ -20,6 +20,8 @@ LICENSE=	GPLv2
 LICENSE_NAME_PerconaFT=	PerconaFT patents license
 LICENSE_FILE_PerconaFT=	${WRKSRC}/storage/tokudb/PerconaFT/PATENTS
 LICENSE_PERMS_PerconaFT=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+
+BROKEN_powerpc64=	Does not build
 
 SUB_FILES=	pkg-message
 PKGMESSAGE=	${WRKDIR}/pkg-message
@@ -140,15 +142,13 @@ post-install:
 		${STAGEDIR}${PREFIX}/bin/mysqlaccess
 	${RM} -r ${STAGEDIR}/${PREFIX}/share/mysql/policy \
 		${STAGEDIR}/${PREFIX}/share/pkgconfig
-# See https://mariadb.atlassian.net/browse/MDEV-9529
-	${RM} ${STAGEDIR}/${PREFIX}/bin/maria_add_gis_sp.sql
 .endif # defined(CLIENT_ONLY)
 
-.if defined(WITH_OPENSSL_PORT)
-GSSAPI_BASE_IGNORE=	BASE_GSSAPI is not compatible with OpenSSL from ports. Use other GSSAPI options or OpenSSL from base system
-.endif
-
 .include <bsd.port.pre.mk>
+
+.if ${SSL_DEFAULT} != base && ${PORT_OPTIONS:MGSSAPI_BASE}
+IGNORE=		BASE_GSSAPI is not compatible with OpenSSL from ports. Use other GSSAPI options or OpenSSL from base system
+.endif
 
 .if ${OPSYS} == DragonFly
 CMAKE_ARGS+=	-DWITHOUT_TOKUDB

@@ -13,7 +13,8 @@ MAINTAINER=		mr@FreeBSD.org
 COMMENT=		Schematic and PCB editing software
 
 BUILD_DEPENDS=	bzr:devel/bzr \
-		${LOCALBASE}/lib/${PYTHON_VERSION}/site-packages/bzrlib/plugins/bzrtools/bzrtools.py:devel/bzrtools
+		${LOCALBASE}/lib/${PYTHON_VERSION}/site-packages/bzrlib/plugins/bzrtools/bzrtools.py:devel/bzrtools \
+		${LOCALBASE}/include/glm/glm.hpp:math/glm
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
 
@@ -22,7 +23,7 @@ CONFLICTS=	kicad-2014*
 DOCVERSION=	1.1
 LIBVERSION=	1.0
 
-CXXFLAGS+=	-std=c++11
+#CXXFLAGS+=	-std=c++11
 USE_GL=		glew glu
 USE_WX=		3.0
 WX_COMPS=	wx
@@ -44,6 +45,7 @@ CMAKE_ARGS=	-DLOCALBASE="${LOCALBASE}" \
 		-DCMAKE_VERBOSE_MAKEFILE=ON \
 		-DCMAKE_BUILD_TYPE="Debug" \
 		-DKICAD_TESTING_VERSION=ON \
+		-DKICAD_BUILD_VERSION=${DISTVERSION} \
 		-DCMAKE_INCLUDE_PATH="${LOCALBASE}/include" \
 		-DwxWidgets_CONFIG_EXECUTABLE="${WX_CONFIG}" \
 		-DKICAD_SKIP_BOOST=YES
@@ -158,4 +160,12 @@ PLIST_DIR_LIST=		lib/kicad
 PLIST_SHAREDDIR_LIST=	share/mimelnk/application \
 			share/mimelnk
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD
+.if ${OSVERSION} < 1000000 || ${COMPILER_TYPE} == "gcc"
+  IGNORE= builds only on greater than 10 and with clang
+.endif
+.endif
+
+.include <bsd.port.post.mk>

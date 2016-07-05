@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	smart_proxy_chef
-PORTVERSION=	0.1.6
+PORTVERSION=	0.1.7
 CATEGORIES=	sysutils ruby
 MASTER_SITES=	RG
 
@@ -17,8 +17,7 @@ RUN_DEPENDS=	foreman-proxy>=1.8.0:net/foreman-proxy \
 
 NO_ARCH=	yes
 USE_RUBY=	yes
-USE_RUBYGEMS=	yes
-RUBYGEM_AUTOPLIST=	yes
+USES=		gem
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/foreman-proxy/settings.d ${STAGEDIR}${PREFIX}/share/foreman-proxy/bundler.d

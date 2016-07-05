@@ -15,10 +15,7 @@ LICENSE=	PHP301
 
 LIB_DEPENDS=	libGeoIP.so:net/GeoIP
 
-USE_PHP=	yes
-USE_PHPEXT=	yes
-USES=		tar:tgz
-IGNORE_WITH_PHP=	70
+USES=		php:ext tar:tgz
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|-ldl||g' ${WRKSRC}/config.m4

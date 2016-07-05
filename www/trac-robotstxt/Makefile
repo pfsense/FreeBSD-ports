@@ -12,12 +12,14 @@ DISTNAME=	TracRobotsTxt-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Allows simple management of a robots.txt
 
-BROKEN=		unfetchable
-
 RUN_DEPENDS=	tracd:www/trac
+
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
 
 USES=		python:2
 USE_PYTHON=	distutils autoplist
+NO_ARCH=	yes
 
-.include "${.CURDIR}/../../www/trac/plugin.mk"
 .include <bsd.port.mk>

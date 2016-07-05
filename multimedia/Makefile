@@ -55,10 +55,12 @@
     SUBDIR += emby-server
     SUBDIR += emotion_generic_players-vlc
     SUBDIR += emovix
+    SUBDIR += ffdec
     SUBDIR += ffmpeg
     SUBDIR += ffmpeg0
     SUBDIR += ffmpeg2theora
     SUBDIR += ffmpegthumbnailer
+    SUBDIR += ffms2
     SUBDIR += flvmeta
     SUBDIR += flvstreamer
     SUBDIR += flvtool++
@@ -165,6 +167,7 @@
     SUBDIR += kmplayer-kde4
     SUBDIR += kodi
     SUBDIR += kplayer-kde4
+    SUBDIR += l-smash
     SUBDIR += libaacs
     SUBDIR += libass
     SUBDIR += libav
@@ -391,6 +394,8 @@
     SUBDIR += v4l-utils
     SUBDIR += v4l_compat
     SUBDIR += vamps
+    SUBDIR += vapoursynth
+    SUBDIR += vapoursynth-l-smash-works
     SUBDIR += vcdgear
     SUBDIR += vcdimager
     SUBDIR += vcdpad

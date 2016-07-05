@@ -4506,7 +4506,6 @@ editors/kate-plugins||2013-07-26|Has expired: Depends on Qt 3.x
 editors/kile||2013-07-26|Has expired: Depends on Qt 3.x
 editors/klat||2013-07-26|Has expired: Depends on Qt 3.x
 editors/kxmleditor||2013-07-26|Has expired: Depends on Qt 3.x
-editors/pdfedit||2013-07-26|Has expired: Depends on Qt 3.x
 editors/rospell||2013-07-26|Has expired: Depends on Qt 3.x
 finance/eqonomize-kde3||2013-07-26|Has expired: Depends on Qt 3.x
 finance/kexchange||2013-07-26|Has expired: Depends on Qt 3.x
@@ -8242,8 +8241,8 @@ graphics/hugin-2016||2016-03-22|overtaken by released version
 net/rubygem-omniauth-cas3||2016-03-28|Removed
 textproc/libvisio||2016-03-28|No longer used by other ports: use textproc/libvisio01 instead
 textproc/libe-book00||2016-03-28|No longer used by other ports: use textproc/libe-book instead
-graphics/libtxc_dxtn|graphics/s2tc|2016-03-29|Superseded by graphics/s2tc
 devel/erlang-ssl_verify_hostname|devel/erlang-ssl_verify_fun|2016-03-28|Project renamed
+graphics/libtxc_dxtn|graphics/s2tc|2016-03-29|Superseded by graphics/s2tc
 www/session2||2016-03-29|Has expired: That is a part of Quixote webapp framework we no longer have in ports
 www/py-django-pipeline14||2016-03-29|Has expired: This port depends upon expired www/py-django16 and have no consumers
 textproc/libwpd||2016-03-29|Has expired: Not used any more
@@ -8268,3 +8267,116 @@ devel/rubygem-coffee-rails41|devel/rubygem-coffee-rails4|2016-03-31|Has expired:
 www/rubygem-railties41|www/rubygem-railties4|2016-03-31|Has expired: Rails 4.1 is no longer supported - please switch to Rails 4.2
 devel/rubygem-jbuilder-rails41|devel/rubygem-jbuilder|2016-03-31|Has expired: Rails 4.1 is no longer supported - please switch to Rails 4.2
 textproc/py-genshi-devel|textproc/py-genshi|2016-03-31|Has expired: The port is no longer updated and behind the main genshi port
+www/py-satchmo||2016-04-03|Has expired: Project development unmaintained
+www/py-ua-parser|devel/py-ua_parser|2016-04-04|Duplicate port deleted
+net-mgmt/weathermap||2016-04-04|Has expired: Distfile unavailable, website no longer exists
+accessibility/gnopernicus|accessibility/orca|2016-04-08|Has expired: Not developed upstream anymore. Obsoleted by accessibility/orca
+textproc/p5-ElasticSearch-SearchBuilder|textproc/p5-Search-Elasticsearch|2016-04-10|Has expired: Use textproc/p5-Search-Elasticsearch which is the official client
+textproc/p5-ElasticSearch-legacy|textproc/p5-Search-Elasticsearch|2016-04-10|Has expired: Use textproc/p5-Search-Elasticsearch which is the official client
+textproc/py-openpyxl1|textproc/py-openpyxl|2016-04-10|Has expired: Use textproc/py-openpyxl instead
+devel/libmcs||2016-04-13|Development no longer active and is not used any more
+www/node-devel|www/node|2016-04-13|Upstream no longer releases a development version
+graphics/kipi-plugin-googledrive||2016-04-14|Merged into graphics/kipi-plugin-googleservices
+graphics/kipi-plugin-picasawebexport||2016-04-14|Merged into graphics/kipi-plugin-googleservices
+security/engine_pkcs11|security/libp11|2016-04-20|Merged
+devel/elixir-timex-interval||2016-04-22|Merged into devel/elixir-timex upstream
+devel/p5-Test-Stream|devel/p5-Test2-Suite|2016-04-23|Use devel/p5-Test2-Suite instead
+deskutils/qlabels||2016-04-23|Has expired: Does not fetch, unmaintained
+french/tvdownloader||2016-04-23|Has expired: Many channels have modified their protocols and cannot be DL anymore
+comms/cdr_read||2016-04-23|Has expired: unfetchable
+russian/rubygem-rutils||2016-04-23|Has expired: Deprecated by upstream
+devel/rubygem-dotenv-deployment||2016-04-23|Has expired: Deprecated by upstream in latest version (0.3.0)
+www/p5-LWP-ConsoleLogger||2016-04-23|Has expired: Depends on expiring www/p5-HTTP-CookieMonster
+www/p5-WWW-Mechanize-Cached||2016-04-23|Has expired: Depends on expiring www/p5-HTTP-CookieMonster
+www/p5-HTTP-CookieMonster||2016-04-23|Has expired: Broken for more than 6 months
+misc/diary-hercules||2016-04-23|Has expired: Broken for more than 6 months
+graphics/ffff||2016-04-23|Has expired: Broken for more than 6 months
+net-im/sigram||2016-04-23|Has expired: Broken for more than 6 months
+games/annelid||2016-04-23|Has expired: Broken for more than 6 months
+science/py-pydap||2016-04-23|Has expired: Broken for more than 6 months
+sysutils/su2||2016-04-23|Has expired: Broken for more than 6 months
+www/download-gemist||2016-04-23|Has expired: Broken for more than 6 months
+databases/p5-qdbm||2016-04-23|Has expired: Broken for more than 6 months
+deskutils/ladon||2016-04-23|Has expired: Broken for more than 6 months
+java/linux-sun-jdk17||2016-04-24|Has expired: Unsupported and known for multiple security vulnerabilities
+devel/compiler-rt-devel|devel/llvm-devel|2016-04-24|Folded back in to devel/llvm-devel
+databases/rrdtool10|databases/rrdtool|2016-05-02|Old version, not maintained any more
+devel/sope|devel/sope2|2016-05-02|Renamed to devel/sope2
+www/sogo|www/sogo2|2016-05-02|Renamed to www/sogo2
+www/sogo-activesync|www/sogo2-activesync|2016-05-02|Renamed to www/sogo2-activesync
+textproc/rubygem-gherkin3|textproc/rubygem-gherkin|2016-05-03|Has expired: Use textproc/rubygem-gherkin instead
+dns/odsclient||2016-05-03|Has expired: ODS shuts service down, so client is probably useless
+games/Cockatrice|games/cockatrice|2016-05-05|Renamed to games/cockatrice
+graphics/py-opengl|graphics/py-PyOpenGL|2016-05-09|Use correct upstream PyPI name
+graphics/py-opengl-accelerate|graphics/py-PyOpenGL-accelerate|2016-05-09|Use correct upstream PyPI name
+java/linux-sun-jre17||2016-05-09|Has expired: Unsupported and known for multiple security vulnerabilities
+deskutils/gnustep-notebook||2016-05-09|Has expired: Does not fetch
+lang/moscow_ml|lang/mosml|2016-05-11|Project renamed
+devel/rubygem-redmine_acts_as_taggable_on|www/rubygem-redmine_acts_as_taggable_on|2016-05-14|Duplicate port
+lang/gcc-aux||2016-05-16|Has expired: Use newer lang/gcc5-aux or lang/gcc6-aux compilers instead
+audio/deadbeef-mpris-plugin|audio/deadbeef-mpris2-plugin|2016-05-16|Has expired: Abandonware; use `audio/deadbeef-mpris2-plugin' instead
+net/samba41||2016-05-16|Has expired: not supported by the upstream
+databases/postgresql90-contrib||2016-05-16|Has expired: "EOL was reached in September 2015"
+databases/postgresql90-pltcl||2016-05-16|Has expired: "EOL was reached in September 2015"
+databases/postgresql90-docs||2016-05-16|Has expired: "EOL was reached in September 2015"
+devel/py-gyp-devel|devel/py-gyp|2016-05-16|Renamed to devel/py-gyp
+databases/py-sqlalchemy|databases/py-sqlalchemy07|2016-05-18|Renamed to databases/py-sqlalchemy07
+databases/py-sqlalchemy-devel|databases/py-sqlalchemy08|2016-05-18|Renamed to databases/py-sqlalchemy08
+sysutils/relaunchd|sysutils/jobd|2016-05-20|Renamed to sysutils/jobd
+dns/nsd3|dns/nsd|2016-05-20|Has expired: NSD 3 is EOL, please upgrade to NSD 4 in dns/nsd
+security/easypg||2016-05-22|Has expired: Included into emacs since 2.3
+misc/kdehier4||2016-05-25|Not used since 2014
+devel/maven-ant-tasks||2016-05-27|Use Maven directly
+graphics/py-imaging|graphics/py-pillow|2016-05-28|Has expired: Unmaintained upstream; use graphics/py-pillow
+textproc/py-curator|textproc/py-elasticsearch-curator-py|2016-05-29|Follow existing Elasticsearch naming conventions
+databases/py-psycopg|databases/py-psycopg2|2016-05-29|Has expired: This port is obsoleted by databases/py-psycopg2
+security/py-clamav|security/py-pyclamd|2016-05-30|Has expired: Not updated since 2008 by upstream and abandoned in favor of pyClamd (security/py-pyclamd)
+graphics/ruby-gdal||2016-05-31|Has expired: disabled by upstream (https://trac.osgeo.org/gdal/changeset/28756)
+net/omcmd||2016-06-01|Has expired: Unfetchable and depends on expired net/isc-dhcp41-server
+net/isc-dhcp41-server|net/isc-dhcp43-server|2016-06-01|Has expired: isc-dhcp 4.1 is now End of Life
+lang/ruby20||2016-06-01|Has expired: Upstream support ended
+java/rubygem-rjb||2016-06-02|Has expired: fails to create JVM
+devel/rubygem-atoulme-antwrap||2016-06-02|Removed, depends on java/rubygem-rjb
+net/xmlrpc-c-devel||2016-06-11|Retired, older than net/xmlrpc-c
+www/drupal6-content_access||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-google_analytics||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-seo_checklist||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-pathauto||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-wysiwyg||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-advanced_help||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-path_redirect||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-webform||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-imce||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-mimedetect||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-tagadelic||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-panels||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-zeropoint||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-geshifilter||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-chaos||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-token||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-print||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-nodewords||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-image||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-menu_block||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-views||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-services||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-ckeditor||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-nice_menus||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-page_title||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6-cck||2016-06-18|Has expired: www/drupal6 upstream is EOL and port expired 2016-04-24
+www/drupal6||2016-06-18|Has expired: EOL upstream as of 2016-02-24
+x11-toolkits/gtk-sharp10||2016-06-20|Not depend on anymore superceeded by gtk-sharp20 and gtk-sharp30
+devel/p5-ReadLine-Perl|devel/p5-Term-ReadLine-Perl|2016-06-21|Duplicates
+devel/p5-ReadLine-Gnu|devel/p5-Term-ReadLine-Gnu|2016-06-21|Rename to match upstream
+devel/p5-ReadLine-TTYtter|devel/p5-Term-ReadLine-TTYtter|2016-06-21|Rename to match upstream
+graphics/linux-c6-dri-compat|graphics/linux-c6-dri|2016-06-22|Obsolete
+security/py-letsencrypt|security/py-certbot|2016-06-23|The LetsEncrypt project has renamed the utility
+textproc/py-beautifulsoup4|www/py-beautifulsoup|2016-06-26|Duplicate port deleted
+textproc/kibana42|textproc/kibana45|2016-06-27|Has expired: not actively supported - use kibana 4.5 (textproc/kibana45) instead
+graphics/libchamplain08||2016-06-30|Has expired: Old version, not needed any more
+sysutils/syslog-ng35||2016-06-30|Has expired: EOL, no longer supported by bababit.hu
+sysutils/syslog-ng34||2016-06-30|Has expired: EOL, no longer supported by bababit.hu
+devel/jenkins2|devel/jenkins|2016-06-30|Has expired: Use devel/jenkins
+www/p5-WWW-Google-Notebook||2016-06-30|Has expired: Google Notebook has shut down
+sysutils/syslog-ng-incubator03||2016-06-30|Has expired: EOL, no longer supported by bababit.hu
+www/node5|www/node|2016-07-01|Has expired: upstream support has ended, use www/node instead

@@ -1,4 +1,5 @@
-SHA256 (rpm/i686/centos/6.7/libxml2-2.7.6-20.el6.i686.rpm) = 92f0392e79bc4f1a7cc8c190460587d9bac381c5805b3b4bf55dcd759fc96bfe
-SIZE (rpm/i686/centos/6.7/libxml2-2.7.6-20.el6.i686.rpm) = 820672
-SHA256 (rpm/i686/centos/6.7/libxml2-2.7.6-20.el6.src.rpm) = 81f0632ed93c1bb645979d65628ec36a066630b70350783e57ef1c258f6d9435
-SIZE (rpm/i686/centos/6.7/libxml2-2.7.6-20.el6.src.rpm) = 4902265
+TIMESTAMP = 1466953671
+SHA256 (rpm/i686/centos/6.8/libxml2-2.7.6-21.el6_8.1.i686.rpm) = 56558f0128bbf150cf6d7a1c1ef3ce09564150a1e7cbc9680e4d6e3684b5888d
+SIZE (rpm/i686/centos/6.8/libxml2-2.7.6-21.el6_8.1.i686.rpm) = 824456
+SHA256 (rpm/i686/centos/6.8/libxml2-2.7.6-21.el6_8.1.src.rpm) = 224a4e6bfaa4eb5c88f476ebf836cafe674241c1d19ee9af835385cd82c5d89f
+SIZE (rpm/i686/centos/6.8/libxml2-2.7.6-21.el6_8.1.src.rpm) = 4944442

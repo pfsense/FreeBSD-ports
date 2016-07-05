@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pjsip
-PORTVERSION=	2.4.5
-PORTREVISION=	1
+PORTVERSION=	2.5.1
 CATEGORIES=	net
 MASTER_SITES=	http://www.pjsip.org/release/${PORTVERSION}/
 DISTNAME=	pjproject-${DISTVERSION}
@@ -19,13 +18,14 @@ CONFLICTS=	pjsip-extsrtp-[0-9]*
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-external-pa \
 		--disable-silk
-USES=		gmake localbase tar:bz2
+USES=		gmake localbase pathfix tar:bz2
+PATHFIX_MAKEFILEIN=	Makefile
 USE_LDCONFIG=	yes
 PLIST_SUB=	CONFIGURE_TARGET="${CONFIGURE_TARGET}"
 MAKE_JOBS_UNSAFE=	yes
 
 OPTIONS_DEFINE=	DEBUG FFMPEG G711 G722 G7221 GSM ILBC IPV6 L16 OPENH264 RESAMPLE RESAMPLEDLL \
-		SAMPLERATE SDL SHARED SPEEX SPEEXAEC V4L IPV6 SOUND VIDEO AMR EXTSRTP
+		SAMPLERATE SDL SHARED SPEEX SPEEXAEC V4L SOUND VIDEO AMR EXTSRTP
 OPTIONS_DEFAULT=G711 G722 G7221 GSM ILBC L16 SHARED SPEEX SPEEXAEC
 
 G711_DESC=	G.711 codec support
@@ -86,6 +86,9 @@ EXTSRTP_LIB_DEPENDS=		libsrtp.so:net/libsrtp
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \
 		${WRKSRC}/pkgconfig.py
+	@${REINPLACE_CMD} -e 's/$$(APP_LDFLAGS) \{0,1\}//' \
+		-e 's/$$(OS_LDFLAGS)/$$(APP_LDFLAGS) &/' \
+		${WRKSRC}/*/build/Makefile
 	@${ECHO} "#include <sys/select.h>" > ${WRKSRC}/pjlib/include/pj/config_site.h
 	@${ECHO} "#define PJ_IOQUEUE_MAX_HANDLES (FD_SETSIZE)" >> ${WRKSRC}/pjlib/include/pj/config_site.h
 

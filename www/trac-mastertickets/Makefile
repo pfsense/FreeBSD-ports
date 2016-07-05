@@ -13,13 +13,14 @@ DISTNAME=	coderanger-trac-${PORTNAME}-43a7537
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Support for ticket dependencies
 
+RUN_DEPENDS=	trac>=0.12:www/trac
+
 BROKEN=		unfetchable
-
-RUN_DEPENDS+=	trac>=0.12:www/trac
-
-WRKSRC=			${WRKDIR}/${DISTNAME}
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
 
 USES=		python
 USE_PYTHON=	distutils autoplist
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

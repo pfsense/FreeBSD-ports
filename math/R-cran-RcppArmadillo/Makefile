@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	RcppArmadillo
-PORTVERSION=	0.6.600.4.0
+PORTVERSION=	0.7.100.3.1
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
@@ -13,9 +13,6 @@ LICENSE=	GPLv2+
 
 RUN_DEPENDS=	R-cran-Rcpp>=0.11.0:devel/R-cran-Rcpp
 
-USES=	cran:auto-plist
-
-post-patch:
-	@${REINPLACE_CMD} -e '/bin\//s|bash|sh|' ${WRKSRC}/configure
+USES=		cran:auto-plist,compiles
 
 .include <bsd.port.mk>

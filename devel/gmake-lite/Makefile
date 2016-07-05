@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	make
-PORTVERSION=	4.1
-PORTREVISION=	1
+PORTVERSION=	4.2.1
 CATEGORIES=	devel ports-mgmt
 MASTER_SITES=	GNU
 PKGNAMEPREFIX=	g
@@ -19,6 +18,8 @@ CONFIGURE_ARGS+=	--program-prefix=g \
 			--program-suffix=-lite \
 			--without-guile \
 			--disable-nls
+# fmake does not like PO_DEPENDS_ON_POT being undefined
+MAKE_ARGS=	PO_DEPENDS_ON_POT=
 
 USES=	cpe tar:bzip2
 CPE_VENDOR=	gnu

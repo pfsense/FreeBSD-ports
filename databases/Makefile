@@ -9,6 +9,7 @@
     SUBDIR += R-cran-RSQLite.extfuns
     SUBDIR += R-cran-sqldf
     SUBDIR += WWWdb
+    SUBDIR += adabase
     SUBDIR += adminer
     SUBDIR += adodb
     SUBDIR += adodb5
@@ -20,6 +21,7 @@
     SUBDIR += apq-mysql
     SUBDIR += apq-odbc
     SUBDIR += apq-pgsql
+    SUBDIR += ateam_mysql_ldap_auth
     SUBDIR += autobackupmysql
     SUBDIR += bbdb
     SUBDIR += beansdb
@@ -174,7 +176,9 @@
     SUBDIR += liquibase
     SUBDIR += lmdb
     SUBDIR += luadbi
+    SUBDIR += luasql-firebird
     SUBDIR += luasql-mysql
+    SUBDIR += luasql-odbc
     SUBDIR += luasql-postgres
     SUBDIR += luasql-sqlite3
     SUBDIR += mantis
@@ -249,6 +253,7 @@
     SUBDIR += p5-AnyEvent-DBD-Pg
     SUBDIR += p5-AnyEvent-Memcached
     SUBDIR += p5-AnyEvent-Redis
+    SUBDIR += p5-App-Sqitch
     SUBDIR += p5-AsciiDB-TagFile
     SUBDIR += p5-BDB
     SUBDIR += p5-BSON
@@ -492,7 +497,6 @@
     SUBDIR += p5-Time-Piece-MySQL
     SUBDIR += p5-TokyoCabinet
     SUBDIR += p5-mysql-genocide
-    SUBDIR += p5-qdbm
     SUBDIR += p5-tokyotyrant
     SUBDIR += pear-DB
     SUBDIR += pear-DBA
@@ -537,6 +541,7 @@
     SUBDIR += pecl-memcache
     SUBDIR += pecl-memcached
     SUBDIR += pecl-mongo
+    SUBDIR += pecl-mongodb
     SUBDIR += pecl-mysqlnd_ms
     SUBDIR += pecl-mysqlnd_qc
     SUBDIR += pecl-pdo_user
@@ -551,6 +556,7 @@
     SUBDIR += pg_citus
     SUBDIR += pg_reorg
     SUBDIR += pg_rman
+    SUBDIR += pg_stat_kcache
     SUBDIR += pg_statsinfo
     SUBDIR += pgaccess
     SUBDIR += pgadmin3
@@ -563,6 +569,8 @@
     SUBDIR += pgfouine
     SUBDIR += pglesslog
     SUBDIR += pgloader
+    SUBDIR += pglogical
+    SUBDIR += pglogical-output
     SUBDIR += pgpool
     SUBDIR += pgpool-II
     SUBDIR += pgpool-II-22
@@ -570,6 +578,7 @@
     SUBDIR += pgpool-II-30
     SUBDIR += pgpool-II-33
     SUBDIR += pgpoolAdmin
+    SUBDIR += pgreplay
     SUBDIR += pgrouting
     SUBDIR += pgsphere
     SUBDIR += pgtcl
@@ -627,6 +636,7 @@
     SUBDIR += php70-pdo_pgsql
     SUBDIR += php70-pdo_sqlite
     SUBDIR += php70-pgsql
+    SUBDIR += php70-redis
     SUBDIR += php70-sqlite3
     SUBDIR += phpminiadmin
     SUBDIR += phpmyadmin
@@ -634,6 +644,7 @@
     SUBDIR += postgis-jdbc
     SUBDIR += postgis20
     SUBDIR += postgis21
+    SUBDIR += postgis22
     SUBDIR += postgresql-jdbc
     SUBDIR += postgresql-libpgeasy
     SUBDIR += postgresql-libpqxx
@@ -645,13 +656,11 @@
     SUBDIR += postgresql-plv8js
     SUBDIR += postgresql-relay
     SUBDIR += postgresql-repmgr
+    SUBDIR += postgresql-repmgr2
     SUBDIR += postgresql90-client
-    SUBDIR += postgresql90-contrib
-    SUBDIR += postgresql90-docs
     SUBDIR += postgresql90-pgtcl
     SUBDIR += postgresql90-plperl
     SUBDIR += postgresql90-plpython
-    SUBDIR += postgresql90-pltcl
     SUBDIR += postgresql90-server
     SUBDIR += postgresql91-client
     SUBDIR += postgresql91-contrib
@@ -702,7 +711,9 @@
     SUBDIR += proftpd-mod_sql_tds
     SUBDIR += puppetdb
     SUBDIR += puppetdb-terminus
+    SUBDIR += puppetdb-terminus3
     SUBDIR += puppetdb-terminus4
+    SUBDIR += puppetdb3
     SUBDIR += puppetdb4
     SUBDIR += pure-sql3
     SUBDIR += puredb
@@ -738,10 +749,12 @@
     SUBDIR += py-htsql-pgsql
     SUBDIR += py-kyotocabinet
     SUBDIR += py-leveldb
+    SUBDIR += py-motor
     SUBDIR += py-mycli
     SUBDIR += py-mysql-connector-python
     SUBDIR += py-mysql-connector-python2
     SUBDIR += py-mysql2pgsql
+    SUBDIR += py-mysqlclient
     SUBDIR += py-odbc
     SUBDIR += py-oops
     SUBDIR += py-oursql
@@ -755,8 +768,8 @@
     SUBDIR += py-pickleshare
     SUBDIR += py-postgresql
     SUBDIR += py-psycogreen
-    SUBDIR += py-psycopg
     SUBDIR += py-psycopg2
+    SUBDIR += py-psycopg2cffi
     SUBDIR += py-pyPgSQL
     SUBDIR += py-pyhs
     SUBDIR += py-pylibmc
@@ -775,10 +788,12 @@
     SUBDIR += py-riak
     SUBDIR += py-rrdtool_lgpl
     SUBDIR += py-south
-    SUBDIR += py-sqlalchemy
-    SUBDIR += py-sqlalchemy-devel
     SUBDIR += py-sqlalchemy-migrate
     SUBDIR += py-sqlalchemy06
+    SUBDIR += py-sqlalchemy07
+    SUBDIR += py-sqlalchemy08
+    SUBDIR += py-sqlalchemy09
+    SUBDIR += py-sqlalchemy10
     SUBDIR += py-sqlite3
     SUBDIR += py-sqlite3dbm
     SUBDIR += py-sqlobject
@@ -789,6 +804,7 @@
     SUBDIR += py-sybase
     SUBDIR += py-tarantool
     SUBDIR += py-umemcache
+    SUBDIR += py-unqlite
     SUBDIR += py-whisper
     SUBDIR += py3-bsddb3
     SUBDIR += py33-gdbm
@@ -799,6 +815,7 @@
     SUBDIR += py35-sqlite3
     SUBDIR += pydbx
     SUBDIR += pymongo
+    SUBDIR += pymongo28
     SUBDIR += pypy-gdbm
     SUBDIR += pypy-sqlite3
     SUBDIR += pyspatialite
@@ -832,7 +849,6 @@
     SUBDIR += rrdman
     SUBDIR += rrdmerge
     SUBDIR += rrdtool
-    SUBDIR += rrdtool10
     SUBDIR += rrdtool12
     SUBDIR += ruby-bdb
     SUBDIR += ruby-cdb
@@ -847,6 +863,7 @@
     SUBDIR += rubygem-activemodel
     SUBDIR += rubygem-activemodel4
     SUBDIR += rubygem-activerecord
+    SUBDIR += rubygem-activerecord-import
     SUBDIR += rubygem-activerecord-jdbc-adapter
     SUBDIR += rubygem-activerecord-jdbcmysql-adapter
     SUBDIR += rubygem-activerecord-mysql-adapter
@@ -906,6 +923,8 @@
     SUBDIR += rubygem-openid-redis-store
     SUBDIR += rubygem-paranoia
     SUBDIR += rubygem-pg
+    SUBDIR += rubygem-pg_array_parser
+    SUBDIR += rubygem-postgres_ext
     SUBDIR += rubygem-rbase
     SUBDIR += rubygem-redis
     SUBDIR += rubygem-redis-actionpack
@@ -934,12 +953,15 @@
     SUBDIR += sqldeveloper
     SUBDIR += sqlite-ext-miscfuncs
     SUBDIR += sqlite-ext-pcre
+    SUBDIR += sqlite-ext-regexp
+    SUBDIR += sqlite-ext-spellfix
     SUBDIR += sqlite2
     SUBDIR += sqlite3
     SUBDIR += sqlitebrowser
     SUBDIR += sqliteman
     SUBDIR += sqlitemanager
     SUBDIR += sqliteodbc
+    SUBDIR += sqliteodbc-sqlite2
     SUBDIR += sqlitestudio
     SUBDIR += sqlrelay
     SUBDIR += sqsh
@@ -948,9 +970,11 @@
     SUBDIR += tarantool
     SUBDIR += tarantool-c
     SUBDIR += tcl-Mysql
+    SUBDIR += tcl-lmdb
     SUBDIR += tcl-sqlite3
     SUBDIR += tdb
     SUBDIR += tdbc
+    SUBDIR += tile38
     SUBDIR += tinycdb
     SUBDIR += tokyocabinet
     SUBDIR += tokyotyrant

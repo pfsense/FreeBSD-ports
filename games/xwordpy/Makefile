@@ -8,10 +8,12 @@ CATEGORIES=	games
 MASTER_SITES=	http://x-word.org/
 DISTNAME=	xword-${PORTVERSION}
 
-MAINTAINER=	bf@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Application for solving crossword puzzles in the Across Lite format
 
 BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
 USE_GNOME=	pygtk2
 USES=		python
 NO_BUILD=	yes

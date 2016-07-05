@@ -1,4 +1,7 @@
-SHA256 (ejabberd-16.02.tgz) = 98388050864d8c3717c581ece5381c473cd89729b7d0c2ee059735e9ff892a7a
-SIZE (ejabberd-16.02.tgz) = 1679966
-SHA256 (ejabberd-deps-5.tar.xz) = b2b53f165f3a1bb5aeb472ab0f3583175f8a7e7cb676c2b422e751aec4ff116e
-SIZE (ejabberd-deps-5.tar.xz) = 24471888
+TIMESTAMP = 1466178399
+SHA256 (ejabberd-16.04.tgz) = 3d964fe74e438253c64c8498eb7465d2440823614a23df8d33bdf40126d72cc3
+SIZE (ejabberd-16.04.tgz) = 1715963
+SHA256 (ejabberd-deps-7.tar.xz) = 3c12376e58466f765eb68660841fdb0abe2c4b78d40dceaa108bdb33bfbf1b3c
+SIZE (ejabberd-deps-7.tar.xz) = 27107612
+SHA256 (patch-mod_logdb-16.04.diff) = 39643737b62e4dc54f1dab4ed80439e6f1a3f6774e05c5b06afee91295ea51b2
+SIZE (patch-mod_logdb-16.04.diff) = 305208
