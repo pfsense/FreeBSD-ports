@@ -882,17 +882,17 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 		}
 		fwrite ($fd, "\tbalance\t\t\t{$pool['balance']}{$parameters}\n");
 	}
-	if (!$pool['connection_timeout']) {
+	if ($pool['connection_timeout'] === "") {
 		$pool['connection_timeout'] = 30000;
 	}
 	fwrite ($fd, "\ttimeout connect\t\t" . $pool['connection_timeout'] . "\n");
 
-	if (!$pool['server_timeout']) {
+	if ($pool['server_timeout'] === "") {
 		$pool['server_timeout'] = 30000;
 	}
 	fwrite ($fd, "\ttimeout server\t\t" . $pool['server_timeout'] . "\n");
 
-	if (!$pool['retries']) {
+	if ($pool['retries'] === "") {
 		$pool['retries'] = 3;
 	}
 	fwrite ($fd, "\tretries\t\t\t" . $pool['retries'] . "\n");

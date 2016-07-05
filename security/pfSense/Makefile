@@ -60,7 +60,8 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/clog:sysutils/clog \
 		${LOCALBASE}/bin/scponly:shells/scponly \
 		${LOCALBASE}/sbin/xinetd:security/xinetd \
 		${LOCALBASE}/www/status_monitoring.php:sysutils/pfSense-Status_Monitoring \
-		${LOCALBASE}/bin/uclcmd:devel/uclcmd
+		${LOCALBASE}/bin/uclcmd:devel/uclcmd \
+		${LOCALBASE}/share/mobile-broadband-provider-info/serviceproviders.xml:net/mobile-broadband-provider-info
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
