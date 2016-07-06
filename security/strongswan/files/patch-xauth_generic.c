@@ -1,5 +1,5 @@
---- src/libcharon/plugins/xauth_generic/xauth_generic.c.orig	2014-02-12 09:23:58.000000000 +0100
-+++ src/libcharon/plugins/xauth_generic/xauth_generic.c	2014-02-12 09:50:09.000000000 +0100
+--- src/libcharon/plugins/xauth_generic/xauth_generic.c.orig	2016-04-22 20:01:35 UTC
++++ src/libcharon/plugins/xauth_generic/xauth_generic.c
 @@ -13,10 +13,15 @@
   * for more details.
   */
@@ -16,7 +16,7 @@
  
  typedef struct private_xauth_generic_t private_xauth_generic_t;
  
-@@ -41,6 +46,103 @@
+@@ -41,6 +46,103 @@ struct private_xauth_generic_t {
  	identification_t *peer;
  };
  
@@ -120,7 +120,7 @@
  METHOD(xauth_method_t, initiate_peer, status_t,
  	private_xauth_generic_t *this, cp_payload_t **out)
  {
-@@ -137,6 +239,7 @@
+@@ -137,6 +239,7 @@ METHOD(xauth_method_t, process_server, s
  	chunk_t user = chunk_empty, pass = chunk_empty;
  	status_t status = FAILED;
  	int tried = 0;
@@ -128,7 +128,7 @@
  
  	enumerator = in->create_attribute_enumerator(in);
  	while (enumerator->enumerate(enumerator, &attr))
-@@ -176,29 +279,45 @@
+@@ -176,29 +279,45 @@ METHOD(xauth_method_t, process_server, s
  		pass.len -= 1;
  	}
  

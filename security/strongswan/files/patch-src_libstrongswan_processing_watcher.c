@@ -1,4 +1,4 @@
---- src/libstrongswan/processing/watcher.c.orig	2015-12-07 20:33:06 UTC
+--- src/libstrongswan/processing/watcher.c.orig	2016-04-22 20:01:35 UTC
 +++ src/libstrongswan/processing/watcher.c
 @@ -25,6 +25,7 @@
  #include <unistd.h>
