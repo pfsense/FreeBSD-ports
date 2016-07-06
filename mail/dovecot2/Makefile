@@ -13,7 +13,7 @@
 ######################################################################
 
 PORTNAME=	dovecot
-PORTVERSION=	2.2.22
+PORTVERSION=	2.2.24
 CATEGORIES=	mail ipv6
 MASTER_SITES=	http://www.dovecot.org/releases/${PORTVERSION:R}/
 PKGNAMESUFFIX=	2
@@ -99,7 +99,7 @@ LUCENE_LIB_DEPENDS=	libclucene-core.so:textproc/clucene
 
 LZ4_LIB_DEPENDS=	liblz4.so:archivers/liblz4
 
-MYSQL_USE=		MYSQL=yes
+MYSQL_USES=		mysql
 MYSQL_CONFIGURE_WITH=	mysql
 
 PGSQL_USES=		pgsql
@@ -109,7 +109,7 @@ SOLR_CONFIGURE_WITH=	solr
 SOLR_BUILD_DEPENDS=	curl:ftp/curl
 SOLR_LIB_DEPENDS=	libexpat.so:textproc/expat2
 
-SQLITE_USE=		SQLITE=3
+SQLITE_USES=		sqlite:3
 SQLITE_CONFIGURE_WITH=	sqlite
 
 SSL_CONFIGURE_WITH=	ssl=openssl
@@ -152,10 +152,13 @@ post-patch:
 	@${REINPLACE_CMD} -e '/^[^#]/s|/usr|${LOCALBASE}|' \
 		${WRKSRC}/src/plugins/fts/decode2text.sh
 
-post-install:
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR} ${STAGEDIR}${DOCSDIR}
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	(cd ${WRKSRC} && ${INSTALL_DATA} ${DOCS} ${STAGEDIR}${DOCSDIR})
+
+post-install-EXAMPLES-on:
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${MV} ${STAGEDIR}${DOCSDIR}/dovecot-openssl.cnf ${STAGEDIR}${EXAMPLESDIR}
 	${MV} ${STAGEDIR}${DOCSDIR}/mkcert.sh ${STAGEDIR}${EXAMPLESDIR}
-	(cd ${WRKSRC} && ${INSTALL_DATA} ${DOCS} ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

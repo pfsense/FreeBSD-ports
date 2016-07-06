@@ -3,7 +3,7 @@
 
 PORTNAME=	fvm
 PORTVERSION=	0.15.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	science parallel
 MASTER_SITES=	http://code-saturne.org/releases/
 
@@ -16,8 +16,6 @@ LIB_DEPENDS=	libmed.so:french/med	\
 		libbft.so:science/bft	\
 		libhdf5.so:science/hdf5	\
 		libcgns.so:science/cgnslib
-
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 USES=		libtool
 USE_LDCONFIG=	yes

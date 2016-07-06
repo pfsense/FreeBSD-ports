@@ -37,6 +37,7 @@
     SUBDIR += dnscrypt-wrapper
     SUBDIR += dnsdbck
     SUBDIR += dnsdist
+    SUBDIR += dnsenum
     SUBDIR += dnsflood
     SUBDIR += dnshistory
     SUBDIR += dnsjava
@@ -45,6 +46,7 @@
     SUBDIR += dnsmax-perl
     SUBDIR += dnsperf
     SUBDIR += dnsproxy
+    SUBDIR += dnsrecon
     SUBDIR += dnsreflector
     SUBDIR += dnstable
     SUBDIR += dnstop
@@ -62,6 +64,7 @@
     SUBDIR += fpdns
     SUBDIR += gdnsd
     SUBDIR += gdnsd2
+    SUBDIR += gen6dns
     SUBDIR += getdns
     SUBDIR += ghtool
     SUBDIR += hesiod
@@ -95,12 +98,10 @@
     SUBDIR += mydns-ng
     SUBDIR += noip
     SUBDIR += nsd
-    SUBDIR += nsd3
     SUBDIR += nslint
     SUBDIR += nsping
     SUBDIR += nss_mdns
     SUBDIR += nss_resinit
-    SUBDIR += odsclient
     SUBDIR += opendd
     SUBDIR += opendnssec
     SUBDIR += opendnssec13
@@ -171,6 +172,7 @@
     SUBDIR += py-namebench
     SUBDIR += py-publicsuffix
     SUBDIR += py-py3dns
+    SUBDIR += py-pycares
     SUBDIR += py-pydnstable
     SUBDIR += py-pywdns
     SUBDIR += py-tldextract

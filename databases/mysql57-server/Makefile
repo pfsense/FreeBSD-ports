@@ -1,15 +1,16 @@
-# Created by: "Mahdi Mokhtari <mokhi64@gmail.com>"
+# Created by: Mahdi Mokhtari <mokhi64@gmail.com>
 # $FreeBSD$
 
-PORTNAME=	mysql
-PORTVERSION=	5.7.12
+PORTNAME?=	mysql
+PORTVERSION=	5.7.13
+PORTREVISION?=	0
 CATEGORIES=	databases ipv6
 MASTER_SITES=	MYSQL/MySQL-5.7
 PKGNAMESUFFIX?=	57-server
 DISTNAME=	${PORTNAME}-boost-${PORTVERSION}
 
 MAINTAINER=	mokhi64@gmail.com
-COMMENT=	Multithreaded SQL database (server)
+COMMENT?=	Multithreaded SQL database (server)
 
 LICENSE=	GPLv2
 
@@ -20,8 +21,6 @@ USES=		bison:build cmake:outsource compiler:c11 compiler:c++11-lib cpe libedit l
 
 USE_OPENSSL=	yes
 USE_PERL5=	run
-
-WITH_OPENSSL_PORT=	yes
 
 MY_DBDIR=	/var/db/mysql
 MY_SECDIR=	/var/db/mysql_secure
@@ -57,9 +56,7 @@ CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
 		-DWITH_EDITLINE=system \
 		-DWITH_LIBEVENT=system \
 		-DWITH_LZ4=system \
-		-DWITH_ZLIB=system \
-		-DWITH_SSL=${OPENSSLBASE} \
-		-DWITH_PIC=1
+		-DWITH_ZLIB=system
 
 SHEBANG_FILES=	scripts/*.pl* scripts/*.sh
 
@@ -77,8 +74,7 @@ PLIST_SUB=	MY_DBDIR=${MY_DBDIR} \
 
 # MySQL-Server part
 .if !defined(CLIENT_ONLY)
-USE_MYSQL=	yes
-WANT_MYSQL_VER=	57
+USES+=		mysql:57
 
 CONFLICTS_INSTALL=	mysql5[0-68-9]-server-* \
 			mysql[0-46-9][0-9]-server-* \
@@ -133,12 +129,25 @@ PERFSCHM_SUB_LIST+=	PERFSCHEMRC=""
 PERFSCHM_SUB_LIST_OFF+=	PERFSCHEMRC="--skip-performance-schema"
 .endif
 
-.include <bsd.port.pre.mk>
+.include <bsd.port.options.mk>
 
 ### Just for the sake of FreeBSD 9.X ###
 .if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
 .if !defined(CLIENT_ONLY)
 EXTRA_PATCHES+=		${PATCHDIR}/rapid_plugin-patch-_x_mysqlxtest__src_mysqlxtest.cc
+.endif
+WITH_OPENSSL_PORT=	yes
+CMAKE_ARGS+=		-DWITH_SSL=${OPENSSLBASE}
+.endif
+
+.include <bsd.port.pre.mk>
+
+### FreeBSD Version > 9.X ###
+.if ${OPSYS} == FreeBSD && ${OSVERSION} > 1000000
+.if ${SSL_DEFAULT} == base
+CMAKE_ARGS+=		-DWITH_SSL=system
+.else
+CMAKE_ARGS+=		-DWITH_SSL=${OPENSSLBASE}
 .endif
 .endif
 

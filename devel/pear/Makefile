@@ -11,14 +11,14 @@ COMMENT=	PEAR framework for PHP
 
 LICENSE=	PHP301
 
-USES=		cpe tar:bzip2
+BROKEN_powerpc64=	Does not build
+
+USES=		cpe php:cli tar:bzip2
 CPE_VENDOR=	php
 NO_BUILD=	yes
 NO_ARCH=	yes
 
-WANT_PHP_CLI=	yes
-USE_PHP=	pcre xml zlib
-USE_PHP_BUILD=	yes
+USE_PHP=	pcre:build xml:build zlib:build
 
 PEARDIR=	${PREFIX}/share/pear
 

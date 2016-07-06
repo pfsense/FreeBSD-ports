@@ -31,7 +31,7 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/clog:sysutils/clog \
 		${LOCALBASE}/sbin/check_reload_status:sysutils/check_reload_status \
 		${LOCALBASE}/sbin/dhcrelay:net/isc-dhcp43-relay \
 		${LOCALBASE}/sbin/dhcp6c:net/dhcp6 \
-		${LOCALBASE}/sbin/dnsmasq:dns/dnsmasq-devel \
+		${LOCALBASE}/sbin/dnsmasq:dns/dnsmasq \
 		${LOCALBASE}/sbin/igmpproxy:net/igmpproxy \
 		${LOCALBASE}/sbin/filterdns:net/filterdns \
 		${LOCALBASE}/sbin/filterlog:sysutils/filterlog \

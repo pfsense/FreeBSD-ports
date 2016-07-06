@@ -11,6 +11,8 @@ COMMENT=	System for detecting network intruders in real-time
 
 LICENSE=	BSD3CLAUSE
 
+BROKEN_powerpc64=	Does not build
+
 BUILD_DEPENDS=	${LOCALBASE}/bin/bison:devel/bison \
 		${LOCALBASE}/bin/swig:devel/swig13
 LIB_DEPENDS=	libGeoIP.so:net/GeoIP
@@ -135,8 +137,8 @@ CMAKE_ARGS+=	-D CMAKE_EXE_LINKER_FLAGS="${OPENSSL_LDFLAGS}"
 BUILD_DEPENDS+=	${LOCALBASE}/lib/libcrypto.so:security/openssl
 RUN_DEPENDS+=	${LOCALBASE}/lib/libcrypto.so:security/openssl
 .else
-.if defined(WITH_OPENSSL_PORT)
-IGNORE=		the SSL option is requred when WITH_OPENSSL_PORT is enabled
+.if ${SSL_DEFAULT} != base
+IGNORE=		the SSL option is requred when using SSL from ports
 .endif
 .endif
 

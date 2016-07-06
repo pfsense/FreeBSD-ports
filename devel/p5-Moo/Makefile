@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Moo
-PORTVERSION=	2.001001
-PORTREVISION=	2
+PORTVERSION=	2.002004
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:HAARG
@@ -33,7 +32,7 @@ XS_RUN_DEPENDS=		${XS_BUILD_DEPENDS}
 
 .include <bsd.port.pre.mk>
 
-.if ${PERL_LEVEL} < 502200
+.if ${PERL_LEVEL} < 502200 && ${PORT_OPTIONS:MXS}
 BUILD_DEPENDS+=	p5-Scalar-List-Utils>=0:lang/p5-Scalar-List-Utils
 RUN_DEPENDS+=	p5-Scalar-List-Utils>=0:lang/p5-Scalar-List-Utils
 .endif

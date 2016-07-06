@@ -11,11 +11,11 @@ DISTNAME=	${PORTNAME}${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Sound toolkit for scripting languages
 
-USES=		tk
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/../COPYING
+
+USES=		tk:tea
 USE_LDCONFIG=	${PREFIX}/lib/snack${PORTVERSION:R}
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-tcl=${TCL_LIBDIR} \
-		--with-tk=${TK_LIBDIR}
 MAKE_ENV=	prefix=${PREFIX} exec_prefix=${PREFIX}
 
 WRKSRC=		${WRKDIR}/${DISTNAME}/unix
@@ -32,7 +32,9 @@ VORBIS_CONFIGURE_ON=	--with-ogg-include=${LOCALBASE}/include \
 VORBIS_ALL_TARGET=	all libsnackogg.so
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/snack${PORTVERSION:R}/*.so
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/snack${PORTVERSION:R}/*.so
+
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/../doc/* ${STAGEDIR}${DOCSDIR}
 

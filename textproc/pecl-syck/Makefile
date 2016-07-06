@@ -14,12 +14,12 @@ COMMENT=	PECL extension which facilitates YAML parsing
 
 LICENSE=	PHP301
 
+BROKEN_powerpc64=	Does not build
+
 BUILD_DEPENDS=	${LOCALBASE}/lib/libsyck.a:textproc/syck
 
-USES=		tar:tgz
-USE_PHP=	spl hash
-USE_PHP_BUILD=	yes
-USE_PHPEXT=	yes
+USES=		php:ext tar:tgz
+USE_PHP=	spl:build hash:build
 IGNORE_WITH_PHP=	70
 
 CONFIGURE_ARGS=	--enable-syck

@@ -2,15 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	atheme-services
-PORTVERSION=	7.0.7
-PORTREVISION=	2
+PORTVERSION=	7.2.6
 CATEGORIES=	irc
-MASTER_SITES=	http://atheme.net/downloads/
+MASTER_SITES=	http://atheme.github.io/downloads/
 
 MAINTAINER=	tdb@FreeBSD.org
 COMMENT=	Set of services for IRC networks
 
-USES=		pkgconfig pathfix gmake
+USES=		tar:bzip2 pkgconfig pathfix gmake
 PATHFIX_MAKEFILEIN=	Makefile
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
@@ -30,7 +29,7 @@ LIB_DEPENDS+=	libmowgli-2.so:devel/libmowgli2
 USE_RC_SUBR=	atheme-services
 
 OPTIONS_DEFINE=	CONTRIB CRACKLIB DOCS LDAP NLS PCRE PERL
-OPTIONS_DEFAULT=	CRACKLIB DOCS LDAP NLS PCRE PERL
+OPTIONS_DEFAULT=	CRACKLIB LDAP PCRE PERL
 
 CONTRIB_DESC=	Enable contrib modules
 CRACKLIB_DESC=	Use cracklib for checking password strength

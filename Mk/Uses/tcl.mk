@@ -27,7 +27,7 @@
 #
 # Usage:
 #
-# USES+=	PORT[:(VERSION|wrapper),build,run]
+# USES+=	PORT[:(VERSION|wrapper),build,run,tea]
 #
 # where PORT is one of:
 #
@@ -53,6 +53,9 @@
 #
 # Build-time / Run-time only dependencies can be specified with build or run.
 #
+# Tea can be used for Tcl/Tk extensions that use the Tcl Extension Architecture
+# [http://www.tcl.tk/doc/tea] and allows to set common autoconf parameters.
+#
 # MAINTAINER: tcltk@FreeBSD.org
 
 .if ${USES:Mtk} || ${USES:Mtk\:*}
@@ -67,6 +70,8 @@ _INCLUDE_USES_TCL_MK=	yes
 #
 # List the currently available versions.
 #
+# When adding a version, please keep the comment in
+# Mk/bsd.default-versions.mk in sync.
 _TCLTK_VALID_VERSIONS=	84 85 86
 
 #
@@ -196,6 +201,19 @@ RUN_DEPENDS+=	${_TCLTK_WRAPPER_PORT} \
 .else
 RUN_DEPENDS+=	${_TCLTK_WRAPPER_PORT}
 LIB_DEPENDS+=	${_TCLTK_LIB_LINE}
+.endif
+
+# Setup TEA stuff
+.if ${tcl_ARGS:Mtea}
+GNU_CONFIGURE=	yes
+TCL_PKG?=	${PORTNAME:C/^tcl(-?)//:C/(-?)tcl\$//}${PORTVERSION}
+PLIST_SUB+=	TCL_PKG=${TCL_PKG}
+CONFIGURE_ARGS+=--exec-prefix=${PREFIX} \
+		--with-tcl=${TCL_LIBDIR} \
+		--with-tclinclude=${TCL_INCLUDEDIR}
+.  if ${_TCLTK_PORT} == "tk"
+CONFIGURE_ARGS+=--with-tk=${TK_LIBDIR} --with-tkinclude=${TK_INCLUDEDIR}
+.  endif
 .endif
 
 .endif # defined(_INCLUDE_USES_TCL_MK)

@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	xarchiver
-PORTVERSION=	0.5.4
-PORTREVISION=	1
+PORTVERSION=	0.5.4.6
+DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	archivers
-MASTER_SITES=	SF/${PORTNAME:tl}
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Desktop-agnostic GTK+2 frontend to various archiving tools
@@ -16,6 +15,9 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 		7zr:archivers/p7zip \
 		zip:archivers/zip \
 		zipinfo:archivers/unzip
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	ib
 
 USES=		desktop-file-utils gmake pkgconfig tar:bzip2
 USE_GNOME=	glib20 gtk20 intltool

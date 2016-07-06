@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sprockets
-PORTVERSION=	3.5.2
+PORTVERSION=	3.6.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	3
@@ -18,8 +18,7 @@ RUN_DEPENDS=	rubygem-concurrent-ruby>=1.0:devel/rubygem-concurrent-ruby \
 
 NO_ARCH=	yes
 USE_RUBY=	yes
-USE_RUBYGEMS=	yes
-RUBYGEM_AUTOPLIST=	yes
+USES=		gem
 
 post-install:
 	@${RM} ${STAGEDIR}${PREFIX}/bin/sprockets

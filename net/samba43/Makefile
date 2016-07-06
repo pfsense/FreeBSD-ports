@@ -13,13 +13,13 @@ COMMENT?=		Free SMB/CIFS and AD/DC server and client for Unix
 
 LICENSE=		GPLv3
 
-CONFLICTS?=		*samba3[2-6]-3.* samba4-4.0.* samba41-4.1.* samba42-4.2.*
+CONFLICTS?=		*samba3[2-6]-3.* samba4-4.0.* samba41-4.1.* samba42-4.2.* samba44-4.4.*
 
 EXTRA_PATCHES=		${PATCHDIR}/extra-patch-progress:-p1
 
 SAMBA4_BASENAME=	samba
 SAMBA4_PORTNAME=	${SAMBA4_BASENAME}4
-SAMBA4_VERSION=		4.3.8
+SAMBA4_VERSION=		4.3.9
 SAMBA4_DISTNAME=	${SAMBA4_BASENAME}-${SAMBA4_VERSION:S|.p|pre|:S|.r|rc|:S|.t|tp|:S|.a|alpha|}
 
 WRKSRC?=		${WRKDIR}/${DISTNAME}
@@ -75,10 +75,7 @@ PLIST_SUB+=		PKGCONFIGDIR=${PKGCONFIGDIR:S;${PREFIX}/;;}
 LIB_DEPENDS+=		libpopt.so:devel/popt
 # inotify
 LIB_DEPENDS+=		libinotify.so:devel/libinotify
-# SASL
-LIB_DEPENDS+=		libsasl2.so:security/cyrus-sasl2
 # GNUTLS
-LIB_DEPENDS+=		libgcrypt.so:security/libgcrypt
 LIB_DEPENDS+=		libgnutls.so:security/gnutls
 # NFS4 ACL glue
 LIB_DEPENDS+=		libsunacl.so:sysutils/libsunacl
@@ -97,8 +94,8 @@ BUILD_DEPENDS+=		talloc>=2.1.5:devel/talloc
 RUN_DEPENDS+=		talloc>=2.1.5:devel/talloc
 SAMBA4_BUNDLED_LIBS+=	!talloc
 # tevent
-BUILD_DEPENDS+=		tevent>=0.9.25:devel/tevent
-RUN_DEPENDS+=		tevent>=0.9.25:devel/tevent
+BUILD_DEPENDS+=		tevent>=0.9.28:devel/tevent
+RUN_DEPENDS+=		tevent>=0.9.28:devel/tevent
 SAMBA4_BUNDLED_LIBS+=	!tevent
 # tdb
 BUILD_DEPENDS+=		tdb>=1.3.8:databases/tdb
@@ -277,8 +274,10 @@ CONFIGURE_ARGS+=	--disable-dnssd
 .if ${PORT_OPTIONS:MCUPS}
 LIB_DEPENDS+=		libcups.so:print/cups
 CONFIGURE_ARGS+=	--enable-cups --enable-iprint
+PLIST_SUB+=		CUPS=""
 .else
 CONFIGURE_ARGS+=	--disable-cups --disable-iprint
+PLIST_SUB+=		CUPS="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MDNSUPDATE}

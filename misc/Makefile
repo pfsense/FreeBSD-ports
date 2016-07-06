@@ -65,7 +65,6 @@
     SUBDIR += dejagnu
     SUBDIR += delay
     SUBDIR += detachtty
-    SUBDIR += diary-hercules
     SUBDIR += diction
     SUBDIR += digitemp
     SUBDIR += display
@@ -122,6 +121,7 @@
     SUBDIR += freebsd-doc-tr
     SUBDIR += freebsd-doc-zh_cn
     SUBDIR += freebsd-doc-zh_tw
+    SUBDIR += freebsd-release-manifests
     SUBDIR += freeguide
     SUBDIR += ftdi-eeprom
     SUBDIR += fxload
@@ -232,7 +232,6 @@
     SUBDIR += kde4-l10n-wa
     SUBDIR += kde4-xdg-env
     SUBDIR += kdeedu4
-    SUBDIR += kdehier4
     SUBDIR += kdeutils4
     SUBDIR += kenny
     SUBDIR += kgeography
@@ -276,6 +275,7 @@
     SUBDIR += mtx
     SUBDIR += najitool
     SUBDIR += newer
+    SUBDIR += nms
     SUBDIR += nsf
     SUBDIR += numchar
     SUBDIR += nut
@@ -375,12 +375,14 @@
     SUBDIR += py-osd
     SUBDIR += py-pexpect
     SUBDIR += py-powerline-status
+    SUBDIR += py-pyprind
     SUBDIR += py-progressbar
     SUBDIR += py-progressbar231
     SUBDIR += py-qt4-demo
     SUBDIR += py-qt4-doc
     SUBDIR += py-qt5-demo
     SUBDIR += py-qt5-doc
+    SUBDIR += py-socli
     SUBDIR += py-spdx
     SUBDIR += py-spdx-lookup
     SUBDIR += py-tqdm
@@ -394,6 +396,8 @@
     SUBDIR += qt4-l10n
     SUBDIR += qt4-qtconfig
     SUBDIR += qt4-qtdemo
+    SUBDIR += qt5-doc
+    SUBDIR += qt5-examples
     SUBDIR += qt5-l10n
     SUBDIR += qt5ct
     SUBDIR += quotes
@@ -410,11 +414,13 @@
     SUBDIR += rubygem-mime-types
     SUBDIR += rubygem-mime-types-data
     SUBDIR += rubygem-mime-types1
+    SUBDIR += rubygem-mime-types29
     SUBDIR += rubygem-mimemagic
     SUBDIR += rubygem-rabbit
     SUBDIR += rubygem-vpim
     SUBDIR += rump
     SUBDIR += saaghar
+    SUBDIR += sent
     SUBDIR += seq2
     SUBDIR += shared-mime-info
     SUBDIR += shc

@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pango
-PORTVERSION=	3.0.7
-PORTREVISION=	1
+PORTVERSION=	3.0.8
 CATEGORIES=	x11-toolkits rubygems
 MASTER_SITES=	RG
 
@@ -16,7 +15,6 @@ RUN_DEPENDS=	rubygem-cairo>=1.14.0:graphics/rubygem-cairo \
 
 USE_GNOME=	pango
 USE_RUBY=	yes
-USE_RUBYGEMS=	yes
-RUBYGEM_AUTOPLIST=	yes
+USES=		gem
 
 .include <bsd.port.mk>

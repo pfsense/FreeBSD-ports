@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME?=	mariadb
-PORTVERSION=	5.5.49
+PORTVERSION=	5.5.50
 CATEGORIES=	databases ipv6
 MASTER_SITES=	http://ftp.osuosl.org/pub/mariadb/${PORTNAME}-${PORTVERSION}/source/ \
 		http://mirrors.supportex.net/mariadb/${PORTNAME}-${PORTVERSION}/source/ \
@@ -18,6 +18,8 @@ MAINTAINER=	never@nevermind.kiev.ua
 COMMENT?=	Multithreaded SQL database (server)
 
 LICENSE=	GPLv2
+
+BROKEN_powerpc64=	Does not build
 
 SUB_FILES=	pkg-message
 PKGMESSAGE=	${WRKDIR}/pkg-message
@@ -59,8 +61,7 @@ BROKEN_armv6=		Does not compile on arm
 
 .if !defined(CLIENT_ONLY)
 # MySQL-Server part
-USE_MYSQL=	yes
-WANT_MYSQL_VER=	55m
+USES+=		mysql:55m
 
 CONFLICTS_INSTALL=	mariadb5[0-46-9]-server-* \
 			mariadb1*-server-* \

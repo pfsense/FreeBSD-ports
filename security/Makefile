@@ -74,6 +74,7 @@
     SUBDIR += clambc
     SUBDIR += clamcour
     SUBDIR += clamd-stream-client
+    SUBDIR += clamfs
     SUBDIR += clamsmtp
     SUBDIR += clamtk
     SUBDIR += clusterssh
@@ -107,6 +108,7 @@
     SUBDIR += dirmngr
     SUBDIR += distcache
     SUBDIR += dmitry
+    SUBDIR += doas
     SUBDIR += doorman
     SUBDIR += doscan
     SUBDIR += dradis
@@ -115,13 +117,12 @@
     SUBDIR += duo
     SUBDIR += easy-rsa
     SUBDIR += easy-rsa2
-    SUBDIR += easypg
     SUBDIR += elixir-comeonin
     SUBDIR += elixir-comeonin_i18n
     SUBDIR += elixir-jose
-    SUBDIR += engine_pkcs11
     SUBDIR += erlang-jose
     SUBDIR += erlang-p1tls
+    SUBDIR += eschalot
     SUBDIR += esteidfirefoxplugin
     SUBDIR += expiretable
     SUBDIR += f-prot
@@ -289,6 +290,8 @@
     SUBDIR += lasso
     SUBDIR += lastpass-cli
     SUBDIR += letsencrypt.sh
+    SUBDIR += letskencrypt
+    SUBDIR += libadacrypt
     SUBDIR += libassuan
     SUBDIR += libbeid
     SUBDIR += libbf
@@ -492,6 +495,7 @@
     SUBDIR += p5-Crypt-CipherSaber
     SUBDIR += p5-Crypt-Cracklib
     SUBDIR += p5-Crypt-Ctr
+    SUBDIR += p5-Crypt-Curve25519
     SUBDIR += p5-Crypt-DES
     SUBDIR += p5-Crypt-DES_EDE3
     SUBDIR += p5-Crypt-DES_PP
@@ -501,6 +505,7 @@
     SUBDIR += p5-Crypt-ECB
     SUBDIR += p5-Crypt-Eksblowfish
     SUBDIR += p5-Crypt-Enigma
+    SUBDIR += p5-Crypt-Format
     SUBDIR += p5-Crypt-GCrypt
     SUBDIR += p5-Crypt-GOST
     SUBDIR += p5-Crypt-GOST_PP
@@ -512,6 +517,7 @@
     SUBDIR += p5-Crypt-Imail
     SUBDIR += p5-Crypt-Juniper
     SUBDIR += p5-Crypt-Khazad
+    SUBDIR += p5-Crypt-LE
     SUBDIR += p5-Crypt-License
     SUBDIR += p5-Crypt-Lite
     SUBDIR += p5-Crypt-Loki97
@@ -527,6 +533,7 @@
     SUBDIR += p5-Crypt-OpenSSL-DSA
     SUBDIR += p5-Crypt-OpenSSL-EC
     SUBDIR += p5-Crypt-OpenSSL-ECDSA
+    SUBDIR += p5-Crypt-OpenSSL-PKCS10
     SUBDIR += p5-Crypt-OpenSSL-RSA
     SUBDIR += p5-Crypt-OpenSSL-Random
     SUBDIR += p5-Crypt-OpenSSL-X509
@@ -545,6 +552,7 @@
     SUBDIR += p5-Crypt-RHash
     SUBDIR += p5-Crypt-RIPEMD160
     SUBDIR += p5-Crypt-RSA
+    SUBDIR += p5-Crypt-RSA-Parse
     SUBDIR += p5-Crypt-RSA-Yandex
     SUBDIR += p5-Crypt-Rabbit
     SUBDIR += p5-Crypt-RandPasswd
@@ -667,6 +675,7 @@
     SUBDIR += p5-POE-Filter-SSL
     SUBDIR += p5-Parse-Snort
     SUBDIR += p5-PerlCryptLib
+    SUBDIR += p5-Protocol-ACME
     SUBDIR += p5-SAVI-Perl
     SUBDIR += p5-SHA
     SUBDIR += p5-Safe-Hole
@@ -779,6 +788,7 @@
     SUBDIR += pinentry-gnome3
     SUBDIR += pinentry-gtk2
     SUBDIR += pinentry-qt4
+    SUBDIR += pinentry-qt5
     SUBDIR += pinentry-tty
     SUBDIR += pixiewps
     SUBDIR += pkcrack
@@ -813,14 +823,15 @@
     SUBDIR += py-Products.PluggableAuthService
     SUBDIR += py-RestrictedPython
     SUBDIR += py-SecretStorage
+    SUBDIR += py-YubiOTP
     SUBDIR += py-acme
     SUBDIR += py-acme-tiny
     SUBDIR += py-artifacts
     SUBDIR += py-bcrypt
     SUBDIR += py-borg.localrole
     SUBDIR += py-cerealizer
+    SUBDIR += py-certbot
     SUBDIR += py-certifi
-    SUBDIR += py-clamav
     SUBDIR += py-cpe
     SUBDIR += py-cracklib
     SUBDIR += py-crits
@@ -842,7 +853,6 @@
     SUBDIR += py-keyczar
     SUBDIR += py-keyring
     SUBDIR += py-keyrings.alt
-    SUBDIR += py-letsencrypt
     SUBDIR += py-libnacl
     SUBDIR += py-m2crypto
     SUBDIR += py-mcrypt
@@ -958,10 +968,12 @@
     SUBDIR += ruby-hmac
     SUBDIR += ruby-password
     SUBDIR += ruby-tcpwrap
+    SUBDIR += rubygem-airbrussh
     SUBDIR += rubygem-attr_encrypted
     SUBDIR += rubygem-bcrypt
     SUBDIR += rubygem-bcrypt-ruby
     SUBDIR += rubygem-devise-two-factor
+    SUBDIR += rubygem-digest-crc
     SUBDIR += rubygem-doorkeeper
     SUBDIR += rubygem-encryptor
     SUBDIR += rubygem-ezcrypto
@@ -986,6 +998,7 @@
     SUBDIR += rubygem-omniauth-multipassword
     SUBDIR += rubygem-omniauth-saml
     SUBDIR += rubygem-omniauth-shibboleth
+    SUBDIR += rubygem-openssl-ccm
     SUBDIR += rubygem-origami
     SUBDIR += rubygem-pyu-ruby-sasl
     SUBDIR += rubygem-rack-oauth2
@@ -1093,6 +1106,7 @@
     SUBDIR += tinc
     SUBDIR += tinyca
     SUBDIR += titus
+    SUBDIR += tls-check
     SUBDIR += tlswrap
     SUBDIR += tmux-cssh
     SUBDIR += tor
@@ -1142,9 +1156,12 @@
     SUBDIR += yersinia
     SUBDIR += ykclient
     SUBDIR += ykpers
+    SUBDIR += yubico-piv-tool
     SUBDIR += yubikey-personalization-gui
+    SUBDIR += yubikey-piv-manager
     SUBDIR += zebedee
     SUBDIR += zenmap
+    SUBDIR += zeronet
     SUBDIR += zxid
     SUBDIR += zzuf
 

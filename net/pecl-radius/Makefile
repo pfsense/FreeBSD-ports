@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	radius
-PORTVERSION=	1.2.7
+DISTVERSION=	1.3.0
 CATEGORIES=	net security pear
 MASTER_SITES=	http://pecl.php.net/get/
 PKGNAMEPREFIX=	pecl-
@@ -13,9 +13,7 @@ COMMENT=	Radius client library for PHP
 
 LICENSE=	BSD3CLAUSE
 
-USES=		tar:tgz
-USE_PHP=	yes
-USE_PHPEXT=	yes
+USES=		php:ext tar:tgz
 IGNORE_WITH_PHP=	70
 
 CONFIGURE_ARGS=	--enable-radius

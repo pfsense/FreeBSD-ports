@@ -3,18 +3,21 @@
 
 PORTNAME=	cloud_sptheme
 PORTVERSION=	1.6
+PORTREVISION=	1
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DIST_SUBDIR=	python
 
-MAINTAINER=	horia@racoviceanu.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Sphinx theme
 
 LICENSE=	BSD3CLAUSE
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0:textproc/py-sphinx
 RUN_DEPENDS:=	${BUILD_DEPENDS}
+
+BROKEN=		does not build
 
 USES=		python
 USE_PYTHON=	distutils autoplist
@@ -40,6 +43,9 @@ DOCSRCDIR4=	${DOCSRCDIR2}/_static
 DOC_FILES4=	*.css *.gif *.js *.png *.svg
 
 OPTIONS_DEFINE=	DOCS
+
+post-extract:
+	@${CHMOD} 644 ${WRKSRC}/cloud_sptheme/themes/greencloud/theme.conf
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR} ${STAGEDIR}${DOCSDIR2}

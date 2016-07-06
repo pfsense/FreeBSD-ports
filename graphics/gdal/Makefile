@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gdal
-PORTVERSION=	2.0.2
-PORTREVISION=	1
+PORTVERSION=	2.1.0
 CATEGORIES=	graphics geography
 MASTER_SITES=	http://download.osgeo.org/gdal/${PORTVERSION}/ \
 		ftp://ftp.remotesensing.org/pub/gdal/${PORTVERSION}/ \
@@ -53,7 +52,7 @@ USES=		gmake iconv jpeg localbase tar:xz
 PLIST_SUB=	MAJOR_VER=${PORTVERSION:R:R} PORTVERSION=${PORTVERSION}
 PORTDATA=	*
 
-SLAVEDIRS=	graphics/p5-Geo-GDAL graphics/php-gdal graphics/py-gdal graphics/ruby-gdal
+SLAVEDIRS=	graphics/p5-Geo-GDAL graphics/php-gdal graphics/py-gdal
 
 ARMADILLO_CONFIGURE_WITH=	armadillo
 ARMADILLO_LIB_DEPENDS=	libarmadillo.so:math/armadillo
@@ -105,7 +104,7 @@ PROJ_LIB_DEPENDS=	libproj.so:graphics/proj
 SPATIALITE_CONFIGURE_WITH=	spatialite
 SPATIALITE_LIB_DEPENDS=	libspatialite.so:databases/spatialite
 SQLITE_CONFIGURE_WITH=	sqlite3
-SQLITE_USE=		SQLITE=yes
+SQLITE_USES=		sqlite
 WEBP_CONFIGURE_WITH=	webp
 WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
 XERCES_CONFIGURE_WITH=	xerces
@@ -113,6 +112,7 @@ XERCES_LIB_DEPENDS=	libxerces-c.so:textproc/xerces-c3
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|$$(INST_LIB)/pkgconfig|${PREFIX}/libdata/pkgconfig|' ${WRKSRC}/GNUmakefile
+	@${REINPLACE_CMD} -e 's|-lminizip|-lkmlminizip|' ${WRKSRC}/configure
 # Cleanup bundled libraries
 	@${RM} -fr ${WRKSRC}/frmts/gif/giflib/
 	@${RM} -fr ${WRKSRC}/frmts/gtiff/libgeotiff/

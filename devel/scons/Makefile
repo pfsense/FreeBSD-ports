@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	scons
-PORTVERSION=	2.4.1
+PORTVERSION=	2.5.0
 CATEGORIES=	devel python
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}
+MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Build tool alternative to make

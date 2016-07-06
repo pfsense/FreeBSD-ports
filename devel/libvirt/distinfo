@@ -1,2 +1,3 @@
-SHA256 (libvirt-1.3.2.tar.gz) = e3c6fc2683178660b371efb3ac7a1103a3f4b78efac7ffe560bc5917974ccf05
-SIZE (libvirt-1.3.2.tar.gz) = 30056101
+TIMESTAMP = 1465314056
+SHA256 (libvirt-1.3.5.tar.gz) = 93a23c44eb431da46c9458f95a66e29c9b98e37515d44b6be09e75b35ec94ac8
+SIZE (libvirt-1.3.5.tar.gz) = 35109092
