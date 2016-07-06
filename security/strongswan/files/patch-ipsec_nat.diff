@@ -1,7 +1,19 @@
-diff -ruN ../strongswan-5.3.0.orig/src/libcharon/plugins/stroke/stroke_config.c ./src/libcharon/plugins/stroke/stroke_config.c
---- ../strongswan-5.3.0.orig/src/libcharon/plugins/stroke/stroke_config.c	2015-03-31 12:42:35.000000000 -0500
-+++ ./src/libcharon/plugins/stroke/stroke_config.c	2015-03-31 12:42:40.000000000 -0500
-@@ -1073,6 +1073,7 @@
+--- src/libcharon/plugins/kernel_pfkey/kernel_pfkey_ipsec.c.orig	2016-06-20 08:49:09 UTC
++++ src/libcharon/plugins/kernel_pfkey/kernel_pfkey_ipsec.c
+@@ -520,8 +520,8 @@ static policy_entry_t *create_policy_ent
+ 	uint16_t port;
+ 	uint8_t proto;
+ 
+-	src_ts->to_subnet(src_ts, &policy->src.net, &policy->src.mask);
+-	dst_ts->to_subnet(dst_ts, &policy->dst.net, &policy->dst.mask);
++	src_ts->to_subnetnat(src_ts, &policy->src.net, &policy->src.mask, dir);
++	dst_ts->to_subnetnat(dst_ts, &policy->dst.net, &policy->dst.mask, dir);
+ 
+ 	/* src or dest proto may be "any" (0), use more restrictive one */
+ 	proto = max(src_ts->get_protocol(src_ts), dst_ts->get_protocol(dst_ts));
+--- src/libcharon/plugins/stroke/stroke_config.c.orig	2016-04-22 20:01:35 UTC
++++ src/libcharon/plugins/stroke/stroke_config.c
+@@ -982,6 +982,7 @@ static void add_ts(private_stroke_config
  				   stroke_end_t *end, child_cfg_t *child_cfg, bool local)
  {
  	traffic_selector_t *ts;
@@ -9,7 +21,7 @@ diff -ruN ../strongswan-5.3.0.orig/src/libcharon/plugins/stroke/stroke_config.c 
  
  	if (end->tohost)
  	{
-@@ -1086,12 +1087,27 @@
+@@ -995,12 +996,27 @@ static void add_ts(private_stroke_config
  		{
  			host_t *net;
  
@@ -38,7 +50,7 @@ diff -ruN ../strongswan-5.3.0.orig/src/libcharon/plugins/stroke/stroke_config.c 
  			}
  		}
  		else
-@@ -1126,8 +1142,22 @@
+@@ -1035,8 +1051,22 @@ static void add_ts(private_stroke_config
  				}
  				else
  				{
@@ -61,30 +73,15 @@ diff -ruN ../strongswan-5.3.0.orig/src/libcharon/plugins/stroke/stroke_config.c 
  				}
  				if (ts)
  				{
-diff -ruN ../strongswan-5.3.0.orig/src/libcharon/plugins/kernel_pfkey/kernel_pfkey_ipsec.c ./src/libcharon/plugins/kernel_pfkey/kernel_pfkey_ipsec.c
---- ../strongswan-5.3.0.orig/src/libcharon/plugins/kernel_pfkey/kernel_pfkey_ipsec.c	2015-03-31 12:42:35.000000000 -0500
-+++ ./src/libcharon/plugins/kernel_pfkey/kernel_pfkey_ipsec.c	2015-03-31 12:42:40.000000000 -0500
-@@ -509,8 +509,8 @@
- 		.direction = dir,
- 	);
- 
--	src_ts->to_subnet(src_ts, &policy->src.net, &policy->src.mask);
--	dst_ts->to_subnet(dst_ts, &policy->dst.net, &policy->dst.mask);
-+	src_ts->to_subnetnat(src_ts, &policy->src.net, &policy->src.mask, dir);
-+	dst_ts->to_subnetnat(dst_ts, &policy->dst.net, &policy->dst.mask, dir);
- 
- 	/* src or dest proto may be "any" (0), use more restrictive one */
- 	policy->src.proto = max(src_ts->get_protocol(src_ts),
-diff -ruN ../strongswan-5.3.0.orig/src/libstrongswan/selectors/traffic_selector.c ./src/libstrongswan/selectors/traffic_selector.c
---- ../strongswan-5.3.0.orig/src/libstrongswan/selectors/traffic_selector.c	2015-03-31 12:42:35.000000000 -0500
-+++ ./src/libstrongswan/selectors/traffic_selector.c	2015-03-31 12:43:26.000000000 -0500
-@@ -90,6 +90,34 @@
+--- src/libstrongswan/selectors/traffic_selector.c.orig	2016-04-22 20:01:35 UTC
++++ src/libstrongswan/selectors/traffic_selector.c
+@@ -90,6 +90,34 @@ struct private_traffic_selector_t {
  	};
  
  	/**
 +	 * subnet size in CIDR notation, 255 means a non-subnet address range
 +	 */
-+	u_int8_t natnetbits;
++	uint8_t natnetbits;
 +
 +	/**
 +	 * begin of address range, network order
@@ -93,9 +90,9 @@ diff -ruN ../strongswan-5.3.0.orig/src/libstrongswan/selectors/traffic_selector.
 +		/** dummy char for common address manipulation */
 +		char natfrom[0];
 +		/** IPv4 address */
-+		u_int32_t natfrom4[1];
++		uint32_t natfrom4[1];
 +		/** IPv6 address */
-+		u_int32_t natfrom6[4];
++		uint32_t natfrom6[4];
 +	};
 +
 +	/**
@@ -105,23 +102,23 @@ diff -ruN ../strongswan-5.3.0.orig/src/libstrongswan/selectors/traffic_selector.
 +		/** dummy char for common address manipulation */
 +		char natto[0];
 +		/** IPv4 address */
-+		u_int32_t natto4[1];
++		uint32_t natto4[1];
 +		/** IPv6 address */
-+		u_int32_t natto6[4];
++		uint32_t natto6[4];
 +	};
 +	/**
  	 * begin of port range
  	 */
- 	u_int16_t from_port;
-@@ -103,6 +131,29 @@
+ 	uint16_t from_port;
+@@ -103,6 +131,29 @@ struct private_traffic_selector_t {
  /**
   * calculate the "to"-address for the "from" address and a subnet size
   */
-+static void calc_natrange(private_traffic_selector_t *this, u_int8_t netbits)
++static void calc_natrange(private_traffic_selector_t *this, uint8_t netbits)
 +{
 +	size_t len;
 +	int bytes, bits;
-+	u_int8_t mask;
++	uint8_t mask;
 +
 +	this->natnetbits = netbits;
 +
@@ -140,17 +137,17 @@ diff -ruN ../strongswan-5.3.0.orig/src/libstrongswan/selectors/traffic_selector.
 +/**
 + * calculate the "to"-address for the "from" address and a subnet size
 + */
- static void calc_range(private_traffic_selector_t *this, u_int8_t netbits)
+ static void calc_range(private_traffic_selector_t *this, uint8_t netbits)
  {
  	size_t len;
-@@ -126,6 +177,53 @@
+@@ -126,6 +177,53 @@ static void calc_range(private_traffic_s
  /**
   * calculate the subnet size from the "to" and "from" addresses
   */
-+static u_int8_t calc_natnetbits(private_traffic_selector_t *this)
++static uint8_t calc_natnetbits(private_traffic_selector_t *this)
 +{
 +	int byte, bit;
-+	u_int8_t netbits;
++	uint8_t netbits;
 +	size_t size = (this->type == TS_IPV4_ADDR_RANGE) ? 4 : 16;
 +	bool prefix = TRUE;
 +
@@ -165,7 +162,7 @@ diff -ruN ../strongswan-5.3.0.orig/src/libstrongswan/selectors/traffic_selector.
 +	{
 +		for (bit = 7; bit >= 0; bit--)
 +		{
-+			u_int8_t bitmask = 1 << bit;
++			uint8_t bitmask = 1 << bit;
 +
 +			if (prefix)
 +			{
@@ -194,10 +191,10 @@ diff -ruN ../strongswan-5.3.0.orig/src/libstrongswan/selectors/traffic_selector.
 +/**
 + * calculate the subnet size from the "to" and "from" addresses
 + */
- static u_int8_t calc_netbits(private_traffic_selector_t *this)
+ static uint8_t calc_netbits(private_traffic_selector_t *this)
  {
  	int byte, bit;
-@@ -217,8 +315,8 @@
+@@ -217,8 +315,8 @@ int traffic_selector_printf_hook(printf_
  	private_traffic_selector_t *this = *((private_traffic_selector_t**)(args[0]));
  	linked_list_t *list = *((linked_list_t**)(args[0]));
  	enumerator_t *enumerator;
@@ -208,7 +205,7 @@ diff -ruN ../strongswan-5.3.0.orig/src/libstrongswan/selectors/traffic_selector.
  	char *serv_proto = NULL, *sep = "";
  	bool has_proto, has_ports;
  	size_t written = 0;
-@@ -255,26 +353,34 @@
+@@ -254,26 +352,34 @@ int traffic_selector_printf_hook(printf_
  		if (this->type == TS_IPV4_ADDR_RANGE)
  		{
  			inet_ntop(AF_INET, &this->from4, from_str, sizeof(from_str));
@@ -245,7 +242,7 @@ diff -ruN ../strongswan-5.3.0.orig/src/libstrongswan/selectors/traffic_selector.
  		}
  	}
  
-@@ -444,6 +550,12 @@
+@@ -443,6 +549,12 @@ METHOD(traffic_selector_t, get_subset, t
  	memcpy(subset->from, from, size);
  	memcpy(subset->to, to, size);
  	calc_netbits(subset);
@@ -258,12 +255,12 @@ diff -ruN ../strongswan-5.3.0.orig/src/libstrongswan/selectors/traffic_selector.
  
  	return &subset->public;
  }
-@@ -659,6 +771,58 @@
+@@ -658,6 +770,58 @@ METHOD(traffic_selector_t, to_subnet, bo
  	return this->netbits != NON_SUBNET_ADDRESS_RANGE;
  }
  
 +METHOD(traffic_selector_t, to_subnetnat, bool,
-+	private_traffic_selector_t *this, host_t **net, u_int8_t *mask, policy_dir_t dir)
++	private_traffic_selector_t *this, host_t **net, uint8_t *mask, policy_dir_t dir)
 +{
 +	if (this->natnetbits && dir == POLICY_OUT) {
 +		/* there is no way to do this cleanly, as the address range may
@@ -271,7 +268,7 @@ diff -ruN ../strongswan-5.3.0.orig/src/libstrongswan/selectors/traffic_selector.
 +		 * and try to calculate a usable subnet mask.
 +		 */
 +		int family, non_zero_bytes;
-+		u_int16_t port = 0;
++		uint16_t port = 0;
 +		chunk_t net_chunk;
 +
 +		*mask = (this->natnetbits == NON_SUBNET_ADDRESS_RANGE) ? calc_natnetbits(this)
@@ -317,7 +314,7 @@ diff -ruN ../strongswan-5.3.0.orig/src/libstrongswan/selectors/traffic_selector.
  METHOD(traffic_selector_t, clone_, traffic_selector_t*,
  	private_traffic_selector_t *this)
  {
-@@ -667,6 +831,7 @@
+@@ -666,6 +830,7 @@ METHOD(traffic_selector_t, clone_, traff
  	clone = traffic_selector_create(this->protocol, this->type,
  									this->from_port, this->to_port);
  	clone->netbits = this->netbits;
@@ -325,7 +322,7 @@ diff -ruN ../strongswan-5.3.0.orig/src/libstrongswan/selectors/traffic_selector.
  	clone->dynamic = this->dynamic;
  
  	switch (clone->type)
-@@ -674,10 +839,14 @@
+@@ -673,10 +838,14 @@ METHOD(traffic_selector_t, clone_, traff
  		case TS_IPV4_ADDR_RANGE:
  			memcpy(clone->from4, this->from4, sizeof(this->from4));
  			memcpy(clone->to4, this->to4, sizeof(this->to4));
@@ -340,7 +337,7 @@ diff -ruN ../strongswan-5.3.0.orig/src/libstrongswan/selectors/traffic_selector.
  			return &clone->public;
  		default:
  			/* unreachable */
-@@ -814,6 +983,54 @@
+@@ -813,6 +982,54 @@ traffic_selector_t *traffic_selector_cre
  	return (&this->public);
  }
  
@@ -395,7 +392,7 @@ diff -ruN ../strongswan-5.3.0.orig/src/libstrongswan/selectors/traffic_selector.
  /*
   * see header
   */
-@@ -984,6 +1201,7 @@
+@@ -982,6 +1199,7 @@ static private_traffic_selector_t *traff
  			.includes = _includes,
  			.set_address = _set_address,
  			.to_subnet = _to_subnet,
@@ -403,10 +400,9 @@ diff -ruN ../strongswan-5.3.0.orig/src/libstrongswan/selectors/traffic_selector.
  			.clone = _clone_,
  			.hash = _hash,
  			.destroy = _destroy,
-diff -ruN ../strongswan-5.3.0.orig/src/libstrongswan/selectors/traffic_selector.h ./src/libstrongswan/selectors/traffic_selector.h
---- ../strongswan-5.3.0.orig/src/libstrongswan/selectors/traffic_selector.h	2015-03-31 12:42:35.000000000 -0500
-+++ ./src/libstrongswan/selectors/traffic_selector.h	2015-03-31 12:42:40.000000000 -0500
-@@ -28,6 +28,7 @@
+--- src/libstrongswan/selectors/traffic_selector.h.orig	2016-04-22 20:01:35 UTC
++++ src/libstrongswan/selectors/traffic_selector.h
+@@ -28,6 +28,7 @@ typedef struct traffic_selector_t traffi
  
  #include <library.h>
  #include <networking/host.h>
@@ -414,17 +410,17 @@ diff -ruN ../strongswan-5.3.0.orig/src/libstrongswan/selectors/traffic_selector.
  
  /**
   * Traffic selector types.
-@@ -219,6 +220,7 @@
+@@ -219,6 +220,7 @@ struct traffic_selector_t {
  	 * @return			TRUE if traffic selector matches exactly to the subnet
  	 */
- 	bool (*to_subnet) (traffic_selector_t *this, host_t **net, u_int8_t *mask);
-+	bool (*to_subnetnat) (traffic_selector_t *this, host_t **net, u_int8_t *mask, policy_dir_t dir);
+ 	bool (*to_subnet) (traffic_selector_t *this, host_t **net, uint8_t *mask);
++	bool (*to_subnetnat) (traffic_selector_t *this, host_t **net, uint8_t *mask, policy_dir_t dir);
  
  	/**
  	 * Create a hash value for the traffic selector.
-@@ -373,6 +375,8 @@
- 							host_t *net, u_int8_t netbits, u_int8_t protocol,
- 							u_int16_t from_port, u_int16_t to_port);
+@@ -373,6 +375,8 @@ traffic_selector_t *traffic_selector_cre
+ 							host_t *net, uint8_t netbits, uint8_t protocol,
+ 							uint16_t from_port, uint16_t to_port);
  
 +traffic_selector_t *traffic_selector_add_nat_from_subnet(traffic_selector_t *, char *);
 +
