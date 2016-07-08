@@ -218,8 +218,6 @@ USE_OPENSSL=	yes
 
 .if ${PHP_MODNAME} == "opcache"
 CONFIGURE_ARGS+=--enable-opcache
-# XXX: Workaround to fix opcache build in pfSense
-USES:=		${USES:C/php:ext/php:zend/}
 .endif
 
 .if ${PHP_MODNAME} == "pcntl"
