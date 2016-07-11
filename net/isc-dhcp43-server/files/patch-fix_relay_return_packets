@@ -1,0 +1,31 @@
+description: fix relaying of return packets
+author: Steinar H. Gunderson <sgunderson@bigfoot.com>
+
+--- common/discover.c
++++ common/discover.c
+@@ -1104,9 +1104,9 @@ discover_interfaces(int state) {
+ 					  INTERFACE_REQUESTED);
+ 
+ #ifdef DHCPv6
+-		if (!(tmp->flags & INTERFACE_REQUESTED)) {
++		if (!(tmp->flags & INTERFACE_REQUESTED) && state != DISCOVER_RELAY) {
+ #else
+-		if (!tmp -> ifp || !(tmp -> flags & INTERFACE_REQUESTED)) {
++		if (!tmp -> ifp || (!(tmp -> flags & INTERFACE_REQUESTED) && state != DISCOVER_RELAY)) {
+ #endif /* DHCPv6 */
+ 			if ((tmp -> flags & INTERFACE_REQUESTED) != ir)
+ 				log_fatal ("%s: not found", tmp -> name);
+--- relay/dhcrelay.c
++++ relay/dhcrelay.c
+@@ -787,6 +787,11 @@ do_relay4(struct interface_info *ip, str
+ 	if (out)
+ 		return;
+ 
++       /* If this is not a BOOTREPLY, and it is not on a requested interface,
++	 * drop it. */
++	if (!(ip->flags & INTERFACE_REQUESTED))
++		return;
++
+ 	/* Add relay agent options if indicated.   If something goes wrong,
+ 	 * drop the packet.  Note this may set packet->giaddr if RFC3527
+ 	 * is enabled. */
