@@ -54,9 +54,6 @@
 	OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-/* TODOs */
-//disallow TOP 10 Days on multiple interfaces
-
 require("guiconfig.inc");
 
 function vnstat_write_conf($startDay = "1") {
@@ -107,7 +104,7 @@ function vnstat_create_nic_dbs($portlist) {
 
 	foreach($portlist as $interface => $details) {
 
-		exec('/usr/local/bin/vnstat -u -i ' . escapeshellarg($interface) . ' --create');
+		exec('/usr/local/bin/vnstat -u -i ' . escapeshellarg($interface) . ' --nick ' . $details['friendly'] . ' --create');
 
 	}
 
@@ -720,7 +717,17 @@ events.push(function() {
 				
 				json[index*2] = {};
 
-				json[index*2]['key'] = interface + " (tx)";
+				var ifNick = interface;
+
+				$.each(raw_json.interfaces, function(index, value) {
+
+					if(value.id === interface) {
+						ifNick = value.nick;
+					}
+
+				});
+
+				json[index*2]['key'] = ifNick + " (tx)";
 				json[index*2]['type'] = graphtype;
 				if(graphtype === "stacked") { json[index*2]['type'] = "bar"; }
 				if(graphtype === "line") { json[index*2]['area'] = true; }
@@ -730,7 +737,7 @@ events.push(function() {
 
 				json[index*2+1] = {};
 
-				json[index*2+1]['key'] = interface + " (rx)";
+				json[index*2+1]['key'] = ifNick + " (rx)";
 				json[index*2+1]['type'] = graphtype;
 				if(graphtype === "stacked") { json[index*2+1]['type'] = "bar"; }
 				if(graphtype === "line") { json[index*2+1]['area'] = true; }
@@ -851,17 +858,17 @@ events.push(function() {
 							var trueValue = data.series[v].value;
 						}
 
-						if(trueValue / 1024 > 1) {
+						if(trueValue >= 1000) {
 							trueValue = trueValue / 1024;
 							unit = 'MiB';
 						}
 
-						if(trueValue / 1024 > 1) {
+						if(trueValue >= 1000) {
 							trueValue = trueValue / 1024;
 							unit = 'GiB';
 						}
 
-						if(trueValue / 1024 > 1) {
+						if(trueValue >= 1000) {
 							trueValue = trueValue / 1024;
 							unit = 'TiB';
 						}
@@ -959,47 +966,47 @@ events.push(function() {
 					var rxUnit = 'KiB';
 					var totalUnit = 'KiB';
 
-					if(tx / 1024 > 1) {
+					if(tx >= 1000) {
 						tx = tx / 1024;
 						txUnit = 'MiB';
 					}
 
-					if(tx / 1024 > 1) {
+					if(tx >= 1000) {
 						tx = tx / 1024;
 						txUnit = 'GiB';
 					}
 
-					if(tx / 1024 > 1) {
+					if(tx >= 1000) {
 						tx = tx / 1024;
 						txUnit = 'TiB';
 					}
 
-					if(rx / 1024 > 1) {
+					if(rx >= 1000) {
 						rx = rx / 1024;
 						rxUnit = 'MiB';
 					}
 
-					if(rx / 1024 > 1) {
+					if(rx >= 1000) {
 						rx = rx / 1024;
 						rxUnit = 'GiB';
 					}
 
-					if(rx / 1024 > 1) {
+					if(rx >= 1000) {
 						rx = rx / 1024;
 						rxUnit = 'TiB';
 					}
 
-					if(total / 1024 > 1) {
+					if(total >= 1000) {
 						total = total / 1024;
 						totalUnit = 'MiB';
 					}
 
-					if(total / 1024 > 1) {
+					if(total >= 1000) {
 						total = total / 1024;
 						totalUnit = 'GiB';
 					}
 
-					if(total / 1024 > 1) {
+					if(total >= 1000) {
 						total = total / 1024;
 						totalUnit = 'TiB';
 					}
