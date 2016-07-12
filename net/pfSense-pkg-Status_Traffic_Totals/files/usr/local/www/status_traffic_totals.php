@@ -54,6 +54,9 @@
 	OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+/* TODOs */
+//disallow TOP 10 Days on multiple interfaces
+
 require("guiconfig.inc");
 
 function vnstat_write_conf($startDay = "1") {
@@ -303,7 +306,7 @@ display_top_tabs($tab_array);
 	</div>
 	<div class="panel-body">
 		<div class="table-responsive">
-			<table id="summary" class="table table-striped table-hover">
+			<table id="summary" class="table table-striped table-hover sortable-theme-bootstrap" data-sortable>
 				<thead></thead>
 				<tbody></tbody>
 			</table>
@@ -408,6 +411,20 @@ events.push(function() {
 			var invert = $( "#invert" ).val();
 			var cumulative = $( "#cumulative" ).val();
 
+			//The Top 10 logic doesn't work with more than one interface
+			if(timePeriod === "top" && interfaces.length > 1) {
+
+				$("#chart").hide();
+				$("#loading-msg").hide();
+				$('#summary tbody').empty();
+				$('#summary thead').empty();
+
+				$("#chart-error").show().html('<strong>Error</strong>: Top 10 doesn\'t allow for more than one interface to be selected.');
+
+				return console.warn("Top 10 doesn't allow for more than one interface to be selected.");
+
+			}
+
 			var json = [];
 
 			$.each(interfaces, function(index, interface) {
@@ -421,10 +438,6 @@ events.push(function() {
 				var current_month = current_date.getMonth();
 				var current_day = current_date.getDate();
 				var current_hour = current_date.getHours();
-
-				//TODO add tx/rx total line for each interface?
-				//     if so, don't do total line for stacked line and stacked bar
-				//TODO add bar stacked option
 
 				switch(timePeriod) {
 					case "hour":
@@ -469,15 +482,17 @@ events.push(function() {
 						var current_utc = Date.UTC(current_year, current_month, current_day, current_hour);
 						var count = 23;
 
+						current_utc = current_utc+tzOffset;
+
 						for(var t = 0; t < tx_series.length; t++) {	
 
 							//TODO break if length === period interval?
 
-							if(tx_series[t][0]+tzOffset > (current_utc-(3600000*count)+tzOffset)) {
+							if(tx_series[t][0] > (current_utc-(3600000*count))) {
 
 								var index_diff = 0;
 
-								while (tx_series[t][0]+tzOffset > (current_utc-(3600000*count)+tzOffset)) {
+								while (tx_series[t][0] > (current_utc-(3600000*count))) {
 
 									tx_series.splice(t+index_diff, 0, [current_utc-(3600000*count),0]);
 									rx_series.splice(t+index_diff, 0, [current_utc-(3600000*count),0]);
@@ -536,7 +551,7 @@ events.push(function() {
 						*/
 
 						var current_utc = Date.UTC(current_year, current_month, current_day);
-						var count = 30;
+						var count = 29;
 
 						$.each(tx_series, function(index, value) {
 
@@ -610,7 +625,7 @@ events.push(function() {
 
 						var current_utc = Date.UTC(current_year, current_month);
 						var addDate = new Date(current_utc+tzOffset); //add offset for comparison, but remove it later
-						addDate.setMonth(addDate.getMonth() - 12);
+						addDate.setMonth(addDate.getMonth() - 11);
 						var index_diff = 0;
 
 						$.each(tx_series, function(index, value) {
@@ -679,6 +694,7 @@ events.push(function() {
 						break;
 				}
 
+				//cumulate the data over time if option selected
 				if(cumulative === "true" && timePeriod != "top") {
 
 					$.each(tx_series, function(index, value) {
@@ -694,8 +710,6 @@ events.push(function() {
 							var rx_previous = rx_series[index-1][1];
 
 						}
-
-						console.log(tx_previous);
 
 						tx_series[index][1] = tx_series[index][1] + tx_previous;
 						rx_series[index][1] = rx_series[index][1] + rx_previous;
@@ -774,9 +788,10 @@ events.push(function() {
 					}).tickPadding(15);
 				}
 
+				//TODO units changes based on period?
 				chart.yAxis1.tickFormat(function(d) {
-					return d3.format('.2s')(d)
-				}).axisLabel('Traffic (Bits Per Second)').tickPadding(5).showMaxMin(false);
+					return d3.format('f')(d)
+				}).axisLabel('Total Traffic (KiB)').tickPadding(5).showMaxMin(false);
 
 				if(graphtype === "stacked") {
 					chart.bars1.stacked(true);
@@ -802,7 +817,9 @@ events.push(function() {
 					.text("Time Period: " + timePeriod);
 
 				//add current date
-				var currentDate = d3.time.format('%a %b %d %H:%M:%S %Y GMT%Z')(new Date());
+				//TODO change to updated date
+				//console.log(raw_json.interfaces[0].updated);
+				var currentDate = d3.time.format('%b %d, %Y %H:%M')(new Date());
 				d3.select('#chart svg')
 					.append("text")
 					.attr("x", 680)
@@ -824,6 +841,7 @@ events.push(function() {
 					}
 
 					var content = '<h3>' + date + '</h3><table><tbody>';
+					var unit = 'KiB';
 
 					for ( var v = 0; v < data.series.length; v++ ){
 
@@ -833,9 +851,22 @@ events.push(function() {
 							var trueValue = data.series[v].value;
 						}
 
-						var formatted_value = d3.formatPrefix(trueValue);
+						if(trueValue / 1024 > 1) {
+							trueValue = trueValue / 1024;
+							unit = 'MiB';
+						}
 
-						content += '<tr><td class="legend-color-guide"><div style="background-color: ' + data.series[v].color + '"></div></td><td>' + data.series[v].key + '</td><td class="value"><strong>' + formatted_value.scale(trueValue).toFixed(2) + ' ' + formatted_value.symbol + 'b/s</strong></td></tr>';
+						if(trueValue / 1024 > 1) {
+							trueValue = trueValue / 1024;
+							unit = 'GiB';
+						}
+
+						if(trueValue / 1024 > 1) {
+							trueValue = trueValue / 1024;
+							unit = 'TiB';
+						}
+
+						content += '<tr><td class="legend-color-guide"><div style="background-color: ' + data.series[v].color + '"></div></td><td>' + data.series[v].key + '</td><td class="value"><strong>' + trueValue.toFixed(2) + ' ' + unit + '</strong></td></tr>';
 					}
 
 					content += '</tbody></table>';
@@ -875,7 +906,7 @@ events.push(function() {
 		$('#summary tbody').empty();
 		$('#summary thead').empty();
 
-		var header = '<tr><th>Time</th>';
+		var header = '<tr><th></th><th>Time</th>';
 
 		//grab every other key (since there is an RX and TX of each)
 		for(var i = 0; i < data.length; i += 2) {
@@ -888,90 +919,212 @@ events.push(function() {
 
 		$('#summary thead').append(header);
 
-		for ( var v = 0; v < data[0].values.length; v++ ){
+		//TOP 10 is displayed in a different order than the rest of the periods
+		if(timePeriod === "top") {
 
-			switch(timePeriod) {
-				case "hour":
-					var date = new Date(data[0].values[v].x);
+			for ( var v = 0; v < data[0].values.length; v++ ) {
 
-					var year = date.getFullYear();
-					var month = date.getMonth() + 1;
-					var day = date.getDate();
-					var hours = date.getHours();
-
-					var body = '<tr><th>' + hours + ':00</th>';
-					break;
-				case "day":
-					var date = new Date(data[0].values[v].x);
+				if(parseInt(localStorage.getItem(data[0].values[v].x)) > 1000) {
+					var date = new Date(parseInt(localStorage.getItem(data[0].values[v].x)));
 
 					var year = date.getFullYear();
 					var month = ("0" + (date.getMonth() + 1)).slice(-2);
 					var day = ("0" + date.getDate()).slice(-2);
 					var hours = ("0" + date.getHours()).slice(-2);
+					var minutes = ("0" + date.getMinutes()).slice(-2);
 
-					var body = '<tr><th>' + year + "-" + month + "-" + day + '</th>';
-					break;
-				case "month":
-					var date = new Date(data[0].values[v].x);
+					var body = '<tr><td>' + (v + 1) + '</td><td>' + year + "-" + month + "-" + day + ' ' + hours + ':' + minutes + '</td>';
+				} else {
+					var body = '<tr><td>' + (v + 1) + '</td><td>--</td>';
+				}
 
-					var year = date.getFullYear();
-					var month = ("0" + (date.getMonth() + 1)).slice(-2);
-					var day = ("0" + date.getDate()).slice(-2);
-					var hours = ("0" + date.getHours()).slice(-2);
+				for(var d = 0; d < data.length; d += 2) {
 
-					var body = '<tr><th>' + month + '/' + year + '</th>';
-					break;
-				case "top":
-					if(parseInt(localStorage.getItem(data[0].values[v].x)) > 1000) {
-						var date = new Date(parseInt(localStorage.getItem(data[0].values[v].x)));
+					var tx = data[d].values[v].y;
+
+					if (data[d+1].invert === "true") {
+						var rx = 0 - data[d+1].values[v].y; //flip value back to positive
+					} else {
+						var rx = data[d+1].values[v].y;
+					}
+
+					if(rx > 0) {
+						var ratio = tx / rx;
+					} else {
+						var ratio = 0;
+					}
+
+					var total = tx + rx;
+					var txUnit = 'KiB';
+					var rxUnit = 'KiB';
+					var totalUnit = 'KiB';
+
+					if(tx / 1024 > 1) {
+						tx = tx / 1024;
+						txUnit = 'MiB';
+					}
+
+					if(tx / 1024 > 1) {
+						tx = tx / 1024;
+						txUnit = 'GiB';
+					}
+
+					if(tx / 1024 > 1) {
+						tx = tx / 1024;
+						txUnit = 'TiB';
+					}
+
+					if(rx / 1024 > 1) {
+						rx = rx / 1024;
+						rxUnit = 'MiB';
+					}
+
+					if(rx / 1024 > 1) {
+						rx = rx / 1024;
+						rxUnit = 'GiB';
+					}
+
+					if(rx / 1024 > 1) {
+						rx = rx / 1024;
+						rxUnit = 'TiB';
+					}
+
+					if(total / 1024 > 1) {
+						total = total / 1024;
+						totalUnit = 'MiB';
+					}
+
+					if(total / 1024 > 1) {
+						total = total / 1024;
+						totalUnit = 'GiB';
+					}
+
+					if(total / 1024 > 1) {
+						total = total / 1024;
+						totalUnit = 'TiB';
+					}
+
+					body += '<td>' + tx.toFixed(2) + ' ' + txUnit + '</td><td>' + rx.toFixed(2) + ' ' + rxUnit + '</td><td>' + ratio.toFixed(2) + '</td><td>' + total.toFixed(2) + ' ' + totalUnit + '</td>';
+					
+				}
+
+				body += '</tr>';
+
+				$('#summary tbody').append(body);
+
+			}
+
+		} else {
+
+			for ( var v = data[0].values.length-1; v >= 0; v-- ) {
+
+				switch(timePeriod) {
+					case "hour":
+						var date = new Date(data[0].values[v].x);
+
+						var year = date.getFullYear();
+						var month = date.getMonth() + 1;
+						var day = date.getDate();
+						var hours = date.getHours();
+
+						var body = '<tr><td>' + (data[0].values.length - v) + '</td><td>' + hours + ':00</td>';
+						break;
+					case "day":
+						var date = new Date(data[0].values[v].x);
 
 						var year = date.getFullYear();
 						var month = ("0" + (date.getMonth() + 1)).slice(-2);
 						var day = ("0" + date.getDate()).slice(-2);
 						var hours = ("0" + date.getHours()).slice(-2);
-						var minutes = ("0" + date.getMinutes()).slice(-2);
 
-						var body = '<tr><th>' + year + "-" + month + "-" + day + ' ' + hours + ':' + minutes + '</th>';
+						var body = '<tr><td>' + (data[0].values.length - v) + '</td><td>' + year + "-" + month + "-" + day + '</td>';
+						break;
+					case "month":
+						var date = new Date(data[0].values[v].x);
+
+						var year = date.getFullYear();
+						var month = ("0" + (date.getMonth() + 1)).slice(-2);
+						var day = ("0" + date.getDate()).slice(-2);
+						var hours = ("0" + date.getHours()).slice(-2);
+
+						var body = '<tr><td>' + (data[0].values.length - v) + '</td><td>' + month + '/' + year + '</td>';
+						break;
+				}
+
+				for(var d = 0; d < data.length; d += 2) {
+
+					var tx = data[d].values[v].y;
+
+					if (data[d+1].invert === "true") {
+						var rx = 0 - data[d+1].values[v].y; //flip value back to positive
 					} else {
-						var body = '<tr><th>--</th>';
+						var rx = data[d+1].values[v].y;
 					}
-					
-					break;
-			}
 
-			for(var d = 0; d < data.length; d += 2) {
+					if(rx > 0) {
+						var ratio = tx / rx;
+					} else {
+						var ratio = 0;
+					}
 
-				var tx = data[d].values[v].y;
+					var total = tx + rx;
+					var txUnit = 'KiB';
+					var rxUnit = 'KiB';
+					var totalUnit = 'KiB';
 
-				if (data[d+1].invert === "true") {
-					var rx = 0 - data[d+1].values[v].y; //flip value back to positive
-				} else {
-					var rx = data[d+1].values[v].y;
+					if(tx / 1024 > 1) {
+						tx = tx / 1024;
+						txUnit = 'MiB';
+					}
+
+					if(tx / 1024 > 1) {
+						tx = tx / 1024;
+						txUnit = 'GiB';
+					}
+
+					if(tx / 1024 > 1) {
+						tx = tx / 1024;
+						txUnit = 'TiB';
+					}
+
+					if(rx / 1024 > 1) {
+						rx = rx / 1024;
+						rxUnit = 'MiB';
+					}
+
+					if(rx / 1024 > 1) {
+						rx = rx / 1024;
+						rxUnit = 'GiB';
+					}
+
+					if(rx / 1024 > 1) {
+						rx = rx / 1024;
+						rxUnit = 'TiB';
+					}
+
+					if(total / 1024 > 1) {
+						total = total / 1024;
+						totalUnit = 'MiB';
+					}
+
+					if(total / 1024 > 1) {
+						total = total / 1024;
+						totalUnit = 'GiB';
+					}
+
+					if(total / 1024 > 1) {
+						total = total / 1024;
+						totalUnit = 'TiB';
+					}
+
+					body += '<td>' + tx.toFixed(2) + ' ' + txUnit + '</td><td>' + rx.toFixed(2) + ' ' + rxUnit + '</td><td>' + ratio.toFixed(2) + '</td><td>' + total.toFixed(2) + ' ' + totalUnit + '</td>';
 				}
 
-				var formatted_tx = d3.formatPrefix(tx);
-				var tx_value = formatted_tx.scale(tx).toFixed(2) + ' ' + formatted_tx.symbol + "b";
+				body += '</tr>';
 
-				var formatted_rx = d3.formatPrefix(rx);
-				var rx_value = formatted_rx.scale(rx).toFixed(2) + ' ' + formatted_rx.symbol + "b";
+				$('#summary tbody').append(body);
 
-				if(rx > 0) {
-					var ratio = tx / rx;
-				} else {
-					var ratio = 0;
-				}
-
-				var total = tx + rx;
-
-				var formatted_total = d3.formatPrefix(total);
-				var total_value = formatted_total.scale(total).toFixed(2) + ' ' + formatted_total.symbol + "b";
-
-				body += '<td>' + tx_value + '</td><td>' + rx_value + '</td><td>' + ratio.toFixed(2) + '</td><td>' + total_value + '</td>';
 			}
-
-			body += '</tr>';
-
-			$('#summary tbody').append(body);
 
 		}
 
