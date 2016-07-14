@@ -59,7 +59,7 @@ if ($_GET['a'] == "download") {
 			$backup_cmd = "/usr/bin/tar --create --verbose --gzip --file {$backup_path} --directory / ";
 			foreach ($a_backup as $ent) {
 				if ($ent['enabled'] == "true") {
-					$backup_cmd .= htmlspecialchars($ent['path']) . ' ';
+					$backup_cmd .= escapeshellarg($ent['path']) . ' ';
 				}
 				$i++;
 			}
