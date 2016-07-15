@@ -55,6 +55,13 @@
 */
 
 require("guiconfig.inc");
+require_once("ipsec.inc");
+
+/* TODOs */
+//fix table sort by blowing away and creating new each time?
+//figure out how to store config options
+//show databases somewhere
+//update address with last updated date
 
 function vnstat_write_conf($startDay = "1") {
 
@@ -104,7 +111,18 @@ function vnstat_create_nic_dbs($portlist) {
 
 	foreach($portlist as $interface => $details) {
 
-		exec('/usr/local/bin/vnstat -u -i ' . escapeshellarg($interface) . ' --nick ' . $details['friendly'] . ' --create');
+		if($details['descr']) {
+			$nick = $details['descr'];
+		} else {
+			$nick = $interface;
+		}
+
+		unset($test);
+
+		exec('/usr/local/bin/vnstat -u -i ' . escapeshellarg($details['if']) . ' --nick "' . $nick . '" --create', $test);
+
+		//TODO check output array for errors
+		//print_r($test);
 
 	}
 
@@ -114,13 +132,47 @@ function vnstat_delete_nic_dbs($portlist) {
 
 	foreach($portlist as $interface => $details) {
 
-		exec('/usr/local/bin/vnstat -i ' . escapeshellarg($interface) . ' --delete --force');
+		unset($test);
+
+		exec('/usr/local/bin/vnstat -i ' . escapeshellarg($details['if']) . ' --delete --force', $test);
+
+		//TODO check output array for errors
+		//print_r($test);
 
 	}
 
 }
 
-$portlist = get_interface_list();
+/*
+//grab vnStat filenames
+$home = getcwd();
+$rrddbpath = "/var/db/vnstat/";
+chdir($rrddbpath);
+$databases = glob(".*");
+unset($databases[0]);
+unset($databases[1]);
+chdir($home);
+
+print_r($databases);
+*/
+
+$portlist = $config['interfaces'];
+
+if (ipsec_enabled()) {
+	$portlist['enc0']['if'] = "enc0";
+	$portlist['enc0']['descr'] = gettext("IPsec");
+}
+
+foreach (array('server', 'client') as $mode) {
+	if (is_array($config['openvpn']["openvpn-{$mode}"])) {
+		foreach ($config['openvpn']["openvpn-{$mode}"] as $id => $setting) {
+			if (!isset($setting['disable'])) {
+				$portlist['ovpn' . substr($mode, 0, 1) . $setting['vpnid']]['if'] = 'ovpn' . substr($mode, 0, 1) . $setting['vpnid'];
+				$portlist['ovpn' . substr($mode, 0, 1) . $setting['vpnid']]['descr'] = gettext("OpenVPN") . " " . $mode . ": ".htmlspecialchars($setting['description']);
+			}
+		}
+	}
+}
 
 if($_POST['enable']) {
 
@@ -212,7 +264,7 @@ display_top_tabs($tab_array);
 						<?php
 
 						foreach($portlist as $interface => $details) {
-							echo '<option value="' . $interface . '" selected>' . $details['friendly'] . "</option>\n";
+							echo '<option value="' . $details['if'] . '" selected>' . $details['descr'] . "</option>\n";
 						}
 
 						?>
@@ -848,9 +900,10 @@ events.push(function() {
 					}
 
 					var content = '<h3>' + date + '</h3><table><tbody>';
-					var unit = 'KiB';
 
 					for ( var v = 0; v < data.series.length; v++ ){
+
+						var unit = 'KiB';
 
 						if ( ($("#invert").val() === "true" && data.series[v].key.includes('(rx)')) &&  ($("#graph-type").val() != "area" && $("#graph-type").val() != "stacked")) {
 							var trueValue = 0 - data.series[v].value;
@@ -1079,47 +1132,47 @@ events.push(function() {
 					var rxUnit = 'KiB';
 					var totalUnit = 'KiB';
 
-					if(tx / 1024 > 1) {
+					if(tx >= 1000) {
 						tx = tx / 1024;
 						txUnit = 'MiB';
 					}
 
-					if(tx / 1024 > 1) {
+					if(tx >= 1000) {
 						tx = tx / 1024;
 						txUnit = 'GiB';
 					}
 
-					if(tx / 1024 > 1) {
+					if(tx >= 1000) {
 						tx = tx / 1024;
 						txUnit = 'TiB';
 					}
 
-					if(rx / 1024 > 1) {
+					if(rx >= 1000) {
 						rx = rx / 1024;
 						rxUnit = 'MiB';
 					}
 
-					if(rx / 1024 > 1) {
+					if(rx >= 1000) {
 						rx = rx / 1024;
 						rxUnit = 'GiB';
 					}
 
-					if(rx / 1024 > 1) {
+					if(rx >= 1000) {
 						rx = rx / 1024;
 						rxUnit = 'TiB';
 					}
 
-					if(total / 1024 > 1) {
+					if(total >= 1000) {
 						total = total / 1024;
 						totalUnit = 'MiB';
 					}
 
-					if(total / 1024 > 1) {
+					if(total >= 1000) {
 						total = total / 1024;
 						totalUnit = 'GiB';
 					}
 
-					if(total / 1024 > 1) {
+					if(total >= 1000) {
 						total = total / 1024;
 						totalUnit = 'TiB';
 					}
@@ -1135,7 +1188,8 @@ events.push(function() {
 
 		}
 
-		$('acronym').tooltip();
+		//exampleTable = document.querySelector('#summary')
+		//Sortable.initTable(exampleTable);
 	}
 
 	$( ".update-graph" ).click(function() {
