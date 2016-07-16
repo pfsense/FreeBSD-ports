@@ -180,8 +180,7 @@ if ($savemsg) {
 				<thead>
 					<tr>
 						<th width="5%">&nbsp;</th>
-						<th width="5%"><?=gettext("Description")?></th>
-						<th width="60%"><?=gettext("URL/ID")?></th>
+						<th width="65%"><?=gettext("Description")?></th>
 						<th width="5%"><?=gettext("Fetch")?></th>
 						<th width="5%"><?=gettext("Test")?></th>
 						<th width="5%"><?=gettext("Apply")?></th>
@@ -211,15 +210,6 @@ foreach ($a_patches as $thispatch):
 
 		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
 			<?=$thispatch['descr']?>
-		</td>
-		<td id="frd<?=$i?>">
-			<?php
-			if (!empty($thispatch['location'])) {
-				echo $thispatch['location'];
-			} elseif (!empty($thispatch['patch'])) {
-				echo gettext("Saved Patch");
-			}
-			?>
 		</td>
 		<td id="frd<?=$i?>" onclick="fr_toggle(<?=$i?>)">
 		<?php if (empty($thispatch['patch'])): ?>
