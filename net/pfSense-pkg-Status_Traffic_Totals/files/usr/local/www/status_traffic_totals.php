@@ -58,10 +58,10 @@ require("guiconfig.inc");
 require_once("ipsec.inc");
 
 /* TODOs */
-//fix table sort by blowing away and creating new each time?
-//figure out how to store config options
-//show databases somewhere
-//update address with last updated date
+//fix broken table sort by blowing away and creating new (initializing) each time?
+//show current or unused databases somehow
+//update timestamp with last updated date
+//make Save as Defaults AJAX
 
 function vnstat_write_conf($startDay = "1") {
 
@@ -111,15 +111,9 @@ function vnstat_create_nic_dbs($portlist) {
 
 	foreach($portlist as $interface => $details) {
 
-		if($details['descr']) {
-			$nick = $details['descr'];
-		} else {
-			$nick = $interface;
-		}
-
 		unset($test);
 
-		exec('/usr/local/bin/vnstat -u -i ' . escapeshellarg($details['if']) . ' --nick "' . $nick . '" --create', $test);
+		exec('/usr/local/bin/vnstat -u -i ' . escapeshellarg($details['if']) . ' --nick "' . $details['descr'] . '" --create', $test);
 
 		//TODO check output array for errors
 		//print_r($test);
@@ -156,6 +150,8 @@ chdir($home);
 print_r($databases);
 */
 
+$ifdescrs = get_configured_interface_with_descr();
+
 $portlist = $config['interfaces'];
 
 if (ipsec_enabled()) {
@@ -172,6 +168,18 @@ foreach (array('server', 'client') as $mode) {
 			}
 		}
 	}
+}
+
+foreach($portlist as $interface => $details) {
+
+	if($details['descr']) {
+		//do nothing
+	} elseif($ifdescrs[$interface]) {
+		$portlist[$interface]['descr'] = $ifdescrs[$interface];
+	} else {
+		$portlist[$interface]['descr'] = $interface;
+	}
+
 }
 
 if($_POST['enable']) {
@@ -218,16 +226,66 @@ if ($_POST['defaults']) {
 
 	vnstat_write_conf($_POST['start-day']);
 
-	//TODO save defaults to config
-	//$monthrotate = $config['installedpackages']['vnstat2']['config'][0]['monthrotate'];
-	//write_config();
-	//$savemsg = "The changes have been applied successfully.";
+	//TODO clean inputs
+	$timePeriod = $_POST['time-period'];
+	$interfaces = json_encode($_POST['interfaces']);
+	$graphtype = $_POST['graph-type'];
+	$invert = $_POST['invert'];
+	$cumulative = $_POST['cumulative'];
+	$startDay = $_POST['start-day'];
+
+	$config['installedpackages']['traffictotals']['config'][0]['timeperiod'] = $timePeriod;
+	$config['installedpackages']['traffictotals']['config'][0]['interfaces'] = $interfaces;
+	$config['installedpackages']['traffictotals']['config'][0]['graphtype'] = $graphtype;
+	$config['installedpackages']['traffictotals']['config'][0]['invert'] = $invert;
+	$config['installedpackages']['traffictotals']['config'][0]['cumulative'] = $cumulative;
+	$config['installedpackages']['traffictotals']['config'][0]['startday'] = $startDay;
+
+	write_config('Save default settings for Status > Traffic Totals');
+	$savemsg = "The changes have been applied successfully.";
 
 }
+
+if(isset($config['installedpackages']['traffictotals']['config'][0]['startday'])) {
+
+	$ifArray = json_decode($config['installedpackages']['traffictotals']['config'][0]['interfaces']);
+	$interfaces = "";
+
+	foreach($ifArray as $interface) {
+		$interfaces .= 'interfaces[]=' . $interface . '&';
+	}
+
+	$timePeriod = $config['installedpackages']['traffictotals']['config'][0]['timeperiod'];
+	$graphtype = $config['installedpackages']['traffictotals']['config'][0]['graphtype'];
+	$invert = $config['installedpackages']['traffictotals']['config'][0]['invert'];
+	$cumulative = $config['installedpackages']['traffictotals']['config'][0]['cumulative'];
+	$startDay = $config['installedpackages']['traffictotals']['config'][0]['startday'];
+
+} else {
+
+	$interfaces = "";
+
+	foreach($portlist as $interface => $details) {
+		$interfaces .= 'interfaces[]=' . $details['if'] . '&';
+	}
+
+	$timePeriod = "day";
+	$graphtype = "line";
+	$invert = "true";
+	$cumulative = "false";
+	$startDay = 1;
+
+}
+
+$defaults = $interfaces . 'time-period=' . $timePeriod . '&graph-type=' . $graphtype . '&invert=' . $invert . '&cumulative=' . $cumulative . '&start-day=' . $startDay;
 
 $pgtitle = array(gettext("Status"), gettext("Traffic Totals"));
 
 include("head.inc");
+
+if ($savemsg) {
+	print_info_box($savemsg, 'success');
+}
 
 $tab_array = array();
 $tab_array[] = array(gettext("Hourly"), true, "#hour");
@@ -260,10 +318,11 @@ display_top_tabs($tab_array);
 					Options
 				</label>
 				<div class="col-sm-2">
-					<select class="form-control" id="interfaces" name="interfaces" multiple>
+					<select class="form-control" id="interfaces" name="interfaces[]" multiple>
 						<?php
 
 						foreach($portlist as $interface => $details) {
+
 							echo '<option value="' . $details['if'] . '" selected>' . $details['descr'] . "</option>\n";
 						}
 
@@ -299,7 +358,7 @@ display_top_tabs($tab_array);
 					<span class="help-block">Cumulative</span>
 				</div>
 				<div class="col-sm-2">
-					<input type="number" class="form-control" value="" id="start-day" name="start-day" min="1" max="28" step="1">
+					<input type="number" class="form-control" value="<?=$startDay?>" id="start-day" name="start-day" min="1" max="28" step="1">
 
 					<span class="help-block">Start Day</span>
 				</div>
@@ -315,7 +374,7 @@ display_top_tabs($tab_array);
 					<button class="btn btn-sm btn-primary" type="button" value="csv" name="export" id="export" style="display:none;"><i class="fa fa-download fa-lg"></i> Export As CSV</button>
 				</div>
 				<div class="col-sm-2">
-					<button class="btn btn-sm btn-primary" type="submit" value="true" name="defaults" id="defaults" style="display:none;"><i class="fa fa-save fa-lg"></i> Save Start Day</button>
+					<button class="btn btn-sm btn-primary" type="submit" value="true" name="defaults" id="defaults" style="display:none;"><i class="fa fa-save fa-lg"></i> Save As Defaults</button>
 				</div>
 				<div class="col-sm-2">
 						<button class="btn btn-sm btn-danger" type="submit" value="false" name="enable" id="enable" style="display:none;"><i class="fa fa-ban fa-lg"></i> Disable Graphing</button>
@@ -334,6 +393,7 @@ display_top_tabs($tab_array);
 			</div>
 		</div>
 	</div>
+	<input type="hidden" id="time-period" name="time-period" value="hour">
 </form>
 
 <div class="panel panel-default">
@@ -389,29 +449,43 @@ events.push(function() {
 	var ServerUTCOffset = <?php echo date('Z') / 3600; ?>;
 	var utc = new Date();
 	var ClientUTCOffset = utc.getTimezoneOffset() / 60;
-	//subtracting ServerUTCOffset is a hack until setting local in config is figured out
-	var tzOffset = (ClientUTCOffset + (ServerUTCOffset - ServerUTCOffset)) * 3600000;
+	var tzOffset = (ClientUTCOffset + (ServerUTCOffset)) * 3600000;
 
 	function applySettings(defaults) {
 
 		var allOptions = defaults.split("&");
 
+		//clear interface selections
+		$("#interfaces > option").each(function() {
+			$(this).prop("selected", false);
+		});
+
 		allOptions.forEach(function(entry) {
 			
 			var currentOption = entry.split("=");
 
-			//TODO add interfaces
+			if(currentOption[0] === "interfaces[]") {
+				$("#interfaces option[value='" + currentOption[1] + "']").prop("selected", true);
+			}
 
 			if(currentOption[0] === "timePeriod") {
 				$( "#time-period" ).val(currentOption[1]).change();
 			}
 
-			if(currentOption[0] === "graphtype") {
+			if(currentOption[0] === "graph-type") {
 				$( "#graph-type" ).val(currentOption[1]);
 			}
 
 			if(currentOption[0] === "invert") {
 				$( "#invert" ).val(currentOption[1]);
+			}
+
+			if(currentOption[0] === "cumulative") {
+				$( "#cumulative" ).val(currentOption[1]).change();
+			}
+
+			if(currentOption[0] === "start-day") {
+				$( "#start-day" ).val(currentOption[1]);
 			}
 
 		}, this);
@@ -476,17 +550,17 @@ events.push(function() {
 
 			var json = [];
 
+			var current_date = new Date();
+			var current_year = current_date.getFullYear();
+			var current_month = current_date.getMonth();
+			var current_day = current_date.getDate();
+			var current_hour = current_date.getHours();
+
 			$.each(interfaces, function(index, interface) {
 				
 				var tx_series = [];
 				var rx_series = [];
 				var interface_index = 0;
-
-				var current_date = new Date();
-				var current_year = current_date.getFullYear();
-				var current_month = current_date.getMonth();
-				var current_day = current_date.getDate();
-				var current_hour = current_date.getHours();
 
 				switch(timePeriod) {
 					case "hour":
@@ -507,8 +581,8 @@ events.push(function() {
 
 							var date = Date.UTC(value.date.year, value.date.month-1, value.date.day, value.id);
 
-							tx_series.push([date, value.tx]);
-							rx_series.push([date, value.rx]);
+							tx_series.push([date+((0-ServerUTCOffset)*3600000), value.tx]);
+							rx_series.push([date+((0-ServerUTCOffset)*3600000), value.rx]);
 
 						});
 
@@ -531,7 +605,7 @@ events.push(function() {
 						var current_utc = Date.UTC(current_year, current_month, current_day, current_hour);
 						var count = 23;
 
-						current_utc = current_utc+tzOffset;
+						current_utc = current_utc+(ClientUTCOffset*3600000);
 
 						for(var t = 0; t < tx_series.length; t++) {	
 
@@ -578,8 +652,8 @@ events.push(function() {
 
 							var date = Date.UTC(value.date.year, value.date.month-1, value.date.day);
 
-							tx_series.push([date, value.tx]);
-							rx_series.push([date, value.rx]);
+							tx_series.push([date+((0-ServerUTCOffset)*3600000), value.tx]);
+							rx_series.push([date+((0-ServerUTCOffset)*3600000), value.rx]);
 
 						});
 
@@ -601,6 +675,8 @@ events.push(function() {
 
 						var current_utc = Date.UTC(current_year, current_month, current_day);
 						var count = 29;
+
+						current_utc = current_utc+(ClientUTCOffset*3600000);
 
 						$.each(tx_series, function(index, value) {
 
@@ -651,8 +727,8 @@ events.push(function() {
 
 							var date = Date.UTC(value.date.year, value.date.month-1);
 
-							tx_series.push([date, value.tx]);
-							rx_series.push([date, value.rx]);
+							tx_series.push([date+((0-ServerUTCOffset)*3600000), value.tx]);
+							rx_series.push([date+((0-ServerUTCOffset)*3600000), value.rx]);
 
 						});
 
@@ -673,7 +749,7 @@ events.push(function() {
 						*/
 
 						var current_utc = Date.UTC(current_year, current_month);
-						var addDate = new Date(current_utc+tzOffset); //add offset for comparison, but remove it later
+						var addDate = new Date(current_utc+(ClientUTCOffset*3600000));
 						addDate.setMonth(addDate.getMonth() - 11);
 						var index_diff = 0;
 
@@ -687,8 +763,8 @@ events.push(function() {
 
 								while (value[0] > addDate.getTime()) {
 
-									tx_series.splice(index+index_diff, 0, [addDate.getTime()-tzOffset,0]);
-									rx_series.splice(index+index_diff, 0, [addDate.getTime()-tzOffset,0]);
+									tx_series.splice(index+index_diff, 0, [addDate.getTime(),0]);
+									rx_series.splice(index+index_diff, 0, [addDate.getTime(),0]);
 
 									addDate.setMonth(addDate.getMonth() + 1);
 									index_diff++;
@@ -1203,6 +1279,8 @@ events.push(function() {
 		$( "body > div.container > ul.nav li" ).removeClass("active");
 		$(this).addClass("active");
 
+		$("#time-period").val($(this).find("a").attr('href').substring(1));
+
 		$("#chart").hide();
 		$("#loading-msg").show();
 		$("#chart-error").hide();
@@ -1252,7 +1330,7 @@ events.push(function() {
 
 	});
 
-	//applySettings("<?php echo $pconfig['category']; ?>");
+	applySettings("<?=$defaults?>");
 
 	draw_graph();
 
