@@ -41,37 +41,26 @@ pfb_global();
 // Set 'Install flag' to skip sync process during installations.
 $g['pfblockerng_install'] = true;
 
-$pfb['maxmind'][0]['url']	= 'http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz';
-$pfb['maxmind'][0]['file_dwn']	= 'GeoIP.dat.gz';
-$pfb['maxmind'][0]['file']	= 'GeoIP.dat';
-$pfb['maxmind'][1]['url']	= 'http://geolite.maxmind.com/download/geoip/database/GeoIPv6.dat.gz';
-$pfb['maxmind'][1]['file_dwn']	= 'GeoIPv6.dat.gz';
-$pfb['maxmind'][1]['file']	= 'GeoIPv6.dat';
-$pfb['maxmind'][2]['url']	= 'http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip';
-$pfb['maxmind'][2]['file_dwn']	= 'GeoIPCountryCSV.zip';
-$pfb['maxmind'][2]['file']	= 'GeoIPCountryWhois.csv';
-$pfb['maxmind'][3]['url']	= 'http://dev.maxmind.com/static/csv/codes/country_continent.csv';
-$pfb['maxmind'][3]['file_dwn']	= 'country_continent.csv';
-$pfb['maxmind'][3]['file']	= 'country_continent.csv';
-$pfb['maxmind'][4]['url']	= 'http://geolite.maxmind.com/download/geoip/database/GeoIPv6.csv.gz';
-$pfb['maxmind'][4]['file_dwn']	= 'GeoIPv6.csv.gz';
-$pfb['maxmind'][4]['file']	= 'GeoIPv6.csv';
-
-// Only download MaxMind Database if files do not exist.   ** ( Add temp. patch for 4 missing CCodes ) **
+// Only download MaxMind Database if files do not exist
 $maxmind_verify = 0;
-$pfb['geoipshare'] = '/usr/local/share/GeoIP';
-if (!file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][0]['file']}") ||
-    !file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][1]['file']}") ||
-    !file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][2]['file']}") ||
-    !file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][3]['file']}") ||
-    !file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][4]['file']}") ||
-    !file_exists('/usr/local/share/GeoIP/cc/BQ_v4.txt')) {
 
-	update_status("\nDownloading MaxMind Country databases. This may take a minute...\n");
-	foreach ($pfb['maxmind'] as $feed) {
+if (!file_exists("{$pfb['geoipshare']}/{$pfb['extras'][0]['file']}") ||
+    !file_exists("{$pfb['geoipshare']}/{$pfb['extras'][1]['file']}") ||
+    !file_exists("{$pfb['geoipshare']}/GeoLite2-Country-Blocks-IPv4.csv") ||
+    !file_exists("{$pfb['dbdir']}/GeoIP_Locale")) {
+
+	update_status("\nDownloading MaxMind GeoIP databases. This may take a minute...\n");
+
+	// Remove Alexa from download process
+	unset($pfb['extras'][3]);
+
+	foreach ($pfb['extras'] as $feed) {
 
 		$file_dwn = "{$pfb['geoipshare']}/{$feed['file_dwn']}";
 		if (($fhandle = @fopen("{$file_dwn}", 'w')) !== FALSE) {
+			if (empty($feed['file'])) {
+				$feed['file'] = 'GeoLite2-Country-CSV.zip';
+			}
 			update_status(" {$feed['file']}...");
 			if (!($ch = curl_init("{$feed['url']}"))) {
 				update_status(" Failed to create cURL resource.\n");
@@ -103,9 +92,9 @@ if (!file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][0]['file']}") ||
 				if (strpos($file_dwn, '.gz') !== FALSE) {
 					exec("/usr/bin/gunzip -dfq {$file_dwn} {$pfb['geoipshare']}");
 				} elseif (strpos($file_dwn, '.zip') !== FALSE) {
-					exec("/usr/bin/tar -xOf {$file_dwn} > {$pfb['geoipshare']}/{$feed['file']}");
-					unlink_if_exists("{$file_dwn}");
+					exec("/usr/bin/tar -xf {$file_dwn} --strip=1 -C {$pfb['geoipshare']}");
 				}
+				unlink_if_exists("{$file_dwn}");
 				update_status(" done.\n");
 				$maxmind_verify += 1;
 			}
@@ -118,18 +107,18 @@ if (!file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][0]['file']}") ||
 		@fclose($fhandle);
 	}
 
-	if ($maxmind_verify != 5) {
+	if ($maxmind_verify != 3) {
 		update_status("MaxMind download Failed! Fetching MaxMind archive from pfSense package repo...\n");
 		// Fetch archived MaxMind database
 		$url = 'https://packages.pfsense.org/packages/config/pfblockerng/countrycodes.tar.bz2';
 		$retval = '';
 		exec("/usr/bin/fetch -o /tmp/countrycodes.tar.bz2 {$url}", $output, $retval);
 		if ($retval == 0) {
-			// Uncompress archived Country code file
+			// Uncompress archived GeoIP code file
 			$retval = '';
 			exec("/usr/bin/tar -jx -C {$pfb['ccdir']} -f /tmp/countrycodes.tar.bz2", $output, $retval);
 			if ($retval == 0) {
-				$maxmind_verify = 5;
+				$maxmind_verify = 3;
 				update_status("Fetch done.\n");
 			} else {
 				update_status("Fetch Failed!\n");
@@ -140,12 +129,12 @@ if (!file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][0]['file']}") ||
 		}
 	}
 	else {
-		update_status("Downloading MaxMind Country databases... done.\n");
+		update_status("Downloading MaxMind GeoIP databases... done.\n");
 	}
 
 	// Proceed with conversion of MaxMind files on download success
-	if ($maxmind_verify == 5) {
-		update_status("Converting MaxMind Country databases for pfBlockerNG.\n This may take a few minutes...\n");
+	if ($maxmind_verify == 3) {
+		update_status("Converting MaxMind GeoIP databases for pfBlockerNG.\n This may take a few minutes...\n");
 		pfblockerng_uc_countries();
 		update_status("Creating pfBlockerNG Continent XML files...\n");
 		pfblockerng_get_countries();
@@ -155,7 +144,7 @@ if (!file_exists("{$pfb['geoipshare']}/{$pfb['maxmind'][0]['file']}") ||
 	}
 }
 else {
-	update_status("\nMaxMind Country databases previously downloaded.\n");
+	update_status("\nMaxMind GeoIP databases previously downloaded.\n");
 }
 
 
@@ -289,7 +278,7 @@ EOF;
 // Upgrade - Adv. Inbound settings to new variable names. 
 update_status("Upgrading Adv. Inbound firewall rule settings ...");
 $ufound = FALSE;
-$upgrade_type = array('pfblockernglistsv4', 'pfblockernglistsv6', 'pfblockerngdnsblsettings', 'pfblockerngafrica', 'pfblockerngantartica',
+$upgrade_type = array('pfblockernglistsv4', 'pfblockernglistsv6', 'pfblockerngdnsblsettings', 'pfblockerngafrica', 'pfblockerngantarctica',
 		    'pfblockerngasia', 'pfblockerngeurope', 'pfblockerngnorthamerica', 'pfblockerngoceania', 'pfblockerngsouthamerica',
 		    'pfblockerngtopspammers', 'pfblockerngproxyandsatellite');
 
@@ -332,10 +321,15 @@ foreach ($upgrade_type as $type) {
 }
 
 if ($ufound) {
-	write_config('pfBlockerNG: Upgrade Adv. Inbound Settings.');
+	write_config('pfBlockerNG: Upgrade Advanced Inbound Settings.');
 	update_status(" saving new changes ... done.\n");
 } else {
 	update_status(" no changes required ... done.\n");
+}
+
+// Remove incorrect xml setting
+if (isset($config['installedpackages']['pfblockerngantartica'])) {
+	unset($config['installedpackages']['pfblockerngantartica']);
 }
 
 unset($g['pfblockerng_install']);	// Remove 'Install flag'
