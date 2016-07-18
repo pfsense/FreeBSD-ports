@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-zabbix-proxy
 PORTVERSION=	0.8.9
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +13,7 @@ COMMENT=	pfSense package zabbix-proxy
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/zabbix_proxy:net-mgmt/zabbix22-proxy
+RUN_DEPENDS=	${LOCALBASE}/sbin/zabbix_proxy:net-mgmt/zabbix3-proxy
 
 NO_BUILD=	yes
 NO_MTREE=	yes
