@@ -26,6 +26,22 @@ $query = str_replace('.', '\.', htmlspecialchars($_SERVER['HTTP_HOST']));
 exec("/usr/bin/grep -l ' \"{$query} 60 IN A' /var/db/pfblockerng/dnsblalias/*", $match);
 $pfb_query = strstr($match[0], 'DNSBL', FALSE);
 
+// Query for a TLD Block
+if (empty($pfb_query)) {
+	$idparts	= explode('.', $query);
+	$idcnt		= (count($idparts) -1);
+
+	for ($i=1; $i <= $idcnt; $i++) {
+		$d_query = implode('.', array_slice($idparts, -$i, $i, TRUE));
+		exec("/usr/bin/grep -l '^{$d_query}$' /var/db/pfblockerng/dnsblalias/DNSBL_TLD", $match);
+
+		if (!empty($match[0])) {
+			$pfb_query = 'DNSBL_TLD';
+			break;
+		}
+	}
+}
+
 if (!empty($pfb_query)) {
 	// Increment DNSBL Alias Counter
 	$dnsbl_info = '/var/db/pfblockerng/dnsbl_info';
