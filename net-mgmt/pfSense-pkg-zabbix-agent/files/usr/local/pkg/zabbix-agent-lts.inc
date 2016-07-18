@@ -299,7 +299,7 @@ EOF;
 }
 
 // Based on openvpn_add_keyfile() function
-function zabbix_agent_add_keyfile(& $data, $directive) {
+function zabbix_agent_add_keyfile($data, $directive) {
 
 	$fpath = "/usr/local/etc/zabbix3/zabbix_agentd.{$directive}";
 

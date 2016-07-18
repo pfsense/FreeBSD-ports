@@ -266,7 +266,7 @@ EOF;
 }
 
 // Based on openvpn_add_keyfile() function
-function zabbix_proxy_add_keyfile(& $data, $directive) {
+function zabbix_proxy_add_keyfile($data, $directive) {
 
 	$fpath = "/usr/local/etc/zabbix3/zabbix_proxy.{$directive}";
 
