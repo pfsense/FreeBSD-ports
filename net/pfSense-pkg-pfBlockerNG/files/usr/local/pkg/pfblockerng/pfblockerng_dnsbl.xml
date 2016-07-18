@@ -85,8 +85,8 @@
 			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml</url>
 		</tab>
 		<tab>
-			<text>Country</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml</url>
+			<text>GeoIP</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_TopSpammers.xml</url>
 		</tab>
 		<tab>
 			<text>Logs</text>
@@ -131,7 +131,7 @@
 			<fielddescr>Info</fielddescr>
 			<description><![CDATA[<div class="infoblock">
 				<span class="text-danger">Note: </span>DNSBL requires the DNS Resolver (Unbound) to be used as the DNS service.<br />
-				When a DNS request is made for a domain that is listed in DNSBL, the request is redirected to the Virtual IP address<br />
+				When a DNS request is made for a Domain that is listed in DNSBL, the request is redirected to the Virtual IP address<br />
 				where an instance of Lighttpd Web Server will collect the packet statistics and push a '1x1' GIF image to the Browser.
 				If browsing is slow, check for Firewall LAN Rules/Limiters that might be blocking access to the DNSBL VIP.<br /><br />
 
@@ -151,6 +151,53 @@
 			<sethelp><![CDATA[This will enable DNS Block List for Malicious and/or unwanted Adverts Domains<br />
 				To Utilize, <strong>Unbound DNS Resolver</strong> must be enabled.]]>
 			</sethelp>
+		</field>
+		<field>
+			<fielddescr>Enable TLD</fielddescr>
+			<fieldname>pfb_tld</fieldname>
+			<type>checkbox</type>
+			<sethelp><![CDATA[<span class="badge" title="This feature is in BETA">BETA</span>&emsp;
+				This is an <strong>Advanced process</strong> to determine if all Sub-Domains should be blocked for each listed Domain.<br />
+				<span class="text-danger">Click infoblock before enabling this feature!</span>&emsp;
+				<div class="infoblock">
+					<strong>This Feature is not recommended for Low-Perfomance/Low-Memory installations!</strong><br /><br />
+
+					The 'Unbound Resolver Reloads' can take several seconds or more to complete and may temporarily interrupt
+					DNS Resolution until the Resolver has been fully Reloaded with the updated Domain changes.
+					Consider updating the DNSBL Feeds <strong>'Once per Day'</strong>, if network issues arise.<br /><br />
+
+					When enabled and after all downloads for DNSBL Feeds have completed; TLD will process the Domains.<br />
+					TLD uses a predetermined list of TLDs, to determine if the listed Domain should be configured to block all Sub-Domains.<br />
+					The predetermined TLD list can be found in &emsp;<u>/usr/local/pkg/pfblockerng/dnsbl_tld</u><br /><br />
+
+					To exclude a TLD/Domain from the TLD process, add the TLD/Domain to the <strong>TLD Exclusion</strong>.
+					The specific Domain will be Blocked, but all other Sub-Domains will only be blocked if they are listed elsewhere.
+					Whitelisting a Domain in the <strong>Custom Domain Whitelist</strong> can also be used to bypass TLD, however,
+					the listed Domain will not be Blocked.<br /><br />
+
+					<strong>TLD Blacklist</strong>, can be used to block whole TLDs. &emsp;IE: <strong>xyz</strong><br />
+					<strong>TLD Whitelist</strong> is <strong><u>only</u></strong> used in conjunction with <strong>TLD Blacklist</strong> and
+					is used to allow access to a Domain that is being blocked by a TLD Blacklist.<br /><br />
+
+					When Enabling/Disabling TLD, a <strong>Force Reload - DNSBL</strong> is required.<br /><br />
+
+					Once the TLD Domain limit below is exceeded, the balance of the Domains will be listed as-is.
+					IE: Blocking only the listed Domain (Not Sub-Domains)<br /><strong>TLD Domain Limit Restrictions:</strong><br />
+					<ul>
+						<li>< 1.0GB RAM - Max 100k Domains</li>
+						<li>< 1.5GB RAM - Max 150k Domains</li>
+						<li>< 2.0GB RAM - Max 200k Domains</li>
+						<li>< 2.5GB RAM - Max 250k Domains</li>
+						<li>< 3.0GB RAM - Max 400k Domains</li>
+						<li>< 4.0GB RAM - Max 600k Domains</li>
+						<li>< 5.0GB RAM - Max 1.0M Domains</li>
+						<li>< 6.0GB RAM - Max 1.5M Domains</li>
+						<li>< 7.0GB RAM - Max 2.5M Domains</li>
+						<li>> 7.0GB RAM - > 2.5M Domains</li>
+					</ul>
+				</div>]]>
+			</sethelp>
+			<enablefields>pfb_resolver_check</enablefields>
 		</field>
 		<field>
 			<fielddescr>DNSBL Virtual IP</fielddescr>
@@ -456,14 +503,14 @@
 			<fieldname>alexa_enable</fieldname>
 			<sethelp><![CDATA[Alexa provides a <a target="_blank" href="https://aws.amazon.com/alexa-top-sites/">Top 1 million sites list.</a>
 				(Global 1 month average traffic ranking)<br />
-				Alexa can be used to whitelist the most popular domain names to avoid false positives.
+				Alexa can be used to whitelist the most popular Domain names to avoid false positives.
 				To use this feature, select the number of 'Top Domains' to whitelist. You can also 'include' which TLDs to whitelist.
 
 				<div class="infoblock"><span class="text-danger">Recommendation: </span>
 				<ul>Alexa also contains the 'Top' AD Servers, so its recommended to configure the first DNSBL Alias with AD Server<br />
 				(ie. yoyo, Adaway...) based feeds. Alexa whitelisting can be disabled for this first defined Alias.<br /><br />
 				Generally, Alexa should be used for feeds that post full URLs like PhishTank, OpenPhish or MalwarePatrol.<br /><br />
-				To bypass an Alexa domain, add the Domain to the first defined Alias 'Custom Block list' with Alexa disabled in this alias.</ul>
+				To bypass an Alexa Domain, add the Domain to the first defined Alias 'Custom Block list' with Alexa disabled in this alias.</ul>
 
 				The complete 'Top 1M list' can be downloaded from
 				<a target=_blank href="https://s3.amazonaws.com/alexa-static/top-1m.csv.zip">Here</a> (Database is free to use.)<br />
@@ -494,7 +541,7 @@
 			<fieldname>alexa_inclusion</fieldname>
 			<description><![CDATA[Select the TLDs for Whitelist. (Only showing the Top 150 TLDs)<br />
 				<strong>Default: COM, NET, ORG, CA, CO, IO</strong><br /><br />
-				Detailed listing : <a target=_blank href="http://www.iana.org/domains/root/db">Root Zone top-level domains.</a> ]]>
+				Detailed listing : <a target=_blank href="http://www.iana.org/domains/root/db">Root Zone Top-Level Domains.</a> ]]>
 			</description>
 			<type>select</type>
 			<options>
@@ -667,14 +714,87 @@
 		<field>
 			<fielddescr>Custom List</fielddescr>
 			<fieldname>suppression</fieldname>
-			<description><![CDATA[No Regex Entries Allowed!
-				<div class="infoblock"><br /><br />
+			<description><![CDATA[No Regex Entries Allowed!&emsp;
+				<div class="infoblock">
 				Enter one &emsp; <strong>Domain Name</strong>&emsp; per line<br />
-				You may use "<strong>#</strong>" after any Domain name to add comments. example (google.com # Suppress Google.com)<br />
+				Prefix Domain with a "." to Whitelist all Sub-Domains. &emsp;IE: (.example.com)<br />
+				You may use "<strong>#</strong>" after any Domain name to add comments. &emsp;IE: (example.com # Whitelist example.com)<br />
 				This List is stored as 'Base64' format in the config.xml file.<br /><br />
-				<span class="text-danger">Note: </span>These entries are only suppressed when Feeds are downloaded or on a
+				<span class="text-danger">Note: </span>These entries are only Whitelisted when Feeds are downloaded or on a
 				<span class="text-danger">'Force Reload'.</span><br />
-				Use the Alerts Tab '+' Suppression icon to immediately remove a domain from Unbound DNSBL.</div>]]> 
+				Use the Alerts Tab '+' Whitelist Icon to immediately remove a Domain from Unbound DNSBL.</div>]]> 
+			</description>
+			<type>textarea</type>
+			<cols>90</cols>
+			<rows>15</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<name>TLD Exclusion List</name>
+			<type>listtopic</type>
+			<collapse>closed</collapse>
+		</field>
+		<field>
+			<fielddescr>TLD Exclusion List</fielddescr>
+			<fieldname>tldexclusion</fieldname>
+			<description><![CDATA[Enter TLD(s) and/or Domain(s) to be excluded from the TLD function.&emsp;
+				<div class="infoblock">
+					Enter one &emsp; <strong>Domain Name or TLD</strong>&emsp; per line<br />
+					No Regex Entries and no leading/trailing 'dot' allowed!<br />
+					You may use "<strong>#</strong>" after any Domain/TLD to add comments. &emsp;<br />
+					IE: (example.com # Exclude example.com)<br />
+					IE: (co.uk # Exclude CO.UK)<br />
+					This List is stored as 'Base64' format in the config.xml file.<br /><br />
+				</div>]]>
+			</description>
+			<type>textarea</type>
+			<cols>90</cols>
+			<rows>15</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<name>TLD Blacklist</name>
+			<type>listtopic</type>
+			<collapse>closed</collapse>
+		</field>
+		<field>
+			<fielddescr>TLD Blacklist</fielddescr>
+			<fieldname>tldblacklist</fieldname>
+			<description><![CDATA[Enter TLD(s) to be blacklisted.&emsp;
+				<div class="infoblock">
+					Enter one &emsp; <strong>TLD</strong>&emsp; per line. ie: xyz<br />
+					No Regex Entries and no leading/trailing 'dot' allowed!<br />
+					You may use "<strong>#</strong>" after any TLD to add comments. example (xyz # Blacklist XYZ TLD)<br />
+					This List is stored as 'Base64' format in the config.xml file.<br /><br />
+				</div>]]>
+			</description>
+			<type>textarea</type>
+			<cols>90</cols>
+			<rows>15</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<name>TLD Whitelist</name>
+			<type>listtopic</type>
+			<collapse>closed</collapse>
+		</field>
+		<field>
+			<fielddescr>TLD Whitelist</fielddescr>
+			<fieldname>tldwhitelist</fieldname>
+			<description><![CDATA[Enter <strong>each specific</strong> Domain and/or Sub-Domains to be Whitelisted.
+				(Used in conjunction with <strong>TLD Blacklist only</strong>)&emsp;
+				<div class="infoblock">
+					Enter one &emsp;<strong>Domain</strong>&emsp; per line, followed by &emsp;<strong>|x.x.x.x</strong>&emsp;
+					(IP Address for Domain or Sub-Domain) &emsp;<br />Examples:<br />
+					<ul>
+						<li>example.com|x.x.x.x</li>
+						<li>news.example.com|x.x.x.x &emsp;&emsp;(Replace x.x.x.x with associated Domain/Sub-Domain IP Address.</li>
+					</ul>
+					You must Whitelist every Domain or Sub-Domain individually.<br />
+					No Regex Entries and no leading/trailing 'dot' allowed!<br />
+					You may use "<strong>#</strong>" after any Domain/Sub-Domain to add comments. IE: (example.com|x.x.x.x # TLD Whitelist)<br />
+					This List is stored as 'Base64' format in the config.xml file.<br /><br />
+				</div>]]>
 			</description>
 			<type>textarea</type>
 			<cols>90</cols>
