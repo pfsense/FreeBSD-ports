@@ -83,16 +83,35 @@ foreach ($aglobal_array as $type => $value) {
 	${"$type"} = $pfb['aglobal'][$type] != '' ? $pfb['aglobal'][$type] : $value;
 }
 
-// Collect DNSBL suppression list
+// Assign variable to suppression config
 $pfb['dsupp'] = &$config['installedpackages']['pfblockerngdnsblsettings']['config'][0]['suppression'];
-$dnssupp_ex = array();
-$suppression = pfbng_text_area_decode($pfb['dnsblconfig']['suppression'], TRUE);
-if (isset($suppression)) {
-	foreach ($suppression as $dnssupp) {
-		// Create 1) array for the suppressed domains 2) A string with the domain and comment text
-		$dnssupp_ex[] = $dnssupp[0];
-		$dnssupp_dat .= "{$dnssupp[0]} {$dnssupp[1]}\r\n";
+
+// Collect DNSBL Whitelist
+$dnssupp_ex = $dnssupp_ex_tld = array();
+$dnssupp_dat = '';
+
+$whitelist = pfbng_text_area_decode($pfb['dnsblconfig']['suppression'], TRUE, TRUE);
+if (!empty($whitelist)) {
+	foreach ($whitelist as $line) {
+
+		// Create string (Domain and Comment if found)
+		if (isset($line[1]) && strpos($line[1], '#') !== FALSE) {
+			$dnssupp_dat .= "{$line[0]} {$line[1]}\r\n";
+		} else {
+			$dnssupp_dat .= trim("{$line[0]}") . "\r\n";
+		}
+
+		// Create array of Whitelisted Domains (Full Domain)
+		if (substr($line[0], 0, 1) == '.') {
+			$dnssupp_ex_tld[] = ltrim($line[0], '.');
+		}
+
+		// Create array of Whitelisted Domains (Sub-Domains)
+		else {
+			$dnssupp_ex[] = $line[0];
+		}
 	}
+	$dnssupp_ex_tld = array_flip($dnssupp_ex_tld);
 }
 
 // Save Alerts tab customizations
@@ -146,21 +165,22 @@ if (isset($_POST['filterlogentries_submit'])) {
 	}
 }
 
-if ($_POST['filterlogentries_clear']) {
+// Clear Filter Alerts
+if (isset($_POST['filterlogentries_clear'])) {
 	$pfb['filterlogentries'] = FALSE;
 	$filterfieldsarray = array();
 }
 
 // Add IP to the suppression alias
-if ($_POST['addsuppress']) {
+if (isset($_POST['addsuppress']) && !empty($_POST['addsuppress'])) {
 	if (isset($_POST['ip'])) {
 		$ip	= htmlspecialchars($_POST['ip']);
 		$table	= htmlspecialchars($_POST['table']);
 		$descr	= htmlspecialchars($_POST['descr']);
 		$cidr	= htmlspecialchars($_POST['cidr']);
 
-		// If description or CIDR field is empty, exit.
-		if (empty($descr) || empty($cidr)) {
+		// If IP or CIDR field is empty, exit.
+		if (empty($ip) || empty($cidr)) {
 			header('Location: /pfblockerng/pfblockerng_alerts.php');
 			exit;
 		}
@@ -259,15 +279,32 @@ if ($_POST['addsuppress']) {
 	}
 }
 
-// Add domain to the suppression list
-if ($_POST['addsuppressdom']) {
+// Add domain to the Whitelist
+if (isset($_POST['addsuppressdom']) && !empty($_POST['addsuppressdom'])) {
+
 	$domain		= htmlspecialchars($_POST['domain']);
 	$domainparse	= str_replace('.', '\.', $domain);
+	$table		= htmlspecialchars($_POST['table']);
+	$descr		= htmlspecialchars($_POST['descr']);
+	$supp_type	= htmlspecialchars($_POST['dnsbl_supp_type']);
+
+	// If Domain or Table field is empty, exit.
+	if (empty($domain) || empty($table)) {
+		header('Location: /pfblockerng/pfblockerng_alerts.php');
+		exit;
+	}
 
 	// Query for Domain in Unbound DNSBL file.
 	$dnsbl_query = exec("/usr/bin/grep -Hm1 ' \"{$domainparse} 60 IN A' {$pfb['dnsbl_file']}.conf");
 
-	// Query Domain for CNAME(s)
+	// Remove 'www.' from query if not found
+	if (empty($dnsbl_query) && substr($domain, 0, 4) == 'www.') {
+		$domain		= substr($domain, 4);
+		$domainparse	= str_replace('.', '\.', $domain);
+		$dnsbl_query	= exec("/usr/bin/grep -Hm1 ' \"{$domainparse} 60 IN A' {$pfb['dnsbl_file']}.conf");
+	}
+
+	// Query for CNAME(s)
 	exec("/usr/bin/drill {$domain} @8.8.8.8 | /usr/bin/awk '/CNAME/ {sub(\"\.$\", \"\", $5); print $5;}'", $cname_list);
 	if (!empty($cname_list)) {
 		$cname = array();
@@ -278,31 +315,56 @@ if ($_POST['addsuppressdom']) {
 		}
 	}
 
-	// Save new suppress domain to suppress list.
+	// Save Domain to Whitelist
 	if (empty($dnsbl_query)) {
 		$savemsg = gettext("Domain: [ ") . "{$domain}" . gettext(" ] does not exist in the Unbound Resolver DNSBL");
 		exec("/usr/local/sbin/unbound-control -c {$pfb['dnsbldir']}/unbound.conf flush {$domain}.");
 	}
 	else {
+		// Collect Domains/Sub-Domains to Whitelist (used by grep -vF -f cmd to remove Domain/Sub-Domains)
+		$dnsbl_remove = "\"{$domain} 60\n";
+
+		$supp_string = '';
+		if ($supp_type == 'true') {
+			$supp_string  .= '.';
+			$dnsbl_remove .= ".{$domain} 60\n";
+		}
+
+		if (!empty($descr)) {
+			$supp_string .= "{$domain} # {$descr}\r\n";
+		} else {
+			$supp_string .= "{$domain}\r\n";
+		}
+
+		// Remove 'Domain and CNAME(s)' from Unbound resolver pfb_dnsbl.conf file
 		if (is_array($cname)) {
-			// Remove Domain and CNAME(s) in Unbound resolver pfb_dnsbl.conf file
-			$removed	= "{$domain} | ";
-			$supp_string	= "{$domain}\r\n";
-			exec("{$pfb['sed']} -i '' '/ \"{$domain} 60 IN A/d' {$pfb['dnsbl_file']}.conf");
+			$removed = "{$domain} | ";
 
 			foreach ($cname as $name) {
 				$removed	.= "{$name} | ";
-				$supp_string	.= "{$name} # CNAME for ({$domain})\r\n";
-				exec("{$pfb['sed']} -i '' '/ \"{$name} 60 IN A/d' {$pfb['dnsbl_file']}.conf");
+				$dnsbl_remove	.= "\"{$name} 60\n";
+
+				if ($supp_type == 'true') {
+					$supp_string	.= '.';
+					$dnsbl_remove	.= ".{$name} 60\n";
+				}
+				$supp_string .= "{$name} # CNAME for ({$domain})\r\n";
 			}
 			$savemsg = gettext("Removed - Domain|CNAME(s) | ") . "{$removed}"
 				. gettext("from Unbound Resolver DNSBL. You may need to flush your browsers DNS Cache");
 		}
 		else {
-			// Remove domain from Unbound resolver pfb_dnsbl.conf file
-			exec("{$pfb['sed']} -i '' '/ \"{$domain} 60 IN A/d' {$pfb['dnsbl_file']}.conf");
 			$savemsg = gettext("Removed Domain: [ ") . "{$domain}" . gettext(" ] from Resolver DNSBL. You may need to flush your browsers DNS Cache");
 		}
+
+		// Save DNSBL Whitelist file (grep -vF -f cmd)
+		@file_put_contents("{$pfb['dnsbl_tmp']}.adup", $dnsbl_remove, LOCK_EX);
+
+		// Remove Domain Whitelist from DNSBL files
+		exec("{$pfb['grep']} -vF -f {$pfb['dnsbl_tmp']}.adup {$pfb['dnsbl_file']}.conf > {$pfb['dnsbl_tmp']}.supp && mv -f {$pfb['dnsbl_tmp']}.supp {$pfb['dnsbl_file']}.conf");
+		exec("{$pfb['grep']} -vF -f {$pfb['dnsbl_tmp']}.adup {$pfb['dnsdir']}/{$table}.txt > {$pfb['dnsbl_tmp']}.supp && mv -f {$pfb['dnsbl_tmp']}.supp {$pfb['dnsdir']}/{$table}.txt");
+
+		unlink_if_exists("{$pfb['dnsbl_tmp']}.adup");
 
 		$cache_dumpfile = '/var/tmp/unbound_cache';
 		unlink_if_exists("{$cache_dumpfile}");
@@ -318,18 +380,17 @@ if ($_POST['addsuppressdom']) {
 		exec("/usr/local/sbin/unbound-control -c {$pfb['dnsbldir']}/unbound.conf flush {$domain}");
 		if (is_array($cname)) {
 			foreach ($cname as $name) {
-				exec("/usr/local/sbin/unbound-control -c {$pfb['dnsbldir']}/unbound.conf flush {$name}");
+				exec("/usr/local/sbin/unbound-control -c {$pfb['dnsbldir']}/unbound.conf flush {$name}.");
 			}
 		}
 
 		if (!in_array($domain, $dnssupp_ex)) {
-			if (is_array($cname)) {
-				$dnssupp_dat .= "{$supp_string}";
-			} else {
-				$dnssupp_dat .= "{$domain}";
-			}
+			$dnssupp_dat .= "{$supp_string}";
 			$pfb['dsupp'] = base64_encode($dnssupp_dat);
-			write_config("pfBlockerNG: Added {$domain} to DNSBL suppress list");
+			write_config("pfBlockerNG: Added {$domain} to DNSBL Whitelist");
+
+			// Disable 'Auto-Resolve' on DNSBL Whitelist until next refresh
+			$hostlookup = '';
 		}
 	}
 }
@@ -574,7 +635,7 @@ function conv_log_filter_lite($logfile, $nentries, $tail, $pfbdenycnt, $pfbpermi
 	global $pfb, $rule_list, $filterfieldsarray;
 	$fields_array	= array();
 	$denycnt	= $permitcnt = $matchcnt = 0;
-	$logarr		= '';
+	$logarr		= $previous_alert = '';
 
 	if (file_exists($logfile)) {
 		// Collect filter.log entries
@@ -675,7 +736,7 @@ function conv_log_filter_lite($logfile, $nentries, $tail, $pfbdenycnt, $pfbpermi
 		return $fields_array;
 	}
 }
-$pgtitle = array(gettext('Firewall'), gettext("pfBlockerNG"), gettext("Alerts"));
+$pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'), gettext('Alerts'));
 include_once('head.inc');
 
 // refresh every 60 secs
@@ -689,7 +750,7 @@ if ($alertrefresh == 'on') {
 	}
 }
 
-if ($savemsg) {
+if (isset($savemsg)) {
 	print_info_box($savemsg);
 }
 
@@ -701,7 +762,7 @@ $tab_array[] = array(gettext("Reputation"), false, "/pkg_edit.php?xml=/pfblocker
 $tab_array[] = array(gettext("IPv4"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml");
 $tab_array[] = array(gettext("IPv6"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml");
 $tab_array[] = array(gettext("DNSBL"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml");
-$tab_array[] = array(gettext("Country"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml");
+$tab_array[] = array(gettext("GeoIP"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_TopSpammers.xml");
 $tab_array[] = array(gettext("Logs"), false, "/pfblockerng/pfblockerng_log.php");
 $tab_array[] = array(gettext("Sync"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml");
 display_top_tabs($tab_array, true);
@@ -731,7 +792,7 @@ $group->add(new Form_Input(
 	'Deny',
 	'number',
 	$pfbdenycnt,
-	[min => 0, max => 1000]
+	['min' => 0, 'max' => 1000]
 ))->setHelp('Deny')->setAttribute('title', 'Enter number of \'Deny\' log entries to view. Set to \'0\' to disable');
 
 $group->add(new Form_Input(
@@ -739,7 +800,7 @@ $group->add(new Form_Input(
 	'DNSBL',
 	'number',
 	$pfbdnscnt,
-	[min => 0, max => 1000]
+	['min' => 0, 'max' => 1000]
 ))->setHelp('DNSBL')->setAttribute('title', 'Enter number of \'DNSBL\' log entries to view. Set to \'0\' to disable');
 
 $group->add(new Form_Input(
@@ -747,7 +808,7 @@ $group->add(new Form_Input(
 	'Permit',
 	'number',
 	$pfbpermitcnt,
-	[min => 0, max => 1000]
+	['min' => 0, 'max' => 1000]
 ))->setHelp('Permit')->setAttribute('title', 'Enter number of \'Permit\' log entries to view. Set to \'0\' to disable');
 
 $group->add(new Form_Input(
@@ -755,7 +816,7 @@ $group->add(new Form_Input(
 	'Match',
 	'number',
 	$pfbmatchcnt,
-	[min => 0, max => 1000]
+	['min' => 0, 'max' => 1000]
 ))->setHelp('Match')->setAttribute('title', 'Enter number of \'Match\' log entries to view. Set to \'0\' to disable');
 
 $group->add(new Form_Checkbox(
@@ -764,7 +825,7 @@ $group->add(new Form_Checkbox(
 	NULL,
 	($alertrefresh == 'on' ? TRUE : FALSE),
 	'on'
-))->setHelp('Auto-Refresh')->setAttribute('title', 'Select to \'Auto-Refresh\' page every 60 seconds.');
+))->setHelp('Auto Refresh')->setAttribute('title', 'Select to \'Auto-Refresh\' page every 60 seconds.');
 
 $group->add(new Form_Checkbox(
 	'hostlookup',
@@ -772,7 +833,7 @@ $group->add(new Form_Checkbox(
 	NULL,
 	($hostlookup == 'on' ? TRUE : FALSE),
 	'on'
-))->setHelp('Auto-Resolve')->setAttribute('title', 'Select to \'Auto-Resolve\' Hosts.');
+))->setHelp('Auto Resolve')->setAttribute('title', 'Select to \'Auto-Resolve\' Hosts.');
 
 $btn_save = new Form_Button(
 	'save',
@@ -902,6 +963,7 @@ $form->addGlobal(new Form_Input('cidr', 'cidr', 'hidden', ''));
 $form->addGlobal(new Form_Input('ip', 'ip', 'hidden', ''));
 $form->addGlobal(new Form_Input('addsuppress', 'addsuppress', 'hidden', ''));
 $form->addGlobal(new Form_Input('addsuppressdom', 'addsuppressdom', 'hidden', ''));
+$form->addGlobal(new Form_Input('dnsbl_supp_type', 'dnsbl_supp_type', 'hidden', ''));
 print($form);
 
 $skipcount = $counter = $resolvecounter = 0;
@@ -938,7 +1000,7 @@ foreach (array (	'Deny'		=> "{$pfb['denydir']}/* {$pfb['nativedir']}/*",
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<h2 class="panel-title">&nbsp;<?=gettext($type)?>
-			<small>-&nbsp;<?=gettext(Last)?>&nbsp;<?=$pfbentries?>&nbsp;<?=gettext("Alert Entries")?></small>
+			<small>-&nbsp;<?=gettext('Last')?>&nbsp;<?=$pfbentries?>&nbsp;<?=gettext('Alert Entries')?></small>
 		</h2>
 	</div>
 	<div class="panel-body">
@@ -962,6 +1024,7 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 			<tbody>
 <?php
 	$dns_array = $final = array();
+	$pdomain = '';
 	if (file_exists("{$pfb['dnslog']}")) {
 		if (($handle = @fopen("{$pfb['dnslog']}", 'r')) !== FALSE) {
 			while (($line = fgetcsv($handle)) !== FALSE) {
@@ -988,9 +1051,14 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 
 	if (!empty($dns_array)) {
 
-		$supp_dom_txt  = "Clicking this Suppression icon, will immediately remove the blocked domain from Unbound Resolver.\n\n";
-		$supp_dom_txt .= "To manually add Domain(s), edit the 'Domain Suppression' list in the DNSBL tab.\n";
-		$supp_dom_txt .= "Manual entries will not immediatelty remove existing blocked hosts.";
+		// Collect TLD Blacklist and remove any leading/trailing 'dot'
+		$tld_blacklist = array_flip(pfbng_text_area_decode($pfb['dnsblconfig']['tldblacklist'], TRUE, FALSE));
+		if (!empty($tld_blacklist)) {
+			foreach ($tld_blacklist as $tld => $key) {
+				unset($tld_blacklist[$tld]);
+				$tld_blacklist[trim($tld, '.')] = '';
+			}
+		}
 
 		foreach ($dns_array as $aline) {
 
@@ -1031,18 +1099,56 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 				continue;
 			}
 
-			// Collect the list that contains the blocked domain
-			$domain = str_replace('.', '\.', $aline[2]);
-			$sed_cmd = "{$pfb['sed']} -e 's/^.*[a-zA-Z]\///' -e 's/:.*//' -e 's/\..*/ /'";
-			$pfb_query = exec("{$pfb['grep']} -Hm1 ' \"{$domain} 60 IN A' {$pfb['dnsdir']}/* | {$sed_cmd}");
-			$pfb_alias = exec("{$pfb['grep']} -Hm1 ' \"{$domain} 60 IN A' {$pfb['dnsalias']}/* | {$sed_cmd}");
+			// Collect the list that contains the blocked Domain
+			$domain		= $domain_final = $pfbalertdnsbl[8];
+			$domainparse	= str_replace('.', '\.', $domain);
+			$dquery		= " \"{$domainparse} 60 IN A\| \"www\.{$domainparse} 60 IN A";
+			$sed_cmd	= "{$pfb['sed']} -e 's/^.*[a-zA-Z]\///' -e 's/:.*//' -e 's/\..*/ /'";
+			$pfb_query	= exec("{$pfb['grep']} -Hm1 '{$dquery}' {$pfb['dnsdir']}/*.txt | {$sed_cmd}");
+			$pfb_alias	= exec("{$pfb['grep']} -Hm1 '{$dquery}' {$pfb['dnsalias']}/* | {$sed_cmd}");
+			$pfb_tld	= FALSE;
+
+			if (empty($pfb_query)) {
+				$dparts = explode('.', $domain);
+				$dcnt	= count($dparts);
+				$dtld	= end($dparts);
+
+				// Determine if TLD exists in TLD Blacklist
+				if (isset($tld_blacklist[$dtld])) {
+					$pfb_query	= 'DNSBL_TLD';
+				}
+
+				// Search Sub-Domains for match, unset highest level Domain at each loop
+				elseif (is_numeric($dcnt)) {
+
+					for ($i=0; $i < $dcnt; $i++) {
+						unset($dparts[$i]);
+						$domainparse	= str_replace('.', '\.', implode('.', $dparts));
+						$dquery		= " \"{$domainparse} 60 IN A\| \"www\.{$domainparse} 60 IN A";
+						$pfb_query	= exec("{$pfb['grep']} -Hm1 '{$dquery}' {$pfb['dnsdir']}/*.txt | {$sed_cmd}");
+
+						if (!empty($pfb_query)) {
+							// Denote DNSBL blocking whole Domain
+							$dquery		= " \"{$domainparse} 60 IN A\| \"www\.{$domainparse} 60 IN A";
+							$pfb_alias	= exec("{$pfb['grep']} -Hm1 '{$dquery}' {$pfb['dnsalias']}/* | {$sed_cmd}");
+							$domain_final	= str_replace('\.', '.', $domainparse);
+							$pfb_tld	= TRUE;
+							$supp_dom	= "&emsp;<i class=\"fa fa-plus-circle\"" .
+										" title=\"The whole domain [ {$domain_final} ] is being blocked.\"></i>";
+							break;
+						}
+					}
+				}
+			}
 
 			if (empty($pfb_query)) {
 				$pfb_query = 'no match';
+				$pfb_alias = '';
 			}
 
-			// Truncate long list names
 			$pfb_matchtitle = "The DNSBL Feed and Alias that blocked the indicated Domain.";
+
+			// Truncate long list names
 			if (strlen($pfb_query) >= 17 || strlen($pfb_alias) >= 25) {
 				$pfb_matchtitle = "Feed: {$pfb_query} | Alias: {$pfb_alias}";
 				$pfb_query	= substr($pfb_query, 0, 16) . '...';
@@ -1050,14 +1156,53 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 			}
 
 			$alert_dom = '<a class="fa fa-info icon-pointer icon-primary" title="Click for Threat Source Lookup." ' .
-					'href="/pfblockerng/pfblockerng_threats.php?domain=' . $aline[2] . '"></a>';
+					'href="/pfblockerng/pfblockerng_threats.php?domain=' . $domain_final . '"></a>';
 
-			if (!in_array($pfbalertdnsbl[8], $dnssupp_ex)) {
-				$supp_dom = '<i class="fa fa-plus icon-pointer icon-primary" id="DNSBLSUP' . $domain . '"' .
-						'" title="' . $supp_dom_txt . '"></i>';
+			$supp_dom_txt = '';
+			if ($pfb_tld) {
+				$supp_dom_txt = "The whole Domain [ {$domain_final} ] is being blocked.\n\n";
+			}
+
+			$supp_dom_txt .= "Clicking this Whitelist Icon, will immediately remove the blocked Domain from DNSBL.\n";
+			$supp_dom_txt .= "CNAMES will also be whitelisted, if found. (Google DNS @8.8.8.8 is used to collect the CNAMES)\n\n";
+			$supp_dom_txt .= "To manually add Domain(s), edit the 'Custom Domain Whitelist' in the DNSBL tab.\n";
+			$supp_dom_txt .= "Manual entries require a 'Force Reload - DNSBL' to take effect";
+
+			// Determine if Domain exists in Whitelist
+			if ($pfb_query != 'DNSBL_TLD') {
+				if (in_array($domain_final, $dnssupp_ex)) {
+					$supp_dom = '<i class="fa fa-plus-square-o icon-pointer"' . 
+							' title="This Domain is already in the DNSBL WhiteList"></i>&emsp;';
+				}
+
+				// Determine if Alerted Domain is blocked by a Domain or Sub-Domain
+				else {
+					$dparts = explode('.', $domain_final);
+					$dcnt	= count($dparts);
+					for ($i=$dcnt; $i > 0; $i--) {
+						$d_query = implode('.', array_slice($dparts, -$i, $i, TRUE));
+						if (isset($dnssupp_ex_tld[$d_query])) {
+							$supp_dom = '<i class="fa fa-minus-square-o icon-pointer" title="The following Domain [ ' .
+									$d_query . ' ] is already in the DNSBL WhiteList"></i>&emsp;';
+							break;
+						}
+
+						// Root Domain blocking all Sub-Domains
+						if ($pfb_tld) {
+							$supp_dom = '<i class="fa fa-plus-circle icon-pointer icon-primary" id="DNSBLSUP' .
+									$domain_final . '|' . $pfb_query . '" title="' . $supp_dom_txt . '"></i>';
+
+						// Domain not in Whitelist
+						} else {
+							$supp_dom = '<i class="fa fa-plus icon-pointer icon-primary" id="DNSBLSUP' .
+								$domain_final . '|' . $pfb_query . '" title="' . $supp_dom_txt . '"></i>';
+						}
+					}
+				}
 			}
 			else {
-				$supp_dom = '<i class="fa fa-plus-square-o icon-pointer" title="This domain is already in the DNSBL Suppress List"></i>&emsp;';
+				// Don't add Whitelist Icon as whole TLD is Blocked
+				$supp_dom = "<i class=\"fa fa-hand-stop-o\" title=\"The whole TLD [ {$dtld} ] is being blocked.\"></i>";
 			}
 
 			// Truncate long URLs
@@ -1104,7 +1249,7 @@ if ($type != 'DNSBL') {
 // Process fields array for: Deny/Permit/Match and generate output
 if (!empty($fields_array[$type]) && !empty($rule_list) && $type != 'DNSBL') {
 	foreach ($fields_array[$type] as $fields) {
-		$rulenum = $alert_ip = $supp_ip = $pfb_query = '';
+		$rulenum = $alert_ip = $supp_ip = $pfb_query = $src_icons = $dst_icons = '';
 
 		/* Fields_array Reference	[0]	= Rulenum			[6]	= Protocol
 						[1]	= Real Interface		[7]	= SRC IP
@@ -1129,7 +1274,7 @@ if (!empty($fields_array[$type]) && !empty($rule_list) && $type != 'DNSBL') {
 				$pfb_query = 'Country';
 			}
 
-			// Add DNS resolve and suppression icons to external IPs only. GeoIP code to external IPs only.
+			// Add DNS resolve and Suppression icons to external IPs only. GeoIP code to external IPs only.
 			if (in_array($fields[8], $pfb_local) || ip_in_pfb_localsub($fields[8])) {
 				// Destination is gateway/NAT/VIP
 				$rule = "{$rule_list[$rulenum]['name']}<br /><small>({$rulenum})</small>";
@@ -1146,7 +1291,7 @@ if (!empty($fields_array[$type]) && !empty($rule_list) && $type != 'DNSBL') {
 				if ($rtype == 'block' && $hostlookup == 'on') {
 					$hostname = getpfbhostname('src', $fields[7], $counter, $fields[8]);
 				} else {
-					$hostname = '';
+					$hostname = array('src' => '', 'dst' => '');
 				}
 
 				$src_icons_1	= "{$alert_ip}&nbsp;{$supp_ip}";
@@ -1170,7 +1315,7 @@ if (!empty($fields_array[$type]) && !empty($rule_list) && $type != 'DNSBL') {
 				if ($rtype == 'block' && $hostlookup == 'on') {
 					$hostname = getpfbhostname('dst', $fields[8], $counter, $fields[7]);
 				} else {
-					$hostname = '';
+					$hostname = array('src' => '', 'dst' => '');
 				}
 
 				$src_icons_1	= '';
@@ -1265,6 +1410,7 @@ if (!empty($fields_array[$type]) && !empty($rule_list) && $type != 'DNSBL') {
 }
 
 		// Print final table info
+			$msg = '';
 			if ($pfbentries != $counter) {
 				$msg = ' - Insufficient Firewall Alerts found.';
 			}
@@ -1285,10 +1431,31 @@ if (!empty($fields_array[$type]) && !empty($rule_list) && $type != 'DNSBL') {
 <?php
 endforeach;	// End - Create four output windows ('Deny', 'DNSBL', 'Permit' and 'Match')
 unset($fields_array);
-
-include('foot.inc');
 ?>
 
+<!-- Show Icon Legend -->
+<div class="infoblock">
+	<div class="alert alert-info clearfix" role="alert"><div class="pull-left">
+		<dl class="dl-horizontal responsive">
+			<dt><?=gettext('Icon')?></dt>
+				<dd><?=gettext('Legend')?></dd>
+			<dt><i class="fa fa-info">&nbsp;</i></dt>
+				<dd><?=gettext('Links to Threat Source lookups');?></dd>
+			<dt><i class="fa fa-plus"></i></dt>
+				<dd><?=gettext('Whitelist a IP/Domain');?></dd>
+			<dt><i class="fa fa-plus-circle"></i></dt>
+				<dd><?=gettext('Whitelist a TLD Domain');?></dd>
+			<dt><i class="fa fa-plus-square-o"></i></dt>
+				<dd><?=gettext('Domain is already Whitelisted');?></dd>
+			<dt><i class="fa fa-minus-square-o"></i></dt>
+				<dd><?=gettext('Domain is already Whitelisted (Custom Whitelist entry prefixed by a \'Dot\')');?></dd>
+			<dt><i class="fa fa-hand-stop-o"></i></dt>
+				<dd><?=gettext('Domain is blocked by a whole TLD');?></dd>
+		</dl>
+	</div></div>
+</div>
+
+<?php include('foot.inc');?>
 <script type="text/javascript">
 //<![CDATA[
 
@@ -1314,36 +1481,102 @@ if ( autoresolve == 'on' ) {
 	}
 }
 
+function dnsbl_whitelist() {
+	if (domain && table) {
+		$('#addsuppressdom').val('true');
+		$('form').submit();
+	}
+}
+
+function add_description() {
+
+	$('<div></div>').appendTo('body')
+	.html('<div><h6>Do you want to add a description for this Whitelist ?</h6></div>')
+	.dialog({
+		modal: true,
+		autoOpen: true,
+		resizable: false,
+		closeOnEscape: true,
+		width: 'auto',
+		title: 'Domain Whitelist description:',
+		position: { my: 'top', at: 'top' },
+		buttons: {
+			Yes: function () {
+				var description = prompt("Please enter Whitelist description");
+				$('#descr').val(description);
+				$(this).dialog("close");
+				dnsbl_whitelist();
+			},
+			No: function () {
+				$(this).dialog("close");
+				dnsbl_whitelist();
+			},
+			'Cancel Whitelist': function (event, ui) {
+				$(this).dialog("close");
+			}
+		}
+	}).css('background-color','#ffd700');
+	$("div[role=dialog]").find('button').addClass('btn-info btn-xs');
+}
+
+
 events.push(function() {
 
 	$('[id^=DNSBLSUP]').click(function(event) {
 		if (confirm(event.target.title)) {
-			var domain = this.id.replace(/DNSBLSUP|\\/gi, "");
-			$('#domain').val(domain);
 
-			if (domain) {
-				$('#addsuppressdom').val('true');
-				$('form').submit();
-			}
+			$('meta[http-equiv=refresh]').remove();
+			var domaintable = this.id.replace("DNSBLSUP", "");
+			var arr = domaintable.split('|');	// Split domaintable into (Domain/Table)
+			$('#domain').val(arr[0]);
+			$('#table').val(arr[1]);
+
+			$('<div></div>').appendTo('body')
+			.html('<div><h6>Do you wish to Whitelist *ALL* Sub-Domains of [ ' + arr[0] + ' ] ?</h6></div>')
+			.dialog({
+				modal: true,
+				autoOpen: true,
+				resizable: false,
+				closeOnEscape: true,
+				width: 'auto',
+				title: 'Domain Whitelisting:',
+				position: { my: 'top', at: 'top' },
+				buttons: {
+					Yes: function () {
+						$('#dnsbl_supp_type').val(true);
+						$(this).dialog("close");
+						add_description();
+					},
+					No: function () {
+						$('#dnsbl_supp_type').val(false);
+						$(this).dialog("close");
+						add_description();
+					}
+				}
+			}).css('background-color','#ffd700');
+			$("div[role=dialog]").find('button').addClass('btn-info btn-xs');
 		}
 	});
 
 	$('[id^=PFBIPSUP]').click(function(event) {
-		var iprule = this.id.replace("PFBIPSUP", "");
-		var arr = iprule.split('|');	// Split iprule into (IP/Rulename)
-		$('#ip').val(arr[0]);
-		$('#table').val(arr[1]);
+		if (confirm(event.target.title)) {
+			$('meta[http-equiv=refresh]').remove();
+			var iprule = this.id.replace("PFBIPSUP", "");
+			var arr = iprule.split('|');	// Split iprule into (IP/Rulename)
+			$('#ip').val(arr[0]);
+			$('#table').val(arr[1]);
 
-		var description = prompt("Please enter Suppression Description");
-		$('#descr').val(description);
+			var description = prompt("Please enter Suppression description");
+			$('#descr').val(description);
 
-		if (description.value != "") {
-			var cidr = prompt("Please enter CIDR [ 32 or 24 CIDR only supported ]","32");
-			$('#cidr').val(cidr);
+			if (description.value != "") {
+				var cidr = prompt("Please enter CIDR [ 32 or 24 CIDR only supported ]","32");
+				$('#cidr').val(cidr);
 
-			if (arr[0] && arr[1] && description && cidr) {
-				$('#addsuppress').val('true');
-				$('form').submit();
+				if (arr[0] && arr[1] && description && cidr) {
+					$('#addsuppress').val('true');
+					$('form').submit();
+				}
 			}
 		}
 	});
