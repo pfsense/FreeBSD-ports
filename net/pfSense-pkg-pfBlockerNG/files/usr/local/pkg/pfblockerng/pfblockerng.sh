@@ -422,6 +422,7 @@ dnsbl_scrub() {
 	fi
 
 	countf="$(grep -c ^ ${pfbdomain}${alias}.bk)"
+	rm -f "${pfbdomain}${alias}.bk2"
 
 	echo '  ----------------------------------------------------------------------'
 	printf "%-10s %-10s %-10s %-10s %-10s %-10s %-10s\n" '  Orig.' 'Unique' '# Dups' '# White' '# Alexa' 'Final'
