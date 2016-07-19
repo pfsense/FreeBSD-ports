@@ -809,10 +809,10 @@ events.push(function() {
 				clearInterval(wait_for_update);
 
 				var auto_update_interval = 0;
+				var rrd_update_interval = 62;
 
 				// Synchronize auto update with RRD resolution step and update interval, plus a cushion to ensure RRD has been updated.
 				if ( $( "#auto-update" ).val() == "-2") {		// Auto Sync option selected
-					var rrd_update_interval = 62;
 					var now = Math.floor(Date.now() / 1000);
 					var last_update = Math.floor(last_updated / 1000);
 					var last_step_boundary = (Math.floor(now / step) * step);
@@ -838,7 +838,7 @@ events.push(function() {
 
 				// Keep auto update working if a condition results in an invalid auto update interval.  Such as RRD update fails to occur.
 				if (auto_update_interval < 1) {
-					auto_update_interval = now + rrd_update_interval;
+					auto_update_interval = rrd_update_interval;
 				}
 
 				// Schedule the graph auto update.
