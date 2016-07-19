@@ -313,11 +313,22 @@ if ($left != "null") {
 				
 			}
 
-			$obj[$ds_key_left_adjusted]['min'] = min($stats);
-			$obj[$ds_key_left_adjusted]['max'] = max($stats);
-			$obj[$ds_key_left_adjusted]['avg'] = array_sum($stats) / count($stats);
 			$obj[$ds_key_left_adjusted]['values'] = $data;
 			$obj[$ds_key_left_adjusted]['raw'] = $raw_data;
+
+			if(count($stats)) {
+
+				$obj[$ds_key_left_adjusted]['min'] = min($stats);
+				$obj[$ds_key_left_adjusted]['max'] = max($stats);
+				$obj[$ds_key_left_adjusted]['avg'] = array_sum($stats) / count($stats);
+
+			} else {
+
+				$obj[$ds_key_left_adjusted]['min'] = 0;
+				$obj[$ds_key_left_adjusted]['max'] = 0;
+				$obj[$ds_key_left_adjusted]['avg'] = 0;
+
+			}
 
 		}
 	}
@@ -604,11 +615,22 @@ if ($right != "null") {
 				
 			}
 
-			$obj[$ds_key_right_adjusted]['min'] = min($stats);
-			$obj[$ds_key_right_adjusted]['max'] = max($stats);
-			$obj[$ds_key_right_adjusted]['avg'] = array_sum($stats) / count($stats);
 			$obj[$ds_key_right_adjusted]['values'] = $data;
 			$obj[$ds_key_right_adjusted]['raw'] = $raw_data;
+
+			if(count($stats)) {
+
+				$obj[$ds_key_right_adjusted]['min'] = min($stats);
+				$obj[$ds_key_right_adjusted]['max'] = max($stats);
+				$obj[$ds_key_right_adjusted]['avg'] = array_sum($stats) / count($stats);
+
+			} else {
+
+				$obj[$ds_key_right_adjusted]['min'] = 0;
+				$obj[$ds_key_right_adjusted]['max'] = 0;
+				$obj[$ds_key_right_adjusted]['avg'] = 0;
+
+			}
 
 		}
 
