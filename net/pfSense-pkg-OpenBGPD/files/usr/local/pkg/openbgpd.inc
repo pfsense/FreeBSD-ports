@@ -268,9 +268,9 @@ EOF;
 
 function openbgpd_restart() {
 	if (is_openbgpd_running() == true) {
-		exec("{$pkg_bin}/bgpctl reload");
+		exec(PKG_BGPD_BIN . "/bgpctl reload");
 	} else {
-		exec("{$pkg_bin}/bgpd -f {$bgpd_config_base}/bgpd.conf");
+		exec(PKG_BGPD_BIN . "/bgpd -f " . PKG_BGPD_CONFIG_BASE . "/bgpd.conf");
 	}
 }
 
