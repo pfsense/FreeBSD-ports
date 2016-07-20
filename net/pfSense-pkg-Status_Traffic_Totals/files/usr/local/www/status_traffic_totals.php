@@ -288,7 +288,7 @@ if ($savemsg) {
 }
 
 $tab_array = array();
-$tab_array[] = array(gettext("Hourly"), true, "#hour");
+$tab_array[] = array(gettext("Hourly"), false, "#hour");
 $tab_array[] = array(gettext("Daily"), false, "#day");
 $tab_array[] = array(gettext("Monthly"), false, "#month");
 $tab_array[] = array(gettext("Top 10 Days"), false, "#top");
@@ -455,7 +455,7 @@ events.push(function() {
 
 		var allOptions = defaults.split("&");
 
-		//clear interface selections
+		//clear interface selections before resetting them
 		$("#interfaces > option").each(function() {
 			$(this).prop("selected", false);
 		});
@@ -468,8 +468,20 @@ events.push(function() {
 				$("#interfaces option[value='" + currentOption[1] + "']").prop("selected", true);
 			}
 
-			if(currentOption[0] === "timePeriod") {
-				$( "#time-period" ).val(currentOption[1]).change();
+			if(currentOption[0] === "time-period") {
+
+				//remove active class before resetting it
+				$( "body > div.container > ul.nav > li" ).each(function(entry) {
+					$(this).removeClass('active');
+				});
+
+				//reset active class
+				$( "body > div.container > ul.nav > li > a" ).each(function(entry) {
+					if($(this).attr('href').substring(1) === currentOption[1]) {
+						$(this).parent().addClass('active');
+					}
+				});
+
 			}
 
 			if(currentOption[0] === "graph-type") {
