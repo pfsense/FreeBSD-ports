@@ -3478,6 +3478,8 @@ function sync_package_pfblockerng($cron='') {
 													$line = trim(str_replace('|', '', strstr($line, '^', TRUE)));
 												} elseif (strpos($line, '$') !== FALSE) {
 													$line = trim(str_replace('|', '', strstr($line, '$', TRUE)));
+												} else {
+													$line = trim(str_replace('|', '', $line));
 												}
 
 												if (strpos($line, '/') !== FALSE) {
