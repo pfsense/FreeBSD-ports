@@ -1100,16 +1100,21 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 			}
 
 			// Collect the list that contains the blocked Domain
+			$pfb_tld	= FALSE;
 			$domain		= $domain_final = $pfbalertdnsbl[8];
 			$domainparse	= str_replace('.', '\.', $domain);
-			$dquery		= " \"{$domainparse} 60 IN A\| \"www\.{$domainparse} 60 IN A";
 			$sed_cmd	= "{$pfb['sed']} -e 's/^.*[a-zA-Z]\///' -e 's/:.*//' -e 's/\..*/ /'";
+			$dquery		= " \"{$domainparse} 60\|\"www\.{$domainparse} 60";
 			$pfb_query	= exec("{$pfb['grep']} -Hm1 '{$dquery}' {$pfb['dnsdir']}/*.txt | {$sed_cmd}");
-			$pfb_alias	= exec("{$pfb['grep']} -Hm1 '{$dquery}' {$pfb['dnsalias']}/* | {$sed_cmd}");
-			$pfb_tld	= FALSE;
+
+			$pfb_alias = '';
+			if (!empty($pfb_query)) {
+				$pfb_alias = exec("{$pfb['grep']} -Hm1 '{$dquery}' {$pfb['dnsalias']}/* | {$sed_cmd}");
+			}
 
 			if (empty($pfb_query)) {
 				$dparts = explode('.', $domain);
+				unset($dparts[0]);
 				$dcnt	= count($dparts);
 				$dtld	= end($dparts);
 
@@ -1118,18 +1123,16 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 					$pfb_query	= 'DNSBL_TLD';
 				}
 
-				// Search Sub-Domains for match, unset highest level Domain at each loop
+				// Search Sub-Domains for match
 				elseif (is_numeric($dcnt)) {
 
-					for ($i=0; $i < $dcnt; $i++) {
-						unset($dparts[$i]);
+					for ($i=0; $i < ($dcnt -1); $i++) {
 						$domainparse	= str_replace('.', '\.', implode('.', $dparts));
-						$dquery		= " \"{$domainparse} 60 IN A\| \"www\.{$domainparse} 60 IN A";
+						$dquery		= " \"{$domainparse} 60\|\"www\.{$domainparse} 60";
 						$pfb_query	= exec("{$pfb['grep']} -Hm1 '{$dquery}' {$pfb['dnsdir']}/*.txt | {$sed_cmd}");
 
+						// Collect Alias Group name
 						if (!empty($pfb_query)) {
-							// Denote DNSBL blocking whole Domain
-							$dquery		= " \"{$domainparse} 60 IN A\| \"www\.{$domainparse} 60 IN A";
 							$pfb_alias	= exec("{$pfb['grep']} -Hm1 '{$dquery}' {$pfb['dnsalias']}/* | {$sed_cmd}");
 							$domain_final	= str_replace('\.', '.', $domainparse);
 							$pfb_tld	= TRUE;
@@ -1137,6 +1140,7 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 										" title=\"The whole domain [ {$domain_final} ] is being blocked.\"></i>";
 							break;
 						}
+						unset($dparts[$i]);
 					}
 				}
 			}
@@ -1170,14 +1174,26 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 
 			// Determine if Domain exists in Whitelist
 			if ($pfb_query != 'DNSBL_TLD') {
-				if (in_array($domain_final, $dnssupp_ex)) {
-					$supp_dom = '<i class="fa fa-plus-square-o icon-pointer"' . 
-							' title="This Domain is already in the DNSBL WhiteList"></i>&emsp;';
+				
+				// Default - Domain not in Whitelist
+				$supp_dom = '<i class="fa fa-plus icon-pointer icon-primary" id="DNSBLSUP' .
+						$domain_final . '|' . $pfb_query . '" title="' . $supp_dom_txt . '"></i>';
+
+				// Root Domain blocking all Sub-Domains
+				if ($pfb_tld) {
+					$supp_dom = '<i class="fa fa-plus-circle icon-pointer icon-primary" id="DNSBLSUP' .
+						$domain_final . '|' . $pfb_query . '" title="' . $supp_dom_txt . '"></i>';
 				}
 
-				// Determine if Alerted Domain is blocked by a Domain or Sub-Domain
-				else {
-					$dparts = explode('.', $domain_final);
+				// Determine if Alerted Domain is in Whitelist
+				elseif (in_array($domain_final, $dnssupp_ex)) {
+					$supp_dom = '<i class="fa fa-plus-square-o icon-pointer"' .
+						' title="This Domain is already in the DNSBL WhiteList"></i>&emsp;';
+				}
+
+				// Determine if Alerted Domain is in Whitelist (prefixed by a "dot" )
+				elseif (!empty($dnssupp_ex_tld)) {
+					$dparts	= explode('.', $domain_final);
 					$dcnt	= count($dparts);
 					for ($i=$dcnt; $i > 0; $i--) {
 						$d_query = implode('.', array_slice($dparts, -$i, $i, TRUE));
@@ -1186,22 +1202,11 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 									$d_query . ' ] is already in the DNSBL WhiteList"></i>&emsp;';
 							break;
 						}
-
-						// Root Domain blocking all Sub-Domains
-						if ($pfb_tld) {
-							$supp_dom = '<i class="fa fa-plus-circle icon-pointer icon-primary" id="DNSBLSUP' .
-									$domain_final . '|' . $pfb_query . '" title="' . $supp_dom_txt . '"></i>';
-
-						// Domain not in Whitelist
-						} else {
-							$supp_dom = '<i class="fa fa-plus icon-pointer icon-primary" id="DNSBLSUP' .
-								$domain_final . '|' . $pfb_query . '" title="' . $supp_dom_txt . '"></i>';
-						}
 					}
 				}
 			}
 			else {
-				// Don't add Whitelist Icon as whole TLD is Blocked
+				// Whole TLD is blocked
 				$supp_dom = "<i class=\"fa fa-hand-stop-o\" title=\"The whole TLD [ {$dtld} ] is being blocked.\"></i>";
 			}
 
