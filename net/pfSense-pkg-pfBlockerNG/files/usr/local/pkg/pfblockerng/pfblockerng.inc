@@ -861,7 +861,7 @@ debug.log-condition-handling	= "enable"
 }
 
 EOF;
-			$log = "\nSaving new DNSBL web server configuration to port [ {$pfb['dnsbl_port']} & {$pfb['dnsbl_port_ssl']} ]\n";
+			$log = "\nSaving new DNSBL web server configuration to port [ {$pfb['dnsbl_port']} and {$pfb['dnsbl_port_ssl']} ]\n";
 			pfb_logger("{$log}", 1);
 
 			$pfbupdate = TRUE;
