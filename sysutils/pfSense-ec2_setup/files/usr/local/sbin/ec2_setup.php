@@ -1,12 +1,12 @@
 #!/usr/local/bin/php -f
 <?php
 
-require("globals.inc");
-require("config.inc");
-require("auth.inc");
-require("interfaces.inc");
-require("certs.inc");
-require("openvpn.inc");
+require_once("globals.inc");
+require_once("config.inc");
+require_once("auth.inc");
+require_once("interfaces.inc");
+require_once("certs.inc");
+require_once("openvpn.inc");
 
 function retrieveMetaData($url) {
 	if (!$url)

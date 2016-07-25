@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-ec2_setup
-PORTVERSION=	0.4
-PORTREVISION=	1
+PORTVERSION=	0.5
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
