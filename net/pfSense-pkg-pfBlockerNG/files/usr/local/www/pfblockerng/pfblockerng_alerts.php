@@ -275,6 +275,7 @@ if (isset($_POST['addsuppress']) && !empty($_POST['addsuppress'])) {
 				// Save Suppress alias changes to pfSense config file
 				write_config("pfBlockerNG: Added {$ip} to IP Suppress List");
 			}
+			header("Location: /pfblockerng/pfblockerng_alerts.php?savemsg={$savemsg}");
 		}
 	}
 }
@@ -392,6 +393,7 @@ if (isset($_POST['addsuppressdom']) && !empty($_POST['addsuppressdom'])) {
 			// Disable 'Auto-Resolve' on DNSBL Whitelist until next refresh
 			$hostlookup = '';
 		}
+		header("Location: /pfblockerng/pfblockerng_alerts.php?savemsg={$savemsg}");
 	}
 }
 
@@ -754,6 +756,11 @@ if (isset($savemsg)) {
 	print_info_box($savemsg);
 }
 
+if (isset($_REQUEST['savemsg'])) {
+	$savemsg = htmlspecialchars($_REQUEST['savemsg']);
+	print_info_box($savemsg);
+}
+
 $tab_array   = array();
 $tab_array[] = array(gettext("General"), false, "/pkg_edit.php?xml=pfblockerng.xml");
 $tab_array[] = array(gettext("Update"), false, "/pfblockerng/pfblockerng_update.php");
@@ -1104,7 +1111,7 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 			$domain		= $domain_final = $pfbalertdnsbl[8];
 			$domainparse	= str_replace('.', '\.', $domain);
 			$sed_cmd	= "{$pfb['sed']} -e 's/^.*[a-zA-Z]\///' -e 's/:.*//' -e 's/\..*/ /'";
-			$dquery		= " \"{$domainparse} 60\|\"www\.{$domainparse} 60";
+			$dquery		= " \"{$domainparse} 60";
 			$pfb_query	= exec("{$pfb['grep']} -Hm1 '{$dquery}' {$pfb['dnsdir']}/*.txt | {$sed_cmd}");
 
 			$pfb_alias = '';
@@ -1128,7 +1135,7 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 
 					for ($i=0; $i < ($dcnt -1); $i++) {
 						$domainparse	= str_replace('.', '\.', implode('.', $dparts));
-						$dquery		= " \"{$domainparse} 60\|\"www\.{$domainparse} 60";
+						$dquery		= " \"{$domainparse} 60";
 						$pfb_query	= exec("{$pfb['grep']} -Hm1 '{$dquery}' {$pfb['dnsdir']}/*.txt | {$sed_cmd}");
 
 						// Collect Alias Group name
@@ -1136,8 +1143,6 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 							$pfb_alias	= exec("{$pfb['grep']} -Hm1 '{$dquery}' {$pfb['dnsalias']}/* | {$sed_cmd}");
 							$domain_final	= str_replace('\.', '.', $domainparse);
 							$pfb_tld	= TRUE;
-							$supp_dom	= "&emsp;<i class=\"fa fa-plus-circle\"" .
-										" title=\"The whole domain [ {$domain_final} ] is being blocked.\"></i>";
 							break;
 						}
 						unset($dparts[$i]);
@@ -1202,7 +1207,17 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 									$d_query . ' ] is already in the DNSBL WhiteList"></i>&emsp;';
 							break;
 						}
+
+						// Remove Whitelist Icon for 'no match'
+						if ($pfb_query == 'no match') {
+							$supp_dom = '';
+						}
 					}
+				}
+
+				// Remove Whitelist Icon for 'no match'
+				elseif ($pfb_query == 'no match') {
+					$supp_dom = '';
 				}
 			}
 			else {
