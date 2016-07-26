@@ -1169,7 +1169,12 @@ if ($pfb['dnsbl'] == 'on' && $type == 'DNSBL') {
 
 			$supp_dom_txt = '';
 			if ($pfb_tld) {
-				$supp_dom_txt = "The whole Domain [ {$domain_final} ] is being blocked.\n\n";
+				$supp_dom_txt  = "The whole Domain/Sub-Domains of [ {$domain_final} ] is being blocked via TLD.\n\n";
+				$supp_dom_txt .= "Whitelisting Options:\n";
+				$supp_dom_txt .= "1) Whitelist only this Domain\n";
+				$supp_dom_txt .= "2) Whitelist the entire Domain/Sub-Domains\n";
+				$supp_dom_txt .= "3) Manually add this Domain to the 'TLD Exclusion customlist' which will bypass\n";
+				$supp_dom_txt .= "the TLD process and only block the listed Sub-Domains only. (A Force Reload-DNSBL required!)\n\n";
 			}
 
 			$supp_dom_txt .= "Clicking this Whitelist Icon, will immediately remove the blocked Domain from DNSBL.\n";
