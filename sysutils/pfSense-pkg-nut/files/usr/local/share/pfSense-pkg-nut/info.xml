@@ -3,6 +3,7 @@
 	<package>
 		<name>nut</name>
 		<descr><![CDATA[Network UPS Tools]]></descr>
+        <pkginfolink>https://forum.pfsense.org/index.php?topic=115349.0</pkginfolink>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>nut.xml</configurationfile>
 	</package>
