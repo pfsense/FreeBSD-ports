@@ -1,8 +1,7 @@
-# Created by: Sander Peterse <sander.peterse88@gmail.com>
 # $FreeBSD$
 
 PORTNAME=		pfSense-pkg-nut
-PORTVERSION=	2.3.1
+PORTVERSION=	2.7.4
 CATEGORIES=		sysutils
 MASTER_SITES=	# empty
 DISTFILES=		# empty
@@ -28,30 +27,32 @@ do-extract:
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
+	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/nut
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${MKDIR} ${STAGEDIR}${PREFIX}/www
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/shortcuts	
-	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/javascript
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/widgets
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/include
 	${MKDIR} ${STAGEDIR}${DATADIR}
-	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/nut.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/nut.xml \
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/nut.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/nut.inc \
-		${STAGEDIR}${PREFIX}/pkg
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/nut/nut.inc \
+		${STAGEDIR}${PREFIX}/pkg/nut
+	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/nut/nut_email.php \
+		${STAGEDIR}${PREFIX}/pkg/nut
 	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/nut.priv.inc \
 		${STAGEDIR}/etc/inc/priv
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/shortcuts/pkg_nut.inc \
 		${STAGEDIR}${PREFIX}/www/shortcuts
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/ups_status.php \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/nut_settings.php \
 		${STAGEDIR}${PREFIX}/www
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/javascript/ups_status.js \
-		${STAGEDIR}${PREFIX}/www/widgets/javascript
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/widgets/ups_status.widget.php \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/nut_status.php \
+		${STAGEDIR}${PREFIX}/www
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/widgets/nut_status.widget.php \
 		${STAGEDIR}${PREFIX}/www/widgets/widgets
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/include/ups_status.inc \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/include/nut_status.inc \
 		${STAGEDIR}${PREFIX}/www/widgets/include
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
