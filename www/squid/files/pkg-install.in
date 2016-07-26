@@ -19,6 +19,10 @@ PRE-INSTALL)
 	echo "===> Pre-installation configuration for ${pkgname}"
 	;;
 POST-INSTALL)
+	# Workaround to fix #6643
+	if [ ! -f /usr/bin/install ]; then
+		tar -x -C / -f /usr/local/share/pfSense/base.txz ./usr/bin/install
+	fi
 	# Since we usually start the Squid master process as ${squid_user}
 	# instead of root make sure that ${squid_homedir} is writable for it.
 	if [ ! -d ${squid_homedir} ]; then
