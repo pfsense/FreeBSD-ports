@@ -62,6 +62,7 @@ require_once("ipsec.inc");
 //show current or unused databases somehow
 //update timestamp with last updated date
 //make Save as Defaults AJAX
+//remove package defaults on uninstall
 
 function vnstat_write_conf($startDay = "1") {
 
@@ -937,8 +938,27 @@ events.push(function() {
 
 				//TODO units changes based on period?
 				chart.yAxis1.tickFormat(function(d) {
-					return d3.format('f')(d)
-				}).axisLabel('Total Traffic (KiB)').tickPadding(5).showMaxMin(false);
+
+					var dUnit = 'K';
+
+					if(d >= 1000 || d <= -1000) {
+						d = d / 1024;
+						dUnit = 'M';
+					}
+
+					if(d >= 1000 || d <= -1000) {
+						d = d / 1024;
+						dUnit = 'G';
+					}
+
+					if(d >= 1000 || d <= -1000) {
+						d = d / 1024;
+						dUnit = 'T';
+					}
+
+					return parseFloat(d).toFixed(1) + dUnit;
+
+				}).axisLabel('Total Traffic (Bytes)').showMaxMin(false);
 
 				if(graphtype === "stacked") {
 					chart.bars1.stacked(true);
