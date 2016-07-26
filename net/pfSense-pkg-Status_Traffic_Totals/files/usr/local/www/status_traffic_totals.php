@@ -427,7 +427,7 @@ display_top_tabs($tab_array);
 <div class="infoblock">
 	<div class="alert alert-info clearfix" role="alert">
 		<div class="pull-left">
-			The data for this page is pulled from vnStat.
+			The data for this page is pulled from vnStat and updated every five minutes.
 		</div>
 	</div>
 </div>
