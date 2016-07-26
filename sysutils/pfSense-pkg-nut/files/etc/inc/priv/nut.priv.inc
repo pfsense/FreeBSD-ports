@@ -1,8 +1,10 @@
 <?php
 /*
 	nut.priv.inc
+
 	part of pfSense (http://www.pfSense.org/)
 	Copyright (C) 2015 ESF, LLC
+	Copyright (C) 2016 Denny Page
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -15,7 +17,7 @@
 	   notice, this list of conditions and the following disclaimer in the
 	   documentation and/or other materials provided with the distribution.
 
-	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
 	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
 	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
 	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
@@ -26,15 +28,16 @@
 	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
 */
+
 global $priv_list;
 
 $priv_list['page-services-nut'] = array();
-$priv_list['page-services-nut']['name'] = "WebCfg - Services: NUT package";
-$priv_list['page-services-nut']['descr'] = "Allow access to NUT package GUI";
+$priv_list['page-services-nut']['name'] = "WebCfg - Services: UPS";
+$priv_list['page-services-nut']['descr'] = "Allow access to NUT UPS package gui";
 
 $priv_list['page-services-nut']['match'] = array();
-$priv_list['page-services-nut']['match'][] = "pkg_edit.php?xml=nut.xml*";
-$priv_list['page-services-nut']['match'][] = "ups_status.php*";
-$priv_list['page-services-nut']['match'][] = "ups_status.widget.php*";
+$priv_list['page-services-nut']['match'][] = "nut_status.php*";
+$priv_list['page-services-nut']['match'][] = "nut_settings.php*";
+$priv_list['page-services-nut']['match'][] = "nut_status.widget.php*";
 
 ?>
