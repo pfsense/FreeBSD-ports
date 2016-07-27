@@ -29,7 +29,7 @@
 */
 require_once("pkg-utils.inc");
 require_once("globals.inc");
-require_once("phpmailer/PHPMailerAutoload.php");
+require_once("notices.inc");
 
 global $config, $g;
 
@@ -53,49 +53,16 @@ if (empty($argv[1]) || empty($apcstatus["$argv[1]"])) {
 	return;
 }
 
-$apcsubject = $apcstatus["$argv[1]"];
-
-if (empty($config['notifications']['smtp']['ipaddress'])) {
-	return;
-}
-
-$mail = new PHPMailer();
-$mail->IsSMTP();
-$mail->Host = $config['notifications']['smtp']['ipaddress'];
-
-if ((isset($config['notifications']['smtp']['ssl']) && $config['notifications']['smtp']['ssl'] != "unchecked") || $config['notifications']['smtp']['ssl'] == "checked") {
-	$mail->SMTPSecure = "ssl";
-}
-
-if ((isset($config['notifications']['smtp']['tls']) && $config['notifications']['smtp']['tls'] != "unchecked") || $config['notifications']['smtp']['tls'] == "checked") {
-	$mail->SMTPSecure = "tls";
-}
-
-$mail->Port = empty($config['notifications']['smtp']['port']) ? 25 : $config['notifications']['smtp']['port'];
-
-if ($config['notifications']['smtp']['username'] && $config['notifications']['smtp']['password']) {
-	$mail->SMTPAuth	= true;
-	$mail->Username	= $config['notifications']['smtp']['username'];
-	$mail->Password	= $config['notifications']['smtp']['password'];
-}
-
-$mail->ContentType = 'text/html';
-$mail->IsHTML(true);
-$mail->AddReplyTo($config['notifications']['smtp']['fromaddress'], "Apcupsd");
-$mail->SetFrom($config['notifications']['smtp']['fromaddress'], "Apcupsd");
-$address = $config['notifications']['smtp']['notifyemailaddress'];
-$mail->AddAddress($address, "Apcupsd Recipient");
-$mail->Subject = "{$config['system']['hostname']}.{$config['system']['domain']} - {$apcsubject}";
+$apcsubject = "apcupsd - " . $apcstatus["$argv[1]"];
+$apcmessage = "Status information from apcupsd:\n";
 
 putenv("PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin");
-$mail->Body = "<pre>";
 $ph = popen('apcaccess status 2>&1', "r" );
-while ($line = fgets($ph)) $mail->Body .= htmlspecialchars($line);
-pclose($ph);
-$mail->Body .= "</pre>";
-
-if (!$mail->Send()) {
-	echo "Mailer Error: " . $mail->ErrorInfo;
+while ($line = fgets($ph)) {
+	$apcmessage .= $line;
 }
+pclose($ph);
+
+send_smtp_message($apcmessage, $apcsubject);
 
 ?>
