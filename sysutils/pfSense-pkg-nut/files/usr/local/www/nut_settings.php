@@ -333,8 +333,8 @@ $pgtitle = array(gettext("Services"), gettext("UPS"), gettext("Settings"));
 include("head.inc");
 
 $tab_array = array();
-$tab_array[] = array(gettext("UPS Status"), false, "nut_status.php");
-$tab_array[] = array(gettext("UPS Settings"), true, "nut_settings.php");
+$tab_array[] = array(gettext("UPS Status"), false, "/nut_status.php");
+$tab_array[] = array(gettext("UPS Settings"), true, "/nut_settings.php");
 display_top_tabs($tab_array);
 
 
