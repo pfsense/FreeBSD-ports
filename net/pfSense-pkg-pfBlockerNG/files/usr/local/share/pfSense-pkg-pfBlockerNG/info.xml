@@ -4,7 +4,7 @@
 		<name>pfBlockerNG</name>
 		<descr><![CDATA[pfBlockerNG is the Next Generation of pfBlocker.&lt;br /&gt;
 			Manage IPv4/v6 List Sources into 'Deny, Permit or Match' formats.&lt;br /&gt;
-			Country Blocking Database by MaxMind Inc. (GeoLite Free version).&lt;br /&gt;
+			GeoIP database by MaxMind Inc. (GeoLite2 Free version).&lt;br /&gt;
 			De-Duplication, Suppression, and Reputation enhancements.&lt;br /&gt;
 			Provision to download from diverse List formats.&lt;br /&gt;
 			Advanced Integration for Proofpoint ET IQRisk IP Reputation Threat Sources.&lt;br /&gt;

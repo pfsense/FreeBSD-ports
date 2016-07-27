@@ -83,8 +83,8 @@
 			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml</url>
 		</tab>
 		<tab>
-			<text>Country</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml</url>
+			<text>GeoIP</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_TopSpammers.xml</url>
 		</tab>
 		<tab>
 			<text>Logs</text>

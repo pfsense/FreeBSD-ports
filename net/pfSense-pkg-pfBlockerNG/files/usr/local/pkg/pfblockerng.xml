@@ -94,8 +94,8 @@
 			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml</url>
 		</tab>
 		<tab>
-			<text>Country</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml</url>
+			<text>GeoIP</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_TopSpammers.xml</url>
 		</tab>
 		<tab>
 			<text>Logs</text>
@@ -275,15 +275,34 @@
 			<fielddescr>Global Logging</fielddescr>
 			<fieldname>enable_log</fieldname>
 			<type>checkbox</type>
-			<description><![CDATA[Firewall Rule logging - Enable Global logging to [ Status: System Logs: FIREWALL Log ].<br />
+			<sethelp><![CDATA[Firewall Rule logging - Enable Global logging to [ Status: System Logs: FIREWALL Log ].<br />
 				This overrides any log settings in the Continent/IPv4/6 Alias tabs. (DNSBL not included)]]>
+			</sethelp>
+		</field>
+		<field>
+			<fielddescr>MaxMind Localized Language</fielddescr>
+			<fieldname>maxmind_locale</fieldname>
+			<type>select</type>
+			<description><![CDATA[Select the localized name data from the Language options available.<br />
+				Changes to the Locale will be executed in the background, and will take a few minutes to complete.<br />
+				Upon completion, a pfSense Notice will be generated.]]>
 			</description>
+			<options>
+				<option><name>English</name><value>en</value></option>
+				<option><name>French</name><value>fr</value></option>
+				<option><name>Brazilian Portuguese</name><value>pt-BR</value></option>
+				<option><name>German</name><value>de</value></option>
+				<option><name>Japanese</name><value>ja</value></option>
+				<option><name>Simplified Chinese</name><value>zh-CN</value></option>
+				<option><name>Spanish</name><value>es</value></option>
+			</options>
+			<default_value>en</default_value>
 		</field>
 		<field>
 			<fielddescr>Disable MaxMind Updates</fielddescr>
 			<fieldname>database_cc</fieldname>
 			<type>checkbox</type>
-			<description>This will disable the MaxMind monthly Country database Cron update.
+			<description>This will disable the MaxMind monthly GeoIP database Cron update.
 				This does not affect the MaxMind binary cron task.
 			</description>
 		</field>
@@ -334,8 +353,8 @@
 			<combinefields>begin</combinefields>
 		</field>
 		<field>
-			<fieldname>inbound_interface</fieldname>
 			<fielddescr>Interface(s)</fielddescr>
+			<fieldname>inbound_interface</fieldname>
 			<description>Select the Inbound interface(s) you want to apply auto rules to:</description>
 			<type>interfaces_selection</type>
 			<hideinterfaceregex>loopback</hideinterfaceregex>
@@ -389,7 +408,15 @@
 			<fielddescr>OpenVPN Interface</fielddescr>
 			<fieldname>openvpn_action</fieldname>
 			<type>checkbox</type>
-			<description>Select to add auto-rules for OpenVPN. These will be added to 'Floating Rules' or OpenVPN rules tab.</description>
+			<sethelp><![CDATA[Select to add auto-rules for OpenVPN. This is only required when the OpenVPN Interface is not listed above.<br />
+				OpenVPN Server (Outbound auto-rules only), OpenVPN Client (Both In/Outbound auto-rules)<br />
+				These will be added to 'Floating Rules' or OpenVPN rules tab.]]></sethelp>
+		</field>
+		<field>
+			<fielddescr>IPSec Interface</fielddescr>
+			<fieldname>ipsec_action</fieldname>
+			<type>checkbox</type>
+			<description>Select to add 'Outbound' auto-rules for IPSec. These will be added to 'Floating Rules' or IPSec rules tab.</description>
 		</field>
 		<field>
 			<fielddescr>Floating Rules</fielddescr>
@@ -450,9 +477,9 @@
 			<description><![CDATA[<strong>pfBlockerNG </strong>
 				Created in 2015 by <a target="_blank" href="https://forum.pfsense.org/index.php?action=profile;u=238481">BBcan177.</a><br /><br />
 				Based upon pfBlocker by Marcello Coutinho and Tom Schaefer.<br />
-				Country database GeoLite distributed under the Creative Commons Attribution-ShareAlike 3.0 Unported License by:
+				GeoIP database GeoLite2 distributed under the Creative Commons Attribution-ShareAlike 4.0 International License by:
 				MaxMind Inc. @ <a target="_blank" href="http://www.maxmind.com">MaxMind.com</a>.
-				The database is automatically updated the first Tuesday of each month]]>
+				The GeoIP database is automatically updated the first Tuesday of each month]]>
 			</description>
 			<type>info</type>
 		</field>
@@ -474,7 +501,27 @@
 	</custom_php_pre_deinstall_command>
 	<custom_php_validation_command>
 		<![CDATA[
+		global $pfb, $input_errors;
 		pfblockerng_validate_input($_POST, $input_errors);
+
+		// Determine if MaxMind GeoIP Update is running before changing Language Locale
+		if (file_exists("{$pfb['dbdir']}/GeoIP_Locale")) {
+			$ex_geoip_locale	= file("{$pfb['dbdir']}/GeoIP_Locale");
+			$ex_geoip_locale	= trim($ex_geoip_locale[0]);
+			$new_geoip_locale	= htmlspecialchars($_POST['maxmind_locale']);
+
+			if ($new_geoip_locale != $ex_geoip_locale) {
+				exec('/bin/ps -wx', $result_cron);
+				if (!preg_grep("/pfblockerng[.]php\s+?(uc|gc|ugc)/", $result_cron)) {
+					// Execute MaxMind update and generate pfSense Notice message on completion
+					mwexec_bg("/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php ugc {$ex_geoip_locale} {$new_geoip_locale} >> {$pfb['extraslog']} 2>&1");
+				} else {
+					$input_errors[] = 'MaxMind GeoIP conversion already in process!';
+					$input_errors[] = 'Cannot change Language Locale at this time!';
+				}
+			}
+		}
+
 		]]>
 	</custom_php_validation_command>
 	<custom_php_resync_config_command>
