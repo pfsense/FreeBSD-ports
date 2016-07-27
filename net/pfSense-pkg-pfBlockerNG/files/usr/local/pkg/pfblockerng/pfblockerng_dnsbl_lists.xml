@@ -83,8 +83,8 @@
 			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml</url>
 		</tab>
 		<tab>
-			<text>Country</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml</url>
+			<text>GeoIP</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_TopSpammers.xml</url>
 		</tab>
 		<tab>
 			<text>Logs</text>
@@ -162,7 +162,13 @@
 			<type>info</type>
 			<description><![CDATA[<div class="infoblock"><dl class="dl-horizontal">
 				<dt>Format:</dt><dd>Select the Format type:</dd>
-				<dt>State:</dt><dd>Select the run State:</dd>
+				<dt>State:</dt><dd>Select the run State:
+					<dl class="dl-horizontal">
+						<dt>On:</dt><dd>Enable List</dd>
+						<dt>Off:</dt><dd>Disable List</dd>
+						<dt>Hold:</dt><dd>Download List only once</dd>
+						<dt>Flex:</dt><dd>Downgrade the SSL Connection (Not Recommended)</dd>
+					</dl></dd>
 				<dt>Source:</dt><dd>Select the Source type:
 					<dl class="dl-horizontal">
 						<dt>URL:</dt><dd>External link to source&emsp;(ie:&nbsp;
