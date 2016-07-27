@@ -2,8 +2,9 @@
 <pfsensepkgs>
 	<package>
 		<name>nut</name>
+		<pkginfolink>https://forum.pfsense.org/index.php?topic=115349.0</pkginfolink>
+		<website>http://networkupstools.org/</website>
 		<descr><![CDATA[Network UPS Tools]]></descr>
-        <pkginfolink>https://forum.pfsense.org/index.php?topic=115349.0</pkginfolink>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>nut.xml</configurationfile>
 	</package>
