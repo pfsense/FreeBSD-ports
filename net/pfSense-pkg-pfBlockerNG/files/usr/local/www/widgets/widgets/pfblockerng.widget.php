@@ -78,7 +78,7 @@ if (isset($_POST['pfb_submit'])) {
 }
 
 // Ackwnowlege failed downloads
-if ($_POST['pfblockerngack']) {
+if (isset($_POST['pfblockerngack'])) {
 	exec("{$pfb['sed']} -i '' 's/FAIL/Fail/g' {$pfb['errlog']}");
 	header("Location: /");
 	exit(0);
@@ -91,7 +91,7 @@ if (isset($_GET['getNewCounts'])) {
 }
 
 // Reset DNSBL Alias packet counters
-if ($_POST['pfblockerngdnsblclear']) {
+if (isset($_POST['pfblockerngdnsblclear'])) {
 	$dnsbl_info = array_map('str_getcsv', @file("{$pfb['dnsbl_info']}"));
 	if (!empty ($dnsbl_info)) {
 		$handle = @fopen("{$pfb['dnsbl_info']}", 'w');
@@ -147,6 +147,7 @@ function pfbsort(&$array, $subkey='id', $sort_ascending=FALSE) {
 function pfBlockerNG_get_counts() {
 	global $config, $pfb;
 	$pfb_table = $pfb_dtable = array();
+	$pfb['pfctlerr'] = FALSE;
 
 	/* Alias Table Definitions -	'update'	- Last Updated Timestamp
 					'rule'		- Total number of Firewall rules per alias
@@ -165,6 +166,9 @@ function pfBlockerNG_get_counts() {
 					continue;
 				}
 				exec("{$pfb['grep']} -cv '^1\.1\.1\.1$' {$pfb['aliasdir']}/{$pfb_alias}.txt", $match);
+				if (!isset($match[1])) {
+					$match[1] = 0;
+				}
 				$pfb_table[$pfb_alias] = array('count' => $match[1], 'img' => $pfb['down']);
 				exec("{$pfb['ls']} -ld {$pfb['aliasdir']}/{$pfb_alias}.txt | {$pfb['awk']} '{ print $6,$7,$8 }'", $update);
 				$pfb_table[$pfb_alias]['update'] = $update[0];
@@ -199,11 +203,11 @@ function pfBlockerNG_get_counts() {
 			if (isset($rule['disabled'])) {
 				continue;
 			}
-			if (stripos($rule['source']['address'], 'pfb_') !== FALSE) {
+			if (isset($rule['source']['address']) && stripos($rule['source']['address'], 'pfb_') !== FALSE) {
 				$pfb_table[$rule['source']['address']]['img'] = $pfb['up'];
 				$pfb_table[$rule['source']['address']]['rule'] += 1;
 			}
-			if (stripos($rule['destination']['address'], 'pfb_') !== FALSE) {
+			if (isset($rule['destination']['address']) && stripos($rule['destination']['address'], 'pfb_') !== FALSE) {
 				$pfb_table[$rule['destination']['address']]['img'] = $pfb['up'];
 				$pfb_table[$rule['destination']['address']]['rule'] += 1;
 			}
@@ -220,8 +224,13 @@ function pfBlockerNG_get_counts() {
 			$descr = ltrim(stristr($result, '<pfb_', FALSE), '<');
 			$descr = strstr($descr, ':', TRUE);
 
-			if (!empty($id) && !empty($descr) && strpos($pfb_table[$descr]['rules'], $id) === FALSE) {
-				$pfb_table[$descr]['rules'] .= $id . '|';
+			if (!empty($id) && !empty($descr)) {
+				if (!isset($pfb_table[$descr]['rules'])) {
+					$pfb_table[$descr]['rules'] = '';
+				}
+				if (strpos($pfb_table[$descr]['rules'], $id) === FALSE) {
+					$pfb_table[$descr]['rules'] .= $id . '|';
+				}
 			}
 		}
 	}

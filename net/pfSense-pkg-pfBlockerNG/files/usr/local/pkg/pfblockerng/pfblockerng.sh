@@ -13,6 +13,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
+DEBUG=0
+
 now=$(/bin/date +%m/%d/%y' '%T)
 
 # Application Locations
@@ -44,12 +46,12 @@ masterfile=/var/db/pfblockerng/masterfile
 mastercat=/var/db/pfblockerng/mastercat
 geoiplog=/var/log/pfblockerng/geoip.log
 errorlog=/var/log/pfblockerng/error.log
-domainmaster=/tmp/domainmaster
+dnsbl_file=/var/unbound/pfb_dnsbl
 
 # Folder Locations
 etdir=/var/db/pfblockerng/ET
 tmpxlsx=/tmp/xlsx/
-
+dnsbl_tmp=/tmp/DNSBL_TMP/
 pfbdb=/var/db/pfblockerng/
 pfbdeny=/var/db/pfblockerng/deny/
 pfborig=/var/db/pfblockerng/original/
@@ -73,6 +75,10 @@ addfile=/tmp/pfbtemp5_$rvar
 syncfile=/tmp/pfbtemp6_$rvar
 matchfile=/tmp/pfbtemp7_$rvar
 tempmatchfile=/tmp/pfbtemp8_$rvar
+domainmaster=/tmp/pfbtemp9_$rvar
+
+dnsbl_remove=/tmp/dnsbl_remove
+dnsbl_whitelist=/tmp/dnsbl_tmp.sup
 
 PLATFORM="$(cat /etc/platform)"
 USE_MFS_TMPVAR="$(/usr/bin/grep -c use_mfs_tmpvar /cf/conf/config.xml)"
@@ -353,55 +359,174 @@ duplicate() {
 }
 
 
-# Function to remove duplicate DNSBL domain names from feeds.
-domainduplicate() {
-	# Alexa Whitelist variables
-	alexa_enable="${max}"
+
+# Function for DNSBL (De-Duplication, Whitelist, and Alexa Whitelist)
+dnsbl_scrub() {
 
 	counto="$(grep -c ^ ${pfbdomain}${alias}.bk)"
+	alexa_enable="${max}"
+
+	# Process De-Duplication
+	sort "${pfbdomain}${alias}.bk" | uniq > "${pfbdomain}${alias}.bk2"
+	countu="$(grep -c ^ ${pfbdomain}${alias}.bk2)"
+
 	if [ -d "${pfbdomain}" ] && [ "$(ls -A ${pfbdomain}*.txt 2>/dev/null)" ]; then
-		sort "${pfbdomain}${alias}.bk" | uniq > "${pfbdomain}${alias}.bk2"
-		countu="$(grep -c ^ ${pfbdomain}${alias}.bk2)"
-		find "${pfbdomain}"*.txt ! -name "${alias}.txt" | xargs cat > "${domainmaster}"
+		find "${pfbdomain}"*.txt ! -name "${pfbdomain}${alias}.txt" | xargs cat > "${domainmaster}"
 
 		# Only execute awk command, if master domain file contains data.
-		counta="$(grep -c ^ ${domainmaster})"
-		if [ "${counta}" -gt 0 ]; then
+		query_size="$(grep -c ^ ${domainmaster})"
+		if [ "${query_size}" -gt 0 ]; then
 			awk 'FNR==NR{a[$0];next}!($0 in a)' "${domainmaster}" "${pfbdomain}${alias}.bk2" > "${pfbdomain}${alias}.bk"
 		fi
 
-		rm -f "${domainmaster}"; rm -f "${pfbdomain}${alias}.bk2"
-		countf="$(grep -c ^ ${pfbdomain}${alias}.bk)"
-		countd="$((countu - countf))"
+		rm -f "${domainmaster}"
 	else
-		sort "${pfbdomain}${alias}.bk" | uniq > "${pfbdomain}${alias}.bk2" && mv -f "${pfbdomain}${alias}.bk2" "${pfbdomain}${alias}.bk"
-		countf="$(grep -c ^ ${pfbdomain}${alias}.bk)"
-		countd=0; countu="${counto}"
+		mv -f "${pfbdomain}${alias}.bk2" "${pfbdomain}${alias}.bk"
 	fi
 
-	if [ "${alexa_enable}" == 'on' ]; then
-		awk 'FNR==NR{a[$0];next}!($0 in a)' "${pfbalexa}" "${pfbdomain}${alias}.bk" > "${pfbdomain}${alias}.bk2"
-		countw="$(grep -c ^ ${pfbdomain}${alias}.bk2)"
-		counta="$((countf - countw))"
+	countf="$(grep -c ^ ${pfbdomain}${alias}.bk)"
+	countd="$((countu - countf))"
+	rm -f "${pfbdomain}${alias}.bk2"
+
+	# Remove Whitelisted Domains and Sub-Domains, if configured
+	if [ -s "${dnsbl_whitelist}" ] && [ -s "${pfbdomain}${alias}.bk" ]; then
+		grep -vF -f "${dnsbl_whitelist}" "${pfbdomain}${alias}.bk" > "${pfbdomain}${alias}.bk2"
+		countx="$(grep -c ^ ${pfbdomain}${alias}.bk2)"
+		countw="$((countf - countx))"
+
+		if [ "${countw}" -gt 0 ]; then
+			data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
+				cut -d '"' -f2 | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
+			echo "  Whitelist: ${data}"
+			mv -f "${pfbdomain}${alias}.bk2" "${pfbdomain}${alias}.bk"
+		fi
+	else
+		countw=0
+	fi
+
+	# Process Alexa Whitelist
+	if [ "${alexa_enable}" == "on" ] && [ -s "${pfbalexa}" ] && [ -s "${pfbdomain}${alias}.bk" ]; then
+		countf="$(grep -c ^ ${pfbdomain}${alias}.bk)"
+		grep -vF -f "${pfbalexa}" "${pfbdomain}${alias}.bk" > "${pfbdomain}${alias}.bk2"
+		countx="$(grep -c ^ ${pfbdomain}${alias}.bk2)"
+		counta="$((countf - countx))"
 
 		if [ "${counta}" -gt 0 ]; then
 			data="$(awk 'FNR==NR{a[$0];next}!($0 in a)' ${pfbdomain}${alias}.bk2 ${pfbdomain}${alias}.bk | \
 				cut -d '"' -f2 | cut -d ' ' -f1 | sort | uniq | tr '\n' '|')"
-			echo; echo; echo "  Alexa Whitelist: ${data}"
+			echo "  Alexa Whitelist: ${data}"
 			mv -f "${pfbdomain}${alias}.bk2" "${pfbdomain}${alias}.bk"
-			countf="$((countw))"
-		else
-			rm -f "${pfbdomain}${alias}.bk2"
 		fi
 	else
-		counta='-'
+		counta=0
 	fi
 
-	echo; echo '  ------------------------------------------------'
-	printf "%-10s %-10s %-10s %-10s %-10s\n" '  Original' 'Unique' '# Dups' 'Alexa' 'Final'
-	echo '  ------------------------------------------------'
-	printf "%-10s %-10s %-10s %-10s %-10s\n" "  ${counto}" "${countu}" "${countd}" "${counta}" "${countf}"
-	echo '  ------------------------------------------------'
+	countf="$(grep -c ^ ${pfbdomain}${alias}.bk)"
+	rm -f "${pfbdomain}${alias}.bk2"
+
+	echo '  ----------------------------------------------------------------------'
+	printf "%-10s %-10s %-10s %-10s %-10s %-10s %-10s\n" '  Orig.' 'Unique' '# Dups' '# White' '# Alexa' 'Final'
+	echo '  ----------------------------------------------------------------------'
+	printf "%-10s %-10s %-10s %-10s %-10s %-10s %-10s\n" "  ${counto}" "${countu}" "${countd}" "${countw}" "${counta}" "${countf}"
+	echo '  ----------------------------------------------------------------------'
+}
+
+
+# Function to process TLD
+domaintld() {
+	# List of Feeds
+	dnsbl_files="${cc}";
+
+	> "${tempfile}"; > "${tempfile2}"; > "${dupfile}"
+
+	sort "${dnsbl_file}.conf" | uniq > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_file}.conf"
+	countto="$(grep -v '"transparent"\|\"static\"' ${dnsbl_file}.conf | grep -c ^)"
+
+	if [ -s "${dnsbl_remove}" ]; then
+		sort "${dnsbl_remove}" | uniq > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_remove}"
+		counttm="$(grep -c '^\.' ${dnsbl_remove})"
+	else
+		counttm=0
+	fi
+
+	if [ "${DEBUG}" == 1 ]; then
+		cp "${dnsbl_file}.conf" "${dnsbl_file}.conf.orig"
+	fi
+
+	# 'Redirect zone'
+	# Collect DNSBL TLD files (by smallest line count first) and merge
+	dnsbl_tmp_files="$(grep -c ^ ${dnsbl_tmp}DNSBL_*.txt | sort -t : -k 2,2n | cut -d':' -f1)"
+	if [ ! -z "${dnsbl_tmp_files}" ]; then
+
+		for file in ${dnsbl_tmp_files}; do
+			# For each file, place 'local-zone' before 'local-data'
+			head -1 "${file}" >> "${dupfile}"
+			tail -n +2 "${file}" | sort | uniq >> "${dupfile}"
+		done
+
+		# Remove redundant Domains (in 'redirect zone')
+		if [ -s "${dnsbl_remove}" ] && [ -s "${dupfile}" ]; then
+
+			if [ "${DEBUG}" == 1 ]; then
+				cp "${dupfile}" "${dnsbl_file}.dup"
+			fi
+
+			grep -vF -f "${dnsbl_remove}" "${dupfile}" > "${tempfile}"
+		else
+			mv -f "${dupfile}" "${tempfile}"
+		fi
+	fi
+
+	# 'Transparent zone'
+	# Remove redundant Domains (in 'transparent zone')
+	if [ -s "${dnsbl_remove}.tsp" ] && [ -s "${dnsbl_file}.tsp" ]; then
+		grep -vF -f "${dnsbl_remove}.tsp" "${dnsbl_file}.tsp" | sort | uniq > "${tempfile2}"
+	else
+		mv -f "${dnsbl_remove}.tsp" "${tempfile2}"
+	fi
+
+	# Merge all TLD files
+	if [ -f "${tempfile}" ] || [ -f "${tempfile2}" ]; then
+		> "${dnsbl_file}.conf"
+		cat "${tempfile}" "${tempfile2}" >> "${dnsbl_file}.conf"
+	fi
+
+	if [ "${DEBUG}" == 1 ]; then
+		cp "${dnsbl_file}.conf" "${dnsbl_file}.conf.final"
+	fi
+
+	# Sort 'Transparent zone' remove file
+	if [ -s "${dnsbl_remove}.tsp" ]; then
+		sort "${dnsbl_remove}.tsp" | uniq > "${tempfile}" && mv -f "${tempfile}" "${dnsbl_remove}.tsp"
+	fi
+
+	# Remove redundant Domains in DNSBL files
+	# Need to re-process all Feeds for TLD (Remove any recently added TLD Domains)
+	if [ -s "${dnsbl_remove}.tsp" ]; then
+		for i in ${dnsbl_files}; do
+			alias="$(echo ${i%*,})"
+
+			if [ "${DEBUG}" == 1 ] && [ -f "${pfbdomain}${alias}.txt" ]; then
+				cp "${pfbdomain}${alias}.txt" "${pfbdomain}${alias}.xxx"
+			fi
+
+			# Remove redundant TLD Domains
+			if [ -s "${pfbdomain}${alias}.txt" ]; then
+				grep -vF -f "${dnsbl_remove}.tsp" "${pfbdomain}${alias}.txt" > "${tempfile}"
+				mv -f "${tempfile}" "${pfbdomain}${alias}.txt"
+			fi
+		done
+	fi
+
+	counttf="$(grep -v '"transparent"\|\"static\"' ${dnsbl_file}.conf | grep -c ^)"
+	counttr="$((countto - counttf))"
+
+	echo ' completed'
+	echo ' ----------------------------------------'
+	printf "%-12s %-10s %-10s %-10s\n" ' Original' 'Matches' 'Removed' 'Final'
+	echo ' ----------------------------------------'
+	printf "%-12s %-10s %-10s %-10s\n" " ${countto}" "${counttm}" "${counttr}" "${counttf}"
+	echo ' -----------------------------------------'
 }
 
 
@@ -751,7 +876,7 @@ processet() {
 				15) echo "${i}" >> "${etdir}/ET_P2P.txt";;
 				16) echo "${i}" >> "${etdir}/ET_Proxy.txt";;
 				17) echo "${i}" >> "${etdir}/ET_Ipcheck.txt";;
-				18) echo "${i}" >> "$[etdir}/ET_Cat18.txt";;
+				18) echo "${i}" >> "${etdir}/ET_Cat18.txt";;
 				19) echo "${i}" >> "${etdir}/ET_Utility.txt";;
 				20) echo "${i}" >> "${etdir}/ET_DDos.txt";;
 				21) echo "${i}" >> "${etdir}/ET_Scanner.txt";;
@@ -937,8 +1062,11 @@ case "${1}" in
 	continent)
 		duplicate
 		;;
-	domainduplicate)
-		domainduplicate
+	dnsbl_scrub)
+		dnsbl_scrub
+		;;
+	domaintld)
+		domaintld
 		;;
 	cidr_aggregate)
 		agg_folder=true

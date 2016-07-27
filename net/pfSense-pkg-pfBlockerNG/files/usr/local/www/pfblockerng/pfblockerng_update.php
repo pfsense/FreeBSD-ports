@@ -54,7 +54,7 @@ pfb_global();
 
 // Collect pfBlockerNG log file and post live output to terminal window.
 function pfbupdate_output($text) {
-	$text = str_replace("\n", "\\n", $text);
+	$text = htmlspecialchars(str_replace("\n", "\\n", $text));
 	print("\n<script type=\"text/javascript\">");
 	print("\n//<![CDATA[");
 	print("\nthis.document.forms[0].pfb_output.value = \"" . $text . "\";");
@@ -68,7 +68,7 @@ function pfbupdate_output($text) {
 
 // Post status message to terminal window.
 function pfbupdate_status($status) {
-	$status = str_replace("\n", "\\n", $status);
+	$status = htmlspecialchars(str_replace("\n", "\\n", $status));
 	print("\n<script type=\"text/javascript\">");
 	print("\n//<![CDATA[");
 	print("\nthis.document.forms[0].pfb_status.value=\"" . $status . "\";");
@@ -133,12 +133,6 @@ $pconfig = array();
 if ($_POST) {
 	$pconfig = $_POST;
 }
-if ($input_errors) {
-	print_input_errors($input_errors);
-}
-if ($savemsg) {
-	print_info_box($savemsg, 'success');
-}
 
 $tab_array	= array();
 $tab_array[]	= array(gettext("General"), false, "/pkg_edit.php?xml=pfblockerng.xml");
@@ -148,7 +142,7 @@ $tab_array[]	= array(gettext("Reputation"), false, "/pkg_edit.php?xml=/pfblocker
 $tab_array[]	= array(gettext("IPv4"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml");
 $tab_array[]	= array(gettext("IPv6"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml");
 $tab_array[]	= array(gettext("DNSBL"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml");
-$tab_array[]	= array(gettext("Country"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml");
+$tab_array[]	= array(gettext("GeoIP"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_TopSpammers.xml");
 $tab_array[]	= array(gettext("Logs"), false, "/pfblockerng/pfblockerng_log.php");
 $tab_array[]	= array(gettext("Sync"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml");
 display_top_tabs($tab_array, true);
@@ -184,7 +178,7 @@ if ($pfb['enable'] == 'on') {
 		}
 	}
 	elseif ($pfb['interval'] == 24) {
-		$cron_hour_next = $cron_hour_begin = $pfb['24hour'] ?: '00';
+		$cron_hour_next = $cron_hour_begin = !empty($pfb['24hour']) ?: '00';
 	}
 	else {
 		// Find next cron hour schedule
@@ -378,7 +372,6 @@ $group->add(new Form_StaticText(
 
 $section->add($group);
 
-
 // Build 'textarea' windows
 $section = new Form_Section('Log');
 $section->addInput(new Form_Textarea(
@@ -415,13 +408,13 @@ if (isset($pconfig['log_view'])) {
 if ($pfb['enable'] == 'on' && isset($pconfig['run']) && !empty($pconfig['pfb_force'])) {
 	// Execute appropriate 'Force command' 
 	if ($pconfig['pfb_force'] == 'update') {
-		pfb_cron_update(update);
+		pfb_cron_update('update');
 	} elseif ($pconfig['pfb_force'] == 'cron') {
-		pfb_cron_update(cron);
+		pfb_cron_update('cron');
 	} elseif ($pconfig['pfb_force'] == 'reload') {
 		$config['installedpackages']['pfblockerng']['config'][0]['pfb_reuse'] = 'on';
 		write_config('pfBlockerNG: Executing Force Reload');
-		pfb_cron_update(reload);
+		pfb_cron_update('reload');
 	}
 }
 
