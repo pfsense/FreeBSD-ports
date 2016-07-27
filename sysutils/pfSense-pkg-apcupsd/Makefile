@@ -12,8 +12,7 @@ COMMENT=	pfSense package apcupsd
 
 LICENSE=	ESF
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/apcupsd:sysutils/apcupsd \
-		/etc/inc/phpmailer/PHPMailerAutoload.php:mail/pfSense-pkg-mailreport
+RUN_DEPENDS=	${LOCALBASE}/sbin/apcupsd:sysutils/apcupsd
 
 NO_BUILD=	yes
 NO_MTREE=	yes

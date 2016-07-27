@@ -342,8 +342,8 @@
 			<description>
 				<![CDATA[
 				Choose how APCUpsd will send email notifications.<br /><br />
-				<strong>phpMailer</strong> - In order to receive e-mail notifications through phpMailer, you need to configure SMTP Email Notifications on Advanced/Notifications section,&nbsp;
-				and also install mailreport package.<br />
+				<strong>php</strong> - In order to receive e-mail notifications through php, you need to configure SMTP Email Notifications 
+				on System/Advanced/Notifications section.<br />
 				<br />
 				<strong>SMTP built-in</strong> - A simple SMTP mail client for apcupsd. It does not have smtp authentication of any kind.
 				]]>
@@ -351,7 +351,7 @@
 			<type>select</type>
 			<default_value>phpmailer</default_value>
 			<options>
-				<option><name>phpMailer</name><value>phpmailer</value></option>
+				<option><name>php</name><value>phpmailer</value></option>
 				<option><name>SMTP built-in</name><value>smtpbuiltin</value></option>
 			</options>
 		</field>
