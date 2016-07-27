@@ -31,8 +31,6 @@ require_once("pkg-utils.inc");
 require_once("globals.inc");
 require_once("notices.inc");
 
-global $config, $g;
-
 $apcstatus[killpower] = "UPS now committed to shut down";
 $apcstatus[commfailure] = "Communications with UPS lost";
 $apcstatus[commok] = "Communications with UPS restored";
