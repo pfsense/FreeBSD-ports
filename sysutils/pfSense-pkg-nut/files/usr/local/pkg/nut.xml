@@ -51,7 +51,7 @@
 		<name>UPS</name>
 		<tooltiptext>Network UPS Tools status</tooltiptext>
 		<section>Services</section>
-		<url>nut_status.php</url>
+		<url>/nut_status.php</url>
 	</menu>
 	<service>
 		<name>nut</name>
