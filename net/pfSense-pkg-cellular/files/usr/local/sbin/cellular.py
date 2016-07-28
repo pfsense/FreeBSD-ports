@@ -29,7 +29,7 @@ class CellularInterface:
 		"""
 		self.cmd_string = ""
 
-		self.path = "/var"
+		self.path = "/usr/local"
 		self.conf = self.path + "/etc/cellular/cellular.conf"
 		self.defconf = self.path + "/etc/cellular/cellular.defaults.conf"
 
@@ -84,7 +84,7 @@ class CellularInterface:
 		elif args.value:
 			if not tmp.has_section(args.section):
 				tmp.add_section(args.section)
-				tmp.set(args.section, args.key, args.value)
+			tmp.set(args.section, args.key, args.value)
 
 		with open(self.conf, "wb") as f:
 			tmp.write(f)
@@ -102,18 +102,18 @@ class CellularInterface:
 			tmp.readfp(open(self.conf))
 			found = False
 
-		# return module when in config
-		if tmp.has_section("Hardware") and tmp.has_option("Hardware", "module"):
-			self.module = tmp.get("Hardware", "module")
-			found = True
+			# return module when in config
+			if tmp.has_section("Hardware") and tmp.has_option("Hardware", "module"):
+				self.module = tmp.get("Hardware", "module")
+				found = True
 
-		# return manufacturer when in config
-		if tmp.has_section("Hardware") and tmp.has_option("Hardware", "manufacturer"):
-			self.manufacturer = tmp.get("Hardware", "manufacturer")
-			found = True
+			# return manufacturer when in config
+			if tmp.has_section("Hardware") and tmp.has_option("Hardware", "manufacturer"):
+				self.manufacturer = tmp.get("Hardware", "manufacturer")
+				found = True
 
-		if found:
-			return
+			if found:
+				return
 
 		tmp.add_section("Hardware")
 		args = (lambda: 0)
@@ -146,19 +146,19 @@ class CellularInterface:
 			tmp = ConfigParser.ConfigParser()
 			tmp.readfp(open(config_file))
 
-		config_version = tmp.get("Software", "version")
+			config_version = tmp.get("Software", "version")
 
-		if config_version.split("_")[0] != __version__.split("_")[0]:
-			# version mismatch: remove /etc/defaults/cellular.defaults.conf
-			print("Cleaning up old config file", file=sys.stdout)
-			os.remove(config_file)
+			if config_version.split("_")[0] != __version__.split("_")[0]:
+				# version mismatch: remove /etc/defaults/cellular.defaults.conf
+				print("Cleaning up old config file", file=sys.stdout)
+				os.remove(config_file)
 
 		if (not os.path.isfile(config_file)):
 			# generate new /etc/defaults/cellular.defaults.conf
 			pre_text = """\
-			# Default configuration 
-			# DO NOT ALTER THESE SETTINGS.
-			# If you want to introduce custom settings, you may do so in /etc/cellular.conf"""
+# Default configuration 
+# DO NOT ALTER THESE SETTINGS.
+# If you want to introduce custom settings, you may do so in /etc/cellular.conf"""
 
 			self.config.add_section("Software")
 			self.config.set("Software", "version", __version__)
@@ -204,7 +204,8 @@ class CellularInterface:
 		if ("ERROR" in answ) or (not "OK" in answ):
 			if to_stdout:
 				print("ERROR", file=sys.stdout)
-				return ("-1", "-1")
+
+			return ("-1", "-1")
 
 		if to_stdout:
 			print(answ, file=sys.stdout)
@@ -299,11 +300,11 @@ class CellularInterface:
 		if m:
 			if not silent:
 				print(m.group(1), file=sys.stdout)
-				return (info[0], m.group(1))
+			return (info[0], m.group(1))
 		else:
 			if not silent:
 				print("ERROR", file=sys.stdout)
-				return ("-1", "ERROR")
+			return ("-1", "ERROR")
 
 		return info
 
@@ -317,11 +318,11 @@ class CellularInterface:
 		if m:
 			if not silent:
 				print(m.group(1), file=sys.stdout)
-				return (info[0], m.group(1))
+			return (info[0], m.group(1))
 		else:
 			if not silent:
 				print("ERROR", file=sys.stdout)
-				return ("-1", "ERROR")
+			return ("-1", "ERROR")
 
 		return info
 
