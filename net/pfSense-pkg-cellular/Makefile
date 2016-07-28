@@ -31,7 +31,7 @@ do-extract:
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
-	${MKDIR} ${STAGEDIR}/var/etc/cellular
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/cellular
 	${MKDIR} ${STAGEDIR}${PREFIX}/sbin
 		${MKDIR} ${STAGEDIR}${DATADIR}
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/widgets
