@@ -13,7 +13,7 @@ www/pfblockerng/pfblockerng_threats.php
 www/widgets/widgets/pfblockerng.widget.php
 www/widgets/include/widget-pfblockerng.inc
 www/widgets/javascript/pfblockerng.js
-pkg/pfblockerng/pfblockerng_top20.xml
+pkg/pfblockerng/dnsbl_tld
 pkg/pfblockerng/pfblockerng_dnsbl.xml
 pkg/pfblockerng/pfblockerng_dnsbl_lists.xml
 pkg/pfblockerng/pfblockerng_dnsbl_easylist.xml
