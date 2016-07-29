@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-pfBlockerNG
-PORTVERSION=	2.0.17
+PORTVERSION=	2.1.1
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -28,14 +29,12 @@ do-extract:
 	${MKDIR} ${WRKSRC}
 
 do-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/pfblockerng
-	${MKDIR} ${STAGEDIR}${PREFIX}/www/pfblockerng
+	${MKDIR} ${STAGEDIR}${PREFIX}/www/pfblockerng/www
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/widgets
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/include
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/javascript
-	${MKDIR} ${STAGEDIR}${PREFIX}/www/pfblockerng/www
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/pfblockerng.xml \
 		${STAGEDIR}${PREFIX}/pkg
@@ -65,7 +64,7 @@ do-install:
 		${STAGEDIR}${PREFIX}/www/widgets/include
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/javascript/pfblockerng.js \
 		${STAGEDIR}${PREFIX}/www/widgets/javascript
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfblockerng_top20.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/pfblockerng/dnsbl_tld \
 		${STAGEDIR}${PREFIX}/pkg/pfblockerng
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/pfblockerng/pfblockerng_dnsbl.xml \
 		${STAGEDIR}${PREFIX}/pkg/pfblockerng

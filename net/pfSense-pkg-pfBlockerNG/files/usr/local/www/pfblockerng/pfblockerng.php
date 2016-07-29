@@ -50,39 +50,28 @@ require_once('/usr/local/pkg/pfblockerng/pfblockerng_extra.inc');	// 'include fu
 global $config, $g, $pfb;
 
 // Extras - MaxMind/Alexa Download URLs/filenames/settings
-$pfb['extras'][0]['url']	= 'http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz';
+$pfb['extras'][0]['url']	= 'https://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz';
 $pfb['extras'][0]['file_dwn']	= 'GeoIP.dat.gz';
 $pfb['extras'][0]['file']	= 'GeoIP.dat';
 $pfb['extras'][0]['folder']	= "{$pfb['geoipshare']}";
 
-$pfb['extras'][1]['url']	= 'http://geolite.maxmind.com/download/geoip/database/GeoIPv6.dat.gz';
+$pfb['extras'][1]['url']	= 'https://geolite.maxmind.com/download/geoip/database/GeoIPv6.dat.gz';
 $pfb['extras'][1]['file_dwn']	= 'GeoIPv6.dat.gz';
 $pfb['extras'][1]['file']	= 'GeoIPv6.dat';
 $pfb['extras'][1]['folder']	= "{$pfb['geoipshare']}";
 
-$pfb['extras'][2]['url']	= 'http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip';
-$pfb['extras'][2]['file_dwn']	= 'GeoIPCountryCSV.zip';
-$pfb['extras'][2]['file']	= 'GeoIPCountryWhois.csv';
+$pfb['extras'][2]['url']	= 'https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country-CSV.zip';
+$pfb['extras'][2]['file_dwn']	= 'GeoLite2-Country-CSV.zip';
+$pfb['extras'][2]['file']	= '';
 $pfb['extras'][2]['folder']	= "{$pfb['geoipshare']}";
 
-$pfb['extras'][3]['url']	= 'http://dev.maxmind.com/static/csv/codes/country_continent.csv';
-$pfb['extras'][3]['file_dwn']	= 'country_continent.csv';
-$pfb['extras'][3]['file']	= 'country_continent.csv';
-$pfb['extras'][3]['folder']	= "{$pfb['geoipshare']}";
-
-$pfb['extras'][4]['url']	= 'http://geolite.maxmind.com/download/geoip/database/GeoIPv6.csv.gz';
-$pfb['extras'][4]['file_dwn']	= 'GeoIPv6.csv.gz';
-$pfb['extras'][4]['file']	= 'GeoIPv6.csv';
-$pfb['extras'][4]['folder']	= "{$pfb['geoipshare']}";
-
-$pfb['extras'][5]['url']	= 'https://s3.amazonaws.com/alexa-static/top-1m.csv.zip';
-$pfb['extras'][5]['file_dwn']	= 'top-1m.csv.zip';
-$pfb['extras'][5]['file']	= 'top-1m.csv';
-$pfb['extras'][5]['folder']	= "{$pfb['dbdir']}";
-
+$pfb['extras'][3]['url']	= 'https://s3.amazonaws.com/alexa-static/top-1m.csv.zip';
+$pfb['extras'][3]['file_dwn']	= 'top-1m.csv.zip';
+$pfb['extras'][3]['file']	= 'top-1m.csv';
+$pfb['extras'][3]['folder']	= "{$pfb['dbdir']}";
 
 // Call include file and collect updated Global settings
-if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'bu', 'uc', 'gc', 'al', 'cron'))) {
+if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'bu', 'uc', 'gc', 'al', 'cron', 'ugc'))) {
 	pfb_global();
 
 	// Script Arguments
@@ -102,27 +91,28 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'bu', 'u
 
 			// If 'General Tab' skip MaxMind download setting if checked, only download binary updates for Reputation/Alerts page.
 			if (!empty($pfb['cc'])) {
-				unset($pfb['extras'][2], $pfb['extras'][3], $pfb['extras'][4]);
+				unset($pfb['extras'][2]);
 			}
 
 			// Skip Alexa update, if disabled
 			if ($pfb['dnsbl_alexa'] != 'on') {
-				unset($pfb['extras'][5]);
+				unset($pfb['extras'][3]);
 			}
 
 			// Proceed with conversion of MaxMind files on download success
-			if (pfblockerng_download_extras()) {
+			if (empty($pfb['cc']) && pfblockerng_download_extras()) {
 				pfblockerng_uc_countries();
 				pfblockerng_get_countries();
 			}
+
 			unset($pfb['maxmind_install']);
 			break;
 		case 'bu':		// Update MaxMind binary database files only.
-			unset($pfb['extras'][2], $pfb['extras'][3], $pfb['extras'][4], $pfb['extras'][5]);
+			unset($pfb['extras'][2], $pfb['extras'][3]);
 			pfblockerng_download_extras();
 			break;
 		case 'al':		// Update Alexa database only.
-			unset($pfb['extras'][0], $pfb['extras'][1], $pfb['extras'][2], $pfb['extras'][3], $pfb['extras'][4]);
+			unset($pfb['extras'][0], $pfb['extras'][1], $pfb['extras'][2]);
 			pfblockerng_download_extras();
 			break;
 		case 'uc':		// Update MaxMind ISO files from local database files.
@@ -130,6 +120,15 @@ if (in_array($argv[1], array('update', 'updateip', 'updatednsbl', 'dc', 'bu', 'u
 			break;
 		case 'gc':		// Update Continent XML files.
 			pfblockerng_get_countries();
+			break;
+		case 'ugc':
+			pfblockerng_uc_countries();
+			pfblockerng_get_countries();
+
+			if (!empty($argv[2]) && !empty($argv[3])) {
+				file_notice('pfBlockerNG', "The MaxMind GeoIP Locale has been changed from [ {$argv[2]} ]"
+						. " to [ {$argv[3]} ]", gettext('MaxMind Locale Changed'), '', 0);
+			}
 			break;
 	}
 }
@@ -410,10 +409,6 @@ function pfblockerng_sync_cron() {
 function pfblockerng_uc_countries() {
 	global $g, $pfb;
 
-	$maxmind_cont	= "{$pfb['geoipshare']}/country_continent.csv";
-	$maxmind_cc4	= "{$pfb['geoipshare']}/GeoIPCountryWhois.csv";
-	$maxmind_cc6	= "{$pfb['geoipshare']}/GeoIPv6.csv";
-	
 	// Create folders if not exist
 	$folder_array = array ("{$pfb['dbdir']}", "{$pfb['logdir']}", "{$pfb['ccdir']}");
 	foreach ($folder_array as $folder) {
@@ -427,8 +422,9 @@ function pfblockerng_uc_countries() {
 	}
 	pfb_logger("{$log}", 3);
 
-	if (!file_exists($maxmind_cont) || !file_exists($maxmind_cc4) || !file_exists($maxmind_cc6)) {
-		$log = " [ MAXMIND UPDATE FAIL, CSV missing, using previous Country code database \n";
+	$maxmind_cont = "{$pfb['geoipshare']}/GeoLite2-Country-Locations-{$pfb['maxmind_locale']}.csv";
+	if (!file_exists($maxmind_cont)) {
+		$log = " [ MAXMIND UPDATE FAIL, Language File Missing, using previous Country code database \n";
 		if (!$g['pfblockerng_install']) {
 			print ("{$log}");
 		}
@@ -437,11 +433,9 @@ function pfblockerng_uc_countries() {
 	}
 
 	// Save Date/Time stamp to MaxMind version file
-	$local_tds4	 = @gmdate('D, d M Y H:i:s T', @filemtime($maxmind_cc4));
-	$local_tds6	 = @gmdate('D, d M Y H:i:s T', @filemtime($maxmind_cc6));
-	$maxmind_ver	 = "MaxMind GeoLite Date/Time Stamps\n";
-	$maxmind_ver	.= "Local_v4 \tLast-Modified: {$local_tds4}\n";
-	$maxmind_ver	.= "Local_v6 \tLast-Modified: {$local_tds6}\n";
+	$local_tds	 = @gmdate('D, d M Y H:i:s T', @filemtime($maxmind_cont));
+	$maxmind_ver	 = "MaxMind GeoLite2 Date/Time Stamp\n";
+	$maxmind_ver	.= "Last-Modified: {$local_tds}\n";
 	@file_put_contents("{$pfb['logdir']}/maxmind_ver", $maxmind_ver, LOCK_EX);
 
 	// Collect ISO codes for each Continent
@@ -451,66 +445,71 @@ function pfblockerng_uc_countries() {
 	}
 	pfb_logger("{$log}", 3);
 
-	$cont_array = array();
+	// Remove any previous working files
+	rmdir_recursive("{$pfb['ccdir_tmp']}");
+	safe_mkdir("{$pfb['ccdir_tmp']}");
+
+	rmdir_recursive("{$pfb['ccdir']}");
+	safe_mkdir("{$pfb['ccdir']}");
+
+	$pfb_geoip = array();
+
+	$top_20 = array('CN', 'RU', 'JP', 'UA', 'GB', 'DE', 'BR', 'FR', 'IN', 'TR',
+			'IT', 'KR', 'PL', 'ES', 'VN', 'AR', 'CO', 'TW', 'MX', 'CL');
+
+	// Read GeoLite2 database and create array by geoname_ids
 	if (($handle = @fopen("{$maxmind_cont}", 'r')) !== FALSE) {
 		while (($cc = @fgetcsv($handle)) !== FALSE) {
-			$cc_key = $cc[0];
-			$cont_key = $cc[1];
 
-			switch ($cont_key) {
-				case 'AF':
-					$cont_array[0]['continent'] = 'Africa';
-					$cont_array[0]['iso']  .= "{$cc_key},";
-					$cont_array[0]['file4'] = "{$pfb['ccdir']}/Africa_v4.txt";
-					$cont_array[0]['file6'] = "{$pfb['ccdir']}/Africa_v6.txt";
-					break;
-				case 'AS':
-					$cont_array[1]['continent'] = 'Asia';
-					$cont_array[1]['iso']  .= "{$cc_key},";
-					$cont_array[1]['file4'] = "{$pfb['ccdir']}/Asia_v4.txt";
-					$cont_array[1]['file6'] = "{$pfb['ccdir']}/Asia_v6.txt";
-					break;
-				case 'EU':
-					$cont_array[2]['continent'] = 'Europe';
-					$cont_array[2]['iso']  .= "{$cc_key},";
-					$cont_array[2]['file4'] = "{$pfb['ccdir']}/Europe_v4.txt";
-					$cont_array[2]['file6'] = "{$pfb['ccdir']}/Europe_v6.txt";
-					break;
-				case 'NA':
-					$cont_array[3]['continent'] = 'North America';
-					$cont_array[3]['iso']  .= "{$cc_key},";
-					$cont_array[3]['file4'] = "{$pfb['ccdir']}/North_America_v4.txt";
-					$cont_array[3]['file6'] = "{$pfb['ccdir']}/North_America_v6.txt";
-					break;
-				case 'OC':
-					$cont_array[4]['continent'] = 'Oceania';
-					$cont_array[4]['iso']  .= "{$cc_key},";
-					$cont_array[4]['file4'] = "{$pfb['ccdir']}/Oceania_v4.txt";
-					$cont_array[4]['file6'] = "{$pfb['ccdir']}/Oceania_v6.txt";
-					break;
-				case 'SA':
-					$cont_array[5]['continent'] = 'South America';
-					$cont_array[5]['iso']  .= "{$cc_key},";
-					$cont_array[5]['file4'] = "{$pfb['ccdir']}/South_America_v4.txt";
-					$cont_array[5]['file6'] = "{$pfb['ccdir']}/South_America_v6.txt";
-					break;
+			if ($cc[0] == 'geoname_id') {
+				continue;
+			}
+
+			/*	Sample MaxMind lines:
+				geoname_id,locale_code,continent_code,continent_name,country_iso_code,country_name
+				49518,en,AF,Africa,RW,Rwanda	*/
+
+			if (!empty($cc[0]) && !empty($cc[1]) && !empty($cc[2]) && !empty($cc[3]) && !empty($cc[4]) && !empty($cc[5])) {
+				$pfb_geoip['country'][$cc[0]] = array('id' => $cc[0], 'continent' => $cc[3], 'name' => $cc[5], 'iso' => array("{$cc[4]}"));
+
+				// Collect English Continent name for filenames only
+				if ($cc[1] != 'en') {
+					$geoip_en	= str_replace("Locations-{$pfb['maxmind_locale']}", 'Locations-en', $maxmind_cont);
+					$continent_en	= exec("{$pfb['grep']} -m1 ',en,{$cc[2]}' {$geoip_en} | {$pfb['cut']} -d',' -f4");
+				} else {
+					$continent_en	= "{$cc[3]}";
+				}
+				$continent_en = str_replace(array(' ', '"'), array('_', ''), $continent_en);
+				$pfb_geoip['country'][$cc[0]]['continent_en'] = "{$continent_en}";
+
+				// Collect data for TOP 20 tab
+				switch($cc[4]) {
+					case (in_array($cc[4], $top_20)):
+						$order = array_keys($top_20, $cc[4]);
+						$top20 = 'A' . str_pad($order[0], 5, '0', STR_PAD_LEFT);
+						$pfb_geoip['country'][$top20] = array('name' => $cc[5], 'iso' => $cc[4], 'id' => $cc[0]);
+						break;
+				}
 			}
 		}
+
+		unset($cc);
+		@fclose($handle);
 	}
-	unset($cc);
-	@fclose($handle);
 
-	// Add Maxmind Anonymous Proxy and Satellite Providers to array
-	$cont_array[6]['continent']	= 'Proxy and Satellite';
-	$cont_array[6]['iso']		= 'A1,A2';
-	$cont_array[6]['file4'] 	= "{$pfb['ccdir']}/Proxy_Satellite_v4.txt";
-	$cont_array[6]['file6'] 	= "{$pfb['ccdir']}/Proxy_Satellite_v6.txt";
+	// Add 'Proxy and Satellite' geoname_ids
+	$pfb_geoip['country']['proxy']		= array('continent' => 'Proxy and Satellite', 'name' => 'A. Proxy', 'iso' => array('A1'),
+							'continent_en' => 'Proxy_and_Satellite');
+	$pfb_geoip['country']['satellite']	= array('continent' => 'Proxy and Satellite', 'name' => 'Satellite P.', 'iso' => array('A2'),
+							'continent_en' => 'Proxy_and_Satellite');
 
-	// Patch for missing CCodes
-	$cont_array[0]['iso'] .= 'SS';
-	$cont_array[3]['iso'] .= 'BQ,CW,SX';
+	// Add 'Asia/Europe' undefined geoname_ids
+	$pfb_geoip['country']['6255147']	= array('continent' => 'Asia', 'name' => 'AA ASIA UNDEFINED', 'iso' => array('6255147'),
+							'continent_en' => 'Asia');
+	$pfb_geoip['country']['6255148']	= array('continent' => 'Europe', 'name' => 'AA EUROPE UNDEFINED', 'iso' => array('6255148'),
+							'continent_en' => 'Europe');
 
-	sort($cont_array);
+	ksort($pfb_geoip['country'], SORT_NATURAL);
 
 	// Collect Country ISO data and sort to Continent arrays (IPv4 and IPv6)
 	foreach (array('4', '6') as $type) {
@@ -518,51 +517,178 @@ function pfblockerng_uc_countries() {
 		print ("{$log}");
 		pfb_logger("{$log}", 3);
 
-		if ($type == '4') {
-			$maxmind_cc = "{$pfb['geoipshare']}/GeoIPCountryWhois.csv";
-		} else {
-			$maxmind_cc = "{$pfb['geoipshare']}/GeoIPv6.csv";
-		}
-		$iptype = "ip{$type}";
-		$filetype = "file{$type}";
+		$geoip_dup = 0;		// Count of Geoname_ids which have both a different 'Registered and Represented' geoname_id
 
+		$maxmind_cc = "{$pfb['geoipshare']}/GeoLite2-Country-Blocks-IPv{$type}.csv";
 		if (($handle = @fopen("{$maxmind_cc}", 'r')) !== FALSE) {
 			while (($cc = @fgetcsv($handle)) !== FALSE) {
-				$cc_key		= $cc[4];
-				$country_key	= $cc[5];
-				$a_cidr		= implode(',', ip_range_to_subnet_array($cc[0], $cc[1]));
-				foreach ($cont_array as $key => $iso) {
-					if (strpos($iso['iso'], $cc_key) !== FALSE) {
-						$cont_array[$key][$cc_key][$iptype]  .= "{$a_cidr},";
-						$cont_array[$key][$cc_key]['country'] = $country_key;
-						continue;
+
+				/*	Sample lines:
+					Network,geoname_id,registered_country_geoname_id,represented_country_geoname_id,is_anonymous_proxy,is_satellite_provider
+					1.0.0.0/24,2077456,2077456,,0,0		*/
+
+				if ($cc[0] == 'network') {
+					continue;
+				}
+
+				$iso = $iso_rep = '';
+
+				// Is Anonymous Proxy?
+				if ($cc[4] == 1) {
+
+					if (!empty($cc[1])) {
+						$iso = "A1_{$pfb_geoip['country']['proxy']['iso'][0]}";
+					}
+					if (!empty($cc[2]) && $cc[1] != $cc[2]) {
+						$geoip_dup++;
+						$iso_rep = "A1_{$pfb_geoip['country'][$cc[2]]['iso'][0]}_rep";
+					}
+					if (empty($cc[1]) && empty($cc[2])) {
+						$iso = "A1";
+					}
+					$cc[2] = 'proxy';	// Re-define variable
+				}
+
+				// Is Satellite Provider?
+				elseif ($cc[5] == 1) {
+
+					if (!empty($cc[1])) {
+						$iso = "A2_{$pfb_geoip['country']['satellite']['iso'][0]}";
+					}
+					if (!empty($cc[2]) && $cc[1] != $cc[2]) {
+						$geoip_dup++;
+						$iso_rep = "A2_{$pfb_geoip['country'][$cc[2]]['iso'][0]}_rep";
+					}
+					if (empty($cc[1]) && empty($cc[2])) {
+						$iso = "A2";
+					}
+					$cc[2] = 'satellite';	// Re-define variable
+				}
+				else {
+					if (!empty($cc[1])) {
+						$iso = "{$pfb_geoip['country'][$cc[1]]['iso'][0]}";
+					}
+					if (!empty($cc[2]) && $cc[1] != $cc[2]) {
+						$geoip_dup++;
+						$iso_rep = "{$pfb_geoip['country'][$cc[2]]['iso'][0]}_rep";
+					}
+				}
+
+				// Add 'ISO Represented' to Country ISO list
+				if (!empty($iso_rep) && !empty($cc[2])) {
+
+					// Only add if not existing
+					if (!isset($pfb_geoip['country'][$cc[2]]) || !in_array($iso_rep, $pfb_geoip['country'][$cc[2]]['iso'])) {
+						$pfb_geoip['country'][$cc[2]]['iso'][] = "{$iso_rep}";
+					}
+				}
+
+				// Save 'ISO Registered Network' to ISO file
+				if (!empty($iso) && !empty($cc[0])) {
+					$file = "{$pfb['ccdir_tmp']}/{$iso}_v{$type}.txt";
+					@file_put_contents("{$file}", "{$cc[0]}\n", FILE_APPEND | LOCK_EX);
+				}
+
+				// Save ISO 'Represented Network' to ISO file
+				if (!empty($iso_rep) && !empty($cc[0])) {
+					$file = "{$pfb['ccdir_tmp']}/{$iso_rep}_v{$type}.txt";
+					@file_put_contents("{$file}", "{$cc[0]}\n", FILE_APPEND | LOCK_EX);
+				}
+			}
+
+			// Report number of Geoname_ids which have both a different 'Registered and Represented' geoname_id
+			if ($geoip_dup != 0) {
+				@file_put_contents("{$pfb['logdir']}/maxmind_ver", "Duplicate Represented IP{$type} Networks: {$geoip_dup}\n", FILE_APPEND | LOCK_EX);
+			}
+
+			// Create Continent txt files
+			if (!empty($pfb_geoip['country'])) {
+				foreach ($pfb_geoip['country'] as $key => $geoip) {
+
+					// Save 'TOP 20' data
+					if (strpos($key, 'A000') !== FALSE) {
+						$pfb_file = "{$pfb['ccdir']}/Top_20_v{$type}.info";
+
+						if (!file_exists($pfb_file)) {
+							$header  = '# Generated from MaxMind Inc. on: ' . date('m/d/y G:i:s', time()) . "\n";
+							$header .= "# Continent IPv{$type}: TopSpammers\n";
+							$header .= "# Continent en: TopSpammers\n";
+							@file_put_contents($pfb_file, $header, LOCK_EX);
+						}
+
+						$iso_header  = "# Country: {$geoip['name']} ({$geoip['id']})\n";
+						$iso_header .= "# ISO Code: {$geoip['iso']}\n";
+						$iso_header .= "# Total Networks: Top20\n";
+						$iso_header .= "Top20\n";
+
+						// Add any 'TOP 20' Represented ISOs Networks
+						if (file_exists("{$pfb['ccdir_tmp']}/{$geoip['iso']}_rep_v{$type}.txt")) {
+							$iso_header .= "# Country: {$geoip['name']} ({$geoip['id']})\n";
+							$iso_header .= "# ISO Code: {$geoip['iso']}_rep\n";
+							$iso_header .= "# Total Networks: Top20\n";
+							$iso_header .= "Top20\n";
+						}
+						@file_put_contents($pfb_file, $iso_header, FILE_APPEND | LOCK_EX);
+					}
+
+					else {
+						if (!empty($geoip['continent_en'])) {
+
+							$pfb_file = "{$pfb['ccdir']}/{$geoip['continent_en']}_v{$type}.txt";
+							if (!file_exists($pfb_file)) {
+								$header  = '# Generated from MaxMind Inc. on: ' . date('m/d/y G:i:s', time()) . "\n";
+								$header .= "# Continent IPv{$type}: {$geoip['continent']}\n";
+								$header .= "# Continent en: {$geoip['continent_en']}\n";
+								@file_put_contents($pfb_file, $header, LOCK_EX);
+							}
+
+							if (!empty($geoip['iso'])) {
+								foreach ($geoip['iso'] as $iso) {
+
+									$iso_file = "{$pfb['ccdir_tmp']}/{$iso}_v{$type}.txt";
+									if (file_exists($iso_file)) {
+
+										$networks = exec("{$pfb['grep']} -c ^ {$iso_file} 2>&1");
+										$geoip_id = '';
+										if (!empty($geoip['id'])) {
+											$geoip_id = " [{$geoip['id']}]";
+										}
+										$iso_header  = "# Country: {$geoip['name']}{$geoip_id}\n";
+										$iso_header .= "# ISO Code: {$iso}\n";
+										$iso_header .= "# Total Networks: {$networks}\n";
+										@file_put_contents($pfb_file, $iso_header, FILE_APPEND | LOCK_EX);
+
+										// Concat ISO Networks to Continent file
+										exec("{$pfb['cat']} {$iso_file} >> {$pfb_file} 2>&1");
+									}
+								}
+
+								// Reset ISOs to original setting (Remove any Represented ISOs)
+								$pfb_geoip['country'][$key]['iso'] = array($pfb_geoip['country'][$key]['iso'][0]);
+							}
+							else {
+								$log = "\n Missing ISO data: {$geoip['continent']}";
+								print ("{$log}");
+								pfb_logger("{$log}", 3);
+							}
+						}
+						else {
+							$log = "\n Failed to create Continent file: {$geoip['continent']}";
+							print ("{$log}");
+							pfb_logger("{$log}", 3);
+						}
 					}
 				}
 			}
+			unset($cc);
+			@fclose($handle);
 		}
-		unset($cc);
-		@fclose($handle);
-
-		// Build Continent files
-		foreach ($cont_array as $key => $iso) {
-			$header		= $pfb_file = $iso_key = '';
-			$header		.= '# Generated from MaxMind Inc. on: ' . date('m/d/y G:i:s', time()) . "\n";
-			$header		.= "# Continent IPv{$type}: {$cont_array[$key]['continent']}\n";
-			$pfb_file	= $cont_array[$key][$filetype];
-			$iso_key	= array_keys($iso);
-
-			foreach ($iso_key as $ikey) {
-				if (strlen($ikey) == 2) {
-					$header .= "# Country: {$iso[$ikey]['country']}\n";
-					$header .= "# ISO Code: {$ikey}\n";
-					$header .= '# Total Networks: ' . substr_count($iso[$ikey][$iptype], ',') . "\n";
-					$header .= str_replace(',', "\n", $iso[$ikey][$iptype]);
-					$iso[$ikey][$iptype] = '';
-				}
-			}
-			@file_put_contents($pfb_file, $header, LOCK_EX);
+		else {
+			pfb_logger("\n Failed to load file: {$maxmind_cc}\n", 1);
 		}
 	}
+	unset($pfb_geoip);
+	rmdir_recursive("{$pfb['ccdir_tmp']}");
 }
 
 
@@ -570,13 +696,15 @@ function pfblockerng_uc_countries() {
 function pfblockerng_get_countries() {
 	global $g, $pfb;
 
-	$files = array (	'Africa'		=> "{$pfb['ccdir']}/Africa_v4.txt",
+	$geoip_files = array (	'Africa'		=> "{$pfb['ccdir']}/Africa_v4.txt",
+				'Antarctica'		=> "{$pfb['ccdir']}/Antarctica_v4.txt",
 				'Asia'			=> "{$pfb['ccdir']}/Asia_v4.txt",
 				'Europe'		=> "{$pfb['ccdir']}/Europe_v4.txt",
 				'North America'		=> "{$pfb['ccdir']}/North_America_v4.txt",
 				'Oceania'		=> "{$pfb['ccdir']}/Oceania_v4.txt",
 				'South America'		=> "{$pfb['ccdir']}/South_America_v4.txt",
-				'Proxy and Satellite'	=> "{$pfb['ccdir']}/Proxy_Satellite_v4.txt"
+				'Proxy and Satellite'	=> "{$pfb['ccdir']}/Proxy_and_Satellite_v4.txt",
+				'TOP 20'		=> "{$pfb['ccdir']}/Top_20_v4.info"
 				);
 
 	// Collect data to generate new continent XML files.
@@ -586,7 +714,7 @@ function pfblockerng_get_countries() {
 	}
 	pfb_logger("{$log}", 3);
 
-	foreach ($files as $cont => $file) {
+	foreach ($geoip_files as $cont => $file) {
 		// Process the following for IPv4 and IPv6
 		foreach (array('4', '6') as $type) {
 			$log = " IPv{$type} {$cont}\n";
@@ -596,10 +724,9 @@ function pfblockerng_get_countries() {
 			if ($type == '6') {
 				$file = str_replace('v4', 'v6', $file);
 			}
+
 			$convert		= explode("\n", file_get_contents($file));
-			$cont_name		= str_replace(' ', '', $cont);
-			$cont_name_lower	= strtolower($cont_name);
-			$active			= array("$cont" => '<active/>');
+			$active			= array("{$cont}" => '<active/>');
 			$lastkey		= count($convert) - 1;
 			$pfb['complete']	= FALSE;
 			$keycount		= 1;
@@ -607,15 +734,21 @@ function pfblockerng_get_countries() {
 			$xml_data		= '';
 
 			foreach ($convert as $line) {
+
 				if (substr($line, 0, 1) == '#') {
 					if ($pfb['complete']) {
-						${'coptions' . $type}[] = "{$country}-{$isocode} ({$total})</name><value>{$isocode}</value></option>";
-						// Only collect IPv4 for Reputation Tab
-						if ($type == '4') {
-							$roptions4[] = "{$country}-{$isocode} ({$total})</name><value>{$isocode}</value></option>";
+						if (!empty($xml_data)) {
+							${'coptions' . $type}[] = "{$country} {$isocode} ({$total})</name><value>{$isocode}</value></option>";
+							// Only collect IPv4 for Reputation Tab
+							if ($type == '4') {
+								$roptions4[] = "{$country} {$isocode} ({$total})</name><value>{$isocode}</value></option>";
+							}
+
+							// Save ISO data
+							if ($cont != 'TOP 20') {
+								@file_put_contents("{$pfb['ccdir']}/{$isocode}_v{$type}.txt", $xml_data, LOCK_EX);
+							}
 						}
-						// Save ISO data
-						@file_put_contents("{$pfb['ccdir']}/{$isocode}_v{$type}.txt", $xml_data, LOCK_EX);
 
 						// Clear variables and restart Continent collection process
 						unset($total, $xml_data);
@@ -625,16 +758,28 @@ function pfblockerng_get_countries() {
 					if (strpos($line, 'Total Networks: 0') !== FALSE) {
 						continue;
 					}
+					if (strpos($line, 'Continent IPv') !== FALSE) {
+						$continent = trim(str_replace(':', '', strstr($line, ':', FALSE)));
+						// $geoip_title[$cont]	= "{$continent}";	// Not yet implemented
+					}
+					if (strpos($line, 'Continent en:') !== FALSE) {
+						$cont_name		= trim(str_replace(':', '', strstr($line, ':', FALSE)));
+						$cont_name_lower	= strtolower($cont_name);
+					}
 					if (strpos($line, 'Country: ') !== FALSE) {
 						$country = str_replace('# Country: ', '', $line);
 					}
 					if (strpos($line, 'ISO Code: ') !== FALSE) {
 						$isocode = str_replace('# ISO Code: ', '', $line);
 					}
-
 				}
+
 				elseif (substr($line, 0, 1) != '#') {
-					$total++;
+					if ($cont == 'TOP 20') {
+						$total = exec("{$pfb['grep']} -c ^ {$pfb['ccdir']}/{$isocode}_v{$type}.txt 2>&1");
+					} else {
+						$total++;
+					}
 					if (!empty($line)) {
 						$xml_data .= "{$line}\n";
 					}
@@ -647,20 +792,29 @@ function pfblockerng_get_countries() {
 					if (strpos($line, 'Total Networks: 0') !== FALSE) {
 						continue;
 					}
-					${'coptions' . $type}[] = "{$country}-{$isocode} ({$total})</name><value>{$isocode}</value></option>";
-					if ($type == '4') {
-						$roptions4[] = "{$country}-{$isocode} ({$total})</name><value>{$isocode}</value></option>";
+
+					if (!empty($xml_data)) {
+						${'coptions' . $type}[] = "{$country} {$isocode} ({$total})</name><value>{$isocode}</value></option>";
+						if ($type == '4') {
+							$roptions4[] = "{$country} {$isocode} ({$total})</name><value>{$isocode}</value></option>";
+						}
+
+						// Save ISO data
+						if ($cont != 'TOP 20') {
+							@file_put_contents("{$pfb['ccdir']}/{$isocode}_v{$type}.txt", $xml_data, LOCK_EX);
+						}
 					}
-					@file_put_contents("{$pfb['ccdir']}/{$isocode}_v{$type}.txt", $xml_data, LOCK_EX);
 					unset($total, $xml_data);
 				}
 				$keycount++;
 			}
-			unset ($ips, $convert);
+			unset($ips, $convert);
 
 			// Sort IP Countries alphabetically and build XML <option> data for Continents tab
 			if (!empty(${'coptions' . $type})) {
-				sort(${'coptions' . $type}, SORT_STRING);
+				if ($cont != 'TOP 20') {
+					sort(${'coptions' . $type}, SORT_STRING);
+				}
 				${'ftotal' . $type} = count(${'coptions' . $type});
 				$count = 1;
 				${'options' . $type} = '';
@@ -732,16 +886,15 @@ $xml = <<<EOF
 	<name>pfblockerng{$cont_name_lower}</name>
 	<title>Firewall/pfBlockerNG</title>
 	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
-	<addedit_string>pfBlockerNG: Save {$cont} settings</addedit_string>
 	<savehelp><![CDATA[<strong>Click to SAVE Settings and/or Rule edits.&emsp;Changes are applied via CRON or
 		'Force Update'</strong>]]>
 	</savehelp>
 	<menu>
-		<name>pfBlockerNG: {$cont_name}</name>
+		<name>pfBlockerNG: {$continent}</name>
 		<section>Firewall</section>
 		<url>pkg_edit.php?xml=pfblockerng_{$cont_name_lower}.xml</url>
 	</menu>
-		<tabs>
+	<tabs>
 		<tab>
 			<text>General</text>
 			<url>/pkg_edit.php?xml=pfblockerng.xml</url>
@@ -771,20 +924,26 @@ $xml = <<<EOF
 			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml</url>
 		</tab>
 		<tab>
-			<text>Country</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml</url>
+			<text>GeoIP</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_TopSpammers.xml</url>
 		</tab>
 		<tab>
 			<text>Top 20</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml</url>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_TopSpammers.xml</url>
 			<tab_level>2</tab_level>
-			{$active['top']}
+			{$active['TOP 20']}
 		</tab>
 		<tab>
 			<text>Africa</text>
 			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Africa.xml</url>
 			<tab_level>2</tab_level>
 			{$active['Africa']}
+		</tab>
+		<tab>
+			<text>Antarctica</text>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Antarctica.xml</url>
+			<tab_level>2</tab_level>
+			{$active['Antarctica']}
 		</tab>
 		<tab>
 			<text>Asia</text>
@@ -800,7 +959,7 @@ $xml = <<<EOF
 		</tab>
 		<tab>
 			<text>North America</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_NorthAmerica.xml</url>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_North_America.xml</url>
 			<tab_level>2</tab_level>
 			{$active['North America']}
 		</tab>
@@ -812,13 +971,13 @@ $xml = <<<EOF
 		</tab>
 		<tab>
 			<text>South America</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_SouthAmerica.xml</url>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_South_America.xml</url>
 			<tab_level>2</tab_level>
 			{$active['South America']}
 		</tab>
 		<tab>
 			<text>Proxy and Satellite</text>
-			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_ProxyandSatellite.xml</url>
+			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_Proxy_and_Satellite.xml</url>
 			<tab_level>2</tab_level>
 			{$active['Proxy and Satellite']}
 		</tab>
@@ -830,11 +989,27 @@ $xml = <<<EOF
 			<text>Sync</text>
 			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml</url>
 		</tab>
-		</tabs>
+	</tabs>
 	<fields>
 		<field>
-			<name><![CDATA[Continent {$cont}&emsp; (Geolite Data by MaxMind Inc. - ISO 3166)]]></name>
+			<name><![CDATA[Continent - {$continent} &emsp;(GeoIP data by MaxMind Inc. - GeoLite2)]]></name>
 			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>NOTES</fielddescr>
+			<description><![CDATA[Click here for IMPORTANT info on:&emsp;
+				<a target="_blank" href="https://dev.maxmind.com/geoip/geoip2/whats-new-in-geoip2/">
+				<span class="text-danger"><strong>What new in GeoIP2</strong></span></a><br /><br /> 
+
+				<span class="text-danger"><strong>Note:&emsp;</strong></span>
+				pfSense by default implicitly blocks all unsolicited inbound traffic to the WAN interface.<br />
+				Therefore adding GeoIP based firewall rules to the WAN will <strong>not</strong> provide any benefit, unless there are
+				open WAN ports.<br /><br />
+				It's also <strong>not</strong> recommended to block the 'world', instead consider rules to 'Permit' traffic from
+				selected Countries only.<br />
+				Also consider protecting just the specific open WAN ports and it's just as important to protect the outbound LAN traffic.]]>
+			</description>
+			<type>info</type>
 		</field>
 		<field>
 			<fielddescr>LINKS</fielddescr>
@@ -845,14 +1020,13 @@ $xml = <<<EOF
 		</field>
 		<field>
 			<fieldname>countries4</fieldname>
-			<fielddescr><![CDATA[<strong><center>Countries</center></strong><br />
-				<center>Use CTRL&nbsp;+&nbsp;CLICK to select/unselect countries</center>]]>
-			</fielddescr>
+			<fielddescr>Countries - use CTRL+CLICK to select/unselect Countries (New: Represented IPs)</fielddescr>
 			<type>select</type>
 			<options>
 			${'options4'}
 			</options>
 			<size>${'ftotal4'}</size>
+			<width>4</width>
 			<multiple/>
 
 EOF;
@@ -884,6 +1058,7 @@ if (!empty (${'options6'})) {
 			${'options6'}
 			</options>
 			<size>${'ftotal6'}</size>
+			<width>4</width>
 			<multiple/>
 			<combinefields>end</combinefields>
 		</field>
@@ -1159,10 +1334,10 @@ $xml .= <<<EOF
 EOF;
 
 		// Update each Continent XML file.
-		@file_put_contents('/usr/local/pkg/pfblockerng/pfblockerng_'.$cont_name.'.xml', $xml,LOCK_EX);
+		@file_put_contents("/usr/local/pkg/pfblockerng/pfblockerng_{$cont_name}.xml", $xml, LOCK_EX);
 
 		// Unset Arrays
-		unset (${'options4'}, ${'options6'}, $xml);
+		unset(${'options4'}, ${'options6'}, $xml);
 
 	}	// End foreach 'Six Continents and Proxy/Satellite' update XML process
 
@@ -1236,7 +1411,6 @@ $xmlrep = <<<EOF
 	<name>pfblockerngreputation</name>
 	<title>Firewall/pfBlockerNG</title>
 	<include_file>/usr/local/pkg/pfblockerng/pfblockerng.inc</include_file>
-	<addedit_string>pfBlockerNG: Save Reputation Settings</addedit_string>
 	<savehelp><![CDATA[<strong>Click to SAVE Settings and/or Rule edits.&emsp;Changes are applied via CRON or
 		'Force Update'</strong>]]>
 	</savehelp>
@@ -1276,7 +1450,7 @@ $xmlrep = <<<EOF
 			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml</url>
 		</tab>
 		<tab>
-			<text>Country</text>
+			<text>GeoIP</text>
 			<url>/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml</url>
 		</tab>
 		<tab>
@@ -1448,8 +1622,7 @@ $xmlrep = <<<EOF
 			</options>
 		</field>
 		<field>
-			<fielddescr><![CDATA[<br /><strong>IPv4</strong><br />Country Exclusion<br />
-				<br />Geolite Data by: <br />MaxMind Inc.&emsp;(ISO 3166)]]></fielddescr>
+			<fielddescr>IPv4 Country Exclusion</fielddescr>
 			<fieldname>ccexclude</fieldname>
 			<description>
 				<![CDATA[Select Countries you want to <strong>Exclude</strong> from the Reputation Process.<br />
@@ -1631,5 +1804,8 @@ EOF;
 
 	// Unset arrays
 	unset($roptions4, $et_options, $xmlrep);
+
+	// Save MaxMind GeoIP Language Locale to file
+	@file_put_contents("{$pfb['dbdir']}/GeoIP_Locale", "{$pfb['maxmind_locale']}\n", LOCK_EX);
 }
 ?>

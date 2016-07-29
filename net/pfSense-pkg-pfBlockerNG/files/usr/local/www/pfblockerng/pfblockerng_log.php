@@ -158,7 +158,7 @@ $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 						'download'	=> TRUE,
 						'clear'		=> FALSE
 						),
-			'country'	=> array('name'		=> 'Country Files',
+			'GeoIP'		=> array('name'		=> 'Country Files',
 						'ext'		=> 'txt',
 						'logdir'	=> "{$pfb['ccdir']}/",
 						'download'	=> TRUE,
@@ -171,6 +171,13 @@ $pfb_logtypes = array(	'defaultlogs'	=> array('name'		=> 'Log Files',
 						'clear'		=> FALSE
 						)
 		);
+
+
+// Function to escape Log viewer output
+function pfb_htmlspecialchars($line) {
+	return htmlspecialchars($line, ENT_NOQUOTES);
+}
+
 
 $pconfig = array();
 if ($_POST) {
@@ -187,7 +194,7 @@ if ($_REQUEST['ajax']) {
 		if (!$pfb_logfilename) {
 			print ("|3|" . gettext('Log file is empty or does not exist') . ".|");
 		} else {
-			$data = @file_get_contents($pfb_logfilename);
+			$data = implode(array_map('pfb_htmlspecialchars', @file($pfb_logfilename)));
 			if ($data === false) {
 				print ("|1|" . gettext('Failed to read log file') . ".|");
 			} else {
@@ -251,7 +258,7 @@ $tab_array[]	= array(gettext("Reputation"), false, "/pkg_edit.php?xml=/pfblocker
 $tab_array[]	= array(gettext("IPv4"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v4lists.xml");
 $tab_array[]	= array(gettext("IPv6"), false, "/pkg.php?xml=/pfblockerng/pfblockerng_v6lists.xml");
 $tab_array[]	= array(gettext("DNSBL"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_dnsbl.xml");
-$tab_array[]	= array(gettext("Country"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_top20.xml");
+$tab_array[]	= array(gettext("GeoIP"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_TopSpammers.xml");
 $tab_array[]	= array(gettext("Logs"), true, "/pfblockerng/pfblockerng_log.php");
 $tab_array[]	= array(gettext("Sync"), false, "/pkg_edit.php?xml=/pfblockerng/pfblockerng_sync.xml");
 display_top_tabs($tab_array, true);
