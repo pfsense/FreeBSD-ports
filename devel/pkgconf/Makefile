@@ -2,7 +2,7 @@
 
 PORTNAME=	pkgconf
 PORTVERSION=	0.9.12
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://rabbit.dereferenced.org/~nenolod/distfiles/ \
 		http://files.etoilebsd.net/pkgconf/
@@ -11,6 +11,8 @@ MAINTAINER=	bapt@FreeBSD.org
 COMMENT=	Utility to help to configure compiler and linker flags
 
 LICENSE=	ISCL
+
+SUB_FILES=	pkg-install
 
 USES=		tar:bzip2
 GNU_CONFIGURE=	yes

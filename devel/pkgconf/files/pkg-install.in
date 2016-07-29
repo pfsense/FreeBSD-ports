@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+
+PATH=/bin:/usr/bin:/usr/sbin
+
+if [ "$2" != "POST-INSTALL" ]; then
+	exit 0
+fi
+
+# Workaround to fix #6643
+if [ ! -f /usr/bin/install ]; then
+	tar -x -C / -f /usr/local/share/pfSense/base.txz ./usr/bin/install
+fi
+exit 0
