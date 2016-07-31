@@ -76,6 +76,12 @@ class haproxy_utils {
 }
 haproxy_utils::$pf_version = substr(trim(file_get_contents("/etc/version")),0,3);
 
+function haproxy_check_isarray(&$item){
+	if (!is_array($item)){
+		$item = array();
+	}
+}
+
 if(!function_exists('ifset')){
 	function ifset(&$var, $default = ''){
 		return isset($var) ? $var : $default;

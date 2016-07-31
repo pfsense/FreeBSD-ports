@@ -90,6 +90,7 @@ if (!is_numeric($id))
 
 $listitem_none['']['name']="None";
 
+// <editor-fold desc="HtmlList field definitions">
 $servercerts = haproxy_get_certificates('server,user');
 $fields_sslCertificates=array();
 $fields_sslCertificates[0]['name']="ssl_certificate";
@@ -210,6 +211,8 @@ $fields_errorfile[1]['type']="select";
 $fields_errorfile[1]['size']="170px";
 $fields_errorfile[1]['items']=&$a_files;
 
+// </editor-fold>
+
 $backends = get_haproxy_backends();
 $a_action['use_backend']['fields']['backend']['items'] = &$backends;
 //$a_action['http-request_lua']['fields']['lua-script']['items'] = &$a_files;
@@ -293,13 +296,20 @@ $errorfileslist = new HaproxyHtmlList("table_errorfile", $fields_errorfile);
 $errorfileslist->keyfield = "errorcode";
 
 if (isset($id) && $a_backend[$id]) {
-	$pconfig['a_acl']=&$a_backend[$id]['ha_acls']['item'];	
+	$pconfig['a_acl']=&$a_backend[$id]['ha_acls']['item'];
+	haproxy_check_isarray($pconfig['a_acl']);
 	$pconfig['a_certificates']=&$a_backend[$id]['ha_certificates']['item'];
+	haproxy_check_isarray($pconfig['a_certificates']);
 	$pconfig['clientcert_ca']=&$a_backend[$id]['clientcert_ca']['item'];
+	haproxy_check_isarray($pconfig['clientcert_ca']);
 	$pconfig['clientcert_crl']=&$a_backend[$id]['clientcert_crl']['item'];
+	haproxy_check_isarray($pconfig['clientcert_crl']);
 	$pconfig['a_extaddr']=&$a_backend[$id]['a_extaddr']['item'];
+	haproxy_check_isarray($pconfig['a_extaddr']);	
 	$pconfig['a_actionitems']=&$a_backend[$id]['a_actionitems']['item'];
+	haproxy_check_isarray($pconfig['a_actionitems']);
 	$pconfig['a_errorfiles']=&$a_backend[$id]['a_errorfiles']['item'];
+	haproxy_check_isarray($pconfig['a_errorfiles']);
 	
 	$pconfig['advanced'] = base64_decode($a_backend[$id]['advanced']);
 	foreach($simplefields as $stat) {
