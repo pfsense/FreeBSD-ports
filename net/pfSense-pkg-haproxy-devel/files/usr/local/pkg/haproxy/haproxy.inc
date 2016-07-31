@@ -34,6 +34,7 @@ require_once("pkg-utils.inc");
 require_once("notices.inc");
 require_once("filter.inc");
 require_once("haproxy_utils.inc");
+require_once("haproxy_socketinfo.inc");
 require_once("haproxy_xmlrpcsyncclient.inc");
 
 $d_haproxyconfdirty_path = $g['varrun_path'] . "/haproxy.conf.dirty";
@@ -191,9 +192,9 @@ $a_cookiemode['session-prefix'] 		= array('name' => 'Session-prefix', 'syntax' =
 	'descr' => 'Cookie is analyzed on incoming request to choose server whose Cookie Name prefix matches. Set Cookie value is prefixed using server line Cookie ID in response. Cookie is modified only between HAProxy and the client only');
 $a_cookiemode['passive-session-prefix'] = array('name' => 'Passive-session-prefix', 'syntax' => 'cookie <cookie name> preserve prefix indirect',
 	'descr' => 'Cookie is analysed on incoming request to choose server whose Cookie ID prefix matches.');
-foreach($a_cookiemode as &$cookiemode)
+foreach($a_cookiemode as &$cookiemode) {
 	$cookiemode['descr'] = $cookiemode['descr'] . "\n\n" . $cookiemode['syntax'] . "";
-
+}
 global $a_sticky_type;
 $a_sticky_type = array();
 $a_sticky_type['none'] = array('name' => 'none',
@@ -385,9 +386,10 @@ if (!function_exists('group_ports')) {
 // function group_ports() is present in pfSense 2.2 in util.inc
 /* create ranges of sequential port numbers (200:215) and remove duplicates */
 function group_ports($ports) {
-	if (!is_array($ports) || empty($ports))
+	if (!is_array($ports) || empty($ports)) {
 		return;
-
+	}
+	
 	$uniq = array();
 	foreach ($ports as $port) {
 		if (is_portrange($port)) {
@@ -415,11 +417,12 @@ function group_ports($ports) {
 		}
 
 		$last = end($result);
-		if (is_portrange($last))
+		if (is_portrange($last)) {
 			list($begin, $end) = explode(":", $last);
-		else
+		} else {
 			$begin = $end = $last;
-
+		}
+		
 		if ($port == ($end+1)) {
 			$end++;
 			$result[count($result)-1] = "{$begin}:{$end}";
@@ -461,10 +464,12 @@ function haproxy_portoralias_to_list($port_or_alias) {
 		$ports = explode(",", $port_or_alias);
 		foreach($ports as $port){
 			if (is_port($port)) {
-				if (getservbyname($port, "tcp"))
+				if (getservbyname($port, "tcp")) {
 					$port = getservbyname($port, "tcp");
-				if (getservbyname($port, "udp"))
+				}
+				if (getservbyname($port, "udp")) {
 					$port = getservbyname($port, "udp");
+				}
 				$portresult[] = $port;
 			}
 		}
@@ -508,7 +513,9 @@ function haproxy_get_fileslist() {
 	global $config;
 	// create a copy to not modify the original 'keyless' array
 	$a_files = $config['installedpackages']['haproxy']['files']['item'];
-	if (!is_array($a_files)) $a_files = array();	
+	if (!is_array($a_files)) {
+		$a_files = array();	
+	}
 	foreach($a_files as $file) {
 		$key = $file['name'];
 		$result[$key] = $file;
@@ -533,15 +540,16 @@ function haproxy_custom_php_deinstall_command() {
 }
 
 function haproxy_custom_php_install_command() {
-	global $g, $config, $static_output;
+	global $g, $static_output;
 	$static_output .= "HAProxy, running haproxy_custom_php_install_command()\n";
 	update_output_window($static_output);
 	
 	$pf_version=substr(trim(file_get_contents("/etc/version")),0,3);
-	if ($pf_version == "2.1" || $pf_version == "2.2")
+	if ($pf_version == "2.1" || $pf_version == "2.2") {
 		$haproxy_binary = "/usr/pbi/haproxy-devel-" . php_uname("m") . "/sbin/haproxy";
-	else
+	} else {
 		$haproxy_binary = "/usr/local/sbin/haproxy";
+	}
 
 	$static_output .= "HAProxy, create '/usr/local/etc/rc.d/haproxy.sh'\n";
 	update_output_window($static_output);
@@ -735,8 +743,9 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 		}
 	}
 	
-	if ($pool['log-health-checks'] == 'yes')
+	if ($pool['log-health-checks'] == 'yes') {
 		fwrite ($fd, "\toption\t\t\tlog-health-checks\n");
+	}
 		
 	if ($frontendtype == "http") {
 		// actions that read/write http headers only work when 'mode http' is used
@@ -847,18 +856,20 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 		break;
 	}
 	
-	unset($checkport);
 	$check_type = $pool['check_type'];
 	if ($check_type != 'none') {
 		$optioncheck = $a_checktypes[$check_type]['syntax'];
-		if ($check_type == "MySQL" || $check_type == "PostgreSQL")
+		if ($check_type == "MySQL" || $check_type == "PostgreSQL") {
 			$optioncheck .= " user " . $pool['monitor_username'];
-		if ($check_type == "SMTP" || $check_type == "ESMTP")
+		}
+		if ($check_type == "SMTP" || $check_type == "ESMTP") {
 			$optioncheck .= " " . $pool['monitor_domain'];
+		}
 		if ($check_type == "HTTP") {
 			$uri = $pool['monitor_uri'];
-			if (!$uri)
+			if (!$uri) {
 				$uri = "/";
+			}
 			$optioncheck .= " {$pool['httpcheck_method']} {$uri} {$pool['monitor_httpversion']}";
 		}
 		if ($check_type == "Agent") {
@@ -947,8 +958,9 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 		
 		$aclname = $aclitem['name'];
 		$acltype = haproxy_find_acl($expression);
-		if (!isset($acltype))
+		if (!isset($acltype)) {
 			continue;
+		}
 		
 		// Filter out acls for different modes
 		if ($acltype['mode'] != '' && $acltype['mode'] != strtolower($frontendtype)) {
@@ -1014,15 +1026,16 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 				$parameter = $actionitem[$actionid . $field['name']];
 				
 				if ($fieldname == "backend") {
-					$backend = $parameter;
 					$backendname = $parameter . "_" . strtolower($bind['type'])."_".$ipversion;
+					/*
+					$backend = $parameter;
 					if (!isset($a_pendingpl[$backendname])) {
 						$a_pendingpl[$backendname] = array();
 						$a_pendingpl[$backendname]['name'] = $backendname;
 						$a_pendingpl[$backendname]['backend'] = $backend;
 						$a_pendingpl[$backendname]['frontend'] = $bind;
 						$a_pendingpl[$backendname]['ipversion'] = $ipversion;
-					}
+					}*/
 					$parameter = $backendname;
 				}
 				$action_cfg = str_replace("{{$fieldname}}", $parameter, $action_cfg);
@@ -1310,7 +1323,6 @@ function haproxy_uses_ocsp() {
 		return false;
 	}
 	
-	$configpath = "{$g['varetc_path']}/haproxy";
 	foreach ($a_frontends as $frontend) {
 		if ($frontend['sslocsp'] == 'yes') {
 			return true;
@@ -1434,6 +1446,7 @@ function haproxy_writeconf($configpath) {
 		if ($a_global['log-send-hostname']) {
 			fwrite ($fd, "\tlog-send-hostname\t\t{$a_global['log-send-hostname']}\n");
 		}
+		fwrite ($fd, "\tserver-state-file /tmp/haproxy_server_state\n");
 		
 		// lua-load
 		if (is_array($a_files)) {
@@ -1737,10 +1750,7 @@ function haproxy_writeconf($configpath) {
 			}
 			
 			$inspectdelay = 0;
-			$i = 0;
-			$acllist = array();
 			$needs_clientcert = array();
-			$acl_newid = 0;
 			foreach ($bind['config'] as $frontend) {
 				// loop through 'shared frontends' within one primary.
 				
@@ -1780,10 +1790,7 @@ function haproxy_writeconf($configpath) {
 					$ipv["ipvANY"]['aclnameadd'] = "";
 				}
 
-				$certacl = "";
-				$y = 0;
 				foreach($ipv as $ipversion => $ipversionoptions) {
-					$cert_acls = "";
 					$aclcrt_name = "";
 					
 					// ACL's
@@ -1793,8 +1800,9 @@ function haproxy_writeconf($configpath) {
 						
 						$aclname = $aclitem['name'];
 						$acltype = haproxy_find_acl($expression);
-						if (!isset($acltype))
+						if (!isset($acltype)) {
 							continue;
+						}
 						
 						// Filter out acls for different modes
 						if ($acltype['mode'] != '' && $acltype['mode'] != strtolower($bind['type'])) {
@@ -2005,7 +2013,6 @@ function use_transparent_clientip_proxying() {
 		foreach ($a_backends as $backend) {
 			if ($backend["transparent_clientip"] == 'yes') {
 				return true;
-				break;
 			}
 		}
 	}
@@ -2053,8 +2060,9 @@ function haproxy_generate_rules_plugin($type) {
 		if (count($transparent_backends) > 0) {
 			$rules .= "# allow HAProxy transparent traffic\n";
 			foreach($transparent_backends as $tb){
-				if (is_ipaddrv4($tb['address']))
+				if (is_ipaddrv4($tb['address'])) {
 					$rules .= "pass  out  quick  on {$tb['interface']} inet proto tcp  from any to {$tb['address']} port {$tb['port']} flags S/SA keep state ( sloppy )  label \"HAPROXY_transparent_rule_{$tb['name']}\"\n";
+				}
 				if (is_ipaddrv6($tb['address'])) {
 					list ($addr, $scope) = explode("%", $tb['address']);
 					$rules .= "pass  out  quick  on {$tb['interface']} inet6 proto tcp  from any to {$addr} port {$tb['port']} flags S/SA keep state ( sloppy )  label \"HAPROXY_transparent_rule_{$tb['name']}\"\n";
@@ -2117,8 +2125,9 @@ function load_ipfw_rules() {
 	
 
 	file_put_contents("{$g['tmp_path']}/ipfw_{$ipfw_zone_haproxy}.haproxy.rules", $rules);
-	if (haproxy_utils::$pf_version < 2.2)
+	if (haproxy_utils::$pf_version < 2.2) {
 		mwexec("/usr/local/sbin/ipfw_context -s $ipfw_zone_haproxy", true);
+	}
 	mwexec("/sbin/ipfw -x $ipfw_zone_haproxy -q {$g['tmp_path']}/ipfw_{$ipfw_zone_haproxy}.haproxy.rules", true);
 }
 
@@ -2172,11 +2181,13 @@ function haproxy_plugin_certificates($pluginparams) {
 function haproxy_carpipismaster($ip) {
 	global $config;
 	foreach($config['virtualip']['vip'] as $carp) {
-		if ($carp['mode'] != "carp")
+		if ($carp['mode'] != "carp") {
 			continue;
+		}
 		$ipaddress = $carp['subnet'];
-		if ($ipaddress != $ip)
+		if ($ipaddress != $ip) {
 			continue;
+		}
 
 		$carp_int = "_vip{$carp['uniqid']}";
 		$status = get_carp_interface_status($carp_int);
@@ -2192,14 +2203,17 @@ function haproxy_check_run($reload) {
 	$configpath = "{$g['varetc_path']}/haproxy";
 	
 	if ($reload) {
+		$r = haproxy_socket_command("show servers state");
+		file_put_contents("/tmp/haproxy_server_state", $r);
+				
 		haproxy_writeconf($configpath);
 		haproxy_updateocsp(false);
 		
-		if (isset($a_global['carpdev']))
+		if (isset($a_global['carpdev'])) {
 			install_cron_job("/usr/local/etc/rc.d/haproxy.sh onecheck", true, "*/2");
-		else
+		} else {
 			install_cron_job("/usr/local/etc/rc.d/haproxy.sh onecheck", false);
-	
+		}
 		$useocsp = haproxy_uses_ocsp();
 		if ($useocsp == "true") {
 			install_cron_job("/etc/rc.haproxy_ocsp.sh", true, "*/120");
@@ -2408,8 +2422,9 @@ function get_frontend_ipport($frontend, $userfriendly=false) {
 function get_frontend_bindips($frontend) {
 	$mainfrontend = get_primaryfrontend($frontend);
 	$result = array();
-	if (!is_arrayset($mainfrontend,"a_extaddr","item"))
+	if (!is_arrayset($mainfrontend,"a_extaddr","item")) {
 		return $result;
+	}
 	foreach($mainfrontend['a_extaddr']['item'] as $extaddr) {
 		$a_ip = array();
 		if (isset($extaddr['extaddr']) && $extaddr['extaddr'] != "custom") {
@@ -2418,12 +2433,6 @@ function get_frontend_bindips($frontend) {
 			$iporalias = $extaddr['extaddr_custom'];
 			$a_ip = haproxy_addressoralias_to_list($iporalias);
 		}
-		if ($extaddr['extaddr_ssl'] == 'yes') {
-			$ssl = $ssl_info;
-		} else {
-			$ssl = "";
-		}
-		
 		foreach($a_ip as $ip) {
 			$portsnumeric = group_ports(haproxy_portoralias_to_list($extaddr['extaddr_port']));
 			if (is_array($portsnumeric)) {
@@ -2529,8 +2538,9 @@ function get_frontend_uses_ssl($frontend) {
 			}
 		}
 	}
-	if ($mainfrontend['name'] != $frontend['name'])
+	if ($mainfrontend['name'] != $frontend['name']) {
 		$ssl = $ssl && $frontend['ssloffload'] == 'yes';
+	}
 	return $ssl;
 }
 
@@ -2562,7 +2572,6 @@ function haproxy_get_cert_acls($cert, $usealternativenames = false) {
 		$acl_item = array();
 		$is_wildcard = substr($cert_cn, 0, 2) == "*.";
 		$cert_cn_regex = str_replace(".", "\.", $cert_cn); // escape '.' in regex.
-		$wild_regex = "";
 		if ($is_wildcard) {
 			$cert_cn_regex = "([^\.]*)" . substr($cert_cn_regex, 1);// match only subdomains directly under the wildcard
 		}
@@ -2720,7 +2729,6 @@ function haproxy_escape_acl_name($aclname) {
 }
 
 function haproxy_find_create_certificate($certificatename) {
-	global $g;
 	$cert = lookup_cert_by_name($certificatename);
 	if (is_array($cert)) {
 		return $cert;
@@ -2744,5 +2752,3 @@ function haproxy_find_create_certificate($certificatename) {
 	$a_cert[] = $cert;
 	return $cert;
 }
-
-?>

@@ -70,9 +70,9 @@ if(!empty($_GET['act']) and !empty($_GET['be']) and !empty($_GET['srv'])) {
 
 $simplefields = array("haproxy_widget_timer","haproxy_widget_showfrontends","haproxy_widget_showclients","haproxy_widget_showclienttraffic");
 if ($_POST) {
-	foreach($simplefields as $fieldname)
+	foreach($simplefields as $fieldname) {
 		$a_config[$fieldname] = $_POST[$fieldname];
-			
+	}
 	write_config("Services: HAProxy: Widget: Updated settings via dashboard.");
 	header("Location: /");
 	exit(0);
@@ -241,12 +241,6 @@ if ($getupdatestatus) {
 </div>
 
 <script type="text/javascript" src="/haproxy/haproxy_geturl.js"></script>
-<script type="text/javascript">
-	d = document;
-	selectIntLink = "haproxy-configure";
-	textlink = d.getElementById(selectIntLink);
-	textlink.style.display = "inline";
-</script>
 <script type="text/javascript">
 	function getstatusgetupdate() {
 		var url = "/widgets/widgets/haproxy.widget.php";
