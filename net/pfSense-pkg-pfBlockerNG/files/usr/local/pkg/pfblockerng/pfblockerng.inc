@@ -3366,6 +3366,7 @@ function sync_package_pfblockerng($cron='') {
 
 											if ($line == '#family,type,url,status,first_seen,first_active,last_active,last_update') {
 												$h3x_feed = TRUE;
+												$liteparser = TRUE;
 											}
 											continue;
 										}
