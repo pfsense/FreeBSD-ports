@@ -12,8 +12,6 @@ COMMENT=	Utility to help to configure compiler and linker flags
 
 LICENSE=	ISCL
 
-SUB_FILES=	pkg-install
-
 USES=		tar:bzip2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-pkg-config-dir=${PREFIX}/libdata/pkgconfig:/usr/libdata/pkgconfig \
