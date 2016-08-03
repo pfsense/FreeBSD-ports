@@ -78,8 +78,7 @@ function nut_write_rcfile($driver) {
 		$start .= "\n	/usr/bin/killall -q -9 $driver";
 	}
 
-	/* Service start may run nut.sh in the background, and monitoring keys off
-       upsmon, so start it first. */
+	/* Service status keys off upsmon, so start it first. */
 	$start .= "\n	/usr/local/sbin/upsmon";
 	if (isset($driver)) {
 		$start .= "\n	/usr/local/sbin/upsdrvctl start &";

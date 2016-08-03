@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=		pfSense-pkg-nut
-PORTVERSION=	2.7.4
+PORTVERSION=	2.7.4_1
 CATEGORIES=		sysutils
 MASTER_SITES=	# empty
 DISTFILES=		# empty
