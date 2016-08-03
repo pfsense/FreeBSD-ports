@@ -45,7 +45,6 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/clog:sysutils/clog \
 		${LOCALBASE}/sbin/sshlockout_pf:sysutils/sshlockout_pf \
 		${LOCALBASE}/sbin/qstats:sysutils/qstats \
 		${LOCALBASE}/bin/wol:net/wol \
-		${LOCALBASE}/sbin/smartctl:sysutils/smartmontools \
 		${LOCALBASE}/sbin/ataidle:sysutils/ataidle \
 		${LOCALBASE}/sbin/cpustats:sysutils/cpustats \
 		${LOCALBASE}/bin/xmllint:textproc/libxml2 \
@@ -84,6 +83,7 @@ PLIST_DIRS=	/etc
 
 .if (${ARCH} == "amd64" || ${ARCH} == "i386")
 RUN_DEPENDS+=	${LOCALBASE}/sbin/dmidecode:sysutils/dmidecode \
+		${LOCALBASE}/sbin/smartctl:sysutils/smartmontools \
 		${LOCALBASE}/sbin/wrapresetbtn:sysutils/wrapalixresetbutton \
 		${LOCALBASE}/bin/beep:audio/beep
 .endif
