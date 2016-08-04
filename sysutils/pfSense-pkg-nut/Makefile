@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=		pfSense-pkg-nut
-PORTVERSION=	2.7.4
+PORTVERSION=	2.7.4_1
 CATEGORIES=		sysutils
 MASTER_SITES=	# empty
 DISTFILES=		# empty
@@ -10,17 +10,17 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=		coreteam@pfsense.org
 COMMENT=		Network UPS Tools
 
-LICENSE=        ESF
+LICENSE=		ESF
 
-RUN_DEPENDS=    ${LOCALBASE}/sbin/upsd:sysutils/nut \
+RUN_DEPENDS=	${LOCALBASE}/sbin/upsd:sysutils/nut \
 				${LOCALBASE}/sbin/upsmon:sysutils/nut \
 				${LOCALBASE}/sbin/upsdrvctl:sysutils/nut
 
-NO_BUILD=       yes
-NO_MTREE=       yes
+NO_BUILD=		yes
+NO_MTREE=		yes
 
-SUB_FILES=      pkg-install pkg-deinstall
-SUB_LIST=       PORTNAME=${PORTNAME}
+SUB_FILES=		pkg-install pkg-deinstall
+SUB_LIST=		PORTNAME=${PORTNAME}
 
 do-extract:
 	${MKDIR} ${WRKSRC}
@@ -30,7 +30,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/nut
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${MKDIR} ${STAGEDIR}${PREFIX}/www
-	${MKDIR} ${STAGEDIR}${PREFIX}/www/shortcuts	
+	${MKDIR} ${STAGEDIR}${PREFIX}/www/shortcuts
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/widgets
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/include
 	${MKDIR} ${STAGEDIR}${DATADIR}

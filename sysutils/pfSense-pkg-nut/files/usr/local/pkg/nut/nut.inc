@@ -76,11 +76,16 @@ function nut_write_rcfile($driver) {
 	$start .= "\n	/usr/bin/killall -q -9 upsdrvctl";
 	if (isset($driver)) {
 		$start .= "\n	/usr/bin/killall -q -9 $driver";
+	}
 
+	/* Service status keys off upsmon, so start it first. */
+	$start .= "\n	/usr/local/sbin/upsmon";
+	if (isset($driver)) {
 		$start .= "\n	/usr/local/sbin/upsdrvctl start &";
+		/* Since we are starting the driver in backgroud, give it a moment to start. */
+		$start .= "\n	sleep 1";
 		$start .= "\n	/usr/local/sbin/upsd -u root";
 	}
-	$start .= "\n	/usr/local/sbin/upsmon";
 	$start .= "\n	return 0";
 
 	$stop = "echo stopping NUT";
@@ -116,9 +121,9 @@ function nut_write_file($file, $content) {
 function nut_sync_config() {
 	global $config;
 
-	if (is_service_running("nut")) {
+	if (is_service_running('nut')) {
 		log_error("Stopping service nut");
-		stop_service("nut");
+		stop_service('nut');
 	}
  
 	$nut_config = &$config['installedpackages']['nut']['config'][0];
@@ -279,7 +284,8 @@ function nut_sync_config() {
 	}
 
 	log_error("Starting service nut");
-	start_service("nut");
+	start_service('nut');
+	sleep(3);
 }
 
 
@@ -318,9 +324,13 @@ function nut_ups_status()
 	$status['_name'] = $ups;
 
 	/* Even though upsc might actually work (no password) it's better to report failure of upsmon */
-	if (!is_process_running("upsmon")) {
-		$status['_summary'] = "UPS Monitor not running";
-		$status['_alert'] = true;
+	if (!is_service_running('nut')) {
+		if (get_uptime_sec() < 60) {
+			$status['_summary'] = "UPS Monitor pending";
+		} else {
+			$status['_summary'] = "UPS Monitor not running";
+			$status['_alert'] = true;
+		}
 		return $status;
 	}
 
@@ -339,6 +349,15 @@ function nut_ups_status()
 	}
 
 	if (count($status) < 2) {
+		/* If we are using a local upsd, allow it a minute to initialize before declaring an alert */
+		if (file_exists("/var/db/nut/upsd.pid")) {
+			$stat = stat("/var/db/nut/upsd.pid");
+			if (time() - $stat['mtime'] < 60) {
+				$status['_summary'] = "UPS Daemon pending";
+				return $status;
+			}
+		}
+
 		$status['_summary'] = "Failed to retrieve status";
 		$status['_alert'] = true;
 		return $status;
@@ -422,9 +441,9 @@ function nut_ups_status()
 
 
 function nut_deinstall_command() {
-	if (is_service_running("nut")) {
+	if (is_service_running('nut')) {
 		log_error("Stopping service nut");
-		stop_service("nut");
+		stop_service('nut');
 	}
 
 	unlink_if_exists(NUT_RCFILE);
