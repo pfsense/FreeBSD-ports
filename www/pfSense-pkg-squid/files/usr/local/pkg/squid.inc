@@ -1930,7 +1930,8 @@ function squid_resync_users() {
 	$contents = '';
 	if (is_array($users)) {
 		foreach ($users as $user) {
-			$contents .= $user['username'] . ':' . crypt($user['password'], base64_encode($user['password'])) . "\n";
+			/* Store password with SHA512 and a random salt, which allows for longer passwords. */
+			$contents .= $user['username'] . ':' . crypt($user['password'], '$6$rounds=5000$' . bin2hex(openssl_random_pseudo_bytes(16)) . '$') . "\n";
 		}
 	}
 	file_put_contents(SQUID_PASSWD, $contents);
