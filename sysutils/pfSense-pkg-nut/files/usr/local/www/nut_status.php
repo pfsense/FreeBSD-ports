@@ -58,8 +58,8 @@ $pgtitle = array(gettext("Services"), gettext("UPS"), gettext("Status"));
 include("head.inc");
 
 $tab_array = array();
-$tab_array[] = array(gettext("UPS Status"), true, "nut_status.php");
-$tab_array[] = array(gettext("UPS Settings"), false, "nut_settings.php");
+$tab_array[] = array(gettext("UPS Status"), true, "/nut_status.php");
+$tab_array[] = array(gettext("UPS Settings"), false, "/nut_settings.php");
 display_top_tabs($tab_array);
 
 
@@ -133,7 +133,7 @@ if ($status['_alert']) {
 					print '<td>' . htmlspecialchars($value) . '</td>';
 					print '</tr>';
 				}
-	?>
+?>
 	
 			</table>
 		</div>
@@ -141,5 +141,14 @@ if ($status['_alert']) {
 </div>
 
 <?php
+/* If there is a status error, reload the page after 10 seconds */
+if ($status['_alert'] || count($status) <= 2) {
+	print "<script type=\"text/javascript\">\n";
+	print "//<![CDATA[\n";
+	print "setTimeout(function(){ window.location.reload(1); }, 10000);\n";
+	print "//]]>\n";
+	print "</script>\n";
+}
+
 include("foot.inc");
 ?>

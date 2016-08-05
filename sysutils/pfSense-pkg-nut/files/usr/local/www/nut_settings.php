@@ -125,10 +125,9 @@ if (isset($a_nut)) {
 			if (!empty($a_nut['snmpcommunity']) && $a_nut['snmpcommunity'] != 'public') {
 				$pconfig['extra_args'] = "community=" . $a_nut['snmpcommunity'] . "\n";
 			}
-			/* prior version of nut package had v2c incorrectly marked as default */
-			if ($a_nut['snmpversion'] == 'v2c') {
-				$pconfig['extra_args'] .= "snmp_version=v2c\n";
-			}
+			/* The prior version of nut package had v2c incorrectly marked as default. Use
+               of 64 bit counters generally isn't desirable, so we explictly ignore that here.
+               Add "snmp_version=v2c" to Driver Extra Arguments to restore. */
 		} elseif ($a_nut['monitor'] == 'remote') {
 			$pconfig['type'] = 'remote_nut';
 			$pconfig['name'] = $a_nut['remotename'];
@@ -333,8 +332,8 @@ $pgtitle = array(gettext("Services"), gettext("UPS"), gettext("Settings"));
 include("head.inc");
 
 $tab_array = array();
-$tab_array[] = array(gettext("UPS Status"), false, "nut_status.php");
-$tab_array[] = array(gettext("UPS Settings"), true, "nut_settings.php");
+$tab_array[] = array(gettext("UPS Status"), false, "/nut_status.php");
+$tab_array[] = array(gettext("UPS Settings"), true, "/nut_settings.php");
 display_top_tabs($tab_array);
 
 

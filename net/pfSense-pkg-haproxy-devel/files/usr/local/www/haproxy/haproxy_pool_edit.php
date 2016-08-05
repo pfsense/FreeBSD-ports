@@ -321,16 +321,12 @@ $htmllist_actions->keyfield = "name";
 
 if (isset($id) && $a_pools[$id]) {
 	$pconfig['a_acl'] = &$a_pools[$id]['a_acl']['item'];
-	if (!is_array($pconfig['a_acl'])) {
-		$pconfig['a_acl'] = array();
-	}
+	haproxy_check_isarray($pconfig['a_acl']);
 	$pconfig['a_actionitems'] = &$a_pools[$id]['a_actionitems']['item'];
-	if (!is_array($pconfig['a_actionitems'])) {
-		$pconfig['a_actionitems'] = array();
-	}
+	haproxy_check_isarray($pconfig['a_actionitems']);
+	
 	$pconfig['advanced'] = base64_decode($a_pools[$id]['advanced']);
 	$pconfig['advanced_backend'] = base64_decode($a_pools[$id]['advanced_backend']);
-	
 	
 	$a_servers = &$a_pools[$id]['ha_servers']['item'];	
 	

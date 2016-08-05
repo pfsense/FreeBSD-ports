@@ -43,7 +43,7 @@
 	]]>
 	</copyright>
 	<name>nut</name>
-	<version>2.7.4</version>
+	<version>2.7.4_1</version>
 	<title>Services: UPS</title>
 	<savetext>Change</savetext>
 	<include_file>/usr/local/pkg/nut/nut.inc</include_file>
@@ -51,7 +51,7 @@
 		<name>UPS</name>
 		<tooltiptext>Network UPS Tools status</tooltiptext>
 		<section>Services</section>
-		<url>nut_status.php</url>
+		<url>/nut_status.php</url>
 	</menu>
 	<service>
 		<name>nut</name>
