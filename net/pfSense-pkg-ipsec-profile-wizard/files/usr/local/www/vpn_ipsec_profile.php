@@ -402,7 +402,7 @@ function generate_ike($phase1, $profId, $certUuid, $user) {
 
 	$ike = get_vpn_type($phase1['iketype']);
 
-	if ($ike == "IPsec") {
+	if ($ike == "IPSec") {
 		$certAuthMethods = ["xauth_rsa_server",
 			"rsasig"];
 		$extendedAuthMethods = ["hybrid_rsa_server", "xauth_rsa_server",
@@ -449,7 +449,7 @@ function generate_ike($phase1, $profId, $certUuid, $user) {
 	}
 
 	/* generate the pieces that are specific to the IKE version */
-	if ($ike == "IPsec") {
+	if ($ike == "IPSec") {
 		$ikeDict = generate_ikev1($phase1, $user, $authMethod, $extendedAuth);
 	} else {
 		$ikeDict = generate_ikev2($phase1, $user, $authMethod, $extendedAuth, $realAddr);
