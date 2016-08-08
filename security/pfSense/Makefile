@@ -64,7 +64,7 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/clog:sysutils/clog \
 		${LOCALBASE}/share/pear/XML/RPC.php:net/pear-XML_RPC \
 		${LOCALBASE}/share/pear/Crypt/CHAP.php:security/pear-Crypt_CHAP \
 		${LOCALBASE}/share/pear/Net/IPv6.php:net/pear-Net_IPv6 \
-		${LOCALBASE}/share/pear/Auth/RADIUS.php:pear-Auth_RADIUS
+		${LOCALBASE}/share/pear/Auth/RADIUS.php:net/pear-Auth_RADIUS
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
