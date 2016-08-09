@@ -16,7 +16,6 @@ LICENSE=	BSD3CLAUSE
 BROKEN_powerpc64=	Does not build
 
 USES=		php:ext tar:tgz
-USE_PHP=	session:build
 IGNORE_WITH_PHP=	70
 
 .include <bsd.port.mk>
