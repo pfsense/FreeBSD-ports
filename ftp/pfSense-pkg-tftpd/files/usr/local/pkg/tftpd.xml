@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	tftpd.xml
+	Copyright (C) 2016 Stefan Seidel
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<name>tftpd</name>
+	<title>TFTP server</title>
+	<include_file>/usr/local/pkg/tftpd.inc</include_file>
+	<aftersaveredirect>/pkg_edit.php?xml=tftpd.xml</aftersaveredirect>
+	<menu>
+		<name>tftpd</name>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=tftpd.xml</url>
+	</menu>
+	<service>
+		<name>tftpd</name>
+		<rcfile>tftpd.sh</rcfile>
+		<executable>in.tftpd</executable>
+		<description>TFTP daemon</description>
+	</service>
+	<fields>
+		<field>
+			<fielddescr>Enable TFTP service</fielddescr>
+			<fieldname>tftpd_enable</fieldname>
+			<description>Enable the TFTP service?</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Directory for files</fielddescr>
+			<fieldname>datadir</fieldname>
+			<description>Enter the directory path to the files that the TFTP server should serve. The directory must exist. Default: /tftpboot</description>
+			<type>input</type>
+			<default_value>/tftpboot</default_value>
+		</field>
+	</fields>
+	<custom_php_install_command>
+		install_package_tftpd();
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		deinstall_package_tftpd();
+	</custom_php_deinstall_command>
+	<custom_add_php_command>
+		sync_package_tftpd();
+	</custom_add_php_command>
+	<custom_php_resync_config_command>
+		sync_package_tftpd();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		validate_form_tftpd($_POST, $input_errors);
+	</custom_php_validation_command>
+</packagegui>

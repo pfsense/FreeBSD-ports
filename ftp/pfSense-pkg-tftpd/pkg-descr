@@ -1,0 +1,1 @@
+tftpd installs and runs a TFTP server. We use the versatile tftp-hpa server.
