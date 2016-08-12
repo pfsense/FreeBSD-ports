@@ -14,8 +14,10 @@ COMMENT=	Extension to ease testing of PHP code
 LICENSE=	BSD3CLAUSE
 
 CONFIGURE_ARGS=	--enable-test-helpers
-USES=		php:ext tar:tgz
+USES=		php:zend tar:tgz
 SUB_FILES=	pkg-message
 IGNORE_WITH_PHP=	70
+# This needs to be loaded *after* devel/php-xdebug
+PHP_MOD_PRIO=	30
 
 .include <bsd.port.mk>
