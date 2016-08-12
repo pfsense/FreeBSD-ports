@@ -61,7 +61,7 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/clog:sysutils/clog \
 		${LOCALBASE}/www/status_monitoring.php:sysutils/pfSense-Status_Monitoring \
 		${LOCALBASE}/bin/uclcmd:devel/uclcmd \
 		${LOCALBASE}/share/mobile-broadband-provider-info/serviceproviders.xml:net/mobile-broadband-provider-info \
-		${LOCALBASE}/share/pear/XML/RPC.php:net/pear-XML_RPC \
+		${LOCALBASE}/share/pear/XML/RPC2/Client.php:net/pear-XML_RPC2 \
 		${LOCALBASE}/share/pear/Crypt/CHAP.php:security/pear-Crypt_CHAP \
 		${LOCALBASE}/share/pear/Net/IPv6.php:net/pear-Net_IPv6 \
 		${LOCALBASE}/share/pear/Auth/RADIUS.php:net/pear-Auth_RADIUS \
