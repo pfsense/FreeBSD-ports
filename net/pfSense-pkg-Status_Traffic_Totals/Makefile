@@ -28,6 +28,8 @@ do-extract:
 do-install:
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${MKDIR} ${STAGEDIR}${PREFIX}/www
+	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/widgets
+	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/include
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/pfSense/menu
 	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/status_traffic_totals.priv.inc \
 		${STAGEDIR}/etc/inc/priv/${PORTNAME}.priv.inc
@@ -35,6 +37,10 @@ do-install:
 		${STAGEDIR}${PREFIX}/www
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/vnstat_fetch_json.php \
 		${STAGEDIR}${PREFIX}/www
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/widgets/traffic_totals.widget.php \
+		${STAGEDIR}${PREFIX}/www/widgets/widgets
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/widgets/include/traffic_totals.inc \
+		${STAGEDIR}${PREFIX}/www/widgets/include
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/menu.xml \
 		${STAGEDIR}${PREFIX}/share/pfSense/menu/${PORTNAME}.xml
 
