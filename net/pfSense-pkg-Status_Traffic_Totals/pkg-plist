@@ -1,6 +1,8 @@
 /etc/inc/priv/%%PORTNAME%%.priv.inc
 www/status_traffic_totals.php
 www/vnstat_fetch_json.php
+www/widgets/widgets/traffic_totals.widget.php
+www/widgets/include/traffic_totals.inc
 share/pfSense/menu/%%PORTNAME%%.xml
 @dir /etc/inc/priv
 @dir /etc/inc
