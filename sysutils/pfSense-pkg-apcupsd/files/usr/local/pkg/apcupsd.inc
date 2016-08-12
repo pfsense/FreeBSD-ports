@@ -44,15 +44,8 @@ function php_deinstall_apcupsd() {
 
 	unlink_if_exists(APCUPSD_BASE . "/etc/rc.d/apcupsd.sh");
 	unlink_if_exists(APCUPSD_BASE . "/etc/apcupsd/apcupsd.conf");
-	unlink_if_exists("/var/log/apcupsd/apcupsd.log");
-	unlink_if_exists("/var/run/apcupsd/apcupsd.pid");
-
-	if (is_dir("/var/log/apcupsd")) {
-		exec("/bin/rm -rf /var/log/apcupsd/");
-	}
-	if (is_dir("/var/run/apcupsd")) {
-		exec("/bin/rm -rf /var/run/apcupsd/");
-	}
+	unlink_if_exists("/var/log/apcupsd.events");
+	unlink_if_exists("/var/run/apcupsd.pid");
 
 }
 
@@ -131,6 +124,11 @@ function sync_package_apcupsd() {
 
 	conf_mount_rw();
 
+	if (is_service_running('apcupsd') && !file_exists("{$g['tmp_path']}/.rc.start_packages.running")) {
+		log_error("Stopping service apcupsd");
+		stop_service('apcupsd');
+	}
+
 	define('APCUPSD_BASE', '/usr/local');
 
 	// check apcupsd settings
@@ -189,14 +187,14 @@ function sync_package_apcupsd() {
 			)
 		);
 
-		restart_service("apcupsd");
+		apccontrol_scripts_install($emailnotification);
 
-	} else {
-		stop_service("apcupsd");
-		unlink_if_exists($apcupsd_rcfile);
+		if (!file_exists("{$g['tmp_path']}/.rc.start_packages.running")) {
+			log_error("Starting service apcupsd");
+			start_service("apcupsd");
+		}
 	}
 
-	apccontrol_scripts_install($emailnotification);
 	conf_mount_ro();
 }
 
