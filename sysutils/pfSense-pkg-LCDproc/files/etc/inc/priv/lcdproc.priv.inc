@@ -32,9 +32,8 @@ $priv_list['page-services-lcdproc'] = array();
 $priv_list['page-services-lcdproc']['name'] = "WebCfg - Services: LCDproc package";
 $priv_list['page-services-lcdproc']['descr'] = "Allow access to LCDproc package GUI";
 $priv_list['page-services-lcdproc']['match'] = array();
-$priv_list['page-services-lcdproc']['match'][] = "pkg.php?xml=lcdproc.xml*";
-$priv_list['page-services-lcdproc']['match'][] = "pkg.php?xml=lcdproc_screens.xml*";
-$priv_list['page-services-lcdproc']['match'][] = "pkg_edit.php?xml=lcdproc.xml*";
-$priv_list['page-services-lcdproc']['match'][] = "pkg_edit.php?xml=lcdproc_screens.xml*";
+$priv_list['page-services-lcdproc']['match'][] = "packages/lcdproc/lcdproc.php*";
+$priv_list['page-services-lcdproc']['match'][] = "packages/lcdproc/lcdproc_screens.php*";
+$priv_list['page-services-lcdproc']['match'][] = "packages/lcdproc/index.php*";
 
 ?>
