@@ -38,7 +38,7 @@ $lcdproc_screens_config = &$config['installedpackages']['lcdprocscreens']['confi
 
 // Set default values for anything not in the $config
 $pconfig = $lcdproc_config;
-if (!isset($pconfig['enabled']))           $pconfig['enabled']           = 'no';
+if (!isset($pconfig['enable']))            $pconfig['enable']            = '';
 if (!isset($pconfig['comport']))           $pconfig['enabled']           = 'ucom1';
 if (!isset($pconfig['size']))              $pconfig['size']              = '16x2';
 if (!isset($pconfig['driver']))            $pconfig['driver']            = 'pyramid';
@@ -57,8 +57,8 @@ if ($_POST) {
 	$pconfig = $_POST;
 
 	if (!$input_errors) {
-		$lcdproc_config['enabled']           = $pconfig['enabled'];
-		$lcdproc_config['enabled']           = $pconfig['enabled'];
+		$lcdproc_config['enable']            = $pconfig['enable'];
+		$lcdproc_config['comport']           = $pconfig['comport'];
 		$lcdproc_config['size']              = $pconfig['size'];   
 		$lcdproc_config['driver']            = $pconfig['driver'];
 		$lcdproc_config['connection_type']   = $pconfig['connection_type'];
@@ -78,6 +78,10 @@ if ($_POST) {
 
 $pgtitle = array(gettext("Services"), gettext("LCDproc"), gettext("Server"));
 include("head.inc");
+
+if ($input_errors) {
+	print_input_errors($input_errors);
+}
 
 $tab_array = array();
 $tab_array[] = array(gettext("Server"),  true,  "/packages/lcdproc/lcdproc.php");
