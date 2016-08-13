@@ -1,9 +1,9 @@
 pkg/lcdproc.xml
 pkg/lcdproc.inc
 pkg/lcdproc_client.php
+/etc/inc/priv/lcdproc.priv.inc
 www/packages/lcdproc/lcdproc.php
 www/packages/lcdproc/lcdproc_screens.php
 www/packages/lcdproc/index.php
-/etc/inc/priv/lcdproc.priv.inc
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv
