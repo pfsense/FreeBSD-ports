@@ -595,7 +595,7 @@ function build_interface($lcd) {
 	/* process screens to display */
 	if (is_array($lcdproc_screens_config)) {
 		foreach ($lcdproc_screens_config as $name => $screen) {
-			if ($screen == "on") {
+			if ($screen == "on" || $screen == "yes" ) {
 				switch($name) {
 					case "scr_version":
 						$lcd_cmds[] = "screen_add $name";
@@ -817,7 +817,7 @@ function loop_status($lcd) {
 
 		/* process screens to display */
 		foreach ((array) $lcdproc_screens_config as $name => $screen) {
-			if ($screen != "on") {
+			if ($screen != "on" && $screen != "yes") {
 				continue;
 			}
 			switch($name) {
