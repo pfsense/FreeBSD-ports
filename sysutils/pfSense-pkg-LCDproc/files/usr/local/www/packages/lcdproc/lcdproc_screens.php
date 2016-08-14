@@ -142,7 +142,7 @@ $section->addInput(
 	new Form_Checkbox(
 		'scr_disk', // checkbox name (id)
 		'Disk', // checkbox label
-		'Display disk info', // checkbox text
+		'Display the percentage of disk-space used', // checkbox text
 		$pconfig['scr_disk'] // checkbox initial value
 	)
 );
@@ -150,7 +150,7 @@ $section->addInput(
 	new Form_Checkbox(
 		'scr_load', // checkbox name (id)
 		'Load', // checkbox label
-		'Display the load', // checkbox text
+		'Display the load averages', // checkbox text
 		$pconfig['scr_load'] // checkbox initial value
 	)
 );
@@ -174,7 +174,7 @@ $section->addInput(
 	new Form_Checkbox(
 		'scr_ipsec', // checkbox name (id)
 		'IPsec', // checkbox label
-		'Show IPsec Tunnels state', // checkbox text
+		'Show IPsec tunnels', // checkbox text
 		$pconfig['scr_ipsec'] // checkbox initial value
 	)
 );
@@ -182,7 +182,7 @@ $section->addInput(
 	new Form_Checkbox(
 		'scr_slbd', // checkbox name (id)
 		'Load Balancer', // checkbox label
-		'', // checkbox text
+		'Show the load balance state', // checkbox text
 		$pconfig['scr_slbd'] // checkbox initial value
 	)
 );
@@ -198,7 +198,7 @@ $section->addInput(
 	new Form_Checkbox(
 		'scr_mbuf', // checkbox name (id)
 		'Mbuf', // checkbox label
-		'', // checkbox text
+		'Show the MBuf usage', // checkbox text
 		$pconfig['scr_mbuf'] // checkbox initial value
 	)
 );
@@ -210,29 +210,27 @@ $section->addInput(
 		$pconfig['scr_cpufrequency'] // checkbox initial value
 	)
 );
-$section->addInput(
+
+
+$trafficGroup = new Form_Group('Traffic');
+$trafficGroup->add(
 	new Form_Checkbox(
 		'scr_traffic', // checkbox name (id)
-		'Interface Traffic', // checkbox label
-		'Display the traffic of an interface', // checkbox text
+		'', // checkbox label
+		'Display interface traffic for:', // checkbox text
 		$pconfig['scr_traffic'] // checkbox initial value
 	)
 );
-
-
-/*
-$interfaceList = array();
-foreach($config['interfaces'] as $interface) {
-	$interfaceList[$interface['if']] = '*' . $interface['descr'];
-}*/
-$section->addInput(
+$trafficGroup->add(
 	new Form_Select(
 		'scr_traffic_interface',
-		' > interface selected',
+		'',
 		$pconfig['scr_traffic_interface'], // Initial value.
-		[ 'wan' => 'WAN', 'lan' => 'LAN' ]
+		get_configured_interface_with_descr()
 	)
-)->setHelp('If Interface Traffic is enabled, here you specify which interface to monitor');
+);
+//$trafficGroup->setHelp('Show the current in and out speed of the interface');
+$section->add($trafficGroup);
 
 		
 $form->add($section); // Add the section to our form

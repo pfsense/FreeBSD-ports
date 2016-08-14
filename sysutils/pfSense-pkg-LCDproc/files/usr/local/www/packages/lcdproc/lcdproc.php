@@ -91,7 +91,7 @@ display_top_tabs($tab_array);
 // The constructor for Form automatically creates a submit button. If you want to suppress that
 // use Form(false), of specify a different button using Form($mybutton)
 $form = new Form();
-$section = new Form_Section('LCD Options');
+$section = new Form_Section('LCD connection and hardware');
 
 // Add the Enable checkbox
 $section->addInput(
@@ -129,7 +129,7 @@ $section->addInput(
 $section->addInput(
 	new Form_Select(
 		'size',
-		'Display Size',
+		'Display size',
 		$pconfig['size'], // Initial value.
 		[
 			'12x1' => '1 rows 12 colums',
@@ -145,7 +145,8 @@ $section->addInput(
 	)
 )->setHelp('Set the display size lcdproc should use.');
 
-$section->addInput(
+$driverGroup = new Form_Group('Interface Traffic');
+$driverGroup->add(
 	new Form_Select(
 		'driver',
 		'Driver',
@@ -160,7 +161,7 @@ $section->addInput(
 			'ea65'         => 'ea65',
 			'EyeboxOne'    => 'EyeboxOne',
 			'glk'          => 'glk',
-			'hd44780'      => 'hd44780',
+			'hd44780'      => 'HD44780 and compatible',
 			'icp_a106'     => 'icp_a106',
 			'IOWarrior'    => 'IOWarrior',
 			'lb216'        => 'lb216',
@@ -188,12 +189,14 @@ $section->addInput(
 			'tyan'         => 'tyan'
 		]
 	)
-)->setHelp('Set the LCD driver LCDproc should use.');
+);
 
-$section->addInput(
+// The connection type is HD44780-specific, so is hidden by javascript (below) 
+// if the HD44780 driver is not being used.
+$driverGroup->add(
 	new Form_Select(
 		'connection_type',
-		'Connection Type',
+		'Connection type',
 		$pconfig['connection_type'], // Initial value.
 		[
 			'4bit'          => '4bit wiring to parallel port',
@@ -216,23 +219,37 @@ $section->addInput(
 			'i2c'           => 'LCD driven by PCF8574/PCA9554 connected via i2c'
 		]
 	)
-)->setHelp('Set connection type for the HD44780 driver');
+);
+$driverGroup->setHelp('Set the LCD driver LCDproc should use.<br />If using a HD44780 driver, set the connection type using the second selection box, which will appear.');
+$section->add($driverGroup);
+?>
 
-$section->addInput(
-	new Form_Select(
-		'refresh_frequency',
-		'Refresh frequency',
-		$pconfig['refresh_frequency'], // Initial value.
-		[
-			'1'  => '1 second',
-			'2'  => '2 seconds',
-			'3'  => '3 seconds',
-			'5'  => '5 seconds',
-			'10' => '10 seconds',
-			'15' => '15 seconds'
-		]
-	)
-)->setHelp('Set the refresh frequency of the information on the LCD Panel');
+<script type="text/javascript">
+//<![CDATA[
+	events.push(
+		function() {
+			$('#driver').on('change', updateInputVisibility);
+			updateInputVisibility();
+		}
+	);
+  
+    function updateInputVisibility() {	
+		var driverName_lowercase = $('#driver').val().toLowerCase();
+	
+		// Hide the connection type selection field when not using the HD44780 driver		
+		var using_HD44780_driver  = driverName_lowercase.indexOf("hd44780") >= 0;
+		using_HD44780_driver     |= jQuery("#driver option:selected").text().toLowerCase().indexOf("hd44780") >= 0;
+		hideGroupInput('connection_type', !using_HD44780_driver);
+		
+		// Hide the Output-LEDs checkbox when not using the CFontz633 or CFontzPacket driver
+		var driverSupportsLEDs  = driverName_lowercase.indexOf("cfontz633") >= 0;
+		driverSupportsLEDs     |= driverName_lowercase.indexOf("cfontzpacket") >= 0;
+		hideCheckbox('outputleds', !driverSupportsLEDs);		
+	}
+//]]>
+</script>
+
+<?php
 
 $section->addInput(
 	new Form_Select(
@@ -250,6 +267,46 @@ $section->addInput(
 		]
 	)
 )->setHelp('Set the port speed.<br />Caution: not all the driver or panels support all the speeds, leave "default" if unsure.');
+
+/********* New section *********/
+$form->add($section); 
+$section = new Form_Section('Display preferences');
+/********* New section *********/
+
+$section->addInput(
+	new Form_Select(
+		'refresh_frequency',
+		'Refresh frequency',
+		$pconfig['refresh_frequency'], // Initial value.
+		[
+			'1'  => '1 second',
+			'2'  => '2 seconds',
+			'3'  => '3 seconds',
+			'5'  => '5 seconds',
+			'10' => '10 seconds',
+			'15' => '15 seconds'
+		]
+	)
+)->setHelp('Set the duration for which each info screen will be displayed.');
+
+// The connection type is CFontz633/CFontzPacket-specific, so is hidden by javascript (above) 
+// if a CFontz633/CFontzPacket driver is not being used.
+$section->addInput(
+	new Form_Checkbox(
+		'outputleds', // checkbox name (id)
+		'Enable output LEDs', // checkbox label
+		'Enable the output LEDs present on some LCD panels.', // checkbox text
+		$pconfig['outputleds'] // checkbox initial value
+	)
+)->setHelp(
+	'This feature is currently supported by the CFontz633 driver only.<br />' .
+	'Each LED can be off or show two colors: RED (alarm) or GREEN (everything ok) and shows:<br />' .
+	'LED1: NICs status (green: ok, red: at least one nic down)<br />' .
+	'LED2: CARP status (green: master, red: backup, off: CARP not implemented)<br />' .
+	'LED3: CPU status (green &lt; 50%, red &gt; 50%)<br />' .
+	'LED4: Gateway status (green: ok, red: at least one gateway not responding, off: no gateway configured).'
+);
+
 
 $section->addInput(
 	new Form_Select(
@@ -272,31 +329,6 @@ $section->addInput(
 		]
 	)
 )->setHelp('Set the brightness of the LCD panel.<br />This option is not supported by all the LCD panels, leave "default" if unsure.');
-
-$section->addInput(
-	new Form_Select(
-		'offbrightness',
-		'Off brightness',
-		$pconfig['offbrightness'], // Initial value.
-		[
-			'-1' => 'Default',
-			'0'  => '0%',
-			'10' => '10%',
-			'20' => '20%',
-			'30' => '30%',
-			'40' => '40%',
-			'50' => '50%',
-			'60' => '60%',
-			'70' => '70%',
-			'80' => '80%',
-			'90' => '90%',
-			'100' => '100%'
-		]
-	)
-)->setHelp(
-	'Set the off-brightness of the LCD panel. This value is used when the display is normally switched off in case LCDd is inactive.<br />' .
-	'This option is not supported by all the LCD panels, leave "default" if unsure.'
-);
 
 $section->addInput(
 	new Form_Select(
@@ -340,21 +372,29 @@ $section->addInput(
 );
 
 $section->addInput(
-	new Form_Checkbox(
-		'outputleds', // checkbox name (id)
-		'Enable Output LEDs', // checkbox label
-		'Enable the Output LEDs present on some LCD panels.', // checkbox text
-		$pconfig['outputleds'] // checkbox initial value
+	new Form_Select(
+		'offbrightness',
+		'Off brightness',
+		$pconfig['offbrightness'], // Initial value.
+		[
+			'-1' => 'Default',
+			'0'  => '0%',
+			'10' => '10%',
+			'20' => '20%',
+			'30' => '30%',
+			'40' => '40%',
+			'50' => '50%',
+			'60' => '60%',
+			'70' => '70%',
+			'80' => '80%',
+			'90' => '90%',
+			'100' => '100%'
+		]
 	)
 )->setHelp(
-	'This feature is currently supported by the CFontz633 driver only.<br />' .
-	'Each LED can be off or show two colors: RED (alarm) or GREEN (everything ok) and shows:<br />' .
-	'LED1: NICs status (green: ok, red: at least one nic down)<br />' .
-	'LED2: CARP status (green: master, red: backup, off: CARP not implemented)<br />' .
-	'LED3: CPU status (green &lt; 50%, red &gt; 50%)<br />' .
-	'LED4: Gateway status (green: ok, red: at least one gateway not responding, off: no gateway configured).'
+	'Set the off-brightness of the LCD panel. This value is used when the display is normally switched off in case LCDd is inactive.<br />' .
+	'This option is not supported by all the LCD panels, leave "default" if unsure.'
 );
-
 
 $form->add($section); // Add the section to our form
 print($form); // Finally . . We can display our new form
