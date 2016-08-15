@@ -15,6 +15,8 @@ if [ ! -f /usr/bin/install ]; then
 fi
 
 # Workaround to fix #6665
-sed -i '' -E 's/([^ ])(--raw-format json-compact)/\1-R \2/' \
-	/etc/inc/pkg-utils.inc
+if [ -f /etc/inc/pkg-utils.inc ]; then
+	sed -i '' -E 's/([^ ])(--raw-format json-compact)/\1-R \2/' \
+		/etc/inc/pkg-utils.inc
+fi
 exit 0
