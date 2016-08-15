@@ -33,7 +33,7 @@ function get_addresses($intf) {
 
 	$addresses = array();
 	$sysIntf = get_real_interface($intf);
-	$ipaddr  = find_interface_ip($sysIntf);
+	$ipaddr  = get_interface_ip($intf);
 	$addresses[] = $ipaddr;
 
 	/* AWS hosts will get a file under /var/db with the public IP */
