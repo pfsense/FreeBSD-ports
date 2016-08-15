@@ -91,18 +91,30 @@ if (file_exists($logfile) && (filesize($logfile) > 0)) {
 	}
 }
 
-$pgtitle = "Services: Syslog-ng Log Viewer";
+$pgtitle = array(gettext("Package"), gettext("Services: Syslog-ng"), gettext("Logs"));
+
 include("head.inc");
 ?>
+
 <?php include("fbegin.inc"); ?>
 <?php if ($savemsg) print_info_box($savemsg); ?>
+
+<style>
+
+.border-bottom {
+	border: 1px solid #F5F5F5; border-width: 0px 0 3px 0px;
+}
+
+</style>
+
+
 <form action="syslog-ng_log_viewer.php" method="post" name="iform">
-<table width="99%" border="0" cellpadding="0" cellspacing="0">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #F5F5F5;">
 	<tr><td>
 <?php
 	$tab_array = array();
 	$tab_array[] = array("General", false, "/pkg_edit.php?xml=syslog-ng.xml&amp;id=0");
-	$tab_array[] = array("Advanced", false, "/pkg.php?xml=syslog-ng_advanced.xml");
+	$tab_array[] = array("Advanced", false, "/pkg_edit.php?xml=syslog-ng_advanced.xml");
 	$tab_array[] = array("Log Viewer", true, "/syslog-ng_log_viewer.php");
 	display_top_tabs($tab_array);
 ?>
@@ -112,8 +124,9 @@ include("head.inc");
 		<table id="maintable" class="tabcont" width="100%" border="0" cellpadding="0" cellspacing="0">
 			<tr><td>
 
-			<table>
-				<tr><td width="22%">Log File</td><td width="78%"><select name="logfile">
+			<table width="100%" class="panel-default" style="background-color: #FFFFFF;">
+				<h2 class="panel-title" style="background-color: #424242; color: #FFFFFF; border: solid 5px #424242;">Syslog-ng Logs</h2>
+				<tr><td class="border-bottom" width="22%">Log File</td><td class="border-bottom" width="78%"><select name="logfile">
 				<?php
 				$log_files = syslogng_get_log_files($objects);
 				foreach($log_files as $log_file) {
@@ -125,7 +138,7 @@ include("head.inc");
 				}
 				?>
 				</select></td></tr>
-				<tr><td width="22%">Limit</td><td width="78%"><select name="limit">
+				<tr><td class="border-bottom" width="22%">Limit</td><td class="border-bottom" width="78%"><select name="limit">
 				<?php
 				$limit_options = array("10", "20", "50");
 				foreach($limit_options as $limit_option) {
@@ -137,8 +150,8 @@ include("head.inc");
 				}
 				?>
 				</select></td></tr>
-				<tr><td width="22%">Include Archives</td><td width="78%"><input type="checkbox" name="archives" <?php if($archives) echo " CHECKED"; ?> /></td></tr>
-				<tr><td colspan="2">
+				<tr><td class="border-bottom" lass="border-bottom" width="22%">Include Archives</td><td class="border-bottom" width="78%"><input type="checkbox" name="archives" <?php if($archives) echo " CHECKED"; ?> /></td></tr>
+				<tr><td class="border-bottom" colspan="2">
 				<table class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="0">
 				<?php
 				if(!empty($log_messages)) {
@@ -152,9 +165,9 @@ include("head.inc");
 				?>
 				</table>
 				</td></tr>
-				<tr><td width="22%">Filter</td><td width="78%"><input name="filter" value="<?=$filter?>" /></td></tr>
-				<tr><td width="22%">Inverse Filter (NOT)</td><td width="78%"><input type="checkbox" name="not" <?php if($not) echo " CHECKED"; ?> /></td></tr>
-				<tr><td colspan="2"><input type="submit" value="Refresh" /></td></tr>
+				<tr><td class="border-bottom" width="22%">Filter</td><td class="border-bottom" width="78%"><input name="filter" value="<?=$filter?>" /></td></tr>
+				<tr><td class="border-bottom" width="22%">Inverse Filter (NOT)</td><td class="border-bottom" width="78%"><input type="checkbox" name="not" <?php if($not) echo " CHECKED"; ?> /></td></tr>
+				<tr><td class="border-bottom" colspan="2"><input type="submit" value="Refresh" /></td></tr>
 			</table>
 
 			</td></tr>
