@@ -165,6 +165,10 @@ function sync_package_apcupsd() {
 	if (is_array($apcupsd_config) && $apcupsd_config['apcupsdenabled']=="on") {
 
 		$apcupsd_start = "echo \"Starting APC UPS Daemon...\"\n";
+		$apcupsd_start .= "	if [ -f /var/run/apcupsd.pid ]; then \n";
+		$apcupsd_start .= "		echo \"Already running\" \n";
+		$apcupsd_start .= "		exit 1 \n";
+		$apcupsd_start .= "	fi \n";
 		$apcupsd_start .= "	if [ ! -d {$lockfile} ]; then \n";
 		$apcupsd_start .= "		/bin/mkdir -p {$lockfile} \n";
 		$apcupsd_start .= "	fi \n";
