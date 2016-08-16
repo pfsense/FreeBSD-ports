@@ -150,7 +150,7 @@ include("head.inc");
 				}
 				?>
 				</select></td></tr>
-				<tr><td class="border-bottom" lass="border-bottom" width="22%">Include Archives</td><td class="border-bottom" width="78%"><input type="checkbox" name="archives" <?php if($archives) echo " CHECKED"; ?> /></td></tr>
+				<tr><td class="border-bottom" width="22%">Include Archives</td><td class="border-bottom" width="78%"><input type="checkbox" name="archives" <?php if($archives) echo " CHECKED"; ?> /></td></tr>
 				<tr><td class="border-bottom" colspan="2">
 				<table class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="0">
 				<?php
