@@ -52,7 +52,7 @@
 		<name>ntopng</name>
 		<tooltiptext>Access ntopng</tooltiptext>
 		<section>Diagnostics</section>
-		<url>http://$myurl:3000</url>
+		<url>/ntopng_redirect.php</url>
 	</menu>
 	<service>
 		<name>ntopng</name>
@@ -68,7 +68,7 @@
 		</tab>
 		<tab>
 			<text>Access ntopng</text>
-			<url>http://$myurl:3000</url>
+			<url>/ntopng_redirect.php</url>
 		</tab>
 	</tabs>
 	<fields>
