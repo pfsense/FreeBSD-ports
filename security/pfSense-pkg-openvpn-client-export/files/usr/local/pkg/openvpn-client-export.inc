@@ -156,7 +156,7 @@ function openvpn_client_export_validate_config($srvid, $usrid, $crtid) {
 	return array($settings, $server_cert, $server_ca, $servercn, $user, $cert, $nokeys);
 }
 
-function openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $randomlocalport, $usetoken, $nokeys = false, $proxy, $expformat = "baseconf", $outpass = "", $skiptls = false, $doslines = false, $openvpnmanager, $advancedoptions = "") {
+function openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $nokeys = false, $proxy, $expformat = "baseconf", $outpass = "", $skiptls = false, $doslines = false, $openvpnmanager, $advancedoptions = "") {
 	global $config, $input_errors, $g;
 
 	$nl = ($doslines) ? "\r\n" : "\n";
@@ -208,6 +208,15 @@ EOF;
 		$conf .= "resolv-retry infinite{$nl}";
 	}
 	$conf .= "$remotes{$nl}";
+
+	/* Prevent DNS Leaks on Windows 10 by blocking outside access to other
+	 * DNS Servers. Using the setenv method is non-fatal to clients which
+	 * do not support the option.
+	 * See https://redmine.pfsense.org/issues/6719 and https://community.openvpn.net/openvpn/ticket/605
+	 */
+	if ($blockoutsidedns != 0) {
+		$conf .= "setenv opt block-outside-dns{$nl}";
+	}
 
 	/* Use a random local port, otherwise two clients will conflict if they run at the same time.
 		May not be supported on older clients (Released before May 2010) */
@@ -481,7 +490,7 @@ EOF;
 	}
 }
 
-function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $randomlocalport, $usetoken, $outpass, $proxy, $openvpnmanager, $advancedoptions, $openvpn_version = "x86-xp") {
+function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $outpass, $proxy, $openvpnmanager, $advancedoptions, $openvpn_version = "x86-xp") {
 	global $config, $g, $input_errors, $current_openvpn_version, $current_openvpn_version_rev;
 	$uname_p = trim(exec("uname -p"));
 
@@ -539,7 +548,7 @@ function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $veri
 		$pwdfle .= "{$proxy['password']}\r\n";
 		file_put_contents("{$confdir}/{$proxy['passwdfile']}", $pwdfle);
 	}
-	$conf = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $randomlocalport, $usetoken, $nokeys, $proxy, "", "baseconf", false, true, $openvpnmanager, $advancedoptions);
+	$conf = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $nokeys, $proxy, "", "baseconf", false, true, $openvpnmanager, $advancedoptions);
 	if (!$conf) {
 		$input_errors[] = "Could not create a config to export.";
 		return false;
@@ -607,7 +616,7 @@ RunProgram="openvpn-postinstall.exe"
 	return $outfile;
 }
 
-function viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $randomlocalport, $usetoken, $outpass, $proxy, $openvpnmanager, $advancedoptions) {
+function viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $outpass, $proxy, $openvpnmanager, $advancedoptions) {
 	global $config, $g;
 	$uname_p = trim(exec("uname -p"));
 
@@ -639,7 +648,7 @@ function viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $usead
 		file_put_contents("{$tempdir}/{$proxy['passwdfile']}", $pwdfle);
 	}
 
-	$conf = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $randomlocalport, $usetoken, true, $proxy, "baseconf", $outpass, true, true, $openvpnmanager, $advancedoptions);
+	$conf = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, true, $proxy, "baseconf", $outpass, true, true, $openvpnmanager, $advancedoptions);
 	if (!$conf) {
 		return false;
 	}
