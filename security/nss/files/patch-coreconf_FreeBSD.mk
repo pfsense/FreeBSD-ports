@@ -1,6 +1,6 @@
---- coreconf/FreeBSD.mk.orig	2009-08-22 07:33:09.000000000 +0200
-+++ coreconf/FreeBSD.mk	2010-03-28 23:01:33.000000000 +0200
-@@ -37,9 +37,9 @@
+--- coreconf/FreeBSD.mk.orig	2016-08-05 15:43:39 UTC
++++ coreconf/FreeBSD.mk
+@@ -5,9 +5,9 @@
  
  include $(CORE_DEPTH)/coreconf/UNIX.mk
  
@@ -13,7 +13,13 @@
  RANLIB			= ranlib
  
  CPU_ARCH		= $(OS_TEST)
-@@ -52,6 +52,13 @@ endif
+@@ -17,9 +17,19 @@ endif
+ ifeq ($(CPU_ARCH),pc98)
+ CPU_ARCH		= x86
+ endif
++ifeq ($(CPU_ARCH),armv6)
++CPU_ARCH		= arm
++endif
  ifeq ($(CPU_ARCH),amd64)
  CPU_ARCH		= x86_64
  endif
@@ -27,7 +33,7 @@
  
  OS_CFLAGS		= $(DSO_CFLAGS) -ansi -Wall -Wno-switch -DFREEBSD -DHAVE_STRERROR -DHAVE_BSD_FLOCK
  
-@@ -70,15 +85,15 @@
+@@ -38,15 +48,15 @@ endif
  
  ARCH			= freebsd
  
@@ -49,7 +55,7 @@
  ifdef MAPFILE
  	MKSHLIB += -Wl,--version-script,$(MAPFILE)
  endif
-@@ -87,4 +100,5 @@
+@@ -55,4 +65,5 @@ PROCESS_MAP_FILE = grep -v ';-' $< | \
  
  G++INCLUDES		= -I/usr/include/g++
  
