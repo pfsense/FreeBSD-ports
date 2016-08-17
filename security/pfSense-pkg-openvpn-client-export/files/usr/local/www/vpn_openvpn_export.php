@@ -653,35 +653,35 @@ function download_begin(act, i, j) {
 
 	var dlurl;
 	dlurl  = "/vpn_openvpn_export.php?act=" + act;
-	dlurl += "&srvid=" + escape(servers[index][0]);
+	dlurl += "&srvid=" + encodeURIComponent(servers[index][0]);
 	if (users[i]) {
-		dlurl += "&usrid=" + escape(users[i][0]);
-		dlurl += "&crtid=" + escape(users[i][1]);
+		dlurl += "&usrid=" + encodeURIComponent(users[i][0]);
+		dlurl += "&crtid=" + encodeURIComponent(users[i][1]);
 	}
 	if (certs[j]) {
 		dlurl += "&usrid=";
-		dlurl += "&crtid=" + escape(certs[j][0]);
+		dlurl += "&crtid=" + encodeURIComponent(certs[j][0]);
 	}
-	dlurl += "&useaddr=" + escape(useaddr);
-	dlurl += "&verifyservercn=" + escape(verifyservercn);
-	dlurl += "&randomlocalport=" + escape(randomlocalport);
-	dlurl += "&openvpnmanager=" + escape(openvpnmanager);
-	dlurl += "&usetoken=" + escape(usetoken);
+	dlurl += "&useaddr=" + encodeURIComponent(useaddr);
+	dlurl += "&verifyservercn=" + encodeURIComponent(verifyservercn);
+	dlurl += "&randomlocalport=" + encodeURIComponent(randomlocalport);
+	dlurl += "&openvpnmanager=" + encodeURIComponent(openvpnmanager);
+	dlurl += "&usetoken=" + encodeURIComponent(usetoken);
 	if (usepass) {
-		dlurl += "&password=" + escape(pass);
+		dlurl += "&password=" + encodeURIComponent(pass);
 	}
 	if (useproxy) {
-		dlurl += "&proxy_type=" + escape(proxytype);
-		dlurl += "&proxy_addr=" + escape(proxyaddr);
-		dlurl += "&proxy_port=" + escape(proxyport);
-		dlurl += "&proxy_authtype=" + escape(proxyauth);
+		dlurl += "&proxy_type=" + encodeURIComponent(proxytype);
+		dlurl += "&proxy_addr=" + encodeURIComponent(proxyaddr);
+		dlurl += "&proxy_port=" + encodeURIComponent(proxyport);
+		dlurl += "&proxy_authtype=" + encodeURIComponent(proxyauth);
 		if (useproxypass) {
-			dlurl += "&proxy_user=" + escape(proxyuser);
-			dlurl += "&proxy_password=" + escape(proxypass);
+			dlurl += "&proxy_user=" + encodeURIComponent(proxyuser);
+			dlurl += "&proxy_password=" + encodeURIComponent(proxypass);
 		}
 	}
 
-	dlurl += "&advancedoptions=" + escape(advancedoptions);
+	dlurl += "&advancedoptions=" + encodeURIComponent(advancedoptions);
 
 	window.open(dlurl, "_self");
 }
