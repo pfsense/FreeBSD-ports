@@ -32,7 +32,7 @@ require_once("util.inc");
 require_once("pfsense-utils.inc");
 
 global $git_root_url, $patch_suffix, $patch_dir, $patch_cmd;
-$git_root_url = "https://github.com/pfsense/pfsense/commit/";
+$git_root_url = "https://github.com/pfsense/FreeBSD-ports/commit/";
 $patch_suffix = ".patch";
 $patch_dir = "/var/patches";
 $patch_cmd = "/usr/bin/patch";
