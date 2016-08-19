@@ -1,2 +1,3 @@
-SHA256 (perl/perl-5.24.0.tar.xz) = a9a37c0860380ecd7b23aa06d61c20fc5bc6d95198029f3684c44a9d7e2952f2
-SIZE (perl/perl-5.24.0.tar.xz) = 11483228
+TIMESTAMP = 1471072507
+SHA256 (perl/perl-5.24.1-RC3.tar.xz) = 18a25373d80e5d5c39928790e45427c7bc34a98499b25645de2b5fb2ab7ba7b5
+SIZE (perl/perl-5.24.1-RC3.tar.xz) = 11552388
