@@ -135,30 +135,44 @@ function get_version() {
 	return("{$g['product_name']} {$version}");
 }
 
-function get_cpufrequency() {
-	$cpufreqs = "";
-	exec("/sbin/sysctl -n dev.cpu.0.freq_levels", $cpufreqs);
-	$cpufreqs = explode(" ", trim($cpufreqs[0]));
-	$maxfreq = explode("/", $cpufreqs[0]);
-	$maxfreq = $maxfreq[0];
-	$curfreq = "";
-	exec("/sbin/sysctl -n dev.cpu.0.freq", $curfreq);
-	$curfreq = trim($curfreq[0]);
-	$status = "$curfreq\/$maxfreq Mhz";
-	return($status);
+// Returns the max frequency in Mhz, or false if powerd is not supported.
+// powerd is not supported on all systems - "no cpufreq(4) support" https://redmine.pfsense.org/issues/5739
+function get_cpu_maxfrequency() {
+	$execRet = 0;
+	exec("/sbin/sysctl -n dev.cpu.0.freq_levels", $cpufreqs, $execRet);
+	if ($execRet === 0) {
+		$cpufreqs = explode(" ", trim($cpufreqs[0]));
+		$maxfreqs = explode("/", $cpufreqs[0]);
+		return $maxfreqs[0];
+	} else {
+		// sysctrl probably returned "unknown oid 'dev.cpu.0.freq_levels'", 
+		// see https://redmine.pfsense.org/issues/5739 
+		return false;
+	}
 }
 
-function get_cpufrequency_perc() {
-	$cpufreqs = "";
-	exec("/sbin/sysctl -n dev.cpu.0.freq_levels", $cpufreqs);
-	$cpufreqs = explode(" ", trim($cpufreqs[0]));
-	$maxfreq = explode("/", $cpufreqs[0]);
-	$maxfreq = $maxfreq[0];
-	$curfreq = "";
-	exec("/sbin/sysctl -n dev.cpu.0.freq", $curfreq);
-	$curfreq = trim($curfreq[0]);
-	$status = $curfreq/$maxfreq * 100;
-	return($status);
+// Returns the current frequency in Mhz, or false if powerd is not supported.
+// powerd is not supported on all systems - "no cpufreq(4) support" https://redmine.pfsense.org/issues/5739
+function get_cpu_currentfrequency() {
+	$execRet = 0;
+	exec("/sbin/sysctl -n dev.cpu.0.freq", $curfreq, $execRet);
+	if ($execRet === 0) {
+		return trim($curfreq[0]);
+	} else {
+		// sysctrl probably returned "unknown oid 'dev.cpu.0.freq'", 
+		// see https://redmine.pfsense.org/issues/5739 
+		return false;
+	}
+}
+
+function get_cpufrequency() {
+	$maxfreq = get_cpu_maxfrequency();
+	if ($maxfreq === false) {
+		return "no cpufreq(4) support";
+	} else {
+		$curfreq = get_cpu_currentfrequency();
+		return "$curfreq\/$maxfreq Mhz";
+	}
 }
 
 function get_interfaces_stats() {
@@ -759,7 +773,13 @@ function loop_status($lcd) {
 			$summary_states = explode("/", get_pfstate());
 			$lcd_summary_data = sprintf("%02d%% %02d%% %6d", cpu_usage(), mem_usage(), $summary_states[0]);
 			if ($lcdpanel_width > "16") {
-				$lcd_summary_data = $lcd_summary_data . sprintf(" %3d%%", get_cpufrequency_perc());
+				/* Include the CPU frequency as a percentage */
+				$maxfreq = get_cpu_maxfrequency();
+				if ($maxfreq === false || $maxfreq == 0) {
+					$lcd_summary_data .= "  N/A"; // powerd not available on all systems - https://redmine.pfsense.org/issues/5739
+				} else {
+					$lcd_summary_data .= sprintf(" %3d%%", get_cpu_currentfrequency() / $maxfreq * 100);				
+				}
 			}
 		} else {
 			$lcd_summary_data = "";
