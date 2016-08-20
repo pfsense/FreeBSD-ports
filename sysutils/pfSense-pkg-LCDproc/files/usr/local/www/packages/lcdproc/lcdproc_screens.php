@@ -1,9 +1,10 @@
 <?php
 /*
-	cron_edit.php
+	lcdproc_screens.php
 	part of pfSense (https://www.pfSense.org/)
 	Copyright (C) 2008 Mark J Crane
-	Copyright (C) 2015 ESF, LLC
+	Copyright (C) 2016 Treer
+	Copyright (C) 2016 ESF, LLC
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
