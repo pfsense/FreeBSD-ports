@@ -35,24 +35,29 @@ $lcdproc_screens_config = &$config['installedpackages']['lcdprocscreens']['confi
 
 // Set default values for anything not in the $config
 $pconfig = $lcdproc_screens_config;
-if (!isset($pconfig['scr_version']))                       $pconfig['scr_version']                       = false;
-if (!isset($pconfig['scr_time']))                          $pconfig['scr_time']                          = false;
-if (!isset($pconfig['scr_uptime']))                        $pconfig['scr_uptime']                        = false;
-if (!isset($pconfig['scr_hostname']))                      $pconfig['scr_hostname']                      = false;
-if (!isset($pconfig['scr_system']))                        $pconfig['scr_system']                        = false;
-if (!isset($pconfig['scr_disk']))                          $pconfig['scr_disk']                          = false;
-if (!isset($pconfig['scr_load']))                          $pconfig['scr_load']                          = false;
-if (!isset($pconfig['scr_states']))                        $pconfig['scr_states']                        = false;
-if (!isset($pconfig['scr_carp']))                          $pconfig['scr_carp']                          = false;
-if (!isset($pconfig['scr_ipsec']))                         $pconfig['scr_ipsec']                         = false;
-if (!isset($pconfig['scr_slbd']))                          $pconfig['scr_slbd']                          = false;
-if (!isset($pconfig['scr_interfaces']))                    $pconfig['scr_interfaces']                    = false;
-if (!isset($pconfig['scr_mbuf']))                          $pconfig['scr_mbuf']                          = false;
-if (!isset($pconfig['scr_cpufrequency']))                  $pconfig['scr_cpufrequency']                  = false;
-if (!isset($pconfig['scr_traffic']))                       $pconfig['scr_traffic']                       = false;
-if (!isset($pconfig['scr_traffic_interface']))             $pconfig['scr_traffic_interface']             = '';
-if (!isset($pconfig['scr_top_interfaces_by_bps']))         $pconfig['scr_top_interfaces_by_bps']         = false;
-if (!isset($pconfig['scr_top_interfaces_by_bytes_today'])) $pconfig['scr_top_interfaces_by_bytes_today'] = false;
+if (!isset($pconfig['scr_version']))                         $pconfig['scr_version']                         = false;
+if (!isset($pconfig['scr_time']))                            $pconfig['scr_time']                            = false;
+if (!isset($pconfig['scr_uptime']))                          $pconfig['scr_uptime']                          = false;
+if (!isset($pconfig['scr_hostname']))                        $pconfig['scr_hostname']                        = false;
+if (!isset($pconfig['scr_system']))                          $pconfig['scr_system']                          = false;
+if (!isset($pconfig['scr_disk']))                            $pconfig['scr_disk']                            = false;
+if (!isset($pconfig['scr_load']))                            $pconfig['scr_load']                            = false;
+if (!isset($pconfig['scr_states']))                          $pconfig['scr_states']                          = false;
+if (!isset($pconfig['scr_carp']))                            $pconfig['scr_carp']                            = false;
+if (!isset($pconfig['scr_ipsec']))                           $pconfig['scr_ipsec']                           = false;
+if (!isset($pconfig['scr_slbd']))                            $pconfig['scr_slbd']                            = false;
+if (!isset($pconfig['scr_interfaces']))                      $pconfig['scr_interfaces']                      = false;
+if (!isset($pconfig['scr_mbuf']))                            $pconfig['scr_mbuf']                            = false;
+if (!isset($pconfig['scr_cpufrequency']))                    $pconfig['scr_cpufrequency']                    = false;
+if (!isset($pconfig['scr_traffic']))                         $pconfig['scr_traffic']                         = false;
+if (!isset($pconfig['scr_traffic_interface']))               $pconfig['scr_traffic_interface']               = '';
+if (!isset($pconfig['scr_top_interfaces_by_bps']))           $pconfig['scr_top_interfaces_by_bps']           = false;
+if (!isset($pconfig['scr_top_interfaces_by_bytes_today']))   $pconfig['scr_top_interfaces_by_bytes_today']   = false;
+if (!isset($pconfig['scr_traffic_by_address']))              $pconfig['scr_traffic_by_address']              = false;
+if (!isset($pconfig['scr_traffic_by_address_if']))           $pconfig['scr_traffic_by_address_if']           = '';
+if (!isset($pconfig['scr_traffic_by_address_sort']))         $pconfig['scr_traffic_by_address_sort']         = 'in';
+if (!isset($pconfig['scr_traffic_by_address_filter']))       $pconfig['scr_traffic_by_address_filter']       = 'local';
+if (!isset($pconfig['scr_traffic_by_address_hostipformat'])) $pconfig['scr_traffic_by_address_hostipformat'] = 'descr';
 
 
 if ($_POST) {
@@ -60,24 +65,29 @@ if ($_POST) {
 	$pconfig = $_POST;
 
 	if (!$input_errors) {
-		$lcdproc_screens_config['scr_version']                       = $pconfig['scr_version'];
-		$lcdproc_screens_config['scr_time']                          = $pconfig['scr_time'];
-		$lcdproc_screens_config['scr_uptime']                        = $pconfig['scr_uptime'];
-		$lcdproc_screens_config['scr_hostname']                      = $pconfig['scr_hostname'];
-		$lcdproc_screens_config['scr_system']                        = $pconfig['scr_system'];
-		$lcdproc_screens_config['scr_disk']                          = $pconfig['scr_disk'];
-		$lcdproc_screens_config['scr_load']                          = $pconfig['scr_load'];
-		$lcdproc_screens_config['scr_states']                        = $pconfig['scr_states'];
-		$lcdproc_screens_config['scr_carp']                          = $pconfig['scr_carp'];
-		$lcdproc_screens_config['scr_ipsec']                         = $pconfig['scr_ipsec'];
-		$lcdproc_screens_config['scr_slbd']                          = $pconfig['scr_slbd'];
-		$lcdproc_screens_config['scr_interfaces']                    = $pconfig['scr_interfaces'];
-		$lcdproc_screens_config['scr_mbuf']                          = $pconfig['scr_mbuf'];
-		$lcdproc_screens_config['scr_cpufrequency']                  = $pconfig['scr_cpufrequency'];
-		$lcdproc_screens_config['scr_traffic']                       = $pconfig['scr_traffic'];
-		$lcdproc_screens_config['scr_traffic_interface']             = $pconfig['scr_traffic_interface'];
-		$lcdproc_screens_config['scr_top_interfaces_by_bps']         = $pconfig['scr_top_interfaces_by_bps'];
-		$lcdproc_screens_config['scr_top_interfaces_by_bytes_today'] = $pconfig['scr_top_interfaces_by_bytes_today'];
+		$lcdproc_screens_config['scr_version']                         = $pconfig['scr_version'];
+		$lcdproc_screens_config['scr_time']                            = $pconfig['scr_time'];
+		$lcdproc_screens_config['scr_uptime']                          = $pconfig['scr_uptime'];
+		$lcdproc_screens_config['scr_hostname']                        = $pconfig['scr_hostname'];
+		$lcdproc_screens_config['scr_system']                          = $pconfig['scr_system'];
+		$lcdproc_screens_config['scr_disk']                            = $pconfig['scr_disk'];
+		$lcdproc_screens_config['scr_load']                            = $pconfig['scr_load'];
+		$lcdproc_screens_config['scr_states']                          = $pconfig['scr_states'];
+		$lcdproc_screens_config['scr_carp']                            = $pconfig['scr_carp'];
+		$lcdproc_screens_config['scr_ipsec']                           = $pconfig['scr_ipsec'];
+		$lcdproc_screens_config['scr_slbd']                            = $pconfig['scr_slbd'];
+		$lcdproc_screens_config['scr_interfaces']                      = $pconfig['scr_interfaces'];
+		$lcdproc_screens_config['scr_mbuf']                            = $pconfig['scr_mbuf'];
+		$lcdproc_screens_config['scr_cpufrequency']                    = $pconfig['scr_cpufrequency'];
+		$lcdproc_screens_config['scr_traffic']                         = $pconfig['scr_traffic'];
+		$lcdproc_screens_config['scr_traffic_interface']               = $pconfig['scr_traffic_interface'];
+		$lcdproc_screens_config['scr_top_interfaces_by_bps']           = $pconfig['scr_top_interfaces_by_bps'];
+		$lcdproc_screens_config['scr_top_interfaces_by_bytes_today']   = $pconfig['scr_top_interfaces_by_bytes_today'];
+		$lcdproc_screens_config['scr_traffic_by_address']              = $pconfig['scr_traffic_by_address'];
+		$lcdproc_screens_config['scr_traffic_by_address_if']           = $pconfig['scr_traffic_by_address_if'];
+		$lcdproc_screens_config['scr_traffic_by_address_sort']         = $pconfig['scr_traffic_by_address_sort'];
+		$lcdproc_screens_config['scr_traffic_by_address_filter']       = $pconfig['scr_traffic_by_address_filter'];
+		$lcdproc_screens_config['scr_traffic_by_address_hostipformat'] = $pconfig['scr_traffic_by_address_hostipformat'];
 				
 		write_config();
 		sync_package_lcdproc();
@@ -211,14 +221,14 @@ $section->addInput(
 	new Form_Checkbox(
 		'scr_cpufrequency', // checkbox name (id)
 		'CPU Frequency', // checkbox label
-		'Display CPU power consumption', // checkbox text
+		'Show when CPU speed is lowered to save power', // checkbox text
 		$pconfig['scr_cpufrequency'] // checkbox initial value
 	)
 );
 
 
-$trafficGroup = new Form_Group('Traffic');
-$trafficGroup->add(
+$group = new Form_Group('Traffic of interface');
+$group->add(
 	new Form_Checkbox(
 		'scr_traffic', // checkbox name (id)
 		'', // checkbox label
@@ -226,7 +236,7 @@ $trafficGroup->add(
 		$pconfig['scr_traffic'] // checkbox initial value
 	)
 );
-$trafficGroup->add(
+$group->add(
 	new Form_Select(
 		'scr_traffic_interface',
 		'',
@@ -234,8 +244,7 @@ $trafficGroup->add(
 		get_configured_interface_with_descr()
 	)
 );
-//$trafficGroup->setHelp('Show the current in and out speed of the interface');
-$section->add($trafficGroup);
+$section->add($group);
 
 $section->addInput(
 	new Form_Checkbox(
@@ -244,7 +253,7 @@ $section->addInput(
 		'List interfaces, ordered by bits-per-second (in & out)', // checkbox text
 		$pconfig['scr_top_interfaces_by_bps'] // checkbox initial value
 	)
-)->setHelp('A 4&hyphen;row 20&hyphen;column display size, or higher, is recommended for this screen');
+)->setHelp('A 4&hyphen;row 20&hyphen;column display size, or higher, is recommended for this screen.');
 
 $section->addInput(
 	new Form_Checkbox(
@@ -253,7 +262,54 @@ $section->addInput(
 		'List interfaces, ordered by total bytes today (in & out)', // checkbox text
 		$pconfig['scr_top_interfaces_by_bytes_today'] // checkbox initial value
 	)
-)->setHelp('A 4&hyphen;row 20&hyphen;column display size, or higher, is recommended for this screen');
+)->setHelp('A 4&hyphen;row 20&hyphen;column display size, or higher, is recommended for this screen.');
+
+
+$group = new Form_Group('Traffic by address');
+$group->add(new Form_Checkbox(
+		'scr_traffic_by_address',
+		'',
+		'Show IP traffic:',
+		$pconfig['scr_traffic_by_address']
+));
+$group->add(new Form_Select(
+	'scr_traffic_by_address_if',
+	null,
+	$pconfig['scr_traffic_by_address_if'],
+	get_configured_interface_with_descr()
+))->setHelp('Interface');
+$group->add(new Form_Select(
+	'scr_traffic_by_address_sort',
+	null,
+	$pconfig['scr_traffic_by_address_sort'],
+	array (
+		'in'	=> gettext('Bandwidth In'),
+		'out'	=> gettext('Bandwidth Out')
+	)
+))->setHelp('Sort by');
+$group->add(new Form_Select(
+	'scr_traffic_by_address_filter',
+	null,
+	$pconfig['scr_traffic_by_address_filter'],
+	array (
+		'local'	=> gettext('Local'),
+		'remote'=> gettext('Remote'),
+		'all'	=> gettext('All')
+	)
+))->setHelp('Filter');
+$group->add(new Form_Select(
+	'scr_traffic_by_address_hostipformat',
+	null,
+	$pconfig['scr_traffic_by_address_hostipformat'],
+	array (
+		''			=> gettext('IP Address'),
+		'hostname'	=> gettext('Host Name'),
+		'descr'		=> gettext('Description'),
+		'fqdn'		=> gettext('FQDN')
+	)
+))->setHelp('Display');
+$group->setHelp('A 4&hyphen;row 20&hyphen;column display size, or higher, is recommended for this screen.');
+$section->add($group);
 
 		
 $form->add($section); // Add the section to our form

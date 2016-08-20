@@ -743,6 +743,64 @@ function get_top_interfaces_by_bytes_today($interfaceTrafficList, $lcdpanel_widt
 	return $result;
 }
 
+function convert_bandwidth_to_shortform($bytes_string) {
+	// Shorten values from bandwidth_by_ip.php, which have the form 
+	// "168.16k", "10.31k", "0.00".
+	// The unit is preserved, but decimal point is dropped for 10 or
+	// higher, and only 1 decimal place is kept for lower than 10.
+	// So "168.16k", "10.31k", "0.00" becomes "168k", "10k", "0"
+	
+	if ($bytes_string == "0.00") return "0";
+	
+	$decimalPos = strpos($bytes_string, '.');
+	if ($decimalPos == 1) {
+		// allow 1 decimal place
+		return substr($bytes_string, 0, 3) . substr($bytes_string, 4);	
+	} elseif ($decimalPos > 1) {
+		// remove the decimal places
+		return substr($bytes_string, 0, $decimalPos) . substr($bytes_string, $decimalPos + 3);	
+	} else {
+		// Our format assumptions are wrong
+		return $bytes_string;
+	}
+}
+
+function get_bandwidth_by_ip() {
+
+	global $config;
+	
+	$result = array();
+	$lcdproc_screens_config = $config['installedpackages']['lcdprocscreens']['config'][0];
+
+	$lan          = $lcdproc_screens_config['scr_traffic_by_address_if'];
+	$sort         = $lcdproc_screens_config['scr_traffic_by_address_sort'];
+	$filter       = $lcdproc_screens_config['scr_traffic_by_address_filter'];
+	$hostipformat = $lcdproc_screens_config['scr_traffic_by_address_hostipformat'];
+
+	// ideally we would use /usr/local/www/bandwidth_by_ip.php, but it requires a 
+	// logged-in authenticated user session, so use a local copy instead that's outside
+	// the www directory and doesn't require an authenticated user session.
+	$output = shell_exec("/usr/local/bin/php-cgi -f /usr/local/pkg/lcdproc_bandwidth_by_ip.php if=$lan sort=$sort filter=$filter hostipformat=$hostipformat");	
+	
+	$hostLines = explode("|", $output);
+	foreach($hostLines as $hostLine) {
+		$hostData = explode(";", $hostLine);
+		if (count($hostData) == 3) {
+			$host = array();
+			$host['name']   = $hostData[0];
+			$host['in']     = convert_bandwidth_to_shortform($hostData[1]);
+			$host['out']    = convert_bandwidth_to_shortform($hostData[2]);
+			$host['in/out'] = $host['in'] . '/' . $host['out'];
+			$result[] = $host;
+		}
+	}
+	if (count($result) === 0 && strlen($output) > 1) {
+		$result['error'] = $output;
+	}
+	
+	return $result;
+}
+
 function add_summary_declaration(&$lcd_cmds, $name) {
 	$lcdpanel_height = get_lcdpanel_height();
 	$lcdpanel_width = get_lcdpanel_width();
@@ -933,6 +991,19 @@ function build_interface($lcd) {
 
 						for($i = 0; $i < ($lcdpanel_height - 1); $i++) {
 							$lcd_cmds[] = "widget_add $name text_wdgt{$i} string";
+						}
+						$includeSummary = false; // this screen needs all the lines
+						break;
+					case "scr_traffic_by_address":
+						$lcd_cmds[] = "screen_add $name";
+						$lcd_cmds[] = "screen_set $name heartbeat off";
+						$lcd_cmds[] = "screen_set $name name $name";
+						$lcd_cmds[] = "screen_set $name duration $refresh_frequency";
+						$lcd_cmds[] = "widget_add $name title_wdgt string";
+
+						for($i = 0; $i < ($lcdpanel_height - 1); $i++) {
+							$lcd_cmds[] = "widget_add $name descr_wdgt{$i} scroller";
+							$lcd_cmds[] = "widget_add $name data_wdgt{$i} string";
 						}
 						$includeSummary = false; // this screen needs all the lines
 						break;
@@ -1127,8 +1198,39 @@ function loop_status($lcd) {
 					}
 					$updateSummary = false;
 					break;
+				case "scr_traffic_by_address":
+					$title = ($lcdpanel_width >= 20) ? "Host        IN / OUT" : "Host    IN / OUT";
+					$lcd_cmds[] = "widget_set $name title_wdgt 1 1 \"{$title}\"";
+				
+					$traffic = get_bandwidth_by_ip();
+					$clearLinesFrom = 0;
+					
+					if (isset($traffic['error'])) {
+						if ($traffic['error'] === "no info") {
+							// not really an error - there's likely just no traffic
+						} else {
+							// traffic info not available, display the error message instead
+							$lcd_cmds[] = "widget_set $name descr_wdgt0 1 2 $lcdpanel_width 2 h 2 \"Error: {$traffic['error']}\"";
+							$lcd_cmds[] = "widget_set $name data_wdgt0 1 2 \"\"";							
+							$clearLinesFrom = 1;
+						}												
+					} else {
+						for($i = 0; $i < ($lcdpanel_height - 1) && i < count($traffic); $i++) {
+							$speeds = $traffic[$i]['in/out'];
+							$left = $lcdpanel_width - strlen($speeds);							
+							$lcd_cmds[] = "widget_set $name data_wdgt{$i} " . ($left + 1) . " " . ($i + 2) . " \"{$speeds}\"";							
+							$lcd_cmds[] = "widget_set $name descr_wdgt{$i} 1 " . ($i + 2) . " " . ($left - 1) . " " . ($i + 2) . " h 2 \"{$traffic[$i]['name']}\"";						
+							$clearLinesFrom = $i + 1;
+						}
+					}		
+					for($i = $clearLinesFrom; $i < ($lcdpanel_height - 1); $i++) {
+						$lcd_cmds[] = "widget_set $name descr_wdgt{$i} 1 2 1 2 h 2 \"\"";
+						$lcd_cmds[] = "widget_set $name  data_wdgt{$i} 1 2         \"\"";							
+					}
+					$updateSummary = false;
+					break;
 			}
-			if ($name != "scr_traffic_interface") {	// "scr_traffic_interface" isn't a real screen, it's a parameter for the "scr_traffic" screen
+			if ($name != "scr_traffic_interface" && substr($name, 0, 23) != 'scr_traffic_by_address_') {	// "scr_traffic_interface" isn't a real screen, it's a parameter for the "scr_traffic" screen
 				$widget_counter++;
 				if ($updateSummary) add_summary_values($lcd_cmds, $name, $lcd_summary_data);
 			}
@@ -1140,6 +1242,8 @@ function loop_status($lcd) {
 			return;
 		}
 		if (($refresh_frequency * $widget_counter) > 5) {
+			// If LCD is waiting 10 seconds on each screen, for example, then we can update the data of 
+			// of a screen while its being displayed.
 			sleep(5);
 		} else {
 			sleep($refresh_frequency * $widget_counter);
