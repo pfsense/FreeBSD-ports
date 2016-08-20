@@ -978,6 +978,7 @@ function loop_status($lcd) {
 		}
 
 		$lcd_cmds = array();
+		$interfaceTrafficList = null;
 
 		/* initializes the widget counter */
 		$widget_counter = 0;
