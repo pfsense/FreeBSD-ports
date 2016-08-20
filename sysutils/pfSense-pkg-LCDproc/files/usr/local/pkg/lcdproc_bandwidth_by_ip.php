@@ -1,11 +1,6 @@
 <?php
 /*
- * This file is copied from bandwidth_by_ip.php
- * This file must not be placed in the www directory, unlike 
- * bandwidth_by_ip.php it does not check for a authenticated 
- * user session. 
- * It is used locally by lcdproc_client.php 
- *
+ * lcdproc_bandwidth_by_ip.php
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2016 Electric Sheep Fencing, LLC
  * All rights reserved.
@@ -23,6 +18,14 @@
  * limitations under the License.
  */
 
+/*
+ * This file is copied from bandwidth_by_ip.php
+ * This file must not be placed in the www directory, unlike 
+ * bandwidth_by_ip.php it does not check for a authenticated 
+ * user session. 
+ *
+ * It is used locally by lcdproc_client.php 
+ */ 
 require_once('interfaces.inc');
 require_once('pfsense-utils.inc');
 require_once('util.inc');

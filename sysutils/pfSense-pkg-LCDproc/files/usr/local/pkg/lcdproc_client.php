@@ -5,7 +5,8 @@
 	Copyright (C) 2007-2009 Seth Mos <seth.mos@dds.nl>
 	Copyright (C) 2009 Scott Ullrich
 	Copyright (C) 2011 Michele Di Maria
-	Copyright (C) 2015 ESF, LLC
+	Copyright (C) 2016 Treer
+	Copyright (C) 2016 ESF, LLC
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without

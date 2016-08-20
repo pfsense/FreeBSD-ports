@@ -45,7 +45,7 @@
 	</copyright>
 	<title>Services: LCDproc</title>
 	<name>lcdproc</name>
-	<version>0.10.0</version>
+	<version>0.10.1</version>
 	<include_file>/usr/local/pkg/lcdproc.inc</include_file>
 	<menu>
 		<name>LCDproc</name>
