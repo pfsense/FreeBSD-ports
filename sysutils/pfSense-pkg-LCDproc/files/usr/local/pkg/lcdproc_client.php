@@ -1000,6 +1000,7 @@ function build_interface($lcd) {
 						$lcd_cmds[] = "screen_set $name name $name";
 						$lcd_cmds[] = "screen_set $name duration $refresh_frequency";
 						$lcd_cmds[] = "widget_add $name title_wdgt string";
+						$lcd_cmds[] = "widget_add $name heart_wdgt icon";
 
 						for($i = 0; $i < ($lcdpanel_height - 1); $i++) {
 							$lcd_cmds[] = "widget_add $name descr_wdgt{$i} scroller";
@@ -1029,8 +1030,8 @@ function loop_status($lcd) {
 
 	$refresh_frequency = get_lcdpanel_refresh_frequency();
 	/* keep a counter to see how many times we can loop */
-	$i = 1;
-	while ($i) {
+	$loopCounter = 1;
+	while ($loopCounter) {
 		/* prepare the summary data */
 		if ($lcdpanel_height >= "4") {
 			$summary_states = explode("/", get_pfstate());
@@ -1199,9 +1200,10 @@ function loop_status($lcd) {
 					$updateSummary = false;
 					break;
 				case "scr_traffic_by_address":
-					$title = ($lcdpanel_width >= 20) ? "Host        IN / OUT" : "Host    IN / OUT";
-					$lcd_cmds[] = "widget_set $name title_wdgt 1 1 \"{$title}\"";
-				
+					$title = ($lcdpanel_width >= 20) ? "Host       IN / OUT" : "Host   IN / OUT";
+					$lcd_cmds[] = "widget_set $name title_wdgt 2 1 \"{$title}\"";
+					$lcd_cmds[] = "widget_set $name heart_wdgt 1 1 \"" . (($loopCounter & 1) == 0 ? "HEART_OPEN" : "HEART_FILLED") . "\""; // Indicate each time the list has been updated
+								
 					$traffic = get_bandwidth_by_ip();
 					$clearLinesFrom = 0;
 					
@@ -1248,7 +1250,7 @@ function loop_status($lcd) {
 		} else {
 			sleep($refresh_frequency * $widget_counter);
 		}
-		$i++;
+		$loopCounter++;
 	}
 }
 
