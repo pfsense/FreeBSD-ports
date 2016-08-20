@@ -206,7 +206,7 @@ $section->addInput(
 	new Form_Checkbox(
 		'scr_cpufrequency', // checkbox name (id)
 		'CPU Frequency', // checkbox label
-		'Display how much the CPU has clocked down to reduce power consumption', // checkbox text
+		'Display CPU power consumption', // checkbox text
 		$pconfig['scr_cpufrequency'] // checkbox initial value
 	)
 );
