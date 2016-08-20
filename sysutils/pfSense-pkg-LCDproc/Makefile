@@ -50,6 +50,8 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/lcdproc_client.php \
 		${STAGEDIR}${PREFIX}/pkg
+	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/lcdproc_bandwidth_by_ip.php \
+		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/lcdproc.inc \
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/packages/lcdproc/lcdproc.php \
