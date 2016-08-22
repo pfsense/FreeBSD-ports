@@ -60,7 +60,7 @@ foreach ($wglobal_array as $type => $value) {
 }
 
 // Save widget customizations
-if (isset($_POST['pfb_submit'])) {
+if ($_POST && isset($_POST['pfb_submit'])) {
 	$pfb['wglobal']['widget-popup']			= htmlspecialchars($_POST['pfb_popup']) ?: 'off';
 	$pfb['wglobal']['widget-sortcolumn']		= htmlspecialchars($_POST['pfb_sortcolumn']) ?: 'none';
 	$pfb['wglobal']['widget-sortdir']		= htmlspecialchars($_POST['pfb_sortdir']) ?: 'asc';
@@ -78,20 +78,20 @@ if (isset($_POST['pfb_submit'])) {
 }
 
 // Ackwnowlege failed downloads
-if (isset($_POST['pfblockerngack'])) {
+if ($_POST && $_POST['pfblockerngack']) {
 	exec("{$pfb['sed']} -i '' 's/FAIL/Fail/g' {$pfb['errlog']}");
 	header("Location: /");
 	exit(0);
 }
 
 // Called by Ajax to update table contents
-if (isset($_GET['getNewCounts'])) {
+if ($_GET && $_GET['getNewCounts']) {
 	pfBlockerNG_get_table('js');
 	return;
 }
 
 // Reset DNSBL Alias packet counters
-if (isset($_POST['pfblockerngdnsblclear'])) {
+if ($_POST && $_POST['pfblockerngdnsblclear']) {
 	$dnsbl_info = array_map('str_getcsv', @file("{$pfb['dnsbl_info']}"));
 	if (!empty ($dnsbl_info)) {
 		$handle = @fopen("{$pfb['dnsbl_info']}", 'w');
