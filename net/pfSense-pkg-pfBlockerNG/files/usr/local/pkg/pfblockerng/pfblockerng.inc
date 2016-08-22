@@ -98,6 +98,7 @@ $pfb['dnsbl_conf']	= '/var/unbound/pfb_dnsbl_lighty.conf';
 $pfb['dnsbl_cert']	= '/var/unbound/dnsbl_cert.pem';
 $pfb['script']		= '/usr/local/pkg/pfblockerng/pfblockerng.sh';
 $pfb['aliasarchive']	= '/usr/local/etc/aliastables.tar.bz2';
+$pfb['geoip_tmp']	= '/tmp/pfb_continent';
 
 // Unbound files and folders
 $pfb['dnsbl_file']	= '/var/unbound/pfb_dnsbl';	// Filename Extension not referenced
@@ -334,11 +335,23 @@ function pfb_logger($log, $logtype) {
 		$pfb['pnow'] = "{$now}";
 	}
 
+	// Print to pfBlockerNG log and Error log
 	if ($logtype == 2) {
 		@file_put_contents("{$pfb['log']}", "{$log}", FILE_APPEND);
 		@file_put_contents("{$pfb['errlog']}", "{$log}", FILE_APPEND);
+
+	// Print to Extras log
 	} elseif ($logtype == 3) {
 		@file_put_contents("{$pfb['extraslog']}", "{$log}", FILE_APPEND);
+
+	// Print to screen and Extras log
+	} elseif ($logtype == 4) {
+		if (!$g['pfblockerng_install'] && !$pfb['extras_update']) {
+			print "{$log}";
+		}
+		@file_put_contents("{$pfb['extraslog']}", "{$log}", FILE_APPEND);
+
+	// Print to pfBlockerNG log
 	} else {
 		@file_put_contents("{$pfb['log']}", "{$log}", FILE_APPEND);
 	}
@@ -472,6 +485,7 @@ function pfb_cron_base_hour() {
 	global $pfb;
 
 	switch($pfb['interval']) {
+		case 'Disabled':
 		case 1:
 			return;
 			break;
@@ -532,6 +546,35 @@ function pfb_get_gateways() {
 	$gateway = array_merge($gateway_item, $gateway_group);
 
 	return $gateway;
+}
+
+
+// Collect all Interfaces for DNSBL Firewall Permit Rule
+function pfb_build_if_list() {
+	global $config;
+	$pfb_list = array();
+
+	if (is_array($config['ifgroups']['ifgroupentry'])) {
+		foreach ($config['ifgroups']['ifgroupentry'] as $ifgen) {
+			$pfb_list[] = array('name' => $ifgen['ifname'], 'value' => $ifgen['ifname']);
+		}
+	}
+
+	foreach (get_configured_interface_with_descr() as $ifent => $ifdesc) {
+		if ($ifdesc != 'WAN') {
+			$pfb_list[] = array('name' => $ifdesc, 'value' => $ifent);
+		}
+	}
+
+	if (ipsec_enabled()) {
+		$pfb_list[] = array('name' => 'IPsec', 'value' => 'enc0');
+	}
+
+	if ($config['openvpn']['openvpn-server'] || $config['openvpn']['openvpn-client']) {
+		$pfb_list[] = array('name' => 'OpenVPN', 'value' => 'openvpn');
+	}
+
+	return $pfb_list;
 }
 
 
@@ -880,7 +923,7 @@ EOF;
 			// Execute ifconfig to enable VIP address
 			$iface = get_real_interface("{$pfb['dnsbl_iface']}");
 			if (!empty($iface) && !empty($pfb['dnsbl_vip'])) {
-				mwexec('/sbin/ifconfig ' . escapeshellarg($iface) . ' inet '. escapeshellarg("{$pfb['dnsbl_vip']}") . '/32 alias');
+				mwexec('/sbin/ifconfig ' . escapeshellarg("{$iface}") . ' inet '. escapeshellarg("{$pfb['dnsbl_vip']}") . '/32 alias');
 				$log = "VIP address configured. Widget Packet statistics reset.\n";
 				pfb_logger("{$log}", 1);
 				filter_configure();
@@ -910,18 +953,11 @@ EOF;
 			restart_service('dnsbl');
 		}
 	} else {
-		// Determine if VIP exists
-		if (isset($config['virtualip']['vip'])) {
-			foreach ($config['virtualip']['vip'] as $ex_vip) {
-				if (strpos($ex_vip['descr'], 'pfB DNSBL') !== FALSE) {
-					// Execute ifconfig to remove VIP address
-					$iface = get_real_interface("{$pfb['dnsbl_iface']}");
-					if (!empty($iface) && !empty($pfb['dnsbl_vip'])) {
-						mwexec('/sbin/ifconfig ' . escapeshellarg($iface) . ' delete ' . escapeshellarg("{$pfb['dnsbl_vip']}"));
-						filter_configure();
-					}
-				}
-			}
+		// Remove DNSBL VIP address 
+		$iface = get_real_interface("{$pfb['dnsbl_iface']}");
+		if (!empty($iface) && !empty($pfb['dnsbl_vip'])) {
+			mwexec('/sbin/ifconfig ' . escapeshellarg($iface) . ' delete ' . escapeshellarg("{$pfb['dnsbl_vip']}"));
+			filter_configure();
 		}
 
 		if (is_service_running('dnsbl')) {
@@ -1039,7 +1075,7 @@ function tld_analysis() {
 	// Collect TLD Whitelist(s). If configured, create a 'static local-zone' Resolver entry
 	$whitelist = pfbng_text_area_decode($pfb['dnsblconfig']['tldwhitelist'], TRUE, FALSE);
 	$tld_whitelist = array();
-	if (!empty(tld_blacklist) && !empty($whitelist)) {
+	if (!empty($tld_blacklist) && !empty($whitelist)) {
 		foreach ($whitelist as $list) {
 
 			$parts = array_map('trim', explode('|', $list));
@@ -3301,6 +3337,7 @@ function sync_package_pfblockerng($cron='') {
 								$e_skip = $e_found = FALSE;	// Variables for Easylists
 								$iqrisk = FALSE;		// Variable for ET IQRisk
 								$h3x_feed = FALSE;		// Variable for H3x.eu Feed
+								$otx_feed = FALSE;		// Variable for Alienvault OTX Pulse
 								$fail_list = ''; $csvfail = $ipcount = $ip_cnt = 0;
 								if (($fhandle = @fopen("{$file_dwn}.orig", 'r')) !== FALSE) {
 									while (($line = @fgets($fhandle, 3072)) !== FALSE) {
@@ -3365,8 +3402,7 @@ function sync_package_pfblockerng($cron='') {
 											}
 
 											if ($line == '#family,type,url,status,first_seen,first_active,last_active,last_update') {
-												$h3x_feed = TRUE;
-												$liteparser = TRUE;
+												$h3x_feed = $liteparser = TRUE;
 											}
 											continue;
 										}
@@ -3419,15 +3455,20 @@ function sync_package_pfblockerng($cron='') {
 												}
 											}
 
-											// Parse ET IQRisk IPRep domain list
-											elseif ($iqrisk) {
-												$liteparser = TRUE;
-												$line = $csvline[0];
+											// Parse Alienvault OTX pulse
+											elseif ($otx_feed || strpos($csvline[0], 'Indicator type') !== FALSE) {
+												$otx_feed = $liteparser = TRUE;
+												if (count($csvline) == 3 && $csvline[0] == "'domain'") {
+													$line = str_replace("'", '', $csvline[1]);
+												} else {
+													continue;
+												}
 											}
 
-											// Set flag to process ET IQRisk feed
-											if (!$iqrisk && $line == 'domain, category, score') {
-												$iqrisk = TRUE;
+											// Parse ET IQRisk IPRep domain list
+											elseif ($iqrisk || $line == 'domain, category, score') {
+												$iqrisk = $liteparser = TRUE;
+												$line = $csvline[0];
 											}
 										}
 										$line = trim($line);
@@ -3853,27 +3894,42 @@ function sync_package_pfblockerng($cron='') {
 					$pfborig	= $pfbarr['orig'];
 					$logtab		= $pfbarr['logtab'];
 
-					$continent_ex	= array();	// An array of existing Continent IPs
-					$continent	= array();	// An array of updated Continent IPs
-
 					if (!empty($continent_config[$c_type])) {
-						$ccfile = "{$pfb_alias}{$vtype}";
+						$ccfile	= "{$pfb_alias}{$vtype}";
 
-						// Collect selected ISO Country ISOs
-						foreach (explode(',', $continent_config[$c_type]) as $iso) {
-							$isofile = "{$pfb['ccdir']}/{$iso}{$vtype}.txt";
+						// Collect selected GeoIP ISOs
+						if (($pfb_output = @fopen("{$pfb['geoip_tmp']}", 'w')) !== FALSE) {
+							foreach (explode(',', $continent_config[$c_type]) as $iso) {
 
-							if (!empty($iso) && file_exists("{$isofile}")) {
-								$cc_iso = file("{$isofile}", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-								$continent = array_merge($continent, $cc_iso);
+								$isofile = "{$pfb['ccdir']}/{$iso}{$vtype}.txt";
+								if (($handle = @fopen("{$isofile}", 'r')) !== FALSE) {
+									while (($line = @fgets($handle, 1024)) !== FALSE) {
+										@fwrite($pfb_output, $line);
+									}
+								}
+								else {
+									pfb_logger("\nCould not open ISO [ {$iso}{$vtype} ]\n", 1);
+								}
+								@fclose($handle);
 							}
 						}
+						else {
+							pfb_logger("\n[ {$pfb_alias}{$vtype} ] Could not create GeoIP file handle\n", 1);
+						}
+						@fclose($pfb_output);
 
-						// Collect existing Continent data
-						if (file_exists("{$pfborig}/{$ccfile}.orig")) {
-							$continent_ex = file("{$pfborig}/{$ccfile}.orig", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+						// Collect md5 of new Continent data
+						$continent		= 'md5_0';
+						if (file_exists("{$pfb['geoip_tmp']}")) {
+							$continent	= @md5_file("{$pfb['geoip_tmp']}");
 						}
 
+						// Collect md5 of existing Continent data
+						$continent_ex		= 'md5_1';
+						if (file_exists("{$pfborig}/{$ccfile}.orig")) {
+							$continent_ex	= @md5_file("{$pfborig}/{$ccfile}.orig");
+						}
+						
 						// Check if pfBlockerNG pfctl Continent tables are empty (pfBlockerNG was disabled w/ "keep", then re-enabled)
 						$pfctlck = exec("{$pfb['pfctl']} -vvsTables | {$pfb['grep']} -A1 {$pfb_alias}{$vtype} | {$pfb['awk']} '/Addresses/ {s+=$2}; END {print s}'");
 
@@ -3887,8 +3943,8 @@ function sync_package_pfblockerng($cron='') {
 						$pfb_alias_lists_all[] = "{$pfb_alias}{$vtype}";
 
 						// Compare existing (original file) and new Continent data
-						if ($continent === $continent_ex && !empty($pfctlck) &&
-						    file_exists("{$pfbfolder}/{$ccfile}.txt") && $pfb['reuse'] == '') {
+						if ($continent == $continent_ex && !empty($pfctlck)
+						    && file_exists("{$pfbfolder}/{$ccfile}.txt") && $pfb['reuse'] == '') {
 							if (!$pfb['save']) {
 								$log = "\n[ {$pfb_alias}{$vtype} ]{$logtab} exists. [ NOW ]";
 								pfb_logger("{$log}", 1);
@@ -3905,14 +3961,8 @@ function sync_package_pfblockerng($cron='') {
 								// Collect updated alias lists ('Reputation' disabled)
 								$pfb_alias_lists[] = "{$pfb_alias}{$vtype}";
 
-								if (!empty($continent)) {
-									$cont_string = '';
-									foreach ($continent as $ccline) {
-										$cont_string .= "{$ccline}\n";
-									}
-
-									// Save Continent data
-									@file_put_contents("{$pfborig}/{$ccfile}.orig", rtrim($cont_string, "\n"), LOCK_EX);
+								if ($continent != 'md5_0') {
+									@rename("{$pfb['geoip_tmp']}", "{$pfborig}/{$ccfile}.orig");
 									@copy("{$pfborig}/{$ccfile}.orig", "{$pfbfolder}/{$ccfile}.txt");
 
 									// Call Aggregate process
@@ -3972,8 +4022,8 @@ function sync_package_pfblockerng($cron='') {
 			}
 		}
 	}
-	// Unset variables
-	unset ($continent, $continent_ex);
+	// Remove temp file
+	unlink_if_exists("{$pfb['geoip_tmp']}");
 
 	#################################################
 	#	Download and Collect IPv4/IPv6 lists	#
@@ -4707,19 +4757,18 @@ function sync_package_pfblockerng($cron='') {
 			}
 
 			// Define DNSBL 'Floating' pass rule for selected 'OPT' segments to be able to access the LAN DNSBL VIP
-			if ($pfb['enable'] == 'on' && $pfb['dnsbl'] == 'on' && $pfb['dnsbl_rule'] != 'Disabled' && !empty($pfb['dnsblconfig']['dnsbl_allow_int'])) {
-				if (isset($implode_interfaces) && isset($pfb['dnsbl_vip'])) {
-					$rule			= $pfb['base_rule_float'];
-					$rule['tracker']	= pfb_tracker('pfB_DNSBL_Allow_access_to_VIP', '', '');
-					$rule['type']		= 'pass';
-					$rule['direction']	= 'any';
-					$rule['interface']	= $implode_interfaces;
-					$rule['descr']		= 'pfB_DNSBL_Allow_access_to_VIP';
-					$rule['source']		= array('any' => '');
-					$rule['destination']	= array('address' => "{$pfb['dnsbl_vip']}");
-					$rule['created']	= array('time' => (int)microtime(true), 'username' => 'Auto');
-					$new_rules[] = $rule;
-				}
+			if ($pfb['enable'] == 'on' && $pfb['dnsbl'] == 'on' && $pfb['dnsbl_rule'] != 'Disabled'
+			    && !empty($pfb['dnsblconfig']['dnsbl_allow_int']) && isset($pfb['dnsbl_vip'])) {
+				$rule			= $pfb['base_rule_float'];
+				$rule['tracker']	= pfb_tracker('pfB_DNSBL_Allow_access_to_VIP', '', '');
+				$rule['type']		= 'pass';
+				$rule['direction']	= 'any';
+				$rule['interface']	= "{$pfb['dnsblconfig']['dnsbl_allow_int']}";
+				$rule['descr']		= 'pfB_DNSBL_Allow_access_to_VIP';
+				$rule['source']		= array('any' => '');
+				$rule['destination']	= array('address' => "{$pfb['dnsbl_vip']}");
+				$rule['created']	= array('time' => (int)microtime(true), 'username' => 'Auto');
+				$new_rules[] = $rule;
 			}
 
 			// Define inbound interface rules
@@ -5226,7 +5275,7 @@ function sync_package_pfblockerng($cron='') {
 	#########################################
 
 	// Replace CRON job with any user changes to $pfb_min
-	if ($pfb['enable'] == 'on') {
+	if ($pfb['enable'] == 'on' && $pfb['interval'] != 'Disabled') {
 		// Define pfBlockerNG CRON job
 		$pfb_cmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php cron >> {$pfb['log']} 2>&1";
 		// $pfb['min'] ( User defined variable. Variable defined at start of script )
@@ -5257,13 +5306,13 @@ function sync_package_pfblockerng($cron='') {
 
 	if ($pfb['enable'] == 'on') {
 		// Define pfBlockerNG MaxMind CRON job
-		$pfb_gcmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php dc >> {$pfb['extraslog']} 2>&1";
+		$pfb_gcmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php dcc >> {$pfb['extraslog']} 2>&1";
 		// MaxMind GeoIP CRON hour is randomized between 0-23 Hour to minimize effect on MaxMind website
 		$pfb_gmin	= '0';
 		$pfb_ghour	= rand(0,23);
-		$pfb_gmday	= '1,2,3,4,5,6,7';
+		$pfb_gmday	= '1-7';
 		$pfb_gmonth	= '*';
-		$pfb_gwday	= '2';
+		$pfb_gwday	= '*';
 		$pfb_gwho	= 'root';
 
 		// Determine if CRON job requires updating
@@ -5273,7 +5322,7 @@ function sync_package_pfblockerng($cron='') {
 	}
 	else {
 		// Clear any existing pfBlockerNG CRON jobs
-		install_cron_job('pfblockerng.php dc', false);
+		install_cron_job('pfblockerng.php dcc', false);
 	}
 
 
