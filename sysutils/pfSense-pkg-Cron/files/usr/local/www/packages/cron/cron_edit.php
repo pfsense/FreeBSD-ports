@@ -30,6 +30,11 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/cron.inc");
 
+if (!empty($_POST["cancel"])) {
+	header("Location: cron.php");
+	exit;
+}
+
 $a_cron = &$config['cron']['item'];
 
 $id = $_GET['id'];
