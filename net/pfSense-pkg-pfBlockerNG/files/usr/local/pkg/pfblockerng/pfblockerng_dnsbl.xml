@@ -252,9 +252,11 @@
 		</field>
 		<field>
 			<fieldname>dnsbl_allow_int</fieldname>
-			<type>interfaces_selection</type>
+			<type>select_source</type>
+			<source><![CDATA[pfb_build_if_list()]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
 			<width>7</width>
-			<hideinterfaceregex>wan</hideinterfaceregex>
 			<multiple/>
 			<combinefields>end</combinefields>
 		</field>
