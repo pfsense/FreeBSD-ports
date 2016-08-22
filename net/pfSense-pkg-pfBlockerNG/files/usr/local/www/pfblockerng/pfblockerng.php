@@ -740,9 +740,6 @@ function pfblockerng_get_countries() {
 		// Process the following for IPv4 and IPv6
 		foreach (array('4', '6') as $type) {
 
-			$log = " IPv{$type} {$cont}{$tab} [ NOW ]\n";
-			pfb_logger("{$log}", 4);
-
 			$cont_length = strlen($cont);
 			if ($cont_length < 8) {
 				$tab = "\t\t\t";
@@ -751,6 +748,9 @@ function pfblockerng_get_countries() {
 			} else {
 				$tab = "\t";
 			}
+
+			$log = " IPv{$type} {$cont}{$tab} [ NOW ]\n";
+			pfb_logger("{$log}", 4);
 
 			if ($type == '6') {
 				$file = str_replace('v4', 'v6', $file);
