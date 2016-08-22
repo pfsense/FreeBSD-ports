@@ -47,6 +47,7 @@ $maxmind_verify = 0;
 if (!file_exists("{$pfb['geoipshare']}/{$pfb['extras'][0]['file']}") ||
     !file_exists("{$pfb['geoipshare']}/{$pfb['extras'][1]['file']}") ||
     !file_exists("{$pfb['geoipshare']}/GeoLite2-Country-Blocks-IPv4.csv") ||
+    !file_exists("{$pfb['ccdir']}/A1_ZW_rep_v4.txt") ||
     !file_exists("{$pfb['dbdir']}/GeoIP_Locale")) {
 
 	update_status("\nDownloading MaxMind GeoIP databases. This may take a minute...\n");
@@ -331,6 +332,9 @@ if ($ufound) {
 if (isset($config['installedpackages']['pfblockerngantartica'])) {
 	unset($config['installedpackages']['pfblockerngantartica']);
 }
+
+// Remove discontinued pfBlockerNG CRON job
+install_cron_job('pfblockerng.php dc >>', false);
 
 unset($g['pfblockerng_install']);	// Remove 'Install flag'
 update_status("Custom commands completed ... ");
