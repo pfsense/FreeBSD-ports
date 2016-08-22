@@ -223,7 +223,7 @@ if ($pfb['enable'] == 'on') {
 	$nextcron = "{$hour_final}:{$min_final}:{$sec_final}";
 }
 
-if (empty($pfb['enable']) || empty($cron_hour_next)) {
+if (empty($pfb['enable']) || empty($cron_hour_next) || $pfb['interval'] == 'Disabled') {
 	$cronreal = ' [ Disabled ]';
 	$nextcron = '--';
 }
