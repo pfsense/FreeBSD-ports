@@ -823,7 +823,7 @@ function pfblockerng_get_countries() {
 
 					// Save last EOF ISO IP data
 					if ($linenum == $lastline) {
-						// Don't collect Countries with null data
+						// Create placeholder for null ISO Data or 'undefined ISO Represented'
 						if (strpos($line, 'Total Networks: 0') !== FALSE ||
 						    ($type == '4' && strpos($line, 'Total Networks: NA') !== FALSE)) {
 							@file_put_contents("{$pfb['ccdir']}/{$isocode}_v{$type}.txt", '', LOCK_EX);
