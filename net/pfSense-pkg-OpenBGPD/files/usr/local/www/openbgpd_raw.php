@@ -33,7 +33,7 @@ require("openbgpd.inc");
 global $config;
 
 if (isset($_POST['openbgpd_raw'])) {
-	openbgpd_put_raw_config($_POST['openbgpd_raw']);
+	openbgpd_put_raw_config(base64_encode($_POST['openbgpd_raw']));
 	write_config();
 	openbgpd_install_conf();
 }
