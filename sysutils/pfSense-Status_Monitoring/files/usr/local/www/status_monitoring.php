@@ -533,7 +533,7 @@ if ($savemsg) {
 	<div class="panel-body">
 		<div class="alert alert-info" id="loading-msg">Loading Graph...</div>
 		<div id="chart-error" class="alert alert-danger" style="display: none;"></div>
-		<div id="chart" class="with-3d-shadow with-transitions">
+		<div id="monitoring-chart" class="d3-chart">
 			<svg></svg>
 		</div>
 	</div>
@@ -819,7 +819,7 @@ events.push(function() {
 
 			if(!start || !end) {
 				error = "Invalid Date/Time in Custom Period."
-				$("#chart").hide();
+				$("#monitoring-chart").hide();
 				$("#chart-error").show().html('<strong>Error</strong>: ' + error);
 				console.warn(error);
 				return false;
@@ -962,7 +962,7 @@ events.push(function() {
 	applySettings("<?php echo $pconfig['category']; ?>");
 
 	$( ".update-graph" ).click(function() {
-		$("#chart").hide();
+		$("#monitoring-chart").hide();
 		$("#loading-msg").show();
 		$("#chart-error").hide();
 		draw_graph(getOptions());
@@ -986,13 +986,13 @@ events.push(function() {
 			.post(getOptions(), function(error, json) {
 
 				if (error) {
-					$("#chart").hide();
+					$("#monitoring-chart").hide();
 					$("#chart-error").show().html('<strong>Error</strong>: ' + error);
 					return console.warn(error);
 				}
 
 				if (json.error) {
-					$("#chart").hide();
+					$("#monitoring-chart").hide();
 					$("#chart-error").show().html('<strong>Error</strong>: ' + json.error);
 					return console.warn(json.error);
 				}
@@ -1056,21 +1056,21 @@ events.push(function() {
 			.header("Content-Type", "application/x-www-form-urlencoded")
 			.post(options, function(error, json) {
 
-			$("#chart").show();
+			$("#monitoring-chart").show();
 			$("#loading-msg").hide();
 
 			d3.select("svg").remove(); //delete previous svg so it can be drawn from scratch
 			d3.select("div[id^=nvtooltip-]").remove(); //delete previous tooltip in case it gets hung
-			d3.select('#chart').append('svg'); //re-add blank svg so it and be drawn on
+			d3.select('#monitoring-chart').append('svg'); //re-add blank svg so it and be drawn on
 
 			if (error) {
-				$("#chart").hide();
+				$("#monitoring-chart").hide();
 				$("#chart-error").show().html('<strong>Error</strong>: ' + error);
 				return console.warn(error);
 			}
 
 			if (json.error) {
-				$("#chart").hide();
+				$("#monitoring-chart").hide();
 				$("#chart-error").show().html('<strong>Error</strong>: ' + json.error);
 				return console.warn(json.error);
 			}
@@ -1125,7 +1125,7 @@ events.push(function() {
 				//add left title
 				var leftTitle = $("#category-left option:selected").text() + " -- " + $("#graph-left option:selected").text();
 				
-				d3.select('#chart svg')
+				d3.select('#monitoring-chart svg')
 					.append("text")
 					.attr("x", 150)
 					.attr("y", 11)
@@ -1150,7 +1150,7 @@ events.push(function() {
 
 				//add right title
 				var rightTitle = $("#category-right option:selected").text() + " -- " + $("#graph-right option:selected").text();
-				d3.select('#chart svg')
+				d3.select('#monitoring-chart svg')
 					.append("text")
 					.attr("x", 150)
 					.attr("y", 28)
@@ -1159,7 +1159,7 @@ events.push(function() {
 
 				//add system name
 				var systemName = '<?=htmlspecialchars($config['system']['hostname'] . "." . $config['system']['domain']); ?>';
-				d3.select('#chart svg')
+				d3.select('#monitoring-chart svg')
 					.append("text")
 					.attr("x", 100)
 					.attr("y", 415)
@@ -1168,7 +1168,7 @@ events.push(function() {
 
 				//add time period
 				var timePeriod = $("#time-period option:selected").text();
-				d3.select('#chart svg')
+				d3.select('#monitoring-chart svg')
 					.append("text")
 					.attr("x", 330)
 					.attr("y", 415)
@@ -1177,7 +1177,7 @@ events.push(function() {
 
 				//add resolution
 				var Resolution = $("#resolution option:selected").text();
-				d3.select('#chart svg')
+				d3.select('#monitoring-chart svg')
 					.append("text")
 					.attr("x", 530)
 					.attr("y", 415)
@@ -1186,7 +1186,7 @@ events.push(function() {
 
 				//add last updated date
 				var currentDate = d3.time.format('%a %b %d %H:%M:%S %Y')(new Date(data[0].last_updated));
-				d3.select('#chart svg')
+				d3.select('#monitoring-chart svg')
 					.append("text")
 					.attr("x", 755)
 					.attr("y", 415)
@@ -1246,7 +1246,7 @@ events.push(function() {
 
 				});
 
-				d3.select('#chart svg')
+				d3.select('#monitoring-chart svg')
 				   .datum(data)
 				   .transition()
 				   .duration(500)
@@ -1346,7 +1346,7 @@ events.push(function() {
 	if(!rrdEnabled) {
 
 		$("#loading-msg").hide();
-		$("#chart").hide();
+		$("#monitoring-chart").hide();
 		$("#chart-error").show().html('<strong>Error</strong>: RRD graphs are not enabled. Enable in the Settings above.');
 
 	} else {
