@@ -57,10 +57,9 @@ function openbgpd_install_conf() {
 
 	// Since we need to embed this in a string, copy to a var. Can't embed constants.
 	$bgpd_config_base = PKG_BGPD_CONFIG_BASE;
-	if ($config['installedpackages']['openbgpd']['rawconfig'] && $config['installedpackages']['openbgpd']['rawconfig']['item']) {
+	if (isset($config['installedpackages']['openbgpd']['rawconfig']) && !empty($config['installedpackages']['openbgpd']['rawconfig'])) {
 		// If there is a raw config specified in the config.xml, use that instead of the assisted config
-		$conffile = implode("\n", $config['installedpackages']['openbgpd']['rawconfig']['item']);
-		//$conffile = $config['installedpackages']['openbgpd']['rawconfig'];
+		$conffile = base64_decode($config['installedpackages']['openbgpd']['rawconfig']);
 	} else {
 		// Generate bgpd.conf based on the assistant
 		if ($config['installedpackages']['openbgpd']['config']) {
