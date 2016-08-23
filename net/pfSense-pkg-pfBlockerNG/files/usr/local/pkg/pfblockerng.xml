@@ -157,6 +157,7 @@
 				<option><name>Every 8 hours</name><value>8</value></option>
 				<option><name>Every 12 hours</name><value>12</value></option>
 				<option><name>Once a day</name><value>24</value></option>
+				<option><name>Disabled</name><value>Disabled</value></option>
 			</options>
 			<default_value>1</default_value>
 			<combinefields/>

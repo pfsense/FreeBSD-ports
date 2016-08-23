@@ -586,6 +586,7 @@ ciscofreak.com
 cloudcontrolapp.com
 cloudcontrolled.com
 cn.com
+cns.joyent.com
 co.com
 codespot.com
 damnserver.com
@@ -765,7 +766,11 @@ meteorapp.com
 eu.meteorapp.com
 mex.com
 myactivedirectory.com
+myasustor.com
 mydrobo.com
+dev-myqnapcloud.com
+alpha-myqnapcloud.com
+myqnapcloud.com
 mysecuritycamera.com
 myshopblocks.com
 myvnc.com
@@ -1212,6 +1217,7 @@ plc.co.im
 com.im
 net.im
 org.im
+ro.im
 tt.im
 tv.im
 ac.in
@@ -1244,6 +1250,7 @@ webhop.info
 eu.int
 backplaneapp.io
 boxfuse.io
+browsersafetymark.io
 com.io
 dedyn.io
 drud.io
@@ -3539,6 +3546,8 @@ re.kr
 sc.kr
 seoul.kr
 ulsan.kr
+co.krd
+edu.krd
 com.kw
 edu.kw
 gov.kw
@@ -3555,6 +3564,7 @@ gov.kz
 mil.kz
 net.kz
 org.kz
+bnr.la
 c.la
 com.la
 edu.la
@@ -3576,6 +3586,9 @@ gov.lc
 net.lc
 org.lc
 oy.lc
+static.land
+dev.static.land
+sites.static.land
 blogspot.li
 cyon.link
 mypep.link
@@ -5496,6 +5509,7 @@ is-very-good.org
 is-very-nice.org
 is-very-sweet.org
 isa-geek.org
+js.org
 kicks-ass.org
 misconfused.org
 mlbfan.org
@@ -5521,6 +5535,7 @@ tuxfamily.org
 ufcfan.org
 us.org
 webhop.org
+wmflabs.org
 za.org
 zapto.org
 nerdpol.ovh
@@ -5863,6 +5878,7 @@ nom.ro
 nt.ro
 org.ro
 rec.ro
+shop.ro
 store.ro
 tm.ro
 www.ro
@@ -6112,6 +6128,7 @@ univ.sn
 com.so
 net.so
 org.so
+stackspace.space
 co.st
 com.st
 consulado.st
@@ -6736,6 +6753,7 @@ mil.zm
 net.zm
 org.zm
 sch.zm
+triton.zone
 ac.zw
 co.zw
 org.zw
