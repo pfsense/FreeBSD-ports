@@ -287,12 +287,13 @@ function openbgpd_get_raw_config() {
 // Serialize the raw openbgpd config file to config.xml
 function openbgpd_put_raw_config($conffile) {
 	global $config;
+	if (!isset($config['installedpackages']['openbgpd']['rawconfig'])) {
+		$config['installedpackages']['openbgpd']['rawconfig'] = array();
+	}
 	if ($conffile == "") {
 		unset($config['installedpackages']['openbgpd']['rawconfig']);
 	} else {
-		$config['installedpackages']['openbgpd']['rawconfig'] = array();
-		$config['installedpackages']['openbgpd']['rawconfig']['item'] = explode("\n", $_POST['openbgpd_raw']);
-		//$config['installedpackages']['openbgpd']['rawconfig'] = $conffile;
+		$config['installedpackages']['openbgpd']['rawconfig'] = $conffile;
 	}
 }
 
