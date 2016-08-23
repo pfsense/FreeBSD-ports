@@ -346,8 +346,15 @@ function pfb_logger($log, $logtype) {
 
 	// Print to screen and Extras log
 	} elseif ($logtype == 4) {
+		
+		// Print to screen
 		if (!$g['pfblockerng_install'] && !$pfb['extras_update']) {
 			print "{$log}";
+		}
+		
+		// Print to Installation window
+		if ($g['pfblockerng_install']) {
+			update_status("{$log}");
 		}
 		@file_put_contents("{$pfb['extraslog']}", "{$log}", FILE_APPEND);
 
