@@ -404,7 +404,7 @@ display_top_tabs($tab_array);
 	<div class="panel-body">
 		<div class="alert alert-info" id="loading-msg">Loading Graph...</div>
 		<div id="chart-error" class="alert alert-danger" style="display: none;"></div>
-		<div id="chart" class="with-3d-shadow with-transitions">
+		<div id="traffic-totals-chart" class="d3-chart">
 			<svg></svg>
 		</div>
 	</div>
@@ -522,7 +522,7 @@ events.push(function() {
 
 				var errorMsg = raw_json.error;
 
-				$("#chart").hide();
+				$("#traffic-totals-chart").hide();
 				$("#loading-msg").hide();
 				
 				//check if interface databases don't exist
@@ -550,7 +550,7 @@ events.push(function() {
 			//The Top 10 logic doesn't work with more than one interface
 			if(timePeriod === "top" && interfaces.length > 1) {
 
-				$("#chart").hide();
+				$("#traffic-totals-chart").hide();
 				$("#loading-msg").hide();
 				$('#summary tbody').empty();
 				$('#summary thead').empty();
@@ -889,12 +889,12 @@ events.push(function() {
 
 			});
 
-			$("#chart").show();
+			$("#traffic-totals-chart").show();
 			$("#loading-msg").hide();
 
 			d3.select("svg").remove(); //delete previous svg so it can be drawn from scratch
 			d3.select("div[id^=nvtooltip-]").remove(); //delete previous tooltip in case it gets hung
-			d3.select('#chart').append('svg'); //re-add blank svg so it and be drawn on
+			d3.select('#traffic-totals-chart').append('svg'); //re-add blank svg so it and be drawn on
 
 			var data = json;
 			var offset = 0;
@@ -967,7 +967,7 @@ events.push(function() {
 
 				//add system name
 				var systemName = '<?=htmlspecialchars($config['system']['hostname'] . "." . $config['system']['domain']); ?>';
-				d3.select('#chart svg')
+				d3.select('#traffic-totals-chart svg')
 					.append("text")
 					.attr("x", 225)
 					.attr("y", 415)
@@ -976,7 +976,7 @@ events.push(function() {
 
 				//add time period
 				var timePeriod = $( "li.active" ).text();
-				d3.select('#chart svg')
+				d3.select('#traffic-totals-chart svg')
 					.append("text")
 					.attr("x", 480)
 					.attr("y", 415)
@@ -987,7 +987,7 @@ events.push(function() {
 				//TODO change to updated date
 				//console.log(raw_json.interfaces[0].updated);
 				var currentDate = d3.time.format('%b %d, %Y %H:%M')(new Date());
-				d3.select('#chart svg')
+				d3.select('#traffic-totals-chart svg')
 					.append("text")
 					.attr("x", 680)
 					.attr("y", 415)
@@ -1043,7 +1043,7 @@ events.push(function() {
 
 				});
 
-				d3.select('#chart svg')
+				d3.select('#traffic-totals-chart svg')
 				   .datum(data)
 				   .transition()
 				   .duration(500)
@@ -1061,7 +1061,7 @@ events.push(function() {
 
 		})
 		.fail(function(error) {
-			$("#chart").hide();
+			$("#traffic-totals-chart").hide();
 			$("#chart-error").show().html('<strong>Error</strong>: ' + error);
 			
 			console.warn(error);
@@ -1301,7 +1301,7 @@ events.push(function() {
 	}
 
 	$( ".update-graph" ).click(function() {
-		$("#chart").hide();
+		$("#traffic-totals-chart").hide();
 		$("#loading-msg").show();
 		$("#chart-error").hide();
 		draw_graph();
@@ -1313,7 +1313,7 @@ events.push(function() {
 
 		$("#time-period").val($(this).find("a").attr('href').substring(1));
 
-		$("#chart").hide();
+		$("#traffic-totals-chart").hide();
 		$("#loading-msg").show();
 		$("#chart-error").hide();
 		draw_graph();
