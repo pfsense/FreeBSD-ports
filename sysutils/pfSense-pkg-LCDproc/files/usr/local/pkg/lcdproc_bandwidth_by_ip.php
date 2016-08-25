@@ -20,9 +20,9 @@
 
 /*
  * This file is copied from bandwidth_by_ip.php
- * This file must not be placed in the www directory, unlike 
- * bandwidth_by_ip.php it does not check for a authenticated 
- * user session. 
+ * This file must not be placed in the www directory, because unlike 
+ * bandwidth_by_ip.php it does not check for an authenticated user
+ * session. 
  *
  * It is used locally by lcdproc_client.php 
  */ 
