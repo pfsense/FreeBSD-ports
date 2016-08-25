@@ -7,14 +7,9 @@ MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	treer.git@gmail.com
+MAINTAINER=	coreteam@pfsense.org
 COMMENT=	LCDproc package for pfSense
 
-# If your build machine fails with "License not correctly defined", try replacing bsd.licenses.db.mk as follows:
-#    cd /usr/ports/Templates/Licenses
-#    curl -o ESF https://raw.githubusercontent.com/pfsense/FreeBSD-ports/devel/Templates/Licenses/ESF
-#    cd /usr/ports/Mk
-#    curl -o bsd.licenses.db.mk https://raw.githubusercontent.com/pfsense/FreeBSD-ports/devel/Mk/bsd.licenses.db.mk
 LICENSE=	ESF
 
 NO_BUILD=	yes
@@ -23,20 +18,7 @@ NO_MTREE=	yes
 SUB_FILES=	pkg-install pkg-deinstall
 SUB_LIST=	PORTNAME=${PORTNAME}
 
-# Until the sysutils/lcdproc port is included in the pfSense-core repository catalogue
-# you may have to install it manually using the following commands:
-#   32bit:
-#      pkg install print/freetype2
-#      (or pkg add http://pkg.freebsd.org/freebsd:10:x86:32/release_3/All/freetype2-2.6.2.txz)
-#      pkg add http://pkg.freebsd.org/freebsd:10:x86:32/release_3/All/lcdproc-0.5.7_2.txz
-#   64bit:
-#      pkg install print/freetype2
-#      (or pkg add http://pkg.freebsd.org/freebsd:10:x86:64/release_3/All/freetype2-2.6.2.txz)
-#      pkg add http://pkg.freebsd.org/freebsd:10:x86:64/release_3/All/lcdproc-0.5.7_2.txz
 RUN_DEPENDS=	${LOCALBASE}/sbin/LCDd:sysutils/lcdproc
-
-# the sysutils/lcdproc port already has this dependency
-#LIB_DEPENDS=	libfreetype.so:print/freetype2
 
 do-extract:
 	${MKDIR} ${WRKSRC}

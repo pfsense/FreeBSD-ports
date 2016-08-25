@@ -182,7 +182,7 @@ $section->addInput(
 	new Form_Checkbox(
 		'scr_carp', // checkbox name (id)
 		'Carp', // checkbox label
-		'Show CARP state', // checkbox text
+		'Display CARP state', // checkbox text
 		$pconfig['scr_carp'] // checkbox initial value
 	)
 );
@@ -190,7 +190,7 @@ $section->addInput(
 	new Form_Checkbox(
 		'scr_ipsec', // checkbox name (id)
 		'IPsec', // checkbox label
-		'Show IPsec tunnels', // checkbox text
+		'Display IPsec tunnels', // checkbox text
 		$pconfig['scr_ipsec'] // checkbox initial value
 	)
 );
@@ -198,7 +198,7 @@ $section->addInput(
 	new Form_Checkbox(
 		'scr_slbd', // checkbox name (id)
 		'Load Balancer', // checkbox label
-		'Show the load balance state', // checkbox text
+		'Display the load balance state', // checkbox text
 		$pconfig['scr_slbd'] // checkbox initial value
 	)
 );
@@ -206,7 +206,7 @@ $section->addInput(
 	new Form_Checkbox(
 		'scr_interfaces', // checkbox name (id)
 		'Interfaces', // checkbox label
-		'Show whether interfaces are up', // checkbox text
+		'Display status of interfaces', // checkbox text
 		$pconfig['scr_interfaces'] // checkbox initial value
 	)
 );
@@ -214,7 +214,7 @@ $section->addInput(
 	new Form_Checkbox(
 		'scr_mbuf', // checkbox name (id)
 		'Mbuf', // checkbox label
-		'Show the MBuf usage', // checkbox text
+		'Display the MBuf usage', // checkbox text
 		$pconfig['scr_mbuf'] // checkbox initial value
 	)
 );
@@ -222,7 +222,7 @@ $section->addInput(
 	new Form_Checkbox(
 		'scr_cpufrequency', // checkbox name (id)
 		'CPU Frequency', // checkbox label
-		'Show when CPU speed is lowered to save power', // checkbox text
+		'Display CPU power saving rate', // checkbox text
 		$pconfig['scr_cpufrequency'] // checkbox initial value
 	)
 );
@@ -266,11 +266,11 @@ $section->addInput(
 )->setHelp('A 4&hyphen;row 20&hyphen;column display size, or higher, is recommended for this screen.');
 
 
-$group = new Form_Group('Traffic by address');
+$group = new Form_Group('Addresses by traffic');
 $group->add(new Form_Checkbox(
 		'scr_traffic_by_address',
 		'',
-		'Show IP traffic:',
+		'Display IP traffic:',
 		$pconfig['scr_traffic_by_address']
 ));
 $group->add(new Form_Select(
