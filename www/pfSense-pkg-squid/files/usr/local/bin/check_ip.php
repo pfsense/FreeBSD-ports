@@ -40,35 +40,28 @@ if (!defined(STDOUT)) {
 	define("STDOUT", fopen('php://stdout', 'w'));
 }
 while (!feof(STDIN)) {
-	$line = trim(fgets(STDIN));
-	$files = glob("{$g['vardb_path']}/captive.*db");
-	$answer="ERR";
-	foreach ($files as $file) {
-		$result = squid_cp_read_db($file);
-		//1419045939,1419045939,2000,2000,192.168.10.11,192.168.10.11,08:00:27:5c:e1:ee,08:00:27:5c:e1:ee,marcello,marcello,605a1f46e2d64556,605a1f46e2d64556,,,,,,,,,,,first,first
-		foreach ($result as $row) {
-			if ($row[4] != "" && $row[4] == $line) {
-				$answer = "OK user={$row[8]}";
-				break 2;
-			}
+	$check_ip = trim(fgets(STDIN));
+	$dbs = glob("{$g['vardb_path']}/captiveportal*.db");
+
+	foreach ($dbs as $db) {
+		if(!strpos($db, "_radius")) {
+			$status = squid_check_ip($db, $check_ip);
+			break;
 		}
 	}
-	fwrite(STDOUT, "{$answer}\n");
+	if (isset($status)) {
+		fwrite(STDOUT, "OK user={$status}\n");
+	} else {
+		fwrite(STDOUT, "ERR\n");
+	}
 }
-/* read captive portal DB into array */
-function squid_cp_read_db($file) {
-	$cpdb = array();
-	$DB = new SQLite3($file);
-	if ($DB) {
-		$response = $DB->query("SELECT * FROM captiveportal");
-		if ($response != FALSE) {
-			while ($row = $response->fetchArray()) {
-				$cpdb[] = $row;
-			}
-		}
-		$DB->close();
+
+function squid_check_ip($db, $check_ip) {
+	exec("sqlite3 {$db} \"SELECT ip FROM captiveportal WHERE ip='{$check_ip}'\"", $ip);
+	if ($check_ip == $ip[0]) {
+		exec("sqlite3 {$db} \"SELECT username FROM captiveportal WHERE ip='{$check_ip}'\"", $user);
+		return $user[0];
 	}
-	return $cpdb;
 }
 
 ?>
