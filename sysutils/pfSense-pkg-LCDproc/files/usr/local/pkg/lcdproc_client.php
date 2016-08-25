@@ -1191,7 +1191,9 @@ function loop_status($lcd) {
 					if ($interfaceTrafficList == null) $interfaceTrafficList = build_interface_traffic_stats_list(); // We only want build_interface_traffic_stats_list() to be called once per loop, and only if it's needed
 					$interfaceTrafficStrings = get_top_interfaces_by_bytes_today($interfaceTrafficList, $lcdpanel_width);
 
-					$title = ($lcdpanel_width >= 20) ? "Total today   IN/OUT" : "Today   IN / OUT";
+					// TODO: Make counters show daily totals
+					//$title = ($lcdpanel_width >= 20) ? "Total today   IN/OUT" : "Today   IN / OUT";
+					$title = ($lcdpanel_width >= 20) ? "Total         IN/OUT" : "Total   IN / OUT";
 					$lcd_cmds[] = "widget_set $name title_wdgt 1 1 \"{$title}\"";
 
 					for($i = 0; $i < ($lcdpanel_height - 1) && i < count($interfaceTrafficStrings); $i++) {
