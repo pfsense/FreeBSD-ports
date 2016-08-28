@@ -887,11 +887,6 @@ function build_interface($lcd) {
 	if (is_array($lcdproc_screens_config)) {
 		foreach ($lcdproc_screens_config as $name => $screen) {
 
-			// Every time I restarted lcdproc, more duplicate screens would get created on the LCD,
-			// deleting screens before building them seems to automatically avoid this without any
-			// side-effects that I've noticed.
-			$lcd_cmds[] = "screen_del $name";
-
 			if ($screen == "on" || $screen == "yes" ) {
 
 				$includeSummary = true;
