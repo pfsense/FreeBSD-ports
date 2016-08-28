@@ -53,6 +53,7 @@ if (!isset($pconfig['scr_cpufrequency']))                    $pconfig['scr_cpufr
 if (!isset($pconfig['scr_traffic']))                         $pconfig['scr_traffic']                         = false;
 if (!isset($pconfig['scr_traffic_interface']))               $pconfig['scr_traffic_interface']               = '';
 if (!isset($pconfig['scr_top_interfaces_by_bps']))           $pconfig['scr_top_interfaces_by_bps']           = false;
+if (!isset($pconfig['scr_top_interfaces_by_total_bytes']))   $pconfig['scr_top_interfaces_by_total_bytes']   = false;
 if (!isset($pconfig['scr_top_interfaces_by_bytes_today']))   $pconfig['scr_top_interfaces_by_bytes_today']   = false;
 if (!isset($pconfig['scr_traffic_by_address']))              $pconfig['scr_traffic_by_address']              = false;
 if (!isset($pconfig['scr_traffic_by_address_if']))           $pconfig['scr_traffic_by_address_if']           = '';
@@ -83,6 +84,7 @@ if ($_POST) {
 		$lcdproc_screens_config['scr_traffic']                         = $pconfig['scr_traffic'];
 		$lcdproc_screens_config['scr_traffic_interface']               = $pconfig['scr_traffic_interface'];
 		$lcdproc_screens_config['scr_top_interfaces_by_bps']           = $pconfig['scr_top_interfaces_by_bps'];
+		$lcdproc_screens_config['scr_top_interfaces_by_total_bytes']   = $pconfig['scr_top_interfaces_by_total_bytes'];
 		$lcdproc_screens_config['scr_top_interfaces_by_bytes_today']   = $pconfig['scr_top_interfaces_by_bytes_today'];
 		$lcdproc_screens_config['scr_traffic_by_address']              = $pconfig['scr_traffic_by_address'];
 		$lcdproc_screens_config['scr_traffic_by_address_if']           = $pconfig['scr_traffic_by_address_if'];
@@ -233,7 +235,7 @@ $group->add(
 	new Form_Checkbox(
 		'scr_traffic', // checkbox name (id)
 		'', // checkbox label
-		'Display interface traffic for:', // checkbox text
+		'Display total bytes since last boot (in & out), for interface:', // checkbox text
 		$pconfig['scr_traffic'] // checkbox initial value
 	)
 );
@@ -251,16 +253,25 @@ $section->addInput(
 	new Form_Checkbox(
 		'scr_top_interfaces_by_bps', // checkbox name (id)
 		'Interfaces by traffic', // checkbox label
-		'List interfaces, ordered by bits-per-second (in & out)', // checkbox text
+		'Interfaces listed with current bits-per-second (in & out)', // checkbox text
 		$pconfig['scr_top_interfaces_by_bps'] // checkbox initial value
 	)
 )->setHelp('A 4&hyphen;row 20&hyphen;column display size, or higher, is recommended for this screen.');
 
 $section->addInput(
 	new Form_Checkbox(
-		'scr_top_interfaces_by_bytes_today', // checkbox name (id)
+		'scr_top_interfaces_by_total_bytes', // checkbox name (id)
 		'Interfaces by volume', // checkbox label
-		'List interfaces, ordered by total bytes today (in & out)', // checkbox text
+		'Interfaces listed with total bytes since last boot (in & out)', // checkbox text
+		$pconfig['scr_top_interfaces_by_total_bytes'] // checkbox initial value
+	)
+)->setHelp('A 4&hyphen;row 20&hyphen;column display size, or higher, is recommended for this screen.');
+
+$section->addInput(
+	new Form_Checkbox(
+		'scr_top_interfaces_by_bytes_today', // checkbox name (id)
+		'Interfaces by volume today', // checkbox label
+		'Interfaces listed with total bytes since the start of the day, or since LCDproc reset (in & out)', // checkbox text
 		$pconfig['scr_top_interfaces_by_bytes_today'] // checkbox initial value
 	)
 )->setHelp('A 4&hyphen;row 20&hyphen;column display size, or higher, is recommended for this screen.');

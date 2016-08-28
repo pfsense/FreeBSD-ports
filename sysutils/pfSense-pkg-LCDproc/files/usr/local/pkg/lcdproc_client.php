@@ -555,6 +555,7 @@ function build_interface_traffic_stats_list() {
 		$interfaceStats = pfSense_get_interface_stats($interfaceName);
 
 		calculate_interfaceBytesPerSecond_sinceLastChecked($interfaceName, $interfaceStats, $in_Bps, $out_Bps);
+		calculate_bytesToday($interfaceName, $interfaceStats, $in_bytesToday, $out_bytesToday);
 
 		$entry = array();
 		$entry['descr']       = $description;
@@ -567,12 +568,20 @@ function build_interface_traffic_stats_list() {
 		$entry['out_bytes']   = $interfaceStats['outbytes'];
 		$entry['total_bytes'] = $interfaceStats['inbytes'] + $interfaceStats['outbytes'];
 
+		$entry['in_bytes_today']    = $in_bytesToday;
+		$entry['out_bytes_today']   = $out_bytesToday;
+		$entry['total_bytes_today'] = $in_bytesToday + $out_bytesToday;
+		
 		$result[$interface['if']] = $entry;
 	}
 	return $result;
 }
 
-function sort_interface_list_by_bytesToday(&$interfaceTrafficStatsList) {
+function sort_interface_list_by_bytes_today(&$interfaceTrafficStatsList) {
+	uasort($interfaceTrafficStatsList, "cmp_total_bytes_today");
+}
+
+function sort_interface_list_by_total_bytes(&$interfaceTrafficStatsList) {
 	uasort($interfaceTrafficStatsList, "cmp_total_bytes");
 }
 
@@ -583,15 +592,19 @@ function sort_interface_list_by_bps(&$interfaceTrafficStatsList) {
 function cmp_total_Bps($a, $b)
 {
 	if ($a['total_Bps'] == $b['total_Bps']) return 0;
-
 	return ($a['total_Bps'] < $b['total_Bps']) ? 1 : -1;
 }
 
 function cmp_total_bytes($a, $b)
 {
 	if ($a['total_bytes'] == $b['total_bytes']) return 0;
-
 	return ($a['total_bytes'] < $b['total_bytes']) ? 1 : -1;
+}
+
+function cmp_total_bytes_today($a, $b)
+{
+	if ($a['total_bytes_today'] == $b['total_bytes_today']) return 0;
+	return ($a['total_bytes_today'] < $b['total_bytes_today']) ? 1 : -1;
 }
 
 function calculate_interfaceBytesPerSecond_sinceLastChecked($interfaceName, $interfaceStats, &$in_Bps, &$out_Bps) {
@@ -615,6 +628,23 @@ function calculate_interfaceBytesPerSecond_sinceLastChecked($interfaceName, $int
 	$traffic_last_ifin[$interfaceName]  = (double)$interfaceStats['inbytes'];
 	$traffic_last_ifout[$interfaceName] = (double)$interfaceStats['outbytes'];
 }
+
+function calculate_bytesToday($interfaceName, $interfaceStats, &$in_bytesToday, &$out_bytesToday) {
+
+	global $traffic_last_hour, $traffic_startOfDay_ifin, $traffic_startOfDay_ifout;
+	
+	$hourOfDay = getdate()['hours'];
+	
+	if (!isset($traffic_last_hour[$interfaceName]) || ($hourOfDay < $traffic_last_hour[$interfaceName])) {
+		$traffic_startOfDay_ifin[$interfaceName]  = (double)$interfaceStats['inbytes'];
+		$traffic_startOfDay_ifout[$interfaceName] = (double)$interfaceStats['outbytes'];	
+	}
+	$traffic_last_hour[$interfaceName] = $hourOfDay;
+	
+	$in_bytesToday  = ((double)$interfaceStats['inbytes']  - $traffic_startOfDay_ifin[$interfaceName]);
+	$out_bytesToday = ((double)$interfaceStats['outbytes'] - $traffic_startOfDay_ifout[$interfaceName]);
+}
+
 
 function format_interface_string($interfaceEntry, $in_key, $out_key, $output_in_bits, $outputLength) {
 
@@ -719,7 +749,7 @@ function get_top_interfaces_by_bps($interfaceTrafficList, $lcdpanel_width, $lcdp
 	if (count($interfaceTrafficList) < $lcdpanel_height) {
 		// All the interfaces will fit on the screen, so use the same sort order as
 		// the bytes_today screen, so that the interfaces stay in one place (much easier to read)
-		sort_interface_list_by_bytesToday($interfaceTrafficList);
+		sort_interface_list_by_total_bytes($interfaceTrafficList);
 	} else {
 		// We can't show all the interfaces, so show the ones with the most traffic
 		sort_interface_list_by_bps($interfaceTrafficList);
@@ -734,15 +764,34 @@ function get_top_interfaces_by_bps($interfaceTrafficList, $lcdpanel_width, $lcdp
 function get_top_interfaces_by_bytes_today($interfaceTrafficList, $lcdpanel_width) {
 
 	$result = array();
+	
+	if (count($interfaceTrafficList) < $lcdpanel_height) {
+		// All the interfaces will fit on the screen, so use the same sort order as
+		// the bytes_today screen and the bps screen, so that the interfaces stay in 
+		// one place (much easier to read)
+		sort_interface_list_by_total_bytes($interfaceTrafficList);
+	} else {
+		// We can't show all the interfaces, so show the ones with the most traffic	today
+		sort_interface_list_by_bytes_today($interfaceTrafficList);
+	}
 
-	sort_interface_list_by_bytesToday($interfaceTrafficList);
+	foreach($interfaceTrafficList as $interfaceEntry) {
+		$result[] = format_interface_string($interfaceEntry, 'in_bytes_today', 'out_bytes_today', false, $lcdpanel_width);
+	}
+	return $result;
+}
+
+function get_top_interfaces_by_total_bytes($interfaceTrafficList, $lcdpanel_width) {
+
+	$result = array();
+	sort_interface_list_by_total_bytes($interfaceTrafficList);
 
 	foreach($interfaceTrafficList as $interfaceEntry) {
 		$result[] = format_interface_string($interfaceEntry, 'in_bytes', 'out_bytes', false, $lcdpanel_width);
 	}
-
 	return $result;
 }
+
 
 function convert_bandwidth_to_shortform($bytes_string) {
 	// Shorten values from bandwidth_by_ip.php, which have the form 
@@ -983,6 +1032,7 @@ function build_interface($lcd) {
 						$lcd_cmds[] = "widget_add $name text_wdgt string";
 						break;
 					case "scr_top_interfaces_by_bps":
+					case "scr_top_interfaces_by_total_bytes":
 					case "scr_top_interfaces_by_bytes_today":
 						$lcd_cmds[] = "screen_add $name";
 						$lcd_cmds[] = "screen_set $name heartbeat off";
@@ -1189,10 +1239,21 @@ function loop_status($lcd) {
 					break;
 				case "scr_top_interfaces_by_bytes_today":
 					if ($interfaceTrafficList == null) $interfaceTrafficList = build_interface_traffic_stats_list(); // We only want build_interface_traffic_stats_list() to be called once per loop, and only if it's needed
-					$interfaceTrafficStrings = get_top_interfaces_by_bytes_today($interfaceTrafficList, $lcdpanel_width);
+					$interfaceTrafficStrings = get_top_interfaces_by_bytes_today($interfaceTrafficList, $lcdpanel_width, true);
 
-					// TODO: Make counters show daily totals
-					//$title = ($lcdpanel_width >= 20) ? "Total today   IN/OUT" : "Today   IN / OUT";
+					$title = ($lcdpanel_width >= 20) ? "Total today   IN/OUT" : "Today   IN / OUT";
+					$lcd_cmds[] = "widget_set $name title_wdgt 1 1 \"{$title}\"";
+
+					for($i = 0; $i < ($lcdpanel_height - 1) && i < count($interfaceTrafficStrings); $i++) {
+
+						$lcd_cmds[] = "widget_set $name text_wdgt{$i} 1 " . ($i + 2) . " \"{$interfaceTrafficStrings[$i]}\"";
+					}
+					$updateSummary = false;
+					break;
+				case "scr_top_interfaces_by_total_bytes":
+					if ($interfaceTrafficList == null) $interfaceTrafficList = build_interface_traffic_stats_list(); // We only want build_interface_traffic_stats_list() to be called once per loop, and only if it's needed
+					$interfaceTrafficStrings = get_top_interfaces_by_total_bytes($interfaceTrafficList, $lcdpanel_width, true);
+
 					$title = ($lcdpanel_width >= 20) ? "Total         IN/OUT" : "Total   IN / OUT";
 					$lcd_cmds[] = "widget_set $name title_wdgt 1 1 \"{$title}\"";
 
@@ -1261,6 +1322,11 @@ function loop_status($lcd) {
 $traffic_last_ugmt  = array();
 $traffic_last_ifin  = array();
 $traffic_last_ifout = array();
+
+$traffic_last_hour        = array();
+$traffic_startOfDay_ifin  = array();
+$traffic_startOfDay_ifout = array();
+
 /* Initialize the global error counter */
 $lcdproc_connect_errors = 0;
 $lcdproc_max_connect_errors = 3;
