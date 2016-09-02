@@ -146,10 +146,10 @@ function ntopng_sync_package() {
 	if ($config['system']['webgui']['protocol'] == "https") {
 		$cert =& lookup_cert($config['system']['webgui']['ssl-certref']);
 		ntopng_write_cert_file("/usr/local/share/ntopng/httpdocs/ssl/ntopng-cert.pem", $cert);
-		$http_args = "-w 0 -W 3000\n";
+		$http_args = "-w 0 -W 3000";
 	} else {
 		unlink_if_exists("/usr/local/share/ntopng/httpdocs/ssl/ntopng-cert.pem");
-		$http_args = "-w 3000\n";
+		$http_args = "-w 3000";
 	}
 
 	/* Create rc script */
