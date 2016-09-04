@@ -160,7 +160,7 @@ function ntopng_sync_package() {
 	// Add support for --data-dir /somewhere, --httpdocs-dir /somewhereelse,
 	// --dump-timeline (on/off) --http-port, --https-port
 
-	$start .= "\t/usr/local/bin/ntopng -d /var/db/ntopng -G /var/run/ntopng.pid -s -e $http_args {$disable_alerts} {$dump_flows} {$ifaces} {$dns_mode} {$aggregations} {$local_networks} &\n";
+	$start .= "\t/usr/local/bin/ntopng -d /var/db/ntopng -G /var/run/ntopng.pid -s -e {$http_args} {$disable_alerts} {$dump_flows} {$ifaces} {$dns_mode} {$aggregations} {$local_networks} &\n";
 	$stop .= "/usr/bin/killall ntopng redis-cli redis-server\n";
 	write_rcfile(array("file" => "ntopng.sh", "start" => $start, "stop" => $stop));
 
