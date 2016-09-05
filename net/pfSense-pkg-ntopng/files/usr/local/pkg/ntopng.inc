@@ -70,8 +70,9 @@ function ntopng_write_cert_file($file, $cert) {
 		return;
 	}
 	chmod($file, 0600);
-	fwrite($fd, base64_decode($cert['crt']));
-	fwrite($fd, base64_decode($cert['prv']));
+	/* newline to deal with certs/keys lacking newline at end */
+	fwrite($fd, base64_decode($cert['crt']) . "\n");
+	fwrite($fd, base64_decode($cert['prv']) . "\n");
 	fclose($fd);
 }
 
