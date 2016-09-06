@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-RRD_Summary
-PORTVERSION=	1.3.1
+PORTVERSION=	1.3.2
 PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
