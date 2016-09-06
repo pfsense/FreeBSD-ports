@@ -34,12 +34,13 @@ $startday = isset($_POST['startday']) ? $_POST['startday'] : "01";
 $rrd = isset($_POST['rrd']) ? $_POST['rrd'] : "wan-traffic.rrd";
 
 $start = "00 " . date("m/{$startday}/Y");
-$lastmonth = "00 " . date("m/{$startday}/Y", strtotime("-1 month", strtotime(date("m/{$startday}/Y"))));
+$lastmonthstart = "00 " . date("m/d/Y", strtotime("-1 month", strtotime(date("m/{$startday}/Y"))));
+$lastmonthend = "00 " . date("m/d/Y", strtotime("-1 second", strtotime(date("m/{$startday}/Y"))));
 
 $thismonth = fetch_rrd_summary($rrd, $start, "now");
-$lastmonth = fetch_rrd_summary($rrd, $lastmonth, $start, 720*60);
+$lastmonth = fetch_rrd_summary($rrd, $lastmonthstart, $lastmonthend, 24*60*60);
 
-function fetch_rrd_summary($rrd, $start, $end, $resolution=3600) {
+function fetch_rrd_summary($rrd, $start, $end, $resolution=60*60) {
 	$traffic = array();
 	$rrd = escapeshellarg("/var/db/rrd/{$rrd}");
 	$start = escapeshellarg($start);
