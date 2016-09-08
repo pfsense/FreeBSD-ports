@@ -40,8 +40,9 @@ if (isset($_GET['haproxystats']) || isset($_GET['scope']) || (isset($_POST) && i
 	try{
 		$request = "";
 		if (is_array($_GET)){
-			foreach($_GET as $key => $arg)
+			foreach($_GET as $key => $arg) {
 				$request .= ";$key=$arg";
+			}
 		}
 		$options = array(
 		  'http'=>array(
@@ -54,23 +55,26 @@ if (isset($_GET['haproxystats']) || isset($_GET['scope']) || (isset($_POST) && i
 		$response = @file_get_contents("http://127.0.0.1:{$pconfig['localstatsport']}/haproxy/haproxy_stats.php?haproxystats=1".$request, false, $context);
 		if (is_array($http_response_header)){
 			foreach($http_response_header as $header){
-				if (strpos($header,"Refresh: ") == 0)
+				if (strpos($header,"Refresh: ") == 0) {
 					header($header);
+				}
 			}
 		}
 		$fail = $response === false;
 	} catch (Exception $e) {
 		$fail = true;
 	}
-	if ($fail)
+	if ($fail) {
 		$response = "<br/><br/>Make sure HAProxy settings are applied and HAProxy is enabled and running";
+	}
 	echo $response;
 	exit(0);
 }
 require_once("guiconfig.inc");
 if (isset($_GET['showsticktablecontent']) || isset($_GET['showstatresolvers'])) {
-	if (is_numeric($pconfig['localstats_sticktable_refreshtime']))
+	if (is_numeric($pconfig['localstats_sticktable_refreshtime'])) {
 		header("Refresh: {$pconfig['localstats_sticktable_refreshtime']}");
+	}
 }
 $shortcut_section = "haproxy";
 require_once("certs.inc");
@@ -86,8 +90,9 @@ $a_frontend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
 if ($_POST) {
 	if ($_POST['apply']) {
 		$result = haproxy_check_and_run($savemsg, true);
-		if ($result)
+		if ($result) {
 			unlink_if_exists($d_haproxyconfdirty_path);
+		}
 	}
 }
 

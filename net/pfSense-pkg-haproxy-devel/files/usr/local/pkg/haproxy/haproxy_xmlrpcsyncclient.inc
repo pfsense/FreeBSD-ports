@@ -32,8 +32,12 @@
 require_once("functions.inc");
 require_once("pkg-utils.inc");
 require_once("notices.inc");
-require_once("xmlrpc.inc");
-require_once("xmlrpc_client.inc");
+
+if(!function_exists('pf_version')) {
+	function pf_version() {
+		return substr(trim(file_get_contents("/etc/version")), 0, 3);
+	}
+}
 
 function xmlrpc_sync_execute($syncinfo) {
 	// name that is logged if something fails during syncing
@@ -45,29 +49,54 @@ function xmlrpc_sync_execute($syncinfo) {
 	// executes to apply the changed configuration on the target system
 	$sync_function = $syncinfo['sync_done_execute'];
 	
+	if (pf_version() < "2.4") {
+		xmlrpc_sync_execute_23($sync_logname, $xml, $sync_include, $sync_function);
+	} else {
+		xmlrpc_sync_execute_24($sync_logname, $xml, $sync_include, $sync_function);
+	}
+}
+
+function xmlrpc_sync_execute_24($sync_logname, $xml, $sync_include,$sync_function) {
+	require_once("xmlrpc_client.inc");
+	
+	$rpc_client = new pfsense_xmlrpc_client();
+	$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml);
+	
+	$execcmd  = "require_once('{$sync_include}');\n";
+	$execcmd .= "{$sync_function}();\n";		
+	$resp = $rpc_client->xmlrpc_exec_php($execcmd);
+}
+
+function xmlrpc_sync_execute_23($sync_logname, $xml, $sync_include,$sync_function) {
 	global $config, $g;
 	//if(!$password)
 		$password = $config['hasync']['password'];
-	if(!$password)
+	if(!$password) {
 		return;
+	}
 
 	//if(!$sync_to_ip)
 		$sync_to_ip = $config['hasync']['synchronizetoip'];
-	if(!$sync_to_ip)
+	if(!$sync_to_ip) {
 		return;
+	}
 	
 	// Do not allow syncing to self.
 	$donotsync = false;
 	$localips = get_configured_ip_addresses();
-	if (in_array($sync_to_ip, $localips , true))
+	if (in_array($sync_to_ip, $localips , true)) {
 		$donotsync = true;
+	}
 	
 	if($donotsync) {
 		log_error("Disallowing sync loop for {$sync_logname} sync.");
 		return;
 	}
 
-	$xmlrpc_sync_neighbor = $sync_to_ip;
+	require_once("xmlrpc.inc");
+	require_once("xmlrpc_client.inc");
+	
+	//$xmlrpc_sync_neighbor = $sync_to_ip;
     if($config['system']['webgui']['protocol'] != "") {
 		$synchronizetoip = $config['system']['webgui']['protocol'];
 		$synchronizetoip .= "://";
@@ -75,10 +104,11 @@ function xmlrpc_sync_execute($syncinfo) {
     $port = $config['system']['webgui']['port'];
     /* if port is empty lets rely on the protocol selection */
     if($port == "") {
-		if($config['system']['webgui']['protocol'] == "http") 
+		if($config['system']['webgui']['protocol'] == "http") {
 			$port = "80";
-		else 
+		} else {
 			$port = "443";
+		}
     }
 	$synchronizetoip .= $sync_to_ip;
 
@@ -99,8 +129,9 @@ function xmlrpc_sync_execute($syncinfo) {
 	$msg = new XML_RPC_Message($method, $params);
 	$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
 	$cli->setCredentials('admin', $password);
-	if($g['debug'])
+	if($g['debug']) {
 		$cli->setDebug(1);
+	}
 	/* send our XMLRPC message and timeout after 250 seconds */
 	$resp = $cli->send($msg, "250");
 	if(!$resp) {
@@ -147,5 +178,3 @@ function xmlrpc_sync_execute($syncinfo) {
 		log_error("{$sync_logname} XMLRPC reload data success with {$url}:{$port} (exec_php).");
 	}
 }
-
-?>

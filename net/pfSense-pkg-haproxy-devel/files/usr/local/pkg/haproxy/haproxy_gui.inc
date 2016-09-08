@@ -111,9 +111,11 @@ $haproxy_icons = array(
 global $pf_version;
 $pf_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
 
-function pf_version() {
-	global $pf_version;
-	return $pf_version;
+if(!function_exists('pf_version')) {
+	function pf_version() {
+		global $pf_version;
+		return $pf_version;
+	}
 }
 
 function haproxyicon($iconname, $title) {

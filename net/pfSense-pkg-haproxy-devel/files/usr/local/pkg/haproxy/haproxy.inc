@@ -899,17 +899,17 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 		}
 		fwrite ($fd, "\tbalance\t\t\t{$pool['balance']}{$parameters}\n");
 	}
-	if ($pool['connection_timeout'] === "") {
+	if (empty($pool['connection_timeout'])) {
 		$pool['connection_timeout'] = 30000;
 	}
 	fwrite ($fd, "\ttimeout connect\t\t" . $pool['connection_timeout'] . "\n");
 
-	if ($pool['server_timeout'] === "") {
+	if (empty($pool['server_timeout'])) {
 		$pool['server_timeout'] = 30000;
 	}
 	fwrite ($fd, "\ttimeout server\t\t" . $pool['server_timeout'] . "\n");
 
-	if ($pool['retries'] === "") {
+	if (empty($pool['retries'])) {
 		$pool['retries'] = 3;
 	}
 	fwrite ($fd, "\tretries\t\t\t" . $pool['retries'] . "\n");
@@ -951,7 +951,6 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 	global $a_action;
 	$config_acls = array();
 
-	$cert_acls = "";
 	$aclcrt_name = "";
 	$a_acl = get_backend_acls($pool, $frontendtype);
 	if (!is_array($a_acl)) {
@@ -1215,7 +1214,6 @@ function write_backend($configpath, $fd, $name, $pool, $backendsettings) {
 }
 
 function haproxy_configure() {
-	global $g;
 	// reload haproxy
 	return haproxy_check_run(1);
 }
@@ -1393,7 +1391,7 @@ function haproxy_updateocsp($socketupdate = true) {
 function haproxy_writeconf($configpath) {
 	global $config, $a_files_cache;
 	global $aliastable;
-	global $a_action;
+	global $a_action, $a_error;
 	if (!isset($aliastable)) {
 		alias_make_table($config);
 	}
@@ -1598,10 +1596,11 @@ function haproxy_writeconf($configpath) {
 	// Construct and write out configuration for each "frontend"
 	if (is_array($a_bind)) {
 		foreach ($a_bind as $bind) {
+			$frontendname = $bind['name'];
 			if (count($bind['config']) > 1) {
-				$frontendinfo = "frontend {$bind['name']}-merged\n";
+				$frontendinfo = "frontend {$frontendname}-merged\n";
 			} else {
-				$frontendinfo = "frontend {$bind['name']}\n";
+				$frontendinfo = "frontend {$frontendname}\n";
 			}
 
 			fwrite ($fd, "{$frontendinfo}");
@@ -1650,8 +1649,8 @@ function haproxy_writeconf($configpath) {
 			}
 			fwrite ($fd, "{$listenip}");
 			
-			if (use_frontend_as_unixsocket($bind['name'])) {
-				fwrite ($fd, "\tbind /tmp/haproxy_chroot/{$bind['name']}.socket name unixsocket accept-proxy {$ssl_info} {$advanced_bind}\n");
+			if (use_frontend_as_unixsocket($frontendname)) {
+				fwrite ($fd, "\tbind /tmp/haproxy_chroot/{$frontendname}.socket name unixsocket uid 80 accept-proxy {$ssl_info} {$advanced_bind}\n");
 			}
 
 			// https is an alias for tcp for clarity purposes
@@ -1715,7 +1714,7 @@ function haproxy_writeconf($configpath) {
 					$file = $errorfile['errorfile'];
 					$errorcodes = explode(",",$errorfile['errorcode']);
 					foreach($errorcodes as $errorcode) {
-						$filename = "$configpath/errorfile_{$name}_{$errorcode}_{$file}";
+						$filename = "$configpath/errorfile_{$frontendname}_{$errorcode}_{$file}";
 						$content = base64_decode($a_files_cache[$file]['content']);
 						$content = str_replace('{errormsg}', $a_error[$errorcode]['descr'], $content);
 						$content = str_replace('{errorcode}', $errorcode, $content);
@@ -2057,7 +2056,6 @@ function haproxy_get_transparent_backends(){
 }
 
 function haproxy_generate_rules_plugin($type) {
-	global $g, $config;
 	$rules = "";
 	switch($type) {
 	case 'filter':
@@ -2070,7 +2068,7 @@ function haproxy_generate_rules_plugin($type) {
 					$rules .= "pass  out  quick  on {$tb['interface']} inet proto tcp  from any to {$tb['address']} port {$tb['port']} flags S/SA keep state ( sloppy )  label \"HAPROXY_transparent_rule_{$tb['name']}\"\n";
 				}
 				if (is_ipaddrv6($tb['address'])) {
-					list ($addr, $scope) = explode("%", $tb['address']);
+					list ($addr) = explode("%", $tb['address']);
 					$rules .= "pass  out  quick  on {$tb['interface']} inet6 proto tcp  from any to {$addr} port {$tb['port']} flags S/SA keep state ( sloppy )  label \"HAPROXY_transparent_rule_{$tb['name']}\"\n";
 				}
 			}
@@ -2088,8 +2086,6 @@ function load_ipfw_rules() {
 	} else {
 		$ipfw_zone_haproxy = "4000"; // seems that 4000 is a safe zone number to avoid conflicts with captive portal.. and 4095 is the max?
 	}
-	
-	$a_backends = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 	
 	haproxy_load_modules();
 
@@ -2209,8 +2205,10 @@ function haproxy_check_run($reload) {
 	$configpath = "{$g['varetc_path']}/haproxy";
 	
 	if ($reload) {
-		$r = haproxy_socket_command("show servers state");
-		file_put_contents("/tmp/haproxy_server_state", $r);
+		if (haproxy_is_running()) {
+			$r = haproxy_socket_command("show servers state");
+			file_put_contents("/tmp/haproxy_server_state", $r);
+		}
 				
 		haproxy_writeconf($configpath);
 		haproxy_updateocsp(false);
@@ -2323,10 +2321,12 @@ function killprocesses($processname, $pidfile, $signal = "KILL") {
 
 function haproxy_sync_xmlrpc_settings() {
 	global $config;
+	if (!is_array($config['installedpackages']['haproxysyncpkg'])) {
+		return false;
+	}
 	// preserve 'old' sync settings, that should not be overwritten by xmlrpc-sync.
 	$old_config = $config['installedpackages']['haproxy'];
 	$enable = isset($config['installedpackages']['haproxy']['enablesync']);
-	
 	$config['installedpackages']['haproxy'] = $config['installedpackages']['haproxysyncpkg'];
 	unset($config['installedpackages']['haproxysyncpkg']);
 	$new_config = &$config['installedpackages']['haproxy'];
@@ -2357,6 +2357,7 @@ function haproxy_xmlrpc_sync_prepare_config() {
 
 function haproxy_xmlrpc_sync_configure() {
 	// this function is called by xmlrpc after config has been synced.
+	global $config;
 	
 	haproxy_sync_xmlrpc_settings();
 	haproxy_configure(); // Configure HAProxy config files to use the new configuration.
@@ -2373,8 +2374,9 @@ function get_frontend_id($name) {
 	$i = 0;
 	foreach($a_frontend as $frontend)
 	{
-		if ($frontend['name'] == $name)
+		if ($frontend['name'] == $name) {
 			return $i;
+		}
 		$i++;
 	}
 	return null;
