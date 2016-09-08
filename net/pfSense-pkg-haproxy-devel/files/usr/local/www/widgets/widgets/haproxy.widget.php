@@ -267,7 +267,7 @@ if ($getupdatestatus) {
 			getURL(url+"?"+pars, getstatusgetupdate);
 	}
 </script>
-<?
+<?php
 if (pf_version() < "2.3") {
 	echo '<div id="haproxy-settings" class="widgetconfigdiv" style="display:none;">';
 } else {

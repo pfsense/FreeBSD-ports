@@ -228,11 +228,11 @@ function set_content(elementid, image) {
 function js_callback(req) {
 	showapplysettings.style.display = 'block';
 	
-	if(req.content != '') {
+	if(req.content !== '') {
 		var itemsplit = req.content.split("|");
 		buttonid = itemsplit[0];
 		enabled = itemsplit[1];
-		if (enabled == 1){
+		if (enabled === "1"){
 			img = "<?=haproxyicon("enabled", gettext("click to toggle enable/disable this frontend"))?>";
 		} else {
 			img = "<?=haproxyicon("disabled", gettext("click to toggle enable/disable this frontend"))?>";
