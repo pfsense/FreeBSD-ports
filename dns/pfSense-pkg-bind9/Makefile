@@ -1,27 +1,25 @@
 # $FreeBSD$
-# pkg-help formatted with fmt 59 63
 
-PORTNAME= pfSense-pkg-bind
+PORTNAME=	pfSense-pkg-bind
 PORTVERSION=	9.10
 PORTREVISION=	8
 CATEGORIES=	dns net ipv6
-MASTER_SITES= # empty
-DISTFILES= # empty
-EXTRACT_ONLY= # empty
+MASTER_SITES=	# empty
+DISTFILES=	# empty
+EXTRACT_ONLY=	# empty
 
-
-RUN_DEPENDS= ${LOCALBASE}/sbin/named:dns/bind-pfsense
+RUN_DEPENDS=	${LOCALBASE}/sbin/named:dns/bind-pfsense
 
 MAINTAINER=	tech@voleatech.de
 COMMENT=	BIND DNS suite with updated DNSSEC and DNS64
 
 LICENSE=	ESF
 
-NO_BUILD= yes
-NO_MTREE= yes
+NO_BUILD=	yes
+NO_MTREE=	yes
 
-SUB_FILES=    pkg-install pkg-deinstall
-SUB_LIST=     PORTNAME=${PORTNAME}
+SUB_FILES=	pkg-install pkg-deinstall
+SUB_LIST=	PORTNAME=${PORTNAME}
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
