@@ -32,6 +32,7 @@ require_once("interfaces.inc");
 require_once("pkg-utils.inc");
 require_once("service-utils.inc");
 require_once("util.inc");
+require_once("certs.inc");
 
 global $redis_path;
 $redis_path = "/usr/local/bin";
@@ -62,6 +63,20 @@ function ntopng_php_deinstall_command() {
 	}
 }
 
+function ntopng_write_cert_file($file, $cert) {
+	$fd = fopen($file, "w");
+	if (!$fd) {
+		log_error("ERROR: Could not open {$file} for writing");
+		return;
+	}
+	chmod($file, 0600);
+	/* newline to deal with certs/keys lacking newline at end */
+	fwrite($fd, base64_decode($cert['crt']) . "\n");
+	fwrite($fd, base64_decode($cert['prv']) . "\n");
+	fclose($fd);
+}
+
+
 function ntopng_sync_package() {
 	global $config, $ntopng_config, $redis_path;
 	/* These are done via ntopng_validate_input(), just return */
@@ -79,6 +94,7 @@ function ntopng_sync_package() {
 	if ($ntopng_config['enable'] != "on") {
 		ntopng_services_stop();
 		unlink_if_exists("/usr/local/etc/rc.d/ntopng.sh");
+		unlink_if_exists("/usr/local/share/ntopng/httpdocs/ssl/ntopng-cert.pem");
 		return;
 	}
 
@@ -128,6 +144,15 @@ function ntopng_sync_package() {
 		$disable_alerts = "-H";
 	}
 
+	if ($config['system']['webgui']['protocol'] == "https") {
+		$cert =& lookup_cert($config['system']['webgui']['ssl-certref']);
+		ntopng_write_cert_file("/usr/local/share/ntopng/httpdocs/ssl/ntopng-cert.pem", $cert);
+		$http_args = "-w 0 -W 3000";
+	} else {
+		unlink_if_exists("/usr/local/share/ntopng/httpdocs/ssl/ntopng-cert.pem");
+		$http_args = "-w 3000";
+	}
+
 	/* Create rc script */
 	$start = "";
 	$stop = "";
@@ -136,7 +161,7 @@ function ntopng_sync_package() {
 	// Add support for --data-dir /somewhere, --httpdocs-dir /somewhereelse,
 	// --dump-timeline (on/off) --http-port, --https-port
 
-	$start .= "\t/usr/local/bin/ntopng -d /var/db/ntopng -G /var/run/ntopng.pid -s -e {$disable_alerts} {$dump_flows} {$ifaces} {$dns_mode} {$aggregations} {$local_networks} &\n";
+	$start .= "\t/usr/local/bin/ntopng -d /var/db/ntopng -G /var/run/ntopng.pid -s -e {$http_args} {$disable_alerts} {$dump_flows} {$ifaces} {$dns_mode} {$aggregations} {$local_networks} &\n";
 	$stop .= "/usr/bin/killall ntopng redis-cli redis-server\n";
 	write_rcfile(array("file" => "ntopng.sh", "start" => $start, "stop" => $stop));
 
