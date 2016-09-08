@@ -312,8 +312,9 @@ if (isset($id) && $a_backend[$id]) {
 if (isset($_GET['dup'])) {
 	unset($id);
 	$pconfig['name'] .= "-copy";
-	if ($pconfig['secondary'] != 'yes')
+	if ($pconfig['secondary'] != 'yes') {
 		$pconfig['primary_frontend'] = $pconfig['name'];
+	}
 }
 
 $changedesc = "Services: HAProxy: Frontend";
@@ -532,7 +533,7 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 			primary = primaryfrontends[primary_frontend.value];
 			type = primary['ref']['type'];
 			for (i = 0; i < 99; i++) {
-				if (primary['ref']['a_extaddr']['item'][i] && primary['ref']['a_extaddr']['item'][i]['extaddr_ssl'] == 'yes')
+				if (primary['ref']['a_extaddr']['item'][i] && primary['ref']['a_extaddr']['item'][i]['extaddr_ssl'] === 'yes')
 					sslshow = true;//ssloffload.checked;
 					ssl = ssloffload.checked;
 			}
@@ -548,7 +549,7 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 			
 		setCSSdisplay(".haproxy_ssloffloading_show", sslshow);
 		setCSSdisplay(".haproxy_ssloffloading_enabled", ssl);
-		setCSSdisplay(".haproxy_mode_http", type == "http");
+		setCSSdisplay(".haproxy_mode_http", type === "http");
 		if (secondary !== null) {
 			setCSSdisplay(".haproxy_primary", !secondary.checked);
 			setCSSdisplay(".haproxy_secondary", secondary.checked);
@@ -566,8 +567,8 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 	function type_change(type) {
 		var d, i, j, el, row;
 		var count = <?=count($a_acltypes);?>;
-		var acl = [ <?php foreach ($a_acltypes as $key => $expr) echo "'".$key."'," ?> ];
-		var mode = [ <?php foreach ($a_acltypes as $key => $expr) echo "'".$expr['mode']."'," ?> ];
+		var acl = [ <?php foreach ($a_acltypes as $key => $expr) { echo "'".$key."',"; } ?> ];
+		var mode = [ <?php foreach ($a_acltypes as $key => $expr) { echo "'".$expr['mode']."',"; } ?> ];
 
         d = document;
 		for (i = 0; i < 99; i++) {
@@ -578,8 +579,8 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 			if (!el || !row_e)
 				continue;
 			for (j = 0; j < count; j++) {
-				if (acl[j] == el.value) {
-					if (mode[j] != '' && mode[j] != type) {
+				if (acl[j] === el.value) {
+					if (mode[j] !== '' && mode[j] !== type) {
 						hideElement(row_e, true);
 						hideElement(row_v, true);
 						hideElement(row_vd, true);
