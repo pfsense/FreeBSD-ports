@@ -63,12 +63,7 @@ _LICENSE_LIST+= ART10 ARTPERL10 ART20
 # PHP family
 _LICENSE_LIST+= PHP202 PHP30 PHP301
 
-# ESF license
-_LICENSE_LIST+=	ESF
-
 # List of groups (only names must be present)
-
-_LICENSE_NAME_ESF=	Electric Sheep Fencing
 
 _LICENSE_NAME_FSF=	Free Software Foundation Approved
 
@@ -151,9 +146,6 @@ _LICENSE_GROUPS_CPAL-1.0=	FSF OSI
 
 _LICENSE_NAME_EPL=	Eclipse Public License
 _LICENSE_GROUPS_EPL=	FSF OSI
-
-_LICENSE_NAME_ESF=	Electric Sheep Fencing License
-_LICENSE_GROUPS_ESF=	
 
 _LICENSE_NAME_GFDL=	GNU Free Documentation License
 _LICENSE_GROUPS_GFDL=	FSF
