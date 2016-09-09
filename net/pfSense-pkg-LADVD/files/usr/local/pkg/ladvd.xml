@@ -110,7 +110,7 @@
 			<fieldname>management</fieldname>
 			<value>lan</value>
 			<type>interfaces_selection</type>
-			<description>The management interface for this host. Addresses on this interface are auto-detected (IPv4 and IPv6).</description>
+			<description>The management interface for this host. Addresses on this interface are auto-detected (IPv4 and IPv6). This must be a physical interface, not a VLAN, LAGG, or other abstracted type.</description>
 		</field>
 		<field>
 			<fielddescr>System Location</fielddescr>
