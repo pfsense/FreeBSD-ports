@@ -10,7 +10,7 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	run various pfSense scripts on event.
 
-LICENSE=	ESF
+LICENSE=	APACHE20
 
 WHERE=		sbin
 PLIST_FILES=	${WHERE}/${PORTNAME} ${WHERE}/pfSctl ${WHERE}/fcgicli

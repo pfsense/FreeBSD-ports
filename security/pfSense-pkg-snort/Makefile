@@ -11,7 +11,7 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package snort
 
-LICENSE=	ESF
+LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/bin/snort:security/snort \
 		${LOCALBASE}/bin/barnyard2:security/barnyard2

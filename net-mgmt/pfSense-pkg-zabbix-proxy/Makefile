@@ -11,7 +11,7 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package zabbix-proxy
 
-LICENSE=	ESF
+LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/zabbix_proxy:net-mgmt/zabbix3-proxy
 

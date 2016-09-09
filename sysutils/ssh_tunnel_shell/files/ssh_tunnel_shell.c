@@ -1,6 +1,6 @@
 /*-
  * Copyright (c) 2004 The FreeBSD Project.
- * Copyright (c) 2010 Ermal Luçi
+ * Copyright (c) 2010 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

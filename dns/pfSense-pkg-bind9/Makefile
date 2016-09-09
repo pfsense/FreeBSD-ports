@@ -13,7 +13,7 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/named:dns/bind-pfsense
 MAINTAINER=	tech@voleatech.de
 COMMENT=	BIND DNS suite with updated DNSSEC and DNS64
 
-LICENSE=	ESF
+LICENSE=	APACHE20
 
 NO_BUILD=	yes
 NO_MTREE=	yes

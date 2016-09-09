@@ -10,7 +10,7 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package Lightsquid
 
-LICENSE=	ESF
+LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/libexec/lightsquid/ip2name.list:www/lightsquid \
 		${LOCALBASE}/sbin/lighttpd:www/lighttpd

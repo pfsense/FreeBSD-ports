@@ -12,7 +12,7 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	luiz@netgate.com
 COMMENT=	read dhpcd.lease file and add it to hosts file
 
-LICENSE=	ESF
+LICENSE=	APACHE20
 
 WHERE=		sbin
 PLIST_FILES=    ${WHERE}/${PORTNAME}

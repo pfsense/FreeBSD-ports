@@ -11,7 +11,7 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package syslog-ng
 
-LICENSE=	ESF
+LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/syslog-ng:sysutils/syslog-ng \
 		${LOCALBASE}/sbin/logrotate:sysutils/logrotate

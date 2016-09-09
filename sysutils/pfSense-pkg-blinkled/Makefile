@@ -11,7 +11,7 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package blinkled
 
-LICENSE=	ESF
+LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/bin/blinkled:sysutils/blinkled
 
