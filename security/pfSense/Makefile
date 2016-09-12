@@ -10,7 +10,7 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	renato@pfsense.com
 COMMENT?=	Meta package to install pfSense required ports
 
-LICENSE=	ESF
+LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/clog:sysutils/clog \
 		${LOCALBASE}/bin/rate:net-mgmt/rate \

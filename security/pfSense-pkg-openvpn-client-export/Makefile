@@ -10,7 +10,7 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package openvpn-client-export
 
-LICENSE=	ESF
+LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/share/openvpn/client-export/template/config-import:security/openvpn-client-export \
 		${LOCALBASE}/bin/zip:archivers/zip \

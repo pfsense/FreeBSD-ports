@@ -9,7 +9,7 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	luiz@netgate.com
 COMMENT=	filterdns
 
-LICENSE=	ESF
+LICENSE=	APACHE20
 
 WHERE=		sbin
 PLIST_FILES=    ${WHERE}/${PORTNAME}

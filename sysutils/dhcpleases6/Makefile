@@ -11,7 +11,7 @@ EXTRACT_ONLY=	# empty
 MAINTAINER?=	coreteam@pfsense.org
 COMMENT?=	read dhpcd6.leases file and trigger command on modification
 
-LICENSE=	ESF
+LICENSE=	APACHE20
 
 WHERE=		sbin
 PLIST_FILES=    ${WHERE}/${PORTNAME}

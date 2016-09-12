@@ -10,7 +10,7 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	renato@pfsense.com
 COMMENT?=	Meta package to install pfSense builder required ports
 
-LICENSE=	ESF
+LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/bin/git:devel/git \
 		${LOCALBASE}/bin/curl:ftp/curl \

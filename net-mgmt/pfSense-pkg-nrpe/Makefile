@@ -11,7 +11,7 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	tech@voleatech.de
 COMMENT=	pfSense package nrpe
 
-LICENSE=	ESF
+LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/nrpe2:net-mgmt/nrpe-ssl
 

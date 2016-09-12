@@ -1,11 +1,33 @@
 <?php
 /*
-	index.php
+ * index.php
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2016 BBcan177@gmail.com
+ * All rights reserved.
+ *
+ * Portions of this code are based on original work done for
+ * pfSense from the following contributors:
+ *
+ * pkg_mgr_install.php
+ * Part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2005 Colin Smith
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-	pfBlockerNG (DNSBL)
-	Copyright (c) 2015-2016 BBcan177@gmail.com
-	All rights reserved.
-*/
 header("Cache-Control: private, no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
