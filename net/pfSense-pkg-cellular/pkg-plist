@@ -7,5 +7,3 @@ www/widgets/widgets/cellular.widget.php
 /etc/inc/priv/cellular.priv.inc
 @dir /etc/inc/priv
 @dir /etc/inc
-@dir etc/cellular
-@dir etc
