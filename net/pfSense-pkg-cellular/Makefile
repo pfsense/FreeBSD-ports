@@ -10,7 +10,7 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	tech@voleatech.de
 COMMENT=	Voleatech Cellular Module Interface
 
-LICENSE=	ESF
+LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/bin/miniterm.py:comms/py-serial
 
@@ -31,9 +31,8 @@ do-extract:
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
-	${MKDIR} ${STAGEDIR}${PREFIX}/etc/cellular
 	${MKDIR} ${STAGEDIR}${PREFIX}/sbin
-		${MKDIR} ${STAGEDIR}${DATADIR}
+	${MKDIR} ${STAGEDIR}${DATADIR}
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/widgets
 	${INSTALL_DATA} ${WRKSRC}${PREFIX}/pkg/cellular.xml \
 		${STAGEDIR}${PREFIX}/pkg
@@ -48,13 +47,12 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}${PREFIX}/www/widgets/widgets/cellular.widget.php \
 		${STAGEDIR}${PREFIX}/www/widgets/widgets
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
-		${STAGEDIR}${DATADIR}/info.xml
-	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
+		${STAGEDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${PREFIX}/pkg/cellular.xml
 	(cd ${WRKSRC}${PREFIX} \
 		&& ${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py \
 		-d ${PREFIX} -f sbin)
-	${INSTALL_DATA} ${WRKSRC}${PREFIX}/sbin/cellular.pyc \
+	${INSTALL_SCRIPT} ${WRKSRC}${PREFIX}/sbin/cellular.pyc \
 		${STAGEDIR}${PREFIX}/sbin/cellular
 
 .include <bsd.port.mk>
