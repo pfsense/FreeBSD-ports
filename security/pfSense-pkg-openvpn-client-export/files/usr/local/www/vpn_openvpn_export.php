@@ -161,6 +161,11 @@ if (!empty($act)) {
 	if ($usetoken && (($act == "conf_yealink_t28") || ($act == "conf_yealink_t38g") || ($act == "conf_yealink_t38g2") || ($act == "conf_snom"))) {
 		$input_errors[] = "Microsoft Certificate Storage cannot be used with a Yealink or SNOM configuration.";
 	}
+	$usepkcs11 = $_GET['usepkcs11'];
+	$pkcs11id = $_GET['pkcs11id'];
+	if ($usepkcs11 && !$pkcs11id) {
+		$input_errors[] = "You must provide the PKCS#11 ID.";
+	}					
 	$password = "";
 	if ($_GET['password']) {
 		$password = $_GET['password'];
@@ -239,17 +244,17 @@ if (!empty($act)) {
 				$exp_name = urlencode($exp_name . "-config.ovpn");
 				$expformat = "baseconf";
 		}
-		$exp_path = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $nokeys, $proxy, $expformat, $password, false, false, $openvpnmanager, $advancedoptions);
+		$exp_path = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $nokeys, $proxy, $expformat, $password, false, false, $openvpnmanager, $advancedoptions, $usepkcs11, $pkcs11id);
 	}
 
 	if ($act == "visc") {
 		$exp_name = urlencode($exp_name . "-Viscosity.visc.zip");
-		$exp_path = viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $password, $proxy, $openvpnmanager, $advancedoptions);
+		$exp_path = viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $password, $proxy, $openvpnmanager, $advancedoptions, $usepkcs11, $pkcs11id);
 	}
 
 	if (substr($act, 0, 4) == "inst") {
 		$exp_name = urlencode($exp_name."-install.exe");
-		$exp_path = openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $password, $proxy, $openvpnmanager, $advancedoptions, substr($act, 5));
+		$exp_path = openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $password, $proxy, $openvpnmanager, $advancedoptions, substr($act, 5), $usepkcs11, $pkcs11id);
 	}
 
 	if (!$exp_path) {
@@ -380,6 +385,18 @@ $section->addInput(new Form_Checkbox(
 $form->add($section);
 
 $section = new Form_Section('Certificate Export Options');
+
+$section->addInput(new Form_Checkbox(
+	'usepkcs11',
+	'PKCS#11 Certificate Storage',
+	'Use PKCS#11 storage instead of local files.',
+	$config['installedpackages']['openvpnclientexport']['config'][0]['usepkcs11']
+));
+
+$section->addInput(new Form_Input(
+	'pkcs11id',
+	'PKCS#11 ID'
+));
 
 $section->addInput(new Form_Checkbox(
 	'usetoken',
@@ -589,6 +606,11 @@ function download_begin(act, i, j) {
 	if (document.getElementById("usetoken").checked) {
 		usetoken = 1;
 	}
+	var usepkcs11 = 0;
+	if (document.getElementById("usepkcs11").checked) {
+		usepkcs11 = 1;
+	}
+	var pkcs11id = document.getElementById("pkcs11id").value;
 	var usepass = 0;
 	if (document.getElementById("usepass").checked) {
 		usepass = 1;
@@ -668,6 +690,8 @@ function download_begin(act, i, j) {
 	dlurl += "&randomlocalport=" + encodeURIComponent(randomlocalport);
 	dlurl += "&openvpnmanager=" + encodeURIComponent(openvpnmanager);
 	dlurl += "&usetoken=" + encodeURIComponent(usetoken);
+	dlurl += "&usepkcs11=" + escape(usepkcs11);
+	dlurl += "&pkcs11id=" + escape(pkcs11id);
 	if (usepass) {
 		dlurl += "&password=" + encodeURIComponent(pass);
 	}
@@ -833,6 +857,14 @@ function useaddr_changed() {
 	}
 }
 
+function usepkcs11_changed() {
+	if ($('#usepkcs11').prop('checked')) {
+		hideInput('pkcs11id', false);
+	} else {
+		hideInput('pkcs11id', true);
+	}
+}
+
 function usepass_changed() {
 	if ($('#usepass').prop('checked')) {
 		hideInput('pass', false);
@@ -878,6 +910,9 @@ events.push(function(){
 	$('#useaddr').on('change', function() {
 		useaddr_changed();
 	});
+	$('#usepkcs11').on('change', function() {
+		usepkcs11_changed();
+	});
 	$('#usepass').on('change', function() {
 		usepass_changed();
 	});
@@ -892,6 +927,7 @@ events.push(function(){
 
 	server_changed();
 	useaddr_changed();
+	usepkcs11_changed();
 	usepass_changed();
 	useproxy_changed();
 });

@@ -27,8 +27,15 @@
 	]]>
 	</copyright>
 	<name>OpenVPN Client Export</name>
-	<title>OpenVPN Client Export</title>
+	<title>Diagnostics: OpenVPN Client Export</title>
 	<include_file>/usr/local/pkg/openvpn-client-export.inc</include_file>
+	<aftersaveredirect>pkg_edit.php?xml=openvpn-client-export.xml&amp;id=0</aftersaveredirect>
+	<menu>
+		<name>OpenVPN Client Export</name>
+		<tooltiptext>Set OpenVPN client export settings.</tooltiptext>
+		<section>Diagnostics</section>
+		<url>/pkg_edit.php?xml=openvpn-client-export.xml&amp;id=0</url>
+	</menu>
 	<tabs>
 		<tab>
 			<name>Client Export</name>
@@ -41,6 +48,29 @@
 			<url>/vpn_openvpn_export_shared.php</url>
 		</tab>
 	</tabs>
+	<fields>
+                <field>
+                        <type>listtopic</type>
+                        <name>Certificate Export Options</name>
+                </field>
+		<field>
+			<fielddescr>PKCS#11 Certificate Storage</fielddescr>
+			<fieldname>usepkcs11</fieldname>
+			<description>Use PKCS#11 storage instead of local files.</description>
+			<sethelp>This option configures the default value of the PKCS#11 Certificate Storage checkbox.</sethelp>
+			<type>checkbox</type>
+			<default_value>off</default_value>
+		</field>
+		<field>
+			<fielddescr>PKCS#11 Provider</fielddescr>
+			<fieldname>pkcs11provider</fieldname>
+			<description>Enter the path to the PKCS#11 provider</description>
+			<type>input</type>
+		</field>
+	</fields>
+	<custom_php_validation_command>
+		oce_custom_php_validation_command($_POST, $input_errors);
+	</custom_php_validation_command>
 	<custom_php_deinstall_command>
 		openvpn_client_export_deinstall();
 	</custom_php_deinstall_command>
