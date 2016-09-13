@@ -561,6 +561,7 @@ haproxy_enable=\${haproxy-"YES"}
 
 start_cmd="haproxy_start"
 stop_postcmd="haproxy_stop"
+restart_cmd="haproxy_restart"
 check_cmd="haproxy_check"
 extra_commands="check"
 
@@ -597,6 +598,11 @@ ENDOFF
 haproxy_stop () {
         echo "Stopping haproxy."
         killall haproxy
+}
+
+haproxy_restart () {
+	echo "Restarting haproxy."
+	haproxy_start
 }
 
 run_rc_command "\$1"
