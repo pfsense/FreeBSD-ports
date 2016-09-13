@@ -49,10 +49,15 @@ function openbgpd_install_conf() {
 
 	// Since we need to embed this in a string, copy to a var. Can't embed constants.
 	$bgpd_config_base = PKG_BGPD_CONFIG_BASE;
-	if ($config['installedpackages']['openbgpd']['rawconfig'] && $config['installedpackages']['openbgpd']['rawconfig']['item']) {
-		// If there is a raw config specified in the config.xml, use that instead of the assisted config
+
+	// Convert raw config to base64 encode
+	if (isset($config['installedpackages']['openbgpd']['rawconfig']['item']) && !empty($config['installedpackages']['openbgpd']['rawconfig']['item'])) {
 		$conffile = implode("\n", $config['installedpackages']['openbgpd']['rawconfig']['item']);
-		//$conffile = $config['installedpackages']['openbgpd']['rawconfig'];
+		$config['installedpackages']['openbgpd']['rawconfig'] = base64_encode($conffile);
+		write_config("Converted OpenBGPD raw config to base64 encode...");
+	} elseif (isset($config['installedpackages']['openbgpd']['rawconfig']) && !empty($config['installedpackages']['openbgpd']['rawconfig'])) {
+		// If there is a raw config specified in the config.xml, use that instead of the assisted config
+		$conffile = base64_decode($config['installedpackages']['openbgpd']['rawconfig']);
 	} else {
 		// Generate bgpd.conf based on the assistant
 		if ($config['installedpackages']['openbgpd']['config']) {
@@ -279,12 +284,13 @@ function openbgpd_get_raw_config() {
 // Serialize the raw openbgpd config file to config.xml
 function openbgpd_put_raw_config($conffile) {
 	global $config;
+	if (!isset($config['installedpackages']['openbgpd']['rawconfig'])) {
+		$config['installedpackages']['openbgpd']['rawconfig'] = array();
+	}
 	if ($conffile == "") {
 		unset($config['installedpackages']['openbgpd']['rawconfig']);
 	} else {
-		$config['installedpackages']['openbgpd']['rawconfig'] = array();
-		$config['installedpackages']['openbgpd']['rawconfig']['item'] = explode("\n", $_POST['openbgpd_raw']);
-		//$config['installedpackages']['openbgpd']['rawconfig'] = $conffile;
+		$config['installedpackages']['openbgpd']['rawconfig'] = $conffile;
 	}
 }
 
