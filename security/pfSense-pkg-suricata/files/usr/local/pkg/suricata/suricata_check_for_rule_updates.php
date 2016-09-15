@@ -181,6 +181,9 @@ function suricata_download_file_url($url, $file_out) {
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 0);
+		
+		// detect broken connection so it disconnects after +-10 minutes (with default TCP_KEEPIDLE and TCP_KEEPINTVL) to avoid waiting forever.
+		curl_setopt($ch, CURLOPT_TCP_KEEPALIVE, 1); 
 
 		// Honor any system restrictions on sending USERAGENT info
 		if (!isset($config['system']['do_not_send_host_uuid'])) {
