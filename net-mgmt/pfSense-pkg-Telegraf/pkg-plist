@@ -1,0 +1,5 @@
+pkg/telegraf.xml
+pkg/telegraf.inc
+/etc/inc/priv/telegraf.priv.inc
+%%DATADIR%%/info.xml
+@dir /etc/inc/priv

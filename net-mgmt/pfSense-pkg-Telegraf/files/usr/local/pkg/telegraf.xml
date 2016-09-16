@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+    <copyright>...</copyright>
+
+    <name>telegraf</name>
+    <title>Services: Telegraf</title>
+    <description>...</description>
+    <category>Network Management</category>
+    <include_file>/usr/local/pkg/telegraf.inc</include_file>
+
+    <menu>
+        <name>Telegraf</name>
+        <section>Services</section>
+        <configfile>telegraf.xml</configfile>
+        <url>/pkg_edit.php?xml=telegraf.xml</url>
+    </menu>
+
+    <service>
+        <name>telegraf</name>
+        <rcfile>telegraf</rcfile>
+        <executable>telegraf</executable>
+        <description>...</description>
+    </service>
+
+    <tabs>
+        <tab>
+            <text>General</text>
+            <url>/pkg_edit.php?xml=telegraf.xml</url>
+            <active/>
+        </tab>
+    </tabs>
+
+    <fields>
+        <field>
+            <fielddescr>Enable</fielddescr>
+            <fieldname>enable</fieldname>
+            <type>checkbox</type>
+            <description>Enable Telegraf</description>
+            <enablefields>influx_server,influx_db,influx_user,influx_pass</enablefields>
+        </field>
+        <field>
+            <fielddescr>InfluxDB Server</fielddescr>
+            <fieldname>influx_server</fieldname>
+            <type>input</type>
+            <!--<required/>-->
+            <description>Full HTTP or UDP endpoint URL for InfluxDB instance</description>
+        </field>
+        <field>
+            <fielddescr>InfluxDB Database</fielddescr>
+            <fieldname>influx_db</fieldname>
+            <type>input</type>
+            <!--<required/>-->
+            <description>Target database for metrics (created if does not exist)</description>
+        </field>
+        <field>
+            <fielddescr>InfluxDB Username</fielddescr>
+            <fieldname>influx_user</fieldname>
+            <type>input</type>
+        </field>
+        <field>
+            <fielddescr>InfluxDB Password</fielddescr>
+            <fieldname>influx_pass</fieldname>
+            <type>password</type>
+        </field>
+    </fields>
+
+    <custom_php_resync_config_command>
+        telegraf_resync_config();
+    </custom_php_resync_config_command>
+</packagegui>

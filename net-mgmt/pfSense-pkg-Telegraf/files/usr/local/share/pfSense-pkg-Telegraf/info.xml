@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>Telegraf</name>
+		<descr><![CDATA[...]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>telegraf.xml</configurationfile>
+	</package>
+</pfsensepkgs>
