@@ -1203,10 +1203,10 @@ diff -ruN ../suricata-3.0.orig/src/suricata.c ./src/suricata.c
 diff -ruN ../suricata-3.0.orig/src/tm-modules.c ./src/tm-modules.c
 --- ../suricata-3.0.orig/src/tm-modules.c	2016-03-04 08:12:34.000000000 -0500
 +++ ./src/tm-modules.c	2016-01-06 19:52:55.000000000 -0500
-@@ -221,6 +221,9 @@
+@@ -219,6 +219,9 @@
+         CASE_CODE (TMM_ALERTDEBUGLOG);
+         CASE_CODE (TMM_ALERTSYSLOG);
          CASE_CODE (TMM_LOGDROPLOG);
-         CASE_CODE (TMM_ALERTSYSLOG4);
-         CASE_CODE (TMM_ALERTSYSLOG6);
 +        CASE_CODE (TMM_ALERTPF);
 +        CASE_CODE (TMM_ALERTPF4);
 +        CASE_CODE (TMM_ALERTPF6);
