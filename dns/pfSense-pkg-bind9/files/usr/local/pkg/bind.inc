@@ -855,7 +855,7 @@ function bind_write_rcfile() {
 	$rc['file'] = 'named.sh';
 	// Curly braces in the following <<<EOD are PHP {$variable}, not named.conf text { value; }
 	$rc['start'] = <<<EOD
-		if [ -z "`/bin/ps auxw | /usr/bin/grep "[n]amed {$ip_version} -c /etc/namedb/named.conf" | /usr/bin/awk '{print $2}'`" ]; then
+		if [ -z "`/bin/ps auxw | /usr/bin/grep "[n]amed" | /usr/bin/awk '{print $2}'`" ]; then
 			{$BIND_LOCALBASE}/sbin/named {$ip_version} -c /etc/namedb/named.conf -u bind -t /cf/named/
 		fi
 EOD;
@@ -865,7 +865,7 @@ EOD;
 EOD;
 	// curly braces in the following <<<EOD are PHP {$variable}, not named.conf text { value; }
 	$rc['restart'] = <<<EOD
-		if [ -z "`/bin/ps auxw | /usr/bin/grep "[n]amed {$ip_version} -c /etc/namedb/named.conf" | /usr/bin/awk '{print $2}'`" ]; then
+		if [ -z "`/bin/ps auxw | /usr/bin/grep "[n]amed" | /usr/bin/awk '{print $2}'`" ]; then
 			{$BIND_LOCALBASE}/sbin/named {$ip_version} -c /etc/namedb/named.conf -u bind -t /cf/named/
 		else
 			/usr/bin/killall -9 named 2>/dev/null
