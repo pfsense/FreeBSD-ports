@@ -1,5 +1,5 @@
 # Created by: Patrick Tracanelli <eksffa@freebsdbrasil.com.br>
-# $FreeBSD$
+# $FreeBSD: head/security/suricata/Makefile 421635 2016-09-09 19:42:46Z amdmi3 $
 
 PORTNAME=	suricata
 PORTVERSION=	3.1.1
@@ -104,7 +104,6 @@ TESTS_CONFIGURE_ENABLE=		unittests
 SUB_FILES=	pkg-message
 
 CONFIGURE_ARGS+=--enable-gccprotect \
-		--disable-silent-rules \
 		--with-libpcre-includes=${LOCALBASE}/include \
 		--with-libpcre-libraries=${LOCALBASE}/lib \
 		--with-libyaml-includes=${LOCALBASE}/include \
