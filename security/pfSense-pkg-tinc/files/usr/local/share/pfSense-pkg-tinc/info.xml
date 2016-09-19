@@ -6,5 +6,9 @@
 		<descr><![CDATA[tinc is a Virtual Private Network (VPN) daemon that uses tunnelling and encryption to create a secure private network between hosts on the Internet.]]></descr>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>tinc.xml</configurationfile>
+		<logging>
+			<facilityname>tinc</facilityname>
+			<logfilename>tinc.log</logfilename>
+		</logging>
 	</package>
 </pfsensepkgs>
