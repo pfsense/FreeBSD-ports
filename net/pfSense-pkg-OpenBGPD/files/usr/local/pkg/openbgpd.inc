@@ -58,6 +58,10 @@ function openbgpd_install_conf() {
 	} elseif (isset($config['installedpackages']['openbgpd']['rawconfig']) && !empty($config['installedpackages']['openbgpd']['rawconfig'])) {
 		// If there is a raw config specified in the config.xml, use that instead of the assisted config
 		$conffile = base64_decode($config['installedpackages']['openbgpd']['rawconfig']);
+		$conffile = preg_replace("~\r\n~", "\n", $conffile);
+		if ( substr($conffile,-1) != PHP_EOL ) {
+			$conffile .= "\n";
+		}
 	} else {
 		// Generate bgpd.conf based on the assistant
 		if ($config['installedpackages']['openbgpd']['config']) {
