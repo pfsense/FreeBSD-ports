@@ -3,9 +3,9 @@
  * haproxy_listeners.php
  *
  * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2008 Remco Hoef <remcoverhoef@pfsense.com>
  * Copyright (c) 2009 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2013-2015 PiBa-NL
- * Copyright (C) 2008 Remco Hoef <remcoverhoef@pfsense.com>
+ * Copyright (c) 2013-2016 PiBa-NL
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -220,11 +220,11 @@ function set_content(elementid, image) {
 function js_callback(req) {
 	showapplysettings.style.display = 'block';
 	
-	if(req.content != '') {
+	if(req.content !== '') {
 		var itemsplit = req.content.split("|");
 		buttonid = itemsplit[0];
 		enabled = itemsplit[1];
-		if (enabled == 1){
+		if (enabled === "1"){
 			img = "<?=haproxyicon("enabled", gettext("click to toggle enable/disable this frontend"))?>";
 		} else {
 			img = "<?=haproxyicon("disabled", gettext("click to toggle enable/disable this frontend"))?>";
