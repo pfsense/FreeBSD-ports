@@ -188,7 +188,7 @@ $section = new Form_Section('OpenVPN Server');
 
 $serverlist = array();
 foreach ($ras_server as $server) {
-	$serverlist[$server['sindex']] = $server['name'];
+	$serverlist[$server['index']] = $server['name'];
 }
 
 $section->addInput(new Form_Select(
