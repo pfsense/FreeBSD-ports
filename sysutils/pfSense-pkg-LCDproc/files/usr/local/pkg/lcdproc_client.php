@@ -272,8 +272,7 @@ function get_carp_stats() {
 			$netmask = $carp['subnet_bits'];
 			$vhid = $carp['vhid'];
 			$advskew = $carp['advskew'];
-			$carp_int = find_carp_interface($ipaddress);
-			$status = get_carp_interface_status($carp_int);
+			$status = get_carp_interface_status("_vip{$carp['uniqid']}");
 			switch ($status) {
 				case "MASTER":
 					$mastercount++;
@@ -505,8 +504,8 @@ function outputled_carp() {
 			if ($carp['mode'] != "carp") {
 				 continue;
 			}
-			$carp_int = find_carp_interface($carp['subnet']);
-			$status = get_carp_interface_status($carp_int);
+			$status = get_carp_interface_status("_vip{$carp['uniqid']}");
+			
 			switch($status) {
 				case "MASTER":
 					return 1;
