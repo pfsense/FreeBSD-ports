@@ -546,10 +546,12 @@ servers[<?=$sindex?>][1][<?=$uindex?>][3] = '<?=str_replace("'", "\\'", $user['c
 <?		endforeach; ?>
 <?php		$c=0;
 		foreach ($server['certs'] as $cert): ?>
+<?php		if (!is_cert_revoked($config['cert'][$cert['cindex']])) { ?>
 servers[<?=$sindex?>][3][<?=$c?>] = new Array();
 servers[<?=$sindex?>][3][<?=$c?>][0] = '<?=$cert['cindex']?>';
 servers[<?=$sindex?>][3][<?=$c?>][1] = '<?=str_replace("'", "\\'", $cert['certname'])?>';
 <?		$c++;
+		}
 		endforeach; ?>
 <?	endforeach; ?>
 
