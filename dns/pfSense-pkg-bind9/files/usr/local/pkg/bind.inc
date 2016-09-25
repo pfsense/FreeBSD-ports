@@ -435,7 +435,6 @@ EOD;
 						$bind_conf .= "\t\tmasters { $zoneipslave; };\n";
 						$bind_conf .= "\t\tallow-query { $zoneallowquery; };\n";
 						$bind_conf .= "\t\tallow-transfer { $zoneallowtransfer; };\n";
-						$bind_conf .= "\t\tnotify no;\n";
 						break;
 					case 'forward':
 						$bind_conf .= "\t\tforward only;\n";
