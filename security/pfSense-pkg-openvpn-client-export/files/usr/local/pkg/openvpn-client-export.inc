@@ -144,7 +144,7 @@ function openvpn_client_export_validate_config($srvid, $usrid, $crtid) {
 	return array($settings, $server_cert, $server_ca, $servercn, $user, $cert, $nokeys);
 }
 
-function openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $nokeys = false, $proxy, $expformat = "baseconf", $outpass = "", $skiptls = false, $doslines = false, $openvpnmanager, $advancedoptions = "") {
+function openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $nokeys = false, $proxy, $expformat = "baseconf", $outpass = "", $skiptls = false, $doslines = false, $openvpnmanager, $advancedoptions = "", $usepkcs11, $pkcs11providers, $pkcs11id) {
 	global $config, $input_errors, $g;
 
 	$nl = ($doslines) ? "\r\n" : "\n";
@@ -279,6 +279,10 @@ EOF;
 			$conf .= "ca /openvpn/ca.crt{$nl}";
 			$conf .= "cert /openvpn/phone1.crt{$nl}";
 			$conf .= "key /openvpn/phone1.key{$nl}";
+		} elseif ($usepkcs11) {
+			$conf .= "ca {$cafile}{$nl}";
+			$conf .= "pkcs11-providers '{$pkcs11providers}'{$nl}";
+			$conf .= "pkcs11-id '{$pkcs11id}'{$nl}";
 		} elseif ($usetoken) {
 			$conf .= "ca {$cafile}{$nl}";
 			$conf .= "cryptoapicert \"SUBJ:{$user['name']}\"{$nl}";
@@ -373,7 +377,7 @@ EOF;
 			}
 
 			// write key files
-			if ($settings['mode'] != "server_user") {
+			if ($settings['mode'] != "server_user" && !$usepkcs11) {
 				$crtfile = "{$tempdir}/{$prefix}-cert.crt";
 				file_put_contents($crtfile, base64_decode($cert['crt']));
 				$keyfile = "{$tempdir}/{$prefix}.key";
@@ -478,7 +482,7 @@ EOF;
 	}
 }
 
-function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $outpass, $proxy, $openvpnmanager, $advancedoptions, $openvpn_version = "x86-xp") {
+function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $outpass, $proxy, $openvpnmanager, $advancedoptions, $openvpn_version = "x86-xp", $usepkcs11, $pkcs11providers, $pkcs11id) {
 	global $config, $g, $input_errors, $current_openvpn_version, $current_openvpn_version_rev;
 	$uname_p = trim(exec("uname -p"));
 
@@ -536,7 +540,7 @@ function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $veri
 		$pwdfle .= "{$proxy['password']}\r\n";
 		file_put_contents("{$confdir}/{$proxy['passwdfile']}", $pwdfle);
 	}
-	$conf = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $nokeys, $proxy, "", "baseconf", false, true, $openvpnmanager, $advancedoptions);
+	$conf = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $nokeys, $proxy, "", "baseconf", false, true, $openvpnmanager, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id);
 	if (!$conf) {
 		$input_errors[] = "Could not create a config to export.";
 		return false;
@@ -552,7 +556,7 @@ function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $veri
 	}
 
 	// write key files
-	if ($settings['mode'] != "server_user") {
+	if ($settings['mode'] != "server_user" && !$usepkcs11) {
 		$crtfile = "{$tempdir}/config/{$prefix}-{$user['name']}.crt";
 		file_put_contents($crtfile, base64_decode($cert['crt']));
 		$keyfile = "{$tempdir}/config/{$prefix}-{$user['name']}.key";
@@ -604,7 +608,7 @@ RunProgram="openvpn-postinstall.exe"
 	return $outfile;
 }
 
-function viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $outpass, $proxy, $openvpnmanager, $advancedoptions) {
+function viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $outpass, $proxy, $openvpnmanager, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id) {
 	global $config, $g;
 	$uname_p = trim(exec("uname -p"));
 
@@ -636,7 +640,7 @@ function viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $usead
 		file_put_contents("{$tempdir}/{$proxy['passwdfile']}", $pwdfle);
 	}
 
-	$conf = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, true, $proxy, "baseconf", $outpass, true, true, $openvpnmanager, $advancedoptions);
+	$conf = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, true, $proxy, "baseconf", $outpass, true, true, $openvpnmanager, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id);
 	if (!$conf) {
 		return false;
 	}
@@ -679,7 +683,7 @@ EOF;
 	$cafile = "{$tempdir}/ca.crt";
 	file_put_contents($cafile, $server_ca);
 
-	if ($settings['mode'] != "server_user") {
+	if ($settings['mode'] != "server_user" && !$usepkcs11) {
 
 		// write user .crt
 		$crtfile = "{$tempdir}/cert.crt";
