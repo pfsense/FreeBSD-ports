@@ -195,16 +195,14 @@ function bootup_apply_patches() {
 function patch_add_shellcmd() {
 	global $config;
 
-	if (!isset($config['system']['earlyshellcmd'])) {
+	if (!isset($config['system']['earlyshellcmd']) || !is_array($config['system']['earlyshellcmd'])) {
 	    $config['system']['earlyshellcmd'] = array();
 	}
 	$a_earlyshellcmd = &$config['system']['earlyshellcmd'];
 	$found = false;
-	if (is_array($a_earlyshellcmd)) {
-		foreach ($a_earlyshellcmd as $idx => $cmd) {
-			if (stristr($cmd, "apply_patches.php")) {
-				$found = true;
-			}
+	foreach ($a_earlyshellcmd as $idx => $cmd) {
+		if (stristr($cmd, "apply_patches.php")) {
+			$found = true;
 		}
 	}
 	if (!$found) {
@@ -216,21 +214,19 @@ function patch_add_shellcmd() {
 
 function patch_remove_shellcmd() {
 	global $config;
-	if (!isset($config['system']['earlyshellcmd'])) {
+	if (!isset($config['system']['earlyshellcmd']) || !is_array($config['system']['earlyshellcmd'])) {
 	    $config['system']['earlyshellcmd'] = array();
 	}
 	$a_earlyshellcmd = &$config['system']['earlyshellcmd'];
-	if (is_array($a_earlyshellcmd)) {
-		$removed = 0;
-		foreach ($a_earlyshellcmd as $idx => $cmd) {
-			if (stristr($cmd, "apply_patches.php")) {
-				unset($a_earlyshellcmd[$idx]);
-				$removed++;
-			}
+	$removed = 0;
+	foreach ($a_earlyshellcmd as $idx => $cmd) {
+		if (stristr($cmd, "apply_patches.php")) {
+			unset($a_earlyshellcmd[$idx]);
+			$removed++;
 		}
-		if ($removed > 0) {
-			write_config("System Patches package removed {$removed} existing early shellcmd(s): apply patches");
-		}
+	}
+	if ($removed > 0) {
+		write_config("System Patches package removed {$removed} existing early shellcmd(s): apply patches");
 	}
 }
 
