@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	osc
-PORTVERSION=	0.154.0
+PORTVERSION=	0.155.1
 CATEGORIES=	devel
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -22,7 +22,8 @@ CPE_VENDOR=	suse
 CPE_PRODUCT=	opensuse_osc
 
 USES=		cpe python
-USE_PYTHON=	distutils
+USE_PYTHON=	autoplist distutils
+PLIST_FILES=	bin/osc
 NO_ARCH=	yes
 
 PORTDOCS=	*
@@ -31,14 +32,9 @@ OPTIONS_DEFINE=	CA_BUNDLE DOCS
 OPTIONS_DEFAULT=CA_BUNDLE
 CA_BUNDLE_DESC=	Install CA Certificates
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MCA_BUNDLE}
-RUN_DEPENDS+=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
-CA_PATH=	${LOCALBASE}/share/certs/ca-root-nss.crt
-.else
-CA_PATH=	/etc/ssl
-.endif
+CA_BUNDLE_RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
+CA_BUNDLE_VARS=		CA_PATH=${LOCALBASE}/share/certs/ca-root-nss.crt
+CA_BUNDLE_VARS_OFF=	CA_PATH=/etc/ssl
 
 post-patch:
 	@${REINPLACE_CMD} -e "s|'share', 'man'|'man'|" ${WRKSRC}/setup.py

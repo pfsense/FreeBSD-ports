@@ -3,13 +3,14 @@
 
 PORTNAME=	crack
 PORTVERSION=	0.4
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	security www
 MASTER_SITES=	http://pecl.php.net/get/
 PKGNAMEPREFIX=	pecl-
 DIST_SUBDIR=	PECL
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PECL extension to cracklib
 
 LICENSE=	PHP30

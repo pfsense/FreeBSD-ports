@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	cgit
-PORTVERSION=	0.12
+PORTVERSION=	1.0
 CATEGORIES=	devel www
 MASTER_SITES=	http://git.zx2c4.com/cgit/snapshot/:cgit \
 		https://www.kernel.org/pub/software/scm/git/:git
@@ -15,9 +15,8 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 PROJECTHOST=	git-core
-GIT_VERSION=	2.7.0
-USES=		cpe gmake iconv shebangfix tar:xz
-USE_OPENSSL=	yes
+GIT_VERSION=	2.9.2
+USES=		cpe gmake iconv shebangfix ssl tar:xz
 CPE_VENDOR=	lars_hjemli
 SHEBANG_FILES=	filters/html-converters/rst2html
 
@@ -39,7 +38,10 @@ post-extract:
 	@${MV} ${WRKDIR}/git-${GIT_VERSION} ${WRKSRC}/git
 
 post-patch:
-	@${REINPLACE_CMD} -e 's/-liconv/${ICONV_LIB}/' ${WRKSRC}/git/Makefile
+	@${REINPLACE_CMD} -e 's/-liconv/${ICONV_LIB}/' \
+		-e "s|\(ALL_CFLAGS =\)|\1 -I${OPENSSLINC}|g" \
+		-e "s|\(ALL_LDFLAGS =\)|\1 -L${OPENSSLLIB}|g" \
+		${WRKSRC}/git/Makefile
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

@@ -257,6 +257,7 @@ etc/man.d/perl%%PKGNAMESUFFIX%%.conf
 %%PRIV_LIB%%/IPC/Cmd.pm
 %%PRIV_LIB%%/IPC/Open2.pm
 %%PRIV_LIB%%/IPC/Open3.pm
+%%PRIV_LIB%%/Internals.pod
 %%PRIV_LIB%%/JSON/PP.pm
 %%PRIV_LIB%%/JSON/PP/Boolean.pm
 %%PRIV_LIB%%/Locale/Codes.pm
@@ -1154,6 +1155,7 @@ etc/man.d/perl%%PKGNAMESUFFIX%%.conf
 %%MAN3%%/IPC::Semaphore.3.gz
 %%MAN3%%/IPC::SharedMem.3.gz
 %%MAN3%%/IPC::SysV.3.gz
+%%MAN3%%/Internals.3.gz
 %%MAN3%%/JSON::PP.3.gz
 %%MAN3%%/JSON::PP::Boolean.3.gz
 %%MAN3%%/List::Util.3.gz
@@ -1522,6 +1524,8 @@ etc/man.d/perl%%PKGNAMESUFFIX%%.conf
 %%PRIV_LIB%%/pod/perl5252delta.pod
 %%PRIV_LIB%%/pod/perl5253delta.pod
 %%PRIV_LIB%%/pod/perl5254delta.pod
+%%PRIV_LIB%%/pod/perl5255delta.pod
+%%PRIV_LIB%%/pod/perl5256delta.pod
 %%PRIV_LIB%%/pod/perl561delta.pod
 %%PRIV_LIB%%/pod/perl56delta.pod
 %%PRIV_LIB%%/pod/perl581delta.pod
@@ -2210,6 +2214,8 @@ etc/man.d/perl%%PKGNAMESUFFIX%%.conf
 %%MAN1%%/perl5252delta.1.gz
 %%MAN1%%/perl5253delta.1.gz
 %%MAN1%%/perl5254delta.1.gz
+%%MAN1%%/perl5255delta.1.gz
+%%MAN1%%/perl5256delta.1.gz
 %%MAN1%%/perl561delta.1.gz
 %%MAN1%%/perl56delta.1.gz
 %%MAN1%%/perl581delta.1.gz

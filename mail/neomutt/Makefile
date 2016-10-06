@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	neomutt
-PORTVERSION=	20160611
-PORTREVISION=	1
+PORTVERSION=	20160916
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	mail
 
@@ -14,12 +13,10 @@ LICENSE_FILE=	${WRKSRC}/GPL
 
 USE_GITHUB=	yes
 
-USES=		autoreconf localbase ncurses shebangfix
+USES=		autoreconf localbase ncurses shebangfix ssl
 GNU_CONFIGURE=	yes
-USE_OPENSSL=	yes
 
-LIB_DEPENDS=	libtokyocabinet.so:databases/tokyocabinet \
-		libnotmuch.so:mail/notmuch
+LIB_DEPENDS=	libnotmuch.so:mail/notmuch
 BUILD_DEPENDS=	gdate:sysutils/coreutils
 RUN_DEPENDS=	${LOCALBASE}/etc/mime.types:misc/mime-support \
 		urlview:textproc/urlview
@@ -28,10 +25,14 @@ OPTIONS_SUB=	yes
 SHEBANG_FILES=	smime_keys.pl
 
 OPTIONS_DEFINE=	NLS DOCS SASL ICONV IDN FLOCK GPGME
-OPTIONS_DEFAULT=	SASL
+OPTIONS_DEFAULT=SASL TOKYOCABINET
+OPTIONS_RADIO=	HCACHE
+OPTIONS_RADIO_HCACHE=	TOKYOCABINET LMDB
 
 FLOCK_DESC=	Use flock() to lock files
 GPGME_DESC=	Use gpgme to handle pgp
+TOKYOCABINET_DESC=	Use TokyoCabinet as header-cache backend
+LMDB_DESC=		Use LMDB as header-cache backend
 
 CONFIGURE_ARGS=	--disable-dependency-tracking \
 		--with-docdir="${DOCSDIR}" \
@@ -44,10 +45,15 @@ CONFIGURE_ARGS=	--disable-dependency-tracking \
 		--enable-hcache \
 		--enable-sidebar \
 		--enable-notmuch \
-		--with-tokyocabinet \
 		--without-qdbm \
 		--disable-fcntl \
 		--enable-external-dotlock
+
+TOKYOCABINET_CONFIGURE_WITH=	tokyocabinet
+TOKYOCABINET_LIB_DEPENDS=	libtokyocabinet.so:databases/tokyocabinet
+
+LMDB_CONFIGURE_WITH=	lmdb
+LMDB_LIB_DEPENDS=	liblmdb.so:databases/lmdb
 
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=	gettext
@@ -75,6 +81,7 @@ DOCS_BUILD_DEPENDS=	xsltproc:textproc/libxslt \
 
 post-patch:
 	@${REINPLACE_CMD} -e "s/\`date/\`gdate/" ${WRKSRC}/Makefile.am ${WRKSRC}/doc/Makefile.am
+	@${REINPLACE_CMD} '/LIBS=$$/d' ${WRKSRC}/configure.ac
 
 post-install:
 	${RM} -f ${STAGEDIR}${PREFIX}/etc/mime*

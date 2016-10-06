@@ -3,9 +3,10 @@
 
 PORTNAME?=	postgresql
 DISTVERSION?=	9.2.18
+PORTREVISION?=	1
 CATEGORIES?=	databases
 MASTER_SITES=	PGSQL/source/v${DISTVERSION}
-PKGNAMESUFFIX?=	${DISTVERSION:R:S/.//}${COMPONENT}
+PKGNAMESUFFIX?=	${PORTVERSION:R:S/.//}${COMPONENT}
 
 MAINTAINER?=	pgsql@FreeBSD.org
 COMMENT?=	The most advanced open-source database available anywhere
@@ -88,7 +89,7 @@ ICU_DESC=	Use ICU for unicode collation
 # (requires dump/restore if modified.)
 OPTIONS_DEFINE+=	INTDATE
 INTDATE_DESC=	Builds with 64-bit date/time type
-OPTIONS_DEFAULT=	XML TZDATA INTDATE
+OPTIONS_DEFAULT+=	XML TZDATA INTDATE
 .endif
 
 .if !defined(SLAVE_ONLY)
@@ -229,6 +230,7 @@ post-patch:
 .  if defined(SERVER_ONLY) && ${PORT_OPTIONS:MICU}
 	@${REINPLACE_CMD} -E -e \
 		"s|^(m4_if.*)2.6[0-9](.*Autoconf version )2.6[0-9]|\1${AUTOCONF_VERSION}\2${AUTOCONF_VERSION}|g" \
+		-e '/icu/s/_57//' \
 		${WRKSRC}/configure.in
 .  endif
 
@@ -242,7 +244,9 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/periodic/daily ;\
 	${INSTALL_SCRIPT} ${WRKDIR}/502.pgsql \
 			${STAGEDIR}${PREFIX}/etc/periodic/daily
-	${MKDIR} ${STAGEDIR}${PREFIX}/${PG_USER}
+.	if ${PORTVERSION:M9.[2345].*}
+		${MKDIR} ${STAGEDIR}${PREFIX}/${PG_USER}
+.	endif	
 .  endif # SERVER_ONLY
 .  if defined(CLIENT_ONLY)
 	@ cd ${WRKSRC}/src && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-local

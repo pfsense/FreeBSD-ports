@@ -28,12 +28,12 @@
     SUBDIR += conduit
     SUBDIR += conkyemail
     SUBDIR += conkyforecast
+    SUBDIR += copyq
     SUBDIR += countdown
     SUBDIR += cycle
     SUBDIR += dailystrips
     SUBDIR += deforaos-todo
     SUBDIR += devd-notifier
-    SUBDIR += displaycalibrator
     SUBDIR += dlume
     SUBDIR += docear
     SUBDIR += dosage

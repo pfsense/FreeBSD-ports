@@ -38,6 +38,7 @@
     SUBDIR += droid-fonts-ttf
     SUBDIR += ecofont
     SUBDIR += encodings
+    SUBDIR += exo
     SUBDIR += fantasque-sans-mono
     SUBDIR += farsifonts
     SUBDIR += fifteen
@@ -88,7 +89,6 @@
     SUBDIR += fontconfig-reference
     SUBDIR += fontmatrix
     SUBDIR += fonts-indic
-    SUBDIR += fonts-te
     SUBDIR += fontsproto
     SUBDIR += fonttosfnt
     SUBDIR += freefont-ttf
@@ -102,6 +102,7 @@
     SUBDIR += gnu-unifont
     SUBDIR += gnu-unifont-ttf
     SUBDIR += gohufont
+    SUBDIR += hack-font
     SUBDIR += hanazono-fonts-ttf
     SUBDIR += hasklig
     SUBDIR += inconsolata-lgc-ttf
@@ -137,11 +138,13 @@
     SUBDIR += mkitalic
     SUBDIR += mondulkiri
     SUBDIR += montecarlo_fonts
+    SUBDIR += montserrat
     SUBDIR += moveable-type-fonts
     SUBDIR += nexfontsel
     SUBDIR += noto
     SUBDIR += noto-lite
     SUBDIR += nucleus
+    SUBDIR += oldschool-pc-fonts
     SUBDIR += p5-Font-AFM
     SUBDIR += p5-Font-TTF
     SUBDIR += p5-Font-TTFMetrics

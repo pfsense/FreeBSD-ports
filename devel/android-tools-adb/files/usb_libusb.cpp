@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-#define TRACE_TAG TRACE_USB
+#define TRACE_TAG USB
 
 #include "sysdeps.h"
 
@@ -58,7 +58,7 @@ static usb_handle handle_list = {
     .next = &handle_list,
 };
 
-void
+static void
 usb_cleanup()
 {
     libusb_exit(ctx);
@@ -484,51 +484,13 @@ check_device(libusb_device *dev)
             goto fail;
         }
 
-        if (desc.iSerialNumber) {
-            // reading serial
-            uint16_t    buffer[128] = {0};
-            uint16_t    languages[128] = {0};
-            int languageCount = 0;
-
-            memset(languages, 0, sizeof(languages));
-            r = libusb_control_transfer(uh.devh,
-                                        LIBUSB_ENDPOINT_IN |  LIBUSB_REQUEST_TYPE_STANDARD | LIBUSB_RECIPIENT_DEVICE,
-                                        LIBUSB_REQUEST_GET_DESCRIPTOR, LIBUSB_DT_STRING << 8,
-                                        0, (uint8_t *)languages, sizeof(languages), 0);
-
-            if (r <= 0) {
-                D("check_device(): Failed to get languages count");
-                goto fail;
-            }
-
-            languageCount = (r - 2) / 2;
-
-            for (i = 1; i <= languageCount; ++i) {
-                memset(buffer, 0, sizeof(buffer));
-
-                r = libusb_control_transfer(uh.devh,
-                                            LIBUSB_ENDPOINT_IN |  LIBUSB_REQUEST_TYPE_STANDARD | LIBUSB_RECIPIENT_DEVICE,
-                                            LIBUSB_REQUEST_GET_DESCRIPTOR, (LIBUSB_DT_STRING << 8) | desc.iSerialNumber,
-                                            languages[i], (uint8_t *)buffer, sizeof(buffer), 0);
-
-                if (r > 0) { /* converting serial */
-                    int j = 0;
-                    r /= 2;
-
-                    for (j = 1; j < r; ++j)
-                        serial[j - 1] = buffer[j];
-
-                    serial[j - 1] = '\0';
-                    break; /* languagesCount cycle */
-                }
-            }
-
-            if (register_device(&uh, serial) == 0) {
-                D("check_device(): Failed to register device");
-                goto fail_interface;
-            }
-
-            libusb_ref_device(dev);
+        if (desc.iSerialNumber != 0) {
+            libusb_get_string_descriptor_ascii(uh.devh, desc.iSerialNumber,
+                                               (unsigned char *)uh.serial, sizeof(uh.serial));
+        }
+        if (register_device(&uh, uh.serial) == 0) {
+            D("check_device(): Failed to register device\n");
+            goto fail_interface;
         }
     }
 
@@ -600,9 +562,10 @@ scan_usb_devices()
     libusb_free_device_list(devs, 1);
 }
 
-static void *
-device_poll_thread(void* unused)
+static void
+device_poll_thread(void*)
 {
+    adb_thread_setname("USB scan");
     D("device_poll_thread(): Created USB scan thread");
 
     for (;;) {
@@ -610,9 +573,6 @@ device_poll_thread(void* unused)
         kick_disconnected();
         scan_usb_devices();
     }
-
-    /* never reaching this point */
-    return (NULL);
 }
 
 static void
@@ -625,7 +585,6 @@ void
 usb_init()
 {
     D("usb_init(): started");
-    adb_thread_t        tid;
     struct sigaction actions;
 
     atexit(usb_cleanup);
@@ -648,7 +607,7 @@ usb_init()
     scan_usb_devices();
 
     /* starting USB event polling thread */
-    if (adb_thread_create(&tid, device_poll_thread, nullptr)) {
+    if (!adb_thread_create(device_poll_thread, nullptr)) {
         fatal_errno("cannot create USB scan thread");
     }
 

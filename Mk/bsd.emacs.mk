@@ -7,7 +7,7 @@
 Emacs_Include=			bsd.emacs.mk
 Emacs_Include_MAINTAINER=	ashish@FreeBSD.org
 
-EMACS_PORT_NAME?=	emacs24
+EMACS_PORT_NAME?=	emacs25
 
 #
 # This file for ports which depend on emacs family.
@@ -63,14 +63,14 @@ EMACS_PORT_NAME?=	emacs24
 
 EMACS_MASTERDIR_PKGFILES?=	NO
 
-# Emacs-24.x
-.if (${EMACS_PORT_NAME} == "emacs24")
+# Emacs-25.x
+.if (${EMACS_PORT_NAME} == "emacs25")
 EMACS_NAME=		emacs
-EMACS_VER=		24.5
-EMACS_MAJOR_VER=	24
+EMACS_VER=		25.1
+EMACS_MAJOR_VER=	25
 EMACS_LIBDIR?=		share/${EMACS_NAME}
 EMACS_LIBDIR_WITH_VER?=	share/${EMACS_NAME}/${EMACS_VER}
-EMACS_PORTSDIR=		${PORTSDIR}/editors/emacs
+EMACS_PORTDIR=		editors/emacs
 EMACS_COMMON_PORT=	NO
 EMACS_HAS_MULE=		YES
 EMACS_NO_SUBDIRSEL=	NO
@@ -80,14 +80,30 @@ DESCR?=			${PKGDIR}/pkg-descr.${EMACS_PORT_NAME}
 PLIST?=			${PKGDIR}/pkg-plist.${EMACS_PORT_NAME}
 .endif
 
-# Emacs-24.x (development version)
+# Emacs-25.x (development version)
 .elif (${EMACS_PORT_NAME} == "emacs-devel")
 EMACS_NAME=		emacs
-EMACS_VER=		25.0.95
+EMACS_VER=		25.2.50
 EMACS_MAJOR_VER=	25
 EMACS_LIBDIR?=		share/${EMACS_NAME}
 EMACS_LIBDIR_WITH_VER?=	share/${EMACS_NAME}/${EMACS_VER}
-EMACS_PORTSDIR=		${PORTSDIR}/editors/emacs-devel
+EMACS_PORTDIR=		editors/emacs-devel
+EMACS_COMMON_PORT=	NO
+EMACS_HAS_MULE=		YES
+EMACS_NO_SUBDIRSEL=	NO
+.if (${EMACS_MASTERDIR_PKGFILES} == "YES")
+COMMENTFILE?=		${PKGDIR}/pkg-comment.${EMACS_PORT_NAME}
+DESCR?=			${PKGDIR}/pkg-descr.${EMACS_PORT_NAME}
+PLIST?=			${PKGDIR}/pkg-plist.${EMACS_PORT_NAME}
+.endif
+
+.elif (${EMACS_PORT_NAME} == "emacs-nox11")
+EMACS_NAME=		emacs
+EMACS_VER=		25.1
+EMACS_MAJOR_VER=	25
+EMACS_LIBDIR=		share/${EMACS_NAME}
+EMACS_LIBDIR_WITH_VER?= share/${EMACS_NAME}/${EMACS_VER}
+EMACS_PORTDIR=		editors/emacs-nox11
 EMACS_COMMON_PORT=	NO
 EMACS_HAS_MULE=		YES
 EMACS_NO_SUBDIRSEL=	NO
@@ -101,7 +117,7 @@ PLIST?=			${PKGDIR}/pkg-plist.${EMACS_PORT_NAME}
 check-makevars::
 	@${ECHO} "Makefile error: Bad value of EMACS_PORT_NAME: ${EMACS_PORT_NAME}."
 	@${ECHO} "Valid values are:"
-	@${ECHO} "	Emacs  family: emacs24 emacs-devel"
+	@${ECHO} "	Emacs  family: emacs25 emacs-devel emacs-nox11"
 	@${FALSE}
 .endif
 
@@ -130,13 +146,13 @@ EMACS_VERSION_SITE_LISPDIR?=	${EMACS_LIBDIR_WITH_VER}/site-lisp
 EMACS_NO_BUILD_DEPENDS?=	NO
 EMACS_NO_RUN_DEPENDS?=		NO
 .if (${EMACS_NO_BUILD_DEPENDS} == "NO")
-BUILD_DEPENDS+=		${EMACS_CMD}:${EMACS_PORTSDIR}
+BUILD_DEPENDS+=		${EMACS_CMD}:${EMACS_PORTDIR}
 .endif
 .if (${EMACS_NO_RUN_DEPENDS} == "NO")
 .if defined(EMACS_COMMON_PORT) && (${EMACS_COMMON_PORT} == "YES")
-RUN_DEPENDS+=	${EMACS_COREEL}:${EMACS_PORTSDIR}-common
+RUN_DEPENDS+=	${EMACS_COREEL}:${EMACS_PORTDIR}-common
 .else
-RUN_DEPENDS+=	${EMACS_CMD}:${EMACS_PORTSDIR}
+RUN_DEPENDS+=	${EMACS_CMD}:${EMACS_PORTDIR}
 .endif
 .endif
 

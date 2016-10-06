@@ -2,15 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	endless-sky
-PORTVERSION=	0.8.11
+PORTVERSION=	0.9.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Space exploration and combat game similar to Escape Velocity
 
-LICENSE=	GPLv3+
-LICENSE_FILE=	${WRKSRC}/license.txt
+LICENSE=	GPLv3+ CC-BY-4.0 CC-BY-SA-3.0 CC-BY-SA-4.0 PD
+LICENSE_COMB=	multi
+LICENSE_FILE_GPLv3+ =	${WRKSRC}/license.txt
 
 LIB_DEPENDS=	libpng.so:graphics/png
 
@@ -18,7 +19,7 @@ BROKEN_FreeBSD_9=	does not build # revisit when ports gcc is switched to 4.9
 
 USE_GITHUB=	yes
 
-USES=		compiler:c++11-lib jpeg localbase openal scons
+USES=		compiler:c++11-lib jpeg localbase:ldflags openal scons
 USE_SDL=	sdl2
 USE_GL=		gl glew
 INSTALLS_ICONS=	yes

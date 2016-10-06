@@ -3,6 +3,7 @@
 
 PORTNAME=	vlc
 DISTVERSION=	2.2.4
+PORTREVISION=	1
 PORTEPOCH=	4
 CATEGORIES=	multimedia audio ipv6 net www
 MASTER_SITES=	http://download.videolan.org/pub/videolan/${PORTNAME}/${DISTVERSION:S/a$//}/ \
@@ -41,7 +42,7 @@ CONFIGURE_ARGS=	--enable-avcodec --enable-avformat --enable-dvbpsi \
 		--disable-dv1394 --disable-egl --disable-fdkaac \
 		--disable-gles1 --disable-gles2 --disable-kai --disable-kva \
 		--disable-libvnc --disable-opencv --disable-projectm \
-		--disable-quicksync --disable-silent-rules --disable-telx \
+		--disable-quicksync --disable-telx \
 		--disable-tiger --disable-tremor --disable-udev \
 		--disable-update-check --disable-vcdx --disable-vsxu \
 		--disable-wasapi --disable-x26410b \

@@ -8,7 +8,6 @@
     SUBDIR += centerim
     SUBDIR += centerim-devel
     SUBDIR += chattahoochie
-    SUBDIR += cicquin
     SUBDIR += cjc
     SUBDIR += climm
     SUBDIR += coccinella
@@ -32,7 +31,6 @@
     SUBDIR += gloox
     SUBDIR += hotot
     SUBDIR += hs-haskell-xmpp
-    SUBDIR += icb
     SUBDIR += icmpchat
     SUBDIR += icqlib
     SUBDIR += imspector
@@ -112,11 +110,9 @@
     SUBDIR += pidgin-hotkeys
     SUBDIR += pidgin-latex
     SUBDIR += pidgin-libnotify
-    SUBDIR += pidgin-manualsize
     SUBDIR += pidgin-osd
     SUBDIR += pidgin-pidgimpd
     SUBDIR += pidgin-privacy-please
-    SUBDIR += pidgin-rhythmbox
     SUBDIR += pidgin-sipe
     SUBDIR += pidgin-skype
     SUBDIR += pidgin-skypeweb
@@ -130,15 +126,18 @@
     SUBDIR += psi
     SUBDIR += psimedia
     SUBDIR += pwytter
+    SUBDIR += py-fbmq
     SUBDIR += py-jabber
     SUBDIR += py-jabberbot
     SUBDIR += py-libturpial
     SUBDIR += py-nbxmpp
     SUBDIR += py-punjab
+    SUBDIR += py-python-telegram-bot
     SUBDIR += py-pyxmpp
     SUBDIR += py-skype4py
     SUBDIR += py-slackclient
     SUBDIR += py-sleekxmpp
+    SUBDIR += py-telepot
     SUBDIR += py-twistedWords
     SUBDIR += py-xmpppy
     SUBDIR += py-xmpppy-irc
@@ -179,6 +178,7 @@
     SUBDIR += telepathy-mission-control
     SUBDIR += telepathy-python
     SUBDIR += telepathy-qt4
+    SUBDIR += telepathy-qt5
     SUBDIR += telepathy-rakia
     SUBDIR += telepathy-salut
     SUBDIR += telepathy-sofiasip

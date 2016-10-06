@@ -12,6 +12,8 @@ COMMENT=	Anonymous, distributed, reputation-based network
 
 LICENSE=	GPLv3
 
+BROKEN=		runtime malfunction caused by missing gnunet-daemon-hostlist (bugs no. 205042)
+
 LIB_DEPENDS=	libogg.so:audio/libogg \
 		libopus.so:audio/opus \
 		libpulse.so:audio/pulseaudio \
@@ -28,8 +30,7 @@ USES=		gmake iconv libtool pathfix pkgconfig
 USE_GNOME=	glib20
 USE_GSTREAMER1=	yes
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-silent-rules \
-		--with-extractor=${LOCALBASE} \
+CONFIGURE_ARGS=	--with-extractor=${LOCALBASE} \
 		--with-gnutls=${LOCALBASE} \
 		--with-libgcrypt-prefix=${LOCALBASE} \
 		--with-libunistring-prefix=${LOCALBASE} \

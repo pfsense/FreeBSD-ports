@@ -3,7 +3,7 @@
 
 PORTNAME=	mplayer-skins
 PORTVERSION=	1.1.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	multimedia
 MASTER_SITES=	MPLAYERHQ/skins
 DISTFILES=	# filled in later after options
@@ -24,6 +24,8 @@ COMMENT=	Skins for MPlayer's Graphical User Interface (GUI)
 USES=		tar:bzip2
 NO_WRKSUBDIR=	yes
 NO_BUILD=	yes
+
+NO_ARCH=	yes
 
 .include "${.CURDIR}/Makefile.options"
 
@@ -49,7 +51,7 @@ PORT_OPTIONS+=	${ALLSKINS}
 post-build-script:
 DISTFILES+=	${DEFAULT_FILE}${EXTRACT_SUFX}
 .for f in ${ALLSKINS}
-.if $(PORT_OPTIONS:M${f})
+.if ${PORT_OPTIONS:M${f}}
 PLIST_SUB+=	${f}="" WITHOUT_SKIN_${f}="@comment "
 DISTFILES+=	${${f}_FILE}${EXTRACT_SUFX}
 .else

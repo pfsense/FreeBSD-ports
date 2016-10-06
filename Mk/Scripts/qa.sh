@@ -20,15 +20,19 @@ err() {
 	echo "Error: $@" >&2
 }
 
+list_stagedir_elfs() {
+	cd ${STAGEDIR} && find -s . -type f \( -perm +111 -o -name '*.so*' \) "$@"
+}
+
 shebangonefile() {
 	local f interp rc
 
 	f="$@"
 	rc=0
 
-	# blacklist of files which are not intended to be runnable
-	case "${f##*/}" in
-	*.pm|*.pod|*.txt)
+	# whitelist some files
+	case "${f}" in
+	*.pm|*.pod|*.txt|${STAGEDIR}${LINUXBASE}/*)
 		return 0
 		;;
 	esac
@@ -115,9 +119,7 @@ baselibs() {
 			;;
 		esac
 	done <<-EOF
-	$(find ${STAGEDIR}${PREFIX}/bin ${STAGEDIR}${PREFIX}/sbin \
-		${STAGEDIR}${PREFIX}/lib ${STAGEDIR}${PREFIX}/libexec \
-		-type f -exec readelf -d {} + 2>/dev/null)
+	$(list_stagedir_elfs -exec readelf -d {} + 2>/dev/null)
 	EOF
 	if [ -z "${USESSSL}" -a -n "${found_openssl}" ]; then
 		warn "you need USES=ssl"
@@ -306,7 +308,7 @@ libperl() {
 }
 
 prefixvar() {
-	if test -d ${STAGEDIR}${PREFIX}/var; then
+	if [ ${PREFIX} != ${LINUXBASE} -a -d ${STAGEDIR}${PREFIX}/var ]; then
 		warn "port uses ${PREFIX}/var instead of /var"
 	fi
 }
@@ -351,7 +353,7 @@ proxydeps_suggest_uses() {
 
 	# miscellaneous USE clauses
 	if [ ${pkg} = 'devel/gettext-runtime' ]; then
-		warn "you need USES+=gettext"
+		warn "you need USES+=gettext-runtime"
 	elif [ ${pkg} = 'databases/sqlite3' ]; then
 		warn "you need USES+=sqlite"
 	elif [ ${pkg} = 'databases/sqlite2' ]; then
@@ -440,6 +442,38 @@ proxydeps_suggest_uses() {
 	elif [ ${pkg} = "x11/mate-menus" ]; then warn "you need USE_MATE+=menus"
 	elif [ ${pkg} = "x11/mate-panel" ]; then warn "you need USE_MATE+=panel"
 	elif [ ${pkg} = "sysutils/mate-polkit" ]; then warn "you need USE_MATE+=polkit"
+	# KDE
+	# grep -B1 _LIB= Mk/Uses/kde.mk | grep _PORT=|sed -e 's/^\(.*\)_PORT=[[:space:]]*\([^[:space:]]*\).*/elif [ ${pkg} = "\2" ]; then warn "you need to use USE_KDE+=\1"/'
+	elif [ ${pkg} = "sysutils/baloo" ]; then warn "you need to use USE_KDE+=baloo"
+	elif [ ${pkg} = "sysutils/baloo-widgets" ]; then warn "you need to use USE_KDE+=baloo-widgets"
+	elif [ ${pkg} = "x11/kactivities" ]; then warn "you need to use USE_KDE+=kactivities"
+	elif [ ${pkg} = "editors/kate" ]; then warn "you need to use USE_KDE+=kate"
+	elif [ ${pkg} = "x11/kdelibs4" ]; then warn "you need to use USE_KDE+=kdelibs"
+	elif [ ${pkg} = "sysutils/kfilemetadata" ]; then warn "you need to use USE_KDE+=kfilemetadata"
+	elif [ ${pkg} = "audio/libkcddb" ]; then warn "you need to use USE_KDE+=libkcddb"
+	elif [ ${pkg} = "audio/libkcompactdisc" ]; then warn "you need to use USE_KDE+=libkcompactdisc"
+	elif [ ${pkg} = "graphics/libkdcraw-kde4" ]; then warn "you need to use USE_KDE+=libkdcraw"
+	elif [ ${pkg} = "misc/libkdeedu" ]; then warn "you need to use USE_KDE+=libkdeedu"
+	elif [ ${pkg} = "games/libkdegames" ]; then warn "you need to use USE_KDE+=libkdegames"
+	elif [ ${pkg} = "graphics/libkexiv2-kde4" ]; then warn "you need to use USE_KDE+=libkexiv2"
+	elif [ ${pkg} = "graphics/libkipi-kde4" ]; then warn "you need to use USE_KDE+=libkipi"
+	elif [ ${pkg} = "x11/libkonq" ]; then warn "you need to use USE_KDE+=libkonq"
+	elif [ ${pkg} = "graphics/libksane" ]; then warn "you need to use USE_KDE+=libksane"
+	elif [ ${pkg} = "astro/marble" ]; then warn "you need to use USE_KDE+=marble"
+	elif [ ${pkg} = "sysutils/nepomuk-core" ]; then warn "you need to use USE_KDE+=nepomuk-core"
+	elif [ ${pkg} = "sysutils/nepomuk-widgets" ]; then warn "you need to use USE_KDE+=nepomuk-widgets"
+	elif [ ${pkg} = "graphics/okular" ]; then warn "you need to use USE_KDE+=okular"
+	elif [ ${pkg} = "deskutils/kdepimlibs4" ]; then warn "you need to use USE_KDE+=pimlibs"
+	elif [ ${pkg} = "devel/ruby-qtruby" ]; then warn "you need to use USE_KDE+=qtruby"
+	elif [ ${pkg} = "devel/smokegen" ]; then warn "you need to use USE_KDE+=smokegen"
+	elif [ ${pkg} = "devel/smokekde" ]; then warn "you need to use USE_KDE+=smokekde"
+	elif [ ${pkg} = "devel/smokeqt" ]; then warn "you need to use USE_KDE+=smokeqt"
+	elif [ ${pkg} = "x11/kde4-workspace" ]; then warn "you need to use USE_KDE+=workspace"
+	elif [ ${pkg} = "databases/akonadi" ]; then warn "you need to use USE_KDE+=akonadi"
+	elif [ ${pkg} = "x11-toolkits/attica" ]; then warn "you need to use USE_KDE+=attica"
+	elif [ ${pkg} = "x11/qimageblitz" ]; then warn "you need to use USE_KDE+=qimageblitz"
+	elif [ ${pkg} = "textproc/soprano" ]; then warn "you need to use USE_KDE+=soprano"
+	elif [ ${pkg} = "deskutils/libstreamanalyzer" ]; then warn "you need to use USE_KDE+=strigi"
 	# sdl-related
 	elif [ ${pkg} = 'devel/sdl12' ]; then
 		warn "you need USE_SDL+=sdl"
@@ -474,9 +508,13 @@ proxydeps_suggest_uses() {
 	# Qt4
 	elif expr ${pkg} : '.*/qt4-.*' > /dev/null; then
 		warn "you need USE_QT4+=$(echo ${pkg} | sed -E 's|.*/qt4-||')"
+	elif expr ${pkg} : '.*/.*-qt4' > /dev/null; then
+		warn "you need USE_QT4+=$(echo ${pkg} | sed -E 's|.*/(.*)-qt4|\1|')"
 	# Qt5
 	elif expr ${pkg} : '.*/qt5-.*' > /dev/null; then
 		warn "you need USE_QT5+=$(echo ${pkg} | sed -E 's|.*/qt5-||')"
+	elif expr ${pkg} : '.*/.*-qt5' > /dev/null; then
+		warn "you need USE_QT5+=$(echo ${pkg} | sed -E 's|.*/(.*)-qt5|\1|')"
 	# MySQL
 	elif expr ${lib_file} : "${LOCALBASE}/lib/mysql/[^/]*$" > /dev/null; then
 		warn "you need USES+=mysql"
@@ -520,6 +558,9 @@ proxydeps_suggest_uses() {
 	# motif
 	elif [ ${pkg} = "x11-toolkits/lesstif" -o ${pkg} = "x11-toolkits/open-motif" ]; then
 		warn "you need USES+=motif"
+	# ncurses
+	elif [ ${pkg} = "devel/ncurses" ]; then
+		warn "you need USES+=ncurses"
 	# objc
 	elif [ ${pkg} = "lang/libobjc2" ]; then
 		warn "you need USES+=objc"
@@ -591,11 +632,21 @@ proxydeps() {
 			# No results presents a blank line from heredoc.
 			[ -z "${dep_file}" ] && continue
 			dep_file=$(subst_dep_file ${dep_file})
+			# Skip files we already checked.
 			if listcontains ${dep_file} "${already}"; then
 				continue
 			fi
 			if $(pkg which -q ${dep_file} > /dev/null 2>&1); then
 				dep_file_pkg=$(pkg which -qo ${dep_file})
+
+				# Check that the .so we need has a SONAME
+				if [ "${dep_file_pkg}" != "${PKGORIGIN}" ]; then
+					if ! readelf -d "${dep_file}" | grep -q SONAME; then
+						err "${file} is linked to ${dep_file} which does not have a SONAME.  ${dep_file_pkg} needs to be fixed."
+					fi
+				fi
+
+				# If we don't already depend on it, and we don't provide it
 				if ! listcontains ${dep_file_pkg} "${LIB_RUN_DEPENDS} ${PKGORIGIN}"; then
 					err "${file} is linked to ${dep_file} from ${dep_file_pkg} but it is not declared as a dependency"
 					proxydeps_suggest_uses ${dep_file_pkg} ${dep_file}
@@ -614,9 +665,9 @@ proxydeps() {
 			!/^\// && section<=1 && ($3 ~ "^'${PREFIX}'" || $3 ~ "^'${LOCALBASE}'") {print $3}')
 		EOT
 	done <<-EOT
-	$(cd ${STAGEDIR} && find -s . -type f \( -perm +111 -o -name '*.so*' \) | \
+	$(list_stagedir_elfs | \
 		file -F $'\1' -f - | \
-		grep -a 'ELF.*dynamically linked' | \
+		grep -a 'ELF.*FreeBSD.*dynamically linked' | \
 		cut -f 1 -d $'\1'| \
 		sed -e 's/^\.//')
 	EOT
@@ -626,9 +677,35 @@ proxydeps() {
 	return ${rc}
 }
 
+sonames() {
+	[ -n "${BUNDLE_LIBS}" ] && return 0
+	while read f; do
+		# No results presents a blank line from heredoc.
+		[ -z "${f}" ] && continue
+		# Ignore symlinks
+		[ -f "${f}" -a ! -L "${f}" ] || continue
+		if ! readelf -d ${f} | grep -q SONAME; then
+			warn "${f} doesn't have a SONAME."
+			warn "pkg(8) will not register it as being provided by the port."
+			warn "If another port depend on it, pkg will not be able to know where it comes from."
+			case "${f}" in
+				${STAGEDIR}${PREFIX}/lib/*/*)
+					warn "It is in a subdirectory, it may not be used in another port."
+					;;
+				*)
+					warn "It is directly in ${PREFIX}/lib, it is probably used by other ports."
+					;;
+			esac
+		fi
+	# Use heredoc to avoid losing rc from find|while subshell
+	done <<-EOT
+	$(find ${STAGEDIR}${PREFIX}/lib -name '*.so.*')
+	EOT
+}
+
 checks="shebang symlinks paths stripped desktopfileutils sharedmimeinfo"
 checks="$checks suidfiles libtool libperl prefixvar baselibs terminfo"
-checks="$checks proxydeps"
+checks="$checks proxydeps sonames"
 
 ret=0
 cd ${STAGEDIR}

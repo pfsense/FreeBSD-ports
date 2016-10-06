@@ -3,6 +3,7 @@
 
 PORTNAME=	freetuxtv
 PORTVERSION=	0.6.6
+PORTREVISION=	1
 CATEGORIES=	multimedia
 MASTER_SITES=	GOOGLE_CODE
 
@@ -10,20 +11,21 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	WebTV player based on GTK3+ and LibVLC
 
 LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		Unfetchable (google code has gone away)
 
 LIB_DEPENDS=	libvlc.so:multimedia/vlc \
+		libdbus-1.so:devel/dbus \
 		libdbus-glib-1.so:devel/dbus-glib \
-		libsqlite3.so:databases/sqlite3 \
 		libcurl.so:ftp/curl \
 		libnotify.so:devel/libnotify
 
-USES=		gmake iconv libtool pkgconfig
-USE_GNOME=	gtk30 intltool
+USES=		gmake iconv libtool localbase pkgconfig sqlite
+USE_GNOME=	cairo gtk30 intltool
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-gtk=3.0
 CFLAGS+=	-Wno-return-type -w
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
 INSTALLS_ICONS=	yes
 
 PORTDOCS=	AUTHORS ChangeLog README
@@ -48,10 +50,11 @@ pre-configure:
 		${WRKSRC}/src/main.c
 
 post-install:
+	(cd ${STAGEDIR}${PREFIX}/share/pixmaps && \
+		${LN} -sf ../icons/hicolor/48x48/apps/${PORTNAME}.png)
+
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
-
-	${LN} -sf ${PREFIX}/share/icons/hicolor/48x48/apps/${PORTNAME}.png \
-		${STAGEDIR}${PREFIX}/share/pixmaps/
 
 .include <bsd.port.mk>

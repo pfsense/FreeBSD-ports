@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	erlang
-PORTVERSION=	18.3.4.1
+PORTVERSION=	19.1.1
 CATEGORIES=	lang parallel java
 MASTER_SITES=	http://www.erlang.org/download/:erlangorg		\
 		http://erlang.stacken.kth.se/download/:erlangorg	\
@@ -14,11 +14,11 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 PATCH_SITES=	http://olgeni.olgeni.com/~olgeni/distfiles/ \
 		LOCAL/olgeni
-PATCHFILES=	patch-otp-18.3.1 patch-otp-18.3.2 patch-otp-18.3.3 \
-		patch-otp-18.3.4 patch-otp-18.3.4.1
+PATCHFILES=	patch-otp-19.1.1
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Erlang interface for Java
+
 LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/bin/erl:lang/erlang
@@ -31,14 +31,14 @@ MAKE_JOBS_UNSAFE=yes
 
 OPTIONS_DEFINE=	DOCS
 
-ERL_RELEASE=	18.3
+ERL_RELEASE=	19.1
 
 USES=		gmake ncurses perl5
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-APP_VERSION=	1.6.1
+APP_VERSION=	1.7.1
 APP_DIR=	${PREFIX}/lib/erlang/lib/jinterface-${APP_VERSION}
 
 .include <bsd.port.options.mk>
@@ -59,6 +59,7 @@ MAKE_ARGS+=	ARCH=x86
 .endif
 
 do-build:
+	@${MKDIR} ${WRKSRC}/lib/jinterface/ebin
 	cd ${WRKSRC}/lib/jinterface && ${GMAKE} ERL_TOP=${WRKSRC} TARGET=${CONFIGURE_TARGET}
 	${RM} -r ${WRKSRC}/lib/jinterface/priv/com
 
@@ -73,5 +74,6 @@ do-install:
 	${TAR} --unlink -xzpf ${DISTDIR}/${DIST_SUBDIR}/${ERLANG_DOCS} \
 		-C ${STAGEDIR}${PREFIX}/lib/erlang lib/jinterface-${APP_VERSION}
 .endif
+	${FIND} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/* -type d -empty -delete
 
 .include <bsd.port.mk>

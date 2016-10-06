@@ -139,11 +139,10 @@ make-pkg-install:
 	@ ${ECHO_CMD} 'esac' >> ${PKGPOSTINSTALL}
 	@ ${ECHO_CMD} PACKAGE_INSTALLER=yes >> ${PKGPOSTINSTALL}
 	@ ${ECHO_CMD} POLICYSRC=/tmp/$$$$.tmp >> ${PKGPOSTINSTALL}
-	@ ${ECHO_CMD} PREFIX="$(PREFIX)" >> ${PKGPOSTINSTALL}
+	@ ${ECHO_CMD} PREFIX="${PREFIX}" >> ${PKGPOSTINSTALL}
 	@ ${ECHO_CMD} DO_NOT_CONFIG=yes >> ${PKGPOSTINSTALL}
 	@ ${ECHO_CMD} TW_CLOBBER="false" >> ${PKGPOSTINSTALL}
 	@ ${ECHO_CMD} TW_PROMPT="false" >> ${PKGPOSTINSTALL}
-	@ ${ECHO_CMD} sysconfdir="$(sysconfdir)" >> ${PKGPOSTINSTALL}
 	@ ${ECHO_CMD} prefix=${PREFIX} >> ${PKGPOSTINSTALL}
 	@ ${ECHO_CMD} sysconfdir=${TWCFG} >> ${PKGPOSTINSTALL}
 	@ ${ECHO_CMD} path_to_vi="/usr/bin/vi" >> ${PKGPOSTINSTALL}

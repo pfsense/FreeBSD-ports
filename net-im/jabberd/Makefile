@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	jabberd
-PORTVERSION=	2.3.6
+PORTVERSION=	2.4.0
 CATEGORIES=	net-im
 MASTER_SITES=	https://github.com/jabberd2/jabberd2/releases/download/${PORTNAME}-${DISTVERSION}/ \
 		LOCAL/matthew/${PORTNAME}
@@ -24,9 +24,8 @@ OPTIONS_SUB=	yes
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		compiler:c11 iconv libtool perl5 tar:xz
+USES=		compiler:c11 iconv libtool perl5 ssl tar:xz
 USE_PERL5=	run
-USE_OPENSSL=	yes
 USE_RC_SUBR=	jabberd
 USE_LDCONFIG=	${PREFIX}/lib/jabberd
 CONFIGURE_ARGS=	--localstatedir=/var \
@@ -76,7 +75,7 @@ SQLITE_LIB_DEPENDS=	libsqlite3.so:databases/sqlite3
 MYSQL_USE=		MYSQL=yes
 MYSQL_CONFIGURE_ENABLE=	mysql
 
-BDB_USE=		BDB=41+
+BDB_USES=		bdb
 BDB_CONFIGURE_ENABLE=	db
 BDB_CONFIGURE_ON=	--oldincludedir=/nonexistant
 

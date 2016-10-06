@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libdombey
-PORTVERSION=	5.29
+PORTVERSION=	5.32
 CATEGORIES=	devel
 MASTER_SITES=	http://www.mammothcheese.ca/
 
@@ -12,7 +12,9 @@ COMMENT=	SCGI application server in a library
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+USES=		ssl
 USE_LDCONFIG=	yes
+CFLAGS+=	-I${OPENSSLINC}
 
 DESTDIRNAME=	STAGEDIR
 

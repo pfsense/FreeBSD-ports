@@ -9,6 +9,7 @@
     SUBDIR += bluej
     SUBDIR += bootstrap-openjdk
     SUBDIR += bouncycastle
+    SUBDIR += bouncycastle15
     SUBDIR += cacao
     SUBDIR += castor
     SUBDIR += classpath
@@ -122,7 +123,6 @@
     SUBDIR += veditor
     SUBDIR += visualvm
     SUBDIR += wildfly100
-    SUBDIR += wildfly82
     SUBDIR += wildfly90
     SUBDIR += xdoclet
 

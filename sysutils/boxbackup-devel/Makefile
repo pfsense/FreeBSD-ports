@@ -17,11 +17,12 @@ LICENSE_FILE=	${WRKSRC}/LICENSE-DUAL.txt
 
 SVNVERSION=	0.11_trunk_2979
 
-USES=		perl5 tar:tgz
-USE_OPENSSL=	yes
+USES=		perl5 ssl tar:tgz
 GNU_CONFIGURE=	yes
 USE_AUTOTOOLS=	autoconf aclocal autoheader
 ACLOCAL_ARGS+=	-I ${WRKSRC}/infrastructure/m4
+CFLAGS+=	-I${OPENSSLINC}
+LDFLAGS+=	-L${OPENSSLLIB}
 
 CONFIGURE_ARGS+=--sysconfdir=${PREFIX}/etc
 
@@ -130,7 +131,6 @@ do-install:
 	${WRKSRC}/${SERVERDIR}/raidfile-config.8.gz \
 	${STAGEDIR}${PREFIX}/man/man8/
 .endif
-post-install:
 .if ${PORT_OPTIONS:MCLIENT}
 	@${MKDIR} -m 0700 ${STAGEDIR}${PREFIX}/etc/box/bbackupd
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/periodic/monthly

@@ -20,8 +20,7 @@ LIB_DEPENDS=	libIlmImf.so:graphics/OpenEXR \
 		libhal.so:sysutils/hal \
 		libqca.so:devel/qca \
 		libpolkit-qt-core-1.so:sysutils/polkit-qt \
-		libdbusmenu-qt.so:devel/libdbusmenu-qt \
-		libgrantlee_gui.so:devel/grantlee
+		libdbusmenu-qt.so:devel/libdbusmenu-qt
 
 BUILD_DEPENDS=	docbook-xml>0:textproc/docbook-xml \
 		${LOCALBASE}/share/xsl/docbook/html/docbook.xsl:textproc/docbook-xsl
@@ -31,11 +30,11 @@ RUN_DEPENDS=	${LOCALBASE}/share/icons/hicolor/index.theme:misc/hicolor-icon-them
 		docbook-xml>0:textproc/docbook-xml \
 		${LOCALBASE}/share/xsl/docbook/html/docbook.xsl:textproc/docbook-xsl
 
+USES=		cmake:outsource fam gettext grantlee:4 jpeg kde:4 perl5 \
+		shared-mime-info shebangfix tar:xz
 USE_GNOME=	libxml2 libxslt
-USE_KDE4=	oxygen \
+USE_KDE=	oxygen-icons4 \
 		attica automoc4 ontologies soprano strigi
-USES=		cmake:outsource fam gettext jpeg perl5 shared-mime-info \
-		shebangfix tar:xz
 USE_OPENSSL=	yes
 USE_QT4=	corelib dbus declarative designer_build gui \
 		network opengl phonon qt3support \
@@ -64,7 +63,7 @@ CMAKE_ARGS+=	-DWITH_ACL:BOOL=Off \
 #   -I${LOCALBASE}/include -I${LOCALBASE}/KF5
 # which in turn leads to kdelibs4 headers with the same name being used instead
 # of the KF5 ones, possibly breaking the build.
-CMAKE_ARGS+=	-DINCLUDE_INSTALL_DIR:PATH="${KDE4_PREFIX}/include/kde4"
+CMAKE_ARGS+=	-DINCLUDE_INSTALL_DIR:PATH="${KDE_PREFIX}/include/kde4"
 
 SHEBANG_FILES=	kdecore/kconfig_compiler/checkkcfg.pl \
 		kdeui/preparetips \
@@ -77,10 +76,10 @@ SHEBANG_FILES=	kdecore/kconfig_compiler/checkkcfg.pl \
 OPTIONS_DEFINE=	AVAHI UPNP
 OPTIONS_DEFAULT=AVAHI
 
-AVAHI_LIB_DEPENDS=	libavahi-core.so:${PORTSDIR}/net/avahi-app
+AVAHI_LIB_DEPENDS=	libavahi-core.so:net/avahi-app
 
 UPNP_DESC=	UPnP backend for Solid (WARNING: Unstable)
-UPNP_LIB_DEPENDS=	libHUpnp.so:${PORTSDIR}/net/hupnp
+UPNP_LIB_DEPENDS=	libHUpnp.so:net/hupnp
 UPNP_CMAKE_ON=	-DHUPNP_ENABLED:BOOL=On
 
 post-patch:
