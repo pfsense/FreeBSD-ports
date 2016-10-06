@@ -5,20 +5,20 @@ PORTNAME=	omake
 DISTVERSION=	0.9.8.6-0.rc1
 PORTREVISION=	1
 CATEGORIES=	devel
-MASTER_SITES=	http://main.metaprl.org/download/omake/
+MASTER_SITES=	http://pkgs.fedoraproject.org/repo/pkgs/ocaml-omake/omake-0.9.8.6-0.rc1.tar.gz/fe39a476ef4e33b7ba2ca77a6bcaded2/ \
+		http://download.camlcity.org/download/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Flexible build system
 
-BROKEN=		unfetchable
-DEPRECATED=	Broken for more than 6 months
-EXPIRATION_DATE=	2016-07-04
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION:C|-.*||}
 USE_OCAML=	yes
 NO_OCAML_RUNDEPENDS=yes
 USES=		ncurses readline
-MAKE_ENV+=	INSTALL_ROOT=${STAGEDIR}
+MAKE_ENV=	INSTALL_ROOT=${STAGEDIR}
 MAKE_JOBS_UNSAFE=	yes
 
 INFO=		omake-doc
@@ -49,7 +49,7 @@ post-patch:
 .endfor
 .endif
 
-check regression-test test: build
+do-test:
 	@cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE_ARGS} boot/omake check
 	@${FIND} -ds ${WRKSRC}/test -type f -name 'result.log' -print0 | \
 		${XARGS} -0tI @ ${CAT} @

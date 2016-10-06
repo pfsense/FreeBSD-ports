@@ -3,12 +3,13 @@
 
 PORTNAME=	htscanner
 PORTVERSION=	1.0.1
+PORTREVISION=	1
 CATEGORIES=	devel pear
 MASTER_SITES=	http://pecl.php.net/get/
 PKGNAMEPREFIX=	pecl-
 DIST_SUBDIR=	PECL
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Support htaccess for PHP
 
 LICENSE=	PHP30

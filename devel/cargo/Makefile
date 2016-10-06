@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	cargo
-PORTVERSION=	0.10.0
+PORTVERSION=	0.13.0
 CATEGORIES=	devel
 
 MAINTAINER=	dumbbell@FreeBSD.org
@@ -33,7 +33,7 @@ LICENSE_FILE_MIT=	${WRKSRC}/LICENSE-MIT
 #   This is a collection of mainly shell scripts which are used to
 #   install Cargo.
 
-MASTER_SITES=	https://static.rust-lang.org/cargo-dist/2016-04-10/:bootstrap \
+MASTER_SITES=	https://static.rust-lang.org/cargo-dist/2016-08-21/:bootstrap \
 		LOCAL/jbeich:registry
 .if !defined(SKIP_CARGO_REGISTRY)
 DISTFILES+=	${CARGO_REGISTRY}:registry
@@ -42,7 +42,8 @@ DISTFILES+=	${CARGO_REGISTRY}:registry
 USE_GITHUB=	yes
 GH_ACCOUNT=	rust-lang
 GH_PROJECT=	rust-installer:rust_installer
-GH_TAGNAME=	4915c75:rust_installer
+GH_TAGNAME=	755bc3d:rust_installer
+GH_SUBDIR=	src/rust-installer:rust_installer
 
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	requires prebuilt bootstrap cargo
@@ -83,10 +84,6 @@ BOOTSTRAP_MAKE_ENV=	LD_LIBRARY_PATH="${WRKSRC}/target/snapshot/cargo/lib"
 BOOTSTRAP_VARS+=	WITH_OPENSSL_PORT=yes
 .endif
 
-post-extract:
-	@${RMDIR} ${WRKSRC}/src/rust-installer
-	@${MV} ${WRKSRC_rust_installer} ${WRKSRC}/src/rust-installer
-
 post-extract-BOOTSTRAP-on:
 	@${MKDIR} ${WRKSRC}/target/dl
 	${LN} -sf ${DISTDIR}/${CARGO_BOOT} ${WRKSRC}/target/dl/
@@ -94,7 +91,7 @@ post-extract-BOOTSTRAP-on:
 post-patch:
 # Fix mandir and don't install licenses outside of ${_LICENSE_DIR}
 	@${REINPLACE_CMD} -e 's,share/man,man,' \
-		-e 's, LICENSE-[^[:space:]]*,,g' \
+		-e 's,$$(S)LICENSE-[^[:space:]]* ,,g' \
 		${WRKSRC}/Makefile.in
 
 # In case the previous "make stage" failed, this ensures rust's

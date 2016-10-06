@@ -13,11 +13,13 @@ COMMENT=	Programming environment for images, animation, and interactions
 
 LICENSE=	GPLv2
 
+BROKEN=		Unfetchable (google code has gone away)
+
 RUN_DEPENDS=	jikes>=1.22:java/jikes \
 		${JAVA_HOME}/jre/lib/ext/RXTXcomm.jar:comms/rxtx
 
 USES=		tar:tgz
-USE_JAVA=	1.6+
+USE_JAVA=	yes
 NO_BUILD=	yes
 
 SUB_FILES=	processing

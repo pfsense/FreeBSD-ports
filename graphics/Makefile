@@ -46,6 +46,7 @@
     SUBDIR += ampasACES-container
     SUBDIR += ampasCTL
     SUBDIR += animorph
+    SUBDIR += ansilove
     SUBDIR += aoi
     SUBDIR += apngasm
     SUBDIR += apngdis
@@ -157,13 +158,6 @@
     SUBDIR += eps2png
     SUBDIR += epstool
     SUBDIR += eterm-bg
-    SUBDIR += evas_generic_loaders
-    SUBDIR += evas_generic_loaders-gst
-    SUBDIR += evas_generic_loaders-pdf
-    SUBDIR += evas_generic_loaders-ps
-    SUBDIR += evas_generic_loaders-raw
-    SUBDIR += evas_generic_loaders-svg
-    SUBDIR += evas_generic_loaders-xcf
     SUBDIR += evince
     SUBDIR += evince-lite
     SUBDIR += evolvotron
@@ -290,7 +284,6 @@
     SUBDIR += gpaint
     SUBDIR += gphoto2
     SUBDIR += gpicview
-    SUBDIR += gplot
     SUBDIR += gpsmanshp
     SUBDIR += gracula
     SUBDIR += grads
@@ -365,8 +358,8 @@
     SUBDIR += imgv
     SUBDIR += imlib2
     SUBDIR += imlib2_loaders
-    SUBDIR += import-pictures
     SUBDIR += impressive
+    SUBDIR += imv
     SUBDIR += inkscape
     SUBDIR += intel-backlight
     SUBDIR += intergif
@@ -461,6 +454,7 @@
     SUBDIR += lcms2
     SUBDIR += leafpak
     SUBDIR += lensfun
+    SUBDIR += lepton
     SUBDIR += leptonica
     SUBDIR += lfview
     SUBDIR += lib3ds
@@ -470,7 +464,6 @@
     SUBDIR += libGLw
     SUBDIR += libafterimage
     SUBDIR += libart_lgpl
-    SUBDIR += libaux
     SUBDIR += libboard
     SUBDIR += libbpg
     SUBDIR += libcaca
@@ -546,6 +539,7 @@
     SUBDIR += linux-c6-dri
     SUBDIR += linux-c6-gdk-pixbuf2
     SUBDIR += linux-c6-glx-utils
+    SUBDIR += linux-c6-jasper
     SUBDIR += linux-c6-jpeg
     SUBDIR += linux-c6-libGLU
     SUBDIR += linux-c6-png
@@ -601,6 +595,7 @@
     SUBDIR += netpbm
     SUBDIR += nip2
     SUBDIR += nomacs
+    SUBDIR += nplot
     SUBDIR += npretty
     SUBDIR += nurbs++
     SUBDIR += nvidia-texture-tools
@@ -776,6 +771,7 @@
     SUBDIR += phplot
     SUBDIR += picpuz
     SUBDIR += piddle
+    SUBDIR += piglit
     SUBDIR += pikopixel
     SUBDIR += pinpoint
     SUBDIR += pixelize
@@ -845,7 +841,10 @@
     SUBDIR += py-graph-dot
     SUBDIR += py-graphy
     SUBDIR += py-gvgen
+    SUBDIR += py-imageio
     SUBDIR += py-imagesize
+    SUBDIR += py-imgurpython
+    SUBDIR += py-mayavi
     SUBDIR += py-mcomix
     SUBDIR += py-ming
     SUBDIR += py-nwdiag
@@ -878,6 +877,7 @@
     SUBDIR += py-soya3d
     SUBDIR += py-stltools
     SUBDIR += py-toyplot
+    SUBDIR += py-traitsui
     SUBDIR += py-wand
     SUBDIR += py-webcolors
     SUBDIR += py3-cairo
@@ -1045,8 +1045,6 @@
     SUBDIR += waffle
     SUBDIR += waifu2x-converter-cpp
     SUBDIR += webp
-    SUBDIR += whirlgif
-    SUBDIR += white_dune
     SUBDIR += wings
     SUBDIR += wmicons
     SUBDIR += wxsvg

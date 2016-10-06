@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	HTML-DOM
-PORTVERSION=	0.056
+PORTVERSION=	0.057
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -22,5 +22,6 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	configure
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	tellico
 PORTVERSION=	2.3.11
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	misc kde
 MASTER_SITES=	http://tellico-project.org/files/
 
@@ -18,9 +18,9 @@ LIB_DEPENDS=	libtag.so:audio/taglib \
 		libexempi.so:textproc/exempi \
 		libqjson.so:devel/qjson
 
-USE_KDE4=	kdelibs libksane pimlibs \
+USES=		cmake gettext kde:4 pkgconfig shared-mime-info tar:bzip2
+USE_KDE=	kdelibs libksane pimlibs \
 		automoc4 qimageblitz libkcddb libkcompactdisc
 USE_QT4=	qmake_build moc_build uic_build rcc_build
-USES=		cmake gettext pkgconfig shared-mime-info tar:bzip2
 
 .include <bsd.port.mk>

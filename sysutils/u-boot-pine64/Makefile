@@ -30,13 +30,19 @@ MAKE_ARGS+=	ARCH=arm \
 		PLAT=sun50iw1p1 \
 		CONFIG_EFI=y
 
+.include <bsd.port.pre.mk>
+
+.if ${OSVERSION} < 1000000
+IGNORE=		requires FreeBSD 10 or later
+.endif
+
 post-extract:
 	(cd ${WRKSRC}; ${EXTRACT_CMD} xvf ${DISTDIR}/firmware-pine64-20160329-6.1.src.rpm)
 	${RM} -fr ${WRKSRC}/arm-trusted-firmware
 	(cd ${WRKSRC}; ${EXTRACT_CMD} xvf pine64atf.tar.xz)
 
 do-configure:
-	(cd ${WRKSRC}; ${GMAKE} pine64_plus_defconfig)
+	(cd ${WRKSRC}; ${MAKE_CMD} pine64_plus_defconfig)
 
 post-build:
 	(cd ${WRKSRC}/arm-trusted-firmware; ${GMAKE} ${MAKE_ARGS} DEBUG=1)
@@ -47,7 +53,7 @@ post-build:
 
 do-install:
 	${MKDIR} ${STAGEDIR}/${PREFIX}/${U_BOOT_DIR}
-	${CP} ${WRKSRC}/pine64.img ${STAGEDIR}/${PREFIX}/${U_BOOT_DIR}/
-	${CP} ${DESCR} ${STAGEDIR}/${PREFIX}/${U_BOOT_DIR}/README
+	${INSTALL_DATA} ${WRKSRC}/pine64.img ${STAGEDIR}/${PREFIX}/${U_BOOT_DIR}
+	${INSTALL_DATA} ${DESCR} ${STAGEDIR}/${PREFIX}/${U_BOOT_DIR}/README
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

@@ -18,7 +18,7 @@ LICENSE_NAME=	JSoftware End User License Agreement
 LICENSE_FILE=	${FILESDIR}/license.txt
 LICENSE_PERMS=	auto-accept dist-mirror pkg-mirror
 
-USE_LINUX=	yes
+USES=		linux
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
 
@@ -41,7 +41,6 @@ do-install:
 	${BRANDELF} -t Linux ${WRKSRC}/j${PORTVERSION:S/b//g}/jconsole
 	${INSTALL_PROGRAM} ${WRKSRC}/j${PORTVERSION:S/b//g}/jconsole ${STAGEDIR}${PREFIX}/lib/j/jconsole
 
-post-install:
 	${MV} ${STAGEDIR}${PREFIX}/man/man1/jconsole.1 ${STAGEDIR}${PREFIX}/man/man1/j-jconsole.1
 
 .include <bsd.port.mk>

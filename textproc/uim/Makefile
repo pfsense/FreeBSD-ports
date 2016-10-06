@@ -5,7 +5,7 @@ PORTNAME=	uim
 PORTVERSION=	1.8.6
 PORTREVISION?=	2
 CATEGORIES?=	textproc
-MASTER_SITES=	GOOGLE_CODE
+MASTER_SITES=	https://github.com/uim/uim/releases/download/${PORTNAME}-${PORTVERSION}/
 .if !defined(UIM_SLAVE) && defined(WITHOUT_X11)
 PKGNAMESUFFIX=	-nox11
 .endif
@@ -16,7 +16,7 @@ COMMENT?=	Input method library
 USE_LDCONFIG=	yes
 WANT_GNOME=	yes
 USE_GNOME+=	glib20 intltool
-USES=		gettext gmake iconv libedit libtool pkgconfig perl5 tar:bzip2
+USES+=		gettext gmake iconv libedit libtool pkgconfig perl5 tar:bzip2
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 

@@ -21,6 +21,25 @@
 #
 # USE_PHP=	ext1 ext2 ext3
 #
+# PHP and Zend extensions built with :ext and :zend are automatically enabled
+# when the port is installed.  Each port creates a PHP_EXT_INI_FILE file and
+# registers the extension in it.
+#
+# The PHP_EXT_INI_FILE file has a priority number embeded into its name so that
+# extensions are loaded in the right order.  The priority is defined by
+# PHP_MOD_PRIO and is a number between 00 and 99.
+#
+# For extensions that do not depend on any extension, the priority is
+# automatically set to 20, for extensions that depend on another extension, the
+# priority is automatically set to 30.  Some extensions may need to be loaded
+# before everyone else (for example opcache), or after an extension with a
+# priotity of 30, in that case, add PHP_MOD_PRIO=XX in the port's Makefile.
+# For example:
+#
+# USES=		php:ext
+# USE_PHP=	xml wddx
+# PHP_MOD_PRIO=	40
+#
 # The port can set these options in its Makefile before bsd.port.pre.mk:
 #
 # DEFAULT_PHP_VER=N - Use PHP version N if PHP is not yet installed.
@@ -37,8 +56,6 @@
 PHP_Include_MAINTAINER=	ale@FreeBSD.org
 
 _INCLUDE_USES_PHP_MK=	yes
-
-.include "${PORTSDIR}/Mk/bsd.default-versions.mk"
 
 .  if defined(DEFAULT_PHP_VER)
 WARNING+=	"DEFAULT_PHP_VER is defined, consider using DEFAULT_VERSIONS=php=${DEFAULT_PHP_VER} instead"
@@ -123,7 +140,7 @@ PHP_EXT_INC?=	""
 .    for VER in ${IGNORE_WITH_PHP}
 .      if ${PHP_VER} == "${VER}"
 IGNORE=		cannot be installed: doesn't work with lang/php${PHP_VER} port\
-		(doesn't support PHP ${IGNORE_WITH_PHP:C/^5/5./})
+		(doesn't support PHP ${IGNORE_WITH_PHP:C/^([57])/\1./})
 .      endif
 .    endfor
 .  endif
@@ -204,13 +221,26 @@ _INCLUDE_USES_PHP_POST_MK=yes
 
 .  if ${php_ARGS:Mext} || ${php_ARGS:Mzend}
 PHP_MODNAME?=	${PORTNAME}
-PHP_HEADER_DIRS?=	""
+PHP_EXT_PKGMESSAGE=	${WRKDIR}/php-ext-pkg-message
+_PKGMESSAGES+=	${PHP_EXT_PKGMESSAGE}
+PHP_HEADER_DIRS+=	.
+# If there is no priority defined, we wing it.
+.    if !defined(PHP_MOD_PRIO)
+.      if defined(USE_PHP)
+# If an extension needs another, put it after the others.
+PHP_MOD_PRIO=	30
+.      else
+# Otherwise, put it where it with everybody.
+PHP_MOD_PRIO=	20
+.      endif
+.    endif
+PHP_EXT_INI_FILE=	etc/php/ext-${PHP_MOD_PRIO}-${PHP_MODNAME}.ini
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/php/${PHP_EXT_DIR}
 	@${INSTALL_LIB} ${WRKSRC}/modules/${PHP_MODNAME}.so \
 		${STAGEDIR}${PREFIX}/lib/php/${PHP_EXT_DIR}
-.    for header in . ${PHP_HEADER_DIRS}
+.    for header in ${PHP_HEADER_DIRS}
 		@${MKDIR} ${STAGEDIR}${PREFIX}/include/php/ext/${PHP_MODNAME}/${header}
 		@${INSTALL_DATA} ${WRKSRC}/${header}/*.h \
 			${STAGEDIR}${PREFIX}/include/php/ext/${PHP_MODNAME}/${header}
@@ -219,8 +249,13 @@ do-install:
 	@${GREP} "#define \(COMPILE\|HAVE\|USE\)_" ${WRKSRC}/config.h \
 		> ${STAGEDIR}${PREFIX}/include/php/ext/${PHP_MODNAME}/config.h
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/php
+.    if ${php_ARGS:Mzend}
+	@${ECHO_CMD} "zend_extension=${PHP_MODNAME}.so" > ${STAGEDIR}${PREFIX}/${PHP_EXT_INI_FILE}
+.    else
+	@${ECHO_CMD} "extension=${PHP_MODNAME}.so" > ${STAGEDIR}${PREFIX}/${PHP_EXT_INI_FILE}
+.    endif
 
-add-plist-info: add-plist-phpext
+_USES_stage+=	899:add-plist-phpext
 add-plist-phpext:
 	@${ECHO_CMD} "lib/php/${PHP_EXT_DIR}/${PHP_MODNAME}.so" \
 		>> ${TMPPLIST}
@@ -234,59 +269,32 @@ add-plist-phpext:
 		>> ${TMPPLIST}
 	@${ECHO_CMD} "@unexec rm %D/include/php/ext/php_config.h.orig" \
 		>> ${TMPPLIST}
-	@${ECHO_CMD} "@dir etc/php" \
+	@${ECHO_CMD} "${PHP_EXT_INI_FILE}" \
 		>> ${TMPPLIST}
+	@${ECHO_CMD} "****************************************************************************" > ${PHP_EXT_PKGMESSAGE}
+	@${ECHO_CMD} "" >> ${PHP_EXT_PKGMESSAGE}
+	@${ECHO_CMD} "The following line has been added to your ${PREFIX}/${PHP_EXT_INI_FILE}" >> ${PHP_EXT_PKGMESSAGE}
+	@${ECHO_CMD} "configuration file to automatically load the installed extension:" >> ${PHP_EXT_PKGMESSAGE}
+	@${ECHO_CMD} "" >> ${PHP_EXT_PKGMESSAGE}
 .    if ${php_ARGS:Mzend}
-	@${ECHO_CMD} "@exec echo zend_extension=%D/lib/php/${PHP_EXT_DIR}/${PHP_MODNAME}.so >> %D/etc/php/extensions.ini" \
-		>> ${TMPPLIST}
+	@${ECHO_CMD} "zend_extension=${PHP_MODNAME}.so" >> ${PHP_EXT_PKGMESSAGE}
 .    else
-	@${ECHO_CMD} "@exec echo extension=${PHP_MODNAME}.so >> %D/etc/php/extensions.ini" \
-		>> ${TMPPLIST}
+	@${ECHO_CMD} "extension=${PHP_MODNAME}.so" >> ${PHP_EXT_PKGMESSAGE}
 .    endif
-	# XXX: pfSense workaround to keep extensions sorted
-	@${ECHO_CMD} "@exec sort -u -o %D/etc/php/extensions.ini %D/etc/php/extensions.ini" \
-		>> ${TMPPLIST}
-	@${ECHO_CMD} "@unexec cp %D/etc/php/extensions.ini %D/etc/php/extensions.ini.orig" \
-		>> ${TMPPLIST}
-.    if ${php_ARGS:Mzend}
-	@${ECHO_CMD} "@unexec grep -v zend_extension=%D/lib/php/${PHP_EXT_DIR}/${PHP_MODNAME}\\\.so %D/etc/php/extensions.ini.orig > %D/etc/php/extensions.ini || true" \
-		>> ${TMPPLIST}
-.    else
-	@${ECHO_CMD} "@unexec grep -v extension=${PHP_MODNAME}\\\.so %D/etc/php/extensions.ini.orig > %D/etc/php/extensions.ini || true" \
-		>> ${TMPPLIST}
-.    endif
-	@${ECHO_CMD} "@unexec rm %D/etc/php/extensions.ini.orig" \
-		>> ${TMPPLIST}
-	@${ECHO_CMD} "@unexec [ -s %D/etc/php/extensions.ini ] || rm %D/etc/php/extensions.ini" \
-		>> ${TMPPLIST}
-
-package-message: php-ini
-
-php-ini:
-	@${ECHO_CMD} "****************************************************************************"
-	@${ECHO_CMD} ""
-	@${ECHO_CMD} "The following line has been added to your ${PREFIX}/etc/php/extensions.ini"
-	@${ECHO_CMD} "configuration file to automatically load the installed extension:"
-	@${ECHO_CMD} ""
-.    if ${php_ARGS:Mzend}
-	@${ECHO_CMD} "zend_extension=${PREFIX}/lib/php/${PHP_EXT_DIR}/${PHP_MODNAME}.so"
-.    else
-	@${ECHO_CMD} "extension=${PHP_MODNAME}.so"
-.    endif
-	@${ECHO_CMD} ""
-	@${ECHO_CMD} "****************************************************************************"
+	@${ECHO_CMD} "" >> ${PHP_EXT_PKGMESSAGE}
+	@${ECHO_CMD} "****************************************************************************" >> ${PHP_EXT_PKGMESSAGE}
 .  endif
 
 # Extensions
 .  if defined(USE_PHP) && ${USE_PHP:tl} != "yes"
 # non-version specific components
-_USE_PHP_ALL=	apc bcmath bitset bz2 calendar ctype curl dba dom \
-		exif fileinfo filter ftp gd gettext gmp \
+_USE_PHP_ALL=	bcmath bitset bz2 calendar ctype curl dba dom \
+		enchant exif fileinfo filter ftp gd gettext gmp \
 		hash iconv igbinary imap interbase intl json ldap mbstring mcrypt \
 		memcache mysqli odbc opcache \
 		openssl pcntl pcre pdf pdo pdo_dblib pdo_firebird pdo_mysql \
 		pdo_odbc pdo_pgsql pdo_sqlite phar pgsql posix \
-		pspell radius readline recode session shmop simplexml snmp soap\
+		pspell radius readline recode redis session shmop simplexml snmp soap\
 		sockets spl sqlite3 sysvmsg sysvsem sysvshm \
 		tidy tokenizer wddx xml xmlreader xmlrpc xmlwriter xsl zip zlib
 # version specific components
@@ -294,7 +302,6 @@ _USE_PHP_VER55=	${_USE_PHP_ALL} mssql mysql sybase_ct
 _USE_PHP_VER56=	${_USE_PHP_ALL} mssql mysql sybase_ct
 _USE_PHP_VER70=	${_USE_PHP_ALL}
 
-apc_DEPENDS=	www/pecl-APC
 bcmath_DEPENDS=	math/php${PHP_VER}-bcmath
 .    if ${PHP_VER} == 70
 bitset_DEPENDS=	math/pecl-bitset
@@ -308,6 +315,7 @@ curl_DEPENDS=	ftp/php${PHP_VER}-curl
 dba_DEPENDS=	databases/php${PHP_VER}-dba
 dbase_DEPENDS=	databases/php${PHP_VER}-dbase
 dom_DEPENDS=	textproc/php${PHP_VER}-dom
+enchant_DEPENDS=	textproc/php${PHP_VER}-enchant
 exif_DEPENDS=	graphics/php${PHP_VER}-exif
 fileinfo_DEPENDS=	sysutils/php${PHP_VER}-fileinfo
 filter_DEPENDS=	security/php${PHP_VER}-filter
@@ -354,6 +362,7 @@ pspell_DEPENDS=	textproc/php${PHP_VER}-pspell
 radius_DEPENDS=	net/pecl-radius
 readline_DEPENDS=	devel/php${PHP_VER}-readline
 recode_DEPENDS=	converters/php${PHP_VER}-recode
+redis_DEPENDS=	databases/php${PHP_VER}-redis
 session_DEPENDS=www/php${PHP_VER}-session
 shmop_DEPENDS=	devel/php${PHP_VER}-shmop
 simplexml_DEPENDS=	textproc/php${PHP_VER}-simplexml

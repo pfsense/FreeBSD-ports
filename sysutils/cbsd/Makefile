@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	cbsd
-PORTVERSION=	10.3.2
-DISTVERSIONPREFIX=	v
+PORTVERSION=	11.0.1
 CATEGORIES=	sysutils
 
 MAINTAINER=	olevole@olevole.ru
@@ -34,10 +33,6 @@ GROUPS=	${PORTNAME}
 
 .if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
 IGNORE=	does not support FreeBSD versions < 10.0
-.endif
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100000
-LIB_DEPENDS+=	libxo.so:devel/libxo
 .endif
 
 do-install:

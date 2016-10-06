@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	hsqldb
-PORTVERSION=	2.3.3
+PORTVERSION=	2.3.4
 CATEGORIES=	databases java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}_2_3
 
@@ -30,7 +30,7 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/lib/sqltool.jar \
 		${STAGEDIR}${JAVAJARDIR}/sqltool.jar
 
-post-install:
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/readme.txt ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC}/doc && ${COPYTREE_SHARE} \* ${STAGEDIR}${DOCSDIR})

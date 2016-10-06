@@ -3,6 +3,7 @@
 
 PORTNAME=	php-screw
 PORTVERSION=	1.5
+PORTREVISION=	1
 CATEGORIES=	www security
 MASTER_SITES=	SF/${PORTNAME}/OldFiles
 DISTNAME=	php_screw-${PORTVERSION}
@@ -40,9 +41,11 @@ do-build:
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/php/${PHP_EXT_DIR}
-	@${INSTALL_DATA} ${WRKSRC}/modules/php_screw.so \
+	@${INSTALL_LIB} ${WRKSRC}/modules/php_screw.so \
 		${STAGEDIR}${PREFIX}/lib/php/${PHP_EXT_DIR}
 	@${INSTALL_PROGRAM} ${WRKSRC}/tools/screw ${STAGEDIR}${PREFIX}/bin
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/php/${PHP_EXT_DIR}/php_screw.so
+	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/php
+	@${ECHO_CMD} "extension=${PREFIX}/lib/php/${PHP_EXT_DIR}/php_screw.so" > \
+		${STAGEDIR}${PREFIX}/etc/php/ext-30-screw.ini
 
 .include <bsd.port.mk>

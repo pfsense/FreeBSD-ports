@@ -22,7 +22,7 @@ LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
 		libsoup-2.4.so:devel/libsoup \
 		libjson-glib-1.0.so:devel/json-glib
 
-USES+=		gettext gmake libtool pathfix pkgconfig
+USES+=		gettext gmake libtool localbase pathfix pkgconfig
 USE_GNOME=	glib20 libxslt intlhack referencehack
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
@@ -31,9 +31,8 @@ INSTALL_TARGET=	install-strip
 CONFIGURE_ARGS=	--without-oracle \
 		--disable-crypto \
 		--disable-default-binary \
-		--enable-introspection
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
+		--enable-introspection \
+		--disable-silent-rules
 
 .include <bsd.port.options.mk>
 
@@ -53,7 +52,7 @@ CONFIGURE_ARGS+=--without-ui
 .endif
 
 .if ${LIBGDA5_SLAVE}==bdb
-USE_BDB=		5
+USES+=			bdb:5
 CONFIGURE_ARGS+=	--with-bdb=${LOCALBASE}
 .else
 CONFIGURE_ARGS+=	--without-bdb
@@ -67,7 +66,7 @@ CONFIGURE_ARGS+=	--without-ldap
 .endif
 
 .if ${LIBGDA5_SLAVE}==mysql
-USE_MYSQL=		yes
+USES+=			mysql
 CONFIGURE_ARGS+=	--with-mysql=${LOCALBASE}
 .else
 CONFIGURE_ARGS+=	--without-mysql

@@ -3,6 +3,7 @@
 
 PORTNAME=	llvm
 PORTVERSION=	${LLVM_MAJOR}.d${SNAPDATE}
+PORTREVISION=	1
 CATEGORIES=	devel lang
 PKGNAMESUFFIX=	-devel
 
@@ -23,6 +24,7 @@ SUB_FILES=	llvm-wrapper.sh
 SUB_LIST=	LLVM_PREFIX="${LLVM_PREFIX}" LLVM_SUFFIX="${LLVM_SUFFIX}"
 
 CMAKE_INSTALL_PREFIX=	${LLVM_PREFIX}
+#CMAKE_ARGS=	-DBUILD_SHARED_LIBS=ON
 CMAKE_ARGS=
 
 USE_GITHUB=	yes
@@ -31,11 +33,11 @@ GH_TAGNAME=	${LLVM_COMMIT}
 
 .include "Makefile.snapshot"
 
-OPTIONS_DEFINE=	CLANG DOCS EXTRAS GOLD LIT LLD LLDB
-OPTIONS_DEFINE_amd64=	COMPILER_RT OPENMP
+OPTIONS_DEFINE=	CLANG DOCS EXTRAS LIT LLD LLDB
+OPTIONS_DEFINE_amd64=	COMPILER_RT GOLD OPENMP
 OPTIONS_DEFINE_i386=	COMPILER_RT
-OPTIONS_DEFAULT=	CLANG EXTRAS GOLD LIT LLD LLDB
-OPTIONS_DEFAULT_amd64=	COMPILER_RT OPENMP
+OPTIONS_DEFAULT=	CLANG EXTRAS LIT LLD LLDB
+OPTIONS_DEFAULT_amd64=	COMPILER_RT GOLD OPENMP
 OPTIONS_DEFAULT_i386=	COMPILER_RT
 OPTIONS_SUB=	yes
 
@@ -71,6 +73,7 @@ LLDB_DESC=		Install lldb, the LLVM debugger (ignored on 9.x)
 LLDB_BUILD_DEPENDS=	swig:devel/swig13
 LLDB_GH_PROJECT=	lldb:lldb
 LLDB_GH_TAGNAME=	${LLDB_COMMIT}:lldb
+LLDB_USES=		execinfo
 OPENMP_DESC=		Install libomp, the LLVM OpenMP runtime library
 OPENMP_CONFLICTS_INSTALL=	libiomp5-devel-*
 OPENMP_GH_PROJECT=	openmp:openmp
@@ -83,7 +86,7 @@ OPTIONS_SUB=	yes
 
 DOCS_BUILD_DEPENDS=		sphinx-build:textproc/py-sphinx
 
-LLVM_RELEASE=	3.8.0
+PLIST_SUB+=	LLVM_MAJOR=${LLVM_MAJOR} LLVM_RELEASE=${LLVM_RELEASE}
 
 COMMANDS=	bugpoint \
 		llc \
@@ -124,21 +127,25 @@ STRIP_LIBS=	BugpointPasses.so \
 
 EXTRAS_COMMANDS= \
 		clang-apply-replacements \
+		clang-include-fixer \
 		clang-modernize \
 		clang-query \
 		clang-rename \
 		clang-tidy \
+		find-all-symbols \
 		modularize
 EXTRAS_LIBS=	\
 		libclangApplyReplacements \
-		libclangQuery \
+		libclangIncludeFixer \
 		libclangRename \
+		libclangQuery \
 		libclangTidy \
 		libclangTidyGoogleModule \
 		libclangTidyLLVMModule \
 		libclangTidyMiscModule \
 		libclangTidyReadabilityModule \
 		libclangTidyUtils \
+		libfindAllSymbols \
 		libmodernizeCore
 EXTRAS_PATTERN= ${EXTRAS_COMMANDS:tW:C/  */|/g}|${EXTRAS_LIBS:tW:C/  */|/g}
 
@@ -158,6 +165,10 @@ MAN1SRCS+=	clang.1 \
 CLANG_PATTERN=	(c-index-test|clang|scan-|Reporter.py|ScanView.py|scanview.css|sorttable.js|startfile.py|-analyzer)
 .endif
 
+.if ${PORT_OPTIONS:MCOMPILER_RT}
+COMPILER_RT_PATTERN=	(asan_blacklist.txt|sanitizer|xray)
+.endif
+
 .if ${PORT_OPTIONS:MLIT}
 MAN1SRCS+=	lit.1 FileCheck.1
 _USES_PYTHON=	python
@@ -170,6 +181,18 @@ COMMANDS+=	lldb \
 		lldb-mi \
 		lldb-server
 _USES_PYTHON=	python
+.endif
+
+.if ! ${OPTIONS_DEFINE:MCOMPILER_RT}
+# Hack to disable COMPILER_RT in plist of unsupported architectures
+PLIST_SUB+=    COMPILER_RT="@comment "
+.else
+.endif
+
+.if ! ${OPTIONS_DEFINE:MGOLD}
+# Hack to disable GOLD in plist of unsupported architectures
+PLIST_SUB+=    GOLD="@comment "
+.else
 .endif
 
 .if ! ${OPTIONS_DEFINE:MOPENMP}
@@ -360,14 +383,18 @@ build-plist:
 	    ${GREP} -v '[/-]lit$$' | ${GREP} -v 'FileCheck$$' | \
 	    ${GREP} -v man/man1 | ${SED} -e 's|${STAGEDIR}${PREFIX}/||' \
 	    -e 's|${PORTVERSION}|%%PORTVERSION%%|' \
-	    -e 's|release.cmake|%%CMAKE_BUILD_TYPE%%.cmake|' | \
+	    -e 's|release.cmake|%%CMAKE_BUILD_TYPE%%.cmake|' \
+	    -e 's|${LLVM_RELEASE:C/\./\\./g}|%%LLVM_RELEASE%%|' \
+	    -e 's|${LLVM_MAJOR:C/\./\\./}|%%LLVM_MAJOR%%|' | \
 	    ${SORT} >> ${PLIST}.tmp
 	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR}/lit${LLVM_SUFFIX} -type f | \
-	    ${SED} -e 's|${STAGEDIR}${PYTHON_SITELIBDIR}|%%LIT%%%%PYTHON_SITELIBDIR%%|' | \
+	    ${SED} -e 's|${STAGEDIR}${PYTHON_SITELIBDIR}|%%LIT%%%%PYTHON_SITELIBDIR%%|' \
+	    -e 's|${LLVM_RELEASE:C/\./\\./g}|%%LLVM_RELEASE%%|' \
+	    -e 's|${LLVM_MAJOR:C/\./\\./}|%%LLVM_MAJOR%%|' | \
 	    ${SORT} >> ${PLIST}.tmp
 	awk '{ \
 	    if ($$0 ~ /${CLANG_PATTERN}/ && $$0 !~ /omp.h|${EXTRAS_PATTERN}|libclang_rt/) {printf "%%%%CLANG%%%%"} \
-	    if ($$0 ~ /asan_blacklist.txt|sanitizer/) \
+	    if ($$0 ~ /${COMPILER_RT_PATTERN}/) \
 		{printf "%%%%COMPILER_RT%%%%"} \
 	    if ($$0 ~ /lld/ && $$0 !~ /lldb/) {printf "%%%%LLD%%%%"} \
 	    if ($$0 ~ /(${EXTRAS_PATTERN})/) {printf "%%%%EXTRAS%%%%"} \

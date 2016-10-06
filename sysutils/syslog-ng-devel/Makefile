@@ -2,29 +2,29 @@
 # $FreeBSD$
 
 PORTNAME=	syslog-ng
-PORTVERSION=	3.7.3
+DISTVERSION=	3.8.1
 PORTREVISION=	1
 PKGNAMESUFFIX=	-devel
 CATEGORIES=	sysutils
-DISTVERSION=	$(PORTVERSION:S/a/alpha/:S/b/beta/:S/r/rc/)
 DISTFILES=	syslog-ng-${DISTVERSION}.tar.gz
 MASTER_SITES=	https://github.com/balabit/syslog-ng/releases/download/syslog-ng-${DISTVERSION}/
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Powerful syslogd replacement
 
-BROKEN_powerpc64=	Does not build
+BROKEN_sparc64=		Does not compile on sparc64: gcc core dump
 
 LIB_DEPENDS=	libevtlog.so:sysutils/eventlog \
-		libpcre.so:devel/pcre
+		libpcre.so:devel/pcre \
+		libuuid.so:misc/e2fsprogs-libuuid
 
 CONFLICTS?=	syslog-ng-[0-9]* syslog-ng[0-9]-[0-9]* \
 		syslog-ng[0-9][0-9]-[0-9]* \
 		syslog-ng-devel-[0-9]*
-WRKSRC=		$(WRKDIR)/$(PORTNAME)-$(DISTVERSION)
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 
 MAKE_JOBS_UNSAFE=	yes
-OPTIONS_DEFINE=	TCP_WRAPPERS SQL SPOOF IPV6 SMTP JSON GEOIP DOCS REDIS JAVA PYTHON
+OPTIONS_DEFINE=	TCP_WRAPPERS SQL SPOOF IPV6 SMTP JSON GEOIP DOCS REDIS JAVA PYTHON MONGO CURL JAVA_MOD
 OPTIONS_DEFAULT=	JSON
 TCP_WRAPPERS_DESC=	Build with TCP Wrappers
 SQL_DESC=		Build with database (libdbi) support
@@ -34,122 +34,109 @@ SMTP_DESC=		Build with SMTP support
 JSON_DESC=		Build with JSON-C support
 GEOIP_DESC=		Build with GeoIP support
 REDIS_DESC=		Build with Redis support
-JAVA_DESC=		Build with Java support (and modules, like Elastic)
+JAVA_DESC=		Build with Java support (no modules)
+JAVA_MOD_DESC=		Build with Java modules (needs Maven / Internet access)
 PYTHON_DESC=		Build with Python 2.7 support
+CURL_DESC=		Build with Curl HTTP support
 
-USES=		gmake libtool pathfix pkgconfig
+USES=		autoreconf:build gmake libtool pathfix pkgconfig ssl \
+		gettext-runtime
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	syslog-ng
 GNU_CONFIGURE=	yes
 USE_GNOME=	glib20
 SUB_FILES=	pkg-message
-USE_OPENSSL=	yes
 INSTALL_TARGET=	install-strip
 
 CONFIGURE_ARGS=	--sysconfdir=${LOCALBASE}/etc --localstatedir=/var/db \
 		--enable-dynamic-linking --enable-manpages \
 		--disable-linux-caps \
-		--datadir=${PREFIX}/share/syslog-ng/ \
-		--with-docbook-dir=${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl
-
-BROKEN_sparc64=	Does not compile on sparc64: gcc core dump
-
-.include <bsd.port.options.mk>
-
-BUILD_DEPENDS+=		xsltproc:textproc/libxslt \
-			${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl
+		--datadir=${PREFIX}/share/
 
 CONFIGURE_ENV+=		OPENSSL_CFLAGS="-I${OPENSSLINC}" \
 			OPENSSL_LIBS="-L${OPENSSLLIB} -lcrypto -lssl"
 
-.if ${PORT_OPTIONS:MTCP_WRAPPERS}
-CONFIGURE_ARGS+=	--enable-tcp-wrapper
-.else
-CONFIGURE_ARGS+=	--disable-tcp-wrapper
-.endif
+TCP_WRAPPERS_CONFIGURE_ENABLE=	tcp-wrapper
 
-.if ${PORT_OPTIONS:MSPOOF}
-LIB_DEPENDS+=		libnet.so:net/libnet
-CONFIGURE_ARGS+=	--enable-spoof-source
-.else
-CONFIGURE_ARGS+=	--disable-spoof-source
-.endif
+SPOOF_LIB_DEPENDS=		libnet.so:net/libnet
+SPOOF_CONFIGURE_ENABLE=		spoof-source
 
-.if ${PORT_OPTIONS:MIPV6}
-CONFIGURE_ARGS+=	--enable-ipv6
-.else
-CONFIGURE_ARGS+=	--disable-ipv6
-.endif
+IPV6_CONFIGURE_ENABLE=		ipv6
 
-.if ${PORT_OPTIONS:MGEOIP}
-CONFIGURE_ARGS+=	--enable-geoip
-LIB_DEPENDS+=		libGeoIP.so:net/GeoIP
-CONFIGURE_ENV+=		GEOIP_LIBS="-L${LOCALBASE}/lib -lGeoIP"
-PLIST_FILES+=		lib/syslog-ng/libgeoip-plugin.so
-.else
-CONFIGURE_ARGS+=	--disable-geoip
-.endif
+GEOIP_CONFIGURE_ENABLE=		geoip
+GEOIP_LIB_DEPENDS=		libGeoIP.so:net/GeoIP
+GEOIP_CONFIGURE_ENV=		GEOIP_LIBS="-L${LOCALBASE}/lib -lGeoIP"
+GEOIP_PLIST_FILES=		lib/syslog-ng/libgeoip-plugin.so
 
-.if ${PORT_OPTIONS:MREDIS}
-CONFIGURE_ARGS+=        --enable-redis
-LIB_DEPENDS+=           libhiredis.so:databases/hiredis
-PLIST_FILES+=           lib/syslog-ng/libredis.so
-.else
-CONFIGURE_ARGS+=        --disable-redis
-.endif
+REDIS_CONFIGURE_ENABLE=		redis
+REDIS_LIB_DEPENDS=		libhiredis.so:databases/hiredis
+REDIS_PLIST_FILES=		lib/syslog-ng/libredis.so
 
-.if ${PORT_OPTIONS:MSMTP}
-CONFIGURE_ARGS+=	--with-libesmtp=/usr/local/
-LIB_DEPENDS+=		libesmtp.so:mail/libesmtp
-PLIST_FILES+=		lib/syslog-ng/libafsmtp.so
-.else
-CONFIGURE_ARGS+=	--disable-smtp
-.endif
+SMTP_CONFIGURE_ON=		--with-libesmtp=${LOCALBASE} --enable-smtp
+SMTP_CONFIGURE_OFF=		--without-libesmtp --disable-smtp
+SMTP_LIB_DEPENDS=		libesmtp.so:mail/libesmtp
+SMTP_PLIST_FILES=		lib/syslog-ng/libafsmtp.so
 
-.if ${PORT_OPTIONS:MSQL}
-LIB_DEPENDS+=		libdbi.so:databases/libdbi
-CONFIGURE_ENV+=		LIBDBI_LIBS="-ldbi"
-CONFIGURE_ARGS+=	--enable-sql
-LDFLAGS+=		-L${LOCALBASE}/lib
-PLIST_FILES+=		lib/syslog-ng/libafsql.so
-.else
-CONFIGURE_ARGS+=	--disable-sql
-.endif
+MSQL_CONFIGURE_ENABLE=		sql
+MSQL_LIB_DEPENDS=		libdbi.so:databases/libdbi
+MSQL_CONFIGURE_ENV=		LIBDBI_LIBS="-ldbi"
+MSQL_LDFLAGS=			-L${LOCALBASE}/lib
+MSQL_PLIST_FILES=		lib/syslog-ng/libafsql.so
 
-.if ${PORT_OPTIONS:MJSON}
-LIB_DEPENDS+=		libjson-c.so:devel/json-c
-CONFIGURE_ARGS+=	--enable-json
-PLIST_FILES+= 		lib/syslog-ng/libjson-plugin.so
-.else
-CONFIGURE_ARGS+=        --disable-json
-.endif
+MONGO_CONFIGURE_ENABLE=		mongodb
+MONGO_BROKEN=			Does not build
+MONGO_LIB_DEPENDS=		libmongoc-1.0.so:devel/mongo-c-driver
+MONGO_PLIST_FILES=		lib/syslog-ng/libafmongodb.so
 
-.if ${PORT_OPTIONS:MJAVA}
-CONFIGURE_ARGS+=	--enable-java
-USE_JAVA=	yes
-BUILD_DEPENDS+=		gradle:devel/gradle
-BUILD_DEPENDS+=		bash:shells/bash
-PLIST_FILES+= 		lib/syslog-ng/libmod-java.so \
-			lib/syslog-ng/java-modules/syslog-ng-core.jar \
-			lib/syslog-ng/java-modules/log4j-1.2.16.jar \
-			lib/syslog-ng/java-modules/elastic.jar \
-			lib/syslog-ng/java-modules/http.jar \
-			lib/syslog-ng/java-modules/kafka.jar \
-			lib/syslog-ng/java-modules/java-modules.jar \
-			lib/syslog-ng/java-modules/hdfs.jar \
-			lib/syslog-ng/java-modules/syslog-ng-common.jar \
-			lib/syslog-ng/java-modules/dummy.jar
-.else
-CONFIGURE_ARGS+=        --disable-java
-.endif
+JSON_CONFIGURE_ENABLE=		json
+JSON_LIB_DEPENDS=		libjson-c.so:devel/json-c
+JSON_PLIST_FILES= 		lib/syslog-ng/libjson-plugin.so
 
-.if ${PORT_OPTIONS:MPYTHON}
-CONFIGURE_ARGS+=	--enable-python --with-python=2.7
-USES+=			python:2.7
-PLIST_FILES+= 		lib/syslog-ng/libmod-python.so
-.else
-CONFIGURE_ARGS+=        --disable-python
-.endif
+JAVA_CONFIGURE_ENABLE=		java
+JAVA_USE_JAVA=			yes
+JAVA_PLIST_FILES= 		lib/syslog-ng/libmod-java.so \
+				lib/syslog-ng/java-modules/syslog-ng-core.jar
+
+JAVA_MOD_CONFIGURE_ENABLE=	java-modules
+JAVA_MOD_BROKEN=		Unsupported maven downloads.
+JAVA_MOD_USE_JAVA=		yes
+JAVA_MOD_BUILD_DEPENDS=		gradle:devel/gradle \
+				bash:shells/bash
+JAVA_MOD_PLIST_DIRS=		lib/syslog-ng/java-modules/elastic-jest-client
+JAVA_MOD_PLIST_FILES=		lib/syslog-ng/java-modules/log4j-1.2.16.jar \
+				lib/syslog-ng/java-modules/elastic-jest-client/jest-2.0.2.jar \
+				lib/syslog-ng/java-modules/elastic-jest-client/jest-common-2.0.2.jar \
+				lib/syslog-ng/java-modules/elastic-jest-client/httpcore-nio-4.4.4.jar \
+				lib/syslog-ng/java-modules/elastic-jest-client/httpclient-4.5.2.jar \
+				lib/syslog-ng/java-modules/elastic-jest-client/httpasyncclient-4.1.1.jar \
+				lib/syslog-ng/java-modules/elastic-jest-client/slf4j-api-1.7.13.jar \
+				lib/syslog-ng/java-modules/elastic-jest-client/guava-19.0.jar \
+				lib/syslog-ng/java-modules/elastic-jest-client/gson-2.6.2.jar \
+				lib/syslog-ng/java-modules/elastic-jest-client/commons-lang3-3.4.jar \
+				lib/syslog-ng/java-modules/elastic-jest-client/httpcore-4.4.4.jar \
+				lib/syslog-ng/java-modules/elastic-jest-client/commons-logging-1.2.jar \
+				lib/syslog-ng/java-modules/elastic-jest-client/commons-codec-1.9.jar \
+				lib/syslog-ng/java-modules/elastic-jest-client/slf4j-simple-1.7.13.jar \
+				lib/syslog-ng/java-modules/hdfs.jar \
+				lib/syslog-ng/java-modules/elastic.jar \
+				lib/syslog-ng/java-modules/elastic-v2.jar \
+				lib/syslog-ng/java-modules/kafka.jar \
+				lib/syslog-ng/java-modules/dummy.jar \
+				lib/syslog-ng/java-modules/http.jar \
+				lib/syslog-ng/java-modules/syslog-ng-common.jar
+
+
+PYTHON_CONFIGURE_ENABLE=	python
+PYTHON_CONFIGURE_WITH=		python=2.7
+PYTHON_USES=			python:2.7
+PYTHON_PLIST_FILES= 		lib/syslog-ng/libmod-python.so
+
+CURL_CONFIGURE_ENABLE=		curl
+CURL_LIB_DEPENDS=		libcurl.so:ftp/curl
+CURL_PLIST_FILES= 		lib/syslog-ng/libcurl.so
+
+
+.include <bsd.port.pre.mk>
 
 post-patch:
 	@${CP} ${WRKSRC}/scl/syslog-ng.conf ${WRKSRC}/scl/syslog-ng.conf.dist
@@ -172,4 +159,4 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/lib/ivykis/src/include/iv*.h \
 		${STAGEDIR}${PREFIX}/include/syslog-ng/
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

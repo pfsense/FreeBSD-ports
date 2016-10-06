@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	libcdr
-PORTVERSION=	0.1.2
+PORTVERSION=	0.1.3
+PORTREVISION=	1
 CATEGORIES=	graphics devel
 MASTER_SITES=	LODEV
 PKGNAMESUFFIX=	01
@@ -19,7 +20,7 @@ LIB_DEPENDS=	libicui18n.so:devel/icu \
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-tests --disable-werror --without-docs
-USES=	libtool pathfix pkgconfig tar:xz
+USES=		compiler:c++11-lib libtool pathfix pkgconfig tar:xz
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 

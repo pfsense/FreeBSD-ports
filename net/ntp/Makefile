@@ -3,6 +3,7 @@
 
 PORTNAME=	ntp
 PORTVERSION=	4.2.8p8
+PORTREVISION=	1
 CATEGORIES=	net ipv6
 MASTER_SITES=	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/ \
 		http://archive.ntp.org/ntp4/ntp-4.2/ \
@@ -12,14 +13,15 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:S/P/p/:S/.r/-RC/}
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	The Network Time Protocol Distribution
 
-LIB_DEPENDS=	libevent.so:devel/libevent2
+LIB_DEPENDS=	libevent.so:devel/libevent2 \
+		libmd5.so:www/libwww
 
 CONFLICTS=	ntp-rc-* ntp-devel-*
 
-USES=		cpe pathfix shebangfix libedit libtool pkgconfig
+USES=		cpe pathfix shebangfix libedit libtool localbase:ldflags \
+		pkgconfig ssl
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-silent-rules
 
 TEST_TARGET=	check
 
@@ -49,7 +51,6 @@ NTPSNMPD_CONFIGURE_OFF=	--without-ntpsnmpd
 
 PERL_UTILS_USES=	perl5
 
-SSL_USE=		OPENSSL=yes
 SSL_CONFIGURE_ON=	--with-openssl-incdir=${OPENSSLINC} \
 			--with-openssl-libdir=${OPENSSLLIB}
 SSL_CONFIGURE_OFF=	--without-crypto

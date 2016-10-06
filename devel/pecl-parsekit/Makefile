@@ -3,6 +3,7 @@
 
 PORTNAME=	parsekit
 PORTVERSION=	1.3.0
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://pecl.php.net/get/
 PKGNAMEPREFIX=	pecl-
@@ -11,6 +12,9 @@ DIST_SUBDIR=	PECL
 
 MAINTAINER=	dereckson@gmail.com
 COMMENT=	Extension for opcodes runtime analysis
+
+DEPRECATED=	Works only with EOL php 5.5
+EXPIRATION_DATE=	2016-10-20
 
 LICENSE=	PHP301
 

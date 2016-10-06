@@ -1,11 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	meta1
-PORTVERSION=	1.1.0a.2.0
-DISTVERSION=	1.1.Alpha2.0
+PORTVERSION=	1.1.0a.6.0
+DISTVERSION=	1.1.Alpha6.0
 PORTREVISION=	0
 CATEGORIES=	mail ipv6
-MASTER_SITES=	http://www.MeTA1.org/download/.alpha/dane1/
+MASTER_SITES=	http://www.MeTA1.org/download/.alpha/danm/
 PKGNAMESUFFIX?=	${TLS_SUFFIX}${SASL_SUFFIX}${BERKELEYDB_SUFFIX}${PMILTER_SUFFIX}${PKGNAMESUFFIX2}
 
 MAINTAINER=	dinoex@FreeBSD.org
@@ -54,6 +54,8 @@ MSP_DESC=	Enable mail submision program
 SASL2_DESC=	Adds SASL2 support
 SASL2AUTHD_DESC=	Enable plaintext authentication via SASL2
 
+BDB_USES=		bdb
+PMILTER_USES=		ssl
 PMILTER_CONFIGURE_ENABLE=	pmilter
 DKIM_CONFIGURE_ENABLE=	DKIM
 MSP_CONFIGURE_ENABLE=	msp
@@ -72,8 +74,7 @@ MAKE_ENV+=	MTA_NETINET6=1
 
 .if ${PORT_OPTIONS:MBDB}
 BROKEN=		port version of Berkeley DB is not compatible
-USE_BDB=	42+
-INVALID_BDB_VER=	46 47 48 5 6
+INVALID_BDB_VER=	48 5 6
 BERKELEYDB_SUFFIX=	-db${BDB_VER}
 CONFIGURE_ARGS+=	--disable-included-bdb
 CONFIGURE_ARGS+=	--with-bdb-incdir=${BDB_INCLUDE_DIR}
@@ -84,9 +85,7 @@ BERKELEYDB_SUFFIX=	-intbdb
 PLIST_SUB+=	WITH_BDBINT=""
 .endif
 
-.if ${PORT_OPTIONS:MPMILTER}
-USE_OPENSSL=	yes
-.else
+.if ! ${PORT_OPTIONS:MPMILTER}
 PMILTER_SUFFIX?=	-nopmilter
 .endif
 

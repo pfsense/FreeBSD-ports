@@ -13,6 +13,8 @@ COMMENT=	Scriptable bar graph generator
 
 LICENSE=	GPLv2
 
+BROKEN=		Unfetchable (google code has gone away)
+
 RUN_DEPENDS=	${LOCALBASE}/bin/fig2dev:print/transfig \
 		${LOCALBASE}/bin/gnuplot:math/gnuplot
 
@@ -26,9 +28,10 @@ OPTIONS_DEFINE=	DOCS EXAMPLES
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/bargraph.pl ${STAGEDIR}${PREFIX}/bin/bargraph
 
-post-install:
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_MAN} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
+post-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${CP} ${WRKSRC}/samples/*.perf  ${WRKSRC}/samples/*.png ${STAGEDIR}${EXAMPLESDIR}
 
