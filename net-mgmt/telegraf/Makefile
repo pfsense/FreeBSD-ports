@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	telegraf
-PORTVERSION=	1.0.0.b1
+DISTVERSION=	1.0.1
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	girgen@FreeBSD.org
@@ -18,10 +18,10 @@ USE_RC_SUBR=	telegraf
 
 USE_GITHUB=	yes
 
-GH_TAGNAME=	1.0.0-beta1
 GH_ACCOUNT=	influxdata:DEFAULT
 GH_TUPLE=	Shopify:sarama:8aadb47:sarama \
 		Sirupsen:logrus:219c8cb:logrus \
+		aerospike:aerospike-client-go:45863b7:aerospike_client_go \
 		amir:raidman:53c1b96:raidman \
 		aws:aws-sdk-go:13a1206:aws_sdk_go \
 		beorn7:perks:3ac7bf7:perks \
@@ -37,7 +37,6 @@ GH_TUPLE=	Shopify:sarama:8aadb47:sarama \
 		eapache:go-resiliency:b86b1ec:go_resiliency \
 		eapache:queue:ded5959:queue \
 		eclipse:paho.mqtt.golang:0f7a459:paho_mqtt_golang \
-		fsouza:go-dockerclient:4ac6ea1:go_dockerclient \
 		go-sql-driver:mysql:1fca743:mysql \
 		gobwas:glob:49571a1:glob \
 		golang:protobuf:552c7b9:protobuf \
@@ -51,6 +50,8 @@ GH_TUPLE=	Shopify:sarama:8aadb47:sarama \
 		influxdata:config:b79f682:config \
 		influxdata:influxdb:e094138:influxdb \
 		influxdata:toml:af4df43:toml \
+		kardianos:osext:29ae4ff:osext \
+		kardianos:service:5e33559:service \
 		klauspost:crc32:19b0b33:crc32 \
 		lib:pq:e182dc4:pq \
 		matttproud:golang_protobuf_extensions:d0c3fe8:golang_protobuf_extensions \
@@ -66,18 +67,20 @@ GH_TUPLE=	Shopify:sarama:8aadb47:sarama \
 		prometheus:common:e8eabff:common \
 		prometheus:procfs:406e5b7:procfs \
 		samuel:go-zookeeper:218e9c8:go_zookeeper \
-		shirou:gopsutil:586bb69:gopsutil \
-		soniah:gosnmp:b1b4f88:gosnmp \
-		sparrc:gdm:2b7833e:gdm \
+		shirou:gopsutil:4d0c402:gopsutil \
+		soniah:gosnmp:eb32571:gosnmp \
+		sparrc:gdm:66023a5:gdm \
 		streadway:amqp:b4f3cea:amqp \
 		stretchr:testify:1f4a164:testify \
+		vjeantet:grok:83bfdfd:grok \
 		wvanbergen:kafka:46f9a1c:kafka \
 		wvanbergen:kazoo-go:0f76871:kazoo_go \
+		yuin:gopher-lua:bf3808a:gopher_lua \
 		zensqlmonitor:go-mssqldb:ffe5510:go_mssqldb \
 		golang:crypto:5dc8cb4:crypto \
 		golang:net:6acef71:net \
 		golang:text:a71fd10:text \
-		golang:tools:b41cbfc:tools \
+		golang:tools:fc2b74b:tools \
 		dancannon:gorethink:7d1af5b:gorethink_v1 \
 		fatih:pool:cba550e:pool_v2 \
 		go-mgo:mgo:d90005c:mgo \
@@ -91,9 +94,9 @@ STRIP=		# stripping can break go binaries
 
 post-patch:
 	@${MKDIR} ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME} \
-	${WRKSRC}/src/git.eclipse.org/gitroot \
 	${WRKSRC}/src/github.com/Shopify \
 	${WRKSRC}/src/github.com/Sirupsen \
+	${WRKSRC}/src/github.com/aerospike \
 	${WRKSRC}/src/github.com/amir \
 	${WRKSRC}/src/github.com/aws \
 	${WRKSRC}/src/github.com/beorn7 \
@@ -104,7 +107,6 @@ post-patch:
 	${WRKSRC}/src/github.com/docker \
 	${WRKSRC}/src/github.com/eapache \
 	${WRKSRC}/src/github.com/eclipse \
-	${WRKSRC}/src/github.com/fsouza \
 	${WRKSRC}/src/github.com/go-sql-driver \
 	${WRKSRC}/src/github.com/gobwas \
 	${WRKSRC}/src/github.com/golang \
@@ -114,6 +116,7 @@ post-patch:
 	${WRKSRC}/src/github.com/hashicorp \
 	${WRKSRC}/src/github.com/hpcloud \
 	${WRKSRC}/src/github.com/influxdata \
+	${WRKSRC}/src/github.com/kardianos \
 	${WRKSRC}/src/github.com/klauspost \
 	${WRKSRC}/src/github.com/lib \
 	${WRKSRC}/src/github.com/matttproud \
@@ -130,18 +133,21 @@ post-patch:
 	${WRKSRC}/src/github.com/sparrc \
 	${WRKSRC}/src/github.com/streadway \
 	${WRKSRC}/src/github.com/stretchr \
+	${WRKSRC}/src/github.com/vjeantet \
 	${WRKSRC}/src/github.com/wvanbergen \
+	${WRKSRC}/src/github.com/yuin \
 	${WRKSRC}/src/github.com/zensqlmonitor \
 	${WRKSRC}/src/golang.org/x \
 	${WRKSRC}/src/gopkg.in/dancannon \
 	${WRKSRC}/src/gopkg.in/fatih
 	cd ${WRKSRC} && ${MV} CHANGELOG.md CONTRIBUTING.md Godeps Godeps_windows \
-	LICENSE Makefile README.md accumulator.go agent circle.yml cmd docs etc \
-	input.go internal metric.go metric_test.go output.go plugins scripts testutil \
+		LICENSE Makefile README.md accumulator.go agent circle.yml cmd docs etc filter \
+		input.go internal metric.go metric_test.go output.go plugins scripts testutil \
 		${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME}
-	@${LN} -s ${WRKSRC}/src/github.com/eclipse/paho.mqtt.golang ${WRKSRC}/src/git.eclipse.org/gitroot/paho
+	@${LN} -s ${WRKSRC}/src/github.com/aerospike/aerospike-client-go ${WRKSRC}/src/github.com/sparrc/aerospike-client-go
 	@${MV} ${WRKSRC_sarama} ${WRKSRC}/src/github.com/Shopify/sarama ;\
 	${MV} ${WRKSRC_logrus} ${WRKSRC}/src/github.com/Sirupsen/logrus ;\
+	${MV} ${WRKSRC_aerospike_client_go} ${WRKSRC}/src/github.com/aerospike/aerospike-client-go ;\
 	${MV} ${WRKSRC_raidman} ${WRKSRC}/src/github.com/amir/raidman ;\
 	${MV} ${WRKSRC_aws_sdk_go} ${WRKSRC}/src/github.com/aws/aws-sdk-go ;\
 	${MV} ${WRKSRC_perks} ${WRKSRC}/src/github.com/beorn7/perks ;\
@@ -157,7 +163,6 @@ post-patch:
 	${MV} ${WRKSRC_go_resiliency} ${WRKSRC}/src/github.com/eapache/go-resiliency ;\
 	${MV} ${WRKSRC_queue} ${WRKSRC}/src/github.com/eapache/queue ;\
 	${MV} ${WRKSRC_paho_mqtt_golang} ${WRKSRC}/src/github.com/eclipse/paho.mqtt.golang ;\
-	${MV} ${WRKSRC_go_dockerclient} ${WRKSRC}/src/github.com/fsouza/go-dockerclient ;\
 	${MV} ${WRKSRC_mysql} ${WRKSRC}/src/github.com/go-sql-driver/mysql ;\
 	${MV} ${WRKSRC_glob} ${WRKSRC}/src/github.com/gobwas/glob ;\
 	${MV} ${WRKSRC_protobuf} ${WRKSRC}/src/github.com/golang/protobuf ;\
@@ -171,6 +176,8 @@ post-patch:
 	${MV} ${WRKSRC_config} ${WRKSRC}/src/github.com/influxdata/config ;\
 	${MV} ${WRKSRC_influxdb} ${WRKSRC}/src/github.com/influxdata/influxdb ;\
 	${MV} ${WRKSRC_toml} ${WRKSRC}/src/github.com/influxdata/toml ;\
+	${MV} ${WRKSRC_osext} ${WRKSRC}/src/github.com/kardianos/osext ;\
+	${MV} ${WRKSRC_service} ${WRKSRC}/src/github.com/kardianos/service ;\
 	${MV} ${WRKSRC_crc32} ${WRKSRC}/src/github.com/klauspost/crc32 ;\
 	${MV} ${WRKSRC_pq} ${WRKSRC}/src/github.com/lib/pq ;\
 	${MV} ${WRKSRC_golang_protobuf_extensions} ${WRKSRC}/src/github.com/matttproud/golang_protobuf_extensions ;\
@@ -191,8 +198,10 @@ post-patch:
 	${MV} ${WRKSRC_gdm} ${WRKSRC}/src/github.com/sparrc/gdm ;\
 	${MV} ${WRKSRC_amqp} ${WRKSRC}/src/github.com/streadway/amqp ;\
 	${MV} ${WRKSRC_testify} ${WRKSRC}/src/github.com/stretchr/testify ;\
+	${MV} ${WRKSRC_grok} ${WRKSRC}/src/github.com/vjeantet/grok ;\
 	${MV} ${WRKSRC_kafka} ${WRKSRC}/src/github.com/wvanbergen/kafka ;\
 	${MV} ${WRKSRC_kazoo_go} ${WRKSRC}/src/github.com/wvanbergen/kazoo-go ;\
+	${MV} ${WRKSRC_gopher_lua} ${WRKSRC}/src/github.com/yuin/gopher-lua ;\
 	${MV} ${WRKSRC_go_mssqldb} ${WRKSRC}/src/github.com/zensqlmonitor/go-mssqldb ;\
 	${MV} ${WRKSRC_crypto} ${WRKSRC}/src/golang.org/x/crypto ;\
 	${MV} ${WRKSRC_net} ${WRKSRC}/src/golang.org/x/net ;\

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	josm
-PORTVERSION=	10327
+PORTVERSION=	10966
 CATEGORIES=	astro java
 MASTER_SITES=	http://josm.openstreetmap.de/download/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -14,6 +14,8 @@ MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Comprehensive editor for OpenStreetMap.org database
 
 LICENSE=	GPLv2+
+
+PORTSCOUT=	ignore:1
 
 NO_WRKSUBDIR=	yes
 

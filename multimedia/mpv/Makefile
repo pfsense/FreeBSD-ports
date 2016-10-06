@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mpv
-PORTVERSION=	0.18.0
+PORTVERSION=	0.20.0
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio
@@ -14,19 +14,22 @@ LICENSE=	GPLv2+ LGPL21+
 LICENSE_COMB=	multi
 
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
-BUILD_DEPENDS=	rst2man:textproc/py-docutils
+BUILD_DEPENDS=	rst2man:textproc/py-docutils \
+		rst2html:textproc/py-docutils
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mpv-player waf-project:waf
 GH_PROJECT=	waf:waf
-GH_TAGNAME=	waf-1.9.0pre3:waf
+GH_TAGNAME=	waf-1.9.3:waf
 
 WAF_CMD=	${WRKSRC_waf}/waf-light
 
-USES=		compiler:c11 desktop-file-utils iconv localbase pkgconfig python:build waf
+USES=		compiler:c11 desktop-file-utils iconv jpeg localbase:ldflags \
+		pkgconfig python:build waf
 USE_LDCONFIG=	yes
 
 CONFIGURE_ARGS=	--docdir=${EXAMPLESDIR} \
+		--htmldir=${DOCSDIR}/html \
 		--mandir=${MANPREFIX}/man \
 		--prefix=${PREFIX} \
 		--disable-debug-build \
@@ -40,7 +43,8 @@ CONFIGURE_ARGS=	--docdir=${EXAMPLESDIR} \
 		--disable-videotoolbox-hwaccel \
 		--disable-videotoolbox-gl \
 		--disable-wayland \
-		--enable-libmpv-shared
+		--enable-libmpv-shared \
+		--enable-html
 
 OPTIONS_DEFINE=		ASS DOCS ENCA LCMS2 \
 			LIBGUESS LUAJIT UCHARDET ZSH
@@ -49,7 +53,7 @@ OPTIONS_DEFAULT=	ASS DVDREAD DVDNAV ENCA OPENGL \
 OPTIONS_GROUP=		IN VO AO
 OPTIONS_GROUP_IN=	CDIO DVDREAD DVDNAV LIBBLURAY V4L YTDL SMB
 OPTIONS_GROUP_VO=	CACA OPENGL VAAPI VDPAU X11 XINERAMA
-OPTIONS_GROUP_AO=	ALSA JACK PULSEAUDIO SDL
+OPTIONS_GROUP_AO=	ALSA JACK PULSEAUDIO SDL SNDIO
 OPTIONS_SUB=		yes
 
 ASS_DESC=	ASS/SSA subtitle and OSD rendering
@@ -102,7 +106,7 @@ LUAJIT_USES_OFF=		lua
 LUAJIT_CONFIGURE_ON=		--lua=luajit
 LUAJIT_CONFIGURE_OFF=		--lua=${LUA_VER_STR}fbsd
 
-OPENGL_USE=			GL=gl
+OPENGL_USE=			GL=egl,gbm,gl
 OPENGL_CONFIGURE_OFF=		--disable-gl
 OPENGL_IMPLIES=			X11
 
@@ -112,6 +116,10 @@ PULSEAUDIO_CONFIGURE_OFF=	--disable-pulse
 SDL_USE=			SDL=sdl2
 SDL_CONFIGURE_ON=		--enable-sdl2
 SDL_CONFIGURE_OFF=		--disable-sdl2
+
+SNDIO_LIB_DEPENDS=		libsndio.so:audio/sndio
+SNDIO_CONFIGURE_ON=		--enable-sndio
+SNDIO_CONFIGURE_OFF=		--disable-sndio
 
 SMB_LIB_DEPENDS=		libsmbclient.so:net/samba-libsmbclient
 SMB_CONFIGURE_OFF=		--disable-libsmbclient
@@ -129,7 +137,7 @@ VAAPI_CONFIGURE_OFF=		--disable-vaapi
 VDPAU_LIB_DEPENDS=		libvdpau.so:multimedia/libvdpau
 VDPAU_CONFIGURE_OFF=		--disable-vdpau
 
-X11_USE=			XORG=x11,xv,xxf86vm
+X11_USE=			XORG=x11,xext,xrandr,xscrnsaver,xv,xxf86vm
 X11_VARS=			INSTALLS_ICONS=yes
 X11_CONFIGURE_OFF=		--disable-x11
 

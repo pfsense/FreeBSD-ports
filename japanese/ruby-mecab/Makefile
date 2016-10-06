@@ -5,7 +5,7 @@ PORTNAME=	mecab
 PORTVERSION=	0.996
 PORTREVISION=	1
 CATEGORIES=	japanese textproc ruby
-MASTER_SITES=	GOOGLE_CODE
+MASTER_SITES=	https://drive.google.com/uc?export=download&id=0B4y35FiV1wh7VUNlczBWVDZJbE0&dummy=/
 DISTNAME=	${PORTNAME}-ruby-${PORTVERSION}
 
 MAINTAINER=	ruby@FreeBSD.org

@@ -3,12 +3,13 @@
 
 PORTNAME=	swish
 PORTVERSION=	0.5.0
+PORTREVISION=	1
 CATEGORIES=	www pear
 MASTER_SITES=	http://pecl.php.net/get/
 PKGNAMEPREFIX=	pecl-
 DIST_SUBDIR=	PECL
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Swish-e bindings for PHP
 
 LICENSE=	PHP301

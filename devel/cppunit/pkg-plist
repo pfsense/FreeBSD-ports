@@ -854,8 +854,6 @@ share/aclocal/cppunit.m4
 %%DOXYGEN%%%%DOCSDIR%%/html/_xml_outputter_hook_8h__incl.png
 %%DOXYGEN%%%%DOCSDIR%%/html/_xml_outputter_hook_8h_source.html
 %%DOXYGEN%%%%DOCSDIR%%/html/annotated.html
-%%DOXYGEN%%%%DOCSDIR%%/html/arrowdown.png
-%%DOXYGEN%%%%DOCSDIR%%/html/arrowright.png
 %%DOXYGEN%%%%DOCSDIR%%/html/bc_s.png
 %%DOXYGEN%%%%DOCSDIR%%/html/bdwn.png
 %%DOXYGEN%%%%DOCSDIR%%/html/class_additional_message-members.html
@@ -1338,9 +1336,6 @@ share/aclocal/cppunit.m4
 %%DOXYGEN%%%%DOCSDIR%%/html/dir_ba2a4a3a284960cb5e490c57e3886afc_dep.md5
 %%DOXYGEN%%%%DOCSDIR%%/html/dir_ba2a4a3a284960cb5e490c57e3886afc_dep.png
 %%DOXYGEN%%%%DOCSDIR%%/html/dir_c4b14d76b0344c563c835d95a27c8cd0.html
-%%DOXYGEN%%%%DOCSDIR%%/html/dir_c4b14d76b0344c563c835d95a27c8cd0_dep.map
-%%DOXYGEN%%%%DOCSDIR%%/html/dir_c4b14d76b0344c563c835d95a27c8cd0_dep.md5
-%%DOXYGEN%%%%DOCSDIR%%/html/dir_c4b14d76b0344c563c835d95a27c8cd0_dep.png
 %%DOXYGEN%%%%DOCSDIR%%/html/dir_c5eaf16858184a764c0b183940730f6f.html
 %%DOXYGEN%%%%DOCSDIR%%/html/dir_c5eaf16858184a764c0b183940730f6f_dep.map
 %%DOXYGEN%%%%DOCSDIR%%/html/dir_c5eaf16858184a764c0b183940730f6f_dep.md5
@@ -1369,6 +1364,7 @@ share/aclocal/cppunit.m4
 %%DOXYGEN%%%%DOCSDIR%%/html/folderclosed.png
 %%DOXYGEN%%%%DOCSDIR%%/html/folderopen.png
 %%DOXYGEN%%%%DOCSDIR%%/html/functions.html
+%%DOXYGEN%%%%DOCSDIR%%/html/functions_0x7e.html
 %%DOXYGEN%%%%DOCSDIR%%/html/functions_a.html
 %%DOXYGEN%%%%DOCSDIR%%/html/functions_b.html
 %%DOXYGEN%%%%DOCSDIR%%/html/functions_c.html
@@ -1378,6 +1374,7 @@ share/aclocal/cppunit.m4
 %%DOXYGEN%%%%DOCSDIR%%/html/functions_eval.html
 %%DOXYGEN%%%%DOCSDIR%%/html/functions_f.html
 %%DOXYGEN%%%%DOCSDIR%%/html/functions_func.html
+%%DOXYGEN%%%%DOCSDIR%%/html/functions_func_0x7e.html
 %%DOXYGEN%%%%DOCSDIR%%/html/functions_func_b.html
 %%DOXYGEN%%%%DOCSDIR%%/html/functions_func_c.html
 %%DOXYGEN%%%%DOCSDIR%%/html/functions_func_d.html
@@ -1398,7 +1395,6 @@ share/aclocal/cppunit.m4
 %%DOXYGEN%%%%DOCSDIR%%/html/functions_func_u.html
 %%DOXYGEN%%%%DOCSDIR%%/html/functions_func_w.html
 %%DOXYGEN%%%%DOCSDIR%%/html/functions_func_x.html
-%%DOXYGEN%%%%DOCSDIR%%/html/functions_func_~.html
 %%DOXYGEN%%%%DOCSDIR%%/html/functions_g.html
 %%DOXYGEN%%%%DOCSDIR%%/html/functions_h.html
 %%DOXYGEN%%%%DOCSDIR%%/html/functions_i.html
@@ -1416,7 +1412,6 @@ share/aclocal/cppunit.m4
 %%DOXYGEN%%%%DOCSDIR%%/html/functions_vars.html
 %%DOXYGEN%%%%DOCSDIR%%/html/functions_w.html
 %%DOXYGEN%%%%DOCSDIR%%/html/functions_x.html
-%%DOXYGEN%%%%DOCSDIR%%/html/functions_~.html
 %%DOXYGEN%%%%DOCSDIR%%/html/globals.html
 %%DOXYGEN%%%%DOCSDIR%%/html/globals_defs.html
 %%DOXYGEN%%%%DOCSDIR%%/html/globals_func.html
@@ -1573,6 +1568,8 @@ share/aclocal/cppunit.m4
 %%DOXYGEN%%%%DOCSDIR%%/html/inherit_graph_9.png
 %%DOXYGEN%%%%DOCSDIR%%/html/inherits.html
 %%DOXYGEN%%%%DOCSDIR%%/html/jquery.js
+%%DOXYGEN%%%%DOCSDIR%%/html/menu.js
+%%DOXYGEN%%%%DOCSDIR%%/html/menudata.js
 %%DOXYGEN%%%%DOCSDIR%%/html/modules.html
 %%DOXYGEN%%%%DOCSDIR%%/html/money_example.html
 %%DOXYGEN%%%%DOCSDIR%%/html/msvc6_2testrunner_2_test_runner_8h.html

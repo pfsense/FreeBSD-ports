@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	crashplan
-DISTVERSION=	4.5.0
+DISTVERSION=	4.7.0
 PORTREVISION=	1
 CATEGORIES=	sysutils java linux
 MASTER_SITES=	https://download.code42.com/installs/linux/install/CrashPlan/
@@ -20,10 +20,9 @@ JAVA_VERSION=	1.7+
 
 WRKSRC=		${WRKDIR}/crashplan-install
 
-USE_LINUX=	yes
-USE_LINUX_APPS=	expat fontconfig xorglibs
+USES=		linux shebangfix tar:tgz
+USE_LINUX=	expat fontconfig xorglibs
 USE_RC_SUBR=	crashplan
-USES=		shebangfix tar:tgz
 
 SHEBANG_FILES=	scripts/CrashPlanEngine scripts/CrashPlanDesktop
 
@@ -32,6 +31,7 @@ ONLY_FOR_ARCHS=	i386 amd64
 NO_BUILD=	yes
 
 CRASHDIR=	${PREFIX}/share/crashplan
+LOGDIR=		/var/log/crashplan
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${CRASHDIR}
@@ -42,7 +42,8 @@ do-install:
 	${ECHO_CMD} > ${STAGEDIR}${CRASHDIR}/install.vars
 	${ECHO_CMD} "TARGETDIR=${CRASHDIR}" >> ${STAGEDIR}${CRASHDIR}/install.vars
 	${ECHO_CMD} "BINSDIR=${CRASHDIR}/bin" >> ${STAGEDIR}${CRASHDIR}/install.vars
-	${ECHO_CMD} "JAVA_COMMON=${JAVA}" >> ${STAGEDIR}${CRASHDIR}/install.vars
+	${ECHO_CMD} "JAVACOMMON=${JAVA}" >> ${STAGEDIR}${CRASHDIR}/install.vars
+	${ECHO_CMD} "LOGDIR=${LOGDIR}" >> ${STAGEDIR}${CRASHDIR}/install.vars
 	${CAT} ${WRKSRC}/install.defaults >> ${STAGEDIR}${CRASHDIR}/install.vars
 
 .include <bsd.port.mk>

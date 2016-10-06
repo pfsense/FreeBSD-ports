@@ -1,13 +1,13 @@
 # $FreeBSD$
 
 PORTNAME=	freebsd-release-manifests
-DISTVERSION=	20160404
+DISTVERSION=	20160917
 PORTREVISION=	0
 CATEGORIES=	misc
 MASTER_SITES=	#
 DISTFILES=	#
 
-MAINTAINER=	cperciva@FreeBSD.org
+MAINTAINER=	bdrewery@FreeBSD.org
 COMMENT=	FreeBSD release manifests
 
 LICENSE=	BSD2CLAUSE

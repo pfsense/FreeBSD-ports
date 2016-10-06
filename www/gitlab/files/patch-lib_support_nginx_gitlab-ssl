@@ -1,4 +1,4 @@
---- lib/support/nginx/gitlab-ssl.orig	2016-06-15 01:41:18 UTC
+--- lib/support/nginx/gitlab-ssl.orig	2016-07-11 19:38:44 UTC
 +++ lib/support/nginx/gitlab-ssl
 @@ -21,7 +21,7 @@
  ## See installation.md#using-https for additional HTTPS configuration details.
@@ -14,7 +14,7 @@
    error_page 503 /503.html;
    location ~ ^/(404|422|500|502|503)\.html$ {
 -    root /home/git/gitlab/public;
-+    root /home/git/gitlab/public; 
++    root /usr/local/www/gitlab/public;
      internal;
    }
  }

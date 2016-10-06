@@ -3,9 +3,8 @@
 
 PORTNAME=	ndpi
 PORTVERSION=	1.8
+PORTREVISION=	1
 CATEGORIES=	net
-MASTER_SITES=	SF/ntop/nDPI
-DISTNAME=	nDPI-${PORTVERSION}
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	NTOP-maintained superset of the popular OpenDPI library
@@ -20,9 +19,13 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 LIBS+=		-ljson-c
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-USES=	 	alias autoreconf compiler:c++11-lang libtool pathfix pkgconfig tar:tgz
-WRKSRC=		${WRKDIR}/nDPI-${PORTVERSION}
+USES=	 	autoreconf compiler:c++11-lang libtool pathfix pkgconfig tar:tgz
 INSTALL_TARGET=	install-strip
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	ntop
+GH_PROJECT=	nDPI
+GH_TAGNAME=	6fb81f1
 
 PLIST_SUB=	MAJOR_VER=${PORTVERSION}.0
 

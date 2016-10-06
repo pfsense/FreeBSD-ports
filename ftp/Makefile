@@ -17,7 +17,6 @@
     SUBDIR += curl-hiphop
     SUBDIR += curlpp
     SUBDIR += dmachine
-    SUBDIR += fget
     SUBDIR += filezilla
     SUBDIR += fmirror
     SUBDIR += fpc-libcurl
@@ -82,6 +81,7 @@
     SUBDIR += py-pyftpdlib
     SUBDIR += py-tftpy
     SUBDIR += quftp
+    SUBDIR += rexx-curl
     SUBDIR += rubygem-curb
     SUBDIR += scythia
     SUBDIR += smbftpd

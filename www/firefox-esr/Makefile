@@ -4,7 +4,7 @@
 PORTNAME=	firefox
 DISTVERSION=	45.4.0
 DISTVERSIONSUFFIX=esr.source
-PORTREVISION=	1
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	www ipv6
 MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}esr/source \
@@ -28,8 +28,7 @@ BUILD_DEPENDS=	nspr>=4.12:devel/nspr \
 		v4l_compat>0:multimedia/v4l_compat \
 		autoconf-2.13:devel/autoconf213 \
 		yasm:devel/yasm \
-		zip:archivers/zip \
-		unzip:archivers/unzip
+		zip:archivers/zip
 
 LIB_DEPENDS=	libv4l2.so:multimedia/libv4l
 
@@ -40,8 +39,6 @@ MOZ_PKGCONFIG_FILES=	# empty
 USE_MOZILLA=	# empty
 MOZILLA_NAME=	Firefox
 
-USE_QT5=	# empty
-QT_NONSTANDARD=	yes
 USE_GL=		gl
 USES=		tar:xz
 
@@ -51,7 +48,6 @@ MOZ_OPTIONS=	--program-transform-name='s/firefox/${MOZILLA}/' \
 		--enable-application=browser \
 		--enable-official-branding
 
-OPTIONS_EXCLUDE=	GSTREAMER LOGGING
 OPTIONS_DEFINE=		RUST
 OPTIONS_DEFAULT=	BUNDLED_CAIRO GTK2
 

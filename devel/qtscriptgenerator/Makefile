@@ -5,11 +5,13 @@ PORTNAME=	qtscriptgenerator
 PORTVERSION=	0.2.0
 PORTREVISION=	3
 CATEGORIES=	devel
-MASTER_SITES=	GOOGLE_CODE
-DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 
 MAINTAINER=	syncer@gmail.com
 COMMENT=	Tool that generates Qt bindings for Qt Script
+
+USE_GITHUB=	YES
+GH_ACCOUNT=	qt-labs
+GH_TAGNAME=	a6ce388
 
 OPTIONS_DEFINE=	PHONON
 PHONON_DESC=	Build Phonon support

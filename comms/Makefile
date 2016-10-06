@@ -31,7 +31,6 @@
     SUBDIR += dfu-programmer
     SUBDIR += dfu-util
     SUBDIR += dump1090
-    SUBDIR += dump1090_mr
     SUBDIR += ebook2cw
     SUBDIR += ebook2cwgui
     SUBDIR += echolinux
@@ -146,6 +145,7 @@
     SUBDIR += qsstv
     SUBDIR += qt5-connectivity
     SUBDIR += qt5-sensors
+    SUBDIR += qt5-serialbus
     SUBDIR += qt5-serialport
     SUBDIR += qtel
     SUBDIR += quisk
@@ -179,6 +179,7 @@
     SUBDIR += twpsk
     SUBDIR += uarduno
     SUBDIR += uartlirc
+    SUBDIR += uhd
     SUBDIR += uird
     SUBDIR += unixcw
     SUBDIR += usbmuxd

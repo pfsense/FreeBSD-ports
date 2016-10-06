@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Unreal
-PORTVERSION=	3.2.10.5
-PORTREVISION=	1
+PORTVERSION=	3.2.10.7
 CATEGORIES=	irc ipv6
 MASTER_SITES=	http://www.unrealircd.com/downloads/
 DISTNAME=	${PORTNAME}${PORTVERSION}
@@ -15,8 +14,6 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libcares.so:dns/c-ares
-
-WRKSRC=		${WRKDIR}/${PORTNAME}${PORTVERSION}
 
 MODULESDIR=	${PREFIX}/lib/${PORTNAME}
 CONFIGDIR=	${PREFIX}/etc/${PORTNAME}
@@ -133,7 +130,6 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/${file} ${STAGEDIR}${DOCSDIR}
 .endfor
 
-post-install:
 .if defined(WITH_SQLMOD)
 	@${CP} ${WRKSRC}/SQLMod/sample.conf ${STAGEDIR}${CONFIGDIR}/m_sqlmod.conf
 	@${CP} ${WRKSRC}/SQLMod/Changes ${STAGEDIR}${DOCSDIR}/Changes.sqlmod

@@ -1,12 +1,15 @@
---- Makefile.orig      2012-11-30 13:59:48.000000000 +0800
-+++ Makefile   2012-11-30 14:00:09.000000000 +0800
-@@ -44,8 +44,8 @@
+--- Makefile.orig	2006-11-10 00:14:11 UTC
++++ Makefile
+@@ -43,9 +43,9 @@ RM = /bin/rm
+ INSTALL = /usr/bin/install -c
  STRIP = strip
  
- LIBS = -lncurses
+-LIBS = -lncurses
 -CC = gcc
 -CFLAGS = -g -O2 -Wall
++LIBS = $(LDFLAGS) -lncurses
 +CC ?= cc
 +CFLAGS ?= -O -pipe
  
  all: mp3info gmp3info doc
+ 

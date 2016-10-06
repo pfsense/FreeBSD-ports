@@ -83,8 +83,7 @@ do-install:
 	cd ${HBASE_DIST} && ${COPYTREE_SHARE} lib ${STAGEDIR}${PREFIX}/hbase/ "! -name hadoop-*.jar"
 	${MKDIR} ${STAGEDIR}${HBASE_LOGDIR}
 	${MKDIR} ${STAGEDIR}${HBASE_RUNDIR}
-
-post-install:
+	${CHMOD} 644 ${STAGEDIR}${PREFIX}/hbase/lib/native/libmlockall_agent.so
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/hbase/lib/native/libmlockall_agent.so
 
 .include <bsd.port.post.mk>

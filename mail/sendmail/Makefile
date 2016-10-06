@@ -2,7 +2,7 @@
 
 PORTNAME=	sendmail
 PORTVERSION=	8.15.2
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	mail ipv6
 MASTER_SITES=	ftp://ftp.sendmail.org/pub/sendmail/
 PKGNAMESUFFIX?=	${TLS_SUFFIX}${SASL_SUFFIX}${LDAP_SUFFIX}${BDB_SUFFIX}${PKGNAMESUFFIX2}
@@ -57,7 +57,8 @@ CYRUSLOOKUP_DESC=	Enable cyruslookup feature
 PICKY_HELO_CHECK_DESC=	Enable picky HELO check
 MILTER_DESC=		Enable milter support
 
-BDB_USE=	BDB=yes
+BDB_USES=	bdb
+TLS_USES=	ssl
 LDAP_USE=	OPENLDAP=yes
 SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 SASLAUTHD_RUN_DEPENDS=	${LOCALBASE}/sbin/saslauthd:security/cyrus-sasl2-saslauthd
@@ -118,9 +119,6 @@ SITE+=	${FILESDIR}/site.config.m4.ldap
 .endif
 .if ${PORT_OPTIONS:MMILTER}
 SITE+=	${FILESDIR}/site.config.m4.milter
-.endif
-.if ${PORT_OPTIONS:MTLS}
-USE_OPENSSL=	yes
 .endif
 
 SED_SCRIPT=	-e "s|\`-O\'|\`${CFLAGS}\'|" \
@@ -218,6 +216,9 @@ post-install:
 	${TAR} -C ${WRKSRC} -cf - cf | \
 		${TAR} -C ${STAGEDIR}${PREFIX}/share/sendmail -xf -
 	${RM} ${STAGEDIR}${PREFIX}/man/cat*/*
+# final perm of sendmail is 2555 (see plist), needed for strip cmd
+	${CHMOD} 755 ${STAGEDIR}${PREFIX}/sbin/sendmail
+
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/vacation
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/rmail
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/*

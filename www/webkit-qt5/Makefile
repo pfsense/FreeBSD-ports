@@ -2,8 +2,9 @@
 
 PORTNAME=	webkit
 DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www
+MASTER_SITE_SUBDIR=	community_releases/${QT5_VERSION:R}/${QT5_VERSION}/
 PKGNAMEPREFIX=	qt5-
 
 MAINTAINER=	kde@FreeBSD.org
@@ -11,9 +12,12 @@ COMMENT=	Qt WebKit implementation
 
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libicui18n.so:devel/icu \
+		libleveldb.so:databases/leveldb \
 		libpng.so:graphics/png \
 		libwebp.so:graphics/webp
 BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex
+
+DISTINFO_FILE=	${MASTERDIR}/distinfo
 
 BROKEN_sparc64=	cannot build: uses i386 assembler
 

@@ -1,5 +1,7 @@
 bin/rbenv
 bin/ruby-local-exec
+etc/rbenv.d/exec/gem-rehash.bash
+etc/rbenv.d/exec/gem-rehash/rubygems_plugin.rb
 libexec/rbenv
 libexec/rbenv---version
 libexec/rbenv-commands
@@ -11,6 +13,7 @@ libexec/rbenv-hooks
 libexec/rbenv-init
 libexec/rbenv-local
 libexec/rbenv-prefix
+libexec/rbenv-realpath.dylib
 libexec/rbenv-rehash
 libexec/rbenv-root
 libexec/rbenv-sh-rehash

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	socli
-PORTVERSION=	1.7
-PORTREVISION=	1
+PORTVERSION=	2.4
 CATEGORIES=	misc python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -16,18 +15,12 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=0:www/py-beautifulsoup \
 		${PYTHON_PKGNAMEPREFIX}requests>=0:www/py-requests
 
-USES=		python:3
+USES=		dos2unix python
 USE_GITHUB=	yes
-USE_PYTHON=	autoplist distutils
+USE_PYTHON=	autoplist concurrent distutils
 
 GH_ACCOUNT=	gautamkrishnar
 
 NO_ARCH=	yes
 
-.include <bsd.port.pre.mk>
-
-.if defined(PACKAGE_BUILDING) && ${PYTHON_VER} != ${PYTHON_DEFAULT}
-IGNORE= you have python ${PYTHON_DEFAULT} set as the default, and this needs ${PYTHON_VER}
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

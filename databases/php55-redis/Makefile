@@ -3,6 +3,7 @@
 
 PORTNAME=	redis
 PORTVERSION=	2.2.4
+PORTREVISION=	1
 CATEGORIES=	databases
 PKGNAMEPREFIX=	php55-
 
@@ -10,8 +11,6 @@ MAINTAINER=	m.tsatsenko@gmail.com
 COMMENT=	PHP5-Extension for Redis
 
 LICENSE=	PHP301
-
-BROKEN_powerpc64=	Does not build
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	nicolasff
