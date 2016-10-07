@@ -12,6 +12,8 @@ COMMENT=	Setup pfSense pkg(8) repositories
 
 LICENSE=	APACHE20
 
+RUN_DEPENDS=	sbin/pfSense-upgrade:sysutils/pfSense-upgrade
+
 NO_MTREE=	yes
 
 SUB_FILES=	pkg-install
