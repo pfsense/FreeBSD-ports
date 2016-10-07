@@ -24,7 +24,7 @@ TMP_PLIST_FILES=${PFSENSE_REPOS_${ARCH}:C/$/.conf/} \
 		${PFSENSE_REPOS_${ARCH}:C/$/.descr/} \
 		${PFSENSE_REPOS_${ARCH}:C/$/.abi/} \
 		${PFSENSE_REPOS_${ARCH}:C/$/.altabi/}
-PLIST_FILES=	${TMP_PLIST_FILES:C/^/%%DATADIR%%\//}
+PLIST_FILES=	${TMP_PLIST_FILES:C/^/%%DATADIR%%\/pkg\/repos\//}
 DATADIR=	${PREFIX}/share/pfSense
 DEFAULT_ABI=	${OPSYS}:${OSREL:C/\..*//}:${ARCH}
 
@@ -70,19 +70,19 @@ do-build:
 .endfor
 
 do-install:
-	${MKDIR} ${STAGEDIR}${DATADIR}
+	${MKDIR} ${STAGEDIR}${DATADIR}/pkg/repos
 .for f in ${PFSENSE_REPOS_${ARCH}}
-	${INSTALL_DATA} ${WRKSRC}/${f}.conf ${STAGEDIR}${DATADIR}
-	${INSTALL_DATA} ${WRKSRC}/${f}.descr ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${WRKSRC}/${f}.conf ${STAGEDIR}${DATADIR}/pkg/repos
+	${INSTALL_DATA} ${WRKSRC}/${f}.descr ${STAGEDIR}${DATADIR}/pkg/repos
 	if [ -f ${WRKSRC}/${f}.abi ]; then \
-		${INSTALL_DATA} ${WRKSRC}/${f}.abi ${STAGEDIR}${DATADIR}; \
+		${INSTALL_DATA} ${WRKSRC}/${f}.abi ${STAGEDIR}${DATADIR}/pkg/repos; \
 	else \
-		${ECHO_CMD} ${DEFAULT_ABI} > ${STAGEDIR}${DATADIR}/${f}.abi; \
+		${ECHO_CMD} ${DEFAULT_ABI} > ${STAGEDIR}${DATADIR}/pkg/repos/${f}.abi; \
 	fi
 	if [ -f ${WRKSRC}/${f}.altabi ]; then \
-		${INSTALL_DATA} ${WRKSRC}/${f}.altabi ${STAGEDIR}${DATADIR}; \
+		${INSTALL_DATA} ${WRKSRC}/${f}.altabi ${STAGEDIR}${DATADIR}/pkg/repos; \
 	else \
-		${ECHO_CMD} ${DEFAULT_ALTABI} > ${STAGEDIR}${DATADIR}/${f}.altabi; \
+		${ECHO_CMD} ${DEFAULT_ALTABI} > ${STAGEDIR}${DATADIR}/pkg/repos/${f}.altabi; \
 	fi
 .endfor
 
