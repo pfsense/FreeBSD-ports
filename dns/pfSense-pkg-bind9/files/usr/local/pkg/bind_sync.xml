@@ -80,7 +80,7 @@
 			<description>Select a sync method for BIND.</description>
 			<type>select</type>
 			<required/>
-			<default_value>auto</default_value>
+			<default_value>disabled</default_value>
 			<options>
 				<option><name>Sync to configured system backup server</name><value>auto</value></option>
 				<option><name>Sync to host(s) defined below</name><value>manual</value></option>
