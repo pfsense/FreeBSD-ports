@@ -312,6 +312,11 @@ pkg_upgrade() {
 
 		pkg_update
 
+		# Lock pkg to avoid having pkg binary for version N+1 installed on N
+		if [ -n "${NEW_MAJOR}" ]; then
+			pkg_lock pkg
+		fi
+
 		if [ -z "${NEW_MAJOR}" -a "$(compare_pkg_version pkg)" = "<" ]; then
 			_exec "pkg upgrade pkg" "Upgrading pkg" mute
 			pkg_update force
@@ -410,10 +415,6 @@ pkg_upgrade() {
 		fetch_upgrade_packages
 
 		if [ $(pkg ${pkg_chroot} upgrade -nq ${kernel_pkg} | wc -l) -gt 1 ]; then
-			# Lock pkg to avoid having pkg binary for version N+1 installed on N
-			if [ -n "${NEW_MAJOR}" ]; then
-				pkg_lock pkg
-			fi
 			_exec "pkg ${pkg_chroot} upgrade ${kernel_pkg}" "Upgrading ${product} kernel"
 		fi
 
