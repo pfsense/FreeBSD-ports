@@ -343,6 +343,7 @@ pkg_upgrade() {
 			cp /usr/local/etc/pkg/repos/${product}.conf \
 				/tmp/${product}.conf.copy
 			_exec "pkg upgrade ${_repo_pkg}" "Upgrading ${_repo_pkg}" mute
+			abi_setup
 			# If conf differs, for an update
 			if ! cmp -s /usr/local/etc/pkg/repos/${product}.conf /tmp/${product}.conf.copy; then
 				pkg_update force
