@@ -411,8 +411,18 @@ pkg_upgrade() {
 			fi
 		fi
 
+		# Unlock pkg to make sure it's downloaded
+		if [ -n "${NEW_MAJOR}" ]; then
+			pkg_unlock pkg
+		fi
+
 		# Download all upgrade packages first
 		fetch_upgrade_packages
+
+		# Then lock it again
+		if [ -n "${NEW_MAJOR}" ]; then
+			pkg_unlock pkg
+		fi
 
 		if [ $(pkg ${pkg_chroot} upgrade -nq ${kernel_pkg} | wc -l) -gt 1 ]; then
 			_exec "pkg ${pkg_chroot} upgrade ${kernel_pkg}" "Upgrading ${product} kernel"
