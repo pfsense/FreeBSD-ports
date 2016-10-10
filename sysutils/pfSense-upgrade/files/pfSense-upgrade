@@ -257,6 +257,10 @@ abi_setup() {
 		ALTABI=${CUR_ALTABI}
 	fi
 
+	# Make sure pkg.conf is set properly so GUI can work
+	echo "ABI=${ABI}" > /usr/local/etc/pkg.conf
+	echo "ALTABI=${ALTABI}" >> /usr/local/etc/pkg.conf
+
 	if [ "${CUR_ABI}" = "${ABI}" -o "${CUR_ABI}" = "${ALTABI}" ] ; then
 		NEW_MAJOR=""
 	else

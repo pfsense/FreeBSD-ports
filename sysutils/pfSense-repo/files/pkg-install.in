@@ -4,19 +4,30 @@ if [ "${2}" != "POST-INSTALL" ]; then
 	exit 0
 fi
 
-if [ ! -f /usr/local/share/%%PRODUCT_NAME%%/pkg/repos/%%PRODUCT_NAME%%-repo.conf ]; then
+DEFAULT_REPO=%%DATADIR%%/pkg/repos/%%PRODUCT_NAME%%-repo.conf
+REPO_PATH=/usr/local/etc/pkg/repos
+REPO_CONF=${REPO_PATH}/%%PRODUCT_NAME%%.conf
+
+if [ ! -f "${DEFAULT_REPO}" ]; then
 	echo "===> ERROR: Default repo conf not found!"
 	exit 1
 fi
 
-if [ ! -L /usr/local/etc/pkg/repos/%%PRODUCT_NAME%%.conf ]; then
-	if [ -f /usr/local/etc/pkg/repos/%%PRODUCT_NAME%%.conf ]; then
-		rm -f /usr/local/etc/pkg/repos/%%PRODUCT_NAME%%.conf
+if [ ! -L "${REPO_CONF}" ]; then
+	if [ -f "${REPO_CONF}" ]; then
+		rm -f ${REPO_CONF}
 	fi
-	mkdir -p /usr/local/etc/pkg/repos
-	ln -sf \
-		/usr/local/share/%%PRODUCT_NAME%%/pkg/repos/%%PRODUCT_NAME%%-repo.conf \
-		/usr/local/etc/pkg/repos/%%PRODUCT_NAME%%.conf
+	mkdir -p ${REPO_PATH}
+	ln -sf ${DEFAULT_REPO} ${REPO_CONF}
 fi
+
+PKG_CONF="/usr/local/etc/pkg.conf"
+REAL_CONF=$(readlink ${REPO_CONF})
+
+ABI=$(cat ${REAL_CONF%%.conf}.abi)
+ALTABI=$(cat ${REAL_CONF%%.conf}.altabi)
+
+echo "ABI=${ABI}" > ${PKG_CONF}
+echo "ALTABI=${ALTABI}" >> ${PKG_CONF}
 
 exit 0
