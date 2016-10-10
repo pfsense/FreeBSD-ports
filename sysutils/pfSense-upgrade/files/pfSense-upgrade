@@ -421,7 +421,7 @@ pkg_upgrade() {
 
 		# Then lock it again
 		if [ -n "${NEW_MAJOR}" ]; then
-			pkg_unlock pkg
+			pkg_lock pkg
 		fi
 
 		if [ $(pkg ${pkg_chroot} upgrade -nq ${kernel_pkg} | wc -l) -gt 1 ]; then
