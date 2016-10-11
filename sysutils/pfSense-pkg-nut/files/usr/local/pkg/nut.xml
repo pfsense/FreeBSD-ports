@@ -62,6 +62,9 @@
 	<custom_php_resync_config_command>
 		nut_sync_config();	
 	</custom_php_resync_config_command>
+	<custom_php_install_command>
+		nut_install_command();
+	</custom_php_install_command>
 	<custom_php_pre_deinstall_command>
 		nut_deinstall_command();
 	</custom_php_pre_deinstall_command>
