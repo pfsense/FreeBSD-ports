@@ -11,7 +11,7 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	PfSense package AWS VPC VPN Connection Wizard
 
-LICENSE=	ESF
+LICENSE=	APACHE20
 
 NO_BUILD=	yes
 NO_MTREE=	yes
