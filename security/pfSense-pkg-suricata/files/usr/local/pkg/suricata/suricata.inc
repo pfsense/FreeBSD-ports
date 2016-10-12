@@ -33,7 +33,6 @@ require_once("pkg-utils.inc");
 require_once("filter.inc");
 require_once("notices.inc");
 require_once("util.inc");
-require_once("xmlrpc.inc");
 require_once("xmlrpc_client.inc");
 require("/usr/local/pkg/suricata/suricata_defs.inc");
 
@@ -3475,8 +3474,14 @@ function suricata_sync_on_changes() {
  	}
 }
 
+if(!function_exists('pf_version')) {
+	function pf_version() {
+		return substr(trim(file_get_contents("/etc/version")), 0, 3);
+	}
+}
+
 /* Do the actual XMLRPC sync */
-function suricata_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protocol, $username, $password, $synctimeout = 150, $syncstartsuricata) {
+function suricata_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protocol, $username, $password, $synctimeout, $syncstartsuricata) {
 	global $config, $g;
 
 	/* Do not attempt a package sync while booting up or installing package */
@@ -3490,112 +3495,13 @@ function suricata_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protoc
 		return;
 	}
 
-	// Take care of IPv6 literal address
-	if (is_ipaddrv6($sync_to_ip)) {
-		$sync_to_ip = "[{$sync_to_ip}]";
-	}
-
-	$url = "{$protocol}://{$sync_to_ip}";
-
-
-	/*************************************************/
-	/* Send over any auto-SID management files       */
-	/*************************************************/
-	$sid_files = glob(SURICATA_SID_MODS_PATH . '*');
-	foreach ($sid_files as $file) {
-		$content = base64_encode(file_get_contents($file));
-		$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
-
-		/* assemble xmlrpc payload */
-		$method = 'pfsense.exec_php';
-		$params = array( XML_RPC_encode($password), XML_RPC_encode($payload) );
-	
-		log_error("[suricata] XMLRPC sync sending auto-SID conf files to {$url}:{$port}.");
-		$msg = new XML_RPC_Message($method, $params);
-		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-		$cli->setCredentials($username, $password);
-		$resp = $cli->send($msg, $synctimeout);
-		$error = "";
-		if (!$resp) {
-			$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
-			log_error($error);
-			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error($error);
-			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-		}
-	}
-
-	if (!empty($sid_files) && $error == "") {
-		log_error("[suricata] XMLRPC sync auto-SID conf files success with {$url}:{$port} (pfsense.exec_php).");
-	}
-
-	/*************************************************/
-	/* Send over any IPREP IP List files             */
-	/*************************************************/
-	$iprep_files = glob(SURICATA_IPREP_PATH . '*');
-	foreach ($iprep_files as $file) {
-		$content = base64_encode(file_get_contents($file));
-		$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
-
-		/* assemble xmlrpc payload */
-		$method = 'pfsense.exec_php';
-		$params = array( XML_RPC_encode($password), XML_RPC_encode($payload) );
-	
-		log_error("[suricata] Suricata XMLRPC sync sending IPREP files to {$url}:{$port}.");
-		$msg = new XML_RPC_Message($method, $params);
-		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-		$cli->setCredentials($username, $password);
-		$resp = $cli->send($msg, $synctimeout);
-		$error = "";
-		if (!$resp) {
-			$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
-			log_error($error);
-			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error($error);
-			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-		}
-	}
-
-	if (!empty($iprep_files) && $error == "") {
-		log_error("[suricata] XMLRPC sync IPREP files success with {$url}:{$port} (pfsense.exec_php).");
-	}
-
 	/**************************************************/
 	/* Send over the <suricata> portion of config.xml */
 	/* $xml will hold the section to sync.            */
 	/**************************************************/
 	$xml = array();
 	$xml['suricata'] = $config['installedpackages']['suricata'];
-	/* assemble xmlrpc payload */
-	$params = array(
-		XML_RPC_encode($password),
-		XML_RPC_encode($xml)
-	);
-
-	log_error("[suricata] Beginning package configuration XMLRPC sync to {$url}:{$port}.");
-	$method = 'pfsense.merge_installedpackages_section_xmlrpc';
-	$msg = new XML_RPC_Message($method, $params);
-	$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-	$cli->setCredentials($username, $password);
-
-	/* send our XMLRPC message and timeout after defined sync timeout value*/
-	$resp = $cli->send($msg, $synctimeout);
-	if (!$resp) {
-		$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.";
-		log_error($error);
-		file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-	} elseif ($resp->faultCode()) {
-		$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-		log_error($error);
-		file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-	} else {
-		log_error("[suricata] Package configuration XMLRPC sync successfully completed with {$url}:{$port}.");
-	}
-
+	
 	$downloadrulescmd = "";
 	if ($syncdownloadrules == "yes") {
 		$downloadrulescmd = "log_error(gettext(\"[suricata] XMLRPC pkg sync: Update of downloaded rule sets requested...\"));\n";
@@ -3648,54 +3554,190 @@ EOD;
 	/* to a PHP file in the /tmp directory.          */
 	/*************************************************/
 	$execcmd = "file_put_contents('/tmp/suricata_sync_cmds.php', '{$suricata_sync_cmd}');";
-
-	/* assemble xmlrpc payload */
-	$method = 'pfsense.exec_php';
-	$params = array(
-		XML_RPC_encode($password),
-		XML_RPC_encode($execcmd)
-	);
 	
-	log_error("[suricata] XMLRPC sync sending reload configuration cmd set as a file to {$url}:{$port}.");
-	$msg = new XML_RPC_Message($method, $params);
-	$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-	$cli->setCredentials($username, $password);
-	$resp = $cli->send($msg, $synctimeout);
-	if (!$resp) {
-		$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
-		log_error($error);
-		file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-	} elseif ($resp->faultCode()) {
-		$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-		log_error($error);
-		file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-	} else {
-		log_error("[suricata] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
-	}
-
 	/*************************************************/
 	/* Now assemble a command to execute the         */
 	/* previously sent PHP file in the background.   */
 	/*************************************************/
-	$execcmd = "exec(\"/usr/local/bin/php-cgi -f '/tmp/suricata_sync_cmds.php' > /dev/null 2>&1 &\");";
-	$params2 = array(
-		XML_RPC_encode($password),
-		XML_RPC_encode($execcmd)
-	);
-	log_error("[suricata] XMLRPC sync sending {$url}:{$port} cmd to execute configuration reload.");
-	$msg2 = new XML_RPC_Message($method, $params2);
-	$resp = $cli->send($msg2, $synctimeout);
-	if (!$resp) {
-		$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
-		log_error($error);
-		file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-	} elseif ($resp->faultCode()) {
-		$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-		log_error($error);
-		file_notice("sync_settings", $error, "Suricata Settings Sync", "");
+	$execcmd2 = "exec(\"/usr/local/bin/php-cgi -f '/tmp/suricata_sync_cmds.php' > /dev/null 2>&1 &\");";
+	
+	if (pf_version() >= "2.4") {
+		// xmlrpc cannot encode NULL objects/arrays..
+		foreach($xml as $xmlkey => $xmlvalue) {
+			if (gettype($xmlvalue) == "NULL") {
+				$xml[$xmlkey] = array();
+			}
+		}
+		$synctimeout = intval($synctimeout);
+		$rpc_client = new pfsense_xmlrpc_client();
+		$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
+		
+		/*************************************************/
+		/* Send over any auto-SID management files       */
+		/*************************************************/
+		$sid_files = glob(SURICATA_SID_MODS_PATH . '*');
+		foreach ($sid_files as $file) {
+			$content = base64_encode(file_get_contents($file));
+			$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
+			$resp = $rpc_client->xmlrpc_exec_php($payload, $synctimeout);
+		}
+		/*************************************************/
+		/* Send over any IPREP IP List files             */
+		/*************************************************/
+		$iprep_files = glob(SURICATA_IPREP_PATH . '*');
+		foreach ($iprep_files as $file) {
+			$content = base64_encode(file_get_contents($file));
+			$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
+			$resp = $rpc_client->xmlrpc_exec_php($payload, $synctimeout);
+		}
+		
+		$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
+		$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
+		$resp = $rpc_client->xmlrpc_exec_php($execcmd2, $synctimeout);
 	} else {
-		log_error("[suricata] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
+		// pfSense before 2.4
+		require_once('xmlrpc.inc');
+	
+		// Take care of IPv6 literal address
+		if (is_ipaddrv6($sync_to_ip)) {
+			$sync_to_ip = "[{$sync_to_ip}]";
+		}
+
+		$url = "{$protocol}://{$sync_to_ip}";
+
+		/*************************************************/
+		/* Send over any auto-SID management files       */
+		/*************************************************/
+		$sid_files = glob(SURICATA_SID_MODS_PATH . '*');
+		foreach ($sid_files as $file) {
+			$content = base64_encode(file_get_contents($file));
+			$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
+
+			/* assemble xmlrpc payload */
+			$method = 'pfsense.exec_php';
+			$params = array( XML_RPC_encode($password), XML_RPC_encode($payload) );
+
+			log_error("[suricata] XMLRPC sync sending auto-SID conf files to {$url}:{$port}.");
+			$msg = new XML_RPC_Message($method, $params);
+			$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
+			$cli->setCredentials($username, $password);
+			$resp = $cli->send($msg, $synctimeout);
+			$error = "";
+			if (!$resp) {
+				$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
+				log_error($error);
+				file_notice("sync_settings", $error, "Suricata Settings Sync", "");
+			} elseif ($resp->faultCode()) {
+				$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
+				log_error($error);
+				file_notice("sync_settings", $error, "Suricata Settings Sync", "");
+			}
+		}
+
+		if (!empty($sid_files) && $error == "") {
+			log_error("[suricata] XMLRPC sync auto-SID conf files success with {$url}:{$port} (pfsense.exec_php).");
+		}
+
+		/*************************************************/
+		/* Send over any IPREP IP List files             */
+		/*************************************************/
+		$iprep_files = glob(SURICATA_IPREP_PATH . '*');
+		foreach ($iprep_files as $file) {
+			$content = base64_encode(file_get_contents($file));
+			$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
+
+			/* assemble xmlrpc payload */
+			$method = 'pfsense.exec_php';
+			$params = array( XML_RPC_encode($password), XML_RPC_encode($payload) );
+
+			log_error("[suricata] Suricata XMLRPC sync sending IPREP files to {$url}:{$port}.");
+			$msg = new XML_RPC_Message($method, $params);
+			$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
+			$cli->setCredentials($username, $password);
+			$resp = $cli->send($msg, $synctimeout);
+			$error = "";
+			if (!$resp) {
+				$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
+				log_error($error);
+				file_notice("sync_settings", $error, "Suricata Settings Sync", "");
+			} elseif ($resp->faultCode()) {
+				$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
+				log_error($error);
+				file_notice("sync_settings", $error, "Suricata Settings Sync", "");
+			}
+		}
+
+		if (!empty($iprep_files) && $error == "") {
+			log_error("[suricata] XMLRPC sync IPREP files success with {$url}:{$port} (pfsense.exec_php).");
+		}
+
+		/* assemble xmlrpc payload */
+		$params = array(
+			XML_RPC_encode($password),
+			XML_RPC_encode($xml)
+		);
+
+		log_error("[suricata] Beginning package configuration XMLRPC sync to {$url}:{$port}.");
+		$method = 'pfsense.merge_installedpackages_section_xmlrpc';
+		$msg = new XML_RPC_Message($method, $params);
+		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
+		$cli->setCredentials($username, $password);
+
+		/* send our XMLRPC message and timeout after defined sync timeout value*/
+		$resp = $cli->send($msg, $synctimeout);
+		if (!$resp) {
+			$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.";
+			log_error($error);
+			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
+		} elseif ($resp->faultCode()) {
+			$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
+			log_error($error);
+			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
+		} else {
+			log_error("[suricata] Package configuration XMLRPC sync successfully completed with {$url}:{$port}.");
+		}
+
+		/* assemble xmlrpc payload */
+		$method = 'pfsense.exec_php';
+		$params = array(
+			XML_RPC_encode($password),
+			XML_RPC_encode($execcmd)
+		);
+
+		log_error("[suricata] XMLRPC sync sending reload configuration cmd set as a file to {$url}:{$port}.");
+		$msg = new XML_RPC_Message($method, $params);
+		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
+		$cli->setCredentials($username, $password);
+		$resp = $cli->send($msg, $synctimeout);
+		if (!$resp) {
+			$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
+			log_error($error);
+			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
+		} elseif ($resp->faultCode()) {
+			$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
+			log_error($error);
+			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
+		} else {
+			log_error("[suricata] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
+		}
+
+		$params2 = array(
+			XML_RPC_encode($password),
+			XML_RPC_encode($execcmd2)
+		);
+		log_error("[suricata] XMLRPC sync sending {$url}:{$port} cmd to execute configuration reload.");
+		$msg2 = new XML_RPC_Message($method, $params2);
+		$resp = $cli->send($msg2, $synctimeout);
+		if (!$resp) {
+			$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
+			log_error($error);
+			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
+		} elseif ($resp->faultCode()) {
+			$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
+			log_error($error);
+			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
+		} else {
+			log_error("[suricata] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
+		}
 	}
 }
-
-?>
