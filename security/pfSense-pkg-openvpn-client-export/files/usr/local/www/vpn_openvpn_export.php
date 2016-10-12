@@ -108,6 +108,51 @@ foreach ($a_server as $sindex => $server) {
 	$ras_server[] = $ras_serverent;
 }
 
+$a_config =& $config['installedpackages']['openvpnclientexport'];
+$hashes = array_map(function($s){return('server_'.md5($s['name']));},$ras_server);
+foreach ($a_config as $shash => $cfg) {
+	$any_change = false;
+	if (!in_array($shash, $hashes)) {
+		unset($a_config[$shash]);
+		$any_change = true;
+	}
+	if ($any_change) {
+		write_config("Settings cleaned up");
+	}
+}
+$persistent_config = array(
+	'useaddr' => array('type' => 'select', 'default' => null),
+	'useaddr_hostname' => array('type' => 'input', 'default' => null),
+	'verifyservercn' => array('type' => 'select', 'default' => null),
+	'blockoutsidedns' => array('type' => 'checkbox', 'default' => true),
+	'randomlocalport' => array('type' => 'checkbox', 'default' => true),
+	'usepkcs11' => array('type' => 'checkbox', 'default' => false),
+	'pkcs11providers' => array('type' => 'input', 'default' => null),
+	'usetoken' => array('type' => 'checkbox', 'default' => false),
+	'usepass' => array('type' => 'checkbox', 'default' => false),
+	'useproxy' => array('type' => 'checkbox', 'default' => false),
+	'useproxytype' => array('type' => 'select', 'default' => null),
+	'proxyaddr' => array('type' => 'input', 'default' => null),
+	'proxyport' => array('type' => 'input', 'default' => null),
+	'useproxypass' => array('type' => 'input', 'default' => null),
+	'proxyuser' => array('type' => 'input', 'default' => null),
+	'proxypass' => array('type' => 'input', 'default' => null),
+	'proxyconf' => array('type' => 'input', 'default' => null),
+	'openvpnmanager' => array('type' => 'checkbox', 'default' => false),
+	'advancedoptions' => array('type' => 'input', 'default' => null),
+	);
+if (isset($_POST['save_as_default'])) {
+	$vpnidx = $_POST['vpnidx'];
+	$sname = $ras_server[$vpnidx]['name'];
+	$scfg = 'server_'.md5($sname);
+unset($a_config[$scfg]);
+	foreach (array_keys($persistent_config) as $ncfg) {
+	  $a_config[$scfg][$ncfg] = str_replace("\r\n","\\n",$_POST[$ncfg]);
+	}
+	$savemsg = sprintf(gettext("Settings saved as default for %s."), $sname);
+	write_config($savemsg);
+}
+
 $id = $_GET['id'];
 if (isset($_POST['id'])) {
 	$id = $_POST['id'];
@@ -161,6 +206,15 @@ if (!empty($act)) {
 	if ($usetoken && (($act == "conf_yealink_t28") || ($act == "conf_yealink_t38g") || ($act == "conf_yealink_t38g2") || ($act == "conf_snom"))) {
 		$input_errors[] = "Microsoft Certificate Storage cannot be used with a Yealink or SNOM configuration.";
 	}
+	$usepkcs11 = $_GET['usepkcs11'];
+	$pkcs11providers = $_GET['pkcs11providers'];
+	if ($usepkcs11 && !$pkcs11providers) {
+		$input_errors[] = "You must provide the PKCS#11 providers.";
+	}					
+	$pkcs11id = $_GET['pkcs11id'];
+	if ($usepkcs11 && !$pkcs11id) {
+		$input_errors[] = "You must provide the PKCS#11 ID.";
+	}					
 	$password = "";
 	if ($_GET['password']) {
 		$password = $_GET['password'];
@@ -239,17 +293,17 @@ if (!empty($act)) {
 				$exp_name = urlencode($exp_name . "-config.ovpn");
 				$expformat = "baseconf";
 		}
-		$exp_path = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $nokeys, $proxy, $expformat, $password, false, false, $openvpnmanager, $advancedoptions);
+		$exp_path = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $nokeys, $proxy, $expformat, $password, false, false, $openvpnmanager, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id);
 	}
 
 	if ($act == "visc") {
 		$exp_name = urlencode($exp_name . "-Viscosity.visc.zip");
-		$exp_path = viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $password, $proxy, $openvpnmanager, $advancedoptions);
+		$exp_path = viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $password, $proxy, $openvpnmanager, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id);
 	}
 
 	if (substr($act, 0, 4) == "inst") {
 		$exp_name = urlencode($exp_name."-install.exe");
-		$exp_path = openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $password, $proxy, $openvpnmanager, $advancedoptions, substr($act, 5));
+		$exp_path = openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $password, $proxy, $openvpnmanager, $advancedoptions, substr($act, 5), $usepkcs11, $pkcs11providers, $pkcs11id);
 	}
 
 	if (!$exp_path) {
@@ -382,6 +436,23 @@ $form->add($section);
 $section = new Form_Section('Certificate Export Options');
 
 $section->addInput(new Form_Checkbox(
+	'usepkcs11',
+	'PKCS#11 Certificate Storage',
+	'Use PKCS#11 storage instead of local files.'
+));
+
+$section->addInput(new Form_Input(
+	'pkcs11providers',
+	'PKCS#11 Providers',
+	'Enter the path to the PKCS#11 providers.'
+));
+
+$section->addInput(new Form_Input(
+	'pkcs11id',
+	'PKCS#11 ID'
+));
+
+$section->addInput(new Form_Checkbox(
 	'usetoken',
 	'Microsoft Certificate Storage',
 	'Use Microsoft Certificate Storage instead of local files.',
@@ -490,6 +561,20 @@ $section = new Form_Section('Advanced');
 
 $form->add($section);
 
+$form->AddGlobal(new Form_Input(
+	'vpnidx',
+	null,
+	'hidden',
+	0
+));
+
+$form->addGlobal(new Form_Button(
+	'save_as_default',
+	gettext("Save as Default"),
+	null,
+	'fa-save'
+))->addClass('btn-primary');
+
 print($form);
 ?>
 
@@ -531,12 +616,17 @@ Links to OpenVPN clients for various platforms:<br />
 var viscosityAvailable = false;
 
 var servers = new Array();
+var config = new Array();
 <?php foreach ($ras_server as $sindex => $server): ?>
 servers[<?=$sindex?>] = new Array();
 servers[<?=$sindex?>][0] = '<?=$server['index']?>';
 servers[<?=$sindex?>][1] = new Array();
 servers[<?=$sindex?>][2] = '<?=$server['mode']?>';
 servers[<?=$sindex?>][3] = new Array();
+config[<?=$sindex?>] = new Array();
+<?php		foreach ($a_config['server_'.md5($server['name'])] as $cname => $cvalue): ?>
+config[<?=$sindex?>]['<?=$cname?>'] = '<?=$cvalue?>';
+<?		endforeach; ?>
 <?php		foreach ($server['users'] as $uindex => $user): ?>
 servers[<?=$sindex?>][1][<?=$uindex?>] = new Array();
 servers[<?=$sindex?>][1][<?=$uindex?>][0] = '<?=$user['uindex']?>';
@@ -589,6 +679,12 @@ function download_begin(act, i, j) {
 	if (document.getElementById("usetoken").checked) {
 		usetoken = 1;
 	}
+	var usepkcs11 = 0;
+	if (document.getElementById("usepkcs11").checked) {
+		usepkcs11 = 1;
+	}
+	var pkcs11providers = document.getElementById("pkcs11providers").value;
+	var pkcs11id = document.getElementById("pkcs11id").value;
 	var usepass = 0;
 	if (document.getElementById("usepass").checked) {
 		usepass = 1;
@@ -668,6 +764,9 @@ function download_begin(act, i, j) {
 	dlurl += "&randomlocalport=" + encodeURIComponent(randomlocalport);
 	dlurl += "&openvpnmanager=" + encodeURIComponent(openvpnmanager);
 	dlurl += "&usetoken=" + encodeURIComponent(usetoken);
+	dlurl += "&usepkcs11=" + escape(usepkcs11);
+	dlurl += "&pkcs11providers=" + escape(pkcs11providers);
+	dlurl += "&pkcs11id=" + escape(pkcs11id);
 	if (usepass) {
 		dlurl += "&password=" + encodeURIComponent(pass);
 	}
@@ -695,6 +794,18 @@ function server_changed() {
 	}
 
 	var index = document.getElementById("server").selectedIndex;
+	$('#vpnidx').val(index);
+<?php	foreach ($persistent_config as $ncfg => $cfg): ?>
+<?php		if ($cfg['type'] == 'checkbox'): ?>
+	$('#<?=$ncfg?>').prop('checked', (typeof config[index]['<?=$ncfg?>'] !== 'undefined' ? config[index]['<?=$ncfg?>'] == 'yes' : '<?=$cfg['default']?>'));
+<?php		else: ?>
+	$('#<?=$ncfg?>').val(typeof config[index]['<?=$ncfg?>'] !== 'undefined' ? config[index]['<?=$ncfg?>'] : '<?=$cfg['default']?>');
+<?php		endif; ?>
+<?php	endforeach; ?>
+	useaddr_changed();
+	usepkcs11_changed();
+	usepass_changed();
+	useproxy_changed();
 	var users = servers[index][1];
 	var certs = servers[index][3];
 	for (i = 0; i < users.length; i++) {
@@ -833,6 +944,16 @@ function useaddr_changed() {
 	}
 }
 
+function usepkcs11_changed() {
+	if ($('#usepkcs11').prop('checked')) {
+		hideInput('pkcs11id', false);
+		hideInput('pkcs11providers', false);
+	} else {
+		hideInput('pkcs11id', true);
+		hideInput('pkcs11providers', true);
+	}
+}
+
 function usepass_changed() {
 	if ($('#usepass').prop('checked')) {
 		hideInput('pass', false);
@@ -878,6 +999,9 @@ events.push(function(){
 	$('#useaddr').on('change', function() {
 		useaddr_changed();
 	});
+	$('#usepkcs11').on('change', function() {
+		usepkcs11_changed();
+	});
 	$('#usepass').on('change', function() {
 		usepass_changed();
 	});
@@ -890,10 +1014,10 @@ events.push(function(){
 
 	// ---------- On initial page load ------------------------------------------------------------
 
+	if ('<?=$vpnidx?>'!='') {
+		$('#server').val('<?=$vpnidx?>');
+		}
 	server_changed();
-	useaddr_changed();
-	usepass_changed();
-	useproxy_changed();
 });
 //]]>
 </script>
