@@ -368,7 +368,7 @@
 			<description>
 				<![CDATA[
 				You can put your own custom options here, one per line. They'll be added to the configuration.<br />
-				They need to be <a href="http://www.freebsd.org/cgi/man.cgi?query=named.conf&apropos=0&sektion=0&manpath=FreeBSD+10.1-RELEASE+and+Ports&arch=default&format=html"named.conf</a> native settings.
+				They need to be <a href="http://www.freebsd.org/cgi/man.cgi?query=named.conf&apropos=0&sektion=0&manpath=FreeBSD+10.1-RELEASE+and+Ports&arch=default&format=html">named.conf</a> native settings.
 				]]>
 			</description>
 			<type>textarea</type>
@@ -387,7 +387,7 @@
 			<description>
 				<![CDATA[
 				You can put your own global settings here. They'll be added to the configuration.<br />
-				They need to be <a href="http://www.freebsd.org/cgi/man.cgi?query=named.conf&apropos=0&sektion=0&manpath=FreeBSD+10.1-RELEASE+and+Ports&arch=default&format=html"named.conf</a> native settings.
+				They need to be <a href="http://www.freebsd.org/cgi/man.cgi?query=named.conf&apropos=0&sektion=0&manpath=FreeBSD+10.1-RELEASE+and+Ports&arch=default&format=html">named.conf</a> native settings.
 				]]>
 			</description>
 			<type>textarea</type>
