@@ -155,9 +155,8 @@ static zend_function_entry pfSense_functions[] = {
     PHP_FE(pfSense_delete_lease, NULL)
 #endif
 #ifdef IPFW_FUNCTIONS
-   PHP_FE(pfSense_ipfw_getTablestats, NULL)
-   PHP_FE(pfSense_ipfw_Tableaction, NULL)
-   PHP_FE(pfSense_pipe_action, NULL)
+   PHP_FE(pfSense_ipfw_table, NULL)
+   PHP_FE(pfSense_ipfw_pipe, NULL)
 #endif
    PHP_FE(pfSense_ipsec_list_sa, NULL)
     {NULL, NULL, NULL}
@@ -499,8 +498,6 @@ PHP_MINIT_FUNCTION(pfSense_socket)
 #ifdef IPFW_FUNCTIONS
 	REGISTER_LONG_CONSTANT("IP_FW_TABLE_XADD", IP_FW_TABLE_XADD, CONST_PERSISTENT | CONST_CS);
 	REGISTER_LONG_CONSTANT("IP_FW_TABLE_XDEL", IP_FW_TABLE_XDEL, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IP_FW_TABLE_XLISTENTRY", IP_FW_TABLE_XLISTENTRY, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IP_FW_TABLE_XZEROENTRY", IP_FW_TABLE_XZEROENTRY, CONST_PERSISTENT | CONST_CS);
 #endif
 
 	return SUCCESS;
@@ -836,17 +833,7 @@ PHP_FUNCTION(pfSense_kill_states)
 }
 
 #ifdef IPFW_FUNCTIONS
-/* Stolen from ipfw2.c code */
-static unsigned long long
-pfSense_align_uint64(const uint64_t *pll)
-{
-	uint64_t ret;
-
-	bcopy (pll, &ret, sizeof(ret));
-	return ret;
-}
-
-PHP_FUNCTION(pfSense_pipe_action)
+PHP_FUNCTION(pfSense_ipfw_pipe)
 {
 	int ac, do_pipe = 1, param_len = 0;
 	enum { bufsize = 2048 };
@@ -907,151 +894,201 @@ PHP_FUNCTION(pfSense_pipe_action)
 	RETURN_TRUE;
 }
 
-PHP_FUNCTION(pfSense_ipfw_Tableaction)
+static int
+table_get_info(ipfw_obj_header *oh, ipfw_xtable_info *i)
 {
-	ip_fw3_opheader *op3;
-	ipfw_table_xentry *xent;
+	char tbuf[sizeof(ipfw_obj_header) + sizeof(ipfw_xtable_info)];
+	int error;
+	size_t sz;
+
+	sz = sizeof(tbuf);
+	memset(tbuf, 0, sizeof(tbuf));
+	memcpy(tbuf, oh, sizeof(*oh));
+	oh = (ipfw_obj_header *)tbuf;
+	oh->opheader.opcode = IP_FW_TABLE_XINFO;
+
+	error = setsockopt(PFSENSE_G(ipfw), IPPROTO_IP, IP_FW3, &oh->opheader,
+	    sz);
+	if (error != 0)
+		return (error);
+	if (sz < sizeof(tbuf))
+		return (EINVAL);
+
+	*i = *(ipfw_xtable_info *)(oh + 1);
+
+	return (0);
+}
+
+static int
+get_mac_addr_mask(const char *p, uint8_t *addr, uint8_t *mask)
+{
+        int i;
+        size_t l;
+        char *ap, *ptr, *optr;
+        struct ether_addr *mac;
+        const char *macset = "0123456789abcdefABCDEF:";
+
+        if (strcmp(p, "any") == 0) {
+		for (i = 0; i < ETHER_ADDR_LEN; i++)
+			addr[i] = mask[i] = 0;
+		return (0);
+	}
+
+	optr = ptr = strdup(p);
+	if ((ap = strsep(&ptr, "&/")) != NULL && *ap != 0) {
+		l = strlen(ap);
+		if (strspn(ap, macset) != l || (mac = ether_aton(ap)) == NULL)
+			return (-1);
+		bcopy(mac, addr, ETHER_ADDR_LEN);
+	} else
+		return (-1);
+
+	if (ptr != NULL) { /* we have mask? */
+		if (p[ptr - optr - 1] == '/') { /* mask len */
+			long ml = strtol(ptr, &ap, 10);
+			if (*ap != 0 || ml > ETHER_ADDR_LEN * 8 || ml < 0)
+				return (-1);
+			for (i = 0; ml > 0 && i < ETHER_ADDR_LEN; ml -= 8, i++)
+				mask[i] = (ml >= 8) ? 0xff: (~0) << (8 - ml);
+		} else { /* mask */
+			l = strlen(ptr);
+			if (strspn(ptr, macset) != l ||
+			    (mac = ether_aton(ptr)) == NULL)
+				return (-1);
+			bcopy(mac, mask, ETHER_ADDR_LEN);
+		}
+	} else { /* default mask: ff:ff:ff:ff:ff:ff */
+		for (i = 0; i < ETHER_ADDR_LEN; i++)
+			mask[i] = 0xff;
+	}
+	for (i = 0; i < ETHER_ADDR_LEN; i++)
+		addr[i] &= mask[i];
+
+	free(optr);
+
+	return (0);
+}
+
+PHP_FUNCTION(pfSense_ipfw_table)
+{
+	char *arg, *p, *tname;
+	char xbuf[sizeof(ipfw_obj_header) + sizeof(ipfw_obj_ctlv) +
+	    sizeof(ipfw_obj_tentry)];
+	int error;
+	ipfw_obj_ctlv *ctlv;
+	ipfw_obj_header *oh;
+	ipfw_obj_ntlv *ntlv;
+	ipfw_obj_tentry *tent;
+	ipfw_table_value *v;
+	ipfw_xtable_info xi;
+	long action, arglen, pipe, tnamelen;
 	socklen_t size;
-	long mask = 0, table = 0, pipe = 0, zone = 0;
-	char *ip, *mac = NULL;
-	int ip_len, addrlen, mac_len = 0;
-	long action = IP_FW_TABLE_XADD;
-	int err;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "llls|lsl", &zone, &action, &table, &ip, &ip_len, &mask, &mac, &mac_len, &pipe) == FAILURE) {
+	pipe = 0;
+	action = IP_FW_TABLE_XADD;
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sls|l",
+	    &tname, &tnamelen, &action, &arg, &arglen, &pipe) == FAILURE) {
 		RETURN_FALSE;
 	}
 
-	if (action != IP_FW_TABLE_XDEL && action != IP_FW_TABLE_XADD && action != IP_FW_TABLE_XZEROENTRY)
+	if (action != IP_FW_TABLE_XDEL && action != IP_FW_TABLE_XADD)
 		RETURN_FALSE;
 
-	size = sizeof(*op3) + sizeof(*xent);
+	memset(xbuf, 0, sizeof(xbuf));
+	oh = (ipfw_obj_header *)xbuf;
+	oh->opheader.opcode = action;
+	oh->opheader.version = 1;
 
-	if ((op3 = (ip_fw3_opheader *)emalloc(size)) == NULL)
+	ntlv = &oh->ntlv;
+	ntlv->head.type = IPFW_TLV_TBL_NAME;
+	ntlv->head.length = sizeof(ipfw_obj_ntlv);
+	ntlv->idx = 1;
+	ntlv->set = 0;
+	strlcpy(ntlv->name, tname, sizeof(ntlv->name));
+	oh->idx = 1;
+
+	if (table_get_info(oh, &xi) != 0)
 		RETURN_FALSE;
 
-	memset(op3, 0, size);
-	op3->ctxid = (uint16_t)zone;
-	op3->opcode = action;
-	xent = (ipfw_table_xentry *)(op3 + 1);
-	xent->tbl = (u_int16_t)table;
+	ntlv->type = xi.type;
 
-	if (strchr(ip, ':')) {
-		if (!inet_pton(AF_INET6, ip, &xent->k.addr6)) {
-			efree(op3);
+	size = sizeof(ipfw_obj_ctlv) + sizeof(ipfw_obj_tentry);
+	ctlv = (ipfw_obj_ctlv *)(oh + 1);
+	ctlv->count = 1;
+	ctlv->head.length = size;
+
+	tent = (ipfw_obj_tentry *)(ctlv + 1);
+	tent->head.length = sizeof(ipfw_obj_tentry);
+	tent->idx = oh->idx;
+
+	switch (xi.type) {
+	case IPFW_TABLE_ADDR: {
+		int mask;
+
+		/* Remove / if exists */
+		if ((p = strchr(arg, '/')) != NULL) {
+			*p = '\0';
+			mask = atoi(p + 1);
+		}
+
+		if (inet_pton(AF_INET, arg, &tent->k.addr) == 1) {
+			if (p != NULL && mask > 32)
+				RETURN_FALSE;
+
+			tent->subtype = AF_INET;
+			tent->masklen = p ? mask : 32;
+		} else if (inet_pton(AF_INET6, arg, &tent->k.addr6) == 1) {
+			if (IN6_IS_ADDR_V4COMPAT(&tent->k.addr6))
+				RETURN_FALSE;
+			if (p != NULL && mask > 128)
+				RETURN_FALSE;
+
+			tent->subtype = AF_INET6;
+			tent->masklen = p ? mask : 128;
+		} else {
+		        /* Assume FQDN - not supported. */
 			RETURN_FALSE;
 		}
-		addrlen = sizeof(struct in6_addr);
-	} else if (!inet_pton(AF_INET, ip, &xent->k.addr6)) {
-		efree(op3);
-		RETURN_FALSE;
-	}
-
-	if (!strchr(ip, ':')) {
-		xent->flags = IPFW_TCF_INET;
-		addrlen = sizeof(uint32_t);
-	}
-
-	if (mask)
-		xent->masklen = (u_int8_t)mask;
-	else
-		xent->masklen = 32;
-
-	if (pipe)
-		xent->value = (u_int32_t)pipe;
-
-	if (mac_len > 0) {
-		if (ether_aton_r(mac, (struct ether_addr *)&xent->mac_addr) == NULL) {
-			efree(op3);
-			php_printf("Failed mac\n");
-			RETURN_FALSE;
 		}
-		//xent->masklen += ETHER_ADDR_LEN;
+		break;
+
+	case IPFW_TABLE_MAC2: {
+		char *src, *dst;
+		struct mac_entry *mac;
+
+		dst = arg;
+		if ((p = strchr(arg, ' ')) == NULL)
+			RETURN_FALSE;
+		*p = '\0';
+		src = p + 1;
+
+		mac = (struct mac_entry *)&tent->k.mac;
+		if (get_mac_addr_mask(dst, mac->addr, mac->mask) == -1)
+			RETURN_FALSE;
+		if (get_mac_addr_mask(src, &(mac->addr[ETHER_ADDR_LEN]),
+		    &(mac->mask[ETHER_ADDR_LEN])) == -1)
+			RETURN_FALSE;
+
+		tent->subtype = AF_LINK;
+		tent->masklen = ETHER_ADDR_LEN * 8;
+		}
+		break;
 	}
 
-	xent->type = IPFW_TABLE_CIDR;
-	xent->len = offsetof(ipfw_table_xentry, k) + addrlen;
-	err = setsockopt(PFSENSE_G(ipfw), IPPROTO_IP, IP_FW3, op3, size);
-	if (err < 0 && err != EEXIST) {
-		efree(op3);
+	if (pipe != 0) {
+		v = &tent->v.value;
+		v->pipe = pipe;
+	}
+
+	size += sizeof(ipfw_obj_header);
+	error = setsockopt(PFSENSE_G(ipfw), IPPROTO_IP, IP_FW3, &oh->opheader,
+	    size);
+	if (error < 0 && error != EEXIST) {
 		php_printf("Failed setsockopt");
 		RETURN_FALSE;
 	}
-	efree(op3);
 
 	RETURN_TRUE;
-}
-
-PHP_FUNCTION(pfSense_ipfw_getTablestats)
-{
-	ip_fw3_opheader *op3;
-	ipfw_table_xentry *xent;
-	socklen_t size;
-	long mask = 0, table = 0, zone = 0;
-	char *ip, *mac = NULL;
-	int ip_len, addrlen, mac_len = 0;
-	long action = IP_FW_TABLE_XADD;
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "llls|sl", &zone, &action, &table, &ip, &ip_len, &mac, &mac_len, &mask) == FAILURE) {
-		RETURN_FALSE;
-	}
-
-	if (action != IP_FW_TABLE_XLISTENTRY)
-		RETURN_FALSE;
-
-	size = sizeof(*op3) + sizeof(*xent);
-
-	if ((op3 = (ip_fw3_opheader *)emalloc(size)) == NULL)
-		RETURN_FALSE;
-
-	memset(op3, 0, size);
-	op3->ctxid = (uint16_t)zone;
-	op3->opcode = IP_FW_TABLE_XLISTENTRY;
-	xent = (ipfw_table_xentry *)(op3 + 1);
-	xent->tbl = (u_int16_t)table;
-
-	if (strchr(ip, ':')) {
-		if (!inet_pton(AF_INET6, ip, &xent->k.addr6)) {
-			efree(op3);
-			RETURN_FALSE;
-		}
-		addrlen = sizeof(struct in6_addr);
-	} else if (!inet_pton(AF_INET, ip, &xent->k.addr6)) {
-		efree(op3);
-		RETURN_FALSE;
-	}
-
-	if (!strchr(ip, ':')) {
-		xent->flags = IPFW_TCF_INET;
-		addrlen = sizeof(uint32_t);
-	}
-
-	if (mask)
-		xent->masklen = (u_int8_t)mask;
-	else
-		xent->masklen = 32;
-
-	if (mac_len > 0) {
-		if (ether_aton_r(mac, (struct ether_addr *)&xent->mac_addr) == NULL)
-			RETURN_FALSE;
-		//xent->masklen += ETHER_ADDR_LEN;
-	}
-
-	xent->type = IPFW_TABLE_CIDR;
-	xent->len = offsetof(ipfw_table_xentry, k) + addrlen;
-	if (getsockopt(PFSENSE_G(ipfw), IPPROTO_IP, IP_FW3, op3, &size) < 0) {
-		efree(op3);
-		RETURN_FALSE;
-	}
-
-	xent = (ipfw_table_xentry *)(op3);
-	array_init(return_value);
-	add_assoc_long(return_value, "packets", pfSense_align_uint64(&xent->packets));
-	add_assoc_long(return_value, "bytes", pfSense_align_uint64(&xent->bytes));
-	add_assoc_long(return_value, "timestamp", xent->timestamp);
-	add_assoc_long(return_value, "dnpipe", xent->value);
-
-	efree(op3);
 }
 #endif
 
