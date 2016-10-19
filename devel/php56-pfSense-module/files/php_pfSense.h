@@ -108,9 +108,8 @@ PHP_FUNCTION(pfSense_delete_lease);
 #endif
 
 #ifdef IPFW_FUNCTIONS
-PHP_FUNCTION(pfSense_ipfw_getTablestats);
-PHP_FUNCTION(pfSense_ipfw_Tableaction);
-PHP_FUNCTION(pfSense_pipe_action);
+PHP_FUNCTION(pfSense_ipfw_table);
+PHP_FUNCTION(pfSense_ipfw_pipe);
 #endif
 PHP_FUNCTION(pfSense_ipsec_list_sa);
 

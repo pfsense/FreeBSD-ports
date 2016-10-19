@@ -484,10 +484,6 @@ ipfw_tableentry(struct thread_data *ipfwd, struct sockaddr *address, int action)
 		}
 		entry.xent.len = offsetof(ipfw_table_xentry, k) + addrlen;
 		entry.op3.opcode = action == ADD ? IP_FW_TABLE_XADD : IP_FW_TABLE_XDEL;
-#if (__FreeBSD_version < 1100000) /* XXX: Missing ipfw patch on 11 */
-		entry.op3.ctxid = ipfwctx;
-#endif
-
 		if (setsockopt(s, IPPROTO_IP, IP_FW3, (void *)&entry, sizeof(entry)) < 0) {
 			error++;
 			continue;

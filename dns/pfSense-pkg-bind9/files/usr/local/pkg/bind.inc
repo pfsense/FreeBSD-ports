@@ -32,7 +32,6 @@ if (!function_exists("filter_configure")) {
 	require_once("filter.inc");
 }
 require_once("notices.inc");
-require_once("xmlrpc.inc");
 require_once("xmlrpc_client.inc");
 
 $pf_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
@@ -922,6 +921,12 @@ function bind_sync_on_changes()
 	}
 }
 
+if(!function_exists('pf_version')) {
+	function pf_version() {
+		return substr(trim(file_get_contents("/etc/version")), 0, 3);
+	}
+}
+
 /* Do the actual XMLRPC sync */
 function bind_do_xmlrpc_sync($sync_to_ip, $username, $password, $synctimeout, $master_zone_ip)
 {
@@ -942,12 +947,7 @@ function bind_do_xmlrpc_sync($sync_to_ip, $username, $password, $synctimeout, $m
 	if (!$synctimeout) {
 		$synctimeout = 25;
 	}
-
-	$xmlrpc_sync_neighbor = $sync_to_ip;
-	if ($config['system']['webgui']['protocol'] != "") {
-		$synchronizetoip = $config['system']['webgui']['protocol'];
-		$synchronizetoip .= "://";
-	}
+	
 	$port = $config['system']['webgui']['port'];
 	/* If port is empty let's rely on the protocol selection */
 	if ($port == "") {
@@ -957,7 +957,6 @@ function bind_do_xmlrpc_sync($sync_to_ip, $username, $password, $synctimeout, $m
 			$port = "443";
 		}
 	}
-	$synchronizetoip .= $sync_to_ip;
 
 	/* XML will hold the sections to sync */
 	$xml = array();
@@ -978,65 +977,90 @@ function bind_do_xmlrpc_sync($sync_to_ip, $username, $password, $synctimeout, $m
 
 		}
 	}
-	/* Assemble XMLRPC payload */
-	$params = array(
-		XML_RPC_encode($password),
-		XML_RPC_encode($xml)
-	);
-
-	/* Set a few variables needed for sync code borrowed from filter.inc */
-	$url = $synchronizetoip;
-	log_error("[bind] Beginning bind XMLRPC sync to {$url}:{$port}.");
-	$method = 'pfsense.merge_installedpackages_section_xmlrpc';
-	$msg = new XML_RPC_Message($method, $params);
-	$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-	$cli->setCredentials($username, $password);
-	if ($g['debug']) {
-		$cli->setDebug(1);
-	}
-	/* Send our XMLRPC message and timeout after defined sync timeout value */
-	$resp = $cli->send($msg, $synctimeout);
-	if (!$resp) {
-		$error = "A communication error occurred while attempting BIND XMLRPC sync with {$url}:{$port}.";
-		log_error($error);
-		file_notice("sync_settings", $error, "bind Settings Sync", "");
-	} elseif ($resp->faultCode()) {
-		$cli->setDebug(1);
-		$resp = $cli->send($msg, $synctimeout);
-		$error = "An error code was received while attempting BIND XMLRPC sync with {$url}:{$port} - Code ".$resp->faultCode().": ".$resp->faultString();
-		log_error($error);
-		file_notice("sync_settings", $error, "bind Settings Sync", "");
-	} else {
-		log_error("[bind] XMLRPC sync successfully completed with {$url}:{$port}.");
-	}
-
-	/* Tell bind to reload our settings on the destination sync host. */
-	$method = 'pfsense.exec_php';
+	
 	$execcmd = "require_once('/usr/local/pkg/bind.inc');\n";
 	$execcmd .= "bind_sync('yes');";
-	/* Assemble XMLRPC payload */
-	$params = array(
-		XML_RPC_encode($password),
-		XML_RPC_encode($execcmd)
-	);
-
-	log_error("[bind] XMLRPC reload data {$url}:{$port}.");
-	$msg = new XML_RPC_Message($method, $params);
-	$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-	$cli->setCredentials($username, $password);
-	$resp = $cli->send($msg, $synctimeout);
-	if (!$resp) {
-		$error = "A communication error occurred while attempting BIND XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
-		log_error($error);
-		file_notice("sync_settings", $error, "Bind Settings Sync", "");
-	} elseif ($resp->faultCode()) {
-		$cli->setDebug(1);
-		$resp = $cli->send($msg, $synctimeout);
-		$error = "[bind] An error code was received while attempting BIND XMLRPC sync with {$url}:{$port} - Code ".$resp->faultCode().": ".$resp->faultString();
-		log_error($error);
-		file_notice("sync_settings", $error, "bind Settings Sync", "");
+	
+	if (pf_version() >= "2.4") {
+		// xmlrpc cannot encode NULL objects/arrays..
+		foreach($xml as $xmlkey => $xmlvalue) {
+			if (gettype($xmlvalue) == "NULL") {
+				$xml[$xmlkey] = array();
+			}
+		}
+		$synctimeout = intval($synctimeout);
+		$rpc_client = new pfsense_xmlrpc_client();
+		$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password);
+		$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
+		$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
 	} else {
-		log_error("BIND XMLRPC reload data success with {$url}:{$port} (pfsense.exec_php).");
+		// pfSense before 2.4
+		require_once('xmlrpc.inc');
+	
+		if ($config['system']['webgui']['protocol'] != "") {
+			$synchronizetoip = $config['system']['webgui']['protocol'];
+			$synchronizetoip .= "://";
+		}
+		$synchronizetoip .= $sync_to_ip;
+
+		/* Assemble XMLRPC payload */
+		$params = array(
+			XML_RPC_encode($password),
+			XML_RPC_encode($xml)
+		);
+
+		/* Set a few variables needed for sync code borrowed from filter.inc */
+		$url = $synchronizetoip;
+		log_error("[bind] Beginning bind XMLRPC sync to {$url}:{$port}.");
+		$method = 'pfsense.merge_installedpackages_section_xmlrpc';
+		$msg = new XML_RPC_Message($method, $params);
+		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
+		$cli->setCredentials($username, $password);
+		if ($g['debug']) {
+			$cli->setDebug(1);
+		}
+		/* Send our XMLRPC message and timeout after defined sync timeout value */
+		$resp = $cli->send($msg, $synctimeout);
+		if (!$resp) {
+			$error = "A communication error occurred while attempting BIND XMLRPC sync with {$url}:{$port}.";
+			log_error($error);
+			file_notice("sync_settings", $error, "bind Settings Sync", "");
+		} elseif ($resp->faultCode()) {
+			$cli->setDebug(1);
+			$resp = $cli->send($msg, $synctimeout);
+			$error = "An error code was received while attempting BIND XMLRPC sync with {$url}:{$port} - Code ".$resp->faultCode().": ".$resp->faultString();
+			log_error($error);
+			file_notice("sync_settings", $error, "bind Settings Sync", "");
+		} else {
+			log_error("[bind] XMLRPC sync successfully completed with {$url}:{$port}.");
+		}
+
+		/* Tell bind to reload our settings on the destination sync host. */
+		$method = 'pfsense.exec_php';
+		/* Assemble XMLRPC payload */
+		$params = array(
+			XML_RPC_encode($password),
+			XML_RPC_encode($execcmd)
+		);
+
+		log_error("[bind] XMLRPC reload data {$url}:{$port}.");
+		$msg = new XML_RPC_Message($method, $params);
+		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
+		$cli->setCredentials($username, $password);
+		$resp = $cli->send($msg, $synctimeout);
+		if (!$resp) {
+			$error = "A communication error occurred while attempting BIND XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
+			log_error($error);
+			file_notice("sync_settings", $error, "Bind Settings Sync", "");
+		} elseif ($resp->faultCode()) {
+			$cli->setDebug(1);
+			$resp = $cli->send($msg, $synctimeout);
+			$error = "[bind] An error code was received while attempting BIND XMLRPC sync with {$url}:{$port} - Code ".$resp->faultCode().": ".$resp->faultString();
+			log_error($error);
+			file_notice("sync_settings", $error, "bind Settings Sync", "");
+		} else {
+			log_error("BIND XMLRPC reload data success with {$url}:{$port} (pfsense.exec_php).");
+		}
 	}
 }
 
