@@ -61,10 +61,11 @@ if (!is_array($config['cert'])) {
 $a_cert = $config['cert'];
 
 $ras_server = array();
-foreach ($a_server as $sindex => $server) {
+foreach ($a_server as $server) {
 	if (isset($server['disable'])) {
 		continue;
 	}
+	$vpnid = $server['vpnid'];
 	$ras_user = array();
 	$ras_certs = array();
 	if (stripos($server['mode'], "server") === false) {
@@ -92,7 +93,8 @@ foreach ($a_server as $sindex => $server) {
 				$ras_user[] = $ras_userent;
 			}
 		}
-	} elseif (($server['mode'] == "server_tls") || (($server['mode'] == "server_tls_user") && ($server['authmode'] != "Local Database"))) {
+	} elseif (($server['mode'] == "server_tls") || 
+			(($server['mode'] == "server_tls_user") && ($server['authmode'] != "Local Database"))) {
 		foreach ($a_cert as $cindex => $cert) {
 			if (($cert['caref'] != $server['caref']) || ($cert['refid'] == $server['certref'])) {
 				continue;
@@ -112,12 +114,13 @@ foreach ($a_server as $sindex => $server) {
 	} else {
 		$name = "Server {$prot}:{$port}";
 	}
-	$ras_serverent['index'] = $sindex;
+	$ras_serverent['index'] = $vpnid;
 	$ras_serverent['name'] = $name;
 	$ras_serverent['users'] = $ras_user;
 	$ras_serverent['certs'] = $ras_certs;
 	$ras_serverent['mode'] = $server['mode'];
-	$ras_server[] = $ras_serverent;
+	$ras_serverent['authmode'] = $server['authmode'] != "Local Database" ? 'other' : 'local';
+	$ras_server[$vpnid] = $ras_serverent;
 }
 
 $id = $_GET['id'];
@@ -135,16 +138,17 @@ if (!empty($act)) {
 	$srvid = $_GET['srvid'];
 	$usrid = $_GET['usrid'];
 	$crtid = $_GET['crtid'];
+	$srvcfg = get_openvpnserver_by_id($srvid);
 	if ($srvid === false) {
 		pfSenseHeader("vpn_openvpn_export.php");
 		exit;
-	} else if (($config['openvpn']['openvpn-server'][$srvid]['mode'] != "server_user") &&
+	} else if (($srvcfg['mode'] != "server_user") &&
 		(($usrid === false) || ($crtid === false))) {
 		pfSenseHeader("vpn_openvpn_export.php");
 		exit;
 	}
 
-	if ($config['openvpn']['openvpn-server'][$srvid]['mode'] == "server_user") {
+	if ($srvcfg['mode'] == "server_user") {
 		$nokeys = true;
 	} else {
 		$nokeys = false;
@@ -368,7 +372,7 @@ $section->addInput(new Form_Select(
 	null,
 	array(
 		"auto" => "Automatic - Use verify-x509-name (OpenVPN 2.3+) where possible",
-		"tls-remote" => "Use tls-remote (Deprecated, use only on old clients &lt;= OpenVPN 2.2.x)",
+		"tls-remote" => "Use tls-remote (Deprecated, use only on old clients < OpenVPN 2.2.x)",
 		"tls-remote-quote" => "Use tls-remote and quote the server CN",
 		"none" => "Do not verify the server CN")
 ))->setHelp("Optionally verify the server certificate Common Name (CN) when the client connects. Current clients, including the most recent versions of Windows, Viscosity, Tunnelblick, OpenVPN on iOS and Android and so on should all work at the default automatic setting.".
@@ -407,17 +411,11 @@ $section->addInput(new Form_Checkbox(
 	false
 ));
 
-$section->addInput(new Form_Input(
+$section->addPassword(new Form_Input(
 	'pass',
 	'Certificate Password',
 	'password'
 ))->setHelp('Password used to protect the certificate file contents.');
-
-$section->addInput(new Form_Input(
-	'conf',
-	'Confirm Certificate Password',
-	'password'
-))->setHelp('Type the Certificate Password again to confirm.');
 
 $form->add($section);
 
@@ -464,15 +462,9 @@ $section->addInput(new Form_Input(
 	'Proxy Username'
 ))->setHelp('Username for authentication to proxy server.');
 
-$section->addInput(new Form_Input(
+$section->addPassword(new Form_Input(
 	'proxypass',
 	'Proxy Password',
-	'password'
-))->setHelp('Password for authentication to proxy server.');
-
-$section->addInput(new Form_Input(
-	'proxyconf',
-	'Proxy Password (Confirm)',
 	'password'
 ))->setHelp('Password for authentication to proxy server.');
 
@@ -570,31 +562,37 @@ Links to OpenVPN clients for various platforms:<br />
 var viscosityAvailable = false;
 
 var servers = new Array();
-<?php foreach ($ras_server as $sindex => $server): ?>
+<?php
+foreach ($ras_server as $sindex => $server): ?>
 servers[<?=$sindex?>] = new Array();
 servers[<?=$sindex?>][0] = '<?=$server['index']?>';
 servers[<?=$sindex?>][1] = new Array();
 servers[<?=$sindex?>][2] = '<?=$server['mode']?>';
 servers[<?=$sindex?>][3] = new Array();
-<?php		foreach ($server['users'] as $uindex => $user): ?>
+servers[<?=$sindex?>][4] = '<?=$server['authmode']?>';
+<?php
+	foreach ($server['users'] as $uindex => $user): ?>
 servers[<?=$sindex?>][1][<?=$uindex?>] = new Array();
 servers[<?=$sindex?>][1][<?=$uindex?>][0] = '<?=$user['uindex']?>';
 servers[<?=$sindex?>][1][<?=$uindex?>][1] = '<?=$user['cindex']?>';
 servers[<?=$sindex?>][1][<?=$uindex?>][2] = '<?=$user['name']?>';
 servers[<?=$sindex?>][1][<?=$uindex?>][3] = '<?=str_replace("'", "\\'", $user['certname'])?>';
-<?		endforeach; ?>
-<?php		$c=0;
-		foreach ($server['certs'] as $cert): ?>
+<?php	
+	endforeach;
+	$c=0;
+	foreach ($server['certs'] as $cert): ?>
 servers[<?=$sindex?>][3][<?=$c?>] = new Array();
 servers[<?=$sindex?>][3][<?=$c?>][0] = '<?=$cert['cindex']?>';
 servers[<?=$sindex?>][3][<?=$c?>][1] = '<?=str_replace("'", "\\'", $cert['certname'])?>';
-<?		$c++;
-		endforeach; ?>
-<?	endforeach; ?>
+<?php
+		$c++;
+	endforeach;
+endforeach; 
+?>
 
 function download_begin(act, i, j) {
 
-	var index = document.getElementById("server").selectedIndex;
+	var index = document.getElementById("server").value;
 	var users = servers[index][1];
 	var certs = servers[index][3];
 	var useaddr;
@@ -638,13 +636,13 @@ function download_begin(act, i, j) {
 	}
 
 	var pass = document.getElementById("pass").value;
-	var conf = document.getElementById("conf").value;
+	var pass_confirm = document.getElementById("pass_confirm").value;
 	if (usepass && (act.substring(0, 4) == "inst")) {
-		if (!pass || !conf) {
+		if (!pass || !pass_confirm) {
 			alert("The password or confirm field is empty");
 			return;
 		}
-		if (pass != conf) {
+		if (pass != pass_confirm) {
 			alert("The password and confirm fields must match");
 			return;
 		}
@@ -673,17 +671,17 @@ function download_begin(act, i, j) {
 		var proxyauth = document.getElementById("useproxypass").value;
 		var proxyuser = document.getElementById("proxyuser").value;
 		var proxypass = document.getElementById("proxypass").value;
-		var proxyconf = document.getElementById("proxyconf").value;
+		var proxypass_confirm = document.getElementById("proxypass_confirm").value;
 		if (useproxypass) {
 			if (!proxyuser) {
 				alert("Please fill the proxy username and password.");
 				return;
 			}
-			if (!proxypass || !proxyconf) {
+			if (!proxypass || !proxypass_confirm) {
 				alert("The proxy password or confirm field is empty");
 				return;
 			}
-			if (proxypass != proxyconf) {
+			if (proxypass != proxypass_confirm) {
 				alert("The proxy password and confirm fields must match");
 				return;
 			}
@@ -735,7 +733,7 @@ function server_changed() {
 		table.deleteRow(0);
 	}
 
-	var index = document.getElementById("server").selectedIndex;
+	var index = document.getElementById("server").value;
 	var users = servers[index][1];
 	var certs = servers[index][3];
 	for (i = 0; i < users.length; i++) {
@@ -877,10 +875,10 @@ function useaddr_changed() {
 function usepass_changed() {
 	if ($('#usepass').prop('checked')) {
 		hideInput('pass', false);
-		hideInput('conf', false);
+		hideInput('pass_confirm', false);
 	} else {
 		hideInput('pass', true);
-		hideInput('conf', true);
+		hideInput('pass_confirm', true);
 	}
 }
 
@@ -897,16 +895,16 @@ function useproxy_changed() {
 		hideInput('useproxypass', true);
 		hideInput('proxyuser', true);
 		hideInput('proxypass', true);
-		hideInput('proxyconf', true);
+		hideInput('proxypass_confirm', true);
 	}
 	if ($('#useproxy').prop('checked') && ($('#useproxypass').val() != 'none')) {
 		hideInput('proxyuser', false);
 		hideInput('proxypass', false);
-		hideInput('proxyconf', false);
+		hideInput('proxypass_confirm', false);
 	} else {
 		hideInput('proxyuser', true);
 		hideInput('proxypass', true);
-		hideInput('proxyconf', true);
+		hideInput('proxypass_confirm', true);
 	}
 }
 
@@ -984,4 +982,5 @@ events.push(function(){
 //]]>
 </script>
 
-<?php include("foot.inc"); ?>
+<?php
+include("foot.inc");
