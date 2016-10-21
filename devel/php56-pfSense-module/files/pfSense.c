@@ -899,16 +899,17 @@ table_get_info(ipfw_obj_header *oh, ipfw_xtable_info *i)
 {
 	char tbuf[sizeof(ipfw_obj_header) + sizeof(ipfw_xtable_info)];
 	int error;
-	size_t sz;
+	socklen_t sz;
 
 	sz = sizeof(tbuf);
 	memset(tbuf, 0, sizeof(tbuf));
 	memcpy(tbuf, oh, sizeof(*oh));
 	oh = (ipfw_obj_header *)tbuf;
 	oh->opheader.opcode = IP_FW_TABLE_XINFO;
+	oh->opheader.version = 0;
 
-	error = setsockopt(PFSENSE_G(ipfw), IPPROTO_IP, IP_FW3, &oh->opheader,
-	    sz);
+	error = getsockopt(PFSENSE_G(ipfw), IPPROTO_IP, IP_FW3, &oh->opheader,
+	    &sz);
 	if (error != 0)
 		return (error);
 	if (sz < sizeof(tbuf))

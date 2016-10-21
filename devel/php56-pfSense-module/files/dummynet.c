@@ -50,6 +50,7 @@
 #include <netinet/ip_dummynet.h>
 #include <arpa/inet.h>	/* inet_ntoa */
 
+static struct cmdline_opts co = { 0 };
 
 static struct _s_x dummynet_params[] = {
 	{ "plr",		TOK_PLR },
@@ -1264,7 +1265,7 @@ process_extra_parms(int *ac, char **av, struct dn_extra_parms *ep,
  * pipe ==>
  */
 void
-ipfw_config_pipe(int ac, char **av)
+ipfw_config_pipe(int ac, char **av, int do_pipe)
 {
 	int i;
 	u_int j;
@@ -1314,7 +1315,7 @@ ipfw_config_pipe(int ac, char **av)
 	o_next(&buf, sizeof(struct dn_id), DN_CMD_CONFIG);
 	base->id = DN_API_VERSION;
 
-	switch (co.do_pipe) {
+	switch (do_pipe) {
 	case 1: /* "pipe N config ..." */
 		/* Allocate space for the WF2Q+ scheduler, its link
 		 * and the FIFO flowset. Set the number, but leave
