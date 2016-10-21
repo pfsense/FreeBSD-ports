@@ -133,6 +133,57 @@ if (isset($_POST['act'])) {
 	$act = $_POST['act'];
 }
 
+global $simplefields;
+$simplefields = array('server','useaddr','useaddr_hostname','verifyservercn','blockoutsidedns','randomlocalport',
+	'usetoken','usepass',
+	'useproxy','useproxytype','proxyaddr','proxyport','useproxypass','proxyuser',
+	'openvpnmanager');
+	//'pass','proxypass','advancedoptions'
+
+$openvpnexportcfg = &$config['installedpackages']['vpn_openvpn_export'];
+$ovpnserverdefaults = &$openvpnexportcfg['serverconfig']['item'];
+$cfg = &$config['installedpackages']['vpn_openvpn_export']['defaultsettings'];
+
+
+if (isset($_POST['save'])) {
+	$vpnid = $_POST['server'];
+	$index = count($ovpnserverdefaults);
+	foreach($ovpnserverdefaults as $key => $cfg) {
+		if ($cfg['server'] == $vpnid) {
+			$index = $key;
+			break;
+		}
+	}
+	$cfg = &$ovpnserverdefaults[$index];
+	if (!is_array($cfg)) {
+		$cfg = array();
+	}
+	if ($_POST['pass'] <> DMYPWD) {
+		if ($_POST['pass'] <> $_POST['pass_confirm']) {
+			$input_errors[] = "Different certificate passwords entered.";
+		}
+		$cfg['pass'] = $_POST['pass'];
+	}
+	if ($_POST['proxypass'] <> DMYPWD) {
+		if ($_POST['proxypass'] <> $_POST['proxypass_confirm']) {
+			$input_errors[] = "Different Proxy passwords entered.";
+		}
+		$cfg['proxypass'] = $_POST['proxypass'];
+	}
+	
+	foreach ($simplefields as $value) {
+		$cfg[$value] = $_POST[$value];
+	}
+	$cfg['advancedoptions'] = base64_encode($_POST['advancedoptions']);
+	if (empty($input_errors)) {
+		write_config("Save openvpn client export defaults");
+	}
+}
+//$cfg['advancedoptions'] = base64_decode($cfg['advancedoptions']);
+for($i = 0; $i < count($ovpnserverdefaults); $i++) {
+	$ovpnserverdefaults[$i]['advancedoptions'] = base64_decode($ovpnserverdefaults[$i]['advancedoptions']);
+}
+//print_r($ovpnserverdefaults);
 if (!empty($act)) {
 
 	$srvid = $_GET['srvid'];
@@ -179,7 +230,11 @@ if (!empty($act)) {
 	}
 	$password = "";
 	if ($_GET['password']) {
-		$password = $_GET['password'];
+		if ($_GET['password'] != DMYPWD) {
+			$password = $_GET['password'];
+		} else {
+			$password = $cfg['pass'];
+		}
 	}
 
 	$proxy = "";
@@ -206,7 +261,11 @@ if (!empty($act)) {
 			if (!empty($_GET['proxy_user']) && empty($_GET['proxy_password'])) {
 				$input_errors[] = "A password for the proxy user must be specified.";
 			} else {
-				$proxy['password'] = $_GET['proxy_password'];
+				if ($_GET['proxy_password'] != DMYPWD) {
+					$proxy['password'] = $_GET['proxy_password'];
+				} else {
+					$proxy['password'] = $cfg['proxypass'];
+				}
 			}
 		}
 	}
@@ -309,7 +368,7 @@ $tab_array[] = array(gettext("Wizards"), false, "wizard.php?xml=openvpn_wizard.x
 add_package_tabs("OpenVPN", $tab_array);
 display_top_tabs($tab_array);
 
-$form = new Form(false);
+$form = new Form("Save as default");
 
 $section = new Form_Section('OpenVPN Server');
 
@@ -321,7 +380,7 @@ foreach ($ras_server as $server) {
 $section->addInput(new Form_Select(
 	'server',
 	'Remote Access Server',
-	null,
+	$cfg['server'],
 	$serverlist
 	));
 
@@ -356,20 +415,22 @@ $useaddrlist["other"] = "Other";
 $section->addInput(new Form_Select(
 	'useaddr',
 	'Host Name Resolution',
-	null,
+	$cfg['useaddr'],
 	$useaddrlist
 	));
 
 $section->addInput(new Form_Input(
 	'useaddr_hostname',
-	'Host Name'
+	'Host Name',
+	'text',
+	$cfg['useaddr_hostname']
 ))->setHelp('Enter the hostname or IP address the client will use to connect to this server.');
 
 
 $section->addInput(new Form_Select(
 	'verifyservercn',
 	'Verify Server CN',
-	null,
+	$cfg['verifyservercn'],
 	array(
 		"auto" => "Automatic - Use verify-x509-name (OpenVPN 2.3+) where possible",
 		"tls-remote" => "Use tls-remote (Deprecated, use only on old clients < OpenVPN 2.2.x)",
@@ -383,14 +444,14 @@ $section->addInput(new Form_Checkbox(
 	'blockoutsidedns',
 	'Block Outside DNS',
 	'Block access to DNS servers except across OpenVPN while connected, forcing clients to use only VPN DNS servers.',
-	true
+	$cfg['blockoutsidedns']
 ))->setHelp("Requires Windows 10 and OpenVPN 2.3.9 or later. Only Windows 10 is prone to DNS leakage in this way, other clients will ignore the option as they are not affected.");
 
 $section->addInput(new Form_Checkbox(
 	'randomlocalport',
 	'Use Random Local Port',
 	'Use a random local source port (lport) for traffic from the client. Without this set, two clients may not run concurrently.',
-	true
+	$cfg['randomlocalport']
 ));
 
 $form->add($section);
@@ -401,20 +462,21 @@ $section->addInput(new Form_Checkbox(
 	'usetoken',
 	'Microsoft Certificate Storage',
 	'Use Microsoft Certificate Storage instead of local files.',
-	false
+	$cfg['usetoken']
 ));
 
 $section->addInput(new Form_Checkbox(
 	'usepass',
 	'Password Protect Certificate',
 	'Use a password to protect the pkcs12 file contents or key in Viscosity bundle.',
-	false
+	$cfg['usepass']
 ));
 
 $section->addPassword(new Form_Input(
 	'pass',
 	'Certificate Password',
-	'password'
+	'password',
+	$cfg['pass']
 ))->setHelp('Password used to protect the certificate file contents.');
 
 $form->add($section);
@@ -425,13 +487,13 @@ $section->addInput(new Form_Checkbox(
 	'useproxy',
 	'Use A Proxy',
 	'Use proxy to communicate with the OpenVPN server.',
-	false
+	$cfg['useproxy']
 ));
 
 $section->addInput(new Form_Select(
 	'useproxytype',
 	'Proxy Type',
-	null,
+	$cfg['useproxytype'],
 	array(
 		"http" => "HTTP",
 		"socks" => "SOCKS")
@@ -439,18 +501,22 @@ $section->addInput(new Form_Select(
 
 $section->addInput(new Form_Input(
 	'proxyaddr',
-	'Proxy IP Address'
+	'Proxy IP Address',
+	'text',
+	$cfg['proxyaddr']
 ))->setHelp('Hostname or IP address of proxy server.');
 
 $section->addInput(new Form_Input(
 	'proxyport',
-	'Proxy Port'
+	'Proxy Port',
+	'text',
+	$cfg['proxyport']
 ))->setHelp('Port where proxy server is listening.');
 
 $section->addInput(new Form_Select(
 	'useproxypass',
 	'Proxy Authentication',
-	null,
+	$cfg['useproxypass'],
 	array(
 		"none" => "None",
 		"basic" => "Basic",
@@ -459,15 +525,17 @@ $section->addInput(new Form_Select(
 
 $section->addInput(new Form_Input(
 	'proxyuser',
-	'Proxy Username'
+	'Proxy Username',
+	'text',
+	$cfg['proxyuser']
 ))->setHelp('Username for authentication to proxy server.');
 
 $section->addPassword(new Form_Input(
 	'proxypass',
 	'Proxy Password',
-	'password'
+	'password',
+	$cfg['proxypass']
 ))->setHelp('Password for authentication to proxy server.');
-
 $form->add($section);
 
 $section = new Form_Section('Management Interface');
@@ -476,7 +544,7 @@ $section->addInput(new Form_Checkbox(
 	'openvpnmanager',
 	'Management Interface',
 	'Use the OpenVPNManager Management Interface.',
-	false
+	$cfg['openvpnmanager']
 ))->setHelp("This will activate management interface in the generated .ovpn configuration and ".
 	"include the OpenVPNManager program in the Windows Installers. With this management interface, OpenVPN can be used by non-administrator users.".
 	"This is also useful for Windows Vista/7/8/10 systems where elevated permissions are needed to add routes to the OS.".
@@ -489,7 +557,7 @@ $section = new Form_Section('Advanced');
 	$section->addInput(new Form_Textarea(
 		'advancedoptions',
 		'Additional configuration options',
-		null
+		$cfg['advancedoptions']
 	))->setHelp('Enter any additional options to add to the OpenVPN client export configuration here, separated by a line break or semicolon.<br/><br/>EXAMPLE: remote-random;');
 
 $form->add($section);
@@ -589,6 +657,8 @@ servers[<?=$sindex?>][3][<?=$c?>][1] = '<?=str_replace("'", "\\'", $cert['certna
 	endforeach;
 endforeach; 
 ?>
+
+serverdefaults = <?=json_encode($ovpnserverdefaults)?>;
 
 function download_begin(act, i, j) {
 
@@ -733,7 +803,37 @@ function server_changed() {
 		table.deleteRow(0);
 	}
 
+	function setFieldValue(field, value) {
+		checkboxes = $("input[type=checkbox]#"+field);
+		checkboxes.prop('checked', value == 'yes').trigger("change");
+		
+		inputboxes = $("input[type!=checkbox]#"+field);
+		inputboxes.val(value);
+		
+		selectboxes = $("select#"+field);
+		selectboxes.val(value);
+		
+		textareaboxes = $("textarea#"+field);
+		textareaboxes.val(value);
+	}
+
 	var index = document.getElementById("server").value;
+	for(i = 0; i < serverdefaults.length; i++) {
+		if (serverdefaults[i]['server'] !== index) {
+			continue;
+		}
+		fields = serverdefaults[i];
+		fieldnames = Object.getOwnPropertyNames(fields);
+		for (fieldnr = 0; fieldnr < fieldnames.length; fieldnr++) {
+			fieldname = fieldnames[fieldnr];
+			setFieldValue(fieldname, fields[fieldname]);
+		}
+		setFieldValue('pass_confirm', fields['pass']);
+		setFieldValue('proxypass_confirm', fields['proxypass']);
+		break;
+	}
+	
+	
 	var users = servers[index][1];
 	var certs = servers[index][3];
 	for (i = 0; i < users.length; i++) {
