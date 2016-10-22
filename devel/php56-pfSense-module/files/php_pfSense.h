@@ -32,10 +32,6 @@ typedef char dns_tsec_t;
 #include <dhcpctl.h>
 #endif
 
-#ifdef IPFW_FUNCTIONS
-#include "php_dummynet.h"
-#endif
-
 #include <libvici.h>
 
 ZEND_BEGIN_MODULE_GLOBALS(pfSense)

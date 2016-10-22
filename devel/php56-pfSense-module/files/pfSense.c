@@ -107,6 +107,7 @@ IS ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "config.h"
 #endif
 
+#include "ipfw2.h"
 #include "php.h"
 #include "php_ini.h"
 #include "php_pfSense.h"
