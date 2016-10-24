@@ -2992,14 +2992,16 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 		bcopy(s->packets[1], &packets[1], sizeof(uint64_t));
 		bcopy(s->bytes[0], &bytes[0], sizeof(uint64_t));
 		bcopy(s->bytes[1], &bytes[1], sizeof(uint64_t));
-		add_assoc_long(array, "packets total",
-		    (long)(be64toh(packets[0]) + be64toh(packets[1])));
-		add_assoc_long(array, "packets in", (long)be64toh(packets[0]));
-		add_assoc_long(array, "packets out", (long)be64toh(packets[1]));
-		add_assoc_long(array, "bytes total",
-		    (long)(be64toh(bytes[0]) + be64toh(bytes[1])));
-		add_assoc_long(array, "bytes in", (long)be64toh(bytes[0]));
-		add_assoc_long(array, "bytes out", (long)be64toh(bytes[1]));
+		add_assoc_double(array, "packets total",
+		    (double)(be64toh(packets[0]) + be64toh(packets[1])));
+		add_assoc_double(array, "packets in",
+		    (double)be64toh(packets[0]));
+		add_assoc_double(array, "packets out",
+		    (double)be64toh(packets[1]));
+		add_assoc_double(array, "bytes total",
+		    (double)(be64toh(bytes[0]) + be64toh(bytes[1])));
+		add_assoc_double(array, "bytes in", (double)be64toh(bytes[0]));
+		add_assoc_double(array, "bytes out", (double)be64toh(bytes[1]));
 		if (ntohl(s->anchor) != -1)
 			add_assoc_long(array, "anchor", (long)ntohl(s->anchor));
 		if (ntohl(s->rule) != -1)
