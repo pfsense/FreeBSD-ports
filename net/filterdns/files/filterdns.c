@@ -51,7 +51,6 @@
 static int interval = 30;
 static int dev = -1;
 static int debug = 0;
-static int ipfwctx;
 static char *file = NULL;
 static pthread_attr_t attr;
 static pthread_cond_t sig_condvar;
@@ -947,7 +946,7 @@ int main(int argc, char *argv[]) {
 	file = NULL;
 	pidfile = NULL;
 
-	while ((ch = getopt(argc, argv, "c:d:fi:p:y:v")) != -1) {
+	while ((ch = getopt(argc, argv, "c:d:fi:p:v")) != -1) {
 		switch (ch) {
 		case 'c':
 			file = optarg;
@@ -967,9 +966,6 @@ int main(int argc, char *argv[]) {
 			break;
 		case 'p':
 			pidfile = optarg;
-			break;
-		case 'y':
-			ipfwctx = atoi(optarg);
 			break;
 		case 'v':
 			printf("Version 1.2\n");
