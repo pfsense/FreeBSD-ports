@@ -979,11 +979,11 @@ static int
 tentry_fill_key(char *arg, uint8_t type, ipfw_obj_tentry *tent)
 {
 	char *p;
+	int mask;
+	uint32_t key;
 
 	switch (type) {
-	case IPFW_TABLE_ADDR: {
-		int mask;
-
+	case IPFW_TABLE_ADDR:
 		/* Remove / if exists */
 		if ((p = strchr(arg, '/')) != NULL) {
 			*p = '\0';
@@ -1008,7 +1008,6 @@ tentry_fill_key(char *arg, uint8_t type, ipfw_obj_tentry *tent)
 		        /* Assume FQDN - not supported. */
 			return (-1);
 		}
-		}
 		break;
 
 	case IPFW_TABLE_MAC2: {
@@ -1016,7 +1015,7 @@ tentry_fill_key(char *arg, uint8_t type, ipfw_obj_tentry *tent)
 		struct mac_entry *mac;
 
 		dst = arg;
-		if ((p = strchr(arg, ' ')) == NULL)
+		if ((p = strchr(arg, ',')) == NULL)
 			return (-1);
 		*p = '\0';
 		src = p + 1;
@@ -1032,6 +1031,27 @@ tentry_fill_key(char *arg, uint8_t type, ipfw_obj_tentry *tent)
 		tent->masklen = ETHER_ADDR_LEN * 8;
 		}
 		break;
+
+	case IPFW_TABLE_INTERFACE:
+		/* Assume interface name. Copy significant data only */
+		mask = MIN(strlen(arg), IF_NAMESIZE - 1);
+		memcpy(tent->k.iface, arg, mask);
+		/* Set mask to exact match */
+		tent->masklen = 8 * IF_NAMESIZE;
+		break;
+
+	case IPFW_TABLE_NUMBER:
+		/* Port or any other key */
+		key = strtol(arg, &p, 10);
+		if (*p != '\0') {
+			php_printf("Invalid number: %s", arg);
+			return (-1);
+		}
+
+		tent->k.key = key;
+		tent->masklen = 32;
+		break;
+
 	default:
 		return (-1);
 	}
