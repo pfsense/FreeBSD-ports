@@ -32,10 +32,6 @@ typedef char dns_tsec_t;
 #include <dhcpctl.h>
 #endif
 
-#ifdef IPFW_FUNCTIONS
-#include "php_dummynet.h"
-#endif
-
 #include <libvici.h>
 
 ZEND_BEGIN_MODULE_GLOBALS(pfSense)
@@ -109,6 +105,10 @@ PHP_FUNCTION(pfSense_delete_lease);
 
 #ifdef IPFW_FUNCTIONS
 PHP_FUNCTION(pfSense_ipfw_table);
+PHP_FUNCTION(pfSense_ipfw_table_info);
+PHP_FUNCTION(pfSense_ipfw_table_list);
+PHP_FUNCTION(pfSense_ipfw_table_lookup);
+PHP_FUNCTION(pfSense_ipfw_tables_list);
 PHP_FUNCTION(pfSense_ipfw_pipe);
 #endif
 PHP_FUNCTION(pfSense_ipsec_list_sa);

@@ -51,7 +51,6 @@
 static int interval = 30;
 static int dev = -1;
 static int debug = 0;
-static int ipfwctx;
 static char *file = NULL;
 static pthread_attr_t attr;
 static pthread_cond_t sig_condvar;
@@ -67,9 +66,10 @@ static void clear_config(struct thread_list *);
 static void clear_hostname_addresses(struct thread_data *);
 static int filterdns_check_sameip_diff_hostname(struct thread_data *, struct table *);
 
-#define DELETE 1
-#define ADD 2
-#define TABLENAME(name)	name != NULL ? name : ""
+#define	DELETE			1
+#define	ADD			2
+#define	TABLENAME(name)		(name != NULL ? name : "")
+#define	TABLETYPE(_type)	((_type == PF_TYPE) ? "pf" : "ipfw")
 
 #define satosin(sa)	((struct sockaddr_in *)(sa))
 #define satosin6(sa)	((struct sockaddr_in6 *)(sa))
@@ -207,34 +207,30 @@ add_table_entry(struct thread_data *thrdata, struct sockaddr *addr, int forceupd
 	char buffer[INET6_ADDRSTRLEN] = { 0 };
 	int error = 0;
 
+	if (addr->sa_family == AF_INET)
+		inet_ntop(addr->sa_family, &satosin(addr)->sin_addr.s_addr, buffer, sizeof buffer);
+	else if (addr->sa_family == AF_INET6)
+		inet_ntop(addr->sa_family, &satosin6(addr)->sin6_addr.s6_addr, buffer, sizeof buffer);
 	TAILQ_FOREACH(tmp, &thrdata->rnh, entry) {
 		if (tmp->addr->sa_family != addr->sa_family)
 			continue;
 		if (!memcmp(addr, tmp->addr, addr->sa_len)) {
-			if (debug >= 2) {
-				if (addr->sa_family == AF_INET)
-					syslog(LOG_WARNING, "\t\tentry %s exists in table %s", inet_ntop(addr->sa_family, &satosin(addr)->sin_addr.s_addr, buffer, sizeof buffer), TABLENAME(thrdata->tablename));
-				else if (addr->sa_family == AF_INET6)
-					syslog(LOG_WARNING, "\t\tentry %s exists in table %s", inet_ntop(addr->sa_family, satosin6(addr)->sin6_addr.s6_addr, buffer, sizeof buffer), TABLENAME(thrdata->tablename));
-			}
+			if (debug >= 2)
+				syslog(LOG_WARNING, "\t\tentry %s exists in %s table %s",
+				    buffer, TABLETYPE(thrdata->type),
+				    TABLENAME(thrdata->tablename));
 			tmp->refcnt++;
 			if (forceupdate) {
-				if (thrdata->type == PF_TYPE) {
-					if (debug >= 2) {
-						if(addr->sa_family == AF_INET)
-							syslog(LOG_WARNING, "\tREFRESHING entry %s on table %s for host %s", inet_ntop(addr->sa_family, addr->sa_data + 2, buffer, sizeof buffer), TABLENAME(thrdata->tablename), thrdata->hostname);
-						if(addr->sa_family == AF_INET6)
-							syslog(LOG_WARNING, "\tREFRESHING entry %s on table %s for host %s", inet_ntop(addr->sa_family, addr->sa_data + 6, buffer, sizeof buffer), TABLENAME(thrdata->tablename), thrdata->hostname);
-					}
+				if (debug >= 2)
+					syslog(LOG_WARNING, "\tREFRESHING entry %s on %s table %s for host %s",
+					    buffer, TABLETYPE(thrdata->type), TABLENAME(thrdata->tablename),
+					    thrdata->hostname);
+				if (thrdata->type == PF_TYPE)
 					error = pf_tableentry(thrdata, addr, ADD);
-				}
-				else if (thrdata->type == IPFW_TYPE) {
-					if (debug >= 2)
-						syslog(LOG_WARNING, "\tadding entry %s to table %s on host %s", inet_ntop(addr->sa_family, addr->sa_data + 2, buffer, sizeof buffer), TABLENAME(thrdata->tablename), thrdata->hostname);
+				else if (thrdata->type == IPFW_TYPE)
 					error = ipfw_tableentry(thrdata, addr, ADD);
-				}
-				if (error > 0)
-					return (EPIPE);
+				if (error != 0)
+					return (error);
 			}
 			return (EEXIST);
 		}
@@ -242,34 +238,36 @@ add_table_entry(struct thread_data *thrdata, struct sockaddr *addr, int forceupd
 
 	ent = calloc(1, sizeof(*ent));
 	if (ent == NULL) {
-		syslog(LOG_ERR, "\tFILTERDNS: Failed to allocate new entry for table %s.", TABLENAME(thrdata->tablename));
+		syslog(LOG_ERR, "\tFILTERDNS: Failed to allocate new entry for %s table %s.",
+		    TABLETYPE(thrdata->type), TABLENAME(thrdata->tablename));
 		return (ENOMEM);
 	}
 	ent->addr = calloc(1, addr->sa_len);
 	if (ent->addr == NULL) {
 		free(ent);
-		syslog(LOG_WARNING, "\tFILTERDNS: Failed to allocate new address entry for table %s.", TABLENAME(thrdata->tablename));
+		syslog(LOG_WARNING, "\tFILTERDNS: Failed to allocate new address entry for %s table %s.",
+		    TABLETYPE(thrdata->type), TABLENAME(thrdata->tablename));
 		return (ENOMEM);
 	}
 	memcpy(ent->addr, addr, addr->sa_len);
 	ent->refcnt = 2;
 	TAILQ_INSERT_HEAD(&thrdata->rnh, ent, entry);
-	if (thrdata->type == PF_TYPE) {
-		if(addr->sa_family == AF_INET)
-			syslog(LOG_NOTICE, "\tadding entry %s to table %s on host %s", inet_ntop(addr->sa_family, addr->sa_data + 2, buffer, sizeof buffer), TABLENAME(thrdata->tablename), thrdata->hostname);
-		if(addr->sa_family == AF_INET6)
-			syslog(LOG_NOTICE, "\tadding entry %s to table %s on host %s", inet_ntop(addr->sa_family, addr->sa_data + 6, buffer, sizeof buffer), TABLENAME(thrdata->tablename), thrdata->hostname);
-		error = pf_tableentry(thrdata, ent->addr, ADD);
-	}
-	else if (thrdata->type == IPFW_TYPE) {
-		syslog(LOG_NOTICE, "\tadding entry %s to table %s on host %s", inet_ntop(addr->sa_family, addr->sa_data + 2, buffer, sizeof buffer), TABLENAME(thrdata->tablename), thrdata->hostname);
-		error = ipfw_tableentry(thrdata, addr, ADD);
-	}
 
-	if (error > 0)
-		return (EAGAIN);
-	else
-		return (0);
+	syslog(LOG_NOTICE, "\tadding entry %s to %s table %s for host %s",
+	    buffer, TABLETYPE(thrdata->type), TABLENAME(thrdata->tablename),
+	    thrdata->hostname);
+
+	if (thrdata->type == PF_TYPE)
+		error = pf_tableentry(thrdata, ent->addr, ADD);
+	else if (thrdata->type == IPFW_TYPE)
+		error = ipfw_tableentry(thrdata, ent->addr, ADD);
+
+	if (error != 0)
+		syslog(LOG_NOTICE, "\tCOULD NOT add the entry %s to %s table %s for host %s",
+		    buffer, TABLETYPE(thrdata->type), TABLENAME(thrdata->tablename),
+		    thrdata->hostname);
+
+	return (error);
 }
 
 static int
@@ -331,47 +329,35 @@ filterdns_clean_table(struct thread_data *thrdata, int donotcheckrefcount)
 
 	TAILQ_FOREACH_SAFE(e, &thrdata->rnh, entry, tmp) {
 		e->refcnt--;
+		if (e->addr->sa_family == AF_INET)
+			inet_ntop(e->addr->sa_family, e->addr->sa_data + 2, buffer, sizeof buffer);
+		else if (e->addr->sa_family == AF_INET6)
+			inet_ntop(e->addr->sa_family, e->addr->sa_data + 6, buffer, sizeof buffer);
 		if (donotcheckrefcount || (e->refcnt <= 0)) {
 			/* If 2 dns names have same ip do not do any operation */
 			if (filterdns_check_sameip_diff_hostname(thrdata, e) == EEXIST)
 				continue;
 
 			error = 0;
-			if (thrdata->type == PF_TYPE) {
-				if(e->addr->sa_family == AF_INET)
-					syslog(LOG_NOTICE, "\t\tclearing entry %s from table %s on host %s", inet_ntop(e->addr->sa_family, e->addr->sa_data + 2, buffer, sizeof buffer), TABLENAME(thrdata->tablename), thrdata->hostname);
-				if(e->addr->sa_family == AF_INET6)
-					syslog(LOG_NOTICE, "\t\tclearing entry %s from table %s on host %s", inet_ntop(e->addr->sa_family, e->addr->sa_data + 6, buffer, sizeof buffer), TABLENAME(thrdata->tablename), thrdata->hostname);
+			syslog(LOG_NOTICE, "clearing entry %s from %s table %s on host %s",
+			    buffer, TABLETYPE(thrdata->type), TABLENAME(thrdata->tablename),
+			    thrdata->hostname);
+			if (thrdata->type == PF_TYPE)
 				error = pf_tableentry(thrdata, e->addr, DELETE);
-			}
-			else if (thrdata->type == IPFW_TYPE) {
-				syslog(LOG_NOTICE, "\t\tclearing entry %s from table %s on host %s", inet_ntop(e->addr->sa_family, e->addr->sa_data + 2, buffer, sizeof buffer), TABLENAME(thrdata->tablename), thrdata->hostname);
+			else if (thrdata->type == IPFW_TYPE)
 				error = ipfw_tableentry(thrdata, e->addr, DELETE);
-			}
-
-			if (error == 0) {
-				TAILQ_REMOVE(&thrdata->rnh, e, entry);
-				free(e->addr);
-				free(e);
-				if (!donotcheckrefcount)
-					removed++;
-			} else {
-				syslog(LOG_ERR, "\t\tCOULD NOT clear entry %s from table %s on host %s will retry later", inet_ntop(e->addr->sa_family, e->addr->sa_data + 2, buffer, sizeof buffer), TABLENAME(thrdata->tablename), thrdata->hostname);
-			}
-		} else if (debug >= 2) {
-			if (thrdata->type == PF_TYPE || thrdata->type == CMD_TYPE) {
-				if (debug >= 2) {
-					if(e->addr->sa_family == AF_INET)
-						syslog(LOG_WARNING, "\tNOT clearing entry %s from table %s on host %s", inet_ntop(e->addr->sa_family, e->addr->sa_data + 2, buffer, sizeof buffer), TABLENAME(thrdata->tablename), thrdata->hostname);
-					if(e->addr->sa_family == AF_INET6)
-						syslog(LOG_WARNING, "\tNOT clearing entry %s from table %s on host %s", inet_ntop(e->addr->sa_family, e->addr->sa_data + 6, buffer, sizeof buffer), TABLENAME(thrdata->tablename), thrdata->hostname);
-				}
-			}
-			else if (thrdata->type == IPFW_TYPE) {
-				if (debug >= 2)
-					syslog(LOG_WARNING, "\tNOT clearing entry %s from table %s on host %s", inet_ntop(e->addr->sa_family, e->addr->sa_data + 2, buffer, sizeof buffer), TABLENAME(thrdata->tablename), thrdata->hostname);
-			}
-		}
+			if (error != 0)
+				syslog(LOG_ERR, "COULD NOT clear entry %s from %s table %s on host %s will retry later",
+				    buffer, TABLETYPE(thrdata->type), TABLENAME(thrdata->tablename), thrdata->hostname);
+			TAILQ_REMOVE(&thrdata->rnh, e, entry);
+			free(e->addr);
+			free(e);
+			if (!donotcheckrefcount)
+				removed++;
+		} else if (debug >= 2)
+			syslog(LOG_WARNING, "\tNOT clearing entry %s from %s table %s on host %s",
+			    buffer, TABLETYPE(thrdata->type), TABLENAME(thrdata->tablename),
+			    thrdata->hostname);
 	}
 
 	return (removed);
@@ -408,7 +394,9 @@ host_dns(struct thread_data *hostd, int forceupdate)
 			continue;
 		if (res->ai_family == AF_INET) {
 			if (debug > 9)
-				syslog(LOG_WARNING, "\t\tfound entry %s for %s", inet_ntop(res->ai_family, res->ai_addr->sa_data + 2, buffer, sizeof buffer), TABLENAME(hostd->tablename));
+				syslog(LOG_WARNING, "\t\tfound entry %s for %s table %s",
+				    inet_ntop(res->ai_family, res->ai_addr->sa_data + 2, buffer, sizeof buffer),
+				    TABLETYPE(hostd->type), TABLENAME(hostd->tablename));
 			if (hostd->mask > 32) {
 				syslog(LOG_WARNING, "\t\tinvalid mask for %s/%d", inet_ntop(res->ai_family, res->ai_addr->sa_data + 2, buffer, sizeof buffer), hostd->mask);
 				hostd->mask = 32;
@@ -416,7 +404,9 @@ host_dns(struct thread_data *hostd, int forceupdate)
 		}
 		if(res->ai_family == AF_INET6) {
 			if (debug > 9)
-				syslog(LOG_WARNING, "\t\tfound entry %s for %s", inet_ntop(res->ai_family, res->ai_addr->sa_data + 6, buffer, sizeof buffer), TABLENAME(hostd->tablename));
+				syslog(LOG_WARNING, "\t\tfound entry %s for %s table %s",
+				    inet_ntop(res->ai_family, res->ai_addr->sa_data + 6, buffer, sizeof buffer),
+				    TABLETYPE(hostd->type), TABLENAME(hostd->tablename));
 		}
 		error = add_table_entry(hostd, res->ai_addr, forceupdate);
 		if (error == 0)
@@ -449,45 +439,117 @@ host_dns(struct thread_data *hostd, int forceupdate)
 }
 
 static int
+table_get_info(int s, ipfw_obj_header *oh, ipfw_xtable_info *i)
+{
+	char tbuf[sizeof(ipfw_obj_header) + sizeof(ipfw_xtable_info)];
+	int error;
+	socklen_t sz;
+
+	sz = sizeof(tbuf);
+	memset(tbuf, 0, sizeof(tbuf));
+	memcpy(tbuf, oh, sizeof(*oh));
+	oh = (ipfw_obj_header *)tbuf;
+	oh->opheader.opcode = IP_FW_TABLE_XINFO;
+	oh->opheader.version = 0;
+
+	error = getsockopt(s, IPPROTO_IP, IP_FW3, &oh->opheader, &sz);
+	if (error != 0)
+		return (error);
+	if (sz < sizeof(tbuf))
+		return (EINVAL);
+
+	*i = *(ipfw_xtable_info *)(oh + 1);
+
+	return (0);
+}
+
+static int
 ipfw_tableentry(struct thread_data *ipfwd, struct sockaddr *address, int action)
 {
+	char xbuf[sizeof(ipfw_obj_header) + sizeof(ipfw_obj_ctlv) +
+	    sizeof(ipfw_obj_tentry)];
+	int error, retry;
+	ipfw_obj_ctlv *ctlv;
+	ipfw_obj_header *oh;
+	ipfw_obj_ntlv *ntlv;
+	ipfw_obj_tentry *tent;
+	ipfw_table_value *v;
+	ipfw_xtable_info xi;
+	socklen_t size;
 	static int s = -1;
-	int error, i = 3;
 
-	struct _entry {
-		ip_fw3_opheader op3;
-		ipfw_table_xentry xent;
-	} entry;
-	int addrlen;
+	retry = 3;
+	while (retry-- > 0) {
 
-	error = 0;
-	while (i-- > 0) {
+		error = 0;
+
+		/* XXX - the socket will remain open between calls. */
 		if (s == -1)
 			s = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
 		if (s < 0) {
-			error++;
+			error = errno;
 			continue;
 		}
-		bzero(&entry, sizeof(entry));
-		entry.xent.tbl = ipfwd->tablenr;
-		entry.xent.value = ipfwd->pipe; /* XXX */
-		entry.xent.type = IPFW_TABLE_CIDR;
+
+		memset(xbuf, 0, sizeof(xbuf));
+		oh = (ipfw_obj_header *)xbuf;
+		if (action == ADD)
+			oh->opheader.opcode = IP_FW_TABLE_XADD;
+		else
+			oh->opheader.opcode = IP_FW_TABLE_XDEL;
+		oh->opheader.version = 1;
+
+		ntlv = &oh->ntlv;
+		ntlv->head.type = IPFW_TLV_TBL_NAME;
+		ntlv->head.length = sizeof(ipfw_obj_ntlv);
+		ntlv->idx = 1;
+		ntlv->set = 0;
+		strlcpy(ntlv->name, ipfwd->tablename, sizeof(ntlv->name));
+		oh->idx = 1;
+
+		if (table_get_info(s, oh, &xi) != 0) {
+			error = ENOENT;
+			break;
+		}
+
+		ntlv->type = xi.type;
+		if (xi.type != IPFW_TABLE_ADDR) {
+			error = EINVAL;
+			break;
+		}
+
+		size = sizeof(ipfw_obj_ctlv) + sizeof(ipfw_obj_tentry);
+		ctlv = (ipfw_obj_ctlv *)(oh + 1);
+		ctlv->count = 1;
+		ctlv->head.length = size;
+
+		tent = (ipfw_obj_tentry *)(ctlv + 1);
+		tent->head.length = sizeof(ipfw_obj_tentry);
+		tent->idx = oh->idx;
+
 		if (address->sa_family == AF_INET) {
-			memcpy(&entry.xent.k.addr6, &satosin(address)->sin_addr, sizeof(struct in_addr));
-			entry.xent.flags = IPFW_TCF_INET;
-			entry.xent.masklen = ipfwd->mask;
-			addrlen = sizeof(struct in_addr);
-		} else if (address->sa_family == AF_INET6) {
-			memcpy(&entry.xent.k.addr6, &satosin6(address)->sin6_addr, sizeof(struct in6_addr));
-			entry.xent.masklen = ipfwd->mask6;
-			addrlen = sizeof(struct in6_addr);
+			tent->subtype = AF_INET;
+			tent->masklen = ipfwd->mask;
+			memcpy(&tent->k.addr, &satosin(address)->sin_addr,
+			    sizeof(struct in_addr));
+		} else {
+			tent->subtype = AF_INET6;
+			tent->masklen = ipfwd->mask6;
+			memcpy(&tent->k.addr6, &satosin6(address)->sin6_addr,
+			    sizeof(struct in6_addr));
 		}
-		entry.xent.len = offsetof(ipfw_table_xentry, k) + addrlen;
-		entry.op3.opcode = action == ADD ? IP_FW_TABLE_XADD : IP_FW_TABLE_XDEL;
-		if (setsockopt(s, IPPROTO_IP, IP_FW3, (void *)&entry, sizeof(entry)) < 0) {
-			error++;
-			continue;
+
+		if (ipfwd->pipe != 0) {
+			v = &tent->v.value;
+			v->pipe = ipfwd->pipe;
 		}
+
+		size += sizeof(ipfw_obj_header);
+		error = setsockopt(s, IPPROTO_IP, IP_FW3, &oh->opheader, size);
+
+		/* Operation succeeded. */
+		if (error == 0)
+			break;
 	}
 
 	return (error);
@@ -677,7 +739,8 @@ check_hostname(void *arg)
 		/* Hack for sleeping a thread */
 		pthread_cond_timedwait(&thrd->cond, &thrd->mtx, &ts);
 		if (debug >= 6)
-			syslog(LOG_WARNING, "\tAwaking from the sleep for hostname %s, table %s", thrd->hostname, TABLENAME(thrd->tablename));
+			syslog(LOG_WARNING, "\tAwaking from the sleep for hostname %s, %s table %s",
+			    thrd->hostname, TABLETYPE(thrd->type), TABLENAME(thrd->tablename));
 	}
 	pthread_mutex_unlock(&thrd->mtx);
 
@@ -811,7 +874,13 @@ merge_config(void *arg __unused) {
 					if (thr->cmd != NULL)
 						free(thr->cmd);
 					free(thr);
+					if (debug > 3)
+						syslog(LOG_ERR, "Waking resolving thread for host %s", thr->hostname);
 					tmpthr->exit = 2;
+					filterdns_clean_table(tmpthr, 1);
+					pthread_mutex_lock(&tmpthr->mtx);
+					pthread_cond_signal(&tmpthr->cond);
+					pthread_mutex_unlock(&tmpthr->mtx);
 					foundexisting = 1;
 					break;
 				}
@@ -890,7 +959,7 @@ int main(int argc, char *argv[]) {
 	file = NULL;
 	pidfile = NULL;
 
-	while ((ch = getopt(argc, argv, "c:d:fi:p:y:v")) != -1) {
+	while ((ch = getopt(argc, argv, "c:d:fi:p:v")) != -1) {
 		switch (ch) {
 		case 'c':
 			file = optarg;
@@ -910,9 +979,6 @@ int main(int argc, char *argv[]) {
 			break;
 		case 'p':
 			pidfile = optarg;
-			break;
-		case 'y':
-			ipfwctx = atoi(optarg);
 			break;
 		case 'v':
 			printf("Version 1.2\n");

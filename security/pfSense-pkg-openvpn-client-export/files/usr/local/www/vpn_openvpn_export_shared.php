@@ -35,7 +35,7 @@ if (!is_array($config['openvpn']['openvpn-server'])) {
 $a_server = $config['openvpn']['openvpn-server'];
 
 $ras_server = array();
-foreach ($a_server as $sindex => $server) {
+foreach ($a_server as $server) {
 	if (isset($server['disable'])) {
 		continue;
 	}
@@ -43,6 +43,7 @@ foreach ($a_server as $sindex => $server) {
 	if ($server['mode'] != "p2p_shared_key") {
 		continue;
 	}
+	$vpnid = $server['vpnid'];
 	$ras_serverent = array();
 	$prot = $server['protocol'];
 	$port = $server['local_port'];
@@ -51,10 +52,10 @@ foreach ($a_server as $sindex => $server) {
 	} else {
 		$name = "Shared Key Server {$prot}:{$port}";
 	}
-	$ras_serverent['index'] = $sindex;
+	$ras_serverent['index'] = $vpnid;
 	$ras_serverent['name'] = $name;
 	$ras_serverent['mode'] = $server['mode'];
-	$ras_server[] = $ras_serverent;
+	$ras_server[$vpnid] = $ras_serverent;
 }
 
 $id = $_GET['id'];
@@ -71,8 +72,9 @@ $error = false;
 
 if (($act == "skconfinline") || ($act == "skconf") || ($act == "skzipconf")) {
 	$srvid = $_GET['srvid'];
-	if (($srvid === false) || ($config['openvpn']['openvpn-server'][$srvid]['mode'] != "p2p_shared_key")) {
-		pfSenseHeader("vpn_openvpn_export.php");
+	$srvcfg = get_openvpnserver_by_id($srvid);
+	if (($srvid === false) || ($srvcfg['mode'] != "p2p_shared_key")) {
+		pfSenseHeader("vpn_openvpn_export_shared.php");
 		exit;
 	}
 
@@ -316,11 +318,11 @@ servers[<?=$sindex?>] = new Array();
 servers[<?=$sindex?>][0] = '<?=$server['index']?>';
 servers[<?=$sindex?>][1] = new Array();
 servers[<?=$sindex?>][2] = '<?=$server['mode']?>';
-<?	endforeach; ?>
+<?php	endforeach; ?>
 
 function download_begin(act) {
 
-	var index = document.getElementById("server").selectedIndex;
+	var index = document.getElementById("server").value;
 	var useaddr;
 
 	if (document.getElementById("useaddr").value == "other") {
@@ -398,7 +400,7 @@ function server_changed() {
 		table.deleteRow(1);
 	}
 
-	var index = document.getElementById("server").selectedIndex;
+	var index = document.getElementById("server").value;
 
 	if (servers[index][2] == 'p2p_shared_key') {
 		var row = table.insertRow(table.rows.length);

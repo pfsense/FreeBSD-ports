@@ -50,6 +50,13 @@
 #include <netinet/ip_dummynet.h>
 #include <arpa/inet.h>	/* inet_ntoa */
 
+#include "php.h"
+#include "php_ini.h"
+#include "php_pfSense.h"
+
+static int do_cmd(int optname, void *optval, uintptr_t optlen);
+
+ZEND_DECLARE_MODULE_GLOBALS(pfSense)
 
 static struct _s_x dummynet_params[] = {
 	{ "plr",		TOK_PLR },
@@ -218,139 +225,6 @@ time_to_us(const char *s)
 
 	return -1;
 }
-
- 
-/* Get AQM or scheduler extra parameters  */
-void
-get_extra_parms(uint32_t nr, char *out, int subtype)
-{ 
-	struct dn_extra_parms *ep;
-	int ret;
-	char strt1[15], strt2[15], strt3[15];
-	u_int l;
-
-	/* prepare the request */
-	l = sizeof(struct dn_extra_parms);
-	ep = safe_calloc(1, l);
-	memset(ep, 0, sizeof(*ep));
-	*out = '\0';
-
-	oid_fill(&ep->oid, l, DN_CMD_GET, DN_API_VERSION);
-	ep->oid.len = l;
-	ep->oid.subtype = subtype;
-	ep->nr = nr;
-
-	ret = do_cmd(-IP_DUMMYNET3, ep, (uintptr_t)&l);
-	if (ret) {
-		free(ep);
-		errx(EX_DATAERR, "Error getting extra parameters\n");
-	}
-
-	switch (subtype) {
-	case DN_AQM_PARAMS:
-		if( !strcasecmp(ep->name, "codel")) {
-			us_to_time(ep->par[0], strt1);
-			us_to_time(ep->par[1], strt2);
-			l = sprintf(out, " AQM CoDel target %s interval %s",
-				strt1, strt2);
-			if (ep->par[2] & CODEL_ECN_ENABLED)
-				l = sprintf(out + l, " ECN");
-			else
-				l += sprintf(out + l, " NoECN");
-		} else if( !strcasecmp(ep->name, "pie")) {
-			us_to_time(ep->par[0], strt1);
-			us_to_time(ep->par[1], strt2);
-			us_to_time(ep->par[2], strt3);
-			l = sprintf(out, " AQM type PIE target %s tupdate %s alpha "
-					"%g beta %g max_burst %s max_ecnth %.3g",
-					strt1,
-					strt2,
-					ep->par[4] / (float) PIE_SCALE,
-					ep->par[5] / (float) PIE_SCALE,
-					strt3,
-					ep->par[3] / (float) PIE_SCALE
-				);
-				
-			if (ep->par[6] & PIE_ECN_ENABLED)
-				l += sprintf(out + l, " ECN");
-			else
-				l += sprintf(out + l, " NoECN");
-			if (ep->par[6] & PIE_CAPDROP_ENABLED)
-				l += sprintf(out + l, " CapDrop");
-			else
-				l += sprintf(out + l, " NoCapDrop");
-			if (ep->par[6] & PIE_ON_OFF_MODE_ENABLED)
-				l += sprintf(out + l, " OnOff");
-			if (ep->par[6] & PIE_DEPRATEEST_ENABLED)
-				l += sprintf(out + l, " DRE");
-			else
-				l += sprintf(out + l, " TS");
-			if (ep->par[6] & PIE_DERAND_ENABLED)
-				l += sprintf(out + l, " Derand");
-			else
-				l += sprintf(out + l, " NoDerand");
-		}
-		break;
-
-	case	DN_SCH_PARAMS:
-		if (!strcasecmp(ep->name,"FQ_CODEL")) {
-			us_to_time(ep->par[0], strt1);
-			us_to_time(ep->par[1], strt2);
-			l = sprintf(out," FQ_CODEL target %s interval %s"
-				" quantum %jd limit %jd flows %jd",
-				strt1, strt2,
-				(intmax_t) ep->par[3],
-				(intmax_t) ep->par[4],
-				(intmax_t) ep->par[5]
-				);
-			if (ep->par[2] & CODEL_ECN_ENABLED)
-				l += sprintf(out + l, " ECN");
-			else
-				l += sprintf(out + l, " NoECN");
-			l += sprintf(out + l, "\n");
-		} else 	if (!strcasecmp(ep->name,"FQ_PIE")) {
-			us_to_time(ep->par[0], strt1);
-			us_to_time(ep->par[1], strt2);
-			us_to_time(ep->par[2], strt3);
-			l = sprintf(out, "  FQ_PIE target %s tupdate %s alpha "
-				"%g beta %g max_burst %s max_ecnth %.3g"
-				" quantum %jd limit %jd flows %jd",
-				strt1,
-				strt2,
-				ep->par[4] / (float) PIE_SCALE,
-				ep->par[5] / (float) PIE_SCALE,
-				strt3,
-				ep->par[3] / (float) PIE_SCALE,
-				(intmax_t) ep->par[7],
-				(intmax_t) ep->par[8],
-				(intmax_t) ep->par[9]
-			);
-			
-			if (ep->par[6] & PIE_ECN_ENABLED)
-				l += sprintf(out + l, " ECN");
-			else
-				l += sprintf(out + l, " NoECN");
-			if (ep->par[6] & PIE_CAPDROP_ENABLED)
-				l += sprintf(out + l, " CapDrop");
-			else
-				l += sprintf(out + l, " NoCapDrop");
-			if (ep->par[6] & PIE_ON_OFF_MODE_ENABLED)
-				l += sprintf(out + l, " OnOff");
-			if (ep->par[6] & PIE_DEPRATEEST_ENABLED)
-				l += sprintf(out + l, " DRE");
-			else
-				l += sprintf(out + l, " TS");
-			if (ep->par[6] & PIE_DERAND_ENABLED)
-				l += sprintf(out + l, " Derand");
-			else
-				l += sprintf(out + l, " NoDerand");
-			l += sprintf(out + l, "\n");
-		}
-		break;
-	}
-
-	free(ep);
-}
 #endif
 
 
@@ -388,270 +262,96 @@ sort_q(void *arg, const void *pa, const void *pb)
 }
 #endif
 
-/* print a mask and header for the subsequent list of flows */
-static void
-print_mask(struct ipfw_flow_id *id)
+/*
+ * _substrcmp2 takes three strings and returns 1 if the first two do not match,
+ * and 0 if they match exactly or the second string is a sub-string
+ * of the first.  A warning is printed to stderr in the case that the
+ * first string does not match the third.
+ *
+ * This function exists to warn about the bizarre construction
+ * strncmp(str, "by", 2) which is used to allow people to use a shortcut
+ * for "bytes".  The problem is that in addition to accepting "by",
+ * "byt", "byte", and "bytes", it also excepts "by_rabid_dogs" and any
+ * other string beginning with "by".
+ *
+ * This function will be removed in the future through the usual
+ * deprecation process.
+ */
+static int
+_substrcmp2(const char *str1, const char* str2, const char* str3)
 {
-	if (!IS_IP6_FLOW_ID(id)) {
-		printf("    "
-		    "mask: %s 0x%02x 0x%08x/0x%04x -> 0x%08x/0x%04x\n",
-		    id->extra ? "queue," : "",
-		    id->proto,
-		    id->src_ip, id->src_port,
-		    id->dst_ip, id->dst_port);
-	} else {
-		char buf[255];
-		printf("\n        mask: %sproto: 0x%02x, flow_id: 0x%08x,  ",
-		    id->extra ? "queue," : "",
-		    id->proto, id->flow_id6);
-		inet_ntop(AF_INET6, &(id->src_ip6), buf, sizeof(buf));
-		printf("%s/0x%04x -> ", buf, id->src_port);
-		inet_ntop(AF_INET6, &(id->dst_ip6), buf, sizeof(buf));
-		printf("%s/0x%04x\n", buf, id->dst_port);
-	}
+
+	if (strncmp(str1, str2, strlen(str2)) != 0)
+		return 1;
+
+	if (strcmp(str1, str3) != 0)
+		php_printf("DEPRECATED: '%s' matched '%s'", str1, str3);
+	return 0;
 }
 
+/* n2mask sets n bits of the mask */
 static void
-print_header(struct ipfw_flow_id *id)
+n2mask(struct in6_addr *mask, int n)
 {
-	if (!IS_IP6_FLOW_ID(id))
-		printf("BKT Prot ___Source IP/port____ "
-		    "____Dest. IP/port____ "
-		    "Tot_pkt/bytes Pkt/Byte Drp\n");
-	else
-		printf("BKT ___Prot___ _flow-id_ "
-		    "______________Source IPv6/port_______________ "
-		    "_______________Dest. IPv6/port_______________ "
-		    "Tot_pkt/bytes Pkt/Byte Drp\n");
-}
+	static int	minimask[9] =
+	    { 0x00, 0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff };
+	u_char		*p;
 
-static void
-list_flow(struct buf_pr *bp, struct dn_flow *ni)
-{
-	char buff[255];
-	struct protoent *pe = NULL;
-	struct in_addr ina;
-	struct ipfw_flow_id *id = &ni->fid;
-
-	pe = getprotobynumber(id->proto);
-		/* XXX: Should check for IPv4 flows */
-	bprintf(bp, "%3u%c", (ni->oid.id) & 0xff,
-		id->extra ? '*' : ' ');
-	if (!IS_IP6_FLOW_ID(id)) {
-		if (pe)
-			bprintf(bp, "%-4s ", pe->p_name);
+	memset(mask, 0, sizeof(struct in6_addr));
+	p = (u_char *) mask;
+	for (; n > 0; p++, n -= 8) {
+		if (n >= 8)
+			*p = 0xff;
 		else
-			bprintf(bp, "%4u ", id->proto);
-		ina.s_addr = htonl(id->src_ip);
-		bprintf(bp, "%15s/%-5d ",
-		    inet_ntoa(ina), id->src_port);
-		ina.s_addr = htonl(id->dst_ip);
-		bprintf(bp, "%15s/%-5d ",
-		    inet_ntoa(ina), id->dst_port);
-	} else {
-		/* Print IPv6 flows */
-		if (pe != NULL)
-			bprintf(bp, "%9s ", pe->p_name);
-		else
-			bprintf(bp, "%9u ", id->proto);
-		bprintf(bp, "%7d  %39s/%-5d ", id->flow_id6,
-		    inet_ntop(AF_INET6, &(id->src_ip6), buff, sizeof(buff)),
-		    id->src_port);
-		bprintf(bp, " %39s/%-5d ",
-		    inet_ntop(AF_INET6, &(id->dst_ip6), buff, sizeof(buff)),
-		    id->dst_port);
+			*p = minimask[n];
 	}
-	pr_u64(bp, &ni->tot_pkts, 4);
-	pr_u64(bp, &ni->tot_bytes, 8);
-	bprintf(bp, "%2u %4u %3u",
-	    ni->length, ni->len_bytes, ni->drops);
+	return;
 }
 
-static void
-print_flowset_parms(struct dn_fs *fs, char *prefix)
+/**
+ * match_token takes a table and a string, returns the value associated
+ * with the string (-1 in case of failure).
+ */
+static int
+match_token(struct _s_x *table, const char *string)
 {
-	int l;
-	char qs[30];
-	char plr[30];
-	char red[200];	/* Display RED parameters */
+	struct _s_x *pt;
+	uint i = strlen(string);
 
-	l = fs->qsize;
-	if (fs->flags & DN_QSIZE_BYTES) {
-		if (l >= 8192)
-			sprintf(qs, "%d KB", l / 1024);
-		else
-			sprintf(qs, "%d B", l);
-	} else
-		sprintf(qs, "%3d sl.", l);
-	if (fs->plr)
-		sprintf(plr, "plr %f", 1.0 * fs->plr / (double)(0x7fffffff));
-	else
-		plr[0] = '\0';
-
-	if (fs->flags & DN_IS_RED) {	/* RED parameters */
-		sprintf(red,
-		    "\n\t %cRED w_q %f min_th %d max_th %d max_p %f",
-		    (fs->flags & DN_IS_GENTLE_RED) ? 'G' : ' ',
-		    1.0 * fs->w_q / (double)(1 << SCALE_RED),
-		    fs->min_th,
-		    fs->max_th,
-		    1.0 * fs->max_p / (double)(1 << SCALE_RED));
-		if (fs->flags & DN_IS_ECN)
-			strncat(red, " (ecn)", 6);
-#ifdef NEW_AQM
-	/* get AQM parameters */
-	} else if (fs->flags & DN_IS_AQM) {
-			get_extra_parms(fs->fs_nr, red, DN_AQM_PARAMS);
-#endif
-	} else
-		sprintf(red, "droptail");
-
-	if (prefix[0]) {
-	    printf("%s %s%s %d queues (%d buckets) %s\n",
-		prefix, qs, plr, fs->oid.id, fs->buckets, red);
-	    prefix[0] = '\0';
-	} else {
-	    printf("q%05d %s%s %d flows (%d buckets) sched %d "
-			"weight %d lmax %d pri %d %s\n",
-		fs->fs_nr, qs, plr, fs->oid.id, fs->buckets,
-		fs->sched_nr, fs->par[0], fs->par[1], fs->par[2], red);
-	    if (fs->flags & DN_HAVE_MASK)
-		print_mask(&fs->flow_mask);
-	}
-}
-
-static void
-print_extra_delay_parms(struct dn_profile *p)
-{
-	double loss;
-	if (p->samples_no <= 0)
-		return;
-
-	loss = p->loss_level;
-	loss /= p->samples_no;
-	printf("\t profile: name \"%s\" loss %f samples %d\n",
-		p->name, loss, p->samples_no);
-}
-
-static void
-flush_buf(char *buf)
-{
-	if (buf[0])
-		printf("%s\n", buf);
-	buf[0] = '\0';
+	for (pt = table ; i && pt->s != NULL ; pt++)
+		if (strlen(pt->s) == i && !bcmp(string, pt->s, i))
+			return pt->x;
+	return (-1);
 }
 
 /*
- * generic list routine. We expect objects in a specific order, i.e.
- * PIPES AND SCHEDULERS:
- *	link; scheduler; internal flowset if any; instances
- * we can tell a pipe from the number.
- *
- * FLOWSETS:
- *	flowset; queues;
- * link i (int queue); scheduler i; si(i) { flowsets() : queues }
+ * conditionally runs the command.
+ * Selected options or negative -> getsockopt
  */
-static void
-list_pipes(struct dn_id *oid, struct dn_id *end)
+static int
+do_cmd(int optname, void *optval, uintptr_t optlen)
 {
-    char buf[160];	/* pending buffer */
-    int toPrint = 1;	/* print header */
-    struct buf_pr bp;
+	int i;
 
-    buf[0] = '\0';
-    bp_alloc(&bp, 4096);
-    for (; oid != end; oid = O_NEXT(oid, oid->len)) {
-	if (oid->len < sizeof(*oid))
-		errx(1, "invalid oid len %d\n", oid->len);
+	if (PFSENSE_G(ipfw) == -1)
+		PFSENSE_G(ipfw) = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
+	if (PFSENSE_G(ipfw) < 0)
+		return (-1);
 
-	switch (oid->type) {
-	default:
-	    flush_buf(buf);
-	    printf("unrecognized object %d size %d\n", oid->type, oid->len);
-	    break;
-	case DN_TEXT: /* list of attached flowsets */
-	    {
-		int i, l;
-		struct {
-			struct dn_id id;
-			uint32_t p[0];
-		} *d = (void *)oid;
-		l = (oid->len - sizeof(*oid))/sizeof(d->p[0]);
-		if (l == 0)
-		    break;
-		printf("   Children flowsets: ");
-		for (i = 0; i < l; i++)
-			printf("%u ", d->p[i]);
-		printf("\n");
-		break;
-	    }
-	case DN_CMD_GET:
-	    if (co.verbose)
-		printf("answer for cmd %d, len %d\n", oid->type, oid->id);
-	    break;
-	case DN_SCH: {
-	    struct dn_sch *s = (struct dn_sch *)oid;
-	    flush_buf(buf);
-	    printf(" sched %d type %s flags 0x%x %d buckets %d active\n",
-			s->sched_nr,
-			s->name, s->flags, s->buckets, s->oid.id);
-#ifdef NEW_AQM
-		char parms[200];
-		get_extra_parms(s->sched_nr, parms, DN_SCH_PARAMS);
-		printf("%s",parms);
-#endif
-	    if (s->flags & DN_HAVE_MASK)
-		print_mask(&s->sched_mask);
-	    }
-	    break;
+	if (optname == IP_FW_GET || optname == IP_DUMMYNET_GET ||
+	    optname == IP_FW_ADD || optname == IP_FW_TABLE_LIST ||
+	    optname == IP_FW_TABLE_GETSIZE ||
+	    optname == IP_FW_NAT_GET_CONFIG ||
+	    optname < 0 ||
+	    optname == IP_FW_NAT_GET_LOG) {
+		if (optname < 0)
+			optname = -optname;
+		i = getsockopt(PFSENSE_G(ipfw), IPPROTO_IP, optname, optval,
+			(socklen_t *)optlen);
+	} else
+		i = setsockopt(PFSENSE_G(ipfw), IPPROTO_IP, optname, optval, optlen);
 
-	case DN_FLOW:
-	    if (toPrint != 0) {
-		    print_header(&((struct dn_flow *)oid)->fid);
-		    toPrint = 0;
-	    }
-	    list_flow(&bp, (struct dn_flow *)oid);
-	    printf("%s\n", bp.buf);
-	    bp_flush(&bp);
-	    break;
-
-	case DN_LINK: {
-	    struct dn_link *p = (struct dn_link *)oid;
-	    double b = p->bandwidth;
-	    char bwbuf[30];
-	    char burst[5 + 7];
-
-	    /* This starts a new object so flush buffer */
-	    flush_buf(buf);
-	    /* data rate */
-	    if (b == 0)
-		sprintf(bwbuf, "unlimited     ");
-	    else if (b >= 1000000)
-		sprintf(bwbuf, "%7.3f Mbit/s", b/1000000);
-	    else if (b >= 1000)
-		sprintf(bwbuf, "%7.3f Kbit/s", b/1000);
-	    else
-		sprintf(bwbuf, "%7.3f bit/s ", b);
-
-	    if (humanize_number(burst, sizeof(burst), p->burst,
-		    "", HN_AUTOSCALE, 0) < 0 || co.verbose)
-		sprintf(burst, "%d", (int)p->burst);
-	    sprintf(buf, "%05d: %s %4d ms burst %s",
-		p->link_nr % DN_MAX_ID, bwbuf, p->delay, burst);
-	    }
-	    break;
-
-	case DN_FS:
-	    print_flowset_parms((struct dn_fs *)oid, buf);
-	    break;
-	case DN_PROFILE:
-	    flush_buf(buf);
-	    print_extra_delay_parms((struct dn_profile *)oid);
-	}
-	flush_buf(buf); // XXX does it really go here ?
-    }
-
-    bp_free(&bp);
+	return i;
 }
 
 /*
@@ -671,7 +371,7 @@ ipfw_delete_pipe(int do_pipe, int i)
 	i = do_cmd(IP_DUMMYNET3, &cmd, cmd.oid.len);
 	if (i) {
 		i = 1;
-		warn("rule %u: setsockopt(IP_DUMMYNET_DEL)", i);
+		php_printf("rule %u: setsockopt(IP_DUMMYNET_DEL)", i);
 	}
 	return i;
 }
@@ -791,18 +491,19 @@ is_valid_number(const char *s)
  * and return the numeric bandwidth value.
  * set clocking interface or bandwidth value
  */
-static void
+static int
 read_bandwidth(char *arg, int *bandwidth, char *if_name, int namelen)
 {
 	if (*bandwidth != -1)
-		warnx("duplicate token, override bandwidth value!");
+		php_printf("duplicate token, override bandwidth value!");
 
 	if (arg[0] >= 'a' && arg[0] <= 'z') {
 		if (!if_name) {
-			errx(1, "no if support");
+			php_printf("no if support");
+			return (-1);
 		}
 		if (namelen >= IFNAMSIZ)
-			warn("interface name truncated");
+			php_printf("interface name truncated");
 		namelen--;
 		/* interface name */
 		strncpy(if_name, arg, namelen);
@@ -825,13 +526,17 @@ read_bandwidth(char *arg, int *bandwidth, char *if_name, int namelen)
 		    _substrcmp2(end, "by", "bytes") == 0)
 			bw *= 8;
 
-		if (bw < 0)
-			errx(EX_DATAERR, "bandwidth too large");
+		if (bw < 0) {
+			php_printf("bandwidth too large");
+			return (-1);
+		}
 
 		*bandwidth = bw;
 		if (if_name)
 			if_name[0] = '\0';
 	}
+
+	return (0);
 }
 
 struct point {
@@ -859,7 +564,7 @@ compare_points(const void *vp1, const void *vp2)
 
 #define ED_EFMT(s) EX_DATAERR,"error in %s at line %d: "#s,filename,lineno
 
-static void
+static int
 load_extra_delays(const char *filename, struct dn_profile *p,
 	struct dn_link *link)
 {
@@ -881,8 +586,10 @@ load_extra_delays(const char *filename, struct dn_profile *p,
 
 	profile_name[0] = '\0';
 	f = fopen(filename, "r");
-	if (f == NULL)
-		err(EX_UNAVAILABLE, "fopen: %s", filename);
+	if (f == NULL) {
+		php_printf("fopen: %s", filename);
+		return (-1);
+	}
 
 	while (fgets(line, ED_MAX_LINE_LEN, f)) {	 /* read commands */
 		char *s, *cur = line, *name = NULL, *arg = NULL;
@@ -896,8 +603,10 @@ load_extra_delays(const char *filename, struct dn_profile *p,
 				break;
 			if (*s == '\0')
 				continue;
-			if (arg)
-				errx(ED_EFMT("too many arguments"));
+			if (arg) {
+				php_printf("too many arguments");
+				return (-1);
+			}
 			if (name == NULL)
 				name = s;
 			else
@@ -905,50 +614,73 @@ load_extra_delays(const char *filename, struct dn_profile *p,
 		}
 		if (name == NULL)	/* empty line */
 			continue;
-		if (arg == NULL)
-			errx(ED_EFMT("missing arg for %s"), name);
+		if (arg == NULL) {
+			php_printf("missing arg for %s", name);
+			return (-1);
+		}
 
 		if (!strcasecmp(name, ED_TOK_SAMPLES)) {
-		    if (samples > 0)
-			errx(ED_EFMT("duplicate ``samples'' line"));
-		    if (atoi(arg) <=0)
-			errx(ED_EFMT("invalid number of samples"));
+		    if (samples > 0) {
+			php_printf("duplicate ``samples'' line");
+			return (-1);
+		    }
+		    if (atoi(arg) <=0) {
+			php_printf("invalid number of samples");
+			return (-1);
+		    }
 		    samples = atoi(arg);
-		    if (samples>ED_MAX_SAMPLES_NO)
-			    errx(ED_EFMT("too many samples, maximum is %d"),
-				ED_MAX_SAMPLES_NO);
+		    if (samples>ED_MAX_SAMPLES_NO) {
+			php_printf("too many samples, maximum is %d",
+			    ED_MAX_SAMPLES_NO);
+			return (-1);
+		    }
 		    do_points = 0;
 		} else if (!strcasecmp(name, ED_TOK_BW)) {
 		    char buf[IFNAMSIZ];
-		    read_bandwidth(arg, &link->bandwidth, buf, sizeof(buf));
+		    if (read_bandwidth(arg, &link->bandwidth, buf, sizeof(buf)) == -1)
+			return (-1);
 		} else if (!strcasecmp(name, ED_TOK_LOSS)) {
-		    if (loss != -1.0)
-			errx(ED_EFMT("duplicated token: %s"), name);
-		    if (!is_valid_number(arg))
-			errx(ED_EFMT("invalid %s"), arg);
+		    if (loss != -1.0) {
+			php_printf("duplicated token: %s", name);
+			return (-1);
+		    }
+		    if (!is_valid_number(arg)) {
+			php_printf("invalid %s", arg);
+			return (-1);
+		    }
 		    loss = atof(arg);
-		    if (loss > 1)
-			errx(ED_EFMT("%s greater than 1.0"), name);
+		    if (loss > 1) {
+			php_printf("%s greater than 1.0", name);
+			return (-1);
+		    }
 		    do_points = 0;
 		} else if (!strcasecmp(name, ED_TOK_NAME)) {
-		    if (profile_name[0] != '\0')
-			errx(ED_EFMT("duplicated token: %s"), name);
+		    if (profile_name[0] != '\0') {
+			php_printf("duplicated token: %s", name);
+			return (-1);
+		    }
 		    strncpy(profile_name, arg, sizeof(profile_name) - 1);
 		    profile_name[sizeof(profile_name)-1] = '\0';
 		    do_points = 0;
 		} else if (!strcasecmp(name, ED_TOK_DELAY)) {
-		    if (do_points)
-			errx(ED_EFMT("duplicated token: %s"), name);
+		    if (do_points) {
+			php_printf("duplicated token: %s", name);
+			return (-1);
+		    }
 		    delay_first = 1;
 		    do_points = 1;
 		} else if (!strcasecmp(name, ED_TOK_PROB)) {
-		    if (do_points)
-			errx(ED_EFMT("duplicated token: %s"), name);
+		    if (do_points) {
+			php_printf("duplicated token: %s", name);
+			return (-1);
+		    }
 		    delay_first = 0;
 		    do_points = 1;
 		} else if (do_points) {
-		    if (!is_valid_number(name) || !is_valid_number(arg))
-			errx(ED_EFMT("invalid point found"));
+		    if (!is_valid_number(name) || !is_valid_number(arg)) {
+			php_printf("invalid point found");
+			return (-1);
+		    }
 		    if (delay_first) {
 			points[points_no].delay = atof(name);
 			points[points_no].prob = atof(arg);
@@ -956,30 +688,34 @@ load_extra_delays(const char *filename, struct dn_profile *p,
 			points[points_no].delay = atof(arg);
 			points[points_no].prob = atof(name);
 		    }
-		    if (points[points_no].prob > 1.0)
-			errx(ED_EFMT("probability greater than 1.0"));
+		    if (points[points_no].prob > 1.0) {
+			php_printf("probability greater than 1.0");
+			return (-1);
+		    }
 		    ++points_no;
 		} else {
-		    errx(ED_EFMT("unrecognised command '%s'"), name);
+		    php_printf("unrecognised command '%s'", name);
+		    return (-1);
 		}
 	}
 
 	fclose (f);
 
 	if (samples == -1) {
-	    warnx("'%s' not found, assuming 100", ED_TOK_SAMPLES);
+	    php_printf("'%s' not found, assuming 100", ED_TOK_SAMPLES);
 	    samples = 100;
 	}
 
 	if (loss == -1.0) {
-	    warnx("'%s' not found, assuming no loss", ED_TOK_LOSS);
+	    php_printf("'%s' not found, assuming no loss", ED_TOK_LOSS);
 	    loss = 1;
 	}
 
 	/* make sure that there are enough points. */
-	if (points_no < ED_MIN_SAMPLES_NO)
-	    errx(ED_EFMT("too few samples, need at least %d"),
-		ED_MIN_SAMPLES_NO);
+	if (points_no < ED_MIN_SAMPLES_NO) {
+	    php_printf("too few samples, need at least %d", ED_MIN_SAMPLES_NO);
+	    return (-1);
+	}
 
 	qsort(points, points_no, sizeof(struct point), compare_points);
 
@@ -1006,6 +742,8 @@ load_extra_delays(const char *filename, struct dn_profile *p,
 	p->samples_no = samples;
 	p->loss_level = loss * samples;
 	strncpy(p->name, profile_name, sizeof(p->name));
+
+	return (0);
 }
 
 #ifdef NEW_AQM
@@ -1039,16 +777,20 @@ process_extra_parms(int *ac, char **av, struct dn_extra_parms *ep,
 			(*ac)--; av++;
 			switch(tok) {
 			case TOK_TARGET:
-				if (*ac <= 0 || time_to_us(av[0]) < 0)
-					errx(EX_DATAERR, "target needs time\n");
+				if (*ac <= 0 || time_to_us(av[0]) < 0) {
+					php_printf("target needs time\n");
+					return (-1);
+				}
 
 				ep->par[0] = time_to_us(av[0]);
 				(*ac)--; av++;
 				break;
 
 			case TOK_INTERVAL:
-				if (*ac <= 0 || time_to_us(av[0]) < 0)
-					errx(EX_DATAERR, "interval needs time\n");
+				if (*ac <= 0 || time_to_us(av[0]) < 0) {
+					php_printf("interval needs time\n");
+					return (-1);
+				}
 
 				ep->par[1] = time_to_us(av[0]);
 				(*ac)--; av++;
@@ -1062,30 +804,42 @@ process_extra_parms(int *ac, char **av, struct dn_extra_parms *ep,
 				break;
 			/* Config fq_codel parameters */
 			case TOK_QUANTUM:
-				if (type != TOK_FQ_CODEL)
-					errx(EX_DATAERR, "quantum is not for codel\n");
-				if (*ac <= 0 || !is_valid_number(av[0]))
-					errx(EX_DATAERR, "quantum needs number\n");
+				if (type != TOK_FQ_CODEL) {
+					php_printf("quantum is not for codel\n");
+					return (-1);
+				}
+				if (*ac <= 0 || !is_valid_number(av[0])) {
+					php_printf("quantum needs number\n");
+					return (-1);
+				}
 
 				ep->par[3]= atoi(av[0]);
 				(*ac)--; av++;
 				break;
 
 			case TOK_LIMIT:
-				if (type != TOK_FQ_CODEL)
-					errx(EX_DATAERR, "limit is not for codel, use queue instead\n");
-				if (*ac <= 0 || !is_valid_number(av[0]))
-					errx(EX_DATAERR, "limit needs number\n");
+				if (type != TOK_FQ_CODEL) {
+					php_printf("limit is not for codel, use queue instead\n");
+					return (-1);
+				}
+				if (*ac <= 0 || !is_valid_number(av[0])) {
+					php_printf("limit needs number\n");
+					return (-1);
+				}
 
 				ep->par[4] = atoi(av[0]);
 				(*ac)--; av++;
 				break;
 
 			case TOK_FLOWS:
-				if (type != TOK_FQ_CODEL)
-					errx(EX_DATAERR, "flows is not for codel\n");
-				if (*ac <= 0 || !is_valid_number(av[0]))
-					errx(EX_DATAERR, "flows needs number\n");
+				if (type != TOK_FQ_CODEL) {
+					php_printf("flows is not for codel\n");
+					return (-1);
+				}
+				if (*ac <= 0 || !is_valid_number(av[0])) {
+					php_printf("flows needs number\n");
+					return (-1);
+				}
 
 				ep->par[5] = atoi(av[0]);
 				(*ac)--; av++;
@@ -1119,48 +873,60 @@ process_extra_parms(int *ac, char **av, struct dn_extra_parms *ep,
 			(*ac)--; av++;
 			switch(tok) {
 			case TOK_TARGET:
-				if (*ac <= 0 || time_to_us(av[0]) < 0)
-					errx(EX_DATAERR, "target needs time\n");
+				if (*ac <= 0 || time_to_us(av[0]) < 0) {
+					php_printf("target needs time\n");
+					return (-1);
+				}
 					
 				ep->par[0] = time_to_us(av[0]);
 				(*ac)--; av++;
 				break;
 				
 			case TOK_TUPDATE:
-				if (*ac <= 0 || time_to_us(av[0]) < 0)
-					errx(EX_DATAERR, "tupdate needs time\n");
+				if (*ac <= 0 || time_to_us(av[0]) < 0) {
+					php_printf("tupdate needs time\n");
+					return (-1);
+				}
 					
 				ep->par[1] = time_to_us(av[0]);
 				(*ac)--; av++;
 				break;
 				
 			case TOK_MAX_BURST:
-				if (*ac <= 0 || time_to_us(av[0]) < 0)
-					errx(EX_DATAERR, "max_burst needs time\n");
+				if (*ac <= 0 || time_to_us(av[0]) < 0) {
+					php_printf("max_burst needs time\n");
+					return (-1);
+				}
 					
 				ep->par[2] = time_to_us(av[0]);
 				(*ac)--; av++;
 				break;
 				
 			case TOK_MAX_ECNTH:
-				if (*ac <= 0 || !is_valid_number(av[0]))
-					errx(EX_DATAERR, "max_ecnth needs number\n");
+				if (*ac <= 0 || !is_valid_number(av[0])) {
+					php_printf("max_ecnth needs number\n");
+					return (-1);
+				}
 					
 				ep->par[3] = atof(av[0]) * PIE_SCALE;
 				(*ac)--; av++;
 				break;
 
 			case TOK_ALPHA:
-				if (*ac <= 0 || !is_valid_number(av[0]))
-					errx(EX_DATAERR, "alpha needs number\n");
+				if (*ac <= 0 || !is_valid_number(av[0])) {
+					php_printf("alpha needs number\n");
+					return (-1);
+				}
 					
 				ep->par[4] = atof(av[0]) * PIE_SCALE;
 				(*ac)--; av++;
 				break;
 
 			case TOK_BETA:
-				if (*ac <= 0 || !is_valid_number(av[0]))
-					errx(EX_DATAERR, "beta needs number\n");
+				if (*ac <= 0 || !is_valid_number(av[0])) {
+					php_printf("beta needs number\n");
+					return (-1);
+				}
 					
 				ep->par[5] = atof(av[0]) * PIE_SCALE;
 				(*ac)--; av++;
@@ -1201,30 +967,42 @@ process_extra_parms(int *ac, char **av, struct dn_extra_parms *ep,
 
 			/* Config fq_pie parameters */
 			case TOK_QUANTUM:
-				if (type != TOK_FQ_PIE)
-					errx(EX_DATAERR, "quantum is not for pie\n");
-				if (*ac <= 0 || !is_valid_number(av[0]))
-					errx(EX_DATAERR, "quantum needs number\n");
+				if (type != TOK_FQ_PIE) {
+					php_printf("quantum is not for pie\n");
+					return (-1);
+				}
+				if (*ac <= 0 || !is_valid_number(av[0])) {
+					php_printf("quantum needs number\n");
+					return (-1);
+				}
 
 				ep->par[7]= atoi(av[0]);
 				(*ac)--; av++;
 				break;
 
 			case TOK_LIMIT:
-				if (type != TOK_FQ_PIE)
-					errx(EX_DATAERR, "limit is not for pie, use queue instead\n");
-				if (*ac <= 0 || !is_valid_number(av[0]))
-					errx(EX_DATAERR, "limit needs number\n");
+				if (type != TOK_FQ_PIE) {
+					php_printf("limit is not for pie, use queue instead\n");
+					return (-1);
+				}
+				if (*ac <= 0 || !is_valid_number(av[0])) {
+					php_printf("limit needs number\n");
+					return (-1);
+				}
 
 				ep->par[8] = atoi(av[0]);
 				(*ac)--; av++;
 				break;
 
 			case TOK_FLOWS:
-				if (type != TOK_FQ_PIE)
-					errx(EX_DATAERR, "flows is not for pie\n");
-				if (*ac <= 0 || !is_valid_number(av[0]))
-					errx(EX_DATAERR, "flows needs number\n");
+				if (type != TOK_FQ_PIE) {
+					php_printf("flows is not for pie\n");
+					return (-1);
+				}
+				if (*ac <= 0 || !is_valid_number(av[0])) {
+					php_printf("flows needs number\n");
+					return (-1);
+				}
 
 				ep->par[9] = atoi(av[0]);
 				(*ac)--; av++;
@@ -1232,7 +1010,7 @@ process_extra_parms(int *ac, char **av, struct dn_extra_parms *ep,
 
 
 			default:
-				printf("%s is invalid parameter\n", av[-1]);
+				php_printf("%s is invalid parameter\n", av[-1]);
 			}
 		}
 		break;
@@ -1263,8 +1041,8 @@ process_extra_parms(int *ac, char **av, struct dn_extra_parms *ep,
  *	optional Pipe N config ...
  * pipe ==>
  */
-void
-ipfw_config_pipe(int ac, char **av)
+int
+ipfw_config_pipe(int ac, char **av, int do_pipe)
 {
 	int i;
 	u_int j;
@@ -1307,14 +1085,16 @@ ipfw_config_pipe(int ac, char **av)
 		i = atoi(*av); av++; ac--;
 	} else
 		i = -1;
-	if (i <= 0)
-		errx(EX_USAGE, "need a pipe/flowset/sched number");
-	base = buf = safe_calloc(1, lmax);
+	if (i <= 0) {
+		php_printf("need a pipe/flowset/sched number");
+		return (-1);
+	}
+	base = buf = calloc(1, lmax);
 	/* all commands start with a 'CONFIGURE' and a version */
 	o_next(&buf, sizeof(struct dn_id), DN_CMD_CONFIG);
 	base->id = DN_API_VERSION;
 
-	switch (co.do_pipe) {
+	switch (do_pipe) {
 	case 1: /* "pipe N config ..." */
 		/* Allocate space for the WF2Q+ scheduler, its link
 		 * and the FIFO flowset. Set the number, but leave
@@ -1522,8 +1302,10 @@ ipfw_config_pipe(int ac, char **av)
 				    ac++; av--; /* backtrack */
 				    goto end_mask;
 			    }
-			    if (ac < 1)
-				    errx(EX_USAGE, "mask: value missing");
+			    if (ac < 1) {
+				    php_printf("mask: value missing");
+				    goto fail;
+			    }
 			    if (*av[0] == '/') {
 				    a = strtoul(av[0]+1, &end, 0);
 				    if (pa6 == NULL)
@@ -1533,25 +1315,28 @@ ipfw_config_pipe(int ac, char **av)
 			    if (p32 != NULL)
 				    *p32 = a;
 			    else if (p16 != NULL) {
-				    if (a > 0xFFFF)
-					    errx(EX_DATAERR,
-						"port mask must be 16 bit");
+				    if (a > 0xFFFF) {
+					    php_printf("port mask must be 16 bit");
+					    goto fail;
+				    }
 				    *p16 = (uint16_t)a;
 			    } else if (p20 != NULL) {
-				    if (a > 0xfffff)
-					errx(EX_DATAERR,
-					    "flow_id mask must be 20 bit");
+				    if (a > 0xfffff) {
+					    php_printf("flow_id mask must be 20 bit");
+					    goto fail;
+				    }
 				    *p20 = (uint32_t)a;
 			    } else if (pa6 != NULL) {
-				    if (a > 128)
-					errx(EX_DATAERR,
-					    "in6addr invalid mask len");
-				    else
+				    if (a > 128) {
+					    php_printf("in6addr invalid mask len");
+					    goto fail;
+				    } else
 					n2mask(pa6, a);
 			    } else {
-				    if (a > 0xFF)
-					    errx(EX_DATAERR,
-						"proto mask must be 8 bit");
+				    if (a > 0xFF) {
+					    php_printf("proto mask must be 8 bit");
+					    goto fail;
+				    }
 				    mask->proto = (uint8_t)a;
 			    }
 			    if (a != 0)
@@ -1571,18 +1356,22 @@ end_mask:
 			strcpy(aqm_extra->name,av[-1]);
 			aqm_extra->oid.subtype = DN_AQM_PARAMS;
 
-			process_extra_parms(&ac, av, aqm_extra, tok);
+			if (process_extra_parms(&ac, av, aqm_extra, tok) == -1)
+				goto fail;
 			break;
 
 		case TOK_FQ_CODEL:
 		case TOK_FQ_PIE:
-			if (!strcmp(av[-1],"type"))
-				errx(EX_DATAERR, "use type before fq_codel/fq_pie");
+			if (!strcmp(av[-1],"type")) {
+				php_printf("use type before fq_codel/fq_pie");
+				goto fail;
+			}
 
 			NEED(sch, "fq_codel/fq_pie is only for schd");
 			strcpy(sch_extra->name,av[-1]);
 			sch_extra->oid.subtype = DN_SCH_PARAMS;
-			process_extra_parms(&ac, av, sch_extra, tok);
+			if (process_extra_parms(&ac, av, sch_extra, tok) == -1)
+				goto fail;
 			break;
 #endif
 		case TOK_RED:
@@ -1596,8 +1385,10 @@ end_mask:
 			 */
 			if ((end = strsep(&av[0], "/"))) {
 			    double w_q = strtod(end, NULL);
-			    if (w_q > 1 || w_q <= 0)
-				errx(EX_DATAERR, "0 < w_q <= 1");
+			    if (w_q > 1 || w_q <= 0) {
+				php_printf("0 < w_q <= 1");
+				goto fail;
+			    }
 			    fs->w_q = (int) (w_q * (1 << SCALE_RED));
 			}
 			if ((end = strsep(&av[0], "/"))) {
@@ -1612,8 +1403,10 @@ end_mask:
 			}
 			if ((end = strsep(&av[0], "/"))) {
 			    double max_p = strtod(end, NULL);
-			    if (max_p > 1 || max_p < 0)
-				errx(EX_DATAERR, "0 <= max_p <= 1");
+			    if (max_p > 1 || max_p < 0) {
+				php_printf("0 <= max_p <= 1");
+				goto fail;
+			    }
 			    fs->max_p = (int)(max_p * (1 << SCALE_RED));
 			}
 			ac--; av++;
@@ -1631,7 +1424,8 @@ end_mask:
 		case TOK_BW:
 			NEED(p, "bw is only for links");
 			NEED1("bw needs bandwidth or interface\n");
-			read_bandwidth(av[0], &p->bandwidth, NULL, 0);
+			if (read_bandwidth(av[0], &p->bandwidth, NULL, 0) == -1)
+				goto fail;
 			ac--; av++;
 			break;
 
@@ -1647,8 +1441,10 @@ end_mask:
 			NEED(sch, "type is only for schedulers");
 			NEED1("type needs a string");
 			l = strlen(av[0]);
-			if (l == 0 || l > 15)
-				errx(1, "type %s too long\n", av[0]);
+			if (l == 0 || l > 15) {
+				php_printf("type %s too long\n", av[0]);
+				goto fail;
+			}
 			strcpy(sch->name, av[0]);
 			sch->oid.subtype = 0; /* use string */
 #ifdef NEW_AQM
@@ -1658,7 +1454,8 @@ end_mask:
 			if (!strcasecmp(av[0],"fq_codel") || !strcasecmp(av[0],"fq_pie")){
 				strcpy(sch_extra->name,av[0]);
 				sch_extra->oid.subtype = DN_SCH_PARAMS;
-				process_extra_parms(&ac, av, sch_extra, tok);
+				if (process_extra_parms(&ac, av, sch_extra, tok) == -1)
+					goto fail;
 			} else {
 				ac--;av++;
 			}
@@ -1703,7 +1500,8 @@ end_mask:
 		    {
 			NEED1("extra delay needs the file name\n");
 			pf = o_next(&buf, sizeof(*pf), DN_PROFILE);
-			load_extra_delays(av[0], pf, p); //XXX can't fail?
+			if (load_extra_delays(av[0], pf, p) == -1)
+				goto fail;
 			--ac; ++av;
 		    }
 			break;
@@ -1713,24 +1511,31 @@ end_mask:
 			NEED1("burst needs argument\n");
 			errno = 0;
 			if (expand_number(av[0], &p->burst) < 0)
-				if (errno != ERANGE)
-					errx(EX_DATAERR,
+				if (errno != ERANGE) {
+					php_printf(
 					    "burst: invalid argument");
-			if (errno || p->burst > (1ULL << 48) - 1)
-				errx(EX_DATAERR,
+					goto fail;
+				}
+			if (errno || p->burst > (1ULL << 48) - 1) {
+				php_printf(
 				    "burst: out of range (0..2^48-1)");
+				goto fail;
+			}
 			ac--; av++;
 			break;
 
 		default:
-			errx(EX_DATAERR, "unrecognised option ``%s''", av[-1]);
+			php_printf("unrecognised option ``%s''", av[-1]);
+			goto fail;
 		}
 	}
 
 	/* check validity of parameters */
 	if (p) {
-		if (p->delay > 10000)
-			errx(EX_DATAERR, "delay must be < 10000");
+		if (p->delay > 10000) {
+			php_printf("delay must be < 10000");
+			goto fail;
+		}
 		if (p->bandwidth == -1)
 			p->bandwidth = 0;
 	}
@@ -1744,8 +1549,10 @@ end_mask:
 		if (sysctlbyname("net.inet.ip.dummynet.pipe_byte_limit",
 			&limit, &len, NULL, 0) == -1)
 			limit = 1024*1024;
-		if (fs->qsize > limit)
-			errx(EX_DATAERR, "queue size must be < %ldB", limit);
+		if (fs->qsize > limit) {
+			php_printf("queue size must be < %ldB", limit);
+			goto fail;
+		}
 	    } else {
 		size_t len;
 		long limit;
@@ -1754,18 +1561,23 @@ end_mask:
 		if (sysctlbyname("net.inet.ip.dummynet.pipe_slot_limit",
 			&limit, &len, NULL, 0) == -1)
 			limit = 100;
-		if (fs->qsize > limit)
-			errx(EX_DATAERR, "2 <= queue size <= %ld", limit);
+		if (fs->qsize > limit) {
+			php_printf("2 <= queue size <= %ld", limit);
+			goto fail;
+		}
 	    }
 
 #ifdef NEW_AQM
 		if ((fs->flags & DN_IS_ECN) && !((fs->flags & DN_IS_RED)|| 
-			(fs->flags & DN_IS_AQM)))
-			errx(EX_USAGE, "ECN can be used with red/gred/"
-				"codel/fq_codel only!");
+		    (fs->flags & DN_IS_AQM))) {
+			php_printf("ECN can be used with red/gred/codel/fq_codel only!");
+			goto fail;
+		}
 #else
-	    if ((fs->flags & DN_IS_ECN) && !(fs->flags & DN_IS_RED))
-		errx(EX_USAGE, "enable red/gred for ECN");
+	    if ((fs->flags & DN_IS_ECN) && !(fs->flags & DN_IS_RED)) {
+		php_printf("enable red/gred for ECN");
+		goto fail;
+	    }
 
 #endif
 
@@ -1773,33 +1585,42 @@ end_mask:
 		size_t len;
 		int lookup_depth, avg_pkt_size;
 
-		if (!(fs->flags & DN_IS_ECN) && (fs->min_th >= fs->max_th))
-		    errx(EX_DATAERR, "min_th %d must be < than max_th %d",
+		if (!(fs->flags & DN_IS_ECN) && (fs->min_th >= fs->max_th)) {
+		    php_printf("min_th %d must be < than max_th %d",
 			fs->min_th, fs->max_th);
-		else if ((fs->flags & DN_IS_ECN) && (fs->min_th > fs->max_th))
-		    errx(EX_DATAERR, "min_th %d must be =< than max_th %d",
+		    goto fail;
+		} else if ((fs->flags & DN_IS_ECN) && (fs->min_th > fs->max_th)) {
+		    php_printf("min_th %d must be =< than max_th %d",
 			fs->min_th, fs->max_th);
+		    goto fail;
+		}
 
-		if (fs->max_th == 0)
-		    errx(EX_DATAERR, "max_th must be > 0");
+		if (fs->max_th == 0) {
+		    php_printf("max_th must be > 0");
+		    goto fail;
+		}
 
 		len = sizeof(int);
 		if (sysctlbyname("net.inet.ip.dummynet.red_lookup_depth",
 			&lookup_depth, &len, NULL, 0) == -1)
 			lookup_depth = 256;
-		if (lookup_depth == 0)
-		    errx(EX_DATAERR, "net.inet.ip.dummynet.red_lookup_depth"
+		if (lookup_depth == 0) {
+		    php_printf("net.inet.ip.dummynet.red_lookup_depth"
 			" must be greater than zero");
+		    goto fail;
+		}
 
 		len = sizeof(int);
 		if (sysctlbyname("net.inet.ip.dummynet.red_avg_pkt_size",
 			&avg_pkt_size, &len, NULL, 0) == -1)
 			avg_pkt_size = 512;
 
-		if (avg_pkt_size == 0)
-			errx(EX_DATAERR,
+		if (avg_pkt_size == 0) {
+			php_printf(
 			    "net.inet.ip.dummynet.red_avg_pkt_size must"
 			    " be greater than zero");
+			goto fail;
+		}
 
 #if 0 /* the following computation is now done in the kernel */
 		/*
@@ -1836,7 +1657,14 @@ end_mask:
 	i = do_cmd(IP_DUMMYNET3, base, (char *)buf - (char *)base);
 
 	if (i)
-		err(1, "setsockopt(%s)", "IP_DUMMYNET_CONFIGURE");
+		php_printf("setsockopt(%s)", "IP_DUMMYNET_CONFIGURE");
+
+	free(base);
+	return (i);
+
+fail:
+	free(base);
+	return (-1);
 }
 
 void
@@ -1845,145 +1673,4 @@ dummynet_flush(void)
 	struct dn_id oid;
 	oid_fill(&oid, sizeof(oid), DN_CMD_FLUSH, DN_API_VERSION);
 	do_cmd(IP_DUMMYNET3, &oid, oid.len);
-}
-
-/* Parse input for 'ipfw [pipe|sched|queue] show [range list]'
- * Returns the number of ranges, and possibly stores them
- * in the array v of size len.
- */
-static int
-parse_range(int ac, char *av[], uint32_t *v, int len)
-{
-	int n = 0;
-	char *endptr, *s;
-	uint32_t base[2];
-
-	if (v == NULL || len < 2) {
-		v = base;
-		len = 2;
-	}
-
-	for (s = *av; s != NULL; av++, ac--) {
-		v[0] = strtoul(s, &endptr, 10);
-		v[1] = (*endptr != '-') ? v[0] :
-			 strtoul(endptr+1, &endptr, 10);
-		if (*endptr == '\0') { /* prepare for next round */
-			s = (ac > 0) ? *(av+1) : NULL;
-		} else {
-			if (*endptr != ',') {
-				warn("invalid number: %s", s);
-				s = ++endptr;
-				continue;
-			}
-			/* continue processing from here */
-			s = ++endptr;
-			ac++;
-			av--;
-		}
-		if (v[1] < v[0] ||
-			v[1] >= DN_MAX_ID-1 ||
-			v[1] >= DN_MAX_ID-1) {
-			continue; /* invalid entry */
-		}
-		n++;
-		/* translate if 'pipe list' */
-		if (co.do_pipe == 1) {
-			v[0] += DN_MAX_ID;
-			v[1] += DN_MAX_ID;
-		}
-		v = (n*2 < len) ? v + 2 : base;
-	}
-	return n;
-}
-
-/* main entry point for dummynet list functions. co.do_pipe indicates
- * which function we want to support.
- * av may contain filtering arguments, either individual entries
- * or ranges, or lists (space or commas are valid separators).
- * Format for a range can be n1-n2 or n3 n4 n5 ...
- * In a range n1 must be <= n2, otherwise the range is ignored.
- * A number 'n4' is translate in a range 'n4-n4'
- * All number must be > 0 and < DN_MAX_ID-1
- */
-void
-dummynet_list(int ac, char *av[], int show_counters)
-{
-	struct dn_id *oid, *x = NULL;
-	int ret, i;
-	int n; 		/* # of ranges */
-	u_int buflen, l;
-	u_int max_size;	/* largest obj passed up */
-
-	(void)show_counters;	// XXX unused, but we should use it.
-	ac--;
-	av++; 		/* skip 'list' | 'show' word */
-
-	n = parse_range(ac, av, NULL, 0);	/* Count # of ranges. */
-
-	/* Allocate space to store ranges */
-	l = sizeof(*oid) + sizeof(uint32_t) * n * 2;
-	oid = safe_calloc(1, l);
-	oid_fill(oid, l, DN_CMD_GET, DN_API_VERSION);
-
-	if (n > 0)	/* store ranges in idx */
-		parse_range(ac, av, (uint32_t *)(oid + 1), n*2);
-	/*
-	 * Compute the size of the largest object returned. If the
-	 * response leaves at least this much spare space in the
-	 * buffer, then surely the response is complete; otherwise
-	 * there might be a risk of truncation and we will need to
-	 * retry with a larger buffer.
-	 * XXX don't bother with smaller structs.
-	 */
-	max_size = sizeof(struct dn_fs);
-	if (max_size < sizeof(struct dn_sch))
-		max_size = sizeof(struct dn_sch);
-	if (max_size < sizeof(struct dn_flow))
-		max_size = sizeof(struct dn_flow);
-
-	switch (co.do_pipe) {
-	case 1:
-		oid->subtype = DN_LINK;	/* list pipe */
-		break;
-	case 2:
-		oid->subtype = DN_FS;	/* list queue */
-		break;
-	case 3:
-		oid->subtype = DN_SCH;	/* list sched */
-		break;
-	}
-
-	/*
-	 * Ask the kernel an estimate of the required space (result
-	 * in oid.id), unless we are requesting a subset of objects,
-	 * in which case the kernel does not give an exact answer.
-	 * In any case, space might grow in the meantime due to the
-	 * creation of new queues, so we must be prepared to retry.
-	 */
-	if (n > 0) {
-		buflen = 4*1024;
-	} else {
-		ret = do_cmd(-IP_DUMMYNET3, oid, (uintptr_t)&l);
-		if (ret != 0 || oid->id <= sizeof(*oid))
-			goto done;
-		buflen = oid->id + max_size;
-		oid->len = sizeof(*oid); /* restore */
-	}
-	/* Try a few times, until the buffer fits */
-	for (i = 0; i < 20; i++) {
-		l = buflen;
-		x = safe_realloc(x, l);
-		bcopy(oid, x, oid->len);
-		ret = do_cmd(-IP_DUMMYNET3, x, (uintptr_t)&l);
-		if (ret != 0 || x->id <= sizeof(*oid))
-			goto done; /* no response */
-		if (l + max_size <= buflen)
-			break; /* ok */
-		buflen *= 2;	 /* double for next attempt */
-	}
-	list_pipes(x, O_NEXT(x, l));
-done:
-	if (x)
-		free(x);
-	free(oid);
 }

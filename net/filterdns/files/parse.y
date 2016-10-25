@@ -84,7 +84,6 @@ grammar		: /* empty */
 
 dnsrule		: ftype STRING STRING pipe command {
 			struct thread_data *thr = NULL;
-			u_long  ulval;
 			char *p, *q;
 
 			if ($1 != IPFW_TYPE && $1 != PF_TYPE) {
@@ -98,6 +97,7 @@ dnsrule		: ftype STRING STRING pipe command {
 					YYERROR;
 				}
 				thr->exit = 0;
+				thr->type = $1;
 				thr->hostname = strdup($2);
 				if ((p = strrchr(thr->hostname, '/')) != NULL) {
 					thr->mask = strtol(p+1, &q, 0);
@@ -112,20 +112,8 @@ dnsrule		: ftype STRING STRING pipe command {
 					thr->mask6 = 128;
 				}
 				free($2);
-				if ($1 == IPFW_TYPE) {
-					thr->type = IPFW_TYPE;
-					if (atoul($3, &ulval) == -1) {
-						free($3);
-						yyerror("%s is not a number", $3);
-						YYERROR;
-					} else
-						thr->tablenr = ulval;
-				} else if ($1 == PF_TYPE) {
-					thr->type = PF_TYPE;
-				}
 				thr->tablename = strdup($3);
 				free($3);
-
 				if ($4)
 					thr->pipe = $4;
 				if ($5) {
