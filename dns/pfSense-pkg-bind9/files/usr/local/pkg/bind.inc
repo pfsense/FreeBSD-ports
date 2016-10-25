@@ -889,7 +889,7 @@ function bind_sync_on_changes()
 				break;
 			case 'auto':
 				if (is_array($config['hasync'])) {
-					$hasync = $config['hasync'][0];
+					$hasync = $config['hasync'];
 					$rs[0]['ipaddress'] = $hasync['synchronizetoip'];
 					$rs[0]['username'] = $hasync['username'];
 					$rs[0]['password'] = $hasync['password'];
