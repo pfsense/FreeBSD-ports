@@ -131,7 +131,9 @@ $simplefields = array('server','useaddr','useaddr_hostname','verifyservercn','bl
 $openvpnexportcfg = &$config['installedpackages']['vpn_openvpn_export'];
 $ovpnserverdefaults = &$openvpnexportcfg['serverconfig']['item'];
 $cfg = &$config['installedpackages']['vpn_openvpn_export']['defaultsettings'];
-
+if (!is_array($ovpnserverdefaults)) {
+	$ovpnserverdefaults = array();
+}
 
 if (isset($_POST['save'])) {
 	$vpnid = $_POST['server'];
@@ -167,11 +169,11 @@ if (isset($_POST['save'])) {
 		write_config("Save openvpn client export defaults");
 	}
 }
-//$cfg['advancedoptions'] = base64_decode($cfg['advancedoptions']);
+
 for($i = 0; $i < count($ovpnserverdefaults); $i++) {
 	$ovpnserverdefaults[$i]['advancedoptions'] = base64_decode($ovpnserverdefaults[$i]['advancedoptions']);
 }
-//print_r($ovpnserverdefaults);
+
 if (!empty($act)) {
 
 	$srvid = $_GET['srvid'];
