@@ -181,11 +181,11 @@ if (isset($_POST['save'])) {
 		write_config("Save openvpn client export defaults");
 	}
 }
-//$cfg['advancedoptions'] = base64_decode($cfg['advancedoptions']);
+
 for($i = 0; $i < count($ovpnserverdefaults); $i++) {
 	$ovpnserverdefaults[$i]['advancedoptions'] = base64_decode($ovpnserverdefaults[$i]['advancedoptions']);
 }
-//print_r($ovpnserverdefaults);
+
 if (!empty($act)) {
 
 	$srvid = $_GET['srvid'];
