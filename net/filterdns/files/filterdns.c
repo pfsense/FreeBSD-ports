@@ -874,7 +874,13 @@ merge_config(void *arg __unused) {
 					if (thr->cmd != NULL)
 						free(thr->cmd);
 					free(thr);
+					if (debug > 3)
+						syslog(LOG_ERR, "Waking resolving thread for host %s", thr->hostname);
 					tmpthr->exit = 2;
+					filterdns_clean_table(tmpthr, 1);
+					pthread_mutex_lock(&tmpthr->mtx);
+					pthread_cond_signal(&tmpthr->cond);
+					pthread_mutex_unlock(&tmpthr->mtx);
 					foundexisting = 1;
 					break;
 				}
@@ -884,13 +890,6 @@ merge_config(void *arg __unused) {
 						syslog(LOG_ERR, "Creating a new thread for host %s!", thr->hostname);
 					if (check_hostname_create(thr) == -1)
 						syslog(LOG_ERR, "Unable to create monitoring thread for host %s! It will not be monitored!", thr->hostname);
-				} else {
-					if (debug > 3)
-						syslog(LOG_ERR, "Waking resolving thread for host %s", thr->hostname);
-					filterdns_clean_table(tmpthr, 1);
-					pthread_mutex_lock(&tmpthr->mtx);
-					pthread_cond_signal(&tmpthr->cond);
-					pthread_mutex_unlock(&tmpthr->mtx);
 				}
 			}
 		}
