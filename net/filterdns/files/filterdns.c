@@ -339,23 +339,25 @@ filterdns_clean_table(struct thread_data *thrdata, int donotcheckrefcount)
 				continue;
 
 			error = 0;
-			syslog(LOG_NOTICE, "\t\tclearing entry %s from table %s on host %s", buffer,
-			    TABLENAME(thrdata->tablename), thrdata->hostname);
+			syslog(LOG_NOTICE, "clearing entry %s from %s table %s on host %s",
+			    buffer, TABLETYPE(thrdata->type), TABLENAME(thrdata->tablename),
+			    thrdata->hostname);
 			if (thrdata->type == PF_TYPE)
 				error = pf_tableentry(thrdata, e->addr, DELETE);
 			else if (thrdata->type == IPFW_TYPE)
 				error = ipfw_tableentry(thrdata, e->addr, DELETE);
 			if (error != 0)
-				syslog(LOG_ERR, "\t\tCOULD NOT clear entry %s from table %s on host %s will retry later",
-				    buffer, TABLENAME(thrdata->tablename), thrdata->hostname);
+				syslog(LOG_ERR, "COULD NOT clear entry %s from %s table %s on host %s will retry later",
+				    buffer, TABLETYPE(thrdata->type), TABLENAME(thrdata->tablename), thrdata->hostname);
 			TAILQ_REMOVE(&thrdata->rnh, e, entry);
 			free(e->addr);
 			free(e);
 			if (!donotcheckrefcount)
 				removed++;
 		} else if (debug >= 2)
-			syslog(LOG_WARNING, "\tNOT clearing entry %s from table %s on host %s",
-			    buffer, TABLENAME(thrdata->tablename), thrdata->hostname);
+			syslog(LOG_WARNING, "\tNOT clearing entry %s from %s table %s on host %s",
+			    buffer, TABLETYPE(thrdata->type), TABLENAME(thrdata->tablename),
+			    thrdata->hostname);
 	}
 
 	return (removed);
@@ -392,7 +394,9 @@ host_dns(struct thread_data *hostd, int forceupdate)
 			continue;
 		if (res->ai_family == AF_INET) {
 			if (debug > 9)
-				syslog(LOG_WARNING, "\t\tfound entry %s for %s", inet_ntop(res->ai_family, res->ai_addr->sa_data + 2, buffer, sizeof buffer), TABLENAME(hostd->tablename));
+				syslog(LOG_WARNING, "\t\tfound entry %s for %s table %s",
+				    inet_ntop(res->ai_family, res->ai_addr->sa_data + 2, buffer, sizeof buffer),
+				    TABLETYPE(hostd->type), TABLENAME(hostd->tablename));
 			if (hostd->mask > 32) {
 				syslog(LOG_WARNING, "\t\tinvalid mask for %s/%d", inet_ntop(res->ai_family, res->ai_addr->sa_data + 2, buffer, sizeof buffer), hostd->mask);
 				hostd->mask = 32;
@@ -400,7 +404,9 @@ host_dns(struct thread_data *hostd, int forceupdate)
 		}
 		if(res->ai_family == AF_INET6) {
 			if (debug > 9)
-				syslog(LOG_WARNING, "\t\tfound entry %s for %s", inet_ntop(res->ai_family, res->ai_addr->sa_data + 6, buffer, sizeof buffer), TABLENAME(hostd->tablename));
+				syslog(LOG_WARNING, "\t\tfound entry %s for %s table %s",
+				    inet_ntop(res->ai_family, res->ai_addr->sa_data + 6, buffer, sizeof buffer),
+				    TABLETYPE(hostd->type), TABLENAME(hostd->tablename));
 		}
 		error = add_table_entry(hostd, res->ai_addr, forceupdate);
 		if (error == 0)
@@ -733,7 +739,8 @@ check_hostname(void *arg)
 		/* Hack for sleeping a thread */
 		pthread_cond_timedwait(&thrd->cond, &thrd->mtx, &ts);
 		if (debug >= 6)
-			syslog(LOG_WARNING, "\tAwaking from the sleep for hostname %s, table %s", thrd->hostname, TABLENAME(thrd->tablename));
+			syslog(LOG_WARNING, "\tAwaking from the sleep for hostname %s, %s table %s",
+			    thrd->hostname, TABLETYPE(thrd->type), TABLENAME(thrd->tablename));
 	}
 	pthread_mutex_unlock(&thrd->mtx);
 
@@ -877,6 +884,13 @@ merge_config(void *arg __unused) {
 						syslog(LOG_ERR, "Creating a new thread for host %s!", thr->hostname);
 					if (check_hostname_create(thr) == -1)
 						syslog(LOG_ERR, "Unable to create monitoring thread for host %s! It will not be monitored!", thr->hostname);
+				} else {
+					if (debug > 3)
+						syslog(LOG_ERR, "Waking resolving thread for host %s", thr->hostname);
+					filterdns_clean_table(thr, 1);
+					pthread_mutex_lock(&thr->mtx);
+					pthread_cond_signal(&thr->cond);
+					pthread_mutex_unlock(&thr->mtx);
 				}
 			}
 		}
