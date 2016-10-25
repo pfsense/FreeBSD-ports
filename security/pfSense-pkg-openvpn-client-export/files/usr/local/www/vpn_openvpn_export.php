@@ -143,7 +143,9 @@ $simplefields = array('server','useaddr','useaddr_hostname','verifyservercn','bl
 $openvpnexportcfg = &$config['installedpackages']['vpn_openvpn_export'];
 $ovpnserverdefaults = &$openvpnexportcfg['serverconfig']['item'];
 $cfg = &$config['installedpackages']['vpn_openvpn_export']['defaultsettings'];
-
+if (!is_array($ovpnserverdefaults)) {
+	$ovpnserverdefaults = array();
+}
 
 if (isset($_POST['save'])) {
 	$vpnid = $_POST['server'];
