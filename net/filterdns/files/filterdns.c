@@ -887,10 +887,10 @@ merge_config(void *arg __unused) {
 				} else {
 					if (debug > 3)
 						syslog(LOG_ERR, "Waking resolving thread for host %s", thr->hostname);
-					filterdns_clean_table(thr, 1);
-					pthread_mutex_lock(&thr->mtx);
-					pthread_cond_signal(&thr->cond);
-					pthread_mutex_unlock(&thr->mtx);
+					filterdns_clean_table(tmpthr, 1);
+					pthread_mutex_lock(&tmpthr->mtx);
+					pthread_cond_signal(&tmpthr->cond);
+					pthread_mutex_unlock(&tmpthr->mtx);
 				}
 			}
 		}
