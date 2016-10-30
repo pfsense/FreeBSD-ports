@@ -2097,22 +2097,27 @@ function load_ipfw_rules() {
 		$transparent_interfaces[$interface] = 1;
 	}
 	
-	if (haproxy_utils::$pf_version < 2.2) {
-		// pfSense 2.1 FreeBSD 8.3
-		mwexec("/usr/local/sbin/ipfw_context -a $ipfw_zone_haproxy", true);
-		
-		foreach($transparent_interfaces as $transparent_if => $value) {
-			mwexec("/usr/local/sbin/ipfw_context -a $ipfw_zone_haproxy -n $transparent_if", true);
+	if (haproxy_utils::$pf_version < 2.4) {
+		$rulenum = 64000; // why that high? captiveportal.inc also does it...
+		if (haproxy_utils::$pf_version < 2.2) {
+			// pfSense 2.1 FreeBSD 8.3
+			mwexec("/usr/local/sbin/ipfw_context -a $ipfw_zone_haproxy", true);
+
+			foreach($transparent_interfaces as $transparent_if => $value) {
+				mwexec("/usr/local/sbin/ipfw_context -a $ipfw_zone_haproxy -n $transparent_if", true);
+			}
+		} else {
+			// pfSense 2.2 FreeBSD 10
+			mwexec("/sbin/ipfw zone $ipfw_zone_haproxy create", true);
+			foreach($transparent_interfaces as $transparent_if => $value) {
+				mwexec("/sbin/ipfw zone $ipfw_zone_haproxy madd $transparent_if", true);
+			}
 		}
 	} else {
-		// pfSense 2.2 FreeBSD 10
-		mwexec("/sbin/ipfw zone $ipfw_zone_haproxy create", true);
-		foreach($transparent_interfaces as $transparent_if => $value) {
-			mwexec("/sbin/ipfw zone $ipfw_zone_haproxy madd $transparent_if", true);
-		}
+		// pfSense 2.4, captive portal rules start at 1000
+		$rulenum = 10;
 	}
 	
-	$rulenum = 64000; // why that high? captiveportal.inc also does it...
 	$rules = "flush\n";
 	foreach($transparent_backends as $transparent_be) {
 		if (is_ipaddrv4($transparent_be["address"])) {
@@ -2130,7 +2135,11 @@ function load_ipfw_rules() {
 	if (haproxy_utils::$pf_version < 2.2) {
 		mwexec("/usr/local/sbin/ipfw_context -s $ipfw_zone_haproxy", true);
 	}
-	mwexec("/sbin/ipfw -x $ipfw_zone_haproxy -q {$g['tmp_path']}/ipfw_{$ipfw_zone_haproxy}.haproxy.rules", true);
+	if (haproxy_utils::$pf_version < 2.4) {
+		mwexec("/sbin/ipfw -x $ipfw_zone_haproxy -q {$g['tmp_path']}/ipfw_{$ipfw_zone_haproxy}.haproxy.rules", true);
+	} else {
+		mwexec("/sbin/ipfw -q {$g['tmp_path']}/ipfw_{$ipfw_zone_haproxy}.haproxy.rules", true);
+	}
 }
 
 function haproxy_plugin_carp($pluginparams) {
@@ -2171,6 +2180,22 @@ function haproxy_plugin_certificates($pluginparams) {
 									$result['certificatelist'][$cert][] = $item;
 								}
 							}
+						}
+					}
+				}
+			}
+		}
+		
+		$a_backends = $config['installedpackages']['haproxy']['ha_pools']['item'];
+		if (is_array($a_backends)) {
+			foreach ($a_backends as &$backend) {
+				if (is_array($backend['ha_servers']['item'])) {
+					foreach($backend['ha_servers']['item'] as $srv) {
+						if ($srv['ssl-server-clientcert']) {
+							$item = array();
+							$cert = $srv['ssl-server-clientcert'];
+							$item['usedby'] = $backend['name']."/".$srv['name'];
+							$result['certificatelist'][$cert][] = $item;
 						}
 					}
 				}
