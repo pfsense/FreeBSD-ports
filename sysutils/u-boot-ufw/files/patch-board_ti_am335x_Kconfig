@@ -1,0 +1,13 @@
+--- board/ti/am335x/Kconfig.orig	2016-03-14 14:20:21 UTC
++++ board/ti/am335x/Kconfig
+@@ -38,4 +38,10 @@ config NOR_BOOT
+ 	  as the ROM only partially sets up pinmux.  We also default to using
+ 	  NOR for environment.
+ 
++config UBMC
++	bool "Enable uBMC board support"
++
++config UFW
++	bool "Enable uFW board support"
++
+ endif

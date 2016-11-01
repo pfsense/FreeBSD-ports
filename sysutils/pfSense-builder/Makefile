@@ -25,7 +25,8 @@ RUN_DEPENDS=	${LOCALBASE}/bin/git:devel/git \
 		${LOCALBASE}/lib/pam_ldap.so:security/pam_ldap \
 		${LOCALBASE}/lib/pam_mkhomedir.so:security/pam_mkhomedir \
 		${LOCALBASE}/bin/gtar:archivers/gtar \
-		${LOCALBASE}/bin/xml:textproc/xmlstarlet
+		${LOCALBASE}/bin/xml:textproc/xmlstarlet \
+		${LOCALBASE}/share/u-boot/u-boot-ufw/u-boot.img:sysutils/u-boot-ufw
 
 LIB_DEPENDS=	libpcre.so:devel/pcre
 

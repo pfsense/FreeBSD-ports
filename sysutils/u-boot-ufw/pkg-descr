@@ -1,0 +1,14 @@
+U-Boot loader for the uFW.
+
+This version is patched so that:
+ * ELF and API features are enabled.
+ * The default environment is trimmed to just what's needed to boot.
+ * The DTB file name is chosen based on the board model and passed to ubldr
+   using the fdtfile env variable.  ubldr loads the DTB from /boot/dtb/ on
+   the FreeBSD partition.
+ * By default, it loads ubldr from file ubldr.bin from active FAT slice on
+   SD/MMC to address 0x88000000 and launches it.
+
+For information about running FreeBSD on uBMC and uFW, see https://netgate.com
+
+For general information about U-Boot see WWW: http://www.denx.de/wiki/U-Boot
