@@ -132,7 +132,7 @@ function quagga_ospfd_install_conf() {
 				} elseif (!empty($conf['password'])) {
 					$conffile .= "  ip ospf authentication-key " . substr($conf['password'], 0, 8) . "\n";
 				}
-				if (!empty($conf['routerpriorityelections'])) {
+				if (!empty($conf['routerpriorityelections']) || ($conf['routerpriorityelections'] == "0")) {
 					$conffile .= "  ip ospf priority {$conf['routerpriorityelections']}\n";
 				}
 				if (!empty($conf['retransmitinterval'])) {
