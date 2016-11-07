@@ -486,6 +486,8 @@ PHP_MINIT_FUNCTION(pfSense_socket)
 #ifdef IFCAP_VLAN_HWTSO
 	REGISTER_LONG_CONSTANT("IFCAP_VLAN_HWTSO", IFCAP_VLAN_HWTSO, CONST_PERSISTENT | CONST_CS);
 #endif
+	REGISTER_LONG_CONSTANT("IFCAP_RXCSUM_IPV6", IFCAP_RXCSUM_IPV6, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFCAP_TXCSUM_IPV6", IFCAP_TXCSUM_IPV6, CONST_PERSISTENT | CONST_CS);
 
 	REGISTER_LONG_CONSTANT("IFBIF_LEARNING", IFBIF_LEARNING, CONST_PERSISTENT | CONST_CS);
 	REGISTER_LONG_CONSTANT("IFBIF_DISCOVER", IFBIF_DISCOVER, CONST_PERSISTENT | CONST_CS);
@@ -2006,6 +2008,10 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 				add_assoc_long(caps, "rxcsum", 1);
 			if (ifr.ifr_reqcap & IFCAP_TXCSUM)
 				add_assoc_long(caps, "txcsum", 1);
+			if (ifr.ifr_reqcap & IFCAP_RXCSUM_IPV6)
+				add_assoc_long(caps, "rxcsum6", 1);
+			if (ifr.ifr_reqcap & IFCAP_TXCSUM_IPV6)
+				add_assoc_long(caps, "txcsum6", 1);
 			if (ifr.ifr_reqcap & IFCAP_VLAN_MTU)
 				add_assoc_long(caps, "vlanmtu", 1);
 			if (ifr.ifr_reqcap & IFCAP_JUMBO_MTU)
