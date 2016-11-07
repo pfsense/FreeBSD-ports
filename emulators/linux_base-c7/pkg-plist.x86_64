@@ -3033,9 +3033,9 @@ var/mail
 @dir etc/xinetd.d
 @dir mnt
 @dir opt
-@dir proc
+@dir(,,555) proc
 @dir srv
-@dir sys
+@dir(,,555) sys
 @dir usr/etc
 @dir usr/games
 @dir usr/include

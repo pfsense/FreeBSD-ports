@@ -50,6 +50,10 @@
 			</description>
 		</field>
 		<field>
+			<name>User Privileges</name>
+			<type>listtopic</type>
+		</field>
+		<field>
 			<fielddescr>User Permissions</fielddescr>
 			<fieldname>none</fieldname>
 			<type>rowhelper</type>
@@ -86,6 +90,27 @@
 					<value>ALL</value>
 				</rowhelperfield>
 			</rowhelper>
+		</field>
+		<field>
+			<name>Advanced Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Custom Configuration</fielddescr>
+			<fieldname>add_includedir</fieldname>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>Do Not Include</name><value>none</value></option>
+				<option><name>Include at Start</name><value>include_start</value></option>
+				<option><name>Include at End</name><value>include_end</value></option>
+			</options>
+			<description>
+			<![CDATA[
+				Include additional custom configuration files from <b>/usr/local/etc/sudoers.d</b>.<br /><br />
+				Including custom configuration files allows options to be set which are not supported by the GUI, but these files can be a potential security risk and they are not backed up.<br /><br />
+			]]>
+			</description>
 		</field>
 	</fields>
 	<custom_php_install_command>
