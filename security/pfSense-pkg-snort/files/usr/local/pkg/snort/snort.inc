@@ -1026,6 +1026,12 @@ function sync_snort_package_config() {
 	$snortdir = SNORTDIR;
 	$rcdir = RCFILEPREFIX;
 
+	/* Create required log and db directories in /var on each sync, in case /var is in RAM. */
+	safe_mkdir(SNORTLOGDIR);
+	safe_mkdir(SNORT_IPREP_PATH);
+	safe_mkdir(SNORT_SID_MODS_PATH);
+	safe_mkdir(SNORT_APPID_ODP_PATH);
+
 	/* do not start config build if rules is empty or there are no Snort settings */
 	if (!is_array($config['installedpackages']['snortglobal']) || !is_array($config['installedpackages']['snortglobal']['rule'])) {
 		return;
