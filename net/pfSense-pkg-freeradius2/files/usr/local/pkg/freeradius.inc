@@ -33,6 +33,7 @@ require_once("util.inc");
 require_once("xmlrpc_client.inc");
 
 define('FREERADIUS_BASE', '/usr/local');
+global $bash_path;
 $bash_path = FREERADIUS_BASE . "/bin/bash";
 define('FREERADIUS_LIB', FREERADIUS_BASE . '/lib');
 define('FREERADIUS_ETC', FREERADIUS_BASE . '/etc');
