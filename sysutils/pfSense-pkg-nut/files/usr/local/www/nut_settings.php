@@ -319,9 +319,9 @@ $serial_drivers = array(
 
 
 $serial_ports = array();
-$dlist = glob("/dev/cuau*");
+$dlist = glob("/dev/cua[uU]*");
 foreach ($dlist as $d) {
-	if (preg_match('/^\/dev\/cuau[0-9]+$/', $d)) {
+	if (preg_match('/^\/dev\/cua[uU][0-9]+$/', $d)) {
 		$serial_ports[$d] = $d; 
 	} 
 }
