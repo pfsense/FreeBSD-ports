@@ -46,6 +46,8 @@ require_once('pkg-utils.inc');
 require_once('filter.inc');
 require_once('service-utils.inc');
 
+global $config;
+
 # squid package must exists by default system path (for v.2.0/2.1)
 # todo: move include string to the squid-function call string position
 if (file_exists('/usr/local/pkg/squid.inc')) {
@@ -125,9 +127,15 @@ define('SQUIDGUARD_VAR',                '/var/squidGuard');                     
 define('SQUIDGUARD_STATE',              '/squidGuard.state');
 define('SQUIDGUARD_REBUILD',            '/squidGuard.rebuild');
 define('SQUIDGUARD_CONFXML',            '/squidguard_conf.xml');
-define('SQUIDGUARD_DBHOME',             '/var/db/squidGuard');
+
+if (isset($config['system']['use_mfs_tmpvar'])) {
+	define('SQUIDGUARD_DBHOME',     '/usr/local/share/squidGuard');
+} else {
+	define('SQUIDGUARD_DBHOME',     '/var/db/squidGuard');
+}
+
 define('SQUIDGUARD_DBHOME_BLK',         SQUIDGUARD_DBHOME);
-define('SQUIDGUARD_DBSAMPLE',           '/var/db/squidGuard.sample');
+define('SQUIDGUARD_DBSAMPLE',           SQUIDGUARD_DBHOME . '.sample');
 define('SQUIDGUARD_LOGDIR',             '/var/squidGuard/log');
 define('SQUIDGUARD_WEBGUI_LOG',         '/squidguard_gui.log');
 define('SQUIDGUARD_WEBGUI_HISTORY_LOG', '/squidguard_gui_history.log');
@@ -576,7 +584,7 @@ function sg_reconfigure_user_db()
         # 5. recursive set files access
         set_file_access($dbhome, OWNER_NAME, 0755);
 
-        # 6. rebuild user db ('/var/db/squidGuard')
+        # 6. rebuild user db (SQUIDGUARD_DBHOME)
         squidguard_rebuild_db("_usrdb", $dbhome, $dst_list);
     } else
         sg_addlog("sg_reconfigure_user_db", "User destinations list empty.", SQUIDGUARD_WARNING);
@@ -639,10 +647,10 @@ function sg_remove_unused_db_entries()
 # sg_rebuild_db  Rebuild squidGuard DB from list items
 # ------------------------------------------------------------------------------
 # $shtag         - rebuild SH script TAG
-# $rdb_dbhome    - DB directory  (default: '/var/db/squidGuard')
+# $rdb_dbhome    - DB directory  (default: SQUIDGUARD_DBHOME)
 # $rdb_itemslist - items list as ['dest_key']='dest_DB_path'
 #                  dest_DB_path - path without '$rdb_dbhome'
-#                  example: ['ads_ban']='ads/banners' -> '/var/db/squidGuard/ads/banners'
+#                  example: ['ads_ban']='ads/banners' -> SQUIDGUARD_DBHOME . '/ads/banners'
 # ------------------------------------------------------------------------------
 /*
 function sg_rebuild_db($shtag, $rdb_dbhome, $rdb_itemslist)
@@ -695,10 +703,10 @@ function sg_rebuild_db($shtag, $rdb_dbhome, $rdb_itemslist)
 # squidguard_rebuild_db  Rebuild squidGuard DB from list items
 # ------------------------------------------------------------------------------
 # $tag           - rebuild task TAG
-# $rdb_dbhome    - DB directory  (default: '/var/db/squidGuard')
+# $rdb_dbhome    - DB directory  (default: SQUIDGUARD_DBHOME)
 # $rdb_itemslist - items list as ['dest_key']='dest_DB_path'
 #                  dest_DB_path - path without '$rdb_dbhome'
-#                  example: ['ads_ban']='ads/banners' -> '/var/db/squidGuard/ads/banners'
+#                  example: ['ads_ban']='ads/banners' -> SQUIDGUARD_DBHOME . '/ads/banners'
 # ------------------------------------------------------------------------------
 function squidguard_rebuild_db($tag, $rdb_dbhome, $rdb_itemslist)
 {
@@ -1159,7 +1167,7 @@ function sg_create_config()
 #         $blk_dbhome   - temporary DB home dir, may be different with DBHOME
 #         $blk_destlist - is array as [dst_name] = 'path',
 #                         where path - catalog without dbhome path
-#                         For example: dbhome is '/var/db/squidGuard/',
+#                         For example: dbhome is SQUIDGUARD_DBHOME . '/',
 #                         path can be 'usr/ads' or 'bl/poxy'
 #         $redirect_to  - redirector string
 # ------------------------------------------------------------------------------
@@ -2215,7 +2223,7 @@ function sg_entries_blacklist()
     return $contents;
 }
 # -----------------------------------------------------------------------------
-# sg_blacklist_rebuild_db - rebuild current Blacklist DB (default: '/var/db/squidGuard')
+# sg_blacklist_rebuild_db - rebuild current Blacklist DB (default: SQUIDGUARD_DBHOME)
 # -----------------------------------------------------------------------------
 /*
 function sg_blacklist_rebuild_db()
@@ -2236,7 +2244,7 @@ function sg_blacklist_rebuild_db()
             foreach($blklist as $bl) { $dst_list[$bl] = $bl; }
     }
 
-    # rebuild user db ('/var/db/squidGuard')
+    # rebuild user db (SQUIDGUARD_DBHOME)
     squidguard_rebuild_db("_blkdb", $dbhome, $dst_list);
 }
 */
