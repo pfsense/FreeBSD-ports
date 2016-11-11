@@ -1,0 +1,7 @@
+/etc/inc/priv/vhosts.inc
+pkg/vhosts.xml
+pkg/vhosts.inc
+pkg/shortcuts/vhosts.inc
+www/packages/vhosts.php
+%%DATADIR%%/info.xml
+@dir /etc/inc/priv
