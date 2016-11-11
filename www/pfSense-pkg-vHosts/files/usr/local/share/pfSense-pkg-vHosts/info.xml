@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--****************************************************************************
+* vHosts package information file.
+* ==============================================================================
+* Part of pfSense 2.3 and later (https://www.pfSense.org/).
+*
+* Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
+* Licensed under the Apache 2.0 License.
+*
+* Copyright (C) 2016 Softlife Consulting
+* Licensed under the same terms and conditions as pfSense itself.
+*
+* License: https://github.com/pfsense/pfsense/blob/master/LICENSE
+*****************************************************************************-->
+<pfsensepkgs>
+	<package>
+		<name>vHosts</name>
+		<descr><![CDATA[vHosts nginx Web Server]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>vhosts.xml</configurationfile>
+	</package>
+</pfsensepkgs>
