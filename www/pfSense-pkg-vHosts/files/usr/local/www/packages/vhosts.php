@@ -39,14 +39,17 @@ require("/usr/local/pkg/vhosts.inc");
 /*******************************************************************************
 * save_config_and_exit */
 /**
-* Writes out the configuration, updates the config files, and reloads page.
+* Writes out the configuration, updates the config files, and reloads page. If
+* the service is running, the subsystem is marked 'dirty' and a warning message
+* to restart the service is shown on the list page. 'dirty' mark is cleared when
+* the service starts as declared in the <startcmd> of the config file.
 *******************************************************************************/
 function save_config_and_exit()
 	{
 	global $vhosts_g;
 	
 	write_config();
-	vhosts_sync_package();
+	vhosts_build_service_config();
 	
 	if (is_service_running($vhosts_g['service_name']))
 		mark_subsystem_dirty('vhosts');
@@ -304,12 +307,12 @@ else
 	</div>
 	
 	<?php
-	/*----------------------------------------------------------------------*/
-	/* pfSenseHelpers.js will add a listener to the "showinfo-vhosts" icon  */
-	/* that will toggle display of "infoblock-vhosts". We are               */
-	/* short-circuiting the "infoblock" feature to manually place the       */
-	/* "Info" icon to the left of the "action-buttons" which looks cleaner. */
-	/*----------------------------------------------------------------------*/
+	/*-------------------------------------------------------------------*/
+	/* pfSenseHelpers.js will add a listener to the "showinfo-vhosts"    */
+	/* icon that will toggle display of "infoblock-vhosts". We are short */
+	/* circuiting the "infoblock" feature to manually place the "Info"   */
+	/* icon to the left of the "action-buttons" which looks cleaner.     */
+	/*-------------------------------------------------------------------*/
 	?>
 	<nav class="action-buttons">
 		<span style="float:left;margin-top:5px">
@@ -326,8 +329,8 @@ else
 	<div class="infoblock-vhosts alert alert-info clearfix" role="alert" style="display:none; margin-top:-10px">
 		<?=gettext('<p>vHosts is a web server package to host HTML, Javascript, CSS, and PHP. It creates another instance'.
 					'of the <b>nginx</b> web server that is already installed and uses PHP5 in FastCGI mode. '.
-					'The document root folder of a vHost configuration is <b>/usr/local/vhosts/</b><i>Name</i>. Files can be '.
-					'copied to the root folder using <b>Diagnostics->Edit File</b>. </b>To copy files using SCP or SFTP, '.
+					"The document root folder of a vHost configuration is <b>{$vhosts_g['root_base_path']}/</b><i>Name</i>. Files can be ".
+					'copied to the root folder using <b>Diagnostics->Edit File</b> or, </b>to allow file transfer using <b>SCP</b> or <b>SFTP</b>, '.
 					'enable SSH from <b>System->Advanced->Enable Secure Shell</b>.</p>'.
 					'<p>After adding or updating a vHost configuration, restart the service to apply the settings.</p>'); ?>
 	</div>

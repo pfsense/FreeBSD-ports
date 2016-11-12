@@ -25,20 +25,30 @@
 		<name>vhostsd</name>
 		<rcfile>vhostsd.sh</rcfile>
 		<description>vHosts nginx Web Server</description>
+		
+		<!--=================================================-->
+		<!-- service_utils.inc:is_service_running() will use -->
+		<!-- this to determine if the service is running.    -->
+		<!--=================================================-->
 		<custom_php_service_status_command>
 			is_pid_running("/var/run/vhostsd.pid");
 		</custom_php_service_status_command>
+		
+		<!--======================================================-->
+		<!-- service_utils.inc:start_service() will eval this to  -->
+		<!-- clear the 'dirty' flag after the service is started. -->
+		<!--======================================================-->
 		<startcmd>
 			clear_subsystem_dirty('vhosts');
 		</startcmd>	
 	</service>
 	<custom_php_resync_config_command>
-		vhosts_sync_package();
+		vhosts_build_service_config();
 	</custom_php_resync_config_command>
 	<custom_php_install_command>
-		vhosts_install_command();
+		vhosts_post_install();
 	</custom_php_install_command>
 	<custom_php_pre_deinstall_command>
-		vhosts_deinstall_command();
+		vhosts_pre_deinstall();
 	</custom_php_pre_deinstall_command>
 </packagegui>

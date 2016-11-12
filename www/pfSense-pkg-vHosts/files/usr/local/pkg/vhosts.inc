@@ -118,46 +118,12 @@ $vhosts_g['conf_server_ssl'] = <<<CONF_SERVER_SSL
 CONF_SERVER_SSL;
 
 /*******************************************************************************
-* vhosts_deinstall_command */
-/**
-* Custom uninstall command to remove extra files created by package.
-*******************************************************************************/
-function vhosts_deinstall_command() 
-	{
-	global $vhosts_g;
-	
-	exec("/bin/rm -f {$vhosts_g['conf_file_prefix']}*");
-	}
-
-/*******************************************************************************
-* vhosts_install_command */
-/**
-* Custom install command to create rcfile and build config file.
-*******************************************************************************/
-function vhosts_install_command() 
-	{
-	global $vhosts_g;
-	
-	$conf_dir  = dirname ($vhosts_g['conf_file_path']);
-	$conf_file = basename($vhosts_g['conf_file_path']);
-	
-	write_rcfile(
-		[
-		"file"  => "vhostsd.sh",
-		"start" => "/usr/local/sbin/nginx -p {$conf_dir}/ -c $conf_file",
-		"stop"  => "kill `cat {$vhosts_g['pid_file_path']}`"
-		]);
-
-	vhosts_sync_package();
-	}
-
-/*******************************************************************************
-* vhosts_sync_package */
+* vhosts_build_service_config */
 /**
 * Rebuilds nginx configuration for vhosts. Called for package synchronization
 * and when any vhost is modified.
 *******************************************************************************/
-function vhosts_sync_package() 
+function vhosts_build_service_config() 
 	{
 	global $config, $vhosts_g;
 	
@@ -250,5 +216,39 @@ function vhosts_sync_package()
 	/*--------------------*/
 	file_put_contents($conf_file_path, strtr($vhosts_g['conf'], [ '@servers' => $servers ]));
 	conf_mount_ro();
+	}
+
+/*******************************************************************************
+* vhosts_post_install */
+/**
+* Creates rc file and builds the service config after package install.
+*******************************************************************************/
+function vhosts_post_install() 
+	{
+	global $vhosts_g;
+	
+	$conf_dir  = dirname ($vhosts_g['conf_file_path']);
+	$conf_file = basename($vhosts_g['conf_file_path']);
+	
+	write_rcfile(
+		[
+		"file"  => "vhostsd.sh",
+		"start" => "/usr/local/sbin/nginx -p {$conf_dir}/ -c $conf_file",
+		"stop"  => "kill `cat {$vhosts_g['pid_file_path']}`"
+		]);
+
+	vhosts_build_service_config();
+	}
+
+/*******************************************************************************
+* vhosts_pre_deinstall */
+/**
+* Removes generated files before uninstall.
+*******************************************************************************/
+function vhosts_pre_deinstall() 
+	{
+	global $vhosts_g;
+	
+	exec("/bin/rm -f {$vhosts_g['conf_file_prefix']}*");
 	}
 ?>
