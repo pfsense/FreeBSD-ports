@@ -118,18 +118,6 @@ $vhosts_g['conf_server_ssl'] = <<<CONF_SERVER_SSL
 CONF_SERVER_SSL;
 
 /*******************************************************************************
-* is_vhosts_running */
-/**
-* Returns true if the vHosts nginx server is running.
-*******************************************************************************/
-function is_vhosts_running() 
-	{
-	global $vhosts_g;
-	
-	return is_pid_running("{$vhosts_g['pid_file_path']}");
-	}
-
-/*******************************************************************************
 * vhosts_deinstall_command */
 /**
 * Custom uninstall command to remove extra files created by package.
@@ -192,7 +180,7 @@ function vhosts_sync_package()
 		/*---------------------------*/
 		/* Skip if host is disabled. */
 		/*---------------------------*/
-		if ($vhost['disabled'])
+		if (isset($vhost['disabled']))
 			continue;
 			
 		/*--------------------------------------------------*/
@@ -208,11 +196,12 @@ function vhosts_sync_package()
 		/*--------------------------------------*/
 		/* Build SSL config if host has a cert. */
 		/*--------------------------------------*/
+		unset($ssl_conf);
 		if (isset($vhost['certref']))
 			{
 			$cert = lookup_cert($vhost['certref']);
 			$crt  = base64_decode($cert['crt']);
-			$key  = base64_decode($cert['key']);
+			$key  = base64_decode($cert['prv']);
 			
 			/*----------------------------------------------------------------*/
 			/* Create Cert/Key files and SSL config to add to Server section. */
@@ -232,13 +221,21 @@ function vhosts_sync_package()
 				}
 			}
 			
-		/*-----------------------------------------------------*/
-		/* Add server section for this vhost. Set hostnames    */
-		/* for 'server_name' catchall if no hostname provided. */
-		/*-----------------------------------------------------*/
+		/*---------------------------------------------------------*/
+		/* Set listen configuration for ipaddress:port.            */
+		/* Set 'server_name' to hostname and hostname:port for all */
+		/* names listed. Set to catchall if no hostnames listed.   */
+		/*---------------------------------------------------------*/
 		$listen_conf = "listen {$vhost['ipaddress']}:{$vhost['port']}".($ssl_conf ? ' ssl;' : ';');
-		$hostnames   = ($vhost['hostname'] ?: "_");
 		
+		if ($vhost['hostname'])
+			$hostnames = join(' ', array_map(function($n) { return "$n $n:8000"; }, explode(' ', $vhost['hostname'])));
+		else
+			$hostnames = '_';
+		
+		/*------------------------------------*/
+		/* Add server section for this vhost. */
+		/*------------------------------------*/
 		$servers .= strtr($vhosts_g['conf_server'], 
 			[
 			'@listen_conf' => $listen_conf,

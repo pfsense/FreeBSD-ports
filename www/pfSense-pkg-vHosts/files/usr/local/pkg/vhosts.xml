@@ -26,8 +26,11 @@
 		<rcfile>vhostsd.sh</rcfile>
 		<description>vHosts nginx Web Server</description>
 		<custom_php_service_status_command>
-			is_vhosts_running();
-		</custom_php_service_status_command>	
+			is_pid_running("/var/run/vhostsd.pid");
+		</custom_php_service_status_command>
+		<startcmd>
+			clear_subsystem_dirty('vhosts');
+		</startcmd>	
 	</service>
 	<custom_php_resync_config_command>
 		vhosts_sync_package();
@@ -35,7 +38,7 @@
 	<custom_php_install_command>
 		vhosts_install_command();
 	</custom_php_install_command>
-	<custom_php_deinstall_command>
+	<custom_php_pre_deinstall_command>
 		vhosts_deinstall_command();
-	</custom_php_deinstall_command>
+	</custom_php_pre_deinstall_command>
 </packagegui>
