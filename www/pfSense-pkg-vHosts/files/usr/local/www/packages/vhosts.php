@@ -43,9 +43,14 @@ require("/usr/local/pkg/vhosts.inc");
 *******************************************************************************/
 function save_config_and_exit()
 	{
+	global $vhosts_g;
+	
 	write_config();
 	vhosts_sync_package();
-	mark_subsystem_dirty('vhosts');
+	
+	if (is_service_running($vhosts_g['service_name']))
+		mark_subsystem_dirty('vhosts');
+		
 	header("Location: ?");
 	exit;
 	}	
@@ -228,7 +233,7 @@ else
 	include("head.inc");
 	
 	if (is_subsystem_dirty('vhosts'))
-		print_info_box(gettext('vHosts configuration has been changed. (Re)start service to apply changes.'));
+		print_info_box(gettext('vHosts configuration has been changed. Restart service to apply changes.'));
 	
 	?>
 	<div class="panel panel-default">
@@ -298,21 +303,33 @@ else
 		</div>
 	</div>
 	
+	<?php
+	/*----------------------------------------------------------------------*/
+	/* pfSenseHelpers.js will add a listener to the "showinfo-vhosts" icon  */
+	/* that will toggle display of "infoblock-vhosts". We are               */
+	/* short-circuiting the "infoblock" feature to manually place the       */
+	/* "Info" icon to the left of the "action-buttons" which looks cleaner. */
+	/*----------------------------------------------------------------------*/
+	?>
 	<nav class="action-buttons">
+		<span style="float:left;margin-top:5px">
+			<i id="showinfo-vhosts" title="More information" 
+				class="fa fa-info-circle icon-pointer" style="color: #337AB7; font-size:20px; margin-left:10px; margin-bottom:10px">
+			</i>
+		</span>
 		<a href="?act=add" class="btn btn-sm btn-success btn-sm">
 		<i class="fa fa-plus icon-embed-btn"></i>
 			<?=gettext("Add")?>
 		</a>
 	</nav>
 	
-	<div class="infoblock">
-		<div class="alert alert-info clearfix" role="alert">
-			<?=gettext('vHosts is a web server package that can host HTML, Javascript, CSS, and PHP. It creates another instance of the '.
-						'nginx web server that is already installed. It uses PHP5 in FastCGI mode and has access to PHP Data Objects '.
-						'and PDO SQLite. To use SFTP, enable SSH from <b>System->Advanced->Enable Secure Shell</b>. Then SFTP can be used '.
-						'to access the files at <b>/usr/local/vhosts</b>. After adding or updating an entry make sure to restart the '.
-						'<a href="/status_services.php">service</a> to apply the settings.'); ?>
-		</div>
+	<div class="infoblock-vhosts alert alert-info clearfix" role="alert" style="display:none; margin-top:-10px">
+		<?=gettext('<p>vHosts is a web server package to host HTML, Javascript, CSS, and PHP. It creates another instance'.
+					'of the <b>nginx</b> web server that is already installed and uses PHP5 in FastCGI mode. '.
+					'The document root folder of a vHost configuration is <b>/usr/local/vhosts/</b><i>Name</i>. Files can be '.
+					'copied to the root folder using <b>Diagnostics->Edit File</b>. </b>To copy files using SCP or SFTP, '.
+					'enable SSH from <b>System->Advanced->Enable Secure Shell</b>.</p>'.
+					'<p>After adding or updating a vHost configuration, restart the service to apply the settings.</p>'); ?>
 	</div>
 	
 	<?php

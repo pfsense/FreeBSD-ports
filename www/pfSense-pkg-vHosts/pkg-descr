@@ -1,3 +1,2 @@
-A web server package that can host HTML, Javascript, CSS, and PHP.
-It creates another instance of the nginx web server that is already installed,
-uses PHP5 in FastCGI mode, and has access to PHP Data Ojbects and PDO SQLite.
+A web server package to host HTML, Javascript, CSS, and PHP. It creates another instance 
+of the nginx web server that is already installed and uses PHP5 in FastCGI mode.
