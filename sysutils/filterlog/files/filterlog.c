@@ -108,7 +108,7 @@ decode_packet(u_char *user __unused, const struct pcap_pkthdr *pkthdr, const u_c
 		sbuf_printf(&sbuf, "[pflog: invalid header length!]");
 		goto printsbuf;
 	}
-	hdrlen = PFLOG_HDRLEN;
+	hdrlen = BPF_WORDALIGN(hdr->length);
 
 	if (caplen < hdrlen) {
 		sbuf_printf(&sbuf, "[|pflog]");
