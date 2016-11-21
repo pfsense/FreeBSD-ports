@@ -180,6 +180,7 @@ $categories[] = "custom.rules";
 $categories[] = "decoder.rules";
 $categories[] = "preprocessor.rules";
 $categories[] = "sensitive-data.rules";
+$categories[] = "appid.rules";
 
 // Get any automatic rule category enable/disable modifications
 // if auto-SID Mgmt is enabled, and adjust the available rulesets
