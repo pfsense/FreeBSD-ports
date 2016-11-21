@@ -604,8 +604,8 @@ EOD;
 									$z = $zonename;
 								}
 								if (file_exists($dnssec_bin) && $key_restored == 0) {
-									exec("{$dnssec_bin} -K " . CHROOT_LOCALBASE . "/etc/namedb/keys {$z}", $kout);
-									exec("{$dnssec_bin} -K " . CHROOT_LOCALBASE . "/etc/namedb/keys -fk {$z}", $kout);
+									exec("{$dnssec_bin} -a ECDSAP256SHA256 -K " . CHROOT_LOCALBASE . "/etc/namedb/keys {$z}", $kout);
+									exec("{$dnssec_bin} -a ECDSAP256SHA256 -K " . CHROOT_LOCALBASE . "/etc/namedb/keys -fk {$z}", $kout);
 									foreach ($kout as $filename) {
 										chown(CHROOT_LOCALBASE . "/etc/namedb/keys/{$filename}.key", "bind");
 										chown(CHROOT_LOCALBASE . "/etc/namedb/keys/{$filename}.private", "bind");
