@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	afl
-PORTVERSION=	2.07b
+PORTVERSION=	2.32
+DISTVERSIONSUFFIX=	b
 CATEGORIES=	security
 MASTER_SITES=	http://lcamtuf.coredump.cx/afl/releases/
 
@@ -25,8 +26,10 @@ OPTIONS_SUB=	yes
 ONLY_FOR_ARCHS=	amd64 i386
 ONLY_FOR_ARCHS_REASON=	Uses binary instrumentation
 
-LLVM_BUILD_DEPENDS=	clang37:devel/llvm37
-LLVM_RUN_DEPENDS=	clang37:devel/llvm37
+LLVM_VERSION=	38
+
+LLVM_BUILD_DEPENDS=	clang${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
+LLVM_RUN_DEPENDS=	clang${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
 MINIMIZE_CORPUS_RUN_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash
 
 .include <bsd.port.options.mk>
@@ -60,13 +63,19 @@ post-patch:
 		${WRKSRC}/afl-as.c
 .endif
 
+post-patch-LLVM-on:
+	${REINPLACE_CMD} \
+		-e 's|"clang"|"clang${LLVM_VERSION}"|g' \
+		-e 's|"clang\+\+"|"clang\+\+${LLVM_VERSION}"|g' \
+		${WRKSRC}/llvm_mode/afl-clang-fast.c
+
 .if ! ${OSVERSION} < 1000013
 # Broken on FreeBSD 9
 post-build-LLVM-on:
 	@(cd ${WRKSRC}/llvm_mode; ${SETENV} \
-		CC=clang37 \
-		CXX=clang++37 \
-		LLVM_CONFIG=llvm-config37 \
+		CC=clang${LLVM_VERSION} \
+		CXX=clang++${LLVM_VERSION} \
+		LLVM_CONFIG=llvm-config${LLVM_VERSION} \
 		CFLAGS="${CFLAGS}" \
 		CXXFLAGS="${CXXFLAGS}" \
 		${GMAKE})
@@ -74,7 +83,6 @@ post-build-LLVM-on:
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/docs/COPYING ${STAGEDIR}${DOCSDIR}/
-
 .for afl_script in afl-cmin afl-plot afl-whatsup
 	${INSTALL_SCRIPT} ${WRKSRC}/${afl_script} ${STAGEDIR}${PREFIX}/bin/
 .endfor

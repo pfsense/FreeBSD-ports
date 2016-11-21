@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	node
-PORTVERSION=	4.4.7
+PORTVERSION=	4.6.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES=	http://nodejs.org/dist/v${PORTVERSION}/
@@ -14,13 +14,17 @@ COMMENT=	V8 JavaScript for client and server (4.x LTS)
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-OPTIONS_DEFINE=	BUNDLED_SSL DOCS
+OPTIONS_DEFINE=	BUNDLED_SSL DOCS NLS
 OPTIONS_SUB=	yes
 
-BUNDLED_SSL_DESC=	Use node.js's bundled OpenSSL implementation
-BUNDLED_SSL_USE_OFF=	OPENSSL=yes
+BUNDLED_SSL_DESC=		Use node.js's bundled OpenSSL implementation
+BUNDLED_SSL_USES_OFF=		ssl
+BUNDLED_SSL_CONFIGURE_OFF=	--shared-openssl
 
-USES=		compiler execinfo gmake python:2 pkgconfig localbase
+NLS_CONFIGURE_ON=	--with-intl=system-icu
+NLS_LIB_DEPENDS=	libicui18n.so:devel/icu
+
+USES=		compiler:c++11-lib execinfo gmake python:2 pkgconfig localbase
 HAS_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
@@ -28,7 +32,6 @@ CONFLICTS_INSTALL=	node-[0-9]* node-devel-0.[0-9]* node010-[0-9]* node012-[0-9]*
 
 ONLY_FOR_ARCHS=	i386 amd64
 CONFIGURE_ARGS=	--prefix=${PREFIX_RELDEST} \
-		--with-intl=system-icu \
 	 	--without-npm \
 		--shared-libuv \
 		--shared-zlib
@@ -36,8 +39,7 @@ PREFIX_RELDEST=	${PREFIX:S,^${DESTDIR},,}
 REINPLACE_ARGS=	-i ''
 MAKE_ENV+=	CC.host=${CC} CXX.host=${CXX} LINK.host=${CXX} LINK.target=${CXX}
 
-LIB_DEPENDS+=	libicui18n.so:devel/icu \
-		libuv.so:devel/libuv
+LIB_DEPENDS+=	libuv.so:devel/libuv
 
 .include <bsd.port.options.mk>
 
@@ -48,8 +50,6 @@ LIB_DEPENDS+=	libicui18n.so:devel/icu \
 WITH_OPENSSL_PORT=yes
 .endif
 
-CONFIGURE_ARGS+=	--shared-openssl
-
 .endif
 
 .include <bsd.port.pre.mk>
@@ -58,20 +58,6 @@ CONFIGURE_ARGS+=	--shared-openssl
 .if !empty(SSL_DEFAULT:Mlibressl*)
 IGNORE=		cannot build node.js with LibreSSL. You must enable BUNDLED_SSL
 .endif
-.endif
-
-.if ${COMPILER_TYPE} == clang
-MAKE_ENV+=	LINK=clang++
-CFLAGS+=	-Wno-unused-private-field
-.if ${COMPILER_VERSION} >= 33
-CFLAGS+=	-Wno-nested-anon-types -Wno-unused-function
-.if ${COMPILER_VERSION} >= 34
-CFLAGS+=	-Wno-unused-const-variable
-.endif
-.endif
-.else
-MAKE_ARGS+=	strictaliasing=off
-USE_GCC=	yes
 .endif
 
 post-patch:

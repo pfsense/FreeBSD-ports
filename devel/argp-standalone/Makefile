@@ -8,8 +8,11 @@ CATEGORIES=	devel
 MASTER_SITES=	http://www.lysator.liu.se/~nisse/misc/ \
 		LOCAL/sem
 
-MAINTAINER=	sem@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Standalone version of arguments parsing functions from GLIBC
+
+LICENSE=	LGPL20+ PD
+LICENSE_COMB=	multi
 
 USES=		autoreconf libtool
 USE_CSTD=	gnu89

@@ -3,6 +3,7 @@
 
 PORTNAME=	texinfo
 PORTVERSION=	6.1.20160425
+PORTEPOCH=	1
 CATEGORIES=	print
 MASTER_SITES=	ftp://ftp.stack.nl/pub/users/johans/texinfo/${PORTVERSION:E}/ \
 		http://ftp.stack.nl/pub/users/johans/texinfo/${PORTVERSION:E}/ \
@@ -25,10 +26,10 @@ NLS_CONFIGURE_ENABLE=	nls
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install install-tex
 PKGDEINSTALL=	${PKGINSTALL}
-USES+=		charsetfix cpe gmake:lite ncurses perl5 tar:xz
+USES+=		charsetfix cpe gmake ncurses perl5 tar:xz
 
 MAKE_ARGS=	TEXMF=${LOCALBASE}/${TEXMF} PERL=${LOCALBASE}/bin/perl
-INFO=		texinfo info-stnd info
+INFO=		texinfo info-stnd
 CPE_VENDOR=	gnu
 CPE_VERSION=	${PORTVERSION:R}
 

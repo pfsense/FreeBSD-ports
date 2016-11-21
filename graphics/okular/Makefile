@@ -2,7 +2,7 @@
 
 PORTNAME=	okular
 PORTVERSION=	${KDE4_VERSION}
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	graphics kde
 MASTER_SITES=	KDE/${KDE4_BRANCH}/${PORTVERSION}/src
 DIST_SUBDIR=	KDE/${PORTVERSION}
@@ -21,11 +21,11 @@ LIB_DEPENDS=	libdjvulibre.so:graphics/djvulibre \
 		libepub.so:textproc/ebook-tools \
 		libqmobipocket.so:graphics/kdegraphics4-mobipocket
 
-USE_KDE4=	kdelibs automoc4 qimageblitz kactivities \
+USES=		cmake:outsource jpeg kde:4 pkgconfig tar:xz
+USE_KDE=	kdelibs automoc4 qimageblitz kactivities \
 		libkexiv2
 USE_QT4=	corelib declarative gui opengl xml \
 		qmake_build moc_build uic_build rcc_build
-USES=		cmake:outsource jpeg pkgconfig tar:xz
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=	DVI

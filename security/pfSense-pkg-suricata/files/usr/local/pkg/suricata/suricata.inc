@@ -33,7 +33,6 @@ require_once("pkg-utils.inc");
 require_once("filter.inc");
 require_once("notices.inc");
 require_once("util.inc");
-require_once("xmlrpc.inc");
 require_once("xmlrpc_client.inc");
 require("/usr/local/pkg/suricata/suricata_defs.inc");
 
@@ -49,8 +48,9 @@ function suricata_generate_id() {
 	while (true) {
 		$suricata_uuid = mt_rand(1, 65535);
 		foreach ($suricatacfg as $value) {
-			if ($value['uuid'] == $suricata_uuid)
+			if ($value['uuid'] == $suricata_uuid) {
 				continue 2;
+			}
 		}
 		break;
 	}
@@ -83,8 +83,9 @@ function suricata_stop($suricatacfg, $if_real) {
 		sleep(1);
 
 		// For some reason Suricata seems to need a double TERM signal to actually shutdown
-		if (isvalidpid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid"))
+		if (isvalidpid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid")) {
 			killbypid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
+		}
 	}
 	// Stop Barnyard2 on the interface if running
 	suricata_barnyard_stop($suricatacfg, $if_real);
@@ -115,9 +116,9 @@ function suricata_start($suricatacfg, $if_real) {
 		$run_mode = $suricatacfg['ips_mode'] == 'ips_mode_inline' ? '--netmap' : '-i ' . $if_real;
 		log_error("[Suricata] Suricata START for {$suricatacfg['descr']}({$if_real})...");
 		mwexec_bg("{$suricatabindir}suricata {$run_mode} -D -c {$suricatadir}suricata_{$suricata_uuid}_{$if_real}/suricata.yaml --pidfile {$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
-	}
-	else
+	} else {
 		return;
+	}
 
 	// Start Barnyard2 if enabled on the interface
 	suricata_barnyard_start($suricatacfg, $if_real);
@@ -133,12 +134,14 @@ function suricata_start_all_interfaces($background=FALSE) {
 	global $g, $config;
 
 	/* do nothing if no Suricata interfaces active */
-	if (!is_array($config['installedpackages']['suricata']['rule']))
+	if (!is_array($config['installedpackages']['suricata']['rule'])) {
 		return;
+	}
 
 	foreach ($config['installedpackages']['suricata']['rule'] as $suricatacfg) {
-		if ($suricatacfg['enable'] != 'on')
+		if ($suricatacfg['enable'] != 'on') {
 			continue;
+		}
 		suricata_start($suricatacfg, get_real_interface($suricatacfg['interface']));
 	}
 }
@@ -152,8 +155,9 @@ function suricata_stop_all_interfaces() {
 	global $g, $config;
 
 	/* do nothing if no Suricata interfaces active */
-	if (!is_array($config['installedpackages']['suricata']['rule']))
+	if (!is_array($config['installedpackages']['suricata']['rule'])) {
 		return;
+	}
 
 	foreach ($config['installedpackages']['suricata']['rule'] as $suricatacfg) {
 		suricata_stop($suricatacfg, get_real_interface($suricatacfg['interface']));
@@ -170,8 +174,9 @@ function suricata_restart_all_interfaces() {
 	global $g, $config;
 
 	/* do nothing if no Suricata interfaces active */
-	if (!is_array($config['installedpackages']['suricata']['rule']))
+	if (!is_array($config['installedpackages']['suricata']['rule'])) {
 		return;
+	}
 
 	suricata_stop_all_interfaces();
 	sleep(2);
@@ -245,8 +250,9 @@ function suricata_get_blocked_ips() {
 	if (!empty($blocked_ips)) {
 		if (is_array($blocked_ips)) {
 			foreach ($blocked_ips as $blocked_ip) {
-				if (empty($blocked_ip))
+				if (empty($blocked_ip)) {
 					continue;
+				}
 				$blocked_ips_array[] = trim($blocked_ip, " \n\t");
 			}
 		}
@@ -259,14 +265,17 @@ function suricata_find_list($find_name, $type = 'passlist') {
 	global $config;
 
 	$suricataglob = $config['installedpackages']['suricata'];
-	if (!is_array($suricataglob[$type]))
+	if (!is_array($suricataglob[$type])) {
 		return "";
-	if (!is_array($suricataglob[$type]['item']))
+	}
+	if (!is_array($suricataglob[$type]['item'])) {
 		return "";
+	}
 
 	foreach ($suricataglob[$type]['item'] as $value) {
-		if ($value['name'] == $find_name)
+		if ($value['name'] == $find_name) {
 			return $value;
+		}
 	}
 
 	return array();
@@ -286,25 +295,29 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 		$localnet = 'yes'; $wanip = 'yes'; $wangw = 'yes'; $wandns = 'yes'; $vips = 'yes'; $vpns = 'yes';
 	}
 	else {
-                $list = suricata_find_list($listname);
-                if (empty($list))
-                        return $list;
+		$list = suricata_find_list($listname);
+		if (empty($list)) {
+			return $list;
+		}
 		$localnet = $list['localnets'];
 		$wanip = $list['wanips'];
 		$wangw = $list['wangateips'];
 		$wandns = $list['wandnsips'];
 		$vips = $list['vips'];
 		$vpns = $list['vpnips'];
-		if (!empty($list['address']) && is_alias($list['address']))
+		if (!empty($list['address']) && is_alias($list['address'])) {
 			$home_net = explode(" ", trim(filter_expand_alias($list['address'])));
+		}
 	}
 
 	// Always add loopback to HOME_NET and passlist
 	if (!$externallist) {
-		if (!in_array("127.0.0.1/32", $home_net))
+		if (!in_array("127.0.0.1/32", $home_net)) {
 			$home_net[] = "127.0.0.1/32";
-		if (!in_array("::1/128", $home_net))
+		}
+		if (!in_array("::1/128", $home_net)) {
 			$home_net[] = "::1/128";
+		}
 	}
 
 	/********************************************************************/
@@ -321,39 +334,44 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 			if ($suricatacfg['interface'] <> "wan") {
 				if ($sn = get_interface_subnet($suricatacfg['interface'])) {
 					$ip = gen_subnet($suricataip, $sn) . "/{$sn}";
-					if (!in_array($ip, $home_net))
+					if (!in_array($ip, $home_net)) {
 						$home_net[] = $ip;
+					}
 				}
 			}
 		}
 	}
 	elseif (!$externallist && $localnet != 'yes') {
 		if (is_ipaddrv4($suricataip)) {
-			if (!in_array($suricataip . "/32", $home_net))
+			if (!in_array($suricataip . "/32", $home_net)) {
 				$home_net[] = $suricataip . "/32";
+			}
 		}
 	}
 
 	// Grab the IPv6 address if we have one assigned
 	$suricataip = get_interface_ipv6($suricatacfg['interface']);
 	// Trim off the interface designation (e.g., %em1) if present
-	if (strpos($suricataip, "%") !== FALSE)
+	if (strpos($suricataip, "%") !== FALSE) {
 		$suricataip = substr($suricataip, 0, strpos($suricataip, "%"));
+	}
 	if (($externallist && $localnet == 'yes') || (!$externallist && (!$passlist || $localnet == 'yes' || empty($localnet)))) {
 		if (is_ipaddrv6($suricataip)) {
 			if ($suricatacfg['interface'] <> "wan") {
 				if ($sn = get_interface_subnetv6($suricatacfg['interface'])) {
 					$ip = gen_subnetv6($suricataip, $sn). "/{$sn}";
-					if (!in_array($ip, $home_net))
+					if (!in_array($ip, $home_net)) {
 						$home_net[] = $ip;
+					}
 				}
 			}
 		}
 	}
 	elseif (!$externallist && $localnet != 'yes') {
 		if (is_ipaddrv6($suricataip)) {
-			if (!in_array($suricataip . "/128", $home_net))
+			if (!in_array($suricataip . "/128", $home_net)) {
 				$home_net[] = $suricataip . "/128";
+			}
 		}
 	}
 
@@ -361,10 +379,12 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 	$suricataip = get_interface_linklocal($suricatacfg['interface']);
 	if (!empty($suricataip) && $localnet == 'yes') {
 		// Trim off the interface designation (e.g., %em1) if present
-		if (strpos($suricataip, "%") !== FALSE)
+		if (strpos($suricataip, "%") !== FALSE) {
 			$suricataip = substr($suricataip, 0, strpos($suricataip, "%"));
-		if (!in_array($suricataip . "/128", $home_net))
+		}
+		if (!in_array($suricataip . "/128", $home_net)) {
 			$home_net[] = $suricataip . "/128";
+		}
 	}
 
 	if (($$externallist && $localnet == 'yes') || (!$externallist && (!$passlist || $localnet == 'yes' || empty($localnet)))) {		
@@ -376,26 +396,30 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 		/*************************************************************************/
 		$int_array = get_configured_interface_list();
 		foreach ($int_array as $int) {
-			if ($int == "wan")
+			if ($int == "wan") {
 				continue;
+			}
 			$subnet = get_interface_ip($int);
 			if (is_ipaddrv4($subnet)) {
 				if ($sn = get_interface_subnet($int)) {
 					$ip = gen_subnet($subnet, $sn) . "/{$sn}";
-					if (!in_array($ip, $home_net))
+					if (!in_array($ip, $home_net)) {
 						$home_net[] = $ip;
+					}
 				}
 			}
 
 			$subnet = get_interface_ipv6($int);
 			// Trim off the interface designation (e.g., %em1) if present
-			if (strpos($subnet, "%") !== FALSE)
+			if (strpos($subnet, "%") !== FALSE) {
 				$subnet = substr($subnet, 0, strpos($subnet, "%"));
+			}
 			if (is_ipaddrv6($subnet)) {
 				if ($sn = get_interface_subnetv6($int)) {
 					$ip = gen_subnetv6($subnet, $sn). "/{$sn}";
-					if (!in_array($ip, $home_net))
+					if (!in_array($ip, $home_net)) {
 						$home_net[] = $ip;
+					}
 				}
 			}
 
@@ -403,10 +427,12 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 			$suricataip = get_interface_linklocal($int);
 			if (!empty($suricataip)) {
 				// Trim off the interface designation (e.g., %em1) if present
-				if (strpos($suricataip, "%") !== FALSE)
+				if (strpos($suricataip, "%") !== FALSE) {
 					$suricataip = substr($suricataip, 0, strpos($suricataip, "%"));
-				if (!in_array($suricataip . "/128", $home_net))
+				}
+				if (!in_array($suricataip . "/128", $home_net)) {
 					$home_net[] = $suricataip . "/128";
+				}
 			}
 		}
 	}
@@ -414,58 +440,70 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 	if ($wanip == 'yes') {
 		$ip = get_interface_ip("wan");
 		if (is_ipaddrv4($ip)) {
-			if (!in_array($ip . "/32", $home_net))
+			if (!in_array($ip . "/32", $home_net)) {
 				$home_net[] = $ip . "/32";
+			}
 		}
 		$ip = get_interface_ipv6("wan");
 		// Trim off the interface designation (e.g., %em1) if present
-		if (strpos($ip, "%") !== FALSE)
+		if (strpos($ip, "%") !== FALSE) {
 			$ip = substr($ip, 0, strpos($ip, "%"));
+		}
 		if (is_ipaddrv6($ip)) {
-			if (!in_array($ip . "/128", $home_net))
+			if (!in_array($ip . "/128", $home_net)) {
 				$home_net[] = $ip . "/128";
+			}
 		}
 		// Explicitly grab the WAN Link-Local address
 		$ip = get_interface_linklocal("wan");
 		if (!empty($ip)) {
 			// Trim off the interface designation (e.g., %em1) if present
-			if (strpos($ip, "%") !== FALSE)
+			if (strpos($ip, "%") !== FALSE) {
 				$ip = substr($ip, 0, strpos($ip, "%"));
-			if (!in_array($ip . "/128", $home_net))
+			}
+			if (!in_array($ip . "/128", $home_net)) {
 				$home_net[] = $ip . "/128";
+			}
 		}
 	}
 
 	if ($wangw == 'yes') {
 		// Grab the default gateway if set
 		$default_gw = exec("/sbin/route -n get default |grep 'gateway:' | /usr/bin/awk '{ print $2 }'");
-		if (is_ipaddrv4($default_gw) && !in_array($default_gw . "/32", $home_net))
+		if (is_ipaddrv4($default_gw) && !in_array($default_gw . "/32", $home_net)) {
 			$home_net[] = $default_gw . "/32";
-		if (is_ipaddrv6($default_gw) && !in_array($default_gw . "/128", $home_net))
+		}
+		if (is_ipaddrv6($default_gw) && !in_array($default_gw . "/128", $home_net)) {
 			$home_net[] = $default_gw . "/128";
+		}
 
 		// Get any other interface gateway and put in $HOME_NET if not there already
 		$gw = get_interface_gateway($suricatacfg['interface']);
-		if (is_ipaddrv4($gw) && !in_array($gw . "/32", $home_net))
+		if (is_ipaddrv4($gw) && !in_array($gw . "/32", $home_net)) {
 			$home_net[] = $gw . "/32";
+		}
 		$gw = get_interface_gateway_v6($suricatacfg['interface']);
 		// Trim off the interface designation (e.g., %em1) if present
-		if (strpos($gw, "%") !== FALSE)
+		if (strpos($gw, "%") !== FALSE) {
 			$gw = substr($gw, 0, strpos($gw, "%"));
-		if (is_ipaddrv6($gw) && !in_array($gw . "/128", $home_net))
+		}
+		if (is_ipaddrv6($gw) && !in_array($gw . "/128", $home_net)) {
 			$home_net[] = $gw . "/128";
+		}
 	}
 
 	if ($wandns == 'yes') {
 		// Add DNS server for WAN interface to Pass List
 		$dns_servers = get_dns_servers();
 		foreach ($dns_servers as $dns) {
-			if (is_ipaddrv4($dns))
+			if (is_ipaddrv4($dns)) {
 				$dns .= "/32";
-			elseif (is_ipaddrv6($dns))
+			} elseif (is_ipaddrv6($dns)) {
 				$dns .= "/128";
-			if ($dns && !in_array($dns, $home_net))
+			}
+			if ($dns && !in_array($dns, $home_net)) {
 				$home_net[] = $dns;
+			}
 		}
 	}
 
@@ -474,8 +512,9 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 		if (is_array($config['virtualip']) && is_array($config['virtualip']['vip'])) {
 			foreach($config['virtualip']['vip'] as $vip) {
 				if ($vip['subnet']) {
-					if (!in_array("{$vip['subnet']}/{$vip['subnet_bits']}", $home_net))
+					if (!in_array("{$vip['subnet']}/{$vip['subnet_bits']}", $home_net)) {
 						$home_net[] = "{$vip['subnet']}/{$vip['subnet_bits']}";
+					}
 				}
 			}
 		}
@@ -488,19 +527,22 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 			// Convert the returned space-delimited string to an array
 			// and then add each VPN address to our HOME_NET array.
 			$vpns = explode(" ", $vpns_list);
-			foreach ($vpns as $vpn)
+			foreach ($vpns as $vpn) {
 				$home_net[] = trim($vpn);
+			}
 			unset($vpns, $vpns_list);
 		}
 	}
 
 	$valresult = array();
 	foreach ($home_net as $vald) { 
-		if (empty($vald))
+		if (empty($vald)) {
 			continue;
+		}
 		$vald = trim($vald);
-		if (empty($valresult[$vald]))
+		if (empty($valresult[$vald])) {
 			$valresult[$vald] = $vald;
+		}
 	}
 
 	// Release memory no longer required
@@ -529,26 +571,34 @@ function suricata_cron_job_exists($crontask, $match_time=FALSE, $minute="0", $ho
 
 	global $config, $g;
 
-	if (!is_array($config['cron']))
+	if (!is_array($config['cron'])) {
 		$config['cron'] = array();
-	if (!is_array($config['cron']['item']))
+	}
+	if (!is_array($config['cron']['item'])) {
 		$config['cron']['item'] = array();
+	}
 
 	foreach($config['cron']['item'] as $item) {
 		if(strpos($item['command'], $crontask) !== FALSE) {
 			if ($match_time) {
-				if ($item['minute'] != $minute)
+				if ($item['minute'] != $minute) {
 					return FALSE;
-				if ($item['hour'] != $hour)
+				}
+				if ($item['hour'] != $hour) {
 					return FALSE;
-				if ($item['mday'] != $monthday)
+				}
+				if ($item['mday'] != $monthday) {
 					return FALSE;
-				if ($item['month'] != $month)
+				}
+				if ($item['month'] != $month) {
 					return FALSE;
-				if ($item['wday'] != $weekday)
+				}
+				if ($item['wday'] != $weekday) {
 					return FALSE;
-				if ($item['who'] != $who)
+				}
+				if ($item['who'] != $who) {
 					return FALSE;
+				}
 			}
 			return TRUE;
 		}
@@ -562,8 +612,9 @@ function suricata_rules_up_install_cron($should_install=true) {
 	// If called with FALSE as argument, then we're removing 
 	// the existing job.
 	if ($should_install == FALSE) {
-		if (suricata_cron_job_exists("suricata_check_for_rule_updates.php", FALSE))
+		if (suricata_cron_job_exists("suricata_check_for_rule_updates.php", FALSE)) {
 			install_cron_job("suricata_check_for_rule_updates.php", false);
+		}
 		return;
 	}
 
@@ -571,10 +622,11 @@ function suricata_rules_up_install_cron($should_install=true) {
 	$suricata_rules_up_info_ck = $config['installedpackages']['suricata']['config'][0]['autoruleupdate'];
 
 	// See if a customized start time has been set for rule file updates
-	if (!empty($config['installedpackages']['suricata']['config'][0]['autoruleupdatetime']))
+	if (!empty($config['installedpackages']['suricata']['config'][0]['autoruleupdatetime'])) {
 		$suricata_rules_upd_time = $config['installedpackages']['suricata']['config'][0]['autoruleupdatetime'];
-	else
+	} else {
 		$suricata_rules_upd_time = "00:03";
+	}
 
 	if ($suricata_rules_up_info_ck == "6h_up") {
 		$suricata_rules_up_min = intval(substr($suricata_rules_upd_time, -2));
@@ -582,8 +634,9 @@ function suricata_rules_up_install_cron($should_install=true) {
 		$suricata_rules_up_hr = strval($hour);
 		for ($i=0; $i<3; $i++) {
 			$hour += 6;
-			if ($hour > 24)
+			if ($hour > 24) {
 				$hour -= 24;
+			}
 			$suricata_rules_up_hr .= "," . strval($hour);
 		}
 		$suricata_rules_up_mday = "*";
@@ -595,8 +648,9 @@ function suricata_rules_up_install_cron($should_install=true) {
 		$hour = intval(substr($suricata_rules_upd_time, 0, 2));
 		$suricata_rules_up_hr = strval($hour) . ",";
 		$hour += 12;
-		if ($hour > 24)
+		if ($hour > 24) {
 			$hour -= 24;
+		}
 		$suricata_rules_up_hr .= strval($hour);
 		$suricata_rules_up_mday = "*";
 		$suricata_rules_up_month = "*";
@@ -635,8 +689,9 @@ function suricata_rules_up_install_cron($should_install=true) {
 	$command = "/usr/bin/nice -n20 /usr/local/bin/php-cgi -f /usr/local/pkg/suricata/suricata_check_for_rule_updates.php";
 
 	// If there are no changes in the cron job command string from the existing job, then exit
-	if (suricata_cron_job_exists($command, TRUE, $suricata_rules_up_min, $suricata_rules_up_hr, $suricata_rules_up_mday, $suricata_rules_up_month, $suricata_rules_up_wday, "root"))
+	if (suricata_cron_job_exists($command, TRUE, $suricata_rules_up_min, $suricata_rules_up_hr, $suricata_rules_up_mday, $suricata_rules_up_month, $suricata_rules_up_wday, "root")) {
 		return;
+	}
 
 	// Else install the new or updated cron job by removing the
 	// existing job first, then installing the new or updated job.
@@ -648,14 +703,16 @@ function suricata_loglimit_install_cron($should_install=true) {
 
 	// See if simply removing existing "loglimit" job for Suricata
 	if ($should_install == FALSE) {
-		if (suricata_cron_job_exists("suricata/suricata_check_cron_misc.inc", FALSE))
+		if (suricata_cron_job_exists("suricata/suricata_check_cron_misc.inc", FALSE)) {
 			install_cron_job("suricata_check_cron_misc.inc", false);
+		}
 		return;
 	}
 
 	// If there are no changes in the cron job command string from the existing job, then exit.
-	if ($should_install && suricata_cron_job_exists("/usr/local/pkg/suricata/suricata_check_cron_misc.inc", TRUE, "*/5"))
+	if ($should_install && suricata_cron_job_exists("/usr/local/pkg/suricata/suricata_check_cron_misc.inc", TRUE, "*/5")) {
 		return;
+	}
 
 	// Else install the new or updated cron job by removing the
 	// existing job first, then installing the new or updated job.
@@ -669,8 +726,9 @@ function suricata_rm_blocked_install_cron($should_install) {
 
 	// See if simply removing existing "expiretable" job for Suricata
 	if ($should_install == FALSE) {
-		if (suricata_cron_job_exists("{$suri_pf_table}", FALSE))
+		if (suricata_cron_job_exists("{$suri_pf_table}", FALSE)) {
 			install_cron_job("{$suri_pf_table}", false);
+		}
 		return;
 	}
 
@@ -761,8 +819,9 @@ function suricata_rm_blocked_install_cron($should_install) {
 	$command = "/usr/bin/nice -n20 /sbin/pfctl -q -t {$suri_pf_table} -T expire {$suricata_rm_blocked_expire}";
 
 	// If there are no changes in the cron job command string from the existing job, then exit.
-	if (suricata_cron_job_exists($command, TRUE, $suricata_rm_blocked_min, $suricata_rm_blocked_hr, $suricata_rm_blocked_mday, $suricata_rm_blocked_month, $suricata_rm_blocked_wday, "root"))
+	if (suricata_cron_job_exists($command, TRUE, $suricata_rm_blocked_min, $suricata_rm_blocked_hr, $suricata_rm_blocked_mday, $suricata_rm_blocked_month, $suricata_rm_blocked_wday, "root")) {
 		return;
+	}
 
 	// Else install the new or updated cron job by removing the
 	// existing job first, then installing the new or updated job.
@@ -777,21 +836,24 @@ function sync_suricata_package_config() {
 	$rcdir = RCFILEPREFIX;
 
 	// Do not start config build if there are no Suricata-configured interfaces
-	if (!is_array($config['installedpackages']['suricata']['rule']) || count($config['installedpackages']['suricata']['rule']) < 1)
+	if (!is_array($config['installedpackages']['suricata']['rule']) || count($config['installedpackages']['suricata']['rule']) < 1) {
 		return;
+	}
 
 	$suricataconf = $config['installedpackages']['suricata']['rule'];
 	foreach ($suricataconf as $value) {
 		/* Skip configuration of any disabled interface */
-		if ($value['enable'] != 'on')
+		if ($value['enable'] != 'on') {
 			continue;
+		}
 
 		// create a suricata.yaml file for interface
 		suricata_generate_yaml($value);
 
 		// create barnyard2.conf file for interface
-		if ($value['barnyard_enable'] == 'on')
+		if ($value['barnyard_enable'] == 'on') {
 			suricata_generate_barnyard2_conf($value, get_real_interface($value['interface']));
+		}
 	}
 
 	// create suricata bootup file suricata.sh
@@ -807,8 +869,9 @@ function sync_suricata_package_config() {
 	suricata_rm_blocked_install_cron($config['installedpackages']['suricata']['config'][0]['rm_blocked'] != "never_b" ? true : false);
 
 	// Do not attempt package sync if reinstalling package or booting
-	if (!isset($g['suricata_postinstall']) && !$g['booting'])
+	if (!isset($g['suricata_postinstall']) && !$g['booting']) {
 		suricata_sync_on_changes();
+	}
 }
 
 function suricata_load_suppress_sigs($suricatacfg, $track_by=false) {
@@ -835,12 +898,15 @@ function suricata_load_suppress_sigs($suricatacfg, $track_by=false) {
 
 	$suppress = array();
 
-	if (!is_array($config['installedpackages']['suricata']))
+	if (!is_array($config['installedpackages']['suricata'])) {
 		return;
-	if (!is_array($config['installedpackages']['suricata']['suppress']))
+	}
+	if (!is_array($config['installedpackages']['suricata']['suppress'])) {
 		return;
-	if (!is_array($config['installedpackages']['suricata']['suppress']['item']))
+	}
+	if (!is_array($config['installedpackages']['suricata']['suppress']['item'])) {
 		return;
+	}
 	$a_suppress = $config['installedpackages']['suricata']['suppress']['item'];
 
 	foreach ($a_suppress as $a_id => $alist) {
@@ -850,20 +916,24 @@ function suricata_load_suppress_sigs($suricatacfg, $track_by=false) {
 				$tmp = explode("\n", $tmplist);
 				foreach ($tmp as $line) {
 					// Skip any blank lines
-					if (trim($line, " \n") == "")
+					if (trim($line, " \n") == "") {
 						continue;
+					}
 					// Skip any comment lines
-					if (preg_match('/^\s*#/', $line))
+					if (preg_match('/^\s*#/', $line)) {
 						continue;
+					}
 					/* See if entry suppresses GID:SID for all hosts */
 					if (preg_match('/\s*suppress\s*gen_id\b\s*(\d+),\s*sig_id\b\s*(\d+)\s*$/i', $line, $matches)) {
 						$genid = $matches[1];
 						$sigid = $matches[2];
 						if (!empty($genid) && !empty($sigid)) {
-							if (!is_array($suppress[$genid]))
+							if (!is_array($suppress[$genid])) {
 								$suppress[$genid] = array();
-							if (!is_array($suppress[$genid][$sigid]))
+							}
+							if (!is_array($suppress[$genid][$sigid])) {
 								$suppress[$genid][$sigid] = array();
+							}
 							$suppress[$genid][$sigid] = "suppress";
 						}
 					}
@@ -877,14 +947,18 @@ function suricata_load_suppress_sigs($suricatacfg, $track_by=false) {
 							$whichip = trim($matches[3]);
 							$ip = $matches[4];
 							if (!empty($genid) && !empty($sigid) && !empty($whichip) && !empty($ip)) {
-								if (!is_array($suppress[$genid]))
+								if (!is_array($suppress[$genid])) {
 									$suppress[$genid] = array();
-								if (!is_array($suppress[$genid][$sigid]))
+								}
+								if (!is_array($suppress[$genid][$sigid])) {
 									$suppress[$genid][$sigid] = array();
-								if (!is_array($suppress[$genid][$sigid][$whichip]))
+								}
+								if (!is_array($suppress[$genid][$sigid][$whichip])) {
 									$suppress[$genid][$sigid][$whichip] = array();
-								if (!is_array($suppress[$genid][$sigid][$whichip][$ip]))
+								}
+								if (!is_array($suppress[$genid][$sigid][$whichip][$ip])) {
 									$suppress[$genid][$sigid][$whichip][$ip] = array();
+								}
 								$suppress[$genid][$sigid][$whichip][$ip] = "suppress";
 							}
 						}
@@ -895,14 +969,18 @@ function suricata_load_suppress_sigs($suricatacfg, $track_by=false) {
 							$whichip = trim($matches[3]);
 							$ip = trim($matches[4]);
 							if (!empty($genid) && !empty($sigid) && !empty($whichip) && !empty($ip)) {
-								if (!is_array($suppress[$genid]))
+								if (!is_array($suppress[$genid])) {
 									$suppress[$genid] = array();
-								if (!is_array($suppress[$genid][$sigid]))
+								}
+								if (!is_array($suppress[$genid][$sigid])) {
 									$suppress[$genid][$sigid] = array();
-								if (!is_array($suppress[$genid][$sigid][$whichip]))
+								}
+								if (!is_array($suppress[$genid][$sigid][$whichip])) {
 									$suppress[$genid][$sigid][$whichip] = array();
-								if (!is_array($suppress[$genid][$sigid][$whichip][$ip]))
+								}
+								if (!is_array($suppress[$genid][$sigid][$whichip][$ip])) {
 									$suppress[$genid][$sigid][$whichip][$ip] = array();
+								}
 								$suppress[$genid][$sigid][$whichip][$ip] = "suppress";
 							}
 						}
@@ -928,12 +1006,14 @@ function suricata_post_delete_logs($suricata_uuid = 0) {
 	global $config, $g;
 
 	// do nothing if no Suricata interfaces active
-	if (!is_array($config['installedpackages']['suricata']['rule']))
+	if (!is_array($config['installedpackages']['suricata']['rule'])) {
 		return;
+	}
 
 	foreach ($config['installedpackages']['suricata']['rule'] as $value) {
-		if ($value['uuid'] != $suricata_uuid)
+		if ($value['uuid'] != $suricata_uuid) {
 			continue;
+		}
 		$if_real = get_real_interface($value['interface']);
 		$suricata_log_dir = SURICATALOGDIR . "suricata_{$if_real}{$suricata_uuid}";
 
@@ -942,20 +1022,23 @@ function suricata_post_delete_logs($suricata_uuid = 0) {
 			$filelist = glob("{$suricata_log_dir}/unified2.alert.*");
 			// Keep most recent file
 			unset($filelist[count($filelist) - 1]);
-			foreach ($filelist as $file)
+			foreach ($filelist as $file) {
 				unlink_if_exists($file);
+			}
 
 			/* Clean-up Barnyard2 archived files if any exist */
 			$filelist = glob("{$suricata_log_dir}/barnyard2/archive/unified2.alert.*");
-			foreach ($filelist as $file)
+			foreach ($filelist as $file) {
 				unlink_if_exists($file);
+			}
 
 			/* Clean-up packet capture files if any exist */
 			$filelist = glob("{$suricata_log_dir}/log.pcap.*");
 			// Keep most recent file
 			unset($filelist[count($filelist) - 1]);
-			foreach ($filelist as $file)
+			foreach ($filelist as $file) {
 				unlink_if_exists($file);
+			}
 			unset($filelist);
 		}
 	}
@@ -963,8 +1046,9 @@ function suricata_post_delete_logs($suricata_uuid = 0) {
 
 /* This returns size of passed directory or file in 1024-byte blocks */
 function suricata_Getdirsize($node) {
-	if(!is_readable($node))
+	if(!is_readable($node)) {
 		return false;
+	}
 
 	$blah = exec( "/usr/bin/du -kdc $node" );
 	return substr( $blah, 0, strpos($blah, 9) );
@@ -998,26 +1082,30 @@ function suricata_build_sid_msg_map($rules_path, $sid_file) {
 	// variable accordingly. If we can't figure it out, return
 	// and don't write a sid-msg.map file.
 	if (is_string($rules_path)) {
-		if (is_dir($rules_path))
+		if (is_dir($rules_path)) {
 			$rule_files = glob($rules_path . "*.rules");
-		elseif (is_file($rules_path))
+		} elseif (is_file($rules_path)) {
 			$rule_files = (array)$rules_path;
+		}
 	}
-	elseif (is_array($rules_path))
+	elseif (is_array($rules_path)) {
 		$rule_files = $rules_path;
-	else
+	} else {
 		return;
+	}
 
 	// Read the rule files into an array, then iterate the list
 	foreach ($rule_files as $file) {
 
 		// Don't process files with "deleted" in the filename
-		if (stristr($file, "deleted"))
+		if (stristr($file, "deleted")) {
 			continue;
+		}
 
 		// Read the file into an array, skipping missing files.
-		if (!file_exists($file))
+		if (!file_exists($file)) {
 			continue;
+		}
 
 		$rules_array = file($file, FILE_SKIP_EMPTY_LINES);
 		$record = "";
@@ -1027,8 +1115,9 @@ function suricata_build_sid_msg_map($rules_path, $sid_file) {
 		foreach ($rules_array as $rule) {
 
 			// Skip any non-rule lines unless we're in multiline mode.
-			if (!preg_match('/^\s*#*\s*(alert|drop|pass)/i', $rule) && !$b_Multiline)
+			if (!preg_match('/^\s*#*\s*(alert|drop|pass)/i', $rule) && !$b_Multiline) {
 				continue;
+			}
 
 			// Test for a multi-line rule, and reassemble the
 			// pieces back into a single line.
@@ -1057,25 +1146,32 @@ function suricata_build_sid_msg_map($rules_path, $sid_file) {
 			$msg = '';
 			$matches = '';
 			$sidEntry = '';
-			if (preg_match('/\bmsg\s*:\s*"(.+?)"\s*;/i', $rule, $matches))
+			if (preg_match('/\bmsg\s*:\s*"(.+?)"\s*;/i', $rule, $matches)) {
 				$msg = trim($matches[1]);
-			if (preg_match('/\bsid\s*:\s*(\d+)\s*;/i', $rule, $matches))
+			}
+			if (preg_match('/\bsid\s*:\s*(\d+)\s*;/i', $rule, $matches)) {
 				$sid = trim($matches[1]);
-			if (preg_match('/\bgid\s*:\s*(\d+)\s*;/i', $rule, $matches))
+			}
+			if (preg_match('/\bgid\s*:\s*(\d+)\s*;/i', $rule, $matches)) {
 				$gid = trim($matches[1]);
-			if (preg_match('/\brev\s*:\s*([^\;]+)/i', $rule, $matches))
+			}
+			if (preg_match('/\brev\s*:\s*([^\;]+)/i', $rule, $matches)) {
 				$rev = trim($matches[1]);
-			if (preg_match('/\bclasstype\s*:\s*([^\;]+)/i', $rule, $matches))
+			}
+			if (preg_match('/\bclasstype\s*:\s*([^\;]+)/i', $rule, $matches)) {
 				$classtype = trim($matches[1]);
-			if (preg_match('/\bpriority\s*:\s*([^\;]+)/i', $rule, $matches))
+			}
+			if (preg_match('/\bpriority\s*:\s*([^\;]+)/i', $rule, $matches)) {
 				$priority = trim($matches[1]);
+			}
 
 			if (!empty($gid) && !empty($sid) && !empty($msg)) {
 				$sidEntry = $gid . ' || ' . $sid . ' || ' . $rev . ' || ' . $classtype . ' || ';
 				$sidEntry .= $priority . ' || ' . $msg;
 				preg_match_all('/\breference\s*:\s*([^\;]+)/i', $rule, $matches);
-				foreach ($matches[1] as $ref)
+				foreach ($matches[1] as $ref) {
 					$sidEntry .= " || " . trim($ref);
+				}
 				$sidEntry .= "\n";
 				$sidMap[] = $sidEntry;
 			}
@@ -1098,40 +1194,45 @@ function suricata_merge_reference_configs($cfg_in, $cfg_out) {
 	/* no duplication of lines occurs in the output file.      */
 	/***********************************************************/
 
-        $outMap = array();
-        foreach ($cfg_in as $file) {
-	     if (!file_exists($file))
+	$outMap = array();
+	foreach ($cfg_in as $file) {
+		if (!file_exists($file)) {
 			continue;
-                $in = file($file, FILE_SKIP_EMPTY_LINES);
-                foreach ($in as $line) {
-                        /* Skip comment lines  */
-                        if (preg_match('/^\s*#/', $line))
-                                continue;
-                        if (preg_match('/(\:)\s*(\w+)\s*(.*)/', $line, $matches)) {
-                                if (!empty($matches[2]) && !empty($matches[3])) {
-                                        $matches[2] = trim($matches[2]);
-                                        if (!array_key_exists($matches[2], $outMap)) {
-						if (!is_array($outMap[$matches[2]]))
+		}
+		$in = file($file, FILE_SKIP_EMPTY_LINES);
+		foreach ($in as $line) {
+			/* Skip comment lines  */
+			if (preg_match('/^\s*#/', $line)) {
+				continue;
+			}
+			if (preg_match('/(\:)\s*(\w+)\s*(.*)/', $line, $matches)) {
+				if (!empty($matches[2]) && !empty($matches[3])) {
+					$matches[2] = trim($matches[2]);
+					if (!array_key_exists($matches[2], $outMap)) {
+						if (!is_array($outMap[$matches[2]])) {
 							$outMap[$matches[2]] = array();
-                                                $outMap[$matches[2]] = trim($matches[3]);
+						}
+						$outMap[$matches[2]] = trim($matches[3]);
 					}
-                                }
-                        }
-                }             
-        }
-        // Sort the new reference map.
-        uksort($outMap,'strnatcasecmp');
+				}
+			}
+		}             
+	}
+	// Sort the new reference map.
+	uksort($outMap,'strnatcasecmp');
 
 	// Do NOT write an empty references.config file, just
 	// exit instead.
-	if (empty($outMap))
+	if (empty($outMap)) {
 		return false;
+	}
 
-        // Format and write it to the supplied output file.
-        $format = "config reference: %-12s %s\n";
-        foreach ($outMap as $key=>$value)
-                $outMap[$key] = sprintf($format, $key, $value);
-        @file_put_contents($cfg_out, array_values($outMap));
+	// Format and write it to the supplied output file.
+	$format = "config reference: %-12s %s\n";
+	foreach ($outMap as $key=>$value) {
+		$outMap[$key] = sprintf($format, $key, $value);
+	}
+	@file_put_contents($cfg_out, array_values($outMap));
 	return true;
 }
 
@@ -1144,40 +1245,45 @@ function suricata_merge_classification_configs($cfg_in, $cfg_out) {
 	/* so no duplication of lines occurs in the output file.    */
 	/************************************************************/
 
-        $outMap = array();
-        foreach ($cfg_in as $file) {
-	     if (!file_exists($file))
+	$outMap = array();
+	foreach ($cfg_in as $file) {
+		if (!file_exists($file)) {
 			continue;
-                $in = file($file, FILE_SKIP_EMPTY_LINES);
-                foreach ($in as $line) {
-                        if (preg_match('/(.*:)(\s*.*),(.*),(.*)/', $line, $matches)) {
-                                /* Skip comment lines  */
-                                if (preg_match('/^\s*#/', $line))
-                                        continue;
-                                if (!empty($matches[2]) && !empty($matches[3]) && !empty($matches[4])) {
-                                        $matches[2] = trim($matches[2]);
-                                        if (!array_key_exists($matches[2], $outMap)) {
-						if (!is_array($outMap[$matches[2]]))
+		}
+		$in = file($file, FILE_SKIP_EMPTY_LINES);
+		foreach ($in as $line) {
+			if (preg_match('/(.*:)(\s*.*),(.*),(.*)/', $line, $matches)) {
+				/* Skip comment lines  */
+				if (preg_match('/^\s*#/', $line)) {
+					continue;
+				}
+				if (!empty($matches[2]) && !empty($matches[3]) && !empty($matches[4])) {
+					$matches[2] = trim($matches[2]);
+					if (!array_key_exists($matches[2], $outMap)) {
+						if (!is_array($outMap[$matches[2]])) {
 							$outMap[$matches[2]] = array();
-                                                $outMap[$matches[2]] = trim($matches[3]) . "," . trim($matches[4]);
+						}
+						$outMap[$matches[2]] = trim($matches[3]) . "," . trim($matches[4]);
 					}
-                                }
-                        }
-                }             
-        }
-        // Sort the new classification map.
-        uksort($outMap,'strnatcasecmp');
+				}
+			}
+		}             
+	}
+	// Sort the new classification map.
+	uksort($outMap,'strnatcasecmp');
 
 	// Do NOT write an empty classification.config file, just
 	// exit instead.
-	if (empty($outMap))
+	if (empty($outMap)) {
 		return false;
+	}
 
-        // Format and write it to the supplied output file.
-        $format = "config classification: %s,%s\n";
-        foreach ($outMap as $key=>$value)
-                $outMap[$key] = sprintf($format, $key, $value);
-        @file_put_contents($cfg_out, array_values($outMap));
+	// Format and write it to the supplied output file.
+	$format = "config classification: %s,%s\n";
+	foreach ($outMap as $key=>$value) {
+		$outMap[$key] = sprintf($format, $key, $value);
+	}
+	@file_put_contents($cfg_out, array_values($outMap));
 	return true;
 }
 
@@ -1196,8 +1302,9 @@ function suricata_load_rules_map($rules_path) {
 	$map_ref = array();
 	$rule_files = array();
 
-	if (empty($rules_path))
+	if (empty($rules_path)) {
 		return $map_ref;
+	}
 
 	/************************************************************************************
 	 * Read all the rules into the map array.
@@ -1229,28 +1336,32 @@ function suricata_load_rules_map($rules_path) {
 	// variable accordingly. If we can't figure it out, return
 	// an empty rules map array.
 	if (is_string($rules_path)) {
-		if (is_dir($rules_path))
+		if (is_dir($rules_path)) {
 			$rule_files = glob($rules_path . "*.rules");
-		elseif (is_file($rules_path))
+		} elseif (is_file($rules_path)) {
 			$rule_files = (array)$rules_path;
+		}
 	}
-	elseif (is_array($rules_path))
+	elseif (is_array($rules_path)) {
 		$rule_files = $rules_path;
-	else
+	} else {
 		return $map_ref;
+	}
 
         // Read the rule files into an array, then iterate the list
 	// to process the rules from the files one-by-one.
 	foreach ($rule_files as $file) {
 
 		// Don't process files with "deleted" in the filename.
-		if (stristr($file, "deleted"))
+		if (stristr($file, "deleted")) {
 			continue;
+		}
 
 		// Read the file contents into an array, skipping
 		// missing files.
-		if (!file_exists($file))
+		if (!file_exists($file)) {
 			continue;
+		}
 
 		$rules_array = file($file, FILE_SKIP_EMPTY_LINES);
 		$record = "";
@@ -1261,13 +1372,15 @@ function suricata_load_rules_map($rules_path) {
 		foreach ($rules_array as $rule) {
 
 			// Skip any lines that may be just spaces.
-			if (trim($rule, " \n") == "")
+			if (trim($rule, " \n") == "") {
 				continue;
+			}
 
 			// Skip any non-rule lines unless we're in
 			// multiline mode.
-			if (!preg_match('/^\s*#*\s*(alert|drop|pass|reject)/i', $rule) && !$b_Multiline)
+			if (!preg_match('/^\s*#*\s*(alert|drop|pass|reject)/i', $rule) && !$b_Multiline) {
 				continue;
+			}
 
 			// Test for a multi-line rule; loop and reassemble
 			// the pieces back into a single line.
@@ -1299,10 +1412,12 @@ function suricata_load_rules_map($rules_path) {
 			}
 
 			$gid = suricata_get_gid($rule);
-			if (!is_array($map_ref[$gid]))
+			if (!is_array($map_ref[$gid])) {
 				$map_ref[$gid] = array();
-			if (!is_array($map_ref[$gid][$sid]))
+			}
+			if (!is_array($map_ref[$gid][$sid])) {
 				$map_ref[$gid][$sid] = array();
+			}			
 			$map_ref[$gid][$sid]['rule'] = $rule;
 			$map_ref[$gid][$sid]['category'] = basename($file, ".rules");
 			$map_ref[$gid][$sid]['state_toggled'] = 0;
@@ -1310,16 +1425,18 @@ function suricata_load_rules_map($rules_path) {
 
 			// Grab the rule action
 			$matches = array();
-			if (preg_match('/^\s*#*\s*(alert|drop|pass|reject)/i', $rule, $matches))
+			if (preg_match('/^\s*#*\s*(alert|drop|pass|reject)/i', $rule, $matches)) {
 				$map_ref[$gid][$sid]['action'] = $matches[1];
-			else
+			} else {
 				$map_ref[$gid][$sid]['action'] = "";
+			}
 
 			// Determine if default state is "disabled"
-			if (preg_match('/^\s*\#+/', $rule))
+			if (preg_match('/^\s*\#+/', $rule)) {
 				$map_ref[$gid][$sid]['disabled'] = 1;
-			else
+			} else {
 				$map_ref[$gid][$sid]['disabled'] = 0;
+			}
 
 			// Grab any associated flowbits from the rule.
 			$map_ref[$gid][$sid]['flowbits'] = suricata_get_flowbits($rule);
@@ -1343,10 +1460,11 @@ function suricata_get_gid($rule) {
 	/* general text rules match.                                    */
 	/****************************************************************/
 
-	if (preg_match('/\bgid\s*:\s*(\d+)\s*;/i', $rule, $matches))
+	if (preg_match('/\bgid\s*:\s*(\d+)\s*;/i', $rule, $matches)) {
 		return trim($matches[1]);
-	else
+	} else {
 		return "1";
+	}
 }
 
 function suricata_get_sid($rule) {
@@ -1356,10 +1474,11 @@ function suricata_get_sid($rule) {
 	/* empty value.                                                */
 	/***************************************************************/
 
-	if (preg_match('/\bsid\s*:\s*(\d+)\s*;/i', $rule, $matches))
+	if (preg_match('/\bsid\s*:\s*(\d+)\s*;/i', $rule, $matches)) {
 		return trim($matches[1]);
-	else
+	} else {
 		return "";
+	}
 }
 
 function suricata_get_msg($rule) {
@@ -1369,8 +1488,9 @@ function suricata_get_msg($rule) {
 	/**************************************************************/
 
 	$msg = "";
-	if (preg_match('/\bmsg\s*:\s*"(.+?)"\s*;/i', $rule, $matches))
+	if (preg_match('/\bmsg\s*:\s*"(.+?)"\s*;/i', $rule, $matches)) {
 		$msg = trim($matches[1]);
+	}
 	return $msg;
 }
 
@@ -1390,8 +1510,9 @@ function suricata_get_flowbits($rule) {
 		while (++$i < count($matches[1])) {
 			$action = trim($matches[1][$i]);
 			$target = preg_split('/[&|]/', $matches[2][$i]);
-			foreach ($target as $t)
+			foreach ($target as $t) {
 				$flowbits[] = "{$action}," . trim($t);
+			}
 		}
 	}
 
@@ -1416,33 +1537,42 @@ function suricata_get_checked_flowbits($rules_map) {
 
 	$checked_flowbits = array();
 	foreach ($rules_map as $rulem) {
-		if (!is_array($rulem))
+		if (!is_array($rulem)) {
 			continue;
+		}
 		foreach ($rulem as $rulem2) {
-			if (!is_array($rulem2))
+			if (!is_array($rulem2)) {
 				continue;
-			if ($rulem2['disabled'] == 1)
+			}
+			if ($rulem2['disabled'] == 1) {
 				continue;
-			if (empty($rulem2['flowbits']))
+			}
+			if (empty($rulem2['flowbits'])) {
 				continue;
-			if (!is_array($rulem2['flowbits']))
+			}
+			if (!is_array($rulem2['flowbits'])) {
 				continue;
+			}
 			foreach ($rulem2['flowbits'] as $flowbit) {
-				if (empty($flowbit))
+				if (empty($flowbit)) {
 					continue;
+				}
 				// If no comma in flowbits option, then  skip it.
 				$pos = strpos($flowbit, ",");
-				if ($pos === false)
+				if ($pos === false) {
 					continue;
+				}
 				$action = substr(strtolower($flowbit), 0, $pos);
 				if ($action == "isset" || $action == "isnotset") {
 					$target = preg_split('/[&|]/', substr($flowbit, $pos + 1));
-					foreach ($target as $t)
+					foreach ($target as $t) {
 						if (!empty($t) && !isset($checked_flowbits[$t])) {
-							if (!is_array($checked_flowbits[$t]))
+							if (!is_array($checked_flowbits[$t])) {
 								$checked_flowbits[$t] = array();
+							}
 							$checked_flowbits[$t] = $action;
 						}
+					}
 				}
 			}
 		}
@@ -1461,31 +1591,39 @@ function suricata_get_set_flowbits($rules_map) {
 
 	$set_flowbits = array();
 	foreach ($rules_map as $rulem) {
-		if (!is_array($rulem))
+		if (!is_array($rulem)) {
 			continue;
+		}
 		foreach ($rulem as $rulem2) {
-			if ($rulem2['disabled'] == 1)
+			if ($rulem2['disabled'] == 1) {
 				continue;
-			if (empty($rulem2['flowbits']))
+			}
+			if (empty($rulem2['flowbits'])) {
 				continue;
-			if (!is_array($rulem2['flowbits']))
+			}
+			if (!is_array($rulem2['flowbits'])) {
 				continue;
+			}
 			foreach ($rulem2['flowbits'] as $flowbit) {
-				if (empty($flowbit))
+				if (empty($flowbit)) {
 					continue;
+				}
 				/* If no comma in flowbits option, then  skip it. */
 				$pos = strpos($flowbit, ",");
-				if ($pos === false)
+				if ($pos === false) {
 					continue;
+				}
 				$action = substr(strtolower($flowbit), 0, $pos);
 				if ($action == "set" || $action == "toggle" || $action == "setx") {
 					$target = preg_split('/[&|]/', substr($flowbit, $pos + 1));
-					foreach ($target as $t)
+					foreach ($target as $t) {
 						if (!empty($t) && !isset($set_flowbits[$t])) {
-							if (!is_array($set_flowbits[$t]))
+							if (!is_array($set_flowbits[$t])) {
 								$set_flowbits[$t] = array();
+							}
 							$set_flowbits[$t] = $action;
 						}
+					}
 				}
 			}
 		}
@@ -1505,29 +1643,35 @@ function suricata_find_flowbit_required_rules($rules, $unchecked_flowbits) {
 
 	$required_flowbits_rules = array();
 	foreach ($rules as $k1 => $rule) {
-		if (!is_array($rule))
+		if (!is_array($rule)) {
 			continue;
+		}
 		foreach ($rule as $k2 => $rule2) {
-			if (empty($rule2['flowbits']))
+			if (empty($rule2['flowbits'])) {
 				continue;
-			if (!is_array($rule2['flowbits']))
+			}
+			if (!is_array($rule2['flowbits'])) {
 				continue;
+			}
 			foreach ($rule2['flowbits'] as $flowbit) {
-				if (empty($flowbit))
+				if (empty($flowbit)) {
 					continue;
+				}
 				$action = substr($flowbit, 0, strpos($flowbit, ","));
 				if (!strcasecmp(substr($action, 0, 3), "set")) {
 					$tmp = substr($flowbit, strpos($flowbit, ",") +1 );
 					if (!empty($tmp) && isset($unchecked_flowbits[$tmp])) {
-						if (!is_array($required_flowbits_rules[$k1]))
+						if (!is_array($required_flowbits_rules[$k1])) {
 							$required_flowbits_rules[$k1] = array();
-						if (!is_array($required_flowbits_rules[$k1][$k2]))
+						}
+						if (!is_array($required_flowbits_rules[$k1][$k2])) {
 							$required_flowbits_rules[$k1][$k2] = array();
+						}
 						$required_flowbits_rules[$k1][$k2]['category'] = $rule2['category'];
-						if ($rule2['disabled'] == 0)
+						if ($rule2['disabled'] == 0) {
 							// If not disabled, just return the rule text "as is"
 							$required_flowbits_rules[$k1][$k2]['rule'] = ltrim($rule2['rule']);
-						else {
+						} else {
 							// If rule is disabled, remove leading '#' to enable it
 							$required_flowbits_rules[$k1][$k2]['rule'] = ltrim(substr($rule2['rule'], strpos($rule2['rule'], "#") + 1));
 							$required_flowbits_rules[$k1][$k2]['disabled'] = 0;
@@ -1611,8 +1755,9 @@ function suricata_write_flowbit_rules_file($flowbit_rules, $rule_file) {
 	// See if we were passed a directory or full
 	// filename to write the rules to, and adjust
 	// the destination argument accordingly.
-	if (is_dir($rule_file))
+	if (is_dir($rule_file)) {
 		$rule_file = rtrim($rule_file, '/')."/{$flowbit_rules_file}";
+	}
 
 	if (empty($flowbit_rules)) {
 		@file_put_contents($rule_file, "");
@@ -1674,10 +1819,12 @@ function suricata_load_vrt_policy($policy, $all_rules=null) {
 		foreach ($arulem as $k2 => $arulem2) {
 			if (strripos($arulem2['rule'], "policy {$policy}-ips") !== false) {
 				if (!preg_match('/flowbits\s*:\s*noalert/i', $arulem2['rule'])) {
-					if (!is_array($vrt_policy_rules[$k1]))
+					if (!is_array($vrt_policy_rules[$k1])) {
 						$vrt_policy_rules[$k1] = array();
-					if (!is_array($vrt_policy_rules[$k1][$k2]))
+					}
+					if (!is_array($vrt_policy_rules[$k1][$k2])) {
 						$vrt_policy_rules[$k1][$k2] = array();
+					}
 					$vrt_policy_rules[$k1][$k2] = $arulem2;
 
 					// Enable the policy rule if disabled
@@ -1727,12 +1874,14 @@ function suricata_parse_sidconf_file($sidconf_file) {
 		$line = array();
 
 		// Skip any lines that may be just spaces.
-		if (trim($buf, " \r\n") == "")
+		if (trim($buf, " \r\n") == "") {
 			continue;
+		}
 
 		// Skip line with leading "#" since it's a comment
-		if (preg_match('/^\s*#/', $buf))
+		if (preg_match('/^\s*#/', $buf)) {
 			continue;
+		}
 
 		// Trim off any trailing comment
 		$line = explode("#", $buf);
@@ -1743,8 +1892,9 @@ function suricata_parse_sidconf_file($sidconf_file) {
 		// Now split the SID mod arguments at the commas, if more than one
 		// per line, and add to our $sid_mods array.
 		$line = explode(",", $buf);
-		foreach ($line as $ent)
+		foreach ($line as $ent) {
 			$sid_mods[] = trim($ent);
+		}
 	}
 
 	// Close the file, release unneeded memory and return
@@ -1796,20 +1946,24 @@ function suricata_sid_mgmt_auto_categories($suricatacfg, $log_results = FALSE) {
 	$drops = array();
 
 	// Check if auto-mgmt of SIDs is enabled, exit if not
-	if ($config['installedpackages']['suricata']['config'][0]['auto_manage_sids'] != 'on')
+	if ($config['installedpackages']['suricata']['config'][0]['auto_manage_sids'] != 'on') {
 		return array();
-	if (empty($suricatacfg['disable_sid_file']) && empty($suricatacfg['enable_sid_file']) && empty($suricatacfg['drop_sid_file']))
+	}
+	if (empty($suricatacfg['disable_sid_file']) && empty($suricatacfg['enable_sid_file']) && empty($suricatacfg['drop_sid_file'])) {
 		return array();
+	}
 
 	// Configure the interface's logging subdirectory if log results is enabled
-	if ($log_results == TRUE)
+	if ($log_results == TRUE) {
 		$log_file = SURICATALOGDIR . $suricatalogdir . "suricata_" . get_real_interface($suricatacfg['interface']) . "{$suricatacfg['uuid']}/sid_changes.log";
-	else
+	} else {
 		$log_file = NULL;
+	}
 
 	// Get the list of currently enabled categories for the interface
-	if (!empty($suricatacfg['rulesets']))
+	if (!empty($suricatacfg['rulesets'])) {
 		$enabled_cats = explode("||", $suricatacfg['rulesets']);
+	}
 
 	if ($log_results == TRUE) {
 		error_log(gettext("********************************************************\n"), 3, $log_file);
@@ -1820,40 +1974,44 @@ function suricata_sid_mgmt_auto_categories($suricatacfg, $log_results = FALSE) {
 	switch ($suricatacfg['sid_state_order']) {
 		case "disable_enable":
 			if (!empty($suricatacfg['disable_sid_file'])) {
-				if ($log_results == TRUE)
+				if ($log_results == TRUE) {
 					error_log(gettext("Processing disable_sid file: {$suricatacfg['disable_sid_file']}\n"), 3, $log_file);
+				}
 
 				// Attempt to open the 'disable_sid_file' for the interface
 				if (!file_exists("{$suricata_sidmods_dir}{$suricatacfg['disable_sid_file']}")) {
 					log_error(gettext("[Suricata] Error - unable to open 'disable_sid_file' \"{$suricatacfg['disable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
-					if ($log_results == TRUE)
+					if ($log_results == TRUE) {
 						error_log(gettext("Unable to open disable_sid file \"{$suricatacfg['disable_sid_file']}\".\n"), 3, $log_file);
-				}
-				else
+					}
+				} else {
 					$sid_mods = suricata_parse_sidconf_file("{$suricata_sidmods_dir}{$suricatacfg['disable_sid_file']}");
+				}
 
-				if (!empty($sid_mods))
+				if (!empty($sid_mods)) {
 					$disables = suricata_get_auto_category_mods($enabled_cats, $sid_mods, "disable", $log_results, $log_file);
-				elseif ($log_results == TRUE && !empty($log_file)) {
+				} elseif ($log_results == TRUE && !empty($log_file)) {
 					error_log(gettext("WARNING: no valid SID match tokens found in file \"{$suricatacfg['disable_sid_file']}\".\n"), 3, $log_file);
 				}
 			}
 			if (!empty($suricatacfg['enable_sid_file'])) {
-				if ($log_results == TRUE)
+				if ($log_results == TRUE) {
 					error_log(gettext("Processing enable_sid file: {$suricatacfg['enable_sid_file']}\n"), 3, $log_file);
+				}
 
 				// Attempt to open the 'enable_sid_file' for the interface
 				if (!file_exists("{$suricata_sidmods_dir}{$suricatacfg['enable_sid_file']}")) {
 					log_error(gettext("[Suricata] Error - unable to open 'enable_sid_file' \"{$suricatacfg['enable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
-					if ($log_results == TRUE)
+					if ($log_results == TRUE) {
 						error_log(gettext("Unable to open enable_sid file \"{$suricatacfg['enable_sid_file']}\".\n"), 3, $log_file);
-				}
-				else
+					}
+				} else {
 					$sid_mods = suricata_parse_sidconf_file("{$suricata_sidmods_dir}{$suricatacfg['enable_sid_file']}");
+				}
 
-				if (!empty($sid_mods))
+				if (!empty($sid_mods)) {
 					$enables = suricata_get_auto_category_mods($enabled_cats, $sid_mods, "enable", $log_results, $log_file);
-				elseif ($log_results == TRUE && !empty($log_file)) {
+				} elseif ($log_results == TRUE && !empty($log_file)) {
 					error_log(gettext("WARNING: no valid SID match tokens found in file \"{$suricatacfg['enable_sid_file']}\".\n"), 3, $log_file);
 				}
 			}
@@ -1861,40 +2019,45 @@ function suricata_sid_mgmt_auto_categories($suricatacfg, $log_results = FALSE) {
 
 		case "enable_disable":
 			if (!empty($suricatacfg['enable_sid_file'])) {
-				if ($log_results == TRUE)
+				if ($log_results == TRUE) {
 					error_log(gettext("Processing enable_sid file: {$suricatacfg['enable_sid_file']}\n"), 3, $log_file);
+				}
 
 				// Attempt to open the 'enable_sid_file' for the interface
 				if (!file_exists("{$suricata_sidmods_dir}{$suricatacfg['enable_sid_file']}")) {
 					log_error(gettext("[Suricata] Error - unable to open 'enable_sid_file' \"{$suricatacfg['enable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
-					if ($log_results == TRUE)
+					if ($log_results == TRUE) {
 						error_log(gettext("Unable to open enable_sid file \"{$suricatacfg['enable_sid_file']}\".\n"), 3, $log_file);
-				}
-				else
+					}
+				} else {
 					$sid_mods = suricata_parse_sidconf_file("{$suricata_sidmods_dir}{$suricatacfg['enable_sid_file']}");
+				}
 
-				if (!empty($sid_mods))
+				if (!empty($sid_mods)) {
 					$enables = suricata_get_auto_category_mods($enabled_cats, $sid_mods, "enable", $log_results, $log_file);
-				elseif ($log_results == TRUE && !empty($log_file)) {
+				} elseif ($log_results == TRUE && !empty($log_file)) {
 					error_log(gettext("WARNING: no valid SID match tokens found in file \"{$suricatacfg['enable_sid_file']}\".\n"), 3, $log_file);
 				}
 			}
 			if (!empty($suricatacfg['disable_sid_file'])) {
-				if ($log_results == TRUE)
+				if ($log_results == TRUE) {
 					error_log(gettext("Processing disable_sid file: {$suricatacfg['disable_sid_file']}\n"), 3, $log_file);
+				}
 
 				// Attempt to open the 'disable_sid_file' for the interface
 				if (!file_exists("{$suricata_sidmods_dir}{$suricatacfg['disable_sid_file']}")) {
 					log_error(gettext("[Suricata] Error - unable to open 'disable_sid_file' \"{$suricatacfg['disable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
-					if ($log_results == TRUE)
+					if ($log_results == TRUE) {
 						error_log(gettext("Unable to open disable_sid file \"{$suricatacfg['disable_sid_file']}\".\n"), 3, $log_file);
+					}
 				}
-				else
+				else {
 					$sid_mods = suricata_parse_sidconf_file("{$suricata_sidmods_dir}{$suricatacfg['disable_sid_file']}");
+				}
 
-				if (!empty($sid_mods))
+				if (!empty($sid_mods)) {
 					$disables = suricata_get_auto_category_mods($enabled_cats, $sid_mods, "disable", $log_results, $log_file);
-				elseif ($log_results == TRUE && !empty($log_file)) {
+				} elseif ($log_results == TRUE && !empty($log_file)) {
 					error_log(gettext("WARNING: no valid SID match tokens found in file \"{$suricatacfg['disable_sid_file']}\".\n"), 3, $log_file);
 				}
 			}
@@ -1964,8 +2127,9 @@ function suricata_get_auto_category_mods($categories, $sid_mods, $action, $log_r
 	// Get a list of all possible categories by loading all rules files
 	foreach (array( VRT_FILE_PREFIX, ET_OPEN_FILE_PREFIX, ET_PRO_FILE_PREFIX, GPL_FILE_PREFIX ) as $prefix) {
 		$files = glob("{$suricatadir}rules/{$prefix}*.rules");
-		foreach ($files as $file)
+		foreach ($files as $file) {
 			$all_cats[] = basename($file);
+		}
 	}
 
 	// Walk the SID mod tokens and decode looking for rule
@@ -1973,23 +2137,23 @@ function suricata_get_auto_category_mods($categories, $sid_mods, $action, $log_r
 	foreach ($sid_mods as $tok) {
 		$matches = array();
 		// Test the SID token for a GID:SID range and skip if true
-		if (preg_match('/^(\d+):(\d+)-\1:(\d+)/', $tok))
+		if (preg_match('/^(\d+):(\d+)-\1:(\d+)/', $tok)) {
 			continue;
 		// Test the token for a single GID:SID and skip if true
-		elseif (preg_match('/^(\d+):(\d+)$/', $tok))
+		} elseif (preg_match('/^(\d+):(\d+)$/', $tok)) {
 			continue;
 		// Test the token for the PCRE: keyword and skip if true
-		elseif (preg_match('/(^pcre\:)(.+)/i', $tok))
+		} elseif (preg_match('/(^pcre\:)(.+)/i', $tok)) {
 			continue;
 		// Test the token for the MS reference keyword and skip if true
-		elseif (preg_match('/^MS\d+-.+/i', $tok))
+		} elseif (preg_match('/^MS\d+-.+/i', $tok)) {
 			continue;
 		// Test the token for other keywords delimited with a colon and skip if true
-		elseif (preg_match('/^[a-xA-X]+\:.+/', $tok))
+		} elseif (preg_match('/^[a-xA-X]+\:.+/', $tok)) {
 			continue;
 		// Test the SID token for a rule category name.  Anything that
 		// failed to match above is considered a potential category name.
-		elseif (preg_match('/[a-xA-X]+(-|\w).*/', $tok, $matches)) {
+		} elseif (preg_match('/[a-xA-X]+(-|\w).*/', $tok, $matches)) {
 			$counter++;
 			$regex = "/" . preg_quote(trim($matches[0]), '/') . "/i";
 			// Search through the $all_cats array for any matches to the regex
@@ -2001,8 +2165,9 @@ function suricata_get_auto_category_mods($categories, $sid_mods, $action, $log_r
 					case 'enable':
 						if (!isset($changes[$cat])) {
 							$changes[$cat] = 'enabled';
-							if ($log_results == TRUE && !empty($log_file))
+							if ($log_results == TRUE && !empty($log_file)) {
 								error_log(gettext("    Enabled rule category: {$cat}\n"), 3, $log_file);
+							}
 							$matchcount++;
 						}
 						break;
@@ -2010,8 +2175,9 @@ function suricata_get_auto_category_mods($categories, $sid_mods, $action, $log_r
 					case 'disable':
 						if (!isset($changes[$cat])) {
 							$changes[$cat] = 'disabled';
-							if ($log_results == TRUE && !empty($log_file))
+							if ($log_results == TRUE && !empty($log_file)) {
 								error_log(gettext("    Disabled rule category: {$cat}\n"), 3, $log_file);
+							}
 							$matchcount++;
 						}
 						break;
@@ -2022,8 +2188,9 @@ function suricata_get_auto_category_mods($categories, $sid_mods, $action, $log_r
 			}
 		}
 		else {
-			if ($log_results == TRUE && !empty($log_file))
+			if ($log_results == TRUE && !empty($log_file)) {
 				error_log(gettext("WARNING: unrecognized token '{$tok}' encountered while processing an automatic SID MGMT file.\n"), 3, $log_file);
+			}
 		}
 	}
 
@@ -2075,8 +2242,9 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 
 	// If no rules in $rule_map or mods in $sid_mods,
 	// then nothing to do.
-	if (empty($rule_map) || empty($sid_mods))
+	if (empty($rule_map) || empty($sid_mods)) {
 		return $sids;
+	}
 
 	// Validate the action keyword as we only accept
 	// 'enable', 'disable' and 'drop' as valid.
@@ -2182,8 +2350,9 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 			}
 		}
 		else {
-			if ($log_results == TRUE && !empty($log_file))
+			if ($log_results == TRUE && !empty($log_file)) {
 				error_log(gettext("WARNING: unrecognized token '{$tok}' encountered while processing an automatic SID MGMT file.\n"), 3, $log_file);
+			}
 		}
 	}
 
@@ -2193,8 +2362,9 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 	$modcount = $changecount = 0;
 	$counter = count($sids, COUNT_RECURSIVE) - count($sids);
 
-	if ($log_results == TRUE && !empty($log_file))
+	if ($log_results == TRUE && !empty($log_file)) {
 		error_log(gettext("    Parsed {$counter} potential SIDs to match from the provided list of tokens.\n"), 3, $log_file);
+	}
 
 	foreach (array_keys($sids) as $k1) {
 		foreach (array_keys($sids[$k1]) as $k2) {
@@ -2271,8 +2441,9 @@ function suricata_modify_sid_content(&$rule_map, $sid_mods, $log_results = FALSE
 
 	// If no rules in $rule_map or mods in $sid_mods,
 	// then nothing to do.
-	if (empty($rule_map) || empty($sid_mods))
+	if (empty($rule_map) || empty($sid_mods)) {
 		return $sids;
+	}
 
 	// Walk the SID mod tokens and decode each one
 	foreach ($sid_mods as $tok) {
@@ -2357,8 +2528,9 @@ function suricata_process_enablesid(&$rule_map, $suricatacfg, $log_results = FAL
 	$sid_mods = array();
 
 	// If no rules in $rule_map, then nothing to do
-	if (empty($rule_map))
+	if (empty($rule_map)) {
 		return;
+	}
 
 	// Attempt to open the 'enable_sid_file' for the interface
 	if (!file_exists("{$suricata_sidmods_dir}{$suricatacfg['enable_sid_file']}")) {
@@ -2404,20 +2576,21 @@ function suricata_process_disablesid(&$rule_map, $suricatacfg, $log_results = FA
 	$sid_mods = array();
 
 	// If no rules in $rule_map, then nothing to do
-	if (empty($rule_map))
+	if (empty($rule_map)) {
 		return;
+	}
 
 	// Attempt to open the 'disable_sid_file' for the interface
 	if (!file_exists("{$suricata_sidmods_dir}{$suricatacfg['disable_sid_file']}")) {
 		log_error(gettext("[Suricata] Error - unable to open 'disable_sid_file' \"{$suricatacfg['disable_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
 		return;
-	}
-	else
+	} else {
 		$sid_mods = suricata_parse_sidconf_file("{$suricata_sidmods_dir}{$suricatacfg['disable_sid_file']}");
+	}
 
-	if (!empty($sid_mods))
+	if (!empty($sid_mods)) {
 		suricata_modify_sid_state($rule_map, $sid_mods, "disable", $log_results, $log_file);
-	elseif ($log_results == TRUE && !empty($log_file)) {
+	} elseif ($log_results == TRUE && !empty($log_file)) {
 		error_log(gettext("WARNING: no valid SID match tokens found in file \"{$suricatacfg['disable_sid_file']}\".\n"), 3, $log_file);
 	}
 
@@ -2451,20 +2624,21 @@ function suricata_process_modifysid(&$rule_map, $suricatacfg, $log_results = FAL
 	$sid_mods = array();
 
 	// If no rules in $rule_map, then nothing to do
-	if (empty($rule_map))
+	if (empty($rule_map)) {
 		return;
+	}
 
 	// Attempt to open the 'modify_sid_file' for the interface
 	if (!file_exists("{$suricata_sidmods_dir}{$suricatacfg['modify_sid_file']}")) {
 		log_error(gettext("[Suricata] Error - unable to open 'modify_sid_file' \"{$suricatacfg['modify_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
 		return;
-	}
-	else
+	} else {
 		$sid_mods = suricata_parse_sidconf_file("{$suricata_sidmods_dir}{$suricatacfg['modify_sid_file']}");
+	}
 
-	if (!empty($sid_mods))
+	if (!empty($sid_mods)) {
 		suricata_modify_sid_content($rule_map, $sid_mods, $log_results, $log_file);
-	elseif ($log_results == TRUE && !empty($log_file)) {
+	} elseif ($log_results == TRUE && !empty($log_file)) {
 		error_log(gettext("WARNING: no valid SID match tokens found in file \"{$suricatacfg['modify_sid_file']}\".\n"), 3, $log_file);
 	}
 
@@ -2498,20 +2672,21 @@ function suricata_process_dropsid(&$rule_map, $suricatacfg, $log_results = FALSE
 	$sid_mods = array();
 
 	// If no rules in $rule_map, then nothing to do
-	if (empty($rule_map))
+	if (empty($rule_map)) {
 		return;
+	}
 
 	// Attempt to open the 'drop_sid_file' for the interface
 	if (!file_exists("{$suricata_sidmods_dir}{$suricatacfg['drop_sid_file']}")) {
 		log_error(gettext("[Suricata] Error - unable to open 'drop_sid_file' \"{$suricatacfg['drop_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
 		return;
-	}
-	else
+	} else {
 		$sid_mods = suricata_parse_sidconf_file("{$suricata_sidmods_dir}{$suricatacfg['drop_sid_file']}");
+	}
 
-	if (!empty($sid_mods))
+	if (!empty($sid_mods)) {
 		suricata_modify_sid_state($rule_map, $sid_mods, "drop", $log_results, $log_file);
-	elseif ($log_results == TRUE && !empty($log_file)) {
+	} elseif ($log_results == TRUE && !empty($log_file)) {
 		error_log(gettext("WARNING: no valid SID match tokens found in file \"{$suricatacfg['drop_sid_file']}\".\n"), 3, $log_file);
 	}
 
@@ -2546,10 +2721,11 @@ function suricata_auto_sid_mgmt(&$rule_map, $suricatacfg, $log_results = FALSE) 
 	$result = FALSE;
 
 	// Configure the interface's logging subdirectory if log results is enabled
-	if ($log_results == TRUE)
+	if ($log_results == TRUE) {
 		$log_file = SURICATALOGDIR . $suricatalogdir . "suricata_" . get_real_interface($suricatacfg['interface']) . "{$suricatacfg['uuid']}/sid_changes.log";
-	else
+	} else {
 		$log_file = NULL;
+	}
 
 	// Check if auto-mgmt of SIDs is enabled and files are specified
 	// for the interface.
@@ -2565,23 +2741,27 @@ function suricata_auto_sid_mgmt(&$rule_map, $suricatacfg, $log_results = FALSE) 
 		switch ($suricatacfg['sid_state_order']) {
 			case "disable_enable":
 				if (!empty($suricatacfg['disable_sid_file'])) {
-					if ($log_results == TRUE)
+					if ($log_results == TRUE) {
 						error_log(gettext("Processing disable_sid file: {$suricatacfg['disable_sid_file']}\n"), 3, $log_file);
+					}
 					suricata_process_disablesid($rule_map, $suricatacfg, $log_results, $log_file);
 				}
 				if (!empty($suricatacfg['enable_sid_file'])) {
-					if ($log_results == TRUE)
+					if ($log_results == TRUE) {
 						error_log(gettext("Processing enable_sid file: {$suricatacfg['enable_sid_file']}\n"), 3, $log_file);
+					}
 					suricata_process_enablesid($rule_map, $suricatacfg, $log_results, $log_file);
 				}
 				if (!empty($suricatacfg['modify_sid_file'])) {
-					if ($log_results == TRUE)
+					if ($log_results == TRUE) {
 						error_log(gettext("Processing modify_sid file: {$suricatacfg['modify_sid_file']}\n"), 3, $log_file);
+					}
 					suricata_process_modifysid($rule_map, $suricatacfg, $log_results, $log_file);
 				}
 				if (!empty($suricatacfg['drop_sid_file'])) {
-					if ($log_results == TRUE)
+					if ($log_results == TRUE) {
 						error_log(gettext("Processing drop_sid file: {$suricatacfg['drop_sid_file']}\n"), 3, $log_file);
+					}
 					suricata_process_dropsid($rule_map, $suricatacfg, $log_results, $log_file);
 				}
 				$result = TRUE;
@@ -2589,23 +2769,27 @@ function suricata_auto_sid_mgmt(&$rule_map, $suricatacfg, $log_results = FALSE) 
 
 			case "enable_disable":
 				if (!empty($suricatacfg['enable_sid_file'])) {
-					if ($log_results == TRUE)
+					if ($log_results == TRUE) {
 						error_log(gettext("Processing enable_sid file: {$suricatacfg['enable_sid_file']}\n"), 3, $log_file);
+					}
 					suricata_process_enablesid($rule_map, $suricatacfg, $log_results, $log_file);
 				}
 				if (!empty($suricatacfg['disable_sid_file'])) {
-					if ($log_results == TRUE)
+					if ($log_results == TRUE) {
 						error_log(gettext("Processing disable_sid file: {$suricatacfg['disable_sid_file']}\n"), 3, $log_file);
+					}
 					suricata_process_disablesid($rule_map, $suricatacfg, $log_results, $log_file);
 				}
 				if (!empty($suricatacfg['modify_sid_file'])) {
-					if ($log_results == TRUE)
+					if ($log_results == TRUE) {
 						error_log(gettext("Processing modify_sid file: {$suricatacfg['modify_sid_file']}\n"), 3, $log_file);
+					}
 					suricata_process_modifysid($rule_map, $suricatacfg, $log_results, $log_file);
 				}
 				if (!empty($suricatacfg['drop_sid_file'])) {
-					if ($log_results == TRUE)
+					if ($log_results == TRUE) {
 						error_log(gettext("Processing drop_sid file: {$suricatacfg['drop_sid_file']}\n"), 3, $log_file);
+					}
 					suricata_process_dropsid($rule_map, $suricatacfg, $log_results, $log_file);
 				}
 				$result = TRUE;
@@ -2645,13 +2829,15 @@ function suricata_load_sid_mods($sids) {
 	/*****************************************/
 
 	$result = array();
-	if (empty($sids))
+	if (empty($sids)) {
 		return $result;
+	}
 	$tmp = explode("||", $sids);
 	foreach ($tmp as $v) {
 		if (preg_match('/(\d+)\s*:\s*(\d+)/', $v, $match)) {
-			if (!is_array($result[$match[1]]))
+			if (!is_array($result[$match[1]])) {
 				$result[$match[1]] = array();
+			}
 			$result[$match[1]][$match[2]] = "{$match[1]}:{$match[2]}";
 		}
 	}
@@ -2673,8 +2859,9 @@ function suricata_modify_sids(&$rule_map, $suricatacfg) {
 	/***********************************************/
 
 	if (!isset($suricatacfg['rule_sid_on']) && 
-	    !isset($suricatacfg['rule_sid_off']))
+	    !isset($suricatacfg['rule_sid_off'])) {
 		return;
+	}
 
 	// Load up our enablesid and disablesid
 	// arrays with lists of modified SIDs.
@@ -2760,8 +2947,9 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 			if (!empty($suricatacfg['rulesets'])) {
 				foreach (explode("||", $suricatacfg['rulesets']) as $file){
 						$category = basename($file, ".rules");
-						if (!is_array($enabled_files[$category]))
+						if (!is_array($enabled_files[$category])) {
 							$enabled_files[$category] = array();
+						}
 						$enabled_files[$category] = $file;
 				}
 			}
@@ -2773,13 +2961,15 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 					$key = basename($k, ".rules");
 					switch ($action) {
 						case 'enabled':
-							if (!isset($enabled_files[$key]))
+							if (!isset($enabled_files[$key])) {
 								$enabled_files[$key] = $k;
+							}
 							break;
 
 						case 'disabled':
-							if (isset($enabled_files[$key]))
+							if (isset($enabled_files[$key])) {
 								unset($enabled_files[$key]);
+							}
 							break;
 
 						default:
@@ -2796,10 +2986,12 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 			foreach ($all_rules as $k1 => $rulem) {
 				foreach ($rulem as $k2 => $v) {
 					if (isset($enabled_files[$v['category']])) {
-						if (!is_array($enabled_rules[$k1]))
+						if (!is_array($enabled_rules[$k1])) {
 							$enabled_rules[$k1] = array();
-						if (!is_array($enabled_rules[$k1][$k2]))
+						}
+						if (!is_array($enabled_rules[$k1][$k2])) {
 							$enabled_rules[$k1][$k2] = array();
+						}
 						$enabled_rules[$k1][$k2]['rule'] = $v['rule'];
 						$enabled_rules[$k1][$k2]['category'] = $v['category'];
 						$enabled_rules[$k1][$k2]['disabled'] = $v['disabled'];
@@ -2818,10 +3010,12 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 			$policy_rules = suricata_load_vrt_policy($suricatacfg['ips_policy'], $all_rules);
 			foreach ($policy_rules as $k1 => $policy) {
 				foreach ($policy as $k2 => $p) {
-					if (!is_array($enabled_rules[$k1]))
+					if (!is_array($enabled_rules[$k1])) {
 						$enabled_rules[$k1] = array();
-					if (!is_array($enabled_rules[$k1][$k2]))
+					}
+					if (!is_array($enabled_rules[$k1][$k2])) {
 						$enabled_rules[$k1][$k2] = array();
+					}
 					$enabled_rules[$k1][$k2]['rule'] = $p['rule'];
 					$enabled_rules[$k1][$k2]['category'] = $p['category'];
 					$enabled_rules[$k1][$k2]['disabled'] = $p['disabled'];
@@ -2849,9 +3043,10 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 			suricata_modify_sids($fbits, $suricatacfg);
 			suricata_write_flowbit_rules_file($fbits, "{$suricatacfgdir}/rules/{$flowbit_rules_file}");
 			unset($fbits);
-		} else
+		} else {
 			// Just put an empty file to always have the file present
 			suricata_write_flowbit_rules_file(array(), "{$suricatacfgdir}/rules/{$flowbit_rules_file}");
+		}
 		unset($all_rules);
 	}
 	// If no rule categories were enabled, then use auto-SID management if enabled, since it may enable some rules
@@ -2881,9 +3076,10 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 				suricata_modify_sids($fbits, $suricatacfg);
 				suricata_write_flowbit_rules_file($fbits, "{$suricatacfgdir}/rules/{$flowbit_rules_file}");
 				unset($all_rules, $fbits);
-			} else
+			} else {
 				// Just put an empty file to always have the file present
-			suricata_write_flowbit_rules_file(array(), "{$suricatacfgdir}/rules/{$flowbit_rules_file}");
+				suricata_write_flowbit_rules_file(array(), "{$suricatacfgdir}/rules/{$flowbit_rules_file}");
+			}
 		}
 		else {
 			suricata_write_enforcing_rules_file(array(), "{$suricatacfgdir}/rules/{$suricata_enforcing_rules_file}");
@@ -2899,12 +3095,14 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 		@file_put_contents("{$suricatacfgdir}/rules/custom.rules", base64_decode($suricatacfg['customrules']));
 		$no_rules_defined = false;
 	}
-	else
+	else {
 		@file_put_contents("{$suricatacfgdir}/rules/custom.rules", "");
+	}
 
 	// Log a warning if the interface has no rules defined or enabled
-	if ($no_rules_defined)
+	if ($no_rules_defined) {
 		log_error(gettext("[Suricata] Warning - no text rules selected for: " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface']) . " ..."));
+	}
 
 	// Build a new sid-msg.map file from the enabled
 	// rules and copy it to the interface directory.
@@ -2932,10 +3130,11 @@ function suricata_write_enforcing_rules_file($rule_map, $rule_path) {
 	// See if we were passed a directory or full
 	// filename to write the rules to, and adjust
 	// the destination argument accordingly.
-	if (is_dir($rule_path))
+	if (is_dir($rule_path)) {
 		$rule_file = rtrim($rule_path, '/').$rule_file;
-	else
+	} else {
 		$rule_file = $rule_path;
+	}
 
 	// If the $rule_map array is empty, then exit.
 	if (empty($rule_map)) {
@@ -2954,8 +3153,9 @@ function suricata_write_enforcing_rules_file($rule_map, $rule_path) {
 		foreach ($rule_map as $rulem) {
 			foreach ($rulem as $rulem2) {
 				/* No reason to write disabled rules to enforcing file, so skip them. */
-				if ($rulem2['disabled'] == 1)
+				if ($rulem2['disabled'] == 1) {
 					continue;
+				}
 				@fwrite($fp, $rulem2['rule']);
 			}
 		}
@@ -2980,11 +3180,13 @@ function suricata_create_rc() {
 	$rcdir = RCFILEPREFIX;	
 
 	// If no interfaces are configured for Suricata, exit
-	if (!is_array($config['installedpackages']['suricata']['rule']))
+	if (!is_array($config['installedpackages']['suricata']['rule'])) {
 		return;
+	}
 	$suricataconf = $config['installedpackages']['suricata']['rule'];
-	if (empty($suricataconf))
+	if (empty($suricataconf)) {
 		return;
+	}
 
 	// At least one interface is configured, so OK
 	$start_suricata_iface_start = array();
@@ -2994,8 +3196,9 @@ function suricata_create_rc() {
 	// the shell script.
 	foreach ($suricataconf as $value) {
 		// Skip disabled Suricata interfaces
-		if ($value['enable'] != 'on')
+		if ($value['enable'] != 'on') {
 			continue;
+		}
 		$suricata_uuid = $value['uuid'];
 		$if_real = get_real_interface($value['interface']);
 		$run_mode = $value['ips_mode'] == 'ips_mode_inline' ? '--netmap' : '-i ' . $if_real;
@@ -3045,10 +3248,11 @@ EOE;
 		fi
         fi
 EOE;
-		if ($value['barnyard_enable'] == 'on')
+		if ($value['barnyard_enable'] == 'on') {
 			$start_barnyard2 = $start_barnyard;
-		else
+		} else {
 			$start_barnyard2 = $stop_barnyard2;
+		}
 
 		$start_suricata_iface_start[] = <<<EOE
 
@@ -3181,21 +3385,26 @@ function suricata_generate_barnyard2_conf($suricatacfg, $if_real) {
 	if (!file_exists("{$suricatadir}/gen-msg.map"))
 		@file_put_contents("{$suricatadir}/gen-msg.map", "");
 
-	if (!empty($suricatacfg['barnyard_sensor_name']))
+	if (!empty($suricatacfg['barnyard_sensor_name'])) {
 		$suricatabarnyardlog_hostname_info_chk = $suricatacfg['barnyard_sensor_name'];
-	else
+	} else {
 		$suricatabarnyardlog_hostname_info_chk = php_uname("n");
+	}
 
 	// Set general config parameters
 	$gen_configs = "config quiet\nconfig daemon\nconfig decode_data_link\nconfig alert_with_interface_name\nconfig event_cache_size: 4096";
-	if ($suricatacfg['barnyard_show_year'] == 'on')
+	if ($suricatacfg['barnyard_show_year'] == 'on') {
 		$gen_configs .= "\nconfig show_year";
-	if ($suricatacfg['barnyard_obfuscate_ip'] == 'on')
+	}
+	if ($suricatacfg['barnyard_obfuscate_ip'] == 'on') {
 		$gen_configs .= "\nconfig obfuscate";
-	if ($suricatacfg['barnyard_dump_payload'] == 'on')
+	}
+	if ($suricatacfg['barnyard_dump_payload'] == 'on') {
 		$gen_configs .= "\nconfig dump_payload";
-	if ($suricatacfg['barnyard_archive_enable'] == 'on')
+	}
+	if ($suricatacfg['barnyard_archive_enable'] == 'on') {
 		$gen_configs .= "\nconfig archivedir:          {$suricatalogdir}/barnyard2/archive";
+	}
 
 	// Set output plugins
 	$suricatabarnyardlog_output_plugins = "";
@@ -3204,18 +3413,20 @@ function suricata_generate_barnyard2_conf($suricatacfg, $if_real) {
 		$suricatabarnyardlog_output_plugins .= "# database: log to a MySQL DB\noutput database: alert, mysql, ";
 		$suricatabarnyardlog_output_plugins .= "user={$suricatacfg['barnyard_dbuser']} password={$by2_dbpwd} ";
 		$suricatabarnyardlog_output_plugins .= "dbname={$suricatacfg['barnyard_dbname']} host={$suricatacfg['barnyard_dbhost']}";
-		if (isset($suricatacfg['barnyard_sensor_name']) && strlen($suricatacfg['barnyard_sensor_name']) > 0)
+		if (isset($suricatacfg['barnyard_sensor_name']) && strlen($suricatacfg['barnyard_sensor_name']) > 0) {
 			$suricatabarnyardlog_output_plugins .= " sensor_name={$suricatacfg['barnyard_sensor_name']}";
-		if ($suricatacfg['barnyard_disable_sig_ref_tbl'] == 'on')
+		}
+		if ($suricatacfg['barnyard_disable_sig_ref_tbl'] == 'on') {
 			$suricatabarnyardlog_output_plugins .= " disable_signature_reference_table";
+		}
 		$suricatabarnyardlog_output_plugins .= "\n\n";
 	}
 	if ($suricatacfg['barnyard_syslog_enable'] == 'on') {
 		$suricatabarnyardlog_output_plugins .= "# syslog_full: log to a syslog receiver\n";
 		$suricatabarnyardlog_output_plugins .= "output alert_syslog_full: sensor_name {$suricatabarnyardlog_hostname_info_chk}, ";
-		if ($suricatacfg['barnyard_syslog_local'] == 'on')
+		if ($suricatacfg['barnyard_syslog_local'] == 'on') {
 			$suricatabarnyardlog_output_plugins .= "local, log_facility {$suricatacfg['barnyard_syslog_facility']}, log_priority {$suricatacfg['barnyard_syslog_priority']}\n\n";
-		else {
+		} else {
 			$suricatabarnyardlog_output_plugins .= "server {$suricatacfg['barnyard_syslog_rhost']}, protocol {$suricatacfg['barnyard_syslog_proto']}, ";
 			$suricatabarnyardlog_output_plugins .= "port {$suricatacfg['barnyard_syslog_dport']}, operation_mode {$suricatacfg['barnyard_syslog_opmode']}, ";
 			$suricatabarnyardlog_output_plugins .= "log_facility {$suricatacfg['barnyard_syslog_facility']}, log_priority {$suricatacfg['barnyard_syslog_priority']}\n\n";
@@ -3294,8 +3505,9 @@ function suricata_generate_yaml($suricatacfg) {
 	$suricata_uuid = $suricatacfg['uuid'];
 	$suricatacfgdir = "{$suricatadir}suricata_{$suricata_uuid}_{$if_real}";
 
-	if (!is_array($config['installedpackages']['suricata']['rule']))
+	if (!is_array($config['installedpackages']['suricata']['rule'])) {
 		return;
+	}
 
 	// Pull in the PHP code that generates the suricata.yaml file
 	// variables that will be substitued further down below.
@@ -3322,14 +3534,15 @@ function suricata_remove_dead_rules() {
 	/* to determine which rules files to remove.             */
 	/*********************************************************/
 
-	global $config, $g;
+	global $config;
 	$rulesdir = SURICATADIR . "rules/";
 	$count = 0;
 	$cats = array();
 
 	// If there is no "deprecated_rules" file, then exit
-	if (!file_exists("/usr/local/pkg/suricata/deprecated_rules"))
+	if (!file_exists("/usr/local/pkg/suricata/deprecated_rules")) {
 		return;
+	}
 
 	// Open a SplFileObject to read in deprecated rules
 	$file = new SplFileObject("/usr/local/pkg/suricata/deprecated_rules");
@@ -3338,12 +3551,14 @@ function suricata_remove_dead_rules() {
 		$line = $file->fgets();
 
 		// Skip any lines with just spaces
-		if (trim($line) == "")
+		if (trim($line) == "") {
 			continue;
+		}
 
 		// Skip any comment lines starting with '#'
-		if (preg_match('/^\s*\#+/', $line))
+		if (preg_match('/^\s*\#+/', $line)) {
 			continue;
+		}
 
 		$cats[] = $line;
 	}
@@ -3353,8 +3568,9 @@ function suricata_remove_dead_rules() {
 
 	// Delete any dead rules files from the Suricata RULES directory
 	foreach ($cats as $file) {
-		if (file_exists("{$rulesdir}{$file}"))
+		if (file_exists("{$rulesdir}{$file}")) {
 			$count++;
+		}
 		unlink_if_exists("{$rulesdir}{$file}");
 	}
 
@@ -3367,8 +3583,9 @@ function suricata_remove_dead_rules() {
 			$enabled_rules = explode("||", $iface['rulesets']);
 			foreach ($enabled_rules as $k => $v) {
 				foreach ($cats as $d) {
-					if (strpos(trim($v), $d) !== false)
+					if (strpos(trim($v), $d) !== false) {
 						unset($enabled_rules[$k]);
+					}
 				}
 			}
 			$iface['rulesets'] = implode("||", $enabled_rules);
@@ -3475,8 +3692,14 @@ function suricata_sync_on_changes() {
  	}
 }
 
+if(!function_exists('pf_version')) {
+	function pf_version() {
+		return substr(trim(file_get_contents("/etc/version")), 0, 3);
+	}
+}
+
 /* Do the actual XMLRPC sync */
-function suricata_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protocol, $username, $password, $synctimeout = 150, $syncstartsuricata) {
+function suricata_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protocol, $username, $password, $synctimeout, $syncstartsuricata) {
 	global $config, $g;
 
 	/* Do not attempt a package sync while booting up or installing package */
@@ -3490,112 +3713,13 @@ function suricata_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protoc
 		return;
 	}
 
-	// Take care of IPv6 literal address
-	if (is_ipaddrv6($sync_to_ip)) {
-		$sync_to_ip = "[{$sync_to_ip}]";
-	}
-
-	$url = "{$protocol}://{$sync_to_ip}";
-
-
-	/*************************************************/
-	/* Send over any auto-SID management files       */
-	/*************************************************/
-	$sid_files = glob(SURICATA_SID_MODS_PATH . '*');
-	foreach ($sid_files as $file) {
-		$content = base64_encode(file_get_contents($file));
-		$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
-
-		/* assemble xmlrpc payload */
-		$method = 'pfsense.exec_php';
-		$params = array( XML_RPC_encode($password), XML_RPC_encode($payload) );
-	
-		log_error("[suricata] XMLRPC sync sending auto-SID conf files to {$url}:{$port}.");
-		$msg = new XML_RPC_Message($method, $params);
-		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-		$cli->setCredentials($username, $password);
-		$resp = $cli->send($msg, $synctimeout);
-		$error = "";
-		if (!$resp) {
-			$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
-			log_error($error);
-			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error($error);
-			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-		}
-	}
-
-	if (!empty($sid_files) && $error == "") {
-		log_error("[suricata] XMLRPC sync auto-SID conf files success with {$url}:{$port} (pfsense.exec_php).");
-	}
-
-	/*************************************************/
-	/* Send over any IPREP IP List files             */
-	/*************************************************/
-	$iprep_files = glob(SURICATA_IPREP_PATH . '*');
-	foreach ($iprep_files as $file) {
-		$content = base64_encode(file_get_contents($file));
-		$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
-
-		/* assemble xmlrpc payload */
-		$method = 'pfsense.exec_php';
-		$params = array( XML_RPC_encode($password), XML_RPC_encode($payload) );
-	
-		log_error("[suricata] Suricata XMLRPC sync sending IPREP files to {$url}:{$port}.");
-		$msg = new XML_RPC_Message($method, $params);
-		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-		$cli->setCredentials($username, $password);
-		$resp = $cli->send($msg, $synctimeout);
-		$error = "";
-		if (!$resp) {
-			$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
-			log_error($error);
-			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-		} elseif ($resp->faultCode()) {
-			$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
-			log_error($error);
-			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-		}
-	}
-
-	if (!empty($iprep_files) && $error == "") {
-		log_error("[suricata] XMLRPC sync IPREP files success with {$url}:{$port} (pfsense.exec_php).");
-	}
-
 	/**************************************************/
 	/* Send over the <suricata> portion of config.xml */
 	/* $xml will hold the section to sync.            */
 	/**************************************************/
 	$xml = array();
 	$xml['suricata'] = $config['installedpackages']['suricata'];
-	/* assemble xmlrpc payload */
-	$params = array(
-		XML_RPC_encode($password),
-		XML_RPC_encode($xml)
-	);
-
-	log_error("[suricata] Beginning package configuration XMLRPC sync to {$url}:{$port}.");
-	$method = 'pfsense.merge_installedpackages_section_xmlrpc';
-	$msg = new XML_RPC_Message($method, $params);
-	$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-	$cli->setCredentials($username, $password);
-
-	/* send our XMLRPC message and timeout after defined sync timeout value*/
-	$resp = $cli->send($msg, $synctimeout);
-	if (!$resp) {
-		$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.";
-		log_error($error);
-		file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-	} elseif ($resp->faultCode()) {
-		$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-		log_error($error);
-		file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-	} else {
-		log_error("[suricata] Package configuration XMLRPC sync successfully completed with {$url}:{$port}.");
-	}
-
+	
 	$downloadrulescmd = "";
 	if ($syncdownloadrules == "yes") {
 		$downloadrulescmd = "log_error(gettext(\"[suricata] XMLRPC pkg sync: Update of downloaded rule sets requested...\"));\n";
@@ -3648,54 +3772,190 @@ EOD;
 	/* to a PHP file in the /tmp directory.          */
 	/*************************************************/
 	$execcmd = "file_put_contents('/tmp/suricata_sync_cmds.php', '{$suricata_sync_cmd}');";
-
-	/* assemble xmlrpc payload */
-	$method = 'pfsense.exec_php';
-	$params = array(
-		XML_RPC_encode($password),
-		XML_RPC_encode($execcmd)
-	);
 	
-	log_error("[suricata] XMLRPC sync sending reload configuration cmd set as a file to {$url}:{$port}.");
-	$msg = new XML_RPC_Message($method, $params);
-	$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-	$cli->setCredentials($username, $password);
-	$resp = $cli->send($msg, $synctimeout);
-	if (!$resp) {
-		$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
-		log_error($error);
-		file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-	} elseif ($resp->faultCode()) {
-		$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-		log_error($error);
-		file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-	} else {
-		log_error("[suricata] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
-	}
-
 	/*************************************************/
 	/* Now assemble a command to execute the         */
 	/* previously sent PHP file in the background.   */
 	/*************************************************/
-	$execcmd = "exec(\"/usr/local/bin/php-cgi -f '/tmp/suricata_sync_cmds.php' > /dev/null 2>&1 &\");";
-	$params2 = array(
-		XML_RPC_encode($password),
-		XML_RPC_encode($execcmd)
-	);
-	log_error("[suricata] XMLRPC sync sending {$url}:{$port} cmd to execute configuration reload.");
-	$msg2 = new XML_RPC_Message($method, $params2);
-	$resp = $cli->send($msg2, $synctimeout);
-	if (!$resp) {
-		$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
-		log_error($error);
-		file_notice("sync_settings", $error, "Suricata Settings Sync", "");
-	} elseif ($resp->faultCode()) {
-		$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
-		log_error($error);
-		file_notice("sync_settings", $error, "Suricata Settings Sync", "");
+	$execcmd2 = "exec(\"/usr/local/bin/php-cgi -f '/tmp/suricata_sync_cmds.php' > /dev/null 2>&1 &\");";
+	
+	if (pf_version() >= "2.4") {
+		// xmlrpc cannot encode NULL objects/arrays..
+		foreach($xml as $xmlkey => $xmlvalue) {
+			if (gettype($xmlvalue) == "NULL") {
+				$xml[$xmlkey] = array();
+			}
+		}
+		$synctimeout = intval($synctimeout);
+		$rpc_client = new pfsense_xmlrpc_client();
+		$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
+		
+		/*************************************************/
+		/* Send over any auto-SID management files       */
+		/*************************************************/
+		$sid_files = glob(SURICATA_SID_MODS_PATH . '*');
+		foreach ($sid_files as $file) {
+			$content = base64_encode(file_get_contents($file));
+			$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
+			$resp = $rpc_client->xmlrpc_exec_php($payload, $synctimeout);
+		}
+		/*************************************************/
+		/* Send over any IPREP IP List files             */
+		/*************************************************/
+		$iprep_files = glob(SURICATA_IPREP_PATH . '*');
+		foreach ($iprep_files as $file) {
+			$content = base64_encode(file_get_contents($file));
+			$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
+			$resp = $rpc_client->xmlrpc_exec_php($payload, $synctimeout);
+		}
+		
+		$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
+		$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
+		$resp = $rpc_client->xmlrpc_exec_php($execcmd2, $synctimeout);
 	} else {
-		log_error("[suricata] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
+		// pfSense before 2.4
+		require_once('xmlrpc.inc');
+	
+		// Take care of IPv6 literal address
+		if (is_ipaddrv6($sync_to_ip)) {
+			$sync_to_ip = "[{$sync_to_ip}]";
+		}
+
+		$url = "{$protocol}://{$sync_to_ip}";
+
+		/*************************************************/
+		/* Send over any auto-SID management files       */
+		/*************************************************/
+		$sid_files = glob(SURICATA_SID_MODS_PATH . '*');
+		foreach ($sid_files as $file) {
+			$content = base64_encode(file_get_contents($file));
+			$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
+
+			/* assemble xmlrpc payload */
+			$method = 'pfsense.exec_php';
+			$params = array( XML_RPC_encode($password), XML_RPC_encode($payload) );
+
+			log_error("[suricata] XMLRPC sync sending auto-SID conf files to {$url}:{$port}.");
+			$msg = new XML_RPC_Message($method, $params);
+			$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
+			$cli->setCredentials($username, $password);
+			$resp = $cli->send($msg, $synctimeout);
+			$error = "";
+			if (!$resp) {
+				$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
+				log_error($error);
+				file_notice("sync_settings", $error, "Suricata Settings Sync", "");
+			} elseif ($resp->faultCode()) {
+				$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
+				log_error($error);
+				file_notice("sync_settings", $error, "Suricata Settings Sync", "");
+			}
+		}
+
+		if (!empty($sid_files) && $error == "") {
+			log_error("[suricata] XMLRPC sync auto-SID conf files success with {$url}:{$port} (pfsense.exec_php).");
+		}
+
+		/*************************************************/
+		/* Send over any IPREP IP List files             */
+		/*************************************************/
+		$iprep_files = glob(SURICATA_IPREP_PATH . '*');
+		foreach ($iprep_files as $file) {
+			$content = base64_encode(file_get_contents($file));
+			$payload = "@file_put_contents('{$file}', base64_decode('{$content}'));";
+
+			/* assemble xmlrpc payload */
+			$method = 'pfsense.exec_php';
+			$params = array( XML_RPC_encode($password), XML_RPC_encode($payload) );
+
+			log_error("[suricata] Suricata XMLRPC sync sending IPREP files to {$url}:{$port}.");
+			$msg = new XML_RPC_Message($method, $params);
+			$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
+			$cli->setCredentials($username, $password);
+			$resp = $cli->send($msg, $synctimeout);
+			$error = "";
+			if (!$resp) {
+				$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.  Failed to transfer file: " . basename($file);
+				log_error($error);
+				file_notice("sync_settings", $error, "Suricata Settings Sync", "");
+			} elseif ($resp->faultCode()) {
+				$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port}. Failed to transfer file: " . basename($file) . " - Code " . $resp->faultCode() . ": " . $resp->faultString();
+				log_error($error);
+				file_notice("sync_settings", $error, "Suricata Settings Sync", "");
+			}
+		}
+
+		if (!empty($iprep_files) && $error == "") {
+			log_error("[suricata] XMLRPC sync IPREP files success with {$url}:{$port} (pfsense.exec_php).");
+		}
+
+		/* assemble xmlrpc payload */
+		$params = array(
+			XML_RPC_encode($password),
+			XML_RPC_encode($xml)
+		);
+
+		log_error("[suricata] Beginning package configuration XMLRPC sync to {$url}:{$port}.");
+		$method = 'pfsense.merge_installedpackages_section_xmlrpc';
+		$msg = new XML_RPC_Message($method, $params);
+		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
+		$cli->setCredentials($username, $password);
+
+		/* send our XMLRPC message and timeout after defined sync timeout value*/
+		$resp = $cli->send($msg, $synctimeout);
+		if (!$resp) {
+			$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port}.";
+			log_error($error);
+			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
+		} elseif ($resp->faultCode()) {
+			$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
+			log_error($error);
+			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
+		} else {
+			log_error("[suricata] Package configuration XMLRPC sync successfully completed with {$url}:{$port}.");
+		}
+
+		/* assemble xmlrpc payload */
+		$method = 'pfsense.exec_php';
+		$params = array(
+			XML_RPC_encode($password),
+			XML_RPC_encode($execcmd)
+		);
+
+		log_error("[suricata] XMLRPC sync sending reload configuration cmd set as a file to {$url}:{$port}.");
+		$msg = new XML_RPC_Message($method, $params);
+		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
+		$cli->setCredentials($username, $password);
+		$resp = $cli->send($msg, $synctimeout);
+		if (!$resp) {
+			$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
+			log_error($error);
+			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
+		} elseif ($resp->faultCode()) {
+			$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
+			log_error($error);
+			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
+		} else {
+			log_error("[suricata] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
+		}
+
+		$params2 = array(
+			XML_RPC_encode($password),
+			XML_RPC_encode($execcmd2)
+		);
+		log_error("[suricata] XMLRPC sync sending {$url}:{$port} cmd to execute configuration reload.");
+		$msg2 = new XML_RPC_Message($method, $params2);
+		$resp = $cli->send($msg2, $synctimeout);
+		if (!$resp) {
+			$error = "A communications error occurred while attempting Suricata XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
+			log_error($error);
+			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
+		} elseif ($resp->faultCode()) {
+			$error = "An error code was received while attempting Suricata XMLRPC sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString();
+			log_error($error);
+			file_notice("sync_settings", $error, "Suricata Settings Sync", "");
+		} else {
+			log_error("[suricata] XMLRPC sync reload configuration success with {$url}:{$port} (pfsense.exec_php).");
+		}
 	}
 }
-
-?>

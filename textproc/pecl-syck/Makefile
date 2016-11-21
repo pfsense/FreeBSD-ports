@@ -3,7 +3,7 @@
 
 PORTNAME=	syck
 PORTVERSION=	0.9.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	textproc pear
 MASTER_SITES=	http://pecl.php.net/get/
 PKGNAMEPREFIX=	pecl-
@@ -13,8 +13,6 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PECL extension which facilitates YAML parsing
 
 LICENSE=	PHP301
-
-BROKEN_powerpc64=	Does not build
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libsyck.a:textproc/syck
 

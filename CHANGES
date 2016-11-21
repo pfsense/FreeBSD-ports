@@ -10,6 +10,97 @@ in the release notes and/or placed into UPDATING.
 
 All ports committers are allowed to commit to this file.
 
+20160911:
+AUTHOR: amdmi3@FreeBSD.org
+
+  Support has been added for complete set of Creative Commons licenses
+
+  CC-(BY|BY-ND|BY-NC|BY-NC-ND|BY-NC-SA|BY-SA)-(1.0|2.0|2.5|3.0|4.0)
+
+20160909:
+AUTHOR: amdmi3@FreeBSD.org
+
+  Verbose build logs are now preferred and enabled by default for cmake,
+  ninja and GNU configure.  Ports which still produce quiet build logs
+  (hiding actual commands) are strongly advised to switch to verbose logs.
+
+20160908:
+AUTHOR: amdmi3@FreeBSD.org
+
+  Support has been added for NONE license, use it when the port doesn't
+  have cleanly defined licensing terms.  Note that without clean license
+  allowing you to use and distribute the code it would be be illegal to do
+  so in many jurisdictions, so for ports with NONE license no distfiles or
+  packages are distributed.
+
+20160824:
+AUTHOR: mat@FreeBSD.org
+
+  To complete the USE_GITHUB framework, a GH_SUBDIR variable has been added.
+  It automatically moves a secondary distfile to the right place inside WRKSRC.
+  It also extends the GH_TUPLE variable to make it as easy to use as possible.
+
+  Before:
+
+    GH_TUPLE=   Regaddi:Chart.js:f13f99b:chart_js \
+                FVANCOP:ChartNew.js:77e7f87:chartnew_js
+    post-extract:
+            @${RMDIR} ${WRKSRC}/database ${WRKSRC}/3rd/Chart.js
+            @${MV} ${WRKSRC_database} ${WRKSRC}/database
+            @${MV} ${WRKSRC_chart_js} ${WRKSRC}/3rd/Chart.js
+
+  After:
+
+    GH_TUPLE=   Regaddi:Chart.js:f13f99b:chart_js/3rd/Chart.js \
+                FVANCOP:ChartNew.js:77e7f87:chartnew_js/3rd/ChartNew.js
+
+  It also works if not using GH_TUPLE but the regular
+  GH_ACCOUNT/PROJECT/TAGNAME variables:
+
+    GH_SUBDIR=  3rd/Chart.js:chart_js 3rd/ChartNew.js:chartnew_js
+
+20160824:
+AUTHOR: kde@FreeBSD.org
+
+  A new USES file has been introduced: USES=kde:4, which replaces the old
+  bsd.kde4.mk file in preparation for upcoming KDE Frameworks and Plasma5
+  ports.
+
+  Ports depending on KDE4 have to switch from
+     USE_KDE4=foo bar
+  to
+     USES=kde:4
+     USE_KDE=foo bar
+  and make sure to switch from using KDE4_PREFIX to the new name KDE_PREFIX
+  in the Makefiles as well as plists.
+
+20160821:
+AUTHOR: kde@FreeBSD.org
+
+  A new USES file has been introduced: USES=grantlee:[4,5], which introduces a
+  LIB_DEPENDS on either devel/grantlee (Qt4) or devel/grantlee5 (Qt5).
+
+  Uses/grantlee.mk also exports the GRANTLEE_VERSION variable to users, and the
+  GRANTLEE_VERSION_FULL and GRANTLEE_VERSION_SHORT pkg-plist substitutions.
+
+20160817:
+AUTHOR: mat@FreeBSD.org
+
+  This adds the possibility to use regular expressions for the makeplist stage
+  of the PLIST_SUB life.
+
+  From time to time, the values are too generic, and they get in the way of
+  other stuff.
+
+  This adds the possibility to have a VAR_regex=regex that will be used
+  instead of the VAR=string to search for possible replacements.
+
+  For example, in lang/perl5*, there is PERL_ARCH=mach, which will get replaced
+  in paths if a file is called, say "machine", will end up being
+  "%%PERL_ARCH%%ine".  Adding PERL_ARCH_regex="\bmach\b" will ensure only full
+  words are replaced, so machine will stay machine, but "lib/mach/foo "will
+  still be replaced by "lib/%%PERL_ARCH%%/foo".
+
 20160803:
 AUTHOR: mat@FreeBSD.org
 
@@ -867,6 +958,12 @@ AUTHOR: kde@FreeBSD.org
   Add support for Qt 5 via USE_QT5. USE_QT5 is analogous to USE_QT4,
   the only difference is the list of available components
   (see Mk/bsd.qt.mk for details). USES=qmake supports Qt 5 as well.
+
+20140224:
+AUTHOR: bapt@FreeBSD.org
+
+  Deprecate support for KNOBS, the new option framework allows to express a
+  more consistent, user friendly and visible way the same feature.
 
 20140127:
 AUTHOR: mat@FreeBSD.org

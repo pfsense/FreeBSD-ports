@@ -3,11 +3,12 @@
 
 PORTNAME=	znc
 PORTVERSION=	1.6.3
+PORTREVISION=	3
 CATEGORIES=	irc ipv6
 MASTER_SITES=	http://znc.in/releases/ \
 		http://znc.in/releases/archive/
 
-MAINTAINER=	jase@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Advanced IRC bouncer
 
 LICENSE=	APACHE20
@@ -16,6 +17,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 GNU_CONFIGURE=	yes
 USE_RC_SUBR=	znc
 USES=		compiler:c++11-lib cpe gmake iconv pkgconfig
+MAKE_ENV=	V=1
 
 OPTIONS_DEFINE=	CHARSET CYRUS DEBUG DOCS IPV6 OPENSSL PERL PYTHON TCL
 OPTIONS_DEFAULT=	OPENSSL PERL
@@ -37,7 +39,7 @@ DEBUG_CONFIGURE_ON=	--enable-debug
 IPV6_CONFIGURE_OFF=	--disable-ipv6
 OPENSSL_CONFIGURE_OFF=	--disable-openssl
 OPENSSL_CONFIGURE_ON=	--with-openssl=${OPENSSLBASE}
-OPENSSL_USE=	openssl=yes
+OPENSSL_USES=	ssl
 PERL_BUILD_DEPENDS=	swig30>=3.0.0:devel/swig30
 PERL_CONFIGURE_ENABLE=	perl
 PERL_CONFIGURE_ON=	--enable-swig
@@ -52,13 +54,6 @@ TCL_CONFIGURE_ON=	--with-tcl=${TCL_LIBDIR}
 TCL_USES=	tcl
 
 PORTDOCS=	README.md
-
-pre-configure:
-# No need to cast to char** in AM_ICONV, fixes charset/iconv detection
-# and by extension, successfully builds charset module
-	@${REINPLACE_CMD} -e \
-		's#(char \*\*)##g' \
-		${WRKSRC}/configure
 
 # Instead of using bundled swig generated files, delete them to force
 # regeneration using swig 2.0.11+ (fixes port compilation using clang)
@@ -77,7 +72,7 @@ post-patch:
 		's#/usr/local#${LOCALBASE}#' ${WRKSRC}/configure
 
 post-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ${PORTDOCS}
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
 .endfor

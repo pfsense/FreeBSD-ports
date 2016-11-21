@@ -3,7 +3,7 @@
 
 PORTNAME=	simon
 PORTVERSION=	0.4.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}/src
 DIST_SUBDIR=	KDE
@@ -17,12 +17,13 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libsphinxad.so:audio/sphinxbase \
 		libqwt6.so:x11-toolkits/qwt6
 
-USE_KDE4=	kdelibs automoc4 pimlibs
-USES=		cmake:outsource gettext tar:bz2
-USE_QT4=	accessible corelib dbus gui script testlib xml \
+USES=		cmake:outsource gettext kde:4 tar:bz2
+USE_KDE=	kdelibs automoc4 pimlibs
+USE_QT4=	accessible corelib dbus gui network script sql svg testlib xml \
 		moc_build qmake_build rcc_build uic_build
+USE_XORG=	x11 xtst
+
 USE_LDCONFIG=	yes
-INSTALLS_ICONS=	yes
 
 CMAKE_ARGS+=	-DWITH_OpenCV:BOOL=OFF
 

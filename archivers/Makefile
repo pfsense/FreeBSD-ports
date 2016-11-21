@@ -23,7 +23,6 @@
     SUBDIR += dzip
     SUBDIR += ecm
     SUBDIR += engrampa
-    SUBDIR += epkg
     SUBDIR += fastjar
     SUBDIR += file-roller
     SUBDIR += fpc-bzip2
@@ -56,6 +55,7 @@
     SUBDIR += lcab
     SUBDIR += lha
     SUBDIR += lha-ac
+    SUBDIR += lhasa
     SUBDIR += libarc
     SUBDIR += libarchive
     SUBDIR += libcabinet
@@ -73,6 +73,8 @@
     SUBDIR += linux-f10-ucl
     SUBDIR += linux-f10-upx
     SUBDIR += lrzip
+    SUBDIR += lua-lzlib
+    SUBDIR += lzfse
     SUBDIR += lzip
     SUBDIR += lzlib
     SUBDIR += lzma
@@ -140,8 +142,8 @@
     SUBDIR += pecl-lzf
     SUBDIR += pecl-phk
     SUBDIR += pecl-rar
+    SUBDIR += pecl-snappy
     SUBDIR += php-horde_lz4
-    SUBDIR += php5-snappy
     SUBDIR += php55-bz2
     SUBDIR += php55-phar
     SUBDIR += php55-zip
@@ -169,6 +171,7 @@
     SUBDIR += py-lz4
     SUBDIR += py-lzma
     SUBDIR += py-pyliblzma
+    SUBDIR += py-python-lhafile
     SUBDIR += py-python-snappy
     SUBDIR += py-rarfile
     SUBDIR += py-rcssmin
@@ -238,6 +241,7 @@
     SUBDIR += zipper
     SUBDIR += zoo
     SUBDIR += zopfli
+    SUBDIR += zstd
     SUBDIR += zutils
 
 .include <bsd.port.subdir.mk>

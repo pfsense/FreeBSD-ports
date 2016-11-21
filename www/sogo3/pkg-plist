@@ -53,6 +53,7 @@ GNUstep/Local/Library/Frameworks/SOGo.framework/Versions/3/Headers/SOGoSource.h
 GNUstep/Local/Library/Frameworks/SOGo.framework/Versions/3/Headers/SOGoStartupLogger.h
 GNUstep/Local/Library/Frameworks/SOGo.framework/Versions/3/Headers/SOGoStaticAuthenticator.h
 GNUstep/Local/Library/Frameworks/SOGo.framework/Versions/3/Headers/SOGoSystemDefaults.h
+GNUstep/Local/Library/Frameworks/SOGo.framework/Versions/3/Headers/SOGoTextTemplateFile.h
 GNUstep/Local/Library/Frameworks/SOGo.framework/Versions/3/Headers/SOGoUser.h
 GNUstep/Local/Library/Frameworks/SOGo.framework/Versions/3/Headers/SOGoUserDefaults.h
 GNUstep/Local/Library/Frameworks/SOGo.framework/Versions/3/Headers/SOGoUserFolder.h
@@ -1500,6 +1501,7 @@ GNUstep/Local/Library/SOGo/WebServerResources/fonts/MaterialIcons-Regular.woff
 GNUstep/Local/Library/SOGo/WebServerResources/fonts/MaterialIcons-Regular.woff2
 GNUstep/Local/Library/SOGo/WebServerResources/img/cardboard-transp.png
 GNUstep/Local/Library/SOGo/WebServerResources/img/felt-transp.png
+GNUstep/Local/Library/SOGo/WebServerResources/img/ic_person_grey_24px.svg
 GNUstep/Local/Library/SOGo/WebServerResources/img/inverse.png
 GNUstep/Local/Library/SOGo/WebServerResources/img/sogo-compact.svg
 GNUstep/Local/Library/SOGo/WebServerResources/img/sogo-full.svg
@@ -1536,12 +1538,16 @@ GNUstep/Local/Library/SOGo/WebServerResources/js/Common/sgAvatarImage.directive.
 GNUstep/Local/Library/SOGo/WebServerResources/js/Common/sgCheckmark.directive.js
 GNUstep/Local/Library/SOGo/WebServerResources/js/Common/sgColorPicker.directive.js
 GNUstep/Local/Library/SOGo/WebServerResources/js/Common/sgCompile.directive.js
+GNUstep/Local/Library/SOGo/WebServerResources/js/Common/sgDatepickerReadonlyInput.directive.js
+GNUstep/Local/Library/SOGo/WebServerResources/js/Common/sgDraggable.directive.js
+GNUstep/Local/Library/SOGo/WebServerResources/js/Common/sgDroppable.directive.js
 GNUstep/Local/Library/SOGo/WebServerResources/js/Common/sgEnter.directive.js
 GNUstep/Local/Library/SOGo/WebServerResources/js/Common/sgEscape.directive.js
 GNUstep/Local/Library/SOGo/WebServerResources/js/Common/sgFocus.directive.js
 GNUstep/Local/Library/SOGo/WebServerResources/js/Common/sgFocus.service.js
 GNUstep/Local/Library/SOGo/WebServerResources/js/Common/sgFolderStylesheet.directive.js
 GNUstep/Local/Library/SOGo/WebServerResources/js/Common/sgPlaceholder.directive.js
+GNUstep/Local/Library/SOGo/WebServerResources/js/Common/sgRippleClick.directive.js
 GNUstep/Local/Library/SOGo/WebServerResources/js/Common/sgSearch.directive.js
 GNUstep/Local/Library/SOGo/WebServerResources/js/Common/sgSelectOnly.directive.js
 GNUstep/Local/Library/SOGo/WebServerResources/js/Common/sgSubscribe.directive.js
@@ -1626,7 +1632,6 @@ GNUstep/Local/Library/SOGo/WebServerResources/js/vendor/angular-file-upload.min.
 GNUstep/Local/Library/SOGo/WebServerResources/js/vendor/angular-file-upload.min.js.map
 GNUstep/Local/Library/SOGo/WebServerResources/js/vendor/angular-material.js
 GNUstep/Local/Library/SOGo/WebServerResources/js/vendor/angular-material.min.js
-GNUstep/Local/Library/SOGo/WebServerResources/js/vendor/angular-material.min.js.map
 GNUstep/Local/Library/SOGo/WebServerResources/js/vendor/angular-messages.js
 GNUstep/Local/Library/SOGo/WebServerResources/js/vendor/angular-messages.min.js
 GNUstep/Local/Library/SOGo/WebServerResources/js/vendor/angular-messages.min.js.map

@@ -2,11 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	rust
-PORTVERSION?=	1.9.0
+PORTVERSION?=	1.12.1
 CATEGORIES=	lang
 MASTER_SITES=	http://static.rust-lang.org/dist/:src \
-		http://static.rust-lang.org/stage0-snapshots/:bootstrap \
-		https://github.com/dhuseby/rust-manual-snapshots/raw/master/:bootstrap
+		http://static.rust-lang.org/dist/:bootstrap \
+		https://github.com/dhuseby/rust-manual-snapshots/raw/master/:bootstrap \
+		LOCAL/marino:bootstrap
 DISTNAME?=	${PORTNAME}c-${PORTVERSION}
 DISTFILES?=	${DISTNAME}-src${EXTRACT_SUFX}:src
 DISTFILES+=	${RUST_BOOT}:bootstrap
@@ -21,10 +22,12 @@ LICENSE_COMB=	dual
 # APACHE20 license is standard, see Templates/Licenses/APACHE20
 LICENSE_FILE_MIT=	${WRKSRC}/LICENSE-MIT
 
+BUILD_DEPENDS=		cmake:devel/cmake
+
 ONLY_FOR_ARCHS?=	amd64 i386
 ONLY_FOR_ARCHS_REASON=	requires prebuilt bootstrap compiler
 
-BROKEN_FreeBSD_9=	Only compiles on FreeBSD 10 and 11
+BROKEN_FreeBSD_9=	Only compiles on FreeBSD 10 and later
 
 DISTINFO_FILE?=	${MASTERDIR}/distinfo.${ARCH}
 
@@ -35,11 +38,8 @@ CONFLICTS_BUILD?=	rust-nightly
 CONFLICTS_BUILD+=	${PKGBASE}
 CONFLICTS_INSTALL?=	rust-nightly
 
-RUST_BOOT=	rust-stage0-${RUST_BOOT_SIG_${ARCH}}.tar.bz2
-
-RUST_BOOT_SIG_x86_64?=	2016-03-18-235d774-dragonfly-x86_64-e790279a7b286ddf2e716ccd3bb1b7f0a386a5c7
-RUST_BOOT_SIG_amd64?=	2016-03-18-235d774-freebsd-x86_64-390b9a9f60f3d0d6a52c04d939a0355f572d03b3
-RUST_BOOT_SIG_i386?=	2016-03-18-235d774-freebsd-i386-b5a87e66e3e3eed5f0b68367ad22f25f0be2d4ea
+RUST_BOOT_VERSION?=	1.11.0
+RUST_BOOT=		rustc-${RUST_BOOT_VERSION}-${RUST_TARGET}.tar.gz
 
 # Rust's libraries are named librustc_${component}-${RUST_VSN_HASH}.so.
 # The hash depends on Rust version and, if the channel is not "stable",
@@ -60,19 +60,25 @@ PLIST_SUB+=	RUST_TARGET=${RUST_TARGET}
 
 USES=		compiler gmake libedit python:2,build
 HAS_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-valgrind --disable-docs \
+CONFIGURE_ARGS=	--disable-valgrind \
 		${CHOSEN_COMPILER_TYPE:Mclang:C/.+/--enable-&/} \
+		--prefix=${PREFIX}	\
+		--musl-root=${PREFIX}	\
+		--local-rust-root=${PREFIX} \
 		--mandir=${MANPREFIX}/man \
 		--release-channel=${RUST_CHANNEL}
+
+PORTDOCS=	*
 
 .if defined(BATCH) || defined(PACKAGE_BUILDING)
 MAKE_ARGS+=	VERBOSE=1
 .endif
 
-OPTIONS_DEFINE=		GDB LLNEXTGEN PORT_LLVM
+OPTIONS_DEFINE=		DOCS GDB LLNEXTGEN PORT_LLVM
 GDB_DESC=		Install ports gdb (necessary for debugging rust programs)
 LLNEXTGEN_DESC=		Build with grammar verification
 
+DOCS_CONFIGURE_ENABLE=	docs
 GDB_RUN_DEPENDS=		${LOCALBASE}/bin/gdb:devel/gdb
 LLNEXTGEN_BUILD_DEPENDS=	LLnextgen:devel/llnextgen
 
@@ -80,7 +86,7 @@ LLNEXTGEN_BUILD_DEPENDS=	LLnextgen:devel/llnextgen
 PORT_LLVM_DESC=	Build against devel/llvm${LLVM_VER} instead of bundled version
 PORT_LLVM_BUILD_DEPENDS=	${LLVM_PREFIX}/bin/FileCheck:devel/llvm${LLVM_VER}
 PORT_LLVM_CONFIGURE_ON=		--llvm-root=${LLVM_PREFIX}
-LLVM_VER?=			36 # XXX Move to DEFAULT_VERSIONS
+LLVM_VER?=			38
 LLVM_PREFIX=			${LOCALBASE}/llvm${LLVM_VER}
 
 # Note that make test does not work when rust is already installed
@@ -141,6 +147,16 @@ pre-install:
 		${STAGEDIR}${PREFIX}/lib/rustlib/rust-installer-version \
 		${STAGEDIR}${PREFIX}/lib/rustlib/uninstall.sh
 
+pre-install-DOCS-on:
+	@for f in manifest-rust-docs; do \
+	    if test -f ${STAGEDIR}${PREFIX}/lib/rustlib/$$f; then \
+		${SED} -E -e 's,^(dir|file:),${STAGEDIR},' \
+		< ${STAGEDIR}${PREFIX}/lib/rustlib/$$f \
+		| ${XARGS} ${RM}; \
+	    fi; \
+	done
+	@${RM} ${STAGEDIR}${PREFIX}/lib/rustlib/manifest-rust-docs
+
 post-install:
 	@for f in manifest-rustc manifest-rust-std-${RUST_TARGET}; do \
 		${REINPLACE_CMD} -e 's|${STAGEDIR}||' \
@@ -155,5 +171,13 @@ post-install:
 		${STAGEDIR}${PREFIX}/bin/rustdoc \
 		${STAGEDIR}${PREFIX}/lib/*.so \
 		${STAGEDIR}${PREFIX}/lib/rustlib/*/lib/*.so
+
+post-install-DOCS-on:
+	@for f in manifest-rust-docs; do \
+		${REINPLACE_CMD} -e 's|${STAGEDIR}||' \
+			${STAGEDIR}${PREFIX}/lib/rustlib/$$f; \
+		${RM} ${STAGEDIR}${PREFIX}/lib/rustlib/$$f.bak; \
+	done
+	@${RMDIR} ${STAGEDIR}${PREFIX}/share/doc/rust/html/extra
 
 .include <bsd.port.mk>

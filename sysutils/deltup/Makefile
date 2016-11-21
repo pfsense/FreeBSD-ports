@@ -25,9 +25,10 @@ BZIP2_102=	1.0.2
 BZIP2_103=	1.0.3
 
 USE_OPENSSL=	yes
-USES=		gmake
+USES=		gmake ssl
 ALL_TARGET=	deltup
 MAKE_ARGS=	CC="${CC}" CXX="${CXX}" PREFIX="${PREFIX}"
+CXXFLAGS+=	-I${OPENSSLINC}
 PLIST_FILES=	bin/deltup \
 		bin/bzip2_1.0.2 \
 		bin/bzip2_1.0.3 \
@@ -38,7 +39,8 @@ WRKSRC_BZIP2_103=	${WRKDIR}/bzip2-${BZIP2_103}
 PORTDOCS=	ChangeLog README
 
 post-patch:
-	@${REINPLACE_CMD} -e 's/CC/CXX/' -e 's,gcc,$${CXX},' ${WRKSRC}/Makefile
+	@${REINPLACE_CMD} -e 's/CC/CXX/' -e 's,gcc,$${CXX},' \
+		-e "s|\(-lcrypto\)|-L${OPENSSLLIB} \1|g" ${WRKSRC}/Makefile
 
 pre-build:
 	@${REINPLACE_CMD} -e 's|-Wall -Winline -O2|-Wall -Winline -O2 ${CFLAGS}|' \
@@ -55,8 +57,6 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC_BZIP2_102}/bzip2 ${STAGEDIR}${PREFIX}/bin/bzip2_1.0.2
 	${INSTALL_PROGRAM} ${WRKSRC_BZIP2_103}/bzip2 ${STAGEDIR}${PREFIX}/bin/bzip2_1.0.3
 	${INSTALL_MAN} ${WRKSRC}/deltup.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
-
-post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for i in ${PORTDOCS}
 	@${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}/${i}

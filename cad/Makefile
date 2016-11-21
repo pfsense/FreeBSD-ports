@@ -3,6 +3,7 @@
 
     COMMENT = CAD tools
 
+    SUBDIR += NASTRAN-95
     SUBDIR += admesh
     SUBDIR += adms
     SUBDIR += alliance
@@ -24,6 +25,7 @@
     SUBDIR += elmerfem
     SUBDIR += feappv
     SUBDIR += fidocadj
+    SUBDIR += freecad
     SUBDIR += freehdl
     SUBDIR += fritzing
     SUBDIR += gdsreader
@@ -49,6 +51,7 @@
     SUBDIR += leocad
     SUBDIR += librecad
     SUBDIR += linux-eagle5
+    SUBDIR += linuxcnc-devel
     SUBDIR += logisim
     SUBDIR += magic
     SUBDIR += meshdev
@@ -67,7 +70,6 @@
     SUBDIR += py-pycam
     SUBDIR += pythoncad
     SUBDIR += qcad
-    SUBDIR += qcad-partslib
     SUBDIR += qelectrotech
     SUBDIR += qfsm
     SUBDIR += qmls

@@ -33,7 +33,7 @@ _INCLUDE_USES_PGSQL_MK=	yes
 
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-VALID_PGSQL_VER=	9.0 9.1 9.2 9.3 9.4 9.5
+VALID_PGSQL_VER=	9.1 9.2 9.3 9.4 9.5 9.6
 
 # Override non-default LIBVERS like this:
 #PGSQL99_LIBVER=6
@@ -42,8 +42,6 @@ PGSQL_LIBVER=	5
 .for v in ${VALID_PGSQL_VER:S,.,,}
 PGSQL$v_LIBVER?=	${PGSQL_LIBVER}
 .endfor
-
-.include "${PORTSDIR}/Mk/bsd.default-versions.mk"
 
 .for v in ${PGSQL_DEFAULT}
 .  if ! ${VALID_PGSQL_VER:M$v}

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	greybird
-PORTVERSION=	1.6.2
+PORTVERSION=	3.18.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	x11-themes xfce
 PKGNAMESUFFIX=	-theme
@@ -10,7 +10,12 @@ PKGNAMESUFFIX=	-theme
 MAINTAINER=	olivierd@FreeBSD.org
 COMMENT=	Gtk and xfwm4 themes for the Xfce Desktop
 
+LICENSE=	GPLv2 CC-BY-SA-3.0
+LICENSE_COMB=	dual
+
 RUN_DEPENDS=	gtk-murrine-engine>=0.98.1:x11-themes/gtk-murrine-engine
+
+PORTSCOUT=	limit:^3\.18\.
 
 GH_ACCOUNT=	shimmerproject
 GH_PROJECT=	Greybird

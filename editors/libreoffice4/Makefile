@@ -2,9 +2,9 @@
 
 PORTNAME=	libreoffice
 PORTVERSION=	4.3.7
-PORTREVISION=	3
+PORTREVISION=	7
 CATEGORIES=	editors
-MASTER_SITES=	http://download.documentfoundation.org/libreoffice/ \
+MASTER_SITES=	http://download.documentfoundation.org/libreoffice/src/${PORTVERSION}/ \
 		http://dev-www.libreoffice.org/extern/:ext \
 		http://dev-www.libreoffice.org/src/:src
 PKGNAMESUFFIX=	4
@@ -263,9 +263,10 @@ JAVA_CONFIGURE_OFF=	--without-java
 JAVA_USE=	JAVA=yes
 JAVA_VARS=	JAVA_BUILD=yes
 
-KDE4_USE=	KDE4=kdelibs QT4=moc_build,qmake_build
+KDE4_USES=	kde:4
+KDE4_USE=	KDE=kdelibs QT4=moc_build,qmake_build
 KDE4_CONFIGURE_ENABLE=	kde4
-KDE4_CONFIGURE_ENV=	KDE4DIR="${KDE4_PREFIX}" \
+KDE4_CONFIGURE_ENV=	KDE4DIR="${KDE_PREFIX}" \
 			QT4DIR="${QT_PREFIX}" \
 			QT4INC="${QT_INCDIR}" \
 			QT4LIB="${QT_LIBDIR}"

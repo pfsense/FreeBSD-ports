@@ -3,6 +3,7 @@
 
 PORTNAME=	p1xml
 PORTVERSION=	1.1.2
+PORTREVISION=	1
 CATEGORIES=	textproc
 PKGNAMEPREFIX=	erlang-
 
@@ -29,6 +30,7 @@ post-patch:
 	      -e 's|{"LDFLAGS", ".*"|{"LDFLAGS", "${LDFLAGS}"|' ${WRKSRC}/rebar.config.script.in
 
 post-install:
+	${CHMOD} 644 ${STAGEDIR}${PREFIX}/lib/erlang/lib/${PORTNAME}-${PORTVERSION}/priv/lib/*.so
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/erlang/lib/${PORTNAME}-${PORTVERSION}/priv/lib/*.so
 
 .include <bsd.port.mk>

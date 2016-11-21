@@ -9,5 +9,10 @@
 		<website>http://haproxy.1wt.eu/</website>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>haproxy.xml</configurationfile>
+		<logging>
+			<logsocket>/tmp/haproxy_chroot/var/run/log</logsocket>
+			<facilityname>haproxy</facilityname>
+			<logfilename>haproxy.log</logfilename>
+		</logging>
 	</package>
 </pfsensepkgs>

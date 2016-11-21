@@ -3,7 +3,7 @@
 
 PORTNAME=	cnews
 PORTVERSION=	cr.g
-PORTREVISION=	14
+PORTREVISION=	16
 CATEGORIES=	news
 MASTER_SITES=	ftp://ftp.cs.toronto.edu/pub/c-news/ \
 		ftp://ftp.funet.fi/pub/unix/news/cnews/ \
@@ -38,7 +38,8 @@ LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 MAKE_JOBS_UNSAFE=	yes
 
 USES=		tar:Z
-USE_GCC=	any
+USE_CSTD=	gnu89
+CFLAGS+=	-Wno-return-type
 
 DIST_SUBDIR=	${DISTNAME}
 NO_WRKSUBDIR=	yes
@@ -94,6 +95,10 @@ pre-patch:
 		${DISTDIR}/${DIST_SUBDIR}/${PGPVERIFY} \
 		> ${WRKSRC}/${PGPVERIFY}
 
+post-patch:
+	@${REINPLACE_CMD} -e 's/getline/get_line/g' ${WRKSRC}/readnews/active.c \
+		${WRKSRC}/readnews/newsrc.c
+
 pre-configure:
 .for i in conf/quiz.def conf/substitutions include/config.make
 	${REINPLACE_CMD} \
@@ -143,7 +148,7 @@ do-install:
 .endfor
 
 test:
-	(cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} \
+	(cd ${WRKSRC} && ${SETENV} LANG=C ${MAKE_ENV} \
 	${MAKE} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} r)
 
 .include <bsd.port.mk>

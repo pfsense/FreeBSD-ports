@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	quagga
-PORTVERSION=	1.0.20160315
+PORTVERSION=	1.0.20161017
 CATEGORIES=	net ipv6
 MASTER_SITES=	SAVANNAH
 
@@ -18,15 +18,15 @@ CONFLICTS=	openbgpd-[0-9]* openospfd-[0-9]* zebra-0* quagga-re-[0-9]*
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-exampledir=${PREFIX}/share/examples/quagga
 INSTALL_TARGET=	install-strip
-USES=		gmake libtool makeinfo perl5 readline compiler:c11 tar:xz autoreconf cpe
+USES=		gmake libtool makeinfo perl5 readline compiler:c11 autoreconf cpe
 USE_LDCONFIG=	yes
 USE_PERL5=	build
 
 INFO=		quagga
 
-OPTIONS_DEFINE=	ISISD PIMD PAM OSPF_OPAQUE_LSA RTADV SNMP TCPSOCKETS DLMALLOC \
+OPTIONS_DEFINE=	ISISD PIMD PAM RTADV SNMP TCPSOCKETS DLMALLOC \
 		NO_BGP_ANNOUNCE OSPF_NEXTHOP IRDP ISIS_TOPOLOGY
-OPTIONS_DEFAULT=	ISISD PIMD RTADV OSPF_OPAQUE_LSA
+OPTIONS_DEFAULT=	ISISD PIMD RTADV
 OPTIONS_SUB=	yes
 
 PIMD_DESC=		PIM-SSM multicast routing
@@ -34,7 +34,6 @@ IRDP_DESC=		Enable IRDP server support
 ISISD_DESC=		Enable ISIS daemon (beta)
 ISIS_TOPOLOGY_DESC=	Enable IS-IS topology generator
 PAM_DESC=		PAM authentication for vtysh
-OSPF_OPAQUE_LSA_DESC=	OSPF Opaque-LSA support (RFC2370)
 RTADV_DESC=		IPv6 Router Advertisements
 TCPSOCKETS_DESC=	Use TCP/IP sockets for protocol daemons
 DLMALLOC_DESC=		Use dlmalloc (makes bgpd much faster)
@@ -65,7 +64,6 @@ ISIS_TOPOLOGY_CONFIGURE_ENABLE=	isis-topology
 PIMD_CONFIGURE_ENABLE=	pimd
 IRDP_CONFIGURE_ENABLE=	irdb
 PAM_CONFIGURE_WITH=	libpam
-OSPF_OPAQUE_LSA_CONFIGURE_ENABLE=	opaque-lsa
 RTADV_CONFIGURE_ENABLE=	rtadv
 SNMP_CONFIGURE_ENABLE=	snmp
 SNMP_LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp

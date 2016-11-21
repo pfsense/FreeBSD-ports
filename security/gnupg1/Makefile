@@ -2,34 +2,54 @@
 
 PORTNAME=	gnupg
 PORTVERSION=	1.4.21
-#PORTREVISION=	0
 CATEGORIES=	security
 MASTER_SITES=	GNUPG
 PKGNAMESUFFIX=	1
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} ${DISTNAME}${EXTRACT_SUFX}.sig
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	adamw@FreeBSD.org
 COMMENT=	The GNU Privacy Guard
+
+LICENSE=	GPLv3+
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+CPE_VENDOR=	gnupg
 
 USES=		charsetfix cpe gmake tar:bzip2
 GNU_CONFIGURE=	YES
-CPE_VENDOR=	gnupg
-.if ${MACHINE_CPU:Mi586}
-MACHINE_ARCH=	i586
-.endif
-CFLAGS:=	${CFLAGS:S/-pipe//g}
+
 INFO=		gnupg1
 DOCSDIR=	${PREFIX}/share/doc/gnupg1
 PORTDOCS=	*
 
-OPTIONS_DEFINE=	LDAP LIBICONV LIBUSB SUID_GPG NLS CURL DOCS
-OPTIONS_DEFAULT=	CURL
+TEST_TARGET=	check
+
+OPTIONS_DEFINE=	CURL DOCS LDAP LIBICONV LIBUSB NLS SUID_GPG
+OPTIONS_DEFAULT=CURL
+OPTIONS_SUB=	yes
+
+CURL_DESC=	use libcurl for the keyserver interface
 LDAP_DESC=	LDAP keyserver interface
 LIBICONV_DESC=	use libiconv
 LIBUSB_DESC=	use libusb
 SUID_GPG_DESC=	install GPG with suid
-CURL_DESC=	use libcurl for the keyserver interface
+
+CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
+CURL_CONFIGURE_WITH=	libcurl=${LOCALBASE}
+# Work around a GnuPG configure buglet
+CURL_CONFIGURE_ENV=	_libcurl_config=${LOCALBASE}/bin/curl-config
+
+LIBICONV_USES=		iconv
+LIBICONV_CONFIGURE_ENABLE=	gnupg-iconv
+
+LIBUSB_CONFIGURE_WITH=	libusb=${LOCALBASE}
+
+LDAP_USE=		OPENLDAP=yes
+LDAP_CONFIGURE_WITH=	ldap=${LOCALBASE}
+
+NLS_USES=		gettext
+NLS_CONFIGURE_ENABLE=	nls
 
 .include <bsd.port.options.mk>
 
@@ -40,47 +60,8 @@ CFLAGS:=	${CFLAGS:S/$/ -fheinous-gnu-extensions/}
 .endif
 .endif
 
-.if ${PORT_OPTIONS:MLIBICONV}
-USES+=		iconv
-.else
-CONFIGURE_ARGS+=	--disable-gnupg-iconv
-.endif
-
-.if ${PORT_OPTIONS:MLIBUSB}
-CONFIGURE_ARGS+=	--with-libusb=${LOCALBASE}
-.else
-CONFIGURE_ARGS+=	--without-libusb
-.endif
-
-.if ${PORT_OPTIONS:MLDAP}
-USE_OPENLDAP=	yes
-PLIST_SUB+=	WITH_LDAP=""
-CONFIGURE_ARGS+=	--with-ldap=${LOCALBASE}
-#CONFIGURE_ENV+=	LDFLAGS="-L/usr/lib"
-.else
-PLIST_SUB+=	WITH_LDAP="@comment "
-CONFIGURE_ARGS+=	--disable-ldap
-.endif
-
-.if ${PORT_OPTIONS:MNLS}
-USES+=		gettext
-PLIST_SUB+=	NLS=""
-.else
-CONFIGURE_ARGS+=--disable-nls
-PLIST_SUB+=	NLS="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MCURL}
-LIB_DEPENDS+=	libcurl.so:ftp/curl
-CONFIGURE_ARGS+=--with-libcurl=${LOCALBASE}
-# Work around a GnuPG configure buglet
-CONFIGURE_ENV+=	_libcurl_config=${LOCALBASE}/bin/curl-config
-.else
-CONFIGURE_ARGS+=--without-libcurl
-.endif
-
-post-install:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for i in DETAILS FAQ HACKING OpenPGP
 	${INSTALL_DATA} ${WRKSRC}/doc/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
@@ -88,11 +69,8 @@ post-install:
 	README THANKS TODO VERSION
 	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
-.if ${PORT_OPTIONS:MSUID_GPG}
-	${CHMOD} u+s ${STAGEDIR}${PREFIX}/bin/gpg
-.endif
 
-check:
-	(cd ${WRKSRC}; ${MAKE} check)
+post-install-SUID_GPG-on:
+	${CHMOD} u+s ${STAGEDIR}${PREFIX}/bin/gpg
 
 .include <bsd.port.mk>

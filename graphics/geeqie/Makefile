@@ -3,13 +3,14 @@
 
 PORTNAME=	geeqie
 PORTVERSION=	1.3
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.geeqie.org/
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Lightweight image viewer forked from GQview
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpng.so:graphics/png

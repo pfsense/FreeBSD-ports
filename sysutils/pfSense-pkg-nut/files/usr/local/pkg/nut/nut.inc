@@ -431,6 +431,22 @@ function nut_ups_status()
 }
 
 
+function nut_install_command() {
+	global $config;
+
+	/* Remove obsolete menu entry */
+	$menus =& $config['installedpackages']['menu'];
+	if (is_array($config['installedpackages']['menu'])) {
+		foreach ($menus as $key => $menu) {
+			if ($menu['name'] == 'NUT') {
+				unset($menus[$key]);
+				break;
+			}
+		}
+	}
+}
+
+
 function nut_deinstall_command() {
 	if (is_service_running('nut')) {
 		log_error("Stopping service nut");

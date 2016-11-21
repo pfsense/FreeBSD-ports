@@ -9,7 +9,6 @@
     SUBDIR += afnix
     SUBDIR += alchemist.el
     SUBDIR += algol68g
-    SUBDIR += alisp
     SUBDIR += angelscript
     SUBDIR += arena
     SUBDIR += asis
@@ -31,6 +30,7 @@
     SUBDIR += cfortran
     SUBDIR += chibi-scheme
     SUBDIR += chicken
+    SUBDIR += cilkplus
     SUBDIR += cint
     SUBDIR += cjs
     SUBDIR += clang-devel
@@ -67,6 +67,7 @@
     SUBDIR += erlang-runtime16
     SUBDIR += erlang-runtime17
     SUBDIR += erlang-runtime18
+    SUBDIR += erlang-runtime19
     SUBDIR += erlang-wx
     SUBDIR += execline
     SUBDIR += expect
@@ -134,7 +135,6 @@
     SUBDIR += icc
     SUBDIR += ici
     SUBDIR += icon
-    SUBDIR += intel2gas
     SUBDIR += intercal
     SUBDIR += io
     SUBDIR += itcl
@@ -159,7 +159,6 @@
     SUBDIR += linux-f10-tcl85
     SUBDIR += linux-j
     SUBDIR += lua-ada
-    SUBDIR += lua-mode.el
     SUBDIR += lua51
     SUBDIR += lua52
     SUBDIR += lua53
@@ -264,7 +263,7 @@
     SUBDIR += py-prolog
     SUBDIR += py-qt5-qml
     SUBDIR += pypy
-    SUBDIR += pypy3-devel
+    SUBDIR += pypy3
     SUBDIR += python
     SUBDIR += python-doc-html
     SUBDIR += python-doc-pdf-a4
@@ -297,7 +296,6 @@
     SUBDIR += runawk
     SUBDIR += rust
     SUBDIR += rust-nightly
-    SUBDIR += s9fes
     SUBDIR += sagittarius-scheme
     SUBDIR += sather-specification
     SUBDIR += sather-tutorial
@@ -320,7 +318,6 @@
     SUBDIR += smalltalk
     SUBDIR += smlnj
     SUBDIR += snobol4
-    SUBDIR += spark
     SUBDIR += spidermonkey17
     SUBDIR += spidermonkey170
     SUBDIR += spidermonkey185
@@ -328,7 +325,6 @@
     SUBDIR += spl
     SUBDIR += squeak
     SUBDIR += squirrel
-    SUBDIR += stalin
     SUBDIR += starlogo
     SUBDIR += stldoc
     SUBDIR += swi-pl

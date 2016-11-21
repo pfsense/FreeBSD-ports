@@ -18,6 +18,7 @@ share/ECM/kde-modules/KDECompilerSettings.cmake
 share/ECM/kde-modules/KDEFrameworkCompilerSettings.cmake
 share/ECM/kde-modules/KDEInstallDirs.cmake
 share/ECM/kde-modules/KDEPackageAppTemplates.cmake
+share/ECM/kde-modules/appstreamtest.cmake
 share/ECM/modules/ECMAddAppIcon.cmake
 share/ECM/modules/ECMAddTests.cmake
 share/ECM/modules/ECMCoverageOption.cmake
@@ -161,3 +162,4 @@ share/ECM/toolchain/specifydependencies.cmake
 %%PORTDOCS%%%%DOCSDIR%%/html/search.html
 %%PORTDOCS%%%%DOCSDIR%%/html/searchindex.js
 %%PORTDOCS%%%%DOCSDIR%%/html/toolchain/Android.html
+%%HELP%%%%DOCSDIR%%/ExtraCMakeModules.qch

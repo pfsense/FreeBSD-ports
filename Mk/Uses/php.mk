@@ -57,8 +57,6 @@ PHP_Include_MAINTAINER=	ale@FreeBSD.org
 
 _INCLUDE_USES_PHP_MK=	yes
 
-.include "${PORTSDIR}/Mk/bsd.default-versions.mk"
-
 .  if defined(DEFAULT_PHP_VER)
 WARNING+=	"DEFAULT_PHP_VER is defined, consider using DEFAULT_VERSIONS=php=${DEFAULT_PHP_VER} instead"
 .  endif
@@ -224,7 +222,7 @@ _INCLUDE_USES_PHP_POST_MK=yes
 .  if ${php_ARGS:Mext} || ${php_ARGS:Mzend}
 PHP_MODNAME?=	${PORTNAME}
 PHP_EXT_PKGMESSAGE=	${WRKDIR}/php-ext-pkg-message
-PKGMESSAGES+=	${PHP_EXT_PKGMESSAGE}
+_PKGMESSAGES+=	${PHP_EXT_PKGMESSAGE}
 PHP_HEADER_DIRS+=	.
 # If there is no priority defined, we wing it.
 .    if !defined(PHP_MOD_PRIO)
@@ -290,13 +288,13 @@ add-plist-phpext:
 # Extensions
 .  if defined(USE_PHP) && ${USE_PHP:tl} != "yes"
 # non-version specific components
-_USE_PHP_ALL=	apc bcmath bitset bz2 calendar ctype curl dba dom \
-		exif fileinfo filter ftp gd gettext gmp \
+_USE_PHP_ALL=	bcmath bitset bz2 calendar ctype curl dba dom \
+		enchant exif fileinfo filter ftp gd gettext gmp \
 		hash iconv igbinary imap interbase intl json ldap mbstring mcrypt \
 		memcache mysqli odbc opcache \
 		openssl pcntl pcre pdf pdo pdo_dblib pdo_firebird pdo_mysql \
 		pdo_odbc pdo_pgsql pdo_sqlite phar pgsql posix \
-		pspell radius readline recode session shmop simplexml snmp soap\
+		pspell radius readline recode redis session shmop simplexml snmp soap\
 		sockets spl sqlite3 sysvmsg sysvsem sysvshm \
 		tidy tokenizer wddx xml xmlreader xmlrpc xmlwriter xsl zip zlib
 # version specific components
@@ -304,7 +302,6 @@ _USE_PHP_VER55=	${_USE_PHP_ALL} mssql mysql sybase_ct
 _USE_PHP_VER56=	${_USE_PHP_ALL} mssql mysql sybase_ct
 _USE_PHP_VER70=	${_USE_PHP_ALL}
 
-apc_DEPENDS=	www/pecl-APC
 bcmath_DEPENDS=	math/php${PHP_VER}-bcmath
 .    if ${PHP_VER} == 70
 bitset_DEPENDS=	math/pecl-bitset
@@ -318,6 +315,7 @@ curl_DEPENDS=	ftp/php${PHP_VER}-curl
 dba_DEPENDS=	databases/php${PHP_VER}-dba
 dbase_DEPENDS=	databases/php${PHP_VER}-dbase
 dom_DEPENDS=	textproc/php${PHP_VER}-dom
+enchant_DEPENDS=	textproc/php${PHP_VER}-enchant
 exif_DEPENDS=	graphics/php${PHP_VER}-exif
 fileinfo_DEPENDS=	sysutils/php${PHP_VER}-fileinfo
 filter_DEPENDS=	security/php${PHP_VER}-filter
@@ -364,6 +362,7 @@ pspell_DEPENDS=	textproc/php${PHP_VER}-pspell
 radius_DEPENDS=	net/pecl-radius
 readline_DEPENDS=	devel/php${PHP_VER}-readline
 recode_DEPENDS=	converters/php${PHP_VER}-recode
+redis_DEPENDS=	databases/php${PHP_VER}-redis
 session_DEPENDS=www/php${PHP_VER}-session
 shmop_DEPENDS=	devel/php${PHP_VER}-shmop
 simplexml_DEPENDS=	textproc/php${PHP_VER}-simplexml

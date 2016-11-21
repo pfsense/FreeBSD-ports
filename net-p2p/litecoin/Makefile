@@ -16,10 +16,9 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libboost_date_time.so:devel/boost-libs
 
-USES+=		autoreconf gmake libtool pkgconfig shebangfix
+USES+=		autoreconf gmake libtool pkgconfig shebangfix ssl
 SHEBANG_FILES=	src/test/*.py
 USE_GITHUB=	yes
-USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
 
 SLAVE_PORT?=	no
@@ -71,7 +70,7 @@ QRCODES_LIB_DEPENDS=	libqrencode.so:graphics/libqrencode
 WALLET_CONFIGURE_ENABLE=	wallet
 WALLET_CXXFLAGS=		-I${BDB_INCLUDE_DIR}
 WALLET_LIBS=			-L${BDB_LIB_DIR}
-WALLET_USE=			BDB=48
+WALLET_USES=			bdb:48
 
 GH_ACCOUNT=	litecoin-project
 
@@ -84,8 +83,21 @@ CONFIGURE_ARGS?=	--without-libs \
 CONFIGURE_ENV=	CRYPTO_CFLAGS="-I${OPENSSLINC}" CRYPTO_LIBS="-L${OPENSSLLIB} -lcrypto" \
 		SSL_CFLAGS="-I${OPENSSLINC}" SSL_LIBS="-L${OPENSSLLIB} -lssl"
 
+CONFIGURE_ENV+= OBJC="${CC}" OBJCFLAGS="${CFLAGS}" OBJCXX="${CXX}" OBJCXXFLAGS="${CXXFLAGS}"
+
+CPPFLAGS+=	-I${OPENSSLINC}
+CFLAGS+=	-I${OPENSSLINC}
+LDFLAGS+=	-L${OPENSSLLIB}
+
 PLIST_FILES?=	bin/litecoin-qt share/applications/litecoin-qt.desktop \
 		share/pixmaps/litecoin128.png
+
+.include <bsd.port.pre.mk>
+
+.if ${SSL_DEFAULT:Mlibressl*}
+# The configure script will output this message, so save the user the trouble
+IGNORE=	Detected LibreSSL: This is NOT supported, and may break consensus compatibility!
+.endif
 
 .if defined(SLAVE_PORT) && ${SLAVE_PORT} == "no"
 
@@ -110,4 +122,4 @@ regression-test: build
 
 	@cd ${WRKSRC} && ${GMAKE} check
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

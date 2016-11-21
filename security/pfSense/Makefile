@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense
-DISTVERSION=	2.4
+DISTVERSION=	2.4.0
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -66,7 +66,8 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/clog:sysutils/clog \
 		${LOCALBASE}/share/pear/Net/IPv6.php:net/pear-Net_IPv6 \
 		${LOCALBASE}/share/pear/Auth/RADIUS.php:net/pear-Auth_RADIUS \
 		${LOCALBASE}/share/pear/Mail.php:mail/pear-Mail \
-		${LOCALBASE}/share/pear/Net/Growl.php:net/pear-Net_Growl
+		${LOCALBASE}/share/pear/Net/Growl.php:net/pear-Net_Growl \
+		${DATADIR}/pkg/repos/pfSense-repo.conf:sysutils/pfSense-repo
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 

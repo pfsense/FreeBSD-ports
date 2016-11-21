@@ -2,7 +2,7 @@
 
 PORTNAME=	openjdk
 PORTVERSION=	${JDK_MAJOR_VERSION}.${JDK_UPDATE_VERSION}.${JDK_BUILD_NUMBER:S/^0//}
-PORTREVISION=	3
+PORTREVISION=	1
 CATEGORIES=	java devel
 MASTER_SITES=	http://download.java.net/openjdk/jdk${JDK_MAJOR_VERSION}/promoted/b${DIST_BUILD_NUMBER}/:jdk \
 		https://adopt-openjdk.ci.cloudbees.com/job/jtreg/${JTREG_JENKINS_BUILD}/artifact/:jtreg \
@@ -25,7 +25,8 @@ PATCHFILES=	patch-8u05-b13.xz \
 		patch-8u72-b15.xz \
 		patch-8u74-b02.xz \
 		patch-8u77-b03.xz \
-		patch-8u92-b14.xz
+		patch-8u92-b14.xz \
+		patch-8u102-b14.xz
 
 MAINTAINER=	java@FreeBSD.org
 COMMENT?=	Java Development Kit ${JDK_MAJOR_VERSION}
@@ -203,7 +204,7 @@ NO_CCACHE=		yes
 NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	8
-JDK_UPDATE_VERSION=	92
+JDK_UPDATE_VERSION=	102
 JDK_BUILD_NUMBER=	14
 DIST_BUILD_NUMBER=	132
 JTREG_VERSION=		4.1
@@ -234,10 +235,14 @@ CONFIGURE_SCRIPT=	../../configure
 CONFIGURE_WRKSRC=	${WRKSRC}/common/autoconf
 
 OPTIONS_DEFINE=		POLICY TZUPDATE
+OPTIONS_DEFINE_armv6=	FPUHACK
 OPTIONS_DEFAULT=	POLICY TZUPDATE
+OPTIONS_DEFAULT_armv6=	FPUHACK
+FPUHACK_DESC=		Hack denormalized numbers in flush-to-zero mode
 POLICY_DESC=		Install the Unlimited Strength Policy Files
 TZUPDATE_DESC=		Update the time zone data
 
+FPUHACK_EXTRA_PATCHES=	${PATCHDIR}/fpuhack.patch
 POLICY_CONFIGURE_ENABLE=	unlimited-crypto
 TZUPDATE_RUN_DEPENDS=	java-zoneinfo>0:java/java-zoneinfo
 
@@ -291,16 +296,6 @@ CONFIGURE_ARGS+=	--with-tools-dir="${TOOLS_DIR:u:S/ /:/g}"
 # XXX We must limit max heap size for 32-bit targets.
 CONFIGURE_ARGS+=	--with-boot-jdk-jvmargs="-Xmx768m"
 MAKE_ENV+=	JAVADOC_CMD_MEM="-Xmx768m"
-.endif
-
-.if ${ARCH} == "armv6"
-# From NetBSD http://cvsweb.netbsd.org/bsdweb.cgi/pkgsrc/lang/openjdk7/hacks.mk
-# Workaround incorrect constant folding of subnormals in javac when the FPU
-# does not handle subnormal arithmetic, like on ARM in Flush-to-zero mode.
-# These workarounds avoid underflow conditions during the bootstrap so the
-# JDK can correctly build itself. Compiling or running programs other than
-# openjdk itself on such hardware may still cause unexpected behaviour.
-EXTRA_PATCHES=	${PATCHDIR}/armv6.patch
 .endif
 
 .if ${ARCH} == "amd64" || ${ARCH} == "i386"
@@ -442,9 +437,8 @@ do-install:
 	${CHMOD} ${BINMODE} ${JDK_JVMDIR}/jexec ${JDK_JVMDIR}/jspawnhelper
 	@${ECHO} "@dir ${INSTALLDIR}/lib/applet" >> ${TMPPLIST}
 .endif
-	@${ECHO} "@unexec ${LOCALBASE}/bin/unregistervm ${INSTALLDIR}/bin/java" >> ${TMPPLIST}
+	@${ECHO} "@javavm ${INSTALLDIR}/bin/java" >> ${TMPPLIST}
 	@${FIND} ${STAGEDIR}${INSTALLDIR} -not -type d | ${SORT} | \
 	    ${SED} -e 's|^${STAGEDIR}${PREFIX}/||' >> ${TMPPLIST}
-	@${ECHO} "@exec ${LOCALBASE}/bin/registervm '${INSTALLDIR}/bin/java # ${JAVAVMS_COMMENT}'" >> ${TMPPLIST}
 
 .include <bsd.port.post.mk>

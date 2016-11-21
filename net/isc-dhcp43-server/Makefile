@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dhcp
-PORTVERSION=	4.3.4
+PORTVERSION=	4.3.5
 PORTREVISION=	${DHCP_PORTREVISION}
 CATEGORIES=	net
 MASTER_SITES=	ISC/${PORTNAME}/${PORTVERSION:S/P/-P/g}
@@ -19,7 +19,7 @@ USES=		gmake
 
 PORTREVISION_SERVER=	0
 PORTREVISION_CLIENT=	0
-PORTREVISION_RELAY=	1
+PORTREVISION_RELAY=	0
 
 SUBSYS?=	server
 
@@ -167,8 +167,6 @@ do-install:
 	${INSTALL_MAN} ${LDAP_README} ${STAGEDIR}${DOCSDIR}
 .endif
 .endif
-
-post-install:
 .if ${SUBSYS} == client
 	${INSTALL_SCRIPT} ${WRKSRC}/client/scripts/freebsd ${STAGEDIR}${PREFIX}/sbin/dhclient-script
 .elif ${SUBSYS} == server

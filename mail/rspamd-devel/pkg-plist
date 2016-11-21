@@ -1,5 +1,6 @@
 bin/rspamd-%%RSPAMDVERSION%%
 bin/rspamd
+bin/rspamd_stats
 bin/rspamadm-%%RSPAMDVERSION%%
 bin/rspamadm
 bin/rspamc-%%RSPAMDVERSION%%
@@ -40,12 +41,14 @@ bin/rspamc
 @sample %%ETCDIR%%/statistic.conf.sample
 @sample %%ETCDIR%%/surbl-whitelist.inc.sample
 @sample %%ETCDIR%%/worker-controller.inc.sample
-@sample %%ETCDIR%%/worker-fuzzy.inc
+@sample %%ETCDIR%%/worker-fuzzy.inc.sample
 @sample %%ETCDIR%%/worker-normal.inc.sample
 @sample %%ETCDIR%%/rspamd.newsyslog.conf.sample
-/usr/local/etc/newsyslog.conf.d/rspamd.newsyslog.conf
+etc/newsyslog.conf.d/rspamd.newsyslog.conf
 lib/rspamd/librspamd-actrie.so
 %%DATADIR%%/effective_tld_names.dat
+%%DATADIR%%/lua/antivirus.lua
+%%DATADIR%%/lua/asn.lua
 %%DATADIR%%/lua/dcc.lua
 %%DATADIR%%/lua/dmarc.lua
 %%DATADIR%%/lua/emails.lua
@@ -80,6 +83,7 @@ lib/rspamd/librspamd-actrie.so
 %%DATADIR%%/rules/rspamd.classifiers.lua
 %%DATADIR%%/rules/rspamd.lua
 %%DATADIR%%/www/README.md
+%%DATADIR%%/www/css/d3evolution.css
 %%DATADIR%%/www/css/datatables.min.css
 %%DATADIR%%/www/css/glyphicons-halflings-regular.woff
 %%DATADIR%%/www/css/glyphicons-halflings-regular.woff2
@@ -90,8 +94,10 @@ lib/rspamd/librspamd-actrie.so
 %%DATADIR%%/www/img/spinner.gif
 %%DATADIR%%/www/img/spinner.png
 %%DATADIR%%/www/index.html
+%%DATADIR%%/www/js/d3evolution.min.js
 %%DATADIR%%/www/js/d3pie.min.js
 %%DATADIR%%/www/js/datatables.min.js
+%%DATADIR%%/www/js/humanize.min.js
 %%DATADIR%%/www/js/rspamd.js
 %%DATADIR%%/www/plugins.txt
 %%DATADIR%%/www/react-index.html

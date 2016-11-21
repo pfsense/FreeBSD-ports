@@ -3,6 +3,7 @@
 
 PORTNAME=	memcache
 PORTVERSION=	3.0.8
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	http://pecl.php.net/get/
 PKGNAMEPREFIX=	pecl-
@@ -13,8 +14,6 @@ COMMENT=	Memcached extension
 
 LICENSE=	PHP30
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_powerpc64=	does not build
 
 OPTIONS_DEFINE=	EXAMPLES
 

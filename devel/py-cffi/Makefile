@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	cffi
-PORTVERSION=	1.6.0
+PORTVERSION=	1.7.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,14 +17,29 @@ LIB_DEPENDS=	libffi.so:devel/libffi
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycparser>=2.10:devel/py-pycparser
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest
 
-CFLAGS+=	-I${LOCALBASE}/include -Wl,-rpath,${LOCALBASE}/lib
-LDFLAGS+=	-L${LOCALBASE}/lib
-
-USES=		python
+# Actually 2.6-2.7,3.2-3.5
+USES=		localbase python compiler
 USE_PYTHON=	autoplist distutils
 
-do-test: patch
-	cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} build_ext -i && \
-	${LOCALBASE}/bin/py.test
+.include <bsd.port.pre.mk>
 
-.include <bsd.port.mk>
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100000
+.if ${COMPILER_TYPE:Mclang}
+CFLAGS+=	-Wno-shift-negative-value
+.endif
+.endif
+
+# Tests assume gcc, and fail on pure clang systems
+# Fixed in https://bitbucket.org/cffi/cffi/issues/271
+post-patch:
+	${REINPLACE_CMD} -e 's|gcc|${CC}|g' ${WRKSRC}/testing/cffi0/test_ownlib.py
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/_cffi_backend.so
+
+do-test:
+	@(cd ${TEST_WRKSRC} && ${SETENV} ${MAKE_ENV} ${PYTHON_CMD} \
+		${PYDISTUTILS_SETUP} build_ext -i)
+	@(cd ${TEST_WRKSRC} && ${SETENV} ${TEST_ENV} ${PYTHON_CMD} -m pytest -rs)
+
+.include <bsd.port.post.mk>

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	web2ldap
-PORTVERSION=	1.2.19
-PORTREVISION=	3
+PORTVERSION=	1.2.71
 CATEGORIES=	www
 MASTER_SITES=	http://www.web2ldap.de/download/ \
 		http://www.sfr-fresh.com/unix/www/ \
@@ -48,7 +47,7 @@ do-install:
 		${FIND} * -type d | ${GREP} -vE "^htdocs" | ${CPIO} -p ${STAGEDIR}${DATADIR}; \
 		${FIND} * -type f | ${GREP} -vE "^htdocs" | ${CPIO} -pd ${STAGEDIR}${DATADIR})
 
-post-install:
+post-install-DOCS-on:
 	@${ECHO_MSG} "==> Installing document files..."
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	@(cd ${WRKSRC}; \

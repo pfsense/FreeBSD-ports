@@ -3,7 +3,7 @@
 
 PORTNAME=	webkit
 PORTVERSION=	2.4.11
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	www
 MASTER_SITES=	http://webkitgtk.org/releases/
 PKGNAMESUFFIX=	-gtk2
@@ -24,7 +24,7 @@ LIB_DEPENDS=	libenchant.so:textproc/enchant \
 		libsoup-2.4.so:devel/libsoup
 RUN_DEPENDS=	geoclue>=0:net/geoclue
 
-PORTSCOUT=	limit:1.4.*$$
+PORTSCOUT=	limit:^2\.4\.
 
 USE_GSTREAMER1=	yes
 USE_XORG=	xt xdamage xcomposite
@@ -48,6 +48,8 @@ CONFIGURE_ARGS=	--with-gtk=2.0 \
 		--with-html-dir=${PREFIX}/share/gtk-doc/html/webkit1
 MAKEFILE=	GNUmakefile
 MAKE_ENV=	XDG_CACHE_HOME=${WRKDIR}
+
+BROKEN_sparc64=	attempts to use x86 assembler
 
 CONFIGURE_ARGS+=--disable-egl \
 		--disable-gles2

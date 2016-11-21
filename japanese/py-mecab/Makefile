@@ -5,7 +5,7 @@ PORTNAME=	mecab
 PORTVERSION=	0.996
 PORTREVISION=	2
 CATEGORIES=	japanese python textproc
-MASTER_SITES=	GOOGLE_CODE
+MASTER_SITES=	https://drive.google.com/uc?export=download&id=0B4y35FiV1wh7UlJpaWJKM01KRVE&dummy=/
 DISTNAME=	${PORTNAME}-python-${PORTVERSION}
 
 MAINTAINER=	jun-g@daemonfreaks.com

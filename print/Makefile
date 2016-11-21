@@ -43,9 +43,9 @@
     SUBDIR += enscript-a4
     SUBDIR += enscript-letter
     SUBDIR += enscript-letterdj
-    SUBDIR += enscriptfonts
     SUBDIR += epson-inkjet-printer-escpr
     SUBDIR += epsonepl
+    SUBDIR += fig2dev
     SUBDIR += flpsed
     SUBDIR += font-amsfonts
     SUBDIR += font2svg
@@ -137,7 +137,6 @@
     SUBDIR += mp-a4
     SUBDIR += mp-letter
     SUBDIR += mpage
-    SUBDIR += mup
     SUBDIR += musixtex
     SUBDIR += muttprint
     SUBDIR += nenscript
@@ -233,7 +232,6 @@
     SUBDIR += splix
     SUBDIR += system-config-printer
     SUBDIR += t1utils
-    SUBDIR += tex
     SUBDIR += tex-aleph
     SUBDIR += tex-basic-engines
     SUBDIR += tex-dvipdfmx

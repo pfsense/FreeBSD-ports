@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ansible
-PORTVERSION?=	2.1.0.0
-PORTREVISION?=	1
+PORTVERSION?=	2.2.0.0
 CATEGORIES=	sysutils python
 MASTER_SITES=	http://releases.ansible.com/ansible/
 
@@ -18,10 +17,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml \
 		${PYTHON_PKGNAMEPREFIX}paramiko>0:security/py-paramiko \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>0:devel/py-Jinja2
 
-EXTRA_PATCHES?=	${FILESDIR}/extra-patch-b5e012b
-
 NO_ARCH=	yes
-USES=		cpe python:2 shebangfix
+USES?=		cpe python shebangfix
 USE_PYTHON=	autoplist distutils
 python_CMD=	${LOCALBASE}/bin/python
 SHEBANG_FILES+=	lib/ansible/modules/core/*/*.py \

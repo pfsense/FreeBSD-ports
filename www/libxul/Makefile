@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	libxul
-DISTVERSION=	45.4.0
-PORTREVISION=	1
+DISTVERSION=	45.5.0
 CATEGORIES?=	www devel
 MASTER_SITES=	MOZILLA/firefox/releases/${DISTVERSION}esr/source \
-		MOZILLA/firefox/candidates/${DISTVERSION}esr-candidates/build2/source
+		MOZILLA/firefox/candidates/${DISTVERSION}esr-candidates/build1/source
 DISTNAME=	firefox-${DISTVERSION}esr.source
 
 MAINTAINER?=	gecko@FreeBSD.org
@@ -26,16 +25,13 @@ BUILD_DEPENDS=	nspr>=4.12:devel/nspr \
 		v4l_compat>0:multimedia/v4l_compat \
 		autoconf-2.13:devel/autoconf213 \
 		yasm:devel/yasm \
-		zip:archivers/zip \
-		unzip:archivers/unzip
+		zip:archivers/zip
 
 LIB_DEPENDS=	libv4l2.so:multimedia/libv4l
 
 WRKSRC:=	${WRKDIR}/firefox-${DISTVERSION}esr
 CONFLICTS_INSTALL=	libxul-1.9.*
 
-USE_QT5=	# empty
-QT_NONSTANDARD=	yes
 USE_GL=		gl
 USES=		pathfix tar:xz
 MAKE_ENV=	SKIP_GRE_REGISTRATION=1 mozappdir=${PREFIX}/lib/${MOZILLA}
@@ -51,7 +47,6 @@ MOZILLA_PLIST_DIRS=	bin include lib share/idl libdata
 MOZ_PKGCONFIG_FILES=	libxul-embedding libxul mozilla-js \
 			mozilla-plugin
 
-OPTIONS_EXCLUDE=	GSTREAMER LOGGING
 OPTIONS_DEFINE=		RUST
 OPTIONS_DEFAULT=	BUNDLED_CAIRO GTK2
 

@@ -10,8 +10,10 @@ PKGNAMEPREFIX=	plasma-applet-
 MAINTAINER=	makc@FreeBSD.org
 COMMENT=	KDE4 Plasma applet, which monitors connections to ftp daemons
 
-USES=		cmake tar:bzip2
-USE_KDE4=	kdelibs automoc4
+BROKEN=		Unfetchable (google code has gone away)
+
+USES=		cmake kde:4 tar:bzip2
+USE_KDE=	kdelibs automoc4
 USE_QT4=	qmake_build moc_build uic_build rcc_build
 
 post-patch:

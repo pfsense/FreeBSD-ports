@@ -29,11 +29,10 @@ CMAKE_ARGS=	-DBUNDLED_LIBS=OFF \
 		-DHAVE_RESOLV=${LIBDIR} \
 		-DINSTALL_SYSCONFDIR=${PREFIX}/etc \
 		-DMAN_INSTALLDIR=${PREFIX}/man
-CMAKE_VERBOSE=	yes
 LDFLAGS+=	${ICONV_LIB} -lnet -lpcap
 MAKE_JOBS_UNSAFE=	yes
 USE_LDCONFIG=	yes
-USES=		bison cmake:outsource cpe iconv localbase pkgconfig
+USES=		bison cmake:outsource cpe iconv localbase:ldflags pkgconfig
 
 DOCS=		AUTHORS CHANGELOG README README.BINARIES README.BUGS \
 		README.GIT README.PLATFORMS THANKS TODO TODO.TESTING \

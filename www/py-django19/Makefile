@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	django
-PORTVERSION=	1.9.6
+PORTVERSION=	1.9.11
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP \
-		https://www.djangoproject.com/m/releases/${PORTVERSION}/
+		https://www.djangoproject.com/m/releases/${PORTVERSION:R}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 PKGNAMESUFFIX=	19
 DISTNAME=	Django-${PORTVERSION}
@@ -20,7 +20,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USES=		cpe python
 USE_PYTHON=	autoplist distutils
 
-CONFLICTS_INSTALL=	py??-django-devel-* py??-django-1.[012345679].*
+CONFLICTS_INSTALL=	py??-django-devel-* py??-django1[68]-* py??-django110-*
 CPE_VENDOR=		djangoproject
 
 DOCSDIR=	${PREFIX}/share/doc/py-django

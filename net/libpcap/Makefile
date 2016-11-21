@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	libpcap
-PORTVERSION=	1.7.4
+PORTVERSION=	1.8.0
+PORTREVISION=	1
 CATEGORIES=	net ipv6
 MASTER_SITES=	http://www.tcpdump.org/release/
 
@@ -11,11 +12,14 @@ COMMENT=	Ubiquitous network traffic capture library
 
 LICENSE=	BSD3CLAUSE
 
+BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex
+
 GNU_CONFIGURE=	yes
 USES=		bison gmake
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS+=--enable-dbus=no \
 		--with-pcap=bpf
+CONFIGURE_ENV+=	LEX=${LOCALBASE}/bin/flex
 PLIST_SUB+=	PORTVERSION=${PORTVERSION}
 
 OPTIONS_DEFINE=	DAG IPV6

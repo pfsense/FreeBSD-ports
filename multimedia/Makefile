@@ -12,7 +12,9 @@
     SUBDIR += assimp
     SUBDIR += atomicparsley
     SUBDIR += audacious
+    SUBDIR += audacious-gtk3
     SUBDIR += audacious-plugins
+    SUBDIR += audacious-plugins-gtk3
     SUBDIR += audiopreview
     SUBDIR += avbin
     SUBDIR += avidemux
@@ -53,7 +55,6 @@
     SUBDIR += dvdstyler
     SUBDIR += dvts
     SUBDIR += emby-server
-    SUBDIR += emotion_generic_players-vlc
     SUBDIR += emovix
     SUBDIR += ffdec
     SUBDIR += ffmpeg
@@ -75,7 +76,6 @@
     SUBDIR += gcfilms
     SUBDIR += gdialog
     SUBDIR += gdvrecv
-    SUBDIR += ggrab
     SUBDIR += gmencoder
     SUBDIR += gmerlin
     SUBDIR += gmerlin-avdecoder
@@ -145,6 +145,7 @@
     SUBDIR += gstreamer1-plugins-x264
     SUBDIR += gstreamer1-plugins-x265
     SUBDIR += gstreamer1-qt4
+    SUBDIR += gstreamer1-qt5
     SUBDIR += gstreamer1-rtsp-server
     SUBDIR += gstreamer1-vaapi
     SUBDIR += gstreamer1-validate
@@ -167,6 +168,7 @@
     SUBDIR += kmplayer-kde4
     SUBDIR += kodi
     SUBDIR += kplayer-kde4
+    SUBDIR += kvazaar
     SUBDIR += l-smash
     SUBDIR += libaacs
     SUBDIR += libass
@@ -218,9 +220,7 @@
     SUBDIR += linux-c6-libv4l
     SUBDIR += linux-f10-libtheora
     SUBDIR += linux-f10-libv4l
-    SUBDIR += linux-realplayer
     SUBDIR += linux-tsmuxer
-    SUBDIR += linux-xmovie
     SUBDIR += linux_dvbwrapper-kmod
     SUBDIR += lives
     SUBDIR += livestreamer
@@ -247,6 +247,7 @@
     SUBDIR += motion
     SUBDIR += mp3cd
     SUBDIR += mp4v2
+    SUBDIR += mpc-qt
     SUBDIR += mpeg2codec
     SUBDIR += mpeg2play
     SUBDIR += mpeg4ip
@@ -313,6 +314,7 @@
     SUBDIR += ptx-kmod
     SUBDIR += pwcbsd
     SUBDIR += pwcview
+    SUBDIR += py-cec
     SUBDIR += py-enzyme
     SUBDIR += py-ffmpeg
     SUBDIR += py-gstreamer
@@ -323,6 +325,7 @@
     SUBDIR += py-kaa-metadata
     SUBDIR += py-librtmp
     SUBDIR += py-mlt
+    SUBDIR += py-moviepy
     SUBDIR += py-openlp
     SUBDIR += py-periscope
     SUBDIR += py-qt4-multimedia
@@ -425,7 +428,6 @@
     SUBDIR += vdr-plugin-xineliboutput
     SUBDIR += vdr-plugin-xvdr
     SUBDIR += vdr-plugins
-    SUBDIR += vic
     SUBDIR += vid.stab
     SUBDIR += vlc
     SUBDIR += vlc-qt4

@@ -1,20 +1,22 @@
 # $FreeBSD$
 
 PORTNAME=	axis2
-PORTVERSION=	1.7.1
+PORTVERSION=	1.7.4
 CATEGORIES=	www java
 MASTER_SITES=	APACHE/axis/${PORTNAME}/java/core/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-bin
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	dbaio@bsd.com.br
 COMMENT=	Provides a Web Services,SOAP and WSDL engine from Apache
 
 LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 USES=		cpe zip
 CPE_VENDOR=	apache
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 NO_BUILD=	yes
+NO_ARCH=	yes
 
 OPTIONS_SINGLE=	AS
 OPTIONS_SINGLE_AS=	TOMCAT6 TOMCAT7
@@ -22,44 +24,32 @@ OPTIONS_DEFAULT=	TOMCAT6
 
 OPTIONS_DEFINE=	EXAMPLES
 
-.include <bsd.port.options.mk>
+TOMCAT6_VARS=	APPHOME=${LOCALBASE}/apache-tomcat-6.0
+TOMCAT6_RUN_DEPENDS+=	${APPHOME}/bin/bootstrap.jar:www/tomcat6
 
-.if ${PORT_OPTIONS:MTOMCAT6}
-APPHOME=	${LOCALBASE}/apache-tomcat-6.0
-BUILD_DEPENDS+=	${APPHOME}/bin/bootstrap.jar:www/tomcat6
-RUN_DEPENDS+=	${APPHOME}/bin/bootstrap.jar:www/tomcat6
-.endif
-
-.if ${PORT_OPTIONS:MTOMCAT7}
-APPHOME=	${LOCALBASE}/apache-tomcat-7.0
-BUILD_DEPENDS+=	${APPHOME}/bin/bootstrap.jar:www/tomcat7
-RUN_DEPENDS+=	${APPHOME}/bin/bootstrap.jar:www/tomcat7
-.endif
+TOMCAT7_VARS=	APPHOME=${LOCALBASE}/apache-tomcat-7.0
+TOMCAT7_RUN_DEPENDS+=	${APPHOME}/bin/bootstrap.jar:www/tomcat7
 
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
 SHAREOWN=	www
 SHAREGRP=	www
-PLIST_SUB+=	APPHOME=${APPHOME:S|^${PREFIX}/||} \
-		CONF_EXT=${CONF_EXT} PORTVERSION=${PORTVERSION}
-CONF_EXT=	sample
 
-PORTEXAMPLES=	*
+PLIST_SUB+=	APPHOME=${APPHOME:S|^${PREFIX}/||} \
+	PORTVERSION=${PORTVERSION}
 
 do-install:
-	( ${MKDIR} ${STAGEDIR}${APPHOME}/webapps/${PORTNAME}/WEB-INF/lib && cd ${WRKSRC}/lib && ${COPYTREE_SHARE} \* ${STAGEDIR}${APPHOME}/webapps/${PORTNAME}/WEB-INF/lib)
-	( ${MKDIR} ${STAGEDIR}${APPHOME}/webapps/${PORTNAME}/WEB-INF/classes && cd ${WRKSRC}/webapp/WEB-INF/classes && ${COPYTREE_SHARE} \* ${STAGEDIR}${APPHOME}/webapps/${PORTNAME}/WEB-INF/classes )$
+	( ${MKDIR} ${STAGEDIR}${APPHOME}/webapps/${PORTNAME}/WEB-INF && cd ${WRKSRC}/webapp/WEB-INF && ${COPYTREE_SHARE} \* ${STAGEDIR}${APPHOME}/webapps/${PORTNAME}/WEB-INF )
+	( cd ${WRKSRC}/lib && ${COPYTREE_SHARE} \* ${STAGEDIR}${APPHOME}/webapps/${PORTNAME}/WEB-INF/lib )
 	( ${MKDIR} ${STAGEDIR}${APPHOME}/webapps/${PORTNAME}/axis2-web && cd ${WRKSRC}/webapp/axis2-web && ${COPYTREE_SHARE} \* ${STAGEDIR}${APPHOME}/webapps/${PORTNAME}/axis2-web )
 	( cd ${WRKSRC}/repository && ${COPYTREE_SHARE} \* ${STAGEDIR}${APPHOME}/webapps/${PORTNAME}/WEB-INF )
-	${MKDIR} ${STAGEDIR}${APPHOME}/webapps/${PORTNAME}/WEB-INF/conf
 .for f in axis2.policy axis2.xml commons-logging.properties log4j.properties
 	${INSTALL_DATA} ${WRKSRC}/conf/${f} ${STAGEDIR}${APPHOME}/webapps/${PORTNAME}/WEB-INF/conf/${f}.sample
 .endfor
-	${INSTALL_DATA} ${WRKSRC}/webapp/WEB-INF/web.xml ${STAGEDIR}${APPHOME}/webapps/${PORTNAME}/WEB-INF/web.xml.sample
-.if ${PORT_OPTIONS:MEXAMPLES}
+	${MV} ${STAGEDIR}${APPHOME}/webapps/${PORTNAME}/WEB-INF/web.xml ${STAGEDIR}${APPHOME}/webapps/${PORTNAME}/WEB-INF/web.xml.sample
+
+do-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	cd ${WRKSRC}/samples && ${FIND} . -type d -exec ${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/{} \;
-#	cd ${WRKSRC}/samples && ${FIND} . -type f -not -name '*.class' -exec ${INSTALL_DATA} {} ${STAGEDIR}${EXAMPLESDIR}/{} \;
-.endif
+	cd ${WRKSRC}/samples && ${COPYTREE_SHARE} \* ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

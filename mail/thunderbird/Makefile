@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	thunderbird
-DISTVERSION=	45.3.0
+DISTVERSION=	45.4.0
 PORTREVISION=	1
 CATEGORIES=	mail news net-im ipv6
 MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}/source \
@@ -27,20 +27,17 @@ BUILD_DEPENDS=	nspr>=4.12:devel/nspr \
 		v4l_compat>0:multimedia/v4l_compat \
 		autoconf-2.13:devel/autoconf213 \
 		yasm:devel/yasm \
-		zip:archivers/zip \
-		unzip:archivers/unzip
+		zip:archivers/zip
 
 LIB_DEPENDS=	libv4l2.so:multimedia/libv4l
 
 EM_VERSION=	1.9.5
-L_VERSION=	4.7.3
+L_VERSION=	4.7.4
 
 SSP_UNSAFE=	yes
 USE_GECKO=	gecko
 USE_MOZILLA=	# empty
 
-USE_QT5=	# empty
-QT_NONSTANDARD=	yes
 USE_GL=		gl
 USES=		tar:xz
 
@@ -57,7 +54,6 @@ PORTNAME_ICON_SRC=	${PREFIX}/lib/${MOZILLA}/chrome/icons/default/default48.png
 SYSTEM_PREFS=	${FAKEDIR}/lib/${PORTNAME}/defaults/pref/${PORTNAME}.js
 MOZ_PIS_SCRIPTS=moz_pis_S50cleanhome
 
-OPTIONS_EXCLUDE=GSTREAMER LOGGING
 OPTIONS_DEFINE=	ENIGMAIL LIGHTNING RUST
 OPTIONS_SINGLE=	TOOLKIT
 OPTIONS_SINGLE_TOOLKIT=	GTK2 GTK3

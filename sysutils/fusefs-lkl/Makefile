@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	lkl
-PORTVERSION=	4.3.0
+PORTVERSION=	4.5.0
 CATEGORIES=	sysutils
-MASTER_SITES=	GOOGLE_CODE
 PKGNAMEPREFIX=	fusefs-
 
 MAINTAINER=	cem@FreeBSD.org
@@ -20,28 +19,25 @@ USE_BINUTILS=	yes
 USE_GCC=	yes
 USE_GITHUB=	yes
 GH_PROJECT=	linux
-GH_TAGNAME=	64a367f522c6ec4fbed0193589d7733b06ab7968
+GH_TAGNAME=	e145a5a5bdf4b70753495b5ccd2439a354655341
 
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=No one has added other architecture ld formats yet
+
+IGNORE_FreeBSD_9=	requires FreeBSD 11 or newer
+IGNORE_FreeBSD_10=	requires FreeBSD 11 or newer
 
 WRKSRC_SUBDIR=	tools/lkl
 ALL_TARGET=	lklfuse
 MAKE_JOBS_UNSAFE=yes
 MAKE_ARGS+=	V=1
 # Need ports versions of 'bc', 'ld' to build!
-MAKE_ARGS+=	PATH="${PREFIX}/bin:${PATH}"
+MAKE_ARGS+=	PATH="${LOCALBASE}/bin:${PATH}"
 
 PLIST_FILES=	bin/lklfuse lib/liblkl.a
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/lklfuse ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_DATA} ${WRKSRC}/lib/liblkl.a ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_DATA} ${WRKSRC}/liblkl.a ${STAGEDIR}${PREFIX}/lib
 
-.include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 1100000
-IGNORE=		requires FreeBSD CURRENT
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

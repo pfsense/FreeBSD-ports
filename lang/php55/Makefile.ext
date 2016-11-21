@@ -2,7 +2,7 @@ COMMENT=	The ${PHP_MODNAME} shared extension for php
 
 USES+=	php:ext
 PHP_MODNAME=	${PKGNAMESUFFIX:S/-//}
-PHP_DEFAULT=	5.5
+PHP_VER=	55
 IGNORE_WITH_PHP= 56 70
 
 EXTSUBDIR=	${DISTNAME}/ext/${PHP_MODNAME}
@@ -58,6 +58,11 @@ CONFIGURE_ARGS+=--enable-dom \
 		--with-libxml-dir=${LOCALBASE}
 
 USE_GNOME=	libxml2
+.endif
+
+.if ${PHP_MODNAME} == "enchant"
+LIB_DEPENDS+=   libenchant.so:textproc/enchant
+CONFIGURE_ARGS+=--with-enchant=${LOCALBASE}
 .endif
 
 .if ${PHP_MODNAME} == "exif"
@@ -457,7 +462,7 @@ CONFIGURE_ARGS+=--without-cdb
 .	if ${PORT_OPTIONS:MDB4}
 CONFIGURE_ARGS+=--with-db4=${LOCALBASE}
 
-USE_BDB=		40+
+USES+=			bdb
 WITH_BDB_HIGHEST=	yes
 .	endif
 .	if ${PORT_OPTIONS:MGDBM}

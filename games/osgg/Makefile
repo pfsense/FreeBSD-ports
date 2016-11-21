@@ -2,39 +2,35 @@
 # $FreeBSD$
 
 PORTNAME=	osgg
-PORTVERSION=	0.99
-PORTREVISION=	9
+PORTVERSION=	1.0
 CATEGORIES=	games
-MASTER_SITES=	SF
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	OldSkool Gravity Game
 
-USES=		tar:bzip2
-USE_SDL=	sdl image ttf mixer
-USE_GL=		yes
+LICENSE=	GPLv3+
 
-WRKSRC=		${WRKDIR}/${PORTNAME}
+USE_GITHUB=	yes
+GH_ACCOUNT=	DusteDdk
+GH_PROJECT=	Osgg
+GH_TAGNAME=	32d9e02 # 1.0 + extra FreeBSD-related fixes
+
+USE_SDL=	sdl image ttf mixer
+USE_GL=		gl
+MAKE_ENV=	DATADIR="${DATADIR}/"
 
 PLIST_FILES=	bin/${PORTNAME}
-PORTDATA=	*
+PORTDATA=	*.txt *.ogg Bandal.ttf icon.png levels
 
-post-extract:
-	@${FIND} -d ${WRKSRC} -name .svn -exec ${RM} -rf {} \;
-
-post-patch:
-	@${RM} -f ${WRKSRC}/osgg
-	@${REINPLACE_CMD} -e 's|"[a-z]*.txt"|DATADIR&|; s|endian.h|sys/&|' \
-		${WRKSRC}/main.cpp
-
-do-build:
-	cd ${WRKSRC} && ${CXX} ${CXXFLAGS} `${SDL_CONFIG} --libs --cflags` \
-		-lGL -lSDL_image -lSDL_ttf -lSDL_mixer -o ${PORTNAME} \
-		-DDATADIR="\"${DATADIR}/\"" \
-		main.cpp text.cpp sound.cpp
+DESKTOP_ENTRIES="Osgg" \
+		"" \
+		"${DATADIR}/icon.png" \
+		"osgg" \
+		"Game;ArcadeGame;" \
+		""
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
-	cd ${WRKSRC} && ${COPYTREE_SHARE} "*.txt *.ogg Bandal.ttf icon.png levels" ${STAGEDIR}${DATADIR}/
+	@cd ${WRKSRC} && ${COPYTREE_SHARE} "${PORTDATA}" ${STAGEDIR}${DATADIR}/
 
 .include <bsd.port.mk>

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	qTox
-PORTVERSION=	1.4.1
+PORTVERSION=	1.5.1
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net-im net-p2p
 
@@ -45,6 +46,13 @@ PLIST_FILES=	bin/qtox \
 PLIST_FILES+=	share/icons/hicolor/${SZ}/apps/qtox.png
 .endfor
 
+.include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} == "gcc" && ${ARCH} == i386 && !${CFLAGS:M-march=*}
+# Needed for __atomic_fetch_add_8
+CFLAGS+=	-march=i586
+.endif
+
 pre-everything::
 	@${ECHO_MSG}
 	@${ECHO_MSG} "Warning: qTox won't build if the option NaCl was selected for Tox!"
@@ -69,7 +77,8 @@ post-install:
 	@${GZIP_CMD} ${GZIP} < ${WRKSRC}/img/icons/qtox.svg > ${STAGEDIR}${PREFIX}/share/icons/hicolor/scalable/apps/qtox.svgz
 .for SZ in ${ICON_SIZES}
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/${SZ}/apps
-	@${CP} ${WRKSRC}/img/icons/${SZ}/qtox.png ${STAGEDIR}${PREFIX}/share/icons/hicolor/${SZ}/apps/qtox.png
+	${INSTALL_DATA} ${WRKSRC}/img/icons/${SZ}/qtox.png \
+		${STAGEDIR}${PREFIX}/share/icons/hicolor/${SZ}/apps/qtox.png
 .endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

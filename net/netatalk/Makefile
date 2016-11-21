@@ -13,8 +13,7 @@ COMMENT=	File server for Mac OS X
 
 LIB_DEPENDS=	libgcrypt.so:security/libgcrypt
 
-USES=		gmake iconv libtool perl5 tar:bzip2
-USE_BDB=	46+
+USES=		bdb gmake iconv libtool perl5 tar:bzip2
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-D_IPP_PRIVATE_STRUCTURES
 INSTALL_TARGET=	install-strip
@@ -27,9 +26,8 @@ CONFIGURE_ARGS+=	--with-tcp-wrappers \
 			--with-uams-path=${PREFIX}/libexec/netatalk-uams \
 			--with-bdb=${LOCALBASE}
 
-OPTIONS_DEFINE=	SRVLOC PAM TIMELORD KRB5 ZEROCONF LDAP SENDFILE
+OPTIONS_DEFINE=	SRVLOC PAM KRB5 ZEROCONF LDAP SENDFILE
 SRVLOC_DESC=	Service Location Protocol support
-TIMELORD_DESC=	Timelord network time service
 KRB5_DESC=	Kerberos V UAM
 ZEROCONF_DESC=	Zeroconf (Bonjour) support
 SENDFILE_DESC=	sendfile support
@@ -42,9 +40,10 @@ LINKS=		unbin unhex unsingle hqx2bin single2bin macbinary \
 CONFLICTS=	bigloo-2.* cap-6.0.* tct-1.* netatalk-1* yudit-[0-9]*
 
 .if exists(/usr/include/netatalk/ddp.h)
-OPTIONS_DEFINE+=APPLETALK
+OPTIONS_DEFINE+=APPLETALK TIMELORD
 OPTIONS_DEFAULT=APPLETALK
 APPLETALK_DESC=	AppleTalk protocol support
+TIMELORD_DESC=	Timelord network time service
 .endif
 
 .include <bsd.port.options.mk>

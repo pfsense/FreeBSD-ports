@@ -4,7 +4,7 @@
 
 PORTNAME=	poedit
 PORTVERSION=	1.8.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	editors
 MASTER_SITES=	http://github.com/vslavik/${PORTNAME}/releases/download/v${PORTVERSION}-oss/
 
@@ -18,11 +18,10 @@ LIB_DEPENDS=	libgtkspell.so:textproc/gtkspell \
 		libboost_thread.so:devel/boost-libs \
 		liblucene++.so:textproc/luceneplusplus
 
-USES=		compiler:c++11-lib desktop-file-utils gettext gmake pkgconfig
+USES=		bdb compiler:c++11-lib desktop-file-utils gettext gmake pkgconfig
 USE_WX=		3.0
 WX_CONF_ARGS=	absolute
 WX_UNICODE=	yes
-USE_BDB=	yes
 WITH_BDB_HIGHEST=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	WXRC="${WXRC_CMD}"

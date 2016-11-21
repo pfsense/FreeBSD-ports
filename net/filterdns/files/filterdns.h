@@ -47,7 +47,6 @@ struct thread_data {
 	int type;
 	char *tablename;
 	char *hostname;
-	int tablenr;
 	int pipe;
 	int mask;
 	int mask6;

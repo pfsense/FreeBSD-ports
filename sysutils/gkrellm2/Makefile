@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	gkrellm
-PORTVERSION=	2.3.7
+PORTVERSION=	2.3.8
 #PORTREVISION=	0
 CATEGORIES=	sysutils ipv6
 MASTER_SITES=	http://gkrellm.srcbox.net/releases/ \
@@ -39,7 +39,7 @@ USES+=		gettext
 MAKE_ENV+=	enable_nls=0
 .endif
 .if ${PORT_OPTIONS:MOPENSSL}
-USE_OPENSSL=	yes
+USES+=		ssl
 MAKE_ENV+=	without-gnutls=1
 .else
 MAKE_ENV+=	without-gnutls=1 without-ssl=1
@@ -50,7 +50,7 @@ PORTDOCS=	COPYRIGHT CREDITS README Themes.html
 
 ALL_TARGET=	freebsd
 
-MAKE_ENV+=	INSTALLROOT=${PREFIX} INSTALL_PREFIX=$(STAGEDIR) \
+MAKE_ENV+=	INSTALLROOT=${PREFIX} INSTALL_PREFIX=${STAGEDIR} \
 		PKGCONFIGDIR=${PREFIX}/libdata/pkgconfig \
 		SINSTALLDIR=${PREFIX}/sbin \
 		MANDIR=${MAN1PREFIX}/man/man1 SMANDIR=${MANPREFIX}/man/man8 \

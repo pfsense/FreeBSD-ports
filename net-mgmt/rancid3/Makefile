@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	rancid
-PORTVERSION=	3.4.1
-PORTREVISION=	2
+PORTVERSION=	3.5.1
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	ftp://ftp.shrubbery.net/pub/rancid/
 PKGNAMESUFFIX=	3
@@ -21,12 +21,12 @@ SHEBANG_FILES=	bin/*
 USERS=		rancid
 GROUPS=		rancid
 
-SUB_FILES=	pkg-message
+SUB_FILES=	pkg-message 200.rancid
 GNU_CONFIGURE=	yes
 
-CONFIGURE_ARGS=	--localstatedir=${PREFIX}/var/${PORTNAME}/ \
-		--bindir=${PREFIX}/libexec/${PORTNAME}/ \
-		--sysconfdir=${PREFIX}/etc/${PORTNAME}/
+CONFIGURE_ARGS=	--localstatedir=${LOCALBASE}/var/${PORTNAME}/ \
+		--bindir=${LOCALBASE}/libexec/${PORTNAME}/ \
+		--sysconfdir=${LOCALBASE}/etc/${PORTNAME}/
 
 OLDCONFIG_FILE1=	bin/env
 OLDCONFIG_FILE2=	util/lg/lg.conf
@@ -34,14 +34,21 @@ NEWERCONFIG_FILES1=	etc/rancid.conf
 NEWERCONFIG_FILES2=	etc/lg.conf
 NEWCONFIG_FILES=	rancid.conf lg.conf
 
-OPTIONS_DEFINE=		SVN
+OPTIONS_DEFINE=		COMWARE SVN
 OPTIONS_DEFAULT=
 
+COMWARE_DESC=		Add experimental support for Comware devices
 SVN_DESC=		Use Subversion instead of CVS
 
 CONFLICTS=	rancid-[0-9]*
 
 .include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MCOMWARE}
+PLIST_SUB+=	COMWARE=""
+.else
+PLIST_SUB+=	COMWARE="@comment "
+.endif
 
 .if ${PORT_OPTIONS:MSVN}
 CONFIGURE_ARGS+=	--with-svn
@@ -57,45 +64,52 @@ pre-everything::
 	@ ${ECHO} "Make sure your rancid repository is quiet before upgrading; disable rancid cron jobs"
 
 post-patch:
+.if ${PORT_OPTIONS:MCOMWARE}
+	${CAT} ${FILESDIR}/comware_types.conf >> ${WRKSRC}/etc/rancid.types.base
+.endif
 	${REINPLACE_CMD} "s|par.1|rancid-par.1|" ${WRKSRC}/man/Makefile.in
 	${MV} ${WRKSRC}/man/par.1 ${WRKSRC}/man/rancid-par.1
-	${REINPLACE_CMD} "s|3des|3des-cbc|g" ${WRKSRC}/bin/*.in ${WRKSRC}/cloginrc.sample \
-	    ${WRKSRC}/man/cloginrc.5 ${WRKSRC}/man/clogin.1
 
 post-install:
-	${LN} -s ${PREFIX}/libexec/${PORTNAME}/rancid-cvs ${STAGEDIR}${PREFIX}/bin
-	${LN} -s ${PREFIX}/libexec/${PORTNAME}/rancid-run ${STAGEDIR}${PREFIX}/bin
+	${MKDIR} ${STAGEDIR}${LOCALBASE}/etc/periodic/hourly
+	${INSTALL_SCRIPT} ${WRKDIR}/200.rancid ${STAGEDIR}${LOCALBASE}/etc/periodic/hourly
+	${LN} -s ${LOCALBASE}/libexec/${PORTNAME}/rancid-cvs ${STAGEDIR}${LOCALBASE}/bin
+	${LN} -s ${LOCALBASE}/libexec/${PORTNAME}/rancid-run ${STAGEDIR}${LOCALBASE}/bin
+.if ${PORT_OPTIONS:MCOMWARE}
+	${INSTALL_DATA} ${FILESDIR}/cmw.pm ${STAGEDIR}/${LOCALBASE}/lib/rancid
+	${INSTALL_SCRIPT} ${FILESDIR}/cmwlogin ${STAGEDIR}/${LOCALBASE}/libexec/rancid
+.endif
 .for file in ${NEWCONFIG_FILES}
-	@ if [ -f ${PREFIX}/etc/${PORTNAME}/${file} ] ; then \
-	${ECHO} "WARNING: *** new ${file} file is installed as ${PREFIX}/rancid/${file}.sample"; \
+	@ if [ -f ${LOCALBASE}/etc/${PORTNAME}/${file} ] ; then \
+	${ECHO} "WARNING: *** new ${file} file is installed as ${LOCALBASE}/rancid/${file}.sample"; \
 	${ECHO} "       : *** review ${file}.sample for new/deprecated switches or install in place ${file}";  \
 	fi
 .endfor
-	@ if [ -f ${PREFIX}/rancid/${NEWERCONFIG_FILE1} ] ; then \
-	${ECHO} "WARNING: *** ${PREFIX}/rancid/${NEWERCONFIG_FILE1} has been replaced with "; \
-	${ECHO} "       : *** ${PREFIX}/etc/${PORTNAME}/rancid.conf. Merge from sample and old file "; \
+	@ if [ -f ${LOCALBASE}/rancid/${NEWERCONFIG_FILE1} ] ; then \
+	${ECHO} "WARNING: *** ${LOCALBASE}/rancid/${NEWERCONFIG_FILE1} has been replaced with "; \
+	${ECHO} "       : *** ${LOCALBASE}/etc/${PORTNAME}/rancid.conf. Merge from sample and old file "; \
 	fi
-	@ if [ -f ${PREFIX}/rancid/${NEWERCONFIG_FILE2} ] ; then \
-	${ECHO} "WARNING: *** ${PREFIX}/rancid/${NEWERCONFIG_FILE2} has been replaced with "; \
-	${ECHO} "       : *** ${PREFIX}/etc/${PORTNAME}/lg.conf. Merge from sample and old file "; \
+	@ if [ -f ${LOCALBASE}/rancid/${NEWERCONFIG_FILE2} ] ; then \
+	${ECHO} "WARNING: *** ${LOCALBASE}/rancid/${NEWERCONFIG_FILE2} has been replaced with "; \
+	${ECHO} "       : *** ${LOCALBASE}/etc/${PORTNAME}/lg.conf. Merge from sample and old file "; \
 	fi
-	@ if [ -f ${PREFIX}/rancid/${NEWERCONFIG_FILE1} -o \
-	-f ${PREFIX}/rancid/${NEWERCONFIG_FILE2} ] ; then \
-	${ECHO} "WARNING: *** New CVS Repository will be stored ${PREFIX}/var/${PORTNAME}/ "; \
+	@ if [ -f ${LOCALBASE}/rancid/${NEWERCONFIG_FILE1} -o \
+	-f ${LOCALBASE}/rancid/${NEWERCONFIG_FILE2} ] ; then \
+	${ECHO} "WARNING: *** New CVS Repository will be stored ${LOCALBASE}/var/${PORTNAME}/ "; \
 	${ECHO} "       : *** Copy the repository if you want to keep the history "; \
 	fi
 
-	@ if [ -f ${PREFIX}/rancid/${OLDCONFIG_FILE1} ] ; then \
-	${ECHO} "WARNING: *** ${PREFIX}/rancid/${OLDCONFIG_FILE1} has been replaced with "; \
-	${ECHO} "       : *** ${PREFIX}/etc/${PORTNAME}/rancid.conf. Merge from sample and old file "; \
+	@ if [ -f ${LOCALBASE}/rancid/${OLDCONFIG_FILE1} ] ; then \
+	${ECHO} "WARNING: *** ${LOCALBASE}/rancid/${OLDCONFIG_FILE1} has been replaced with "; \
+	${ECHO} "       : *** ${LOCALBASE}/etc/${PORTNAME}/rancid.conf. Merge from sample and old file "; \
 	fi
-	@ if [ -f ${PREFIX}/rancid/${OLDCONFIG_FILE2} ] ; then \
-	${ECHO} "WARNING: *** ${PREFIX}/rancid/${OLDCONFIG_FILE2} has been replaced with "; \
-	${ECHO} "       : *** ${PREFIX}/etc/${PORTNAME}/lg.conf. Merge from sample and old file "; \
+	@ if [ -f ${LOCALBASE}/rancid/${OLDCONFIG_FILE2} ] ; then \
+	${ECHO} "WARNING: *** ${LOCALBASE}/rancid/${OLDCONFIG_FILE2} has been replaced with "; \
+	${ECHO} "       : *** ${LOCALBASE}/etc/${PORTNAME}/lg.conf. Merge from sample and old file "; \
 	fi
-	@ if [ -f ${PREFIX}/rancid/${OLDCONFIG_FILE1} -o \
-	-f ${PREFIX}/rancid/${OLDCONFIG_FILE2} ] ; then \
-	${ECHO} "WARNING: *** New CVS Repository will be stored ${PREFIX}/rancid/var "; \
+	@ if [ -f ${LOCALBASE}/rancid/${OLDCONFIG_FILE1} -o \
+	-f ${LOCALBASE}/rancid/${OLDCONFIG_FILE2} ] ; then \
+	${ECHO} "WARNING: *** New CVS Repository will be stored ${LOCALBASE}/rancid/var "; \
 	${ECHO} "       : *** Copy the repository if you want to keep the history "; \
 	fi
 

@@ -5,8 +5,8 @@ PORTNAME=	namebench
 PORTVERSION=	1.3.1
 PORTREVISION=	1
 CATEGORIES=	dns python benchmarks
-MASTER_SITES=	GOOGLE_CODE \
-		LOCAL/jgh/dns/
+MASTER_SITES=	SF/bsdsrc/${PORTDIRNAME}/ \
+		https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/${PORTNAME}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	${PORTNAME}-${PORTVERSION}-source
 

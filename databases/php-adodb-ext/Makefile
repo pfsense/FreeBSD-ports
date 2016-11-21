@@ -3,7 +3,7 @@
 
 PORTNAME=	adodb-ext
 PORTVERSION=	5.04
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	databases
 MASTER_SITES=	http://phplens.com/lens/dl/
 PKGNAMEPREFIX=	php-
@@ -12,12 +12,14 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:S/.//}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	ADOdb Extension
 
+DEPRECATED=	Works only with EOL php 5.5
+EXPIRATION_DATE=	2016-10-20
+
 WRKSRC=		${WRKDIR}/adodb-${PORTVERSION:S/.//}
 
 USES=		dos2unix php:ext zip
 IGNORE_WITH_PHP=56 70
-
-SUB_FILES=	pkg-message
+PHP_MODNAME=	adodb
 
 .include <bsd.port.pre.mk>
 

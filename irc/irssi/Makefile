@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	irssi
-PORTVERSION=	0.8.19
-PORTREVISION?=	1
+PORTVERSION=	0.8.20
+PORTREVISION?=	0
 CATEGORIES?=	irc
 MASTER_SITES=	https://github.com/irssi/irssi/releases/download/${PORTVERSION}/
 
@@ -15,7 +15,7 @@ LIB_DEPENDS=	libglib-2.0.so:devel/glib20
 
 CONFLICTS=	irssi-devel-[0-9]* zh-irssi-[0-9]*
 
-USES=		gmake libtool ncurses pkgconfig tar:xz
+USES=		gettext-runtime gmake libtool ncurses pkgconfig tar:xz
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-ncurses=${NCURSESBASE}
 INSTALL_TARGET=	install-strip
@@ -36,13 +36,10 @@ IPV6_CATEGORIES=	ipv6
 TRUECOLOR_DESC=	Truecolor (24bit) support
 TRUECOLOR_CONFIGURE_ENABLE=	true-color
 
-# USE_OPENSSL must be defined before bsd.port.pre.mk so use old schema
-# for WITH_SSL option
-
 .if defined(WITHOUT_SSL)
 CONFIGURE_ARGS+=	--disable-ssl
 .else
-USE_OPENSSL=	yes
+USES+=		ssl
 .endif
 
 post-patch:

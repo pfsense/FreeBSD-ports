@@ -169,7 +169,7 @@ mobility_print(struct sbuf *sbuf, const u_char *bp, int len)
 	int mhlen, hlen, type;
 	char ip6addr[INET6_ADDRSTRLEN];
 
-	mh = (struct ip6_mobility *)bp;
+	mh = (const struct ip6_mobility *)bp;
 
 	/* 'ep' points to the end of available data. */
 	ep = bp + len;

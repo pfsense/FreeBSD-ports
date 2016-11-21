@@ -14,8 +14,10 @@ COMMENT=	HTML/XML Compressor
 
 LICENSE=	APACHE20
 
+BROKEN=		Unfetchable (google code has gone away)
+
 NO_WRKSUBDIR=	yes
-USE_JAVA=	1.6+
+USE_JAVA=	yes
 NO_BUILD=	yes
 
 PLIST_FILES=	bin/htmlcompressor %%JAVAJARDIR%%/htmlcompressor.jar

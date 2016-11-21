@@ -1,31 +1,32 @@
 # $FreeBSD$
 
 PORTNAME=	rspamd
-PORTVERSION=	1.3.0.b3.30062016
+PORTVERSION=	1.4.0.a1.01092016
 CATEGORIES=	mail
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	vsevolod@FreeBSD.org
 COMMENT=	Fast spam filtering system dev version
 
-LICENSE=	BSD2CLAUSE
+LICENSE=	APACHE20
 
 LIB_DEPENDS=	libpcre.so:devel/pcre \
-		libgmime-2.4.so:mail/gmime24 \
+		libgmime-2.6.so:mail/gmime26 \
 		libevent.so:devel/libevent2 \
-		libluajit-5.1.so:lang/luajit
+		libluajit-5.1.so:lang/luajit \
+		libfann.so:math/fann
 BUILD_DEPENDS=	ragel:devel/ragel
 
 CONFLICTS_INSTALL=	rspamd
 
-RSPAMD_VERSION=	1.3.0
+RSPAMD_VERSION=	1.4.0
 USE_GITHUB=	yes
 GH_ACCOUNT=	vstakhov
 GH_PROJECT=	rspamd
-GH_TAGNAME=	c2e7232
+GH_TAGNAME=	99c2eb2
 
 OPTIONS_DEFINE=	GPERF REDIRECTOR HYPERSCAN
-GPERF_DESC=		google perf-tools profiling
+GPERF_DESC=		Google perf-tools profiling
 REDIRECTOR_DESC=	Install HTTP redirector
 HYPERSCAN_DESC=		Use hyperscan optimizations (amd64 only)
 
@@ -45,15 +46,15 @@ CMAKE_ARGS+=	-DCONFDIR=${PREFIX}/etc/rspamd \
 		-DLIBDIR=${PREFIX}/lib/rspamd \
 		-DNO_SHARED=ON \
 		-DDEBUG=ON \
-		-DGIT_ID=${GH_TAGNAME}
+		-DGIT_ID=${GH_TAGNAME} \
+		-DENABLE_FANN=ON
 
 USES=		cmake:outsource gettext iconv pkgconfig tar:xz perl5 \
-		compiler:c11 sqlite
+		compiler:c11 sqlite ssl
 USE_LDCONFIG=	yes
 USE_PERL5=	build
 
 USE_GNOME=	glib20
-USE_OPENSSL=	yes
 DEBUG_FLAGS=	-g -O0
 WITH_DEBUG=	yes
 
@@ -65,7 +66,7 @@ WITH_DEBUG=	yes
 .endif
 
 .if ${PORT_OPTIONS:MHYPERSCAN}
- CMAKE_ARGS+=	-DENABLE_HYPERSCAN=ON
+ CMAKE_ARGS+=		-DENABLE_HYPERSCAN=ON
  BUILD_DEPENDS+=	${LOCALBASE}/lib/libhs.a:devel/hyperscan
  ONLY_FOR_ARCHS=	amd64
 .endif
@@ -88,7 +89,7 @@ WITH_DEBUG=	yes
 	p5-Proc-Daemon>=0:devel/p5-Proc-Daemon \
 	p5-SWF-File>=0:graphics/p5-SWF-File
 .else
- PLIST_SUB+=		REDIRECTOR="@comment "
+ PLIST_SUB+=	REDIRECTOR="@comment "
 .endif
 
 post-stage:
@@ -96,14 +97,14 @@ post-stage:
 		${STAGEDIR}/var/log/rspamd \
 		${STAGEDIR}/var/db/rspamd \
 		${STAGEDIR}/var/run/rspamd
-		# Linux specific
-		${RM} ${STAGEDIR}/${ETCDIR}/rspamd.systemd.conf
-		# No need, since rspamd.conf.sample is a same
-		${RM} ${STAGEDIR}/${ETCDIR}/rspamd.sysvinit.conf
+	# Linux specific
+	${RM} ${STAGEDIR}/${ETCDIR}/rspamd.systemd.conf
+	# No need, since rspamd.conf.sample is a same
+	${RM} ${STAGEDIR}/${ETCDIR}/rspamd.sysvinit.conf
 	${INSTALL_DATA} ${WRKDIR}/rspamd.newsyslog.conf.sample ${STAGEDIR}${ETCDIR}
 
 post-install:
-	@${MKDIR} ${STAGEDIR}/usr/local/etc/newsyslog.conf.d
-	${LN} -s ${ETCDIR}/rspamd.newsyslog.conf ${STAGEDIR}/usr/local/etc/newsyslog.conf.d
+	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/newsyslog.conf.d
+	${LN} -s ${ETCDIR}/rspamd.newsyslog.conf ${STAGEDIR}${PREFIX}/etc/newsyslog.conf.d
 
 .include <bsd.port.mk>

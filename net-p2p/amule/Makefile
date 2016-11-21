@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	amule
-PORTVERSION=	2.3.1
-PORTREVISION=	15
+PORTVERSION=	2.3.2
 CATEGORIES=	net-p2p
 MASTER_SITES=	SF/${PORTNAME}/aMule/${PORTVERSION}
 DISTNAME=	aMule-${PORTVERSION}
@@ -19,7 +18,7 @@ LIB_DEPENDS=	libcryptopp.so:security/cryptopp
 CONFLICTS=	amule-devel-[0-9]*
 
 USES=		bison desktop-file-utils gmake perl5 pkgconfig shebangfix \
-		tar:bzip2
+		tar:xz
 USE_PERL5=	build
 USE_WX=		2.8
 WX_CONF_ARGS=	absolute
@@ -88,10 +87,11 @@ MMAP_CONFIGURE_ON=	--enable-mmap
 MONOLITHIC_CONFIGURE_OFF=	--disable-monolithic
 
 PLASMAMULE_CONFIGURE_ON=	--enable-plasmamule
-PLASMAMULE_USE=	KDE4=kdelibs QT4=dbus,gui,moc_build
+PLASMAMULE_USES=	kde:4
+PLASMAMULE_USE=	KDE=kdelibs QT4=dbus,gui,moc_build
 PLASMAMULE_CONFIGURE_ENV= \
-			ac_cv_path_KDE4_CONFIG=${KDE4_PREFIX}/bin/kde4-config \
-			KBUILDSYCOCA=${KDE4_PREFIX}/bin/kbuildsycoca4 \
+			ac_cv_path_KDE4_CONFIG=${KDE_PREFIX}/bin/kde4-config \
+			KBUILDSYCOCA=${KDE_PREFIX}/bin/kbuildsycoca4 \
 			UPDATE_MIME_DATABASE=/usr/bin/true
 
 UPNP_LIB_DEPENDS=	libupnp.so:devel/upnp
@@ -123,8 +123,8 @@ post-patch:	.SILENT
 		${WRKSRC}/docs/Makefile.in
 .endif
 .if ${PORT_OPTIONS:MPLASMAMULE}
-	${REINPLACE_CMD} -e 's|@prefix@|${KDE4_PREFIX}|' \
-		-e 's|LDFLAGS =|& -L${KDE4_PREFIX}/lib |' \
+	${REINPLACE_CMD} -e 's|@prefix@|${KDE_PREFIX}|' \
+		-e 's|LDFLAGS =|& -L${KDE_PREFIX}/lib |' \
 		${WRKSRC}/src/utils/plasmamule/Makefile.in
 .endif
 

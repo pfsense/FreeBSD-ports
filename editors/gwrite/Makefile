@@ -5,7 +5,8 @@ PORTNAME=	gwrite
 PORTVERSION=	0.5.1
 PORTREVISION=	4
 CATEGORIES=	editors python
-MASTER_SITES=	GOOGLE_CODE
+MASTER_SITES=	http://archive.ubuntu.com/ubuntu/pool/universe/g/gwrite/
+DISTNAME=	gwrite_${PORTVERSION}.orig
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple HTML format editor
@@ -25,5 +26,6 @@ NO_ARCH=	yes
 USES=		desktop-file-utils gettext-tools python
 USE_GNOME=	intltool pygtk2
 USE_PYTHON=	distutils
+WRKSRC=		${WRKDIR}/gwrite-${PORTVERSION}
 
 .include <bsd.port.mk>

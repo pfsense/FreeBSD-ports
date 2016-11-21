@@ -23,7 +23,6 @@
     SUBDIR += ask
     SUBDIR += asmail
     SUBDIR += assp
-    SUBDIR += atmail
     SUBDIR += automx
     SUBDIR += autorespond
     SUBDIR += autosig
@@ -105,7 +104,6 @@
     SUBDIR += dovecot2-pigeonhole
     SUBDIR += drac
     SUBDIR += dracmail
-    SUBDIR += dsbl-testers
     SUBDIR += dspam
     SUBDIR += ecartis
     SUBDIR += elm
@@ -120,7 +118,6 @@
     SUBDIR += evolution
     SUBDIR += evolution-ews
     SUBDIR += evolution-mapi
-    SUBDIR += exact
     SUBDIR += exilog
     SUBDIR += exim
     SUBDIR += exim-doc-html
@@ -148,14 +145,12 @@
     SUBDIR += gensig
     SUBDIR += getmail
     SUBDIR += gkrellmmailwatch2
-    SUBDIR += gld
     SUBDIR += gmime2
     SUBDIR += gmime2-sharp
     SUBDIR += gmime24
     SUBDIR += gmime24-sharp
     SUBDIR += gmime26
     SUBDIR += gmime26-sharp
-    SUBDIR += gml
     SUBDIR += gnarwl
     SUBDIR += gnome-gmail-notifier
     SUBDIR += gnubiff
@@ -191,6 +186,7 @@
     SUBDIR += jamlib
     SUBDIR += jmba
     SUBDIR += junkfilter
+    SUBDIR += jwsmtp
     SUBDIR += kbiff
     SUBDIR += kshowmail
     SUBDIR += lbdb
@@ -228,7 +224,6 @@
     SUBDIR += mailpile
     SUBDIR += mailscanner
     SUBDIR += mailsync
-    SUBDIR += mailtray
     SUBDIR += mailx
     SUBDIR += mairix
     SUBDIR += masqmail
@@ -258,7 +253,6 @@
     SUBDIR += minimalist
     SUBDIR += missey
     SUBDIR += mixmaster
-    SUBDIR += ml
     SUBDIR += mlmmj
     SUBDIR += mls
     SUBDIR += mmr
@@ -494,7 +488,6 @@
     SUBDIR += pecl-mailparse
     SUBDIR += pecl-pop3
     SUBDIR += perdition
-    SUBDIR += pflogstats
     SUBDIR += pflogsumm
     SUBDIR += pfqueue
     SUBDIR += pgpsendmail
@@ -506,7 +499,6 @@
     SUBDIR += pine-pgp-filters
     SUBDIR += pm-lib
     SUBDIR += policyd2
-    SUBDIR += pop3gwd
     SUBDIR += pop3lite
     SUBDIR += pop3proxy
     SUBDIR += pop3vscan
@@ -539,13 +531,14 @@
     SUBDIR += procmail
     SUBDIR += prom-wl
     SUBDIR += proxsmtp
-    SUBDIR += py-email-reply-parser
     SUBDIR += py-Products.MailHost
     SUBDIR += py-Products.SecureMailHost
     SUBDIR += py-apolicy
     SUBDIR += py-authres
     SUBDIR += py-cyruslib
     SUBDIR += py-dkimpy
+    SUBDIR += py-email-reply-parser
+    SUBDIR += py-fuglu
     SUBDIR += py-libgmail
     SUBDIR += py-milter
     SUBDIR += py-notmuch
@@ -564,7 +557,6 @@
     SUBDIR += qmail-activedir
     SUBDIR += qmail-auditor
     SUBDIR += qmail-autoresponder
-    SUBDIR += qmail-conf
     SUBDIR += qmail-contrib
     SUBDIR += qmail-dk
     SUBDIR += qmail-ldap
@@ -743,7 +735,6 @@
     SUBDIR += vmailmgr
     SUBDIR += vpopmail
     SUBDIR += vqadmin
-    SUBDIR += vqregister
     SUBDIR += vrfy
     SUBDIR += wanderlust
     SUBDIR += wanderlust-devel
@@ -751,7 +742,6 @@
     SUBDIR += whoson
     SUBDIR += wmbiff
     SUBDIR += wmmaiload
-    SUBDIR += wmpop3
     SUBDIR += x-face-e21
     SUBDIR += xbuffy
     SUBDIR += xcite

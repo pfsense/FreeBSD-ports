@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	synth
-PORTVERSION=	1.41
+PORTVERSION=	1.52
 DISTVERSIONPREFIX=	v
 CATEGORIES=	ports-mgmt
 
@@ -12,16 +12,24 @@ COMMENT=	Custom package repository builder for FreeBSD and DragonFly
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/License.txt
 
-BUILD_DEPENDS=	${GPR}/ini_file_manager.gpr:misc/ini_file_manager \
+BUILD_DEPENDS=	${LOCALBASE}/lib/libncurses.a:devel/ncurses \
+		${GPR}/ini_file_manager.gpr:misc/ini_file_manager \
 		${GPR}/adacurses.gpr:devel/adacurses
 
-USES=		ada:6 ncurses:port
+USES=		ada:6
 USE_GITHUB=	yes
 GH_ACCOUNT=	jrmarino
 
 GPR=		${LOCALBASE}/lib/gnat
+MAKE_ENV=	NCURSES_LINK=static
+
+.include <bsd.port.pre.mk>
 
 post-extract:
+.if (${OPSYS} == FreeBSD   && ${OSVERSION} < 1000000) || \
+    (${OPSYS} == DragonFly && ${OSVERSION} < 400600)
+	${REINPLACE_CMD} -e 's|"re"|"r"|' ${WRKSRC}/src/unix.adb
+.endif
 	@${REINPLACE_CMD} -e "s|/usr/local|${LOCALBASE}|" \
 		${WRKSRC}/src/definitions.ads
 
@@ -48,4 +56,4 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/shell-completers/_synth \
 		${STAGEDIR}${PREFIX}/share/zsh/site-functions
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

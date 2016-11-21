@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	acme-tiny
-PORTVERSION=	0.0.g.2015.12.29
-PORTREVISION=	1
+PORTVERSION=	0.0.g.2016.08.18
 CATEGORIES=	security python
 
 MAINTAINER=	mat@FreeBSD.org
@@ -12,13 +11,12 @@ COMMENT=	Tiny script to issue and renew TLS certs from Let's Encrypt
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		python shebangfix
-USE_OPENSSL=	yes
+USES=		python shebangfix ssl
 SHEBANG_FILES=	acme_tiny.py
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	diafygi
-GH_TAGNAME=	f61f72c
+GH_TAGNAME=	daba51d
 
 SUB_FILES=	pkg-message
 NO_BUILD=	yes

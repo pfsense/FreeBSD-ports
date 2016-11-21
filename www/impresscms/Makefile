@@ -11,7 +11,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}_final
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Community Developed Content Management System
 
-USES=		cpe shebangfix zip:infozip
+USES=		cpe shebangfix php zip:infozip
 SHEBANG_FILES=	htdocs/editors/FCKeditor/editor/dialog/fck_spellerpages/spellerpages/server-scripts/spellchecker.pl \
 		htdocs/libraries/phpopenid/admin/packagexml.py
 USE_PHP=	mysql pcre session iconv xml gd

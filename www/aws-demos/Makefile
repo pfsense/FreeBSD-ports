@@ -3,6 +3,7 @@
 
 PORTNAME=	aws
 PORTVERSION=	17.0.0
+PORTREVISION=	1
 CATEGORIES=	www
 PKGNAMESUFFIX=	-demos
 
@@ -31,6 +32,8 @@ CONF_ARGS+=	prefix=${PREFIX}
 OPTIONS_DEFINE=		SSL LDAP
 OPTIONS_DEFAULT=	SSL
 OPTIONS_SUB=		yes
+
+SSL_USES=		ssl
 
 DEMO_DIRS+=	auth
 DEMO_DIRS+=	autobahn
@@ -66,10 +69,13 @@ DEMO_DIRS+=	ws
 DEMO_DIRS+=	ws_candy
 DEMO_DIRS+=	zdemo
 
-.include <bsd.port.options.mk>
+.include <bsd.port.pre.mk>
+
+.if ${SSL_DEFAULT} == base
+IGNORE_FreeBSD_9=	Requires newer OpenSSL (set DEFAULT_VERSIONS+=ssl=openssl)
+.endif
 
 .if ${PORT_OPTIONS:MSSL}
-LIB_DEPENDS+=	libssl.so:security/openssl
 CONF_ARGS+=	SOCKET=openssl
 DEMO_DIRS+=	agent
 DEMO_DIRS+=	runme
@@ -118,4 +124,4 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}/templates.tads \
 		${STAGEDIR}${EXAMPLESDIR}/templates
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

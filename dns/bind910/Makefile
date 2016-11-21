@@ -2,12 +2,12 @@
 # pkg-help formatted with fmt 59 63
 
 PORTNAME=	bind
-PORTVERSION=	${ISCVERSION:S/-P/P/:S/b/.b/}
+PORTVERSION=	${ISCVERSION:S/-P/P/:S/b/.b/:S/a/.a/:S/rc/.rc/}
 .if defined(BIND_TOOLS_SLAVE)
 # dns/bind-tools here
 PORTREVISION=	0
 .else
-# dns/bind910 here
+# dns/bind9xx here
 PORTREVISION=	0
 .endif
 CATEGORIES=	dns net ipv6
@@ -29,9 +29,7 @@ COMMENT=	BIND DNS suite with updated DNSSEC and DNS64
 LICENSE=	ISCL
 
 # ISC releases things like 9.8.0-P1, which our versioning doesn't like
-ISCVERSION=	9.10.4-P2
-
-MAKE_JOBS_UNSAFE=	yes
+ISCVERSION=	9.10.4-P4
 
 USES=	cpe libedit
 
@@ -56,23 +54,24 @@ CONFIGURE_ARGS+=	--disable-shared
 .endif
 ETCDIR=		${PREFIX}/etc/namedb
 
-CONFLICTS+=	bind9*-9.[456789].* bind9*-sdb-9.[456789].*
+CONFLICTS+=	bind9*-9.[456789].* bind911-* bind9*-sdb-9.[456789].*
 
 .if !defined(BIND_TOOLS_SLAVE)
 SUB_FILES=	pkg-message
 .endif
 
 OPTIONS_DEFAULT=	SSL THREADS SIGCHASE IDN GSSAPI_NONE
-OPTIONS_DEFINE=		IDN LARGE_FILE PYTHON START_LATE \
+OPTIONS_DEFINE=		IDN LARGE_FILE PYTHON \
 			FIXED_RRSET SIGCHASE IPV6 THREADS FILTER_AAAA
 OPTIONS_RADIO=	CRYPTO GOSTDEF
 OPTIONS_RADIO_CRYPTO=	SSL NATIVE_PKCS11
 OPTIONS_RADIO_GOSTDEF=	GOST GOST_ASN1
 
 .if !defined(BIND_TOOLS_SLAVE)
-OPTIONS_DEFAULT+=	RRL DLZ_FILESYSTEM
-OPTIONS_DEFINE+=	LINKS RPZ_NSIP RPZ_NSDNAME RRL DOCS NEWSTATS GEOIP \
-			MINCACHE PORTREVISION FETCHLIMIT QUERYTRACE
+OPTIONS_DEFAULT+=	DLZ_FILESYSTEM RPZ_NSIP RPZ_NSDNAME 
+OPTIONS_DEFINE+=	LINKS RPZ_NSIP RPZ_NSDNAME DOCS GEOIP \
+			MINCACHE PORTREVISION FETCHLIMIT QUERYTRACE \
+			START_LATE
 OPTIONS_GROUP=		DLZ
 OPTIONS_GROUP_DLZ=	DLZ_POSTGRESQL DLZ_MYSQL DLZ_BDB \
 			DLZ_LDAP DLZ_FILESYSTEM DLZ_STUB
@@ -101,10 +100,8 @@ FETCHLIMIT_DESC=	Enable the query quotas for resolvers
 QUERYTRACE_DESC=	Enable the very verbose query tracelogging
 
 LINKS_DESC=		Create conf file symlinks in ${PREFIX}
-NEWSTATS_DESC=		Enable alternate xml statistics channel format
 RPZ_NSIP_DESC=		Enable RPZ NSIP trigger rules
 RPZ_NSDNAME_DESC=	Enable RPZ NSDNAME policy records
-RRL_DESC=		Response Rate Limiting
 DLZ_DESC=		Dynamically Loadable Zones
 DLZ_POSTGRESQL_DESC=	DLZ Postgres driver
 DLZ_MYSQL_DESC=		DLZ MySQL driver (no threading)
@@ -127,10 +124,8 @@ CONFLICTS+=		bind-tools-9.*
 .endif	# BIND_TOOLS_SLAVE
 
 SSL_CONFIGURE_ON=	--with-openssl=${OPENSSLBASE}
-SSL_USE=		openssl=yes
+SSL_USES=		ssl
 SSL_CONFIGURE_OFF=	--disable-openssl-version-check --without-openssl
-
-NEWSTATS_CONFIGURE_ENABLE=	newstats
 
 IDN_USES=		iconv
 IDN_CONFIGURE_ON=	--with-idn=${LOCALBASE} ${ICONV_CONFIGURE_BASE}
@@ -164,8 +159,6 @@ FIXED_RRSET_CONFIGURE_ENABLE=	fixed-rrset
 RPZ_NSIP_CONFIGURE_ENABLE=	rpz-nsip
 
 RPZ_NSDNAME_CONFIGURE_ENABLE=	rpz-nsdname
-
-RRL_CONFIGURE_ENABLE=	rrl
 
 DLZ_MYSQL_CONFIGURE_ON=	--with-dlz-mysql=yes
 DLZ_MYSQL_USES=		mysql
@@ -231,6 +224,10 @@ PKGDEINSTALL=	${PKGINSTALL}
 PORTDOCS=	*
 
 .include <bsd.port.pre.mk>
+
+.if ${OSVERSION} <= 1000000
+MAKE_JOBS_UNSAFE=	yes
+.endif
 
 .if ( ${PORT_OPTIONS:MGOST} || ${PORT_OPTIONS:MGOST_ASN1} ) && ${SSL_DEFAULT} == base
 BROKEN=	OpenSSL from the base system does not support GOST, add \

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	netatalk
-PORTVERSION=	3.1.8
+PORTVERSION=	3.1.9
 PORTEPOCH=	1
 CATEGORIES=	net
 MASTER_SITES=	SF
@@ -16,8 +16,7 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
 		libevent.so:devel/libevent2
 
-USE_BDB=	5+
-USES=		iconv gmake pkgconfig perl5 libtool tar:bzip2
+USES=		iconv gmake pkgconfig perl5 libtool tar:bzip2 bdb:5+ ssl
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	netatalk
@@ -30,7 +29,8 @@ CONFIGURE_ARGS+=	--with-pkgconfdir=${PREFIX}/etc \
 			--localstatedir=/var \
 			--disable-bundled-libevent \
 			--with-libevent-header=${LOCALBASE}/include \
-			--with-libevent-lib=${LOCALBASE}/lib
+			--with-libevent-lib=${LOCALBASE}/lib \
+			--with-ssl-dir=${OPENSSLBASE}
 
 OPTIONS_DEFINE=PAM KRB5 LDAP SENDFILE KERBEROS DBUS MYSQL ACL TCPWRAP
 OPTIONS_DEFAULT=KERBEROS DBUS TCPWRAP
@@ -92,6 +92,7 @@ SUB_LIST+=		ZEROCONF="avahi_daemon"
 
 .if ${PORT_OPTIONS:MMDNSRESPONDER}
 CONFIGURE_ARGS+=	--enable-zeroconf=${LOCALBASE}
+CONFIGURE_ENV+=		ac_cv_lib_avahi_client_avahi_client_new=no
 CFLAGS+=		-I${LOCALBASE}/include
 LDFLAGS+=		-L${LOCALBASE}/lib
 LIB_DEPENDS+=		libdns_sd.so:net/mDNSResponder

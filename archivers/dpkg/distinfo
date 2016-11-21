@@ -1,2 +1,3 @@
-SHA256 (dpkg_1.18.7.tar.xz) = ace36d3a6dc750a42baf797f9e75ec580a21f92bb9ff96b482100755d6d9b87b
-SIZE (dpkg_1.18.7.tar.xz) = 4617284
+TIMESTAMP = 1470065650
+SHA256 (dpkg_1.18.10.tar.xz) = 025524da41ba18b183ff11e388eb8686f7cc58ee835ed7d48bd159c46a8b6dc5
+SIZE (dpkg_1.18.10.tar.xz) = 4645448

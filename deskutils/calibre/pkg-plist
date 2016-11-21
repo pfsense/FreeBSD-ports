@@ -901,7 +901,6 @@ lib/calibre/calibre/gui2/preferences/columns_ui.py
 lib/calibre/calibre/gui2/preferences/conversion.py
 lib/calibre/calibre/gui2/preferences/conversion_ui.py
 lib/calibre/calibre/gui2/preferences/create_custom_column.py
-lib/calibre/calibre/gui2/preferences/create_custom_column_ui.py
 lib/calibre/calibre/gui2/preferences/device_debug.py
 lib/calibre/calibre/gui2/preferences/device_user_defined.py
 lib/calibre/calibre/gui2/preferences/email_ui.py
@@ -944,6 +943,7 @@ lib/calibre/calibre/gui2/search_box.py
 lib/calibre/calibre/gui2/search_restriction_mixin.py
 lib/calibre/calibre/gui2/shortcuts.py
 lib/calibre/calibre/gui2/shortcuts_ui.py
+lib/calibre/calibre/gui2/splash_screen.py
 lib/calibre/calibre/gui2/store/__init__.py
 lib/calibre/calibre/gui2/store/basic_config.py
 lib/calibre/calibre/gui2/store/basic_config_widget_ui.py
@@ -1597,6 +1597,7 @@ lib/calibre/tinycss/version.py
 %%DATADIR%%/catalog/stylesheet.css
 %%DATADIR%%/catalog/template.xhtml
 %%DATADIR%%/coffee-script.js
+%%DATADIR%%/common-user-agents.txt
 %%DATADIR%%/compiled_coffeescript.zip
 %%DATADIR%%/content-server/autoreload.js
 %%DATADIR%%/content-server/calibre.png
@@ -1718,13 +1719,13 @@ lib/calibre/tinycss/version.py
 %%DATADIR%%/images/debug.png
 %%DATADIR%%/images/default_cover.png
 %%DATADIR%%/images/devices/bambook.png
-%%DATADIR%%/images/devices/boox.jpg
+%%DATADIR%%/images/devices/boox.png
 %%DATADIR%%/images/devices/folder.png
 %%DATADIR%%/images/devices/ipad.png
 %%DATADIR%%/images/devices/italica.png
 %%DATADIR%%/images/devices/itunes.png
-%%DATADIR%%/images/devices/kindle.jpg
-%%DATADIR%%/images/devices/nook.jpg
+%%DATADIR%%/images/devices/kindle.png
+%%DATADIR%%/images/devices/nook.png
 %%DATADIR%%/images/devices/tablet.png
 %%DATADIR%%/images/dialog_error.png
 %%DATADIR%%/images/dialog_information.png
@@ -1838,7 +1839,6 @@ lib/calibre/tinycss/version.py
 %%DATADIR%%/images/network-server.png
 %%DATADIR%%/images/news.png
 %%DATADIR%%/images/next.png
-%%DATADIR%%/images/notify.png
 %%DATADIR%%/images/ok.png
 %%DATADIR%%/images/page.png
 %%DATADIR%%/images/plugboard.png
@@ -1879,6 +1879,7 @@ lib/calibre/tinycss/version.py
 %%DATADIR%%/images/series.png
 %%DATADIR%%/images/smarten-punctuation.png
 %%DATADIR%%/images/snippets.png
+%%DATADIR%%/images/sort.png
 %%DATADIR%%/images/spell-check.png
 %%DATADIR%%/images/store.png
 %%DATADIR%%/images/subset-fonts.png
@@ -1903,7 +1904,6 @@ lib/calibre/tinycss/version.py
 %%DATADIR%%/images/view-refresh.png
 %%DATADIR%%/images/view.png
 %%DATADIR%%/images/viewer.png
-%%DATADIR%%/images/welcome_wizard.png
 %%DATADIR%%/images/window-close.png
 %%DATADIR%%/images/wizard.png
 %%DATADIR%%/jacket/stylesheet.css

@@ -2,7 +2,7 @@ bin/gpg
 bin/gpg-zip
 bin/gpgsplit
 bin/gpgv
-%%WITH_LDAP%%libexec/gnupg/gpgkeys_ldap
+%%LDAP%%libexec/gnupg/gpgkeys_ldap
 libexec/gnupg/gpgkeys_curl
 libexec/gnupg/gpgkeys_finger
 libexec/gnupg/gpgkeys_hkp
@@ -41,4 +41,4 @@ man/man1/gpgv.1.gz
 %%NLS%%share/locale/uk/LC_MESSAGES/gnupg.mo
 %%NLS%%share/locale/zh_CN/LC_MESSAGES/gnupg.mo
 %%NLS%%share/locale/zh_TW/LC_MESSAGES/gnupg.mo
-@unexec [ -r %D/bin/gpg2 ] && ln -s gpg2 %D/bin/gpg || true
+@postunexec [ -r %D/bin/gpg2 ] && ln -s gpg2 %D/bin/gpg || true

@@ -4,6 +4,7 @@
     COMMENT = Character code converters
 
     SUBDIR += R-cran-RJSONIO
+    SUBDIR += R-cran-base64enc
     SUBDIR += R-cran-jsonlite
     SUBDIR += R-cran-rjson
     SUBDIR += aish
@@ -58,6 +59,7 @@
     SUBDIR += ocaml-jsonm
     SUBDIR += osm2mp
     SUBDIR += osm2pgsql
+    SUBDIR += p5-Bencode
     SUBDIR += p5-Boulder
     SUBDIR += p5-Convert-ASCII-Armour
     SUBDIR += p5-Convert-ASN1

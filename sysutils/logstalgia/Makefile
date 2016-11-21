@@ -3,7 +3,7 @@
 
 PORTNAME=	logstalgia
 PORTVERSION=	1.0.3
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	sysutils www
 MASTER_SITES=	GOOGLE_CODE LOCAL/ehaupt
 
@@ -12,13 +12,16 @@ COMMENT=	Website access log visualization tool
 
 LICENSE=	GPLv3
 
+BROKEN=		Unfetchable (google code has gone away)
+
 LIB_DEPENDS=	libftgl.so:graphics/ftgl \
 		libpng.so:graphics/png \
 		libpcre.so:devel/pcre
 
 GNU_CONFIGURE=	yes
 USES=		jpeg pkgconfig
-USE_SDL=	sdl image
+USE_GL=		gl glu
+USE_SDL=	image sdl
 
 CFLAGS+=	-L${LOCALBASE}/lib
 

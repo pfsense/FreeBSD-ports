@@ -3,6 +3,7 @@
 
 PORTNAME=	glib
 PORTVERSION=	2.46.2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome2
@@ -96,8 +97,7 @@ PLIST_SUB+=	GDB="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MDEBUG}
-CONFIGURE_ARGS+=	--enable-debug=yes \
-			--disable-silent-rules
+CONFIGURE_ARGS+=	--enable-debug=yes
 .endif
 
 post-patch:

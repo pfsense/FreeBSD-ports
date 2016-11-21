@@ -10,10 +10,12 @@ MASTER_SITES=	http://libgcal.googlecode.com/files/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Akonadi Resources for Google Contacts and Calendar
 
+BROKEN=		Unfetchable (google code has gone away)
+
 LIB_DEPENDS=	libgcal.so:deskutils/libgcal
 
-USES=		cmake gettext tar:bzip2
+USES=		cmake gettext kde:4 tar:bzip2
 USE_QT4=	qmake_build rcc_build moc_build uic_build dbus
-USE_KDE4=	kdelibs pimlibs automoc4 akonadi
+USE_KDE=	kdelibs pimlibs automoc4 akonadi
 
 .include <bsd.port.mk>

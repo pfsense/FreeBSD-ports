@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	ImageMagick
-DISTVERSION=	7.0.1-5
+DISTVERSION=	7.0.2-9
 CATEGORIES=	graphics perl5
 MASTER_SITES=	http://www.imagemagick.org/download/ \
 		http://www.imagemagick.org/download/legacy/ \
@@ -39,8 +39,8 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl
 CONFLICTS_INSTALL=	execline-[0-9]* # bin/import
 
 # This port uses .la files, keep libtool:keepla! (magick/module.c)
-USES=		cpe gmake libtool:keepla localbase pathfix perl5 \
-		pkgconfig:both shebangfix tar:xz
+USES=		cpe gettext-runtime gmake gnome libtool:keepla \
+		localbase pathfix perl5 pkgconfig:both shebangfix tar:xz
 CPE_PRODUCT=	imagemagick
 CPE_VENDOR=	imagemagick
 SHEBANG_FILES=	www/source/examples.pl
@@ -171,7 +171,8 @@ PLIST_SUB+=		MODULES='@comment '
 . if ${_IMAGEMAGICK_THREADS} == "no"
 IGNORE=OpenEXR requires threads. ${_IMAGEMAGICK_THREADS_IGNORE_MSG}
 . else
-LIB_DEPENDS+=		libIlmImf.so:graphics/OpenEXR
+LIB_DEPENDS+=		libIlmImf.so:graphics/OpenEXR \
+			libImath-2_2.so:graphics/ilmbase
 PLIST_SUB+=		OPENEXR=""
 . endif
 .else
@@ -228,6 +229,7 @@ CONFIGURE_ARGS+=	--without-gslib
 .if ${PORT_OPTIONS:MLQR}
 CONFIGURE_ARGS+=	--with-lqr
 LIB_DEPENDS+=		liblqr-1.so:graphics/liblqr-1
+USE_GNOME+=		glib20
 .else
 CONFIGURE_ARGS+=	--without-lqr
 .endif
@@ -337,6 +339,7 @@ PLIST_SUB+=		WMF="@comment "
 # SVG (Scalable Vector Graphics) requires both libxml2 and X11
 .if ${PORT_OPTIONS:MSVG} && ${PORT_OPTIONS:MX11}
 LIB_DEPENDS+=		librsvg-2.so:graphics/librsvg2
+USE_GNOME+=		cairo gdkpixbuf2
 CONFIGURE_ARGS+=	--with-rsvg
 .else
 CONFIGURE_ARGS+=	--without-rsvg
@@ -369,7 +372,7 @@ PKGNAMESUFFIX=		7-nox11
 CONFLICTS+=		ImageMagick7-nox11-*
 CONFLICTS+=		display-[0-9]*
 CONFIGURE_ARGS+=	--with-x
-USE_XORG=		xext xt
+USE_XORG=		sm ice x11 xext xt
 PLIST_SUB+=		X11=''
 .endif
 

@@ -2,7 +2,7 @@
 # pkg-help formatted with fmt 59 63
 
 PORTNAME=	bind
-PORTVERSION=	${ISCVERSION:S/-P/P/:S/b/.b/}
+PORTVERSION=	${ISCVERSION:S/-P/P/:S/b/.b/:S/a/.a/:S/rc/.rc/}
 PORTREVISION=	0
 CATEGORIES=	dns net ipv6
 MASTER_SITES=	ISC/bind9/${ISCVERSION}
@@ -15,9 +15,7 @@ COMMENT=	BIND DNS suite with updated DNSSEC and DNS64
 LICENSE=	ISCL
 
 # ISC releases things like 9.8.0-P1, which our versioning doesn't like
-ISCVERSION=	9.9.9-P2
-
-MAKE_JOBS_UNSAFE=	yes
+ISCVERSION=	9.9.9-P4
 
 USES=	cpe libedit
 
@@ -39,11 +37,12 @@ CONFIGURE_ARGS=	--localstatedir=/var --disable-linux-caps \
 		--sysconfdir=${ETCDIR}
 ETCDIR=		${PREFIX}/etc/namedb
 
-CONFLICTS=	bind9*-9.[45678].* bind9*-sdb-9.[45678].* bind-tools-9.*
+CONFLICTS=	bind9*-9.[45678].* bind9*-sdb-9.[45678].* bind910-* bind911-* bind-tools-9.*
 
 SUB_FILES=	pkg-message
 
-OPTIONS_DEFAULT=	SSL THREADS SIGCHASE IDN GSSAPI_NONE RRL DLZ_FILESYSTEM
+OPTIONS_DEFAULT=	SSL THREADS SIGCHASE IDN GSSAPI_NONE RRL DLZ_FILESYSTEM \
+			RPZ_NSIP RPZ_NSDNAME
 OPTIONS_DEFINE=		SSL IDN REPLACE_BASE LARGE_FILE FIXED_RRSET SIGCHASE \
 			IPV6 THREADS FILTER_AAAA GOST PYTHON START_LATE MINCACHE \
 			LINKS RPZ_NSIP RPZ_NSDNAME RRL DOCS RPZ_PATCH NEWSTATS \
@@ -92,7 +91,7 @@ FETCHLIMIT_CONFIGURE_ENABLE=	fetchlimit
 QUERYTRACE_CONFIGURE_ENABLE=	querytrace
 
 SSL_CONFIGURE_ON=	--with-openssl=${OPENSSLBASE}
-SSL_USE=		openssl=yes
+SSL_USES=		ssl
 SSL_CONFIGURE_OFF=	--disable-openssl-version-check --without-openssl
 
 NEWSTATS_CONFIGURE_ENABLE=	newstats
@@ -190,6 +189,10 @@ PKGDEINSTALL=	${PKGINSTALL}
 PORTDOCS=	*
 
 .include <bsd.port.pre.mk>
+
+.if ${OSVERSION} <= 1000000
+MAKE_JOBS_UNSAFE=	yes
+.endif
 
 .if ( ${PORT_OPTIONS:MGOST} ) && ${SSL_DEFAULT} == base
 BROKEN=	OpenSSL from the base system does not support GOST, add \

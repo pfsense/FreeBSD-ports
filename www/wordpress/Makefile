@@ -7,20 +7,17 @@ PORTEPOCH=	1
 CATEGORIES=	www
 MASTER_SITES=	http://wordpress.org/
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	joneum@bsdproject.de
 COMMENT=	State-of-the-art semantic personal publishing platform
 
 LICENSE=	GPLv2
-
-BROKEN_powerpc64=	Does not build
 
 CONFLICTS_INSTALL=	de-wordpress-[0-9].* ja-wordpress-[0-9].* ru-wordpress-[0-9].*
 
 NO_ARCH=	yes
 NO_BUILD=	yes
-USES=		cpe
+USES=		php:web cpe
 USE_PHP=	curl gd hash mysqli pcre tokenizer xml zip zlib ftp
-WANT_PHP_WEB=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 .if ${PORTVERSION:N*.*.*}

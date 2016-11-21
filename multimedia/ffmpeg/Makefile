@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	ffmpeg
-PORTVERSION=	2.8.7
-PORTREVISION=	1
+PORTVERSION=	2.8.8
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio ipv6 net
 MASTER_SITES=	http://ffmpeg.org/releases/
@@ -18,7 +18,7 @@ BUILD_DEPENDS=	yasm:devel/yasm \
 		${LOCALBASE}/bin/as:devel/binutils
 
 HAS_CONFIGURE=	yes
-USES=		compiler cpe gmake perl5 pkgconfig tar:bzip2 shebangfix
+USES=		compiler:c11 cpe gmake perl5 pkgconfig tar:bzip2 shebangfix
 USE_LDCONFIG=	yes
 USE_PERL5=	build
 SHEBANG_FILES=	doc/texi2pod.pl
@@ -27,7 +27,7 @@ PORTSCOUT=	limit:^2\.
 
 OPTIONS_DEFINE= AACPLUS ALSA AMR_NB AMR_WB ASS BS2B CACA CDIO CELT DC1394 \
 		DEBUG DOCS FAAC FDK_AAC FFSERVER FLITE FONTCONFIG \
-		FREETYPE FREI0R FRIBIDI GME GSM ICONV ILBC JACK LADSPA \
+		FREETYPE FREI0R FRIBIDI GME GSM ICONV ILBC JACK KVAZAAR LADSPA \
 		LAME LIBBLURAY MODPLUG OPENAL OPENCL OPENCV OPENGL \
 		OPENH264 OPENJPEG OPTIMIZED_CFLAGS OPUS PULSEAUDIO QUVI \
 		RTCPU RTMP SCHROEDINGER SDL SMB SNAPPY SPEEX SSH \
@@ -61,10 +61,10 @@ FLITE_DESC=	Voice synthesis support via libflite
 GME_DESC=	Game Music Emu demuxer
 GPL3_DESC=	Allow (L)GPL version 3 code(cs)
 ILBC_DESC=	Internet Low Bit Rate codec
+KVAZAAR_DESC=	H.265 video codec support via Kvazaar
 LICENSE_DESC=	Licensing options
 NEON_DESC=	Enable Media Processing Engine instructions
 NONFREE_DESC=	Allow use of nonfree code
-OPENCL_DESC=	Heterogeneous computing via OpenCL
 OPENH264_DESC=	H.264 video codec support via OpenH264
 QUVI_DESC=	Flash media stream URLs
 RTCPU_DESC=	Detect CPU capabilities at runtime
@@ -186,6 +186,10 @@ ILBC_CONFIGURE_ENABLE=	libilbc
 # jack
 JACK_LIB_DEPENDS=	libjack.so:audio/jack
 JACK_CONFIGURE_OFF=	--disable-indev=jack
+
+# kvazaar
+KVAZAAR_LIB_DEPENDS=	libkvazaar.so:multimedia/kvazaar
+KVAZAAR_CONFIGURE_ENABLE=	libkvazaar
 
 # ladspa
 LADSPA_BUILD_DEPENDS=	${LOCALBASE}/include/ladspa.h:audio/ladspa

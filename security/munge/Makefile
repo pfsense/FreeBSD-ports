@@ -2,10 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	munge
-PORTVERSION=	0.5.11
-PORTREVISION=	2
+PORTVERSION=	0.5.12
 CATEGORIES=	security
-MASTER_SITES=	GOOGLE_CODE
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Authentication service for creating and validating credentials
@@ -13,16 +11,15 @@ COMMENT=	Authentication service for creating and validating credentials
 LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	dual
 
+USE_GITHUB=yes
+GH_ACCOUNT=	dun
+GH_TAGNAME=	880584f
+
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--localstatedir=/var
-USES=		libtool pathfix perl5 tar:bzip2
+CONFIGURE_ARGS=	--with-openssl-prefix=${OPENSSLBASE}
+USES=		libtool pathfix perl5 ssl
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	munged
 INSTALL_TARGET=	install-strip
-
-post-install:
-	${RM} -r ${STAGEDIR}${PREFIX}/etc/default
-	${RM} -r ${STAGEDIR}${PREFIX}/etc/init.d
-	${RM} -r ${STAGEDIR}${ETCDIR}
 
 .include <bsd.port.mk>

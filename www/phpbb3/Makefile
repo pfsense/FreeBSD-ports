@@ -3,12 +3,13 @@
 
 PORTNAME=	phpbb
 PORTVERSION=	3.1.9
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	https://www.phpbb.com/files/release/
 PKGNAMESUFFIX=	3
 DISTNAME=	phpBB-${PORTVERSION}
 
-MAINTAINER=	jochen@jochen-neumeister.de
+MAINTAINER=	joneum@bsdproject.de
 COMMENT=	PHP-based bulletin board / discussion forum system
 
 LICENSE=	GPLv2
@@ -17,6 +18,7 @@ CONFLICTS=	phpbb-tw-[0-9]* phpbb-devel-[0-9]* \
 		phpbb-[0-2]*
 
 USES=		php tar:bzip2
+USE_PHP=	ctype hash json
 
 OPTIONS_DEFINE=	DOCS
 
@@ -25,6 +27,7 @@ PHPBBURL?=	phpBB3
 
 WRKSRC=		${WRKDIR}/phpBB3
 NO_BUILD=	yes
+NO_ARCH=	yes
 SUB_FILES=	pkg-message
 SUB_LIST=	PHPBBURL="${PHPBBURL}" \
 		PHPBBDIR="${PHPBBDIR}"
@@ -34,8 +37,6 @@ PLIST_SUB+=	PHPBBDIR=${PHPBBDIR} WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
 PHPBBDIR=	${WWWDOCROOT}/${PHPBBURL}
 PKGOPTS=	${FILESDIR}/pkg-opts
 PORTDOCS=	*
-
-.include <bsd.port.options.mk>
 
 options:
 	@${ECHO_MSG} "===>  Build options for ${PKGNAME}:"
@@ -50,11 +51,11 @@ pre-everything::
 .endif
 
 do-install:
-.	if ${PORT_OPTIONS:MDOCS}
-		@${MKDIR} ${STAGEDIR}${DOCSDIR}
-		cd ${WRKSRC}/docs && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
-.	endif
 	${MV} ${WRKSRC}/config.php ${WRKSRC}/config.php.sample
 	cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/${PHPBBDIR}
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC}/docs && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -3,6 +3,7 @@
 
 PORTNAME=	event
 PORTVERSION=	2.0.4
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://pecl.php.net/get/
 PKGNAMEPREFIX=	pecl-
@@ -15,8 +16,6 @@ LICENSE=	PHP301
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libevent.so:devel/libevent2
-
-BROKEN_powerpc64=	does not build
 
 USES=		php:ext tar:tgz
 USE_OPENSSL=	yes

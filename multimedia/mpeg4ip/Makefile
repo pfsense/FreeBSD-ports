@@ -3,7 +3,7 @@
 
 PORTNAME=	mpeg4ip
 PORTVERSION=	1.6.1
-PORTREVISION=	33
+PORTREVISION=	34
 CATEGORIES=	multimedia audio ipv6 net
 MASTER_SITES=	LOCAL/ahze
 # http://sourceforge.net/forum/forum.php?thread_id=1839453&forum_id=59136
@@ -97,8 +97,7 @@ pre-configure:
 		${WRKSRC}/lib/Makefile.in
 	@${FIND} ${WRKSRC} -type f -name Makefile.in | \
 		${XARGS} -n 10 ${REINPLACE_CMD} -e \
-		's|-I$(top_srcdir)/lib/mp4v2||; \
-		s|$$(top_builddir)/lib/mp4v2/libmp4v2.la||; \
+		's|$$(top_builddir)/lib/mp4v2/libmp4v2.la||; \
 		s|$$(top_srcdir)/lib/mp4v2/libmp4v2.la||; \
 		s|@LIBS@|@LIBS@ -lmp4v2|; \
 		s|nasm|yasm|'

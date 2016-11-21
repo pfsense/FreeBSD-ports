@@ -37,12 +37,12 @@ RUN_DEPENDS+=	libxul>=45:www/libxul
 .elif ${gecko_ARGS:Mfirefox}
 
 _GECKO_DEFAULT_VERSION=	45
-_GECKO_VERSIONS=		45 49
+_GECKO_VERSIONS=		45 50
 _GECKO_TYPE=	firefox
 
 # Dependence lines for different Firefox versions
 45_DEPENDS=		${LOCALBASE}/lib/firefox/firefox:www/firefox-esr
-49_DEPENDS=		${LOCALBASE}/lib/firefox/firefox:www/firefox
+50_DEPENDS=		${LOCALBASE}/lib/firefox/firefox:www/firefox
 
 .if exists(${LOCALBASE}/bin/firefox)
 _GECKO_INSTALLED_VER!=	${LOCALBASE}/bin/firefox --version 2>/dev/null
@@ -51,8 +51,8 @@ _GECKO_INSTALLED_VER:=	${_GECKO_INSTALLED_VER:M[0-9][0-9]*:C/([0-9][0-9]).*/\1/g
 
 .elif ${gecko_ARGS:Mseamonkey}
 
-_GECKO_DEFAULT_VERSION=	39
-_GECKO_VERSIONS=		39
+_GECKO_DEFAULT_VERSION=	40
+_GECKO_VERSIONS=		40
 _GECKO_TYPE=	seamonkey
 
 .if exists(${LOCALBASE}/bin/seamonkey)
@@ -61,7 +61,7 @@ _GECKO_INSTALLED_VER:=	${_GECKO_INSTALLED_VER:M[0-9]*:C/[0-9].([0-9][0-9]).*/\1/
 .endif
 
 # Dependence lines for different Seamonkey versions
-39_DEPENDS=		${LOCALBASE}/lib/seamonkey/seamonkey:www/seamonkey
+40_DEPENDS=		${LOCALBASE}/lib/seamonkey/seamonkey:www/seamonkey
 
 .elif ${gecko_ARGS:Mthunderbird}
 

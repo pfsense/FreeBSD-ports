@@ -1,2 +1,3 @@
-SHA256 (doxygen-1.8.10.src.tar.gz) = cedf78f6d213226464784ecb999b54515c97eab8a2f9b82514292f837cf88b93
-SIZE (doxygen-1.8.10.src.tar.gz) = 4818276
+TIMESTAMP = 1474244407
+SHA256 (doxygen-1.8.12.src.tar.gz) = 792d4091cbdf228549ff2033dd71ff7ea5029c6b436317cc5ec866e71302df6c
+SIZE (doxygen-1.8.12.src.tar.gz) = 4880613

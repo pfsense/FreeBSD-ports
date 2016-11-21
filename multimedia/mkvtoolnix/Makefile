@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mkvtoolnix
-PORTVERSION=	9.2.0
+PORTVERSION=	9.4.2
 CATEGORIES=	multimedia audio
 MASTER_SITES=	http://www.bunkus.org/videotools/mkvtoolnix/sources/ \
 		https://mkvtoolnix.download/sources/
@@ -18,6 +18,8 @@ LIB_DEPENDS=	libvorbis.so:audio/libvorbis \
 		libebml.so:textproc/libebml \
 		libboost_regex.so:devel/boost-libs \
 		libmatroska.so:multimedia/libmatroska
+
+BROKEN_FreeBSD_9=	does not build: g++48 internal compiler error
 
 USES=		compiler:c++11-lib iconv pkgconfig tar:xz
 GNU_CONFIGURE=	yes
@@ -46,7 +48,7 @@ NLS_CONFIGURE_WITH=	gettext
 
 QT5_DESC=	Build and install GUI application (Qt 5)
 QT5_USES=	desktop-file-utils shared-mime-info
-QT5_USE=	QT5=buildtools_build,core,quick,widgets
+QT5_USE=	QT5=buildtools_build,core,gui,network,quick,widgets
 QT5_CONFIGURE_ON=	--enable-qt
 QT5_CONFIGURE_OFF=	--disable-qt
 

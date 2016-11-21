@@ -1,0 +1,15 @@
+TIMESTAMP = 1472853484
+SHA256 (llvm-3.9.0.src.tar.xz) = 66c73179da42cee1386371641241f79ded250e117a79f571bbd69e56daa48948
+SIZE (llvm-3.9.0.src.tar.xz) = 18235716
+SHA256 (cfe-3.9.0.src.tar.xz) = 7596a7c7d9376d0c89e60028fe1ceb4d3e535e8ea8b89e0eb094e0dcb3183d28
+SIZE (cfe-3.9.0.src.tar.xz) = 10390440
+SHA256 (compiler-rt-3.9.0.src.tar.xz) = e0e5224fcd5740b61e416c549dd3dcda92f10c524216c1edb5e979e42078a59a
+SIZE (compiler-rt-3.9.0.src.tar.xz) = 1379960
+SHA256 (clang-tools-extra-3.9.0.src.tar.xz) = 5b7aec46ec8e999ec683c87ad744082e1133781ee4b01905b4bdae5d20785f14
+SIZE (clang-tools-extra-3.9.0.src.tar.xz) = 455144
+SHA256 (lld-3.9.0.src.tar.xz) = 986e8150ec5f457469a20666628bf634a5ca992a53e157f3b69dbc35056b32d9
+SIZE (lld-3.9.0.src.tar.xz) = 499816
+SHA256 (lldb-3.9.0.src.tar.xz) = 61280e07411e3f2b4cca0067412b39c16b0a9edd19d304d3fc90249899d12384
+SIZE (lldb-3.9.0.src.tar.xz) = 13754516
+SHA256 (openmp-3.9.0.src.tar.xz) = df88f90d7e5b5e9525a35fa2e2b93cbbb83c4882f91df494e87ee3ceddacac91
+SIZE (openmp-3.9.0.src.tar.xz) = 2257596

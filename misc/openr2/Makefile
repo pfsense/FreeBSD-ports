@@ -12,6 +12,10 @@ COMMENT=	MFC/R2 call setup library
 
 BUILD_DEPENDS=	${LOCALBASE}/include/dahdi/user.h:misc/dahdi
 
+USE_GITHUB=	yes
+GH_ACCOUNT=	moises-silva
+GH_TAGNAME=	d6a5716
+
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 INSTALL_TARGET=	install-strip

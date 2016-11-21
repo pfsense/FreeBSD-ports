@@ -3,13 +3,17 @@
 
 PORTNAME=	html_parse
 PORTVERSION=	1.0.0
+PORTREVISION=	1
 CATEGORIES=	textproc pear
 MASTER_SITES=	http://pecl.php.net/get/
 PKGNAMEPREFIX=	pecl-
 DIST_SUBDIR=	PECL
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PECL extension for the ekhtml library
+
+DEPRECATED=	Works only with EOL php 5.5
+EXPIRATION_DATE=	2016-10-20
 
 LICENSE=	PHP30
 

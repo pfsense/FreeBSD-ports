@@ -69,6 +69,7 @@
     SUBDIR += flowviewer
     SUBDIR += fprobe
     SUBDIR += glpi-plugins-fusioninventory-server
+    SUBDIR += gnu-ipcalc
     SUBDIR += grepcidr
     SUBDIR += grepip
     SUBDIR += gsnmp
@@ -89,7 +90,6 @@
     SUBDIR += ipaudit
     SUBDIR += ipcad
     SUBDIR += ipcalc
-    SUBDIR += ipfm
     SUBDIR += ipplan
     SUBDIR += ipv6calc
     SUBDIR += ipv6gen
@@ -154,7 +154,6 @@
     SUBDIR += nedi
     SUBDIR += nefu
     SUBDIR += net-snmp
-    SUBDIR += netams
     SUBDIR += netdisco
     SUBDIR += netdisco-mibs
     SUBDIR += netdot
@@ -168,7 +167,6 @@
     SUBDIR += netmagis-utils
     SUBDIR += netmagis-www
     SUBDIR += netmask
-    SUBDIR += netmond
     SUBDIR += netspoc
     SUBDIR += netustad
     SUBDIR += netwag
@@ -191,6 +189,7 @@
     SUBDIR += ocsinventory-agent
     SUBDIR += ocsinventory-ng
     SUBDIR += omping
+    SUBDIR += onionlauncher
     SUBDIR += openlldp
     SUBDIR += openvmps
     SUBDIR += p0f
@@ -270,6 +269,7 @@
     SUBDIR += pmacct
     SUBDIR += pnp
     SUBDIR += pnp-icinga
+    SUBDIR += pnp-icinga2
     SUBDIR += portmon
     SUBDIR += py-flowtools
     SUBDIR += py-ipcalc
@@ -280,6 +280,7 @@
     SUBDIR += py-snmp4
     SUBDIR += py-snmp4-apps
     SUBDIR += py-snmp4-mibs
+    SUBDIR += py-snmp_passpersist
     SUBDIR += py-yapsnmp
     SUBDIR += qkismet
     SUBDIR += rackmonkey
@@ -290,6 +291,7 @@
     SUBDIR += remarp
     SUBDIR += resource-agents
     SUBDIR += riemann
+    SUBDIR += riemann-c-client
     SUBDIR += rotorouter
     SUBDIR += routers2
     SUBDIR += routers2-extensions
@@ -326,7 +328,6 @@
     SUBDIR += telegraf
     SUBDIR += tornova
     SUBDIR += torrus
-    SUBDIR += unifi3
     SUBDIR += unifi4
     SUBDIR += unifi5
     SUBDIR += victorops-nagios
@@ -356,5 +357,9 @@
     SUBDIR += zabbix3-frontend
     SUBDIR += zabbix3-proxy
     SUBDIR += zabbix3-server
+    SUBDIR += zabbix32-agent
+    SUBDIR += zabbix32-frontend
+    SUBDIR += zabbix32-proxy
+    SUBDIR += zabbix32-server
 
 .include <bsd.port.subdir.mk>

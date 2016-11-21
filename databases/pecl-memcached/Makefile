@@ -3,7 +3,7 @@
 
 PORTNAME=	memcached
 PORTVERSION=	2.2.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	databases
 MASTER_SITES=	http://pecl.php.net/get/
 PKGNAMEPREFIX=	pecl-
@@ -16,8 +16,6 @@ LICENSE=	PHP30
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libmemcached.so:databases/libmemcached
-
-BROKEN_powerpc64=	does not build
 
 OPTIONS_DEFINE=	IGBINARY SASL
 IGBINARY_DESC=	Binary serializer support

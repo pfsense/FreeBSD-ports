@@ -2,6 +2,7 @@
 
 PORTNAME=	openbor
 PORTVERSION=	3.0.r4167
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	LOCAL/jbeich \
 		https://svn.code.sf.net/p/${PORTNAME}/engine/engine/:svn
@@ -21,7 +22,7 @@ MAKE_ENV=	BUILD_LINUX=1 SDKPATH="${LOCALBASE}" \
 		GCC_TARGET="${CONFIGURE_TARGET:S/amd64/x86_64/}"
 MAKE_ARGS=	CC="${CC}" LIBRARIES="${LOCALBASE}/lib" \
 		TARGET_ARCH=${ARCH:S/i386/x86/} ARCHFLAGS="" \
-		TARGET_FINAL='$(TARGET)' BUILD_MMX=""
+		TARGET_FINAL='${TARGET}' BUILD_MMX=""
 LDFLAGS+=	-Wl,--as-needed
 PLIST_FILES=	bin/${PORTNAME} \
 		share/pixmaps/${PORTNAME}.png

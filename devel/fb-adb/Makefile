@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	fb-adb
-DISTVERSION=	1.4.4-124
-DISTVERSIONSUFFIX=	-gb230619
+DISTVERSION=	1.4.4-126
+DISTVERSIONSUFFIX=	-g6fd78ae
 CATEGORIES=	devel
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -49,20 +49,20 @@ DEBUG_CONFIGURE_ENABLE=	debuggable-stubs
 
 # XXX Convert into USES=android once more things depend on it
 NDK_DESC=		Build target stubs using Android NDK
-NDK_MASTER_SITES=	https://dl.google.com/android/ndk/:ndk,p7zip
+NDK_MASTER_SITES=	https://dl.google.com/android/ndk/:7z \
+			https://dl.google.com/android/repository/:zip
 .if defined(ANDROID_NDK)
 # Prefer NDK from environment
 WRKSRC_ndk=		${ANDROID_NDK}
 .else
-NDK_DISTFILES=		${NDK_DISTFILES_${LINUX_RPM_ARCH}}
-NDK_DISTFILES_i686=	android-ndk-r10e-linux-x86.bin:ndk,p7zip
-NDK_DISTFILES_x86_64=	android-ndk-r11c-linux-x86_64.zip:ndk
+NDK_DISTFILES=		${NDK_DISTFILES_${LINUX_ARCH}}
+NDK_DISTFILES_i386=	android-ndk-r10e-linux-x86.bin:7z
+NDK_DISTFILES_x86_64=	android-ndk-r12b-linux-x86_64.zip:zip
 WRKSRC_ndk=		${WRKDIR}/${NDK_DISTFILES:R:C/(-[^-]+){2}$//}
 .endif
-NDK_BUILD_DEPENDS=	${LINUX_BASE_PORT}
-NDK_USES=		7z:partial
-NDK_USE=		LINUX=yes # build
-NDK_SHELL=		${SETENV} UNAME_s=Linux UNAME_m=${LINUX_RPM_ARCH} ${SH}
+NDK_USES=		7z:partial linux
+NDK_USE=		LINUX=base:build
+NDK_SHELL=		${LINUXBASE}/bin/sh
 NDK_CONFIGURE_ENV=	ANDROID_NDK="${WRKSRC_ndk}" \
 			ANDROID_NDK_SHELL="${NDK_SHELL}" \
 			NDK_TMPDIR="${WRKDIR}"
@@ -85,15 +85,13 @@ post-patch:
 # XXX Decouple -Werror from --enable-checking (ASSERT=on)
 	@${REINPLACE_CMD} -e '/CPPFLAGS.*-Werror/d' ${WRKSRC}/configure.ac
 
+post-patch-NDK-on:
+	@${REINPLACE_CMD} 's,mkdir,/compat/linux/../../bin/mkdir,' \
+		${WRKSRC_ndk}/build/tools/make-standalone-toolchain.sh \
+		${WRKSRC_ndk}/build/tools/ndk-common.sh
+
 post-patch-NDK-off:
 	@${REINPLACE_CMD} -i '.aux.bak' -e 's/linux-android/aux-&/' \
 		${WRKSRC}/stub-*/configure
 
 .include <bsd.port.mk>
-
-# XXX Bug 204615: Teach USE_LINUX about build-only deps
-.if defined(.PARSEDIR)
-RUN_DEPENDS:=	${RUN_DEPENDS:N${LINUX_BASE_PORT}}
-.else
-RUN_DEPENDS:=	${RUN_DEPENDS:N*linux_base*}
-.endif

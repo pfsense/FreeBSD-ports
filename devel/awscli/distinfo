@@ -1,2 +1,3 @@
-SHA256 (awscli-1.10.20.tar.gz) = 63d18580fea9accfb63a26ceb829cac9986ac609fedc3cc967ac24f40573258d
-SIZE (awscli-1.10.20.tar.gz) = 459271
+TIMESTAMP = 1473665049
+SHA256 (awscli-1.10.63.tar.gz) = a50c242a90343e14fc5c74b0f84959fe35c76e316ee205f53247a6aecec55141
+SIZE (awscli-1.10.63.tar.gz) = 488426

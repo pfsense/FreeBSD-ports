@@ -3,7 +3,7 @@
 
 PORTNAME=	qpopper
 PORTVERSION=	4.1.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	mail ipv6
 MASTER_SITES=	ftp://ftp.qualcomm.com/eudora/servers/unix/popper/ \
 		http://core.ring.gr.jp/archives/net/mail/qpopper/
@@ -57,6 +57,9 @@ STANDALONE_MODE_DESC=	build qpopper to be run without inetd
 U_OPTION_DESC=	include support for user .qpopper-options
 
 OPTIONS_DEFAULT=	APOP SSL U_OPTION
+OPTION_SUB=	yes
+
+SSL_USES=	ssl
 
 .include <bsd.port.pre.mk>
 
@@ -123,7 +126,6 @@ USE_RC_SUBR=	 ${PORTNAME}
 
 # The default is to build without SSL/TLS support.
 .if ${PORT_OPTIONS:MSSL}
-USE_OPENSSL=	yes
 CONFIGURE_ARGS+=	--with-openssl=${OPENSSLBASE}
 .endif
 
@@ -166,7 +168,6 @@ do-install:
 
 # based on original from op port, written by Cyrille Lefevre
 # <clefevre@citeweb.net>.
-post-install:
 	@if [ ! -f ${CONF_DIR}/${CONF_FILE}${SAMP_SUFX} ]; then \
 		${MKDIR} ${STAGEDIR}${ETCDIR} ; \
 		if [ -f /etc/ftpusers ] && [ -n "${PORT_OPTIONS:MSAMPLE_POPUSERS}" ]; then \
@@ -175,15 +176,5 @@ post-install:
 			${CP} /dev/null ${STAGEDIR}${POPUSERS_FILE}${SAMPLE_EXT} ; \
 		fi ; \
 	fi
-
-.if ${PORT_OPTIONS:MPOPPASSD}
-	@${ECHO_MSG}	""
-	@${ECHO_MSG}	"==============================================================================="
-	@${ECHO_MSG}	"It adds for myself"
-	@${ECHO_MSG}	"/etc/devfs.conf:"
-	@${ECHO_MSG}	"link	/dev/pts/0 pty0"
-	@${ECHO_MSG}	"==============================================================================="
-	@${ECHO_MSG}	""
-.endif
 
 .include <bsd.port.post.mk>

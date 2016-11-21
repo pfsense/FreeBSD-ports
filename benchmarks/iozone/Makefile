@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	iozone
-DISTVERSION=	3_434
+DISTVERSION=	3_457
 CATEGORIES=	benchmarks
 MASTER_SITES=	http://www.iozone.org/src/current/
 DISTNAME=	${PORTNAME}${DISTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	jpaetzel@FreeBSD.org
 COMMENT=	Performance Test of Sequential File I/O
 
 WRKSRC=		${WRKDIR}/${DISTNAME}/src/current

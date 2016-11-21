@@ -10,7 +10,7 @@ PORTVERSION=	1.0.4.1
 DISTVERSIONPREFIX=	snappy-java-
 PORTREVISION=	2
 CATEGORIES=	archivers java
-MASTER_SITES=	http://snappy.googlecode.com/files/:source2 \
+MASTER_SITES=	http://pkgs.fedoraproject.org/repo/pkgs/snappy/snappy-1.0.4.tar.gz/b69151652e82168bc5c643bcd6f07162/:source2 \
 		LOCAL/jgh/archivers/${PORTNAME}/:source3
 PKGNAMESUFFIX=	java
 DISTFILES+=	snappy-${PORTVERSION:R}.tar.gz:source2 \

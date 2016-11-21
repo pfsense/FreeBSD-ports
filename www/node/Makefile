@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	node
-PORTVERSION=	6.2.2
+PORTVERSION=	6.9.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES=	http://nodejs.org/dist/v${PORTVERSION}/
@@ -12,22 +12,25 @@ COMMENT=	V8 JavaScript for client and server (6.x)
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-OPTIONS_DEFINE=	BUNDLED_SSL DOCS
+OPTIONS_DEFINE=	BUNDLED_SSL DOCS NLS
 OPTIONS_SUB=	yes
 
-BUNDLED_SSL_DESC=	Use node.js's bundled OpenSSL implementation
-BUNDLED_SSL_USE_OFF=	OPENSSL=yes
+BUNDLED_SSL_DESC=		Use node.js's bundled OpenSSL implementation
+BUNDLED_SSL_USES_OFF=		ssl
+BUNDLED_SSL_CONFIGURE_OFF+=	--shared-openssl
 
-USES=		compiler execinfo gmake python:2,build pkgconfig localbase
+NLS_CONFIGURE_ON=	--with-intl=system-icu
+NLS_LIB_DEPENDS=	libicui18n.so:devel/icu
+
+USES=		compiler:c++11-lib execinfo gmake python:2,build pkgconfig localbase
 HAS_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
-CONFLICTS_INSTALL=	node4-* node-0.[02-9][0-9]* node-devel-0.[0-9]* node010-[0-9]* node012-[0-9]* iojs-[0-9]*
+CONFLICTS_INSTALL=	node4-4.* node012-0.12.* node010-0.10.* node-devel-[0-9]* iojs-[0-9]*
 
 ONLY_FOR_ARCHS=	i386 amd64 armv6
 CONFIGURE_ARGS=	--prefix=${PREFIX_RELDEST} \
 		--without-npm \
-		--with-intl=system-icu \
 		--shared-cares \
 		--shared-libuv \
 		--shared-zlib
@@ -37,7 +40,6 @@ REINPLACE_ARGS=	-i ''
 MAKE_ENV+=	CC.host=${CC} CXX.host=${CXX} LINK.host=${CXX} LINK.target=${CXX}
 
 LIB_DEPENDS+=	libcares.so:dns/c-ares\
-		libicui18n.so:devel/icu \
 		libuv.so:devel/libuv
 
 .include <bsd.port.options.mk>
@@ -48,8 +50,6 @@ LIB_DEPENDS+=	libcares.so:dns/c-ares\
 # node.js requires openssl 1.0.2, use the port since base isn't new enough
 WITH_OPENSSL_PORT=	yes
 .endif
-
-CONFIGURE_ARGS+=	--shared-openssl
 
 .endif
 
@@ -65,33 +65,22 @@ IGNORE=		cannot build node.js with LibreSSL. You must enable BUNDLED_SSL
 CONFIGURE_ARGS=	--openssl-no-asm
 .endif
 
-.if ${COMPILER_TYPE} == clang
-MAKE_ENV+=	LINK=clang++
-CFLAGS+=	-Wno-unused-private-field
-.if ${COMPILER_VERSION} >= 33
-CFLAGS+=	-Wno-nested-anon-types -Wno-unused-function
-.if ${COMPILER_VERSION} >= 34
-CFLAGS+=	-Wno-unused-const-variable
-.endif
-.endif
-.else
-MAKE_ARGS+=	strictaliasing=off
-USE_GCC=	yes
+.if ${COMPILER_TYPE} == gcc
+# GCC does not expose std::snprintf() without this define
+CXXFLAGS+=	-D_GLIBCXX_USE_C99
 .endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' \
 		${WRKSRC}/deps/v8/tools/gyp/v8.gyp
+	# So many different ways to run python. Fix them all.
 	@${REINPLACE_CMD} -e 's|/usr/bin/env python|${PYTHON_CMD}|' \
 		${WRKSRC}/configure
-	@${REINPLACE_CMD} -e "s|python -c|${PYTHON_CMD} -c|" \
-		${WRKSRC}/deps/v8/build/toolchain.gypi
-	@${REINPLACE_CMD} -e "s|'python',|'${PYTHON_CMD}',|" \
-		${WRKSRC}/tools/icu/icu-generic.gyp \
-		${WRKSRC}/deps/v8/build/shim_headers.gypi \
-		${WRKSRC}/deps/v8/tools/gyp/v8.gyp \
-		${WRKSRC}/deps/v8/src/d8.gyp \
-		${WRKSRC}/node.gyp
+	@${FIND} ${WRKSRC} -type f -name '*.gyp*' -print0 \
+		| ${XARGS} -0 ${REINPLACE_CMD} \
+			-e "s|'python'|'${PYTHON_CMD}'|" \
+			-e 's|<!(python |<!(${PYTHON_CMD} |' \
+			-e 's|\&\& python |\&\& ${PYTHON_CMD} |'
 
 post-configure:
 	# Post-process Makefile and *.mk files created by node-gyp and remove

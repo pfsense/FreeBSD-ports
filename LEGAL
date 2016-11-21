@@ -39,7 +39,6 @@ apache2/mod_h264_streaming-*	www/mod_h264_streaming	No commercial use
 armyops*-linux.run	games/linux-americasarmy Redistribution is limited
 astah-community-*.zip	devel/astah-community	License restrictions -- See http://astah.net/faq/community/enduser-license-agreement
 atari800/*		emulators/atari800	xf25 contains copyright ROMs and cannot be distributed
-bamg*			math/bamg		Contact author personally regarding commercial use
 baudline_*		audio/baudline		No redistribution allowed
 BCWipe-*		security/bcwipe		Non-commercial distribution and use only
 bdc*			security/bdc		License does not allow redistribution
@@ -62,7 +61,6 @@ dcl-*-C.tar.gz		science/cdcl		No commercial use
 dcl-*.tar.gz		science/dcl		No commercial use
 defcon*			games/linux-defcon	Redistribution is limited, see license
 djbdns*			dns/djbdns		No license -- see http://cr.yp.to/softwarelaw.html
-djbdns-1.05.tar.gz	mail/qmail-conf		No license -- see http://cr.yp.to/softwarelaw.html
 djbfft-*		math/djbfft		No license -- see http://cr.yp.to/softwarelaw.html
 dlv			lang/dlv		Not sure if we can redistribute it
 dmd-*			lang/dmd1		No redistribution of non validated binaries
@@ -187,7 +185,6 @@ perforce/*/p4d		devel/p4d		Restricted distribution
 perforce/*/p4ftpd	devel/p4ftpd		Restricted distribution
 perforce/*/p4p		devel/p4p		Restricted distribution
 perforce/*/p4web	devel/p4web		Restricted distribution
-platon*			biology/platon		$5000 USD for commercial users, free for academic
 ppsmall-*		archivers/ppunpack	No commercial redistribution
 qtools-*		mail/qtools		No license -- see http://cr.yp.to/softwarelaw.html
 quake4-linux-*		games/linux-quake4	Redistribution is limited; see the license
@@ -196,7 +193,6 @@ Radiator/*		net/radiator		Commercial software
 RakNet-*		devel/raknet		Special authorization granted to distribute version 3.x under GPLv3
 rapid-*			math/rapid		For any commercial purpose, you must request a license from http://www.cs.unc.edu/~geom/OBB/OBBT.html
 rarbsd-*		archivers/rar		only unmodified original package can be distributed
-RealPlayer-*.rpm	multimedia/linux-realplayer Redistribution not allowed
 ricty-*			japanese/font-ricty	Redistribution not allowed
 ringtonetools-*		misc/ringtonetools	Not free for commercial organizations
 savage/SFE*		games/linux-savage	Freeware, but license terms are unclear
@@ -231,7 +227,6 @@ TrueCrypt*		security/truecrypt	May not be redistributed.  Must accept license to
 tuc-*			converters/tuc		Author does not allow CD-ROM distribution
 tw_cli-*		sysutils/tw_cli		Redistribution forbidden by license
 ue*dev.zip		editors/uemacs		Resale allowed for media cost only
-unifi-3*/UniFi.unix.zip	net-mgmt/unifi3		Redistribution of bundled firmware images is not permitted
 unifi-4*/UniFi.unix.zip	net-mgmt/unifi4		Redistribution of bundled firmware images is not permitted
 unifi-5*/UniFi.unix.zip	net-mgmt/unifi5		Redistribution of bundled firmware images is not permitted
 uplink-demo*		games/linux-uplink-demo	Redistribution is limited, see license
@@ -251,7 +246,6 @@ xchada01.lzh		games/xchadance		Contains commercial character data
 xephem-*		astro/xephem		Personal use only
 XFrisk-*.tar.gz		games/xfrisk		Possible trademark infringement
 xGate/*			japanese/xgate		Requested by Orangesoft Inc.
-xgobi.sh.gz		math/xgobi		Restrictive copyright (do not sell for profit)
 xhime*.tgz		games/xhime		Contains commercial character data
 xinvaders-*		games/xinvaders		Do not sell for profit
 xmdiary-*		deskutils/xmdiary	Do not sell for profit

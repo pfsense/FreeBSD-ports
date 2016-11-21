@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	filezilla
-PORTVERSION=	3.19.0
+PORTVERSION=	3.21.0
 CATEGORIES=	ftp
 MASTER_SITES=	SF/${PORTNAME}/FileZilla_Client/${PORTVERSION}
 DISTNAME=	FileZilla_${PORTVERSION}_src
@@ -19,12 +19,15 @@ LIB_DEPENDS=	libfilezilla.so:ftp/libfilezilla \
 		libgnutls.so:security/gnutls \
 		libidn.so:dns/libidn \
 		libnettle.so:security/nettle \
-		libpugixml.so:textproc/pugixml
+		libpugixml.so:textproc/pugixml \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2
 
 BROKEN_FreeBSD_9=	requires C++14 complier, 9.x lacks C++11 standard library
 
 INSTALLS_ICONS=	yes
 USES=		compiler:c++14-lang gmake localbase pkgconfig sqlite tar:bzip2
+USE_GNOME=	cairo gtk20
 USE_WX=		3.0
 WX_CONF_ARGS=	relative
 GNU_CONFIGURE=	yes
@@ -38,6 +41,7 @@ DBUS_LIB_DEPENDS=	libdbus-1.so:devel/dbus
 DBUS_CONFIGURE_WITH=	dbus
 
 NLS_USES=		gettext
+NLS_USES_OFF=		gettext-runtime
 NLS_CONFIGURE_OFF=	--disable-locales
 
 .if !defined(MAINTAINER_MODE)

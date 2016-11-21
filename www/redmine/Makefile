@@ -3,6 +3,7 @@
 
 PORTNAME=	redmine
 PORTVERSION=	3.2.3
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	http://www.redmine.org/releases/
 
@@ -27,8 +28,7 @@ RUN_DEPENDS=	rubygem-bundler>=1.5.0:sysutils/rubygem-bundler \
 		rubygem-rbpdf>=1.19.0:print/rubygem-rbpdf \
 		rubygem-rake>=0:devel/rubygem-rake \
 		rubygem-ruby-openid>=2.3.0:net/rubygem-ruby-openid \
-		rubygem-rack-openid>=0:www/rubygem-rack-openid \
-		rubygem-net-ldap>=0.3.1:net/rubygem-net-ldap
+		rubygem-rack-openid>=0:www/rubygem-rack-openid
 
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -59,6 +59,7 @@ PASSENGER_RUN_DEPENDS=	passenger-config:www/rubygem-passenger
 POSTGRESQL_RUN_DEPENDS=	rubygem-pg>=0.18.1:databases/rubygem-pg
 MARKDOWN_RUN_DEPENDS=	rubygem-redcarpet>=3.3.2:textproc/rubygem-redcarpet
 RMAGIC_RUN_DEPENDS=	rubygem-rmagick>=2.13.4:graphics/rubygem-rmagick
+LDAP_RUN_DEPENDS=	rubygem-net-ldap>=0.3.1:net/rubygem-net-ldap
 THIN_RUN_DEPENDS=	thin:www/rubygem-thin
 THIN_SUB_LIST=		WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
 THIN_VARS=		USE_RC_SUBR=redmine
@@ -80,6 +81,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${WWWDIR}/tmp/pids
 	${MKDIR} ${STAGEDIR}${WWWDIR}/bundler.d
 	cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR}
+	${TOUCH} ${STAGEDIR}${WWWDIR}/Gemfile.lock
 
 do-install-MYSQL-on:
 	${CP} ${FILESDIR}/mysql.rb ${STAGEDIR}${WWWDIR}/bundler.d
@@ -101,8 +103,5 @@ do-install-RMAGIC-on:
 
 do-install-THIN-on:
 	${CP} ${FILESDIR}/thin.rb ${STAGEDIR}${WWWDIR}/bundler.d
-
-post-install:
-	${TOUCH} ${STAGEDIR}${WWWDIR}/Gemfile.lock
 
 .include <bsd.port.mk>

@@ -3,11 +3,12 @@
 
 PORTNAME=	haru
 PORTVERSION=	1.0.4
+PORTREVISION=	1
 CATEGORIES=	print pear
 MASTER_SITES=	http://pecl.php.net/get/
 PKGNAMEPREFIX=	pecl-
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PECL extension to Haru PDF functions
 
 LICENSE=	PHP301

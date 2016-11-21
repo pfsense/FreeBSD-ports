@@ -43,6 +43,7 @@ enum tokens {
 
 	TOK_ACCEPT,
 	TOK_COUNT,
+	TOK_EACTION,
 	TOK_PIPE,
 	TOK_LINK,
 	TOK_QUEUE,
@@ -61,6 +62,8 @@ enum tokens {
 	TOK_CHECKSTATE,
 	TOK_NAT,
 	TOK_REASS,
+	TOK_CALL,
+	TOK_RETURN,
 
 	TOK_ALTQ,
 	TOK_LOG,
@@ -125,8 +128,34 @@ enum tokens {
 	TOK_BURST,
 	TOK_RED,
 	TOK_GRED,
+	TOK_ECN,
 	TOK_DROPTAIL,
 	TOK_PROTO,
+#ifdef NEW_AQM
+	/* AQM tokens*/
+	TOK_NO_ECN,
+	TOK_CODEL, 
+	TOK_FQ_CODEL,
+	TOK_TARGET,
+	TOK_INTERVAL,
+	TOK_FLOWS,
+	TOK_QUANTUM,
+	
+	TOK_PIE,
+	TOK_FQ_PIE,
+	TOK_TUPDATE,
+	TOK_MAX_BURST,
+	TOK_MAX_ECNTH,
+	TOK_ALPHA,
+	TOK_BETA,
+	TOK_CAPDROP,
+	TOK_NO_CAPDROP,
+	TOK_ONOFF,
+	TOK_DRE,
+	TOK_TS,
+	TOK_DERAND,
+	TOK_NO_DERAND,
+#endif
 	/* dummynet tokens */
 	TOK_WEIGHT,
 	TOK_LMAX,
@@ -140,12 +169,13 @@ enum tokens {
  	TOK_DENY_INC,
  	TOK_SAME_PORTS,
  	TOK_UNREG_ONLY,
+	TOK_SKIP_GLOBAL,
  	TOK_RESET_ADDR,
  	TOK_ALIAS_REV,
  	TOK_PROXY_ONLY,
 	TOK_REDIR_ADDR,
 	TOK_REDIR_PORT,
-	TOK_REDIR_PROTO,	
+	TOK_REDIR_PROTO,
 
 	TOK_IPV6,
 	TOK_FLOWID,
@@ -161,4 +191,41 @@ enum tokens {
 	TOK_FIB,
 	TOK_SETFIB,
 	TOK_LOOKUP,
+	TOK_SOCKARG,
+	TOK_SETDSCP,
+	TOK_FLOW,
+	TOK_IFLIST,
+	/* Table tokens */
+	TOK_CREATE,
+	TOK_DESTROY,
+	TOK_LIST,
+	TOK_INFO,
+	TOK_DETAIL,
+	TOK_MODIFY,
+	TOK_FLUSH,
+	TOK_SWAP,
+	TOK_ADD,
+	TOK_DEL,
+	TOK_VALTYPE,
+	TOK_ALGO,
+	TOK_TALIST,
+	TOK_ATOMIC,
+	TOK_LOCK,
+	TOK_UNLOCK,
+	TOK_VLIST,
+	TOK_OLIST,
 };
+
+/*
+ * the following macro returns an error message if we run out of
+ * arguments.
+ */
+#define	NEED(_p, msg)	{if (!_p) { php_printf(msg); goto fail; }}
+#define	NEED1(msg)	{if (!(*av)) { php_printf(msg); goto fail; }}
+
+/* first-level command handlers */
+int ipfw_config_pipe(int ac, char **av, int do_pipe);
+
+/* dummynet.c */
+void dummynet_flush(void);
+int ipfw_delete_pipe(int pipe_or_queue, int n);

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	firefox
-DISTVERSION=	45.4.0
+DISTVERSION=	45.5.0
 DISTVERSIONSUFFIX=esr
 PORTEPOCH=	2
 CATEGORIES=	www ipv6
@@ -13,8 +13,6 @@ MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	Web browser based on the browser portion of Mozilla
 
 USES=		tar:bzip2
-
-WANT_GTK218=	yes
 
 PREFS_FILE=	${WRKSRC}/${APP_SUBDIR}defaults/preferences/browser-prefs.js
 APP_SUBDIR=	browser/ # plugins, extensions

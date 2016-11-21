@@ -13,7 +13,7 @@ COMMENT=	High performance media player supporting many formats
 OPTIONS_DEFINE=	AALIB AMR_NB AMR_WB BLURAY CACA CDIO DEBUG DV DVDNAV \
 		ENCA FONTCONFIG FRIBIDI GIF GNUTLS GSM GUI IPV6 JACK \
 		LADSPA LIBMNG LIRC LZO NAS OCFLAGS OPENAL OPENGL \
-		OPENJPEG OPUS PULSEAUDIO REAL RTC RTMP \
+		OPENJPEG OPUS PULSEAUDIO RTC RTMP \
 		SCHROEDINGER SDL SKINS SMB SPEEX SVGALIB V4L VDPAU VPX \
 		X11 X11DGA X11VM XINERAMA XVIDEO XVMC
 
@@ -33,7 +33,6 @@ BLURAY_DESC?=	BluRay support
 ENCA_DESC?=	Charset conversion via enca
 LZO_DESC?=	External liblzo support
 OCFLAGS_DESC?=	${OPTIMIZED_CFLAGS_DESC}
-REAL_DESC?=	Enable realplayer plugin
 RTC_DESC?=	Add support for kernel real time clock
 RTCPU_DESC?=	Use runtime CPU detection
 SKINS_DESC?=	Install skins for GUI
@@ -79,7 +78,7 @@ PLIST_SUB+=	GMPLAYER="@comment "
 .endif #GUI && X11
 
 .if ${PORT_OPTIONS:MX11}
-USE_XORG=	x11 xproto xscrnsaver
+USE_XORG=	x11 xext xproto xscrnsaver
 .if ${PORT_OPTIONS:MXVIDEO}
 USE_XORG+=	xv
 .else
@@ -168,7 +167,7 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/etc/${conf} ${STAGEDIR}${DATADIR}/examples/etc
 .endfor
 .if ${PORT_OPTIONS:MGUI} && ${PORT_OPTIONS:MX11}
-	@${LN} -sf ${PREFIX}/bin/mplayer ${STAGEDIR}${PREFIX}/bin/gmplayer
+	@${LN} -sf mplayer ${STAGEDIR}${PREFIX}/bin/gmplayer
 	@(cd ${STAGEDIR}${MAN1PREFIX}/man/man1 && ${LN} -sf mplayer.1.gz gmplayer.1.gz)
 	${CP} -f ${WRKSRC}/etc/mplayer256x256.png ${STAGEDIR}${PREFIX}/share/pixmaps/mplayer.png
 .endif

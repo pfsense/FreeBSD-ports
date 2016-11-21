@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	seahub
-PORTVERSION=	5.1.8
+PORTVERSION=	6.0.0
 DISTVERSIONPREFIX=	v
 DISTVERSIONSUFFIX=	-pro
 CATEGORIES=	www
@@ -37,6 +37,7 @@ USES=		python:-2.7 shebangfix
 SHEBANG_FILES=	*.sh tests/*.sh *.template *.py tools/*.py seahub/*.py
 
 NO_BUILD=	yes
+NO_ARCH=	yes
 
 OPTIONS_DEFINE=		SEAFOBJ SEAFDAV NLS
 OPTIONS_DEFAULT=	SEAFOBJ SEAFDAV
@@ -59,6 +60,7 @@ SEAFILE_SERVER=	${HAIWENDIR}/seafile-server
 SEAHUBDIR=	${SEAFILE_SERVER}/seahub
 SEALIB=		${SEAFILE_SERVER}/seafile/lib
 SITEPACKAGEDIR=	${SEAHUBDIR}/thirdpart
+SEAFILE_VER=	`${CAT} ${.CURDIR}/../../net-mgmt/seafile/Makefile | ${GREP} -Eom1 '[0-9]+\.[0-9]+\.[0-9]+'`
 SEAHUB_DATA_DIR=	${HAIWENDIR}/seahub-data
 
 USERS=		seafile
@@ -84,7 +86,7 @@ do-patch:
 	echo "${WRKSRC}..."
 	@${MKDIR} ${WRKSRC}/runtime
 	${CP} ${FILESDIR}/runtime_seahub.conf ${WRKSRC}/runtime/seahub.conf
-	${REINPLACE_CMD} -e "s|SEAFILE_VERSION = '[0-9].[0-9].[0-9]'|SEAFILE_VERSION = '${PORTVERSION}'|" \
+	${REINPLACE_CMD} -Ee "s|SEAFILE_VERSION = '[0-9]+\.[0-9]+\.[0-9]+'|SEAFILE_VERSION = '${SEAFILE_VER}'|" \
 			 ${WRKSRC}/seahub/settings.py
 	${REINPLACE_CMD} -e 's|##FIX_WWWDIR##|${PREFIX}/${HAIWENDIR}|' ${WRKSRC}/*.template
 	${REINPLACE_CMD} -e 's|##FIX_SEALIB##|${PREFIX}/${SEALIB}|' ${WRKSRC}/*.template
@@ -101,7 +103,8 @@ do-patch:
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${SEAFILE_SERVER}/runtime/ \
-		${STAGEDIR}${PREFIX}/${SEAHUBDIR} ${STAGEDIR}${PREFIX}/${SEAHUB_DATA_DIR}
+		${STAGEDIR}${PREFIX}/${SEAHUBDIR} ${STAGEDIR}${PREFIX}/${SEAHUB_DATA_DIR} \
+		${STAGEDIR}${PREFIX}/${SEAHUB_DATA_DIR}/custom
 	${INSTALL} ${WRKSRC}/runtime/seahub.conf \
 		${STAGEDIR}${PREFIX}/${SEAFILE_SERVER}/runtime/
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/${SEAHUBDIR} \
@@ -109,7 +112,7 @@ do-install:
 	! -name default-non-register.jpg ! -name default.png ! -name groups")
 	(cd ${WRKSRC}/media && ${COPYTREE_SHARE} ./avatars \
 		 ${STAGEDIR}${PREFIX}/${SEAHUB_DATA_DIR})
-	${LN} -fs ${PREFIX}/${SEAHUB_DATA_DIR}/avatars \
+	${LN} -fs ../../../seahub-data/avatars \
 		${STAGEDIR}${PREFIX}/${SEAHUBDIR}/media/avatars
 
 .include <bsd.port.mk>

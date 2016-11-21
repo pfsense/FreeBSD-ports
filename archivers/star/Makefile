@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	star
-DISTVERSION=	1.5.2
+DISTVERSION=	1.5.3
 CATEGORIES=	archivers
-MASTER_SITES=	http://BSDforge.com/projects/source/srchivers/star/
+MASTER_SITES=	SF/s-tar
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Unique standard tape archiver with many enhancements
@@ -16,7 +16,6 @@ LICENSE_FILES=	${WRKSRC}/CDDL.Schily.txt
 BUILD_DEPENDS=	smake:devel/smake
 
 USES=		gettext iconv tar:bzip2
-USE_GCC=	any
 
 .if defined(NO_INSTALL_MANPAGES)
 XMKFLAGS=	XMK_FILE=""
@@ -30,8 +29,6 @@ PORTDOCS=	README README.crash README.mtio README.pattern STARvsGNUTAR \
 		README.posix-2001
 
 OPTIONS_DEFINE=	DOCS
-
-.include <bsd.port.options.mk>
 
 post-patch:
 	@${FIND} ${WRKSRC} -type f -print \
@@ -56,12 +53,10 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/star/star.dfl ${STAGEDIR}${PREFIX}/etc/star.sample
 	${INSTALL_DATA} ${WRKSRC}/rmt/rmt.dfl ${STAGEDIR}${PREFIX}/etc/rmt.sample
 
-post-install:
-.if ${PORT_OPTIONS:MDOCS}
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for FILE in ${PORTDOCS}
 	(cd ${WRKSRC}/star && ${INSTALL_DATA} ${FILE} ${STAGEDIR}${DOCSDIR}/${FILE})
 .endfor
-.endif
 
 .include <bsd.port.mk>
