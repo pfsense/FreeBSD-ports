@@ -41,6 +41,9 @@ ZEND_BEGIN_MODULE_GLOBALS(pfSense)
 #ifdef IPFW_FUNCTIONS
 	int ipfw;
 #endif
+#ifdef ETHERSWITCH_FUNCTIONS
+	int etherswitch;
+#endif
 	int csock;
 ZEND_END_MODULE_GLOBALS(pfSense)
 
@@ -110,6 +113,11 @@ PHP_FUNCTION(pfSense_ipfw_table_list);
 PHP_FUNCTION(pfSense_ipfw_table_lookup);
 PHP_FUNCTION(pfSense_ipfw_tables_list);
 PHP_FUNCTION(pfSense_ipfw_pipe);
+#endif
+#ifdef ETHERSWITCH_FUNCTIONS
+PHP_FUNCTION(pfSense_etherswitch_open);
+PHP_FUNCTION(pfSense_etherswitch_close);
+PHP_FUNCTION(pfSense_etherswitch_getinfo);
 #endif
 PHP_FUNCTION(pfSense_ipsec_list_sa);
 

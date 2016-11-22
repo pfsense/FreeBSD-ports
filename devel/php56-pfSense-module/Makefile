@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense
-PORTVERSION=	0.21
+PORTVERSION=	0.22
 CATEGORIES=	devel
 MASTER_SITES=	#
 DISTFILES=	#
@@ -13,16 +13,18 @@ COMMENT=	Library for getting useful info
 
 LIB_DEPENDS=	libvici.so:security/strongswan
 
-OPTIONS_DEFINE=	IPFW
-OPTIONS_DEFAULT=IPFW
+OPTIONS_DEFINE=	IPFW ETHERSWITCH
+OPTIONS_DEFAULT=IPFW ETHERSWITCH
 
 IPFW_DESC=	Enable IPFW functions
+ETHERSWITCH_DESC=	Enable etherswitch functions
 
 USES=		php:ext
 
 CFLAGS+=	-I/usr/local/include -I. -DTCPSTATES
 CFLAGS+=	-Wall -Wredundant-decls -Wnested-externs -Winline
 IPFW_CFLAGS=	-DIPFW_FUNCTIONS
+ETHERSWITCH_CFLAGS=	-DETHERSWITCH_FUNCTIONS
 
 CONFIGURE_ARGS=	--enable-pfSense
 
