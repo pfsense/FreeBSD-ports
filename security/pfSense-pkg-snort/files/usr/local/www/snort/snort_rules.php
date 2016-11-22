@@ -180,7 +180,10 @@ $categories[] = "custom.rules";
 $categories[] = "decoder.rules";
 $categories[] = "preprocessor.rules";
 $categories[] = "sensitive-data.rules";
+if (file_exists("{$snortdir}/snort_{$snort_uuid}_{$if_real}/preproc_rules/appid.rules"))
+{
 $categories[] = "appid.rules";
+}
 
 // Get any automatic rule category enable/disable modifications
 // if auto-SID Mgmt is enabled, and adjust the available rulesets
