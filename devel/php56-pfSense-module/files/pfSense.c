@@ -107,6 +107,10 @@ IS ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "config.h"
 #endif
 
+#ifdef ETHERSWITCH_FUNCTIONS
+#include "etherswitch.h"
+#endif
+
 #include "ipfw2.h"
 #include "php.h"
 #include "php_ini.h"
@@ -162,6 +166,11 @@ static zend_function_entry pfSense_functions[] = {
    PHP_FE(pfSense_ipfw_table_lookup, NULL)
    PHP_FE(pfSense_ipfw_tables_list, NULL)
    PHP_FE(pfSense_ipfw_pipe, NULL)
+#endif
+#ifdef ETHERSWITCH_FUNCTIONS
+   PHP_FE(pfSense_etherswitch_open, NULL)
+   PHP_FE(pfSense_etherswitch_close, NULL)
+   PHP_FE(pfSense_etherswitch_getinfo, NULL)
 #endif
    PHP_FE(pfSense_ipsec_list_sa, NULL)
     {NULL, NULL, NULL}
@@ -439,6 +448,9 @@ PHP_MINIT_FUNCTION(pfSense_socket)
 		} else
 			fcntl(PFSENSE_G(ipfw), F_SETFD, fcntl(PFSENSE_G(ipfw), F_GETFD, 0) | FD_CLOEXEC);
 	
+#endif
+#ifdef ETHERSWITCH_FUNCTIONS
+		PFSENSE_G(etherswitch) = -1;
 #endif
 		/* Create a new socket node */
 		if (NgMkSockNode(NULL, &csock, NULL) < 0)
@@ -1577,6 +1589,88 @@ PHP_FUNCTION(pfSense_ipfw_tables_list)
 		free(olh);
 		break;
 	}
+}
+#endif
+
+#ifdef ETHERSWITCH_FUNCTIONS
+static int
+etherswitch_open(const char *dev)
+{
+
+	PFSENSE_G(etherswitch) = open(dev, O_RDONLY);
+	if (PFSENSE_G(etherswitch) == -1)
+		return (-1);
+
+	return (0);
+}
+
+PHP_FUNCTION(pfSense_etherswitch_open)
+{
+	char *devname;
+	long devnamelen;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s",
+	    &devname, &devnamelen) == FAILURE) {
+		RETURN_FALSE;
+	}
+
+	if (devnamelen == 0)
+		devname = "/dev/etherswitch0";
+
+	if (PFSENSE_G(etherswitch) != -1)
+		RETURN_TRUE;
+
+	if (etherswitch_open(devname) == -1)
+		RETURN_FALSE;
+
+	RETURN_TRUE;
+}
+
+PHP_FUNCTION(pfSense_etherswitch_close)
+{
+	if (PFSENSE_G(etherswitch) == -1)
+		RETURN_TRUE;
+	close(PFSENSE_G(etherswitch));
+	PFSENSE_G(etherswitch) = -1;
+	RETURN_TRUE;
+}
+
+PHP_FUNCTION(pfSense_etherswitch_getinfo)
+{
+	etherswitch_conf_t	conf;
+	etherswitch_info_t	info;
+	zval *caps;
+
+	if (PFSENSE_G(etherswitch) == -1)
+		if (etherswitch_open("/dev/etherswitch0") == -1)
+			RETURN_NULL();
+	memset(&info, 0, sizeof(info));
+	if (ioctl(PFSENSE_G(etherswitch), IOETHERSWITCHGETINFO, &info) != 0)
+		RETURN_NULL();
+	memset(&conf, 0, sizeof(conf));
+	if (ioctl(PFSENSE_G(etherswitch), IOETHERSWITCHGETCONF, &conf) != 0)
+		RETURN_NULL();
+
+	array_init(return_value);
+	add_assoc_string(return_value, "name", info.es_name, 1);
+	add_assoc_long(return_value, "nports", info.es_nports);
+	add_assoc_long(return_value, "nvlangroups", info.es_nvlangroups);
+
+	ALLOC_INIT_ZVAL(caps);
+	array_init(caps);
+
+	if (info.es_vlan_caps & ETHERSWITCH_VLAN_ISL)
+		add_assoc_long(caps, "ISL", 1);
+	if (info.es_vlan_caps & ETHERSWITCH_VLAN_PORT)
+		add_assoc_long(caps, "PORT", 1);
+	if (info.es_vlan_caps & ETHERSWITCH_VLAN_DOT1Q)
+		add_assoc_long(caps, "DOT1Q", 1);
+	if (info.es_vlan_caps & ETHERSWITCH_VLAN_DOT1Q_4K)
+		add_assoc_long(caps, "DOT1Q4K", 1);
+	if (info.es_vlan_caps & ETHERSWITCH_VLAN_DOUBLE_TAG)
+		add_assoc_long(caps, "QinQ", 1);
+
+	add_assoc_zval(return_value, "caps", caps);
 }
 #endif
 
