@@ -1728,12 +1728,12 @@ PHP_FUNCTION(pfSense_etherswitch_getvlangroup)
 	for (i = 0; i < info.es_nports; i++) {
 		if ((vg.es_member_ports & ETHERSWITCH_PORTMASK(i)) != 0) {
 			if ((vg.es_untagged_ports & ETHERSWITCH_PORTMASK(i)) != 0)
-				tag = "t";
-			else
 				tag = "";
+			else
+				tag = "t";
 			memset(buf, 0, sizeof(buf));
 			snprintf(buf, sizeof(buf) - 1, "%d%s", i, tag);
-			add_assoc_long(members, buf, 1);
+			add_assoc_string(members, "port", buf, 1);
 		}
 	}
 	add_assoc_zval(return_value, "members", members);
