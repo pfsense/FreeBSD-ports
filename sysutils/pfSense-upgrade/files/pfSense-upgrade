@@ -449,11 +449,11 @@ pkg_upgrade() {
 		fi
 
 		if [ $(pkg ${pkg_chroot} upgrade -nq ${kernel_pkg} | wc -l) -gt 1 ]; then
-			_exec "pkg ${pkg_chroot} upgrade ${kernel_pkg}" "Upgrading ${product} kernel"
+			_exec "pkg ${pkg_chroot} upgrade -U ${kernel_pkg}" "Upgrading ${product} kernel"
 		fi
 
 		if [ $(pkg ${pkg_chroot} upgrade -nq ${uboot_pkg} | wc -l) -gt 1 ]; then
-			_exec "pkg ${pkg_chroot} upgrade ${uboot_pkg}" "Upgrading ${product} u-boot"
+			_exec "pkg ${pkg_chroot} upgrade -U ${uboot_pkg}" "Upgrading ${product} u-boot"
 		fi
 
 		if [ -n "${NEW_MAJOR}" ]; then
