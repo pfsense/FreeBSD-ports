@@ -108,6 +108,7 @@ IS ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 #ifdef ETHERSWITCH_FUNCTIONS
+#include <net/if_media.h>
 #include "etherswitch.h"
 #endif
 
@@ -171,6 +172,7 @@ static zend_function_entry pfSense_functions[] = {
    PHP_FE(pfSense_etherswitch_open, NULL)
    PHP_FE(pfSense_etherswitch_close, NULL)
    PHP_FE(pfSense_etherswitch_getinfo, NULL)
+   PHP_FE(pfSense_etherswitch_getport, NULL)
    PHP_FE(pfSense_etherswitch_getvlangroup, NULL)
 #endif
    PHP_FE(pfSense_ipsec_list_sa, NULL)
@@ -1694,6 +1696,71 @@ PHP_FUNCTION(pfSense_etherswitch_getinfo)
 	add_assoc_string(return_value, "vlan_mode", vlan_mode, 1);
 }
 
+#define	IFMEDIAREQ_NULISTENTRIES	256
+
+PHP_FUNCTION(pfSense_etherswitch_getport)
+{
+	char buf[128];
+	etherswitch_conf_t conf;
+	etherswitch_port_t p;
+	int ifm_ulist[IFMEDIAREQ_NULISTENTRIES];
+	long port;
+	zval *flags, *media;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &port) == FAILURE)
+		RETURN_NULL();
+	if (PFSENSE_G(etherswitch) == -1)
+		if (etherswitch_open("/dev/etherswitch0") == -1)
+			RETURN_NULL();
+
+	memset(&conf, 0, sizeof(conf));
+	if (ioctl(PFSENSE_G(etherswitch), IOETHERSWITCHGETCONF, &conf) != 0)
+		RETURN_NULL();
+	memset(&p, 0, sizeof(p));
+	p.es_port = port;
+	p.es_ifmr.ifm_ulist = ifm_ulist;
+	p.es_ifmr.ifm_count = IFMEDIAREQ_NULISTENTRIES;
+	if (ioctl(PFSENSE_G(etherswitch), IOETHERSWITCHGETPORT, &p) != 0)
+		RETURN_NULL();
+
+	array_init(return_value);
+	add_assoc_long(return_value, "port", p.es_port);
+	if (conf.vlan_mode == ETHERSWITCH_VLAN_DOT1Q)
+		add_assoc_long(return_value, "pvid", p.es_pvid);
+	add_assoc_string(return_value, "status",
+	    (p.es_ifmr.ifm_status & IFM_ACTIVE) ? "active" : "no carrier", 1);
+
+	ALLOC_INIT_ZVAL(flags);
+	array_init(flags);
+	if (p.es_flags & ETHERSWITCH_PORT_CPU)
+		add_assoc_long(flags, "CPU", 1);
+	if (p.es_flags & ETHERSWITCH_PORT_STRIPTAG)
+		add_assoc_long(flags, "STRIPTAG", 1);
+	if (p.es_flags & ETHERSWITCH_PORT_ADDTAG)
+		add_assoc_long(flags, "ADDTAG", 1);
+	if (p.es_flags & ETHERSWITCH_PORT_FIRSTLOCK)
+		add_assoc_long(flags, "FIRSTLOCK", 1);
+	if (p.es_flags & ETHERSWITCH_PORT_DROPUNTAGGED)
+		add_assoc_long(flags, "DROPUNTAGGED", 1);
+	if (p.es_flags & ETHERSWITCH_PORT_DOUBLE_TAG)
+		add_assoc_long(flags, "QinQ", 1);
+	if (p.es_flags & ETHERSWITCH_PORT_INGRESS)
+		add_assoc_long(flags, "INGRESS", 1);
+	add_assoc_zval(return_value, "flags", flags);
+
+	ALLOC_INIT_ZVAL(media);
+	array_init(media);
+	memset(buf, 0, sizeof(buf));
+	print_media_word(buf, sizeof(buf), p.es_ifmr.ifm_current, 1);
+	add_assoc_string(media, "current", buf, 1);
+	if (p.es_ifmr.ifm_active != p.es_ifmr.ifm_current) {
+		memset(buf, 0, sizeof(buf));
+		print_media_word(buf, sizeof(buf), p.es_ifmr.ifm_active, 0);
+		add_assoc_string(media, "active", buf, 1);
+	}
+	add_assoc_zval(return_value, "media", media);
+}
+
 PHP_FUNCTION(pfSense_etherswitch_getvlangroup)
 {
 	char buf[32], *tag;
@@ -1728,9 +1795,9 @@ PHP_FUNCTION(pfSense_etherswitch_getvlangroup)
 	for (i = 0; i < info.es_nports; i++) {
 		if ((vg.es_member_ports & ETHERSWITCH_PORTMASK(i)) != 0) {
 			if ((vg.es_untagged_ports & ETHERSWITCH_PORTMASK(i)) != 0)
-				tag = "t";
-			else
 				tag = "";
+			else
+				tag = "t";
 			memset(buf, 0, sizeof(buf));
 			snprintf(buf, sizeof(buf) - 1, "%d%s", i, tag);
 			add_assoc_long(members, buf, 1);
