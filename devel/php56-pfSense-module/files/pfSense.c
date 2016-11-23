@@ -171,6 +171,7 @@ static zend_function_entry pfSense_functions[] = {
    PHP_FE(pfSense_etherswitch_open, NULL)
    PHP_FE(pfSense_etherswitch_close, NULL)
    PHP_FE(pfSense_etherswitch_getinfo, NULL)
+   PHP_FE(pfSense_etherswitch_getvlangroup, NULL)
 #endif
    PHP_FE(pfSense_ipsec_list_sa, NULL)
     {NULL, NULL, NULL}
@@ -1637,8 +1638,9 @@ PHP_FUNCTION(pfSense_etherswitch_close)
 
 PHP_FUNCTION(pfSense_etherswitch_getinfo)
 {
-	etherswitch_conf_t	conf;
-	etherswitch_info_t	info;
+	char *vlan_mode;
+	etherswitch_conf_t conf;
+	etherswitch_info_t info;
 	zval *caps;
 
 	if (PFSENSE_G(etherswitch) == -1)
@@ -1658,7 +1660,6 @@ PHP_FUNCTION(pfSense_etherswitch_getinfo)
 
 	ALLOC_INIT_ZVAL(caps);
 	array_init(caps);
-
 	if (info.es_vlan_caps & ETHERSWITCH_VLAN_ISL)
 		add_assoc_long(caps, "ISL", 1);
 	if (info.es_vlan_caps & ETHERSWITCH_VLAN_PORT)
@@ -1669,8 +1670,73 @@ PHP_FUNCTION(pfSense_etherswitch_getinfo)
 		add_assoc_long(caps, "DOT1Q4K", 1);
 	if (info.es_vlan_caps & ETHERSWITCH_VLAN_DOUBLE_TAG)
 		add_assoc_long(caps, "QinQ", 1);
-
 	add_assoc_zval(return_value, "caps", caps);
+
+	switch(conf.vlan_mode) {
+	case ETHERSWITCH_VLAN_ISL:
+		vlan_mode = "ISL";
+		break;
+	case ETHERSWITCH_VLAN_PORT:
+		vlan_mode = "PORT";
+		break;
+	case ETHERSWITCH_VLAN_DOT1Q:
+		vlan_mode = "DOT1Q";
+		break;
+	case ETHERSWITCH_VLAN_DOT1Q_4K:
+		vlan_mode = "DOT1Q4K";
+		break;
+	case ETHERSWITCH_VLAN_DOUBLE_TAG:
+		vlan_mode = "QinQ";
+		break;
+	default:
+		vlan_mode = "Unknown";
+	}
+	add_assoc_string(return_value, "vlan_mode", vlan_mode, 1);
+}
+
+PHP_FUNCTION(pfSense_etherswitch_getvlangroup)
+{
+	char buf[32], *tag;
+	etherswitch_info_t info;
+	etherswitch_vlangroup_t vg;
+	int i;
+	long vlangroup;
+	zval *members;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &vlangroup) == FAILURE)
+		RETURN_NULL();
+	if (PFSENSE_G(etherswitch) == -1)
+		if (etherswitch_open("/dev/etherswitch0") == -1)
+			RETURN_NULL();
+
+	memset(&info, 0, sizeof(info));
+	if (ioctl(PFSENSE_G(etherswitch), IOETHERSWITCHGETINFO, &info) != 0)
+		RETURN_NULL();
+	memset(&vg, 0, sizeof(vg));
+	vg.es_vlangroup = vlangroup;
+	if (ioctl(PFSENSE_G(etherswitch), IOETHERSWITCHGETVLANGROUP, &vg) != 0)
+		RETURN_NULL();
+	if ((vg.es_vid & ETHERSWITCH_VID_VALID) == 0)
+		RETURN_NULL();
+
+	array_init(return_value);
+	add_assoc_long(return_value, "vlangroup", vg.es_vlangroup);
+	add_assoc_long(return_value, "vid", vg.es_vid & ETHERSWITCH_VID_MASK);
+
+	ALLOC_INIT_ZVAL(members);
+	array_init(members);
+	for (i = 0; i < info.es_nports; i++) {
+		if ((vg.es_member_ports & ETHERSWITCH_PORTMASK(i)) != 0) {
+			if ((vg.es_untagged_ports & ETHERSWITCH_PORTMASK(i)) != 0)
+				tag = "t";
+			else
+				tag = "";
+			memset(buf, 0, sizeof(buf));
+			snprintf(buf, sizeof(buf) - 1, "%d%s", i, tag);
+			add_assoc_long(members, buf, 1);
+		}
+	}
+	add_assoc_zval(return_value, "members", members);
 }
 #endif
 
