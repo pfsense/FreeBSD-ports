@@ -288,6 +288,25 @@ pkg_upgrade() {
 	# figure out which kernel variant is running
 	export kernel_pkg=$(pkg query %n $(pkg info ${product}-kernel-\* | grep -v -- -debug-))
 
+	# Detect if has u-boot package installed
+	unset uboot_pkg
+	if pkg info ${product}-u-boot-\* >/dev/null 2>&1; then
+		export uboot_pkg=$(pkg query %n $(pkg info ${product}-u-boot-\*))
+	fi
+
+	if [ -n "${uboot_pkg}" -a \
+	    "$(compare_pkg_version ${uboot_pkg})" = "<" ]; then
+		if [ ! -f /boot/msdos/u-boot.img ]; then
+			# Try to mount /boot/msdos
+			mount /boot/msdos >/dev/null 2>&1
+		fi
+
+		if [ ! -f /boot/msdos/u-boot.img ]; then
+			_echo "ERROR: u-boot partition (/boot/msdos) is not properly mounted"
+			_exit 1
+		fi
+	fi
+
 	if [ -z "${kernel_pkg}" ]; then
 		_echo "ERROR: It was not possible to identify which ${product} kernel is installed"
 		_exit 1
@@ -431,6 +450,10 @@ pkg_upgrade() {
 
 		if [ $(pkg ${pkg_chroot} upgrade -nq ${kernel_pkg} | wc -l) -gt 1 ]; then
 			_exec "pkg ${pkg_chroot} upgrade ${kernel_pkg}" "Upgrading ${product} kernel"
+		fi
+
+		if [ $(pkg ${pkg_chroot} upgrade -nq ${uboot_pkg} | wc -l) -gt 1 ]; then
+			_exec "pkg ${pkg_chroot} upgrade ${uboot_pkg}" "Upgrading ${product} u-boot"
 		fi
 
 		if [ -n "${NEW_MAJOR}" ]; then
