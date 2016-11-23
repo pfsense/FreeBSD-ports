@@ -1752,11 +1752,11 @@ PHP_FUNCTION(pfSense_etherswitch_getport)
 	array_init(media);
 	memset(buf, 0, sizeof(buf));
 	print_media_word(buf, sizeof(buf), p.es_ifmr.ifm_current, 1);
-	add_assoc_string(return_value, "current", "", 1);
+	add_assoc_string(media, "current", buf, 1);
 	if (p.es_ifmr.ifm_active != p.es_ifmr.ifm_current) {
 		memset(buf, 0, sizeof(buf));
 		print_media_word(buf, sizeof(buf), p.es_ifmr.ifm_active, 0);
-		add_assoc_string(return_value, "active", "", 1);
+		add_assoc_string(media, "active", buf, 1);
 	}
 	add_assoc_zval(return_value, "media", media);
 }
