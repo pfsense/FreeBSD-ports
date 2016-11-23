@@ -1800,7 +1800,7 @@ PHP_FUNCTION(pfSense_etherswitch_getvlangroup)
 				tag = "t";
 			memset(buf, 0, sizeof(buf));
 			snprintf(buf, sizeof(buf) - 1, "%d%s", i, tag);
-			add_assoc_string(members, "port", buf, 1);
+			add_assoc_long(members, buf, 1);
 		}
 	}
 	add_assoc_zval(return_value, "members", members);
