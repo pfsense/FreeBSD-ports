@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense
-PORTVERSION=	0.23
+PORTVERSION=	0.24
 CATEGORIES=	devel
 MASTER_SITES=	#
 DISTFILES=	#
@@ -38,6 +38,13 @@ extract:
 		${WRKSRC}/config.m4
 .else
 	@${REINPLACE_CMD} -e "s,%%DUMMYNET%%,," \
+		${WRKSRC}/config.m4
+.endif
+.if ${PORT_OPTIONS:METHERSWITCH}
+	@${REINPLACE_CMD} -e "s,%%ETHERSWITCH%%,ifmedia.c," \
+		${WRKSRC}/config.m4
+.else
+	@${REINPLACE_CMD} -e "s,%%ETHERSWITCH%%,," \
 		${WRKSRC}/config.m4
 .endif
 
