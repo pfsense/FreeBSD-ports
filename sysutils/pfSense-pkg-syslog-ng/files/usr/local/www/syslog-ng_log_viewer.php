@@ -37,7 +37,7 @@ if ($_POST['logfile']) {
 if ($_POST['limit']) {
 	$limit = intval($_POST['limit']);
 } else {
-	$limit = "10";
+	$limit = "50";
 }
 
 if ($_POST['archives']) {
@@ -132,7 +132,7 @@ include("head.inc");
 				</select></td></tr>
 				<tr><td class="border-bottom" width="22%">Limit</td><td class="border-bottom" width="78%"><select name="limit">
 				<?php
-				$limit_options = array("10", "20", "50");
+				$limit_options = array("10", "20", "50", "100", "250", "500");
 				foreach($limit_options as $limit_option) {
 					if($limit_option == $limit) {
 						echo "<option value=\"$limit_option\" selected=\"selected\">$limit_option</option>\n";
@@ -143,6 +143,9 @@ include("head.inc");
 				?>
 				</select></td></tr>
 				<tr><td class="border-bottom" width="22%">Include Archives</td><td class="border-bottom" width="78%"><input type="checkbox" name="archives" <?php if($archives) echo " CHECKED"; ?> /></td></tr>
+				<tr><td class="border-bottom" width="22%">Filter</td><td class="border-bottom" width="78%"><input name="filter" value="<?=$filter?>" /></td></tr>
+				<tr><td class="border-bottom" width="22%">Inverse Filter (NOT)</td><td class="border-bottom" width="78%"><input type="checkbox" name="not" <?php if($not) echo " CHECKED"; ?> /></td></tr>
+				<tr><td class="border-bottom" colspan="2"><input type="submit" value="Refresh" /></td></tr>
 				<tr><td class="border-bottom" colspan="2">
 				<table class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="0">
 				<?php
@@ -157,9 +160,6 @@ include("head.inc");
 				?>
 				</table>
 				</td></tr>
-				<tr><td class="border-bottom" width="22%">Filter</td><td class="border-bottom" width="78%"><input name="filter" value="<?=$filter?>" /></td></tr>
-				<tr><td class="border-bottom" width="22%">Inverse Filter (NOT)</td><td class="border-bottom" width="78%"><input type="checkbox" name="not" <?php if($not) echo " CHECKED"; ?> /></td></tr>
-				<tr><td class="border-bottom" colspan="2"><input type="submit" value="Refresh" /></td></tr>
 			</table>
 
 			</td></tr>
