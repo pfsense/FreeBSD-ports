@@ -735,7 +735,7 @@ $section->addInput(new Form_Select(
 	'Default Backend',
 	$pconfig['backend_serverpool'],
 	haproxy_keyvalue_array($listitem_none + $backends)
-))->setHelp('If actions above or in other shared frontends no default is needed and backend is selected with actions above this can be left to "None".');
+))->setHelp('If a backend is selected with actions above or in other shared frontends, no default is needed and this can be left to "None".');
 
 
 $form->add($section);
@@ -756,7 +756,7 @@ $section->addClass("haproxy_primary");
 
 $section->addInput(new Form_Checkbox(
 	'dontlognull',
-	'Dont log null',
+	"Don't log null",
 	'A connection on which no data has been transferred will not be logged.',
 	$pconfig['dontlognull']
 ))->setHelp("To skip logging probes from monitoring systems that otherwise would pollute the logging. 
@@ -775,7 +775,7 @@ $section->addInput(new Form_Checkbox(
 $section->addInput(new Form_Checkbox(
 	'log-separate-errors',
 	'Raise level for errors',
-	'Change the level changes from "info" to "err" for potentially interesting information.',
+	'Change the level from "info" to "err" for potentially interesting information.',
 	$pconfig['log-separate-errors']
 ))->setHelp("This option makes haproxy raise the level of logs containing potentially interesting information such
 	as errors, timeouts, retries, redispatches, or HTTP status codes 5xx.");
