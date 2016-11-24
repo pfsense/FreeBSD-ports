@@ -114,7 +114,7 @@ include("head.inc");
 <?php
 	$tab_array = array();
 	$tab_array[] = array("General", false, "/pkg_edit.php?xml=syslog-ng.xml&amp;id=0");
-	$tab_array[] = array("Advanced", false, "/pkg_edit.php?xml=syslog-ng_advanced.xml");
+	$tab_array[] = array("Advanced", false, "/pkg.php?xml=syslog-ng_advanced.xml");
 	$tab_array[] = array("Log Viewer", true, "/syslog-ng_log_viewer.php");
 	display_top_tabs($tab_array);
 ?>
