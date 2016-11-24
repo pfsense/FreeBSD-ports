@@ -153,6 +153,7 @@
 	</custom_php_resync_config_command>
 	<custom_php_install_command>
 		syslogng_install_command();
+		syslogng_upgrade_config();
 	</custom_php_install_command>
 	<custom_php_deinstall_command>
 		syslogng_deinstall_command();
