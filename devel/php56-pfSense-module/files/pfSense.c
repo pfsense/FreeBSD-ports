@@ -1733,7 +1733,7 @@ PHP_FUNCTION(pfSense_etherswitch_getport)
 	ALLOC_INIT_ZVAL(flags);
 	array_init(flags);
 	if (p.es_flags & ETHERSWITCH_PORT_CPU)
-		add_assoc_long(flags, "CPU", 1);
+		add_assoc_long(flags, "HOST", 1);
 	if (p.es_flags & ETHERSWITCH_PORT_STRIPTAG)
 		add_assoc_long(flags, "STRIPTAG", 1);
 	if (p.es_flags & ETHERSWITCH_PORT_ADDTAG)
