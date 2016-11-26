@@ -217,7 +217,7 @@ $section->addInput(new Form_Checkbox(
 	'ETPro for Suricata offers daily updates and extensive coverage of current malware threats.',
 	$pconfig['enable_etpro_rules'] == 'on' ? true:false,
 	'on'
-))->setHelp('The ETPro rules contain all of the ETOpen rules, so the ETOpen rules are not required and are disabled when the ETPro rules are selected. <a href="https://www.proofpoint.com/us/solutions/products/threat-intelligence/ET-Pro-Ruleset">Sign Up for an ETPro Account</a>');
+))->setHelp('The ETPro rules contain all of the ETOpen rules, so the ETOpen rules are not required and are disabled when the ETPro rules are selected. <a href="https://www.proofpoint.com/us/products/et-pro-ruleset">Sign Up for an ETPro Account</a>');
 $section->addInput(new Form_Input(
 	'etprocode',
 	'ETPro Subscription Configuration Code',
@@ -230,7 +230,7 @@ $section->addInput(new Form_Checkbox(
 	'Snort VRT free Registered User or paid Subscriber rules',
 	$pconfig['enable_vrt_rules'] == 'on' ? true:false,
 	'on'
-))->setHelp('<a href="https://www.snort.org/users/sign_up">Sign Up for a free Registered User Rule Account</a><br /><a href="https://www.proofpoint.com/us/products/et-pro-ruleset">Sign Up for paid Sourcefire VRT Certified Subscriber Rules</a>');
+))->setHelp('<a href="https://www.snort.org/users/sign_up">Sign Up for a free Registered User Rule Account</a><br /><a href="https://www.snort.org/products">Sign Up for paid Sourcefire VRT Certified Subscriber Rules</a>');
 $section->addInput(new Form_Input(
 	'snort_rules_file',
 	'Snort VRT Rules Filename',
