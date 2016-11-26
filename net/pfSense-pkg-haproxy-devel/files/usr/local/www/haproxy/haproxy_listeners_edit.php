@@ -157,6 +157,7 @@ $fields_externalAddress[0]['colwidth']="25%";
 $fields_externalAddress[0]['type']="select";
 $fields_externalAddress[0]['size']="200px";
 $fields_externalAddress[0]['items']=&$interfaces;
+$fields_externalAddress[0]['maxwidth']="200px";
 $fields_externalAddress[1]['name']="extaddr_custom";
 $fields_externalAddress[1]['columnheader']="Custom address";
 $fields_externalAddress[1]['colwidth']="25%";

@@ -1423,6 +1423,9 @@ function haproxy_writeconf($configpath) {
 	}
 	
 	$fd = fopen($configfile, "w");
+	fwrite ($fd, "# Automaticaly generated, dont edit manually.\n");
+	$d = date("Y-m-d H:i");
+	fwrite ($fd, "# Generated on: {$d}\n");
 	if (is_array($a_global)) {
 		fwrite ($fd, "global\n");
 		if ($a_global['maxconn']) {
@@ -2553,7 +2556,7 @@ function get_haproxy_frontends($excludeitem = "") {
 		foreach ($serveraddress as $addr) {
 			$serveradresstext .=($serveradresstext == null ? "" : ", ") . "{$addr['addr']}:{$addr['port']}";
 		}
-		$result[$frontend['name']]['name'] = "{$frontend['name']} - {$frontend['type']} ({$serveradresstext})";
+		$result[$frontend['name']]['name'] = "{$frontend['name']} - {$frontend['type']}";
 		$result[$frontend['name']]['ref'] = &$frontend;
 	}
 	uasort($result, haproxy_compareByName);

@@ -103,6 +103,7 @@ $fields_servers[2]['colwidth']="15%";
 $fields_servers[2]['type']="select";
 $fields_servers[2]['size']="100px";
 $fields_servers[2]['items']=&$primaryfrontends;
+$fields_servers[2]['maxwidth']="100px";
 $fields_servers[3]['name']="address";
 $fields_servers[3]['columnheader']="Address";
 $fields_servers[3]['colwidth']="10%";
@@ -113,6 +114,7 @@ $fields_servers[4]['columnheader']="Port";
 $fields_servers[4]['colwidth']="5%";
 $fields_servers[4]['type']="textbox";
 $fields_servers[4]['size']="5";
+$fields_servers[4]['maxwidth']="50px";
 $fields_servers[5]['name']="ssl";
 $fields_servers[5]['columnheader']="SSL";
 $fields_servers[5]['colwidth']="5%";
@@ -123,6 +125,7 @@ $fields_servers[6]['columnheader']="Weight";
 $fields_servers[6]['colwidth']="8%";
 $fields_servers[6]['type']="textbox";
 $fields_servers[6]['size']="5";
+$fields_servers[6]['maxwidth']="50px";
 
 $listitem_none['']['name']="None";
 
