@@ -135,7 +135,7 @@
 					<?php if ($disable): ?>
 					<tr title="<?=$tooltip?>">
 					  <td class="text-center">
-					  	<img src="/icon_block_d.gif" width="11" height"11" border="0"/>
+					  	<i class="fa fa-times text-danger"></i>
 					<?php else: ?>
 					<tr>
 					  <td class="text-center">
