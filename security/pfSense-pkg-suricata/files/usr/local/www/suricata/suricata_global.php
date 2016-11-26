@@ -256,7 +256,7 @@ $section->addInput(new Form_Checkbox(
 	'Hide deprecated rules categories in the GUI and remove them from the configuration. Default is Not Checked.',
 	$pconfig['hide_deprecated_rules'] == 'on' ? true:false,
 	'on'
-))->setHelp('If you are a Snort VRT Paid Subscriber, the community ruleset is already built into your download of the Snort VRT rules, and there is no benefit in adding this rule set.');
+));
 $form->add($section);
 
 $section = new Form_Section('Rules Update Settings');
