@@ -239,7 +239,7 @@ function syslogng_build_logrotate_conf($settings, $objects) {
 	if ($compress_archives == 'on') {
 		$conf .= "\tcompress\n";
 		if ($compress_type == 'bz2') {
-			$conf .= "\tcompresscmd bzip2\n";
+			$conf .= "\tcompresscmd /usr/bin/bzip2\n";
 		}
 	}
 
