@@ -452,7 +452,8 @@ pkg_upgrade() {
 			_exec "pkg ${pkg_chroot} upgrade -U ${kernel_pkg}" "Upgrading ${product} kernel"
 		fi
 
-		if [ $(pkg ${pkg_chroot} upgrade -nq ${uboot_pkg} | wc -l) -gt 1 ]; then
+		if [ -n "${uboot_pkg}" ] && \
+		    [ $(pkg ${pkg_chroot} upgrade -nq ${uboot_pkg} | wc -l) -gt 1 ]; then
 			_exec "pkg ${pkg_chroot} upgrade -U ${uboot_pkg}" "Upgrading ${product} u-boot"
 		fi
 
@@ -687,6 +688,11 @@ is_pkg_installed() {
 
 compare_pkg_version() {
 	local _pkg_name="${1}"
+
+	if [ -z "${_pkg_name}" ]; then
+		echo '!'
+		return 1
+	fi
 
 	if ! is_pkg_installed ${_pkg_name} ${pkg_chroot}; then
 		echo '!'
