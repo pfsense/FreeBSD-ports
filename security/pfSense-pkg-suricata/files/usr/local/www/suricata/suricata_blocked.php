@@ -194,7 +194,7 @@ $group->add(new Form_Button(
 
 $section->add($group);
 
-$group = new Form_Group('Save or Remove Hosts');
+$group = new Form_Group('Save Settings');
 
 $group->add(new Form_Button(
 	'save',
