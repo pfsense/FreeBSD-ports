@@ -98,7 +98,7 @@ _exec() {
 _exit() {
 	trap "-" 1 2 15 EXIT
 
-	pkg_lock ${kernel_pkg}
+	pkg_lock ${kernel_pkg} ${uboot_pkg}
 
 	if [ -f "${pid_file}" ]; then
 		rm -f ${pid_file}
@@ -388,9 +388,9 @@ pkg_upgrade() {
 		fi
 
 		if [ -n "${dry_run}" ]; then
-			pkg_unlock ${kernel_pkg}
+			pkg_unlock ${kernel_pkg} ${uboot_pkg}
 			pkg ${pkg_chroot} upgrade -nq 2>&1 | tee -a ${logfile}
-			pkg_lock ${kernel_pkg}
+			pkg_lock ${kernel_pkg} ${uboot_pkg}
 			_exit 0
 		fi
 
@@ -422,7 +422,7 @@ pkg_upgrade() {
 			need_reboot=1
 		fi
 
-		pkg_unlock ${kernel_pkg}
+		pkg_unlock ${kernel_pkg} ${uboot_pkg}
 
 		if [ -z "${yes}" ]; then
 			# Show user which packages are going to be upgraded
