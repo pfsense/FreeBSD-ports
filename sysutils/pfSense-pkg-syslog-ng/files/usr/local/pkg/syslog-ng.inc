@@ -326,6 +326,14 @@ function syslogng_resync() {
 	}
 	array_multisort($sort['objecttype'], SORT_ASC, $sort['objectname'], SORT_ASC, $objects);
 
+	/* Move _DEFAULT objects to the end */
+	usort($objects, function($a, $b) {
+		if ($a['objecttype'] != $b['objecttype']) {
+			return strcmp($a['objecttype'], $b['objecttype']);
+		}
+		return ($a['objectname'] == '_DEFAULT') ? 1 : -1;
+	});
+
 	syslogng_build_conf($objects);
 	syslogng_build_logrotate_conf($settings, $objects);
 
