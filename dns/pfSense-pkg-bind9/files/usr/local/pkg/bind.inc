@@ -427,7 +427,6 @@ EOD;
 						$bind_conf .= "\t\tmasters { $zoneipslave; };\n";
 						$bind_conf .= "\t\tallow-query { $zoneallowquery; };\n";
 						$bind_conf .= "\t\tallow-transfer { $zoneallowtransfer; };\n";
-						$bind_conf .= "\t\tnotify no;\n";
 						break;
 					case 'forward':
 						$bind_conf .= "\t\tforward only;\n";
@@ -587,9 +586,18 @@ EOD;
 									log_error("[bind] {$key_restored} DNSSEC keys restored from XML backup for {$zonename} zone.");
 								}
 								$dnssec_bin = "/usr/local/sbin/dnssec-keygen";
+								if ($zonereverso == "on") {
+									if ($zonereversv6o == "on") {
+										$z = "${zonename}.ip6.arpa";
+									} else {
+										$z = "${zonename}.in-addr.arpa";
+									}
+								} else {
+									$z = $zonename;
+								}
 								if (file_exists($dnssec_bin) && $key_restored == 0) {
-									exec("{$dnssec_bin} -K " . CHROOT_LOCALBASE . "/etc/namedb/keys {$zonename}", $kout);
-									exec("{$dnssec_bin} -K " . CHROOT_LOCALBASE . "/etc/namedb/keys -fk {$zonename}", $kout);
+									exec("{$dnssec_bin} -K " . CHROOT_LOCALBASE . "/etc/namedb/keys {$z}", $kout);
+									exec("{$dnssec_bin} -K " . CHROOT_LOCALBASE . "/etc/namedb/keys -fk {$z}", $kout);
 									foreach ($kout as $filename) {
 										chown(CHROOT_LOCALBASE . "/etc/namedb/keys/{$filename}.key", "bind");
 										chown(CHROOT_LOCALBASE . "/etc/namedb/keys/{$filename}.private", "bind");
