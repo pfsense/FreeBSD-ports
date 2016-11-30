@@ -56,22 +56,6 @@ function syslogng_deinstall_command() {
 	filter_configure();
 }
 
-function syslogng_upgrade_config() {
-	global $config;
-	
-	// _DEFAULT was renamed to zzzDEFAULT to allow overriding the default values (Feature #4548)
-	$oldobjects = $config['installedpackages']['syslogngadvanced']['config'];
-	if (is_array($oldobjects)) {
-		foreach ($oldobjects as $i => $oldobject) {
-			if ($oldobjects[$i]['objectname'] == '_DEFAULT') {
-				unset($config['installedpackages']['syslogngadvanced']['config'][$i]);
-			}
-		}
-	write_config();
-	}
-}
-
-
 function syslogng_validate_general($post, &$input_errors) {
 	global $config;
 
@@ -120,8 +104,8 @@ function syslogng_validate_advanced($post, &$input_errors) {
 
 	$objects = $config['installedpackages']['syslogngadvanced']['config'];
 
-	if ($post['objectname'] == 'zzzDEFAULT') {
-		$input_errors[] = 'Creation or modification of \'zzzDEFAULT\' objects not permitted. Change default settings under \'General\' tab.';
+	if ($post['objectname'] == '_DEFAULT') {
+		$input_errors[] = 'Creation or modification of \'_DEFAULT\' objects not permitted. Change default settings under \'General\' tab.';
 	}
 
 	$post['objectparameters'] = base64_encode($post['objectparameters']);
@@ -147,7 +131,7 @@ function syslogng_build_default_objects($settings) {
 	$default_logdir = $settings['default_logdir'];
 	$default_logfile = $settings['default_logfile'];
 
-	$default_objects[0] = array("objecttype"=>"source", "objectname"=>"zzzDEFAULT", "objectparameters"=>"{ internal(); syslog(transport($default_protocol) port($default_port)");
+	$default_objects[0] = array("objecttype"=>"source", "objectname"=>"_DEFAULT", "objectparameters"=>"{ internal(); syslog(transport($default_protocol) port($default_port)");
 	foreach (explode(",", $interfaces) as $interface) {
 		$interface_address = syslogng_get_real_interface_address($interface);
 		if ($interface_address[0]) {
@@ -156,9 +140,9 @@ function syslogng_build_default_objects($settings) {
 	}
 	$default_objects[0]['objectparameters'] .= "); };";
 	$default_objects[0]['objectparameters'] = base64_encode($default_objects[0]['objectparameters']);
-	$default_objects[1] = array("objecttype"=>"destination", "objectname"=>"zzzDEFAULT", "objectparameters"=>"{ file(\"$default_logdir/$default_logfile\"); };");
+	$default_objects[1] = array("objecttype"=>"destination", "objectname"=>"_DEFAULT", "objectparameters"=>"{ file(\"$default_logdir/$default_logfile\"); };");
 	$default_objects[1]['objectparameters'] = base64_encode($default_objects[1]['objectparameters']);
-	$default_objects[2] = array("objecttype"=>"log", "objectname"=>"zzzDEFAULT", "objectparameters"=>"{ source(zzzDEFAULT); destination(zzzDEFAULT); };");
+	$default_objects[2] = array("objecttype"=>"log", "objectname"=>"_DEFAULT", "objectparameters"=>"{ source(_DEFAULT); destination(_DEFAULT); };");
 	$default_objects[2]['objectparameters'] = base64_encode($default_objects[2]['objectparameters']);
 
 	return $default_objects;
