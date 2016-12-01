@@ -269,7 +269,7 @@ get_pf_states(int dev, struct pfioc_states *ps)
 	memset(ps, 0, sizeof(*ps));
 	for (;;) {
 		ps->ps_len = len;
-		if (len) {
+		if (len > 0) {
 			newinbuf = realloc(inbuf, len);
 			if (newinbuf == NULL)
 				return (-1);
@@ -288,8 +288,10 @@ get_pf_states(int dev, struct pfioc_states *ps)
 		len *= 2;
 	}
 
-	if (ps->ps_len == 0)
+	if (ps->ps_len == 0) {
+		ps->ps_buf = NULL;
 		free(inbuf);
+	}
 
 	return (0);
 }
@@ -3067,7 +3069,6 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 		RETURN_NULL();
 	}
 	if (ps.ps_len == 0) {
-		free(ps.ps_buf);
 		close(dev);
 		RETURN_NULL();
 	}
