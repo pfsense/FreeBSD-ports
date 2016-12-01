@@ -169,8 +169,6 @@ static zend_function_entry pfSense_functions[] = {
    PHP_FE(pfSense_ipfw_pipe, NULL)
 #endif
 #ifdef ETHERSWITCH_FUNCTIONS
-   PHP_FE(pfSense_etherswitch_open, NULL)
-   PHP_FE(pfSense_etherswitch_close, NULL)
    PHP_FE(pfSense_etherswitch_getinfo, NULL)
    PHP_FE(pfSense_etherswitch_getport, NULL)
    PHP_FE(pfSense_etherswitch_getvlangroup, NULL)
@@ -453,9 +451,6 @@ PHP_MINIT_FUNCTION(pfSense_socket)
 		} else
 			fcntl(PFSENSE_G(ipfw), F_SETFD, fcntl(PFSENSE_G(ipfw), F_GETFD, 0) | FD_CLOEXEC);
 	
-#endif
-#ifdef ETHERSWITCH_FUNCTIONS
-		PFSENSE_G(etherswitch) = -1;
 #endif
 		/* Create a new socket node */
 		if (NgMkSockNode(NULL, &csock, NULL) < 0)
@@ -1598,64 +1593,33 @@ PHP_FUNCTION(pfSense_ipfw_tables_list)
 #endif
 
 #ifdef ETHERSWITCH_FUNCTIONS
-static int
-etherswitch_open(const char *dev)
-{
-
-	PFSENSE_G(etherswitch) = open(dev, O_RDONLY);
-	if (PFSENSE_G(etherswitch) == -1)
-		return (-1);
-
-	return (0);
-}
-
-PHP_FUNCTION(pfSense_etherswitch_open)
-{
-	char *devname;
-	long devnamelen;
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s",
-	    &devname, &devnamelen) == FAILURE) {
-		RETURN_FALSE;
-	}
-
-	if (devnamelen == 0)
-		devname = "/dev/etherswitch0";
-
-	if (PFSENSE_G(etherswitch) != -1)
-		RETURN_TRUE;
-
-	if (etherswitch_open(devname) == -1)
-		RETURN_FALSE;
-
-	RETURN_TRUE;
-}
-
-PHP_FUNCTION(pfSense_etherswitch_close)
-{
-	if (PFSENSE_G(etherswitch) == -1)
-		RETURN_TRUE;
-	close(PFSENSE_G(etherswitch));
-	PFSENSE_G(etherswitch) = -1;
-	RETURN_TRUE;
-}
-
 PHP_FUNCTION(pfSense_etherswitch_getinfo)
 {
-	char *vlan_mode;
+	char *dev, *vlan_mode;
 	etherswitch_conf_t conf;
 	etherswitch_info_t info;
+	int fd;
+	long devlen;
 	zval *caps;
 
-	if (PFSENSE_G(etherswitch) == -1)
-		if (etherswitch_open("/dev/etherswitch0") == -1)
-			RETURN_NULL();
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &dev, &devlen) == FAILURE)
+		RETURN_NULL();
+	if (devlen == 0)
+		dev = "/dev/etherswitch0";
+	fd = open(dev, O_RDONLY);
+	if (fd == -1)
+		RETURN_NULL();
 	memset(&info, 0, sizeof(info));
-	if (ioctl(PFSENSE_G(etherswitch), IOETHERSWITCHGETINFO, &info) != 0)
+	if (ioctl(fd, IOETHERSWITCHGETINFO, &info) != 0) {
+		close(fd);
 		RETURN_NULL();
+	}
 	memset(&conf, 0, sizeof(conf));
-	if (ioctl(PFSENSE_G(etherswitch), IOETHERSWITCHGETCONF, &conf) != 0)
+	if (ioctl(fd, IOETHERSWITCHGETCONF, &conf) != 0) {
+		close(fd);
 		RETURN_NULL();
+	}
+	close(fd);
 
 	array_init(return_value);
 	add_assoc_string(return_value, "name", info.es_name, 1);
@@ -1702,28 +1666,36 @@ PHP_FUNCTION(pfSense_etherswitch_getinfo)
 
 PHP_FUNCTION(pfSense_etherswitch_getport)
 {
-	char buf[128];
+	char buf[128], *dev;
 	etherswitch_conf_t conf;
 	etherswitch_port_t p;
-	int ifm_ulist[IFMEDIAREQ_NULISTENTRIES];
-	long port;
+	int fd, ifm_ulist[IFMEDIAREQ_NULISTENTRIES];
+	long devlen, port;
 	zval *flags, *media;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &port) == FAILURE)
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sl", &dev,
+	    &devlen, &port) == FAILURE)
 		RETURN_NULL();
-	if (PFSENSE_G(etherswitch) == -1)
-		if (etherswitch_open("/dev/etherswitch0") == -1)
-			RETURN_NULL();
+	if (devlen == 0)
+		dev = "/dev/etherswitch0";
+	fd = open(dev, O_RDONLY);
+	if (fd == -1)
+		RETURN_NULL();
 
 	memset(&conf, 0, sizeof(conf));
-	if (ioctl(PFSENSE_G(etherswitch), IOETHERSWITCHGETCONF, &conf) != 0)
+	if (ioctl(fd, IOETHERSWITCHGETCONF, &conf) != 0) {
+		close(fd);
 		RETURN_NULL();
+	}
 	memset(&p, 0, sizeof(p));
 	p.es_port = port;
 	p.es_ifmr.ifm_ulist = ifm_ulist;
 	p.es_ifmr.ifm_count = IFMEDIAREQ_NULISTENTRIES;
-	if (ioctl(PFSENSE_G(etherswitch), IOETHERSWITCHGETPORT, &p) != 0)
+	if (ioctl(fd, IOETHERSWITCHGETPORT, &p) != 0) {
+		close(fd);
 		RETURN_NULL();
+	}
+	close(fd);
 
 	array_init(return_value);
 	add_assoc_long(return_value, "port", p.es_port);
@@ -1765,26 +1737,34 @@ PHP_FUNCTION(pfSense_etherswitch_getport)
 
 PHP_FUNCTION(pfSense_etherswitch_getvlangroup)
 {
-	char buf[32], *tag;
+	char buf[32], *dev, *tag;
 	etherswitch_info_t info;
 	etherswitch_vlangroup_t vg;
-	int i;
-	long vlangroup;
+	int fd, i;
+	long devlen, vlangroup;
 	zval *members;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &vlangroup) == FAILURE)
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sl", &dev,
+	    &devlen, &vlangroup) == FAILURE)
 		RETURN_NULL();
-	if (PFSENSE_G(etherswitch) == -1)
-		if (etherswitch_open("/dev/etherswitch0") == -1)
-			RETURN_NULL();
+	if (devlen == 0)
+		dev = "/dev/etherswitch0";
+	fd = open(dev, O_RDONLY);
+	if (fd == -1)
+		RETURN_NULL();
 
 	memset(&info, 0, sizeof(info));
-	if (ioctl(PFSENSE_G(etherswitch), IOETHERSWITCHGETINFO, &info) != 0)
+	if (ioctl(fd, IOETHERSWITCHGETINFO, &info) != 0) {
+		close(fd);
 		RETURN_NULL();
+	}
 	memset(&vg, 0, sizeof(vg));
 	vg.es_vlangroup = vlangroup;
-	if (ioctl(PFSENSE_G(etherswitch), IOETHERSWITCHGETVLANGROUP, &vg) != 0)
+	if (ioctl(fd, IOETHERSWITCHGETVLANGROUP, &vg) != 0) {
+		close(fd);
 		RETURN_NULL();
+	}
+	close(fd);
 	if ((vg.es_vid & ETHERSWITCH_VID_VALID) == 0)
 		RETURN_NULL();
 
