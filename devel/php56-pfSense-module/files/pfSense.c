@@ -2995,9 +2995,9 @@ PHP_FUNCTION(pfSense_get_pf_rules) {
 
 PHP_FUNCTION(pfSense_get_pf_states) {
 	char buf[128], *filter, *key;
-	int dev, filter_if, filter_rl, found, i, min, sec;
+	int dev, filter_if, filter_rl, found, min, sec, states;
 	struct pfioc_states ps;
-	struct pfsync_state *s;
+	struct pfsync_state *s, state;
 	struct pfsync_state_peer *src, *dst;
 	struct pfsync_state_key *sk, *nk;
 	struct protoent *p;
@@ -3050,15 +3050,21 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 
 	if ((dev = open("/dev/pf", O_RDWR)) < 0)
 		RETURN_NULL();
-	if (get_pf_states(dev, &ps) <= 0) {
+	states = get_pf_states(dev, &ps);
+	if (states <= 0) {
 		close(dev);
 		RETURN_NULL();
 	}
 	close(dev);
 
+	/* XXX - Limit to 10000 states. */
+	if (states > 10000)
+		states = 10000;
+
 	s = ps.ps_states;
 	array_init(return_value);
-	for (i = 0; i < ps.ps_len; i += sizeof(*s), s++) {
+	for (; states > 0; states--, s++) {
+		memcpy(&state, s, sizeof(state));
 		if (filter_if || filter_rl) {
 			found = 0;
 			hash1 = Z_ARRVAL_P(zvar);
@@ -3073,11 +3079,11 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 					RETURN_NULL();
 				}
 				if (filter_if) {
-					if (strcasecmp(s->ifname, Z_STRVAL_PP(data2)) == 0)
+					if (strcasecmp(state.ifname, Z_STRVAL_PP(data2)) == 0)
 						found = 1;
 				} else if (filter_rl) {
-					if (ntohl(s->rule) != -1 &&
-					    (long)ntohl(s->rule) == Z_LVAL_PP(data2)) {
+					if (ntohl(state.rule) != -1 &&
+					    (long)ntohl(state.rule) == Z_LVAL_PP(data2)) {
 						found = 1;
 					}
 				}
@@ -3086,19 +3092,19 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 				continue;
 		}
 
-	        if (s->direction == PF_OUT) {
-			src = &s->src;
-			dst = &s->dst;
-			sk = &s->key[PF_SK_STACK];
-			nk = &s->key[PF_SK_WIRE];
-			if (s->proto == IPPROTO_ICMP || s->proto == IPPROTO_ICMPV6)
+	        if (state.direction == PF_OUT) {
+			src = &state.src;
+			dst = &state.dst;
+			sk = &state.key[PF_SK_STACK];
+			nk = &state.key[PF_SK_WIRE];
+			if (state.proto == IPPROTO_ICMP || state.proto == IPPROTO_ICMPV6)
 				sk->port[0] = nk->port[0];
 		} else {
-			src = &s->dst;
-			dst = &s->src;
-			sk = &s->key[PF_SK_WIRE];
-			nk = &s->key[PF_SK_STACK];
-			if (s->proto == IPPROTO_ICMP || s->proto == IPPROTO_ICMPV6)
+			src = &state.dst;
+			dst = &state.src;
+			sk = &state.key[PF_SK_WIRE];
+			nk = &state.key[PF_SK_STACK];
+			if (state.proto == IPPROTO_ICMP || state.proto == IPPROTO_ICMPV6)
 				sk->port[1] = nk->port[1];
 		}
 
@@ -3106,51 +3112,51 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 		ALLOC_INIT_ZVAL(array);
 		array_init(array);
 
-		add_assoc_string(array, "if", s->ifname, 1);
-		if ((p = getprotobynumber(s->proto)) != NULL) {
+		add_assoc_string(array, "if", state.ifname, 1);
+		if ((p = getprotobynumber(state.proto)) != NULL) {
 			add_assoc_string(array, "proto", p->p_name, 1);
 			if (filter != NULL && strstr(p->p_name, filter))
 				found = 1;
 		} else
-			add_assoc_long(array, "proto", (long)s->proto);
+			add_assoc_long(array, "proto", (long)state.proto);
 		add_assoc_string(array, "direction",
-		    ((s->direction == PF_OUT) ? "out" : "in"), 1);
+		    ((state.direction == PF_OUT) ? "out" : "in"), 1);
 
 		memset(buf, 0, sizeof(buf));
-		pf_print_host(&nk->addr[1], nk->port[1], s->af, buf, sizeof(buf));
-		add_assoc_string(array, ((s->direction == PF_OUT) ? "src" : "dst"), buf, 1);
+		pf_print_host(&nk->addr[1], nk->port[1], state.af, buf, sizeof(buf));
+		add_assoc_string(array, ((state.direction == PF_OUT) ? "src" : "dst"), buf, 1);
 		if (filter != NULL && !found && strstr(buf, filter))
 			found = 1;
 
-		if (PF_ANEQ(&nk->addr[1], &sk->addr[1], s->af) ||
+		if (PF_ANEQ(&nk->addr[1], &sk->addr[1], state.af) ||
 		    nk->port[1] != sk->port[1]) {
 			memset(buf, 0, sizeof(buf));
-			pf_print_host(&sk->addr[1], sk->port[1], s->af, buf,
+			pf_print_host(&sk->addr[1], sk->port[1], state.af, buf,
 			    sizeof(buf));
 			add_assoc_string(array,
-			    ((s->direction == PF_OUT) ? "src-orig" : "dst-orig"), buf, 1);
+			    ((state.direction == PF_OUT) ? "src-orig" : "dst-orig"), buf, 1);
 			if (filter != NULL && !found && strstr(buf, filter))
 				found = 1;
 		}
 
 		memset(buf, 0, sizeof(buf));
-		pf_print_host(&nk->addr[0], nk->port[0], s->af, buf, sizeof(buf));
-		add_assoc_string(array, ((s->direction == PF_OUT) ? "dst" : "src"), buf, 1);
+		pf_print_host(&nk->addr[0], nk->port[0], state.af, buf, sizeof(buf));
+		add_assoc_string(array, ((state.direction == PF_OUT) ? "dst" : "src"), buf, 1);
 		if (filter != NULL && !found && strstr(buf, filter))
 			found = 1;
 
-		if (PF_ANEQ(&nk->addr[0], &sk->addr[0], s->af) ||
+		if (PF_ANEQ(&nk->addr[0], &sk->addr[0], state.af) ||
 		    nk->port[0] != sk->port[0]) {
 			memset(buf, 0, sizeof(buf));
-			pf_print_host(&sk->addr[0], sk->port[0], s->af, buf,
+			pf_print_host(&sk->addr[0], sk->port[0], state.af, buf,
 			    sizeof(buf));
 			add_assoc_string(array,
-			    ((s->direction == PF_OUT) ? "dst-orig" : "src-orig"), buf, 1);
+			    ((state.direction == PF_OUT) ? "dst-orig" : "src-orig"), buf, 1);
 			if (filter != NULL && !found && strstr(buf, filter))
 				found = 1;
 		}
 
-		if (s->proto == IPPROTO_TCP) {
+		if (state.proto == IPPROTO_TCP) {
 			if (src->state <= TCPS_TIME_WAIT &&
 			    dst->state <= TCPS_TIME_WAIT) {
 				snprintf(buf, sizeof(buf) - 1, "%s:%s",
@@ -3173,7 +3179,7 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 				    src->state, dst->state);
 				add_assoc_string(array, "state", buf, 1);
 			}
-		} else if (s->proto == IPPROTO_UDP && src->state < PFUDPS_NSTATES &&
+		} else if (state.proto == IPPROTO_UDP && src->state < PFUDPS_NSTATES &&
 		    dst->state < PFUDPS_NSTATES) {
 			const char *states[] = PFUDPS_NAMES;
 
@@ -3186,7 +3192,7 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 			    strstr(states[dst->state], filter))) {
 				found = 1;
 			}
-		} else if (s->proto != IPPROTO_ICMP && src->state < PFOTHERS_NSTATES &&
+		} else if (state.proto != IPPROTO_ICMP && src->state < PFOTHERS_NSTATES &&
 		    dst->state < PFOTHERS_NSTATES) {
 			/* XXX ICMP doesn't really have state levels */
 			const char *states[] = PFOTHERS_NAMES;
@@ -3210,14 +3216,14 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 			continue;
 		}
 
-		creation = ntohl(s->creation);
+		creation = ntohl(state.creation);
 		sec = creation % 60;
 		creation /= 60;
 		min = creation % 60;
 		creation /= 60;
 		snprintf(buf, sizeof(buf) - 1, "%.2u:%.2u:%.2u", creation, min, sec);
 		add_assoc_string(array, "age", buf, 1);
-		expire = ntohl(s->expire);
+		expire = ntohl(state.expire);
 		sec = expire % 60;
 		expire /= 60;
 		min = expire % 60;
@@ -3225,10 +3231,10 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 		snprintf(buf, sizeof(buf) - 1, "%.2u:%.2u:%.2u", expire, min, sec);
 		add_assoc_string(array, "expires in", buf, 1);
 
-		bcopy(s->packets[0], &packets[0], sizeof(uint64_t));
-		bcopy(s->packets[1], &packets[1], sizeof(uint64_t));
-		bcopy(s->bytes[0], &bytes[0], sizeof(uint64_t));
-		bcopy(s->bytes[1], &bytes[1], sizeof(uint64_t));
+		bcopy(state.packets[0], &packets[0], sizeof(uint64_t));
+		bcopy(state.packets[1], &packets[1], sizeof(uint64_t));
+		bcopy(state.bytes[0], &bytes[0], sizeof(uint64_t));
+		bcopy(state.bytes[1], &bytes[1], sizeof(uint64_t));
 		add_assoc_double(array, "packets total",
 		    (double)(be64toh(packets[0]) + be64toh(packets[1])));
 		add_assoc_double(array, "packets in",
@@ -3239,15 +3245,15 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 		    (double)(be64toh(bytes[0]) + be64toh(bytes[1])));
 		add_assoc_double(array, "bytes in", (double)be64toh(bytes[0]));
 		add_assoc_double(array, "bytes out", (double)be64toh(bytes[1]));
-		if (ntohl(s->anchor) != -1)
-			add_assoc_long(array, "anchor", (long)ntohl(s->anchor));
-		if (ntohl(s->rule) != -1)
-			add_assoc_long(array, "rule", (long)ntohl(s->rule));
+		if (ntohl(state.anchor) != -1)
+			add_assoc_long(array, "anchor", (long)ntohl(state.anchor));
+		if (ntohl(state.rule) != -1)
+			add_assoc_long(array, "rule", (long)ntohl(state.rule));
 
-		bcopy(&s->id, &id, sizeof(uint64_t));
+		bcopy(&state.id, &id, sizeof(uint64_t));
 		snprintf(buf, sizeof(buf) - 1, "%016jx", (uintmax_t)be64toh(id));
 		add_assoc_string(array, "id", buf, 1);
-		snprintf(buf, sizeof(buf) - 1, "%08x", ntohl(s->creatorid));
+		snprintf(buf, sizeof(buf) - 1, "%08x", ntohl(state.creatorid));
 		add_assoc_string(array, "creatorid", buf, 1);
 
 		add_next_index_zval(return_value, array);
