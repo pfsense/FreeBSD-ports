@@ -2,7 +2,6 @@
 
 PORTNAME=	pfSense-pkg-tftpd
 PORTVERSION=	0.1.2
-PORTREVISION=	1
 CATEGORIES=	ftp
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -11,7 +10,7 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	pfsense@stefanseidel.info
 COMMENT=	pfSense package for tftp server
 
-LICENSE=	GPLv3
+LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/libexec/in.tftpd:ftp/tftp-hpa
 
