@@ -257,41 +257,47 @@ prefix(void *val, int size)
 }
 
 static int
-get_pf_states(int dev, struct pfioc_states *ps)
+get_pf_states(int fd, struct pfioc_states* ps)
 {
-	char *inbuf, *newinbuf;
-	unsigned int len;
+	char *inbuf, *newbuf;
+	int retry;
+	size_t len;
 
-	len = 0;
-	inbuf = newinbuf = NULL;
 	memset(ps, 0, sizeof(*ps));
-	for (;;) {
-		ps->ps_len = len;
-		if (len > 0) {
-			newinbuf = realloc(inbuf, len);
-			if (newinbuf == NULL)
-				return (-1);
-			ps->ps_buf = inbuf = newinbuf;
-		}
-		if (ioctl(dev, DIOCGETSTATES, ps) < 0) {
-			free(inbuf);
+	ps->ps_len = 0;
+	inbuf = NULL;
+
+	// ask the kernel how much memory we need to allocate
+	if (ioctl(fd, DIOCGETSTATES, ps) == -1)
+		return (-1);
+
+	/* no states */
+	if (ps->ps_len == 0)
+		return (0);
+
+	for (retry = 5; retry > 0; retry--) {
+
+		len = ps->ps_len + sizeof(struct pfioc_states) +
+		    sizeof(struct pfsync_state) * 20;
+		newbuf = realloc(inbuf, len);
+		if (newbuf == NULL)
+			return (-1);
+
+		ps->ps_buf = inbuf = newbuf;
+
+		// really retrieve the different states
+		if (ioctl(fd, DIOCGETSTATES, ps) == -1) {
+			free(ps->ps_buf);
 			return (-1);
 		}
-		if (ps->ps_len == 0)
-			break;		/* no states */
+
 		if (ps->ps_len + sizeof(struct pfioc_states) < len)
-			break;
-		if (len == 0 && ps->ps_len != 0)
-			len = ps->ps_len;
-		len *= 2;
+			return (ps->ps_len / sizeof(struct pfsync_state));
 	}
 
-	if (ps->ps_len == 0) {
-		ps->ps_buf = NULL;
-		free(inbuf);
-	}
+	free(inbuf);
 
-	return (0);
+	return (-1);
 }
 
 static int
@@ -3044,14 +3050,11 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 
 	if ((dev = open("/dev/pf", O_RDWR)) < 0)
 		RETURN_NULL();
-	if (get_pf_states(dev, &ps) == -1) {
+	if (get_pf_states(dev, &ps) <= 0) {
 		close(dev);
 		RETURN_NULL();
 	}
-	if (ps.ps_len == 0) {
-		close(dev);
-		RETURN_NULL();
-	}
+	close(dev);
 
 	s = ps.ps_states;
 	array_init(return_value);
@@ -3250,7 +3253,6 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 		add_next_index_zval(return_value, array);
 	}
 	free(ps.ps_buf);
-	close(dev);
 }
 
 PHP_FUNCTION(pfSense_get_pf_stats) {
