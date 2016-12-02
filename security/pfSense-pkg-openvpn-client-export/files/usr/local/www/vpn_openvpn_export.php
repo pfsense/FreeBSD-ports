@@ -78,6 +78,7 @@ foreach ($a_server as $server) {
 				$ras_userent['cindex'] = $cindex;
 				$ras_userent['name'] = $user['name'];
 				$ras_userent['certname'] = $cert['descr'];
+				$ras_userent['cert'] = $cert;
 				$ras_user[] = $ras_userent;
 			}
 		}
@@ -107,6 +108,7 @@ foreach ($a_server as $server) {
 	$ras_serverent['users'] = $ras_user;
 	$ras_serverent['certs'] = $ras_certs;
 	$ras_serverent['mode'] = $server['mode'];
+	$ras_serverent['crlref'] = $server['crlref'];
 	$ras_serverent['authmode'] = $server['authmode'] != "Local Database" ? 'other' : 'local';
 	$ras_server[$vpnid] = $ras_serverent;
 }
@@ -630,20 +632,25 @@ servers[<?=$sindex?>][3] = new Array();
 servers[<?=$sindex?>][4] = '<?=$server['authmode']?>';
 <?php
 	foreach ($server['users'] as $uindex => $user): ?>
+<?php		if (!$server['crlref'] || !is_cert_revoked($user['cert'], $server['crlref'])): ?>
 servers[<?=$sindex?>][1][<?=$uindex?>] = new Array();
 servers[<?=$sindex?>][1][<?=$uindex?>][0] = '<?=$user['uindex']?>';
 servers[<?=$sindex?>][1][<?=$uindex?>][1] = '<?=$user['cindex']?>';
 servers[<?=$sindex?>][1][<?=$uindex?>][2] = '<?=$user['name']?>';
 servers[<?=$sindex?>][1][<?=$uindex?>][3] = '<?=str_replace("'", "\\'", $user['certname'])?>';
 <?php	
+		endif;
 	endforeach;
 	$c=0;
 	foreach ($server['certs'] as $cert): ?>
+<?php
+		if (!$server['crlref'] || !is_cert_revoked($config['cert'][$cert['cindex']], $server['crlref'])): ?>
 servers[<?=$sindex?>][3][<?=$c?>] = new Array();
 servers[<?=$sindex?>][3][<?=$c?>][0] = '<?=$cert['cindex']?>';
 servers[<?=$sindex?>][3][<?=$c?>][1] = '<?=str_replace("'", "\\'", $cert['certname'])?>';
 <?php
-		$c++;
+			$c++;
+		endif;
 	endforeach;
 endforeach; 
 ?>
