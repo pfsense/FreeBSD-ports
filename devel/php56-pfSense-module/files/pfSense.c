@@ -291,7 +291,7 @@ get_pf_states(int fd, struct pfioc_states* ps)
 			return (-1);
 		}
 
-		if (ps->ps_len + sizeof(struct pfioc_states) < len)
+		if (ps->ps_len + sizeof(struct pfioc_states) <= len)
 			return (ps->ps_len / sizeof(struct pfsync_state));
 	}
 
@@ -2995,7 +2995,7 @@ PHP_FUNCTION(pfSense_get_pf_rules) {
 
 PHP_FUNCTION(pfSense_get_pf_states) {
 	char buf[128], *filter, *key;
-	int dev, filter_if, filter_rl, found, min, sec, states;
+	int count, dev, filter_if, filter_rl, found, min, sec, states;
 	struct pfioc_states ps;
 	struct pfsync_state *s, state;
 	struct pfsync_state_peer *src, *dst;
@@ -3057,13 +3057,10 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 	}
 	close(dev);
 
-	/* XXX - Limit to 10000 states. */
-	if (states > 10000)
-		states = 10000;
-
 	s = ps.ps_states;
 	array_init(return_value);
-	for (; states > 0; states--, s++) {
+	/* Limit the result to 50.000 states maximum. */
+	for (count = 0; states > 0 && count < 50000; states--, s++) {
 		memcpy(&state, s, sizeof(state));
 		if (filter_if || filter_rl) {
 			found = 0;
@@ -3257,6 +3254,7 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 		add_assoc_string(array, "creatorid", buf, 1);
 
 		add_next_index_zval(return_value, array);
+		count++;
 	}
 	free(ps.ps_buf);
 }
