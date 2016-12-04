@@ -1599,6 +1599,23 @@ PHP_FUNCTION(pfSense_ipfw_tables_list)
 #endif
 
 #ifdef ETHERSWITCH_FUNCTIONS
+static int
+etherswitch_dev_is_valid(char *dev)
+{
+	char *ep;
+	long unit;
+
+	if (dev == NULL || strlen(dev) <= 16 ||
+	    strncmp(dev, "/dev/etherswitch", 16) != 0) {
+		return (-1);
+	}
+	unit = strtol(dev + 16, &ep, 0);
+	if (*(dev + 16) != '\0' && ep != NULL && *ep != '\0')
+		return (-1);
+
+	return ((int)unit);
+}
+
 PHP_FUNCTION(pfSense_etherswitch_getinfo)
 {
 	char *dev, *vlan_mode;
@@ -1612,6 +1629,8 @@ PHP_FUNCTION(pfSense_etherswitch_getinfo)
 		RETURN_NULL();
 	if (devlen == 0)
 		dev = "/dev/etherswitch0";
+	if (etherswitch_dev_is_valid(dev) < 0)
+		RETURN_NULL();
 	fd = open(dev, O_RDONLY);
 	if (fd == -1)
 		RETURN_NULL();
@@ -1684,6 +1703,8 @@ PHP_FUNCTION(pfSense_etherswitch_getport)
 		RETURN_NULL();
 	if (devlen == 0)
 		dev = "/dev/etherswitch0";
+	if (etherswitch_dev_is_valid(dev) < 0)
+		RETURN_NULL();
 	fd = open(dev, O_RDONLY);
 	if (fd == -1)
 		RETURN_NULL();
@@ -1755,6 +1776,8 @@ PHP_FUNCTION(pfSense_etherswitch_getvlangroup)
 		RETURN_NULL();
 	if (devlen == 0)
 		dev = "/dev/etherswitch0";
+	if (etherswitch_dev_is_valid(dev) < 0)
+		RETURN_NULL();
 	fd = open(dev, O_RDONLY);
 	if (fd == -1)
 		RETURN_NULL();
