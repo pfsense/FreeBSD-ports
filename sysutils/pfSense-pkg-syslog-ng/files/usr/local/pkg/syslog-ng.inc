@@ -231,7 +231,8 @@ function syslogng_build_logrotate_conf($settings, $objects) {
 	if ($compress_archives == 'on') {
 		$conf .= "\tcompress\n";
 		if ($compress_type == 'bz2') {
-			$conf .= "\tcompresscmd bzip2\n";
+			$conf .= "\tcompresscmd /usr/bin/bzip2\n";
+			$conf .= "\tcompressext .bz2\n";
 		}
 	}
 
@@ -316,6 +317,14 @@ function syslogng_resync() {
 		$sort['objectname'][$k] = $v['objectname'];
 	}
 	array_multisort($sort['objecttype'], SORT_ASC, $sort['objectname'], SORT_ASC, $objects);
+
+	/* Move _DEFAULT objects to the end */
+	usort($objects, function($a, $b) {
+		if ($a['objecttype'] != $b['objecttype']) {
+			return strcmp($a['objecttype'], $b['objecttype']);
+		}
+		return ($a['objectname'] == '_DEFAULT') ? 1 : -1;
+	});
 
 	syslogng_build_conf($objects);
 	syslogng_build_logrotate_conf($settings, $objects);

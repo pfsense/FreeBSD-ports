@@ -98,7 +98,7 @@ _exec() {
 _exit() {
 	trap "-" 1 2 15 EXIT
 
-	pkg_lock ${kernel_pkg}
+	pkg_lock ${kernel_pkg} ${uboot_pkg}
 
 	if [ -f "${pid_file}" ]; then
 		rm -f ${pid_file}
@@ -194,32 +194,38 @@ fetch_upgrade_packages() {
 }
 
 pkg_lock() {
-	local _pkgs="${1}"
+	local _pkgs="$@"
 
 	if [ -z "${_pkgs}" ]; then
 		return
 	fi
 
-	for _pkg in $(pkg query -g %n "${_pkgs}"); do
-		if [ "$(pkg ${pkg_chroot} query %k ${_pkg})" = "0" ]; then
-			_exec "pkg ${pkg_chroot} lock ${_pkg}" \
-				"Locking package ${_pkg}" mute
-		fi
+	for _pkg in ${_pkgs}; do
+		for _pkg_name in $(pkg query -g %n "${_pkg}"); do
+			if [ "$(pkg ${pkg_chroot} query %k ${_pkg_name})" != "0" ]; then
+				continue
+			fi
+			_exec "pkg ${pkg_chroot} lock ${_pkg_name}" \
+				"Locking package ${_pkg_name}" mute
+		done
 	done
 }
 
 pkg_unlock() {
-	local _pkgs="${1}"
+	local _pkgs="$@"
 
 	if [ -z "${_pkgs}" ]; then
 		return
 	fi
 
-	for _pkg in $(pkg query -g %n "${_pkgs}"); do
-		if [ "$(pkg ${pkg_chroot} query %k ${_pkg})" = "1" ]; then
-			_exec "pkg ${pkg_chroot} unlock ${_pkg}" \
-				"Unlocking package ${_pkg}" mute
-		fi
+	for _pkg in ${_pkgs}; do
+		for _pkg_name in $(pkg query -g %n "${_pkg}"); do
+			if [ "$(pkg ${pkg_chroot} query %k ${_pkg_name})" != "1" ]; then
+				continue
+			fi
+			_exec "pkg ${pkg_chroot} unlock ${_pkg_name}" \
+				"Unlocking package ${_pkg_name}" mute
+		done
 	done
 }
 
@@ -287,6 +293,25 @@ pkg_update() {
 pkg_upgrade() {
 	# figure out which kernel variant is running
 	export kernel_pkg=$(pkg query %n $(pkg info ${product}-kernel-\* | grep -v -- -debug-))
+
+	# Detect if has u-boot package installed
+	unset uboot_pkg
+	if pkg info ${product}-u-boot-\* >/dev/null 2>&1; then
+		export uboot_pkg=$(pkg query %n $(pkg info ${product}-u-boot-\*))
+	fi
+
+	if [ -n "${uboot_pkg}" -a \
+	    "$(compare_pkg_version ${uboot_pkg})" = "<" ]; then
+		if [ ! -f /boot/msdos/u-boot.img ]; then
+			# Try to mount /boot/msdos
+			mount /boot/msdos >/dev/null 2>&1
+		fi
+
+		if [ ! -f /boot/msdos/u-boot.img ]; then
+			_echo "ERROR: u-boot partition (/boot/msdos) is not properly mounted"
+			_exit 1
+		fi
+	fi
 
 	if [ -z "${kernel_pkg}" ]; then
 		_echo "ERROR: It was not possible to identify which ${product} kernel is installed"
@@ -363,9 +388,9 @@ pkg_upgrade() {
 		fi
 
 		if [ -n "${dry_run}" ]; then
-			pkg_unlock ${kernel_pkg}
+			pkg_unlock ${kernel_pkg} ${uboot_pkg}
 			pkg ${pkg_chroot} upgrade -nq 2>&1 | tee -a ${logfile}
-			pkg_lock ${kernel_pkg}
+			pkg_lock ${kernel_pkg} ${uboot_pkg}
 			_exit 0
 		fi
 
@@ -397,7 +422,7 @@ pkg_upgrade() {
 			need_reboot=1
 		fi
 
-		pkg_unlock ${kernel_pkg}
+		pkg_unlock ${kernel_pkg} ${uboot_pkg}
 
 		if [ -z "${yes}" ]; then
 			# Show user which packages are going to be upgraded
@@ -430,7 +455,12 @@ pkg_upgrade() {
 		fi
 
 		if [ $(pkg ${pkg_chroot} upgrade -nq ${kernel_pkg} | wc -l) -gt 1 ]; then
-			_exec "pkg ${pkg_chroot} upgrade ${kernel_pkg}" "Upgrading ${product} kernel"
+			_exec "pkg ${pkg_chroot} upgrade -U ${kernel_pkg}" "Upgrading ${product} kernel"
+		fi
+
+		if [ -n "${uboot_pkg}" ] && \
+		    [ $(pkg ${pkg_chroot} upgrade -nq ${uboot_pkg} | wc -l) -gt 1 ]; then
+			_exec "pkg ${pkg_chroot} upgrade -U ${uboot_pkg}" "Upgrading ${product} u-boot"
 		fi
 
 		if [ -n "${NEW_MAJOR}" ]; then
@@ -664,6 +694,11 @@ is_pkg_installed() {
 
 compare_pkg_version() {
 	local _pkg_name="${1}"
+
+	if [ -z "${_pkg_name}" ]; then
+		echo '!'
+		return 1
+	fi
 
 	if ! is_pkg_installed ${_pkg_name} ${pkg_chroot}; then
 		echo '!'
