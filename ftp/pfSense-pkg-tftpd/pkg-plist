@@ -1,0 +1,6 @@
+/etc/inc/priv/tftpd.priv.inc
+pkg/tftpd.inc
+pkg/tftpd.xml
+%%DATADIR%%/info.xml
+@dir /etc/inc/priv
+@dir /etc/inc
