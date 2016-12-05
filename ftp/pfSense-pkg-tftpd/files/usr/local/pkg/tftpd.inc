@@ -39,6 +39,8 @@ function deinstall_package_tftpd() {
 function sync_package_tftpd() {
 	global $config;
 
+	conf_mount_rw();
+
 	if (is_array($config['installedpackages']['tftpd'])) {
 		$tftpd_conf = &$config['installedpackages']['tftpd']['config'][0];
 	} else {
@@ -78,6 +80,9 @@ function sync_package_tftpd() {
 		start_service("tftpd");
 		sleep(3);
 	}
+
+	conf_mount_ro();
+
 	filter_configure();
 }
 
