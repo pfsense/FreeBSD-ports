@@ -33,7 +33,7 @@ function install_package_tftpd() {
 }
 
 function deinstall_package_tftpd() {
-	rmdir("/tftpboot");
+	@rmdir("/tftpboot");
 }
 
 function sync_package_tftpd() {
