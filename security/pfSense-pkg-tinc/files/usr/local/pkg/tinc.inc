@@ -22,34 +22,7 @@
 require_once('config.inc');
 require_once('service-utils.inc');
 require_once('util.inc');
-/* include_once('guiconfig.inc'); is needed for clear_log_file() during package installation while booting.
- * However, guiconfig.inc includes authgui.inc which requires a valid php session_auth() and exits when not found.
- * So we include the function here.
-*/
-if (!function_exists('clear_log_file')) {
-
-	function clear_log_file($logfile = "/var/log/system.log", $restart_syslogd = true) {
-		require_once('system.inc');
-		global $config;
-		if ($restart_syslogd) {
-			exec("/usr/bin/killall syslogd");
-		}
-		if (isset($config['system']['disablesyslogclog'])) {
-			unlink($logfile);
-			touch($logfile);
-		} else {
-			$log_size = isset($config['syslog']['logfilesize']) ? $config['syslog']['logfilesize'] : "511488";
-			if (isset($config['system']['usefifolog'])) {
-				exec("/usr/sbin/fifolog_create -s {$log_size} " . escapeshellarg($logfile));
-			} else {
-				exec("/usr/local/sbin/clog -i -s {$log_size} " . escapeshellarg($logfile));
-			}
-		}
-		if ($restart_syslogd) {
-			system_syslogd_start();
-		}
-	}
-}
+require_once('system.inc');
 
 function tinc_save() {
 	global $config, $configpath;
