@@ -124,13 +124,6 @@ function tinc_save() {
 		chmod("{$configpath}/subnet-down", 0744);
 	}
 
-	$pfs_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-	if ($pfs_version == "2.2") {
-		$pbietcpath = '/usr/pbi/tinc-' . php_uname("m") . '/local/etc';
-		unlink_if_exists("{$pbietcpath}/tinc");
-		symlink($configpath, "{$pbietcpath}/tinc");
-	}
-
 	if ($tincconf['enable'] != "") {
 		tinc_write_rcfile();
 		if (is_service_running("tinc")) {
