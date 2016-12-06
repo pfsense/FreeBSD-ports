@@ -33,7 +33,7 @@ function tinc_save() {
 	rename("{$configpath}", "{$configpath}.old");
 	safe_mkdir("{$configpath}");
 	safe_mkdir("{$configpath}/hosts");
-	touch("{$configpath}/WARNING-ENTIRE_DIRECTORY_ERASED_ON_SAVE_FROM_GUI");
+
 	if (is_array($config['installedpackages']['tinc']['config'])) {
 		$tincconf = &$config['installedpackages']['tinc']['config'][0];
 	} else {
