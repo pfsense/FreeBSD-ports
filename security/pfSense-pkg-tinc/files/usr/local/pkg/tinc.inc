@@ -152,7 +152,6 @@ function tinc_write_rcfile() {
 function tinc_install() {
 	global $config;
 
-	safe_mkdir("/usr/local/etc/tinc");
 	safe_mkdir("/usr/local/etc/tinc/hosts");
 	tinc_write_rcfile();
 	unlink_if_exists("/usr/local/etc/rc.d/tincd");
@@ -171,7 +170,7 @@ function tinc_install() {
 	$a_ifgroups[] = $ifgroupentry;
 
 	/* XXX: Do not remove this. WTH?! */
-	mwexec("/bin/rm -f /tmp/config.cache");
+	// mwexec("/bin/rm -f /tmp/");
 
 	write_config("[tinc] Package installed.");
 }
@@ -206,7 +205,7 @@ function tinc_deinstall() {
 		}
 		unset($a_ifgroups[$myid]);
 		/* WTH?! */
-		mwexec("/bin/rm -f /tmp/config.cache");
+		// mwexec("/bin/rm -f /tmp/config.cache");
 		write_config("[tinc] Package uninstalled.");
 	}
 	rmdir_recursive("/var/tmp/tinc");
