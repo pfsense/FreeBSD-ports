@@ -591,7 +591,7 @@ events.push(function() {
 		"vpnusers": "Users",
 		"quality": "Milliseconds, Percent",
 		"traffic": "Bits Per Second",
-		"queue" : "Bits Per Second",
+		"queues" : "Bits Per Second",
 		"queuedrops" : "Drops Per Second",
 		"wireless" : "snr / channel / rate",
 		"cellular" : "Signal"
