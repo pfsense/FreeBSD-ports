@@ -95,18 +95,20 @@ $left_unit_acronym = $right_unit_acronym = "";
 
 //Set units based on RRD database name
 $graph_unit_lookup = array(
-	"traffic"   => "b/s",
-	"packets"   => "pps",
-	"states"    => "cps",
-	"quality"   => "ms",
-	"processor" => "%",
-	"memory"    => "%",
-	"wireless"  => "dBi",
-	"mbuf"      => "",
-	"dhcpd"     => "",
-	"ntpd"      => "",
-	"vpnusers"  => "",
-	"cellular"  => "dB"
+	"traffic"    => "b/s",
+	"packets"    => "pps",
+	"states"     => "cps",
+	"quality"    => "ms",
+	"processor"  => "%",
+	"memory"     => "%",
+	"wireless"   => "dBi",
+	"mbuf"       => "",
+	"dhcpd"      => "",
+	"ntpd"       => "",
+	"vpnusers"   => "",
+	"queues"     => "b/s",
+	"queuedrops" => "drops",
+	"cellular"   => "dB"
 );
 
 $left_unit_acronym = $graph_unit_lookup[$left_pieces[1]];
@@ -154,97 +156,97 @@ if ($left != "null") {
 
 		//Overrides based on line name
 		switch($ds) {
-		case "user":
-			$ds = "user util.";
-			break;
-		case "nice":
-			$ds = "nice util.";
-			break;
-		case "system":
-			$ds = "system util.";
-			break;
-		case "stddev":
-			$ds = "delay std. dev.";
-			$multiplier = 1000;
-			break;
-		case "delay":
-			$ds = "delay average";
-			$multiplier = 1000;
-			break;	
-		case "loss":
-			$ds = "packet loss";
-			$unit_acronym = "%";
-			$invert = $invert_graph;
-			break;
-		case "processes":
-			$unit_acronym = "";
-			break;
-		case "pfstates":
-			$unit_acronym = "";
-			$ds = "filter states";
-			break;
-		case "srcip":
-			$unit_acronym = "";
-			$ds = "source addr.";
-			break;
-		case "dstip":
-			$unit_acronym = "";
-			$ds = "dest. addr.";
-			break;
-		case "pfrate":
-			$ds = "state changes";
-			break;
-		case "pfnat":
-			$ignored_left++;
-			$ignore = true;
-			break;
-		case "inpass":
-			$ninetyfifth = true;
-			$multiplier = 8;
-			$format = "s";
-			break;
-		case "max":
-			$format = "s";
-			break;
-		case "inpass6":
-			$ninetyfifth = true;
-			$multiplier = 8;
-			$format = "s";
-			break;
-		case "outpass":
-			$invert = $invert_graph;
-			$ninetyfifth = true;
-			$multiplier = 8;
-			$format = "s";
-			break;
-		case "outpass6":
-			$invert = $invert_graph;
-			$ninetyfifth = true;
-			$multiplier = 8;
-			$format = "s";
-			break;
-		case "rate":
-			$unit_acronym = "Mb";
-			break;
-		case "channel":
-			$unit_acronym = "";
-			break;
-		case "concurrentusers":
-			$unit_acronym = "";
-			break;
-		case "loggedinusers":
-			$unit_acronym = "";
-			break;
-		case "offset":
-		case "sjit":
-		case "cjit":
-		case "wander":
-		case "disp":
-			$unit_acronym = "ms";
-			break;
-		case "freq":
-			$unit_acronym = "";
-			break;
+			case "user":
+				$ds = "user util.";
+				break;
+			case "nice":
+				$ds = "nice util.";
+				break;
+			case "system":
+				$ds = "system util.";
+				break;
+			case "stddev":
+				$ds = "delay std. dev.";
+				$multiplier = 1000;
+				break;
+			case "delay":
+				$ds = "delay average";
+				$multiplier = 1000;
+				break;
+			case "loss":
+				$ds = "packet loss";
+				$unit_acronym = "%";
+				$invert = $invert_graph;
+				break;
+			case "processes":
+				$unit_acronym = "";
+				break;
+			case "pfstates":
+				$unit_acronym = "";
+				$ds = "filter states";
+				break;
+			case "srcip":
+				$unit_acronym = "";
+				$ds = "source addr.";
+				break;
+			case "dstip":
+				$unit_acronym = "";
+				$ds = "dest. addr.";
+				break;
+			case "pfrate":
+				$ds = "state changes";
+				break;
+			case "pfnat":
+				$ignored_left++;
+				$ignore = true;
+				break;
+			case "inpass":
+				$ninetyfifth = true;
+				$multiplier = 8;
+				$format = "s";
+				break;
+			case "max":
+				$format = "s";
+				break;
+			case "inpass6":
+				$ninetyfifth = true;
+				$multiplier = 8;
+				$format = "s";
+				break;
+			case "outpass":
+				$invert = $invert_graph;
+				$ninetyfifth = true;
+				$multiplier = 8;
+				$format = "s";
+				break;
+			case "outpass6":
+				$invert = $invert_graph;
+				$ninetyfifth = true;
+				$multiplier = 8;
+				$format = "s";
+				break;
+			case "rate":
+				$unit_acronym = "Mb";
+				break;
+			case "channel":
+				$unit_acronym = "";
+				break;
+			case "concurrentusers":
+				$unit_acronym = "";
+				break;
+			case "loggedinusers":
+				$unit_acronym = "";
+				break;
+			case "offset":
+			case "sjit":
+			case "cjit":
+			case "wander":
+			case "disp":
+				$unit_acronym = "ms";
+				break;
+			case "freq":
+				$unit_acronym = "";
+				break;
 		}
 
 		if (!$ignore) {
@@ -466,87 +468,97 @@ if ($right != "null") {
 
 		//Override acronym based on line name
 		switch($ds) {
-		case "user":
-			$ds = "user util.";
-			break;
-		case "nice":
-			$ds = "nice util.";
-			break;
-		case "system":
-			$ds = "system util.";
-			break;
-		case "stddev":
-			$ds = "delay std. dev.";
-			$multiplier = 1000;
-			break;
-		case "delay":
-			$ds = "delay average";
-			$multiplier = 1000;
-			break;
-		case "loss":
-			$ds = "packet loss";
-			$unit_acronym = "%";
-			$invert = $invert_graph;
-			break;
-		case "processes":
-			$unit_acronym = "";
-			break;
-		case "pfstates":
-			$unit_acronym = "";
-			$ds = "filter states";
-			break;
-		case "srcip":
-			$unit_acronym = "";
-			$ds = "source addr.";
-			break;
-		case "dstip":
-			$unit_acronym = "";
-			$ds = "dest. addr.";
-			break;
-		case "pfrate":
-			$ds = "state changes";
-			break;
-		case "pfnat":
-			$ignored_right++;
-			$ignore = true;
-			break;
-		case "inpass":
-			$ninetyfifth = true;
-			$multiplier = 8;
-			$format = "s";
-			break;
-		case "max":
-			$format = "s";
-			break;
-		case "inpass6":
-			$ninetyfifth = true;
-			$multiplier = 8;
-			$format = "s";
-			break;
-		case "outpass":
-			$invert = $invert_graph;
-			$ninetyfifth = true;
-			$multiplier = 8;
-			$format = "s";
-			break;
-		case "outpass6":
-			$invert = $invert_graph;
-			$ninetyfifth = true;
-			$multiplier = 8;
-			$format = "s";
-			break;
-		case "rate":
-			$unit_acronym = "Mb";
-			break;
-		case "channel":
-			$unit_acronym = "";
-			break;
-		case "concurrentusers":
-			$unit_acronym = "";
-			break;
-		case "loggedinusers":
-			$unit_acronym = "";
-			break;
+			case "user":
+				$ds = "user util.";
+				break;
+			case "nice":
+				$ds = "nice util.";
+				break;
+			case "system":
+				$ds = "system util.";
+				break;
+			case "stddev":
+				$ds = "delay std. dev.";
+				$multiplier = 1000;
+				break;
+			case "delay":
+				$ds = "delay average";
+				$multiplier = 1000;
+				break;
+			case "loss":
+				$ds = "packet loss";
+				$unit_acronym = "%";
+				$invert = $invert_graph;
+				break;
+			case "processes":
+				$unit_acronym = "";
+				break;
+			case "pfstates":
+				$unit_acronym = "";
+				$ds = "filter states";
+				break;
+			case "srcip":
+				$unit_acronym = "";
+				$ds = "source addr.";
+				break;
+			case "dstip":
+				$unit_acronym = "";
+				$ds = "dest. addr.";
+				break;
+			case "pfrate":
+				$ds = "state changes";
+				break;
+			case "pfnat":
+				$ignored_right++;
+				$ignore = true;
+				break;
+			case "inpass":
+				$ninetyfifth = true;
+				$multiplier = 8;
+				$format = "s";
+				break;
+			case "max":
+				$format = "s";
+				break;
+			case "inpass6":
+				$ninetyfifth = true;
+				$multiplier = 8;
+				$format = "s";
+				break;
+			case "outpass":
+				$invert = $invert_graph;
+				$ninetyfifth = true;
+				$multiplier = 8;
+				$format = "s";
+				break;
+			case "outpass6":
+				$invert = $invert_graph;
+				$ninetyfifth = true;
+				$multiplier = 8;
+				$format = "s";
+				break;
+			case "rate":
+				$unit_acronym = "Mb";
+				break;
+			case "channel":
+				$unit_acronym = "";
+				break;
+			case "concurrentusers":
+				$unit_acronym = "";
+				break;
+			case "loggedinusers":
+				$unit_acronym = "";
+				break;
+			case "offset":
+			case "sjit":
+			case "cjit":
+			case "wander":
+			case "disp":
+				$unit_acronym = "ms";
+				break;
+			case "freq":
+				$unit_acronym = "";
+				break;
 		}
 
 		if (!$ignore) {
