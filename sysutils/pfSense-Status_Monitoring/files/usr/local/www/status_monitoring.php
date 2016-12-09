@@ -85,6 +85,21 @@ chdir($rrddbpath);
 $databases = glob("*.rrd");
 chdir($home);
 
+function createSlug($string) {
+
+    //Lower case everything
+    $string = strtolower($string);
+    //Make alphanumeric (removes all other characters)
+    $string = preg_replace("/[^a-z0-9_\s-]/", "", $string);
+    //Clean up multiple dashes or whitespaces
+    $string = preg_replace("/[\s-]+/", " ", $string);
+    //Convert whitespaces and underscore to dash
+    $string = preg_replace("/[\s_]/", "-", $string);
+
+    return $string;
+
+}
+
 if($_POST['enable']) {
 	if(($_POST['enable'] === 'false')) { 
 		unset($config['rrd']['enable']); 
@@ -111,18 +126,143 @@ if(strpos($config['rrd']['category'], '&resolution') === false) {
 	write_config();
 }
 
-//save new defaults
-if ($_POST['defaults']) {
-	// Time period setting change applies valid resolutions and selects the default resolution of the time period.
-	// Time period setting needs to be before resolution so that the time period default doesn't override the page load default resolution.
-	// Time period setting needs to be before custom start/end date/time so those will be enabled before applying their setting.
-	$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert'];
-	write_config();
-	$savemsg = "The changes have been applied successfully.";
+//save settings for current view
+if ($_POST['save-view']) {
+
+	$title = $_POST['view-title'];
+
+	if (is_array($config['rrd']['savedviews'])) {
+
+		if(!isset($title) || $title == "default") {
+
+			$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert'];
+
+		} else {
+
+			foreach ($config['rrd']['savedviews'] as $key => $view) {
+
+				if($title == createSlug($view['title'])) {
+
+					$config['rrd']['savedviews'][$key]['category'] =  "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert'];
+
+				}
+
+			}
+
+		}
+
+	} else {
+
+		$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert'];
+
+	}
+
+	write_config(gettext("Status Monitoring View Updated"));
+
+	$savemsg = "The current view has been updated.";
+}
+
+//add a new view
+if ($_POST['add-view']) {
+
+	$title = $_POST['view-title'];
+
+	$values = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert'];
+
+	if (is_array($config['rrd']['savedviews'])) {
+
+			$key = "view" . count($config['rrd']['savedviews']);
+
+			$config['rrd']['savedviews'][$key] = array('title' => $title, 'category' => $values);
+
+	} else {
+
+		$config['rrd']['savedviews']["view0"] = array('title' => $title, 'category' => $values);
+
+	}
+
+	write_config(gettext("Status Monitoring View Added"));
+
+	$savemsg = "The \"" . $title . "\" view has been added.";
+}
+
+$view_removed = false;
+
+//remove current view
+if ($_POST['remove-view']) {
+
+	if(empty($_POST['view-title']) || $_POST['view-title'] == "default") {
+
+		$savemsg = "Can't remove default view.";
+
+	} else {
+
+		$title = htmlspecialchars($_POST['view-title']);
+
+		if (is_array($config['rrd']['savedviews'])) {
+
+			$savedviews = [];
+			$view_count = 0;
+
+			foreach ($config['rrd']['savedviews'] as $key => $view) {
+
+				if(createSlug($view['title']) !== $title) {
+
+					$view_key = "view" . $view_count;
+
+					//unset($config['rrd']['savedviews'][$key]);
+					$savedviews[$view_key] = array('title' => $view['title'], 'category' => $view['category']);
+
+					$view_count++;
+
+				}
+
+			}
+
+			$config['rrd']['savedviews'] = $savedviews;
+
+		}
+
+		write_config(gettext("Status Monitoring View Removed"));
+
+		$savemsg = "The \"" . $title . "\" view has been removed.";
+
+		$view_removed = true;
+
+	}
+
 }
 
 $pconfig['enable'] = isset($config['rrd']['enable']);
-$pconfig['category'] = $config['rrd']['category'];
+
+//grab settings for the active view
+if (is_array($config['rrd']['savedviews'])) {
+
+	$title = $_GET['view'];
+
+	if(!isset($_GET['view']) || $title == "default") {
+
+		$pconfig['category'] = $config['rrd']['category'];
+
+	} else {
+
+		foreach ($config['rrd']['savedviews'] as $key => $view) {
+
+			if($title == createSlug($view['title'])) {
+
+				$pconfig['category'] =  $view['category'];
+
+			}
+
+		}
+
+	}
+
+} else {
+
+	$pconfig['category'] = $config['rrd']['category'];
+
+}
 
 $system = $packets = $quality = $traffic = $captiveportal = $ntpd = $queues = $queuedrops = $dhcpd = $vpnusers = $wireless = $cellular = [];
 
@@ -277,7 +417,7 @@ foreach ($databases as $db) {
 
 }
 
-## Get the configured options for Show/Hide monitoring settings panel.
+// Get the configured options for Show/Hide monitoring settings panel.
 $monitoring_settings_form_hidden = !$user_settings['webgui']['statusmonitoringsettingspanel'];
 
 if ($monitoring_settings_form_hidden) {
@@ -297,6 +437,48 @@ include("head.inc");
 if ($savemsg) {
 	print_info_box($savemsg, 'success');
 }
+
+$tab_array = array();
+$active_tab = false;
+
+if(isset($_GET['view'])) {
+
+	$view_title = $_GET['view'];
+
+} else {
+
+	$view_title = $_POST['view-title'];
+
+}
+
+if($view_title == "" || $view_title == "default" || $view_removed) {
+
+	$active_tab = true;
+
+}
+
+$tab_array[] = array(gettext("Default"), $active_tab, "/status_monitoring.php?view=default");
+
+if (is_array($config['rrd']['savedviews'])) {
+
+	foreach ($config['rrd']['savedviews'] as $key => $view) {
+
+		$active_tab = false;
+
+		if($view_title == createSlug($view['title'])) {
+
+			$active_tab = true;
+
+		}
+
+		$view_slug = "/status_monitoring.php?view=" . createSlug($view['title']);
+		$tab_array[] = array($view['title'], $active_tab, $view_slug);
+
+	}
+
+}
+
+display_top_tabs($tab_array);
 
 ?>
 
@@ -497,13 +679,12 @@ if ($savemsg) {
 				<div class="col-sm-2">
 					<button class="btn btn-sm btn-info" type="button" value="true" name="settings" id="settings"><i class="fa fa-cog fa-lg"></i> Display Advanced</button>
 				</div>
-				<div class="col-sm-2">
-					<button class="btn btn-sm btn-primary" type="button" value="csv" name="export" id="export" style="display:none;"><i class="fa fa-download fa-lg"></i> Export As CSV</button>
+				<div class="col-sm-4">
+					<button class="btn btn-sm btn-primary" type="submit" value="true" name="save-view" id="save-view" style="display:none;"><i class="fa fa-save fa-lg"></i> Save View</button>
+					<button class="btn btn-sm btn-primary" type="button" value="true" name="add-view" id="add-view" style="display:none;"><i class="fa fa-plus fa-lg"></i> Add View</button>
+					<button class="btn btn-sm btn-primary" type="submit" value="true" name="remove-view" id="remove-view" style="display:none;"><i class="fa fa-trash fa-lg"></i> Remove View</button>
 				</div>
-				<div class="col-sm-2">
-					<button class="btn btn-sm btn-primary" type="submit" value="true" name="defaults" id="defaults" style="display:none;"><i class="fa fa-save fa-lg"></i> Save As Defaults</button>
-				</div>
-				<div class="col-sm-2">
+				<div class="col-sm-4">
 					<?php
 					if ($pconfig['enable']) {
 						echo '<button class="btn btn-sm btn-danger" type="submit" value="false" name="enable" id="enable" style="display:none;"><i class="fa fa-ban fa-lg"></i> Disable Graphing</button>';
@@ -511,21 +692,20 @@ if ($savemsg) {
 						echo '<button class="btn btn-sm btn-success" type="submit" value="true" name="enable" id="enable" style="display:none;"><i class="fa fa-check fa-lg"></i> Enable Graphing</button>';
 					}
 					?>
-				</div>
-				<div class="col-sm-2">
-					<button class="btn btn-sm btn-danger" type="submit" value="true" name="ResetRRD" id="ResetRRD" style="display:none;"><i class="fa fa-trash fa-lg"></i> Reset Graphing Data</button>
+					<button class="btn btn-sm btn-danger" type="submit" value="true" name="ResetRRD" id="ResetRRD" style="display:none;"><i class="fa fa-trash fa-lg"></i> Reset Data</button>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-2 control-label">
 					&nbsp;
 				</label>
-				<div class="col-sm-2">
+				<div class="col-sm-10">
 					<button class="btn btn-sm btn-primary update-graph" type="button"><i class="fa fa-refresh fa-lg"></i> Update Graphs</button>
 				</div>
 			</div>
 		</div>
 	</div>
+	<input type="hidden" id="view-title" name="view-title" value="<?=$_GET['view']?>">
 </form>
 
 <div class="panel panel-default">
@@ -791,6 +971,17 @@ events.push(function() {
 		return (Date.UTC(parts[3], parts[1]-1, parts[2], parts[4]) / 1000) - (ServerUTCOffset*3600);
 	}
 
+	function createSlug(string) {
+
+	    return string.toString().toLowerCase()
+			.replace(/\s+/g, '-')       // Replace spaces with -
+			.replace(/[^\w\-]+/g, '')   // Remove all non-word chars
+			.replace(/\-\-+/g, '-')     // Replace multiple - with single -
+			.replace(/^-+/, '')         // Trim - from start of text
+			.replace(/-+$/, '');        // Trim - from end of text
+
+	}
+
 	/***
 	**
 	** Grab graphing options on submit
@@ -963,6 +1154,52 @@ events.push(function() {
 
 	applySettings("<?php echo $pconfig['category']; ?>");
 
+	$( "#add-view" ).click(function() {
+
+	    var view_title;
+	    var dupe_title = true;
+	    var current_titles = [];
+
+	    //Grab current views listed in the page navigation
+	    $( "ul.nav-pills li" ).each(function( index, element ) {
+
+			var this_title = $(this).find('a:first').attr('href').split('=');
+
+			current_titles.push(this_title[1]);
+
+	    });
+
+	    do {
+
+			view_title=prompt("Enter a unique title for your view:");
+
+	        var title_slug = createSlug(view_title);
+
+	        if(jQuery.inArray(title_slug, current_titles) !== -1) {
+
+				alert('That title is already used, try again.');
+
+	        } else {
+
+				dupe_title = false;
+
+	        }
+
+	    }
+	    while(dupe_title);
+
+	    $('#view-title').val(view_title);
+
+	    var input = $("<input>")
+               .attr("type", "hidden")
+               .attr("name", "add-view").val("true");
+
+		$('#monitoring-settings-form').append($(input));
+
+		$('#monitoring-settings-form').submit();
+
+	});
+
 	$( ".update-graph" ).click(function() {
 		$("#monitoring-chart").hide();
 		$("#loading-msg").show();
@@ -972,13 +1209,14 @@ events.push(function() {
 
 	$( "#settings" ).click(function() {
 		($(this).text().trim() === 'Display Advanced') ? $(this).html('<i class="fa fa-cog fa-lg"></i> Hide Advanced') : $(this).html('<i class="fa fa-cog fa-lg"></i> Display Advanced');
-		$("#export").toggle();
-		$("#defaults").toggle();
+		$("#save-view").toggle();
+		$("#add-view").toggle();
+		$("#remove-view").toggle();
 		$("#enable").toggle();
 		$("#ResetRRD").toggle();
 	});
 
-	$( "#export" ).click(function() {
+	$( "#export-graph" ).click(function() {
 
 		var csv = ","; //skip first csv column in header row
 		var csvArray = [];
