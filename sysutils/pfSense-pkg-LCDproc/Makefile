@@ -26,7 +26,7 @@ do-extract:
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
-	${MKDIR} ${STAGEDIR}${PREFIX}/www/packages/lcdproc	
+	${MKDIR} ${STAGEDIR}${PREFIX}/www/packages/lcdproc
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/lcdproc.xml \
 		${STAGEDIR}${PREFIX}/pkg
@@ -47,6 +47,7 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
-		${STAGEDIR}${DATADIR}/info.xml
+		${STAGEDIR}${DATADIR}/info.xml \
+		${STAGEDIR}${PREFIX}/pkg/lcdproc.xml
 
 .include <bsd.port.mk>

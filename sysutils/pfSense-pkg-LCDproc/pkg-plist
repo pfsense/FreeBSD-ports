@@ -8,3 +8,4 @@ www/packages/lcdproc/lcdproc_screens.php
 www/packages/lcdproc/index.php
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv
+@dir /etc/inc
