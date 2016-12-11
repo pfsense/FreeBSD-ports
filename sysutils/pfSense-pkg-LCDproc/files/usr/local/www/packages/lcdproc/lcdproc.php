@@ -137,7 +137,7 @@ $section->addInput(
 	)
 )->setHelp('Set the display size lcdproc should use.');
 
-$driverGroup = new Form_Group('Interface Traffic');
+$driverGroup = new Form_Group('Driver');
 $driverGroup->add(
 	new Form_Select(
 		'driver',
