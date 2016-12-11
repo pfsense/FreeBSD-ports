@@ -23,7 +23,7 @@ require_once("filter.inc");
 require_once("pfsense-utils.inc");
 require_once("pkg-utils.inc");
 require_once("util.inc");
-
+// Bonus comment for testing
 global $pfs_version;
 $pfs_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
 
