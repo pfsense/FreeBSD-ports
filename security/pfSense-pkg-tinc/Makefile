@@ -41,6 +41,8 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
-		${STAGEDIR}${DATADIR}/info.xml
+		${STAGEDIR}${DATADIR}/info.xml \
+		${STAGEDIR}${PREFIX}/pkg/tinc.xml \
+		${STAGEDIR}${PREFIX}/pkg/tinc_hosts.xml
 
 .include <bsd.port.mk>
