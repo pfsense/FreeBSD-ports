@@ -1,62 +1,28 @@
 <?php
 /*
-	tinc.inc
-	part of pfSense (https://www.pfSense.org/)
-	Copyright (C) 2012-2015 ESF, LLC
-	All rights reserved.
+ * tinc.inc
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-	Redistribution and use in source and binary forms, with or without
-	modification, are permitted provided that the following conditions are met:
-
-	1. Redistributions of source code must retain the above copyright notice,
-	   this list of conditions and the following disclaimer.
-
-	2. Redistributions in binary form must reproduce the above copyright
-	   notice, this list of conditions and the following disclaimer in the
-	   documentation and/or other materials provided with the distribution.
-
-	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-	POSSIBILITY OF SUCH DAMAGE.
-*/
 require_once('config.inc');
 require_once('service-utils.inc');
 require_once('util.inc');
-/* include_once('guiconfig.inc'); is needed for clear_log_file() during package installation while booting.
- * However, guiconfig.inc includes authgui.inc which requires a valid php session_auth() and exits when not found.
- * So we include the function here.
-*/
-if (!function_exists('clear_log_file')) {
-
-	function clear_log_file($logfile = "/var/log/system.log", $restart_syslogd = true) {
-		require_once('system.inc');
-		global $config;
-		if ($restart_syslogd) {
-			exec("/usr/bin/killall syslogd");
-		}
-		if (isset($config['system']['disablesyslogclog'])) {
-			unlink($logfile);
-			touch($logfile);
-		} else {
-			$log_size = isset($config['syslog']['logfilesize']) ? $config['syslog']['logfilesize'] : "511488";
-			if (isset($config['system']['usefifolog'])) {
-				exec("/usr/sbin/fifolog_create -s {$log_size} " . escapeshellarg($logfile));
-			} else {
-				exec("/usr/local/sbin/clog -i -s {$log_size} " . escapeshellarg($logfile));
-			}
-		}
-		if ($restart_syslogd) {
-			system_syslogd_start();
-		}
-	}
-}
+require_once('system.inc');
 
 function tinc_save() {
 	global $config, $configpath;
@@ -67,7 +33,7 @@ function tinc_save() {
 	rename("{$configpath}", "{$configpath}.old");
 	safe_mkdir("{$configpath}");
 	safe_mkdir("{$configpath}/hosts");
-	touch("{$configpath}/WARNING-ENTIRE_DIRECTORY_ERASED_ON_SAVE_FROM_GUI");
+
 	if (is_array($config['installedpackages']['tinc']['config'])) {
 		$tincconf = &$config['installedpackages']['tinc']['config'][0];
 	} else {
@@ -158,13 +124,6 @@ function tinc_save() {
 		chmod("{$configpath}/subnet-down", 0744);
 	}
 
-	$pfs_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-	if ($pfs_version == "2.2") {
-		$pbietcpath = '/usr/pbi/tinc-' . php_uname("m") . '/local/etc';
-		unlink_if_exists("{$pbietcpath}/tinc");
-		symlink($configpath, "{$pbietcpath}/tinc");
-	}
-
 	if ($tincconf['enable'] != "") {
 		tinc_write_rcfile();
 		if (is_service_running("tinc")) {
@@ -193,7 +152,6 @@ function tinc_write_rcfile() {
 function tinc_install() {
 	global $config;
 
-	safe_mkdir("/usr/local/etc/tinc");
 	safe_mkdir("/usr/local/etc/tinc/hosts");
 	tinc_write_rcfile();
 	unlink_if_exists("/usr/local/etc/rc.d/tincd");
@@ -212,7 +170,7 @@ function tinc_install() {
 	$a_ifgroups[] = $ifgroupentry;
 
 	/* XXX: Do not remove this. WTH?! */
-	mwexec("/bin/rm -f /tmp/config.cache");
+	// mwexec("/bin/rm -f /tmp/");
 
 	write_config("[tinc] Package installed.");
 }
@@ -247,7 +205,7 @@ function tinc_deinstall() {
 		}
 		unset($a_ifgroups[$myid]);
 		/* WTH?! */
-		mwexec("/bin/rm -f /tmp/config.cache");
+		// mwexec("/bin/rm -f /tmp/config.cache");
 		write_config("[tinc] Package uninstalled.");
 	}
 	rmdir_recursive("/var/tmp/tinc");

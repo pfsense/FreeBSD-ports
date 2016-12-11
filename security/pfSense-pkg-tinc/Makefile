@@ -7,10 +7,10 @@ MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	dinoex@FreeBSD.org
+MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package tinc
 
-LICENSE=	GPLv3
+LICENSE=	APACHE20
 
 RUN_DEPENDS=    ${LOCALBASE}/sbin/tincd:security/tinc
 
