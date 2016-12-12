@@ -186,6 +186,8 @@ if (empty($pconfig['eve_systemlog_priority']))
 	$pconfig['eve_systemlog_priority'] = "notice";
 if (empty($pconfig['eve_log_alerts']))
 	$pconfig['eve_log_alerts'] = "on";
+if (empty($pconfig['eve_log_alerts_payload']))
+	$pconfig['eve_log_alerts_payload'] = "on";
 if (empty($pconfig['eve_log_http']))
 	$pconfig['eve_log_http'] = "on";
 if (empty($pconfig['eve_log_dns']))
@@ -332,6 +334,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['eve_systemlog_facility']) $natent['eve_systemlog_facility'] = $_POST['eve_systemlog_facility'];
 		if ($_POST['eve_systemlog_priority']) $natent['eve_systemlog_priority'] = $_POST['eve_systemlog_priority'];
 		if ($_POST['eve_log_alerts'] == "on") { $natent['eve_log_alerts'] = 'on'; }else{ $natent['eve_log_alerts'] = 'off'; }
+		if ($_POST['eve_log_alerts_payload'] == "on") { $natent['eve_log_alerts_payload'] = 'on'; }else{ $natent['eve_log_alerts_payload'] = 'off'; }
 		if ($_POST['eve_log_http'] == "on") { $natent['eve_log_http'] = 'on'; }else{ $natent['eve_log_http'] = 'off'; }
 		if ($_POST['eve_log_dns'] == "on") { $natent['eve_log_dns'] = 'on'; }else{ $natent['eve_log_dns'] = 'off'; }
 		if ($_POST['eve_log_tls'] == "on") { $natent['eve_log_tls'] = 'on'; }else{ $natent['eve_log_tls'] = 'off'; }
@@ -755,6 +758,14 @@ $group->add(new Form_Checkbox(
 	'Alerts',
 	'Alerts',
 	$pconfig['eve_log_alerts'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_alerts_payload',
+	'Alert Payloads',
+	'Suricata will log additional payload data with alerts.',
+	$pconfig['eve_log_alerts_payload'] == 'on' ? true:false,
 	'on'
 ));
 
@@ -1193,6 +1204,7 @@ events.push(function(){
 		disableInput('eve_output_type', disable);
 		disableInput('eve_log_info', disable);
 		disableInput('eve_log_alerts', disable);
+		disableInput('eve_log_alerts_payload', disable);
 		disableInput('eve_log_http', disable);
 		disableInput('eve_log_dns', disable);
 		disableInput('eve_log_tls', disable);
