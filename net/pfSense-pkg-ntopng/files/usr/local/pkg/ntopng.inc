@@ -208,6 +208,8 @@ function ntopng_set_redis_password() {
 		$password = md5($ntopng_config['redis_password']);
 		if (ntopng_redis_started()) {
 			mwexec("{$redis_path}/redis-cli SET ntopng.user.admin.password " . escapeshellarg($password));
+			// Make sure the preferences menu is accessible (Bug #6999)
+			mwexec("{$redis_path}/redis-cli SET ntopng.user.admin.group administrator");
 			mwexec("{$redis_path}/redis-cli save");
 		} else {
 			log_error(gettext("[ntopng] Cannot set admin password - redis-server is not running."));

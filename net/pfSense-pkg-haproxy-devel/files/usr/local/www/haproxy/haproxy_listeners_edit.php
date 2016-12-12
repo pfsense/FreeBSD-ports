@@ -149,6 +149,7 @@ $fields_externalAddress[0]['colwidth']="25%";
 $fields_externalAddress[0]['type']="select";
 $fields_externalAddress[0]['size']="200px";
 $fields_externalAddress[0]['items']=&$interfaces;
+$fields_externalAddress[0]['maxwidth']="200px";
 $fields_externalAddress[1]['name']="extaddr_custom";
 $fields_externalAddress[1]['columnheader']="Custom address";
 $fields_externalAddress[1]['colwidth']="25%";
@@ -697,7 +698,7 @@ $section->addInput(new Form_StaticText(
 	</table>
 	<br/>
 	acl's with the same name will be 'combined' using OR criteria.<br/>
-	For more information about ACL's please see <a href='http://haproxy.1wt.eu/download/1.5/doc/configuration.txt' target='_blank'>HAProxy Documentation</a> Section 7 - Using ACL's<br/><br/>
+	For more information about ACL's please see <a href='http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#7' target='_blank'>HAProxy Documentation</a> Section 7 - Using ACL's<br/><br/>
 	<strong>NOTE Important change in behaviour, since package version 0.32</strong><br/>
 	-acl's are no longer combined with logical AND operators, list multiple acl's below where needed.<br/>
 	-acl's alone no longer implicitly generate use_backend configuration. Add 'actions' below to accomplish this behaviour.
@@ -735,7 +736,7 @@ $section->addInput(new Form_Select(
 	'Default Backend',
 	$pconfig['backend_serverpool'],
 	haproxy_keyvalue_array($listitem_none + $backends)
-))->setHelp('If actions above or in other shared frontends no default is needed and backend is selected with actions above this can be left to "None".');
+))->setHelp('If a backend is selected with actions above or in other shared frontends, no default is needed and this can be left to "None".');
 
 
 $form->add($section);
@@ -756,7 +757,7 @@ $section->addClass("haproxy_primary");
 
 $section->addInput(new Form_Checkbox(
 	'dontlognull',
-	'Dont log null',
+	"Don't log null",
 	'A connection on which no data has been transferred will not be logged.',
 	$pconfig['dontlognull']
 ))->setHelp("To skip logging probes from monitoring systems that otherwise would pollute the logging. 
@@ -775,7 +776,7 @@ $section->addInput(new Form_Checkbox(
 $section->addInput(new Form_Checkbox(
 	'log-separate-errors',
 	'Raise level for errors',
-	'Change the level changes from "info" to "err" for potentially interesting information.',
+	'Change the level from "info" to "err" for potentially interesting information.',
 	$pconfig['log-separate-errors']
 ))->setHelp("This option makes haproxy raise the level of logs containing potentially interesting information such
 	as errors, timeouts, retries, redispatches, or HTTP status codes 5xx.");
