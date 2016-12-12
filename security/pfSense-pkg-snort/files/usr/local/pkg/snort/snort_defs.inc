@@ -64,7 +64,7 @@ if (!defined('SNORT_APPID_RULES_PATH'))
 // Rules filenames, download URLs and prefixes.
 // Be sure to include the trailing backslash on URLs.
 if (!defined("SNORT_ENFORCING_RULES_FILENAME"))
-        define("SNORT_ENFORCING_RULES_FILENAME", "snort.rules");
+	define("SNORT_ENFORCING_RULES_FILENAME", "snort.rules");
 if (!defined("FLOWBITS_FILENAME"))
 	define("FLOWBITS_FILENAME", "flowbit-required.rules");
 if (!defined("SNORT_RULES_UPD_LOGFILE"))
@@ -90,9 +90,9 @@ if (!defined("SNORT_OPENAPPID_DNLD_URL"))
 if (!defined("SNORT_OPENAPPID_DNLD_FILENAME"))
 	define("SNORT_OPENAPPID_DNLD_FILENAME", "snort-openappid.tar.gz");
 if (!defined("SNORT_OPENAPPID_RULES_URL"))
-        define("SNORT_OPENAPPID_RULES_URL", "http://www.ifs.edu.br/");
+	define("SNORT_OPENAPPID_RULES_URL", "http://www.ifs.edu.br/");
 if (!defined("SNORT_OPENAPPID_RULES_FILENAME"))
-        define("SNORT_OPENAPPID_RULES_FILENAME", "appid_rules.tar.gz");
+	define("SNORT_OPENAPPID_RULES_FILENAME", "appid_rules.tar.gz");
 if (!defined("SNORT_RULES_UPD_LOGFILE"))
 	define("SNORT_RULES_UPD_LOGFILE", SNORTLOGDIR . "/snort_rules_update.log");
 if (!defined("VRT_FILE_PREFIX"))
