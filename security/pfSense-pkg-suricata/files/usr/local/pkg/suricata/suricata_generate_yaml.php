@@ -356,7 +356,7 @@ $eve_out_types = "";
 if (($suricatacfg['eve_log_alerts'] == 'on') && ($suricatacfg['eve_log_alerts_payload'] == 'off'))	
 	$eve_out_types .= "\n        - alert";
 	
-if (($suricatacfg['eve_log_alerts'] == 'on') && ($suricatacfg['eve_log_alerts_payload'] == 'on'))	{
+if (($suricatacfg['eve_log_alerts'] == 'on') && ($suricatacfg['eve_log_alerts_payload'] == 'on')) {
 	$eve_out_types .= "\n        - alert:";
         $eve_out_types .= "\n            payload: yes # enable dumping payload in Base64";
         $eve_out_types .= "\n            payload-printable: yes # enable dumping payload in printable (lossy) format";
