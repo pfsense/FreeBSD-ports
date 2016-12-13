@@ -1,4 +1,7 @@
 #!/usr/local/bin/python2.7
+# Copyright: www.brool.com (http://www.brool.com/post/using-google-authenticator-for-your-website/)
+# License: CC0 1.0 Universal License
+
 import sys
 import time
 import struct
