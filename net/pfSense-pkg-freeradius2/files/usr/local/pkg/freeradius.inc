@@ -99,7 +99,7 @@ function freeradius_install_command() {
 	// Install Google Authenticator scripts
 	if (!file_exists(FREERADIUS_ETC . "/raddb/scripts/googleauth.py")) { 
 		copy(FREERADIUS_BASE . "/pkg/googleauth.py", FREERADIUS_ETC . "/raddb/scripts/"); 
-		exec("chmod +x " . FREERADIUS_ETC . "/raddb/scripts/googleauth.py");
+		chmod(REERADIUS_ETC . "/raddb/scripts/googleauth.py",0755);
 	}
 	if (!file_exists(FREERADIUS_ETC . "/raddb/modules/googleauth")) { copy(FREERADIUS_BASE . "/pkg/googleauth", FREERADIUS_ETC . "/raddb/modules/");}
 	  
