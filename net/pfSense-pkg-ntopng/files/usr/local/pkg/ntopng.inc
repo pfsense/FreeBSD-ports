@@ -156,7 +156,7 @@ function ntopng_sync_package() {
 	/* Create rc script */
 	$start = "";
 	$stop = "";
-	$start .= "\t{$redis_path}/redis-server --dir /var/db/ntopng/ --dbfilename ntopng.rdb &\n";
+	$start .= "\t{$redis_path}/redis-server --bind 127.0.0.1 ::1 --dir /var/db/ntopng/ --dbfilename ntopng.rdb &\n";
 	// TODO:
 	// Add support for --data-dir /somewhere, --httpdocs-dir /somewhereelse,
 	// --dump-timeline (on/off) --http-port, --https-port
@@ -193,7 +193,7 @@ function ntopng_redis_started() {
 	$redis_started = false;
 
 	if (!is_process_running("redis-server")) {
-		mwexec_bg("{$redis_path}/redis-server --dir /var/db/ntopng/ --dbfilename ntopng.rdb");
+		mwexec_bg("{$redis_path}/redis-server --bind 127.0.0.1 ::1 --dir /var/db/ntopng/ --dbfilename ntopng.rdb");
 		for ($i = 0; $i <= 10; $i++) {
 			if (is_process_running("redis-server")) {
 				$redis_started = true;
