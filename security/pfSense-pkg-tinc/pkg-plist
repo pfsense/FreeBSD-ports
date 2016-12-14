@@ -5,3 +5,4 @@ www/status_tinc.php
 /etc/inc/priv/tinc.priv.inc
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv
+@dir /etc/inc
