@@ -44,7 +44,7 @@ function squid_print_javascript_auth() {
 	$auth_method = $settingsauth['auth_method'];
 
 	// No authentication for transparent proxy
-	if ($transparent_proxy and preg_match("/(local|ldap|radius|msnt|ntlm)/", $auth_method)) {
+	if ($transparent_proxy and preg_match("/(local|ldap|radius|msnt|ntlm|adk)/", $auth_method)) {
 		$javascript = <<< EOD
 <script type="text/javascript">
 //<![CDATA[
@@ -66,6 +66,10 @@ function on_auth_method_changed() {
 	document.iform.auth_ttl.disabled = 1;
 	document.iform.unrestricted_auth.disabled = 1;
 	document.iform.no_auth_hosts.disabled = 1;
+	document.iform.adk_domain.disabled = 1;
+	document.iform.adk_user.disabled = 1;
+	document.iform.adk_secret.disabled = 1;
+	document.iform.adk_version.disabled = 1;
 }
 //]]>
 </script>
@@ -98,6 +102,10 @@ function on_auth_method_changed() {
 		document.iform.auth_ttl.disabled = 1;
 		document.iform.unrestricted_auth.disabled = 1;
 		document.iform.no_auth_hosts.disabled = 1;
+		document.iform.adk_domain.disabled = 1;
+		document.iform.adk_user.disabled = 1;
+		document.iform.adk_secret.disabled = 1;
+		document.iform.adk_version.disabled = 1;
 	} else {
 		document.iform.auth_prompt.disabled = 0;
 		document.iform.auth_processes.disabled = 0;
@@ -119,6 +127,10 @@ function on_auth_method_changed() {
 		document.iform.ldap_basedomain.disabled = 1;
 		document.iform.radius_secret.disabled = 1;
 		document.iform.msnt_secondary.disabled = 1;
+		document.iform.adk_domain.disabled = 1;
+		document.iform.adk_user.disabled = 1;
+		document.iform.adk_secret.disabled = 1;
+		document.iform.adk_version.disabled = 1;
 		break;
 	case 'ldap':
 		document.iform.auth_server.disabled = 0;
@@ -132,6 +144,10 @@ function on_auth_method_changed() {
 		document.iform.radius_secret.disabled = 1;
 		document.iform.msnt_secondary.disabled = 1;
 		document.iform.auth_ntdomain.disabled = 1;
+		document.iform.adk_domain.disabled = 1;
+		document.iform.adk_user.disabled = 1;
+		document.iform.adk_secret.disabled = 1;
+		document.iform.adk_version.disabled = 1;
 		break;
 	case 'radius':
 		document.iform.auth_server.disabled = 0;
@@ -145,6 +161,10 @@ function on_auth_method_changed() {
 		document.iform.radius_secret.disabled = 0;
 		document.iform.msnt_secondary.disabled = 1;
 		document.iform.auth_ntdomain.disabled = 1;
+		document.iform.adk_domain.disabled = 1;
+		document.iform.adk_user.disabled = 1;
+		document.iform.adk_secret.disabled = 1;
+		document.iform.adk_version.disabled = 1;
 		break;
 	case 'msnt':
 		document.iform.auth_server.disabled = 0;
@@ -158,6 +178,10 @@ function on_auth_method_changed() {
 		document.iform.ldap_basedomain.disabled = 1;
 		document.iform.radius_secret.disabled = 1;
 		document.iform.msnt_secondary.disabled = 0;
+		document.iform.adk_domain.disabled = 1;
+		document.iform.adk_user.disabled = 1;
+		document.iform.adk_secret.disabled = 1;
+		document.iform.adk_version.disabled = 1;
 		break;
 	case 'cp':
 		document.iform.auth_server.disabled = 1;
@@ -176,6 +200,32 @@ function on_auth_method_changed() {
 		document.iform.auth_ttl.disabled = 0;
 		document.iform.unrestricted_auth.disabled = 1;
 		document.iform.no_auth_hosts.disabled = 1;
+		document.iform.adk_domain.disabled = 1;
+		document.iform.adk_user.disabled = 1;
+		document.iform.adk_secret.disabled = 1;
+		document.iform.adk_version.disabled = 1;
+		break;
+	case 'adk':
+		document.iform.auth_server.disabled = 1;
+		document.iform.auth_server_port.disabled = 1;
+		document.iform.auth_ntdomain.disabled = 1;
+		document.iform.ldap_user.disabled = 1;
+		document.iform.ldap_version.disabled = 1;
+		document.iform.ldap_userattribute.disabled = 1;
+		document.iform.ldap_filter.disabled = 1;
+		document.iform.ldap_pass.disabled = 1;
+		document.iform.ldap_basedomain.disabled = 1;
+		document.iform.radius_secret.disabled = 1;
+		document.iform.msnt_secondary.disabled = 1;
+		document.iform.auth_prompt.disabled = 1;
+		document.iform.auth_processes.disabled = 0;
+		document.iform.auth_ttl.disabled = 0;
+		document.iform.unrestricted_auth.disabled = 1;
+		document.iform.no_auth_hosts.disabled = 1;
+		document.iform.adk_domain.disabled = 0;
+		document.iform.adk_user.disabled = 0;
+		document.iform.adk_secret.disabled = 0;
+		document.iform.adk_version.disabled = 0;
 		break;
 	}
 }

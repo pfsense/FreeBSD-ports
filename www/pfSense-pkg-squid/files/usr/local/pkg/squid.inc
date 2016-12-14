@@ -336,6 +336,8 @@ function squid_write_rcfile() {
 	$rc = array();
 	$rc['file'] = 'squid.sh';
 	$rc['start'] = <<< EOD
+KRB5_KTNAME=/usr/local/etc/squid/PROXY.keytab
+export KRB5_KTNAME
 #/sbin/sysctl net.inet.ip.portrange.reservedhigh=0
 if [ -z "`/bin/ps auxw | /usr/bin/grep "[s]quid " | /usr/bin/awk '{print $2}'`" ]; then
 	{$squid_base}/sbin/squid -f {$squid_conffile_var}
@@ -510,6 +512,10 @@ function squid_deinstall_command() {
 
 	/* remove cronjobs */
 	squid_install_cron(false);
+	squid_adk_cron(false);
+
+	/* remove adk keytab/krb5secret file */
+	squid_adk_remove_files();
 
 	/* kill all running services */
 	mwexec('/usr/local/etc/rc.d/sqp_monitor.sh stop');
@@ -1073,7 +1079,7 @@ function squid_validate_auth($post, &$input_errors) {
 	unset($num_fields);
 
 	$auth_method = $post['auth_method'];
-	if (($auth_method != 'none') && ($auth_method != 'local') && ($auth_method != 'cp')) {
+	if (($auth_method != 'none') && ($auth_method != 'local') && ($auth_method != 'cp') && ($auth_method != 'adk')) {
 		$server = trim($post['auth_server']);
 		if (empty($server)) {
 			$input_errors[] = "'Authentication server' is required.";
@@ -1294,6 +1300,7 @@ EOD;
 	$conf .= "logfile_rotate {$rotate}\n";
 	$conf .= "debug_options rotate={$rotate}\n";
 	squid_install_cron(true);
+	squid_adk_cron(true);
 
 	$conf .= <<< EOD
 shutdown_lifetime 3 seconds
@@ -1862,8 +1869,15 @@ function squid_resync_auth() {
 				$conf .= "auth_param basic program " . SQUID_LOCALBASE . "/libexec/squid/basic_msnt_auth\n";
 				squid_resync_msnt();
 				break;
+			case 'adk':
+				$conf .= "auth_param negotiate program " . SQUID_LOCALBASE . "/libexec/squid/negotiate_kerberos_auth\n";
+				$conf .= "auth_param negotiate children 10\n";
+				$conf .= "auth_param negotiate keep_alive on\n";
+				$conf .= "acl password proxy_auth REQUIRED\n";
+				squid_resync_adk();
+				break;
 		}
-		if ($auth_method != 'cp') {
+		if (($auth_method != 'cp') or ($auth_method != 'adk')) {
 		$conf .= <<< EOD
 auth_param basic children $processes
 auth_param basic realm $prompt
@@ -1947,6 +1961,90 @@ function squid_resync_msnt() {
 	file_put_contents(SQUID_CONFBASE . "/msntauth.conf", "server {$pdcserver} {$bdcserver} {$ntdomain}");
 	chown(SQUID_CONFBASE . "/msntauth.conf", SQUID_UID);
 	chmod(SQUID_CONFBASE . "/msntauth.conf", 0600);
+}
+
+/* adk remove keytab/krb5secret if exists */
+function squid_adk_remove_files() {
+	unlink_if_exists(SQUID_CONFBASE . "/PROXY.keytab");
+	unlink_if_exists("/etc/krb5secret");
+}
+
+/* squid adk cron */
+function squid_adk_cron($should_install) {
+	global $config;
+
+	if (is_array($config['installedpackages']['squidauth'])) {
+		$settings = $config['installedpackages']['squidauth']['config'][0];
+	} else {
+		$settings = array();
+	}
+	$cron_cmd = SQUID_BASE . "/sbin/msktutil --auto-update --verbose --computer-name " . strtolower($config['system']['hostname']);
+	if ( ($should_install) && ($settings['auth_method'] == 'adk') ) {
+		log_error("[squid] Adding cronjob for Active Directory authentication ...");
+		install_cron_job("{$cron_cmd}", true,  "0", "0", "1", "*", "*","root");
+	} else {
+		log_error("[squid] Removing cronjob for Active Directory authentication ...");
+		install_cron_job("{$cron_cmd}", false);
+	}
+}
+
+/* Proxy server: Active Directory Kerberos configuration handler */
+function squid_resync_adk() {
+	global $config;
+
+	if (is_array($config['installedpackages']['squidauth'])) {
+		$settings = $config['installedpackages']['squidauth']['config'][0];
+	} else {
+		$settings = array();
+	}
+
+	$krb_config = "; http://wiki.squid-cache.org/ConfigExamples/Authenticate/WindowsActiveDirectory\n";
+	$krb_config .= "[libdefaults]\n";
+	$krb_config .= "    default_realm = " . strtoupper($settings['adk_domain']) . "\n";
+	$krb_config .= "    dns_lookup_kdc = no\n";
+	$krb_config .= "    dns_lookup_realm = no\n";
+	$krb_config .= "    ticket_lifetime = 24h\n";
+	$krb_config .= "    default_keytab_name = " . SQUID_CONFBASE . "/PROXY.keytab\n";
+	if ($settings['adk_version'] == '2003') {
+		$krb_config .= "; for Windows 2003\n";
+		$krb_config .= "    default_tgs_enctypes = rc4-hmac des-cbc-crc des-cbc-md5\n";
+		$krb_config .= "    default_tkt_enctypes = rc4-hmac des-cbc-crc des-cbc-md5\n";
+		$krb_config .= "    permitted_enctypes = rc4-hmac des-cbc-crc des-cbc-md5\n";
+	} elseif ($settings['adk_version'] == '2008') {
+		$krb_config .= "; for Windows 2008 with AES\n";
+		$krb_config .= "    default_tgs_enctypes = aes256-cts-hmac-sha1-96 rc4-hmac des-cbc-crc des-cbc-md5\n";
+		$krb_config .= "    default_tkt_enctypes = aes256-cts-hmac-sha1-96 rc4-hmac des-cbc-crc des-cbc-md5\n";
+		$krb_config .= "    permitted_enctypes = aes256-cts-hmac-sha1-96 rc4-hmac des-cbc-crc des-cbc-md5\n";
+	}
+	$krb_config .= "[realms]\n";
+	$krb_config .= "    " . strtoupper($settings['adk_domain']) . "= {\n";
+	$krb_config .= "        kdc = " . strtolower($settings['adk_dc']) . "\n";
+	$krb_config .= "        admin_server = " . strtolower($settings['adk_dc']) . "\n";
+	$krb_config .= "        default_domain = " . strtolower($settings['adk_domain']) . "\n";
+	$krb_config .= "    }\n";
+
+	$krb_config .= "[domain_realm]\n";
+	$krb_config .= "    ." . strtolower($settings['adk_domain']) . " = " . strtoupper($settings['adk_domain']) . "\n";
+	$krb_config .= "    " . strtolower($settings['adk_domain']) . " = " . strtoupper($settings['adk_domain']) . "\n";
+
+	file_put_contents("/etc/krb5.conf", $krb_config);
+	chown("/etc/krb5.conf", SQUID_UID);
+	chmod("/etc/krb5.conf", 0600);
+
+	if ( !file_exists(SQUID_CONFBASE . "/PROXY.keytab") ) {
+		file_put_contents("/etc/krb5secret", $settings['adk_secret']);
+		chmod("/etc/krb5secret", 0600);
+		mwexec("/usr/bin/kinit --password-file=/etc/krb5secret ". $settings['adk_user'] . "@" . strtoupper($settings['adk_domain']));
+		if ( $settings['adk_version'] == '2003' ) {
+			mwexec(SQUID_LOCALBASE . '/sbin/msktutil -c -b CN=COMPUTERS -s HTTP -k ' . SQUID_CONFBASE . '/PROXY.keytab --computer-name ' . strtoupper($config['system']['hostname']) . ' --upn HTTP/' . $hostname  . ' --server ' . $settings['adk_dc'] . ' --verbose');
+		} elseif ( $settings['adk_version'] == '2008' ) { 
+			mwexec(SQUID_LOCALBASE . '/sbin/msktutil -c -b CN=COMPUTERS -s HTTP -k ' . SQUID_CONFBASE . '/PROXY.keytab --computer-name ' . strtoupper($config['system']['hostname']) . ' --upn HTTP/' . $hostname  . ' --server ' . $settings['adk_dc'] . ' --verbose --enctypes 28');
+		}
+		chown(SQUID_CONFBASE . "/PROXY.keytab",SQUID_UID);
+		chown(SQUID_CONFBASE . "/PROXY.keytab",SQUID_GID);
+		mwexec("/usr/bin/kdestroy");
+		unlink("/etc/krb5secret");
+	}
 }
 
 /* Wrapper function to sync whole Squid configuration */

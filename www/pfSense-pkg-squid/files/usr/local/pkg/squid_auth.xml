@@ -90,6 +90,7 @@
 				<option><name>RADIUS</name><value>radius</value></option>
 				<option><name>Captive Portal</name><value>cp</value></option>
 				<option><name>NT Domain</name><value>msnt</value></option>
+				<option><name>Active Directory (Kerberos)</name><value>adk</value></option>
 			</options>
 			<onchange>on_auth_method_changed()</onchange>
 		</field>
@@ -245,6 +246,49 @@
 			<type>password</type>
 			<size>20</size>
 		</field>
+		<field>
+			<name>Squid Authentication Active Directory Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Active Directory Domain</fielddescr>
+			<fieldname>adk_domain</fieldname>
+			<description>Enter the Active Directory domain here.</description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>Active Directory user</fielddescr>
+			<fieldname>adk_user</fieldname>
+			<description>Enter the user to use to connect to the LDAP server here.</description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>Active Directory password</fielddescr>
+			<fieldname>adk_secret</fieldname>
+			<description>Enter the password for authentication here.</description>
+			<type>password</type>
+			<size>20</size>
+		</field>
+		<field>
+			<fielddescr>Active Directory Domain Controller</fielddescr>
+			<fieldname>adk_dc</fieldname>
+			<description>Enter the name of the Domain Controller server here.</description>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>Active Directoy Domain version</fielddescr>
+			<fieldname>adk_version</fieldname>
+			<description>Select Active Directory Domain version.</description>
+			<type>select</type>
+			<default_value>2</default_value>
+			<options>
+				<option><name>2003</name><value>2003</value></option>
+				<option><name>2008 with AES</name><value>2008</value></option>
+			</options>
+		</field>
 	</fields>
 	<custom_php_validation_command>
 		squid_validate_auth($_POST, $input_errors);
@@ -261,7 +305,7 @@
 	<custom_php_after_head_command>
 		<![CDATA[
 		$transparent_proxy = ($config['installedpackages']['squid']['config'][0]['transparent_proxy'] == 'on');
-		if ($transparent_proxy and preg_match("/(local|ldap|radius|msnt|ntlm)/", $config['installedpackages']['squidauth']['config'][0]['auth_method'])) {
+		if ($transparent_proxy and preg_match("/(local|ldap|radius|msnt|ntlm|adk)/", $config['installedpackages']['squidauth']['config'][0]['auth_method'])) {
 			$input_errors[] = "Authentication cannot be enabled while transparent proxy mode is enabled";
 		}
 		squid_print_javascript_auth();
