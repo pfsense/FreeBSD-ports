@@ -1,13 +1,10 @@
 <?php
-/* $Id$ */
 /*
  * snort_download_updates.php
  *
  * part of pfSense (https://www.pfsense.org)
- *
  * Copyright (c) 2004-2016 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2016 Bill Meeks
- *
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +12,6 @@
  * You may obtain a copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
- *
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
