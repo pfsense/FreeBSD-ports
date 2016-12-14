@@ -122,7 +122,7 @@ if ($_POST['ResetRRD']) {
 
 //old config that needs to be updated
 if(strpos($config['rrd']['category'], '&resolution') === false) {
-	$config['rrd']['category'] = "left=system-processor&right=&resolution=300&timePeriod=-1d&startDate=&endDate=&startTime=0&endTime=0&graphtype=line&invert=true";
+	$config['rrd']['category'] = "left=system-processor&right=&resolution=300&timePeriod=-1d&startDate=&endDate=&startTime=0&endTime=0&graphtype=line&invert=true&refresh-interval=0";
 	write_config();
 }
 
@@ -135,7 +135,7 @@ if ($_POST['save-view']) {
 
 		if(!isset($title) || $title == "default") {
 
-			$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert'];
+			$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert']."&refresh-interval=".$_POST['refresh-interval'];
 
 		} else {
 
@@ -143,7 +143,7 @@ if ($_POST['save-view']) {
 
 				if($title == createSlug($view['title'])) {
 
-					$config['rrd']['savedviews'][$key]['category'] =  "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert'];
+					$config['rrd']['savedviews'][$key]['category'] =  "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert']."&refresh-interval=".$_POST['refresh-interval'];
 
 				}
 
@@ -153,7 +153,7 @@ if ($_POST['save-view']) {
 
 	} else {
 
-		$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert'];
+		$config['rrd']['category'] = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert']."&refresh-interval=".$_POST['refresh-interval'];
 
 	}
 
@@ -167,7 +167,7 @@ if ($_POST['add-view']) {
 
 	$title = $_POST['view-title'];
 
-	$values = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert'];
+	$values = "left=".$_POST['graph-left']."&right=".$_POST['graph-right']."&timePeriod=".$_POST['time-period']."&resolution=".$_POST['resolution']."&startDate=".$_POST['start-date']."&endDate=".$_POST['end-date']."&startTime=".$_POST['start-time']."&endTime=".$_POST['end-time']."&graphtype=".$_POST['graph-type']."&invert=".$_POST['invert']."&refresh-interval=".$_POST['refresh-interval'];
 
 	if (is_array($config['rrd']['savedviews'])) {
 
@@ -482,6 +482,7 @@ display_top_tabs($tab_array);
 
 <script src="/vendor/d3/d3.min.js"></script>
 <script src="/vendor/nvd3/nv.d3.js"></script>
+<script src="/vendor/visibility/visibility-1.2.3.min.js"></script>
 
 <link href="/vendor/nvd3/nv.d3.css" media="screen, projection" rel="stylesheet" type="text/css">
 
@@ -643,6 +644,16 @@ display_top_tabs($tab_array);
 					</select>
 
 					<span class="help-block">Inverse</span>
+				</div>
+				<div class="col-sm-2">
+					<select class="form-control" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="You must save this view for the refresh interval to take effect." id="refresh-interval" name="refresh-interval">
+						<option value="0" selected>Never</option>
+						<option value="60000">1 Minute</option>
+						<option value="300000">5 Minutes</option>
+						<option value="600000">10 Minutes</option>
+					</select>
+
+					<span class="help-block">Refresh Interval</span>
 				</div>
 			</div>
 			<div class="form-group" id="custom-time" style="display:none;">
@@ -814,6 +825,10 @@ events.push(function() {
 	var ClientUTC = new Date();
 	var ClientUTCOffset = ClientUTC.getTimezoneOffset() / 60;
 	var tzOffset = (ClientUTCOffset + ServerUTCOffset) * 3600000;
+
+	$("[data-toggle=tooltip]").tooltip({
+		placement: $(this).data("placement") || 'top'
+	});
 
 	/***
 	**
@@ -1000,6 +1015,8 @@ events.push(function() {
 		var resolution = $( "#resolution" ).val();
 		var graphtype = $( "#graph-type" ).val();
 		var invert = $( "#invert" ).val();
+		var refreshInterval = $( "#refresh-interval" ).val();
+
 		var start = '';
 		var end = '';
 
@@ -1017,7 +1034,7 @@ events.push(function() {
 			}
 		}
 
-		var graphOptions = 'left=' + graphLeft + '&right=' + graphRight + '&start=' + start + '&end=' + end + '&resolution=' + resolution + '&timePeriod=' + timePeriod + '&graphtype=' + graphtype + '&invert=' + invert ;
+		var graphOptions = 'left=' + graphLeft + '&right=' + graphRight + '&start=' + start + '&end=' + end + '&resolution=' + resolution + '&timePeriod=' + timePeriod + '&graphtype=' + graphtype + '&invert=' + invert + '&refreshInterval=' + refreshInterval;
 
 		return graphOptions;
 	}
@@ -1144,6 +1161,10 @@ events.push(function() {
 
 			if(currentOption[0] === "invert") {
 				$( "#invert" ).val(currentOption[1]);
+			}
+
+			if(currentOption[0] === "refresh-interval") {
+				$( "#refresh-interval" ).val(currentOption[1]);
 			}
 
 		}, this);
@@ -1590,6 +1611,16 @@ events.push(function() {
 	} else {
 
 		draw_graph(getOptions());
+
+		var refresh_interval = $( "#refresh-interval" ).val();
+
+		if(refresh_interval > 0) {
+
+			var refresh_id = Visibility.every(refresh_interval, function () {
+			    draw_graph(getOptions());
+			});
+
+		}
 
 	}
 
