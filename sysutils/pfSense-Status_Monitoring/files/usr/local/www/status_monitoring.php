@@ -204,12 +204,20 @@ if ($_POST['remove-view']) {
 
 $pconfig['enable'] = isset($config['rrd']['enable']);
 
+if(isset($_GET['view'])) {
+
+	$view_title = createSlug($_GET['view']);
+
+} else {
+
+	$view_title = createSlug($_POST['view-title']);
+
+}
+
 //grab settings for the active view
 if (is_array($config['rrd']['savedviews'])) {
 
-	$title = $_GET['view'];
-
-	if(!isset($_GET['view']) || $title == "default") {
+	if($view_title == "" || $view_title == "default" || $view_removed) {
 
 		$pconfig['category'] = $config['rrd']['category'];
 
@@ -217,7 +225,7 @@ if (is_array($config['rrd']['savedviews'])) {
 
 		foreach ($config['rrd']['savedviews'] as $key => $view) {
 
-			if($title == createSlug($view['title'])) {
+			if($view_title === createSlug($view['title'])) {
 
 				$pconfig['category'] =  $view['category'];
 
@@ -409,16 +417,6 @@ if ($savemsg) {
 
 $tab_array = array();
 $active_tab = false;
-
-if(isset($_GET['view'])) {
-
-	$view_title = $_GET['view'];
-
-} else {
-
-	$view_title = $_POST['view-title'];
-
-}
 
 if($view_title == "" || $view_title == "default" || $view_removed) {
 
@@ -1030,7 +1028,7 @@ events.push(function() {
 					}
 
 					if (rrdDb[1] === "packets") {
-						$( "#category" + currentOption[0] ).val(rrdDb[1]).change();
+						$( "#category-" + currentOption[0] ).val(rrdDb[1]).change();
 						$( "#graph-" + currentOption[0] ).val(currentOption[1]);
 					}
 
