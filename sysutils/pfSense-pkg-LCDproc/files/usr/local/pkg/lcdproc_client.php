@@ -6,7 +6,6 @@
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2016 Treer
  * Copyright (c) 2011 Michele Di Maria
- * Copyright (c) 2009 Scott Ullrich
  * Copyright (c) 2007-2009 Seth Mos <seth.mos@dds.nl>
  * All rights reserved.
  *
