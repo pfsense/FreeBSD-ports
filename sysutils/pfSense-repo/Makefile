@@ -20,6 +20,10 @@ SUB_FILES=	pkg-install
 SUB_LIST=	PORTNAME=${PORTNAME} \
 		PRODUCT_NAME=${PRODUCT_NAME}
 
+DATADIR=	${PREFIX}/share/pfSense
+
+.include <bsd.port.pre.mk>
+
 PFSENSE_REPOS?=	pfSense-repo pfSense-repo-devel
 PFSENSE_REPOS_${ARCH}?=	${PFSENSE_REPOS}
 TMP_PLIST_FILES=${PFSENSE_REPOS_${ARCH}:C/$/.conf/} \
@@ -27,10 +31,7 @@ TMP_PLIST_FILES=${PFSENSE_REPOS_${ARCH}:C/$/.conf/} \
 		${PFSENSE_REPOS_${ARCH}:C/$/.abi/} \
 		${PFSENSE_REPOS_${ARCH}:C/$/.altabi/}
 PLIST_FILES=	${TMP_PLIST_FILES:C/^/%%DATADIR%%\/pkg\/repos\//}
-DATADIR=	${PREFIX}/share/pfSense
 DEFAULT_ABI=	${OPSYS}:${OSREL:C/\..*//}:${ARCH}
-
-.include <bsd.port.pre.mk>
 
 .if ${ARCH} == "amd64"
 ALTABI_ARCH=	x86:64
