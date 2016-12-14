@@ -12,13 +12,13 @@ COMMENT=	LCDproc package for pfSense
 
 LICENSE=	APACHE20
 
+RUN_DEPENDS=	${LOCALBASE}/sbin/LCDd:sysutils/lcdproc
+
 NO_BUILD=	yes
 NO_MTREE=	yes
 
 SUB_FILES=	pkg-install pkg-deinstall
 SUB_LIST=	PORTNAME=${PORTNAME}
-
-RUN_DEPENDS=	${LOCALBASE}/sbin/LCDd:sysutils/lcdproc
 
 do-extract:
 	${MKDIR} ${WRKSRC}
