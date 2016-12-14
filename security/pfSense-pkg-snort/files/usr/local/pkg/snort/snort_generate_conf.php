@@ -75,7 +75,7 @@ foreach ($snort_dirs as $dir) {
 /********************************************************************/
 $snort_files = array("gen-msg.map", "classification.config", "reference.config", "attribute_table.dtd", 
 		"sid-msg.map", "unicode.map", "file_magic.conf", "threshold.conf", "preproc_rules/preprocessor.rules",
-		"preproc_rules/decoder.rules", "preproc_rules/sensitive-data.rules", "preproc_rules/appid.rules"
+		"preproc_rules/decoder.rules", "preproc_rules/sensitive-data.rules"
 	);
 foreach ($snort_files as $file) {
 	if (file_exists("{$snortdir}/{$file}")) {
