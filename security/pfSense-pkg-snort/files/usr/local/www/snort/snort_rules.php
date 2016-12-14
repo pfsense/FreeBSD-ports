@@ -59,6 +59,7 @@ $snortdownload = $config['installedpackages']['snortglobal']['snortdownload'];
 $snortcommunitydownload = $config['installedpackages']['snortglobal']['snortcommunityrules'] == 'on' ? 'on' : 'off';
 $emergingdownload = $config['installedpackages']['snortglobal']['emergingthreats'];
 $etprodownload = $config['installedpackages']['snortglobal']['emergingthreats_pro'];
+$appidownload = $config['installedpackages']['snortglobal']['openappid_rules_detectors'];
 
 // Load a RULES file raw text if requested via Ajax to populate a Modal dialog
 if ($_REQUEST['ajax']) {
@@ -171,10 +172,6 @@ $categories[] = "custom.rules";
 $categories[] = "decoder.rules";
 $categories[] = "preprocessor.rules";
 $categories[] = "sensitive-data.rules";
-if (file_exists("{$snortdir}/snort_{$snort_uuid}_{$if_real}/preproc_rules/appid.rules"))
-{
-$categories[] = "appid.rules";
-}
 
 // Get any automatic rule category enable/disable modifications
 // if auto-SID Mgmt is enabled, and adjust the available rulesets
@@ -575,6 +572,8 @@ foreach ($categories as $value) {
 	if ($etprodownload != 'on' && substr($value, 0, mb_strlen(ET_PRO_FILE_PREFIX)) == ET_PRO_FILE_PREFIX)
 		continue;
 	if ($snortcommunitydownload != 'on' && substr($value, 0, mb_strlen(GPL_FILE_PREFIX)) == GPL_FILE_PREFIX)
+		continue;
+	if ($appidownload != 'on' && substr($value, 0, mb_strlen(OPENAPPID_FILE_PREFIX)) == OPENAPPID_FILE_PREFIX)
 		continue;
 	if (empty($value))
 		continue;

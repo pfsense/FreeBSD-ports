@@ -49,7 +49,7 @@ if (!defined("SNORT_IPREP_PATH"))
 if (!defined('SNORT_APPID_ODP_PATH'))
 	define('SNORT_APPID_ODP_PATH', SNORTDIR . "/appid/");
 if (!defined('SNORT_APPID_RULES_PATH'))
-        define('SNORT_APPID_RULES_PATH', SNORTDIR . "/preproc_rules/");
+        define('SNORT_APPID_RULES_PATH', SNORTDIR . "/rules/");
 
 // Rules filenames, download URLs and prefixes.
 // Be sure to include the trailing backslash on URLs.
@@ -93,5 +93,7 @@ if (!defined("ET_OPEN_FILE_PREFIX"))
 	define("ET_OPEN_FILE_PREFIX", "emerging-");
 if (!defined("ET_PRO_FILE_PREFIX"))
 	define("ET_PRO_FILE_PREFIX", "etpro-");
+if (!defined("OPENAPPID_FILE_PREFIX"))
+	define("OPENAPPID_FILE_PREFIX", "openappid-");
 
 ?>

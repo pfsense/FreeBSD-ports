@@ -111,6 +111,8 @@ if (!$input_errors) {
 			$disabled_rules[] = ET_OPEN_FILE_PREFIX;
 		if ($config['installedpackages']['snortglobal']['emergingthreats_pro'] == 'off')
 			$disabled_rules[] = ET_PRO_FILE_PREFIX;
+		if ($config['installedpackages']['snortglobal']['openappid_rules_detectors'] == 'off')
+			$disabled_rules[] = OPENAPPID_FILE_PREFIX;
 
 		// Now walk all the configured interface rulesets and remove
 		// any matching the disabled ruleset prefixes.
