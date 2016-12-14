@@ -12,7 +12,7 @@ COMMENT=	pfSense package tinc
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=    ${LOCALBASE}/sbin/tincd:security/tinc
+RUN_DEPENDS=	${LOCALBASE}/sbin/tincd:security/tinc
 
 NO_BUILD=	yes
 NO_MTREE=	yes
