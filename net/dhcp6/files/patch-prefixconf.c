@@ -5,7 +5,7 @@
  	sp->prefix.pltime = pinfo->pltime;
  	sp->prefix.vltime = pinfo->vltime;
 -	dprintf(LOG_DEBUG, FNAME, "%s a prefix %s/%d pltime=%lu, vltime=%lu",
-+	dprintf(LOG_INFO, FNAME, "%s a prefix %s/%d pltime=%lu, vltime=%lu",
++	d_printf(LOG_INFO, FNAME, "%s a prefix %s/%d pltime=%lu, vltime=%lu",
  	    spcreate ? "create" : "update",
  	    in6addr2str(&pinfo->addr, 0), pinfo->plen,
  	    pinfo->pltime, pinfo->vltime);
