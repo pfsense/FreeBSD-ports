@@ -1852,12 +1852,12 @@ function squid_resync_auth() {
 				$conf .= 'auth_param basic program ' . SQUID_LOCALBASE . '/libexec/squid/basic_ncsa_auth ' . SQUID_PASSWD . "\n";
 				break;
 			case 'ldap':
-				$port = ((isset($settings['auth_server_port']) && !empty($setting['auth_server_port'])) ? ":{$settings['auth_server_port']}" : '');
+				$port = ((isset($settings['auth_server_port']) && !empty($settings['auth_server_port'])) ? ":{$settings['auth_server_port']}" : '');
 				$password = (isset($settings['ldap_pass']) ? "-w {$settings['ldap_pass']}" : '');
 				$conf .= "auth_param basic program " . SQUID_LOCALBASE . "/libexec/squid/basic_ldap_auth -v {$settings['ldap_version']} -b {$settings['ldap_basedomain']} -D {$settings['ldap_user']} $password -f \"{$settings['ldap_filter']}\" -u {$settings['ldap_userattribute']} -P {$settings['auth_server']}$port\n";
 				break;
 			case 'radius':
-				$port = ((isset($settings['auth_server_port']) && !empty($setting['auth_server_port'])) ? "-p {$settings['auth_server_port']}" : '');
+				$port = ((isset($settings['auth_server_port']) && !empty($settings['auth_server_port'])) ? "-p {$settings['auth_server_port']}" : '');
 				$conf .= "auth_param basic program ". SQUID_LOCALBASE . "/libexec/squid/basic_radius_auth -w {$settings['radius_secret']} -h {$settings['auth_server']} $port\n";
 				break;
 			case 'cp':
