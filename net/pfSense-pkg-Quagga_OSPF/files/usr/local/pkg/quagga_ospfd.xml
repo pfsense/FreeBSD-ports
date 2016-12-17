@@ -117,8 +117,15 @@
 		<field>
 			<fielddescr>Disable FIB updates (Routing table)</fielddescr>
 			<fieldname>updatefib</fieldname>
-			<description>Disables the updating of the host routing table(turns into stub router).</description>
-			<type>checkbox</type>
+			<description>Disables the updating of the host routing table (turns into stub router).</description>
+			<type>select</type>
+			<default_value>none</default_value>
+			<options>
+				<option><name>None (FIB updates enabled) (default)</name><value>none</value></option>
+				<option><name>Stub Area (stub)</name><value>stub</value></option>
+				<option><name>Totally Stub (no-summary)</name><value>stub no-summary</value></option>
+				<option><name>Not so Stub Area (nssa)</name><value>nssa</value></option>
+			</options>
 		</field>
 		<field>
 			<fielddescr>Redistribute connected subnets</fielddescr>
