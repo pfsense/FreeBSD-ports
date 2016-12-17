@@ -56,7 +56,6 @@ if ($_POST) {
 	 */
 	//upload_config($_REQUEST['reason']);
 
-	$savemsg = "Backup completed successfully.";
 	$donotshowheader = true;
 }
 
@@ -65,9 +64,6 @@ include("head.inc");
 
 if ($input_errors) {
 	print_input_errors($input_errors);
-}
-if ($savemsg) {
-	print_info_box($savemsg, 'success');
 }
 
 $tab_array = array();
