@@ -33,9 +33,30 @@ require_once("notices.inc");
 unlink_if_exists("/usr/local/pkg/parse_config/parse_config_upload.inc");
 unlink_if_exists("/usr/local/pkg/parse_config/parse_config_upload.php");
 
+/* Check whether ACB is enabled */
+function acb_enabled() {
+	global $config;
+	$acb_enabled = false;
+
+	if (is_array($config['installedpackages']['autoconfigbackup']['config'])) {
+		if ($config['installedpackages']['autoconfigbackup']['config'][0]['enable_acb'] == "on") {
+			$acb_enabled = true;
+		}
+	}
+	return $acb_enabled;
+}
+
 // Ensures patches match
 function acb_custom_php_validation_command($post, &$input_errors) {
 	global $_POST, $savemsg, $config;
+
+	// Do nothing when ACB is disabled in configuration
+	// This also makes it possible to delete the credentials from config.xml
+	if (!acb_enabled()) {
+		// We do not need to store this value.
+		unset($_POST['testconnection']);
+		return;
+	}
 
 	if (!$post['username']) {
 		$input_errors[] = "Username is required.";
@@ -69,6 +90,11 @@ function acb_custom_php_validation_command($post, &$input_errors) {
 }
 
 function acb_custom_php_resync_config_command() {
+	// Do nothing when ACB is disabled in configuration
+	if (!acb_enabled()) {
+		return;
+	}
+
 	if (is_file("/cf/conf/lastpfSbackup.txt")) {
 		conf_mount_rw();
 		unlink("/cf/conf/lastpfSbackup.txt");
@@ -103,12 +129,14 @@ function configure_proxy() {
 function test_connection($post) {
 	global $savemsg, $config, $g;
 
-	// Do nothing when booting
+	// Do nothing when booting or when not enabled
 	if (function_exists("platform_booting")) {
 		if (platform_booting()) {
 			return;
 		}
 	} elseif ($g['booting']) {
+		return;
+	} elseif (!acb_enabled()) {
 		return;
 	}
 
@@ -157,12 +185,14 @@ function test_connection($post) {
 function upload_config($reasonm = "") {
 	global $config, $g, $input_errors;
 
-	// Do nothing when booting
+	// Do nothing when booting or when not enabled
 	if (function_exists("platform_booting")) {
 		if (platform_booting()) {
 			return;
 		}
 	} elseif ($g['booting']) {
+		return;
+	} elseif (!acb_enabled()) {
 		return;
 	}
 
@@ -291,4 +321,3 @@ function upload_config($reasonm = "") {
 		}
 	}
 }
-
