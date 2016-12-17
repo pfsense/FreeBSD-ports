@@ -190,8 +190,17 @@ function quagga_ospfd_install_conf() {
 		if ($ospfd_conf['routerid']) {
 			$conffile .= "  ospf router-id {$ospfd_conf['routerid']}\n";
 		}
-		if ($ospfd_conf['updatefib']) {
+		/* In package versions <=0.6.15, this used to a checkbox handling stub areas only
+		 * Leave the first check here
+		 */
+		if ($ospfd_conf['updatefib'] == "on" ) {
 			$conffile .= "  area {$ospfd_conf['area']} stub\n";
+		} elseif ($ospfd_conf['updatefib'] == "stub") {
+			$conffile .= "  area {$ospfd_conf['area']} stub\n";
+		} elseif ($ospfd_conf['updatefib'] == "nosum") {
+			$conffile .= "  area {$ospfd_conf['area']} stub no-summary\n";
+		} elseif ($ospfd_conf['updatefib'] == "nssa") {
+			$conffile .= "  area {$ospfd_conf['area']} nssa\n";
 		}
 		if ($ospfd_conf['logging'] && $ospfd_conf['adjacencylog']) {
 			$conffile .= "  log-adjacency-changes detail\n";
