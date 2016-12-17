@@ -36,14 +36,10 @@ $priv_list['page-services-quagga']['match'] = array();
 $priv_list['page-services-quagga']['match'][] = "pkg.php?xml=quagga_ospfd.xml*";
 $priv_list['page-services-quagga']['match'][] = "pkg.php?xml=quagga_ospfd_interfaces.xml*";
 $priv_list['page-services-quagga']['match'][] = "pkg.php?xml=quagga_ospfd_raw.xml*";
-$priv_list['page-services-quagga']['match'][] = "pkg.php?xml=bind_views.xml*";
-$priv_list['page-services-quagga']['match'][] = "pkg.php?xml=bind_zones.xml*";
 
 $priv_list['page-services-quagga']['match'][] = "pkg_edit.php?xml=quagga_ospfd.xml*";
 $priv_list['page-services-quagga']['match'][] = "pkg_edit.php?xml=quagga_ospfd_interfaces.xml*";
 $priv_list['page-services-quagga']['match'][] = "pkg_edit.php?xml=quagga_ospfd_raw.xml*";
-$priv_list['page-services-quagga']['match'][] = "pkg_edit.php?xml=bind_views.xml*";
-$priv_list['page-services-quagga']['match'][] = "pkg_edit.php?xml=bind_zones.xml*";
 
 $priv_list['page-services-quagga']['match'][] = "status_ospfd.php*";
 
