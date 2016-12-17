@@ -1,3 +1,2 @@
-OSPF routing protocol using Quagga.<br />
-			<strong>WARNING! Installs files to the same place as
-			OpenBGPD. Installing both will break things.</strong>
+OSPF routing protocol using Quagga.
+Conflicts with OpenBGPD; both packages cannot be installed at the same time.
