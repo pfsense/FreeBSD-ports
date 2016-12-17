@@ -32,9 +32,13 @@ if ($_POST) {
 		touch("/tmp/acb_nooverwrite");
 	}
 	if ($_REQUEST['reason']) {
-		write_config($_REQUEST['reason']);
+		if (write_config($_REQUEST['reason'])) {
+			$savemsg = "Backup completed successfully.";
+		}
+	} elseif (write_config("Backup invoked via Auto Config Backup.")) {
+			$savemsg = "Backup completed successfully.";
 	} else {
-		write_config("Backup invoked via Auto Config Backup.");
+		$savemsg = "Backup not completed - write_config() failed.";
 	}
 	$config = parse_config(true);
 	conf_mount_rw();
@@ -55,6 +59,9 @@ include("head.inc");
 
 if ($input_errors) {
 	print_input_errors($input_errors);
+}
+if ($savemsg) {
+	print_info_box($savemsg, 'success');
 }
 
 $tab_array = array();
