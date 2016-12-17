@@ -73,6 +73,12 @@
 	</tabs>
 	<fields>
 		<field>
+			<fielddescr>Enable AutoConfigBackup</fielddescr>
+			<fieldname>enable_acb</fieldname>
+			<description>Check this to enable configuration backups to portal.pfsense.org</description>
+			<type>checkbox</type>
+		</field>
+		<field>
 			<fielddescr>Subscription Username</fielddescr>
 			<fieldname>username</fieldname>
 			<description>Enter the subscription username for portal.pfsense.org</description>
