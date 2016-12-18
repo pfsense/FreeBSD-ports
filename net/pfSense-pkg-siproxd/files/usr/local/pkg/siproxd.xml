@@ -84,12 +84,14 @@
 			<fieldname>if_inbound</fieldname>
 			<description>Select the inbound interface.</description>
 			<type>interfaces_selection</type>
+			<showvirtualips/>
 		</field>
 		<field>
 			<fielddescr>Outbound Interface</fielddescr>
 			<fieldname>if_outbound</fieldname>
 			<description>Select the outbound interface.</description>
 			<type>interfaces_selection</type>
+			<showvirtualips/>
 		</field>
 		<field>
 			<name>SIP Settings</name>
