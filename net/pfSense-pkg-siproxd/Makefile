@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-siproxd
 PORTVERSION=	1.1.3
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
