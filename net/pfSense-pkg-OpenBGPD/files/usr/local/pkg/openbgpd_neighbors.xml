@@ -142,6 +142,8 @@
 						<option><name>Metric X</name><value>set metric</value></option>
 						<option><name>Multihop X</name><value>multihop</value></option>
 						<option><name>Localpref X</name><value>set localpref</value></option>
+						<option><name>Prepend Neighbor X</name><value>set prepend-neighbor</value></option>
+						<option><name>Prepend Self X</name><value>set prepend-self</value></option>
 						<option><name>Remote AS X</name><value>remote-as</value></option>
 						<option><name>Route-reflector X</name><value>route-reflector</value></option>
 						<option><name>Softreconfig in yes</name><value>softreconfig in yes</value></option>
