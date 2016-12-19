@@ -39,7 +39,7 @@ function acb_enabled() {
 	$acb_enabled = false;
 
 	if (is_array($config['installedpackages']['autoconfigbackup']['config'])) {
-		if ($config['installedpackages']['autoconfigbackup']['config'][0]['enable_acb'] == "on") {
+		if ($config['installedpackages']['autoconfigbackup']['config'][0]['enable_acb'] != "disabled") {
 			$acb_enabled = true;
 		}
 	}
