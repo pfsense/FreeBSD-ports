@@ -139,7 +139,7 @@
 			<options>
 				<option><name>None (FIB updates enabled) (default)</name><value>none</value></option>
 				<option><name>Stub Area (stub)</name><value>stub</value></option>
-				<option><name>Totally Stub (no-summary)</name><value>stub no-summary</value></option>
+				<option><name>Totally Stub (no-summary)</name><value>nosum</value></option>
 				<option><name>Not so Stub Area (nssa)</name><value>nssa</value></option>
 			</options>
 		</field>
