@@ -60,8 +60,13 @@
 		<field>
 			<fielddescr>Enable AutoConfigBackup</fielddescr>
 			<fieldname>enable_acb</fieldname>
-			<description>Check this to enable configuration backups to portal.pfsense.org</description>
-			<type>checkbox</type>
+			<description>Enable/disable configuration backups to portal.pfsense.org</description>
+			<type>select</type>
+			<default_value>enabled</default_value>
+			<options>
+				<option><value>enabled</value><name>Enabled</name></option>
+				<option><value>disabled</value><name>Disabled</name></option>
+			</options>
 		</field>
 		<field>
 			<fielddescr>Subscription Username</fielddescr>
