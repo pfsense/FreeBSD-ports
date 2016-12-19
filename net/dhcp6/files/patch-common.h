@@ -9,3 +9,12 @@
  extern int get_duid __P((char *, struct duid *));
  extern void dhcp6_init_options __P((struct dhcp6_optinfo *));
  extern void dhcp6_clear_options __P((struct dhcp6_optinfo *));
+@@ -179,7 +179,7 @@ extern void duidfree __P((struct duid *)
+ extern int ifaddrconf __P((ifaddrconf_cmd_t, char *, struct sockaddr_in6 *,
+ 			   int, int, int));
+ extern int safefile __P((const char *));
+-
++extern int opt_norelease;
+ /* missing */
+ #ifndef HAVE_STRLCAT
+ extern size_t strlcat __P((char *, const char *, size_t));
