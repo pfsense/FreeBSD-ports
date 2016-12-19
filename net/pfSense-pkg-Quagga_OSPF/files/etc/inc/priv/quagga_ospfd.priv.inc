@@ -3,7 +3,7 @@
  * quagga_ospfd.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2016 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,14 +29,10 @@ $priv_list['page-services-quagga']['match'] = array();
 $priv_list['page-services-quagga']['match'][] = "pkg.php?xml=quagga_ospfd.xml*";
 $priv_list['page-services-quagga']['match'][] = "pkg.php?xml=quagga_ospfd_interfaces.xml*";
 $priv_list['page-services-quagga']['match'][] = "pkg.php?xml=quagga_ospfd_raw.xml*";
-$priv_list['page-services-quagga']['match'][] = "pkg.php?xml=bind_views.xml*";
-$priv_list['page-services-quagga']['match'][] = "pkg.php?xml=bind_zones.xml*";
 
 $priv_list['page-services-quagga']['match'][] = "pkg_edit.php?xml=quagga_ospfd.xml*";
 $priv_list['page-services-quagga']['match'][] = "pkg_edit.php?xml=quagga_ospfd_interfaces.xml*";
 $priv_list['page-services-quagga']['match'][] = "pkg_edit.php?xml=quagga_ospfd_raw.xml*";
-$priv_list['page-services-quagga']['match'][] = "pkg_edit.php?xml=bind_views.xml*";
-$priv_list['page-services-quagga']['match'][] = "pkg_edit.php?xml=bind_zones.xml*";
 
 $priv_list['page-services-quagga']['match'][] = "status_ospfd.php*";
 
