@@ -4,7 +4,7 @@
 		<name>Quagga OSPF</name>
 		<internal_name>Quagga_OSPF</internal_name>
 		<descr><![CDATA[OSPF routing protocol using Quagga.&lt;br /&gt;
-			&lt;strong&gt;WARNING! Installs files to the same place as OpenBGPD. Installing both will break things.&lt;/strong&gt;]]></descr>
+			&lt;strong&gt;Conflicts with OpenBGPD; both packages cannot be installed at the same time.&lt;/strong&gt;]]></descr>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>quagga_ospfd.xml</configurationfile>
 	</package>
