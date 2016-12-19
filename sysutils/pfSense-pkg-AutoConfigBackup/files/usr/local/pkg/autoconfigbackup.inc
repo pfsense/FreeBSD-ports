@@ -3,7 +3,7 @@
  * autoconfigbackup.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2008-2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2008-2016 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -123,13 +123,7 @@ function test_connection($post) {
 	global $savemsg, $config, $g;
 
 	// Do nothing when booting or when not enabled
-	if (function_exists("platform_booting")) {
-		if (platform_booting()) {
-			return;
-		}
-	} elseif ($g['booting']) {
-		return;
-	} elseif (!acb_enabled()) {
+	if (platform_booting() || !acb_enabled()) {
 		return;
 	}
 
@@ -179,13 +173,7 @@ function upload_config($reasonm = "") {
 	global $config, $g, $input_errors;
 
 	// Do nothing when booting or when not enabled
-	if (function_exists("platform_booting")) {
-		if (platform_booting()) {
-			return;
-		}
-	} elseif ($g['booting']) {
-		return;
-	} elseif (!acb_enabled()) {
+	if (platform_booting() || !acb_enabled()) {
 		return;
 	}
 
