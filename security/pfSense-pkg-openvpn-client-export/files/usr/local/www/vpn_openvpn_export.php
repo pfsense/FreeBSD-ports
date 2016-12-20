@@ -673,14 +673,16 @@ servers[<?=$sindex?>][2] = '<?=$server['mode']?>';
 servers[<?=$sindex?>][3] = new Array();
 servers[<?=$sindex?>][4] = '<?=$server['authmode']?>';
 <?php
+	$c=0;
 	foreach ($server['users'] as $uindex => $user): ?>
 <?php		if (!$server['crlref'] || !is_cert_revoked($user['cert'], $server['crlref'])): ?>
-servers[<?=$sindex?>][1][<?=$uindex?>] = new Array();
-servers[<?=$sindex?>][1][<?=$uindex?>][0] = '<?=$user['uindex']?>';
-servers[<?=$sindex?>][1][<?=$uindex?>][1] = '<?=$user['cindex']?>';
-servers[<?=$sindex?>][1][<?=$uindex?>][2] = '<?=$user['name']?>';
-servers[<?=$sindex?>][1][<?=$uindex?>][3] = '<?=str_replace("'", "\\'", $user['certname'])?>';
+servers[<?=$sindex?>][1][<?=$c?>] = new Array();
+servers[<?=$sindex?>][1][<?=$c?>][0] = '<?=$user['uindex']?>';
+servers[<?=$sindex?>][1][<?=$c?>][1] = '<?=$user['cindex']?>';
+servers[<?=$sindex?>][1][<?=$c?>][2] = '<?=$user['name']?>';
+servers[<?=$sindex?>][1][<?=$c?>][3] = '<?=str_replace("'", "\\'", $user['certname'])?>';
 <?php	
+			$c++;
 		endif;
 	endforeach;
 	$c=0;
