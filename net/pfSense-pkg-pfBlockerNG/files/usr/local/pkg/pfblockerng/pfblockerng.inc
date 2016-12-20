@@ -27,8 +27,6 @@ require_once('pfsense-utils.inc');
 require_once('globals.inc');
 require_once('services.inc');
 require_once('service-utils.inc');
-require_once('xmlrpc.inc');
-require_once('xmlrpc_client.inc');
 if (file_exists('/usr/local/pkg/pfblockerng/pfblockerng_extra.inc')) {
 	require_once('/usr/local/pkg/pfblockerng/pfblockerng_extra.inc');	// 'include functions' not yet merged into pfSense
 }
@@ -5492,11 +5490,12 @@ function pfblockerng_sync_on_changes() {
 		if ($pfb_sync['varsynconchanges'] == 'disabled' || empty($pfb_sync['varsynconchanges'])) {
 			return;
 		}
-		$synctimeout = $pfb_sync['varsynctimeout'] ?: '150';
+		$synctimeout = $pfb_sync['varsynctimeout'] ?: 150;
 	} else {
 		return;
 	}
 
+	pfb_logger("\n===[  XMLRPC Sync ]===================================================\n", 1);
 	syslog(LOG_NOTICE, '[pfBlockerNG] XMLRPC sync is starting.');
 
 	if (isset($config['installedpackages']['pfblockerngsync']['config'])) {
@@ -5568,17 +5567,24 @@ function pfblockerng_sync_on_changes() {
 					}
 
 					if ($validate) {
-						pfblockerng_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout);
+						pfb_logger("\n Sync with [ {$protocol}://{$sync_to_ip}:{$port} ] ...", 1);
+						$success = pfblockerng_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout);
+
 						if ($success) {
+							pfb_logger(" done.\n", 1);
 							syslog(LOG_NOTICE, "[pfBlockerNG] XMLRPC sync to [ {$sync_to_ip}:{port} ] completed successfully.");
+						} else {
+							pfb_logger(" Failed!\n", 1);
 						}
 					} else {
+						pfb_logger(" terminated due to the following error(s): {$error}", 1);
 						log_error("[pfBlockerNG] XMLRPC sync to [ {$sync_to_ip}:{port} ] terminated due to the following error(s): {$error}");
 					}
 				}
 			}
 		}
 	}
+	pfb_logger("\n======================================================================\n", 1);
 }
 
 
@@ -5590,18 +5596,19 @@ function pfblockerng_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $p
 	// Take care of IPv6 literal address
 	if (is_ipaddrv6($sync_to_ip)) {
 		$sync_to_ip = "[{$sync_to_ip}]";
- 	}
-
-	$url = "{$protocol}://{$sync_to_ip}";
+	}
 
 	/* xml will hold the sections to sync */
 	$xml = array();
+
 	// If User Disabled, remove 'General Tab Customizations' from Sync
-	if (!isset($config['installedpackages']['pfblockerngsync']['config'][0]['syncinterfaces'])) {
-		if (isset($config['installedpackages']['pfblockerng']))
+	if (!isset($config['installedpackages']['pfblockerngsync']['config']['syncinterfaces'])) {
+		if (isset($config['installedpackages']['pfblockerng'])) {
 			$xml['pfblockerng']		= $config['installedpackages']['pfblockerng'];
-		if (isset($config['installedpackages']['pfblockerngdnsblsettings']))
+		}
+		if (isset($config['installedpackages']['pfblockerngdnsblsettings'])) {
 			$xml['pfblockerngdnsblsettings']= $config['installedpackages']['pfblockerngdnsblsettings'];
+		}
 	}
 
 	if (isset($config['installedpackages']['pfblockerngreputation']))
@@ -5633,32 +5640,62 @@ function pfblockerng_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $p
 	if (isset($config['installedpackages']['pfblockerngdnsbl']))
 		$xml['pfblockerngdnsbl']		= $config['installedpackages']['pfblockerngdnsbl'];
 
-	/* assemble xmlrpc payload */
-	$params = array(XML_RPC_encode($password), XML_RPC_encode($xml));
+	// Execute applicable XMLRPC code as per pfSense version
+	if (substr(trim(file_get_contents('/etc/version')), 0, 3) < '2.4') {
 
-	/* set a few variables needed for sync code borrowed from filter.inc */
-	$method = 'pfsense.merge_installedpackages_section_xmlrpc';
-	$msg = new XML_RPC_Message($method, $params);
-	$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
-	$cli->setCredentials($username, $password);
-	if ($g['debug']) {
-		$cli->setDebug(1);
-	}
+		require_once('xmlrpc.inc');
+		require_once('xmlrpc_client.inc');
 
-	/* send our XMLRPC message and timeout after defined sync timeout value */
-	$resp = $cli->send($msg, $synctimeout);
+		$url = "{$protocol}://{$sync_to_ip}";
 
-	if (!$resp) {
-		log_error("[pfBlockerNG] XMLRPC communications error occurred while attempting sync with {$url}:{$port}.");
-		file_notice('sync_settings', $error, 'pfBlockerNG Settings Sync', '');
-		$success = FALSE;
-	} elseif ($resp->faultCode()) {
-		$cli->setDebug(1);
+		/* assemble xmlrpc payload */
+		$params = array(XML_RPC_encode($password), XML_RPC_encode($xml));
+
+		/* set a few variables needed for sync code borrowed from filter.inc */
+		$method = 'pfsense.merge_installedpackages_section_xmlrpc';
+		$msg = new XML_RPC_Message($method, $params);
+		$cli = new XML_RPC_Client('/xmlrpc.php', $url, $port);
+		$cli->setCredentials($username, $password);
+		if ($g['debug']) {
+			$cli->setDebug(1);
+		}
+
+		/* send our XMLRPC message and timeout after defined sync timeout value */
 		$resp = $cli->send($msg, $synctimeout);
-		log_error("[pfBlockerNG] XMLRPC Error received while attempting sync with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString());
-		file_notice('sync_settings', $error, 'pfBlockerNG Settings Sync', '');
-		$success = FALSE;
+
+		if (!$resp) {
+			log_error("[pfBlockerNG] XMLRPC communications error occurred while attempting sync with {$url}:{$port}.");
+			file_notice('sync_settings', $error, 'pfBlockerNG Settings Sync', '');
+			$success = FALSE;
+		} elseif ($resp->faultCode()) {
+			$cli->setDebug(1);
+			$resp = $cli->send($msg, $synctimeout);
+			log_error("[pfBlockerNG] XMLRPC errors syncing with {$url}:{$port} - Code " . $resp->faultCode() . ": " . $resp->faultString());
+			file_notice('sync_settings', $error, 'pfBlockerNG Settings Sync', '');
+			$success = FALSE;
+		}
+		return $success;
 	}
-	return $success;
+	else {
+		require_once('xmlrpc_client.inc');
+
+		// xmlrpc cannot encode NULL objects/arrays
+		foreach ($xml as $xmlkey => $xmlvalue) {
+			if (gettype($xmlvalue) == 'NULL') {
+				$xml[$xmlkey] = array();
+			}
+		}
+
+		$synctimeout = intval($synctimeout);
+		$rpc_client = new pfsense_xmlrpc_client();
+		$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
+		$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
+
+		if (!isset($resp)) {
+			return FALSE;
+		} else {
+			return TRUE;
+		}
+	}
 }
 ?>
