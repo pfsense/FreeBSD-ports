@@ -8,7 +8,7 @@
  * autoconfigbackup.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2008-2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2008-2016 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -57,6 +57,17 @@
 		</tab>
 	</tabs>
 	<fields>
+		<field>
+			<fielddescr>Enable AutoConfigBackup</fielddescr>
+			<fieldname>enable_acb</fieldname>
+			<description>Enable/disable configuration backups to portal.pfsense.org</description>
+			<type>select</type>
+			<default_value>enabled</default_value>
+			<options>
+				<option><value>enabled</value><name>Enabled</name></option>
+				<option><value>disabled</value><name>Disabled</name></option>
+			</options>
+		</field>
 		<field>
 			<fielddescr>Subscription Username</fielddescr>
 			<fieldname>username</fieldname>
