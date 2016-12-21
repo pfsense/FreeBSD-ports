@@ -348,9 +348,9 @@ if (($suricatacfg['eve_log_alerts'] == 'on') && ($suricatacfg['eve_log_alerts_pa
 	$eve_out_types .= "\n            packet: yes # enable dumping of packet (without stream segments)";
 	$eve_out_types .= "\n            http: yes # enable dumping of http fields";
 	$eve_out_types .= "\n            tls: yes # enable dumping of tls fields";
-        $eve_out_types .= "\n            ssh: yes # enable dumping of ssh fields";
-        $eve_out_types .= "\n            smtp: yes # enable dumping of smtp fields";
-		}
+	$eve_out_types .= "\n            ssh: yes # enable dumping of ssh fields";
+	$eve_out_types .= "\n            smtp: yes # enable dumping of smtp fields";
+}
 
 if ($suricatacfg['eve_log_http'] == 'on') {
 	$eve_out_types .= "\n        - http:";
