@@ -482,9 +482,9 @@ $section->addInput(new Form_Checkbox(
 $section->addInput(new Form_Input(
 	'pkcs11providers',
 	'PKCS#11 Providers',
-	'Enter the path to the PKCS#11 providers.',
+	'text',
 	$cfg['kcs11providers']
-));
+))->setHelp('Enter the path to the PKCS#11 providers.');
 
 $section->addInput(new Form_Input(
 	'pkcs11id',
