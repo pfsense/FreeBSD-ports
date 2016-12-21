@@ -49,23 +49,23 @@ function squid_print_javascript_auth() {
 <script type="text/javascript">
 //<![CDATA[
 function on_auth_method_changed() {
-	document.iform.auth_method.disabled = 1;
-	document.iform.auth_server.disabled = 1;
-	document.iform.auth_ntdomain.disabled = 1;
-	document.iform.auth_server_port.disabled = 1;
-	document.iform.ldap_user.disabled = 1;
-	document.iform.ldap_version.disabled = 1;
-	document.iform.ldap_userattribute.disabled = 1;
-	document.iform.ldap_filter.disabled = 1;
-	document.iform.ldap_pass.disabled = 1;
-	document.iform.ldap_basedomain.disabled = 1;
-	document.iform.radius_secret.disabled = 1;
-	document.iform.msnt_secondary.disabled = 1;
-	document.iform.auth_prompt.disabled = 1;
-	document.iform.auth_processes.disabled = 1;
-	document.iform.auth_ttl.disabled = 1;
-	document.iform.unrestricted_auth.disabled = 1;
-	document.iform.no_auth_hosts.disabled = 1;
+	$('#auth_method').prop("disabled", true);
+	$('#auth_server').prop("disabled", true);
+	$('#auth_ntdomain').prop("disabled", true);
+	$('#auth_server_port').prop("disabled", true);
+	$('#ldap_user').prop("disabled", true);
+	$('#ldap_version').prop("disabled", true);
+	$('#ldap_userattribute').prop("disabled", true);
+	$('#ldap_filter').prop("disabled", true);
+	$('#ldap_pass').prop("disabled", true);
+	$('#ldap_basedomain').prop("disabled", true);
+	$('#radius_secret').prop("disabled", true);
+	$('#msnt_secondary').prop("disabled", true);
+	$('#auth_prompt').prop("disabled", true);
+	$('#auth_processes').prop("disabled", true);
+	$('#auth_ttl').prop("disabled", true);
+	$('#unrestricted_auth').prop("disabled", true);
+	$('#no_auth_hosts').prop("disabled", true);
 }
 //]]>
 </script>
@@ -78,104 +78,103 @@ EOD;
 <script type="text/javascript">
 //<![CDATA[
 function on_auth_method_changed() {
-	var field = document.iform.auth_method;
-	var auth_method = field.options[field.selectedIndex].value;
+	auth_method = $('#auth_method').val();
 
 	if (auth_method == 'none') {
-		document.iform.auth_server.disabled = 1;
-		document.iform.auth_server_port.disabled = 1;
-		document.iform.auth_ntdomain.disabled = 1;
-		document.iform.ldap_user.disabled = 1;
-		document.iform.ldap_version.disabled = 1;
-		document.iform.ldap_userattribute.disabled = 1;
-		document.iform.ldap_filter.disabled = 1;
-		document.iform.ldap_pass.disabled = 1;
-		document.iform.ldap_basedomain.disabled = 1;
-		document.iform.radius_secret.disabled = 1;
-		document.iform.msnt_secondary.disabled = 1;
-		document.iform.auth_prompt.disabled = 1;
-		document.iform.auth_processes.disabled = 1;
-		document.iform.auth_ttl.disabled = 1;
-		document.iform.unrestricted_auth.disabled = 1;
-		document.iform.no_auth_hosts.disabled = 1;
+		$('#auth_server').prop("disabled", true);
+		$('#auth_server_port').prop("disabled", true);
+		$('#auth_ntdomain').prop("disabled", true);
+		$('#ldap_user').prop("disabled", true);
+		$('#ldap_version').prop("disabled", true);
+		$('#ldap_userattribute').prop("disabled", true);
+		$('#ldap_filter').prop("disabled", true);
+		$('#ldap_pass').prop("disabled", true);
+		$('#ldap_basedomain').prop("disabled", true);
+		$('#radius_secret').prop("disabled", true);
+		$('#msnt_secondary').prop("disabled", true);
+		$('#auth_prompt').prop("disabled", true);
+		$('#auth_processes').prop("disabled", true);
+		$('#auth_ttl').prop("disabled", true);
+		$('#unrestricted_auth').prop("disabled", true);
+		$('#no_auth_hosts').prop("disabled", true);
 	} else {
-		document.iform.auth_prompt.disabled = 0;
-		document.iform.auth_processes.disabled = 0;
-		document.iform.auth_ttl.disabled = 0;
-		document.iform.unrestricted_auth.disabled = 0;
-		document.iform.no_auth_hosts.disabled = 0;
+		$('#auth_prompt').prop("disabled", false);
+		$('#auth_processes').prop("disabled", false);
+		$('#auth_ttl').prop("disabled", false);
+		$('#unrestricted_auth').prop("disabled", false);
+		$('#no_auth_hosts').prop("disabled", false);
 	}
 
 	switch (auth_method) {
 	case 'local':
-		document.iform.auth_server.disabled = 1;
-		document.iform.auth_server_port.disabled = 1;
-		document.iform.auth_ntdomain.disabled = 1;
-		document.iform.ldap_user.disabled = 1;
-		document.iform.ldap_pass.disabled = 1;
-		document.iform.ldap_version.disabled = 1;
-		document.iform.ldap_userattribute.disabled = 1;
-		document.iform.ldap_filter.disabled = 1;
-		document.iform.ldap_basedomain.disabled = 1;
-		document.iform.radius_secret.disabled = 1;
-		document.iform.msnt_secondary.disabled = 1;
+		$('#auth_server').prop("disabled", true);
+		$('#auth_server_port').prop("disabled", true);
+		$('#auth_ntdomain').prop("disabled", true);
+		$('#ldap_user').prop("disabled", true);
+		$('#ldap_pass').prop("disabled", true);
+		$('#ldap_version').prop("disabled", true);
+		$('#ldap_userattribute').prop("disabled", true);
+		$('#ldap_filter').prop("disabled", true);
+		$('#ldap_basedomain').prop("disabled", true);
+		$('#radius_secret').prop("disabled", true);
+		$('#msnt_secondary').prop("disabled", true);
 		break;
 	case 'ldap':
-		document.iform.auth_server.disabled = 0;
-		document.iform.auth_server_port.disabled = 0;
-		document.iform.ldap_user.disabled = 0;
-		document.iform.ldap_pass.disabled = 0;
-		document.iform.ldap_version.disabled = 0;
-		document.iform.ldap_userattribute.disabled = 0;
-		document.iform.ldap_filter.disabled = 0;
-		document.iform.ldap_basedomain.disabled = 0;
-		document.iform.radius_secret.disabled = 1;
-		document.iform.msnt_secondary.disabled = 1;
-		document.iform.auth_ntdomain.disabled = 1;
+		$('#auth_server').prop("disabled", false);
+		$('#auth_server_port').prop("disabled", false);
+		$('#ldap_user').prop("disabled", false);
+		$('#ldap_pass').prop("disabled", false);
+		$('#ldap_version').prop("disabled", false);
+		$('#ldap_userattribute').prop("disabled", false);
+		$('#ldap_filter').prop("disabled", false);
+		$('#ldap_basedomain').prop("disabled", false);
+		$('#radius_secret').prop("disabled", true);
+		$('#msnt_secondary').prop("disabled", true);
+		$('#auth_ntdomain').prop("disabled", true);
 		break;
 	case 'radius':
-		document.iform.auth_server.disabled = 0;
-		document.iform.auth_server_port.disabled = 0;
-		document.iform.ldap_user.disabled = 1;
-		document.iform.ldap_pass.disabled = 1;
-		document.iform.ldap_version.disabled = 1;
-		document.iform.ldap_userattribute.disabled = 1;
-		document.iform.ldap_filter.disabled = 1;
-		document.iform.ldap_basedomain.disabled = 1;
-		document.iform.radius_secret.disabled = 0;
-		document.iform.msnt_secondary.disabled = 1;
-		document.iform.auth_ntdomain.disabled = 1;
+		$('#auth_server').prop("disabled", false);
+		$('#auth_server_port').prop("disabled", false);
+		$('#ldap_user').prop("disabled", true);
+		$('#ldap_pass').prop("disabled", true);
+		$('#ldap_version').prop("disabled", true);
+		$('#ldap_userattribute').prop("disabled", true);
+		$('#ldap_filter').prop("disabled", true);
+		$('#ldap_basedomain').prop("disabled", true);
+		$('#radius_secret').prop("disabled", false);
+		$('#msnt_secondary').prop("disabled", true);
+		$('#auth_ntdomain').prop("disabled", true);
 		break;
 	case 'msnt':
-		document.iform.auth_server.disabled = 0;
-		document.iform.auth_server_port.disabled = 1;
-		document.iform.auth_ntdomain.disabled = 0;
-		document.iform.ldap_user.disabled = 1;
-		document.iform.ldap_pass.disabled = 1;
-		document.iform.ldap_version.disabled = 1;
-		document.iform.ldap_userattribute.disabled = 1;
-		document.iform.ldap_filter.disabled = 1;
-		document.iform.ldap_basedomain.disabled = 1;
-		document.iform.radius_secret.disabled = 1;
-		document.iform.msnt_secondary.disabled = 0;
+		$('#auth_server').prop("disabled", false);
+		$('#auth_server_port').prop("disabled", true);
+		$('#auth_ntdomain').prop("disabled", false);
+		$('#ldap_user').prop("disabled", true);
+		$('#ldap_pass').prop("disabled", true);
+		$('#ldap_version').prop("disabled", true);
+		$('#ldap_userattribute').prop("disabled", true);
+		$('#ldap_filter').prop("disabled", true);
+		$('#ldap_basedomain').prop("disabled", true);
+		$('#radius_secret').prop("disabled", true);
+		$('#msnt_secondary').prop("disabled", false);
 		break;
 	case 'cp':
-		document.iform.auth_server.disabled = 1;
-		document.iform.auth_server_port.disabled = 1;
-		document.iform.auth_ntdomain.disabled = 1;
-		document.iform.ldap_user.disabled = 1;
-		document.iform.ldap_version.disabled = 1;
-		document.iform.ldap_userattribute.disabled = 1;
-		document.iform.ldap_filter.disabled = 1;
-		document.iform.ldap_pass.disabled = 1;
-		document.iform.ldap_basedomain.disabled = 1;
-		document.iform.radius_secret.disabled = 1;
-		document.iform.msnt_secondary.disabled = 1;
-		document.iform.auth_prompt.disabled = 1;
-		document.iform.auth_processes.disabled = 0;
-		document.iform.auth_ttl.disabled = 0;
-		document.iform.unrestricted_auth.disabled = 1;
-		document.iform.no_auth_hosts.disabled = 1;
+		$('#auth_server').prop("disabled", true);
+		$('#auth_server_port').prop("disabled", true);
+		$('#auth_ntdomain').prop("disabled", true);
+		$('#ldap_user').prop("disabled", true);
+		$('#ldap_version').prop("disabled", true);
+		$('#ldap_userattribute').prop("disabled", true);
+		$('#ldap_filter').prop("disabled", true);
+		$('#ldap_pass').prop("disabled", true);
+		$('#ldap_basedomain').prop("disabled", true);
+		$('#radius_secret').prop("disabled", true);
+		$('#msnt_secondary').prop("disabled", true);
+		$('#auth_prompt').prop("disabled", true);
+		$('#auth_processes').prop("disabled", false);
+		$('#auth_ttl').prop("disabled", false);
+		$('#unrestricted_auth').prop("disabled", true);
+		$('#no_auth_hosts').prop("disabled", true);
 		break;
 	}
 }
@@ -201,52 +200,52 @@ function squid_print_antivirus_advanced_config() {
 	$javascript = <<< EOD
 <script type="text/javascript">
 //<![CDATA[
+
 function on_antivirus_advanced_config_changed() {
-	var field = document.iform.enable_advanced;
-	var enable_advanced = field.options[field.selectedIndex].value;
+	var enable_advanced = $('#enable_advanced').val();
 
 	if (enable_advanced === 'disabled') {
-		document.iform['clamav_url'].disabled = 0;
-		document.iform['clamav_safebrowsing'].disabled = 0;
-		document.iform['clamav_disable_stream_scanning'].disabled = 0;
-		document.iform['clamav_update'].disabled = 0;
-		document.iform['clamav_dbregion'].disabled = 0;
-		document.iform['clamav_dbservers'].disabled = 0;
-		document.getElementById("load_advanced").disabled = 1;
-		document.iform['raw_squidclamav_conf'].disabled = 1;
-		document.iform['raw_squidclamav_conf'].value = '';
-		document.iform['raw_cicap_conf'].disabled = 1;
-		document.iform['raw_cicap_conf'].value = '';
-		document.iform['raw_cicap_magic'].disabled = 1;
-		document.iform['raw_cicap_magic'].value = '';
-		document.iform['raw_freshclam_conf'].disabled = 1;
-		document.iform['raw_freshclam_conf'].value = '';
-		document.iform['raw_clamd_conf'].disabled = 1;
-		document.iform['raw_clamd_conf'].value = '';
+		$('#clamav_url').prop("disabled", false);
+		$('#clamav_safebrowsing').prop("disabled", false);
+		$('#clamav_disable_stream_scanning').prop("disabled", false);
+		$('#clamav_update').prop("disabled", false);
+		$('#clamav_dbregion').prop("disabled", false);
+		$('#clamav_dbservers').prop("disabled", false);
+		$('#load_advanced').prop("disabled", true);
+		$('#raw_squidclamav_conf').prop("disabled", true);
+		$('#raw_squidclamav_conf').val("");
+		$('#raw_cicap_conf').prop("disabled", true);
+		$('#raw_cicap_conf').val("");
+		$('#raw_cicap_magic').prop("disabled", true);
+		$('#raw_cicap_magic').val("");
+		$('#raw_freshclam_conf').prop("disabled", true);
+		$('#raw_freshclam_conf').val("");
+		$('#raw_clamd_conf').prop("disabled", true);
+		$('#raw_clamd_conf').val("");
 	} else {
-		document.iform['clamav_url'].disabled = 1;
-		document.iform['clamav_safebrowsing'].disabled = 1;
-		document.getElementById('clamav_safebrowsing').checked = 0;
-		document.iform['clamav_disable_stream_scanning'].disabled = 1;
-		document.getElementById('clamav_disable_stream_scanning').checked = 0;
-		document.iform['clamav_update'].disabled = 0;
-		document.iform['clamav_dbregion'].disabled = 1;
-		document.getElementById("clamav_dbregion").value = '';
-		document.iform['clamav_dbservers'].disabled = 1;
-		document.iform['clamav_dbservers'].value = '';
-		document.getElementById("load_advanced").disabled = 0;
-		document.iform['raw_squidclamav_conf'].disabled = 0;
-		document.iform['raw_cicap_conf'].disabled = 0;
-		document.iform['raw_cicap_magic'].disabled = 0;
-		document.iform['raw_freshclam_conf'].disabled = 0;
-		document.iform['raw_clamd_conf'].disabled = 0;
+		$('#clamav_url').prop("disabled", true);
+		$('#clamav_safebrowsing').prop("disabled", true);
+		$('#clamav_safebrowsing').prop('checked', false);
+		$('#clamav_disable_stream_scanning').prop("disabled", true);
+		$('#clamav_disable_stream_scanning').prop('checked', false);
+		$('#clamav_update').prop("disabled", false);
+		$('#clamav_dbregion').prop("disabled", true);
+		$('#clamav_dbregion').val("");
+		$('#clamav_dbservers').prop("disabled", true);
+		$('#clamav_dbservers').val("");
+		$('#load_advanced').prop("disabled", false);
+		$('#raw_squidclamav_conf').prop("disabled", false);
+		$('#raw_cicap_conf').prop("disabled", false);
+		$('#raw_cicap_magic').prop("disabled", false);
+		$('#raw_freshclam_conf').prop("disabled", false);
+		$('#raw_clamd_conf').prop("disabled", false);
 
 	}
 
-	if (document.getElementById("enable").checked == 0) {
-		document.getElementById("update_av").disabled = 1;
+	if (! $('enable').prop("checked")) {
+		$('#update_av').prop("disabled", true);
 	} else {
-		document.getElementById("update_av").disabled = 0;
+		$('#update_av').prop("disabled", false);
 	}
 }
 //]]>
