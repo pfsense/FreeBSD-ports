@@ -475,7 +475,7 @@ $section = new Form_Section('Certificate Export Options');
 $section->addInput(new Form_Checkbox(
 	'usepkcs11',
 	'PKCS#11 Certificate Storage',
-	'Use PKCS#11 storage instead of local files.',
+	'Use PKCS#11 storage device (cryptographic token, HSM, smart card) instead of local files.',
 	$cfg['usepkcs11']
 ));
 
@@ -483,13 +483,14 @@ $section->addInput(new Form_Input(
 	'pkcs11providers',
 	'PKCS#11 Providers',
 	'text',
-	$cfg['kcs11providers']
-))->setHelp('Enter the path to the PKCS#11 providers.');
+	$cfg['pkcs11providers']
+))->setHelp('Enter the client local path to the PKCS#11 provider(s) (DLL, module), multiple separated by a space character.');
 
 $section->addInput(new Form_Input(
 	'pkcs11id',
-	'PKCS#11 ID'
-));
+	'PKCS#11 ID',
+	'text'
+))->setHelp('Enter the object\'s ID on the PKCS#11 device.');
 
 $section->addInput(new Form_Checkbox(
 	'usetoken',
