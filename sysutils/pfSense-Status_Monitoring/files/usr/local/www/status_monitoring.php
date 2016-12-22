@@ -615,8 +615,9 @@ display_top_tabs($tab_array);
 					<span class="help-block">Inverse</span>
 				</div>
 				<div class="col-sm-2">
-					<select class="form-control" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="You must save this view for the refresh interval to take effect." id="refresh-interval" name="refresh-interval">
+					<select class="form-control" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="The refresh interval will take effect immediately." id="refresh-interval" name="refresh-interval">
 						<option value="0" selected>Never</option>
+						<option value="-1">Settings Change</option>
 						<option value="60000">1 Minute</option>
 						<option value="300000">5 Minutes</option>
 						<option value="600000">10 Minutes</option>
@@ -1561,6 +1562,34 @@ events.push(function() {
 		$('acronym').tooltip();
 	}
 
+	// Refresh graph scheduler.
+	var refresh_id;
+	function refresh_graph_scheduler() {
+		var refresh_interval = $( "#refresh-interval" ).val();
+		Visibility.stop(refresh_id);
+		if(refresh_interval > 0) {
+			refresh_id = Visibility.every(refresh_interval, function () {
+				$("#chart-error").hide();
+			    draw_graph(getOptions());
+			});
+		}
+	}
+
+	// Refresh graph when settings changes are made.
+	$('#category-left, #category-right, #graph-left, #graph-right, #time-period, #resolution, #graph-type, #invert, #start-date, #end-date, #start-time, #end-time').on('change', function() {
+		// If "Settings Change" refresh interval option is selected.
+		if ($( "#refresh-interval" ).val() == -1) {
+			$("#chart-error").hide();
+			draw_graph(getOptions());
+			refresh_graph_scheduler();
+		}
+	});
+
+	// Apply refresh interval setting immediately when changed.
+	$('#refresh-interval').on('change', function() {
+		refresh_graph_scheduler();
+	});
+
 	var chart;
 
 	<?php
@@ -1580,16 +1609,7 @@ events.push(function() {
 	} else {
 
 		draw_graph(getOptions());
-
-		var refresh_interval = $( "#refresh-interval" ).val();
-
-		if(refresh_interval > 0) {
-
-			var refresh_id = Visibility.every(refresh_interval, function () {
-			    draw_graph(getOptions());
-			});
-
-		}
+		refresh_graph_scheduler();
 
 	}
 
