@@ -34,6 +34,12 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/acme.inc \
 		${STAGEDIR}${PREFIX}/pkg/acme
+	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/acme/acme.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/acme_sh.inc \
+		${STAGEDIR}${PREFIX}/pkg/acme
+	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/acme/acme_command.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/acme_gui.inc \
 		${STAGEDIR}${PREFIX}/pkg/acme
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/acme_htmllist.inc \
@@ -41,8 +47,6 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/acme_serverconnectors.inc \
 		${STAGEDIR}${PREFIX}/pkg/acme
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/acme_utils.inc \
-		${STAGEDIR}${PREFIX}/pkg/acme
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/lescript.inc \
 		${STAGEDIR}${PREFIX}/pkg/acme
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/pkg_acme_tabs.inc \
 		${STAGEDIR}${PREFIX}/pkg/acme

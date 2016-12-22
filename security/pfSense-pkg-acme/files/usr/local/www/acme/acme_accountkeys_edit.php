@@ -1,31 +1,23 @@
 <?php
 /*
-	acme_accountkeys_edit.php
-	part of pfSense (https://www.pfsense.org/)
-	Copyright (C) 2016 PiBa-NL
-	All rights reserved.
-
-	Redistribution and use in source and binary forms, with or without
-	modification, are permitted provided that the following conditions are met:
-
-	1. Redistributions of source code must retain the above copyright notice,
-	   this list of conditions and the following disclaimer.
-
-	2. Redistributions in binary form must reproduce the above copyright
-	   notice, this list of conditions and the following disclaimer in the
-	   documentation and/or other materials provided with the distribution.
-
-	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-	AUTHOR BE LIABLE FOR ANY DIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-	POSSIBILITY OF SUCH DAMAGE.
-*/
+ * acme_accountkeys_edit.php
+ * 
+ * part of pfSense (https://www.pfsense.org/)
+ * Copyright (c) 2016 PiBa-NL
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 namespace pfsense_pkg\acme;
 
@@ -37,7 +29,9 @@ require_once("acme/acme_htmllist.inc");
 require_once("acme/pkg_acme_tabs.inc");
 
 if ($_POST['action'] == "createkey") {
-	echo generateAccountKey();
+	$caname = $_POST['caname'];
+	$ca = $a_acmeserver[$caname]['url'];
+	echo generateAccountKey("_createkey", $ca);
 	exit;
 }
 if ($_POST['action'] == "registerkey") {
@@ -45,8 +39,7 @@ if ($_POST['action'] == "registerkey") {
 	$key = $_POST['key'];
 	$ca = $a_acmeserver[$caname]['url'];
 	echo "Register key at ca: {$ca}\n";
-	//echo "Key: {$key}\n";
-	echo registerAcmeAccountKey($ca, $key);
+	echo registerAcmeAccountKey("_registerkey", $ca, $key);
 	exit;
 }
 
@@ -310,7 +303,7 @@ if ($_POST) {
 //$closehead = false;
 $pgtitle = array("Services", "Acme", "Certificate options: Edit");
 include("head.inc");
-display_top_tabs_active($acme_tab_array['acme'], "backend");
+display_top_tabs_active($acme_tab_array['acme'], "accountkeys");
 
 // 'processing' done, make all simple fields usable in html.
 foreach($simplefields as $field){
@@ -348,7 +341,7 @@ $section->addInput(new \Form_Textarea(
 
 $section->addInput(new \Form_StaticText(
 	'', 
-	"<a href='javascript:createkey();' class='btn btn-sm btn-primary'>"
+	"<a id='btncreatekey' class='btn btn-sm btn-primary'>"
 		. "<i id='btncreatekeyicon' class='fa fa-check'></i> Create new account key</a>"
 ));
 
@@ -414,7 +407,7 @@ print $form;
 //<![CDATA[
 
 	function setTest(data){
-		$("#accountkey").text(data);
+		$("#accountkey").val(data);
 	}
 	function createkey() {
 		$("#btncreatekeyicon").removeClass("fa-check").addClass("fa-cog fa-spin");
@@ -441,6 +434,21 @@ events.push(function() {
 		});
 		
 	});
+	
+	$('#btncreatekey').click(function() {
+		$("#btncreatekeyicon").removeClass("fa-check").addClass("fa-cog fa-spin");
+		var caname = $("#acmeserver").val();
+		ajaxRequest = $.ajax({
+			type: "post",
+			data: { action: "createkey", caname: caname },
+			success: function(data) {
+				setTest(data);
+				$("#btncreatekeyicon").removeClass("fa-cog fa-spin").addClass("fa-check");
+			}
+		});
+		
+	});
+	
 	/*
 	$('#stats_enabled').click(function () {
 		updatevisibility();

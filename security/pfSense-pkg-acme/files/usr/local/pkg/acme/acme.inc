@@ -1,37 +1,40 @@
 <?php
 /*
-    acme.inc
-	Copyright (C) 2016 PiBa-NL
-    All rights reserved.
-
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions are met:
-
-    1. Redistributions of source code must retain the above copyright notice,
-       this list of conditions and the following disclaimer.
-
-    2. Redistributions in binary form must reproduce the above copyright
-       notice, this list of conditions and the following disclaimer in the
-       documentation and/or other materials provided with the distribution.
-
-    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-    POSSIBILITY OF SUCH DAMAGE.
-*/
+ * acme.inc
+ * 
+ * part of pfSense (https://www.pfsense.org/)
+ * Copyright (c) 2016 PiBa-NL
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 namespace { // global code
 	function acme_plugin_certificates($pluginparams) {
+		global $config;
 		$result = array();
 		if ($pluginparams['type'] == 'certificates' && $pluginparams['event'] == 'used_certificates') {
+			$a_certificates = &$config['installedpackages']['acme']['certificates']['item'];
 			$result['pkgname'] = "Acme";
 			$result['certificatelist'] = array();
+			foreach($a_certificates as $certificate) {
+				$certificatename = $certificate["name"];
+				$cert = lookup_cert_by_name($certificatename);
+				$item = array();
+				$cert = $cert['refid'];
+				$item['usedby'] = "Acme - {$certificatename}";
+				$result['certificatelist'][$cert][] = $item;
+			}
 		}
 		return $result;
 	}
@@ -45,7 +48,7 @@ require_once("pkg-utils.inc");
 require_once("notices.inc");
 require_once("util.inc");
 require_once("acme_utils.inc");
-require_once("lescript.inc");
+require_once("acme_sh.inc");
 require_once("acme/acme_serverconnectors.inc");
 
 $d_acmeconfdirty_path = $g['varrun_path'] . "/acme.conf.dirty";
@@ -64,6 +67,9 @@ $a_acmeserver['letsencrypt-staging'] = array('name' => "Let's Encrypt Staging (f
 $a_acmeserver['letsencrypt-production'] = array('name' => "Let's Encrypt Production(Applies ratelimits to certificate requests)",
     'url' => 'https://acme-v01.api.letsencrypt.org'
 );
+/*$a_acmeserver['dummy'] = array('name' => "dummy",
+    'url' => 'https://example.org'
+);*/
 
 global $acme_domain_validation_method;
 $acme_domain_validation_method = array();
@@ -89,27 +95,45 @@ $acme_domain_validation_method['ftpwebroot'] = array(name => "FTP webroot",
 			'description' =>"Folder the acme challenge response is written to for default: /.well-known/acme-challenge/"
 		)
 	));
-/*$acme_domain_validation_method['http-post'] = array(name => "http-post",
+//TODO add more challenge validation types
+/* 
+$acme_domain_validation_method['http-post'] = array(name => "http-post",
 	'fields' => array(
 		'url' => array('name'=>"url",'columnheader'=>"Url",'type'=>"textbox",'size'=>"50",
 			'description' =>"Url the challenge file is posted to, the webserver there must store and reply to the request when the acme servers perform the request for the file from /.well-known/acme-challenge/"
 		)
-	));*/
+	));
+$acme_domain_validation_method['dns'] = array(name => "dns",
+	'fields' => array(
+		'url' => array('name'=>"url",'columnheader'=>"Url",'type'=>"textbox",'size'=>"50",
+			'description' =>"Verify domain by adding a txt dns record"
+		)
+	));
+*/
 
+//TODO add more 'actions'
 $acme_newcertificateactions = array();
 $acme_newcertificateactions['shellcommand'] = array(name => "shell command");
+$acme_newcertificateactions['servicerestart'] = array(name => "restart service");
 $acme_newcertificateactions['php_command'] = array(name => "php command script");
 
 // </editor-fold>
 #end
 
+$a_keylength = array();
+$a_keylength['2048'] = array(name => "2048");
+$a_keylength['3072'] = array(name => "3072");
+$a_keylength['4096'] = array(name => "4096");
+$a_keylength['ec-256'] = array(name => "ec-256", ecc => true);
+$a_keylength['ec-384'] = array(name => "ec-384", ecc => true);
+
 function set_cronjob() {
 	global $config;
 	$a_global = &$config['installedpackages']['acme'];
 	if (isset($a_global['enable'])) {
-		install_cron_job("/etc/rc.acme_renew.sh", true, "16", "3");
+		install_cron_job('/usr/local/pkg/acme/acme_command.sh "renewall"', true, "16", "3");
 	} else {
-		install_cron_job("/etc/rc.acme_renew.sh", false);
+		install_cron_job('/usr/local/pkg/acme/acme_command.sh "renewall"', false);
 	}
 }
 
@@ -117,9 +141,6 @@ function acme_custom_php_deinstall_command() {
 	global $static_output;
 	$static_output .= "Acme, running acme_custom_php_deinstall_command()\n";
 	update_output_window($static_output);
-	$static_output .= "Acme, deleting renew_renew.sh\n";
-	update_output_window($static_output);
-	unlink_if_exists("/etc/rc.acme_renew.sh");
 	$static_output .= "Acme, uninstalling cron job\n";
 	update_output_window($static_output);
 	install_cron_job("/etc/rc.acme_renew.sh", false);
@@ -131,34 +152,9 @@ function acme_custom_php_install_command() {
 	global $static_output;
 	$static_output .= "Acme, running acme_custom_php_install_command()\n";
 	update_output_window($static_output);
-
-	$acme_renew = <<<EOD
-#!/usr/local/bin/php-cgi -f
-<?php
-
-/*
-	Updates acme certificates when applicable.
-*/
-
-namespace pfsense_pkg\acme;
-			
-require_once("globals.inc");		
-require_once("functions.inc");
-require_once("acme/acme.inc");
-renew_all_certificates();
-
-?>
-
-EOD;
-	// removing the \r prevents the "No input file specified." error..
-	$acme_renew = str_replace("\r\n","\n", $acme_renew);
-	$fd = fopen("/etc/rc.acme_renew.sh", "w");
-	fwrite($fd, $acme_renew);
-	fclose($fd);
-	chmod("/etc/rc.acme_renew.sh", 0755);
-
+	$static_output .= "Acme, installing cron job if enabled\n";
+	update_output_window($static_output);
 	set_cronjob();
-	
 	$static_output .= "Acme, running acme_custom_php_install_command() DONE\n";
 	update_output_window($static_output);
 }
@@ -213,39 +209,21 @@ function & get_certificate($name) {
 	return null;
 }
 
-	function createAcmeAccountKey() {
-		$certificatename = "acme_account_key";
-		$cert = lookup_cert_by_name($certificatename);
-		if (!is_array($cert)) {
-			global $config;
-			$a_cert =& $config['cert'];
-			$cert = array();
-			$cert['refid'] = uniqid();
-			$cert['descr'] = $certificatename;
-			$accountkey = generateAccountKey();
-			cert_import($cert, $accountkey['crt'], $accountkey['prv']);
-			$a_cert[] = $cert;
-			$changedesc = "Services: Acme";
-			$changedesc .= " created acme account key";
-			write_config($changedesc);
-		}
+	function generateAccountKey($name, $ca) {
+		$acmesh = new acme_sh($name, $ca);
+		return $acmesh->generateAccountKey();
 	}
-	function generateAccountKey() {
-        $res = openssl_pkey_new(array(
-            "private_key_type" => OPENSSL_KEYTYPE_RSA,
-            "private_key_bits" => 4096,
-        ));
-		if(!openssl_pkey_export($res, $privateKey)) {
-            throw new \RuntimeException("Key export failed!");
-        }
-		return $privateKey;
+	
+	function generateDomainKey($name, $ca, $domain, $keylength) {
+		$acmesh = new acme_sh($name, $ca);
+		return $acmesh->generateDomainKey($domain, $keylength);
+	}
+	
+	function registerAcmeAccountKey($name, $ca, $key) {
+		$acmesh = new acme_sh($name, $ca);
+		return $acmesh->registeraccount($key);
 	}
 
-	function getAcmeClient($ca) {
-		$logger = new Logger();
-		$le = \Analogic\ACME\Lescript::createWithCustomEvents($ca, $logger);
-		return $le;
-	}
 	function renew_all_certificates() {
 		global $config;
 		$a_global = &$config['installedpackages']['acme'];
@@ -257,6 +235,45 @@ function & get_certificate($name) {
 		}
 	}
 	
+	function getCertificatePSK($ca, $certificate, $domain) {
+		$certificatename = $certificate['name'];
+		$cert = lookup_cert_by_name($certificatename);
+		if (!is_array($cert)) {
+			echo "\n getCertificatePSK creating new cert";
+			global $config;
+			$a_cert =& $config['cert'];
+			$cert = array();
+			$cert['refid'] = uniqid();
+			$cert['descr'] = $certificatename;
+			$accountkey = generateDomainKey($certificatename, $ca, $domain, $certificate['keylength']);
+			$cert['prv'] = base64_encode($accountkey);
+			$a_cert[] = $cert;
+			echo "\n{$cert['prv']}";
+			$desc = "Acme: Add new certificate & key.";
+			write_config($desc);
+		}
+		return base64_decode($cert['prv']);
+	}
+	
+	function storeCertificateCer($certificatename, $keyfile, $cerfile) {
+		global $config;
+		$key = file_get_contents($keyfile);
+		$crt = file_get_contents($cerfile);
+		if (is_array($config['cert'])) {
+			foreach ($config['cert'] as &$cert) {
+				if ($cert['descr'] == $certificatename) {
+					syslog(LOG_NOTICE, "Acme, storing new certificate: {$certificatename}");
+					echo "update cert!";
+					$cert['key'] = base64_encode($key);
+					$cert['crt'] = base64_encode($crt);
+					return true;
+				}
+			}
+		}
+		//TODO: store chain to.?.
+		return false;
+	}
+		
 	function renew_certificate($id, $force = false) {
 		$certificate = & get_certificate($id);
 		if (!$force) {
@@ -265,14 +282,17 @@ function & get_certificate($name) {
 				return;
 			}
 
+			$renewafterdays = is_numericint($certificate['renewafter']) ? $certificate['renewafter'] : 60;	
 			$timetorenew = false;
 			$now = new \DateTime();
 			$lastrenewal = new \DateTime();
 			$lastrenewal->setTimestamp($certificate['lastrenewal']);
-			$nextrenewal = $lastrenewal->add(new \DateInterval('P'.$certificate['renewafter'].'D'));
+			$nextrenewal = $lastrenewal->add(new \DateInterval('P'.$renewafterdays.'D'));
 			if ($now >= $nextrenewal) {
 				echo "## Its time to renew ##\n";
 				$timetorenew = true;
+			} else {
+				echo "Renewal number of days not yet reached.";
 			}
 		}
 		
@@ -290,136 +310,62 @@ function & get_certificate($name) {
 			echo "account: {$certificate['acmeaccount']} \n";
 			$account = get_accountkey($certificate['acmeaccount']);
 			$acmeserver = $account['acmeserver'];
-			$key = $account['accountkey'];
+			$accountkey = $account['accountkey'];
 			echo "server: $acmeserver \n";
+			
 			global $a_acmeserver;
 			$url = $a_acmeserver[$acmeserver]['url'];
-			$le = getAcmeClient($url);
-			$le->setPrivateKey(base64_decode($key));
-			
-			$handler = new acme_handler();
-			$handler->certificateinfo = & $certificate;
-			$handler->path = "";
-			$le->callback = $handler;
-			$le->signDomains($domainstosign);
-			if (is_array($certificate['a_actionlist']['item'])) {
-				foreach($certificate['a_actionlist']['item'] as $action) {
-					if ($action['method'] == "shellcommand") {
-						echo "Running {$action['command']}\n";
-						mwexec_bg($action['command']);
-					}
-					if ($action['method'] == "php_command") {
-						echo "Running php {$action['command']}\n";
-						eval($action['command']);
-					}
-				}
-			}
-			syslog(LOG_NOTICE, "Acme, certificate renewed: {$id}");
-		}
-	}
-	class acme_handler {
-		public $path = "";
-		public $certificateinfo = null;
-		private $ftp = null;
-		function chalenge_response_put($domain, $token, $payload){
-			echo "\nchalenge_response_put\n";
-			foreach($this->certificateinfo['a_domainlist']['item'] as $domainitem) {
-				if($domainitem['name'] == $domain){
-					$domain_info = $domainitem;
-				}
-			}
-			if ($domain_info['method'] == 'webroot') {
-				echo "webroot\n";
-				$directory = $domain_info['webrootfolder'];
-				if(!file_exists($directory) && !@mkdir($directory, 0755, true)) {
-					throw new \RuntimeException("Couldn't create directory to expose challenge: ${tokenPath}");
-				}
-				$tokenPath = $directory . "/" . $token;
-				file_put_contents($tokenPath, $payload);
-				echo "put token at: {$tokenPath}\n";
-			}
-			if ($domain_info['method'] == 'ftpwebroot') {
-				echo "FTP\n";
-				$this->ftp = new FTPConnection($domain_info['ftpwebrootftpserver']);
-				$this->ftp->login($domain_info['ftpwebrootusername'], $domain_info['ftpwebrootpassword']);
-				$directory = $domain_info['ftpwebrootfolder'];
-				$tokenPath = $directory . "/" . $token;
-				$this->ftp->mkdir($directory);
-				$this->ftp->uploadData($payload, $tokenPath);
-			}
-		}
-		function chalenge_response_cleanup($domain, $token) {
-			foreach($this->certificateinfo['a_domainlist']['item'] as $domainitem) {
-				if($domainitem['name'] == $domain){
-					$domain_info = $domainitem;
-				}
-			}
-			if ($domain_info['method'] == 'webroot') {
-				$tokenfile = $domain_info['webrootfolder'] . "/" . $token;
-				@unlink($tokenfile);
-			}
-			if ($domain_info['method'] == 'ftpwebroot') {
-				$tokenfile = $domain_info['ftpwebrootfolder'] . "/" . $token;
-				$this->ftp->deleteFile($tokenfile);
-			}
-		}
-		function getCertificatePSK() {
-			$certificatename = "acme_cert_" . $this->certificateinfo['name'];
-			$cert = lookup_cert_by_name($certificatename);
-			if (!is_array($cert)) {
-				echo "\n getCertificatePSK creating new cert";
-				global $config;
-				$a_cert =& $config['cert'];
-				$cert = array();
-				$cert['refid'] = uniqid();
-				$cert['descr'] = $certificatename;
-				$accountkey = generateAccountKey();
-				$cert['prv'] = base64_encode($accountkey);
-				$a_cert[] = $cert;
-				echo "\n{$cert['prv']}";
-			}
-			return base64_decode($cert['prv']);
-		}
-		function storeCertificate($certificates) {
-			$certificatename = "acme_cert_" . $this->certificateinfo['name'];
-			global $config;
-			if (is_array($config['cert'])) {
-				foreach ($config['cert'] as &$cert) {
-					if ($cert['descr'] == $certificatename) {
-						//TODO add validation that the new cert 'fits' on the private key..
-						$cert['crt'] = base64_encode(array_shift($certificates));
-						
-						$id = get_certificate_id($this->certificateinfo['name']);
-						$a_certificates = &$config['installedpackages']['acme']['certificates']['item'];
-						$a_certificates[$id]['lastrenewal'] = time();
-					}
-				}
-			}
-			//TODO: store chain to.?.
-			//$cert = lookup_cert_by_name($certificatename);
-
-			//if (is_array($cert)) {
-				//$cert['crt'] = array_shift($certificates);
-				//echo "NEW CRT: ".base64_decode($cert['crt']);
-			//}
-			$changedesc = "Services: Acme";
-			$changedesc .= "Storing signed certificate";
-			write_config($changedesc);
+			$certificatepsk = getCertificatePSK($url, $certificate, $domainstosign[0]);
+			$acmesh = new acme_sh($certificate['name'], $url);
+			$acmesh->signCertificate($accountkey, $certificatepsk, $domainstosign);
 		}
 	}
 	
-	function registerAcmeAccountKey($ca, $key) {
-		$logger = new Logger();
-		$le = \Analogic\ACME\Lescript::createWithCustomEvents($ca, $logger);
-		$le->setPrivateKey($key);
-		$result = $le->postNewReg();
-		return $result;
-	}
-	
-	class Logger { 
-		function __call($name, $arguments) { 
-			echo date('Y-m-d H:i:s')." [$name] ${arguments[0]}\n";
+	function challenge_response_put($certificatename, $domain, $token, $payload) {
+		$acmecert = get_certificate($certificatename);
+		
+		echo "\nchalenge_response_put $certificatename, $domain\n";
+		foreach($acmecert['a_domainlist']['item'] as $domainitem) {
+			if($domainitem['name'] == $domain){
+				$domain_info = $domainitem;
+				echo "FOUND domainitem";
+			}
+		}
+		if ($domain_info['method'] == 'webroot') {
+			echo "webroot\n";
+			$directory = $domain_info['webrootfolder'];
+			if(!file_exists($directory) && !@mkdir($directory, 0755, true)) {
+				throw new \RuntimeException("Couldn't create directory to expose challenge: ${tokenPath}");
+			}
+			$tokenPath = $directory . "/" . $token;
+			file_put_contents($tokenPath, $payload);
+			echo "put token at: {$tokenPath}\n";
+		}
+		if ($domain_info['method'] == 'ftpwebroot') {
+			echo "FTP\n";
+			$this->ftp = new FTPConnection($domain_info['ftpwebrootftpserver']);
+			$this->ftp->login($domain_info['ftpwebrootusername'], $domain_info['ftpwebrootpassword']);
+			$directory = $domain_info['ftpwebrootfolder'];
+			$tokenPath = $directory . "/" . $token;
+			$this->ftp->mkdir($directory);
+			$this->ftp->uploadData($payload, $tokenPath);
+		}
+	}	
+
+	function chalenge_response_cleanup($certificatename, $domain, $token) {
+		$acmecert = get_certificate($certificatename);
+		foreach($acmecert['a_domainlist']['item'] as $domainitem) {
+			if($domainitem['name'] == $domain){
+				$domain_info = $domainitem;
+			}
+		}
+		if ($domain_info['method'] == 'webroot') {
+			$tokenfile = $domain_info['webrootfolder'] . "/" . $token;
+			@unlink($tokenfile);
+		}
+		if ($domain_info['method'] == 'ftpwebroot') {
+			$tokenfile = $domain_info['ftpwebrootfolder'] . "/" . $token;
+			$this->ftp->deleteFile($tokenfile);
 		}
 	}
-
 }

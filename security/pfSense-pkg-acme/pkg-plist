@@ -4,7 +4,10 @@ pkg/acme/acme_gui.inc
 pkg/acme/acme_htmllist.inc
 pkg/acme/acme_serverconnectors.inc
 pkg/acme/acme_utils.inc
-pkg/acme/lescript.inc
+pkg/acme/acme.inc
+pkg/acme/acme.sh
+pkg/acme/acme_command.sh
+pkg/acme/acme_sh.inc
 pkg/acme/pkg_acme_tabs.inc
 www/acme/acme_accountkeys.php
 www/acme/acme_accountkeys_edit.php

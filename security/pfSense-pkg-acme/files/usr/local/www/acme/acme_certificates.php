@@ -1,31 +1,23 @@
 <?php
 /*
-	acme_certificates.php
-	part of pfSense (https://www.pfsense.org/)
-	Copyright (C) 2016 PiBa-NL
-	All rights reserved.
-
-	Redistribution and use in source and binary forms, with or without
-	modification, are permitted provided that the following conditions are met:
-
-	1. Redistributions of source code must retain the above copyright notice,
-	   this list of conditions and the following disclaimer.
-
-	2. Redistributions in binary form must reproduce the above copyright
-	   notice, this list of conditions and the following disclaimer in the
-	   documentation and/or other materials provided with the distribution.
-
-	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-	POSSIBILITY OF SUCH DAMAGE.
-*/
+ * acme_certificates.php
+ * 
+ * part of pfSense (https://www.pfsense.org/)
+ * Copyright (c) 2016 PiBa-NL
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 namespace pfsense_pkg\acme;
 
@@ -82,15 +74,15 @@ if($_POST['action'] == "toggle") {
 	$id = $_POST['id'];
 	echo "$id|";
 	if (isset($a_certifcates[get_certificate_id($id)])) {
-		$frontent = &$a_certifcates[get_certificate_id($id)];
-		if ($frontent['status'] != "disabled"){
-			$frontent['status'] = 'disabled';
+		$item = &$a_certifcates[get_certificate_id($id)];
+		if ($item['status'] != "disabled"){
+			$item['status'] = 'disabled';
 			echo "0|";
 		}else{
-			$frontent['status'] = 'active';
+			$item['status'] = 'active';
 			echo "1|";
 		}
-		$changedesc .= " set frontend '$id' status to: {$frontent['status']}";
+		$changedesc .= " set item '$id' status to: {$item['status']}";
 		
 		touch($d_acmeconfdirty_path);
 		write_config($changedesc);
@@ -165,7 +157,7 @@ if ($_GET['act'] == "del") {
 	if (isset($a_certifcates[$id])) {
 		if (!$input_errors) {
 			unset($a_certifcates[$id]);
-			$changedesc .= " Frontend delete";
+			$changedesc .= " Item delete";
 			write_config($changedesc);
 			touch($d_acmeconfdirty_path);
 		}
@@ -198,7 +190,7 @@ echo "</div>";
 </div>
 	
 <?php
-display_top_tabs_active($acme_tab_array['acme'], "frontend");
+display_top_tabs_active($acme_tab_array['acme'], "certificates");
 ?>
 <form action="acme_certificates.php" method="post">
 	<div class="panel panel-default">
@@ -261,13 +253,13 @@ display_top_tabs_active($acme_tab_array['acme'], "frontend");
 			  <td class="action-icons">
 				<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=$certificatename?>" name="move_<?=$certificatename?>" value="move_<?=$certificatename?>"></button>
 				<a href="acme_certificates_edit.php?id=<?=$certificatename;?>">
-					<?=acmeicon("edit", gettext("edit frontend"))?>
+					<?=acmeicon("edit", gettext("edit"))?>
 				</a>
 				<a href="acme_certificates.php?act=del&amp;id=<?=$certificatename;?>" onclick="return confirm('Do you really want to delete this entry?')">
-					<?=acmeicon("delete", gettext("delete frontend"))?>
+					<?=acmeicon("delete", gettext("delete"))?>
 				</a>
 				<a href="acme_certificates_edit.php?dup=<?=$certificatename;?>">
-					<?=acmeicon("clone", gettext("clone frontend"))?>
+					<?=acmeicon("clone", gettext("clone"))?>
 				</a>
 			  </td>
 			</tr><?php
@@ -331,6 +323,7 @@ function renewcertificate($id) {
 		data: { id: $id, action: "renew"},
 		success: function(data) {
 			js_callbackrenew(data);
+			$("#btnrenewicon_"+$id).removeClass("fa-cog fa-spin").addClass("fa-check");
 		}
 	});
 }
