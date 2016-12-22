@@ -242,7 +242,7 @@ function on_antivirus_advanced_config_changed() {
 
 	}
 
-	if (! $('enable').prop("checked")) {
+	if ($('#enable').prop('checked') == false) {
 		$('#update_av').prop("disabled", true);
 	} else {
 		$('#update_av').prop("disabled", false);
