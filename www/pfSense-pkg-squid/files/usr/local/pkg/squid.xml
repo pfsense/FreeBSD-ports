@@ -209,9 +209,7 @@
 			<fielddescr>Patch Captive Portal</fielddescr>
 			<description>
 				<![CDATA[
-				<strong><span class="errmsg">This feature was removed</span></strong> - see <a href="https://redmine.pfsense.org/issues/5594">Bug #5594</a> for details!<br/>
-				If you were using this feature, double-check '/etc/inc/captiveportal.inc' content for sanity.<br/>
-				Get a <a href="https://github.com/pfsense/pfsense/blob/master/src/etc/inc/captiveportal.inc">sane copy of the file from pfSense GitHub repository</a> if needed.
+				<strong><span class="errmsg">This feature was removed</span></strong> - see <a href="https://redmine.pfsense.org/issues/5594">Bug #5594</a> for details!
 				]]>
 			</description>
 			<type>info</type>
