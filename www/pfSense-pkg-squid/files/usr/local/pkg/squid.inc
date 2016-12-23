@@ -639,6 +639,14 @@ function squid_upgrade_config() {
 		$settingsauth['no_auth_hosts'] = base64_encode(implode("\n", explode(",", $settingsauth['no_auth_hosts'])));
 		$config['installedpackages']['squidauth']['config'][0]['no_auth_hosts'] = $settingsauth['no_auth_hosts'];
 	}
+	/* NT Domain authentication has been removed - Bug #7017 */
+	if (!empty($settingsauth['auth_method'])) {
+		if (preg_match("/msnt/i", $settingsauth['auth_method'])) {
+			$msnt_msg = "NT Domain authentication has been removed - see Bug #7017! Use LDAP for AD authentication.";
+			file_notice("squid", $msnt_msg, "Packages", "");
+			log_error("[squid] {$msnt_msg}");
+		}
+	}
 
 	/* migrate cache settings */
 	if (!empty($settingscache['donotcache']) && strstr($settingscache['donotcache'], ",")) {
