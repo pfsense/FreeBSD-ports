@@ -1,5 +1,5 @@
---- src/os-freebsd.h.orig	2009-10-06 02:07:06.000000000 +0800
-+++ src/os-freebsd.h	2016-01-20 15:43:54.364740000 +0800
+--- src/os-freebsd.h.orig
++++ src/os-freebsd.h
 @@ -14,10 +14,20 @@
  
  static inline u_short ip_data_len(const struct ip *ip)
