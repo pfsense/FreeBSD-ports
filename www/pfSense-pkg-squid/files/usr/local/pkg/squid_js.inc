@@ -189,7 +189,7 @@ EOD;
 
 /* onchange toggle helper for squid_print_javascript_auth() function */
 function squid_print_javascript_auth2() {
-	print("<script type=\"text/javascript\">on_auth_method_changed()</script>\n");
+	print("<script type=\"text/javascript\">events.push(function () {on_auth_method_changed();});</script>\n");
 }
 
 /*
@@ -258,7 +258,7 @@ EOD;
 
 /* onchange toggle helper for squid_print_antivirus_advanced_config() function */
 function squid_print_antivirus_advanced_config2() {
-	print("<script type=\"text/javascript\">on_antivirus_advanced_config_changed()</script>\n");
+	print("<script type=\"text/javascript\">events.push(function () {on_antivirus_advanced_config_changed();});</script>\n");
 }
 
 ?>
