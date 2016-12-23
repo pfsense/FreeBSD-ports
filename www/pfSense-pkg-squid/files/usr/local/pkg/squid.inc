@@ -510,6 +510,9 @@ function squid_install_command() {
 	install_cron_job("/usr/local/pkg/swapstate_check.php clean;", false);
 	install_cron_job("/bin/rm /var/squid/cache/swap.state;", false);
 
+	/* NT Domain authentication has been removed */
+	unlink_if_exists(SQUID_CONFBASE . '/msntauth.conf');
+
 }
 
 function squid_deinstall_command() {
@@ -1106,13 +1109,6 @@ function squid_validate_auth($post, &$input_errors) {
 				$secret = trim($post['radius_secret']);
 				if (empty($secret)) {
 					$input_errors[] = "'RADIUS secret' is required.";
-				}
-				break;
-			case 'msnt':
-				foreach (explode(",", trim($post['msnt_secondary'])) as $server) {
-					if (!empty($server) && !is_ipaddr($server) && !is_domain($server)) {
-						$input_errors[] = "The host '$server' is not a valid IP address or domain name";
-					}
 				}
 				break;
 		}
@@ -1865,10 +1861,6 @@ function squid_resync_auth() {
 				$conf .= "external_acl_type check_cp {$helpers_num} ttl={$auth_ttl} %SRC " . SQUID_BASE . "/bin/check_ip.php\n";
 				$conf .= "acl password external check_cp\n";
 				break;
-			case 'msnt':
-				$conf .= "auth_param basic program " . SQUID_LOCALBASE . "/libexec/squid/basic_msnt_auth\n";
-				squid_resync_msnt();
-				break;
 		}
 		if ($auth_method != 'cp') {
 		$conf .= <<< EOD
@@ -1936,24 +1928,6 @@ function squid_resync_users() {
 	file_put_contents(SQUID_PASSWD, $contents);
 	chown(SQUID_PASSWD, SQUID_UID);
 	chmod(SQUID_PASSWD, 0600);
-}
-
-/* Proxy server: NT Domain configuration handler */
-function squid_resync_msnt() {
-	global $config;
-
-	if (is_array($config['installedpackages']['squidauth'])) {
-		$settings = $config['installedpackages']['squidauth']['config'][0];
-	} else {
-		$settings = array();
-	}
-	$pdcserver = $settings['auth_server'];
-	$bdcserver = str_replace(',', ' ', $settings['msnt_secondary']);
-	$ntdomain = $settings['auth_ntdomain'];
-
-	file_put_contents(SQUID_CONFBASE . "/msntauth.conf", "server {$pdcserver} {$bdcserver} {$ntdomain}");
-	chown(SQUID_CONFBASE . "/msntauth.conf", SQUID_UID);
-	chmod(SQUID_CONFBASE . "/msntauth.conf", 0600);
 }
 
 /* Wrapper function to sync whole Squid configuration */
