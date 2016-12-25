@@ -145,11 +145,10 @@ function customdrawcell_actions($object, $item, $itemvalue, $editable, $itemname
 		echo $itemvalue;
 	}
 }
-
 if (isset($id) && $a_certificates[$id]) {
 	$a_domains = &$a_certificates[$id]['a_domainlist']['item'];
 	$a_actions = &$a_certificates[$id]['a_actions']['item'];
-	
+
 	$pconfig["lastrenewal"] = $a_certificates[$id]["lastrenewal"];
 	foreach($simplefields as $stat) {
 		$pconfig[$stat] = $a_certificates[$id][$stat];
@@ -339,7 +338,7 @@ $section->addInput(new \Form_Select(
 
 $section->addInput(new \Form_StaticText(
 	'Domain SAN list', 
-	"List all domain names that should be included in the certificate here, and how to validate ownership by use of a wenroot or dns challenge<br/>"
+	"List all domain names that should be included in the certificate here, and how to validate ownership by use of a webroot or dns challenge<br/>"
 	. "Examples:<br/>"
 	. "/usr/local/www/.well-known/acme-challenge/<br/>"
 	. "/tmp/haproxy_chroot/.well-known/acme-challenge/"

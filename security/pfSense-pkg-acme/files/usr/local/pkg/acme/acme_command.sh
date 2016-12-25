@@ -60,5 +60,5 @@ if ($command == "removekey") {
 	$certificatename = $argv[2];
 	$domain = $argv[3];
 	$token = $argv[4];
-	chalenge_response_cleanup($certificatename, $domain, $token);
+	challenge_response_cleanup($certificatename, $domain, $token);
 }

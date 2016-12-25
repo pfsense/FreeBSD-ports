@@ -30,20 +30,22 @@ require_once("config.inc");
 if(!function_exists('ifset')){
 	function ifset(&$var, $default = ''){
 		return isset($var) ? $var : $default;
-	};
+	}
 }
 
 if(!function_exists('is_arrayset')){
 	function is_arrayset(&$array, $items){
-		if (!isset($array))
+		if (!isset($array)) {
 			return false;
+		}
 		$item = $array;
 		$arg = func_get_args();
 		for($i = 1; $i < count($arg); $i++) {
 
 			$itemindex = $arg[$i];
-			if (!isset($item[$itemindex]) || !is_array($item[$itemindex]))
+			if (!isset($item[$itemindex]) || !is_array($item[$itemindex])) {
 				return false;
+			}
 			$item = $item[$itemindex];
 
 		}
@@ -56,13 +58,14 @@ function phparray_to_javascriptarray_recursive($nestID, $path, $items, $nodeName
 	$itemName = "item$nestID";
 	//echo "{$offset}$nodeName = {};\n";
 	echo "{$offset}$nodeName = Object.create(null);\n";
-	if (is_array($items))
+	if (is_array($items)) {
 		foreach ($items as $key => $item)
 		{
-			if (in_array($path.'/'.$key, $includeitems))
+			if (in_array($path.'/'.$key, $includeitems)) {
 				$subpath = $path.'/'.$key;
-			else
+			} else {
 				$subpath = $path.'/*';
+			}
 			if (in_array($subpath, $includeitems) || in_array($path.'/*', $includeitems)) {
 				if (is_array($item)) {
 					$subNodeName = "item$nestID";
@@ -74,6 +77,7 @@ function phparray_to_javascriptarray_recursive($nestID, $path, $items, $nodeName
 				}
 			}
 		}
+	}
 }
 function phparray_to_javascriptarray($items, $javaMapName, $includeitems) {
 	phparray_to_javascriptarray_recursive(1,'',$items, $javaMapName, $includeitems);
@@ -95,10 +99,12 @@ function html_select_options($keyvaluelist, $selected="") {
 function echo_html_select($name, $keyvaluelist, $selected, $listEmptyMessage="", $onchangeEvent="", $style="") {
 	$result = "";
 	if (count($keyvaluelist)>0){
-		if ($onchangeEvent != "")
+		if ($onchangeEvent != "") {
 			$onchangeEvent = " onchange='$onchangeEvent'";
-		if ($style != "")
+		}
+		if ($style != "") {
 			$style = " style='$style'";
+		}
 		$result .= "<select name=\"$name\" id=\"$name\" class=\"formselect\"$onchangeEvent$style>";
 		$result .= html_select_options($keyvaluelist, $selected);
 		$result .= "</select>";
@@ -108,19 +114,23 @@ function echo_html_select($name, $keyvaluelist, $selected, $listEmptyMessage="",
 	return $result;
 }
 
-function form_keyvalue_array($hap_array) {
+function form_keyvalue_array($item_array) {
 	$result = array();
-	foreach($hap_array as $key => $item) {
-		$result[$key] = $item['name'];
+	if (is_array($item_array)) {
+		foreach($item_array as $key => $item) {
+			$result[$key] = $item['name'];
+		}
 	}
 	return $result;
 }
 
-function form_name_array($hap_array) {
+function form_name_array($item_array) {
 	$result = array();
-	foreach($hap_array as $key => $item) {
-		$name = $item['name'];
-		$result[$name] = $name;
+	if (is_array($item_array)) {
+		foreach($item_array as $key => $item) {
+			$name = $item['name'];
+			$result[$name] = $name;
+		}
 	}
 	return $result;
 }

@@ -26,6 +26,7 @@ do-extract:
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/acme
+	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${MKDIR} ${STAGEDIR}${PREFIX}/www
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/acme
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
@@ -50,6 +51,32 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg/acme
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/pkg_acme_tabs.inc \
 		${STAGEDIR}${PREFIX}/pkg/acme
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_ovh.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_pdns.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_ali.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_aws.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_cf.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_cx.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_dp.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_gd.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_ispconfig.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_lexicon.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_lua.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_me.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_nsupdate.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/acme/acme_accountkeys.php \
 		${STAGEDIR}${PREFIX}/www/acme
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/acme/acme_accountkeys_edit.php \

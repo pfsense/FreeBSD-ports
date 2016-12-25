@@ -21,11 +21,15 @@
 
 namespace pfsense_pkg\acme;
 
-	function logexec($command, &$out = null) {
+	function logexec($command, $envvariables = null) {
 		echo "<br/>\n".$command;
 		// add to cron environment path: /usr/local/bin/
 		$env = array();
 		$env['path'] = "/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin/";
+		if (is_array($envvariables)) {
+			$env = array_merge($env, $envvariables);
+		}
+		print_r($env);
 		$descriptorspec = array(
 		   0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
 		   1 => array("pipe", "w")  // stdout is a pipe that the child will write to
@@ -90,7 +94,14 @@ class acme_sh {
 		return $privateKey;
 	}
 	
-	function signCertificate($accountkey, $certificatepsk, $domainstosign) {
+	function signCertificate($accountkey, $certificatepsk, $domainstosign, $api = null, $envvariables = null) {
+		$cmdparameters = "";
+		if ($api && substr($api, 0, 4 ) === "dns_") {
+			$cmdparameters = " --dns {$api}";
+		} else {
+			$cmdparameters = " --webroot pfSenseacme";
+		}
+		
 		$Le_Domain = $domainstosign[0];
 		$certpath = "{$this->acmeconf}{$Le_Domain}/";
 		$CERT_KEY_PATH = "{$certpath}{$Le_Domain}.key";
@@ -127,12 +138,12 @@ EOF;
 			. " --issue {$domainstr}"
 			. " --home {$this->acmeconf}"
 			. " --accountconf {$this->accountconfig}"
-			. " --webroot pfSenseacme"
 			. " --force"
 			. " --reloadCmd {$this->acmeconf}reloadcmd.sh"
+			. $cmdparameters
 			. " --log-level 1"
 			. " --log {$this->acmeconf}acme_issuecert.log"
-			. " > {$this->acmeconf}issue.log 2>&1", $output, $err);
+			. " > {$this->acmeconf}issue.log 2>&1", $envvariables);
 		$cer = "{$certpath}/{$domainstosign[0]}.cer";
 		if (file_exists($cer)) {
 			return $cer;

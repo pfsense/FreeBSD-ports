@@ -9,6 +9,19 @@ pkg/acme/acme.sh
 pkg/acme/acme_command.sh
 pkg/acme/acme_sh.inc
 pkg/acme/pkg_acme_tabs.inc
+pkg/acme/dnsapi/dns_ovh.sh
+pkg/acme/dnsapi/dns_pdns.sh
+pkg/acme/dnsapi/dns_ali.sh
+pkg/acme/dnsapi/dns_aws.sh
+pkg/acme/dnsapi/dns_cf.sh
+pkg/acme/dnsapi/dns_cx.sh
+pkg/acme/dnsapi/dns_dp.sh
+pkg/acme/dnsapi/dns_gd.sh
+pkg/acme/dnsapi/dns_ispconfig.sh
+pkg/acme/dnsapi/dns_lexicon.sh
+pkg/acme/dnsapi/dns_lua.sh
+pkg/acme/dnsapi/dns_me.sh
+pkg/acme/dnsapi/dns_nsupdate.sh
 www/acme/acme_accountkeys.php
 www/acme/acme_accountkeys_edit.php
 www/acme/acme_certificates.php
@@ -17,3 +30,6 @@ www/acme/acme_generalsettings.php
 /etc/inc/priv/acme.priv.inc
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv
+
+
+

@@ -73,13 +73,13 @@ $a_acmeserver['letsencrypt-production'] = array('name' => "Let's Encrypt Product
 
 global $acme_domain_validation_method;
 $acme_domain_validation_method = array();
-$acme_domain_validation_method['webroot'] = array(name => "local webroot folder",
+$acme_domain_validation_method['webroot'] = array(name => "webroot local folder",
 	'fields' => array(
 		'folder' => array('name'=>"folder",'columnheader'=>"RootFolder",'type'=>"textbox",'size'=>"50",
 			'description' =>"Folder the acme challenge response is written to for example: /usr/local/www/.well-known/acme-challenge/"
 		)
 	));
-$acme_domain_validation_method['ftpwebroot'] = array(name => "FTP webroot",
+$acme_domain_validation_method['webrootftp'] = array(name => "webroot FTP",
 	'fields' => array(
 		'ftpserver' => array('name'=>"ftpserver",'columnheader'=>"Server",'type'=>"textbox",'size'=>"50",
 			'description' =>"Hostname of FTP server to connect to for example: ftps://www.webserver.tld "
@@ -95,18 +95,149 @@ $acme_domain_validation_method['ftpwebroot'] = array(name => "FTP webroot",
 			'description' =>"Folder the acme challenge response is written to for default: /.well-known/acme-challenge/"
 		)
 	));
+$acme_domain_validation_method['dns_ali'] = array(name => "DNS-Aliyuncs",
+	'fields' => array(
+		'Ali_Key' => array('name'=>"ali_key",'columnheader'=>"Key",'type'=>"textbox",
+			'description' =>"Fill in the API Key"
+		),
+		'Ali_Secret' => array('name'=>"ali_secret",'columnheader'=>"Secret",'type'=>"textbox",
+			'description' =>"Fill in the API Secret"
+		)
+	));
+$acme_domain_validation_method['dns_aws'] = array(name => "DNS-Amazon Route53",
+	'fields' => array(
+		'AWS_ACCESS_KEY_ID' => array('name'=>"AWS_ACCESS_KEY_ID",'columnheader'=>"Id",'type'=>"textbox",
+			'description' =>"Fill in the API Id"
+		),
+		'AWS_SECRET_ACCESS_KEY' => array('name'=>"AWS_SECRET_ACCESS_KEY",'columnheader'=>"Key",'type'=>"textbox",
+			'description' =>"Fill in the API Key"
+		)
+	));
+$acme_domain_validation_method['dns_cf'] = array(name => "DNS-Cloudflare",
+	'fields' => array(
+		'CF_Key' => array('name'=>"CF_Key",'columnheader'=>"Key",'type'=>"textbox",
+			'description' =>"Fill in the API Key"
+		),
+		'CF_Email' => array('name'=>"CF_Email",'columnheader'=>"Email",'type'=>"textbox",
+			'description' =>"Fill in the API Emailadress"
+		)
+	));
+$acme_domain_validation_method['dns_cx'] = array(name => "DNS-Cloudxns",
+	'fields' => array(
+		'CX_Key' => array('name'=>"CX_Key",'columnheader'=>"Key",'type'=>"textbox",
+			'description' =>"Fill in the API Key"
+		),
+		'CX_Secret' => array('name'=>"CX_Secret",'columnheader'=>"Secret",'type'=>"textbox",
+			'description' =>"Fill in the API Secret"
+		)
+	));
+$acme_domain_validation_method['dns_dp'] = array(name => "DNS-Dnspod.cn",
+	'fields' => array(
+		'DP_Id' => array('name'=>"DP_Id",'columnheader'=>"Id",'type'=>"textbox",
+			'description' =>"Fill in the API Id"
+		),
+		'DP_Key' => array('name'=>"DP_Key",'columnheader'=>"Key",'type'=>"textbox",
+			'description' =>"Fill in the API Key"
+		)
+	));
+$acme_domain_validation_method['dns_gd'] = array(name => "DNS-Godaddy",
+	'fields' => array(
+		'GD_Key' => array('name'=>"GD_Key",'columnheader'=>"Key",'type'=>"textbox",
+			'description' =>"Fill in the API Key"
+		),
+		'GD_Secret' => array('name'=>"GD_Secret",'columnheader'=>"Secret",'type'=>"textbox",
+			'description' =>"Fill in the API Secret"
+		)
+	));
+$acme_domain_validation_method['dns_ispconfig'] = array(name => "DNS-ISPConfig",
+	'fields' => array(
+		'ISPC_User' => array('name'=>"ISPC_User",'columnheader'=>"User",'type'=>"textbox",
+			'description' =>"Fill in the remoteUser"
+		),
+		'ISPC_Password' => array('name'=>"ISPC_Password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"Fill in the remotePassword"
+		),
+		'ISPC_Api' => array('name'=>"ISPC_Api",'columnheader'=>"Api",'type'=>"textbox",
+			'description' =>"Fill in the https://ispc.domain.tld:8080/remote/json.php"
+		),
+		'ISPC_Api_Insecure' => array('name'=>"ISPC_Api_Insecure",'columnheader'=>"Secure",'type'=>"textbox",
+			'description' =>"Fill in the Set 1 for insecure and 0 for secure  -> difference is whether ssl cert is checked for validity (0) or whether it is just accepted (1)"
+		)
+	));
+/*
+You must install python and lexicon before using it. ???
+$acme_domain_validation_method['dns_lexicon'] = array(name => "DNS-Lexicon",
+	'fields' => array(
+		'' => array('name'=>"ftpserver",'columnheader'=>"Key",'type'=>"textbox",
+			'description' =>"Fill in the API Key"
+		),
+		'' => array('name'=>"username",'columnheader'=>"Id",'type'=>"textbox",
+			'description' =>"Fill in the API Id"
+		)
+	));*/
+$acme_domain_validation_method['dns_luadns'] = array(name => "DNS-Luadns",
+	'fields' => array(
+		'LUA_Key' => array('name'=>"LUA_Key",'columnheader'=>"Key",'type'=>"textbox",
+			'description' =>"Fill in the API Key"
+		),
+		'LUA_Email' => array('name'=>"LUA_Email",'columnheader'=>"Email",'type'=>"textbox",
+			'description' =>"Fill in the API Emailadress"
+		)
+	));
+$acme_domain_validation_method['dns_me'] = array(name => "DNS-DNSMadeEasy",
+	'fields' => array(
+		'ME_Key' => array('name'=>"ME_Key",'columnheader'=>"Key",'type'=>"textbox",
+			'description' =>"Fill in the API Key"
+		),
+		'ME_Secret' => array('name'=>"ME_Secret",'columnheader'=>"Secret",'type'=>"textbox",
+			'description' =>"Fill in the API Secret"
+		)
+	));
+/*$acme_domain_validation_method['dns_nsupdate'] = array(name => "DNS-NSupdate",
+	'fields' => array(
+		'NSUPDATE_SERVER' => array('name'=>"NSUPDATE_SERVER",'columnheader'=>"Key",'type'=>"textbox",
+			'description' =>"Fill in the API Key"
+		),
+		'NSUPDATE_KEY' => array('name'=>"NSUPDATE_KEY",'columnheader'=>"Id",'type'=>"textarea",
+			'description' =>"Fill in the API Id"
+		)
+	));needs a file reference..*/
+$acme_domain_validation_method['dns_ovh'] = array(name => "DNS-ovh / kimsufi / soyoustart / runabove",
+	'fields' => array(
+		'OVH_AK' => array('name'=>"OVH_AK",'columnheader'=>"Application Key",'type'=>"textbox",
+			'description' =>"Fill in the Application Key"
+		),
+		'OVH_AS' => array('name'=>"OVH_AS",'columnheader'=>"Application Secret",'type'=>"textbox",
+			'description' =>"Fill in the Application Secret"
+		),
+		'OVH_CK' => array('name'=>"OVH_CK",'columnheader'=>"Consumer Key",'type'=>"textbox",
+			'description' =>"Fill in the Consumer Key"
+		),
+		'OVH_END_POINT' => array('name'=>"OVH_END_POINT",'columnheader'=>"Endpoint",'type'=>"textbox",
+			'description' =>"Fill in one of: ovh-eu/ovh-ca/kimsufi-eu/kimsufi-ca/soyoustart-eu/soyoustart-ca/runabove-ca"
+		)
+	));
+$acme_domain_validation_method['pdns'] = array(name => "DNS-PowerDNS",
+	'fields' => array(
+		'PDNS_Url' => array('name'=>"PDNS_Url",'columnheader'=>"URL",'type'=>"textbox",
+			'description' =>"Fill in the URL http://ns.example.com:8081"
+		),
+		'PDNS_ServerId' => array('name'=>"PDNS_ServerId",'columnheader'=>"ServerID",'type'=>"textbox",
+			'description' =>"Fill in the ServerId localhost"
+		),
+		'PDNS_Token' => array('name'=>"PDNS_Token",'columnheader'=>"Token",'type'=>"textbox",
+			'description' =>"Fill in the Token 0123456789ABCDEF"
+		),
+		'PDNS_Ttl' => array('name'=>"PDNS_Ttl",'columnheader'=>"TTL",'type'=>"textbox",
+			'description' =>"Fill in the TTL 60"
+		)
+	));
 //TODO add more challenge validation types
 /* 
 $acme_domain_validation_method['http-post'] = array(name => "http-post",
 	'fields' => array(
 		'url' => array('name'=>"url",'columnheader'=>"Url",'type'=>"textbox",'size'=>"50",
 			'description' =>"Url the challenge file is posted to, the webserver there must store and reply to the request when the acme servers perform the request for the file from /.well-known/acme-challenge/"
-		)
-	));
-$acme_domain_validation_method['dns'] = array(name => "dns",
-	'fields' => array(
-		'url' => array('name'=>"url",'columnheader'=>"Url",'type'=>"textbox",'size'=>"50",
-			'description' =>"Verify domain by adding a txt dns record"
 		)
 	));
 */
@@ -292,7 +423,7 @@ function & get_certificate($name) {
 				echo "## Its time to renew ##\n";
 				$timetorenew = true;
 			} else {
-				echo "Renewal number of days not yet reached.";
+				echo "Renewal number of days not yet reached.\n";
 			}
 		}
 		
@@ -305,6 +436,12 @@ function & get_certificate($name) {
 					continue;
 				}
 				$domainstosign[] = $domain['name'];
+				$method = $domain['method'];
+				$envvariables = array();
+				global $acme_domain_validation_method;
+				foreach($acme_domain_validation_method[$method]['fields'] as $key => $field) {
+					$envvariables[$key] = $domain["{$method}{$field['name']}"];
+				}
 			}
 			
 			echo "account: {$certificate['acmeaccount']} \n";
@@ -317,7 +454,7 @@ function & get_certificate($name) {
 			$url = $a_acmeserver[$acmeserver]['url'];
 			$certificatepsk = getCertificatePSK($url, $certificate, $domainstosign[0]);
 			$acmesh = new acme_sh($certificate['name'], $url);
-			$acmesh->signCertificate($accountkey, $certificatepsk, $domainstosign);
+			$acmesh->signCertificate($accountkey, $certificatepsk, $domainstosign, $method, $envvariables);
 		}
 	}
 	
@@ -352,7 +489,7 @@ function & get_certificate($name) {
 		}
 	}	
 
-	function chalenge_response_cleanup($certificatename, $domain, $token) {
+	function challenge_response_cleanup($certificatename, $domain, $token) {
 		$acmecert = get_certificate($certificatename);
 		foreach($acmecert['a_domainlist']['item'] as $domainitem) {
 			if($domainitem['name'] == $domain){
@@ -363,7 +500,7 @@ function & get_certificate($name) {
 			$tokenfile = $domain_info['webrootfolder'] . "/" . $token;
 			@unlink($tokenfile);
 		}
-		if ($domain_info['method'] == 'ftpwebroot') {
+		if ($domain_info['method'] == 'webrootftp') {
 			$tokenfile = $domain_info['ftpwebrootfolder'] . "/" . $token;
 			$this->ftp->deleteFile($tokenfile);
 		}
