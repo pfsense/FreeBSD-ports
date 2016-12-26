@@ -20,35 +20,46 @@
  */
 
 namespace pfsense_pkg\acme;
-
-	function logexec($command, $envvariables = null) {
-		echo "<br/>\n".$command;
-		// add to cron environment path: /usr/local/bin/
-		$env = array();
-		$env['path'] = "/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin/";
-		if (is_array($envvariables)) {
-			$env = array_merge($env, $envvariables);
-		}
-		print_r($env);
-		$descriptorspec = array(
-		   0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
-		   1 => array("pipe", "w")  // stdout is a pipe that the child will write to
-		);
-		$process = proc_open($command, $descriptorspec, $pipes, null, $env);
-		if (is_resource($process)) {
-			echo stream_get_contents($pipes[1]);
-			fclose($pipes[0]);
-			fclose($pipes[1]);
-			$return_value = proc_close($process);
-		}
-		return $return_value;
-	}
 	
 class acme_sh {
 
 	private $accountconfig;
 	private $path_account;
 	private $name;
+	private $debug = true;
+	
+	private function execacmesh($command, $envvariables = null) {
+		$command = "/usr/local/pkg/acme/acme.sh " . $command;
+		if ($this->debug) {
+			echo "<br/>\n".$command."<br/>\n";
+		}
+		// add to cron environment path: /usr/local/bin/
+		$env = array();
+		$env['path'] = "/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin/";
+		if (is_array($envvariables)) {
+			$env = array_merge($env, $envvariables);
+		}
+		if ($this->debug) {
+			print_r($env);
+		}
+		$descriptorspec = array(
+		   0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
+		   1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
+		   2 => array("pipe", "w")   // stderr
+		);
+		$process = proc_open($command, $descriptorspec, $pipes, null, $env);
+		if (is_resource($process)) {
+			if ($this->debug) {
+				echo stream_get_contents($pipes[1]);
+				echo stream_get_contents($pipes[2]);
+			}
+			fclose($pipes[0]);
+			fclose($pipes[1]);
+			fclose($pipes[2]);
+			$return_value = proc_close($process);
+		}
+		return $return_value;
+	}
 	
 	function __construct($name, $ca) {
 		$this->name = $name;
@@ -68,15 +79,21 @@ class acme_sh {
 	
 	function generateAccountKey() {
 		unlink_if_exists("{$this->path_account}/account.key");
-		exec("/usr/local/pkg/acme/acme.sh --home {$this->acmeconf} --createAccountKey --accountkeylength 4096 --accountconf {$this->accountconfig}");
+		$this->debug = false;
+		$this->execacmesh("--home {$this->acmeconf} --createAccountKey --accountkeylength 4096 --accountconf {$this->accountconfig}");
 		$privateKey = file_get_contents("{$this->path_account}/account.key");
 		return $privateKey;
 	}
 	
 	function registeraccount($key) {
 		file_put_contents("{$this->path_account}/account.key", $key);
-		exec("/usr/local/pkg/acme/acme.sh --home {$this->acmeconf} --registeraccount --accountconf {$this->accountconfig} 2>&1", $output, $err);
-		return $err == 0;
+		$result = $this->execacmesh(""
+				. " --home {$this->acmeconf}"
+				. " --registeraccount"
+				. " --accountconf {$this->accountconfig}"
+				. " --log-level 3"
+				. " --log {$this->acmeconf}acme_issuecert.log");
+		return $result == 0;
 	}
 	
 	function generateDomainKey($domain, $keylength) {
@@ -89,14 +106,25 @@ class acme_sh {
 		safe_mkdir($certpath);
 		 
 		unlink_if_exists("{$certpath}/{$domain}.key");
-		logexec("/usr/local/pkg/acme/acme.sh --home {$this->acmeconf} --accountconf {$this->accountconfig} --createDomainKey -d $domain --keylength $keylength");
+		$this->execacmesh(""
+				. " --home {$this->acmeconf}"
+				. " --accountconf {$this->accountconfig}"
+				. " --createDomainKey -d $domain"
+				. " --keylength $keylength"
+				. " --log-level 3"
+				. " --log {$this->acmeconf}acme_createdomainkey.log");
 		$privateKey = file_get_contents("{$certpath}/{$domain}.key");
 		return $privateKey;
 	}
 	
-	function signCertificate($accountkey, $certificatepsk, $domainstosign, $api = null, $envvariables = null) {
+	function signCertificate($action, $accountkey, $certificatepsk, $domainstosign, $api = null, $envvariables = null) {
+		// $action = issue / renew
+		file_put_contents("{$this->path_account}/account.key", base64_decode($accountkey));
 		$cmdparameters = "";
 		if ($api && substr($api, 0, 4 ) === "dns_") {
+			if ($api == "dns_manual") {
+				$api = "";
+			}
 			$cmdparameters = " --dns {$api}";
 		} else {
 			$cmdparameters = " --webroot pfSenseacme";
@@ -108,10 +136,16 @@ class acme_sh {
 		$CERT_PATH = "{$certpath}{$Le_Domain}.cer";
 		$CA_CERT_PATH = "{$certpath}ca.cer";
 		$CERT_FULLCHAIN_PATH = "{$certpath}fullchain.cer";
-		$reloadcmd = "/usr/local/pkg/acme/acme_command.sh \"importcert\" \"{$this->name}\" \"$Le_Domain\" \"$CERT_KEY_PATH\" \"$CERT_PATH\" \"$CA_CERT_PATH\" \"$CERT_FULLCHAIN_PATH\"";
+		$reloadcmd = "/usr/local/pkg/acme/acme_command.sh"
+				. " importcert \"{$this->name}\""
+				. " \"$Le_Domain\""
+				. " \"$CERT_KEY_PATH\""
+				. " \"$CERT_PATH\""
+				. " \"$CA_CERT_PATH\""
+				. " \"$CERT_FULLCHAIN_PATH\"";
 		$reloadfile = "{$this->acmeconf}reloadcmd.sh";
 		file_put_contents($reloadfile, $reloadcmd);
-		chmod($reloadfile, 755);
+		chmod($reloadfile, 0755);
 
 		$hookcontent_httpapi  = <<<EOF
 pfSenseacme_add() {
@@ -125,7 +159,7 @@ EOF;
 		safe_mkdir("{$this->acmeconf}httpapi");
 		$hookfile_httpapi = "{$this->acmeconf}httpapi/pfSenseacme.sh";
 		file_put_contents($hookfile_httpapi, $hookcontent_httpapi);
-		chmod($hookfile_httpapi, 755);
+		chmod($hookfile_httpapi, 0755);
 		
 		$certpath = "{$this->acmeconf}{$domainstosign[0]}";
 		safe_mkdir($certpath);
@@ -134,16 +168,17 @@ EOF;
 		foreach($domainstosign as $domain) {
 			$domainstr .= " -d {$domain}";
 		}
-		logexec("/usr/local/pkg/acme/acme.sh"
-			. " --issue {$domainstr}"
+		$this->execacmesh(""
+			. " --{$action} {$domainstr}"
 			. " --home {$this->acmeconf}"
 			. " --accountconf {$this->accountconfig}"
 			. " --force"
 			. " --reloadCmd {$this->acmeconf}reloadcmd.sh"
 			. $cmdparameters
-			. " --log-level 1"
+			. " --log-level 3"
 			. " --log {$this->acmeconf}acme_issuecert.log"
-			. " > {$this->acmeconf}issue.log 2>&1", $envvariables);
+			//. " > {$this->acmeconf}issue.log 2>&1"
+			, $envvariables);
 		$cer = "{$certpath}/{$domainstosign[0]}.cer";
 		if (file_exists($cer)) {
 			return $cer;

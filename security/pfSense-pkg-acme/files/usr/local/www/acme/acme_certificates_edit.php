@@ -313,7 +313,7 @@ $section->addInput(new \Form_Input('name', 'Name', 'text', $pconfig['name']
 $section->addInput(new \Form_Input('desc', 'Description', 'text', $pconfig['desc']));
 $activedisable = array();
 $activedisable['active'] = "Active";
-$activedisable['disable'] = "Disable";
+$activedisable['disabled'] = "Disabled";
 $section->addInput(new \Form_Select(
 	'status',
 	'Status',

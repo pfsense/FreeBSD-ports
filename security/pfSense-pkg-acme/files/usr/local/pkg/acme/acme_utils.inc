@@ -53,6 +53,40 @@ if(!function_exists('is_arrayset')){
 	}
 }
 
+function array_moveitemsbefore(&$items, $before, $selected) {
+	// generic function to move array items before the set item by their numeric indexes.
+	
+	$a_new = array();
+	/* copy all entries < $before and not selected */
+	for ($i = 0; $i < $before; $i++) {
+		if (!in_array($i, $selected)) {
+			$a_new[] = $items[$i];
+		}
+	}
+	/* copy all selected entries */
+	for ($i = 0; $i < count($items); $i++) {
+		if ($i == $before) {
+			continue;
+		}
+		if (in_array($i, $selected)) {
+			$a_new[] = $items[$i];
+		}
+	}
+	/* copy $before entry */
+	if ($before < count($items)) {
+		$a_new[] = $items[$before];
+	}
+	/* copy all entries > $before and not selected */
+	for ($i = $before+1; $i < count($items); $i++) {
+		if (!in_array($i, $selected)) {
+			$a_new[] = $items[$i];
+		}
+	}
+	if (count($a_new) > 0) {
+		$items = $a_new;
+	}
+}
+
 function phparray_to_javascriptarray_recursive($nestID, $path, $items, $nodeName, $includeitems) {
 	$offset = str_repeat('  ',$nestID);
 	$itemName = "item$nestID";

@@ -29,21 +29,23 @@ if ($command == "importcert") {
 	$changedesc .= "Storing signed certificate: " . $certificatename;
 	write_config($changedesc);
 
-	foreach($certificate['a_actionlist']['item'] as $action) {
-		if ($action['status'] == "disable") {
-			continue;
-		}
-		if ($action['method'] == "shellcommand") {
-			syslog(LOG_NOTICE, "Acme, Running {$action['command']}");
-			mwexec_bg($action['command']);
-		}
-		if ($action['method'] == "php_command") {
-			syslog(LOG_NOTICE, "Acme, Running php {$action['command']}");
-			eval($action['command']);
-		}
-		if ($action['method'] == "servicerestart") {
-			syslog(LOG_NOTICE, "Acme, Restarting service {$action['command']}");
-			restart_service($action['command']);
+	if (is_array($certificate['a_actionlist']['item'])) {
+		foreach($certificate['a_actionlist']['item'] as $action) {
+			if ($action['status'] == "disable") {
+				continue;
+			}
+			if ($action['method'] == "shellcommand") {
+				syslog(LOG_NOTICE, "Acme, Running {$action['command']}");
+				mwexec_bg($action['command']);
+			}
+			if ($action['method'] == "php_command") {
+				syslog(LOG_NOTICE, "Acme, Running php {$action['command']}");
+				eval($action['command']);
+			}
+			if ($action['method'] == "servicerestart") {
+				syslog(LOG_NOTICE, "Acme, Restarting service {$action['command']}");
+				restart_service($action['command']);
+			}
 		}
 	}
 }

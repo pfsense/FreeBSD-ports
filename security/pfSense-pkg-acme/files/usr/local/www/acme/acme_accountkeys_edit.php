@@ -423,7 +423,7 @@ print $form;
 events.push(function() {
 	$('#btnregisterkey').click(function() {
 		$("#btnregisterkeyicon").removeClass("fa-check").addClass("fa-cog fa-spin");
-		var key = $("#accountkey").text();
+		var key = $("#accountkey").val();
 		var caname = $("#acmeserver").val();
 		ajaxRequest = $.ajax({
 			type: "post",

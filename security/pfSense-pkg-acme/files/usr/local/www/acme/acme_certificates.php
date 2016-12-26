@@ -36,40 +36,6 @@ if (!is_array($config['installedpackages']['acme']['certificates']['item'])) {
 }
 $a_certifcates = &$config['installedpackages']['acme']['certificates']['item'];
 
-function array_moveitemsbefore(&$items, $before, $selected) {
-	// generic function to move array items before the set item by their numeric indexes.
-	
-	$a_new = array();
-	/* copy all entries < $before and not selected */
-	for ($i = 0; $i < $before; $i++) {
-		if (!in_array($i, $selected)) {
-			$a_new[] = $items[$i];
-		}
-	}
-	/* copy all selected entries */
-	for ($i = 0; $i < count($items); $i++) {
-		if ($i == $before) {
-			continue;
-		}
-		if (in_array($i, $selected)) {
-			$a_new[] = $items[$i];
-		}
-	}
-	/* copy $before entry */
-	if ($before < count($items)) {
-		$a_new[] = $items[$before];
-	}
-	/* copy all entries > $before and not selected */
-	for ($i = $before+1; $i < count($items); $i++) {
-		if (!in_array($i, $selected)) {
-			$a_new[] = $items[$i];
-		}
-	}
-	if (count($a_new) > 0) {
-		$items = $a_new;
-	}
-}
-
 if($_POST['action'] == "toggle") {
 	$id = $_POST['id'];
 	echo "$id|";
@@ -90,11 +56,19 @@ if($_POST['action'] == "toggle") {
 	echo "ok|";
 	exit;
 }
-if($_POST['action'] == "renew") {
+if($_POST['action'] == "issuecert") {
 	$id = $_POST['id'];
 	echo $id . "\n";
 	if (isset($a_certifcates[get_certificate_id($id)])) {
-		renew_certificate($id, true);
+		issue_certificate($id, true);
+	}
+	exit;
+}
+if($_POST['action'] == "renewcert") {
+	$id = $_POST['id'];
+	echo $id . "\n";
+	if (isset($a_certifcates[get_certificate_id($id)])) {
+		issue_certificate($id, true, true);
 	}
 	exit;
 }
@@ -246,9 +220,29 @@ display_top_tabs_active($acme_tab_array['acme'], "certificates");
 				<?=date('d-m-Y H:i:s', $certificate['lastrenewal']);?>
 			  </td>
 			  <td>
+				  <?php
+					$method = "";
+					if (is_array($certificate['a_domainlist']['item'])) {
+						foreach($certificate['a_domainlist']['item'] as $domain) {
+							if ($domain['status'] == 'disable') {
+								continue;
+							}
+							$method = $domain['method'];
+						}
+					}
+			
+				  if ($method == "dns_manual"): ?>
 				  <a href='javascript:renewcertificate("<?=$certificatename;?>");' class="btn btn-sm btn-primary">
 					  <i id="btnrenewicon_<?=$certificatename;?>" class="fa fa-check"></i> Renew
 				  </a>
+				  <a href='javascript:issuecertificate("<?=$certificatename;?>");' class="btn btn-sm btn-primary">
+					  <i id="btnissueicon_<?=$certificatename;?>" class="fa fa-check"></i> Issue
+				  </a>
+				  <?php else: ?>
+				  <a href='javascript:issuecertificate("<?=$certificatename;?>");' class="btn btn-sm btn-primary">
+					  <i id="btnissueicon_<?=$certificatename;?>" class="fa fa-check"></i> Issue/Renew
+				  </a>
+				  <?php endif; ?>
 			  </td>
 			  <td class="action-icons">
 				<button style="display: none;" class="btn btn-default btn-xs" type="submit" id="move_<?=$certificatename?>" name="move_<?=$certificatename?>" value="move_<?=$certificatename?>"></button>
@@ -314,20 +308,33 @@ function js_callback(req_content) {
 	}
 }
 
+function issuecertificate($id) {
+	$('#'+"btnissueicon_"+$id).removeClass("fa-check").addClass("fa-cog fa-spin");
+	
+	ajaxRequest = $.ajax({
+		url: "",
+		type: "post",
+		data: { id: $id, action: "issuecert"},
+		success: function(data) {
+			js_callbackrenew(data);
+			$("#btnissueicon_"+$id).removeClass("fa-cog fa-spin").addClass("fa-check");
+		}
+	});
+}
+
 function renewcertificate($id) {
 	$('#'+"btnrenewicon_"+$id).removeClass("fa-check").addClass("fa-cog fa-spin");
 	
 	ajaxRequest = $.ajax({
 		url: "",
 		type: "post",
-		data: { id: $id, action: "renew"},
+		data: { id: $id, action: "renewcert"},
 		success: function(data) {
 			js_callbackrenew(data);
 			$("#btnrenewicon_"+$id).removeClass("fa-cog fa-spin").addClass("fa-check");
 		}
 	});
 }
-
 function togglerow($id) {
 	ajaxRequest = $.ajax({
 		url: "",

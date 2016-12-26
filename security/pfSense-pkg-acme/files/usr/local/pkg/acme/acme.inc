@@ -95,6 +95,9 @@ $acme_domain_validation_method['webrootftp'] = array(name => "webroot FTP",
 			'description' =>"Folder the acme challenge response is written to for default: /.well-known/acme-challenge/"
 		)
 	));
+$acme_domain_validation_method['dns_manual'] = array(name => "DNS-Manual",
+	'fields' => array(
+	));
 $acme_domain_validation_method['dns_ali'] = array(name => "DNS-Aliyuncs",
 	'fields' => array(
 		'Ali_Key' => array('name'=>"ali_key",'columnheader'=>"Key",'type'=>"textbox",
@@ -361,7 +364,7 @@ function & get_certificate($name) {
 		if (is_array($a_global['certificates']['item'])) {
 			foreach($a_global['certificates']['item'] as $certificate) {
 				echo "Checking if renewal is needed for: {$certificate['name']}\n";
-				renew_certificate($certificate['name']);
+				issue_certificate($certificate['name']);
 			}
 		}
 	}
@@ -405,7 +408,7 @@ function & get_certificate($name) {
 		return false;
 	}
 		
-	function renew_certificate($id, $force = false) {
+	function issue_certificate($id, $force = false, $renew = false) {
 		$certificate = & get_certificate($id);
 		if (!$force) {
 			if ($certificate['status'] != 'active') {
@@ -431,16 +434,19 @@ function & get_certificate($name) {
 			syslog(LOG_NOTICE, "Acme, renewing certificate: {$id}");
 			echo "Renewing certificate";
 			$domainstosign = array();
-			foreach($certificate['a_domainlist']['item'] as $domain) {
-				if ($domain['status'] == 'disable') {
-					continue;
-				}
-				$domainstosign[] = $domain['name'];
-				$method = $domain['method'];
-				$envvariables = array();
-				global $acme_domain_validation_method;
-				foreach($acme_domain_validation_method[$method]['fields'] as $key => $field) {
-					$envvariables[$key] = $domain["{$method}{$field['name']}"];
+			$method = "";
+			if (is_array($certificate['a_domainlist']['item'])) {
+				foreach($certificate['a_domainlist']['item'] as $domain) {
+					if ($domain['status'] == 'disable') {
+						continue;
+					}
+					$domainstosign[] = $domain['name'];
+					$method = $domain['method'];
+					$envvariables = array();
+					global $acme_domain_validation_method;
+					foreach($acme_domain_validation_method[$method]['fields'] as $key => $field) {
+						$envvariables[$key] = $domain["{$method}{$field['name']}"];
+					}
 				}
 			}
 			
@@ -454,7 +460,8 @@ function & get_certificate($name) {
 			$url = $a_acmeserver[$acmeserver]['url'];
 			$certificatepsk = getCertificatePSK($url, $certificate, $domainstosign[0]);
 			$acmesh = new acme_sh($certificate['name'], $url);
-			$acmesh->signCertificate($accountkey, $certificatepsk, $domainstosign, $method, $envvariables);
+			$action = $renew == true ? "renew" : "issue";
+			$acmesh->signCertificate($action, $accountkey, $certificatepsk, $domainstosign, $method, $envvariables);
 		}
 	}
 	
