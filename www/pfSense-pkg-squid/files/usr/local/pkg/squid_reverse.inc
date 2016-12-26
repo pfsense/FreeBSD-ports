@@ -183,6 +183,10 @@ function squid_resync_reverse() {
 	if (!empty($settings['reverse_ip'])) {
 		$reverse_ip = explode(";", ($settings['reverse_ip']));
 		foreach ($reverse_ip as $reip) {
+			//Take care of IPv6 IP(s) configured in User Defined Reverse Proxy IPs
+			if (is_ipaddrv6($reip)) {
+				$reip = "[{$reip}]";
+			}
 			//HTTP
 			if ((!empty($settings['reverse_http'])) || ($settings['reverse_owa_autodiscover'] == 'on')) {
 				$conf .= "http_port {$reip}:{$http_port} accel defaultsite={$http_defsite} vhost\n";
