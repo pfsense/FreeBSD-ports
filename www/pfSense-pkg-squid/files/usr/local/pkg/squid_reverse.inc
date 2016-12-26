@@ -3,7 +3,7 @@
  * squid_reverse.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2016 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012 Martin Fuchs
  * Copyright (c) 2012-2014 Marcello Coutinho
  * Copyright (c) 2013-2015 Gekkenhuis
@@ -176,6 +176,10 @@ function squid_resync_reverse() {
 	if (!empty($settings['reverse_ip'])) {
 		$reverse_ip = explode(";", ($settings['reverse_ip']));
 		foreach ($reverse_ip as $reip) {
+			//Take care of IPv6 IP(s) configured in User Defined Reverse Proxy IPs
+			if (is_ipaddrv6($reip)) {
+				$reip = "[{$reip}]";
+			}
 			//HTTP
 			if ((!empty($settings['reverse_http'])) || ($settings['reverse_owa_autodiscover'] == 'on')) {
 				$conf .= "http_port {$reip}:{$http_port} accel defaultsite={$http_defsite} vhost\n";
