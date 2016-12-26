@@ -98,7 +98,8 @@
 			<fieldname>reverse_ip</fieldname>
 			<description>
 				<![CDATA[
-				Squid will additionally bind to these user-defined IPs for reverse proxy operation. Useful for virtual IPs such as CARP.<br/>
+				Squid will additionally bind to these user-defined IPs for reverse proxy operation.<br/>
+				Useful for virtual IPs such as CARP, or for binding to IPv6 configured on an above-selected interface.<br/>
 				Note: Separate entries by semi-colons (;)<br/><br/>
 				<strong><span class="errmsg">Important:</span> Any entry here must be a valid, locally configured IP address.</strong>
 				]]>
