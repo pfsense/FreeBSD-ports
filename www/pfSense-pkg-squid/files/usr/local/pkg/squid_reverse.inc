@@ -116,28 +116,30 @@ function squid_resync_reverse() {
 	$sslflags_cache_peer = ($settings['reverse_ignore_ssl_valid'] == "on" ? "sslflags=DONT_VERIFY_PEER" : "");
 
 	// Reverse Proxy HTTPS security settings
-	if (isset($settings["dhparams_size"])) {
-		if ($settings['dhparams_size'] == '2048' && file_exists("/etc/dh-parameters.2048")) {
-			$dhparams = "dhparams=/etc/dh-parameters.2048";
-		} else if ($settings['dhparams_size'] == '4096' && file_exists("/etc/dh-parameters.4096")) {
-			$dhparams = "dhparams=/etc/dh-parameters.4096";
-		}
-	} else if (file_exists("/etc/dh-parameters.2048")) {
-		// Fallback dhparams option
-		$dhparams = "dhparams=/etc/dh-parameters.2048";
+	$options = "NO_SSLv2,NO_SSLv3,CIPHER_SERVER_PREFERENCE";
+	if (!empty($settings['reverse_compatibility_mode']) && ($settings['reverse_compatibility_mode'] == 'modern')) {
+		// Modern
+		$ciphers = "cipher=ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK";
+		$options .= ",NO_TLSv1";
+	} else {
+		// Intermediate
+		$ciphers = "cipher=ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:ECDHE-RSA-DES-CBC3-SHA:ECDHE-ECDSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA";
 	}
 
-	// Without DHParams file and settings below squid will not work correct
-	if (isset($dhparams) && !empty($dhparams)) {
-		if ($settings['reverse_compatibility_mode'] == 'modern') {
-			// Modern
-			$ciphers = "cipher=ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK";
-			$options = "options=NO_SSLv2,NO_SSLv3,NO_TLSv1,SINGLE_DH_USE,CIPHER_SERVER_PREFERENCE";
-		} else if ($settings['reverse_compatibility_mode'] == 'intermediate') {
-			// Intermediate
-			$ciphers = "cipher=ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:ECDHE-RSA-DES-CBC3-SHA:ECDHE-ECDSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA";
-			$options = "options=NO_SSLv2,NO_SSLv3,SINGLE_DH_USE,CIPHER_SERVER_PREFERENCE";
+	if (!empty($settings['dhparams_size'])) {
+		if ($settings['dhparams_size'] == '4096') {
+			$dhparams = "tls-dh=prime256v1:/etc/dh-parameters.4096";
+		} elseif ($settings['dhparams_size'] == '2048') {
+			$dhparams = "tls-dh=prime256v1:/dh-parameters.2048";
 		}
+		$options .= ",SINGLE_DH_USE,SINGLE_ECDH_USE";
+	} elseif (file_exists("/etc/dh-parameters.2048")) {
+		// Fallback dhparams option
+		$dhparams = "tls-dh=prime256v1:/etc/dh-parameters.2048";
+		$options .= ",SINGLE_DH_USE,SINGLE_ECDH_USE";
+	} else {
+		// Should never get here
+		$dhparams = "";
 	}
 
 	if (!empty($settings['disable_session_reuse'])) {
@@ -147,7 +149,7 @@ function squid_resync_reverse() {
 	
 		// Check or the sslflags for the interface https_port
 		// are already set by reverse_ssl_clientcrl setting
-		if(!empty($sslflags_https_port_iface)) {
+		if (!empty($sslflags_https_port_iface)) {
 			// Append the sslflags
 			$sslflags_https_port_iface .= ",NO_SESSION_REUSE";
 		} else {
@@ -167,7 +169,7 @@ function squid_resync_reverse() {
 			if (!empty($settings['reverse_https'])) {
 				// Squid will fail when the line length exceeds 1024 characters, this can happen because of the long ciphersuite so break the line
 				$conf .= "https_port {$real_ifaces[$i][0]}:{$https_port} accel cert={$reverse_crt} key={$reverse_key} {$clientca_opts} {$sslflags_https_port_iface} {$dhparams} {$ciphers} \\\n";
-				$conf .= " {$options} defaultsite={$https_defsite} vhost\n";
+				$conf .= " options={$options} defaultsite={$https_defsite} vhost\n";
 				$conf .= "\n";
 			}
 		}
@@ -188,7 +190,7 @@ function squid_resync_reverse() {
 			if (!empty($settings['reverse_https'])) {
 				// Squid will fail when the line length exceeds 1024 characters, this can happen because of the long ciphersuite so break the line
 				$conf .= "https_port {$reip}:{$https_port} accel cert={$reverse_crt} key={$reverse_key} {$sslflags_https_port_reverse} {$dhparams} {$ciphers} \\\n";
-				$conf .= " {$options} defaultsite={$https_defsite} vhost\n";
+				$conf .= " options={$options} defaultsite={$https_defsite} vhost\n";
 				$conf .= "\n";
 			}
 		}
