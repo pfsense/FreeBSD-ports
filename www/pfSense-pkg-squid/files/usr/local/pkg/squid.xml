@@ -102,14 +102,6 @@
 			<url>/pkg_edit.php?xml=squid_sync.xml</url>
 		</tab>
 	</tabs>
-	<!-- START INC files -->
-	<!-- END INC files -->
-	<!-- START XML files -->
-	<!-- END XML files -->
-	<!-- START additional PHP files -->
-	<!-- END additional PHP files -->
-	<!-- START executable CLI scripts -->
-	<!-- END executable CLI scripts -->
 	<advanced_options>enabled</advanced_options>
 	<fields>
 		<field>
@@ -336,6 +328,43 @@
 			<type>input</type>
 			<size>5</size>
 			<default_value>3129</default_value>
+		</field>
+		<field>
+			<fielddescr>SSL Proxy Compatibility Mode</fielddescr>
+			<fieldname>sslproxy_compatibility_mode</fieldname>
+			<description>
+				<![CDATA[
+				The compatibility mode determines which cipher suites and TLS versions are supported.<br/>
+				Modern is the default, intended for modern clients only (post FF 27, Chrome 22, IE 11 etc.) and also disables HIGH ciphers and TLS v1.0.<br/>
+				If you need to support older clients, use the Intermediate setting.<br/><br/>
+				<strong><span class="errmsg">Warning: </span>Clients like IE 6 and Java 6 are not supported anymore!</strong>
+				]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>Modern</name><value>modern</value></option>
+				<option><name>Intermediate</name><value>intermediate</value>
+				</option>
+			</options>
+			<size>1</size>
+			<default_value>modern</default_value>
+		</field>
+		<field>
+			<fielddescr>DHParams Key Size</fielddescr>
+			<fieldname>dhparams_size</fieldname>
+			<description>
+				<![CDATA[
+				DH parameters are used for temporary/ephemeral DH key exchanges. They improve security by enabling the use of DHE ciphers.<br/>
+				]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>1024 (not recommended)</name><value>1024</value></option>
+				<option><name>2048 (default)</name><value>2048</value></option>
+				<option><name>4096 (very secure)</name><value>4096</value></option>
+			</options>
+			<size>1</size>
+			<default_value>2048</default_value>
 		</field>
 		<field>
 			<fielddescr>CA</fielddescr>
