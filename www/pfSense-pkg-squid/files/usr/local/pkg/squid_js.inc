@@ -44,14 +44,13 @@ function squid_print_javascript_auth() {
 	$auth_method = $settingsauth['auth_method'];
 
 	// No authentication for transparent proxy
-	if ($transparent_proxy and preg_match("/(local|ldap|radius|msnt|ntlm)/", $auth_method)) {
+	if ($transparent_proxy and preg_match("/(local|ldap|radius|ntlm)/", $auth_method)) {
 		$javascript = <<< EOD
 <script type="text/javascript">
 //<![CDATA[
 function on_auth_method_changed() {
 	$('#auth_method').prop("disabled", true);
 	$('#auth_server').prop("disabled", true);
-	$('#auth_ntdomain').prop("disabled", true);
 	$('#auth_server_port').prop("disabled", true);
 	$('#ldap_user').prop("disabled", true);
 	$('#ldap_version').prop("disabled", true);
@@ -60,7 +59,6 @@ function on_auth_method_changed() {
 	$('#ldap_pass').prop("disabled", true);
 	$('#ldap_basedomain').prop("disabled", true);
 	$('#radius_secret').prop("disabled", true);
-	$('#msnt_secondary').prop("disabled", true);
 	$('#auth_prompt').prop("disabled", true);
 	$('#auth_processes').prop("disabled", true);
 	$('#auth_ttl').prop("disabled", true);
@@ -83,7 +81,6 @@ function on_auth_method_changed() {
 	if (auth_method == 'none') {
 		$('#auth_server').prop("disabled", true);
 		$('#auth_server_port').prop("disabled", true);
-		$('#auth_ntdomain').prop("disabled", true);
 		$('#ldap_user').prop("disabled", true);
 		$('#ldap_version').prop("disabled", true);
 		$('#ldap_userattribute').prop("disabled", true);
@@ -91,7 +88,6 @@ function on_auth_method_changed() {
 		$('#ldap_pass').prop("disabled", true);
 		$('#ldap_basedomain').prop("disabled", true);
 		$('#radius_secret').prop("disabled", true);
-		$('#msnt_secondary').prop("disabled", true);
 		$('#auth_prompt').prop("disabled", true);
 		$('#auth_processes').prop("disabled", true);
 		$('#auth_ttl').prop("disabled", true);
@@ -109,7 +105,6 @@ function on_auth_method_changed() {
 	case 'local':
 		$('#auth_server').prop("disabled", true);
 		$('#auth_server_port').prop("disabled", true);
-		$('#auth_ntdomain').prop("disabled", true);
 		$('#ldap_user').prop("disabled", true);
 		$('#ldap_pass').prop("disabled", true);
 		$('#ldap_version').prop("disabled", true);
@@ -117,7 +112,6 @@ function on_auth_method_changed() {
 		$('#ldap_filter').prop("disabled", true);
 		$('#ldap_basedomain').prop("disabled", true);
 		$('#radius_secret').prop("disabled", true);
-		$('#msnt_secondary').prop("disabled", true);
 		break;
 	case 'ldap':
 		$('#auth_server').prop("disabled", false);
@@ -129,8 +123,6 @@ function on_auth_method_changed() {
 		$('#ldap_filter').prop("disabled", false);
 		$('#ldap_basedomain').prop("disabled", false);
 		$('#radius_secret').prop("disabled", true);
-		$('#msnt_secondary').prop("disabled", true);
-		$('#auth_ntdomain').prop("disabled", true);
 		break;
 	case 'radius':
 		$('#auth_server').prop("disabled", false);
@@ -142,26 +134,10 @@ function on_auth_method_changed() {
 		$('#ldap_filter').prop("disabled", true);
 		$('#ldap_basedomain').prop("disabled", true);
 		$('#radius_secret').prop("disabled", false);
-		$('#msnt_secondary').prop("disabled", true);
-		$('#auth_ntdomain').prop("disabled", true);
-		break;
-	case 'msnt':
-		$('#auth_server').prop("disabled", false);
-		$('#auth_server_port').prop("disabled", true);
-		$('#auth_ntdomain').prop("disabled", false);
-		$('#ldap_user').prop("disabled", true);
-		$('#ldap_pass').prop("disabled", true);
-		$('#ldap_version').prop("disabled", true);
-		$('#ldap_userattribute').prop("disabled", true);
-		$('#ldap_filter').prop("disabled", true);
-		$('#ldap_basedomain').prop("disabled", true);
-		$('#radius_secret').prop("disabled", true);
-		$('#msnt_secondary').prop("disabled", false);
 		break;
 	case 'cp':
 		$('#auth_server').prop("disabled", true);
 		$('#auth_server_port').prop("disabled", true);
-		$('#auth_ntdomain').prop("disabled", true);
 		$('#ldap_user').prop("disabled", true);
 		$('#ldap_version').prop("disabled", true);
 		$('#ldap_userattribute').prop("disabled", true);
@@ -169,7 +145,6 @@ function on_auth_method_changed() {
 		$('#ldap_pass').prop("disabled", true);
 		$('#ldap_basedomain').prop("disabled", true);
 		$('#radius_secret').prop("disabled", true);
-		$('#msnt_secondary').prop("disabled", true);
 		$('#auth_prompt').prop("disabled", true);
 		$('#auth_processes').prop("disabled", false);
 		$('#auth_ttl').prop("disabled", false);
@@ -242,7 +217,7 @@ function on_antivirus_advanced_config_changed() {
 
 	}
 
-	if (! $('enable').prop("checked")) {
+	if ($('#enable').prop('checked') == false) {
 		$('#update_av').prop("disabled", true);
 	} else {
 		$('#update_av').prop("disabled", false);

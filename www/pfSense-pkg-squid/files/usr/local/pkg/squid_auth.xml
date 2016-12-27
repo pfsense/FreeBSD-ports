@@ -89,7 +89,6 @@
 				<option><name>LDAP</name><value>ldap</value></option>
 				<option><name>RADIUS</name><value>radius</value></option>
 				<option><name>Captive Portal</name><value>cp</value></option>
-				<option><name>NT Domain</name><value>msnt</value></option>
 			</options>
 			<onchange>on_auth_method_changed()</onchange>
 		</field>
@@ -217,24 +216,6 @@
 			<default_value>(&amp;(objectClass=person)(uid=%s))</default_value>
 		</field>
 		<field>
-			<name>Squid Authentication NT Domain Settings</name>
-			<type>listtopic</type>
-		</field>
-		<field>
-			<fielddescr>NT Domain</fielddescr>
-			<fieldname>auth_ntdomain</fieldname>
-			<description>Enter the NT domain here.</description>
-			<type>input</type>
-			<size>60</size>
-		</field>
-		<field>
-			<fielddescr>Secondary NT Servers</fielddescr>
-			<fieldname>msnt_secondary</fieldname>
-			<description>Enter comma-separated list of secondary servers to be used for NT domain authentication here.</description>
-			<type>input</type>
-			<size>60</size>
-		</field>
-		<field>
 			<name>Squid Authentication RADIUS Settings</name>
 			<type>listtopic</type>
 		</field>
@@ -261,7 +242,7 @@
 	<custom_php_after_head_command>
 		<![CDATA[
 		$transparent_proxy = ($config['installedpackages']['squid']['config'][0]['transparent_proxy'] == 'on');
-		if ($transparent_proxy and preg_match("/(local|ldap|radius|msnt|ntlm)/", $config['installedpackages']['squidauth']['config'][0]['auth_method'])) {
+		if ($transparent_proxy and preg_match("/(local|ldap|radius|ntlm)/", $config['installedpackages']['squidauth']['config'][0]['auth_method'])) {
 			$input_errors[] = "Authentication cannot be enabled while transparent proxy mode is enabled";
 		}
 		squid_print_javascript_auth();
