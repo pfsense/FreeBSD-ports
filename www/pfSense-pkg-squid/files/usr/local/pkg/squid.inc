@@ -503,6 +503,9 @@ function squid_install_command() {
 	install_cron_job("/usr/local/pkg/swapstate_check.php clean;", false);
 	install_cron_job("/bin/rm /var/squid/cache/swap.state;", false);
 
+	/* NT Domain authentication has been removed */
+	unlink_if_exists(SQUID_CONFBASE . '/msntauth.conf');
+
 }
 
 function squid_deinstall_command() {
@@ -635,6 +638,14 @@ function squid_upgrade_config() {
 	if (!empty($settingsauth['no_auth_hosts']) && strstr($settingsauth['no_auth_hosts'], ",")) {
 		$settingsauth['no_auth_hosts'] = base64_encode(implode("\n", explode(",", $settingsauth['no_auth_hosts'])));
 		$config['installedpackages']['squidauth']['config'][0]['no_auth_hosts'] = $settingsauth['no_auth_hosts'];
+	}
+	/* NT Domain authentication has been removed - Bug #7017 */
+	if (!empty($settingsauth['auth_method'])) {
+		if (preg_match("/msnt/i", $settingsauth['auth_method'])) {
+			$msnt_msg = "NT Domain authentication has been removed - see Bug #7017! Use LDAP for AD authentication.";
+			file_notice("squid", $msnt_msg, "Packages", "");
+			log_error("[squid] {$msnt_msg}");
+		}
 	}
 
 	/* migrate cache settings */
@@ -1101,13 +1112,6 @@ function squid_validate_auth($post, &$input_errors) {
 					$input_errors[] = "'RADIUS secret' is required.";
 				}
 				break;
-			case 'msnt':
-				foreach (explode(",", trim($post['msnt_secondary'])) as $server) {
-					if (!empty($server) && !is_ipaddr($server) && !is_domain($server)) {
-						$input_errors[] = "The host '$server' is not a valid IP address or domain name";
-					}
-				}
-				break;
 		}
 
 		$no_auth = explode("\n", $post['no_auth_hosts']);
@@ -1148,19 +1152,41 @@ function squid_resync_general() {
 				}
 				// force squid user permission on /var/squid/lib/ssl_db/
 				squid_chown_recursive(SQUID_SSL_DB, SQUID_UID, SQUID_GID);
-				// cert, key, version, cipher, options, clientca, cafile, capath, crlfile, dhparams, sslflags, sslcontext
+				// cert, key, version, cipher, options, clientca, cafile, capath, crlfile, tls-dh, sslflags, sslcontext
 				$crt_pk = SQUID_CONFBASE . "/serverkey.pem";
 				$crt_capath = SQUID_LOCALBASE . "/share/certs/";
-				/* XXX: Bug #4453
-				 * http://wiki.squid-cache.org/ConfigExamples/Intercept/SslBumpExplicit#Modern_DH.2Fciphers_usage
+				$sslproxy_options = "NO_SSLv2,NO_SSLv3";
+				/* XXX: Bug #4453, Bug #6592, Feature #6593
+				 * http://wiki.squid-cache.org/ConfigExamples/Intercept/SslBumpExplicit#Modern_DH.2FEDH_ciphers_usage
 				 */
-				//$sslproxy_cipher = "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH+aRSA+RC4:EECDH:EDH+aRSA:!RC4:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS";
-				$sslproxy_cipher = "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH+aRSA+RC4:EECDH:EDH+aRSA:HIGH:!RC4:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS";
-				$sslproxy_dhparams = "/etc/dh-parameters.2048";
-				$sslproxy_options = "NO_SSLv2,NO_SSLv3,SINGLE_DH_USE";
+				if (!empty($settings['sslproxy_compatibility_mode']) && ($settings['sslproxy_compatibility_mode'] == 'modern')) {
+					// Modern cipher suites
+					$sslproxy_cipher = "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH+aRSA+RC4:EECDH:EDH+aRSA:!RC4:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS";
+					$sslproxy_options .= ",NO_TLSv1";
+				} else {
+					// Use intermediate cipher suites by default to match port versions <0.4.29 behavior on upgrade
+					$sslproxy_cipher = "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH+aRSA+RC4:EECDH:EDH+aRSA:HIGH:!RC4:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS";
+				}
+				if (!empty($settings["dhparams_size"])) {
+					if ($settings['dhparams_size'] == '4096') {
+						$sslproxy_dhparams = "tls-dh=prime256v1:/etc/dh-parameters.4096";
+					} elseif ($settings['dhparams_size'] == '2048') {
+						$sslproxy_dhparams = "tls-dh=prime256v1:/etc/dh-parameters.2048";
+					} elseif ($settings['dhparams_size'] == '1024') {
+						$sslproxy_dhparams = "tls-dh=prime256v1:/etc/dh-parameters.1024";
+					}
+					$sslproxy_options .= ",SINGLE_DH_USE,SINGLE_ECDH_USE";
+				} elseif (file_exists("/etc/dh-parameters.2048")) {
+					// Fallback options for defaults on install
+					$sslproxy_dhparams = "tls-dh=prime256v1:/etc/dh-parameters.2048";
+					$sslproxy_options .= ",SINGLE_DH_USE,SINGLE_ECDH_USE";
+				} else {
+					// Should never get here
+					$sslproxy_dhparams = "";
+				}
 				file_put_contents($crt_pk, base64_decode($srv_cert['prv']) . base64_decode($srv_cert['crt']));
 				$sslcrtd_children = ($settings['sslcrtd_children'] ? $settings['sslcrtd_children'] : 5);
-				$ssl_interception .= "ssl-bump generate-host-certificates=on dynamic_cert_mem_cache_size=" . ($sslcrtd_children*2) . "MB cert={$crt_pk} capath={$crt_capath} cipher={$sslproxy_cipher} dhparams={$sslproxy_dhparams} options={$sslproxy_options}\n";
+				$ssl_interception .= "ssl-bump generate-host-certificates=on dynamic_cert_mem_cache_size=" . ($sslcrtd_children*2) . "MB cert={$crt_pk} capath={$crt_capath} cipher={$sslproxy_cipher} {$sslproxy_dhparams} options={$sslproxy_options}\n";
 				$interception_checks = "sslcrtd_program " . SQUID_LOCALBASE . "/libexec/squid/ssl_crtd -s " . SQUID_SSL_DB . " -M 4MB -b 2048\n";
 				$interception_checks .= "sslcrtd_children {$sslcrtd_children}\n";
 				$interception_checks .= "sslproxy_capath {$crt_capath}\n";
@@ -1858,10 +1884,6 @@ function squid_resync_auth() {
 				$conf .= "external_acl_type check_cp {$helpers_num} ttl={$auth_ttl} %SRC " . SQUID_BASE . "/bin/check_ip.php\n";
 				$conf .= "acl password external check_cp\n";
 				break;
-			case 'msnt':
-				$conf .= "auth_param basic program " . SQUID_LOCALBASE . "/libexec/squid/basic_msnt_auth\n";
-				squid_resync_msnt();
-				break;
 		}
 		if ($auth_method != 'cp') {
 		$conf .= <<< EOD
@@ -1929,24 +1951,6 @@ function squid_resync_users() {
 	file_put_contents(SQUID_PASSWD, $contents);
 	chown(SQUID_PASSWD, SQUID_UID);
 	chmod(SQUID_PASSWD, 0600);
-}
-
-/* Proxy server: NT Domain configuration handler */
-function squid_resync_msnt() {
-	global $config;
-
-	if (is_array($config['installedpackages']['squidauth'])) {
-		$settings = $config['installedpackages']['squidauth']['config'][0];
-	} else {
-		$settings = array();
-	}
-	$pdcserver = $settings['auth_server'];
-	$bdcserver = str_replace(',', ' ', $settings['msnt_secondary']);
-	$ntdomain = $settings['auth_ntdomain'];
-
-	file_put_contents(SQUID_CONFBASE . "/msntauth.conf", "server {$pdcserver} {$bdcserver} {$ntdomain}");
-	chown(SQUID_CONFBASE . "/msntauth.conf", SQUID_UID);
-	chmod(SQUID_CONFBASE . "/msntauth.conf", 0600);
 }
 
 /* Wrapper function to sync whole Squid configuration */
