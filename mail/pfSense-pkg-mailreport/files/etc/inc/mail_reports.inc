@@ -95,11 +95,13 @@ function mail_report_send($headertext, $cmdtext, $logtext, $attachments) {
 	$mail->Host = $config['notifications']['smtp']['ipaddress'];
 	$mail->Port = empty($config['notifications']['smtp']['port']) ? 25 : $config['notifications']['smtp']['port'];
 
-	if ((isset($config['notifications']['smtp']['ssl']) && $config['notifications']['smtp']['ssl'] != "unchecked") || $config['notifications']['smtp']['ssl'] == "checked")
+	if (isset($config['notifications']['smtp']['ssl'])) {
 		$mail->SMTPSecure =  "ssl";
-
-	if ((isset($config['notifications']['smtp']['tls']) && $config['notifications']['smtp']['tls'] != "unchecked") || $config['notifications']['smtp']['tls'] == "checked")
-		$mail->SMTPSecure =  "tls";
+		$mail->SMTPAutoTLS = true;
+	} else {
+		$mail->SMTPSecure =  "";
+		$mail->SMTPAutoTLS = false;
+	}
 
 	if($config['notifications']['smtp']['username'] &&
 	   $config['notifications']['smtp']['password']) {
