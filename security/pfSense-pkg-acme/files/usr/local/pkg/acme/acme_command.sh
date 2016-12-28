@@ -19,7 +19,7 @@ if ($command == "importcert") {
 	$CA_CERT_PATH = $argv[6];
 	$CERT_FULLCHAIN_PATH = $argv[7];
 	echo "\nIMPORT CERT $certificatename, $CERT_KEY_PATH, $CERT_PATH";
-	storeCertificateCer($certificatename, $CERT_KEY_PATH, $CERT_PATH);
+	storeCertificateCer($certificatename, $CERT_KEY_PATH, $CERT_PATH, $CERT_FULLCHAIN_PATH);
 
 	$id = get_certificate_id($certificatename);
 	$certificate = &$config['installedpackages']['acme']['certificates']['item'][$id];

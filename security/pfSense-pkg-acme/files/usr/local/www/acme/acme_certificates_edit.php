@@ -178,6 +178,10 @@ if ($_POST) {
 
 	do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
 
+	if (preg_match("/[^a-zA-Z0-9\.\-_]/", $_POST['name'])) {
+		$input_errors[] = "The field 'Name' contains invalid characters.";
+	}
+	
 	if ($_POST['stats_enabled']) {
 		$reqdfields = explode(" ", "name stats_uri");
 		$reqdfieldsn = explode(",", "Name,Stats Uri");		

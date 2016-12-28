@@ -389,23 +389,59 @@ function & get_certificate($name) {
 		return base64_decode($cert['prv']);
 	}
 	
-	function storeCertificateCer($certificatename, $keyfile, $cerfile) {
+	function saveCACertificateToStore($crt) {
 		global $config;
+		$crt_enc = base64_encode($crt);
+		if (!is_array($config['ca'])) {
+			$config['ca'] = array();
+		}
+		$a_ca =& $config['ca'];
+		foreach($a_ca as $ca) {
+			if ($ca['crt'] == $crt_enc) {
+				return;
+			}
+		}
+		$subject = cert_get_subject($crt, false);
+		$cert = array();
+		$cert['refid'] = uniqid();
+		$cert['descr'] = "Acmecert: {$subject}";
+		ca_import($cert, $crt);
+		$a_ca[] = $cert;
+		syslog(LOG_NOTICE, "Acme, storing new CA: {$subject}");
+	}
+	
+	function storeCertificateCer($certificatename, $keyfile, $cerfile, $fullchainfile) {
+		global $config;
+		$certupdated = false;
+		
 		$key = file_get_contents($keyfile);
 		$crt = file_get_contents($cerfile);
+		$fullchain = "";
+		if(!empty($fullchainfile)) {
+			$fullchain = file_get_contents($fullchainfile);
+			preg_match_all("/-+BEGIN CERTIFICATE(.+?)END CERTIFICATE-+/s", $fullchain, $certificatematches);
+			$first = true;
+			foreach($certificatematches[0] as $cacert) {
+				if ($first == true) {
+					$first = false;
+					continue;
+				}
+				saveCACertificateToStore($cacert);
+			}
+		}
 		if (is_array($config['cert'])) {
 			foreach ($config['cert'] as &$cert) {
 				if ($cert['descr'] == $certificatename) {
 					syslog(LOG_NOTICE, "Acme, storing new certificate: {$certificatename}");
-					echo "update cert!";
-					$cert['key'] = base64_encode($key);
-					$cert['crt'] = base64_encode($crt);
-					return true;
+					echo "\nupdate cert!";
+					cert_import($cert, $crt, $key);
+					$certupdated = true;
+					break;
 				}
 			}
 		}
-		//TODO: store chain to.?.
-		return false;
+		
+		return $certupdated;
 	}
 		
 	function issue_certificate($id, $force = false, $renew = false) {
