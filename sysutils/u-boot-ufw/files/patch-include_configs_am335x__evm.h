@@ -1,15 +1,17 @@
 --- include/configs/am335x_evm.h.orig	2016-03-14 14:20:21 UTC
 +++ include/configs/am335x_evm.h
-@@ -315,7 +315,7 @@
+@@ -315,9 +315,7 @@
  #define CONFIG_USB_GADGET_VBUS_DRAW	2
  #define CONFIG_USB_MUSB_HOST
  #define CONFIG_AM335X_USB0
 -#define CONFIG_AM335X_USB0_MODE	MUSB_PERIPHERAL
+-#define CONFIG_AM335X_USB1
+-#define CONFIG_AM335X_USB1_MODE MUSB_HOST
 +#define CONFIG_AM335X_USB0_MODE	MUSB_HOST
- #define CONFIG_AM335X_USB1
- #define CONFIG_AM335X_USB1_MODE MUSB_HOST
  
-@@ -445,8 +445,8 @@
+ #ifndef CONFIG_SPL_USBETH_SUPPORT
+ /* Fastboot */
+@@ -445,8 +443,8 @@
  #define CONFIG_SYS_REDUNDAND_ENVIRONMENT
  #define CONFIG_ENV_SPI_MAX_HZ		CONFIG_SF_DEFAULT_SPEED
  #define CONFIG_ENV_SECT_SIZE		(4 << 10) /* 4 KB sectors */
@@ -20,7 +22,7 @@
  #define MTDIDS_DEFAULT			"nor0=m25p80-flash.0"
  #define MTDPARTS_DEFAULT		"mtdparts=m25p80-flash.0:128k(SPL)," \
  					"512k(u-boot),128k(u-boot-env1)," \
-@@ -512,4 +512,117 @@
+@@ -512,4 +510,117 @@
  #endif
  #endif  /* NOR support */
  
@@ -102,9 +104,9 @@
 +	"\0" \
 +	"SetupFatdev=" \
 +	  "env exists fatdev || " \
-+	    "fatsize ${fatdev:=mmc 0} ${bootfile} || " \
-+	    "fatdev='mmc 1'; " \
-+	    "fatsize ${fatdev} ${bootfile} || " \
++	    "usb start && fatdev='usb 0'; fatsize ${fatdev} ${bootfile} || " \
++	    "fatdev='mmc 0'; fatsize ${fatdev} ${bootfile} || " \
++	    "fatdev='mmc 1'; fatsize ${fatdev} ${bootfile} || " \
 +	    "env set trynetboot 1; " \
 +	"\0" \
 +	"Preboot=" \

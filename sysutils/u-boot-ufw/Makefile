@@ -2,6 +2,7 @@
 
 PORTNAME=	u-boot
 PORTVERSION=	2016.03
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	ftp://ftp.denx.de/pub/u-boot/
 PKGNAMESUFFIX?=	-ufw
