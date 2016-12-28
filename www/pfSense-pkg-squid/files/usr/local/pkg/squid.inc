@@ -1766,11 +1766,6 @@ function squid_resync_auth() {
 
 	$conf = '';
 
-	// SSL interception acl options part 1
-	if ($settingsconfig['ssl_proxy'] == "on" && !empty($settingsnac['whitelist'])) {
-		$conf .= "ssl_bump splice whitelist\n";
-	}
-
 	// Package integration
 	if (!empty($settingsconfig['custom_options'])) {
 		$co_preg[0] = '/;/';
@@ -1862,9 +1857,12 @@ function squid_resync_auth() {
 		}
 	}
 	if ($auth_method == 'none') {
-		// SSL interception acl options part 2 without authentication
+		// SSL interception ACL options without authentication
 		if ($settingsconfig['ssl_proxy'] == "on") {
 			$conf .= "ssl_bump peek step1\n";
+			if (!empty($settingsnac['whitelist'])) {
+				$conf .= "ssl_bump splice whitelist\n";
+			}
 			$conf .= "ssl_bump bump all\n";
 		}
 		$conf .= "# Setup allowed ACLs\n";
@@ -1919,9 +1917,12 @@ EOD;
 		// Custom User Options after authentication definition
 		$conf .= "# Custom options after auth\n" . sq_text_area_decode($settingsconfig['custom_options2_squid3']) . "\n\n";
 
-		// SSL interception acl options part 2
+		// SSL interception ACL options with authentication
 		if ($settingsconfig['ssl_proxy'] == "on") {
 			$conf .= "ssl_bump peek step1\n";
+			if (!empty($settingsnac['whitelist'])) {
+				$conf .= "ssl_bump splice whitelist\n";
+			}
 			$conf .= "ssl_bump bump all\n";
 		}
 		// Onto the ACLs
