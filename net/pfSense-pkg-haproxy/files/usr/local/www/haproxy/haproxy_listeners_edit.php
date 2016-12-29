@@ -82,6 +82,7 @@ if (!is_numeric($id))
 
 $listitem_none['']['name']="None";
 
+// <editor-fold desc="HtmlList field definitions">
 $servercerts = haproxy_get_certificates('server,user');
 $fields_sslCertificates=array();
 $fields_sslCertificates[0]['name']="ssl_certificate";
@@ -148,6 +149,7 @@ $fields_externalAddress[0]['colwidth']="25%";
 $fields_externalAddress[0]['type']="select";
 $fields_externalAddress[0]['size']="200px";
 $fields_externalAddress[0]['items']=&$interfaces;
+$fields_externalAddress[0]['maxwidth']="200px";
 $fields_externalAddress[1]['name']="extaddr_custom";
 $fields_externalAddress[1]['columnheader']="Custom address";
 $fields_externalAddress[1]['colwidth']="25%";
@@ -201,6 +203,8 @@ $fields_errorfile[1]['colwidth']="30%";
 $fields_errorfile[1]['type']="select";
 $fields_errorfile[1]['size']="170px";
 $fields_errorfile[1]['items']=&$a_files;
+
+// </editor-fold>
 
 $backends = get_haproxy_backends();
 $a_action['use_backend']['fields']['backend']['items'] = &$backends;
@@ -285,13 +289,20 @@ $errorfileslist = new HaproxyHtmlList("table_errorfile", $fields_errorfile);
 $errorfileslist->keyfield = "errorcode";
 
 if (isset($id) && $a_backend[$id]) {
-	$pconfig['a_acl']=&$a_backend[$id]['ha_acls']['item'];	
+	$pconfig['a_acl']=&$a_backend[$id]['ha_acls']['item'];
+	haproxy_check_isarray($pconfig['a_acl']);
 	$pconfig['a_certificates']=&$a_backend[$id]['ha_certificates']['item'];
+	haproxy_check_isarray($pconfig['a_certificates']);
 	$pconfig['clientcert_ca']=&$a_backend[$id]['clientcert_ca']['item'];
+	haproxy_check_isarray($pconfig['clientcert_ca']);
 	$pconfig['clientcert_crl']=&$a_backend[$id]['clientcert_crl']['item'];
+	haproxy_check_isarray($pconfig['clientcert_crl']);
 	$pconfig['a_extaddr']=&$a_backend[$id]['a_extaddr']['item'];
+	haproxy_check_isarray($pconfig['a_extaddr']);	
 	$pconfig['a_actionitems']=&$a_backend[$id]['a_actionitems']['item'];
+	haproxy_check_isarray($pconfig['a_actionitems']);
 	$pconfig['a_errorfiles']=&$a_backend[$id]['a_errorfiles']['item'];
+	haproxy_check_isarray($pconfig['a_errorfiles']);
 	
 	$pconfig['advanced'] = base64_decode($a_backend[$id]['advanced']);
 	foreach($simplefields as $stat) {
@@ -302,8 +313,9 @@ if (isset($id) && $a_backend[$id]) {
 if (isset($_GET['dup'])) {
 	unset($id);
 	$pconfig['name'] .= "-copy";
-	if ($pconfig['secondary'] != 'yes')
+	if ($pconfig['secondary'] != 'yes') {
 		$pconfig['primary_frontend'] = $pconfig['name'];
+	}
 }
 
 $changedesc = "Services: HAProxy: Frontend";
@@ -522,7 +534,7 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 			primary = primaryfrontends[primary_frontend.value];
 			type = primary['ref']['type'];
 			for (i = 0; i < 99; i++) {
-				if (primary['ref']['a_extaddr']['item'][i] && primary['ref']['a_extaddr']['item'][i]['extaddr_ssl'] == 'yes')
+				if (primary['ref']['a_extaddr']['item'][i] && primary['ref']['a_extaddr']['item'][i]['extaddr_ssl'] === 'yes')
 					sslshow = true;//ssloffload.checked;
 					ssl = ssloffload.checked;
 			}
@@ -538,7 +550,7 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 			
 		setCSSdisplay(".haproxy_ssloffloading_show", sslshow);
 		setCSSdisplay(".haproxy_ssloffloading_enabled", ssl);
-		setCSSdisplay(".haproxy_mode_http", type == "http");
+		setCSSdisplay(".haproxy_mode_http", type === "http");
 		if (secondary !== null) {
 			setCSSdisplay(".haproxy_primary", !secondary.checked);
 			setCSSdisplay(".haproxy_secondary", secondary.checked);
@@ -556,8 +568,8 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 	function type_change(type) {
 		var d, i, j, el, row;
 		var count = <?=count($a_acltypes);?>;
-		var acl = [ <?php foreach ($a_acltypes as $key => $expr) echo "'".$key."'," ?> ];
-		var mode = [ <?php foreach ($a_acltypes as $key => $expr) echo "'".$expr['mode']."'," ?> ];
+		var acl = [ <?php foreach ($a_acltypes as $key => $expr) { echo "'".$key."',"; } ?> ];
+		var mode = [ <?php foreach ($a_acltypes as $key => $expr) { echo "'".$expr['mode']."',"; } ?> ];
 
         d = document;
 		for (i = 0; i < 99; i++) {
@@ -568,8 +580,8 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 			if (!el || !row_e)
 				continue;
 			for (j = 0; j < count; j++) {
-				if (acl[j] == el.value) {
-					if (mode[j] != '' && mode[j] != type) {
+				if (acl[j] === el.value) {
+					if (mode[j] !== '' && mode[j] !== type) {
 						hideElement(row_e, true);
 						hideElement(row_v, true);
 						hideElement(row_vd, true);

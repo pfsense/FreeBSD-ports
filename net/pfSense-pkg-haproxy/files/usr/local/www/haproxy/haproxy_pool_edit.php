@@ -36,17 +36,20 @@ $a_pools = &$config['installedpackages']['haproxy']['ha_pools']['item'];
 
 $a_files = haproxy_get_fileslist();
 
-if (isset($_POST['id']))
+if (isset($_POST['id'])) {
 	$id = $_POST['id'];
-else
+} else {
 	$id = $_GET['id'];
+}
 
 $tmp = get_backend_id($id);
-if (is_numeric($tmp))
+if (is_numeric($tmp)) {
 	$id = $tmp;
+}
 
-if (isset($_GET['dup']))
+if (isset($_GET['dup'])) {
 	$id = $_GET['dup'];
+}
 
 global $simplefields;
 $simplefields = array(
@@ -92,6 +95,7 @@ $fields_servers[2]['colwidth']="15%";
 $fields_servers[2]['type']="select";
 $fields_servers[2]['size']="100px";
 $fields_servers[2]['items']=&$primaryfrontends;
+$fields_servers[2]['maxwidth']="100px";
 $fields_servers[3]['name']="address";
 $fields_servers[3]['columnheader']="Address";
 $fields_servers[3]['colwidth']="10%";
@@ -102,6 +106,7 @@ $fields_servers[4]['columnheader']="Port";
 $fields_servers[4]['colwidth']="5%";
 $fields_servers[4]['type']="textbox";
 $fields_servers[4]['size']="5";
+$fields_servers[4]['maxwidth']="50px";
 $fields_servers[5]['name']="ssl";
 $fields_servers[5]['columnheader']="SSL";
 $fields_servers[5]['colwidth']="5%";
@@ -112,6 +117,7 @@ $fields_servers[6]['columnheader']="Weight";
 $fields_servers[6]['colwidth']="8%";
 $fields_servers[6]['type']="textbox";
 $fields_servers[6]['size']="5";
+$fields_servers[6]['maxwidth']="50px";
 
 $listitem_none['']['name']="None";
 
@@ -313,22 +319,18 @@ $htmllist_actions->keyfield = "name";
 
 if (isset($id) && $a_pools[$id]) {
 	$pconfig['a_acl'] = &$a_pools[$id]['a_acl']['item'];
-	if (!is_array($pconfig['a_acl'])) {
-		$pconfig['a_acl'] = array();
-	}
+	haproxy_check_isarray($pconfig['a_acl']);
 	$pconfig['a_actionitems'] = &$a_pools[$id]['a_actionitems']['item'];
-	if (!is_array($pconfig['a_actionitems'])) {
-		$pconfig['a_actionitems'] = array();
-	}
+	haproxy_check_isarray($pconfig['a_actionitems']);
+	
 	$pconfig['advanced'] = base64_decode($a_pools[$id]['advanced']);
 	$pconfig['advanced_backend'] = base64_decode($a_pools[$id]['advanced_backend']);
 	
+	$a_servers = $a_pools[$id]['ha_servers']['item'];	
 	
-	$a_servers = &$a_pools[$id]['ha_servers']['item'];	
-	
-	foreach($simplefields as $stat)
+	foreach($simplefields as $stat) {
 		$pconfig[$stat] = $a_pools[$id][$stat];
-		
+	}
 	
 	$a_errorfiles = &$a_pools[$id]['errorfiles']['item'];
 	if (!is_array($a_errorfiles)) {
@@ -365,36 +367,38 @@ if ($_POST) {
 		}
 	}
 	
-	if (preg_match("/[^a-zA-Z0-9\.\-_]/", $_POST['name']))
+	if (preg_match("/[^a-zA-Z0-9\.\-_]/", $_POST['name'])) {
 		$input_errors[] = "The field 'Name' contains invalid characters.";
-	
-	if ($_POST['checkinter'] !== "" && !is_numeric($_POST['checkinter']))
+	}
+	if ($_POST['checkinter'] !== "" && !is_numeric($_POST['checkinter'])) {
 		$input_errors[] = "The field 'Check frequency' value is not a number.";
-	
-	if ($_POST['connection_timeout'] !== "" && !is_numeric($_POST['connection_timeout']))
+	}
+	if ($_POST['connection_timeout'] !== "" && !is_numeric($_POST['connection_timeout'])) {
 		$input_errors[] = "The field 'Connection timeout' value is not a number.";
-
-	if ($_POST['server_timeout'] !== "" && !is_numeric($_POST['server_timeout']))
+	}
+	if ($_POST['server_timeout'] !== "" && !is_numeric($_POST['server_timeout'])) {
 		$input_errors[] = "The field 'Server timeout' value is not a number.";
-
-	if ($_POST['retries'] !== "" && !is_numeric($_POST['retries']))
+	}
+	if ($_POST['retries'] !== "" && !is_numeric($_POST['retries'])) {
 		$input_errors[] = "The field 'Retries' value is not a number.";
-
+	}
 	// the colon ":" is invalid in the username, other than that pretty much any character can be used.
-	if (preg_match("/[^a-zA-Z0-9!-\/;-~ ]/", $_POST['stats_username']))
+	if (preg_match("/[^a-zA-Z0-9!-\/;-~ ]/", $_POST['stats_username'])) {
 		$input_errors[] = "The field 'Stats Username' contains invalid characters.";
-
+	}
 	// the colon ":" can also be used in the password
-	if (preg_match("/[^a-zA-Z0-9!-~ ]/", $_POST['stats_password']))
+	if (preg_match("/[^a-zA-Z0-9!-~ ]/", $_POST['stats_password'])) {
 		$input_errors[] = "The field 'Stats Password' contains invalid characters.";
-
-	if (preg_match("/[^a-zA-Z0-9\-_]/", $_POST['stats_node']))
+	}
+	if (preg_match("/[^a-zA-Z0-9\-_]/", $_POST['stats_node'])) {
 		$input_errors[] = "The field 'Stats Node' contains invalid characters. Should be a string with digits(0-9), letters(A-Z, a-z), hyphen(-) or underscode(_)";
-		
+	}
 	/* Ensure that our pool names are unique */
-	for ($i=0; isset($config['installedpackages']['haproxy']['ha_pools']['item'][$i]); $i++)
-		if (($_POST['name'] == $config['installedpackages']['haproxy']['ha_pools']['item'][$i]['name']) && ($i != $id))
+	for ($i=0; isset($config['installedpackages']['haproxy']['ha_pools']['item'][$i]); $i++) {
+		if (($_POST['name'] == $config['installedpackages']['haproxy']['ha_pools']['item'][$i]['name']) && ($i != $id)) {
 			$input_errors[] = "This pool name has already been used.  Pool names must be unique.";
+		}
+	}
 
 	$pconfig['a_acl'] = $htmllist_acls->haproxy_htmllist_get_values();
 	$pconfig['a_actionitems'] = $htmllist_actions->haproxy_htmllist_get_values();
@@ -405,36 +409,41 @@ if ($_POST) {
 		$server_port    = $server['port'];
 		$server_weight  = $server['weight'];
 
-		if (preg_match("/[^a-zA-Z0-9\.\-_]/", $server_name))
+		if (preg_match("/[^a-zA-Z0-9\.\-_]/", $server_name)) {
 			$input_errors[] = "The field 'Name' contains invalid characters.";
+		}
 
 		if (!isset($server['forwardto']) || $server['forwardto'] == "") {
-			if (!is_ipaddr($server_address) && !is_hostname($server_address) && !haproxy_is_frontendname($server_address))
+			if (!is_ipaddr($server_address) && !is_hostname($server_address) && !haproxy_is_frontendname($server_address)) {
 				$input_errors[] = "The field 'Address' for server $server_name is not a valid ip address or hostname." . $server_address;
+			}
 		} else {
-			if ( ($server_address && $server_address != "") || ($server_port && !is_numeric($server_port))) {
+			if ((!empty($server_address)) || ($server_port && !is_numeric($server_port))) {
 				$input_errors[] = "'Address' and 'port' should be empty when a 'Forwardto' frontend is chosen other than 'Address+Port'.";
 			}
 		}
 
-		if (!preg_match("/.{2,}/", $server_name))
+		if (!preg_match("/.{2,}/", $server_name)) {
 			$input_errors[] = "The field 'Name' is required (and must be at least 2 characters).";
-
-		if ($server_weight && !is_numeric($server_weight))
+		}
+		if ($server_weight && !is_numeric($server_weight)) {
 			$input_errors[] = "The field 'Weight' value is not a number.";
-
-		if ($server_port && !is_numeric($server_port))
+		}
+		if ($server_port && !is_numeric($server_port)) {
 			$input_errors[] = "The field 'Port' value is not a number.";
+		}
 	}
 	
 	$a_errorfiles = $errorfileslist->haproxy_htmllist_get_values();
 	
-	if ($_POST['strict_transport_security'] !== "" && !is_numeric($_POST['strict_transport_security']))
+	if ($_POST['strict_transport_security'] !== "" && !is_numeric($_POST['strict_transport_security'])) {
 		$input_errors[] = "The field 'Strict-Transport-Security' is not empty or a number.";
+	}
 
 	$pool = array();
-	if(isset($id) && $a_pools[$id])
+	if(isset($id) && $a_pools[$id]) {
 		$pool = $a_pools[$id];
+	}
 		
 	if (!empty($pool['name']) && ($pool['name'] != $_POST['name'])) {
 		//old $pool['name'] can be empty if a new or cloned item is saved, nothing should be renamed then
@@ -464,8 +473,9 @@ if ($_POST) {
 		}
 	}
 
-	if($pool['name'] != "")
+	if($pool['name'] != "") {
 		$changedesc .= " modified pool: '{$pool['name']}'";
+	}
 	$pool['ha_servers']['item'] = $a_servers;
 	$pool['a_acl']['item'] = $pconfig['a_acl'];
 	$pool['a_actionitems']['item'] = $pconfig['a_actionitems'];
@@ -474,8 +484,9 @@ if ($_POST) {
 	update_if_changed("advanced_backend", $pool['advanced_backend'], base64_encode($_POST['advanced_backend']));
 
 	global $simplefields;
-	foreach($simplefields as $stat)
+	foreach($simplefields as $stat) {
 		update_if_changed($stat, $pool[$stat], $_POST[$stat]);
+	}
 
 	if (isset($id) && $a_pools[$id]) {
 		$a_pools[$id] = $pool;
@@ -543,7 +554,7 @@ foreach($simplefields as $field){
 			var rules = ss[i].cssRules || ss[i].rules;
 			for (var j=0; j<rules.length; j++) {
 				if (rules[j].selectorText === cssID) {
-					rules[j].style.display = rules[j].style.display == "none" ? "" : "none";
+					rules[j].style.display = rules[j].style.display === "none" ? "" : "none";
 				}
 			}
 		}
@@ -571,11 +582,11 @@ foreach($simplefields as $field){
 		persist_cookie_mode_description.setAttribute('style','padding:5px; border:1px dashed #990000; background-color: #ffffff; color: #000000; font-size: 8pt; height:30px');
 		persist_cookie_mode_description.setAttribute('style','padding:5px; border:1px dashed #990000; background-color: #ffffff; color: #000000; font-size: 8pt; height:'+persist_cookie_mode_description.scrollHeight+'px');
 		
-		setCSSdisplay(".haproxy_check_enabled", check_type != 'none');
-		setCSSdisplay(".haproxy_check_http", check_type == 'HTTP');
-		setCSSdisplay(".haproxy_check_username", check_type == 'MySQL' ||  check_type == 'PostgreSQL');
-		setCSSdisplay(".haproxy_check_smtp", check_type == 'SMTP' ||  check_type == 'ESMTP');
-		setCSSdisplay(".haproxy_check_agent", check_type == 'Agent');
+		setCSSdisplay(".haproxy_check_enabled", check_type !== 'none');
+		setCSSdisplay(".haproxy_check_http", check_type === 'HTTP');
+		setCSSdisplay(".haproxy_check_username", check_type === 'MySQL' ||  check_type === 'PostgreSQL');
+		setCSSdisplay(".haproxy_check_smtp", check_type === 'SMTP' ||  check_type === 'ESMTP');
+		setCSSdisplay(".haproxy_check_agent", check_type === 'Agent');
 		
 		setCSSdisplay(".haproxy_agent_check", agent_check.checked);
 
@@ -585,8 +596,8 @@ foreach($simplefields as $field){
 		
 		persist_sticky_type = d.getElementById("persist_sticky_type").value;
 		//hideClass('haproxytestcfg', false);
-		hideClass('haproxy_stick_tableused', persist_sticky_type == 'none');
-		hideClass('haproxy_stick_cookiename', persist_sticky_type != 'stick_rdp_cookie' &&  persist_sticky_type != 'stick_cookie_value');
+		hideClass('haproxy_stick_tableused', persist_sticky_type === 'none');
+		hideClass('haproxy_stick_cookiename', persist_sticky_type !== 'stick_rdp_cookie' &&  persist_sticky_type !== 'stick_cookie_value');
 		
 		cookie_example = sticky_type[persist_sticky_type]['cookiedescr'];
 		stick_cookiename_description = d.getElementById("stick_cookiename_description");
@@ -602,7 +613,10 @@ foreach($simplefields as $field){
 		}
 	}
 </script>
-<?php if (isset($input_errors)) print_input_errors($input_errors);
+<?php
+if (isset($input_errors)) {
+	print_input_errors($input_errors);
+}
 
 $counter=0;
 
