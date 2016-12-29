@@ -53,21 +53,35 @@ if(!empty($_GET['getupdatestatus'])) {
 
 #Backends/Servers Actions if asked
 if(!empty($_GET['act']) and !empty($_GET['be']) and !empty($_GET['srv'])) {
+	if (!session_id()) {
+		session_start();
+	}
+	$user = getUserEntry($_SESSION['Username']);
+	if (!(userHasPrivilege($user, "page-service-haproxy") || userHasPrivilege($user, "page-all"))) {
+		echo "Privilege Denied";
+		return;
+	}
 	$backend = $_GET['be'];
 	$server =  $_GET['srv'];
 	$enable = $_GET['act'] == 'start' ? true : false;
 	haproxy_set_server_enabled($backend, $server, $enable);
+	return;
 }
 
 $simplefields = array("haproxy_widget_timer","haproxy_widget_showfrontends","haproxy_widget_showclients","haproxy_widget_showclienttraffic");
 if ($_POST) {
-	foreach($simplefields as $fieldname)
+	foreach($simplefields as $fieldname) {
 		$a_config[$fieldname] = $_POST[$fieldname];
-			
+	}
 	write_config("Services: HAProxy: Widget: Updated settings via dashboard.");
 	header("Location: /");
 	exit(0);
 }
+
+if (!session_id()) {
+	session_start();
+}
+$user = getUserEntry($_SESSION['Username']);
 
 // Set default values
 if (!$a_config['haproxy_widget_timer']) {
@@ -192,8 +206,10 @@ foreach ($backends as $be => $bedata) {
 			print "<tr><td class=\"listlr\">&nbsp;".$srvname."</td>";
 			print "<td class=\"listlr\">".$srvdata['scur']."</td>";
 			print "<td class=\"listlr\"$icondetails><center>".$statusicon."</center></td>";
-			print "<td class=\"listlr\"><center><a  onclick=\"control_haproxy('".$nextaction."','".$bedata['pxname']."','".$srvdata['svname']."');\">".$acticon."</a></center></td></tr>";
-
+			
+			if ((userHasPrivilege($user, "page-service-haproxy") || userHasPrivilege($user, "page-all"))) {
+				print "<td class=\"listlr\"><center><a  onclick=\"control_haproxy('".$nextaction."','".$bedata['pxname']."','".$srvdata['svname']."');\">".$acticon."</a></center></td></tr>";
+			}
 			if ($show_clients == "YES") {
 				foreach ($clients as $cli => $clidata) {
 					if ($clidata['be'] == $bedata['pxname'] && $clidata['srv'] == $srvdata['svname']) {
@@ -226,12 +242,6 @@ if ($getupdatestatus) {
 
 <script type="text/javascript" src="/haproxy/haproxy_geturl.js"></script>
 <script type="text/javascript">
-	d = document;
-	selectIntLink = "haproxy-configure";
-	textlink = d.getElementById(selectIntLink);
-	textlink.style.display = "inline";
-</script>
-<script type="text/javascript">
 	function getstatusgetupdate() {
 		var url = "/widgets/widgets/haproxy.widget.php";
 		var pars = 'getupdatestatus=yes';
@@ -257,7 +267,7 @@ if ($getupdatestatus) {
 			getURL(url+"?"+pars, getstatusgetupdate);
 	}
 </script>
-<?
+<?php
 if (pf_version() < "2.3") {
 	echo '<div id="haproxy-settings" class="widgetconfigdiv" style="display:none;">';
 } else {

@@ -157,8 +157,9 @@ if ($_POST) {
 	}
 } else {
 	$result = haproxy_check_config($retval);
-	if ($result)
+	if ($result) {
 		$savemsg = gettext($result);
+}
 }
 
 if ($_GET['act'] == "del") {
@@ -188,12 +189,13 @@ function haproxy_userlist_backend_servers($backendname) {
 			foreach($servers as $server){
 				$srvstatus = $server['status'];
 				$status = $a_servermodes[$srvstatus]['sign'];
-				if (isset($server['forwardto']) && $server['forwardto'] != "")
+				if (isset($server['forwardto']) && $server['forwardto'] != "") {
 					$backend_servers .= "\n{$status}[{$server['forwardto']}]";
-				else								
+				} else {
 					$backend_servers .= "\n{$status}{$server['address']}:{$server['port']}";
 			}
 		}
+	}
 	}
 	return $backend_servers;
 }
@@ -226,11 +228,11 @@ function set_content(elementid, image) {
 function js_callback(req) {
 	showapplysettings.style.display = 'block';
 	
-	if(req.content != '') {
+	if(req.content !== '') {
 		var itemsplit = req.content.split("|");
 		buttonid = itemsplit[0];
 		enabled = itemsplit[1];
-		if (enabled == 1){
+		if (enabled === "1"){
 			img = "<?=haproxyicon("enabled", gettext("click to toggle enable/disable this frontend"))?>";
 		} else {
 			img = "<?=haproxyicon("disabled", gettext("click to toggle enable/disable this frontend"))?>";
@@ -243,10 +245,12 @@ function js_callback(req) {
 	
 	function sort_sharedfrontends(&$a, &$b) {
 		// make sure the 'primary frontend' is the first in the array, after that sort by name.
-		if ($a['secondary'] != $b['secondary'])
+		if ($a['secondary'] != $b['secondary']) {
 			return $a['secondary'] > $b['secondary'] ? 1 : -1;
-		if ($a['name'] != $b['name'])
+		}
+		if ($a['name'] != $b['name']) {
 			return $a['name'] > $b['name'] ? 1 : -1;
+		}
 		return 0;
 	}
 	
@@ -349,8 +353,12 @@ function js_callback(req) {
 					}
 					
 					$isadvset = "";
-					if ($frontend['advanced_bind']) $isadvset .= "Advanced bind: ".htmlspecialchars($frontend['advanced_bind'])."\r\n";
-					if ($frontend['advanced']) $isadvset .= "Advanced pass thru setting used\r\n";
+					if ($frontend['advanced_bind']) {
+						$isadvset .= "Advanced bind: ".htmlspecialchars($frontend['advanced_bind'])."\r\n";
+					}
+					if ($frontend['advanced']) {
+						$isadvset .= "Advanced pass thru setting used\r\n";
+					}
 					if ($isadvset) {
 						echo haproxyicon("advanced", gettext("Advanced settings set") . ": {$isadvset}");
 					}
@@ -384,13 +392,15 @@ function js_callback(req) {
 						$mainfrontend = get_primaryfrontend($frontend);
 						$sslused = get_frontend_uses_ssl($mainfrontend);
 						$httpused = !get_frontend_uses_ssl_only($frontend);
-						if ($httpused)
+						if ($httpused) {
 							echo "http";
+						}
 						if ($sslused) {
 							echo ($httpused ? "/" : "") . "https";
 						}
-					} else
+					} else {
 						echo $a_frontendmode[$frontend['type']]['shortname'];
+					}
 				  ?>
 				  </td>
 				  <td>

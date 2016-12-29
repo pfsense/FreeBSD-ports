@@ -76,23 +76,31 @@ class haproxy_utils {
 }
 haproxy_utils::$pf_version = substr(trim(file_get_contents("/etc/version")),0,3);
 
+function haproxy_check_isarray(&$item){
+	if (!is_array($item)){
+		$item = array();
+	}
+}
+
 if(!function_exists('ifset')){
 	function ifset(&$var, $default = ''){
 		return isset($var) ? $var : $default;
-	};
+}
 }
 
 if(!function_exists('is_arrayset')){
-	function is_arrayset(&$array, $items){
-		if (!isset($array))
+	function is_arrayset(&$array/*, $items, $items, $items*/) {
+		if (!isset($array)) {
 			return false;
+		}
 		$item = $array;
 		$arg = func_get_args();
 		for($i = 1; $i < count($arg); $i++) {
 
 			$itemindex = $arg[$i];
-			if (!isset($item[$itemindex]) || !is_array($item[$itemindex]))
+			if (!isset($item[$itemindex]) || !is_array($item[$itemindex])) {
 				return false;
+			}
 			$item = $item[$itemindex];
 
 		}
@@ -108,8 +116,9 @@ function haproxy_interface_ip($interfacebindname,$userfriendly=false){
 	$list = haproxy_get_bindable_interfaces();
 	$item = $list[$interfacebindname];
 	$result = $item['ip'];
-	if ($userfriendly && !$result)
+	if ($userfriendly && !$result) {
 		$result = $item['name'];
+	}
 	return $result;
 }
 
@@ -141,18 +150,21 @@ function haproxy_get_bindable_interfaces($ipv="ipv4,ipv6", $interfacetype="any,l
 		}
 		if (in_array('real',$interfacetypes)){
 			foreach($config['interfaces'] as $if => $ifdetail) {
-				if (!isset($ifdetail['enable']))
+				if (!isset($ifdetail['enable'])) {
 					continue;
-				if (!isset($ifdetail['ipaddr']))
+				}
+				if (!isset($ifdetail['ipaddr'])) {
 					continue;
+				}
 				$descr = $ifdetail['descr'];
 				if (!$descr){
-					if ($if == "wan" && !$ifdetail['descr'])
+					if ($if == "wan" && !$ifdetail['descr']) {
 						$descr = "WAN";
-					else if ($if == "lan" && !$ifdetail['descr'])
+					} else if ($if == "lan" && !$ifdetail['descr']) {
 						$descr = "LAN";
-					else
+					} else {
 						$descr = $if;
+				}
 				}
 				$item = array();
 				$item['ip'] = get_interface_ip($if);
@@ -180,8 +192,9 @@ function haproxy_get_bindable_interfaces($ipv="ipv4,ipv6", $interfacetype="any,l
 			}
 		}
 	}
-	if (!isset($config['system']['ipv6allow']))
+	if (!isset($config['system']['ipv6allow'])) {
 		return $bindable;// skip adding the IPv6 addresses if those are not 'allowed'
+	}
 	
 	if (in_array("ipv6",$ipversions)){
 		if (in_array('any',$interfacetypes)){
@@ -198,18 +211,21 @@ function haproxy_get_bindable_interfaces($ipv="ipv4,ipv6", $interfacetype="any,l
 		}
 		if (in_array('real',$interfacetypes)){
 			foreach($config['interfaces'] as $if => $ifdetail) {
-				if (!isset($ifdetail['enable']))
+				if (!isset($ifdetail['enable'])) {
 					continue;
-				if (!isset($ifdetail['ipaddrv6']))
+				}
+				if (!isset($ifdetail['ipaddrv6'])) {
 					continue;
+				}
 				$descr = $ifdetail['descr'];
 				if (!$descr){
-					if ($if == "wan" && !$ifdetail['descr'])
+					if ($if == "wan" && !$ifdetail['descr']) {
 						$descr = "WAN";
-					else if ($if == "lan" && !$ifdetail['descr'])
+					} else if ($if == "lan" && !$ifdetail['descr']) {
 						$descr = "LAN";
-					else
+					} else {
 						$descr = $if;
+				}
 				}
 				$item = array();
 				$item['ip'] = get_interface_ipv6($if);
@@ -275,13 +291,14 @@ function haproxy_recalculate_certifcate_chain(){
 	foreach($allcertificates as &$cert){
 		$recalculate=false;
 		if (!isset($cert['selfsigned'])){
-			if (!isset($cert['caref']))
+			if (!isset($cert['caref'])) {
 				$recalculate=true;
-			else {		
+			} else {		
 				$ca = lookup_ca($cert['caref']);
-				if (!$ca)	
+				if (!$ca) {
 					$recalculate=true;
 			}
+		}
 		}
 		if ($recalculate){
 			foreach($allcertificates as &$signedbycert){
@@ -296,29 +313,38 @@ function haproxy_recalculate_certifcate_chain(){
 			}
 		}
 	}
-	if ($items_recalculated > 0)
+	if ($items_recalculated > 0) {
 		write_config("Services: HAProxy: Recalculated $items_recalculated certificate chains.");
+	}
 	return $items_recalculated;
 }
 
 function get_certificat_usage($refid) {
 	$usage = array();
 	$cert = lookup_cert($refid);
-	if (is_cert_revoked($cert))
+	if (is_cert_revoked($cert)) {
 		$usage[] = "*Revoked";
-	if (is_webgui_cert($refid))
+	}
+	if (is_webgui_cert($refid)) {
 		$usage[] = "webConfigurator";
-	if (is_user_cert($refid))
+	}
+	if (is_user_cert($refid)) {
 		$usage[] = "User Cert";
-	if (is_openvpn_server_cert($refid))
+	}
+	if (is_openvpn_server_cert($refid)) {
 		$usage[] = "OpenVPN Server";
-	if (is_openvpn_client_cert($refid))
+	}
+	if (is_openvpn_client_cert($refid)) {
 		$usage[] = "OpenVPN Client";
-	if (is_ipsec_cert($refid))
+	}
+	if (is_ipsec_cert($refid)) {
 		$usage[] = "IPsec Tunnel";
-	if (function_exists("is_captiveportal_cert"))
-		if (is_captiveportal_cert($refid))
+	}
+	if (function_exists("is_captiveportal_cert")) {
+		if (is_captiveportal_cert($refid)){
 			$usage[] = "Captive Portal";
+		}
+	}
 	return $usage;
 }
 
@@ -327,17 +353,17 @@ function haproxy_get_certificate_descriptivename($cert) {
 	foreach($usage as $use){
 		$usagestr .= " " . $use;
 	}		
-	if ($usagestr != "")
+	if ($usagestr != "") {
 		$usagestr = " (".trim($usagestr).")";
-
+	}
 	$purpose = cert_get_purpose($cert['crt']);
 	$certserverpurpose = $purpose['server'] == 'Yes' ? " [Server cert]" : "";
 		
 	$caname = "";
 	$ca = lookup_ca($cert['caref']);
-	if ($ca)
+	if ($ca) {
 		$caname = " (CA: {$ca['descr']})";
-	
+	}
 	return $cert['descr'] . $caname . $certserverpurpose . $usagestr;
 }
 
@@ -358,10 +384,12 @@ function haproxy_get_certificates($type = 'server,user', $get_includeWebCert=fal
 				$ok = false;
 				$ok |= stristr($type,',server,') && $purpose['server'] == 'Yes';
 				$ok |= stristr($type,',user,') && $purpose['server'] != 'Yes';
-				if (!$ok)
+				if (!$ok) {
 					continue;
-				if ($get_includeWebCert == false && $cert['descr'] == "webConfigurator default")
+				}
+				if ($get_includeWebCert == false && $cert['descr'] == "webConfigurator default") {
 					continue;
+				}
 				$certificates[$cert['refid']]['name'] = haproxy_get_certificate_descriptivename($cert);
 			}
 		}
@@ -406,9 +434,9 @@ function haproxy_get_crls() {
 		foreach ($config['crl'] as $crl) {
 			$caname = "";
 			$ca = lookup_ca($crl['caref']);
-			if ($ca)
+			if ($ca) {
 				$caname = " (CA: {$ca['descr']})";
-		
+			}
 			$certificates[$crl['refid']]['name'] = $crl['descr'] . $caname;
 		}
 	}
@@ -421,13 +449,14 @@ function phparray_to_javascriptarray_recursive($nestID, $path, $items, $nodeName
 	$itemName = "item$nestID";
 	//echo "{$offset}$nodeName = {};\n";
 	echo "{$offset}$nodeName = Object.create(null);\n";
-	if (is_array($items))
+	if (is_array($items)) {
 		foreach ($items as $key => $item)
 		{
-			if (in_array($path.'/'.$key, $includeitems))
+			if (in_array($path.'/'.$key, $includeitems)) {
 				$subpath = $path.'/'.$key;
-			else
+			} else {
 				$subpath = $path.'/*';
+			}
 			if (in_array($subpath, $includeitems) || in_array($path.'/*', $includeitems)) {
 				if (is_array($item)) {
 					$subNodeName = "item$nestID";
@@ -440,6 +469,8 @@ function phparray_to_javascriptarray_recursive($nestID, $path, $items, $nodeName
 			}
 		}
 }
+}
+
 function phparray_to_javascriptarray($items, $javaMapName, $includeitems) {
 	phparray_to_javascriptarray_recursive(1,'',$items, $javaMapName, $includeitems);
 }
@@ -473,10 +504,12 @@ function haproxy_js_select_options($keyvaluelist, $selected="") {
 function echo_html_select($name, $keyvaluelist, $selected, $listEmptyMessage="", $onchangeEvent="", $style="") {
 	$result = "";
 	if (count($keyvaluelist)>0){
-		if ($onchangeEvent != "")
+		if ($onchangeEvent != "") {
 			$onchangeEvent = " onchange='$onchangeEvent'";
-		if ($style != "")
+		}
+		if ($style != "") {
 			$style = " style='$style'";
+		}
 		$result .= "<select name=\"$name\" id=\"$name\" class=\"formselect\"$onchangeEvent$style>";
 		$result .= haproxy_html_select_options($keyvaluelist, $selected);
 		$result .= "</select>";
@@ -493,5 +526,3 @@ function haproxy_keyvalue_array($hap_array) {
 	}
 	return $result;
 }
-
-?>
