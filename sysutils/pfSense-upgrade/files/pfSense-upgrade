@@ -332,7 +332,7 @@ pkg_upgrade() {
 		_exit 0
 	fi
 
-	unset need_reboot
+	need_reboot=1
 	# First upgrade stage
 	if [ -z "${next_stage}" ]; then
 		if [ -f "${logfile}" ]; then
@@ -417,22 +417,22 @@ pkg_upgrade() {
 				fi
 				setup_nanobsd_env
 			fi
-			need_reboot=1
-		elif pkg upgrade -r ${product} -nq ${_meta_pkg} >/dev/null 2>&1; then
-			need_reboot=1
 		fi
 
 		pkg_unlock ${kernel_pkg} ${uboot_pkg}
+
+		# If kernel is not going to be upgraded, reroot
+		if [ $(pkg upgrade -nq ${kernel_pkg} | wc -l) -lt 1 ]; then
+			reboot_params="-r"
+		fi
 
 		if [ -z "${yes}" ]; then
 			# Show user which packages are going to be upgraded
 			pkg ${pkg_chroot} upgrade -nq 2>&1 | tee -a ${logfile}
 
 			_echo ""
-			if [ -n "${need_reboot}" ]; then
-				_echo "**** WARNING ****"
-				_echo "Reboot will be required!!"
-			fi
+			_echo "**** WARNING ****"
+			_echo "Reboot will be required!!"
 			_echo -n "Proceed with upgrade? (y/N) "
 			read answer
 			if [ "${answer}" != "y" ]; then
@@ -470,7 +470,7 @@ pkg_upgrade() {
 		pkg ${pkg_chroot} annotate -q -M ${kernel_pkg} next_stage 2
 		next_stage=2
 
-		if [ -n "${need_reboot}" -a "${platform}" != "nanobsd" ]; then
+		if [ "${platform}" != "nanobsd" ]; then
 			do_reboot
 			_exit 0
 		fi
@@ -526,7 +526,7 @@ pkg_upgrade() {
 		pkg_unlock "${pkg_prefix}*"
 		unlock_additional_pkgs=""
 
-		if [ -n "${need_reboot}" -a "${platform}" = "nanobsd" ]; then
+		if [ "${platform}" = "nanobsd" ]; then
 			switch_active_nanobsd_partition
 			do_reboot
 			_exit 0
@@ -821,9 +821,9 @@ do_reboot() {
 		/etc/rc.notify_message -e -g -m "Upgrade is complete.  Rebooting ${_msg}" \
 			>/dev/null 2>&1
 		if [ "${_now}" = "now" ]; then
-			/etc/rc.reboot
+			/etc/rc.reboot ${reboot_params}
 		else
-			(sleep ${reboot_after} && /etc/rc.reboot) &
+			(sleep ${reboot_after} && /etc/rc.reboot ${reboot_params}) &
 		fi
 	else
 		_echo "Upgrade is complete."
@@ -918,6 +918,9 @@ export nc_pid=""
 
 # Reboot after 10 seconds
 export reboot_after=10
+
+# Used to set -r and reroot
+export reboot_params=""
 
 unset dry_run
 unset dont_reboot
