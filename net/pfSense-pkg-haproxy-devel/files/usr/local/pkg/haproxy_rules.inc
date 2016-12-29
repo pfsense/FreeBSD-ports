@@ -22,9 +22,10 @@
 
 require_once("haproxy/haproxy.inc");
 
+/* XXX Remove it */
 function haproxy_rules_generate_rules($type) {
 	// called by filter.inc when pfSense rules generation happens
-	return haproxy_generate_rules_plugin($type);
+	return haproxy_generate_rules($type);
 }
 
 ?>
