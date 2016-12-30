@@ -8666,3 +8666,4 @@ multimedia/kvazaar-devel|multimedia/kvazaar|2016-10-05|Out of date: use multimed
 www/lighttpd-mod_geoip|www/lighttpd|2016-10-21|Integrated into www/lighttpd
 www/linux-f10-flashplugin11||2016-12-13|Deprecated
 www/linux-c6-flashplugin11|www/linux-c6-flashplugin24|2016-12-13|Deprecated
+security/openvpn-polarssl|security/openvpn-mbedtls|2016-12-27|Slave port renamed to match the TLS library's new name.

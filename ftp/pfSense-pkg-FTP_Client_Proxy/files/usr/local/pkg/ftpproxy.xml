@@ -140,4 +140,7 @@
 	<custom_php_validation_command>
 		validate_form_ftpproxy($_POST, $input_errors);
 	</custom_php_validation_command>
+	<filter_rules_needed>
+		ftpproxy_generate_rules
+	</filter_rules_needed>
 </packagegui>

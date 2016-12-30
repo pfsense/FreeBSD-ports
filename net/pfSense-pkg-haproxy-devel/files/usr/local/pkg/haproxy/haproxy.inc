@@ -2050,7 +2050,7 @@ function haproxy_get_transparent_backends(){
 	return $transparent_backends;
 }
 
-function haproxy_generate_rules_plugin($type) {
+function haproxy_generate_rules($type) {
 	$rules = "";
 	switch($type) {
 	case 'filter':
