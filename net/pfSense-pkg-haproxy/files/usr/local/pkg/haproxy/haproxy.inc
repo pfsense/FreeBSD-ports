@@ -381,60 +381,6 @@ if (haproxy_version() >= '1.6') {
 
 #end
 
-
-if (!function_exists('group_ports')) {
-// function group_ports() is present in pfSense 2.2 in util.inc
-/* create ranges of sequential port numbers (200:215) and remove duplicates */
-function group_ports($ports) {
-	if (!is_array($ports) || empty($ports)) {
-		return;
-	}
-
-	$uniq = array();
-	foreach ($ports as $port) {
-		if (is_portrange($port)) {
-			list($begin, $end) = explode(":", $port);
-			if ($begin > $end) {
-				$aux = $begin;
-				$begin = $end;
-				$end = $aux;
-			}
-			for ($i = $begin; $i <= $end; $i++)
-				if (!in_array($i, $uniq))
-					$uniq[] = $i;
-		} elseif (is_port($port)) {
-			if (!in_array($port, $uniq))
-				$uniq[] = $port;
-		}
-	}
-	sort($uniq, SORT_NUMERIC);
-
-	$result = array();
-	foreach ($uniq as $idx => $port) {
-		if ($idx == 0) {
-			$result[] = $port;
-			continue;
-		}
-
-		$last = end($result);
-		if (is_portrange($last)) {
-			list($begin, $end) = explode(":", $last);
-		} else {
-			$begin = $end = $last;
-		}
-
-		if ($port == ($end+1)) {
-			$end++;
-			$result[count($result)-1] = "{$begin}:{$end}";
-		} else {
-			$result[] = $port;
-		}
-	}
-
-	return $result;
-}
-}
-
 global $haproxy_version;
 function haproxy_version() {
 	global $haproxy_version;
@@ -544,12 +490,7 @@ function haproxy_custom_php_install_command() {
 	$static_output .= "HAProxy, running haproxy_custom_php_install_command()\n";
 	update_output_window($static_output);
 	
-	$pf_version=substr(trim(file_get_contents("/etc/version")),0,3);
-	if ($pf_version == "2.1" || $pf_version == "2.2") {
-		$haproxy_binary = "/usr/pbi/haproxy-devel-" . php_uname("m") . "/sbin/haproxy";
-	} else {
-		$haproxy_binary = "/usr/local/sbin/haproxy";
-	}
+	$haproxy_binary = "/usr/local/sbin/haproxy";
 
 	$static_output .= "HAProxy, create '/usr/local/etc/rc.d/haproxy.sh'\n";
 	update_output_window($static_output);
@@ -2082,13 +2023,9 @@ function haproxy_generate_rules_plugin($type) {
 }
 
 function load_ipfw_rules() {
-	// On FreeBSD 8 pf does not support "divert-reply" so ipfw is needed.
-	global $g, $config;
-	if (haproxy_utils::$pf_version < 2.2) {
-		$ipfw_zone_haproxy = "haproxy";
-	} else {
-		$ipfw_zone_haproxy = "4000"; // seems that 4000 is a safe zone number to avoid conflicts with captive portal.. and 4095 is the max?
-	}
+	// On FreeBSD 8/9/10/11 pf does not support "divert-reply" so ipfw is needed.
+	global $g;
+	$ipfw_zone_haproxy = "4000"; // seems that 4000 is a safe zone number to avoid conflicts with captive portal.. and 4095 is the max?
 	
 	haproxy_load_modules();
 
@@ -2102,19 +2039,10 @@ function load_ipfw_rules() {
 	
 	if (haproxy_utils::$pf_version < 2.4) {
 		$rulenum = 64000; // why that high? captiveportal.inc also does it...
-		if (haproxy_utils::$pf_version < 2.2) {
-			// pfSense 2.1 FreeBSD 8.3
-			mwexec("/usr/local/sbin/ipfw_context -a $ipfw_zone_haproxy", true);
-
-			foreach($transparent_interfaces as $transparent_if => $value) {
-				mwexec("/usr/local/sbin/ipfw_context -a $ipfw_zone_haproxy -n $transparent_if", true);
-			}
-		} else {
-			// pfSense 2.2 FreeBSD 10
-			mwexec("/sbin/ipfw zone $ipfw_zone_haproxy create", true);
-			foreach($transparent_interfaces as $transparent_if => $value) {
-				mwexec("/sbin/ipfw zone $ipfw_zone_haproxy madd $transparent_if", true);
-			}
+		// pfSense 2.2 FreeBSD 10
+		mwexec("/sbin/ipfw zone $ipfw_zone_haproxy create", true);
+		foreach($transparent_interfaces as $transparent_if => $value) {
+			mwexec("/sbin/ipfw zone $ipfw_zone_haproxy madd $transparent_if", true);
 		}
 	} else {
 		// pfSense 2.4, captive portal rules start at 1000
@@ -2135,9 +2063,6 @@ function load_ipfw_rules() {
 	
 
 	file_put_contents("{$g['tmp_path']}/ipfw_{$ipfw_zone_haproxy}.haproxy.rules", $rules);
-	if (haproxy_utils::$pf_version < 2.2) {
-		mwexec("/usr/local/sbin/ipfw_context -s $ipfw_zone_haproxy", true);
-	}
 	if (haproxy_utils::$pf_version < 2.4) {
 		mwexec("/sbin/ipfw -x $ipfw_zone_haproxy -q {$g['tmp_path']}/ipfw_{$ipfw_zone_haproxy}.haproxy.rules", true);
 	} else {
@@ -2191,7 +2116,7 @@ function haproxy_plugin_certificates($pluginparams) {
 		
 		$a_backends = $config['installedpackages']['haproxy']['ha_pools']['item'];
 		if (is_array($a_backends)) {
-			foreach ($a_backends as &$backend) {
+			foreach ($a_backends as $backend) {
 				if (is_array($backend['ha_servers']['item'])) {
 					foreach($backend['ha_servers']['item'] as $srv) {
 						if ($srv['ssl-server-clientcert']) {
@@ -2280,12 +2205,8 @@ function haproxy_check_run($reload) {
 			filter_configure();
 			load_ipfw_rules();
 		} else {
-			if (haproxy_utils::$pf_version < 2.2) {
-				mwexec("/usr/local/sbin/ipfw_context -d haproxy", true);
-			} else {			
-				$ipfw_zone_haproxy = 4000;
-				mwexec("/sbin/ipfw zone $ipfw_zone_haproxy destroy", true);
-			}
+			$ipfw_zone_haproxy = 4000;
+			mwexec("/sbin/ipfw zone $ipfw_zone_haproxy destroy", true);
 		}
 		
 		if (file_exists('/var/run/haproxy.pid')){
