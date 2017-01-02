@@ -112,10 +112,19 @@ class HaproxyHtmlList
 		$result = "";
 		$itemnamenr = $this->tablename . $itemname . $counter;
 		$itemtype = $item['type'];
+		$itemmaxwidth = $item['maxwidth'];
+		$style = "";
+		$stylevalue = "";
+		if ($itemmaxwidth) {
+			$stylevalue .= ";max-width:".$itemmaxwidth;
+		}
+		if ($stylevalue) {
+			$style = ' style="'.$stylevalue.'"';
+		}
 		if ($editable) {
 			$itemtype = $item['type'];
 			if ($itemtype == "select") {
-				$result .= echo_html_select($itemnamenr, $item['items'], $itemvalue,"-none available-","html_listitem_change(\"{$this->tablename}\",\"{$itemname}\",\"{$counter}\",this);", "");
+				$result .= echo_html_select($itemnamenr, $item['items'], $itemvalue,"-none available-","html_listitem_change(\"{$this->tablename}\",\"{$itemname}\",\"{$counter}\",this);", $stylevalue);
 			} elseif ($itemtype == "checkbox") {
 				$checked = $itemvalue=='yes' ? " checked" : "";
 				$result .= "<input onclick='html_listitem_change(\"{$this->tablename}\",\"{$itemname}\",\"{$counter}\",this);' name='$itemnamenr' id='$itemnamenr' type='checkbox'$checked value='yes' />";
@@ -127,7 +136,7 @@ class HaproxyHtmlList
 				$result .= $item['text'];
 			} else {
 				$itemvalue = htmlspecialchars($itemvalue, ENT_QUOTES);
-				$result .= "<input name='$itemnamenr' id='$itemnamenr' type='text' value='{$itemvalue}' />";
+				$result .= "<input name='$itemnamenr' id='$itemnamenr' type='text' value='{$itemvalue}' {$style}/>";
 			}
 		} else {
 			if ($itemtype == "select") {
