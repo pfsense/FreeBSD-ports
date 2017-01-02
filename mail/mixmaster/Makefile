@@ -4,7 +4,7 @@
 
 PORTNAME=	mixmaster
 PORTVERSION=	3.0.2d
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	mail security
 MASTER_SITES=	http://www.c-s.li/ports/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
@@ -29,7 +29,6 @@ CONFIG_FILES=	abuse.txt.in dest.blk mix.cfg news.hlp pubring.mix type1.hlp \
 
 OPTIONS_DEFINE=	DOCS
 
-BROKEN_FreeBSD_9=	does not compile
 BROKEN=		upstream disappeared (unfetchable)
 
 post-patch:

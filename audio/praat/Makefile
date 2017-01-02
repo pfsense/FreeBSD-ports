@@ -4,7 +4,7 @@
 PORTNAME=	praat
 PORTVERSION=	5.4.08
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	audio science
 
 MAINTAINER=	bacon4000@gmail.com
@@ -28,9 +28,9 @@ USE_GCC=	yes
 
 post-patch:
 	@${FIND} ${WRKSRC} -name Makefile -exec \
-		${REINPLACE_CMD} -e 's|^CFLAGS =|CFLAGS +=|' "{}" \;
+		${REINPLACE_CMD} -e 's|^CFLAGS =|CFLAGS +=|' {} \;
 	@${FIND} ${WRKSRC} -name Makefile -exec \
-		${REINPLACE_CMD} -e 's|^CPPFLAGS =|CPPFLAGS +=|' "{}" \;
+		${REINPLACE_CMD} -e 's|^CPPFLAGS =|CPPFLAGS +=|' {} \;
 	@${CP} ${FILESDIR}/makefile.defs.freebsd.alsa \
 		${WRKSRC}/makefile.defs
 	@${REINPLACE_CMD} -e 's|%%WRKSRC%%|${WRKSRC}|g' \

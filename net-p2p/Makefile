@@ -13,12 +13,14 @@
     SUBDIR += bnbt
     SUBDIR += btpd
     SUBDIR += btsync
+    SUBDIR += couchpotato
     SUBDIR += cpuminer
     SUBDIR += createtorrent
     SUBDIR += ctcs
     SUBDIR += ctorrent
     SUBDIR += dclib
     SUBDIR += deluge
+    SUBDIR += deluge-cli
     SUBDIR += digitalcoin
     SUBDIR += dogecoin
     SUBDIR += ed2k

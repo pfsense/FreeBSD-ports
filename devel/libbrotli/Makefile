@@ -3,7 +3,7 @@
 
 PORTNAME=	libbrotli
 PORTVERSION=	1.0
-PORTREVISION=	4
+PORTREVISION=	5
 MASTER_SITES=	https://github.com/bagder/libbrotli/archive/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 CATEGORIES=	devel archivers
@@ -21,7 +21,7 @@ GH_PROJECT=	brotli:brotli
 GH_TAGNAME=	${BROTLI_VERSION}:brotli
 GH_SUBDIR=	brotli:brotli
 
-USES=		pkgconfig autoreconf libtool compiler:c++0x
+USES=		pkgconfig autoreconf libtool compiler:c++0x pathfix
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTNAME}-${PORTVERSION}

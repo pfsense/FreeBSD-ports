@@ -10,4 +10,7 @@ COMMENT=	X.Org tseng display driver
 
 XORG_CAT=	driver
 
+BROKEN_aarch64=		error: implicit declaration of function outb is invalid in C99
+BROKEN_armv6=		error: implicit declaration of function outb is invalid in C99
+
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@ COMMENT=	The ${PHP_MODNAME} shared extension for php
 USES+=	php:ext
 PHP_MODNAME=	${PKGNAMESUFFIX:S/-//}
 PHP_VER=	56
-IGNORE_WITH_PHP=	55 70
+IGNORE_WITH_PHP=	70
 
 EXTSUBDIR=	${DISTNAME}/ext/${PHP_MODNAME}
 WRKSRC=		${WRKDIR}/${EXTSUBDIR}
@@ -526,6 +526,10 @@ USES+=	mysql
 .endif
 
 .include <bsd.port.pre.mk>
+
+.if ${PHP_MODNAME} == "openssl" && ${SSL_DEFAULT:Mopenssl-devel}
+BROKEN=		Does not build with openssl-devel
+.endif
 
 .if ${PHP_MODNAME} == "gd"
 .	if ${PORT_OPTIONS:MT1LIB}

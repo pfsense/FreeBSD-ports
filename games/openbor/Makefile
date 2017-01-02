@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	openbor
-PORTVERSION=	3.0.r4167
-PORTREVISION=	1
+PORTVERSION=	3.0.r4426
 CATEGORIES=	games
 MASTER_SITES=	LOCAL/jbeich \
 		https://svn.code.sf.net/p/${PORTNAME}/engine/engine/:svn
@@ -10,20 +9,25 @@ MASTER_SITES=	LOCAL/jbeich \
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Moddable fighting game engine (aka Beats of Rage)
 
-LICENSE=	BSD3CLAUSE
+LICENSE=	BSD3CLAUSE GPLv2+ ISCL
+LICENSE_COMB=	multi
+LICENSE_FILE_BSD3CLAUSE=${WRKSRC}/LICENSE
+LICENSE_FILE_GPLv2+ =	${_LICENSE_STORE}/GPLv2 # source/gfxlib/hq2x.c
+LICENSE_FILE_ISCL=	${WRKSRC}/source/webmlib/nestegg/LICENSE
 
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libvpx.so:multimedia/libvpx
 
-USES=		dos2unix gmake pkgconfig tar:xz
+USES=		gmake pkgconfig tar:xz
 USE_SDL=	gfx2
-DOS2UNIX_FILES=	Makefile
 MAKE_ENV=	BUILD_LINUX=1 SDKPATH="${LOCALBASE}" \
 		GCC_TARGET="${CONFIGURE_TARGET:S/amd64/x86_64/}"
 MAKE_ARGS=	CC="${CC}" LIBRARIES="${LOCALBASE}/lib" \
 		TARGET_ARCH=${ARCH:S/i386/x86/} ARCHFLAGS="" \
 		TARGET_FINAL='${TARGET}' BUILD_MMX=""
-LDFLAGS+=	-Wl,--as-needed
+CFLAGS+=	-fgnu89-inline ${CFLAGS_${OPSYS}}
+CFLAGS_DragonFly=	-D_GCC_MAX_ALIGN_T # system stddef.h
+LDFLAGS+=	-Wl,--as-needed # ogg, pthread, zlib
 PLIST_FILES=	bin/${PORTNAME} \
 		share/pixmaps/${PORTNAME}.png
 PORTDOCS=	README
@@ -36,7 +40,7 @@ DESKTOP_ENTRIES="OpenBOR" \
 		""
 
 OPTIONS_DEFINE=		TREMOR
-OPTIONS_DEFAULT=	${MACHINE_CPU:tu:MSOFTFP:S/SOFTFP/TREMOR/}
+OPTIONS_DEFAULT=	${MACHINE_CPU:Msoftfp:C/.+/TREMOR/}
 OPTIONS_DEFINE_i386=	MMX
 OPTIONS_DEFAULT_i386=	MMX # runtime detection
 
@@ -65,14 +69,18 @@ SVN_REV?=	${PORTVERSION:E:S/r//}
 .if defined(BOOTSTRAP) || defined(SVN_FETCH)
 FETCH_DEPENDS+=	svn:devel/subversion
 
+NO_CHECKSUM=	yes
+
 do-fetch:
 	${MKDIR} ${WRKDIR}
 	svn export -r${SVN_REV} ${_MASTER_SITES_svn} ${WRKSRC}
 	(cd ${WRKDIR} && ${TAR} cJvf \
 		${_DISTDIR}/${DISTNAME}${EXTRACT_SUFX} \
 		--uid 0 --gid 0 ${DISTNAME})
+. ifmake makesum
 	${REINPLACE_CMD} -i '' '/^PORTVERSION=/s/r.*/r${SVN_REV}/' \
 		${MASTERDIR}/Makefile
+. endif
 . if ${USER} == ${MAINTAINER:C/@.*//}
 	-scp ${_DISTDIR}/${DISTNAME}${EXTRACT_SUFX} \
 		freefall.freebsd.org:public_distfiles/
@@ -91,7 +99,7 @@ post-patch:
 	@${GREP} -Flr 'malloc.h' ${WRKSRC} | ${XARGS} ${REINPLACE_CMD} \
 		's,malloc\.h,stdlib.h,'
 	@${REINPLACE_CMD} -e 's/^function \(.*\) {/\1() {/' \
-		-e 's/^get_revnum/VERSION_BUILD=${SVN_REV}/' \
+		-e 's/^get_revnum$$/VERSION_BUILD=${SVN_REV}/' \
 		${WRKSRC}/version.sh
 
 do-configure:

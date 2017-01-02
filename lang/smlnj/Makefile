@@ -225,7 +225,7 @@ do-build:
 	./makeml
 	@${ECHO} '(* Removing old libs and heaps: *)'
 	cd ${WRKSRC}/${RECOMPILEDIR} && \
-	${RM} -rf ../../lib && ${MKDIR} ../../lib && \
+	${RM} -r ../../lib && ${MKDIR} ../../lib && \
 	${FIND} ../../bin/.heap -name '*.${MLARCH}-bsd' \
 	\! -name 'sml.${MLARCH}-bsd' -delete -print
 	@${ECHO} '(* Installing the recompiled libs and heap: *)'
@@ -379,7 +379,6 @@ do-install:
 	@${ECHO} ' done. *)'
 .endif
 
-post-install:
 # Only execute ${PKGINSTALL} when installing to ${PREFIX},
 # but not when staging.
 .ifmake install${CALM}
@@ -387,7 +386,6 @@ post-install:
 	${SH} ${PKGINSTALL} ${PKGNAME} POST-INSTALL
 .endif
 
-post-stage:
 	${FIND} ${STAGEDIR} -type f -name '\._*' -delete
 	MLARCHOPSYS=`${STAGEDIR}${MLBIN}/.arch-n-opsys` && \
 	( eval $${MLARCHOPSYS} ; \

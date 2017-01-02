@@ -1,0 +1,17 @@
+TIMESTAMP = 1483109516
+SHA256 (citra-emu-citra-s20161230-f7dd8d5e_GH0.tar.gz) = 48945e446e13a8c28a634b41f6002acb7d5ce6b25897e8fa185ae103e2948664
+SIZE (citra-emu-citra-s20161230-f7dd8d5e_GH0.tar.gz) = 2236739
+SHA256 (citra-emu-ext-soundtouch-5274ec4_GH0.tar.gz) = de5e101818ba38b5ea30d8cde0b2b788b53bc7c0f5d77b380b8968569872c2cb
+SIZE (citra-emu-ext-soundtouch-5274ec4_GH0.tar.gz) = 34535
+SHA256 (MerryMage-dynarmic-70f4235_GH0.tar.gz) = 19a6df51bd703e1710c961745c09cc582365d72eef8be1b46a30e761c37a003b
+SIZE (MerryMage-dynarmic-70f4235_GH0.tar.gz) = 317153
+SHA256 (fmtlib-fmt-3.0.0-146-g796beaa_GH0.tar.gz) = e5b0b3055082d9dc2b56509d8a11032fdeb3ab846feb5369591ccf58593446f9
+SIZE (fmtlib-fmt-3.0.0-146-g796beaa_GH0.tar.gz) = 612701
+SHA256 (herumi-xbyak-v5.40_GH0.tar.gz) = 106bbe15dc7e5d025ff98d1b5dd62a3f0a26d2569debe77fcde14852d50a66e1
+SIZE (herumi-xbyak-v5.40_GH0.tar.gz) = 203521
+SHA256 (neobrain-nihstro-26a0a04_GH0.tar.gz) = 8d94e57f5a9aebf976e4df3c7a0c69d4a0c4a6f2c3d0e4d464a7f09a826b345f
+SIZE (neobrain-nihstro-26a0a04_GH0.tar.gz) = 110136
+SHA256 (philsquared-Catch-v1.4.0_GH0.tar.gz) = b225e9828291636745db75e42cd604b8d755dcad0c5235fc90d7c725c4b49fb1
+SIZE (philsquared-Catch-v1.4.0_GH0.tar.gz) = 311263
+SHA256 (svn2github-inih-603729d_GH0.tar.gz) = b4faa364c3e33261707d4b669e1c669ca3818d7b9515c15fe0befd9df3f1f00a
+SIZE (svn2github-inih-603729d_GH0.tar.gz) = 8342

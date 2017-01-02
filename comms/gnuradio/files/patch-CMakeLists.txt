@@ -1,4 +1,4 @@
---- CMakeLists.txt.orig	2015-07-25 20:27:13 UTC
+--- CMakeLists.txt.orig	2016-04-11 02:35:01 UTC
 +++ CMakeLists.txt
 @@ -29,6 +29,11 @@ cmake_minimum_required(VERSION 2.6)
  project(gnuradio CXX C)
@@ -12,6 +12,15 @@
  #make sure our local CMake Modules path comes first
  list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_SOURCE_DIR}/cmake/Modules)
  
+@@ -53,7 +58,7 @@ include(GrVersion) #setup version info
+ # Append -O2 optimization flag for Debug builds
+ SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O2")
+ SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O2")
+-
++link_directories("/usr/lib" "${LOCALBASE}/lib")
+ ########################################################################
+ # Environment setup
+ ########################################################################
 @@ -144,6 +149,14 @@ string(REPLACE "\n" " \\n" COMPILER_INFO
  ########################################################################
  include(GrPlatform) #define LIB_SUFFIX

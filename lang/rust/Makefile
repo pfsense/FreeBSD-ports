@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rust
-PORTVERSION?=	1.12.1
+PORTVERSION?=	1.14.0
 CATEGORIES=	lang
 MASTER_SITES=	http://static.rust-lang.org/dist/:src \
 		http://static.rust-lang.org/dist/:bootstrap \
@@ -27,8 +27,6 @@ BUILD_DEPENDS=		cmake:devel/cmake
 ONLY_FOR_ARCHS?=	amd64 i386
 ONLY_FOR_ARCHS_REASON=	requires prebuilt bootstrap compiler
 
-BROKEN_FreeBSD_9=	Only compiles on FreeBSD 10 and later
-
 DISTINFO_FILE?=	${MASTERDIR}/distinfo.${ARCH}
 
 # FIXME: The bootstrapped rustc adds -L/usr/local/lib in front of
@@ -38,7 +36,7 @@ CONFLICTS_BUILD?=	rust-nightly
 CONFLICTS_BUILD+=	${PKGBASE}
 CONFLICTS_INSTALL?=	rust-nightly
 
-RUST_BOOT_VERSION?=	1.11.0
+RUST_BOOT_VERSION?=	1.13.0
 RUST_BOOT=		rustc-${RUST_BOOT_VERSION}-${RUST_TARGET}.tar.gz
 
 # Rust's libraries are named librustc_${component}-${RUST_VSN_HASH}.so.
@@ -70,9 +68,7 @@ CONFIGURE_ARGS=	--disable-valgrind \
 
 PORTDOCS=	*
 
-.if defined(BATCH) || defined(PACKAGE_BUILDING)
 MAKE_ARGS+=	VERBOSE=1
-.endif
 
 OPTIONS_DEFINE=		DOCS GDB LLNEXTGEN PORT_LLVM
 GDB_DESC=		Install ports gdb (necessary for debugging rust programs)
@@ -86,7 +82,7 @@ LLNEXTGEN_BUILD_DEPENDS=	LLnextgen:devel/llnextgen
 PORT_LLVM_DESC=	Build against devel/llvm${LLVM_VER} instead of bundled version
 PORT_LLVM_BUILD_DEPENDS=	${LLVM_PREFIX}/bin/FileCheck:devel/llvm${LLVM_VER}
 PORT_LLVM_CONFIGURE_ON=		--llvm-root=${LLVM_PREFIX}
-LLVM_VER?=			38
+LLVM_VER?=			39
 LLVM_PREFIX=			${LOCALBASE}/llvm${LLVM_VER}
 
 # Note that make test does not work when rust is already installed
@@ -120,7 +116,6 @@ pre-fetch:
 post-extract:
 	@${MKDIR} ${WRKSRC}/dl
 	${LN} -sf ${DISTDIR}/${RUST_BOOT} ${WRKSRC}/dl
-	${FIND} ${WRKSRC} -type d -exec ${CHMOD} 0755 {} +
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \

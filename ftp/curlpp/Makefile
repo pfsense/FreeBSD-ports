@@ -4,7 +4,7 @@
 PORTNAME=	curlpp
 PORTVERSION=	0.7.3
 DISTVERSIONPREFIX=	v
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	ftp
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -20,7 +20,6 @@ OPTIONS_DEFINE=	BOOST DOCS EXAMPLES
 CONFIGURE_ARGS=	--disable-ewarning
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-PATHFIX_MAKEFILEIN=	Makefile.am
 USE_LDCONFIG=	yes
 USES=		autoreconf libtool localbase pathfix
 

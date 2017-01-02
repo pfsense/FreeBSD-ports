@@ -3,6 +3,7 @@
 
 PORTNAME=	pipelight
 PORTVERSION=	0.2.8.2
+PORTREVISION=	2
 CATEGORIES=	emulators
 MASTER_SITES=	https://bitbucket.org/mmueller2012/pipelight/get/ \
 		http://repos.fds-team.de/pluginloader/v${DISTVERSION}/:plg
@@ -62,10 +63,10 @@ pre-configure:
 		${WRKSRC}/pluginloader-v${DISTVERSION}.tar.gz.sig
 	${MKDIR} ${WRKDIR}/.gnupg
 
-post-stage:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/pipelight/libpipelight.so
-
 post-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/pipelight-mkufs ${STAGEDIR}${PREFIX}/bin/
+
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/pipelight/libpipelight.so
+
 
 .include <bsd.port.post.mk>

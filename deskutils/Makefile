@@ -94,6 +94,7 @@
     SUBDIR += gnote
     SUBDIR += gnotime
     SUBDIR += gnustep-wrapper
+    SUBDIR += go-for-it
     SUBDIR += gourmet
     SUBDIR += griffith
     SUBDIR += growl-for-linux
@@ -164,6 +165,7 @@
     SUBDIR += osynctool
     SUBDIR += owncloudclient
     SUBDIR += p5-Data-ICal
+    SUBDIR += p5-Data-ICal-DateTime
     SUBDIR += p5-Goo
     SUBDIR += p5-ZConf-BGSet
     SUBDIR += p5-ZConf-Runner
@@ -261,7 +263,6 @@
     SUBDIR += xchm
     SUBDIR += xfce4-generic-slider
     SUBDIR += xfce4-notes-plugin
-    SUBDIR += xfce4-notification-daemon
     SUBDIR += xfce4-notifyd
     SUBDIR += xfce4-tumbler
     SUBDIR += xfce4-volumed

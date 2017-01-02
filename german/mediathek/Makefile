@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mediathek
-PORTVERSION=	11
+PORTVERSION=	12
 CATEGORIES=	german java
 MASTER_SITES=	SF/zdfmediathk/Mediathek/Mediathek%20${PORTVERSION}
 DISTNAME=	MediathekView_${PORTVERSION}
@@ -10,12 +10,13 @@ DISTNAME=	MediathekView_${PORTVERSION}
 MAINTAINER=	lme@FreeBSD.org
 COMMENT=	Filme der oeff. rechtlichen Sender herunterladen und ansehen
 
-RUN_DEPENDS=	flvstreamer:multimedia/flvstreamer
+RUN_DEPENDS=	${LOCALBASE}/openjdk8/bin/javafxpackager:java/openjfx8-devel \
+		flvstreamer:multimedia/flvstreamer
 
 NO_BUILD=	yes
 USES=		zip:infozip
 USE_JAVA=	yes
-JAVA_VERSION=	1.7+
+JAVA_VERSION=	1.8+
 SUB_FILES=	mediathek
 
 INSTALLFILES=	MediathekView.jar MediathekView.ico
@@ -47,7 +48,7 @@ DESKTOP_ENTRIES="MediathekView" \
 		false
 
 do-extract:
-	@${RM} -rf ${WRKDIR}
+	@${RM} -r ${WRKDIR}
 	@${MKDIR} ${WRKSRC}
 	@${UNZIP_CMD} -q -d ${WRKSRC} ${DISTDIR}/${EXTRACT_ONLY}
 

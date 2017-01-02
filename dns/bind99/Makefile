@@ -3,7 +3,7 @@
 
 PORTNAME=	bind
 PORTVERSION=	${ISCVERSION:S/-P/P/:S/b/.b/:S/a/.a/:S/rc/.rc/}
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	dns net ipv6
 MASTER_SITES=	ISC/bind9/${ISCVERSION}
 PKGNAMESUFFIX=	99
@@ -32,12 +32,12 @@ CONFIGURE_ARGS=	--localstatedir=/var --disable-linux-caps \
 		--disable-symtable \
 		--with-randomdev=/dev/random \
 		--with-libxml2=${LOCALBASE} \
-		--with-readline=-ledit \
+		--with-readline="-L${LOCALBASE}/lib -ledit" \
 		--with-dlopen=yes \
 		--sysconfdir=${ETCDIR}
 ETCDIR=		${PREFIX}/etc/namedb
 
-CONFLICTS=	bind9*-9.[45678].* bind9*-sdb-9.[45678].* bind910-* bind911-* bind-tools-9.*
+CONFLICTS=	bind-tools bind9-devel bind910 bind911
 
 SUB_FILES=	pkg-message
 
@@ -186,13 +186,11 @@ SUB_LIST+=	NOBASE="@comment " BASE=""
 
 PKGDEINSTALL=	${PKGINSTALL}
 
+MAKE_JOBS_UNSAFE=	yes
+
 PORTDOCS=	*
 
 .include <bsd.port.pre.mk>
-
-.if ${OSVERSION} <= 1000000
-MAKE_JOBS_UNSAFE=	yes
-.endif
 
 .if ( ${PORT_OPTIONS:MGOST} ) && ${SSL_DEFAULT} == base
 BROKEN=	OpenSSL from the base system does not support GOST, add \

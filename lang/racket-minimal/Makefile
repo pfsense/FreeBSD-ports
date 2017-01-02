@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	racket
-PORTVERSION=	6.6
+PORTVERSION=	6.7
 CATEGORIES=	lang scheme
 MASTER_SITES=	http://mirror.racket-lang.org/installers/${PORTVERSION}/ \
 		http://www.cs.utah.edu/plt/installers/${PORTVERSION}/ \
@@ -20,6 +20,9 @@ COMMENT=	Interactive, integrated, graphical Scheme programming environment
 LICENSE=	LGPL3
 
 LIB_DEPENDS=	libffi.so:devel/libffi
+
+BROKEN_aarch64=	does not build: error: Unported platform
+BROKEN_sparc64=	does not build
 
 MAKE_JOBS_UNSAFE=yes
 
@@ -52,4 +55,10 @@ JIT_CONFIGURE_ENABLE=	jit
 post-install:
 	${FIND} ${STAGEDIR}${PREFIX} -type d -empty -delete
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1000000 && ${ARCH} == i386
+BROKEN=		does not build on i386 (Seg fault (internal error) at 0x606060a)
+.endif
+
+.include <bsd.port.post.mk>

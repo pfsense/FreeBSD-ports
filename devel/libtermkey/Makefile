@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libtermkey
-PORTVERSION=	0.18
+PORTVERSION=	0.19
 CATEGORIES=	devel
 MASTER_SITES=	http://www.leonerd.org.uk/code/libtermkey/
 
@@ -11,15 +11,13 @@ COMMENT=	Easy processing of keyboard entry from terminal-based programs
 
 LICENSE=	MIT
 
-USES=		gmake libtool:build ncurses pkgconfig
+USES=		gmake libtool:build ncurses pathfix pkgconfig
+PATHFIX_MAKEFILEIN=	Makefile
 LIB_DEPENDS=	libunibilium.so:devel/unibilium
 USE_LDCONFIG=	yes
 MAKE_ARGS=	MANDIR=${MANPREFIX}/man
 
-post-patch:
-	${REINPLACE_CMD} -e 's|$$(LIBDIR)/pkgconfig|${PREFIX}/libdata/pkgconfig|g' ${WRKSRC}/Makefile
-
-post-stage:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libtermkey.so.1.12.0
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libtermkey.so.1.13.0
 
 .include <bsd.port.mk>

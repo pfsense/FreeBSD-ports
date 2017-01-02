@@ -6,7 +6,7 @@
 
 PORTNAME=	mutt
 PORTVERSION=	${VERSION}.j${JP_VERSION}
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	japanese mail
 MASTER_SITES=	ftp://ftp.mutt.org/mutt/devel/:body \
 		ftp://ftp.fu-berlin.de/pub/unix/mail/mutt/devel/:body \
@@ -46,6 +46,8 @@ LICENSE=	GPLv2
 
 RUN_DEPENDS=	urlview:textproc/urlview \
 		${LOCALBASE}/etc/mime.types:misc/mime-support
+
+BROKEN_aarch64=	Fails to compile: error: conflicting types for __wcwidth
 
 CONFLICTS=	ja-mutt-[0-9]* mutt-[0-9]* mutt-devel-[0-9]* mutt-devel-lite-[0-9]* mutt-lite-[0-9]* zh-mutt-devel-[0-9]*
 

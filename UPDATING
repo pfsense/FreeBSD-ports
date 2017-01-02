@@ -5,6 +5,337 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20170102:
+  AFFECTS: multimedia/ffmpeg
+  AUTHOR: jbeich@FreeBSD.org
+
+  OPTIMIZED_CFLAGS switched to only use vendor optimizations which
+  means -ffast-math -fno-finite-math-only are no longer applied. If
+  you did like the former behavior consider adding
+
+      # multimedia/ffmpeg/Makefile.local
+      OPTIMIZED_CFLAGS_CFLAGS += -ffast-math -fno-finite-math-only
+
+  or
+
+      # /etc/make.conf
+      .if ${.CURDIR:M*/multimedia/ffmpeg}
+      CFLAGS += -ffast-math -fno-finite-math-only
+      .endif
+
+20161230:
+  AFFECTS: users of x11/xfce4-terminal
+  AUTHOR: olivierd@FreeBSD.org
+
+  The port has been updated to the latest stable version 0.8.2.
+  Please, don't active the hidden 'MiscSlimTabs' option in
+  ~/.config/xfce4/terminal/terminalrc, it requires Gtk+ > 3.20.
+
+20161228:
+  AFFECTS: users of multimedia/mlt
+  AUTHOR: avilla@FreeBSD.org
+
+  MLT Qt plugins have been moved to their own ports, mlt-qt4 and
+  mlt-qt5. Please, uninstall multimedia/mlt before you update:
+
+  # pkg delete mlt
+
+20161227:
+  AFFECTS: users of security/openvpn, security/openvpn-polarssl
+  AUTHOR: Matthias Andree <mandree@FreeBSD.org>
+
+  The OpenVPN ports have been updated to the new upstream release v2.4,
+  and their predecessors preserved as openvpn23 and openvpn23-polarssl,
+  respectively.  Note that for the new v2.4 release, the
+  openvpn-polarssl port has been renamed to openvpn-mbedtls to match the
+  upstream library's new name.
+
+20161218:
+  AFFECTS: users of www/nghttp2
+  AUTHOR: sunpoet@FreeBSD.org
+
+  nghttp2 has been split into 2 ports: www/libnghttp2 for core library and
+  www/nghttp2 for the rest. Please uninstall nghttp2 before you update
+  this port.
+
+20161216:
+  AFFECTS: mail/thunderbird, www/seamonkey
+  AUTHOR: gecko@FreeBSD.org
+
+  ENIGMAIL is no longer provided as part of the ports after upstream
+  dropped binary components in 1.9. Go to Tools -> Add-ons Manager
+  then type "enigmail" in the search box to install.
+
+20161213:
+  AFFECTS: users of devel/skalibs, lang/execline, sysutils/s6
+  AUTHOR: Colin Booth <colin-ports@heliocat.net>
+
+  skalibs has undergone a major version bump and compatibility is not
+  guaranteed for software with a runtime dependency on
+  libskarnet.so.2.3.9.0. This will not affect lang/execline or
+  sysutils/s6 as those are statically linked against libskarnet.a.
+
+  execline has undergone a major version bump and compatibility is not
+  guaranteed for software with a runtime dependency on
+  libexecline.so.2.1.4.5. This will not affect sysutils/s6 as all s6
+  programs are statically linked against libexecline.a.
+
+  s6 has undergone a major version bump and compatibility is not
+  guaranteed for software with a runtime dependency on
+  libs6.so.2.2.4.3. Additionally, s6-applyuidgid and s6-setuidgid
+  have moved from $PREFIX/sbin to $PREFIX/bin. Any scripts calling
+  those utilities that are not relying on $PATH resolution to find
+  them will need to be rewritten.
+
+20161207:
+  AFFECTS: users of www/node
+  AUTHOR: bradleythughes@fastmail.fm
+
+  The www/node port has been updated to node.js v7.2.0, the latest
+  upstream release. A new port, www/node6, has been created for the
+  v6.x LTS branch. Users wanting to stay on v6.x can replace www/node
+  with www/node6 with one of the following commands:
+
+  # pkg set -o www/node:www/node6
+    or
+  # portmaster -o www/node6 www/node
+    or
+  # portupgrade -o www/node6 www/node
+
+20161202:
+  AFFECTS: Users of textproc/p5-Search-Elasticsearch
+  AUTHOR: tj@FreeBSD.org
+
+  As of the 5.01 release of ths package, the client libraries for older
+  versions of Elasticsearch have started to be shipped seperately.  If you are
+  using this library to access a none 5.X server you will need to install one of
+  the textproc/p5-Search-Elasticsearch-Client-* ports.
+
+20161126:
+  AFFECTS: Users of security/gpgme-*
+  AUTHOR: jhale@FreeBSD.org
+
+  Gpgme has been updated to 1.8.0.
+  With it comes the removal of libgpgme-pthread.so in favor of using
+  libgpgme.so itself as the thread-safe library. Ports that may have
+  linked to -lgpgme-pthread will now just link to -lgpgme. PORTREVISION
+  has been bumped on all ports with a dependency on security/gpgme.
+
+  The Python module provided by security/py-gpgme has been renamed
+  from pyme3 to gpg, as well.
+
+  Portmaster users:
+      portmaster -r gpgme
+  Portupgrade users:
+      portupgrade -fr security/gpgme
+
+20161121:
+  AFFECTS: Users of graphics/tiff
+  AUTHOR: antoine@FreeBSD.org
+
+  The tiff port was updated to 4.0.7.
+  The following tools are removed from this release: bmp2tiff, gif2tiff, ras2tiff, rgb2ycbcr and thumbnail.
+
+20161116:
+  AFFECTS: Users of sysutils/bareos-*
+  AUTHOR: rand@iteris.com
+
+  Bareos v1.6.x changed the configuration scheme, from one configuration
+  file per Bareos component (file daemon, storage daemon, and director)
+  to several configuration files, in several directories, for each 
+  component. See http://doc.bareos.org/master/html/bareos-manual-main-reference.html
+
+  The new scheme will use all files named *.conf in the directory
+  hierarchies for each component:
+
+    /usr/local/etc/bareos/bareos-dir.d/
+    /usr/local/etc/bareos/bareos-fd.d/
+    /usr/local/etc/bareos/bareos-sd.d/
+
+  To retain the old configuration scheme of one file per component add
+  appropriate lines such as these to your /etc/rc.conf:
+
+    bareos_dir_config="/usr/local/etc/bareos/bareos-dir.conf"
+    bareos_fd_config="/usr/local/etc/bareos/bareos-fd.conf"
+    bareos_sd_config="/usr/local/etc/bareos/bareos-sd.conf"
+
+20161113:
+  AFFECTS: users of devel/libosinfo
+  AUTHOR: novel@FreeBSD.org
+
+  The libosinfo port was separated into three different ports
+  to follow the upstream split:
+
+   - sysutils/osinfo-db-tools: contains the CLI tools
+   - misc/osinfo-db: contains database with OS data
+   - devel/libosinfo: the library
+
+  As osinfo-db-tools now ships binaries that previously were 
+  part of libosinfo, it's required to delete the old libosinfo
+  package to prevent conflict because of same files installation:
+
+  # pkg delete libosinfo
+
+  And then install the new version.
+
+20161112:
+  AFFECTS: users of security/heimdal
+  AUTHOR: hrs@FreeBSD.org
+
+  Heimdal in the base system and security/heimdal <= 1.5.3_6 use
+  Berkeley DB to store principals into /var/heimdal/heimdal.db and
+  the database format is version 3 by default.  On the other hand,
+  security/heimdal 1.5.3_7 or newer use the newer version of
+  Berkeley DB and the database format is version 9.
+  These two versions are not compatible with each other.  If there is
+  a mismatch between Heimdal utilities and its database format,
+  you will get an error like the following:
+
+  # /usr/local/sbin/kadmin -l dump
+  BDB0641 __db_meta_setup: /var/heimdal/heimdal.db: unexpected file type or format
+  kadmin: hdb_open: opening /var/heimdal/heimdal: Invalid argument
+
+  This mismatch can occur in the following three cases:
+
+  1. You used Heimdal in the base system and switch to use security/heimdal
+     after creating /var/db/heimdal.db.
+
+  2. You used security/heimdal >= 1.5.3_7 and switch to use one in the
+     base system.
+
+  3. You used security/heimdal < 1.5.3_7 and upgrade it to 1.5.3_7 or later.
+
+  To fix this mismatch, you need to dump contents of heimdal.db and
+  rebuild the database by using kadmin(8) utility.
+
+  If you use Heimdal in the base system or older versions of
+  security/heimdal, and plan to switch to use
+  security/heimdal >= 1.5.3_7, execute the following command
+  *after* creating a backup copy of /var/heimdal and installing
+  security/heimdal:
+
+  # /usr/bin/kadmin -l dump /var/heimdal/heimdal.db.dump
+  # rm /var/heimdal/heimdal.db
+  # /usr/local/sbin/kadmin -l load /var/heimdal/heimdal.db.dump
+  # rm /var/heimdal/heimdal.db.dump
+
+  The above example assumes security/heimdal is installed into
+  /usr/local.  If your base system is compiled with WITHOUT_KERBEROS
+  use the following instead:
+
+  # db_dump185-5 /var/heimdal/heimdal.db | db_load-5 /var/heimdal/heimdal.db.new
+  # chown 0600 /var/heimdal/heimdal.db.new
+  # mv /var/heimdal/heimdal.db.new /var/heimdal/heimdal.db
+
+  db_dump and db_load utilitites are installed by database/db5 as
+  dependency of security/heimdal.
+
+  If you want to switch from security/heimdal to Heimdal in the base
+  system, use the following:
+
+  # /usr/local/sbin/kadmin -l dump /var/heimdal/heimdal.db.dump
+  # rm /var/heimdal/heimdal.db
+  # /usr/bin/kadmin -l load /var/heimdal/heimdal.db.dump
+  # rm /var/heimdal/heimdal.db.dump
+
+20161105:
+  AFFECTS: users of security/heimdal
+  AUTHOR: hrs@FreeBSD.org
+
+  kadmin(8) in heimdal-1.5.3_5 and prior did not create a database
+  in /var/heimdal in Berkeley DB format which kdc(8) required.  This
+  problem has been fixed in heimdal-1.5.3_6.
+
+20161104:
+  AFFECTS: users of mail/mu4e and mail/mu4e-maildirs
+  AUTHOR: hrs@FreeBSD.org
+
+  The package name of mail/mu4e* have been changed from mu4e* to
+  mu4e*-emacsNN.  When upgrading the older versions, this change can
+  cause the following error which prevents it from upgrading:
+
+   pkg-static: mu4e-emacs25-0.9.16 conflicts with mu4e-0.9.16 (installs files into the same place).
+
+  If this error occurs, please remove the old packages by using
+  "pkg delete" manually:
+
+   # pkg delete mu4e-0.9.16 mu4e-maildirs-0.8.20160126_1
+
+20161103:
+  AFFECTS: users of lang/perl5*
+  AUTHOR: mat@FreeBSD.org
+
+  The default Perl version has been switched to Perl 5.24.  If you are using
+  binary packages to upgrade your system, you do not have anything to do, pkg
+  upgrade will do the right thing.  For the other people, assuming you are
+  migrating from 5.20 to 5.24, do:
+
+  First, add to /etc/make.conf:
+
+  DEFAULT_VERSIONS+=  perl5=5.24
+
+  Portupgrade users:
+	portupgrade -o lang/perl5.24 -f lang/perl5.20
+
+	  You can now remove the DEFAULT_VERSIONS line added earlier
+	  from /etc/make.conf
+
+	  Then you will need to rebuild everything that uses libperl.so, you
+	  can do so with:
+
+	portupgrade -f `pkg shlib -qR libperl.so.5.20`
+
+  Portmaster users:
+	portmaster -o lang/perl5.24 lang/perl5.20
+
+	  You can now remove the DEFAULT_VERSIONS line added earlier
+	  from /etc/make.conf
+
+	  Then you will need to rebuild everything that uses libperl.so, you
+	  can do so with:
+
+	portmaster -f `pkg shlib -qR libperl.so.5.20`
+
+20161102:
+  AFFECTS: users of security/acme-client
+  AUTHOR: brnrd@FreeBSD.org
+
+  The default configuration paths have changed from 'letsencrypt' to
+  'acme'. Rename the directories used accordingly
+
+        mv /usr/local/etc/letsencrypt /usr/local/etc/acme
+        mv /usr/local/etc/ssl/letsencrypt /usr/local/etc/ssl/acme
+        mv /usr/local/www/letsencrypt /usr/local/www/acme
+
+  Check your scripts to ensure proper operation.
+
+20161030:
+  AFFECTS: users of mail/squirrelmail
+  AUTHOR: adamw@FreeBSD.org
+
+  For better php70 support, the squirrelmail port has switched from
+  PEAR database access to PDO. If you are using squirrelmail with
+  a database backend, you'll need to install a corresponding PDO
+  database module, such as php56-pdo_sqlite.
+
+20161030:
+  AFFECTS: users of security/srm
+  AUTHOR: rakuco@FreeBSD.org
+
+  srm has been updated from 1.2.12 to 1.2.15. Since version 1.2.14,
+  srm defaults to using its "simple" mode to overwrite files (one pass
+  writing 0x00 to the files) instead of the 35-pass Gutmann method.
+
+20161029:
+  AFFECTS: users of irc/quassel
+  AUTHOR: woodsb02@freebsd.org
+
+  Quassel is now split into two ports / packages; one for providing
+  the server backend (irc/quassel-core), and one for providing the
+  client front-end (irc/quassel). Alternatively, the irc/quassel
+  port can be built with the MONO option enabled to also install
+  the client and server combined into a single monolithic binary.
+
 20161028:
   AFFECTS: users of security/openssl and security/openssl-devel
   AUTHOR: brnrd@freebsd.org
@@ -19,6 +350,100 @@ you update your ports collection, before attempting any port upgrades.
         portmaster -r openssl
   If you use portupgrade:
         portupgrade -fr security/openssl
+
+20161026:
+  AFFECTS: users of net-p2p/deluge
+  AUTHOR: rm@FreeBSD.org
+
+  Deluge port has been split out onto CLI part and GUI part. So if user
+  only needs deluged, net-p2p/deluge-cli should be installed. For full
+  deluge installation, including GTK+ GUI client, net-p2p/deluge should
+  be installed as a usual.
+
+  Old deluge package should be removed manually first:
+
+  # pkg delete deluge
+
+  After that install preferred deluge package as usual.
+
+20161018:
+  AFFECTS: users of x11/xfce4-terminal
+  AUTHOR: olivierd@FreeBSD.org
+
+  The port has been updated to the latest stable version 0.8.0.
+  A warning appears each time we open new tab:
+
+  Gtk-WARNING **: gtk_widget_size_allocate(): attempt to allocate
+  widget with...
+
+  This issue will disappear with Gtk > 3.21.
+
+20161014:
+  AFFECTS: users of lang/python3
+  AUTHOR: antoine@FreeBSD.org
+
+  The default version of python3 has changed from 3.4 to 3.5.
+  If you wish to stick with older version, add "python3=3.4" to your
+  DEFAULT_VERSIONS variable in /etc/make.conf.  To upgrade:
+
+  If using portupgrade:
+  # portupgrade -o lang/python35 lang/python34
+
+  If using portmaster:
+  # portmaster -o lang/python35 lang/python34
+
+20161011:
+  AFFECTS: Users of net-im/ejabberd
+  AUTHOR: ashish@FreeBSD.org
+
+  Before upgrading ejabberd to 16.09, please make sure to backup your 
+  ejabberd data using:
+ 
+     % sudo -u ejabberd -H ejabberdctl backup /path/to/backup/file
+
+  In some cases, ejabberd may fail to start, for which a workaround is to 
+  remove the schema.DAT file from /var/spool/ejabberd before starting, and
+  then restoring everything from the backup using:
+     
+     % sudo -u ejabberd -H ejabberdctl restore /path/to/backup/file
+
+  For more details:
+
+  https://github.com/processone/ejabberd/issues/1305
+
+20161005:
+  AFFECTS: Users of audio/squeezeboxserver (now audio/logitechmediaserver)
+  AUTHOR: woodsb02@FreeBSD.org
+
+  With the rename of the audio/squeezeboxserver port to
+  audio/logitechmediaserver, the server and database are now installed in
+  different locations by default (/usr/local/share/logitechmediaserver and
+  /var/db/logitechmediaserver respectively).
+
+  If you were an existing user of audio/squeezeboxserver, you should
+  consider backing up you server configuration files and database before
+  upgrading to audio/logitechmediaserver. If you wish to override the
+  default locations for storing the server and database, you can set the
+  SLIMDIR and SLIMDBDIR variables in your /etc/make.conf when building
+  the audio/logitechmediaserver port.
+
+20161004:
+  AFFECTS: mail/roundcube-carddav
+  AUTHOR:  gahr@FreeBSD.org
+
+  There is no upgrade path from the 1.0 version. You'll need to:
+
+  1. Log off from Roundcube.
+  2. Manually drop all carddav_* tables from your db backend.
+  3. Upgrade the mail/roundcube-carddav port.
+
+  The new tables will be created upon login. The CardDAV plugin will need to be
+  reconfigured.
+
+  If you are running php < 7.0.0, you'll need to set the plugin option:
+  $prefs['_GLOBAL']['suppress_version_warning'] = true;
+
+  See https://github.com/blind-coder/rcmcarddav/issues/165 for details.
 
 20160927:
   AFFECTS: emulators/ppsspp

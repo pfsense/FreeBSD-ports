@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tt-rss
-PORTVERSION=	16.8.2016.08.11
-PORTREVISION=	1
+PORTVERSION=	29.12.2016.04.37
 CATEGORIES=	www
 MASTER_SITES=	https://tt-rss.org/gitlab/fox/tt-rss/repository/archive${EXTRACT_SUFX}?ref=${GL_TAGNAME}&num;/
 
@@ -12,7 +11,7 @@ COMMENT=	Tiny Tiny RSS: web-based news feed (RSS/Atom) aggregator
 
 LICENSE=	GPLv2
 
-GL_TAGNAME=	5cbd1fe8
+GL_TAGNAME=	 832aa249
 
 NO_BUILD=	yes
 NO_ARCH=	yes
@@ -82,7 +81,7 @@ do-configure:
 do-install:
 	${MKDIR} ${STAGEDIR}${WWWDIR} ${STAGEDIR}${DATADIR}
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} "*" ${STAGEDIR}${WWWDIR} "! -name LICENSE")
-	${RM} -rf ${STAGEDIR}${WWWDIR}/debian
+	${RM} -r ${STAGEDIR}${WWWDIR}/debian
 	${MKDIR} ${STAGEDIR}${WWWDIR}/icons/	# Not used for fresh installation
 	${TOUCH} ${STAGEDIR}${WWWDIR}/icons/.empty
 	${INSTALL_DATA} ${WRKDIR}/httpd-tt-rss.conf ${STAGEDIR}${DATADIR}

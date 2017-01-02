@@ -11,7 +11,6 @@
     SUBDIR += ark
     SUBDIR += atool
     SUBDIR += bicom
-    SUBDIR += brotli
     SUBDIR += bzip
     SUBDIR += bzip2
     SUBDIR += cabextract
@@ -48,6 +47,7 @@
     SUBDIR += innoextract
     SUBDIR += javatar
     SUBDIR += jzlib
+    SUBDIR += kf5-karchive
     SUBDIR += kzip
     SUBDIR += laszip
     SUBDIR += lbrate
@@ -69,9 +69,8 @@
     SUBDIR += librtfcomp
     SUBDIR += libunrar
     SUBDIR += libunrar4
+    SUBDIR += libunrar5
     SUBDIR += libzip
-    SUBDIR += linux-f10-ucl
-    SUBDIR += linux-f10-upx
     SUBDIR += lrzip
     SUBDIR += lua-lzlib
     SUBDIR += lzfse
@@ -144,10 +143,6 @@
     SUBDIR += pecl-rar
     SUBDIR += pecl-snappy
     SUBDIR += php-horde_lz4
-    SUBDIR += php55-bz2
-    SUBDIR += php55-phar
-    SUBDIR += php55-zip
-    SUBDIR += php55-zlib
     SUBDIR += php56-bz2
     SUBDIR += php56-phar
     SUBDIR += php56-zip
@@ -165,6 +160,7 @@
     SUBDIR += pxz
     SUBDIR += py-attic
     SUBDIR += py-borgbackup
+    SUBDIR += py-brotli
     SUBDIR += py-bz2file
     SUBDIR += py-libarchive-c
     SUBDIR += py-librtfcomp
@@ -186,7 +182,6 @@
     SUBDIR += rpm2cpio
     SUBDIR += rpm4
     SUBDIR += ruby-lha
-    SUBDIR += ruby-zip
     SUBDIR += rubygem-archive-tar-minitar
     SUBDIR += rubygem-archive-zip
     SUBDIR += rubygem-bzip2-ruby

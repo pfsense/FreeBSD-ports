@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	vapoursynth
-DISTVERSION=	R33.1
+DISTVERSION=	R35
+PORTREVISION=	2
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -12,7 +13,6 @@ LICENSE=	LGPL21+
 USE_GITHUB=	yes
 
 USES=		autoreconf gmake libtool localbase pathfix pkgconfig
-PATHFIX_MAKEFILEIN=	Makefile.am
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-D_GLIBCXX_USE_C99 # XXX ports/193528
 INSTALL_TARGET=	install-strip
@@ -59,7 +59,7 @@ SIMD_CONFIGURE_ENABLE=		x86-asm
 # COMPS group
 
 CORE_DESC=			Core library
-CORE_BUILD_DEPENDS=		sekrit-twc-zimg>=2.2:graphics/sekrit-twc-zimg
+CORE_BUILD_DEPENDS=		sekrit-twc-zimg>=2.3:graphics/sekrit-twc-zimg
 CORE_LIB_DEPENDS=		libzimg.so:graphics/sekrit-twc-zimg
 CORE_USES=			compiler:c++11-lib
 CORE_CONFIGURE_ENABLE=		core

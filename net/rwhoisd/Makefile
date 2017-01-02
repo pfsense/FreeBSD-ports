@@ -12,6 +12,9 @@ MASTER_SITES=	http://projects.arin.net/rwhois/ftp/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The Internic referral whois server
 
+DEPRECATED=	No more public distfiles
+EXPIRATION_DATE=	2017-01-22
+
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
@@ -31,7 +34,6 @@ ETCFILES=	rwhoisd.allow rwhoisd.auth_area rwhoisd.conf rwhoisd.deny \
 PLIST_SUB+=	ETCFILES="${ETCFILES}"
 
 OPTIONS_DEFINE=	IPV6 DOCS
-IPV6_DESC=	Enable IPV6 support
 IPV6_CONFIGURE_OFF=	--disable-ipv6
 
 post-patch:
@@ -46,6 +48,7 @@ post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/*
 	${INSTALL_MAN} ${WRKSRC}/doc/rwhois_indexer.8 ${STAGEDIR}${PREFIX}/man/man8
 	${INSTALL_MAN} ${WRKSRC}/doc/rwhoisd.8 ${STAGEDIR}${PREFIX}/man/man8
+	@${MKDIR} ${STAGEDIR}/var/log/rwhoisd ${STAGEDIR}/var/run/rwhoisd
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

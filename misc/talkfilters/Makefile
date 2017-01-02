@@ -15,7 +15,7 @@ LICENSE=	GPLv2
 
 CONFLICTS=	jive* chef* filters-*
 
-USES=		libtool
+USES=		libtool pathfix
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
@@ -28,11 +28,7 @@ post-extract:
 	@${CHMOD} +x ${WRKSRC}/install-sh
 
 post-patch:
-	@${RM} -f ${WRKSRC}/*.info*
-	@${REINPLACE_CMD} -e \
-		's|^\(pkgconfigdir\ =\ \).*|\1$$(prefix)/libdata/pkgconfig|' \
-			${WRKSRC}/Makefile.am \
-			${WRKSRC}/Makefile.in
+	@${RM} ${WRKSRC}/*.info*
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libtalkfilters.so*

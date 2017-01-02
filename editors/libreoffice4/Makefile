@@ -2,7 +2,7 @@
 
 PORTNAME=	libreoffice
 PORTVERSION=	4.3.7
-PORTREVISION=	7
+PORTREVISION=	11
 CATEGORIES=	editors
 MASTER_SITES=	http://download.documentfoundation.org/libreoffice/src/${PORTVERSION}/ \
 		http://dev-www.libreoffice.org/extern/:ext \
@@ -55,7 +55,7 @@ LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 		libnss3.so:security/nss \
 		libclucene-core.so:textproc/clucene \
 		libexpat.so:textproc/expat2 \
-		libhunspell-1.3.so:textproc/hunspell \
+		libhunspell-1.5.so:textproc/hunspell \
 		libhyphen.so:textproc/hyphen \
 		libabw-0.1.so:textproc/libabw \
 		libe-book-0.1.so:textproc/libe-book \
@@ -267,7 +267,7 @@ KDE4_USES=	kde:4
 KDE4_USE=	KDE=kdelibs QT4=moc_build,qmake_build
 KDE4_CONFIGURE_ENABLE=	kde4
 KDE4_CONFIGURE_ENV=	KDE4DIR="${KDE_PREFIX}" \
-			QT4DIR="${QT_PREFIX}" \
+			QT4DIR="${PREFIX}" \
 			QT4INC="${QT_INCDIR}" \
 			QT4LIB="${QT_LIBDIR}"
 
@@ -359,7 +359,7 @@ post-configure:
 
 do-install:
 	@cd ${WRKSRC} && ${MAKE_CMD} ${MAKE_ARGS} distro-pack-install
-	@${RM} -f ${PLISTD} ${PLISTF}
+	@${RM} ${PLISTD} ${PLISTF}
 	@cd ${STAGEDIR}${PREFIX} && ${FIND} -d lib/libreoffice -type d \
 	    -empty -exec ${ECHO_CMD} "@dir {}" \; >> ${PLISTD}
 	@cd ${STAGEDIR}${PREFIX} && ${FIND} -H -s bin etc lib man \

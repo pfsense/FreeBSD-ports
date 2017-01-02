@@ -4,6 +4,7 @@
 PORTNAME=	seqan-apps
 PORTVERSION=	2.2.0
 DISTVERSIONPREFIX=	seqan-v
+PORTREVISION=	1
 CATEGORIES=	biology
 
 MAINTAINER=	h2+fbsdports@fsfe.org
@@ -23,7 +24,7 @@ GH_PROJECT=	seqan
 USES=		cmake:outsource
 CMAKE_ARGS=	-DSEQAN_BUILD_SYSTEM="SEQAN_RELEASE_APPS"
 
-USE_GCC=	4.9+
+USE_GCC=	yes
 
 .include <bsd.port.pre.mk>
 

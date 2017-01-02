@@ -136,9 +136,6 @@
     SUBDIR += pecl-fribidi
     SUBDIR += pecl-igbinary
     SUBDIR += php5-bsdconv
-    SUBDIR += php55-iconv
-    SUBDIR += php55-mbstring
-    SUBDIR += php55-recode
     SUBDIR += php56-iconv
     SUBDIR += php56-mbstring
     SUBDIR += php56-recode
@@ -146,12 +143,12 @@
     SUBDIR += php70-mbstring
     SUBDIR += php70-recode
     SUBDIR += psiconv
+    SUBDIR += py-bcode
     SUBDIR += py-bencode
     SUBDIR += py-bencoder
     SUBDIR += py-better-bencode
     SUBDIR += py-bsdconv
     SUBDIR += py-iconv
-    SUBDIR += py-pisa
     SUBDIR += py-rencode
     SUBDIR += py-unidecode
     SUBDIR += py-zfec

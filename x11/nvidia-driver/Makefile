@@ -12,7 +12,7 @@
 PORTNAME=	nvidia-driver
 DISTVERSION?=	367.44
 # Always try to set PORTREVISION as it can be overridden by the slave ports
-PORTREVISION?=	0
+PORTREVISION?=	3
 CATEGORIES=	x11
 MASTER_SITES=	NVIDIA/XFree86/FreeBSD-${ARCH_SUFX}/${DISTVERSION}
 DISTNAME=	NVIDIA-FreeBSD-${ARCH_SUFX}-${DISTVERSION}
@@ -97,6 +97,7 @@ PLIST_SUB+=	LINUXBASE=${LINUXBASE} SHLIB_VERSION=${PORTVERSION} \
 .if ${PORT_OPTIONS:MLINUX}
 CONFLICTS_INSTALL=	linux[-_]dri-[0-9]* linux-f10-dri-[0-9]*
 USES+=		linux
+USE_LINUX=	base:build,run xorglibs
 PLIST_SUB+=	LINUX=""
 .else
 PLIST_SUB+=	LINUX="@comment "
@@ -195,6 +196,10 @@ post-patch: .SILENT
 .if ! ${PORT_OPTIONS:MLINUX}
 	${REINPLACE_CMD} -E 's/define (NV_SUPPORT_LINUX_COMPAT)/undef \1/' \
 		${WRKSRC}/src/${NVSRC}/nv-freebsd.h
+.  if ${NVVERSION} >= 358.009
+	${REINPLACE_CMD} -E 's/define (NVKMS_SUPPORT_LINUX_COMPAT)/undef \1/' \
+		${WRKSRC}/src/nvidia-modeset/nvidia-modeset-freebsd.c
+.  endif
 .endif
 .if ${PORT_OPTIONS:MPAE}
 	${REINPLACE_CMD} -E 's/undef (NV_SUPPORT_PAE)/define \1/' \

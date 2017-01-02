@@ -3,6 +3,7 @@
 
 PORTNAME=	rekall-core
 DISTVERSION=	1.5.2.post1
+PORTREVISION=	1
 CATEGORIES=	security python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -31,8 +32,5 @@ RUN_DEPENDS=	cabextract:archivers/cabextract \
 NO_ARCH=	yes
 USES=		python:2.7 zip
 USE_PYTHON=	distutils autoplist
-
-post-extract:
-	@${CHMOD} -R a+rX ${WRKSRC}
 
 .include <bsd.port.mk>

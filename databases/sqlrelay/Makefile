@@ -14,7 +14,8 @@ LICENSE=	LGPL20
 LIB_DEPENDS=	librudiments.so:devel/rudiments
 
 WANT_GNOME=	yes
-USES=		gmake libtool python
+USES=		gmake libtool pathfix python
+PATHFIX_MAKEFILEIN=	Makefile
 CPPFLAGS+=	-I${LOCALBASE}/include
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=		${SQLRELAY_CONFIGURE_ARGS} \
@@ -152,7 +153,7 @@ post-patch:
 post-configure:
 	@${REINPLACE_CMD} 's,-Werror,,' ${WRKSRC}/config.mk
 
-post-stage:
+post-install:
 .for f in ${TOSTRIP}
 	-${STRIP_CMD} ${STAGEDIR}${PREFIX}/${f}
 .endfor

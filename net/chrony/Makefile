@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	chrony
-PORTVERSION=	2.4
+PORTVERSION=	2.4.1
 CATEGORIES=	net
 MASTER_SITES=	http://download.tuxfamily.org/chrony/
 
@@ -40,7 +40,7 @@ OPTIONS_DEFINE=		IPV6
 IPV6_CATEGORIES=	ipv6
 IPV6_CONFIGURE_OFF=	--disable-ipv6
 
-post-stage:
+post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/chronyc
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/chronyd
 	${INSTALL_DATA} ${EXTRAPORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}

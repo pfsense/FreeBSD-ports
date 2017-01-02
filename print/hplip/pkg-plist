@@ -872,6 +872,7 @@ share/ppd/HP/hp-laserjet_p3005-ps.ppd.gz
 share/ppd/HP/hp-laserjet_p3010_series-ps.ppd.gz
 share/ppd/HP/hp-laserjet_p4010_series-ps.ppd.gz
 share/ppd/HP/hp-laserjet_pro_m201_m202-ps.ppd.gz
+share/ppd/HP/hp-laserjet_pro_m203_m206-ps.ppd.gz
 share/ppd/HP/hp-laserjet_pro_m402_m403-ps.ppd.gz
 share/ppd/HP/hp-laserjet_pro_m402_m403d-ps.ppd.gz
 share/ppd/HP/hp-laserjet_pro_m501dn-ps.ppd.gz
@@ -879,6 +880,7 @@ share/ppd/HP/hp-laserjet_pro_m501n-ps.ppd.gz
 share/ppd/HP/hp-laserjet_pro_m701-ps.ppd.gz
 share/ppd/HP/hp-laserjet_pro_m706-ps.ppd.gz
 share/ppd/HP/hp-laserjet_pro_mfp_m225_m226-ps.ppd.gz
+share/ppd/HP/hp-laserjet_pro_mfp_m227-m231-ps.ppd.gz
 share/ppd/HP/hp-laserjet_pro_mfp_m435-ps.ppd.gz
 share/ppd/HP/hp-lj_300_400_color_m351_m451-ps.ppd.gz
 share/ppd/HP/hp-lj_300_400_color_mfp_m375_m475-ps.ppd.gz
@@ -894,10 +896,15 @@ share/ppd/HP/hp-officejet_pro_551_series-ps.ppd.gz
 share/ppd/HP/hp-officejet_pro_8000_enterprise_a811a-ps.ppd.gz
 share/ppd/HP/hp-officejet_pro_8210-ps.ppd.gz
 share/ppd/HP/hp-officejet_pro_8730-ps.ppd.gz
+share/ppd/HP/hp-officejet_pro_8732-ps.ppd.gz
 share/ppd/HP/hp-officejet_pro_8740-ps.ppd.gz
+share/ppd/HP/hp-pagewide_352_printer-ps.ppd.gz
+share/ppd/HP/hp-pagewide_377_mfp-ps.ppd.gz
 share/ppd/HP/hp-pagewide_color_556-ps.ppd.gz
+share/ppd/HP/hp-pagewide_color_e55650-ps.ppd.gz
 share/ppd/HP/hp-pagewide_color_flow_mfp_586-ps.ppd.gz
 share/ppd/HP/hp-pagewide_color_mfp_586-ps.ppd.gz
+share/ppd/HP/hp-pagewide_color_mfp_e58650-ps.ppd.gz
 share/ppd/HP/hp-pagewide_mfp_p57750-ps.ppd.gz
 share/ppd/HP/hp-pagewide_p55250-ps.ppd.gz
 share/ppd/HP/hp-pagewide_pro_452_printer-ps.ppd.gz

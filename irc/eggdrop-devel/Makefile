@@ -79,7 +79,7 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/language
 	${INSTALL_DATA} ${WRKSRC}/language/core.*.lang ${STAGEDIR}${DATADIR}/language
 	@cd ${WRKSRC}/src/mod \
-		&& ${FIND} . -name "*.lang" -exec ${INSTALL_DATA} "{}" \
+		&& ${FIND} . -name "*.lang" -exec ${INSTALL_DATA} {} \
 			${STAGEDIR}${DATADIR}/language ";"
 	@${MKDIR} ${STAGEDIR}${DATADIR}/scripts
 .for f in CONTENTS action.fix.tcl autobotchk alltools.tcl botchk \
@@ -118,7 +118,7 @@ do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/html
 	cd ${WRKSRC}/doc/html && ${INSTALL_DATA} *.html ${STAGEDIR}${DOCSDIR}/html
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/settings
-	cd ${WRKSRC}/doc/settings && ${RM} -rf CVS \
+	cd ${WRKSRC}/doc/settings && ${RM} -r CVS \
 		&& ${INSTALL_DATA} * ${STAGEDIR}${DOCSDIR}/settings
 
 .include <bsd.port.mk>

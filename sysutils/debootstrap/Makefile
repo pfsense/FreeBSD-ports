@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	debootstrap
-PORTVERSION=	1.0.82
+PORTVERSION=	1.0.87
 CATEGORIES=	sysutils
 MASTER_SITES=	DEBIAN/pool/main/d/${PORTNAME}
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
-MAINTAINER=	lifanov@mail.lifanov.com
+MAINTAINER=	lifanov@FreeBSD.org
 COMMENT=	Install Debian base system into a directory
 
 LICENSE=	MIT

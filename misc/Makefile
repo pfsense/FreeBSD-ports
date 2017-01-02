@@ -30,6 +30,7 @@
     SUBDIR += bottlerocket
     SUBDIR += boxes
     SUBDIR += brs
+    SUBDIR += bsod
     SUBDIR += buffer
     SUBDIR += cave
     SUBDIR += cdcollect
@@ -98,7 +99,6 @@
     SUBDIR += fortune-mod-ferengi_rules_of_acquisition
     SUBDIR += fortune-mod-futurama
     SUBDIR += fortune-mod-psalms
-    SUBDIR += fortune_strfile
     SUBDIR += fortuneit
     SUBDIR += fpc-chm
     SUBDIR += freebsd-doc-all
@@ -165,7 +165,6 @@
     SUBDIR += granulate
     SUBDIR += grc
     SUBDIR += gregexp
-    SUBDIR += grun
     SUBDIR += gtkfind
     SUBDIR += gwhich
     SUBDIR += hb
@@ -185,7 +184,6 @@
     SUBDIR += iso-codes
     SUBDIR += jargon
     SUBDIR += jbidwatcher
-    SUBDIR += jive
     SUBDIR += kbdscan
     SUBDIR += kcd
     SUBDIR += kde-thumbnailer-chm
@@ -284,6 +282,7 @@
     SUBDIR += opencyc
     SUBDIR += openr2
     SUBDIR += orville-write
+    SUBDIR += osinfo-db
     SUBDIR += ossp-uuid
     SUBDIR += otter
     SUBDIR += p5-Acme-ButFirst
@@ -362,7 +361,6 @@
     SUBDIR += pear-Text_Figlet
     SUBDIR += pecl-timezonedb
     SUBDIR += pfm
-    SUBDIR += php55-calendar
     SUBDIR += php56-calendar
     SUBDIR += php70-calendar
     SUBDIR += phraze
@@ -373,6 +371,8 @@
     SUBDIR += proxyper
     SUBDIR += pspresent
     SUBDIR += py-YABT
+    SUBDIR += py-fuzzy
+    SUBDIR += py-glance
     SUBDIR += py-osd
     SUBDIR += py-pexpect
     SUBDIR += py-powerline-status

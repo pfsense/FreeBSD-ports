@@ -3,7 +3,7 @@
 
 PORTNAME=	graphviz
 PORTVERSION=	2.38.0
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	graphics tk
 MASTER_SITES=	http://www.graphviz.org/pub/graphviz/ARCHIVE/
 
@@ -16,6 +16,8 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libexpat.so:textproc/expat2 \
 		libgd.so:${GD_PORT}
+
+ONLY_FOR_ARCHS=	aarch64 amd64 i386 sparc64
 
 USES=		bison cpe gmake jpeg libtool:keepla pkgconfig pathfix shebangfix
 GNU_CONFIGURE=	yes

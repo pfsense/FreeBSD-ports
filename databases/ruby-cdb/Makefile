@@ -24,6 +24,9 @@ INSTALL_TARGET=	site-install
 
 OPTIONS_DEFINE=	DOCS
 
+DEPRECATED=	Upstream no longer active
+EXPIRATION_DATE=	2017-01-28
+
 .include <bsd.port.pre.mk>
 
 post-patch:
@@ -33,7 +36,7 @@ post-patch:
 		${WRKSRC}/cdb.c
 
 post-extract:
-	${RM} -f ${WRKSRC}/cdb
+	${RM} ${WRKSRC}/cdb
 	${LN} -s `cd ${CDB_PORTDIR}; ${MAKE} -V WRKSRC` ${WRKSRC}/cdb
 
 post-install:

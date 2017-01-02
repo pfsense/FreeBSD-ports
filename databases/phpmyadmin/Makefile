@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	phpMyAdmin
-DISTVERSION=	4.6.5
+DISTVERSION=	4.6.5.2
 CATEGORIES=	databases www
 MASTER_SITES=	https://files.phpmyadmin.net/${PORTNAME}/${DISTVERSION}/
 DISTNAME=	${PORTNAME}-${DISTVERSION}-all-languages
@@ -18,7 +18,6 @@ CPE_PRODUCT=	${PORTNAME:tl}
 NO_ARCH=	yes
 NO_BUILD=	yes
 .if !defined(WITHOUT_PHP_DEPENDS)
-IGNORE_WITH_PHP=5 54
 USE_PHP=	ctype session filter mbstring json spl mysqli
 .endif
 

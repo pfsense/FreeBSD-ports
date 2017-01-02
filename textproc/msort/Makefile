@@ -3,7 +3,7 @@
 
 PORTNAME=	msort
 PORTVERSION=	8.53
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	textproc
 MASTER_SITES=	http://billposer.org/Software/Downloads/
 
@@ -18,6 +18,8 @@ LIB_DEPENDS=	libtre.so:textproc/libtre \
 		libutf8proc.so:textproc/utf8proc
 RUN_DEPENDS=	iwidgets>=0:x11-toolkits/iwidgets
 TEST_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash
+
+BROKEN_aarch64=	Fails to link: missing sbrk
 
 CONFIGURE_ENV=	ac_cv_lib_tre_regwcomp=yes
 CPPFLAGS+=	-I${LOCALBASE}/include
