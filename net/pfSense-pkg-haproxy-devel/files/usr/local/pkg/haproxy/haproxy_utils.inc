@@ -293,7 +293,7 @@ function haproxy_recalculate_certifcate_chain(){
 		if (!isset($cert['selfsigned'])){
 			if (!isset($cert['caref'])) {
 				$recalculate=true;
-			} else {		
+			} else {
 				$ca = lookup_ca($cert['caref']);
 				if (!$ca) {
 					$recalculate=true;

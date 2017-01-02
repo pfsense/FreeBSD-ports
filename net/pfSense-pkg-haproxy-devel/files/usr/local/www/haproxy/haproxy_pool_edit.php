@@ -804,7 +804,7 @@ $section->addInput(new Form_StaticText(
 					</tr>
 				</table>
 			<br/>
-			For more information about ACL's please see <a href='http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#7' target='_blank'>HAProxy Documentation</a> Section 7 - Using ACL's<br/>			Actions should be added below to use the result of the acl as a conditional parameter.
+			For more information about ACL's please see <a href='http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#7' target='_blank'>HAProxy Documentation</a> Section 7 - Using ACL's<br/>			Actions should be added below to use the result of the acl as a conditional parameter.
 			</div>
 EOT
 ));
@@ -895,7 +895,7 @@ $section->addInput(new Form_Checkbox(
 	'Agent checks',
 	'Use agent checks',
 	$pconfig['agent_check']
-))->setHelp("Use a TCP connection to read an ASCII string of the form 100%,75%,drain,down (more about this in the <a href='http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#5.2-agent-check' target='_blank'>haproxy manual</a>)");
+))->setHelp("Use a TCP connection to read an ASCII string of the form 100%,75%,drain,down (more about this in the <a href='http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#5.2-agent-check' target='_blank'>haproxy manual</a>)");
 $section->addInput(new Form_Input('agent_port', 'Agent port', 'number', $pconfig['agent_port']
 ),"haproxy_agent_check")->setHelp('Fill in the TCP portnumber the healthcheck should be performed on.');
 $section->addInput(new Form_Input('agent_inter', 'Agent interval', 'text', $pconfig['agent_inter']
