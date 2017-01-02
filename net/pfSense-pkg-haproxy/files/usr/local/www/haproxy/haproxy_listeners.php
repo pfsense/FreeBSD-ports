@@ -151,7 +151,7 @@ if ($_POST) {
 	$result = haproxy_check_config($retval);
 	if ($result) {
 		$savemsg = gettext($result);
-}
+	}
 }
 
 if ($_GET['act'] == "del") {
@@ -185,9 +185,9 @@ function haproxy_userlist_backend_servers($backendname) {
 					$backend_servers .= "\n{$status}[{$server['forwardto']}]";
 				} else {
 					$backend_servers .= "\n{$status}{$server['address']}:{$server['port']}";
+				}
 			}
 		}
-	}
 	}
 	return $backend_servers;
 }

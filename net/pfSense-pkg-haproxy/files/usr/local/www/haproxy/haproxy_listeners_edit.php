@@ -698,7 +698,7 @@ $section->addInput(new Form_StaticText(
 	</table>
 	<br/>
 	acl's with the same name will be 'combined' using OR criteria.<br/>
-	For more information about ACL's please see <a href='http://cbonte.github.io/haproxy-dconv/1.6/configuration.html#7' target='_blank'>HAProxy Documentation</a> Section 7 - Using ACL's<br/><br/>
+	For more information about ACL's please see <a href='http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#7' target='_blank'>HAProxy Documentation</a> Section 7 - Using ACL's<br/><br/>
 	<strong>NOTE Important change in behaviour, since package version 0.32</strong><br/>
 	-acl's are no longer combined with logical AND operators, list multiple acl's below where needed.<br/>
 	-acl's alone no longer implicitly generate use_backend configuration. Add 'actions' below to accomplish this behaviour.

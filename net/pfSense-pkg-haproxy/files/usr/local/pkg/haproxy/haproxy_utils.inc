@@ -77,9 +77,9 @@ function haproxy_check_isarray(&$item){
 }
 
 if(!function_exists('ifset')){
-	function ifset(&$var, $default = ''){
+	function ifset(&$var, $default = '') {
 		return isset($var) ? $var : $default;
-}
+	}
 }
 
 if(!function_exists('is_arrayset')){
@@ -158,7 +158,7 @@ function haproxy_get_bindable_interfaces($ipv="ipv4,ipv6", $interfacetype="any,l
 						$descr = "LAN";
 					} else {
 						$descr = $if;
-				}
+					}
 				}
 				$item = array();
 				$item['ip'] = get_interface_ip($if);
@@ -219,7 +219,7 @@ function haproxy_get_bindable_interfaces($ipv="ipv4,ipv6", $interfacetype="any,l
 						$descr = "LAN";
 					} else {
 						$descr = $if;
-				}
+					}
 				}
 				$item = array();
 				$item['ip'] = get_interface_ipv6($if);
@@ -287,12 +287,12 @@ function haproxy_recalculate_certifcate_chain(){
 		if (!isset($cert['selfsigned'])){
 			if (!isset($cert['caref'])) {
 				$recalculate=true;
-			} else {		
+			} else {
 				$ca = lookup_ca($cert['caref']);
 				if (!$ca) {
 					$recalculate=true;
+				}
 			}
-		}
 		}
 		if ($recalculate){
 			foreach($allcertificates as &$signedbycert){
@@ -462,7 +462,7 @@ function phparray_to_javascriptarray_recursive($nestID, $path, $items, $nodeName
 				}
 			}
 		}
-}
+	}
 }
 
 function phparray_to_javascriptarray($items, $javaMapName, $includeitems) {
@@ -497,7 +497,7 @@ function haproxy_js_select_options($keyvaluelist, $selected="") {
 
 function echo_html_select($name, $keyvaluelist, $selected, $listEmptyMessage="", $onchangeEvent="", $style="") {
 	$result = "";
-	if (count($keyvaluelist)>0){
+	if (count($keyvaluelist) > 0) {
 		if ($onchangeEvent != "") {
 			$onchangeEvent = " onchange='$onchangeEvent'";
 		}
