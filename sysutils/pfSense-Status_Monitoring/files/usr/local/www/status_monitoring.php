@@ -23,13 +23,7 @@
  * limitations under the License.
  */
 
-##|+PRIV
-###|*IDENT=page-status-monitoring
-###|*NAME=WebCfg - Status: Monitoring
-###|*DESCR=Allow access to monitoring status page.
-###|*MATCH=status_monitoring.php*
-###|*MATCH=rrd_fetch_json.php*
-###|-PRIV
+// See pfSense-Status_Monitoring.priv.inc for the page priv data for status_monitoring.
 
 require("guiconfig.inc");
 require_once("filter.inc");
@@ -70,8 +64,8 @@ function createSlug($string) {
 }
 
 if($_POST['enable']) {
-	if(($_POST['enable'] === 'false')) { 
-		unset($config['rrd']['enable']); 
+	if(($_POST['enable'] === 'false')) {
+		unset($config['rrd']['enable']);
 	} else {
 		$config['rrd']['enable'] = true;
 	}
@@ -79,7 +73,7 @@ if($_POST['enable']) {
 
 	$retval = 0;
 	$retval = enable_rrd_graphing();
-	$savemsg = get_std_save_message($retval); 
+	$savemsg = get_std_save_message($retval);
 }
 
 if ($_POST['ResetRRD']) {
@@ -277,7 +271,7 @@ foreach ($databases as $db) {
 
 		if (empty($friendly)) {
 			if(substr($db_arr[0], 0, 5) === "ovpns") {
-				
+
 				if (is_array($config['openvpn']["openvpn-server"])) {
 
 					foreach ($config['openvpn']["openvpn-server"] as $id => $setting) {
@@ -309,7 +303,7 @@ foreach ($databases as $db) {
 			if(substr($db_arr[0], 0, 5) === "ovpns") {
 
 				if (is_array($config['openvpn']["openvpn-server"])) {
-				
+
 					foreach ($config['openvpn']["openvpn-server"] as $id => $setting) {
 
 						if($config['openvpn']["openvpn-server"][$id]['vpnid'] === substr($db_arr[0],5)) {
@@ -369,7 +363,7 @@ foreach ($databases as $db) {
 
 		if (empty($friendly)) {
 			if(substr($db_arr[0], 0, 5) === "ovpns") {
-				
+
 				if (is_array($config['openvpn']["openvpn-server"])) {
 
 					foreach ($config['openvpn']["openvpn-server"] as $id => $setting) {
@@ -940,7 +934,7 @@ events.push(function() {
 				$("#resolution").append('<option value="60">1 Minute</option>');
 				break;
 			}
-			
+
 	});
 
 	function convertToEpoch(datestring) {
@@ -1025,11 +1019,11 @@ events.push(function() {
 		var allOptions = defaults.split("&");
 
 		allOptions.forEach(function(entry) {
-			
+
 			var currentOption = entry.split("=");
 
 			if(currentOption[0] === "left" || currentOption[0] === "right") {
-				
+
 				var rrdDb = currentOption[1].split("-");
 
 				if(rrdDb[0]) {
@@ -1226,9 +1220,9 @@ events.push(function() {
 				}
 
 				var index = 0;
-				
+
 				json.forEach(function(event) {
-					
+
 					//create header row
 					csv += event.key + ",";
 
@@ -1352,7 +1346,7 @@ events.push(function() {
 
 				//add left title
 				var leftTitle = $("#category-left option:selected").text() + " -- " + $("#graph-left option:selected").text();
-				
+
 				d3.select('#monitoring-chart svg')
 					.append("text")
 					.attr("x", 150)
@@ -1564,7 +1558,7 @@ events.push(function() {
 	var chart;
 
 	<?php
-	if ($pconfig['enable']) { 
+	if ($pconfig['enable']) {
 		echo 'var rrdEnabled = true;';
 	} else {
 		echo 'var rrdEnabled = false;';
