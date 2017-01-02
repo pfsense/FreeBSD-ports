@@ -1,5 +1,7 @@
+bin/arpaname
 bin/bind9-config
 bin/isc-config.sh
+bin/named-rrchecker
 include/bind9/check.h
 include/bind9/getaddresses.h
 include/bind9/version.h
@@ -359,7 +361,6 @@ man/man8/tsig-keygen.8.gz
 %%NATIVE_PKCS11%%man/man8/pkcs11-tokens.8.gz
 man/man8/rndc-confgen.8.gz
 man/man8/rndc.8.gz
-sbin/arpaname
 sbin/ddns-confgen
 sbin/genrandom
 sbin/isc-hmac-fixup
@@ -369,7 +370,6 @@ sbin/named-checkconf
 sbin/named-checkzone
 sbin/named-compilezone
 sbin/named-journalprint
-sbin/named-rrchecker
 sbin/nsec3hash
 %%NATIVE_PKCS11%%sbin/pkcs11-destroy
 %%NATIVE_PKCS11%%sbin/pkcs11-keygen
