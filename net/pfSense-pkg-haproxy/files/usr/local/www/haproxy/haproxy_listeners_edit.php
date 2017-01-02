@@ -335,7 +335,6 @@ if ($_POST) {
 		$reqdfieldsn = explode(",", "Name");
 	}
 	
-	$pf_version=substr(trim(file_get_contents("/etc/version")), 0, 3);
 	do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
 
 	if (preg_match("/[^a-zA-Z0-9\.\-_]/", $_POST['name'])) {
