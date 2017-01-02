@@ -2,7 +2,7 @@
 
 PORTNAME=	phantomjs
 PORTVERSION=	2.0.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	lang
 MASTER_SITES=	https://bitbucket.org/ariya/phantomjs/downloads/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-source
@@ -20,7 +20,6 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libpng.so:graphics/png
 
 BROKEN_sparc64=		does not link on sparc64
-BROKEN_FreeBSD_9_i386=	does not build
 
 USES=		bison:build compiler:c++11-lang gmake gperf jpeg perl5 pkgconfig python:build zip
 USE_PERL5=	build

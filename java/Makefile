@@ -34,6 +34,7 @@
     SUBDIR += intellij-fsnotifier
     SUBDIR += intellij-pty4j
     SUBDIR += intellij-pycharm
+    SUBDIR += intellij-ultimate
     SUBDIR += jad
     SUBDIR += jaf
     SUBDIR += jai
@@ -51,7 +52,6 @@
     SUBDIR += jakarta-commons-primitives
     SUBDIR += jakarta-oro
     SUBDIR += jakarta-regexp
-    SUBDIR += jakarta-struts
     SUBDIR += jamvm
     SUBDIR += jasmin
     SUBDIR += java-checkstyle

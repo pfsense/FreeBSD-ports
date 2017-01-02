@@ -3,7 +3,7 @@
 
 PORTNAME=	LPRng
 PORTVERSION=	3.8.C
-PORTREVISION=	2
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	sysutils print
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}
@@ -16,6 +16,8 @@ LICENSE=	ART10 GPLv2
 LICENSE_COMB=	dual
 
 LIB_DEPENDS=	libgdbm.so:databases/gdbm
+
+BROKEN_aarch64=	Fails to link: missing sbrk
 
 USES=		gmake
 USE_OPENSSL=	yes

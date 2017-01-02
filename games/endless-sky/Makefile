@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	endless-sky
-PORTVERSION=	0.9.2
+PORTVERSION=	0.9.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 
@@ -14,8 +14,6 @@ LICENSE_COMB=	multi
 LICENSE_FILE_GPLv3+ =	${WRKSRC}/license.txt
 
 LIB_DEPENDS=	libpng.so:graphics/png
-
-BROKEN_FreeBSD_9=	does not build # revisit when ports gcc is switched to 4.9
 
 USE_GITHUB=	yes
 

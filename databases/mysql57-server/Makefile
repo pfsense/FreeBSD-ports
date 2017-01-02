@@ -3,7 +3,7 @@
 
 PORTNAME?=	mysql
 PORTVERSION=	5.7.15
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES=	databases ipv6
 MASTER_SITES=	MYSQL/MySQL-5.7
 PKGNAMESUFFIX?=	57-server
@@ -141,14 +141,13 @@ EXTRA_PATCHES+=		${PATCHDIR}/rapid_plugin-patch-_x_mysqlxtest__src_mysqlxtest.cc
 .include <bsd.port.pre.mk>
 
 .if ${SSL_DEFAULT} == base
-BROKEN_FreeBSD_9=	FreeBSD 9.x requires SSL from ports
 CMAKE_ARGS+=		-DWITH_SSL=system
 .else
 CMAKE_ARGS+=		-DWITH_SSL=${OPENSSLBASE}
 .endif
 
 post-extract:
-	@${RM} -rvf ${WRKSRC}/sql/sql_hints.yy.cc ${WRKSRC}/sql/sql_hints.yy.h
+	@${RM} -rv ${WRKSRC}/sql/sql_hints.yy.cc ${WRKSRC}/sql/sql_hints.yy.h
 
 post-patch:
 	@${REINPLACE_CMD} 's/*.1/${MMAN1}/' ${WRKSRC}/man/CMakeLists.txt
@@ -158,7 +157,6 @@ post-install:
 	${MKDIR} ${STAGEDIR}${ETCDIR}
 	${INSTALL_DATA} ${WRKDIR}/my.cnf.sample ${STAGEDIR}${ETCDIR}/my.cnf.sample
 
-post-stage:
 	${MKDIR} ${STAGEDIR}${ETCDIR}/keyring
 	${MKDIR} ${STAGEDIR}${MY_SECDIR}
 	${MKDIR} ${STAGEDIR}${MY_TMPDIR}

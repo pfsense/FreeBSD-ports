@@ -10,7 +10,7 @@ MASTER_SITE_SUBDIR?=	25160/eng
 PKGNAMEPREFIX=	intel-
 PKGNAMESUFFIX=	-kmod
 
-MAINTAINER=	freebsd@intel.com
+MAINTAINER?=	freebsd@intel.com
 COMMENT?=	40 gigabit FreeBSD Base Driver for Intel(R) Network Connections
 
 LICENSE=	BSD2CLAUSE
@@ -24,10 +24,12 @@ MANPAGENAME?=	${PORTNAME}
 PLIST_FILES=	${KMODDIR}/if_${PORTNAME}_updated.ko \
 		man/man4/${MANPAGENAME}.4.gz
 
+.include <bsd.port.pre.mk>
+
+# Fixup for slave ports that use this as a master port. sbruno
+.if ${PORTNAME} == ixl
 ONLY_FOR_ARCHS=		amd64
 ONLY_FOR_ARCHS_REASON=	Not supported on other architectures, amd64 only.
-
-.include <bsd.port.pre.mk>
 
 .if ${OSVERSION} < 1001000
 IGNORE=		is not supported on FreeBSD 10.0 and older
@@ -35,6 +37,7 @@ IGNORE=		is not supported on FreeBSD 10.0 and older
 
 .if ${OSVERSION} >= 1100000
 BROKEN=		does not build
+.endif
 .endif
 
 do-install:

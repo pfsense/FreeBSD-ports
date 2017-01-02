@@ -3,7 +3,7 @@
 
 PORTNAME=	cyphesis
 PORTVERSION=	0.6.2
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	net
 MASTER_SITES=	SF/worldforge/${PORTNAME}%20%28server%29/${PORTVERSION}
 
@@ -49,7 +49,7 @@ post-patch:
 		${REINPLACE_CMD} -e 's|$$(datadir)/cyphesis|${DATADIR}|g ; \
 		s|confbackupdir = .*|confbackupdir = ${DOCSDIR}/conf|g'
 	@${REINPLACE_CMD} -e 's|/bash|/sh|' ${WRKSRC}/scripts/extract_revision.sh
-	@${REINPLACE_CMD} -e '1s|python|${LOCALBASE}/bin/${PYTHON_VERSION}|' ${WRKSRC}/scripts/gen_buildid.py
+	@${REINPLACE_CMD} -e '1s|python|${PYTHON_CMD}|' ${WRKSRC}/scripts/gen_buildid.py
 	@${REINPLACE_CMD} -e 's/#ifdef __APPLE__/#if defined(__APPLE__) || defined(__FreeBSD__)/g; \
 		s/#ifndef __APPLE__/#if !defined(__APPLE__) \&\& !defined(__FreeBSD__)/g' \
 		${WRKSRC}/common/system.cpp \

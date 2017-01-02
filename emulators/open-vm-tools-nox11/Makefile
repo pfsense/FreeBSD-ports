@@ -3,8 +3,9 @@
 
 MASTERDIR=	${.CURDIR}/../open-vm-tools
 PKGNAMESUFFIX=	-nox11
-OPTIONS_UNSET=	X11 LIBNOTIFY
+OPTIONS_EXCLUDE=	X11 LIBNOTIFY
 
+BROKEN_mips64=		Does not configure: error: Unknown architecture
 BROKEN_powerpc64=	Does not build
 
 .include "${MASTERDIR}/Makefile"

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mutt
-PORTVERSION=	1.6.1
+PORTVERSION=	1.7.2
 PORTREVISION?=	0
 CATEGORIES+=	mail ipv6
 MASTER_SITES=	ftp://ftp.mutt.org/pub/mutt/ \
@@ -12,18 +12,25 @@ MASTER_SITES=	ftp://ftp.mutt.org/pub/mutt/ \
 		http://www.mutt.org.ua/download/mutt-${VVV_PATCH_VERSION}/:vvv \
 		http://www2.mutt.org.ua/download/mutt-${VVV_PATCH_VERSION}/:vvv
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
+DIST_SUBDIR=	mutt
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 PATCH_SITES+=	http://www.mutt.org.ua/download/mutt-${VVV_PATCH_VERSION}/:vvv \
 		http://www2.mutt.org.ua/download/mutt-${VVV_PATCH_VERSION}/:vvv \
-		http://home.woolridge.ca/mutt/patches/:dw
+		http://home.uchicago.edu/~dgc/sw/mutt/:dgc \
+		https://www.schrab.com/aaron/mutt/:ats \
+		http://vc.org.ua/mutt/:vc
+PATCH_DIST_STRIP=	-p1
+PATCHFILES=	patch-1.5.1.dgc.deepif.1:dgc \
+			patch-1.7.0.ats.date_conditional.1:ats
 
-MAINTAINER?=	udo.schweigert@siemens.com
-COMMENT?=	The Mongrel of Mail User Agents (development version)
+MAINTAINER?=	dereks@lifeofadishwasher.com
+COMMENT?=	Small but powerful text based program for read/writing e-mail
+
+LICENSE=	GPLv2+
 
 CONFLICTS?=	ja-mutt-[0-9]* ja-mutt-devel-[0-9]* mutt-1.4* mutt-devel-lite-[0-9]* mutt-lite-[0-9]* zh-mutt-devel-[0-9]*
 
-DIST_SUBDIR=	mutt
 DOCSDIR?=	${PREFIX}/share/doc/mutt
 EXAMPLESDIR?=	${PREFIX}/share/examples/mutt
 DATADIR?=	${PREFIX}/share/mutt
@@ -33,7 +40,7 @@ CONFIGURE_ARGS=	--disable-fcntl --with-ssl=${OPENSSLBASE} \
 		--enable-external-dotlock --enable-pop --enable-imap \
 		--disable-warnings
 
-USES+=		cpe shebangfix
+USES+=		cpe shebangfix ssl
 SHEBANG_FILES=	doc/gen-map-doc smime_keys.pl contrib/smime_keys_test.pl
 
 .if defined(MUTT_CONFIGURE_ARGS)
@@ -43,26 +50,20 @@ CONFIGURE_ARGS+=	${MUTT_CONFIGURE_ARGS}
 USES+=		autoreconf
 GNU_CONFIGURE=	yes
 AUTOMAKE_ARGS=	--add-missing --foreign
-USE_OPENSSL=	yes
 
 OPTIONS_SUB=	yes
 
 .if defined (MUTT_LITE)
-LITE=	yes
-USES+=	ncurses
-.endif
-
-.if defined (LITE)
-OPTIONS_UNSET=	NLS DOCS EXAMPLES
+OPTIONS_EXCLUDE=	NLS DOCS EXAMPLES
 .else
 OPTIONS_DEFINE=	COMPRESSED_FOLDERS SASL DEBUG DOCS EXAMPLES FLOCK \
 		FORCEBASE64 GPGME GREETING_PATCH HTML ICONV IDN IFDEF_PATCH \
 		IMAP_HEADER_CACHE LOCALES_FIX MAILBOX_MANPAGES \
 		MAILDIR_HEADER_CACHE MAILDIR_MTIME_PATCH \
 		MIXMASTER NLS NNTP PARENT_CHILD_MATCH_PATCH \
-		QUOTE_PATCH REVERSE_REPLY_PATCH SIDEBAR_PATCH \
+		QUOTE_PATCH REVERSE_REPLY_PATCH SIDEBAR \
 		SMART_DATE SMIME_OUTLOOK_COMPAT SMTP TOKYOCABINET \
-		TRASH_PATCH URLVIEW XML
+		URLVIEW XML
 
 OPTIONS_SINGLE=	GSSAPI SCREEN
 OPTIONS_RADIO=	SPELL
@@ -91,36 +92,36 @@ NLS_DESC=	Native language support (implies ICONV)
 PARENT_CHILD_MATCH_PATCH_DESC=	Parent/child match
 QUOTE_PATCH_DESC=	Extended quoting
 REVERSE_REPLY_PATCH_DESC=	Reverse_reply
-SIDEBAR_PATCH_DESC=	Sidebar support
+SIDEBAR_DESC=	Sidebar support
 SLANG_DESC=	SLANG support
 SMART_DATE_DESC=	Dynamic date formatting with "%@"
 SMIME_OUTLOOK_COMPAT_DESC=	SMIME outlook compatibility
 SMTP_DESC=	SMTP relay support
 TOKYOCABINET_DESC=	Use tokyocabinet instead of Berkley DB
-TRASH_PATCH_DESC=	Trash folder support
 URLVIEW_DESC=	Use urlview for the URL selector menu
 XML_DESC=	Use XML tools for rebuilding documentation
 
-OPTIONS_DEFAULT=	COMPRESSED_FOLDERS HTML ICONV IDN IFDEF_PATCH \
+OPTIONS_DEFAULT=	COMPRESSED_FOLDERS GPGME HTML ICONV IDN IFDEF_PATCH \
 		IMAP_HEADER_CACHE LOCALES_FIX MAILBOX_MANPAGES \
 		MAILDIR_HEADER_CACHE MAILDIR_MTIME_PATCH NLS \
 		NCURSES PARENT_CHILD_MATCH_PATCH QUOTE_PATCH \
 		REVERSE_REPLY_PATCH SMART_DATE SMIME_OUTLOOK_COMPAT \
-		SASL SMTP TRASH_PATCH URLVIEW XML GSSAPI_NONE
+		SASL SMTP URLVIEW XML GSSAPI_NONE
 .endif
 
 RUN_DEPENDS+=	${LOCALBASE}/etc/mime.types:misc/mime-support
 
-.if !defined (LITE)
+.if !defined (MUTT_LITE)
 ASPELL_BUILD_DEPENDS=	aspell:textproc/aspell
-ASPELL_RUN_DEPENDS=		aspell:textproc/aspell
+ASPELL_RUN_DEPENDS=	aspell:textproc/aspell
 ISPELL_BUILD_DEPENDS=	ispell:textproc/aspell-ispell
-ISPELL_RUN_DEPENDS=		ispell:textproc/aspell-ispell
+ISPELL_RUN_DEPENDS=	ispell:textproc/aspell-ispell
 URLVIEW_RUN_DEPENDS=	urlview:textproc/urlview
 .endif
 
-.if defined (LITE)
+.if defined (MUTT_LITE)
 PKGNAMESUFFIX=	-lite
+USES+=	ncurses
 PLIST_SUB+=	MAILBOX_MANPAGES=""
 PLIST_SUB+=	COMPRESSED_FOLDERS="@comment "
 PLIST_SUB+=	HTML="@comment "
@@ -129,6 +130,11 @@ PLIST_SUB+=	NNTP="@comment "
 # XXX bug in bpm ?
 PLIST_SUB+=	NLS="@comment "
 CONFIGURE_ARGS+=	--disable-nls --disable-iconv --without-idn
+.endif
+
+.ifmake makesum # for optional distfiles patchfiles
+PORT_DBDIR=		/dev/null
+OPTIONS_DEFAULT=	${OPTIONS_DEFINE}
 .endif
 
 DEBUG_CONFIGURE_ON=	--enable-debug
@@ -141,7 +147,8 @@ SLANG_VARS=	PKGMESSAGE=${FILESDIR}/pkg-message.slang
 NCURSES_USES=	ncurses
 
 NLS_USES=	gettext
-NLS_CONFIGURE_OFF=	--disable-nls
+NLS_CONFIGURE_ENABLE=	nls
+#NLS_CONFIGURE_OFF=	--disable-nls
 NLS_IMPLIES=	ICONV
 
 # Handle GSSAPI from various places
@@ -171,31 +178,29 @@ MIXMASTER_CONFIGURE_ON=	--with-mixmaster=${LOCALBASE}
 SMIME_OUTLOOK_COMPAT_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-smime-outlook
 SMART_DATE_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-smartdate
 
-FLOCK_CONFIGURE_ON=	--enable-flock
-FLOCK_CONFIGURE_OFF=	--disable-flock
+FLOCK_CONFIGURE_ENABLE=	flock
 
 LOCALES_FIX_CONFIGURE_ON=	--enable-locales-fix
 
 IDN_LIB_DEPENDS=	libidn.so:dns/libidn
-IDN_CONFIGURE_ON=	--with-idn
-IDN_CONFIGURE_OFF=	--without-idn
+IDN_CONFIGURE_WITH=	idn
 IDN_IMPLIES=	ICONV
 
 GPGME_LIB_DEPENDS=	libgpgme.so:security/gpgme
-GPGME_CONFIGURE_ON=	--enable-gpgme
-GPGME_CONFIGURE_OFF=	--disable-gpgme
+GPGME_CONFIGURE_ENABLE=	gpgme
 
-SMTP_CONFIGURE_ON=	--enable-smtp
-SMTP_CONFIGURE_OFF=	--disable-smtp
+SMTP_CONFIGURE_ENABLE=	smtp
 
 MAILDIR_HEADER_CACHE_CONFIGURE_OFF=	--without-qdbm
+
+GREETING_PATCH_PATCHFILES=	mutt-${GREETING_PATCH_VERSION}.vc.greeting:vc
 
 COMPRESSED_FOLDERS_DISTFILES=	patch-${RR_PATCH_VERSION}.rr.compressed.gz:vvv
 COMPRESSED_FOLDERS_CONFIGURE_ON=	--enable-compressed
 COMPRESSED_FOLDERS_VARS=	XML_NEEDED=yes
 
 QUOTE_PATCH_PATCHFILES=	patch-${VVV_PATCH_VERSION}.vvv.initials.gz:vvv \
-		patch-${VVV_PATCH_VERSION}.vvv.quote.gz:vvv
+			patch-${VVV_PATCH_VERSION}.vvv.quote.gz:vvv
 QUOTE_PATCH_VARS=	XML_NEEDED=yes
 
 NNTP_DISTFILES=	patch-${VVV_PATCH_VERSION}.vvv.nntp.gz:vvv \
@@ -204,23 +209,27 @@ NNTP_CONFIGURE_ON=	--enable-nntp
 NNTP_VARS=	XML_NEEDED=yes
 NNTP_CATEGORIES=	news
 
-SIDEBAR_PATCH_VARS=	XML_NEEDED=yes
+SIDEBAR_CONFIGURE_ENABLE=	sidebar
+SIDEBAR_CONFIGURE_ON=	--enable-sidebar
+SIDEBAR_VARS=	XML_NEEDED=yes
 
 DOCS_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-doc-ref
 
 .include <bsd.port.options.mk>
 
-DW_PATCH_VERSION=	1.5.6
-VVV_PATCH_VERSION:=	1.6.0
-RR_PATCH_VERSION:=	1.6.0
+# un/comment as each VERSION is created for PORTVERSION
+VVV_PATCH_VERSION=	1.7.1
+RR_PATCH_VERSION=	1.7.1
+#GREETING_PATCH_VERSION=	1.7.0
+
 .if !defined(VVV_PATCH_VERSION)
 VVV_PATCH_VERSION=	${PORTVERSION}
 .endif
 .if !defined(RR_PATCH_VERSION)
 RR_PATCH_VERSION=	${PORTVERSION}
 .endif
-.if !defined(DW_PATCH_VERSION)
-DW_PATCH_VERSION=	${PORTVERSION}
+.if !defined(GREETING_PATCH_VERSION)
+GREETING_PATCH_VERSION=	${PORTVERSION}
 .endif
 
 # XXX
@@ -236,8 +245,6 @@ pre-build::
 LDFLAGS+=		-L${LOCALBASE}/lib -Wl,-rpath=${LOCALBASE}/lib:/usr/lib -ltinfow
 CFLAGS+=		${CFLAGS_ADD}
 LDFLAGS+=		${LDFLAGS_ADD}
-
-PATCH_DIST_STRIP=	-p1
 
 pre-patch-PARENT_CHILD_MATCH_PATCH-on:
 	@${PATCH} ${PATCH_ARGS} -p1 < ${PATCHDIR}/extra-patch-parent-child-match
@@ -255,10 +262,6 @@ pre-patch-NNTP-on:
 	@${PATCH} ${PATCH_ARGS} -p1 < ${WRKDIR}/patch-nntp
 
 post-patch-NNTP-on:
-.if ${PORT_OPTIONS:MSIDEBAR_PATCH}
-	@${PATCH} ${PATCH_ARGS} -p1 < ${PATCHDIR}/extra-patch-sidebar-nntp
-	@${PATCH} ${PATCH_ARGS} -p1 < ${PATCHDIR}/extra-patch-sidebar-refresh
-.endif
 .if ${PORT_OPTIONS:MMAILDIR_MTIME_PATCH}
 	@${PATCH} ${PATCH_ARGS} -p1 < ${PATCHDIR}/extra-patch-maildir-mtime-nntp
 .endif
@@ -267,10 +270,6 @@ post-patch-NNTP-on:
 .endif
 
 post-patch-NNTP-off:
-.if ${PORT_OPTIONS:MSIDEBAR_PATCH}
-	@${PATCH} ${PATCH_ARGS} -p1 < ${PATCHDIR}/extra-patch-sidebar
-	@${PATCH} ${PATCH_ARGS} -p1 < ${PATCHDIR}/extra-patch-sidebar-refresh
-.endif
 .if ${PORT_OPTIONS:MMAILDIR_MTIME_PATCH}
 	@${PATCH} ${PATCH_ARGS} -p1 < ${PATCHDIR}/extra-patch-maildir-mtime
 .endif
@@ -284,14 +283,8 @@ post-install:
 post-install-NNTP-on:
 	${INSTALL_DATA} ${WRKSRC}/ChangeLog.nntp ${STAGEDIR}${DOCSDIR}
 
-post-patch-GREETING_PATCH-on:
-	@${PATCH} ${PATCH_ARGS} -p1 < ${PATCHDIR}/extra-patch-greeting
-
 post-patch-IFDEF_PATCH-on:
 	@${PATCH} ${PATCH_ARGS} -p1 < ${PATCHDIR}/extra-patch-ifdef
-
-post-patch-TRASH_PATCH-on:
-	@${PATCH} ${PATCH_ARGS} -p1 < ${PATCHDIR}/extra-patch-trash-purge
 
 WRKSRC=		${WRKDIR}/${DISTNAME:S/i$//}
 
@@ -304,7 +297,7 @@ post-patch::
 		${WRKSRC}/contrib/Makefile.am
 
 pre-configure::
-	@${RM} -f ${WRKSRC}/missing
+	@${RM} ${WRKSRC}/missing
 .if defined(WITH_KRB5_SYS)
 	@${ECHO_CMD} "#define HAVE_HEIMDAL" >> ${WRKSRC}/config.h.in
 	@${REINPLACE_CMD} -e 's|<gssapi/gssapi\.h>|<gssapi.h>|' \

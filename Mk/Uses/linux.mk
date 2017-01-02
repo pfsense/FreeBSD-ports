@@ -4,8 +4,7 @@
 #
 # Feature:	linux:args
 # Usage:	USES=linux or USES=linux:args
-# Valid args:	f10	Depend on Fedora 10 packages (deprecated)
-#		c6	Depend on CentOS 6 packages (default)
+# Valid args:	c6	Depend on CentOS 6 packages (default)
 #		c7	Depend on CentOS 7 packages
 # Additional variables:
 # USE_LINUX	List of Linux packages to depend on.
@@ -13,6 +12,7 @@
 #		infrastructure ports are made available.  Possible values:
 #		yes	Default LIB_DISTFILES and empty BIN_DISTFILES.
 #		nolib	Default BIN_DISTFILES and empty LIB_DISTFILES.
+#		noarch	Like nolib but distfiles are architecture neutral.
 # Additional variables when USE_LINUX_RPM is defined:
 # BIN_DISTFILES	List of distfiles to install.
 # LIB_DISTFILES	List of distfiles to install both the 32 and 64 bit version of.
@@ -29,9 +29,7 @@ _USES_POST+=		linux
 linux_ARGS=		${LINUX_DEFAULT:S/_64//}
 .endif
 
-.if ${linux_ARGS} == f10
-LINUX_DIST_VER?=	10
-.elif ${linux_ARGS} == c6
+.if ${linux_ARGS} == c6
 LINUX_DIST_VER?=	6.8
 .elif ${linux_ARGS} == c7
 LINUX_DIST_VER?=	7.2.1511
@@ -39,20 +37,15 @@ LINUX_DIST_VER?=	7.2.1511
 IGNORE=			Invalid Linux distribution: ${linux_ARGS}
 .endif
 
-.if ${linux_ARGS} == f10
-LINUX_ARCH=		i386
-DEPRECATED=		Fedora 10 is unsupported and vulnerable
-EXPIRATION_DATE=	2016-12-31
-.else
 .if ${LINUX_DEFAULT:M*_64}
 LINUX_ARCH=		x86_64
+LINUX_ARCH32=		i386
 .if ${ARCH} != amd64 || ${OPSYS} != FreeBSD || ${OSVERSION} < 1002507 \
  || ( ${OSVERSION} >= 1100000 && ${OSVERSION} < 1100105 )
-IGNORE=			Linux ${LINUX_DEFAULT} only supported on FreeBSD/amd64 10.3 or higher
+IGNORE=			Linux ${LINUX_DEFAULT} is only supported on FreeBSD/amd64 10.3 or higher
 .endif
 .else
 LINUX_ARCH=		i386
-.endif
 .endif
 
 linux_allegro_DEP=		linux-${linux_ARGS}-allegro>0:devel/linux-${linux_ARGS}-allegro
@@ -75,22 +68,24 @@ linux_esound_DEP=		linux-${linux_ARGS}-esound>0:audio/linux-${linux_ARGS}-esound
 linux_expat_DEP=		linux-${linux_ARGS}-expat>0:textproc/linux-${linux_ARGS}-expat
 linux_flac_DEP=			linux-${linux_ARGS}-flac>0:audio/linux-${linux_ARGS}-flac
 linux_fontconfig_DEP=		linux-${linux_ARGS}-fontconfig>0:x11-fonts/linux-${linux_ARGS}-fontconfig
-.if ${linux_ARGS:Mf10}
-linux_gdkpixbuf2_DEP=		linux-${linux_ARGS}-gtk2>0:x11-toolkits/linux-${linux_ARGS}-gtk2
-.else
 linux_gdkpixbuf2_DEP=		linux-${linux_ARGS}-gdk-pixbuf2>0:graphics/linux-${linux_ARGS}-gdk-pixbuf2
-.endif
 linux_gnutls_DEP=		linux-${linux_ARGS}-gnutls>0:security/linux-${linux_ARGS}-gnutls
+linux_graphite2_DEP=		linux-${linux_ARGS}-graphite2>0:graphics/linux-${linux_ARGS}-graphite2
 linux_gtk2_DEP=			linux-${linux_ARGS}-gtk2>0:x11-toolkits/linux-${linux_ARGS}-gtk2
+linux_harfbuzz_DEP=		linux-${linux_ARGS}-harfbuzz>0:print/linux-${linux_ARGS}-harfbuzz
 linux_hicontheme_DEP=		linux-${linux_ARGS}-hicolor-icon-theme>0:x11-themes/linux-${linux_ARGS}-hicolor-icon-theme
 linux_jasper_DEP=		linux-${linux_ARGS}-jasper>0:graphics/linux-${linux_ARGS}-jasper
+linux_jbigkit_DEP=		linux-${linux_ARGS}-jbigkit>0:graphics/linux-${linux_ARGS}-jbigkit
 linux_jpeg_DEP=			linux-${linux_ARGS}-jpeg>0:graphics/linux-${linux_ARGS}-jpeg
 linux_libasyncns_DEP=		linux-${linux_ARGS}-libasyncns>0:dns/linux-${linux_ARGS}-libasyncns
+.if ${linux_ARGS:Mc6}
 linux_libaudiofile_DEP=		linux-${linux_ARGS}-libaudiofile>0:audio/linux-${linux_ARGS}-libaudiofile
+.else
+linux_libaudiofile_DEP=		linux-${linux_ARGS}-audiofile>0:audio/linux-${linux_ARGS}-audiofile
+.endif
 linux_libelf_DEP=		linux-${linux_ARGS}-libelf>0:devel/linux-${linux_ARGS}-libelf
 linux_libgcrypt_DEP=		linux-${linux_ARGS}-libgcrypt>0:security/linux-${linux_ARGS}-libgcrypt
 linux_libgfortran_DEP=		linux-${linux_ARGS}-libgfortran>0:devel/linux-${linux_ARGS}-libgfortran
-linux_libglu_DEP=		linux-${linux_ARGS}-libGLU>0:graphics/linux-${linux_ARGS}-libGLU
 linux_libgpg-error_DEP=		linux-${linux_ARGS}-libgpg-error>0:security/linux-${linux_ARGS}-libgpg-error
 linux_libmng_DEP=		linux-${linux_ARGS}-libmng>0:graphics/linux-${linux_ARGS}-libmng
 linux_libogg_DEP=		linux-${linux_ARGS}-libogg>0:audio/linux-${linux_ARGS}-libogg
@@ -118,18 +113,20 @@ linux_pango_DEP=		linux-${linux_ARGS}-pango>0:x11-toolkits/linux-${linux_ARGS}-p
 linux_pixman_DEP=		linux-${linux_ARGS}-pixman>0:x11/linux-${linux_ARGS}-pixman
 linux_png_DEP=			linux-${linux_ARGS}-png>0:graphics/linux-${linux_ARGS}-png
 linux_pulseaudio-libs_DEP=	linux-${linux_ARGS}-pulseaudio-libs>0:audio/linux-${linux_ARGS}-pulseaudio-libs
-linux_qt47_DEP=			linux-${linux_ARGS}-qt47>0:devel/linux-${linux_ARGS}-qt47
-linux_qt47-webkit_DEP=		linux-${linux_ARGS}-qt47-webkit>0:www/linux-${linux_ARGS}-qt47-webkit
-linux_qt47-x11_DEP=		linux-${linux_ARGS}-qt47-x11>0:x11-toolkits/linux-${linux_ARGS}-qt47-x11
+.if ${linux_ARGS:Mc6}
+linux_qt_DEP=			linux-${linux_ARGS}-qt47>0:devel/linux-${linux_ARGS}-qt47
+linux_qt-x11_DEP=		linux-${linux_ARGS}-qt47-x11>0:x11-toolkits/linux-${linux_ARGS}-qt47-x11
+linux_qtwebkit_DEP=		linux-${linux_ARGS}-qt47-webkit>0:www/linux-${linux_ARGS}-qt47-webkit
+.else
+linux_qt_DEP=			linux-${linux_ARGS}-qt>0:devel/linux-${linux_ARGS}-qt
+linux_qt-x11_DEP=		linux-${linux_ARGS}-qt-x11>0:x11-toolkits/linux-${linux_ARGS}-qt-x11
+linux_qtwebkit_DEP=		linux-${linux_ARGS}-qtwebkit>0:www/linux-${linux_ARGS}-qtwebkit
+.endif
 linux_scimlibs_DEP=		linux-${linux_ARGS}-scim-libs>0:textproc/linux-${linux_ARGS}-scim-libs
 linux_sdl12_DEP=		linux-${linux_ARGS}-sdl>0:devel/linux-${linux_ARGS}-sdl12
 linux_sdlimage_DEP=		linux-${linux_ARGS}-sdl_image>0:graphics/linux-${linux_ARGS}-sdl_image
 linux_sdlmixer_DEP=		linux-${linux_ARGS}-sdl_mixer>0:audio/linux-${linux_ARGS}-sdl_mixer
-.if ${linux_ARGS:Mf10}
-linux_sqlite3_DEP=		linux-${linux_ARGS}-sqlite3>0:databases/linux-${linux_ARGS}-sqlite3
-.else
 linux_sqlite3_DEP=		linux-${linux_ARGS}-sqlite>0:databases/linux-${linux_ARGS}-sqlite3
-.endif
 linux_tcl85_DEP=		linux-${linux_ARGS}-tcl85>0:lang/linux-${linux_ARGS}-tcl85
 linux_tcp_wrappers-libs_DEP=	linux-${linux_ARGS}-tcp_wrappers-libs>0:net/linux-${linux_ARGS}-tcp_wrappers-libs
 linux_tiff_DEP=			linux-${linux_ARGS}-tiff>0:graphics/linux-${linux_ARGS}-tiff
@@ -155,20 +152,7 @@ RUN_DEPENDS+=		${linux_${i:C/:.*//}_DEP}
 
 DISTVERSIONSUFFIX?=	-${RPMVERSION}
 
-.if ${linux_ARGS} == f10
-
-.ifndef MASTER_SITES
-MASTER_SITES=		${MASTER_SITE_FEDORA_LINUX}
-MASTER_SITE_SUBDIR=	releases/${LINUX_DIST_VER}/Everything/${LINUX_ARCH}/os/Packages \
-			updates/${LINUX_DIST_VER}/${LINUX_ARCH} \
-			releases/${LINUX_DIST_VER}/Everything/source/SRPMS/:SOURCE \
-			updates/${LINUX_DIST_VER}/SRPMS/:SOURCE
-.endif
-DIST_SUBDIR?=		rpm/${LINUX_ARCH}/fedora/${LINUX_DIST_VER}
-
-LINUX_RPM_ARCH?=	i386
-
-.elif ${linux_ARGS} == c6
+.if ${linux_ARGS} == c6
 
 .ifndef MASTER_SITES
 MASTER_SITES=		${MASTER_SITE_CENTOS_LINUX}
@@ -179,7 +163,9 @@ MASTER_SITE_SUBDIR=	centos/${LINUX_DIST_VER}/os/${LINUX_ARCH}/Packages \
 .endif
 DIST_SUBDIR?=		rpm/${LINUX_RPM_ARCH}/centos/${LINUX_DIST_VER}
 
-.if ${LINUX_ARCH} == x86_64
+.if ${USE_LINUX_RPM} == noarch
+LINUX_RPM_ARCH?=	noarch
+.elif ${LINUX_ARCH} == x86_64
 LINUX_RPM_ARCH?=	x86_64
 LINUX_RPM_ARCH32?=	i686
 .else
@@ -202,7 +188,9 @@ MASTER_SITE_SUBDIR+=	centos/${LINUX_DIST_VER}/os/Source/SPackages/:SOURCE \
 .endif
 DIST_SUBDIR?=		rpm/centos/${LINUX_DIST_VER}/${LINUX_ARCH}
 
-.if ${LINUX_ARCH} == x86_64
+.if ${USE_LINUX_RPM} == noarch
+LINUX_RPM_ARCH?=	noarch
+.elif ${LINUX_ARCH} == x86_64
 LINUX_RPM_ARCH?=	x86_64
 LINUX_RPM_ARCH32?=	i686
 .else
@@ -231,16 +219,30 @@ _INCLUDE_USES_LINUX_POST_MK=	yes
 
 .ifdef USE_LINUX_RPM
 
-.if ${USE_LINUX_RPM} == nolib
-BIN_DISTFILES?=		${DISTNAME}${EXTRACT_SUFX}
+.if ${USE_LINUX_RPM} == noarch
+NO_ARCH=		yes
 .else
-LIB_DISTFILES?=		${DISTNAME}${EXTRACT_SUFX}
+ONLY_FOR_ARCHS?=	i386 amd64
 .endif
-.ifdef LINUX_RPM_ARCH32
+
+.if ${USE_LINUX_RPM} == yes
+LIB_DISTFILES?=		${DISTNAME}${EXTRACT_SUFX}
+.else
+BIN_DISTFILES?=		${DISTNAME}${EXTRACT_SUFX}
+.endif
+.ifdef LINUX_ARCH32 && EXTRACT_SUFX32
+.for fmakehack in ${LINUX_ARCH32}
+.if !(defined(ONLY_FOR_ARCHS) && empty(ONLY_FOR_ARCHS:M${fmakehack})) \
+ && empty(NOT_FOR_ARCHS:M${fmakehack})
 DISTFILES?=		${LIB_DISTFILES:S/${EXTRACT_SUFX}/${EXTRACT_SUFX32}/} \
 			${LIB_DISTFILES} ${BIN_DISTFILES}
 EXTRACT_ONLY?=		${LIB_DISTFILES:S/${EXTRACT_SUFX}/${EXTRACT_SUFX32}/} \
 			${LIB_DISTFILES} ${BIN_DISTFILES}
+.else
+DISTFILES?=		${LIB_DISTFILES} ${BIN_DISTFILES}
+EXTRACT_ONLY?=		${LIB_DISTFILES} ${BIN_DISTFILES}
+.endif
+.endfor
 .else
 DISTFILES?=		${LIB_DISTFILES} ${BIN_DISTFILES}
 EXTRACT_ONLY?=		${LIB_DISTFILES} ${BIN_DISTFILES}
@@ -261,17 +263,40 @@ EXTRACT_BEFORE_ARGS=	<
 EXTRACT_AFTER_ARGS=	| ${TAR} xf - --no-same-owner --no-same-permissions
 .endif
 
-ONLY_FOR_ARCHS?=	i386 amd64
-.if ${linux_ARGS} != f10
+.if ${USE_LINUX_RPM} != noarch
 PLIST?=			${PKGDIR}/pkg-plist.${LINUX_ARCH}
 .endif
 
 .if !target(do-install)
 do-install:
-	(cd ${WRKSRC} && ${FIND} * -type d -exec ${MKDIR} "${STAGEDIR}${PREFIX}/{}" \;)
-	(cd ${WRKSRC} && ${FIND} * ! -type d | ${CPIO} -pm ${STAGEDIR}${PREFIX})
+	(cd ${WRKSRC} && ${FIND} * | ${CPIO} -dumpl ${STAGEDIR}${PREFIX})
 .endif
 
 .endif # USE_LINUX_RPM
+
+.ifdef DISTNAME_i386
+DISTFILES_i386?=	${DISTNAME_i386}${EXTRACT_SUFX}
+.endif
+.ifdef DISTNAME_x86_64
+DISTFILES_x86_64?=	${DISTNAME_x86_64}${EXTRACT_SUFX}
+.endif
+.ifdef DISTFILES_i386 || DISTFILES_x86_64
+.if make(makesum)
+.if !defined(DISTFILES)
+DISTFILES=		${DISTFILES_i386} ${DISTFILES_x86_64}
+EXTRACT_ONLY?=		${DISTFILES_${LINUX_ARCH}}
+.endif
+.else
+DISTFILES?=		${DISTFILES_${LINUX_ARCH}}
+.endif
+.endif
+
+# With fmake :M${var} only works when ${var} is a for loop variable.
+.for fmakehack in ${LINUX_ARCH:S/x86_64/amd64/}
+.if (defined(ONLY_FOR_ARCHS) && empty(ONLY_FOR_ARCHS:M${fmakehack})) \
+ || !empty(NOT_FOR_ARCHS:M${fmakehack})
+IGNORE=			does not run on Linux/${LINUX_ARCH}
+.endif
+.endfor
 
 .endif # _POSTMKINCLUDED && ! _INCLUDE_USES_LINUX_POST_MK

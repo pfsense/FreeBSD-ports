@@ -22,9 +22,7 @@ DATADIR=	${Q1DIR}/${PORTNAME}
 
 post-extract:
 # Remove CVS directories
-	@${FIND} ${WRKSRC} -type d -name CVS -print0 | ${XARGS} -0 ${RM} -rf
-# Fix permissions
-	@${CHMOD} go-w ${WRKSRC}/dpmod/progs.dat
+	@${FIND} ${WRKSRC} -type d -name CVS -print0 | ${XARGS} -0 ${RM} -r
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}

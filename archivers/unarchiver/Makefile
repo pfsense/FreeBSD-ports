@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	unar
-PORTVERSION=	1.10
-PORTREVISION=	1
+PORTVERSION=	1.10.1
+PORTREVISION=	2
 CATEGORIES=	archivers gnustep
 MASTER_SITES=	http://wakaba.c3.cx/releases/TheUnarchiver/
 DISTNAME=	${PORTNAME}${PORTVERSION}_src
@@ -16,6 +16,7 @@ LICENSE_FILE=	${WRKSRC}/License.txt
 
 # XXX: USES=gnustep overrides MAKEFILE we set below, so depend explicitly
 LIB_DEPENDS=	libgnustep-base.so:lang/gnustep-base \
+		libicuuc.so:devel/icu \
 		libwavpack.so:audio/wavpack
 
 USES=		gmake zip

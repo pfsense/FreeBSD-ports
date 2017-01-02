@@ -70,6 +70,7 @@
     SUBDIR += ibp
     SUBDIR += java-commapi
     SUBDIR += java-commapi-freebsd
+    SUBDIR += java-simple-serial-connector
     SUBDIR += jerm
     SUBDIR += jsdr
     SUBDIR += kb
@@ -77,7 +78,6 @@
     SUBDIR += klog
     SUBDIR += kremotecontrol
     SUBDIR += kvasd
-    SUBDIR += libcodec2
     SUBDIR += libconcord
     SUBDIR += libfap
     SUBDIR += libfec

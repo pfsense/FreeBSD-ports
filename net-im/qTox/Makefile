@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	qTox
-PORTVERSION=	1.5.1
-PORTREVISION=	1
+PORTVERSION=	1.6.0
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	net-im net-p2p
 
 MAINTAINER=	yuri@rawbw.com
@@ -14,8 +14,8 @@ LICENSE=	GPLv3
 
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
 LIB_DEPENDS=	libtoxcore.so:net-im/tox \
-		libopencv_highgui.so:graphics/opencv \
-		libopencv_core.so:graphics/opencv-core \
+		libopencv_highgui.so:graphics/opencv2 \
+		libopencv_core.so:graphics/opencv2-core \
 		libavcodec.so:multimedia/ffmpeg \
 		libvpx.so:multimedia/libvpx \
 		libfilteraudio.so:audio/libfilteraudio \
@@ -26,7 +26,7 @@ LIB_DEPENDS=	libtoxcore.so:net-im/tox \
 		libfontconfig.so:x11-fonts/fontconfig
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	tux3
+GH_ACCOUNT=	qTox
 
 SUB_FILES=	pkg-message
 

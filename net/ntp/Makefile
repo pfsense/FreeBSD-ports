@@ -3,6 +3,7 @@
 
 PORTNAME=	ntp
 PORTVERSION=	4.2.8p9
+PORTREVISION=	1
 CATEGORIES=	net ipv6
 MASTER_SITES=	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/ \
 		http://archive.ntp.org/ntp4/ntp-4.2/ \
@@ -12,15 +13,17 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:S/P/p/:S/.r/-RC/}
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	The Network Time Protocol Distribution
 
+BUILD_DEPENDS=	autogen:devel/autogen
 LIB_DEPENDS=	libevent.so:devel/libevent2 \
 		libmd5.so:www/libwww
 
-CONFLICTS=	ntp-rc-* ntp-devel-*
+CONFLICTS=	ntp-devel-*
 
 USES=		cpe pathfix shebangfix libedit libtool localbase:ldflags \
 		pkgconfig ssl
 
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--enable-leap-smear
 
 TEST_TARGET=	check
 
@@ -61,6 +64,12 @@ THREADS_CONFIGURE_WITH=		threads
 ${D}_CONFIGURE_ON=	--enable-${D}
 .endfor
 
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
+BROKEN=		Does not build under FreeBSD-9, aclocal not found
+.endif
+
 # XXX Temporary hack. Remember to remove this next commit.
 post-extract:
 	@${TOUCH} ${WRKSRC}/scripts/build/checkHtmlFileDates
@@ -74,4 +83,4 @@ post-install:
 	@cd ${WRKSRC}/html && ${FIND} . -print | \
 		${CPIO} -pdu -R ${SHAREOWN}:${SHAREGRP} --quiet ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

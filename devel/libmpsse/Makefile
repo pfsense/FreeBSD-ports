@@ -5,7 +5,7 @@ PORTVERSION=	1.3
 CATEGORIES=	devel
 MASTER_SITES=	GOOGLE_CODE
 
-MAINTAINER=	uffe@uffe.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open source library for SPI/I2C control via FTDI chips
 
 LICENSE=	GPLv2
@@ -47,7 +47,6 @@ post-install:
 	${MKDIR} ${STAGEDIR}/${EXAMPLESDIR}
 	(cd ${WRKSRC}/src/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR} "! -name Makefile")
 
-post-stage:
 	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/_pylibmpsse.so
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libmpsse.so
 

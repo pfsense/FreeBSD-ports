@@ -3,13 +3,14 @@
 
 PORTNAME=	osquery
 PORTVERSION=	1.4.7
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	sysutils
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	SQL powered OS instrumentation, monitoring, and analytics
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	snappy>0:archivers/snappy \
 		rocksdb>0:databases/rocksdb \
@@ -20,7 +21,6 @@ BUILD_DEPENDS=	snappy>0:archivers/snappy \
 		doxygen:devel/doxygen \
 		${PYTHON_PKGNAMEPREFIX}MarkupSafe>0:textproc/py-MarkupSafe \
 		${PYTHON_PKGNAMEPREFIX}psutil>0:sysutils/py-psutil \
-		${PYTHON_PKGNAMEPREFIX}argparse>0:devel/py-argparse \
 		${PYTHON_PKGNAMEPREFIX}pexpect>0:misc/py-pexpect \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>0:devel/py-Jinja2  \
 		${PYTHON_PKGNAMEPREFIX}thrift>0:devel/py-thrift \
@@ -28,6 +28,8 @@ BUILD_DEPENDS=	snappy>0:archivers/snappy \
 LIB_DEPENDS=	libboost_regex.so:devel/boost-libs \
 		libgflags.so:devel/gflags \
 		libicuuc.so:devel/icu
+
+BROKEN=		does not build (error: no matching constructor for initialization of 'gflags::FlagRegisterer')
 
 USES=		cmake:outsource gmake libtool python:build compiler:c++11-lib
 CONFIGURE_ENV+=	OSQUERY_BUILD_VERSION="${PORTVERSION}" HOME="${WRKDIR}" \
@@ -70,7 +72,6 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/tools/deployment/osquery.example.conf \
 		${STAGEDIR}${PREFIX}/etc/osquery.conf.sample
 
-post-stage:
 	${MKDIR} ${STAGEDIR}/var/db/osquery
 
 .include <bsd.port.post.mk>

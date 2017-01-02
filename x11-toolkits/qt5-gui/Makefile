@@ -2,6 +2,7 @@
 
 PORTNAME=	gui
 DISTVERSION=	${QT5_VERSION}
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits graphics
 PKGNAMEPREFIX=	qt5-
 
@@ -80,6 +81,10 @@ CFLAGS_powerpc64=	-mminimal-toc
 # painting/qdrawhelper.cpp:1282: error: cannot convert 'int __vector__' to 'long long int __vector__' for argument '1' to 'long long int __vector__ __builtin_ia32_psrlqi128(long long int __vector__, int)'
 .if ${COMPILER_TYPE} == gcc && ${COMPILER_VERSION} <= 42
 CXXFLAGS+=	-flax-vector-conversions
+.endif
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
+EXTRA_PATCHES+=  ${FILESDIR}/extrapatch-src_gui_painting_qcolor.cpp
 .endif
 
 post-build:

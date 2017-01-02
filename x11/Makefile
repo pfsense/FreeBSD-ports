@@ -124,6 +124,16 @@
     SUBDIR += keyboardcast
     SUBDIR += keylaunch
     SUBDIR += keynav
+    SUBDIR += kf5-frameworkintegration
+    SUBDIR += kf5-frameworks
+    SUBDIR += kf5-kactivities
+    SUBDIR += kf5-kded
+    SUBDIR += kf5-kdelibs4support
+    SUBDIR += kf5-kglobalaccel
+    SUBDIR += kf5-kinit
+    SUBDIR += kf5-krunner
+    SUBDIR += kf5-kwindowsystem
+    SUBDIR += kf5-plasma-framework
     SUBDIR += kgamma
     SUBDIR += konsole
     SUBDIR += leechcraft
@@ -162,6 +172,8 @@
     SUBDIR += libfakekey
     SUBDIR += libfm
     SUBDIR += libfm-extra
+    SUBDIR += libfm-qt
+    SUBDIR += libfmqt-l10n
     SUBDIR += libgnome
     SUBDIR += libgnome-reference
     SUBDIR += libgnomekbd
@@ -180,9 +192,12 @@
     SUBDIR += libxkbui
     SUBDIR += libxklavier
     SUBDIR += libxshmfence
+    SUBDIR += lightdm
+    SUBDIR += lightdm-gtk-greeter
     SUBDIR += linux-c6-pixman
     SUBDIR += linux-c6-xorg-libs
-    SUBDIR += linux-f10-xorg-libs
+    SUBDIR += linux-c7-pixman
+    SUBDIR += linux-c7-xorg-libs
     SUBDIR += listres
     SUBDIR += lsw
     SUBDIR += luit
@@ -192,6 +207,7 @@
     SUBDIR += lxde-meta
     SUBDIR += lxmenu-data
     SUBDIR += lxpanel
+    SUBDIR += lxqt-l10n
     SUBDIR += lxrandr
     SUBDIR += mate
     SUBDIR += mate-applets
@@ -223,6 +239,7 @@
     SUBDIR += p5-X11-GUITest
     SUBDIR += p5-X11-IdleTime
     SUBDIR += p5-X11-Protocol
+    SUBDIR += p5-X11-Protocol-Other
     SUBDIR += p5-X11-Resolution
     SUBDIR += p5-X11-XCB
     SUBDIR += p5-X11-Xlib
@@ -243,6 +260,7 @@
     SUBDIR += qt5-qev
     SUBDIR += qt5-x11extras
     SUBDIR += qterminal
+    SUBDIR += qterminal-l10n
     SUBDIR += qxkb
     SUBDIR += randrproto
     SUBDIR += recordproto

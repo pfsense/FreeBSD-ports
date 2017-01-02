@@ -3,7 +3,7 @@
 
 PORTNAME=	pdal
 PORTVERSION=	1.1.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math databases graphics
 
 MAINTAINER=	coder@tuxfamily.org
@@ -15,6 +15,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 LIB_DEPENDS=	libgdal.so:graphics/gdal \
 		libgeos.so:graphics/geos \
 		libboost_thread.so:devel/boost-libs
+
+BROKEN=		does not build (error: typedef redefinition with different types ('struct GTIFS *' vs 'struct gtiff'))
 
 USES=		cmake:outsource compiler:c++11-lib pathfix pkgconfig
 USE_LDCONFIG=	yes

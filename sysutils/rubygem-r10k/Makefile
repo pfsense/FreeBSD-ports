@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	r10k
-PORTVERSION=	2.2.2
+PORTVERSION=	2.5.1
+PORTREVISION=	1
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 
@@ -13,6 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	rubygem-colored>=1.2:textproc/rubygem-colored \
 		rubygem-cri>=2.6.1:devel/rubygem-cri \
+		rubygem-gettext-setup>=0.5:devel/rubygem-gettext-setup \
 		rubygem-log4r>=1.1.10:sysutils/rubygem-log4r \
 		rubygem-minitar>=0:archivers/rubygem-minitar \
 		rubygem-multi_json>=1.10:devel/rubygem-multi_json \
@@ -25,8 +27,6 @@ USES=		gem shebangfix
 
 PLIST_FILES=	bin/r10k
 
-SHEBANG_FILES=	integration/*/*.sh \
-		integration/*/*/*.sh \
-		integration/*/*/*/*.sh
+SHEBANG_FILES=	integration/*/*.sh
 
 .include <bsd.port.mk>

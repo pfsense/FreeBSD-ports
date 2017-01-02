@@ -1,12 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	ejabberd
-PORTVERSION=	16.08
+PORTVERSION=	16.09
 CATEGORIES=	net-im
 MASTER_SITES=	http://www.process-one.net/downloads/${PORTNAME}/${PORTVERSION}/:p1 \
 		http://distfiles.pirateparty.in/ashish/:deps \
 		LOCAL/ashish:deps
-DISTFILES+=	${DISTNAME}.tgz:p1 ejabberd-deps-8.tar.xz:deps
+DISTFILES+=	${DISTNAME}.tgz:p1 ejabberd-deps-9.tar.xz:deps
 
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Free and Open Source distributed fault-tolerant Jabber server
@@ -101,6 +101,6 @@ post-install:
 		${STAGEDIR}${PREFIX}/${EJABBERD_LIBDIR}/${PORTNAME}-${PORTVERSION}/priv/bin/epam
 .endif
 	@${FIND} ${STAGEDIR}${PREFIX}/${EJABBERD_LIBDIR} -type f \
-		-name '*.so' -exec ${STRIP_CMD} '{}' \;
+		-name '*.so' -exec ${STRIP_CMD} {} \;
 
 .include <bsd.port.post.mk>

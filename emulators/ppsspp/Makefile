@@ -3,7 +3,7 @@
 PORTNAME=	ppsspp
 DISTVERSIONPREFIX=	v
 DISTVERSION?=	1.3
-PORTREVISION?=	2
+PORTREVISION?=	3
 CATEGORIES=	emulators
 # XXX Get from Debian once #697821 lands
 MASTER_SITES=	https://bazaar.launchpad.net/~sergio-br2/${PORTNAME}/debian-sdl/download/5/${PORTNAME}.1-20140802045408-dd26dik367ztj5xg-8/:manpage
@@ -21,11 +21,16 @@ LIB_DEPENDS=	libzip.so:archivers/libzip \
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	hrydgard:DEFAULT,lang Kingcom:ext_armips
-GH_PROJECT=	${PORTNAME}-lang:lang armips:ext_armips
-GH_TAGNAME?=	cdf4a8d:lang 1ffab37:ext_armips
+GH_ACCOUNT=	hrydgard
+GH_TUPLE?=	hrydgard:${PORTNAME}-lang:cdf4a8d:lang/lang \
+		Kingcom:armips:1ffab37:armips/ext/armips
 
 CONFLICTS_INSTALL=	${PORTNAME}-*
+
+# [QT4] FakeJit.cpp:42:37: error: no matching constructor for initialization of 'JitBlockCache'
+# [QT5] c++: error: the clang compiler does not support '-march=armv7-a'
+# [SDL] SplineCommon.cpp:639:17: error: use of undeclared identifier 'AllocateAlignedMemory'
+BROKEN_aarch64=		https://github.com/hrydgard/ppsspp/issues/9032
 
 USES=		compiler:c++11-lib localbase:ldflags pkgconfig
 EXCLUDE=	glew snappy libzip zlib
@@ -47,23 +52,16 @@ DESKTOP_ENTRIES="PPSSPP" \
 OPTIONS_SINGLE=	GUI
 OPTIONS_SINGLE_GUI=	QT4 QT5 SDL
 OPTIONS_SLAVE?=	SDL
-OPTIONS_EXCLUDE=	${OPTIONS_SINGLE_GUI}
+OPTIONS_EXCLUDE:=	${OPTIONS_SINGLE_GUI}
 
 QT4_USES=	qmake:outsource
 QT4_USE=	QT4=qmake_build,moc_build,rcc_build,uic_build,linguisttools_build,gui,opengl
 QT5_USES=	qmake:outsource
 QT5_USE=	QT5=qmake_build,buildtools_build,linguisttools_build,gui,opengl,widgets
-SDL_USES=	cmake:outsource ninja
+SDL_USES=	cmake:outsource
 SDL_BUILD_DEPENDS=	png>=1.6:graphics/png
 SDL_LIB_DEPENDS=	libpng.so:graphics/png
 SDL_VARS=	PORTDATA+="assets ${PORTNAME}"
-
-post-extract:
-# Convert USE_GITHUB groups to git-submodule(1) paths
-.for group in ${GH_PROJECT:C/.*://}
-	@${RMDIR} ${WRKSRC}/${group:S,_,/,g}
-	@${MV} ${WRKSRC_${group}} ${WRKSRC}/${group:S,_,/,g}
-.endfor
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/usr/share,${PREFIX}/share,' \

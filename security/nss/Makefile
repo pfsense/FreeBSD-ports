@@ -4,6 +4,7 @@
 PORTNAME=	nss
 PORTVERSION=	3.28
 #DISTVERSIONSUFFIX=	-with-ckbi-1.98
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	MOZILLA/security/${PORTNAME}/releases/${DISTNAME:tu:C/[-.]/_/g}_RTM/src
 
@@ -30,6 +31,7 @@ USE_PERL5=	build
 MAKE_ENV=	LIBRARY_PATH="${LOCALBASE}/lib" \
 		SQLITE_INCLUDE_DIR="${LOCALBASE}/include" \
 		FREEBL_LOWHASH=1 \
+		NSS_ENABLE_TLS_1_3=1 \
 		NSS_DISABLE_GTESTS=1 \
 		NSS_USE_SYSTEM_SQLITE=1
 CFLAGS+=	-I${LOCALBASE}/include/nspr
@@ -89,7 +91,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/include/nss/nss ${STAGEDIR}${PREFIX}/lib/nss
 	${FIND} ${DIST}/public/nss -type l \
 		-exec ${INSTALL_DATA} {} ${STAGEDIR}${PREFIX}/include/nss/nss \;
-	${INSTALL_LIB} ${BINS}/lib/*.so.1 \
+	${INSTALL_LIB} ${BINS}/lib/*.so \
 		${STAGEDIR}${PREFIX}/lib/nss
 	${INSTALL_DATA} ${BINS}/lib/libcrmf.a \
 		${STAGEDIR}${PREFIX}/lib/nss
@@ -97,8 +99,6 @@ do-install:
 	${INSTALL_PROGRAM} ${BINS}/bin/${bin} \
 		${STAGEDIR}${PREFIX}/bin
 .endfor
-	cd ${BINS}/lib && \
-		${TAR} -cf - *.so | ${TAR} --unlink -C ${STAGEDIR}${PREFIX}/lib/nss -xf -
 	${INSTALL_SCRIPT} ${WRKDIR}/nss-config ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_DATA} ${WRKDIR}/nss.pc ${STAGEDIR}${PREFIX}/libdata/pkgconfig
 

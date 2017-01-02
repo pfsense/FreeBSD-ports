@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	certificate-transparency
-PORTVERSION=	20160102
-PORTREVISION=	1
+PORTVERSION=	20161015
+PORTREVISION=	5
 CATEGORIES=	security
 
 MAINTAINER=	ports@FreeBSD.org
@@ -17,6 +17,7 @@ LIB_DEPENDS?=	libevent.so:devel/libevent2 \
 		libgflags.so:devel/gflags \
 		libglog.so:devel/glog \
 		libgmock.so:devel/googlemock \
+		libicuuc.so:devel/icu \
 		libjson-c.so:devel/json-c \
 		libleveldb.so:databases/leveldb \
 		libobjecthash.so:devel/objecthash \
@@ -24,15 +25,13 @@ LIB_DEPENDS?=	libevent.so:devel/libevent2 \
 		libsqlite3.so:databases/sqlite3 \
 		libtcmalloc.so:devel/google-perftools
 
-BROKEN_FreeBSD_9=	does not build on FreeBSD < 10.x
-
 USES=		autoreconf compiler:c++11-lib gmake pkgconfig
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV+=	"CFLAGS+=-I${LOCALBASE}/include CXXFLAGS+=-lgtest CXXFLAGS+=-lgmock"
 MAKE_FLAGS+=	"V=1"
 USE_GITHUB=	yes
 GH_ACCOUNT=	google
-GH_TAGNAME=	1cdd6b5
+GH_TAGNAME=	28478cb
 
 CPPFLAGS+=	"-I${LOCALBASE}/include"
 CPPFLAGS+=	"-I${LOCALBASE}/include/evhtp"

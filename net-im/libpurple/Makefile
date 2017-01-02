@@ -3,7 +3,7 @@
 
 PORTNAME?=	libpurple
 PORTVERSION=	2.11.0
-PORTREVISION?=	0
+PORTREVISION?=	2
 CATEGORIES?=	net-im
 MASTER_SITES=	SF/pidgin/Pidgin/${PORTVERSION}
 DISTNAME=	pidgin-${PORTVERSION}
@@ -11,7 +11,7 @@ DISTNAME=	pidgin-${PORTVERSION}
 MAINTAINER?=	marcus@FreeBSD.org
 COMMENT?=	Backend library for the Pidgin multi-protocol messaging client
 
-USES=		cpe gettext gmake libtool pathfix pkgconfig tar:bzip2
+USES+=		cpe gettext gmake libtool pathfix pkgconfig tar:bzip2
 USE_GNOME?=	gnomeprefix intltool glib20 libxml2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS?=--disable-gtkui \
@@ -137,14 +137,14 @@ PLIST_SUB+=		EVO="@comment not installed: "
 #.endif
 
 .if ${PORT_OPTIONS:MGSTREAMER}
-USE_GSTREAMER+=	core good
+USE_GSTREAMER1+=core good
 .else
 CONFIGURE_ARGS+=--disable-gstreamer
 .endif
 
 .if ${PORT_OPTIONS:MVV} && ${PORT_OPTIONS:MGSTREAMER}
 LIB_DEPENDS+=	libfarstream-0.2.so:net-im/farstream
-USE_GSTREAMER+=	v4l2
+USE_GSTREAMER1+=v4l2
 PLIST_SUB+=	VV=""
 .else
 CONFIGURE_ARGS+=--disable-vv
@@ -333,7 +333,7 @@ post-patch:
 .endif
 
 .if !defined(PIDGIN_SLAVE) && ${PORT_OPTIONS:MPERL}
-post-stage:
+post-install:
 	@${SED} -i '' -e 's|^${STAGEDIR}||g' \
 		${STAGEDIR}${PREFIX}/lib/purple-2/perl/auto/Purple/.packlist
 .endif

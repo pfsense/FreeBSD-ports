@@ -3,11 +3,13 @@
 
 PORTNAME=	osm2pgsql
 PORTVERSION=	0.87.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	converters geography
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Convert OSM XML data to PostgreSQL database
+
+BROKEN=		Last update of graphics/geos broke compatibility
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

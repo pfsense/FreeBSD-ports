@@ -5,10 +5,9 @@ PORTNAME=	libofa
 PORTVERSION=	0.9.3
 PORTREVISION=	10
 CATEGORIES=	audio
-MASTER_SITES=	http://pkgs.fedoraproject.org/repo/pkgs/libofa/libofa-0.9.3.tar.gz/51507d2c4b432bd2755f48d58471696e/
 
 MAINTAINER=	jhale@FreeBSD.org
-COMMENT=	The Open Fingerprint Architecture Library
+COMMENT=	Open Fingerprint Architecture Library
 
 LICENSE=		APL1 GPLv2
 LICENSE_COMB=		dual
@@ -21,11 +20,15 @@ LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libexpat.so:textproc/expat2 \
 		libcurl.so:ftp/curl
 
-PROJECTHOST=	musicip-libofa
-USES=		dos2unix libtool pathfix
+DEPRECATED=	MusicDNS service has been discontinued
+EXPIRATION_DATE=	2017-03-01
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	tanob
+GH_TAGNAME=	b75e45e
+
+USES=		dos2unix libtool localbase pathfix
 GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 

@@ -42,6 +42,7 @@
     SUBDIR += axa
     SUBDIR += babeld
     SUBDIR += balance
+    SUBDIR += bctoolbox
     SUBDIR += beacon
     SUBDIR += beanstalkd
     SUBDIR += belle-sip
@@ -51,7 +52,9 @@
     SUBDIR += bird-devel
     SUBDIR += bird6
     SUBDIR += bittwist
+    SUBDIR += bluemix-cli
     SUBDIR += bmon
+    SUBDIR += bnxt-kmod
     SUBDIR += boclient
     SUBDIR += boinc-client
     SUBDIR += boinc_curses
@@ -74,6 +77,7 @@
     SUBDIR += cnd
     SUBDIR += coda6_client
     SUBDIR += coda6_server
+    SUBDIR += concourse-fly
     SUBDIR += corkscrew
     SUBDIR += corosync
     SUBDIR += courier-authlib-ldap
@@ -107,7 +111,6 @@
     SUBDIR += dictd
     SUBDIR += dictd-database
     SUBDIR += dimes
-    SUBDIR += dosdetector
     SUBDIR += dpdk
     SUBDIR += dpinger
     SUBDIR += drawterm
@@ -143,12 +146,14 @@
     SUBDIR += freeradius2
     SUBDIR += freeradius3
     SUBDIR += freerdp
+    SUBDIR += freerdp1
     SUBDIR += freeswitch
     SUBDIR += freevrrpd
     SUBDIR += fspclient
     SUBDIR += fspd
     SUBDIR += fsplib
     SUBDIR += g2ipmsg
+    SUBDIR += gdrive
     SUBDIR += geoclue
     SUBDIR += geocode-glib
     SUBDIR += geoipupdate
@@ -245,7 +250,6 @@
     SUBDIR += iaxmodem
     SUBDIR += icmpinfo
     SUBDIR += icpld
-    SUBDIR += iet
     SUBDIR += ifdepd
     SUBDIR += iffinder
     SUBDIR += ifstat
@@ -254,6 +258,7 @@
     SUBDIR += iipsrv
     SUBDIR += ilbc
     SUBDIR += imapproxy
+    SUBDIR += intel-em-kmod
     SUBDIR += intel-ixl-kmod
     SUBDIR += iodine
     SUBDIR += ip2location
@@ -288,6 +293,7 @@
     SUBDIR += kdenetwork4-filesharing
     SUBDIR += kdenetwork4-strigi-analyzers
     SUBDIR += kea
+    SUBDIR += kf5-kxmlrpcclient
     SUBDIR += kget
     SUBDIR += kio-upnp-ms
     SUBDIR += kippo
@@ -376,8 +382,9 @@
     SUBDIR += linux-c6-avahi-libs
     SUBDIR += linux-c6-openldap
     SUBDIR += linux-c6-tcp_wrappers-libs
-    SUBDIR += linux-f10-nss_ldap
-    SUBDIR += linux-f10-openldap
+    SUBDIR += linux-c7-avahi-libs
+    SUBDIR += linux-c7-openldap
+    SUBDIR += linux-c7-tcp_wrappers-libs
     SUBDIR += linuxigd
     SUBDIR += liveMedia
     SUBDIR += lla
@@ -420,6 +427,7 @@
     SUBDIR += msend
     SUBDIR += mtr
     SUBDIR += mtr-nox11
+    SUBDIR += multicat
     SUBDIR += nakenchat
     SUBDIR += nanomsg
     SUBDIR += nast
@@ -491,6 +499,7 @@
     SUBDIR += openldap24-sasl-client
     SUBDIR += openldap24-server
     SUBDIR += openmpi
+    SUBDIR += openmpi2
     SUBDIR += openmq
     SUBDIR += openmq-client
     SUBDIR += openntpd
@@ -606,9 +615,11 @@
     SUBDIR += p5-Net-Finger
     SUBDIR += p5-Net-Flow
     SUBDIR += p5-Net-Frame
+    SUBDIR += p5-Net-Frame-Device
     SUBDIR += p5-Net-Frame-Dump
     SUBDIR += p5-Net-Frame-Layer-ICMPv6
     SUBDIR += p5-Net-Frame-Layer-IPv6
+    SUBDIR += p5-Net-Frame-Simple
     SUBDIR += p5-Net-GitHub
     SUBDIR += p5-Net-Gnats
     SUBDIR += p5-Net-Google
@@ -650,6 +661,7 @@
     SUBDIR += p5-Net-LDAP-posixAccount
     SUBDIR += p5-Net-LDAP-posixGroup
     SUBDIR += p5-Net-Libdnet
+    SUBDIR += p5-Net-Libdnet6
     SUBDIR += p5-Net-LimeLight-Purge
     SUBDIR += p5-Net-MAC
     SUBDIR += p5-Net-MAC-Vendor
@@ -675,7 +687,6 @@
     SUBDIR += p5-Net-Patricia
     SUBDIR += p5-Net-Pcap
     SUBDIR += p5-Net-PcapUtils
-    SUBDIR += p5-Net-Ping
     SUBDIR += p5-Net-Ping-External
     SUBDIR += p5-Net-Proxy
     SUBDIR += p5-Net-PubSubHubbub-Publisher
@@ -890,12 +901,12 @@
     SUBDIR += pear-XML_RPC2
     SUBDIR += pecl-amqp
     SUBDIR += pecl-apn
-    SUBDIR += pecl-cvsclient
     SUBDIR += pecl-geoip
     SUBDIR += pecl-gupnp
     SUBDIR += pecl-ip2location
     SUBDIR += pecl-mosquitto
     SUBDIR += pecl-oauth
+    SUBDIR += pecl-oauth2
     SUBDIR += pecl-radius
     SUBDIR += pecl-smbclient
     SUBDIR += pecl-yaz
@@ -904,10 +915,6 @@
     SUBDIR += pen
     SUBDIR += pfinger
     SUBDIR += phamm
-    SUBDIR += php55-ldap
-    SUBDIR += php55-soap
-    SUBDIR += php55-sockets
-    SUBDIR += php55-xmlrpc
     SUBDIR += php56-ldap
     SUBDIR += php56-soap
     SUBDIR += php56-sockets
@@ -987,11 +994,11 @@
     SUBDIR += py-netlib
     SUBDIR += py-netstring
     SUBDIR += py-nnpy
-    SUBDIR += py-novaclient
     SUBDIR += py-ntplib
     SUBDIR += py-oauth
     SUBDIR += py-oauth2
     SUBDIR += py-paho-mqtt
+    SUBDIR += py-pamqp
     SUBDIR += py-pcap
     SUBDIR += py-pcapy
     SUBDIR += py-pcs
@@ -1004,15 +1011,27 @@
     SUBDIR += py-pypcap
     SUBDIR += py-pysendfile
     SUBDIR += py-pyshark
+    SUBDIR += py-pysimplesoap
     SUBDIR += py-pysmb
     SUBDIR += py-pysocks
     SUBDIR += py-pystun
+    SUBDIR += py-python-barbicanclient
     SUBDIR += py-python-bitcoinrpc
+    SUBDIR += py-python-ceilometerclient
+    SUBDIR += py-python-cinderclient
+    SUBDIR += py-python-designateclient
+    SUBDIR += py-python-glanceclient
+    SUBDIR += py-python-heatclient
+    SUBDIR += py-python-keystoneclient
+    SUBDIR += py-python-neutronclient
+    SUBDIR += py-python-novaclient
     SUBDIR += py-python-ntlm
+    SUBDIR += py-python-openstackclient
     SUBDIR += py-pyvmomi
     SUBDIR += py-pyzmq
     SUBDIR += py-qt4-network
     SUBDIR += py-qt5-network
+    SUBDIR += py-rabbitpy
     SUBDIR += py-radix
     SUBDIR += py-raet
     SUBDIR += py-rainbowstream
@@ -1021,11 +1040,11 @@
     SUBDIR += py-ripe.atlas.tools
     SUBDIR += py-s3cmd
     SUBDIR += py-s3transfer
-    SUBDIR += py-simplesoap
     SUBDIR += py-smbpasswd
     SUBDIR += py-soappy
     SUBDIR += py-socketio-client
     SUBDIR += py-speedtest-cli
+    SUBDIR += py-sshuttle
     SUBDIR += py-suds
     SUBDIR += py-terminado
     SUBDIR += py-tofu
@@ -1037,7 +1056,6 @@
     SUBDIR += py-txrestapi
     SUBDIR += py-upnp-inspector
     SUBDIR += py-uritemplate
-    SUBDIR += py-uritemplate.py
     SUBDIR += py-urllib3
     SUBDIR += py-wolframalpha
     SUBDIR += py-xmlrpc
@@ -1078,8 +1096,8 @@
     SUBDIR += relayd
     SUBDIR += remmina
     SUBDIR += remmina-plugin-gnome
-    SUBDIR += remmina-plugin-i18n
     SUBDIR += remmina-plugin-nx
+    SUBDIR += remmina-plugin-rdp
     SUBDIR += remmina-plugin-telepathy
     SUBDIR += remmina-plugin-vnc
     SUBDIR += remmina-plugin-xdmcp
@@ -1177,6 +1195,7 @@
     SUBDIR += rubygem-opennebula
     SUBDIR += rubygem-packetfu
     SUBDIR += rubygem-pcaprub
+    SUBDIR += rubygem-qiniu
     SUBDIR += rubygem-rabbiter
     SUBDIR += rubygem-rbvmomi
     SUBDIR += rubygem-right_aws
@@ -1256,6 +1275,7 @@
     SUBDIR += socketpipe
     SUBDIR += socketw
     SUBDIR += sofia-sip
+    SUBDIR += softethervpn
     SUBDIR += spideroak
     SUBDIR += splatd
     SUBDIR += spoofer
@@ -1306,6 +1326,7 @@
     SUBDIR += tcpslice
     SUBDIR += tcpsplit
     SUBDIR += tcpstat
+    SUBDIR += tcptestsuite
     SUBDIR += tcptrace
     SUBDIR += tcptraceroute
     SUBDIR += tcptraceroute-devel
@@ -1370,7 +1391,6 @@
     SUBDIR += vinagre
     SUBDIR += vino
     SUBDIR += vmware-vsphere-cli
-    SUBDIR += vnc
     SUBDIR += vncreflector
     SUBDIR += vnstat
     SUBDIR += vortex

@@ -3,9 +3,9 @@
 
 PORTNAME=	plexhometheater
 PORTVERSION=	1.4.1
-PORTREVISION=	3
 DISTVERSIONPREFIX=v
 DISTVERSIONSUFFIX=.469-47a90f01
+PORTREVISION=	5
 CATEGORIES=	multimedia
 
 MAINTAINER=	woodsb02@FreeBSD.org
@@ -60,6 +60,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3 \
 		glxinfo:graphics/mesa-demos \
 		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow \
 		xdpyinfo:x11/xdpyinfo
+
+BROKEN=		Fails to build against libsamplerate-0.1.9
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	plexinc

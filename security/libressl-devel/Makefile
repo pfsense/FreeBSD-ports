@@ -20,9 +20,9 @@ OPTIONS_DEFAULT=	MAN3 NC
 MAN3_DESC=	Install API manpages (section 3)
 NC_DESC=	Install TLS-enabled netcat
 
-CONFLICTS?=	libressl-[0-9]* \
-		openssl-[0-9]* \
-		openssl-devel-[0-9]*
+CONFLICTS_INSTALL=	libressl-[0-9]* \
+			openssl-[0-9]* \
+			openssl-devel-[0-9]*
 
 GNU_CONFIGURE=	yes
 USES=		cpe libtool pathfix pkgconfig
@@ -33,15 +33,15 @@ CFLAGS+=	-fpic -DPIC
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 
-post-stage-NC-on:
+post-install:
+	${RM} -r ${STAGEDIR}/${PREFIX}/etc/ssl/cert.pem
+
+post-install-NC-on:
 	${INSTALL_PROGRAM} ${WRKSRC}/apps/nc/.libs/nc ${STAGEDIR}/${PREFIX}/bin/nc
 	${INSTALL_MAN} ${WRKSRC}/apps/nc/nc.1 ${STAGEDIR}/${PREFIX}/man/man1/nc.1
 
-post-stage:
-	${RM} -rf ${STAGEDIR}/${PREFIX}/etc/ssl/cert.pem
-
 post-install-MAN3-off:
-	${RM} -rf ${STAGEDIR}/${PREFIX}/man/man3
+	${RM} -r ${STAGEDIR}/${PREFIX}/man/man3
 	${REINPLACE_CMD} -e '/^man\/man3/d' ${TMPPLIST}
 
 .include <bsd.port.mk>

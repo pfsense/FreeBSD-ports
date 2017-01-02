@@ -3,13 +3,14 @@
 
 PORTNAME=	hfst
 PORTVERSION=	3.8.2
+PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/source
 
 MAINTAINER=	demon@FreeBSD.org
 COMMENT=	A toolkit for for processing natural language morphologies
 
-USES=		libtool pkgconfig python:2 readline shebangfix
+USES=		libtool pathfix pkgconfig python:2 readline shebangfix
 USE_GNOME=	glib20 libxml2
 USE_GCC=	yes
 GNU_CONFIGURE=	yes

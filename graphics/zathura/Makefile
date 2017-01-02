@@ -3,7 +3,7 @@
 
 PORTNAME=	zathura
 PORTVERSION=	0.3.6
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics print
 MASTER_SITES=	http://pwmt.org/projects/zathura/download/
 
@@ -20,7 +20,8 @@ LIB_DEPENDS=	libcairo.so:graphics/cairo \
 BUILD_DEPENDS+=	rst2html:textproc/py-docutils
 
 USE_GNOME=	glib20 gtk30 gdkpixbuf2
-USES=		compiler:c11 gmake pkgconfig
+USES=		compiler:c11 gmake pathfix pkgconfig
+PATHFIX_MAKEFILEIN=	Makefile
 MAKE_ENV=	SFLAGS="${STRIP}" \
 		RSTTOMAN=${LOCALBASE}/bin/rst2man \
 		ZLIB_INC= \
@@ -39,7 +40,6 @@ NLS_USES=		gettext
 
 post-patch:	.SILENT
 	${REINPLACE_CMD} -e 's|man[15]|man/&|g' \
-		-e 's|$${LIBDIR}/pkgconfig|${PREFIX}/libdata/pkgconfig|g'\
 		${WRKSRC}/Makefile
 	${REINPLACE_CMD} -e 's|PLUGINDIR ?= .*$$|PLUGINDIR ?= ${PREFIX}/lib/zathura|'\
 		${WRKSRC}/config.mk
@@ -52,7 +52,7 @@ post-patch:	.SILENT
 	${REINPLACE_CMD} -e 's|/etc|${PREFIX}&|g' \
 		${WRKSRC}/zathura/config.h \
 		${WRKSRC}/doc/man/zathurarc.5.rst
-	(cd ${WRKSRC}; ${RM} -f zathura.1 zathurarc.5)
+	(cd ${WRKSRC}; ${RM} zathura.1 zathurarc.5)
 
 post-patch-NLS-off: .SILENT
 	${REINPLACE_CMD} -e '/-C po/d'\

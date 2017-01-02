@@ -9,7 +9,7 @@ CATEGORIES=	mail
 MASTER_SITES=	http://www.opensmtpd.org/archives/ \
 		http://distfiles.pirateparty.in/ashish/
 
-MAINTAINER=	ashish@FreeBSD.org
+MAINTAINER=	fluffy@FreeBSD.org
 COMMENT=	Security- and simplicity-focused SMTP server from OpenBSD
 
 LICENSE=	ISCL
@@ -27,8 +27,7 @@ MAILERCONF_DESC=	Activate OpenSMTPD in mailer.conf(5)
 SSL_PORT_DESC=		SSL/TLS support via OpenSSL/LibreSSL from port
 TABLE_DB_DESC=		Build table-db plugin (aliases)
 
-USES=		cpe libtool
-USE_OPENSSL=	yes
+USES=		cpe libtool ssl
 GNU_CONFIGURE=	yes
 
 CPE_VENDOR=	openbsd

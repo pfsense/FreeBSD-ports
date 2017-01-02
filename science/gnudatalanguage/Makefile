@@ -3,7 +3,7 @@
 
 PORTNAME=	gnudatalanguage
 DISTVERSION=	0.9.6v2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	science lang
 MASTER_SITES=	SF/${PORTNAME}/gdl/${PORTVERSION:R}
 .if defined(BUILD_PYTHON_MODULE)
@@ -111,7 +111,7 @@ do-install:
 .endif
 
 .if !defined(BUILD_PYTHON_MODULE)
-post-stage:
+post-install:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/testsuite
 	(cd ${WRKSRC}/testsuite && ${COPYTREE_SHARE} \* ${STAGEDIR}${EXAMPLESDIR}/testsuite/)
 .endif

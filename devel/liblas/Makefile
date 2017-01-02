@@ -3,6 +3,7 @@
 
 PORTNAME=	liblas
 PORTVERSION=	1.8.1
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	wen@FreeBSD.org
@@ -15,7 +16,9 @@ LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 
 CONFLICTS=	liblas12-1.2*
 
-USES=		cmake libtool
+PORTSCOUT=	skipv:progress-20071229
+
+USES=		cmake compiler:c++11-lang libtool
 LDFLAGS+=	-lpthread
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

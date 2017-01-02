@@ -3,6 +3,7 @@
 
 PORTNAME=	mcmc-jags
 PORTVERSION=	4.0.0
+PORTREVISION=	3
 CATEGORIES=	math
 MASTER_SITES=	SF/mcmc-jags/JAGS/${S}.x/Source/:1 \
 		SF/mcmc-jags/Examples/${S}.x/:2 \
@@ -18,12 +19,27 @@ COMMENT=	Just Another Gibbs Sampler
 LICENSE=	GPLv2
 
 GNU_CONFIGURE=	yes
-USES=		bison compiler:features fortran gmake libtool localbase
+USES=		bison compiler:features fortran gmake libtool localbase pathfix
 USE_GCC=	yes
 USE_LDCONFIG=	yes
 
 WRKSRC=		${WRKDIR}/JAGS-${PORTVERSION}
 
+OPTIONS_SINGLE=		BLAS
+OPTIONS_SINGLE_BLAS=	ATLAS OPENBLAS NETLIB
+
+OPTIONS_DEFAULT+= OPENBLAS
+
+ATLAS_USES=		blaslapack:atlas
+ATLAS_VARS=		MANUAL_PACKAGE_BUILD=\
+"Choose a BLAS option other than ATLAS for package building."
+NETLIB_USES=		blaslapack:netlib
+OPENBLAS_USES=		blaslapack:openblas
+
+CONFIGURE_ARGS+= --with-blas="-L${LOCALBASE}/lib ${BLASLIB}" \
+		 --with-lapack="${LAPACKLIB}"
+
+OPTIONS_SUB=		YES
 PLIST_SUB=	MODULEVERSION=${S}
 S=		${PORTVERSION:C|\..*||}
 
@@ -41,26 +57,7 @@ DISTFILES+=	classic-bugs.tar.gz:2
 PORTEXAMPLES=	*
 .endif
 
-.if exists(${LOCALBASE}/lib/libatlas.so)
-WITH_BLAS?=	atlas
-.else
-WITH_BLAS?=	reference
-.endif
-
-.if ${WITH_BLAS} == "atlas"
-LIB_DEPENDS+=	libatlas.so:math/atlas
-CONFIGURE_ARGS=	--with-lapack="-lalapack -lptcblas" --with-blas="-lptf77blas"
-.elif ${WITH_BLAS} == "reference"
-LIB_DEPENDS+=	libblas.so:math/blas
-LIB_DEPENDS+=	liblapack.so:math/lapack
-CONFIGURE_ARGS=	--with-lapack="-llapack" --with-blas="-lblas"
-.else
-IGNORE=		invalid value for WITH_BLAS: ${WITH_BLAS}
-.endif
-
 post-patch:
-	@${REINPLACE_CMD} -e 's|[(]libdir[)]/pkgconfig|(prefix)/libdata/pkgconfig|g' \
-		${WRKSRC}/etc/Makefile.in
 	@${REINPLACE_CMD} \
 		-e '/@WINDOWS_FALSE@bin_SCRIPTS =/s/jags/mcmc-&/' \
 		-e '/CLEANFILES =/s/jags/mcmc-&/' \

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lftp
-PORTVERSION=	4.7.3
+PORTVERSION=	4.7.4
 CATEGORIES=	ftp ipv6
 MASTER_SITES=	http://lftp.yar.ru/ftp/ \
 		http://lftp.yar.ru/ftp/old/ \
@@ -64,4 +64,10 @@ post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${SSL_DEFAULT:Mopenssl-devel}
+BROKEN=		Does not build with openssl-devel
+.endif
+
+.include <bsd.port.post.mk>

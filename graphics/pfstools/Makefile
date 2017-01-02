@@ -17,7 +17,7 @@ RUN_DEPENDS+=	bash:shells/bash
 PFS_BUILD=	${MACHINE_ARCH}-portbld-freebsd${OSREL}
 PLIST_SUB+=	PFS_BASE=${PREFIX}
 
-USES=		gmake pkgconfig libtool
+USES=		gmake libtool pathfix pkgconfig
 GNU_CONFIGURE=	yes
 CONFIGURE_TARGET=	${PFS_BUILD}
 CONFIGURE_ARGS+=	--disable-jpeghdr --disable-matlab \
@@ -80,7 +80,7 @@ octave_OLD_CMD?=/usr/bin/octave
 octave_CMD?=	${OCTAVE_BASE}/bin/octave
 .endif
 
-post-stage:
+post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib//libpfs-1.2.so.0.0.0
 
 .include <bsd.port.mk>

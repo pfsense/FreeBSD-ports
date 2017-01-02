@@ -3,7 +3,7 @@
 
 PORTNAME=	webkit
 PORTVERSION=	2.8.5
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	www
 MASTER_SITES=	http://webkitgtk.org/releases/
 PKGNAMESUFFIX=	2-gtk3
@@ -12,7 +12,8 @@ DISTNAME=	${PORTNAME}gtk-${PORTVERSION}
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Opensource browser engine using the GTK+ 3 toolkit
 
-BUILD_DEPENDS=	geoclue>=0:net/geoclue
+BUILD_DEPENDS=	geoclue>=0:net/geoclue \
+		python:lang/python
 LIB_DEPENDS=	libenchant.so:textproc/enchant \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \

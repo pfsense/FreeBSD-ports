@@ -3,6 +3,7 @@
 
 PORTNAME=	ring-gnome
 PORTVERSION=	0.160516
+PORTREVISION=	1
 #DISTVERSIONPREFIX=	v
 CATEGORIES=	net-im net-p2p
 
@@ -25,8 +26,6 @@ LIB_DEPENDS=	libringclient.so:net-im/ring-libclient \
 		libsecret-1.so:security/libsecret \
 		libebook-1.2.so:databases/evolution-data-server
 
-BROKEN_FreeBSD_9=	Fails due to compiler issues
-
 USE_GITHUB=	yes
 GH_TUPLE+=	savoirfairelinux:ring-client-gnome:07107e9
 
@@ -45,7 +44,7 @@ OPTIONS_DEFINE=	NLS
 NLS_CMAKE_ON=	-DFREEBSD_NLS_ON:BOOL=ON
 OPTIONS_SUB=	yes
 
-post-stage:
+post-install:
 	@${GZIP_CMD} ${GZIP} < ${STAGEDIR}${PREFIX}/share/icons/hicolor/scalable/apps/ring.svg > ${STAGEDIR}${PREFIX}/share/icons/hicolor/scalable/apps/ring.svgz
 	@${RM} ${STAGEDIR}${PREFIX}/share/icons/hicolor/scalable/apps/ring.svg
 

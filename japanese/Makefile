@@ -20,6 +20,7 @@
     SUBDIR += asterisk-sounds
     SUBDIR += awffull
     SUBDIR += bible_names-fpw
+    SUBDIR += boiled-mozc
     SUBDIR += bookview
     SUBDIR += bugzilla44
     SUBDIR += bugzilla50
@@ -194,6 +195,7 @@
     SUBDIR += nhocr
     SUBDIR += nkf
     SUBDIR += onew
+    SUBDIR += p5-2chproxy
     SUBDIR += p5-Date-Japanese-Era
     SUBDIR += p5-Date-Japanese-Holiday
     SUBDIR += p5-DateTime-Calendar-Japanese-Era

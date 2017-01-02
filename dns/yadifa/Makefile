@@ -3,6 +3,7 @@
 
 PORTNAME=	yadifa
 PORTVERSION=	2.2.1
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-6281
 CATEGORIES=	dns ipv6
 MASTER_SITES=	http://cdn.yadifa.eu/sites/default/files/releases/
@@ -42,6 +43,9 @@ PORTDOCS=	AUTHORS COPYING ChangeLog \
 post-configure:
 	${REINPLACE_CMD} -e 's|^docdir = .*|docdir = ${EXAMPLESDIR}|' ${WRKSRC}/etc/Makefile
 	${REINPLACE_CMD} -e 's|/usr/local/var|/var|' -e 's|/var/zones|/var/${PORTNAME}|' ${WRKSRC}/etc/yadifad.conf.example
+
+pre-build:
+	@cd ${WRKSRC} && ${MAKE_CMD} features
 
 post-install:
 	${MV} ${STAGEDIR}${PREFIX}/etc/yadifad.conf \

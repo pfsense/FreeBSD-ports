@@ -3,7 +3,7 @@
 
 PORTNAME=	dbmail
 PORTVERSION=	2.2.18
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	mail
 MASTER_SITES=	http://www.dbmail.org/download/2.2/
 PKGNAMESUFFIX=	22
@@ -74,7 +74,7 @@ DATABASE+=	sqlite
 .endif
 
 post-patch:
-	@${FIND} ${WRKSRC} -name CVS -type d | ${XARGS} ${RM} -fr
+	@${FIND} ${WRKSRC} -name CVS -type d | ${XARGS} ${RM} -r
 	@${FIND} ${WRKSRC} -name *.orig -type f -delete
 
 post-configure:

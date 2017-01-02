@@ -15,11 +15,11 @@ RUN_DEPENDS=	syscache:sysutils/pcbsd-syscache \
 		warden:sysutils/warden \
 		nginx:www/nginx
 
-IGNORE_WITH_PHP=5 54
 USE_PHP=	filter gd json session
 WRKSRC_SUBDIR=	src-webui
-USES=		pkgconfig tar:xz
+USES=		pkgconfig
 NO_BUILD=	yes
+NO_ARCH=	yes
 MAKE_ARGS=	PREFIX=${STAGEDIR}${PREFIX}
 
 USE_GITHUB=	yes

@@ -46,6 +46,7 @@
     SUBDIR += dkns
     SUBDIR += drjava
     SUBDIR += e3
+    SUBDIR += ecce
     SUBDIR += edith
     SUBDIR += editorconfig-core-c
     SUBDIR += emacs
@@ -54,7 +55,6 @@
     SUBDIR += fileobj
     SUBDIR += flim
     SUBDIR += focuswriter
-    SUBDIR += focuswriter-qt4
     SUBDIR += fpc-ide
     SUBDIR += fte
     SUBDIR += fxite
@@ -69,6 +69,7 @@
     SUBDIR += heme
     SUBDIR += hexcurse
     SUBDIR += hexedit
+    SUBDIR += hexer
     SUBDIR += hexpert
     SUBDIR += hnb
     SUBDIR += hte
@@ -190,6 +191,7 @@
     SUBDIR += libreoffice-ug
     SUBDIR += libreoffice-uz
     SUBDIR += libreoffice-ve
+    SUBDIR += libreoffice-vec
     SUBDIR += libreoffice-xh
     SUBDIR += libreoffice-zu
     SUBDIR += libreoffice4
@@ -255,7 +257,7 @@
     SUBDIR += vile
     SUBDIR += vim
     SUBDIR += vim-lite
-    SUBDIR += winefish
+    SUBDIR += web-mode
     SUBDIR += with-editor
     SUBDIR += wordgrinder
     SUBDIR += xcoral

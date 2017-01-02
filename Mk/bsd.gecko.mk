@@ -183,7 +183,7 @@ harfbuzz_LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
 harfbuzz_MOZ_OPTIONS=	--with-system-harfbuzz
 .endif
 
-hunspell_LIB_DEPENDS=	libhunspell-1.3.so:textproc/hunspell
+hunspell_LIB_DEPENDS=	libhunspell-1.5.so:textproc/hunspell
 hunspell_MOZ_OPTIONS=	--enable-system-hunspell
 
 icu_LIB_DEPENDS=		libicui18n.so:devel/icu
@@ -372,6 +372,19 @@ MOZ_OPTIONS+=	--enable-pulseaudio
 MOZ_OPTIONS+=	--disable-pulseaudio
 .endif
 
+.if ${PORT_OPTIONS:MSNDIO}
+LIB_DEPENDS+=	libsndio.so:audio/sndio
+post-patch-SNDIO-on:
+	@${REINPLACE_CMD} -e 's|OpenBSD|${OPSYS}|g' \
+		${MOZSRC}/media/libcubeb/src/moz.build \
+		${MOZSRC}/media/libcubeb/tests/moz.build \
+		${MOZSRC}/toolkit/library/moz.build
+	@${REINPLACE_CMD} -e 's|OS==\"openbsd\"|OS==\"${OPSYS:tl}\"|g' \
+		${MOZSRC}/media/webrtc/trunk/webrtc/build/common.gypi
+	@${ECHO} "OS_LIBS += ['sndio']" >> \
+		${MOZSRC}/media/webrtc/signaling/test/common.build
+.endif
+
 .if ${PORT_OPTIONS:MRUST}
 BUILD_DEPENDS+=	rustc:${RUST_PORT}
 RUST_PORT?=		lang/rust
@@ -494,7 +507,7 @@ gecko-post-patch:
 .if exists(${PKGDEINSTALL_INC})
 	@${MOZCONFIG_SED} < ${PKGDEINSTALL_INC} > ${PKGDEINSTALL}
 .endif
-	@${RM} -f ${MOZCONFIG}
+	@${RM} ${MOZCONFIG}
 .if !defined(NOMOZCONFIG)
 	@if [ -e ${PORT_MOZCONFIG} ] ; then \
 		${MOZCONFIG_SED} < ${PORT_MOZCONFIG} >> ${MOZCONFIG} ; \
@@ -585,7 +598,7 @@ post-install-script: gecko-create-plist
 
 gecko-create-plist:
 # Create the plist
-	${RM} -f ${PLISTF}
+	${RM} ${PLISTF}
 .for dir in ${MOZILLA_PLIST_DIRS}
 	@cd ${STAGEDIR}${PREFIX}/${dir} && ${FIND} -H -s * ! -type d | \
 		${SED} -e 's|^|${dir}/|' >> ${PLISTF}

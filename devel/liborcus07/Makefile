@@ -2,6 +2,7 @@
 
 PORTNAME=	liborcus
 PORTVERSION=	0.7.1
+PORTREVISION=	1
 CATEGORIES=	devel misc
 MASTER_SITES=	http://kohei.us/files/orcus/src/
 PKGNAMESUFFIX=	07
@@ -29,7 +30,7 @@ CONFIGURE_ENV=	ZLIB_CFLAGS="-I/usr/include" ZLIB_LIBS="-lz"
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-post-stage:
-	@${RM} -f ${STAGEDIR}${PREFIX}/bin/*
+post-install:
+	@${RM} ${STAGEDIR}${PREFIX}/bin/*
 
 .include <bsd.port.mk>

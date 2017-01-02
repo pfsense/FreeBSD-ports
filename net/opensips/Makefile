@@ -3,6 +3,7 @@
 
 PORTNAME=		opensips
 PORTVERSION=		2.1.4
+PORTREVISION=	1
 CATEGORIES=		net
 MASTER_SITES=		http://opensips.org/pub/opensips/${PORTVERSION}/
 
@@ -41,7 +42,7 @@ DOCSDIR=		share/doc/opensips
 
 USE_RC_SUBR=		opensips
 
-USES=			gmake perl5 pkgconfig shebangfix ssl
+USES=			gmake ncurses perl5 pkgconfig shebangfix ssl
 USE_GCC=		yes
 
 NOPRECIOUSMAKEVARS=	yes
@@ -172,20 +173,19 @@ do-build:
 do-install:
 	cd ${WRKSRC} && ${OPENSIPS_MAKE_ENV} ${GMAKE} ${INSTALL_TARGET}
 
-do-install-TESTS-on:
-	(cp -r ${WRKSRC}/test ${STAGEDIR}${PREFIX}/tests/opensips)
-
-do-install-EXAMPLES-on:
-	(cp -r ${WRKSRC}/examples ${STAGEDIR}${PREFIX}/share/examples/opensips)
-
-post-stage:
 	@${REINPLACE_CMD} -e "s|^# MD5=.*|MD5=\"md5\"|" ${STAGEDIR}${PREFIX}/etc/opensips/opensipsctlrc.sample
 	@${REINPLACE_CMD} -e "s|^# GREP=.*|GREP=\"${LOCALBASE}/bin/grep\"|" ${STAGEDIR}${PREFIX}/etc/opensips/opensipsctlrc.sample
 	@${REINPLACE_CMD} -e "s|^# MD5=.*|MD5=\"md5\"|" ${STAGEDIR}${PREFIX}/etc/opensips/osipsconsolerc.sample
 	@${REINPLACE_CMD} -e "s|^# GREP=.*|GREP=\"${LOCALBASE}/bin/egrep\"|" ${STAGEDIR}${PREFIX}/etc/opensips/osipsconsolerc.sample
 	(cp ${FILESDIR}/opensips.cfg.sample ${STAGEDIR}${ETCDIR}/opensips.cfg.sample)
 
-post-stage-RADIUS-on:
+do-install-TESTS-on:
+	(cp -r ${WRKSRC}/test ${STAGEDIR}${PREFIX}/tests/opensips)
+
+do-install-EXAMPLES-on:
+	(cp -r ${WRKSRC}/examples ${STAGEDIR}${PREFIX}/share/examples/opensips)
+
+post-install-RADIUS-on:
 	(mv ${STAGEDIR}${ETCDIR}/dictionary.opensips ${STAGEDIR}${ETCDIR}/dictionary.opensips.sample)
 
 # Strip binaries in sbin

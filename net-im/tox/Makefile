@@ -3,7 +3,7 @@
 
 PORTNAME=	toxcore
 PORTVERSION=	0.160924
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net-im net-p2p
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -23,7 +23,6 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-tests
 USES=		autoreconf compiler:c11 libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
-PATHFIX_MAKEFILEIN=	Makefile.am
 INSTALL_TARGET=		install-strip
 
 OPTIONS_DEFINE=		DAEMON

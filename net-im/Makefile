@@ -102,6 +102,7 @@
     SUBDIR += papyon
     SUBDIR += pebrot
     SUBDIR += pecl-stomp
+    SUBDIR += pecl-stomp2
     SUBDIR += pidgin
     SUBDIR += pidgin-birthday-reminder
     SUBDIR += pidgin-bs
@@ -147,6 +148,7 @@
     SUBDIR += qwit
     SUBDIR += qwit-devel
     SUBDIR += qxmpp
+    SUBDIR += qxmpp-qt5
     SUBDIR += ramblercontacts
     SUBDIR += ricochet
     SUBDIR += ring-daemon

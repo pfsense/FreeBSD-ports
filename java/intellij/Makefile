@@ -5,7 +5,7 @@
 # Vadim Zhukov <zhuk@openbsd.org>
 
 PORTNAME=	intellij
-PORTVERSION=	2016.2.4
+PORTVERSION=	2016.3.2
 CATEGORIES=	java devel
 MASTER_SITES=	https://download.jetbrains.com/idea/ \
 		http://download.jetbrains.com/idea/
@@ -25,7 +25,7 @@ JAVA_VERSION=	1.7+
 NO_ARCH=	yes
 NO_BUILD=	yes
 
-WRKDIST=	${WRKDIR}/idea-IC-162.2032.8
+WRKDIST=	${WRKDIR}/idea-IC-163.10154.41
 
 .include "common.mk"
 
@@ -42,12 +42,9 @@ do-install:
 		${STAGEDIR}${IDEA_HOME}/bin/fsnotifier64 \
 		${STAGEDIR}${IDEA_HOME}/bin/libbreakgen.so \
 		${STAGEDIR}${IDEA_HOME}/bin/libbreakgen64.so \
-		${STAGEDIR}${IDEA_HOME}/plugins/gradle/lib/native-platform-linux-amd64-0.10.jar \
-		${STAGEDIR}${IDEA_HOME}/plugins/gradle/lib/native-platform-linux-i386-0.10.jar \
-		${STAGEDIR}${IDEA_HOME}/plugins/gradle/lib/native-platform-osx-amd64-0.10.jar \
-		${STAGEDIR}${IDEA_HOME}/plugins/gradle/lib/native-platform-osx-i386-0.10.jar \
-		${STAGEDIR}${IDEA_HOME}/plugins/gradle/lib/native-platform-windows-amd64-0.10.jar \
-		${STAGEDIR}${IDEA_HOME}/plugins/gradle/lib/native-platform-windows-i386-0.10.jar
+		${STAGEDIR}${IDEA_HOME}/plugins/gradle/lib/native-platform-linux-*.jar \
+		${STAGEDIR}${IDEA_HOME}/plugins/gradle/lib/native-platform-osx-*.jar \
+		${STAGEDIR}${IDEA_HOME}/plugins/gradle/lib/native-platform-windows-*.jar \
 # Remove the bundled native Pty4J support libraries, they are replaced
 # by java/intellij-pty4j
 	@${RM} -r ${STAGEDIR}${IDEA_HOME}/lib/libpty

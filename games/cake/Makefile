@@ -3,7 +3,7 @@
 
 PORTNAME=	cake
 PORTVERSION=	2005.12.26
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	games
 MASTER_SITES=	http://freebsd.nsu.ru/distfiles/
 DISTNAME=	${PORTNAME}_src_${PORTVERSION:S/.//g}
@@ -13,7 +13,7 @@ COMMENT=	Quake3 map viewer (and powerful 3D game engine)
 
 LICENSE=	GPLv2
 
-USES=		gmake jpeg zip
+USES=		gmake jpeg ncurses zip
 USE_GL=		glut
 USE_XORG=	x11 xext xmu xt xi sm ice
 
@@ -31,7 +31,7 @@ post-patch: .SILENT
 		-name Makefile \) \
 		-exec ${REINPLACE_CMD} -E -e 's/[[:cntrl:]]*$$//' \
 		-e 's/#pragma[[:blank:]]+pack[[:blank:]]*\([[:blank:]]*push[[:blank:]]*,[[:blank:]]*1[[:blank:]]*\)/#pragma pack(1)/g' \
-		-e 's/#pragma[[:blank:]]+pack[[:blank:]]*\([[:blank:]]*pop[[:blank:]]*\)/#pragma pack()/g' '{}' \;
+		-e 's/#pragma[[:blank:]]+pack[[:blank:]]*\([[:blank:]]*pop[[:blank:]]*\)/#pragma pack()/g' {} \;
 	${REINPLACE_CMD} -e 's/jpeg\/JPEGLIB\.H/jpeglib.h/' \
 		${WRKSRC}/cake/texture.cpp
 # Fmod library is not supported on FreeBSD, so no sound :(
