@@ -39,7 +39,7 @@ require_once('certs.inc');
 if (file_exists('/usr/local/pkg/squid.inc')) {
 	require_once('/usr/local/pkg/squid.inc');
 } else {
-	echo "No squid.inc found. You must have Squid/Squid3 package installed to use LightSquid.";
+	echo "No squid.inc found. You must have Squid package installed to use LightSquid.";
 }
 
 define('LIGHTSQUID_BASE', '/usr/local');
@@ -113,7 +113,7 @@ function lightsquid_install() {
 		symlink('/usr/local/share/lightsquid/tpl/' . $tpl, LS_TEMPLATEPATH . '/' . $tpl);
 	}
 
-	update_status("\nRemove any existing and create link for lightsquid lighttpd executable...");
+	update_status("\nRemove any existing and create new hardlink for lightsquid lighttpd executable...");
 	unlink_if_exists('/usr/local/sbin/lighttpd_ls');
 	link('/usr/local/sbin/lighttpd', '/usr/local/sbin/lighttpd_ls');
 
@@ -187,6 +187,10 @@ function lightsquid_write_webconfig() {
 
 	touch($lighttpd_ls_auth_path);
 	chmod($lighttpd_ls_auth_path, 0600);
+	// Remove any existing and create new hardlink for lightsquid lighttpd executable
+	// This is required to avoid undefined symbol errors when lighttpd port is upgraded
+	unlink_if_exists('/usr/local/sbin/lighttpd_ls');
+	link('/usr/local/sbin/lighttpd', '/usr/local/sbin/lighttpd_ls');
 	file_put_contents($lighttpd_ls_auth_path, "{$lightsquid_config['lighttpd_ls_user']}:{$lightsquid_config['lighttpd_ls_password']}");
 
 	$lighttpd_ls_conf = <<<EOF
