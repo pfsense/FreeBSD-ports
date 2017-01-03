@@ -48,7 +48,6 @@ function haproxy_add_stats_example() {
 	$backend["stats_uri"] = "/";
 	$backend["stats_refresh"] = "10";
 	$a_backends[] = $backend;
-	$changecount++;
 	
 	$frontend = array();
 	$frontend["name"] = "HAProxy_stats_ssl_frontend";
@@ -60,25 +59,25 @@ function haproxy_add_stats_example() {
 	$frontend["ssloffloadcert"] = $webcert['refid'];
 	$frontend["backend_serverpool"] = $backend["name"];
 	$a_frontends[] = $frontend;
-	$changecount++;
+	
 	$changedesc = "add new HAProxy stats example";
 	
-	if ($changecount > 0) {
-		header("Location: haproxy_listeners.php");
-		echo "touching: $d_haproxyconfdirty_path";
-		touch($d_haproxyconfdirty_path);
-		write_config($changedesc);
-		exit;
-	}
+	header("Location: haproxy_listeners.php");
+	echo "touching: $d_haproxyconfdirty_path";
+	touch($d_haproxyconfdirty_path);
+	write_config($changedesc);
+	exit;
 }
 
 function template_errorfile() {
 	global $config, $d_haproxyconfdirty_path, $savemsg;
 
 	$a_files = &$config['installedpackages']['haproxy']['files']['item'];
-	if (!is_array($a_files)) $a_files = array();
-
+	if (!is_array($a_files)) {
+		$a_files = array();
+	}
 	$a_files_cache = haproxy_get_fileslist();
+	$changecount = 0;
 	if (!isset($a_files_cache["ExampleErrorfile"])) {
 		$errorfile = <<<EOD
 HTTP/1.0 503 Service Unavailable

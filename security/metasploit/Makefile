@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	metasploit
-PORTVERSION=	4.12.29
+PORTVERSION=	4.13.6
 CATEGORIES=	security
 
 MAINTAINER=	tanawts@gmail.com
@@ -24,8 +24,8 @@ RUN_DEPENDS=	nmap:security/nmap \
 		rubygem-metasploit-credential>=0:security/rubygem-metasploit-credential \
 		rubygem-metasploit_data_models>=0:security/rubygem-metasploit_data_models \
 		rubygem-metasploit-model>=0:security/rubygem-metasploit-model \
-		rubygem-metasploit-payloads>=1.1.16:security/rubygem-metasploit-payloads \
-		rubygem-metasploit_payloads-mettle>=0.0.6:security/rubygem-metasploit_payloads-mettle \
+		rubygem-metasploit-payloads>=1.2.4:security/rubygem-metasploit-payloads \
+		rubygem-metasploit_payloads-mettle>=0.1.4:security/rubygem-metasploit_payloads-mettle \
 		rubygem-msgpack>=0:devel/rubygem-msgpack \
 		rubygem-network_interface>=0:net/rubygem-network_interface \
 		rubygem-rubyntlm>=0:net/rubygem-rubyntlm \
@@ -43,10 +43,11 @@ RUN_DEPENDS=	nmap:security/nmap \
 		rubygem-bit-struct>=0:devel/rubygem-bit-struct \
 		rubygem-windows_error>=0:devel/rubygem-windows_error \
 		rubygem-net-ssh>=0:security/rubygem-net-ssh \
-		rubygem-rex-arch>=0:security/rubygem-rex-arch \
+		rubygem-rex-arch>=0.1.4:security/rubygem-rex-arch \
 		rubygem-rex-bin_tools>=0:security/rubygem-rex-bin_tools \
 		rubygem-rex-core>=0:security/rubygem-rex-core \
 		rubygem-rex-encoder>=0:security/rubygem-rex-encoder \
+		rubygem-rex-exploitation>=0:security/rubygem-rex-exploitation \
 		rubygem-rex-java>=0:security/rubygem-rex-java \
 		rubygem-rex-mime>=0:security/rubygem-rex-mime \
 		rubygem-rex-nop>=0:security/rubygem-rex-nop \
@@ -75,6 +76,7 @@ GH_ACCOUNT=	rapid7
 GH_PROJECT=	metasploit-framework
 
 NO_ARCH=	yes
+STRIP=
 
 USE_RUBY=	yes
 
@@ -93,14 +95,11 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	cd ${WRKSRC} && ${PAX} -rw . ${STAGEDIR}${DATADIR}
 .for f in ${SCRIPTS}
-	${PRINTF} '#!/bin/sh\ncd ${DATADIR} && ./${f} "$$@"\n' > ${STAGEDIR}${PREFIX}/bin/${f}
+	${LN} -s ../${DATADIR_REL}/${f} ${STAGEDIR}${PREFIX}/bin/${f}
 .endfor
 
 post-install:
-.for f in ${SCRIPTS}
-	@${ECHO} "@(,,555) bin/${f}" >> ${TMPPLIST}
-.endfor
-	@${FIND} ${STAGEDIR}${DATADIR} ! -type d | \
+	@${FIND} ${STAGEDIR} ! -type d | \
 		${SED} 's,${STAGEDIR}${PREFIX}/,, ; /Gemfile.lock/s|^|@(,,0666) |' >> ${TMPPLIST}
 	@${FIND} -ds ${STAGEDIR}${DATADIR} -type d -empty | \
 		${SED} 's,${STAGEDIR}${PREFIX}/,, ; s,^,@dir ,' >> ${TMPPLIST}

@@ -3,7 +3,7 @@
 
 PORTNAME=	gtklife
 PORTVERSION=	5.1
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	games
 MASTER_SITES=	http://ironphoenix.org/tril/gtklife/
 
@@ -51,7 +51,7 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/gtklife ${STAGEDIR}${PREFIX}/bin
 	cd ${WRKSRC} && \
 	${FIND} ${DATA_SUBDIRS} -type d ! -empty -exec ${MKDIR} "${STAGEDIR}${DATADIR}/{}" \; && \
-	${FIND} ${DATA_SUBDIRS} ! -type d -exec ${INSTALL_DATA} "{}" "${STAGEDIR}${DATADIR}/{}" \;
+	${FIND} ${DATA_SUBDIRS} ! -type d -exec ${INSTALL_DATA} {} "${STAGEDIR}${DATADIR}/{}" \;
 .for s in ${ICON_SIZES}
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/${s}/apps
 	${INSTALL_DATA} ${WRKSRC}/icon_${s}.png \

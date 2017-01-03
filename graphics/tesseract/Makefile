@@ -3,7 +3,7 @@
 
 PORTNAME=	tesseract
 PORTVERSION=	3.04.01
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics
 
 MAINTAINER=	pkubaj@anongoth.pl
@@ -13,7 +13,7 @@ LICENSE=	APACHE20
 
 LIB_DEPENDS=	liblept.so:graphics/leptonica
 
-USES=		localbase libtool
+USES=		localbase libtool pathfix
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
@@ -39,9 +39,6 @@ TOOLS_USE=	GNOME=cairo,glib20,pango
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|-O3 -DNDEBUG||' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e \
-		's|[(]libdir[)]/pkgconfig|(prefix)/libdata/pkgconfig|g' \
-		${WRKSRC}/Makefile.in
 
 post-build-TOOLS-on:
 	@cd ${WRKSRC} && ${MAKE} training

@@ -2,7 +2,7 @@
 
 PORTNAME=	yapet
 PORTVERSION=	1.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	http://www.guengel.ch/myapps/yapet/downloads/
 
@@ -14,8 +14,6 @@ LICENSE=	GPLv3
 USES=		gmake ncurses
 USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
-
-CONFIGURE_ARGS=	--enable-silent-rules
 
 OPTIONS_DEFINE=		CONVERTERS DOCS NLS
 OPTIONS_DEFAULT=	CONVERTERS

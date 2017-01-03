@@ -3,7 +3,7 @@
 
 PORTNAME=	xine
 PORTVERSION=	1.2.6
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	multimedia ipv6
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-lib/${PORTVERSION}
 PKGNAMEPREFIX=	lib
@@ -62,12 +62,15 @@ CONFIGURE_ARGS=	--with-w32-path=${LOCALBASE}/lib/win32 \
 		--without-alsa \
 		--disable-musepack \
 		--enable-dvb
+MAKE_ENV=	V=1
 
 DOCSDIR=	${PREFIX}/share/doc/xine-lib
 # Please sync with XINE_PLUGINSDIR in multimedia/xine
 # and multimedia/vdr-plugin-xineliboutput
 PLUGINSDIR=	lib/xine/plugins/2.5
 PLIST_SUB=	PLUGINSDIR="${PLUGINSDIR}"
+
+BROKEN_aarch64=		Fails to configure: error: no acceptable as found in $PATH
 
 OPTIONS_DEFINE=	NLS CACA ESOUND JACK GNOMEVFS2 PULSEAUDIO XVMC SMB AALIB \
 		IMAGEMAGICK PIXBUF WAVPACK VAAPI LIBBLURAY

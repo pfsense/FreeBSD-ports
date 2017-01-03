@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rudiments
-PORTVERSION=	0.55.0
+PORTVERSION=	0.57.0
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
@@ -12,7 +12,8 @@ COMMENT=	C++ class library for daemons, clients, servers, and more
 LICENSE=	LGPL20
 
 GNU_CONFIGURE=	yes
-USES=		libtool pkgconfig shebangfix
+USES=		libtool pathfix pkgconfig shebangfix
+PATHFIX_MAKEFILEIN=	Makefile
 SHEBANG_FILES=	doc/programming/insert.pl
 USE_LDCONFIG=	yes
 
@@ -24,12 +25,12 @@ OPTIONS_DEFAULT=	SSL
 
 PCRE_LIB_DEPENDS=	libpcre.so:devel/pcre
 PCRE_CONFIGURE_ENABLE=	pcre
-SSL_USE=		OPENSSL=yes
+SSL_USES=		ssl
 SSL_CONFIGURE_ENABLE=	ssl
 SSL_CONFIGURE_ON=	--with-ssl-includes=-I${OPENSSLINC} \
 			--with-ssl-libs=-L${OPENSSLLIB}
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/librudiments.so.2.0.0
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/librudiments.so.3.0.0
 
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	alembic
 PORTVERSION=	1.5.8
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -14,8 +14,6 @@ LICENSE=	BSD3CLAUSE
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libImath-2_2.so:graphics/ilmbase \
 		libhdf5.so:science/hdf5
-
-BROKEN_FreeBSD_9=	does not build (insufficient C++11 support)
 
 USE_GITHUB=	yes
 

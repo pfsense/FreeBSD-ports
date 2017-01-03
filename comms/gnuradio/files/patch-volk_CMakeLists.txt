@@ -1,6 +1,6 @@
---- volk/CMakeLists.txt.orig	2015-05-12 09:39:44 UTC
+--- volk/CMakeLists.txt.orig	2016-04-08 03:47:02 UTC
 +++ volk/CMakeLists.txt
-@@ -136,7 +136,7 @@ configure_file(
+@@ -139,7 +139,7 @@ configure_file(
  
  install(
      FILES ${CMAKE_CURRENT_BINARY_DIR}/volk.pc

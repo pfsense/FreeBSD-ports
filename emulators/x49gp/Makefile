@@ -5,6 +5,7 @@
 
 PORTNAME=	x49gp
 PORTVERSION=	20100425
+PORTREVISION=	1
 CATEGORIES=	emulators math
 MASTER_SITES=	LOCAL/shaun
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} sdcard64.tar.gz
@@ -89,9 +90,15 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/x49gp ${STAGEDIR}${PREFIX}/bin/x49gp-bin
 
 	${INSTALL_SCRIPT} ${WRKDIR}/hp50g.sh ${STAGEDIR}${PREFIX}/bin/hp50g
-	${RM} -f ${STAGEDIR}${PREFIX}/bin/hp49g+
+	${RM} ${STAGEDIR}${PREFIX}/bin/hp49g+
 	${LN} ${STAGEDIR}${PREFIX}/bin/hp50g ${STAGEDIR}${PREFIX}/bin/hp49g+
 
 	${INSTALL_DATA} ${DISTDIR}/sdcard64.tar.gz ${STAGEDIR}${DATADIR}/
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1000000 && ${ARCH} == i386
+BROKEN=		does not build on i386 (error: frame pointer required, but reserved)
+.endif
+
+.include <bsd.port.post.mk>

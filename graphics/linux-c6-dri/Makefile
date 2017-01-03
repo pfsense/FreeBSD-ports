@@ -3,7 +3,7 @@
 
 PORTNAME=	dri
 PORTVERSION=	11.0.7
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	graphics linux
 LIB_DISTFILES=	mesa-libGL-${PORTVERSION}-4.el6${EXTRACT_SUFX} \
 		mesa-libGLU-${PORTVERSION}-4.el6${EXTRACT_SUFX} \
@@ -26,5 +26,9 @@ USE_LINUX=	expat libelf libpciaccess xorglibs
 USE_LINUX_RPM=	yes
 USE_LDCONFIG=	yes
 DESCR=		${.CURDIR}/../${PORTNAME}/pkg-descr
+
+post-install:
+	@${RM} ${STAGEDIR}${PREFIX}/usr/lib/libGL.so.1
+	@${RM} ${STAGEDIR}${PREFIX}/usr/lib64/libGL.so.1
 
 .include <bsd.port.mk>

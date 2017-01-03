@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	jquery-rails
-PORTVERSION=	4.1.1
+PORTVERSION=	4.2.2
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	4
@@ -13,7 +13,7 @@ COMMENT=	Provides a Rails generator for jQuery
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
 
-RUN_DEPENDS=	rubygem-rails-dom-testing>=1.0:textproc/rubygem-rails-dom-testing \
+RUN_DEPENDS?=	rubygem-rails-dom-testing>=1.0:textproc/rubygem-rails-dom-testing \
 		rubygem-railties4>=4.2.0:www/rubygem-railties4 \
 		rubygem-thor>=0.14:devel/rubygem-thor
 

@@ -280,7 +280,7 @@ $section->addInput(new Form_Input('nbproc', 'Number of processes to start', 'tex
 ))->setHelp(<<<EOD
 	Defaults to 1 if left blank ({$cpucores} CPU core(s) detected).<br/>
 	Note : Consider leaving this value empty or 1  because in multi-process mode (nbproc > 1) memory is not shared between the processes, which could result in random behaviours for several options like ACL's, sticky connections, stats pages, admin maintenance options and some others.<br/>
-	For more information about the <b>"nbproc"</b> option please see <b><a href='http://cbonte.github.io/haproxy-dconv/1.6/configuration.html#nbproc' target='_blank'>HAProxy Documentation</a></b>
+	For more information about the <b>"nbproc"</b> option please see <b><a href='http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#nbproc' target='_blank'>HAProxy Documentation</a></b>
 EOD
 );
 
@@ -397,7 +397,7 @@ $section->add(group_input_with_text(
 	Sets the maximum size of the Diffie-Hellman parameters used for generating
 	the ephemeral/temporary Diffie-Hellman key in case of DHE key exchange.
 	Minimum and default value is: 1024, bigger values might increase CPU usage.<br/>
-	For more information about the <b>"tune.ssl.default-dh-param"</b> option please see <b><a href='http://cbonte.github.io/haproxy-dconv/1.6/configuration.html#tune.ssl.default-dh-param' target='_blank'>HAProxy Documentation</a></b><br/>
+	For more information about the <b>"tune.ssl.default-dh-param"</b> option please see <b><a href='http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#tune.ssl.default-dh-param' target='_blank'>HAProxy Documentation</a></b><br/>
 	NOTE: HAProxy will emit a warning when starting when this setting is used but not configured.
 EOD
 );

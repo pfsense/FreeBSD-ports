@@ -3,6 +3,7 @@
 
 PORTNAME=	saga
 PORTVERSION=	2.3.1
+PORTREVISION=	4
 CATEGORIES=	math
 MASTER_SITES=	SF/saga-gis/SAGA%20-%20${PORTVERSION:C/\.[[:digit:]]*$//}/SAGA%20${PORTVERSION}
 DISTNAME=	${PORTNAME}_${PORTVERSION}
@@ -20,8 +21,8 @@ LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libjasper.so:graphics/jasper \
 		liblas.so:devel/liblas12 \
 		libodbc.so:databases/unixODBC \
-		libopencv_ml.so:graphics/opencv \
-		libopencv_core.so:graphics/opencv-core \
+		libopencv_ml.so:graphics/opencv2 \
+		libopencv_core.so:graphics/opencv2-core \
 		libproj.so:graphics/proj \
 		libtbb.so:devel/tbb \
 		libtiff.so:graphics/tiff
@@ -58,6 +59,10 @@ VIGRA_BUILD_DEPENDS=	${LOCALBASE}/lib/libvigraimpex.so:graphics/vigra
 VIGRA_RUN_DEPENDS=	${LOCALBASE}/lib/libvigraimpex.so:graphics/vigra
 
 .include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1000000 && ${OSVERSION} < 1002000
+BROKEN=		does not build on 10.1 (undefined reference to `__cxa_throw_bad_array_new_length')
+.endif
 
 SUB_FILES=	pkg-message
 

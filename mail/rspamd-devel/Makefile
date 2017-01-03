@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	rspamd
-PORTVERSION=	1.4.0.a1.01092016
+PORTVERSION=	1.5.0.a2.20161226
 CATEGORIES=	mail
 PKGNAMESUFFIX=	-devel
 
@@ -9,9 +9,9 @@ MAINTAINER=	vsevolod@FreeBSD.org
 COMMENT=	Fast spam filtering system dev version
 
 LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libpcre.so:devel/pcre \
-		libgmime-2.6.so:mail/gmime26 \
 		libevent.so:devel/libevent2 \
 		libluajit-5.1.so:lang/luajit \
 		libfann.so:math/fann
@@ -19,16 +19,17 @@ BUILD_DEPENDS=	ragel:devel/ragel
 
 CONFLICTS_INSTALL=	rspamd
 
-RSPAMD_VERSION=	1.4.0
+RSPAMD_VERSION=	1.5.0
 USE_GITHUB=	yes
 GH_ACCOUNT=	vstakhov
-GH_PROJECT=	rspamd
-GH_TAGNAME=	99c2eb2
+GH_TAGNAME=	0d4c60d
 
-OPTIONS_DEFINE=	GPERF REDIRECTOR HYPERSCAN
+OPTIONS_DEFINE=	GPERF REDIRECTOR HYPERSCAN GD
+OPTIONS_DEFAULT=	GD
 GPERF_DESC=		Google perf-tools profiling
 REDIRECTOR_DESC=	Install HTTP redirector
 HYPERSCAN_DESC=		Use hyperscan optimizations (amd64 only)
+GD_DESC=		Enable libgd support for images fuzzy hashes
 
 USE_RC_SUBR=	rspamd
 
@@ -42,14 +43,13 @@ CMAKE_ARGS+=	-DCONFDIR=${PREFIX}/etc/rspamd \
 		-DMANDIR=${MANPREFIX}/man \
 		-DCMAKE_INSTALL_PREFIX=${PREFIX} \
 		-DBUILD_PORT=yes \
-		-DFORCE_GMIME24=yes \
 		-DLIBDIR=${PREFIX}/lib/rspamd \
 		-DNO_SHARED=ON \
 		-DDEBUG=ON \
 		-DGIT_ID=${GH_TAGNAME} \
 		-DENABLE_FANN=ON
 
-USES=		cmake:outsource gettext iconv pkgconfig tar:xz perl5 \
+USES=		cmake:outsource gettext iconv pkgconfig perl5 \
 		compiler:c11 sqlite ssl
 USE_LDCONFIG=	yes
 USE_PERL5=	build
@@ -60,6 +60,13 @@ WITH_DEBUG=	yes
 
 .include <bsd.port.options.mk>
 
+.if ${PORT_OPTIONS:MGD}
+ CMAKE_ARGS+=	-DENABLE_GD=ON
+ LIB_DEPENDS+=	libgd.so:graphics/gd
+.else
+ CMAKE_ARGS+=	-DENABLE_GD=OFF
+.endif
+
 .if ${PORT_OPTIONS:MGPERF}
  CMAKE_ARGS+=	-DENABLE_GPERF_TOOLS=ON
  LIB_DEPENDS+=	libprofiler.so:devel/google-perftools
@@ -67,7 +74,7 @@ WITH_DEBUG=	yes
 
 .if ${PORT_OPTIONS:MHYPERSCAN}
  CMAKE_ARGS+=		-DENABLE_HYPERSCAN=ON
- BUILD_DEPENDS+=	${LOCALBASE}/lib/libhs.a:devel/hyperscan
+ LIB_DEPENDS+=		libhs.so:devel/hyperscan
  ONLY_FOR_ARCHS=	amd64
 .endif
 
@@ -92,8 +99,8 @@ WITH_DEBUG=	yes
  PLIST_SUB+=	REDIRECTOR="@comment "
 .endif
 
-post-stage:
-	${INSTALL} -d \
+post-install:
+	@${MKDIR} \
 		${STAGEDIR}/var/log/rspamd \
 		${STAGEDIR}/var/db/rspamd \
 		${STAGEDIR}/var/run/rspamd
@@ -102,8 +109,6 @@ post-stage:
 	# No need, since rspamd.conf.sample is a same
 	${RM} ${STAGEDIR}/${ETCDIR}/rspamd.sysvinit.conf
 	${INSTALL_DATA} ${WRKDIR}/rspamd.newsyslog.conf.sample ${STAGEDIR}${ETCDIR}
-
-post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/newsyslog.conf.d
 	${LN} -s ${ETCDIR}/rspamd.newsyslog.conf ${STAGEDIR}${PREFIX}/etc/newsyslog.conf.d
 

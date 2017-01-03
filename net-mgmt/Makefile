@@ -27,7 +27,8 @@
     SUBDIR += bwm-ng
     SUBDIR += cacti
     SUBDIR += cacti-spine
-    SUBDIR += ccnet
+    SUBDIR += ccnet-client
+    SUBDIR += ccnet-server
     SUBDIR += cdpd
     SUBDIR += cdpr
     SUBDIR += cdpsnarf
@@ -144,6 +145,7 @@
     SUBDIR += nagiosgraph
     SUBDIR += nagiosql
     SUBDIR += nagircbot
+    SUBDIR += nagnu
     SUBDIR += nagstamon
     SUBDIR += nagtail
     SUBDIR += nagvis
@@ -258,7 +260,6 @@
     SUBDIR += pandorafms_server
     SUBDIR += percona-monitoring-plugins
     SUBDIR += pftabled
-    SUBDIR += php55-snmp
     SUBDIR += php56-snmp
     SUBDIR += php70-snmp
     SUBDIR += phpip
@@ -271,6 +272,7 @@
     SUBDIR += pnp-icinga
     SUBDIR += pnp-icinga2
     SUBDIR += portmon
+    SUBDIR += prometheus
     SUBDIR += py-flowtools
     SUBDIR += py-ipcalc
     SUBDIR += py-ipy
@@ -284,7 +286,6 @@
     SUBDIR += py-yapsnmp
     SUBDIR += qkismet
     SUBDIR += rackmonkey
-    SUBDIR += rancid
     SUBDIR += rancid3
     SUBDIR += rate
     SUBDIR += rcpd
@@ -303,8 +304,9 @@
     SUBDIR += sblim-wbemcli
     SUBDIR += scli
     SUBDIR += sdig
-    SUBDIR += seafile
+    SUBDIR += seafile-client
     SUBDIR += seafile-gui
+    SUBDIR += seafile-server
     SUBDIR += send
     SUBDIR += sendip
     SUBDIR += sipcalc
@@ -328,7 +330,6 @@
     SUBDIR += telegraf
     SUBDIR += tornova
     SUBDIR += torrus
-    SUBDIR += unifi4
     SUBDIR += unifi5
     SUBDIR += victorops-nagios
     SUBDIR += vidalia

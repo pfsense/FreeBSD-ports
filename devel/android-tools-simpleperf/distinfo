@@ -1,7 +1,7 @@
-TIMESTAMP = 1472009581
-SHA256 (jbeich-platform_system_extras-android-7.0.0_r1_GH0.tar.gz) = ff2ea6db032da70374edcd6867bd11d765a475a32d732b983d0dad6ae16e209b
-SIZE (jbeich-platform_system_extras-android-7.0.0_r1_GH0.tar.gz) = 79621110
-SHA256 (android-platform_bionic-android-7.0.0_r1_GH0.tar.gz) = 60c75732796cffeff2006f63d556abb7af462939cdc710ff79edf56d26535d74
-SIZE (android-platform_bionic-android-7.0.0_r1_GH0.tar.gz) = 3514221
-SHA256 (android-platform_system_core-android-7.0.0_r1_GH0.tar.gz) = faa44f626dfab9e604f509cc541a8e491e7e46a9de42df3a9c1e24c36fd9f8c4
-SIZE (android-platform_system_core-android-7.0.0_r1_GH0.tar.gz) = 1570346
+TIMESTAMP = 1477379212
+SHA256 (jbeich-platform_system_extras-android-7.1.1_r4_GH0.tar.gz) = 72c758f5f4fe69b5f4e2f46ceb78ca7240e2968bea63505c45158b6ef56bc09f
+SIZE (jbeich-platform_system_extras-android-7.1.1_r4_GH0.tar.gz) = 79624857
+SHA256 (android-platform_bionic-android-7.1.1_r4_GH0.tar.gz) = 5df4a9d8fcc5653a55fedaa43baba0ba2cf23aa8e7936ea39f382d96adf7954f
+SIZE (android-platform_bionic-android-7.1.1_r4_GH0.tar.gz) = 3515656
+SHA256 (android-platform_system_core-android-7.1.1_r4_GH0.tar.gz) = 7ee986fcc6d5856bee645855f36ea00f57336914f1307a51eedebb59ee6035fc
+SIZE (android-platform_system_core-android-7.1.1_r4_GH0.tar.gz) = 1591590

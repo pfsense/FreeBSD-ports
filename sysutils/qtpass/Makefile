@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	qtpass
-PORTVERSION=	1.1.3
+PORTVERSION=	1.1.6
 DISTVERSIONPREFIX=v
 CATEGORIES=	sysutils
 
@@ -9,6 +9,7 @@ MAINTAINER=	brouwer@annejan.com
 COMMENT=	Qt GUI for pass, the standard unix password manager
 
 LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	pass:sysutils/password-store
 
@@ -27,10 +28,7 @@ DESKTOP_ENTRIES=	"QtPass" "" \
 			"${PREFIX}/bin/qtpass" \
 			"Security;Utility;" true
 
-post-patch:
-# The project file assumes PREFIX is the bin-dir. We pass PREFIX=${LOCALBASE}
-# so we have to append bin to target.path.
-	${REINPLACE_CMD} -e '/target.path/s,$$,bin,' ${WRKSRC}/qtpass.pro
+WRKSRC=		${WRKDIR}/QtPass-${PORTVERSION}
 
 # Install the icon of the port.
 post-install:

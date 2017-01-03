@@ -4,7 +4,7 @@
 PORTNAME=	mixxx
 PORTVERSION=	1.11.0
 DISTVERSIONSUFFIX=	-src
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	audio
 MASTER_SITES=	http://downloads.mixxx.org/${PORTNAME}-${PORTVERSION}/
 
@@ -29,7 +29,7 @@ USES=		scons iconv
 USE_QT4=	corelib gui network opengl script sql svg xml \
 		linguisttools_build moc_build qmake_build rcc_build uic_build
 USE_GL=		glu
-MAKE_ARGS=	qtdir="${QT_PREFIX}" optimize=0
+MAKE_ARGS=	qtdir="${PREFIX}" optimize=0
 LATE_INSTALL_ARGS=	--install-sandbox=${STAGEDIR}
 
 PORTDATA=	*

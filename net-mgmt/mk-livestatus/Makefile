@@ -2,19 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	mk-livestatus
-PORTVERSION=	1.2.4
-PORTREVISION=	1
+PORTVERSION=	1.2.8p15
 CATEGORIES=	net-mgmt
-MASTER_SITES=	http://mathias-kettner.de/download/ \
-		LOCAL/ohauer
+MASTER_SITES=	http://mathias-kettner.de/download/
 DIST_SUBDIR=	check_mk
 
-MAINTAINER=	ohauer@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Nagios event broker module
 
 LICENSE=	GPLv2
 
-USES=		gmake
+USES=		compiler:c++11-lib gmake
 GNU_CONFIGURE=	yes
 
 OPTIONS_SINGLE=	NAGIOS
@@ -47,7 +45,7 @@ COMMAND_FILE?=	/var/spool/nagios/rw/live
 # Actual version can be found on CPAN
 # http://search.cpan.org/~nierlein/Monitoring-Livestatus/
 post-extract:
-	@${RM} -rf ${WRKSRC}/api/perl
+	@${RM} -r ${WRKSRC}/api/perl
 
 post-patch:
 	@${SED} -i '' -e 's|/usr/bin/python|${LOCALBASE}/bin/python2.7|g' \

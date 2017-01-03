@@ -3,6 +3,7 @@
 
 PORTNAME=	memcached
 PORTVERSION=	1.4.33
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	http://www.memcached.org/files/ \
 		GENTOO
@@ -19,7 +20,15 @@ CONFLICTS=	memcached-1.2*
 
 # Dtrace option disabled until it is fixed upstream
 OPTIONS_DEFINE=		SASL DOCS DTRACE
-OPTIONS_DEFAULT=	SASL
+OPTIONS_DEFAULT=	SASL DTRACE
+
+.if !exists(/usr/sbin/dtrace)
+OPTIONS_EXCLUDE+=	DTRACE
+.endif
+
+OPTIONS_EXCLUDE_FreeBSD_9+=	DTRACE
+OPTIONS_EXCLUDE_FreeBSD_10+=	DTRACE
+OPTIONS_EXCLUDE_i386=		DTRACE
 
 DTRACE_DESC=	Enable dtrace probes
 SASL_DESC=	Enable SASL Authentication
@@ -37,6 +46,7 @@ CONFIGURE_ARGS=	--with-libevent=${LOCALBASE} \
 		--disable-coverage
 
 DOCS_BUILD_DEPENDS=	xml2rfc:textproc/xml2rfc
+DOCS_CONFIGURE_ENABLE=	docs
 
 DTRACE_CONFIGURE_ENABLE=	dtrace
 
@@ -54,8 +64,9 @@ MAKE_JOBS_UNSAFE=	yes
 CONFIGURE_ARGS+=	--enable-64bit
 .endif
 
+# avoid triggering a bug in libdtrace, see illumos issue 6653
 .if ${PORT_OPTIONS:MDTRACE}
-BROKEN=			DTRACE broken with gcc/clang - reported upstream
+CFLAGS+=		-no-integrated-as
 .endif
 
 post-install:

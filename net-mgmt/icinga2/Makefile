@@ -2,19 +2,21 @@
 
 PORTNAME=	icinga2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.5.4
+DISTVERSION=	2.6.0
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	lme@FreeBSD.org
 COMMENT=	Monitoring and management system for hosts, services and networks
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libyajl.so:devel/yajl
 RUN_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash
 
-BROKEN_powerpc64=	Does not build
+BROKEN_powerpc64=	does not build
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	icinga

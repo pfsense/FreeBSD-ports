@@ -117,6 +117,25 @@ MASTER_SITE_COMP_SOURCES+= \
 	http://ftp.fi.netbsd.org/pub/misc/archive/comp.sources.%SUBDIR%/
 .endif
 
+.if !defined(IGNORE_MASTER_SITE_CRAN)
+MASTER_SITE_CRAN+= \
+	https://cloud.r-project.org/%SUBDIR%/ \
+	https://stat.ethz.ch/CRAN/%SUBDIR%/ \
+	http://cran.utstat.utoronto.ca/%SUBDIR%/ \
+	https://cran.cnr.berkeley.edu/%SUBDIR%/ \
+	http://cran.csiro.au/%SUBDIR%/ \
+	https://mirrors.tuna.tsinghua.edu.cn/CRAN/%SUBDIR%/ \
+	http://camoruco.ing.uc.edu.ve/cran/%SUBDIR%/ \
+	https://mirror.las.iastate.edu/CRAN/%SUBDIR%/ \
+	https://cran.ma.imperial.ac.uk/%SUBDIR%/ \
+	https://cran.gis-lab.info/%SUBDIR%/ \
+	https://cran.ism.ac.jp/%SUBDIR%/
+.endif
+
+.if !defined(IGNORE_MASTER_SITE_CRAN_ARCHIVE)
+MASTER_SITE_CRAN_ARCHIVE+= ${MASTER_SITE_CRAN:S,$,Archive/${PORTNAME}/,}
+.endif
+
 .if !defined(IGNORE_MASTER_SITE_DEBIAN)
 MASTER_SITE_DEBIAN+= \
 	http://cdn.debian.net/debian/%SUBDIR%/ \
@@ -186,45 +205,24 @@ MASTER_SITE_ECLIPSE+= \
 .if !defined(IGNORE_MASTER_SITE_EXIM)
 MASTER_SITE_EXIM+= \
 	ftp://ftp.exim.org/pub/exim/%SUBDIR%/ \
-	ftp://exim.inode.at/exim/%SUBDIR%/ \
-	ftp://exim-ftp.itsoft.at/exim/exim/%SUBDIR%/ \
-	http://exim-ftp.itsoft.at/exim/%SUBDIR%/ \
-	ftp://ftp.easynet.be/exim/exim/%SUBDIR%/ \
-	ftp://mirror.kn.vutbr.cz/pub/ftp.exim.org/exim/%SUBDIR%/ \
-	http://exim.mirror.fr/exim/%SUBDIR%/ \
-	http://mirrors.zerg.biz/exim/exim/%SUBDIR%/ \
+	ftp://mirror.easyname.at/exim-ftp/%SUBDIR%/ \
 	http://dl.ambiweb.de/mirrors/ftp.exim.org/exim/%SUBDIR%/ \
 	ftp://exim.noris.de/exim/%SUBDIR%/ \
 	ftp://ftp.bytemine.net/exim/exim/%SUBDIR%/ \
-	ftp://exim.mirror.iphh.net/ftp/exim/%SUBDIR%/ \
-	http://exim.mirror.iphh.net/ftp/exim/%SUBDIR%/ \
-	ftp://ftp.fu-berlin.de/unix/mail/exim/%SUBDIR%/ \
-	http://exim-ftp.octet.hu/exim/%SUBDIR%/ \
 	ftp://ftp.heanet.ie/pub/exim/%SUBDIR%/ \
 	http://ftp.heanet.ie/pub/exim/%SUBDIR%/ \
 	http://washitake.com/mail/exim/mirror/exim/%SUBDIR%/ \
-	ftp://ftp.tin.org/pub/mail/exim/%SUBDIR%/ \
-	http://exim.psshee.com/ftp/exim/%SUBDIR%/ \
-	ftp://mirror.hostfuss.com/exim/ftp/exim/%SUBDIR%/ \
-	http://mirror.hostfuss.com/exim/ftp/exim/%SUBDIR%/ \
-	ftp://ftp.nl.uu.net/pub/unix/mail/exim/exim/%SUBDIR%/ \
+	ftp://ftp.kaist.ac.kr/exim/%SUBDIR%/ \
+	http://ftp.kaist.ac.kr/exim/%SUBDIR%/ \
 	ftp://sunsite.uio.no/pub/mail/exim/exim/%SUBDIR%/ \
-	http://piotrkosoft.net/pub/mirrors/ftp.exim.org/exim/%SUBDIR%/ \
-	ftp://ftp.piotrkosoft.net/pub/mirrors/ftp.exim.org/exim/%SUBDIR%/ \
 	ftp://sunsite.icm.edu.pl/pub/unix/mail/exim/exim/%SUBDIR%/ \
 	http://sunsite.icm.edu.pl/pub/unix/mail/exim/exim/%SUBDIR%/ \
-	ftp://ftp.is.co.za/networking/mail/mta/exim/ftp/exim/%SUBDIR%/ \
 	ftp://mirrors.dominios.pt/pub/ftp.exim.org/exim/%SUBDIR%/ \
 	ftp://mirror.switch.ch/mirror/exim/exim/%SUBDIR%/ \
 	http://mirror.switch.ch/ftp/mirror/exim/exim/%SUBDIR%/ \
-	ftp://ftp.reaper.org/pub/exim/exim/%SUBDIR%/ \
-	ftp://sunsite.cnlab-switch.ch/mirror/exim/exim/%SUBDIR%/ \
-	ftp://ftp.demon.co.uk/pub/mirrors/exim/%SUBDIR%/ \
-	ftp://mirror.tje.me.uk/pub/mirrors/ftp.exim.org/exim/%SUBDIR%/ \
-	http://mirror.tje.me.uk/pub/mirrors/ftp.exim.org/exim/%SUBDIR%/ \
-	ftp://ftp.fsckit.net/pub/exim/exim/%SUBDIR%/ \
-	ftp://idcnetwork.org/pub/exim/exim/%SUBDIR%/ \
-	http://ftp.exim.llorien.org/exim/%SUBDIR%/
+	ftp://ftp.mirrorservice.org/sites/ftp.exim.org/pub/%SUBDIR%/ \
+	http://exim.telcom.net.ua/ftp/%SUBDIR/ \
+	ftp://idcnetwork.org/pub/exim/exim/%SUBDIR%/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_CENTOS_LINUX)
@@ -237,6 +235,12 @@ MASTER_SITE_CENTOS_LINUX+= \
 MASTER_SITE_EPEL+= \
 	http://dl.fedoraproject.org/pub/epel/6/${LINUX_ARCH}/ \
 	http://dl.fedoraproject.org/pub/epel/6/SRPMS/:SOURCE
+.endif
+
+.if !defined(IGNORE_MASTER_SITE_EPEL7)
+MASTER_SITE_EPEL7+= \
+	http://dl.fedoraproject.org/pub/epel/7/${LINUX_ARCH}/%SUBDIR%/ \
+	http://dl.fedoraproject.org/pub/epel/7/SRPMS/%SUBDIR%/:SOURCE
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_FEDORA_LINUX)
@@ -529,9 +533,9 @@ DISTFILES+=	${DISTNAME}${_GITHUB_EXTRACT_SUFX}
 .  if !empty(GH_SUBDIR)
 _SITES_extract:=	690:post-extract-gh-DEFAULT
 post-extract-gh-DEFAULT:
-	@${RMDIR} ${WRKSRC}/${GH_SUBDIR} 2>/dev/null || :
-	@${MKDIR} ${WRKSRC}/${GH_SUBDIR:H} 2>/dev/null || :
-	@${LN} -s ${GH_SUBDIR:C/[^\/]//g:C/\//..\//g} ${WRKSRC}/${GH_SUBDIR}
+	@${RMDIR} ${WRKSRC}/${GH_SUBDIR_DEFAULT} 2>/dev/null || :
+	@${MKDIR} ${WRKSRC}/${GH_SUBDIR_DEFAULT:H} 2>/dev/null || :
+	@${LN} -s ${GH_SUBDIR_DEFAULT:C/[^\/]//g:C/\//..\//g} ${WRKSRC}/${GH_SUBDIR_DEFAULT}
 .  endif
 # If there are non default groups
 .  if !empty(_GITHUB_GROUPS:NDEFAULT)
@@ -544,6 +548,7 @@ GH_PROJECT_${_group}?=	${GH_PROJECT_DEFAULT}
 GH_TAGNAME_${_group}?=	${GH_TAGNAME_DEFAULT}
 GH_TAGNAME_${_group}_SANITIZED=	${GH_TAGNAME_${_group}:S,/,-,}
 GH_TAGNAME_${_group}_EXTRACT=	${GH_TAGNAME_${_group}_SANITIZED:C/^[vV]([0-9])/\1/}
+_GH_TUPLE_OUT:=	${_GH_TUPLE_OUT} ${GH_ACCOUNT_${_group}}:${GH_PROJECT_${_group}}:${GH_TAGNAME_${_group}}:${_group}/${GH_SUBDIR_${_group}}
 DISTNAME_${_group}:=	${GH_ACCOUNT_${_group}}-${GH_PROJECT_${_group}}-${GH_TAGNAME_${_group}_SANITIZED}
 DISTFILE_${_group}:=	${DISTNAME_${_group}}_GH${_GITHUB_REV}${_GITHUB_EXTRACT_SUFX}
 DISTFILES:=	${DISTFILES} ${DISTFILE_${_group}}:${_group}
@@ -559,6 +564,8 @@ post-extract-gh-${_group}:
 .      endif
 .    endfor
 .  endif
+convert-to-gh-tuple:
+	@${ECHO_MSG} ${GH_ACCOUNT}:${GH_PROJECT}:${GH_TAGNAME} ${_GH_TUPLE_OUT:S/\/$//}
 .endif # defined(USE_GITHUB)
 .endif # !defined(IGNORE_MASTER_SITE_GITHUB)
 
@@ -1059,8 +1066,8 @@ MASTER_SITE_SAVANNAH+= \
 # Updated:	2013-03-25
 .if !defined(IGNORE_MASTER_SITE_SOURCEFORGE)
 MASTER_SITE_SOURCEFORGE+= http://downloads.sourceforge.net/project/%SUBDIR%/
-.for mirror in heanet sunet iweb switch freefr garr aarnet jaist master \
-	nchc ncu internode waix hivelocity superb-dca3 ufpr tenet \
+.for mirror in heanet iweb freefr jaist master \
+	nchc ncu internode waix superb-dca3 ufpr tenet \
 	netcologne ignum kent
 MASTER_SITE_SOURCEFORGE+= \
 	http://${mirror}.dl.sourceforge.net/project/%SUBDIR%/

@@ -3,6 +3,7 @@
 
 PORTNAME=	libr3
 PORTVERSION=	1.0.0
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	gasol.wu@gmail.com
@@ -16,15 +17,11 @@ LIB_DEPENDS=	libcheck.so:devel/libcheck \
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-graphviz
-USES=		autoreconf libtool pkgconfig
+USES=		autoreconf libtool pathfix pkgconfig
 INSTALL_TARGET=	install-strip
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	c9s
 GH_PROJECT=	r3
-
-post-patch:
-	@${REINPLACE_CMD} 's,^pkgconfigdir = .*,pkgconfigdir=$${prefix}/libdata/pkgconfig,' \
-		${WRKSRC}/Makefile.am
 
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	sssd
 PORTVERSION=	1.11.7
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	security
 MASTER_SITES=	https://fedorahosted.org/released/${PORTNAME}/ \
 		http://mirrors.rit.edu/zi/
@@ -55,7 +55,6 @@ USE_LDCONFIG=	yes
 USE_OPENLDAP=	yes
 USES=		autoreconf cpe gettext gmake iconv libtool pathfix pkgconfig \
 		python:2 shebangfix gssapi:mit
-PATHFIX_MAKEFILEIN=	Makefile.am
 INSTALL_TARGET=	install-strip
 CPE_VENDOR=	fedoraproject
 

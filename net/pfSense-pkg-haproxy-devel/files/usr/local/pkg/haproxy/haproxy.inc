@@ -381,7 +381,7 @@ function group_ports($ports) {
 	if (!is_array($ports) || empty($ports)) {
 		return;
 	}
-	
+
 	$uniq = array();
 	foreach ($ports as $port) {
 		if (is_portrange($port)) {
@@ -414,7 +414,7 @@ function group_ports($ports) {
 		} else {
 			$begin = $end = $last;
 		}
-		
+
 		if ($port == ($end+1)) {
 			$end++;
 			$result[count($result)-1] = "{$begin}:{$end}";

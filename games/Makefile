@@ -32,6 +32,8 @@
     SUBDIR += alephone-data
     SUBDIR += alephone-scenarios
     SUBDIR += alex4
+    SUBDIR += alienarena
+    SUBDIR += alienarena-data
     SUBDIR += alienblaster
     SUBDIR += alienwave
     SUBDIR += allacrost
@@ -48,10 +50,12 @@
     SUBDIR += armagetron
     SUBDIR += arx-libertatis
     SUBDIR += asc
+    SUBDIR += ascii-invaders
     SUBDIR += asciiquarium
     SUBDIR += assaultcube
     SUBDIR += asteroid
     SUBDIR += asteroids3d
+    SUBDIR += asylum
     SUBDIR += atanks
     SUBDIR += atomix
     SUBDIR += atr3d
@@ -103,9 +107,11 @@
     SUBDIR += braincurses
     SUBDIR += brainparty
     SUBDIR += brainworkshop
+    SUBDIR += brickout
     SUBDIR += brickshooter
     SUBDIR += brikx
     SUBDIR += briquolo
+    SUBDIR += brumbrumrally
     SUBDIR += brutalchess
     SUBDIR += bs
     SUBDIR += bsdgames
@@ -166,6 +172,7 @@
     SUBDIR += crafty-open-medium
     SUBDIR += crafty-tablebase-no-pawn
     SUBDIR += crafty-tablebase-pawn
+    SUBDIR += crashtest
     SUBDIR += cre
     SUBDIR += cretan-hubris
     SUBDIR += crimson
@@ -210,7 +217,6 @@
     SUBDIR += dopewars
     SUBDIR += drcreep
     SUBDIR += drm
-    SUBDIR += dsnake
     SUBDIR += duckmaze
     SUBDIR += duel
     SUBDIR += dunelegacy
@@ -230,6 +236,7 @@
     SUBDIR += el
     SUBDIR += el-data
     SUBDIR += ember
+    SUBDIR += emptyepsilon
     SUBDIR += endgame-singularity
     SUBDIR += endgame-singularity-music
     SUBDIR += endless-sky
@@ -355,15 +362,18 @@
     SUBDIR += gnomekiss
     SUBDIR += gnono
     SUBDIR += gnubg
+    SUBDIR += gnubik
     SUBDIR += gnuchess
     SUBDIR += gnudoku
     SUBDIR += gnugo
+    SUBDIR += gnujump
     SUBDIR += gnurobbo
     SUBDIR += gnurobots
     SUBDIR += gnushogi
     SUBDIR += gnustep-ladder
     SUBDIR += gnustep-sudoku
     SUBDIR += golddig
+    SUBDIR += goldencheetah
     SUBDIR += golly
     SUBDIR += gomoku
     SUBDIR += gondola
@@ -512,6 +522,7 @@
     SUBDIR += libfov
     SUBDIR += libgames-support
     SUBDIR += libggz
+    SUBDIR += libgnome-games-support
     SUBDIR += libkdegames
     SUBDIR += libkmahjongg
     SUBDIR += liblcf
@@ -526,6 +537,7 @@
     SUBDIR += linux-defcon
     SUBDIR += linux-doom3
     SUBDIR += linux-doom3-demo
+    SUBDIR += linux-dwarffortress
     SUBDIR += linux-enemyterritory
     SUBDIR += linux-enemyterritory-etpro
     SUBDIR += linux-enemyterritory-jaymod
@@ -1017,6 +1029,8 @@
     SUBDIR += vodovod
     SUBDIR += volleyball
     SUBDIR += vor
+    SUBDIR += voxelands
+    SUBDIR += voxelands-server
     SUBDIR += vultures-eye
     SUBDIR += wanderer
     SUBDIR += wargus
@@ -1037,6 +1051,7 @@
     SUBDIR += wolfpack
     SUBDIR += wop
     SUBDIR += wordplay
+    SUBDIR += wordwarvi
     SUBDIR += worldofpadman
     SUBDIR += wtf
     SUBDIR += wxlauncher

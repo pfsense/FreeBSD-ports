@@ -1,14 +1,15 @@
 # $FreeBSD$
 
 PORTNAME=	FreeCAD
-DISTVERSION=	0.17.g20160907
-PORTREVISION=	1
+DISTVERSION=	0.17.g20161104
+PORTREVISION=	2
 CATEGORIES=	cad
 
-MAINTAINER=	pfg@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	General purpose 3D CAD modeller
 
-LICENSE=	LGPL20
+LICENSE=	LGPL20+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	pyside-rcc:devel/pyside-tools		\
 		swig:devel/swig13	\
@@ -30,22 +31,41 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2		\
 		libshiboken-${PYTHON_VERSION}.so:devel/shiboken
 
 USE_GITHUB=	yes
-GH_TAGNAME=	1ed3562
+GH_TAGNAME=	0ea7373
 
 USES=		compiler:c++11-lib cmake:outsource jpeg python localbase
 USE_XORG=	ice sm x11 xext xt
 USE_GL=		gl glu
 USE_QT4=	qmake_build corelib gui moc_build network opengl rcc_build \
 		uic_build svg xml webkit
+USE_LDCONFIG=	yes
+CMAKE_ARGS=	-DOCC_INCLUDE_DIR="${LOCALBASE}/include/OpenCASCADE" \
+		-DFREECAD_USE_EXTERNAL_PIVY=1
+
+# To be removed when french/med will be built against science/hdf5
+LIB_DEPENDS+=	libhdf5-18.so:science/hdf5-18
+CMAKE_ARGS+=	-DHDF5_FOUND="TRUE" -DHDF5_VERSION="1.8.17"		\
+		-DHDF5_INCLUDE_DIRS="${LOCALBASE}/include/hdf5-18"	\
+		-DCMAKE_CXX_FLAGS="-I${LOCALBASE}/include/hdf5-18"	\
+		-DCMAKE_C_FLAGS="-I${LOCALBASE}/include/hdf5-18"	\
+		-DHDF5_LIBRARIES="-lhdf5-18"
+CFLAGS+=	-I${LOCALBASE}/include/hdf5-18
 
 CMAKE_INSTALL_PREFIX=	${PREFIX}/${PORTNAME}
 
-CMAKE_ARGS+=	"-DOCC_INCLUDE_DIR=${LOCALBASE}/include/OpenCASCADE"
-CMAKE_ARGS+=	"-DFREECAD_USE_EXTERNAL_PIVY=1 -DCMAKE_BUILD_TYPE=Release ."
+DESKTOP_ENTRIES=${PORTNAME} "" "${PREFIX}/FreeCAD/data/freecad.svg" \
+		${PORTNAME} "Engineering;" false
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,%%LOCALBASE%%,${LOCALBASE},' \
 		${WRKSRC}/src/Gui/CMakeLists.txt
+
+pre-configure:
+	# To be removed when french/med will be built against science/hdf5
+	${REINPLACE_CMD} -e 's|find_package(HDF5 REQUIRED)|#find_package(HDF5 REQUIRED)|' \
+		${WRKSRC}/CMakeLists.txt
+	${REINPLACE_CMD} -e 's|<hdf5.h>|<hdf5-18/hdf5.h>|'	\
+		${WRKSRC}/src/3rdParty/salomesmesh/inc/MED_Common.hxx
 
 post-install:
 	${LN} -s ../${PORTNAME}/bin/FreeCAD ${STAGEDIR}${LOCALBASE}/bin/FreeCAD

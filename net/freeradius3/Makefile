@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	freeradius
-DISTVERSION=	3.0.11
+DISTVERSION=	3.0.12
 CATEGORIES=	net
 MASTER_SITES=	ftp://ftp.freeradius.org/pub/freeradius/%SUBDIR%/ \
 		ftp://ftp.ntua.gr/pub/net/radius/freeradius/%SUBDIR%/ \
@@ -28,10 +28,9 @@ CONFLICTS_INSTALL=	gnu-radius-[0-9].* openradius-[0-9].* radiusd-cistron-[0-9].*
 
 USE_RC_SUBR=	radiusd
 
-USES=		gmake shebangfix tar:bzip2
+USES=		gmake shebangfix ssl tar:bzip2
 SHEBANG_FILES=	src/modules/rlm_counter/rad_counter scripts/sql/radsqlrelay
 GNU_CONFIGURE=	yes
-USE_OPENSSL=	yes
 # Prevent /root/.rnd leftover
 MAKE_ARGS+=	HOME=/dev/null
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -287,6 +286,14 @@ CONFIGURE_ARGS+=--with-udpfromto
 WITH_OPENSSL_PORT=yes
 .endif
 
+# rlm_eap_fast is currently broken under 9.x:
+# https://github.com/FreeRADIUS/freeradius-server/issues/1803
+.if ${OSVERSION} < 1000015
+PLIST_SUB+=     EAPFAST="@comment "
+.else
+PLIST_SUB+=     EAPFAST=""
+.endif
+
 .include <bsd.port.pre.mk>
 
 # if we're installing, place sample configs into ${EXAMPLESDIR}
@@ -343,6 +350,9 @@ SUB_LIST+=	RADIUS_USER="${RADIUS_USER}" \
 SUB_LIST+=	REQUIRE="${_REQUIRE}"
 
 post-patch:
+.if ${OSVERSION} < 1000015
+	${RM} -r ${WRKSRC}/src/modules/rlm_eap/types/rlm_eap_fast
+.endif
 # never try to find execinfo.h (needed until we can enable/disable backtrace
 	@${REINPLACE_CMD} -e '/#include <execinfo.h>/d' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -Ee "s:tests/all.mk ::" ${WRKSRC}/src/all.mk
@@ -362,11 +372,14 @@ post-patch:
 		${WRKSRC}/src/modules/rlm_krb5/configure
 .endif
 .if empty(PORT_OPTIONS:MRUBY)
-	@${RM} -fr ${WRKSRC}/src/modules/rlm_ruby/
+	@${RM} -r ${WRKSRC}/src/modules/rlm_ruby/
 .endif
 
 post-build:
 	@${FIND} ${WRKSRC}/build/lib -type f -name '*.so' -exec ${STRIP_CMD} {} \;
 	@${FIND} ${WRKSRC}/build/bin -type f -exec ${STRIP_CMD} {} \;
+
+post-install:
+	${MKDIR} ${STAGEDIR}/var/run/radiusd
 
 .include <bsd.port.post.mk>

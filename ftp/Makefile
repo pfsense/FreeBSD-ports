@@ -14,9 +14,9 @@
     SUBDIR += cftp
     SUBDIR += cmdftp
     SUBDIR += curl
-    SUBDIR += curl-hiphop
     SUBDIR += curlpp
     SUBDIR += dmachine
+    SUBDIR += fastdfs
     SUBDIR += filezilla
     SUBDIR += fmirror
     SUBDIR += fpc-libcurl
@@ -40,7 +40,7 @@
     SUBDIR += lftp
     SUBDIR += libfilezilla
     SUBDIR += linux-c6-curl
-    SUBDIR += linux-f10-curl
+    SUBDIR += linux-c7-curl
     SUBDIR += llnlxdir
     SUBDIR += llnlxftp
     SUBDIR += mirror
@@ -62,11 +62,11 @@
     SUBDIR += pavuk
     SUBDIR += pear-Net_FTP
     SUBDIR += pftpd
-    SUBDIR += php55-curl
-    SUBDIR += php55-ftp
     SUBDIR += php56-curl
+    SUBDIR += php56-fastdfs
     SUBDIR += php56-ftp
     SUBDIR += php70-curl
+    SUBDIR += php70-fastdfs
     SUBDIR += php70-ftp
     SUBDIR += phpwebftp
     SUBDIR += plasma-applet-ftpmonitor
@@ -85,6 +85,7 @@
     SUBDIR += rubygem-curb
     SUBDIR += scythia
     SUBDIR += smbftpd
+    SUBDIR += spegla
     SUBDIR += tftp-hpa
     SUBDIR += tnftp
     SUBDIR += tnftpd

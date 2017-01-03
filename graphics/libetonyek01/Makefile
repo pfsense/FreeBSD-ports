@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	libetonyek
-PORTVERSION=	0.1.3
+PORTVERSION=	0.1.6
 PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	graphics
@@ -14,19 +14,22 @@ COMMENT=	Library to interpret and import Apple Keynote presentations
 LICENSE=	LGPL21 MPL
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	${LOCALBASE}/include/mdds/global.hpp:devel/mdds0 \
+BUILD_DEPENDS=	${LOCALBASE}/include/mdds-1.2/mdds/global.hpp:devel/mdds \
 		${LOCALBASE}/include/glm/glm.hpp:math/glm
 LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs \
 		librevenge-0.0.so:textproc/librevenge \
+		liblangtag.so:devel/liblangtag \
 		libxml2.so:textproc/libxml2
 
 OPTIONS_DEFINE=	TEST
 
 CONFIGURE_ARGS=	--disable-werror --without-docs
 CPPFLAGS+=	-I${LOCALBASE}/include
+CXXFLAGS+=	-D_GLIBCXX_USE_C99 -D_GLIBCXX_USE_C99_MATH_TR1 \
+		-D_DECLARE_C99_LDBL_MATH # XXX ports/193528
 
 GNU_CONFIGURE=	yes
-USES=		compiler:c++11-lang gmake libtool pathfix pkgconfig tar:xz
+USES=		autoreconf compiler:c++11-lib gmake libtool pathfix pkgconfig tar:xz
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 

@@ -20,7 +20,6 @@ GH_PROJECT=	${PORTNAME:S/2$//}
 
 GNU_CONFIGURE=	yes
 USES=		autoreconf libtool pathfix
-PATHFIX_MAKEFILEIN=Makefile.am
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=	OPENSSL THREADS
@@ -43,4 +42,10 @@ post-patch:
 regression-test: build
 	@(${SH} ${WRKSRC}/test/regress)
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${PORT_OPTIONS:MOPENSSL} && ${SSL_DEFAULT:Mopenssl-devel}
+BROKEN=		Does not build with openssl-devel
+.endif
+
+.include <bsd.port.post.mk>

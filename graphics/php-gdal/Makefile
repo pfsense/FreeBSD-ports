@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gdal
-PORTVERSION=	2.1.0
+PORTVERSION=	2.1.2
 CATEGORIES=	graphics
 MASTER_SITES=	http://download.osgeo.org/gdal/${PORTVERSION}/ \
 		ftp://ftp.remotesensing.org/pub/gdal/${PORTVERSION}/ \
@@ -31,8 +31,8 @@ post-patch:
 	@${REINPLACE_CMD} -e '/^SWIG = swig/ s|$$|3.0|' ${WRKSRC}/../SWIGmake.base
 	@${REINPLACE_CMD} -e 's|^CC=.*$$|CC=${CC}|; s|^CXX=.*$$|CXX=${CXX}|; s|^CFLAGS=.*$$|CFLAGS=${CFLAGS}|' ${WRKSRC}/${MAKEFILE}
 
-# include/cpl_config.h will exist after build phase
-pre-build:
+# GDALmake.opt and cpl_config.h are not available until configure phase
+post-configure:
 	${SED} -e '/^GDAL_ROOT/d' ${DATADIR}/GDALmake.opt > ${WRKSRC}/../../GDALmake.opt
 	${CP} ${LOCALBASE}/include/cpl_config.h ${WRKSRC}/../../port/
 

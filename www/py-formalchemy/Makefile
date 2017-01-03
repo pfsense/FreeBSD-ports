@@ -2,21 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	formalchemy
-PORTVERSION=	1.3.3
-PORTREVISION=	2
+PORTVERSION=	1.5.1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	www python
-MASTER_SITES=	GOOGLE_CODE
+#MASTER_SITES=	https://github.com/FormAlchemy/formalchemy
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-DISTNAME=	FormAlchemy-${DISTVERSION}
 
 MAINTAINER=	ghostonthewire@gmail.com
 COMMENT=	Toolkit for creating HTML form elements
 
 LICENSE=	MIT
 
-BROKEN=		Unfetchable (google code has gone away)
+USE_GITHUB=	yes
+GH_ACCOUNT=	FormAlchemy
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlalchemy06>=0.4.5:databases/py-sqlalchemy06 \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlalchemy10>=0.4.5:databases/py-sqlalchemy10 \
 		${PYTHON_PKGNAMEPREFIX}Tempita>=0.4:textproc/py-Tempita \
 		${PYTHON_PKGNAMEPREFIX}webhelpers>=0.6.4:www/py-webhelpers
 RUN_DEPENDS:=	${BUILD_DEPENDS}

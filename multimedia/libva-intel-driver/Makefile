@@ -3,6 +3,7 @@
 
 PORTNAME=	libva-intel-driver
 PORTVERSION=	1.7.2
+PORTREVISION=	1
 CATEGORIES=	multimedia
 MASTER_SITES=	http://www.freedesktop.org/software/vaapi/releases/${PORTNAME}/
 
@@ -22,6 +23,9 @@ USE_GL=		gl
 USE_LDCONFIG=	yes
 
 PLIST_FILES=	lib/va/i965_drv_video.so
+
+ONLY_FOR_ARCHS=	amd64 i386
+ONLY_FOR_ARCHS_REASON=	Driver for hardware present only on intel i386 and amd64 CPUs
 
 post-patch:	.SILENT
 	${REINPLACE_CMD} -e 's/-ldl//' \

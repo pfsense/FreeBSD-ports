@@ -11,14 +11,16 @@ COMMENT=	Highly scalable, fault-tolerant distributed file system
 
 LICENSE=	APACHE20
 
-BROKEN_powerpc64=	Does not build
-
 BUILD_DEPENDS=	${LOCALBASE}/lib/erlang17/bin/erlc:lang/erlang-runtime17 \
 		${LOCALBASE}/bin/cmake:devel/cmake \
 		${LOCALBASE}/lib/libcheck.a:devel/libcheck
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	leo-project
+
+BROKEN_aarch64=		Does not compile: fatal error: lzo/lzo1x.h file not found
+BROKEN_powerpc64=	Does not build
+BROKEN_sparc64=		Does not build: error Please implement AtomicPointer for this platform
 
 LEOFS_USER=	leofs
 LEOFS_GROUP=	leofs
@@ -116,14 +118,13 @@ label=		${dep:C,^.*:,,}
 GH_ACCOUNT:=	${GH_ACCOUNT} ${account}:${label}
 GH_PROJECT:=	${GH_PROJECT} ${project}:${label}
 GH_TAGNAME:=	${GH_TAGNAME} ${tagname}:${label}
+GH_SUBDIR:=	${GH_SUBDIR} deps/${label}:${label}
 .endfor
 
 post-extract:
 .for dep in ${LEOFS_DEPS}
 .for tagname in ${dep:C,^[^=]+=([^\?]+)\?.*$,\1,}
 .for label in ${dep:C,^.*:,,}
-	@${MKDIR} ${WRKSRC}/deps
-	@${MV} ${WRKSRC_${label}} ${WRKSRC}/deps/${label}
 	@if [ -f "${WRKSRC}/deps/${label}/src/${label}.app.src" ]; then \
 	    ${REINPLACE_CMD} -e "s|{vsn, *git}|{vsn, \"${tagname}\"}|" \
 		"${WRKSRC}/deps/${label}/src/${label}.app.src"; \

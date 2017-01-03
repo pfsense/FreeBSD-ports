@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	msmtp
-PORTVERSION=	1.6.5
+PORTVERSION=	1.6.6
 CATEGORIES=	mail ipv6
 MASTER_SITES=	SF
 
@@ -58,7 +58,7 @@ post-extract:
 		${WRKSRC}/doc/msmtp.1
 
 .if ${PORT_OPTIONS:MMSMTPQ}
-post-stage:
+post-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/scripts/msmtpq/msmtp-queue ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_SCRIPT} ${WRKSRC}/scripts/msmtpq/msmtpq ${STAGEDIR}${PREFIX}/bin
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

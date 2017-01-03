@@ -3,7 +3,7 @@
 
 PORTNAME=	vice
 PORTVERSION=	2.4
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	emulators
 MASTER_SITES=	http://www.zimmers.net/anonftp/pub/cbm/crossplatform/emulators/VICE/ \
 		ftp://ftp.zimmers.net/pub/cbm/crossplatform/emulators/VICE/
@@ -101,6 +101,7 @@ __pmlinks1!= ${ECHO_CMD} '${LMLINKS:S/    / /}' | ${AWK} \
 .if ${PORT_OPTIONS:MXAW3D}
 GNOME_SUFFIX=   -xaw3d
 CONFLICTS?=     vice-gnome-1.* vice-1.*
+USES+=		perl5
 .endif
 
 .if ${PORT_OPTIONS:MGNOMEUI}
@@ -142,9 +143,10 @@ USE_SDL=	sdl
 .endif
 
 post-extract:
-	@${RM} -f ${WRKSRC}/doc/vice.info*
+	@${RM} ${WRKSRC}/doc/vice.info*
 
 post-patch:
+	${CHMOD} +x "${WRKSRC}/doc/html/texi2html"
 	${REINPLACE_CMD} -e "s|%%PREFIX%%|${PREFIX}|g" \
 		${WRKSRC}/man/vice.1
 	${REINPLACE_CMD} -e 's|^localedir.*|localedir = $$(DESTDIR)${LOCALBASE}/share/locale|' \
@@ -152,6 +154,12 @@ post-patch:
 	${REINPLACE_CMD} -e 's|lungif|lgif|g' -e 's|== "x|= "x|' \
 		-e 's|"DATADIRNAME"/locale|share/locale|' \
 		${WRKSRC}/configure
+	${REINPLACE_CMD} -e 's|CODEC_ID_|AV_CODEC_ID_|' \
+		-e 's|PIX_FMT_|AV_PIX_FMT_|' \
+		${WRKSRC}/src/gfxoutputdrv/ffmpegdrv.c
+	${REINPLACE_CMD} \
+		-e 's|enum PixelFormat|enum AVPixelFormat|g' \
+		${WRKSRC}/src/gfxoutputdrv/ffmpeglib.h
 .for i in da.po de.po fr.po hu.po it.po nl.po pl.po sv.po tr.po
 	${MV} "${WRKSRC}/po/${i}" "${WRKSRC}/po/${i}.latin"
 	${ICONV_CMD} -f latin1 -t utf-8 < "${WRKSRC}/po/${i}.latin" > "${WRKSRC}/po/${i}"

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	efl
-PORTVERSION=	1.18.1
+PORTVERSION=	1.18.4
 CATEGORIES=	devel enlightenment
 MASTER_SITES=	http://download.enlightenment.org/rel/libs/${PORTNAME}/
 
@@ -152,13 +152,8 @@ LIB_DEPENDS+=			libluajit-5.1.so:lang/luajit
 PLIST_SUB+=			ELUA=""
 .endif
 
-pre-patch:
-	@${REINPLACE_CMD} -e \
-		's|[(]libdir[)]/pkgconfig|(prefix)/libdata/pkgconfig|g' \
-		${WRKSRC}/Makefile.am
-
-post-stage:
-	${RM} -rf ${STAGEDIR}${PREFIX}/share/gdb
+post-install:
+	${RM} -r ${STAGEDIR}${PREFIX}/share/gdb
 	for i in `${FIND} ${STAGEDIR}${PREFIX}/bin ${STAGEDIR}${PREFIX}/lib -type f`; do \
 	    if ${FILE} $$i | ${GREP} -q "not stripped"; then ${STRIP_CMD} $$i; fi; \
 	done

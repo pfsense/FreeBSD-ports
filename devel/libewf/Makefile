@@ -3,8 +3,9 @@
 
 PORTNAME=	libewf
 PORTVERSION=	20140608
+PORTREVISION=	1
 CATEGORIES=	devel
-MASTER_SITES=	https://googledrive.com/host/0B3fBvzttpiiSMTdoaVExWWNsRjg/ \
+MASTER_SITES=	https://github.com/libyal/legacy/raw/master/libewf/ \
 		LOCAL/antoine
 
 MAINTAINER=	nobutaka@FreeBSD.org

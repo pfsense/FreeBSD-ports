@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	lilypond
-PORTVERSION=	2.19.47
+PORTVERSION=	2.19.51
+PORTREVISION=	1
 CATEGORIES=	print audio
 MASTER_SITES=	http://download.linuxaudio.org/lilypond/sources/v${PORTVERSION:R}/
 PKGNAMESUFFIX=	-devel
@@ -25,11 +26,11 @@ BUILD_DEPENDS=	pdftexi2dvi:print/texinfo \
 		zip:archivers/zip
 RUN_DEPENDS=	mftrace:print/mftrace \
 		${LOCALBASE}/share/fonts/dejavu/DejaVuSans-Bold.ttf:x11-fonts/dejavu
-LIB_DEPENDS=	libguile.so:lang/guile \
+LIB_DEPENDS=	libltdl.so:devel/libltdl \
+		libguile.so:lang/guile \
 		libgmp.so:math/gmp \
-		libfreetype.so:print/freetype2
-
-BROKEN_FreeBSD_9=	does not build on FreeBSD < 10.x
+		libfreetype.so:print/freetype2 \
+		libfontconfig.so:x11-fonts/fontconfig
 
 INFO=		internals \
 		lilypond-changes \
@@ -68,13 +69,12 @@ NO_CCACHE=	yes
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 OPTIONS_DEFINE=	NLS
+OPTIONS_SUB=	yes
 
-.include <bsd.port.options.mk>
+.include <bsd.port.pre.mk>
 
-.if ${PORT_OPTIONS:MNLS}
-PLIST_SUB+=	NLS=""
-.else
-PLIST_SUB+=	NLS="@comment "
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1000000 && ${OSVERSION} < 1002000
+BROKEN=		does not build on 10.1 (undefined reference to `__cxa_throw_bad_array_new_length')
 .endif
 
 post-patch:
@@ -82,13 +82,13 @@ post-patch:
 	    ${REINPLACE_CMD} -e 's|isinf[ ]*(|::isinf(|g' -e 's|isnan|::isnan|g'
 	${REINPLACE_CMD} -e 's|<FlexLexer.h>|"/usr/include/FlexLexer.h"|' \
 	    ${WRKSRC}/lily/include/includable-lexer.hh
-.if !${PORT_OPTIONS:MNLS}
+
+post-patch-NLS-off:
 	${REINPLACE_CMD} -e '/po \\$$/d' ${WRKSRC}/${MAKEFILE}.in
-.endif
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/lilypond
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lilypond/${PORTVERSION}/python/midi.so
-	@${LN} -fs ${DATADIR}/${PORTVERSION} ${STAGEDIR}${DATADIR}/current
+	(cd ${STAGEDIR}/${DATADIR} && ${LN} -fs ${PORTVERSION} current)
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

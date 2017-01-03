@@ -1,21 +1,33 @@
 # Created by: Edwin Groothuis
 # $FreeBSD$
 
-PORTNAME=	nos-ttb
+PORTNAME=	ttb
 PORTVERSION=	0.9.5
 PORTREVISION=	3
 CATEGORIES=	net
-MASTER_SITES=	http://www.djcbsoftware.nl/code/ttb/
-DISTNAME=	ttb-${PORTVERSION}
+MASTER_SITES=	http://www.djcbsoftware.nl/code/${PORTNAME}/
+PKGNAMEPREFIX=	nos-
 
-MAINTAINER=	edwin@mavetju.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	NOS teletekst browser
 
-#don't know if pygtk-1.X could also be used
+LICENSE=	GPLv3+
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
 RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/pygtk-2.0.pc:x11-toolkits/py-gtk2
 
-NO_BUILD=	yes
+# there is a successor project called TTX at
+# https://github.com/djcb/ttx
+DEPRECATED=	does not work due to protocol changes
+EXPIRATION_DATE=2017-02-20
+
 USES=		python
+NO_BUILD=	yes
+NO_ARCH=	yes
+
+PLIST_FILES=	bin/${PORTNAME} \
+		%%DATADIR%%/ttb.glade \
+		%%DATADIR%%/ttb.png
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/ttb

@@ -9,7 +9,7 @@ MASTER_SITES=	SF/crawl-ref/Stone%20Soup/${PORTVERSION}
 MASTER_SITES=	http://crawl.develz.org/release/
 DISTNAME=	stone_soup-${PORTVERSION}-nodeps
 
-MAINTAINER=	lifanov@mail.lifanov.com
+MAINTAINER=	lifanov@FreeBSD.org
 COMMENT=	Dungeon Crawl Stone Soup - a fun, free rogue-like game
 
 LICENSE=	GPLv2
@@ -70,7 +70,7 @@ LUA_MAKE_ARGS_OFF=	NO_LUA_BINDINGS=yes
 
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_TYPE} != clang
+.if ${CHOSEN_COMPILER_TYPE} != clang
 CFLAGS+=	-D_GLIBCXX_USE_C99
 .endif
 

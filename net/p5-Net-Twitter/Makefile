@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	Net-Twitter
-PORTVERSION=	4.01020
+PORTVERSION=	4.01041
+PORTREVISION=	1
 CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -12,6 +13,7 @@ COMMENT=	Perl interface to twitter.com
 
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	p5-Carp-Clan>=0:devel/p5-Carp-Clan \
 		p5-Class-Load>=0:devel/p5-Class-Load \

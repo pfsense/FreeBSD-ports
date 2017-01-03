@@ -20,7 +20,7 @@
 # PERL_ARCH	- Directory name of architecture dependent libraries
 #		  (value: mach).
 # PERL_PORT	- Name of the perl port that is installed
-#		  (for example: perl5.18)
+#		  (for example: perl5.24)
 # SITE_PERL	- Directory name where site specific perl packages go.
 #		  This value is added to PLIST_SUB.
 # SITE_ARCH	- Directory name where arch site specific perl packages go.
@@ -51,9 +51,7 @@ THIS_IS_OLD_PERL=	yes
 # end of remove
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-.if ${PERL5_DEFAULT} == 5.18
-.include "${PORTSDIR}/lang/perl5.18/version.mk"
-.elif ${PERL5_DEFAULT} == 5.20
+.if ${PERL5_DEFAULT} == 5.20
 .include "${PORTSDIR}/lang/perl5.20/version.mk"
 .elif ${PERL5_DEFAULT} == 5.22
 .include "${PORTSDIR}/lang/perl5.22/version.mk"
@@ -97,10 +95,8 @@ PERL_ARCH?=	mach
 PERL_PORT?=	perl5.24
 .elif   ${PERL_LEVEL} >= 502200
 PERL_PORT?=	perl5.22
-.elif   ${PERL_LEVEL} >= 502000
+.else # ${PERL_LEVEL} < 502200
 PERL_PORT?=	perl5.20
-.else # ${PERL_LEVEL} < 502000
-PERL_PORT?=	perl5.18
 .endif
 
 SITE_PERL_REL?=	lib/perl5/site_perl
@@ -308,7 +304,7 @@ fix-perl-things:
 # by mistake in their plists.  It is sometime compressed, so use a
 # shell glob for the removal.  Also, remove the directories that
 # contain it to not leave orphans directories around.
-	@${RM} -f ${STAGEDIR}${PREFIX}/lib/perl5/${PERL_VER}/${PERL_ARCH}/perllocal.pod* || :
+	@${RM} ${STAGEDIR}${PREFIX}/lib/perl5/${PERL_VER}/${PERL_ARCH}/perllocal.pod* || :
 	@${RMDIR} -p ${STAGEDIR}${PREFIX}/lib/perl5/${PERL_VER}/${PERL_ARCH} 2>/dev/null || :
 # Starting at ExtUtils::MakeMaker 7.06 and Perl 5.25.1, the base README.pod is
 # no longer manified into a README.3, as the README.pod is installed and can be

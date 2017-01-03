@@ -85,6 +85,10 @@ RELTYPE=		Release
 
 .include <bsd.port.pre.mk>
 
+.if ${OPSYS} == "FreeBSD" && ${OSVERSION} >= 1200017 && ${CHOSEN_COMPILER_TYPE} == "clang"
+BROKEN=	Base clang produces compiler errors
+.endif
+
 # keep in sync with /usr/src/lib/clang/clang.build.mk
 CONFIGURE_TARGET:=${ARCH:C/amd64/x86_64/:C/armv6hf/armv6/}-portbld-${OPSYS:tl}${OSREL}
 
@@ -100,7 +104,7 @@ pre-fetch:
 .endif
 
 post-extract:
-	${RM} -f ${BUILD_WRKSRC}
+	${RM} ${BUILD_WRKSRC}
 	${MV} ${WRKDIR}/${CLANG_EXTRACT} ${BUILD_WRKSRC}
 
 post-patch:
@@ -176,7 +180,7 @@ PLIST_DIR_LIST=		include/clang \
 			lib/python
 
 build-plist:
-	${RM} -f ${PLIST}
+	${RM} ${PLIST}
 .for command in ${COMMANDS}
 	${ECHO_CMD} bin/${command}%%LLVM_SUFFIX%% >> ${PLIST}
 .endfor

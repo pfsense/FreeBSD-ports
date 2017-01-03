@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Test-WWW-Mechanize
-PORTVERSION=	1.46
+PORTVERSION=	1.48
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:PETDANCE
@@ -22,6 +22,9 @@ BUILD_DEPENDS=	p5-Carp-Assert-More>=0:devel/p5-Carp-Assert-More \
 		p5-libwww>=6.02:www/p5-libwww
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
+PORTSCOUT=	limit:^[0-9\.]*$$
+
+NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
 

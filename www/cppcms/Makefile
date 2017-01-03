@@ -2,7 +2,7 @@
 
 PORTNAME=	cppcms
 PORTVERSION=	1.0.5
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	www
 MASTER_SITES=	SF/cppcms/${PORTNAME}/${PORTVERSION}
 
@@ -12,8 +12,6 @@ COMMENT=	C++ web development framework
 LICENSE=	LGPL3
 
 BROKEN_powerpc64=	Does not build
-
-BROKEN_FreeBSD_9=	does not build on 9.x
 
 LIB_DEPENDS=	libpcre.so:devel/pcre
 

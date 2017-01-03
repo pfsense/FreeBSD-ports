@@ -2,14 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	zoneinfo
-DISTVERSION=	2016f
+DISTVERSION=	2016i
 CATEGORIES=	misc
 MASTER_SITES=	ftp://ftp.iana.org/tz/releases/ \
 		ftp://munnari.oz.au/pub/
 DISTNAME=	tzdata${DISTVERSION}
 
-MAINTAINER=	edwin@mavetju.org
+MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Updated timezone definitions
+
+LICENSE=	PD
 
 NO_WRKSUBDIR=	yes
 PREFIX=		/usr

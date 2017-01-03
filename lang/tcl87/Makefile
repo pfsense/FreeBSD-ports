@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	tcl
-DISTVERSION=	8.7.a0.20160909
+PORTREVISION=	1
+DISTVERSION=	8.7.a0.20161104
 CATEGORIES=	lang
 MASTER_SITES=	http://core.tcl.tk/tcl/tarball/
 PKGNAMESUFFIX=	${PORTVERSION:R:R:S/.//}
@@ -17,13 +18,22 @@ LICENSE_FILE=	${WRKSRC}/../license.terms
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 OPTIONS_DEFINE=	TCLMAN TZDATA MODULES THREADS DEBUG
+OPTIONS_DEFINE_amd64=	DTRACE
 OPTIONS_DEFAULT=MODULES THREADS
+OPTIONS_DEFAULT_amd64=	DTRACE
 TCLMAN_DESC=	Install Tcl function manpages
 TZDATA_DESC=	Install Tcl timezone data
 MODULES_DESC=	Install Tcl common modules
 OPTIONS_SUB=	yes
 
-FOSSIL_CHECKIN=	20c19f9d5593455a
+.if !exists(/usr/sbin/dtrace)
+OPTIONS_EXCLUDE+=	DTRACE
+.endif
+
+OPTIONS_EXCLUDE_FreeBSD_9=	DTRACE
+OPTIONS_EXCLUDE_FreeBSD_10=	DTRACE
+
+FOSSIL_CHECKIN=	24d90770030948ca
 
 PATCH_WRKSRC=	${WRKDIR}/Tcl_Source_Code
 WRKSRC=		${PATCH_WRKSRC}/unix
@@ -55,6 +65,15 @@ TZDATA_INSTALL_TARGET=	install-tzdata
 MODULES_INSTALL_TARGET=	install-modules
 THREADS_CONFIGURE_ENABLE=	threads
 DEBUG_CONFIGURE_ENABLE=	symbols
+DTRACE_CONFIGURE_ENABLE=	dtrace
+
+.include <bsd.port.options.mk>
+ 
+.if ${PORT_OPTIONS:MDTRACE}
+PLIST_SUB+=	DTRACE=""
+.else
+PLIST_SUB+=	DTRACE="@comment "
+.endif
 
 post-patch:
 	${REINPLACE_CMD} -e \

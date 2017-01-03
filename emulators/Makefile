@@ -16,6 +16,8 @@
     SUBDIR += catapult
     SUBDIR += cinc
     SUBDIR += cingb
+    SUBDIR += citra
+    SUBDIR += citra-qt5
     SUBDIR += cpmemu
     SUBDIR += cpmtools
     SUBDIR += cpmtools2
@@ -68,10 +70,9 @@
     SUBDIR += libdsk
     SUBDIR += libspectrum
     SUBDIR += linux-c6
-    SUBDIR += linux-f10
+    SUBDIR += linux-c7
     SUBDIR += linux_base-c6
     SUBDIR += linux_base-c7
-    SUBDIR += linux_base-f10
     SUBDIR += lisaem
     SUBDIR += loemu
     SUBDIR += m2000
@@ -112,6 +113,8 @@
     SUBDIR += ppsspp-qt4
     SUBDIR += ppsspp-qt5
     SUBDIR += py-gns3-converter
+    SUBDIR += py-nova
+    SUBDIR += py-unicorn
     SUBDIR += q4wine
     SUBDIR += qemu
     SUBDIR += qemu-cheri
@@ -119,8 +122,10 @@
     SUBDIR += qemu-cheri128m
     SUBDIR += qemu-devel
     SUBDIR += qemu-launcher
+    SUBDIR += qemu-riscv
     SUBDIR += qemu-sbruno
     SUBDIR += qemu-user-static
+    SUBDIR += qemu-utils
     SUBDIR += qmc2
     SUBDIR += qtemu
     SUBDIR += quasi88
@@ -143,6 +148,7 @@
     SUBDIR += tuxnes
     SUBDIR += uae
     SUBDIR += ucon64
+    SUBDIR += unicorn
     SUBDIR += vba
     SUBDIR += vboxtool
     SUBDIR += vgb-bin
@@ -151,8 +157,9 @@
     SUBDIR += virtio-kmod
     SUBDIR += virtualbox-ose
     SUBDIR += virtualbox-ose-additions
+    SUBDIR += virtualbox-ose-additions-nox11
     SUBDIR += virtualbox-ose-kmod
-    SUBDIR += virtualbox-ose-lite
+    SUBDIR += virtualbox-ose-nox11
     SUBDIR += visualboyadvance-m
     SUBDIR += vmips
     SUBDIR += vmsbackup
@@ -166,6 +173,7 @@
     SUBDIR += wine-mono
     SUBDIR += wine-mono-devel
     SUBDIR += wine-staging
+    SUBDIR += winetricks
     SUBDIR += wxmupen64plus
     SUBDIR += x48
     SUBDIR += x49gp

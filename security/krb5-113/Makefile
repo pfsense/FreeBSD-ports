@@ -13,9 +13,12 @@ PATCH_SITES=		http://web.mit.edu/kerberos/advisories/
 PATCH_DIST_STRIP=	-p2
 
 MAINTAINER=		cy@FreeBSD.org
-COMMENT=		Authentication system developed at MIT, successor to Kerberos IV
+COMMENT=		MIT implementation of RFC 4120 network authentication service
 
 LICENSE=		MIT
+
+DEPRECATED=             EOL twelve months after release of krb5-1.15
+EXPIRATION_DATE=        2017-12-02
 
 CONFLICTS=		heimdal-[0-9]* srp-[0-9]* krb5-11[0-2]-* krb5-[0-9].*
 

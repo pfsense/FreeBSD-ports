@@ -108,9 +108,9 @@ pootle:*:158:158::0:0:Pootle User:/var/db/pootle:/usr/sbin/nologin
 nocat:*:159:159::0:0:NoCat Daemon:/libexec/nocat:/sbin/nologin
 _ypldap:*:160:160::0:0:YP Ldap unprivileged user:/var/empty:/usr/sbin/nologin
 solr:*:161:161::0:0:Apache Solr System:/var/db/solr:/usr/sbin/nologin
-# free: 162
-# free: 163
-# free: 164
+octoprint:*:162:162::0:0:OctoPrint Daemon:/usr/local/octoprint:/usr/sbin/nologin
+_iked:*:163:163::0:0:IKEv2 Daemon:/var/empty:/usr/sbin/nologin
+lightdm:*:164:164::0:0:Light Display Manager:/var/lib/lightdm-data:/usr/sbin/nologin
 # free: 165
 # free: 166
 # free: 167
@@ -123,7 +123,7 @@ polipo:*:173:173::0:0:polipo web cache:/nonexistent:/usr/sbin/nologin
 flowtools:*:174:174::0:0:Flow-tools collector pseudo-user:/nonexistent:/usr/sbin/nologin
 twms:*:175:175::0:0:tWMS pseudo-user:/nonexistent:/usr/sbin/nologin
 mlvpn:*:176:176::0:0:mlVPN pseudo-user:/var/run/mlvpn:/usr/sbin/nologin
-# free: 177
+_mdnsd:*:177:177::0:0:Multicast DNS Daemon:/var/empty:/usr/sbin/nologin
 otpw:*:178:178::0:0:OTPW pseudo-user:/var/lib/otpw:/usr/sbin/nologin
 gdnsd:*:179:179::0:0:gDNSd pseudo-user:/nonexistent:/usr/sbin/nologin
 # free: 180
@@ -136,15 +136,15 @@ dnslog:*:186:186::0:0:dnslog pseudo-user:/nonexistent:/usr/sbin/nologin
 swift:*:187:187::0:0:Swift daemon pseudo-user:/nonexistent:/usr/sbin/nologin
 netxms:*:188:188::0:0:netxms pseudo-user:/nonexistent:/usr/sbin/nologin
 leofs:*:189:189::0:0:LeoFS daemons pseudo-user:/var/db/leofs:/usr/sbin/nologin
-# free: 190
-# free: 191
+keystone:*:190:190::0:0:Keystone pseudo-user:/var/lib/keystone:/usr/sbin/nologin
+glance:*:191:191::0:0:Glance pseudo-user:/var/lib/glance:/usr/sbin/nologin
 moinmoin:*:192:192::0:0:MoinMoin User:/nonexistent:/usr/sbin/nologin
 cups:*:193:193::0:0:Cups Owner:/nonexistent:/usr/sbin/nologin
 saned:*:194:194::0:0:SANE Scanner Daemon:/nonexistent:/bin/sh
 radns:*:195:195::0:0:radns user:/nonexistent:/usr/sbin/nologin
-# free: 196
-# free: 197
-# free: 198
+nova:*:196:196::0:0:Nova daemon pseudo-user:/var/lib/nova:/usr/sbin/nologin
+dq:*:197:197::0:0:dqcache user:/nonexistent:/usr/sbin/nologin
+horizon:*:198:198::0:0:Horizon pseudo-user:/var/lib/horizon:/usr/sbin/nologin
 mcserver:*:199:199::0:0:Minecraft Server:/nonexistent:/bin/sh
 sympa:*:200:200::0:0:Sympa Owner:/nonexistent:/usr/sbin/nologin
 privoxy:*:201:201::0:0:Privoxy proxy user:/nonexistent:/usr/sbin/nologin
@@ -201,7 +201,7 @@ fcron:*:247:247::0:0:fcron pseudo-user:/nonexistent:/usr/sbin/nologin
 # free: 252
 _adsuck:*:253:253::0:0:Adsuck ad blocking user:/nonexistent:/usr/sbin/nologin
 # free: 254
-# free: 255
+_i2pd:*:255:255::0:0:I2P daemon:/var/db/i2pd:/usr/sbin/nologin
 _tor:*:256:256::0:0:Tor anonymizing router:/var/db/tor:/usr/sbin/nologin
 _smtpd:*:257:257::0:0:OpenSMTPD:/var/empty:/usr/sbin/nologin
 _smtpq:*:258:258::0:0:OpenSMTPD queue user:/var/empty:/usr/sbin/nologin
@@ -224,7 +224,7 @@ meta1:*:264:264::0:0:MeTA1 other:/nonexistent:/usr/sbin/nologin
 hacluster:*:275:275::0:0:Heartbeat cluster user:/nonexistent:/usr/sbin/nologin
 frontbase:*:276:276::0:0:FrontBase Daemon:/usr/local/FrontBase/Databases:/bin/sh
 # free: 277
-# free: 278
+rtg:*:278:278::0:0:RTG daemon:/nonexistent:/usr/sbin/nologin
 mrtg:*:279:279::0:0:MRTG daemon:/nonexistent:/usr/sbin/nologin
 xymon:*:280:280::0:0:Xymon Monitor:/nonexistent:/usr/sbin/nologin
 prelude:*:281:281::0:0:Prelude user:/nonexistent:/usr/sbin/nologin
@@ -259,7 +259,7 @@ backuppc:*:300:300::0:0:BackupPC pseudo-user:/nonexistent:/usr/sbin/nologin
 # free: 310
 # free: 311
 _sphinx:*:312:312::0:0:Sphinxsearch Owner:/nonexistent:/usr/sbin/nologin
-# free: 313
+_fastdfs:*:313:313::0:0:FastDFS Owner:/nonexistent:/usr/sbin/nologin
 # free: 314
 # free: 315
 # free: 316
@@ -414,7 +414,7 @@ ecartis:*:450:450::0:0:Ecartis Listserver:/usr/local/ecartis:/usr/sbin/nologin
 courier:*:465:465::0:0:Courier Mail Server:/nonexistent:/usr/sbin/nologin
 condor:*:466:466::0:0:& user:/home/condor:/usr/sbin/nologin
 netmon:*:467:467::0:0:Network monitor account:/var/netmon:/usr/sbin/nologin
-slurm:*:468:468::0:0:SLURM Daemon:/home/slurm:/usr/sbin/nologin
+slurm:*:468:468::0:0:SLURM Daemon:/nonexistent:/usr/sbin/nologin
 consul:*:469:469::0:0:Consul Daemon:/var/tmp/consul:/usr/sbin/nologin
 serf:*:470:470::0:0:Serf Daemon:/nonexistent:/usr/sbin/nologin
 vault:*:471:471::0:0:Vault Daemon:/nonexistent:/usr/sbin/nologin
@@ -424,7 +424,7 @@ nomad:*:472:472::0:0:Nomad Daemon:/var/tmp/nomad:/usr/sbin/nologin
 # free: 475
 # free: 476
 # free: 477
-# free: 478
+prometheus:*:478:478::0:0:Prometheus Daemon:/var/tmp/prometheus:/usr/sbin/nologin
 # free: 479
 # free: 480
 # free: 481
@@ -521,7 +521,7 @@ polkitd:*:565:565::0:0:Polkit Daemon User:/var/empty:/usr/sbin/nologin
 # free: 572
 # free: 573
 # free: 574
-# free: 575
+nexus:*:575:575::0:0:Nexus Repository Manager OSS:/nonexistent:/usr/sbin/nologin
 # free: 576
 # free: 577
 # free: 578
@@ -725,7 +725,7 @@ postgres:*:770:770::0:0:PostgreSQL Daemon:/var/db/postgres:/bin/sh
 # free: 776
 openxpki:*:777:777::0:0:OpenXPKI Owner:/nonexistent:/usr/sbin/nologin
 # free: 778
-# free: 779
+bitcoin:*:779:779::0:0:bitcoin Daemon:/var/db/bitcoin:/usr/sbin/nologin
 zetacoin:*:780:780::0:0:ZetaCoin Daemon:/nonexistent:/usr/sbin/nologin
 # free: 781
 # free: 782
