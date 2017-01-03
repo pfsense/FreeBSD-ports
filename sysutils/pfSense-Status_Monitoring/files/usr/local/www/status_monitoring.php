@@ -66,14 +66,14 @@ function createSlug($string) {
 if($_POST['enable']) {
 	if(($_POST['enable'] === 'false')) {
 		unset($config['rrd']['enable']);
+		$savemsg = "RRD graphing has been disabled.";
 	} else {
 		$config['rrd']['enable'] = true;
+		$savemsg = "RRD graphing has been enabled.";
 	}
 	write_config();
 
-	$retval = 0;
-	$retval = enable_rrd_graphing();
-	$savemsg = get_std_save_message($retval);
+	enable_rrd_graphing();
 }
 
 if ($_POST['ResetRRD']) {
