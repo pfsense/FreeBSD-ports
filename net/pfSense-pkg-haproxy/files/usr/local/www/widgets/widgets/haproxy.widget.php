@@ -263,13 +263,7 @@ if ($getupdatestatus) {
 			getURL(url+"?"+pars, getstatusgetupdate);
 	}
 </script>
-<?php
-if (pf_version() < "2.3") {
-	echo '<div id="haproxy-settings" class="widgetconfigdiv" style="display:none;">';
-} else {
-	echo '<div id="widget-haproxy_panel-footer" class="panel-footer collapse">';
-}
-?>
+<div id="widget-haproxy_panel-footer" class="panel-footer collapse">
 <form action="/widgets/widgets/haproxy.widget.php" method="post" name="iform" id="iform">
 	<table>
 	<tr><td>
