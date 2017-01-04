@@ -8,7 +8,7 @@
  * lightsquid.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2016 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2006-2012 Sergey Dvoriancev <dv_serg@mail.ru>
  * All rights reserved.
  *
@@ -64,11 +64,11 @@
 				<![CDATA[
 				1/ <strong>Enable 'Access Logging' in the Squid package!</strong> It is strongly suggested to leave the 'Log Store Directory' in Squid package at default '/var/squid/logs' value.<br/><br/>
 				2/ <strong>ONLY if Squid is NOT set up as transparent proxy:</strong><br/>
-				-  Configure Squid - General - Proxy Interface(s) to include <strong>'loopback'</strong> interface (in addition to any other interfaces you want Squid to bind on).<br/>
+				-  Configure Squid - General - Proxy Interface(s) to include <strong>'loopback'</strong> interface (in addition to any other interfaces you want Squid to bind on).<br/><br/>
 				3/ <strong>Configure 'Report Template Settings' and 'Reporting Settings and Scheduler' below and Save when finished.</strong><br/><br/>
 				4/ <strong>Use the Refresh buttons in the 'Manual Refresh' section below to create initial LightSquid reports</strong>; otherwise you will get an error diagnostic page.<br/>
-				- <em>"Refresh now"</em> will (re)parse today's entries only in Squid's current access.log.<br/>
-				- <em>"Refresh full"</em> will (re)parse all entries in all Squid's access logs, including the rotated ones. <strong>Note: This may take long time to finish!</strong><br/>
+				- <em>"Refresh"</em> will (re)parse today's entries only in Squid's current access.log.<br/>
+				- <em>"Refresh Full"</em> will (re)parse all entries in all Squid's access logs, including the rotated ones. <strong>Note: This may take long time to finish!</strong><br/>
 				]]>
 			</description>
 		</field>
@@ -270,7 +270,7 @@
 	<custom_php_resync_config_command>
 	<![CDATA[
 		// Do not resync configuration on manual reports refresh
-		if ($_POST['refreshnow'] == "Refresh now" || $_POST['refreshfull'] == "Refresh full") {
+		if ($_POST['refreshnow'] == "Refresh Now" || $_POST['refreshfull'] == "Refresh Full") {
 			return;
 		}
 		lightsquid_resync();
