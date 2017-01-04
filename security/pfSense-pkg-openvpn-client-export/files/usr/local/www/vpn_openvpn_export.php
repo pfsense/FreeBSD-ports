@@ -124,7 +124,7 @@ if (isset($_POST['act'])) {
 }
 
 global $simplefields;
-$simplefields = array('server','useaddr','useaddr_hostname','verifyservercn','blockoutsidedns','randomlocalport',
+$simplefields = array('server','useaddr','useaddr_hostname','verifyservercn','blockoutsidedns','legacy','randomlocalport',
 	'usepkcs11','pkcs11providers',
 	'usetoken','usepass',
 	'useproxy','useproxytype','proxyaddr','proxyport','useproxypass','proxyuser');
@@ -211,6 +211,7 @@ if (!empty($act)) {
 
 	$verifyservercn = $_GET['verifyservercn'];
 	$blockoutsidedns = $_GET['blockoutsidedns'];
+	$legacy = $_GET['legacy'];
 	$randomlocalport = $_GET['randomlocalport'];
 	$usetoken = $_GET['usetoken'];
 	if ($usetoken && (substr($act, 0, 10) == "confinline")) {
@@ -314,17 +315,17 @@ if (!empty($act)) {
 				$exp_name = urlencode($exp_name . "-config.ovpn");
 				$expformat = "baseconf";
 		}
-		$exp_path = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $nokeys, $proxy, $expformat, $password, false, false, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id);
+		$exp_path = openvpn_client_export_config($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $nokeys, $proxy, $expformat, $password, false, false, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id);
 	}
 
 	if ($act == "visc") {
 		$exp_name = urlencode($exp_name . "-Viscosity.visc.zip");
-		$exp_path = viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $password, $proxy, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id);
+		$exp_path = viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $password, $proxy, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id);
 	}
 
 	if (substr($act, 0, 4) == "inst") {
 		$exp_name = urlencode($exp_name."-install.exe");
-		$exp_path = openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $randomlocalport, $usetoken, $password, $proxy, $advancedoptions, substr($act, 5), $usepkcs11, $pkcs11providers, $pkcs11id);
+		$exp_path = openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $password, $proxy, $advancedoptions, substr($act, 5), $usepkcs11, $pkcs11providers, $pkcs11id);
 	}
 
 	if (!$exp_path) {
@@ -446,6 +447,13 @@ $section->addInput(new Form_Checkbox(
 	'Block access to DNS servers except across OpenVPN while connected, forcing clients to use only VPN DNS servers.',
 	$cfg['blockoutsidedns']
 ))->setHelp("Requires Windows 10 and OpenVPN 2.3.9 or later. Only Windows 10 is prone to DNS leakage in this way, other clients will ignore the option as they are not affected.");
+
+$section->addInput(new Form_Checkbox(
+	'legacy',
+	'Legacy Client',
+	'Do not include OpenVPN 2.4 settings in the client configuration.',
+	$cfg['legacy']
+))->setHelp("When using an older client, check this option to prevent the exporter from placing knonw-incompatible settings such as Negotiable Cryptographic Parameters (NCP) into the client configuration.");
 
 $section->addInput(new Form_Checkbox(
 	'randomlocalport',
@@ -710,6 +718,10 @@ function download_begin(act, i, j) {
 	if (document.getElementById("blockoutsidedns").checked) {
 		blockoutsidedns = 1;
 	}
+	var legacy = 0;
+	if (document.getElementById("legacy").checked) {
+		legacy = 1;
+	}
 	var randomlocalport = 0;
 	if (document.getElementById("randomlocalport").checked) {
 		randomlocalport = 1;
@@ -796,6 +808,7 @@ function download_begin(act, i, j) {
 	dlurl += "&useaddr=" + encodeURIComponent(useaddr);
 	dlurl += "&verifyservercn=" + encodeURIComponent(verifyservercn);
 	dlurl += "&blockoutsidedns=" + encodeURIComponent(blockoutsidedns);
+	dlurl += "&legacy=" + encodeURIComponent(legacy);
 	dlurl += "&randomlocalport=" + encodeURIComponent(randomlocalport);
 	dlurl += "&usetoken=" + encodeURIComponent(usetoken);
 	dlurl += "&usepkcs11=" + escape(usepkcs11);
