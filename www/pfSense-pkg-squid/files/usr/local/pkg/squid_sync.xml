@@ -8,7 +8,7 @@
  * squid_sync.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012-2014 Marcello Coutinho
  * All rights reserved.
  *
@@ -82,9 +82,9 @@
 			<fieldname>synconchanges</fieldname>
 			<description>
 				<![CDATA[
-				Select a sync method for Squid.<br/><br/>
-				<strong>Important:</strong> While using "Sync to host(s) defined below", only sync from host A to B, A to C but <strong>do not</strong> enable XMLRPC sync <b>to</b> A.
-				This will result in a loop!
+				Select a sync method for Squid.<br/>
+				<strong><span class="text-danger">Important:</span></strong> While using "Sync to host(s) defined below",
+				only sync from host A to B, A to C but <strong>do not</strong> enable XMLRPC sync <b>to</b> A. This will result in a loop!
 				]]>
 			</description>
 			<type>select</type>
@@ -130,21 +130,22 @@
 						<option><name>HTTP</name><value>http</value></option>
 						<option><name>HTTPS</name><value>https</value></option>
 					</options>
+					<width>1</width>
 				</rowhelperfield>
 				<rowhelperfield>
 					<fielddescr>IP Address/Hostname</fielddescr>
 					<fieldname>ipaddress</fieldname>
 					<description><![CDATA[IP address or hostname of the destination host.]]></description>
 					<type>input</type>
-					<size>40</size>
 					<required/>
+					<width>2</width>
 				</rowhelperfield>
 				<rowhelperfield>
 					<fielddescr>Port</fielddescr>
 					<fieldname>syncport</fieldname>
 					<description><![CDATA[Choose the sync port of the destination host.]]></description>
 					<type>input</type>
-					<size>3</size>
+					<width>1</width>
 					<required/>
 				</rowhelperfield>
 				<rowhelperfield>
@@ -152,7 +153,7 @@
 					<fieldname>password</fieldname>
 					<description><![CDATA[Password of the user "admin" on the destination host.]]></description>
 					<type>password</type>
-					<size>20</size>
+					<width>2</width>
 					<required/>
 				</rowhelperfield>
 			</rowhelper>
