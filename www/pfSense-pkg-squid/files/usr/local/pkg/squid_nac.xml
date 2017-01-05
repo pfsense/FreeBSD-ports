@@ -97,10 +97,10 @@
 			<fieldname>allowed_subnets</fieldname>
 			<description>
 				<![CDATA[
-				Enter subnets that are allowed to use the proxy.<br/>
-				The subnets must be expressed as CIDR ranges (e.g.: 192.168.1.0/24).<br/>
-				The proxy interface subnet is already an allowed subnet. All the other subnets won't be able to use the proxy.<br/>
-				<strong>Note: Put each entry on a separate line.</strong>
+				Enter subnets that are allowed to use the proxy in CIDR format.
+				All the other subnets won't be able to use the proxy.<br/>
+				<span class="text-info">Put each entry on a separate line.
+				<strong>The proxy interface subnet is allowed by default.</strong></span>
 				]]>
 			</description>
 			<type>textarea</type>
@@ -113,9 +113,9 @@
 			<fieldname>unrestricted_hosts</fieldname>
 			<description>
 				<![CDATA[
-				Enter unrestricted IP address(es) / network(s) in CIDR format.<br/>
+				Enter unrestricted IP address(es) / network(s) in CIDR format.
 				Configured entries will NOT be filtered out by the other access control directives set in this page.<br/>
-				<strong>Note: Put each entry on a separate line.</strong>
+				<span class="text-info">Put each entry on a separate line.</span>
 				]]>
 			</description>
 			<type>textarea</type>
@@ -128,9 +128,9 @@
 			<fieldname>banned_hosts</fieldname>
 			<description>
 				<![CDATA[
-				Enter IP address(es) / network(s) in CIDR format.<br/>
+				Enter IP address(es) / network(s) in CIDR format.
 				Configured entries will NOT be allowed to use the proxy.<br/>
-				<strong>Note: Put each entry on a separate line.</strong>
+				<span class="text-info">Put each entry on a separate line.</span>
 				]]>
 			</description>
 			<type>textarea</type>
@@ -144,7 +144,7 @@
 			<description>
 				<![CDATA[
 				Destination domains that will be accessible to the users that are allowed to use the proxy.<br/>
-				<strong>Note: Put each entry on a separate line.</strong> You also can use regular expressions.
+				<span class="text-info">Put each entry on a separate line. You can also use regular expressions.</span>
 				]]>
 			</description>
 			<type>textarea</type>
@@ -158,7 +158,7 @@
 			<description>
 				<![CDATA[
 				Destination domains that will be blocked for the users that are allowed to use the proxy.<br/>
-				<strong>Note: Put each entry on a separate line.</strong> You also can use regular expressions.
+				<span class="text-info">Put each entry on a separate line. You can also use regular expressions.</span>
 				]]>
 			</description>
 			<type>textarea</type>
@@ -172,7 +172,7 @@
 			<description>
 				<![CDATA[
 				Enter user agents that will be blocked for the users that are allowed to use the proxy.<br/>
-				<strong>Note: Put each entry on a separate line.</strong> You also can use regular expressions.
+				<span class="text-info">Put each entry on a separate line. You can also use regular expressions.</span>
 				]]>
 			</description>
 			<type>textarea</type>
@@ -185,9 +185,9 @@
 			<fieldname>block_reply_mime_type</fieldname>
 			<description>
 				<![CDATA[
-				Enter <a href="http://www.iana.org/assignments/media-types/media-types.xhtml">MIME types</a> that will be blocked for the
+				Enter <a href="http://www.iana.org/assignments/media-types/media-types.xhtml" target="_blank">MIME types</a> that will be blocked for the
 				users that are allowed to use the proxy. Useful to block javascript (application/javascript).<br/>
-				<strong>Note: Put each entry on a separate line.</strong> You also can use regular expressions.
+				<span class="text-info">Put each entry on a separate line. You can also use regular expressions.</span>
 				]]>
 			</description>
 			<type>textarea</type>
@@ -205,7 +205,7 @@
 			<description>
 				<![CDATA[
 				This is a space-separated list of "safe ports" <strong>in addition</strong> to the predefined default list.<br/>
-				Default list: 21 70 80 210 280 443 488 563 591 631 777 901 1025-65535
+				<span class="text-info">Default list: 21 70 80 210 280 443 488 563 591 631 777 901 1025-65535</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -218,7 +218,7 @@
 			<description>
 				<![CDATA[
 				This is a space-separated list of ports to allow SSL "CONNECT" to <strong>in addition</strong> to the predefined default list.<br/>
-				Default list: 443 563
+				<span class="text-info">Default list: 443 563</span>
 				]]>
 			</description>
 			<type>input</type>
