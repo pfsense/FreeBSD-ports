@@ -105,8 +105,8 @@
 			<fieldname>name</fieldname>
 			<description>
 				<![CDATA[
-				Enter the name to identify this redirect in Squid reverse configuration.<br />
-				Example: REDIR1
+				Enter the name to identify this redirect in Squid reverse configuration.
+				<span class="text-info">Example: REDIR1</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -114,9 +114,8 @@
 			<required/>
 		</field>
 		<field>
-			<fielddescr>Redirect Description</fielddescr>
+			<fielddescr>Redirect Description (Optional)</fielddescr>
 			<fieldname>description</fieldname>
-			<description>Redirect Description (Optional)</description>
 			<type>input</type>
 			<size>60</size>
 		</field>
@@ -125,13 +124,13 @@
 			<fieldname>protocol</fieldname>
 			<description>
 				<![CDATA[
-				Select the protocol to redirect on.<br/>
-				Use CTRL + click to select multiple options.
+				Select the protocol to redirect on.
+				<span class="text-info">Use CTRL + click to select multiple options.</span>
 				]]>
 			</description>
 			<type>select</type>
 			<multiple/>
-			<size>03</size>
+			<size>2</size>
 			<options>
 				<option><name>HTTP</name><value>HTTP</value></option>
 				<option><name>HTTPS</name><value>HTTPS</value></option>
@@ -139,7 +138,24 @@
 			<required/>
 		</field>
 		<field>
-			<fielddescr>Blocked Domains</fielddescr>
+			<fielddescr>Redirect Domains Settings</fielddescr>
+			<type>info</type>
+			<description>
+				<![CDATA[
+				Use Redirect Domains row(s) below to match domains to redirect for (one per row).
+				<div class="infoblock">
+					Do <strong>NOT</strong> enter http:// or https:// - only the hostname is required.<br/><br/>
+					<span class="text-info">Examples:</span><br/>
+					example.com<br/>
+					sub.example.com<br/>
+					www.example.com<br/>
+					</span>
+				</div>
+				]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>Redirect Domains</fielddescr>
 			<fieldname>none</fieldname>
 			<type>rowhelper</type>
 			<rowhelper>
@@ -150,10 +166,8 @@
 					<required/>
 					<fielddescr>
 						<![CDATA[
-						Enter the domains to match here.<br/><br/>
-						<strong>Example:</strong> example.com sub.example.com www.example.com<br/><br/>
-						<strong>Do NOT enter http:// or https:// here!</strong> Only the hostname is required.
-						Domains to redirect for.
+						Enter the domains to match here.
+						<span class="text-info">Click Info above for examples.</span>
 						]]>
 					</fielddescr>
 				</rowhelperfield>
@@ -164,8 +178,8 @@
 			<fieldname>pathregex</fieldname>
 			<description>
 				<![CDATA[
-				Enter the path regex to match here.<br/>
-				Hint: Enter ^/$ to match the domain only.
+				Enter the path regex to match here.
+				<span class="text-info">Hint: Enter ^/$ to match the domain only.</span>
 				]]>
 			</description>
 			<type>input</type>
