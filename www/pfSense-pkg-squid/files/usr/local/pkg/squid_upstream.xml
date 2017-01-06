@@ -8,7 +8,7 @@
  * squid_upstream.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012-2014 Marcello Coutinho
  * All rights reserved.
  *
@@ -123,7 +123,7 @@
 			<description>
 				<![CDATA[
 				Unique name for the peer.<br/>
-				<strong>Note: Name is required if you have multiple peers on the same host but different ports.</strong>
+				<strong><span class="text-danger">Important:</span></strong> Name is required if you have multiple peers on the same host but different ports.
 				]]>
 			</description>
 			<type>input</type>
@@ -139,57 +139,19 @@
 			<default_value>3128</default_value>
 			<required/>
 		</field>
-		<!-- The commented-out options are not used anywhere in the code -->
-		<!--
-		<field>
-			<fielddescr>Timeout</fielddescr>
-			<fieldname>connecttimeout</fieldname>
-			<description>
-				<![CDATA[
-				A peer-specific connect timeout. This parameter specifies how long to wait for a pending TCP connection to a peer cache.<br/>
-				Also see <a href="http://www.squid-cache.org/Doc/config/peer_connect_timeout/">peer_connect_timeout directive</a>.
-				]]>
-			</description>
-			<type>input</type>
-			<size>5</size>
-		</field>
-		<field>
-			<fielddescr>Fail Limit</fielddescr>
-			<fieldname>connectfaillimit</fieldname>
-			<description>
-				<![CDATA[
-				How many times connecting to a peer must fail before it is marked as down.<br/>
-				Default: 10
-				]]>
-			</description>
-			<type>input</type>
-			<size>5</size>
-			<default_value>10</default_value>
-		</field>
-		<field>
-			<fielddescr>Max Connections</fielddescr>
-			<fieldname>maxconn</fieldname>
-			<description>
-				<![CDATA[
-				Limit the amount of connections Squid may open to this peer.<br/>
-				Peer exceeding the limit is not used for new requests unless a standby connection is available.<br/>
-				<strong>Warning: This feature currently works poorly with idle persistent connections.</strong><br/>
-				See <a href="http://www.squid-cache.org/Doc/config/cache_peer/">cache_peer directive documentation</a> for details.
-				]]>
-			</description>
-			<type>input</type>
-			<size>5</size>
-		</field>
-		-->
 		<field>
 			<fielddescr>General Options (Allow Miss/No Tproxy/Proxy Only)</fielddescr>
 			<fieldname>allowmiss</fieldname>
 			<description>
 				<![CDATA[
-				<strong>allow-miss</strong> - Disable Squid's use of only-if-cached when forwarding requests to siblings. This is primarily useful when icp_hit_stale is used by the sibling.<br/>
-				<strong>no-tproxy</strong> - Do not use the client-spoof TPROXY support when forwarding requests to this peer. Use normal address selection instead.<br/>
-				<strong>proxy-only</strong> - Objects fetched from the peer will not be stored locally.<br/><br/>
-				Note: Use CTRL + click to select multiple options.
+				<span class="text-info">Use CTRL + click to select multiple options.</span>
+				<div class="infoblock">
+				<dl class="dl-horizontal responsive">
+				<dt>allow-miss</dt><dd>Disable Squid's use of only-if-cached when forwarding requests to siblings. This is primarily useful when icp_hit_stale is used by the sibling.</dd>
+				<dt>no-tproxy</dt><dd>Do not use the client-spoof TPROXY support when forwarding requests to this peer. Use normal address selection instead.</dd>
+				<dt>proxy-only</dt><dd>Objects fetched from the peer will not be stored locally.</dd>
+				</dl>
+				</div>
 				]]>
 			</description>
 			<type>select</type>
@@ -210,7 +172,7 @@
 			<type>info</type>
 			<description>
 				<![CDATA[
-				Please, see <a href="http://www.squid-cache.org/Doc/config/cache_peer/">cache_peer directive documentation</a> for detailed description of the settings below.<br/>
+				Please, see <a href="http://www.squid-cache.org/Doc/config/cache_peer/" target="_blank">cache_peer directive documentation</a> for detailed description of the settings below.
 				]]>
 			</description>
 		</field>
@@ -231,15 +193,19 @@
 			<fieldname>peermethod</fieldname>
 			<description>
 				<![CDATA[
-				The default peer selection method is ICP, with the first responding peer being used as source. These options can be used for better load balancing.<br/>
-				Please see <a href="http://www.squid-cache.org/Doc/config/cache_peer/">cache_peer directive documentation</a> for details.<br/><br/>
-				<strong>default</strong> - Parent cache which can be used as a "last-resort" if a peer cannot be located by any of the peer-selection methods.<br/>
-				<strong>round-robin</strong> - Load-Balance parents which should be used in a round-robin fashion in the absence of any ICP queries.<br/>
-				<strong>weighted-round-robin</strong> - Load-Balance parents which should be used in a round-robin fashion with the frequency of each parent being based on the	round trip time.<br/>
-				<strong>carp</strong> - Load-Balance parents which should be used as a CARP array.<br/>
-				<strong>userhash</strong> -Load-Balance parents based on the client proxy_auth or ident username.<br/>
-				<strong>sourcehash</strong> - Load-balance parents based on the client source IP.<br/>
-				<strong>multicast-siblings</strong> - To be used only for cache peers of type "multicast".<br/>
+				The default peer selection method is ICP, with the first responding peer being used as source. These options can be used for better load balancing.
+				<div class="infoblock">
+				<dl class="dl-horizontal responsive">
+				<dt>default</dt><dd>Parent cache which can be used as a "last-resort" if a peer cannot be located by any of the peer-selection methods.</dd>
+				<dt>round-robin</dt><dd>Load-Balance parents which should be used in a round-robin fashion in the absence of any ICP queries.</dd>
+				<dt>weighted-round-robin</dt><dd>Load-Balance parents which should be used in a round-robin fashion with the frequency of each parent being based on the round trip time.</dd>
+				<dt>carp</dt><dd>Load-Balance parents which should be used as a CARP array.</dd>
+				<dt>userhash</dt><dd>Load-Balance parents based on the client proxy_auth or ident username.</dd>
+				<dt>sourcehash</dt><dd>Load-balance parents based on the client source IP.</dd>
+				<dt>multicast-siblings</dt><dd>To be used only for cache peers of type "multicast".</dd>
+				</dl>
+				Please see <a href="http://www.squid-cache.org/Doc/config/cache_peer/" target="_blank">cache_peer directive documentation</a> for details.
+				</div>
 				 ]]>
 			</description>
 			<type>select</type>
@@ -259,9 +225,9 @@
 			<fieldname>weight</fieldname>
 			<description>
 				<![CDATA[
-				Use to affect the selection of a peer during any weighted peer-selection mechanisms.<br/>
-				<strong>Note: The weight must be an integer; larger weights are favored more.</strong><br/><br/>
-				Default: 1
+				Use to affect the selection of a peer during any weighted peer-selection mechanisms.
+				<span class="text-info">Default: 1</span><br/>
+				<strong><span class="text-info">Note:</span></strong> The weight must be an integer; larger weights are favored more.
 				]]>
 			</description>
 			<type>input</type>
@@ -287,7 +253,7 @@
 			<description>
 				<![CDATA[
 				Specify a TTL to use when sending multicast ICP queries to this address. Only useful when sending to a multicast group.<br/>
-				Note: Because we don't accept ICP replies from random hosts, you must configure other group members as peers with the 'multicast-responder' option.
+				<strong><span class="text-info">Note:</span></strong> Because we don't accept ICP replies from random hosts, you must configure other group members as peers with the 'multicast-responder' option.
 				]]>
 			</description>
 			<type>input</type>
@@ -314,7 +280,7 @@
 			<description>
 				<![CDATA[
 				Enter the port to connect to the upstream proxy for the ICP protocol.<br/>
-				<strong>Hint: Use port number 7 to disable ICP communication between the proxies.</strong>
+				<strong><span class="text-info">Hint:</span></strong> Use port number 7 to disable ICP communication between the proxies.
 				]]>
 			</description>
 			<type>input</type>
@@ -326,12 +292,16 @@
 			<fieldname>icpoptions</fieldname>
 			<description>
 				<![CDATA[
-				<strong>Note: You MUST also set 'ICP Port' explicitly when using these options.</strong> The defaults will prevent peer traffic using ICP.<br/>
-				Please see <a href="http://www.squid-cache.org/Doc/config/cache_peer/">cache_peer directive documentation</a> for details.<br/><br/>
-				<strong>no-query</strong> - Disable ICP queries to this neighbor.<br/>
-				<strong>multicast-responder</strong> - Indicates the named peer is a member of a multicast group.<br/>
-				<strong>closest-only</strong> - Indicates that, for ICP_OP_MISS replies, we'll only forward CLOSEST_PARENT_MISSes and never FIRST_PARENT_MISSes.<br/>
-				<strong>background-ping</strong> - To only send ICP queries to this neighbor infrequently.<br/>
+				<strong><span class="text-danger">Important:</span> You MUST also set 'ICP Port' explicitly when using these options.</strong> The defaults will prevent peer traffic using ICP.
+				<div class="infoblock">
+				<dl class="dl-horizontal responsive">
+				<dt>no-query</dt><dd>Disable ICP queries to this neighbor.</dd>
+				<dt>multicast-dt</strong><dd>Indicates the named peer is a member of a multicast group.</dd>
+				<dt>closest-only</dt><dd>Indicates that, for ICP_OP_MISS replies, we'll only forward CLOSEST_PARENT_MISSes and never FIRST_PARENT_MISSes.</dd>
+				<dt>background-ping</dt><dd>To only send ICP queries to this neighbor infrequently.</dd>
+				</dl>
+				Please see <a href="http://www.squid-cache.org/Doc/config/cache_peer/" target="_blank">cache_peer directive documentation</a> for details.
+				</div>
 				]]>
 			</description>
 			<type>select</type>
@@ -364,15 +334,19 @@
 			<fieldname>authoption</fieldname>
 			<description>
 				<![CDATA[
-				Please see <a href="http://www.squid-cache.org/Doc/config/cache_peer/">cache_peer directive documentation</a> for details.<br/><br/>
-				<strong>login=user:password</strong> - If this is a personal/workgroup proxy and your parent requires proxy authentication.<br/>
-				<strong>login=PASSTHRU</strong> - Send login details received from client to this peer. Authentication is not required by Squid for this to work.<br/>
-				<strong>login=PASS</strong> - Send login details received from client to this peer. Authentication is not required by this option.<br/>
-				<strong>login=*:password</strong> - Send the username to the upstream cache, but with a fixed password.<br/>
-				<strong>login=NEGOTIATE</strong> - If this is a personal/workgroup proxy and your parent requires a secure proxy authentication.<br>
-				<strong>login=NEGOTIATE:principal_name</strong> - If this is a personal/workgroup proxy and your parent requires a secure proxy authentication.<br/>
-				<strong>connection-auth=on</strong> - Peer does support Microsoft connection oriented authentication, and any such challenges received from there should be ignored.<br/>
-				<strong>connection-auth=off</strong> - Peer does not support Microsoft connection oriented authentication, and any such challenges received from there should be ignored.<br/>
+				Please see <a href="http://www.squid-cache.org/Doc/config/cache_peer/" target="_blank">cache_peer directive documentation</a> for details.
+				<div class="infoblock">
+				<dl class="dl-horizontal responsive">
+				<dt>login=user:password</dt><dd>If this is a personal/workgroup proxy and your parent requires proxy authentication.</dd>
+				<dt>login=PASSTHRU</dt><dd>Send login details received from client to this peer. Authentication is not required by Squid for this to work.</dd>
+				<dt>login=PASS</dt><dd>Send login details received from client to this peer. Authentication is not required by this option.</dd>
+				<dt>login=*:password</dt><dd>Send the username to the upstream cache, but with a fixed password.</dd>
+				<dt>login=NEGOTIATE</dt><dd>If this is a personal/workgroup proxy and your parent requires a secure proxy authentication.</dd>
+				<dt>login=NEGOTIATE:principal_name</dt><dd>If this is a personal/workgroup proxy and your parent requires a secure proxy authentication.</dd>
+				<dt>connection-auth=on</dt><dd>Peer does support Microsoft connection oriented authentication, and any such challenges received from there should be ignored.</dd>
+				<dt>connection-auth=off</dt><dd>Peer does not support Microsoft connection oriented authentication, and any such challenges received from there should be ignored.</dd>
+				</dl>
+				</div>
 				]]>
 			</description>
 			<type>select</type>
