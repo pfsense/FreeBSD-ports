@@ -65,15 +65,19 @@
 		<field>
 			<fielddescr>Reverse Proxy Interface(s)</fielddescr>
 			<fieldname>reverse_interface</fieldname>
-			<description>The interface(s) the reverse-proxy server will bind to (usually WAN).</description>
-			<sethelp>
+			<description>
 				<![CDATA[
-				Use CTRL + click to select multiple interfaces.<br/><br/>
-				<strong><span class="errmsg">Important:</span><br/></strong>
-				<strong>To use Squid as a reverse proxy ONLY:</strong> After saving configuration here, you must tick the 'Enable Squid Proxy' checkbox under Services - Squid Proxy Server - General and click Save there.<br/>
-				<strong>To disable the reverse proxy ONLY (without disabling Squid completely):</strong> Unselect all 'Reverse Proxy Interface(s)', uncheck both 'Enable HTTP Reverse Proxy' and 'Enable HTTPS Reverse Proxy' below and click Save.
+				The interface(s) the reverse-proxy server will bind to (usually WAN).
+				<span class="text-info">Use CTRL + click to select multiple interfaces.</span>
+				<div class="infoblock">
+				<strong><span class="text-danger">Usage Instructions:</span></strong><br/>
+				<span class="text-info">To use Squid as a reverse proxy ONLY:</span><br/>
+				After saving configuration here, you must tick the 'Enable Squid Proxy' checkbox under Services - Squid Proxy Server - General and click Save there.<br/><br/>
+				<span class="text-info">To disable the reverse proxy ONLY (without disabling Squid completely):</span><br/>
+				Unselect all 'Reverse Proxy Interface(s)', uncheck both 'Enable HTTP Reverse Proxy' and 'Enable HTTPS Reverse Proxy' below and click Save.
+				</div>
 				]]>
-			</sethelp>
+			</description>
 			<type>interfaces_selection</type>
 			<default_value>wan</default_value>
 			<multiple/>
@@ -83,10 +87,12 @@
 			<fieldname>reverse_ip</fieldname>
 			<description>
 				<![CDATA[
-				Squid will additionally bind to these user-defined IPs for reverse proxy operation.<br/>
-				Useful for virtual IPs such as CARP, or for binding to IPv6 configured on an above-selected interface.<br/>
-				Note: Separate entries by semi-colons (;)<br/><br/>
-				<strong><span class="errmsg">Important:</span> Any entry here must be a valid, locally configured IP address.</strong>
+				Squid will additionally bind to these user-defined IPs for reverse proxy operation.
+				<span class="text-info">Separate entries by semi-colons (;)</span>
+				<div class="infoblock">
+				<strong><span class="text-danger">Important:</span></strong> Any entry here must be a valid, locally configured IP address.<br/>
+				Useful for virtual IPs such as CARP, or for binding to IPv6 configured on an above-selected interface.
+				</div>
 				]]>
 			</description>
 			<type>input</type>
@@ -116,7 +122,7 @@
 			<description>If checked, the proxy server will act in HTTP reverse mode.</description>
 			<sethelp>
 				<![CDATA[
-				<strong><span class="errmsg">Important:</span> You must add a proper firewall rule with destination matching the 'Reverse Proxy Interface(s)' address.</strong>
+				<strong><span class="text-danger">Important:</span></strong> You must add a proper firewall rule with destination matching the 'Reverse Proxy Interface(s)' address.
 				]]>
 			</sethelp>
 			<type>checkbox</type>
@@ -128,8 +134,8 @@
 			<fieldname>reverse_http_port</fieldname>
 			<description>
 				<![CDATA[
-				This is the port the HTTP reverse proxy will listen on.<br/>
-				Default: 80
+				This is the port the HTTP reverse proxy will listen on.
+				<span class="text-info">Default: 80</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -141,8 +147,8 @@
 			<fieldname>reverse_http_defsite</fieldname>
 			<description>
 				<![CDATA[
-				This is the HTTP reverse proxy default site.<br/>
-				Note: Leave empty to use 'External FQDN' value specified above.
+				This is the HTTP reverse proxy default site.
+				<span class="text-info">Leave empty to use 'External FQDN' value specified above.</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -158,7 +164,7 @@
 			<description>If checked, the proxy server will act in HTTPS reverse mode.</description>
 			<sethelp>
 				<![CDATA[
-				<strong><span class="errmsg">Important:</span> You must add a proper firewall rule with destination matching the 'Reverse Proxy Interface(s)' address.</strong>
+				<strong><span class="text-danger">Important:</span></strong> You must add a proper firewall rule with destination matching the 'Reverse Proxy Interface(s)' address.
 				]]>
 			</sethelp>
 			<type>checkbox</type>
@@ -170,8 +176,8 @@
 			<fieldname>reverse_https_port</fieldname>
 			<description>
 				<![CDATA[
-				This is the port the HTTPS reverse proxy will listen on.<br/>
-				Default: 443
+				This is the port the HTTPS reverse proxy will listen on.
+				<span class="text-info">Default: 443</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -183,8 +189,10 @@
 			<fieldname>reverse_https_defsite</fieldname>
 			<description>
 				<![CDATA[
-				This is the HTTPS reverse proxy default site.<br/>
-				Note: Leave empty to use 'External FQDN' value specified in 'Squid Reverse Proxy General Settings'.
+				This is the HTTPS reverse proxy default site.
+				<div class="infoblock">
+				<span class="text-info">Note:</span> Leave empty to use 'External FQDN' value specified in 'Squid Reverse Proxy General Settings'.
+				</div>
 				]]>
 			</description>
 			<type>input</type>
@@ -225,14 +233,14 @@
 			<fielddescr>Check Client Certificate</fielddescr>
 			<fieldname>reverse_check_clientca</fieldname>
 			<description>If checked, clients need a client certificate to authenticate.</description>
-			<type>checkbox</type>  
+			<type>checkbox</type>
 			<default_value>off</default_value>
 		</field>
 		<field>
 			<fielddescr>Client Certificate CA</fielddescr>
 			<fieldname>reverse_ssl_clientca</fieldname>
 			<description>Choose the CA used to issue client authentication certificates.</description>
-	    	<type>select_source</type>
+			<type>select_source</type>
 			<source><![CDATA[$config['ca']]]></source>
 			<source_name>descr</source_name>
 			<source_value>refid</source_value>
@@ -245,8 +253,9 @@
 			<description>
 				<![CDATA[
 				Choose the CRL used for client certificates revocation. If set to 'none', no CRL validation will be performed.<br/>
-				<strong>Note: This must match the 'Client Certificate CA' selected above!</strong><br/><br/>
-				<strong><span class="errmsg">Important:</span></strong> After updating the CRL in System - Cert Manager - Certificate Revocation, remember to press the 'Refresh CRL' button below.<br/>
+				<strong><span class="text-danger">Important:</span></strong>
+				This must match the 'Client Certificate CA' selected above!<br/><br/>
+				After updating the CRL in System - Cert Manager - Certificate Revocation, remember to press the 'Refresh CRL' button below.
 				Otherwise, the updated CRL will not have any effect on Squid reverse proxy users!<br/><br/>
 				<button class="btn btn-primary btn-sm" name='refresh_crl' id='refresh_crl' type='submit' value='Refresh CRL'><i class="fa fa-refresh icon-embed-btn"></i>Refresh CRL</button>
 				]]>
@@ -267,10 +276,12 @@
 			<fieldname>reverse_compatibility_mode</fieldname>
 			<description>
 				<![CDATA[
-				The compatibility mode determines which ciphersuite and TLS versions are supported.<br/>
-				Modern is for modern clients only (post FF 27, Chrome 22, IE 11 etc.). If you need to support older clients use the Intermediate setting.<br/><br/>
-				<strong><span class="errmsg">Warning: </span>Clients like IE 6 and Java 6 are not supported anymore!</strong><br/>
-				The compatibility mode is based on <a href="https://wiki.mozilla.org/Security/Server_Side_TLS" target="_blank">Mozilla's</a> documentation.
+				The compatibility mode determines which ciphersuite and TLS versions are supported.
+				<div class="infoblock">
+				Modern is for modern clients only (FF &gt;27, Chrome &gt;22, IE 11, etc.). If you need to support older clients, use the Intermediate setting.<br/>
+				The compatibility mode settings are based on <a href="https://wiki.mozilla.org/Security/Server_Side_TLS" target="_blank">Mozilla's documentation.</a><br/>
+				<strong><span class="text-danger">Warning: </span>Clients like IE 6 and Java 6 are not supported anymore!</strong>
+				</div>
 				]]>
 			</description>
 			<type>select</type>
@@ -309,18 +320,20 @@
 			<size>1</size>
 			<default_value>2048</default_value>
 		</field>
-		<field>  
-			<fielddescr>Disable session resumption (caching)</fielddescr>  
-			<fieldname>disable_session_reuse</fieldname>  
+		<field>
+			<fielddescr>Disable session resumption (caching)</fielddescr>
+			<fieldname>disable_session_reuse</fieldname>
 			<description>Don't allow session reuse.</description>
 			<sethelp>
 				<![CDATA[
-				The current recommendation for web servers is to enable session resumption and benefit from the performance improvement, but to restart servers daily when possible. This ensure that sessions get purged and ticket keys get renewed on a regular basis.<br/><br/>
-				<strong><span class="errmsg">Warning: </span>Disabling session resumption will increase the clients latency and the server load but can improve security for Perfect Forward Secrecy (DHE and ECDH).</strong>
+				<div class="infoblock">
+				The current recommendation for web servers is to enable session resumption and benefit from the performance improvement, but to restart servers daily when possible. This ensure that sessions get purged and ticket keys get renewed on a regular basis.<br/>
+				<strong><span class="text-info">Note: </span></strong>Disabling session resumption will increase the clients latency and the server load but can improve security for Perfect Forward Secrecy (DHE and ECDH).
+				</div>
 				]]>
 			</sethelp>
-			<type>checkbox</type>  
-			<default_value>off</default_value>  
+			<type>checkbox</type>
+			<default_value>off</default_value>
 		</field>
 		<field>
 			<name>OWA Reverse Proxy General Settings</name>
@@ -338,8 +351,8 @@
 			<fieldname>reverse_owa_ip</fieldname>
 			<description>
 				<![CDATA[
-				These are the internal IPs of the CAS-Array (OWA frontend servers).<br/>
-				Note: Separate entries by semi-colons (;)
+				These are the internal IPs of the CAS-Array (OWA frontend servers).
+				<span class="text-info">Separate entries by semi-colons (;)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -363,7 +376,9 @@
 			<description>If checked, MAPI over HTTP will be enabled.</description>
 			<sethelp>
 				<![CDATA[
-				<strong>This feature is only available with at least Microsoft Exchange 2013 SP1</strong>
+				<span class="text-info">
+				This feature is only available with at least Microsoft Exchange 2013 SP1
+				</span>
 				]]>
 			</sethelp>
 			<type>checkbox</type>
@@ -374,7 +389,7 @@
 			<description>If checked, Exchange WebServices will be enabled.</description>
 			<sethelp>
 				<![CDATA[
-				<strong>There are potential DoS side effects to its use. Please avoid unless really required.</strong>
+				<span class="text-danger">There are potential DoS side effects to the use of this feature.</span> Please avoid unless really required.</strong>
 				]]>
 			</sethelp>
 			<type>checkbox</type>
@@ -385,7 +400,7 @@
 			<description>If checked, AutoDiscover will be enabled.</description>
 			<sethelp>
 				<![CDATA[
-				<strong>You also should set up the autodiscover DNS record to point to you WAN IP.</strong>
+				<span class="text-info">You also should set up the autodiscover DNS record to point to you WAN IP.</span>
 				]]>
 			</sethelp>
 			<type>checkbox</type>
