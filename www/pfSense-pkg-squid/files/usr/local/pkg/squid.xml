@@ -8,7 +8,7 @@
  * squid.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012-2014 Marcello Coutinho
  * All rights reserved.
  *
@@ -114,7 +114,7 @@
 			<description>Check to enable the Squid proxy.</description>
 			<sethelp>
 				<![CDATA[
-				<strong><span class="errmsg">Note:</span> If unchecked, ALL Squid services will be disabled and stopped.</strong>
+				<strong><span class="text-danger">Important:</span> If unchecked, ALL Squid services will be disabled and stopped.</strong>
 				]]>
 			</sethelp>
 			<type>checkbox</type>
@@ -125,7 +125,7 @@
 			<description>If enabled, the settings, logs, cache, AV defs and other data will be preserved across package reinstalls.</description>
 			<sethelp>
 				<![CDATA[
-				<strong><span class="errmsg">Note:</span> If disabled, all settings and data will be wiped on package uninstall/reinstall/upgrade.</strong>
+				<strong><span class="text-danger">Important:</span> If disabled, all settings and data will be wiped on package uninstall/reinstall/upgrade.</strong>
 				]]>
 			</sethelp>
 			<type>checkbox</type>
@@ -136,8 +136,8 @@
 			<fieldname>active_interface</fieldname>
 			<description>
 				<![CDATA[
-				The interface(s) the proxy server will bind to.<br/>
-				Note: Use CTRL + click to select multiple interfaces.
+				The interface(s) the proxy server will bind to.
+				<span class="text-info">Use CTRL + click to select multiple interfaces.</span>
 				]]>
 			</description>
 			<type>interfaces_selection</type>
@@ -149,8 +149,8 @@
 			<fieldname>proxy_port</fieldname>
 			<description>
 				<![CDATA[
-				This is the port the proxy server will listen on.<br/>
-				(Default: 3128)
+				This is the port the proxy server will listen on.
+				<span class="text-info">Default: 3128</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -186,7 +186,7 @@
 			<fielddescr>Patch Captive Portal</fielddescr>
 			<description>
 				<![CDATA[
-				<strong><span class="errmsg">This feature was removed</span></strong> - see <a href="https://redmine.pfsense.org/issues/5594">Bug #5594</a> for details!
+				<strong><span class="text-warning">This feature was removed</span></strong> - see <a href="https://redmine.pfsense.org/issues/5594">Bug #5594</a> for details!
 				]]>
 			</description>
 			<type>info</type>
@@ -199,6 +199,12 @@
 				Enable this to force DNS IPv4 lookup first. This option is very useful if you have problems accessing HTTPS sites.
 				]]>
 			</description>
+			<sethelp>
+				<![CDATA[
+				This option is very useful if you have problems accessing HTTPS sites.
+				]]>
+			</sethelp>
+
 			<type>checkbox</type>
 		</field>
 		<field>
@@ -216,8 +222,8 @@
 			<fieldname>dns_nameservers</fieldname>
 			<description>
 				<![CDATA[
-				If you want to use DNS servers other than the DNS forwarder/resolver configured in pfSense, enter the IP(s) here.<br/>
-				<strong>Note: Separate entries by semi-colons (;)</strong>
+				To use DNS servers other than those configured in <a href="system.php" target="_blank">System &gt; General Setup</a>, enter the IP(s) here.
+				<span class="text-info">Separate entries by semi-colons (;)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -230,11 +236,14 @@
 		<field>
 			<fielddescr>Transparent HTTP Proxy</fielddescr>
 			<fieldname>transparent_proxy</fieldname>
-			<description>Enable transparent mode to forward all requests for destination port 80 to the proxy server without any additional configuration being necessary.</description>
+			<description>Enable transparent mode to forward all requests for destination port 80 to the proxy server.</description>
 			<sethelp>
 				<![CDATA[
-				<strong>Note:</strong> Transparent mode will filter SSL (port 443) if you enable man-in-the-middle options below.<br/>
-				In order to proxy both HTTP and HTTPS protocols without intercepting SSL connections, configure WPAD/PAC options on your DNS/DHCP servers.
+				<div class="infoblock blockopen">
+ 				Transparent proxy mode works without any additional configuration being necessary on clients.<br/>
+				<strong><span class="text-danger">Important:</span></strong> Transparent mode will filter SSL (port 443) if you enable 'HTTPS/SSL Interception' below.<br/>
+				<strong><span class="text-info">Hint: </span></strong>In order to proxy both HTTP and HTTPS protocols <strong>without intercepting SSL connections</strong>, configure WPAD/PAC options on your DNS/DHCP servers.
+				</div>
 				]]>
 			</sethelp>
 			<type>checkbox</type>
@@ -245,8 +254,8 @@
 			<fieldname>transparent_active_interface</fieldname>
 			<description>
 				<![CDATA[
-				The interface(s) the proxy server will transparently intercept requests on.<br/>
-				Note: Use CTRL + click to select multiple interfaces.
+				The interface(s) the proxy server will transparently intercept requests on.
+				<span class="text-info">Use CTRL + click to select multiple interfaces.</span>
 				]]>
 			</description>
 			<type>interfaces_selection</type>
@@ -260,7 +269,7 @@
 			<description>Do not forward traffic to Private Address Space (RFC 1918) destinations.</description>
 			<sethelp>
 				<![CDATA[
-				<strong>Destinations</strong> in Private Address Space (RFC 1918) are passed directly through the firewall, not through the proxy server.
+				Destinations in Private Address Space (<a href="https://tools.ietf.org/html/rfc1918" target="_blank">RFC 1918</a>) are passed directly through the firewall, not through the proxy server.
 				]]>
 			</sethelp>
 			<type>checkbox</type>
@@ -270,9 +279,9 @@
 			<fieldname>defined_ip_proxy_off</fieldname>
 			<description>
 				<![CDATA[
-				Do not forward traffic from these <strong>source</strong> IPs, CIDR nets, hostnames, or aliases through the proxy server but let it pass directly through the firewall.
-				(Applies only to transparent mode.)<br/>
-				<strong>Note: Separate entries by semi-colons (;)</strong>
+				Do not forward traffic from these <strong>source</strong> IPs, CIDR nets, hostnames, or aliases through the proxy server but let it pass directly through the firewall.<br/>
+				<strong><span class="text-info">Applies only to transparent mode.</span></strong>
+				<span class="text-info">Separate entries by semi-colons (;)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -283,9 +292,9 @@
 			<fieldname>defined_ip_proxy_off_dest</fieldname>
 			<description>
 				<![CDATA[
-				Do not proxy traffic going to these <strong>destination</strong> IPs, CIDR nets, hostnames, or aliases, but let it pass directly through the firewall.
-				(Applies only to transparent mode.)<br/>
-				<strong>Note: Separate entries by semi-colons (;)</strong>
+				Do not proxy traffic going to these <strong>destination</strong> IPs, CIDR nets, hostnames, or aliases, but let it pass directly through the firewall.<br/>
+				<strong><span class="text-info">Applies only to transparent mode.</span></strong>
+				<span class="text-info">Separate entries by semi-colons (;)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -307,8 +316,8 @@
 			<fieldname>ssl_active_interface</fieldname>
 			<description>
 				<![CDATA[
-				The interface(s) the proxy server will intercept SSL requests on.<br/>
-				Note: Use CTRL + click to select multiple interfaces.
+				The interface(s) the proxy server will intercept SSL requests on.
+				<span class="text-info">Use CTRL + click to select multiple interfaces.</span>
 				]]>
 			</description>
 			<type>interfaces_selection</type>
@@ -321,8 +330,8 @@
 			<fieldname>ssl_proxy_port</fieldname>
 			<description>
 				<![CDATA[
-				This is the port the proxy server will listen on to intercept SSL while using transparent proxy.<br/>
-				(Default: 3129)
+				This is the port the proxy server will listen on to intercept SSL while using transparent proxy.
+				<span class="text-info">Default: 3129</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -334,11 +343,14 @@
 			<fieldname>sslproxy_compatibility_mode</fieldname>
 			<description>
 				<![CDATA[
-				The compatibility mode determines which cipher suites and TLS versions are supported.<br/>
+				The compatibility mode determines which cipher suites and TLS versions are supported.
+				<span class="text-info">Default: Modern.</span> Click Info for details.
+				<div class="infoblock">
 				Modern mode also disables HIGH ciphers and TLS v1.0.<br/>
-				If you get an error (such as "This proxy and the remote host failed to negotiate a mutually acceptable security settings for handling your request")<br/>
+				<strong><span class="text-info">Hint:</span></strong> If you get an error (such as "This proxy and the remote host failed to negotiate a mutually acceptable security settings for handling your request")<br/>
 				when accessing some websites, you will need to use the Intermediate setting.<br/><br/>
-				<strong>Warning: SSLv3 is not supported any more!</strong>
+				<strong><span class="text-danger">Warning: SSLv3 is not supported any more!</span></strong>
+				</div>
 				]]>
 			</description>
 			<type>select</type>
@@ -355,7 +367,7 @@
 			<fieldname>dhparams_size</fieldname>
 			<description>
 				<![CDATA[
-				DH parameters are used for temporary/ephemeral DH key exchanges. They improve security by enabling the use of DHE ciphers.<br/>
+				DH parameters are used for temporary/ephemeral DH key exchanges and improve security by enabling the use of DHE ciphers.
 				]]>
 			</description>
 			<type>select</type>
@@ -372,9 +384,11 @@
 			<fieldname>dca</fieldname>
 			<description>
 				<![CDATA[
-				Select Certificate Authority to use when SSL interception is enabled.<br/>
-				To create a CA on pfSense, go to <strong>System -> Cert Manager</strong>.<br/>
-				Install the CA certificate as a Trusted Root CA on each computer you want to filter SSL on to avoid SSL error on each connection.
+				Select Certificate Authority to use when SSL interception is enabled.
+				<div class="infoblock">
+				To create a CA on pfSense, go to <a href="system_camanager.php" target="_blank">System &gt; Cert Manager</a>.<br/>
+				<strong><span class="text-danger">Important:</span></strong> Install the CA certificate as a Trusted Root CA on each computer you want to filter SSL on to avoid SSL error on each connection.
+				</div>
 				]]>
 			</description>
 			<type>select_source</type>
@@ -389,8 +403,8 @@
 			<fieldname>sslcrtd_children</fieldname>
 			<description>
 				<![CDATA[
-				This is the number of SSL certificate deamon children to start.	If Squid is used in busy environments, this may need to be increased.<br/>
-				Default: 5
+				This is the number of SSL certificate deamon children to start.	May need to be increased in busy environments.
+				<span class="text-info">Default: 5</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -402,8 +416,8 @@
 			<fieldname>interception_checks</fieldname>
 			<description>
 				<![CDATA[
-				Select remote SSL certificate checks to perform.<br/>
-				Note: Use CTRL + click to select multiple options.<br/>
+				Select remote SSL certificate checks to perform.
+				<span class="text-info">Use CTRL + click to select multiple options.</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -412,15 +426,15 @@
 				<option><name>Do not verify remote certificate</name><value>sslproxy_flags</value></option>
 			</options>
 			<multiple/>
-			<size>3</size>
+			<size>2</size>
 		</field>
 		<field>
 			<fielddescr>Certificate Adapt</fielddescr>
 			<fieldname>interception_adapt</fieldname>
 			<description>
 				<![CDATA[
-				Pass original SSL server certificate information to the user. Allow the user to make an informed decision on whether to trust the server certificate.<br/>
-				<strong>Hint:</strong> Set the subject CN - see <a href="http://wiki.squid-cache.org/Features/MimicSslServerCert">fake certificate properties documentation</a> for details.
+				See <a href="http://www.squid-cache.org/Doc/config/sslproxy_cert_adapt/" target="_blank">sslproxy_cert_adapt directive documentation</a> and
+				<a href="http://wiki.squid-cache.org/Features/MimicSslServerCert" target="_blank">Mimic original SSL server certificate wiki article</a> for details.
 				]]>
 			</description>
 			<type>select</type>
@@ -442,7 +456,7 @@
 			<description>This will enable the access log.</description>
 			<sethelp>
 				<![CDATA[
-				<strong>Warning:</strong> Do not enable if disk capacity is low.
+				<strong><span class="text-danger">Warning:</span></strong> Do NOT enable if available disk space is low.
 				]]>
 			</sethelp>
 			<type>checkbox</type>
@@ -453,9 +467,9 @@
 			<fieldname>log_dir</fieldname>
 			<description>
 				<![CDATA[
-				The directory where the logs will be stored. This is also used for logs other than the Access Log above.<br/>
-				Default: /var/squid/logs<br/>
-				<strong>Note: Do NOT include the trailing / when setting a custom location.</strong>
+				The directory where the logs will be stored; also used for logs other than the Access Log above.
+				<span class="text-info">Default: /var/squid/logs</span><br/>
+				<strong><span class="text-danger">Important:</span></strong> Do NOT include the trailing / when setting a custom location.
 				]]>
 			</description>
 			<type>input</type>
@@ -476,11 +490,14 @@
 			<description>Makes it possible for SquidGuard denied log to be included on Squid logs.</description>
 			<sethelp>
 				<![CDATA[
-				<strong>Note: This option will only work if you include the code below in your sgerror.php file.</strong><br/>
+				<span class="text-info">Click Info for detailed instructions.</span>
+				<div class="infoblock">
+				<strong><span class="text-danger">Important:</span></strong> This option will only work if you include the code below in your sgerror.php file.<br/>
 				This forces the client browser to send a second request to Squid with the denied string in URL.<br/><br/>
 				$sge_prefix = (preg_match("/\?/", $cl['u']) ? "&" : "?");<br/>
 				$str[] = '< iframe > src="'. $cl['u'] . $sge_prefix . 'sgr=ACCESSDENIED" width="1" height="1" > < /iframe >';<br/><br/>
-				<strong>Hint: You MUST remove extra spaces in the above iframe HTML tags.</strong>
+				<strong><span class="text-info">Hint:</span></strong> You MUST remove extra spaces in the above iframe HTML tags.
+				</div>
 				]]>
 			</sethelp>
 			<type>checkbox</type>
@@ -563,12 +580,17 @@
 			<fieldname>xforward_mode</fieldname>
 			<description>
 				<![CDATA[
-				<strong>on:</strong> Squid will append your client's IP address in the HTTP requests it forwards. The header looks like: X-Forwarded-For: 192.1.2.3.<br/>
-				<strong>off:</strong> Squid will NOT append your client's IP address in the HTTP requests it forwards. The header looks like: X-Forwarded-For: unknown<br/>
-				<strong>transparent:</strong> Squid will not alter the X-Forwarded-For header in any way.<br/>
-				<strong>delete:</strong> Squid will delete the entire X-Forwarded-For header.<br/>
-				<strong>truncate:</strong> Squid will remove all existing X-Forwarded-For header entries and place the client's IP address as the only header entry.<br/><br/>
-				Default: on
+				Choose how to handle X-Forwarded-For headers.
+				<span class="text-info">Default: on</span>
+				<div class="infoblock">
+				<dl class="dl-horizontal responsive">
+				<dt>on</dt><dd>Squid will append your client's IP address in the HTTP requests it forwards. The header looks like: X-Forwarded-For: 192.1.2.3.</dd>
+				<dt>off</dt><dd>Squid will NOT append your client's IP address in the HTTP requests it forwards. The header looks like: X-Forwarded-For: unknown<dd/>
+				<dt>transparent</dt><dd>Squid will not alter the X-Forwarded-For header in any way.</dd>
+				<dt>delete</dt><dd>Squid will delete the entire X-Forwarded-For header.</dd>
+				<dt>truncate</dt><dd>Squid will remove all existing X-Forwarded-For header entries and place the client's IP address as the only header entry.</dd>
+				</dl>
+				</div>
 				]]>
 			</description>
 			<type>select</type>
@@ -592,11 +614,17 @@
 			<fieldname>uri_whitespace</fieldname>
 			<description>
 				<![CDATA[
-				<strong>strip:</strong> The whitespace characters are stripped out of the URI. This is the behavior recommended by RFC2396.
-				<strong>deny:</strong> The request is denied. The user receives an "Invalid Request" message.
-				<strong>allow:</strong> The request is allowed and the URI is not changed. The whitespace characters remain in the URI.
-				<strong>encode:</strong> The request is allowed and the whitespace characters are encoded according to RFC1738.
-				<strong>chop:</strong> The request is allowed and the URI is chopped at the first whitespace.
+				Choose how to handle whitespace characters in URL.
+				<span class="text-info">Default: strip</span>
+				<div class="infoblock">
+				<dl class="dl-horizontal responsive">
+				<dt>strip</dt><dd>The whitespace characters are stripped out of the URI. This is the behavior recommended by RFC2396.</dd>
+				<dt>deny</dt><dd>The request is denied. The user receives an "Invalid Request" message.</dd>
+				<dt>allow</dt><dd>The request is allowed and the URI is not changed. The whitespace characters remain in the URI.</dd>
+				<dt>encode</dt><dd>The request is allowed and the whitespace characters are encoded according to RFC1738.</dd>
+				<dt>chop</dt><dd>The request is allowed and the URI is chopped at the first whitespace.</dd>
+				</dl>
+				</div>
 				]]>
 			</description>
 			<type>select</type>
@@ -634,7 +662,7 @@
 			<description>
 				<![CDATA[
 				Put your own custom options here, one per line. They'll be added to the configuration before authetication ACLS (if any).<br/>
-				<strong><span class="errmsg">Warning:</span> These need to be squid.conf native options, otherwise Squid will NOT work.</strong>
+				<strong><span class="text-danger">Warning:</span> These need to be squid.conf native options, otherwise Squid will NOT work.</strong>
 				]]>
 			</description>
 			<type>textarea</type>
@@ -649,7 +677,7 @@
 			<description>
 				<![CDATA[
 				Put your own custom options here, one per line. They'll be added to the configuration after authentication definition (if any).<br/>
-				<strong><span class="errmsg">Warning:</span> These need to be squid.conf native options, otherwise Squid will NOT work.</strong>
+				<strong><span class="text-danger">Warning:</span> These need to be squid.conf native options, otherwise Squid will NOT work.</strong>
 				]]>
 			</description>
 			<type>textarea</type>
