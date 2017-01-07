@@ -359,11 +359,12 @@
 			<description>
 				<![CDATA[
 				The compatibility mode determines which cipher suites and TLS versions are supported.
-				<span class="text-info">Default: Modern.</span> Intended for modern clients only (post FF 27, Chrome 22, IE 11 etc.)
+				<span class="text-info">Default: Modern.</span> Click Info for details.
 				<div class="infoblock">
 				Modern mode also disables HIGH ciphers and TLS v1.0.<br/>
-				<strong><span class="text-info">Hint:</span></strong> If you need to support older clients, use the Intermediate setting.<br/><br/>
-				<strong><span class="errmsg">Warning: </span>Clients like IE 6 and Java 6 are not supported anymore!</strong>
+				<strong><span class="text-info">Hint:</span></strong> If you get an error (such as "This proxy and the remote host failed to negotiate a mutually acceptable security settings for handling your request")<br/>
+				when accessing some websites, you will need to use the Intermediate setting.<br/><br/>
+				<strong><span class="text-danger">Warning: SSLv3 is not supported any more!</span></strong>
 				</div>
 				]]>
 			</description>
