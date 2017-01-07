@@ -399,10 +399,12 @@ function squid_antivirus_install_config_files() {
 		$squidsettings = array();
 	}
 	// squidclamav.conf
-	// there is no squidclamav.conf.sample packaged, use squidclamav.conf if really needed
+	// make a backup of default squidclamav.conf.sample first
 	$cf = SQUID_LOCALBASE . "/etc/c-icap/squidclamav.conf";
-	if (!file_exists("{$cf}.default")) {
-		copy("{$cf}", "{$cf}.default");
+	if (file_exists("{$cf}.sample")) {
+		copy("{$cf}.sample", "{$cf}.default");
+	} else {
+		log_error("[squid] Could not backup '{$cf}' sample file!");
 	}
 	if (file_exists("{$cf}.default")) {
 		$sample_file = file_get_contents("{$cf}.default");
@@ -430,10 +432,12 @@ function squid_antivirus_install_config_files() {
 	}
 
 	// c-icap.conf
-	// there is no c-icap.conf.sample packaged, use c-icap.conf if really needed
+	// make a backup of default c-icap.conf.sample first
 	$cf = SQUID_LOCALBASE . "/etc/c-icap/c-icap.conf";
-	if (!file_exists("{$cf}.default")) {
-		copy("{$cf}", "{$cf}.default");
+	if (file_exists("{$cf}.sample")) {
+		copy("{$cf}.sample", "{$cf}.default");
+	} else {
+		log_error("[squid] Could not backup '{$cf}' sample file!");
 	}
 	if (file_exists("{$cf}.default")) {
 		// http://wiki.squid-cache.org/ConfigExamples/ContentAdaptation/C-ICAP#Antivirus_checking_with_C-ICAP.2C_ClamAV_daemon_and_Squidclamav
@@ -467,18 +471,20 @@ function squid_antivirus_install_config_files() {
 	// c-icap.magic
 	// just make a backup and pfSense template copies of default c-icap.magic, we are not patching anything here
 	$cf = SQUID_LOCALBASE . "/etc/c-icap/c-icap.magic";
-	if (!file_exists("{$cf}.default")) {
+	if (file_exists("{$cf}.sample")) {
 		copy("{$cf}.sample", "{$cf}.default");
-	}
-	if (!file_exists("{$cf}.pfsense")) {
 		copy("{$cf}.sample", "{$cf}.pfsense");
+	} else {
+		log_error("[squid] Could not backup '{$cf}' sample file!");
 	}
 
 	// clamd.conf
 	// make a backup of default clamd.conf.sample first
 	$cf = SQUID_LOCALBASE . "/etc/clamd.conf";
-	if (!file_exists("{$cf}.default")) {
+	if (file_exists("{$cf}.sample")) {
 		copy("{$cf}.sample", "{$cf}.default");
+	} else {
+		log_error("[squid] Could not backup '{$cf}' sample file!");
 	}
 	if (file_exists("{$cf}.default")) {
 		$sample_file = file_get_contents("{$cf}.default");
@@ -498,8 +504,10 @@ function squid_antivirus_install_config_files() {
 	// freshclam.conf
 	// make a backup of default freshclam.conf.sample first
 	$cf = SQUID_LOCALBASE . "/etc/freshclam.conf";
-	if (!file_exists("{$cf}.default")) {
+	if (file_exists("{$cf}.sample")) {
 		copy("{$cf}.sample", "{$cf}.default");
+	} else {
+		log_error("[squid] Could not backup '{$cf}' sample file!");
 	}
 	if (file_exists("{$cf}.default")) {
 		$sample_file = file_get_contents("{$cf}.default");
