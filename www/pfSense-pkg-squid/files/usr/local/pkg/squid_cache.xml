@@ -197,7 +197,7 @@
 				<dt>ufs</dt><dd>The old well-known Squid storage format that has always been there.</dd>
 			 	<dt>aufs</dt><dd>Uses POSIX threads to avoid blocking the main Squid process on disk I/O. (Formerly known as async-io.)</dd>
 			 	<dt>diskd</dt><dd>Uses a separate process to avoid blocking the main Squid process on disk I/O.</dd>
-				<dt>null</dt><dd>oes not use any storage. Ideal for embedded.</dd>
+				<dt>null</dt><dd>Does not use any storage. Ideal for embedded.</dd>
 				</dl>
 				Please see <a href="http://www.squid-cache.org/Doc/config/cache_dir/" target="_blank">cache_dir documentation</a> for additional details.
 				</div>
