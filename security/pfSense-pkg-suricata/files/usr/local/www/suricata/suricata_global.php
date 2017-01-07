@@ -236,7 +236,7 @@ $section->addInput(new Form_Input(
 	'Snort VRT Rules Filename',
 	'text',
 	$pconfig['snort_rules_file']
-))->setHelp('Enter the rules tarball filename (filename only, do not include the URL.)<br />Example: snortrules-snapshot-2980.tar.gz');
+))->setHelp('Enter the rules tarball filename (filename only, do not include the URL.)<br />Example: snortrules-snapshot-2990.tar.gz');
 $section->addInput(new Form_Input(
 	'oinkcode',
 	'Snort VRT Oinkmaster Code',
