@@ -669,19 +669,9 @@ function squid_upgrade_config() {
 		$config['installedpackages']['squidnac']['config'][0]['banned_hosts'] = $settingsnac['banned_hosts'];
 	}
 
-	if (!empty($settingsnac['banned_macs']) && strstr($settingsnac['banned_macs'], ",")) {
-		$settingsnac['banned_macs'] = base64_encode(implode("\n", explode(",", $settingsnac['banned_macs'])));
-		$config['installedpackages']['squidnac']['config'][0]['banned_macs'] = $settingsnac['banned_macs'];
-	}
-
 	if (!empty($settingsnac['unrestricted_hosts']) && strstr($settingsnac['unrestricted_hosts'], ",")) {
 		$settingsnac['unrestricted_hosts'] = base64_encode(implode("\n", explode(",", $settingsnac['unrestricted_hosts'])));
 		$config['installedpackages']['squidnac']['config'][0]['unrestricted_hosts'] = $settingsnac['unrestricted_hosts'];
-	}
-
-	if (!empty($settingsnac['unrestricted_macs']) && strstr($settingsnac['unrestricted_macs'], ",")) {
-		$settingsnac['unrestricted_macs'] = base64_encode(implode("\n", explode(",", $settingsnac['unrestricted_macs'])));
-		$config['installedpackages']['squidnac']['config'][0]['unrestricted_macs'] = $settingsnac['unrestricted_macs'];
 	}
 
 	if (!empty($settingsnac['whitelist']) && strstr($settingsnac['whitelist'], ",")) {
@@ -989,16 +979,6 @@ function squid_validate_nac($post, &$input_errors) {
 				}
 			}
 		}
-	}
-
-	foreach (array('unrestricted_macs', 'banned_macs') as $macs) {
-		foreach (explode("\n", $post[$macs]) as $mac) {
-			$mac = trim($mac);
-			if (!empty($mac) && !is_macaddr($mac)) {
-				$input_errors[] = "'$mac' is not a valid MAC address.";
-			}
-		}
-		unset($mac);
 	}
 
 	foreach (explode(",", $post['timelist']) as $time) {
@@ -1780,24 +1760,12 @@ function squid_resync_auth() {
 			$conf .= "http_access deny banned_hosts\n";
 		}
 	}
-	if (!empty($settingsnac['banned_macs'])) {
-		if (squid_is_valid_acl('banned_macs')) {
-			$conf .= "# These macs are banned\n";
-			$conf .= "http_access deny banned_macs\n";
-		}
-	}
 
 	// Unrestricted hosts take precedence over blacklist
 	if (!empty($settingsnac['unrestricted_hosts'])) {
 		if (squid_is_valid_acl('unrestricted_hosts') && $settings['unrestricted_auth'] != "on") {
 			$conf .= "# These hosts do not have any restrictions\n";
 			$conf .= "http_access allow unrestricted_hosts\n";
-		}
-	}
-	if (!empty($settingsnac['unrestricted_macs'])) {
-		if (squid_is_valid_acl('unrestricted_macs')) {
-			$conf .= "# These hosts do not have any restrictions\n";
-			$conf .= "http_access allow unrestricted_macs\n";
 		}
 	}
 
