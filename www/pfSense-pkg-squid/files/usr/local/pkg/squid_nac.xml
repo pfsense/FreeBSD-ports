@@ -116,6 +116,11 @@
 				Enter unrestricted IP address(es) / network(s) in CIDR format.
 				Configured entries will NOT be filtered out by the other access control directives set in this page.<br/>
 				<span class="text-info">Put each entry on a separate line.</span>
+				<div class="infoblock">
+				<strong><span class="text-info">Note:</span></strong><br/>
+ 				These entries will also be exempt from proxy authentication unless 'Require Authentication for Unrestricted Hosts' is checked on 'Authentication' tab.<br/>
+				These entries will also be exempt from bandwidth throttling unless 'Throttle Unrestricted IPs' is checked on 'Traffic Mgmt' tab.
+				</div>
 				]]>
 			</description>
 			<type>textarea</type>
