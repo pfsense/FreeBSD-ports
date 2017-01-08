@@ -157,9 +157,9 @@
 			<default_value>5</default_value>
 		</field>
 		<field>
-			<fielddescr>Require Authentication for Unrestricted Hosts</fielddescr>
+			<fielddescr>Require Authentication for Unrestricted IPs</fielddescr>
 			<fieldname>unrestricted_auth</fieldname>
-			<description>If enabled, even users tagged as unrestricted through access control are required to authenticate to use the proxy.</description>
+			<description>If enabled, even 'Unrestricted IPs' configured on the ACLs tab are required to authenticate to use the proxy.</description>
 			<type>checkbox</type>
 		</field>
 		<field>
