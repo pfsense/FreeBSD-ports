@@ -1626,7 +1626,11 @@ function squid_resync_traffic() {
 	} else {
 		$settings = array();
 	}
-
+	if (is_array($config['installedpackages']['squidnac']['config'])) {
+		$settingsnac = $config['installedpackages']['squidnac']['config'][0];
+	} else {
+		$settingsnac = array();
+	}
 	$conf = '';
 	if (!empty($settings['quick_abort_min']) || ($settings['quick_abort_min']) == "0") {
 		$conf .= "quick_abort_min {$settings['quick_abort_min']} KB\n";
@@ -1668,11 +1672,13 @@ delay_initial_bucket_level 100
 
 EOD;
 
-	if (!empty($settings['unrestricted_hosts'])) {
-		foreach (array('unrestricted_hosts') as $item) {
-			if (in_array($item, $valid_acls)) {
-				$conf .= "# Do not throttle unrestricted hosts\n";
-				$conf .= "delay_access 1 deny $item\n";
+	if (!empty($settingsnac['unrestricted_hosts'])) {
+		if (squid_is_valid_acl('unrestricted_hosts') && $settings['unrestricted_throttling'] != "on") {
+			foreach (array('unrestricted_hosts') as $item) {
+				if (in_array($item, $valid_acls)) {
+					$conf .= "# Do not throttle unrestricted hosts\n";
+					$conf .= "delay_access 1 deny $item\n";
+				}
 			}
 		}
 	}
