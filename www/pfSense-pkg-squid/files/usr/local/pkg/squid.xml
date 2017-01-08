@@ -211,7 +211,7 @@
 			<fieldname>dns_v4_first</fieldname>
 			<description>
 				<![CDATA[
-				Enable this to force DNS IPv4 lookup first. This option is very useful if you have problems accessing HTTPS sites.
+				Enable this to force DNS IPv4 lookup first.
 				]]>
 			</description>
 			<sethelp>
