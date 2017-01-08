@@ -150,6 +150,12 @@
 			<default_value>0</default_value>
 		</field>
 		<field>
+			<fielddescr>Throttle Unrestricted IPs</fielddescr>
+			<fieldname>unrestricted_throttling</fieldname>
+			<description>If enabled, even 'Unrestricted IPs' configured on the ACLs tab are subject to throttling.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
 			<name>Squid Transfer Extension Settings</name>
 			<type>listtopic</type>
 		</field>
