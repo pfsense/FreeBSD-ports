@@ -97,8 +97,8 @@
 			<fieldname>max_download_size</fieldname>
 			<description>
 				<![CDATA[
-				Limit the maximum total download size to the size specified here (in kilobytes).<br/>
-				Set to 0 to disable.
+				Limit the maximum total download size to the size specified here (in kilobytes).
+				<span class="text-info">Set to 0 to disable.</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -111,8 +111,8 @@
 			<fieldname>max_upload_size</fieldname>
 			<description>
 				<![CDATA[
-				Limit the maximum total upload size to the size specified here (in kilobytes).<br/>
-				Set to 0 to disable.
+				Limit the maximum total upload size to the size specified here (in kilobytes).
+				<span class="text-info">Set to 0 to disable.</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -125,9 +125,9 @@
 			<fieldname>overall_throttling</fieldname>
 			<description>
 				<![CDATA[
-				This value specifies the bandwidth throttle for downloads (in kilobytes per second).<br/>
+				This value specifies the bandwidth throttle for downloads (in kilobytes per second).
 				Users will gradually have their download speed decreased according to this value.<br/>
-				Set to 0 to disable.
+				<span class="text-info">Set to 0 to disable.</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -140,8 +140,8 @@
 			<fieldname>perhost_throttling</fieldname>
 			<description>
 				<![CDATA[
-				This value specifies the download throttling per host.<br/>
-				Set to 0 to disable.
+				This value specifies the download throttling per host.
+				<span class="text-info">Set to 0 to disable.</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -191,14 +191,17 @@
 		</field>
 		<field>
 			<type>info</type>
+			<fielddescr>Quick Abort Settings</fielddescr>
 			<description>
 				<![CDATA[
-				The cache by default continues downloading aborted requests which are almost completed.<br/>
+				<div class="infoblock">
+				The cache by default continues downloading aborted requests which are almost completed.
 				This may be undesirable on slow links and/or very busy caches. Impatient users may tie up file descriptors and
-				bandwidth by repeatedly requesting and immediately aborting downloads.<br/>
+				bandwidth by repeatedly requesting and immediately aborting downloads.
 				When the user aborts a request, Squid will compare the below values to the amount of data transferred so far.<br/><br/>
 				If you do not want any retrieval to continue after the client has aborted, set both values below to 0.<br/>
 				If you want retrievals to always continue if they are being cached, set 'Finish transfer if less than x KB remaining' to -1.
+				</div>
 				]]>
 			</description>
 		</field>

@@ -4,9 +4,9 @@
 		<name>squid3</name>
 		<internal_name>squid</internal_name>
 		<descr><![CDATA[High performance web proxy cache (3.4 branch). It combines Squid as a proxy server with its capabilities of acting as a HTTP / HTTPS reverse proxy.&lt;br /&gt;
-			It includes an Exchange-Web-Access (OWA) Assistant, SSL filtering and antivirus integration via C-ICAP.&lt;br/&gt;&lt;br/&gt;
-			&lt;strong&gt;WARNING! This package bundles ClamAV that conflicts with 'Dansguardian', 'Mailscanner' and 'HAVP antivirus' packages! Installing these will result in a broken state.&lt;/strong&gt;]]></descr>
-		<pkginfolink>https://forum.pfsense.org/index.php?topic=100167.0</pkginfolink>
+			It includes an Exchange-Web-Access (OWA) Assistant, SSL filtering and antivirus integration via C-ICAP.
+			]]></descr>
+		<pkginfolink>https://forum.pfsense.org/index.php?board=60.0</pkginfolink>
 		<website>http://www.squid-cache.org/</website>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>squid.xml</configurationfile>

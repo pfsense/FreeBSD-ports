@@ -147,9 +147,9 @@
 			<fieldname>auth_ttl</fieldname>
 			<description>
 				<![CDATA[
-				This specifies for how long (in minutes) the proxy server assumes an externally validated username and password combination is valid (Time To Live).<br/>
-				When the TTL expires, the user will be prompted for credentials again.<br/>
-				Default value: 5.
+				This specifies for how long (in minutes) the proxy server assumes an externally validated username and password combination to be valid.<br/>
+				When the Time To Live expires, the user will be prompted for credentials again.
+				<span class="text-info">Default: 5</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -167,10 +167,12 @@
 			<fieldname>no_auth_hosts</fieldname>
 			<description>
 				<![CDATA[
-				Enter subnet(s) or IP address(es) (in CIDR format) that should NOT be asked for authentication to access the proxy.<br/>
-				Example (subnet): 10.5.0.0/16<br/>
-				Example (single host): 192.168.1.50/32<br/><br/>
-				<strong>Note: Put each entry on a separate line.</strong>
+				Enter subnet(s) or IP address(es) (in CIDR format) that should NOT be asked for authentication to access the proxy.
+				<span class="text-info">Put each entry on a separate line.</span>
+				<div class="infoblock">
+				<span class="text-info">Example (subnet):</span> 10.5.0.0/16<br/>
+				<span class="text-info">Example (single host):</span> 192.168.1.50/32
+				</div>
 				]]>
 			</description>
 			<type>textarea</type>

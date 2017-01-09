@@ -113,8 +113,8 @@
 			<fieldname>name</fieldname>
 			<description>
 				<![CDATA[
-				Name to identify this peer on Squid reverse proxy configuration.<br/>
-				Example: HOST1
+				Name to identify this peer on Squid reverse proxy configuration.
+				<span class="text-info">Example: HOST1</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -126,8 +126,8 @@
 			<fieldname>ip</fieldname>
 			<description>
 				<![CDATA[
-				IP address of this peer.<br/>
-				Example: 192.168.0.1
+				IP address of this peer.
+				<span class="text-info">Example: 192.168.0.1</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -139,8 +139,8 @@
 			<fieldname>port</fieldname>
 			<description>
 				<![CDATA[
-				Listening port of this peer.<br/>
-				Example: 80
+				Listening port of this peer.
+				<span class="text-info">Example: 80</span>
 				]]>
 			</description>
 			<type>input</type>

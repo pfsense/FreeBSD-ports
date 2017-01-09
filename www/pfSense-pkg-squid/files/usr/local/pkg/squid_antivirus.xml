@@ -94,7 +94,7 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Enable</fielddescr>
+			<fielddescr>Enable AV</fielddescr>
 			<fieldname>enable</fieldname>
 			<description>Enable Squid antivirus check using ClamAV.</description>
 			<type>checkbox</type>
@@ -121,12 +121,14 @@
 			<fieldname>enable_advanced</fieldname>
 			<description>
 				<![CDATA[
-				When enabled, the options below no longer have any effect.<br/>
+				<strong><span class="text-danger">Warning: Only enable this if you know what are you doing.</span></strong>
+				<div class="infoblock blockopen">
+				When enabled, the options below no longer have any effect.
 				You must edit the configuration files directly in the 'Advanced Features'.<br/>
-				<strong><span class="errmsg">Warning:</span> Only enable this if you know what are you doing.</strong><br/><br/>
+				After enabling manual configuration, click the button below <strong>once</strong> to load default configuration files.
+				To disable manual configuration again, select 'disabled' and click 'Save'.<br/>
 				<button class="btn btn-info btn-sm" name='load_advanced' id='load_advanced' type='submit' value='Load Advanced'><i class="fa fa-file-text-o icon-embed-btn"></i> Load Advanced</button>
-				After enabling manual configuration, click this once to load default configuration files.<br/><br/>
-				To disable manual configuration again, select 'disabled' and click 'Save'.
+				</div>
 				]]>
 			</description>
 			<type>select</type>
@@ -142,9 +144,9 @@
 			<fieldname>clamav_url</fieldname>
 			<description>
 				<![CDATA[
-				When a virus is found then redirect the user to this URL.<br />
-				Leave empty to use the default Squid/pfSense WebGUI URL.<br/>
-				<strong>Example:</strong> http://proxy.example.com/blocked.html
+				When a virus is found then redirect the user to this URL.
+				<span class="text-info">Example:</span> http://proxy.example.com/blocked.html<br/>
+				<span class="text-info">Leave empty to use the default Squid/pfSense WebGUI URL.</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -157,9 +159,8 @@
 			<description>Enables Google Safe Browsing support.</description>
 			<sethelp>
 				<![CDATA[
-				<a href="http://www.clamav.net/doc/safebrowsing.html">Google Safe Browsing</a> database includes information about websites that may be <a href="https://support.google.com/code/answer/70015">phishing sites or possible sources of malware</a>.<br/>
-				<strong>Note: This option consumes significant amount of RAM.</strong><br/>
-				<strong><span class="errmsg">Important:</span> Set 'ClamAV Database Update' below to 'every 1 hours' if you want to use this feature!</strong>
+				<a href="http://www.clamav.net/documents/safebrowsing" target="_blank">Google Safe Browsing</a> database includes information about websites that may be <a href="https://support.google.com/code/answer/70015" target="_blank">phishing sites or possible sources of malware</a>.<br/>
+				<strong><span class="text-danger">Warning:</span></strong> This option consumes significant amount of RAM.<br/>
 				]]>
 			</sethelp>
 			<type>checkbox</type>
@@ -175,18 +176,21 @@
 			<fieldname>clamav_update</fieldname>
 			<description>
 				<![CDATA[
-				Optionally, you can schedule ClamAV definitions updates via cron.<br/>
-				Select the desired frequency here.<br/><br/>
+				Optionally, you can schedule ClamAV definitions updates via cron. Select the desired frequency here.
+				<div class="infoblock blockopen">
+				<strong><span class="text-danger">Important:</span></strong> Set to 'every 1 hour' if you want to use Google Safe Browsing feature.</br>
+				Click the button below <strong>once</strong> to force the update of AV databases immediately.
+				<strong><span class="text-info">Note:</span> This will take a while.</strong>
+				Check freshclam log on the <a href="squid_monitor.php" target="_blank">'Real Time' tab</a> for progress information.</br>
 				<button class="btn btn-success btn-sm" name='update_av' id='update_av' type='submit' value='Update AV'><i class="fa fa-refresh icon-embed-btn"></i>Update AV</button>
-				Click to update AV databases now.<br/>
-				<strong>Note: This will take a while.</strong> Check freshclam log on the <a href="squid_monitor.php">'Real Time' tab</a> for progress information.
+				</div>
 				]]>
 			</description>
 			<type>select</type>
 			<default_value>0</default_value>
 			<options>
 				<option><name>never	  </name><value></value></option>
-				<option><name>every 1  hours</name><value>1</value></option>
+				<option><name>every 1  hour</name><value>1</value></option>
 				<option><name>every 2  hours</name><value>2</value></option>
 				<option><name>every 3  hours</name><value>3</value></option>
 				<option><name>every 4  hours</name><value>4</value></option>
@@ -201,9 +205,8 @@
 			<fieldname>clamav_dbregion</fieldname>
 			<description>
 				<![CDATA[
-				Select regional database mirror.<br/>
-				<strong><span class="errmsg">Note:</span> It is strongly recommended to choose something here and/or configure your own mirrors manually below.</strong>
-				The default ClamAV database mirror performs extremely slow.
+				Select a regional database mirror. <span class="text-info">Note:</span> The default ClamAV database mirror performs extremely slow.<br/>
+				<strong><span class="text-info">It is strongly recommended to choose a mirror here and/or configure your own mirrors manually below.</span></strong>
 				]]>
 			</description>
 			<type>select</type>
@@ -229,9 +232,10 @@
 			<fieldname>clamav_dbservers</fieldname>
 			<description>
 				<![CDATA[
-				Enter ClamAV update servers here, or leave empty.<br />
-				Note: For official update mirrors, use db.XY.clamav.net format. (Replace XY with your <a href="http://www.iana.org/domains/root/db">country code</a>.)<br/>
-				<strong>Note: Separate entries by semi-colons (;)</strong>
+				Enter ClamAV update servers here, or leave empty.
+				<span class="text-info">Separate entries by semi-colons (;)</span><br/>
+				<strong><span class="text-info">Note:</span></strong> For official update mirrors, use <span class="text-info">db.XY.clamav.net</span> format.
+				(Replace XY with your <a href="http://www.iana.org/domains/root/db" target="_blank">country code</a>.)
 				]]>
 			</description>
 			<type>input</type>
@@ -240,7 +244,12 @@
 		<field>
 			<fielddescr>squidclamav.conf</fielddescr>
 			<fieldname>raw_squidclamav_conf</fieldname>
-			<description>squidclamav.conf file. Edit only if you know what are you doing.</description>
+			<description>
+				<![CDATA[
+				squidclamav.conf file.
+				<span class="text-danger">Edit only if you know what are you doing.</span>
+				]]>
+			</description>
 			<type>textarea</type>
 			<encoding>base64</encoding>
 			<cols>85</cols>
@@ -250,7 +259,12 @@
 		<field>
 			<fielddescr>c-icap.conf</fielddescr>
 			<fieldname>raw_cicap_conf</fieldname>
-			<description>c-icap.conf file. Edit only if you know what are you doing.</description>
+			<description>
+				<![CDATA[
+				c-icap.conf file.
+				<span class="text-danger">Edit only if you know what are you doing.</span>
+				]]>
+			</description>
 			<type>textarea</type>
 			<encoding>base64</encoding>
 			<cols>85</cols>
@@ -260,7 +274,12 @@
 		<field>
 			<fielddescr>c-icap.magic</fielddescr>
 			<fieldname>raw_cicap_magic</fieldname>
-			<description>c-icap.conf file. Edit only if you know what are you doing.</description>
+			<description>
+				<![CDATA[
+				c-icap.conf file.
+				<span class="text-danger">Edit only if you know what are you doing.</span>
+				]]>
+			</description>
 			<type>textarea</type>
 			<encoding>base64</encoding>
 			<cols>85</cols>
@@ -270,7 +289,12 @@
 		<field>
 			<fielddescr>freshclam.conf</fielddescr>
 			<fieldname>raw_freshclam_conf</fieldname>
-			<description>freshclam.conf file. Edit only if you know what are you doing.</description>
+			<description>
+				<![CDATA[
+				freshclam.conf file.
+				<span class="text-danger">Edit only if you know what are you doing.</span>
+				]]>
+			</description>
 			<type>textarea</type>
 			<encoding>base64</encoding>
 			<cols>85</cols>
@@ -280,7 +304,12 @@
 		<field>
 			<fielddescr>clamd.conf</fielddescr>
 			<fieldname>raw_clamd_conf</fieldname>
-			<description>clamd.conf file. Edit only if you know what are you doing.</description>
+			<description>
+				<![CDATA[
+				clamd.conf file.
+				<span class="text-danger">Edit only if you know what are you doing.</span>
+				]]>
+			</description>
 			<type>textarea</type>
 			<encoding>base64</encoding>
 			<cols>85</cols>
