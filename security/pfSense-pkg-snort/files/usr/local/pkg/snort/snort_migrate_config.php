@@ -108,6 +108,11 @@ if (empty($config['installedpackages']['snortglobal']['openappid_detectors'])) {
 	$config['installedpackages']['snortglobal']['openappid_detectors'] = "off";
 	$updated_cfg = true;
 }
+if (empty($config['installedpackages']['snortglobal']['openappid_rules_detectors'])) {
+        $config['installedpackages']['snortglobal']['openappid_rules_detectors'] = "off";
+        $updated_cfg = true;
+}
+
 
 /**********************************************************/
 /* Create new HIDE_DEPRECATED_RULES setting if not set    */

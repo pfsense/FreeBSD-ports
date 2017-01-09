@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	irssi
-PORTVERSION=	0.8.20
+PORTVERSION=	0.8.21
+PORTEPOCH=	1
 PORTREVISION?=	0
 CATEGORIES?=	irc
 MASTER_SITES=	https://github.com/irssi/irssi/releases/download/${PORTVERSION}/
@@ -31,7 +32,7 @@ PERL_USES=	perl5
 PERL_CONFIGURE_ON=	--with-perl-lib=site
 PERL_CONFIGURE_OFF=	--with-perl=no
 PROXY_CONFIGURE_WITH=	proxy
-IPV6_CONFIGURE_ENABLE=	ipv6
+IPV6_CONFIGURE_ENABLE=	ipv6 
 IPV6_CATEGORIES=	ipv6
 TRUECOLOR_DESC=	Truecolor (24bit) support
 TRUECOLOR_CONFIGURE_ENABLE=	true-color
