@@ -47,6 +47,7 @@ else {
 	$pconfig['clearblocks'] = $config['installedpackages']['snortglobal']['clearblocks'] == "on" ? 'on' : 'off';
 	$pconfig['verbose_logging'] = $config['installedpackages']['snortglobal']['verbose_logging'] == "on" ? 'on' : 'off';
 	$pconfig['openappid_detectors'] = $config['installedpackages']['snortglobal']['openappid_detectors'] == "on" ? 'on' : 'off';
+	$pconfig['openappid_rules_detectors'] = $config['installedpackages']['snortglobal']['openappid_rules_detectors'] == "on" ? 'on' : 'off';
 	$pconfig['hide_deprecated_rules'] = $config['installedpackages']['snortglobal']['hide_deprecated_rules'] == "on" ? 'on' : 'off';
 	$pconfig['curl_no_verify_ssl_peer'] = $config['installedpackages']['snortglobal']['curl_no_verify_ssl_peer'] == "on" ? 'on' : 'off';
 }
@@ -91,6 +92,7 @@ if (!$input_errors) {
 		$config['installedpackages']['snortglobal']['clearblocks'] = $_POST['clearblocks'] ? 'on' : 'off';
 		$config['installedpackages']['snortglobal']['verbose_logging'] = $_POST['verbose_logging'] ? 'on' : 'off';
 		$config['installedpackages']['snortglobal']['openappid_detectors'] = $_POST['openappid_detectors'] ? 'on' : 'off';
+		$config['installedpackages']['snortglobal']['openappid_rules_detectors'] = $_POST['openappid_rules_detectors'] ? 'on' : 'off';
 		$config['installedpackages']['snortglobal']['hide_deprecated_rules'] = $_POST['hide_deprecated_rules'] ? 'on' : 'off';
 		$config['installedpackages']['snortglobal']['curl_no_verify_ssl_peer'] = $_POST['curl_no_verify_ssl_peer'] ? 'on' : 'off';
 
@@ -109,6 +111,8 @@ if (!$input_errors) {
 			$disabled_rules[] = ET_OPEN_FILE_PREFIX;
 		if ($config['installedpackages']['snortglobal']['emergingthreats_pro'] == 'off')
 			$disabled_rules[] = ET_PRO_FILE_PREFIX;
+		if ($config['installedpackages']['snortglobal']['openappid_rules_detectors'] == 'off')
+			$disabled_rules[] = OPENAPPID_FILE_PREFIX;
 
 		// Now walk all the configured interface rulesets and remove
 		// any matching the disabled ruleset prefixes.
@@ -273,6 +277,13 @@ $section->addInput(new Form_StaticText(
 $section->addInput(new Form_StaticText(
 	'OpenAppID Version',
 	$openappid_ver
+));
+$section->addInput(new Form_Checkbox(
+        'openappid_rules_detectors',
+        'Enable RULES OpenAppID',
+        'Click to enable download of APPID Open rules',
+        $pconfig['openappid_rules_detectors'] == 'on' ? true:false,
+        'on'
 ));
 
 $form->add($section);

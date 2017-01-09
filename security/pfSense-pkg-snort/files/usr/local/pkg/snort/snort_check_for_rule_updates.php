@@ -44,6 +44,7 @@ $etpro = $config['installedpackages']['snortglobal']['emergingthreats_pro'] == '
 $snortcommunityrules = $config['installedpackages']['snortglobal']['snortcommunityrules'] == 'on' ? 'on' : 'off';
 $vrt_enabled = $config['installedpackages']['snortglobal']['snortdownload'] == 'on' ? 'on' : 'off';
 $openappid_detectors = $config['installedpackages']['snortglobal']['openappid_detectors'] == 'on' ? 'on' : 'off';
+$openappid_rules_detectors = $config['installedpackages']['snortglobal']['openappid_rules_detectors'] == 'on' ? 'on' : 'off';
 
 /* Working directory for downloaded rules tarballs and extraction */
 $tmpfname = "{$g['tmp_path']}/snort_rules_up";
@@ -97,6 +98,12 @@ $snort_community_rules_url = GPLV2_DNLD_URL;
 $snort_openappid_filename = SNORT_OPENAPPID_DNLD_FILENAME;
 $snort_openappid_filename_md5 = SNORT_OPENAPPID_DNLD_FILENAME . ".md5";
 $snort_openappid_url = SNORT_OPENAPPID_DNLD_URL;
+
+/* Snort OpenAppID detectors filename and URL FOR RULES APPID */
+$snort_openappid_rules_filename = SNORT_OPENAPPID_RULES_FILENAME;
+$snort_openappid_rules_filename_md5 = SNORT_OPENAPPID_RULES_FILENAME . ".md5";
+$snort_openappid_rules_url = SNORT_OPENAPPID_RULES_URL;
+
 
 function snort_update_status($msg) {
 	/************************************************/
@@ -411,7 +418,7 @@ if ($snortdownload == 'on') {
 
 /*  Check for and download any new Snort OpenAppID detectors */
 if ($openappid_detectors == 'on') {
-	if (snort_check_rule_md5("{$snort_openappid_url}{$snort_openappid_filename}/md5", "{$tmpfname}/{$snort_openappid_filename_md5}", "Snort OpenAppID detectors")) {
+	if (snort_check_rule_md5("{$snort_openappid_url}{$snort_openappid_filename}/md5", "{$tmpfname}/{$snort_openappid_filename_md5}","Snort OpenAppID detectors")) {
 		$file_md5 = trim(file_get_contents("{$tmpfname}/{$snort_openappid_filename_md5}"));
 		file_put_contents("{$tmpfname}/{$snort_openappid_filename_md5}", $file_md5);
 		/* download snort-openappid file */
@@ -420,6 +427,18 @@ if ($openappid_detectors == 'on') {
 	}
 	else
 		$openappid_detectors = 'off';
+}
+/*  Check for and download any new Snort OpenAppID RULES detectors */
+if ($openappid_rules_detectors == 'on') {
+        if (snort_check_rule_md5("{$snort_openappid_rules_url}{$snort_openappid_rules_filename}.md5", "{$tmpfname}/{$snort_openappid_rules_filename_md5}", "Snort OpenAppID RULES detectors")) {
+                $file_md5 = trim(file_get_contents("{$tmpfname}/{$snort_openappid_rules_filename_md5}"));
+                file_put_contents("{$tmpfname}/{$snort_openappid_rules_filename_md5}", $file_md5);
+                /* download snort-openappid file rules */
+                if (!snort_fetch_new_rules("{$snort_openappid_rules_url}{$snort_openappid_rules_filename}", "{$tmpfname}/{$snort_openappid_rules_filename}", $file_md5, "Snort OpenAppID RULES detectors"))
+                        $openappid_rules_detectors = 'off';
+        }
+        else
+                $openappid_rules_detectors = 'off';
 }
 
 /*  Check for and download any new Snort GPLv2 Community Rules sigs */
@@ -550,6 +569,24 @@ if ($openappid_detectors == 'on') {
 		error_log(gettext("\tInstallation of Snort OpenAppID detectors completed.\n"), 3, SNORT_RULES_UPD_LOGFILE);
 	}
 }
+/* Untar Snort OpenAppID detectors file to SNORT_APPID_ODP_PATH */
+if ($openappid_rules_detectors == 'on') {
+        // If we have a valid downloaded file, then first cleanup the old directory
+        if (file_exists("{$tmpfname}/{$snort_openappid_rules_filename}")) {
+                snort_update_status(gettext("Installing Snort OpenAppID RULES detectors..."));
+                $snort_openappid_rules_path = SNORT_APPID_RULES_PATH;
+                error_log(gettext("\tExtracting and installing Snort OpenAppID detectors...\n"), 3, SNORT_RULES_UPD_LOGFILE);
+                exec("/usr/bin/tar oxzf {$tmpfname}/{$snort_openappid_rules_filename} -C {$snort_openappid_rules_path}");
+                if (file_exists("{$tmpfname}/{$snort_openappid_rules_filename_md5}")) {
+                        snort_update_status(gettext("Copying md5 signature to snort directory..."));
+                        @copy("{$tmpfname}/{$snort_openappid_rules_filename_md5}", "{$snortdir}/{$snort_openappid_rules_filename_md5}");
+                }
+                snort_update_status(gettext(" done.") . "\n");
+                unlink_if_exists("{$tmpfname}/{$snort_openappid_rules_filename}");
+                error_log(gettext("\tInstallation of Snort OpenAppID detectors completed.\n"), 3, SNORT_RULES_UPD_LOGFILE);
+        }
+}
+
 
 /* Untar Snort GPLv2 Community rules file to tmp and install the rules */
 if ($snortcommunityrules == 'on') {

@@ -87,6 +87,9 @@ function suricata_stop($suricatacfg, $if_real) {
 			killbypid("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
 		}
 	}
+	// Make sure the PID file is actually deleted so Suricata will restart without error
+	unlink_if_exists("{$g['varrun_path']}/suricata_{$if_real}{$suricata_uuid}.pid");
+
 	// Stop Barnyard2 on the interface if running
 	suricata_barnyard_stop($suricatacfg, $if_real);
 }
