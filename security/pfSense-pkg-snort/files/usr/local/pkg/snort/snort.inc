@@ -2098,7 +2098,7 @@ function snort_get_auto_category_mods($categories, $sid_mods, $action, $log_resu
 	$matchcount = 0;
 
 	// Get a list of all possible categories by loading all rules files
-	foreach (array( VRT_FILE_PREFIX, ET_OPEN_FILE_PREFIX, ET_PRO_FILE_PREFIX, GPL_FILE_PREFIX ) as $prefix) {
+	foreach (array( VRT_FILE_PREFIX, ET_OPEN_FILE_PREFIX, ET_PRO_FILE_PREFIX, GPL_FILE_PREFIX, OPENAPPID_FILE_PREFIX ) as $prefix) {
 		$files = glob("{$snortdir}/rules/{$prefix}*.rules");
 		foreach ($files as $file)
 			$all_cats[] = basename($file);

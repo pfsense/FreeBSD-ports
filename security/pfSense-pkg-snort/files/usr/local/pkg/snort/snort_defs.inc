@@ -48,6 +48,8 @@ if (!defined("SNORT_IPREP_PATH"))
 	define("SNORT_IPREP_PATH", "{$g['vardb_path']}/snort/iprep/");
 if (!defined('SNORT_APPID_ODP_PATH'))
 	define('SNORT_APPID_ODP_PATH', SNORTDIR . "/appid/");
+if (!defined('SNORT_APPID_RULES_PATH'))
+        define('SNORT_APPID_RULES_PATH', SNORTDIR . "/rules/");
 
 // Rules filenames, download URLs and prefixes.
 // Be sure to include the trailing backslash on URLs.
@@ -77,6 +79,10 @@ if (!defined("SNORT_OPENAPPID_DNLD_URL"))
 	define("SNORT_OPENAPPID_DNLD_URL", "https://www.snort.org/downloads/openappid/");
 if (!defined("SNORT_OPENAPPID_DNLD_FILENAME"))
 	define("SNORT_OPENAPPID_DNLD_FILENAME", "snort-openappid.tar.gz");
+if (!defined("SNORT_OPENAPPID_RULES_URL"))
+	define("SNORT_OPENAPPID_RULES_URL", "http://www.ifs.edu.br/");
+if (!defined("SNORT_OPENAPPID_RULES_FILENAME"))
+	define("SNORT_OPENAPPID_RULES_FILENAME", "appid_rules.tar.gz");
 if (!defined("SNORT_RULES_UPD_LOGFILE"))
 	define("SNORT_RULES_UPD_LOGFILE", SNORTLOGDIR . "/snort_rules_update.log");
 if (!defined("VRT_FILE_PREFIX"))
@@ -87,5 +93,7 @@ if (!defined("ET_OPEN_FILE_PREFIX"))
 	define("ET_OPEN_FILE_PREFIX", "emerging-");
 if (!defined("ET_PRO_FILE_PREFIX"))
 	define("ET_PRO_FILE_PREFIX", "etpro-");
+if (!defined("OPENAPPID_FILE_PREFIX"))
+	define("OPENAPPID_FILE_PREFIX", "openappid-");
 
 ?>

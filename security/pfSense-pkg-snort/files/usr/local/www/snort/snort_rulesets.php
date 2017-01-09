@@ -62,10 +62,12 @@ $snortdownload = $config['installedpackages']['snortglobal']['snortdownload'] ==
 $emergingdownload = $config['installedpackages']['snortglobal']['emergingthreats'] == 'on' ? 'on' : 'off';
 $etpro = $config['installedpackages']['snortglobal']['emergingthreats_pro'] == 'on' ? 'on' : 'off';
 $snortcommunitydownload = $config['installedpackages']['snortglobal']['snortcommunityrules'] == 'on' ? 'on' : 'off';
+$openappid_rulesdownload = $config['installedpackages']['snortglobal']['openappid_rules_detectors'] == 'on' ? 'on' : 'off';
 
 $no_emerging_files = false;
 $no_snort_files = false;
 $no_community_files = false;
+$no_openappid_files = false;
 
 /* Test rule categories currently downloaded to $SNORTDIR/rules and set appropriate flags */
 if (($etpro == 'off' || empty($etpro)) && $emergingdownload == 'on') {
@@ -81,6 +83,9 @@ if (empty($test))
 $test = glob("{$snortdir}/rules/" . VRT_FILE_PREFIX . "*.rules");
 if (empty($test))
 	$no_snort_files = true;
+$test = glob("{$snortdir}/rules/" . OPENAPPID_FILE_PREFIX . "*.rules");
+if (empty($test))
+	$no_openappid_files = true;
 if (!file_exists("{$snortdir}/rules/" . GPL_FILE_PREFIX . "community.rules"))
 	$no_community_files = true;
 
@@ -213,6 +218,11 @@ if (isset($_POST['selectall'])) {
 
 	if ($snortcommunitydownload == 'on') {
 		$files = glob("{$snortdir}/rules/" . GPL_FILE_PREFIX . "community.rules");
+		foreach ($files as $file)
+			$enabled_rulesets_array[] = basename($file);
+	}
+	if ($openappid_rulesdownload == 'on') {
+		$files = glob("{$snortdir}/rules/" . OPENAPPID_FILE_PREFIX . "*.rules");
 		foreach ($files as $file)
 			$enabled_rulesets_array[] = basename($file);
 	}
@@ -467,6 +477,10 @@ if ($snortdownload == "on") {
 				  $msg_snort = "have not been downloaded.";
 			      else
 				  $msg_snort = "are not enabled.";
+			      if ($no_openappid_files && $openappid_rulesdownload == 'on')
+				  $msg_snort = "have not been downloaded.";	
+			      else
+				  $msg_snort = "are not enabled.";
 			?>
 <!-- End of rules file state -->
 
@@ -492,6 +506,12 @@ if ($snortdownload == "on") {
 					<?php else: ?>
 						<th colspan="4"><?=gettext("Snort VRT rules {$msg_snort}"); ?></th>
 					<?php endif; ?>
+					<?php if ($openappid_rulesdownload == 'on' && !$no_openappid_files): ?>
+						<th><?=gettext("Enabled"); ?></th>
+						<th><?=gettext('Ruleset: Snort OPENAPPI Rules');?></th>
+						<?php else: ?>
+						<th colspan="4"><?=gettext("Snort OPENAPPID rules {$msg_snort}"); ?></th>
+					<?php endif; ?>
 					</tr>
 				</thead>
 <!-- End of header row -->
@@ -500,6 +520,7 @@ if ($snortdownload == "on") {
 				$emergingrules = array();
 				$snortsorules = array();
 				$snortrules = array();
+				$openappidrules = array();
 				if (empty($isrulesfolderempty))
 					$dh  = opendir("{$snortdir}/snort_{$snort_uuid}_{$if_real}/rules/");
 				else
@@ -518,13 +539,15 @@ if ($snortdownload == "on") {
 						else
 							$snortrules[] = $filename;
 					}
+					else if (strstr($filename, OPENAPPID_FILE_PREFIX) && $openappid_rulesdownload == 'on')
+						$openappidrules[] = $filename;
 				}
 
 				// Sort the rules file names alphabetically
 				sort($emergingrules);
 				sort($snortsorules);
 				sort($snortrules);
-
+				sort($openappidrules);
 				// Now find the provider rules group with the most files 
 				// and use that as the max interator value.
 				$i = count($emergingrules);
@@ -532,7 +555,8 @@ if ($snortdownload == "on") {
 					$i = count($snortsorules);
 				if ($i < count($snortrules))
 					$i = count($snortrules);
-
+				if ($i < count($openappidrules))
+					$i = count($openappidrules);
 				// Walk the rules file names arrays and output the
 				// the file names and associated form controls in 
 				// an HTML table.
@@ -649,7 +673,42 @@ if ($snortdownload == "on") {
 						echo "</td>\n";
 					} else
 						echo "<td colspan='2'><br/></td>\n";
-					echo "</tr>\n";
+					if (!empty($openappidrules[$j])) {
+						$file = $openappidrules[$j];
+						echo "<td>";
+						if(is_array($enabled_rulesets_array)) {
+							if(in_array($file, $enabled_rulesets_array) && !isset($cat_mods[$file]))
+								$CHECKED = " checked=\"checked\"";
+							else
+								$CHECKED = "";
+						} else
+							$CHECKED = "";
+					if (isset($cat_mods[$file])) {
+						if (in_array($file, $enabled_rulesets_array))
+							echo "<input type='hidden' name='toenable[]' value='{$file}' />\n";
+					if ($cat_mods[$file] == 'enabled') {
+							$CHECKED = "enabled";
+						echo "  \n<i class=\"fa fa-adn text-success\" title=\"" . gettext('Auto-enabled by settings on SID Mgmt
+tab') . "></i>\n";
+					}
+					else {
+					echo "  \n<i class=\"fa fa-adn text-danger\" title=\"" . gettext('Auto-disabled by settings on SID Mgmt
+tab') . "></i>\n";
+					}
+				}
+				else {
+					echo "  \n<input type=\"checkbox\" name=\"toenable[]\" value=\"{$file}\" {$CHECKED} />\n";
+				}
+				echo "</td>\n";
+				echo "<td>\n";
+				if (empty($CHECKED))
+					echo $file;
+				else
+					echo "<a href='snort_rules.php?id={$id}&openruleset=" . urlencode($file) . "'>{$file}</a>\n";
+				echo "</td>\n";
+			} else
+				echo "<td colspan='2'><br/></td>\n";
+			echo "</tr>\n";
 				}
 			?>
 				</tbody>
