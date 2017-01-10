@@ -29,6 +29,4 @@ www/acme/acme_generalsettings.php
 /etc/inc/priv/acme.priv.inc
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv
-
-
-
+@dir /etc/inc

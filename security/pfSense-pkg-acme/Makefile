@@ -7,12 +7,13 @@ MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	PiBa-NL
+MAINTAINER=	PiBa.NL.dev@gmail.com
 COMMENT=	pfSense package acme
 
-USE_PHP= ftp
+LICENSE=	APACHE20
 
-CONFLICTS=	
+USES=		php
+USE_PHP=	ftp
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -24,10 +25,7 @@ do-extract:
 	${MKDIR} ${WRKSRC}
 
 do-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
-	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/acme
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
-	${MKDIR} ${STAGEDIR}${PREFIX}/www
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/acme
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${MKDIR} ${STAGEDIR}${DATADIR}
