@@ -80,7 +80,12 @@ class acme_sh {
 	function generateAccountKey() {
 		unlink_if_exists("{$this->path_account}/account.key");
 		$this->debug = false;
-		$this->execacmesh("--home {$this->acmeconf} --createAccountKey --accountkeylength 4096 --accountconf {$this->accountconfig}");
+		$this->execacmesh(""
+				. " --home " . escapeshellarg($this->acmeconf)
+				. " --createAccountKey"
+				. " --accountkeylength 4096"
+				. " --accountconf " . escapeshellarg($this->accountconfig)
+				);
 		$privateKey = file_get_contents("{$this->path_account}/account.key");
 		return $privateKey;
 	}
@@ -88,11 +93,11 @@ class acme_sh {
 	function registeraccount($key) {
 		file_put_contents("{$this->path_account}/account.key", $key);
 		$result = $this->execacmesh(""
-				. " --home {$this->acmeconf}"
+				. " --home " . escapeshellarg($this->acmeconf)
 				. " --registeraccount"
-				. " --accountconf {$this->accountconfig}"
+				. " --accountconf " . escapeshellarg($this->accountconfig)
 				. " --log-level 3"
-				. " --log {$this->acmeconf}acme_issuecert.log");
+				. " --log " . escapeshellarg($this->acmeconf."acme_issuecert.log"));
 		return $result == 0;
 	}
 	
@@ -104,15 +109,16 @@ class acme_sh {
 		}
 		$certpath = "{$this->acmeconf}{$domain}{$pathadd}";
 		safe_mkdir($certpath);
-		 
+		
 		unlink_if_exists("{$certpath}/{$domain}.key");
 		$this->execacmesh(""
-				. " --home {$this->acmeconf}"
-				. " --accountconf {$this->accountconfig}"
-				. " --createDomainKey -d $domain"
-				. " --keylength $keylength"
+				. " --home " . escapeshellarg($this->acmeconf)
+				. " --accountconf " . escapeshellarg($this->accountconfig)
+				. " --createDomainKey -d " . escapeshellarg($domain)
+				. " --keylength " . escapeshellarg($keylength)
 				. " --log-level 3"
-				. " --log {$this->acmeconf}acme_createdomainkey.log");
+				. " --log " . escapeshellarg($this->acmeconf."acme_createdomainkey.log")
+				);
 		$privateKey = file_get_contents("{$certpath}/{$domain}.key");
 		return $privateKey;
 	}
@@ -125,7 +131,7 @@ class acme_sh {
 			if ($api == "dns_manual") {
 				$api = "";
 			}
-			$cmdparameters = " --dns {$api}";
+			$cmdparameters = " --dns " . escapeshellarg($api);
 		} else {
 			$cmdparameters = " --webroot pfSenseacme";
 		}
@@ -166,17 +172,17 @@ EOF;
 		file_put_contents("{$certpath}/{$domainstosign[0]}.key", $certificatepsk);
 		$domainstr = "";
 		foreach($domainstosign as $domain) {
-			$domainstr .= " -d {$domain}";
+			$domainstr .= " -d " . escapeshellarg($domain);
 		}
 		$this->execacmesh(""
 			. " --{$action} {$domainstr}"
-			. " --home {$this->acmeconf}"
-			. " --accountconf {$this->accountconfig}"
+			. " --home " . escapeshellarg($this->acmeconf)
+			. " --accountconf " . escapeshellarg($this->accountconfig)
 			. " --force"
-			. " --reloadCmd {$this->acmeconf}reloadcmd.sh"
+			. " --reloadCmd " . escapeshellarg("{$this->acmeconf}reloadcmd.sh")
 			. $cmdparameters
 			. " --log-level 3"
-			. " --log {$this->acmeconf}acme_issuecert.log"
+			. " --log " . escapeshellarg("{$this->acmeconf}acme_issuecert.log")
 			//. " > {$this->acmeconf}issue.log 2>&1"
 			, $envvariables);
 		$cer = "{$certpath}/{$domainstosign[0]}.cer";

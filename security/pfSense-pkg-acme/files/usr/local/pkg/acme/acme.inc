@@ -196,7 +196,7 @@ $acme_domain_validation_method['dns_me'] = array(name => "DNS-DNSMadeEasy",
 			'description' =>"Fill in the API Secret"
 		)
 	));
-/*$acme_domain_validation_method['dns_nsupdate'] = array(name => "DNS-NSupdate",
+$acme_domain_validation_method['dns_nsupdate'] = array(name => "DNS-NSupdate",
 	'fields' => array(
 		'NSUPDATE_SERVER' => array('name'=>"NSUPDATE_SERVER",'columnheader'=>"Key",'type'=>"textbox",
 			'description' =>"Fill in the API Key"
@@ -204,7 +204,7 @@ $acme_domain_validation_method['dns_me'] = array(name => "DNS-DNSMadeEasy",
 		'NSUPDATE_KEY' => array('name'=>"NSUPDATE_KEY",'columnheader'=>"Id",'type'=>"textarea",
 			'description' =>"Fill in the API Id"
 		)
-	));needs a file reference..*/
+	));
 $acme_domain_validation_method['dns_ovh'] = array(name => "DNS-ovh / kimsufi / soyoustart / runabove",
 	'fields' => array(
 		'OVH_AK' => array('name'=>"OVH_AK",'columnheader'=>"Application Key",'type'=>"textbox",

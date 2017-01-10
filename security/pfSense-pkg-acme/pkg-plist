@@ -4,7 +4,6 @@ pkg/acme/acme_gui.inc
 pkg/acme/acme_htmllist.inc
 pkg/acme/acme_serverconnectors.inc
 pkg/acme/acme_utils.inc
-pkg/acme/acme.inc
 pkg/acme/acme.sh
 pkg/acme/acme_command.sh
 pkg/acme/acme_sh.inc

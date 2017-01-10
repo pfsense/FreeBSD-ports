@@ -206,59 +206,18 @@ if ($_POST) {
 		}
 	}
 	
-	/*if (preg_match("/[^a-zA-Z0-9\.\-_]/", $_POST['name'])) {
-		$input_errors[] = "The field 'Name' contains invalid characters.";
-	}
-	if ($_POST['checkinter'] !== "" && !is_numeric($_POST['checkinter'])) {
-		$input_errors[] = "The field 'Check frequency' value is not a number.";
-	}
-	if ($_POST['connection_timeout'] !== "" && !is_numeric($_POST['connection_timeout'])) {
-		$input_errors[] = "The field 'Connection timeout' value is not a number.";
-	}
-
-	if ($_POST['server_timeout'] !== "" && !is_numeric($_POST['server_timeout'])) {
-		$input_errors[] = "The field 'Server timeout' value is not a number.";
-	}
-
-	if ($_POST['retries'] !== "" && !is_numeric($_POST['retries'])) {
-		$input_errors[] = "The field 'Retries' value is not a number.";
-	}
-
-	// the colon ":" is invalid in the username, other than that pretty much any character can be used.
-	if (preg_match("/[^a-zA-Z0-9!-\/;-~ ]/", $_POST['stats_username'])) {
-		$input_errors[] = "The field 'Stats Username' contains invalid characters.";
-	}
-
-	// the colon ":" can also be used in the password
-	if (preg_match("/[^a-zA-Z0-9!-~ ]/", $_POST['stats_password'])) {
-		$input_errors[] = "The field 'Stats Password' contains invalid characters.";
-	}
-
-	if (preg_match("/[^a-zA-Z0-9\-_]/", $_POST['stats_node'])) {
-		$input_errors[] = "The field 'Stats Node' contains invalid characters. Should be a string with digits(0-9), letters(A-Z, a-z), hyphen(-) or underscode(_)";
-	}*/
-	
-	/* Ensure that our pool names are unique */
+	/* Ensure that our account key names are unique */
 	for ($i=0; isset($config['installedpackages']['acme']['accountkeys']['item'][$i]); $i++) {
 		if (($_POST['name'] == $config['installedpackages']['acme']['accountkeys']['item'][$i]['name']) && ($i != $id)) {
-			$input_errors[] = "This pool name has already been used.  Pool names must be unique.";
+			$input_errors[] = "This name has already been used. Names must be unique.";
 		}
 	}
-	$a_domains = $domainslist->acme_htmllist_get_values();
-	foreach($a_domains as $server){
-		$domain_name    = $server['name'];
-		if (!is_hostname($domain_name)) {
-			$input_errors[] = "The field 'Domainname' does not contain a valid hostname.";
-		}
-	}
-	$a_actions = $actionslist->acme_htmllist_get_values();
 
 	$accountkey = array();
 	if(isset($id) && $a_accountkeys[$id]) {
 		$accountkey = $a_accountkeys[$id];
 	}
-		
-//	echo "newname id:$id";
+
 	if (!empty($accountkey['name']) && ($accountkey['name'] != $_POST['name'])) {
 		//old $accountkey['name'] can be empty if a new or cloned item is saved, nothing should be renamed then
 		// name changed:
@@ -272,7 +231,7 @@ if ($_POST) {
 	}
 
 	if($accountkey['name'] != "") {
-		$changedesc .= " modified pool: '{$accountkey['name']}'";
+		$changedesc .= " modified account key: '{$accountkey['name']}'";
 	}
 	$accountkey['a_domainlist']['item'] = $a_domains;
 	$accountkey['a_actionlist']['item'] = $a_actions;
@@ -342,13 +301,13 @@ $section->addInput(new \Form_Textarea(
 $section->addInput(new \Form_StaticText(
 	'', 
 	"<a id='btncreatekey' class='btn btn-sm btn-primary'>"
-		. "<i id='btncreatekeyicon' class='fa fa-check'></i> Create new account key</a>"
+		. "<i id='btncreatekeyicon' class='fa fa-plus'></i> Create new account key</a>"
 ));
 
 $section->addInput(new \Form_StaticText(
 	'Acme account registration',
 	"<a id='btnregisterkey' class='btn btn-sm btn-primary'>"
-		. "<i id='btnregisterkeyicon' class='fa fa-check'></i> Register acme account key</a>"
+		. "<i id='btnregisterkeyicon' class='fa fa-key'></i> Register acme account key</a>"
 ))->setHelp("Before using a accountkey it must first be registered at the chosen CA.");
 
 $form->add($section);
@@ -422,7 +381,7 @@ print $form;
 	}
 events.push(function() {
 	$('#btnregisterkey').click(function() {
-		$("#btnregisterkeyicon").removeClass("fa-check").addClass("fa-cog fa-spin");
+		$("#btnregisterkeyicon").removeClass("fa-key").addClass("fa-cog fa-spin");
 		var key = $("#accountkey").val();
 		var caname = $("#acmeserver").val();
 		ajaxRequest = $.ajax({
@@ -432,11 +391,10 @@ events.push(function() {
 				$("#btnregisterkeyicon").removeClass("fa-cog fa-spin").addClass("fa-check");
 			}
 		});
-		
 	});
 	
 	$('#btncreatekey').click(function() {
-		$("#btncreatekeyicon").removeClass("fa-check").addClass("fa-cog fa-spin");
+		$("#btncreatekeyicon").removeClass("fa-plus").addClass("fa-cog fa-spin");
 		var caname = $("#acmeserver").val();
 		ajaxRequest = $.ajax({
 			type: "post",

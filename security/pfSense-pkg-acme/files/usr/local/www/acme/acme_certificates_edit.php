@@ -193,15 +193,15 @@ if ($_POST) {
 		}
 	}
 	
-	/* Ensure that our pool names are unique */
+	/* Ensure that our certificate names are unique */
 	for ($i=0; isset($config['installedpackages']['acme']['certificates']['item'][$i]); $i++) {
 		if (($_POST['name'] == $config['installedpackages']['acme']['certificates']['item'][$i]['name']) && ($i != $id)) {
-			$input_errors[] = "This pool name has already been used.  Pool names must be unique.";
+			$input_errors[] = "This name has already been used. Names must be unique.";
 		}
 	}
 	$a_domains = $domainslist->acme_htmllist_get_values();
 	foreach($a_domains as $server){
-		$domain_name    = $server['name'];
+		$domain_name = $server['name'];
 		if (!is_hostname($domain_name)) {
 			$input_errors[] = "The field 'Domainname' does not contain a valid hostname.";
 		}
@@ -227,7 +227,7 @@ if ($_POST) {
 	}
 
 	if($certificate['name'] != "") {
-		$changedesc .= " modified pool: '{$certificate['name']}'";
+		$changedesc .= " modified certificate: '{$certificate['name']}'";
 	}
 	$certificate['a_domainlist']['item'] = $a_domains;
 	$certificate['a_actionlist']['item'] = $a_actions;
@@ -313,7 +313,7 @@ $form = new \Form;
 
 $section = new \Form_Section('Edit Certificate options');
 $section->addInput(new \Form_Input('name', 'Name', 'text', $pconfig['name']
-))->setHelp('The name set here will also be used to create or overwrite a certificate that might already exist with this name in the pfSense certificate m.');
+))->setHelp('The name set here will also be used to create or overwrite a certificate that might already exist with this name in the pfSense Certificate Manager.');
 $section->addInput(new \Form_Input('desc', 'Description', 'text', $pconfig['desc']));
 $activedisable = array();
 $activedisable['active'] = "Active";
@@ -364,6 +364,15 @@ $section->addInput(new \Form_Input('renewafter', 'Certificate renewal after', 't
 
 $form->add($section);
 
+if (!is_array($a_accountkeys) || count($a_accountkeys) == 0) {
+	$form = new \Form;
+	$section = new \Form_Section('Edit Certificate options');
+	$section->addInput(new \Form_StaticText(
+		'Accountkey required', 
+		"A account key should be created and registered before configuring certificates."
+	));
+	$form->add($section);
+}
 print $form;
 ?>	
 	<?php if (isset($id) && $a_certificates[$id]): ?>

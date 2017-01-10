@@ -332,9 +332,9 @@ EOT
 		}
 		$result .= "</tbody>
 		</table>
-			<a onclick='javascript:addRowTo(\"{$tablename}\"); return false;' href='#'>
-			".acmeicon('add','add another entry')."
-			</a>
+			<button class='btn btn-success addbtn' type='button' value='add another entry' 
+			onclick='javascript:addRowTo(\"{$tablename}\"); return false;'
+			><i class='fa fa-plus icon-embed-btn'></i>Add</button>
 		</div></div>";
 		return $result;
 	}
