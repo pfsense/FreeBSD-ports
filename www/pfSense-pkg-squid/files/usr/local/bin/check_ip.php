@@ -4,7 +4,7 @@
  * check_ip.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2017 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2016 Marcello Coutinho
  * All rights reserved.
  *
@@ -50,9 +50,9 @@ while (!feof(STDIN)) {
 }
 
 function squid_check_ip($db, $check_ip) {
-	exec("sqlite3 {$db} \"SELECT ip FROM captiveportal WHERE ip='{$check_ip}'\"", $ip);
+	exec("/usr/local/bin/sqlite3 {$db} \"SELECT ip FROM captiveportal WHERE ip='{$check_ip}'\"", $ip);
 	if ($check_ip == $ip[0]) {
-		exec("sqlite3 {$db} \"SELECT username FROM captiveportal WHERE ip='{$check_ip}'\"", $user);
+		exec("/usr/local/bin/sqlite3 {$db} \"SELECT username FROM captiveportal WHERE ip='{$check_ip}'\"", $user);
 		return $user[0];
 	}
 }
