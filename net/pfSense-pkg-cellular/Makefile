@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-cellular
-PORTVERSION=	1.1.1
+PORTVERSION=	1.1.2
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty

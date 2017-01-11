@@ -25,7 +25,7 @@
 @require_once("/usr/local/www/widgets/include/interfaces.inc");
 
 global $config;
-$python_bin = '/usr/local/bin/python';
+$python_bin = '/usr/local/bin/python2.7';
 $interface_bin = '/usr/local/sbin/cellular';
 $widget_url = '/widgets/widgets/cellular.widget.php';
 
