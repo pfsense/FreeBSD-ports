@@ -16,7 +16,8 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 OPTIONS_DEFINE=	IPV6 MFD_REWRITES PERL PERL_EMBEDDED PYTHON DUMMY TKMIB \
-		MYSQL AX_SOCKONLY UNPRIVILEGED SMUX DOCS JAIL AX_DISABLE_TRAP
+		MYSQL AX_SOCKONLY UNPRIVILEGED SMUX DOCS JAIL AX_DISABLE_TRAP \
+		TLS
 OPTIONS_DEFAULT=PERL PERL_EMBEDDED DUMMY SMUX
 
 MFD_REWRITES_DESC=	Build with 64-bit Interface Counters
@@ -29,6 +30,7 @@ AX_DISABLE_TRAP_DESC=	Disable agentx subagent code in snmptrapd
 UNPRIVILEGED_DESC=	Allow unprivileged users to execute net-snmp
 SMUX_DESC=		Build with SNMP multiplexing (SMUX) support
 JAIL_DESC=		Options for running snmpd within a jail(8)
+TLS_DESC=		Enable TLS support
 
 MAKE_JOBS_UNSAFE=	yes
 
@@ -42,6 +44,8 @@ USES=		cpe libtool perl5
 CPE_VENDOR=	net-snmp
 USE_PERL5=	build run
 USE_CSTD=	c99
+
+TLS_USES=	ssl
 
 CFLAGS+=	-I${LOCALBASE}/include -I${PKG_PREFIX}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -143,6 +147,10 @@ PLIST_SUB+=	WITH_IPV6="@comment "
 
 .if ${PORT_OPTIONS:MUNPRIVILEGED}
 CONFIGURE_ARGS+=--without-root-access
+.endif
+
+.if ${PORT_OPTIONS:MTLS}
+CONFIGURE_ARGS+=--with-security-modules=tsm --with-transports=TLSTCP,DTLSUDP
 .endif
 
 SHLIB_VERSION=	30
