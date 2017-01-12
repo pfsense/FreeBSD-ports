@@ -932,9 +932,25 @@ EOF;
 
 		// Create DNSBL SSL certificate
 		if (!file_exists ("{$pfb['dnsbl_cert']}")) {
-			$log = "New DNSBL Cert Created.\n";
+			$log = "\nNew DNSBL cert created";
 			pfb_logger("{$log}", 1);
-			exec("/usr/bin/openssl req -new -x509 -keyout {$pfb['dnsbl_cert']} -out {$pfb['dnsbl_cert']} -days 3650 -nodes");
+
+			$dn = array (	'countryName'		=> 'CA',
+					'stateOrProvinceName'	=> 'ST_DNSBL',
+					'localityName'		=> 'LN_DNSBL',
+					'organizationName'	=> 'ON_DNSBL',
+					'organizationalUnitName'=> 'OU_DNSBL',
+					'commonName'		=> 'CN_DNSBL',
+					'emailAddress'		=> 'dnsbl@example.com'
+					);
+
+			$pkey	= openssl_pkey_new();
+			$csr	= openssl_csr_new($dn, $pkey);
+			$cert	= openssl_csr_sign($csr, NULL, $pkey, 3650);
+
+			openssl_pkey_export($pkey, $privatekey);
+			openssl_x509_export($cert, $publickey);
+			@file_put_contents("{$pfb['dnsbl_cert']}", "{$privatekey}{$publickey}", LOCK_EX);
 		}
 
 		if ($pfbupdate || !is_service_running('dnsbl')) {
@@ -3334,7 +3350,7 @@ function sync_package_pfblockerng($cron='') {
 
 										// On 'category match', parse EasyList feed 
 										if (isset($easylist)) {
-											if (substr($line, 24, 19) == 'easylist_adservers.' ||
+											if (substr($line, 88, 19) == 'easylist_adservers.' ||
 											    substr($line, 91, 28) == 'easyprivacy_trackingservers.') {
 												$e_found = TRUE;
 											}
@@ -3464,21 +3480,20 @@ function sync_package_pfblockerng($cron='') {
 										$line = trim($line);
 
 										// Parser for EasyList, enable collect of selected EasyList categories
-										if (isset($easylist) && (strpos($line, '! *** easylist:') !== FALSE) ||
-										    strpos($line, '! *** Fetched from:') !== FALSE) {
+										if (isset($easylist) && strpos($line, '! *** Fetched from:') !== FALSE) {
 											// Skip all previous Easylist entries
 
 											// Collect EasyList feed
-											if (substr($line, 24, 19) == 'easylist_adservers.') {
+											if (substr($line, 88, 19) == 'easylist_adservers.') {
 												if (in_array('ea', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
-											elseif (substr($line, 24, 25) == 'easylist_adservers_popup.') {
+											elseif (substr($line, 88, 25) == 'easylist_adservers_popup.') {
 												if (in_array('eap', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
-											elseif (substr($line, 30, 16) == 'adult_adservers.') {
+											elseif (substr($line, 94, 16) == 'adult_adservers.') {
 												if (in_array('aa', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
-											elseif (substr($line, 30, 22) == 'adult_adservers_popup.') {
+											elseif (substr($line, 94, 22) == 'adult_adservers_popup.') {
 												if (in_array('aap', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
 
@@ -3491,7 +3506,7 @@ function sync_package_pfblockerng($cron='') {
 											}
 
 											// End of useable EasyList feed
-											elseif (substr($line, 24, 20) == 'easylist_thirdparty.') {
+											elseif (substr($line, 88, 20) == 'easylist_thirdparty.') {
 												break;
 											}
 											// End of useable EasyPrivacy feed
