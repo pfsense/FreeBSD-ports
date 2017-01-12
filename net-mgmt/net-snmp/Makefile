@@ -30,6 +30,7 @@ AX_DISABLE_TRAP_DESC=	Disable agentx subagent code in snmptrapd
 UNPRIVILEGED_DESC=	Allow unprivileged users to execute net-snmp
 SMUX_DESC=		Build with SNMP multiplexing (SMUX) support
 JAIL_DESC=		Options for running snmpd within a jail(8)
+TLS_DESC=		Enable TLS support
 
 MAKE_JOBS_UNSAFE=	yes
 
