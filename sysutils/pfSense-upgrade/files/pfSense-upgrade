@@ -421,9 +421,13 @@ pkg_upgrade() {
 
 		pkg_unlock ${kernel_pkg} ${uboot_pkg}
 
-		# If kernel is not going to be upgraded, reroot
-		if [ $(pkg upgrade -nq ${kernel_pkg} | wc -l) -lt 1 ]; then
-			reboot_params="-r"
+		# ZFS panics with reroot, do not use it in this case
+		# https://redmine.pfsense.org/issues/6045
+		if ! kldstat -qm zfs; then
+			# If kernel is not going to be upgraded, reroot
+			if [ $(pkg upgrade -nq ${kernel_pkg} | wc -l) -lt 1 ]; then
+				reboot_params="-r"
+			fi
 		fi
 
 		if [ -z "${yes}" ]; then
