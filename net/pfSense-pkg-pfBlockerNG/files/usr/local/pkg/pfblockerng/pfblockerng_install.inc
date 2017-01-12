@@ -289,10 +289,6 @@ EOF;
 	openssl_x509_export($cert, $publickey);
 	@file_put_contents("{$pfb['dnsbl_cert']}", "{$privatekey}{$publickey}", LOCK_EX);
 	update_status(" done.\n");
-
-	update_status("Starting DNSBL Service...");
-	restart_service('dnsbl');
-	update_status(" done.\n");
 	
 	update_status("Starting DNSBL Service...");
 	restart_service('dnsbl');
