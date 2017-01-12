@@ -154,6 +154,7 @@ if ($_POST) {
 
 $closehead = false;
 $pgtitle = array(gettext("System"),gettext("Patches"), gettext("Edit"));
+$pglinks = array("", "system_patches.php", "@self");
 include("head.inc");
 
 if ($input_errors) {
