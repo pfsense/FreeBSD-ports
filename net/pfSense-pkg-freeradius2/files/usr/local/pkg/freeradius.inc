@@ -101,7 +101,9 @@ function freeradius_install_command() {
 		copy(FREERADIUS_BASE . "/pkg/googleauth.py", FREERADIUS_ETC . "/raddb/scripts/"); 
 		chmod(REERADIUS_ETC . "/raddb/scripts/googleauth.py",0755);
 	}
-	if (!file_exists(FREERADIUS_ETC . "/raddb/modules/googleauth")) { copy(FREERADIUS_BASE . "/pkg/googleauth", FREERADIUS_ETC . "/raddb/modules/");}
+	if (!file_exists(FREERADIUS_ETC . "/raddb/modules/googleauth")) { 
+		copy(FREERADIUS_BASE . "/pkg/googleauth", FREERADIUS_ETC . "/raddb/modules/");
+	}
 	  
 	// Disable virtual-server we do not need by default
 	if (file_exists(FREERADIUS_ETC . "/raddb/sites-enabled/control-socket")) { unlink(FREERADIUS_ETC . "/raddb/sites-enabled/control-socket"); }
