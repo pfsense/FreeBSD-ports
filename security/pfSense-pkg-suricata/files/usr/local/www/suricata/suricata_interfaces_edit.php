@@ -1063,7 +1063,6 @@ events.push(function(){
 		if ($('#ips_mode').val() == 'ips_mode_inline') {
 			hideCheckbox('blockoffenderskill', true);
 			hideSelect('blockoffendersip', true);
-			hideClass('passlist', true);
 		}
 	}
 
@@ -1262,7 +1261,6 @@ events.push(function(){
 		if ($('#ips_mode').val() == 'ips_mode_inline') {
 			hideCheckbox('blockoffenderskill', true);
 			hideSelect('blockoffendersip', true);
-			hideClass('passlist', true);
 		}
 		else {
 			hideCheckbox('blockoffenderskill', false);

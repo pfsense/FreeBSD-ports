@@ -64,6 +64,17 @@ $plist = suricata_build_list($suricatacfg, $suricatacfg['passlistname'], true);
 @file_put_contents("{$suricatacfgdir}/passlist", implode("\n", $plist));
 $suri_passlist = "{$suricatacfgdir}/passlist";
 
+// If using inline IPS mode, generate PASS rules to substitute for the PASS LIST
+@file_put_contents("{$suricatacfgdir}/rules/passlist.rules", '');
+if ($suricatacfg['ips_mode'] == 'ips_mode_inline' && $suricatacfg['blockoffenders'] == 'on') {
+	$sid_tmp = 1000001;
+	foreach ($plist as $ip_tmp) {
+		$line = "pass ip {$ip_tmp} any <> any any (msg:\"Pass List Entry - allow all traffic from/to {$ip_tmp}\"; sid:{$sid_tmp};)\n";
+		@file_put_contents("{$suricatacfgdir}/rules/passlist.rules", $line, FILE_APPEND);
+		$sid_tmp++;
+	}
+}
+
 // Set default and user-defined variables for SERVER_VARS and PORT_VARS
 $suricata_servers = array (
 	"dns_servers" => "\$HOME_NET", "smtp_servers" => "\$HOME_NET", "http_servers" => "\$HOME_NET",
@@ -764,6 +775,8 @@ if (filesize("{$suricatacfgdir}/rules/".FLOWBITS_FILENAME) > 0)
 	$rules_files .= "\n - " . FLOWBITS_FILENAME;
 if (filesize("{$suricatacfgdir}/rules/custom.rules") > 0)
 	$rules_files .= "\n - custom.rules";
+if (filesize("{$suricatacfgdir}/rules/passlist.rules") > 0)
+	$rules_files .= "\n - passlist.rules";
 $rules_files = ltrim($rules_files, '\n -');
 
 // Add the general logging settings to the configuration (non-interface specific)
