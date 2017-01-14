@@ -89,6 +89,7 @@ if (isset($id) && $a_nat[$id]) {
 	$pconfig['autoflowbits'] = $a_nat[$id]['autoflowbitrules'];
 	$pconfig['ips_policy_enable'] = $a_nat[$id]['ips_policy_enable'];
 	$pconfig['ips_policy'] = $a_nat[$id]['ips_policy'];
+	$pconfig['ips_policy_mode'] = $a_nat[$id]['ips_policy_mode'];
 }
 
 $if_real = get_real_interface($a_nat[$id]['interface']);
@@ -146,10 +147,12 @@ if (isset($_POST["save"])) {
 	if ($_POST['ips_policy_enable'] == "on") {
 		$a_nat[$id]['ips_policy_enable'] = 'on';
 		$a_nat[$id]['ips_policy'] = $_POST['ips_policy'];
+		$a_nat[$id]['ips_policy_mode'] = $_POST['ips_policy_mode'];
 	}
 	else {
 		$a_nat[$id]['ips_policy_enable'] = 'off';
 		unset($a_nat[$id]['ips_policy']);
+		unset($a_nat[$id]['ips_policy_mode']);
 	}
 
 	// Always start with the default events and files rules
@@ -163,7 +166,6 @@ if (isset($_POST["save"])) {
 
 	if ($_POST['autoflowbits'] == "on") {
 		$a_nat[$id]['autoflowbitrules'] = 'on';
-		print("Autoflowbits is on");
 	}
 	else {
 		$a_nat[$id]['autoflowbitrules'] = 'off';
@@ -196,15 +198,18 @@ if (isset($_POST["save"])) {
 	if ($_POST['ips_policy_enable'] == "on") {
 		$a_nat[$id]['ips_policy_enable'] = 'on';
 		$a_nat[$id]['ips_policy'] = $_POST['ips_policy'];
+		$a_nat[$id]['ips_policy_mode'] = $_POST['ips_policy_mode'];
 	}
 	else {
 		$a_nat[$id]['ips_policy_enable'] = 'off';
 		unset($a_nat[$id]['ips_policy']);
+		unset($a_nat[$id]['ips_policy_mode']);
 	}
 
 	$pconfig['autoflowbits'] = $_POST['autoflowbits'];
 	$pconfig['ips_policy_enable'] = $_POST['ips_policy_enable'];
 	$pconfig['ips_policy'] = $_POST['ips_policy'];
+	$pconfig['ips_policy_mode'] = $_POST['ips_policy_mode'];
 
 	// Remove all but the default events and files rules
 	$enabled_rulesets_array = array();
@@ -219,15 +224,18 @@ if (isset($_POST["save"])) {
 	if ($_POST['ips_policy_enable'] == "on") {
 		$a_nat[$id]['ips_policy_enable'] = 'on';
 		$a_nat[$id]['ips_policy'] = $_POST['ips_policy'];
+		$a_nat[$id]['ips_policy_mode'] = $_POST['ips_policy_mode'];
 	}
 	else {
 		$a_nat[$id]['ips_policy_enable'] = 'off';
 		unset($a_nat[$id]['ips_policy']);
+		unset($a_nat[$id]['ips_policy_mode']);
 	}
 
 	$pconfig['autoflowbits'] = $_POST['autoflowbits'];
 	$pconfig['ips_policy_enable'] = $_POST['ips_policy_enable'];
 	$pconfig['ips_policy'] = $_POST['ips_policy'];
+	$pconfig['ips_policy_mode'] = $_POST['ips_policy_mode'];
 
 	// Start with the required default events and files rules
 	$enabled_rulesets_array = $default_rules;
@@ -338,7 +346,7 @@ else:
 		'fa-file-text-o'
 	);
 
-	$viewbtn->removeClass('btn-primary')->addClass('btn-success')
+	$viewbtn->removeClass('btn-primary')->addClass('btn-success btn-sm')
 	  ->setHelp('Click to view auto-enabled rules required to satisfy flowbit dependencies' . '<br /><br />' .
 	  			'<span class="text-danger"><strong>' . gettext('Note:  ') . '</strong></span>' .
 	  			gettext('Auto-enabled rules generating unwanted alerts should have their GID:SID added to the Suppression List for the interface.'));
@@ -364,10 +372,9 @@ else:
 
 	print($section);
 
-	if (true || $snortdownload == 'on') {
+	if ($snortdownload == 'on') {
 
 		$section = new Form_Section("Snort IPS Policy selection");
-
 		$chkips = new Form_Checkbox(
 			'ips_policy_enable',
 			'Use IPS Policy',
@@ -375,30 +382,32 @@ else:
 			($a_nat[$id]['ips_policy_enable'] == "on"),
 			'on'
 		);
-
 		$chkips->setHelp('<span class="text-danger"><strong>' . gettext("Note:  ") . '</strong></span>' . gettext('You must be using the Snort VRT rules to use this option.' . '<br />' .
 					'Selecting this option disables manual selection of Snort VRT categories in the list below, ' .
 						'although Emerging Threats categories may still be selected if enabled on the Global Settings tab.  ' .
 						'These will be added to the pre-defined Snort IPS policy rules from the Snort VRT.'));
-
-
-		if (($snortdownload != 'on') || ($a_nat[$id]['ips_policy_enable'] != 'on')) {
-			// $chkips->setDisabled();
-		}
-
 		$section->addInput($chkips);
-
 		$section->addInput(new Form_Select(
 			'ips_policy',
 			'IPS Policy Selection',
 			$pconfig['ips_policy'],
-			array(
-				'connected' => 'Conected',
+			array(	'connectivity' => 'Connectivity',
 				'balanced'  => 'Balanced',
-				'security'  => 'Security')
+				'security'  => 'Security',
+				'max-detect' => 'Maximum Detection')
 			))->setHelp('Connectivity blocks most major threats with few or no false positives. Balanced is a good starter policy. ' .
 						'It is speedy, has good base coverage level, and covers most threats of the day. It includes all rules in Connectivity. Security is a stringent policy. ' .
-						'It contains everything in the first two plus policy-type rules such as Flash in an Excel file.');
+						'It contains everything in the first two plus policy-type rules such as Flash in an Excel file.  Maximum Detection encompasses vulnerabilities from 2005 ' . 
+						'or later with a CVSS score of at least 7.5 along with critical malware and exploit kit rules.  The Maximum Detection policy favors detection over rated ' .
+						'throughput. In some situations this policy can and will cause significant throughput reductions.');
+		$section->addInput(new Form_Select(
+			'ips_policy_mode',
+			'IPS Policy Mode',
+			$pconfig['ips_policy_mode'],
+			array(  'alert' => 'Alert',
+				'policy'  => 'Policy')
+			))->setHelp('When Policy is selected, this will automatically change the action for rules in the selected IPS Policy from their default action of alert to the action specified ' . 
+					'in the policy metadata (typically drop, but may be alert for some policy rules).');
 
 		print($section);
 	}
@@ -672,6 +681,7 @@ events.push(function() {
 		var endis = !($('#ips_policy_enable').prop('checked'));
 
 		hideInput('ips_policy', endis);
+		hideInput('ips_policy_mode', endis);
 
 		$('input[type="checkbox"]').each(function() {
 			var str = $(this).val();
