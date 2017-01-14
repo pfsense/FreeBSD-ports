@@ -838,6 +838,11 @@ function sync_suricata_package_config() {
 	$suricatadir = SURICATADIR;
 	$rcdir = RCFILEPREFIX;
 
+	/* Create required log and db directories in /var on each sync, in case /var is in RAM. */
+	safe_mkdir(SURICATALOGDIR);
+	safe_mkdir(SURICATA_IPREP_PATH);
+	safe_mkdir(SURICATA_SID_MODS_PATH);
+
 	// Do not start config build if there are no Suricata-configured interfaces
 	if (!is_array($config['installedpackages']['suricata']['rule']) || count($config['installedpackages']['suricata']['rule']) < 1) {
 		return;
