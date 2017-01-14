@@ -134,10 +134,12 @@ function ntopng_sync_package() {
 			break;
 	}
 
-	/* Historical Data Storage, Dump expired flows */
+	// Pending rework - see https://redmine.pfsense.org/issues/7000
+	/* Historical Data Storage, Dump expired flows
 	if ($ntopng_config['dump_flows'] == "on") {
 		$dump_flows = "-F";
 	}
+	*/
 
 	/* Disable alerts */
 	if ($ntopng_config['disable_alerts'] == "on") {
@@ -325,7 +327,7 @@ function ntopng_validate_input($post, &$input_errors) {
 	if ($post['Submit'] == "Update GeoIP Data") {
 		ntopng_update_geoip();
 	}
-	if ($post['Delete'] == "Delete (Historical) Data") {
+	if ($post['Delete'] == "Delete Data") {
 		ntopng_flush_historical_data();
 	}
 }
