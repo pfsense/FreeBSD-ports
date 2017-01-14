@@ -255,6 +255,11 @@ if ($suricatacfg['enable_tls_log'] == 'on')
 else
 	$tls_log_enabled = "no";
 
+if ($suricatacfg['enable_tls_store'] == 'on')
+	$tls_store_enabled = "yes";
+else
+	$tls_store_enabled = "no";
+
 if ($suricatacfg['tls_log_extended'] == 'on')
 	$tls_log_extended = "yes";
 else

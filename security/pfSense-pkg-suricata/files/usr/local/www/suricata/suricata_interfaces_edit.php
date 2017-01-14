@@ -302,6 +302,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['enable_http_log'] == "on") { $natent['enable_http_log'] = 'on'; }else{ $natent['enable_http_log'] = 'off'; }
 		if ($_POST['append_http_log'] == "on") { $natent['append_http_log'] = 'on'; }else{ $natent['append_http_log'] = 'off'; }
 		if ($_POST['enable_tls_log'] == "on") { $natent['enable_tls_log'] = 'on'; }else{ $natent['enable_tls_log'] = 'off'; }
+		if ($_POST['enable_tls_store'] == "on") { $natent['enable_tls_store'] = 'on'; }else{ $natent['enable_tls_store'] = 'off'; }
 		if ($_POST['http_log_extended'] == "on") { $natent['http_log_extended'] = 'on'; }else{ $natent['http_log_extended'] = 'off'; }
 		if ($_POST['tls_log_extended'] == "on") { $natent['tls_log_extended'] = 'on'; }else{ $natent['tls_log_extended'] = 'off'; }
 		if ($_POST['enable_pcap_log'] == "on") { $natent['enable_pcap_log'] = 'on'; }else{ $natent['enable_pcap_log'] = 'off'; }
@@ -665,6 +666,13 @@ $section->addInput(new Form_Checkbox(
 	'Enable TLS Log',
 	'Suricata will log TLS handshake traffic for the interface. Default is Not Checked.',
 	$pconfig['enable_tls_log'] == 'on' ? true:false,
+	'on'
+));
+$section->addInput(new Form_Checkbox(
+	'enable_tls_store',
+	'Enable TLS Store',
+	'Suricata will log and store TLS certificates for the interface. Default is Not Checked.',
+	$pconfig['enable_tls_store'] == 'on' ? true:false,
 	'on'
 ));
 
@@ -1128,6 +1136,7 @@ events.push(function(){
 
 	function toggle_tls_log() {
 		var hide = ! $('#enable_tls_log').prop('checked');
+		hideCheckbox('enable_tls_store', hide);
 		hideCheckbox('tls_log_extended', hide);
 	}
 
@@ -1190,6 +1199,7 @@ events.push(function(){
 		disableInput('append_http_log', disable);
 		disableInput('http_log_extended', disable);
 		disableInput('enable_tls_log', disable);
+		disableInput('enable_tls_store', disable);
 		disableInput('tls_log_extended', disable);
 		disableInput('enable_json_file_log', disable);
 		disableInput('append_json_file_log', disable);
