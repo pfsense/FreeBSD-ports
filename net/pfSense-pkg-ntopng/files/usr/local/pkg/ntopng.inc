@@ -3,7 +3,7 @@
  * ntopng.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -127,10 +127,12 @@ function ntopng_sync_package() {
 			break;
 	}
 
-	/* Historical Data Storage, Dump expired flows */
+	// Pending rework - see https://redmine.pfsense.org/issues/7000
+	/* Historical Data Storage, Dump expired flows
 	if ($ntopng_config['dump_flows'] == "on") {
 		$dump_flows = "-F";
 	}
+	*/
 
 	/* Disable alerts */
 	if ($ntopng_config['disable_alerts'] == "on") {
@@ -318,7 +320,7 @@ function ntopng_validate_input($post, &$input_errors) {
 	if ($post['Submit'] == "Update GeoIP Data") {
 		ntopng_update_geoip();
 	}
-	if ($post['Delete'] == "Delete (Historical) Data") {
+	if ($post['Delete'] == "Delete Data") {
 		ntopng_flush_historical_data();
 	}
 }
