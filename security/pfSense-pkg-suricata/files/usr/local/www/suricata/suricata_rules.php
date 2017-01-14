@@ -177,15 +177,19 @@ $rulefile = "{$ruledir}/{$currentruleset}";
 if ($currentruleset != 'custom.rules') {
 	// Read the current rules file into our rules map array.
 	// If it is the auto-flowbits file, set the full path.
-	if ($currentruleset == "Auto-Flowbit Rules")
+	if ($currentruleset == "Auto-Flowbit Rules") {
 		$rulefile = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
+	}
 	// Test for the special case of an IPS Policy file.
-	if (substr($currentruleset, 0, 10) == "IPS Policy")
-		$rules_map = suricata_load_vrt_policy($a_rule[$id]['ips_policy']);
-	elseif (!file_exists($rulefile))
+	if (substr($currentruleset, 0, 10) == "IPS Policy") {
+		$rules_map = suricata_load_vrt_policy($a_rule[$id]['ips_policy'], $a_rule[$id]['ips_policy_mode']);
+	}
+	elseif (!file_exists($rulefile)) {
 		$input_errors[] = gettext("{$currentruleset} seems to be missing!!! Please verify rules files have been downloaded, then go to the Categories tab and save the rule set again.");
-	else
+	}
+	else {
 		$rules_map = suricata_load_rules_map($rulefile);
+	}
 }
 
 /* Process the current category rules through any auto SID MGMT changes if enabled */
