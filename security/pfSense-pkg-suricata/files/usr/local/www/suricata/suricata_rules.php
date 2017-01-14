@@ -68,6 +68,7 @@ global $g, $config, $rebuild_rules;
 $suricatadir = SURICATADIR;
 $rules_map = array();
 $pconfig = array();
+$filterrules = FALSE;
 
 if (!is_array($config['installedpackages']['suricata']['rule']))
 	$config['installedpackages']['suricata']['rule'] = array();
@@ -436,6 +437,17 @@ elseif (isset($_POST['save'])) {
 	// Sync to configured CARP slaves if any are enabled
 	suricata_sync_on_changes();
 }
+elseif ($_POST['filterrules_submit']) {
+	// Set flag for filtering rules
+	$filterrules = TRUE;
+	$filterfieldsarray = array();
+	$filterfieldsarray['show_enabled'] = $_POST['filterrules_enabled'] ? $_POST['filterrules_enabled'] : null;
+	$filterfieldsarray['show_disabled'] = $_POST['filterrules_disabled'] ? $_POST['filterrules_disabled'] : null;
+}
+elseif ($_POST['filterrules_clear']) {
+	$filterfieldsarray = array();
+	$filterrules = TRUE;
+}
 elseif (isset($_POST['apply'])) {
 
 	/* Save new configuration */
@@ -632,6 +644,48 @@ else {
 $section->add($group);
 print($section);
 
+// ========== Start Rule filter Panel =========================================
+if ($filterrules) {
+	$section = new Form_Section("Rules View Filter", "rulesfilter", COLLAPSIBLE|SEC_OPEN);
+}
+else {
+	$section = new Form_Section("Rules View Filter", "rulesfilter", COLLAPSIBLE|SEC_CLOSED);
+}
+$group = new Form_Group('');
+$group->add(new Form_Checkbox(
+	'filterrules_enabled',
+	'Show Enabled Rules',
+	'Show enabled rules',
+	$filterfieldsarray['show_enabled'] == 'on' ? true:false,
+	'on'
+));
+$group->add(new Form_Checkbox(
+	'filterrules_disabled',
+	'Show Disabled Rules',
+	'Show disabled rules',
+	$filterfieldsarray['show_disabled'] == 'on' ? true:false,
+	'on'
+));
+$group->add(new Form_Button(
+	'filterrules_submit',
+	'Filter',
+	null,
+	'fa-filter'
+))->setHelp("Apply filter")
+  ->removeClass("btn-primary")
+  ->addClass("btn-sm btn-success");
+$group->add(new Form_Button(
+	'filterrules_clear',
+	'Clear',
+	null,
+	'fa-trash-o'
+))->setHelp("Remove all filters")
+  ->removeclass("btn-primary")
+  ->addClass("btn-sm btn-danger no-confirm");
+$section->add($group);
+print($section);
+// ========== End Rule filter Panel ===========================================
+
 ?>
 
 <div class="panel panel-default">
@@ -693,6 +747,16 @@ print($section);
 							$gid = $k1;
 							$ruleset = $currentruleset;
 							$style = "";
+
+							// Apply rule state filters if filtering is enabled
+							if ($filterrules) {
+								if (isset($filterfieldsarray['show_disabled']) && $v['disabled'] == 0) {
+									continue;
+								}
+								elseif (isset($filterfieldsarray['show_enabled']) && $v['disabled'] == 1) {
+									continue;
+								}
+							}
 
 							// Determine which icons to display in the first column for rule state.
 							// See if the rule is auto-managed by the SID MGMT tab feature
@@ -904,6 +968,14 @@ events.push(function() {
 
 	$('#selectbox').on('change', function() {
 		go();
+	});
+
+	$('#filterrules_enabled').click(function() {
+		$('#filterrules_disabled').prop("checked", false);
+	});
+
+	$('#filterrules_disabled').click(function() {
+		$('#filterrules_enabled').prop("checked", false);
 	});
 
 	<?php if (!empty($anchor)): ?>
