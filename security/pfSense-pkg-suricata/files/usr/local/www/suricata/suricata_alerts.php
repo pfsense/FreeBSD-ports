@@ -678,10 +678,10 @@ $group->add(new Form_Button(
 	'filterlogentries_clear',
 	'Clear',
 	null,
-	'fa-trash'
+	'fa-trash-o'
 ))->setHelp("Remove all filters")
   ->removeclass("btn-primary")
-  ->addClass("btn-danger");
+  ->addClass("btn-danger no-confirm");
 
 $section->add($group);
 
