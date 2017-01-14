@@ -1328,7 +1328,8 @@ function suricata_load_rules_map($rules_path) {
 	 *                   0 if not auto-managed 
 	 *   state_toggled = 1 if rule was toggled by SID MGMT process,
 	 *                   0 if not toggled
-	 *   modified      = 1 if rule action or content is modified by SID MGMT process,
+	 *   modified      = 1 if rule action or content is modified by SID MGMT or
+	 *                     IPS Poliocy process,
 	 *                   0 if not modified
 	 *   flowbits      = Array of applicable flowbits if rule contains 
 	 *                   flowbits options
@@ -1786,16 +1787,22 @@ function suricata_write_flowbit_rules_file($flowbit_rules, $rule_file) {
 	}
 }
 
-function suricata_load_vrt_policy($policy, $all_rules=null) {
+function suricata_load_vrt_policy($policy, $mode='alert', $all_rules=null) {
 
 	/************************************************/
 	/* This function returns an array of all rules  */
 	/* marked with the passed in $policy metadata.  */
 	/*                                              */
 	/*    $policy --> desired VRT security policy   */
-	/*                  1.  connectivity            */
-	/*                  2.  balanced                */
-	/*                  3.  security                */
+	/*                  1. connectivity             */
+	/*                  2. balanced                 */
+	/*                  3. security                 */
+	/*                                              */
+	/*      $mode --> determines rule action        */
+	/*                  1. alert = all rule alert   */
+	/*                  2. policy = rule action     */
+	/*                              set according   */
+	/*                              policy spec.    */
 	/*                                              */
 	/* $all_rules --> optional Rules Map array of   */
 	/*                rules to scan for policy.     */
@@ -1834,6 +1841,19 @@ function suricata_load_vrt_policy($policy, $all_rules=null) {
 					if ($arulem2['disabled'] == 1) {
 						$vrt_policy_rules[$k1][$k2]['rule'] = ltrim(substr($arulem2['rule'], strpos($arulem2['rule'], "#") + 1));
 						$vrt_policy_rules[$k1][$k2]['disabled'] = 0;
+					}
+
+					// If policy mode is enabled, grab the suggested action
+					// for this policy and set it as the rule action.
+					if ($mode == 'policy') {
+						$matches = array();
+						if (preg_match('/' . "policy {$policy}-ips" . '([^,|^;]*)/', $arulem2['rule'], $matches)) {
+							if ($tmp = preg_replace('/^\s*alert\s/', trim($matches[1]) . ' ', $vrt_policy_rules[$k1][$k2]['rule'], 1)) {
+								$vrt_policy_rules[$k1][$k2]['rule'] = $tmp;
+								$vrt_policy_rules[$k1][$k2]['action'] = $matches[1];
+								$vrt_policy_rules[$k1][$k2]['modified'] = 1;
+							}
+						}
 					}
 				}
 			}
@@ -2389,7 +2409,7 @@ function suricata_modify_sid_state(&$rule_map, $sid_mods, $action, $log_results 
 					$modcount++;
 				}
 				elseif ($action == 'drop' && $rule_map[$k1][$k2]['action'] != 'drop') {
-					if ($tmp = preg_replace('/alert/', 'drop', $rule_map[$k1][$k2]['rule'], 1)) {
+					if ($tmp = preg_replace('/\s*alert\s*/', 'drop ', $rule_map[$k1][$k2]['rule'], 1)) {
 						$rule_map[$k1][$k2]['rule'] = $tmp;
 						$rule_map[$k1][$k2]['action'] = 'drop';
 						$rule_map[$k1][$k2]['managed'] = 1;
@@ -3009,8 +3029,8 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 
 		// Check if a pre-defined Snort VRT policy is selected. If so,
 		// add all the VRT policy rules to our enforcing rule set.
-		if (!empty($suricatacfg['ips_policy'])) {
-			$policy_rules = suricata_load_vrt_policy($suricatacfg['ips_policy'], $all_rules);
+		if ($suricatacfg['ips_policy_enable'] == 'on' && !empty($suricatacfg['ips_policy'])) {
+			$policy_rules = suricata_load_vrt_policy($suricatacfg['ips_policy'], $suricatacfg['ips_policy_mode'], $all_rules);
 			foreach ($policy_rules as $k1 => $policy) {
 				foreach ($policy as $k2 => $p) {
 					if (!is_array($enabled_rules[$k1])) {
@@ -3019,10 +3039,12 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 					if (!is_array($enabled_rules[$k1][$k2])) {
 						$enabled_rules[$k1][$k2] = array();
 					}
-					$enabled_rules[$k1][$k2]['rule'] = $p['rule'];
 					$enabled_rules[$k1][$k2]['category'] = $p['category'];
 					$enabled_rules[$k1][$k2]['disabled'] = $p['disabled'];
 					$enabled_rules[$k1][$k2]['flowbits'] = $p['flowbits'];
+					$enabled_rules[$k1][$k2]['rule'] = $p['rule'];
+					$enabled_rules[$k1][$k2]['action'] = $p['action'];
+					$enabled_rules[$k1][$k2]['modified'] = $p['modified'];
 				}
 			}
 			unset($policy_rules, $policy, $p);
