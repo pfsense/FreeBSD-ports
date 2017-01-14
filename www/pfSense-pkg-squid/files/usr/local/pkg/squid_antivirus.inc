@@ -77,8 +77,10 @@ function squid_install_freshclam_cron($should_install) {
 		}
 		if ($antivirus_config['clamav_update'] != "") {
 			log_error("[squid] Adding freshclam cronjob.");
+			// Randomize minutes to mitigate mirrors overload issues
+			$minutes = rand(0,59);
 			$hours = $antivirus_config['clamav_update'];
-			install_cron_job("{$freshclam_cmd}", true, "*", "*/{$hours}", "*", "*", "*", "clamav");
+			install_cron_job("{$freshclam_cmd}", true, "{$minutes}", "*/{$hours}", "*", "*", "*", "clamav");
 		} else {
 			log_error("[squid] Removing freshclam cronjob.");
 			install_cron_job("{$freshclam_cmd}", false);
