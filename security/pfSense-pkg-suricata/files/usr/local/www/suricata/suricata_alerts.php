@@ -508,7 +508,7 @@ $group->add(new Form_Checkbox(
 	'arefresh',
 	null,
 	'Refresh',
-	($config['installedpackages']['suricata']['alertsblocks']['arefresh'] == "on"),
+	$pconfig['arefresh'] == 'on' ? true:false,
 	'on'
 ))->setHelp('Default is ON');
 
