@@ -154,11 +154,19 @@ function sync_package_siproxd() {
 	}
 
 	if ($siproxd_conf['if_inbound'] != "") {
-		fwrite($fout, "if_inbound = " . convert_friendly_interface_to_real_interface_name($siproxd_conf['if_inbound']) . "\n");
+		if (is_ipaddr($siproxd_conf['if_inbound'])) {
+			fwrite($fout, "if_inbound = {$siproxd_conf['if_inbound']}\n");
+		} else {
+			fwrite($fout, "if_inbound = " . convert_friendly_interface_to_real_interface_name($siproxd_conf['if_inbound']) . "\n");
+		}
 	}
 
 	if ($siproxd_conf['if_outbound'] != "") {
-		fwrite($fout, "if_outbound = " . convert_friendly_interface_to_real_interface_name($siproxd_conf['if_outbound']) . "\n");
+		if (is_ipaddr($siproxd_conf['if_inbound'])) {
+			fwrite($fout, "if_outbound = {$siproxd_conf['if_outbound']}\n");
+		} else {
+			fwrite($fout, "if_outbound = " . convert_friendly_interface_to_real_interface_name($siproxd_conf['if_outbound']) . "\n");
+		}
 	}
 
 	if ($siproxd_conf['port'] != "") {
