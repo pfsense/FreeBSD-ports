@@ -1869,7 +1869,7 @@ function suricata_load_vrt_policy($policy, $mode='alert', $all_rules=null) {
 						if (preg_match('/' . "policy {$policy}-ips" . '([^,|^;]*)/', $arulem2['rule'], $matches)) {
 							if ($tmp = preg_replace('/^\s*alert\s/', trim($matches[1]) . ' ', $vrt_policy_rules[$k1][$k2]['rule'], 1)) {
 								$vrt_policy_rules[$k1][$k2]['rule'] = $tmp;
-								$vrt_policy_rules[$k1][$k2]['action'] = $matches[1];
+								$vrt_policy_rules[$k1][$k2]['action'] = trim($matches[1]);
 								$vrt_policy_rules[$k1][$k2]['modified'] = 1;
 							}
 						}
@@ -2938,6 +2938,67 @@ function suricata_modify_sids(&$rule_map, $suricatacfg) {
 	unset($enablesid, $disablesid);
 }
 
+function suricata_modify_sids_action(&$rule_map, $suricatacfg) {
+
+	/***********************************************/
+	/* This function modifies the rules in the     */
+	/* passed rules_map array based on values in   */
+	/* the alertsid/dropsid configuration          */
+	/* parameters for the interface.               */
+	/*                                             */
+	/*  $rule_map = array of current rules         */
+	/*  $suricatacfg = interface config settings   */
+	/***********************************************/
+
+	if (!isset($suricatacfg['rule_sid_force_alert']) && 
+	    !isset($suricatacfg['rule_sid_force_drop'])) {
+		return;
+	}
+
+	/* Load up our alertsid and dropsid arrays with manually changed SID actions */
+	$alertsid = suricata_load_sid_mods($suricatacfg['rule_sid_force_alert']);
+	$dropsid = suricata_load_sid_mods($suricatacfg['rule_sid_force_drop']);
+
+	/* Change action for any rules that need to be */
+	/* forced to "alert" with alertsid mods.       */
+	if (!empty($alertsid)) {
+		foreach ($rule_map as $k1 => $rulem) {
+			foreach ($rulem as $k2 => $v) {
+				if (isset($alertsid[$k1][$k2]) && $v['action'] != 'alert') {
+					$matches = array();
+					if (preg_match('/^\s*#*\s*(drop|pass|reject)/i', $v['rule'], $matches)) {
+						$txt_regx = '/^\s*' . "{$matches[1]}" . '\s/';
+						if ($tmp = preg_replace($txt_regx, 'alert ', $v['rule'], 1)) {
+							$rule_map[$k1][$k2]['rule'] = $tmp;
+							$rule_map[$k1][$k2]['action'] = 'alert';
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/* Change action for any rules that need to be */
+	/* forced to "drop" with dropsid mods.         */
+	if (!empty($dropsid)) {
+		foreach ($rule_map as $k1 => $rulem) {
+			foreach ($rulem as $k2 => $v) {
+				if (isset($dropsid[$k1][$k2]) && $v['action'] != 'drop') {
+					$matches = array();
+					if (preg_match('/^\s*#*\s*(alert|pass|reject)/i', $v['rule'], $matches)) {
+						$txt_regx = '/^\s*' . "{$matches[1]}" . '\s/';
+						if ($tmp = preg_replace($txt_regx, 'drop ', $v['rule'], 1)) {
+							$rule_map[$k1][$k2]['rule'] = $tmp;
+							$rule_map[$k1][$k2]['action'] = 'drop';
+						}
+					}
+				}
+			}
+		}
+	}
+	unset($alertsid, $dropsid);
+}
+
 function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 
 	/***********************************************************/
@@ -3069,10 +3130,11 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 			unset($policy_rules, $policy, $p);
 		}
 
-		// Process any enablesid or disablesid modifications for the selected rules.
+		// Process any enablesid, disablesid, alertsid or dropsid modifications for the selected rules.
 		// Do the auto-SID managment first, if enabled, then do any manual SID state changes.
 		suricata_auto_sid_mgmt($enabled_rules, $suricatacfg, TRUE);
 		suricata_modify_sids($enabled_rules, $suricatacfg);
+		suricata_modify_sids_action($enabled_rules, $suricatacfg);
 
 		// Write the enforcing rules file to the Suricata interface's "rules" directory.
 		suricata_write_enforcing_rules_file($enabled_rules, "{$suricatacfgdir}/rules/{$suricata_enforcing_rules_file}");
@@ -3100,9 +3162,11 @@ function suricata_prepare_rule_files($suricatacfg, $suricatacfgdir) {
 
 		suricata_auto_sid_mgmt($enabled_rules, $suricatacfg, TRUE);
 		if (!empty($enabled_rules)) {
-			// Auto-SID management generated some rules, so use them
+			// Auto-SID management generated some rules, so use them but
+			// apply any user-specified overrides for state or action.
 			$no_rules_defined = false;
 			suricata_modify_sids($enabled_rules, $suricatacfg);
+			suricata_modify_sids_action($enabled_rules, $suricatacfg);
 
 			// Write the enforcing rules file to the Suricata interface's "rules" directory.
 			suricata_write_enforcing_rules_file($enabled_rules, "{$suricatacfgdir}/rules/{$suricata_enforcing_rules_file}");
