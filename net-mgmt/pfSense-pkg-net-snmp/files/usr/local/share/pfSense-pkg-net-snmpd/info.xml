@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>net-snmp</name>
+		<internal_name>net-snmp</internal_name>
+		<descr><![CDATA[NET-SNMP daemon and tools]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>net-snmp.xml</configurationfile>
+	</package>
+</pfsensepkgs>
