@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * net-snmp_hostinfo.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>netsnmp_hostinfo</name>
+	<title>NET-SNMP</title>
+	<include_file>/usr/local/pkg/net-snmp.inc</include_file>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=net-snmp.xml</url>
+		</tab>
+		<tab>
+			<text>Host Information</text>
+			<url>/pkg_edit.php?xml=net-snmp_hostinfo.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Users</text>
+			<url>/pkg.php?xml=net-snmp_users.xml</url>
+		</tab>
+		<tab>
+			<text>Communities</text>
+			<url>/pkg.php?xml=net-snmp_communities.xml</url>
+		</tab>
+		<tab>
+			<text>Trap Generation</text>
+			<url>/pkg_edit.php?xml=net-snmp_trapgen.xml</url>
+		</tab>
+		<tab>
+			<text>[SNMP Trap Daemon]</text>
+			<url>/pkg_edit.php?xml=net-snmptrapd.xml</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>General Information</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Location</fielddescr>
+			<fieldname>syslocation</fieldname>
+			<description><![CDATA[A description of this firewall's physical location. (optional)]]></description>
+			<type>input</type>
+			<size>40</size>
+		</field>
+		<field>
+			<fielddescr>Contact</fielddescr>
+			<fieldname>syscontact</fieldname>
+			<description><![CDATA[Contact informationm for this firewall. (optional)]]></description>
+			<type>input</type>
+			<size>40</size>
+		</field>
+		<field>
+			<fielddescr>Name</fielddescr>
+			<fieldname>sysname</fieldname>
+			<description><![CDATA[This name of this firewall. (optional)]]></description>
+			<type>input</type>
+			<size>40</size>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>sysdescr</fieldname>
+			<description><![CDATA[A description of this firewall. (optional)]]></description>
+			<type>input</type>
+			<size>40</size>
+		</field>
+
+		<field>
+			<name>Interface Handling</name>
+			<type>listtopic</type>
+		</field>
+
+		<field>
+			<fielddescr>Interface Fadeout</fielddescr>
+			<fieldname>interface_fadeout</fieldname>
+			<description><![CDATA[The amount of time, in seconds, before an interface is removed from ifTable after it has been deleted or removed (e.g. ppp, tun, etc. type temporary interfaces). (optional, default: 300)]]></description>
+			<type>input</type>
+			<size>40</size>
+			<default_value>300</default_value>
+		</field>
+		<field>
+			<fielddescr>Replace Old Interfaces</fielddescr>
+			<fieldname>interface_replace_old</fieldname>
+			<description>Replace Old Interfaces (Default: checked)</description>
+			<sethelp>
+				<![CDATA[
+				If an interface reappears before the Interface Fadeout expires, this option controls whether the record is replaced (checked) or if a new interface index will be given to the replacement interface (unchecked).
+				]]>
+			</sethelp>
+			<type>checkbox</type>
+			<default_value>on</default_value>
+		</field>
+
+		<field>
+			<name>Disk Handling</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Disk Usage Warning</fielddescr>
+			<fieldname>disk_usage_percent</fieldname>
+			<description>
+				<![CDATA[
+				The percentage of free space remaining before setting dskErrorFlag=1.
+				Traps are not generated for disk usage. (optional, default: 20)
+				<div class="infoblock">
+					All detected disks except for /dev and its clones will be monitored by snmpd.
+				</div>
+				]]>
+			</description>
+			<type>input</type>
+			<size>40</size>
+			<default_value>20</default_value>
+		</field>
+
+		<field>
+			<name>Load Monitoring</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				These fields configure Load Average monitoring in snmpd.
+				When the load average is above the value configured for any interval, laErrorFlag is set to 1.
+				<br/></br>
+				Traps are not generated for load average.
+				When all fields are blank, Load Average Monitoring is disabled.
+				To set a 5 minute value, the 1 minute value must also be set.
+				To set a 15 minute value, the 5 and 1 minute values must also be set.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Load Monitoring</fielddescr>
+			<fieldname>load_1</fieldname>
+			<description><![CDATA[1-minute threshold]]></description>
+			<type>input</type>
+			<size>40</size>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Load Monitoring 5m</fielddescr>
+			<fieldname>load_5</fieldname>
+			<description><![CDATA[5-minute threshold]]></description>
+			<type>input</type>
+			<size>40</size>
+		</field>
+		<field>
+			<fielddescr>Load Monitoring 15m</fielddescr>
+			<fieldname>load_15</fieldname>
+			<description><![CDATA[15-minute threshold]]></description>
+			<type>input</type>
+			<size>40</size>
+			<combinefields>end</combinefields>
+		</field>
+
+		<field>
+			<name>Extended Commands</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				Extended Command entries allow custom user-defined programs to be executed by SNMP clients.
+				This behavior is useful, but insecure and can potentially leak information.
+				We recommend only using Extended Commands with SNMPv3 authorized users and transport encryption.
+				<div class="infoblock">
+					To access the output from clients, use the references found under nsExtendOutput1. For output with each line as a spearate OID, use nsExtendOutput2.
+
+					<pre>snmpwalk -v 3 -l authPriv -a SHA -A 1234567890 -u myuser -x AES -X 1234567890 localhost nsExtendOutput1</pre>
+
+					To retrieve the output individually, use the configured extend Name as part of the OID:
+					<pre>snmpget -v 3 -l authPriv -a SHA -A 1234567890 -u myuser -x AES -X 1234567890 localhost nsExtendOutputFull.\"uname\"</pre>
+				</div>
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Extended Commands</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>Type</fielddescr>
+					<fieldname>ext_type</fieldname>
+					<description><![CDATA[The type of extend entry.]]></description>
+					<type>select</type>
+					<default_value>extend</default_value>
+					<options>
+						<option><name>extend</name><value>extend</value></option>
+						<option><name>extendfix (must first have extend defined)</name><value>extendfix</value></option>
+					</options>
+					<width>2</width>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>MIB OID</fielddescr>
+					<fieldname>ext_miboid</fieldname>
+					<description><![CDATA[The MIB/OID at which this extend instance can be referenced, if different than the default NET-SNMP-EXTEND-MIB / nsExtendOutput. Only valid for 'extend' entries.]]></description>
+					<type>input</type>
+					<width>2</width>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Name</fielddescr>
+					<fieldname>ext_name</fieldname>
+					<description><![CDATA[The name of this entry. For extend/extendfix pairs, this must match.]]></description>
+					<type>input</type>
+					<width>1</width>
+					<required/>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Program</fielddescr>
+					<fieldname>ext_prog</fieldname>
+					<description><![CDATA[The full path to the program or script to run.]]></description>
+					<type>input</type>
+					<width>2</width>
+					<required/>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Arguments</fielddescr>
+					<fieldname>ext_args</fieldname>
+					<description><![CDATA[The command line arguments to be passed to the Program.]]></description>
+					<type>input</type>
+					<width>2</width>
+					<required/>
+				</rowhelperfield>
+			</rowhelper>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		netsnmp_resync();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		netsnmp_validate_netsnmphostinfo($_POST, $input_errors);
+	</custom_php_validation_command>
+</packagegui>

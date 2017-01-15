@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * net-snmptrapd.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>netsnmptrapdusers</name>
+	<title>NET-SNMP Trap Daemon</title>
+	<include_file>/usr/local/pkg/net-snmp.inc</include_file>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=net-snmptrapd.xml</url>
+		</tab>
+		<tab>
+			<text>Community Auth</text>
+			<url>/pkg.php?xml=net-snmptrapd_communities.xml</url>
+		</tab>
+		<tab>
+			<text>User Auth</text>
+			<url>/pkg.php?xml=net-snmptrapd_users.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Formats</text>
+			<url>/pkg_edit.php?xml=net-snmptrapd_formats.xml</url>
+		</tab>
+		<tab>
+			<text>Trap Handles</text>
+			<url>/pkg.php?xml=net-snmptrapd_traphandles.xml</url>
+		</tab>
+		<tab>
+			<text>Trap Forwards</text>
+			<url>/pkg.php?xml=net-snmptrapd_forwards.xml</url>
+		</tab>
+		<tab>
+			<text>[SNMP Daemon]</text>
+			<url>/pkg_edit.php?xml=net-snmp.xml</url>
+		</tab>
+	</tabs>
+	<delete_string>snmptrapd user auth entry deleted</delete_string>
+	<addedit_string>snmptrapd user auth entry created/modified</addedit_string>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Username</fielddescr>
+			<fieldname>username</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Process Type</fielddescr>
+			<fieldname>type</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+		</columnitem>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<name>User Authorization Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				User Authorization defines SNMPv3 users which are allowed to send traps to this daemon and what actions the daemon will allow.
+				Restrictions may also be placed on the user to limit how it can connect and what part of the OID tree it is allowed to work with.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Trap User</fielddescr>
+			<fieldname>username</fieldname>
+			<description><![CDATA[Choose a username that can send traps to this server (Create in the Users tab under NET-SNMP).]]></description>
+			<type>select_source</type>
+			<source><![CDATA[netsnmp_get_usernames()]]></source>
+			<source_name>descr</source_name>
+			<source_value>refid</source_value>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+			<description><![CDATA[A description of this entry.]]></description>
+			<type>input</type>
+			<size>20</size>
+		</field>
+		<field>
+			<fielddescr>Process Type</fielddescr>
+			<fieldname>type</fieldname>
+			<description><![CDATA[Type of events to process using this entry. If no types are slected, all types will be used.]]></description>
+			<type>select</type>
+			<multiple/>
+			<options>
+				<option><name>Log Trap Event (log)</name><value>log</value></option>
+				<option><name>Forward Trap to another Host (net)</name><value>net</value></option>
+				<option><name>Execute a Trap Handle (execute)</name><value>execute</value></option>
+			</options>
+			<size>3</size>
+		</field>
+		<field>
+			<fielddescr>Security Model</fielddescr>
+			<fieldname>secmodel</fieldname>
+			<description><![CDATA[The security model for this user.]]></description>
+			<type>select</type>
+			<default_value>usm</default_value>
+			<options>
+				<option><name>User Security (usm)</name><value>usm</value></option>
+				<option><name>Transport Security (tsm)</name><value>tsm</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Security Level</fielddescr>
+			<fieldname>level</fieldname>
+			<description><![CDATA[The security level allowed for this user.]]></description>
+			<type>select</type>
+			<default_value>priv</default_value>
+			<options>
+				<option><name>Private (Encryption Required)</name><value>priv</value></option>
+				<option><name>Authenticated</name><value>auth</value></option>
+				<option><name>Unauthenticated</name><value>noauth</value></option>
+				<option><name>Unspecified</name><value>none</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Base OID</fielddescr>
+			<fieldname>baseoid</fieldname>
+			<description><![CDATA[Restrict the user to part of the tree rooted at this OID. Leave blank to allow full access.]]></description>
+			<type>input</type>
+			<size>20</size>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		netsnmp_resync_snmptrapd();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		netsnmp_validate_netsnmptrapdusers($_POST, $input_errors);
+	</custom_php_validation_command>
+</packagegui>

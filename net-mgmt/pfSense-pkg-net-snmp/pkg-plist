@@ -1,0 +1,8 @@
+pkg/net-snmp.xml
+pkg/net-snmp.inc
+pkg/net-snmp_users.xml
+pkg/net-snmp_traplisten.xml
+pkg/net-snmp_hostinfo.xml
+pkg/net-snmp_communities.xml
+pkg/net-snmp_trapgen.xml
+%%DATADIR%%/info.xml

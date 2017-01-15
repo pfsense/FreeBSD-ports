@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * net-snmptrapd_forwards.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>netsnmptrapdforwards</name>
+	<title>NET-SNMP Trap Daemon</title>
+	<include_file>/usr/local/pkg/net-snmp.inc</include_file>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=net-snmptrapd.xml</url>
+		</tab>
+		<tab>
+			<text>Community Auth</text>
+			<url>/pkg.php?xml=net-snmptrapd_communities.xml</url>
+		</tab>
+		<tab>
+			<text>User Auth</text>
+			<url>/pkg.php?xml=net-snmptrapd_users.xml</url>
+		</tab>
+		<tab>
+			<text>Formats</text>
+			<url>/pkg_edit.php?xml=net-snmptrapd_formats.xml</url>
+		</tab>
+		<tab>
+			<text>Trap Handles</text>
+			<url>/pkg.php?xml=net-snmptrapd_traphandles.xml</url>
+		</tab>
+		<tab>
+			<text>Trap Forwards</text>
+			<url>/pkg.php?xml=net-snmptrapd_forwards.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>[SNMP Daemon]</text>
+			<url>/pkg_edit.php?xml=net-snmp.xml</url>
+		</tab>
+	</tabs>
+	<delete_string>snmptrapd forward deleted</delete_string>
+	<addedit_string>snmptrapd forward created/modified</addedit_string>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Destination</fielddescr>
+			<fieldname>destination</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+		</columnitem>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<name>Forwarding Host Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				Forwarding Host entries destinations for traps received by the daemon from a user or community authorization source with the "net" Process Type selected.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Destination</fielddescr>
+			<fieldname>destination</fieldname>
+			<description><![CDATA[Trap destination OID, or "default"]]></description>
+			<type>input</type>
+			<size>40</size>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				The Forward Host below defines the transport, host, and port that snmptrapd will use to relay traps to another trap receiver.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Forward Host</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>Transport Type</fielddescr>
+					<fieldname>transport</fieldname>
+					<description><![CDATA[The protocol used by this forward.]]></description>
+					<type>select</type>
+					<default_value>udp</default_value>
+					<options>
+						<option><name>UDP</name><value>udp</value></option>
+						<option><name>UDP6</name><value>udp6</value></option>
+						<option><name>TCP</name><value>tcp</value></option>
+						<option><name>TCP6</name><value>tcp6</value></option>
+						<option><name>DTLS/UDP</name><value>dtlsudp</value></option>
+					</options>
+					<width>2</width>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>IP Address/Hostname</fielddescr>
+					<fieldname>ipaddress</fieldname>
+					<description><![CDATA[IP address or hostname to forward.]]></description>
+					<type>input</type>
+					<width>2</width>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Port</fielddescr>
+					<fieldname>snmpport</fieldname>
+					<description><![CDATA[The forwarding port (default: 161).]]></description>
+					<type>input</type>
+					<width>1</width>
+					<default_value>161</default_value>
+					<required/>
+				</rowhelperfield>
+			</rowhelper>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+			<description><![CDATA[A description of this entry.]]></description>
+			<type>input</type>
+			<size>20</size>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		netsnmp_resync_snmptrapd();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		netsnmp_validate_netsnmptrapdforwards($_POST, $input_errors);
+	</custom_php_validation_command>
+</packagegui>

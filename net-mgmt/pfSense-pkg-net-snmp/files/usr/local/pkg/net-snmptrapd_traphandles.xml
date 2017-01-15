@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * net-snmptrapd.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>netsnmptrapdtraphandles</name>
+	<title>NET-SNMP Trap Daemon</title>
+	<include_file>/usr/local/pkg/net-snmp.inc</include_file>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=net-snmptrapd.xml</url>
+		</tab>
+		<tab>
+			<text>Community Auth</text>
+			<url>/pkg.php?xml=net-snmptrapd_communities.xml</url>
+		</tab>
+		<tab>
+			<text>User Auth</text>
+			<url>/pkg.php?xml=net-snmptrapd_users.xml</url>
+		</tab>
+		<tab>
+			<text>Formats</text>
+			<url>/pkg_edit.php?xml=net-snmptrapd_formats.xml</url>
+		</tab>
+		<tab>
+			<text>Trap Handles</text>
+			<url>/pkg.php?xml=net-snmptrapd_traphandles.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Trap Forwards</text>
+			<url>/pkg.php?xml=net-snmptrapd_forwards.xml</url>
+		</tab>
+		<tab>
+			<text>[SNMP Daemon]</text>
+			<url>/pkg_edit.php?xml=net-snmp.xml</url>
+		</tab>
+	</tabs>
+	<delete_string>snmptrapd trap handle deleted</delete_string>
+	<addedit_string>snmptrapd trap handle created/modified</addedit_string>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Destination</fielddescr>
+			<fieldname>destination</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Program</fielddescr>
+			<fieldname>program</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+		</columnitem>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<name>Trap Handle Configuration</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				Trap Handle entries define programs or scripts to execute when a trap is received by snmptrapd from a user or community authorization source with the "execute" Process Type selected.
+				<br/><br/>Details from the incoming trap are passed via standard input, with metadata in the environment such as the hostname and how the trap arrived.
+				For more information about data available to trap handles, consult
+				<a href="https://www.freebsd.org/cgi/man.cgi?query=snmptrapd.conf&sektion=5&apropos=0&manpath=FreeBSD+11.0-RELEASE+and+Ports#NOTIFICATION_PROCESSING">the snmptrapd.conf manual page</a>.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+
+		<field>
+			<fielddescr>Destination</fielddescr>
+			<fieldname>destination</fieldname>
+			<description><![CDATA[Trap Handle destination OID, or "default"]]></description>
+			<type>input</type>
+			<size>40</size>
+		</field>
+		<field>
+			<fielddescr>Program</fielddescr>
+			<fieldname>program</fieldname>
+			<description><![CDATA[<b>Full path</b> to the Trap Handle program or script]]></description>
+			<type>input</type>
+			<size>40</size>
+		</field>
+		<field>
+			<fielddescr>Arguments</fielddescr>
+			<fieldname>args</fieldname>
+			<description><![CDATA[Trap Handle program arguments]]></description>
+			<type>input</type>
+			<size>40</size>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+			<description><![CDATA[A description of this entry]]></description>
+			<type>input</type>
+			<size>20</size>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		netsnmp_resync_snmptrapd();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		netsnmp_validate_netsnmptrapdtraphandles($_POST, $input_errors);
+	</custom_php_validation_command>
+</packagegui>
