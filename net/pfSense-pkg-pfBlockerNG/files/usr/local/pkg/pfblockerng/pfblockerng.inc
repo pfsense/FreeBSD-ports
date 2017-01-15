@@ -5617,7 +5617,7 @@ function pfblockerng_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $p
 	$xml = array();
 
 	// If User Disabled, remove 'General Tab Customizations' from Sync
-	if (!isset($config['installedpackages']['pfblockerngsync']['config']['syncinterfaces'])) {
+	if ($config['installedpackages']['pfblockerngsync']['config'][0]['syncinterfaces'] != 'on') {
 		if (isset($config['installedpackages']['pfblockerng'])) {
 			$xml['pfblockerng']		= $config['installedpackages']['pfblockerng'];
 		}
