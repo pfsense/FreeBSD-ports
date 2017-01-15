@@ -181,7 +181,7 @@ if ($currentruleset != 'custom.rules') {
 		$rulefile = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
 	}
 	// Test for the special case of an IPS Policy file.
-	if (substr($currentruleset, 0, 10) == "IPS Policy") {
+	elseif (substr($currentruleset, 0, 10) == "IPS Policy") {
 		$rules_map = suricata_load_vrt_policy($a_rule[$id]['ips_policy'], $a_rule[$id]['ips_policy_mode']);
 	}
 	elseif (!file_exists($rulefile)) {
@@ -198,6 +198,12 @@ suricata_auto_sid_mgmt($rules_map, $a_rule[$id], FALSE);
 /* Load up our enablesid and disablesid arrays with manually enabled or disabled SIDs */
 $enablesid = suricata_load_sid_mods($a_rule[$id]['rule_sid_on']);
 $disablesid = suricata_load_sid_mods($a_rule[$id]['rule_sid_off']);
+suricata_modify_sids($rules_map, $a_rule[$id]);
+
+/* Load up our alertsid and dropsid arrays with manually changed SID actions */
+$alertsid = suricata_load_sid_mods($a_rule[$id]['rule_sid_force_alert']);
+$dropsid = suricata_load_sid_mods($a_rule[$id]['rule_sid_force_drop']);
+suricata_modify_sids_action($rules_map, $a_rule[$id]);
 
 /* Process AJAX request to view content of a specific rule */
 if ($_POST['action'] == 'loadRule') {
@@ -212,7 +218,7 @@ if ($_POST['action'] == 'loadRule') {
 	exit;
 }
 
-if (isset($_POST['toggle']) && is_numeric($_POST['sid']) && is_numeric($_POST['gid']) && !empty($rules_map)) {
+if (isset($_POST['toggle_state']) && is_numeric($_POST['sid']) && is_numeric($_POST['gid']) && !empty($rules_map)) {
 
 	// Get the GID:SID tags embedded in the clicked rule icon.
 	$gid = $_POST['gid'];
@@ -267,11 +273,76 @@ if (isset($_POST['toggle']) && is_numeric($_POST['sid']) && is_numeric($_POST['g
 	// We changed a rule state, remind user to apply the changes
 	mark_subsystem_dirty('suricata_rules');
 
+	// Update our in-memory rules map with the changes just saved
+	// to the Suricata configuration file.
+	suricata_modify_sids($rules_map, $a_rule[$id]);
+
+	// Set a scroll-to anchor location
+	$anchor = "rule_{$gid}_{$sid}";
+}
+elseif (isset($_POST['toggle_action']) && is_numeric($_POST['sid']) && is_numeric($_POST['gid']) && !empty($rules_map)) {
+
+	// Get the GID:SID tags embedded in the clicked rule icon.
+	$gid = $_POST['gid'];
+	$sid = $_POST['sid'];
+
+	// See if the target SID is in our list of modified SIDs,
+	// and toggle it to opposite action if present; otherwise,
+	// add it to the appropriate modified SID list.
+	if (isset($alertsid[$gid][$sid])) {
+		unset($alertsid[$gid][$sid]);
+		$dropsid[$gid][$sid] = "dropsid";
+	}
+	elseif (isset($dropsid[$gid][$sid])) {
+		unset($dropsid[$gid][$sid]);
+		$alertsid[$gid][$sid] = "alertsid";
+	}
+	else {
+		if ($rules_map[$gid][$sid]['action'] == 'drop')
+			$alertsid[$gid][$sid] = "alertsid";
+		else
+			$dropsid[$gid][$sid] = "dropsid";
+	}
+
+	// Write the updated alertsid and dropsid values to the config file.
+	$tmp = "";
+	foreach (array_keys($alertsid) as $k1) {
+		foreach (array_keys($alertsid[$k1]) as $k2)
+			$tmp .= "{$k1}:{$k2}||";
+	}
+	$tmp = rtrim($tmp, "||");
+
+	if (!empty($tmp))
+		$a_rule[$id]['rule_sid_force_alert'] = $tmp;
+	else
+		unset($a_rule[$id]['rule_sid_force_alert']);
+
+	$tmp = "";
+	foreach (array_keys($dropsid) as $k1) {
+		foreach (array_keys($dropsid[$k1]) as $k2)
+			$tmp .= "{$k1}:{$k2}||";
+	}
+	$tmp = rtrim($tmp, "||");
+
+	if (!empty($tmp))
+		$a_rule[$id]['rule_sid_force_drop'] = $tmp;
+	else
+		unset($a_rule[$id]['rule_sid_force_drop']);
+
+	/* Update the config.xml file. */
+	write_config("Suricata pkg: modified action for rule {$gid}:{$sid} on {$a_rule[$id]['interface']}.");
+
+	// We changed a rule action, remind user to apply the changes
+	mark_subsystem_dirty('suricata_rules');
+
+	// Update our in-memory rules map with the changes just saved
+	// to the Suricata configuration file.
+	suricata_modify_sids_action($rules_map, $a_rule[$id]);
+
 	// Set a scroll-to anchor location
 	$anchor = "rule_{$gid}_{$sid}";
 }
 elseif (isset($_POST['disable_all']) && !empty($rules_map)) {
-
 	// Mark all rules in the currently selected category "disabled".
 	foreach (array_keys($rules_map) as $k1) {
 		foreach (array_keys($rules_map[$k1]) as $k2) {
@@ -310,6 +381,10 @@ elseif (isset($_POST['disable_all']) && !empty($rules_map)) {
 	mark_subsystem_dirty('suricata_rules');
 
 	write_config("Suricata pkg: disabled all rules in category {$currentruleset} for {$a_rule[$id]['interface']}.");
+
+	// Update our in-memory rules map with the changes just saved
+	// to the Suricata configuration file.
+	suricata_modify_sids($rules_map, $a_rule[$id]);
 }
 elseif (isset($_POST['enable_all']) && !empty($rules_map)) {
 
@@ -350,6 +425,10 @@ elseif (isset($_POST['enable_all']) && !empty($rules_map)) {
 	mark_subsystem_dirty('suricata_rules');
 
 	write_config("Suricata pkg: enable all rules in category {$currentruleset} for {$a_rule[$id]['interface']}.");
+
+	// Update our in-memory rules map with the changes just saved
+	// to the Suricata configuration file.
+	suricata_modify_sids($rules_map, $a_rule[$id]);
 }
 elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 
@@ -360,6 +439,10 @@ elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 				unset($enablesid[$k1][$k2]);
 			if (isset($disablesid[$k1][$k2]))
 				unset($disablesid[$k1][$k2]);
+			if (isset($alertsid[$k1][$k2]))
+				unset($alertsid[$k1][$k2]);
+			if (isset($dropsid[$k1][$k2]))
+				unset($dropsid[$k1][$k2]);
 		}
 	}
 
@@ -388,22 +471,75 @@ elseif (isset($_POST['resetcategory']) && !empty($rules_map)) {
 	else
 		unset($a_rule[$id]['rule_sid_off']);
 
-	// We changed a rule state, remind user to apply the changes
+	// Write the updated alertsid and dropsid values to the config file.
+	$tmp = "";
+	foreach (array_keys($alertsid) as $k1) {
+		foreach (array_keys($alertsid[$k1]) as $k2)
+			$tmp .= "{$k1}:{$k2}||";
+	}
+	$tmp = rtrim($tmp, "||");
+
+	if (!empty($tmp))
+		$a_rule[$id]['rule_sid_force_alert'] = $tmp;
+	else
+		unset($a_rule[$id]['rule_sid_force_alert']);
+
+	$tmp = "";
+	foreach (array_keys($dropsid) as $k1) {
+		foreach (array_keys($dropsid[$k1]) as $k2)
+			$tmp .= "{$k1}:{$k2}||";
+	}
+	$tmp = rtrim($tmp, "||");
+
+	if (!empty($tmp))
+		$a_rule[$id]['rule_sid_force_drop'] = $tmp;
+	else
+		unset($a_rule[$id]['rule_sid_force_drop']);
+
+	// We changed a rule state or action, remind user to apply the changes
 	mark_subsystem_dirty('suricata_rules');
 
-	write_config("Suricata pkg: remove enablesid/disablesid changes for category {$currentruleset} on {$a_rule[$id]['interface']}.");
+	write_config("Suricata pkg: remove rule state/action changes for category {$currentruleset} on {$a_rule[$id]['interface']}.");
+
+	// Reload the rules so we can accurately show content after
+	// resetting any user overrides.
+	if ($currentruleset == "Auto-Flowbit Rules") {
+		$rulefile = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
+	}
+	// Test for the special case of an IPS Policy file.
+	elseif (substr($currentruleset, 0, 10) == "IPS Policy") {
+		$rules_map = suricata_load_vrt_policy($a_rule[$id]['ips_policy'], $a_rule[$id]['ips_policy_mode']);
+	}
+	else {
+		$rules_map = suricata_load_rules_map($rulefile);
+	}
 }
 elseif (isset($_POST['resetall']) && !empty($rules_map)) {
 
 	// Remove all modified SIDs from config.xml and save the changes.
 	unset($a_rule[$id]['rule_sid_on']);
 	unset($a_rule[$id]['rule_sid_off']);
+	unset($a_rule[$id]['rule_sid_force_alert']);
+	unset($a_rule[$id]['rule_sid_force_drop']);
 
-	// We changed a rule state, remind user to apply the changes
+	// We changed a rule state or action, remind user to apply the changes
 	mark_subsystem_dirty('suricata_rules');
 
 	/* Update the config.xml file. */
-	write_config("Suricata pkg: remove all enablesid/disablesid changes for {$a_rule[$id]['interface']}.");
+	write_config("Suricata pkg: remove all rule state/action changes for {$a_rule[$id]['interface']}.");
+
+	// Reload the rules so we can accurately show content after
+	// resetting any user overrides.
+	if ($currentruleset == "Auto-Flowbit Rules") {
+		$rulefile = "{$suricatacfgdir}/rules/" . FLOWBITS_FILENAME;
+	}
+	// Test for the special case of an IPS Policy file.
+	elseif (substr($currentruleset, 0, 10) == "IPS Policy") {
+		$rules_map = suricata_load_vrt_policy($a_rule[$id]['ips_policy'], $a_rule[$id]['ips_policy_mode']);
+	}
+	else {
+		$rules_map = suricata_load_rules_map($rulefile);
+	}
 }
 elseif (isset($_POST['clear'])) {
 	unset($a_rule[$id]['customrules']);
@@ -511,17 +647,9 @@ function build_cat_list() {
 $if_friendly = convert_friendly_interface_to_friendly_descr($pconfig['interface']);
 $pgtitle = array(gettext("Suricata"), gettext("Interface ") . $if_friendly, gettext("Rules: ") . $currentruleset);
 include_once("head.inc");
-?>
 
-<form action="/suricata/suricata_rules.php" method="post" enctype="multipart/form-data" class="form-horizontal" name="iform" id="iform">
-<input type='hidden' name='id' id='id' value='<?=$id;?>'/>
-<input type='hidden' name='openruleset' id='openruleset' value='<?=$currentruleset;?>'/>
-<input type='hidden' name='sid' id='sid' value=''/>
-<input type='hidden' name='gid' id='gid' value=''/>
-
-<?php
 if (is_subsystem_dirty('suricata_rules')) {
-	print_apply_box(gettext("A change has been made to a rule state.") . "<br/>" . gettext("Click APPLY when finished to send the changes to the running configuration."));
+	print_apply_box(gettext("A change has been made to a rule state or action.") . "<br/>" . gettext("Click APPLY when finished to send the changes to the running configuration."));
 }
 
 if ($input_errors) {
@@ -532,6 +660,15 @@ if ($savemsg) {
 	print_info_box($savemsg);
 }
 
+?>
+
+<form action="/suricata/suricata_rules.php" method="post" enctype="multipart/form-data" class="form-horizontal" name="iform" id="iform">
+<input type='hidden' name='id' id='id' value='<?=$id;?>'/>
+<input type='hidden' name='openruleset' id='openruleset' value='<?=$currentruleset;?>'/>
+<input type='hidden' name='sid' id='sid' value=''/>
+<input type='hidden' name='gid' id='gid' value=''/>
+
+<?php
 $tab_array = array();
 $tab_array[] = array(gettext("Interfaces"), true, "/suricata/suricata_interfaces.php");
 $tab_array[] = array(gettext("Global Settings"), false, "/suricata/suricata_global.php");
@@ -640,10 +777,10 @@ if ($currentruleset == 'Auto-Flowbit Rules') {
 	$msg = '<b>' . gettext('Note: ') . '</b>' . gettext('You should not disable flowbit rules!  Add Suppress List entries for them instead by ');
 	$msg .= '<a href="/suricata/suricata_rules_flowbits.php?id=' . $id . '" title="' . gettext('Add Suppress List entry for Flowbit Rule') . '">';
 	$msg .= gettext('clicking here.') . '</a>';
-	$group->setHelp('When finished, click APPLY to save and send any SID enable/disable changes made on this tab to Suricata.<br/>' . $msg);
+	$group->setHelp('When finished, click APPLY to save and send any SID state/action changes made on this tab to Suricata.<br/>' . $msg);
 }
 else {
-	$group->setHelp('When finished, click APPLY to save and send any SID enable/disable changes made on this tab to Suricata.');
+	$group->setHelp('When finished, click APPLY to save and send any SID state/action changes made on this tab to Suricata.');
 }
 $section->add($group);
 print($section);
@@ -704,6 +841,7 @@ print($section);
 						<td style="padding-left: 8px;"><i class="fa fa-check-circle-o text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Default Enabled');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-check-circle text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Enabled by user');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-adn text-success"></i></td><td style="padding-left: 4px;"><small><?=gettext('Auto-enabled by SID Mgmt');?></small></td>
+						<td style="padding-left: 8px;"><i class="fa fa-exclamation-triangle text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is alert');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-adn text-warning"></i></td><td style="padding-left: 4px;"><small><?=gettext('Action and/or content modified by SID Mgmt');?></small></td>
 					</tr>
 					<tr>
@@ -711,7 +849,8 @@ print($section);
 						<td style="padding-left: 8px;"><i class="fa fa-times-circle-o text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Default Disabled');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-times-circle text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Disabled by user');?></small></td>
 						<td style="padding-left: 8px;"><i class="fa fa-adn text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Auto-disabled by SID Mgmt');?></small></td>
-						<td></td>
+						<td style="padding-left: 8px;"><i class="fa fa-thumbs-down text-danger"></i></td><td style="padding-left: 4px;"><small><?=gettext('Rule action is drop');?></small></td>
+						<td></td><td></td>
 					</tr>
 				</tbody>
 			</table>
@@ -719,6 +858,7 @@ print($section);
 
 		<table  style="table-layout: fixed; width: 100%;" class="table table-striped table-hover table-condensed">
 			<colgroup>
+				<col width="5%">
 				<col width="5%">
 				<col width="4%">
 				<col width="9%">
@@ -732,6 +872,7 @@ print($section);
 			<thead>
 			   <tr>
 				<th><?=gettext("State");?></th>
+				<th><?=gettext("Action");?></th>
 				<th><?=gettext("GID");?></th>
 				<th><?=gettext("SID");?></th>
 				<th><?=gettext("Proto");?></th>
@@ -795,6 +936,7 @@ print($section);
 								$iconb_class = 'class="fa fa-check-circle text-success text-left"';
 								$title = gettext("Enabled by user. Click to toggle to disabled state");
 							}
+
 							// These last two checks handle normal cases of default-enabled or default disabled rules
 							// with no user overrides.
 							elseif (($v['disabled'] == 1) && ($v['state_toggled'] == 0) && (!isset($enablesid[$gid][$sid]))) {
@@ -809,6 +951,18 @@ print($section);
 								$enable_cnt++;
 								$iconb_class = 'class="fa fa-check-circle-o text-success text-left"';
 								$title = gettext("Enabled by default. Click to toggle to disabled state");
+							}
+
+							// Determine which icon to display in the second column for rule action
+							if ($v['action'] == 'drop') {
+								$textss = $textse = "";
+								$iconact_class = 'class="fa fa-thumbs-down text-danger text-center"';
+								$title_act = gettext("Rule will drop traffic when triggered.  Click to force alert action instead.");
+							}
+							else {
+								$textss = $textse = "";
+								$iconact_class = 'class="fa fa-exclamation-triangle text-warning text-center"';
+								$title_act = gettext("Rule will alert on traffic when triggered. Click to force drop action instead.");
 							}
 
 							// Pick off the first section of the rule (prior to the start of the MSG field),
@@ -840,6 +994,11 @@ print($section);
 								<i class="fa fa-adn text-warning text-left" title="<?=gettext('Action or content modified by settings on SID Mgmt tab'); ?>"></i><?=$textse; ?>
 				<?php endif; ?>
 								</td>
+
+							       <td><?=$textss; ?><a id="rule_<?=$gid; ?>_<?=$sid; ?>_action" href="#" onClick="toggleAction('<?=$sid; ?>', '<?=$gid; ?>');" 
+									<?=$iconact_class; ?> title="<?=$title_act; ?>"></a><?=$textse; ?>
+							       </td>
+
 							       <td ondblclick="showRuleContents('<?=$gid;?>','<?=$sid;?>');">
 									<?=$textss . $gid . $textse;?>
 							       </td>
@@ -919,7 +1078,15 @@ function toggleRule(sid, gid) {
 	$('#sid').val(sid);
 	$('#gid').val(gid);
 	$('#openruleset').val($('#selectbox').val());
-	$('<input name="toggle" value="1" />').appendTo($('#iform'));
+	$('<input name="toggle_state" value="1" />').appendTo($('#iform'));
+	$('#iform').submit();
+}
+
+function toggleAction(sid, gid) {
+	$('#sid').val(sid);
+	$('#gid').val(gid);
+	$('#openruleset').val($('#selectbox').val());
+	$('<input name="toggle_action" value="1" />').appendTo($('#iform'));
 	$('#iform').submit();
 }
 
