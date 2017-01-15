@@ -76,7 +76,7 @@ function ntopng_sync_package() {
 	if ($_POST['Submit'] == "Update GeoIP Data") {
 		return;
 	}
-	if ($_POST['Delete'] == "Delete (Historical) Data") {
+	if ($_POST['Delete'] == "Delete Data") {
 		return;
 	}
 
@@ -289,7 +289,7 @@ function ntopng_flush_historical_data() {
 		ntopng_services_stop();
 		if (is_dir("/var/db/ntopng/")) {
 			mwexec("rm -rf /var/db/ntopng/");
-			log_error(gettext("[ntopng] Deleted ntopng historical traffic data and graphs."));
+			log_error(gettext("[ntopng] Deleted ntopng traffic data and graphs."));
 		} else {
 			log_error(gettext("[ntopng] Nothing to delete; /var/db/ntopng/ directory not found."));
 		}
@@ -301,9 +301,9 @@ function ntopng_flush_historical_data() {
 		ntopng_sync_package();
 		log_error(gettext("[ntopng] Resynced ntopng settings."));
 	} else {
-		$error = "Cannot delete historical data - redis-server is not running.";
+		$error = "Cannot delete data - redis-server is not running.";
 		log_error(gettext("[ntopng] {$error}"));
-		file_notice("ntopng", $error, "ntopng Delete Historical Data", "");
+		file_notice("ntopng", $error, "ntopng Delete Data", "");
 	}
 }
 
