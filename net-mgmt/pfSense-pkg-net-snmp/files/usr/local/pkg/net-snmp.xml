@@ -29,22 +29,28 @@
 	<title>NET-SNMP</title>
 	<include_file>/usr/local/pkg/net-snmp.inc</include_file>
 	<menu>
-		<name>NET-SNMP Daemon</name>
+		<name>SNMP (NET-SNMP)</name>
 		<tooltiptext>Modify the NET-SNMP Daemon Settings</tooltiptext>
 		<section>Services</section>
 		<url>/pkg_edit.php?xml=net-snmp.xml</url>
+	</menu>
+	<menu>
+		<name>SNMP Trap Daemon (NET-SNMP)</name>
+		<tooltiptext>Modify the NET-SNMP Daemon Settings</tooltiptext>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=net-snmptrapd.xml</url>
 	</menu>
 	<service>
 		<name>net-snmpd</name>
 		<rcfile>net-snmpd.sh</rcfile>
 		<executable>snmpd</executable>
-		<description>NET-SNMP Daemon</description>
+		<description><![CDATA[NET-SNMP Daemon]]></description>
 	</service>
 	<service>
 		<name>net-snmptrapd</name>
 		<rcfile>net-snmptrapd.sh</rcfile>
 		<executable>snmpdtrapd</executable>
-		<description>NET-SNMP Trap Listening Daemon</description>
+		<description><![CDATA[NET-SNMP Trap Listening Daemon]]></description>
 	</service>
 	<tabs>
 		<tab>
