@@ -259,6 +259,26 @@ EOF;
 	unset($pfb_conf);
 	update_status(" done.\n");
 
+	// Create new DNSBL Certificate
+	update_status("Creating DNSBL Certificate...");
+	$dn = array (	'countryName'		=> 'CA',
+			'stateOrProvinceName'	=> 'ST_DNSBL',
+			'localityName'		=> 'LN_DNSBL',
+			'organizationName'	=> 'ON_DNSBL',
+			'organizationalUnitName'=> 'OU_DNSBL',
+			'commonName'		=> 'CN_DNSBL',
+			'emailAddress'		=> 'dnsbl@example.com'
+			);
+
+	$pkey	= openssl_pkey_new();
+	$csr	= openssl_csr_new($dn, $pkey);
+	$cert	= openssl_csr_sign($csr, NULL, $pkey, 3650);
+
+	openssl_pkey_export($pkey, $privatekey);
+	openssl_x509_export($cert, $publickey);
+	@file_put_contents("{$pfb['dnsbl_cert']}", "{$privatekey}{$publickey}", LOCK_EX);
+	update_status(" done.\n");
+	
 	update_status("Starting DNSBL Service...");
 	restart_service('dnsbl');
 	update_status(" done.\n");
