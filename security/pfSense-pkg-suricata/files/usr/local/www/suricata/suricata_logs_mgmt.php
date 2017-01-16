@@ -33,7 +33,7 @@ $suricatadir = SURICATADIR;
 $pconfig = array();
 
 // Grab saved settings from configuration
-$pconfig['enable_log_mgmt'] = $config['installedpackages']['suricata']['config'][0]['enable_log_mgmt'] == 'on' ? 'on' : 'off';
+$pconfig['enable_log_mgmt'] = $config['installedpackages']['suricata']['config'][0]['enable_log_mgmt'] == 'off' ? 'off' : 'on';
 $pconfig['clearlogs'] = $config['installedpackages']['suricata']['config'][0]['clearlogs'] == 'on' ? 'on' : 'off';
 $pconfig['suricataloglimit'] = $config['installedpackages']['suricata']['config'][0]['suricataloglimit'] == 'on' ? 'on' : 'off';
 $pconfig['suricataloglimitsize'] = $config['installedpackages']['suricata']['config'][0]['suricataloglimitsize'];
