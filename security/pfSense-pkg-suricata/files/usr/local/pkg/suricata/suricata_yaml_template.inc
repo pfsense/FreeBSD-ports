@@ -74,6 +74,9 @@ outputs:
       enabled: {$tls_log_enabled}
       filename: tls.log
       extended: {$tls_log_extended}
+
+  - tls-store:
+      enabled: {$tls_store_enabled}
       certs-log-dir: certs
 
   - stats:

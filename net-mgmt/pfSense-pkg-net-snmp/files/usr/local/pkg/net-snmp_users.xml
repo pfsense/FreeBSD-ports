@@ -103,7 +103,7 @@
 			<type>select</type>
 			<default_value>user</default_value>
 			<options>
-				<option><name>User Entry (TSM)</name><value>user</value></option>
+				<option><name>User Entry (USM)</name><value>user</value></option>
 				<option><name>Certificate Mapping (TSM)</name><value>cert</value></option>
 				<option><name>Both User Entry and Certificate Mapping</name><value>both</value></option>
 			</options>
