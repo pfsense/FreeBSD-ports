@@ -2086,7 +2086,8 @@ PHP_FUNCTION(pfSense_getall_interface_addresses)
 	char *ifname;
 	int ifname_len;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ifname, &ifname_len) == FAILURE)
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ifname,
+	    &ifname_len) == FAILURE)
 		RETURN_NULL();
 
 	getifaddrs(&ifdata);
@@ -2109,10 +2110,12 @@ PHP_FUNCTION(pfSense_getall_interface_addresses)
 		case AF_INET:
 			bzero(outputbuf, sizeof outputbuf);
 			tmp = (struct sockaddr_in *)mb->ifa_addr;
-			inet_ntop(AF_INET, (void *)&tmp->sin_addr, outputbuf, sizeof(outputbuf));
+			inet_ntop(AF_INET, (void *)&tmp->sin_addr, outputbuf,
+			    sizeof(outputbuf));
 			tmp = (struct sockaddr_in *)mb->ifa_netmask;
 			unsigned char mask;
-			const unsigned char *byte = (unsigned char *)&tmp->sin_addr.s_addr;
+			const unsigned char *byte =
+			    (unsigned char *)&tmp->sin_addr.s_addr;
 			int i = 0, n = sizeof(tmp->sin_addr.s_addr);
 			while (n--) {
 				mask = ((unsigned char)-1 >> 1) + 1;
@@ -2122,17 +2125,22 @@ PHP_FUNCTION(pfSense_getall_interface_addresses)
 						mask >>= 1;
 					} while (mask);
 			}
-			snprintf(outputbuf + strlen(outputbuf), sizeof(outputbuf) - strlen(outputbuf), "/%d", i);
+			snprintf(outputbuf + strlen(outputbuf),
+			    sizeof(outputbuf) - strlen(outputbuf), "/%d", i);
 			add_next_index_string(return_value, outputbuf, 1);
 			break;
 		case AF_INET6:
 			bzero(outputbuf, sizeof outputbuf);
 			tmp6 = (struct sockaddr_in6 *)mb->ifa_addr;
-			if (getnameinfo((struct sockaddr *)tmp6, tmp6->sin6_len, outputbuf, sizeof(outputbuf), NULL, 0, NI_NUMERICHOST))
-				inet_ntop(AF_INET6, (void *)&tmp6->sin6_addr, outputbuf, INET6_ADDRSTRLEN);
+			if (getnameinfo((struct sockaddr *)tmp6, tmp6->sin6_len,
+			    outputbuf, sizeof(outputbuf), NULL, 0,
+			    NI_NUMERICHOST))
+				inet_ntop(AF_INET6, (void *)&tmp6->sin6_addr,
+				    outputbuf, INET6_ADDRSTRLEN);
 			tmp6 = (struct sockaddr_in6 *)mb->ifa_netmask;
-			snprintf(outputbuf + strlen(outputbuf), sizeof(outputbuf) - strlen(outputbuf),
-				"/%d", prefix(&tmp6->sin6_addr, sizeof(struct in6_addr)));
+			snprintf(outputbuf + strlen(outputbuf),
+			    sizeof(outputbuf) - strlen(outputbuf), "/%d",
+			    prefix(&tmp6->sin6_addr, sizeof(struct in6_addr)));
 			add_next_index_string(return_value, outputbuf, 1);
 			break;
 		}
@@ -2153,7 +2161,8 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 	zval *caps;
 	zval *encaps;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ifname, &ifname_len) == FAILURE)
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ifname,
+	    &ifname_len) == FAILURE)
 		RETURN_NULL();
 
 	getifaddrs(&ifdata);
@@ -2200,22 +2209,25 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 			md = mb->ifa_data;
 			if (md->ifi_link_state == LINK_STATE_UP)
 				add_assoc_long(return_value, "linkstateup", 1);
-			//add_assoc_long(return_value, "hwassistflag", md->ifi_hwassist);
 			switch (md->ifi_type) {
 			case IFT_IEEE80211:
-				add_assoc_string(return_value, "iftype", "wireless", 1);
+				add_assoc_string(return_value, "iftype",
+				    "wireless", 1);
 				break;
 			case IFT_ETHER:
 			case IFT_FASTETHER:
 			case IFT_FASTETHERFX:
 			case IFT_GIGABITETHERNET:
-				add_assoc_string(return_value, "iftype", "ether", 1);
+				add_assoc_string(return_value, "iftype",
+				    "ether", 1);
 				break;
 			case IFT_L2VLAN:
-				add_assoc_string(return_value, "iftype", "vlan", 1);
+				add_assoc_string(return_value, "iftype",
+				    "vlan", 1);
 				break;
 			case IFT_BRIDGE:
-				add_assoc_string(return_value, "iftype", "bridge", 1);
+				add_assoc_string(return_value, "iftype",
+				    "bridge", 1);
 				break;
 			case IFT_TUNNEL:
 			case IFT_GIF:
@@ -2225,10 +2237,12 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 			case IFT_ENC:
 			case IFT_PFLOG:
 			case IFT_PFSYNC:
-				add_assoc_string(return_value, "iftype", "virtual", 1);
+				add_assoc_string(return_value, "iftype",
+				    "virtual", 1);
 				break;
 			default:
-				add_assoc_string(return_value, "iftype", "other", 1);
+				add_assoc_string(return_value, "iftype",
+				    "other", 1);
 			}
 		}
 		ALLOC_INIT_ZVAL(caps);
@@ -2276,10 +2290,6 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 				add_assoc_long(caps, "toe6", 1);
 			if (ifr.ifr_reqcap & IFCAP_VLAN_HWFILTER)
 				add_assoc_long(caps, "vlanhwfilter", 1);
-#if 0
-			if (ifr.ifr_reqcap & IFCAP_POLLING_NOCOUNT)
-				add_assoc_long(caps, "pollingnocount", 1);
-#endif
 			add_assoc_long(encaps, "flags", ifr.ifr_curcap);
 			if (ifr.ifr_curcap & IFCAP_POLLING)
 				add_assoc_long(encaps, "polling", 1);
@@ -2313,10 +2323,6 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 				add_assoc_long(encaps, "toe6", 1);
 			if (ifr.ifr_curcap & IFCAP_VLAN_HWFILTER)
 				add_assoc_long(encaps, "vlanhwfilter", 1);
-#if 0
-			if (ifr.ifr_reqcap & IFCAP_POLLING_NOCOUNT)
-				add_assoc_long(caps, "pollingnocount", 1);
-#endif
 		}
 		add_assoc_zval(return_value, "caps", caps);
 		add_assoc_zval(return_value, "encaps", encaps);
@@ -2328,12 +2334,14 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 				break;
 			bzero(outputbuf, sizeof outputbuf);
 			tmp = (struct sockaddr_in *)mb->ifa_addr;
-			inet_ntop(AF_INET, (void *)&tmp->sin_addr, outputbuf, sizeof(outputbuf));
+			inet_ntop(AF_INET, (void *)&tmp->sin_addr, outputbuf,
+			    sizeof(outputbuf));
 			add_assoc_string(return_value, "ipaddr", outputbuf, 1);
 			addresscnt++;
 			tmp = (struct sockaddr_in *)mb->ifa_netmask;
 			unsigned char mask;
-			const unsigned char *byte = (unsigned char *)&tmp->sin_addr.s_addr;
+			const unsigned char *byte =
+			    (unsigned char *)&tmp->sin_addr.s_addr;
 			int i = 0, n = sizeof(tmp->sin_addr.s_addr);
 			while (n--) {
 				mask = ((unsigned char)-1 >> 1) + 1;
@@ -2346,22 +2354,28 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 			add_assoc_long(return_value, "subnetbits", i);
 
 			bzero(outputbuf, sizeof outputbuf);
-			inet_ntop(AF_INET, (void *)&tmp->sin_addr, outputbuf, sizeof(outputbuf));
+			inet_ntop(AF_INET, (void *)&tmp->sin_addr, outputbuf,
+			    sizeof(outputbuf));
 			add_assoc_string(return_value, "subnet", outputbuf, 1);
 
 			if (mb->ifa_flags & IFF_BROADCAST) {
 				bzero(outputbuf, sizeof outputbuf);
 				tmp = (struct sockaddr_in *)mb->ifa_broadaddr;
-				inet_ntop(AF_INET, (void *)&tmp->sin_addr, outputbuf, sizeof(outputbuf));
-				add_assoc_string(return_value, "broadcast", outputbuf, 1);
+				inet_ntop(AF_INET, (void *)&tmp->sin_addr,
+				    outputbuf, sizeof(outputbuf));
+				add_assoc_string(return_value, "broadcast",
+				    outputbuf, 1);
 			}
 
 			if (mb->ifa_flags & IFF_POINTOPOINT) {
 				tmp = (struct sockaddr_in *)mb->ifa_dstaddr;
 				if (tmp != NULL && tmp->sin_family == AF_INET) {
 					bzero(outputbuf, sizeof outputbuf);
-					inet_ntop(AF_INET, (void *)&tmp->sin_addr, outputbuf, sizeof(outputbuf));
-					add_assoc_string(return_value, "tunnel", outputbuf, 1);
+					inet_ntop(AF_INET,
+					    (void *)&tmp->sin_addr, outputbuf,
+					    sizeof(outputbuf));
+					add_assoc_string(return_value, "tunnel",
+					    outputbuf, 1);
 				}
 			}
 
@@ -2373,25 +2387,32 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 			tmp6 = (struct sockaddr_in6 *)mb->ifa_addr;
 			if (IN6_IS_ADDR_LINKLOCAL(&tmp6->sin6_addr))
 				break;
-			inet_ntop(AF_INET6, (void *)&tmp6->sin6_addr, outputbuf, sizeof(outputbuf));
+			inet_ntop(AF_INET6, (void *)&tmp6->sin6_addr, outputbuf,
+			    sizeof(outputbuf));
 			add_assoc_string(return_value, "ipaddr6", outputbuf, 1);
 			addresscnt6++;
 			tmp6 = (struct sockaddr_in6 *)mb->ifa_netmask;
-			add_assoc_long(return_value, "subnetbits6", prefix(&tmp6->sin6_addr, sizeof(struct in6_addr)));
+			add_assoc_long(return_value, "subnetbits6",
+			    prefix(&tmp6->sin6_addr, sizeof(struct in6_addr)));
 
 			if (mb->ifa_flags & IFF_POINTOPOINT) {
 				tmp6 = (struct sockaddr_in6 *)mb->ifa_dstaddr;
-				if (tmp6 != NULL && tmp6->sin6_family == AF_INET6) {
+				if (tmp6 != NULL &&
+				    tmp6->sin6_family == AF_INET6) {
 					bzero(outputbuf, sizeof outputbuf);
-					inet_ntop(AF_INET6, (void *)&tmp6->sin6_addr, outputbuf, sizeof(outputbuf));
-					add_assoc_string(return_value, "tunnel6", outputbuf, 1);
+					inet_ntop(AF_INET6,
+					    (void *)&tmp6->sin6_addr, outputbuf,
+					    sizeof(outputbuf));
+					add_assoc_string(return_value,
+					    "tunnel6", outputbuf, 1);
 				}
 			}
 			break;
 		case AF_LINK:
 			tmpdl = (struct sockaddr_dl *)mb->ifa_addr;
 			bzero(outputbuf, sizeof outputbuf);
-			ether_ntoa_r((struct ether_addr *)LLADDR(tmpdl), outputbuf);
+			ether_ntoa_r((struct ether_addr *)LLADDR(tmpdl),
+			    outputbuf);
 			add_assoc_string(return_value, "macaddr", outputbuf, 1);
 			md = (struct if_data *)mb->ifa_data;
 
