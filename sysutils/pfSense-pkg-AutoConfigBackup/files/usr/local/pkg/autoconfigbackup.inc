@@ -133,8 +133,8 @@ function test_connection($post) {
 	// Encryption password
 	$decrypt_password = $post['crypto_password'];
 
-	// Defined username
-	$username = $post['username'];
+	// Defined username. Username must be sent lowercase. See Redmine #7127 and Netgate Redmine #163
+	$username = strtolower($post['username']);
 
 	// Defined password
 	$password = $post['password'];
@@ -205,7 +205,8 @@ function upload_config($reasonm = "") {
 	} else {
 		$reason	= $config['revision']['description'];
 	}
-	$username = $config['installedpackages']['autoconfigbackup']['config'][0]['username'];
+	// Username must be sent lowercase. See Redmine #7127 and Netgate Redmine #163
+	$username = strtolower($config['installedpackages']['autoconfigbackup']['config'][0]['username']);
 	$password = $config['installedpackages']['autoconfigbackup']['config'][0]['password'];
 	$encryptpw = $config['installedpackages']['autoconfigbackup']['config'][0]['crypto_password'];
 

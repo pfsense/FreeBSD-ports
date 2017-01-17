@@ -27,8 +27,8 @@ $oper_sep = "\|\|";
 // Encryption password
 $decrypt_password = $config['installedpackages']['autoconfigbackup']['config'][0]['crypto_password'];
 
-// Defined username
-$username = $config['installedpackages']['autoconfigbackup']['config'][0]['username'];
+// Defined username. Username must be sent lowercase. See Redmine #7127 and Netgate Redmine #163
+$username = strtolower($config['installedpackages']['autoconfigbackup']['config'][0]['username']);
 
 // Defined password
 $password = $config['installedpackages']['autoconfigbackup']['config'][0]['password'];
