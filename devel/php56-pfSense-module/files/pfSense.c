@@ -178,9 +178,7 @@ static zend_function_entry pfSense_functions[] = {
 };
 
 zend_module_entry pfSense_module_entry = {
-#if ZEND_MODULE_API_NO >= 20010901
     STANDARD_MODULE_HEADER,
-#endif
     PHP_PFSENSE_WORLD_EXTNAME,
     pfSense_functions,
     PHP_MINIT(pfSense_socket),
@@ -188,9 +186,7 @@ zend_module_entry pfSense_module_entry = {
     NULL,
     NULL,
     NULL,
-#if ZEND_MODULE_API_NO >= 20010901
     PHP_PFSENSE_WORLD_VERSION,
-#endif
     STANDARD_MODULE_PROPERTIES
 };
 
