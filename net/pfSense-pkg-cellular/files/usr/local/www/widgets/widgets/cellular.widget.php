@@ -251,8 +251,8 @@ if (isset($_POST['getsignalstrength'])) {
 		init_modem();
 		widget();
 		getstatus_modem();
-		set_td_widths();
-		setTimeout("set_td_widths()", 1000);
+		//set_td_widths();
+		//setTimeout("set_td_widths()", 1000);
 	});
 </script>
 
