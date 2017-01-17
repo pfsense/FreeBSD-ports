@@ -2150,10 +2150,11 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 	struct sockaddr_in *tmp;
 	struct sockaddr_in6 *tmp6;
 	struct sockaddr_dl *tmpdl;
+	struct in6_ifreq ifr6;
 	struct ifreq ifr;
 	char outputbuf[128];
 	char *ifname;
-	int ifname_len, addresscnt = 0, addresscnt6 = 0;
+	int ifname_len, llflag, sock, addresscnt = 0, addresscnt6 = 0;
 	zval *caps;
 	zval *encaps;
 
@@ -2387,6 +2388,21 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 			    sizeof(outputbuf));
 			add_assoc_string(return_value, "ipaddr6", outputbuf, 1);
 			addresscnt6++;
+
+			memset(&ifr6, 0, sizeof(ifr6));
+			strncpy(ifr6.ifr_name, mb->ifa_name,
+			    sizeof(ifr6.ifr_name));
+			memcpy(&ifr6.ifr_ifru.ifru_addr, tmp6, tmp6->sin6_len);
+			if ((sock = socket(PF_INET6, SOCK_DGRAM, 0))) {
+				if (ioctl(sock, SIOCGIFAFLAG_IN6, &ifr6) == 0) {
+					llflag = ifr6.ifr_ifru.ifru_flags6;
+					if ((llflag & IN6_IFF_TENTATIVE) != 0)
+						add_assoc_long(return_value,
+						    "tentative", 1);
+				}
+				close(sock);
+			}
+
 			tmp6 = (struct sockaddr_in6 *)mb->ifa_netmask;
 			add_assoc_long(return_value, "subnetbits6",
 			    prefix(&tmp6->sin6_addr, sizeof(struct in6_addr)));
