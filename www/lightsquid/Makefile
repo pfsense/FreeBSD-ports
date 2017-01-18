@@ -3,7 +3,7 @@
 
 PORTNAME=	lightsquid
 PORTVERSION=	1.8
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	www
 MASTER_SITES=	SF
 
@@ -80,4 +80,10 @@ do-install-DOCS-on:
 	${INSTALL_DATA} ${WRKSRC}/doc/${i} ${STAGEDIR}/${DOCSDIR}
 .endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${PERL_LEVEL} >= 502200
+RUN_DEPENDS+=	p5-CGI>0:www/p5-CGI
+.endif
+
+.include <bsd.port.post.mk>
