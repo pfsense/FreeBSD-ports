@@ -1,4 +1,4 @@
-#!/usr/local/bin/python
+#!/usr/local/bin/python2.7
 #
 # cellular.py
 #
@@ -50,8 +50,9 @@ class CellularInterface:
 		self.cmd_string = ""
 
 		self.path = "/usr/local"
-		self.conf = self.path + "/etc/cellular/cellular.conf"
-		self.defconf = self.path + "/etc/cellular/cellular.defaults.conf"
+		self.confdir = self.path + "/etc/cellular"
+		self.conf = self.confdir + "/cellular.conf"
+		self.defconf = self.confdir + "/cellular.defaults.conf"
 
 		self.config = ConfigParser.ConfigParser()
 
@@ -160,6 +161,10 @@ class CellularInterface:
 
 	def init_config(self, config_file):
 		"""initialize config file if not present or from old version."""
+		
+		#make sure confdir exists
+		if (not os.path.isdir(self.confdir)):
+			os.makedirs(self.confdir)
 
 		# check if config file is from an old version.
 		if (os.path.isfile(config_file)):
