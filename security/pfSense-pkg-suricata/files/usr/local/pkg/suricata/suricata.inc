@@ -295,7 +295,23 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 	$home_net = array();
 
 	if (!$externallist && ($listname == 'default' || empty($listname))) {
-		$localnet = 'yes'; $wanip = 'yes'; $wangw = 'yes'; $wandns = 'yes'; $vips = 'yes'; $vpns = 'yes';
+		// When using inline IPS mode, do not include
+		// locally-attached network segments or the WAN IP in
+		// the default Pass List as this will kill all alerts
+		// and allow all traffic to pass!  We do include
+		// locally-attached networks and the WAN IP when
+		// building only the HOME_NET variable.
+		if ($suricatacfg['ips_mode'] == 'ips_mode_inline' && $passlist == TRUE) {
+			$localnet = 'no';
+			$wanip = 'no';
+		}
+		else {
+			$localnet = 'yes';
+			$wanip = 'yes';
+		}
+
+		// Default the remaining Pass List/HOME_NET items to 'yes'.
+		$wangw = 'yes'; $wandns = 'yes'; $vips = 'yes'; $vpns = 'yes';
 	}
 	else {
 		$list = suricata_find_list($listname);
@@ -345,7 +361,7 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 		}
 	}
 	elseif (!$externallist && $localnet != 'yes') {
-		if (is_ipaddrv4($suricataip)) {
+		if (is_ipaddrv4($suricataip) && $suricatacfg['interface'] <> "wan") {
 			if (!in_array($suricataip . "/32", $home_net)) {
 				$home_net[] = $suricataip . "/32";
 			}
@@ -371,7 +387,7 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 		}
 	}
 	elseif (!$externallist && $localnet != 'yes') {
-		if (is_ipaddrv6($suricataip)) {
+		if (is_ipaddrv6($suricataip) && $suricatacfg['interface'] <> "wan") {
 			if (!in_array($suricataip . "/128", $home_net)) {
 				$home_net[] = $suricataip . "/128";
 			}
@@ -390,7 +406,9 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 		}
 	}
 
-	if (($$externallist && $localnet == 'yes') || (!$externallist && (!$passlist || $localnet == 'yes' || empty($localnet)))) {		
+	// Now find all the locally-attached network subnets and add them to the
+	// list if user chose to include Local Networks.
+	if (($externallist && $localnet == 'yes') || (!$externallist && (!$passlist || $localnet == 'yes' || empty($localnet)))) {		
 		/*************************************************************************/
 		/*  Iterate through the interface list and write out pass list items and */
 		/*  also compile a HOME_NET list of all local interfaces for suricata.   */
@@ -440,6 +458,7 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 		}
 	}
 
+	// If user chose to include the WAN IP, then do so.
 	if ($wanip == 'yes') {
 		$ip = get_interface_ip("wan");
 		if (is_ipaddrv4($ip)) {
@@ -470,6 +489,7 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 		}
 	}
 
+	// If the user chose to include WAN gateways, then do so.
 	if ($wangw == 'yes') {
 		// Grab the default gateway if set
 		$default_gw = exec("/sbin/route -n get default |grep 'gateway:' | /usr/bin/awk '{ print $2 }'");
@@ -495,6 +515,7 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 		}
 	}
 
+	// If the user chose to include WAN DNS servers, then do so.
 	if ($wandns == 'yes') {
 		// Add DNS server for WAN interface to Pass List
 		$dns_servers = get_dns_servers();
@@ -510,6 +531,7 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 		}
 	}
 
+	// If the user chose to include Virtual IPs, then do so.
 	if($vips == 'yes') {
 		// iterate all vips and add to passlist
 		if (is_array($config['virtualip']) && is_array($config['virtualip']['vip'])) {
@@ -523,7 +545,9 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 		}
 	}
 
-	// Grab a list of vpns enabled - these come back as CIDR mask networks
+	// If the user chose to include VPNs, then grab a list of 
+	// vpns enabled and include them.  These come back as CIDR
+	// mask networks.
 	if ($vpns == 'yes') {
 		$vpns_list = filter_get_vpns_list();
 		if (!empty($vpns_list)) {
