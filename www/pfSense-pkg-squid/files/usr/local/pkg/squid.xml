@@ -687,9 +687,6 @@
 			<advancedfield/>
 		</field>
 	</fields>
-	<custom_add_php_command>
-		squid_resync();
-	</custom_add_php_command>
 	<custom_php_validation_command>
 		squid_validate_general($_POST, $input_errors);
 	</custom_php_validation_command>
