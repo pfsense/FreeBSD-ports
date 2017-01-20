@@ -403,7 +403,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 			$natent['msn_parser'] = "detection-only";
 
 			$natent['enable_iprep'] = "off";
-			$natent['host_memcap'] = "16777216";
+			$natent['host_memcap'] = "33554432";
 			$natent['host_hash_size'] = "4096";
 			$natent['host_prealloc'] = "1000";
 
