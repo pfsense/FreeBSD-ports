@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-tftpd
-PORTVERSION=	0.1.2
+PORTVERSION=	0.1.3
 CATEGORIES=	ftp
 MASTER_SITES=	# empty
 DISTFILES=	# empty
