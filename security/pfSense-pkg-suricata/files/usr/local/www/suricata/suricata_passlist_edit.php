@@ -273,6 +273,13 @@ $section->addInput(new Form_Checkbox(
 	'yes'
 ));
 $section->addInput(new Form_Checkbox(
+	'wanips',
+	'WAN IP',
+	'Add WAN interface IP to the list.',
+	$pconfig['wanips'] == 'yes' ? true:false,
+	'yes'
+));
+$section->addInput(new Form_Checkbox(
 	'wangateips',
 	'WAN Gateways',
 	'Add WAN Gateways to the list.',
