@@ -81,7 +81,7 @@ $suri_passlist = "{$suricatacfgdir}/passlist";
 
 // If using inline IPS mode, generate PASS rules to substitute for the PASS LIST
 @file_put_contents("{$suricatacfgdir}/rules/passlist.rules", '');
-if ($suricatacfg['ips_mode'] == 'ips_mode_inline' && $suricatacfg['blockoffenders'] == 'on') {
+if ($suricatacfg['ips_mode'] == 'ips_mode_inline' && $suricatacfg['blockoffenders'] == 'on' && $suricatacfg['passlistname'] <> 'none') {
 	$sid_tmp = 1000001;
 	foreach ($plist as $ip_tmp) {
 		$line = "pass ip {$ip_tmp} any <> any any (msg:\"Pass List Entry - allow all traffic from/to {$ip_tmp}\"; sid:{$sid_tmp};)\n";
