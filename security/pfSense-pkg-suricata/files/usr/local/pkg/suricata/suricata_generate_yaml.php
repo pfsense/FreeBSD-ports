@@ -774,7 +774,7 @@ if ($suricatacfg['enable_iprep'] == "on") {
 if (!empty($suricatacfg['host_memcap']))
 	$host_memcap = $suricatacfg['host_memcap'];
 else
-	$host_memcap = "16777216";
+	$host_memcap = "33554432";
 if (!empty($suricatacfg['host_hash_size']))
 	$host_hash_size = $suricatacfg['host_hash_size'];
 else
