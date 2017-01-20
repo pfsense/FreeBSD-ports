@@ -25,7 +25,7 @@
 @require_once("/usr/local/www/widgets/include/interfaces.inc");
 
 global $config;
-$python_bin = '/usr/local/bin/python';
+$python_bin = '/usr/local/bin/python2.7';
 $interface_bin = '/usr/local/sbin/cellular';
 $widget_url = '/widgets/widgets/cellular.widget.php';
 
@@ -251,8 +251,8 @@ if (isset($_POST['getsignalstrength'])) {
 		init_modem();
 		widget();
 		getstatus_modem();
-		set_td_widths();
-		setTimeout("set_td_widths()", 1000);
+		//set_td_widths();
+		//setTimeout("set_td_widths()", 1000);
 	});
 </script>
 

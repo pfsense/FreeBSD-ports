@@ -403,7 +403,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 			$natent['msn_parser'] = "detection-only";
 
 			$natent['enable_iprep'] = "off";
-			$natent['host_memcap'] = "16777216";
+			$natent['host_memcap'] = "33554432";
 			$natent['host_hash_size'] = "4096";
 			$natent['host_prealloc'] = "1000";
 
@@ -932,13 +932,14 @@ $section->add($group);
 $group = new Form_Group('Pass List');
 
 $group->addClass('passlist');
-
+$list = suricata_get_config_lists('passlist');
+$list['none'] = 'none';
 $group->add(new Form_Select(
 	'passlistname',
 	'Pass List',
 	$pconfig['passlistname'],
-	suricata_get_config_lists('passlist')
-))->setHelp('Choose the Pass List you want this interface to use. Addresses in a Pass List are never blocked. ');
+	$list
+))->setHelp('Choose the Pass List you want this interface to use. Addresses in a Pass List are never blocked. Select "none" to prevent use of a Pass List.');
 
 $group->add(new Form_Button(
 	'btnPasslist',
@@ -947,8 +948,9 @@ $group->add(new Form_Button(
 	'fa-file-text-o'
 ))->removeClass('btn-primary')->addClass('btn-info')->addClass('btn-sm')->setAttribute('data-target', '#passlist')->setAttribute('data-toggle', 'modal');
 
-$group->setHelp('The default Pass List adds local networks, WAN IPs, Gateways, VPNs and VIPs.  Create an Alias to customize.' . '<br />' .
-				'This option will only be used when block offenders is on.');
+$group->setHelp('The default Pass List adds local networks, WAN IPs, Gateways, VPNs and VIPs.  Create an Alias to customize.' . 
+				'This option will only be used when block offenders is on.  Choosing "none" will disable Pass List generation ' . 
+				'and is the recommended choice when using Inline IPS Mode.');
 
 $section->add($group);
 

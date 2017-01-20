@@ -32,7 +32,7 @@ function cellular_sync() {
 
 	global $config;
 
-	$python_bin = '/usr/local/bin/python';
+	$python_bin = '/usr/local/bin/python2.7';
 	$interface_bin = '/usr/local/sbin/cellular';
 
 	// exec("$python_bin $interface_bin signal", $sig);
@@ -100,7 +100,7 @@ function cellular_before_everything() {
 
 	if (isset($pkg) && array_key_exists('fields', $pkg)) {
 
-		$python_bin = '/usr/local/bin/python';
+		$python_bin = '/usr/local/bin/python2.7';
 		$interface_bin = '/usr/local/sbin/cellular';
 
 		$custom_str = "I; +CSQ; +COPS?; +CGPADDR";
