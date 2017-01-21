@@ -41,6 +41,17 @@
 		<executable>in.tftpd</executable>
 		<description>TFTP daemon</description>
 	</service>
+	<tabs>
+		<tab>
+			<text>Settings</text>
+			<url>/pkg_edit.php?xml=tftpd.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Files</text>
+			<url>/tftp_files.php</url>
+		</tab>
+	</tabs>
 	<fields>
 		<field>
 			<fielddescr>Enable TFTP service</fielddescr>
