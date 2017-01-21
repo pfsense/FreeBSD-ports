@@ -100,7 +100,7 @@ EOD;
 	write_rcfile(array(
 		"file" => "telegraf.sh",
 		"start" => "/usr/sbin/daemon -crP {$pidfile} /usr/local/bin/telegraf -config={$conffile} 2>> {$logfile}",
-		"stop" => "/bin/kill `/bin/cat /var/run/telegraf.pid`"
+		"stop" => "/bin/kill `/bin/cat {$pidfile}`"
 		)
 	);
 
