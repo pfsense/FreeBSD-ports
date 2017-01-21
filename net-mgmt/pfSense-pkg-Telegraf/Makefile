@@ -1,24 +1,24 @@
 # $FreeBSD$
 
-PORTNAME=     pfSense-pkg-Telegraf
-PORTVERSION=  0.0.13
-CATEGORIES=   net-mgmt
-MASTER_SITES= # empty
-DISTFILES=    # empty
-EXTRACT_ONLY= # empty
+PORTNAME=	pfSense-pkg-Telegraf
+PORTVERSION=	0.1
+CATEGORIES=	net-mgmt
+MASTER_SITES=	# empty
+DISTFILES=	# empty
+EXTRACT_ONLY=	# empty
 
-MAINTAINER=   me@willboyce.com
-COMMENT=      pfSense package Telegraf
+MAINTAINER=	me@willboyce.com
+COMMENT=	pfSense package Telegraf
 
-LICENSE=      APACHE20
+LICENSE=	APACHE20
 
-RUN_DEPENDS=  telegraf:net-mgmt/telegraf
+RUN_DEPENDS=	telegraf:net-mgmt/telegraf
 
-NO_BUILD=     yes
-NO_MTREE=     yes
+NO_BUILD=	yes
+NO_MTREE=	yes
 
-SUB_FILES=    pkg-install pkg-deinstall
-SUB_LIST=     PORTNAME=${PORTNAME}
+SUB_FILES=	pkg-install pkg-deinstall
+SUB_LIST=	PORTNAME=${PORTNAME}
 
 do-extract:
 	${MKDIR} ${WRKSRC}
