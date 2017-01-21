@@ -25,13 +25,51 @@ require_once("pfsense-utils.inc");
 require_once("service-utils.inc");
 require_once("util.inc");
 
+/* Helper function for files listing */
+function tftp_byte_convert($bytes) {
+	if ($bytes <= 0) {
+		return '0 Byte';
+	}
+	$convention = 1000;
+	$s = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB');
+	$e = floor(log($bytes, $convention));
+	return round($bytes/pow($convention, $e), 2) . ' ' . $s[$e];
+}
+
+/* Create backup of the TFTP server directory */
+function tftp_create_backup($trigger_download = false) {
+	global $backup_dir, $backup_path, $files_dir;
+
+	conf_mount_rw();
+	safe_mkdir("{$backup_dir}");
+	if (mwexec("/usr/bin/tar -czC / -f {$backup_path} {$files_dir}") || !file_exists("{$backup_path}")) {
+		header("Location: tftp_files.php?savemsg=Backup+failed.&result=alert-warning");
+	} elseif ($trigger_download == false) {
+		header("Location: tftp_files.php?savemsg=Backup+has+been+created");
+	}
+	conf_mount_ro();
+}
+
 function install_package_tftpd() {
-	safe_mkdir("/tftpboot");
+	if (is_array($config['installedpackages']['tftpd'])) {
+		$tftpd_conf = &$config['installedpackages']['tftpd']['config'][0];
+	} else {
+		$tftpd_conf = array();
+	}
+	$datadir = ($tftpd_conf['datadir'] ?: '/tftpboot');
+	safe_mkdir("{$datadir}");
 	unlink_if_exists("/usr/local/etc/rc.d/tftpd");
 }
 
 function deinstall_package_tftpd() {
-	@rmdir("/tftpboot");
+	if (is_array($config['installedpackages']['tftpd'])) {
+		$tftpd_conf = &$config['installedpackages']['tftpd']['config'][0];
+	} else {
+		$tftpd_conf = array();
+	}
+	$datadir = ($tftpd_conf['datadir'] ?: '/tftpboot');
+	// Will only get removed when empty
+	@rmdir("{$datadir}");
 }
 
 function sync_package_tftpd() {
