@@ -31,7 +31,7 @@
 	<include_file>/usr/local/pkg/tftpd.inc</include_file>
 	<aftersaveredirect>/pkg_edit.php?xml=tftpd.xml</aftersaveredirect>
 	<menu>
-		<name>tftpd</name>
+		<name>TFTP Server</name>
 		<section>Services</section>
 		<url>/pkg_edit.php?xml=tftpd.xml</url>
 	</menu>
