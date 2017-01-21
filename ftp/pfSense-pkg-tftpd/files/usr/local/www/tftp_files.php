@@ -173,6 +173,7 @@ display_top_tabs($tab_array);
 				</tr>
 			<?php endif; ?>
 			<?php endforeach; ?>
+			</tbody>
 			</table>
 		</td></tr></tbody>
 		</table>
@@ -206,7 +207,7 @@ display_top_tabs($tab_array);
 			<i class="fa fa-upload icon-embed-btn"></i>
 			<?=gettext("Upload")?>
 		</button>
-		<a name="tftpd_dnload_all" id="tftpd_dnload_all" type="button" class="btn btn-info btn-sm"" title="<?=gettext('Download all files in a single gzip archive');?>"
+		<a name="tftpd_dnload_all" id="tftpd_dnload_all" type="button" class="btn btn-info btn-sm" title="<?=gettext('Download all files in a single gzip archive');?>"
 			href="tftp_files.php?a=download&amp;t=backup" text="download all files">
 			<i class="fa fa-download icon-embed-btn"></i>
 			<?=gettext('Download');?>
