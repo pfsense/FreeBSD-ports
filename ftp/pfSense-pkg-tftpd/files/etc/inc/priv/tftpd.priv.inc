@@ -3,6 +3,7 @@
  * tftpd.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2016 Stefan Seidel
  * All rights reserved.
  *
@@ -22,7 +23,7 @@
 global $priv_list;
 
 $priv_list['page-system-tftpd'] = array();
-$priv_list['page-system-tftpd']['name'] = "WebCfg - System: tftpd package";
+$priv_list['page-system-tftpd']['name'] = "WebCfg - Services: tftpd package";
 $priv_list['page-system-tftpd']['descr'] = "Allow access to tftpd package GUI";
 $priv_list['page-system-tftpd']['match'] = array();
 
