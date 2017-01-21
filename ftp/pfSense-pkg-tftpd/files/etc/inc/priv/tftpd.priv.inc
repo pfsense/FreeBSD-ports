@@ -22,11 +22,12 @@
 
 global $priv_list;
 
-$priv_list['page-system-tftpd'] = array();
-$priv_list['page-system-tftpd']['name'] = "WebCfg - Services: tftpd package";
-$priv_list['page-system-tftpd']['descr'] = "Allow access to tftpd package GUI";
-$priv_list['page-system-tftpd']['match'] = array();
+$priv_list['page-services-tftpd'] = array();
+$priv_list['page-services-tftpd']['name'] = "WebCfg - Services: tftpd package";
+$priv_list['page-services-tftpd']['descr'] = "Allow access to tftpd package GUI";
+$priv_list['page-services-tftpd']['match'] = array();
 
-$priv_list['page-system-tftpd']['match'][] = "pkg_edit.php?xml=tftpd.xml*";
+$priv_list['page-services-tftpd']['match'][] = "pkg_edit.php?xml=tftpd.xml*";
+$priv_list['page-services-tftpd']['match'][] = "tftp_files.php*";
 
 ?>
