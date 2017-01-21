@@ -141,9 +141,9 @@ display_top_tabs($tab_array);
 ?>
 
 <div class="panel panel-default">
-        <div class="panel-heading"><h2 class="panel-title"><?=gettext("TFTP Server Files Management")?></h2></div>
-        <div class="panel-body table-responsive">
-                <table class="table table-striped table-hover table-condensed">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("TFTP Server Files Management")?></h2></div>
+	<div class="panel-body table-responsive">
+		<table class="table table-striped table-hover table-condensed">
 		<tbody><tr><td>
 			<table class="table table-striped table-hover table-condensed">
 			<thead>
@@ -190,7 +190,7 @@ display_top_tabs($tab_array);
 				</div>
 
 				<div class="modal-body">
-					<?=gettext("Select a file to upload, and then click 'Upload'.  Click 'Close' to quit."); ?><br /><br />
+					<?=gettext("Select a file to upload, and then click 'Upload'. Click 'Close' to quit."); ?><br /><br />
 					<form action="tftp_files.php" method="post" enctype="multipart/form-data" name="iform" id="iform">
 					<input type="hidden" name="MAX_FILE_SIZE" value="100000000" />
 					<input type="file" class="btn btn-info" name="tftpd_fileup" id="tftpd_fileup" class="formfld file" size="50" /><br />
