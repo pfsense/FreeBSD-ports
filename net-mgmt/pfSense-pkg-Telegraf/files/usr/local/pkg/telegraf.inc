@@ -80,8 +80,6 @@ function telegraf_resync_config() {
 [[outputs.influxdb]]
 	urls = ["{$telegraf_conf['influx_server']}"]
 	database = "{$telegraf_conf['influx_db']}"
-	username = ""
-	password = ""
 
 EOD;
 
