@@ -152,6 +152,13 @@ class acme_sh {
 		$reloadfile = "{$this->acmeconf}reloadcmd.sh";
 		file_put_contents($reloadfile, $reloadcmd);
 		chmod($reloadfile, 0755);
+		
+		if ($api == "dns_nsupdate") {
+			$keyfile = "{$certpath}nsupdate.key";
+			$nsupdatekey = base64_decode($envvariables['NSUPDATE_KEY']);
+			file_put_contents($keyfile, $nsupdatekey);
+			$envvariables['NSUPDATE_KEY'] = $keyfile;
+		}
 
 		$hookcontent_httpapi  = <<<EOF
 pfSenseacme_add() {

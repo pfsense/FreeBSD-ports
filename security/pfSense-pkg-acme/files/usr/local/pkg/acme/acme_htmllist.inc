@@ -120,14 +120,14 @@ class HtmlList
 				$checked = $itemvalue=='yes' ? " checked" : "";
 				$result .= "<input onclick='html_listitem_change(\"{$this->tablename}\",\"{$itemname}\",\"{$counter}\",this);' name='$itemnamenr' id='$itemnamenr' type='checkbox'$checked value='yes' />";
 			} elseif ($itemtype == "textarea") {
-				$result .= "<textarea class='nowrap' name='$itemnamenr' id='$itemnamenr' cols='{$item['size']}' rows='10'>";
+				$result .= "<textarea class='form-control nowrap' name='$itemnamenr' id='$itemnamenr' cols='{$item['size']}' rows='10'>";
 				$result .= htmlspecialchars(base64_decode($itemvalue));
 				$result .= "</textarea>";
 			} elseif ($itemtype ==  "fixedtext") {
 				$result .= $item['text'];
 			} else {
 				$itemvalue = htmlspecialchars($itemvalue, ENT_QUOTES);
-				$result .= "<input name='$itemnamenr' id='$itemnamenr' type='text' value='{$itemvalue}' />";
+				$result .= "<input class='form-control' name='$itemnamenr' id='$itemnamenr' type='text' value='{$itemvalue}' />";
 			}
 		} else {
 			if ($itemtype == "select") {
@@ -181,7 +181,7 @@ class HtmlList
 					} else {
 						$itemvalue = $value[$this->keyfield];
 					}
-					$key = "<input name='{$tablename}_key{$counter}' id='{$tablename}_key{$counter}' class='hidden' value='{$itemvalue}'>";
+					$key = "<input name='{$tablename}_key{$counter}' id='{$tablename}_key{$counter}' class='form-control hidden' value='{$itemvalue}'>";
 				} else {
 					$key = "";
 				}
@@ -244,7 +244,7 @@ class HtmlList
 				}
 				$result .= "
 		<td class='action-icons'>
-			<input name='{$tablename}_rowindex[]' id='{$tablename}_rowindex{$counter}' class='hidden' value='{$counter}' />
+			<input name='{$tablename}_rowindex[]' id='{$tablename}_rowindex{$counter}' class='form-control hidden' value='{$counter}' />
 			<a onclick='deleteRow({$counter}, \"{$tablename}\"); return false;' >".acmeicon('delete','delete entry')."</a>
 			<a onclick='dupRow({$counter}, \"{$tablename}\"); return false;' >".acmeicon('clone','duplicate entry')."</a>
 			";
@@ -299,7 +299,7 @@ EOT
 						}
 						$result .= "</div>";
 						$result .= "<div id='htmltable_{$tablename}_{$counter}_details_edit' class='hidden'>";
-						$result .= "<table class='tabcont' style='border-collapse:collapse' border='1' cellspacing='0' >";
+						$result .= "<table class='table table-hover table-striped table-condensed' style='border-collapse:collapse' border='1' cellspacing='0' >";
 						foreach($itemdetails as $item) {
 							$itemname = $item['name'];
 							$result .= "<tr id='tr_edititemdetails_{$counter}_{$itemname}'>";
@@ -375,7 +375,7 @@ function acme_htmllist_js(){
 			"' id='" + tableId + field['name'] + rowId +
 			"'><\/input> ";
 		} else if(field['type'] === 'textarea') {
-			result="<textarea class='nowrap' cols='" + field['size'] + "' rows='15' name='" + tableId + field['name'] + rowId +
+			result="<textarea class='form-control nowrap' cols='" + field['size'] + "' rows='15' name='" + tableId + field['name'] + rowId +
 			"' id='" + tableId + field['name'] + rowId +
 			"'><\/textarea> ";
 		} else if(field['type'] === 'select') {
