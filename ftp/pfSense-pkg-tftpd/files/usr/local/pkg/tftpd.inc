@@ -143,6 +143,10 @@ function validate_form_tftpd($post, &$input_errors) {
 		$input_errors[] = 'Directory for files does not exist!';
 	}
 
+	if ($post['datadir'] == '/') {
+		$input_errors[] = 'Setting "/" as directory for files is not allowed!';
+	}
+
 	if ($post['tftpd_ip']) {
 		if ($post['tftpd_ipv4only'] && !is_ipaddrv4($post['tftpd_ip'])) {
 			$input_errors[] = 'TFTP Server Bind IP must be a valid IPv4 address!';
