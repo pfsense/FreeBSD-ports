@@ -8,6 +8,7 @@
  * tftpd.xml
  *
  * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2016 Stefan Seidel
  * All rights reserved.
  *
@@ -30,7 +31,7 @@
 	<include_file>/usr/local/pkg/tftpd.inc</include_file>
 	<aftersaveredirect>/pkg_edit.php?xml=tftpd.xml</aftersaveredirect>
 	<menu>
-		<name>tftpd</name>
+		<name>TFTP Server</name>
 		<section>Services</section>
 		<url>/pkg_edit.php?xml=tftpd.xml</url>
 	</menu>
@@ -40,19 +41,58 @@
 		<executable>in.tftpd</executable>
 		<description>TFTP daemon</description>
 	</service>
+	<tabs>
+		<tab>
+			<text>Settings</text>
+			<url>/pkg_edit.php?xml=tftpd.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Files</text>
+			<url>/tftp_files.php</url>
+		</tab>
+	</tabs>
 	<fields>
 		<field>
 			<fielddescr>Enable TFTP service</fielddescr>
 			<fieldname>tftpd_enable</fieldname>
-			<description>Enable the TFTP service?</description>
+			<description>Check to enable the TFTP service.</description>
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Directory for files</fielddescr>
-			<fieldname>datadir</fieldname>
-			<description>Enter the directory path to the files that the TFTP server should serve. The directory must exist. Default: /tftpboot</description>
+			<fielddescr>TFTP Server Bind IP</fielddescr>
+			<fieldname>tftpd_ip</fieldname>
+			<description>
+				<![CDATA[
+				By default, TFTP server will listen on all local addresses. If this is not desired,
+				you can restrict this to a specific local address.<br/>
+				<span class="text-danger">This must be a valid, locally configured IP address.</span>
+				]]>
+			</description>
 			<type>input</type>
-			<default_value>/tftpboot</default_value>
+		</field>
+		<field>
+			<fielddescr>IPv4 Only</fielddescr>
+			<fieldname>tftpd_ipv4only</fieldname>
+			<description>Check to allow clients to connect with IPv4 only.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Max Block Size</fielddescr>
+			<fieldname>tftpd_blocksize</fieldname>
+			<description>
+				<![CDATA[
+				Specifies the maximum permitted block size. <span class="text-info">The permitted range is from 512 to 65464.</span>
+				<div class="infoblock">
+				Some embedded clients request large block sizes	and yet	do not handle fragmented packets
+				correctly; for these clients, it is recommended to set this value to the smallest MTU
+				on your network minus 32 bytes (20 bytes for IP, 8 for UDP, and 4 for TFTP; less if you
+				use IP options on your network.)<br/>
+				For example, on a standard Ethernet (MTU 1500) a value of 1468 is reasonable.
+				</div>
+				]]>
+			</description>
+			<type>input</type>
 		</field>
 	</fields>
 	<custom_php_install_command>
@@ -61,9 +101,6 @@
 	<custom_php_deinstall_command>
 		deinstall_package_tftpd();
 	</custom_php_deinstall_command>
-	<custom_add_php_command>
-		sync_package_tftpd();
-	</custom_add_php_command>
 	<custom_php_resync_config_command>
 		sync_package_tftpd();
 	</custom_php_resync_config_command>
