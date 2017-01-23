@@ -1,0 +1,9 @@
+pkg/teamspeak3.xml
+pkg/teamspeak3.inc
+/etc/inc/priv/teamspeak3.priv.inc
+www/shortcuts/pkg_teamspeak3.inc
+www/teamspeak3/teamspeak3_backup_restore.php
+www/teamspeak3/teamspeak3_show_logs.php
+www/teamspeak3/index.php
+%%DATADIR%%/info.xml
+@dir /etc/inc/priv
