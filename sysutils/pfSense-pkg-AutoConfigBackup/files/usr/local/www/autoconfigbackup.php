@@ -152,9 +152,11 @@ if ($_REQUEST['newver'] != "") {
 	$data_split = split("\+\+\+\+", $data);
 	$sha256 = trim($data_split[0]);
 	$data = $data_split[1];
+
 	if (!tagfile_deformat($data, $data, "config.xml")) {
 		$input_errors[] = "The downloaded file does not appear to contain an encrypted pfSense configuration.";
 	}
+
 	$out = decrypt_data($data, $decrypt_password);
 
 	$pos = stripos($out, "</pfsense>");
@@ -164,9 +166,11 @@ if ($_REQUEST['newver'] != "") {
 	$fd = fopen("/tmp/config_restore.xml", "w");
 	fwrite($fd, $data);
 	fclose($fd);
+
 	if (strlen($data) < 50) {
 		$input_errors[] = "The decrypted config.xml is under 50 characters, something went wrong. Aborting.";
 	}
+
 	$ondisksha256 = trim(shell_exec("/sbin/sha256 /tmp/config_restore.xml | /usr/bin/awk '{ print $4 }'"));
 	// We might not have a sha256 on file for older backups
 	if ($sha256 != "0" && $sha256 != "") {
@@ -184,6 +188,7 @@ if ($_REQUEST['newver'] != "") {
 	} else {
 		curl_close($curl_session);
 	}
+
 	if (!$input_errors && $data) {
 		conf_mount_rw();
 		if (config_restore("/tmp/config_restore.xml") == 0) {
@@ -205,6 +210,7 @@ EOF;
 	unlink_if_exists("/tmp/config_restore.xml");
 	conf_mount_ro();
 }
+
 if ($_REQUEST['download']) {
 	// Phone home and obtain backups
 	$curl_session = curl_init();
@@ -238,7 +244,10 @@ if ($_REQUEST['download']) {
 			$input_errors[] = "Could not decrypt config.xml";
 		}
 	}
-} else {
+}
+
+// $confvers must be populated viewing info but there were errors
+if ( !($_REQUEST['download']) || $input_errors) {
 	// Populate available backups
 	$curl_session = curl_init();
 	curl_setopt($curl_session, CURLOPT_URL, $get_url);
@@ -301,6 +310,7 @@ if ($_REQUEST['download']) {
 } else {
 	$active = true;
 }
+
 $tab_array[1] = array("Restore", $active, "/autoconfigbackup.php");
 if ($_REQUEST['download']) {
 	$tab_array[] = array("Revision", true, "/autoconfigbackup.php?download={$_REQUEST['download']}");
