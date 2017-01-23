@@ -21,28 +21,25 @@
  */
 
 require_once("globals.inc");
+require_once("notices.inc");
 require_once("pfsense-utils.inc");
 require_once("service-utils.inc");
 require_once("util.inc");
 
-/* Helper function for files listing */
-function tftp_byte_convert($bytes) {
-	if ($bytes <= 0) {
-		return '0 Byte';
-	}
-	$convention = 1000;
-	$s = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB');
-	$e = floor(log($bytes, $convention));
-	return round($bytes/pow($convention, $e), 2) . ' ' . $s[$e];
-}
+/* Define some locations */
+define('BACKUP_DIR', '/root/backup');
+define('BACKUP_FILENAME', 'tftp.bak.tgz');
+define('BACKUP_PATH', BACKUP_DIR . '/' . BACKUP_FILENAME);
+/* Change FILES_DIR below if you really need TFTP files directory elsewhere.
+ * Note: Such modifications are completely unsupported!
+ */
+define('FILES_DIR', '/tftpboot');
 
 /* Create backup of the TFTP server directory */
 function tftp_create_backup($trigger_download = false) {
-	global $backup_dir, $backup_path, $files_dir;
-
 	conf_mount_rw();
-	safe_mkdir("{$backup_dir}");
-	if (mwexec("/usr/bin/tar -czC / -f {$backup_path} {$files_dir}") || !file_exists("{$backup_path}")) {
+	safe_mkdir(BACKUP_DIR);
+	if (mwexec("/usr/bin/tar -czC / -f " . BACKUP_PATH . " " . FILES_DIR) || !file_exists(BACKUP_PATH)) {
 		header("Location: tftp_files.php?savemsg=Backup+failed.&result=alert-warning");
 	} elseif ($trigger_download == false) {
 		header("Location: tftp_files.php?savemsg=Backup+has+been+created");
@@ -50,26 +47,52 @@ function tftp_create_backup($trigger_download = false) {
 	conf_mount_ro();
 }
 
-function install_package_tftpd() {
-	if (is_array($config['installedpackages']['tftpd'])) {
-		$tftpd_conf = &$config['installedpackages']['tftpd']['config'][0];
+/* Restore backup of the TFTP server directory */
+function tftp_restore_backup() {
+	if (file_exists(BACKUP_PATH)) {
+		conf_mount_rw();
+		mwexec("/usr/bin/tar -xpzC / -f " . BACKUP_PATH);
+		header("Location: tftp_files.php?savemsg=Backup+has+been+restored.");
+		conf_mount_ro();
 	} else {
-		$tftpd_conf = array();
+		header("Location: tftp_files.php?savemsg=Restore+failed.+Backup+file+not+found.&result=alert-warning");
 	}
-	$datadir = ($tftpd_conf['datadir'] ?: '/tftpboot');
-	safe_mkdir("{$datadir}");
+}
+
+/* Only allow to download files under the FILES_DIR */
+function tftp_filesdir_bounds_check($filename, $error_msg) {
+	$basedirlength = strlen(FILES_DIR);
+	if (substr($filename, 0, $basedirlength) !== FILES_DIR) {
+		log_error("[tftpd] {$error_msg}");
+		file_notice("tftpd", "{$error_msg}", "Packages");
+		return false;
+	} else {
+		return true;
+	}
+}
+
+function install_package_tftpd() {
+	safe_mkdir(FILES_DIR);
 	unlink_if_exists("/usr/local/etc/rc.d/tftpd");
+	upgrade_config_tftpd();
 }
 
 function deinstall_package_tftpd() {
+	// Will only get removed when empty
+	@rmdir(FILES_DIR);
+}
+
+function upgrade_config_tftpd() {
+	// FILES_DIR is not configurable any more
 	if (is_array($config['installedpackages']['tftpd'])) {
 		$tftpd_conf = &$config['installedpackages']['tftpd']['config'][0];
 	} else {
 		$tftpd_conf = array();
 	}
-	$datadir = ($tftpd_conf['datadir'] ?: '/tftpboot');
-	// Will only get removed when empty
-	@rmdir("{$datadir}");
+	if (!empty($tftpd_conf['datadir']) && $tftpd_conf['datadir'] !== FILES_DIR) {
+		file_notice("tftpd", "Please, move your TFTP server files from {$tftpd_conf['datadir']} to /tftpboot", "Packages");
+		unset($config['installedpackages']['tftpd']['config'][0]['datadir']);
+	}
 }
 
 function sync_package_tftpd() {
@@ -94,15 +117,17 @@ function sync_package_tftpd() {
 	}
 
 	// Root directory
-	$datadir = $tftpd_conf['datadir'];
+	$datadir = FILES_DIR;
 
 	// TFTP Server Bind IP
 	if (!empty($tftpd_conf['tftpd_ip'])) {
 		$address = $tftpd_conf['tftpd_ip'];
 		if (is_ipaddrv6($address)) {
 			$address = "-a [{$address}]";
-		} else {
+		} elseif (is_ipaddrv4($address)) {
 			$address = "-a {$address}";
+		} else {
+			$address = "";
 		}
 	}
 
@@ -115,7 +140,7 @@ function sync_package_tftpd() {
 
 	// Max Block Size
 	if (!empty($tftpd_conf['tftpd_blocksize'])) {
-		$options .= " -B {$tftpd_conf['tftpd_blocksize']}";
+		$options .= " -B " . escapeshellarg($tftpd_conf['tftpd_blocksize']);
 	}
 
 	write_rcfile(array(
@@ -139,14 +164,6 @@ function sync_package_tftpd() {
 }
 
 function validate_form_tftpd($post, &$input_errors) {
-	if ($post['datadir'] && !is_dir($post['datadir'])) {
-		$input_errors[] = 'Directory for files does not exist!';
-	}
-
-	if ($post['datadir'] == '/') {
-		$input_errors[] = 'Setting "/" as directory for files is not allowed!';
-	}
-
 	if ($post['tftpd_ip']) {
 		if ($post['tftpd_ipv4only'] && !is_ipaddrv4($post['tftpd_ip'])) {
 			$input_errors[] = 'TFTP Server Bind IP must be a valid IPv4 address!';
