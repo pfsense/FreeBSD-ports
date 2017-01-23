@@ -51,20 +51,6 @@ if ($_GET['a'] == "download") {
 			$desc = $filename;
 			$filename = basename($filename);
 		}
-		/*
-		$basedirlength = strlen(FILES_DIR);
-		$filename = htmlspecialchars($_GET['filename']);
-		if (substr($filename, 0, $basedirlength) !== FILES_DIR) {
-			$error_msg = "Attempt to download files outside of TFTP server directory rejected!";
-			log_error("[tftpd] {$error_msg}");
-			file_notice("tftpd", "{$error_msg}", "Packages");
-			header("Location: tftp_files.php");
-			return;
-		} else {
-			$desc = $filename;
-			$filename = basename($filename);
-		}
-		*/
 	}
 
 	session_cache_limiter('public');
@@ -115,22 +101,6 @@ if ($_GET['act'] == "del") {
 			header("Location: tftp_files.php");
 			exit;
 		}
-		/*
-		// Only delete files under the FILES_DIR!
-		$basedirlength = strlen(FILES_DIR);
-		if (substr($filename, 0, $basedirlength) !== FILES_DIR) {
-			$error_msg = "Attempt to delete files outside of TFTP server directory rejected!";
-			log_error("[tftpd] {$error_msg}");
-			file_notice("tftpd", $error_msg, "Packages");
-			header("Location: tftp_files.php");
-			return;
-		} else {
-			unlink_if_exists("{$filename}");
-			conf_mount_ro();
-			header("Location: tftp_files.php");
-			exit;
-		}
-		*/
 	}
 }
 
