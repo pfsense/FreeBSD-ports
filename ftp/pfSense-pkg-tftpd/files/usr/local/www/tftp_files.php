@@ -26,14 +26,6 @@ require_once("notices.inc");
 require_once("util.inc");
 require_once("/usr/local/pkg/tftpd.inc");
 
-/* Define some locations */
-$backup_dir = "/root/backup";
-$backup_filename = "tftp.bak.tgz";
-$backup_path = "{$backup_dir}/{$backup_filename}";
-$files_dir = $config['installedpackages']['tftpd']['config'][0]['datadir'];
-$filename = htmlspecialchars($_GET['filename']);
-$download_dir = $files_dir;
-
 /* Trigger full backup creation */
 if ($_GET['a'] == "other" && $_GET['t'] == "backup") {
 	tftp_create_backup();
@@ -42,27 +34,37 @@ if ($_GET['a'] == "other" && $_GET['t'] == "backup") {
 /* Download full backup or individual files */
 if ($_GET['a'] == "download") {
 	if ($_GET['t'] == "backup") {
-		// Create backup first if it does not exist yet
-		if (!file_exists("{$backup_path}")) {
-			tftp_create_backup(true);
-		}
-		// Download full TFTP server backup from $backup_dir
-		$desc = $backup_path;
-		$filename = $backup_filename;
+		// Create backup first
+		tftp_create_backup(true);
+		// Download full TFTP server backup from BACKUP_DIR
+		$desc = BACKUP_PATH;
+		$filename = BACKUP_FILENAME;
 	} else {
-		// Download a single file from $files_dir
-		// Only allow to download files under the $files_dir!
-		$basedirlength = strlen($files_dir);
-		if (substr($filename, 0, $basedirlength) !== "{$files_dir}") {
-			$error_msg = "Attempt to download files outside of TFTP server directory rejected!";
-			log_error("[tftpd] {$error_msg}");
-			file_notice("tftpd", $error_msg, "Packages");
+		// Download a single file from FILES_DIR
+		// Only allow to download files under the FILES_DIR
+		$filename = htmlspecialchars($_GET['filename']);
+		$error_msg = "Attempt to download files outside of TFTP server directory rejected!";
+		if (!tftp_filesdir_bounds_check($filename, $error_msg)) {
 			header("Location: tftp_files.php");
 			return;
 		} else {
 			$desc = $filename;
 			$filename = basename($filename);
 		}
+		/*
+		$basedirlength = strlen(FILES_DIR);
+		$filename = htmlspecialchars($_GET['filename']);
+		if (substr($filename, 0, $basedirlength) !== FILES_DIR) {
+			$error_msg = "Attempt to download files outside of TFTP server directory rejected!";
+			log_error("[tftpd] {$error_msg}");
+			file_notice("tftpd", "{$error_msg}", "Packages");
+			header("Location: tftp_files.php");
+			return;
+		} else {
+			$desc = $filename;
+			$filename = basename($filename);
+		}
+		*/
 	}
 
 	session_cache_limiter('public');
@@ -81,15 +83,8 @@ if ($_GET['a'] == "download") {
 
 /* Restore TFTP server backup */
 if ($_GET['a'] == "other" && $_GET['t'] == "restore") {
-		if (file_exists($backup_path)) {
-			conf_mount_rw();
-			mwexec("/usr/bin/tar -xpzC / -f {$backup_path}");
-			header("Location: tftp_files.php?savemsg=Backup+has+been+restored.");
-			conf_mount_ro();
-		} else {
-			header("Location: tftp_files.php?savemsg=Restore+failed.+Backup+file+not+found.&result=alert-warning");
-		}
-		exit;
+	tftp_restore_backup();
+	exit;
 }
 
 /* Upload files to TFTP server */
@@ -98,7 +93,7 @@ if ($_POST['upload'] == "Upload" && $_FILES["tftpd_fileup"]["error"] == UPLOAD_E
 		conf_mount_rw();
 		$tmp_name = $_FILES["tftpd_fileup"]["tmp_name"];
 		$name = basename($_FILES["tftpd_fileup"]["name"]);
-		move_uploaded_file($tmp_name, "{$files_dir}/{$name}");
+		move_uploaded_file($tmp_name, FILES_DIR . "/{$name}");
 		conf_mount_ro();
 	} else {
 		$input_errors[] = gettext("Failed to upload file {$_FILES["tftpd_fileup"]["name"]}");
@@ -110,9 +105,20 @@ if ($_GET['act'] == "del") {
 	if ($_GET['type'] == 'tftp') {
 		conf_mount_rw();
 		$filename = htmlspecialchars($_GET['filename']);
-		// Only delete files under the $files_dir!
-		$basedirlength = strlen($files_dir);
-		if (substr($filename, 0, $basedirlength) !== "{$files_dir}") {
+		$error_msg = "Attempt to delete files outside of TFTP server directory rejected!";
+		if (!tftp_filesdir_bounds_check($filename, $error_msg)) {
+			header("Location: tftp_files.php");
+			return;
+		} else {
+			unlink_if_exists("{$filename}");
+			conf_mount_ro();
+			header("Location: tftp_files.php");
+			exit;
+		}
+		/*
+		// Only delete files under the FILES_DIR!
+		$basedirlength = strlen(FILES_DIR);
+		if (substr($filename, 0, $basedirlength) !== FILES_DIR) {
 			$error_msg = "Attempt to delete files outside of TFTP server directory rejected!";
 			log_error("[tftpd] {$error_msg}");
 			file_notice("tftpd", $error_msg, "Packages");
@@ -124,6 +130,7 @@ if ($_GET['act'] == "del") {
 			header("Location: tftp_files.php");
 			exit;
 		}
+		*/
 	}
 }
 
@@ -153,20 +160,20 @@ display_top_tabs($tab_array);
 				<th>Actions</th>
 			</thead>
 			<tbody>
-			<?php $tftpdfiles = new RecursiveDirectoryIterator("{$files_dir}"); ?>
+			<?php $tftpdfiles = new RecursiveDirectoryIterator(FILES_DIR); ?>
 			<?php foreach (new RecursiveIteratorIterator($tftpdfiles) as $filename => $file): ?>
 			<?php if (is_file($file)): ?>
 				<tr>
-					<td><?=gettext($file); ?></td>
+					<td><?=htmlspecialchars($file); ?></td>
 					<td><?=date('M-d Y g:i a', filemtime("{$file}")); ?></td>
-					<td><?=tftp_byte_convert(filesize("{$file}")); ?> </td>
+					<td><?=format_bytes(filesize("{$file}")); ?> </td>
 						<td>
 						<a name="tftpd_deleteX[]" id="tftpd_deleteX[]" type="button" title="<?=gettext('Delete this file');?>"
-							href='?type=tftp&amp;act=del&amp;filename=<?=$file;?>' style="cursor: pointer;" text="delete this">
+							href='?type=tftp&amp;act=del&amp;filename=<?=htmlspecialchars($file);?>' style="cursor: pointer;" text="delete this">
 							<i class="fa fa-trash" title="<?=gettext('Delete this file');?>"></i>
 						</a>
 						<a name="tftpd_dnloadX[]" id="tftpd_dnloadX[]" type="button" title="<?=gettext('Download this file');?>"
-							href='tftp_files.php?a=download&amp;filename=<?=$file;?>' style="cursor: pointer;">
+							href='tftp_files.php?a=download&amp;filename=<?=htmlspecialchars($file);?>' style="cursor: pointer;">
 							<i class="fa fa-download" title="<?=gettext('Download this file');?>"></i>
 						</a>
 					</td>
@@ -207,18 +214,19 @@ display_top_tabs($tab_array);
 			<i class="fa fa-upload icon-embed-btn"></i>
 			<?=gettext("Upload")?>
 		</button>
-		<a name="tftpd_dnload_all" id="tftpd_dnload_all" type="button" class="btn btn-info btn-sm" title="<?=gettext('Download all files in a single gzip archive');?>"
+		<a name="tftpd_dnload_all" id="tftpd_dnload_all" type="button" class="btn btn-info btn-sm" 
+			title="<?=sprintf(gettext('Backup all files to %s and download the backup in a single gzip archive'), BACKUP_PATH);?>" 
 			href="tftp_files.php?a=download&amp;t=backup" text="download all files">
 			<i class="fa fa-download icon-embed-btn"></i>
-			<?=gettext('Download');?>
+			<?=gettext('Backup &amp; Download');?>
 		</a>
-		<a name="tftpd_backup" id="tftpd_backup" type="button" class="btn btn-success btn-sm" title="<?=sprintf(gettext('Backup all files to %s'), $backup_path);?>"
+		<a name="tftpd_backup" id="tftpd_backup" type="button" class="btn btn-success btn-sm" title="<?=sprintf(gettext('Backup all files to %s'), BACKUP_PATH);?>"
 			href="tftp_files.php?a=other&amp;t=backup" text="backup files">
 			<i class="fa fa-save icon-embed-btn"></i>
 			<?=gettext('Backup');?>
 		</a>
-		<?php if (file_exists($backup_path)): ?>
-		<a name="tftpd_restore" id="tftpd_restore" type="button" class="btn btn-danger btn-sm" title="<?=sprintf(gettext('Restore all files from %s'), $backup_path);?>"
+		<?php if (file_exists(BACKUP_PATH)): ?>
+		<a name="tftpd_restore" id="tftpd_restore" type="button" class="btn btn-danger btn-sm" title="<?=sprintf(gettext('Restore all files from %s'), BACKUP_PATH);?>"
 			href="tftp_files.php?a=other&amp;t=restore" text="restore backup">
 			<i class="fa fa-undo icon-embed-btn"></i>
 			<?=gettext('Restore');?>
