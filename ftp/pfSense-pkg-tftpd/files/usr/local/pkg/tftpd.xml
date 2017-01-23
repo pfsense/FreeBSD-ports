@@ -60,19 +60,6 @@
 			<type>checkbox</type>
 		</field>
 		<field>
-			<fielddescr>Directory for Files</fielddescr>
-			<fieldname>datadir</fieldname>
-			<description>
-				<![CDATA[
-				Enter the directory path to the files that the TFTP server should serve. The directory must exist.
-				<span class="text-info">Default: /tftpboot</span>
-				]]>
-			</description>
-			<type>input</type>
-			<default_value>/tftpboot</default_value>
-			<required/>
-		</field>
-		<field>
 			<fielddescr>TFTP Server Bind IP</fielddescr>
 			<fieldname>tftpd_ip</fieldname>
 			<description>
