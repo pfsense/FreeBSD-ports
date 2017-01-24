@@ -356,42 +356,42 @@
 
 		function validate_input_darkstat($post, &$input_errors) {
 			if (($_POST['port']) && ($_POST['port'] < 1 || $_POST['port'] < 65535 || !is_numericint($_POST['port']))) {
-				$input_errors[] .= gettext("The value for 'Maximum number of ports' to keep' must be a positive integer between 1 and 65535.");
+				$input_errors[] = gettext("The value for 'Maximum number of ports' to keep' must be a positive integer between 1 and 65535.");
 			}
 			if (($_POST['hostsmax']) && ($_POST['hostsmax'] < 1 || !is_numericint($_POST['hostsmax']))) {
 				$input_errors[] = gettext("The value for 'Maximum hosts count' must be a positive integer.");
 			}
 			if (($_POST['hostskeep']) && ($_POST['hostskeep'] < 1 || !is_numericint($_POST['hostskeep']))) {
-				$input_errors[] .= gettext("The value for 'Maximum number of hosts to keep' must be a positive integer.");
+				$input_errors[] = gettext("The value for 'Maximum number of hosts to keep' must be a positive integer.");
 			}
 			if ($_POST['hostsmax'] || $_POST['hostskeep']) {
 				if ($_POST['hostsmax'] <= $_POST['hostskeep']) {
-					$input_errors[] .= gettext("'Maximum hosts count' must be greater than 'Maximum number of hosts to keep'.");
+					$input_errors[] = gettext("'Maximum hosts count' must be greater than 'Maximum number of hosts to keep'.");
 				}
 			}
 			if (($_POST['portsmax']) && ($_POST['portsmax'] < 1 || !is_numericint($_POST['portsmax']))) {
-				$input_errors[] .= gettext("The value for 'Maximum ports count' must be a positive integer.");
+				$input_errors[] = gettext("The value for 'Maximum ports count' must be a positive integer.");
 			}
 			if (($_POST['portskeep']) && ($_POST['portskeep'] < 1 || !is_numericint($_POST['portskeep']))) {
-				$input_errors[] .= gettext("The value for 'Maximum number of ports' to keep' must be a positive integer.");
+				$input_errors[] = gettext("The value for 'Maximum number of ports' to keep' must be a positive integer.");
 			}
 			if ($_POST['portsmax'] || $_POST['portskeep']) {
 				if ($_POST['portsmax'] <= $_POST['portskeep']) {
-					$input_errors[] .= gettext("'Maximum ports count' must be greater than 'Maximum number of ports to keep'.");
+					$input_errors[] = gettext("'Maximum ports count' must be greater than 'Maximum number of ports to keep'.");
 				}
 			}
 			if ($_POST['localnetworkenable'] && $_POST['nopromisc'] != "") {
-				$input_errors[] .= gettext("'Do not use promiscuous mode to capture' cannot be used when the 'local network' feature is enabled.");
+				$input_errors[] = gettext("'Do not use promiscuous mode to capture' cannot be used when the 'local network' feature is enabled.");
 			}
 			if ($_POST['localnetwork']) {
 				$int = convert_friendly_interface_to_real_interface_name($post['localnetwork']);
 				$ip = find_interface_ip($int);
 				if (!is_ipaddrv4($ip)) {
-					$input_errors[] .= gettext("The selected 'local network' interface has no IPv4 configured. Configured IPv4 is required.");
+					$input_errors[] = gettext("The selected 'local network' interface has no IPv4 configured. Configured IPv4 is required.");
 				}
 			}
 			if (($post['advfilter']) && !preg_match("/^[a-zA-Z0-9\+\-\=\(\):. ]*$/", $post['advfilter'])) {
-				$input_errors[] .= gettext('Advanced traffic filtering options may only contain characters matching ^[a-zA-Z0-9\+\-\=\(\):. ]*$ regexp.');
+				$input_errors[] = gettext('Advanced traffic filtering options may only contain characters matching ^[a-zA-Z0-9\+\-\=\(\):. ]*$ regexp.');
 			}
 		}
 	]]>
