@@ -46,7 +46,7 @@
 		<name>Darkstat Settings</name>
 		<tooltiptext>Setup darkstat specific settings.</tooltiptext>
 		<section>Diagnostics</section>
-		<url>/pkg_edit.php?xml=darkstat.xml&amp;id=0</url>
+		<url>/pkg_edit.php?xml=darkstat.xml</url>
 	</menu>
 	<service>
 		<name>darkstat</name>
@@ -54,11 +54,10 @@
 		<executable>darkstat</executable>
 		<description>Darkstat bandwidth monitoring daemon</description>
 	</service>
-	<configpath>installedpackages->package->$packagename->configuration->settings</configpath>
 	<tabs>
 		<tab>
 			<text>Darkstat Settings</text>
-			<url>/pkg_edit.php?xml=darkstat.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=darkstat.xml</url>
 			<active/>
 		</tab>
 		<tab>
@@ -77,8 +76,8 @@
 			<fielddescr>Capture Interfaces</fielddescr>
 			<fieldname>capture_interfaces</fieldname>
 			<description><![CDATA[
-				Capture traffic on the specified network interface(s).<br />
-				(Default is LAN.)
+				Capture traffic on the specified network interface(s).
+				<span class="text-info">Default: LAN.</span>
 				]]>
 			</description>
 			<type>interfaces_selection</type>
@@ -93,8 +92,8 @@
 			<fieldname>bind_interfaces</fieldname>
 			<description>
 				<![CDATA[
-				Bind the web interface to the IP address(es) of the specified interface(s).<br />
-				(The default is to listen on all interfaces.)
+				Bind the web interface to the IP address(es) of the specified interface(s).
+				<span class="text-info">Default: Listen on all interfaces.</span>
 				]]>
 			</description>
 			<type>interfaces_selection</type>
@@ -147,8 +146,8 @@
 			<sethelp>
 				<![CDATA[
 				Note that an interface may already be in promiscuous mode, or may later enter promiscuous mode,
-				due to circumstances beyond the control of darkstat.<br />
-				<strong>This cannot be used when the "local network" feature is enabled.</strong>
+				due to circumstances beyond the control of darkstat.
+				<strong><span class="text-info">This cannot be used when the "local network" feature is enabled.</span></strong>
 				]]>
 			</sethelp>
 			<type>checkbox</type>
@@ -177,9 +176,9 @@
 			<fieldname>hostsmax</fieldname>
 			<description>
 				<![CDATA[
-				The maximum number of hosts that will be kept in the hosts table.<br />
+				The maximum number of hosts that will be kept in the hosts table.
 				This is used to limit how much accounting data will be kept in memory.<br />
-				(If filled in, the number must be greater than 'Maximum number of hosts to keep' below.)
+				<span class="text-info">If filled in, the number must be greater than 'Maximum number of hosts to keep' below.</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -190,9 +189,9 @@
 			<fieldname>hostskeep</fieldname>
 			<description>
 				<![CDATA[
-				When the hosts table hits 'Maximum hosts count' and traffic is seen from a new host,<br />
+				When the hosts table hits 'Maximum hosts count' and traffic is seen from a new host,
 				we clean out the hosts table, keeping only the top number of hosts, sorted by total traffic.<br />
-				(If filled in, the number must be lower than 'Maximum hosts count' above.)
+				<span class="text-info">If filled in, the number must be lower than 'Maximum hosts count' above.</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -203,9 +202,9 @@
 			<fieldname>portsmax</fieldname>
 			<description>
 				<![CDATA[
-				The maximum number of ports that will be tracked for each host.<br />
+				The maximum number of ports that will be tracked for each host.
 				This is used to limit how much accounting data will be kept in memory.<br />
-				(If filled in, the number must be greater than 'Maximum number of ports to keep' below.)
+				<span class="text-info">If filled in, the number must be greater than 'Maximum number of ports to keep' below.</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -217,7 +216,7 @@
 			<description>
 				<![CDATA[
 				When a ports table fills up, this many ports are kept and the rest are discarded.<br />
-				(If filled in, the number must be lower than 'Maximum ports count' above.)
+				<span class="text-info">If filled in, the number must be lower than 'Maximum ports count' above.</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -228,17 +227,19 @@
 			<fieldname>advfilter</fieldname>
 			<description>
 				<![CDATA[
-				Use the specified filter expression when capturing traffic.<br /><br />
-				Example 1: We only want to account for SSH traffic.<br />
+				Use the specified filter expression when capturing traffic. <span class="text-info">Click Info for examples.</span>
+				<div class="infoblock">
+				<span class="text-info">Example 1:</span> We only want to account for SSH traffic.<br />
 				Filter expression: <em>port 22</em><br /><br />
-				Example 2: We don't want to account for traffic between internal IPs.<br />
+				<span class="text-info">Example 2:</span> We don't want to account for traffic between internal IPs.<br />
 				Filter expression: <em>not (src net 192.168.0 and dst net 192.168.0)</em><br /><br />
-				NOTE: Filter syntax is beyond the scope of this description; please refer to 
+				<span class="text-info">NOTE:</span> Filter syntax is beyond the scope of this description; please refer to 
 				<a href="https://www.freebsd.org/cgi/man.cgi?query=tcpdump&amp;sektion=1&amp;apropos=0&amp;manpath=FreeBSD+10.1-RELEASE+and+Ports">tcpdump(1)</a>, 
 				<a href="https://www.freebsd.org/cgi/man.cgi?query=pcap-filter&amp;sektion=7&amp;apropos=0&amp;manpath=FreeBSD+10.1-RELEASE+and+Ports">pcap-filter(7)</a> 
 				and <a href="https://www.freebsd.org/cgi/man.cgi?query=darkstat&apropos=0&sektion=0&manpath=FreeBSD+10.1-RELEASE+and+Ports&arch=default&format=html">darkstat(8)</a>
 				documentation.<br />
-				<strong>WARNING: You are completely on your own with this! If misconfigured, darkstat will malfunction or even not start at all.</strong>
+    				<strong><span class="text-danger">WARNING: You are completely on your own with this!</span> If misconfigured, darkstat will malfunction or even not start at all.</strong>
+				</div>
 				]]>
 			</description>
 			<type>textarea</type>
@@ -254,6 +255,15 @@
 			conf_mount_rw();
 			global $config, $darkstat_config;
 			$darkstat_config =& $config['installedpackages']['darkstat']['config'][0];
+
+			/* If the service is (being) disabled, stop it (if running), remove rc script and do nothing else */
+			if ($darkstat_config['enable'] != "on") {
+				if (is_process_running("darkstat")) {
+					stop_service("darkstat");
+				}
+				unlink_if_exists('/usr/local/etc/rc.d/darkstat.sh');
+				return;
+			}
 
 			/* Configure capture interface(s) */
 			$capture_interfaces = $darkstat_config['capture_interfaces'] ?: 'lan';
@@ -332,14 +342,13 @@
 				)
 			);
 
-			/* If the service is (being) disabled, stop it (if running) and do nothing else */
-			if (!($darkstat_config['enable'])) {
-				if (is_process_running("darkstat")) {
-					stop_service("darkstat");
-				}
+			/* Do not (re)start service on boot */
+			if (platform_booting()) {
 				return;
-			} else {
+			} elseif (is_process_running("darkstat")) {
 				restart_service("darkstat");
+			} else {
+				start_service("darkstat");
 			}
 
 			conf_mount_ro();
@@ -387,9 +396,6 @@
 		}
 	]]>
 	</custom_php_global_functions>
-	<custom_add_php_command>
-		sync_package_darkstat();
-	</custom_add_php_command>
 	<custom_php_resync_config_command>
 		sync_package_darkstat();
 	</custom_php_resync_config_command>
