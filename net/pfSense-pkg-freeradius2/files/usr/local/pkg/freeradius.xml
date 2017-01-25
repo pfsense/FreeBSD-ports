@@ -497,7 +497,7 @@
 		freeradius_users_resync();
 	</custom_delete_php_command>
 	<custom_php_resync_config_command>
-		freeradius_settings_resync();
+		freeradius_settings_resync(false);
 		sleep(1);
 		freeradius_users_resync();
 	</custom_php_resync_config_command>
