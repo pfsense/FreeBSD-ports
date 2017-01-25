@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Quagga_OSPF
-PORTVERSION=	0.6.16
+PORTVERSION=	0.6.17
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
