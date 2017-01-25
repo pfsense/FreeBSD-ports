@@ -418,7 +418,6 @@ EOD;
 	exec("ldconfig -m /usr/local/lib/mysql");
 	// Change owner of freeradius created files
 	exec("chown -R root:wheel /var/log");
-	restart_service("radiusd");
 }
 
 function freeradius_users_resync() {
