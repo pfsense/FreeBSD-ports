@@ -567,11 +567,37 @@ pkg_upgrade() {
 		repository_url=$(/usr/local/sbin/read_xml_tag.sh string system/gitsync/repositoryurl)
 		branch=$(/usr/local/sbin/read_xml_tag.sh string system/gitsync/branch)
 
+		minimal=$(/usr/local/sbin/read_xml_tag.sh boolean system/gitsync/minimal)
+		diff=$(/usr/local/sbin/read_xml_tag.sh boolean system/gitsync/diff)
+		show_files=$(/usr/local/sbin/read_xml_tag.sh boolean system/gitsync/show_files)
+		show_command=$(/usr/local/sbin/read_xml_tag.sh boolean system/gitsync/show_command)
+		dryrun=$(/usr/local/sbin/read_xml_tag.sh boolean system/gitsync/dryrun)
+
+		mute='mute'
+		options=''
+		if [ "${minimal}" = "true" ]; then
+			options=${options}' --minimal'
+		fi
+		if [ "${diff}" = "true" ]; then
+			options=${options}' --diff'
+		fi
+		if [ "${show_files}" = "true" ]; then
+			options=${options}' --show-files'
+			mute='off'
+		fi
+		if [ "${show_command}" = "true" ]; then
+			options=${options}' --show-command'
+			mute='off'
+		fi
+		if [ "${dryrun}" = "true" ]; then
+			options=${options}' --dry-run'
+		fi
+
 		# Repository URL is not mandatory
 		if [ -n "${branch}" ]; then
 			_exec "/usr/local/sbin/pfSsh.php playback gitsync \
-				${repositoryurl} ${branch} --upgrading" \
-				"Running gitsync" mute ignore_result
+				${repositoryurl} ${branch} ${options} --upgrading" \
+				"Running gitsync" ${mute} ignore_result
 		fi
 	fi
 }
