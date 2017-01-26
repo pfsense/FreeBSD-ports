@@ -1318,6 +1318,10 @@ events.push(function() {
 			d3.select('#monitoring-chart').append('svg'); //re-add blank svg so it and be drawn on
 
 			if (error) {
+				if(String(error).startsWith("SyntaxError")) {
+					error = "JSON not returned. Check to make sure you have an active session";
+				}
+
 				$("#monitoring-chart").hide();
 				$("#chart-error").show().html('<strong>Error</strong>: ' + error);
 				return console.warn(error);
