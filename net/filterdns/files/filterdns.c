@@ -74,23 +74,6 @@ static int filterdns_check_sameip_diff_hostname(struct thread_data *, struct tab
 #define satosin(sa)	((struct sockaddr_in *)(sa))
 #define satosin6(sa)	((struct sockaddr_in6 *)(sa))
 
-#if 0
-	static void
-flush_table(char *tablename)
-{
-	struct pfioc_table io;
-
-	memset(&io, 0, sizeof(io));
-	if (strlcpy(io.pfrio_table.pfrt_name, tablename,
-				sizeof(io.pfrio_table.pfrt_name)) >=
-			sizeof(io.pfrio_table.pfrt_name))
-		return; /* XXX */
-	/* pfctl -Tflush */
-	if (ioctl(dev, DIOCRCLRADDRS, &io) == -1)
-		syslog(LOG_WARNING, "Cannot flush table %s addresses", tablename);
-}
-#endif
-
 static int
 get_present_table_entries(struct thread_data *thr)
 {
@@ -104,7 +87,8 @@ get_present_table_entries(struct thread_data *thr)
 	table = &io.pfrio_table;
 	memset(table, 0, sizeof(*table));
 
-	if (strlcpy(table->pfrt_name, thr->tablename, sizeof(table->pfrt_name)) >= sizeof(table->pfrt_name))
+	if (strlcpy(table->pfrt_name, thr->tablename,
+	    sizeof(table->pfrt_name)) >= sizeof(table->pfrt_name))
 		return (-1);
 
 	io.pfrio_buffer = NULL;
@@ -112,37 +96,45 @@ get_present_table_entries(struct thread_data *thr)
 
 	if (ioctl(dev, DIOCRGETADDRS, &io) < 0) {
 		if (debug >= 3)
-			syslog(LOG_WARNING, "\tCould not get number of entries from table %s", TABLENAME(thr->tablename));
+			syslog(LOG_WARNING,
+			    "\tCould not get number of entries from table %s",
+			    TABLENAME(thr->tablename));
 		free(io.pfrio_buffer);
 		io.pfrio_buffer = NULL;
 		return (-1);
 	}
 	if (debug >= 3)
-		syslog(LOG_WARNING, "\tTable %s has %u entries", TABLENAME(thr->tablename), io.pfrio_size);
+		syslog(LOG_WARNING, "\tTable %s has %u entries",
+		    TABLENAME(thr->tablename), io.pfrio_size);
 	io.pfrio_buffer = calloc(1, io.pfrio_size * io.pfrio_esize);
 	if (io.pfrio_buffer == NULL)
 		return (-1);
 
 	if (debug >= 3)
-		syslog(LOG_WARNING, "\tTable %s has %u entries", TABLENAME(thr->tablename), io.pfrio_size);
+		syslog(LOG_WARNING, "\tTable %s has %u entries",
+		    TABLENAME(thr->tablename), io.pfrio_size);
 
 	if (ioctl(dev, DIOCRGETADDRS, &io) < 0) {
 		if (debug >= 3)
-			syslog(LOG_WARNING, "\tCould not retrieve entries from table %s", TABLENAME(thr->tablename));
+			syslog(LOG_WARNING,
+			    "\tCould not retrieve entries from table %s",
+			    TABLENAME(thr->tablename));
 		free(io.pfrio_buffer);
 		io.pfrio_buffer = NULL;
 		return (-1);
 	}
 
 	if (debug >= 3)
-		syslog(LOG_WARNING, "\tFetched %s has %u entries", TABLENAME(thr->tablename), io.pfrio_size);
+		syslog(LOG_WARNING, "\tFetched %s has %u entries",
+		    TABLENAME(thr->tablename), io.pfrio_size);
 
 	addr = io.pfrio_buffer;
 	for (i = 0; i < io.pfrio_size; i++) {
 		ent = calloc(1, sizeof(*ent));
 		if (ent == NULL) {
 			if (debug >= 3)
-				syslog(LOG_ERR, "\tCould not allocate one entry retrying");
+				syslog(LOG_ERR,
+				    "\tCould not allocate one entry retrying");
 			continue;
 		}
 
@@ -153,17 +145,21 @@ get_present_table_entries(struct thread_data *thr)
 		if (ent->addr == NULL) {
 			free(ent);
 			if (debug >= 3)
-				syslog(LOG_WARNING, "\tFailed to allocate new address entry for table %s.", TABLENAME(thr->tablename));
+				syslog(LOG_WARNING,
+				    "\tFailed to allocate new address entry for table %s.",
+				    TABLENAME(thr->tablename));
 			continue;
 		}
 		if (addr[i].pfra_af == AF_INET) {
 			ent->addr->sa_len = sizeof(struct sockaddr_in);
 			ent->addr->sa_family = AF_INET;
-			((struct sockaddr_in *)ent->addr)->sin_addr = addr[i].pfra_ip4addr;
+			((struct sockaddr_in *)ent->addr)->sin_addr =
+			    addr[i].pfra_ip4addr;
 		} else {
 			ent->addr->sa_len = sizeof(struct sockaddr_in6);
 			ent->addr->sa_family = AF_INET6;
-			((struct sockaddr_in6 *)ent->addr)->sin6_addr = addr[i].pfra_ip6addr;
+			((struct sockaddr_in6 *)ent->addr)->sin6_addr =
+			    addr[i].pfra_ip6addr;
 		}
 		if (filterdns_check_sameip_diff_hostname(thr, ent) != EEXIST)
 			TAILQ_INSERT_HEAD(&thr->static_rnh, ent, entry);
@@ -181,71 +177,91 @@ need_to_monitor(struct thread_data *thr, struct sockaddr *addr)
 	struct table *tmp;
 	char buffer[INET6_ADDRSTRLEN] = { 0 };
 
-	if (!TAILQ_EMPTY(&thr->static_rnh)) {
-		TAILQ_FOREACH(tmp, &thr->static_rnh, entry) {
-			if (tmp->addr->sa_family != addr->sa_family)
-				continue;
-			if (!memcmp(addr, tmp->addr, addr->sa_len)) {
-				if (debug >= 2) {
-					if (addr->sa_family == AF_INET)
-						syslog(LOG_WARNING, "\t\tentry %s is static on table %s", inet_ntop(addr->sa_family, &satosin(addr)->sin_addr.s_addr, buffer, sizeof buffer), TABLENAME(thr->tablename));
-					else if (addr->sa_family == AF_INET6)
-						syslog(LOG_WARNING, "\t\tentry %s is static on table %s", inet_ntop(addr->sa_family, satosin6(addr)->sin6_addr.s6_addr, buffer, sizeof buffer), TABLENAME(thr->tablename));
-				}
-				return (0);
-			}
+	if (TAILQ_EMPTY(&thr->static_rnh)) {
+		return (1);
+	}
+
+	TAILQ_FOREACH(tmp, &thr->static_rnh, entry) {
+		if (tmp->addr->sa_family != addr->sa_family)
+			continue;
+		if (memcmp(addr, tmp->addr, addr->sa_len))
+			continue;
+		if (debug >= 2) {
+			if (addr->sa_family == AF_INET)
+				syslog(LOG_WARNING,
+				    "\t\tentry %s is static on table %s",
+				    inet_ntop(addr->sa_family,
+					&satosin(addr)->sin_addr.s_addr,
+					buffer, sizeof buffer),
+				    TABLENAME(thr->tablename));
+			else if (addr->sa_family == AF_INET6)
+				syslog(LOG_WARNING,
+				    "\t\tentry %s is static on table %s",
+				    inet_ntop(addr->sa_family,
+					satosin6(addr)->sin6_addr.s6_addr,
+					buffer, sizeof buffer),
+				    TABLENAME(thr->tablename));
 		}
+		return (0);
 	}
 
 	return (1);
 }
 
 static int
-add_table_entry(struct thread_data *thrdata, struct sockaddr *addr, int forceupdate)
+add_table_entry(struct thread_data *thrdata, struct sockaddr *addr,
+    int forceupdate)
 {
 	struct table *ent, *tmp;
 	char buffer[INET6_ADDRSTRLEN] = { 0 };
 	int error = 0;
 
 	if (addr->sa_family == AF_INET)
-		inet_ntop(addr->sa_family, &satosin(addr)->sin_addr.s_addr, buffer, sizeof buffer);
+		inet_ntop(addr->sa_family, &satosin(addr)->sin_addr.s_addr,
+		    buffer, sizeof buffer);
 	else if (addr->sa_family == AF_INET6)
-		inet_ntop(addr->sa_family, &satosin6(addr)->sin6_addr.s6_addr, buffer, sizeof buffer);
+		inet_ntop(addr->sa_family, &satosin6(addr)->sin6_addr.s6_addr,
+		    buffer, sizeof buffer);
 	TAILQ_FOREACH(tmp, &thrdata->rnh, entry) {
 		if (tmp->addr->sa_family != addr->sa_family)
 			continue;
-		if (!memcmp(addr, tmp->addr, addr->sa_len)) {
+		if (memcmp(addr, tmp->addr, addr->sa_len))
+			continue;
+		if (debug >= 2)
+			syslog(LOG_WARNING,
+			    "\t\tentry %s exists in %s table %s",
+			    buffer, TABLETYPE(thrdata->type),
+			    TABLENAME(thrdata->tablename));
+		tmp->refcnt++;
+		if (forceupdate) {
 			if (debug >= 2)
-				syslog(LOG_WARNING, "\t\tentry %s exists in %s table %s",
+				syslog(LOG_WARNING,
+				    "\tREFRESHING entry %s on %s table %s for host %s",
 				    buffer, TABLETYPE(thrdata->type),
-				    TABLENAME(thrdata->tablename));
-			tmp->refcnt++;
-			if (forceupdate) {
-				if (debug >= 2)
-					syslog(LOG_WARNING, "\tREFRESHING entry %s on %s table %s for host %s",
-					    buffer, TABLETYPE(thrdata->type), TABLENAME(thrdata->tablename),
-					    thrdata->hostname);
-				if (thrdata->type == PF_TYPE)
-					error = pf_tableentry(thrdata, addr, ADD);
-				else if (thrdata->type == IPFW_TYPE)
-					error = ipfw_tableentry(thrdata, addr, ADD);
-				if (error != 0)
-					return (error);
-			}
-			return (EEXIST);
+				    TABLENAME(thrdata->tablename),
+				    thrdata->hostname);
+			if (thrdata->type == PF_TYPE)
+				error = pf_tableentry(thrdata, addr, ADD);
+			else if (thrdata->type == IPFW_TYPE)
+				error = ipfw_tableentry(thrdata, addr, ADD);
+			if (error != 0)
+				return (error);
 		}
+		return (EEXIST);
 	}
 
 	ent = calloc(1, sizeof(*ent));
 	if (ent == NULL) {
-		syslog(LOG_ERR, "\tFILTERDNS: Failed to allocate new entry for %s table %s.",
+		syslog(LOG_ERR,
+		    "\tFILTERDNS: Failed to allocate new entry for %s table %s.",
 		    TABLETYPE(thrdata->type), TABLENAME(thrdata->tablename));
 		return (ENOMEM);
 	}
 	ent->addr = calloc(1, addr->sa_len);
 	if (ent->addr == NULL) {
 		free(ent);
-		syslog(LOG_WARNING, "\tFILTERDNS: Failed to allocate new address entry for %s table %s.",
+		syslog(LOG_WARNING,
+		    "\tFILTERDNS: Failed to allocate new address entry for %s table %s.",
 		    TABLETYPE(thrdata->type), TABLENAME(thrdata->tablename));
 		return (ENOMEM);
 	}
@@ -263,15 +279,17 @@ add_table_entry(struct thread_data *thrdata, struct sockaddr *addr, int forceupd
 		error = ipfw_tableentry(thrdata, ent->addr, ADD);
 
 	if (error != 0)
-		syslog(LOG_NOTICE, "\tCOULD NOT add the entry %s to %s table %s for host %s",
-		    buffer, TABLETYPE(thrdata->type), TABLENAME(thrdata->tablename),
-		    thrdata->hostname);
+		syslog(LOG_NOTICE,
+		    "\tCOULD NOT add the entry %s to %s table %s for host %s",
+		    buffer, TABLETYPE(thrdata->type),
+		    TABLENAME(thrdata->tablename), thrdata->hostname);
 
 	return (error);
 }
 
 static int
-filterdns_check_sameip_diff_hostname(struct thread_data *thread, struct table *ip)
+filterdns_check_sameip_diff_hostname(struct thread_data *thread,
+    struct table *ip)
 {
 	struct thread_data *thr;
 	struct table *e;
@@ -286,30 +304,26 @@ filterdns_check_sameip_diff_hostname(struct thread_data *thread, struct table *i
 		/* Same thread! */
 		if (thr->thr_pid == thread->thr_pid)
 			continue;
-#if 0
-		if (!strncmp(thr->hostname, thread->hostname, strlen(thr->hostname)))
-			continue;
-		if (strlen(thr->hostname) != strlen(thread->hostname))
-			continue;
-#endif
 		if (thr->tablename == NULL)
 			continue;
 		if (strlen(thr->tablename) != strlen(thread->tablename))
 			continue;
-		if (strncmp(thr->tablename, thread->tablename, strlen(thr->tablename)))
+		if (strncmp(thr->tablename, thread->tablename,
+		    strlen(thr->tablename)))
 			continue;
 
 		TAILQ_FOREACH(e, &thr->rnh, entry) {
 			if (e->addr->sa_family != ip->addr->sa_family)
 				continue;
-			if (!memcmp(ip->addr, e->addr, ip->addr->sa_len)) {
-				syslog(LOG_INFO,
-				    "IP address %s already present on table %s as address of hostname %s",
-				    inet_ntop(e->addr->sa_family, e->addr->sa_data + 2, buffer, sizeof buffer),
-				    TABLENAME(thr->tablename),
-				    thr->hostname);
-				return (EEXIST);
-			}
+			if (memcmp(ip->addr, e->addr, ip->addr->sa_len))
+				continue;
+			syslog(LOG_INFO,
+			    "IP address %s already present on table %s as address of hostname %s",
+			    inet_ntop(e->addr->sa_family, e->addr->sa_data + 2,
+				buffer, sizeof buffer),
+			    TABLENAME(thr->tablename),
+			    thr->hostname);
+			return (EEXIST);
 		}
 	}
 
@@ -330,34 +344,43 @@ filterdns_clean_table(struct thread_data *thrdata, int donotcheckrefcount)
 	TAILQ_FOREACH_SAFE(e, &thrdata->rnh, entry, tmp) {
 		e->refcnt--;
 		if (e->addr->sa_family == AF_INET)
-			inet_ntop(e->addr->sa_family, e->addr->sa_data + 2, buffer, sizeof buffer);
+			inet_ntop(e->addr->sa_family, e->addr->sa_data + 2,
+			    buffer, sizeof buffer);
 		else if (e->addr->sa_family == AF_INET6)
-			inet_ntop(e->addr->sa_family, e->addr->sa_data + 6, buffer, sizeof buffer);
+			inet_ntop(e->addr->sa_family, e->addr->sa_data + 6,
+			    buffer, sizeof buffer);
 		if (donotcheckrefcount || (e->refcnt <= 0)) {
 			/* If 2 dns names have same ip do not do any operation */
-			if (filterdns_check_sameip_diff_hostname(thrdata, e) == EEXIST)
+			if (filterdns_check_sameip_diff_hostname(thrdata, e) ==
+			    EEXIST)
 				continue;
 
 			error = 0;
-			syslog(LOG_NOTICE, "clearing entry %s from %s table %s on host %s",
-			    buffer, TABLETYPE(thrdata->type), TABLENAME(thrdata->tablename),
-			    thrdata->hostname);
+			syslog(LOG_NOTICE,
+			    "clearing entry %s from %s table %s on host %s",
+			    buffer, TABLETYPE(thrdata->type),
+			    TABLENAME(thrdata->tablename), thrdata->hostname);
 			if (thrdata->type == PF_TYPE)
 				error = pf_tableentry(thrdata, e->addr, DELETE);
 			else if (thrdata->type == IPFW_TYPE)
-				error = ipfw_tableentry(thrdata, e->addr, DELETE);
+				error = ipfw_tableentry(thrdata, e->addr,
+				    DELETE);
 			if (error != 0)
-				syslog(LOG_ERR, "COULD NOT clear entry %s from %s table %s on host %s will retry later",
-				    buffer, TABLETYPE(thrdata->type), TABLENAME(thrdata->tablename), thrdata->hostname);
+				syslog(LOG_ERR,
+				    "COULD NOT clear entry %s from %s table %s on host %s will retry later",
+				    buffer, TABLETYPE(thrdata->type),
+				    TABLENAME(thrdata->tablename),
+				    thrdata->hostname);
 			TAILQ_REMOVE(&thrdata->rnh, e, entry);
 			free(e->addr);
 			free(e);
 			if (!donotcheckrefcount)
 				removed++;
 		} else if (debug >= 2)
-			syslog(LOG_WARNING, "\tNOT clearing entry %s from %s table %s on host %s",
-			    buffer, TABLETYPE(thrdata->type), TABLENAME(thrdata->tablename),
-			    thrdata->hostname);
+			syslog(LOG_WARNING,
+			    "\tNOT clearing entry %s from %s table %s on host %s",
+			    buffer, TABLETYPE(thrdata->type),
+			    TABLENAME(thrdata->tablename), thrdata->hostname);
 	}
 
 	return (removed);
@@ -376,7 +399,9 @@ host_dns(struct thread_data *hostd, int forceupdate)
 	res0 = NULL;
 	error = getaddrinfo(hostd->hostname, NULL, &hints, &res0);
 	if (error) {
-		syslog(LOG_WARNING, "failed to resolve host %s will retry later again.", hostd->hostname);
+		syslog(LOG_WARNING,
+		    "failed to resolve host %s will retry later again.",
+		    hostd->hostname);
 		if (res0 != NULL)
 			freeaddrinfo(res0);
 		return (-1);
@@ -387,26 +412,39 @@ host_dns(struct thread_data *hostd, int forceupdate)
 	for (res = res0; res; res = res->ai_next) {
 		if (res->ai_addr == NULL) {
 			if (debug >=4)
-				syslog(LOG_WARNING, "Skipping empty address for hostname %s", hostd->hostname);
+				syslog(LOG_WARNING,
+				    "Skipping empty address for hostname %s",
+				    hostd->hostname);
 			continue;
 		}
-		if (hostd->type == PF_TYPE && !need_to_monitor(hostd, res->ai_addr))
+		if (hostd->type == PF_TYPE && !need_to_monitor(hostd,
+		    res->ai_addr))
 			continue;
 		if (res->ai_family == AF_INET) {
 			if (debug > 9)
-				syslog(LOG_WARNING, "\t\tfound entry %s for %s table %s",
-				    inet_ntop(res->ai_family, res->ai_addr->sa_data + 2, buffer, sizeof buffer),
-				    TABLETYPE(hostd->type), TABLENAME(hostd->tablename));
+				syslog(LOG_WARNING,
+				    "\t\tfound entry %s for %s table %s",
+				    inet_ntop(res->ai_family,
+				    res->ai_addr->sa_data + 2, buffer,
+				    sizeof buffer), TABLETYPE(hostd->type),
+				    TABLENAME(hostd->tablename));
 			if (hostd->mask > 32) {
-				syslog(LOG_WARNING, "\t\tinvalid mask for %s/%d", inet_ntop(res->ai_family, res->ai_addr->sa_data + 2, buffer, sizeof buffer), hostd->mask);
+				syslog(LOG_WARNING,
+				    "\t\tinvalid mask for %s/%d",
+				    inet_ntop(res->ai_family,
+					res->ai_addr->sa_data + 2, buffer,
+					sizeof buffer), hostd->mask);
 				hostd->mask = 32;
 			}
 		}
 		if(res->ai_family == AF_INET6) {
 			if (debug > 9)
-				syslog(LOG_WARNING, "\t\tfound entry %s for %s table %s",
-				    inet_ntop(res->ai_family, res->ai_addr->sa_data + 6, buffer, sizeof buffer),
-				    TABLETYPE(hostd->type), TABLENAME(hostd->tablename));
+				syslog(LOG_WARNING,
+				    "\t\tfound entry %s for %s table %s",
+				    inet_ntop(res->ai_family,
+					res->ai_addr->sa_data + 6, buffer,
+					sizeof buffer), TABLETYPE(hostd->type),
+				    TABLENAME(hostd->tablename));
 		}
 		error = add_table_entry(hostd, res->ai_addr, forceupdate);
 		if (error == 0)
@@ -423,13 +461,17 @@ host_dns(struct thread_data *hostd, int forceupdate)
 	if (error > 0) {
 		execcmd++;
 		if (debug >= 4)
-			syslog(LOG_WARNING, "Cleared %d entries for host(%s) table (%s)", error, hostd->hostname, TABLENAME(hostd->tablename));
+			syslog(LOG_WARNING,
+			    "Cleared %d entries for host(%s) table (%s)", error,
+			    hostd->hostname, TABLENAME(hostd->tablename));
 	}
 
 	if (execcmd > 0 && hostd->cmd != NULL) {
 		execcmd = system(hostd->cmd);
 		if (debug >= 2)
-			syslog(LOG_WARNING, "Ran command %s with exit status %d because a dns change on hostname %s was detected.", hostd->cmd, execcmd, hostd->hostname);
+			syslog(LOG_WARNING,
+			    "Ran command %s with exit status %d because a dns change on hostname %s was detected.",
+			    hostd->cmd, execcmd, hostd->hostname);
 	}
 
 	if (retry > 0)
@@ -574,7 +616,8 @@ set_ipmask(struct in6_addr *h, int b)
 
 	/* Mask off bits of the address that will never be used. */
 	for (i = 0; i < 4; i++)
-		h->__u6_addr.__u6_addr32[i] = h->__u6_addr.__u6_addr32[i] & m.addr32[i];
+		h->__u6_addr.__u6_addr32[i] =
+		    h->__u6_addr.__u6_addr32[i] & m.addr32[i];
 }
 
 static int
@@ -592,7 +635,8 @@ pf_tableentry(struct thread_data *pfd, struct sockaddr *address, int action)
 	if (strlcpy(table.pfrt_name, pfd->tablename,
 		sizeof(table.pfrt_name)) >= sizeof(table.pfrt_name)) {
 		if (debug >= 1)
-			syslog(LOG_WARNING, "could not add address to table %s", pfd->tablename);
+			syslog(LOG_WARNING, "could not add address to table %s",
+			    pfd->tablename);
 		return (0);
 	}
 
@@ -604,12 +648,15 @@ pf_tableentry(struct thread_data *pfd, struct sockaddr *address, int action)
 	}
 	if (address->sa_family == AF_INET6) {
 		addr.pfra_af = address->sa_family;
-		memcpy(&addr.pfra_ip6addr, &satosin6(address)->sin6_addr, sizeof(addr.pfra_ip6addr));
+		memcpy(&addr.pfra_ip6addr, &satosin6(address)->sin6_addr,
+		    sizeof(addr.pfra_ip6addr));
 		addr.pfra_net = pfd->mask6;
 		set_ipmask(&addr.pfra_ip6addr, pfd->mask6);
 	}
 	if(debug >= 4)
-		syslog(LOG_WARNING, "setting subnet mask for family %i to %i", addr.pfra_af, addr.pfra_net);
+		syslog(LOG_WARNING,
+		    "setting subnet mask for family %i to %i",
+		    addr.pfra_af, addr.pfra_net);
 
 	error = 0;
 	while (i-- > 0) {
@@ -622,21 +669,31 @@ pf_tableentry(struct thread_data *pfd, struct sockaddr *address, int action)
 		if (action == DELETE) {
 			if (ioctl(dev, DIOCRDELADDRS, &io)) {
 				if (debug >= 3)
-					syslog(LOG_WARNING, "FAILED to delete address from table %s.", pfd->tablename);
+					syslog(LOG_WARNING,
+					    "FAILED to delete address from table %s.",
+					    pfd->tablename);
 				error++;
 			} else {
 				if (debug >= 3)
-					syslog(LOG_WARNING, "\t DELETED %d addresses(%d) to table %s.", io.pfrio_ndel, address->sa_family, pfd->tablename);
+					syslog(LOG_WARNING,
+					    "\t DELETED %d addresses(%d) to table %s.",
+					    io.pfrio_ndel, address->sa_family,
+					    pfd->tablename);
 				break;
 			}
 		} else if (action == ADD) {
 			if (ioctl(dev, DIOCRADDADDRS, &io)) {
 				if (debug >= 3)
-					syslog(LOG_WARNING, "FAILED to add address to table %s with errno %d.", pfd->tablename, errno);
+					syslog(LOG_WARNING,
+					    "FAILED to add address to table %s with errno %d.",
+					    pfd->tablename, errno);
 				error++;
 			} else {
 				if (debug >= 3)
-					syslog(LOG_WARNING, "\t ADDED %d addresses(%d) to table %s.", io.pfrio_nadd, address->sa_family, pfd->tablename);
+					syslog(LOG_WARNING,
+					    "\t ADDED %d addresses(%d) to table %s.",
+					    io.pfrio_nadd, address->sa_family,
+					    pfd->tablename);
 				break;
 			}
 		}
@@ -658,8 +715,9 @@ is_ipaddrv6(const char *s, struct sockaddr_in6 *sin6)
 	if (getaddrinfo(s, "0", &hints, &res) == 0) {
 		sin6->sin6_len = sizeof(*sin6);
 		sin6->sin6_family = AF_INET6;
-		memcpy(&sin6->sin6_addr, &((struct sockaddr_in6 *)res->ai_addr)->sin6_addr,
-			sizeof(struct in6_addr));
+		memcpy(&sin6->sin6_addr,
+		    &((struct sockaddr_in6 *)res->ai_addr)->sin6_addr,
+		    sizeof(struct in6_addr));
 		freeaddrinfo(res);
 		result = 1;
 	}
@@ -680,7 +738,8 @@ check_hostname(void *arg)
 		return (NULL);
 
 	if (debug >= 2)
-		syslog(LOG_WARNING, "Found hostname %s with netmask %d.", thrd->hostname, thrd->mask);
+		syslog(LOG_WARNING, "Found hostname %s with netmask %d.",
+		    thrd->hostname, thrd->mask);
 
 	if (thrd->type == PF_TYPE)
 		get_present_table_entries(thrd);
@@ -697,7 +756,8 @@ check_hostname(void *arg)
 		if (dev < 0) {
 			dev = open("/dev/pf", O_RDWR);
 			if (dev < 0)
-				syslog(LOG_ERR, "firewall device could not be opened for operation...skipping this time");
+				syslog(LOG_ERR,
+				    "firewall device could not be opened for operation...skipping this time");
 		}
 
 		if (dev > 0) {
@@ -713,23 +773,32 @@ check_hostname(void *arg)
 			}
 
 			/* Detect if and ip address was passed in */
-			if (added == 0 && inet_pton(AF_INET, thrd->hostname, &in.sin_addr) == 1) {
+			if (added == 0 && inet_pton(AF_INET,thrd->hostname,
+			    &in.sin_addr) == 1) {
 				added = 1;
 				in.sin_family = AF_INET;
 				in.sin_len = sizeof(in);
 				if (thrd->mask > 32) {
-					syslog(LOG_WARNING, "invalid mask for %s/%d", thrd->hostname, thrd->mask);
+					syslog(LOG_WARNING,
+					    "invalid mask for %s/%d",
+					    thrd->hostname, thrd->mask);
 					thrd->mask = 32;
 				}
-				error = add_table_entry(thrd, (struct sockaddr *)&in, 1);
-			} else if (added == 0 && is_ipaddrv6(thrd->hostname, &in6) == 1) {
-				error = add_table_entry(thrd, (struct sockaddr *)&in6, 1);
+				error = add_table_entry(thrd,
+				    (struct sockaddr *)&in, 1);
+			} else if (added == 0 &&
+			    is_ipaddrv6(thrd->hostname, &in6) == 1) {
+				error = add_table_entry(thrd,
+				    (struct sockaddr *)&in6, 1);
 				added = 1;
 			} else if (added == 0) {
 				error = host_dns(thrd, tmp);
 			}
 			if (error == EAGAIN) {
-				/* Need to retry again due to some issue with table handling */
+				/*
+				 * Need to retry again due to some issue with
+				 * table handling
+				 */
 				tmp = 1;
 			} else
 				tmp = 0;
@@ -739,8 +808,10 @@ check_hostname(void *arg)
 		/* Hack for sleeping a thread */
 		pthread_cond_timedwait(&thrd->cond, &thrd->mtx, &ts);
 		if (debug >= 6)
-			syslog(LOG_WARNING, "\tAwaking from the sleep for hostname %s, %s table %s",
-			    thrd->hostname, TABLETYPE(thrd->type), TABLENAME(thrd->tablename));
+			syslog(LOG_WARNING,
+			    "\tAwaking from the sleep for hostname %s, %s table %s",
+			    thrd->hostname, TABLETYPE(thrd->type),
+			    TABLENAME(thrd->tablename));
 	}
 	pthread_mutex_unlock(&thrd->mtx);
 
@@ -821,7 +892,8 @@ merge_config(void *arg __unused) {
 		pthread_mutex_lock(&sig_mtx);
 		error = pthread_cond_wait(&sig_condvar, &sig_mtx);
 		if (error != 0) {
-			syslog(LOG_ERR, "unable to wait on output queue retrying");
+			syslog(LOG_ERR,
+			    "unable to wait on output queue retrying");
 			continue;
 		}
 		pthread_mutex_unlock(&sig_mtx);
@@ -836,7 +908,9 @@ merge_config(void *arg __unused) {
 		}
 
 		if (parse_config(file)) {
-			syslog(LOG_ERR, "could not parse new configuration file, exiting...");
+			syslog(LOG_ERR,
+			    "could not parse new configuration file, exiting..."
+			    );
 			exit(10);
 		}
 
@@ -844,25 +918,43 @@ merge_config(void *arg __unused) {
 			TAILQ_FOREACH_SAFE(thr, &thread_list, next, tmpthr2) {
 				foundexisting = 0;
 
-				TAILQ_FOREACH_SAFE(tmpthr, &tmp_thread_list, next, tmpthr3) {
+				TAILQ_FOREACH_SAFE(tmpthr, &tmp_thread_list,
+				    next, tmpthr3) {
 					if (thr->type != tmpthr->type)
 						continue;
-					if (strlen(thr->hostname) != strlen(tmpthr->hostname))
+					if (strlen(thr->hostname) !=
+					    strlen(tmpthr->hostname))
 						continue;
-					if (strncmp(thr->hostname, tmpthr->hostname, strlen(thr->hostname)))
+					if (strncmp(thr->hostname,
+					    tmpthr->hostname,
+					    strlen(thr->hostname)))
 						continue;
 
-					if (thr->tablename != NULL && (strlen(thr->tablename) != strlen(tmpthr->tablename) || strncmp(thr->tablename, tmpthr->tablename, strlen(thr->tablename))))
+					if (thr->tablename != NULL &&
+					    (strlen(thr->tablename) !=
+					    strlen(tmpthr->tablename) ||
+					    strncmp(thr->tablename,
+						tmpthr->tablename,
+						strlen(thr->tablename)))
+					    )
 						continue;
 
 					TAILQ_REMOVE(&thread_list, thr, next);
-					TAILQ_REMOVE(&tmp_thread_list, tmpthr, next);
-					TAILQ_INSERT_HEAD(&thread_list, tmpthr, next);
+					TAILQ_REMOVE(&tmp_thread_list, tmpthr,
+					    next);
+					TAILQ_INSERT_HEAD(&thread_list, tmpthr,
+					    next);
 					if (thr->cmd != NULL) {
 						if (tmpthr->cmd != NULL) {
-							if ((strlen(thr->cmd) != strlen(tmpthr->cmd) || strncmp(thr->cmd, tmpthr->cmd, strlen(thr->cmd)))) {
+							if ((strlen(thr->cmd) !=
+							    strlen(tmpthr->cmd)
+							    || strncmp(thr->cmd,
+								tmpthr->cmd,
+								strlen(thr->cmd)))
+							    ) {
 								free(tmpthr->cmd);
-								tmpthr->cmd = strdup(thr->cmd);
+								tmpthr->cmd =
+								    strdup(thr->cmd);
 							}
 						} else if (thr->cmd != NULL)
 							tmpthr->cmd = strdup(thr->cmd);
@@ -875,7 +967,9 @@ merge_config(void *arg __unused) {
 						free(thr->cmd);
 					free(thr);
 					if (debug > 3)
-						syslog(LOG_ERR, "Waking resolving thread for host %s", thr->hostname);
+						syslog(LOG_ERR,
+						    "Waking resolving thread for host %s",
+						    thr->hostname);
 					tmpthr->exit = 2;
 					filterdns_clean_table(tmpthr, 1);
 					pthread_mutex_lock(&tmpthr->mtx);
@@ -887,9 +981,13 @@ merge_config(void *arg __unused) {
 
 				if (foundexisting == 0) {
 					if (debug > 3)
-						syslog(LOG_ERR, "Creating a new thread for host %s!", thr->hostname);
+						syslog(LOG_ERR,
+						    "Creating a new thread for host %s!",
+						    thr->hostname);
 					if (check_hostname_create(thr) == -1)
-						syslog(LOG_ERR, "Unable to create monitoring thread for host %s! It will not be monitored!", thr->hostname);
+						syslog(LOG_ERR,
+						    "Unable to create monitoring thread for host %s! It will not be monitored!",
+						    thr->hostname);
 				}
 			}
 		}
@@ -905,7 +1003,8 @@ static void
 handle_signal(int sig)
 {
 	if (debug >= 3)
-		syslog(LOG_WARNING, "Received signal %s(%d).", strsignal(sig), sig);
+		syslog(LOG_WARNING, "Received signal %s(%d).", strsignal(sig),
+		    sig);
 	switch(sig) {
 		case SIGHUP:
 			pthread_mutex_lock(&sig_mtx);
@@ -935,7 +1034,8 @@ clear_config(struct thread_list *thrlist)
 
 	while ((thr = TAILQ_FIRST(thrlist)) != NULL) {
 		if (debug >= 5)
-			syslog(LOG_INFO, "Clearing out hostname %s", thr->hostname);
+			syslog(LOG_INFO, "Clearing out hostname %s",
+			    thr->hostname);
 		clear_hostname_addresses(thr);
 		TAILQ_REMOVE(thrlist, thr, next);
 		thr->exit = 1;
@@ -973,7 +1073,8 @@ int main(int argc, char *argv[]) {
 		case 'i':
 			interval = atoi(optarg);
 			if (interval < 1) {
-				fprintf(stderr, "Invalid interval %d\n", interval);
+				fprintf(stderr, "Invalid interval %d\n",
+				    interval);
 				return (3);
 			}
 			break;
@@ -1054,10 +1155,13 @@ int main(int argc, char *argv[]) {
 
 	TAILQ_FOREACH(thr, &thread_list, next) {
 		if (debug > 3)
-			syslog(LOG_ERR, "Creating a new thread for host %s!", thr->hostname);
+			syslog(LOG_ERR, "Creating a new thread for host %s!",
+			    thr->hostname);
 		if (check_hostname_create(thr) == -1)
 			if (debug >= 1)
-				syslog(LOG_ERR, "Unable to create monitoring thread for host %s", thr->hostname);
+				syslog(LOG_ERR,
+				    "Unable to create monitoring thread for host %s",
+				    thr->hostname);
 	}
 
 	pthread_mutex_init(&sig_mtx, NULL);
@@ -1065,15 +1169,9 @@ int main(int argc, char *argv[]) {
 	error = pthread_create(&sig_thr, &attr, merge_config, NULL);
 	if (error != 0) {
 		if (debug >= 1)
-			syslog(LOG_ERR, "Unable to create signal thread %s", thr->hostname);
+			syslog(LOG_ERR, "Unable to create signal thread %s",
+			    thr->hostname);
 	}
 	pthread_set_name_np(sig_thr, "signal-thread");
-#if 0
-	TAILQ_FOREACH(thr, &thread_list, next)
-		pthread_join(thr->thr_pid, NULL);
-
-	clear_config(&thread_list);
-#endif
-
 	pthread_exit(NULL);
 }

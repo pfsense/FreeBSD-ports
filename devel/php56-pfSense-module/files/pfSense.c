@@ -2996,16 +2996,16 @@ PHP_FUNCTION(pfSense_get_interface_stats)
 	tmpd = &ifmd.ifmd_data;
 
 	array_init(return_value);
-	add_assoc_long(return_value, "inpkts", (long)tmpd->ifi_ipackets);
-	add_assoc_long(return_value, "inbytes", (long)tmpd->ifi_ibytes);
-	add_assoc_long(return_value, "outpkts", (long)tmpd->ifi_opackets);
-	add_assoc_long(return_value, "outbytes", (long)tmpd->ifi_obytes);
-	add_assoc_long(return_value, "inerrs", (long)tmpd->ifi_ierrors);
-	add_assoc_long(return_value, "outerrs", (long)tmpd->ifi_oerrors);
-	add_assoc_long(return_value, "collisions", (long)tmpd->ifi_collisions);
-	add_assoc_long(return_value, "inmcasts", (long)tmpd->ifi_imcasts);
-	add_assoc_long(return_value, "outmcasts", (long)tmpd->ifi_omcasts);
-	add_assoc_long(return_value, "unsuppproto", (long)tmpd->ifi_noproto);
+	add_assoc_double(return_value, "inpkts", (double)tmpd->ifi_ipackets);
+	add_assoc_double(return_value, "inbytes", (double)tmpd->ifi_ibytes);
+	add_assoc_double(return_value, "outpkts", (double)tmpd->ifi_opackets);
+	add_assoc_double(return_value, "outbytes", (double)tmpd->ifi_obytes);
+	add_assoc_double(return_value, "inerrs", (double)tmpd->ifi_ierrors);
+	add_assoc_double(return_value, "outerrs", (double)tmpd->ifi_oerrors);
+	add_assoc_double(return_value, "collisions", (double)tmpd->ifi_collisions);
+	add_assoc_double(return_value, "inmcasts", (double)tmpd->ifi_imcasts);
+	add_assoc_double(return_value, "outmcasts", (double)tmpd->ifi_omcasts);
+	add_assoc_double(return_value, "unsuppproto", (double)tmpd->ifi_noproto);
 	add_assoc_long(return_value, "mtu", (long)tmpd->ifi_mtu);
 }
 
@@ -3038,12 +3038,12 @@ PHP_FUNCTION(pfSense_get_pf_rules) {
 		add_assoc_long(array, "id", (long)pr.rule.nr);
 		add_assoc_long(array, "tracker", (long)pr.rule.cuid);
 		add_assoc_string(array, "label", pr.rule.label, 1);
-		add_assoc_long(array, "evaluations", (long)pr.rule.evaluations);
-		add_assoc_long(array, "packets", (long)(pr.rule.packets[0] + pr.rule.packets[1]));
-		add_assoc_long(array, "bytes", (long)(pr.rule.bytes[0] + pr.rule.bytes[1]));
-		add_assoc_long(array, "states", (long)pr.rule.u_states_cur);
+		add_assoc_double(array, "evaluations", (double)pr.rule.evaluations);
+		add_assoc_double(array, "packets", (double)(pr.rule.packets[0] + pr.rule.packets[1]));
+		add_assoc_double(array, "bytes", (double)(pr.rule.bytes[0] + pr.rule.bytes[1]));
+		add_assoc_double(array, "states", (double)pr.rule.u_states_cur);
 		add_assoc_long(array, "pid", (long)pr.rule.cpid);
-		add_assoc_long(array, "state creations", (long)pr.rule.u_states_tot);
+		add_assoc_double(array, "state creations", (double)pr.rule.u_states_tot);
 		add_index_zval(return_value, pr.rule.nr, array);
 	}
 	close(dev);
