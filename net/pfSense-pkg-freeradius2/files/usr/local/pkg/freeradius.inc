@@ -453,7 +453,7 @@ EOD;
 	}
 }
 
-function freeradius_users_resync($via_rpc = "no") {
+function freeradius_users_resync($via_rpc = false) {
 global $config;
 
 $conf = '';
@@ -676,13 +676,13 @@ EOD;
 	freeradius_sync_on_changes();
 	// Do not restart on boot
 	// Will get restarted later by freeradius_clients_resync() if called via XMLRPC sync
-	if ($via_rpc == "no" && !platform_booting()) {
+	if ($via_rpc === false && !platform_booting()) {
 		restart_service('radiusd');
 	}
 }
 
 
-function freeradius_authorizedmacs_resync($via_rpc = "no") {
+function freeradius_authorizedmacs_resync($via_rpc = false) {
 global $config;
 
 $conf = '';
@@ -872,7 +872,7 @@ EOD;
 	conf_mount_ro();
 	
 	freeradius_sync_on_changes();
-	if ($via_rpc == "no") {
+	if ($via_rpc === false) {
 		restart_service('radiusd');
 	}
 }
@@ -2804,9 +2804,9 @@ function freeradius_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncpo
 // This function restarts all other needed functions after XMLRPC so that the content of .XML + .INC will be written in the files (clients.conf, users)
 // Adding more functions will increase the to sync
 function freeradius_all_after_XMLRPC_resync() {
-	// Only (re)start the service once by passing $via_rpc = 'yes' to the below function calls
-	freeradius_users_resync('yes');
-	freeradius_authorizedmacs_resync('yes');
+	// Only (re)start the service once by passing $via_rpc = true to the below function calls
+	freeradius_users_resync(true);
+	freeradius_authorizedmacs_resync(true);
 	freeradius_clients_resync();
 	
 	log_error("[FreeRADIUS]: Finished XMLRPC process. It should be OK. For more information look at the host which started sync.");
