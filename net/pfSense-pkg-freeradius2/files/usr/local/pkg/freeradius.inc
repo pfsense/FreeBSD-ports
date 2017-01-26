@@ -75,8 +75,11 @@ function freeradius_install_command() {
 	@mkdir("/var/log/radacct/timecounter", 0755, true);
 	@mkdir(FREERADIUS_ETC . "/raddb/scripts", 0755, true);
 
-	unlink_if_exists("/usr/local/etc/raddb");
-	@symlink(FREERADIUS_ETC . "/raddb", "/usr/local/etc/raddb");
+	// Previous package versions were creating a symlink targeting itself here
+	if (is_link(FREERADIUS_ETC . "/raddb")) {
+		unlink(FREERADIUS_ETC . "/raddb");
+	}
+	safe_mkdir(FREERADIUS_ETC . "/raddb");
 	if (!file_exists("/var/log/radutmp")) { exec("touch /var/log/radutmp");	}
 	if (!file_exists("/var/log/radwtmp")) {	exec("touch /var/log/radwtmp");	}
 	exec("chown -R root:wheel " . FREERADIUS_ETC . "/raddb /var/log/radacct");
