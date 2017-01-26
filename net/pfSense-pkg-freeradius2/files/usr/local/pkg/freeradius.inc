@@ -114,7 +114,7 @@ function freeradius_install_command() {
 
 	// Previous package versions were creating a symlink targeting itself here
 	if (is_link(FREERADIUS_ETC . "/raddb")) {
-		unlink(FREERADIUS_ETC . "/raddb");
+		@unlink(FREERADIUS_ETC . "/raddb");
 	}
 	safe_mkdir(FREERADIUS_ETC . "/raddb/scripts");
 	freeradius_chown_recursive(FREERADIUS_ETC . "/raddb");
