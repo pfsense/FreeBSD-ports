@@ -415,8 +415,7 @@ EOD;
 	
 	// This is to fix the mysqlclient.so which gets lost after reboot
 	exec("ldconfig -m /usr/local/lib/mysql");
-	// Change owner of freeradius created files
-	exec("chown -R root:wheel /var/log");
+
 	if ($restart_svc) {
 		restart_service("radiusd");
 	}
