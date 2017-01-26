@@ -39,16 +39,17 @@ define('FREERADIUS_LIB', FREERADIUS_BASE . '/lib');
 define('FREERADIUS_ETC', FREERADIUS_BASE . '/etc');
 
 // Check freeradius lib version
-	$frlib="";
-	if (file_exists(FREERADIUS_LIB)) {
+	$frlib = "";
+	if (is_dir(FREERADIUS_LIB)) {
 		$libfiles = scandir(FREERADIUS_LIB);
-		foreach ($libfiles as $libfile){
-			if (preg_match("/freeradius-/",$libfile))
-				$frlib=FREERADIUS_LIB . '/' . $libfile;
+		foreach ($libfiles as $libfile) {
+			if (preg_match("/freeradius-/", $libfile)) {
+				$frlib = FREERADIUS_LIB . '/' . $libfile;
+			}
 		}
 	}
-	if ($frlib == ""){
-		log_error("freeRADIUS - No freeradius lib found on ".FREERADIUS_LIB);
+	if ($frlib == "") {
+		log_error("freeRADIUS - No freeradius libs found on " . FREERADIUS_LIB);
 	}
 	
 function freeradius_deinstall_command() {
@@ -62,6 +63,29 @@ function freeradius_deinstall_command() {
 		$i++;
 	}
 	return;
+}
+
+function freeradius_chown_recursive($dir, $user = "root", $group = "wheel") {
+	if (empty($dir) || ($dir == '/') || ($dir == '/usr/local') || ($dir == '/usr/local/etc') || ($dir == '/usr/local/lib') || ($dir == '/var/log') || !is_dir($dir)) {
+		log_error(gettext("[freeradius] Attempted to recursively chown an invalid directory: '{$dir}'"));
+		return;
+	}
+	chown($dir, $user);
+	chgrp($dir, $group);
+	$handle = opendir($dir);
+	if ($handle) {
+		while (($item = readdir($handle)) !== false) {
+			if (!empty($item) && ($item != ".") && ($item != "..")) {
+				$path = "{$dir}/{$item}";
+				if (is_file($path)) {
+					chown($path, $user);
+					chgrp($path, $group);
+				}
+			}
+		}
+	} else {
+		log_error(gettext("[freedarius] freeradius_chown_recursive() call failed; permissions not set for directory: '{$dir}'"));
+	}
 }
 
 function freeradius_install_command() {
@@ -82,9 +106,10 @@ function freeradius_install_command() {
 	safe_mkdir(FREERADIUS_ETC . "/raddb");
 	if (!file_exists("/var/log/radutmp")) { exec("touch /var/log/radutmp");	}
 	if (!file_exists("/var/log/radwtmp")) {	exec("touch /var/log/radwtmp");	}
-	exec("chown -R root:wheel " . FREERADIUS_ETC . "/raddb /var/log/radacct");
-	if (file_exists($frlib)) {
-		exec("chown -R root:wheel {$frlib}");
+	freeradius_chown_recursive(FREERADIUS_ETC . "/raddb");
+	freeradius_chown_recursive("/var/log/radacct");
+	if (is_dir($frlib)) {
+		freeradius_chown_recursive($frlib);
 	}
 
 	// creating a backup file of the original policy.conf no matter if user checked this or not
@@ -186,9 +211,6 @@ function freeradius_settings_resync($restart_svc = true) {
 	}
 	if (!file_exists("/var/log/radwtmp")) {
 		touch("/var/log/radwtmp");
-	}
-	if (is_dir("/var/log/radacct/")) {
-		exec("chown -R root:wheel /var/log/radacct");
 	}
 
 	$varsettings = $config['installedpackages']['freeradiussettings']['config'][0];
@@ -418,6 +440,10 @@ EOD;
 	
 	// This is to fix the mysqlclient.so which gets lost after reboot
 	exec("ldconfig -m /usr/local/lib/mysql");
+	// Change owner of freeradius created files
+	if (is_dir("/var/log/radacct/")) {
+		freeradius_chown_recursive("/var/log/radacct");
+	}
 
 	if ($restart_svc) {
 		restart_service("radiusd");
