@@ -29,37 +29,45 @@ $lcdproc_screens_config = &$config['installedpackages']['lcdprocscreens']['confi
 
 // Set default values for anything not in the $config
 $pconfig = $lcdproc_config;
-if (!isset($pconfig['enable']))            $pconfig['enable']            = '';
-if (!isset($pconfig['comport']))           $pconfig['enabled']           = 'ucom1';
-if (!isset($pconfig['size']))              $pconfig['size']              = '16x2';
-if (!isset($pconfig['driver']))            $pconfig['driver']            = 'pyramid';
-if (!isset($pconfig['connection_type']))   $pconfig['connection_type']   = 'lcd2usb';
-if (!isset($pconfig['refresh_frequency'])) $pconfig['refresh_frequency'] = '5';
-if (!isset($pconfig['port_speed']))        $pconfig['port_speed']        = '0';
-if (!isset($pconfig['brightness']))        $pconfig['brightness']        = '-1';
-if (!isset($pconfig['offbrightness']))     $pconfig['offbrightness']     = '-1';
-if (!isset($pconfig['contrast']))          $pconfig['contrast']          = '-1';
-if (!isset($pconfig['backlight']))         $pconfig['backlight']         = 'default';
-if (!isset($pconfig['outputleds']))        $pconfig['outputleds']        = 'no';
+if (!isset($pconfig['enable']))                      $pconfig['enable']                      = '';
+if (!isset($pconfig['comport']))                     $pconfig['enabled']                     = 'ucom1';
+if (!isset($pconfig['size']))                        $pconfig['size']                        = '16x2';
+if (!isset($pconfig['driver']))                      $pconfig['driver']                      = 'pyramid';
+if (!isset($pconfig['connection_type']))             $pconfig['connection_type']             = 'lcd2usb'; // specific to hd44780 driver
+if (!isset($pconfig['refresh_frequency']))           $pconfig['refresh_frequency']           = '5';
+if (!isset($pconfig['port_speed']))                  $pconfig['port_speed']                  = '0';
+if (!isset($pconfig['brightness']))                  $pconfig['brightness']                  = '-1';
+if (!isset($pconfig['offbrightness']))               $pconfig['offbrightness']               = '-1';
+if (!isset($pconfig['contrast']))                    $pconfig['contrast']                    = '-1';
+if (!isset($pconfig['backlight']))                   $pconfig['backlight']                   = 'default';
+if (!isset($pconfig['outputleds']))                  $pconfig['outputleds']                  = 'no';
+if (!isset($pconfig['mtxorb_type']))                 $pconfig['mtxorb_type']                 = 'lcd'; // specific to Matrix Orbital driver
+if (!isset($pconfig['mtxorb_adjustable_backlight'])) $pconfig['mtxorb_adjustable_backlight'] = true;  // specific to Matrix Orbital driver
 
 
 if ($_POST) {
 	unset($input_errors);
 	$pconfig = $_POST;
 
+	// Input validation would go here, with any invalid values found 
+	// in $_POST being added to $input_errors, e.g:
+	//   $input_errors[] = "Descriptive error message for the user.";
+
 	if (!$input_errors) {
-		$lcdproc_config['enable']            = $pconfig['enable'];
-		$lcdproc_config['comport']           = $pconfig['comport'];
-		$lcdproc_config['size']              = $pconfig['size'];   
-		$lcdproc_config['driver']            = $pconfig['driver'];
-		$lcdproc_config['connection_type']   = $pconfig['connection_type'];
-		$lcdproc_config['refresh_frequency'] = $pconfig['refresh_frequency'];
-		$lcdproc_config['port_speed']        = $pconfig['port_speed'];
-		$lcdproc_config['brightness']        = $pconfig['brightness'];
-		$lcdproc_config['offbrightness']     = $pconfig['offbrightness'];
-		$lcdproc_config['contrast']          = $pconfig['contrast'];
-		$lcdproc_config['backlight']         = $pconfig['backlight'];
-		$lcdproc_config['outputleds']        = $pconfig['outputleds'];
+		$lcdproc_config['enable']                      = $pconfig['enable'];
+		$lcdproc_config['comport']                     = $pconfig['comport'];
+		$lcdproc_config['size']                        = $pconfig['size'];   
+		$lcdproc_config['driver']                      = $pconfig['driver'];
+		$lcdproc_config['connection_type']             = $pconfig['connection_type'];
+		$lcdproc_config['refresh_frequency']           = $pconfig['refresh_frequency'];
+		$lcdproc_config['port_speed']                  = $pconfig['port_speed'];
+		$lcdproc_config['brightness']                  = $pconfig['brightness'];
+		$lcdproc_config['offbrightness']               = $pconfig['offbrightness'];
+		$lcdproc_config['contrast']                    = $pconfig['contrast'];
+		$lcdproc_config['backlight']                   = $pconfig['backlight'];
+		$lcdproc_config['outputleds']                  = $pconfig['outputleds'];
+		$lcdproc_config['mtxorb_type']                 = $pconfig['mtxorb_type'];
+		$lcdproc_config['mtxorb_adjustable_backlight'] = $pconfig['mtxorb_adjustable_backlight'];
 				
 		write_config();
 		sync_package_lcdproc();
@@ -136,8 +144,7 @@ $section->addInput(
 	)
 )->setHelp('Set the display size lcdproc should use.');
 
-$driverGroup = new Form_Group('Driver');
-$driverGroup->add(
+$section->addInput(
 	new Form_Select(
 		'driver',
 		'Driver',
@@ -161,7 +168,7 @@ $driverGroup->add(
 			'MD8800'       => 'MD8800',
 			'ms6931'       => 'ms6931',
 			'mtc_s16209x'  => 'mtc_s16209x',
-			'MtxOrb'       => 'MtxOrb',
+			'MtxOrb'       => 'Matrix Orbital',
 			'nexcom'       => 'nexcom (x86 only)',
 			'NoritakeVFD'  => 'NoritakeVFD',
 			'picolcd'      => 'picolcd',
@@ -180,11 +187,11 @@ $driverGroup->add(
 			'tyan'         => 'tyan'
 		]
 	)
-);
+)->setHelp('Select the LCD driver LCDproc should use. Some drivers will show additional settings.');
 
 // The connection type is HD44780-specific, so is hidden by javascript (below) 
 // if the HD44780 driver is not being used.
-$driverGroup->add(
+$section->addInput(
 	new Form_Select(
 		'connection_type',
 		'Connection type',
@@ -210,9 +217,34 @@ $driverGroup->add(
 			'i2c'           => 'LCD driven by PCF8574/PCA9554 connected via i2c'
 		]
 	)
+)->setHelp('Select the HD44780 connection type');
+
+// The mtxorb_type and mtxorb_adjustable_backlight are Matrix-Orbital-specific, so are 
+// hidden by javascript (below) if the MtxOrb driver is not being used.
+$subsection = new Form_Group('Display type');
+$subsection->add(
+	new Form_Select(
+		'mtxorb_type',
+		'Display type',
+		$pconfig['mtxorb_type'], // Initial value.
+		[
+			'lcd' => 'LCD (default)',
+			'lkd' => 'LKD',
+			'vfd' => 'VFD',
+			'vkd' => 'VKD'
+		]
+	)
 );
-$driverGroup->setHelp('Set the LCD driver LCDproc should use.<br />If using a HD44780 driver, set the connection type using the second selection box, which will appear.');
-$section->add($driverGroup);
+$subsection->add(
+	new Form_Checkbox(
+		'mtxorb_adjustable_backlight',          // checkbox name (id)
+		'Has adjustable backlight',             // label
+		'Has adjustable backlight',             // text
+		$pconfig['mtxorb_adjustable_backlight'] // initial value
+	)
+);
+$subsection->setHelp('Select the Matrix Orbital display type.<br />Some old firmware versions of Matrix Orbital modules do not support an adjustable backlight but only can switch the backlight on/off. If you own such a module and experience randomly appearing block characters and backlight cannot be switched on or off, uncheck the adjustable backlight option.');
+$section->add($subsection);
 ?>
 
 <script type="text/javascript">
@@ -230,7 +262,11 @@ $section->add($driverGroup);
 		// Hide the connection type selection field when not using the HD44780 driver		
 		var using_HD44780_driver  = driverName_lowercase.indexOf("hd44780") >= 0;
 		using_HD44780_driver     |= jQuery("#driver option:selected").text().toLowerCase().indexOf("hd44780") >= 0;
-		hideGroupInput('connection_type', !using_HD44780_driver);
+		hideInput('connection_type', !using_HD44780_driver); // Hides the entire section
+
+		// Hide the Matrix Orbital specific fields when not using the MtxOrb driver		
+		var using_MtxOrb_driver  = driverName_lowercase.indexOf("mtxorb") >= 0;
+		hideInput('mtxorb_type', !using_MtxOrb_driver); // Hides the entire section, including the mtxorb_adjustable_backlight checkbox
 		
 		// Hide the Output-LEDs checkbox when not using the CFontz633 or CFontzPacket driver
 		var driverSupportsLEDs  = driverName_lowercase.indexOf("cfontz633") >= 0;
