@@ -770,6 +770,7 @@ events.push(function() {
 	//lookup timeformats based on resolution
 	var timeLookup = {
 		"86400": "%Y-%m-%d",
+		"43200": "%Y-%m-%d",
 		"3600": "%m/%d %H:%M",
 		"300": "%H:%M:%S",
 		"60": "%H:%M:%S"
