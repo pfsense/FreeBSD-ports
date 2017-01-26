@@ -100,20 +100,23 @@ function freeradius_install_command() {
 	global $config, $frlib;
 
 	// We create here different folders for different counters.
-	@mkdir("/var/log/radacct/datacounter/daily", 0755, true);
-	@mkdir("/var/log/radacct/datacounter/weekly", 0755, true);
-	@mkdir("/var/log/radacct/datacounter/monthly", 0755, true);
-	@mkdir("/var/log/radacct/datacounter/forever", 0755, true);
-	@mkdir("/var/log/radacct/timecounter", 0755, true);
-	@mkdir(FREERADIUS_ETC . "/raddb/scripts", 0755, true);
+	safe_mkdir("/var/log/radacct/datacounter/daily");
+	safe_mkdir("/var/log/radacct/datacounter/weekly");
+	safe_mkdir("/var/log/radacct/datacounter/monthly");
+	safe_mkdir("/var/log/radacct/datacounter/forever");
+	safe_mkdir("/var/log/radacct/timecounter");
+	if (!file_exists("/var/log/radutmp")) {
+		touch("/var/log/radutmp");
+	}
+	if (!file_exists("/var/log/radwtmp")) {
+		touch("/var/log/radwtmp");
+	}
 
 	// Previous package versions were creating a symlink targeting itself here
 	if (is_link(FREERADIUS_ETC . "/raddb")) {
 		unlink(FREERADIUS_ETC . "/raddb");
 	}
-	safe_mkdir(FREERADIUS_ETC . "/raddb");
-	if (!file_exists("/var/log/radutmp")) { exec("touch /var/log/radutmp");	}
-	if (!file_exists("/var/log/radwtmp")) {	exec("touch /var/log/radwtmp");	}
+	safe_mkdir(FREERADIUS_ETC . "/raddb/scripts");
 	freeradius_chown_recursive(FREERADIUS_ETC . "/raddb");
 	freeradius_chown_recursive("/var/log/radacct");
 	if (is_dir($frlib)) {
