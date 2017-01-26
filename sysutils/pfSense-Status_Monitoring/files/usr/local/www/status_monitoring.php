@@ -1397,7 +1397,7 @@ events.push(function() {
 				var timePeriod = $("#time-period option:selected").text();
 				d3.select('#monitoring-chart svg')
 					.append("text")
-					.attr("x", 330)
+					.attr("x", 400)
 					.attr("y", 415)
 					.attr("id", "time-period")
 					.text("Time Period: " + timePeriod);
@@ -1406,7 +1406,7 @@ events.push(function() {
 				var Resolution = $("#resolution option:selected").text();
 				d3.select('#monitoring-chart svg')
 					.append("text")
-					.attr("x", 530)
+					.attr("x", 570)
 					.attr("y", 415)
 					.attr("id", "resolution")
 					.text("Resolution: " + stepLookup[data[0].step]);
