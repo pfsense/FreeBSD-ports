@@ -39,7 +39,7 @@ define('FREERADIUS_LIB', FREERADIUS_BASE . '/lib');
 define('FREERADIUS_ETC', FREERADIUS_BASE . '/etc');
 
 /*
- * List of functions that directly call restart_service('radiusd')
+ * List of functions that directly call restart_service("radiusd")
  * (with optional parameters to be passed to avoid that behaviour)
  * freeradius_settings_resync($restart_svc = true)
  * freeradius_users_resync($via_rpc = false)
@@ -47,6 +47,7 @@ define('FREERADIUS_ETC', FREERADIUS_BASE . '/etc');
  * freeradius_clients_resync($restart_svc = true)
  * freeradius_eapconf_resync($restart_svc = true)
  * freeradius_modulesldap_resync($restart_svc = true)
+ * freeradius_allcertcnf_resync($restart_svc = true)
 */
 
 // Check freeradius lib version
@@ -447,7 +448,8 @@ EOD;
 	file_put_contents(FREERADIUS_ETC . '/raddb/radiusd.conf', $conf);
 	conf_mount_ro();
 	
-	// "freeradius_sqlconf_resync" is pointing to this function because we need to run "freeradius_serverdefault_resync" and after that restart freeradius.
+	// freeradius_sqlconf_resync() is pointing to this function because we need
+	// to run freeradius_serverdefault_resync() and after that restart freeradius.
 	freeradius_plainmacauth_resync();
 	freeradius_motp_resync();
 	freeradius_serverdefault_resync();
@@ -459,7 +461,7 @@ EOD;
 		freeradius_chown_recursive("/var/log/radacct");
 	}
 
-	if ($restart_svc) {
+	if ($restart_svc === true) {
 		restart_service("radiusd");
 	}
 }
@@ -688,7 +690,7 @@ EOD;
 	// Do not restart on boot
 	// Will get restarted later by freeradius_clients_resync() if called via XMLRPC sync
 	if ($via_rpc === false && !platform_booting()) {
-		restart_service('radiusd');
+		restart_service("radiusd");
 	}
 }
 
@@ -884,7 +886,7 @@ EOD;
 	
 	freeradius_sync_on_changes();
 	if ($restart_svc === true && $via_rpc === false) {
-		restart_service('radiusd');
+		restart_service("radiusd");
 	}
 }
 
@@ -953,15 +955,17 @@ EOD;
 	conf_mount_ro();
 	
 	freeradius_sync_on_changes();
-	restart_service("radiusd");
+	if ($restart_svc === true) {
+		restart_service("radiusd");
+	}
 }
 
 
 
 function freeradius_eapconf_resync($restart_svc = true) {
 	global $config;
-		// We make this write enabled here because embedded systems need to write certs in ../raddb/certs/ folder
-		conf_mount_rw();
+	// We make this write enabled here because embedded systems need to write certs in ../raddb/certs/ folder
+	conf_mount_rw();
 	$conf = '';
 
 	$eapconf = $config['installedpackages']['freeradiuseapconf']['config'][0];
@@ -1205,8 +1209,8 @@ EOD;
 	chmod($filename, 0640);
 	conf_mount_ro();
 
-	if ($restart_svc) {
-		restart_service('radiusd');
+	if ($restart_svc === true) {
+		restart_service("radiusd");
 	}
 }
 
@@ -1380,9 +1384,8 @@ EOD;
 	chmod($filename, 0640);
 	conf_mount_ro();
 	
-	// We don't need a restart at this time because there are additional changes needed in:
-	// "freeradius_settings_resync" and "freeradius_serverdefault_resync".
-	// restart_service('radiusd');
+	// We don't need a restart at this time because there are
+	// additional changes needed in freeradius_settings_resync()
 	freeradius_settings_resync();
 }
 
@@ -2228,8 +2231,7 @@ EOD;
 	chmod($filename, 0640);
 	conf_mount_ro();
 	
-	// No need to restart here because the restart of the service will be done in "freeradius_settings_resync"
-	// restart_service('radiusd');
+	// No need to restart here because the restart of the service will be done in freeradius_settings_resync()
 }
 
 function freeradius_cacertcnf_resync() {
@@ -2590,8 +2592,9 @@ if ($eapconf['vareapconfchoosecertmanager'] == '') {
 		exec(FREERADIUS_ETC . "/raddb/certs/bootstrap");
 		
 		// rename client generated 02.pem to client.pem
-		if (file_exists(FREERADIUS_ETC . "/raddb/certs/02.pem"))
-		rename(FREERADIUS_ETC . "/raddb/certs/02.pem",FREERADIUS_ETC . "/raddb/certs/client.pem");
+		if (file_exists(FREERADIUS_ETC . "/raddb/certs/02.pem")) {
+			rename(FREERADIUS_ETC . "/raddb/certs/02.pem", FREERADIUS_ETC . "/raddb/certs/client.pem");
+		}
 		
 		// tar client-cert files
 		exec("cd " . FREERADIUS_ETC . "/raddb/certs && tar -cf client.tar client.crt client.csr client.key ca.der client.pem");
@@ -2599,7 +2602,8 @@ if ($eapconf['vareapconfchoosecertmanager'] == '') {
 		log_error("freeRADIUS: Added client.csr .crt .key .pem together with ca.der in " . FREERADIUS_ETC . "/raddb/certs/client.tar");
 		
 		// If there were changes on the certificates we need to restart freeradius
-		restart_service('radiusd');
+		// Note: this function is currently only called from freeradiuscerts.xml functions
+		if ($restart_svc === true) { restart_service("radiusd"); }
 		}
 	}
 } //end choose pfSense cert-manager
@@ -2817,11 +2821,12 @@ function freeradius_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncpo
 // This function restarts all other needed functions after XMLRPC so that the content of .XML + .INC will be written in the files (clients.conf, users)
 // Adding more functions will increase the to sync
 function freeradius_all_after_XMLRPC_resync() {
-	// Only (re)start the service once by passing $restart_svc = false 
-	// and/or $via_rpc = true to the below function calls
+	// Make sure we only (re)start the service once below
+	// Do not restart service yet - $via_rpc = true
 	freeradius_users_resync(true);
-	// Do not restart service
+	// Do not restart service yet - $restart_svc = false, $via_rpc = true
 	freeradius_authorizedmacs_resync(false, true);
+	// Restart now when XMLRPC sync is completely finished
 	freeradius_clients_resync();
 	
 	log_error("[FreeRADIUS]: Finished XMLRPC process. It should be OK. For more information look at the host which started sync.");
@@ -3699,7 +3704,7 @@ EOD;
 	// We need to rebuild "freeradius_serverdefault_resync" before restart service
 	// "freeradius_serverdefault_resync" needs to restart other dependencies so we are pointing directly to "freeradius_settings_resync()"
 	freeradius_serverdefault_resync();
-	if ($restart_svc) {
+	if ($restart_svc === true) {
 		restart_service("radiusd");
 	}
 	
