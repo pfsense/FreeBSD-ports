@@ -643,7 +643,9 @@ EOD;
 	conf_mount_ro();
 	
 	freeradius_sync_on_changes();
-	if ($via_rpc == "no") {
+	// Do not restart on boot
+	// Will get restarted later by freeradius_clients_resync() if called via XMLRPC sync
+	if ($via_rpc == "no" && !platform_booting()) {
 		restart_service('radiusd');
 	}
 }
