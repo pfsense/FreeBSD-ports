@@ -38,17 +38,29 @@ $bash_path = FREERADIUS_BASE . "/bin/bash";
 define('FREERADIUS_LIB', FREERADIUS_BASE . '/lib');
 define('FREERADIUS_ETC', FREERADIUS_BASE . '/etc');
 
+/*
+ * List of functions that directly call restart_service('radiusd')
+ * (with optional parameters to be passed to avoid that behaviour)
+ * freeradius_settings_resync($restart_svc = true)
+ * freeradius_users_resync($via_rpc = false)
+ * freeradius_authorizedmacs_resync($restart_svc = true, $via_rpc = false)
+ * freeradius_clients_resync($restart_svc = true)
+ * freeradius_eapconf_resync($restart_svc = true)
+ * freeradius_modulesldap_resync($restart_svc = true)
+*/
+
 // Check freeradius lib version
-	$frlib="";
-	if (file_exists(FREERADIUS_LIB)) {
+	$frlib = "";
+	if (is_dir(FREERADIUS_LIB)) {
 		$libfiles = scandir(FREERADIUS_LIB);
-		foreach ($libfiles as $libfile){
-			if (preg_match("/freeradius-/",$libfile))
-				$frlib=FREERADIUS_LIB . '/' . $libfile;
+		foreach ($libfiles as $libfile) {
+			if (preg_match("/freeradius-/", $libfile)) {
+				$frlib = FREERADIUS_LIB . '/' . $libfile;
+			}
 		}
 	}
-	if ($frlib == ""){
-		log_error("freeRADIUS - No freeradius lib found on ".FREERADIUS_LIB);
+	if ($frlib == "") {
+		log_error("freeRADIUS - No freeradius libs found on " . FREERADIUS_LIB);
 	}
 	
 function freeradius_deinstall_command() {
@@ -64,24 +76,54 @@ function freeradius_deinstall_command() {
 	return;
 }
 
+function freeradius_chown_recursive($dir, $user = "root", $group = "wheel") {
+	if (empty($dir) || ($dir == '/') || ($dir == '/usr/local') || ($dir == '/usr/local/etc') || ($dir == '/usr/local/lib') || ($dir == '/var/log') || !is_dir($dir)) {
+		log_error(gettext("[freeradius] Attempted to recursively chown an invalid directory: '{$dir}'"));
+		return;
+	}
+	chown($dir, $user);
+	chgrp($dir, $group);
+	$handle = opendir($dir);
+	if ($handle) {
+		while (($item = readdir($handle)) !== false) {
+			if (!empty($item) && ($item != ".") && ($item != "..")) {
+				$path = "{$dir}/{$item}";
+				if (is_file($path)) {
+					chown($path, $user);
+					chgrp($path, $group);
+				}
+			}
+		}
+	} else {
+		log_error(gettext("[freedarius] freeradius_chown_recursive() call failed; permissions not set for directory: '{$dir}'"));
+	}
+}
+
 function freeradius_install_command() {
 	global $config, $frlib;
 
 	// We create here different folders for different counters.
-	@mkdir("/var/log/radacct/datacounter/daily", 0755, true);
-	@mkdir("/var/log/radacct/datacounter/weekly", 0755, true);
-	@mkdir("/var/log/radacct/datacounter/monthly", 0755, true);
-	@mkdir("/var/log/radacct/datacounter/forever", 0755, true);
-	@mkdir("/var/log/radacct/timecounter", 0755, true);
-	@mkdir(FREERADIUS_ETC . "/raddb/scripts", 0755, true);
+	safe_mkdir("/var/log/radacct/datacounter/daily");
+	safe_mkdir("/var/log/radacct/datacounter/weekly");
+	safe_mkdir("/var/log/radacct/datacounter/monthly");
+	safe_mkdir("/var/log/radacct/datacounter/forever");
+	safe_mkdir("/var/log/radacct/timecounter");
+	if (!file_exists("/var/log/radutmp")) {
+		touch("/var/log/radutmp");
+	}
+	if (!file_exists("/var/log/radwtmp")) {
+		touch("/var/log/radwtmp");
+	}
 
-	unlink_if_exists("/usr/local/etc/raddb");
-	@symlink(FREERADIUS_ETC . "/raddb", "/usr/local/etc/raddb");
-	if (!file_exists("/var/log/radutmp")) { exec("touch /var/log/radutmp");	}
-	if (!file_exists("/var/log/radwtmp")) {	exec("touch /var/log/radwtmp");	}
-	exec("chown -R root:wheel " . FREERADIUS_ETC . "/raddb /var/log/radacct");
-	if (file_exists($frlib)) {
-		exec("chown -R root:wheel {$frlib}");
+	// Previous package versions were creating a symlink targeting itself here
+	if (is_link(FREERADIUS_ETC . "/raddb")) {
+		@unlink(FREERADIUS_ETC . "/raddb");
+	}
+	safe_mkdir(FREERADIUS_ETC . "/raddb/scripts");
+	freeradius_chown_recursive(FREERADIUS_ETC . "/raddb");
+	freeradius_chown_recursive("/var/log/radacct");
+	if (is_dir($frlib)) {
+		freeradius_chown_recursive($frlib);
 	}
 
 	// creating a backup file of the original policy.conf no matter if user checked this or not
@@ -101,7 +143,7 @@ function freeradius_install_command() {
 	if (file_exists(FREERADIUS_ETC . "/raddb/sites-enabled/inner-tunnel")) { unlink(FREERADIUS_ETC . "/raddb/sites-enabled/inner-tunnel"); }
 
 	// We run this here just to suppress some warnings on syslog if file doesn't exist
-	freeradius_authorizedmacs_resync();
+	freeradius_authorizedmacs_resync(false, false);
 
 	// These two functions create the module and the dictionary entry for Mobile-One-Time-Password
 	freeradius_dictionary_resync();
@@ -119,9 +161,9 @@ function freeradius_install_command() {
 
 	// Initialize some config files - the functions below call other functions
 	freeradius_sqlconf_resync();
-	freeradius_eapconf_resync();
-	freeradius_clients_resync();
-	freeradius_modulesldap_resync();
+	freeradius_eapconf_resync(false);
+	freeradius_clients_resync(false);
+	freeradius_modulesldap_resync(false);
 
 	$rcfile = array();
 	$rcfile['file'] = 'radiusd.sh';
@@ -163,10 +205,9 @@ SERVICENAME="radiusd"
 EOD;
 	$rcfile['stop'] = FREERADIUS_ETC . '/rc.d/radiusd onestop';
 	write_rcfile($rcfile);
-	start_service("radiusd");
 }
 
-function freeradius_settings_resync() {
+function freeradius_settings_resync($restart_svc = true) {
 	global $config;
 	$conf = '';
 
@@ -174,12 +215,17 @@ function freeradius_settings_resync() {
 	$varFREERADIUS_BASE = FREERADIUS_BASE;
 
 	// We do some checks of some folders which will be deleted after reboot on nanobsd systems
-	if (!file_exists("/var/log/radacct/")) { exec("mkdir /var/log/radacct"); }
-	if (!file_exists("/var/log/radacct/datacounter/")) { exec("mkdir /var/log/radacct/datacounter && mkdir /var/log/radacct/datacounter/daily && mkdir /var/log/radacct/datacounter/weekly && mkdir /var/log/radacct/datacounter/monthly && mkdir /var/log/radacct/datacounter/forever"); }
-	if (!file_exists("/var/log/radacct/timecounter/")) { exec("mkdir /var/log/radacct/timecounter"); }
-	if (!file_exists("/var/log/radutmp")) { exec("touch /var/log/radutmp");	}
-	if (!file_exists("/var/log/radwtmp")) {	exec("touch /var/log/radwtmp");	}
-	if (!file_exists("/var/log/radacct/")) { exec("chown -R root:wheel /var/log/radacct"); }
+	safe_mkdir("/var/log/radacct/datacounter/daily");
+	safe_mkdir("/var/log/radacct/datacounter/weekly");
+	safe_mkdir("/var/log/radacct/datacounter/monthly");
+	safe_mkdir("/var/log/radacct/datacounter/forever");
+	safe_mkdir("/var/log/radacct/timecounter");
+	if (!file_exists("/var/log/radutmp")) {
+		touch("/var/log/radutmp");
+	}
+	if (!file_exists("/var/log/radwtmp")) {
+		touch("/var/log/radwtmp");
+	}
 
 	$varsettings = $config['installedpackages']['freeradiussettings']['config'][0];
 	
@@ -409,11 +455,16 @@ EOD;
 	// This is to fix the mysqlclient.so which gets lost after reboot
 	exec("ldconfig -m /usr/local/lib/mysql");
 	// Change owner of freeradius created files
-	exec("chown -R root:wheel /var/log");
-	restart_service("radiusd");
+	if (is_dir("/var/log/radacct/")) {
+		freeradius_chown_recursive("/var/log/radacct");
+	}
+
+	if ($restart_svc) {
+		restart_service("radiusd");
+	}
 }
 
-function freeradius_users_resync() {
+function freeradius_users_resync($via_rpc = false) {
 global $config;
 
 $conf = '';
@@ -634,11 +685,15 @@ EOD;
 	conf_mount_ro();
 	
 	freeradius_sync_on_changes();
-	restart_service('radiusd');
+	// Do not restart on boot
+	// Will get restarted later by freeradius_clients_resync() if called via XMLRPC sync
+	if ($via_rpc === false && !platform_booting()) {
+		restart_service('radiusd');
+	}
 }
 
 
-function freeradius_authorizedmacs_resync() {
+function freeradius_authorizedmacs_resync($restart_svc = true, $via_rpc = false) {
 global $config;
 
 $conf = '';
@@ -828,10 +883,12 @@ EOD;
 	conf_mount_ro();
 	
 	freeradius_sync_on_changes();
-	restart_service('radiusd');
+	if ($restart_svc === true && $via_rpc === false) {
+		restart_service('radiusd');
+	}
 }
 
-function freeradius_clients_resync() {
+function freeradius_clients_resync($restart_svc = true) {
 	global $config;
 
 	$conf = '';
@@ -901,7 +958,7 @@ EOD;
 
 
 
-function freeradius_eapconf_resync() {
+function freeradius_eapconf_resync($restart_svc = true) {
 	global $config;
 		// We make this write enabled here because embedded systems need to write certs in ../raddb/certs/ folder
 		conf_mount_rw();
@@ -974,7 +1031,7 @@ function freeradius_eapconf_resync() {
 // This is for the pfsense cert manager
 // Depends on "freeradius_get_server_certs" and "freeradius_get_ca_certs"
 
-if ($eapconf['vareapconfchoosecertmanager'] == 'on') {
+	if ($eapconf['vareapconfchoosecertmanager'] == 'on') {
 		
 		$ca_cert = lookup_ca($eapconf["ssl_ca_cert"]);
 		if ($ca_cert != false) {
@@ -1148,7 +1205,9 @@ EOD;
 	chmod($filename, 0640);
 	conf_mount_ro();
 
-	restart_service('radiusd');
+	if ($restart_svc) {
+		restart_service('radiusd');
+	}
 }
 
 // Gets started from freeradiuseapconf.xml
@@ -2758,14 +2817,14 @@ function freeradius_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncpo
 // This function restarts all other needed functions after XMLRPC so that the content of .XML + .INC will be written in the files (clients.conf, users)
 // Adding more functions will increase the to sync
 function freeradius_all_after_XMLRPC_resync() {
-	
-	freeradius_users_resync();
-	freeradius_authorizedmacs_resync();
+	// Only (re)start the service once by passing $restart_svc = false 
+	// and/or $via_rpc = true to the below function calls
+	freeradius_users_resync(true);
+	// Do not restart service
+	freeradius_authorizedmacs_resync(false, true);
 	freeradius_clients_resync();
 	
 	log_error("[FreeRADIUS]: Finished XMLRPC process. It should be OK. For more information look at the host which started sync.");
-	
-	exec(FREERADIUS_ETC . "/rc.d/radiusd onerestart");
 }
 
 function freeradius_modulescounter_resync() {
@@ -3035,7 +3094,7 @@ EOD;
 
 }
 
-function freeradius_modulesldap_resync() {
+function freeradius_modulesldap_resync($restart_svc = true) {
 	global $config;
 	$conf = '';
 	
@@ -3640,7 +3699,9 @@ EOD;
 	// We need to rebuild "freeradius_serverdefault_resync" before restart service
 	// "freeradius_serverdefault_resync" needs to restart other dependencies so we are pointing directly to "freeradius_settings_resync()"
 	freeradius_serverdefault_resync();
-	restart_service("radiusd");
+	if ($restart_svc) {
+		restart_service("radiusd");
+	}
 	
 }
 
