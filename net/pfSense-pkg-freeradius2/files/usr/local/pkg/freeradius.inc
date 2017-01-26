@@ -46,6 +46,17 @@ $bash_path = FREERADIUS_BASE . "/bin/bash";
 define('FREERADIUS_LIB', FREERADIUS_BASE . '/lib');
 define('FREERADIUS_ETC', FREERADIUS_BASE . '/etc');
 
+/*
+ * List of functions that directly call restart_service('radiusd')
+ * (with optional parameters to be passed to avoid that behaviour)
+ * freeradius_settings_resync($restart_svc = true)
+ * freeradius_users_resync($via_rpc = false)
+ * freeradius_authorizedmacs_resync($restart_svc = true, $via_rpc = false)
+ * freeradius_clients_resync($restart_svc = true)
+ * freeradius_eapconf_resync($restart_svc = true)
+ * freeradius_modulesldap_resync($restart_svc = true)
+*/
+
 // Check freeradius lib version
 	$frlib = "";
 	if (is_dir(FREERADIUS_LIB)) {
@@ -140,7 +151,7 @@ function freeradius_install_command() {
 	if (file_exists(FREERADIUS_ETC . "/raddb/sites-enabled/inner-tunnel")) { unlink(FREERADIUS_ETC . "/raddb/sites-enabled/inner-tunnel"); }
 
 	// We run this here just to suppress some warnings on syslog if file doesn't exist
-	freeradius_authorizedmacs_resync();
+	freeradius_authorizedmacs_resync(false, false);
 
 	// These two functions create the module and the dictionary entry for Mobile-One-Time-Password
 	freeradius_dictionary_resync();
@@ -158,9 +169,9 @@ function freeradius_install_command() {
 
 	// Initialize some config files - the functions below call other functions
 	freeradius_sqlconf_resync();
-	freeradius_eapconf_resync();
-	freeradius_clients_resync();
-	freeradius_modulesldap_resync();
+	freeradius_eapconf_resync(false);
+	freeradius_clients_resync(false);
+	freeradius_modulesldap_resync(false);
 
 	$rcfile = array();
 	$rcfile['file'] = 'radiusd.sh';
@@ -690,7 +701,7 @@ EOD;
 }
 
 
-function freeradius_authorizedmacs_resync($via_rpc = false) {
+function freeradius_authorizedmacs_resync($restart_svc = true, $via_rpc = false) {
 global $config;
 
 $conf = '';
@@ -880,12 +891,12 @@ EOD;
 	conf_mount_ro();
 	
 	freeradius_sync_on_changes();
-	if ($via_rpc === false) {
+	if ($restart_svc === true && $via_rpc === false) {
 		restart_service('radiusd');
 	}
 }
 
-function freeradius_clients_resync() {
+function freeradius_clients_resync($restart_svc = true) {
 	global $config;
 
 	$conf = '';
@@ -955,7 +966,7 @@ EOD;
 
 
 
-function freeradius_eapconf_resync() {
+function freeradius_eapconf_resync($restart_svc = true) {
 	global $config;
 		// We make this write enabled here because embedded systems need to write certs in ../raddb/certs/ folder
 		conf_mount_rw();
@@ -1028,7 +1039,7 @@ function freeradius_eapconf_resync() {
 // This is for the pfsense cert manager
 // Depends on "freeradius_get_server_certs" and "freeradius_get_ca_certs"
 
-if ($eapconf['vareapconfchoosecertmanager'] == 'on') {
+	if ($eapconf['vareapconfchoosecertmanager'] == 'on') {
 		
 		$ca_cert = lookup_ca($eapconf["ssl_ca_cert"]);
 		if ($ca_cert != false) {
@@ -1202,7 +1213,9 @@ EOD;
 	chmod($filename, 0640);
 	conf_mount_ro();
 
-	restart_service('radiusd');
+	if ($restart_svc) {
+		restart_service('radiusd');
+	}
 }
 
 // Gets started from freeradiuseapconf.xml
@@ -2812,9 +2825,11 @@ function freeradius_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncpo
 // This function restarts all other needed functions after XMLRPC so that the content of .XML + .INC will be written in the files (clients.conf, users)
 // Adding more functions will increase the to sync
 function freeradius_all_after_XMLRPC_resync() {
-	// Only (re)start the service once by passing $via_rpc = true to the below function calls
+	// Only (re)start the service once by passing $restart_svc = false 
+	// and/or $via_rpc = true to the below function calls
 	freeradius_users_resync(true);
-	freeradius_authorizedmacs_resync(true);
+	// Do not restart service
+	freeradius_authorizedmacs_resync(false, true);
 	freeradius_clients_resync();
 	
 	log_error("[FreeRADIUS]: Finished XMLRPC process. It should be OK. For more information look at the host which started sync.");
@@ -3087,7 +3102,7 @@ EOD;
 
 }
 
-function freeradius_modulesldap_resync() {
+function freeradius_modulesldap_resync($restart_svc = true) {
 	global $config;
 	$conf = '';
 	
@@ -3692,7 +3707,9 @@ EOD;
 	// We need to rebuild "freeradius_serverdefault_resync" before restart service
 	// "freeradius_serverdefault_resync" needs to restart other dependencies so we are pointing directly to "freeradius_settings_resync()"
 	freeradius_serverdefault_resync();
-	restart_service("radiusd");
+	if ($restart_svc) {
+		restart_service("radiusd");
+	}
 	
 }
 
