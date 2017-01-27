@@ -770,6 +770,7 @@ events.push(function() {
 	//lookup timeformats based on resolution
 	var timeLookup = {
 		"86400": "%Y-%m-%d",
+		"43200": "%Y-%m-%d",
 		"3600": "%m/%d %H:%M",
 		"300": "%H:%M:%S",
 		"60": "%H:%M:%S"
@@ -1286,6 +1287,10 @@ events.push(function() {
 			d3.select('#monitoring-chart').append('svg'); //re-add blank svg so it and be drawn on
 
 			if (error) {
+				if(String(error).startsWith("SyntaxError")) {
+					error = "JSON not returned. Check to make sure you have an active session";
+				}
+
 				$("#monitoring-chart").hide();
 				$("#chart-error").show().html('<strong>Error</strong>: ' + error);
 				return console.warn(error);
@@ -1392,7 +1397,7 @@ events.push(function() {
 				var timePeriod = $("#time-period option:selected").text();
 				d3.select('#monitoring-chart svg')
 					.append("text")
-					.attr("x", 330)
+					.attr("x", 400)
 					.attr("y", 415)
 					.attr("id", "time-period")
 					.text("Time Period: " + timePeriod);
@@ -1401,7 +1406,7 @@ events.push(function() {
 				var Resolution = $("#resolution option:selected").text();
 				d3.select('#monitoring-chart svg')
 					.append("text")
-					.attr("x", 530)
+					.attr("x", 570)
 					.attr("y", 415)
 					.attr("id", "resolution")
 					.text("Resolution: " + stepLookup[data[0].step]);
