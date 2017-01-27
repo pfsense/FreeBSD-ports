@@ -3,7 +3,7 @@
  * squid_clwarn.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2015 Marcello Coutinho
  * All rights reserved.
  *
@@ -19,7 +19,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-$VERSION = '6.10';
+require_once("pkg-utils.inc");
+pkg_exec("query '%v' squidclamav", $version, $err);
+$VERSION = "{$version}";
 $url = htmlspecialchars($_REQUEST['url']);
 $virus = ($_REQUEST['virus'] ? $_REQUEST['virus'] : $_REQUEST['malware']);
 
