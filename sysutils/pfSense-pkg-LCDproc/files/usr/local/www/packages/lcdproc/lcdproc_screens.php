@@ -160,7 +160,7 @@ $section->addInput(
 	new Form_Checkbox(
 		'scr_load', // checkbox name (id)
 		'Load', // checkbox label
-		'Display the load averages', // checkbox text
+		'Display the load average of the system over the last 1, 5, and 15 minutes', // checkbox text
 		$pconfig['scr_load'] // checkbox initial value
 	)
 );
