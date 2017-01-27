@@ -1546,8 +1546,10 @@ EOD;
 # the next bumping action (e.g., peek or splice). Valid SslBump step
 # values and the corresponding ssl_bump evaluation moments are:
 #   SslBump1: After getting TCP-level and HTTP CONNECT info.
-#   SslBump2: After getting SSL Client Hello info.
-#   SslBump3: After getting SSL Server Hello info.
+#   SslBump2: After getting TLS Client Hello info.
+#   SslBump3: After getting TLS Server Hello info.
+# These ACLs exist even when 'SSL/MITM Mode' is set to 'Custom' so that
+# they can be used there for custom configuration.
 acl step1 at_step SslBump1
 acl step2 at_step SslBump2
 acl step3 at_step SslBump3
@@ -1826,11 +1828,21 @@ function squid_resync_auth() {
 	if ($auth_method == 'none') {
 		// SSL interception ACL options without authentication
 		if ($settingsconfig['ssl_proxy'] == "on") {
-			$conf .= "ssl_bump peek step1\n";
-			if (!empty($settingsnac['whitelist'])) {
-				$conf .= "ssl_bump splice whitelist\n";
+			// Custom SSL/MITM configuration overrides everything
+			if ($settingsconfig['sslproxy_mitm_mode'] == "custom") {
+				$conf .= "# Custom SSL/MITM options before auth\n" . sq_text_area_decode($settingsconfig['custom_options3_squid3']) . "\n\n";
+			} elseif ($settingsconfig['sslproxy_mitm_mode'] == "spliceall") {
+				// 'Splice All' SSL/MIMT configuration
+				$conf .= "ssl_bump peek step1\n";
+				$conf .= "ssl_bump splice all\n";
+			} else {
+				// 'Splice Whitelist, Bump Otherwise' SSL/MIMT configuration (Default)
+				$conf .= "ssl_bump peek step1\n";
+				if (!empty($settingsnac['whitelist'])) {
+					$conf .= "ssl_bump splice whitelist\n";
+				}
+				$conf .= "ssl_bump bump all\n";
 			}
-			$conf .= "ssl_bump bump all\n";
 		}
 		$conf .= "# Setup allowed ACLs\n";
 		$allowed = array('allowed_subnets');
@@ -1883,14 +1895,23 @@ EOD;
 		}
 		// Custom User Options after authentication definition
 		$conf .= "# Custom options after auth\n" . sq_text_area_decode($settingsconfig['custom_options2_squid3']) . "\n\n";
-
 		// SSL interception ACL options with authentication
 		if ($settingsconfig['ssl_proxy'] == "on") {
-			$conf .= "ssl_bump peek step1\n";
-			if (!empty($settingsnac['whitelist'])) {
-				$conf .= "ssl_bump splice whitelist\n";
+			// Custom SSL/MITM configuration overrides everything
+			if ($settingsconfig['sslproxy_mitm_mode'] == "custom") {
+				$conf .= "# Custom SSL/MITM options after auth\n" . sq_text_area_decode($settingsconfig['custom_options3_squid3']) . "\n\n";
+			} elseif ($settingsconfig['sslproxy_mitm_mode'] == "spliceall") {
+				// 'Splice All' SSL/MIMT configuration
+				$conf .= "ssl_bump peek step1\n";
+				$conf .= "ssl_bump splice all\n";
+			} else {
+				// 'Splice Whitelist, Bump Otherwise' SSL/MIMT configuration (Default)
+				$conf .= "ssl_bump peek step1\n";
+				if (!empty($settingsnac['whitelist'])) {
+					$conf .= "ssl_bump splice whitelist\n";
+				}
+				$conf .= "ssl_bump bump all\n";
 			}
-			$conf .= "ssl_bump bump all\n";
 		}
 		// Onto the ACLs
 		$password = array('localnet', 'allowed_subnets');

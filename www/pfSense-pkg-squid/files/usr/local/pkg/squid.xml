@@ -309,7 +309,45 @@
 			<fieldname>ssl_proxy</fieldname>
 			<description>Enable SSL filtering.</description>
 			<type>checkbox</type>
-			<enablefields>ssl_active_interface,dca,sslcrtd_children,ssl_proxy_port,interception_checks</enablefields>
+			<enablefields>ssl_proxy_port,sslcrtd_children</enablefields>
+		</field>
+		<field>
+			<fielddescr>SSL/MITM Mode</fielddescr>
+			<fieldname>sslproxy_mitm_mode</fieldname>
+			<description>
+				<![CDATA[
+				The SSL/MITM mode determines how SSL interception is treated when 'SSL Man In the Middle Filtering' is enabled.<br/>
+				<span class="text-info">Default: Splice Whitelist, Bump Otherwise. <strong>Click Info for details.</strong></span>
+				<div class="infoblock">
+				<strong><span class="text-info">Splice Whitelist, Bump Otherwise: </span></strong><br/>
+				<span>
+				This is the default. Destinations defined in 'Whitelist' on the 'ACLs' tab will be spliced. All other domains will be bumped.<br/>
+				You <em>need</em> to install the CA certificate configured below on clients.<br/>
+				Content filtering (such as Antivirus) <em>will</em> be available with bumped sites (but <em>not</em> for 'Whitelist').
+				</span><br/><br/>
+				<strong><span class="text-info">Splice All: </span></strong><br/>
+				<span>
+				This configuration is suitable if you want to use the <a href="https://doc.pfsense.org/index.php/SquidGuard_package" target="_blank">SquidGuard package</a> for web filtering.</br>
+				All destinations will be spliced. SquidGuard can do its job of denying or allowing destinations according its rules, as it does with HTTP.<br/>
+				You do <em>not</em> need to install the CA certificate configured below on clients.<br/>
+				Content filtering (such as Antivirus) <em>will not</em> be available for SSL sites.
+				</span><br/><br/>
+				<strong><span class="text-info">Custom: </span></strong><br/>
+				<span>Use 'Custom Options (SSL/MITM)' defined in Advanced Features. See Info there for details and examples.</span><br/>
+				<strong><span class="text-danger">Warning: Custom mode is not supported in any way!</span></strong><br/><br/>
+				Please see <a href="http://wiki.squid-cache.org/Features/SslPeekAndSplice" target="_blank">SslBump Peek and Splice wiki documentation</a>
+				for additional details.<br/>
+				</div>
+				]]>
+			</description>
+			<type>select</type>
+			<options>
+				<option><name>Splice Whitelist, Bump Otherwise</name><value>splicewhitelist</value></option>
+				<option><name>Splice All</name><value>spliceall</value></option>
+				<option><name>Custom</name><value>custom</value></option>
+			</options>
+			<size>1</size>
+			<default_value>splicewhitelist</default_value>
 		</field>
 		<field>
 			<fielddescr>SSL Intercept Interface(s)</fielddescr>
@@ -326,7 +364,7 @@
 			<multiple/>
 		</field>
 		<field>
-			<fielddescr>SSL Proxy port</fielddescr>
+			<fielddescr>SSL Proxy Port</fielddescr>
 			<fieldname>ssl_proxy_port</fieldname>
 			<description>
 				<![CDATA[
@@ -356,8 +394,7 @@
 			<type>select</type>
 			<options>
 				<option><name>Modern</name><value>modern</value></option>
-				<option><name>Intermediate</name><value>intermediate</value>
-				</option>
+				<option><name>Intermediate</name><value>intermediate</value></option>
 			</options>
 			<size>1</size>
 			<default_value>modern</default_value>
@@ -657,7 +694,7 @@
 			<advancedfield/>
 		</field>
 		<field>
-			<fielddescr>Custom ACLS (Before Auth)</fielddescr>
+			<fielddescr>Custom Options (Before Auth)</fielddescr>
 			<fieldname>custom_options_squid3</fieldname>
 			<description>
 				<![CDATA[
@@ -672,7 +709,7 @@
 			<advancedfield/>
 		</field>
 		<field>
-			<fielddescr>Custom ACLS (After Auth)</fielddescr>
+			<fielddescr>Custom Options (After Auth)</fielddescr>
 			<fieldname>custom_options2_squid3</fieldname>
 			<description>
 				<![CDATA[
@@ -686,10 +723,58 @@
 			<rows>10</rows>
 			<advancedfield/>
 		</field>
+		<field>
+			<fielddescr>Custom Options (SSL/MITM)</fielddescr>
+			<fieldname>custom_options3_squid3</fieldname>
+			<description>
+				<![CDATA[
+				Put your own custom options here, one per line. They'll be added to the configuration in place of the default SSL/MITM configuration.<br/>
+				<span class="text-info">Click Info for details.</span> 
+				<div class="infoblock">
+				Some predefined ACLs for step values are available here: <strong><span class="text-info">step1, step2, step3</span></strong>.<br/>
+				These can be used there for custom configuration and are applied at the corresponding ssl_bump evaluation moments:<br/><br/>
+				<dl class="dl-horizontal responsive">
+				<dt>step1</dt><dd>SslBump1 - After getting TCP-level and HTTP CONNECT info.</dd>
+				<dt>step2</dt><dd>SslBump2 - After getting TLS Client Hello info.</dd>
+				<dt>step3</dt><dd>SslBump3 - After getting TLS Server Hello info.</dd>
+				</dl>
+				<strong><span class="text-info">Example:</span></strong><br/>
+				<code>
+				# some banking sites that should not be MITM-ed<br/>
+				acl serverIsBank ssl::server_name .bank1.example.com<br/>
+				acl serverIsBank ssl::server_name .bank2.example.net<br/>
+				# some sites we want to monitor/do content filtering for<br/>
+				acl monitoredSites ssl::server_name .foo.example.com<br/>
+				acl monitoredSites ssl::server_name .bar.example.org<br/>
+				# get SNI obtained by parsing TLS Client Hello during step2<br/>
+				# (which is instructed by ssl_bump peek step1)<br/>
+				ssl_bump peek step1<br/>
+				# bump monitored sites, but not banks<br/>
+				ssl_bump bump monitoredSites !serverIsBank<br/>
+				# splice all the rest<br/>
+				ssl_bump splice all
+				</code><br/><br/>
+				Please see <a href="http://wiki.squid-cache.org/Features/SslPeekAndSplice" target="_blank">SslBump Peek and Splice wiki documentation</a>
+				for additional details.
+				</div><br/>
+				<strong><span class="text-danger">Warning:</span> These need to be squid.conf native options, otherwise Squid will NOT work.</strong>
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<cols>78</cols>
+			<rows>10</rows>
+			<advancedfield/>
+		</field>
 	</fields>
 	<custom_php_validation_command>
 		squid_validate_general($_POST, $input_errors);
 	</custom_php_validation_command>
+	<!--
+	<custom_php_after_form_command>
+		squid_print_javascript_general2();
+	</custom_php_after_form_command>
+	-->
 	<custom_php_resync_config_command>
 		squid_resync();
 	</custom_php_resync_config_command>
