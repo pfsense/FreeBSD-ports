@@ -1,0 +1,20 @@
+bin/adexport.pl
+www/shortcuts/pkg_postfix.inc
+www/postfix_view_config.php
+www/postfix_about.php
+www/widgets/widgets/postfix.widget.php
+www/postfix_queue.php
+www/postfix_search.php
+www/postfix_recipients.php
+www/postfix.php
+pkg/postfix_domains.xml
+pkg/postfix_antispam.xml
+pkg/postfix.inc
+pkg/postfix_recipients.xml
+pkg/postfix.xml
+pkg/postfix_sync.xml
+pkg/postfix_acl.xml
+%%DATADIR%%/info.xml
+@dir /etc/inc
+@dir /etc/inc/priv
+/etc/inc/priv/postfix.priv.inc

@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ========================================================================== */
+/*
+    postfix.xml
+    part of the Postfix package for pfSense
+    Copyright (C) 2010 Erik Fonnesbeck
+    Copyright (C) 2011-2015 Marcello Coutinho
+
+    All rights reserved.            
+			                                                                  */
+/* ========================================================================== */
+/*
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+     1. Redistributions of source code MUST retain the above copyright notice,
+        this list of conditions and the following disclaimer.
+
+     2. Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+                                                                              */
+/* ========================================================================== */
+	]]>
+	</copyright>
+	<description>Describe your package here</description>
+	<requirements>Describe your package requirements here</requirements>
+	<faq>Currently there are no FAQ items provided.</faq>
+	<name>postfix</name>
+	<version>2.6</version>
+	<title>Services: Postfix relay and antispam</title>
+	<include_file>/usr/local/pkg/postfix.inc</include_file>
+	<menu>
+		<name>Postfix Forwarder</name>
+		<tooltiptext>Configure Postfix Forwarder</tooltiptext>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=postfix.xml&amp;id=0</url>
+	</menu>
+	<menu>
+		<name>Search Mail</name>
+		<tooltiptext>Search postfix logs</tooltiptext>
+		<section>Diagnostics</section>
+		<url>/postfix_search.php</url>
+	</menu>
+	<menu>
+		<name>Postfix Queue</name>
+		<tooltiptext>check postfix queue</tooltiptext>
+		<section>Status</section>
+		<url>/postfix_queue.php</url>
+	</menu>
+	<service>
+		<name>postfix</name>
+		<rcfile>postfix.sh</rcfile>
+		<executable>master</executable>
+	</service>
+<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=postfix.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Domains</text>
+			<url>/pkg_edit.php?xml=postfix_domains.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Recipients</text>
+			<url>/pkg_edit.php?xml=postfix_recipients.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Access Lists</text>
+			<url>/pkg_edit.php?xml=postfix_acl.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Antispam</text>
+			<url>/pkg_edit.php?xml=postfix_antispam.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=postfix_sync.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>View config</text>
+			<url>/postfix_view_config.php</url>
+		</tab>
+		<tab>
+			<text>Search mail</text>
+			<url>/postfix_search.php</url>
+		</tab>
+		<tab>
+			<text>Queue</text>
+			<url>/postfix_queue.php</url>
+		</tab>
+
+		<tab>
+			<text>About</text>
+			<url>/postfix_about.php</url>
+		</tab>
+
+</tabs>
+	<fields>
+		<field>
+			<name>Postfix General Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable Postfix  </fielddescr>
+			<fieldname>enable_postfix</fieldname>
+			<type>checkbox</type>
+			<description></description>
+		</field>
+		<field>
+			<fielddescr>Listen Protocol</fielddescr>
+			<fieldname>inet_protocol</fieldname>
+			<description><![CDATA[Specify what protocols Postfix will use when it makes or accepts network connections<br>
+								 This option controls what DNS lookups Postfix will use when it makes network connections.<br><br>
+								 <b>Restart postfix daemon after changing Listen protocol.</b>]]></description>
+	    	<type>select</type>
+ 				<options>
+				<option><name>ipv4       (DEFAULT: enable IPv4 only)</name><value>ipv4</value></option>
+				<option><name>all        (enable IPv4, and IPv6 if supported)</name><value>all</value></option>
+				<option><name>ipv4, ipv6 (enable both IPv4 and IPv6)</name><value>ipv4,ipv6</value></option>
+				<option><name>ipv6       (enable IPv6 only</name><value>ipv6</value></option>
+				</options>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Listen on</fielddescr>
+			<fieldname>enabled_interface</fieldname>
+			<description><![CDATA[Interface(s) that daemon will bind to.<br>Do not listen on WAN without a good "antispam/close relay" configuration.<br>
+									If you need postfix on other ip then Interface address, choose localhost and then create a nat rule from external ip to localhost.<br><br>
+									<b>Restart postfix daemon after changing Listen on addresses/interfaces.</b>]]></description>
+			<type>interfaces_selection</type>
+			<required/>
+			<default_value>loopback</default_value>
+			<showlistenall/>
+			<showvirtualips/>
+			<multiple/>
+		</field>
+		<field>
+			<fielddescr>Maximum message size</fielddescr>
+			<fieldname>message_size_limit</fieldname>
+			<type>input</type>
+			<size>10</size>
+			<description>
+				This setting governs the largest message size that will be accepted by this mail server. Ensure you have enough space to accommodate this size, and ensure this setting matches or is lower than the destination server(s).&lt;br/&gt;Default: 10240000 (10MB).
+			</description>
+		</field>
+		<field>
+			<fielddescr>Process Limit</fielddescr>
+			<fieldname>process_limit</fieldname>
+			<type>input</type>
+			<size>10</size>
+			<description>
+				The default maximal number of Postfix child processes that provide a given service.&lt;br/&gt;Default: 100
+			</description>
+		</field>
+		<field>
+			<fielddescr>custom main.cf options</fielddescr>
+			<fieldname>maincf</fieldname>
+			<description>Paste your custom code here.  This code will be included at main.cf postfix file</description>
+			<type>textarea</type>
+			<cols>70</cols>
+			<rows>03</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<name>Logging</name>
+		<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Destination</fielddescr>
+			<fieldname>log_to</fieldname>
+			<description><![CDATA[Choose where you want to save log information about mails on this server.<br>
+									Using system log you can forward logging to a syslog server.<BR>
+									Status -> system Logs -> Settings]]></description>
+	    	<type>select</type>
+ 				<options>
+				<option><name>System log</name><value>system</value></option>
+				<option><name>/var/log/maillog</name><value>maillog</value></option>
+				<option><name>Disable logging</name><value>none</value></option>
+				</options>
+		</field>
+		<field>
+			<fielddescr>Update Sqlite</fielddescr>
+			<fieldname>update_sqlite</fieldname>
+			<description><![CDATA[Choose how often pfSense will transfer log files to Sqlite database.<BR>
+								  To use <strong>Diagnostics -> Search mail</strong> you need to:<br>
+								  Select Loggin Destination to /var/log/maillog<br>
+								  Select update Sqlite frequency<br>
+								  Inlcude <strong>/^Subject:/ WARN</strong> line in Acl Headers after all your Subject rules.]]></description>
+	    	<type>select</type>
+ 				<options>
+ 				<option><name>Every minute</name><value>01min</value></option>
+				<option><name>Every 10 minutes</name><value>10min</value></option>
+				<option><name>Every Hour</name><value>01hour</value></option>
+				<option><name>Once a day</name><value>24hours</value></option>
+				<option><name>Never</name><value>never</value></option>
+				</options>
+		</field>		
+		<field>
+			<fielddescr>Debug peer list</fielddescr>
+			<fieldname>debug_list</fieldname>
+			<description><![CDATA[The "debug_peer_list" parameter specifies an optional list of domain or network patterns, /file/name patterns or type:name tables.<br>
+								  When an SMTP client or server host name or address matches a pattern, increase the verbose logging level by the amount specified in the "debug_peer_level" parameter.]]></description>
+			<type>textarea</type>
+			<cols>70</cols>
+			<rows>3</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>Debug peer level</fielddescr>
+			<fieldname>debug_level</fieldname>
+			<description><![CDATA[The "debug_peer_level" parameter specifies the increment in verbose logging level when an SMTP client or server host name or address matches a pattern in the "debug_peer_list" parameter.]]></description>
+	    	<type>select</type>
+ 				<options>
+				<option><name>2</name><value>2</value></option>
+				<option><name>3</name><value>3</value></option>
+				<option><name>4</name><value>4</value></option>
+				<option><name>5</name><value>5</value></option>
+				<option><name>6</name><value>6</value></option>
+				</options>
+		</field>
+
+		<field>
+			<name>Widget options</name>
+			<type>listtopic</type>
+		</field>
+			<field>
+			<fielddescr>list days</fielddescr>
+			<fieldname>widget_days</fieldname>
+			<type>select</type>
+ 				<options>
+ 				<option><name>1</name><value>1</value></option>
+				<option><name>3</name><value>3</value></option>
+				<option><name>5</name><value>5</value></option>
+				<option><name>7</name><value>7</value></option>
+				<option><name>9</name><value>9</value></option>
+				<option><name>12</name><value>12</value></option>
+				</options>
+			<description>How many days to display in widget. Default is 3.</description>
+		</field>
+				<field>
+			<fielddescr>Max file size</fielddescr>
+			<fieldname>widget_size</fieldname>
+			<type>input</type>
+			<size>10</size>
+			<description>
+				The maximun size in bytes sqlite file we get stats. Default is 100000000 (100mb).
+			</description>
+		</field>
+	</fields>
+	<custom_php_install_command>
+		postfix_php_install_command();
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		postfix_php_deinstall_command();
+	</custom_php_deinstall_command>
+	<custom_php_validation_command>
+		postfix_validate_input($_POST, $input_errors);
+	</custom_php_validation_command>	
+	<custom_php_resync_config_command>
+		sync_package_postfix();
+	</custom_php_resync_config_command>
+</packagegui>

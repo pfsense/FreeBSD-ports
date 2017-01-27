@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ========================================================================== */
+/*
+    postfix_antispam.xml
+    part of the Postfix package for pfSense
+    Copyright (C) 2011-2015 Marcello Coutinho
+
+    All rights reserved.            
+			                                                                  */
+/* ========================================================================== */
+/*
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+     1. Redistributions of source code must retain the above copyright notice,
+        this list of conditions and the following disclaimer.
+
+     2. Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+                                                                              */
+/* ========================================================================== */
+	]]>
+	</copyright>
+	<description>Describe your package here</description>
+	<requirements>Describe your package requirements here</requirements>
+	<faq>Currently there are no FAQ items provided.</faq>
+	<name>postfix_antispam</name>
+	<version>1.0</version>
+	<title>Services: Postfix relay and antispam</title>
+	<include_file>/usr/local/pkg/postfix.inc</include_file>
+	<menu>
+		<name>Postfix Antispam and mail Relay</name>
+		<tooltiptext>Configure Postfix Forwarder</tooltiptext>
+		<section>Services</section>
+		<url>pkg_edit.php?xml=postfix_antispam.xml&amp;id=0</url>
+	</menu>
+<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=postfix.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Domains</text>
+			<url>/pkg_edit.php?xml=postfix_domains.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Recipients</text>
+			<url>/pkg_edit.php?xml=postfix_recipients.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Access Lists</text>
+			<url>/pkg_edit.php?xml=postfix_acl.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Antispam</text>
+			<url>/pkg_edit.php?xml=postfix_antispam.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=postfix_sync.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>View config</text>
+			<url>/postfix_view_config.php</url>
+		</tab>
+		<tab>
+			<text>Search mail</text>
+			<url>/postfix_search.php</url>
+		</tab>
+		<tab>
+			<text>Queue</text>
+			<url>/postfix_queue.php</url>
+		</tab>
+		<tab>
+			<text>About</text>
+			<url>/postfix_about.php</url>
+		</tab>
+
+</tabs>
+	<fields>
+		<field>
+			<name>Postfix Antispam Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Header verification  </fielddescr>
+			<fieldname>header_check</fieldname>
+			<type>select</type>
+			<options>
+				<option><name>Strong</name><value>strong</value></option>
+				<option><name>Basic</name><value>basic</value></option>
+			</options>
+			<description><![CDATA[<strong>Default: Strong</strong><br>
+								Enable sender, client, recipients and rfc verification.<br>]]></description>
+		</field>
+		<field>
+			<fielddescr>Helo Hostname</fielddescr>
+			<fieldname>reject_unknown_helo_hostname</fieldname>
+			<type>checkbox</type>
+			<description><![CDATA[<strong>Default: Checked</strong><br>
+								Reject unknow helo hostname during smtp communication.]]></description>
+		</field>
+		<field>
+			<fielddescr>Zombie blocker</fielddescr>
+			<fieldname>zombie_blocker</fieldname>
+			<description>
+			<![CDATA[<strong>Default: Enabled with enforce</strong><br><a target=_new href='http://www.postfix.org/POSTSCREEN_README.html'>Use postfix 2.8 Postscreen feature to detect zombie spammers</a>]]>
+			</description>
+	    	<type>select</type>
+ 				<options>
+				<option><name>Enabled with enforce</name><value>enforce</value></option>
+				<option><name>Enabled with drop</name><value>drop</value></option>
+				<option><name>Enabled with ignore</name><value>ignore</value></option>
+				<option><name>Disabled</name><value>disabled</value></option>
+				</options>
+		</field>
+		<field>
+			<fielddescr>greet wait time</fielddescr>
+			<fieldname>greet_time</fieldname>
+			<type>input</type>
+			<size>10</size>
+			<description><![CDATA[<strong>Default: up to 2 seconds under stress, up to 6 seconds otherwises</strong><br>syntax: 2,6s<br>
+								The amount of time that postscreen will wait for an SMTP client to send a command before its turn, and for DNS blocklist lookup results to arrive .<br>
+								Specify a non-zero time value (an integral value plus an optional one-letter suffix that specifies the time unit).<br>
+								Time units: s (seconds), m (minutes), h (hours), d (days), w (weeks).]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>After greeting tests</fielddescr>
+			<fieldname>after_greeting</fieldname>
+			<description>
+			<![CDATA[<a target=_new href='http://www.postfix.org/POSTSCREEN_README.html'>Postscreen After greeting tests. All these options are recomended.</a>]]>
+			</description>
+	    	<type>select</type>
+ 				<options>
+				<option><name>postscreen_bare_newline_enable</name><value>postscreen_bare_newline_enable</value></option>
+				<option><name>postscreen_disable_vrfy_command</name><value>postscreen_disable_vrfy_command</value></option>
+				<option><name>postscreen_non_smtp_command_enable</name><value>postscreen_non_smtp_command_enable</value></option>
+				<option><name>postscreen_pipelining_enable</name><value>postscreen_pipelining_enable</value></option>
+				<option><name>postscreen_greet_check</name><value>postscreen_greet_check</value></option>
+				</options>
+				<size>06</size>
+				<multiple/>
+		</field>
+		<field>
+			<fielddescr>Soft Bounce</fielddescr>
+			<fieldname>soft_bounce</fieldname>
+			<type>select</type>
+ 				<options>
+				<option><name>Enabled only in postscreen</name><value>postscreen</value></option>
+				<option><name>Enabled</name><value>enabled</value></option>
+				<option><name>Disabled</name><value>disabled</value></option>
+				</options>
+			<description><![CDATA[<strong>Default: Enabled only in postscreen</strong><br>Safety net to keep mail queued that would otherwise be returned to the sender.<br>
+								This parameter disables locally-generated bounces, and prevents the Postfix SMTP server from rejecting mail permanently, by changing 5xx reply codes into 4xx.<br>
+								However, soft_bounce is no cure for address rewriting mistakes or mail routing mistakes.]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>Anvil Daemon</fielddescr>
+			<fieldname>anvil</fieldname>
+			<type>select</type>
+ 				<options>
+				<option><name>Enabled only when using postscreen</name><value>postscreen</value></option>
+ 				<option><name>Enabled</name><value>enabled</value></option>
+				<option><name>Disabled</name><value>disabled</value></option>
+				</options>
+			<description><![CDATA[anvil - <a href='http://www.postfix.org/anvil.8.html'>Postfix session count and request rate control.</a><br>You can disable it if your server relays mail from internal clients to internet.]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>RBL server List</fielddescr>
+			<fieldname>rbl_servers</fieldname>
+			<description><![CDATA[
+                        <strong>THIS IS JUST AN EXAMPLE, CHECK IF ANY LIST YOU CHOOSE IS PAID OR FREE!</strong><BR>
+			ex: dnsbl.sorbs.net, bl.spamcop.net*2, dnslb.local*-5, cbl.abuseat.org, b.barracudacentral.org<BR>
+			Check some rbl servers at http://www.anti-abuse.org/multi-rbl-check/<br><br>
+			You can also create a local rbl dns server to whitelist some hosts/domains<br>
+			See how it works in http://www.postfix.org/postconf.5.html#postscreen_dnsbl_sites]]>
+			</description>
+			<type>textarea</type>
+			<cols>70</cols>
+			<rows>05</rows>
+		</field>
+		<field>
+			<fielddescr>RBL threshold</fielddescr>
+			<fieldname>rbl_threshold</fieldname>
+			<description><![CDATA[<strong>Default: 2</strong><br>How many RBL Lists Postscreen must find clien's ip address to block sender.]]></description>
+	    	<type>select</type>
+ 				<options>
+				<option><name>1</name><value>1</value></option>
+				<option><name>2</name><value>2</value></option>
+				<option><name>3</name><value>3</value></option>
+				<option><name>4</name><value>4</value></option>
+				<option><name>5</name><value>5</value></option>
+				</options>
+		</field>
+		<field>
+			<fielddescr>SPF lookup</fielddescr>
+			<fieldname>postfix_spf</fieldname>
+			<type>select</type>
+ 				<options>
+				<option><name>REJECT the mail when the sender credentials FAILS</name><value>reject_spf_invalid_sender</value></option>
+				<option><name>PERMIT the mail when the sender credentials SUCCEED</name><value>permit_spf_valid_sender</value></option>
+				<option><name>Just show in header that the mail failed the test</name><value>spf_mark_only</value></option>
+				<option><name>Do not check SPF records</name><value>disable</value></option>
+				</options>
+			<description>
+			<![CDATA[<strong>Default: REJECT the mail when the sender credentials FAILS</strong><br><a target=_new href='http://www.openspf.org/Introduction'>The Sender Policy Framework (SPF) is an open standard specifying a technical method to prevent sender address forgery.</a>]]>
+			</description>
+		</field>
+		<field>
+			<name><![CDATA[Third part Antispam Settings ]]></name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Use Third part antispam</fielddescr>
+			<fieldname>antispam_enabled</fieldname>
+			<type>checkbox</type>
+			<description></description>
+		</field>
+		<field>
+			<fielddescr>Message Hold mode</fielddescr>
+			<fieldname>hold_mode</fieldname>
+			<description><![CDATA[Select how postfix will hold messages to mailscanner.<br>
+								When using auto mode, postfix will hold all messages.<br>
+								When using manual mode, include options like this in acl headers:<br>
+								/^to:.*admin@mydomain.com/ OK<br>
+								/^from:.*user@extdomain.com/ OK<br>
+								/^from:/ HOLD<br>
+								/^to:.*@mydomain.com/ HOLD]]></description>
+	    	<type>select</type>
+ 				<options>
+				<option><name>Auto mode</name><value>auto</value></option>
+				<option><name>Manual mode using ACLs</name><value>manual</value></option>
+				</options>
+		</field>
+		<field>
+			<fielddescr>Software</fielddescr>
+			<fieldname>antispam_software</fieldname>
+			<description>Select Third part solution to use. See postfix forwarder package info page for instaling instructions</description>
+	    	<type>select</type>
+ 				<options>
+				<option><name>Mailscanner + Spamassassin + clamav</name><value>mailscanner</value></option>
+				<option><name>Policyd v2 + amavis</name><value>policyd2</value></option>
+				</options>
+		</field>
+		<field>
+			<fielddescr>Policydv2 Location</fielddescr>
+			<fieldname>antispam_location</fieldname>
+			<description><![CDATA[inet:ipaddress:port of antispam server.<br><strong>NEVER try to install policyd on pfsense base system. It will never boot again.</strong>]]></description>
+			<type>input</type>
+			<size>50</size>
+		</field>
+	</fields>
+	<custom_php_install_command>
+		postfix_php_install_command();
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		postfix_php_deinstall_command();
+	</custom_php_deinstall_command>
+	<custom_php_validation_command>
+		postfix_validate_input($_POST, $input_errors);
+	</custom_php_validation_command>	
+	<custom_php_resync_config_command>
+		sync_package_postfix();
+	</custom_php_resync_config_command>
+</packagegui>

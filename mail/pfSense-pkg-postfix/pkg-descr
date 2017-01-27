@@ -1,0 +1,8 @@
+Postfix mail forwarder acts as a relay server for your domain.
+It can do first and second line antispam combat before sending incoming mail to
+local mail servers.
+Postfix can also detect zombies, check RBLs, SPF, search LDAP for valid 
+recipients and use third
+part antispam engines like policyd and mailscanner for better antispam solution.
+
+WWW: https://forum.pfsense.org/index.php?topic=40622.0

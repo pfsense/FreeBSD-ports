@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>Postfix Forwarder</name>
+		<internal_name>Postfix_Forwarder</internal_name>
+		<website>http://www.postfix.org/</website>
+		<descr><![CDATA[
+			Postfix mail forwarder acts as a relay server for your domain.<br />
+			It can do first and second line antispam combat before sending incoming mail to local mail servers.<br />
+			Postfix can also detect zombies, check RBLs, SPF, search LDAP for valid recipients and use third part antispam engines like policyd and mailscanner for better antispam solution.
+			]]>
+		</descr>
+		<category>Services</category>
+		<pkginfolink>https://forum.pfsense.org/index.php/topic,40622.0.html</pkginfolink>
+		<version>2.5</version>
+		<status>RC</status>
+		<required_version>2.3</required_version>
+		<configurationfile>postfix.xml</configurationfile>
+		<port_category>mail</port_category>
+		<maintainer>marcellocoutinho@gmail.com</maintainer>
+		<build_options>postfix_SET_FORCE=PCRE SASL2 SPF TLS</build_options>
+	</package>
+</pfsensepkgs>

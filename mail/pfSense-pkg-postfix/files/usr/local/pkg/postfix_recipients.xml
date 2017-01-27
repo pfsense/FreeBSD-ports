@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ========================================================================== */
+/*
+    postfix_recipients.xml
+    part of the Postfix package for pfSense
+    Copyright (C) 2011-2015 Marcello Coutinho
+    All rights reserved.            
+*/
+/* ========================================================================== */
+/*
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+     1. Redistributions of source code must retain the above copyright notice,
+        this list of conditions and the following disclaimer.
+
+     2. Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+                                                                              */
+/* ========================================================================== */
+	]]>
+	</copyright>
+	<description>Describe your package here</description>
+	<requirements>Describe your package requirements here</requirements>
+	<faq>Currently there are no FAQ items provided.</faq>
+	<name>postfixrecipients</name>
+	<version>2.6</version>
+	<title>Services: Postfix relay and antispam</title>
+	<include_file>/usr/local/pkg/postfix.inc</include_file>
+	<menu>
+		<name>Postfix Antispam and mail Relay</name>
+		<tooltiptext>Configure Postfix Forwarder</tooltiptext>
+		<section>Services</section>
+		<url>pkg_edit.php?xml=postfix.xml&amp;id=0</url>
+	</menu>
+<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=postfix.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Domains</text>
+			<url>/pkg_edit.php?xml=postfix_domains.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Recipients</text>
+			<url>/pkg_edit.php?xml=postfix_recipients.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Access Lists</text>
+			<url>/pkg_edit.php?xml=postfix_acl.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Antispam</text>
+			<url>/pkg_edit.php?xml=postfix_antispam.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=postfix_sync.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>View config</text>
+			<url>/postfix_view_config.php</url>
+		</tab>
+		<tab>
+			<text>Search mail</text>
+			<url>/postfix_search.php</url>
+		</tab>
+		<tab>
+			<text>Queue</text>
+			<url>/postfix_queue.php</url>
+		</tab>
+		<tab>
+			<text>About</text>
+			<url>/postfix_about.php</url>
+		</tab>
+	
+</tabs>
+	<fields>
+		<field>
+			<name>Get Valid recipients update frequency</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Frequency</fielddescr>
+			<fieldname>freq</fieldname>
+			<description>Wait time between each update HINT 30m(30 minutes), 1h(one hour), 1d(one day)</description>
+			<type>input</type>
+			<size>15</size>
+		</field>
+		<field>
+			<name>Get Valid recipients from Active Directory</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable LDAP fetch</fielddescr>
+			<fieldname>enable_ldap</fieldname>
+			<type>checkbox</type>
+			<description><![CDATA[Extract valid email addresses from Active Directory.]]></description>
+		</field>
+		<field>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<dontdisplayname/>
+			<usecolspan2/>
+			<movable>on</movable>
+			<rowhelper>
+			<rowhelperfield>
+				<fielddescr>Hostname</fielddescr>
+				<description><![CDATA[<strong>Hostname Hint:</strong><br>dc1.mysite.com]]></description>
+				<fieldname>dc</fieldname>
+				<type>input</type>
+				<size>23</size>
+			</rowhelperfield>
+			<rowhelperfield>
+				<fielddescr>Domain</fielddescr>
+				<description><![CDATA[<strong>Domain Hint:</strong><br>dc=mysite,dc=com]]></description>
+				<fieldname>cn</fieldname>
+				<type>input</type>
+				<size>25</size>
+			</rowhelperfield>
+			<rowhelperfield>
+				<fielddescr>Username</fielddescr>
+				<description><![CDATA[<strong>Username Hint:</strong><br>Username:cn=antispam,cn=Users]]></description>
+				<fieldname>username</fieldname>
+				<type>input</type>
+				<size>24</size>
+			</rowhelperfield>
+			<rowhelperfield>
+				<fielddescr>Password</fielddescr>
+				<fieldname>password</fieldname>
+				<type>password</type>
+				<size>12</size>
+			</rowhelperfield>
+			</rowhelper>
+		</field>
+		<field>
+			<name>Get Valid recipients from a clear text url</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable URL fetch</fielddescr>
+			<fieldname>enable_url</fieldname>
+			<type>checkbox</type>
+			<description><![CDATA[Extract valid email addresses from external URL.<br>
+								The file must return a list with valid emails in clear text format(hint: <strong>http://intranet.mycompany.com/valid_emails.txt</strong>)]]></description>
+		</field>
+		<field>
+			<fielddescr>URL</fielddescr>
+			<fieldname>custom_url</fieldname>
+			<type>input</type>
+			<size>80</size>
+		</field>
+		<field>
+			<name>Custom Valid recipients</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Custom list</fielddescr>
+			<fieldname>custom_recipients</fieldname>
+			<description><![CDATA[Paste your valid recipients here, one per line. <strong>HINT user@mycompany.com OK</strong>]]></description>
+			<type>textarea</type>
+			<cols>70</cols>
+			<rows>15</rows>
+			<encoding>base64</encoding>
+		</field>
+	</fields>
+	<custom_php_install_command>
+		postfix_php_install_command();
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		postfix_php_deinstall_command();
+	</custom_php_deinstall_command>
+	<custom_php_validation_command>
+		postfix_validate_input($_POST, $input_errors);
+	</custom_php_validation_command>	
+	<custom_php_resync_config_command>
+		sync_package_postfix();
+	</custom_php_resync_config_command>
+</packagegui>

@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "./schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ========================================================================== */post	
+/*
+    postfix.xml
+    part of the Postfix package for pfSense
+    Copyright (C) 2011-2015 Marcello Coutinho
+    All rights reserved.            
+                                                                  */
+/* ========================================================================== */
+/*
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+
+     1. Redistributions of source code MUST retain the above copyright notice,
+        this list of conditions and the following disclaimer.
+
+     2. Redistributions in binary form MUST reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+                                                                              */
+/* ========================================================================== */
+	]]>
+	</copyright>
+	<description>Describe your package here</description>
+	<requirements>Describe your package requirements here</requirements>
+	<faq>Currently there are no FAQ items provided.</faq>
+	<name>postfixacl</name>
+	<version>1.0</version>
+	<title>Services: Postfix relay and antispam</title>
+	<include_file>/usr/local/pkg/postfix.inc</include_file>
+	<menu>
+		<name>Postfix Antispam and mail Relay</name>
+		<tooltiptext>Configure Postfix Forwarder</tooltiptext>
+		<section>Services</section>
+		<url>pkg_edit.php?xml=postfix.xml&amp;id=0</url>
+	</menu>
+<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=postfix.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Domains</text>
+			<url>/pkg_edit.php?xml=postfix_domains.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Recipients</text>
+			<url>/pkg_edit.php?xml=postfix_recipients.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Access Lists</text>
+			<url>/pkg_edit.php?xml=postfix_acl.xml&amp;id=0</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Antispam</text>
+			<url>/pkg_edit.php?xml=postfix_antispam.xml&amp;id=0</url>
+		</tab>
+		<tab>
+			<text>Sync</text>
+			<url>/pkg_edit.php?xml=postfix_sync.xml&amp;id=0</url>
+		</tab>		
+		<tab>
+			<text>View config</text>
+			<url>/postfix_view_config.php</url>
+		</tab>
+		<tab>
+			<text>Search mail</text>
+			<url>/postfix_search.php</url>
+		</tab>
+		<tab>
+			<text>Queue</text>
+			<url>/postfix_queue.php</url>
+		</tab>
+		<tab>
+			<text>About</text>
+			<url>/postfix_about.php</url>
+		</tab>
+		
+	</tabs>
+	<fields>
+		<field>
+			<name>Filters while receiving mail</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Header</fielddescr>
+			<fieldname>header_maps</fieldname>
+			<description><![CDATA[<strong>PCRE filters</strong><a href=http://www.postfix.org/pcre_table.5.html> that are applied to initial message headers(except for the headers that are processed with mime_header_checks</a> Hint:<br>
+								/^Subject:.*(viagra|cialis|levitra|day price):/ REJECT<br>
+								/^From:.*spammer@myspam.net/ REJECT<br>
+								/^From:.*@mytrustdomain OK<br>
+								See http://www.postfix.org/header_checks.5.html for more help]]>
+			</description>
+			<type>textarea</type>
+			<cols>80</cols>
+			<rows>15</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>Helo</fielddescr>
+			<fieldname>helo_maps</fieldname>
+			<description><![CDATA[<strong>PCRE filters</strong><a href=http://www.postfix.org/pcre_table.5.html> that are applied to initial message helo info. Hint:<br>
+								/^tmpstr.*/ REJECT<br>
+								/^myserver.local/ REJECT external server with local domain info<br>
+								/^trusted_network.local/ DUNNO trusted remote misconfigured server<br>
+								See http://www.postfix.org/postconf.5.html#smtpd_helo_restrictions for more help]]>
+			</description>
+			<type>textarea</type>
+			<cols>80</cols>
+			<rows>15</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>Sender</fielddescr>
+			<fieldname>sender_access</fieldname>
+			<description><![CDATA[<strong>HASH filters</strong> that implements whitelisting and blacklisting of full or partial email addresses and domains as specified in the MAIL FROM field :<br>
+									myfriend@example.com    DUNNO<br>
+									junk@spam.com           REJECT<br>
+									marketing@              REJECT<br>
+									theboss@                DUNNO<br>
+									deals.marketing.com     REJECT<br>
+									somedomain.com          DUNNO<br><br>
+								See http://www.postfix.org/postconf.5.html#smtpd_sender_restrictions for more help<br>
+								<strong>Note: a result of "OK" in this field is not allowed/wanted for safety reasons(it may accept forged senders as it will not do other spam checks). Instead, use DUNNO in order to exclude specific hosts from blacklists.</strong>]]>
+			</description>
+			<type>textarea</type>
+			<cols>80</cols>
+			<rows>15</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>MIME</fielddescr>
+			<fieldname>mime_maps</fieldname>
+			<description><![CDATA[<strong>PCRE filters</strong><a href=http://www.postfix.org/pcre_table.5.html> that are applied to MIME related message headers only.</a> Hint:<br>
+								/^name=[^>]*\.(com|vbs|js|jse|exe|bat|cmd|vxd|scr|hlp|pif|shs|ini|dll)/ REJECT W do not allow files of type "$3" because of security concerns - "$2" caused the block.<br>
+								/^Content-(Disposition|Type):\s+.+?(?:file)?name="?.+?\.(386|ad[ept]|drv|em(ai)?l|ex[_e]|xms|\{[\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12}\})\b/ REJECT ".$2" file attachment types not allowed]]>
+			</description>
+			<type>textarea</type>
+			<cols>80</cols>
+			<rows>15</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>body</fielddescr>
+			<fieldname>body_maps</fieldname>
+			<description><![CDATA[<strong>PCRE filters</strong><a href=http://www.postfix.org/pcre_table.5.html> that are applied to all other content, including multi-part message boundaries.</a> Hint:<br>
+								# First skip over base 64 encoded text to save CPU cycles.<br>
+       							~^[[:alnum:]+/]{60,}$~          OK]]>
+			</description>
+			<type>textarea</type>
+			<cols>80</cols>
+			<rows>15</rows>
+			<encoding>base64</encoding>
+		</field>
+		
+		<field>
+			<name>Client Access List</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>MyNetworks</fielddescr>
+			<fieldname>mynetworks</fieldname>
+			<description><![CDATA[<a href='http://www.postfix.org/postconf.5.html#mynetworks'>Paste the list of "trusted" SMTP clients that have more privileges than "strangers" one per line.</a><br>
+								In particular, "trusted" SMTP clients are allowed to relay mail through Postfix. See the smtpd_recipient_restrictions parameter description in the postconf(5) manual.Hint:<br>192.168.0.3<br>
+								192.168.1.0/24]]>
+			</description>
+			<type>textarea</type>
+			<cols>60</cols>
+			<rows>10</rows>
+			<encoding>base64</encoding>
+		</field>
+
+		<field>
+			<fielddescr>CIDR</fielddescr>
+			<fieldname>cal_cidr</fieldname>
+			<description><![CDATA[Paste your client access list in CIDR format(standard ip/domain and action) one per line.<br>
+								This list is used by postfix/postscreen to check who has access or not to this relay. Hint:<br>
+								192.168.3.2 OK<br>spammer.junkdomain.com REJECT]]>
+			</description>
+			<type>textarea</type>
+			<cols>60</cols>
+			<rows>10</rows>
+			<encoding>base64</encoding>
+		</field>
+		<field>
+			<fielddescr>PCRE</fielddescr>
+			<fieldname>cal_pcre</fieldname>
+			<description><![CDATA[Paste your client access list in PCRE format one per line.<br>
+							This list is used by postfix to check who has access or not to this relay.Hint:<br>
+							/.*\.dsl\..*/  REJECT DSLs not allowed<br>
+  							/.*\.adsl\..*/ REJECT DSLs not allowed]]>
+			</description>
+			<type>textarea</type>
+			<cols>70</cols>
+			<rows>10</rows>
+			<encoding>base64</encoding>
+		</field>
+	</fields>
+	<custom_php_install_command>
+		postfix_php_install_command();
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		postfix_php_deinstall_command();
+	</custom_php_deinstall_command>
+	<custom_php_validation_command>
+		postfix_validate_input($_POST, $input_errors);
+	</custom_php_validation_command>	
+	<custom_php_resync_config_command>
+		sync_package_postfix();
+	</custom_php_resync_config_command>
+</packagegui>
