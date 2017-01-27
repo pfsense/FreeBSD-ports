@@ -1837,7 +1837,7 @@ function squid_resync_auth() {
 		if ($settingsconfig['ssl_proxy'] == "on") {
 			// Custom SSL/MITM configuration overrides everything
 			if ($settingsconfig['sslproxy_mitm_mode'] == "custom") {
-				$conf .= "# Custom SSL/MITM options after auth\n" . sq_text_area_decode($settingsconfig['custom_options3_squid3']) . "\n\n";
+				$conf .= "# Custom SSL/MITM options before auth\n" . sq_text_area_decode($settingsconfig['custom_options3_squid3']) . "\n\n";
 			} elseif ($settingsconfig['sslproxy_mitm_mode'] == "spliceall") {
 				// 'Splice All' SSL/MIMT configuration
 				$conf .= "ssl_bump peek step1\n";
