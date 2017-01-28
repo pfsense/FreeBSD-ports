@@ -140,6 +140,7 @@ function sync_package_apcupsd() {
 			$annoy = $apcupsd_config['annoy'] ?: "300";
 			$annoydelay = $apcupsd_config['annoydelay'] ?: "60";
 			$killdelay = $apcupsd_config['killdelay'] ?: "0";
+			$shutdownbehavior = $apcupsd_config['shutdownbehavior'];
 			$netserver = $apcupsd_config['netserver'];
 			$nisip= $apcupsd_config['nisip'] ?: "0.0.0.0";
 			$nisport = $apcupsd_config['nisport'] ?: "3551";
@@ -184,7 +185,7 @@ function sync_package_apcupsd() {
 			)
 		);
 
-		apccontrol_scripts_install($emailnotification);
+		apccontrol_scripts_install($emailnotification,$shutdownbehavior);
 
 		if (!file_exists("{$g['tmp_path']}/.rc.start_packages.running")) {
 			log_error("Starting service apcupsd");
@@ -195,7 +196,7 @@ function sync_package_apcupsd() {
 	conf_mount_ro();
 }
 
-function apccontrol_scripts_install($emailnotification) {
+function apccontrol_scripts_install($emailnotification,$shutdownbehavior) {
 	global $config, $g;
 
 	define('APCUPSD_BASE', '/usr/local');
@@ -257,6 +258,23 @@ EOF;
 		}
 
 		file_put_contents(APCUPSD_BASE . "/etc/apcupsd/" . $apccontrol_script, $apccontrol_script_file, LOCK_EX);
+	}
+
+	if ($shutdownbehavior == "poweroff") {
+		$doshutdown_script_file =<<<EOF
+#!/bin/sh
+
+printf "Beginning Shutdown Sequence (shutdown -p)" | wall
+/sbin/shutdown -p now "apcupsd initiated shutdown"
+
+exit 99
+
+EOF;
+
+		file_put_contents(APCUPSD_BASE . "/etc/apcupsd/doshutdown", $doshutdown_script_file, LOCK_EX);
+		@chmod(APCUPSD_BASE . "/etc/apcupsd/doshutdown", 0744);
+	} else {
+		unlink_if_exists(APCUPSD_BASE . "/etc/apcupsd/doshutdown");
 	}
 
 }

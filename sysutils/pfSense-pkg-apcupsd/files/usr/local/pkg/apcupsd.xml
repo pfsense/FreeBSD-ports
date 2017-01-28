@@ -247,6 +247,25 @@
 			<default_value>0</default_value>
 		</field>
 		<field>
+			<fielddescr>Shutdown Behavior</fielddescr>
+			<fieldname>shutdownbehavior</fieldname>
+			<description>
+				<![CDATA[
+				Halt - /sbin/shutdown -h now <br />
+				The system is halted at the specified time. (default) <br />
+				<br />
+				Power Off - /sbin/shutdown -p now <br />
+				The system is halted and the power is turned off (hardware support required) at the specified time.
+				]]>
+				</description>
+			<type>select</type>
+			<default_value>halt</default_value>
+			<options>
+				<option><name>Halt</name><value>halt</value></option>
+				<option><name>Power Off</name><value>poweroff</value></option>
+			</options>
+		</field>
+		<field>
 			<name>Configuration statements for Network Information Server</name>
 			<type>listtopic</type>
 		</field>
