@@ -1036,56 +1036,59 @@ function freeradius_eapconf_resync($restart_svc = true) {
 	conf_mount_rw();
 	$conf = '';
 
-	$eapconf = $config['installedpackages']['freeradiuseapconf']['config'][0];
-	
+	if (is_array($config['installedpackages']['freeradiuseapconf']['config'][0])) {
+		$eapconf = $config['installedpackages']['freeradiuseapconf']['config'][0];
+	} else {
+		$eapconf = array();
+	}
+
 	// Disable weak EAP types like MD5, GTC, LEAP
 	if ($eapconf['vareapconfdisableweakeaptypes'] == '') {
 		$vareapconfweakeaptypes = "md5 {" . "\n\t\t}" . "\n\t\tleap {" . "\n\t\t}" . "\n\t\tgtc {" . "\n\t\t\t#challenge = " . '"Password: "' . "\n\t\t\tauth_type = PAP" . "\n\t\t}";
-	}
-	else {
+	} else {
 		$vareapconfweakeaptypes = '### DISABLED WEAK EAP TYPES MD5, GTC, LEAP ###';
 	}
-	
+
 	// Variables: EAP
-	$vareapconfdefaulteaptype = ($eapconf['vareapconfdefaulteaptype']?$eapconf['vareapconfdefaulteaptype']:'md5');
-	$vareapconftimerexpire = ($eapconf['vareapconftimerexpire']?$eapconf['vareapconftimerexpire']:'60');
-	$vareapconfignoreunknowneaptypes = ($eapconf['vareapconfignoreunknowneaptypes']?$eapconf['vareapconfignoreunknowneaptypes']:'no');
-	$vareapconfciscoaccountingusernamebug = ($eapconf['vareapconfciscoaccountingusernamebug']?$eapconf['vareapconfciscoaccountingusernamebug']:'no');
-	$vareapconfmaxsessions = ($eapconf['vareapconfmaxsessions']?$eapconf['vareapconfmaxsessions']:'4096');
-	
+	$vareapconfdefaulteaptype = ($eapconf['vareapconfdefaulteaptype'] ?: 'md5');
+	$vareapconftimerexpire = ($eapconf['vareapconftimerexpire'] ?: '60');
+	$vareapconfignoreunknowneaptypes = ($eapconf['vareapconfignoreunknowneaptypes'] ?: 'no');
+	$vareapconfciscoaccountingusernamebug = ($eapconf['vareapconfciscoaccountingusernamebug'] ?: 'no');
+	$vareapconfmaxsessions = ($eapconf['vareapconfmaxsessions'] ?: '4096');
+
 	// Variables: EAP-TLS
-	$vareapconfprivatekeypassword = ($eapconf['vareapconfprivatekeypassword']?$eapconf['vareapconfprivatekeypassword']:'whatever');
-	$vareapconffragmentsize = ($eapconf['vareapconffragmentsize']?$eapconf['vareapconffragmentsize']:'1024');
-	$vareapconfincludelength = ($eapconf['vareapconfincludelength']?$eapconf['vareapconfincludelength']:'yes');
-	$vareapconfcountry = ($eapconf['vareapconfcountry']?$eapconf['vareapconfcountry']:'US');
-	$vareapconfstate = ($eapconf['vareapconfstate']?$eapconf['vareapconfstate']:'Texas');
-	$vareapconfcity = ($eapconf['vareapconfcity']?$eapconf['vareapconfcity']:'Austin');
-	$vareapconforganization = ($eapconf['vareapconforganization']?$eapconf['vareapconforganization']:'My Company Ltd');
-	$vareapconfemail = ($eapconf['vareapconfemail']?$eapconf['vareapconfemail']:'admin@mycompany.com');
-	$vareapconfcommonname = ($eapconf['vareapconfcommonname']?$eapconf['vareapconfcommonname']:'internal-ca');
-		
+	$vareapconfprivatekeypassword = ($eapconf['vareapconfprivatekeypassword'] ?: 'whatever');
+	$vareapconffragmentsize = ($eapconf['vareapconffragmentsize'] ?: '1024');
+	$vareapconfincludelength = ($eapconf['vareapconfincludelength'] ?: 'yes');
+	$vareapconfcountry = ($eapconf['vareapconfcountry'] ?: 'US');
+	$vareapconfstate = ($eapconf['vareapconfstate'] ?: 'Texas');
+	$vareapconfcity = ($eapconf['vareapconfcity'] ?: 'Austin');
+	$vareapconforganization = ($eapconf['vareapconforganization'] ?: 'My Company Ltd');
+	$vareapconfemail = ($eapconf['vareapconfemail'] ?: 'admin@mycompany.com');
+	$vareapconfcommonname = ($eapconf['vareapconfcommonname'] ?: 'internal-ca');
+
 	// Variables: Cache
-	$vareapconfcacheenablecache = ($eapconf['vareapconfcacheenablecache']?$eapconf['vareapconfcacheenablecache']:'no');
-	$vareapconfcachelifetime = ($eapconf['vareapconfcachelifetime']?$eapconf['vareapconfcachelifetime']:'24');
-	$vareapconfcachemaxentries = ($eapconf['vareapconfcachemaxentries']?$eapconf['vareapconfcachemaxentries']:'255');
-	
-	// Variables OSCP	
-	$vareapconfocspenable = ($eapconf['vareapconfocspenable']?$eapconf['vareapconfocspenable']:'no');
-	$vareapconfocspoverridecerturl = ($eapconf['vareapconfocspoverridecerturl']?$eapconf['vareapconfocspoverridecerturl']:'no');
-	$vareapconfocspurl = ($eapconf['vareapconfocspurl']?$eapconf['vareapconfocspurl']:'http://127.0.0.1/ocsp/');
-	
+	$vareapconfcacheenablecache = ($eapconf['vareapconfcacheenablecache'] ?: 'no');
+	$vareapconfcachelifetime = ($eapconf['vareapconfcachelifetime'] ?: '24');
+	$vareapconfcachemaxentries = ($eapconf['vareapconfcachemaxentries'] ?: '255');
+
+	// Variables OSCP
+	$vareapconfocspenable = ($eapconf['vareapconfocspenable'] ?: 'no');
+	$vareapconfocspoverridecerturl = ($eapconf['vareapconfocspoverridecerturl'] ?: 'no');
+	$vareapconfocspurl = ($eapconf['vareapconfocspurl'] ?: 'http://127.0.0.1/ocsp/');
+
 	// Variables: EAP-TTLS
-	$vareapconfttlsdefaulteaptype = ($eapconf['vareapconfttlsdefaulteaptype']?$eapconf['vareapconfttlsdefaulteaptype']:'md5');
-	$vareapconfttlscopyrequesttotunnel = ($eapconf['vareapconfttlscopyrequesttotunnel']?$eapconf['vareapconfttlscopyrequesttotunnel']:'no');
-	$vareapconfttlsusetunneledreply = ($eapconf['vareapconfttlsusetunneledreply']?$eapconf['vareapconfttlsusetunneledreply']:'no');
-	$vareapconfttlsincludelength = ($eapconf['vareapconfttlsincludelength']?$eapconf['vareapconfttlsincludelength']:'yes');
-	
+	$vareapconfttlsdefaulteaptype = ($eapconf['vareapconfttlsdefaulteaptype'] ?: 'md5');
+	$vareapconfttlscopyrequesttotunnel = ($eapconf['vareapconfttlscopyrequesttotunnel'] ?: 'no');
+	$vareapconfttlsusetunneledreply = ($eapconf['vareapconfttlsusetunneledreply'] ?: 'no');
+	$vareapconfttlsincludelength = ($eapconf['vareapconfttlsincludelength'] ?: 'yes');
+
 	// Variables: EAP-PEAP with MSCHAPv2
-	$vareapconfpeapdefaulteaptype = ($eapconf['vareapconfpeapdefaulteaptype']?$eapconf['vareapconfpeapdefaulteaptype']:'mschapv2');
-	$vareapconfpeapcopyrequesttotunnel = ($eapconf['vareapconfpeapcopyrequesttotunnel']?$eapconf['vareapconfpeapcopyrequesttotunnel']:'no');
-	$vareapconfpeapusetunneledreply = ($eapconf['vareapconfpeapusetunneledreply']?$eapconf['vareapconfpeapusetunneledreply']:'no');
-	$vareapconfpeapsohenable = ($eapconf['vareapconfpeapsohenable']?$eapconf['vareapconfpeapsohenable']:'Disable');
-	
+	$vareapconfpeapdefaulteaptype = ($eapconf['vareapconfpeapdefaulteaptype'] ?: 'mschapv2');
+	$vareapconfpeapcopyrequesttotunnel = ($eapconf['vareapconfpeapcopyrequesttotunnel'] ?: 'no');
+	$vareapconfpeapusetunneledreply = ($eapconf['vareapconfpeapusetunneledreply'] ?: 'no');
+	$vareapconfpeapsohenable = ($eapconf['vareapconfpeapsohenable'] ?: 'Disable');
+
 	// This is for enable/disbable MS SoH in EAP-PEAP and the virtuial-server "soh-server"
 	if ($eapconf['vareapconfpeapsohenable'] == 'Enable') {
 		$vareapconfpeapsoh = 'soh = yes' . "\n\t\t\tsoh_virtual_server = " . '"' . "soh-server" . '"';
@@ -1096,112 +1099,81 @@ function freeradius_eapconf_resync($restart_svc = true) {
 			exec("rm -f " . FREERADIUS_ETC . "/raddb/sites-enabled/soh");
 		}
 	}
-		
 
-// The filenames of pfsense cert manager are different from freeradius cert manager so it is possible to store both in the same folder at any time.
-// This is for the pfsense cert manager
-// Depends on "freeradius_get_server_certs" and "freeradius_get_ca_certs"
+
+	// The filenames of pfsense cert manager are different from freeradius cert manager so it is possible
+	// to store both in the same folder at any time. This is for the pfsense cert manager
+	// Depends on freeradius_get_server_certs() and freeradius_get_ca_certs()
 
 	if ($eapconf['vareapconfchoosecertmanager'] == 'on') {
-		
+
 		$ca_cert = lookup_ca($eapconf["ssl_ca_cert"]);
 		if ($ca_cert != false) {
-			if(base64_decode($ca_cert['prv'])) {
-				file_put_contents(FREERADIUS_ETC . "/raddb/certs/ca_key.pem", 
-					base64_decode($ca_cert['prv']));
+			if (base64_decode($ca_cert['prv'])) {
+				file_put_contents(FREERADIUS_ETC . "/raddb/certs/ca_key.pem", base64_decode($ca_cert['prv']));
 				$conf['ssl_ca_key'] = FREERADIUS_ETC . '/raddb/certs/ca_key.pem';
 			}
 
-
-			if(base64_decode($ca_cert['crt'])) {
+			if (base64_decode($ca_cert['crt'])) {
 				$crl_cert = lookup_crl($eapconf["ssl_ca_crl"]);
-				if ($crl_cert != false){
-					$crl=base64_decode($crl_cert['text']);
-					$check_crl="check_crl = yes";
-				}
-				else{
+				if ($crl_cert != false) {
+					$crl = base64_decode($crl_cert['text']);
+					$check_crl = "check_crl = yes";
+				} else {
 					$check_crl="check_crl = no";
 				}
-				file_put_contents(FREERADIUS_ETC . "/raddb/certs/ca_cert.pem", 
-					base64_decode($ca_cert['crt']). $crl);
+				file_put_contents(FREERADIUS_ETC . "/raddb/certs/ca_cert.pem", base64_decode($ca_cert['crt']). $crl);
 				$conf['ssl_ca_cert'] = FREERADIUS_ETC . "/raddb/certs/ca_cert.pem";
 			}
+
 			$svr_cert = lookup_cert($eapconf["ssl_server_cert"]);
 			if ($svr_cert != false) {
-				if(base64_decode($svr_cert['prv'])) {
-					file_put_contents(FREERADIUS_ETC . "/raddb/certs/server_key.pem", 
-						base64_decode($svr_cert['prv']));
+				if (base64_decode($svr_cert['prv'])) {
+					file_put_contents(FREERADIUS_ETC . "/raddb/certs/server_key.pem", base64_decode($svr_cert['prv']));
 					$conf['ssl_key'] = FREERADIUS_ETC . '/raddb/certs/server_key.pem';
 				}
 			}
-
-
-			if(base64_decode($svr_cert['crt'])) {
-				file_put_contents(FREERADIUS_ETC . "/raddb/certs/server_cert.pem", 
-					base64_decode($svr_cert['crt']));
+			if (base64_decode($svr_cert['crt'])) {
+				file_put_contents(FREERADIUS_ETC . "/raddb/certs/server_cert.pem", base64_decode($svr_cert['crt']));
 				$conf['ssl_server_cert'] = FREERADIUS_ETC . "/raddb/certs/server_cert.pem";
 			}
-			
-			/* Not needed anymore because pfsense can do this by default
-			if ($eapconf['vareapconfenableclientp12'] == 'on') {
-				$svr_cert = lookup_cert($eapconf["ssl_client_cert"]);
-				if ($svr_cert != false) {
-					if(base64_decode($svr_cert['prv'])) {
-						file_put_contents(FREERADIUS_ETC . "/raddb/certs/client_key.pem", 
-							base64_decode($svr_cert['prv']));
-						$conf['ssl_key'] = FREERADIUS_ETC . '/raddb/certs/client_key.pem';
-					}
-				}
 
-
-				if(base64_decode($svr_cert['crt'])) {
-					file_put_contents(FREERADIUS_ETC . "/raddb/certs/client_cert.pem", 
-						base64_decode($svr_cert['crt']));
-					$conf['ssl_client_cert'] = FREERADIUS_ETC . "/raddb/certs/client_cert.pem";
-				}
-			
-			exec("openssl pkcs12 -export -in " . FREERADIUS_ETC . "/raddb/certs/client_cert.pem -inkey " . FREERADIUS_ETC . "/raddb/certs/client_key.pem -out " . FREERADIUS_ETC . "/raddb/certs/client_cert.p12 -passout pass\:");	
-			}
-			*/
 			$conf['ssl_cert_dir'] = FREERADIUS_ETC . '/raddb/certs';
 		}
 
-	$vareapconfprivatekeyfile = 'server_key.pem';
-	$vareapconfcertificatefile = 'server_cert.pem';
-	$vareapconfcafile = 'ca_cert.pem';
-	
-	// generate new DH and RANDOM file
-	// We create a single empty file just to check if there is really a change from one to another cert manager to avoid building ne DH and random files
-	if (!file_exists(FREERADIUS_ETC . "/raddb/certs/pfsense_cert_mgr")) {
-		log_error("freeRADIUS: Switched to pfSense Cert-Manager. Creating new DH and random file in " . FREERADIUS_ETC . "/raddb/certs");
-		exec("cd " . FREERADIUS_ETC . "/raddb/certs && openssl dhparam -out dh 1024");
-		exec("cd " . FREERADIUS_ETC . "/raddb/certs && dd if=/dev/urandom of=./random count=10");
-		exec("touch " . FREERADIUS_ETC . "/raddb/certs/pfsense_cert_mgr");
+		$vareapconfprivatekeyfile = 'server_key.pem';
+		$vareapconfcertificatefile = 'server_cert.pem';
+		$vareapconfcafile = 'ca_cert.pem';
+
+		// generate new DH and RANDOM file
+		// We create a single empty file just to check if there is really a change
+		// from one to another cert manager to avoid building ne DH and random files
+		if (!file_exists(FREERADIUS_ETC . "/raddb/certs/pfsense_cert_mgr")) {
+			log_error("freeRADIUS: Switched to pfSense Cert Manager. Creating new DH and random file in " . FREERADIUS_ETC . "/raddb/certs");
+			exec("cd " . FREERADIUS_ETC . "/raddb/certs && /usr/bin/openssl dhparam -out dh 1024");
+			exec("cd " . FREERADIUS_ETC . "/raddb/certs && /bin/dd if=/dev/urandom of=./random count=10");
+			exec("/usr/bin/touch " . FREERADIUS_ETC . "/raddb/certs/pfsense_cert_mgr");
+		}
+	} else {
+		// This is for freeradius cert manager
+		$vareapconfprivatekeyfile = 'server.pem';
+		$vareapconfcertificatefile = 'server.pem';
+		$vareapconfcafile = 'ca.pem';
 	}
-}
 
-// This is for freeradius cert manager
-else {
-	$vareapconfprivatekeyfile = 'server.pem';
-	$vareapconfcertificatefile = 'server.pem';
-	$vareapconfcafile = 'ca.pem';
-}
+	// check if the common name of the certificate must match the username
+	if ($eapconf['vareapconfenablecheckcertcn'] == 'on') {
+		$vareapconfcheckcertcn = 'check_cert_cn = %{User-Name}';
+	} else {
+		$vareapconfcheckcertcn = '### check_cert_cn = %{User-Name} ###';
+	}
 
-// check if the common name of the certificate must match the username
-if($eapconf['vareapconfenablecheckcertcn'] == 'on') {
-	$vareapconfcheckcertcn = 'check_cert_cn = %{User-Name}';
-}
-else {
-	$vareapconfcheckcertcn = '### check_cert_cn = %{User-Name} ###';
-}
-
-// check if cert issuer of CA and certs match
-if($eapconf['vareapconfenablecheckcertissuer'] == 'on') {
-	$vareapconfcheckcertissuer = "check_cert_issuer = " . '"' . "/C=$vareapconfcountry/ST=$vareapconfstate/L=$vareapconfcity/O=$vareapconforganization/emailAddress=$vareapconfemail/CN=$vareapconfcommonname" . '"';
-}
-else {
-	$vareapconfcheckcertissuer = '### check_cert_issuer = "/C=GB/ST=Berkshire/L=Newbury/O=My Company Ltd/emailAddress=test@mycomp.com/CN=myca" ###';
-}
+	// check if cert issuer of CA and certs match
+	if ($eapconf['vareapconfenablecheckcertissuer'] == 'on') {
+		$vareapconfcheckcertissuer = "check_cert_issuer = " . '"' . "/C=$vareapconfcountry/ST=$vareapconfstate/L=$vareapconfcity/O=$vareapconforganization/emailAddress=$vareapconfemail/CN=$vareapconfcommonname" . '"';
+	} else {
+		$vareapconfcheckcertissuer = '### check_cert_issuer = "/C=GB/ST=Berkshire/L=Newbury/O=My Company Ltd/emailAddress=test@mycomp.com/CN=myca" ###';
+	}
 
 	$conf .= <<<EOD
 	### EAP
@@ -1211,7 +1183,7 @@ else {
 		ignore_unknown_eap_types = $vareapconfignoreunknowneaptypes
 		cisco_accounting_username_bug = $vareapconfciscoaccountingusernamebug
 		max_sessions = $vareapconfmaxsessions
-		
+
 		$vareapconfweakeaptypes
 
 
@@ -1248,15 +1220,15 @@ else {
 			      url = "$vareapconfocspurl"
 			}
 		}
-	
+
 		### EAP-TTLS
 		ttls {
 			default_eap_type = $vareapconfttlsdefaulteaptype
 			copy_request_to_tunnel = $vareapconfttlscopyrequesttotunnel
 			use_tunneled_reply = $vareapconfttlsusetunneledreply
 			include_length = $vareapconfttlsincludelength
-		}	### end ttls	
-	
+		}	### end ttls
+
 		### EAP-PEAP
 		peap {
 			default_eap_type = $vareapconfpeapdefaulteaptype
@@ -1267,7 +1239,7 @@ else {
 		}
 		mschapv2 {
 		#	send_error = no
-		}	
+		}
 	}
 EOD;
 
@@ -1327,63 +1299,66 @@ function freeradius_sqlconf_resync() {
 	global $config;
 	$conf = '';
 
-	$sqlconf = $config['installedpackages']['freeradiussqlconf']['config'][0];
-	
+	if (is_array($config['installedpackages']['freeradiussqlconf']['config'][0])) {
+		$sqlconf = $config['installedpackages']['freeradiussqlconf']['config'][0];
+	} else {
+		$sqlconf = array();
+	}
+
 	// Variables: SQL DATABASE 1
-	$varsqlconfdatabase = ($sqlconf['varsqlconfdatabase']?$sqlconf['varsqlconfdatabase']:'mysql');
-	$varsqlconfserver = ($sqlconf['varsqlconfserver']?$sqlconf['varsqlconfserver']:'localhost');
-	$varsqlconfport = ($sqlconf['varsqlconfport']?$sqlconf['varsqlconfport']:'3306');
-	$varsqlconflogin = ($sqlconf['varsqlconflogin']?$sqlconf['varsqlconflogin']:'radius');
-	$varsqlconfpassword = ($sqlconf['varsqlconfpassword']?$sqlconf['varsqlconfpassword']:'radpass');
-	$varsqlconfradiusdb = ($sqlconf['varsqlconfradiusdb']?$sqlconf['varsqlconfradiusdb']:'radius');
-	$varsqlconfaccttable1 = ($sqlconf['varsqlconfaccttable1']?$sqlconf['varsqlconfaccttable1']:'radacct');
-	$varsqlconfaccttable2 = ($sqlconf['varsqlconfaccttable2']?$sqlconf['varsqlconfaccttable2']:'radacct');
-	$varsqlconfpostauthtable = ($sqlconf['varsqlconfpostauthtable']?$sqlconf['varsqlconfpostauthtable']:'radpostauth');
-	$varsqlconfauthchecktable = ($sqlconf['varsqlconfauthchecktable']?$sqlconf['varsqlconfauthchecktable']:'radcheck');
-	$varsqlconfauthreplytable = ($sqlconf['varsqlconfauthreplytable']?$sqlconf['varsqlconfauthreplytable']:'radreply');
-	$varsqlconfgroupchecktable = ($sqlconf['varsqlconfgroupchecktable']?$sqlconf['varsqlconfgroupchecktable']:'radgroupcheck');
-	$varsqlconfgroupreplytable = ($sqlconf['varsqlconfgroupreplytable']?$sqlconf['varsqlconfgroupreplytable']:'radgroupreply');
-	$varsqlconfusergrouptable = ($sqlconf['varsqlconfusergrouptable']?$sqlconf['varsqlconfusergrouptable']:'radusergroup');
-	$varsqlconfreadgroups = ($sqlconf['varsqlconfreadgroups']?$sqlconf['varsqlconfreadgroups']:'yes');
-	$varsqlconfdeletestalesessions = ($sqlconf['varsqlconfdeletestalesessions']?$sqlconf['varsqlconfdeletestalesessions']:'yes');
-	$varsqlconfsqltrace = ($sqlconf['varsqlconfsqltrace']?$sqlconf['varsqlconfsqltrace']:'no');
-	$varsqlconfnumsqlsocks = ($sqlconf['varsqlconfnumsqlsocks']?$sqlconf['varsqlconfnumsqlsocks']:'5');
-	$varsqlconfconnectfailureretrydelay = ($sqlconf['varsqlconfconnectfailureretrydelay']?$sqlconf['varsqlconfconnectfailureretrydelay']:'60');
-	$varsqlconflifetime = ($sqlconf['varsqlconflifetime']?$sqlconf['varsqlconflifetime']:'0');
-	$varsqlconfmaxqueries = ($sqlconf['varsqlconfmaxqueries']?$sqlconf['varsqlconfmaxqueries']:'0');
-	$varsqlconfreadclients = ($sqlconf['varsqlconfreadclients']?$sqlconf['varsqlconfreadclients']:'yes');
-	$varsqlconfnastable = ($sqlconf['varsqlconfnastable']?$sqlconf['varsqlconfnastable']:'nas');
-	
-	// Additional changes were made in "freeradius_settings_resync"
+	$varsqlconfdatabase = ($sqlconf['varsqlconfdatabase'] ?: 'mysql');
+	$varsqlconfserver = ($sqlconf['varsqlconfserver'] ?: 'localhost');
+	$varsqlconfport = ($sqlconf['varsqlconfport'] ?: '3306');
+	$varsqlconflogin = ($sqlconf['varsqlconflogin'] ?: 'radius');
+	$varsqlconfpassword = ($sqlconf['varsqlconfpassword'] ?: 'radpass');
+	$varsqlconfradiusdb = ($sqlconf['varsqlconfradiusdb'] ?: 'radius');
+	$varsqlconfaccttable1 = ($sqlconf['varsqlconfaccttable1'] ?: 'radacct');
+	$varsqlconfaccttable2 = ($sqlconf['varsqlconfaccttable2'] ?: 'radacct');
+	$varsqlconfpostauthtable = ($sqlconf['varsqlconfpostauthtable'] ?: 'radpostauth');
+	$varsqlconfauthchecktable = ($sqlconf['varsqlconfauthchecktable'] ?: 'radcheck');
+	$varsqlconfauthreplytable = ($sqlconf['varsqlconfauthreplytable'] ?: 'radreply');
+	$varsqlconfgroupchecktable = ($sqlconf['varsqlconfgroupchecktable'] ?: 'radgroupcheck');
+	$varsqlconfgroupreplytable = ($sqlconf['varsqlconfgroupreplytable'] ?: 'radgroupreply');
+	$varsqlconfusergrouptable = ($sqlconf['varsqlconfusergrouptable'] ?: 'radusergroup');
+	$varsqlconfreadgroups = ($sqlconf['varsqlconfreadgroups'] ?: 'yes');
+	$varsqlconfdeletestalesessions = ($sqlconf['varsqlconfdeletestalesessions'] ?: 'yes');
+	$varsqlconfsqltrace = ($sqlconf['varsqlconfsqltrace'] ?: 'no');
+	$varsqlconfnumsqlsocks = ($sqlconf['varsqlconfnumsqlsocks'] ?: '5');
+	$varsqlconfconnectfailureretrydelay = ($sqlconf['varsqlconfconnectfailureretrydelay'] ?: '60');
+	$varsqlconflifetime = ($sqlconf['varsqlconflifetime'] ?: '0');
+	$varsqlconfmaxqueries = ($sqlconf['varsqlconfmaxqueries'] ?: '0');
+	$varsqlconfreadclients = ($sqlconf['varsqlconfreadclients'] ?: 'yes');
+	$varsqlconfnastable = ($sqlconf['varsqlconfnastable'] ?: 'nas');
+
+	// Additional changes were made in freeradius_settings_resync()
 
 	// Variables: SQL DATABASE 2
-	$varsqlconf2database = ($sqlconf['varsqlconf2database']?$sqlconf['varsqlconf2database']:'mysql');
-	$varsqlconf2server = ($sqlconf['varsqlconf2server']?$sqlconf['varsqlconf2server']:'localhost');
-	$varsqlconf2port = ($sqlconf['varsqlconf2port']?$sqlconf['varsqlconf2port']:'3306');
-	$varsqlconf2login = ($sqlconf['varsqlconf2login']?$sqlconf['varsqlconf2login']:'radius');
-	$varsqlconf2password = ($sqlconf['varsqlconf2password']?$sqlconf['varsqlconf2password']:'radpass');
-	$varsqlconf2radiusdb = ($sqlconf['varsqlconf2radiusdb']?$sqlconf['varsqlconf2radiusdb']:'radius');
-	$varsqlconf2accttable1 = ($sqlconf['varsqlconf2accttable1']?$sqlconf['varsqlconf2accttable1']:'radacct');
-	$varsqlconf2accttable2 = ($sqlconf['varsqlconf2accttable2']?$sqlconf['varsqlconf2accttable2']:'radacct');
-	$varsqlconf2postauthtable = ($sqlconf['varsqlconf2postauthtable']?$sqlconf['varsqlconf2postauthtable']:'radpostauth');
-	$varsqlconf2authchecktable = ($sqlconf['varsqlconf2authchecktable']?$sqlconf['varsqlconf2authchecktable']:'radcheck');
-	$varsqlconf2authreplytable = ($sqlconf['varsqlconf2authreplytable']?$sqlconf['varsqlconf2authreplytable']:'radreply');
-	$varsqlconf2groupchecktable = ($sqlconf['varsqlconf2groupchecktable']?$sqlconf['varsqlconf2groupchecktable']:'radgroupcheck');
-	$varsqlconf2groupreplytable = ($sqlconf['varsqlconf2groupreplytable']?$sqlconf['varsqlconf2groupreplytable']:'radgroupreply');
-	$varsqlconf2usergrouptable = ($sqlconf['varsqlconf2usergrouptable']?$sqlconf['varsqlconf2usergrouptable']:'radusergroup');
-	$varsqlconf2readgroups = ($sqlconf['varsqlconf2readgroups']?$sqlconf['varsqlconf2readgroups']:'yes');
-	$varsqlconf2deletestalesessions = ($sqlconf['varsqlconf2deletestalesessions']?$sqlconf['varsqlconf2deletestalesessions']:'yes');
-	$varsqlconf2sqltrace = ($sqlconf['varsqlconf2sqltrace']?$sqlconf['varsqlconf2sqltrace']:'no');
-	$varsqlconf2numsqlsocks = ($sqlconf['varsqlconf2numsqlsocks']?$sqlconf['varsqlconf2numsqlsocks']:'5');
-	$varsqlconf2connectfailureretrydelay = ($sqlconf['varsqlconf2connectfailureretrydelay']?$sqlconf['varsqlconf2connectfailureretrydelay']:'60');
-	$varsqlconf2lifetime = ($sqlconf['varsqlconf2lifetime']?$sqlconf['varsqlconf2lifetime']:'0');
-	$varsqlconf2maxqueries = ($sqlconf['varsqlconf2maxqueries']?$sqlconf['varsqlconf2maxqueries']:'0');
-	$varsqlconf2readclients = ($sqlconf['varsqlconf2readclients']?$sqlconf['varsqlconf2readclients']:'yes');
-	$varsqlconf2nastable = ($sqlconf['varsqlconf2nastable']?$sqlconf['varsqlconf2nastable']:'nas');
-	
-	// Additional changes were made in "freeradius_settings_resync"
-	
-	
+	$varsqlconf2database = ($sqlconf['varsqlconf2database'] ?: 'mysql');
+	$varsqlconf2server = ($sqlconf['varsqlconf2server'] ?: 'localhost');
+	$varsqlconf2port = ($sqlconf['varsqlconf2port'] ?: '3306');
+	$varsqlconf2login = ($sqlconf['varsqlconf2login'] ?: 'radius');
+	$varsqlconf2password = ($sqlconf['varsqlconf2password'] ?: 'radpass');
+	$varsqlconf2radiusdb = ($sqlconf['varsqlconf2radiusdb'] ?: 'radius');
+	$varsqlconf2accttable1 = ($sqlconf['varsqlconf2accttable1'] ?: 'radacct');
+	$varsqlconf2accttable2 = ($sqlconf['varsqlconf2accttable2'] ?: 'radacct');
+	$varsqlconf2postauthtable = ($sqlconf['varsqlconf2postauthtable'] ?: 'radpostauth');
+	$varsqlconf2authchecktable = ($sqlconf['varsqlconf2authchecktable'] ?: 'radcheck');
+	$varsqlconf2authreplytable = ($sqlconf['varsqlconf2authreplytable'] ?: 'radreply');
+	$varsqlconf2groupchecktable = ($sqlconf['varsqlconf2groupchecktable'] ?: 'radgroupcheck');
+	$varsqlconf2groupreplytable = ($sqlconf['varsqlconf2groupreplytable'] ?: 'radgroupreply');
+	$varsqlconf2usergrouptable = ($sqlconf['varsqlconf2usergrouptable'] ?: 'radusergroup');
+	$varsqlconf2readgroups = ($sqlconf['varsqlconf2readgroups'] ?: 'yes');
+	$varsqlconf2deletestalesessions = ($sqlconf['varsqlconf2deletestalesessions'] ?: 'yes');
+	$varsqlconf2sqltrace = ($sqlconf['varsqlconf2sqltrace'] ?: 'no');
+	$varsqlconf2numsqlsocks = ($sqlconf['varsqlconf2numsqlsocks'] ?: '5');
+	$varsqlconf2connectfailureretrydelay = ($sqlconf['varsqlconf2connectfailureretrydelay'] ?: '60');
+	$varsqlconf2lifetime = ($sqlconf['varsqlconf2lifetime'] ?: '0');
+	$varsqlconf2maxqueries = ($sqlconf['varsqlconf2maxqueries'] ?: '0');
+	$varsqlconf2readclients = ($sqlconf['varsqlconf2readclients'] ?: 'yes');
+	$varsqlconf2nastable = ($sqlconf['varsqlconf2nastable'] ?: 'nas');
+
+	// Additional changes were made in freeradius_settings_resync()
+
 	$conf .= <<<EOD
 
 sql {
@@ -1450,7 +1425,7 @@ EOD;
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 	conf_mount_ro();
-	
+
 	// We don't need a restart at this time because there are
 	// additional changes needed in freeradius_settings_resync()
 	freeradius_settings_resync();
@@ -1459,25 +1434,28 @@ EOD;
 function freeradius_serverdefault_resync() {
 	global $config;
 	$conf = '';
-		
+
 	// Get Variables from freeradiusmodulesldap.xml
-	$arrmodulesldap = $config['installedpackages']['freeradiusmodulesldap']['config'][0];
+	if (is_array($$config['installedpackages']['freeradiusmodulesldap']['config'][0])) {
+		$arrmodulesldap = $config['installedpackages']['freeradiusmodulesldap']['config'][0];
+	} else {
+		$arrmodulesldap = array();
+	}
+
 	// failover/loadbalancing mode
-	$varmodulesldap2failover = ($arrmodulesldap['varmodulesldap2failover']?$arrmodulesldap['varmodulesldap2failover']:'redundant');
-	
+	$varmodulesldap2failover = ($arrmodulesldap['varmodulesldap2failover'] ?: 'redundant');
+
 	// If unchecked then disable authorize ldap2
 	if (!$arrmodulesldap['varmodulesldap2enableauthorize']) {
 		$varmodulesldap2enableauthorize = '### ldap2 disabled ###';
-	}
-	else {
+	} else {
 		$varmodulesldap2enableauthorize = 'ldap2';
 	}
-	
+
 	// If unchecked then disable authorize ldap1
 	if (!$arrmodulesldap['varmodulesldapenableauthorize']) {
 		$varmodulesldapenableauthorize = '### ldap ###';
-	}
-	else {
+	} else {
 		$varmodulesldapenableauthorize = '';
 		$varmodulesldapenableauthorize .= "$varmodulesldap2failover {";
 		$varmodulesldapenableauthorize .= "\n\t\tldap";
@@ -1485,112 +1463,109 @@ function freeradius_serverdefault_resync() {
 		$varmodulesldapenableauthorize .= "\n\t\t$varmodulesldap2enableauthorize";
 		$varmodulesldapenableauthorize .= "\n\t}";
 	}
-	
+
 	// If unchecked then disable authenticate for ldap1
 	if (!$arrmodulesldap['varmodulesldap2enableauthenticate']) {
 		$varmodulesldap2enableauthenticate = "### ldap2 disabled ###";
-	}
-	else {
+	} else {
 		$varmodulesldap2enableauthenticate = "ldap2";
 	}
-	
+
 	// If unchecked then disable authenticate ldap2
 	if (!$arrmodulesldap['varmodulesldapenableauthenticate']) {
 		$varmodulesldapenableauthenticate = "#Auth-Type LDAP {" . "\n\t\t\t#ldap" . "\n\t\t\t$varmodulesldap2enableauthenticate" . "\n\t#}";
-	}
-	else {
+	} else {
 		$varmodulesldapenableauthenticate = "Auth-Type LDAP {" . "\n\t\t\tldap" . "\n\t\t\t$varmodulesldap2enableauthenticate" . "\n\t}";
 	}
-	
+
 	// Get Variables from freeradiussqlconf.xml for DATABASE 1
-	$sqlconf = $config['installedpackages']['freeradiussqlconf']['config'][0];
-	$varsqlconfenableauthorize = ($sqlconf['varsqlconfenableauthorize']?$sqlconf['varsqlconfenableauthorize']:'Disable');
-	$varsqlconfenableaccounting = ($sqlconf['varsqlconfenableaccounting']?$sqlconf['varsqlconfenableaccounting']:'Disable');
-	$varsqlconfenablesession = ($sqlconf['varsqlconfenablesession']?$sqlconf['varsqlconfenablesession']:'Disable');
-	$varsqlconfenablepostauth = ($sqlconf['varsqlconfenablepostauth']?$sqlconf['varsqlconfenablepostauth']:'Disable');
-	
+	if (is_array($config['installedpackages']['freeradiussqlconf']['config'][0])) {
+		$sqlconf = $config['installedpackages']['freeradiussqlconf']['config'][0];
+	} else {
+		$sqlconf = array();
+	}
+	$varsqlconfenableauthorize = ($sqlconf['varsqlconfenableauthorize'] ?: 'Disable');
+	$varsqlconfenableaccounting = ($sqlconf['varsqlconfenableaccounting'] ?: 'Disable');
+	$varsqlconfenablesession = ($sqlconf['varsqlconfenablesession'] ?: 'Disable');
+	$varsqlconfenablepostauth = ($sqlconf['varsqlconfenablepostauth'] ?: 'Disable');
+
 	// Get Variables from freeradiussqlconf.xml for DATABASE 2
-	$varsqlconf2enableauthorize = ($sqlconf['varsqlconf2enableauthorize']?$sqlconf['varsqlconf2enableauthorize']:'Disable');
-	$varsqlconf2enableaccounting = ($sqlconf['varsqlconf2enableaccounting']?$sqlconf['varsqlconf2enableaccounting']:'Disable');
-	$varsqlconf2enablesession = ($sqlconf['varsqlconf2enablesession']?$sqlconf['varsqlconf2enablesession']:'Disable');
-	$varsqlconf2enablepostauth = ($sqlconf['varsqlconf2enablepostauth']?$sqlconf['varsqlconf2enablepostauth']:'Disable');
-	
+	$varsqlconf2enableauthorize = ($sqlconf['varsqlconf2enableauthorize'] ?: 'Disable');
+	$varsqlconf2enableaccounting = ($sqlconf['varsqlconf2enableaccounting'] ?: 'Disable');
+	$varsqlconf2enablesession = ($sqlconf['varsqlconf2enablesession'] ?: 'Disable');
+	$varsqlconf2enablepostauth = ($sqlconf['varsqlconf2enablepostauth'] ?: 'Disable');
+
 	// authorize section DATABASE 2
 	if ($sqlconf['varsqlconf2enableauthorize'] == 'Enable') {
 		$varsqlconf2authorize = 'sql2';
-	}
-	else {
+	} else {
 		$varsqlconf2authorize = '### sql2 DISABLED ###';
 	}
 	// accounting section DATABASE 2
 	if ($sqlconf['varsqlconf2enableaccounting'] == 'Enable') {
 		$varsqlconf2accounting = 'sql2';
-	}
-	else {
+	} else {
 		$varsqlconf2accounting = '### sql2 DISABLED ###';
 	}
 	// session section DATABASE 2
 	if ($sqlconf['varsqlconf2enablesession'] == 'Enable') {
 		$varsqlconf2session = 'sql2';
-	}
-	else {
+	} else {
 		$varsqlconf2session = '### sql2 DISABLED ###';
 	}
 	// post-auth section DATABASE 2
 	if ($sqlconf['varsqlconf2enablepostauth'] == 'Enable') {
 		$varsqlconf2postauth = 'sql2';
-	}
-	else {
+	} else {
 		$varsqlconf2postauth = '### sql2 DISABLED ###';
-	}	
-	
+	}
+
 	// Failover mode
-	$varsqlconf2failover = ($sqlconf['varsqlconf2failover']?$sqlconf['varsqlconf2failover']:'redundant');
+	$varsqlconf2failover = ($sqlconf['varsqlconf2failover'] ?: 'redundant');
 
 	// authorize section DATABASE 1
 	if (($sqlconf['varsqlconfincludeenable'] == 'on') && ($sqlconf['varsqlconfenableauthorize'] == 'Enable')) {
 		$varsqlconfauthorize = "$varsqlconf2failover {" . "\n\t\t\tsql" . "\n\t\t\t$varsqlconf2authorize" . "\n\t}";
-	}
-	else {
+	} else {
 		$varsqlconfauthorize = '### sql DISABLED ###';
 	}
-	
+
 	// accounting section DATABASE 1
 	if (($sqlconf['varsqlconfincludeenable'] == 'on') && ($sqlconf['varsqlconfenableaccounting'] == 'Enable')) {
 		$varsqlconfaccounting = "$varsqlconf2failover {" . "\n\t\t\tsql" . "\n\t\t\t$varsqlconf2accounting" . "\n\t}";
-	}
-	else {
+	} else {
 		$varsqlconfaccounting = '### sql DISABLED ###';
 	}
-	
+
 	// session section DATABASE 1
 	if (($sqlconf['varsqlconfincludeenable'] == 'on') && ($sqlconf['varsqlconfenablesession'] == 'Enable')) {
 		$varsqlconfsession = "$varsqlconf2failover {" . "\n\t\t\tsql" . "\n\t\t\t$varsqlconf2session" . "\n\t}";
-	}
-	else {
+	} else {
 		$varsqlconfsession = 'radutmp';
 	}
 
 	// post-auth section DATABASE 1
 	if (($sqlconf['varsqlconfincludeenable'] == 'on') && ($sqlconf['varsqlconfenablepostauth'] == 'Enable')) {
 		$varsqlconfpostauth = "$varsqlconf2failover {" . "\n\t\t\tsql" . "\n\t\t\t$varsqlconf2postauth" . "\n\t}";
-	}
-	else {
+	} else {
 		$varsqlconfpostauth = '### sql DISABLED ###';
 	}
-	
+
 	// Changing authorize section for plain mac auth
 	// Variables: If not using 802.1x, mac address must be known
-	$varsettings = $config['installedpackages']['freeradiussettings']['config'][0];
-	
+	if (is_array($config['installedpackages']['freeradiussettings']['config'][0])) {
+		$varsettings = $config['installedpackages']['freeradiussettings']['config'][0];
+	} else {
+		$varsettings = array();
+	}
+
 	// If unchecked we need the normal EAP section.
 	if (!$varsettings['varsettingsenablemacauth']) {
 		$varplainmacauthenable = '##### AUTHORIZE FOR PLAIN MAC-AUTH IS DISABLED #####';
 
 		$varplainmacpreacctenable = '##### ACCOUNTING FOR PLAIN MAC-AUTH DISABLED #####';
-	}
-	// If checked we need to check if it is plain mac or eap
-	else {
+	} else {
+		// If checked we need to check if it is plain mac or eap
 		$varplainmacauthenable = '';
 		$varplainmacauthenable .= "### FIRST check MAC address in authorized_macs and if that fails proceed with other checks below in else-section ###";
 		$varplainmacauthenable .= "\n\t### if cleaning up the Calling-Station-Id...###";
@@ -1609,17 +1584,14 @@ function freeradius_serverdefault_resync() {
 		$varplainmacpreacctenable .= '##### ACCOUNTING FOR PLAIN MAC-AUTH ENABLED #####';
 		$varplainmacpreacctenable .= "\n\trewrite_calling_station_id";
 	}
-	
-	// Disable acct_unique in preacct section
-	$varsettings = $config['installedpackages']['freeradiussettings']['config'][0];
 
+	// Disable acct_unique in preacct section
 	if ($varsettings['varsettingsenableacctunique'] == 'on') {
 		$varsettingsacctuniqueenabled = '##### DISABLE acct_unique DISABLE #####';
-	}
-	else {
+	} else {
 		$varsettingsacctuniqueenabled = 'acct_unique';
 	}
-	
+
 	$conf .= <<<EOD
 ######################################################################
 #
@@ -1709,11 +1681,11 @@ authorize {
 	#  It takes care of processing the 'raddb/hints' and the
 	#  'raddb/huntgroups' files.
 	preprocess
-	
+
 	#
 	#
 	$varplainmacauthenable
-	
+
 	#
 	#  If you want to have a log of authentication requests,
 	#  un-comment the following line, and the 'detail auth_log'
@@ -1760,10 +1732,10 @@ authorize {
 	#  Otherwise, when the first style of realm doesn't match,
 	#  the other styles won't be checked.
 	#
-	
+
 	suffix
 	ntdomain
-	
+
 	#
 	#  This module takes care of EAP-MD5, EAP-TLS, and EAP-LEAP
 	#  authentication.
@@ -1782,11 +1754,11 @@ authorize {
 	#  or PEAP.  The load on those servers will therefore be reduced.
 	#
 	#
-	
+
 	eap {
 		ok = return
 	}
-	
+
 	#
 	#  Pull crypt'd passwords from /etc/passwd or /etc/shadow,
 	#  using the system API's to get the password.  If you want
@@ -1815,7 +1787,7 @@ authorize {
 	#
 	#  The ldap module will set Auth-Type to LDAP if it has not
 	#  already been set
-	
+
 	$varmodulesldapenableauthorize
 
 	#
@@ -1844,7 +1816,7 @@ authorize {
 	#  get a chance to set Auth-Type for themselves.
 	#
 	pap
-	
+
 	#
 	#  If "status_server = yes", then Status-Server messages are passed
 	#  through the following section, and ONLY the following section.
@@ -1912,7 +1884,7 @@ authenticate {
 	Auth-Type MOTP {
 		motp
 	}
-	
+
 	#
 	#  If you have a Cisco SIP server authenticating against
 	#  FreeRADIUS, uncomment the following line, and the 'digest'
@@ -1970,9 +1942,9 @@ authenticate {
 #
 preacct {
 	preprocess
-	
+
 	$varplainmacpreacctenable
-	
+
 	#
 	#  Session start times are *implied* in RADIUS.
 	#  The NAS never sends a "start time".  Instead, it sends
@@ -2032,7 +2004,7 @@ accounting {
 		datacountermonthly
 		datacounterforever
 	}
-	
+
 	#  Update the wtmp file
 	#
 	#  If you don't use "radlast", you can delete this line.
@@ -2297,8 +2269,9 @@ EOD;
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 	conf_mount_ro();
-	
-	// No need to restart here because the restart of the service will be done in freeradius_settings_resync()
+
+	// No need to restart here because the restart of the service
+	// will be done in freeradius_settings_resync()
 }
 
 function freeradius_cacertcnf_resync() {
