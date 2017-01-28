@@ -54,8 +54,11 @@ error_log(date("Y-m-d H:i:s") . " | VIRUS FOUND | "
 	. str_replace('|', '', $user) . "\n", 3, "/var/log/c-icap/virus.log");
 
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <style type="text/css">
-	.visu {
+.visu {
 	border:1px solid #C0C0C0;
 	color:#FFFFFF;
 	position: relative;
@@ -66,27 +69,34 @@ error_log(date("Y-m-d H:i:s") . " | VIRUS FOUND | "
 	border-radius: 10px;
 	padding: 3em;
 	-moz-padding-start: 30px;
-	background-color: #8b0000;
+	background-color: #8B0000;
 }
 .visu h2, .visu h3, .visu h4 {
-	font-size:130%;
-	font-family:"times new roman", times, serif;
-	font-style:normal;
-	font-weight:bolder;
+	font-size: 130%;
+	font-family: "times new roman", times, serif;
+	font-style: normal;
+	font-weight: bolder;
+
+}
+a:link, a:visited {
+	color: #FFFFFF;
+	text-decoration: underline;
 }
 </style>
+<title><?=$TITLE_VIRUS?></title>
+</head>
+<body>
 <div class="visu">
 	<h2><?=$TITLE_VIRUS?></h2>
 	<hr />
 	<p>
 	The requested URL <?=$url?> <?=$urlerror?><br/>
 	<?=$subtitle?>: <?=$virus?>
-	</p><p>
-	<?=$errorreturn?>
-	</p><p>
-	Origin: <?=$source?> / <?=$user?>
-	</p><p>
-	<hr />
-	<font color="blue"> Powered by <a href="http://squidclamav.darold.net/">SquidClamav <?=$VERSION?></a>.</font>
 	</p>
+	<p><?=$errorreturn?></p>
+	<p>Origin: <?=$source?> / <?=$user?></p>
+	<hr />
+	<p><small>Powered by <a href="http://squidclamav.darold.net/">SquidClamav <?=$VERSION?></a></small></p>
 </div>
+</body>
+</html>
