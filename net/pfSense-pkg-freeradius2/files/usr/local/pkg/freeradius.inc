@@ -3,7 +3,7 @@
  * freeradius.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
  * Copyright (c) 2013 Marcello Coutinho
  * All rights reserved.
@@ -63,7 +63,7 @@ define('FREERADIUS_ETC', FREERADIUS_BASE . '/etc');
 	if ($frlib == "") {
 		log_error("freeRADIUS - No freeradius libs found on " . FREERADIUS_LIB);
 	}
-	
+
 function freeradius_deinstall_command() {
 	$pidFile = "/var/run/radiusd.pid";
 	$i = 0;
@@ -228,41 +228,49 @@ function freeradius_settings_resync($restart_svc = true) {
 		touch("/var/log/radwtmp");
 	}
 
-	$varsettings = $config['installedpackages']['freeradiussettings']['config'][0];
-	
+	if (is_array($config['installedpackages']['freeradiussettings']['config'][0])) {
+		$varsettings = $config['installedpackages']['freeradiussettings']['config'][0];
+	} else {
+		$varsettings = array();
+	}
+
 	// Variables: General configuration
-	$varsettingsmaxrequests = ($varsettings['varsettingsmaxrequests']?$varsettings['varsettingsmaxrequests']:'1024');
-	$varsettingsmaxrequesttime = ($varsettings['varsettingsmaxrequesttime']?$varsettings['varsettingsmaxrequesttime']:'30');
-	$varsettingscleanupdelay = ($varsettings['varsettingscleanupdelay']?$varsettings['varsettingscleanupdelay']:'5');
-	$varsettingshostnamelookups = ($varsettings['varsettingshostnamelookups']?$varsettings['varsettingshostnamelookups']:'no');
-	$varsettingsallowcoredumps = ($varsettings['varsettingsallowcoredumps']?$varsettings['varsettingsallowcoredumps']:'no');
-	$varsettingsregularexpressions = ($varsettings['varsettingsregularexpressions']?$varsettings['varsettingsregularexpressions']:'yes');
-	$varsettingsextendedexpressions = ($varsettings['varsettingsextendedexpressions']?$varsettings['varsettingsextendedexpressions']:'yes');
-	
+	$varsettingsmaxrequests = ($varsettings['varsettingsmaxrequests'] ?: '1024');
+	$varsettingsmaxrequesttime = ($varsettings['varsettingsmaxrequesttime'] ?: '30');
+	$varsettingscleanupdelay = ($varsettings['varsettingscleanupdelay']?: '5');
+	$varsettingshostnamelookups = ($varsettings['varsettingshostnamelookups'] ?: 'no');
+	$varsettingsallowcoredumps = ($varsettings['varsettingsallowcoredumps'] ?: 'no');
+	$varsettingsregularexpressions = ($varsettings['varsettingsregularexpressions'] ?: 'yes');
+	$varsettingsextendedexpressions = ($varsettings['varsettingsextendedexpressions'] ?:'yes');
+
 	// Variables: Logging options
-	$varsettingslogdir = ($varsettings['varsettingslogdir']?$varsettings['varsettingslogdir']:'syslog');
-	$varsettingsauth = ($varsettings['varsettingsauth']?$varsettings['varsettingsauth']:'yes');
-	$varsettingsauthbadpass = ($varsettings['varsettingsauthbadpass']?$varsettings['varsettingsauthbadpass']:'no');
-	$varsettingsauthbadpassmessage = ($varsettings['varsettingsauthbadpassmessage']?$varsettings['varsettingsauthbadpassmessage']:'');
-	$varsettingsauthgoodpass = ($varsettings['varsettingsauthgoodpass']?$varsettings['varsettingsauthgoodpass']:'no');
-	$varsettingsauthgoodpassmessage = ($varsettings['varsettingsauthgoodpassmessage']?$varsettings['varsettingsauthgoodpassmessage']:'');
-	$varsettingsstrippednames = ($varsettings['varsettingsstrippednames']?$varsettings['varsettingsstrippednames']:'no');
-	
+	$varsettingslogdir = ($varsettings['varsettingslogdir'] ?: 'syslog');
+	$varsettingsauth = ($varsettings['varsettingsauth'] ?: 'yes');
+	$varsettingsauthbadpass = ($varsettings['varsettingsauthbadpass'] ?: 'no');
+	$varsettingsauthbadpassmessage = ($varsettings['varsettingsauthbadpassmessage'] ?: '');
+	$varsettingsauthgoodpass = ($varsettings['varsettingsauthgoodpass'] ?: 'no');
+	$varsettingsauthgoodpassmessage = ($varsettings['varsettingsauthgoodpassmessage'] ?: '');
+	$varsettingsstrippednames = ($varsettings['varsettingsstrippednames'] ?: 'no');
+
 	// Variables: Security
-	$varsettingsmaxattributes = ($varsettings['varsettingsmaxattributes']?$varsettings['varsettingsmaxattributes']:'200');
-	$varsettingsrejectdelay = ($varsettings['varsettingsrejectdelay']?$varsettings['varsettingsrejectdelay']:'1');
-	
+	$varsettingsmaxattributes = ($varsettings['varsettingsmaxattributes'] ?: '200');
+	$varsettingsrejectdelay = ($varsettings['varsettingsrejectdelay'] ?: '1');
+
 	// Variables: Thread Pool
-	$varsettingsstartservers = ($varsettings['varsettingsstartservers']?$varsettings['varsettingsstartservers']:'5');
-	$varsettingsmaxservers = ($varsettings['varsettingsmaxservers']?$varsettings['varsettingsmaxservers']:'32');
-	$varsettingsminspareservers = ($varsettings['varsettingsminspareservers']?$varsettings['varsettingsminspareservers']:'3');
-	$varsettingsmaxspareservers = ($varsettings['varsettingsmaxspareservers']?$varsettings['varsettingsmaxspareservers']:'10');
-	$varsettingsmaxqueuesize = ($varsettings['varsettingsmaxqueuesize']?$varsettings['varsettingsmaxqueuesize']:'65536');
-	$varsettingsmaxrequestsperserver = ($varsettings['varsettingsmaxrequestsperserver']?$varsettings['varsettingsmaxrequestsperserver']:'0');
-	
+	$varsettingsstartservers = ($varsettings['varsettingsstartservers'] ?: '5');
+	$varsettingsmaxservers = ($varsettings['varsettingsmaxservers'] ?: '32');
+	$varsettingsminspareservers = ($varsettings['varsettingsminspareservers'] ?: '3');
+	$varsettingsmaxspareservers = ($varsettings['varsettingsmaxspareservers'] ?: '10');
+	$varsettingsmaxqueuesize = ($varsettings['varsettingsmaxqueuesize'] ?: '65536');
+	$varsettingsmaxrequestsperserver = ($varsettings['varsettingsmaxrequestsperserver'] ?: '0');
+
 	// For more details look at "freeradius_sqlconf_resync"
-	$sqlconf = $config['installedpackages']['freeradiussqlconf']['config'][0];
-		
+	if (is_array($config['installedpackages']['freeradiussqlconf']['config'][0])) {
+		$sqlconf = $config['installedpackages']['freeradiussqlconf']['config'][0];
+	} else {
+		$sqlconf = array();
+	}
+
 	// Dis-/Enable SQL in "instatiate" section in "freeradius_settings_resync" and radiusd.conf SQL SERVER 2
 	if ($sqlconf['varsqlconf2includeenable'] == 'on') {
 		$varsqlconf2instantiate = 'sql2';
@@ -270,16 +278,15 @@ function freeradius_settings_resync($restart_svc = true) {
 	else {
 		$varsqlconf2instantiate = '### sql2 DISABLED ###';
 	}
-	
-	$varsqlconf2failover = ($varsettings['varsqlconf2failover']?$varsettings['varsqlconf2failover']:'redundant');
-	
+
+	$varsqlconf2failover = ($varsettings['varsqlconf2failover'] ?: 'redundant');
+
 	// Dis-/Enable SQL in "instatiate" section in "freeradius_settings_resync" and radiusd.conf SQL SERVER 1
 	if ($sqlconf['varsqlconfincludeenable'] == 'on') {
 		$varsqlconfinclude = '$INCLUDE sql.conf';
 		$varsqlconfincludecounter = '$INCLUDE sql/mysql/counter.conf';
 		$varsqlconfinstantiate = "$varsqlconf2failover {" . "\n\t\tsql" . "\n\t\t$varsqlconf2instantiate" . "\n\t}";
-	}
-	else {
+	} else {
 		$varsqlconfinclude = '#$INCLUDE sql.conf';
 		$varsqlconfincludecounter = '#$INCLUDE sql/mysql/counter.conf';
 		$varsqlconf2failover = '';
@@ -326,11 +333,16 @@ extended_expressions = $varsettingsextendedexpressions
 
 EOD;
 
-// Deletes virtual-server coa by default. Will be re-enabled if there is an interface-type "coa"
-exec("rm -f " . FREERADIUS_ETC . "/raddb/sites-enabled/coa");
+	// Deletes virtual-server coa by default. Will be re-enabled if there is an interface-type "coa"
+	exec("rm -f " . FREERADIUS_ETC . "/raddb/sites-enabled/coa");
 
-$arrinterfaces = $config['installedpackages']['freeradiusinterfaces']['config'];
-	if (is_array($arrinterfaces)  && !empty($arrinterfaces)) {
+	if (is_array($config['installedpackages']['freeradiusinterfaces']['config'])) {
+		$arrinterfaces = $config['installedpackages']['freeradiusinterfaces']['config'];
+	} else {
+		$arrinterfaces = array();
+	}
+
+	if (!empty($arrinterfaces)) {
 		foreach ($arrinterfaces as $item) {
 			$varinterfaceip = $item['varinterfaceip'];
 			$varinterfaceport = $item['varinterfaceport'];
@@ -339,7 +351,7 @@ $arrinterfaces = $config['installedpackages']['freeradiusinterfaces']['config'];
 
 			// Begin "if" for interface-type = detail
 			if ($item['varinterfacetype'] == 'detail') {
-			$conf .= <<<EOD
+				$conf .= <<<EOD
 listen {
 		type = $varinterfacetype
 		$varinterfaceipversion = $varinterfaceip
@@ -349,13 +361,13 @@ listen {
 }
 
 EOD;
-			}	// End "if" for interface-type = detail
+			} // End "if" for interface-type = detail
 
 			// Begin "if" for interface-type = coa
 			if ($item['varinterfacetype'] == 'coa') {
 			// Enables virtual-server coa because interface-type is coa
-			exec("ln -s " . FREERADIUS_ETC . "/raddb/sites-available/coa " . FREERADIUS_ETC . "/raddb/sites-enabled/");
-			$conf .= <<<EOD
+				symlink(FREERADIUS_ETC . "/raddb/sites-available/coa", FREERADIUS_ETC . "/raddb/sites-enabled/");
+				$conf .= <<<EOD
 listen {
 		type = $varinterfacetype
 		$varinterfaceipversion = $varinterfaceip
@@ -364,7 +376,7 @@ listen {
 }
 
 EOD;
-			}	// End "if" for interface-type = coa
+			} // End "if" for interface-type = coa
 
 			// Begin "if" for interface-type = auth, acct, proxy, status
 			if (($item['varinterfacetype'] == 'auth') || ($item['varinterfacetype'] == 'acct') || ($item['varinterfacetype'] == 'proxy') || ($item['varinterfacetype'] == 'status')) {
@@ -376,12 +388,12 @@ listen {
 }
 
 EOD;
-			}	// End "if" for interface-type = auth, acct, proxy, status
-		}	// end foreach
-	}	// end if array
+			} // End "if" for interface-type = auth, acct, proxy, status
+		} // endforeach
+	} // end if array
 
 
-$conf .= <<<EOD
+	$conf .= <<<EOD
 
 log {
 	destination = $varsettingslogdir
@@ -420,10 +432,10 @@ modules {
 	\$INCLUDE eap.conf
 	### Dis-/Enable sql.conf INCLUDE
 	$varsqlconfinclude
-	
+
 	### Dis-/Enable sql/mysql/counter.conf INCLUDE
 	$varsqlconfincludecounter
-		
+
 	#\$INCLUDE sqlippool.conf
 }
 
@@ -447,14 +459,15 @@ EOD;
 	conf_mount_rw();
 	file_put_contents(FREERADIUS_ETC . '/raddb/radiusd.conf', $conf);
 	conf_mount_ro();
-	
+
 	// freeradius_sqlconf_resync() is pointing to this function because we need
 	// to run freeradius_serverdefault_resync() and after that restart freeradius.
 	freeradius_plainmacauth_resync();
 	freeradius_motp_resync();
 	freeradius_serverdefault_resync();
-	
+
 	// This is to fix the mysqlclient.so which gets lost after reboot
+	// XXX: Probably some PBI leftover, remove?
 	exec("ldconfig -m /usr/local/lib/mysql");
 	// Change owner of freeradius created files
 	if (is_dir("/var/log/radacct/")) {
@@ -467,23 +480,26 @@ EOD;
 }
 
 function freeradius_users_resync($via_rpc = false) {
-global $config;
+	global $config;
+	$conf = '';
 
-$conf = '';
+	if (is_array($config['installedpackages']['freeradius']['config'])) {
+		$arrusers = $config['installedpackages']['freeradius']['config'];
+	} else {
+		$arrusers = array();
+	}
 
-$arrusers = $config['installedpackages']['freeradius']['config'];
+	if (!empty($arrusers)) {
+		foreach ($arrusers as $users) {
 
-if (is_array($arrusers) && !empty($arrusers)) {
-	foreach ($arrusers as $users) {
-	
-	// Variables for users file defined parameters
-	
-	$varusersusername = $users['varusersusername'];
-	$varuserspassword = $users['varuserspassword'];
-	
+		// Variables for users file defined parameters
 
-	// Check password encryption
-	$varuserspasswordencryption = ($users['varuserspasswordencryption']?$users['varuserspasswordencryption']:'Cleartext-Password');
+		$varusersusername = $users['varusersusername'];
+		$varuserspassword = $users['varuserspassword'];
+
+
+		// Check password encryption
+		$varuserspasswordencryption = ($users['varuserspasswordencryption'] ?: 'Cleartext-Password');
 		switch ($varuserspasswordencryption) {
 			case "MD5-Password":
 				$varuserspassword = md5($varuserspassword);
@@ -491,201 +507,224 @@ if (is_array($arrusers) && !empty($arrusers)) {
 			default:
 				$varuserspassword = $users['varuserspassword'];
 		}
-	
-		
-	$varusersmotpinitsecret = $users['varusersmotpinitsecret'];
-	$varusersmotppin = $users['varusersmotppin'];
-	$varusersmotpoffset = ($users['varusersmotpoffset']?$users['varusersmotpoffset']:'0');
-	
-	$varuserssimultaneousconnect = ($users['varuserssimultaneousconnect']?$users['varuserssimultaneousconnect']:'');
-	$varuserswisprredirectionurl = $users['varuserswisprredirectionurl'];
-	$varusersframedipaddress = $users['varusersframedipaddress'];
-	$varusersframedipnetmask = $users['varusersframedipnetmask'];
-	$varusersframedroute = $users['varusersframedroute'];
-	$varusersexpiration = $users['varusersexpiration'];
-	$varuserssessiontimeout = $users['varuserssessiontimeout'];
-	$varuserslogintime = $users['varuserslogintime'];
-	$varusersvlanid = $users['varusersvlanid'];
-	
-	// GUI uses minutes but RADIUS needs seconds so we do a multiplication
-	$varusersamountoftime = ($users['varusersamountoftime']?$users['varusersamountoftime']:'');
-	$varusersamountoftime = $varusersamountoftime * 60;
-	$varuserspointoftime = $users['varuserspointoftime'];
-	
-	// GUI uses MB but RADIUS needs Bytes so we do a multiplication
-	$varusersmaxtotaloctets = ($users['varusersmaxtotaloctets']?$users['varusersmaxtotaloctets']:'');
-	$varusersmaxtotaloctets = $varusersmaxtotaloctets * 1024 * 1024;
-	$varusersmaxtotaloctetstimerange = $users['varusersmaxtotaloctetstimerange'];
-	
-	// GUI uses KiloBit but RADIUS needs Bits so we do a multiplication
-	$varusersmaxbandwidthup = ($users['varusersmaxbandwidthup']?$users['varusersmaxbandwidthup']:'');
-	$varusersmaxbandwidthup = $varusersmaxbandwidthup * 1024;
-	$varusersmaxbandwidthdown = ($users['varusersmaxbandwidthdown']?$users['varusersmaxbandwidthdown']:'');
-	$varusersmaxbandwidthdown = $varusersmaxbandwidthdown * 1024;
-	
-	// Accounting-Interim-Interval - Must not be smaller than 60 and should be bigger than 600s
-	if (($users['varusersacctinteriminterval'] >= '0') && ($users['varusersacctinteriminterval'] < '60')) {
-		$varusersacctinteriminterval = 60;
-	} else {
-		$varusersacctinteriminterval = $users['varusersacctinteriminterval'];
-	}
-	
-	// Clear variables for next user foreach additional options TOP
-	$varuserstopadditionaloptions = '';
-	$varusersadditionaloptionstop = '';
-	
-	if(!empty($users['varuserstopadditionaloptions'])) {
-		$varuserstopadditionaloptions = explode("|", ($users['varuserstopadditionaloptions']));
-		foreach ($varuserstopadditionaloptions as $toptmp) {
-			$varusersadditionaloptionstop .= $toptmp . "\n";
-		}
-	}
-	
-	// Clear variables for next user foreach additional options: CHECK-ITEMS
-	$varuserscheckitemsadditionaloptions = '';
-	$varusersadditionaloptionscheckitems = '';
-	
-	if(!empty($users['varuserscheckitemsadditionaloptions'])) {
-		$varuserscheckitemsadditionaloptions = explode("|", ($users['varuserscheckitemsadditionaloptions']));
-		$varusersadditionaloptionscheckitems .= '';
-		foreach ($varuserscheckitemsadditionaloptions as $checkitemtmp) {
-			$varusersadditionaloptionscheckitems .= "$checkitemtmp" . " ";
-		}
-	}
-		
-	// Clear variables for next user foreach additional options: REPLY-ITEMS
-	$varusersreplyitemsadditionaloptions = '';
-	$varusersadditionaloptionsreplyitems = '';
-	
-	if(!empty($users['varusersreplyitemsadditionaloptions'])) {
-		$varusersreplyitemsadditionaloptions = explode("|", ($users['varusersreplyitemsadditionaloptions']));
-		$varusersadditionaloptionsreplyitems .= '';
-		foreach ($varusersreplyitemsadditionaloptions as $replyitemtmp) {
-			$varusersadditionaloptionsreplyitems .= $replyitemtmp . "\n\t";
-		}
-	}
 
-	// Empty variable
-	$varuserscheckitem = '';
-	$varusersreplyitem = '';
-	
+
+		$varusersmotpinitsecret = $users['varusersmotpinitsecret'];
+		$varusersmotppin = $users['varusersmotppin'];
+		$varusersmotpoffset = ($users['varusersmotpoffset'] ?: '0');
+
+		$varuserssimultaneousconnect = ($users['varuserssimultaneousconnect'] ?: '');
+		$varuserswisprredirectionurl = $users['varuserswisprredirectionurl'];
+		$varusersframedipaddress = $users['varusersframedipaddress'];
+		$varusersframedipnetmask = $users['varusersframedipnetmask'];
+		$varusersframedroute = $users['varusersframedroute'];
+		$varusersexpiration = $users['varusersexpiration'];
+		$varuserssessiontimeout = $users['varuserssessiontimeout'];
+		$varuserslogintime = $users['varuserslogintime'];
+		$varusersvlanid = $users['varusersvlanid'];
+
+		// GUI uses minutes but RADIUS needs seconds so we do a multiplication
+		$varusersamountoftime = ($users['varusersamountoftime'] ?: '');
+		$varusersamountoftime = $varusersamountoftime * 60;
+		$varuserspointoftime = $users['varuserspointoftime'];
+
+		// GUI uses MB but RADIUS needs Bytes so we do a multiplication
+		$varusersmaxtotaloctets = ($users['varusersmaxtotaloctets'] ?: '');
+		$varusersmaxtotaloctets = $varusersmaxtotaloctets * 1024 * 1024;
+		$varusersmaxtotaloctetstimerange = $users['varusersmaxtotaloctetstimerange'];
+
+		// GUI uses KiloBit but RADIUS needs Bits so we do a multiplication
+		$varusersmaxbandwidthup = ($users['varusersmaxbandwidthup'] ?: '');
+		$varusersmaxbandwidthup = $varusersmaxbandwidthup * 1024;
+		$varusersmaxbandwidthdown = ($users['varusersmaxbandwidthdown'] ?: '');
+		$varusersmaxbandwidthdown = $varusersmaxbandwidthdown * 1024;
+
+		// Accounting-Interim-Interval - Must not be smaller than 60 and should be bigger than 600s
+		if (($users['varusersacctinteriminterval'] >= '0') && ($users['varusersacctinteriminterval'] < '60')) {
+			$varusersacctinteriminterval = 60;
+		} else {
+			$varusersacctinteriminterval = $users['varusersacctinteriminterval'];
+		}
+
+		// Clear variables for next user foreach additional options TOP
+		$varuserstopadditionaloptions = '';
+		$varusersadditionaloptionstop = '';
+
+		if (!empty($users['varuserstopadditionaloptions'])) {
+			$varuserstopadditionaloptions = explode("|", ($users['varuserstopadditionaloptions']));
+			foreach ($varuserstopadditionaloptions as $toptmp) {
+				$varusersadditionaloptionstop .= $toptmp . "\n";
+			}
+		}
+
+		// Clear variables for next user foreach additional options: CHECK-ITEMS
+		$varuserscheckitemsadditionaloptions = '';
+		$varusersadditionaloptionscheckitems = '';
+
+		if (!empty($users['varuserscheckitemsadditionaloptions'])) {
+			$varuserscheckitemsadditionaloptions = explode("|", ($users['varuserscheckitemsadditionaloptions']));
+			$varusersadditionaloptionscheckitems .= '';
+			foreach ($varuserscheckitemsadditionaloptions as $checkitemtmp) {
+				$varusersadditionaloptionscheckitems .= "$checkitemtmp" . " ";
+			}
+		}
+
+		// Clear variables for next user foreach additional options: REPLY-ITEMS
+		$varusersreplyitemsadditionaloptions = '';
+		$varusersadditionaloptionsreplyitems = '';
+
+		if (!empty($users['varusersreplyitemsadditionaloptions'])) {
+			$varusersreplyitemsadditionaloptions = explode("|", ($users['varusersreplyitemsadditionaloptions']));
+			$varusersadditionaloptionsreplyitems .= '';
+			foreach ($varusersreplyitemsadditionaloptions as $replyitemtmp) {
+				$varusersadditionaloptionsreplyitems .= $replyitemtmp . "\n\t";
+			}
+		}
+
+		// Empty variable
+		$varuserscheckitem = '';
+		$varusersreplyitem = '';
+
 		// check if mobile otp is disabled
 		if ($users['varusersmotpenable'] == '') {
 			// If someone does not want to use username/password but entry "DEFAULT" instead then we can disable this
 			if (($users['varusersusername'] == '') && ($users['varuserspassword'] == '')) {
 				$varuserscheckitem = '';
-			}
-			else {
+			} else {
 				// Add the user attributes to each user.
 				$varuserscheckitem = '"' . $varusersusername . '"' . " $varuserspasswordencryption := " . '"' . $varuserspassword .'"';
 			}
-		} // end of check if otp is enabled
-	
-		// if otp is enabled we need to set Auth-Type to accept because password will be checked when the otp script gets executed in reply-item list
-		else {
+		// end of check if otp is enabled
+		} else {
+			// if otp is enabled we need to set Auth-Type to accept because password will be checked when the otp script gets executed in reply-item list
 			$varuserscheckitem = '"' . $varusersusername . '"' . " Auth-Type = motp";
 		}
-	
-	// Add additional CHECK-ITEMS here. Different formatting in "users" file needed.
-	if ($varuserssimultaneousconnect != '') {
-	$varuserscheckitem .= ", Simultaneous-Use := " . '"' . $varuserssimultaneousconnect . '"';
-	}
-	if ($varusersexpiration != '') {
-	$varuserscheckitem .= ", Expiration := " . '"' . $varusersexpiration . '"';
-	}
-	if ($varuserslogintime != '') {
-	$varuserscheckitem .= ", Login-Time := " . '"' . $varuserslogintime . '"';
-	}	
-	if ($varusersamountoftime != '') {
-	$varuserscheckitem .= ", Max-" . "$varuserspointoftime" . "-Session := " . "$varusersamountoftime";
-	}
-	if ($varusersadditionaloptionscheckitems != '') {
-	$varuserscheckitem .= ", $varusersadditionaloptionscheckitems";
-	}
+
+		// Add additional CHECK-ITEMS here. Different formatting in "users" file needed.
+		if ($varuserssimultaneousconnect != '') {
+			$varuserscheckitem .= ", Simultaneous-Use := " . '"' . $varuserssimultaneousconnect . '"';
+		}
+		if ($varusersexpiration != '') {
+			$varuserscheckitem .= ", Expiration := " . '"' . $varusersexpiration . '"';
+		}
+		if ($varuserslogintime != '') {
+			$varuserscheckitem .= ", Login-Time := " . '"' . $varuserslogintime . '"';
+		}
+		if ($varusersamountoftime != '') {
+			$varuserscheckitem .= ", Max-" . "$varuserspointoftime" . "-Session := " . "$varusersamountoftime";
+		}
+		if ($varusersadditionaloptionscheckitems != '') {
+			$varuserscheckitem .= ", $varusersadditionaloptionscheckitems";
+		}
 
 		// this is the part for mobile otp
 		if ($users['varusersmotpenable'] == 'on') {
 			$varusersreplyitem .= "MOTP-Init-Secret = $varusersmotpinitsecret," . "\n\tMOTP-PIN = $varusersmotppin," . "\n\tMOTP-Offset = $varusersmotpoffset";
-		}
-		else {
+		} else {
 			$varusersreplyitem .= '';
 		}
-		
-	// Add additional REPLY-ITEMS here. Different formatting in "users" file needed.
-	if ($varusersframedipaddress != '') {
-		if ($varusersreplyitem != '') { $varusersreplyitem .=","; }
-		$varusersreplyitem .= "\n\tFramed-IP-Address = $varusersframedipaddress";
-	}
-	if ($varusersframedipnetmask != '') {
-		if ($varusersreplyitem != '') { $varusersreplyitem .=","; }
-		$varusersreplyitem .= "\n\tFramed-IP-Netmask = $varusersframedipnetmask";
-	}
-	if ($varusersframedroute != '') {
-		if ($varusersreplyitem != '') { $varusersreplyitem .=","; }
-		$varusersreplyitem .= "\n\tFramed-Route = " . '"' . $varusersframedroute . '"';
-	}
-	if ($varuserssessiontimeout != '') {
-		if ($varusersreplyitem != '') { $varusersreplyitem .=","; }
-		$varusersreplyitem .= "\n\tSession-Timeout := $varuserssessiontimeout";
-	}
-	if ($varusersvlanid != '') {
-		if ($varusersreplyitem != '') { $varusersreplyitem .=","; }
-		$varusersreplyitem .= "\n\tTunnel-Type = VLAN,\n\tTunnel-Medium-Type = IEEE-802,\n\tTunnel-Private-Group-ID = " . '"' . $varusersvlanid . '"';
-	}
-	if ($varusersmaxbandwidthup != '') {
-		if ($varusersreplyitem != '') { $varusersreplyitem .=","; }
-		$varusersreplyitem .= "\n\tWISPr-Bandwidth-Max-Up := $varusersmaxbandwidthup";
-	}
-	if ($varusersmaxbandwidthdown != '') {
-		if ($varusersreplyitem != '') { $varusersreplyitem .=","; }
-		$varusersreplyitem .= "\n\tWISPr-Bandwidth-Max-Down := $varusersmaxbandwidthdown";
-	}
-	if ($varusersacctinteriminterval != '') {
-		if ($varusersreplyitem != '') { $varusersreplyitem .=","; }
-		$varusersreplyitem .= "\n\tAcct-Interim-Interval := $varusersacctinteriminterval";
-	}
-	if ($varuserswisprredirectionurl != '') {
-		if ($varusersreplyitem != '') { $varusersreplyitem .=","; }
-		$varusersreplyitem .= "\n\tWISPr-Redirection-URL := $varuserswisprredirectionurl";
-	}
-	// If an octet limit is set we create the files for the limit and the counter. Further we call an exec script which checks if the limit is reached or not
-	if ($varusersmaxtotaloctets != '') {
-		if ($varusersreplyitem != '') { $varusersreplyitem .=","; }
-		//create exec script
-		$varusersreplyitem .= "\n\tExec-Program-Wait = " . '"/bin/sh ' . FREERADIUS_ETC . '/raddb/scripts/datacounter_auth.sh ' . "$varusersusername $varusersmaxtotaloctetstimerange" . '"';
-		// create limit file - will be always overwritten so we can increase limit from GUI
-		exec("`echo $varusersmaxtotaloctets > /var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/max-octets-$varusersusername`");
-		// if used-octets file exist we do NOT overwrite this file!!!
-		if (!file_exists("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/used-octets-$varusersusername")) { exec("echo 0 > /var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/used-octets-$varusersusername"); }
-	}
-	// If an octet limit is NOT set we delete the files for the limit and the counter.
-	else {
-		if (file_exists("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/max-octets-$varusersusername")) { unlink("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/max-octets-$varusersusername"); }
-		if (file_exists("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/used-octets-$varusersusername")) { unlink("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/used-octets-$varusersusername*"); }
-	}
-	if ($varusersadditionaloptionsreplyitems != '') {
-		if ($varusersreplyitem != '') { $varusersreplyitem .=","; }
-		$varusersreplyitem .= "\n\t$varusersadditionaloptionsreplyitems";
-	}
-	
-	// Cosmetic fix - This is just to make a blank new line after each user entry
-	$varusersreplyitem .= "\n\n";
-	
-	
-	$conf .= <<<EOD
+
+		// Add additional REPLY-ITEMS here. Different formatting in "users" file needed.
+		if ($varusersframedipaddress != '') {
+			if ($varusersreplyitem != '') {
+				$varusersreplyitem .= ",";
+			}
+			$varusersreplyitem .= "\n\tFramed-IP-Address = $varusersframedipaddress";
+		}
+		if ($varusersframedipnetmask != '') {
+			if ($varusersreplyitem != '') {
+				$varusersreplyitem .= ",";
+			}
+			$varusersreplyitem .= "\n\tFramed-IP-Netmask = $varusersframedipnetmask";
+		}
+		if ($varusersframedroute != '') {
+			if ($varusersreplyitem != '') {
+				$varusersreplyitem .= ",";
+			}
+			$varusersreplyitem .= "\n\tFramed-Route = " . '"' . $varusersframedroute . '"';
+		}
+		if ($varuserssessiontimeout != '') {
+			if ($varusersreplyitem != '') {
+				$varusersreplyitem .= ",";
+			}
+			$varusersreplyitem .= "\n\tSession-Timeout := $varuserssessiontimeout";
+		}
+		if ($varusersvlanid != '') {
+			if ($varusersreplyitem != '') {
+				$varusersreplyitem .= ",";
+			}
+			$varusersreplyitem .= "\n\tTunnel-Type = VLAN,\n\tTunnel-Medium-Type = IEEE-802,\n\tTunnel-Private-Group-ID = " . '"' . $varusersvlanid . '"';
+		}
+		if ($varusersmaxbandwidthup != '') {
+			if ($varusersreplyitem != '') {
+				$varusersreplyitem .= ",";
+			}
+			$varusersreplyitem .= "\n\tWISPr-Bandwidth-Max-Up := $varusersmaxbandwidthup";
+		}
+		if ($varusersmaxbandwidthdown != '') {
+			if ($varusersreplyitem != '') {
+				$varusersreplyitem .= ",";
+			}
+			$varusersreplyitem .= "\n\tWISPr-Bandwidth-Max-Down := $varusersmaxbandwidthdown";
+		}
+		if ($varusersacctinteriminterval != '') {
+			if ($varusersreplyitem != '') {
+				$varusersreplyitem .= ",";
+			}
+			$varusersreplyitem .= "\n\tAcct-Interim-Interval := $varusersacctinteriminterval";
+		}
+		if ($varuserswisprredirectionurl != '') {
+			if ($varusersreplyitem != '') {
+				$varusersreplyitem .= ",";
+			}
+			$varusersreplyitem .= "\n\tWISPr-Redirection-URL := $varuserswisprredirectionurl";
+		}
+		// If an octet limit is set we create the files for the limit and the counter. Further we call an exec script which checks if the limit is reached or not
+		if ($varusersmaxtotaloctets != '') {
+			if ($varusersreplyitem != '') {
+				$varusersreplyitem .= ",";
+			}
+			// create exec script
+			$varusersreplyitem .= "\n\tExec-Program-Wait = " . '"/bin/sh ' . FREERADIUS_ETC . '/raddb/scripts/datacounter_auth.sh ' . "$varusersusername $varusersmaxtotaloctetstimerange" . '"';
+			// create limit file - will be always overwritten so we can increase limit from GUI
+			exec("`echo $varusersmaxtotaloctets > /var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/max-octets-$varusersusername`");
+			// if used-octets file exist we do NOT overwrite this file!!!
+			if (!file_exists("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/used-octets-$varusersusername")) {
+				exec("echo 0 > /var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/used-octets-$varusersusername");
+			}
+		} else {
+			// If an octet limit is NOT set we delete the files for the limit and the counter.
+			if (file_exists("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/max-octets-$varusersusername")) {
+				unlink("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/max-octets-$varusersusername");
+			}
+			if (file_exists("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/used-octets-$varusersusername")) {
+				unlink("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/used-octets-$varusersusername*");
+			}
+		}
+		if ($varusersadditionaloptionsreplyitems != '') {
+			if ($varusersreplyitem != '') {
+				$varusersreplyitem .=",";
+			}
+			$varusersreplyitem .= "\n\t$varusersadditionaloptionsreplyitems";
+		}
+
+		// Cosmetic fix - This is just to make a blank new line after each user entry
+		$varusersreplyitem .= "\n\n";
+
+		$conf .= <<<EOD
 $varusersadditionaloptionstop
 $varuserscheckitem
 	$varusersreplyitem
 EOD;
-	} //end foreach
-} // end if
+		} // endforeach
+	} // endif
 
 	$filename = FREERADIUS_ETC . '/raddb/users';
 	conf_mount_rw();
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 	conf_mount_ro();
-	
+
 	freeradius_sync_on_changes();
 	// Do not restart on boot
 	// Will get restarted later by freeradius_clients_resync() if called via XMLRPC sync
@@ -696,194 +735,222 @@ EOD;
 
 
 function freeradius_authorizedmacs_resync($restart_svc = true, $via_rpc = false) {
-global $config;
+	global $config;
+	$conf = '';
 
-$conf = '';
-$arrmacs = $config['installedpackages']['freeradiusauthorizedmacs']['config'];
-
-if (is_array($arrmacs) && !empty($arrmacs)) {
-	foreach ($arrmacs as $macs) {
-	
-	// Variables for authorized_macs file defined parameters
-	$varmacsaddress = $macs['varmacsaddress'];
-	// We don't need a password but we need this field to make syntac correct for CHECK-ITEMS
-	$varmacspassword = $macs['varmacsaddress'];
-
-	$varmacssimultaneousconnect = ($macs['varmacssimultaneousconnect']?$macs['varmacssimultaneousconnect']:'');
-	$varmacsswisprredirectionurl = $macs['varmacsswisprredirectionurl'];
-	$varmacsframedipaddress = $macs['varmacsframedipaddress'];
-	$varmacsframedipnetmask = $macs['varmacsframedipnetmask'];
-	$varmacsframedroute = $macs['varmacsframedroute'];
-	$varmacsexpiration = $macs['varmacsexpiration'];
-	$varmacssessiontimeout = $macs['varmacssessiontimeout'];
-	$varmacslogintime = $macs['varmacslogintime'];
-	$varmacsvlanid = $macs['varmacsvlanid'];
-	
-	// GUI uses minutes but RADIUS needs seconds so we do a multiplication
-	$varmacsamountoftime = ($macs['varmacsamountoftime']?$macs['varmacsamountoftime']:'');
-	$varmacsamountoftime = $varmacsamountoftime * 60;
-	$varmacspointoftime = $macs['varmacspointoftime'];
-	
-	// GUI uses MB but RADIUS needs Bytes so we do a multiplication
-	$varmacsmaxtotaloctets = ($macs['varmacsmaxtotaloctets']?$macs['varmacsmaxtotaloctets']:'');
-	$varmacsmaxtotaloctets = $varmacsmaxtotaloctets * 1024 * 1024;
-	$varmacsmaxtotaloctetstimerange = $macs['varmacsmaxtotaloctetstimerange'];
-	
-	// GUI uses KiloBit but RADIUS needs Bits so we do a multiplication
-	$varmacsmaxbandwidthup = ($macs['varmacsmaxbandwidthup']?$macs['varmacsmaxbandwidthup']:'');
-	$varmacsmaxbandwidthup = $varmacsmaxbandwidthup * 1024;
-	$varmacsmaxbandwidthdown = ($macs['varmacsmaxbandwidthdown']?$macs['varmacsmaxbandwidthdown']:'');
-	$varmacsmaxbandwidthdown = $varmacsmaxbandwidthdown * 1024;
-	
-		
-	// Accounting-Interim-Interval
-	if (($users['varmacsacctinteriminterval'] >= '0') && ($users['varmacsacctinteriminterval'] < '60')) {
-		$varmacsacctinteriminterval = 60;
+	if (is_array($config['installedpackages']['freeradiusauthorizedmacs']['config'])) {
+		$arrmacs = $config['installedpackages']['freeradiusauthorizedmacs']['config'];
 	} else {
-		$varmacsacctinteriminterval = $users['varmacsacctinteriminterval'];
-	}
-	
-	
-	// Clear variables for next mac foreach additional options TOP
-	$varmacstopadditionaloptions = '';
-	$varmacsadditionaloptionstop = '';
-	
-	if(!empty($macs['varmacstopadditionaloptions'])) {
-		$varmacstopadditionaloptions = explode("|", ($macs['varmacstopadditionaloptions']));
-		foreach ($varmacstopadditionaloptions as $toptmp) {
-			$varmacsadditionaloptionstop .= $toptmp . "\n";
-		}
-	}
-	
-	// Clear variables for next mac foreach additional options: CHECK-ITEMS
-	$varmacscheckitemsadditionaloptions = '';
-	$varmacsadditionaloptionscheckitems = '';
-	
-	if(!empty($macs['varmacscheckitemsadditionaloptions'])) {
-		$varmacscheckitemsadditionaloptions = explode("|", ($macs['varmacscheckitemsadditionaloptions']));
-		$varmacsadditionaloptionscheckitems .= '';
-		foreach ($varmacscheckitemsadditionaloptions as $checkitemtmp) {
-			$varmacsadditionaloptionscheckitems .= "$checkitemtmp" . " ";
-		}
-	}
-		
-	// Clear variables for next mac foreach additional options: REPLY-ITEMS
-	$varmacsreplyitemsadditionaloptions = '';
-	$varmacsadditionaloptionsreplyitems = '';
-	
-	if(!empty($macs['varmacsreplyitemsadditionaloptions'])) {
-		$varmacsreplyitemsadditionaloptions = explode("|", ($macs['varmacsreplyitemsadditionaloptions']));
-		$varmacsadditionaloptionsreplyitems .= '';
-		foreach ($varmacsreplyitemsadditionaloptions as $replyitemtmp) {
-			$varmacsadditionaloptionsreplyitems .= $replyitemtmp . "\n\t";
-		}
+		$arrmacs = array();
 	}
 
-	// Empty variable
-	$varmacscheckitem = '';
-	$varmacsreplyitem = '';
-	
-	// If someone does not want to use MAC address but entry "DEFAULT" instead then we can disable this
-	if ($macs['varmacsaddress'] == '') {
+	if (!empty($arrmacs)) {
+		foreach ($arrmacs as $macs) {
+
+		// Variables for authorized_macs file defined parameters
+		$varmacsaddress = $macs['varmacsaddress'];
+		// We don't need a password but we need this field to make syntac correct for CHECK-ITEMS
+		$varmacspassword = $macs['varmacsaddress'];
+
+		$varmacssimultaneousconnect = ($macs['varmacssimultaneousconnect'] ?: '');
+		$varmacsswisprredirectionurl = $macs['varmacsswisprredirectionurl'];
+		$varmacsframedipaddress = $macs['varmacsframedipaddress'];
+		$varmacsframedipnetmask = $macs['varmacsframedipnetmask'];
+		$varmacsframedroute = $macs['varmacsframedroute'];
+		$varmacsexpiration = $macs['varmacsexpiration'];
+		$varmacssessiontimeout = $macs['varmacssessiontimeout'];
+		$varmacslogintime = $macs['varmacslogintime'];
+		$varmacsvlanid = $macs['varmacsvlanid'];
+
+		// GUI uses minutes but RADIUS needs seconds so we do a multiplication
+		$varmacsamountoftime = ($macs['varmacsamountoftime'] ?: '');
+		$varmacsamountoftime = $varmacsamountoftime * 60;
+		$varmacspointoftime = $macs['varmacspointoftime'];
+
+		// GUI uses MB but RADIUS needs Bytes so we do a multiplication
+		$varmacsmaxtotaloctets = ($macs['varmacsmaxtotaloctets'] ?: '');
+		$varmacsmaxtotaloctets = $varmacsmaxtotaloctets * 1024 * 1024;
+		$varmacsmaxtotaloctetstimerange = $macs['varmacsmaxtotaloctetstimerange'];
+
+		// GUI uses KiloBit but RADIUS needs Bits so we do a multiplication
+		$varmacsmaxbandwidthup = ($macs['varmacsmaxbandwidthup'] ?: '');
+		$varmacsmaxbandwidthup = $varmacsmaxbandwidthup * 1024;
+		$varmacsmaxbandwidthdown = ($macs['varmacsmaxbandwidthdown'] ?: '');
+		$varmacsmaxbandwidthdown = $varmacsmaxbandwidthdown * 1024;
+
+
+		// Accounting-Interim-Interval
+		if (($users['varmacsacctinteriminterval'] >= '0') && ($users['varmacsacctinteriminterval'] < '60')) {
+			$varmacsacctinteriminterval = 60;
+		} else {
+			$varmacsacctinteriminterval = $users['varmacsacctinteriminterval'];
+		}
+
+		// Clear variables for next mac foreach additional options TOP
+		$varmacstopadditionaloptions = '';
+		$varmacsadditionaloptionstop = '';
+
+		if (!empty($macs['varmacstopadditionaloptions'])) {
+			$varmacstopadditionaloptions = explode("|", ($macs['varmacstopadditionaloptions']));
+			foreach ($varmacstopadditionaloptions as $toptmp) {
+				$varmacsadditionaloptionstop .= $toptmp . "\n";
+			}
+		}
+
+		// Clear variables for next mac foreach additional options: CHECK-ITEMS
+		$varmacscheckitemsadditionaloptions = '';
+		$varmacsadditionaloptionscheckitems = '';
+
+		if (!empty($macs['varmacscheckitemsadditionaloptions'])) {
+			$varmacscheckitemsadditionaloptions = explode("|", ($macs['varmacscheckitemsadditionaloptions']));
+			$varmacsadditionaloptionscheckitems .= '';
+			foreach ($varmacscheckitemsadditionaloptions as $checkitemtmp) {
+				$varmacsadditionaloptionscheckitems .= "$checkitemtmp" . " ";
+			}
+		}
+
+		// Clear variables for next mac foreach additional options: REPLY-ITEMS
+		$varmacsreplyitemsadditionaloptions = '';
+		$varmacsadditionaloptionsreplyitems = '';
+
+		if (!empty($macs['varmacsreplyitemsadditionaloptions'])) {
+			$varmacsreplyitemsadditionaloptions = explode("|", ($macs['varmacsreplyitemsadditionaloptions']));
+			$varmacsadditionaloptionsreplyitems .= '';
+			foreach ($varmacsreplyitemsadditionaloptions as $replyitemtmp) {
+				$varmacsadditionaloptionsreplyitems .= $replyitemtmp . "\n\t";
+			}
+		}
+
+		// Empty variable
+		$varmacscheckitem = '';
+		$varmacsreplyitem = '';
+
+		// If someone does not want to use MAC address but entry "DEFAULT" instead then we can disable this
+		if ($macs['varmacsaddress'] == '') {
 			$varmacscheckitem = '';
-	}
-	else {
-		// Add the user attributes to each user.
-		$varmacscheckitem = "$varmacsaddress" . " Cleartext-Password := " . '"' . $varmacspassword . '"';
-	}
-	
-	// Add additional CHECK-ITEMS here. Different formatting in "authorized_macs" file needed.
-	if ($varmacssimultaneousconnect != '') {
-	$varmacscheckitem .= ", Simultaneous-Use := " . '"' . $varmacssimultaneousconnect . '"';
-	}
-	if ($varmacsexpiration != '') {
-	$varmacscheckitem .= ", Expiration := " . '"' . $varmacsexpiration . '"';
-	}
-	if ($varmacslogintime != '') {
-	$varmacscheckitem .= ", Login-Time := " . '"' . $varmacslogintime . '"';
-	}	
-	if ($varmacsamountoftime != '') {
-	$varmacscheckitem .= ", Max-" . "$varmacspointoftime" . "-Session := " . "$varmacsamountoftime";
-	}
-	if ($varmacsadditionaloptionscheckitems != '') {
-	$varmacscheckitem .= ", $varmacsadditionaloptionscheckitems";
-	}
+		} else {
+			// Add the user attributes to each user.
+			$varmacscheckitem = "$varmacsaddress" . " Cleartext-Password := " . '"' . $varmacspassword . '"';
+		}
 
-	// Add additional REPLY-ITEMS here. Different formatting in "authorized_macs" file needed.
-	if ($varmacsframedipaddress != '') {
-		if ($varmacsreplyitem != '') { $varmacsreplyitem .=","; }
-		$varmacsreplyitem .= "\n\tFramed-IP-Address = $varmacsframedipaddress";
-	}
-	if ($varmacsframedipnetmask != '') {
-		if ($varmacsreplyitem != '') { $varmacsreplyitem .=","; }
-		$varmacsreplyitem .= "\n\tFramed-IP-Netmask = $varmacsframedipnetmask";
-	}
-	if ($varmacsframedroute != '') {
-		if ($varmacsreplyitem != '') { $varmacsreplyitem .=","; }
-		$varmacsreplyitem .= "\n\tFramed-Route = " . '"' . $varmacsframedroute . '"';
-	}
-	if ($varmacssessiontimeout != '') {
-		if ($varmacsreplyitem != '') { $varmacsreplyitem .=","; }
-		$varmacsreplyitem .= "\n\tSession-Timeout := $varmacssessiontimeout";
-	}
-	if ($varmacsvlanid != '') {
-		if ($varmacsreplyitem != '') { $varmacsreplyitem .=","; }
-		$varmacsreplyitem .= "\n\tTunnel-Type = VLAN,\n\tTunnel-Medium-Type = IEEE-802,\n\tTunnel-Private-Group-ID = " . '"' . $varmacsvlanid . '"';
-	}
-	if ($varmacsmaxbandwidthup != '') {
-		if ($varmacsreplyitem != '') { $varmacsreplyitem .=","; }
-		$varmacsreplyitem .= "\n\tWISPr-Bandwidth-Max-Up := $varmacsmaxbandwidthup";
-	}
-	if ($varmacsmaxbandwidthdown != '') {
-		if ($varmacsreplyitem != '') { $varmacsreplyitem .=","; }
-		$varmacsreplyitem .= "\n\tWISPr-Bandwidth-Max-Down := $varmacsmaxbandwidthdown";
-	}
-	if ($varmacsacctinteriminterval != '') {
-		if ($varmacsreplyitem != '') { $varmacsreplyitem .=","; }
-		$varmacsreplyitem .= "\n\tAcct-Interim-Interval := $varmacsacctinteriminterval";
-	}
-	if ($varmacswisprredirectionurl != '') {
-		if ($varmacsreplyitem != '') { $varmacsreplyitem .=","; }
-		$varmacsreplyitem .= "\n\tWISPr-Redirection-URL := $varmacsswisprredirectionurl";
-	}
-	// If an octet limit is set we create the files for the limit and the counter. Further we call an exec script which checks if the limit is reached or not
-	if ($varmacsmaxtotaloctets != '') {
-		if ($varmacsreplyitem != '') { $varmacsreplyitem .=","; }
-		//create exec script
-		$varmacsreplyitem .= "\n\tExec-Program-Wait = " . '"/bin/sh ' . FREERADIUS_ETC . '/raddb/scripts/datacounter_auth.sh ' . "$varmacsaddress $varmacsmaxtotaloctetstimerange" . '"';
-		// create limit file - will be always overwritten so we can increase limit from GUI
-		exec("`echo $varmacsmaxtotaloctets > /var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/max-octets-$varmacsaddress`");
-		// if used-octets file exist we do NOT overwrite this file!!!
-		if (!file_exists("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/used-octets-$varmacsaddress")) { exec("echo 0 > /var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/used-octets-$varmacsaddress"); }
-	}
-	// If an octet limit is NOT set we delete the files for the limit and the counter.
-	else {
-		if (file_exists("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/max-octets-$varmacsaddress")) { unlink("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/max-octets-$varmacsaddress"); }
-		if (file_exists("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/used-octets-$varmacsaddress")) { unlink("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/used-octets-$varmacsaddress*"); }
-	}
-	if ($varmacsadditionaloptionsreplyitems != '') {
-		if ($varmacsreplyitem != '') { $varmacsreplyitem .=","; }
-		$varmacsreplyitem .= "\n\t$varmacsadditionaloptionsreplyitems";
-	}
-	
-	// Cosmetic fix - This is just to make a blank new line after each macs entry
-	$varmacsreplyitem .= "\n\n";
-	
-	
+		// Add additional CHECK-ITEMS here. Different formatting in "authorized_macs" file needed.
+		if ($varmacssimultaneousconnect != '') {
+			$varmacscheckitem .= ", Simultaneous-Use := " . '"' . $varmacssimultaneousconnect . '"';
+		}
+		if ($varmacsexpiration != '') {
+			$varmacscheckitem .= ", Expiration := " . '"' . $varmacsexpiration . '"';
+		}
+		if ($varmacslogintime != '') {
+			$varmacscheckitem .= ", Login-Time := " . '"' . $varmacslogintime . '"';
+		}
+		if ($varmacsamountoftime != '') {
+			$varmacscheckitem .= ", Max-" . "$varmacspointoftime" . "-Session := " . "$varmacsamountoftime";
+		}
+		if ($varmacsadditionaloptionscheckitems != '') {
+			$varmacscheckitem .= ", $varmacsadditionaloptionscheckitems";
+		}
+
+		// Add additional REPLY-ITEMS here. Different formatting in "authorized_macs" file needed.
+		if ($varmacsframedipaddress != '') {
+			if ($varmacsreplyitem != '') {
+				$varmacsreplyitem .= ",";
+			}
+			$varmacsreplyitem .= "\n\tFramed-IP-Address = $varmacsframedipaddress";
+		}
+		if ($varmacsframedipnetmask != '') {
+			if ($varmacsreplyitem != '') {
+				$varmacsreplyitem .= ",";
+			}
+			$varmacsreplyitem .= "\n\tFramed-IP-Netmask = $varmacsframedipnetmask";
+		}
+		if ($varmacsframedroute != '') {
+			if ($varmacsreplyitem != '') {
+				$varmacsreplyitem .= ",";
+			}
+			$varmacsreplyitem .= "\n\tFramed-Route = " . '"' . $varmacsframedroute . '"';
+		}
+		if ($varmacssessiontimeout != '') {
+			if ($varmacsreplyitem != '') {
+				$varmacsreplyitem .= ",";
+			}
+			$varmacsreplyitem .= "\n\tSession-Timeout := $varmacssessiontimeout";
+		}
+		if ($varmacsvlanid != '') {
+			if ($varmacsreplyitem != '') {
+				$varmacsreplyitem .= ",";
+			}
+			$varmacsreplyitem .= "\n\tTunnel-Type = VLAN,\n\tTunnel-Medium-Type = IEEE-802,\n\tTunnel-Private-Group-ID = " . '"' . $varmacsvlanid . '"';
+		}
+		if ($varmacsmaxbandwidthup != '') {
+			if ($varmacsreplyitem != '') {
+				$varmacsreplyitem .= ",";
+			}
+			$varmacsreplyitem .= "\n\tWISPr-Bandwidth-Max-Up := $varmacsmaxbandwidthup";
+		}
+		if ($varmacsmaxbandwidthdown != '') {
+			if ($varmacsreplyitem != '') {
+				$varmacsreplyitem .= ",";
+			}
+			$varmacsreplyitem .= "\n\tWISPr-Bandwidth-Max-Down := $varmacsmaxbandwidthdown";
+		}
+		if ($varmacsacctinteriminterval != '') {
+			if ($varmacsreplyitem != '') {
+				$varmacsreplyitem .= ",";
+			}
+			$varmacsreplyitem .= "\n\tAcct-Interim-Interval := $varmacsacctinteriminterval";
+		}
+		if ($varmacswisprredirectionurl != '') {
+			if ($varmacsreplyitem != '') {
+				$varmacsreplyitem .= ",";
+			}
+			$varmacsreplyitem .= "\n\tWISPr-Redirection-URL := $varmacsswisprredirectionurl";
+		}
+		// If an octet limit is set we create the files for the limit and the counter. Further we call an exec script which checks if the limit is reached or not
+		if ($varmacsmaxtotaloctets != '') {
+			if ($varmacsreplyitem != '') {
+				$varmacsreplyitem .= ",";
+			}
+			//create exec script
+			$varmacsreplyitem .= "\n\tExec-Program-Wait = " . '"/bin/sh ' . FREERADIUS_ETC . '/raddb/scripts/datacounter_auth.sh ' . "$varmacsaddress $varmacsmaxtotaloctetstimerange" . '"';
+			// create limit file - will be always overwritten so we can increase limit from GUI
+			exec("`echo $varmacsmaxtotaloctets > /var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/max-octets-$varmacsaddress`");
+			// if used-octets file exist we do NOT overwrite this file!!!
+			if (!file_exists("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/used-octets-$varmacsaddress")) {
+				exec("echo 0 > /var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/used-octets-$varmacsaddress");
+			}
+		} else {
+			// If an octet limit is NOT set we delete the files for the limit and the counter.
+			if (file_exists("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/max-octets-$varmacsaddress")) {
+				unlink("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/max-octets-$varmacsaddress");
+			}
+			if (file_exists("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/used-octets-$varmacsaddress")) {
+				unlink("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/used-octets-$varmacsaddress*");
+			}
+		}
+		if ($varmacsadditionaloptionsreplyitems != '') {
+			if ($varmacsreplyitem != '') {
+				$varmacsreplyitem .=",";
+			}
+			$varmacsreplyitem .= "\n\t$varmacsadditionaloptionsreplyitems";
+		}
+
+		// Cosmetic fix - This is just to make a blank new line after each macs entry
+		$varmacsreplyitem .= "\n\n";
+
 	$conf .= <<<EOD
 $varmacsadditionaloptionstop
 $varmacscheckitem
 	$varmacsreplyitem
 EOD;
-	} //end foreach
-} // end if
+		} // endforeach
+	} // endif
 
 	$filename = FREERADIUS_ETC . '/raddb/authorized_macs';
 	conf_mount_rw();
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 	conf_mount_ro();
-	
+
 	freeradius_sync_on_changes();
 	if ($restart_svc === true && $via_rpc === false) {
 		restart_service("radiusd");
@@ -892,10 +959,15 @@ EOD;
 
 function freeradius_clients_resync($restart_svc = true) {
 	global $config;
-
 	$conf = '';
-	$arrclients = $config['installedpackages']['freeradiusclients']['config'];
-	if (is_array($arrclients) && !empty($arrclients)) {
+
+	if (is_array($config['installedpackages']['freeradiusclients']['config'])) {
+		$arrclients = $config['installedpackages']['freeradiusclients']['config'];
+	} else {
+		$arrclients = array();
+	}
+
+	if (!empty($arrclients)) {
 		foreach ($arrclients as $item) {
 			$varclientip = $item['varclientip'];
 			$varclientsharedsecret = $item['varclientsharedsecret'];
@@ -905,23 +977,20 @@ function freeradius_clients_resync($restart_svc = true) {
 			$varrequiremessageauthenticator = $item['varrequiremessageauthenticator'];
 			$varclientnastype = $item['varclientnastype'];
 			$varclientmaxconnections = $item['varclientmaxconnections'];
-			$varclientlogininput = ($item['varclientlogininput']?$item['varclientlogininput']:'### login = !root ###');
-			$varclientpasswordinput = ($item['varclientpasswordinput']?$item['varclientpasswordinput']:'### password = someadminpass ###');
-			
+			$varclientlogininput = ($item['varclientlogininput'] ?: '### login = !root ###');
+			$varclientpasswordinput = ($item['varclientpasswordinput'] ?: '### password = someadminpass ###');
+
 			if ($item['varclientlogininput'] == '') {
 				$varclientlogin = '### login = !root ###';
-			}
-			else {
+			} else {
 				$varclientlogin = "login = $varclientlogininput";
 			}
 			if ($item['varclientpasswordinput'] == '') {
 				$varclientpassword = '### password = someadminpass ###';
-			}
-			else {
+			} else {
 				$varclientpassword = "password = $varclientpasswordinput";
 			}
-			
-			
+
 			$conf .= <<<EOD
 
 client "$varclientshortname" {
@@ -937,9 +1006,8 @@ client "$varclientshortname" {
 }
 
 EOD;
-		}
-	}
-	else {
+		} // endforeach
+	} else {
 		$conf .= <<<EOD
 client pfsense {
 	ipaddr = 127.0.0.1
@@ -953,7 +1021,7 @@ EOD;
 	conf_mount_rw();
 	file_put_contents(FREERADIUS_ETC . '/raddb/clients.conf', $conf);
 	conf_mount_ro();
-	
+
 	freeradius_sync_on_changes();
 	if ($restart_svc === true) {
 		restart_service("radiusd");
@@ -1021,13 +1089,12 @@ function freeradius_eapconf_resync($restart_svc = true) {
 	// This is for enable/disbable MS SoH in EAP-PEAP and the virtuial-server "soh-server"
 	if ($eapconf['vareapconfpeapsohenable'] == 'Enable') {
 		$vareapconfpeapsoh = 'soh = yes' . "\n\t\t\tsoh_virtual_server = " . '"' . "soh-server" . '"';
-		exec("ln -s " . FREERADIUS_ETC . "/raddb/sites-available/soh " . FREERADIUS_ETC . "/raddb/sites-enabled/");
-	}
-	else {
+		symlink(FREERADIUS_ETC . "/raddb/sites-available/soh", FREERADIUS_ETC . "/raddb/sites-enabled/");
+	} else {
 		$vareapconfpeapsoh = '### MS SoH Server is disabled ###';
-			if (file_exists(FREERADIUS_ETC . "/raddb/sites-enabled/soh")) {
+		if (file_exists(FREERADIUS_ETC . "/raddb/sites-enabled/soh")) {
 			exec("rm -f " . FREERADIUS_ETC . "/raddb/sites-enabled/soh");
-			}
+		}
 	}
 		
 
