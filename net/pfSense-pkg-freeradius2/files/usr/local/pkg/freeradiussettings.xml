@@ -3,12 +3,12 @@
 <?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
 <packagegui>
 	<copyright>
-<![CDATA[	
+<![CDATA[
 /*
  * freeradiussettings.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2014 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2014-2017 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
  * All rights reserved.
  *
@@ -29,9 +29,6 @@
  * limitations under the License.
  */
 ]]>	</copyright>
-	<description><![CDATA[Describe your package here]]></description>
-	<requirements>Describe your package requirements here</requirements>
-	<faq>Currently there are no FAQ items provided.</faq>
 	<name>freeradiussettings</name>
 	<title>FreeRADIUS: Settings</title>
 	<aftersaveredirect>pkg_edit.php?xml=freeradiussettings.xml&amp;id=0</aftersaveredirect>
@@ -87,217 +84,333 @@
 		<field>
 			<name>General Configuration</name>
 			<type>listtopic</type>
-		</field>		
+		</field>
 		<field>
 			<fielddescr>Maximum Requests Server</fielddescr>
 			<fieldname>varsettingsmaxrequests</fieldname>
-			<description><![CDATA[The maximum number of requests the server could handle at a time until "Cleanup Delay" deletes them. Useful range 256 * NAS. If it is set to low it will make the server busy. A higher value is better (but increased RAM usage) but it shouldn't be higher than 1000 * NAS. (Default: 1024)]]></description>
+			<description>
+				<![CDATA[
+				The maximum number of requests the server could handle at a time until "Cleanup Delay" deletes them.
+				Useful range 256 * NAS. If it is set to low it will make the server busy.
+				A higher value is better (but increased RAM usage) but it shouldn't be higher than 1000 * NAS.
+				(Default: 1024)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>1024</default_value>
 		</field>
 		<field>
 			<fielddescr>Max Request Timeout</fielddescr>
 			<fieldname>varsettingsmaxrequesttime</fieldname>
-			<description><![CDATA[The maximum time to handle a request in seconds. (Default: 30)]]></description>
+			<description>
+				<![CDATA[
+				The maximum time to handle a request in seconds.
+				(Default: 30)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>30</default_value>
 		</field>
 		<field>
 			<fielddescr>Cleanup Delay</fielddescr>
 			<fieldname>varsettingscleanupdelay</fieldname>
-			<description><![CDATA[The time to wait before cleaning up a reply which was sent to the NAS in seconds. (Default: 5)]]></description>
+			<description>
+				<![CDATA[
+				The time to wait before cleaning up a reply which was sent to the NAS in seconds.
+				(Default: 5)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>5</default_value>
 		</field>
 		<field>
 			<fielddescr>Allow Core Dumps</fielddescr>
 			<fieldname>varsettingsallowcoredumps</fieldname>
-			<description><![CDATA[Only turn this on if you need to debug the RADIUS server! (Default: no)]]></description>
+			<description>
+				<![CDATA[
+				Only turn this on if you need to debug the RADIUS server!
+				(Default: no)
+				]]>
+			</description>
 			<type>select</type>
 			<default_value>no</default_value>
-					<options>
-						<option><name>Disable</name><value>no</value></option>
-						<option><name>Enable</name><value>yes</value></option>
-					</options>
-		</field>		
+			<options>
+				<option><name>Disable</name><value>no</value></option>
+				<option><name>Enable</name><value>yes</value></option>
+			</options>
+		</field>
 		<field>
 			<fielddescr>Regular Expressions</fielddescr>
 			<fieldname>varsettingsregularexpressions</fieldname>
-			<description><![CDATA[Allows regular expressions. (Default: yes)]]></description>
+			<description>
+				<![CDATA[
+				Allows regular expressions. (Default: yes)
+				]]>
+			</description>
 			<type>select</type>
 			<default_value>yes</default_value>
-					<options>
-						<option><name>Disable</name><value>no</value></option>
-						<option><name>Enable</name><value>yes</value></option>
-					</options>
+			<options>
+				<option><name>Disable</name><value>no</value></option>
+				<option><name>Enable</name><value>yes</value></option>
+			</options>
 		</field>
 		<field>
 			<fielddescr>Extended Expressions</fielddescr>
 			<fieldname>varsettingsextendedexpressions</fieldname>
-			<description><![CDATA[Allows extended expressions. (Default: yes)]]></description>
+			<description>
+				<![CDATA[
+				Allows extended expressions. (Default: yes)
+				]]>
+			</description>
 			<type>select</type>
 			<default_value>yes</default_value>
-					<options>
-						<option><name>Disable</name><value>no</value></option>
-						<option><name>Enable</name><value>yes</value></option>
-					</options>
+			<options>
+				<option><name>Disable</name><value>no</value></option>
+				<option><name>Enable</name><value>yes</value></option>
+			</options>
 		</field>
 		<field>
-			<name>LOGGING CONFIGURATION</name>
+			<name>Logging Configuration</name>
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Logging Destination of RADIUS</fielddescr>
+			<fielddescr>RADIUS Logging Destination</fielddescr>
 			<fieldname>varsettingslogdir</fieldname>
-			<description><![CDATA[Choose the destination where freeRADIUS will log. This will log general service information, but no authentication information. (Default: radius.log)]]></description>
+			<description>
+				<![CDATA[
+				Choose the destination where freeRADIUS will log.
+				This will log general service information, but no authentication information.
+				(Default: /var/log/radius.log)
+				]]>
+			</description>
 			<type>select</type>
 			<default_value>syslog</default_value>
-					<options>
-						<option><name>/var/log/radius.log</name><value>files</value></option>
-						<option><name>System Logs -> System</name><value>syslog</value></option>
-					</options>
+			<options>
+				<option><name>/var/log/radius.log</name><value>files</value></option>
+				<option><name>System Logs</name><value>syslog</value></option>
+			</options>
 		</field>
 		<field>
 			<fielddescr>RADIUS Logging</fielddescr>
 			<fieldname>varsettingsauth</fieldname>
-			<description><![CDATA[This enables logging if an authentication is accepted or rejected. (Default: Disabled)]]></description>
+			<description>
+				<![CDATA[
+				This enables logging if an authentication is accepted or rejected.
+				(Default: Disabled)
+				]]>
+			</description>
 			<type>select</type>
 			<default_value>yes</default_value>
-					<options>
-						<option><name>Disable</name><value>no</value></option>
-						<option><name>Enable</name><value>yes</value></option>
-					</options>
+			<options>
+				<option><name>Disable</name><value>no</value></option>
+				<option><name>Enable</name><value>yes</value></option>
+			</options>
 		</field>
 		<field>
 			<fielddescr>Log Password on Authentication Failure</fielddescr>
 			<fieldname>varsettingsauthbadpass</fieldname>
-			<description><![CDATA[Log the <b>password</b> of failed authentication attempts to syslog. Not recommended for security reasons. Logging must be enabled. (Default: no)]]></description>
+			<description>
+				<![CDATA[
+				Log the <b>password</b> of failed authentication attempts to syslog.
+				Not recommended for security reasons. Logging must be enabled.
+				(Default: no)
+				]]>
+			</description>
 			<type>select</type>
 			<default_value>no</default_value>
-					<options>
-						<option><name>no</name><value>no</value></option>
-						<option><name>Log</name><value>yes</value></option>
-					</options>
+			<options>
+				<option><name>No</name><value>no</value></option>
+				<option><name>Log</name><value>yes</value></option>
+			</options>
 		</field>
 		<field>
-			<fielddescr>Additional information for bad attempts</fielddescr>
+			<fielddescr>Additional Information for Bad Attempts</fielddescr>
 			<fieldname>varsettingsauthbadpassmessage</fieldname>
-			<description><![CDATA[You can add additional information to the syslog output if a user connects. You can use variables for any attributes.<br><br>
-			
-									%{User-Name} - shows the username<br>
-									%{reply:Acct-Output-Octets} - shows the remaining output octets]]></description>
+			<description>
+				<![CDATA[
+				You can add additional information to the syslog output if a user connects.
+				You can use variables for any attributes.<br/><br/>
+				%{User-Name} - shows the username.<br/>
+				%{reply:Acct-Output-Octets} - shows the remaining output octets.
+				]]>
+			</description>
 			<type>input</type>
 			<size>80</size>
 		</field>
 		<field>
 			<fielddescr>Log Password on Authentication Success</fielddescr>
 			<fieldname>varsettingsauthgoodpass</fieldname>
-			<description><![CDATA[Log the <b>password</b> of successful authentication attempts to syslog. Not recommended for security reasons. Logging must be enabled. (Default: no)]]></description>
+			<description>
+				<![CDATA[
+				Log the <b>password</b> of successful authentication attempts to syslog.
+				Not recommended for security reasons. Logging must be enabled.
+				(Default: no)
+				]]>
+			</description>
 			<type>select</type>
 			<default_value>no</default_value>
-					<options>
-						<option><name>no</name><value>no</value></option>
-						<option><name>Log</name><value>yes</value></option>
-					</options>
+			<options>
+				<option><name>No</name><value>no</value></option>
+				<option><name>Log</name><value>yes</value></option>
+			</options>
 		</field>
 		<field>
-			<fielddescr>Additional information for good attempts</fielddescr>
+			<fielddescr>Additional Information for Good Attempts</fielddescr>
 			<fieldname>varsettingsauthgoodpassmessage</fieldname>
-			<description><![CDATA[You can add additional information to the syslog output if a user is rejected. You can use variables for any attributes.<br><br>
-			
-									%{User-Name} - shows the username<br>
-									%{reply:Acct-Output-Octets} - shows the remaining output octets]]></description>
+			<description>
+				<![CDATA[
+				You can add additional information to the syslog output if a user is rejected.
+				You can use variables for any attributes.<br/><br/>
+				%{User-Name} - shows the username.<br/>
+				%{reply:Acct-Output-Octets} - shows the remaining output octets.
+				]]>
+			</description>
 			<type>input</type>
 			<size>80</size>
 		</field>
 		<field>
 			<fielddescr>Log Stripped Names</fielddescr>
 			<fieldname>varsettingsstrippednames</fieldname>
-			<description><![CDATA[Choose this if you want to log the full User-Name attribute as it was found in the request. Logging must be enabled. (Default: no)]]></description>
+			<description>
+				<![CDATA[
+				Choose this if you want to log the full User-Name attribute as it was found in the request. Logging must be enabled.
+				(Default: no)
+				]]>
+			</description>
 			<type>select</type>
 			<default_value>no</default_value>
-					<options>
-						<option><name>no</name><value>no</value></option>
-						<option><name>Log</name><value>yes</value></option>
-					</options>
+			<options>
+				<option><name>No</name><value>no</value></option>
+				<option><name>Log</name><value>yes</value></option>
+			</options>
 		</field>
 		<field>
 			<fielddescr>NAS Hostname Lookup</fielddescr>
 			<fieldname>varsettingshostnamelookups</fieldname>
-			<description><![CDATA[Log the names of NAS instead of IP addresses. Turning this on can result in lock ups of the RADIUS Server. (Default: no)]]></description>
+			<description>
+				<![CDATA[
+				Log the names of NAS instead of IP addresses.
+				<span class="text-danger">Warning: Turning this on can result in lock ups of the RADIUS Server.</span>
+				(Default: no)
+				]]>
+			</description>
 			<type>select</type>
 			<default_value>no</default_value>
-					<options>
-						<option><name>Disable</name><value>no</value></option>
-						<option><name>Enable</name><value>yes</value></option>
-					</options>
+			<options>
+				<option><name>Disable</name><value>no</value></option>
+				<option><name>Enable</name><value>yes</value></option>
+			</options>
 		</field>
 		<field>
-			<name>SECURITY CONFIGURATION</name>
+			<name>Security Configuration</name>
 			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr>Maximum Number of Attributes</fielddescr>
 			<fieldname>varsettingsmaxattributes</fieldname>
-			<description><![CDATA[The maximum number of attributes permitted in a RADIUS packet. Packets which have more than this number of attributes in them will be dropped. (Default: 200)]]></description>
+			<description>
+				<![CDATA[
+				The maximum number of attributes permitted in a RADIUS packet.
+				Packets which have more than this number of attributes in them will be dropped.
+				(Default: 200)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>200</default_value>
 		</field>
 		<field>
 			<fielddescr>Access-Reject Delay</fielddescr>
 			<fieldname>varsettingsrejectdelay</fieldname>
-			<description><![CDATA[When sending an Access-Reject it can be delayed for a few seconds. This may help slow down a DoS attack. It also helps to slow down people trying to brute-force crack a users password. (Default: 1)(Immediately: 0)]]></description>
+			<description>
+				<![CDATA[
+				When sending an Access-Reject it can be delayed for a few seconds. This may help slow down a DoS attack.
+				It also helps to slow down people trying to brute-force crack a users password.
+				(Default: 1. To send Access-Reject immediately, set to '0'.)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>1</default_value>
 		</field>
 		<field>
-			<name>THREAD POOL CONFIGURATION</name>
+			<name>Thread Pool Configuration</name>
 			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr>Number of Threads After Start</fielddescr>
 			<fieldname>varsettingsstartservers</fieldname>
-			<description><![CDATA[The thread pool is a long-lived group of threads which take turns (round-robin) handling any incoming requests. (Default: 5)]]></description>
+			<description>
+				<![CDATA[
+				The thread pool is a long-lived group of threads which take turns (round-robin) handling any incoming requests.
+				(Default: 5)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>5</default_value>
 		</field>
 		<field>
 			<fielddescr>Maximum Number of Threads</fielddescr>
 			<fieldname>varsettingsmaxservers</fieldname>
-			<description><![CDATA[If this limit is ever reached, clients will be locked out so it should not be set to low. (Default: 32)]]></description>
+			<description>
+				<![CDATA[
+				If this limit is ever reached, clients will be locked out so it should not be set to low.
+				(Default: 32)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>32</default_value>
 		</field>
 		<field>
 			<fielddescr>Min Spare Servers</fielddescr>
 			<fieldname>varsettingsminspareservers</fieldname>
-			<description><![CDATA[This dynamically adjusts the "Number of Threads After Start". If the RADIUS server has to handle MANY requests and LESS than "Min Spare Servers" are left than the RADIUS server will INCREASE the number of running threads. (Default: 3)]]></description>
+			<description>
+				<![CDATA[
+				This dynamically adjusts the "Number of Threads After Start". If the RADIUS server has to handle MANY requests
+				and LESS than "Min Spare Servers" are left than the RADIUS server will INCREASE the number of running threads.
+				(Default: 3)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>3</default_value>
 		</field>
 		<field>
 			<fielddescr>Max Spare Servers</fielddescr>
 			<fieldname>varsettingsmaxspareservers</fieldname>
-			<description><![CDATA[This dynamically adjusts the "Number of Threads After Start". If the RADIUS server has to handle FEW requests and MORE than "Max Spare Servers" are left than the RADIUS server will DECREASE the number of running threads. (Default: 10)]]></description>
+			<description>
+				<![CDATA[
+				This dynamically adjusts the "Number of Threads After Start". If the RADIUS server has to handle FEW requests
+				and MORE than "Max Spare Servers" are left than the RADIUS server will DECREASE the number of running threads.
+				(Default: 10)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>10</default_value>
 		</field>
 		<field>
 			<fielddescr>Server Packet Queue Size</fielddescr>
 			<fieldname>varsettingsmaxqueuesize</fieldname>
-			<description><![CDATA[This is the queue size where the server stores packets before processing them. (Default: 65536)]]></description>
+			<description>
+				<![CDATA[
+				This is the queue size where the server stores packets before processing them.
+				(Default: 65536)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>65536</default_value>
 		</field>
 		<field>
 			<fielddescr>Maximum Requests per Server</fielddescr>
 			<fieldname>varsettingsmaxrequestsperserver</fieldname>
-			<description><![CDATA[You should only change this if you encounter memory leaks while running RADIUS. (Default: 0)]]></description>
+			<description>
+				<![CDATA[
+				You should only change this if you encounter memory leaks while running RADIUS.
+				(Default: 0)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>0</default_value>
 		</field>
 		<field>
-			<name>MOBILE-ONE-TIME-PASSWORD CONFIGURATION</name>
+			<name>Mobile-One-Time-Password Configuration</name>
 			<type>listtopic</type>
 		</field>
 		<field>
@@ -316,33 +429,57 @@
 		<field>
 			<fielddescr>OTP Lifetime</fielddescr>
 			<fieldname>varsettingsmotptimespan</fieldname>
-			<description><![CDATA[Enter the lifetime of the OTP. 1=10s, 2=20s, 3=30s (Default: 2)]]></description>
+			<description>
+				<![CDATA[
+				Enter the lifetime of the OTP. 1=10s, 2=20s, 3=30s.
+				(Default: 2)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>2</default_value>
 		</field>
 		<field>
-			<fielddescr>Number of invalid password attempts</fielddescr>
+			<fielddescr>Number of Invalid Password Attempts</fielddescr>
 			<fieldname>varsettingsmotppasswordattempts</fieldname>
-			<description><![CDATA[After this many failed attempts, the user will be locked out until an admin unlocks the user. (Default: 5)]]></description>
+			<description>
+				<![CDATA[
+				After this many failed attempts, the user will be locked out until an admin unlocks the user.
+				(Default: 5)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>5</default_value>
 		</field>
 		<field>
-			<fielddescr>Hash algorithm</fielddescr>
+			<fielddescr>Hash Algorithm</fielddescr>
 			<fieldname>varsettingsmotpchecksumtype</fieldname>
-			<description><![CDATA[We build a hash of "EPOCHTIME+INIT-SECRET+PIN" and then use the digits as password. Perhaps there are some other/hardware tokens which use other hash types so you can perhaps adjust this here. This <b>must</b> be equal on both sides!  (Default: md5)]]></description>
+			<description>
+				<![CDATA[
+				We build a hash of "EPOCHTIME+INIT-SECRET+PIN" and then use the digits as password.
+				Perhaps there are some other/hardware tokens which use other hash types so you can perhaps adjust this here.
+				This <b>must</b> be equal on both sides!
+				(Default: md5)
+				]]>
+			</description>
 			<type>select</type>
 			<default_value>md5</default_value>
-					<options>
-						<option><name>MD5</name><value>md5</value></option>
-						<option><name>SHA1</name><value>sha1</value></option>
-						<option><name>SHA256</name><value>sha256</value></option>
-					</options>
+			<options>
+				<option><name>MD5</name><value>md5</value></option>
+				<option><name>SHA1</name><value>sha1</value></option>
+				<option><name>SHA256</name><value>sha256</value></option>
+			</options>
 		</field>
 		<field>
-			<fielddescr>Token Password length</fielddescr>
+			<fielddescr>Token Password Length</fielddescr>
 			<fieldname>varsettingsmotptokenlength</fieldname>
-			<description><![CDATA[We build a hash of "EPOCHTIME+INIT-SECRET+PIN" and then use the digits 1 to 6 as password. Perhaps there are some other/hardware tokens which use other digits so you can perhaps adjust this here. This <b>must</b> be equal on both sides! (Default: 1-6)]]></description>
+			<description>
+				<![CDATA[
+				We build a hash of "EPOCHTIME+INIT-SECRET+PIN" and then use the digits 1 to 6 as password.
+				Perhaps there are some other/hardware tokens which use other digits so you can perhaps adjust this here.
+				This <b>must</b> be equal on both sides!
+				(Default: 1-6)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>1-6</default_value>
 		</field>
