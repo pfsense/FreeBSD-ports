@@ -3,7 +3,7 @@
  * lightsquid.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2016 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2006-2012 Sergey Dvoriancev <dv_serg@mail.ru>
  * All rights reserved.
  *
@@ -52,7 +52,7 @@ if (is_array($config['installedpackages']['squid']['config'][0]) && $config['ins
 } else {
 	define('LS_SQUIDLOGPATH',	'/var/squid/logs');
 }
-		
+
 define('LS_SQUIDLOG',			'access.log');
 define('LS_IP2NAMEPATH',		LIGHTSQUID_BASE . '/libexec/lightsquid');
 define('CRONTAB_LS_TEMPLATE',		'/usr/local/bin/perl ' . LIGHTSQUID_BASE . '/www/lightsquid/lightparser.pl');
@@ -190,8 +190,20 @@ function lightsquid_write_webconfig() {
 #
 # Lightsquid lighttpd configuration file
 #
+
+EOF;
+
+	// Add this only if SSL is disabled, things break otherwise
+	if ($lightsquid_config['lighttpd_ls_ssl'] != "on") {
+		$lighttpd_ls_conf .= <<<EOF
 server.bind			= "0.0.0.0"
 server.port			= "{$lightsquid_config['lighttpd_ls_port']}"
+\$SERVER["socket"]		== "[::]:{$lightsquid_config['lighttpd_ls_port']}" {  }
+
+EOF;
+	}
+
+	$lighttpd_ls_conf .= <<<EOF
 server.event-handler		= "freebsd-kqueue"
 server.network-backend		= "freebsd-sendfile"
 server.dir-listing		= "disable"
@@ -274,52 +286,63 @@ auth.require = ( "/" =>
 )
 EOF;
 
-if (!isset($lightsquid_config['lighttpd_ls_ssl']) || ($lightsquid_config['lighttpd_ls_ssl'] == "on")) {
-	// Write out cert
-	$lscert =& lookup_cert($config['system']['webgui']['ssl-certref']);
-	if (!is_array($lscert) || !$lscert['crt'] || !$lscert['prv']) {
-		$lscert = system_webgui_create_certificate();
-	}
-	$cert = base64_decode($lscert['crt']);
-	$key = base64_decode($lscert['prv']);
-	$ca = ca_chain($lscert);
-	$cert = str_replace("\r", "", $cert);
-	$key = str_replace("\r", "", $key);
-	$cert = str_replace("\n\n", "\n", $cert);
-	$key = str_replace("\n\n", "\n", $key);
-	if (!empty($cert) && !empty($key)) {
-		$fd = fopen($lighttpd_ls_cert_path, "w");
-		if (!$fd) {
-			printf(gettext("Error: cannot open certificate file in lightsquid_write_webconfig().%s"), "\n");
-			return 1;
+	// SSL is enabled
+	if (!isset($lightsquid_config['lighttpd_ls_ssl']) || ($lightsquid_config['lighttpd_ls_ssl'] == "on")) {
+		// Write out cert
+		$lscert =& lookup_cert($config['system']['webgui']['ssl-certref']);
+		if (!is_array($lscert) || !$lscert['crt'] || !$lscert['prv']) {
+			$lscert = system_webgui_create_certificate();
 		}
-		chmod($lighttpd_ls_cert_path, 0600);
-		if (!empty($ca)) {
-			$cert_chain = $cert . "\n" . $ca;
-		} else {
-			$cert_chain = $cert;
+		$cert = base64_decode($lscert['crt']);
+		$key = base64_decode($lscert['prv']);
+		$ca = ca_chain($lscert);
+		$cert = str_replace("\r", "", $cert);
+		$key = str_replace("\r", "", $key);
+		$cert = str_replace("\n\n", "\n", $cert);
+		$key = str_replace("\n\n", "\n", $key);
+		if (!empty($cert) && !empty($key)) {
+			$fd = fopen($lighttpd_ls_cert_path, "w");
+			if (!$fd) {
+				printf(gettext("Error: cannot open certificate file in lightsquid_write_webconfig().%s"), "\n");
+				return 1;
+			}
+			chmod($lighttpd_ls_cert_path, 0600);
+			if (!empty($ca)) {
+				$cert_chain = $cert . "\n" . $ca;
+			} else {
+				$cert_chain = $cert;
+			}
+			fwrite($fd, $cert_chain);
+			fwrite($fd, $key);
+			fclose($fd);
 		}
-		fwrite($fd, $cert_chain);
-		fwrite($fd, $key);
-		fclose($fd);
-	}
 
-	// Add SSL config
-	$lighttpd_ls_conf .= <<<EOF
-
+		// Add SSL config
+		// Common SSL config snippet for use below
+		$lighttpd_ls_conf_sslcommon = <<<EOF
 ssl.engine		= "enable"
 ssl.pemfile		= "{$lighttpd_ls_cert_path}"
 ssl.use-sslv2		= "disable"
 ssl.use-sslv3		= "disable"
 ssl.honor-cipher-order	= "enable"
 ssl.cipher-list		= "AES128+EECDH:AES256+EECDH:AES128+EDH:AES256+EDH:AES128-SHA:AES256-SHA:!aNULL:!eNULL:!DSS"
-
 EOF;
+
+		// Configure IPv4 and IPv6 sockets
+		$lighttpd_ls_conf .= <<<EOF
+\$SERVER["socket"]	== "0.0.0.0:{$lightsquid_config['lighttpd_ls_port']}" {
+{$lighttpd_ls_conf_sslcommon}
 }
+
+\$SERVER["socket"]	== "[::]:{$lightsquid_config['lighttpd_ls_port']}" {
+{$lighttpd_ls_conf_sslcommon}
+}
+EOF;
+
+	} // endif - SSL is enabled
 
 	@file_put_contents('/var/etc/lightsquid/lighttpd_ls.conf', $lighttpd_ls_conf, LOCK_EX);
 	unset($lighttpd_ls_conf);
-
 }
 
 /*
@@ -597,7 +620,7 @@ function lightsquid_validate_input($post, &$input_errors) {
 			$input_errors[] = "Please, configure Squid - General - Proxy Interface(s) to include 'loopback' interface.";
 		}
 	}
-	
+
 	/* 'Skip URL(s)' validation */
 	if ($post['lightsquid_skipurl'] != "") {
 		$hosts = explode("|", $post['lightsquid_skipurl']);
