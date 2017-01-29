@@ -3,7 +3,7 @@
  * squid.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,8 +22,8 @@
 global $priv_list;
 
 $priv_list['page-services-squid3'] = array();
-$priv_list['page-services-squid3']['name'] = "WebCfg - Services: Squid3 package";
-$priv_list['page-services-squid3']['descr'] = "Allow access to Squid3 package GUI";
+$priv_list['page-services-squid3']['name'] = "WebCfg - Services: Squid package";
+$priv_list['page-services-squid3']['descr'] = "Allow access to Squid package GUI";
 $priv_list['page-services-squid3']['match'] = array();
 
 $priv_list['page-services-squid3']['match'][] = "pkg.php?xml=squid_reverse_peer.xml*";
