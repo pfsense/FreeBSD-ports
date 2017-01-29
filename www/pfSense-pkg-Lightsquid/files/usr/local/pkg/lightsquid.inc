@@ -330,6 +330,7 @@ EOF;
 
 		// Configure IPv4 and IPv6 sockets
 		$lighttpd_ls_conf .= <<<EOF
+
 \$SERVER["socket"]	== "0.0.0.0:{$lightsquid_config['lighttpd_ls_port']}" {
 {$lighttpd_ls_conf_sslcommon}
 }
