@@ -20,8 +20,12 @@
  * limitations under the License.
  */
 require_once("pkg-utils.inc");
-pkg_exec("query '%v' squidclamav", $version, $err);
-$VERSION = "{$version}";
+$rc = pkg_exec("query '%v' squidclamav", $version, $err);
+if ($rc != 0) {
+	$VERSION = "N/A";
+} else {
+	$VERSION = "{$version}";
+}
 $url = htmlspecialchars($_REQUEST['url']);
 $virus = ($_REQUEST['virus'] ? $_REQUEST['virus'] : $_REQUEST['malware']);
 
