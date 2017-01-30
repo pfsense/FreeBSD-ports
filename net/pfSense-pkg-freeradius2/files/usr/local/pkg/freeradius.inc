@@ -1531,8 +1531,10 @@ function freeradius_serverdefault_resync() {
 	// post-auth section DATABASE 1
 	if (($sqlconf['varsqlconfincludeenable'] == 'on') && ($sqlconf['varsqlconfenablepostauth'] == 'Enable')) {
 		$varsqlconfpostauth = "$varsqlconf2failover {" . "\n\t\t\tsql" . "\n\t\t\t$varsqlconf2postauth" . "\n\t}";
+		$varsqlconfpostauthtypereject = 'sql';
 	} else {
 		$varsqlconfpostauth = '### sql DISABLED ###';
+		$varsqlconfpostauthtypereject = '# sql';
 	}
 
 	// Changing authorize section for plain mac auth
@@ -2164,7 +2166,7 @@ post-auth {
 	Post-Auth-Type REJECT {
 
 		# log failed authentications in SQL, too.
-		# sql
+		$varsqlconfpostauthtypereject
 		attr_filter.access_reject
 	}
 }
