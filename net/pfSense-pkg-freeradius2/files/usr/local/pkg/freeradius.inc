@@ -2575,7 +2575,10 @@ function freeradius_allcertcnf_resync() {
 				mwexec("/usr/bin/tar -C " . FREERADIUS_ETC . "/raddb/certs -cf " . FREERADIUS_ETC . "/raddb/certs/client.tar client.crt client.csr client.key ca.der client.pem");
 
 				// Make all files in certs folder read/write only for root
-				mwexec("/bin/chmod -R 0600 " . FREERADIUS_ETC . "/raddb/certs/");
+				$certs = glob(FREERADIUS_ETC . "/raddb/certs/*");
+				array_walk($certs, function($cert_file) {
+					chmod($cert_file, 0600);
+				});
 				log_error("freeRADIUS: Created new client.csr .crt .key .pem and added them together with ca.der in " . FREERADIUS_ETC . "/raddb/certs/client.tar");
 			}
 		} else {
@@ -2620,7 +2623,10 @@ function freeradius_allcertcnf_resync() {
 
 				// tar client-cert files
 				mwexec("/usr/bin/tar -C " . FREERADIUS_ETC . "/raddb/certs -cf " . FREERADIUS_ETC . "/raddb/certs/client.tar client.crt client.csr client.key ca.der client.pem");
-				mwexec("/bin/chmod -R 0600 " . FREERADIUS_ETC . "/raddb/certs/");
+				$certs = glob(FREERADIUS_ETC . "/raddb/certs/*");
+				array_walk($certs, function($cert_file) {
+					chmod($cert_file, 0600);
+				});
 				log_error("freeRADIUS: Added client.csr .crt .key .pem together with ca.der in " . FREERADIUS_ETC . "/raddb/certs/client.tar");
 
 				// If there were changes on the certificates we need to restart freeradius
