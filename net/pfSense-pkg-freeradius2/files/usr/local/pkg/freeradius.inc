@@ -141,12 +141,9 @@ function freeradius_install_command() {
 	}
 
 	// Disable virtual-server we do not need by default
-	if (file_exists(FREERADIUS_ETC . "/raddb/sites-enabled/control-socket")) {
-		unlink(FREERADIUS_ETC . "/raddb/sites-enabled/control-socket");
-	}
-	if (file_exists(FREERADIUS_ETC . "/raddb/sites-enabled/inner-tunnel")) {
-		unlink(FREERADIUS_ETC . "/raddb/sites-enabled/inner-tunnel");
-	}
+	unlink_if_exists(FREERADIUS_ETC . "/raddb/sites-enabled/control-socket");
+	unlink_if_exists(FREERADIUS_ETC . "/raddb/sites-enabled/inner-tunnel");
+
 
 	// We run this here just to suppress some warnings on syslog if file doesn't exist
 	freeradius_authorizedmacs_resync(false, false);
@@ -338,7 +335,7 @@ extended_expressions = $varsettingsextendedexpressions
 EOD;
 
 	// Deletes virtual-server coa by default. Will be re-enabled if there is an interface-type "coa"
-	mwexec("/bin/rm -f " . FREERADIUS_ETC . "/raddb/sites-enabled/coa");
+	unlink_if_exists(FREERADIUS_ETC . "/raddb/sites-enabled/coa");
 
 	if (is_array($config['installedpackages']['freeradiusinterfaces']['config'])) {
 		$arrinterfaces = $config['installedpackages']['freeradiusinterfaces']['config'];
@@ -470,9 +467,6 @@ EOD;
 	freeradius_motp_resync();
 	freeradius_serverdefault_resync();
 
-	// This is to fix the mysqlclient.so which gets lost after reboot
-	// XXX: Probably some PBI leftover, remove?
-	mwexec("/sbin/ldconfig -m /usr/local/lib/mysql");
 	// Change owner of freeradius created files
 	if (is_dir("/var/log/radacct/")) {
 		freeradius_chown_recursive("/var/log/radacct");
@@ -698,12 +692,8 @@ function freeradius_users_resync($via_rpc = false) {
 			}
 		} else {
 			// If an octet limit is NOT set we delete the files for the limit and the counter.
-			if (file_exists("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/max-octets-$varusersusername")) {
-				unlink("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/max-octets-$varusersusername");
-			}
-			if (file_exists("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/used-octets-$varusersusername")) {
-				mwexec("/bin/rm -f /var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/used-octets-$varusersusername*");
-			}
+			unlink_if_exists("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/max-octets-$varusersusername");
+			unlink_if_exists("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/used-octets-$varusersusername*");
 		}
 		if ($varusersadditionaloptionsreplyitems != '') {
 			if ($varusersreplyitem != '') {
@@ -924,12 +914,8 @@ function freeradius_authorizedmacs_resync($restart_svc = true, $via_rpc = false)
 			}
 		} else {
 			// If an octet limit is NOT set we delete the files for the limit and the counter.
-			if (file_exists("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/max-octets-$varmacsaddress")) {
-				unlink("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/max-octets-$varmacsaddress");
-			}
-			if (file_exists("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/used-octets-$varmacsaddress")) {
-				mwexec("/bin/rm -f /var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/used-octets-$varmacsaddress*");
-			}
+			unlink_if_exists("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/max-octets-$varmacsaddress");
+			unlink_if_exists("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/used-octets-$varmacsaddress*");
 		}
 		if ($varmacsadditionaloptionsreplyitems != '') {
 			if ($varmacsreplyitem != '') {
@@ -1099,9 +1085,7 @@ function freeradius_eapconf_resync($restart_svc = true) {
 		symlink(FREERADIUS_ETC . "/raddb/sites-available/soh", FREERADIUS_ETC . "/raddb/sites-enabled/");
 	} else {
 		$vareapconfpeapsoh = '### MS SoH Server is disabled ###';
-		if (file_exists(FREERADIUS_ETC . "/raddb/sites-enabled/soh")) {
-			mwexec("/bin/rm -f " . FREERADIUS_ETC . "/raddb/sites-enabled/soh");
-		}
+		unlink_if_exists(FREERADIUS_ETC . "/raddb/sites-enabled/soh");
 	}
 
 
@@ -2573,11 +2557,10 @@ function freeradius_allcertcnf_resync() {
 			if ($arrcerts['varcertscreateclient'] == 'yes') {
 				// delete all old certificates and keys
 				log_error("freeRADIUS: deleting all client.csr .crt .key .pem .tar in " . FREERADIUS_ETC . "/raddb/certs");
-				mwexec("/bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/client.csr");
-				mwexec("/bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/client.crt");
-				mwexec("/bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/client.key");
-				mwexec("/bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/client.pem");
-				mwexec("/bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/client.tar");
+				$exts = array("csr", "crt", "key", "pem", "tar");
+				foreach ($exts as $ext) {
+					unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/client.{$ext}");
+				}
 
 				// run fuction to create ONLY new client.cnf files based on user input from freeradiuscert.xml
 				freeradius_clientcertcnf_resync();
@@ -2604,17 +2587,17 @@ function freeradius_allcertcnf_resync() {
 			if ($arrcerts['varcertsdeleteall'] == 'yes') {
 				// delete all old certificates and keys - deletes certs from pfsense cert-manager IN THIS FOLDER, too.
 				log_error("freeRADIUS: deleting all CA, Server and Client certs, DH, random and database files in " . FREERADIUS_ETC . "/raddb/certs");
-				mwexec("/bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/ca.pem && /bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/server.pem && /bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/client.pem");
-				mwexec("/bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/ca.der && /bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/server.der && /bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/client.der");
-				mwexec("/bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/ca.csr && /bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/server.csr && /bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/client.csr");
-				mwexec("/bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/ca.crt && /bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/server.crt && /bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/client.crt");
-				mwexec("/bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/ca.key && /bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/server.key && /bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/client.key");
-				mwexec("/bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/ca.p12 && /bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/server.p12 && /bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/client.p12");
-				mwexec("/bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/serial*");
-				mwexec("/bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/index*");
-				mwexec("/bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/dh");
-				mwexec("/bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/random");
-				mwexec("/bin/rm -f " . FREERADIUS_ETC . "/raddb/certs/client.tar");
+				$exts = array("pem", "der", "csr", "crt", "key", "p12");
+				foreach ($exts as $ext) {
+					unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/ca.{$ext}");
+					unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/server.{$ext}");
+					unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/client.{$ext}");
+				}
+				unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/serial*");
+				unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/index*");
+				unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/dh");
+				unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/random");
+				unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/client.tar");
 
 				// run fuctions to create new .cnf files based on user input from freeradiuscert.xml
 				freeradius_cacertcnf_resync();
@@ -2622,9 +2605,7 @@ function freeradius_allcertcnf_resync() {
 				freeradius_clientcertcnf_resync();
 
 				// this command deletes the pfsense_cert_mgr checkfile so when we change back to pfsense cert manager a new DH + random file will be created
-				if (file_exists(FREERADIUS_ETC . "/raddb/certs/pfsense_cert_mgr")) {
-					unlink(FREERADIUS_ETC . "/raddb/certs/pfsense_cert_mgr");
-				}
+				unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/pfsense_cert_mgr");
 
 				// generate new DH and RANDOM file
 				log_error("freeRADIUS: Creating new DH and random file in " . FREERADIUS_ETC . "/raddb/certs");
