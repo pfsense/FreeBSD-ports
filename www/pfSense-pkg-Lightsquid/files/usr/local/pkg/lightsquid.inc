@@ -342,7 +342,7 @@ EOF;
 
 	} // endif - SSL is enabled
 
-	@file_put_contents('/var/etc/lightsquid/lighttpd_ls.conf', $lighttpd_ls_conf, LOCK_EX);
+	file_put_contents('/var/etc/lightsquid/lighttpd_ls.conf', $lighttpd_ls_conf, LOCK_EX);
 	unset($lighttpd_ls_conf);
 }
 
