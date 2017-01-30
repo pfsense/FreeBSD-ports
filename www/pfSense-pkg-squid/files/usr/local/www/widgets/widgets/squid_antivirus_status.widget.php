@@ -76,15 +76,18 @@ function squid_clamav_version() {
 	global $img;
 	// ClamAV status and version
 	$s = (is_service_running("clamd") ? $img['up'] : $img['down']);
-	pkg_exec("query '%v' clamav", $version, $err);
+	$rc = pkg_exec("query '%v' clamav", $version, $err);
+	$version = (($rc != 0) ? "N/A" : $version);
 	$s .= "&nbsp;&nbsp;ClamAV {$version}";
 	$s .= "&nbsp;&nbsp;";
 	// C-ICAP status and version
 	$s .= (is_service_running("c-icap") ? $img['up'] : $img['down']);
-	pkg_exec("query '%v' c-icap", $version, $err);
+	$rc = pkg_exec("query '%v' c-icap", $version, $err);
+	$version = (($rc != 0) ? "N/A" : $version);
 	$s .= "&nbsp;&nbsp;C-ICAP {$version}";
 	// SquidClamav version
-	pkg_exec("query '%v' squidclamav", $version, $err);
+	$rc = pkg_exec("query '%v' squidclamav", $version, $err);
+	$version = (($rc != 0) ? "N/A" : $version);
 	$s .= "+&nbsp;&nbsp;SquidClamav {$version}";
 	return $s;
 }
@@ -119,7 +122,8 @@ function squid_antivirus_statistics() {
 			<td width="75%">
 			<?php
 				$updown = (is_service_running("squid") ? $img['up'] : $img['down']);
-				pkg_exec("query '%v' squid", $version, $err);
+				$rc = pkg_exec("query '%v' squid", $version, $err);
+				$version = (($rc != 0) ? "N/A" : $version);
 				echo "{$updown}&nbsp;&nbsp;${version}";
 			?>
 			</td>
