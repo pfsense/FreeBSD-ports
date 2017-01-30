@@ -139,7 +139,6 @@ function tinc_save() {
 		unlink_if_exists("/usr/local/etc/rc.d/tinc.sh");
 	}
 
-	rmdir_recursive("/usr/local/etc/tinc.old");
 	conf_mount_ro();
 }
 
