@@ -30,6 +30,7 @@ function tinc_save() {
 
 	conf_mount_rw();
 
+	rmdir_recursive("{$configpath}.old");
 	rename("{$configpath}", "{$configpath}.old");
 	safe_mkdir("{$configpath}");
 	safe_mkdir("{$configpath}/hosts");
