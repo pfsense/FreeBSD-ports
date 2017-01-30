@@ -272,7 +272,7 @@ EOF;
 #!/bin/sh
 
 printf "Beginning Shutdown Sequence (shutdown -p)" | wall
-/sbin/shutdown -p now "apcupsd initiated shutdown"
+/etc/rc.halt
 
 exit 99
 
