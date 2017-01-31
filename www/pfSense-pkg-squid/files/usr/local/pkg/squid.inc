@@ -2373,3 +2373,5 @@ function squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $passwor
 		}
 	}
 }
+
+?>
