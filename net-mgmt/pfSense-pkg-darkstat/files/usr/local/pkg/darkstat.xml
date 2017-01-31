@@ -71,6 +71,7 @@
 			<fielddescr>Enable darkstat</fielddescr>
 			<fieldname>enable</fieldname>
 			<type>checkbox</type>
+			<description>Check to enable darkstat.</description>
 		</field>
 		<field>
 			<fielddescr>Capture Interfaces</fielddescr>
