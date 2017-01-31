@@ -68,9 +68,14 @@ function sudo_write_config() {
 		log_error("No sudo configuration found, removing sudoers file to prevent unpredictable results.");
 		return;
 	}
-	$sudocfg = &$config['installedpackages']['sudo']['config'][0]['row'];
+	$sudocfg = &$config['installedpackages']['sudo']['config'][0];
+
+	if ($sudocfg['add_includedir'] == 'include_start') {
+		$sudoers .= "#includedir /usr/local/etc/sudoers.d\n";
+	}
+
 	/* Parse the config and massage it into proper sudo config lines. */
-	foreach ($sudocfg as $sudo_commands) {
+	foreach ($sudocfg['row'] as $sudo_commands) {
 		// (user|group) ALL=(ALL|user spec) ALL|command list
 		list($etype, $ename) = explode(":", $sudo_commands['username']);
 		$user = ($etype == "group") ? "%{$ename}" : $ename;
@@ -80,6 +85,10 @@ function sudo_write_config() {
 		$commands = (empty($sudo_commands['cmdlist'])) ? "ALL" : $sudo_commands['cmdlist'];
 		$commands = ($commands == "all") ? "ALL" : $commands;
 		$sudoers .= "{$user} ALL=({$runas}) {$nopasswd} {$commands}\n";
+	}
+
+	if ($sudocfg['add_includedir'] == 'include_end') {
+		$sudoers .= "#includedir /usr/local/etc/sudoers.d\n";
 	}
 
 	/* Check validity of the sudoers data created above. */

@@ -31,7 +31,6 @@ require_once("pkg-utils.inc");
 require_once("services.inc");
 require_once("service-utils.inc");
 require_once("util.inc");
-require_once("xmlrpc.inc");
 require_once("xmlrpc_client.inc");
 
 define('FREERADIUS_BASE', '/usr/local');

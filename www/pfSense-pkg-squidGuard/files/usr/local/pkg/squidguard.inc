@@ -100,15 +100,6 @@ function squidguard_validate(&$post, &$input_errors)
 
     # check config if 'Apply'
     if ($submit === APPLY_BTN) {
-    	// XXX:Bug #4608
-    	if (($g['platform'] == "pfSense") && isset($config['system']['use_mfs_tmpvar'])) {
-    		$input_errors[] = "Please, disable 'Use RAM Disks' under System: Advanced: Miscellaneous to avoid SquidGuard configuration breakage on reboot.";
-    	}
-	if ($g['platform'] != "pfSense") {
-		if ($post['blacklist'] != "" || $post['blacklist_proxy'] != "" || $post['blacklist_url'] != "") {
-			$input_errors[] = "Blacklists usage is NOT supported on NanoBSD. Disable 'Blacklist' option in 'General settings'.";
-		}
-	}
     	sg_check_config_data($input_errors);
     }
 }
@@ -1462,18 +1453,18 @@ function squidguard_blacklist_list()
     if (file_exists($fname)) {
         $cont = explode("\n", file_get_contents($fname));
         foreach($cont as $cn) {
-            $ph = "/var/db/squidGuard/$cn";
+            $ph = SQUIDGUARD_DBHOME . "/{$cn}";
 
             if (file_exists($ph)) {
                 $dm = "&nbsp;";
                 $ur = "&nbsp;";
                 $ex = "&nbsp;";
 
-                if (file_exists("$ph/domains"))     $dm = "domains";
-                if (file_exists("$ph/urls"))        $ur = "urls";
-                if (file_exists("$ph/expressions")) $ex = "expressions";
+                if (file_exists("{$ph}/domains"))     $dm = "domains";
+                if (file_exists("{$ph}/urls"))        $ur = "urls";
+                if (file_exists("{$ph}/expressions")) $ex = "expressions";
 
-                $res .= "<tr><td class='listlr'>$cn</td><td class='listr'>$dm</td><td class='listr'>$ur</td><td class='listr'>$ex</td></tr>";
+                $res .= "<tr><td class='listlr'>{$cn}</td><td class='listr'>{$dm}</td><td class='listr'>{$ur}</td><td class='listr'>{$ex}</td></tr>";
             }
         }
     }
