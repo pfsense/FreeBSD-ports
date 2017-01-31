@@ -218,3 +218,5 @@ function validate_input_darkstat($post, &$input_errors) {
 		$input_errors[] = gettext('Advanced traffic filtering options may only contain characters matching ^[a-zA-Z0-9\+\-\=\(\):. ]*$ regexp.');
 	}
 }
+
+?>
