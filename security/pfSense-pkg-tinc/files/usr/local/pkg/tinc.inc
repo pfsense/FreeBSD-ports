@@ -30,6 +30,7 @@ function tinc_save() {
 
 	conf_mount_rw();
 
+	rmdir_recursive("{$configpath}.old");
 	rename("{$configpath}", "{$configpath}.old");
 	safe_mkdir("{$configpath}");
 	safe_mkdir("{$configpath}/hosts");
@@ -99,7 +100,7 @@ function tinc_save() {
 		$_output = base64_decode($tincconf['tinc_up']) . "\n";
 	} else {
 		$_output = "ifconfig \$INTERFACE " . $tincconf['localip'] . " netmask " . $tincconf['vpnnetmask'] . "\n";
-		$_output .= "ifconfig \$INTERFACE group pkg-tinc\n";
+		$_output .= "ifconfig \$INTERFACE group pkg_tinc\n";
 	}
 	file_put_contents("{$configpath}/tinc-up", $_output);
 	chmod("{$configpath}/tinc-up", 0744);
@@ -138,7 +139,6 @@ function tinc_save() {
 		unlink_if_exists("/usr/local/etc/rc.d/tinc.sh");
 	}
 
-	rmdir_recursive("/usr/local/etc/tinc.old");
 	conf_mount_ro();
 }
 
@@ -166,7 +166,7 @@ function tinc_install() {
 	$ifgroupentry = array();
 	$ifgroupentry['members'] = '';
 	$ifgroupentry['descr'] = 'tinc mesh VPN interface group';
-	$ifgroupentry['ifname'] = 'pkg-tinc';
+	$ifgroupentry['ifname'] = 'pkg_tinc';
 	$a_ifgroups[] = $ifgroupentry;
 
 	/* XXX: Do not remove this. WTH?! */
@@ -188,7 +188,7 @@ function tinc_deinstall() {
 	$myid = -1;
 	$i = 0;
 	foreach ($a_ifgroups as $ifgroupentry) {
-		if ($ifgroupentry['ifname'] == 'pkg-tinc') {
+		if ($ifgroupentry['ifname'] == 'pkg_tinc') {
 			$myid = $i;
 			break;
 		}
