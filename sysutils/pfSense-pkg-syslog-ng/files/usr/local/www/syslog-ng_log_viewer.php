@@ -66,7 +66,6 @@ if (file_exists($logfile) && (filesize($logfile) > 0)) {
 
 	if (isset($filter) && $not) {
 		$grepcmd = "$grep -v " . escapeshellarg($filter) . " $logfile";
-		$grepcmd = "$grep -v '$filter' $logfile";
 	} else {
 		$grepcmd = "$grep  " . escapeshellarg($filter) . " $logfile";
 	}
