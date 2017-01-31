@@ -55,7 +55,6 @@ function sync_package_darkstat() {
 
 	/* Configure bind interface(s) */
 	foreach (explode(",", $darkstat_config['bind_interfaces']) as $iface) {
-		$if = convert_friendly_interface_to_real_interface_name($iface);
 		$if = get_interface_ip("$iface");
 		if ($if) {
 			$bind_ifaces_final .= " -b {$if}";
