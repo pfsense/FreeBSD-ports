@@ -11,7 +11,7 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	Network UPS Tools
 
-LICENSE=	ESF
+LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/upsd:sysutils/nut \
 		${LOCALBASE}/sbin/upsmon:sysutils/nut \

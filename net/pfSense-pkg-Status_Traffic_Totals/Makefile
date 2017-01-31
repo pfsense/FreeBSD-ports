@@ -11,7 +11,7 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	Traffic Totals using the vnStat database
 
-LICENSE=	ESF
+LICENSE=	APACHE20
 
 NO_BUILD=	yes
 NO_MTREE=	yes

@@ -11,7 +11,7 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package suricata
 
-LICENSE=	ESF
+LICENSE=	APACHE20
 
 RUN_DEPENDS=	suricata>=3.1.2:security/suricata \
 		barnyard2:security/barnyard2

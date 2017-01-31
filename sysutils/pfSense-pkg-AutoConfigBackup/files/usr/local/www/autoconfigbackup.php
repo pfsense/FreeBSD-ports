@@ -1,32 +1,23 @@
 <?php
 /*
-	autoconfigbackup.php
-	part of pfSense (https://www.pfSense.org/)
-	Copyright (C) 2008 Scott Ullrich
-	Copyright (C) 2008-2015 Electric Sheep Fencing LP
-	All rights reserved.
-
-	Redistribution and use in source and binary forms, with or without
-	modification, are permitted provided that the following conditions are met:
-
-	1. Redistributions of source code must retain the above copyright notice,
-	   this list of conditions and the following disclaimer.
-
-	2. Redistributions in binary form must reproduce the above copyright
-	   notice, this list of conditions and the following disclaimer in the
-	   documentation and/or other materials provided with the distribution.
-
-	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-	POSSIBILITY OF SUCH DAMAGE.
-*/
+ * autoconfigbackup.php
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2008-2015 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 require("guiconfig.inc");
 require("autoconfigbackup.inc");
 
@@ -161,9 +152,11 @@ if ($_REQUEST['newver'] != "") {
 	$data_split = split("\+\+\+\+", $data);
 	$sha256 = trim($data_split[0]);
 	$data = $data_split[1];
+
 	if (!tagfile_deformat($data, $data, "config.xml")) {
 		$input_errors[] = "The downloaded file does not appear to contain an encrypted pfSense configuration.";
 	}
+
 	$out = decrypt_data($data, $decrypt_password);
 
 	$pos = stripos($out, "</pfsense>");
@@ -173,9 +166,11 @@ if ($_REQUEST['newver'] != "") {
 	$fd = fopen("/tmp/config_restore.xml", "w");
 	fwrite($fd, $data);
 	fclose($fd);
+
 	if (strlen($data) < 50) {
 		$input_errors[] = "The decrypted config.xml is under 50 characters, something went wrong. Aborting.";
 	}
+
 	$ondisksha256 = trim(shell_exec("/sbin/sha256 /tmp/config_restore.xml | /usr/bin/awk '{ print $4 }'"));
 	// We might not have a sha256 on file for older backups
 	if ($sha256 != "0" && $sha256 != "") {
@@ -193,6 +188,7 @@ if ($_REQUEST['newver'] != "") {
 	} else {
 		curl_close($curl_session);
 	}
+
 	if (!$input_errors && $data) {
 		conf_mount_rw();
 		if (config_restore("/tmp/config_restore.xml") == 0) {
@@ -214,6 +210,7 @@ EOF;
 	unlink_if_exists("/tmp/config_restore.xml");
 	conf_mount_ro();
 }
+
 if ($_REQUEST['download']) {
 	// Phone home and obtain backups
 	$curl_session = curl_init();
@@ -247,7 +244,10 @@ if ($_REQUEST['download']) {
 			$input_errors[] = "Could not decrypt config.xml";
 		}
 	}
-} else {
+}
+
+// $confvers must be populated viewing info but there were errors
+if ( !($_REQUEST['download']) || $input_errors) {
 	// Populate available backups
 	$curl_session = curl_init();
 	curl_setopt($curl_session, CURLOPT_URL, $get_url);
@@ -310,6 +310,7 @@ if ($_REQUEST['download']) {
 } else {
 	$active = true;
 }
+
 $tab_array[1] = array("Restore", $active, "/autoconfigbackup.php");
 if ($_REQUEST['download']) {
 	$tab_array[] = array("Revision", true, "/autoconfigbackup.php?download={$_REQUEST['download']}");

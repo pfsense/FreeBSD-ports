@@ -11,7 +11,7 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package Avahi
 
-LICENSE=	ESF
+LICENSE=	APACHE20
 
 LIB_DEPENDS=	libavahi-core.so:net/avahi-app
 
