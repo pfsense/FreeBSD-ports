@@ -3,7 +3,7 @@
  * syslog-ng_log_viewer.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2012 Lance Leger
  * All rights reserved.
  *
@@ -45,7 +45,7 @@ if ($_POST['archives']) {
 }
 
 if ($_POST['filter']) {
-	$filter = $_POST['filter'];
+	$filter = htmlspecialchars($_POST['filter']);
 }
 
 if ($_POST['not']) {
@@ -54,28 +54,28 @@ if ($_POST['not']) {
 
 $log_messages = array();
 if (file_exists($logfile) && (filesize($logfile) > 0)) {
-	$grep = "grep -ih";
+	$grep = "/usr/bin/grep -ih";
 
 	if (($compress_archives == 'on') && glob($logfile . "*" . $compress_type) && $archives) {
 		if($compress_type == 'bz2') {
-			$grep = "bzgrep -ih";
+			$grep = "/usr/bin/bzgrep -ih";
 		} else {
-			$grep = "zgrep -ih";
+			$grep = "/usr/bin/zgrep -ih";
 		}
 	}
 
 	if (isset($filter) && $not) {
-		$grepcmd = "$grep -v '$filter' $logfile";
+		$grepcmd = "$grep -v " . escapeshellarg($filter) . " $logfile";
 	} else {
-		$grepcmd = "$grep '$filter' $logfile";
+		$grepcmd = "$grep  " . escapeshellarg($filter) . " $logfile";
 	}
 
 	if ($archives) {
 		$grepcmd = $grepcmd . "*";
 	}
 
-	$log_lines = trim(shell_exec("$grepcmd | wc -l"));
-	$log_output = trim(shell_exec("$grepcmd | sort -M | tail -n $limit"));
+	$log_lines = trim(shell_exec("$grepcmd | /usr/bin/wc -l"));
+	$log_output = trim(shell_exec("$grepcmd | /usr/bin/sort -M | /usr/bin/tail -n $limit"));
 
 	if (!empty($log_output)) {
 		$log_messages = explode("\n", $log_output);
@@ -83,89 +83,82 @@ if (file_exists($logfile) && (filesize($logfile) > 0)) {
 	}
 }
 
-$pgtitle = array(gettext("Package"), gettext("Services: Syslog-ng"), gettext("Logs"));
-
-include("head.inc");
-?>
-
-<?php include("fbegin.inc"); ?>
-<?php if ($savemsg) print_info_box($savemsg); ?>
-
-<style>
-
-.border-bottom {
-	border: 1px solid #F5F5F5; border-width: 0px 0 3px 0px;
+$pgtitle = array("Package", "Services: Syslog-ng", "Logs");
+require_once("head.inc");
+if ($savemsg) {
+	print_info_box($savemsg);
 }
-
-</style>
-
+$tab_array = array();
+$tab_array[] = array("General", false, "/pkg_edit.php?xml=syslog-ng.xml&amp;id=0");
+$tab_array[] = array("Advanced", false, "/pkg.php?xml=syslog-ng_advanced.xml");
+$tab_array[] = array("Log Viewer", true, "/syslog-ng_log_viewer.php");
+display_top_tabs($tab_array);
+?>
 
 <form action="syslog-ng_log_viewer.php" method="post" name="iform">
-<table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #F5F5F5;">
-	<tr><td>
-<?php
-	$tab_array = array();
-	$tab_array[] = array("General", false, "/pkg_edit.php?xml=syslog-ng.xml&amp;id=0");
-	$tab_array[] = array("Advanced", false, "/pkg.php?xml=syslog-ng_advanced.xml");
-	$tab_array[] = array("Log Viewer", true, "/syslog-ng_log_viewer.php");
-	display_top_tabs($tab_array);
-?>
-	</td></tr>
-	<tr><td>
-	<div id="mainarea">
-		<table id="maintable" class="tabcont" width="100%" border="0" cellpadding="0" cellspacing="0">
-			<tr><td>
-
-			<table width="100%" class="panel-default" style="background-color: #FFFFFF;">
-				<h2 class="panel-title" style="background-color: #424242; color: #FFFFFF; border: solid 5px #424242;">Syslog-ng Logs</h2>
-				<tr><td class="border-bottom" width="22%">Log File</td><td class="border-bottom" width="78%"><select name="logfile">
-				<?php
-				$log_files = syslogng_get_log_files($objects);
-				foreach($log_files as $log_file) {
-					if($log_file == $logfile) {
-						echo "<option value=\"$log_file\" selected=\"selected\">$log_file</option>\n";
-					} else {
-						echo "<option value=\"$log_file\">$log_file</option>\n";
+<div class="panel panel-default">
+	<div class="panel-heading"><h2 class="panel-title"><?=gettext("Syslog-ng Log Viewer Settings")?></h2></div>
+	<div class="panel-body table-responsive">
+	<table class="table table-condensed">
+		<tbody><tr><td>
+			<table class="table table-condensed">
+				<tr><th class="col-sm-2">Log File</th><td><select name="logfile">
+					<?php
+					$log_files = syslogng_get_log_files($objects);
+					foreach ($log_files as $log_file) {
+						if ($log_file == $logfile) {
+							echo "<option value=\"$log_file\" selected=\"selected\">$log_file</option>\n";
+						} else {
+							echo "<option value=\"$log_file\">$log_file</option>\n";
+						}
 					}
-				}
-				?>
+					?>
 				</select></td></tr>
-				<tr><td class="border-bottom" width="22%">Limit</td><td class="border-bottom" width="78%"><select name="limit">
-				<?php
-				$limit_options = array("10", "20", "50", "100", "250", "500");
-				foreach($limit_options as $limit_option) {
-					if($limit_option == $limit) {
-						echo "<option value=\"$limit_option\" selected=\"selected\">$limit_option</option>\n";
-					} else {
-						echo "<option value=\"$limit_option\">$limit_option</option>\n";
+				<tr><th class="col-sm-2">Limit</th><td><select name="limit">
+					<?php
+					$limit_options = array("10", "20", "50", "100", "250", "500");
+					foreach ($limit_options as $limit_option) {
+						if ($limit_option == $limit) {
+							echo "<option value=\"$limit_option\" selected=\"selected\">$limit_option</option>\n";
+						} else {
+							echo "<option value=\"$limit_option\">$limit_option</option>\n";
+						}
 					}
-				}
-				?>
+					?>
 				</select></td></tr>
-				<tr><td class="border-bottom" width="22%">Include Archives</td><td class="border-bottom" width="78%"><input type="checkbox" name="archives" <?php if($archives) echo " CHECKED"; ?> /></td></tr>
-				<tr><td class="border-bottom" width="22%">Filter</td><td class="border-bottom" width="78%"><input name="filter" value="<?=$filter?>" /></td></tr>
-				<tr><td class="border-bottom" width="22%">Inverse Filter (NOT)</td><td class="border-bottom" width="78%"><input type="checkbox" name="not" <?php if($not) echo " CHECKED"; ?> /></td></tr>
-				<tr><td class="border-bottom" colspan="2"><input type="submit" value="Refresh" /></td></tr>
-				<tr><td class="border-bottom" colspan="2">
-				<table class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="0">
-				<?php
-				if(!empty($log_messages)) {
-					echo "<tr><td class=\"listtopic\">Showing $log_messages_count of $log_lines messages</td></tr>\n";
-					foreach($log_messages as $log_message) {
-						echo "<tr><td class=\"listr\">$log_message</td></tr>\n";
-					}
-				} else {
-					echo "<tr><td><span class=\"red\">No log messages found or log file is empty.</span></td></tr>\n";
-				}
-				?>
-				</table>
+				<tr><th class="col-sm-2">Include Archives</th><td><input type="checkbox" name="archives" <?php if($archives) echo " CHECKED"; ?> /></td></tr>
+				<tr><th class="col-sm-2">Filter</th><td><input name="filter" value="<?=$filter?>" /></td></tr>
+				<tr><th class="col-sm-2">Inverse Filter (NOT)</th><td><input type="checkbox" name="not" <?php if($not) echo " CHECKED"; ?> /></td></tr>
+				<tr><td colspan="2">
+					<button type="submit" class="btn btn-primary" name="refresh" id="refresh" value="Refresh"><i class="fa fa-refresh icon-embed-btn"></i>Refresh</button>
 				</td></tr>
 			</table>
-
-			</td></tr>
-		</table>
+		</td></tr></tbody>
+	</table>
 	</div>
-	</td></tr>
-</table>
+	<div class="panel-heading">
+		<h2 class="panel-title">
+		<?php
+		if (!empty($log_messages)) {
+			echo "Showing last {$log_messages_count} of {$log_lines} messages in {$log_file}\n";
+		} else {
+			echo "No messages found in {$log_file}.\n";
+		}
+		?>
+		</h2>
+	</div>
+	<table class="table table-striped table-hover table-condensed">
+		<tbody>
+			<?php
+			if (!empty($log_messages)) {
+				foreach ($log_messages as $log_message) {
+					echo "<tr><td class=\"listr\">$log_message</td></tr>\n";
+				}
+			}
+			?>
+		</tbody>
+	</table>
+</div>
 </form>
-<?php include("foot.inc"); ?>
+
+<?php require_once("foot.inc"); ?>
