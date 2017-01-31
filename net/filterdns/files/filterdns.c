@@ -971,7 +971,13 @@ merge_config(void *arg __unused) {
 						    "Waking resolving thread for host %s",
 						    thr->hostname);
 					tmpthr->exit = 2;
-					filterdns_clean_table(tmpthr, 1);
+					if (tmpthr->type != CMD_TYPE)
+						/*
+						 * XXX: Do we really need to
+						 * call filterdns_clean_table()
+						 * at this point?
+						 */
+						filterdns_clean_table(tmpthr, 1);
 					pthread_mutex_lock(&tmpthr->mtx);
 					pthread_cond_signal(&tmpthr->cond);
 					pthread_mutex_unlock(&tmpthr->mtx);

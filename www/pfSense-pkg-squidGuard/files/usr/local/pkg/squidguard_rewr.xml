@@ -61,10 +61,12 @@
 		<field>
 			<fielddescr>Name</fielddescr>
 			<fieldname>name</fieldname>
-			<description><![CDATA[
-								Enter a unique name of this rule here.<br>
-								The name must consist between 2 and 15 symbols [a-Z_0-9]. The first one must be a letter.<br>
-			]]></description>
+			<description>
+				<![CDATA[
+				Enter a unique name of this rule here.<br>
+				The name must consist between 2 and 15 symbols [a-Z_0-9]. The first one must be a letter.<br>
+				]]>
+			</description>
 			<type>input</type>
 			<required/>
 			<size>100</size>
@@ -89,25 +91,26 @@
 					<fielddescr>Opt.</fielddescr>
 					<fieldname>mode</fieldname>
 					<type>select</type>
-								  <value>no</value>
-								  <options>
-								      <option> <name>---------</name> <value>no</value> </option>
-								      <option> <name>no case  </name> <value>nocase</value> </option>
-								      <option> <name>redirect </name> <value>redirect</value> </option>
-								      <option> <name>no case + redirect</name> <value>nocase_redirect</value> </option>
-								  </options>
+					<value>no</value>
+					<options>
+						<option>
+							<name>---------</name>
+							<value>no</value>
+						</option>
+						<option>
+							<name>no case  </name>
+							<value>nocase</value>
+						</option>
+						<option>
+							<name>redirect </name>
+							<value>redirect</value>
+						</option>
+						<option>
+							<name>no case + redirect</name>
+							<value>nocase_redirect</value>
+						</option>
+					</options>
 				</rowhelperfield>
-<!--				<rowhelperfield>
-					<fielddescr>Http 301</fielddescr>
-					<fieldname>http301</fieldname>
-					<type>checkbox</type>
-				</rowhelperfield>
-				<rowhelperfield>
-					<fielddescr>Http 302</fielddescr>
-					<fieldname>http302</fieldname>
-					<type>checkbox</type>
-				</rowhelperfield>
--->
 			</rowhelper>
 		</field>
 		<field>
@@ -119,12 +122,14 @@
 		<field>
 			<fielddescr>Description</fielddescr>
 			<fieldname>description</fieldname>
-			<description><![CDATA[You may enter any description here for your reference.<br>
-								<b>Note:</b><br>
-								<b>Rewrite rule:</b> Define how the URL will be replaced.<br>
-								<b>Target URL or Regular Expression:</b> Contains destination URL or regular expression. This is the URL or RegEx the user wants to visit.<br>
-								<b>Replace to URL:</b> Contains the replacing URL. This is the URL the user will see instead the original one.
-			]]></description>
+			<description>
+				<![CDATA[You may enter any description here for your reference.<br>
+				<b>Note:</b><br>
+				<b>Rewrite rule:</b> Define how the URL will be replaced.<br>
+				<b>Target URL or Regular Expression:</b> Contains destination URL or regular expression. This is the URL or RegEx the user wants to visit.<br>
+				<b>Replace to URL:</b> Contains the replacing URL. This is the URL the user will see instead the original one.
+				]]>
+			</description>
 			<type>input</type>
 			<size>100</size>
 		</field>
