@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/* $Id$ */
+/* ====================================================================================== */
+/*
+	filer_sync.xml
+	part of pfSense (https://www.pfSense.org/)
+	Copyright (C) 2010 Scott Ullrich <sullrich@gmail.com>
+	Copyright (C) 2011 Brian Scholer
+	Copyright (C) 2012 Marcello Coutinho
+	Copyright (C) 2015 ESF, LLC
+	All rights reserved.
+*/
+/* ====================================================================================== */
+/*
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are met:
+
+
+	1. Redistributions of source code must retain the above copyright notice,
+	   this list of conditions and the following disclaimer.
+
+	2. Redistributions in binary form must reproduce the above copyright
+	   notice, this list of conditions and the following disclaimer in the
+	   documentation and/or other materials provided with the distribution.
+
+
+	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGE.
+*/
+/* ====================================================================================== */
+	]]>
+	</copyright>
+	<name>filersync</name>
+	<version>0.60.6</version>
+	<title>Filer: Sync</title>
+	<include_file>/usr/local/pkg/filer.inc</include_file>
+	<tabs>
+		<tab>
+			<text>Files</text>
+			<url>/pkg.php?xml=filer.xml</url>
+		</tab>
+		<tab>
+			<text>XMLRPC Sync</text>
+			<url>/pkg_edit.php?xml=filer_sync.xml</url>
+			<active/>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<type>listtopic</type>
+			<name>XMLRPC Sync</name>
+		</field>
+		<field>
+			<fielddescr>Enable Sync</fielddescr>
+			<fieldname>synconchanges</fieldname>
+			<description>
+				<![CDATA[
+				Select a sync method for Filer.<br/><br/>
+				<strong>Important:</strong> While using "Sync to host(s) defined below", only sync from host A to B, A to C but <strong>do not</strong> enable XMLRPC sync <b>to</b> A.
+				This will result in a loop!
+				]]>
+			</description>
+			<type>select</type>
+			<required/>
+			<default_value>disabled</default_value>
+			<options>
+				<option><name>Sync to configured system backup server</name><value>auto</value></option>
+				<option><name>Sync to host(s) defined below</name><value>manual</value></option>
+				<option><name>Do not sync this package configuration</name><value>disabled</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Sync Timeout</fielddescr>
+			<fieldname>synctimeout</fieldname>
+			<description>XMLRPC timeout in seconds.</description>
+			<type>select</type>
+			<required/>
+			<default_value>250</default_value>
+			<options>
+				<option><name>250 seconds (Default)</name><value>250</value></option>
+				<option><name>120 seconds</name><value>120</value></option>
+				<option><name>90 seconds</name><value>90</value></option>
+				<option><name>60 seconds</name><value>60</value></option>
+				<option><name>30 seconds</name><value>30</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Replication Targets</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>Enable</fielddescr>
+					<fieldname>syncdestinenable</fieldname>
+					<description><![CDATA[Enable this host as a replication target]]></description>
+					<type>checkbox</type>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Protocol</fielddescr>
+					<fieldname>syncprotocol</fieldname>
+					<description><![CDATA[Choose the protocol used to sync with the destination host (HTTP or HTTPS).]]></description>
+					<type>select</type>
+					<default_value>HTTP</default_value>
+					<options>
+						<option><name>HTTP</name><value>http</value></option>
+						<option><name>HTTPS</name><value>https</value></option>
+					</options>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>IP Address/Hostname</fielddescr>
+					<fieldname>ipaddress</fieldname>
+					<description><![CDATA[IP address or hostname of the destination host.]]></description>
+					<type>input</type>
+					<size>40</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Port</fielddescr>
+					<fieldname>syncport</fieldname>
+					<description><![CDATA[Choose the sync port of the destination host.]]></description>
+					<type>input</type>
+					<size>3</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Username (admin)</fielddescr>
+					<fieldname>username</fieldname>
+					<description><![CDATA[Enter the username account for administration.]]></description>
+					<type>input</type>
+					<size>20</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Admin Password</fielddescr>
+					<fieldname>password</fieldname>
+					<description><![CDATA[Password of the user "admin" on the destination host.]]></description>
+					<type>password</type>
+					<size>20</size>
+				</rowhelperfield>
+			</rowhelper>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		filer_sync_on_changes();
+	</custom_php_resync_config_command>
+</packagegui>
