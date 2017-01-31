@@ -1,0 +1,4 @@
+exec googleauth {
+      wait = yes
+      program = " /usr/local/etc/raddb/scripts/googleauth.py %{request:User-Name} %{reply:MOTP-Init-Secret} %{reply:MOTP-PIN} %{request:User-Password}"
+}

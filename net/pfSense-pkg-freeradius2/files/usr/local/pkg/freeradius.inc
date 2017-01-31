@@ -138,7 +138,16 @@ function freeradius_install_command() {
 		log_error("FreeRADIUS: Creating backup of the original file to " . FREERADIUS_ETC . "/raddb/files.backup");
 		copy(FREERADIUS_ETC . "/raddb/modules/files", FREERADIUS_ETC . "/raddb/files.backup");
 	}
-
+	
+	// Install Google Authenticator scripts
+	if (!file_exists(FREERADIUS_ETC . "/raddb/scripts/googleauth.py")) { 
+		copy(FREERADIUS_BASE . "/pkg/googleauth.py", FREERADIUS_ETC . "/raddb/scripts/"); 
+		chmod(REERADIUS_ETC . "/raddb/scripts/googleauth.py",0755);
+	}
+	if (!file_exists(FREERADIUS_ETC . "/raddb/modules/googleauth")) { 
+		copy(FREERADIUS_BASE . "/pkg/googleauth", FREERADIUS_ETC . "/raddb/modules/");
+	}
+	  
 	// Disable virtual-server we do not need by default
 	if (file_exists(FREERADIUS_ETC . "/raddb/sites-enabled/control-socket")) { unlink(FREERADIUS_ETC . "/raddb/sites-enabled/control-socket"); }
 	if (file_exists(FREERADIUS_ETC . "/raddb/sites-enabled/inner-tunnel")) { unlink(FREERADIUS_ETC . "/raddb/sites-enabled/inner-tunnel"); }
@@ -492,7 +501,8 @@ if (is_array($arrusers) && !empty($arrusers)) {
 				$varuserspassword = $users['varuserspassword'];
 		}
 	
-		
+	
+	$varusersauthmethod = $users['varusersauthmethod'];  	
 	$varusersmotpinitsecret = $users['varusersmotpinitsecret'];
 	$varusersmotppin = $users['varusersmotppin'];
 	$varusersmotpoffset = ($users['varusersmotpoffset']?$users['varusersmotpoffset']:'0');
@@ -1844,6 +1854,12 @@ authenticate {
 	#  Mobile-One-Time-Password (MOTP) authentication.
 	Auth-Type MOTP {
 		motp
+	}
+	
+	#
+	# Google-Authenticator authentication.
+	Auth-Type GOOGLEAUTH {
+		googleauth
 	}
 	
 	#
