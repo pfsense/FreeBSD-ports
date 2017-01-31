@@ -3,12 +3,12 @@
 <?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
 <packagegui>
 	<copyright>
-<![CDATA[	
+<![CDATA[
 /*
  * freeradiuscerts.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
  * All rights reserved.
  *
@@ -29,9 +29,6 @@
  * limitations under the License.
  */
 ]]>	</copyright>
-	<description><![CDATA[Describe your package here]]></description>
-	<requirements>Describe your package requirements here</requirements>
-	<faq>Currently there are no FAQ items provided.</faq>
 	<name>freeradiuscerts</name>
 	<title>FreeRADIUS: Certificates</title>
 	<aftersaveredirect>pkg_edit.php?xml=freeradiuscerts.xml&amp;id=0</aftersaveredirect>
@@ -89,30 +86,45 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Delete ALL existing Certificates ?</fielddescr>
+			<fielddescr>Delete ALL Existing Certificates?</fielddescr>
 			<fieldname>varcertsdeleteall</fieldname>
-			<description><![CDATA[This will delete <b>ALL</b> existing CAs, Server-Certs and Client-Certs in freeradius certs folder!<br>
-								You <b>must</b> delete all existing if you want to create new ones. (Default: No)<br>
-								<b>Important:</b><br>
-								If you like to use certs created on another PC just disable this and click save.]]></description>
+			<description>
+				<![CDATA[
+				This will delete <b>ALL</b> existing CAs, Server-Certs and Client-Certs in freeradius certs folder!<br/>
+				You <b>must</b> delete all existing if you want to create new ones. (Default: No)<br/>
+				<b>Important:</b> If you like to use certs created on another PC just disable this and click save.
+				]]>
+			</description>
 			<type>select</type>
 			<default_value>no</default_value>
-					<options>
-						<option><name>Yes</name><value>yes</value></option>
-						<option><name>No</name><value>no</value></option>
-					</options>
+			<options>
+				<option><name>Yes</name><value>yes</value></option>
+				<option><name>No</name><value>no</value></option>
+			</options>
 		</field>
 		<field>
 			<fielddescr>READ BEFORE DOING ANYTHING HERE!</fielddescr>
 			<fieldname>varcertsREADBEFORE</fieldname>
-			<description><![CDATA[<b>This field is just to make sure you know what you are doing here!</b><br>
-									<b>If you enter anything the changes here will take effect after "save" - if it's empty - nothing will happen</b><br><br>
-									
-									This page uses the freeradius2 built-in script called "bootstrap" to create CA and certs. The disatvantage of this script is that nothing of your changes will be saved in the global config.xml file. So after a systemcrash or reinstallation of freeradius2 package
-									all your CA and certs will be lost. If you have a backup of all these files on an USB stick or another server than you can copy them back in the freeradius certs folder.<br><br>
-									
-									<b>The better way is to use the firewall's built-in Cert Manager (SYSTEM-> Cert Manager).</b> The CA-Cert and Server-Cert you created there you just have to choose in EAP.
-									The advantage of this is that all your CA and certs will be saved in global config.xml and can be restored.]]></description>
+			<description>
+				<![CDATA[
+				<strong>
+				<span class="text-danger">WARNING!!! THIS FEATURE IS DEPRECATED!!!</span><br/>
+				This feature is not maintained, uses obsolete insecure cryptography (MD5/SHA1)
+				offers no backup capabilities and is pending removal in near future.<br/>
+				Users are strongly urged to transition to the Cert Manager built into pfSense as soon as possible.
+				See 'Choose Cert Manager' on the <a href="/pkg_edit.php?xml=freeradiuseapconf.xml">'EAP' configuration tab</a>
+				and <a href="system_camanager.php">'System > Cert Manager'</a> for certificate management.<br/>
+				<span class="text-danger">WARNING!!! THIS FEATURE IS DEPRECATED!!!</span>
+				</strong><br/><br/>
+				<b>If you enter anything the changes here will take effect after "Save" - if it's empty - nothing will happen</b><br/><br/>
+				This page uses the freeradius2 built-in script called "bootstrap" to create CA and certs.
+				The disadvantage of this script is that nothing of your changes will be saved in the global config.xml file.
+				So, after a systemcrash or reinstallation of freeradius2 package all your CA and certs will be lost.
+				If you have a backup of all these files on an USB stick or another server than you can copy them back in the freeradius certs folder.<br/><br/>
+				<b>Use the <a href="system_camanager.php">built-in Cert Manager</a> so that all your CA and certs
+				can be saved in global config.xml and restored if needed.</b>
+				]]>
+			</description>
 			<type>input</type>
 			<required/>
 			<default_value></default_value>
@@ -124,68 +136,101 @@
 		<field>
 			<fielddescr>Country Code</fielddescr>
 			<fieldname>varcertscountryname</fieldname>
-			<description><![CDATA[Enter your country Code. (Default: US)]]></description>
+			<description>
+				<![CDATA[
+				Enter your country code. (Default: US)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>US</default_value>
 		</field>
 		<field>
 			<fielddescr>State or Province</fielddescr>
 			<fieldname>varcertsstateorprovincename</fieldname>
-			<description><![CDATA[Enter your state or province. (Default: Texas)]]></description>
+			<description>
+				<![CDATA[
+				Enter your state or province. (Default: Texas)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>Texas</default_value>
 		</field>
 		<field>
 			<fielddescr>City</fielddescr>
 			<fieldname>varcertslocalityname</fieldname>
-			<description><![CDATA[Enter your city. (Default: Austin)]]></description>
+			<description>
+				<![CDATA[
+				Enter your city. (Default: Austin)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>Austin</default_value>
 		</field>
 		<field>
 			<fielddescr>Organization</fielddescr>
 			<fieldname>varcertsorganizationname</fieldname>
-			<description><![CDATA[Enter your organization. (Default: My Company Inc)]]></description>
+			<description>
+				<![CDATA[
+				Enter your organization. (Default: My Company Inc)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>My Company Inc</default_value>
 		</field>
-				<field>
+		<field>
 			<fielddescr>Lifetime</fielddescr>
 			<fieldname>varcertsdefaultdays</fieldname>
-			<description><![CDATA[Enter the time after which the CA, Server and Client should expire in days. (Default: 3650)]]></description>
+			<description>
+				<![CDATA[
+				Enter the time after which the CA, Server and Client should expire in days. (Default: 3650)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>3650</default_value>
 		</field>
 		<field>
 			<fielddescr>Key Length</fielddescr>
 			<fieldname>varcertsdefaultbits</fieldname>
-			<description><![CDATA[Enter the key length of CA, Server and Client. (Default: 2048)]]></description>
+			<description>
+				<![CDATA[
+				Enter the key length of CA, Server and Client. (Default: 2048)
+				]]>
+			</description>
 			<type>select</type>
 			<default_value>2048</default_value>
-					<options>
-						<option><name>512</name><value>512</value></option>
-						<option><name>1024</name><value>1024</value></option>
-						<option><name>2048</name><value>2048</value></option>
-						<option><name>4096</name><value>4096</value></option>
-					</options>
+			<options>
+				<option><name>512</name><value>512</value></option>
+				<option><name>1024</name><value>1024</value></option>
+				<option><name>2048</name><value>2048</value></option>
+				<option><name>4096</name><value>4096</value></option>
+			</options>
 		</field>
 		<field>
 			<fielddescr>Key Creation Algorithm</fielddescr>
 			<fieldname>varcertsdefaultmd</fieldname>
-			<description><![CDATA[Choose the algotithem which should be used to create the key.<br>
-								There seems to be some OS which do not support all algorithms. (Default: md5)]]></description>
+			<description>
+				<![CDATA[
+				Choose the algotithem which should be used to create the key.<br/>
+				There seems to be some OS which do not support all algorithms. (Default: md5)
+				]]>
+			</description>
 			<type>select</type>
 			<default_value>md5</default_value>
-					<options>
-						<option><name>MD5</name><value>md5</value></option>
-						<option><name>SHA1</name><value>sha1</value></option>
-					</options>
+			<options>
+				<option><name>MD5 (extremely insecure!)</name><value>md5</value></option>
+				<option><name>SHA1 (insecure!)</name><value>sha1</value></option>
+			</options>
 		</field>
 		<field>
 			<fielddescr>Certificate Password (CA, Server and Client)</fielddescr>
 			<fieldname>varcertspassword</fieldname>
-			<description><![CDATA[Enter the password for the CA, Server and Client.	This is the password you need to enter in eap.conf
-								so that freeradius can read the cert. This field could be empty. (Default: whatever)]]></description>
+			<description>
+				<![CDATA[
+				Enter the password for the CA, Server and Client.
+				This is the password you need to enter in eap.conf so that freeradius can read the cert. This field could be empty.
+				(Default: whatever)
+				]]>
+			</description>
 			<type>password</type>
 			<default_value>whatever</default_value>
 		</field>
@@ -196,14 +241,22 @@
 		<field>
 			<fielddescr>E-Mail Address</fielddescr>
 			<fieldname>varcertscaemailaddress</fieldname>
-			<description><![CDATA[Enter the E-Mail address for the CA. (Default: admin@mycompany.com)]]></description>
+			<description>
+				<![CDATA[
+				Enter the E-Mail address for the CA. (Default: admin@mycompany.com)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>admin@mycompany.com</default_value>
 		</field>
 		<field>
 			<fielddescr>Common Name</fielddescr>
 			<fieldname>varcertscacommonname</fieldname>
-			<description><![CDATA[Enter the common name for the CA. (Default: internal-ca)]]></description>
+			<description>
+				<![CDATA[
+				Enter the common name for the CA. (Default: internal-ca)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>internal-ca</default_value>
 		</field>
@@ -214,14 +267,22 @@
 		<field>
 			<fielddescr>E-Mail Address</fielddescr>
 			<fieldname>varcertsserveremailaddress</fieldname>
-			<description><![CDATA[Enter the E-Mail address for the Server-Cert. (Default: webadmin@mycompany.com)]]></description>
+			<description>
+				<![CDATA[
+				Enter the E-Mail address for the Server-Cert. (Default: webadmin@mycompany.com)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>webadmin@mycompany.com</default_value>
 		</field>
 		<field>
 			<fielddescr>Common Name</fielddescr>
 			<fieldname>varcertsservercommonname</fieldname>
-			<description><![CDATA[Enter the common name for the Server-Cert. (Default: server-cert)]]></description>
+			<description>
+				<![CDATA[
+				Enter the common name for the Server-Cert. (Default: server-cert)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>server-cert</default_value>
 		</field>
@@ -232,41 +293,50 @@
 		<field>
 			<fielddescr>Create a further Client-Certificate</fielddescr>
 			<fieldname>varcertscreateclient</fieldname>
-			<description><![CDATA[This will delete existing <b>Client-Certs</b> in freeradius certs folder!<br>
-								Choose this option if you need multiple Client-Certs.<br>
-								<b>Important:</b> You must backup your old Client-Cert before enabling this option. The new Client-Cert <b>must not</b> have any Common Name as other certificates your created before. (Default: No)<br><br>
-								
-								This is what you should do the very first time when creating certs here:<br>
-								1. Check "Delete ALL Certs...", fill out all fields and create a new CA, new Server and Client Cert<br>
-								2. If you need more than one Client-Cert than backup your first cert using DIAGNOSTICS->COMMAND PROMPT->Download<br>
-								/usr/local/etc/raddb/certs/client.tar<br>
-								3. Disable "Delete ALL Certs..." and enable "Create a further Client-Certificate" and fill out the Client fields<br>
-								4. Repeat step 2. as long as you need.<br><br>
-								
-								
-								<b>Limitations:</b><br>
-								There is no CRL. Deleting of existing certs from the database (../certs/index.txt) isn't possible from GUI.<br>
-								If you choose a Common Name which already exists in the database (check view config) the .crt will be zero bytes.<br>
-								Choose other Common Name and create a new Client-Cert.
-								]]></description>
+			<description>
+				<![CDATA[
+				This will delete existing <b>Client-Certs</b> in freeradius certs folder!<br/>
+				Choose this option if you need multiple Client-Certs.<br/>
+				<b>Important:</b> You must backup your old Client-Cert before enabling this option.
+				The new Client-Cert <b>must not</b> have any Common Name as other certificates your created before. (Default: No)<br/><br/>
+				This is what you should do the very first time when creating certs here:<br/>
+				1. Check "Delete ALL Certs...", fill out all fields and create a new CA, new Server and Client Cert<br/>
+				2. If you need more than one Client-Cert than backup your first cert using DIAGNOSTICS->COMMAND PROMPT->Download<br/>
+				/usr/local/etc/raddb/certs/client.tar<br/>
+				3. Disable "Delete ALL Certs..." and enable "Create a further Client-Certificate" and fill out the Client fields<br/>
+				4. Repeat step 2. as long as you need.<br/><br/>
+				<b>Limitations:</b><br/>
+				There is no CRL. Deleting of existing certs from the database (../certs/index.txt) isn't possible from GUI.<br/>
+				If you choose a Common Name which already exists in the database (check view config) the .crt will be zero bytes.<br/>
+				Choose other Common Name and create a new Client-Cert.
+				]]>
+			</description>
 			<type>select</type>
 			<default_value>no</default_value>
-					<options>
-						<option><name>Yes</name><value>yes</value></option>
-						<option><name>No</name><value>no</value></option>
-					</options>
+			<options>
+				<option><name>Yes</name><value>yes</value></option>
+				<option><name>No</name><value>no</value></option>
+			</options>
 		</field>
 		<field>
 			<fielddescr>E-Mail Address</fielddescr>
 			<fieldname>varcertsclientemailaddress</fieldname>
-			<description><![CDATA[Enter the E-Mail address for the Client-Cert. (Default: user@mycompany.com)]]></description>
+			<description>
+				<![CDATA[
+				Enter the E-Mail address for the Client-Cert. (Default: user@mycompany.com)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>user@mycompany.com</default_value>
 		</field>
 		<field>
 			<fielddescr>Common Name</fielddescr>
 			<fieldname>varcertsclientcommonname</fieldname>
-			<description><![CDATA[Enter the common name for the Client-Cert. (Default: client-cert)]]></description>
+			<description>
+				<![CDATA[
+				Enter the common name for the Client-Cert. (Default: client-cert)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>client-cert</default_value>
 		</field>

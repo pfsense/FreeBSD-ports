@@ -3,12 +3,12 @@
 <?xml-stylesheet type="text/xsl" href="./xsl/package.xsl"?>
 <packagegui>
 	<copyright>
-<![CDATA[	
+<![CDATA[
 /*
  * freeradiusinterfaces.xml
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
  * All rights reserved.
  *
@@ -29,9 +29,6 @@
  * limitations under the License.
  */
 ]]>	</copyright>
-	<description><![CDATA[Describe your package here]]></description>
-	<requirements>Describe your package requirements here</requirements>
-	<faq>Currently there are no FAQ items provided.</faq>
 	<name>freeradiusinterfaces</name>
 	<title>FreeRADIUS: Interfaces</title>
 	<include_file>/usr/local/pkg/freeradius.inc</include_file>
@@ -109,11 +106,16 @@
 		<field>
 			<name>General Configuration</name>
 			<type>listtopic</type>
-		</field>	
+		</field>
 		<field>
 			<fielddescr>Interface IP Address</fielddescr>
 			<fieldname>varinterfaceip</fieldname>
-			<description><![CDATA[Enter the IP address (e.g. 192.168.100.1) of the listening interface. If you choose <b>*</b> then it means all interfaces. (Default: *)]]></description>
+			<description>
+				<![CDATA[
+				Enter the IP address (e.g. 192.168.100.1) of the listening interface.
+				If you choose <b>*</b> then it means all interfaces. (Default: *)
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>*</default_value>
 			<required/>
@@ -121,12 +123,22 @@
 		<field>
 			<fielddescr>Port</fielddescr>
 			<fieldname>varinterfaceport</fieldname>
-			<description><![CDATA[Enter the port number of the listening interface. Different interface types need different ports.<br>
-							You could use this as an example:<br>
-							Authentication  = 1812<br>
-							Accounting  = 1813<br>
-							Status = 1816<br>
-							<b>IMPORTANT:</b> For <b>every interface type</b> listening on the <b>same IP address</b> you need <b>different ports</b>.]]></description>
+			<description>
+				<![CDATA[
+				Enter the port number of the listening interface. Different interface types need different ports.
+				Click Info for details.
+				<div class="infoblock">
+				You could use this as an example:
+				<dl class="dl-horizontal responsive">
+				<dt>Authentication</dt><dd>Using port 1812</dd>
+				<dt>Accounting</dt><dd>Using port 1813</dd>
+				<dt>Status</dt><dd>Using port 1816</dd>
+				</dl>
+				<strong><span class="text-danger">IMPORTANT: </span><strong>
+				For <b>every interface type</b> listening on the <b>same IP address</b> you need <b>different ports</b>.
+				</div>
+				]]>
+			</description>
 			<type>input</type>
 			<default_value>1812</default_value>
 			<required/>
@@ -134,35 +146,49 @@
 		<field>
 			<fielddescr>Interface Type</fielddescr>
 			<fieldname>varinterfacetype</fieldname>
-			<description><![CDATA[Enter the type of the listening interface. (Default: auth)]]></description>
+			<description>
+				<![CDATA[
+				Enter the type of the listening interface.
+				(Default: auth)
+				]]>
+			</description>
 			<type>select</type>
 			<default_value>auth</default_value>
-					<options>
-						<option><name>Authentication</name><value>auth</value></option>
-						<option><name>Accounting</name><value>acct</value></option>
-						<option><name>Proxy</name><value>proxy</value></option>
-						<option><name>Detail</name><value>detail</value></option>
-						<option><name>Status</name><value>status</value></option>
-						<option><name>CoA</name><value>coa</value></option>
-					</options>
+			<options>
+				<option><name>Authentication</name><value>auth</value></option>
+				<option><name>Accounting</name><value>acct</value></option>
+				<option><name>Proxy</name><value>proxy</value></option>
+				<option><name>Detail</name><value>detail</value></option>
+				<option><name>Status</name><value>status</value></option>
+				<option><name>CoA</name><value>coa</value></option>
+			</options>
 			<required/>
 		</field>
 		<field>
 			<fielddescr>IP Version</fielddescr>
 			<fieldname>varinterfaceipversion</fieldname>
-			<description><![CDATA[Enter the IP version of the listening interface. (Default: IPv4)]]></description>
+			<description>
+				<![CDATA[
+				Enter the IP version of the listening interface.
+				(Default: IPv4)
+				]]>
+			</description>
 			<type>select</type>
 			<default_value>ipaddr</default_value>
-					<options>
-						<option><name>IPv4</name><value>ipaddr</value></option>
-						<option><name>IPv6</name><value>ipv6addr</value></option>
-					</options>
+			<options>
+				<option><name>IPv4</name><value>ipaddr</value></option>
+				<option><name>IPv6</name><value>ipv6addr</value></option>
+			</options>
 			<required/>
 		</field>
 		<field>
 			<fielddescr>Description</fielddescr>
 			<fieldname>description</fieldname>
-			<description><![CDATA[Optionally enter a description here for your reference.]]></description>
+			<description>
+				<![CDATA[
+				Optionally enter a description here for your reference.
+				]]>
+			</description>
 			<type>input</type>
 		</field>
 	</fields>

@@ -3,7 +3,7 @@
  * freeradius_view_config.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
  * Copyright (c) 2011 Marcello Coutinho <marcellocoutinho@gmail.com>
  * All rights reserved.
@@ -28,24 +28,23 @@
 require("guiconfig.inc");
 define('RADDB', '/usr/local/etc/raddb');
 
-function get_file($file){
-	$files['radiusd']=RADDB . "/radiusd.conf";
-	$files['eap']=RADDB . "/eap.conf";
-	$files['sql']=RADDB . "/sql.conf";
-	$files['clients']=RADDB . "/clients.conf";
-	$files['users']=RADDB . "/users";
-	$files['macs']=RADDB . "/authorized_macs";
-	$files['virtual-server-default']=RADDB . "/sites-enabled/default";
-	$files['ca']=RADDB . "/certs/ca.cnf";
-	$files['server']=RADDB . "/certs/server.cnf";
-	$files['client']=RADDB . "/certs/client.cnf";
-	$files['index']=RADDB . "/certs/index.txt";
-	$files['ldap']=RADDB . "/modules/ldap";
+function get_file($file) {
+	$files['radiusd'] = RADDB . "/radiusd.conf";
+	$files['eap'] = RADDB . "/eap.conf";
+	$files['sql'] = RADDB . "/sql.conf";
+	$files['clients'] = RADDB . "/clients.conf";
+	$files['users'] = RADDB . "/users";
+	$files['macs'] = RADDB . "/authorized_macs";
+	$files['virtual-server-default'] = RADDB . "/sites-enabled/default";
+	$files['ca'] = RADDB . "/certs/ca.cnf";
+	$files['server'] = RADDB . "/certs/server.cnf";
+	$files['client'] = RADDB . "/certs/client.cnf";
+	$files['index'] = RADDB . "/certs/index.txt";
+	$files['ldap'] = RADDB . "/modules/ldap";
 
-
-	if ($files[$file]!="" && file_exists($files[$file])){
+	if ($files[$file] != "" && file_exists($files[$file])) {
 		print '<pre>';
-		print $files[$file]."\n".file_get_contents($files[$file]);
+		print $files[$file] . "\n" . file_get_contents($files[$file]);
 		print '</pre>';
 	}
 }
