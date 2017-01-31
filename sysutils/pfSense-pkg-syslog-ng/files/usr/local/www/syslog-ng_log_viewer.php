@@ -102,7 +102,7 @@ display_top_tabs($tab_array);
 	<table class="table table-condensed">
 		<tbody><tr><td>
 			<table class="table table-condensed">
-				<tr><th width="22%">Log File</th><td width="78%"><select name="logfile">
+				<tr><th class="col-sm-2">Log File</th><td><select name="logfile">
 					<?php
 					$log_files = syslogng_get_log_files($objects);
 					foreach ($log_files as $log_file) {
@@ -114,7 +114,7 @@ display_top_tabs($tab_array);
 					}
 					?>
 				</select></td></tr>
-				<tr><th width="22%">Limit</th><td width="78%"><select name="limit">
+				<tr><th class="col-sm-2">Limit</th><td><select name="limit">
 					<?php
 					$limit_options = array("10", "20", "50", "100", "250", "500");
 					foreach ($limit_options as $limit_option) {
@@ -126,9 +126,9 @@ display_top_tabs($tab_array);
 					}
 					?>
 				</select></td></tr>
-				<tr><th width="22%">Include Archives</th><td width="78%"><input type="checkbox" name="archives" <?php if($archives) echo " CHECKED"; ?> /></td></tr>
-				<tr><th width="22%">Filter</th><td width="78%"><input name="filter" value="<?=$filter?>" /></td></tr>
-				<tr><th width="22%">Inverse Filter (NOT)</th><td width="78%"><input type="checkbox" name="not" <?php if($not) echo " CHECKED"; ?> /></td></tr>
+				<tr><th class="col-sm-2">Include Archives</th><td><input type="checkbox" name="archives" <?php if($archives) echo " CHECKED"; ?> /></td></tr>
+				<tr><th class="col-sm-2">Filter</th><td><input name="filter" value="<?=$filter?>" /></td></tr>
+				<tr><th class="col-sm-2">Inverse Filter (NOT)</th><td><input type="checkbox" name="not" <?php if($not) echo " CHECKED"; ?> /></td></tr>
 				<tr><td colspan="2">
 					<button type="submit" class="btn btn-primary" name="refresh" id="refresh" value="Refresh"><i class="fa fa-refresh icon-embed-btn"></i>Refresh</button>
 				</td></tr>
