@@ -729,7 +729,7 @@
 			<description>
 				<![CDATA[
 				Put your own custom options here, one per line. They'll be added to the configuration in place of the default SSL/MITM configuration.<br/>
-				<span class="text-info">Click Info for details.</span> 
+				<span class="text-info"><strong>Ignored unless 'SSL/MITM Mode' is set to 'Custom'.</strong> Click Info for details.</span>
 				<div class="infoblock">
 				Some predefined ACLs for step values are available here: <strong><span class="text-info">step1, step2, step3</span></strong>.<br/>
 				These can be used there for custom configuration and are applied at the corresponding ssl_bump evaluation moments:<br/><br/>

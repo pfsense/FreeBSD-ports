@@ -58,6 +58,10 @@ if ($_POST) {
 	unset($input_errors);
 	$pconfig = $_POST;
 
+	// Input validation would go here, with any invalid values found 
+	// in $_POST being added to $input_errors, e.g:
+	//   $input_errors[] = "Descriptive error message for the user.";
+	
 	if (!$input_errors) {
 		$lcdproc_screens_config['scr_version']                         = $pconfig['scr_version'];
 		$lcdproc_screens_config['scr_time']                            = $pconfig['scr_time'];
@@ -160,7 +164,7 @@ $section->addInput(
 	new Form_Checkbox(
 		'scr_load', // checkbox name (id)
 		'Load', // checkbox label
-		'Display the load averages', // checkbox text
+		'Display the load average of the system over the last 1, 5, and 15 minutes', // checkbox text
 		$pconfig['scr_load'] // checkbox initial value
 	)
 );

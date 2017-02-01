@@ -154,10 +154,19 @@ class acme_sh {
 		chmod($reloadfile, 0755);
 		
 		if ($api == "dns_nsupdate") {
-			$keyfile = "{$certpath}nsupdate.key";
+			$keyfile = "{$certpath}nsupdate";
 			$nsupdatekey = base64_decode($envvariables['NSUPDATE_KEY']);
-			file_put_contents($keyfile, $nsupdatekey);
-			$envvariables['NSUPDATE_KEY'] = $keyfile;
+			/* Use the same .key/.private format as RFC2136 Dynamic DNS (See /etc/inc/services.inc (services_dnsupdate_process() */
+			/* Hardcode key type flags/proto for now as Host key and HMAC */
+			file_put_contents("{$keyfile}.key", "_acme-challenge.{$Le_Domain} IN KEY 513 3 157 {$nsupdatekey}\n");
+			$privkey = <<<EOD
+Private-key-format: v1.2
+Algorithm: 157 (HMAC)
+Key: {$nsupdatekey}
+
+EOD;
+			file_put_contents("{$keyfile}.private", $privkey);
+			$envvariables['NSUPDATE_KEY'] = "{$keyfile}.key";
 		}
 
 		$hookcontent_httpapi  = <<<EOF

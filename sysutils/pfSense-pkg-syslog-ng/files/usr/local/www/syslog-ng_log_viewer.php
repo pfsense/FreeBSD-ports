@@ -83,89 +83,100 @@ if (file_exists($logfile) && (filesize($logfile) > 0)) {
 	}
 }
 
-$pgtitle = array(gettext("Package"), gettext("Services: Syslog-ng"), gettext("Logs"));
+$pgtitle = array("Package", "Services: Syslog-ng", "Logs");
 
-include("head.inc");
-?>
+require_once("head.inc");
 
-<?php include("fbegin.inc"); ?>
-<?php if ($savemsg) print_info_box($savemsg); ?>
-
-<style>
-
-.border-bottom {
-	border: 1px solid #F5F5F5; border-width: 0px 0 3px 0px;
+if ($savemsg) {
+	print_info_box($savemsg);
 }
 
-</style>
+$tab_array = array();
+$tab_array[] = array("General", false, "/pkg_edit.php?xml=syslog-ng.xml&amp;id=0");
+$tab_array[] = array("Advanced", false, "/pkg.php?xml=syslog-ng_advanced.xml");
+$tab_array[] = array("Log Viewer", true, "/syslog-ng_log_viewer.php");
+display_top_tabs($tab_array);
 
 
-<form action="syslog-ng_log_viewer.php" method="post" name="iform">
-<table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #F5F5F5;">
-	<tr><td>
-<?php
-	$tab_array = array();
-	$tab_array[] = array("General", false, "/pkg_edit.php?xml=syslog-ng.xml&amp;id=0");
-	$tab_array[] = array("Advanced", false, "/pkg.php?xml=syslog-ng_advanced.xml");
-	$tab_array[] = array("Log Viewer", true, "/syslog-ng_log_viewer.php");
-	display_top_tabs($tab_array);
+$form = new Form(false);
+
+$section = new Form_Section("Syslog-ng Logs");
+
+$log_files = syslogng_get_log_files($objects);
+
+$section->addInput(new Form_Select(
+	'logfile',
+	'Log File',
+	$logfile,
+	array_combine($log_files, $log_files)
+));
+
+$section->addInput(new Form_Select(
+	'limit',
+	'Limit',
+	$limit,
+	array_combine(array("10", "20", "50", "100", "250", "500"), array("10", "20", "50", "100", "250", "500"))
+));
+
+$section->addInput(new Form_Checkbox(
+	'archives',
+	'Include Archives',
+	'',
+	$archives
+));
+
+$section->addInput(new Form_Input(
+	'filter',
+	'Filter',
+	'text',
+	$filter
+));
+
+$section->addInput(new Form_Checkbox(
+	'not',
+	'Inverse Filter (NOT)',
+	'',
+	$not
+));
+
+$form->addGlobal(new Form_Button(
+	'submit',
+	"Refresh",
+	null,
+	'fa-refresh'
+))->addClass('btn-primary');
+
+$form->add($section);
+
+print($form);
 ?>
-	</td></tr>
-	<tr><td>
-	<div id="mainarea">
-		<table id="maintable" class="tabcont" width="100%" border="0" cellpadding="0" cellspacing="0">
-			<tr><td>
 
-			<table width="100%" class="panel-default" style="background-color: #FFFFFF;">
-				<h2 class="panel-title" style="background-color: #424242; color: #FFFFFF; border: solid 5px #424242;">Syslog-ng Logs</h2>
-				<tr><td class="border-bottom" width="22%">Log File</td><td class="border-bottom" width="78%"><select name="logfile">
-				<?php
-				$log_files = syslogng_get_log_files($objects);
-				foreach($log_files as $log_file) {
-					if($log_file == $logfile) {
-						echo "<option value=\"$log_file\" selected=\"selected\">$log_file</option>\n";
-					} else {
-						echo "<option value=\"$log_file\">$log_file</option>\n";
-					}
-				}
-				?>
-				</select></td></tr>
-				<tr><td class="border-bottom" width="22%">Limit</td><td class="border-bottom" width="78%"><select name="limit">
-				<?php
-				$limit_options = array("10", "20", "50", "100", "250", "500");
-				foreach($limit_options as $limit_option) {
-					if($limit_option == $limit) {
-						echo "<option value=\"$limit_option\" selected=\"selected\">$limit_option</option>\n";
-					} else {
-						echo "<option value=\"$limit_option\">$limit_option</option>\n";
-					}
-				}
-				?>
-				</select></td></tr>
-				<tr><td class="border-bottom" width="22%">Include Archives</td><td class="border-bottom" width="78%"><input type="checkbox" name="archives" <?php if($archives) echo " CHECKED"; ?> /></td></tr>
-				<tr><td class="border-bottom" width="22%">Filter</td><td class="border-bottom" width="78%"><input name="filter" value="<?=$filter?>" /></td></tr>
-				<tr><td class="border-bottom" width="22%">Inverse Filter (NOT)</td><td class="border-bottom" width="78%"><input type="checkbox" name="not" <?php if($not) echo " CHECKED"; ?> /></td></tr>
-				<tr><td class="border-bottom" colspan="2"><input type="submit" value="Refresh" /></td></tr>
-				<tr><td class="border-bottom" colspan="2">
-				<table class="tabcont" width="100%" border="0" cellspacing="0" cellpadding="0">
-				<?php
-				if(!empty($log_messages)) {
-					echo "<tr><td class=\"listtopic\">Showing $log_messages_count of $log_lines messages</td></tr>\n";
-					foreach($log_messages as $log_message) {
-						echo "<tr><td class=\"listr\">$log_message</td></tr>\n";
-					}
-				} else {
-					echo "<tr><td><span class=\"red\">No log messages found or log file is empty.</span></td></tr>\n";
-				}
-				?>
-				</table>
-				</td></tr>
+<?php
+if(empty($log_messages)) {
+	print_info_box("No log messages found or log file is empty", "danger", false);
+} else {
+	print('<div class="panel panel-default">');
+	print('<div class="panel-heading"><h2 class="panel-title">Showing ' . $log_messages_count . ' of ' . $log_lines . ' messages</h2></div>');
+?>
+
+	<div class="panel-body">
+		<div clas="table-responsive">
+			<table class="table table-condensed table-hover">
+				<thead>
+				</thead>
+				<tbody>
+<?php
+	foreach($log_messages as $log_message) {
+		print('<tr><td >' . $log_message . '</td></tr>');
+	}
+?>
+				</tbody>
 			</table>
-
-			</td></tr>
-		</table>
+		</div>
 	</div>
-	</td></tr>
-</table>
-</form>
-<?php include("foot.inc"); ?>
+</div>
+
+<?php
+}
+
+include("foot.inc"); ?>

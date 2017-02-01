@@ -370,8 +370,8 @@ function sync_package_lcdproc() {
 				$config_text .= "[{$lcdproc_config['driver']}]\n";
 				$config_text .= "Device={$realport}\n";
 				$config_text .= "Size={$lcdproc_config['size']}\n";
-				$config_text .= "Type=lcd\n";
-				$config_text .= "hasAdjustableBacklight=yes\n";
+				$config_text .= "Type={$lcdproc_config['mtxorb_type']}\n";
+				$config_text .= "hasAdjustableBacklight=" . ($lcdproc_config['mtxorb_adjustable_backlight'] ? "yes" : "no") . "\n";
 				$config_text .= "Reboot=no\n";
 				$config_text .= set_lcd_value("contrast", 1000, 480);
 				$config_text .= set_lcd_value("brightness", 1000, 1000);

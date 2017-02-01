@@ -3,7 +3,7 @@
  * freeradius.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2017 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Alexander Wilke <nachtfalkeaw@web.de>
  * Copyright (c) 2013 Marcello Coutinho
  * All rights reserved.
@@ -26,6 +26,7 @@ require_once("filter.inc");
 require_once("functions.inc");
 require_once("globals.inc");
 require_once("notices.inc");
+require_once("openvpn.inc");
 require_once("pkg-utils.inc");
 require_once("services.inc");
 require_once("service-utils.inc");
@@ -48,7 +49,7 @@ define('FREERADIUS_ETC', FREERADIUS_BASE . '/etc');
  * freeradius_eapconf_resync($restart_svc = true)
  * freeradius_modulesldap_resync($restart_svc = true)
  * freeradius_allcertcnf_resync($restart_svc = true)
-*/
+ */
 
 // Check freeradius lib version
 	$frlib = "";
@@ -61,9 +62,9 @@ define('FREERADIUS_ETC', FREERADIUS_BASE . '/etc');
 		}
 	}
 	if ($frlib == "") {
-		log_error("freeRADIUS - No freeradius libs found on " . FREERADIUS_LIB);
+		log_error("freeRADIUS: No freeradius libs found on " . FREERADIUS_LIB);
 	}
-	
+
 function freeradius_deinstall_command() {
 	$pidFile = "/var/run/radiusd.pid";
 	$i = 0;
@@ -79,7 +80,7 @@ function freeradius_deinstall_command() {
 
 function freeradius_chown_recursive($dir, $user = "root", $group = "wheel") {
 	if (empty($dir) || ($dir == '/') || ($dir == '/usr/local') || ($dir == '/usr/local/etc') || ($dir == '/usr/local/lib') || ($dir == '/var/log') || !is_dir($dir)) {
-		log_error(gettext("[freeradius] Attempted to recursively chown an invalid directory: '{$dir}'"));
+		log_error(gettext("freeRADIUS: Attempted to recursively chown an invalid directory: '{$dir}'"));
 		return;
 	}
 	chown($dir, $user);
@@ -96,7 +97,7 @@ function freeradius_chown_recursive($dir, $user = "root", $group = "wheel") {
 			}
 		}
 	} else {
-		log_error(gettext("[freedarius] freeradius_chown_recursive() call failed; permissions not set for directory: '{$dir}'"));
+		log_error(gettext("freeRADIUS: freeradius_chown_recursive() call failed; permissions not set for directory: '{$dir}'"));
 	}
 }
 
@@ -140,8 +141,9 @@ function freeradius_install_command() {
 	}
 
 	// Disable virtual-server we do not need by default
-	if (file_exists(FREERADIUS_ETC . "/raddb/sites-enabled/control-socket")) { unlink(FREERADIUS_ETC . "/raddb/sites-enabled/control-socket"); }
-	if (file_exists(FREERADIUS_ETC . "/raddb/sites-enabled/inner-tunnel")) { unlink(FREERADIUS_ETC . "/raddb/sites-enabled/inner-tunnel"); }
+	unlink_if_exists(FREERADIUS_ETC . "/raddb/sites-enabled/control-socket");
+	unlink_if_exists(FREERADIUS_ETC . "/raddb/sites-enabled/inner-tunnel");
+
 
 	// We run this here just to suppress some warnings on syslog if file doesn't exist
 	freeradius_authorizedmacs_resync(false, false);
@@ -228,58 +230,64 @@ function freeradius_settings_resync($restart_svc = true) {
 		touch("/var/log/radwtmp");
 	}
 
-	$varsettings = $config['installedpackages']['freeradiussettings']['config'][0];
-	
+	if (is_array($config['installedpackages']['freeradiussettings']['config'][0])) {
+		$varsettings = $config['installedpackages']['freeradiussettings']['config'][0];
+	} else {
+		$varsettings = array();
+	}
+
 	// Variables: General configuration
-	$varsettingsmaxrequests = ($varsettings['varsettingsmaxrequests']?$varsettings['varsettingsmaxrequests']:'1024');
-	$varsettingsmaxrequesttime = ($varsettings['varsettingsmaxrequesttime']?$varsettings['varsettingsmaxrequesttime']:'30');
-	$varsettingscleanupdelay = ($varsettings['varsettingscleanupdelay']?$varsettings['varsettingscleanupdelay']:'5');
-	$varsettingshostnamelookups = ($varsettings['varsettingshostnamelookups']?$varsettings['varsettingshostnamelookups']:'no');
-	$varsettingsallowcoredumps = ($varsettings['varsettingsallowcoredumps']?$varsettings['varsettingsallowcoredumps']:'no');
-	$varsettingsregularexpressions = ($varsettings['varsettingsregularexpressions']?$varsettings['varsettingsregularexpressions']:'yes');
-	$varsettingsextendedexpressions = ($varsettings['varsettingsextendedexpressions']?$varsettings['varsettingsextendedexpressions']:'yes');
-	
+	$varsettingsmaxrequests = ($varsettings['varsettingsmaxrequests'] ?: '1024');
+	$varsettingsmaxrequesttime = ($varsettings['varsettingsmaxrequesttime'] ?: '30');
+	$varsettingscleanupdelay = ($varsettings['varsettingscleanupdelay']?: '5');
+	$varsettingshostnamelookups = ($varsettings['varsettingshostnamelookups'] ?: 'no');
+	$varsettingsallowcoredumps = ($varsettings['varsettingsallowcoredumps'] ?: 'no');
+	$varsettingsregularexpressions = ($varsettings['varsettingsregularexpressions'] ?: 'yes');
+	$varsettingsextendedexpressions = ($varsettings['varsettingsextendedexpressions'] ?:'yes');
+
 	// Variables: Logging options
-	$varsettingslogdir = ($varsettings['varsettingslogdir']?$varsettings['varsettingslogdir']:'syslog');
-	$varsettingsauth = ($varsettings['varsettingsauth']?$varsettings['varsettingsauth']:'yes');
-	$varsettingsauthbadpass = ($varsettings['varsettingsauthbadpass']?$varsettings['varsettingsauthbadpass']:'no');
-	$varsettingsauthbadpassmessage = ($varsettings['varsettingsauthbadpassmessage']?$varsettings['varsettingsauthbadpassmessage']:'');
-	$varsettingsauthgoodpass = ($varsettings['varsettingsauthgoodpass']?$varsettings['varsettingsauthgoodpass']:'no');
-	$varsettingsauthgoodpassmessage = ($varsettings['varsettingsauthgoodpassmessage']?$varsettings['varsettingsauthgoodpassmessage']:'');
-	$varsettingsstrippednames = ($varsettings['varsettingsstrippednames']?$varsettings['varsettingsstrippednames']:'no');
-	
+	$varsettingslogdir = ($varsettings['varsettingslogdir'] ?: 'syslog');
+	$varsettingsauth = ($varsettings['varsettingsauth'] ?: 'yes');
+	$varsettingsauthbadpass = ($varsettings['varsettingsauthbadpass'] ?: 'no');
+	$varsettingsauthbadpassmessage = ($varsettings['varsettingsauthbadpassmessage'] ?: '');
+	$varsettingsauthgoodpass = ($varsettings['varsettingsauthgoodpass'] ?: 'no');
+	$varsettingsauthgoodpassmessage = ($varsettings['varsettingsauthgoodpassmessage'] ?: '');
+	$varsettingsstrippednames = ($varsettings['varsettingsstrippednames'] ?: 'no');
+
 	// Variables: Security
-	$varsettingsmaxattributes = ($varsettings['varsettingsmaxattributes']?$varsettings['varsettingsmaxattributes']:'200');
-	$varsettingsrejectdelay = ($varsettings['varsettingsrejectdelay']?$varsettings['varsettingsrejectdelay']:'1');
-	
+	$varsettingsmaxattributes = ($varsettings['varsettingsmaxattributes'] ?: '200');
+	$varsettingsrejectdelay = ($varsettings['varsettingsrejectdelay'] ?: '1');
+
 	// Variables: Thread Pool
-	$varsettingsstartservers = ($varsettings['varsettingsstartservers']?$varsettings['varsettingsstartservers']:'5');
-	$varsettingsmaxservers = ($varsettings['varsettingsmaxservers']?$varsettings['varsettingsmaxservers']:'32');
-	$varsettingsminspareservers = ($varsettings['varsettingsminspareservers']?$varsettings['varsettingsminspareservers']:'3');
-	$varsettingsmaxspareservers = ($varsettings['varsettingsmaxspareservers']?$varsettings['varsettingsmaxspareservers']:'10');
-	$varsettingsmaxqueuesize = ($varsettings['varsettingsmaxqueuesize']?$varsettings['varsettingsmaxqueuesize']:'65536');
-	$varsettingsmaxrequestsperserver = ($varsettings['varsettingsmaxrequestsperserver']?$varsettings['varsettingsmaxrequestsperserver']:'0');
-	
-	// For more details look at "freeradius_sqlconf_resync"
-	$sqlconf = $config['installedpackages']['freeradiussqlconf']['config'][0];
-		
-	// Dis-/Enable SQL in "instatiate" section in "freeradius_settings_resync" and radiusd.conf SQL SERVER 2
+	$varsettingsstartservers = ($varsettings['varsettingsstartservers'] ?: '5');
+	$varsettingsmaxservers = ($varsettings['varsettingsmaxservers'] ?: '32');
+	$varsettingsminspareservers = ($varsettings['varsettingsminspareservers'] ?: '3');
+	$varsettingsmaxspareservers = ($varsettings['varsettingsmaxspareservers'] ?: '10');
+	$varsettingsmaxqueuesize = ($varsettings['varsettingsmaxqueuesize'] ?: '65536');
+	$varsettingsmaxrequestsperserver = ($varsettings['varsettingsmaxrequestsperserver'] ?: '0');
+
+	// For more details look at freeradius_sqlconf_resync()
+	if (is_array($config['installedpackages']['freeradiussqlconf']['config'][0])) {
+		$sqlconf = $config['installedpackages']['freeradiussqlconf']['config'][0];
+	} else {
+		$sqlconf = array();
+	}
+
+	// Dis-/Enable SQL in "instatiate" section in freeradius_settings_resync() and radiusd.conf SQL SERVER 2
 	if ($sqlconf['varsqlconf2includeenable'] == 'on') {
 		$varsqlconf2instantiate = 'sql2';
-	}
-	else {
+	} else {
 		$varsqlconf2instantiate = '### sql2 DISABLED ###';
 	}
-	
-	$varsqlconf2failover = ($varsettings['varsqlconf2failover']?$varsettings['varsqlconf2failover']:'redundant');
-	
-	// Dis-/Enable SQL in "instatiate" section in "freeradius_settings_resync" and radiusd.conf SQL SERVER 1
+
+	$varsqlconf2failover = ($varsettings['varsqlconf2failover'] ?: 'redundant');
+
+	// Dis-/Enable SQL in "instatiate" section in freeradius_settings_resync() and radiusd.conf SQL SERVER 1
 	if ($sqlconf['varsqlconfincludeenable'] == 'on') {
 		$varsqlconfinclude = '$INCLUDE sql.conf';
 		$varsqlconfincludecounter = '$INCLUDE sql/mysql/counter.conf';
-		$varsqlconfinstantiate = "$varsqlconf2failover {" . "\n\t\tsql" . "\n\t\t$varsqlconf2instantiate" . "\n\t}";
-	}
-	else {
+		$varsqlconfinstantiate = "{$varsqlconf2failover} {" . "\n\t\tsql" . "\n\t\t{$varsqlconf2instantiate}" . "\n\t}";
+	} else {
 		$varsqlconfinclude = '#$INCLUDE sql.conf';
 		$varsqlconfincludecounter = '#$INCLUDE sql/mysql/counter.conf';
 		$varsqlconf2failover = '';
@@ -326,62 +334,67 @@ extended_expressions = $varsettingsextendedexpressions
 
 EOD;
 
-// Deletes virtual-server coa by default. Will be re-enabled if there is an interface-type "coa"
-exec("rm -f " . FREERADIUS_ETC . "/raddb/sites-enabled/coa");
+	// Deletes virtual-server coa by default. Will be re-enabled if there is an interface-type "coa"
+	unlink_if_exists(FREERADIUS_ETC . "/raddb/sites-enabled/coa");
 
-$arrinterfaces = $config['installedpackages']['freeradiusinterfaces']['config'];
-	if (is_array($arrinterfaces)  && !empty($arrinterfaces)) {
+	if (is_array($config['installedpackages']['freeradiusinterfaces']['config'])) {
+		$arrinterfaces = $config['installedpackages']['freeradiusinterfaces']['config'];
+	} else {
+		$arrinterfaces = array();
+	}
+
+	if (!empty($arrinterfaces)) {
 		foreach ($arrinterfaces as $item) {
 			$varinterfaceip = $item['varinterfaceip'];
 			$varinterfaceport = $item['varinterfaceport'];
 			$varinterfacetype = $item['varinterfacetype'];
 			$varinterfaceipversion = $item['varinterfaceipversion'];
 
-			// Begin "if" for interface-type = detail
+			// if interface-type = detail
 			if ($item['varinterfacetype'] == 'detail') {
-			$conf .= <<<EOD
+				$conf .= <<<EOD
 listen {
-		type = $varinterfacetype
-		$varinterfaceipversion = $varinterfaceip
-		port = $varinterfaceport
-		filename = \${radacctdir}/detail-%Y%m%d:%H
-		load_factor = 10
+	type = $varinterfacetype
+	$varinterfaceipversion = $varinterfaceip
+	port = $varinterfaceport
+	filename = \${radacctdir}/detail-%Y%m%d:%H
+	load_factor = 10
 }
 
 EOD;
-			}	// End "if" for interface-type = detail
+			} // endif - interface-type = detail
 
-			// Begin "if" for interface-type = coa
+			// if interface-type = coa
 			if ($item['varinterfacetype'] == 'coa') {
 			// Enables virtual-server coa because interface-type is coa
-			exec("ln -s " . FREERADIUS_ETC . "/raddb/sites-available/coa " . FREERADIUS_ETC . "/raddb/sites-enabled/");
-			$conf .= <<<EOD
+				symlink(FREERADIUS_ETC . "/raddb/sites-available/coa", FREERADIUS_ETC . "/raddb/sites-enabled/");
+				$conf .= <<<EOD
 listen {
-		type = $varinterfacetype
-		$varinterfaceipversion = $varinterfaceip
-		port = $varinterfaceport
-		server = coa
+	type = $varinterfacetype
+	$varinterfaceipversion = $varinterfaceip
+	port = $varinterfaceport
+	server = coa
 }
 
 EOD;
-			}	// End "if" for interface-type = coa
+			} // endif interface-type = coa
 
-			// Begin "if" for interface-type = auth, acct, proxy, status
+			// if interface-type = auth, acct, proxy, status
 			if (($item['varinterfacetype'] == 'auth') || ($item['varinterfacetype'] == 'acct') || ($item['varinterfacetype'] == 'proxy') || ($item['varinterfacetype'] == 'status')) {
-			$conf .= <<<EOD
+				$conf .= <<<EOD
 listen {
-		type = $varinterfacetype
-		$varinterfaceipversion = $varinterfaceip
-		port = $varinterfaceport
+	type = $varinterfacetype
+	$varinterfaceipversion = $varinterfaceip
+	port = $varinterfaceport
 }
 
 EOD;
-			}	// End "if" for interface-type = auth, acct, proxy, status
-		}	// end foreach
-	}	// end if array
+			} // endif interface-type = auth, acct, proxy, status
+		} // endforeach
+	} // endif empty
 
 
-$conf .= <<<EOD
+	$conf .= <<<EOD
 
 log {
 	destination = $varsettingslogdir
@@ -420,10 +433,10 @@ modules {
 	\$INCLUDE eap.conf
 	### Dis-/Enable sql.conf INCLUDE
 	$varsqlconfinclude
-	
+
 	### Dis-/Enable sql/mysql/counter.conf INCLUDE
 	$varsqlconfincludecounter
-		
+
 	#\$INCLUDE sqlippool.conf
 }
 
@@ -447,15 +460,13 @@ EOD;
 	conf_mount_rw();
 	file_put_contents(FREERADIUS_ETC . '/raddb/radiusd.conf', $conf);
 	conf_mount_ro();
-	
+
 	// freeradius_sqlconf_resync() is pointing to this function because we need
 	// to run freeradius_serverdefault_resync() and after that restart freeradius.
 	freeradius_plainmacauth_resync();
 	freeradius_motp_resync();
 	freeradius_serverdefault_resync();
-	
-	// This is to fix the mysqlclient.so which gets lost after reboot
-	exec("ldconfig -m /usr/local/lib/mysql");
+
 	// Change owner of freeradius created files
 	if (is_dir("/var/log/radacct/")) {
 		freeradius_chown_recursive("/var/log/radacct");
@@ -467,225 +478,243 @@ EOD;
 }
 
 function freeradius_users_resync($via_rpc = false) {
-global $config;
+	global $config;
+	$conf = '';
 
-$conf = '';
-
-$arrusers = $config['installedpackages']['freeradius']['config'];
-
-if (is_array($arrusers) && !empty($arrusers)) {
-	foreach ($arrusers as $users) {
-	
-	// Variables for users file defined parameters
-	
-	$varusersusername = $users['varusersusername'];
-	$varuserspassword = $users['varuserspassword'];
-	
-
-	// Check password encryption
-	$varuserspasswordencryption = ($users['varuserspasswordencryption']?$users['varuserspasswordencryption']:'Cleartext-Password');
-		switch ($varuserspasswordencryption) {
-			case "MD5-Password":
-				$varuserspassword = md5($varuserspassword);
-				break;
-			default:
-				$varuserspassword = $users['varuserspassword'];
-		}
-	
-		
-	$varusersmotpinitsecret = $users['varusersmotpinitsecret'];
-	$varusersmotppin = $users['varusersmotppin'];
-	$varusersmotpoffset = ($users['varusersmotpoffset']?$users['varusersmotpoffset']:'0');
-	
-	$varuserssimultaneousconnect = ($users['varuserssimultaneousconnect']?$users['varuserssimultaneousconnect']:'');
-	$varuserswisprredirectionurl = $users['varuserswisprredirectionurl'];
-	$varusersframedipaddress = $users['varusersframedipaddress'];
-	$varusersframedipnetmask = $users['varusersframedipnetmask'];
-	$varusersframedroute = $users['varusersframedroute'];
-	$varusersexpiration = $users['varusersexpiration'];
-	$varuserssessiontimeout = $users['varuserssessiontimeout'];
-	$varuserslogintime = $users['varuserslogintime'];
-	$varusersvlanid = $users['varusersvlanid'];
-	
-	// GUI uses minutes but RADIUS needs seconds so we do a multiplication
-	$varusersamountoftime = ($users['varusersamountoftime']?$users['varusersamountoftime']:'');
-	$varusersamountoftime = $varusersamountoftime * 60;
-	$varuserspointoftime = $users['varuserspointoftime'];
-	
-	// GUI uses MB but RADIUS needs Bytes so we do a multiplication
-	$varusersmaxtotaloctets = ($users['varusersmaxtotaloctets']?$users['varusersmaxtotaloctets']:'');
-	$varusersmaxtotaloctets = $varusersmaxtotaloctets * 1024 * 1024;
-	$varusersmaxtotaloctetstimerange = $users['varusersmaxtotaloctetstimerange'];
-	
-	// GUI uses KiloBit but RADIUS needs Bits so we do a multiplication
-	$varusersmaxbandwidthup = ($users['varusersmaxbandwidthup']?$users['varusersmaxbandwidthup']:'');
-	$varusersmaxbandwidthup = $varusersmaxbandwidthup * 1024;
-	$varusersmaxbandwidthdown = ($users['varusersmaxbandwidthdown']?$users['varusersmaxbandwidthdown']:'');
-	$varusersmaxbandwidthdown = $varusersmaxbandwidthdown * 1024;
-	
-	// Accounting-Interim-Interval - Must not be smaller than 60 and should be bigger than 600s
-	if (($users['varusersacctinteriminterval'] >= '0') && ($users['varusersacctinteriminterval'] < '60')) {
-		$varusersacctinteriminterval = 60;
+	if (is_array($config['installedpackages']['freeradius']['config'])) {
+		$arrusers = $config['installedpackages']['freeradius']['config'];
 	} else {
-		$varusersacctinteriminterval = $users['varusersacctinteriminterval'];
-	}
-	
-	// Clear variables for next user foreach additional options TOP
-	$varuserstopadditionaloptions = '';
-	$varusersadditionaloptionstop = '';
-	
-	if(!empty($users['varuserstopadditionaloptions'])) {
-		$varuserstopadditionaloptions = explode("|", ($users['varuserstopadditionaloptions']));
-		foreach ($varuserstopadditionaloptions as $toptmp) {
-			$varusersadditionaloptionstop .= $toptmp . "\n";
-		}
-	}
-	
-	// Clear variables for next user foreach additional options: CHECK-ITEMS
-	$varuserscheckitemsadditionaloptions = '';
-	$varusersadditionaloptionscheckitems = '';
-	
-	if(!empty($users['varuserscheckitemsadditionaloptions'])) {
-		$varuserscheckitemsadditionaloptions = explode("|", ($users['varuserscheckitemsadditionaloptions']));
-		$varusersadditionaloptionscheckitems .= '';
-		foreach ($varuserscheckitemsadditionaloptions as $checkitemtmp) {
-			$varusersadditionaloptionscheckitems .= "$checkitemtmp" . " ";
-		}
-	}
-		
-	// Clear variables for next user foreach additional options: REPLY-ITEMS
-	$varusersreplyitemsadditionaloptions = '';
-	$varusersadditionaloptionsreplyitems = '';
-	
-	if(!empty($users['varusersreplyitemsadditionaloptions'])) {
-		$varusersreplyitemsadditionaloptions = explode("|", ($users['varusersreplyitemsadditionaloptions']));
-		$varusersadditionaloptionsreplyitems .= '';
-		foreach ($varusersreplyitemsadditionaloptions as $replyitemtmp) {
-			$varusersadditionaloptionsreplyitems .= $replyitemtmp . "\n\t";
-		}
+		$arrusers = array();
 	}
 
-	// Empty variable
-	$varuserscheckitem = '';
-	$varusersreplyitem = '';
-	
-		// check if mobile otp is disabled
-		if ($users['varusersmotpenable'] == '') {
-			// If someone does not want to use username/password but entry "DEFAULT" instead then we can disable this
-			if (($users['varusersusername'] == '') && ($users['varuserspassword'] == '')) {
-				$varuserscheckitem = '';
-			}
-			else {
-				// Add the user attributes to each user.
-				$varuserscheckitem = '"' . $varusersusername . '"' . " $varuserspasswordencryption := " . '"' . $varuserspassword .'"';
-			}
-		} // end of check if otp is enabled
-	
-		// if otp is enabled we need to set Auth-Type to accept because password will be checked when the otp script gets executed in reply-item list
-		else {
-			$varuserscheckitem = '"' . $varusersusername . '"' . " Auth-Type = motp";
-		}
-	
-	// Add additional CHECK-ITEMS here. Different formatting in "users" file needed.
-	if ($varuserssimultaneousconnect != '') {
-	$varuserscheckitem .= ", Simultaneous-Use := " . '"' . $varuserssimultaneousconnect . '"';
-	}
-	if ($varusersexpiration != '') {
-	$varuserscheckitem .= ", Expiration := " . '"' . $varusersexpiration . '"';
-	}
-	if ($varuserslogintime != '') {
-	$varuserscheckitem .= ", Login-Time := " . '"' . $varuserslogintime . '"';
-	}	
-	if ($varusersamountoftime != '') {
-	$varuserscheckitem .= ", Max-" . "$varuserspointoftime" . "-Session := " . "$varusersamountoftime";
-	}
-	if ($varusersadditionaloptionscheckitems != '') {
-	$varuserscheckitem .= ", $varusersadditionaloptionscheckitems";
-	}
+	if (!empty($arrusers)) {
+		foreach ($arrusers as $users) {
+			// Variables for users file defined parameters
+			$varusersusername = $users['varusersusername'];
+			$varuserspassword = $users['varuserspassword'];
 
-		// this is the part for mobile otp
-		if ($users['varusersmotpenable'] == 'on') {
-			$varusersreplyitem .= "MOTP-Init-Secret = $varusersmotpinitsecret," . "\n\tMOTP-PIN = $varusersmotppin," . "\n\tMOTP-Offset = $varusersmotpoffset";
-		}
-		else {
-			$varusersreplyitem .= '';
-		}
-		
-	// Add additional REPLY-ITEMS here. Different formatting in "users" file needed.
-	if ($varusersframedipaddress != '') {
-		if ($varusersreplyitem != '') { $varusersreplyitem .=","; }
-		$varusersreplyitem .= "\n\tFramed-IP-Address = $varusersframedipaddress";
-	}
-	if ($varusersframedipnetmask != '') {
-		if ($varusersreplyitem != '') { $varusersreplyitem .=","; }
-		$varusersreplyitem .= "\n\tFramed-IP-Netmask = $varusersframedipnetmask";
-	}
-	if ($varusersframedroute != '') {
-		if ($varusersreplyitem != '') { $varusersreplyitem .=","; }
-		$varusersreplyitem .= "\n\tFramed-Route = " . '"' . $varusersframedroute . '"';
-	}
-	if ($varuserssessiontimeout != '') {
-		if ($varusersreplyitem != '') { $varusersreplyitem .=","; }
-		$varusersreplyitem .= "\n\tSession-Timeout := $varuserssessiontimeout";
-	}
-	if ($varusersvlanid != '') {
-		if ($varusersreplyitem != '') { $varusersreplyitem .=","; }
-		$varusersreplyitem .= "\n\tTunnel-Type = VLAN,\n\tTunnel-Medium-Type = IEEE-802,\n\tTunnel-Private-Group-ID = " . '"' . $varusersvlanid . '"';
-	}
-	if ($varusersmaxbandwidthup != '') {
-		if ($varusersreplyitem != '') { $varusersreplyitem .=","; }
-		$varusersreplyitem .= "\n\tWISPr-Bandwidth-Max-Up := $varusersmaxbandwidthup";
-	}
-	if ($varusersmaxbandwidthdown != '') {
-		if ($varusersreplyitem != '') { $varusersreplyitem .=","; }
-		$varusersreplyitem .= "\n\tWISPr-Bandwidth-Max-Down := $varusersmaxbandwidthdown";
-	}
-	if ($varusersacctinteriminterval != '') {
-		if ($varusersreplyitem != '') { $varusersreplyitem .=","; }
-		$varusersreplyitem .= "\n\tAcct-Interim-Interval := $varusersacctinteriminterval";
-	}
-	if ($varuserswisprredirectionurl != '') {
-		if ($varusersreplyitem != '') { $varusersreplyitem .=","; }
-		$varusersreplyitem .= "\n\tWISPr-Redirection-URL := $varuserswisprredirectionurl";
-	}
-	// If an octet limit is set we create the files for the limit and the counter. Further we call an exec script which checks if the limit is reached or not
-	if ($varusersmaxtotaloctets != '') {
-		if ($varusersreplyitem != '') { $varusersreplyitem .=","; }
-		//create exec script
-		$varusersreplyitem .= "\n\tExec-Program-Wait = " . '"/bin/sh ' . FREERADIUS_ETC . '/raddb/scripts/datacounter_auth.sh ' . "$varusersusername $varusersmaxtotaloctetstimerange" . '"';
-		// create limit file - will be always overwritten so we can increase limit from GUI
-		exec("`echo $varusersmaxtotaloctets > /var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/max-octets-$varusersusername`");
-		// if used-octets file exist we do NOT overwrite this file!!!
-		if (!file_exists("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/used-octets-$varusersusername")) { exec("echo 0 > /var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/used-octets-$varusersusername"); }
-	}
-	// If an octet limit is NOT set we delete the files for the limit and the counter.
-	else {
-		if (file_exists("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/max-octets-$varusersusername")) { unlink("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/max-octets-$varusersusername"); }
-		if (file_exists("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/used-octets-$varusersusername")) { unlink("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/used-octets-$varusersusername*"); }
-	}
-	if ($varusersadditionaloptionsreplyitems != '') {
-		if ($varusersreplyitem != '') { $varusersreplyitem .=","; }
-		$varusersreplyitem .= "\n\t$varusersadditionaloptionsreplyitems";
-	}
-	
-	// Cosmetic fix - This is just to make a blank new line after each user entry
-	$varusersreplyitem .= "\n\n";
-	
-	
-	$conf .= <<<EOD
+			// Check password encryption
+			$varuserspasswordencryption = ($users['varuserspasswordencryption'] ?: 'Cleartext-Password');
+			switch ($varuserspasswordencryption) {
+				case "MD5-Password":
+					$varuserspassword = md5($varuserspassword);
+					break;
+				default:
+					$varuserspassword = $users['varuserspassword'];
+			}
+
+			$varusersmotpinitsecret = $users['varusersmotpinitsecret'];
+			$varusersmotppin = $users['varusersmotppin'];
+			$varusersmotpoffset = ($users['varusersmotpoffset'] ?: '0');
+
+			$varuserssimultaneousconnect = ($users['varuserssimultaneousconnect'] ?: '');
+			$varuserswisprredirectionurl = $users['varuserswisprredirectionurl'];
+			$varusersframedipaddress = $users['varusersframedipaddress'];
+			$varusersframedipnetmask = $users['varusersframedipnetmask'];
+			$varusersframedroute = $users['varusersframedroute'];
+			$varusersexpiration = $users['varusersexpiration'];
+			$varuserssessiontimeout = $users['varuserssessiontimeout'];
+			$varuserslogintime = $users['varuserslogintime'];
+			$varusersvlanid = $users['varusersvlanid'];
+
+			// GUI uses minutes but RADIUS needs seconds so we do a multiplication
+			$varusersamountoftime = ($users['varusersamountoftime'] ?: '');
+			$varusersamountoftime = $varusersamountoftime * 60;
+			$varuserspointoftime = $users['varuserspointoftime'];
+
+			// GUI uses MB but RADIUS needs Bytes so we do a multiplication
+			$varusersmaxtotaloctets = ($users['varusersmaxtotaloctets'] ?: '');
+			$varusersmaxtotaloctets = $varusersmaxtotaloctets * 1024 * 1024;
+			$varusersmaxtotaloctetstimerange = $users['varusersmaxtotaloctetstimerange'];
+
+			// GUI uses KiloBit but RADIUS needs Bits so we do a multiplication
+			$varusersmaxbandwidthup = ($users['varusersmaxbandwidthup'] ?: '');
+			$varusersmaxbandwidthup = $varusersmaxbandwidthup * 1024;
+			$varusersmaxbandwidthdown = ($users['varusersmaxbandwidthdown'] ?: '');
+			$varusersmaxbandwidthdown = $varusersmaxbandwidthdown * 1024;
+
+			// Accounting-Interim-Interval - Must not be smaller than 60 and should be bigger than 600s
+			if (($users['varusersacctinteriminterval'] >= '0') && ($users['varusersacctinteriminterval'] < '60')) {
+				$varusersacctinteriminterval = 60;
+			} else {
+				$varusersacctinteriminterval = $users['varusersacctinteriminterval'];
+			}
+
+			// Clear variables for next user foreach additional options TOP
+			$varuserstopadditionaloptions = '';
+			$varusersadditionaloptionstop = '';
+
+			if (!empty($users['varuserstopadditionaloptions'])) {
+				$varuserstopadditionaloptions = explode("|", ($users['varuserstopadditionaloptions']));
+				foreach ($varuserstopadditionaloptions as $toptmp) {
+					$varusersadditionaloptionstop .= $toptmp . "\n";
+				}
+			}
+
+			// Clear variables for next user foreach additional options: CHECK-ITEMS
+			$varuserscheckitemsadditionaloptions = '';
+			$varusersadditionaloptionscheckitems = '';
+
+			if (!empty($users['varuserscheckitemsadditionaloptions'])) {
+				$varuserscheckitemsadditionaloptions = explode("|", ($users['varuserscheckitemsadditionaloptions']));
+				$varusersadditionaloptionscheckitems .= '';
+				foreach ($varuserscheckitemsadditionaloptions as $checkitemtmp) {
+					$varusersadditionaloptionscheckitems .= "$checkitemtmp" . " ";
+				}
+			}
+
+			// Clear variables for next user foreach additional options: REPLY-ITEMS
+			$varusersreplyitemsadditionaloptions = '';
+			$varusersadditionaloptionsreplyitems = '';
+
+			if (!empty($users['varusersreplyitemsadditionaloptions'])) {
+				$varusersreplyitemsadditionaloptions = explode("|", ($users['varusersreplyitemsadditionaloptions']));
+				$varusersadditionaloptionsreplyitems .= '';
+				foreach ($varusersreplyitemsadditionaloptions as $replyitemtmp) {
+					$varusersadditionaloptionsreplyitems .= $replyitemtmp . "\n\t";
+				}
+			}
+
+			// Empty variable
+			$varuserscheckitem = '';
+			$varusersreplyitem = '';
+
+			// check if mobile otp is disabled
+			if ($users['varusersmotpenable'] == '') {
+				// If someone does not want to use username/password but entry "DEFAULT" instead then we can disable this
+				if (($users['varusersusername'] == '') && ($users['varuserspassword'] == '')) {
+					$varuserscheckitem = '';
+				} else {
+					// Add the user attributes to each user.
+					$varuserscheckitem = '"' . $varusersusername . '"' . " $varuserspasswordencryption := " . '"' . $varuserspassword .'"';
+				}
+			// end of check if otp is enabled
+			} else {
+				// if otp is enabled we need to set Auth-Type to accept because password will be checked when the otp script gets executed in reply-item list
+				$varuserscheckitem = '"' . $varusersusername . '"' . " Auth-Type = motp";
+			}
+
+			// Add additional CHECK-ITEMS here. Different formatting in "users" file needed.
+			if ($varuserssimultaneousconnect != '') {
+				$varuserscheckitem .= ", Simultaneous-Use := " . '"' . $varuserssimultaneousconnect . '"';
+			}
+			if ($varusersexpiration != '') {
+				$varuserscheckitem .= ", Expiration := " . '"' . $varusersexpiration . '"';
+			}
+			if ($varuserslogintime != '') {
+				$varuserscheckitem .= ", Login-Time := " . '"' . $varuserslogintime . '"';
+			}
+			if ($varusersamountoftime != '') {
+				$varuserscheckitem .= ", Max-" . "$varuserspointoftime" . "-Session := " . "$varusersamountoftime";
+			}
+			if ($varusersadditionaloptionscheckitems != '') {
+				$varuserscheckitem .= ", $varusersadditionaloptionscheckitems";
+			}
+
+			// this is the part for mobile otp
+			if ($users['varusersmotpenable'] == 'on') {
+				$varusersreplyitem .= "MOTP-Init-Secret = $varusersmotpinitsecret," . "\n\tMOTP-PIN = $varusersmotppin," . "\n\tMOTP-Offset = $varusersmotpoffset";
+			} else {
+				$varusersreplyitem .= '';
+			}
+
+			// Add additional REPLY-ITEMS here. Different formatting in "users" file needed.
+			if ($varusersframedipaddress != '') {
+				if ($varusersreplyitem != '') {
+					$varusersreplyitem .= ",";
+				}
+				$varusersreplyitem .= "\n\tFramed-IP-Address = $varusersframedipaddress";
+			}
+			if ($varusersframedipnetmask != '') {
+				if ($varusersreplyitem != '') {
+					$varusersreplyitem .= ",";
+				}
+				$varusersreplyitem .= "\n\tFramed-IP-Netmask = $varusersframedipnetmask";
+			}
+			if ($varusersframedroute != '') {
+				if ($varusersreplyitem != '') {
+					$varusersreplyitem .= ",";
+				}
+				$varusersreplyitem .= "\n\tFramed-Route = " . '"' . $varusersframedroute . '"';
+			}
+			if ($varuserssessiontimeout != '') {
+				if ($varusersreplyitem != '') {
+					$varusersreplyitem .= ",";
+				}
+				$varusersreplyitem .= "\n\tSession-Timeout := $varuserssessiontimeout";
+			}
+			if ($varusersvlanid != '') {
+				if ($varusersreplyitem != '') {
+					$varusersreplyitem .= ",";
+				}
+				$varusersreplyitem .= "\n\tTunnel-Type = VLAN,\n\tTunnel-Medium-Type = IEEE-802,\n\tTunnel-Private-Group-ID = " . '"' . $varusersvlanid . '"';
+			}
+			if ($varusersmaxbandwidthup != '') {
+				if ($varusersreplyitem != '') {
+					$varusersreplyitem .= ",";
+				}
+				$varusersreplyitem .= "\n\tWISPr-Bandwidth-Max-Up := $varusersmaxbandwidthup";
+			}
+			if ($varusersmaxbandwidthdown != '') {
+				if ($varusersreplyitem != '') {
+					$varusersreplyitem .= ",";
+				}
+				$varusersreplyitem .= "\n\tWISPr-Bandwidth-Max-Down := $varusersmaxbandwidthdown";
+			}
+			if ($varusersacctinteriminterval != '') {
+				if ($varusersreplyitem != '') {
+					$varusersreplyitem .= ",";
+				}
+				$varusersreplyitem .= "\n\tAcct-Interim-Interval := $varusersacctinteriminterval";
+			}
+			if ($varuserswisprredirectionurl != '') {
+				if ($varusersreplyitem != '') {
+					$varusersreplyitem .= ",";
+				}
+				$varusersreplyitem .= "\n\tWISPr-Redirection-URL := $varuserswisprredirectionurl";
+			}
+			// If an octet limit is set we create the files for the limit and the counter. Further we call an exec script which checks if the limit is reached or not
+			if ($varusersmaxtotaloctets != '') {
+				if ($varusersreplyitem != '') {
+					$varusersreplyitem .= ",";
+				}
+				// create exec script
+				$varusersreplyitem .= "\n\tExec-Program-Wait = " . '"/bin/sh ' . FREERADIUS_ETC . '/raddb/scripts/datacounter_auth.sh ' . "$varusersusername $varusersmaxtotaloctetstimerange" . '"';
+				// create limit file - will be always overwritten so we can increase limit from GUI
+				file_put_contents("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/max-octets-$varusersusername", $varusersmaxtotaloctets, LOCK_EX);
+				// if used-octets file exist we do NOT overwrite this file!!!
+				if (!file_exists("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/used-octets-$varusersusername")) {
+					file_put_contents("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/used-octets-$varusersusername", "0", LOCK_EX);
+				}
+			} else {
+				// If an octet limit is NOT set we delete the files for the limit and the counter.
+				unlink_if_exists("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/max-octets-$varusersusername");
+				unlink_if_exists("/var/log/radacct/datacounter/$varusersmaxtotaloctetstimerange/used-octets-$varusersusername*");
+			}
+			if ($varusersadditionaloptionsreplyitems != '') {
+				if ($varusersreplyitem != '') {
+					$varusersreplyitem .= ",";
+				}
+				$varusersreplyitem .= "\n\t$varusersadditionaloptionsreplyitems";
+			}
+
+			// Cosmetic fix - This is just to make a blank new line after each user entry
+			$varusersreplyitem .= "\n\n";
+
+			$conf .= <<<EOD
 $varusersadditionaloptionstop
 $varuserscheckitem
 	$varusersreplyitem
 EOD;
-	} //end foreach
-} // end if
+		} // endforeach
+	} // endif
 
 	$filename = FREERADIUS_ETC . '/raddb/users';
 	conf_mount_rw();
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 	conf_mount_ro();
-	
+
 	freeradius_sync_on_changes();
 	// Do not restart on boot
 	// Will get restarted later by freeradius_clients_resync() if called via XMLRPC sync
@@ -696,194 +725,216 @@ EOD;
 
 
 function freeradius_authorizedmacs_resync($restart_svc = true, $via_rpc = false) {
-global $config;
+	global $config;
+	$conf = '';
 
-$conf = '';
-$arrmacs = $config['installedpackages']['freeradiusauthorizedmacs']['config'];
-
-if (is_array($arrmacs) && !empty($arrmacs)) {
-	foreach ($arrmacs as $macs) {
-	
-	// Variables for authorized_macs file defined parameters
-	$varmacsaddress = $macs['varmacsaddress'];
-	// We don't need a password but we need this field to make syntac correct for CHECK-ITEMS
-	$varmacspassword = $macs['varmacsaddress'];
-
-	$varmacssimultaneousconnect = ($macs['varmacssimultaneousconnect']?$macs['varmacssimultaneousconnect']:'');
-	$varmacsswisprredirectionurl = $macs['varmacsswisprredirectionurl'];
-	$varmacsframedipaddress = $macs['varmacsframedipaddress'];
-	$varmacsframedipnetmask = $macs['varmacsframedipnetmask'];
-	$varmacsframedroute = $macs['varmacsframedroute'];
-	$varmacsexpiration = $macs['varmacsexpiration'];
-	$varmacssessiontimeout = $macs['varmacssessiontimeout'];
-	$varmacslogintime = $macs['varmacslogintime'];
-	$varmacsvlanid = $macs['varmacsvlanid'];
-	
-	// GUI uses minutes but RADIUS needs seconds so we do a multiplication
-	$varmacsamountoftime = ($macs['varmacsamountoftime']?$macs['varmacsamountoftime']:'');
-	$varmacsamountoftime = $varmacsamountoftime * 60;
-	$varmacspointoftime = $macs['varmacspointoftime'];
-	
-	// GUI uses MB but RADIUS needs Bytes so we do a multiplication
-	$varmacsmaxtotaloctets = ($macs['varmacsmaxtotaloctets']?$macs['varmacsmaxtotaloctets']:'');
-	$varmacsmaxtotaloctets = $varmacsmaxtotaloctets * 1024 * 1024;
-	$varmacsmaxtotaloctetstimerange = $macs['varmacsmaxtotaloctetstimerange'];
-	
-	// GUI uses KiloBit but RADIUS needs Bits so we do a multiplication
-	$varmacsmaxbandwidthup = ($macs['varmacsmaxbandwidthup']?$macs['varmacsmaxbandwidthup']:'');
-	$varmacsmaxbandwidthup = $varmacsmaxbandwidthup * 1024;
-	$varmacsmaxbandwidthdown = ($macs['varmacsmaxbandwidthdown']?$macs['varmacsmaxbandwidthdown']:'');
-	$varmacsmaxbandwidthdown = $varmacsmaxbandwidthdown * 1024;
-	
-		
-	// Accounting-Interim-Interval
-	if (($users['varmacsacctinteriminterval'] >= '0') && ($users['varmacsacctinteriminterval'] < '60')) {
-		$varmacsacctinteriminterval = 60;
+	if (is_array($config['installedpackages']['freeradiusauthorizedmacs']['config'])) {
+		$arrmacs = $config['installedpackages']['freeradiusauthorizedmacs']['config'];
 	} else {
-		$varmacsacctinteriminterval = $users['varmacsacctinteriminterval'];
-	}
-	
-	
-	// Clear variables for next mac foreach additional options TOP
-	$varmacstopadditionaloptions = '';
-	$varmacsadditionaloptionstop = '';
-	
-	if(!empty($macs['varmacstopadditionaloptions'])) {
-		$varmacstopadditionaloptions = explode("|", ($macs['varmacstopadditionaloptions']));
-		foreach ($varmacstopadditionaloptions as $toptmp) {
-			$varmacsadditionaloptionstop .= $toptmp . "\n";
-		}
-	}
-	
-	// Clear variables for next mac foreach additional options: CHECK-ITEMS
-	$varmacscheckitemsadditionaloptions = '';
-	$varmacsadditionaloptionscheckitems = '';
-	
-	if(!empty($macs['varmacscheckitemsadditionaloptions'])) {
-		$varmacscheckitemsadditionaloptions = explode("|", ($macs['varmacscheckitemsadditionaloptions']));
-		$varmacsadditionaloptionscheckitems .= '';
-		foreach ($varmacscheckitemsadditionaloptions as $checkitemtmp) {
-			$varmacsadditionaloptionscheckitems .= "$checkitemtmp" . " ";
-		}
-	}
-		
-	// Clear variables for next mac foreach additional options: REPLY-ITEMS
-	$varmacsreplyitemsadditionaloptions = '';
-	$varmacsadditionaloptionsreplyitems = '';
-	
-	if(!empty($macs['varmacsreplyitemsadditionaloptions'])) {
-		$varmacsreplyitemsadditionaloptions = explode("|", ($macs['varmacsreplyitemsadditionaloptions']));
-		$varmacsadditionaloptionsreplyitems .= '';
-		foreach ($varmacsreplyitemsadditionaloptions as $replyitemtmp) {
-			$varmacsadditionaloptionsreplyitems .= $replyitemtmp . "\n\t";
-		}
+		$arrmacs = array();
 	}
 
-	// Empty variable
-	$varmacscheckitem = '';
-	$varmacsreplyitem = '';
-	
-	// If someone does not want to use MAC address but entry "DEFAULT" instead then we can disable this
-	if ($macs['varmacsaddress'] == '') {
+	if (!empty($arrmacs)) {
+		foreach ($arrmacs as $macs) {
+			// Variables for authorized_macs file defined parameters
+			$varmacsaddress = $macs['varmacsaddress'];
+			// We don't need a password but we need this field to make syntac correct for CHECK-ITEMS
+			$varmacspassword = $macs['varmacsaddress'];
+
+			$varmacssimultaneousconnect = ($macs['varmacssimultaneousconnect'] ?: '');
+			$varmacsswisprredirectionurl = $macs['varmacsswisprredirectionurl'];
+			$varmacsframedipaddress = $macs['varmacsframedipaddress'];
+			$varmacsframedipnetmask = $macs['varmacsframedipnetmask'];
+			$varmacsframedroute = $macs['varmacsframedroute'];
+			$varmacsexpiration = $macs['varmacsexpiration'];
+			$varmacssessiontimeout = $macs['varmacssessiontimeout'];
+			$varmacslogintime = $macs['varmacslogintime'];
+			$varmacsvlanid = $macs['varmacsvlanid'];
+
+			// GUI uses minutes but RADIUS needs seconds so we do a multiplication
+			$varmacsamountoftime = ($macs['varmacsamountoftime'] ?: '');
+			$varmacsamountoftime = $varmacsamountoftime * 60;
+			$varmacspointoftime = $macs['varmacspointoftime'];
+
+			// GUI uses MB but RADIUS needs Bytes so we do a multiplication
+			$varmacsmaxtotaloctets = ($macs['varmacsmaxtotaloctets'] ?: '');
+			$varmacsmaxtotaloctets = $varmacsmaxtotaloctets * 1024 * 1024;
+			$varmacsmaxtotaloctetstimerange = $macs['varmacsmaxtotaloctetstimerange'];
+
+			// GUI uses KiloBit but RADIUS needs Bits so we do a multiplication
+			$varmacsmaxbandwidthup = ($macs['varmacsmaxbandwidthup'] ?: '');
+			$varmacsmaxbandwidthup = $varmacsmaxbandwidthup * 1024;
+			$varmacsmaxbandwidthdown = ($macs['varmacsmaxbandwidthdown'] ?: '');
+			$varmacsmaxbandwidthdown = $varmacsmaxbandwidthdown * 1024;
+
+			// Accounting-Interim-Interval
+			if (($users['varmacsacctinteriminterval'] >= '0') && ($users['varmacsacctinteriminterval'] < '60')) {
+				$varmacsacctinteriminterval = 60;
+			} else {
+				$varmacsacctinteriminterval = $users['varmacsacctinteriminterval'];
+			}
+
+			// Clear variables for next mac foreach additional options TOP
+			$varmacstopadditionaloptions = '';
+			$varmacsadditionaloptionstop = '';
+
+			if (!empty($macs['varmacstopadditionaloptions'])) {
+				$varmacstopadditionaloptions = explode("|", ($macs['varmacstopadditionaloptions']));
+				foreach ($varmacstopadditionaloptions as $toptmp) {
+					$varmacsadditionaloptionstop .= $toptmp . "\n";
+				}
+			}
+
+			// Clear variables for next mac foreach additional options: CHECK-ITEMS
+			$varmacscheckitemsadditionaloptions = '';
+			$varmacsadditionaloptionscheckitems = '';
+
+			if (!empty($macs['varmacscheckitemsadditionaloptions'])) {
+				$varmacscheckitemsadditionaloptions = explode("|", ($macs['varmacscheckitemsadditionaloptions']));
+				$varmacsadditionaloptionscheckitems .= '';
+				foreach ($varmacscheckitemsadditionaloptions as $checkitemtmp) {
+					$varmacsadditionaloptionscheckitems .= "$checkitemtmp" . " ";
+				}
+			}
+
+			// Clear variables for next mac foreach additional options: REPLY-ITEMS
+			$varmacsreplyitemsadditionaloptions = '';
+			$varmacsadditionaloptionsreplyitems = '';
+
+			if (!empty($macs['varmacsreplyitemsadditionaloptions'])) {
+				$varmacsreplyitemsadditionaloptions = explode("|", ($macs['varmacsreplyitemsadditionaloptions']));
+				$varmacsadditionaloptionsreplyitems .= '';
+				foreach ($varmacsreplyitemsadditionaloptions as $replyitemtmp) {
+					$varmacsadditionaloptionsreplyitems .= $replyitemtmp . "\n\t";
+				}
+			}
+
+			// Empty variable
 			$varmacscheckitem = '';
-	}
-	else {
-		// Add the user attributes to each user.
-		$varmacscheckitem = "$varmacsaddress" . " Cleartext-Password := " . '"' . $varmacspassword . '"';
-	}
-	
-	// Add additional CHECK-ITEMS here. Different formatting in "authorized_macs" file needed.
-	if ($varmacssimultaneousconnect != '') {
-	$varmacscheckitem .= ", Simultaneous-Use := " . '"' . $varmacssimultaneousconnect . '"';
-	}
-	if ($varmacsexpiration != '') {
-	$varmacscheckitem .= ", Expiration := " . '"' . $varmacsexpiration . '"';
-	}
-	if ($varmacslogintime != '') {
-	$varmacscheckitem .= ", Login-Time := " . '"' . $varmacslogintime . '"';
-	}	
-	if ($varmacsamountoftime != '') {
-	$varmacscheckitem .= ", Max-" . "$varmacspointoftime" . "-Session := " . "$varmacsamountoftime";
-	}
-	if ($varmacsadditionaloptionscheckitems != '') {
-	$varmacscheckitem .= ", $varmacsadditionaloptionscheckitems";
-	}
+			$varmacsreplyitem = '';
 
-	// Add additional REPLY-ITEMS here. Different formatting in "authorized_macs" file needed.
-	if ($varmacsframedipaddress != '') {
-		if ($varmacsreplyitem != '') { $varmacsreplyitem .=","; }
-		$varmacsreplyitem .= "\n\tFramed-IP-Address = $varmacsframedipaddress";
-	}
-	if ($varmacsframedipnetmask != '') {
-		if ($varmacsreplyitem != '') { $varmacsreplyitem .=","; }
-		$varmacsreplyitem .= "\n\tFramed-IP-Netmask = $varmacsframedipnetmask";
-	}
-	if ($varmacsframedroute != '') {
-		if ($varmacsreplyitem != '') { $varmacsreplyitem .=","; }
-		$varmacsreplyitem .= "\n\tFramed-Route = " . '"' . $varmacsframedroute . '"';
-	}
-	if ($varmacssessiontimeout != '') {
-		if ($varmacsreplyitem != '') { $varmacsreplyitem .=","; }
-		$varmacsreplyitem .= "\n\tSession-Timeout := $varmacssessiontimeout";
-	}
-	if ($varmacsvlanid != '') {
-		if ($varmacsreplyitem != '') { $varmacsreplyitem .=","; }
-		$varmacsreplyitem .= "\n\tTunnel-Type = VLAN,\n\tTunnel-Medium-Type = IEEE-802,\n\tTunnel-Private-Group-ID = " . '"' . $varmacsvlanid . '"';
-	}
-	if ($varmacsmaxbandwidthup != '') {
-		if ($varmacsreplyitem != '') { $varmacsreplyitem .=","; }
-		$varmacsreplyitem .= "\n\tWISPr-Bandwidth-Max-Up := $varmacsmaxbandwidthup";
-	}
-	if ($varmacsmaxbandwidthdown != '') {
-		if ($varmacsreplyitem != '') { $varmacsreplyitem .=","; }
-		$varmacsreplyitem .= "\n\tWISPr-Bandwidth-Max-Down := $varmacsmaxbandwidthdown";
-	}
-	if ($varmacsacctinteriminterval != '') {
-		if ($varmacsreplyitem != '') { $varmacsreplyitem .=","; }
-		$varmacsreplyitem .= "\n\tAcct-Interim-Interval := $varmacsacctinteriminterval";
-	}
-	if ($varmacswisprredirectionurl != '') {
-		if ($varmacsreplyitem != '') { $varmacsreplyitem .=","; }
-		$varmacsreplyitem .= "\n\tWISPr-Redirection-URL := $varmacsswisprredirectionurl";
-	}
-	// If an octet limit is set we create the files for the limit and the counter. Further we call an exec script which checks if the limit is reached or not
-	if ($varmacsmaxtotaloctets != '') {
-		if ($varmacsreplyitem != '') { $varmacsreplyitem .=","; }
-		//create exec script
-		$varmacsreplyitem .= "\n\tExec-Program-Wait = " . '"/bin/sh ' . FREERADIUS_ETC . '/raddb/scripts/datacounter_auth.sh ' . "$varmacsaddress $varmacsmaxtotaloctetstimerange" . '"';
-		// create limit file - will be always overwritten so we can increase limit from GUI
-		exec("`echo $varmacsmaxtotaloctets > /var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/max-octets-$varmacsaddress`");
-		// if used-octets file exist we do NOT overwrite this file!!!
-		if (!file_exists("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/used-octets-$varmacsaddress")) { exec("echo 0 > /var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/used-octets-$varmacsaddress"); }
-	}
-	// If an octet limit is NOT set we delete the files for the limit and the counter.
-	else {
-		if (file_exists("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/max-octets-$varmacsaddress")) { unlink("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/max-octets-$varmacsaddress"); }
-		if (file_exists("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/used-octets-$varmacsaddress")) { unlink("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/used-octets-$varmacsaddress*"); }
-	}
-	if ($varmacsadditionaloptionsreplyitems != '') {
-		if ($varmacsreplyitem != '') { $varmacsreplyitem .=","; }
-		$varmacsreplyitem .= "\n\t$varmacsadditionaloptionsreplyitems";
-	}
-	
-	// Cosmetic fix - This is just to make a blank new line after each macs entry
-	$varmacsreplyitem .= "\n\n";
-	
-	
-	$conf .= <<<EOD
+			// If someone does not want to use MAC address but entry "DEFAULT" instead then we can disable this
+			if ($macs['varmacsaddress'] == '') {
+				$varmacscheckitem = '';
+			} else {
+				// Add the user attributes to each user.
+				$varmacscheckitem = "$varmacsaddress" . " Cleartext-Password := " . '"' . $varmacspassword . '"';
+			}
+
+			// Add additional CHECK-ITEMS here. Different formatting in "authorized_macs" file needed.
+			if ($varmacssimultaneousconnect != '') {
+				$varmacscheckitem .= ", Simultaneous-Use := " . '"' . $varmacssimultaneousconnect . '"';
+			}
+			if ($varmacsexpiration != '') {
+				$varmacscheckitem .= ", Expiration := " . '"' . $varmacsexpiration . '"';
+			}
+			if ($varmacslogintime != '') {
+				$varmacscheckitem .= ", Login-Time := " . '"' . $varmacslogintime . '"';
+			}
+			if ($varmacsamountoftime != '') {
+				$varmacscheckitem .= ", Max-" . "$varmacspointoftime" . "-Session := " . "$varmacsamountoftime";
+			}
+			if ($varmacsadditionaloptionscheckitems != '') {
+				$varmacscheckitem .= ", $varmacsadditionaloptionscheckitems";
+			}
+
+			// Add additional REPLY-ITEMS here. Different formatting in "authorized_macs" file needed.
+			if ($varmacsframedipaddress != '') {
+				if ($varmacsreplyitem != '') {
+					$varmacsreplyitem .= ",";
+				}
+				$varmacsreplyitem .= "\n\tFramed-IP-Address = $varmacsframedipaddress";
+			}
+			if ($varmacsframedipnetmask != '') {
+				if ($varmacsreplyitem != '') {
+					$varmacsreplyitem .= ",";
+				}
+				$varmacsreplyitem .= "\n\tFramed-IP-Netmask = $varmacsframedipnetmask";
+			}
+			if ($varmacsframedroute != '') {
+				if ($varmacsreplyitem != '') {
+					$varmacsreplyitem .= ",";
+				}
+				$varmacsreplyitem .= "\n\tFramed-Route = " . '"' . $varmacsframedroute . '"';
+			}
+			if ($varmacssessiontimeout != '') {
+				if ($varmacsreplyitem != '') {
+					$varmacsreplyitem .= ",";
+				}
+				$varmacsreplyitem .= "\n\tSession-Timeout := $varmacssessiontimeout";
+			}
+			if ($varmacsvlanid != '') {
+				if ($varmacsreplyitem != '') {
+					$varmacsreplyitem .= ",";
+				}
+				$varmacsreplyitem .= "\n\tTunnel-Type = VLAN,\n\tTunnel-Medium-Type = IEEE-802,\n\tTunnel-Private-Group-ID = " . '"' . $varmacsvlanid . '"';
+			}
+			if ($varmacsmaxbandwidthup != '') {
+				if ($varmacsreplyitem != '') {
+					$varmacsreplyitem .= ",";
+				}
+				$varmacsreplyitem .= "\n\tWISPr-Bandwidth-Max-Up := $varmacsmaxbandwidthup";
+			}
+			if ($varmacsmaxbandwidthdown != '') {
+				if ($varmacsreplyitem != '') {
+					$varmacsreplyitem .= ",";
+				}
+				$varmacsreplyitem .= "\n\tWISPr-Bandwidth-Max-Down := $varmacsmaxbandwidthdown";
+			}
+			if ($varmacsacctinteriminterval != '') {
+				if ($varmacsreplyitem != '') {
+					$varmacsreplyitem .= ",";
+				}
+				$varmacsreplyitem .= "\n\tAcct-Interim-Interval := $varmacsacctinteriminterval";
+			}
+			if ($varmacswisprredirectionurl != '') {
+				if ($varmacsreplyitem != '') {
+					$varmacsreplyitem .= ",";
+				}
+				$varmacsreplyitem .= "\n\tWISPr-Redirection-URL := $varmacsswisprredirectionurl";
+			}
+			// If an octet limit is set we create the files for the limit and the counter. Further we call an exec script which checks if the limit is reached or not
+			if ($varmacsmaxtotaloctets != '') {
+				if ($varmacsreplyitem != '') {
+					$varmacsreplyitem .= ",";
+				}
+				//create exec script
+				$varmacsreplyitem .= "\n\tExec-Program-Wait = " . '"/bin/sh ' . FREERADIUS_ETC . '/raddb/scripts/datacounter_auth.sh ' . "$varmacsaddress $varmacsmaxtotaloctetstimerange" . '"';
+				// create limit file - will be always overwritten so we can increase limit from GUI
+				file_put_contents("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/max-octets-$varmacsaddress", $varmacsmaxtotaloctets, LOCK_EX);
+				// if used-octets file exist we do NOT overwrite this file!!!
+				if (!file_exists("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/used-octets-$varmacsaddress")) {
+					file_put_contents("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/used-octets-$varmacsaddress", "0", LOCK_EX);
+				}
+			} else {
+				// If an octet limit is NOT set we delete the files for the limit and the counter.
+				unlink_if_exists("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/max-octets-$varmacsaddress");
+				unlink_if_exists("/var/log/radacct/datacounter/$varmacsmaxtotaloctetstimerange/used-octets-$varmacsaddress*");
+			}
+			if ($varmacsadditionaloptionsreplyitems != '') {
+				if ($varmacsreplyitem != '') {
+					$varmacsreplyitem .= ",";
+				}
+				$varmacsreplyitem .= "\n\t$varmacsadditionaloptionsreplyitems";
+			}
+
+			// Cosmetic fix - This is just to make a blank new line after each macs entry
+			$varmacsreplyitem .= "\n\n";
+
+			$conf .= <<<EOD
 $varmacsadditionaloptionstop
 $varmacscheckitem
 	$varmacsreplyitem
 EOD;
-	} //end foreach
-} // end if
+		} // endforeach
+	} // endif
 
 	$filename = FREERADIUS_ETC . '/raddb/authorized_macs';
 	conf_mount_rw();
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 	conf_mount_ro();
-	
+
 	freeradius_sync_on_changes();
 	if ($restart_svc === true && $via_rpc === false) {
 		restart_service("radiusd");
@@ -892,10 +943,15 @@ EOD;
 
 function freeradius_clients_resync($restart_svc = true) {
 	global $config;
-
 	$conf = '';
-	$arrclients = $config['installedpackages']['freeradiusclients']['config'];
-	if (is_array($arrclients) && !empty($arrclients)) {
+
+	if (is_array($config['installedpackages']['freeradiusclients']['config'])) {
+		$arrclients = $config['installedpackages']['freeradiusclients']['config'];
+	} else {
+		$arrclients = array();
+	}
+
+	if (!empty($arrclients)) {
 		foreach ($arrclients as $item) {
 			$varclientip = $item['varclientip'];
 			$varclientsharedsecret = $item['varclientsharedsecret'];
@@ -905,23 +961,20 @@ function freeradius_clients_resync($restart_svc = true) {
 			$varrequiremessageauthenticator = $item['varrequiremessageauthenticator'];
 			$varclientnastype = $item['varclientnastype'];
 			$varclientmaxconnections = $item['varclientmaxconnections'];
-			$varclientlogininput = ($item['varclientlogininput']?$item['varclientlogininput']:'### login = !root ###');
-			$varclientpasswordinput = ($item['varclientpasswordinput']?$item['varclientpasswordinput']:'### password = someadminpass ###');
-			
+			$varclientlogininput = ($item['varclientlogininput'] ?: '### login = !root ###');
+			$varclientpasswordinput = ($item['varclientpasswordinput'] ?: '### password = someadminpass ###');
+
 			if ($item['varclientlogininput'] == '') {
 				$varclientlogin = '### login = !root ###';
-			}
-			else {
+			} else {
 				$varclientlogin = "login = $varclientlogininput";
 			}
 			if ($item['varclientpasswordinput'] == '') {
 				$varclientpassword = '### password = someadminpass ###';
-			}
-			else {
+			} else {
 				$varclientpassword = "password = $varclientpasswordinput";
 			}
-			
-			
+
 			$conf .= <<<EOD
 
 client "$varclientshortname" {
@@ -937,9 +990,8 @@ client "$varclientshortname" {
 }
 
 EOD;
-		}
-	}
-	else {
+		} // endforeach
+	} else {
 		$conf .= <<<EOD
 client pfsense {
 	ipaddr = 127.0.0.1
@@ -953,7 +1005,7 @@ EOD;
 	conf_mount_rw();
 	file_put_contents(FREERADIUS_ETC . '/raddb/clients.conf', $conf);
 	conf_mount_ro();
-	
+
 	freeradius_sync_on_changes();
 	if ($restart_svc === true) {
 		restart_service("radiusd");
@@ -968,173 +1020,143 @@ function freeradius_eapconf_resync($restart_svc = true) {
 	conf_mount_rw();
 	$conf = '';
 
-	$eapconf = $config['installedpackages']['freeradiuseapconf']['config'][0];
-	
+	if (is_array($config['installedpackages']['freeradiuseapconf']['config'][0])) {
+		$eapconf = $config['installedpackages']['freeradiuseapconf']['config'][0];
+	} else {
+		$eapconf = array();
+	}
+
 	// Disable weak EAP types like MD5, GTC, LEAP
 	if ($eapconf['vareapconfdisableweakeaptypes'] == '') {
 		$vareapconfweakeaptypes = "md5 {" . "\n\t\t}" . "\n\t\tleap {" . "\n\t\t}" . "\n\t\tgtc {" . "\n\t\t\t#challenge = " . '"Password: "' . "\n\t\t\tauth_type = PAP" . "\n\t\t}";
-	}
-	else {
+	} else {
 		$vareapconfweakeaptypes = '### DISABLED WEAK EAP TYPES MD5, GTC, LEAP ###';
 	}
-	
+
 	// Variables: EAP
-	$vareapconfdefaulteaptype = ($eapconf['vareapconfdefaulteaptype']?$eapconf['vareapconfdefaulteaptype']:'md5');
-	$vareapconftimerexpire = ($eapconf['vareapconftimerexpire']?$eapconf['vareapconftimerexpire']:'60');
-	$vareapconfignoreunknowneaptypes = ($eapconf['vareapconfignoreunknowneaptypes']?$eapconf['vareapconfignoreunknowneaptypes']:'no');
-	$vareapconfciscoaccountingusernamebug = ($eapconf['vareapconfciscoaccountingusernamebug']?$eapconf['vareapconfciscoaccountingusernamebug']:'no');
-	$vareapconfmaxsessions = ($eapconf['vareapconfmaxsessions']?$eapconf['vareapconfmaxsessions']:'4096');
-	
+	$vareapconfdefaulteaptype = ($eapconf['vareapconfdefaulteaptype'] ?: 'md5');
+	$vareapconftimerexpire = ($eapconf['vareapconftimerexpire'] ?: '60');
+	$vareapconfignoreunknowneaptypes = ($eapconf['vareapconfignoreunknowneaptypes'] ?: 'no');
+	$vareapconfciscoaccountingusernamebug = ($eapconf['vareapconfciscoaccountingusernamebug'] ?: 'no');
+	$vareapconfmaxsessions = ($eapconf['vareapconfmaxsessions'] ?: '4096');
+
 	// Variables: EAP-TLS
-	$vareapconfprivatekeypassword = ($eapconf['vareapconfprivatekeypassword']?$eapconf['vareapconfprivatekeypassword']:'whatever');
-	$vareapconffragmentsize = ($eapconf['vareapconffragmentsize']?$eapconf['vareapconffragmentsize']:'1024');
-	$vareapconfincludelength = ($eapconf['vareapconfincludelength']?$eapconf['vareapconfincludelength']:'yes');
-	$vareapconfcountry = ($eapconf['vareapconfcountry']?$eapconf['vareapconfcountry']:'US');
-	$vareapconfstate = ($eapconf['vareapconfstate']?$eapconf['vareapconfstate']:'Texas');
-	$vareapconfcity = ($eapconf['vareapconfcity']?$eapconf['vareapconfcity']:'Austin');
-	$vareapconforganization = ($eapconf['vareapconforganization']?$eapconf['vareapconforganization']:'My Company Ltd');
-	$vareapconfemail = ($eapconf['vareapconfemail']?$eapconf['vareapconfemail']:'admin@mycompany.com');
-	$vareapconfcommonname = ($eapconf['vareapconfcommonname']?$eapconf['vareapconfcommonname']:'internal-ca');
-		
+	$vareapconfprivatekeypassword = ($eapconf['vareapconfprivatekeypassword'] ?: 'whatever');
+	$vareapconffragmentsize = ($eapconf['vareapconffragmentsize'] ?: '1024');
+	$vareapconfincludelength = ($eapconf['vareapconfincludelength'] ?: 'yes');
+	$vareapconfcountry = ($eapconf['vareapconfcountry'] ?: 'US');
+	$vareapconfstate = ($eapconf['vareapconfstate'] ?: 'Texas');
+	$vareapconfcity = ($eapconf['vareapconfcity'] ?: 'Austin');
+	$vareapconforganization = ($eapconf['vareapconforganization'] ?: 'My Company Ltd');
+	$vareapconfemail = ($eapconf['vareapconfemail'] ?: 'admin@mycompany.com');
+	$vareapconfcommonname = ($eapconf['vareapconfcommonname'] ?: 'internal-ca');
+
 	// Variables: Cache
-	$vareapconfcacheenablecache = ($eapconf['vareapconfcacheenablecache']?$eapconf['vareapconfcacheenablecache']:'no');
-	$vareapconfcachelifetime = ($eapconf['vareapconfcachelifetime']?$eapconf['vareapconfcachelifetime']:'24');
-	$vareapconfcachemaxentries = ($eapconf['vareapconfcachemaxentries']?$eapconf['vareapconfcachemaxentries']:'255');
-	
-	// Variables OSCP	
-	$vareapconfocspenable = ($eapconf['vareapconfocspenable']?$eapconf['vareapconfocspenable']:'no');
-	$vareapconfocspoverridecerturl = ($eapconf['vareapconfocspoverridecerturl']?$eapconf['vareapconfocspoverridecerturl']:'no');
-	$vareapconfocspurl = ($eapconf['vareapconfocspurl']?$eapconf['vareapconfocspurl']:'http://127.0.0.1/ocsp/');
-	
+	$vareapconfcacheenablecache = ($eapconf['vareapconfcacheenablecache'] ?: 'no');
+	$vareapconfcachelifetime = ($eapconf['vareapconfcachelifetime'] ?: '24');
+	$vareapconfcachemaxentries = ($eapconf['vareapconfcachemaxentries'] ?: '255');
+
+	// Variables OSCP
+	$vareapconfocspenable = ($eapconf['vareapconfocspenable'] ?: 'no');
+	$vareapconfocspoverridecerturl = ($eapconf['vareapconfocspoverridecerturl'] ?: 'no');
+	$vareapconfocspurl = ($eapconf['vareapconfocspurl'] ?: 'http://127.0.0.1/ocsp/');
+
 	// Variables: EAP-TTLS
-	$vareapconfttlsdefaulteaptype = ($eapconf['vareapconfttlsdefaulteaptype']?$eapconf['vareapconfttlsdefaulteaptype']:'md5');
-	$vareapconfttlscopyrequesttotunnel = ($eapconf['vareapconfttlscopyrequesttotunnel']?$eapconf['vareapconfttlscopyrequesttotunnel']:'no');
-	$vareapconfttlsusetunneledreply = ($eapconf['vareapconfttlsusetunneledreply']?$eapconf['vareapconfttlsusetunneledreply']:'no');
-	$vareapconfttlsincludelength = ($eapconf['vareapconfttlsincludelength']?$eapconf['vareapconfttlsincludelength']:'yes');
-	
+	$vareapconfttlsdefaulteaptype = ($eapconf['vareapconfttlsdefaulteaptype'] ?: 'md5');
+	$vareapconfttlscopyrequesttotunnel = ($eapconf['vareapconfttlscopyrequesttotunnel'] ?: 'no');
+	$vareapconfttlsusetunneledreply = ($eapconf['vareapconfttlsusetunneledreply'] ?: 'no');
+	$vareapconfttlsincludelength = ($eapconf['vareapconfttlsincludelength'] ?: 'yes');
+
 	// Variables: EAP-PEAP with MSCHAPv2
-	$vareapconfpeapdefaulteaptype = ($eapconf['vareapconfpeapdefaulteaptype']?$eapconf['vareapconfpeapdefaulteaptype']:'mschapv2');
-	$vareapconfpeapcopyrequesttotunnel = ($eapconf['vareapconfpeapcopyrequesttotunnel']?$eapconf['vareapconfpeapcopyrequesttotunnel']:'no');
-	$vareapconfpeapusetunneledreply = ($eapconf['vareapconfpeapusetunneledreply']?$eapconf['vareapconfpeapusetunneledreply']:'no');
-	$vareapconfpeapsohenable = ($eapconf['vareapconfpeapsohenable']?$eapconf['vareapconfpeapsohenable']:'Disable');
-	
+	$vareapconfpeapdefaulteaptype = ($eapconf['vareapconfpeapdefaulteaptype'] ?: 'mschapv2');
+	$vareapconfpeapcopyrequesttotunnel = ($eapconf['vareapconfpeapcopyrequesttotunnel'] ?: 'no');
+	$vareapconfpeapusetunneledreply = ($eapconf['vareapconfpeapusetunneledreply'] ?: 'no');
+	$vareapconfpeapsohenable = ($eapconf['vareapconfpeapsohenable'] ?: 'Disable');
+
 	// This is for enable/disbable MS SoH in EAP-PEAP and the virtuial-server "soh-server"
 	if ($eapconf['vareapconfpeapsohenable'] == 'Enable') {
 		$vareapconfpeapsoh = 'soh = yes' . "\n\t\t\tsoh_virtual_server = " . '"' . "soh-server" . '"';
-		exec("ln -s " . FREERADIUS_ETC . "/raddb/sites-available/soh " . FREERADIUS_ETC . "/raddb/sites-enabled/");
-	}
-	else {
+		symlink(FREERADIUS_ETC . "/raddb/sites-available/soh", FREERADIUS_ETC . "/raddb/sites-enabled/");
+	} else {
 		$vareapconfpeapsoh = '### MS SoH Server is disabled ###';
-			if (file_exists(FREERADIUS_ETC . "/raddb/sites-enabled/soh")) {
-			exec("rm -f " . FREERADIUS_ETC . "/raddb/sites-enabled/soh");
-			}
+		unlink_if_exists(FREERADIUS_ETC . "/raddb/sites-enabled/soh");
 	}
-		
 
-// The filenames of pfsense cert manager are different from freeradius cert manager so it is possible to store both in the same folder at any time.
-// This is for the pfsense cert manager
-// Depends on "freeradius_get_server_certs" and "freeradius_get_ca_certs"
+
+	// The filenames of pfsense cert manager are different from freeradius cert manager so it is possible
+	// to store both in the same folder at any time. This is for the pfsense cert manager
+	// Depends on freeradius_get_server_certs() and freeradius_get_ca_certs()
 
 	if ($eapconf['vareapconfchoosecertmanager'] == 'on') {
-		
+
 		$ca_cert = lookup_ca($eapconf["ssl_ca_cert"]);
 		if ($ca_cert != false) {
-			if(base64_decode($ca_cert['prv'])) {
-				file_put_contents(FREERADIUS_ETC . "/raddb/certs/ca_key.pem", 
-					base64_decode($ca_cert['prv']));
+			if (base64_decode($ca_cert['prv'])) {
+				file_put_contents(FREERADIUS_ETC . "/raddb/certs/ca_key.pem", base64_decode($ca_cert['prv']));
 				$conf['ssl_ca_key'] = FREERADIUS_ETC . '/raddb/certs/ca_key.pem';
 			}
 
-
-			if(base64_decode($ca_cert['crt'])) {
+			if (base64_decode($ca_cert['crt'])) {
 				$crl_cert = lookup_crl($eapconf["ssl_ca_crl"]);
-				if ($crl_cert != false){
-					$crl=base64_decode($crl_cert['text']);
-					$check_crl="check_crl = yes";
-				}
-				else{
+				if ($crl_cert != false) {
+					$crl = base64_decode($crl_cert['text']);
+					$check_crl = "check_crl = yes";
+				} else {
 					$check_crl="check_crl = no";
 				}
-				file_put_contents(FREERADIUS_ETC . "/raddb/certs/ca_cert.pem", 
-					base64_decode($ca_cert['crt']). $crl);
+				file_put_contents(FREERADIUS_ETC . "/raddb/certs/ca_cert.pem", base64_decode($ca_cert['crt']). $crl);
 				$conf['ssl_ca_cert'] = FREERADIUS_ETC . "/raddb/certs/ca_cert.pem";
 			}
+
 			$svr_cert = lookup_cert($eapconf["ssl_server_cert"]);
 			if ($svr_cert != false) {
-				if(base64_decode($svr_cert['prv'])) {
-					file_put_contents(FREERADIUS_ETC . "/raddb/certs/server_key.pem", 
-						base64_decode($svr_cert['prv']));
+				if (base64_decode($svr_cert['prv'])) {
+					file_put_contents(FREERADIUS_ETC . "/raddb/certs/server_key.pem", base64_decode($svr_cert['prv']));
 					$conf['ssl_key'] = FREERADIUS_ETC . '/raddb/certs/server_key.pem';
 				}
 			}
-
-
-			if(base64_decode($svr_cert['crt'])) {
-				file_put_contents(FREERADIUS_ETC . "/raddb/certs/server_cert.pem", 
-					base64_decode($svr_cert['crt']));
+			if (base64_decode($svr_cert['crt'])) {
+				file_put_contents(FREERADIUS_ETC . "/raddb/certs/server_cert.pem", base64_decode($svr_cert['crt']));
 				$conf['ssl_server_cert'] = FREERADIUS_ETC . "/raddb/certs/server_cert.pem";
 			}
-			
-			/* Not needed anymore because pfsense can do this by default
-			if ($eapconf['vareapconfenableclientp12'] == 'on') {
-				$svr_cert = lookup_cert($eapconf["ssl_client_cert"]);
-				if ($svr_cert != false) {
-					if(base64_decode($svr_cert['prv'])) {
-						file_put_contents(FREERADIUS_ETC . "/raddb/certs/client_key.pem", 
-							base64_decode($svr_cert['prv']));
-						$conf['ssl_key'] = FREERADIUS_ETC . '/raddb/certs/client_key.pem';
-					}
-				}
 
-
-				if(base64_decode($svr_cert['crt'])) {
-					file_put_contents(FREERADIUS_ETC . "/raddb/certs/client_cert.pem", 
-						base64_decode($svr_cert['crt']));
-					$conf['ssl_client_cert'] = FREERADIUS_ETC . "/raddb/certs/client_cert.pem";
-				}
-			
-			exec("openssl pkcs12 -export -in " . FREERADIUS_ETC . "/raddb/certs/client_cert.pem -inkey " . FREERADIUS_ETC . "/raddb/certs/client_key.pem -out " . FREERADIUS_ETC . "/raddb/certs/client_cert.p12 -passout pass\:");	
-			}
-			*/
 			$conf['ssl_cert_dir'] = FREERADIUS_ETC . '/raddb/certs';
 		}
 
-	$vareapconfprivatekeyfile = 'server_key.pem';
-	$vareapconfcertificatefile = 'server_cert.pem';
-	$vareapconfcafile = 'ca_cert.pem';
-	
-	// generate new DH and RANDOM file
-	// We create a single empty file just to check if there is really a change from one to another cert manager to avoid building ne DH and random files
-	if (!file_exists(FREERADIUS_ETC . "/raddb/certs/pfsense_cert_mgr")) {
-		log_error("freeRADIUS: Switched to pfSense Cert-Manager. Creating new DH and random file in " . FREERADIUS_ETC . "/raddb/certs");
-		exec("cd " . FREERADIUS_ETC . "/raddb/certs && openssl dhparam -out dh 1024");
-		exec("cd " . FREERADIUS_ETC . "/raddb/certs && dd if=/dev/urandom of=./random count=10");
-		exec("touch " . FREERADIUS_ETC . "/raddb/certs/pfsense_cert_mgr");
+		$vareapconfprivatekeyfile = 'server_key.pem';
+		$vareapconfcertificatefile = 'server_cert.pem';
+		$vareapconfcafile = 'ca_cert.pem';
+
+		// generate new DH and RANDOM file
+		// We create a single empty file just to check if there is really a change
+		// from one to another cert manager to avoid building new DH and random files
+		// use openvpn_create_dhparams() from openvpn.inc to generate DH params
+		if (!file_exists(FREERADIUS_ETC . "/raddb/certs/pfsense_cert_mgr")) {
+			log_error("freeRADIUS: Switched to pfSense Cert Manager. Creating new DH and random file in " . FREERADIUS_ETC . "/raddb/certs");
+			file_put_contents(FREERADIUS_ETC . "/raddb/certs/dh", openvpn_create_dhparams('1024'), LOCK_EX);
+			mwexec("/bin/dd if=/dev/urandom of=" . FREERADIUS_ETC . "/raddb/certs/random count=10");
+			touch(FREERADIUS_ETC . "/raddb/certs/pfsense_cert_mgr");
+		}
+	} else {
+		// This is for freeradius cert manager
+		$vareapconfprivatekeyfile = 'server.pem';
+		$vareapconfcertificatefile = 'server.pem';
+		$vareapconfcafile = 'ca.pem';
 	}
-}
 
-// This is for freeradius cert manager
-else {
-	$vareapconfprivatekeyfile = 'server.pem';
-	$vareapconfcertificatefile = 'server.pem';
-	$vareapconfcafile = 'ca.pem';
-}
+	// check if the common name of the certificate must match the username
+	if ($eapconf['vareapconfenablecheckcertcn'] == 'on') {
+		$vareapconfcheckcertcn = 'check_cert_cn = %{User-Name}';
+	} else {
+		$vareapconfcheckcertcn = '### check_cert_cn = %{User-Name} ###';
+	}
 
-// check if the common name of the certificate must match the username
-if($eapconf['vareapconfenablecheckcertcn'] == 'on') {
-	$vareapconfcheckcertcn = 'check_cert_cn = %{User-Name}';
-}
-else {
-	$vareapconfcheckcertcn = '### check_cert_cn = %{User-Name} ###';
-}
-
-// check if cert issuer of CA and certs match
-if($eapconf['vareapconfenablecheckcertissuer'] == 'on') {
-	$vareapconfcheckcertissuer = "check_cert_issuer = " . '"' . "/C=$vareapconfcountry/ST=$vareapconfstate/L=$vareapconfcity/O=$vareapconforganization/emailAddress=$vareapconfemail/CN=$vareapconfcommonname" . '"';
-}
-else {
-	$vareapconfcheckcertissuer = '### check_cert_issuer = "/C=GB/ST=Berkshire/L=Newbury/O=My Company Ltd/emailAddress=test@mycomp.com/CN=myca" ###';
-}
+	// check if cert issuer of CA and certs match
+	if ($eapconf['vareapconfenablecheckcertissuer'] == 'on') {
+		$vareapconfcheckcertissuer = "check_cert_issuer = " . '"' . "/C=$vareapconfcountry/ST=$vareapconfstate/L=$vareapconfcity/O=$vareapconforganization/emailAddress=$vareapconfemail/CN=$vareapconfcommonname" . '"';
+	} else {
+		$vareapconfcheckcertissuer = '### check_cert_issuer = "/C=GB/ST=Berkshire/L=Newbury/O=My Company Ltd/emailAddress=test@mycomp.com/CN=myca" ###';
+	}
 
 	$conf .= <<<EOD
 	### EAP
@@ -1144,7 +1166,7 @@ else {
 		ignore_unknown_eap_types = $vareapconfignoreunknowneaptypes
 		cisco_accounting_username_bug = $vareapconfciscoaccountingusernamebug
 		max_sessions = $vareapconfmaxsessions
-		
+
 		$vareapconfweakeaptypes
 
 
@@ -1181,15 +1203,15 @@ else {
 			      url = "$vareapconfocspurl"
 			}
 		}
-	
+
 		### EAP-TTLS
 		ttls {
 			default_eap_type = $vareapconfttlsdefaulteaptype
 			copy_request_to_tunnel = $vareapconfttlscopyrequesttotunnel
 			use_tunneled_reply = $vareapconfttlsusetunneledreply
 			include_length = $vareapconfttlsincludelength
-		}	### end ttls	
-	
+		}	### end ttls
+
 		### EAP-PEAP
 		peap {
 			default_eap_type = $vareapconfpeapdefaulteaptype
@@ -1200,7 +1222,7 @@ else {
 		}
 		mschapv2 {
 		#	send_error = no
-		}	
+		}
 	}
 EOD;
 
@@ -1260,63 +1282,66 @@ function freeradius_sqlconf_resync() {
 	global $config;
 	$conf = '';
 
-	$sqlconf = $config['installedpackages']['freeradiussqlconf']['config'][0];
-	
+	if (is_array($config['installedpackages']['freeradiussqlconf']['config'][0])) {
+		$sqlconf = $config['installedpackages']['freeradiussqlconf']['config'][0];
+	} else {
+		$sqlconf = array();
+	}
+
 	// Variables: SQL DATABASE 1
-	$varsqlconfdatabase = ($sqlconf['varsqlconfdatabase']?$sqlconf['varsqlconfdatabase']:'mysql');
-	$varsqlconfserver = ($sqlconf['varsqlconfserver']?$sqlconf['varsqlconfserver']:'localhost');
-	$varsqlconfport = ($sqlconf['varsqlconfport']?$sqlconf['varsqlconfport']:'3306');
-	$varsqlconflogin = ($sqlconf['varsqlconflogin']?$sqlconf['varsqlconflogin']:'radius');
-	$varsqlconfpassword = ($sqlconf['varsqlconfpassword']?$sqlconf['varsqlconfpassword']:'radpass');
-	$varsqlconfradiusdb = ($sqlconf['varsqlconfradiusdb']?$sqlconf['varsqlconfradiusdb']:'radius');
-	$varsqlconfaccttable1 = ($sqlconf['varsqlconfaccttable1']?$sqlconf['varsqlconfaccttable1']:'radacct');
-	$varsqlconfaccttable2 = ($sqlconf['varsqlconfaccttable2']?$sqlconf['varsqlconfaccttable2']:'radacct');
-	$varsqlconfpostauthtable = ($sqlconf['varsqlconfpostauthtable']?$sqlconf['varsqlconfpostauthtable']:'radpostauth');
-	$varsqlconfauthchecktable = ($sqlconf['varsqlconfauthchecktable']?$sqlconf['varsqlconfauthchecktable']:'radcheck');
-	$varsqlconfauthreplytable = ($sqlconf['varsqlconfauthreplytable']?$sqlconf['varsqlconfauthreplytable']:'radreply');
-	$varsqlconfgroupchecktable = ($sqlconf['varsqlconfgroupchecktable']?$sqlconf['varsqlconfgroupchecktable']:'radgroupcheck');
-	$varsqlconfgroupreplytable = ($sqlconf['varsqlconfgroupreplytable']?$sqlconf['varsqlconfgroupreplytable']:'radgroupreply');
-	$varsqlconfusergrouptable = ($sqlconf['varsqlconfusergrouptable']?$sqlconf['varsqlconfusergrouptable']:'radusergroup');
-	$varsqlconfreadgroups = ($sqlconf['varsqlconfreadgroups']?$sqlconf['varsqlconfreadgroups']:'yes');
-	$varsqlconfdeletestalesessions = ($sqlconf['varsqlconfdeletestalesessions']?$sqlconf['varsqlconfdeletestalesessions']:'yes');
-	$varsqlconfsqltrace = ($sqlconf['varsqlconfsqltrace']?$sqlconf['varsqlconfsqltrace']:'no');
-	$varsqlconfnumsqlsocks = ($sqlconf['varsqlconfnumsqlsocks']?$sqlconf['varsqlconfnumsqlsocks']:'5');
-	$varsqlconfconnectfailureretrydelay = ($sqlconf['varsqlconfconnectfailureretrydelay']?$sqlconf['varsqlconfconnectfailureretrydelay']:'60');
-	$varsqlconflifetime = ($sqlconf['varsqlconflifetime']?$sqlconf['varsqlconflifetime']:'0');
-	$varsqlconfmaxqueries = ($sqlconf['varsqlconfmaxqueries']?$sqlconf['varsqlconfmaxqueries']:'0');
-	$varsqlconfreadclients = ($sqlconf['varsqlconfreadclients']?$sqlconf['varsqlconfreadclients']:'yes');
-	$varsqlconfnastable = ($sqlconf['varsqlconfnastable']?$sqlconf['varsqlconfnastable']:'nas');
-	
-	// Additional changes were made in "freeradius_settings_resync"
+	$varsqlconfdatabase = ($sqlconf['varsqlconfdatabase'] ?: 'mysql');
+	$varsqlconfserver = ($sqlconf['varsqlconfserver'] ?: 'localhost');
+	$varsqlconfport = ($sqlconf['varsqlconfport'] ?: '3306');
+	$varsqlconflogin = ($sqlconf['varsqlconflogin'] ?: 'radius');
+	$varsqlconfpassword = ($sqlconf['varsqlconfpassword'] ?: 'radpass');
+	$varsqlconfradiusdb = ($sqlconf['varsqlconfradiusdb'] ?: 'radius');
+	$varsqlconfaccttable1 = ($sqlconf['varsqlconfaccttable1'] ?: 'radacct');
+	$varsqlconfaccttable2 = ($sqlconf['varsqlconfaccttable2'] ?: 'radacct');
+	$varsqlconfpostauthtable = ($sqlconf['varsqlconfpostauthtable'] ?: 'radpostauth');
+	$varsqlconfauthchecktable = ($sqlconf['varsqlconfauthchecktable'] ?: 'radcheck');
+	$varsqlconfauthreplytable = ($sqlconf['varsqlconfauthreplytable'] ?: 'radreply');
+	$varsqlconfgroupchecktable = ($sqlconf['varsqlconfgroupchecktable'] ?: 'radgroupcheck');
+	$varsqlconfgroupreplytable = ($sqlconf['varsqlconfgroupreplytable'] ?: 'radgroupreply');
+	$varsqlconfusergrouptable = ($sqlconf['varsqlconfusergrouptable'] ?: 'radusergroup');
+	$varsqlconfreadgroups = ($sqlconf['varsqlconfreadgroups'] ?: 'yes');
+	$varsqlconfdeletestalesessions = ($sqlconf['varsqlconfdeletestalesessions'] ?: 'yes');
+	$varsqlconfsqltrace = ($sqlconf['varsqlconfsqltrace'] ?: 'no');
+	$varsqlconfnumsqlsocks = ($sqlconf['varsqlconfnumsqlsocks'] ?: '5');
+	$varsqlconfconnectfailureretrydelay = ($sqlconf['varsqlconfconnectfailureretrydelay'] ?: '60');
+	$varsqlconflifetime = ($sqlconf['varsqlconflifetime'] ?: '0');
+	$varsqlconfmaxqueries = ($sqlconf['varsqlconfmaxqueries'] ?: '0');
+	$varsqlconfreadclients = ($sqlconf['varsqlconfreadclients'] ?: 'yes');
+	$varsqlconfnastable = ($sqlconf['varsqlconfnastable'] ?: 'nas');
+
+	// Additional changes were made in freeradius_settings_resync()
 
 	// Variables: SQL DATABASE 2
-	$varsqlconf2database = ($sqlconf['varsqlconf2database']?$sqlconf['varsqlconf2database']:'mysql');
-	$varsqlconf2server = ($sqlconf['varsqlconf2server']?$sqlconf['varsqlconf2server']:'localhost');
-	$varsqlconf2port = ($sqlconf['varsqlconf2port']?$sqlconf['varsqlconf2port']:'3306');
-	$varsqlconf2login = ($sqlconf['varsqlconf2login']?$sqlconf['varsqlconf2login']:'radius');
-	$varsqlconf2password = ($sqlconf['varsqlconf2password']?$sqlconf['varsqlconf2password']:'radpass');
-	$varsqlconf2radiusdb = ($sqlconf['varsqlconf2radiusdb']?$sqlconf['varsqlconf2radiusdb']:'radius');
-	$varsqlconf2accttable1 = ($sqlconf['varsqlconf2accttable1']?$sqlconf['varsqlconf2accttable1']:'radacct');
-	$varsqlconf2accttable2 = ($sqlconf['varsqlconf2accttable2']?$sqlconf['varsqlconf2accttable2']:'radacct');
-	$varsqlconf2postauthtable = ($sqlconf['varsqlconf2postauthtable']?$sqlconf['varsqlconf2postauthtable']:'radpostauth');
-	$varsqlconf2authchecktable = ($sqlconf['varsqlconf2authchecktable']?$sqlconf['varsqlconf2authchecktable']:'radcheck');
-	$varsqlconf2authreplytable = ($sqlconf['varsqlconf2authreplytable']?$sqlconf['varsqlconf2authreplytable']:'radreply');
-	$varsqlconf2groupchecktable = ($sqlconf['varsqlconf2groupchecktable']?$sqlconf['varsqlconf2groupchecktable']:'radgroupcheck');
-	$varsqlconf2groupreplytable = ($sqlconf['varsqlconf2groupreplytable']?$sqlconf['varsqlconf2groupreplytable']:'radgroupreply');
-	$varsqlconf2usergrouptable = ($sqlconf['varsqlconf2usergrouptable']?$sqlconf['varsqlconf2usergrouptable']:'radusergroup');
-	$varsqlconf2readgroups = ($sqlconf['varsqlconf2readgroups']?$sqlconf['varsqlconf2readgroups']:'yes');
-	$varsqlconf2deletestalesessions = ($sqlconf['varsqlconf2deletestalesessions']?$sqlconf['varsqlconf2deletestalesessions']:'yes');
-	$varsqlconf2sqltrace = ($sqlconf['varsqlconf2sqltrace']?$sqlconf['varsqlconf2sqltrace']:'no');
-	$varsqlconf2numsqlsocks = ($sqlconf['varsqlconf2numsqlsocks']?$sqlconf['varsqlconf2numsqlsocks']:'5');
-	$varsqlconf2connectfailureretrydelay = ($sqlconf['varsqlconf2connectfailureretrydelay']?$sqlconf['varsqlconf2connectfailureretrydelay']:'60');
-	$varsqlconf2lifetime = ($sqlconf['varsqlconf2lifetime']?$sqlconf['varsqlconf2lifetime']:'0');
-	$varsqlconf2maxqueries = ($sqlconf['varsqlconf2maxqueries']?$sqlconf['varsqlconf2maxqueries']:'0');
-	$varsqlconf2readclients = ($sqlconf['varsqlconf2readclients']?$sqlconf['varsqlconf2readclients']:'yes');
-	$varsqlconf2nastable = ($sqlconf['varsqlconf2nastable']?$sqlconf['varsqlconf2nastable']:'nas');
-	
-	// Additional changes were made in "freeradius_settings_resync"
-	
-	
+	$varsqlconf2database = ($sqlconf['varsqlconf2database'] ?: 'mysql');
+	$varsqlconf2server = ($sqlconf['varsqlconf2server'] ?: 'localhost');
+	$varsqlconf2port = ($sqlconf['varsqlconf2port'] ?: '3306');
+	$varsqlconf2login = ($sqlconf['varsqlconf2login'] ?: 'radius');
+	$varsqlconf2password = ($sqlconf['varsqlconf2password'] ?: 'radpass');
+	$varsqlconf2radiusdb = ($sqlconf['varsqlconf2radiusdb'] ?: 'radius');
+	$varsqlconf2accttable1 = ($sqlconf['varsqlconf2accttable1'] ?: 'radacct');
+	$varsqlconf2accttable2 = ($sqlconf['varsqlconf2accttable2'] ?: 'radacct');
+	$varsqlconf2postauthtable = ($sqlconf['varsqlconf2postauthtable'] ?: 'radpostauth');
+	$varsqlconf2authchecktable = ($sqlconf['varsqlconf2authchecktable'] ?: 'radcheck');
+	$varsqlconf2authreplytable = ($sqlconf['varsqlconf2authreplytable'] ?: 'radreply');
+	$varsqlconf2groupchecktable = ($sqlconf['varsqlconf2groupchecktable'] ?: 'radgroupcheck');
+	$varsqlconf2groupreplytable = ($sqlconf['varsqlconf2groupreplytable'] ?: 'radgroupreply');
+	$varsqlconf2usergrouptable = ($sqlconf['varsqlconf2usergrouptable'] ?: 'radusergroup');
+	$varsqlconf2readgroups = ($sqlconf['varsqlconf2readgroups'] ?: 'yes');
+	$varsqlconf2deletestalesessions = ($sqlconf['varsqlconf2deletestalesessions'] ?: 'yes');
+	$varsqlconf2sqltrace = ($sqlconf['varsqlconf2sqltrace'] ?: 'no');
+	$varsqlconf2numsqlsocks = ($sqlconf['varsqlconf2numsqlsocks'] ?: '5');
+	$varsqlconf2connectfailureretrydelay = ($sqlconf['varsqlconf2connectfailureretrydelay'] ?: '60');
+	$varsqlconf2lifetime = ($sqlconf['varsqlconf2lifetime'] ?: '0');
+	$varsqlconf2maxqueries = ($sqlconf['varsqlconf2maxqueries'] ?: '0');
+	$varsqlconf2readclients = ($sqlconf['varsqlconf2readclients'] ?: 'yes');
+	$varsqlconf2nastable = ($sqlconf['varsqlconf2nastable'] ?: 'nas');
+
+	// Additional changes were made in freeradius_settings_resync()
+
 	$conf .= <<<EOD
 
 sql {
@@ -1383,7 +1408,7 @@ EOD;
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 	conf_mount_ro();
-	
+
 	// We don't need a restart at this time because there are
 	// additional changes needed in freeradius_settings_resync()
 	freeradius_settings_resync();
@@ -1392,25 +1417,28 @@ EOD;
 function freeradius_serverdefault_resync() {
 	global $config;
 	$conf = '';
-		
+
 	// Get Variables from freeradiusmodulesldap.xml
-	$arrmodulesldap = $config['installedpackages']['freeradiusmodulesldap']['config'][0];
+	if (is_array($$config['installedpackages']['freeradiusmodulesldap']['config'][0])) {
+		$arrmodulesldap = $config['installedpackages']['freeradiusmodulesldap']['config'][0];
+	} else {
+		$arrmodulesldap = array();
+	}
+
 	// failover/loadbalancing mode
-	$varmodulesldap2failover = ($arrmodulesldap['varmodulesldap2failover']?$arrmodulesldap['varmodulesldap2failover']:'redundant');
-	
+	$varmodulesldap2failover = ($arrmodulesldap['varmodulesldap2failover'] ?: 'redundant');
+
 	// If unchecked then disable authorize ldap2
 	if (!$arrmodulesldap['varmodulesldap2enableauthorize']) {
 		$varmodulesldap2enableauthorize = '### ldap2 disabled ###';
-	}
-	else {
+	} else {
 		$varmodulesldap2enableauthorize = 'ldap2';
 	}
-	
+
 	// If unchecked then disable authorize ldap1
 	if (!$arrmodulesldap['varmodulesldapenableauthorize']) {
 		$varmodulesldapenableauthorize = '### ldap ###';
-	}
-	else {
+	} else {
 		$varmodulesldapenableauthorize = '';
 		$varmodulesldapenableauthorize .= "$varmodulesldap2failover {";
 		$varmodulesldapenableauthorize .= "\n\t\tldap";
@@ -1418,112 +1446,111 @@ function freeradius_serverdefault_resync() {
 		$varmodulesldapenableauthorize .= "\n\t\t$varmodulesldap2enableauthorize";
 		$varmodulesldapenableauthorize .= "\n\t}";
 	}
-	
+
 	// If unchecked then disable authenticate for ldap1
 	if (!$arrmodulesldap['varmodulesldap2enableauthenticate']) {
 		$varmodulesldap2enableauthenticate = "### ldap2 disabled ###";
-	}
-	else {
+	} else {
 		$varmodulesldap2enableauthenticate = "ldap2";
 	}
-	
+
 	// If unchecked then disable authenticate ldap2
 	if (!$arrmodulesldap['varmodulesldapenableauthenticate']) {
 		$varmodulesldapenableauthenticate = "#Auth-Type LDAP {" . "\n\t\t\t#ldap" . "\n\t\t\t$varmodulesldap2enableauthenticate" . "\n\t#}";
-	}
-	else {
+	} else {
 		$varmodulesldapenableauthenticate = "Auth-Type LDAP {" . "\n\t\t\tldap" . "\n\t\t\t$varmodulesldap2enableauthenticate" . "\n\t}";
 	}
-	
+
 	// Get Variables from freeradiussqlconf.xml for DATABASE 1
-	$sqlconf = $config['installedpackages']['freeradiussqlconf']['config'][0];
-	$varsqlconfenableauthorize = ($sqlconf['varsqlconfenableauthorize']?$sqlconf['varsqlconfenableauthorize']:'Disable');
-	$varsqlconfenableaccounting = ($sqlconf['varsqlconfenableaccounting']?$sqlconf['varsqlconfenableaccounting']:'Disable');
-	$varsqlconfenablesession = ($sqlconf['varsqlconfenablesession']?$sqlconf['varsqlconfenablesession']:'Disable');
-	$varsqlconfenablepostauth = ($sqlconf['varsqlconfenablepostauth']?$sqlconf['varsqlconfenablepostauth']:'Disable');
-	
+	if (is_array($config['installedpackages']['freeradiussqlconf']['config'][0])) {
+		$sqlconf = $config['installedpackages']['freeradiussqlconf']['config'][0];
+	} else {
+		$sqlconf = array();
+	}
+	$varsqlconfenableauthorize = ($sqlconf['varsqlconfenableauthorize'] ?: 'Disable');
+	$varsqlconfenableaccounting = ($sqlconf['varsqlconfenableaccounting'] ?: 'Disable');
+	$varsqlconfenablesession = ($sqlconf['varsqlconfenablesession'] ?: 'Disable');
+	$varsqlconfenablepostauth = ($sqlconf['varsqlconfenablepostauth'] ?: 'Disable');
+
 	// Get Variables from freeradiussqlconf.xml for DATABASE 2
-	$varsqlconf2enableauthorize = ($sqlconf['varsqlconf2enableauthorize']?$sqlconf['varsqlconf2enableauthorize']:'Disable');
-	$varsqlconf2enableaccounting = ($sqlconf['varsqlconf2enableaccounting']?$sqlconf['varsqlconf2enableaccounting']:'Disable');
-	$varsqlconf2enablesession = ($sqlconf['varsqlconf2enablesession']?$sqlconf['varsqlconf2enablesession']:'Disable');
-	$varsqlconf2enablepostauth = ($sqlconf['varsqlconf2enablepostauth']?$sqlconf['varsqlconf2enablepostauth']:'Disable');
-	
+	$varsqlconf2enableauthorize = ($sqlconf['varsqlconf2enableauthorize'] ?: 'Disable');
+	$varsqlconf2enableaccounting = ($sqlconf['varsqlconf2enableaccounting'] ?: 'Disable');
+	$varsqlconf2enablesession = ($sqlconf['varsqlconf2enablesession'] ?: 'Disable');
+	$varsqlconf2enablepostauth = ($sqlconf['varsqlconf2enablepostauth'] ?: 'Disable');
+
 	// authorize section DATABASE 2
 	if ($sqlconf['varsqlconf2enableauthorize'] == 'Enable') {
 		$varsqlconf2authorize = 'sql2';
-	}
-	else {
+	} else {
 		$varsqlconf2authorize = '### sql2 DISABLED ###';
 	}
 	// accounting section DATABASE 2
 	if ($sqlconf['varsqlconf2enableaccounting'] == 'Enable') {
 		$varsqlconf2accounting = 'sql2';
-	}
-	else {
+	} else {
 		$varsqlconf2accounting = '### sql2 DISABLED ###';
 	}
 	// session section DATABASE 2
 	if ($sqlconf['varsqlconf2enablesession'] == 'Enable') {
 		$varsqlconf2session = 'sql2';
-	}
-	else {
+	} else {
 		$varsqlconf2session = '### sql2 DISABLED ###';
 	}
 	// post-auth section DATABASE 2
 	if ($sqlconf['varsqlconf2enablepostauth'] == 'Enable') {
 		$varsqlconf2postauth = 'sql2';
-	}
-	else {
+	} else {
 		$varsqlconf2postauth = '### sql2 DISABLED ###';
-	}	
-	
+	}
+
 	// Failover mode
-	$varsqlconf2failover = ($sqlconf['varsqlconf2failover']?$sqlconf['varsqlconf2failover']:'redundant');
+	$varsqlconf2failover = ($sqlconf['varsqlconf2failover'] ?: 'redundant');
 
 	// authorize section DATABASE 1
 	if (($sqlconf['varsqlconfincludeenable'] == 'on') && ($sqlconf['varsqlconfenableauthorize'] == 'Enable')) {
 		$varsqlconfauthorize = "$varsqlconf2failover {" . "\n\t\t\tsql" . "\n\t\t\t$varsqlconf2authorize" . "\n\t}";
-	}
-	else {
+	} else {
 		$varsqlconfauthorize = '### sql DISABLED ###';
 	}
-	
+
 	// accounting section DATABASE 1
 	if (($sqlconf['varsqlconfincludeenable'] == 'on') && ($sqlconf['varsqlconfenableaccounting'] == 'Enable')) {
 		$varsqlconfaccounting = "$varsqlconf2failover {" . "\n\t\t\tsql" . "\n\t\t\t$varsqlconf2accounting" . "\n\t}";
-	}
-	else {
+	} else {
 		$varsqlconfaccounting = '### sql DISABLED ###';
 	}
-	
+
 	// session section DATABASE 1
 	if (($sqlconf['varsqlconfincludeenable'] == 'on') && ($sqlconf['varsqlconfenablesession'] == 'Enable')) {
 		$varsqlconfsession = "$varsqlconf2failover {" . "\n\t\t\tsql" . "\n\t\t\t$varsqlconf2session" . "\n\t}";
-	}
-	else {
+	} else {
 		$varsqlconfsession = 'radutmp';
 	}
 
 	// post-auth section DATABASE 1
 	if (($sqlconf['varsqlconfincludeenable'] == 'on') && ($sqlconf['varsqlconfenablepostauth'] == 'Enable')) {
 		$varsqlconfpostauth = "$varsqlconf2failover {" . "\n\t\t\tsql" . "\n\t\t\t$varsqlconf2postauth" . "\n\t}";
-	}
-	else {
+		$varsqlconfpostauthtypereject = 'sql';
+	} else {
 		$varsqlconfpostauth = '### sql DISABLED ###';
+		$varsqlconfpostauthtypereject = '# sql';
 	}
-	
+
 	// Changing authorize section for plain mac auth
 	// Variables: If not using 802.1x, mac address must be known
-	$varsettings = $config['installedpackages']['freeradiussettings']['config'][0];
-	
+	if (is_array($config['installedpackages']['freeradiussettings']['config'][0])) {
+		$varsettings = $config['installedpackages']['freeradiussettings']['config'][0];
+	} else {
+		$varsettings = array();
+	}
+
 	// If unchecked we need the normal EAP section.
 	if (!$varsettings['varsettingsenablemacauth']) {
 		$varplainmacauthenable = '##### AUTHORIZE FOR PLAIN MAC-AUTH IS DISABLED #####';
 
 		$varplainmacpreacctenable = '##### ACCOUNTING FOR PLAIN MAC-AUTH DISABLED #####';
-	}
-	// If checked we need to check if it is plain mac or eap
-	else {
+	} else {
+		// If checked we need to check if it is plain mac or eap
 		$varplainmacauthenable = '';
 		$varplainmacauthenable .= "### FIRST check MAC address in authorized_macs and if that fails proceed with other checks below in else-section ###";
 		$varplainmacauthenable .= "\n\t### if cleaning up the Calling-Station-Id...###";
@@ -1542,17 +1569,14 @@ function freeradius_serverdefault_resync() {
 		$varplainmacpreacctenable .= '##### ACCOUNTING FOR PLAIN MAC-AUTH ENABLED #####';
 		$varplainmacpreacctenable .= "\n\trewrite_calling_station_id";
 	}
-	
-	// Disable acct_unique in preacct section
-	$varsettings = $config['installedpackages']['freeradiussettings']['config'][0];
 
+	// Disable acct_unique in preacct section
 	if ($varsettings['varsettingsenableacctunique'] == 'on') {
 		$varsettingsacctuniqueenabled = '##### DISABLE acct_unique DISABLE #####';
-	}
-	else {
+	} else {
 		$varsettingsacctuniqueenabled = 'acct_unique';
 	}
-	
+
 	$conf .= <<<EOD
 ######################################################################
 #
@@ -1620,7 +1644,7 @@ function freeradius_serverdefault_resync() {
 #  The order of the realm modules will determine the order that
 #  we try to find a matching realm.
 #
-#  Make *sure* that 'preprocess' comes before any realm if you 
+#  Make *sure* that 'preprocess' comes before any realm if you
 #  need to setup hints for the remote radius server
 authorize {
 	#
@@ -1642,11 +1666,11 @@ authorize {
 	#  It takes care of processing the 'raddb/hints' and the
 	#  'raddb/huntgroups' files.
 	preprocess
-	
+
 	#
 	#
 	$varplainmacauthenable
-	
+
 	#
 	#  If you want to have a log of authentication requests,
 	#  un-comment the following line, and the 'detail auth_log'
@@ -1693,10 +1717,10 @@ authorize {
 	#  Otherwise, when the first style of realm doesn't match,
 	#  the other styles won't be checked.
 	#
-	
+
 	suffix
 	ntdomain
-	
+
 	#
 	#  This module takes care of EAP-MD5, EAP-TLS, and EAP-LEAP
 	#  authentication.
@@ -1715,11 +1739,11 @@ authorize {
 	#  or PEAP.  The load on those servers will therefore be reduced.
 	#
 	#
-	
+
 	eap {
 		ok = return
 	}
-	
+
 	#
 	#  Pull crypt'd passwords from /etc/passwd or /etc/shadow,
 	#  using the system API's to get the password.  If you want
@@ -1748,7 +1772,7 @@ authorize {
 	#
 	#  The ldap module will set Auth-Type to LDAP if it has not
 	#  already been set
-	
+
 	$varmodulesldapenableauthorize
 
 	#
@@ -1777,7 +1801,7 @@ authorize {
 	#  get a chance to set Auth-Type for themselves.
 	#
 	pap
-	
+
 	#
 	#  If "status_server = yes", then Status-Server messages are passed
 	#  through the following section, and ONLY the following section.
@@ -1845,7 +1869,7 @@ authenticate {
 	Auth-Type MOTP {
 		motp
 	}
-	
+
 	#
 	#  If you have a Cisco SIP server authenticating against
 	#  FreeRADIUS, uncomment the following line, and the 'digest'
@@ -1888,7 +1912,7 @@ authenticate {
 	#
 #	Auth-Type eap {
 #		eap {
-#			handled = 1  
+#			handled = 1
 #		}
 #		if (handled && (Response-Packet-Type == Access-Challenge)) {
 #			attr_filter.access_challenge.post-auth
@@ -1903,9 +1927,9 @@ authenticate {
 #
 preacct {
 	preprocess
-	
+
 	$varplainmacpreacctenable
-	
+
 	#
 	#  Session start times are *implied* in RADIUS.
 	#  The NAS never sends a "start time".  Instead, it sends
@@ -1965,7 +1989,7 @@ accounting {
 		datacountermonthly
 		datacounterforever
 	}
-	
+
 	#  Update the wtmp file
 	#
 	#  If you don't use "radlast", you can delete this line.
@@ -2026,7 +2050,7 @@ accounting {
 }
 
 
-#  Session database, used for checking Simultaneous-Use. Either the radutmp 
+#  Session database, used for checking Simultaneous-Use. Either the radutmp
 #  or rlm_sql module can handle this.
 #  The rlm_sql module is *much* faster
 session {
@@ -2135,13 +2159,13 @@ post-auth {
 	#  Access-Reject packets are sent through the REJECT sub-section of the
 	#  post-auth section.
 	#
-	#  Add the ldap module name (or instance) if you have set 
+	#  Add the ldap module name (or instance) if you have set
 	#  'edir_account_policy_check = yes' in the ldap module configuration
 	#
 	Post-Auth-Type REJECT {
 
 		# log failed authentications in SQL, too.
-		# sql
+		$varsqlconfpostauthtypereject
 		attr_filter.access_reject
 	}
 }
@@ -2230,32 +2254,34 @@ EOD;
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 	conf_mount_ro();
-	
-	// No need to restart here because the restart of the service will be done in freeradius_settings_resync()
+
+	// No need to restart here because the restart of the service
+	// will be done in freeradius_settings_resync()
 }
 
 function freeradius_cacertcnf_resync() {
 	global $config;
 	$conf = '';
 
-	$arrcerts = $config['installedpackages']['freeradiuscerts']['config'][0];
-	
+	if (is_array($config['installedpackages']['freeradiuscerts']['config'][0])) {
+		$arrcerts = $config['installedpackages']['freeradiuscerts']['config'][0];
+	} else {
+		$arrcerts = array();
+	}
+
 	// General variables: CA, Server, Client
-	$varcertsdefaultdays = ($arrcerts['varcertsdefaultdays']?$arrcerts['varcertsdefaultdays']:'3650');
-	$varcertsdefaultmd = ($arrcerts['varcertsdefaultmd']?$arrcerts['varcertsdefaultmd']:'md5');
-	$varcertsdefaultbits = ($arrcerts['varcertsdefaultbits']?$arrcerts['varcertsdefaultbits']:'2048');
-	$varcertspassword = ($arrcerts['varcertspassword']?$arrcerts['varcertspassword']:'whatever');
-	$varcertscountryname = ($arrcerts['varcertscountryname']?$arrcerts['varcertscountryname']:'US');
-	$varcertsstateorprovincename = ($arrcerts['varcertsstateorprovincename']?$arrcerts['varcertsstateorprovincename']:'Texas');
-	$varcertslocalityname = ($arrcerts['varcertslocalityname']?$arrcerts['varcertslocalityname']:'Austin');
-	$varcertsorganizationname = ($arrcerts['varcertsorganizationname']?$arrcerts['varcertsorganizationname']:'My Company Inc');
+	$varcertsdefaultdays = ($arrcerts['varcertsdefaultdays'] ?: '3650');
+	$varcertsdefaultmd = ($arrcerts['varcertsdefaultmd'] ?: 'md5');
+	$varcertsdefaultbits = ($arrcerts['varcertsdefaultbits'] ?: '2048');
+	$varcertspassword = ($arrcerts['varcertspassword'] ?: 'whatever');
+	$varcertscountryname = ($arrcerts['varcertscountryname'] ?: 'US');
+	$varcertsstateorprovincename = ($arrcerts['varcertsstateorprovincename'] ?: 'Texas');
+	$varcertslocalityname = ($arrcerts['varcertslocalityname'] ?: 'Austin');
+	$varcertsorganizationname = ($arrcerts['varcertsorganizationname'] ?: 'My Company Inc');
 
 	// Variables: Only for CA
-	$varcertscaemailaddress = ($arrcerts['varcertscaemailaddress']?$arrcerts['varcertscaemailaddress']:'admin@mycompany.com');
-	$varcertscacommonname = ($arrcerts['varcertscacommonname']?$arrcerts['varcertscacommonname']:'internal-ca');
-	
-	
-	
+	$varcertscaemailaddress = ($arrcerts['varcertscaemailaddress'] ?: 'admin@mycompany.com');
+	$varcertscacommonname = ($arrcerts['varcertscacommonname'] ?: 'internal-ca');
 
 	$conf .= <<<EOD
 [ ca ]
@@ -2331,22 +2357,25 @@ function freeradius_servercertcnf_resync() {
 	global $config;
 	$conf = '';
 
-	$arrcerts = $config['installedpackages']['freeradiuscerts']['config'][0];
-	
+	if (is_array($config['installedpackages']['freeradiuscerts']['config'][0])) {
+		$arrcerts = $config['installedpackages']['freeradiuscerts']['config'][0];
+	} else {
+		$arrcerts = array();
+	}
+
 	// General variables: CA, Server, Client
-	$varcertsdefaultdays = ($arrcerts['varcertsdefaultdays']?$arrcerts['varcertsdefaultdays']:'3650');
-	$varcertsdefaultmd = ($arrcerts['varcertsdefaultmd']?$arrcerts['varcertsdefaultmd']:'md5');
-	$varcertsdefaultbits = ($arrcerts['varcertsdefaultbits']?$arrcerts['varcertsdefaultbits']:'2048');
-	$varcertspassword = ($arrcerts['varcertspassword']?$arrcerts['varcertspassword']:'whatever');
-	$varcertscountryname = ($arrcerts['varcertscountryname']?$arrcerts['varcertscountryname']:'US');
-	$varcertsstateorprovincename = ($arrcerts['varcertsstateorprovincename']?$arrcerts['varcertsstateorprovincename']:'Texas');
-	$varcertslocalityname = ($arrcerts['varcertslocalityname']?$arrcerts['varcertslocalityname']:'Austin');
-	$varcertsorganizationname = ($arrcerts['varcertsorganizationname']?$arrcerts['varcertsorganizationname']:'My Company Inc');
+	$varcertsdefaultdays = ($arrcerts['varcertsdefaultdays'] ?: '3650');
+	$varcertsdefaultmd = ($arrcerts['varcertsdefaultmd'] ?: 'md5');
+	$varcertsdefaultbits = ($arrcerts['varcertsdefaultbits'] ?: '2048');
+	$varcertspassword = ($arrcerts['varcertspassword'] ?: 'whatever');
+	$varcertscountryname = ($arrcerts['varcertscountryname'] ?: 'US');
+	$varcertsstateorprovincename = ($arrcerts['varcertsstateorprovincename'] ?: 'Texas');
+	$varcertslocalityname = ($arrcerts['varcertslocalityname'] ?: 'Austin');
+	$varcertsorganizationname = ($arrcerts['varcertsorganizationname'] ?: 'My Company Inc');
 
 	// Variables: Only for Server
-	$varcertsserveremailaddress = ($arrcerts['varcertsserveremailaddress']?$arrcerts['varcertsserveremailaddress']:'webadmin@mycompany.com');
-	$varcertsservercommonname = ($arrcerts['varcertsservercommonname']?$arrcerts['varcertsservercommonname']:'server-cert');
-	
+	$varcertsserveremailaddress = ($arrcerts['varcertsserveremailaddress'] ?: 'webadmin@mycompany.com');
+	$varcertsservercommonname = ($arrcerts['varcertsservercommonname'] ?: 'server-cert');
 
 	$conf .= <<<EOD
 [ ca ]
@@ -2416,22 +2445,25 @@ function freeradius_clientcertcnf_resync() {
 	global $config;
 	$conf = '';
 
-	$arrcerts = $config['installedpackages']['freeradiuscerts']['config'][0];
-	
+	if (is_array($config['installedpackages']['freeradiuscerts']['config'][0])) {
+		$arrcerts = $config['installedpackages']['freeradiuscerts']['config'][0];
+	} else {
+		$arrcerts = array();
+	}
+
 	// General variables: CA, Server, Client
-	$varcertsdefaultdays = ($arrcerts['varcertsdefaultdays']?$arrcerts['varcertsdefaultdays']:'3650');
-	$varcertsdefaultmd = ($arrcerts['varcertsdefaultmd']?$arrcerts['varcertsdefaultmd']:'md5');
-	$varcertsdefaultbits = ($arrcerts['varcertsdefaultbits']?$arrcerts['varcertsdefaultbits']:'2048');
-	$varcertspassword = ($arrcerts['varcertspassword']?$arrcerts['varcertspassword']:'whatever');
-	$varcertscountryname = ($arrcerts['varcertscountryname']?$arrcerts['varcertscountryname']:'US');
-	$varcertsstateorprovincename = ($arrcerts['varcertsstateorprovincename']?$arrcerts['varcertsstateorprovincename']:'Texas');
-	$varcertslocalityname = ($arrcerts['varcertslocalityname']?$arrcerts['varcertslocalityname']:'Austin');
-	$varcertsorganizationname = ($arrcerts['varcertsorganizationname']?$arrcerts['varcertsorganizationname']:'My Company Inc');
+	$varcertsdefaultdays = ($arrcerts['varcertsdefaultdays'] ?: '3650');
+	$varcertsdefaultmd = ($arrcerts['varcertsdefaultmd'] ?: 'md5');
+	$varcertsdefaultbits = ($arrcerts['varcertsdefaultbits'] ?: '2048');
+	$varcertspassword = ($arrcerts['varcertspassword'] ?: 'whatever');
+	$varcertscountryname = ($arrcerts['varcertscountryname'] ?: 'US');
+	$varcertsstateorprovincename = ($arrcerts['varcertsstateorprovincename'] ?: 'Texas');
+	$varcertslocalityname = ($arrcerts['varcertslocalityname'] ?: 'Austin');
+	$varcertsorganizationname = ($arrcerts['varcertsorganizationname'] ?: 'My Company Inc');
 
 	// Variables: Only for Client
-	$varcertsclientemailaddress = ($arrcerts['varcertsclientemailaddress']?$arrcerts['varcertsclientemailaddress']:'user@mycompany.com');
-	$varcertsclientcommonname = ($arrcerts['varcertsclientcommonname']?$arrcerts['varcertsclientcommonname']:'client-cert');
-	
+	$varcertsclientemailaddress = ($arrcerts['varcertsclientemailaddress'] ?: 'user@mycompany.com');
+	$varcertsclientcommonname = ($arrcerts['varcertsclientcommonname'] ?: 'client-cert');
 
 	$conf .= <<<EOD
 [ ca ]
@@ -2499,122 +2531,119 @@ EOD;
 
 function freeradius_allcertcnf_resync() {
 	global $config;
-		// We need to make this write enabled for embedded systems to write certs
-		conf_mount_rw();
-	
-	
-// Only proceed these steps if freeRADIUS Cert-Manager is activated. if pfSense cert manager is used skip this.
-$eapconf = $config['installedpackages']['freeradiuseapconf']['config'][0];
-if ($eapconf['vareapconfchoosecertmanager'] == '') {
-	
 
-	$arrcerts = $config['installedpackages']['freeradiuscerts']['config'][0];
-	
-	// General variable for deleting and generation of further Client-Cert
-	$varcertscreateclient = ($arrcerts['varcertscreateclient']?$arrcerts['varcertscreateclient']:'no');
-	
-	// General variables for deleting: CA, Server, Client
-	$varcertsdeleteall = ($arrcerts['varcertsdeleteall']?$arrcerts['varcertsdeleteall']:'no');
-		
-	// If all certs should be deleted, we do not need to delete and recreate client-certs first.
-	if ($arrcerts['varcertsdeleteall'] == 'no') {
+	conf_mount_rw();
 
-		if ($arrcerts['varcertscreateclient'] == 'yes') {
-		
-		// delete all old certificates and keys
-		log_error("freeRADIUS: deleting all client.csr .crt .key .pem .tar in " . FREERADIUS_ETC . "/raddb/certs");
-		exec("rm -f " . FREERADIUS_ETC . "/raddb/certs/client.csr");
-		exec("rm -f " . FREERADIUS_ETC . "/raddb/certs/client.crt");
-		exec("rm -f " . FREERADIUS_ETC . "/raddb/certs/client.key");
-		exec("rm -f " . FREERADIUS_ETC . "/raddb/certs/client.pem");
-		exec("rm -f " . FREERADIUS_ETC . "/raddb/certs/client.tar");
-				
-			
-		// run fuction to create ONLY new client.cnf files based on user input from freeradiuscert.xml
-		freeradius_clientcertcnf_resync();
-	
-	
-		// make bootstrap executable and run to create cert based on client.cnf files
-		exec("chmod 0770 " . FREERADIUS_ETC . "/raddb/certs/bootstrap");
-		exec(FREERADIUS_ETC . "/raddb/certs/bootstrap");
-			
-		// rename client generated XX.pem to client.pem // use regex to replace spaces and so on.
-		$varserial = preg_replace("/\s/","",file_get_contents(FREERADIUS_ETC . '/raddb/certs/serial.old'));
-		if (file_exists(FREERADIUS_ETC . "/raddb/certs/$varserial.pem"))
-		rename(FREERADIUS_ETC . "/raddb/certs/$varserial.pem",FREERADIUS_ETC . "/raddb/certs/client.pem");
-		
-		
-		// tar client-cert files
-		exec("cd " . FREERADIUS_ETC . "/raddb/certs && tar -cf client.tar client.crt client.csr client.key ca.der client.pem");
-		
-		// Make all files in certs folder read/write only for root
-		exec("chmod -R 0600 " . FREERADIUS_ETC . "/raddb/certs/");
-		log_error("freeRADIUS: Created new client.csr .crt .key .pem and added them together with ca.der in " . FREERADIUS_ETC . "/raddb/certs/client.tar");
-		}
+	// Only proceed these steps if freeRADIUS Cert-Manager is activated. if pfSense cert manager is used skip this.
+	if (is_array($config['installedpackages']['freeradiuseapconf']['config'][0])) {
+		$eapconf = $config['installedpackages']['freeradiuseapconf']['config'][0];
+	} else {
+		$eapconf = array();
 	}
-	else {
-		
-		if ($arrcerts['varcertsdeleteall'] == 'yes') {
-	
-		// delete all old certificates and keys - deletes certs from pfsense cert-manager IN THIS FOLDER, too.
-		log_error("freeRADIUS: deleting all CA, Server and Client certs, DH, random and database files in " . FREERADIUS_ETC . "/raddb/certs");
-		exec("rm -f " . FREERADIUS_ETC . "/raddb/certs/ca.pem && rm -f " . FREERADIUS_ETC . "/raddb/certs/server.pem && rm -f " . FREERADIUS_ETC . "/raddb/certs/client.pem");
-		exec("rm -f " . FREERADIUS_ETC . "/raddb/certs/ca.der && rm -f " . FREERADIUS_ETC . "/raddb/certs/server.der && rm -f " . FREERADIUS_ETC . "/raddb/certs/client.der");
-		exec("rm -f " . FREERADIUS_ETC . "/raddb/certs/ca.csr && rm -f " . FREERADIUS_ETC . "/raddb/certs/server.csr && rm -f " . FREERADIUS_ETC . "/raddb/certs/client.csr");
-		exec("rm -f " . FREERADIUS_ETC . "/raddb/certs/ca.crt && rm -f " . FREERADIUS_ETC . "/raddb/certs/server.crt && rm -f " . FREERADIUS_ETC . "/raddb/certs/client.crt");
-		exec("rm -f " . FREERADIUS_ETC . "/raddb/certs/ca.key && rm -f " . FREERADIUS_ETC . "/raddb/certs/server.key && rm -f " . FREERADIUS_ETC . "/raddb/certs/client.key");
-		exec("rm -f " . FREERADIUS_ETC . "/raddb/certs/ca.p12 && rm -f " . FREERADIUS_ETC . "/raddb/certs/server.p12 && rm -f " . FREERADIUS_ETC . "/raddb/certs/client.p12");
-		exec("rm -f " . FREERADIUS_ETC . "/raddb/certs/serial*");
-		exec("rm -f " . FREERADIUS_ETC . "/raddb/certs/index*");
-		exec("rm -f " . FREERADIUS_ETC . "/raddb/certs/dh");
-		exec("rm -f " . FREERADIUS_ETC . "/raddb/certs/random");
-		exec("rm -f " . FREERADIUS_ETC . "/raddb/certs/client.tar");
-		
-	
-		// run fuctions to create new .cnf files based on user input from freeradiuscert.xml
-		freeradius_cacertcnf_resync();
-		freeradius_servercertcnf_resync();
-		freeradius_clientcertcnf_resync();
-		
-		// this command deletes the pfsense_cert_mgr checkfile so when we change back to pfsense cert manager a new DH + random file will be created
-		if (file_exists(FREERADIUS_ETC . "/raddb/certs/pfsense_cert_mgr")) {
-			unlink(FREERADIUS_ETC . "/raddb/certs/pfsense_cert_mgr");
+
+	if ($eapconf['vareapconfchoosecertmanager'] == '') {
+		$arrcerts = $config['installedpackages']['freeradiuscerts']['config'][0];
+		// General variable for deleting and generation of further Client-Cert
+		$varcertscreateclient = ($arrcerts['varcertscreateclient'] ?: 'no');
+		// General variables for deleting: CA, Server, Client
+		$varcertsdeleteall = ($arrcerts['varcertsdeleteall'] ?: 'no');
+
+		// If all certs should be deleted, we do not need to delete and recreate client-certs first.
+		if ($arrcerts['varcertsdeleteall'] == 'no') {
+			if ($arrcerts['varcertscreateclient'] == 'yes') {
+				// delete all old certificates and keys
+				log_error("freeRADIUS: deleting all client.csr .crt .key .pem .tar in " . FREERADIUS_ETC . "/raddb/certs");
+				$exts = array("csr", "crt", "key", "pem", "tar");
+				foreach ($exts as $ext) {
+					unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/client.{$ext}");
+				}
+
+				// run fuction to create ONLY new client.cnf files based on user input from freeradiuscert.xml
+				freeradius_clientcertcnf_resync();
+
+				// make bootstrap executable and run to create cert based on client.cnf files
+				chmod(FREERADIUS_ETC . "/raddb/certs/bootstrap", 0770);
+				mwexec(FREERADIUS_ETC . "/raddb/certs/bootstrap");
+
+				// rename client generated XX.pem to client.pem
+				// use regex to replace spaces and so on.
+				$varserial = preg_replace("/\s/","",file_get_contents(FREERADIUS_ETC . '/raddb/certs/serial.old'));
+					if (file_exists(FREERADIUS_ETC . "/raddb/certs/$varserial.pem")) {
+						rename(FREERADIUS_ETC . "/raddb/certs/$varserial.pem", FREERADIUS_ETC . "/raddb/certs/client.pem");
+					}
+
+				// tar client-cert files
+				mwexec("/usr/bin/tar -C " . FREERADIUS_ETC . "/raddb/certs -cf " . FREERADIUS_ETC . "/raddb/certs/client.tar client.crt client.csr client.key ca.der client.pem");
+
+				// Make all files in certs folder read/write only for root
+				$certs = glob(FREERADIUS_ETC . "/raddb/certs/*");
+				array_walk($certs, function($cert_file) {
+					chmod($cert_file, 0600);
+				});
+				log_error("freeRADIUS: Created new client.csr .crt .key .pem and added them together with ca.der in " . FREERADIUS_ETC . "/raddb/certs/client.tar");
+			}
+		} else {
+			if ($arrcerts['varcertsdeleteall'] == 'yes') {
+				// delete all old certificates and keys - deletes certs from pfsense cert-manager IN THIS FOLDER, too.
+				log_error("freeRADIUS: deleting all CA, Server and Client certs, DH, random and database files in " . FREERADIUS_ETC . "/raddb/certs");
+				$exts = array("pem", "der", "csr", "crt", "key", "p12");
+				foreach ($exts as $ext) {
+					unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/ca.{$ext}");
+					unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/server.{$ext}");
+					unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/client.{$ext}");
+				}
+				unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/serial*");
+				unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/index*");
+				unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/dh");
+				unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/random");
+				unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/client.tar");
+
+				// run fuctions to create new .cnf files based on user input from freeradiuscert.xml
+				freeradius_cacertcnf_resync();
+				freeradius_servercertcnf_resync();
+				freeradius_clientcertcnf_resync();
+
+				// this command deletes the pfsense_cert_mgr checkfile so when we change back to pfsense cert manager a new DH + random file will be created
+				unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/pfsense_cert_mgr");
+
+				// generate new DH and RANDOM file
+				log_error("freeRADIUS: Creating new DH and random file in " . FREERADIUS_ETC . "/raddb/certs");
+				// use openvpn_create_dhparams() from openvpn.inc to generate DH params
+				file_put_contents(FREERADIUS_ETC . "/raddb/certs/dh", openvpn_create_dhparams('1024'), LOCK_EX);
+				mwexec("/bin/dd if=/dev/urandom of=" . FREERADIUS_ETC . "/raddb/certs/random count=10");
+
+				log_error("freeRADIUS: Creating new CA, Server and Client certs in " . FREERADIUS_ETC . "/raddb/certs");
+				// make bootstrap executable and run to create certs based on .cnf files
+				chmod(FREERADIUS_ETC . "/raddb/certs/bootstrap", 0770);
+				mwexec(FREERADIUS_ETC . "/raddb/certs/bootstrap");
+
+				// rename client generated 02.pem to client.pem
+				if (file_exists(FREERADIUS_ETC . "/raddb/certs/02.pem")) {
+					rename(FREERADIUS_ETC . "/raddb/certs/02.pem", FREERADIUS_ETC . "/raddb/certs/client.pem");
+				}
+
+				// tar client-cert files
+				mwexec("/usr/bin/tar -C " . FREERADIUS_ETC . "/raddb/certs -cf " . FREERADIUS_ETC . "/raddb/certs/client.tar client.crt client.csr client.key ca.der client.pem");
+				$certs = glob(FREERADIUS_ETC . "/raddb/certs/*");
+				array_walk($certs, function($cert_file) {
+					chmod($cert_file, 0600);
+				});
+				log_error("freeRADIUS: Added client.csr .crt .key .pem together with ca.der in " . FREERADIUS_ETC . "/raddb/certs/client.tar");
+
+				// If there were changes on the certificates we need to restart freeradius
+				// Note: this function is currently only called from freeradiuscerts.xml functions
+				if ($restart_svc === true) {
+					restart_service("radiusd");
+				}
+			}
 		}
-		
-		// generate new DH and RANDOM file
-		log_error("freeRADIUS: Creating new DH and random file in " . FREERADIUS_ETC . "/raddb/certs");
-		exec("cd " . FREERADIUS_ETC . "/raddb/certs && openssl dhparam -out dh 1024");
-		exec("cd " . FREERADIUS_ETC . "/raddb/certs && dd if=/dev/urandom of=./random count=10");
-		
-		log_error("freeRADIUS: Creating new CA, Server and Client certs in " . FREERADIUS_ETC . "/raddb/certs");
-		// make bootstrap executable and run to create certs based on .cnf files
-		exec("chmod 0770 " . FREERADIUS_ETC . "/raddb/certs/bootstrap");
-		exec(FREERADIUS_ETC . "/raddb/certs/bootstrap");
-		
-		// rename client generated 02.pem to client.pem
-		if (file_exists(FREERADIUS_ETC . "/raddb/certs/02.pem")) {
-			rename(FREERADIUS_ETC . "/raddb/certs/02.pem", FREERADIUS_ETC . "/raddb/certs/client.pem");
-		}
-		
-		// tar client-cert files
-		exec("cd " . FREERADIUS_ETC . "/raddb/certs && tar -cf client.tar client.crt client.csr client.key ca.der client.pem");
-		exec("chmod -R 0600 " . FREERADIUS_ETC . "/raddb/certs/");
-		log_error("freeRADIUS: Added client.csr .crt .key .pem together with ca.der in " . FREERADIUS_ETC . "/raddb/certs/client.tar");
-		
-		// If there were changes on the certificates we need to restart freeradius
-		// Note: this function is currently only called from freeradiuscerts.xml functions
-		if ($restart_svc === true) { restart_service("radiusd"); }
-		}
+	// end choose pfSense cert-manager
+	} else {
+		return;
 	}
-} //end choose pfSense cert-manager
-else {
-	return;
+
+	conf_mount_ro();
 }
-// Read-only because of embedded systems
-conf_mount_ro();
-} //end of function
-
-// ##### The following part is based on the code of pfblocker #####
 
 /* Uses XMLRPC to synchronize the changes to a remote node */
 function freeradius_sync_on_changes() {
@@ -2663,7 +2692,7 @@ function freeradius_sync_on_changes() {
 				log_error("[FreeRADIUS]: XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
 				return;
 			}
-			break;		
+			break;
 		default:
 			return;
 			break;
@@ -2706,7 +2735,7 @@ function freeradius_sync_on_changes() {
 	}
 }
 
-if(!function_exists('pf_version')) {
+if (!function_exists('pf_version')) {
 	function pf_version() {
 		return substr(trim(file_get_contents("/etc/version")), 0, 3);
 	}
@@ -2717,11 +2746,7 @@ function freeradius_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncpo
 	global $config, $g;
 
 	/* Detect boot process, do nothing during boot. */
-	if (function_exists("platform_booting")) {
-		if (platform_booting()) {
-			return;
-		}
-	} elseif ($g['booting']) {
+	if (platform_booting()) {
 		return;
 	}
 
@@ -2740,7 +2765,7 @@ function freeradius_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncpo
 	$execcmd .= "freeradius_all_after_XMLRPC_resync();";
 
 	if (pf_version() >= "2.4") {
-		// xmlrpc cannot encode NULL objects/arrays..
+		// xmlrpc cannot encode NULL objects/arrays
 		foreach($xml as $xmlkey => $xmlvalue) {
 			if (gettype($xmlvalue) == "NULL") {
 				$xml[$xmlkey] = array();
@@ -2754,7 +2779,7 @@ function freeradius_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncpo
 	} else {
 		// pfSense before 2.4
 		require_once('xmlrpc.inc');
-	
+
 		/* Take care of IPv6 literal address */
 		if (is_ipaddrv6($sync_to_ip)) {
 			$sync_to_ip = "[{$sync_to_ip}]";
@@ -2818,7 +2843,8 @@ function freeradius_do_xmlrpc_sync($sync_to_ip, $username, $password, $varsyncpo
 	}
 }
 
-// This function restarts all other needed functions after XMLRPC so that the content of .XML + .INC will be written in the files (clients.conf, users)
+// This function restarts all other needed functions after XMLRPC
+// so that the content of .XML + .INC will be written in the files (clients.conf, users)
 // Adding more functions will increase the to sync
 function freeradius_all_after_XMLRPC_resync() {
 	// Make sure we only (re)start the service once below
@@ -2828,7 +2854,7 @@ function freeradius_all_after_XMLRPC_resync() {
 	freeradius_authorizedmacs_resync(false, true);
 	// Restart now when XMLRPC sync is completely finished
 	freeradius_clients_resync();
-	
+
 	log_error("[FreeRADIUS]: Finished XMLRPC process. It should be OK. For more information look at the host which started sync.");
 }
 
@@ -3102,148 +3128,127 @@ EOD;
 function freeradius_modulesldap_resync($restart_svc = true) {
 	global $config;
 	$conf = '';
-	
-	$arrmodulesldap = $config['installedpackages']['freeradiusmodulesldap']['config'][0];
-	
-	// Enable and Disable LDAP for "authorize" and "authenticate" will be done in "freeradius_serverdefault_resync"
-	// redundatnt-load-balancing will there be done, too
-	
-	
-	// Variables for General Configuration ldap1
-	$varmodulesldapserver = ($arrmodulesldap['varmodulesldapserver']?$arrmodulesldap['varmodulesldapserver']:'ldap.your.domain');
-	$varmodulesldapserverport = ($arrmodulesldap['varmodulesldapserverport']?$arrmodulesldap['varmodulesldapserverport']:'389');
-	$varmodulesldapidentity = ($arrmodulesldap['varmodulesldapidentity']?$arrmodulesldap['varmodulesldapidentity']:'cn=admin,o=My Org,c=UA');
-	$varmodulesldappassword = ($arrmodulesldap['varmodulesldappassword']?$arrmodulesldap['varmodulesldappassword']:'mypass');
-	$varmodulesldapbasedn = ($arrmodulesldap['varmodulesldapbasedn']?$arrmodulesldap['varmodulesldapbasedn']:'o=My Org,c=UA');
-	$varmodulesldapfilter = ($arrmodulesldap['varmodulesldapfilter']?$arrmodulesldap['varmodulesldapfilter']:'(uid=%{%{Stripped-User-Name}:-%{User-Name}})');
-	$varmodulesldapbasefilter = ($arrmodulesldap['varmodulesldapbasefilter']?$arrmodulesldap['varmodulesldapbasefilter']:'(objectclass=radiusprofile)');
-	$varmodulesldapldapconnectionsnumber = ($arrmodulesldap['varmodulesldapldapconnectionsnumber']?$arrmodulesldap['varmodulesldapldapconnectionsnumber']:'5');
-	$varmodulesldaptimeout = ($arrmodulesldap['varmodulesldaptimeout']?$arrmodulesldap['varmodulesldaptimeout']:'4');
-	$varmodulesldaptimelimit = ($arrmodulesldap['varmodulesldaptimelimit']?$arrmodulesldap['varmodulesldaptimelimit']:'3');
-	$varmodulesldapnettimeout = ($arrmodulesldap['varmodulesldapnettimeout']?$arrmodulesldap['varmodulesldapnettimeout']:'1');
-	
-	// Variables for General Configuration ldap2
-	$varmodulesldap2server = ($arrmodulesldap['varmodulesldap2server']?$arrmodulesldap['varmodulesldap2server']:'ldap.your.domain');
-	$varmodulesldap2serverport = ($arrmodulesldap['varmodulesldap2serverport']?$arrmodulesldap['varmodulesldap2serverport']:'389');
-	$varmodulesldap2identity = ($arrmodulesldap['varmodulesldap2identity']?$arrmodulesldap['varmodulesldap2identity']:'cn=admin,o=My Org,c=UA');
-	$varmodulesldap2password = ($arrmodulesldap['varmodulesldap2password']?$arrmodulesldap['varmodulesldap2password']:'mypass');
-	$varmodulesldap2basedn = ($arrmodulesldap['varmodulesldap2basedn']?$arrmodulesldap['varmodulesldap2basedn']:'o=My Org,c=UA');
-	$varmodulesldap2filter = ($arrmodulesldap['varmodulesldap2filter']?$arrmodulesldap['varmodulesldap2filter']:'(uid=%{%{Stripped-User-Name}:-%{User-Name}})');
-	$varmodulesldap2basefilter = ($arrmodulesldap['varmodulesldap2basefilter']?$arrmodulesldap['varmodulesldap2basefilter']:'(objectclass=radiusprofile)');
-	$varmodulesldap2ldapconnectionsnumber = ($arrmodulesldap['varmodulesldap2ldapconnectionsnumber']?$arrmodulesldap['varmodulesldap2ldapconnectionsnumber']:'5');
-	$varmodulesldap2timeout = ($arrmodulesldap['varmodulesldap2timeout']?$arrmodulesldap['varmodulesldap2timeout']:'4');
-	$varmodulesldap2timelimit = ($arrmodulesldap['varmodulesldap2timelimit']?$arrmodulesldap['varmodulesldap2timelimit']:'3');
-	$varmodulesldap2nettimeout = ($arrmodulesldap['varmodulesldap2nettimeout']?$arrmodulesldap['varmodulesldap2nettimeout']:'1');	
-	
-	// Variables for TLS / Certificates - ldap1
-	$varmodulesldaprequirecert = ($arrmodulesldap['varmodulesldaprequirecert']?$arrmodulesldap['varmodulesldaprequirecert']:'never');
 
-// if enabled then create the certs in ../raddb/certs/ and enable "Start_tls" in ldap1 module
-if($arrmodulesldap['varmodulesldapenabletlssupport'] == 'on') {
-		
+	if (is_array($config['installedpackages']['freeradiusmodulesldap']['config'][0])) {
+		$arrmodulesldap = $config['installedpackages']['freeradiusmodulesldap']['config'][0];
+	} else {
+		$arrmodulesldap = array();
+	}
+
+	// Enable and Disable LDAP for "authorize" and "authenticate" will be done in freeradius_serverdefault_resync()
+	// redundatnt-load-balancing will there be done, too
+
+	// Variables for General Configuration ldap1
+	$varmodulesldapserver = ($arrmodulesldap['varmodulesldapserver'] ?: 'ldap.your.domain');
+	$varmodulesldapserverport = ($arrmodulesldap['varmodulesldapserverport'] ?: '389');
+	$varmodulesldapidentity = ($arrmodulesldap['varmodulesldapidentity'] ?: 'cn=admin,o=My Org,c=UA');
+	$varmodulesldappassword = ($arrmodulesldap['varmodulesldappassword'] ?: 'mypass');
+	$varmodulesldapbasedn = ($arrmodulesldap['varmodulesldapbasedn'] ?: 'o=My Org,c=UA');
+	$varmodulesldapfilter = ($arrmodulesldap['varmodulesldapfilter'] ?: '(uid=%{%{Stripped-User-Name}:-%{User-Name}})');
+	$varmodulesldapbasefilter = ($arrmodulesldap['varmodulesldapbasefilter'] ?: '(objectclass=radiusprofile)');
+	$varmodulesldapldapconnectionsnumber = ($arrmodulesldap['varmodulesldapldapconnectionsnumber'] ?: '5');
+	$varmodulesldaptimeout = ($arrmodulesldap['varmodulesldaptimeout'] ?: '4');
+	$varmodulesldaptimelimit = ($arrmodulesldap['varmodulesldaptimelimit'] ?: '3');
+	$varmodulesldapnettimeout = ($arrmodulesldap['varmodulesldapnettimeout'] ?: '1');
+
+	// Variables for General Configuration ldap2
+	$varmodulesldap2server = ($arrmodulesldap['varmodulesldap2server'] ?: 'ldap.your.domain');
+	$varmodulesldap2serverport = ($arrmodulesldap['varmodulesldap2serverport'] ?: '389');
+	$varmodulesldap2identity = ($arrmodulesldap['varmodulesldap2identity'] ?: 'cn=admin,o=My Org,c=UA');
+	$varmodulesldap2password = ($arrmodulesldap['varmodulesldap2password'] ?: 'mypass');
+	$varmodulesldap2basedn = ($arrmodulesldap['varmodulesldap2basedn'] ?: 'o=My Org,c=UA');
+	$varmodulesldap2filter = ($arrmodulesldap['varmodulesldap2filter'] ?: '(uid=%{%{Stripped-User-Name}:-%{User-Name}})');
+	$varmodulesldap2basefilter = ($arrmodulesldap['varmodulesldap2basefilter'] ?: '(objectclass=radiusprofile)');
+	$varmodulesldap2ldapconnectionsnumber = ($arrmodulesldap['varmodulesldap2ldapconnectionsnumber'] ?: '5');
+	$varmodulesldap2timeout = ($arrmodulesldap['varmodulesldap2timeout'] ?: '4');
+	$varmodulesldap2timelimit = ($arrmodulesldap['varmodulesldap2timelimit'] ?: '3');
+	$varmodulesldap2nettimeout = ($arrmodulesldap['varmodulesldap2nettimeout'] ?: '1');
+
+	// Variables for TLS / Certificates - ldap1
+	$varmodulesldaprequirecert = ($arrmodulesldap['varmodulesldaprequirecert'] ?: 'never');
+
+	// if enabled then create the certs in ../raddb/certs/ and enable "Start_tls" in ldap1 module
+	if ($arrmodulesldap['varmodulesldapenabletlssupport'] == 'on') {
+
 		$ca_cert = lookup_ca($arrmodulesldap["ssl_ca_cert1"]);
 		if ($ca_cert != false) {
-			if(base64_decode($ca_cert['prv'])) {
-				file_put_contents(FREERADIUS_ETC . "/raddb/certs/ca_ldap1_key.pem", 
-					base64_decode($ca_cert['prv']));
+			if (base64_decode($ca_cert['prv'])) {
+				file_put_contents(FREERADIUS_ETC . "/raddb/certs/ca_ldap1_key.pem", base64_decode($ca_cert['prv']));
 				$conf['ssl_ca_key'] = FREERADIUS_ETC . '/raddb/certs/ca_ldap1_key.pem';
 			}
-
-
-			if(base64_decode($ca_cert['crt'])) {
-				file_put_contents(FREERADIUS_ETC . "/raddb/certs/ca_ldap1_cert.pem", 
-					base64_decode($ca_cert['crt']));
+			if (base64_decode($ca_cert['crt'])) {
+				file_put_contents(FREERADIUS_ETC . "/raddb/certs/ca_ldap1_cert.pem", base64_decode($ca_cert['crt']));
 				$conf['ssl_ca_cert1'] = FREERADIUS_ETC . "/raddb/certs/ca_ldap1_cert.pem";
 			}
 
-
 			$svr_cert = lookup_cert($arrmodulesldap["ssl_server_cert1"]);
 			if ($svr_cert != false) {
-				if(base64_decode($svr_cert['prv'])) {
-					file_put_contents(FREERADIUS_ETC . "/raddb/certs/radius_ldap1_cert.key", 
-						base64_decode($svr_cert['prv']));
+				if (base64_decode($svr_cert['prv'])) {
+					file_put_contents(FREERADIUS_ETC . "/raddb/certs/radius_ldap1_cert.key", base64_decode($svr_cert['prv']));
 					$conf['ssl_key'] = FREERADIUS_ETC . '/raddb/certs/radius_ldap1_cert.key';
 				}
 			}
-
-
-			if(base64_decode($svr_cert['crt'])) {
-				file_put_contents(FREERADIUS_ETC . "/raddb/certs/radius_ldap1_cert.crt", 
-					base64_decode($svr_cert['crt']));
+			if (base64_decode($svr_cert['crt'])) {
+				file_put_contents(FREERADIUS_ETC . "/raddb/certs/radius_ldap1_cert.crt", base64_decode($svr_cert['crt']));
 				$conf['ssl_server_cert1'] = FREERADIUS_ETC . "/raddb/certs/radius_ldap1_cert.crt";
 			}
 
-
 			$conf['ssl_cert_dir'] = FREERADIUS_ETC . '/raddb/certs';
 		}
-	$varmodulesldapstarttls = "yes";
-}
-else {
-	$varmodulesldapstarttls = "no";
-}
-	
-	// Variables for TLS / Certificates - ldap2
-	$varmodulesldap2requirecert = ($arrmodulesldap['varmodulesldap2requirecert']?$arrmodulesldap['varmodulesldap2requirecert']:'never');
+		$varmodulesldapstarttls = "yes";
+	} else {
+		$varmodulesldapstarttls = "no";
+	}
 
-// if enabled then create the certs in ../raddb/certs/ and enable "Start_tls" in ldap2 module
-if($arrmodulesldap['varmodulesldap2enabletlssupport'] == 'on') {	
-		
+	// Variables for TLS / Certificates - ldap2
+	$varmodulesldap2requirecert = ($arrmodulesldap['varmodulesldap2requirecert'] ?: 'never');
+
+	// if enabled then create the certs in ../raddb/certs/ and enable "Start_tls" in ldap2 module
+	if ($arrmodulesldap['varmodulesldap2enabletlssupport'] == 'on') {
+
 		$ca_cert = lookup_ca($arrmodulesldap["ssl_ca_cert2"]);
 		if ($ca_cert != false) {
-			if(base64_decode($ca_cert['prv'])) {
-				file_put_contents(FREERADIUS_ETC . "/raddb/certs/ca_ldap2_key.pem", 
-					base64_decode($ca_cert['prv']));
+			if (base64_decode($ca_cert['prv'])) {
+				file_put_contents(FREERADIUS_ETC . "/raddb/certs/ca_ldap2_key.pem", base64_decode($ca_cert['prv']));
 				$conf['ssl_ca_key'] = FREERADIUS_ETC . '/raddb/certs/ca_ldap2_key.pem';
 			}
-
-
-			if(base64_decode($ca_cert['crt'])) {
-				file_put_contents(FREERADIUS_ETC . "/raddb/certs/ca_ldap2_cert.pem", 
-					base64_decode($ca_cert['crt']));
+			if (base64_decode($ca_cert['crt'])) {
+				file_put_contents(FREERADIUS_ETC . "/raddb/certs/ca_ldap2_cert.pem", base64_decode($ca_cert['crt']));
 				$conf['ssl_ca_cert2'] = FREERADIUS_ETC . "/raddb/certs/ca_ldap2_cert.pem";
 			}
 
-
 			$svr_cert = lookup_cert($arrmodulesldap["ssl_server_cert2"]);
 			if ($svr_cert != false) {
-				if(base64_decode($svr_cert['prv'])) {
-					file_put_contents(FREERADIUS_ETC . "/raddb/certs/radius_ldap2_cert.key", 
-						base64_decode($svr_cert['prv']));
+				if (base64_decode($svr_cert['prv'])) {
+					file_put_contents(FREERADIUS_ETC . "/raddb/certs/radius_ldap2_cert.key", base64_decode($svr_cert['prv']));
 					$conf['ssl_key'] = FREERADIUS_ETC . '/raddb/certs/radius_ldap2_cert.key';
 				}
 			}
-
-
-			if(base64_decode($svr_cert['crt'])) {
-				file_put_contents(FREERADIUS_ETC . "/raddb/certs/radius_ldap2_cert.crt", 
-					base64_decode($svr_cert['crt']));
+			if (base64_decode($svr_cert['crt'])) {
+				file_put_contents(FREERADIUS_ETC . "/raddb/certs/radius_ldap2_cert.crt", base64_decode($svr_cert['crt']));
 				$conf['ssl_server_cert2'] = FREERADIUS_ETC . "/raddb/certs/radius_ldap2_cert.crt";
 			}
 
-
 			$conf['ssl_cert_dir'] = FREERADIUS_ETC . '/raddb/certs';
 		}
-	$varmodulesldap2starttls = "yes";
-}
-else {
-	$varmodulesldap2starttls = "no";
-}	
+		$varmodulesldap2starttls = "yes";
+	} else {
+		$varmodulesldap2starttls = "no";
+	}
 
 	// Miscellaneous Configuration + MS Active Directory Compatibility ldap1
-	$varmodulesldapmsadcompatibilityenable = ($arrmodulesldap['varmodulesldapmsadcompatibilityenable']?$arrmodulesldap['varmodulesldapmsadcompatibilityenable']:'Disable');
+	$varmodulesldapmsadcompatibilityenable = ($arrmodulesldap['varmodulesldapmsadcompatibilityenable'] ?: 'Disable');
 	if ($arrmodulesldap['varmodulesldapmsadcompatibilityenable'] == 'Disable') {
 		$varmodulesldapmsadcompatibility = '### MS Active Directory Compatibility is disabled ###';
-	}
-	else {
+	} else {
 		$varmodulesldapmsadcompatibility = 'chase_referrals = yes' . "\n\trebind = yes";
 	}
-	
+
 	// Miscellaneous Configuration + MS Active Directory Compatibility ldap2
-	$varmodulesldap2msadcompatibilityenable = ($arrmodulesldap['varmodulesldap2msadcompatibilityenable']?$arrmodulesldap['varmodulesldap2msadcompatibilityenable']:'Disable');
+	$varmodulesldap2msadcompatibilityenable = ($arrmodulesldap['varmodulesldap2msadcompatibilityenable'] ?: 'Disable');
 	if ($arrmodulesldap['varmodulesldap2msadcompatibilityenable'] == 'Disable') {
 		$varmodulesldap2msadcompatibility = '### MS Active Directory Compatibility is disabled ###';
-	}
-	else {
+	} else {
 		$varmodulesldap2msadcompatibility = 'chase_referrals = yes' . "\n\trebind = yes";
 	}
 
@@ -3252,14 +3257,13 @@ else {
 		$varmodulesldapdefaultprofile = '### default_profile = "cn=radprofile,ou=dialup,o=My Org,c=UA" ###';
 		$varmodulesldapprofileattribute = '### profile_attribute = "radiusProfileDn" ###';
 		$varmodulesldapaccessattr = '### access_attr = "dialupAccess" ###';
-	}
-	// When enabled we put in the default values so there is no empty entry if there is not input from GUI
-	else {
-		$varmodulesldapdefaultprofile = ($arrmodulesldap['varmodulesldapdefaultprofile']?$arrmodulesldap['varmodulesldapdefaultprofile']:'cn=radprofile,ou=dialup,o=My Org,c=UA');
+	} else {
+		// When enabled we put in the default values so there is no empty entry if there is not input from GUI
+		$varmodulesldapdefaultprofile = ($arrmodulesldap['varmodulesldapdefaultprofile'] ?: 'cn=radprofile,ou=dialup,o=My Org,c=UA');
 		$varmodulesldapdefaultprofile = "default_profile = " . '"' . "$varmodulesldapdefaultprofile" . '"';
-		$varmodulesldapprofileattribute = ($arrmodulesldap['varmodulesldapprofileattribute']?$arrmodulesldap['varmodulesldapprofileattribute']:'radiusProfileDn');
+		$varmodulesldapprofileattribute = ($arrmodulesldap['varmodulesldapprofileattribute'] ?: 'radiusProfileDn');
 		$varmodulesldapprofileattribute = "profile_attribute = " . '"' . "$varmodulesldapprofileattribute" . '"';
-		$varmodulesldapaccessattr = ($arrmodulesldap['varmodulesldapaccessattr']?$arrmodulesldap['varmodulesldapaccessattr']:'dialupAccess');
+		$varmodulesldapaccessattr = ($arrmodulesldap['varmodulesldapaccessattr'] ?: 'dialupAccess');
 		$varmodulesldapaccessattr = "access_attr = " . '"' . "$varmodulesldapaccessattr" . '"';
 	}
 
@@ -3268,17 +3272,16 @@ else {
 		$varmodulesldap2defaultprofile = '### default_profile = "cn=radprofile,ou=dialup,o=My Org,c=UA" ###';
 		$varmodulesldap2profileattribute = '### profile_attribute = "radiusProfileDn" ###';
 		$varmodulesldap2accessattr = '### access_attr = "dialupAccess" ###';
-	}
-	// When enabled we put in the default values so there is no empty entry if there is not input from GUI
-	else {
-		$varmodulesldap2defaultprofile = ($arrmodulesldap['varmodulesldap2defaultprofile']?$arrmodulesldap['varmodulesldap2defaultprofile']:'cn=radprofile,ou=dialup,o=My Org,c=UA');
+	} else {
+		// When enabled we put in the default values so there is no empty entry if there is not input from GUI
+		$varmodulesldap2defaultprofile = ($arrmodulesldap['varmodulesldap2defaultprofile'] ?: 'cn=radprofile,ou=dialup,o=My Org,c=UA');
 		$varmodulesldap2defaultprofile = "default_profile = " . '"' . "$varmodulesldap2defaultprofile" . '"';
-		$varmodulesldap2profileattribute = ($arrmodulesldap['varmodulesldap2profileattribute']?$arrmodulesldap['varmodulesldap2profileattribute']:'radiusProfileDn');
+		$varmodulesldap2profileattribute = ($arrmodulesldap['varmodulesldap2profileattribute'] ?: 'radiusProfileDn');
 		$varmodulesldap2profileattribute = "profile_attribute = " . '"' . "$varmodulesldap2profileattribute" . '"';
-		$varmodulesldap2accessattr = ($arrmodulesldap['varmodulesldap2accessattr']?$arrmodulesldap['varmodulesldap2accessattr']:'dialupAccess');
+		$varmodulesldap2accessattr = ($arrmodulesldap['varmodulesldap2accessattr'] ?: 'dialupAccess');
 		$varmodulesldap2accessattr = "access_attr = " . '"' . "$varmodulesldap2accessattr" . '"';
-	}	
-	
+	}
+
 	// Group membership checking
 	// When disabled we put this in the file but commented (#) like in the default installation ldap1
 	if (!$arrmodulesldap['varmodulesldapgroupenable']) {
@@ -3288,25 +3291,22 @@ else {
 		$varmodulesldapcomparecheckitems = '### compare_check_items = yes ###';
 		$varmodulesldapdoxlat = '### do_xlat = yes ###';
 		$varmodulesldapaccessattrusedforallow = '### access_attr_used_for_allow = yes ###';
-	}
-
-	// When enabled we put in the default values so there is no empty entry if there is not input from GUI
-	else {
-		$varmodulesldapgroupnameattribute = ($arrmodulesldap['varmodulesldapgroupnameattribute']?$arrmodulesldap['varmodulesldapgroupnameattribute']:'cn');
+	} else {
+		// When enabled we put in the default values so there is no empty entry if there is not input from GUI
+		$varmodulesldapgroupnameattribute = ($arrmodulesldap['varmodulesldapgroupnameattribute'] ?: 'cn');
 		$varmodulesldapgroupnameattribute = "groupname_attribute = $varmodulesldapgroupnameattribute";
-		$varmodulesldapgroupmembershipfilter = ($arrmodulesldap['varmodulesldapgroupmembershipfilter']?$arrmodulesldap['varmodulesldapgroupmembershipfilter']:'(|(&(objectClass=GroupOfNames)(member=%{control:Ldap-UserDn}))(&(objectClass=GroupOfUniqueNames)(uniquemember=%{control:Ldap-UserDn})))');
+		$varmodulesldapgroupmembershipfilter = ($arrmodulesldap['varmodulesldapgroupmembershipfilter'] ?: '(|(&(objectClass=GroupOfNames)(member=%{control:Ldap-UserDn}))(&(objectClass=GroupOfUniqueNames)(uniquemember=%{control:Ldap-UserDn})))');
 		$varmodulesldapgroupmembershipfilter = "groupmembership_filter = " . '"' . "$varmodulesldapgroupmembershipfilter" . '"';
-		$varmodulesldapgroupmembershipattribute = ($arrmodulesldap['varmodulesldapgroupmembershipattribute']?$arrmodulesldap['varmodulesldapgroupmembershipattribute']:'radiusGroupName');
+		$varmodulesldapgroupmembershipattribute = ($arrmodulesldap['varmodulesldapgroupmembershipattribute'] ?: 'radiusGroupName');
 		$varmodulesldapgroupmembershipattribute = "groupmembership_attribute = $varmodulesldapgroupmembershipattribute";
-		
-		$varmodulesldapcomparecheckitems = ($arrmodulesldap['varmodulesldapcomparecheckitems']?$arrmodulesldap['varmodulesldapcomparecheckitems']:'yes');
+		$varmodulesldapcomparecheckitems = ($arrmodulesldap['varmodulesldapcomparecheckitems'] ?: 'yes');
 		$varmodulesldapcomparecheckitems = "compare_check_items = $varmodulesldapcomparecheckitems";
-		$varmodulesldapdoxlat = ($arrmodulesldap['varmodulesldapdoxlat']?$arrmodulesldap['varmodulesldapdoxlat']:'yes');
+		$varmodulesldapdoxlat = ($arrmodulesldap['varmodulesldapdoxlat'] ?: 'yes');
 		$varmodulesldapdoxlat = "do_xlat = $varmodulesldapdoxlat";
-		$varmodulesldapaccessattrusedforallow = ($arrmodulesldap['varmodulesldapaccessattrusedforallow']?$arrmodulesldap['varmodulesldapaccessattrusedforallow']:'yes');	
+		$varmodulesldapaccessattrusedforallow = ($arrmodulesldap['varmodulesldapaccessattrusedforallow'] ?: 'yes');
 		$varmodulesldapaccessattrusedforallow = "access_attr_used_for_allow = $varmodulesldapaccessattrusedforallow";
 	}
-	
+
 	// Group membership checking
 	// When disabled we put this in the file but commented (#) like in the default installation ldap2
 	if (!$arrmodulesldap['varmodulesldap2groupenable']) {
@@ -3316,36 +3316,34 @@ else {
 		$varmodulesldap2comparecheckitems = '### compare_check_items = yes ###';
 		$varmodulesldap2doxlat = '### do_xlat = yes ###';
 		$varmodulesldap2accessattrusedforallow = '### access_attr_used_for_allow = yes ###';
+	} else {
+		// When enabled we put in the default values so there is no empty entry if there is not input from GUI
+		$varmodulesldap2groupnameattribute = ($arrmodulesldap['varmodulesldap2groupnameattribute'] ?: 'cn');
+		$varmodulesldap2groupnameattribute = "groupname_attribute = $varmodulesldap2groupnameattribute";
+		$varmodulesldap2groupmembershipfilter = ($arrmodulesldap['varmodulesldap2groupmembershipfilter'] ?: '(|(&(objectClass=GroupOfNames)(member=%{control:Ldap-UserDn}))(&(objectClass=GroupOfUniqueNames)(uniquemember=%{control:Ldap-UserDn})))');
+		$varmodulesldap2groupmembershipfilter = "groupmembership_filter = " . '"' . "$varmodulesldap2groupmembershipfilter" . '"';
+		$varmodulesldap2groupmembershipattribute = ($arrmodulesldap['varmodulesldap2groupmembershipattribute'] ?: 'radiusGroupName');
+		$varmodulesldap2groupmembershipattribute = "groupmembership_attribute = $varmodulesldap2groupmembershipattribute";
+		$varmodulesldap2comparecheckitems = ($arrmodulesldap['varmodulesldap2comparecheckitems'] ?: 'yes');
+		$varmodulesldap2comparecheckitems = "compare_check_items = $varmodulesldap2comparecheckitems";
+		$varmodulesldap2doxlat = ($arrmodulesldap['varmodulesldap2doxlat'] ?: 'yes');
+		$varmodulesldap2doxlat = "do_xlat = $varmodulesldap2doxlat";
+		$varmodulesldap2accessattrusedforallow = ($arrmodulesldap['varmodulesldap2accessattrusedforallow'] ?: 'yes');
+		$varmodulesldap2accessattrusedforallow = "access_attr_used_for_allow = $varmodulesldap2accessattrusedforallow";
 	}
 
-	// When enabled we put in the default values so there is no empty entry if there is not input from GUI
-	else {
-		$varmodulesldap2groupnameattribute = ($arrmodulesldap['varmodulesldap2groupnameattribute']?$arrmodulesldap['varmodulesldap2groupnameattribute']:'cn');
-		$varmodulesldap2groupnameattribute = "groupname_attribute = $varmodulesldap2groupnameattribute";
-		$varmodulesldap2groupmembershipfilter = ($arrmodulesldap['varmodulesldap2groupmembershipfilter']?$arrmodulesldap['varmodulesldap2groupmembershipfilter']:'(|(&(objectClass=GroupOfNames)(member=%{control:Ldap-UserDn}))(&(objectClass=GroupOfUniqueNames)(uniquemember=%{control:Ldap-UserDn})))');
-		$varmodulesldap2groupmembershipfilter = "groupmembership_filter = " . '"' . "$varmodulesldap2groupmembershipfilter" . '"';
-		$varmodulesldap2groupmembershipattribute = ($arrmodulesldap['varmodulesldap2groupmembershipattribute']?$arrmodulesldap['varmodulesldap2groupmembershipattribute']:'radiusGroupName');
-		$varmodulesldap2groupmembershipattribute = "groupmembership_attribute = $varmodulesldap2groupmembershipattribute";
-		
-		$varmodulesldap2comparecheckitems = ($arrmodulesldap['varmodulesldap2comparecheckitems']?$arrmodulesldap['varmodulesldap2comparecheckitems']:'yes');
-		$varmodulesldap2comparecheckitems = "compare_check_items = $varmodulesldap2comparecheckitems";
-		$varmodulesldap2doxlat = ($arrmodulesldap['varmodulesldap2doxlat']?$arrmodulesldap['varmodulesldap2doxlat']:'yes');
-		$varmodulesldap2doxlat = "do_xlat = $varmodulesldap2doxlat";
-		$varmodulesldap2accessattrusedforallow = ($arrmodulesldap['varmodulesldap2accessattrusedforallow']?$arrmodulesldap['varmodulesldap2accessattrusedforallow']:'yes');	
-		$varmodulesldap2accessattrusedforallow = "access_attr_used_for_allow = $varmodulesldap2accessattrusedforallow";
-	}	
-
 	// Keepalive variables ldap1
-	$varmodulesldapkeepaliveidle = ($arrmodulesldap['varmodulesldapkeepaliveidle']?$arrmodulesldap['varmodulesldapkeepaliveidle']:'60');
-	$varmodulesldapkeepaliveprobes = ($arrmodulesldap['varmodulesldapkeepaliveprobes']?$arrmodulesldap['varmodulesldapkeepaliveprobes']:'3');
-	$varmodulesldapkeepaliveinterval = ($arrmodulesldap['varmodulesldapkeepaliveinterval']?$arrmodulesldap['varmodulesldapkeepaliveinterval']:'3');
+	$varmodulesldapkeepaliveidle = ($arrmodulesldap['varmodulesldapkeepaliveidle'] ?: '60');
+	$varmodulesldapkeepaliveprobes = ($arrmodulesldap['varmodulesldapkeepaliveprobes'] ?: '3');
+	$varmodulesldapkeepaliveinterval = ($arrmodulesldap['varmodulesldapkeepaliveinterval'] ?: '3');
 
 	// Keepalive variables ldap2
-	$varmodulesldap2keepaliveidle = ($arrmodulesldap['varmodulesldap2keepaliveidle']?$arrmodulesldap['varmodulesldap2keepaliveidle']:'60');
-	$varmodulesldap2keepaliveprobes = ($arrmodulesldap['varmodulesldap2keepaliveprobes']?$arrmodulesldap['varmodulesldap2keepaliveprobes']:'3');
-	$varmodulesldap2keepaliveinterval = ($arrmodulesldap['varmodulesldap2keepaliveinterval']?$arrmodulesldap['varmodulesldap2keepaliveinterval']:'3');
-$raddb = FREERADIUS_ETC . '/raddb';
-$conf .= <<<EOD
+	$varmodulesldap2keepaliveidle = ($arrmodulesldap['varmodulesldap2keepaliveidle'] ?: '60');
+	$varmodulesldap2keepaliveprobes = ($arrmodulesldap['varmodulesldap2keepaliveprobes'] ?: '3');
+	$varmodulesldap2keepaliveinterval = ($arrmodulesldap['varmodulesldap2keepaliveinterval'] ?: '3');
+
+	$raddb = FREERADIUS_ETC . '/raddb';
+	$conf .= <<<EOD
 # -*- text -*-
 #
 #  $Id$
@@ -3373,7 +3371,7 @@ $conf .= <<<EOD
 #
 #  Setting "Auth-Type = LDAP" is ALMOST ALWAYS WRONG.  We
 #  really can't emphasize this enough.
-#	
+#
 ldap {
 	#
 	#  Note that this needs to match the name in the LDAP
@@ -3419,7 +3417,7 @@ ldap {
 		# Set this to 'yes' to use TLS encrypted connections
 		# to the LDAP database by using the StartTLS extended
 		# operation.
-		#			
+		#
 		# The StartTLS operation is supposed to be
 		# used with normal ldap connections instead of
 		# using ldaps (port 689) connections
@@ -3499,7 +3497,7 @@ ldap {
 	#
 	#  THIS WILL ONLY WORK FOR PAP AUTHENTICATION.
 	#
-	#  THIS WILL NOT WORK FOR CHAP, MS-CHAP, or 802.1x (EAP). 
+	#  THIS WILL NOT WORK FOR CHAP, MS-CHAP, or 802.1x (EAP).
 	#
 	#  You can disable this behavior by setting the following
 	#  configuration entry to "no".
@@ -3514,7 +3512,7 @@ ldap {
 	#
 	#	default: 0x0000 (no debugging messages)
 	#	Example:(LDAP_DEBUG_FILTER+LDAP_DEBUG_CONNS)
-	#ldap_debug = 0x0028 
+	#ldap_debug = 0x0028
 
 	#
 	#  Keepalive configuration.  This MAY NOT be supported by your
@@ -3579,7 +3577,7 @@ ldap ldap2{
 		# Set this to 'yes' to use TLS encrypted connections
 		# to the LDAP database by using the StartTLS extended
 		# operation.
-		#			
+		#
 		# The StartTLS operation is supposed to be
 		# used with normal ldap connections instead of
 		# using ldaps (port 689) connections
@@ -3659,7 +3657,7 @@ ldap ldap2{
 	#
 	#  THIS WILL ONLY WORK FOR PAP AUTHENTICATION.
 	#
-	#  THIS WILL NOT WORK FOR CHAP, MS-CHAP, or 802.1x (EAP). 
+	#  THIS WILL NOT WORK FOR CHAP, MS-CHAP, or 802.1x (EAP).
 	#
 	#  You can disable this behavior by setting the following
 	#  configuration entry to "no".
@@ -3674,7 +3672,7 @@ ldap ldap2{
 	#
 	#	default: 0x0000 (no debugging messages)
 	#	Example:(LDAP_DEBUG_FILTER+LDAP_DEBUG_CONNS)
-	#ldap_debug = 0x0028 
+	#ldap_debug = 0x0028
 
 	#
 	#  Keepalive configuration.  This MAY NOT be supported by your
@@ -3700,29 +3698,34 @@ EOD;
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 	conf_mount_ro();
-	
-	// We need to rebuild "freeradius_serverdefault_resync" before restart service
-	// "freeradius_serverdefault_resync" needs to restart other dependencies so we are pointing directly to "freeradius_settings_resync()"
+
+	// We need to rebuild freeradius_serverdefault_resync() before restart service
+	// freeradius_serverdefault_resync() needs to restart other dependencies so
+	// we are pointing directly to freeradius_settings_resync()
 	freeradius_serverdefault_resync();
 	if ($restart_svc === true) {
 		restart_service("radiusd");
 	}
-	
+
 }
 
 function freeradius_plainmacauth_resync() {
 	global $config;
 	$conf = '';
-	
+
 	// Variables: If not using 802.1x, mac address must be known
-	$varsettings = $config['installedpackages']['freeradiussettings']['config'][0];
-	
+	if (is_array($config['installedpackages']['freeradiussettings']['config'][0])) {
+		$varsettings = $config['installedpackages']['freeradiussettings']['config'][0];
+	} else {
+		$varsettings = array();
+	}
+
 	// defining variables with filename path
 	$filepolicyconf = FREERADIUS_ETC . '/raddb/policy.conf';
 	$filepolicyconfbackup = FREERADIUS_ETC . '/raddb/policy.conf.backup';
 	$filemodulesfiles = FREERADIUS_ETC . '/raddb/modules/files';
 	$filemodulesfilesbackup = FREERADIUS_ETC . '/raddb/files.backup';
-	
+
 	// If unchecked then plain mac auth is disabled and backups of the original files will be restored
 	if ($varsettings['varsettingsenablemacauth'] == '') {
 		// This is a check - only restore files if they aren't already
@@ -3733,14 +3736,13 @@ function freeradius_plainmacauth_resync() {
 			unlink(FREERADIUS_ETC . "/raddb/plain_macauth_enabled");
 			freeradius_serverdefault_resync();
 		}
-	}
-	// If checked then plain mac auth is enabled
-	else {
+	} else {
+		// If checked then plain mac auth is enabled
 		// This is a check - only modify files if they aren't already
 		if (!file_exists(FREERADIUS_ETC . "/raddb/plain_macauth_enabled")) {
 			freeradius_modulesfiles_resync();
 			freeradius_policyconf_resync();
-			exec("cd " . FREERADIUS_ETC . "/raddb && touch " . FREERADIUS_ETC . "/raddb/plain_macauth_enabled");
+			touch(FREERADIUS_ETC . "/raddb/plain_macauth_enabled");
 			log_error("FreeRADIUS: Plain-MAC-Auth enabled. Modified {$filepolicyconf} and {$filemodulesfiles}");
 			freeradius_serverdefault_resync();
 		}
@@ -3904,13 +3906,13 @@ policy {
 	}
 
 
-	#	
+	#
 	#  The following policies are for the Chargeable-User-Identity
 	#  (CUI) configuration.
 	#
 
 	#
-	#  The client indicates it can do CUI by sending a CUI attribute	
+	#  The client indicates it can do CUI by sending a CUI attribute
 	#  containing one zero byte
 	#
 	cui_authorize {
@@ -4011,7 +4013,7 @@ policy {
 	#		noop
 	#	}
 	#}
-	
+
 	#####  MODIFIED FOR http://wiki.freeradius.org/Mac-Auth#Mac-Auth+or+802.1x #####
 	#  Add "rewrite_calling_station_id" in the "authorize" and "preacct"
 	#  sections.
@@ -4040,15 +4042,19 @@ function freeradius_motp_resync() {
 	global $config, $bash_path;
 	$conf = '';
 
-	$varsettings = $config['installedpackages']['freeradiussettings']['config'][0];
-	
-	$varsettingsmotptimespan = ($varsettings['varsettingsmotptimespan']?$varsettings['varsettingsmotptimespan']:'2');
+	if (is_array($config['installedpackages']['freeradiussettings']['config'][0])) {
+		$varsettings = $config['installedpackages']['freeradiussettings']['config'][0];
+	} else {
+		$varsettings = array();
+	}
+
+	$varsettingsmotptimespan = ($varsettings['varsettingsmotptimespan'] ?: '2');
 	$varsettingsmotptimespanbeforeafter = $varsettingsmotptimespan + $varsettingsmotptimespan;
 	$varsettingsmotpdeleteoldpasswords = $varsettingsmotptimespanbeforeafter + 1;
-	$varsettingsmotppasswordattempts = ($varsettings['varsettingsmotppasswordattempts']?$varsettings['varsettingsmotppasswordattempts']:'5');
-	$varsettingsmotpchecksumtype = ($varsettings['varsettingsmotpchecksumtype']?$varsettings['varsettingsmotpchecksumtype']:'md5');
-	$varsettingsmotptokenlength = ($varsettings['varsettingsmotptokenlength']?$varsettings['varsettingsmotptokenlength']:'1-6');
-	
+	$varsettingsmotppasswordattempts = ($varsettings['varsettingsmotppasswordattempts'] ?: '5');
+	$varsettingsmotpchecksumtype = ($varsettings['varsettingsmotpchecksumtype'] ?: 'md5');
+	$varsettingsmotptokenlength = ($varsettings['varsettingsmotptokenlength'] ?: '1-6');
+
 	// check if disabled then we delete otpverify.sh script
 	if ($varsettings['varsettingsmotpenable'] == '') {
 		if (file_exists(FREERADIUS_ETC . "/raddb/scripts/otpverify.sh")) {
@@ -4069,7 +4075,7 @@ function freeradius_motp_resync() {
 # modify it under the terms of the GNU Library General Public
 # License as published by the Free Software Foundation; either
 # version 2 of the License, or (at your option) any later version.
-# 
+#
 # This software is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -4077,13 +4083,13 @@ function freeradius_motp_resync() {
 #
 # arguments:  \$1 \$2 \$3 \$4 \$5
 # \$1 - username
-# \$2 - one-time-password that is to be checked 
+# \$2 - one-time-password that is to be checked
 # \$3 - init-secred from token (to init token: #**#)
 # \$4 - user PIN
 # \$5 - time difference between token and server in 10s of seconds (360 = 1 hour)
 #
 # one-time-password must match md5(EPOCHTIME+SECRET+PIN)
-# 
+#
 #
 # otpverify.sh version 1.04b, Feb. 2003
 # otpverify.sh version 1.04c, Nov. 2008
@@ -4105,7 +4111,7 @@ function chop
 {
 	num=`echo -n "\$1" | wc -c | sed 's/ //g' `
 	nummin1=`expr \$num "-" 1`
-	echo -n "\$1" | cut -b 1-\$nummin1 
+	echo -n "\$1" | cut -b 1-\$nummin1
 }
 
 if [ ! \$# -eq 5 ] ; then
@@ -4173,13 +4179,13 @@ exit 11
 
 
 EOD;
-		$filename = FREERADIUS_ETC . '/raddb/scripts/otpverify.sh';
-		conf_mount_rw();
-		file_put_contents($filename, $conf);
-		chmod($filename, 0750);
-		conf_mount_ro();
-	}
 
+	$filename = FREERADIUS_ETC . '/raddb/scripts/otpverify.sh';
+	conf_mount_rw();
+	file_put_contents($filename, $conf);
+	chmod($filename, 0750);
+	conf_mount_ro();
+	}
 }
 
 function freeradius_modulesmotp_resync() {
@@ -4193,7 +4199,7 @@ function freeradius_modulesmotp_resync() {
 exec motp {
 		wait = yes
 		program = "{$bash_path} {$varFREERADIUS_ETC}/raddb/scripts/otpverify.sh %{request:User-Name} %{request:User-Password} %{reply:MOTP-Init-Secret} %{reply:MOTP-PIN} %{reply:MOTP-Offset}"
-	}	
+	}
 EOD;
 
 	$filename = FREERADIUS_ETC . '/raddb/modules/motp';
@@ -4201,7 +4207,6 @@ EOD;
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 	conf_mount_ro();
-
 }
 
 function freeradius_modulesdatacounter_resync() {
@@ -4235,7 +4240,6 @@ EOD;
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 	conf_mount_ro();
-
 }
 
 function freeradius_datacounter_auth_resync() {
@@ -4275,7 +4279,6 @@ EOD;
 	file_put_contents($filename, $conf);
 	chmod($filename, 0750);
 	conf_mount_ro();
-
 }
 
 function freeradius_datacounter_acct_resync() {
@@ -4337,7 +4340,6 @@ EOD;
 	file_put_contents($filename, $conf);
 	chmod($filename, 0750);
 	conf_mount_ro();
-
 }
 
 function freeradius_dictionary_resync() {
@@ -4405,7 +4407,6 @@ EOD;
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 	conf_mount_ro();
-
 }
 
 ?>

@@ -27,11 +27,18 @@
 	</copyright>
 	<name>Darkstat</name>
 	<title>Diagnostics: Darkstat</title>
+	<include_file>/usr/local/pkg/darkstat.inc</include_file>
 	<menu>
-		<name>Darkstat Settings</name>
+		<name>darkstat Settings</name>
 		<tooltiptext>Setup darkstat specific settings.</tooltiptext>
 		<section>Diagnostics</section>
 		<url>/pkg_edit.php?xml=darkstat.xml</url>
+	</menu>
+	<menu>
+		<name>darkstat</name>
+		<tooltiptext>Access darkstat</tooltiptext>
+		<section>Diagnostics</section>
+		<url>/darkstat_redirect.php</url>
 	</menu>
 	<service>
 		<name>darkstat</name>
@@ -41,13 +48,13 @@
 	</service>
 	<tabs>
 		<tab>
-			<text>Darkstat Settings</text>
+			<text>darkstat Settings</text>
 			<url>/pkg_edit.php?xml=darkstat.xml</url>
 			<active/>
 		</tab>
 		<tab>
-			<text>Access Darkstat</text>
-			<url>http://$myurl:666</url>
+			<text>Access darkstat</text>
+			<url>/darkstat_redirect.php</url>
 		</tab>
 	</tabs>
 	<advanced_options>enabled</advanced_options>
@@ -56,6 +63,7 @@
 			<fielddescr>Enable darkstat</fielddescr>
 			<fieldname>enable</fieldname>
 			<type>checkbox</type>
+			<description>Check to enable darkstat.</description>
 		</field>
 		<field>
 			<fielddescr>Capture Interfaces</fielddescr>
@@ -85,22 +93,20 @@
 			<size>3</size>
 			<multiple>true</multiple>
 		</field>
-		<!-- Disabled until there is some way to handle the $myurl thing in the tabs/url tag above -->
-		<!--
 		<field>
-			<fielddescr>Port</fielddescr>
+			<fielddescr>Web Interface Port</fielddescr>
 			<fieldname>port</fieldname>
 			<description>
 				<![CDATA[
 				Bind the darkstat web interface to the specified port.<br />
-				<strong>WARNING: Do NOT set this to the same port where pfSense WebGUI is running (usually 80/443)!</strong><br />
-				(Default is 666.)
+				<span class="text-danger">WARNING: </span>Do NOT set this to the same port where pfSense WebGUI is running (usually 80/443)!<br />
+				<span class="text-info">Default: 666</span>
 				]]>
 			</description>
 			<type>input</type>
 			<size>5</size>
+			<default_value>666</default_value>
 		</field>
-		-->
 		<field>
 			<fielddescr>Local Network Traffic</fielddescr>
 			<fieldname>localnetworkenable</fieldname>
@@ -234,153 +240,6 @@
 			<advancedfield/>
 		</field>
 	</fields>
-	<custom_php_global_functions>
-	<![CDATA[
-		function sync_package_darkstat() {
-			conf_mount_rw();
-			global $config, $darkstat_config;
-			$darkstat_config =& $config['installedpackages']['darkstat']['config'][0];
-
-			/* If the service is (being) disabled, stop it (if running), remove rc script and do nothing else */
-			if ($darkstat_config['enable'] != "on") {
-				if (is_process_running("darkstat")) {
-					stop_service("darkstat");
-				}
-				unlink_if_exists('/usr/local/etc/rc.d/darkstat.sh');
-				return;
-			}
-
-			/* Configure capture interface(s) */
-			$capture_interfaces = $darkstat_config['capture_interfaces'] ?: 'lan';
-			foreach (explode(",", $capture_interfaces) as $iface) {
-				$if = convert_friendly_interface_to_real_interface_name($iface);
-				if ($if) {
-					$ifaces_final .= " -i {$if}";
-				}
-			}
-			$start = "/usr/local/sbin/darkstat {$ifaces_final}";
-
-			/* Configure bind interface(s) */
-			foreach (explode(",", $darkstat_config['bind_interfaces']) as $iface) {
-				$if = convert_friendly_interface_to_real_interface_name($iface);
-				$if = get_interface_ip("$iface");
-				if ($if) {
-					$bind_ifaces_final .= " -b {$if}";
-				}
-			}
-			$start .= "{$bind_ifaces_final}";
-
-			/* Configure darkstat webgui port
-			NOTE: This will be always be 666 for now, until the 'Port' field is re-enabled in darkstat.xml
-			*/
-			$port = $darkstat_config['port'] ?: '666';
-			$start .= " -p {$port}";
-
-			/* Deal with the rest of configured options here */
-			$localnetworkenable = $darkstat_config['localnetworkenable'];
-			$lif = $darkstat_config['localnetwork'];
-			if ($localnetworkenable != "") {
-				if (is_ipaddrv4(get_interface_ip($lif))) {
-					$start .= " -l " . escapeshellarg(gen_subnet(get_interface_ip($lif), get_interface_subnet($lif)) . '/' . gen_subnet_mask(get_interface_subnet($lif)));
-				}
-				if ($darkstat_config['localnetworkonly'] != "") {
-					$start .= " --local-only";
-				}
-			}
-			if (($localnetworkenable == "") && ($darkstat_config['nopromisc'] != "")) {
-				$start .= " --no-promisc";
-			}
-			if ($darkstat_config['nodns'] != "") {
-				$start .= " --no-dns";
-			}
-			if ($darkstat_config['nomacs'] != "") {
-				$start .= " --no-macs";
-			}
-			if ($darkstat_config['nolastseen'] != "") {
-				$start .= " --no-lastseen";
-			}
-			$hostsmax = $darkstat_config['hostsmax'];
-			$hostskeep = $darkstat_config['hostskeep'];
-			if (($hostsmax > 0) && ($hostsmax > $hostskeep)) {
-				$start .= " --hosts-max {$hostsmax}";
-			}
-			if (($hostskeep > 0) && ($hostskeep < $hostsmax)) {
-				$start .= " --hosts-keep {$hostskeep}";
-			}
-			$portsmax = $darkstat_config['portsmax'];
-			$portskeep = $darkstat_config['portskeep'];
-			if (($portsmax > 0) && ($portsmax > $portskeep)) {
-				$start .= " --ports-max {$portsmax}";
-			}
-			if (($portskeep > 0) && ($portskeep < $portsmax)) {
-				$start .= " --ports-keep {$portskeep}";
-			}
-			$advfilter = $darkstat_config['advfilter'];
-			if ($advfilter != "") {
-				$start .= " -f " . escapeshellarg(base64_decode($advfilter));
-			}
-
-			write_rcfile(array(
-					"file" => "darkstat.sh",
-					"start" => $start,
-					"stop" => "/usr/bin/killall darkstat"
-				)
-			);
-
-			/* Do not (re)start service on boot */
-			if (platform_booting()) {
-				return;
-			} elseif (is_process_running("darkstat")) {
-				restart_service("darkstat");
-			} else {
-				start_service("darkstat");
-			}
-
-			conf_mount_ro();
-		}
-
-		function validate_input_darkstat($post, &$input_errors) {
-			if (($_POST['port']) && ($_POST['port'] < 1 || $_POST['port'] < 65535 || !is_numericint($_POST['port']))) {
-				$input_errors[] = gettext("The value for 'Maximum number of ports' to keep' must be a positive integer between 1 and 65535.");
-			}
-			if (($_POST['hostsmax']) && ($_POST['hostsmax'] < 1 || !is_numericint($_POST['hostsmax']))) {
-				$input_errors[] = gettext("The value for 'Maximum hosts count' must be a positive integer.");
-			}
-			if (($_POST['hostskeep']) && ($_POST['hostskeep'] < 1 || !is_numericint($_POST['hostskeep']))) {
-				$input_errors[] = gettext("The value for 'Maximum number of hosts to keep' must be a positive integer.");
-			}
-			if ($_POST['hostsmax'] || $_POST['hostskeep']) {
-				if ($_POST['hostsmax'] <= $_POST['hostskeep']) {
-					$input_errors[] = gettext("'Maximum hosts count' must be greater than 'Maximum number of hosts to keep'.");
-				}
-			}
-			if (($_POST['portsmax']) && ($_POST['portsmax'] < 1 || !is_numericint($_POST['portsmax']))) {
-				$input_errors[] = gettext("The value for 'Maximum ports count' must be a positive integer.");
-			}
-			if (($_POST['portskeep']) && ($_POST['portskeep'] < 1 || !is_numericint($_POST['portskeep']))) {
-				$input_errors[] = gettext("The value for 'Maximum number of ports' to keep' must be a positive integer.");
-			}
-			if ($_POST['portsmax'] || $_POST['portskeep']) {
-				if ($_POST['portsmax'] <= $_POST['portskeep']) {
-					$input_errors[] = gettext("'Maximum ports count' must be greater than 'Maximum number of ports to keep'.");
-				}
-			}
-			if ($_POST['localnetworkenable'] && $_POST['nopromisc'] != "") {
-				$input_errors[] = gettext("'Do not use promiscuous mode to capture' cannot be used when the 'local network' feature is enabled.");
-			}
-			if ($_POST['localnetwork']) {
-				$int = convert_friendly_interface_to_real_interface_name($post['localnetwork']);
-				$ip = find_interface_ip($int);
-				if (!is_ipaddrv4($ip)) {
-					$input_errors[] = gettext("The selected 'local network' interface has no IPv4 configured. Configured IPv4 is required.");
-				}
-			}
-			if (($post['advfilter']) && !preg_match("/^[a-zA-Z0-9\+\-\=\(\):. ]*$/", $post['advfilter'])) {
-				$input_errors[] = gettext('Advanced traffic filtering options may only contain characters matching ^[a-zA-Z0-9\+\-\=\(\):. ]*$ regexp.');
-			}
-		}
-	]]>
-	</custom_php_global_functions>
 	<custom_php_resync_config_command>
 		sync_package_darkstat();
 	</custom_php_resync_config_command>
