@@ -202,9 +202,10 @@ server.port			= "{$lightsquid_config['lighttpd_ls_port']}"
 
 EOF;
 	} else {
-		/* We ALWAYS need to put server.port there; otherwise
-	 	* the retarded lighttpd thing binds to 80/HTTP no matter what
-	 	*/
+		/*
+		 * We ALWAYS need to put server.port there; otherwise
+		 * lighttpd thing binds to 80/HTTP no matter what
+		 */
 		$lighttpd_ls_conf .= <<<EOF
 server.port			= "{$lightsquid_config['lighttpd_ls_port']}"
 
@@ -336,9 +337,9 @@ ssl.cipher-list		= "AES128+EECDH:AES256+EECDH:AES128+EDH:AES256+EDH:AES128-SHA:A
 EOF;
 
 		/*
-		 * IPv4 HTTPS bind must NOT be a socket; otherwise the retarded
-		 * lighttpd thing yet again binds to 80/HTTP no matter what.
-		 * You enable SSL-only IPv4 by not configuring bind for IPv4 at all.
+		 * IPv4 HTTPS bind must NOT be a socket; otherwise lighttpd
+		 * yet again binds to 80/HTTP no matter what. You enable
+		 * SSL-only IPv4 by not configuring bind for IPv4 at all.
 		 * IPv6 SSL must be configured as a socket
 		 */
 		$lighttpd_ls_conf .= <<<EOF
