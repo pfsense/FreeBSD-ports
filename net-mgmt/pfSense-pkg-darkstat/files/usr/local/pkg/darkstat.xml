@@ -108,14 +108,17 @@
 			<default_value>666</default_value>
 		</field>
 		<field>
-			<fielddescr>Web Interface Hostname</fielddescr>
+			<fielddescr>Web Interface Hostname or IP Address (Optional)</fielddescr>
 			<fieldname>host</fieldname>
 			<description>
 				<![CDATA[
 				Darkstat web interface can use HTTP only; HTTPS protocol is not supported.
 				If pfSense is <a href="/system_advanced_admin.php">configured to use HTTPS for webConfigurator</a>, it will force HTTPS via HSTS header.
-				That will make it impossible to use the webConfigurator FQDN to access darkstat web interface via HTTP.<br />
-				Configure a custom hostname here for use with darkstat web interface to work around this limitation. Click Info for details.
+				That will make it impossible to use the webConfigurator FQDN to access darkstat web interface via HTTP.<br/>
+				Configure a custom hostname here for use with darkstat web interface to work around this limitation.<br />
+				<strong><span class="text-info">Hint: </span></strong>Use the IPv4 address of one of the 'Web Interface Binding' interfaces selected above
+				if you do not want want to deal with DNS configuration.<br/>
+				Click Info for details.
 				<div class="infoblock">
 				<strong><span class="text-danger">Important:</span></strong><br />
 				- You need to set up a 'Host Override' in <a href="/services_unbound.php">Services &gt; DNS Resolver</a>
