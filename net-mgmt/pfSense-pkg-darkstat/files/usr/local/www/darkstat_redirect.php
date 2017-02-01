@@ -22,8 +22,7 @@
 require_once("config.inc");
 global $config;
 
-// Protocol and port
-$proto = $config['system']['webgui']['protocol'];
+// Port
 if (is_array($config['installedpackages']['darkstat'])) {
 	$darkstat_config = $config['installedpackages']['darkstat']['config'][0];
 } else {
@@ -41,7 +40,7 @@ if ($colonpos) {
 }
 
 // Final redirect URL
-$url = "{$proto}://{$baseurl}:{$port}";
+$url = "http://{$baseurl}:{$port}";
 header("Location: {$url}");
 
 ?>
