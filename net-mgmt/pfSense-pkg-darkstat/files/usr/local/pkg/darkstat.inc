@@ -171,7 +171,7 @@ function validate_input_darkstat($post, &$input_errors) {
 		if (!is_ipaddrv4($post['host']) && !is_hostname($post['host']) && !is_domain($post['host'])) {
 			$input_errors[] = gettext("The value for 'Web Interface Hostname' must be a valid IPv4 address, hostname or domain");
 		} elseif (is_ipaddrv4($post['host']) && !is_ipaddr_configured($post['host'])) {
-			$input_errors[] = "Web Interface IP must be a valid, locally configured IPv4 address!";
+			$input_errors[] = gettext("Web Interface IP must be a valid, locally configured IPv4 address");
 		}
 	}
 	/* Validate Maximum Hosts Count */
