@@ -22,7 +22,7 @@
 require_once('config.inc');
 require_once('interfaces.inc');
 require_once('services.inc');
-require_once('service-utils');
+require_once('service-utils.inc');
 require_once('util.inc');
 
 function sync_package_darkstat() {
@@ -218,3 +218,5 @@ function validate_input_darkstat($post, &$input_errors) {
 		$input_errors[] = gettext('Advanced traffic filtering options may only contain characters matching ^[a-zA-Z0-9\+\-\=\(\):. ]*$ regexp.');
 	}
 }
+
+?>
