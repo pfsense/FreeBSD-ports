@@ -202,10 +202,10 @@ server.port			= "{$lightsquid_config['lighttpd_ls_port']}"
 
 EOF;
 	} else {
-	/* We ALWAYS need to put server.port there; otherwise
-	 * the retarded lighttpd thing binds to 80/HTTP no matter what
-	 */
-	$lighttpd_ls_conf .= <<<EOF
+		/* We ALWAYS need to put server.port there; otherwise
+	 	* the retarded lighttpd thing binds to 80/HTTP no matter what
+	 	*/
+		$lighttpd_ls_conf .= <<<EOF
 server.port			= "{$lightsquid_config['lighttpd_ls_port']}"
 
 EOF;
