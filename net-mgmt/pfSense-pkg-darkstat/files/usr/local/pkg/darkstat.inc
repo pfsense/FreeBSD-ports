@@ -21,6 +21,7 @@
 
 require_once('config.inc');
 require_once('interfaces.inc');
+require_once('pfsense-utils.inc');
 require_once('services.inc');
 require_once('service-utils.inc');
 require_once('util.inc');
@@ -163,6 +164,14 @@ function validate_input_darkstat($post, &$input_errors) {
 		}
 		if ($post['port'] == "{$webgui_port}") {
 			$input_errors[] = gettext("The value for 'Web Interface Port' must not be the same port where pfSense WebGUI is running ($webgui_port).");
+		}
+	}
+	/* Validate Web Interface Hostname or IP */
+	if ($post['host']) {
+		if (!is_ipaddrv4($post['host']) && !is_hostname($post['host']) && !is_domain($post['host'])) {
+			$input_errors[] = gettext("The value for 'Web Interface Hostname' must be a valid IPv4 address, hostname or domain");
+		} elseif (is_ipaddrv4($post['host']) && !is_ipaddr_configured($post['host'])) {
+			$input_errors[] = gettext("Web Interface IP must be a valid, locally configured IPv4 address");
 		}
 	}
 	/* Validate Maximum Hosts Count */

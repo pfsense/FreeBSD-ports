@@ -108,6 +108,36 @@
 			<default_value>666</default_value>
 		</field>
 		<field>
+			<fielddescr>Web Interface Hostname or IP Address (Optional)</fielddescr>
+			<fieldname>host</fieldname>
+			<description>
+				<![CDATA[
+				Darkstat web interface can use HTTP only; HTTPS protocol is not supported.
+				If pfSense is <a href="/system_advanced_admin.php">configured to use HTTPS for webConfigurator</a>, it will force HTTPS via HSTS header.
+				That will make it impossible to use the webConfigurator FQDN to access darkstat web interface via HTTP.<br/>
+				Configure a custom hostname here for use with darkstat web interface to work around this limitation.<br />
+				<strong><span class="text-info">Hint: </span></strong>Use the IPv4 address of one of the 'Web Interface Binding' interfaces selected above
+				if you do not want want to deal with DNS configuration.<br/>
+				Click Info for details.
+				<div class="infoblock">
+				<strong><span class="text-danger">Important:</span></strong><br />
+				- You need to set up a 'Host Override' in <a href="/services_unbound.php">Services &gt; DNS Resolver</a>
+				or <a href="/services_dnsmasq.php">Services &gt; DNS Forwarder</a> (depending on which of these you are using)
+				in order to make use of the 'Web Interface Hostname' configured here.<br/>
+				- If your clients are not using the DNS server on pfSense for DNS resolution, you need to set up such 'Host Override' (A record or CNAME pointing to pfSense)
+				on the DNS server that the clients are using, or locally on the clients (using hosts file or similar) for 'Web Interface Hostname' to work for such clients.<br/><br/>
+				<strong><span class="text-info">Hint:</span></strong><br />
+				As an alternative, you may want to put the darkstat web interface behind haproxy. 
+				You can use the <a href="https://doc.pfsense.org/index.php/Haproxy_package" target="_blank">haproxy package</a> for this purpose.
+				In that way, you can continue using HTTPS <em>and</em> the pfSense webConfigurator FQDN to aceess darkstat, and can even make it accessible via IPv6.<br/>
+				See the <a href="https://github.com/PiBa-NL/pfsense-haproxy-package-doc/wiki" target="_blank">HAProxy pfSense Package Howto</a> for usage instructions.
+				</div>
+				]]>
+			</description>
+			<type>input</type>
+			<size>30</size>
+		</field>
+		<field>
 			<fielddescr>Local Network Traffic</fielddescr>
 			<fieldname>localnetworkenable</fieldname>
 			<description>All traffic entering or leaving this network will be graphed.</description>

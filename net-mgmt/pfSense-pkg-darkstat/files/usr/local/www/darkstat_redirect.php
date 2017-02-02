@@ -22,26 +22,32 @@
 require_once("config.inc");
 global $config;
 
-// Protocol and port
-$proto = $config['system']['webgui']['protocol'];
+// Port
 if (is_array($config['installedpackages']['darkstat'])) {
 	$darkstat_config = $config['installedpackages']['darkstat']['config'][0];
 } else {
 	$darkstat_config = array();
 }
-$port= $darkstat_config['port'] ?: '666';
+$port = $darkstat_config['port'] ?: '666';
+$host = $darkstat_config['host'] ?: '';
 
-// Hostname
-$httphost = getenv("HTTP_HOST");
-$colonpos = strpos($httphost, ":");
-if ($colonpos) {
-	$baseurl = substr($httphost, 0, $colonpos);
+if (empty($host)) {
+	// Get hostname automagically
+	$httphost = getenv("HTTP_HOST");
+	$colonpos = strpos($httphost, ":");
+	if ($colonpos) {
+		$baseurl = substr($httphost, 0, $colonpos);
+	} else {
+		$baseurl = $httphost;
+	}
 } else {
-	$baseurl = $httphost;
+	// Use the configured 'Web Interface Hostname'
+	$baseurl = $host;
 }
 
 // Final redirect URL
-$url = "{$proto}://{$baseurl}:{$port}";
+$url = "http://{$baseurl}:{$port}";
 header("Location: {$url}");
+exit;
 
 ?>
