@@ -201,8 +201,16 @@ server.port			= "{$lightsquid_config['lighttpd_ls_port']}"
 \$SERVER["socket"]		== "[::]:{$lightsquid_config['lighttpd_ls_port']}" {  }
 
 EOF;
-	}
+	} else {
+		/*
+		 * We ALWAYS need to put server.port there; otherwise
+		 * lighttpd thing binds to 80/HTTP no matter what
+		 */
+		$lighttpd_ls_conf .= <<<EOF
+server.port			= "{$lightsquid_config['lighttpd_ls_port']}"
 
+EOF;
+	}
 	$lighttpd_ls_conf .= <<<EOF
 server.event-handler		= "freebsd-kqueue"
 server.network-backend		= "freebsd-sendfile"
@@ -328,12 +336,16 @@ ssl.honor-cipher-order	= "enable"
 ssl.cipher-list		= "AES128+EECDH:AES256+EECDH:AES128+EDH:AES256+EDH:AES128-SHA:AES256-SHA:!aNULL:!eNULL:!DSS"
 EOF;
 
-		// Configure IPv4 and IPv6 sockets
+		/*
+		 * IPv4 HTTPS bind must NOT be a socket; otherwise lighttpd
+		 * yet again binds to 80/HTTP no matter what. You enable
+		 * SSL-only IPv4 by not configuring bind for IPv4 at all.
+		 * IPv6 SSL must be configured as a socket
+		 */
 		$lighttpd_ls_conf .= <<<EOF
 
-\$SERVER["socket"]	== "0.0.0.0:{$lightsquid_config['lighttpd_ls_port']}" {
 {$lighttpd_ls_conf_sslcommon}
-}
+
 
 \$SERVER["socket"]	== "[::]:{$lightsquid_config['lighttpd_ls_port']}" {
 {$lighttpd_ls_conf_sslcommon}

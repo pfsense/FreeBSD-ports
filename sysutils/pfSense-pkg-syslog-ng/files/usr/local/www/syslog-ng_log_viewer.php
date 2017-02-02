@@ -45,7 +45,7 @@ if ($_POST['archives']) {
 }
 
 if ($_POST['filter']) {
-	$filter = $_POST['filter'];
+	$filter = htmlspecialchars($_POST['filter']);
 }
 
 if ($_POST['not']) {
@@ -54,28 +54,28 @@ if ($_POST['not']) {
 
 $log_messages = array();
 if (file_exists($logfile) && (filesize($logfile) > 0)) {
-	$grep = "grep -ih";
+	$grep = "/usr/bin/grep -ih";
 
 	if (($compress_archives == 'on') && glob($logfile . "*" . $compress_type) && $archives) {
 		if($compress_type == 'bz2') {
-			$grep = "bzgrep -ih";
+			$grep = "/usr/bin/bzgrep -ih";
 		} else {
-			$grep = "zgrep -ih";
+			$grep = "/usr/bin/zgrep -ih";
 		}
 	}
 
 	if (isset($filter) && $not) {
-		$grepcmd = "$grep -v '$filter' $logfile";
+		$grepcmd = "$grep -v " . escapeshellarg($filter) . " $logfile";
 	} else {
-		$grepcmd = "$grep '$filter' $logfile";
+		$grepcmd = "$grep  " . escapeshellarg($filter) . " $logfile";
 	}
 
 	if ($archives) {
 		$grepcmd = $grepcmd . "*";
 	}
 
-	$log_lines = trim(shell_exec("$grepcmd | wc -l"));
-	$log_output = trim(shell_exec("$grepcmd | sort -M | tail -n $limit"));
+	$log_lines = trim(shell_exec("$grepcmd | /usr/bin/wc -l"));
+	$log_output = trim(shell_exec("$grepcmd | /usr/bin/sort -M | /usr/bin/tail -n $limit"));
 
 	if (!empty($log_output)) {
 		$log_messages = explode("\n", $log_output);
@@ -152,7 +152,7 @@ print($form);
 ?>
 
 <?php
-if(empty($log_messages)) {
+if (empty($log_messages)) {
 	print_info_box("No log messages found or log file is empty", "danger", false);
 } else {
 	print('<div class="panel panel-default">');
