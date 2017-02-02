@@ -506,7 +506,7 @@ function & get_certificate($name) {
 	function challenge_response_put($certificatename, $domain, $token, $payload) {
 		$acmecert = get_certificate($certificatename);
 		
-		echo "\nchalenge_response_put $certificatename, $domain\n";
+		echo "\nchallenge_response_put $certificatename, $domain\n";
 		foreach($acmecert['a_domainlist']['item'] as $domainitem) {
 			if($domainitem['name'] == $domain){
 				$domain_info = $domainitem;
