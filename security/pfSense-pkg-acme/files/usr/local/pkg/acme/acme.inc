@@ -27,13 +27,15 @@ namespace { // global code
 			$a_certificates = &$config['installedpackages']['acme']['certificates']['item'];
 			$result['pkgname'] = "Acme";
 			$result['certificatelist'] = array();
-			foreach($a_certificates as $certificate) {
-				$certificatename = $certificate["name"];
-				$cert = lookup_cert_by_name($certificatename);
-				$item = array();
-				$cert = $cert['refid'];
-				$item['usedby'] = "Acme - {$certificatename}";
-				$result['certificatelist'][$cert][] = $item;
+			if (is_array($a_certificates)) {
+				foreach ($a_certificates as $certificate) {
+					$certificatename = $certificate["name"];
+					$cert = lookup_cert_by_name($certificatename);
+					$item = array();
+					$cert = $cert['refid'];
+					$item['usedby'] = "Acme - {$certificatename}";
+					$result['certificatelist'][$cert][] = $item;
+				}
 			}
 		}
 		return $result;
