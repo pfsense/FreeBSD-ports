@@ -36,6 +36,7 @@ class acme_sh {
 		// add to cron environment path: /usr/local/bin/
 		$env = array();
 		$env['path'] = "/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin/";
+		$env['PATH'] = "/etc:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin/";
 		if (is_array($envvariables)) {
 			$env = array_merge($env, $envvariables);
 		}
