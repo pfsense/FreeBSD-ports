@@ -28,7 +28,6 @@
 	]]>
 	</copyright>
 	<name>filersync</name>
-	<version>0.60.6</version>
 	<title>Filer: Sync</title>
 	<include_file>/usr/local/pkg/filer.inc</include_file>
 	<tabs>
