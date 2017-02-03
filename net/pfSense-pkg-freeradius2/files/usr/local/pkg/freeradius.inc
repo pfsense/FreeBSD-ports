@@ -1420,7 +1420,7 @@ function freeradius_serverdefault_resync() {
 	$conf = '';
 
 	// Get Variables from freeradiusmodulesldap.xml
-	if (is_array($$config['installedpackages']['freeradiusmodulesldap']['config'][0])) {
+	if (is_array($config['installedpackages']['freeradiusmodulesldap']['config'][0])) {
 		$arrmodulesldap = $config['installedpackages']['freeradiusmodulesldap']['config'][0];
 	} else {
 		$arrmodulesldap = array();
