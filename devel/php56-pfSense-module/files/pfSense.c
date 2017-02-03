@@ -172,6 +172,7 @@ static zend_function_entry pfSense_functions[] = {
     PHP_FE(pfSense_etherswitch_getinfo, NULL)
     PHP_FE(pfSense_etherswitch_getport, NULL)
     PHP_FE(pfSense_etherswitch_getvlangroup, NULL)
+    PHP_FE(pfSense_etherswitch_setvlangroup, NULL)
 #endif
     PHP_FE(pfSense_ipsec_list_sa, NULL)
     {NULL, NULL, NULL}
@@ -1783,6 +1784,10 @@ PHP_FUNCTION(pfSense_etherswitch_getvlangroup)
 		close(fd);
 		RETURN_NULL();
 	}
+	if (vlangroup >= info.es_nvlangroups) {
+		close(fd);
+		RETURN_NULL();
+	}
 	memset(&vg, 0, sizeof(vg));
 	vg.es_vlangroup = vlangroup;
 	if (ioctl(fd, IOETHERSWITCHGETVLANGROUP, &vg) != 0) {
@@ -1811,6 +1816,115 @@ PHP_FUNCTION(pfSense_etherswitch_getvlangroup)
 		}
 	}
 	add_assoc_zval(return_value, "members", members);
+}
+
+PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
+{
+	char *dev, *key;
+	etherswitch_info_t info;
+	int fd, members, port, untagged;
+	long devlen, vlan, vlangroup;
+	unsigned int key_len;
+	zval **data1, **data2, *zvar;
+	HashTable *hash1, *hash2;
+	HashPosition h1p, h2p;
+
+	zvar = NULL;
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sll|z", &dev,
+	    &devlen, &vlangroup, &vlan, &zvar) == FAILURE)
+		RETURN_FALSE;
+	if ((vlan & ~ETHERSWITCH_VID_MASK) != 0)
+		RETURN_FALSE;
+	/* vlangroup == -1 is only valid with a vlanid. */
+	if (vlangroup == -1 && vlan == 0)
+		RETURN_FALSE;
+	if (devlen == 0)
+		dev = "/dev/etherswitch0";
+	if (etherswitch_dev_is_valid(dev) < 0)
+		RETURN_FALSE;
+	fd = open(dev, O_RDONLY);
+	if (fd == -1)
+		RETURN_FALSE;
+	memset(&info, 0, sizeof(info));
+	if (ioctl(fd, IOETHERSWITCHGETINFO, &info) != 0) {
+		close(fd);
+		RETURN_FALSE;
+	}
+	if (vlangroup != -1 && vlangroup >= info.es_nvlangroups) {
+		close(fd);
+		RETURN_FALSE;
+	}
+
+	/* If we are setting a vlan id, parse switch ports members. */
+	members = untagged = 0;
+	if (vlan != 0 && zvar != NULL && Z_TYPE_P(zvar) == IS_ARRAY) {
+		hash1 = Z_ARRVAL_P(zvar);
+		for (zend_hash_internal_pointer_reset_ex(hash1, &h1p);
+		    zend_hash_get_current_data_ex(hash1, (void**)&data1, &h1p) == SUCCESS;
+		    zend_hash_move_forward_ex(hash1, &h1p)) {
+			if (zend_hash_get_current_key_ex(hash1, &key, &key_len,
+			    &index, 0, &h1p) != HASH_KEY_IS_LONG ||
+			    Z_TYPE_PP(data1) != IS_ARRAY) {
+				continue;
+			}
+			port = atoi(key);
+			members |= (1 << port);
+			hash2 = Z_ARRVAL_PP(data1);
+			for (zend_hash_internal_pointer_reset_ex(hash2, &h2p);
+			    zend_hash_get_current_data_ex(hash2, (void**)&data2, &h2p) == SUCCESS;
+			    zend_hash_move_forward_ex(hash2, &h2p)) {
+				if (zend_hash_get_current_key_ex(hash2, &key,
+				    &key_len, &index, 0, &h2p) != HASH_KEY_IS_STRING ||
+				    Z_TYPE_PP(data2) != IS_LONG) {
+					continue;
+				}
+				if (key_len == 8 &&
+				    strcasecmp(key, "untagged") == 0 &&
+				    Z_LVAL_PP(data2) != 0) {
+					untagged |= (1 << port);
+				}
+			}
+		}
+	}
+
+	/*
+	 * Find the first unused vlangroup.  Happens only when adding a
+	 * vlangroup.
+	 */
+	if (vlangroup == -1) {
+		for (i = 0; i < info.es_nvlangroups; i++) {
+			memset(&vg, 0, sizeof(vg));
+			vg.es_vlangroup = i;
+			if (ioctl(fd, IOETHERSWITCHGETVLANGROUP, &vg) != 0) {
+				close(fd);
+				RETURN_FALSE;
+			}
+			if ((vg.es_vid & ETHERSWITCH_VID_VALID) == 0) {
+				vlangroup = i;
+				break;
+			}
+		}
+		if (vlangroup == -1) {
+			close(fd);
+			RETURN_FALSE;
+		}
+	}
+
+	memset(&vg, 0, sizeof(vg));
+	vg.es_vlangroup = vlangroup;
+	if (ioctl(fd, IOETHERSWITCHGETVLANGROUP, &vg) != 0) {
+		close(fd);
+		RETURN_FALSE;
+	}
+	vg.es_vid = vlan;
+	vg.es_member_ports = members;
+	vg.es_untagged_ports = untagged;
+	if (ioctl(fd, IOETHERSWITCHSETVLANGROUP, &vg) != 0) {
+		close(fd);
+		RETURN_FALSE;
+	}
+	close(fd);
+	RETURN_TRUE;
 }
 #endif
 
