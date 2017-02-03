@@ -484,6 +484,9 @@ function & get_certificate($name) {
 					global $acme_domain_validation_method;
 					foreach($acme_domain_validation_method[$method]['fields'] as $key => $field) {
 						$envvariables[$key] = $domain["{$method}{$field['name']}"];
+						if ($method == "dns_nsupdate") {
+							$extras[$domain['name']][$key] = $domain["{$method}{$field['name']}"];
+						}
 					}
 				}
 			}
@@ -499,14 +502,14 @@ function & get_certificate($name) {
 			$certificatepsk = getCertificatePSK($url, $certificate, $domainstosign[0]);
 			$acmesh = new acme_sh($certificate['name'], $url);
 			$action = $renew == true ? "renew" : "issue";
-			$acmesh->signCertificate($action, $accountkey, $certificatepsk, $domainstosign, $method, $envvariables);
+			$acmesh->signCertificate($action, $accountkey, $certificatepsk, $domainstosign, $method, $envvariables, $extras);
 		}
 	}
 	
 	function challenge_response_put($certificatename, $domain, $token, $payload) {
 		$acmecert = get_certificate($certificatename);
 		
-		echo "\nchalenge_response_put $certificatename, $domain\n";
+		echo "\nchallenge_response_put $certificatename, $domain\n";
 		foreach($acmecert['a_domainlist']['item'] as $domainitem) {
 			if($domainitem['name'] == $domain){
 				$domain_info = $domainitem;
