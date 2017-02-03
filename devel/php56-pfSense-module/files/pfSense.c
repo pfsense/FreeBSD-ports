@@ -1822,9 +1822,11 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 {
 	char *dev, *key;
 	etherswitch_info_t info;
-	int fd, members, port, untagged;
+	etherswitch_vlangroup_t vg;
+	int fd, i, members, port, untagged;
 	long devlen, vlan, vlangroup;
 	unsigned int key_len;
+	unsigned long index;
 	zval **data1, **data2, *zvar;
 	HashTable *hash1, *hash2;
 	HashPosition h1p, h2p;
