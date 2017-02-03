@@ -2,47 +2,30 @@
 <packagegui>
 	<copyright>
 	<![CDATA[
-/* $Id$ */
-/* ====================================================================================== */
 /*
-	filer.xml
-	part of pfSense (https://www.pfSense.org/)
-	Copyright (C) 2010 Scott Ullrich <sullrich@gmail.com>
-	Copyright (C) 2011 Brian Scholer
-	Copyright (C) 2012 Marcello Coutinho
-	Copyright (C) 2015 ESF, LLC
-	All rights reserved.
-*/
-/* ====================================================================================== */
-/*
-	Redistribution and use in source and binary forms, with or without
-	modification, are permitted provided that the following conditions are met:
-
-
-	1. Redistributions of source code must retain the above copyright notice,
-	   this list of conditions and the following disclaimer.
-
-	2. Redistributions in binary form must reproduce the above copyright
-	   notice, this list of conditions and the following disclaimer in the
-	   documentation and/or other materials provided with the distribution.
-
-
-	THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
-	INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-	AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-	AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-	OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-	CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-	POSSIBILITY OF SUCH DAMAGE.
-*/
-/* ====================================================================================== */
+ * filer.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012 Marcello Coutinho
+ * Copyright (c) 2011 Brian Scholer
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 	]]>
 	</copyright>
 	<name>filer</name>
-	<version>0.60.6</version>
 	<title>Filer</title>
 	<include_file>/usr/local/pkg/filer.inc</include_file>
 	<menu>
@@ -103,7 +86,12 @@
 			<fieldname>mod</fieldname>
 			<type>input</type>
 			<size>10</size>
-			<description><![CDATA[Enter file permission you want on this file<br />If left blank, default file permissions (0644) will be used.]]></description>
+			<description>
+				<![CDATA[
+				Enter file permission you want on this file<br />
+				If left blank, default file permissions (0644) will be used.
+				]]>
+			</description>
 		</field>
 		<field>
 			<fielddescr>File Contents</fielddescr>
@@ -132,20 +120,11 @@
 			<fielddescr>Execute mode</fielddescr>
 			<fieldname>background</fieldname>
 			<type>select</type>
-				<options>
-					<option>
-						<name>Background (default)</name>
-						<value>background</value>
-					</option>
-					<option>
-						<name>Foreground</name>
-						<value>foreground</value>
-					</option>
-					<option>
-						<name>Do not run this script</name>
-						<value>disabled</value>
-					</option>
-				</options>
+			<options>
+				<option><name>Background (default)</name><value>background</value></option>
+				<option><name>Foreground</name><value>foreground</value></option>
+				<option><name>Do not run this script</name><value>disabled</value></option>
+			</options>
 			<description>Choose the way script will run.</description>
 		</field>
 	</fields>
