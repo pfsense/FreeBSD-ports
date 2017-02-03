@@ -2157,11 +2157,11 @@ function squid_generate_rules($type) {
 		case 'rule':
 			foreach ($proxy_ifaces as $iface) {
 				$rules .= "# Setup squid pass rules for proxy\n";
-				$rules .= "pass in quick on $iface proto tcp from any to !127.0.0.1 port {$pf_rule_ports} flags S/SA keep state\n";
+				$rules .= "pass in quick on $iface proto tcp from any to ($iface) port {$pf_rule_ports} flags S/SA keep state\n";
 				$rules .= "\n";
 			}
 			if ($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) {
-				$rules .= "pass in quick on $PPPOE_ALIAS proto tcp from any to !127.0.0.1 port {$pf_rule_ports} flags S/SA keep state\n";
+				$rules .= "pass in quick on $PPPOE_ALIAS proto tcp from any to ($PPPOE_ALIAS) port {$pf_rule_ports} flags S/SA keep state\n";
 			}
 			break;
 		default:
