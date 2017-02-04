@@ -113,7 +113,8 @@
 			<description>
 				<![CDATA[
 				Enter the IP address (e.g. 192.168.100.1) of the listening interface.
-				If you choose <b>*</b> then it means all interfaces. (Default: *)
+				If you choose <b>*</b> then it means all interfaces.
+				<span class="text-info">(Default: *)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -134,7 +135,7 @@
 				<dt>Accounting</dt><dd>Using port 1813</dd>
 				<dt>Status</dt><dd>Using port 1816</dd>
 				</dl>
-				<strong><span class="text-danger">IMPORTANT: </span><strong>
+				<strong><span class="text-danger">IMPORTANT: </span></strong>
 				For <b>every interface type</b> listening on the <b>same IP address</b> you need <b>different ports</b>.
 				</div>
 				]]>
@@ -149,7 +150,7 @@
 			<description>
 				<![CDATA[
 				Enter the type of the listening interface.
-				(Default: auth)
+				<span class="text-info">(Default: Authentication)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -170,7 +171,7 @@
 			<description>
 				<![CDATA[
 				Enter the IP version of the listening interface.
-				(Default: IPv4)
+				<span class="text-info">(Default: IPv4)</span>
 				]]>
 			</description>
 			<type>select</type>
