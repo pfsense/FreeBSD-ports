@@ -199,7 +199,7 @@
 			<description>
 				<![CDATA[
 				<b>Framed-IP-Address</b> must be supported by NAS. <span class="text-info">Click Info for details.</span><br/>
-				<span class="text-danger">IMPORTANT:</span> You must enter an IP address here if you checked "RADIUS issued IP" on VPN PPTP or VPN PPPoE configuration.
+				<span class="text-danger">IMPORTANT:</span> You must enter an IP address here if you checked "RADIUS issued IP" on PPPoE VPN configuration.
 				<div class="infoblock">
 				If you want this MAC address to be assigned a specific IP address from RADIUS, enter the IP address here.<br/>
 				Continuous IP address is available with "+" suffix (e.g. 192.168.1.5+). This can be useful for simultaneous connections.
