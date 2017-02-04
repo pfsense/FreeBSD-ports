@@ -107,22 +107,21 @@
 			<fieldname>varcertsREADBEFORE</fieldname>
 			<description>
 				<![CDATA[
-				<strong>
-				<span class="text-danger">WARNING!!! THIS FEATURE IS DEPRECATED!!!</span><br/>
-				This feature is not maintained, uses obsolete insecure cryptography (MD5/SHA1)
-				offers no backup capabilities and is pending removal in near future.<br/>
-				Users are strongly urged to transition to the Cert Manager built into pfSense as soon as possible.
-				See 'Choose Cert Manager' on the <a href="/pkg_edit.php?xml=freeradiuseapconf.xml">'EAP' configuration tab</a>
-				and <a href="system_camanager.php">'System > Cert Manager'</a> for certificate management.<br/>
-				<span class="text-danger">WARNING!!! THIS FEATURE IS DEPRECATED!!!</span>
-				</strong><br/><br/>
-				<b>If you enter anything the changes here will take effect after "Save" - if it's empty - nothing will happen</b><br/><br/>
-				This page uses the freeradius2 built-in script called "bootstrap" to create CA and certs.
+				<b>If you enter anything, the changes here will take effect after "Save". If left empty, nothing will happen.</b><br/><br/>
+				<div class="infoblock blockopen"><div class="alert alert-danger clearfix" role="alert">
+				<strong>WARNING!!!</strong><br/>
+				The FreeRADIUS Cert Manager is not maintained, uses obsolete insecure cryptography (MD5/SHA1),
+				offers no backup capabilities and is pending removal in near future.<br/><br/>
+				<strong>Users are strongly urged to transition to the Cert Manager built into pfSense as soon as possible.</strong>
+				To use the built-in Cert Manager on pfSense, first create a CA and a Server Certificate at 
+				<a href="system_camanager.php">'System &gt; Cert Manager'</a>. After that, see 'Choose Cert Manager' on the <a href="/pkg_edit.php?xml=freeradiuseapconf.xml">'EAP' configuration tab</a><br/><br/>
+				This page uses the FreeRADIUS built-in script called "bootstrap" to create CA and certs.
 				The disadvantage of this script is that nothing of your changes will be saved in the global config.xml file.
-				So, after a systemcrash or reinstallation of freeradius2 package all your CA and certs will be lost.
+				So, after a system crash or reinstallation of freeradius2 package, all your CA and certs will be lost.
 				If you have a backup of all these files on an USB stick or another server than you can copy them back in the freeradius certs folder.<br/><br/>
-				<b>Use the <a href="system_camanager.php">built-in Cert Manager</a> so that all your CA and certs
-				can be saved in global config.xml and restored if needed.</b>
+				<strong>Use <a href="system_camanager.php">'System &gt; Cert Manager'</a> so that all your CAs and certs
+				can be saved in global config.xml and restored if needed.</strong>
+				</div></div>
 				]]>
 			</description>
 			<type>input</type>
