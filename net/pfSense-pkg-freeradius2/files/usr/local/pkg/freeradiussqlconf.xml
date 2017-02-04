@@ -88,11 +88,14 @@
 		<field>
 			<fielddescr>SQL Support</fielddescr>
 			<fieldname>varsqlconfincludeenable</fieldname>
-			<description>Enable SQL Support (Default: unchecked)</description>
+			<description>Enable SQL Support</description>
 			<sethelp>
 				<![CDATA[
 				Enable this to allow connections from FreeRADIUS to a SQL database.<br/>
+				<span class="text-info">
 				At least one of the following options <strong>must be enabled</strong>: Authorization, Accounting, Session, Post-Auth.
+				(Default: Disabled)
+				</span>
 				]]>
 			</sethelp>
 			<type>checkbox</type>
@@ -104,8 +107,10 @@
 			<description>
 				<![CDATA[
 				Enable this if usernames and passwords are stored on a SQL database.<br/>
+				<span class="text-info">
 				SQL support must be enabled for this to work.
 				(Default: Disable)
+				</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -121,8 +126,10 @@
 			<description>
 				<![CDATA[
 				Enable this if accounting packets should be logged to a SQL database.<br/>
+				<span class="text-info">
 				SQL support must be enabled for this to work.
 				(Default: Disable)
+				</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -138,7 +145,10 @@
 			<description>
 				<![CDATA[
 				Enable this to use the "rlm_sql" module (fast) to check for simultaneous connections instead of "radutmp" (slow).<br/>
-				SQL support must be enabled for this to work. (Default: Disable)
+				<span class="text-info">
+				SQL support must be enabled for this to work.
+				(Default: Disable)
+				</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -154,8 +164,10 @@
 			<description>
 				<![CDATA[
 				Enable this if you like to store post-authentication data on a SQL database.<br/>
+				<span class="text-info">
 				SQL support must be enabled for this to work.
 				(Default: Disable)
+				</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -174,7 +186,8 @@
 			<fieldname>varsqlconfdatabase</fieldname>
 			<description>
 				<![CDATA[
-				Choose the database type. (Default: mysql)
+				Choose the database type.
+				<span class="text-info">(Default: MySQL)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -189,7 +202,8 @@
 			<fieldname>varsqlconfserver</fieldname>
 			<description>
 				<![CDATA[
-				Enter the IP address of the database server (Default: localhost)
+				Enter the IP address of the database server.
+				<span class="text-info">(Default: localhost)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -200,7 +214,8 @@
 			<fieldname>varsqlconfport</fieldname>
 			<description>
 				<![CDATA[
-				Enter the port address of the database server (Default: 3306)
+				Enter the port of the database server.
+				<span class="text-info">(Default: 3306)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -212,7 +227,7 @@
 			<description>
 				<![CDATA[
 				Enter the username for the database server.
-				(Default: radius)
+				<span class="text-info">(Default: radius)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -224,7 +239,7 @@
 			<description>
 				<![CDATA[
 				Enter the password for the database server user.
-				(Default: radpass)
+				<span class="text-info">(Default: radpass)</span>
 				]]>
 			</description>
 			<type>password</type>
@@ -235,10 +250,13 @@
 			<fieldname>varsqlconfradiusdb</fieldname>
 			<description>
 				<![CDATA[
-				Choose database table configuration: (Default: radius)<br/>
-				For all <b>except</b> Oracle choose:  <b>radius</b> <br/>
-				For Oracle change and paste the following line according to your environment:<br/>
-				<b>(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=1521))(CONNECT_DATA=(SID=your_sid)))</b>
+				Choose database table configuration.
+				<span class="text-info">Click Info for details. (Default: radius)</span>
+				<div class="infoblock">
+				- For all DBs <b>except</b> Oracle choose:  <b>radius</b> <br/>
+				- For Oracle, use the following template, adjusted according to your environment:<br/>
+				<code>(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=1521))(CONNECT_DATA=(SID=your_sid)))</code>
+				</div>
 				]]>
 			</description>
 			<type>input</type>
@@ -250,8 +268,8 @@
 			<description>
 				<![CDATA[
 				This is the accounting "Start" table.
-				If you want to log "Start" and "Stop" to the same table choose the same name for both.
-				(Default: radacct)
+				Choose the same name for both if you want to log "Start" and "Stop" to the same table.
+				<span class="text-info">(Default: radacct)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -263,8 +281,8 @@
 			<description>
 				<![CDATA[
 				This is the accounting "Stop" table.
-				If you want to log "Stop" and "Stop" to the same table choose the same name for both.
-				(Default: radacct)
+				Choose the same name for both if you want to log "Start" and "Stop" to the same table.
+				<span class="text-info">(Default: radacct)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -275,7 +293,8 @@
 			<fieldname>varsqlconfpostauthtable</fieldname>
 			<description>
 				<![CDATA[
-				Choose Post Auth Table. (Default: radpostauth)
+				Choose Post Auth Table.
+				<span class="text-info">(Default: radpostauth)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -286,7 +305,8 @@
 			<fieldname>varsqlconfauthchecktable</fieldname>
 			<description>
 				<![CDATA[
-				Choose Auth Check Table. (Default: radcheck)
+				Choose Auth Check Table.
+				<span class="text-info">(Default: radcheck)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -297,7 +317,8 @@
 			<fieldname>varsqlconfauthreplytable</fieldname>
 			<description>
 				<![CDATA[
-				Choose Auth Reply Table. (Default: radreply)
+				Choose Auth Reply Table.
+				<span class="text-info">(Default: radreply)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -308,7 +329,8 @@
 			<fieldname>varsqlconfgroupchecktable</fieldname>
 			<description>
 				<![CDATA[
-				Choose Group Check Table. (Default: radgroupcheck)
+				Choose Group Check Table.
+				<span class="text-info">(Default: radgroupcheck)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -319,7 +341,8 @@
 			<fieldname>varsqlconfgroupreplytable</fieldname>
 			<description>
 				<![CDATA[
-				Choose Group Check Table. (Default: radgroupreply)
+				Choose Group Reply Table.
+				<span class="text-info">(Default: radgroupreply)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -330,7 +353,8 @@
 			<fieldname>varsqlconfusergrouptable</fieldname>
 			<description>
 				<![CDATA[
-				Choose Group Check Table. (Default: radusergroup)
+				Choose User Group Table.
+				<span class="text-info">(Default: radusergroup)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -341,8 +365,9 @@
 			<fieldname>varsqlconfreadgroups</fieldname>
 			<description>
 				<![CDATA[
-				If set to <b>yes</b> (default) we read the group tables.<br/>
-				If set to <b>no</b> the user <b>must</b> have Fall-Through = Yes in the radreply table.
+				If set to 'Yes', the group tables will be read.<br/>
+				If set to 'No', the user <strong>must</strong> have <code>Fall-Through = Yes</code> in the radreply table.
+				<span class="text-info">(Default: Yes)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -358,7 +383,7 @@
 			<description>
 				<![CDATA[
 				Remove stale session if checkrad does not see a double login.
-				(Default: yes)
+				<span class="text-info">(Default: Yes)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -373,7 +398,8 @@
 			<fieldname>varsqlconfsqltrace</fieldname>
 			<description>
 				<![CDATA[
-				Print all SQL statements when in debug mode. (Default: no)
+				Print all SQL statements when in debug mode.
+				<span class="text-info">(Default: No)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -388,7 +414,8 @@
 			<fieldname>varsqlconfnumsqlsocks</fieldname>
 			<description>
 				<![CDATA[
-				Number of SQL connections to make to the server. (Default: 5)
+				Number of SQL connections to make to the server.
+				<span class="text-info">(Default: 5)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -399,8 +426,8 @@
 			<fieldname>varsqlconfconnectfailureretrydelay</fieldname>
 			<description>
 				<![CDATA[
-				Number of seconds btween a retry after a failed database connection.
-				(Default: 60)
+				Number of seconds before a retry after a failed database connection.
+				<span class="text-info">(Default: 60)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -411,9 +438,11 @@
 			<fieldname>varsqlconflifetime</fieldname>
 			<description>
 				<![CDATA[
-				If you are having network issues such as TCP sessions expiring, you may need to set the socket lifetime.
+				If you have network issues, such as TCP sessions expiring, you may need to set the socket lifetime.<br/>
+				<span class="text-info">
 				If set to non-zero, any open connections will be closed X seconds after they were first opened.
 				(Default: 0)
+				</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -424,9 +453,11 @@
 			<fieldname>varsqlconfmaxqueries</fieldname>
 			<description>
 				<![CDATA[
-				If you have issues with SQL sockets lasting too long, you can limit the number of queries performed over one socket.
-				After X queries, the socket will be closed. Use 0 for no limit.
+				If you have issues with SQL sockets lasting too long, you can limit the number of queries performed over one socket.<br/>
+				<span class="text-info">
+				After set number of queries, the socket will be closed. Use 0 for no limit.
 				(Default: 0)
+				</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -437,9 +468,8 @@
 			<fieldname>varsqlconfreadclients</fieldname>
 			<description>
 				<![CDATA[
-				Set to <b>yes</b> to read RADIUS clients from the database ('nas' table).
-				Clients will only be read on server startup.
-				(Default: yes)
+				Set to 'Yes' to read RADIUS clients from the database 'nas' table. Clients will only be read on server startup.
+				<span class="text-info">(Default: Yes)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -454,7 +484,8 @@
 			<fieldname>varsqlconfnastable</fieldname>
 			<description>
 				<![CDATA[
-				Choose the table to keep RADIUS client info. (Default: nas)
+				Choose the table to keep RADIUS client info.
+				<span class="text-info">(Default: nas)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -469,12 +500,15 @@
 			<fieldname>varsqlconf2failover</fieldname>
 			<description>
 				<![CDATA[
-				Choose the interaction of the two SQL databases: (Default: Redundant)<br/>
+				Choose the interaction of the two SQL databases.
+				<span class="text-info">Click Info for details. (Default: Redundant)</span>
+				<div class="infoblock">
 				<dl class="dl-horizontal responsive">
-				<dt>Redundant</dt><dd>If server1 fails failover to server2.</dd>
-				<dt>Load-Balance</dt><dd>The load is balanced 50:50 to both databases.</dd>
-				<dt>Redundant-Load-Balance</dt><dd>The load is balanced 50:50 to both databases. If one is down the other does 100%.</dd>
+					<dt>Redundant</dt><dd>Failover to server2 if server1 fails.</dd>
+					<dt>Load-Balance</dt><dd>The load is balanced 50:50 between both databases.</dd>
+					<dt>Redundant-Load-Balance</dt><dd>The load is balanced 50:50 between both databases. If one is down, the other does 100%.</dd>
 				</dl>
+				</div>
 				]]>
 			</description>
 			<type>select</type>
@@ -496,7 +530,10 @@
 			<sethelp>
 				<![CDATA[
 				Enable this to allow connections from FreeRADIUS to a SQL database.<br/>
+				<span class="text-info">
 				At least one of the following options <strong>must be enabled</strong>: Authorization, Accounting, Session, Post-Auth.
+				(Default: Disabled)
+				</span>
 				]]>
 			</sethelp>
 			<type>checkbox</type>
@@ -508,8 +545,10 @@
 			<description>
 				<![CDATA[
 				Enable this if usernames and passwords are stored on a SQL database.<br/>
+				<span class="text-info">
 				SQL support must be enabled for this to work.
 				(Default: Disable)
+				</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -525,8 +564,10 @@
 			<description>
 				<![CDATA[
 				Enable this if accounting packets should be logged to a SQL database.<br/>
+				<span class="text-info">
 				SQL support must be enabled for this to work.
 				(Default: Disable)
+				</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -542,7 +583,10 @@
 			<description>
 				<![CDATA[
 				Enable this to use the "rlm_sql" module (fast) to check for simultaneous connections instead of "radutmp" (slow).<br/>
-				SQL support must be enabled for this to work. (Default: Disable)
+				<span class="text-info">
+				SQL support must be enabled for this to work.
+				(Default: Disable)
+				</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -558,8 +602,10 @@
 			<description>
 				<![CDATA[
 				Enable this if you like to store post-authentication data on a SQL database.<br/>
+				<span class="text-info">
 				SQL support must be enabled for this to work.
 				(Default: Disable)
+				</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -578,7 +624,8 @@
 			<fieldname>varsqlconf2database</fieldname>
 			<description>
 				<![CDATA[
-				Choose the database type. (Default: mysql)
+				Choose the database type.
+				<span class="text-info">(Default: MySQL)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -593,7 +640,8 @@
 			<fieldname>varsqlconf2server</fieldname>
 			<description>
 				<![CDATA[
-				Enter the IP address of the database server (Default: localhost)
+				Enter the IP address of the database server.
+				<span class="text-info">(Default: localhost)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -604,7 +652,8 @@
 			<fieldname>varsqlconf2port</fieldname>
 			<description>
 				<![CDATA[
-				Enter the port address of the database server (Default: 3306)
+				Enter the port of the database server.
+				<span class="text-info">(Default: 3306)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -616,7 +665,7 @@
 			<description>
 				<![CDATA[
 				Enter the username for the database server.
-				(Default: radius)
+				<span class="text-info">(Default: radius)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -628,7 +677,7 @@
 			<description>
 				<![CDATA[
 				Enter the password for the database server user.
-				(Default: radpass)
+				<span class="text-info">(Default: radpass)</span>
 				]]>
 			</description>
 			<type>password</type>
@@ -639,10 +688,13 @@
 			<fieldname>varsqlconf2radiusdb</fieldname>
 			<description>
 				<![CDATA[
-				Choose database table configuration: (Default: radius)<br/>
-				For all <b>except</b> Oracle choose:  <b>radius</b> <br/>
-				For Oracle change and paste the following line according to your environment:<br/>
-				<b>(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=1521))(CONNECT_DATA=(SID=your_sid)))</b>
+				Choose database table configuration.
+				<span class="text-info">Click Info for details. (Default: radius)</span>
+				<div class="infoblock">
+				- For all DBs <b>except</b> Oracle choose:  <b>radius</b> <br/>
+				- For Oracle, use the following template, adjusted according to your environment:<br/>
+				<code>(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=1521))(CONNECT_DATA=(SID=your_sid)))</code>
+				</div>
 				]]>
 			</description>
 			<type>input</type>
@@ -654,8 +706,8 @@
 			<description>
 				<![CDATA[
 				This is the accounting "Start" table.
-				If you want to log "Start" and "Stop" to the same table choose the same name for both.
-				(Default: radacct)
+				Choose the same name for both if you want to log "Start" and "Stop" to the same table.
+				<span class="text-info">(Default: radacct)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -667,8 +719,8 @@
 			<description>
 				<![CDATA[
 				This is the accounting "Stop" table.
-				If you want to log "Stop" and "Stop" to the same table choose the same name for both.
-				(Default: radacct)
+				Choose the same name for both if you want to log "Start" and "Stop" to the same table.
+				<span class="text-info">(Default: radacct)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -679,7 +731,8 @@
 			<fieldname>varsqlconf2postauthtable</fieldname>
 			<description>
 				<![CDATA[
-				Choose Post Auth Table. (Default: radpostauth)
+				Choose Post Auth Table.
+				<span class="text-info">(Default: radpostauth)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -690,7 +743,8 @@
 			<fieldname>varsqlconf2authchecktable</fieldname>
 			<description>
 				<![CDATA[
-				Choose Auth Check Table. (Default: radcheck)
+				Choose Auth Check Table.
+				<span class="text-info">(Default: radcheck)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -701,7 +755,8 @@
 			<fieldname>varsqlconf2authreplytable</fieldname>
 			<description>
 				<![CDATA[
-				Choose Auth Reply Table. (Default: radreply)
+				Choose Auth Reply Table.
+				<span class="text-info">(Default: radreply)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -712,7 +767,8 @@
 			<fieldname>varsqlconf2groupchecktable</fieldname>
 			<description>
 				<![CDATA[
-				Choose Group Check Table. (Default: radgroupcheck)
+				Choose Group Check Table.
+				<span class="text-info">(Default: radgroupcheck)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -723,7 +779,8 @@
 			<fieldname>varsqlconf2groupreplytable</fieldname>
 			<description>
 				<![CDATA[
-				Choose Group Check Table. (Default: radgroupreply)
+				Choose Group Reply Table.
+				<span class="text-info">(Default: radgroupreply)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -734,7 +791,8 @@
 			<fieldname>varsqlconf2usergrouptable</fieldname>
 			<description>
 				<![CDATA[
-				Choose Group Check Table. (Default: radusergroup)
+				Choose User Group Table.
+				<span class="text-info">(Default: radusergroup)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -745,8 +803,9 @@
 			<fieldname>varsqlconf2readgroups</fieldname>
 			<description>
 				<![CDATA[
-				If set to <b>yes</b> (default) we read the group tables.<br/>
-				If set to <b>no</b> the user <b>must</b> have Fall-Through = Yes in the radreply table.
+				If set to 'Yes', the group tables will be read.<br/>
+				If set to 'No', the user <strong>must</strong> have <code>Fall-Through = Yes</code> in the radreply table.
+				<span class="text-info">(Default: Yes)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -762,7 +821,7 @@
 			<description>
 				<![CDATA[
 				Remove stale session if checkrad does not see a double login.
-				(Default: yes)
+				<span class="text-info">(Default: Yes)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -777,7 +836,8 @@
 			<fieldname>varsqlconf2sqltrace</fieldname>
 			<description>
 				<![CDATA[
-				Print all SQL statements when in debug mode. (Default: no)
+				Print all SQL statements when in debug mode.
+				<span class="text-info">(Default: No)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -792,7 +852,8 @@
 			<fieldname>varsqlconf2numsqlsocks</fieldname>
 			<description>
 				<![CDATA[
-				Number of SQL connections to make to the server. (Default: 5)
+				Number of SQL connections to make to the server.
+				<span class="text-info">(Default: 5)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -803,8 +864,8 @@
 			<fieldname>varsqlconf2connectfailureretrydelay</fieldname>
 			<description>
 				<![CDATA[
-				Number of seconds btween a retry after a failed database connection.
-				(Default: 60)
+				Number of seconds before a retry after a failed database connection.
+				<span class="text-info">(Default: 60)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -815,9 +876,11 @@
 			<fieldname>varsqlconf2lifetime</fieldname>
 			<description>
 				<![CDATA[
-				If you are having network issues such as TCP sessions expiring, you may need to set the socket lifetime.
+				If you have network issues, such as TCP sessions expiring, you may need to set the socket lifetime.<br/>
+				<span class="text-info">
 				If set to non-zero, any open connections will be closed X seconds after they were first opened.
 				(Default: 0)
+				</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -828,9 +891,11 @@
 			<fieldname>varsqlconf2maxqueries</fieldname>
 			<description>
 				<![CDATA[
-				If you have issues with SQL sockets lasting too long, you can limit the number of queries performed over one socket.
-				After X queries, the socket will be closed. Use 0 for no limit.
+				If you have issues with SQL sockets lasting too long, you can limit the number of queries performed over one socket.<br/>
+				<span class="text-info">
+				After set number of queries, the socket will be closed. Use 0 for no limit.
 				(Default: 0)
+				</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -841,9 +906,8 @@
 			<fieldname>varsqlconf2readclients</fieldname>
 			<description>
 				<![CDATA[
-				Set to <b>yes</b> to read RADIUS clients from the database ('nas' table).
-				Clients will only be read on server startup.
-				(Default: yes)
+				Set to 'Yes' to read RADIUS clients from the database 'nas' table. Clients will only be read on server startup.
+				<span class="text-info">(Default: Yes)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -858,7 +922,8 @@
 			<fieldname>varsqlconf2nastable</fieldname>
 			<description>
 				<![CDATA[
-				Choose the table to keep RADIUS client info. (Default: nas)
+				Choose the table to keep RADIUS client info.
+				<span class="text-info">(Default: nas)</span>
 				]]>
 			</description>
 			<type>input</type>
