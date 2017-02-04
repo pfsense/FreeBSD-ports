@@ -158,8 +158,8 @@
 			<description>
 				<![CDATA[
 				Enter the shared secret of the RADIUS client here. This is the shared secret (password)
-				which the NAS (switch or accesspoint) needs to communicate with the RADIUS server.<br/>
-				FreeRADIUS is limited to 31 characters for the shared secret.
+				which the NAS (switch, accesspoint, etc.) needs to communicate with the RADIUS server.
+				<span class="text-info">FreeRADIUS is limited to 31 characters for the shared secret.</span>
 				]]>
 			</description>
 			<type>password</type>
@@ -174,7 +174,8 @@
 			<fieldname>varclientproto</fieldname>
 			<description>
 				<![CDATA[
-				Enter the protocol the client uses. (Default: UDP)
+				Enter the protocol the client uses.
+				<span class="text-info">(Default: UDP)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -189,7 +190,8 @@
 			<fieldname>varclientnastype</fieldname>
 			<description>
 				<![CDATA[
-				Enter the NAS type of the client. This is used by checkrad.pl for simultaneous use checks. (Default: other)
+				Enter the NAS type of the client. This is used by checkrad.pl for simultaneous use checks.
+				<span class="text-info">(Default: other)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -215,7 +217,8 @@
 			<description>
 				<![CDATA[
 				RFC5080 requires Message-Authenticator in Access-Request.
-				But older NAS (switches or accesspoints) do not include that. (Default: no)
+				But older NAS (switches or accesspoints) do not include that.<br/>
+				<span class="text-info">(Default: no)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -231,7 +234,8 @@
 			<description>
 				<![CDATA[
 				Takes only effect if you use TCP as protocol.
-				This is the mirror of "Max Requests Server" from "Settings" tab. (Default 16)
+				This is the mirror of "Max Requests Server" from "Settings" tab.<br/>
+				<span class="text-info">(Default 16)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -242,8 +246,8 @@
 			<fieldname>varclientlogininput</fieldname>
 			<description>
 				<![CDATA[
-				If your NAS supports it you can use SNMP or finger for simultaneous-use checks instead of (s)radutmp file and accounting.
-				Leave empty to choose (s)radutmp. (Default: empty)
+				If supported by your NAS, you can use SNMP or finger for simultaneous-use checks instead of (s)radutmp file and accounting.<br/>
+				Leave empty to choose (s)radutmp. <span class="text-info">(Default: empty)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -253,8 +257,8 @@
 			<fieldname>varclientpasswordinput</fieldname>
 			<description>
 				<![CDATA[
-				If your NAS supports it you can use SNMP or finger for simultaneous-use checks instead of (s)radutmp file and accounting.
-				Leave empty to choose (s)radutmp. (Default: empty)
+				If supported by your NAS, you can use SNMP or finger for simultaneous-use checks instead of (s)radutmp file and accounting.<br/>
+				Leave empty to choose (s)radutmp. <span class="text-info">(Default: empty)</span>
 				]]>
 			</description>
 			<type>input</type>
