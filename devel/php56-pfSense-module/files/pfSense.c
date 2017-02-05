@@ -1820,11 +1820,10 @@ PHP_FUNCTION(pfSense_etherswitch_getvlangroup)
 
 PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 {
-	bool tagged;
 	char *dev, *key;
 	etherswitch_info_t info;
 	etherswitch_vlangroup_t vg;
-	int fd, i, members, port, untagged;
+	int fd, i, members, port, tagged, untagged;
 	long devlen, vlan, vlangroup;
 	unsigned int key_len;
 	unsigned long index;
@@ -1871,10 +1870,10 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 				continue;
 			}
 			port = index;
-			if (port < 0 || port >= info.es_nports);
+			if (port < 0 || port >= info.es_nports)
 				continue;
 			hash2 = Z_ARRVAL_PP(data1);
-			tagged = false;
+			tagged = 0;
 			for (zend_hash_internal_pointer_reset_ex(hash2, &h2p);
 			    zend_hash_get_current_data_ex(hash2, (void**)&data2, &h2p) == SUCCESS;
 			    zend_hash_move_forward_ex(hash2, &h2p)) {
@@ -1886,7 +1885,7 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 				if (key_len == 6 &&
 				    strcasecmp(key, "tagged") == 0 &&
 				    Z_LVAL_PP(data2) != 0) {
-					tagged = true;
+					tagged = 1; 
 				}
 			}
 			members |= (1 << port);
