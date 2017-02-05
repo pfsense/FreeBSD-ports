@@ -1823,7 +1823,7 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 	char *dev, *key;
 	etherswitch_info_t info;
 	etherswitch_vlangroup_t vg;
-	int fd, i, members, port, untagged;
+	int fd, i, members, port, tagged, untagged;
 	long devlen, vlan, vlangroup;
 	unsigned int key_len;
 	unsigned long index;
@@ -1869,9 +1869,11 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 			    Z_TYPE_PP(data1) != IS_ARRAY) {
 				continue;
 			}
-			port = atoi(key);
-			members |= (1 << port);
+			port = index;
+			if (port < 0 || port >= info.es_nports)
+				continue;
 			hash2 = Z_ARRVAL_PP(data1);
+			tagged = 0;
 			for (zend_hash_internal_pointer_reset_ex(hash2, &h2p);
 			    zend_hash_get_current_data_ex(hash2, (void**)&data2, &h2p) == SUCCESS;
 			    zend_hash_move_forward_ex(hash2, &h2p)) {
@@ -1880,12 +1882,15 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 				    Z_TYPE_PP(data2) != IS_LONG) {
 					continue;
 				}
-				if (key_len == 8 &&
-				    strcasecmp(key, "untagged") == 0 &&
+				if (key_len == 6 &&
+				    strcasecmp(key, "tagged") == 0 &&
 				    Z_LVAL_PP(data2) != 0) {
-					untagged |= (1 << port);
+					tagged = 1; 
 				}
 			}
+			members |= (1 << port);
+			if (!tagged)
+				untagged |= (1 << port);
 		}
 	}
 
