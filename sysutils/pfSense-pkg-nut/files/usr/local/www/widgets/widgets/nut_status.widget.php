@@ -40,14 +40,14 @@ if ($_REQUEST && $_REQUEST['ajax']) {
 }
 
 
-function print_row($desc, $value) {
+function print_row($desc, $value, $raw_data = false) {
 	print '<tr>';
 	print '  <td style="width:35%"><b>' . $desc . ':</b></td>';
-	print '  <td>' . htmlspecialchars($value) . '</td>';
+	print '  <td>' . ($raw_data ? $value : htmlspecialchars($value)) . '</td>';
 	print '</tr>';
 }
 
-function print_row_pct($desc, $value) {
+function print_row_pct($desc, $value, $raw_data = false) {
 	print '<tr>';
 	print '  <td style="width:35%"><b>' . $desc . ':</b></td>';
 	print '  <td>';
@@ -55,13 +55,27 @@ function print_row_pct($desc, $value) {
 	print '      <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' . $value . '" style="width: ' . $value . '%">';
 	print '      </div>';
 	print '    </div>';
-	print      htmlspecialchars($value) . '%';
+	print      ($raw_data ? $value : htmlspecialchars($value)) . '%';
 	print '  </td>';
 	print '</tr>';
 }
 
 function print_table() {
 	$status = nut_ups_status();
+
+	//Get connected remote clients (for local UPS only)
+	global $config;
+	$nut_config  = &$config['installedpackages']['nut']['config'][0];
+	$clients_IPs = '';
+	if (strpos($nut_config['type'], 'local') !== false) {
+		//get connected ips
+		exec("pfctl -s states | grep ':3493 ' | grep 'ESTABLISHED:ESTABLISHED' | cut -d ' ' -f 6 | cut -d ':' -f 1", $out_strings);
+		foreach ($out_strings as &$client) {
+			//trying to get client name
+			$client .= ' (' . exec("nslookup {$client} | grep '=' | cut -d '=' -f 2 | cut -d '.' -f 1") . ' )';
+		}
+		$clients_IPs = join("<br />", $out_strings);
+	}
 
 	if ($status['_alert']) {
 		print '<tr>';
@@ -82,6 +96,9 @@ function print_table() {
 	}
 	if (isset($status['battery.charge'])) {
 		print_row_pct(gettext("Battery charge"), $status['battery.charge']);
+	}
+	if ($clients_IPs !== '') {
+		print_row(gettext("Remote clients"), $clients_IPs, true);
 	}
 }
 ?>
