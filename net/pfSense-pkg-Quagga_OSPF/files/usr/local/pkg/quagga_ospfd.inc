@@ -304,12 +304,12 @@ EOF;
 	$rc_file_stop = <<<EOF
 if [ -e /var/run/quagga/zebra.pid ]; then
 	# XXX: See Bug #6305 - Quagga 1.x does not like SIGKILL
-	/bin/pkill -F `/bin/cat /var/run/quagga/zebra.pid`
+	/bin/pkill -F /var/run/quagga/zebra.pid
 	/bin/rm -f /var/run/quagga/zebra.pid
 fi
 if [ -e /var/run/quagga/ospfd.pid ]; then
 	# XXX: See Bug #6305 - Quagga 1.x does not like SIGKILL
-	/bin/pkill -F `/bin/cat /var/run/quagga/ospfd.pid`
+	/bin/pkill -F /var/run/quagga/ospfd.pid
 	/bin/rm -f /var/run/quagga/ospfd.pid
 fi
 EOF;
