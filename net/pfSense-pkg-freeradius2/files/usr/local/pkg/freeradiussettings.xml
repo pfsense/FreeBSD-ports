@@ -86,26 +86,27 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Maximum Requests Server</fielddescr>
+			<fielddescr>Maximum Requests Tracked</fielddescr>
 			<fieldname>varsettingsmaxrequests</fieldname>
 			<description>
 				<![CDATA[
-				The maximum number of requests the server could handle at a time until "Cleanup Delay" deletes them.
-				Useful range 256 * NAS. If it is set to low it will make the server busy.
-				A higher value is better (but increased RAM usage) but it shouldn't be higher than 1000 * NAS.
+				The maximum number of requests which the server keeps track of until 'Cleanup Delay' deletes them.<br/>
+				If set too low, it will make FreeRADIUS server busy. A higher value is better (but means increased RAM usage).<br/>
+				<span class="text-info">Useful range: (256 * &lt; number of NAS &gt;). Shouldn't be higher than (1000 * &lt; number of NAS &gt;).
 				(Default: 1024)
+				</span>
 				]]>
 			</description>
 			<type>input</type>
 			<default_value>1024</default_value>
 		</field>
 		<field>
-			<fielddescr>Max Request Timeout</fielddescr>
+			<fielddescr>Maximum Request Timeout</fielddescr>
 			<fieldname>varsettingsmaxrequesttime</fieldname>
 			<description>
 				<![CDATA[
-				The maximum time to handle a request in seconds.
-				(Default: 30)
+				The maximum time to handle a request (in seconds).
+				<span class="text-info">(Default: 30)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -116,8 +117,8 @@
 			<fieldname>varsettingscleanupdelay</fieldname>
 			<description>
 				<![CDATA[
-				The time to wait before cleaning up a reply which was sent to the NAS in seconds.
-				(Default: 5)
+				The time to wait before cleaning up a reply which was sent to the NAS (in seconds).
+				<span class="text-info">(Default: 5)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -128,8 +129,8 @@
 			<fieldname>varsettingsallowcoredumps</fieldname>
 			<description>
 				<![CDATA[
-				Only turn this on if you need to debug the RADIUS server!
-				(Default: no)
+				Only enable if you need to debug the RADIUS server!
+				<span class="text-info">(Default: Disable)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -144,7 +145,8 @@
 			<fieldname>varsettingsregularexpressions</fieldname>
 			<description>
 				<![CDATA[
-				Allows regular expressions. (Default: yes)
+				Allows to use regular expressions.
+				<span class="text-info">(Default: Enable)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -159,7 +161,8 @@
 			<fieldname>varsettingsextendedexpressions</fieldname>
 			<description>
 				<![CDATA[
-				Allows extended expressions. (Default: yes)
+				Allows to use extended expressions.
+				<span class="text-info">(Default: Enable)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -178,9 +181,9 @@
 			<fieldname>varsettingslogdir</fieldname>
 			<description>
 				<![CDATA[
-				Choose the destination where freeRADIUS will log.
-				This will log general service information, but no authentication information.
-				(Default: /var/log/radius.log)
+				Choose the destination for FreeRADIUS logs.
+				This will log general service information, but no authentication information.<br/>
+				<span class="text-info">(Default: System Logs)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -195,8 +198,8 @@
 			<fieldname>varsettingsauth</fieldname>
 			<description>
 				<![CDATA[
-				This enables logging if an authentication is accepted or rejected.
-				(Default: Disabled)
+				This enables logging of accepted or rejected authentication.
+				<span class="text-info">(Default: Disable)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -212,8 +215,8 @@
 			<description>
 				<![CDATA[
 				Log the <b>password</b> of failed authentication attempts to syslog.
-				Not recommended for security reasons. Logging must be enabled.
-				(Default: no)
+				Not recommended for security reasons.</br>
+				<span class="text-info">'RADIUS Logging' must be enabled. (Default: No)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -228,10 +231,12 @@
 			<fieldname>varsettingsauthbadpassmessage</fieldname>
 			<description>
 				<![CDATA[
-				You can add additional information to the syslog output if a user connects.
+				You can add additional information to the syslog output if a user connects. Click Info for details.
+				<div class="infoblock">
 				You can use variables for any attributes.<br/><br/>
-				%{User-Name} - shows the username.<br/>
-				%{reply:Acct-Output-Octets} - shows the remaining output octets.
+				<code>%{User-Name}</code> - Logs the username.</br>
+				<code>%{reply:Acct-Output-Octets}</code> - Logs the remaining output octets.</br>
+				</div>
 				]]>
 			</description>
 			<type>input</type>
@@ -243,8 +248,8 @@
 			<description>
 				<![CDATA[
 				Log the <b>password</b> of successful authentication attempts to syslog.
-				Not recommended for security reasons. Logging must be enabled.
-				(Default: no)
+				Not recommended for security reasons.</br>
+				<span class="text-info">'RADIUS Logging' must be enabled. (Default: No)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -259,10 +264,12 @@
 			<fieldname>varsettingsauthgoodpassmessage</fieldname>
 			<description>
 				<![CDATA[
-				You can add additional information to the syslog output if a user is rejected.
+				You can add additional information to the syslog output if a user is rejected. Click Info for details.
+				<div class="infoblock">
 				You can use variables for any attributes.<br/><br/>
-				%{User-Name} - shows the username.<br/>
-				%{reply:Acct-Output-Octets} - shows the remaining output octets.
+				<code>%{User-Name}</code> - Logs the username.</br>
+				<code>%{reply:Acct-Output-Octets}</code> - Logs the remaining output octets.</br>
+				</div>
 				]]>
 			</description>
 			<type>input</type>
@@ -273,8 +280,8 @@
 			<fieldname>varsettingsstrippednames</fieldname>
 			<description>
 				<![CDATA[
-				Choose this if you want to log the full User-Name attribute as it was found in the request. Logging must be enabled.
-				(Default: no)
+				Choose this if you want to log the full User-Name attribute as it was found in the request.<br/>
+				<span class="text-info">'RADIUS Logging' must be enabled. (Default: No)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -289,9 +296,9 @@
 			<fieldname>varsettingshostnamelookups</fieldname>
 			<description>
 				<![CDATA[
-				Log the names of NAS instead of IP addresses.
-				<span class="text-danger">Warning: Turning this on can result in lock ups of the RADIUS Server.</span>
-				(Default: no)
+				Log the names of NAS instead of IP addresses.<br/>
+				<span class="text-danger">Warning:</span> Turning this on can result in lock-ups of the RADIUS server.
+				<span class="text-info">(Default: Disable)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -311,8 +318,8 @@
 			<description>
 				<![CDATA[
 				The maximum number of attributes permitted in a RADIUS packet.
-				Packets which have more than this number of attributes in them will be dropped.
-				(Default: 200)
+				Packets which have more than this number of attributes in them will be dropped.<br/>
+				<span class="text-info">(Default: 200)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -323,9 +330,9 @@
 			<fieldname>varsettingsrejectdelay</fieldname>
 			<description>
 				<![CDATA[
-				When sending an Access-Reject it can be delayed for a few seconds. This may help slow down a DoS attack.
-				It also helps to slow down people trying to brute-force crack a users password.
-				(Default: 1. To send Access-Reject immediately, set to '0'.)
+				When sending an Access-Reject it can be delayed for a few seconds.<br/>
+				This may help to slow down a DoS attack. It also helps to slow down people trying to brute-force crack a user's password.<br/>
+				<span class="text-info">To send Access-Reject immediately, set to '0'. (Default: 1)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -341,7 +348,7 @@
 			<description>
 				<![CDATA[
 				The thread pool is a long-lived group of threads which take turns (round-robin) handling any incoming requests.
-				(Default: 5)
+				<span class="text-info">(Default: 5)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -352,34 +359,34 @@
 			<fieldname>varsettingsmaxservers</fieldname>
 			<description>
 				<![CDATA[
-				If this limit is ever reached, clients will be locked out so it should not be set to low.
-				(Default: 32)
+				If this limit is ever reached, clients will be locked out; it should not be set too low.
+				<span class="text-info">(Default: 32)</span>
 				]]>
 			</description>
 			<type>input</type>
 			<default_value>32</default_value>
 		</field>
 		<field>
-			<fielddescr>Min Spare Servers</fielddescr>
+			<fielddescr>Minimum Spare Servers</fielddescr>
 			<fieldname>varsettingsminspareservers</fieldname>
 			<description>
 				<![CDATA[
-				This dynamically adjusts the "Number of Threads After Start". If the RADIUS server has to handle MANY requests
-				and LESS than "Min Spare Servers" are left than the RADIUS server will INCREASE the number of running threads.
-				(Default: 3)
+				This dynamically adjusts the 'Number of Threads After Start'. If the RADIUS server has to handle <strong>many</strong> requests
+				and <strong>less</strong> than 'Minimum Spare Servers' are left, the RADIUS server will <strong>increase</strong> the number of running threads.<br/>
+				<span class="text-info">(Default: 3)</span>
 				]]>
 			</description>
 			<type>input</type>
 			<default_value>3</default_value>
 		</field>
 		<field>
-			<fielddescr>Max Spare Servers</fielddescr>
+			<fielddescr>Maximum Spare Servers</fielddescr>
 			<fieldname>varsettingsmaxspareservers</fieldname>
 			<description>
 				<![CDATA[
-				This dynamically adjusts the "Number of Threads After Start". If the RADIUS server has to handle FEW requests
-				and MORE than "Max Spare Servers" are left than the RADIUS server will DECREASE the number of running threads.
-				(Default: 10)
+				This dynamically adjusts the 'Number of Threads After Start'. If the RADIUS server has to handle <strong>few</strong> requests
+				and <strong>more</strong> than 'Maximum Spare Servers' are left, the RADIUS server will <strong>decrease</strong> the number of running threads.<br/>
+				<span class="text-info">(Default: 10)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -391,19 +398,19 @@
 			<description>
 				<![CDATA[
 				This is the queue size where the server stores packets before processing them.
-				(Default: 65536)
+				<span class="text-info">(Default: 65536)</span>
 				]]>
 			</description>
 			<type>input</type>
 			<default_value>65536</default_value>
 		</field>
 		<field>
-			<fielddescr>Maximum Requests per Server</fielddescr>
+			<fielddescr>Maximum Requests Per Server</fielddescr>
 			<fieldname>varsettingsmaxrequestsperserver</fieldname>
 			<description>
 				<![CDATA[
 				You should only change this if you encounter memory leaks while running RADIUS.
-				(Default: 0)
+				<span class="text-info">(Default: 0)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -416,11 +423,12 @@
 		<field>
 			<fielddescr>Mobile-One-Time-Password</fielddescr>
 			<fieldname>varsettingsmotpenable</fieldname>
-			<description>Enable Mobile-One-Time-Password Support (Default: unchecked)</description>
+			<description>Enable Mobile-One-Time-Password Support</description>
 			<sethelp>
 				<![CDATA[
-				This enables the possibility to authenticate using a username and one-time-password.
-				The client which generates OTP can be installed on various mobile device plattforms like Android and more.
+				This enables the possibility to authenticate with username and one-time-password.</br>
+				The client used to generate OTP can be installed on various mobile device platforms like Android, iOS and others.<br/>
+				<span class="text-info">(Default: Disabled)</span>
 				]]>
 			</sethelp>
 			<type>checkbox</type>
@@ -431,8 +439,8 @@
 			<fieldname>varsettingsmotptimespan</fieldname>
 			<description>
 				<![CDATA[
-				Enter the lifetime of the OTP. 1=10s, 2=20s, 3=30s.
-				(Default: 2)
+				The resulting lifetime (in seconds) is the value entered here multiplied by 10 (i.e., 1 ~ 10s, 2 ~ 20s, 3 ~30s).<br/>
+				<span class="text-info">(Default: 2)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -444,7 +452,7 @@
 			<description>
 				<![CDATA[
 				After this many failed attempts, the user will be locked out until an admin unlocks the user.
-				(Default: 5)
+				<span class="text-info">(Default: 5)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -455,10 +463,9 @@
 			<fieldname>varsettingsmotpchecksumtype</fieldname>
 			<description>
 				<![CDATA[
-				We build a hash of "EPOCHTIME+INIT-SECRET+PIN" and then use the digits as password.
-				Perhaps there are some other/hardware tokens which use other hash types so you can perhaps adjust this here.
-				This <b>must</b> be equal on both sides!
-				(Default: md5)
+				We build a hash of <code>EPOCHTIME+INIT-SECRET+PIN</code> and then use the digits as password.<br/>
+				If some other (hardware) tokens use other hash types, you can adjust the calculation here.<br/>
+				<span class="text-info">Note: This <strong>must</strong> be equal on both sides!(Default: md5)</span>
 				]]>
 			</description>
 			<type>select</type>
@@ -474,10 +481,9 @@
 			<fieldname>varsettingsmotptokenlength</fieldname>
 			<description>
 				<![CDATA[
-				We build a hash of "EPOCHTIME+INIT-SECRET+PIN" and then use the digits 1 to 6 as password.
-				Perhaps there are some other/hardware tokens which use other digits so you can perhaps adjust this here.
-				This <b>must</b> be equal on both sides!
-				(Default: 1-6)
+				We build a hash of <code>EPOCHTIME+INIT-SECRET+PIN</code> and then use the first 6 digits as password.<br/>
+				If some other (hardware) tokens use other digits, you can adjust the used digits here.<br/>
+				<span class="text-info">Note: This <strong>must</strong> be equal on both sides! (Default: 1-6)	</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -490,12 +496,12 @@
 		<field>
 			<fielddescr>Plain MAC Auth</fielddescr>
 			<fieldname>varsettingsenablemacauth</fieldname>
-			<description>Enable Plain MAC Authentication (Default: unchecked)</description>
+			<description>Enable Plain MAC Authentication</description>
 			<sethelp>
 				<![CDATA[
-				The Calling-Station-Id in an Access-Request is first checked against an authorized_macs list before all other authorization methods.
-				If the NAS is not able to convert the MAC address in a 802.1X format then this can be enabled.
-				Leave this disabled unless it is absolutely necessary.
+				The Calling-Station-Id in an Access-Request is first checked against the authorized_macs list, before all other authorization methods.
+				If the NAS is not able to convert the MAC address to the 802.1X format, this field can be enabled.<br/>
+				<span class="text-info">Leave this disabled (unchecked) unless absolutely necessary. (Default: Disabled)</span>
 				]]>
 			</sethelp>
 			<type>checkbox</type>
@@ -503,11 +509,11 @@
 		<field>
 			<fielddescr>Disable Acct_Unique</fielddescr>
 			<fieldname>varsettingsenableacctunique</fieldname>
-			<description>Disable the "rlm_acct_unique" module in FreeRADIUS "preacct" section. (Default: unchecked)</description>
+			<description>Disable the "rlm_acct_unique" module in FreeRADIUS "preacct" section.</description>
 			<sethelp>
 				<![CDATA[
-				By default this module is enabled but it causes some problems with counters.
-				So if you use "Amount of Download/Upload/Time" then leave this checked.
+				If you encounter problems with some counters when using 'Amount of Download/Upload/Time', you can check this to disable the module.
+				<span class="text-info">(Default: Enabled)</span>
 				]]>
 			</sethelp>
 			<type>checkbox</type>

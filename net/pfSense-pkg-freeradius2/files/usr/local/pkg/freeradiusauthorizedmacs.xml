@@ -147,8 +147,8 @@
 			<fieldname>varmacsaddress</fieldname>
 			<description>
 				<![CDATA[
-				Enter the MAC address.Format must be: 0a-1b-2c-4d-5f-fa<br/>
-				If you do not want to use MAC address but custom options then leave this field empty.
+				Enter the MAC address. Leave empty if you want to use custom options instead of MAC address.<br/>
+				<span class="text-info">Required format: <code>0a-1b-2c-4d-5f-fa</code></span>
 				]]>
 			</description>
 			<type>input</type>
@@ -162,7 +162,8 @@
 			<fieldname>varmacsswisprredirectionurl</fieldname>
 			<description>
 				<![CDATA[
-				Enter the URL the MAC should be redirected to after successful login. (e.g.: http://www.google.com)
+				Enter the URL the MAC should be redirected to after successful login.
+				<span class="text-info">Example: http://www.google.com</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -172,8 +173,8 @@
 			<fieldname>varmacssimultaneousconnect</fieldname>
 			<description>
 				<![CDATA[
-				The maximum of simultaneous connections with this MAC address. If you leave this field empty than there is no limit.
-				If you are using FreeRADIUS with CaptivePortal you should leave this empty. Read the documentation!
+				The maximum of simultaneous connections with this MAC address. Leave empty for no limit.<br/>
+				<span class="text-info">If using FreeRADIUS with CaptivePortal you should leave this empty. Read the documentation!
 				]]>
 			</description>
 			<type>input</type>
@@ -197,10 +198,12 @@
 			<fieldname>varmacsframedipaddress</fieldname>
 			<description>
 				<![CDATA[
-				<b>Framed-IP-Address</b> must be supported by NAS.<br/><br/>
-				If you want this MAC address to be assigned a specific IP address from radius, enter the IP address here.<br/>
-				Continuous IP address is available with "+" suffix (e.g. 192.168.1.5+). Could be useful for simultaneous connections.<br/><br/>
-				<b>IMPORTANT:</b> You must enter an IP address here if you checked "RADIUS issued IP" on VPN PPTP or VPN PPPoE configuration.
+				<b>Framed-IP-Address</b> must be supported by NAS. <span class="text-info">Click Info for details.</span><br/>
+				<span class="text-danger">IMPORTANT:</span> You must enter an IP address here if you checked "RADIUS issued IP" on PPPoE VPN configuration.
+				<div class="infoblock">
+				If you want this MAC address to be assigned a specific IP address from RADIUS, enter the IP address here.<br/>
+				Continuous IP address is available with "+" suffix (e.g. 192.168.1.5+). This can be useful for simultaneous connections.
+				</div>
 				]]>
 			</description>
 			<type>input</type>
@@ -210,7 +213,7 @@
 			<fieldname>varmacsframedipnetmask</fieldname>
 			<description>
 				<![CDATA[
-				<b>Framed-IP-Netmask</b> must be supported by NAS. (e.g. 255.255.255.0)
+				<b>Framed-IP-Netmask</b> must be supported by NAS. <span class="text-info">Example: 255.255.255.0</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -220,7 +223,8 @@
 			<fieldname>varmacsframedroute</fieldname>
 			<description>
 				<![CDATA[
-				<b>Framed-Route</b> must be supported by NAS. Format is: Subnet Gateway Metric (e.g. 192.168.10.0 192.168.10.1 1).
+				<b>Framed-Route</b> must be supported by NAS.
+				<span class="text-info">Required format: Subnet Gateway Metric (e.g. 192.168.10.0 192.168.10.1 1)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -231,11 +235,15 @@
 			<description>
 				<![CDATA[
 				Enter the VLAN ID (integer from 1-4095) or the VLAN name that this MAC address should be assigned to.<br/>
-				Must be supported by the NAS.<br/>
+				Must be supported by the NAS. Click Info for details.
+				<div class="infoblock">
 				This setting can be used for a NAS that supports the following RADIUS parameters:<br/><br/>
-				Tunnel-Type = VLAN<br/>
-				Tunnel-Medium-Type = IEEE-802<br/>
-				Tunnel-Private-Group-ID = "<b>THIS IS YOUR INPUT</b>"
+				<dl class="dl-horizontal responsive">
+					<dt>Tunnel-Type</dt><dd>VLAN</dd>
+					<dt>Tunnel-Medium-Type</dt><dd>IEEE-802</dd>
+					<dt>Tunnel-Private-Group-ID</dt><dd>"This is your input"</dd>
+				</dl>
+				</div>
 				]]>
 			</description>
 			<type>input</type>
@@ -249,7 +257,8 @@
 			<fieldname>varmacsexpiration</fieldname>
 			<description>
 				<![CDATA[
-				Enter the date when this account should expire. Format is: Mmm dd yyyy (e.g. Jan 01 2012).
+				Enter the date when this account should expire.</br>
+				<span class="text-info">Required format: Mmm dd yyyy (e.g. Jan 01 2012)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -259,7 +268,7 @@
 			<fieldname>varmacssessiontimeout</fieldname>
 			<description>
 				<![CDATA[
-				Enter the time this MAC address has until relogin in seconds.
+				Enter the time this MAC address has until relogin (in seconds).
 				]]>
 			</description>
 			<type>input</type>
@@ -269,10 +278,11 @@
 			<fieldname>varmacslogintime</fieldname>
 			<description>
 				<![CDATA[
-				Enter the time when this MAC address should have access. If no time is entered it means "always".<br/>
-				Every time string contains a day (Mo,Tu,We,Th,Fr,Sa,Su) or all weekdays which is from monday till friday (Wk).<br/><br/>
-				<b>Wk0855-2305,Sa,Su2230-0230</b><br/><br/>
-				This means weekdays after 8:55 AM and before 11:05 PM | any time on saturday | sunday after 10:30 PM and before 02:30 AM.
+				Enter the time when this MAC address should have access. "Always" if no time is entered. Click Info for details.
+				<div class="infoblock">
+				Every time string contains a day (Mo, Tu, We, Th, Fr, Sa, Su) or all weekdays which is from monday till friday (Wk).<br/>
+				<code>Wk0855-2305,Sa,Su2230-0230</code> - weekdays after 8:55 AM and before 11:05 PM | any time on Saturday | Sunday after 10:30 PM and before 02:30 AM.
+				</div>
 				]]>
 			</description>
 			<type>input</type>
@@ -282,7 +292,7 @@
 			<fieldname>varmacsamountoftime</fieldname>
 			<description>
 				<![CDATA[
-				Enter the amount of time for this MAC address in minutes.
+				Enter the amount of time for this MAC address (in minutes).
 				]]>
 			</description>
 			<type>input</type>
@@ -292,7 +302,7 @@
 			<fieldname>varmacspointoftime</fieldname>
 			<description>
 				<![CDATA[
-				Select the time period for the amount of time.
+				Select the time period after which the 'Amount of Time' is reset.
 				]]>
 			</description>
 			<type>select</type>
@@ -313,7 +323,7 @@
 			<fieldname>varmacsmaxtotaloctets</fieldname>
 			<description>
 				<![CDATA[
-				Enter the amount of download and upload traffic (summarized) for this MAC in <b>MegaByte (MB)</b>.
+				Enter the amount of download and upload traffic (summarized) <span class="text-info">in megabytes (MB)</span> for this MAC.
 				]]>
 			</description>
 			<type>input</type>
@@ -323,7 +333,7 @@
 			<fieldname>varmacsmaxtotaloctetstimerange</fieldname>
 			<description>
 				<![CDATA[
-				Select the time period for the amount of download and upload traffic. This does not automatically reset the counter.<br/>
+				Select the time period for the amount of download and upload traffic. <strong><span class="text-info">This does not automatically reset the counter.</span></strong><br/>
 				You need to setup a cronjob (with cron package) which will reset the counter. Read the documentation!
 				]]>
 			</description>
@@ -341,7 +351,7 @@
 			<fieldname>varmacsmaxbandwidthdown</fieldname>
 			<description>
 				<![CDATA[
-				Enter the maximum bandwidth for download in <b>KiloBits</b> per second.
+				Enter the maximum bandwidth for download in <span class="text-info">in kilobits per second (Kbps)</span>.
 				]]>
 			</description>
 			<type>input</type>
@@ -351,7 +361,7 @@
 			<fieldname>varmacsmaxbandwidthup</fieldname>
 			<description>
 				<![CDATA[
-				Enter the maximum bandwidth for upload in <b>KiloBits</b> per second.
+				Enter the maximum bandwidth for upload in <span class="text-info">in kilobits per second (Kbps)</span>.
 				]]>
 			</description>
 			<type>input</type>
@@ -361,8 +371,8 @@
 			<fieldname>varmacsacctinteriminterval</fieldname>
 			<description>
 				<![CDATA[
-				Enter the seconds which should be between every interim-update.
-				It MUST be more than 60s and SHOULD NOT be less than 600s. (Default: 600)
+				Enter the interval <span class="text-info">in seconds</span> which should elapse between interim-updates.<br/>
+				<span class="text-info">It <strong>must</strong> be more than 60s and <strong>should not</strong> be less than 600s. (Default: 600)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -376,12 +386,14 @@
 			<fieldname>varmacstopadditionaloptions</fieldname>
 			<description>
 				<![CDATA[
-				This is for experts only and should be treated with care!<br/>
-				You may append custom RADIUS options to this MAC address account. If the syntax needs it, you have to set quotes and commas.<br/>
-				To put a command in a new line use a vertical bar (|).<br/><br/>
-				Example: DEFAULT Auth-Type = System<br/><br/>
-				<b>IMPORTANT:</b> If you don't format this field correctly freeRADIUS will not start because of syntax errors.<br/>
-				Verify your changes by checking authorized_macs file (View config -> macs).
+				<span class="text-danger">This is for experts only and should be treated with care!</span> Click Info for details.
+				<div class="infoblock">
+				You may append custom RADIUS options to this MAC address account. If required by syntax, you must use quotes and commas.<br/>
+				Use a vertical bar <code>|</code> to put a command on a new line.<br/><br/>
+				Example: <code>DEFAULT Auth-Type = System</code><br/><br/>
+				<span class="text-danger">IMPORTANT:</span> If you don't format this field correctly, FreeRADIUS will not start because of syntax errors.<br/>
+				Verify your changes by checking the authorized_macs file (<a href="/freeradius_view_config.php">View config</a> &gt; macs).
+				</div>
 				]]>
 			</description>
 			<type>textarea</type>
@@ -389,16 +401,18 @@
 			<cols>75</cols>
 		</field>
 		<field>
-			<fielddescr>Additional RADIUS Attributes (CHECK-ITEM).</fielddescr>
+			<fielddescr>Additional RADIUS Attributes (CHECK-ITEM)</fielddescr>
 			<fieldname>varmacscheckitemsadditionaloptions</fieldname>
 			<description>
 				<![CDATA[
-				This is for experts only and should be treated with care!<br/>
-				You may append custom RADIUS options to this MAC address account. If the syntax needs it, you have to set quotes and commas.<br/>
-				To put a command in a new line use a vertical bar (|).<br/><br/>
-				Example: Max-Daily-Session := 36000<br/><br/>
-				<b>IMPORTANT:</b> If you don't format this field correctly freeRADIUS will not start because of syntax errors.<br/>
-				Verify your changes by checking authorized_macs file (View config -> macs).
+				<span class="text-danger">This is for experts only and should be treated with care!</span> Click Info for details.
+				<div class="infoblock">
+				You may append custom RADIUS options to this MAC address account. If required by syntax, you must use quotes and commas..<br/>
+				Use a vertical bar <code>|</code> to put a command on a new line.<br/><br/>
+				Example: <code>Max-Daily-Session := 36000</code><br/><br/>
+				<span class="text-danger">IMPORTANT:</span> If you don't format this field correctly, FreeRADIUS will not start because of syntax errors.<br/>
+				Verify your changes by checking the authorized_macs file (<a href="/freeradius_view_config.php">View config</a> &gt; macs).
+				</div>
 				]]>
 			</description>
 			<type>textarea</type>
@@ -406,16 +420,18 @@
 			<cols>75</cols>
 		</field>
 		<field>
-			<fielddescr>Additional RADIUS Attributes (REPLY-ITEM).</fielddescr>
+			<fielddescr>Additional RADIUS Attributes (REPLY-ITEM)</fielddescr>
 			<fieldname>varmacsreplyitemsadditionaloptions</fieldname>
 			<description>
 				<![CDATA[
-				This is for experts only and should be treated with care!<br/>
-				You may append custom RADIUS options to this MAC address account. If the syntax needs it, you have to set quotes and commas.<br/>
-				To put a command in a new line use a vertical bar (|).<br/><br/>
-				Example: Service-Type == Login-User,|Login-Service == Telnet,|Login-IP-Host == 192.168.1.2<br/><br/>
-				<b>IMPORTANT:</b> If you don't format this field correctly freeRADIUS will not start because of syntax errors.<br/>
-				Verify your changes by checking authorized_macs file (View config -> macs).
+				<span class="text-danger">This is for experts only and should be treated with care!</span> Click Info for details.
+				<div class="infoblock">
+				You may append custom RADIUS options to this MAC address account. If required by syntax, you must use quotes and commas..<br/>
+				Use a vertical bar <code>|</code> to put a command on a new line.<br/><br/>
+				Example: <code>Service-Type == Login-User,|Login-Service == Telnet,|Login-IP-Host == 192.168.1.2</code><br/><br/>
+				<span class="text-danger">IMPORTANT:</span> If you don't format this field correctly, FreeRADIUS will not start because of syntax errors.<br/>
+				Verify your changes by checking the authorized_macs file (<a href="/freeradius_view_config.php">View config</a> &gt; macs).
+				</div>
 				]]>
 			</description>
 			<type>textarea</type>
