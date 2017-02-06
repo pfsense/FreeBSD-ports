@@ -146,8 +146,8 @@ function customdrawcell_actions($object, $item, $itemvalue, $editable, $itemname
 	}
 }
 if (isset($id) && $a_certificates[$id]) {
-	$a_domains = &$a_certificates[$id]['a_domainlist']['item'];
-	$a_actions = &$a_certificates[$id]['a_actions']['item'];
+	$a_domains = $a_certificates[$id]['a_domainlist']['item'];
+	$a_actions = $a_certificates[$id]['a_actions']['item'];
 
 	$pconfig["lastrenewal"] = $a_certificates[$id]["lastrenewal"];
 	foreach($simplefields as $stat) {
