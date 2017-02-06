@@ -105,7 +105,7 @@
 			</options>
 		</field>
 		<field>
-			<fielddescr>Low-Water Mark in %</fielddescr>
+			<fielddescr>Low-Water Mark in %%</fielddescr>
 			<fieldname>cache_swap_low</fieldname>
 			<description>
 				<![CDATA[
@@ -121,7 +121,7 @@
 			<default_value>90</default_value>
 		</field>
 		<field>
-			<fielddescr>High-Water Mark in %</fielddescr>
+			<fielddescr>High-Water Mark in %%</fielddescr>
 			<fieldname>cache_swap_high</fieldname>
 			<description>
 				<![CDATA[
@@ -219,8 +219,8 @@
 				Hard Disk Cache is automatically managed by swapstate_check.php script which is scheduled to run daily via cron.
 				<div class="infoblock">
 				The script will only clear the disk cache on the following conditions:<br/>
-				- if the swap.state file is taking up more than 75% of disk space;<br/>
-				- or the drive is 90% full and swap.state is larger than 1GB.
+				- if the swap.state file is taking up more than 75%% of disk space;<br/>
+				- or the drive is 90%% full and swap.state is larger than 1GB.
 				</div><br/>
 				If you wish to clear cache <strong>immediately,</strong> click this button <strong>once</strong>:
 				<button class="btn btn-warning" name="clear_cache" id="clear_cache" type="submit" value="Clear Disk Cache NOW"><i class="fa fa-trash icon-embed-btn"></i>Clear Disk Cache NOW</button>
@@ -314,7 +314,7 @@
 				<span class="text-info">Minimum value: 1 (MB). Default: 64 (MB)</span>
 				<div class="infoblock">
 				Please see <a href="http://www.squid-cache.org/Doc/config/cache_mem/" target="_blank">cache_mem documentation</a> for additional details.<br/>
-				This value should not exceed 50% of the installed RAM.
+				This value should not exceed 50%% of the installed RAM.
 				</div>
 				]]>
 			</description>
