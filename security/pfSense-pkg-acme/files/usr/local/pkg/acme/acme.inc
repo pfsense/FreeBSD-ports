@@ -502,6 +502,7 @@ function & get_certificate($name) {
 			$certificatepsk = getCertificatePSK($url, $certificate, $domainstosign[0]);
 			$acmesh = new acme_sh($certificate['name'], $url);
 			$action = $renew == true ? "renew" : "issue";
+			$acmesh->dnssleep = $certificate['dnssleep'];
 			$acmesh->signCertificate($action, $accountkey, $certificatepsk, $domainstosign, $method, $envvariables, $extras);
 		}
 	}
