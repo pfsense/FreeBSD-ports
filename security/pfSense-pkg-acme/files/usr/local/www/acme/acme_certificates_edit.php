@@ -56,7 +56,8 @@ if (!is_numeric($id))
 global $simplefields;
 $simplefields = array(
 	"name","desc","status",
-	"acmeaccount","keylength","renewafter"
+	"acmeaccount","keylength",
+	"dnssleep","renewafter"
 );
 
 
@@ -147,7 +148,7 @@ function customdrawcell_actions($object, $item, $itemvalue, $editable, $itemname
 }
 if (isset($id) && $a_certificates[$id]) {
 	$a_domains = $a_certificates[$id]['a_domainlist']['item'];
-	$a_actions = $a_certificates[$id]['a_actions']['item'];
+	$a_actions = $a_certificates[$id]['a_actionlist']['item'];
 
 	$pconfig["lastrenewal"] = $a_certificates[$id]["lastrenewal"];
 	foreach($simplefields as $stat) {
@@ -344,14 +345,24 @@ $section->addInput(new \Form_StaticText(
 	'Domain SAN list', 
 	"List all domain names that should be included in the certificate here, and how to validate ownership by use of a webroot or dns challenge<br/>"
 	. "Examples:<br/>"
-	. "/usr/local/www/.well-known/acme-challenge/<br/>"
-	. "/tmp/haproxy_chroot/.well-known/acme-challenge/"
+	. "Domainname: www.example.com<br/>"
+	. "Method: Webroot ,Rootfolder: /usr/local/www/.well-known/acme-challenge/<br/>"
+	. "Method: Webroot ,Rootfolder: /tmp/haproxy_chroot/haproxywebroot/.well-known/acme-challenge/"
 	. $domainslist->Draw($a_domains)
 ));
 
+$section->addInput(new \Form_Input(
+	'dnssleep',
+	'DNS-Sleep',
+	'number',
+	$pconfig['dnssleep'],
+	['min' => '1', 'max' => '3600']
+))->setHelp('When using a DNS validation method configure how much time to wait before atempting verification after the txt records are added. Defaults to 120 seconds.');
+
+
 $section->addInput(new \Form_StaticText(
 	'Actions list', 
-	"Used to restart webserver processes this certificate has been renewed<br/>Examples:<br/>/etc/rc.restart_webgui<br/>/usr/local/etc/rc.d/haproxy.sh restart".
+	"Used to restart webserver processes after this certificate has been renewed<br/>Examples:<br/>/etc/rc.restart_webgui<br/>/usr/local/etc/rc.d/haproxy.sh restart".
 	$actionslist->Draw($a_actions)
 ));
 
