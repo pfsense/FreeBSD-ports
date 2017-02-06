@@ -1882,8 +1882,7 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 				    Z_TYPE_PP(data2) != IS_LONG) {
 					continue;
 				}
-				if (key_len == 6 &&
-				    strcasecmp(key, "tagged") == 0 &&
+				if (key_len == 7 && strcasecmp(key, "tagged") == 0 &&
 				    Z_LVAL_PP(data2) != 0) {
 					tagged = 1; 
 				}
