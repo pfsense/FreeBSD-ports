@@ -34,10 +34,6 @@ $pgtitle = "Services: Suricata - Update Rules";
 require_once("head.inc");
 ?>
 
-<body link="#0000CC" vlink="#0000CC" alink="#0000CC">
-
-<?if($pfsense_stable == 'yes'){echo '<p class="pgtitle">' . $pgtitle . '</p>';}?>
-
 <form action="/suricata/suricata_download_updates.php" method="GET">
 
 <table width="100%" border="0" cellpadding="6" cellspacing="0">
