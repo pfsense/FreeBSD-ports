@@ -294,7 +294,6 @@ function js_callbackrenew(data) {
 
 function js_callback(req_content) {
 	
-	//showapplysettings.style.display = 'block';
 	if(req_content !== '') {
 		var itemsplit = req_content.split("|");
 		buttonid = itemsplit[0];
@@ -309,7 +308,7 @@ function js_callback(req_content) {
 }
 
 function issuecertificate($id) {
-	$('#'+"btnissueicon_"+$id).removeClass("fa-check").addClass("fa-cog fa-spin");
+	$("i[id='btnissueicon_"+$id+"']").removeClass("fa-check").addClass("fa-cog fa-spin");
 	
 	ajaxRequest = $.ajax({
 		url: "",
@@ -317,13 +316,16 @@ function issuecertificate($id) {
 		data: { id: $id, action: "issuecert"},
 		success: function(data) {
 			js_callbackrenew(data);
-			$("#btnissueicon_"+$id).removeClass("fa-cog fa-spin").addClass("fa-check");
+			$("i[id='btnissueicon_"+$id+"']").removeClass("fa-cog fa-spin").addClass("fa-check");
+		},
+		error: function(data) {
+			$("i[id='btnissueicon_"+$id+"']").removeClass("fa-cog fa-spin").addClass("fa-chain-broken");
 		}
 	});
 }
 
 function renewcertificate($id) {
-	$('#'+"btnrenewicon_"+$id).removeClass("fa-check").addClass("fa-cog fa-spin");
+	$("i[id='btnrenewicon_"+$id+"']").removeClass("fa-check").addClass("fa-cog fa-spin");
 	
 	ajaxRequest = $.ajax({
 		url: "",
@@ -331,7 +333,10 @@ function renewcertificate($id) {
 		data: { id: $id, action: "renewcert"},
 		success: function(data) {
 			js_callbackrenew(data);
-			$("#btnrenewicon_"+$id).removeClass("fa-cog fa-spin").addClass("fa-check");
+			$("i[id='btnrenewicon_"+$id+"']").removeClass("fa-cog fa-spin").addClass("fa-check");
+		},
+		error: function(data) {
+			$("i[id='btnrenewicon_"+$id+"']").removeClass("fa-cog fa-spin").addClass("fa-chain-broken");
 		}
 	});
 }
