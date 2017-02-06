@@ -87,12 +87,12 @@ class FTPConnection
 			fclose($tempHandle);
 		} else {
 			$sftp = $this->sftp;
-			$stream = @fopen("ssh2.sftp://{$sftp}{$remote_file}", 'w');
+			$stream = @fopen("ssh2.sftp://" . intval($sftp) . "{$remote_file}", 'w');
 			if (! $stream) {
 				throw new \Exception("Could not open file: {$remote_file}");
 			}
 			if (fwrite($stream, $data_to_send) === false) {
-				throw new \Exception("Could not send data to file: $remote_file.");
+				throw new \Exception("Could not send data to file: {$remote_file}.");
 			}
 			fclose($stream);
 		}
@@ -104,8 +104,7 @@ class FTPConnection
 				throw new \Exception("Could not delete file: $remote_file.");
 			}
 		} else {
-			$sftp = $this->sftp;
-			ssh2_sftp_unlink($sftp, $remote_file);
+			ssh2_sftp_unlink($this->sftp, $remote_file);
 		}
 	}
 
@@ -127,8 +126,7 @@ class FTPConnection
 				}
 		   }
 		} else {
-			$sftp = $this->sftp;
-			ssh2_sftp_mkdir($sftp, $remote_dir, 0777, $recursive);
+			ssh2_sftp_mkdir($this->sftp, $remote_dir, 0777, $recursive);
 		}
 	}
 }
