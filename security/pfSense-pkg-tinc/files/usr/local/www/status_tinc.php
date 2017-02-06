@@ -83,10 +83,8 @@ function tinc_status_usr2() {
 
 $shortcut_section = "tinc";
 $pgtitle = array(gettext("Status"), "tinc");
-include("head.inc");
+require_once("head.inc");
 ?>
-
-<?php include("fbegin.inc"); ?>
 
 <div class="panel panel-default">
         <div class="panel-heading"><h2 class="panel-title">Connection list</h2></div>
@@ -110,4 +108,4 @@ include("head.inc");
         </div>
 </div>
 
-<?php include("fend.inc"); ?>
+<?php require_once("foot.inc"); ?>
