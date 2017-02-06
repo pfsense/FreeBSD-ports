@@ -222,7 +222,7 @@ $acme_domain_validation_method['dns_ovh'] = array(name => "DNS-ovh / kimsufi / s
 			'description' =>"Fill in one of: ovh-eu/ovh-ca/kimsufi-eu/kimsufi-ca/soyoustart-eu/soyoustart-ca/runabove-ca"
 		)
 	));
-$acme_domain_validation_method['pdns'] = array(name => "DNS-PowerDNS",
+$acme_domain_validation_method['dns_pdns'] = array(name => "DNS-PowerDNS",
 	'fields' => array(
 		'PDNS_Url' => array('name'=>"pdns_url",'columnheader'=>"URL",'type'=>"textbox",
 			'description' =>"Fill in the URL http://ns.example.com:8081"
@@ -508,6 +508,7 @@ function & get_certificate($name) {
 	
 	function challenge_response_put($certificatename, $domain, $token, $payload) {
 		$acmecert = get_certificate($certificatename);
+		global $ftpconn;
 		
 		echo "\nchallenge_response_put $certificatename, $domain\n";
 		foreach($acmecert['a_domainlist']['item'] as $domainitem) {
@@ -526,18 +527,23 @@ function & get_certificate($name) {
 			file_put_contents($tokenPath, $payload);
 			echo "put token at: {$tokenPath}\n";
 		}
-		if ($domain_info['method'] == 'ftpwebroot') {
+		if ($domain_info['method'] == 'webrootftp') {
 			echo "FTP\n";
-			$this->ftp = new FTPConnection($domain_info['ftpwebrootftpserver']);
-			$this->ftp->login($domain_info['ftpwebrootusername'], $domain_info['ftpwebrootpassword']);
-			$directory = $domain_info['ftpwebrootfolder'];
-			$tokenPath = $directory . "/" . $token;
-			$this->ftp->mkdir($directory);
-			$this->ftp->uploadData($payload, $tokenPath);
+			try {
+				$ftpconn = new FTPConnection($domain_info['webrootftpftpserver']);
+				$ftpconn->login($domain_info['webrootftpusername'], $domain_info['webrootftppassword']);
+				$directory = $domain_info['webrootftpfolder'];
+				$tokenPath = $directory . "/" . $token;
+				$ftpconn->mkdir($directory);
+				$ftpconn->uploadData($payload, $tokenPath);
+			} catch (\Exception $e) {
+				echo 'FTP Attempt Failed: ',  $e->getMessage(), "\n";
+			}
 		}
 	}	
 
 	function challenge_response_cleanup($certificatename, $domain, $token) {
+		global $ftpconn;
 		$acmecert = get_certificate($certificatename);
 		foreach($acmecert['a_domainlist']['item'] as $domainitem) {
 			if($domainitem['name'] == $domain){
@@ -549,8 +555,14 @@ function & get_certificate($name) {
 			@unlink($tokenfile);
 		}
 		if ($domain_info['method'] == 'webrootftp') {
-			$tokenfile = $domain_info['ftpwebrootfolder'] . "/" . $token;
-			$this->ftp->deleteFile($tokenfile);
+			$tokenfile = $domain_info['webrootftpfolder'] . "/" . $token;
+			if ($ftpconn) {
+				try {
+					$ftpconn->deleteFile($tokenfile);
+				} catch (\Exception $e) {
+					echo 'FTP Attempt Failed: ',  $e->getMessage(), "\n";
+				}
+			}
 		}
 	}
 }
