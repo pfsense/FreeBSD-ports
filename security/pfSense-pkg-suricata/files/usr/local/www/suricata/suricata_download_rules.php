@@ -68,12 +68,11 @@ require_once("/usr/local/pkg/suricata/suricata.inc");
 global $g;
 
 $pgtitle = "Services: Suricata - Update Rules";
-include("head.inc");
+require_once("head.inc");
 ?>
 
 <body link="#0000CC" vlink="#0000CC" alink="#0000CC">
 
-<?php include("fbegin.inc"); ?>
 <?if($pfsense_stable == 'yes'){echo '<p class="pgtitle">' . $pgtitle . '</p>';}?>
 
 <form action="/suricata/suricata_download_updates.php" method="GET">
@@ -116,9 +115,8 @@ include("head.inc");
 	</tr>
 </table>
 </form>
-<?php include("fend.inc");?>
-</body>
-</html>
+<?php require_once("foot.inc"); ?>
+	
 <?php
 
 $suricata_gui_include = true;
