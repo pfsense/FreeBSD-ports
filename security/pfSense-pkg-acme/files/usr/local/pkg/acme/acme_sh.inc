@@ -131,8 +131,10 @@ class acme_sh {
 		if ($api && substr($api, 0, 4 ) === "dns_") {
 			if ($api == "dns_manual") {
 				$api = "";
+			} else {
+				$api = escapeshellarg($api);
 			}
-			$cmdparameters = " --dns " . escapeshellarg($api);
+			$cmdparameters = " --dns {$api} ";
 		} else {
 			$cmdparameters = " --webroot pfSenseacme";
 		}
