@@ -27,6 +27,7 @@ class acme_sh {
 	private $path_account;
 	private $name;
 	private $debug = true;
+	public $dnssleep;
 	
 	private function execacmesh($command, $envvariables = null) {
 		$command = "/usr/local/pkg/acme/acme.sh " . $command;
@@ -137,6 +138,9 @@ class acme_sh {
 			$cmdparameters = " --dns {$api} ";
 		} else {
 			$cmdparameters = " --webroot pfSenseacme";
+		}
+		if (is_numericint($this->dnssleep)) {
+			$cmdparameters .= " --dnssleep " . escapeshellarg($this->dnssleep);
 		}
 		
 		$Le_Domain = $domainstosign[0];
