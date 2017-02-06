@@ -222,7 +222,7 @@ $acme_domain_validation_method['dns_ovh'] = array(name => "DNS-ovh / kimsufi / s
 			'description' =>"Fill in one of: ovh-eu/ovh-ca/kimsufi-eu/kimsufi-ca/soyoustart-eu/soyoustart-ca/runabove-ca"
 		)
 	));
-$acme_domain_validation_method['pdns'] = array(name => "DNS-PowerDNS",
+$acme_domain_validation_method['dns_pdns'] = array(name => "DNS-PowerDNS",
 	'fields' => array(
 		'PDNS_Url' => array('name'=>"pdns_url",'columnheader'=>"URL",'type'=>"textbox",
 			'description' =>"Fill in the URL http://ns.example.com:8081"
