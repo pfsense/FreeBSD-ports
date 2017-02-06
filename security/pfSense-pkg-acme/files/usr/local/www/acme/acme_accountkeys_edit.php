@@ -63,7 +63,6 @@ if (!is_numeric($id))
 {
 	//default value for new items.
 	$isnewitem = true;
-	$a_domains[] = array();
 } else {
 	$isnewitem = false;
 }
@@ -74,85 +73,6 @@ $simplefields = array(
 	"acmeserver","renewafter"
 );
 
-
-// <editor-fold desc="domain edit HtmlList">
-$fields_domains=array();
-$fields_domains[0]['name']="status";
-$fields_domains[0]['columnheader']="Mode";
-$fields_domains[0]['colwidth']="5%";
-$fields_domains[0]['type']="select";
-$fields_domains[0]['size']="70px";
-$fields_domains[0]['items']=&$a_enabledisable;
-$fields_domains[1]['name']="name";
-$fields_domains[1]['columnheader']="Domainname";
-$fields_domains[1]['colwidth']="20%";
-$fields_domains[1]['type']="textbox";
-$fields_domains[1]['size']="30";
-$fields_domains[2]['name']="method";
-$fields_domains[2]['columnheader']="Method";
-$fields_domains[2]['colwidth']="15%";
-$fields_domains[2]['type']="select";
-$fields_domains[2]['size']="100px";
-$fields_domains[2]['items']=&$acme_domain_validation_method;
-
-$fields_domains_details=array();
-foreach($acme_domain_validation_method as $key => $action) {
-	if (is_array($action['fields'])) {
-		foreach($action['fields'] as $field) {
-			$item = $field;
-			$name = $key . $item['name'];
-			$item['name'] = $name;
-			//$item['customdrawcell'] = customdrawcell_actions;
-			$fields_domains_details[$name] = $item;
-		}
-	}
-}
-$domainslist = new HtmlList("table_domains", $fields_domains);
-$domainslist->keyfield = "name";
-$domainslist->fields_details = $fields_domains_details;
-$domainslist->editmode = $isnewitem;
-
-// </editor-fold>
-
-// <editor-fold desc="action edit HtmlList">
-$fields_actions=array();
-$fields_actions[0]['name']="status";
-$fields_actions[0]['columnheader']="Mode";
-$fields_actions[0]['colwidth']="5%";
-$fields_actions[0]['type']="select";
-$fields_actions[0]['size']="70px";
-$fields_actions[0]['items']=&$a_enabledisable;
-$fields_actions[1]['name']="command";
-$fields_actions[1]['columnheader']="Command";
-$fields_actions[1]['colwidth']="20%";
-$fields_actions[1]['type']="textbox";
-$fields_actions[1]['size']="30";
-$fields_actions[2]['name']="method";
-$fields_actions[2]['columnheader']="Method";
-$fields_actions[2]['colwidth']="15%";
-$fields_actions[2]['type']="select";
-$fields_actions[2]['size']="100px";
-$fields_actions[2]['items']=&$acme_newcertificateactions;
-
-$fields_actions_details=array();
-foreach($acme_newcertificateactions as $key => $action) {
-	if (is_array($action['fields'])) {
-		foreach($action['fields'] as $field) {
-			$item = $field;
-			$name = $key . $item['name'];
-			$item['name'] = $name;
-			//$item['customdrawcell'] = customdrawcell_actions;
-			$fields_actions_details[$name] = $item;
-		}
-	}
-}
-$actionslist = new HtmlList("table_actions", $fields_actions);
-$actionslist->keyfield = "name";
-//$actionslist->fields_details = $fields_actions_details;
-$actionslist->editmode = $isnewitem;
-
-// </editor-fold>
-
 function customdrawcell_actions($object, $item, $itemvalue, $editable, $itemname, $counter) {
 	if ($editable) {
 		$object->acme_htmllist_drawcell($item, $itemvalue, $editable, $itemname, $counter);
@@ -162,10 +82,6 @@ function customdrawcell_actions($object, $item, $itemvalue, $editable, $itemname
 }
 
 if (isset($id) && $a_accountkeys[$id]) {
-	$a_domains = &$a_accountkeys[$id]['a_domainlist']['item'];
-	$a_actions = &$a_accountkeys[$id]['a_actions']['item'];
-	
-	$pconfig["lastrenewal"] = $a_accountkeys[$id]["lastrenewal"];
 	$pconfig['accountkey'] = base64_decode($a_accountkeys[$id]['accountkey']);
 	foreach($simplefields as $stat) {
 		$pconfig[$stat] = $a_accountkeys[$id][$stat];
@@ -233,8 +149,6 @@ if ($_POST) {
 	if($accountkey['name'] != "") {
 		$changedesc .= " modified account key: '{$accountkey['name']}'";
 	}
-	$accountkey['a_domainlist']['item'] = $a_domains;
-	$accountkey['a_actionlist']['item'] = $a_actions;
 
 	$accountkey['accountkey'] = base64_encode($_POST['accountkey']);
 	global $simplefields;
@@ -319,17 +233,6 @@ print $form;
 	<?php endif; ?>
 <br/>
 <script type="text/javascript">
-<?php
-	phparray_to_javascriptarray($fields_domains_details,"fields_details_domains",Array('/*','/*/name','/*/type'));
-	phparray_to_javascriptarray($acme_domain_validation_method, "showhide_domainfields",
-		Array('/*', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
-	$domainslist->outputjavascript();
-	phparray_to_javascriptarray($fields_actions_details,"fields_details_actions",Array('/*','/*/name','/*/type'));
-	phparray_to_javascriptarray($acme_newcertificateactions, "showhide_actionfields",
-		Array('/*', '/*/fields', '/*/fields/*', '/*/fields/*/name'));
-	$actionslist->outputjavascript();
-?>
-	
 	browser_InnerText_support = (document.getElementsByTagName("body")[0].innerText !== undefined) ? true : false;
 	
 	totalrows =  <?php echo $counter; ?>;
