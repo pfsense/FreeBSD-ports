@@ -20,14 +20,15 @@
  * limitations under the License.
  */
 
-require_once('globals.inc');
+require_once('certs.inc');
 require_once('config.inc');
-require_once('util.inc');
+require_once('filter.inc');
+require_once('globals.inc');
 require_once('pfsense-utils.inc');
 require_once('pkg-utils.inc');
-require_once('filter.inc');
 require_once('service-utils.inc');
-require_once('certs.inc');
+require_once('util.inc');
+
 
 if (file_exists('/usr/local/pkg/squid.inc')) {
 	require_once('/usr/local/pkg/squid.inc');
@@ -37,55 +38,33 @@ if (file_exists('/usr/local/pkg/squid.inc')) {
 
 define('LIGHTSQUID_BASE', '/usr/local');
 
-// configuration settings !-- CHECK THIS --!
-define('LS_CONFIGPATH',			LIGHTSQUID_BASE . '/etc/lightsquid');
-define('LS_CONFIGFILE',			'lightsquid.cfg');
-define('LS_CONFIGFILE_DIST',		'lightsquid.cfg.sample');
-define('LS_WWWPATH',			LIGHTSQUID_BASE . '/www/lightsquid');
-define('LS_TEMPLATEPATH',		LS_WWWPATH . '/tpl');
-define('LS_LANGPATH',			LIGHTSQUID_BASE . '/share/lightsquid/lang');
-define('LS_REPORTPATH',			'/var/lightsquid/report');
+// configuration settings
+define('LS_CONFIGPATH', LIGHTSQUID_BASE . '/etc/lightsquid');
+define('LS_CONFIGFILE', 'lightsquid.cfg');
+define('LS_CONFIGFILE_DIST', 'lightsquid.cfg.sample');
+define('LS_WWWPATH', LIGHTSQUID_BASE . '/www/lightsquid');
+define('LS_TEMPLATEPATH', LS_WWWPATH . '/tpl');
+define('LS_LANGPATH', LIGHTSQUID_BASE . '/share/lightsquid/lang');
+define('LS_REPORTPATH', '/var/lightsquid/report');
 
 global $config;
 if (is_array($config['installedpackages']['squid']['config'][0]) && $config['installedpackages']['squid']['config'][0]['log_dir'] != "") {
-	define('LS_SQUIDLOGPATH',	$config['installedpackages']['squid']['config'][0]['log_dir']);
+	define('LS_SQUIDLOGPATH', $config['installedpackages']['squid']['config'][0]['log_dir']);
 } else {
-	define('LS_SQUIDLOGPATH',	'/var/squid/logs');
+	define('LS_SQUIDLOGPATH', '/var/squid/logs');
 }
 
-define('LS_SQUIDLOG',			'access.log');
-define('LS_IP2NAMEPATH',		LIGHTSQUID_BASE . '/libexec/lightsquid');
-define('CRONTAB_LS_TEMPLATE',		'/usr/local/bin/perl ' . LIGHTSQUID_BASE . '/www/lightsquid/lightparser.pl');
+define('LS_SQUIDLOG', 'access.log');
+define('LS_IP2NAMEPATH', LIGHTSQUID_BASE . '/libexec/lightsquid');
+define('CRONTAB_LS_TEMPLATE', '/usr/local/bin/perl ' . LIGHTSQUID_BASE . '/www/lightsquid/lightparser.pl');
 
 // default values
-define('LS_DEF_IP2NAME',		'dns');
-define('LS_DEF_SQUIDLOGTYPE',		'0');
-define('LS_DEF_SKIPURL',		'zzz\.zzz');
-define('LS_DEF_LANG',			'eng');
-define('LS_DEF_TEMPLATE',		'base');
-define('LS_DEF_BARCOLOR',		'orange');
-
-// variable names
-define('LS_VAR_CFGPATH',		'cfgpath');
-define('LS_VAR_LOGPATH',		'logpath');
-define('LS_VAR_TPLPATH',		'tplpath');
-define('LS_VAR_LANGPATH',		'langpath');
-define('LS_VAR_LANG',			'lang');
-define('LS_VAR_REPORTPATH',		'reportpath');
-define('LS_VAR_SQUIDLOGTYPE',		'squidlogtype');
-define('LS_VAR_SKIPURL',		'skipurl');
-define('LS_VAR_IP2NAMEPATH',		'ip2namepath');
-define('LS_VAR_IP2NAME',		'ip2name');
-define('LS_VAR_TEMPLATE',		'templatename');
-define('LS_VAR_BARCOLOR',		'barcolor');
-
-// XML GUI variables
-define('LS_XML_LANG',			'lightsquid_lang');
-define('LS_XML_SKIPURL',		'lightsquid_skipurl');
-define('LS_XML_IP2NAME',		'lightsquid_ip2name');
-define('LS_XML_TEMPLATE',		'lightsquid_template');
-define('LS_XML_BARCOLOR',		'lightsquid_barcolor');
-define('LS_XML_SHEDULERTIME',		'lightsquid_refreshsheduler_time');
+define('LS_DEF_IP2NAME', 'dns');
+define('LS_DEF_SQUIDLOGTYPE', '0');
+define('LS_DEF_SKIPURL', 'zzz\.zzz');
+define('LS_DEF_LANG', 'eng');
+define('LS_DEF_TEMPLATE', 'base');
+define('LS_DEF_BARCOLOR', 'orange');
 
 /*
  * Package install/uninstall
@@ -101,7 +80,7 @@ function lightsquid_install() {
 	// template symlinks
 	foreach (array('novopf', 'novosea') as $tpl) {
 		if (is_dir(LS_TEMPLATEPATH . '/' . $tpl)) {
-			$_gc = exec('rm -rf ' . LS_TEMPLATEPATH . '/' . $tpl);
+			rmdir_recursive(LS_TEMPLATEPATH . '/' . $tpl);
 		}
 		symlink('/usr/local/share/lightsquid/tpl/' . $tpl, LS_TEMPLATEPATH . '/' . $tpl);
 	}
@@ -127,12 +106,8 @@ function lightsquid_install() {
 function lightsquid_deinstall() {
 	// remove cronjobs
 	lightsquid_setup_cron(false);
-	if (is_dir("/usr/local/www/sqstat/")) {
-		mwexec("/bin/rm -rf /usr/local/www/sqstat/");
-	}
-	if (is_dir("/var/etc/lightsquid/")) {
-		mwexec("/bin/rm -rf /var/etc/lightsquid/");
-	}
+	rmdir_recursive("/usr/local/www/sqstat/");
+	rmdir_recursive("/var/etc/lightsquid/");
 	unlink_if_exists('/usr/local/sbin/lighttpd_ls');
 }
 
@@ -370,47 +345,47 @@ function lightsquid_resync() {
 
 	// Set up variables for configuration update
 	$lsconf_var = array();
-	$lsconf_var[LS_VAR_CFGPATH]	= "\"" . LS_CONFIGPATH . "\"";
-	$lsconf_var[LS_VAR_LOGPATH]	= "\"" . LS_SQUIDLOGPATH . "\"";
+	$lsconf_var['cfgpath'] = "\"" . LS_CONFIGPATH . "\"";
+	$lsconf_var['logpath'] = "\"" . LS_SQUIDLOGPATH . "\"";
 
-	$lsconf_var[LS_VAR_TPLPATH]	= "\"" . LS_TEMPLATEPATH . "\"";
-	$lsconf_var[LS_VAR_LANGPATH]	= "\"" . LS_LANGPATH . "\"";
-	$lsconf_var[LS_VAR_REPORTPATH]	= "\"" . LS_REPORTPATH . "\"";
-	$lsconf_var[LS_VAR_IP2NAMEPATH]	= "\"" . LS_IP2NAMEPATH . "\"";
+	$lsconf_var['tplpath'] = "\"" . LS_TEMPLATEPATH . "\"";
+	$lsconf_var['langpath'] = "\"" . LS_LANGPATH . "\"";
+	$lsconf_var['reportpath'] = "\"" . LS_REPORTPATH . "\"";
+	$lsconf_var['ip2namepath'] = "\"" . LS_IP2NAMEPATH . "\"";
 
-	$lsconf_var[LS_VAR_LANG]	= "\"" . LS_DEF_LANG . "\"";
-	$lsconf_var[LS_VAR_TEMPLATE]	= "\"" . LS_DEF_TEMPLATE . "\"";
-	$lsconf_var[LS_VAR_IP2NAME]	= "\"" . LS_DEF_IP2NAME . "\"";
-	$lsconf_var[LS_VAR_SKIPURL]	= "'" . LS_DEF_SKIPURL . "'";
-	$lsconf_var[LS_VAR_SQUIDLOGTYPE]= LS_DEF_SQUIDLOGTYPE;
+	$lsconf_var['lang'] = "\"" . LS_DEF_LANG . "\"";
+	$lsconf_var['templatename'] = "\"" . LS_DEF_TEMPLATE . "\"";
+	$lsconf_var['ip2name'] = "\"" . LS_DEF_IP2NAME . "\"";
+	$lsconf_var['skipurl'] = "'" . LS_DEF_SKIPURL . "'";
+	$lsconf_var['squidlogtype'] = LS_DEF_SQUIDLOGTYPE;
 
 	// Update variables from package GUI config
 	if (is_array($config['installedpackages']['lightsquid']['config'][0])) {
 		$lightsquid_config = $config['installedpackages']['lightsquid']['config'][0];
 
-		if (isset($lightsquid_config[LS_XML_LANG]) and !empty($lightsquid_config[LS_XML_LANG])) {
-			$lsconf_var[LS_VAR_LANG] = "\"" . $lightsquid_config[LS_XML_LANG] . "\"";
+		if (isset($lightsquid_config['lightsquid_lang']) and !empty($lightsquid_config['lightsquid_lang'])) {
+			$lsconf_var['lang'] = "\"" . $lightsquid_config['lightsquid_lang'] . "\"";
 		}
 
-		if (isset($lightsquid_config[LS_XML_SKIPURL]) and !empty($lightsquid_config[LS_XML_SKIPURL])) {
-			$lsconf_var[LS_VAR_SKIPURL] = "'" . str_replace(".", "\\.", $lightsquid_config[LS_XML_SKIPURL]) . "'";
+		if (isset($lightsquid_config['lightsquid_skipurl']) and !empty($lightsquid_config['lightsquid_skipurl'])) {
+			$lsconf_var['skipurl'] = "'" . str_replace(".", "\\.", $lightsquid_config['lightsquid_skipurl']) . "'";
 		}
 
-		if (isset($lightsquid_config[LS_XML_IP2NAME]) and !empty($lightsquid_config[LS_XML_IP2NAME] )) {
-			$lsconf_var[LS_VAR_IP2NAME] = "\"" . $lightsquid_config[LS_XML_IP2NAME] . "\"";
+		if (isset($lightsquid_config['lightsquid_ip2name']) and !empty($lightsquid_config['lightsquid_ip2name'] )) {
+			$lsconf_var['ip2name'] = "\"" . $lightsquid_config['lightsquid_ip2name'] . "\"";
 		}
 
-		if (isset($lightsquid_config[LS_XML_TEMPLATE]) and !empty($lightsquid_config[LS_XML_TEMPLATE])) {
-			$tpl_val = $lightsquid_config[LS_XML_TEMPLATE];
+		if (isset($lightsquid_config['lightsquid_template']) and !empty($lightsquid_config['lightsquid_template'])) {
+			$tpl_val = $lightsquid_config['lightsquid_template'];
 			// check template path
 			if (!file_exists(LS_TEMPLATEPATH."/$tpl_val")) {
 				$tpl_val = 'base';
 			}
-			$lsconf_var[LS_VAR_TEMPLATE] = "\"" . $tpl_val . "\"";
+			$lsconf_var['templatename'] = "\"" . $tpl_val . "\"";
 		}
 
-		if (isset($lightsquid_config[LS_XML_BARCOLOR]) and !empty($lightsquid_config[LS_XML_BARCOLOR])) {
-			$lsconf_var[LS_VAR_BARCOLOR] = "\"" . $lightsquid_config[LS_XML_BARCOLOR] . "\"";
+		if (isset($lightsquid_config['lightsquid_barcolor']) and !empty($lightsquid_config['lightsquid_barcolor'])) {
+			$lsconf_var['barcolor'] = "\"" . $lightsquid_config['lightsquid_barcolor'] . "\"";
 		}
 	}
 
@@ -463,7 +438,7 @@ function lightsquid_resync() {
 function lightsquid_setup_cron($active=false) {
 	global $config;
 	if (is_array($config['installedpackages']['lightsquid']['config'][0])) {
-		$cron_schedule = $config['installedpackages']['lightsquid']['config'][0][LS_XML_SHEDULERTIME];
+		$cron_schedule = $config['installedpackages']['lightsquid']['config'][0]['lightsquid_refreshsheduler_time'];
 	} else {
 		$cron_schedule = '';
 	}
