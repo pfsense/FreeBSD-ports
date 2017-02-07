@@ -2139,9 +2139,9 @@ function squid_generate_rules($type) {
 			}
 			/* Handle PPPOE case */
 			if (($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) || (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) {
-				$rules .= "rdr pass on $pppoe proto tcp from any to {$config['pppoe']['localip']} port 80 -> 127.0.0.1 port {$port}\n";
+				$rules .= "rdr pass on $pppoe proto tcp from any to !127.0.0.1 port 80 -> 127.0.0.1 port {$port}\n";
 				if ($squid_conf['ssl_proxy'] == "on") {
-					$rules .= "rdr pass on $pppoe proto tcp from any to {$config['pppoe']['localip']} port 443 -> 127.0.0.1 port {$ssl_port}\n";
+					$rules .= "rdr pass on $pppoe proto tcp from any to !127.0.0.1 port 443 -> 127.0.0.1 port {$ssl_port}\n";
 				}
 			}
 			$rules .= "\n";
