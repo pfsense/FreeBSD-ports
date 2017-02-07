@@ -303,11 +303,13 @@ EOF;
 	// Create rc.d file
 	$rc_file_stop = <<<EOF
 if [ -e /var/run/quagga/zebra.pid ]; then
-	/bin/kill -9 `/bin/cat /var/run/quagga/zebra.pid`
+	# XXX: See Bug #6305 - Quagga 1.x does not like SIGKILL
+	/bin/pkill -F /var/run/quagga/zebra.pid
 	/bin/rm -f /var/run/quagga/zebra.pid
 fi
 if [ -e /var/run/quagga/ospfd.pid ]; then
-	/bin/kill -9 `/bin/cat /var/run/quagga/ospfd.pid`
+	# XXX: See Bug #6305 - Quagga 1.x does not like SIGKILL
+	/bin/pkill -F /var/run/quagga/ospfd.pid
 	/bin/rm -f /var/run/quagga/ospfd.pid
 fi
 EOF;
@@ -321,9 +323,17 @@ EOF;
 /usr/sbin/chown -R quagga:quagga /var/run/quagga
 /usr/sbin/chown -R quagga:quagga /var/log/quagga
 # Ensure no other copies of the daemons are running or it breaks.
-/usr/bin/killall -9 zebra 2>/dev/null
-/usr/bin/killall -9 ospfd 2>/dev/null
 sleep 1
+if /bin/pgrep -q zebra; then
+	/usr/bin/killall zebra
+	sleep 1
+	/usr/bin/killall -9 zebra 2>/dev/null
+fi
+if /bin/pgrep -q ospfd; then
+	/usr/bin/killall ospfd
+	sleep 1
+	/usr/bin/killall -9 ospfd 2>/dev/null
+fi
 {$carp_ip_status_check}
 /usr/local/sbin/zebra -d -f {$quagga_config_base}/zebra.conf
 /usr/local/sbin/ospfd -d -f {$quagga_config_base}/ospfd.conf
