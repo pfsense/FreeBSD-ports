@@ -97,6 +97,18 @@ $acme_domain_validation_method['webrootftp'] = array(name => "webroot FTP",
 			'description' =>"Folder the acme challenge response is written to for default: /.well-known/acme-challenge/"
 		)
 	));
+$acme_domain_validation_method['standalone'] = array(name => "standalone HTTP server",
+	'fields' => array(
+		'port' => array('name'=>"port",'columnheader'=>"Port",'type'=>"textbox",'size'=>"50",
+			'description' =>"HTTP listen port for stand-alone server. Must be 80 or have port 80 on WAN forwarded to this port. Firewall rules must also allow traffic to reach this port."
+		)
+	));
+$acme_domain_validation_method['standalonetls'] = array(name => "standalone TLS server",
+	'fields' => array(
+		'port' => array('name'=>"port",'columnheader'=>"Port",'type'=>"textbox",'size'=>"50",
+			'description' =>"TLS listen port for stand-alone server. Must be 443 or have port 443 on WAN forwarded to this port. Firewall rules must also allow traffic to reach this port."
+		)
+	));
 $acme_domain_validation_method['dns_manual'] = array(name => "DNS-Manual",
 	'fields' => array(
 	));
