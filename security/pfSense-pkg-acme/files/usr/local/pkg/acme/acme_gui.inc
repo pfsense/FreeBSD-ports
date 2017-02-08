@@ -115,13 +115,7 @@ function acmeicon($iconname, $title) {
 	$title = str_replace("'", "&#39;", $title);
 	
 	$faicon = $acme_icons[$iconname]["faicon"];
-	if (pf_version() < "2.3") {
-		$icon = $acme_icons[$iconname]["icon"];
-		$iconsize = $acme_icons[$iconname]["iconsize"];
-		return "<img src='/themes/{$g['theme']}/images/icons/$icon' title='$title' width='$iconsize' height='$iconsize' border='0' />";	
-	} else {
-		return "<i class='fa $faicon' title='$title'></i>";
-	}
+	return "<i class='fa $faicon' title='$title'></i>";
 }
 
 class Form_Section_class extends Form_Section {
