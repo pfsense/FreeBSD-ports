@@ -136,6 +136,12 @@ class acme_sh {
 				$cmdapi = escapeshellarg($api);
 			}
 			$cmdparameters = " --dns {$cmdapi} ";
+		} elseif ($api == "standalone") {
+			$port = empty($envvariables['port']) ? 80 : $envvariables['port'];
+			$cmdparameters = " --standalone --httpport " . escapeshellarg($port);
+		} elseif ($api == "standalonetls") {
+			$port = empty($envvariables['port']) ? 443 : $envvariables['port'];
+			$cmdparameters = " --tls --tlsport " . escapeshellarg($port);
 		} else {
 			$cmdparameters = " --webroot pfSenseacme";
 		}
