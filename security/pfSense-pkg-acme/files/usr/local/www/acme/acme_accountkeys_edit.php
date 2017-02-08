@@ -222,7 +222,7 @@ $section->addInput(new \Form_StaticText(
 	'Acme account registration',
 	"<a id='btnregisterkey' class='btn btn-sm btn-primary'>"
 		. "<i id='btnregisterkeyicon' class='fa fa-key'></i> Register acme account key</a>"
-))->setHelp("Before using a accountkey it must first be registered at the chosen CA.");
+))->setHelp("Before using an accountkey, it must first be registered with the chosen CA.");
 
 $form->add($section);
 
@@ -360,5 +360,5 @@ events.push(function() {
 	}
 </script>
 <?php
-acme_htmllist_js();
+acme_htmllist_js("account_keys");
 include("foot.inc");

@@ -66,7 +66,7 @@ $a_acmeserver = array();
 $a_acmeserver['letsencrypt-staging'] = array('name' => "Let's Encrypt Staging (for TESTING purposes)",
     'url' => 'https://acme-staging.api.letsencrypt.org'
 );
-$a_acmeserver['letsencrypt-production'] = array('name' => "Let's Encrypt Production(Applies ratelimits to certificate requests)",
+$a_acmeserver['letsencrypt-production'] = array('name' => "Let's Encrypt Production (Applies rate limits to certificate requests)",
     'url' => 'https://acme-v01.api.letsencrypt.org'
 );
 /*$a_acmeserver['dummy'] = array('name' => "dummy",
@@ -78,7 +78,7 @@ $acme_domain_validation_method = array();
 $acme_domain_validation_method['webroot'] = array(name => "webroot local folder",
 	'fields' => array(
 		'folder' => array('name'=>"folder",'columnheader'=>"RootFolder",'type'=>"textbox",'size'=>"50",
-			'description' =>"Folder the acme challenge response is written to for example: /usr/local/www/.well-known/acme-challenge/"
+			'description' =>"Folder the acme challenge response is written to; for example: /usr/local/www/.well-known/acme-challenge/"
 		)
 	));
 $acme_domain_validation_method['webrootftp'] = array(name => "webroot FTP",
@@ -186,7 +186,7 @@ $acme_domain_validation_method['dns_luadns'] = array(name => "DNS-Luadns",
 			'description' =>"Fill in the API Key"
 		),
 		'LUA_Email' => array('name'=>"lua_email",'columnheader'=>"Email",'type'=>"textbox",
-			'description' =>"Fill in the API Emailadress"
+			'description' =>"Fill in the API Email Address"
 		)
 	));
 $acme_domain_validation_method['dns_me'] = array(name => "DNS-DNSMadeEasy",
@@ -200,11 +200,30 @@ $acme_domain_validation_method['dns_me'] = array(name => "DNS-DNSMadeEasy",
 	));
 $acme_domain_validation_method['dns_nsupdate'] = array(name => "DNS-NSupdate",
 	'fields' => array(
-		'NSUPDATE_SERVER' => array('name'=>"nsupdate_server",'columnheader'=>"Key",'type'=>"textbox",
-			'description' =>"Fill in the NSUpdate target server"
+		'NSUPDATE_SERVER' => array('name'=>"nsupdate_server",'columnheader'=>"Server",'type'=>"textbox",
+			'description' =>"Fill in the nsupdate DNS server (IP address or hostname)"
 		),
-		'NSUPDATE_KEY' => array('name'=>"nsupdate_key",'columnheader'=>"Id",'type'=>"textarea",
-			'description' =>"Fill in the NSUpdate KEY"
+		'NSUPDATE_KEYTYPE' => array('name' => 'nsupdate_keytype', 'columnheader' => 'Key Type', 'type' => 'select',
+			'items' => array(
+				'host' => array('name' => 'Host Key'),
+				'user' => array('name' => 'User Key'),
+				'zone' => array('name' => 'Zone Key'),
+			),
+			'description' => 'Choose the nsupdate key type (typically "host")'
+		),
+		'NSUPDATE_KEYALGO' => array('name' => 'nsupdate_keyalgo', 'columnheader' => 'Key Algorithm', 'type' => 'select',
+			'items' => array(
+				'157' => array('name' => 'HMAC-MD5'),
+				'165' => array('name' => 'HMAC-SHA512'),
+				'164' => array('name' => 'HMAC-SHA384'),
+				'163' => array('name' => 'HMAC-SHA256'),
+				'162' => array('name' => 'HMAC-SHA224'),
+				'161' => array('name' => 'HMAC-SHA1'),
+			),
+			'description' => 'Choose the nsupdate key algorithm  (typically "HMAC-MD5")'
+		),
+		'NSUPDATE_KEY' => array('name'=>"nsupdate_key",'columnheader'=>"Key",'type'=>"textarea",
+			'description' =>"Fill in the nsupdate key contents"
 		)
 	));
 $acme_domain_validation_method['dns_ovh'] = array(name => "DNS-ovh / kimsufi / soyoustart / runabove",

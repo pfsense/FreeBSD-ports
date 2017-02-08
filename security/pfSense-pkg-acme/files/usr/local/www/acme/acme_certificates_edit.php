@@ -371,7 +371,7 @@ $section->addInput(new \Form_Input('', 'Last renewal', 'text',
 ))->setReadonly()->setHelp('The last time this certificate was renewed');
 
 $section->addInput(new \Form_Input('renewafter', 'Certificate renewal after', 'text', $pconfig['renewafter']
-))->setHelp('After how many days the certicicate should be renewed, defaults to 60');
+))->setHelp('After how many days the certificate should be renewed, defaults to 60');
 
 $form->add($section);
 
@@ -380,7 +380,7 @@ if (!is_array($a_accountkeys) || count($a_accountkeys) == 0) {
 	$section = new \Form_Section('Edit Certificate options');
 	$section->addInput(new \Form_StaticText(
 		'Accountkey required', 
-		"A account key should be created and registered before configuring certificates."
+		"An account key should be created and registered before configuring certificates."
 	));
 	$form->add($section);
 }
@@ -448,5 +448,5 @@ events.push(function() {
 </script>
 
 <?php
-acme_htmllist_js();
+acme_htmllist_js("table_domains");
 include("foot.inc");

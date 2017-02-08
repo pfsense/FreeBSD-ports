@@ -213,9 +213,9 @@
 			<default_value>0</default_value>
 		</field>
 		<field>
-			<fielddescr>Finish transfer if more than x %% finished</fielddescr>
+			<fielddescr>Finish transfer if more than x % finished</fielddescr>
 			<fieldname>quick_abort_pct</fieldname>
-			<description>If more than x %% of the transfer has completed, it will finish the retrieval.</description>
+			<description>If more than x % of the transfer has completed, it will finish the retrieval.</description>
 			<type>input</type>
 			<size>10</size>
 			<default_value>0</default_value>
