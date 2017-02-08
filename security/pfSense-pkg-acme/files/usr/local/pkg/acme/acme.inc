@@ -66,7 +66,7 @@ $a_acmeserver = array();
 $a_acmeserver['letsencrypt-staging'] = array('name' => "Let's Encrypt Staging (for TESTING purposes)",
     'url' => 'https://acme-staging.api.letsencrypt.org'
 );
-$a_acmeserver['letsencrypt-production'] = array('name' => "Let's Encrypt Production(Applies ratelimits to certificate requests)",
+$a_acmeserver['letsencrypt-production'] = array('name' => "Let's Encrypt Production (Applies rate limits to certificate requests)",
     'url' => 'https://acme-v01.api.letsencrypt.org'
 );
 /*$a_acmeserver['dummy'] = array('name' => "dummy",
@@ -78,7 +78,7 @@ $acme_domain_validation_method = array();
 $acme_domain_validation_method['webroot'] = array(name => "webroot local folder",
 	'fields' => array(
 		'folder' => array('name'=>"folder",'columnheader'=>"RootFolder",'type'=>"textbox",'size'=>"50",
-			'description' =>"Folder the acme challenge response is written to for example: /usr/local/www/.well-known/acme-challenge/"
+			'description' =>"Folder the acme challenge response is written to; for example: /usr/local/www/.well-known/acme-challenge/"
 		)
 	));
 $acme_domain_validation_method['webrootftp'] = array(name => "webroot FTP",
@@ -186,7 +186,7 @@ $acme_domain_validation_method['dns_luadns'] = array(name => "DNS-Luadns",
 			'description' =>"Fill in the API Key"
 		),
 		'LUA_Email' => array('name'=>"lua_email",'columnheader'=>"Email",'type'=>"textbox",
-			'description' =>"Fill in the API Emailadress"
+			'description' =>"Fill in the API Email Address"
 		)
 	));
 $acme_domain_validation_method['dns_me'] = array(name => "DNS-DNSMadeEasy",
