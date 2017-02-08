@@ -79,7 +79,7 @@ function lightsquid_install() {
 
 	// template symlinks
 	foreach (array('novopf', 'novosea') as $tpl) {
-		symlink('/usr/local/share/lightsquid/tpl/' . $tpl, LS_TEMPLATEPATH . '/' . $tpl);
+		@symlink('/usr/local/share/lightsquid/tpl/' . $tpl, LS_TEMPLATEPATH . '/' . $tpl);
 	}
 
 	update_status("\nRemove any existing and create new hardlink for lightsquid lighttpd executable...");
