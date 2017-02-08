@@ -201,10 +201,10 @@ $acme_domain_validation_method['dns_me'] = array(name => "DNS-DNSMadeEasy",
 $acme_domain_validation_method['dns_nsupdate'] = array(name => "DNS-NSupdate",
 	'fields' => array(
 		'NSUPDATE_SERVER' => array('name'=>"nsupdate_server",'columnheader'=>"Key",'type'=>"textbox",
-			'description' =>"Fill in the NSUpdate target server"
+			'description' =>"Fill in the nsupdate DNS server"
 		),
 		'NSUPDATE_KEY' => array('name'=>"nsupdate_key",'columnheader'=>"Id",'type'=>"textarea",
-			'description' =>"Fill in the NSUpdate KEY"
+			'description' =>"Fill in the nsupdate HMAC-MD5 host key"
 		)
 	));
 $acme_domain_validation_method['dns_ovh'] = array(name => "DNS-ovh / kimsufi / soyoustart / runabove",
