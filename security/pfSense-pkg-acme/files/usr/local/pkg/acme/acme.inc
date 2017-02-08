@@ -200,11 +200,30 @@ $acme_domain_validation_method['dns_me'] = array(name => "DNS-DNSMadeEasy",
 	));
 $acme_domain_validation_method['dns_nsupdate'] = array(name => "DNS-NSupdate",
 	'fields' => array(
-		'NSUPDATE_SERVER' => array('name'=>"nsupdate_server",'columnheader'=>"Key",'type'=>"textbox",
-			'description' =>"Fill in the nsupdate DNS server"
+		'NSUPDATE_SERVER' => array('name'=>"nsupdate_server",'columnheader'=>"Server",'type'=>"textbox",
+			'description' =>"Fill in the nsupdate DNS server (IP address or hostname)"
 		),
-		'NSUPDATE_KEY' => array('name'=>"nsupdate_key",'columnheader'=>"Id",'type'=>"textarea",
-			'description' =>"Fill in the nsupdate HMAC-MD5 host key"
+		'NSUPDATE_KEYTYPE' => array('name' => 'nsupdate_keytype', 'columnheader' => 'Key Type', 'type' => 'select',
+			'items' => array(
+				'host' => array('name' => 'Host Key'),
+				'user' => array('name' => 'User Key'),
+				'zone' => array('name' => 'Zone Key'),
+			),
+			'description' => 'Choose the nsupdate key type (typically "host")'
+		),
+		'NSUPDATE_KEYALGO' => array('name' => 'nsupdate_keyalgo', 'columnheader' => 'Key Algorithm', 'type' => 'select',
+			'items' => array(
+				'157' => array('name' => 'HMAC-MD5'),
+				'165' => array('name' => 'HMAC-SHA512'),
+				'164' => array('name' => 'HMAC-SHA384'),
+				'163' => array('name' => 'HMAC-SHA256'),
+				'162' => array('name' => 'HMAC-SHA224'),
+				'161' => array('name' => 'HMAC-SHA1'),
+			),
+			'description' => 'Choose the nsupdate key algorithm  (typically "HMAC-MD5")'
+		),
+		'NSUPDATE_KEY' => array('name'=>"nsupdate_key",'columnheader'=>"Key",'type'=>"textarea",
+			'description' =>"Fill in the nsupdate key contents"
 		)
 	));
 $acme_domain_validation_method['dns_ovh'] = array(name => "DNS-ovh / kimsufi / soyoustart / runabove",

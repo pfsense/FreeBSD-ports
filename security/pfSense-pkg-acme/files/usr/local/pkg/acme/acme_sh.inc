@@ -131,11 +131,11 @@ class acme_sh {
 		$cmdparameters = "";
 		if ($api && substr($api, 0, 4 ) === "dns_") {
 			if ($api == "dns_manual") {
-				$api = "";
+				$cmdapi = "";
 			} else {
-				$api = escapeshellarg($api);
+				$cmdapi = escapeshellarg($api);
 			}
-			$cmdparameters = " --dns {$api} ";
+			$cmdparameters = " --dns {$cmdapi} ";
 		} else {
 			$cmdparameters = " --webroot pfSenseacme";
 		}
@@ -159,27 +159,42 @@ class acme_sh {
 		$reloadfile = "{$this->acmeconf}reloadcmd.sh";
 		file_put_contents($reloadfile, $reloadcmd);
 		chmod($reloadfile, 0755);
-		
+
 		if ($api == "dns_nsupdate") {
 			/* Prefix to use as a base for server/key/private files */
 			$nsupdatefileprefix = "{$certpath}nsupdate";
 			foreach (array_keys($extras) as $nsupdatedomain) {
 				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$nsupdatedomain}.server", $extras[$nsupdatedomain]['NSUPDATE_SERVER']);
 				$envvariables['NSUPDATE_SERVER'] = $nsupdatefileprefix;
-
 				$nsupdatekey = base64_decode($extras[$nsupdatedomain]['NSUPDATE_KEY']);
+
 				/* Use the same .key/.private format as RFC2136 Dynamic DNS (See /etc/inc/services.inc (services_dnsupdate_process() */
-				/* Hardcode key type flags/proto for now as Host key and HMAC */
-				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$nsupdatedomain}.key", "_acme-challenge.{$nsupdatedomain} IN KEY 513 3 157 {$nsupdatekey}\n");
+				$key_type = $extras[$nsupdatedomain]['NSUPDATE_KEYTYPE'];
+				switch ($extras[$nsupdatedomain]['NSUPDATE_KEYTYPE']) {
+					case "zone":
+						$flags = 257;
+						$proto = 3;
+						break;
+					case "user":
+						$flags = 0;
+						$proto = 2;
+						break;
+					case "host":
+					default:
+						$flags = 513;
+						$proto = 3;
+				}
+				$key_algo = empty($extras[$nsupdatedomain]['NSUPDATE_KEYALGO']) ? '157' : $extras[$nsupdatedomain]['NSUPDATE_KEYALGO'];
+				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$nsupdatedomain}.key", "_acme-challenge.{$nsupdatedomain} IN KEY {$flags} {$proto} {$key_algo} {$nsupdatekey}\n");
 				$privkey = <<<EOD
-Private-key-format: v1.2
-Algorithm: 157 (HMAC)
+Private-key-format: v1.3
+Algorithm: {$key_algo}
 Key: {$nsupdatekey}
 
 EOD;
 				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$nsupdatedomain}.private", $privkey);
-				$envvariables['NSUPDATE_KEY'] = $nsupdatefileprefix;
 			}
+			$envvariables['NSUPDATE_KEY'] = $nsupdatefileprefix;
 		}
 
 		$hookcontent_httpapi  = <<<EOF
