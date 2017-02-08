@@ -326,9 +326,9 @@ function squidguard_resync() {
     //}
 
     squidguard_cron_install();
-
+    
     //Sync only with apply button to avoid multiples reloads on backup server while editing master config
-    if ($submit == APPLY_BTN)
+    if ($submit == APPLY_BTN) 
 		squidguard_sync_on_changes();
 }
 
@@ -661,7 +661,7 @@ function make_grid_general_items($id = '') {
 
 	$bg_color = 'bgcolor="#dddddd"';
 	$res = '';
-	$res .= '<table width="100%%">';
+	$res .= '<table width="100%">';
 
 	if ($id === '') {
 		# Apply
@@ -797,16 +797,16 @@ function make_grid_controls($type, $items, $enable_overtime = true) {
             $thdr .= "<tr $color><th colspan='4' align=middle>$hdr1up</th><th colspan='4' align=middle>$hdr1ov</th></tr>";
             $thdr .= "<tr $color><td colspan='4' align=middle></td><td colspan='4' align=middle>If <b>'Time'</b> not defined, this is column will be ignored.</td></tr>";
             # formatting
-            $thdr .= "<tr><td/><td width='35%%'/><td/><td/><td/><td width='35%%'/><td/><td/></tr>";
+            $thdr .= "<tr><td/><td width='35%'/><td/><td/><td/><td width='35%'/><td/><td/></tr>";
         }
         else {
             $thdr .= "<tr><td colspan='4' align=left>$hds3<hr></tr>";
             $thdr .= "<tr $color><th colspan='4' align=middle>$hdr1up</th></tr>";
             # formatting
-            $thdr .= "<tr><td width='5%%'/><td/><td width='5%%'/><td width='10%%'/></tr>";
+            $thdr .= "<tr><td width='5%'/><td/><td width='5%'/><td width='10%'/></tr>";
         }
 
-        $res .= "<table cellspacing='0' width='100%%'> $thdr $tbl </table>";
+        $res .= "<table cellspacing='0' width='100%'> $thdr $tbl </table>";
 
         $rstyle = "";
 	$ha = <<<EOF
@@ -883,7 +883,7 @@ function squidguard_install_command() {
 #        conf_mount_rw();
         $blklist_file = SQUIDGUARD_BLK_FILELISTPATH;
 
-
+     
         if (!file_exists($blklist_file)) {
         	# if blacklist not exists, then copy default db from samples
 #            $entries = array("ads", "aggressive", "audio-video", "drugs", "gambling", "hacking", "mail", "porn", "proxy", "violence", "warez");
@@ -1008,7 +1008,7 @@ function convert_pfxml_to_sgxml() {
 
     #Clean adversiting
     $sgxml[F_ADV_BLANKIMG] = $pfxml['adv_blankimg']  == 'on' ? 'on' : 'off';
-
+	
 
     # other
     $lanip = $config['interfaces']['lan']['ipaddr'];
