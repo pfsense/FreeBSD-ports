@@ -360,5 +360,5 @@ events.push(function() {
 	}
 </script>
 <?php
-acme_htmllist_js();
+acme_htmllist_js("account_keys");
 include("foot.inc");

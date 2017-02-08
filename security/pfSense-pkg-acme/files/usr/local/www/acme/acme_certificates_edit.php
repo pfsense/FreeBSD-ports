@@ -448,5 +448,5 @@ events.push(function() {
 </script>
 
 <?php
-acme_htmllist_js();
+acme_htmllist_js("table_domains");
 include("foot.inc");

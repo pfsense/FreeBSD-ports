@@ -120,7 +120,7 @@ class HtmlList
 				$checked = $itemvalue=='yes' ? " checked" : "";
 				$result .= "<input onclick='html_listitem_change(\"{$this->tablename}\",\"{$itemname}\",\"{$counter}\",this);' name='$itemnamenr' id='$itemnamenr' type='checkbox'$checked value='yes' />";
 			} elseif ($itemtype == "textarea") {
-				$result .= "<textarea class='form-control nowrap' name='$itemnamenr' id='$itemnamenr' cols='{$item['size']}' rows='10'>";
+				$result .= "<textarea class='form-control nowrap' name='$itemnamenr' id='$itemnamenr' cols='{$item['size']}' rows='10' style='width:100%'>";
 				$result .= htmlspecialchars(base64_decode($itemvalue));
 				$result .= "</textarea>";
 			} elseif ($itemtype ==  "fixedtext") {
@@ -348,7 +348,7 @@ function sort_index(&$a, &$b) {
 	return 0;
 }
 
-function acme_htmllist_js(){
+function acme_htmllist_js($tablename = "") {
 	global $g;
 ?><script type="text/javascript">
 	var theme = "<?=$g['theme']?>";
@@ -375,7 +375,7 @@ function acme_htmllist_js(){
 			"' id='" + tableId + field['name'] + rowId +
 			"'><\/input> ";
 		} else if(field['type'] === 'textarea') {
-			result="<textarea class='form-control nowrap' cols='" + field['size'] + "' rows='15' name='" + tableId + field['name'] + rowId +
+			result="<textarea class='form-control nowrap' cols='" + field['size'] + "' rows='15' style='width:100%' name='" + tableId + field['name'] + rowId +
 			"' id='" + tableId + field['name'] + rowId +
 			"'><\/textarea> ";
 		} else if(field['type'] === 'select') {
@@ -463,27 +463,42 @@ function acme_htmllist_js(){
 			tr.appendChild(td);
 			td = d.createElement("td");
 			td.setAttribute("colspan", fieldcount);
+			vdiv = d.createElement("div");
+			vdiv.setAttribute("id", "htmltable_<?=$tablename?>_" + totalrows + "_details_view");
+			vdiv.setAttribute("class","hidden");
+			td.appendChild(vdiv);
+			ediv = d.createElement("div");
+			ediv.setAttribute("id", "htmltable_<?=$tablename?>_" + totalrows + "_details_edit");
+			ediv.setAttribute("class", "");
+
 			table = d.createElement("table");
+			table.setAttribute("class","table table-hover table-striped table-condensed");
+			table.setAttribute("style","border-collapse:collapse");
+			table.setAttribute("border","1");
 			table.setAttribute("cellspacing","0");
+			etbody = d.createElement("tbody");
+
 			for (var i in detailitems) {
 				field = detailitems[i];
 				fieldhtml = createFieldHtml(tableId, field, totalrows);
 				subtr = d.createElement("tr");
 				subtr.setAttribute("id","tr_edititemdetails_" + totalrows + "_" + field['name']);
 				subtd = d.createElement("td");
-				subtd.setAttribute("class","vncell");
+				subtd.setAttribute("style","border-right:0");
 				subtd.innerHTML = field['columnheader'] + ": ";
 				subtr.appendChild(subtd);
 				subtd = d.createElement("td");
-				subtd.setAttribute("class","vncell");
+				subtd.setAttribute("style","border-left:0");
 				if (field['description']) {
 					fieldhtml = field['description'] + "<br/>" + fieldhtml;
 				}
 				subtd.innerHTML = fieldhtml;
 				subtr.appendChild(subtd);
-				table.appendChild(subtr);
+				etbody.appendChild(subtr);
 			}
-			td.appendChild(table);
+			table.appendChild(etbody);
+			ediv.appendChild(table);
+			td.appendChild(ediv);
 			tr.appendChild(td);
 			td = d.createElement("td");
 			tr.appendChild(td);
