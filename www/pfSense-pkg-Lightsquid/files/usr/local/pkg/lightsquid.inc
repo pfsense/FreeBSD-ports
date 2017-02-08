@@ -79,9 +79,6 @@ function lightsquid_install() {
 
 	// template symlinks
 	foreach (array('novopf', 'novosea') as $tpl) {
-		if (is_dir(LS_TEMPLATEPATH . '/' . $tpl)) {
-			rmdir_recursive(LS_TEMPLATEPATH . '/' . $tpl);
-		}
 		symlink('/usr/local/share/lightsquid/tpl/' . $tpl, LS_TEMPLATEPATH . '/' . $tpl);
 	}
 
