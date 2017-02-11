@@ -104,9 +104,9 @@ function get_uptime_stats() {
 function get_loadavg_stats() {
 	exec("/usr/bin/uptime", $output, $ret);
 
-+	$temp = preg_split("/ /", $output[0], -1, PREG_SPLIT_NO_EMPTY);
-+	$count = count($temp);
-+	return ($count >= 3) ? "{$temp[$count - 3]} {$temp[$count - 2]} {$temp[$count - 1]}" : "Not available";
+	$temp = preg_split("/ /", $output[0], -1, PREG_SPLIT_NO_EMPTY);
+	$count = count($temp);
+	return ($count >= 3) ? "{$temp[$count - 3]} {$temp[$count - 2]} {$temp[$count - 1]}" : "Not available";
 }
 
 function get_mbuf_stats() {
