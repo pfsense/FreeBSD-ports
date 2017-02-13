@@ -298,6 +298,44 @@ pkg_update() {
 	    "Updating repositories metadata" ${_mute}
 }
 
+pkg_upgrade_repo() {
+	if [ -z "${NEW_MAJOR}" -a "$(compare_pkg_version pkg)" = "<" ]; then
+		_exec "pkg upgrade${dont_update} pkg" "Upgrading pkg" mute
+		pkg_update force
+	fi
+
+	local _repo_pkg="${product}-repo"
+
+	# Deprecated pa
+	if is_pkg_installed ${product}-repo-devel; then
+		_exec "pkg ${pkg_chroot} set -A 1 ${product}-repo-devel" \
+			"Scheduling package ${product}-repo-devel for removal"
+		_exec "pkg install${dont_update} ${_repo_pkg}" "Installing ${_repo_pkg}" mute
+		_exec "pkg delete ${product}-repo-devel" "Removing ${product}-repo-devel" \
+			mute ignore_result
+		validate_repo_conf
+		pkg_update force
+	fi
+
+	if [ -z "${NEW_MAJOR}" -a "$(compare_pkg_version ${_repo_pkg})" = "<" ]; then
+		cp /usr/local/etc/pkg/repos/${product}.conf \
+			/tmp/${product}.conf.copy
+		_exec "pkg upgrade${dont_update} ${_repo_pkg}" "Upgrading ${_repo_pkg}" mute
+		abi_setup
+		# If conf differs, for an update
+		if ! cmp -s /usr/local/etc/pkg/repos/${product}.conf /tmp/${product}.conf.copy; then
+			pkg_update force
+
+			# New repo may contain newer pkg
+			if [ -z "${NEW_MAJOR}" -a "$(compare_pkg_version pkg)" = "<" ]; then
+				_exec "pkg upgrade pkg" "Upgrading pkg" mute
+				pkg_update force
+			fi
+		fi
+		rm -f /tmp/${product}.conf.copy
+	fi
+}
+
 pkg_upgrade() {
 	# figure out which kernel variant is running
 	export kernel_pkg=$(pkg query %n $(pkg info ${product}-kernel-\* | grep -v -- -debug-))
@@ -354,41 +392,7 @@ pkg_upgrade() {
 			pkg_lock pkg
 		fi
 
-		if [ -z "${NEW_MAJOR}" -a "$(compare_pkg_version pkg)" = "<" ]; then
-			_exec "pkg upgrade${dont_update} pkg" "Upgrading pkg" mute
-			pkg_update force
-		fi
-
-		local _repo_pkg="${product}-repo"
-
-		# Deprecated pa
-		if is_pkg_installed ${product}-repo-devel; then
-			_exec "pkg ${pkg_chroot} set -A 1 ${product}-repo-devel" \
-				"Scheduling package ${product}-repo-devel for removal"
-			_exec "pkg install${dont_update} ${_repo_pkg}" "Installing ${_repo_pkg}" mute
-			_exec "pkg delete ${product}-repo-devel" "Removing ${product}-repo-devel" \
-				mute ignore_result
-			validate_repo_conf
-			pkg_update force
-		fi
-
-		if [ -z "${NEW_MAJOR}" -a "$(compare_pkg_version ${_repo_pkg})" = "<" ]; then
-			cp /usr/local/etc/pkg/repos/${product}.conf \
-				/tmp/${product}.conf.copy
-			_exec "pkg upgrade${dont_update} ${_repo_pkg}" "Upgrading ${_repo_pkg}" mute
-			abi_setup
-			# If conf differs, for an update
-			if ! cmp -s /usr/local/etc/pkg/repos/${product}.conf /tmp/${product}.conf.copy; then
-				pkg_update force
-
-				# New repo may contain newer pkg
-				if [ -z "${NEW_MAJOR}" -a "$(compare_pkg_version pkg)" = "<" ]; then
-					_exec "pkg upgrade pkg" "Upgrading pkg" mute
-					pkg_update force
-				fi
-			fi
-			rm -f /tmp/${product}.conf.copy
-		fi
+		pkg_upgrade_repo
 
 		if [ $(pkg upgrade${dont_update} -nq | wc -l) -le 1 ]; then
 			_echo "Your packages are up to date"
@@ -626,6 +630,8 @@ check_upgrade() {
 	local _meta_pkg=$(get_meta_pkg_name)
 
 	pkg_update "" mute
+
+	pkg_upgrade_repo
 
 	if [ "$(compare_pkg_version ${_meta_pkg})" = "<" ]; then
 		local _new_version=$(pkg rquery${dont_update} %v ${_meta_pkg})
