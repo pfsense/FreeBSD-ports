@@ -19,11 +19,10 @@
 # limitations under the License.
 
 usage() {
-	echo "Usage: $(basename ${0}) [-46bdyf] [-u|-i PKG_NAME|-r PKG_NAME]" >&2
+	echo "Usage: $(basename ${0}) [-46bdfhnRUy] [-l LOG_PATH] [-p SOCKET_PATH] [-c|-u|-i PKG_NAME|-r PKG_NAME]" >&2
 	echo "	-4          - Force IPv4"
 	echo "	-6          - Force IPv6"
 	echo "	-b          - Platform is booting" >&2
-	echo "	-c          - Check if upgrade is necessary" >&2
 	echo "	-d          - Turn on debug" >&2
 	echo "	-f          - Force package installation" >&2
 	echo "	-h          - Show this usage help" >&2
@@ -31,9 +30,11 @@ usage() {
 	echo "	-n          - Dry run" >&2
 	echo "	-p socket   - Write pkg progress to socket"
 	echo "	-R          - Do not reboot (this can be dangerous)"
+	echo "	-U          - Do not update repository information" >&2
 	echo "	-y          - Assume yes as the answer to any possible interaction" >&2
 	echo "" >&2
 	echo "The following parameters are mutually exclusive:" >&2
+	echo "	-c          - Check if upgrade is necessary" >&2
 	echo "	-i PKG_NAME - Install package PKG_NAME" >&2
 	echo "	-r PKG_NAME - Remove package PKG_NAME" >&2
 	echo "	-u          - Update repository information" >&2
@@ -284,6 +285,10 @@ pkg_update() {
 	[ "${1}" = "force" ] \
 		&& _force=" -f"
 
+	if [ -z "${_force}" -a -n "${dont_update}" ]; then
+		return 0
+	fi
+
 	[ "${2}" = "mute" ] \
 		&& _mute="mute"
 
@@ -350,7 +355,7 @@ pkg_upgrade() {
 		fi
 
 		if [ -z "${NEW_MAJOR}" -a "$(compare_pkg_version pkg)" = "<" ]; then
-			_exec "pkg upgrade pkg" "Upgrading pkg" mute
+			_exec "pkg upgrade${dont_update} pkg" "Upgrading pkg" mute
 			pkg_update force
 		fi
 
@@ -360,7 +365,7 @@ pkg_upgrade() {
 		if is_pkg_installed ${product}-repo-devel; then
 			_exec "pkg ${pkg_chroot} set -A 1 ${product}-repo-devel" \
 				"Scheduling package ${product}-repo-devel for removal"
-			_exec "pkg install ${_repo_pkg}" "Installing ${_repo_pkg}" mute
+			_exec "pkg install${dont_update} ${_repo_pkg}" "Installing ${_repo_pkg}" mute
 			_exec "pkg delete ${product}-repo-devel" "Removing ${product}-repo-devel" \
 				mute ignore_result
 			validate_repo_conf
@@ -370,7 +375,7 @@ pkg_upgrade() {
 		if [ -z "${NEW_MAJOR}" -a "$(compare_pkg_version ${_repo_pkg})" = "<" ]; then
 			cp /usr/local/etc/pkg/repos/${product}.conf \
 				/tmp/${product}.conf.copy
-			_exec "pkg upgrade ${_repo_pkg}" "Upgrading ${_repo_pkg}" mute
+			_exec "pkg upgrade${dont_update} ${_repo_pkg}" "Upgrading ${_repo_pkg}" mute
 			abi_setup
 			# If conf differs, for an update
 			if ! cmp -s /usr/local/etc/pkg/repos/${product}.conf /tmp/${product}.conf.copy; then
@@ -385,20 +390,20 @@ pkg_upgrade() {
 			rm -f /tmp/${product}.conf.copy
 		fi
 
-		if [ $(pkg upgrade -nq | wc -l) -le 1 ]; then
+		if [ $(pkg upgrade${dont_update} -nq | wc -l) -le 1 ]; then
 			_echo "Your packages are up to date"
 			_exit 0
 		fi
 
 		if [ -n "${dry_run}" ]; then
 			pkg_unlock ${kernel_pkg} ${uboot_pkg}
-			pkg ${pkg_chroot} upgrade -nq 2>&1 | tee -a ${logfile}
+			pkg ${pkg_chroot} upgrade${dont_update} -nq 2>&1 | tee -a ${logfile}
 			pkg_lock ${kernel_pkg} ${uboot_pkg}
 			_exit 0
 		fi
 
 		local _meta_pkg=$(get_meta_pkg_name)
-		if [ $(pkg upgrade -r ${product}-core -nq | wc -l) -gt 1 ]; then
+		if [ $(pkg upgrade${dont_update} -r ${product}-core -nq | wc -l) -gt 1 ]; then
 			if [ "${platform}" = "nanobsd" ]; then
 				_echo "**** WARNING ****"
 				_echo "Duplicate slice required!!"
@@ -428,14 +433,14 @@ pkg_upgrade() {
 		# https://redmine.pfsense.org/issues/6045
 		if ! kldstat -qm zfs; then
 			# If kernel is not going to be upgraded, reroot
-			if [ $(pkg upgrade -nq ${kernel_pkg} | wc -l) -lt 1 ]; then
+			if [ $(pkg upgrade${dont_update} -nq ${kernel_pkg} | wc -l) -lt 1 ]; then
 				reboot_params="-r"
 			fi
 		fi
 
 		if [ -z "${yes}" ]; then
 			# Show user which packages are going to be upgraded
-			pkg ${pkg_chroot} upgrade -nq 2>&1 | tee -a ${logfile}
+			pkg ${pkg_chroot} upgrade${dont_update} -nq 2>&1 | tee -a ${logfile}
 
 			_echo ""
 			_echo "**** WARNING ****"
@@ -461,12 +466,12 @@ pkg_upgrade() {
 			pkg_lock pkg
 		fi
 
-		if [ $(pkg ${pkg_chroot} upgrade -nq ${kernel_pkg} | wc -l) -gt 1 ]; then
+		if [ $(pkg ${pkg_chroot} upgrade${dont_update} -nq ${kernel_pkg} | wc -l) -gt 1 ]; then
 			_exec "pkg ${pkg_chroot} upgrade -U ${kernel_pkg}" "Upgrading ${product} kernel"
 		fi
 
 		if [ -n "${uboot_pkg}" ] && \
-		    [ $(pkg ${pkg_chroot} upgrade -nq ${uboot_pkg} | wc -l) -gt 1 ]; then
+		    [ $(pkg ${pkg_chroot} upgrade${dont_update} -nq ${uboot_pkg} | wc -l) -gt 1 ]; then
 			_exec "pkg ${pkg_chroot} upgrade -U ${uboot_pkg}" "Upgrading ${product} u-boot"
 		fi
 
@@ -490,7 +495,7 @@ pkg_upgrade() {
 		# XXX: Workaround to upgrade strongswan
 		# If those symlinks are present, pkg exit because it expects them
 		# to be a directory
-		if [ $(pkg ${pkg_chroot} upgrade -nq strongswan | wc -l) -gt 1 ]; then
+		if [ $(pkg ${pkg_chroot} upgrade${dont_update} -nq strongswan | wc -l) -gt 1 ]; then
 			if [ -L ${chroot_dir}/usr/local/etc/ipsec.d ]; then
 				rm -f ${chroot_dir}/usr/local/etc/ipsec.d
 			fi
@@ -505,7 +510,7 @@ pkg_upgrade() {
 			fi
 		fi
 
-		if [ $(pkg ${pkg_chroot} upgrade -nq | wc -l) -gt 1 ]; then
+		if [ $(pkg ${pkg_chroot} upgrade${dont_update} -nq | wc -l) -gt 1 ]; then
 			delete_annotation=1
 			if [ -n "${is_pkg_locked}" ]; then
 				# Upgrade pkg
@@ -523,7 +528,7 @@ pkg_upgrade() {
 				/etc/rc.php_ini_setup >/dev/null 2>&1
 			fi
 
-			_exec "pkg ${pkg_chroot} upgrade" "Upgrading necessary packages"
+			_exec "pkg ${pkg_chroot} upgrade${dont_update}" "Upgrading necessary packages"
 			delete_annotation=""
 		fi
 
@@ -554,7 +559,7 @@ pkg_upgrade() {
 	if [ "${next_stage}" = "3" ]; then
 		if [ $(pkg upgrade -nq | wc -l) -gt 1 ]; then
 			delete_annotation=1
-			_exec "pkg ${pkg_chroot} upgrade" "Upgrading necessary packages"
+			_exec "pkg ${pkg_chroot} upgrade${dont_update}" "Upgrading necessary packages"
 			delete_annotation=""
 		fi
 
@@ -623,7 +628,7 @@ check_upgrade() {
 	pkg_update "" mute
 
 	if [ "$(compare_pkg_version ${_meta_pkg})" = "<" ]; then
-		local _new_version=$(pkg rquery %v ${_meta_pkg})
+		local _new_version=$(pkg rquery${dont_update} %v ${_meta_pkg})
 		_echo "${_new_version} version of ${product} is available"
 		_exit 2
 	else
@@ -633,7 +638,7 @@ check_upgrade() {
 				continue
 			fi
 			if [ "$(compare_pkg_version ${_pkg})" = "<" ]; then
-				local _new_version=$(pkg rquery %v ${_pkg})
+				local _new_version=$(pkg rquery${dont_update} %v ${_pkg})
 				_echo "${_new_version} version of ${_pkg} is available"
 				_exit 2
 			fi
@@ -745,7 +750,7 @@ compare_pkg_version() {
 		_exit 1
 	fi
 
-	local _rver=$(pkg ${pkg_chroot} rquery %v ${_pkg_name})
+	local _rver=$(pkg ${pkg_chroot} rquery${dont_update} %v ${_pkg_name})
 
 	if [ -z "${_rver}" ]; then
 		_echo "ERROR: It was not possible to determine ${_pkg_name} remote version"
@@ -957,6 +962,7 @@ export reboot_params=""
 
 unset dry_run
 unset dont_reboot
+unset dont_update
 unset booting
 unset boot_stage
 unset force
@@ -967,7 +973,7 @@ unset action
 unset action_pkg
 unset force_ipv4
 unset force_ipv6
-while getopts 46b:cdfi:hp:l:nr:Ruy opt; do
+while getopts 46b:cdfi:hp:l:nr:RuUy opt; do
 	case ${opt} in
 		4)
 			if [ -n "${force_ipv6}" ]; then
@@ -1042,6 +1048,9 @@ while getopts 46b:cdfi:hp:l:nr:Ruy opt; do
 				_exit 1
 			fi
 			action="update"
+			;;
+		U)
+			dont_update=" -U"
 			;;
 		y)
 			yes=1
