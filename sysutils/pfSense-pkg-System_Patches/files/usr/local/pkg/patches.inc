@@ -93,7 +93,7 @@ function patch_fetch(& $patch) {
 		download_file($url, $temp_filename);
 	}
 	$text = @file_get_contents($temp_filename);
-	unlink($temp_filename);
+	@unlink($temp_filename);
 	if (empty($text)) {
 		return false;
 	} else {
