@@ -279,13 +279,18 @@ abi_setup() {
 
 pkg_update() {
 	local _force=""
-	if [ "${1}" = "force" ]; then
-		_force=" -f"
-	fi
+	local _mute=""
+
+	[ "${1}" = "force" ] \
+		&& _force=" -f"
+
+	[ "${2}" = "mute" ] \
+		&& _mute="mute"
 
 	abi_setup
 
-	_exec "pkg ${pkg_chroot} update${_force}" "Updating repositories metadata"
+	_exec "pkg ${pkg_chroot} update${_force}" \
+	    "Updating repositories metadata" ${_mute}
 }
 
 pkg_upgrade() {
@@ -615,7 +620,7 @@ get_meta_pkg_name() {
 check_upgrade() {
 	local _meta_pkg=$(get_meta_pkg_name)
 
-	pkg_update
+	pkg_update "" mute
 
 	if [ "$(compare_pkg_version ${_meta_pkg})" = "<" ]; then
 		local _new_version=$(pkg rquery %v ${_meta_pkg})
