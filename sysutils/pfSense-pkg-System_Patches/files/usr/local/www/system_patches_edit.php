@@ -197,7 +197,7 @@ $section->addInput($patchtext);
 
 $form->add($section);
 
-$section = new Form_Section('Patch Application Behavoir');
+$section = new Form_Section('Patch Application Behavior');
 
 $section->addInput(new Form_Select(
 	'pathstrip',
