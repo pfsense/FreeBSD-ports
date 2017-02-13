@@ -11,9 +11,6 @@ PKGNAMESUFFIX?=		23
 MAINTAINER=		mandree@FreeBSD.org
 COMMENT?=		Secure IP/Ethernet tunnel daemon
 
-DEPRECATED=		Replaced by new upstream relesae 2.4.x
-EXPIRATION_DATE=	2017-03-31
-
 LICENSE=		GPLv2
 
 CONFLICTS_INSTALL=	openvpn-2.[!3].* openvpn-[!2].* openvpn-beta-[0-9]* openvpn-devel-[0-9]*

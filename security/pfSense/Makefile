@@ -40,7 +40,7 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/clog:sysutils/clog \
 		${LOCALBASE}/sbin/miniupnpd:net/miniupnpd \
 		${LOCALBASE}/sbin/mpd4:net/mpd4 \
 		${LOCALBASE}/sbin/mpd5:net/mpd5 \
-		${LOCALBASE}/sbin/openvpn:security/openvpn \
+		${LOCALBASE}/sbin/openvpn:security/openvpn23 \
 		${LOCALBASE}/sbin/pftop:sysutils/pftop \
 		${LOCALBASE}/sbin/relayctl:net/relayd \
 		${LOCALBASE}/sbin/sshlockout_pf:sysutils/sshlockout_pf \
