@@ -278,8 +278,6 @@ abi_setup() {
 }
 
 pkg_update() {
-	local _run_update=1
-
 	local _force=""
 	if [ "${1}" = "force" ]; then
 		_force=" -f"
