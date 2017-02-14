@@ -84,8 +84,9 @@
 				<![CDATA[
 				Enter subnets that are allowed to use the proxy in CIDR format.
 				All the other subnets won't be able to use the proxy.<br/>
-				<span class="text-info">Put each entry on a separate line.
-				<strong>The proxy interface subnet is allowed by default.</strong></span>
+				<span class="text-info">Put each entry on a separate line.<br/>
+				<strong>When 'Allow Users on Interface' is checked on 'General' tab, there is no need to add the 'Proxy Interface(s)' subnet(s) to this list.</strong>
+				</span>
 				]]>
 			</description>
 			<type>textarea</type>
