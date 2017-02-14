@@ -317,23 +317,39 @@ pkg_upgrade_repo() {
 		pkg_update force
 	fi
 
-	if [ -z "${NEW_MAJOR}" -a "$(compare_pkg_version ${_repo_pkg})" = "<" ]; then
-		cp /usr/local/etc/pkg/repos/${product}.conf \
-			/tmp/${product}.conf.copy
-		_exec "pkg upgrade${dont_update} ${_repo_pkg}" "Upgrading ${_repo_pkg}" mute
-		abi_setup
-		# If conf differs, for an update
-		if ! cmp -s /usr/local/etc/pkg/repos/${product}.conf /tmp/${product}.conf.copy; then
-			pkg_update force
+	[ -n "${NEW_MAJOR}" ] \
+		&& return
 
-			# New repo may contain newer pkg
-			if [ -z "${NEW_MAJOR}" -a "$(compare_pkg_version pkg)" = "<" ]; then
-				_exec "pkg upgrade pkg" "Upgrading pkg" mute
-				pkg_update force
-			fi
+	case "$(compare_pkg_version ${_repo_pkg})" in
+		"<")
+			local _force=""
+			;;
+		">")
+			local _force=" -f"
+			;;
+		"=")
+			return
+			;;
+		*)
+			_echo "ERROR: Unable to compare version of ${_repo_pkg}"
+			_exit 1
+	esac
+
+	cp /usr/local/etc/pkg/repos/${product}.conf /tmp/${product}.conf.copy
+	_exec "pkg upgrade${dont_update}${_force} ${_repo_pkg}" \
+	    "Upgrading ${_repo_pkg}" mute
+	abi_setup
+	# If conf differs, for an update
+	if ! cmp -s /usr/local/etc/pkg/repos/${product}.conf /tmp/${product}.conf.copy; then
+		pkg_update force
+
+		# New repo may contain newer pkg
+		if [ -z "${NEW_MAJOR}" -a "$(compare_pkg_version pkg)" = "<" ]; then
+			_exec "pkg upgrade pkg" "Upgrading pkg" mute
+			pkg_update force
 		fi
-		rm -f /tmp/${product}.conf.copy
 	fi
+	rm -f /tmp/${product}.conf.copy
 }
 
 pkg_upgrade() {
