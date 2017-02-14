@@ -2034,7 +2034,7 @@ function squid_generate_rules($type) {
 
 	$squid_conf = $config['installedpackages']['squid']['config'][0];
 
-	// do not install any firewall rules if Squid is disabled or used as reverse proxy only
+	// Do not install any firewall rules if Squid is disabled or used as reverse proxy only
 	if (!squid_enabled()) {
 		log_error("[squid] Installed but disabled. Not installing '{$type}' rules.");
 		return;
@@ -2043,24 +2043,23 @@ function squid_generate_rules($type) {
 		return;
 	}
 
-	// normal squid rule check
-	if (($squid_conf['transparent_proxy'] != 'on') || ($squid_conf['allow_interface'] != 'on')) {
-		return;
-	}
-
+	// Do not install any firewall rules if Squid is not running
 	if (!is_service_running('squid')) {
 		log_error("[squid] Installed but not started. Not installing '{$type}' rules.");
 		return;
 	}
-	// Read assigned interfaces
+
+	// Proxy Interface(s)
 	$proxy_ifaces = explode(",", $squid_conf['active_interface']);
 	$proxy_ifaces = array_map('convert_friendly_interface_to_real_interface_name', $proxy_ifaces);
+	// Transparent Proxy Interface(s)
 	if ($squid_conf['transparent_proxy'] == "on") {
 		$transparent_ifaces = explode(",", $squid_conf['transparent_active_interface']);
 		$transparent_ifaces = array_map('convert_friendly_interface_to_real_interface_name', $transparent_ifaces);
 	} else {
 		$transparent_ifaces = array();
 	}
+	// SSL Intercept Interface(s)
 	if ($squid_conf['ssl_proxy'] == "on") {
 		$ssl_ifaces = explode(",", $squid_conf['ssl_active_interface']);
 		$ssl_ifaces = array_map('convert_friendly_interface_to_real_interface_name', $ssl_ifaces);
@@ -2068,26 +2067,26 @@ function squid_generate_rules($type) {
 		$ssl_ifaces = array();
 	}
 
+	// Define proxy ports
 	$port = ($squid_conf['proxy_port'] ? $squid_conf['proxy_port'] : 3128);
 	$ssl_port = ($squid_conf['ssl_proxy_port'] ? $squid_conf['ssl_proxy_port'] : 3129);
+	$pf_rule_ports = "{{$port},{$ssl_port}}";
 
-	$fw_aliases = filter_generate_aliases();
-	if (strstr($fw_aliases, "pptp =")) {
-		$PPTP_ALIAS = "\$pptp";
-	} else {
-		$PPTP_ALIAS = "\$PPTP";
-	}
-	if (strstr($fw_aliases, "PPPoE =")) {
-		$PPPOE_ALIAS = "\$PPPoE";
-	} else {
-		$PPPOE_ALIAS = "\$pppoe";
-	}
+	// Define NAT ports - 80 and 443 if SSL filtering is enabled
+	$pf_nat_ports = ($squid_conf['ssl_proxy'] == "on" ? "{80,443}" : "80");
 
-	// define ports based on transparent options and ssl filtering
-	$pf_rule_port = ($squid_conf['ssl_proxy'] == "on" ? "{80,443}" : "80");
+	/*
+	 * When transparent proxy is enabled and we are doing NAT, use rdr pass to pass traffic
+	 * For PPPoE server, the $pppoe below is a pf macro, not a PHP variable, needs to be escaped.
+	 */
 	switch($type) {
 		case 'nat':
+			// No NAT rules if transparent proxy is not enabled
+			if ($squid_conf['transparent_proxy'] != 'on') {
+				break;
+			}
 			$rules .= "\n# Setup Squid proxy redirect\n";
+			/* Bypass Proxy for Private Address Destination - RFC1918 */
 			if ($squid_conf['private_subnet_proxy_off'] == 'on') {
 				foreach ($transparent_ifaces as $iface) {
 					$pf_transparent_rule_port = (in_array($iface, $ssl_ifaces) ? "{80,443}" : "80");
@@ -2095,9 +2094,10 @@ function squid_generate_rules($type) {
 				}
 				/* Handle PPPOE case */
 				if (($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) || (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) {
-					$rules .= "no rdr on $PPPOE_ALIAS proto tcp from any to { 192.168.0.0/16, 172.16.0.0/12, 10.0.0.0/8 } port {$pf_rule_port}\n";
+					$rules .= "no rdr on \$pppoe proto tcp from any to { 192.168.0.0/16, 172.16.0.0/12, 10.0.0.0/8 } port {$pf_nat_ports}\n";
 				}
 			}
+			/* Bypass Proxy for These Source IPs */
 			if (!empty($squid_conf['defined_ip_proxy_off'])) {
 				$defined_ip_proxy_off = explode(";", $squid_conf['defined_ip_proxy_off']);
 				$exempt_ip = "";
@@ -2117,9 +2117,10 @@ function squid_generate_rules($type) {
 				}
 				/* Handle PPPOE case */
 				if (($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) || (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) {
-					$rules .= "no rdr on $PPPOE_ALIAS proto tcp from { $exempt_ip } to any port {$pf_rule_port}\n";
+					$rules .= "no rdr on \$pppoe proto tcp from { $exempt_ip } to any port {$pf_nat_ports}\n";
 				}
 			}
+			/* Bypass Proxy for These Destination IPs */
 			if (!empty($squid_conf['defined_ip_proxy_off_dest'])) {
 				$defined_ip_proxy_off_dest = explode(";", $squid_conf['defined_ip_proxy_off_dest']);
 				$exempt_dest = "";
@@ -2139,33 +2140,46 @@ function squid_generate_rules($type) {
 				}
 				/* Handle PPPOE case */
 				if (($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) || (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) {
-					$rules .= "no rdr on $PPPOE_ALIAS proto tcp from any to { $exempt_dest } port {$pf_rule_port}\n";
+					$rules .= "no rdr on \$pppoe proto tcp from any to { $exempt_dest } port {$pf_nat_ports}\n";
 				}
 			}
+			/* Transparent Proxy Interface(s) */
 			foreach ($transparent_ifaces as $t_iface) {
-				$pf_transparent_rule_port = (in_array($t_iface, $ssl_ifaces) ? "{80,443}" : "80");
-				$rules .= "rdr on $t_iface proto tcp from any to !($t_iface) port 80 -> 127.0.0.1 port {$port}\n";
+				$rules .= "rdr pass on $t_iface proto tcp from any to !($t_iface) port 80 -> 127.0.0.1 port {$port}\n";
 				if (in_array($t_iface, $ssl_ifaces)) {
-					$rules .= "rdr on $t_iface proto tcp from any to !($t_iface) port 443 -> 127.0.0.1 port {$ssl_port}\n";
+					$rules .= "rdr pass on $t_iface proto tcp from any to !($t_iface) port 443 -> 127.0.0.1 port {$ssl_port}\n";
 				}
 			}
-			/* Handle PPPOE case */
+			/*
+			 * Transparent Proxy Interface(s) - handle the PPPOE case
+			 * For PPPoE server, mpd uses a group of different _local_ interfaces
+			 * The rules below are needed so that the clients can be transparently proxied
+			 */
 			if (($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) || (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) {
-				$rules .= "rdr on $PPPOE_ALIAS proto tcp from any to !127.0.0.1 port {$pf_rule_port} -> 127.0.0.1 port {$port}\n";
+				$rules .= "rdr pass on \$pppoe proto tcp from any to !127.0.0.1 port 80 -> 127.0.0.1 port {$port}\n";
+				if ($squid_conf['ssl_proxy'] == "on") {
+					$rules .= "rdr pass on \$pppoe proto tcp from any to !127.0.0.1 port 443 -> 127.0.0.1 port {$ssl_port}\n";
+				}
 			}
 			$rules .= "\n";
 			break;
 		case 'filter':
 		case 'rule':
-			foreach ($transparent_ifaces as $iface) {
-				$pf_transparent_rule_port = (in_array($iface, $ssl_ifaces) ? "{80,443,{$port},{$ssl_port}}" : "{80,{$port}}");
-				$rules .= "# Setup squid pass rules for proxy\n";
-				$rules .= "pass in quick on $iface proto tcp from any to !($iface) port {$pf_transparent_rule_port} flags S/SA keep state\n";
-				// $rules .= "pass in quick on $iface proto tcp from any to !($iface) port {$port} flags S/SA keep state\n";
-				$rules .= "\n";
-			}
-			if ($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) {
-				$rules .= "pass in quick on $PPPOE_ALIAS proto tcp from any to !127.0.0.1 port {$port} flags S/SA keep state\n";
+			/*
+			 * Non-Transparent Proxy Interface(s)
+			 * Pass traffic to proxy ports on the proxy interface(s) when 'Allow Users on Interface' is enabled
+			 * XXX: Consider ACLs > Allowed Subnets
+			 */
+			if ($squid_conf['allow_interface'] == 'on') {
+				foreach ($proxy_ifaces as $iface) {
+					$rules .= "# Setup squid pass rules for proxy\n";
+					$rules .= "pass in quick on $iface proto tcp from any to ($iface) port {$pf_rule_ports} flags S/SA keep state\n";
+					$rules .= "\n";
+				}
+				/* Handle PPPOE case */
+				if ($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) {
+					$rules .= "pass in quick on \$pppoe proto tcp from any to {$config['pppoe']['localip']} port {$pf_rule_ports} flags S/SA keep state\n";
+				}
 			}
 			break;
 		default:
