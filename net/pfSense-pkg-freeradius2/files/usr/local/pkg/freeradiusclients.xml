@@ -234,7 +234,7 @@
 			<description>
 				<![CDATA[
 				Takes only effect if you use TCP as protocol.
-				This is the mirror of "Max Requests Server" from "Settings" tab.<br/>
+				Limits the number of simultaneous TCP connections from a client.<br/>
 				<span class="text-info">(Default 16)</span>
 				]]>
 			</description>
@@ -261,7 +261,7 @@
 				Leave empty to choose (s)radutmp. <span class="text-info">(Default: empty)</span>
 				]]>
 			</description>
-			<type>input</type>
+			<type>password</type>
 		</field>
 		<field>
 			<fielddescr>Description</fielddescr>
@@ -280,4 +280,7 @@
 	<custom_php_resync_config_command>
 		freeradius_clients_resync();
 	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		freeradius_validate_clients($_POST, $input_errors);
+	</custom_php_validation_command>
 </packagegui>
