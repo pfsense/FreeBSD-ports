@@ -198,11 +198,11 @@
 			</options>
 		</field>
 		<field>
-			<fielddescr>Server IP Address</fielddescr>
+			<fielddescr>Server Address</fielddescr>
 			<fieldname>varsqlconfserver</fieldname>
 			<description>
 				<![CDATA[
-				Enter the IP address of the database server.
+				Database server FQDN or IP address.
 				<span class="text-info">(Default: localhost)</span>
 				]]>
 			</description>
@@ -210,7 +210,7 @@
 			<default_value>localhost</default_value>
 		</field>
 		<field>
-			<fielddescr>Server Port Address</fielddescr>
+			<fielddescr>Server Port</fielddescr>
 			<fieldname>varsqlconfport</fieldname>
 			<description>
 				<![CDATA[
@@ -636,11 +636,11 @@
 			</options>
 		</field>
 		<field>
-			<fielddescr>Server IP Address</fielddescr>
+			<fielddescr>Server Address</fielddescr>
 			<fieldname>varsqlconf2server</fieldname>
 			<description>
 				<![CDATA[
-				Enter the IP address of the database server.
+				Database server FQDN or IP address.
 				<span class="text-info">(Default: localhost)</span>
 				]]>
 			</description>
@@ -648,7 +648,7 @@
 			<default_value>localhost</default_value>
 		</field>
 		<field>
-			<fielddescr>Server Port Address</fielddescr>
+			<fielddescr>Server Port</fielddescr>
 			<fieldname>varsqlconf2port</fieldname>
 			<description>
 				<![CDATA[
@@ -936,4 +936,7 @@
 	<custom_php_resync_config_command>
 		freeradius_sqlconf_resync();
 	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		freeradius_validate_sql($_POST, $input_errors);
+	</custom_php_validation_command>
 </packagegui>
