@@ -4409,4 +4409,340 @@ EOD;
 	conf_mount_ro();
 }
 
+/*
+ * FreeRADIUS input validation
+ */
+
+/* EAP settings input validation */
+function freeradius_validate_eap($post, &$input_errors) {
+
+	// Disable Weak EAP Types sanity check
+	if ($post['vareapconfdisableweakeaptypes'] == 'on') {
+		if ($post['vareapconfdefaulteaptype'] == 'md5' || $post['vareapconfdefaulteaptype'] == 'gtc' || $post['vareapconfdefaulteaptype'] == 'leap') {
+			$input_errors[] = "The 'Default EAP Type' field must not contain any of the weak types when 'Disable Weak EAP Types' is enabled.";
+		}
+	}
+
+	// EAP Maximum Sessions Tracking Per Server
+	if ($post['vareapconfmaxsessions'] != '' && !is_numericint($post['vareapconfmaxsessions'])) {
+		$input_errors[] = "The 'Maximum Sessions Tracking Per Server' field must contain an integer value.";
+	}
+
+	// EAP Certificates for TLS sanity checking
+	if ($post['vareapconfchoosecertmanager'] == 'on') {
+		// EAP Private Key Password should be empty if using pfSense Cert Manager
+		if ($post['vareapconfprivatekeypassword'] != '') {
+			$input_errors[] = "When using pfSense Certificate Management, the 'Private Key Password' field must be empty.";
+		}
+	} else {
+		// SSL CA Certificate, SSL Revocation List and SSL Server Certificate should be 'none' if using the deprecated FreeRADIUS Cert Manager
+		if ($post['ssl_ca_cert'] != 'none') {
+			$input_errors[] = "When using the deprecated FreeRADIUS Cert Manager, the 'SSL CA Certificate' field must be set to 'none'.";
+		}
+		if ($post['ssl_ca_crl'] != 'none') {
+			$input_errors[] = "When using the deprecated FreeRADIUS Cert Manager, the 'SSL Revocation List' field must be set to 'none'.";
+		}
+		if ($post['ssl_server_cert'] != 'none') {
+			$input_errors[] = "When using the deprecated FreeRADIUS Cert Manager, the 'SSL Server Certificate' field must be set to 'none'.";
+		}
+	}
+
+	// EAP-TLS Fragment Size
+	if ($post['vareapconffragmentsize'] != '') {
+		if (!is_numericint($post['vareapconffragmentsize'])) {
+			$input_errors[] = "The 'Fragment Size' field must contain an integer value.";
+		} elseif ($post['vareapconffragmentsize'] > 4096) {
+			$input_errors[] = "The 'Fragment Size' field must contain an integer value not higher than 4096.";
+		}
+	}
+
+	// EAP-TLS Cache Lifetime
+	if ($post['vareapconfcachelifetime'] != '' && !is_numericint($post['vareapconfcachelifetime'])) {
+		$input_errors[] = "The EAP-TLS Cache 'Lifetime' field must contain an integer value.";
+	}
+
+	// EAP-TLS Cache Max Entries
+	if ($post['vareapconfcachemaxentries'] != '' && !is_numericint($post['vareapconfcachemaxentries'])) {
+		$input_errors[] = "The EAP-TLS Cache 'Max Entries' field must contain an integer value.";
+	}
+
+	// EAP-TLS OCSP Responder
+	if (!empty($post['vareapconfocspurl'])) {
+		if (!filter_var($post['vareapconfocspurl'], FILTER_VALIDATE_URL)) {
+			$input_errors[] = "The 'OCSP Responder' field must contain a valid URL.";
+		}
+	}
+
+	/*
+	 * TODO: 
+	 * EAP-TLS - Country, State or Province, City, Organization, E-Mail Address, Common Name
+	 */
+
+}
+
+/* SQL settings input validation */
+function freeradius_validate_sql($post, &$input_errors) {
+
+	// SQL Server Address
+	if ($post['varsqlconfincludeenable'] == 'on') {
+		if (empty($post['varsqlconfserver'])) {
+			$input_errors[] = "The 'Server Address' field for SQL Server 1 must not be empty when 'SQL Support' for Server 1 is enabled.";
+		} elseif (!is_ipaddr($post['varsqlconfserver']) && !is_hostname($post['varsqlconfserver']) && !is_domain($post['varsqlconfserver'])) {
+			$input_errors[] = "The 'Server Address' field for SQL Server 1 must contain a valid FQDN or IP address.";
+		}
+	}
+	if ($post['varsqlconf2includeenable'] == 'on') {
+		if (empty($post['varsqlconf2server'])) {
+			$input_errors[] = "The 'Server Address' field for SQL Server 2 must not be empty when 'SQL Support' for Server 2 is enabled.";
+		} elseif (!is_ipaddr($post['varsqlconf2server']) && !is_hostname($post['varsqlconf2server']) && !is_domain($post['varsqlconf2server'])) {
+			$input_errors[] = "The 'Server Address' field for SQL Server 2 must contain a valid FQDN or IP address.";
+		}
+	}
+
+	// SQL Server Port
+	if ($post['varsqlconfincludeenable'] == 'on') {
+		if (empty($post['varsqlconfport'])) {
+			$input_errors[] = "The 'Server Port' field for SQL Server 1 must not be empty when 'SQL Support' for Server 1 is enabled.";
+		} elseif (!is_port($post['varsqlconfport'])) {
+			$input_errors[] = "The 'Server Port' field for SQL Server 1 must contain a valid port.";
+		}
+	}
+	if ($post['varsqlconf2includeenable'] == 'on') {
+		if (empty($post['varsqlconf2port'])) {
+			$input_errors[] = "The 'Server Port' field for SQL Server 2 must not be empty when 'SQL Support' for Server 1 is enabled.";
+		} elseif (!is_port($post['varsqlconf2port'])) {
+			$input_errors[] = "The 'Server Port' field for SQL Server 2 must contain a valid port.";
+		}
+	}
+
+	// SQL Server Database Username
+	if ($post['varsqlconfincludeenable'] == 'on') {
+		if (empty($post['varsqlconflogin'])) {
+			$input_errors[] = "The 'Database Username' field for SQL Server 1 must not be empty when 'SQL Support' for Server 1 is enabled.";
+		}
+		/* TODO: Username sanity checking */
+	}
+	if ($post['varsqlconf2includeenable'] == 'on') {
+		if (empty($post['varsqlconf2login'])) {
+			$input_errors[] = "The 'Database Username' field for SQL Server 2 must not be empty when 'SQL Support' for Server 1 is enabled.";
+		}
+		/* TODO: Username sanity checking */
+	}
+
+	// SQL Server Database Password
+	if ($post['varsqlconfincludeenable'] == 'on') {
+		if (empty($post['varsqlconfpassword'])) {
+			$input_errors[] = "The 'Database Password' field for SQL Server 1 must not be empty when 'SQL Support' for Server 1 is enabled.";
+		}
+	}
+	if ($post['varsqlconf2includeenable'] == 'on') {
+		if (empty($post['varsqlconf2password'])) {
+			$input_errors[] = "The 'Database Password' field for SQL Server 2 must not be empty when 'SQL Support' for Server 1 is enabled.";
+		}
+	}
+
+	// SQL Server Database Table Configuration
+	if ($post['varsqlconfincludeenable'] == 'on') {
+		if (empty($post['varsqlconfradiusdb'])) {
+			$input_errors[] = "The 'Database Table Configuration' field for SQL Server 1 must not be empty when 'SQL Support' for Server 1 is enabled.";
+		}
+		/* TODO: DB table name sanity checking */
+	}
+	if ($post['varsqlconf2includeenable'] == 'on') {
+		if (empty($post['varsqlconf2radiusdb'])) {
+			$input_errors[] = "The 'Database Table Configuration' field for SQL Server 2 must not be empty when 'SQL Support' for Server 1 is enabled.";
+		}
+		/* TODO: DB table name sanity checking */
+	}
+
+	// SQL Server Number of SQL Connections
+	if ($post['varsqlconfnumsqlsocks'] != '' && !is_numericint($post['varsqlconfnumsqlsocks'])) {
+		$input_errors[] = "The 'Number of SQL Connections' field for SQL Server 1 must contain an integer value.";
+	}
+	if ($post['varsqlconf2numsqlsocks'] != '' && !is_numericint($post['varsqlconf2numsqlsocks'])) {
+		$input_errors[] = "The 'Number of SQL Connections' field for SQL Server 2 must contain an integer value.";
+	}
+
+	// SQL Server Failed Database Connection Delay
+	if ($post['varsqlconfconnectfailureretrydelay'] != '' && !is_numericint($post['varsqlconfconnectfailureretrydelay'])) {
+		$input_errors[] = "The 'Failed Database Connection Delay' field for SQL Server 1 must contain an integer value.";
+	}
+	if ($post['varsqlconf2connectfailureretrydelay'] != '' && !is_numericint($post['varsqlconf2connectfailureretrydelay'])) {
+		$input_errors[] = "The 'Failed Database Connection Delay' field for SQL Server 2 must contain an integer value.";
+	}
+
+	// SQL Server SQL Socket Lifetime
+	if ($post['varsqlconflifetime'] != '' && !is_numericint($post['varsqlconflifetime'])) {
+		$input_errors[] = "The 'SQL Socket Lifetime' field for SQL Server 1 must contain an integer value.";
+	}
+	if ($post['varsqlconf2lifetime'] != '' && !is_numericint($post['varsqlconf2lifetime'])) {
+		$input_errors[] = "The 'SQL Socket Lifetime' field for SQL Server 2 must contain an integer value.";
+	}
+
+	// SQL Server SQL Socket Maximum Queries
+	if ($post['varsqlconfmaxqueries'] != '' && !is_numericint($post['varsqlconfmaxqueries'])) {
+		$input_errors[] = "The 'SQL Socket Maximum Queries' field for SQL Server 1 must contain an integer value.";
+	}
+	if ($post['varsqlconf2maxqueries'] != '' && !is_numericint($post['varsqlconf2maxqueries'])) {
+		$input_errors[] = "The 'SQL Socket Maximum Queries' field for SQL Server 2 must contain an integer value.";
+	}
+
+	/*
+	 * TODO:
+	 * SQL Database Configuration
+	 * - Accounting Table 1 (Start), Accounting Table 2 (Stop), Post Auth Table, Auth Check Table, Auth Reply Table,
+	 * - Group Check Table, Group Reply Table, User Group Table, RADIUS Client Table
+	 */
+
+}
+
+
+/* LDAP settings input validation */
+function freeradius_validate_ldap($post, &$input_errors) {
+	global $config;
+
+	// LDAP Server Address
+	if ($post['varmodulesldapenableauthorize'] == 'on') {
+		if (empty($post['varmodulesldapserver'])) {
+			$input_errors[] = "The 'Server Address' field for LDAP Server 1 must not be empty when 'LDAP Authorization Support' for Server 1 is enabled.";
+		} elseif (!is_ipaddr($post['varmodulesldapserver']) && !is_hostname($post['varmodulesldapserver']) && !is_domain($post['varmodulesldapserver'])) {
+			$input_errors[] = "The 'Server Address' field for LDAP Server 1 must contain a valid FQDN or IP address.";
+		}
+	}
+	if ($post['varmodulesldap2enableauthorize'] == 'on') {
+		if (empty($post['varmodulesldap2server'])) {
+			$input_errors[] = "The 'Server Address' field for LDAP Server 2 must not be empty when 'LDAP Authorization Support' for Server 2 is enabled.";
+		} elseif (!is_ipaddr($post['varmodulesldap2server']) && !is_hostname($post['varmodulesldap2server']) && !is_domain($post['varmodulesldap2server'])) {
+			$input_errors[] = "The 'Server Address' field for LDAP Server 2 must contain a valid FQDN or IP address.";
+		}
+	}
+
+	// LDAP Server Port
+	if ($post['varmodulesldapenableauthorize'] == 'on') {
+		if (empty($post['varmodulesldapserverport'])) {
+			$input_errors[] = "The 'Server Port' field for LDAP Server 1 must not be empty when 'LDAP Authorization Support' for Server 1 is enabled.";
+		} elseif (!is_port($post['varmodulesldapserverport'])) {
+			$input_errors[] = "The 'Server Port' field for LDAP Server 1 must contain a valid port.";
+		}
+	}
+	if ($post['varmodulesldap2enableauthorize'] == 'on') {
+		if (empty($post['varmodulesldap2serverport'])) {
+			$input_errors[] = "The 'Server Port' field for LDAP Server 2 must not be empty when 'LDAP Authorization Support' for Server 2 is enabled.";
+		} elseif (!is_port($post['varmodulesldap2serverport'])) {
+			$input_errors[] = "The 'Server Port' field for LDAP Server 2 must contain a valid port.";
+		}
+	}
+
+	// LDAP Server Identity
+	if ($post['varmodulesldapenableauthorize'] == 'on') {
+		if (empty($post['varmodulesldapidentity'])) {
+			$input_errors[] = "The 'Identity' field for LDAP Server 1 must not be empty when 'LDAP Authorization Support' for Server 1 is enabled.";
+		}
+		/* TODO: Identity sanity checking */
+	}
+	if ($post['varmodulesldap2enableauthorize'] == 'on') {
+		if (empty($post['varmodulesldap2identity'])) {
+			$input_errors[] = "The 'Identity' field for LDAP Server 2 must not be empty when 'LDAP Authorization Support' for Server 2 is enabled.";
+		}
+		/* TODO: Identity sanity checking */
+	}
+
+	// LDAP Server Password
+	if ($post['varmodulesldapenableauthorize'] == 'on') {
+		if (empty($post['varmodulesldappassword'])) {
+			$input_errors[] = "The 'Server Password' field for LDAP Server 1 must not be empty when 'LDAP Authorization Support' for Server 1 is enabled.";
+		}
+	}
+	if ($post['varmodulesldap2enableauthorize'] == 'on') {
+		if (empty($post['varmodulesldap2password'])) {
+			$input_errors[] = "The 'Server Password' field for LDAP Server 2 must not be empty when 'LDAP Authorization Support' for Server 2 is enabled.";
+		}
+	}
+
+	// LDAP Connections Number
+	if ($post['varmodulesldapldapconnectionsnumber'] != '' && !is_numericint($post['varmodulesldapldapconnectionsnumber'])) {
+		$input_errors[] = "The 'LDAP Connections Number' field for LDAP Server 1 must contain an integer value.";
+	}
+	if ($post['varmodulesldap2ldapconnectionsnumber'] != '' && !is_numericint($post['varmodulesldap2ldapconnectionsnumber'])) {
+		$input_errors[] = "The 'LDAP Connections Number' field for LDAP Server 2 must contain an integer value.";
+	}
+
+	// LDAP Timeout
+	if ($post['varmodulesldaptimeout'] != '' && !is_numericint($post['varmodulesldaptimeout'])) {
+		$input_errors[] = "The 'Timeout' field for LDAP Server 1 must contain an integer value.";
+	}
+	if ($post['varmodulesldap2timeout'] != '' && !is_numericint($post['varmodulesldap2timeout'])) {
+		$input_errors[] = "The 'Timeout' field for LDAP Server 2 must contain an integer value.";
+	}
+
+	// LDAP Time Limit
+	if ($post['varmodulesldaptimelimit'] != '' && !is_numericint($post['varmodulesldaptimelimit'])) {
+		$input_errors[] = "The 'Time Limit' field for LDAP Server 1 must contain an integer value.";
+	}
+	if ($post['varmodulesldap2timelimit'] != '' && !is_numericint($post['varmodulesldap2timelimit'])) {
+		$input_errors[] = "The 'Time Limit' field for LDAP Server 2 must contain an integer value.";
+	}
+
+	// LDAP Network Timeout
+	if ($post['varmodulesldapnettimeout'] != '' && !is_numericint($post['varmodulesldapnettimeout'])) {
+		$input_errors[] = "The 'Network Timeout' field for LDAP Server 1 must contain an integer value.";
+	}
+	if ($post['varmodulesldap2nettimeout'] != '' && !is_numericint($post['varmodulesldap2nettimeout'])) {
+		$input_errors[] = "The 'Network Timeout' field for LDAP Server 2 must contain an integer value.";
+	}
+
+	// LDAP KeepAlive Configuration
+	if ($post['varmodulesldapkeepaliveidle'] != '' && !is_numericint($post['varmodulesldapkeepaliveidle'])) {
+		$input_errors[] = "The 'LDAP OPT X KeepAlive Idle' field for LDAP Server 1 must contain an integer value.";
+	}
+	if ($post['varmodulesldap2keepaliveidle'] != '' && !is_numericint($post['varmodulesldap2keepaliveidle'])) {
+		$input_errors[] = "The 'LDAP OPT X KeepAlive Idle' field for LDAP Server 2 must contain an integer value.";
+	}
+	if ($post['varmodulesldapkeepaliveprobes'] != '' && !is_numericint($post['varmodulesldapkeepaliveprobes'])) {
+		$input_errors[] = "The 'LDAP OPT X KeepAlive Probes' field for LDAP Server 1 must contain an integer value.";
+	}
+	if ($post['varmodulesldap2keepaliveprobes'] != '' && !is_numericint($post['varmodulesldap2keepaliveprobes'])) {
+		$input_errors[] = "The 'LDAP OPT X KeepAlive Probes' field for LDAP Server 2 must contain an integer value.";
+	}
+	if ($post['varmodulesldapkeepaliveinterval'] != '' && !is_numericint($post['varmodulesldapkeepaliveinterval'])) {
+		$input_errors[] = "The 'LDAP OPT X KeepAlive Interval' field for LDAP Server 1 must contain an integer value.";
+	}
+	if ($post['varmodulesldap2keepaliveinterval'] != '' && !is_numericint($post['varmodulesldap2keepaliveinterval'])) {
+		$input_errors[] = "The 'LDAP OPT X KeepAlive Interval' field for LDAP Server 2 must contain an integer value.";
+	}
+
+	// SSL CA Certificate/SSL Server Certificate should be 'none' if using the deprecated FreeRADIUS Cert Manager
+	if (is_array($config['installedpackages']['freeradiuseapconf']['config'][0])) {
+		$eapconf = $config['installedpackages']['freeradiuseapconf']['config'][0];
+	} else {
+		$eapconf = array();
+	}
+	if ($eapconf['vareapconfchoosecertmanager'] != 'on') {
+		if ($post['varmodulesldapenabletlssupport'] == 'on') {
+			if ($post['ssl_ca_cert1'] != 'none') {
+				$input_errors[] = "When using the deprecated FreeRADIUS Cert Manager, the 'SSL CA Certificate' field for LDAP Server 1 must be set to 'none'.";
+			}
+			if ($post['ssl_server_cert1'] != 'none') {
+				$input_errors[] = "When using the deprecated FreeRADIUS Cert Manager, the 'SSL Server Certificate' field for LDAP Server 1 must be set to 'none'.";
+			}
+		}
+		if ($post['varmodulesldap2enabletlssupport'] == 'on') {
+			if ($post['ssl_ca_cert2'] != 'none') {
+				$input_errors[] = "When using the deprecated FreeRADIUS Cert Manager, the 'SSL CA Certificate' field for LDAP Server 2 must be set to 'none'.";
+			}
+			if ($post['ssl_server_cert2'] != 'none') {
+				$input_errors[] = "When using the deprecated FreeRADIUS Cert Manager, the 'SSL Server Certificate' field for LDAP Server 2 must be set to 'none'.";
+			}
+		}
+	}
+
+	/*
+	 * TODO: 
+	 * General Configuration - Base DN, Filter, Base Filter
+	 * Miscellaneous Configuration - Default Profile, Profile Attribute, Access Attribute
+	 * Group Membership Options - Groupname Attribute, Group Membership Filter, Group Membership Attribute
+	 */
+
+}
+
 ?>
