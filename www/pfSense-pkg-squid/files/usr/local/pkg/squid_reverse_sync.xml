@@ -101,13 +101,11 @@
 				<rowhelperfield>
 					<fielddescr>Enable</fielddescr>
 					<fieldname>syncdestinenable</fieldname>
-					<description><![CDATA[Enable this host as a replication target]]></description>
 					<type>checkbox</type>
 				</rowhelperfield>
 				<rowhelperfield>
 					<fielddescr>Protocol</fielddescr>
 					<fieldname>syncprotocol</fieldname>
-					<description><![CDATA[Choose the protocol used to sync with the destination host (HTTP or HTTPS).]]></description>
 					<type>select</type>
 					<default_value>HTTP</default_value>
 					<options>
@@ -119,7 +117,6 @@
 				<rowhelperfield>
 					<fielddescr>IP Address/Hostname</fielddescr>
 					<fieldname>ipaddress</fieldname>
-					<description><![CDATA[IP address or hostname of the destination host.]]></description>
 					<type>input</type>
 					<required/>
 					<width>2</width>
@@ -127,15 +124,19 @@
 				<rowhelperfield>
 					<fielddescr>Port</fielddescr>
 					<fieldname>syncport</fieldname>
-					<description><![CDATA[Choose the sync port of the destination host.]]></description>
 					<type>input</type>
 					<width>1</width>
 					<required/>
 				</rowhelperfield>
 				<rowhelperfield>
-					<fielddescr>Admin Password</fielddescr>
+					<fielddescr>Username</fielddescr>
+					<fieldname>username</fieldname>
+					<type>input</type>
+					<width>2</width>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Password</fielddescr>
 					<fieldname>password</fieldname>
-					<description><![CDATA[Password of the user "admin" on the destination host.]]></description>
 					<type>password</type>
 					<width>2</width>
 					<required/>
