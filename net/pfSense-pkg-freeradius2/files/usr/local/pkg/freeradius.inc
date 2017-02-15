@@ -27,6 +27,7 @@ require_once("functions.inc");
 require_once("globals.inc");
 require_once("notices.inc");
 require_once("openvpn.inc");
+require_once("pfsense-utils.inc");
 require_once("pkg-utils.inc");
 require_once("services.inc");
 require_once("service-utils.inc");
@@ -4412,6 +4413,145 @@ EOD;
 /*
  * FreeRADIUS input validation
  */
+
+/* Interfaces input validation */
+function freeradius_validate_interfaces($post, &$input_errors) {
+
+	// Interface IP Address
+	if (empty($post['varinterfaceip'])) {
+		$input_errors[] = "The 'Interface IP Address' field must not be empty.";
+	} elseif ($post['varinterfaceip'] != '*') {
+		if ($post['varinterfaceipversion'] == 'ipaddr' && !is_ipaddrv4($post['varinterfaceip'])) {
+			$input_errors[] = "The 'Interface IP Address' must contain a valid IPv4 address when IPv4 is selected under 'IP Version'.";
+		}
+		if ($post['varinterfaceipversion'] == 'ipv6addr' && !is_ipaddrv6($post['varinterfaceip'])) {
+			$input_errors[] = "The 'Interface IP Address' must contain a valid IPv6 address when IPv6 is selected under 'IP Version'.";
+		}
+		if (!is_ipaddr_configured($post['varinterfaceip'])) {
+			$input_errors[] = "The 'Interface IP Address' must contain a valid, locally configured IP address!";
+		}
+	}
+
+	// Port
+	if (empty($post['varinterfaceport'])) {
+		$input_errors[] = "The 'Port' field must not be empty.";
+	} elseif (!is_port($post['varinterfaceport'])) {
+		$input_errors[] = "The 'Port' field must contain a valid port.";
+	}
+
+	// Description
+	if ($post['description'] && !preg_match("/^[a-zA-Z0-9 _,.;:+=()-]*$/", $post['description'])) {
+		$input_errors[] = "Do not use special characters in the 'Description' field; only /^[a-zA-Z0-9 _,.;:+=()-]*$/ allowed.";
+	}
+
+	/*
+	 * TODO: Check that the configured port is unique for the selected Interface Type/IP address.
+	 */
+
+}
+
+/* General Settings input validation */
+function freeradius_validate_settings($post, &$input_errors) {
+
+	// Maximum Requests Tracked
+	if ($post['varsettingsmaxrequests'] != '' && !is_numericint($post['varsettingsmaxrequests'])) {
+		$input_errors[] = "The 'Maximum Requests Tracked' field must contain an integer value.";
+	}
+
+	// Maximum Request Timeout
+	if ($post['varsettingsmaxrequesttime'] != '' && !is_numericint($post['varsettingsmaxrequesttime'])) {
+		$input_errors[] = "The 'Maximum Request Timeout' field must contain an integer value.";
+	}
+
+	// Cleanup Delay
+	if ($post['varsettingscleanupdelay'] != '' && !is_numericint($post['varsettingscleanupdelay'])) {
+		$input_errors[] = "The 'Cleanup Delay' field must contain an integer value.";
+	}
+
+	// Maximum Number of Attributes
+	if ($post['varsettingsmaxattributes'] != '' && !is_numericint($post['varsettingsmaxattributes'])) {
+		$input_errors[] = "The 'Maximum Number of Attributes' field must contain an integer value.";
+	}
+
+	// Access-Reject Delay
+	if ($post['varsettingsrejectdelay'] != '' && !is_numericint($post['varsettingsrejectdelay'])) {
+		$input_errors[] = "The 'Access-Reject Delay' field must contain an integer value.";
+	}
+
+	// Number of Threads After Start
+	if ($post['varsettingsstartservers'] != '' && !is_numericint($post['varsettingsstartservers'])) {
+		$input_errors[] = "The 'Number of Threads After Start' field must contain an integer value.";
+	}
+
+	// Maximum Number of Threads
+	if ($post['varsettingsmaxservers'] != '' && !is_numericint($post['varsettingsmaxservers'])) {
+		$input_errors[] = "The 'Maximum Number of Threads' field must contain an integer value.";
+	}
+
+	// Minimum Spare Servers
+	if ($post['varsettingsminspareservers'] != '' && !is_numericint($post['varsettingsminspareservers'])) {
+		$input_errors[] = "The 'Minimum Spare Servers' field must contain an integer value.";
+	}
+
+	// Maximum Spare Servers
+	if ($post['varsettingsmaxspareservers'] != '' && !is_numericint($post['varsettingsmaxspareservers'])) {
+		$input_errors[] = "The 'Maximum Spare Servers' field must contain an integer value.";
+	}
+
+	// Server Packet Queue Size
+	if ($post['varsettingsmaxqueuesize'] != '' && !is_numericint($post['varsettingsmaxqueuesize'])) {
+		$input_errors[] = "The 'Server Packet Queue Size' field must contain an integer value.";
+	}
+
+	// Maximum Requests Per Server
+	if ($post['varsettingsmaxrequestsperserver'] != '' && !is_numericint($post['varsettingsmaxrequestsperserver'])) {
+		$input_errors[] = "The 'Maximum Requests Per Server' field must contain an integer value.";
+	}
+
+	// OTP Lifetime
+	if ($post['varsettingsmotpenable'] == 'on') {
+		if ($post['varsettingsmotptimespan'] === 0) {
+			$input_errors[] = "The 'OTP Lifetime' field must not be 0.";
+		} elseif (empty($post['varsettingsmotptimespan'])) {
+			$input_errors[] = "The 'OTP Lifetime' field must not be empty.";
+		} elseif (!is_numericint($post['varsettingsmotptimespan'])) {
+			$input_errors[] = "The 'OTP Lifetime' field must contain an integer value.";
+		} elseif ($post['varsettingsmotptimespan'] > 12) {
+			$input_errors[] = "The 'OTP Lifetime' field should contain only sane secure values. Values higher than 12 (~120 seconds) are not allowed.";
+		}
+	}
+
+	// Number of Invalid Password Attempts
+	if ($post['varsettingsmotpenable'] == 'on') {
+		if ($post['varsettingsmotppasswordattempts'] === 0) {
+			$input_errors[] = "The 'OTP Lifetime' field must not be 0.";
+		} elseif (empty($post['varsettingsmotppasswordattempts'])) {
+			$input_errors[] = "The 'OTP Lifetime' field must not be empty.";
+		} elseif (!is_numericint($post['varsettingsmotppasswordattempts'])) {
+			$input_errors[] = "The 'OTP Lifetime' field must contain an integer value.";
+		} elseif ($post['varsettingsmotppasswordattempts'] > 20) {
+			$input_errors[] = "The 'OTP Lifetime' field should contain only sane secure values. Values higher than 20 are not allowed.";
+		}
+	}
+
+	// Token Password Length
+	if ($post['varsettingsmotptokenlength'] == 'on') {
+		$digits = explode("-", $post['varsettingsmotptokenlength']);
+		if (count($digits) != 2 || !is_numericint($digits[0]) || !is_numericint($digits[1])) {
+			$input_errors[] = "The 'Token Password Length' field must contain a valid range separated with a '-' character; e.g.: 1-6.";
+		} elseif ($digits[0] >= $digits[1]) {
+			$input_errors[] = "The 'Token Password Length' start of range must not be equal or higher than the end of the range.";
+		}
+	}
+
+	/*
+	 * TODO:
+	 * Logging Configuration - Additional Information for Bad Attempts, Additional Information for Good Attempts
+	 * Miscellaneous Configuration - Default Profile, Profile Attribute, Access Attribute
+	 * Group Membership Options - Groupname Attribute, Group Membership Filter, Group Membership Attribute
+	 */
+
+}
 
 /* EAP settings input validation */
 function freeradius_validate_eap($post, &$input_errors) {
