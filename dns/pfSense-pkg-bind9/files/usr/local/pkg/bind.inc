@@ -887,13 +887,13 @@ EOD;
 }
 
 /* Uses XMLRPC to synchronize the changes to a remote node */
-function bind_sync_on_changes()
-{
+function bind_sync_on_changes() {
 	global $config, $g;
+
 	if (is_array($config['installedpackages']['bindsync']['config'])) {
 		$bind_sync = $config['installedpackages']['bindsync']['config'][0];
 		$synconchanges = $bind_sync['synconchanges'];
-		$synctimeout = $bind_sync['synctimeout'];
+		$synctimeout = $bind_sync['synctimeout'] ?: '30';
 		$master_zone_ip = $bind_sync['masterip'];
 		switch ($synconchanges) {
 			case 'manual':
@@ -910,6 +910,22 @@ function bind_sync_on_changes()
 					$rs[0]['ipaddress'] = $hasync['synchronizetoip'];
 					$rs[0]['username'] = $hasync['username'];
 					$rs[0]['password'] = $hasync['password'];
+					$rs[0]['syncdestinenable'] = FALSE;
+
+					// XMLRPC sync is currently only supported over connections using the same protocol and port as this system
+					if ($config['system']['webgui']['protocol'] == "http") {
+						$rs[0]['syncprotocol'] = "http";
+						$rs[0]['syncport'] = $config['system']['webgui']['port'] ?: '80';
+					} else {
+						$rs[0]['syncprotocol'] = "https";
+						$rs[0]['syncport'] = $config['system']['webgui']['port'] ?: '443';
+					}
+					if ($hasync['synchronizetoip'] == "") {
+						log_error("[bind] XMLRPC CARP/HA sync is enabled but there are no system backup hosts configured as replication targets.");
+						return;
+					} else {
+						$rs[0]['syncdestinenable'] = TRUE;
+					}
 				} else {
 					log_error("[bind] XMLRPC sync is enabled but there are no system backup hosts to push BIND config.");
 					return;
@@ -922,59 +938,79 @@ function bind_sync_on_changes()
 		if (is_array($rs)) {
 			log_error("[bind] XMLRPC sync is starting.");
 			foreach ($rs as $sh) {
-				$sync_to_ip = $sh['ipaddress'];
-				$password = $sh['password'];
-				if ($sh['username']) {
-					$username = $sh['username'];
-				} else {
-					$username = 'admin';
-				}
-				if ($password && $sync_to_ip) {
-					bind_do_xmlrpc_sync($sync_to_ip, $username, $password, $synctimeout, $master_zone_ip);
+				// Only sync enabled replication targets
+				if ($sh['syncdestinenable']) {
+					$sync_to_ip = $sh['ipaddress'];
+					$port = $sh['syncport'];
+					/* If port is empty let's rely on the protocol selection */
+					if ($port == "") {
+						if ($config['system']['webgui']['protocol'] == "http") {
+							$port = "80";
+						} else {
+							$port = "443";
+						}
+					}
+					$username = $sh['username'] ?: 'admin';
+					$password = $sh['password'];
+					$protocol = $sh['syncprotocol'];
+					/* If protocol is empty let's rely on the webGUI protocol selection */
+					if ($protocol == "") {
+						if ($config['system']['webgui']['protocol'] == "http") {
+							$protocol = "http";
+						} else {
+							$protocol = "https";
+						}
+					}
+
+					$error = '';
+					$valid = TRUE;
+
+					if ($password == "") {
+						$error = "Password parameter is empty. ";
+						$valid = FALSE;
+					}
+					if (!is_ipaddr($sync_to_ip) && !is_hostname($sync_to_ip) && !is_domain($sync_to_ip)) {
+						$error .= "Misconfigured Replication Target IP Address or Hostname. ";
+						$valid = FALSE;
+					}
+					if (!is_port($port)) {
+						$error .= "Misconfigured Replication Target Port. ";
+						$valid = FALSE;
+					}
+					if ($master_zone_ip == "") {
+						$error .= "Zone master IP parameter is empty. ";
+						$valid = FALSE;
+					} elseif (!is_ipaddr($master_zone_ip)) {
+						$error .= "Misconfigured zone master IP Address. ";
+						$valid = FALSE;
+					}
+					if ($valid) {
+						bind_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout, $master_zone_ip);
+					} else {
+						log_error("[bind] XMLRPC sync with '{$sync_to_ip}' aborted due to the following error(s): {$error}");
+					}
 				}
 			}
-			log_error("[bind] XMLRPC sync is ending.");
+			log_error("[bind] XMLRPC sync completed.");
 		}
 	}
 }
 
-if(!function_exists('pf_version')) {
+if (!function_exists('pf_version')) {
 	function pf_version() {
 		return substr(trim(file_get_contents("/etc/version")), 0, 3);
 	}
 }
 
 /* Do the actual XMLRPC sync */
-function bind_do_xmlrpc_sync($sync_to_ip, $username, $password, $synctimeout, $master_zone_ip)
-{
+function bind_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $password, $synctimeout, $master_zone_ip) {
 	global $config, $g;
 
-	if (!$username) {
+	if ($username == "" || $password == "" || $sync_to_ip == "" || $port == "" || $protocol == "" || $master_zone_ip =="") {
+		log_error("[bind] A required XMLRPC sync parameter (username, password, replication target, port, protocol or zone master IP) is empty ... aborting pkg sync");
 		return;
-	}
-
-	if (!$password) {
-		return;
-	}
-
-	if (!$sync_to_ip) {
-		return;
-	}
-
-	if (!$synctimeout) {
-		$synctimeout = 25;
 	}
 	
-	$port = $config['system']['webgui']['port'];
-	/* If port is empty let's rely on the protocol selection */
-	if ($port == "") {
-		if ($config['system']['webgui']['protocol'] == "http") {
-			$port = "80";
-		} else {
-			$port = "443";
-		}
-	}
-
 	/* XML will hold the sections to sync */
 	$xml = array();
 	$xml['bind'] = $config['installedpackages']['bind'];
@@ -995,6 +1031,7 @@ function bind_do_xmlrpc_sync($sync_to_ip, $username, $password, $synctimeout, $m
 		}
 	}
 	
+	/* Commands to reload BIND settings on the destination sync host. */
 	$execcmd = "require_once('/usr/local/pkg/bind.inc');\n";
 	$execcmd .= "bind_sync('yes');";
 	
@@ -1005,20 +1042,20 @@ function bind_do_xmlrpc_sync($sync_to_ip, $username, $password, $synctimeout, $m
 				$xml[$xmlkey] = array();
 			}
 		}
-		$synctimeout = intval($synctimeout);
 		$rpc_client = new pfsense_xmlrpc_client();
-		$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password);
+		$rpc_client->setConnectionData($sync_to_ip, $port, $username, $password, $protocol);
 		$resp = $rpc_client->xmlrpc_method('merge_installedpackages_section', $xml, $synctimeout);
 		$resp = $rpc_client->xmlrpc_exec_php($execcmd, $synctimeout);
 	} else {
 		// pfSense before 2.4
 		require_once('xmlrpc.inc');
-	
-		if ($config['system']['webgui']['protocol'] != "") {
-			$synchronizetoip = $config['system']['webgui']['protocol'];
-			$synchronizetoip .= "://";
+
+		// Take care of IPv6 literal address
+		if (is_ipaddrv6($sync_to_ip)) {
+			$sync_to_ip = "[{$sync_to_ip}]";
 		}
-		$synchronizetoip .= $sync_to_ip;
+
+		$url = "{$protocol}://{$sync_to_ip}";
 
 		/* Assemble XMLRPC payload */
 		$params = array(
@@ -1026,8 +1063,7 @@ function bind_do_xmlrpc_sync($sync_to_ip, $username, $password, $synctimeout, $m
 			XML_RPC_encode($xml)
 		);
 
-		/* Set a few variables needed for sync code borrowed from filter.inc */
-		$url = $synchronizetoip;
+		/* Set a few variables needed for sync */
 		log_error("[bind] Beginning bind XMLRPC sync to {$url}:{$port}.");
 		$method = 'pfsense.merge_installedpackages_section_xmlrpc';
 		$msg = new XML_RPC_Message($method, $params);
@@ -1041,13 +1077,13 @@ function bind_do_xmlrpc_sync($sync_to_ip, $username, $password, $synctimeout, $m
 		if (!$resp) {
 			$error = "A communication error occurred while attempting BIND XMLRPC sync with {$url}:{$port}.";
 			log_error($error);
-			file_notice("sync_settings", $error, "bind Settings Sync", "");
+			file_notice("sync_settings", $error, "BIND Settings Sync", "");
 		} elseif ($resp->faultCode()) {
 			$cli->setDebug(1);
 			$resp = $cli->send($msg, $synctimeout);
 			$error = "An error code was received while attempting BIND XMLRPC sync with {$url}:{$port} - Code ".$resp->faultCode().": ".$resp->faultString();
 			log_error($error);
-			file_notice("sync_settings", $error, "bind Settings Sync", "");
+			file_notice("sync_settings", $error, "BIND Settings Sync", "");
 		} else {
 			log_error("[bind] XMLRPC sync successfully completed with {$url}:{$port}.");
 		}
@@ -1068,13 +1104,13 @@ function bind_do_xmlrpc_sync($sync_to_ip, $username, $password, $synctimeout, $m
 		if (!$resp) {
 			$error = "A communication error occurred while attempting BIND XMLRPC sync with {$url}:{$port} (pfsense.exec_php).";
 			log_error($error);
-			file_notice("sync_settings", $error, "Bind Settings Sync", "");
+			file_notice("sync_settings", $error, "BIND Settings Sync", "");
 		} elseif ($resp->faultCode()) {
 			$cli->setDebug(1);
 			$resp = $cli->send($msg, $synctimeout);
 			$error = "[bind] An error code was received while attempting BIND XMLRPC sync with {$url}:{$port} - Code ".$resp->faultCode().": ".$resp->faultString();
 			log_error($error);
-			file_notice("sync_settings", $error, "bind Settings Sync", "");
+			file_notice("sync_settings", $error, "BIND Settings Sync", "");
 		} else {
 			log_error("BIND XMLRPC reload data success with {$url}:{$port} (pfsense.exec_php).");
 		}
