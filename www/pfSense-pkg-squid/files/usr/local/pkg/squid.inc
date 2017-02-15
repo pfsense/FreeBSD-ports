@@ -2279,7 +2279,7 @@ function squid_sync_on_changes() {
  	}
 }
 
-if(!function_exists('pf_version')) {
+if (!function_exists('pf_version')) {
 	function pf_version() {
 		return substr(trim(file_get_contents("/etc/version")), 0, 3);
 	}
@@ -2308,6 +2308,7 @@ function squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $passwor
 	$xml['squidauth'] = $config['installedpackages']['squidauth'];
 	$xml['squidusers'] = $config['installedpackages']['squidusers'];
 
+	/* Commands to reload Squid settings on the destination sync host. */
 	$execcmd = "require_once('/usr/local/pkg/squid.inc');\n";
 	$execcmd .= "squid_resync('yes');";
 
@@ -2363,8 +2364,6 @@ function squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $passwor
 
 		/* Tell Squid to reload our settings on the destination sync host. */
 		$method = 'pfsense.exec_php';
-		$execcmd = "require_once('/usr/local/pkg/squid.inc');\n";
-		$execcmd .= "squid_resync('yes');";
 		/* Assemble XMLRPC payload */
 		$params = array(XML_RPC_encode($password), XML_RPC_encode($execcmd));
 
