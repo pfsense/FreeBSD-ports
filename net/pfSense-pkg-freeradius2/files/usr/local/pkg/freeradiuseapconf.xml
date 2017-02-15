@@ -184,7 +184,7 @@
 		<field>
 			<fielddescr>Choose Cert Manager</fielddescr>
 			<fieldname>vareapconfchoosecertmanager</fieldname>
-			<description>Check to Use pfSense Certificate Management</description>
+			<description>Check to use pfSense Certificate Management</description>
 			<sethelp>
 				<![CDATA[
 				Selects how to manage certificates.
@@ -401,7 +401,7 @@
 			<type>checkbox</type>
 		</field>
 		<field>
-			<name>EAP-TLS - Enable Cache</name>
+			<name>EAP-TLS Cache</name>
 			<type>listtopic</type>
 		</field>
 		<field>
@@ -674,4 +674,7 @@
 	<custom_php_resync_config_command>
 		freeradius_eapconf_resync();
 	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		freeradius_validate_eap($_POST, $input_errors);
+	</custom_php_validation_command>
 </packagegui>
