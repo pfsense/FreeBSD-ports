@@ -4437,8 +4437,10 @@ function freeradius_validate_users($post, &$input_errors) {
 	}
 
 	// PIN
-	if ($post['varusersmotppin']) {
-		if (!preg_match('/^[0-9]{4,8}$/', $post['varusersmotppin'])) {
+	if ($post['varusersmotpenable'] == 'on') {
+		if ($post['varusersmotppin'] == '') {
+			$input_errors[] = "The 'PIN' field may not be empty when 'Enable One-Time-Password for this user' is checked.";
+		} elseif (!preg_match('/^[0-9]{4,8}$/', $post['varusersmotppin'])) {
 			$input_errors[] = "The 'PIN' field may only contain a PIN consisting of 4-8 digits.";
 		}
 	}
