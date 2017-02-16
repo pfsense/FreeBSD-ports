@@ -352,6 +352,16 @@ pkg_upgrade_repo() {
 	rm -f /tmp/${product}.conf.copy
 }
 
+upgrade_available() {
+	# XXX locked packages message should be printed on stderr by pkg?
+	local _lines=$(pkg upgrade${dont_update} -nq "$@" 2>/dev/null \
+	    | sed -e '/^$/d; /is locked and may not be modified/d' \
+	    | wc -l)
+
+	test ${_lines} -gt 0
+	return $?
+}
+
 pkg_upgrade() {
 	# figure out which kernel variant is running
 	export kernel_pkg=$(pkg query %n $(pkg info ${product}-kernel-\* | grep -v -- -debug-))
@@ -410,7 +420,7 @@ pkg_upgrade() {
 
 		pkg_upgrade_repo
 
-		if [ $(pkg upgrade${dont_update} -nq | wc -l) -le 1 ]; then
+		if ! upgrade_available; then
 			_echo "Your packages are up to date"
 			_exit 0
 		fi
@@ -423,28 +433,27 @@ pkg_upgrade() {
 		fi
 
 		local _meta_pkg=$(get_meta_pkg_name)
-		if [ $(pkg upgrade${dont_update} -r ${product}-core -nq | wc -l) -gt 1 ]; then
-			if [ "${platform}" = "nanobsd" ]; then
-				_echo "**** WARNING ****"
-				_echo "Duplicate slice required!!"
-				_echo ""
-				_echo "Before starting the upgrade process, the currently mounted nanobsd partition"
-				_echo "needs to be cloned to the secondary partition, where the update will happen"
-				_echo ""
-				_echo "After installation a reboot will be required to switch partition."
-				_echo ""
-				if [ -z "${yes}" ]; then
-					_echo -n "Proceed with upgrade? (y/N) "
-					read answer
-					if [ "${answer}" != "y" ]; then
-						_echo "Aborting..."
-						_exit 0
-					fi
-					# Do not make the user have to answer again.
-					yes=1
+		if [ "${platform}" = "nanobsd" ] \
+		    && upgrade_available -r "${product}-core"; then
+			_echo "**** WARNING ****"
+			_echo "Duplicate slice required!!"
+			_echo ""
+			_echo "Before starting the upgrade process, the currently mounted nanobsd partition"
+			_echo "needs to be cloned to the secondary partition, where the update will happen"
+			_echo ""
+			_echo "After installation a reboot will be required to switch partition."
+			_echo ""
+			if [ -z "${yes}" ]; then
+				_echo -n "Proceed with upgrade? (y/N) "
+				read answer
+				if [ "${answer}" != "y" ]; then
+					_echo "Aborting..."
+					_exit 0
 				fi
-				setup_nanobsd_env
+				# Do not make the user have to answer again.
+				yes=1
 			fi
+			setup_nanobsd_env
 		fi
 
 		pkg_unlock ${kernel_pkg} ${uboot_pkg}
@@ -453,7 +462,7 @@ pkg_upgrade() {
 		# https://redmine.pfsense.org/issues/6045
 		if ! kldstat -qm zfs; then
 			# If kernel is not going to be upgraded, reroot
-			if [ $(pkg upgrade${dont_update} -nq ${kernel_pkg} | wc -l) -lt 1 ]; then
+			if ! upgrade_available ${kernel_pkg}; then
 				reboot_params="-r"
 			fi
 		fi
@@ -486,12 +495,11 @@ pkg_upgrade() {
 			pkg_lock pkg
 		fi
 
-		if [ $(pkg ${pkg_chroot} upgrade${dont_update} -nq ${kernel_pkg} | wc -l) -gt 1 ]; then
+		if upgrade_available ${kernel_pkg}; then
 			_exec "pkg ${pkg_chroot} upgrade -U ${kernel_pkg}" "Upgrading ${product} kernel"
 		fi
 
-		if [ -n "${uboot_pkg}" ] && \
-		    [ $(pkg ${pkg_chroot} upgrade${dont_update} -nq ${uboot_pkg} | wc -l) -gt 1 ]; then
+		if [ -n "${uboot_pkg}" ] && upgrade_available ${uboot_pkg}; then
 			_exec "pkg ${pkg_chroot} upgrade -U ${uboot_pkg}" "Upgrading ${product} u-boot"
 		fi
 
@@ -515,7 +523,7 @@ pkg_upgrade() {
 		# XXX: Workaround to upgrade strongswan
 		# If those symlinks are present, pkg exit because it expects them
 		# to be a directory
-		if [ $(pkg ${pkg_chroot} upgrade${dont_update} -nq strongswan | wc -l) -gt 1 ]; then
+		if upgrade_available strongswan; then
 			if [ -L ${chroot_dir}/usr/local/etc/ipsec.d ]; then
 				rm -f ${chroot_dir}/usr/local/etc/ipsec.d
 			fi
@@ -530,7 +538,7 @@ pkg_upgrade() {
 			fi
 		fi
 
-		if [ $(pkg ${pkg_chroot} upgrade${dont_update} -nq | wc -l) -gt 1 ]; then
+		if upgrade_available; then
 			delete_annotation=1
 			if [ -n "${is_pkg_locked}" ]; then
 				# Upgrade pkg
@@ -577,7 +585,7 @@ pkg_upgrade() {
 	fi
 
 	if [ "${next_stage}" = "3" ]; then
-		if [ $(pkg upgrade -nq | wc -l) -gt 1 ]; then
+		if upgrade_available; then
 			delete_annotation=1
 			_exec "pkg ${pkg_chroot} upgrade${dont_update}" "Upgrading necessary packages"
 			delete_annotation=""
