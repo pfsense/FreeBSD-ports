@@ -420,6 +420,8 @@ pkg_upgrade() {
 
 		pkg_upgrade_repo
 
+		pkg_unlock ${kernel_pkg} ${uboot_pkg}
+
 		if ! upgrade_available; then
 			_echo "Your packages are up to date"
 			_exit 0
@@ -455,8 +457,6 @@ pkg_upgrade() {
 			fi
 			setup_nanobsd_env
 		fi
-
-		pkg_unlock ${kernel_pkg} ${uboot_pkg}
 
 		# ZFS panics with reroot, do not use it in this case
 		# https://redmine.pfsense.org/issues/6045
