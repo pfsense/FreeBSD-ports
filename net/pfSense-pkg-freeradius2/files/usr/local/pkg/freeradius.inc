@@ -4414,6 +4414,184 @@ EOD;
  * FreeRADIUS input validation
  */
 
+/* MACs input validation */
+function freeradius_validate_macs($post, &$input_errors) {
+
+	// MAC Address
+	if (!empty($post['varmacsaddress'])) {
+		if (!preg_match('/^[0-9A-F]{2}(?:[-][0-9A-F]{2}){5}$/i', $post['varmacsaddress'])) {
+			$input_errors[] = "The 'MAC Address' field must contain a valid MAC address, delimited with '-' character.";
+		}
+	}
+
+	// Redirection URL
+	if (!empty($post['varmacsswisprredirectionurl'])) {
+		if (!filter_var($post['varmacsswisprredirectionurl'], FILTER_VALIDATE_URL)) {
+			$input_errors[] = "The 'Redirection URL' field must contain a valid URL.";
+		}
+	}
+
+	// Number of Simultaneous Connections
+	if ($post['varmacssimultaneousconnect'] != '' && !is_numericint($post['varmacssimultaneousconnect'])) {
+		$input_errors[] = "The 'Number of Simultaneous Connections' field must contain an integer value.";
+	}
+
+	// Description
+	if ($post['description'] && !preg_match("/^[a-zA-Z0-9 _,.;:+=()-]*$/", $post['description'])) {
+		$input_errors[] = "Do not use special characters in the 'Description' field; only /^[a-zA-Z0-9 _,.;:+=()-]*$/ allowed.";
+	}
+
+	// IP Address; may contain a single trailing '+' for simultaneous connections
+	if ($post['varmacsframedipaddress']) {
+		$framedip = str_replace('+', '', $post['varmacsframedipaddress'], $pluscnt);
+		if (!is_ipaddrv4($framedip)) {
+			$input_errors[] = "The 'IP Address' field must contain a valid IPv4 address.";
+		}
+		if ($pluscnt > 1) {
+			$input_errors[] = "The 'IP Address' field may optionally contain only a single trailing '+'.";
+		}
+	}
+
+	// Subnet Mask
+	if ($post['varmacsframedipnetmask']) {
+		if ($post['varmacsframedipaddress'] == '') {
+			$input_errors[] = "To specify a 'Subnet Mask', the 'IP Address' field must not be empty.";
+		} elseif (is_ipaddrv4($framedip)) {
+			$ip = long2ip(ip2long($framedip) & ip2long($post['varmacsframedipnetmask']));
+			$mask = 32 - log((ip2long($post['varmacsframedipnetmask']) ^ ip2long('255.255.255.255')) +1, 2);
+			if (!is_subnetv4("{$ip}/{$mask}")) {
+				$input_errors[] = "The 'Subnet Mask' field must contain a valid subnet mask.";
+			}
+		}
+	}
+
+	// Gateway
+	if ($post['varmacsframedroute'] != '') {
+		$framedroute = explode(" ", $post['varmacsframedroute']);
+		$cnt = count($framedroute);
+		// One or more metrics are allowed per RFC2865 (5.22)
+		if ($cnt < 3) {
+			$input_errors[] = "The 'Gateway' field must match the required format: Subnet Gateway Metric(s) (e.g. 192.168.10.0/24 192.168.10.1 1).";
+		}
+		// The subnet CIDR is optional per RFC2865 (5.22)
+		if (!is_ipaddrv4($framedroute[0]) && !is_subnetv4($framedroute[0])) {
+			$input_errors[] = "The 'Gateway' field's subnet part '{$framedroute[0]}' must be a valid IPv4 subnet.";
+		}
+		if (!is_ipaddrv4($framedroute[1])) {
+			$input_errors[] = "The 'Gateway' field's gateway part '{$framedroute[1]}' must be a valid IPv4 gateway address.";
+		}
+		// One or more metrics are allowed per RFC2865 (5.22)
+		for ($i = 2; $i < $cnt; $i++) {
+			if (!is_numericint($framedroute[$i])) {
+				$input_errors[] = "The 'Gateway' field's metric part '{$framedroute[$i]}' must contain an integer value.";
+			}
+		}
+	}
+
+	// VLAN ID
+	if ($post['varmacsvlanid'] != '') {
+		if (!is_numericint($post['varmacsvlanid'])) {
+			$input_errors[] = "The 'VLAN ID' field must contain an integer value.";
+		} elseif ($post['varmacsvlanid'] < 1 || $post['varmacsvlanid'] > 4095) {
+			$input_errors[] = "The 'VLAN ID' must be in the 1-4095 range.";
+		}
+	}
+
+	// Expiration Date
+	if ($post['varmacsexpiration'] != '') {
+		$expires = date_parse_from_format("M d Y", $post['varmacsexpiration']);
+		if ($expires['error_count'] > 0 || $expires['warning_count'] > 0) {
+			$input_errors[] = "The 'Expiration Date' format is invalid. | Error(s): " .
+			    implode('. ', $expires['errors']) . " | Warning(s): " .
+			    implode('. ', $expires['warnings']);
+		}
+		// Hack around date_parse_from_format() bugs, such as expanding "Jan 199" to "Jan 1 99"
+		if ($expires['year'] < 1970) {
+			$input_errors[] = "The 'Expiration Date' contains an invalid year.";
+		}
+	}
+
+	// Session Timeout
+	if ($post['varmacssessiontimeout'] != '' && !is_numericint($post['varmacssessiontimeout'])) {
+		$input_errors[] = "The 'Session Timeout' field must contain an integer value.";
+	}
+
+	// Possible Login Times
+	// TODO: Produce some regex or better check here
+	if ($post['varmacslogintime'] && !preg_match("/^[a-zA-Z0-9,|-]*$/", $post['varmacslogintime'])) {
+		$input_errors[] = "The 'Possible Login Times' field may only contain a-z, A-Z, 0-9, comma, vertical bar and hyphen (regex /^[a-zA-Z0-9,|-]*$/)";
+	}
+
+	// Amount of Time
+	if ($post['varmacsamountoftime'] != '' && !is_numericint($post['varmacsamountoftime'])) {
+		$input_errors[] = "The 'Amount of Time' field must contain an integer value.";
+	}
+
+	// Amount of Download and Upload Traffic
+	if ($post['varmacsmaxtotaloctets'] != '' && !is_numericint($post['varmacsmaxtotaloctets'])) {
+		$input_errors[] = "The 'Amount of Download and Upload Traffic' field must contain an integer value.";
+	}
+
+	// Maximum Bandwidth Down
+	if ($post['varmacsmaxbandwidthdown'] != '' && !is_numericint($post['varmacsmaxbandwidthdown'])) {
+		$input_errors[] = "The 'Maximum Bandwidth Down' field must contain an integer value.";
+	}
+
+	// Maximum Bandwidth Up
+	if ($post['varmacsmaxbandwidthup'] != '' && !is_numericint($post['varmacsmaxbandwidthup'])) {
+		$input_errors[] = "The 'Maximum Bandwidth Up' field must contain an integer value.";
+	}
+
+	// Accounting Interim Interval
+	if ($post['varmacsacctinteriminterval'] != '') {
+		if (!is_numericint($post['varmacsacctinteriminterval'])) {
+			$input_errors[] = "The 'Accounting Interim Interval' field must contain an integer value.";
+		} elseif ($post['varmacsacctinteriminterval'] <= 60) {
+			$input_errors[] = "The 'Accounting Interim Interval' value must be higher than 60 (seconds).";
+		}
+	}
+
+	/*
+	 * TODO:
+	 * Additional RADIUS Attributes on the TOP of this entry, Additional RADIUS Attributes (CHECK-ITEM), Additional RADIUS Attributes (REPLY-ITEM)
+	 */
+
+}
+
+/* NAS/Clients input validation */
+function freeradius_validate_clients($post, &$input_errors) {
+
+	// Client IP Address
+	if ($post['varclientip'] != '*') {
+		if ($post['varclientipversion'] == 'ipaddr' && !is_ipaddrv4($post['varclientip'])) {
+			$input_errors[] = "The 'Client IP Address' field must contain a valid IPv4 address when IPv4 is selected under 'Client IP Version'.";
+		}
+		if ($post['varclientipversion'] == 'ipv6addr' && !is_ipaddrv6($post['varclientip'])) {
+			$input_errors[] = "The 'Client IP Address' field must contain a valid IPv6 address when IPv6 is selected under 'Client IP Version'.";
+		}
+	}
+
+	// Client Shortname
+	if ($post['varclientshortname'] && !preg_match("/^[a-zA-Z0-9_.-]*$/", $post['varclientshortname'])) {
+		$input_errors[] = "The 'Client Shortname' field may only contain a-z, A-Z, 0-9, underscore, period and hyphen (regex /^[a-zA-Z0-9_.-]*$/)";
+	}
+
+	// Client Shared Secret
+	if (strlen($post['varclientsharedsecret']) > 31) {
+		$input_errors[] = "The 'Client Shared Secret' fields contains too many characters. FreeRADIUS is limited to 31 characters for shared secret.";
+	}
+
+	// Description
+	if ($post['description'] && !preg_match("/^[a-zA-Z0-9 _,.;:+=()-]*$/", $post['description'])) {
+		$input_errors[] = "Do not use special characters in the 'Description' field; only /^[a-zA-Z0-9 _,.;:+=()-]*$/ allowed.";
+	}
+
+	/*
+	 * TODO: Check NAS Login for sanity.
+	 */
+
+}
+
 /* Interfaces input validation */
 function freeradius_validate_interfaces($post, &$input_errors) {
 
