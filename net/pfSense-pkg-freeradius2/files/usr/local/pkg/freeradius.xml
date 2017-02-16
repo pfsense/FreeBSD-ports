@@ -154,8 +154,8 @@
 			<fieldname>varusersusername</fieldname>
 			<description>
 				<![CDATA[
-				Enter the username. Whitespace is allowed.
-				Leave empty if you want to use custom options instead of username/password .
+				Enter the username. Whitespace is allowed.<br/>
+				<span class="text-info">Note: May only contain a-z, A-Z, 0-9, underscore, period and hyphen when using OTP.</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -166,7 +166,7 @@
 			<description>
 				<![CDATA[
 				Enter the password for this username.
-				Leave empty if you want to use custom options instead of username/password .
+				Leave empty if you want to use custom options (such as OTP) instead of username/password.
 				]]>
 			</description>
 			<type>password</type>
@@ -206,7 +206,8 @@
 			<fieldname>varusersmotpinitsecret</fieldname>
 			<description>
 				<![CDATA[
-				This is the generated init secret you get when you initialize the token for the first time on a client (mobile device).
+				This is the generated init secret you get when you initialize the token for the first time on a client (mobile device).<br/>
+				<span class="text-info">Note: May only contain 0-9 and a-f. Must contain at least 16 characters.</span>
 				]]>
 			</description>
 			<type>password</type>
@@ -216,7 +217,8 @@
 			<fieldname>varusersmotppin</fieldname>
 			<description>
 				<![CDATA[
-				This is the PIN the user has to enter on his mobile device to generate a one-time-password.
+				This is the PIN the user has to enter on his mobile device to generate a one-time-password.<br/>
+				<span class="text-info">May only contain a PIN consisting of 4-8 digits. Normally 4 digits are used.</span>
 				]]>
 			</description>
 			<type>password</type>
@@ -247,6 +249,17 @@
 			<type>listtopic</type>
 		</field>
 		<field>
+			<fielddescr>Redirection URL</fielddescr>
+			<fieldname>varuserswisprredirectionurl</fieldname>
+			<description>
+				<![CDATA[
+				Enter the URL the user should be redirected to after successful login.
+				<span class="text-info">Example: http://www.google.com</span>
+				]]>
+			</description>
+			<type>input</type>
+		</field>
+		<field>
 			<fielddescr>Number of Simultaneous Connections</fielddescr>
 			<fieldname>varuserssimultaneousconnect</fieldname>
 			<description>
@@ -254,17 +267,6 @@
 				The maximum of simultaneous connections with this username. Leave empty for no limit.<br/>
 				<span class="text-info">If using FreeRADIUS with Captive Portal you should leave this empty. Read the documentation!
 
-				]]>
-			</description>
-			<type>input</type>
-		</field>
-		<field>
-			<fielddescr>Redirection URL</fielddescr>
-			<fieldname>varuserswisprredirectionurl</fieldname>
-			<description>
-				<![CDATA[
-				Enter the URL the user should be redirected to after successful login.
-				<span class="text-info">Example: http://www.google.com</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -314,7 +316,7 @@
 			<description>
 				<![CDATA[
 				<b>Framed-Route</b> must be supported by NAS.
-				<span class="text-info">Required format: Subnet Gateway Metric (e.g. 192.168.10.0 192.168.10.1 1)</span>
+				<span class="text-info">Required format: Subnet Gateway Metric(s) (e.g. 192.168.10.0/24 192.168.10.1 1)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -370,8 +372,10 @@
 				<![CDATA[
 				Enter the time when this user should have access. "Always" if no time is entered. Click Info for details.
 				<div class="infoblock">
-				Every time string contains a day (Mo, Tu, We, Th, Fr, Sa, Su) or all weekdays which is from monday till friday (Wk).<br/>
-				<code>Wk0855-2305,Sa,Su2230-0230</code> - weekdays after 8:55 AM and before 11:05 PM | any time on Saturday | Sunday after 10:30 PM and before 02:30 AM.
+				Each simple time string must begin with a day definition. That can be just one day, multiple days, or a range of days separated by a hyphen.<br/>
+				A day is Mo, Tu, We, Th, Fr, Sa or Su, or <code>Wk</code> for Mo-Fr. <code>Any</code> or <code>Al</code> means all days.</br>
+				After that, a range of hours follows in hhmm-hhmm format. A time string may be a list of simple time strings separated by <code>,</code><br/><br/>
+				Example: <code>Wk0855-2305,Sa,Su2230-0230</code> - weekdays after 8:55 AM and before 11:05 PM | any time on Saturday | Sunday after 10:30 PM and before 02:30 AM.
 				</div>
 				]]>
 			</description>
@@ -542,4 +546,7 @@
 	<custom_php_deinstall_command>
 		freeradius_deinstall_command();
 	</custom_php_deinstall_command>
+	<custom_php_validation_command>
+		freeradius_validate_users($_POST, $input_errors);
+	</custom_php_validation_command>
 </packagegui>
