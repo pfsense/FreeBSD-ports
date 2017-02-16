@@ -4702,13 +4702,13 @@ function freeradius_validate_settings($post, &$input_errors) {
 	// Number of Invalid Password Attempts
 	if ($post['varsettingsmotpenable'] == 'on') {
 		if ($post['varsettingsmotppasswordattempts'] === 0) {
-			$input_errors[] = "The 'OTP Lifetime' field must not be 0.";
+			$input_errors[] = "The 'Invalid Password Attempts' field must not be 0.";
 		} elseif (empty($post['varsettingsmotppasswordattempts'])) {
-			$input_errors[] = "The 'OTP Lifetime' field must not be empty.";
+			$input_errors[] = "The 'Invalid Password Attempts' field must not be empty.";
 		} elseif (!is_numericint($post['varsettingsmotppasswordattempts'])) {
-			$input_errors[] = "The 'OTP Lifetime' field must contain an integer value.";
+			$input_errors[] = "The 'Invalid Password Attempts' field must contain an integer value.";
 		} elseif ($post['varsettingsmotppasswordattempts'] > 20) {
-			$input_errors[] = "The 'OTP Lifetime' field should contain only sane secure values. Values higher than 20 are not allowed.";
+			$input_errors[] = "The 'Invalid Password Attempts' field should contain only sane secure values. Values higher than 20 are not allowed.";
 		}
 	}
 
