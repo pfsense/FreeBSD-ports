@@ -224,7 +224,7 @@
 			<description>
 				<![CDATA[
 				<b>Framed-Route</b> must be supported by NAS.
-				<span class="text-info">Required format: Subnet Gateway Metric (e.g. 192.168.10.0 192.168.10.1 1)</span>
+				<span class="text-info">Required format: Subnet Gateway Metric(s) (e.g. 192.168.10.0/24 192.168.10.1 1)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -280,8 +280,10 @@
 				<![CDATA[
 				Enter the time when this MAC address should have access. "Always" if no time is entered. Click Info for details.
 				<div class="infoblock">
-				Every time string contains a day (Mo, Tu, We, Th, Fr, Sa, Su) or all weekdays which is from monday till friday (Wk).<br/>
-				<code>Wk0855-2305,Sa,Su2230-0230</code> - weekdays after 8:55 AM and before 11:05 PM | any time on Saturday | Sunday after 10:30 PM and before 02:30 AM.
+				Each simple time string must begin with a day definition. That can be just one day, multiple days, or a range of days separated by a hyphen.<br/>
+				A day is Mo, Tu, We, Th, Fr, Sa or Su, or <code>Wk</code> for Mo-Fr. <code>Any</code> or <code>Al</code> means all days.</br>
+				After that, a range of hours follows in hhmm-hhmm format. A time string may be a list of simple time strings separated by <code>,</code><br/><br/>
+				Example: <code>Wk0855-2305,Sa,Su2230-0230</code> - weekdays after 8:55 AM and before 11:05 PM | any time on Saturday | Sunday after 10:30 PM and before 02:30 AM.
 				</div>
 				]]>
 			</description>
@@ -445,4 +447,7 @@
 	<custom_php_resync_config_command>
 		freeradius_authorizedmacs_resync();
 	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		freeradius_validate_macs($_POST, $input_errors);
+	</custom_php_validation_command>
 </packagegui>
