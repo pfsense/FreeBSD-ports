@@ -53,6 +53,7 @@ define('FREERADIUS_ETC', FREERADIUS_BASE . '/etc');
  */
 
 // Check freeradius lib version
+function freeradius_get_libdir() {
 	$frlib = "";
 	if (is_dir(FREERADIUS_LIB)) {
 		$libfiles = scandir(FREERADIUS_LIB);
@@ -65,6 +66,8 @@ define('FREERADIUS_ETC', FREERADIUS_BASE . '/etc');
 	if ($frlib == "") {
 		log_error("freeRADIUS: No freeradius libs found on " . FREERADIUS_LIB);
 	}
+	return $frlib;
+}
 
 function freeradius_deinstall_command() {
 	$pidFile = "/var/run/radiusd.pid";
@@ -103,7 +106,7 @@ function freeradius_chown_recursive($dir, $user = "root", $group = "wheel") {
 }
 
 function freeradius_install_command() {
-	global $config, $frlib;
+	global $config;
 
 	// We create here different folders for different counters.
 	safe_mkdir("/var/log/radacct/datacounter/daily");
@@ -125,6 +128,7 @@ function freeradius_install_command() {
 	safe_mkdir(FREERADIUS_ETC . "/raddb/scripts");
 	freeradius_chown_recursive(FREERADIUS_ETC . "/raddb");
 	freeradius_chown_recursive("/var/log/radacct");
+	$frlib = freeradius_get_libdir();
 	if (is_dir($frlib)) {
 		freeradius_chown_recursive($frlib);
 	}
@@ -218,6 +222,8 @@ function freeradius_settings_resync($restart_svc = true) {
 	// put the constant to a variable
 	$varFREERADIUS_BASE = FREERADIUS_BASE;
 
+	$frlib = freeradius_get_libdir();
+
 	// We do some checks of some folders which will be deleted after reboot on nanobsd systems
 	safe_mkdir("/var/log/radacct/datacounter/daily");
 	safe_mkdir("/var/log/radacct/datacounter/weekly");
@@ -294,7 +300,6 @@ function freeradius_settings_resync($restart_svc = true) {
 		$varsqlconf2failover = '';
 		$varsqlconfinstantiate = '#sql';
 	}
-
 
 	$conf .= <<<EOD
 prefix = $varFREERADIUS_BASE
