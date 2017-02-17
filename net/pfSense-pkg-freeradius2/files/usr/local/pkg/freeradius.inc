@@ -4891,12 +4891,11 @@ function freeradius_validate_settings($post, &$input_errors) {
 	}
 
 	// Token Password Length
-	if ($post['varsettingsmotptokenlength'] == 'on') {
-		$digits = explode("-", $post['varsettingsmotptokenlength']);
-		if (count($digits) != 2 || !is_numericint($digits[0]) || !is_numericint($digits[1])) {
-			$input_errors[] = "The 'Token Password Length' field must contain a valid range separated with a '-' character; e.g.: 1-6.";
-		} elseif ($digits[0] >= $digits[1]) {
-			$input_errors[] = "The 'Token Password Length' start of range must not be equal or higher than the end of the range.";
+	if ($post['varsettingsmotptokenlength'] != '') {
+		if (!preg_match('/^[0-9]{1,2}(?:[-][0-9]{1,2}){1}$/i', $post['varsettingsmotptokenlength'])) {
+			$input_errors[] = "The 'Token Password Length' field must contain a valid integer range between 1 and 16, separated with a '-' character; e.g.: 1-6.";
+		} elseif (!is_intrange($post['varsettingsmotptokenlength'], 1, 16)) {
+			$input_errors[] = "The 'Token Password Length' field must contain a valid integer range between 1 and 16, separated with a '-' character; e.g.: 1-6.";
 		}
 	}
 
