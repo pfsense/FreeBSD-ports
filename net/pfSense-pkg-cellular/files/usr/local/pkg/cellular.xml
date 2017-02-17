@@ -76,7 +76,7 @@
 			<fielddescr>Custom Status AT Command</fielddescr>
 			<fieldname>statuscmd</fieldname>
 			<type>input</type>
-			<description>(without "AT" Part)</description>
+			<description>(Custom AT command(s) without the "AT" Part)</description>
 		</field>
 		<field>
 			<fielddescr>Info</fielddescr>
@@ -88,6 +88,9 @@
 		cellular_sync();
 	</custom_php_resync_config_command>
 	<custom_php_global_functions>
-	  cellular_before_everything();
+		cellular_before_everything();
 	</custom_php_global_functions>
+	<custom_php_validation_command>
+		cellular_validate_input($_POST, $input_errors);
+	</custom_php_validation_command>
 </packagegui>
