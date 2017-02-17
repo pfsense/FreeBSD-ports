@@ -28,9 +28,13 @@ require_once("util.inc");
 function sync_package_softflowd() {
 	global $config;
 
-	$cf = $config['installedpackages']['softflowd']['config'][0];
+	if (is_array($config['installedpackages']['softflowd']['config'][0])) {
+		$cf = $config['installedpackages']['softflowd']['config'][0];
+	} else {
+		$cf = array();
+	}
 	$interface_list = explode(",", $cf['interface']);
-	if (!empty($cf['host']) && !empty($interface_list)) {
+	if (!empty($cf['host']) && !empty($interface_list) && $cf['enable_softflowd'] != "disabled") {
 		conf_mount_rw();
 		$cf['host'] = is_ipaddrv6($cf['host']) ? "[{$cf['host']}]" : $cf['host'];
 		$start = "/usr/bin/killall -9 softflowd";
@@ -95,6 +99,10 @@ function sync_package_softflowd() {
 				start_service("softflowd");
 			}
 		}
+	} else {
+		conf_mount_rw();
+		stop_service("softflowd");
+		unlink_if_exists("/usr/local/etc/rc.d/softflowd.sh");
 	}
 	conf_mount_ro();
 }
