@@ -3,6 +3,7 @@
  * cellular.widget.php
  *
  * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2016 Voleatech GmbH, Fabian Schweinfurth
  * All rights reserved.
  *
@@ -19,43 +20,36 @@
  * limitations under the License.
  */
 
-@require_once("guiconfig.inc");
-@require_once("pfsense-utils.inc");
-@require_once("functions.inc");
-@require_once("/usr/local/www/widgets/include/interfaces.inc");
+require_once("guiconfig.inc");
+require_once("pfsense-utils.inc");
+require_once("util.inc");
+require_once("/usr/local/www/widgets/include/interfaces.inc");
 
-global $config;
-$python_bin = '/usr/local/bin/python2.7';
-$interface_bin = '/usr/local/sbin/cellular';
 $widget_url = '/widgets/widgets/cellular.widget.php';
+define('PYTHON_BIN', '/usr/local/bin/python2.7');
+define('INTERFACE_BIN', '/usr/local/sbin/cellular');
+
+if (!file_exists(PYTHON_BIN)) {
+	echo "Error: Python not found.";
+	return;
+}
+if (!file_exists(INTERFACE_BIN)) {
+	echo "Error: /usr/local/sbin/cellular not found. Reinstall pfSense-pkg-cellular package.";
+	return;
+}
 
 if (isset($_POST['getsignalstrength'])) {
-
-	if (file_exists($python_bin) && file_exists($interface_bin)) {
-		exec("$python_bin $interface_bin signal", $sig);
-		print $sig[0];
-	}
-
+	exec(PYTHON_BIN . ' ' . INTERFACE_BIN . ' signal', $sig);
+	print $sig[0];
 } elseif (isset($_POST['getcarrier'])) {
-
-	if (file_exists($python_bin) && file_exists($interface_bin)) {
-		exec("$python_bin $interface_bin carrier", $carrier);
-		print $carrier[0];
-	}
-
+	exec(PYTHON_BIN . ' ' . INTERFACE_BIN . ' carrier', $carrier);
+	print $carrier[0];
 } elseif (isset($_POST['getinfoex'])) {
-
-	if (file_exists($python_bin) && file_exists($interface_bin)) {
-		exec("$python_bin $interface_bin infoex", $infoex);
-		print $infoex[0];
-	}
-
+	exec(PYTHON_BIN . ' ' . INTERFACE_BIN . ' infoex', $infoex);
+	print $infoex[0];
 } elseif (isset($_POST['widget'])) {
-	if (file_exists($python_bin) && file_exists($interface_bin)) {
-		exec("$python_bin $interface_bin widget", $widget);
-		print $widget[0];
-	}
-
+	exec(PYTHON_BIN . ' ' . INTERFACE_BIN . ' widget', $widget);
+	print $widget[0];
 } elseif (isset($_POST['getstatus'])) {
 	$ifdescrs = get_configured_interface_with_descr();
 	foreach ($ifdescrs as $ifdescr => $ifname) {
