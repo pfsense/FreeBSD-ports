@@ -8,6 +8,7 @@
  * cellular.xml
  *
  * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2016 Voleatech GmbH, Fabian Schweinfurth
  * All rights reserved.
  *
@@ -42,14 +43,6 @@
 			<active/>
 		</tab>
 	</tabs>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/cellular/cellular.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/widgets/widgets/</prefix>
-		<item>https://packages.pfsense.org/packages/config/cellular/cellular.widget.php</item>
-	</additional_files_needed>
 	<fields>
 		<field>
 			<fielddescr>Source Port</fielddescr>
@@ -89,7 +82,6 @@
 			<fielddescr>Info</fielddescr>
 			<fieldname>info</fieldname>
 			<type>info</type>
-			<description></description>
 		</field>
 	</fields>
 	<custom_php_resync_config_command>
