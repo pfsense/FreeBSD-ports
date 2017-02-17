@@ -34,7 +34,7 @@ function sync_package_softflowd() {
 		$cf = array();
 	}
 	$interface_list = explode(",", $cf['interface']);
-	if (!empty($cf['host']) && !empty($interface_list) && $cf['enable_softflowd'] != "disabled") {
+	if (!empty($cf['host']) && !empty($interface_list) && $cf['enable_softflowd'] != "off") {
 		conf_mount_rw();
 		$cf['host'] = is_ipaddrv6($cf['host']) ? "[{$cf['host']}]" : $cf['host'];
 		$start = "/usr/bin/killall -9 softflowd";
