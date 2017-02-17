@@ -24,6 +24,8 @@ require_once("config.inc");
 require_once("pkg-utils.inc");
 require_once("util.inc");
 
+$shortcut_section = "cellular";
+
 define('PYTHON_BIN', '/usr/local/bin/python2.7');
 define('INTERFACE_BIN', '/usr/local/sbin/cellular');
 
