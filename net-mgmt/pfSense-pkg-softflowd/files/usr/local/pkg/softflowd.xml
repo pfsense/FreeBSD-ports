@@ -49,12 +49,12 @@
 		</field>
 		<field>
 			<fielddescr>Enable softflowd</fielddescr>
-			<fieldname>enable_softflowd</fieldname>
+			<fieldname>enable</fieldname>
 			<type>select</type>
 			<default_value>enabled</default_value>
 			<options>
 				<option><value>enabled</value><name>Enabled</name></option>
-				<option><value>disabled</value><name>Disabled</name></option>
+				<option><value>off</value><name>Disabled</name></option>
 			</options>
 		</field>
 		<field>
