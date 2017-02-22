@@ -33,9 +33,9 @@ function sync_package_softflowd() {
 	} else {
 		$cf = array();
 	}
+	conf_mount_rw();
 	$interface_list = explode(",", $cf['interface']);
 	if (!empty($cf['host']) && !empty($interface_list) && $cf['enable'] != "off") {
-		conf_mount_rw();
 		$cf['host'] = is_ipaddrv6($cf['host']) ? "[{$cf['host']}]" : $cf['host'];
 		$start = "/usr/bin/killall -9 softflowd";
 		foreach ($interface_list as $interface_friendly) {
@@ -100,7 +100,6 @@ function sync_package_softflowd() {
 			}
 		}
 	} else {
-		conf_mount_rw();
 		stop_service("softflowd");
 		unlink_if_exists("/usr/local/etc/rc.d/softflowd.sh");
 	}
