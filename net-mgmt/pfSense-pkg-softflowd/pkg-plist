@@ -1,2 +1,6 @@
+pkg/softflowd.inc
 pkg/softflowd.xml
+/etc/inc/priv/softflowd.priv.inc
 %%DATADIR%%/info.xml
+@dir /etc/inc/priv
+@dir /etc/inc
