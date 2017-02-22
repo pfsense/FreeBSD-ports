@@ -4453,12 +4453,12 @@ function freeradius_validate_users($post, &$input_errors) {
 	// Time Offset
 	if ($post['varusersmotpoffset']) {
 		if (!preg_match('/^-?[0-9]{2,4}$/', $post['varusersmotpoffset'])) {
-			$input_errors[] = "The 'Time Offset' field may only contain a valid TZ offset in minutes, with optional leading minus character.";
+			$input_errors[] = "The 'Time Offset' field may only contain a valid TZ offset in minutes (must be divisible by 15), with optional leading minus character.";
 		} else {
 			// Only accept sane values divisible by 15
 			$offset = str_replace('-', '', $post['varusersmotpoffset']);
 			if ((is_numericint($offset)) && ($offset %15 != 0)) {
-				$input_errors[] = "The 'Time Offset' value '{$offset}' is not a valid TZ offset.";
+				$input_errors[] = "The 'Time Offset' value '{$offset}' is not a valid TZ offset - this must be divisible by 15.";
 			}
 		}
 	}
@@ -4583,10 +4583,8 @@ function freeradius_validate_users($post, &$input_errors) {
 
 	// Accounting Interim Interval
 	if ($post['varusersacctinteriminterval'] != '') {
-		if (!is_numericint($post['varusersacctinteriminterval'])) {
-			$input_errors[] = "The 'Accounting Interim Interval' field must contain an integer value.";
-		} elseif ($post['varusersacctinteriminterval'] <= 60) {
-			$input_errors[] = "The 'Accounting Interim Interval' value must be higher than 60 (seconds).";
+		if (!is_numericint($post['varusersacctinteriminterval']) || $post['varusersacctinteriminterval'] <= 60) {
+			$input_errors[] = "The 'Accounting Interim Interval' field must contain an integer with a value larger than 60 (seconds).";
 		}
 	}
 
@@ -4727,10 +4725,8 @@ function freeradius_validate_macs($post, &$input_errors) {
 
 	// Accounting Interim Interval
 	if ($post['varmacsacctinteriminterval'] != '') {
-		if (!is_numericint($post['varmacsacctinteriminterval'])) {
-			$input_errors[] = "The 'Accounting Interim Interval' field must contain an integer value.";
-		} elseif ($post['varmacsacctinteriminterval'] <= 60) {
-			$input_errors[] = "The 'Accounting Interim Interval' value must be higher than 60 (seconds).";
+		if (!is_numericint($post['varmacsacctinteriminterval']) || $post['varmacsacctinteriminterval'] <= 60) {
+			$input_errors[] = "The 'Accounting Interim Interval' field must contain an integer with a value larger than 60 (seconds).";
 		}
 	}
 
@@ -4871,27 +4867,23 @@ function freeradius_validate_settings($post, &$input_errors) {
 
 	// OTP Lifetime
 	if ($post['varsettingsmotpenable'] == 'on') {
-		if ($post['varsettingsmotptimespan'] === 0) {
-			$input_errors[] = "The 'OTP Lifetime' field must not be 0.";
-		} elseif (empty($post['varsettingsmotptimespan'])) {
-			$input_errors[] = "The 'OTP Lifetime' field must not be empty.";
+		if (empty($post['varsettingsmotptimespan'])) {
+			$input_errors[] = "The 'OTP Lifetime' field must not be 0 or empty.";
 		} elseif (!is_numericint($post['varsettingsmotptimespan'])) {
 			$input_errors[] = "The 'OTP Lifetime' field must contain an integer value.";
 		} elseif ($post['varsettingsmotptimespan'] > 12) {
-			$input_errors[] = "The 'OTP Lifetime' field should contain only sane secure values. Values higher than 12 (~120 seconds) are not allowed.";
+			$input_errors[] = "The 'OTP Lifetime' field should contain only secure values. Values higher than 12 (~120 seconds) are not allowed.";
 		}
 	}
 
 	// Number of Invalid Password Attempts
 	if ($post['varsettingsmotpenable'] == 'on') {
-		if ($post['varsettingsmotppasswordattempts'] === 0) {
-			$input_errors[] = "The 'Invalid Password Attempts' field must not be 0.";
-		} elseif (empty($post['varsettingsmotppasswordattempts'])) {
-			$input_errors[] = "The 'Invalid Password Attempts' field must not be empty.";
+		if (empty($post['varsettingsmotppasswordattempts'])) {
+			$input_errors[] = "The 'Invalid Password Attempts' field must not be 0 or empty.";
 		} elseif (!is_numericint($post['varsettingsmotppasswordattempts'])) {
 			$input_errors[] = "The 'Invalid Password Attempts' field must contain an integer value.";
 		} elseif ($post['varsettingsmotppasswordattempts'] > 20) {
-			$input_errors[] = "The 'Invalid Password Attempts' field should contain only sane secure values. Values higher than 20 are not allowed.";
+			$input_errors[] = "The 'Invalid Password Attempts' field should contain only secure values. Values higher than 20 are not allowed.";
 		}
 	}
 
@@ -4918,7 +4910,7 @@ function freeradius_validate_eap($post, &$input_errors) {
 
 	// Disable Weak EAP Types sanity check
 	if ($post['vareapconfdisableweakeaptypes'] == 'on') {
-		if ($post['vareapconfdefaulteaptype'] == 'md5' || $post['vareapconfdefaulteaptype'] == 'gtc' || $post['vareapconfdefaulteaptype'] == 'leap') {
+		if (in_array($post['vareapconfdefaulteaptype'], array('md5', 'gtc', 'leap'))) {
 			$input_errors[] = "The 'Default EAP Type' field must not contain any of the weak types when 'Disable Weak EAP Types' is enabled.";
 		}
 	}
@@ -4949,9 +4941,7 @@ function freeradius_validate_eap($post, &$input_errors) {
 
 	// EAP-TLS Fragment Size
 	if ($post['vareapconffragmentsize'] != '') {
-		if (!is_numericint($post['vareapconffragmentsize'])) {
-			$input_errors[] = "The 'Fragment Size' field must contain an integer value.";
-		} elseif ($post['vareapconffragmentsize'] > 4096) {
+		if (!is_numericint($post['vareapconffragmentsize']) || $post['vareapconffragmentsize'] > 4096) {
 			$input_errors[] = "The 'Fragment Size' field must contain an integer value not higher than 4096.";
 		}
 	}
@@ -4987,14 +4977,14 @@ function freeradius_validate_sql($post, &$input_errors) {
 	if ($post['varsqlconfincludeenable'] == 'on') {
 		if (empty($post['varsqlconfserver'])) {
 			$input_errors[] = "The 'Server Address' field for SQL Server 1 must not be empty when 'SQL Support' for Server 1 is enabled.";
-		} elseif (!is_ipaddr($post['varsqlconfserver']) && !is_hostname($post['varsqlconfserver']) && !is_domain($post['varsqlconfserver'])) {
+		} elseif (!is_ipaddr($post['varsqlconfserver']) && !is_hostname($post['varsqlconfserver'])) {
 			$input_errors[] = "The 'Server Address' field for SQL Server 1 must contain a valid FQDN or IP address.";
 		}
 	}
 	if ($post['varsqlconf2includeenable'] == 'on') {
 		if (empty($post['varsqlconf2server'])) {
 			$input_errors[] = "The 'Server Address' field for SQL Server 2 must not be empty when 'SQL Support' for Server 2 is enabled.";
-		} elseif (!is_ipaddr($post['varsqlconf2server']) && !is_hostname($post['varsqlconf2server']) && !is_domain($post['varsqlconf2server'])) {
+		} elseif (!is_ipaddr($post['varsqlconf2server']) && !is_hostname($post['varsqlconf2server'])) {
 			$input_errors[] = "The 'Server Address' field for SQL Server 2 must contain a valid FQDN or IP address.";
 		}
 	}
@@ -5105,14 +5095,14 @@ function freeradius_validate_ldap($post, &$input_errors) {
 	if ($post['varmodulesldapenableauthorize'] == 'on') {
 		if (empty($post['varmodulesldapserver'])) {
 			$input_errors[] = "The 'Server Address' field for LDAP Server 1 must not be empty when 'LDAP Authorization Support' for Server 1 is enabled.";
-		} elseif (!is_ipaddr($post['varmodulesldapserver']) && !is_hostname($post['varmodulesldapserver']) && !is_domain($post['varmodulesldapserver'])) {
+		} elseif (!is_ipaddr($post['varmodulesldapserver']) && !is_hostname($post['varmodulesldapserver'])) {
 			$input_errors[] = "The 'Server Address' field for LDAP Server 1 must contain a valid FQDN or IP address.";
 		}
 	}
 	if ($post['varmodulesldap2enableauthorize'] == 'on') {
 		if (empty($post['varmodulesldap2server'])) {
 			$input_errors[] = "The 'Server Address' field for LDAP Server 2 must not be empty when 'LDAP Authorization Support' for Server 2 is enabled.";
-		} elseif (!is_ipaddr($post['varmodulesldap2server']) && !is_hostname($post['varmodulesldap2server']) && !is_domain($post['varmodulesldap2server'])) {
+		} elseif (!is_ipaddr($post['varmodulesldap2server']) && !is_hostname($post['varmodulesldap2server'])) {
 			$input_errors[] = "The 'Server Address' field for LDAP Server 2 must contain a valid FQDN or IP address.";
 		}
 	}
