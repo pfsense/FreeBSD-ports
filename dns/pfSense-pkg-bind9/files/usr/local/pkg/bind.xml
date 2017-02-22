@@ -29,7 +29,6 @@
 	]]>
 	</copyright>
 	<name>bind</name>
-	<version>0.4.3</version>
 	<title>BIND: DNS Settings</title>
 	<include_file>/usr/local/pkg/bind.inc</include_file>
 	<menu>
@@ -68,47 +67,10 @@
 		</tab>
 
 	</tabs>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/bind/bind.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/bind/bind_views.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/bind/bind_zones.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/bind/bind_acls.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/bind/bind.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/etc/inc/priv/</prefix>
-		<item>https://packages.pfsense.org/packages/config/bind/bind.priv.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/pkg/</prefix>
-		<item>https://packages.pfsense.org/packages/config/bind/bind_sync.xml</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/shortcuts/</prefix>
-		<item>https://packages.pfsense.org/packages/config/bind/pkg_bind.inc</item>
-	</additional_files_needed>
-	<additional_files_needed>
-		<prefix>/usr/local/www/widgets/widgets/</prefix>
-		<item>https://packages.pfsense.org/packages/config/bind/bind.widget.php</item>
-	</additional_files_needed>
 	<fields>
 		<field>
 			<type>listtopic</type>
 			<name>Daemon Settings</name>
-			<fieldname>temp01</fieldname>
 		</field>
 		<field>
 			<fielddescr>Enable BIND</fielddescr>
@@ -167,7 +129,6 @@
 		<field>
 			<type>listtopic</type>
 			<name>Logging Options</name>
-			<fieldname>temp01</fieldname>
 		</field>
 		<field>
 			<fielddescr>Enable Logging</fielddescr>
@@ -287,7 +248,6 @@
 		<field>
 			<type>listtopic</type>
 			<name>Response Rate Limit</name>
-			<fieldname>temp01</fieldname>
 		</field>
 		<field>
 			<fielddescr>Rate Limit</fielddescr>
@@ -321,7 +281,6 @@
 		<field>
 			<type>listtopic</type>
 			<name>Forwarder Configuration</name>
-			<fieldname>temp01</fieldname>
 		</field>
 		<field>
 			<fielddescr>Enable Forwarding</fielddescr>
@@ -346,7 +305,6 @@
 		<field>
 			<type>listtopic</type>
 			<name>Custom Options</name>
-			<fieldname>temp01</fieldname>
 		</field>
 		<field>
 			<fielddescr>Custom Options</fielddescr>
@@ -365,7 +323,6 @@
 		<field>
 			<type>listtopic</type>
 			<name>Global Settings</name>
-			<fieldname>temp01</fieldname>
 		</field>
 		<field>
 			<fielddescr>Global Settings</fielddescr>
