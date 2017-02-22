@@ -3,6 +3,7 @@
  * cellular.inc
  *
  * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2016 Voleatech GmbH, Fabian Schweinfurth
  * All rights reserved.
  *
@@ -19,25 +20,23 @@
  * limitations under the License.
  */
 
-$shortcut_section = "cellular";
-require_once("globals.inc");
 require_once("config.inc");
-require_once("util.inc");
-require_once("pfsense-utils.inc");
 require_once("pkg-utils.inc");
-require_once("service-utils.inc");
-require_once("notices.inc");
+require_once("util.inc");
+
+$shortcut_section = "cellular";
+
+define('PYTHON_BIN', '/usr/local/bin/python2.7');
+define('INTERFACE_BIN', '/usr/local/sbin/cellular');
 
 function cellular_sync() {
-
 	global $config;
 
-	$python_bin = '/usr/local/bin/python2.7';
-	$interface_bin = '/usr/local/sbin/cellular';
-
-	// exec("$python_bin $interface_bin signal", $sig);
-	$cellular = $config['installedpackages']['cellular']['config'][0];
-
+	if (is_array($config['installedpackages']['cellular']['config'][0])) {
+		$cellular = $config['installedpackages']['cellular']['config'][0];
+	} else {
+		$cellular = array();
+	}
 	$device = "";
 	$vtp = $cellular["port"];
 
@@ -49,19 +48,19 @@ function cellular_sync() {
 	$vtbr = $cellular["baudrate"];
 
 	if (isset($vtbr) && $vtbr != "default") {
-		$baudrate = "-b ".$vtbr;
+		$baudrate = "-b " . $vtbr;
 	}
 
 	$timeout = "";
 	$vtto = $cellular["timeout"];
 
 	if (isset($vtto) && $vtto != "default" && $vtto !=  "") {
-		$timeout = "-t ".$vtto;
+		$timeout = "-t " . $vtto;
 	}
 
 	foreach (["port", "baudrate", "timeout", "initstring"] as $key) {
 		$key_val = ($cellular[$key] != "default" && $cellular[$key] != "") ? $cellular[$key] : "";
-		exec("$python_bin $interface_bin $device $baudrate $timeout setcfg Interface $key $key_val");
+		exec(PYTHON_BIN . ' ' . INTERFACE_BIN . ' $device $baudrate $timeout setcfg Interface $key $key_val signal');
 	}
 }
 
@@ -91,28 +90,23 @@ function get_baudrates() {
 }
 
 function cellular_before_everything() {
-
-	/// little workaround for dynamic field (content) generation
 	global $pkg;
 	global $config;
 
-	$cellular = $config['installedpackages']['cellular']['config'][0];
+	if (is_array($config['installedpackages']['cellular']['config'][0])) {
+		$cellular = $config['installedpackages']['cellular']['config'][0];
+	} else {
+		$cellular = array();
+	}
 
+	// little workaround for dynamic field (content) generation
 	if (isset($pkg) && array_key_exists('fields', $pkg)) {
 
-		$python_bin = '/usr/local/bin/python2.7';
-		$interface_bin = '/usr/local/sbin/cellular';
+		$custom_str = $cellular["statuscmd"] ?: "I; +CSQ; +COPS?; +CGPADDR";
 
-		$custom_str = "I; +CSQ; +COPS?; +CGPADDR";
-
-		if (isset($cellular["statuscmd"]) && $cellular["statuscmd"] != "") {
-		    $custom_str = $cellular["statuscmd"];
-		}
-
-		exec("$python_bin $interface_bin custom '" . $custom_str . "' -v", $sig);
+		exec(PYTHON_BIN . ' ' . INTERFACE_BIN . " custom " . escapeshellarg($custom_str) . " -v", $sig);
 
 		$my_pkg = &$pkg['fields']['field'];
-
 		foreach ($my_pkg as &$fld) {
 
 			if ($fld['fieldname'] == "info") {
@@ -135,4 +129,21 @@ function cellular_before_everything() {
 		}
 	}
 }
+
+function cellular_validate_input($post, &$input_errors) {
+
+	// Timeout
+	if ($post['timeout'] != '' && !is_numericint($post['timeout'])) {
+		$input_errors[] = "The 'Timeout' field must contain an integer value.";
+	}
+
+	// Custom Status AT Command
+	if ($post['statuscmd'] != '') {
+		if (!preg_match('/^[A-Z0-9 _,;+=?"*#]*$/', $post['statuscmd'])) {
+			$input_errors[] = "The 'Custom Status AT Command' field may only contain A-Z, 0-9 and some other characters matching the /^[A-Z0-9 _,;+=?\"*#-]*$/ regex.";
+		}
+	}
+
+}
+
 ?>
