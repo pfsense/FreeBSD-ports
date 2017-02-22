@@ -23,12 +23,6 @@
 function shellcmd_install_command() {
 	global $config;
 
-	/* Remove garbage left over by previous broken package versions */
-	unlink_if_exists("/usr/local/etc/rc.d/shellcmd.sh");
-	if (is_dir("/usr/local/www/packages/shellcmd")) {
-		mwexec("/bin/rm -rf /usr/local/www/packages/shellcmd/");
-	}
-
 	shellcmd_import_config();
 	shellcmd_sync_package();
 
@@ -53,7 +47,6 @@ function shellcmd_delete_php_command() {
 		}
 
 		/* First check for a couple of special cases that we do NOT want deleted */
-		/* TODO: Create a function for these checks */
 		$pkg = '';
 		/* pfBlockerNG - function to restore archived aliastables on nanobsd (see pfblockerng.inc) */
 		$pfbcmd = "/usr/local/pkg/pfblockerng/pfblockerng.sh";
@@ -74,7 +67,7 @@ function shellcmd_delete_php_command() {
 			}
 		}
 		/* System Patches auto-apply patch feature (see patches.inc) */
-		$spcmd = "/usr/local/bin/php-cgi -f /usr/local/bin/apply_patches.php";
+		$spcmd = "/usr/local/bin/php -f /usr/local/bin/apply_patches.php";
 		if (in_array($spcmd, $a_earlyshellcmd)) {
 			$cntb = 0;
 			foreach ($a_shellcmd_config as $item => $value) {
@@ -114,16 +107,20 @@ function shellcmd_sync_package() {
 	$cmdtype = '';
 	$a_shellcmd = array();
 	$a_earlyshellcmd = array();
-	/* afterfilterchangeshellcmd is NOT treated as an array, it's a string! */
-	/* See /etc/inc/xmlparse.inc and /etc/inc/xmlreader.inc */
+	/*
+	 * afterfilterchangeshellcmd is NOT treated as an array, it's a string!
+	 * See /etc/inc/xmlparse.inc and /etc/inc/xmlreader.inc
+	 */
 	$afterfilterchangeshellcmd = '';
 	$a_shellcmd_config = &$config['installedpackages']['shellcmdsettings']['config'];
 	if (!is_array($a_shellcmd_config)) {
 		$a_shellcmd_config = array();
 	}
 	$i = 0;
-	/* When an item is added to shellcmd package configuration, make sure */
-	/* we add corresponding entry to $config['system'] as well */
+	/*
+	 * When an item is added to shellcmd package configuration, make sure
+	 * we add corresponding entry to $config['system'] as well
+	 */
 	foreach ($a_shellcmd_config as $item) {
 		/* Get the command from package configuration here */
 		$cmd = $a_shellcmd_config[$i]['cmd'];
@@ -183,13 +180,15 @@ function shellcmd_import_config() {
 		}
 	}
 
-	/* Import earlyshellcmd entries which were either created by previous package versions, */
-	/* or manually, or added by some other package(s) (if there are any in config.xml) */
-	/* Two currently known special cases are handled here - System Patches and pfBlockerNG */
+	/*
+	 * Import earlyshellcmd entries which were either created by previous package versions,
+	 * or manually, or added by some other package(s) (if there are any in config.xml)
+	 * Two currently known special cases are handled here - System Patches and pfBlockerNG
+	 */
 	if (is_array($config['system']['earlyshellcmd'])) {
 		$earlyshellcmds = &$config['system']['earlyshellcmd'];
 		$pfbcmd = "/usr/local/pkg/pfblockerng/pfblockerng.sh";
-		$spcmd = "/usr/local/bin/php-cgi -f /usr/local/bin/apply_patches.php";
+		$spcmd = "/usr/local/bin/php -f /usr/local/bin/apply_patches.php";
 		foreach ($earlyshellcmds as $earlyshellcmd) {
 			/* pfBlockerNG - function to restore archived aliastables on nanobsd (see pfblockerng.inc) */
 			if (stristr($earlyshellcmd, "{$pfbcmd}")) {
@@ -224,8 +223,11 @@ function shellcmd_import_config() {
 		}
 	}
 
-	/* Import afterfilterchangeshellcmd entry which was created manually (if there is any in config.xml) */
-	/* afterfilterchangeshellcmd is NOT treated as an array, it's a string! See /etc/inc/xmlparse.inc and /etc/inc/xmlreader.inc */
+	/*
+	 * Import afterfilterchangeshellcmd entry which was created manually (if there is any in config.xml)
+	 * afterfilterchangeshellcmd is NOT treated as an array, it's a string!
+	 * See /etc/inc/xmlparse.inc and /etc/inc/xmlreader.inc
+	 */
 	if ($config['system']['afterfilterchangeshellcmd'] != '') {
 		$shellcmd_config[$i]['cmd'] = $config['system']['afterfilterchangeshellcmd'];
 		$shellcmd_config[$i]['cmdtype'] = "afterfilterchangeshellcmd";
@@ -286,9 +288,8 @@ function shellcmd_validate_input($post, &$input_errors) {
 			// Allow changing description
 			} elseif ((($post['cmd']) == $a_shellcmd_config[$id]['cmd']) && (($post['cmdtype']) == $a_shellcmd_config[$id]['cmdtype'])) {
 				return;
-			// Tired of input validation... Needs something better in future.
 			} else {
-				$input_errors[] = "Only ONE afterfilterchangeshellcmd may be configured! Delete the existing entry and try again!";
+				$input_errors[] = "Only one afterfilterchangeshellcmd may be configured. Delete the existing entry and try again.";
 			}
 		}
 	}
