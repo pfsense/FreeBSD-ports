@@ -2071,20 +2071,9 @@ function squid_generate_rules($type) {
 	$port = ($squid_conf['proxy_port'] ? $squid_conf['proxy_port'] : 3128);
 	$ssl_port = ($squid_conf['ssl_proxy_port'] ? $squid_conf['ssl_proxy_port'] : 3129);
 
-	$fw_aliases = filter_generate_aliases();
-	if (strstr($fw_aliases, "pptp =")) {
-		$PPTP_ALIAS = "\$pptp";
-	} else {
-		$PPTP_ALIAS = "\$PPTP";
-	}
-	if (strstr($fw_aliases, "PPPoE =")) {
-		$PPPOE_ALIAS = "\$PPPoE";
-	} else {
-		$PPPOE_ALIAS = "\$pppoe";
-	}
-
 	// define ports based on transparent options and ssl filtering
-	$pf_rule_port = ($squid_conf['ssl_proxy'] == "on" ? "{80,443}" : "80");
+	$pf_nat_ports = ($squid_conf['ssl_proxy'] == "on" ? "{80,443}" : "80");
+	$pf_rule_ports = "{{$port},{$ssl_port}}";
 	switch($type) {
 		case 'nat':
 			$rules .= "\n# Setup Squid proxy redirect\n";
@@ -2095,7 +2084,7 @@ function squid_generate_rules($type) {
 				}
 				/* Handle PPPOE case */
 				if (($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) || (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) {
-					$rules .= "no rdr on $PPPOE_ALIAS proto tcp from any to { 192.168.0.0/16, 172.16.0.0/12, 10.0.0.0/8 } port {$pf_rule_port}\n";
+					$rules .= "no rdr on \$pppoe proto tcp from any to { 192.168.0.0/16, 172.16.0.0/12, 10.0.0.0/8 } port {$pf_nat_ports}\n";
 				}
 			}
 			if (!empty($squid_conf['defined_ip_proxy_off'])) {
@@ -2117,7 +2106,7 @@ function squid_generate_rules($type) {
 				}
 				/* Handle PPPOE case */
 				if (($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) || (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) {
-					$rules .= "no rdr on $PPPOE_ALIAS proto tcp from { $exempt_ip } to any port {$pf_rule_port}\n";
+					$rules .= "no rdr on \$pppoe proto tcp from { $exempt_ip } to any port {$pf_nat_ports}\n";
 				}
 			}
 			if (!empty($squid_conf['defined_ip_proxy_off_dest'])) {
@@ -2139,33 +2128,33 @@ function squid_generate_rules($type) {
 				}
 				/* Handle PPPOE case */
 				if (($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) || (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) {
-					$rules .= "no rdr on $PPPOE_ALIAS proto tcp from any to { $exempt_dest } port {$pf_rule_port}\n";
+					$rules .= "no rdr on \$pppoe proto tcp from any to { $exempt_dest } port {$pf_nat_ports}\n";
 				}
 			}
 			foreach ($transparent_ifaces as $t_iface) {
-				$pf_transparent_rule_port = (in_array($t_iface, $ssl_ifaces) ? "{80,443}" : "80");
-				$rules .= "rdr on $t_iface proto tcp from any to !($t_iface) port 80 -> 127.0.0.1 port {$port}\n";
+				$rules .= "rdr pass on $t_iface proto tcp from any to !($t_iface) port 80 -> 127.0.0.1 port {$port}\n";
 				if (in_array($t_iface, $ssl_ifaces)) {
-					$rules .= "rdr on $t_iface proto tcp from any to !($t_iface) port 443 -> 127.0.0.1 port {$ssl_port}\n";
+					$rules .= "rdr pass on $t_iface proto tcp from any to !($t_iface) port 443 -> 127.0.0.1 port {$ssl_port}\n";
 				}
 			}
 			/* Handle PPPOE case */
 			if (($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) || (function_exists("is_pppoe_server_enabled") && is_pppoe_server_enabled())) {
-				$rules .= "rdr on $PPPOE_ALIAS proto tcp from any to !127.0.0.1 port {$pf_rule_port} -> 127.0.0.1 port {$port}\n";
+				$rules .= "rdr pass on \$pppoe proto tcp from any to !127.0.0.1 port 80 -> 127.0.0.1 port {$port}\n";
+				if ($squid_conf['ssl_proxy'] == "on") {
+					$rules .= "rdr pass on \$pppoe proto tcp from any to !127.0.0.1 port 443 -> 127.0.0.1 port {$ssl_port}\n";
+				}
 			}
 			$rules .= "\n";
 			break;
 		case 'filter':
 		case 'rule':
-			foreach ($transparent_ifaces as $iface) {
-				$pf_transparent_rule_port = (in_array($iface, $ssl_ifaces) ? "{80,443,{$port},{$ssl_port}}" : "{80,{$port}}");
+			foreach ($proxy_ifaces as $iface) {
 				$rules .= "# Setup squid pass rules for proxy\n";
-				$rules .= "pass in quick on $iface proto tcp from any to !($iface) port {$pf_transparent_rule_port} flags S/SA keep state\n";
-				// $rules .= "pass in quick on $iface proto tcp from any to !($iface) port {$port} flags S/SA keep state\n";
+				$rules .= "pass in quick on $iface proto tcp from any to ($iface) port {$pf_rule_ports} flags S/SA keep state\n";
 				$rules .= "\n";
 			}
 			if ($config['pppoe']['mode'] == "server" && $config['pppoe']['localip']) {
-				$rules .= "pass in quick on $PPPOE_ALIAS proto tcp from any to !127.0.0.1 port {$port} flags S/SA keep state\n";
+				$rules .= "pass in quick on \$pppoe proto tcp from any to {$config['pppoe']['localip']} port {$pf_rule_ports} flags S/SA keep state\n";
 			}
 			break;
 		default:
