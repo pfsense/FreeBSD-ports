@@ -1,10 +1,9 @@
 <?php
 /*
- * cellular.priv.inc
+ * softflowd.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
- * Copyright (C) 2016 Voleatech GmbH, Fabian Schweinfurth
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,13 +21,12 @@
 
 global $priv_list;
 
-$priv_list['page-services-lteinterface'] = array();
-$priv_list['page-services-lteinterface']['name'] = "WebCfg - Status: Cellular Data module package";
-$priv_list['page-services-lteinterface']['descr'] = "Allow access to Cellular package GUI";
+$priv_list['page-services-softflowd'] = array();
+$priv_list['page-services-softflowd']['name'] = "WebCfg - Services: softflowd package";
+$priv_list['page-services-softflowd']['descr'] = "Allow access to softflowd package GUI";
+$priv_list['page-services-softflowd']['match'] = array();
 
-$priv_list['page-services-lteinterface']['match'] = array();
-$priv_list['page-services-lteinterface']['match'][] = "pkg.php?xml=cellular.xml*";
-$priv_list['page-services-lteinterface']['match'][] = "pkg_edit.php?xml=cellular.xml*";
-$priv_list['page-services-lteinterface']['match'][] = "widgets/widgets/cellular.widget.php*";
+$priv_list['page-services-softflowd']['match'][] = "pkg.php?xml=softflowd.xml*";
+$priv_list['page-services-softflowd']['match'][] = "pkg_edit.php?xml=softflowd.xml*";
 
 ?>

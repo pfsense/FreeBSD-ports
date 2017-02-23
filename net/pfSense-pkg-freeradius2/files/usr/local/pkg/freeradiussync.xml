@@ -138,7 +138,6 @@
 				<rowhelperfield>
 					<fielddescr>Protocol</fielddescr>
 					<fieldname>varsyncprotocol</fieldname>
-					<description><![CDATA[Choose the protocol of the destination host (HTTP or HTTPS).]]></description>
 					<type>select</type>
 					<default_value>HTTP</default_value>
 					<options>
@@ -150,21 +149,24 @@
 				<rowhelperfield>
 					<fielddescr>IP Address/Hostname</fielddescr>
 					<fieldname>varsyncipaddress</fieldname>
-					<description><![CDATA[IP Address or hostname of the destination host.]]></description>
 					<type>input</type>
 					<width>2</width>
 				</rowhelperfield>
 				<rowhelperfield>
 					<fielddescr>Port</fielddescr>
 					<fieldname>varsyncport</fieldname>
-					<description><![CDATA[Choose the port of the destination host.]]></description>
 					<type>input</type>
 					<width>1</width>
 				</rowhelperfield>
 				<rowhelperfield>
-					<fielddescr>Admin Password</fielddescr>
+					<fielddescr>Username</fielddescr>
+					<fieldname>varsyncusername</fieldname>
+					<type>input</type>
+					<width>2</width>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Password</fielddescr>
 					<fieldname>varsyncpassword</fieldname>
-					<description><![CDATA[Password of the user "admin" on the destination host.]]></description>
 					<type>password</type>
 					<width>2</width>
 				</rowhelperfield>

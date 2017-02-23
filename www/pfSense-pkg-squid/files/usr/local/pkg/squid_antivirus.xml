@@ -106,7 +106,7 @@
 			<fieldname>enable_advanced</fieldname>
 			<description>
 				<![CDATA[
-				<strong><span class="text-danger">Warning: Only enable this if you know what are you doing.</span></strong>
+				<strong><span class="text-danger">Warning: Only enable this if you know what you are doing.</span></strong>
 				<div class="infoblock blockopen">
 				When enabled, the options below no longer have any effect.
 				You must edit the configuration files directly in the 'Advanced Features'.<br/>
@@ -232,7 +232,7 @@
 			<description>
 				<![CDATA[
 				squidclamav.conf file.
-				<span class="text-danger">Edit only if you know what are you doing.</span>
+				<span class="text-danger">Edit only if you know what you are doing.</span>
 				]]>
 			</description>
 			<type>textarea</type>
@@ -247,7 +247,7 @@
 			<description>
 				<![CDATA[
 				c-icap.conf file.
-				<span class="text-danger">Edit only if you know what are you doing.</span>
+				<span class="text-danger">Edit only if you know what you are doing.</span>
 				]]>
 			</description>
 			<type>textarea</type>
@@ -262,7 +262,7 @@
 			<description>
 				<![CDATA[
 				c-icap.conf file.
-				<span class="text-danger">Edit only if you know what are you doing.</span>
+				<span class="text-danger">Edit only if you know what you are doing.</span>
 				]]>
 			</description>
 			<type>textarea</type>
@@ -277,7 +277,7 @@
 			<description>
 				<![CDATA[
 				freshclam.conf file.
-				<span class="text-danger">Edit only if you know what are you doing.</span>
+				<span class="text-danger">Edit only if you know what you are doing.</span>
 				]]>
 			</description>
 			<type>textarea</type>
@@ -292,7 +292,7 @@
 			<description>
 				<![CDATA[
 				clamd.conf file.
-				<span class="text-danger">Edit only if you know what are you doing.</span>
+				<span class="text-danger">Edit only if you know what you are doing.</span>
 				]]>
 			</description>
 			<type>textarea</type>
