@@ -1,8 +1,4 @@
-A free implementation of the RADIUS protocol.<br />
-			Support: MySQL, PostgreSQL, LDAP, Kerberos.<br />
-			FreeRADIUS and FreeRADIUS2 settings are not compatible
-			so don't use them together or try to update.<br /> On
-			pfSense docs there is a how-to which could help you on
-			porting users.
+A free implementation of the RADIUS protocol.
+Supports MySQL, PostgreSQL, LDAP, Kerberos.
 
 WWW: https://doc.pfsense.org/index.php/FreeRADIUS_2.x_package
