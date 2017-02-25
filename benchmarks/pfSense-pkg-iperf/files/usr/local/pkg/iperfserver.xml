@@ -25,7 +25,7 @@
  */
 	]]>
 	</copyright>
-	<name>iperf</name>
+	<name>iperfserver</name>
 	<title>iperf: Server</title>
 	<savetext>Run iperf server</savetext>
 	<saveicon>fa-play-circle</saveicon>
@@ -33,10 +33,10 @@
 	<preoutput>yes</preoutput>
 	<donotsave>true</donotsave>
 	<menu>
-		<name>iperf</name>
-		<tooltiptext>Run iperf in client or server mode.</tooltiptext>
+		<name>iperf Server</name>
+		<tooltiptext>Run iperf in server mode.</tooltiptext>
 		<section>Diagnostics</section>
-		<configfile>iperf.xml</configfile>
+		<url>/pkg_edit.php?xml=iperfserver.xml</url>
 	</menu>
 	<tabs>
 		<tab>
