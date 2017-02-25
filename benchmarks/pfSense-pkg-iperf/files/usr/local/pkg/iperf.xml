@@ -32,7 +32,8 @@
 	<preoutput>yes</preoutput>
 	<donotsave>true</donotsave>
 	<menu>
-		<name>iperf</name>
+		<name>iperf Client</name>
+		<tooltiptext>Run iperf in client mode.</tooltiptext>
 		<section>Diagnostics</section>
 		<url>/pkg_edit.php?xml=iperf.xml</url>
 	</menu>
