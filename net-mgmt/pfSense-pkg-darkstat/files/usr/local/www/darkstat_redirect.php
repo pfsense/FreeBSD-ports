@@ -19,7 +19,10 @@
  * limitations under the License.
  */
 
+$nocsrf = true;
 require_once("config.inc");
+require_once("guiconfig.inc");
+
 global $config;
 
 // Port
