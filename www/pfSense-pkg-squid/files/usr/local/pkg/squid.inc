@@ -1275,8 +1275,24 @@ function squid_resync_general() {
 	$squid_uid = SQUID_UID;
 	$squid_gid = SQUID_GID;
 
+	/*
+	 * Disable cache digest generation unless we are a sibbling to another proxy.
+	 * This avoids periods when Squid is unresponsive due to digest generation.
+	 */
+	$digest_generation = "off";
+	if (!is_array($config['installedpackages']['squidremote']['config'])) {
+		$config['installedpackages']['squidremote']['config'] = array();
+	}
+	foreach ($config['installedpackages']['squidremote']['config'] as $settings) {
+		if ($settings['enable'] == 'on' && $settings['hierarchy'] == 'sibling') {
+			$digest_generation = "on";
+			break;
+		}
+	}
+
 	$conf .= <<< EOD
 icp_port {$icp_port}
+digest_generation {$digest_generation}
 dns_v4_first {$dns_v4_first}
 pid_filename {$pidfile}
 cache_effective_user {$squid_uid}
