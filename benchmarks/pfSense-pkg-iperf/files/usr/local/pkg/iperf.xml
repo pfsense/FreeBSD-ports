@@ -34,7 +34,7 @@
 	<menu>
 		<name>iperf</name>
 		<section>Diagnostics</section>
-		<configfile>iperf.xml</configfile>
+		<url>/pkg_edit.php?xml=iperf.xml</url>
 	</menu>
 	<service>
 		<name>iperf</name>
