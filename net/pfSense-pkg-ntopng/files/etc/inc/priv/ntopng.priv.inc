@@ -26,5 +26,6 @@ $priv_list['page-diagnostics-ntopng']['name'] = "WebCfg - Diagnostics: ntopng pa
 $priv_list['page-diagnostics-ntopng']['descr'] = "Allow access to ntopng package GUI";
 $priv_list['page-diagnostics-ntopng']['match'] = array();
 $priv_list['page-diagnostics-ntopng']['match'][] = "pkg_edit.php?xml=ntopng.xml*";
+$priv_list['page-diagnostics-ntopng']['match'][] = "ntopng_redirect.php*";
 
 ?>
