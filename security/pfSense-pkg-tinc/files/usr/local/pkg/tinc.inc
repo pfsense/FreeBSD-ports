@@ -19,6 +19,7 @@
  * limitations under the License.
  */
 
+require_once('globals.inc');
 require_once('config.inc');
 require_once('service-utils.inc');
 require_once('util.inc');
@@ -150,7 +151,7 @@ function tinc_write_rcfile() {
 }
 
 function tinc_install() {
-	global $config;
+	global $g, $config;
 
 	safe_mkdir("/usr/local/etc/tinc/hosts");
 	tinc_write_rcfile();
@@ -177,7 +178,7 @@ function tinc_install() {
 }
 
 function tinc_deinstall() {
-	global $config;
+	global $g, $config;
 
 	/* Remove Interface Group */
 	if (!is_array($config['ifgroups']['ifgroupentry'])) {
