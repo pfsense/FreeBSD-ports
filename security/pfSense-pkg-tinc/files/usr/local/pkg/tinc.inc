@@ -169,9 +169,10 @@ function tinc_install() {
 	$ifgroupentry['ifname'] = 'pkg_tinc';
 	$a_ifgroups[] = $ifgroupentry;
 
-	/* XXX: Do not remove this. WTH?! */
-	// mwexec("/bin/rm -f /tmp/");
-
+	/*
+	 * XXX: Do not remove this, otherwise the interface group may not be added properly.
+	 */
+	unlink_if_exists("{$g['tmp_path']}/config.cache");
 	write_config("[tinc] Package installed.");
 }
 
@@ -204,8 +205,10 @@ function tinc_deinstall() {
 			}
 		}
 		unset($a_ifgroups[$myid]);
-		/* WTH?! */
-		// mwexec("/bin/rm -f /tmp/config.cache");
+		/*
+	 	* XXX: Do not remove this, otherwise the interface group may not be removed properly.
+	 	*/
+		unlink_if_exists("{$g['tmp_path']}/config.cache");
 		write_config("[tinc] Package uninstalled.");
 	}
 	rmdir_recursive("/var/tmp/tinc");
