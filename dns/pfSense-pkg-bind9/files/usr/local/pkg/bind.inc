@@ -34,13 +34,7 @@ if (!function_exists("filter_configure")) {
 require_once("notices.inc");
 require_once("xmlrpc_client.inc");
 
-$pf_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-if ($pf_version == "2.1" || $pf_version == "2.2") {
-	define('BIND_LOCALBASE', '/usr/pbi/bind-'.php_uname("m"));
-} else {
-	define('BIND_LOCALBASE', '/usr/local');
-}
-
+define('BIND_LOCALBASE', '/usr/local');
 define('CHROOT_LOCALBASE', '/cf/named');
 
 function bind_zone_validate($post, &$input_errors) {
