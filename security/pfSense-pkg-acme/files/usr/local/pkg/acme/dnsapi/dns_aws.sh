@@ -27,8 +27,10 @@ dns_aws_add() {
     return 1
   fi
 
-  _saveaccountconf AWS_ACCESS_KEY_ID "$AWS_ACCESS_KEY_ID"
-  _saveaccountconf AWS_SECRET_ACCESS_KEY "$AWS_SECRET_ACCESS_KEY"
+  if [ -z "$AWS_SESSION_TOKEN" ]; then
+    _saveaccountconf AWS_ACCESS_KEY_ID "$AWS_ACCESS_KEY_ID"
+    _saveaccountconf AWS_SECRET_ACCESS_KEY "$AWS_SECRET_ACCESS_KEY"
+  fi
 
   _debug "First detect the root zone"
   if ! _get_root "$fulldomain"; then
@@ -91,7 +93,7 @@ _get_root() {
       fi
 
       if _contains "$response" "<Name>$h.</Name>"; then
-        hostedzone="$(echo "$response" | sed 's/<HostedZone>/\n&/g' | _egrep_o "<HostedZone>.*<Name>$h.<.Name>.*<.HostedZone>")"
+        hostedzone="$(echo "$response" | sed 's/<HostedZone>/#&/g' | tr '#' '\n' | _egrep_o "<HostedZone><Id>[^<]*<.Id><Name>$h.<.Name>.*<.HostedZone>")"
         _debug hostedzone "$hostedzone"
         if [ -z "$hostedzone" ]; then
           _err "Error, can not get hostedzone."
@@ -135,13 +137,17 @@ aws_rest() {
 
   #RequestDate="20161120T141056Z" ##############
 
-  _H1="x-amz-date: $RequestDate"
+  export _H1="x-amz-date: $RequestDate"
 
   aws_host="$AWS_HOST"
   CanonicalHeaders="host:$aws_host\nx-amz-date:$RequestDate\n"
-  _debug2 CanonicalHeaders "$CanonicalHeaders"
-
   SignedHeaders="host;x-amz-date"
+  if [ -n "$AWS_SESSION_TOKEN" ]; then
+    export _H2="x-amz-security-token: $AWS_SESSION_TOKEN"
+    CanonicalHeaders="${CanonicalHeaders}x-amz-security-token:$AWS_SESSION_TOKEN\n"
+    SignedHeaders="${SignedHeaders};x-amz-security-token"
+  fi
+  _debug2 CanonicalHeaders "$CanonicalHeaders"
   _debug2 SignedHeaders "$SignedHeaders"
 
   RequestPayload="$data"
@@ -175,10 +181,10 @@ aws_rest() {
 
   #kSecret="wJalrXUtnFEMI/K7MDENG+bPxRfiCYEXAMPLEKEY" ############################
 
-  _debug2 kSecret "$kSecret"
+  _secure_debug2 kSecret "$kSecret"
 
-  kSecretH="$(_hex "$kSecret")"
-  _debug2 kSecretH "$kSecretH"
+  kSecretH="$(printf "%s" "$kSecret" | _hex_dump | tr -d " ")"
+  _secure_debug2 kSecretH "$kSecretH"
 
   kDateH="$(printf "$RequestDateOnly%s" | _hmac "$Hash" "$kSecretH" hex)"
   _debug2 kDateH "$kDateH"
