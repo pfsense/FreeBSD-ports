@@ -101,7 +101,7 @@ _exit() {
 
 	pkg_lock ${kernel_pkg} ${uboot_pkg}
 
-	if [ -f "${pid_file}" ]; then
+	if [ -n "${delete_pid}" -a -f "${pid_file}" ]; then
 		rm -f ${pid_file}
 	fi
 
@@ -976,6 +976,7 @@ validate_repo_conf
 # Flags used in _exit
 export delete_annotation=""
 export unlock_additional_pkgs=""
+export delete_pid=""
 
 # Upgrade process on nanobsd will happen in chroot
 export pkg_chroot=""
@@ -1103,7 +1104,7 @@ fi
 
 if pgrep -qF ${pid_file} >/dev/null 2>&1; then
 	echo "Another instance is already running... Aborting!"
-	exit 1
+	_exit 1
 fi
 
 if [ -z "${booting}" -o "${boot_stage}" != "2" ]; then
@@ -1115,6 +1116,9 @@ if [ -n "${booting}" ]; then
 fi
 
 echo $$ > ${pid_file}
+
+# Since this point it's safe to remove pid_file
+delete_pid=1
 
 trap _exit 1 2 15 EXIT
 
