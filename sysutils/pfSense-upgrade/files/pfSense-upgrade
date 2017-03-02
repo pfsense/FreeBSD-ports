@@ -667,6 +667,10 @@ check_upgrade() {
 			if echo "${_pkg}" | grep -q "^${pkg_prefix}"; then
 				continue
 			fi
+			# Ignore pfSense-upgrade itself
+			if echo "${_pkg}" | grep -q "^${product}-upgrade"; then
+				continue
+			fi
 			if [ "$(compare_pkg_version ${_pkg})" = "<" ]; then
 				local _new_version=$(pkg rquery${dont_update} %v ${_pkg})
 				_echo "${_new_version} version of ${_pkg} is available"
