@@ -652,32 +652,19 @@ get_meta_pkg_name() {
 
 check_upgrade() {
 	local _meta_pkg=$(get_meta_pkg_name)
+	local _core_pkgs=$(pkg query -e "%n ~ ${product}-kernel-* || %n ~ ${product}-base*" %n)
 
 	pkg_update "" mute
 
 	pkg_upgrade_repo
 
-	if [ "$(compare_pkg_version ${_meta_pkg})" = "<" ]; then
-		local _new_version=$(pkg rquery${dont_update} %v ${_meta_pkg})
-		_echo "${_new_version} version of ${product} is available"
-		_exit 2
-	else
-		for _pkg in $(pkg query -e "%n ~ ${product}-*" %n); do
-			# Ignore additional packages
-			if echo "${_pkg}" | grep -q "^${pkg_prefix}"; then
-				continue
-			fi
-			# Ignore pfSense-upgrade itself
-			if echo "${_pkg}" | grep -q "^${product}-upgrade"; then
-				continue
-			fi
-			if [ "$(compare_pkg_version ${_pkg})" = "<" ]; then
-				local _new_version=$(pkg rquery${dont_update} %v ${_pkg})
-				_echo "${_new_version} version of ${_pkg} is available"
-				_exit 2
-			fi
-		done
-	fi
+	for _pkg in ${_meta_pkg} ${_core_pkgs}; do
+		if [ "$(compare_pkg_version ${_pkg})" = "<" ]; then
+			local _new_version=$(pkg rquery${dont_update} %v ${_pkg})
+			_echo "${_new_version} version of ${product} is available"
+			_exit 2
+		fi
+	done
 
 	_echo "Your system is up to date"
 	_exit 0
