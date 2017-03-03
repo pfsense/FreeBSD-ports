@@ -423,6 +423,7 @@ pkg_upgrade() {
 		pkg_unlock ${kernel_pkg} ${uboot_pkg}
 
 		if ! upgrade_available; then
+			pkg_lock ${kernel_pkg} ${uboot_pkg}
 			_echo "Your packages are up to date"
 			_exit 0
 		fi
