@@ -428,7 +428,6 @@ pkg_upgrade() {
 		fi
 
 		if [ -n "${dry_run}" ]; then
-			pkg_unlock ${kernel_pkg} ${uboot_pkg}
 			pkg ${pkg_chroot} upgrade${dont_update} -nq 2>&1 | tee -a ${logfile}
 			pkg_lock ${kernel_pkg} ${uboot_pkg}
 			_exit 0
