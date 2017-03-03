@@ -660,7 +660,7 @@ check_upgrade() {
 
 	for _pkg in ${_meta_pkg} ${_core_pkgs}; do
 		if [ "$(compare_pkg_version ${_pkg})" = "<" ]; then
-			local _new_version=$(pkg rquery${dont_update} %v ${_pkg})
+			local _new_version=$(pkg rquery -U %v ${_pkg})
 			_echo "${_new_version} version of ${product} is available"
 			_exit 2
 		fi
@@ -771,7 +771,7 @@ compare_pkg_version() {
 		_exit 1
 	fi
 
-	local _rver=$(pkg ${pkg_chroot} rquery${dont_update} %v ${_pkg_name})
+	local _rver=$(pkg ${pkg_chroot} rquery -U %v ${_pkg_name})
 
 	if [ -z "${_rver}" ]; then
 		_echo "ERROR: It was not possible to determine ${_pkg_name} remote version"
