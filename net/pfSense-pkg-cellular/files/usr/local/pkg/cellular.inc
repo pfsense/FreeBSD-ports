@@ -70,7 +70,7 @@ function get_devices() {
 	$out = array();
 
 	foreach ($serialports as $port) {
-		$spl = split("/", $port);
+		$spl = explode("/", $port);
 		$out[$spl[2]] = array("name" => $port, "value" => $spl[2]);
 	}
 
