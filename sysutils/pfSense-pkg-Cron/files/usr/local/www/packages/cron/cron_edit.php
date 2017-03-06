@@ -19,6 +19,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+require_once("config.inc");
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/cron.inc");
 
@@ -38,7 +39,7 @@ if ($_GET['act'] == "del") {
 	if ($_GET['type'] == 'php') {
 		if ($a_cron[$_GET['id']]) {
 			unset($a_cron[$_GET['id']]);
-			write_config();
+			write_config(gettext("Crontab item deleted via cron package"));
 			cron_sync_package();
 			header("Location: cron.php");
 			exit;
@@ -79,7 +80,7 @@ if ($_POST) {
 			$a_cron[] = $ent;
 		}
 
-		write_config();
+		write_config(gettext("Crontab edited via cron package"));
 		cron_sync_package();
 
 		header("Location: cron.php");
