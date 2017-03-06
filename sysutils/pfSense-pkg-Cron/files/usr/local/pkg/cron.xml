@@ -41,9 +41,6 @@
 	<custom_delete_php_command>
 		cron_sync_package();
 	</custom_delete_php_command>
-	<custom_php_install_command>
-		cron_install_command();
-	</custom_php_install_command>
 	<custom_php_deinstall_command>
 		cron_deinstall_command();
 	</custom_php_deinstall_command>
