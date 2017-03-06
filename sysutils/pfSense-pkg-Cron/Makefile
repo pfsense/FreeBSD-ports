@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-Cron
 PORTVERSION=	0.3.7
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
