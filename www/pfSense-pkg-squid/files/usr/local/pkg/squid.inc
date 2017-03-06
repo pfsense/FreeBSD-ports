@@ -712,7 +712,7 @@ function squid_upgrade_config() {
 	/* unset broken antivirus settings */
 	squid_antivirus_upgrade_config();
 
-	write_config();
+	write_config(gettext("Upgraded Squid configuration during package install."));
 }
 
 
@@ -1741,7 +1741,7 @@ function squid_resync_auth() {
 	global $config, $valid_acls;
 	$write_config = 0;
 	if (!is_array($config['installedpackages']['squidauth']['config'])) {
-		$config['installedpackages']['squidauth']['config'][] = array('auth_method'=> "none");
+		$config['installedpackages']['squidauth']['config'][] = array('auth_method' => "none");
 		$write_config++;
 	}
 	$settings = $config['installedpackages']['squidauth']['config'][0];
@@ -1758,7 +1758,7 @@ function squid_resync_auth() {
 	}
 
 	if ($write_config > 0) {
-		write_config();
+		write_config(gettext("Squid authentication method not configured, setting to None explicitly."));
 	}
 
 	$conf = '';
