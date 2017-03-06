@@ -22,15 +22,9 @@
 
 require_once("pfsense-utils.inc");
 require_once("services.inc");
-require_once("util.inc");
 
 function cron_sync_package() {
 	configure_cron();
-}
-
-function cron_install_command() {
-	// Clean up possible lingering garbage after previous package versions
-	unlink_if_exists("/usr/local/etc/rc.d/cron.sh");
 }
 
 function cron_deinstall_command() {
