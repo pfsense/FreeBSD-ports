@@ -1,5 +1,7 @@
 #*******************************************************************************
 # vHosts package makefile.
+# see: https://github.com/pfsense/FreeBSD-ports/blob/devel/Mk/bsd.port.mk
+# and: https://www.freebsd.org/doc/en/books/porters-handbook/
 # ------------------------------------------------------------------------------
 # Part of pfSense 2.3 and later (https://www.pfSense.org/).
 #

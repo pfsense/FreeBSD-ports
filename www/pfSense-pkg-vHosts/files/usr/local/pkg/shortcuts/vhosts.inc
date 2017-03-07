@@ -1,4 +1,4 @@
-<?php
+less <?php
 global $shortcuts;
 
 $shortcuts['vhosts'] = array();

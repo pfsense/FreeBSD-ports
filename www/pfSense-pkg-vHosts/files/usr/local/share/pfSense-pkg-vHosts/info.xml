@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--****************************************************************************
-* vHosts package information file.
+* vHosts package information.
 * ==============================================================================
 * Part of pfSense 2.3 and later (https://www.pfSense.org/).
 *
@@ -13,10 +13,10 @@
 * License: https://github.com/pfsense/pfsense/blob/master/LICENSE
 *****************************************************************************-->
 <pfsensepkgs>
-	<package>
-		<name>vHosts</name>
-		<descr><![CDATA[vHosts nginx Web Server]]></descr>
-		<version>%%PKGVERSION%%</version>
-		<configurationfile>vhosts.xml</configurationfile>
-	</package>
+    <package>
+        <name>vHosts</name>
+        <descr><![CDATA[vHosts nginx Web Server]]></descr>
+        <version>%%PKGVERSION%%</version>
+        <configurationfile>vhosts.xml</configurationfile>
+    </package>
 </pfsensepkgs>
