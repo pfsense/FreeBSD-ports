@@ -19,6 +19,7 @@
  * limitations under the License.
  */
 
+require_once('globals.inc');
 require_once('config.inc');
 require_once('service-utils.inc');
 require_once('util.inc');
@@ -150,7 +151,7 @@ function tinc_write_rcfile() {
 }
 
 function tinc_install() {
-	global $config;
+	global $g, $config;
 
 	safe_mkdir("/usr/local/etc/tinc/hosts");
 	tinc_write_rcfile();
@@ -169,14 +170,15 @@ function tinc_install() {
 	$ifgroupentry['ifname'] = 'pkg_tinc';
 	$a_ifgroups[] = $ifgroupentry;
 
-	/* XXX: Do not remove this. WTH?! */
-	// mwexec("/bin/rm -f /tmp/");
-
+	/*
+	 * XXX: Do not remove this, otherwise the interface group may not be added properly.
+	 */
+	unlink_if_exists("{$g['tmp_path']}/config.cache");
 	write_config("[tinc] Package installed.");
 }
 
 function tinc_deinstall() {
-	global $config;
+	global $g, $config;
 
 	/* Remove Interface Group */
 	if (!is_array($config['ifgroups']['ifgroupentry'])) {
@@ -204,8 +206,10 @@ function tinc_deinstall() {
 			}
 		}
 		unset($a_ifgroups[$myid]);
-		/* WTH?! */
-		// mwexec("/bin/rm -f /tmp/config.cache");
+		/*
+	 	* XXX: Do not remove this, otherwise the interface group may not be removed properly.
+	 	*/
+		unlink_if_exists("{$g['tmp_path']}/config.cache");
 		write_config("[tinc] Package uninstalled.");
 	}
 	rmdir_recursive("/var/tmp/tinc");

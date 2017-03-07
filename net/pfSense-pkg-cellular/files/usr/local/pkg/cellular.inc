@@ -70,7 +70,7 @@ function get_devices() {
 	$out = array();
 
 	foreach ($serialports as $port) {
-		$spl = split("/", $port);
+		$spl = explode("/", $port);
 		$out[$spl[2]] = array("name" => $port, "value" => $spl[2]);
 	}
 
@@ -140,7 +140,7 @@ function cellular_validate_input($post, &$input_errors) {
 	// Custom Status AT Command
 	if ($post['statuscmd'] != '') {
 		if (!preg_match('/^[A-Z0-9 _,;+=?"*#]*$/', $post['statuscmd'])) {
-			$input_errors[] = "The 'Custom Status AT Command' field may only contain A-Z, 0-9 and some other characters matching the /^[A-Z0-9 _,;+=?\"*#-]*$/ regex.";
+			$input_errors[] = "The 'Custom Status AT Command' field may only contain A-Z, 0-9 and some other characters matching the /^[A-Z0-9 _,;+=?\"*#]*$/ regex.";
 		}
 	}
 

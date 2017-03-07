@@ -31,7 +31,11 @@ if (file_exists("/usr/local/pkg/squid.inc")) {
 	echo "No squid.inc found. You must have Squid package installed to use this widget.";
 }
 
-define('PATH_CLAMDB', '/var/db/clamav');
+if (isset($config['system']['use_mfs_tmpvar'])) {
+	define('PATH_CLAMDB', '/usr/local/share/clamav-db/');
+} else {
+	define('PATH_CLAMDB', '/var/db/clamav/');
+}
 define('PATH_SQUID', SQUID_BASE . '/bin/squid');
 define('PATH_AVLOG', '/var/log/c-icap/virus.log');
 global $clamd_path, $img;
