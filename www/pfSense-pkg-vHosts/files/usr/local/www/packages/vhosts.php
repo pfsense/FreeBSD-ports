@@ -2,33 +2,36 @@
 /*******************************************************************************
 * vHosts package configuration page. Drops a list of the configured virtual
 * hosts or a form page for host configuration. When a form is posted back, the
-* host information is saved and the server config file is rebuilt.
+* host information is saved, server config file is rebuilt, and the subsystem
+* dirty flag is set if the vhosts server is running. Dirty flag is cleared when
+* the server is restarted.
 *
 * GET: No parameters: 
-*   Drops list of configured vhosts with options to add/change/delete or toggle
-*   the disabled flag.
+*   Drops list of configured vhosts with options to add/copy/change/delete or 
+*   toggle the disabled flag.
 *
 * GET: 'act' = 'add'
 *   Drops form for input of new host settings.
+*
+* GET: 'act' = 'dup', 'id' = n
+*   Drops form for input of new host settings with defaults from host 'n'.
+*   Form action returns 'srcid' set to 'id'.
 *
 * GET: 'act' = 'chg', 'id' = n
 *   Drops form for update of host 'n' config.
 *   Form action returns 'id' value.
 *
 * GET: 'act' = 'del', 'id' = n
-*   Removes host 'n' config, update web config, and drops list page.
-*
-* GET: 'act' = 'dup', 'id' = n
-*   Loads the 'add' page with defaults loaded from host 'n' config.
-*   Form action returns 'srcid' set to 'id'.
+*   Removes host 'n' config, updates web config, and drops list page.
 *
 * GET: 'act' = 'tog', 'id' = n
 *    Toggles Disabled flag for host 'n'.
 *
 * POST: 'id' = n (optional), 'srcid' = n (optional)
 *   Adds or updates host config, updates web config, and drops list page.
-*   If 'id' is empty but 'srcid' has a value, the new copy is inserted 
-*   after the source host ID so it appears next in the list. 
+*   If 'id' is provided, host 'n' is updated. If 'srcid' is provided, new host
+*   is inserted after host 'n' so it appears next in the list. If no 'id' or
+*   'srcid' is provided, new host is added at the end of the host list.
 * ------------------------------------------------------------------------------
 * Part of pfSense 2.3 and later (https://www.pfSense.org/).
 *
@@ -50,7 +53,7 @@ require("/usr/local/pkg/vhosts.inc");
 * Writes out the configuration, updates the config files, and reloads page. If
 * the service is running, the subsystem is marked 'dirty' and a warning message
 * to restart the service is shown on the list page. 'dirty' mark is cleared when
-* the service starts as declared in the <startcmd> of the config file.
+* the service restarts.
 *******************************************************************************/
 function save_config_and_exit()
     {
