@@ -32,12 +32,6 @@
 	<savebtnclass>btn-success</savebtnclass>
 	<preoutput>yes</preoutput>
 	<donotsave>true</donotsave>
-	<menu>
-		<name>iperf Server</name>
-		<tooltiptext>Run iperf in server mode.</tooltiptext>
-		<section>Diagnostics</section>
-		<url>/pkg_edit.php?xml=iperfserver.xml</url>
-	</menu>
 	<tabs>
 		<tab>
 			<text>Client</text>
