@@ -124,9 +124,6 @@ $err_code[505] = "505 HTTP Version not supported";
  */
 function get_page($body) { ?>
 <html>
-	<head>
-		<title>squidGuard Error page</title>
-	</head>
 	<body>
 <?=$body?>
 	</body>
