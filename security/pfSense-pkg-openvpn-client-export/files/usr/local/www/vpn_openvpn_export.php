@@ -23,6 +23,7 @@
 require("globals.inc");
 require("guiconfig.inc");
 require("openvpn-client-export.inc");
+require_once('pfsense-utils.inc');
 require("pkg-utils.inc");
 require('classes/Form.class.php');
 
