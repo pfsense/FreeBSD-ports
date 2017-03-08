@@ -175,6 +175,9 @@ function getstatus_squidav() {
 		},
 		success: function(data){
 			$('#squidav_status').html(data);
+		},
+		error: function(){
+			$('#squidav_status').html("<div class=\"alert alert-danger\"><?=gettext('Unable to retrieve status'); ?></div>");
 		}
 	});
 }
