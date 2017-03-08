@@ -101,30 +101,19 @@ $err_code[505] = "505 HTTP Version not supported";
 # check arg's
 # ----------------------------------------------------------------------------------------------------------------------
 
-if (count($_POST)) {
-    $url  = trim($_POST['url']);
-    $msg  = $_POST['msg'];
-    $cl['a'] = $_POST['a'];
-    $cl['n'] = $_POST['n'];
-    $cl['i'] = $_POST['i'];
-    $cl['s'] = $_POST['s'];
-    $cl['t'] = $_POST['t'];
-    $cl['u'] = $_POST['u'];
-}
-elseif (count($_GET)) {
-    $url  = trim($_GET['url']);
-    $msg  = $_GET['msg'];
-    $cl['a'] = $_GET['a'];
-    $cl['n'] = $_GET['n'];
-    $cl['i'] = $_GET['i'];
-    $cl['s'] = $_GET['s'];
-    $cl['t'] = $_GET['t'];
-    $cl['u'] = $_GET['u'];
-}
-else {
-       # Show 'About page'
-        echo get_page(get_about());
-        exit();
+if (count($_REQUEST)) {
+	$url  = trim($_REQUEST['url']);
+	$msg  = $_REQUEST['msg'];
+	$cl['a'] = $_REQUEST['a'];
+	$cl['n'] = $_REQUEST['n'];
+	$cl['i'] = $_REQUEST['i'];
+	$cl['s'] = $_REQUEST['s'];
+	$cl['t'] = $_REQUEST['t'];
+	$cl['u'] = $_REQUEST['u'];
+} else {
+	# Show 'About page'
+	echo get_page(get_about());
+	exit();
 }
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -215,18 +204,18 @@ function get_error_page($er_code_id, $err_msg='') {
         $str[] = '<html>';
         $str[] = '<body>';
 	if ($config['installedpackages']['squidguarddefault']['config'][0]['deniedmessage']) {
-		$str[] = "<h3>{$config['installedpackages']['squidguarddefault']['config'][0]['deniedmessage']}: {$err_code[$er_code_id]}</h3>";
+		$str[] = "<h3>{$config['installedpackages']['squidguarddefault']['config'][0]['deniedmessage']}: " . htmlspecialchars($err_code[$er_code_id]) . "</h3>";
 	} else {
-		$str[] = "<h3>Request denied by {$g['product_name']} proxy: {$err_code[$er_code_id]}</h3>";
+		$str[] = "<h3>Request denied by {$g['product_name']} proxy: " . htmlspecialchars($err_code[$er_code_id]) . "</h3>";
 	}
         if ($err_msg) $str[] = "<b> Reason: </b> $err_msg";
         $str[] = '<hr size="1" noshade>';
-        if ($cl['a'])        $str[] = "<b> Client address: </b> {$cl['a']} <br>";
-        if ($cl['n'])        $str[] = "<b> Client name:    </b> {$cl['n']} <br>";
-        if ($cl['i'])        $str[] = "<b> Client user:    </b> {$cl['i']} <br>";
-        if ($cl['s'])        $str[] = "<b> Client group:   </b> {$cl['s']} <br>";
-        if ($cl['t'])        $str[] = "<b> Target group:   </b> {$cl['t']} <br>";
-        if ($cl['u'])        $str[] = "<b> URL:            </b> {$cl['u']} <br>";
+        if ($cl['a'])        $str[] = "<b> Client address: </b> " . htmlspecialchars($cl['a']) . "<br>";
+        if ($cl['n'])        $str[] = "<b> Client name:    </b> " . htmlspecialchars($cl['n']) . "<br>";
+        if ($cl['i'])        $str[] = "<b> Client user:    </b> " . htmlspecialchars($cl['i']) . "<br>";
+        if ($cl['s'])        $str[] = "<b> Client group:   </b> " . htmlspecialchars($cl['s']) . "<br>";
+        if ($cl['t'])        $str[] = "<b> Target group:   </b> " . htmlspecialchars($cl['t']) . "<br>";
+        if ($cl['u'])        $str[] = "<b> URL:            </b> " . htmlspecialchars($cl['u']) . "<br>";
         $str[] = '<hr size="1" noshade>';
         $str[] = "</body>";
         $str[] = "</html>";
@@ -247,7 +236,7 @@ function get_about() {
         $str[] = '<table>';
         $str[] = ' <b>HTTP error codes (ERROR_CODE):</th></tr>';
         foreach($err_code as $val) {
-                $str []= "<tr><td>$val";
+                $str []= "<tr><td>" . htmlspecialchars($val);
        }
         $str[] = '</table>';
 
