@@ -43,7 +43,6 @@
 		<section>Diagnostics</section>
 		<url>/pkg_edit.php?xml=iperfserver.xml</url>
 	</menu>
-
 	<service>
 		<name>iperf</name>
 		<executable>iperf</executable>
