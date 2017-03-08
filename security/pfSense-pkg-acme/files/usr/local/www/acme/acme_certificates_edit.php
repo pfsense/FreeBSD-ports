@@ -407,6 +407,7 @@ print $form;
 	totalrows =  <?php echo $counter; ?>;
 	
 	function table_domains_listitem_change(tableId, fieldId, rowNr, field) {
+		d = document;
 		if (fieldId === "toggle_details") {
 			fieldId = "method";
 			field = d.getElementById(tableId+fieldId+rowNr);
@@ -442,6 +443,7 @@ events.push(function() {
 		updatevisibility();
 	});
 	*/
+	$('[id^=table_domainsmethod]').change();
 	updatevisibility();
 });
 //]]>
