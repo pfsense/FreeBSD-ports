@@ -2516,6 +2516,7 @@ function suricata_modify_sid_content(&$rule_map, $sid_mods, $log_results = FALSE
 						$rule_map[1][$k2]['rule'] = preg_replace($from, $to, $v['rule'], -1, $count);
 						if ($count > 0) {
 							$rule_map[1][$k2]['managed'] = 1;
+							$rule_map[1][$k2]['modified'] = 1;
 							$sids[1][$k2] = 'modify';
 							$modifiedcount++;
 						}
@@ -2530,6 +2531,7 @@ function suricata_modify_sid_content(&$rule_map, $sid_mods, $log_results = FALSE
 						$rule_map[1][$sid]['rule'] = preg_replace($from, $to, $rule_map[1][$sid]['rule'], -1, $count);
 						if ($count > 0) {
 							$rule_map[1][$sid]['managed'] = 1;
+							$rule_map[1][$sid]['modified'] = 1;
 							$sids[1][$sid] = 'modify';
 							$modifiedcount++;
 						}
