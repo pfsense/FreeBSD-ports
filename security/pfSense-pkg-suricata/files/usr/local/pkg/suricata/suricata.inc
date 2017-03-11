@@ -2511,40 +2511,42 @@ function suricata_modify_sid_content(&$rule_map, $sid_mods, $log_results = FALSE
 	// Walk the SID mod tokens and decode each one
 	foreach ($sid_mods as $tok) {
 		$matches = array();
-		if (preg_match('/([\d+|,|\*]*)\s+"(.+)"\s+"(.*)"/', $tok, $matches)) {
+		if (preg_match('/(([\da-z-_*]+,)*([\da-z-_*]+))\s+"(.+)"\s+"(.*)"/', $tok, $matches)) {
 			$tokencounter++;
 			$sidlist = explode(",", $matches[1]);
-			$from = '/' . preg_quote($matches[2], '/') . '/';
-			$to = $matches[3];
+			$from = '/' . preg_quote($matches[4], '/') . '/';
+			$to = $matches[5];
 			$count = 0;
 
-			// Now walk the provided rule map and make the modifications
-			if ($matches[1] == "*") {
-				// If wildcard '*' provided for SID, then check them all
-				if (is_array($rule_map)) {
-					foreach ($rule_map[1] as $k2 => $v) {
-						$modcount++;
-						$rule_map[1][$k2]['rule'] = preg_replace($from, $to, $v['rule'], -1, $count);
-						if ($count > 0) {
-							$rule_map[1][$k2]['managed'] = 1;
-							$rule_map[1][$k2]['modified'] = 1;
-							$sids[1][$k2] = 'modify';
-							$modifiedcount++;
-						}
+			// Walk over all sids
+			foreach ($sidlist as $sid) {
+				if (isset($rule_map[1][$sid])) {
+					// If sid is present change modify it
+					$modcount++;
+					$rule_map[1][$sid]['rule'] = preg_replace($from, $to, $rule_map[1][$sid]['rule'], -1, $count);
+					if ($count > 0) {
+						$rule_map[1][$sid]['managed'] = 1;
+						$rule_map[1][$sid]['modified'] = 1;
+						$sids[1][$sid] = 'modify';
+						$modifiedcount++;
 					}
 				}
-			}
-			else {
-				// Otherwise just check the provided SIDs
-				foreach ($sidlist as $sid) {
-					if (isset($rule_map[1][$sid])) {
-						$modcount++;
-						$rule_map[1][$sid]['rule'] = preg_replace($from, $to, $rule_map[1][$sid]['rule'], -1, $count);
-						if ($count > 0) {
-							$rule_map[1][$sid]['managed'] = 1;
-							$rule_map[1][$sid]['modified'] = 1;
-							$sids[1][$sid] = 'modify';
-							$modifiedcount++;
+				else {
+					// Otherwise it's a wildcard or category modification
+					if (is_array($rule_map)) {
+						// If rule_map is an array walk over it to find all rules which need be be modified
+						foreach ($rule_map[1] as $k2 => $v) {
+							if ($sid == "*" || $v['category'] == $sid) {
+								// If a wildcard changed is handled or the category is matching the rule needs to get modified
+								$modcount++;
+								$rule_map[1][$k2]['rule'] = preg_replace($from, $to, $v['rule'], -1, $count);
+								if ($count > 0) {
+									$rule_map[1][$k2]['managed'] = 1;
+									$rule_map[1][$k2]['modified'] = 1;
+									$sids[1][$k2] = 'modify';
+									$modifiedcount++;
+								}
+							}
 						}
 					}
 				}
