@@ -2510,8 +2510,8 @@ function suricata_modify_sid_content(&$rule_map, $sid_mods, $log_results = FALSE
 			// Now walk the provided rule map and make the modifications
 			if ($matches[1] == "*") {
 				// If wildcard '*' provided for SID, then check them all
-				foreach ($rule_map[1] as $rulem) {
-					foreach ($rulem as $k2 => $v) {
+				if (is_array($rule_map)) {
+					foreach ($rule_map[1] as $k2 => $v) {
 						$modcount++;
 						$rule_map[1][$k2]['rule'] = preg_replace($from, $to, $v['rule'], -1, $count);
 						if ($count > 0) {
