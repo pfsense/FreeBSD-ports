@@ -1896,7 +1896,7 @@ function suricata_load_vrt_policy($policy, $mode='alert', $all_rules=null) {
 	return $vrt_policy_rules;
 }
 
-function suricata_parse_sidconf_file($sidconf_file) {
+function suricata_parse_sidconf_file($sidconf_file,$split_lines=TRUE) {
 
 	/**********************************************/
 	/* This function loads and processes the file */
@@ -1907,6 +1907,11 @@ function suricata_parse_sidconf_file($sidconf_file) {
 	/*                                            */
 	/*  $sidconf_file ==> full path and name of   */
 	/*                    file to process         */
+	/*                                            */
+	/*  $split_lines ==> determines whether lines */
+	/*                   should be splitted at    */
+	/*                   commas into multiple     */
+	/*                   sid modification	      */
 	/*                                            */
 	/*        Returns ==> an array containing     */
 	/*                    SID modifier tokens     */
@@ -1941,11 +1946,17 @@ function suricata_parse_sidconf_file($sidconf_file) {
 		// Trim leading and trailing spaces plus newline and any carriage returns
 		$buf = trim($line[0], ' \r\n');
 
-		// Now split the SID mod arguments at the commas, if more than one
-		// per line, and add to our $sid_mods array.
-		$line = explode(",", $buf);
-		foreach ($line as $ent) {
-			$sid_mods[] = trim($ent);
+		if ($split_lines) {
+			// If split mode split the SID mod arguments at the commas, if more than one
+			// per line, and add to our $sid_mods array.
+			$line = explode(",", $buf);
+			foreach ($line as $ent) {
+				$sid_mods[] = trim($ent);
+			}
+		}
+		else{
+			//Otherwise add 1 line as 1 modification to the $sid_mods array
+			$sid_mods[] = $buf;
 		}
 	}
 
@@ -2687,7 +2698,7 @@ function suricata_process_modifysid(&$rule_map, $suricatacfg, $log_results = FAL
 		log_error(gettext("[Suricata] Error - unable to open 'modify_sid_file' \"{$suricatacfg['modify_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
 		return;
 	} else {
-		$sid_mods = suricata_parse_sidconf_file("{$suricata_sidmods_dir}{$suricatacfg['modify_sid_file']}");
+		$sid_mods = suricata_parse_sidconf_file("{$suricata_sidmods_dir}{$suricatacfg['modify_sid_file']}",FALSE);
 	}
 
 	if (!empty($sid_mods)) {
