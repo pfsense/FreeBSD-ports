@@ -1909,7 +1909,7 @@ function suricata_parse_sidconf_file($sidconf_file,$split_lines=TRUE) {
 	/*                    file to process         */
 	/*                                            */
 	/*  $split_lines ==> determines whether lines */
-	/*                   should be splitted at    */
+	/*                   should be split at       */
 	/*                   commas into multiple     */
 	/*                   sid modification	      */
 	/*                                            */
@@ -2511,12 +2511,27 @@ function suricata_modify_sid_content(&$rule_map, $sid_mods, $log_results = FALSE
 	// Walk the SID mod tokens and decode each one
 	foreach ($sid_mods as $tok) {
 		$matches = array();
-		if (preg_match('/(([\da-z-_*]+,)*([\da-z-_*]+))\s+"(.+)"\s+"(.*)"/', $tok, $matches)) {
+		if (preg_match('/((?<sid_category_list> (?<sid_category_plus_comma>[\da-z-_*]+,)* (?<last_sid_cageory>[\da-z-_*]+)) \s+)? "(?<from>.*)" \s+ "(?<to>.*)"/x', $tok, $matches)) {
+			// If a valid config token is found. A valid token is:
+			// An optional group of a comma separated list(sid_category_list) of SIDs(numbers) or categories(lowercase chars,numbers,- or _) plus whitespaces followed by
+			// a search term(from) framed by double quotes followed
+			// whitespaces followed by
+			// a replacement(to) framed by double quotes
+
 			$tokencounter++;
-			$sidlist = explode(",", $matches[1]);
-			$from = '/' . preg_quote($matches[4], '/') . '/';
-			$to = $matches[5];
+			$from = '/' . preg_quote($matches['from'], '/') . '/';
+			$to = $matches['to'];
 			$count = 0;
+
+			if ($matches['sid_category_list'] == "") {
+				// If the sidlist is empty it's the same as a wildcard, therefore create a list with just one wildcard item
+				$sidlist = array("*");
+			}
+			else {
+				// Otherwise split the list
+				$sidlist = explode(",", $matches['sid_category_list']);
+			}
+
 
 			// Walk over all sids
 			foreach ($sidlist as $sid) {
