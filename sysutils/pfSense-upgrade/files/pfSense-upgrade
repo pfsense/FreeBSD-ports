@@ -708,6 +708,8 @@ setup_nanobsd_env() {
 
 	# Make sure resolv.conf is present, otherwise upgrade may fail (bug #6557)
 	local _resolv_conf=$(readlink -f /etc/resolv.conf)
+	_exec "unlink ${chroot_dir}/etc/resolv.conf" \
+		"Removing resolv.conf symlink from upgrade partition" mute ignore_result
 	_exec "cp -f ${_resolv_conf} ${chroot_dir}/etc/resolv.conf" \
 		"Copying resolv.conf to upgrade partition" mute ignore_result
 
