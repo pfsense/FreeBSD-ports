@@ -27,6 +27,7 @@ require_once("functions.inc");
 require_once("globals.inc");
 require_once("notices.inc");
 require_once("openvpn.inc");
+require_once("pfsense-utils.inc");
 require_once("pkg-utils.inc");
 require_once("services.inc");
 require_once("service-utils.inc");
@@ -52,6 +53,7 @@ define('FREERADIUS_ETC', FREERADIUS_BASE . '/etc');
  */
 
 // Check freeradius lib version
+function freeradius_get_libdir() {
 	$frlib = "";
 	if (is_dir(FREERADIUS_LIB)) {
 		$libfiles = scandir(FREERADIUS_LIB);
@@ -64,6 +66,8 @@ define('FREERADIUS_ETC', FREERADIUS_BASE . '/etc');
 	if ($frlib == "") {
 		log_error("freeRADIUS: No freeradius libs found on " . FREERADIUS_LIB);
 	}
+	return $frlib;
+}
 
 function freeradius_deinstall_command() {
 	$pidFile = "/var/run/radiusd.pid";
@@ -102,7 +106,7 @@ function freeradius_chown_recursive($dir, $user = "root", $group = "wheel") {
 }
 
 function freeradius_install_command() {
-	global $config, $frlib;
+	global $config;
 
 	// We create here different folders for different counters.
 	safe_mkdir("/var/log/radacct/datacounter/daily");
@@ -124,6 +128,7 @@ function freeradius_install_command() {
 	safe_mkdir(FREERADIUS_ETC . "/raddb/scripts");
 	freeradius_chown_recursive(FREERADIUS_ETC . "/raddb");
 	freeradius_chown_recursive("/var/log/radacct");
+	$frlib = freeradius_get_libdir();
 	if (is_dir($frlib)) {
 		freeradius_chown_recursive($frlib);
 	}
@@ -217,6 +222,8 @@ function freeradius_settings_resync($restart_svc = true) {
 	// put the constant to a variable
 	$varFREERADIUS_BASE = FREERADIUS_BASE;
 
+	$frlib = freeradius_get_libdir();
+
 	// We do some checks of some folders which will be deleted after reboot on nanobsd systems
 	safe_mkdir("/var/log/radacct/datacounter/daily");
 	safe_mkdir("/var/log/radacct/datacounter/weekly");
@@ -293,7 +300,6 @@ function freeradius_settings_resync($restart_svc = true) {
 		$varsqlconf2failover = '';
 		$varsqlconfinstantiate = '#sql';
 	}
-
 
 	$conf .= <<<EOD
 prefix = $varFREERADIUS_BASE
@@ -4407,6 +4413,826 @@ EOD;
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 	conf_mount_ro();
+}
+
+/*
+ * FreeRADIUS input validation
+ */
+
+/* Users input validation */
+function freeradius_validate_users($post, &$input_errors) {
+
+	// Username
+	if ($post['varusersmotpenable'] == 'on' && !preg_match('/^[a-zA-Z0-9_.-]*$/', $post['varusersusername'])) {
+		$input_errors[] = "The 'Username' field may only contain a-z, A-Z, 0-9, underscore, period and hyphen (regex /^[a-zA-Z0-9_.-]*$/) when 'Enable One-Time-Password for this user' is checked.";
+	}
+
+	// Password
+	if ($post['varusersmotpenable'] == 'on' && $post['varuserspassword'] != '') {
+		$input_errors[] = "The 'Password' field must be left empty when 'Enable One-Time-Password for this user' is checked.";
+	}
+
+	// Init-Secret
+	if ($post['varusersmotpenable'] == 'on') {
+		if ($post['varusersmotpinitsecret'] == '') {
+			$input_errors[] = "The 'Init-Secret' field may not be empty when 'Enable One-Time-Password for this user' is checked.";
+		} elseif (!preg_match('/^[0-9a-f]{16,}$/', $post['varusersmotpinitsecret'])) {
+			$input_errors[] = "The 'Init-Secret' field may only contain 0-9 and a-f (regex /^[0-9a-f]*$/) and must contain at least 16 characters.";
+		}
+	}
+
+	// PIN
+	if ($post['varusersmotpenable'] == 'on') {
+		if ($post['varusersmotppin'] == '') {
+			$input_errors[] = "The 'PIN' field may not be empty when 'Enable One-Time-Password for this user' is checked.";
+		} elseif (!preg_match('/^[0-9]{4,8}$/', $post['varusersmotppin'])) {
+			$input_errors[] = "The 'PIN' field may only contain a PIN consisting of 4-8 digits.";
+		}
+	}
+
+	// Time Offset
+	if ($post['varusersmotpoffset']) {
+		if (!preg_match('/^-?[0-9]{2,4}$/', $post['varusersmotpoffset'])) {
+			$input_errors[] = "The 'Time Offset' field may only contain a valid TZ offset in minutes (must be divisible by 15), with optional leading minus character.";
+		} else {
+			// Only accept sane values divisible by 15
+			$offset = str_replace('-', '', $post['varusersmotpoffset']);
+			if ((is_numericint($offset)) && ($offset %15 != 0)) {
+				$input_errors[] = "The 'Time Offset' value '{$offset}' is not a valid TZ offset - this must be divisible by 15.";
+			}
+		}
+	}
+
+	// Redirection URL
+	if (!empty($post['varuserswisprredirectionurl'])) {
+		if (!filter_var($post['varuserswisprredirectionurl'], FILTER_VALIDATE_URL)) {
+			$input_errors[] = "The 'Redirection URL' field must contain a valid URL.";
+		}
+	}
+
+	// Number of Simultaneous Connections
+	if ($post['varuserssimultaneousconnect'] != '' && !is_numericint($post['varuserssimultaneousconnect'])) {
+		$input_errors[] = "The 'Number of Simultaneous Connections' field must contain an integer value.";
+	}
+
+	// Description
+	if ($post['description'] && !preg_match("/^[a-zA-Z0-9 _,.;:+=()-]*$/", $post['description'])) {
+		$input_errors[] = "Do not use special characters in the 'Description' field; only /^[a-zA-Z0-9 _,.;:+=()-]*$/ allowed.";
+	}
+
+	// IP Address; may contain a single trailing '+' for simultaneous connections
+	if ($post['varusersframedipaddress']) {
+		$framedip = str_replace('+', '', $post['varusersframedipaddress'], $pluscnt);
+		if (!is_ipaddrv4($framedip)) {
+			$input_errors[] = "The 'IP Address' field must contain a valid IPv4 address.";
+		}
+		if ($pluscnt > 1) {
+			$input_errors[] = "The 'IP Address' field may optionally contain only a single trailing '+'.";
+		}
+	}
+
+	// Subnet Mask
+	if ($post['varusersframedipnetmask']) {
+		if ($post['varusersframedipaddress'] == '') {
+			$input_errors[] = "To specify a 'Subnet Mask', the 'IP Address' field must not be empty.";
+		} elseif (is_ipaddrv4($framedip)) {
+			$ip = long2ip(ip2long($framedip) & ip2long($post['varusersframedipnetmask']));
+			$mask = 32 - log((ip2long($post['varusersframedipnetmask']) ^ ip2long('255.255.255.255')) +1, 2);
+			if (!is_subnetv4("{$ip}/{$mask}")) {
+				$input_errors[] = "The 'Subnet Mask' field must contain a valid subnet mask.";
+			}
+		}
+	}
+
+	// Gateway
+	if ($post['varusersframedroute'] != '') {
+		$framedroute = explode(" ", $post['varusersframedroute']);
+		$cnt = count($framedroute);
+		// One or more metrics are allowed per RFC2865 (5.22)
+		if ($cnt < 3) {
+			$input_errors[] = "The 'Gateway' field must match the required format: Subnet Gateway Metric(s) (e.g. 192.168.10.0/24 192.168.10.1 1).";
+		}
+		// The subnet CIDR is optional per RFC2865 (5.22)
+		if (!is_ipaddrv4($framedroute[0]) && !is_subnetv4($framedroute[0])) {
+			$input_errors[] = "The 'Gateway' field's subnet part '{$framedroute[0]}' must be a valid IPv4 subnet.";
+		}
+		if (!is_ipaddrv4($framedroute[1])) {
+			$input_errors[] = "The 'Gateway' field's gateway part '{$framedroute[1]}' must be a valid IPv4 gateway address.";
+		}
+		// One or more metrics are allowed per RFC2865 (5.22)
+		for ($i = 2; $i < $cnt; $i++) {
+			if (!is_numericint($framedroute[$i])) {
+				$input_errors[] = "The 'Gateway' field's metric part '{$framedroute[$i]}' must contain an integer value.";
+			}
+		}
+	}
+
+	// VLAN ID
+	if ($post['varusersvlanid'] != '') {
+		if (!is_numericint($post['varusersvlanid'])) {
+			$input_errors[] = "The 'VLAN ID' field must contain an integer value.";
+		} elseif ($post['varusersvlanid'] < 1 || $post['varusersvlanid'] > 4095) {
+			$input_errors[] = "The 'VLAN ID' must be in the 1-4095 range.";
+		}
+	}
+
+	// Expiration Date
+	if ($post['varusersexpiration'] != '') {
+		$expires = date_parse_from_format("M d Y", $post['varusersexpiration']);
+		if ($expires['error_count'] > 0 || $expires['warning_count'] > 0) {
+			$input_errors[] = "The 'Expiration Date' format is invalid. | Error(s): " .
+			    implode('. ', $expires['errors']) . " | Warning(s): " .
+			    implode('. ', $expires['warnings']);
+		}
+		// Hack around date_parse_from_format() bugs, such as expanding "Jan 199" to "Jan 1 99"
+		if ($expires['year'] < 1970) {
+			$input_errors[] = "The 'Expiration Date' contains an invalid year.";
+		}
+	}
+
+	// Session Timeout
+	if ($post['varuserssessiontimeout'] != '' && !is_numericint($post['varuserssessiontimeout'])) {
+		$input_errors[] = "The 'Session Timeout' field must contain an integer value.";
+	}
+
+	// Possible Login Times
+	// TODO: Produce some regex or better check here
+	if ($post['varuserslogintime'] && !preg_match("/^[a-zA-Z0-9,|-]*$/", $post['varuserslogintime'])) {
+		$input_errors[] = "The 'Possible Login Times' field may only contain a-z, A-Z, 0-9, comma, vertical bar and hyphen (regex /^[a-zA-Z0-9,|-]*$/)";
+	}
+
+	// Amount of Time
+	if ($post['varusersamountoftime'] != '' && !is_numericint($post['varusersamountoftime'])) {
+		$input_errors[] = "The 'Amount of Time' field must contain an integer value.";
+	}
+
+	// Amount of Download and Upload Traffic
+	if ($post['varusersmaxtotaloctets'] != '' && !is_numericint($post['varusersmaxtotaloctets'])) {
+		$input_errors[] = "The 'Amount of Download and Upload Traffic' field must contain an integer value.";
+	}
+
+	// Maximum Bandwidth Down
+	if ($post['varusersmaxbandwidthdown'] != '' && !is_numericint($post['varusersmaxbandwidthdown'])) {
+		$input_errors[] = "The 'Maximum Bandwidth Down' field must contain an integer value.";
+	}
+
+	// Maximum Bandwidth Up
+	if ($post['varusersmaxbandwidthup'] != '' && !is_numericint($post['varusersmaxbandwidthup'])) {
+		$input_errors[] = "The 'Maximum Bandwidth Up' field must contain an integer value.";
+	}
+
+	// Accounting Interim Interval
+	if ($post['varusersacctinteriminterval'] != '') {
+		if (!is_numericint($post['varusersacctinteriminterval']) || $post['varusersacctinteriminterval'] <= 60) {
+			$input_errors[] = "The 'Accounting Interim Interval' field must contain an integer with a value larger than 60 (seconds).";
+		}
+	}
+
+	/*
+	 * TODO:
+	 * Additional RADIUS Attributes on the TOP of this entry, Additional RADIUS Attributes (CHECK-ITEM), Additional RADIUS Attributes (REPLY-ITEM)
+	 */
+
+}
+ 
+/* MACs input validation */
+function freeradius_validate_macs($post, &$input_errors) {
+
+	// MAC Address
+	if (!empty($post['varmacsaddress'])) {
+		if (!preg_match('/^[0-9A-F]{2}(?:[-][0-9A-F]{2}){5}$/i', $post['varmacsaddress'])) {
+			$input_errors[] = "The 'MAC Address' field must contain a valid MAC address, delimited with '-' character.";
+		}
+	}
+
+	// Redirection URL
+	if (!empty($post['varmacsswisprredirectionurl'])) {
+		if (!filter_var($post['varmacsswisprredirectionurl'], FILTER_VALIDATE_URL)) {
+			$input_errors[] = "The 'Redirection URL' field must contain a valid URL.";
+		}
+	}
+
+	// Number of Simultaneous Connections
+	if ($post['varmacssimultaneousconnect'] != '' && !is_numericint($post['varmacssimultaneousconnect'])) {
+		$input_errors[] = "The 'Number of Simultaneous Connections' field must contain an integer value.";
+	}
+
+	// Description
+	if ($post['description'] && !preg_match("/^[a-zA-Z0-9 _,.;:+=()-]*$/", $post['description'])) {
+		$input_errors[] = "Do not use special characters in the 'Description' field; only /^[a-zA-Z0-9 _,.;:+=()-]*$/ allowed.";
+	}
+
+	// IP Address; may contain a single trailing '+' for simultaneous connections
+	if ($post['varmacsframedipaddress']) {
+		$framedip = str_replace('+', '', $post['varmacsframedipaddress'], $pluscnt);
+		if (!is_ipaddrv4($framedip)) {
+			$input_errors[] = "The 'IP Address' field must contain a valid IPv4 address.";
+		}
+		if ($pluscnt > 1) {
+			$input_errors[] = "The 'IP Address' field may optionally contain only a single trailing '+'.";
+		}
+	}
+
+	// Subnet Mask
+	if ($post['varmacsframedipnetmask']) {
+		if ($post['varmacsframedipaddress'] == '') {
+			$input_errors[] = "To specify a 'Subnet Mask', the 'IP Address' field must not be empty.";
+		} elseif (is_ipaddrv4($framedip)) {
+			$ip = long2ip(ip2long($framedip) & ip2long($post['varmacsframedipnetmask']));
+			$mask = 32 - log((ip2long($post['varmacsframedipnetmask']) ^ ip2long('255.255.255.255')) +1, 2);
+			if (!is_subnetv4("{$ip}/{$mask}")) {
+				$input_errors[] = "The 'Subnet Mask' field must contain a valid subnet mask.";
+			}
+		}
+	}
+
+	// Gateway
+	if ($post['varmacsframedroute'] != '') {
+		$framedroute = explode(" ", $post['varmacsframedroute']);
+		$cnt = count($framedroute);
+		// One or more metrics are allowed per RFC2865 (5.22)
+		if ($cnt < 3) {
+			$input_errors[] = "The 'Gateway' field must match the required format: Subnet Gateway Metric(s) (e.g. 192.168.10.0/24 192.168.10.1 1).";
+		}
+		// The subnet CIDR is optional per RFC2865 (5.22)
+		if (!is_ipaddrv4($framedroute[0]) && !is_subnetv4($framedroute[0])) {
+			$input_errors[] = "The 'Gateway' field's subnet part '{$framedroute[0]}' must be a valid IPv4 subnet.";
+		}
+		if (!is_ipaddrv4($framedroute[1])) {
+			$input_errors[] = "The 'Gateway' field's gateway part '{$framedroute[1]}' must be a valid IPv4 gateway address.";
+		}
+		// One or more metrics are allowed per RFC2865 (5.22)
+		for ($i = 2; $i < $cnt; $i++) {
+			if (!is_numericint($framedroute[$i])) {
+				$input_errors[] = "The 'Gateway' field's metric part '{$framedroute[$i]}' must contain an integer value.";
+			}
+		}
+	}
+
+	// VLAN ID
+	if ($post['varmacsvlanid'] != '') {
+		if (!is_numericint($post['varmacsvlanid'])) {
+			$input_errors[] = "The 'VLAN ID' field must contain an integer value.";
+		} elseif ($post['varmacsvlanid'] < 1 || $post['varmacsvlanid'] > 4095) {
+			$input_errors[] = "The 'VLAN ID' must be in the 1-4095 range.";
+		}
+	}
+
+	// Expiration Date
+	if ($post['varmacsexpiration'] != '') {
+		$expires = date_parse_from_format("M d Y", $post['varmacsexpiration']);
+		if ($expires['error_count'] > 0 || $expires['warning_count'] > 0) {
+			$input_errors[] = "The 'Expiration Date' format is invalid. | Error(s): " .
+			    implode('. ', $expires['errors']) . " | Warning(s): " .
+			    implode('. ', $expires['warnings']);
+		}
+		// Hack around date_parse_from_format() bugs, such as expanding "Jan 199" to "Jan 1 99"
+		if ($expires['year'] < 1970) {
+			$input_errors[] = "The 'Expiration Date' contains an invalid year.";
+		}
+	}
+
+	// Session Timeout
+	if ($post['varmacssessiontimeout'] != '' && !is_numericint($post['varmacssessiontimeout'])) {
+		$input_errors[] = "The 'Session Timeout' field must contain an integer value.";
+	}
+
+	// Possible Login Times
+	// TODO: Produce some regex or better check here
+	if ($post['varmacslogintime'] && !preg_match("/^[a-zA-Z0-9,|-]*$/", $post['varmacslogintime'])) {
+		$input_errors[] = "The 'Possible Login Times' field may only contain a-z, A-Z, 0-9, comma, vertical bar and hyphen (regex /^[a-zA-Z0-9,|-]*$/)";
+	}
+
+	// Amount of Time
+	if ($post['varmacsamountoftime'] != '' && !is_numericint($post['varmacsamountoftime'])) {
+		$input_errors[] = "The 'Amount of Time' field must contain an integer value.";
+	}
+
+	// Amount of Download and Upload Traffic
+	if ($post['varmacsmaxtotaloctets'] != '' && !is_numericint($post['varmacsmaxtotaloctets'])) {
+		$input_errors[] = "The 'Amount of Download and Upload Traffic' field must contain an integer value.";
+	}
+
+	// Maximum Bandwidth Down
+	if ($post['varmacsmaxbandwidthdown'] != '' && !is_numericint($post['varmacsmaxbandwidthdown'])) {
+		$input_errors[] = "The 'Maximum Bandwidth Down' field must contain an integer value.";
+	}
+
+	// Maximum Bandwidth Up
+	if ($post['varmacsmaxbandwidthup'] != '' && !is_numericint($post['varmacsmaxbandwidthup'])) {
+		$input_errors[] = "The 'Maximum Bandwidth Up' field must contain an integer value.";
+	}
+
+	// Accounting Interim Interval
+	if ($post['varmacsacctinteriminterval'] != '') {
+		if (!is_numericint($post['varmacsacctinteriminterval']) || $post['varmacsacctinteriminterval'] <= 60) {
+			$input_errors[] = "The 'Accounting Interim Interval' field must contain an integer with a value larger than 60 (seconds).";
+		}
+	}
+
+	/*
+	 * TODO:
+	 * Additional RADIUS Attributes on the TOP of this entry, Additional RADIUS Attributes (CHECK-ITEM), Additional RADIUS Attributes (REPLY-ITEM)
+	 */
+
+}
+
+/* NAS/Clients input validation */
+function freeradius_validate_clients($post, &$input_errors) {
+
+	// Client IP Address
+	if ($post['varclientip'] != '*') {
+		if ($post['varclientipversion'] == 'ipaddr' && !is_ipaddrv4($post['varclientip'])) {
+			$input_errors[] = "The 'Client IP Address' field must contain a valid IPv4 address when IPv4 is selected under 'Client IP Version'.";
+		}
+		if ($post['varclientipversion'] == 'ipv6addr' && !is_ipaddrv6($post['varclientip'])) {
+			$input_errors[] = "The 'Client IP Address' field must contain a valid IPv6 address when IPv6 is selected under 'Client IP Version'.";
+		}
+	}
+
+	// Client Shortname
+	if ($post['varclientshortname'] && !preg_match("/^[a-zA-Z0-9_.-]*$/", $post['varclientshortname'])) {
+		$input_errors[] = "The 'Client Shortname' field may only contain a-z, A-Z, 0-9, underscore, period and hyphen (regex /^[a-zA-Z0-9_.-]*$/)";
+	}
+
+	// Client Shared Secret
+	if (strlen($post['varclientsharedsecret']) > 31) {
+		$input_errors[] = "The 'Client Shared Secret' fields contains too many characters. FreeRADIUS is limited to 31 characters for shared secret.";
+	}
+
+	// Description
+	if ($post['description'] && !preg_match("/^[a-zA-Z0-9 _,.;:+=()-]*$/", $post['description'])) {
+		$input_errors[] = "Do not use special characters in the 'Description' field; only /^[a-zA-Z0-9 _,.;:+=()-]*$/ allowed.";
+	}
+
+	/*
+	 * TODO: Check NAS Login for sanity.
+	 */
+
+}
+
+/* Interfaces input validation */
+function freeradius_validate_interfaces($post, &$input_errors) {
+
+	// Interface IP Address
+	if (empty($post['varinterfaceip'])) {
+		$input_errors[] = "The 'Interface IP Address' field must not be empty.";
+	} elseif ($post['varinterfaceip'] != '*') {
+		if ($post['varinterfaceipversion'] == 'ipaddr' && !is_ipaddrv4($post['varinterfaceip'])) {
+			$input_errors[] = "The 'Interface IP Address' must contain a valid IPv4 address when IPv4 is selected under 'IP Version'.";
+		}
+		if ($post['varinterfaceipversion'] == 'ipv6addr' && !is_ipaddrv6($post['varinterfaceip'])) {
+			$input_errors[] = "The 'Interface IP Address' must contain a valid IPv6 address when IPv6 is selected under 'IP Version'.";
+		}
+		if (!is_ipaddr_configured($post['varinterfaceip'])) {
+			$input_errors[] = "The 'Interface IP Address' must contain a valid, locally configured IP address!";
+		}
+	}
+
+	// Port
+	if (empty($post['varinterfaceport'])) {
+		$input_errors[] = "The 'Port' field must not be empty.";
+	} elseif (!is_port($post['varinterfaceport'])) {
+		$input_errors[] = "The 'Port' field must contain a valid port.";
+	}
+
+	// Description
+	if ($post['description'] && !preg_match("/^[a-zA-Z0-9 _,.;:+=()-]*$/", $post['description'])) {
+		$input_errors[] = "Do not use special characters in the 'Description' field; only /^[a-zA-Z0-9 _,.;:+=()-]*$/ allowed.";
+	}
+
+	/*
+	 * TODO: Check that the configured port is unique for the selected Interface Type/IP address.
+	 */
+
+}
+
+/* General Settings input validation */
+function freeradius_validate_settings($post, &$input_errors) {
+
+	// Maximum Requests Tracked
+	if ($post['varsettingsmaxrequests'] != '' && !is_numericint($post['varsettingsmaxrequests'])) {
+		$input_errors[] = "The 'Maximum Requests Tracked' field must contain an integer value.";
+	}
+
+	// Maximum Request Timeout
+	if ($post['varsettingsmaxrequesttime'] != '' && !is_numericint($post['varsettingsmaxrequesttime'])) {
+		$input_errors[] = "The 'Maximum Request Timeout' field must contain an integer value.";
+	}
+
+	// Cleanup Delay
+	if ($post['varsettingscleanupdelay'] != '' && !is_numericint($post['varsettingscleanupdelay'])) {
+		$input_errors[] = "The 'Cleanup Delay' field must contain an integer value.";
+	}
+
+	// Maximum Number of Attributes
+	if ($post['varsettingsmaxattributes'] != '' && !is_numericint($post['varsettingsmaxattributes'])) {
+		$input_errors[] = "The 'Maximum Number of Attributes' field must contain an integer value.";
+	}
+
+	// Access-Reject Delay
+	if ($post['varsettingsrejectdelay'] != '' && !is_numericint($post['varsettingsrejectdelay'])) {
+		$input_errors[] = "The 'Access-Reject Delay' field must contain an integer value.";
+	}
+
+	// Number of Threads After Start
+	if ($post['varsettingsstartservers'] != '' && !is_numericint($post['varsettingsstartservers'])) {
+		$input_errors[] = "The 'Number of Threads After Start' field must contain an integer value.";
+	}
+
+	// Maximum Number of Threads
+	if ($post['varsettingsmaxservers'] != '' && !is_numericint($post['varsettingsmaxservers'])) {
+		$input_errors[] = "The 'Maximum Number of Threads' field must contain an integer value.";
+	}
+
+	// Minimum Spare Servers
+	if ($post['varsettingsminspareservers'] != '' && !is_numericint($post['varsettingsminspareservers'])) {
+		$input_errors[] = "The 'Minimum Spare Servers' field must contain an integer value.";
+	}
+
+	// Maximum Spare Servers
+	if ($post['varsettingsmaxspareservers'] != '' && !is_numericint($post['varsettingsmaxspareservers'])) {
+		$input_errors[] = "The 'Maximum Spare Servers' field must contain an integer value.";
+	}
+
+	// Server Packet Queue Size
+	if ($post['varsettingsmaxqueuesize'] != '' && !is_numericint($post['varsettingsmaxqueuesize'])) {
+		$input_errors[] = "The 'Server Packet Queue Size' field must contain an integer value.";
+	}
+
+	// Maximum Requests Per Server
+	if ($post['varsettingsmaxrequestsperserver'] != '' && !is_numericint($post['varsettingsmaxrequestsperserver'])) {
+		$input_errors[] = "The 'Maximum Requests Per Server' field must contain an integer value.";
+	}
+
+	// OTP Lifetime
+	if ($post['varsettingsmotpenable'] == 'on') {
+		if (empty($post['varsettingsmotptimespan'])) {
+			$input_errors[] = "The 'OTP Lifetime' field must not be 0 or empty.";
+		} elseif (!is_numericint($post['varsettingsmotptimespan'])) {
+			$input_errors[] = "The 'OTP Lifetime' field must contain an integer value.";
+		} elseif ($post['varsettingsmotptimespan'] > 12) {
+			$input_errors[] = "The 'OTP Lifetime' field should contain only secure values. Values higher than 12 (~120 seconds) are not allowed.";
+		}
+	}
+
+	// Number of Invalid Password Attempts
+	if ($post['varsettingsmotpenable'] == 'on') {
+		if (empty($post['varsettingsmotppasswordattempts'])) {
+			$input_errors[] = "The 'Invalid Password Attempts' field must not be 0 or empty.";
+		} elseif (!is_numericint($post['varsettingsmotppasswordattempts'])) {
+			$input_errors[] = "The 'Invalid Password Attempts' field must contain an integer value.";
+		} elseif ($post['varsettingsmotppasswordattempts'] > 20) {
+			$input_errors[] = "The 'Invalid Password Attempts' field should contain only secure values. Values higher than 20 are not allowed.";
+		}
+	}
+
+	// Token Password Length
+	if ($post['varsettingsmotptokenlength'] != '') {
+		if (!preg_match('/^[0-9]{1,2}(?:[-][0-9]{1,2}){1}$/i', $post['varsettingsmotptokenlength'])) {
+			$input_errors[] = "The 'Token Password Length' field must contain a valid integer range between 1 and 16, separated with a '-' character; e.g.: 1-6.";
+		} elseif (!is_intrange($post['varsettingsmotptokenlength'], 1, 16)) {
+			$input_errors[] = "The 'Token Password Length' field must contain a valid integer range between 1 and 16, separated with a '-' character; e.g.: 1-6.";
+		}
+	}
+
+	/*
+	 * TODO:
+	 * Logging Configuration - Additional Information for Bad Attempts, Additional Information for Good Attempts
+	 * Miscellaneous Configuration - Default Profile, Profile Attribute, Access Attribute
+	 * Group Membership Options - Groupname Attribute, Group Membership Filter, Group Membership Attribute
+	 */
+
+}
+
+/* EAP settings input validation */
+function freeradius_validate_eap($post, &$input_errors) {
+
+	// Disable Weak EAP Types sanity check
+	if ($post['vareapconfdisableweakeaptypes'] == 'on') {
+		if (in_array($post['vareapconfdefaulteaptype'], array('md5', 'gtc', 'leap'))) {
+			$input_errors[] = "The 'Default EAP Type' field must not contain any of the weak types when 'Disable Weak EAP Types' is enabled.";
+		}
+	}
+
+	// EAP Maximum Sessions Tracking Per Server
+	if ($post['vareapconfmaxsessions'] != '' && !is_numericint($post['vareapconfmaxsessions'])) {
+		$input_errors[] = "The 'Maximum Sessions Tracking Per Server' field must contain an integer value.";
+	}
+
+	// EAP Certificates for TLS sanity checking
+	if ($post['vareapconfchoosecertmanager'] == 'on') {
+		// EAP Private Key Password should be empty if using pfSense Cert Manager
+		if ($post['vareapconfprivatekeypassword'] != '') {
+			$input_errors[] = "When using pfSense Certificate Management, the 'Private Key Password' field must be empty.";
+		}
+	} else {
+		// SSL CA Certificate, SSL Revocation List and SSL Server Certificate should be 'none' if using the deprecated FreeRADIUS Cert Manager
+		if ($post['ssl_ca_cert'] != 'none') {
+			$input_errors[] = "When using the deprecated FreeRADIUS Cert Manager, the 'SSL CA Certificate' field must be set to 'none'.";
+		}
+		if ($post['ssl_ca_crl'] != 'none') {
+			$input_errors[] = "When using the deprecated FreeRADIUS Cert Manager, the 'SSL Revocation List' field must be set to 'none'.";
+		}
+		if ($post['ssl_server_cert'] != 'none') {
+			$input_errors[] = "When using the deprecated FreeRADIUS Cert Manager, the 'SSL Server Certificate' field must be set to 'none'.";
+		}
+	}
+
+	// EAP-TLS Fragment Size
+	if ($post['vareapconffragmentsize'] != '') {
+		if (!is_numericint($post['vareapconffragmentsize']) || $post['vareapconffragmentsize'] > 4096) {
+			$input_errors[] = "The 'Fragment Size' field must contain an integer value not higher than 4096.";
+		}
+	}
+
+	// EAP-TLS Cache Lifetime
+	if ($post['vareapconfcachelifetime'] != '' && !is_numericint($post['vareapconfcachelifetime'])) {
+		$input_errors[] = "The EAP-TLS Cache 'Lifetime' field must contain an integer value.";
+	}
+
+	// EAP-TLS Cache Max Entries
+	if ($post['vareapconfcachemaxentries'] != '' && !is_numericint($post['vareapconfcachemaxentries'])) {
+		$input_errors[] = "The EAP-TLS Cache 'Max Entries' field must contain an integer value.";
+	}
+
+	// EAP-TLS OCSP Responder
+	if (!empty($post['vareapconfocspurl'])) {
+		if (!filter_var($post['vareapconfocspurl'], FILTER_VALIDATE_URL)) {
+			$input_errors[] = "The 'OCSP Responder' field must contain a valid URL.";
+		}
+	}
+
+	/*
+	 * TODO: 
+	 * EAP-TLS - Country, State or Province, City, Organization, E-Mail Address, Common Name
+	 */
+
+}
+
+/* SQL settings input validation */
+function freeradius_validate_sql($post, &$input_errors) {
+
+	// SQL Server Address
+	if ($post['varsqlconfincludeenable'] == 'on') {
+		if (empty($post['varsqlconfserver'])) {
+			$input_errors[] = "The 'Server Address' field for SQL Server 1 must not be empty when 'SQL Support' for Server 1 is enabled.";
+		} elseif (!is_ipaddr($post['varsqlconfserver']) && !is_hostname($post['varsqlconfserver'])) {
+			$input_errors[] = "The 'Server Address' field for SQL Server 1 must contain a valid FQDN or IP address.";
+		}
+	}
+	if ($post['varsqlconf2includeenable'] == 'on') {
+		if (empty($post['varsqlconf2server'])) {
+			$input_errors[] = "The 'Server Address' field for SQL Server 2 must not be empty when 'SQL Support' for Server 2 is enabled.";
+		} elseif (!is_ipaddr($post['varsqlconf2server']) && !is_hostname($post['varsqlconf2server'])) {
+			$input_errors[] = "The 'Server Address' field for SQL Server 2 must contain a valid FQDN or IP address.";
+		}
+	}
+
+	// SQL Server Port
+	if ($post['varsqlconfincludeenable'] == 'on') {
+		if (empty($post['varsqlconfport'])) {
+			$input_errors[] = "The 'Server Port' field for SQL Server 1 must not be empty when 'SQL Support' for Server 1 is enabled.";
+		} elseif (!is_port($post['varsqlconfport'])) {
+			$input_errors[] = "The 'Server Port' field for SQL Server 1 must contain a valid port.";
+		}
+	}
+	if ($post['varsqlconf2includeenable'] == 'on') {
+		if (empty($post['varsqlconf2port'])) {
+			$input_errors[] = "The 'Server Port' field for SQL Server 2 must not be empty when 'SQL Support' for Server 1 is enabled.";
+		} elseif (!is_port($post['varsqlconf2port'])) {
+			$input_errors[] = "The 'Server Port' field for SQL Server 2 must contain a valid port.";
+		}
+	}
+
+	// SQL Server Database Username
+	if ($post['varsqlconfincludeenable'] == 'on') {
+		if (empty($post['varsqlconflogin'])) {
+			$input_errors[] = "The 'Database Username' field for SQL Server 1 must not be empty when 'SQL Support' for Server 1 is enabled.";
+		}
+		/* TODO: Username sanity checking */
+	}
+	if ($post['varsqlconf2includeenable'] == 'on') {
+		if (empty($post['varsqlconf2login'])) {
+			$input_errors[] = "The 'Database Username' field for SQL Server 2 must not be empty when 'SQL Support' for Server 1 is enabled.";
+		}
+		/* TODO: Username sanity checking */
+	}
+
+	// SQL Server Database Password
+	if ($post['varsqlconfincludeenable'] == 'on') {
+		if (empty($post['varsqlconfpassword'])) {
+			$input_errors[] = "The 'Database Password' field for SQL Server 1 must not be empty when 'SQL Support' for Server 1 is enabled.";
+		}
+	}
+	if ($post['varsqlconf2includeenable'] == 'on') {
+		if (empty($post['varsqlconf2password'])) {
+			$input_errors[] = "The 'Database Password' field for SQL Server 2 must not be empty when 'SQL Support' for Server 1 is enabled.";
+		}
+	}
+
+	// SQL Server Database Table Configuration
+	if ($post['varsqlconfincludeenable'] == 'on') {
+		if (empty($post['varsqlconfradiusdb'])) {
+			$input_errors[] = "The 'Database Table Configuration' field for SQL Server 1 must not be empty when 'SQL Support' for Server 1 is enabled.";
+		}
+		/* TODO: DB table name sanity checking */
+	}
+	if ($post['varsqlconf2includeenable'] == 'on') {
+		if (empty($post['varsqlconf2radiusdb'])) {
+			$input_errors[] = "The 'Database Table Configuration' field for SQL Server 2 must not be empty when 'SQL Support' for Server 1 is enabled.";
+		}
+		/* TODO: DB table name sanity checking */
+	}
+
+	// SQL Server Number of SQL Connections
+	if ($post['varsqlconfnumsqlsocks'] != '' && !is_numericint($post['varsqlconfnumsqlsocks'])) {
+		$input_errors[] = "The 'Number of SQL Connections' field for SQL Server 1 must contain an integer value.";
+	}
+	if ($post['varsqlconf2numsqlsocks'] != '' && !is_numericint($post['varsqlconf2numsqlsocks'])) {
+		$input_errors[] = "The 'Number of SQL Connections' field for SQL Server 2 must contain an integer value.";
+	}
+
+	// SQL Server Failed Database Connection Delay
+	if ($post['varsqlconfconnectfailureretrydelay'] != '' && !is_numericint($post['varsqlconfconnectfailureretrydelay'])) {
+		$input_errors[] = "The 'Failed Database Connection Delay' field for SQL Server 1 must contain an integer value.";
+	}
+	if ($post['varsqlconf2connectfailureretrydelay'] != '' && !is_numericint($post['varsqlconf2connectfailureretrydelay'])) {
+		$input_errors[] = "The 'Failed Database Connection Delay' field for SQL Server 2 must contain an integer value.";
+	}
+
+	// SQL Server SQL Socket Lifetime
+	if ($post['varsqlconflifetime'] != '' && !is_numericint($post['varsqlconflifetime'])) {
+		$input_errors[] = "The 'SQL Socket Lifetime' field for SQL Server 1 must contain an integer value.";
+	}
+	if ($post['varsqlconf2lifetime'] != '' && !is_numericint($post['varsqlconf2lifetime'])) {
+		$input_errors[] = "The 'SQL Socket Lifetime' field for SQL Server 2 must contain an integer value.";
+	}
+
+	// SQL Server SQL Socket Maximum Queries
+	if ($post['varsqlconfmaxqueries'] != '' && !is_numericint($post['varsqlconfmaxqueries'])) {
+		$input_errors[] = "The 'SQL Socket Maximum Queries' field for SQL Server 1 must contain an integer value.";
+	}
+	if ($post['varsqlconf2maxqueries'] != '' && !is_numericint($post['varsqlconf2maxqueries'])) {
+		$input_errors[] = "The 'SQL Socket Maximum Queries' field for SQL Server 2 must contain an integer value.";
+	}
+
+	/*
+	 * TODO:
+	 * SQL Database Configuration
+	 * - Accounting Table 1 (Start), Accounting Table 2 (Stop), Post Auth Table, Auth Check Table, Auth Reply Table,
+	 * - Group Check Table, Group Reply Table, User Group Table, RADIUS Client Table
+	 */
+
+}
+
+
+/* LDAP settings input validation */
+function freeradius_validate_ldap($post, &$input_errors) {
+	global $config;
+
+	// LDAP Server Address
+	if ($post['varmodulesldapenableauthorize'] == 'on') {
+		if (empty($post['varmodulesldapserver'])) {
+			$input_errors[] = "The 'Server Address' field for LDAP Server 1 must not be empty when 'LDAP Authorization Support' for Server 1 is enabled.";
+		} elseif (!is_ipaddr($post['varmodulesldapserver']) && !is_hostname($post['varmodulesldapserver'])) {
+			$input_errors[] = "The 'Server Address' field for LDAP Server 1 must contain a valid FQDN or IP address.";
+		}
+	}
+	if ($post['varmodulesldap2enableauthorize'] == 'on') {
+		if (empty($post['varmodulesldap2server'])) {
+			$input_errors[] = "The 'Server Address' field for LDAP Server 2 must not be empty when 'LDAP Authorization Support' for Server 2 is enabled.";
+		} elseif (!is_ipaddr($post['varmodulesldap2server']) && !is_hostname($post['varmodulesldap2server'])) {
+			$input_errors[] = "The 'Server Address' field for LDAP Server 2 must contain a valid FQDN or IP address.";
+		}
+	}
+
+	// LDAP Server Port
+	if ($post['varmodulesldapenableauthorize'] == 'on') {
+		if (empty($post['varmodulesldapserverport'])) {
+			$input_errors[] = "The 'Server Port' field for LDAP Server 1 must not be empty when 'LDAP Authorization Support' for Server 1 is enabled.";
+		} elseif (!is_port($post['varmodulesldapserverport'])) {
+			$input_errors[] = "The 'Server Port' field for LDAP Server 1 must contain a valid port.";
+		}
+	}
+	if ($post['varmodulesldap2enableauthorize'] == 'on') {
+		if (empty($post['varmodulesldap2serverport'])) {
+			$input_errors[] = "The 'Server Port' field for LDAP Server 2 must not be empty when 'LDAP Authorization Support' for Server 2 is enabled.";
+		} elseif (!is_port($post['varmodulesldap2serverport'])) {
+			$input_errors[] = "The 'Server Port' field for LDAP Server 2 must contain a valid port.";
+		}
+	}
+
+	// LDAP Server Identity
+	if ($post['varmodulesldapenableauthorize'] == 'on') {
+		if (empty($post['varmodulesldapidentity'])) {
+			$input_errors[] = "The 'Identity' field for LDAP Server 1 must not be empty when 'LDAP Authorization Support' for Server 1 is enabled.";
+		}
+		/* TODO: Identity sanity checking */
+	}
+	if ($post['varmodulesldap2enableauthorize'] == 'on') {
+		if (empty($post['varmodulesldap2identity'])) {
+			$input_errors[] = "The 'Identity' field for LDAP Server 2 must not be empty when 'LDAP Authorization Support' for Server 2 is enabled.";
+		}
+		/* TODO: Identity sanity checking */
+	}
+
+	// LDAP Server Password
+	if ($post['varmodulesldapenableauthorize'] == 'on') {
+		if (empty($post['varmodulesldappassword'])) {
+			$input_errors[] = "The 'Server Password' field for LDAP Server 1 must not be empty when 'LDAP Authorization Support' for Server 1 is enabled.";
+		}
+	}
+	if ($post['varmodulesldap2enableauthorize'] == 'on') {
+		if (empty($post['varmodulesldap2password'])) {
+			$input_errors[] = "The 'Server Password' field for LDAP Server 2 must not be empty when 'LDAP Authorization Support' for Server 2 is enabled.";
+		}
+	}
+
+	// LDAP Connections Number
+	if ($post['varmodulesldapldapconnectionsnumber'] != '' && !is_numericint($post['varmodulesldapldapconnectionsnumber'])) {
+		$input_errors[] = "The 'LDAP Connections Number' field for LDAP Server 1 must contain an integer value.";
+	}
+	if ($post['varmodulesldap2ldapconnectionsnumber'] != '' && !is_numericint($post['varmodulesldap2ldapconnectionsnumber'])) {
+		$input_errors[] = "The 'LDAP Connections Number' field for LDAP Server 2 must contain an integer value.";
+	}
+
+	// LDAP Timeout
+	if ($post['varmodulesldaptimeout'] != '' && !is_numericint($post['varmodulesldaptimeout'])) {
+		$input_errors[] = "The 'Timeout' field for LDAP Server 1 must contain an integer value.";
+	}
+	if ($post['varmodulesldap2timeout'] != '' && !is_numericint($post['varmodulesldap2timeout'])) {
+		$input_errors[] = "The 'Timeout' field for LDAP Server 2 must contain an integer value.";
+	}
+
+	// LDAP Time Limit
+	if ($post['varmodulesldaptimelimit'] != '' && !is_numericint($post['varmodulesldaptimelimit'])) {
+		$input_errors[] = "The 'Time Limit' field for LDAP Server 1 must contain an integer value.";
+	}
+	if ($post['varmodulesldap2timelimit'] != '' && !is_numericint($post['varmodulesldap2timelimit'])) {
+		$input_errors[] = "The 'Time Limit' field for LDAP Server 2 must contain an integer value.";
+	}
+
+	// LDAP Network Timeout
+	if ($post['varmodulesldapnettimeout'] != '' && !is_numericint($post['varmodulesldapnettimeout'])) {
+		$input_errors[] = "The 'Network Timeout' field for LDAP Server 1 must contain an integer value.";
+	}
+	if ($post['varmodulesldap2nettimeout'] != '' && !is_numericint($post['varmodulesldap2nettimeout'])) {
+		$input_errors[] = "The 'Network Timeout' field for LDAP Server 2 must contain an integer value.";
+	}
+
+	// LDAP KeepAlive Configuration
+	if ($post['varmodulesldapkeepaliveidle'] != '' && !is_numericint($post['varmodulesldapkeepaliveidle'])) {
+		$input_errors[] = "The 'LDAP OPT X KeepAlive Idle' field for LDAP Server 1 must contain an integer value.";
+	}
+	if ($post['varmodulesldap2keepaliveidle'] != '' && !is_numericint($post['varmodulesldap2keepaliveidle'])) {
+		$input_errors[] = "The 'LDAP OPT X KeepAlive Idle' field for LDAP Server 2 must contain an integer value.";
+	}
+	if ($post['varmodulesldapkeepaliveprobes'] != '' && !is_numericint($post['varmodulesldapkeepaliveprobes'])) {
+		$input_errors[] = "The 'LDAP OPT X KeepAlive Probes' field for LDAP Server 1 must contain an integer value.";
+	}
+	if ($post['varmodulesldap2keepaliveprobes'] != '' && !is_numericint($post['varmodulesldap2keepaliveprobes'])) {
+		$input_errors[] = "The 'LDAP OPT X KeepAlive Probes' field for LDAP Server 2 must contain an integer value.";
+	}
+	if ($post['varmodulesldapkeepaliveinterval'] != '' && !is_numericint($post['varmodulesldapkeepaliveinterval'])) {
+		$input_errors[] = "The 'LDAP OPT X KeepAlive Interval' field for LDAP Server 1 must contain an integer value.";
+	}
+	if ($post['varmodulesldap2keepaliveinterval'] != '' && !is_numericint($post['varmodulesldap2keepaliveinterval'])) {
+		$input_errors[] = "The 'LDAP OPT X KeepAlive Interval' field for LDAP Server 2 must contain an integer value.";
+	}
+
+	// SSL CA Certificate/SSL Server Certificate should be 'none' if using the deprecated FreeRADIUS Cert Manager
+	if (is_array($config['installedpackages']['freeradiuseapconf']['config'][0])) {
+		$eapconf = $config['installedpackages']['freeradiuseapconf']['config'][0];
+	} else {
+		$eapconf = array();
+	}
+	if ($eapconf['vareapconfchoosecertmanager'] != 'on') {
+		if ($post['varmodulesldapenabletlssupport'] == 'on') {
+			if ($post['ssl_ca_cert1'] != 'none') {
+				$input_errors[] = "When using the deprecated FreeRADIUS Cert Manager, the 'SSL CA Certificate' field for LDAP Server 1 must be set to 'none'.";
+			}
+			if ($post['ssl_server_cert1'] != 'none') {
+				$input_errors[] = "When using the deprecated FreeRADIUS Cert Manager, the 'SSL Server Certificate' field for LDAP Server 1 must be set to 'none'.";
+			}
+		}
+		if ($post['varmodulesldap2enabletlssupport'] == 'on') {
+			if ($post['ssl_ca_cert2'] != 'none') {
+				$input_errors[] = "When using the deprecated FreeRADIUS Cert Manager, the 'SSL CA Certificate' field for LDAP Server 2 must be set to 'none'.";
+			}
+			if ($post['ssl_server_cert2'] != 'none') {
+				$input_errors[] = "When using the deprecated FreeRADIUS Cert Manager, the 'SSL Server Certificate' field for LDAP Server 2 must be set to 'none'.";
+			}
+		}
+	}
+
+	/*
+	 * TODO: 
+	 * General Configuration - Base DN, Filter, Base Filter
+	 * Miscellaneous Configuration - Default Profile, Profile Attribute, Access Attribute
+	 * Group Membership Options - Groupname Attribute, Group Membership Filter, Group Membership Attribute
+	 */
+
 }
 
 ?>
