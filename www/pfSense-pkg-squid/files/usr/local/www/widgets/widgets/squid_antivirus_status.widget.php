@@ -43,6 +43,8 @@ $clamd_path = SQUID_BASE . "/sbin/clamd";
 $img = array();
 $img['up'] = '<i class="fa fa-level-up text-success" title="Service running"></i>';
 $img['down'] = '<i class="fa fa-level-down text-danger" title="Service not running"></i>';
+// Update once per minute by default, instead of every 10 seconds
+$widgetperiod = isset($config['widgets']['period']) ? $config['widgets']['period'] * 1000 * 6 : 60000;
 
 function squid_avdb_info($filename) {
 	$stl = "style='padding-top: 0px; padding-bottom: 0px; padding-left: 4px; padding-right: 4px; border-left: 1px solid #999999;'";
@@ -118,7 +120,7 @@ function squid_antivirus_statistics() {
 
 ?>
 
-<div class="table-responsive">
+<div class="table-responsive" id="squidav_status">
 	<table class="table table-striped table-hover table-condensed">
 	<tbody>
 		<tr>
@@ -159,3 +161,29 @@ function squid_antivirus_statistics() {
 	</tbody>
 	</table>
 </div>
+
+<script type="text/javascript">
+//<![CDATA[
+function getstatus_squidav() {
+	$.ajax({
+		type: 'get',
+		url: '/widgets/widgets/squid_antivirus_status.widget.php',
+		dataType: 'html',
+		dataFilter: function(raw){
+			// We reload the entire widget, strip this block of javascript from it
+			return raw.replace(/<script>([\s\S]*)<\/script>/gi, '');
+		},
+		success: function(data){
+			$('#squidav_status').html(data);
+		},
+		error: function(){
+			$('#squidav_status').html("<div class=\"alert alert-danger\"><?=gettext('Unable to retrieve status'); ?></div>");
+		}
+	});
+}
+
+	events.push(function(){
+		setInterval('getstatus_squidav()', "<?=$widgetperiod?>");
+	});
+//]]>
+</script>
