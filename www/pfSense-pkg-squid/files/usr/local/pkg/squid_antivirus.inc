@@ -746,20 +746,17 @@ function squid_restart_antivirus() {
 			log_error("[squid] Missing " . CLAMAV_DBDIR . "*.cvd or *.cld files. Running freshclam in background.");
 			log_error("[squid] Do NOT attempt to start ClamAV service until AV definitions are downloaded.");
 			squid_update_clamav();
-		} elseif ($antivirus_config['clamav_safebrowsing'] == "on") {
-			if (!is_file(CLAMAV_DBDIR . "safebrowsing.cvd") && !is_file(CLAMAV_DBDIR . "safebrowsing.cld")) {
-				log_error("[squid] Google Safe Browsing is enabled but missing safebrowsing.cvd definitions. Running freshclam in background.");
-				log_error("[squid] ClamAV will be automatically notified about the new definitions when finished. No manual action necessary.");
-				squid_update_clamav();
-			}
-		} elseif ($antivirus_config['clamav_safebrowsing'] != "on") {
-			if (is_file(CLAMAV_DBDIR . "safebrowsing.cvd")) {
-				log_error("[squid] Google Safe Browsing is disabled. Removing safebrowsing.cvd definitions.");
-				mwexec("/bin/rm -f " . CLAMAV_DBDIR . "safebrowsing.cvd");
-			}
-			if (is_file(CLAMAV_DBDIR . "safebrowsing.cld")) {
-				log_error("[squid] Google Safe Browsing is disabled. Removing safebrowsing.cld definitions.");
-				mwexec("/bin/rm -f " . CLAMAV_DBDIR . "safebrowsing.cld");
+		} elseif ($antivirus_config['enable_advanced'] != "enabled") {
+			if ($antivirus_config['clamav_safebrowsing'] == "on") {
+				if (!is_file(CLAMAV_DBDIR . "safebrowsing.cvd") && !is_file(CLAMAV_DBDIR . "safebrowsing.cld")) {
+					log_error("[squid] Google Safe Browsing is enabled but missing safebrowsing.cvd definitions. Running freshclam in background.");
+					log_error("[squid] ClamAV will be automatically notified about the new definitions when finished. No manual action necessary.");
+					squid_update_clamav();
+				}
+			} else {
+				unlink_if_exists(CLAMAV_DBDIR . "safebrowsing.cld");
+				unlink_if_exists(CLAMAV_DBDIR . "safebrowsing.cvd");
+				log_error("[squid] Google Safe Browsing is disabled. Removing safebrowsing.c[lv]d definitions.");
 			}
 		}
 
