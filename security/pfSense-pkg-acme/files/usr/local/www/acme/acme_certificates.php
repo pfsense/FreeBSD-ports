@@ -105,10 +105,9 @@ if ($_POST) {
 		unset($delbtn, $delbtnp2, $movebtn, $movebtnp2, $togglebtn, $togglebtnp2);
 		foreach ($_POST as $pn => $pd) {
 			if (preg_match("/move_(.+)/", $pn, $matches)) {
-				$movebtn = $matches[1];
+				$movebtn = substr($pd, 5);
 			}
 		}
-		//
 		
 		/* move selected p1 entries before this */
 		if (isset($movebtn) && is_array($_POST['rule']) && count($_POST['rule'])) {
@@ -368,7 +367,8 @@ events.push(function() {
 	});
 	
 	$('[id^=Xmove_]').click(function (event) {
-		$('#' + event.target.id.slice(1)).click();
+		buttonid = event.target.id.slice(1);
+		$("[id='" + buttonid + "']").click();
 		return false;
 	});
 	$('[id^=Xmove_]').css('cursor', 'pointer');
