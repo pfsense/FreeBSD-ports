@@ -440,7 +440,7 @@
 			<description>
 				<![CDATA[
 				The resulting lifetime (in seconds) is the value entered here multiplied by 10 (i.e., 1 ~ 10s, 2 ~ 20s, 3 ~30s).<br/>
-				<span class="text-info">(Default: 2)</span>
+				<span class="text-info">Values higher than 12 are not allowed for security reasons. (Default: 2)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -451,8 +451,8 @@
 			<fieldname>varsettingsmotppasswordattempts</fieldname>
 			<description>
 				<![CDATA[
-				After this many failed attempts, the user will be locked out until an admin unlocks the user.
-				<span class="text-info">(Default: 5)</span>
+				After this many failed attempts, the user will be locked out until an admin unlocks the user.<br/>
+				<span class="text-info">Values higher than 20 are not allowed for security reasons. (Default: 5)</span>
 				]]>
 			</description>
 			<type>input</type>
@@ -525,4 +525,7 @@
 	<custom_php_resync_config_command>
 		freeradius_settings_resync();
 	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		freeradius_validate_settings($_POST, $input_errors);
+	</custom_php_validation_command>
 </packagegui>

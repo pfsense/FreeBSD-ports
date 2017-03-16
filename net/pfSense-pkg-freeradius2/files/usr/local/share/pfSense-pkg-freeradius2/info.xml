@@ -4,9 +4,9 @@
 		<name>freeradius2</name>
 		<website>http://www.freeradius.org/</website>
 		<descr><![CDATA[A free implementation of the RADIUS protocol.&lt;br /&gt;
-			Support: MySQL, PostgreSQL, LDAP, Kerberos.&lt;br /&gt;
-			FreeRADIUS and FreeRADIUS2 settings are not compatible so don't use them together or try to update.&lt;br /&gt;
-			On pfSense docs there is a how-to which could help you on porting users.]]></descr>
+			Supports MySQL, PostgreSQL, LDAP, Kerberos.
+			]]>
+		</descr>
 		<pkginfolink>https://doc.pfsense.org/index.php/FreeRADIUS_2.x_package</pkginfolink>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>freeradius.xml</configurationfile>
