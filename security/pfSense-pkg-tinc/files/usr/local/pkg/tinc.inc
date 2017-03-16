@@ -164,11 +164,21 @@ function tinc_install() {
 	}
 
 	$a_ifgroups = &$config['ifgroups']['ifgroupentry'];
-	$ifgroupentry = array();
-	$ifgroupentry['members'] = '';
-	$ifgroupentry['descr'] = 'tinc mesh VPN interface group';
-	$ifgroupentry['ifname'] = 'pkg_tinc';
-	$a_ifgroups[] = $ifgroupentry;
+
+	/* Don't add the interface group if it already exists */
+	$found = false;
+	foreach ($a_ifgroups as $ifg) {
+		if ($ifg == "pkg_tinc") {
+			$found = true;
+		}
+	}
+	if (!$found) {
+		$ifgroupentry = array();
+		$ifgroupentry['members'] = '';
+		$ifgroupentry['descr'] = 'tinc mesh VPN interface group';
+		$ifgroupentry['ifname'] = 'pkg_tinc';
+		$a_ifgroups[] = $ifgroupentry;
+	}
 
 	/*
 	 * XXX: Do not remove this, otherwise the interface group may not be added properly.
@@ -188,13 +198,11 @@ function tinc_deinstall() {
 	$a_ifgroups = &$config['ifgroups']['ifgroupentry'];
 
 	$myid = -1;
-	$i = 0;
-	foreach ($a_ifgroups as $ifgroupentry) {
+	foreach ($a_ifgroups as $idx => $ifgroupentry) {
 		if ($ifgroupentry['ifname'] == 'pkg_tinc') {
-			$myid = $i;
+			$myid = $idx;
 			break;
 		}
-		$i++;
 	}
 
 	if ($myid >= 0 && $a_ifgroups[$myid]) {
@@ -207,8 +215,8 @@ function tinc_deinstall() {
 		}
 		unset($a_ifgroups[$myid]);
 		/*
-	 	* XXX: Do not remove this, otherwise the interface group may not be removed properly.
-	 	*/
+		* XXX: Do not remove this, otherwise the interface group may not be removed properly.
+		*/
 		unlink_if_exists("{$g['tmp_path']}/config.cache");
 		write_config("[tinc] Package uninstalled.");
 	}
