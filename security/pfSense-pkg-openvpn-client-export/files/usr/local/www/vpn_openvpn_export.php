@@ -20,11 +20,12 @@
  * limitations under the License.
  */
 
-require("globals.inc");
-require("guiconfig.inc");
-require("openvpn-client-export.inc");
-require("pkg-utils.inc");
-require('classes/Form.class.php');
+require_once("globals.inc");
+require_once("guiconfig.inc");
+require_once("openvpn-client-export.inc");
+require_once("pfsense-utils.inc");
+require_once("pkg-utils.inc");
+require_once("classes/Form.class.php");
 
 global $current_openvpn_version, $current_openvpn_version_rev;
 
