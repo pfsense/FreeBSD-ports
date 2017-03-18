@@ -147,6 +147,18 @@ function freeradius_install_command() {
 	unlink_if_exists(FREERADIUS_ETC . "/raddb/sites-enabled/control-socket");
 	unlink_if_exists(FREERADIUS_ETC . "/raddb/sites-enabled/inner-tunnel");
 
+	// Remove leftovers of the built-in certificate manager
+	$exts = array("pem", "der", "csr", "crt", "key", "p12");
+	foreach ($exts as $ext) {
+		unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/ca.{$ext}");
+		unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/server.{$ext}");
+		unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/client.{$ext}");
+	}
+	unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/serial*");
+	unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/index*");
+	unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/client.tar");
+	// unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/bootstrap");
+	unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/pfsense_cert_mgr");
 
 	// We run this here just to suppress some warnings on syslog if file doesn't exist
 	freeradius_authorizedmacs_resync(false, false);
