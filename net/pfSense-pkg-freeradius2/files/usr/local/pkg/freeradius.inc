@@ -103,6 +103,24 @@ function freeradius_chown_recursive($dir, $user = "root", $group = "wheel") {
 	}
 }
 
+function freeradius_upgrade_config() {
+	global $config;
+
+	// FreeRADIUS built-in certificate manager was removed (Bug #7170)
+	if (is_array($config['installedpackages']['freeradiuscerts'])) {
+		unset($config['installedpackages']['freeradiuscerts']);
+		log_error(gettext("freeRADIUS: Removing deprecated built-in certificate manager configuration."));
+	}
+	if (is_array($config['installedpackages']['freeradiuseapconf']['config'][0])) {
+		if (isset($config['installedpackages']['freeradiuseapconf']['config'][0]['vareapconfchoosecertmanager'])) {
+			unset($config['installedpackages']['freeradiuseapconf']['config'][0]['vareapconfchoosecertmanager']);
+		}
+		if (isset($config['installedpackages']['freeradiuseapconf']['config'][0]['vareapconfprivatekeypassword'])) {
+			unset($config['installedpackages']['freeradiuseapconf']['config'][0]['vareapconfprivatekeypassword']);
+		}
+	}
+}
+
 function freeradius_install_command() {
 	global $config;
 
@@ -159,6 +177,9 @@ function freeradius_install_command() {
 	unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/client.tar");
 	// unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/bootstrap");
 	unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/pfsense_cert_mgr");
+
+	// Update configuration from old versions
+	freeradius_upgrade_config();
 
 	// We run this here just to suppress some warnings on syslog if file doesn't exist
 	freeradius_authorizedmacs_resync(false, false);
