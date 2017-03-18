@@ -33,7 +33,6 @@ $priv_list['page-services-freeradius']['match'][] = "pkg.php?xml=freeradiusinter
 $priv_list['page-services-freeradius']['match'][] = "pkg.php?xml=freeradiussettings.xml*";
 $priv_list['page-services-freeradius']['match'][] = "pkg.php?xml=freeradiuseapconf.xml*";
 $priv_list['page-services-freeradius']['match'][] = "pkg.php?xml=freeradiussqlconf.xml*";
-$priv_list['page-services-freeradius']['match'][] = "pkg.php?xml=freeradiuscerts.xml*";
 $priv_list['page-services-freeradius']['match'][] = "pkg.php?xml=freeradiusmodulesldap.xml*";
 $priv_list['page-services-freeradius']['match'][] = "pkg.php?xml=freeradiussync.xml*";
 
@@ -44,7 +43,6 @@ $priv_list['page-services-freeradius']['match'][] = "pkg_edit.php?xml=freeradius
 $priv_list['page-services-freeradius']['match'][] = "pkg_edit.php?xml=freeradiussettings.xml*";
 $priv_list['page-services-freeradius']['match'][] = "pkg_edit.php?xml=freeradiuseapconf.xml*";
 $priv_list['page-services-freeradius']['match'][] = "pkg_edit.php?xml=freeradiussqlconf.xml*";
-$priv_list['page-services-freeradius']['match'][] = "pkg_edit.php?xml=freeradiuscerts.xml*";
 $priv_list['page-services-freeradius']['match'][] = "pkg_edit.php?xml=freeradiusmodulesldap.xml*";
 $priv_list['page-services-freeradius']['match'][] = "pkg_edit.php?xml=freeradiussync.xml*";
 
