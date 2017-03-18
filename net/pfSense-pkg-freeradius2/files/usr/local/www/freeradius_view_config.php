@@ -36,10 +36,6 @@ function get_file($file) {
 	$files['users'] = RADDB . "/users";
 	$files['macs'] = RADDB . "/authorized_macs";
 	$files['virtual-server-default'] = RADDB . "/sites-enabled/default";
-	$files['ca'] = RADDB . "/certs/ca.cnf";
-	$files['server'] = RADDB . "/certs/server.cnf";
-	$files['client'] = RADDB . "/certs/client.cnf";
-	$files['index'] = RADDB . "/certs/index.txt";
 	$files['ldap'] = RADDB . "/modules/ldap";
 
 	if ($files[$file] != "" && file_exists($files[$file])) {
@@ -65,7 +61,6 @@ $tab_array[] = array(gettext("Interfaces"), false, "/pkg.php?xml=freeradiusinter
 $tab_array[] = array(gettext("Settings"), false, "/pkg_edit.php?xml=freeradiussettings.xml&id=0");
 $tab_array[] = array(gettext("EAP"), false, "/pkg_edit.php?xml=freeradiuseapconf.xml&id=0");
 $tab_array[] = array(gettext("SQL"), false, "/pkg_edit.php?xml=freeradiussqlconf.xml&id=0");
-$tab_array[] = array(gettext("Certificates"), false, "/pkg_edit.php?xml=freeradiuscerts.xml&id=0");
 $tab_array[] = array(gettext("LDAP"), false, "/pkg_edit.php?xml=freeradiusmodulesldap.xml&id=0");
 $tab_array[] = array(gettext("View config"), true, "/freeradius_view_config.php");
 $tab_array[] = array(gettext("XMLRPC Sync"), false, "/pkg_edit.php?xml=freeradiussync.xml&amp;id=0");
@@ -114,22 +109,6 @@ if ($savemsg) {
 								<i class="fa fa-file-text-o"></i>
 								virtual-server-default
 							</button>
-							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('ca');" id='btn_ca' value="ca.cnf">
-								<i class="fa fa-file-text-o"></i>
-								ca.cnf
-							</button>
-							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('server');" id='btn_server' value="server.cnf">
-								<i class="fa fa-file-text-o"></i>
-								server.cnf
-							</button>
-							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('client');" id='btn_client' value="client.cnf">
-								<i class="fa fa-file-text-o"></i>
-								client.cnf
-							</button>
-							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('index');" id='btn_index' value="index.txt">
-								<i class="fa fa-file-text-o"></i>
-								index.txt
-							</button>
 							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('ldap');" id='btn_ldap' value="ldap">
 								<i class="fa fa-file-text-o"></i>
 								ldap
@@ -173,10 +152,6 @@ function activitycallback_freeradius_file(html) {
 	$('#btn_users').value="users";
 	$('#btn_macs').value="macs";
 	$('#btn_virtual').value="virtual-server-default";
-	$('#btn_ca').value="ca.cnf";
-	$('#btn_server').value="server.cnf";
-	$('#btn_client').value="client.cnf";
-	$('#btn_index').value="index.txt";
 	$('#btn_ldap').value="ldap";
 	scroll(0,0);
 }
