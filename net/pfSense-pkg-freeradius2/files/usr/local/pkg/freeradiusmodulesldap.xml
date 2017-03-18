@@ -479,7 +479,7 @@
 				<![CDATA[
 				Choose the SSL CA Certficate here which you created with <a href="system_camanager.php">'System &gt; Cert Manager'</a>.<br/>
 				<span class="text-info">
-				Choose 'none' if you do not use any kind of certificates or are using the <em>deprecated</em> FreeRADIUS Cert Manager.
+				Choose 'none' if you do not use any kind of certificates.
 				(Default: none)
 				</span>
 				]]>
@@ -496,7 +496,7 @@
 				<![CDATA[
 				Choose the SSL Server Certficate here which you created with <a href="system_camanager.php">'System &gt; Cert Manager'</a>.<br/>
 				<span class="text-info">
-				Choose 'none' if you do not use any kind of certificates or are using the <em>deprecated</em> FreeRADIUS Cert Manager.
+				Choose 'none' if you do not use any kind of certificates.
 				(Default: none)
 				</span>
 				]]>
@@ -960,7 +960,7 @@
 				<![CDATA[
 				Choose the SSL CA Certficate here which you created with <a href="system_camanager.php">'System &gt; Cert Manager'</a>.<br/>
 				<span class="text-info">
-				Choose 'none' if you do not use any kind of certificates or are using the <em>deprecated</em> FreeRADIUS Cert Manager.
+				Choose 'none' if you do not use any kind of certificates.
 				(Default: none)
 				</span>
 				]]>
@@ -977,7 +977,7 @@
 				<![CDATA[
 				Choose the SSL Server Certficate here which you created with <a href="system_camanager.php">'System &gt; Cert Manager'</a>.<br/>
 				<span class="text-info">
-				Choose 'none' if you do not use any kind of certificates or are using the <em>deprecated</em> FreeRADIUS Cert Manager.
+				Choose 'none' if you do not use any kind of certificates.
 				(Default: none)
 				</span>
 				]]>
