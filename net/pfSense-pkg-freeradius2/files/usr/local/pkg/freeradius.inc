@@ -2727,11 +2727,11 @@ function freeradius_modulesldap_resync($restart_svc = true) {
 	// redundatnt-load-balancing will there be done, too
 
 	// Variables for General Configuration ldap1
-	$varmodulesldapserver = ($arrmodulesldap['varmodulesldapserver'] ?: 'ldap.your.domain');
+	$varmodulesldapserver = ($arrmodulesldap['varmodulesldapserver'] ?: 'ldap.example.com');
 	$varmodulesldapserverport = ($arrmodulesldap['varmodulesldapserverport'] ?: '389');
-	$varmodulesldapidentity = ($arrmodulesldap['varmodulesldapidentity'] ?: 'cn=admin,o=My Org,c=UA');
+	$varmodulesldapidentity = ($arrmodulesldap['varmodulesldapidentity'] ?: 'cn=admin,o=My Company Ltd,c=US');
 	$varmodulesldappassword = ($arrmodulesldap['varmodulesldappassword'] ?: 'mypass');
-	$varmodulesldapbasedn = ($arrmodulesldap['varmodulesldapbasedn'] ?: 'o=My Org,c=UA');
+	$varmodulesldapbasedn = ($arrmodulesldap['varmodulesldapbasedn'] ?: 'o=My Company Ltd,c=US');
 	$varmodulesldapfilter = ($arrmodulesldap['varmodulesldapfilter'] ?: '(uid=%{%{Stripped-User-Name}:-%{User-Name}})');
 	$varmodulesldapbasefilter = ($arrmodulesldap['varmodulesldapbasefilter'] ?: '(objectclass=radiusprofile)');
 	$varmodulesldapldapconnectionsnumber = ($arrmodulesldap['varmodulesldapldapconnectionsnumber'] ?: '5');
@@ -2740,11 +2740,11 @@ function freeradius_modulesldap_resync($restart_svc = true) {
 	$varmodulesldapnettimeout = ($arrmodulesldap['varmodulesldapnettimeout'] ?: '1');
 
 	// Variables for General Configuration ldap2
-	$varmodulesldap2server = ($arrmodulesldap['varmodulesldap2server'] ?: 'ldap.your.domain');
+	$varmodulesldap2server = ($arrmodulesldap['varmodulesldap2server'] ?: 'ldap.example.com');
 	$varmodulesldap2serverport = ($arrmodulesldap['varmodulesldap2serverport'] ?: '389');
-	$varmodulesldap2identity = ($arrmodulesldap['varmodulesldap2identity'] ?: 'cn=admin,o=My Org,c=UA');
+	$varmodulesldap2identity = ($arrmodulesldap['varmodulesldap2identity'] ?: 'cn=admin,o=My Company Ltd,c=US');
 	$varmodulesldap2password = ($arrmodulesldap['varmodulesldap2password'] ?: 'mypass');
-	$varmodulesldap2basedn = ($arrmodulesldap['varmodulesldap2basedn'] ?: 'o=My Org,c=UA');
+	$varmodulesldap2basedn = ($arrmodulesldap['varmodulesldap2basedn'] ?: 'o=My Company Ltd,c=US');
 	$varmodulesldap2filter = ($arrmodulesldap['varmodulesldap2filter'] ?: '(uid=%{%{Stripped-User-Name}:-%{User-Name}})');
 	$varmodulesldap2basefilter = ($arrmodulesldap['varmodulesldap2basefilter'] ?: '(objectclass=radiusprofile)');
 	$varmodulesldap2ldapconnectionsnumber = ($arrmodulesldap['varmodulesldap2ldapconnectionsnumber'] ?: '5');
@@ -2842,12 +2842,12 @@ function freeradius_modulesldap_resync($restart_svc = true) {
 
 	// When disabled we put this in the file but commented (#) like in the default installation ldap1
 	if (!$arrmodulesldap['varmodulesldapdmiscenable']) {
-		$varmodulesldapdefaultprofile = '### default_profile = "cn=radprofile,ou=dialup,o=My Org,c=UA" ###';
+		$varmodulesldapdefaultprofile = '### default_profile = "cn=radprofile,ou=dialup,o=My Company Ltd,c=US" ###';
 		$varmodulesldapprofileattribute = '### profile_attribute = "radiusProfileDn" ###';
 		$varmodulesldapaccessattr = '### access_attr = "dialupAccess" ###';
 	} else {
 		// When enabled we put in the default values so there is no empty entry if there is not input from GUI
-		$varmodulesldapdefaultprofile = ($arrmodulesldap['varmodulesldapdefaultprofile'] ?: 'cn=radprofile,ou=dialup,o=My Org,c=UA');
+		$varmodulesldapdefaultprofile = ($arrmodulesldap['varmodulesldapdefaultprofile'] ?: 'cn=radprofile,ou=dialup,o=My Company Ltd,c=US');
 		$varmodulesldapdefaultprofile = "default_profile = " . '"' . "$varmodulesldapdefaultprofile" . '"';
 		$varmodulesldapprofileattribute = ($arrmodulesldap['varmodulesldapprofileattribute'] ?: 'radiusProfileDn');
 		$varmodulesldapprofileattribute = "profile_attribute = " . '"' . "$varmodulesldapprofileattribute" . '"';
@@ -2857,12 +2857,12 @@ function freeradius_modulesldap_resync($restart_svc = true) {
 
 	// When disabled we put this in the file but commented (#) like in the default installation ldap2
 	if (!$arrmodulesldap['varmodulesldap2dmiscenable']) {
-		$varmodulesldap2defaultprofile = '### default_profile = "cn=radprofile,ou=dialup,o=My Org,c=UA" ###';
+		$varmodulesldap2defaultprofile = '### default_profile = "cn=radprofile,ou=dialup,o=My Company Ltd,c=US" ###';
 		$varmodulesldap2profileattribute = '### profile_attribute = "radiusProfileDn" ###';
 		$varmodulesldap2accessattr = '### access_attr = "dialupAccess" ###';
 	} else {
 		// When enabled we put in the default values so there is no empty entry if there is not input from GUI
-		$varmodulesldap2defaultprofile = ($arrmodulesldap['varmodulesldap2defaultprofile'] ?: 'cn=radprofile,ou=dialup,o=My Org,c=UA');
+		$varmodulesldap2defaultprofile = ($arrmodulesldap['varmodulesldap2defaultprofile'] ?: 'cn=radprofile,ou=dialup,o=My Company Ltd,c=US');
 		$varmodulesldap2defaultprofile = "default_profile = " . '"' . "$varmodulesldap2defaultprofile" . '"';
 		$varmodulesldap2profileattribute = ($arrmodulesldap['varmodulesldap2profileattribute'] ?: 'radiusProfileDn');
 		$varmodulesldap2profileattribute = "profile_attribute = " . '"' . "$varmodulesldap2profileattribute" . '"';
