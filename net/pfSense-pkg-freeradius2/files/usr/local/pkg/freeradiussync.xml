@@ -70,10 +70,6 @@
 			<url>/pkg_edit.php?xml=freeradiussqlconf.xml&amp;id=0</url>
 		</tab>
 		<tab>
-			<text>Certificates</text>
-			<url>/pkg_edit.php?xml=freeradiuscerts.xml&amp;id=0</url>
-		</tab>
-		<tab>
 			<text>LDAP</text>
 			<url>/pkg_edit.php?xml=freeradiusmodulesldap.xml&amp;id=0</url>
 		</tab>
