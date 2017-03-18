@@ -23,7 +23,6 @@
 
 require_once("config.inc");
 require_once("filter.inc");
-require_once("functions.inc");
 require_once("globals.inc");
 require_once("notices.inc");
 require_once("openvpn.inc");
@@ -49,7 +48,6 @@ define('FREERADIUS_ETC', FREERADIUS_BASE . '/etc');
  * freeradius_clients_resync($restart_svc = true)
  * freeradius_eapconf_resync($restart_svc = true)
  * freeradius_modulesldap_resync($restart_svc = true)
- * freeradius_allcertcnf_resync($restart_svc = true)
  */
 
 // Check freeradius lib version
@@ -463,9 +461,7 @@ instantiate {
 \$INCLUDE sites-enabled/
 EOD;
 
-	conf_mount_rw();
 	file_put_contents(FREERADIUS_ETC . '/raddb/radiusd.conf', $conf);
-	conf_mount_ro();
 
 	// freeradius_sqlconf_resync() is pointing to this function because we need
 	// to run freeradius_serverdefault_resync() and after that restart freeradius.
@@ -716,10 +712,8 @@ EOD;
 	} // endif
 
 	$filename = FREERADIUS_ETC . '/raddb/users';
-	conf_mount_rw();
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
-	conf_mount_ro();
 
 	freeradius_sync_on_changes();
 	// Do not restart on boot
@@ -936,10 +930,8 @@ EOD;
 	} // endif
 
 	$filename = FREERADIUS_ETC . '/raddb/authorized_macs';
-	conf_mount_rw();
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
-	conf_mount_ro();
 
 	freeradius_sync_on_changes();
 	if ($restart_svc === true && $via_rpc === false) {
@@ -1008,9 +1000,7 @@ client pfsense {
 EOD;
 	}
 
-	conf_mount_rw();
 	file_put_contents(FREERADIUS_ETC . '/raddb/clients.conf', $conf);
-	conf_mount_ro();
 
 	freeradius_sync_on_changes();
 	if ($restart_svc === true) {
@@ -1022,8 +1012,6 @@ EOD;
 
 function freeradius_eapconf_resync($restart_svc = true) {
 	global $config;
-	// We make this write enabled here because embedded systems need to write certs in ../raddb/certs/ folder
-	conf_mount_rw();
 	$conf = '';
 
 	if (is_array($config['installedpackages']['freeradiuseapconf']['config'][0])) {
@@ -1047,7 +1035,6 @@ function freeradius_eapconf_resync($restart_svc = true) {
 	$vareapconfmaxsessions = ($eapconf['vareapconfmaxsessions'] ?: '4096');
 
 	// Variables: EAP-TLS
-	$vareapconfprivatekeypassword = ($eapconf['vareapconfprivatekeypassword'] ?: 'whatever');
 	$vareapconffragmentsize = ($eapconf['vareapconffragmentsize'] ?: '1024');
 	$vareapconfincludelength = ($eapconf['vareapconfincludelength'] ?: 'yes');
 	$vareapconfcountry = ($eapconf['vareapconfcountry'] ?: 'US');
@@ -1089,65 +1076,57 @@ function freeradius_eapconf_resync($restart_svc = true) {
 	}
 
 
-	// The filenames of pfsense cert manager are different from freeradius cert manager so it is possible
-	// to store both in the same folder at any time. This is for the pfsense cert manager
+	// This is for the pfsense cert manager.
 	// Depends on freeradius_get_server_certs() and freeradius_get_ca_certs()
-
-	if ($eapconf['vareapconfchoosecertmanager'] == 'on') {
-
-		$ca_cert = lookup_ca($eapconf["ssl_ca_cert"]);
-		if ($ca_cert != false) {
-			if (base64_decode($ca_cert['prv'])) {
-				file_put_contents(FREERADIUS_ETC . "/raddb/certs/ca_key.pem", base64_decode($ca_cert['prv']));
-				$conf['ssl_ca_key'] = FREERADIUS_ETC . '/raddb/certs/ca_key.pem';
-			}
-
-			if (base64_decode($ca_cert['crt'])) {
-				$crl_cert = lookup_crl($eapconf["ssl_ca_crl"]);
-				if ($crl_cert != false) {
-					$crl = base64_decode($crl_cert['text']);
-					$check_crl = "check_crl = yes";
-				} else {
-					$check_crl="check_crl = no";
-				}
-				file_put_contents(FREERADIUS_ETC . "/raddb/certs/ca_cert.pem", base64_decode($ca_cert['crt']). $crl);
-				$conf['ssl_ca_cert'] = FREERADIUS_ETC . "/raddb/certs/ca_cert.pem";
-			}
-
-			$svr_cert = lookup_cert($eapconf["ssl_server_cert"]);
-			if ($svr_cert != false) {
-				if (base64_decode($svr_cert['prv'])) {
-					file_put_contents(FREERADIUS_ETC . "/raddb/certs/server_key.pem", base64_decode($svr_cert['prv']));
-					$conf['ssl_key'] = FREERADIUS_ETC . '/raddb/certs/server_key.pem';
-				}
-			}
-			if (base64_decode($svr_cert['crt'])) {
-				file_put_contents(FREERADIUS_ETC . "/raddb/certs/server_cert.pem", base64_decode($svr_cert['crt']));
-				$conf['ssl_server_cert'] = FREERADIUS_ETC . "/raddb/certs/server_cert.pem";
-			}
-
-			$conf['ssl_cert_dir'] = FREERADIUS_ETC . '/raddb/certs';
+	$ca_cert = lookup_ca($eapconf["ssl_ca_cert"]);
+	if ($ca_cert != false) {
+		if (base64_decode($ca_cert['prv'])) {
+			file_put_contents(FREERADIUS_ETC . "/raddb/certs/ca_key.pem", base64_decode($ca_cert['prv']));
+			$conf['ssl_ca_key'] = FREERADIUS_ETC . '/raddb/certs/ca_key.pem';
 		}
 
-		$vareapconfprivatekeyfile = 'server_key.pem';
-		$vareapconfcertificatefile = 'server_cert.pem';
-		$vareapconfcafile = 'ca_cert.pem';
-
-		// generate new DH and RANDOM file
-		// We create a single empty file just to check if there is really a change
-		// from one to another cert manager to avoid building new DH and random files
-		// use openvpn_create_dhparams() from openvpn.inc to generate DH params
-		if (!file_exists(FREERADIUS_ETC . "/raddb/certs/pfsense_cert_mgr")) {
-			log_error("freeRADIUS: Switched to pfSense Cert Manager. Creating new DH and random file in " . FREERADIUS_ETC . "/raddb/certs");
-			file_put_contents(FREERADIUS_ETC . "/raddb/certs/dh", openvpn_create_dhparams('1024'), LOCK_EX);
-			mwexec("/bin/dd if=/dev/urandom of=" . FREERADIUS_ETC . "/raddb/certs/random count=10");
-			touch(FREERADIUS_ETC . "/raddb/certs/pfsense_cert_mgr");
+		if (base64_decode($ca_cert['crt'])) {
+			$crl_cert = lookup_crl($eapconf["ssl_ca_crl"]);
+			if ($crl_cert != false) {
+				$crl = base64_decode($crl_cert['text']);
+				$check_crl = "check_crl = yes";
+			} else {
+				$check_crl="check_crl = no";
+			}
+			file_put_contents(FREERADIUS_ETC . "/raddb/certs/ca_cert.pem", base64_decode($ca_cert['crt']). $crl);
+			$conf['ssl_ca_cert'] = FREERADIUS_ETC . "/raddb/certs/ca_cert.pem";
 		}
+
+		$svr_cert = lookup_cert($eapconf["ssl_server_cert"]);
+		if ($svr_cert != false) {
+			if (base64_decode($svr_cert['prv'])) {
+				file_put_contents(FREERADIUS_ETC . "/raddb/certs/server_key.pem", base64_decode($svr_cert['prv']));
+				$conf['ssl_key'] = FREERADIUS_ETC . '/raddb/certs/server_key.pem';
+			}
+		}
+		if (base64_decode($svr_cert['crt'])) {
+			file_put_contents(FREERADIUS_ETC . "/raddb/certs/server_cert.pem", base64_decode($svr_cert['crt']));
+			$conf['ssl_server_cert'] = FREERADIUS_ETC . "/raddb/certs/server_cert.pem";
+		}
+
+		$conf['ssl_cert_dir'] = FREERADIUS_ETC . '/raddb/certs';
 	} else {
-		// This is for freeradius cert manager
-		$vareapconfprivatekeyfile = 'server.pem';
-		$vareapconfcertificatefile = 'server.pem';
-		$vareapconfcafile = 'ca.pem';
+		log_error(gettext("freeRADIUS: Cannot create server certificates. Please see the 'Certificates for TLS' section on the 'EAP' tab to configure FreeRADIUS server certificates."));
+	}
+
+	$vareapconfprivatekeyfile = 'server_key.pem';
+	$vareapconfcertificatefile = 'server_cert.pem';
+	$vareapconfcafile = 'ca_cert.pem';
+
+	// generate new DH and RANDOM file if needed
+	// use openvpn_create_dhparams() from openvpn.inc to generate DH params
+	if (!file_exists(FREERADIUS_ETC . "/raddb/certs/dh")) {
+		log_error("freeRADIUS: Creating new DH file in " . FREERADIUS_ETC . "/raddb/certs");
+		file_put_contents(FREERADIUS_ETC . "/raddb/certs/dh", openvpn_create_dhparams('1024'), LOCK_EX);
+	}
+	if (!file_exists(FREERADIUS_ETC . "/raddb/certs/random")) {
+		log_error("freeRADIUS: Creating new random file in " . FREERADIUS_ETC . "/raddb/certs");
+		mwexec("/bin/dd if=/dev/urandom of=" . FREERADIUS_ETC . "/raddb/certs/random count=10");
 	}
 
 	// check if the common name of the certificate must match the username
@@ -1180,7 +1159,7 @@ function freeradius_eapconf_resync($restart_svc = true) {
 		tls {
 			certdir = \${confdir}/certs
 			cadir = \${confdir}/certs
-			private_key_password = $vareapconfprivatekeypassword
+			# private_key_password =
 			private_key_file = \${certdir}/$vareapconfprivatekeyfile
 			certificate_file = \${certdir}/$vareapconfcertificatefile
 			CA_file = \${cadir}/$vareapconfcafile
@@ -1235,7 +1214,6 @@ EOD;
 	$filename = FREERADIUS_ETC . '/raddb/eap.conf';
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
-	conf_mount_ro();
 
 	if ($restart_svc === true) {
 		restart_service("radiusd");
@@ -1410,10 +1388,8 @@ sql sql2 {
 EOD;
 
 	$filename = FREERADIUS_ETC . '/raddb/sql.conf';
-	conf_mount_rw();
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
-	conf_mount_ro();
 
 	// We don't need a restart at this time because there are
 	// additional changes needed in freeradius_settings_resync()
@@ -2256,399 +2232,11 @@ post-proxy {
 EOD;
 
 	$filename = FREERADIUS_ETC . '/raddb/sites-available/default';
-	conf_mount_rw();
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
-	conf_mount_ro();
 
 	// No need to restart here because the restart of the service
 	// will be done in freeradius_settings_resync()
-}
-
-function freeradius_cacertcnf_resync() {
-	global $config;
-	$conf = '';
-
-	if (is_array($config['installedpackages']['freeradiuscerts']['config'][0])) {
-		$arrcerts = $config['installedpackages']['freeradiuscerts']['config'][0];
-	} else {
-		$arrcerts = array();
-	}
-
-	// General variables: CA, Server, Client
-	$varcertsdefaultdays = ($arrcerts['varcertsdefaultdays'] ?: '3650');
-	$varcertsdefaultmd = ($arrcerts['varcertsdefaultmd'] ?: 'md5');
-	$varcertsdefaultbits = ($arrcerts['varcertsdefaultbits'] ?: '2048');
-	$varcertspassword = ($arrcerts['varcertspassword'] ?: 'whatever');
-	$varcertscountryname = ($arrcerts['varcertscountryname'] ?: 'US');
-	$varcertsstateorprovincename = ($arrcerts['varcertsstateorprovincename'] ?: 'Texas');
-	$varcertslocalityname = ($arrcerts['varcertslocalityname'] ?: 'Austin');
-	$varcertsorganizationname = ($arrcerts['varcertsorganizationname'] ?: 'My Company Inc');
-
-	// Variables: Only for CA
-	$varcertscaemailaddress = ($arrcerts['varcertscaemailaddress'] ?: 'admin@mycompany.com');
-	$varcertscacommonname = ($arrcerts['varcertscacommonname'] ?: 'internal-ca');
-
-	$conf .= <<<EOD
-[ ca ]
-default_ca		= CA_default
-
-[ CA_default ]
-dir			= ./
-certs			= \$dir
-crl_dir			= \$dir/crl
-database		= \$dir/index.txt
-new_certs_dir		= \$dir
-certificate		= \$dir/ca.pem
-serial			= \$dir/serial
-crl			= \$dir/crl.pem
-private_key		= \$dir/ca.key
-RANDFILE		= \$dir/.rand
-name_opt		= ca_default
-cert_opt		= ca_default
-default_days		= $varcertsdefaultdays
-default_crl_days	= 30
-default_md		= $varcertsdefaultmd
-preserve		= no
-policy			= policy_match
-
-[ policy_match ]
-countryName		= match
-stateOrProvinceName	= match
-organizationName	= match
-organizationalUnitName	= optional
-commonName		= supplied
-emailAddress		= optional
-
-[ policy_anything ]
-countryName		= optional
-stateOrProvinceName	= optional
-localityName		= optional
-organizationName	= optional
-organizationalUnitName	= optional
-commonName		= supplied
-emailAddress		= optional
-
-[ req ]
-prompt			= no
-distinguished_name	= certificate_authority
-default_bits		= $varcertsdefaultbits
-input_password		= $varcertspassword
-output_password		= $varcertspassword
-x509_extensions		= v3_ca
-
-[certificate_authority]
-countryName		= $varcertscountryname
-stateOrProvinceName	= $varcertsstateorprovincename
-localityName		= $varcertslocalityname
-organizationName	= $varcertsorganizationname
-emailAddress		= $varcertscaemailaddress
-commonName		= "$varcertscacommonname"
-
-[v3_ca]
-subjectKeyIdentifier	= hash
-authorityKeyIdentifier	= keyid:always,issuer:always
-basicConstraints	= CA:true
-EOD;
-
-	$filename = FREERADIUS_ETC . '/raddb/certs/ca.cnf';
-	conf_mount_rw();
-	file_put_contents($filename, $conf);
-	chmod($filename, 0640);
-	conf_mount_ro();
-
-}
-
-function freeradius_servercertcnf_resync() {
-	global $config;
-	$conf = '';
-
-	if (is_array($config['installedpackages']['freeradiuscerts']['config'][0])) {
-		$arrcerts = $config['installedpackages']['freeradiuscerts']['config'][0];
-	} else {
-		$arrcerts = array();
-	}
-
-	// General variables: CA, Server, Client
-	$varcertsdefaultdays = ($arrcerts['varcertsdefaultdays'] ?: '3650');
-	$varcertsdefaultmd = ($arrcerts['varcertsdefaultmd'] ?: 'md5');
-	$varcertsdefaultbits = ($arrcerts['varcertsdefaultbits'] ?: '2048');
-	$varcertspassword = ($arrcerts['varcertspassword'] ?: 'whatever');
-	$varcertscountryname = ($arrcerts['varcertscountryname'] ?: 'US');
-	$varcertsstateorprovincename = ($arrcerts['varcertsstateorprovincename'] ?: 'Texas');
-	$varcertslocalityname = ($arrcerts['varcertslocalityname'] ?: 'Austin');
-	$varcertsorganizationname = ($arrcerts['varcertsorganizationname'] ?: 'My Company Inc');
-
-	// Variables: Only for Server
-	$varcertsserveremailaddress = ($arrcerts['varcertsserveremailaddress'] ?: 'webadmin@mycompany.com');
-	$varcertsservercommonname = ($arrcerts['varcertsservercommonname'] ?: 'server-cert');
-
-	$conf .= <<<EOD
-[ ca ]
-default_ca		= CA_default
-
-[ CA_default ]
-dir			= ./
-certs			= \$dir
-crl_dir			= \$dir/crl
-database		= \$dir/index.txt
-new_certs_dir		= \$dir
-certificate		= \$dir/server.pem
-serial			= \$dir/serial
-crl			= \$dir/crl.pem
-private_key		= \$dir/server.key
-RANDFILE		= \$dir/.rand
-name_opt		= ca_default
-cert_opt		= ca_default
-default_days		= $varcertsdefaultdays
-default_crl_days	= 30
-default_md		= $varcertsdefaultmd
-preserve		= no
-policy			= policy_match
-
-[ policy_match ]
-countryName		= match
-stateOrProvinceName	= match
-organizationName	= match
-organizationalUnitName	= optional
-commonName		= supplied
-emailAddress		= optional
-
-[ policy_anything ]
-countryName		= optional
-stateOrProvinceName	= optional
-localityName		= optional
-organizationName	= optional
-organizationalUnitName	= optional
-commonName		= supplied
-emailAddress		= optional
-
-[ req ]
-prompt			= no
-distinguished_name	= server
-default_bits		= $varcertsdefaultbits
-input_password		= $varcertspassword
-output_password		= $varcertspassword
-
-[server]
-countryName		= $varcertscountryname
-stateOrProvinceName	= $varcertsstateorprovincename
-localityName		= $varcertslocalityname
-organizationName	= $varcertsorganizationname
-emailAddress		= $varcertsserveremailaddress
-commonName		= "$varcertsservercommonname"
-EOD;
-
-	$filename = FREERADIUS_ETC . '/raddb/certs/server.cnf';
-	conf_mount_rw();
-	file_put_contents($filename, $conf);
-	chmod($filename, 0640);
-	conf_mount_ro();
-
-}
-
-function freeradius_clientcertcnf_resync() {
-	global $config;
-	$conf = '';
-
-	if (is_array($config['installedpackages']['freeradiuscerts']['config'][0])) {
-		$arrcerts = $config['installedpackages']['freeradiuscerts']['config'][0];
-	} else {
-		$arrcerts = array();
-	}
-
-	// General variables: CA, Server, Client
-	$varcertsdefaultdays = ($arrcerts['varcertsdefaultdays'] ?: '3650');
-	$varcertsdefaultmd = ($arrcerts['varcertsdefaultmd'] ?: 'md5');
-	$varcertsdefaultbits = ($arrcerts['varcertsdefaultbits'] ?: '2048');
-	$varcertspassword = ($arrcerts['varcertspassword'] ?: 'whatever');
-	$varcertscountryname = ($arrcerts['varcertscountryname'] ?: 'US');
-	$varcertsstateorprovincename = ($arrcerts['varcertsstateorprovincename'] ?: 'Texas');
-	$varcertslocalityname = ($arrcerts['varcertslocalityname'] ?: 'Austin');
-	$varcertsorganizationname = ($arrcerts['varcertsorganizationname'] ?: 'My Company Inc');
-
-	// Variables: Only for Client
-	$varcertsclientemailaddress = ($arrcerts['varcertsclientemailaddress'] ?: 'user@mycompany.com');
-	$varcertsclientcommonname = ($arrcerts['varcertsclientcommonname'] ?: 'client-cert');
-
-	$conf .= <<<EOD
-[ ca ]
-default_ca		= CA_default
-
-[ CA_default ]
-dir			= ./
-certs			= \$dir
-crl_dir			= \$dir/crl
-database		= \$dir/index.txt
-new_certs_dir		= \$dir
-certificate		= \$dir/server.pem
-serial			= \$dir/serial
-crl			= \$dir/crl.pem
-private_key		= \$dir/server.key
-RANDFILE		= \$dir/.rand
-name_opt		= ca_default
-cert_opt		= ca_default
-default_days		= $varcertsdefaultdays
-default_crl_days	= 30
-default_md		= $varcertsdefaultmd
-preserve		= no
-policy			= policy_match
-
-[ policy_match ]
-countryName		= match
-stateOrProvinceName	= match
-organizationName	= match
-organizationalUnitName	= optional
-commonName		= supplied
-emailAddress		= optional
-
-[ policy_anything ]
-countryName		= optional
-stateOrProvinceName	= optional
-localityName		= optional
-organizationName	= optional
-organizationalUnitName	= optional
-commonName		= supplied
-emailAddress		= optional
-
-[ req ]
-prompt			= no
-distinguished_name	= client
-default_bits		= $varcertsdefaultbits
-input_password		= $varcertspassword
-output_password		= $varcertspassword
-
-[client]
-countryName		= $varcertscountryname
-stateOrProvinceName	= $varcertsstateorprovincename
-localityName		= $varcertslocalityname
-organizationName	= $varcertsorganizationname
-emailAddress		= $varcertsclientemailaddress
-commonName		= "$varcertsclientcommonname"
-EOD;
-
-	$filename = FREERADIUS_ETC . '/raddb/certs/client.cnf';
-	conf_mount_rw();
-	file_put_contents($filename, $conf);
-	chmod($filename, 0640);
-	conf_mount_ro();
-
-}
-
-function freeradius_allcertcnf_resync() {
-	global $config;
-
-	conf_mount_rw();
-
-	// Only proceed these steps if freeRADIUS Cert-Manager is activated. if pfSense cert manager is used skip this.
-	if (is_array($config['installedpackages']['freeradiuseapconf']['config'][0])) {
-		$eapconf = $config['installedpackages']['freeradiuseapconf']['config'][0];
-	} else {
-		$eapconf = array();
-	}
-
-	if ($eapconf['vareapconfchoosecertmanager'] == '') {
-		$arrcerts = $config['installedpackages']['freeradiuscerts']['config'][0];
-		// General variable for deleting and generation of further Client-Cert
-		$varcertscreateclient = ($arrcerts['varcertscreateclient'] ?: 'no');
-		// General variables for deleting: CA, Server, Client
-		$varcertsdeleteall = ($arrcerts['varcertsdeleteall'] ?: 'no');
-
-		// If all certs should be deleted, we do not need to delete and recreate client-certs first.
-		if ($arrcerts['varcertsdeleteall'] == 'no') {
-			if ($arrcerts['varcertscreateclient'] == 'yes') {
-				// delete all old certificates and keys
-				log_error("freeRADIUS: deleting all client.csr .crt .key .pem .tar in " . FREERADIUS_ETC . "/raddb/certs");
-				$exts = array("csr", "crt", "key", "pem", "tar");
-				foreach ($exts as $ext) {
-					unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/client.{$ext}");
-				}
-
-				// run fuction to create ONLY new client.cnf files based on user input from freeradiuscert.xml
-				freeradius_clientcertcnf_resync();
-
-				// make bootstrap executable and run to create cert based on client.cnf files
-				chmod(FREERADIUS_ETC . "/raddb/certs/bootstrap", 0770);
-				mwexec(FREERADIUS_ETC . "/raddb/certs/bootstrap");
-
-				// rename client generated XX.pem to client.pem
-				// use regex to replace spaces and so on.
-				$varserial = preg_replace("/\s/","",file_get_contents(FREERADIUS_ETC . '/raddb/certs/serial.old'));
-					if (file_exists(FREERADIUS_ETC . "/raddb/certs/$varserial.pem")) {
-						rename(FREERADIUS_ETC . "/raddb/certs/$varserial.pem", FREERADIUS_ETC . "/raddb/certs/client.pem");
-					}
-
-				// tar client-cert files
-				mwexec("/usr/bin/tar -C " . FREERADIUS_ETC . "/raddb/certs -cf " . FREERADIUS_ETC . "/raddb/certs/client.tar client.crt client.csr client.key ca.der client.pem");
-
-				// Make all files in certs folder read/write only for root
-				$certs = glob(FREERADIUS_ETC . "/raddb/certs/*");
-				array_walk($certs, function($cert_file) {
-					chmod($cert_file, 0600);
-				});
-				log_error("freeRADIUS: Created new client.csr .crt .key .pem and added them together with ca.der in " . FREERADIUS_ETC . "/raddb/certs/client.tar");
-			}
-		} else {
-			if ($arrcerts['varcertsdeleteall'] == 'yes') {
-				// delete all old certificates and keys - deletes certs from pfsense cert-manager IN THIS FOLDER, too.
-				log_error("freeRADIUS: deleting all CA, Server and Client certs, DH, random and database files in " . FREERADIUS_ETC . "/raddb/certs");
-				$exts = array("pem", "der", "csr", "crt", "key", "p12");
-				foreach ($exts as $ext) {
-					unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/ca.{$ext}");
-					unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/server.{$ext}");
-					unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/client.{$ext}");
-				}
-				unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/serial*");
-				unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/index*");
-				unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/dh");
-				unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/random");
-				unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/client.tar");
-
-				// run fuctions to create new .cnf files based on user input from freeradiuscert.xml
-				freeradius_cacertcnf_resync();
-				freeradius_servercertcnf_resync();
-				freeradius_clientcertcnf_resync();
-
-				// this command deletes the pfsense_cert_mgr checkfile so when we change back to pfsense cert manager a new DH + random file will be created
-				unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/pfsense_cert_mgr");
-
-				// generate new DH and RANDOM file
-				log_error("freeRADIUS: Creating new DH and random file in " . FREERADIUS_ETC . "/raddb/certs");
-				// use openvpn_create_dhparams() from openvpn.inc to generate DH params
-				file_put_contents(FREERADIUS_ETC . "/raddb/certs/dh", openvpn_create_dhparams('1024'), LOCK_EX);
-				mwexec("/bin/dd if=/dev/urandom of=" . FREERADIUS_ETC . "/raddb/certs/random count=10");
-
-				log_error("freeRADIUS: Creating new CA, Server and Client certs in " . FREERADIUS_ETC . "/raddb/certs");
-				// make bootstrap executable and run to create certs based on .cnf files
-				chmod(FREERADIUS_ETC . "/raddb/certs/bootstrap", 0770);
-				mwexec(FREERADIUS_ETC . "/raddb/certs/bootstrap");
-
-				// rename client generated 02.pem to client.pem
-				if (file_exists(FREERADIUS_ETC . "/raddb/certs/02.pem")) {
-					rename(FREERADIUS_ETC . "/raddb/certs/02.pem", FREERADIUS_ETC . "/raddb/certs/client.pem");
-				}
-
-				// tar client-cert files
-				mwexec("/usr/bin/tar -C " . FREERADIUS_ETC . "/raddb/certs -cf " . FREERADIUS_ETC . "/raddb/certs/client.tar client.crt client.csr client.key ca.der client.pem");
-				$certs = glob(FREERADIUS_ETC . "/raddb/certs/*");
-				array_walk($certs, function($cert_file) {
-					chmod($cert_file, 0600);
-				});
-				log_error("freeRADIUS: Added client.csr .crt .key .pem together with ca.der in " . FREERADIUS_ETC . "/raddb/certs/client.tar");
-
-				// If there were changes on the certificates we need to restart freeradius
-				// Note: this function is currently only called from freeradiuscerts.xml functions
-				if ($restart_svc === true) {
-					restart_service("radiusd");
-				}
-			}
-		}
-	// end choose pfSense cert-manager
-	} else {
-		return;
-	}
-
-	conf_mount_ro();
 }
 
 /* Uses XMLRPC to synchronize the changes to a remote node */
@@ -2985,10 +2573,8 @@ counter forever {
 EOD;
 
 	$filename = FREERADIUS_ETC . '/raddb/modules/counter';
-	conf_mount_rw();
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
-	conf_mount_ro();
 
 }
 
@@ -3079,10 +2665,8 @@ nt-response=%{%{mschap:NT-Response}:-00}"
 EOD;
 
 	$filename = FREERADIUS_ETC . '/raddb/modules/mschap';
-	conf_mount_rw();
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
-	conf_mount_ro();
 
 }
 
@@ -3124,10 +2708,8 @@ realm ntdomain {
 EOD;
 
 	$filename = FREERADIUS_ETC . '/raddb/modules/realm';
-	conf_mount_rw();
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
-	conf_mount_ro();
 
 }
 
@@ -3700,10 +3282,8 @@ ldap ldap2{
 EOD;
 
 	$filename = FREERADIUS_ETC . '/raddb/modules/ldap';
-	conf_mount_rw();
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
-	conf_mount_ro();
 
 	// We need to rebuild freeradius_serverdefault_resync() before restart service
 	// freeradius_serverdefault_resync() needs to restart other dependencies so
@@ -3811,10 +3391,8 @@ files authorized_macs {
 EOD;
 
 	$filename = FREERADIUS_ETC . '/raddb/modules/files';
-	conf_mount_rw();
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
-	conf_mount_ro();
 
 }
 
@@ -4037,10 +3615,8 @@ policy {
 EOD;
 
 	$filename = FREERADIUS_ETC . '/raddb/policy.conf';
-	conf_mount_rw();
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
-	conf_mount_ro();
 
 }
 
@@ -4187,10 +3763,8 @@ exit 11
 EOD;
 
 	$filename = FREERADIUS_ETC . '/raddb/scripts/otpverify.sh';
-	conf_mount_rw();
 	file_put_contents($filename, $conf);
 	chmod($filename, 0750);
-	conf_mount_ro();
 	}
 }
 
@@ -4209,10 +3783,8 @@ exec motp {
 EOD;
 
 	$filename = FREERADIUS_ETC . '/raddb/modules/motp';
-	conf_mount_rw();
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
-	conf_mount_ro();
 }
 
 function freeradius_modulesdatacounter_resync() {
@@ -4242,10 +3814,8 @@ exec datacounterforever {
 EOD;
 
 	$filename = FREERADIUS_ETC . '/raddb/modules/datacounter_acct';
-	conf_mount_rw();
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
-	conf_mount_ro();
 }
 
 function freeradius_datacounter_auth_resync() {
@@ -4281,10 +3851,8 @@ fi
 EOD;
 
 	$filename = FREERADIUS_ETC . '/raddb/scripts/datacounter_auth.sh';
-	conf_mount_rw();
 	file_put_contents($filename, $conf);
 	chmod($filename, 0750);
-	conf_mount_ro();
 }
 
 function freeradius_datacounter_acct_resync() {
@@ -4342,10 +3910,8 @@ fi
 EOD;
 
 	$filename = FREERADIUS_ETC . '/raddb/scripts/datacounter_acct.sh';
-	conf_mount_rw();
 	file_put_contents($filename, $conf);
 	chmod($filename, 0750);
-	conf_mount_ro();
 }
 
 function freeradius_dictionary_resync() {
@@ -4409,10 +3975,8 @@ ATTRIBUTE 		MOTP-Offset 			902 	string
 EOD;
 
 	$filename = FREERADIUS_ETC . '/raddb/dictionary';
-	conf_mount_rw();
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
-	conf_mount_ro();
 }
 
 /*
@@ -4920,25 +4484,6 @@ function freeradius_validate_eap($post, &$input_errors) {
 		$input_errors[] = "The 'Maximum Sessions Tracking Per Server' field must contain an integer value.";
 	}
 
-	// EAP Certificates for TLS sanity checking
-	if ($post['vareapconfchoosecertmanager'] == 'on') {
-		// EAP Private Key Password should be empty if using pfSense Cert Manager
-		if ($post['vareapconfprivatekeypassword'] != '') {
-			$input_errors[] = "When using pfSense Certificate Management, the 'Private Key Password' field must be empty.";
-		}
-	} else {
-		// SSL CA Certificate, SSL Revocation List and SSL Server Certificate should be 'none' if using the deprecated FreeRADIUS Cert Manager
-		if ($post['ssl_ca_cert'] != 'none') {
-			$input_errors[] = "When using the deprecated FreeRADIUS Cert Manager, the 'SSL CA Certificate' field must be set to 'none'.";
-		}
-		if ($post['ssl_ca_crl'] != 'none') {
-			$input_errors[] = "When using the deprecated FreeRADIUS Cert Manager, the 'SSL Revocation List' field must be set to 'none'.";
-		}
-		if ($post['ssl_server_cert'] != 'none') {
-			$input_errors[] = "When using the deprecated FreeRADIUS Cert Manager, the 'SSL Server Certificate' field must be set to 'none'.";
-		}
-	}
-
 	// EAP-TLS Fragment Size
 	if ($post['vareapconffragmentsize'] != '') {
 		if (!is_numericint($post['vareapconffragmentsize']) || $post['vareapconffragmentsize'] > 4096) {
@@ -5199,31 +4744,6 @@ function freeradius_validate_ldap($post, &$input_errors) {
 	}
 	if ($post['varmodulesldap2keepaliveinterval'] != '' && !is_numericint($post['varmodulesldap2keepaliveinterval'])) {
 		$input_errors[] = "The 'LDAP OPT X KeepAlive Interval' field for LDAP Server 2 must contain an integer value.";
-	}
-
-	// SSL CA Certificate/SSL Server Certificate should be 'none' if using the deprecated FreeRADIUS Cert Manager
-	if (is_array($config['installedpackages']['freeradiuseapconf']['config'][0])) {
-		$eapconf = $config['installedpackages']['freeradiuseapconf']['config'][0];
-	} else {
-		$eapconf = array();
-	}
-	if ($eapconf['vareapconfchoosecertmanager'] != 'on') {
-		if ($post['varmodulesldapenabletlssupport'] == 'on') {
-			if ($post['ssl_ca_cert1'] != 'none') {
-				$input_errors[] = "When using the deprecated FreeRADIUS Cert Manager, the 'SSL CA Certificate' field for LDAP Server 1 must be set to 'none'.";
-			}
-			if ($post['ssl_server_cert1'] != 'none') {
-				$input_errors[] = "When using the deprecated FreeRADIUS Cert Manager, the 'SSL Server Certificate' field for LDAP Server 1 must be set to 'none'.";
-			}
-		}
-		if ($post['varmodulesldap2enabletlssupport'] == 'on') {
-			if ($post['ssl_ca_cert2'] != 'none') {
-				$input_errors[] = "When using the deprecated FreeRADIUS Cert Manager, the 'SSL CA Certificate' field for LDAP Server 2 must be set to 'none'.";
-			}
-			if ($post['ssl_server_cert2'] != 'none') {
-				$input_errors[] = "When using the deprecated FreeRADIUS Cert Manager, the 'SSL Server Certificate' field for LDAP Server 2 must be set to 'none'.";
-			}
-		}
 	}
 
 	/*
