@@ -166,7 +166,7 @@ function freeradius_install_command() {
 	unlink_if_exists(FREERADIUS_ETC . "/raddb/sites-enabled/inner-tunnel");
 
 	// Remove leftovers of the built-in certificate manager
-	$exts = array("pem", "der", "csr", "crt", "key", "p12");
+	$exts = array("pem", "der", "csr", "crt", "key", "p12", "cnf");
 	foreach ($exts as $ext) {
 		unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/ca.{$ext}");
 		unlink_if_exists(FREERADIUS_ETC . "/raddb/certs/server.{$ext}");
