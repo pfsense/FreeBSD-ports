@@ -139,9 +139,11 @@ function get_freeradius_file(file) {
 		{
 		type: 'post',
 		data: pars,
-		success: activitycallback_freeradius_file
+		success: activitycallback_freeradius_file,
+		error: function() {
+			$('#file_div').html("<div class=\"alert alert-danger\"><?=gettext('Unable to retrieve file'); ?></div>");
 		}
-		);
+	});
 }
 function activitycallback_freeradius_file(html) {
 	$('#file_div').html(html);
