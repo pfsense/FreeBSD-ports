@@ -1,0 +1,11 @@
+/etc/inc/priv/netgate_coreboot_upgrade.priv.inc
+pkg/netgate_coreboot_upgrade.inc
+pkg/netgate_coreboot_upgrade.xml
+sbin/adi_flash_util
+%%DATADIR%%/info.xml
+%%DATADIR%%/roms/%%COREBOOT_DFF2_ROM%%
+%%DATADIR%%/roms/%%COREBOOT_RCC_ROM%%
+%%DATADIR%%/roms/%%COREBOOT_RCCVE_ROM%%
+www/netgate_coreboot_upgrade.php
+@dir /etc/inc/priv
+@dir /etc/inc
