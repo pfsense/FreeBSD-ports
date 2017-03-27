@@ -321,6 +321,13 @@ if (isset($_GET['dup'])) {
 $changedesc = "Services: HAProxy: Frontend";
 $changecount = 0;
 
+/* Deal with the renae is_portoralias -> is_port_or_alias() */
+if (!function_exists('is_port_or_alias')) {
+	function is_port_or_alias($port) {
+		return is_portoralias($port);
+	}
+}
+
 if ($_POST) {
 	$changecount++;
 
@@ -348,7 +355,7 @@ if ($_POST) {
 
 		$ports = split(",", $_POST['port'] . ",");
 		foreach($ports as $port) {
-			if ($port && !is_numeric($port) && !is_portoralias($port)) {
+			if ($port && !is_numeric($port) && !is_port_or_alias($port)) {
 				$input_errors[] = "The field 'Port' value '".htmlspecialchars($port)."' is not a number or alias thereof.";
 			}
 		}
@@ -404,7 +411,7 @@ if ($_POST) {
 	foreach($a_extaddr as $extaddr) {
 		$ports = explode(",",$extaddr['extaddr_port']);
 		foreach($ports as $port){
-			if ($port && !is_numeric($port) && !is_portoralias($port)) {
+			if ($port && !is_numeric($port) && !is_port_or_alias($port)) {
 				$input_errors[] = "The field 'Port' value '".htmlspecialchars($port)."' is not a number or alias thereof.";
 			}
 		}
