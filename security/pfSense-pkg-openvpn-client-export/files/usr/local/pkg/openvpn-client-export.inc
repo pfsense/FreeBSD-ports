@@ -27,11 +27,11 @@ require_once("shaper.inc");
 require_once("util.inc");
 require_once("pfsense-utils.inc");
 
-global $current_openvpn_version, $current_openvpn_version_rev;
-$current_openvpn_version = "2.4.0";
+global $current_openvpn_version, $current_openvpn_version_rev, $legacy_openvpn_version, $legacy_openvpn_version_rev;
+$current_openvpn_version = "2.4.1";
 $current_openvpn_version_rev = "01";
 $legacy_openvpn_version = "2.3.14";
-$legacy_openvpn_version_rev = "01";
+$legacy_openvpn_version_rev = "02";
 
 function openvpn_client_export_deinstall() {
 	exec("/bin/rm -r /usr/local/share/openvpn/client-export");
@@ -533,7 +533,6 @@ EOF;
 
 function openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $outpass, $proxy, $advancedoptions, $openvpn_version = "x86-xp", $usepkcs11, $pkcs11providers, $pkcs11id) {
 	global $g, $input_errors, $current_openvpn_version, $current_openvpn_version_rev, $legacy_openvpn_version, $legacy_openvpn_version_rev;
-	$uname_p = trim(exec("uname -p"));
 
 	switch ($openvpn_version) {
 		case "x86-xp":
@@ -643,11 +642,7 @@ RunProgram="openvpn-postinstall.exe"
 	}
 	file_put_contents("{$tempdir}/7zipConfig",$procchain);
 
-	if (file_exists("/usr/pbi/p7zip-{$uname_p}/bin/7z")) {
-		exec("/usr/pbi/p7zip-{$uname_p}/bin/7z -y a archive.7z {$files}");
-	} else {
-		exec("/usr/local/libexec/p7zip/7z -y a archive.7z {$files}");
-	}
+	exec("/usr/local/libexec/p7zip/7z -y a archive.7z {$files}");
 	// create the final installer
 	$outfile = "{$tempdir}-install.exe";
 	chdir($g['tmp_path']);
@@ -661,7 +656,6 @@ RunProgram="openvpn-postinstall.exe"
 
 function viscosity_openvpn_client_config_exporter($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $outpass, $proxy, $advancedoptions, $usepkcs11, $pkcs11providers, $pkcs11id) {
 	global $g;
-	$uname_p = trim(exec("uname -p"));
 
 	$uniq = uniqid();
 	$tempdir = $g['tmp_path'] . "/openvpn-export-" . $uniq;
@@ -770,11 +764,8 @@ EOF;
 	}
 
 	// Zip Viscosity file
-	if (file_exists("/usr/pbi/zip-{$uname_p}/bin/zip")) {
-		exec("cd {$tempdir}/.. && /usr/pbi/zip-{$uname_p}/bin/zip -r {$zipfile} Viscosity.visc");
-	} else {
-		exec("cd {$tempdir}/.. && /usr/local/bin/zip -r {$zipfile} Viscosity.visc");
-	}
+	exec("cd {$tempdir}/.. && /usr/local/bin/zip -r {$zipfile} Viscosity.visc");
+
 	// Remove temporary directory
 	exec("rm -rf {$tempdir}");
 
@@ -935,12 +926,7 @@ function openvpn_client_export_sharedkey_config($srvid, $useaddr, $proxy, $nokey
 		$shkeyfile = "{$tempdir}/{$shkeyfile}";
 		file_put_contents("{$shkeyfile}", base64_decode($settings['shared_key']));
 
-		$uname_p = trim(exec("uname -p"));
-		if (file_exists("/usr/pbi/zip-{$uname_p}/bin/zip")) {
-			exec("cd {$tempdir}/.. && /usr/pbi/zip-{$uname_p}/bin/zip -r {$g['tmp_path']}/{$prefix}-config.zip {$prefix}");
-		} else {
-			exec("cd {$tempdir}/.. && /usr/local/bin/zip -r {$g['tmp_path']}/{$prefix}-config.zip {$prefix}");
-		}
+		exec("cd {$tempdir}/.. && /usr/local/bin/zip -r {$g['tmp_path']}/{$prefix}-config.zip {$prefix}");
 
 		// Remove temporary directory
 		exec("rm -rf {$tempdir}");
