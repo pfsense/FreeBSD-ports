@@ -112,55 +112,31 @@ if (!empty($model_msg)) {
 
 ?>
 <form action="netgate_coreboot_upgrade.php" method="post" class="form-horizontal">
-	<div class="panel panel-default">
 <?php
 	if (empty($input_errors) && !file_exists("/tmp/coreupdatecomplete")):
-?>
-		<div class="panel-heading">
-			<h2 class="panel-title">
-				<?=gettext("Netgate Coreboot details")?>
-			</h2>
-		</div>
-		<div class="panel-body">
-			<div class="content">
-				<div class="form-group">
-					<label class="col-sm-2 control-label">
-						<?=gettext("Current Coreboot Version")?>
-					</label>
-					<div class="col-sm-10" id="installed_version">
-						<?=$current['version'];?>
-					</div>
-				</div>
 
-				<div class="form-group">
-					<label class="col-sm-2 control-label">
-						<?=gettext("Latest Coreboot Version")?>
-					</label>
-					<div class="col-sm-10" id="version">
-						<?=$new['version'];?>
-					</div>
-				</div>
+		$section = new Form_Section("Netgate Coreboot details");
 
-<?php
-			if ($new['version'] != $current['version']) :
-?>
-				<div class="form-group" id="confirm">
-					<label class="col-sm-2 control-label" id="confirmlabel">
+		$section->addInput(new Form_StaticText(
+			'Current Coreboot Version',
+			$current['version']
+		));
 
-					</label>
-					<div class="col-sm-10">
-						<button type="submit" class="btn btn-success" name="upgrade" id="upgrade" value="yes">
-							<i class="fa fa-check icon-embed-btn"></i>
-							<?=gettext("Upgrade")?>
-						</button>
-					</div>
-				</div>
-<?php
-			endif;
-?>
-			</div>
-		</div>
-<?php
+		$section->addInput(new Form_StaticText(
+			'Latest Coreboot Version',
+			$new['version']
+		));
+
+		if ($new['version'] != $current['version']) {
+			$section->addInput(new Form_Button(
+				'upgrade',
+				'',
+				null,
+				'fa-check'
+			))->addClass('btn-success btn-sm');
+		}
+
+		print($section);
 	elseif ($show_log):
 ?>
 		<div class="panel-heading">
@@ -174,7 +150,7 @@ if (!empty($model_msg)) {
 <?php
 	endif;
 ?>
-	</div>
+
 </form>
 <?php
 
