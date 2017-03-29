@@ -1826,6 +1826,11 @@ function pfb_download($list_url, $file_dwn, $pflex=FALSE, $header, $format, $log
 		}
 	}
 
+	// '304 not modified' - Utilize previously downloaded file if available
+	if ($http_status == '304' && file_exists("{$file_dwn}.orig")) {
+		return TRUE;
+	}
+	
 	if ($http_status == '200 OK') {
 		// Collect file mime-type
 		$file_type = exec("/usr/bin/file -b --mime-type {$file_dwn}.raw");
@@ -2467,11 +2472,12 @@ function pfb_livetail($logfile, $mode) {
 			else {
 				// DNSBL Lighttpd 'dnsbl_error.log' conditional log parser
 				while (($pfb_buffer = @fgets($f, 1024)) !== FALSE) {
-					if (strpos($pfb_buffer, 'HTTPhost') !== FALSE) {
+					if (strpos($pfb_buffer, 'SERVERsocket') !== FALSE) {
 						$checkpos = 0;
 					}
 
-					if ($checkpos == 3 && strpos($pfb_buffer, 'HTTP["host"]') !== FALSE) {
+					if ($checkpos == 2 && strpos($pfb_buffer, 'HTTP["host"]') !== FALSE) {
+
 						$line = strstr($pfb_buffer, ' ) compare', TRUE);
 						$line = ltrim(strstr($line, '] ( ', FALSE), '] ( ');
 						if (!empty($line)) {
@@ -4036,7 +4042,7 @@ function sync_package_pfblockerng($cron='') {
 
 	// IPv4 REGEX Definitions
 	$pfb['range']	= '/((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))-((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))/';
-	$pfb['ipv4']	= '/(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\/(3[012]|[12]?[0-9]))?/';
+	$pfb['ipv4']	= '/(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)((\/(3[012]|[12]?[0-9]))?(?![-0-9a-zA-Z]))/';
 
 	// IPv6 REGEX Definitions - Reference: http://labs.spritelink.net/regex
 	$pfb['ipv6'] = '/((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?(\/[0-9][0-9]?|1([01][0-9]|2[0-8]))?/';
