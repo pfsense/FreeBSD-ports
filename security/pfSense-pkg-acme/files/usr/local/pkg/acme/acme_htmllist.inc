@@ -148,11 +148,6 @@ class HtmlList
 	}
 
 	function acme_htmllist($rowvalues, $items, $editstate=false, $itemdetails=null) {
-		
-		//echo "TEST<br/>TEST<br/>TEST<br/>TEST<br/>";
-		//print_r($items);
-		//print_r($itemdetails);
-		
 		$tablename = $this->tablename;
 		global $g, $counter;
 		$result = "";
@@ -258,17 +253,19 @@ class HtmlList
 		</td>";
 				$result .= "</tr>";
 					if (isset($itemdetails)) {
+						$displayviewstyle = $editstate ? "hidden" : "";
+						$displayeditstyle = $editstate ? "" : "hidden";
 						$colspan = count($items);
 						$result .= "<tr id='tr_viewdetail_$counter'>";
 						$result .= <<<EOT
 							<td>
-							<div id="htmltable_{$tablename}_{$counter}_details_off" style="position:relative;float:right;width:11px;height:11px;">
+							<div class='$displayviewstyle' id="htmltable_{$tablename}_{$counter}_details_off" style="position:relative;float:right;width:11px;height:11px;">
 							<a onclick="htmltable_toggle_details('{$tablename}','{$counter}','htmltable_{$tablename}_{$counter}_details')">
 EOT
 							. acmeicon('expand','Expand advanced server settings') . '</a></div></td>';
 						$result .= "<td colspan='$colspan'>";
 						$itemnr = 0;
-						$result .= "<div id='htmltable_{$tablename}_{$counter}_details_view'>";
+						$result .= "<div id='htmltable_{$tablename}_{$counter}_details_view' class='$displayviewstyle'>";
 						$leftitem = true;
 						foreach($itemdetails as $item) {
 							$itemname = $item['name'];
@@ -298,7 +295,7 @@ EOT
 							$result .= "</div>";
 						}
 						$result .= "</div>";
-						$result .= "<div id='htmltable_{$tablename}_{$counter}_details_edit' class='hidden'>";
+						$result .= "<div id='htmltable_{$tablename}_{$counter}_details_edit' class='$displayeditstyle'>";
 						$result .= "<table class='table table-hover table-striped table-condensed' style='border-collapse:collapse' border='1' cellspacing='0' >";
 						foreach($itemdetails as $item) {
 							$itemname = $item['name'];

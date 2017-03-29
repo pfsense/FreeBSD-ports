@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=		openvpn
-DISTVERSION=		2.4.0
+DISTVERSION=		2.4.1
 PORTREVISION?=		0
 CATEGORIES=		security net
 MASTER_SITES=		http://swupdate.openvpn.net/community/releases/ \
@@ -48,6 +48,8 @@ EASYRSA_RUN_DEPENDS=	easy-rsa>=0:security/easy-rsa
 
 PKCS11_LIB_DEPENDS=	libpkcs11-helper.so:security/pkcs11-helper
 PKCS11_CONFIGURE_ENABLE=	pkcs11
+PKCS11_PREVENTS=	MBEDTLS
+PKCS11_PREVENTS_MSG=	OpenVPN cannot use pkcs11-helper with mbedTLS. Disable PKCS11, or use OpenSSL instead
 
 TUNNELBLICK_EXTRA_PATCHES=	${FILESDIR}/extra-tunnelblick-openvpn_xorpatch
 

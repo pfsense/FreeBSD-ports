@@ -37,6 +37,12 @@
 		<section>Diagnostics</section>
 		<url>/pkg_edit.php?xml=iperf.xml</url>
 	</menu>
+	<menu>
+		<name>iperf Server</name>
+		<tooltiptext>Run iperf in server mode.</tooltiptext>
+		<section>Diagnostics</section>
+		<url>/pkg_edit.php?xml=iperfserver.xml</url>
+	</menu>
 	<service>
 		<name>iperf</name>
 		<executable>iperf</executable>
