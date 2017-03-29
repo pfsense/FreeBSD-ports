@@ -130,7 +130,7 @@ if (!empty($model_msg)) {
 		if ($new['version'] != $current['version']) {
 			$section->addInput(new Form_Button(
 				'upgrade',
-				'',
+				'Upgrade',
 				null,
 				'fa-check'
 			))->addClass('btn-success btn-sm');
