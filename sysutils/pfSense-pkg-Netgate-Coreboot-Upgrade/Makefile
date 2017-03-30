@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Netgate_Coreboot_Upgrade
-PORTVERSION=	0.8
+PORTVERSION=	0.9
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -33,6 +33,8 @@ do-extract:
 do-build:
 	${CC} ${CFLAGS} -o ${WRKSRC}/adi_flash_util \
 		${FILESDIR}/adi_flash_util/adi_flash_util.c
+	${CC} ${CFLAGS} -o ${WRKSRC}/adi_powercycle \
+		${FILESDIR}/adi_powercycle/adi_powercycle.c
 
 do-install:
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
@@ -60,5 +62,6 @@ do-install:
 		${STAGEDIR}${DATADIR}/info.xml
 	${INSTALL_DATA} ${FILESDIR}/roms/*.rom ${STAGEDIR}${DATADIR}/roms
 	${INSTALL_PROGRAM} ${WRKSRC}/adi_flash_util ${STAGEDIR}${PREFIX}/sbin
+	${INSTALL_PROGRAM} ${WRKSRC}/adi_powercycle ${STAGEDIR}${PREFIX}/sbin
 
 .include <bsd.port.mk>
