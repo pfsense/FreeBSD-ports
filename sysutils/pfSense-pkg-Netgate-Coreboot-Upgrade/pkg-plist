@@ -2,6 +2,7 @@
 pkg/netgate_coreboot_upgrade.inc
 pkg/netgate_coreboot_upgrade.xml
 sbin/adi_flash_util
+sbin/adi_powercycle
 %%DATADIR%%/info.xml
 %%DATADIR%%/roms/%%COREBOOT_DFF2_ROM%%
 %%DATADIR%%/roms/%%COREBOOT_RCC_ROM%%
