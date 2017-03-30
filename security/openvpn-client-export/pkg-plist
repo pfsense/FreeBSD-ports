@@ -1,11 +1,11 @@
 share/openvpn/client-export/template/7zsd_All.sfx
 share/openvpn/client-export/template/config-import
 share/openvpn/client-export/template/config-standard
-share/openvpn/client-export/template/openvpn-install-2.4.0-I601.exe
-share/openvpn/client-export/template/openvpn-install-2.3.14-I001-i686.exe
-share/openvpn/client-export/template/openvpn-install-2.3.14-I001-x86_64.exe
-share/openvpn/client-export/template/openvpn-install-2.3.14-I601-i686.exe
-share/openvpn/client-export/template/openvpn-install-2.3.14-I601-x86_64.exe
+share/openvpn/client-export/template/openvpn-install-2.4.1-I601.exe
+share/openvpn/client-export/template/openvpn-install-2.3.14-I002-i686.exe
+share/openvpn/client-export/template/openvpn-install-2.3.14-I002-x86_64.exe
+share/openvpn/client-export/template/openvpn-install-2.3.14-I602-i686.exe
+share/openvpn/client-export/template/openvpn-install-2.3.14-I602-x86_64.exe
 share/openvpn/client-export/template/openvpn-postinstall.exe
 share/openvpn/client-export/template/openvpn-postinstall64.exe
 share/openvpn/client-export/template/procchain-import
