@@ -30,6 +30,9 @@ require_once("guiconfig.inc");
 require_once("system.inc");
 require_once("netgate_coreboot_upgrade.inc");
 
+$guitimeout = 90;	// Seconds to wait before reloading the page after reboot
+$guiretry = 20;		// Seconds to try again if $guitimeout was not long enough
+
 $input_errors = array();
 if (is_netgate_hw()) {
 	$current = get_current_coreboot_details();
@@ -55,9 +58,11 @@ if (is_netgate_hw()) {
 }
 
 $show_log = false;
+$reboot = false;
 if (empty($input_errors) && isset($_POST['upgrade'])) {
 	if (upgrade_coreboot($new, $adi_flash_util_output)) {
 		touch("/tmp/coreupdatecomplete");
+		$reboot = true;
 	} else {
 		$input_errors[] = gettext("Coreboot update failed.");
 	}
@@ -77,11 +82,23 @@ if ($input_errors) {
  * boot)
  */
 if (file_exists("/tmp/coreupdatecomplete")) {
-	$savemsg = sprintf(gettext('Coreboot was successfully upgraded! The ' .
-	    'new version will take effect after %1$sreboot%2$s'),
-	    '<a href="/diag_reboot.php">', '</a>');
+	$savemsg = gettext('Coreboot was successfully upgraded! The ' .
+	    'new version will take effect after reboot');
 
 	print_info_box($savemsg, 'success');
+
+	if ($reboot) {
+		print('<div><pre>');
+		$platform = system_identify_specific_platform();
+		if ($platform['name'] == 'RCC-VE') {
+			mwexec('/usr/local/sbin/adi_powercycle');
+			system_halt();
+		} else {
+			system_reboot();
+		}
+		print('</pre></div>');
+	}
+
 	if (empty($adi_flash_util_output) &&
 	    file_exists("{$g['conf_path']}/netgate_coreboot_upgrade.log")) {
 		$adi_flash_util_output = file_get_contents(
@@ -90,24 +107,10 @@ if (file_exists("/tmp/coreupdatecomplete")) {
 	}
 }
 
-/* Add warnings for SG-4860 and SG-8860 */
-$platform = system_identify_specific_platform();
-$model_msg = '';
-if ($platform['model'] == 'SG-4860') {
-	$model_msg = gettext(
-	    "WARNING: This device will need to be physically rebooted " .
-	    "after the firmware upgrade. Do not do this remotely if you " .
-	    "can't power cycle!");
-
-} elseif ($platform['model'] == 'SG-8860') {
-	$model_msg = gettext("WARNING: This device will need to be powered " .
-	    "on with the red button in the back after coreboot is upgraded. " .
-	    "Do not do this remotely if you can not press this button after " .
-	    "upgrade!");
-}
-
-if (!empty($model_msg)) {
-	print_info_box($model_msg, 'danger', false);
+if (empty($input_errors) && !file_exists("/tmp/coreupdatecomplete") &&
+    ($new['version'] != $current['version'])) {
+	print_info_box(gettext("WARNING: This operation requires a reboot."),
+	    'warning', false);
 }
 
 ?>
@@ -130,10 +133,10 @@ if (!empty($model_msg)) {
 		if ($new['version'] != $current['version']) {
 			$section->addInput(new Form_Button(
 				'upgrade',
-				'Upgrade',
+				'Upgrade and Reboot',
 				null,
 				'fa-check'
-			))->addClass('btn-success btn-sm');
+			))->setAttribute("title", "Upgrade coreboot and reboot the system")->addClass('btn-danger');
 		}
 
 		print($section);
@@ -146,6 +149,50 @@ if (!empty($model_msg)) {
 		</div>
 		<div class="panel-body">
 			<pre><?=$adi_flash_util_output;?></pre>
+		</div>
+
+		<div id="countdown" class="text-center"></div>
+
+		<script type="text/javascript">
+		//<![CDATA[
+		events.push(function() {
+
+			var time = 0;
+
+			function checkonline() {
+				$.ajax({
+					url	 : "/index.php", // or other resource
+					type : "HEAD"
+				})
+				.done(function() {
+					window.location="/index.php";
+				});
+			}
+
+			function startCountdown() {
+				setInterval(function() {
+					if (time == "<?=$guitimeout?>") {
+						$('#countdown').html('<h4><?=sprintf(gettext("Rebooting%sPage will automatically reload in %s seconds"), "<br />", "<span id=\"secs\"></span>");?></h4>');
+					}
+
+					if (time > 0) {
+						$('#secs').html(time);
+						time--;
+					} else {
+						time = "<?=$guiretry?>";
+						$('#countdown').html('<h4><?=sprintf(gettext("Not yet ready%s Retrying in another %s seconds"), "<br />", "<span id=\"secs\"></span>");?></h4>');
+						$('#secs').html(time);
+						checkonline();
+					}
+				}, 1000);
+			}
+
+			time = "<?=$guitimeout?>";
+			startCountdown();
+
+		});
+		//]]>
+		</script>
 		</div>
 <?php
 	endif;
