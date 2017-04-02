@@ -17,7 +17,6 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/clog:sysutils/clog \
 		${LOCALBASE}/bin/dpinger:net/dpinger \
 		${LOCALBASE}/sbin/radvd:net/radvd \
 		${LOCALBASE}/bin/cpdup:sysutils/cpdup \
-		${LOCALBASE}/bin/gogoc:net/gogoc \
 		${LOCALBASE}/bin/ipmitool:sysutils/ipmitool \
 		${LOCALBASE}/bin/minicron:sysutils/minicron \
 		${LOCALBASE}/bin/voucher:sysutils/voucher \
