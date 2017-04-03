@@ -3,7 +3,7 @@
 
 PORTNAME=	ffmpeg
 PORTVERSION=	0.7.17
-PORTREVISION=	6
+PORTREVISION=	7
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio ipv6 net
 MASTER_SITES=	http://ffmpeg.org/releases/
@@ -38,7 +38,7 @@ PLIST_SUB+=	SUFF="${FFMPEG_SUFFIX}"
 PROGS=		ffmpeg ffprobe
 
 CONFIGURE_ENV+=	COMPILER_PATH=${LOCALBASE}/bin
-MAKE_ENV+=	COMPILER_PATH=${LOCALBASE}/bin
+MAKE_ENV+=	COMPILER_PATH=${LOCALBASE}/bin V=1
 
 CONFIGURE_ARGS+=--prefix="${PREFIX}" \
 		--mandir="${PREFIX}/man" \
@@ -48,6 +48,7 @@ CONFIGURE_ARGS+=--prefix="${PREFIX}" \
 		--datadir="${DATADIR}" \
 		--build-suffix="${FFMPEG_SUFFIX}" \
 		--enable-shared \
+		--enable-pic \
 		--enable-gpl \
 		--enable-postproc \
 		--enable-avfilter \
@@ -108,7 +109,7 @@ OPENCV_CONFIGURE_ENABLE=	libopencv
 OPENJPEG_LIB_DEPENDS=		libopenjpeg.so:graphics/openjpeg15
 OPENJPEG_CONFIGURE_ENABLE=	libopenjpeg
 
-RTMP_USE=			OPENSSL=yes
+RTMP_USES=			ssl
 
 SCHROEDINGER_LIB_DEPENDS=	libschroedinger-1.0.so:multimedia/schroedinger
 SCHROEDINGER_CONFIGURE_ENABLE=	libschroedinger
@@ -162,10 +163,6 @@ COMPAT_HEADERS=libavcodec/avcodec.h \
 	libswscale/swscale.h
 
 .include <bsd.port.pre.mk>
-
-.if ${OPSYS} == "FreeBSD" && ${OSVERSION} < 1000000
-CONFIGURE_ARGS+=	--enable-memalign-hack
-.endif
 
 .if ${ARCH} == armv6
 CONFIGURE_ENV+=	ASFLAGS=-no-integrated-as

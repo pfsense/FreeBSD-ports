@@ -14,7 +14,7 @@
 # lxqt		- LXQt core library
 # qtxdg		- Qt implementation of freedesktop.org xdg specs
 #
-# MAINTAINER: olivierd@FreeBSD.org
+# MAINTAINER: ports@FreeBSD.org
 
 .if !defined(_INCLUDE_USES_LXQT_MK)
 _INCLUDE_USES_LXQT_MK=	yes
@@ -24,6 +24,7 @@ IGNORE=	Incorrect 'USES+=lxqt:${lxqt_ARGS} takes no arguments
 .endif
 
 MASTER_SITE_LXQT+= \
+	https://github.com/lxde/%SUBDIR%/releases/download/${PORTVERSION}/ \
 	http://downloads.lxqt.org/%SUBDIR%/${PORTVERSION}/
 MASTER_SITE_LXQT_SUBDIR=	lxqt
 
@@ -61,7 +62,7 @@ qtxdg_LIB_DEPENDS=	libQt5Xdg.so:devel/libqtxdg
 # First, expand all USE_LXQT_REQ recursively.
 .for comp in ${_USE_LXQT_ALL}
 . for subcomp in ${${comp}_USE_LXQT_REQ}
-${comp}_USE_LXQT_REQ+=	${${comp}_USE_LXQR_REQ}
+${comp}_USE_LXQT_REQ+=	${${subcomp}_USE_LXQT_REQ}
 . endfor
 .endfor
 

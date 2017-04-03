@@ -1,12 +1,12 @@
---- src/modbus.c.orig	2016-09-11 08:10:25 UTC
+--- src/modbus.c.orig	2017-01-23 07:53:57 UTC
 +++ src/modbus.c
-@@ -25,6 +25,9 @@
- #include "common.h"
+@@ -26,6 +26,9 @@
+ #include "configfile.h"
  #include "plugin.h"
  
 +/* FreeBSD needs this */
 +#include <sys/socket.h> 
 +
- #include <netdb.h>
- 
  #include <modbus.h>
+ #include <netdb.h>
+ #include <sys/socket.h>

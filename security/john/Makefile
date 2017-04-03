@@ -3,7 +3,7 @@
 
 PORTNAME=	john
 DISTVERSION=	1.8.0-jumbo-1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	http://www.openwall.com/john/j/ \
 		http://mirrors.kernel.org/openwall/projects/john/${DISTVERSION:C/-.*//}/ \
@@ -73,10 +73,6 @@ post-patch:
 
 .if ${SSL_DEFAULT:Mopenssl-devel}
 BROKEN=		Does not build with openssl-devel
-.endif
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000024
-CFLAGS+=	-flax-vector-conversions
 .endif
 
 do-install:

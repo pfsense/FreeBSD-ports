@@ -1,11 +1,10 @@
 etc/asound.conf
-lib/libasound.so.2
-lib/libasound.so.2.0.0
-lib/modprobe.d/dist-alsa.conf
 usr/bin/aserver
 usr/lib/alsa-lib/smixer/smixer-ac97.so
 usr/lib/alsa-lib/smixer/smixer-hda.so
 usr/lib/alsa-lib/smixer/smixer-sbase.so
+usr/lib/libasound.so.2
+usr/lib/libasound.so.2.0.0
 usr/share/alsa/alsa.conf
 usr/share/alsa/alsa.conf.d/README
 usr/share/alsa/cards/AACI.conf
@@ -82,8 +81,8 @@ usr/share/alsa/pcm/surround50.conf
 usr/share/alsa/pcm/surround51.conf
 usr/share/alsa/pcm/surround71.conf
 usr/share/alsa/smixer.conf
+usr/share/alsa/topology/broadwell/broadwell.conf
 %%PORTDOCS%%%%DOCSDIR%%/COPYING
 %%PORTDOCS%%%%DOCSDIR%%/TODO
 %%PORTDOCS%%%%DOCSDIR%%/asoundrc.txt
-%%PORTDOCS%%%%DOCSDIR%%/modprobe-dist-oss.conf
 @dir usr/share/alsa/ucm

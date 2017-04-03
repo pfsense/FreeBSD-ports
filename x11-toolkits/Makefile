@@ -11,6 +11,7 @@
     SUBDIR += blt
     SUBDIR += bwidget
     SUBDIR += c++-gtk-utils
+    SUBDIR += diorite
     SUBDIR += flowcanvas
     SUBDIR += fltk
     SUBDIR += fltk-devel
@@ -93,6 +94,7 @@
     SUBDIR += kf5-kwidgetsaddons
     SUBDIR += kf5-kxmlgui
     SUBDIR += kirigami
+    SUBDIR += kirigami2
     SUBDIR += lesstif
     SUBDIR += libXaw
     SUBDIR += libXmu
@@ -143,7 +145,7 @@
     SUBDIR += p5-Gnome2-Canvas
     SUBDIR += p5-Gnome2-VFS
     SUBDIR += p5-Gnome2-Wnck
-    SUBDIR += p5-Gtk
+    SUBDIR += p5-Gtk-Perl
     SUBDIR += p5-Gtk2
     SUBDIR += p5-Gtk2-Chmod
     SUBDIR += p5-Gtk2-Ex-Dialogs
@@ -229,12 +231,16 @@
     SUBDIR += qt4pas
     SUBDIR += qt5-canvas3d
     SUBDIR += qt5-charts
+    SUBDIR += qt5-datavis3d
     SUBDIR += qt5-declarative
+    SUBDIR += qt5-declarative-render2d
+    SUBDIR += qt5-gamepad
     SUBDIR += qt5-gui
     SUBDIR += qt5-quick
     SUBDIR += qt5-quickcontrols
     SUBDIR += qt5-quickcontrols2
     SUBDIR += qt5-uiplugin
+    SUBDIR += qt5-virtualkeyboard
     SUBDIR += qt5-widgets
     SUBDIR += qtermwidget
     SUBDIR += qwt5
@@ -249,6 +255,7 @@
     SUBDIR += rubygem-gtksourceview3
     SUBDIR += rubygem-pango
     SUBDIR += rubygem-poppler
+    SUBDIR += rubygem-uh
     SUBDIR += rubygem-vte
     SUBDIR += rubygem-vte3
     SUBDIR += scintilla
@@ -280,6 +287,7 @@
     SUBDIR += vte290
     SUBDIR += vte3
     SUBDIR += vtkfox
+    SUBDIR += wlc
     SUBDIR += wmapp
     SUBDIR += wxgtk28
     SUBDIR += wxgtk28-common

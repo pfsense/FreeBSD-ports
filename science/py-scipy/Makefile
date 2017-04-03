@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	scipy
-PORTVERSION=	0.18.1
+PORTVERSION=	0.19.0
 PORTREVISION=	1
 CATEGORIES=	science python
 MASTER_SITES=	http://docs.scipy.org/doc/${DISTNAME}/:doc \
@@ -23,7 +23,7 @@ BUILD_DEPENDS=	${PYNUMPY}
 RUN_DEPENDS=	${PYNUMPY} \
 		swig:devel/swig13
 
-USES=		fortran python
+USES=		fortran python zip
 USE_PYTHON=	autoplist concurrent distutils
 LDFLAGS+=	-shared
 PYDISTUTILS_BUILDARGS=	--fcompiler=gnu95

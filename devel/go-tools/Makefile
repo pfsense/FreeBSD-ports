@@ -11,7 +11,8 @@ COMMENT=	Go Tools
 
 LICENSE=	BSD3CLAUSE
 
-BROKEN=		does not build (cannot find package "golang.org/x/net/html")
+BUILD_DEPENDS=	${LOCALBASE}/${GO_LIBDIR}/golang.org/x/crypto/bcrypt.a:security/go.crypto \
+		${LOCALBASE}/${GO_LIBDIR}/golang.org/x/net/dict.a:net/go.net
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	golang

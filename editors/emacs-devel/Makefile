@@ -15,26 +15,25 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 CONFLICTS=	emacs25-[0-9]* emacs-nox11-[0-9]*
 
+BROKEN_aarch64=		Fails to link: missing sbrk
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	emacs-mirror
-GH_TAGNAME=	2dae636
+GH_TAGNAME=	211d41a
 
 EMACS_VER=	26.0.50
-EMACS_REV=	20161225
+EMACS_REV=	20170324
 GNU_CONFIGURE=	yes
-USES=		autoreconf cpe gmake makeinfo ncurses pkgconfig
+USES=		autoreconf:build cpe gmake makeinfo ncurses pkgconfig
 INFO_PATH=	${DATADIR_REL}/info
 CPE_VENDOR=	gnu
 
 SUB_FILES=	sources.el
 SUB_LIST=	EMACS_VER=${EMACS_VER}
 
-CONFIGURE_ARGS=	--localstatedir=/var \
-		--with-gameuser=games:games
+CONFIGURE_ARGS=	--with-gameuser=games:games
 
 PLIST_SUB=	EMACS_VER=${EMACS_VER} GNU_HOST=${CONFIGURE_TARGET}
-
-MAKE_ENV=	LC_ALL=C
 
 INFO=	ada-mode auth autotype bovine calc ccmode cl dbus dired-x ebrowse ede	\
 	ediff edt efaq eieio eintr elisp emacs emacs-gnutls emacs-mime epa erc	\
@@ -176,8 +175,13 @@ XPM_CONFIGURE_WITH=	xpm
 XPM_IMPLIES=		X11
 XWIDGETS_USE=		XORG=xcomposite
 XWIDGETS_CONFIGURE_WITH=xwidgets
+XWIDGETS_IGNORE=	Cannot build with XWIDGETS, because the version of \
+WebKit GTK3 in the ports tree is too old
 XWIDGETS_LIB_DEPENDS=	libwebkitgtk-3.0.so:www/webkit-gtk3
 XWIDGETS_IMPLIES=	GTK3
+
+pre-configure:
+	@(cd ${WRKSRC} && ./autogen.sh all)
 
 # With a desktop entry stage-qa will give a warning about requiring
 # desktop-file-utils and portlint -C will give a warning about INSTALL_ICONS,

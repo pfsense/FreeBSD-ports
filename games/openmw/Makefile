@@ -4,10 +4,10 @@
 PORTNAME=	openmw
 PORTVERSION=	0.41.0
 DISTVERSIONPREFIX=	openmw-
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games
 
-MAINTAINER=	t@tobik.me
+MAINTAINER=	tobik@FreeBSD.org
 COMMENT=	Unofficial open source engine reimplementation of the game Morrowind
 
 LICENSE=	GPLv3

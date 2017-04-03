@@ -3,7 +3,7 @@
 
 PORTNAME=	recursor
 PORTVERSION=	4.0.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	dns ipv6
 MASTER_SITES=	http://downloads.powerdns.com/releases/
 PKGNAMEPREFIX=	powerdns-
@@ -54,11 +54,4 @@ USERS=		pdns_recursor
 GROUPS=		pdns
 .endif
 
-.include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 1000000 && ${ARCH} == i386
-#BUILD_DEPENDS=		${LOCALBASE}/lib/libatomic_ops.a:devel/libatomic_ops
-LDFLAGS+=		-latomic
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

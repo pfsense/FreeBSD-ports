@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	cloudabi-utils
-PORTVERSION=	0.18
+PORTVERSION=	0.24
 PORTREVISION=	1
 DISTVERSIONPREFIX=v
 CATEGORIES=	sysutils
@@ -13,7 +13,8 @@ COMMENT=	Utilities for running CloudABI programs
 LICENSE=	BSD2CLAUSE
 
 BUILD_DEPENDS=	${LOCALBASE}/include/cloudabi_types.h:devel/cloudabi
-LIB_DEPENDS=	libyaml.so:textproc/libyaml
+LIB_DEPENDS=	libargdata.so:devel/argdata \
+		libyaml.so:textproc/libyaml
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	NuxiNL
@@ -26,10 +27,4 @@ USE_LDCONFIG=	yes
 
 CFLAGS+=	-I${LOCALBASE}/include
 
-.include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 1001511
-IGNORE=		requires a recent implementation of Capsicum
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

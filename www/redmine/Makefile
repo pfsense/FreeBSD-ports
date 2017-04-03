@@ -3,7 +3,7 @@
 
 PORTNAME=	redmine
 PORTVERSION=	3.2.3
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	www
 MASTER_SITES=	http://www.redmine.org/releases/
 
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/doc/COPYING
 
 RUN_DEPENDS=	rubygem-bundler>=1.5.0:sysutils/rubygem-bundler \
 		rubygem-rails4>=4.2.5:www/rubygem-rails4 \
-		rubygem-jquery-rails4>=3.1.4:www/rubygem-jquery-rails4 \
+		rubygem-jquery-rails>=3.1.4:www/rubygem-jquery-rails \
 		rubygem-coderay>=1.1.0:textproc/rubygem-coderay \
 		rubygem-builder>=3.0.4:devel/rubygem-builder \
 		rubygem-request_store>=1.0.5:devel/rubygem-request_store \
@@ -23,7 +23,7 @@ RUN_DEPENDS=	rubygem-bundler>=1.5.0:sysutils/rubygem-bundler \
 		rubygem-mimemagic>=0:misc/rubygem-mimemagic \
 		rubygem-protected_attributes>=0:devel/rubygem-protected_attributes \
 		rubygem-actionpack-action_caching>=0:devel/rubygem-actionpack-action_caching \
-		rubygem-actionpack-xml_parser>=0:textproc/rubygem-actionpack-xml_parser \
+		rubygem-actionpack-xml_parser1>=0:textproc/rubygem-actionpack-xml_parser1 \
 		rubygem-roadie-rails>=0:mail/rubygem-roadie-rails \
 		rubygem-rbpdf>=1.19.0:print/rubygem-rbpdf \
 		rubygem-rake>=0:devel/rubygem-rake \

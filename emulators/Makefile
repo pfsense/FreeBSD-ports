@@ -27,7 +27,6 @@
     SUBDIR += dgen-sdl
     SUBDIR += dolphin-emu
     SUBDIR += dosbox
-    SUBDIR += doscmd
     SUBDIR += dtcyber
     SUBDIR += dynagen
     SUBDIR += dynagui
@@ -55,7 +54,6 @@
     SUBDIR += hercules
     SUBDIR += higan
     SUBDIR += hugo
-    SUBDIR += hyperv-is
     SUBDIR += i386-wine
     SUBDIR += i386-wine-devel
     SUBDIR += i386-wine-staging
@@ -110,7 +108,6 @@
     SUBDIR += pipelight
     SUBDIR += playonbsd
     SUBDIR += ppsspp
-    SUBDIR += ppsspp-qt4
     SUBDIR += ppsspp-qt5
     SUBDIR += py-gns3-converter
     SUBDIR += py-nova
@@ -130,6 +127,8 @@
     SUBDIR += qtemu
     SUBDIR += quasi88
     SUBDIR += raine
+    SUBDIR += riscv-fesvr
+    SUBDIR += riscv-isa-sim
     SUBDIR += rtc
     SUBDIR += rubygem-fission
     SUBDIR += simh

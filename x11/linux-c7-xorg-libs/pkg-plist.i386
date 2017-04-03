@@ -205,5 +205,4 @@ usr/lib/libxshmfence.so.1.0.0
 %%PORTDOCS%%usr/share/doc/libfontenc-1.1.2/README
 %%PORTDOCS%%usr/share/doc/libxkbfile-1.0.8/COPYING
 %%PORTDOCS%%usr/share/doc/libxkbfile-1.0.8/ChangeLog
-usr/share/icons/default/index.theme
 @dir usr/share/X11/app-defaults

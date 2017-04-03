@@ -31,12 +31,11 @@ CONFIGURE_ARGS=	${RUBY_CONFIGURE_ARGS} \
 		--with-ruby-version=minor \
 		--with-sitedir="${PREFIX}/lib/ruby/site_ruby" \
 		--with-vendordir="${PREFIX}/lib/ruby/vendor_ruby"
-CONFIGURE_ENV=	LC_ALL=C debugflags=
+CONFIGURE_ENV=	debugflags=
 CPPFLAGS+=	-I${LOCALBASE}/include
 GNU_CONFIGURE=	yes
 # Keep this, else ruby will fail to load libraries dependent of libpthread.
 LIBS+=		-lpthread -L${LOCALBASE}/lib
-MAKE_ENV=	LC_ALL=C
 USE_LDCONFIG=	yes
 USES=		autoreconf cpe execinfo ssl tar:xz
 WRKSRC=		${RUBY_WRKSRC}
@@ -60,7 +59,7 @@ RDOC_DESC=		Build and install Rdoc indexes
 EDIT_DESC=		Which line editing lib to use
 LIBEDIT_DESC=		Use libedit
 READLINE_DESC=		Use libreadline
-CAPIDOCS_BUILD_DEPENDS=	doxygen>0:devel/doxygen \
+CAPIDOCS_BUILD_DEPENDS=	doxygen>=1.8.12,2:devel/doxygen \
 			dot:graphics/graphviz
 CAPIDOCS_CONFIGURE_ENABLE=	install-capi
 GMP_CONFIGURE_WITH=	gmp

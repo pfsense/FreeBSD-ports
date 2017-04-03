@@ -4,6 +4,7 @@
     COMMENT = Things that used to be on the desktop before computers were invented
 
     SUBDIR += affiche
+    SUBDIR += alarm-clock-applet
     SUBDIR += anamnesis
     SUBDIR += appwrapper
     SUBDIR += aspostit
@@ -71,7 +72,6 @@
     SUBDIR += gnome-screenshot
     SUBDIR += gnome-search-tool
     SUBDIR += gnome-shell-extension-audio-output-switcher
-    SUBDIR += gnome-shell-extension-backslide
     SUBDIR += gnome-shell-extension-coverflow
     SUBDIR += gnome-shell-extension-dashtodock
     SUBDIR += gnome-shell-extension-filesmenu
@@ -123,7 +123,7 @@
     SUBDIR += jjclient
     SUBDIR += jlj
     SUBDIR += kcharselect
-    SUBDIR += kchmviewer-kde4
+    SUBDIR += kchmviewer
     SUBDIR += kdeconnect
     SUBDIR += kdepim4
     SUBDIR += kdepim4-runtime

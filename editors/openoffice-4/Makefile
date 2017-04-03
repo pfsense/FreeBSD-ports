@@ -3,8 +3,7 @@
 
 PORTNAME=	apache-openoffice
 PORTVERSION=	${AOOVERSION}
-PORTREVISION=	4
-#PORTREVISION=	1
+PORTREVISION=	8
 CATEGORIES=	editors java
 MASTER_SITES=	APACHE/openoffice/${PORTVERSION}/source \
 		http://tools.openoffice.org/unowinreg_prebuild/680/:unoreg \
@@ -21,7 +20,7 @@ EXTRACT_ONLY=	${AOOSRC}
 
 MAINTAINER=	office@FreeBSD.org
 #de facto maintainer is truckman@FreeBSD.org
-#Frequent Patch submitters should optionally sign Apache iCLA
+#Frequent Patch submitters should (optionally) sign the Apache iCLA
 COMMENT=	Integrated wordprocessor/dbase/spreadsheet/drawing/chart/browser
 
 LICENSE=		APACHE20 ADOBE BSD3CLAUSE BSD4CLAUSE BSL ICU MIT MPL \
@@ -49,9 +48,6 @@ LICENSE_PERMS_W3C=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 BUILD_DEPENDS=								\
 		p5-Archive-Zip>=0:archivers/p5-Archive-Zip		\
-		p5-libwww>=0:www/p5-libwww				\
-		p5-LWP-Protocol-https>0:www/p5-LWP-Protocol-https	\
-		p5-XML-Parser>=0:textproc/p5-XML-Parser			\
 		${LOCALBASE}/bin/unzip:archivers/unzip			\
 		zip:archivers/zip					\
 		ant:devel/apache-ant					\
@@ -69,14 +65,15 @@ BUILD_DEPENDS=								\
 		${JAVALIBDIR}/bsh.jar:lang/bsh				\
 		bash:shells/bash					\
 		${JAVALIBDIR}/lucene-core-3.6.2.jar:textproc/lucene	\
-		p5-libwww>=0:www/p5-libwww
+		p5-XML-Parser>=0:textproc/p5-XML-Parser			\
+		p5-libwww>=0:www/p5-libwww				\
+		p5-LWP-Protocol-https>0:www/p5-LWP-Protocol-https
 LIB_DEPENDS=								\
 		libapr-1.so:devel/apr1					\
 		libnspr4.so:devel/nspr					\
 		libcurl.so:ftp/curl					\
 		libcairo.so:graphics/cairo				\
 		libpng.so:graphics/png					\
-		libpoppler-glib.so:graphics/poppler-glib		\
 		libgraphite.so:graphics/silgraphite			\
 		libCoinMP.so:math/coinmp				\
 		libfreetype.so:print/freetype2				\
@@ -118,7 +115,7 @@ XDGDIR=			${OOPATH}/share/xdg
 XDGREL=			../../${INSTALLATION_BASEDIR}/openoffice${AOOVERSION1}/share/xdg
 EXECBASE?=		openoffice-${AOOSUFFIX}
 
-ONLY_FOR_ARCHS=	i386 amd64
+ONLY_FOR_ARCHS=	i386 amd64 powerpc64
 
 USE_GL=		gl glu
 USE_GNOME=	gtk20 libxslt libidl glib20
@@ -179,14 +176,20 @@ TARGET_ORDER_OVERRIDE=	710:gnome-post-icons
 
 .if ${COMPILER_TYPE} == clang
 CPPFLAGS+=		-I${LOCALBASE}/include
+. if ${COMPILER_VERSION} >= 40 && ${ARCH} == amd64
+EXTRA_PATCHES+=		${FILESDIR}/extra-patch-align16
+. endif
 .endif
 
 .if ${ARCH} == amd64
 FREEBSD_ENV_SET=	FreeBSDAMDEnv.Set.sh
 PACKAGE_MIDDLE=		${PORTVERSION}_${OPSYS}_x86-64
-.else
+.elif ${ARCH} == i386
 FREEBSD_ENV_SET=	FreeBSDX86Env.Set.sh
 PACKAGE_MIDDLE=		${PORTVERSION}_${OPSYS}_x86
+.elif ${ARCH} == powerpc64
+FREEBSD_ENV_SET=	FreeBSDPPC64Env.Set.sh
+PACKAGE_MIDDLE=		${PORTVERSION}_${OPSYS}_ppc64
 .endif
 PACKAGE_PREFIX=		Apache_OpenOffice
 
@@ -214,6 +217,7 @@ SUB_LIST=	EXECBASE=${EXECBASE} AOOTAG=${AOOTAG} AOOUDIR=${AOOUDIR} \
 
 CONFIGURE_ARGS+=							\
 			--with-unix-wrapper=${EXECBASE}			\
+			--with-alloc=system				\
 			--with-system-apache-commons=yes		\
 			--with-commons-codec-jar=${JAVALIBDIR}/commons-codec.jar \
 			--with-commons-lang-jar=${JAVALIBDIR}/commons-lang.jar \
@@ -258,14 +262,13 @@ CONFIGURE_ARGS+=							\
 			--enable-opengl					\
 			--with-system-openssl				\
 			--with-package-format="archive"			\
-			--with-system-poppler				\
 			--with-system-python				\
 			--with-system-redland				\
 			--with-system-sane				\
 			--with-system-serf				\
 			--with-system-stdlibs				\
-			--without-stlport				\
 			--with-vendor="FreeBSD ports system"		\
+			--with-build-version="PKGNAME: ${PKGNAME:S/,/@/g}" \
 			--enable-verbose				\
 			--with-system-vigra				\
 			--with-system-xrender				\
@@ -400,12 +403,12 @@ do-build:
 	fi ;								  \
 	cd ${WRKSRC}/instsetoo_native ;					  \
 	. ../${FREEBSD_ENV_SET} ;					  \
-	LANG=C LC_ALL=C build.pl --all -P$${numproc} -- -P$${dmproc}
+	build.pl --all -P$${numproc} -- -P$${dmproc}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PRINSTALLATION_BASEDIR} \
 		${STAGEDIR}${PREFIX}/share/mime/packages
-	@cd ${WRKSRC}/instsetoo_native/unxfbsd?.pro/Apache_OpenOffice/archive/install/${LOCALIZED_LANG}/ ; \
+	@cd ${WRKSRC}/instsetoo_native/unxfbsd*.pro/Apache_OpenOffice/archive/install/${LOCALIZED_LANG}/ ; \
 		for i in *.tar.?z ; do \
 			${ECHO_CMD} "extracting $$i" ; \
 			${TAR} -s '|./[^/]*/||' -xz -f $$i \
@@ -429,7 +432,7 @@ do-install:
 	done
 	@${ECHO_CMD} "adding desktop support"
 	@${LN} -sf ${XDGREL} ${STAGEDIR}${DESKTOPDIR}/${EXECBASE}
-	@cd ${WRKSRC}/sysui/unxfbsd?.pro/misc/openoffice ;	\
+	@cd ${WRKSRC}/sysui/unxfbsd*.pro/misc/openoffice ;	\
 	    DESTDIR=${STAGEDIR}					\
 		GNOMEDIR=${PREFIX}				\
 		ICON_PREFIX=openoffice${AOOVERSION1}		\
@@ -443,7 +446,7 @@ do-install:
 
 do-install-SDK-on:
 	${TAR} -s '|./[^/]*/||' -xz -C ${STAGEDIR}${PRINSTALLATION_BASEDIR} \
-		-f ${WRKSRC}/instsetoo_native/unxfbsd?.pro/Apache_OpenOffice_SDK/archive/install/${LOCALIZED_LANG}/*.tar.gz
+		-f ${WRKSRC}/instsetoo_native/unxfbsd*.pro/Apache_OpenOffice_SDK/archive/install/${LOCALIZED_LANG}/*.tar.gz
 	@f=${STAGEDIR}${OOPATH}/sdk/bin/unoapploader ; \
 		${CHMOD} 644 $${f} ; ${STRIP_CMD} $${f} ; ${CHMOD} 444 $${f}
 

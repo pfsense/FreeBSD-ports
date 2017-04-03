@@ -469,6 +469,8 @@ CONFIGURE_ARGS+=--add-module=${WRKSRC_videothumbextractor} \
 NGINX_ZIP_VERSION=	1.1.6
 MASTER_SITES+=	http://mod-zip.googlecode.com/files/:zip
 BROKEN=		Unfetchable (google code has gone away)
+DEPRECATED=	Unfetchable for more than six months (google code has gone away)
+EXPIRATION_DATE=	2017-04-30
 DISTFILES+=	mod_zip-${NGINX_ZIP_VERSION}.tar.gz:zip
 CONFIGURE_ARGS+=--add-module=${WRKDIR}/mod_zip-${NGINX_ZIP_VERSION}
 .endif
@@ -730,18 +732,13 @@ CONFIGURE_ARGS+=--without-http_rewrite_module \
 		--without-pcre
 .endif
 
-.if defined(NGINX_OPENSSL)
-USE_OPENSSL=	yes
-.if ${PORT_OPTIONS:MSPDY}
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000028
-WITH_OPENSSL_PORT=	yes
-.endif
-.endif
-.endif
-
 .if defined(WITH_HTTP_SSL)
 NGINX_OPENSSL=	yes
 CONFIGURE_ARGS+=--with-http_ssl_module
+.endif
+
+.if defined(NGINX_OPENSSL)
+USES+=		ssl
 .endif
 
 .if ${PORT_OPTIONS:MHTTP_SSL}

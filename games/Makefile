@@ -19,6 +19,7 @@
     SUBDIR += abbayedesmorts
     SUBDIR += abe
     SUBDIR += abuse_sdl
+    SUBDIR += ace-of-penguins
     SUBDIR += acm
     SUBDIR += adgali
     SUBDIR += adom
@@ -27,6 +28,7 @@
     SUBDIR += affenspiel
     SUBDIR += afternoonstalker
     SUBDIR += agame
+    SUBDIR += ags
     SUBDIR += aisleriot
     SUBDIR += alephone
     SUBDIR += alephone-data
@@ -201,6 +203,7 @@
     SUBDIR += diameter
     SUBDIR += diaspora
     SUBDIR += digger-vgl
+    SUBDIR += divide-and-succeed
     SUBDIR += dmjava
     SUBDIR += dodgindiamond2
     SUBDIR += domination
@@ -419,6 +422,7 @@
     SUBDIR += hoverboard-sdl
     SUBDIR += hs-scroll
     SUBDIR += hypatia_engine
+    SUBDIR += hyperrogue
     SUBDIR += iagno
     SUBDIR += icbm3d
     SUBDIR += icebreaker
@@ -589,6 +593,7 @@
     SUBDIR += maitretarot
     SUBDIR += manaplus
     SUBDIR += mangband
+    SUBDIR += mari0
     SUBDIR += marsnomercy
     SUBDIR += masterserver
     SUBDIR += maxr
@@ -757,6 +762,7 @@
     SUBDIR += popstar
     SUBDIR += pouetchess
     SUBDIR += powder
+    SUBDIR += powder-toy
     SUBDIR += powermanga
     SUBDIR += powwow
     SUBDIR += ppracer
@@ -835,6 +841,7 @@
     SUBDIR += railroad-rampage
     SUBDIR += redeclipse
     SUBDIR += redeclipse-data
+    SUBDIR += redorblack
     SUBDIR += reminiscence
     SUBDIR += rescue
     SUBDIR += residualvm
@@ -977,7 +984,6 @@
     SUBDIR += traingame
     SUBDIR += tremulous
     SUBDIR += trenchbroom
-    SUBDIR += trigger-data
     SUBDIR += trigger-rally
     SUBDIR += trimines
     SUBDIR += triplane

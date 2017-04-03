@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	dnscrypt-proxy
-PORTVERSION=	1.8.1
+PORTVERSION=	1.9.1
+PORTREVISION=	2
 CATEGORIES=	dns
 MASTER_SITES=	https://download.dnscrypt.org/dnscrypt-proxy/ \
 		http://download.dnscrypt.org/dnscrypt-proxy/ \
@@ -34,6 +35,7 @@ OPTIONS_SUB=	yes
 PLUGINS_CONFIGURE_ENABLE=	plugins
 PLUGINS_LIB_DEPENDS=	libltdl.so:devel/libltdl \
 		libldns.so:dns/ldns
+PLUGINS_USE=	LDCONFIG=${PREFIX}/lib/dnscrypt-proxy
 PLUGINS_USES=	libtool
 PLUGINS_RELAXED_DESC=	Allow loading plugins owned by other users
 PLUGINS_RELAXED_CONFIGURE_ENABLE=	relaxed-plugins-permissions

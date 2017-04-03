@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	B-C
-PORTVERSION=	1.54
+PORTVERSION=	1.55
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:RURBAN
@@ -27,12 +27,6 @@ PERL_INC_STAGE=	${STAGEDIR}${PREFIX}/lib/perl5/${PERL_VER}/${PERL_ARCH}/CORE
 MAKE_ENV+=	PERL_INC_STAGE=${PERL_INC_STAGE}
 PLIST_SUB+=	PERL_ARCH=${PERL_ARCH}
 
-.include <bsd.port.pre.mk>
-
-.if ${PERL_LEVEL} >= 502400 && ${OSVERSION} < 1000054
-BROKEN=		Does not build
-.endif
-
 post-patch:
 	${REINPLACE_CMD} -e "s|PERL_INC|PERL_INC_STAGE|g" ${WRKSRC}/Makefile.PL
 	${MKDIR} ${PERL_INC_STAGE}
@@ -42,4 +36,4 @@ post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/B/Stash/Stash.so
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/ByteLoader/ByteLoader.so
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

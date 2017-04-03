@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	wget
-DISTVERSION=	1.18
-PORTREVISION=	2
+DISTVERSION=	1.19
 CATEGORIES=	ftp www ipv6
 MASTER_SITES=	GNU
 
@@ -51,8 +50,10 @@ PSL_LIB_DEPENDS=	libpsl.so:dns/libpsl
 
 .include <bsd.port.options.mk>
 
+CONFIGURE_ARGS+=--with-included-libunistring
+
 .if ${PORT_OPTIONS:MOPENSSL}
-USE_OPENSSL=	yes
+USES+=		ssl
 CONFIGURE_ARGS+=--with-ssl=openssl --with-libssl-prefix=${OPENSSLBASE}
 CPPFLAGS+=	-I${OPENSSLINC}
 LDFLAGS+=	-L${OPENSSLLIB}
@@ -77,6 +78,7 @@ post-patch:
 			 -e 's,@file{},@file{${PREFIX}},' \
 		${WRKSRC}/doc/sample.wgetrc* ${WRKSRC}/doc/wget.texi
 	${REINPLACE_CMD} -e '/ac_fn_c_check_header_mongrel.*uuid\/uuid.h/ d' \
+			 -e 's|-R$$found_dir|-Wl,-rpath=$$found_dir|g' \
 		${WRKSRC}/configure
 
 .include <bsd.port.pre.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	stonesoup
-PORTVERSION=	0.18.1
+PORTVERSION=	0.19.5
 PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/crawl-ref/Stone%20Soup/${PORTVERSION}
@@ -72,12 +72,6 @@ LUA_MAKE_ARGS_OFF=	NO_LUA_BINDINGS=yes
 
 .if ${CHOSEN_COMPILER_TYPE} != clang
 CFLAGS+=	-D_GLIBCXX_USE_C99
-.endif
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
-MAKE_ARGS+=	NO_YACC=YesPlease
-CFLAGS+=	-std=c++11
-LDFLAGS:=	-Wl,-rpath=${_GCC_RUNTIME} ${LDFLAGS}
 .endif
 
 post-patch-SOUND-on:

@@ -3,7 +3,7 @@
 
 PORTNAME=	ufoai
 PORTVERSION=	2.5
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/UFO_AI%202.x/${PORTVERSION}
 DISTNAME=	${PORTNAME:S/$/-/}${PORTVERSION}-source
@@ -77,10 +77,6 @@ PLIST_SUB+=	UFORADIANT=""
 .else
 CONFIGURE_ARGS+=--disable-uforadiant
 PLIST_SUB+=	UFORADIANT="@comment "
-.endif
-
-.if ${OSVERSION} < 1000024
-FAVORITE_COMPILER=	gcc
 .endif
 
 .include <bsd.port.pre.mk>

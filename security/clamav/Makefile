@@ -3,7 +3,7 @@
 
 PORTNAME=	clamav
 PORTVERSION=	0.99.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	http://www.clamav.net/downloads/production/
 
@@ -44,7 +44,7 @@ MILTER_CONFIGURE_ENABLE=milter
 TESTS_CONFIGURE_ENABLE=	check
 JSON_CONFIGURE_WITH=	libjson
 PCRE_CONFIGURE_WITH=	pcre
-TESTS_BUILD_DEPENDS=	${LOCALBASE}/include/check.h:devel/libcheck
+TESTS_BUILD_DEPENDS=	${LOCALBASE}/include/check.h:devel/check
 ICONV_CONFIGURE_ON=	--with-iconv
 ICONV_CONFIGURE_OFF=	--without-iconv
 ICONV_USES=		iconv

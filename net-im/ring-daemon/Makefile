@@ -4,7 +4,7 @@
 PORTNAME=	ring-daemon
 PORTVERSION=	0.160516
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-im net-p2p
 
 MAINTAINER=	yuri@rawbw.com
@@ -57,11 +57,9 @@ DBUS_LIB_DEPENDS=	\
 	libdbus-c++-1.so:devel/dbus-c++
 OPTIONS_SUB=	yes
 
-.include <bsd.port.pre.mk>
+BROKEN_aarch64=		Fails to configure: machine arm64-portbld not recognized
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1002000
-BROKEN=		does not build
-.endif
+.include <bsd.port.pre.mk>
 
 post-extract:
 	@${MKDIR} ${WRKSRC}/contrib/native

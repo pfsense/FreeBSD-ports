@@ -227,6 +227,8 @@ lib/slurm/switch_generic.a
 lib/slurm/switch_generic.so
 lib/slurm/switch_none.a
 lib/slurm/switch_none.so
+lib/slurm/task_affinity.a
+lib/slurm/task_affinity.so
 lib/slurm/task_cgroup.a
 lib/slurm/task_cgroup.so
 lib/slurm/task_cray.a
@@ -417,7 +419,6 @@ man/man5/nonstop.conf.5.gz
 man/man5/slurm.conf.5.gz
 man/man5/slurmdbd.conf.5.gz
 man/man5/topology.conf.5.gz
-man/man5/wiki.conf.5.gz
 man/man8/slurmctld.8.gz
 man/man8/slurmd.8.gz
 man/man8/slurmdbd.8.gz
@@ -602,4 +603,3 @@ sbin/slurmstepd
 %%PORTDOCS%%%%DOCSDIR%%-%%PORTVERSION%%/html/usage_pies.gif
 %%PORTDOCS%%%%DOCSDIR%%-%%PORTVERSION%%/html/user_permissions.html
 %%PORTDOCS%%%%DOCSDIR%%-%%PORTVERSION%%/html/wckey.html
-%%PORTDOCS%%%%DOCSDIR%%-%%PORTVERSION%%/html/wiki.conf.html

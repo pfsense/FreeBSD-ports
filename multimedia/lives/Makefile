@@ -2,10 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	lives
-PORTVERSION=	2.8.1
+PORTVERSION=	2.8.4
 PORTREVISION=	1
 CATEGORIES=	multimedia
-MASTER_SITES=	SF
+MASTER_SITES=	http://lives-video.com/releases/
+DISTNAME=	LiVES-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Video editing system
@@ -43,6 +44,8 @@ RUN_DEPENDS=	${LOCALBASE}/bin/analyseplugin:audio/ladspa \
 		transcode:multimedia/transcode \
 		x264:multimedia/x264 \
 		cdrecord:sysutils/cdrtools
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 USES=		compiler:c++11-lib gettext-runtime ghostscript:run libtool \
 		localbase pathfix perl5 pkgconfig python shebangfix tar:bzip2

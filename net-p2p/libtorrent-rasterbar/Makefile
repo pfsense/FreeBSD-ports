@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	libtorrent-rasterbar
-PORTVERSION=	1.1.1
-PORTREVISION=	3
+PORTVERSION=	1.1.2
+PORTREVISION=	1
 CATEGORIES?=	net-p2p ipv6
 MASTER_SITES=	https://github.com/arvidn/libtorrent/releases/download/libtorrent-${PORTVERSION:S/./_/g}/
 
-MAINTAINER=	matthew@reztek.cz
+MAINTAINER=	rezny@FreeBSD.org
 COMMENT?=	C++ library implementing a BitTorrent client
 
 LICENSE=	BSD3CLAUSE
@@ -28,7 +28,6 @@ CONFIGURE_ARGS=	--disable-static \
 		--enable-pool-allocators \
 		--enable-deprecated-functions \
 		--with-boost=${LOCALBASE} \
-		--with-boost-system=boost_system \
 		--with-libiconv \
 		--with-openssl=${OPENSSLBASE}
 
@@ -39,17 +38,19 @@ DOCFILES=	AUTHORS ChangeLog
 PORTDOCS=	${DOCFILES} docs/*
 PORTEXAMPLES=	*.cpp
 
-OPTIONS_DEFINE=	DEBUG DOCS EXAMPLES TEST
-TEST_DESC=	Build and run tests (increases library size)
+OPTIONS_DEFINE=	DEBUG DOCS EXAMPLES LOGGING TEST
+OPTIONS_SUB=	yes
+LOGGING_DESC=	Enable disk stat logging and logging to disk
 
-DEBUG_CONFIGURE_ENABLE=	debug
-TEST_CONFIGURE_ENABLE=	tests
+DEBUG_CONFIGURE_ENABLE=		debug
+EXAMPLES_CONFIGURE_ENABLE=	examples
+LOGGING_CONFIGURE_ENABLE=	logging disk-stats
+TEST_CONFIGURE_ENABLE=		tests
 
 .include <bsd.port.options.mk>
 
 .if defined(SLAVE_PORT) && ${SLAVE_PORT:tl} == "yes" && defined(USE_PYTHON)
-CONFIGURE_ARGS+=	--enable-python-binding \
-			--with-boost-python=boost_python
+CONFIGURE_ARGS+=	--enable-python-binding
 .else
 CONFIGURE_ARGS+=	--disable-python-binding
 .endif
@@ -74,6 +75,7 @@ post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_MAN} ${DOCFILES:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} docs ${STAGEDIR}${DOCSDIR})
+	${RM} ${STAGEDIR}${DOCSDIR}/docs/._*
 
 post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

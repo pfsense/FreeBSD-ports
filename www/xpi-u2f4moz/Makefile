@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	u2f4moz
-DISTVERSION=	v1.0
+DISTVERSION=	v1.0.1
 CATEGORIES=	www
 PKGNAMEPREFIX=	xpi-
 
@@ -42,10 +42,6 @@ post-install:
 
 .if ${ARCH} == "amd64"
 SYSTEM_PROCESSOR=	x86_64
-.endif
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-freebsd9
 .endif
 
 .include <bsd.port.post.mk>

@@ -27,9 +27,8 @@ BROKEN_sparc64=		Does not compile: error: DV_INT_TAG_WORD undeclared
 NOT_FOR_ARCHS=	arm armv6 i386 mips powerpc
 NOT_FOR_ARCHS_REASON=	can only be built on 64bit platforms
 
-USES=		execinfo gmake libtool readline uidfix
+USES=		execinfo gmake libtool readline uidfix ssl
 USE_AUTOTOOLS=	autoheader aclocal
-USE_OPENSSL=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-readline\
@@ -56,7 +55,7 @@ CHECK_PORT=	nc -z localhost $$\1 2>\&1
 OPTIONS_DEFINE=		IMAGEMAGICK KERBEROS LDAP IODBC
 
 post-patch:
-	${REINPLACE_CMD} -e 's,-lruby,-lruby${RUBY_VER:S,.,,},g'\
+	${REINPLACE_CMD} -e 's,-lruby,-lruby${RUBY_SUFFIX},g'\
 			${WRKSRC}/configure
 	${FIND} ${WRKSRC} -name '*.sh' | ${XARGS} ${GREP} -l 'netstat -an.*grep LISTEN' |\
 	    ${XARGS} ${REINPLACE_CMD}\

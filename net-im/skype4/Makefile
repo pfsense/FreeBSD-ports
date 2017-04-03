@@ -3,7 +3,7 @@
 
 PORTNAME=	skype
 PORTVERSION=	4.3.0.37
-PORTREVISION=	4
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	net-im
 MASTER_SITES=	http://download.skype.com/linux/
@@ -33,10 +33,6 @@ SUB_FILES=	skype.sh
 SUB_LIST+=	SKYPEDIR=${SKYPEDIR}
 
 .include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && (${OSVERSION} >= 1100000 && ${OSVERSION} < 1100075 || ${OSVERSION} >= 1000000 && ${OSVERSION} < 1002507)
-BROKEN=		Skype 4.3 requires Linux 2.6.32 emulation
-.endif
 
 .if ${PORT_OPTIONS:MVIDEO}
 RUN_DEPENDS+=	webcamd:multimedia/webcamd

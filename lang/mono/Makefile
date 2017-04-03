@@ -3,6 +3,7 @@
 
 PORTNAME=	mono
 PORTVERSION=	4.6.2.7
+PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	http://download.mono-project.com/sources/${PORTNAME}/
 
@@ -29,17 +30,12 @@ CONFIGURE_ENV=	ac_cv_header_sys_inotify_h=no
 # Set location for .wapi creation.
 MONO_SHARED_DIR=${WRKDIR}
 
-# LC_ALL is set in order to work around issues people are having when using
-# other languages.  This has shown itself in build fails and possibly other
-# strange crashes.
 MAKE_ENV=	MONO_SHARED_DIR="${MONO_SHARED_DIR}" \
 		INSTALL_STRIP_FLAG="${STRIP}" \
-		LC_ALL=C TZ=UTC
+		TZ=UTC
 
 ONLY_FOR_ARCHS=	i386 amd64 powerpc
 PORTSCOUT=	limit:^\d+\.\d+\.[1-9]\d*
-
-.include <bsd.port.pre.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|^#!/bin/bash|#!/usr/bin/env bash|g' \
@@ -53,14 +49,9 @@ post-patch:
 post-configure:
 	@${REINPLACE_CMD} -e 's|share\/man|man|g' \
 		${WRKSRC}/mcs/jay/Makefile
-# Fix build on FreeBSD 9.3 (and maybe other unsupported releases)
-.if ${OSVERSION} < 1000000
-	@${REINPLACE_CMD} 's/^#define HAVE_LOCALCHARSET_H 1/#undef HAVE_LOCALCHARSET_H/' \
-		${WRKSRC}/eglib/config.h
-.endif
 
 do-test:
 	@(cd ${WRKSRC}/mono/tests && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} \
 		${MAKE_FLAGS} Makefile ${MAKE_ARGS} check)
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

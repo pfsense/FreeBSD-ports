@@ -2,17 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	tbb
-PORTVERSION=	2017.1
-PORTREVISION=	2
+PORTVERSION=	2017.5
 CATEGORIES=	devel
-MASTER_SITES=	http://threadingbuildingblocks.org/sites/default/files/software_releases/source/ \
-		LOCAL/martymac
-DISTNAME=	${PORTNAME}${PORTVERSION:R:S/.//g}_20160916oss_src
 
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	Library that provides thread building blocks
 
 LICENSE=	GPLv2
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	01org
+GH_TAGNAME=	${PORTVERSION:S/./_U/}
 
 SUB_FILES=	tbb.pc
 SUB_LIST=	prefix="${PREFIX}" \
@@ -30,21 +30,21 @@ USE_LDCONFIG=	yes
 USES=	compiler gmake tar:tgz
 ALL_TARGET=	default
 
-WRKSRC=	${WRKDIR}/${DISTNAME:S/_src//}
+CC_BASENAME=	${CC:C,^.*/,,}
 
 .include <bsd.port.pre.mk>
 
 post-extract:
-.if ${CC} != ${COMPILER_TYPE}
-	@${LN} -sf FreeBSD.${COMPILER_TYPE}.inc ${WRKSRC}/build/FreeBSD.${CC}.inc
+.if ${CC_BASENAME} != ${COMPILER_TYPE}
+	@${LN} -sf FreeBSD.${COMPILER_TYPE}.inc ${WRKSRC}/build/FreeBSD.${CC_BASENAME}.inc
 .endif
 	@${CP} ${FILESDIR}/version_info_FreeBSD.sh ${WRKSRC}/build/
 
 post-patch:
 	@${REINPLACE_CMD} \
-		-e '/^CONLY =/s/^CONLY =.*/CONLY = ${CC}/' \
-		-e '/^CPLUS =/s/^CPLUS =.*/CPLUS = ${CXX}/' \
-			${WRKSRC}/build/FreeBSD.${CC}.inc
+		-e '/^CONLY =/s|^CONLY =.*|CONLY = ${CC}|' \
+		-e '/^CPLUS =/s|^CPLUS =.*|CPLUS = ${CXX}|' \
+			${WRKSRC}/build/FreeBSD.${COMPILER_TYPE}.inc
 
 do-install:
 	cd ${WRKSRC}; \

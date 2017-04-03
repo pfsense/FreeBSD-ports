@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	weechat
-PORTVERSION=	1.6
+PORTVERSION=	1.7
 CATEGORIES=	irc
 MASTER_SITES=	https://weechat.org/files/src/
 
@@ -12,13 +12,11 @@ COMMENT=	Lightweight and user friendly ncurses based IRC client
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS=	weechat-devel-[0-9]*
-
 LIB_DEPENDS+=	libcurl.so:ftp/curl \
 		libgcrypt.so:security/libgcrypt \
 		libgpg-error.so:security/libgpg-error
 
-USES=		cmake:outsource ncurses tar:bzip2
+USES=		cmake:outsource ncurses tar:xz
 USE_LDCONFIG=	yes
 
 CMAKE_ARGS+=	-DENABLE_GUILE=no \
@@ -90,7 +88,7 @@ TCL_USES=		tcl:85+
 
 .include <bsd.port.pre.mk>
 
-.if defined(PORT_OPTIONS:MPYTHON) && ${PYTHON_MAJOR_VER} >= 3
+.if !empty(PORT_OPTIONS:MPYTHON) && ${PYTHON_MAJOR_VER} >= 3
 WARNING=	"Using Python 3.x is NOT recommended because many \"official\" scripts won\'t work"
 CMAKE_ARGS+=	-DENABLE_PYTHON3:BOOL=true \
 		-DPYTHON_LIBRARY:FILEPATH=${LOCALBASE}/lib/libpython${PYTHON_VER}m.so

@@ -3,11 +3,11 @@
 
 PORTNAME=	libfm-qt
 PORTVERSION=	0.11.2
+PORTREVISION=	1
 CATEGORIES=	x11
-#MASTER_SITES=	LXQT/${PORTNAME}
-MASTER_SITES=	https://github.com/lxde/${PORTNAME}/releases/download/${PORTVERSION}/
+MASTER_SITES=	LXQT/${PORTNAME}
 
-MAINTAINER=	olivierd@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Qt port of libfm
 
 LICENSE=	LGPL21+

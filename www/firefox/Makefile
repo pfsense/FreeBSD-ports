@@ -14,7 +14,7 @@ COMMENT=	Web browser based on the browser portion of Mozilla
 
 BUILD_DEPENDS=	nspr>=4.13.1:devel/nspr \
 		nss>=3.28.3:security/nss \
-		libevent2>=2.0.21_2:devel/libevent2 \
+		libevent>=2.0.21_2:devel/libevent \
 		harfbuzz>=1.4.1:print/harfbuzz \
 		graphite2>=1.3.8:graphics/graphite2 \
 		png>=1.6.25:graphics/png \
@@ -46,9 +46,9 @@ MOZ_OPTIONS=	--enable-application=browser \
 
 OPTIONS_DEFINE=		RUST
 OPTIONS_DEFAULT=	BUNDLED_CAIRO GTK3
-OPTIONS_EXCLUDE_FreeBSD_9=	RUST
 # XXX lang/rust and devel/cargo currently build only on these platforms
 OPTIONS_DEFAULT_amd64=	RUST
+OPTIONS_DEFAULT_i386=	RUST
 
 OPTIONS_SINGLE+=	TOOLKIT
 OPTIONS_SINGLE_TOOLKIT=	GTK2 GTK3

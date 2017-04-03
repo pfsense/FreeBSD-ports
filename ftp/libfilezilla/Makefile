@@ -2,10 +2,11 @@
 
 PORTNAME=	libfilezilla
 PORTVERSION=	0.9.0
+PORTREVISION=	1
 CATEGORIES=	ftp
 MASTER_SITES=	http://download.filezilla-project.org/${PORTNAME}/
 
-MAINTAINER=	matthew@reztek.cz
+MAINTAINER=	rezny@FreeBSD.org
 COMMENT=	C++ library for building platform-independent programs
 
 LICENSE=	GPLv2+

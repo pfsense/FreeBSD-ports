@@ -1517,6 +1517,8 @@ share/applications/emacs.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/cl-macs.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/cl-preloaded.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/cl-preloaded.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/cl-print.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/cl-print.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/cl-seq.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/cl-seq.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/cl.el.gz
@@ -2296,8 +2298,6 @@ share/applications/emacs.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/language/lao-util.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/language/lao.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/language/lao.elc
-%%DATADIR%%/%%EMACS_VER%%/lisp/ldefs-boot-auto.el
-%%DATADIR%%/%%EMACS_VER%%/lisp/ldefs-boot-manual.el
 %%DATADIR%%/%%EMACS_VER%%/lisp/language/misc-lang.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/language/misc-lang.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/language/romanian.el.gz
@@ -3631,6 +3631,8 @@ share/applications/emacs.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/timezone.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/tmm.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/tmm.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/term/tmux.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/term/tmux.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/tool-bar.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/tool-bar.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/tooltip.el.gz
@@ -3827,6 +3829,8 @@ share/applications/emacs.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/woman.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/x-dnd.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/x-dnd.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/xdg.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/xdg.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/xml.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/xml.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/xt-mouse.el.gz

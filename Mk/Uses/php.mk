@@ -102,7 +102,10 @@ DEFAULT_PHP_VER?=	${PHP_DEFAULT:S/.//}
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
 PHP_VER?=	${DEFAULT_PHP_VER}
-.    if ${PHP_VER} == 70
+.    if ${PHP_VER} == 71
+PHP_EXT_DIR=   20160303
+PHP_EXT_INC=    pcre spl
+.    elif ${PHP_VER} == 70
 PHP_EXT_DIR=   20151012
 PHP_EXT_INC=    pcre spl
 .    elif ${PHP_VER} == 56
@@ -136,6 +139,7 @@ PHP_EXT_INC?=	""
 .  if defined(IGNORE_WITH_PHP)
 .    for VER in ${IGNORE_WITH_PHP}
 .      if ${PHP_VER} == "${VER}"
+_IGNORE_PHP_SET=
 IGNORE=		cannot be installed: doesn't work with lang/php${PHP_VER} port\
 		(doesn't support PHP ${IGNORE_WITH_PHP:C/^([57])/\1./})
 .      endif
@@ -289,7 +293,7 @@ add-plist-phpext:
 _USE_PHP_ALL=	bcmath bitset bz2 calendar ctype curl dba dom \
 		enchant exif fileinfo filter ftp gd gettext gmp \
 		hash iconv igbinary imap interbase intl json ldap mbstring mcrypt \
-		memcache mysqli odbc opcache \
+		memcache memcached mysqli odbc opcache \
 		openssl pcntl pcre pdf pdo pdo_dblib pdo_firebird pdo_mysql \
 		pdo_odbc pdo_pgsql pdo_sqlite phar pgsql posix \
 		pspell radius readline recode redis session shmop simplexml snmp soap\
@@ -298,9 +302,10 @@ _USE_PHP_ALL=	bcmath bitset bz2 calendar ctype curl dba dom \
 # version specific components
 _USE_PHP_VER56=	${_USE_PHP_ALL} mssql mysql sybase_ct
 _USE_PHP_VER70=	${_USE_PHP_ALL}
+_USE_PHP_VER71=	${_USE_PHP_ALL}
 
 bcmath_DEPENDS=	math/php${PHP_VER}-bcmath
-.    if ${PHP_VER} == 70
+.    if ${PHP_VER} == 70 || ${PHP_VER} == 71
 bitset_DEPENDS=	math/pecl-bitset
 .    else
 bitset_DEPENDS=	math/pecl-bitset2
@@ -325,7 +330,7 @@ iconv_DEPENDS=	converters/php${PHP_VER}-iconv
 igbinary_DEPENDS=	converters/pecl-igbinary
 imap_DEPENDS=	mail/php${PHP_VER}-imap
 interbase_DEPENDS=	databases/php${PHP_VER}-interbase
-.    if ${PHP_VER} == 70
+.    if ${PHP_VER} == 70 || ${PHP_VER} == 71
 intl_DEPENDS=	devel/php${PHP_VER}-intl
 .    else
 intl_DEPENDS=	devel/pecl-intl
@@ -338,6 +343,11 @@ mcrypt_DEPENDS=	security/php${PHP_VER}-mcrypt
 memcache_DEPENDS=	databases/php${PHP_VER}-memcache
 .    else
 memcache_DEPENDS=	databases/pecl-memcache
+.    endif
+.    if ${PHP_VER} >= 70
+memcached_DEPENDS=	databases/pecl-memcached
+.    else
+memcached_DEPENDS=	databases/pecl-memcached2
 .    endif
 mssql_DEPENDS=	databases/php${PHP_VER}-mssql
 mysql_DEPENDS=	databases/php${PHP_VER}-mysql
@@ -363,7 +373,7 @@ pspell_DEPENDS=	textproc/php${PHP_VER}-pspell
 radius_DEPENDS=	net/pecl-radius
 readline_DEPENDS=	devel/php${PHP_VER}-readline
 recode_DEPENDS=	converters/php${PHP_VER}-recode
-redis_DEPENDS=	databases/php${PHP_VER}-redis
+redis_DEPENDS=	databases/pecl-redis
 session_DEPENDS=www/php${PHP_VER}-session
 shmop_DEPENDS=	devel/php${PHP_VER}-shmop
 simplexml_DEPENDS=	textproc/php${PHP_VER}-simplexml
@@ -398,7 +408,7 @@ BUILD_DEPENDS+=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/${extension:S/:build//}.so:${$
 RUN_DEPENDS+=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/${extension:S/:build//}.so:${${extension:S/:build//}_DEPENDS}
 .        endif
 .      else
-.        if ${ext:tl} != "yes"
+.        if ${ext:tl} != "yes" && !defined(_IGNORE_PHP_SET)
 check-makevars::
 			@${ECHO_CMD} "Unknown extension ${extension:S/:build//} for PHP ${PHP_VER}."
 			@${FALSE}

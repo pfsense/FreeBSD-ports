@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	aria2
-PORTVERSION=	1.30.0
+PORTVERSION=	1.31.0
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/release-${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -29,8 +30,6 @@ CONFIGURE_ARGS=	--disable-epoll --enable-bittorrent --enable-libaria2 \
 		--without-libnettle --without-libuv
 CONFIGURE_ENV=	OPENSSL_CFLAGS=-I${OPENSSLINC} \
 		OPENSSL_LIBS="-L${OPENSSLLIB} -lcrypto -lssl" \
-		ZLIB_CFLAGS=-I${INCLUDEDIR} \
-		ZLIB_LIBS="-L${LIBDIR} -lz" \
 		ac_cv_path_RST2HTML=no
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
@@ -55,5 +54,9 @@ SSH2_CONFIGURE_WITH=	libssh2
 SSH2_LIB_DEPENDS=	libssh2.so:security/libssh2
 
 ARIA2_DISK_CACHE?=	16M
+
+post-install:
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d/
+	${INSTALL_DATA} ${WRKSRC}/doc/bash_completion/aria2c ${STAGEDIR}${PREFIX}/etc/bash_completion.d/
 
 .include <bsd.port.mk>

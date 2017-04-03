@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	notmuch
-PORTVERSION=	0.23.4
+PORTVERSION=	0.24
 CATEGORIES=	mail
 MASTER_SITES=	http://notmuchmail.org/releases/
 
@@ -25,7 +25,7 @@ TEST_DEPENDS=	bash:shells/bash \
 		gsed:sysutils/coreutils \
 		gsha256sum:sysutils/coreutils \
 		gpg:security/gnupg \
-		${PREFIX}/bin/gdb:devel/gdb
+		${LOCALBASE}/bin/gdb:devel/gdb
 
 BROKEN_powerpc64=	Does not build
 
@@ -41,7 +41,7 @@ TEST_ENV+=	NOTMUCH_SKIP_TESTS="basic count insert smime atomicity \
 		message-property" \
 		V=1 \
 		TEST_CFLAGS="-g -O0 -I${LOCALBASE}/include -L${LOCALBASE}/lib" \
-		BSD_GDB=${PREFIX}/bin/gdb
+		BSD_GDB=${LOCALBASE}/bin/gdb
 
 TEST_TARGET=	test
 
@@ -68,12 +68,6 @@ MUTT_USE=	PERL=yes
 RUBY_USE=	RUBY=yes
 ZSH_CONFIGURE_WITH=	zsh-completion
 
-.include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 1000000
-CONFIGURE_ENV=	zlib_cflags="" zlib_ldflags="-lz" PKG_CONFIG_PATH=""
-.endif
-
 do-build-MUTT-on:
 	${MAKE_CMD} -C ${WRKSRC}/contrib/notmuch-mutt all
 	${GZIP_CMD} ${WRKSRC}/contrib/notmuch-mutt/notmuch-mutt.1
@@ -86,4 +80,4 @@ post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/notmuch
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libnotmuch.so.4.4.0
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

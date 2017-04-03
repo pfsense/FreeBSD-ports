@@ -3,6 +3,7 @@
 
 PORTNAME=	efl
 PORTVERSION=	1.18.4
+PORTREVISION=	3
 CATEGORIES=	devel enlightenment
 MASTER_SITES=	http://download.enlightenment.org/rel/libs/${PORTNAME}/
 
@@ -128,7 +129,6 @@ PLIST_SUB+=			AUDIO="@comment "
 
 .if ${PORT_OPTIONS:MSSL}
 USES+=				ssl
-WITH_OPENSSL_PORT=		yes
 .else
 CONFIGURE_ARGS+=		--with-crypto=none
 .endif
