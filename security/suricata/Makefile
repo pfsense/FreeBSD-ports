@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	suricata
-PORTVERSION=	3.2.1
+PORTVERSION=	3.1.2
 CATEGORIES=	security
 MASTER_SITES=	http://www.openinfosecfoundation.org/download/
 
-MAINTAINER=	franco@opnsense.org
+MAINTAINER=	koobs@FreeBSD.org
 COMMENT=	High Performance Network IDS, IPS and Security Monitoring engine
 
 LICENSE=	GPLv2
@@ -14,10 +14,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libnet.so:net/libnet \
-		libgnutls.so:security/gnutls \
-		libgcrypt.so:security/libgcrypt \
-		libgpg-error.so:security/libgpg-error \
-		libltdl.so:devel/libltdl \
 		libyaml.so:textproc/libyaml
 
 USES=		autoreconf cpe gmake libtool pathfix pkgconfig
@@ -32,7 +28,6 @@ INSTALL_TARGET=		install-strip
 TEST_TARGET=		check
 
 OPTIONS_DEFINE=		GEOIP HTP_PORT IPFW JSON NETMAP NSS PORTS_PCAP PRELUDE SC TESTS
-OPTIONS_DEFINE_amd64=	HYPERSCAN
 OPTIONS_DEFAULT=	HTP_PORT IPFW JSON NETMAP PRELUDE
 OPTIONS_SUB=		yes
 
@@ -42,7 +37,6 @@ OPTIONS_RADIO_SCRIPTS=	LUA LUAJIT
 SCRIPTS_DESC=		Scripting
 
 GEOIP_DESC=		GeoIP support
-HYPERSCAN_DESC=		Hyperscan support
 HTP_PORT_DESC=		Use libhtp from ports
 IPFW_DESC=		IPFW and IP Divert support for inline IDP
 JSON_DESC=		JSON output support
@@ -64,10 +58,6 @@ HTP_PORT_CONFIGURE_ON=		--enable-non-bundled-htp
 HTP_PORT_CONFIGURE_OFF=		--enable-bundled-htp
 HTP_PORT_CONFLICTS_INSTALL_OFF=	libhtp-[0-9]* libhtp-suricata
 HTP_PORT_USES_OFF=		iconv:translit
-
-HYPERSCAN_LIB_DEPENDS=		libhs.so:devel/hyperscan
-HYPERSCAN_CONFIGURE_ON=		--with-libhs-includes=${LOCALBASE}/include \
-				--with-libhs-libraries=${LOCALBASE}/lib
 
 IPFW_CONFIGURE_ON=		--enable-ipfw
 
