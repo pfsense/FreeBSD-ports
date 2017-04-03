@@ -151,6 +151,7 @@ class acme_sh {
 		
 		$Le_Domain = $domainstosign[0];
 		$certpath = "{$this->acmeconf}{$Le_Domain}/";
+		safe_mkdir($certpath);
 		$CERT_KEY_PATH = "{$certpath}{$Le_Domain}.key";
 		$CERT_PATH = "{$certpath}{$Le_Domain}.cer";
 		$CA_CERT_PATH = "{$certpath}ca.cer";
