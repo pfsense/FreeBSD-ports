@@ -2,46 +2,54 @@
 /*******************************************************************************
 * vHosts package configuration page. Drops a list of the configured virtual
 * hosts or a form page for host configuration. When a form is posted back, the
-* host information is saved, server config file is rebuilt, and the subsystem
-* dirty flag is set if the vhosts server is running. Dirty flag is cleared when
-* the server is restarted.
+* host information is saved and the server config file is rebuilt.
 *
 * GET: No parameters: 
-*   Drops list of configured vhosts with options to add/copy/change/delete or 
-*   toggle the disabled flag.
+*   Drops list of configured vhosts with options to add/change/delete or toggle
+*   the disabled flag.
 *
 * GET: 'act' = 'add'
 *   Drops form for input of new host settings.
-*
-* GET: 'act' = 'dup', 'id' = n
-*   Drops form for input of new host settings with defaults from host 'n'.
-*   Form action returns 'srcid' set to 'id'.
 *
 * GET: 'act' = 'chg', 'id' = n
 *   Drops form for update of host 'n' config.
 *   Form action returns 'id' value.
 *
 * GET: 'act' = 'del', 'id' = n
-*   Removes host 'n' config, updates web config, and drops list page.
+*   Removes host 'n' config, update web config, and drops list page.
+*
+* GET: 'act' = 'dup', 'id' = n
+*   Loads the 'add' page with defaults loaded from host 'n' config.
+*   Form action returns 'srcid' set to 'id'.
 *
 * GET: 'act' = 'tog', 'id' = n
 *    Toggles Disabled flag for host 'n'.
 *
 * POST: 'id' = n (optional), 'srcid' = n (optional)
 *   Adds or updates host config, updates web config, and drops list page.
-*   If 'id' is provided, host 'n' is updated. If 'srcid' is provided, new host
-*   is inserted after host 'n' so it appears next in the list. If no 'id' or
-*   'srcid' is provided, new host is added at the end of the host list.
+*   If 'id' is empty but 'srcid' has a value, the new copy is inserted 
+*   after the source host ID so it appears next in the list. 
 * ------------------------------------------------------------------------------
 * Part of pfSense 2.3 and later (https://www.pfSense.org/).
+* Copyright (c) 2004-2016 Rubicon Communications, LLC (Netgate)
 *
-* Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
-* Licensed under the Apache 2.0 License.
-*
+* Inspired by vhosts package originally written by Mark Crane.
+* Copyright (C) 2008 Mark J Crane
+* Copyright (C) 2015 ESF, LLC
 * Copyright (C) 2016 Softlife Consulting
-* Licensed under the same terms and conditions as pfSense itself.
+* All rights reserved.
 *
-* License: https://github.com/pfsense/pfsense/blob/master/LICENSE
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
 *******************************************************************************/
 require_once("guiconfig.inc");
 require_once("util.inc");
@@ -53,7 +61,7 @@ require("/usr/local/pkg/vhosts.inc");
 * Writes out the configuration, updates the config files, and reloads page. If
 * the service is running, the subsystem is marked 'dirty' and a warning message
 * to restart the service is shown on the list page. 'dirty' mark is cleared when
-* the service restarts.
+* the service starts as declared in the <startcmd> of the config file.
 *******************************************************************************/
 function save_config_and_exit()
     {
@@ -175,7 +183,7 @@ elseif ($good_id && ($act == 'chg' || $act == 'dup'))
     /*-------------------------------------------------*/
     /* Verify the selected certificate is still valid. */
     /*-------------------------------------------------*/
-    if (!empty(trim($pconfig['certref']))) 
+    if (!empty(trim($pconfig['certref'])))
         {
         $thiscert = lookup_cert($pconfig['certref']);
         $purpose  = ($thiscert ? cert_get_purpose($thiscert['crt'], true) : null);
@@ -414,7 +422,3 @@ else
     
 include("foot.inc");
 ?>
-    
-    
-    
-    
