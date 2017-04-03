@@ -82,6 +82,7 @@
     SUBDIR += cyrus-imapd23
     SUBDIR += cyrus-imapd24
     SUBDIR += cyrus-imapd25
+    SUBDIR += cyrus-imapd30
     SUBDIR += cyrus2courier
     SUBDIR += cyrus2dovecot
     SUBDIR += davmail
@@ -216,6 +217,7 @@
     SUBDIR += maildrop
     SUBDIR += mailest
     SUBDIR += mailfmt
+    SUBDIR += mailfromd
     SUBDIR += mailfront
     SUBDIR += mailgraph
     SUBDIR += mailman
@@ -252,7 +254,6 @@
     SUBDIR += mini_sendmail
     SUBDIR += minimalist
     SUBDIR += missey
-    SUBDIR += mixmaster
     SUBDIR += mlmmj
     SUBDIR += mls
     SUBDIR += mmr
@@ -485,6 +486,7 @@
     SUBDIR += pear-Net_IMAP
     SUBDIR += pear-Net_LMTP
     SUBDIR += pecl-mailparse
+    SUBDIR += pecl-mailparse2
     SUBDIR += pecl-pop3
     SUBDIR += perdition
     SUBDIR += pflogsumm
@@ -492,6 +494,7 @@
     SUBDIR += pgpsendmail
     SUBDIR += php56-imap
     SUBDIR += php70-imap
+    SUBDIR += php71-imap
     SUBDIR += phplist
     SUBDIR += phpmailer
     SUBDIR += pine-pgp-filters
@@ -543,7 +546,6 @@
     SUBDIR += py-ppolicy
     SUBDIR += py-pyspf
     SUBDIR += py-spambayes
-    SUBDIR += py-turbomail
     SUBDIR += py-twistedMail
     SUBDIR += py-zope.sendmail
     SUBDIR += pymsgauth
@@ -609,16 +611,14 @@
     SUBDIR += rspamd-devel
     SUBDIR += rss2email2
     SUBDIR += rss2email3
-    SUBDIR += ruby-rfilter
-    SUBDIR += ruby-rmail
-    SUBDIR += rubygem-actionmailer
     SUBDIR += rubygem-actionmailer4
+    SUBDIR += rubygem-actionmailer5
     SUBDIR += rubygem-email_reply_parser
     SUBDIR += rubygem-email_reply_parser-discourse
+    SUBDIR += rubygem-email_reply_trimmer
     SUBDIR += rubygem-exception_notification
     SUBDIR += rubygem-larch
     SUBDIR += rubygem-mail
-    SUBDIR += rubygem-mail25
     SUBDIR += rubygem-mail_room
     SUBDIR += rubygem-mailboxer
     SUBDIR += rubygem-mailfactory

@@ -2,6 +2,7 @@
 
 PORTNAME=	axa
 PORTVERSION=	1.4.0
+PORTREVISION=	1
 CATEGORIES=	net dns
 MASTER_SITES=	FARSIGHT/${PORTNAME} LOCAL/truckman/farsight
 
@@ -15,7 +16,7 @@ LICENSE_FILE_PD=	${WRKSRC}/license_pd
 
 BUILD_DEPENDS=	bash:shells/bash \
 		sie-nmsg>0:net/sie-nmsg
-LIB_DEPENDS=	libcheck.so:devel/libcheck \
+LIB_DEPENDS=	libcheck.so:devel/check \
 		libprotobuf-c.so:devel/protobuf-c \
 		libnmsg.so:net/nmsg \
 		libwdns.so:dns/wdns \
@@ -44,14 +45,10 @@ LDFLAGS+=	-lm
 .include <bsd.port.pre.mk>
 
 .if ${SSL_DEFAULT} == base
-. if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
-IGNORE=	base OpenSSL in FreeBSD 9 is too old, specify a ports version of SSL by adding DEFAULT_VERSIONS+=ssl=... to /etc/make.conf and rebuild everything that needs SSL
-. else
 CONFIGURE_ENV+=	libcrypto_CFLAGS="-I${OPENSSLINC}"		\
 		libcrypto_LIBS="${OPENSSLLIB}/libcrypto.so"	\
 		libssl_CFLAGS="-I${OPENSSLINC}"			\
 		libssl_LIBS="${OPENSSLLIB}/libssl.so"
-. endif
 .endif
 
 post-extract:

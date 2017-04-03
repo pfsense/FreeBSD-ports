@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	binutils
-PORTVERSION=	2.27
-PORTREVISION=	5
+PORTVERSION=	2.28
 PORTEPOCH?=	1
 CATEGORIES?=	devel
 MASTER_SITES=	SOURCEWARE/binutils/releases
@@ -21,7 +20,8 @@ BUILD_DEPENDS=	${LOCALBASE}/lib/libgmp.so:math/gmp \
 CONFLICTS=	libbfd-[0-9]*
 .endif
 
-OPTIONS_DEFINE=	NLS RELRO
+OPTIONS_DEFINE=	NLS RELRO STATIC
+STATIC_PREVENTS=	NLS
 
 RELRO_DESC=	enable -z relro in ELF linker by default
 
@@ -72,6 +72,8 @@ OPTIONS_SUB=	yes
 NLS_USES=	gettext
 NLS_CONFIGURE_ENABLE=	nls
 
+STATIC_LDFLAGS+=	-all-static
+
 .include <bsd.port.pre.mk>
 
 # Actual earliest version may differ slightly
@@ -80,10 +82,6 @@ CONFIGURE_ARGS+=	--enable-gold --enable-plugins
 PLIST_SUB+=	GOLD=""
 .else
 PLIST_SUB+=	GOLD="@comment "
-.endif
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
-CONFIGURE_ARGS+=	--disable-initfini-array
 .endif
 
 .if ${ARCH} == "amd64"

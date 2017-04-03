@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	ircd-ratbox
-PORTVERSION=	3.0.8
-PORTREVISION=	9
+PORTVERSION=	3.0.10
+PORTREVISION=	1
 CATEGORIES=	irc ipv6
 MASTER_SITES=	http://www.ratbox.org/download/				\
 		http://www.ratbox.org/download/old/
@@ -65,7 +65,7 @@ OPTIONS_SUB=		yes
 
 ASSERT_CONFIGURE_ENABLE=	assert
 IPV6_CONFIGURE_ENABLE=		ipv6
-OPENSSL_USE=		openssl=yes
+OPENSSL_USES=		ssl
 OPENSSL_CONFIGURE_ON=	--enable-openssl=${OPENSSLBASE}
 OPENSSL_CONFIGURE_OFF=	--disable-openssl
 SERVICES_CONFIGURE_ENABLE=	services

@@ -3,7 +3,7 @@
 
 PORTNAME=	webkit
 PORTVERSION=	2.4.11
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	www
 MASTER_SITES=	http://webkitgtk.org/releases/
 PKGNAMESUFFIX=	-gtk3
@@ -87,11 +87,6 @@ CFLAGS+=	-mminimal-toc
 .endif
 
 .include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 1000033
-BUILD_DEPENDS+=	flex>=0:textproc/flex
-CONFIGURE_ENV+=	FLEX="${LOCALBASE}/bin/flex"
-.endif
 
 .if ${ARCH} == i386 && ! ${CFLAGS:M-march=*}
 # Needed for __atomic_fetch_add_8

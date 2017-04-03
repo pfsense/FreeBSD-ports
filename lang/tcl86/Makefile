@@ -31,7 +31,6 @@ OPTIONS_SUB=	yes
 OPTIONS_EXCLUDE+=	DTRACE
 .endif
 
-OPTIONS_EXCLUDE_FreeBSD_9=	DTRACE
 OPTIONS_EXCLUDE_FreeBSD_10=	DTRACE
 
 PATCH_WRKSRC=	${WRKDIR}/${PORTNAME}${PORTVERSION}
@@ -53,8 +52,7 @@ SHORT_TCL_VER=	${TCL_VER:S/.//}
 MAN_SUFFIX=	${PKGBASE}
 
 MAKE_ENV=	SHORT_TCL_VER=${SHORT_TCL_VER} \
-		MAN_SUFFIX=.${MAN_SUFFIX} \
-		LANG=C LC_ALL=C	# LANG=C is required for some of UTF-using tests
+		MAN_SUFFIX=.${MAN_SUFFIX}
 
 PLIST_SUB=	TCL_VER=${TCL_VER} \
 		SHORT_TCL_VER=${SHORT_TCL_VER}
@@ -81,12 +79,6 @@ post-patch:
 	     s|@TCL_BUILD_STUB_LIB_PATH@|@TCL_STUB_LIB_PATH@|; \
 	     s|@TCL_SRC_DIR@|${PREFIX}/include/tcl${TCL_VER}|' \
 	     ${PATCH_WRKSRC}/unix/tclConfig.sh.in
-# On FreeBSD 9, pkg-config --cflags tcl can't find zlib.
-.if ${OSVERSION} < 1000000
-	${REINPLACE_CMD} -e \
-	    's|Requires.private: zlib >= 1.2.3||' \
-	    ${PATCH_WRKSRC}/unix/tcl.pc.in
-.endif
 
 post-patch-TCLMAN-off:
 	@${FIND} ${PATCH_WRKSRC}/pkgs -name Makefile.in | ${XARGS} ${REINPLACE_CMD} \

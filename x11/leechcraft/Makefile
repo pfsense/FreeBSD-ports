@@ -3,7 +3,7 @@
 
 PORTNAME=	leechcraft
 PORTVERSION=	0.6.70
-PORTREVISION=	17
+PORTREVISION=	19
 CATEGORIES=	x11
 MASTER_SITES=	http://dist.leechcraft.org/LeechCraft/0.6.70/
 
@@ -404,12 +404,6 @@ BROKEN=		Lemon has not supported yet because depended by libnl
 
 .if ${PORT_OPTIONS:MOTLOZHU}
 BROKEN=		Otlozhu has not supported yet (not ported liblaretz)
-.endif
-
-.if ${OSVERSION} < 1000000
-PORT_OPTIONS:=	${PORT_OPTIONS:O:u}
-PORT_OPTIONS:=	${PORT_OPTIONS:NBITTORRENT}
-USE_GCC=	yes
 .endif
 
 post-install:

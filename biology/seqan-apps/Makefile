@@ -4,7 +4,7 @@
 PORTNAME=	seqan-apps
 PORTVERSION=	2.2.0
 DISTVERSIONPREFIX=	seqan-v
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	biology
 
 MAINTAINER=	h2+fbsdports@fsfe.org
@@ -26,17 +26,9 @@ CMAKE_ARGS=	-DSEQAN_BUILD_SYSTEM="SEQAN_RELEASE_APPS"
 
 USE_GCC=	yes
 
-.include <bsd.port.pre.mk>
+BROKEN_armv6=		fails to link: undefined reference to _Unwind_GetIP@GCC_3.0
 
-.if ${OSVERSION} < 1000000
-post-patch:
-	# missing C99 functions in FreeBSD's math.h, use C++ instead
-	@${REINPLACE_CMD} -e 's|expl(|std::exp(|g' ${WRKSRC}/apps/snp_store/snp_store.h
-	@${REINPLACE_CMD} -e 's|logl(|std::log(|g' ${WRKSRC}/apps/snp_store/snp_store.h
-	# the other way around (use math.h instead of cmath)
-	@${REINPLACE_CMD} -e 's|std::round|round|g' ${WRKSRC}/apps/yara/mapper_writer.h
-	@${REINPLACE_CMD} -e 's|std::erfc|erfc|g' ${WRKSRC}/apps/yara/bits_matches.h
-.endif
+.include <bsd.port.pre.mk>
 
 .if ${ARCH} == "i386"
 PLIST_SUB+=	RM_I386="@comment "

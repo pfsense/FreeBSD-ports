@@ -3,6 +3,7 @@
 
 PORTNAME=	openomf
 PORTVERSION=	0.6.5
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	http://www.omf2097.com/pub/files/omf/:data
 DISTFILES+=	omf2097.rar:data
@@ -20,8 +21,9 @@ LIB_DEPENDS=	libconfuse.so:devel/libconfuse \
 EXTRACT_DEPENDS=	unrar:archivers/unrar
 
 USE_GITHUB=	yes
-GH_TUPLE=	omf2097:openomf:c36c421 \
-		omf2097:libShadowDive:b2c34a6:shadow \
+GH_ACCOUNT=	omf2097
+GH_TAGNAME=	c36c421
+GH_TUPLE=	omf2097:libShadowDive:b2c34a6:shadow \
 		kode54:dumb:238f23c:libdumb
 
 USES=		cmake compiler:c++11-lang gettext

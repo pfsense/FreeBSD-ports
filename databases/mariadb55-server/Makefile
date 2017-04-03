@@ -2,7 +2,7 @@
 
 PORTNAME?=	mariadb
 PORTVERSION=	5.5.54
-PORTREVISION?=	2
+PORTREVISION?=	3
 CATEGORIES=	databases ipv6
 MASTER_SITES=	http://ftp.osuosl.org/pub/mariadb/${PORTNAME}-${PORTVERSION}/source/ \
 		http://mirrors.supportex.net/mariadb/${PORTNAME}-${PORTVERSION}/source/ \
@@ -108,14 +108,14 @@ MAXKEY_EXTRA_PATCHES=	${FILESDIR}/extra-patch-include_my_compare.h
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1000012
+.if ${OPSYS} == FreeBSD
 CMAKE_ARGS+=	-DWITH_JEMALLOC="system"
 .else
 CMAKE_ARGS+=	-DWITH_JEMALLOC="no"
 .endif
 
 # Server segfaults on i386 when built with clang >= 3.4
-.if ${ARCH} == 'i386' && ${OSVERSION} >= 1001000
+.if ${ARCH} == 'i386'
 USE_GCC=	yes
 .endif
 

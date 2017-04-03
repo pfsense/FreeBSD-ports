@@ -83,12 +83,6 @@ IGNORE=	you cannot enable DMARC without SPF and DKIM support
 .if ! ${PORT_OPTIONS:MDNSSEC} || ! ${PORT_OPTIONS:MTLS}
 IGNORE=	you cannot enable DANE without DNSSEC support or without TLS support
 .endif
-# Use Openssl from the ports
-.if ${OSVERSION} < 1000000
-. if ! ${PORT_OPTIONS:MGNUTLS}
-WITH_OPENSSL_PORT=	yes
-. endif
-.endif
 .endif
 
 .if ${PORT_OPTIONS:MSA_EXIM} || defined(FETCH_ALL)
@@ -97,7 +91,7 @@ MASTER_SITES+=	http://marc.merlins.org/linux/exim/files/:sa_exim \
 DISTFILES+=	sa-exim-${SA_EXIM_VERSION}.tar.gz:sa_exim
 .endif
 
-EXIM_VERSION=	4.88
+EXIM_VERSION=	4.89
 SA_EXIM_VERSION=4.2
 EXIM_INSTALL_ARG+=	"-no_chown" "-no_symlink"
 
@@ -487,10 +481,6 @@ SEDLIST+=	-e 's,^\# (USE_READLINE=),\1,'
 
 .if ${PORT_OPTIONS:MCONTENT_SCAN}
 SEDLIST+=	-e 's,^\# (WITH_CONTENT_SCAN=),\1,'
-.endif
-
-.if ${PORT_OPTIONS:MOLD_DEMIME}
-SEDLIST+=	-e 's,^\# (WITH_OLD_DEMIME=),\1,'
 .endif
 
 .if !defined(EXIMON_ONLY) && ${PORT_OPTIONS:MDAEMON}

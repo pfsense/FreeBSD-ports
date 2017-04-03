@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	lxqt-l10n
-PORTVERSION=	0.11.1
+PORTVERSION=	0.11.2
 CATEGORIES=	x11
 
-MAINTAINER=	olivierd@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Translations of LXQt components
 
 LICENSE=	LGPL21+

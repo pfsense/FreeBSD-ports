@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	qemu
-PORTVERSION=	2.8.50.g20161228
+PORTVERSION=	2.8.50.g20170307
+PORTREVISION=	2
 CATEGORIES=	emulators
 MASTER_SITES=	GH \
 		LOCAL/nox:dtc \
@@ -19,7 +20,7 @@ LICENSE=	GPLv2
 USE_GITHUB=	yes
 GH_ACCOUNT=	seanbruno
 GH_PROJECT=	${PORTNAME}-bsd-user
-GH_TAGNAME=	a71818b
+GH_TAGNAME=	c0989c8
 HAS_CONFIGURE=	yes
 USES=		gmake pkgconfig bison perl5 python:2,build
 USE_PERL5=	build
@@ -72,7 +73,7 @@ USE_GNOME+=	glib20
 CONFIGURE_ARGS+=	--localstatedir=/var
 CONFIGURE_ARGS+=	--extra-ldflags=-L\"${LOCALBASE}/lib\"
 CONFIGURE_ARGS+=	--disable-libssh2
-PORTDOCS=	docs qemu-doc.html qmp-commands.txt
+PORTDOCS=	docs qemu-doc.html
 
 .if defined(QEMU_USER_STATIC)
 .if ${ARCH} != "amd64"
@@ -211,7 +212,7 @@ CONFIGURE_ARGS+=	--static
 .endif
 
 .if ${PORT_OPTIONS:MSAMBA}
-RUN_DEPENDS+=	${LOCALBASE}/sbin/smbd:net/samba36
+USES+=		samba:run # smbd
 .endif
 
 .if ${PORT_OPTIONS:MDOCS}

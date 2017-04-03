@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	racket
-PORTVERSION=	6.7
+PORTVERSION=	6.8
 CATEGORIES=	lang scheme
 MASTER_SITES=	http://mirror.racket-lang.org/installers/${PORTVERSION}/ \
 		http://www.cs.utah.edu/plt/installers/${PORTVERSION}/ \
@@ -22,6 +22,7 @@ LIB_DEPENDS=	libffi.so:devel/libffi		\
 		libcairo.so:graphics/cairo	\
 		libpng.so:graphics/png
 
+BROKEN_armv6=	does not build: error: GNU lightning does not support the current target
 BROKEN_aarch64=	does not build: error: Unported platform
 BROKEN_sparc64=	does not build
 BROKEN_FreeBSD_10_i386=	segfaults during build

@@ -26,7 +26,7 @@ BUILD_DEPENDS+=	${LOCALBASE}/sbin/proftpd:ftp/proftpd
 RUN_DEPENDS+=	${LOCALBASE}/sbin/proftpd:ftp/proftpd
 .endif
 
-PROFTPD_VERSION=	1.3.5b
+PROFTPD_VERSION=	1.3.5d
 
 .if defined(_BUILDING_PROFTPD_MODULE)
 DISTFILES+=	${DISTNAME}${EXTRACT_SUFX}
@@ -53,7 +53,7 @@ USE_AUTOTOOLS=	autoconf
 GNU_CONFIGURE=	yes
 
 .if !defined(_BUILDING_PROFTPD_MODULE)
-USE_OPENSSL=	yes
+USES+=		ssl
 USE_RC_SUBR=	proftpd
 .endif
 
@@ -173,6 +173,9 @@ CONFIGURE_ARGS+=	--with-libraries=${LIBDIRS}
 
 .if ${SSL_DEFAULT:Mopenssl-devel}
 BROKEN=		Does not build with openssl-devel
+.endif
+.if ${SSL_DEFAULT:Mlibressl*}
+BROKEN=		Does not build with libressl
 .endif
 
 .if !defined(_BUILDING_PROFTPD_MODULE)

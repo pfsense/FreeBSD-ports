@@ -2,7 +2,7 @@
 
 PORTNAME=	clang
 DISTVERSION=	3.5.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	lang devel
 MASTER_SITES=   http://llvm.org/releases/3.5.2/
 PKGNAMESUFFIX=	${LLVM_SUFFIX}
@@ -84,10 +84,6 @@ RELTYPE=		Release
 .endif
 
 .include <bsd.port.pre.mk>
-
-.if ${OPSYS} == "FreeBSD" && ${OSVERSION} >= 1200017 && ${CHOSEN_COMPILER_TYPE} == "clang"
-BROKEN=	Base clang produces compiler errors
-.endif
 
 # keep in sync with /usr/src/lib/clang/clang.build.mk
 CONFIGURE_TARGET:=${ARCH:C/amd64/x86_64/:C/armv6hf/armv6/}-portbld-${OPSYS:tl}${OSREL}

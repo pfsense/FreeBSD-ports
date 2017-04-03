@@ -2,7 +2,7 @@
 
 PORTNAME=	0ad
 PORTVERSION=	0.0.21
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	http://releases.wildfiregames.com/ \
 		SF/zero-ad/releases
@@ -41,13 +41,12 @@ USE_WX=		2.8+
 WX_COMPS=	wx:lib
 MAKE_ENV+=	JOBS=${_MAKE_JOBS}
 
+BROKEN_aarch64=		Fails to compile: no member named verifyHeapAccessDisassembly
+BROKEN_armv6=		Fails to link: fatal error: conftest: Unknown error: -1
+
 PORTDATA=	*
 
 .include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 1000024
-BROKEN=		segfaults during build
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \

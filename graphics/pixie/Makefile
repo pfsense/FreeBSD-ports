@@ -3,7 +3,7 @@
 
 PORTNAME=	pixie
 PORTVERSION=	2.2.6
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/Pixie%20${PORTVERSION}
 DISTNAME=	Pixie-src-${PORTVERSION}
@@ -46,13 +46,6 @@ BROKEN_sparc64=		Does not compile on sparc64
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.options.mk>
-
-.if ${OSVERSION} < 1000033
-BUILD_DEPENDS+=	${LOCALBASE}/bin/flex:textproc/flex
-CONFIGURE_ENV+=	ac_cv_path_FLEX="${LOCALBASE}/bin/flex"
-.endif
-
 post-patch:
 	@${REINPLACE_CMD} -e '/test/s|==|=|g ; \
 		 s|-lpthread|-pthread|g' ${WRKSRC}/configure
@@ -63,7 +56,7 @@ post-patch:
 		${WRKSRC}/src/ri/Makefile.in \
 		${WRKSRC}/src/sdr/Makefile.in
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} AUTHORS ChangeLog DEVNOTES NEWS \
 		README ${STAGEDIR}${DOCSDIR})

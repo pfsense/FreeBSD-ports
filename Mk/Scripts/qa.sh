@@ -45,6 +45,11 @@ shebangonefile() {
 	case "${interp}" in
 	"") ;;
 	${LINUXBASE}/*) ;;
+	${LOCALBASE}/bin/perl5.* | ${PREFIX}/bin/perl5.*)
+		err "'${interp}' is an invalid shebang for '${f#${STAGEDIR}${PREFIX}/}' you must use ${LOCALBASE}/bin/perl."
+		err "Either pass \${PERL} to the build or use USES=shebangfix"
+		rc=1
+		;;
 	${LOCALBASE}/*) ;;
 	${PREFIX}/*) ;;
 	/bin/csh) ;;
@@ -636,22 +641,6 @@ proxydeps_suggest_uses() {
 	fi
 }
 
-subst_dep_file() {
-	local dep_file=$1
-	if expr ${dep_file} : "${LOCALBASE}/lib/libGL.so.[0-9]$" > /dev/null; then
-		if [ -f ${LOCALBASE}/lib/.mesa/libGL.so ]; then
-			echo ${LOCALBASE}/lib/.mesa/libGL.so
-			return
-		fi
-	elif expr ${dep_file} : "${LOCALBASE}/lib/libEGL.so.[0-9]$" > /dev/null; then
-		if [ -f ${LOCALBASE}/lib/.mesa/libEGL.so ]; then
-			echo ${LOCALBASE}/lib/.mesa/libEGL.so
-			return
-		fi
-	fi
-	echo ${dep_file}
-}
-
 proxydeps() {
 	local file dep_file dep_file_pkg already rc
 
@@ -665,7 +654,6 @@ proxydeps() {
 		while read dep_file; do
 			# No results presents a blank line from heredoc.
 			[ -z "${dep_file}" ] && continue
-			dep_file=$(subst_dep_file ${dep_file})
 			# Skip files we already checked.
 			if listcontains ${dep_file} "${already}"; then
 				continue
@@ -737,6 +725,20 @@ sonames() {
 	EOT
 }
 
+perlcore_port_module_mapping() {
+	case "$1" in
+		Net)
+			echo "Net::Config"
+			;;
+		libwww)
+			echo "LWP"
+			;;
+		*)
+			echo "$1" | sed -e 's/-/::/g'
+			;;
+	esac
+}
+
 perlcore() {
 	local portname version module gotsome
 	[ -x "${LOCALBASE}/bin/corelist" ] || return 0
@@ -744,7 +746,7 @@ perlcore() {
 		portname=$(expr "${dep}" : ".*/p5-\(.*\)")
 		if [ -n "${portname}" ]; then
 			gotsome=1
-			module=$(echo ${portname}|sed -e 's/-/::/g')
+			module=$(perlcore_port_module_mapping "${portname}")
 			version=$(expr "${dep}" : ".*>=*\([^:<]*\)")
 
 			while read l; do

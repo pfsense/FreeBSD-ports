@@ -3,7 +3,7 @@
 
 PORTNAME=	liblas
 PORTVERSION=	1.8.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel
 
 MAINTAINER=	wen@FreeBSD.org
@@ -25,5 +25,8 @@ USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	libLAS
 GH_PROJECT=	${GH_ACCOUNT}
+
+BROKEN_aarch64=		Fails to compile: file liblas/detail/endian.hpp needs to be set up for your CPU type
+BROKEN_armv6=		Fails to compile: file liblas/detail/endian.hpp needs to be set up for your CPU type
 
 .include <bsd.port.mk>

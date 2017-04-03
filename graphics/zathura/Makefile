@@ -2,10 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	zathura
-PORTVERSION=	0.3.6
-PORTREVISION=	3
+PORTVERSION=	0.3.7
+PORTREVISION=	1
 CATEGORIES=	graphics print
-MASTER_SITES=	http://pwmt.org/projects/zathura/download/
+MASTER_SITES=	https://pwmt.org/projects/zathura/download/ \
+		http://www.madpilot.net/~mad/pwmt.org/
 
 MAINTAINER=	quentin.stievenart@gmail.com
 COMMENT=	Customizable lightweight pdf viewer
@@ -24,8 +25,6 @@ USES=		compiler:c11 gmake pathfix pkgconfig
 PATHFIX_MAKEFILEIN=	Makefile
 MAKE_ENV=	SFLAGS="${STRIP}" \
 		RSTTOMAN=${LOCALBASE}/bin/rst2man \
-		ZLIB_INC= \
-		ZLIB_LIB=-lz \
 		WITH_SYNCTEX=1
 
 CPPFLAGS+=	-DWITH_SYNCTEX

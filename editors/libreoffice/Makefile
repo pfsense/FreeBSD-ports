@@ -2,6 +2,7 @@
 
 .include "${.CURDIR}/Makefile.common"
 
+PORTREVISION=	1
 MASTER_SITES=	http://download.documentfoundation.org/libreoffice/src/${PORTVERSION}/ \
 		http://dev-www.libreoffice.org/src/:src \
 		http://dev-www.libreoffice.org/extern/:ext
@@ -32,7 +33,7 @@ LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 		libboost_date_time.so:devel/boost-libs \
 		libicutu.so:devel/icu \
 		liblangtag.so:devel/liblangtag \
-		liborcus-0.11.so:devel/liborcus \
+		liborcus-0.12.so:devel/liborcus \
 		libcurl.so:ftp/curl \
 		libcairo.so:graphics/cairo \
 		libgraphite2.so:graphics/graphite2 \
@@ -70,7 +71,8 @@ LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 		libmythes-1.2.so:textproc/mythes \
 		librdf.so:textproc/redland \
 		libserf-1.so:www/serf
-RUN_DEPENDS=	${LOCALBASE}/share/fonts/Caladea/Caladea-Bold.ttf:x11-fonts/crosextrafonts-caladea-ttf \
+RUN_DEPENDS=	xdg-open:devel/xdg-utils \
+		${LOCALBASE}/share/fonts/Caladea/Caladea-Bold.ttf:x11-fonts/crosextrafonts-caladea-ttf \
 		${LOCALBASE}/share/fonts/Carlito/Carlito-Bold.ttf:x11-fonts/crosextrafonts-carlito-ttf \
 		${LOCALBASE}/share/fonts/dejavu/DejaVuSans.ttf:x11-fonts/dejavu \
 		${LOCALBASE}/share/fonts/GentiumBasic/GenBasI.ttf:x11-fonts/gentium-basic \
@@ -103,6 +105,7 @@ OPTIONS_DEFINE=	CUPS GNOME GTK2 GTK3 JAVA KDE4 MMEDIA PGSQL SDK SYSTRAY \
 		TEST VERBOSE WEBDAV
 OPTIONS_DEFAULT=	CUPS GTK2
 
+GTK3_DESC=	GTK+ 3 GUI toolkit support (experimental)
 JAVA_DESC=	Add Java support (XML filters, macros)
 MMEDIA_DESC=	Enable multimedia backend for impress
 PGSQL_DESC=	Build with PostgreSQL-SDBC driver
@@ -116,7 +119,7 @@ CUPS_CONFIGURE_ENABLE=	cups
 CUPS_LIB_DEPENDS=	libcups.so:print/cups
 
 GNOME_CONFIGURE_ENABLE=	dbus dconf
-GNOME_IMPLIES=	GTK3
+GNOME_IMPLIES=	GTK2
 GNOME_LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib
 GNOME_USE=	GNOME=dconf
 
@@ -260,7 +263,7 @@ CONFIGURE_ENV=	DMAKE=${LOCALBASE}/bin/dmake \
 
 MAKE_ENV+=	CXXFLAGS_WARN="${CXXFLAGS_WARN}"
 MAKE_ENV+=	GNUSED=${LOCALBASE}/bin/gsed
-MAKE_ENV+=	DISPLAY= LANG=C LC_ALL=C
+MAKE_ENV+=	DISPLAY=
 
 _MAKE_JOBS=	#
 
@@ -270,10 +273,12 @@ _MAKE_JOBS=	#
 .if ${COMPILER_FEATURES:Mlibstdc++}
 BROKEN=		Build with system libstdc++ is unsupported
 .endif
-
-.if ${OSVERSION} < 1000033
-BUILD_DEPENDS+=	${LOCALBASE}/bin/flex:textproc/flex
-CONFIGURE_ENV+=	FLEX=${LOCALBASE}/bin/flex
+.if (${OSVERSION} >= 1200000 && ${OSVERSION} < 1200003) || \
+    (${OSVERSION} >= 1100500 && ${OSVERSION} < 1100501) || \
+    (${OSVERSION} >= 1100000 && ${OSVERSION} < 1100122) || \
+    ${OSVERSION} < 1003506
+EXTRA_PATCHES=	${PATCHDIR}/extrapatch-vcl_inc_unx_gtk_gtkinst.hxx \
+		${PATCHDIR}/extrapatch-vcl_unx_gtk_gtkinst.cxx
 .endif
 .endif # FreeBSD
 
@@ -285,6 +290,10 @@ CXXFLAGS_WARN+=	-Wno-unused-local-typedefs
 .else
 CXXFLAGS_WARN=	-Wshadow -Woverloaded-virtual
 .endif
+
+post-patch:
+	${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \
+	    ${WRKSRC}/shell/source/unix/exec/shellexec.cxx
 
 pre-configure:
 	@${TOUCH} ${WRKSRC}/autogen.lastrun

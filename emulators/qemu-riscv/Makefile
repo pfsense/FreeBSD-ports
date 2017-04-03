@@ -2,19 +2,19 @@
 
 PORTNAME=	qemu
 PORTVERSION=	2.7.50
-PORTREVISION=	20161221
+PORTREVISION=	20170306
 CATEGORIES=	emulators
 PKGNAMESUFFIX?=	-riscv
 
 MAINTAINER=	lwhsu@FreeBSD.org
-COMMENT=	QEMU with RISC-V (RV64G, RV32G) emulation support
+COMMENT=	QEMU with RISC-V (RV64GC, RV32GC) emulation support
 
 LICENSE=	GPLv2
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	riscv
 GH_PROJECT=	riscv-qemu
-GH_TAGNAME=	21e3a7c
+GH_TAGNAME=	2094f39
 
 HAS_CONFIGURE=	yes
 USES=	gmake libtool makeinfo pkgconfig python:2,build

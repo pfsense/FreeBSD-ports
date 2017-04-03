@@ -3,7 +3,7 @@
 
 PORTNAME=	sayonara
 PORTVERSION=	0.9.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	audio
 MASTER_SITES=	http://www.sayonara-player.com/sw/
 DISTNAME=	${PORTNAME}-player-${PORTVERSION}-git11-20161030
@@ -30,9 +30,5 @@ post-patch:
 		${WRKSRC}/resources/CMakeLists.txt
 	@${REINPLACE_CMD} -e '/DESTINATION/s,/usr/,,' \
 		${WRKSRC}/src/GUI/Resources/Icons/CMakeLists.txt
-.if !exists(/usr/libdata/pkgconfig/zlib.pc)
-	@${REINPLACE_CMD} -e '/zlib/s/PKG_CHECK_MODULES/FIND_PACKAGE/' \
-		${WRKSRC}/src/Helper/Compressor/CMakeLists.txt
-.endif
 
 .include <bsd.port.mk>

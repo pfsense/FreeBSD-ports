@@ -21,7 +21,6 @@
     SUBDIR += dclib
     SUBDIR += deluge
     SUBDIR += deluge-cli
-    SUBDIR += digitalcoin
     SUBDIR += dogecoin
     SUBDIR += ed2k
     SUBDIR += edonkey-tool-hash
@@ -34,8 +33,6 @@
     SUBDIR += frost
     SUBDIR += gkremldk
     SUBDIR += gnewtellium
-    SUBDIR += gnunet
-    SUBDIR += gnunet-gtk
     SUBDIR += go-ethereum
     SUBDIR += gtk-gnutella
     SUBDIR += gtorrentviewer
@@ -77,6 +74,7 @@
     SUBDIR += py-vertex
     SUBDIR += qbittorrent
     SUBDIR += qbittorrent-nox11
+    SUBDIR += radarr
     SUBDIR += retroshare
     SUBDIR += rtgui
     SUBDIR += rtorrent

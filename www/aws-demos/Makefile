@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	aws
-PORTVERSION=	17.0.1
+PORTVERSION=	17.1
 CATEGORIES=	www
 PKGNAMESUFFIX=	-demos
 
-MAINTAINER=	marino@FreeBSD.org
+MAINTAINER=	freebsd.contact@marino.st
 COMMENT=	Adacore Ada Web Server demos
 
 LICENSE=	GPLv3 GPLv3RLE
@@ -19,8 +19,7 @@ BUILD_DEPENDS=	gprbuild:devel/gprbuild \
 USES=		ada gmake python
 USE_GITHUB=	yes
 GH_ACCOUNT=	AdaCore
-GH_TAGNAME=	17.0
-GH_TUPLE=	AdaCore:templates-parser:17.0:tp/templates_parser
+GH_TUPLE=	AdaCore:templates-parser:${PORTVERSION}:tp/templates_parser
 
 DISTINFO_FILE=	${PORTSDIR}/www/aws/distinfo
 
@@ -103,11 +102,7 @@ PROGS=		multiple_sessions/multiple_sessions \
 		soap_disp/soap_server_disp \
 		soap_disp/soap_client
 
-.include <bsd.port.pre.mk>
-
-.if ${SSL_DEFAULT} == base
-IGNORE_FreeBSD_9=	Requires newer OpenSSL (set DEFAULT_VERSIONS+=ssl=openssl)
-.endif
+.include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MSSL}
 CONF_ARGS+=	SOCKET=openssl
@@ -161,4 +156,4 @@ do-install:
 	@${CHMOD} ${BINMODE} ${STAGEDIR}${EXAMPLESDIR}/demos/${prog}
 .endfor
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

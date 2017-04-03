@@ -12,6 +12,7 @@ MAINTAINER=	woodsb02@FreeBSD.org
 COMMENT=	Media center frontend to multimedia/plexmediaserver
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/LICENSE.GPL
 
 BUILD_DEPENDS=	enca:converters/enca \
 		gawk:lang/gawk \
@@ -21,7 +22,6 @@ BUILD_DEPENDS=	enca:converters/enca \
 		nasm:devel/nasm \
 		gtk-update-icon-cache:x11-toolkits/gtk20 \
 		swig2.0:devel/swig20
-
 LIB_DEPENDS=	libass.so:multimedia/libass \
 		libavahi-client.so:net/avahi-app \
 		libboost_thread.so:devel/boost-libs \
@@ -55,7 +55,6 @@ LIB_DEPENDS=	libass.so:multimedia/libass \
 		libvorbis.so:audio/libvorbis \
 		libxslt.so:textproc/libxslt \
 		libyajl.so:devel/yajl
-
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3 \
 		glxinfo:graphics/mesa-demos \
 		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow \
@@ -86,8 +85,6 @@ ONLY_FOR_ARCHS=	i386 amd64
 PLEX_ARCH_i386=	x86
 PLEX_ARCH_amd64=x86_64
 
-WRKSRC=		${WRKDIR}/${GH_PROJECT}-${GH_TAGNAME_EXTRACT}
-
 SUB_FILES=	${PORTNAME}.sh pkg-message
 PLIST_SUB=	ARCH=${PLEX_ARCH_${ARCH}}
 
@@ -113,8 +110,6 @@ LIRC_RUN_DEPENDS=	lircd:comms/lirc
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 PULSEAUDIO_CMAKE_OFF=	-DCMAKE_DISABLE_FIND_PACKAGE_PulseAudio:BOOL=true
 
-.include <bsd.port.options.mk>
-
 post-patch:
 	@${REINPLACE_CMD} 's/[[:<:]]ARCH[[:>:]]/FFMPEG_ARCH/' \
 		${WRKSRC}/lib/ffmpeg/Makefile \
@@ -125,15 +120,6 @@ post-patch:
 		${WRKSRC}/plex/CMakeModules/FindIconv.cmake
 	@${REINPLACE_CMD} 's/COMMAND\ make/COMMAND\ gmake/g' \
 		${WRKSRC}/lib/ffmpeg/CMakeLists.txt
-.if ${OPSYS} == "FreeBSD" && ${OSVERSION} < 1000024
-	@${REINPLACE_CMD} 's/__builtin_bswap/__bswap/g' \
-		${WRKSRC}/plex/Third-Party/hash-library/crc32.cpp \
-		${WRKSRC}/plex/Third-Party/hash-library/keccak.cpp \
-		${WRKSRC}/plex/Third-Party/hash-library/md5.cpp \
-		${WRKSRC}/plex/Third-Party/hash-library/sha1.cpp \
-		${WRKSRC}/plex/Third-Party/hash-library/sha256.cpp \
-		${WRKSRC}/plex/Third-Party/hash-library/sha3.cpp
-.endif
 
 post-install:
 	${RM} ${STAGEDIR}${PREFIX}/lib/${PORTNAME}/*.so

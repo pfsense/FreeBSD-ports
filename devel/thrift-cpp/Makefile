@@ -3,7 +3,7 @@
 
 PORTNAME=	thrift
 PORTVERSION=	${THRIFT_PORTVERSION} # to keep in sync with thrift
-PORTREVISION=	4
+PORTREVISION=	7
 PORTEPOCH=	1
 CATEGORIES=	devel
 PKGNAMESUFFIX=	-cpp
@@ -16,7 +16,7 @@ COMMENT=	C++ interface to Thrift
 DISTINFO_FILE=		${.CURDIR}/../thrift/distinfo
 
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
-		libevent.so:devel/libevent2
+		libevent.so:devel/libevent
 
 USES=			autoreconf pkgconfig gmake compiler:c++11-lang \
 			libtool pathfix ssl
@@ -52,6 +52,10 @@ CFLAGS+=	-I${OPENSSLINC}
 
 .if ${COMPILER_TYPE} == clang
 USE_CXXSTD=	c++11
+.endif
+
+.if ${SSL_DEFAULT} == openssl-devel
+BROKEN=		Cannot find libcrypto.
 .endif
 
 post-install:

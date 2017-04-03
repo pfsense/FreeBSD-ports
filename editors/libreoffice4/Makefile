@@ -2,7 +2,7 @@
 
 PORTNAME=	libreoffice
 PORTVERSION=	4.3.7
-PORTREVISION=	13
+PORTREVISION=	15
 CATEGORIES=	editors
 MASTER_SITES=	http://download.documentfoundation.org/libreoffice/src/${PORTVERSION}/ \
 		http://dev-www.libreoffice.org/extern/:ext \
@@ -77,6 +77,9 @@ RUN_DEPENDS=	${LOCALBASE}/share/fonts/Caladea/Caladea-Bold.ttf:x11-fonts/crosext
 		${LOCALBASE}/share/fonts/GentiumBasic/GenBasI.ttf:x11-fonts/gentium-basic \
 		${LOCALBASE}/share/fonts/Liberation/LiberationMono-Bold.ttf:x11-fonts/liberation-fonts-ttf \
 		${LOCALBASE}/share/fonts/LinLibertineG/LinLibertine_DR_G.ttf:x11-fonts/linuxlibertine-g
+
+DEPRECATED=	Deprecated by upstream
+EXPIRATION_DATE=	2017-03-31
 
 CONFLICTS_INSTALL=	libreoffice-5.*
 ONLY_FOR_ARCHS=	amd64 i386
@@ -337,11 +340,6 @@ EXTRA_PATCHES+=	${FILESDIR}/extra-libc++.i386:-p0
 EXTRA_PATCHES+=	${FILESDIR}/extra-configure.ac
 .endif
 
-.if ${OSVERSION} < 1000033
-BUILD_DEPENDS+=	${LOCALBASE}/bin/flex:textproc/flex
-CONFIGURE_ENV+=	FLEX=${LOCALBASE}/bin/flex
-.endif
-
 ACLOCAL_ARGS=	-I "${WRKSRC}/m4"
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -349,7 +347,6 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 MAKE_ENV+=	ENVCFLAGS="${CFLAGS}" ENVCFLAGSCXX="${CXXFLAGS}"
 MAKE_ENV+=	ENVLINKFLAGS="${LDFLAGS}"
 MAKE_ENV+=	GNUSED=${LOCALBASE}/bin/gsed
-MAKE_ENV+=	LANG=C LC_ALL=C
 
 pre-configure:
 	@${TOUCH} ${WRKSRC}/autogen.lastrun

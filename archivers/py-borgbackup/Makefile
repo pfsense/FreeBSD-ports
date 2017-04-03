@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	borgbackup
-PORTVERSION=	1.0.9
+PORTVERSION=	1.0.10
 CATEGORIES=	archivers python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -25,13 +25,6 @@ FUSE_RUN_DEPENDS=	${PYTHONPREFIX_SITELIBDIR}/llfuse.so:devel/py-llfuse
 
 USES=		python:3.4+ ssl
 USE_PYTHON=	autoplist distutils
-
-.include <bsd.port.options.mk>
-
-# borg requires openssl>=1.0.0
-.if ${OSVERSION} < 1000015
-WITH_OPENSSL_PORT=yes
-.endif
 
 .include <bsd.port.pre.mk>
 

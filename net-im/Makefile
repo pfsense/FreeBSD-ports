@@ -58,6 +58,7 @@
     SUBDIR += libaccounts-glib
     SUBDIR += libaccounts-qt5
     SUBDIR += libjreen
+    SUBDIR += libmesode
     SUBDIR += libnice
     SUBDIR += libnice-gst010
     SUBDIR += libnice-gst1
@@ -139,6 +140,7 @@
     SUBDIR += py-slackclient
     SUBDIR += py-sleekxmpp
     SUBDIR += py-telepot
+    SUBDIR += py-toxcore-c
     SUBDIR += py-twistedWords
     SUBDIR += py-xmpppy
     SUBDIR += py-xmpppy-irc
@@ -188,7 +190,6 @@
     SUBDIR += tkabber-plugins
     SUBDIR += tox
     SUBDIR += toxic
-    SUBDIR += ttytter
     SUBDIR += turpial
     SUBDIR += twirssi
     SUBDIR += twitmail

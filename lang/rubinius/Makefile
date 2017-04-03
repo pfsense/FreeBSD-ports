@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rubinius
-PORTVERSION=	3.69
+PORTVERSION=	3.70
 CATEGORIES=	lang
 MASTER_SITES=	http://releases.rubini.us/:source
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:source
@@ -18,8 +18,6 @@ BUILD_DEPENDS=	${LOCALBASE}/bin/bundle:sysutils/rubygem-bundler \
 		${LOCALBASE}/bin/bison:devel/bison \
 		${LLVM_CONFIG_PATH}:${LLVM_PORT}
 LIB_DEPENDS=	libyaml.so:textproc/libyaml
-
-BROKEN_RUBY23=	yes
 
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	-P "${PREFIX}" \
@@ -39,8 +37,8 @@ CONFIGURE_ARGS=	-P "${PREFIX}" \
 		--system-name ${OPSYS}
 
 OPTIONS_RADIO=		LLVM
-OPTIONS_DEFAULT=	LLVM39
-OPTIONS_RADIO_LLVM=	LLVM36 LLVM37 LLVM38 LLVM39
+OPTIONS_DEFAULT=	LLVM40
+OPTIONS_RADIO_LLVM=	LLVM36 LLVM37 LLVM38 LLVM39 LLVM40
 
 ONLY_FOR_ARCHS=	amd64
 
@@ -48,9 +46,10 @@ LLVM36_DESC=	LLVM 3.6
 LLVM37_DESC=	LLVM 3.7
 LLVM38_DESC=	LLVM 3.8
 LLVM39_DESC=	LLVM 3.9
+LLVM40_DESC=	LLVM 4.0
 
-USES=		execinfo gmake perl5 readline tar:bzip2 libedit
-USE_OPENSSL=	yes
+USES=		execinfo gmake perl5 readline tar:bzip2 libedit ssl
+USE_LOCALE=	en_US.UTF-8
 USE_RUBY=	yes
 RUBY_NO_RUN_DEPENDS=	yes
 USE_PERL5=	build
@@ -69,9 +68,6 @@ MAKE_ENV+=	HOME=${WRKSRC}
 
 # Hack to switch to a local gem path so locally activated rake can be used
 MAKE_ENV+=	GEM_PATH=${GEM_PATH}
-
-# Hack to build under a UTF-8 locale
-MAKE_ENV+=	LANG=en_US.UTF-8
 
 F_OS=		${OPSYS:tl}
 F_MAJOR=	${OSREL:C/\..*$//}
@@ -96,6 +92,10 @@ LLVM39_VARS=	LLVM_CONFIG=llvm-config39 \
 		LLVM_PORT=devel/llvm39 \
 		LLVM_CC=clang39 \
 		LLVM_CXX=clang++39
+LLVM40_VARS=	LLVM_CONFIG=llvm-config40 \
+		LLVM_PORT=devel/llvm40 \
+		LLVM_CC=clang40 \
+		LLVM_CXX=clang++40
 
 .include <bsd.port.pre.mk>
 

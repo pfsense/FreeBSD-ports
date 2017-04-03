@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	memcached
-PORTVERSION=	1.4.33
-PORTREVISION=	1
+PORTVERSION=	1.4.34
+PORTREVISION=	2
 CATEGORIES=	databases
 MASTER_SITES=	http://www.memcached.org/files/ \
 		GENTOO
@@ -14,7 +14,7 @@ COMMENT=	High-performance distributed memory object cache system
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libevent.so:devel/libevent2
+LIB_DEPENDS=	libevent.so:devel/libevent
 
 CONFLICTS=	memcached-1.2*
 
@@ -26,7 +26,6 @@ OPTIONS_DEFAULT=	SASL DTRACE
 OPTIONS_EXCLUDE+=	DTRACE
 .endif
 
-OPTIONS_EXCLUDE_FreeBSD_9+=	DTRACE
 OPTIONS_EXCLUDE_FreeBSD_10+=	DTRACE
 OPTIONS_EXCLUDE_i386=		DTRACE
 # ld(1) fails to link probes: Relocations in generic ELF (EM: 0)

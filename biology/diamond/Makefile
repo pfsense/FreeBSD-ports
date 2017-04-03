@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	diamond
-PORTVERSION=	0.8.30
+PORTVERSION=	0.8.36
+PORTREVISION=	1
 DISTVERSIONPREFIX=v
 CATEGORIES=	biology
 
@@ -11,7 +12,7 @@ COMMENT=	BLAST-compatible local sequence aligner
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/src/COPYING
 
-ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS=	amd64 i386
 
 USES=		cmake:outsource compiler:c++11-lang
 

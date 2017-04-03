@@ -22,11 +22,13 @@ GH_ACCOUNT=	greearb
 GH_PROJECT=	${PORTNAME}.ct
 SHEBANG_FILES=	xrl/scripts/clnt-gen xrl/scripts/tgt-gen
 python_OLD_CMD=	.*python
-WRKSRC=		${WRKDIR}/${GH_PROJECT}-${DISTVERSIONPREFIX}${DISTVERSION}/${PORTNAME}
+WRKSRC_SUBDIR=	${PORTNAME}
 MAKE_ARGS=	prefix=${PREFIX} enable_boost=1
 SUB_FILES=	pkg-message
 GROUPS=		xorp
-BROKEN_sparc64=		Does not compile on sparc64
+
+BROKEN_armv6=		does not compile: recursive template instantiation exceeded maximum depth of 25
+BROKEN_sparc64=		does not compile on sparc64
 
 OPTIONS_DEFINE=	OPTIMIZE ORIGIN SHARED STRIP TCP_RPC
 OPTIONS_DEFAULT=	OPTIMIZE ORIGIN SHARED STRIP

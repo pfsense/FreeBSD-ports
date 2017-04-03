@@ -4,6 +4,7 @@
 PORTNAME=	opensmtpd
 PORTVERSION=	201606220754
 DISTVERSIONSUFFIX=	p1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	mail
 MASTER_SITES=	http://www.opensmtpd.org/archives/ \
@@ -16,7 +17,7 @@ COMMENT=	Security- and simplicity-focused SMTP server from OpenBSD
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libevent.so:devel/libevent2
+LIB_DEPENDS=	libevent.so:devel/libevent
 
 OPTIONS_DEFINE=		CA_BUNDLE LIBASR MAILERCONF PAM SSL_PORT TABLE_DB
 
@@ -53,14 +54,6 @@ PAM_CONFIGURE_WITH=	auth-pam=smtpd
 SSL_PORT_VARS=		with_openssl_port=yes
 TABLE_DB_CONFIGURE_WITH=	table-db
 
-.include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} <= 1000015
-WITH_OPENSSL_PORT=	yes
-.endif
-
-.include <bsd.port.pre.mk>
-
 CONFIGURE_ARGS+=	--with-libasr=${LOCALBASE} \
 			--with-libevent=${LOCALBASE} \
 			--with-libssl=${OPENSSLBASE} \
@@ -73,9 +66,7 @@ post-patch:
 		'/SMTPD_VERSION/s/"[^"]+"$$/"${PORTVERSION}${DISTVERSIONSUFFIX}"/' \
 		${WRKSRC}/smtpd/smtpd.h
 
-.if ${PORT_OPTIONS:MTABLE_DB}
-post-install:
+post-install-TABLE_DB-on:
 	@${LN} -sf ${PREFIX}/sbin/smtpctl ${STAGEDIR}${PREFIX}/libexec/opensmtpd/makemap
-.endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

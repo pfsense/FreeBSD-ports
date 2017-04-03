@@ -3,7 +3,7 @@
 
 PORTNAME=		Ice
 PORTVERSION=		3.6.3
-PORTREVISION=		1
+PORTREVISION=		2
 DISTVERSIONPREFIX=	v
 CATEGORIES=		devel
 
@@ -35,8 +35,6 @@ USES+=			python:build
 BUILD_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}passlib>0:security/py-passlib
 .endif
 
-WRKSRC=			${WRKDIR}/ice-${PORTVERSION}
-
 USES+=			bdb:5
 INVALID_BDB_VER=	48 6
 USE_LDCONFIG=		yes
@@ -44,7 +42,7 @@ BUILD_WRKSRC?=		${WRKSRC}/cpp
 INSTALL_WRKSRC?=	${WRKSRC}/cpp
 USE_GITHUB=		yes
 GH_ACCOUNT=		zeroc-ice
-
+GH_PROJECT=		ice
 
 CFLAGS+=		-ftemplate-depth-128 -fPIC -DPIC -Wall -D_REENTRANT -I${LOCALBASE}/include
 

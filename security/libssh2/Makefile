@@ -3,7 +3,7 @@
 
 PORTNAME=	libssh2
 PORTVERSION=	1.8.0
-PORTEPOCH=	2
+PORTEPOCH=	3
 CATEGORIES=	security devel
 MASTER_SITES=	http://www.libssh2.org/download/ \
 		LOCAL/sbz
@@ -30,7 +30,7 @@ GCRYPT_CONFIGURE_ON=	--with-libgcrypt
 GCRYPT_CONFIGURE_OFF=	--with-openssl
 GCRYPT_CPPFLAGS=	-I${LOCALBASE}/include
 GCRYPT_LIBS=		-L${LOCALBASE}/lib
-GCRYPT_USE_OFF=	openssl=yes
+GCRYPT_USES_OFF=	ssl
 ZLIB_CONFIGURE_WITH=	libz
 
 .include <bsd.port.pre.mk>
@@ -48,9 +48,5 @@ post-patch:
 		${WRKSRC}/configure
 .  endif
 .endif
-
-post-build:
-	@${REINPLACE_CMD} -E -e '/Requires.private:/{s/[[:<:]]zlib[[:>:]]//;s/,,/,/;s/ ,/ /;s/,$$//;}' \
-		${WRKSRC}/libssh2.pc
 
 .include <bsd.port.post.mk>

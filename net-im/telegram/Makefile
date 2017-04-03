@@ -3,6 +3,7 @@
 
 PORTNAME=	telegram
 PORTVERSION=	1.4.1.g20161227
+PORTREVISION=	2
 CATEGORIES=	net-im
 
 MAINTAINER=	cpm@FreeBSD.org
@@ -12,7 +13,7 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libconfig.so:devel/libconfig \
-		libevent.so:devel/libevent2 \
+		libevent.so:devel/libevent \
 		libjansson.so:devel/jansson
 
 BROKEN_mips=	Missing header
@@ -32,12 +33,6 @@ PLIST_FILES=	bin/telegram-cli \
 		etc/telegram-cli/server.pub
 PORTDOCS=	*
 
-.include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 1000024
-USE_GCC=	yes
-.endif
-
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/telegram-cli
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/telegram-cli ${STAGEDIR}${PREFIX}/bin
@@ -46,4 +41,4 @@ do-install:
 	(cd ${WRKSRC}/ && ${INSTALL_DATA} CHANGELOG README-LUA README.es README.md \
 		${STAGEDIR}${DOCSDIR})
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

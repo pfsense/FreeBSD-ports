@@ -1,0 +1,44 @@
+#!/bin/sh
+
+# PROVIDE: minio
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name=minio
+rcvar=minio_enable
+
+load_rc_config ${name}
+
+: ${minio_enable:="NO"}
+: ${minio_config="%%PREFIX%%/etc/minio"}
+: ${minio_disks="/var/db/minio"}
+: ${minio_address=":9000"}
+: ${minio_user:="%%USER%%"}
+: ${minio_group:="%%GROUP%%"}
+
+pidfile="/var/run/${name}.pid"
+procname="%%PREFIX%%/bin/minio"
+command="/usr/sbin/daemon"
+command_args="-f -c -p ${pidfile} /usr/bin/env ${minio_env} ${procname} -C \"${minio_config}\" server --address=\"${minio_address}\" --quiet ${minio_disks}"
+
+start_precmd="minio_startprecmd"
+
+minio_startprecmd()
+{
+	if [ ! -e "${pidfile}" ]; then
+		install -o "${minio_user}" -g "${minio_group}" "/dev/null" "${pidfile}"
+	fi
+
+	if [ ! -d "${minio_config}" ]; then
+		install -d -o "${minio_user}" -g "${minio_group}" "${minio_config}"
+	fi
+
+	for disk in "${minio_disks}"; do
+		if [ ! -d "${disk}" ]; then
+			install -d -o "${minio_user}" -g "${minio_group}" "${disk}"
+		fi
+	done
+}
+
+run_rc_command "$1"

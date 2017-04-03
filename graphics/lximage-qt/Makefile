@@ -3,11 +3,11 @@
 
 PORTNAME=	lximage-qt
 PORTVERSION=	0.5.1
+PORTREVISION=	1
 CATEGORIES=	graphics
-#MASTER_SITES=	LXQT/${PORTNAME}
-MASTER_SITES=	https://github.com/lxde/${PORTNAME}/releases/download/${PORTVERSION}/
+MASTER_SITES=	LXQT/${PORTNAME}
 
-MAINTAINER=	olivierd@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Image viewer and screenshot tool
 
 LICENSE=	GPLv2

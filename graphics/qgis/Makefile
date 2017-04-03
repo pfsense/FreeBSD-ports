@@ -3,7 +3,7 @@
 
 PORTNAME=	qgis
 DISTVERSIONPREFIX=	final-
-DISTVERSION=	2_18_2
+DISTVERSION=	2_18_4
 PORTREVISION=	1
 CATEGORIES=	graphics geography
 
@@ -29,7 +29,9 @@ USE_GITHUB=	yes
 GH_PROJECT=	${PORTNAME:tu}
 
 USES=		bison cmake cpe desktop-file-utils execinfo fortran \
-		gmake python:2.7 sqlite
+		gmake pyqt:4 python:2.7 sqlite
+USE_PYQT=	core gui network qscintilla2 sip sql svg xml webkit_run
+
 USE_QT4=	corelib designer doc gui linguist_build moc_build \
 		network qmake_build rcc_build script sql sql-pgsql \
 		sql-sqlite3 svg testlib uic_build webkit xml
@@ -49,7 +51,8 @@ DEBUG_DESC=		Write Debugging Output to Console
 SERVER_DESC=		Enable QGIS server
 TESTS_DESC=		Run the test suite after build process
 
-CMAKE_ARGS+=	-DWITH_ORACLE:BOOL=FALSE \
+CMAKE_ARGS+=	-DENABLE_QT5=OFF -DENABLE_PYTHON3=OFF \
+		-DWITH_ORACLE:BOOL=FALSE \
 		-DWITH_GLOBE:BOOL=FALSE
 
 .if !defined(MAINTAINER_MODE)
@@ -89,53 +92,40 @@ POSTGIS_LIB_DEPENDS=	liblwgeom.so:databases/postgis22
 POSTGIS_CMAKE_ON=	-DWITH_POSTGRESQL:BOOL=TRUE
 POSTGIS_CMAKE_OFF=	-DWITH_POSTGRESQL:BOOL=FALSE
 
-PYTHON_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}future>=0.14.3:devel/py-future \
+PYTHON_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}future>=0.15.2:devel/py-future \
 			${PYTHON_PKGNAMEPREFIX}httplib2>=2-0.9.2:www/py-httplib2 \
 			${PYTHON_PKGNAMEPREFIX}Jinja2>=2.8:devel/py-Jinja2 \
-			${PYTHON_PKGNAMEPREFIX}MarkupSafe>=0.23:textproc/py-MarkupSafe \
-			${PYTHON_PKGNAMEPREFIX}matplotlib>=1.4.3:math/py-matplotlib \
+			${PYTHON_PKGNAMEPREFIX}MarkupSafe>=1.0:textproc/py-MarkupSafe \
+			${PYTHON_PKGNAMEPREFIX}matplotlib>=1.5.3:math/py-matplotlib \
 			${PYTHON_PKGNAMEPREFIX}mock>=1.3.0:devel/py-mock \
-			${PYTHON_PKGNAMEPREFIX}pip>=8.0.2:devel/py-pip \
+			${PYTHON_PKGNAMEPREFIX}pbr>=1.8.1:devel/py-pbr \
+			${PYTHON_PKGNAMEPREFIX}pip>=9.0.1:devel/py-pip \
 			${PYTHON_PKGNAMEPREFIX}pygments>=2.1.3:textproc/py-pygments \
+			${PYTHON_PKGNAMEPREFIX}pyproj>=1.9.5.1:graphics/py-pyproj \
 			${PYTHON_PKGNAMEPREFIX}pyspatialite>=3.0.1:databases/pyspatialite \
-			${PYTHON_PKGNAMEPREFIX}pytz>=2016.6.1,1:devel/py-pytz \
-			${PYTHON_PKGNAMEPREFIX}qt4-core>=4.8.5:devel/py-qt4-core \
-			${PYTHON_PKGNAMEPREFIX}qt4-gui>=4.8.5:x11-toolkits/py-qt4-gui \
-			${PYTHON_PKGNAMEPREFIX}qt4-network>=4.8.5:net/py-qt4-network \
-			${PYTHON_PKGNAMEPREFIX}qt4-qscintilla2>=2.8.3:devel/py-qt4-qscintilla2 \
-			${PYTHON_PKGNAMEPREFIX}qt4-sql>=4.11.3:databases/py-qt4-sql \
-			${PYTHON_PKGNAMEPREFIX}qt4-svg>=4.8.5:graphics/py-qt4-svg \
-			${PYTHON_PKGNAMEPREFIX}qt4-xml>=4.5.4:textproc/py-qt4-xml \
-			${PYTHON_PKGNAMEPREFIX}requests>=2.10.0:www/py-requests \
-			${PYTHON_PKGNAMEPREFIX}sip>=4.14.6:devel/py-sip \
+			${PYTHON_PKGNAMEPREFIX}pytz>=2016.10:devel/py-pytz \
+			${PYTHON_PKGNAMEPREFIX}requests>=2.11.1:www/py-requests \
 			${PYTHON_PKGNAMEPREFIX}six>=1.10.0:devel/py-six \
-			${PYTHON_PKGNAMEPREFIX}sqlite3>=2.7.6:databases/py-sqlite3 \
+			${PYTHON_PKGNAMEPREFIX}sqlite3>=2.7.13:databases/py-sqlite3 \
 			${PYTHON_PKGNAMEPREFIX}yaml>=3.11:devel/py-yaml
-PYTHON_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}future>=0.14.3:devel/py-future \
+PYTHON_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}future>=0.15.2:devel/py-future \
 			${PYTHON_PKGNAMEPREFIX}gdal>=2.0.1:graphics/py-gdal \
 			${PYTHON_PKGNAMEPREFIX}httplib2>=2-0.9.2:www/py-httplib2 \
 			${PYTHON_PKGNAMEPREFIX}Jinja2>=2.8:devel/py-Jinja2 \
-			${PYTHON_PKGNAMEPREFIX}MarkupSafe>=0.23:textproc/py-MarkupSafe \
-			${PYTHON_PKGNAMEPREFIX}matplotlib>=1.4.3:math/py-matplotlib \
+			${PYTHON_PKGNAMEPREFIX}MarkupSafe>=1.0:textproc/py-MarkupSafe \
+			${PYTHON_PKGNAMEPREFIX}matplotlib>=1.5.3:math/py-matplotlib \
 			${PYTHON_PKGNAMEPREFIX}mock>=1.3.0:devel/py-mock \
 			${PYTHON_PKGNAMEPREFIX}numpy>=1.11.2,1:math/py-numpy \
-			${PYTHON_PKGNAMEPREFIX}pip>=8.0.2:devel/py-pip \
+			${PYTHON_PKGNAMEPREFIX}pbr>=1.8.1:devel/py-pbr \
+			${PYTHON_PKGNAMEPREFIX}pip>=9.0.1:devel/py-pip \
 			${PYTHON_PKGNAMEPREFIX}psycopg2>=2.5.3:databases/py-psycopg2 \
 			${PYTHON_PKGNAMEPREFIX}pygments>=2.1.3:textproc/py-pygments \
+			${PYTHON_PKGNAMEPREFIX}pyproj>=1.9.5.1:graphics/py-pyproj \
 			${PYTHON_PKGNAMEPREFIX}pyspatialite>=3.0.1:databases/pyspatialite \
-			${PYTHON_PKGNAMEPREFIX}pytz>=2016.6.1,1:devel/py-pytz \
-			${PYTHON_PKGNAMEPREFIX}qt4-core>=4.8.5:devel/py-qt4-core \
-			${PYTHON_PKGNAMEPREFIX}qt4-gui>=4.8.5:x11-toolkits/py-qt4-gui \
-			${PYTHON_PKGNAMEPREFIX}qt4-network>=4.8.5:net/py-qt4-network \
-			${PYTHON_PKGNAMEPREFIX}qt4-qscintilla2>=2.8.3:devel/py-qt4-qscintilla2 \
-			${PYTHON_PKGNAMEPREFIX}qt4-sql>=4.11.3:databases/py-qt4-sql \
-			${PYTHON_PKGNAMEPREFIX}qt4-svg>=4.8.5:graphics/py-qt4-svg \
-			${PYTHON_PKGNAMEPREFIX}qt4-webkit>=4.11.1:www/py-qt4-webkit \
-			${PYTHON_PKGNAMEPREFIX}qt4-xml>=4.5.4:textproc/py-qt4-xml \
-			${PYTHON_PKGNAMEPREFIX}requests>=2.10.0:www/py-requests \
-			${PYTHON_PKGNAMEPREFIX}sip>=4.14.6:devel/py-sip \
+			${PYTHON_PKGNAMEPREFIX}pytz>=2016.10:devel/py-pytz \
+			${PYTHON_PKGNAMEPREFIX}requests>=2.11.1:www/py-requests \
 			${PYTHON_PKGNAMEPREFIX}six>=1.10.0:devel/py-six \
-			${PYTHON_PKGNAMEPREFIX}sqlite3>=2.7.6:databases/py-sqlite3 \
+			${PYTHON_PKGNAMEPREFIX}sqlite3>=2.7.13:databases/py-sqlite3 \
 			${PYTHON_PKGNAMEPREFIX}termcolor>=1.1.0:devel/py-termcolor \
 			${PYTHON_PKGNAMEPREFIX}yaml>=3.11:devel/py-yaml
 PYTHON_CMAKE_ON=	-DWITH_BINDINGS:BOOL=TRUE
@@ -156,7 +146,7 @@ INSTALLS_ICONS=		yes
 USES+=		compiler:features
 .else
 USES+=		compiler:gcc-c++11-lib
-BUILD_DEPENDS+=	flex>=2.5.39:textproc/flex
+BUILD_DEPENDS+=	flex>=2.6.1:textproc/flex
 CMAKE_ARGS+=	-DFLEX_EXECUTABLE:STRING=${LOCALBASE}/bin/flex
 CXXFLAGS+=	-I${LOCALBASE}/include/flex
 .endif

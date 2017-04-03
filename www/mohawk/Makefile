@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	mohawk
-PORTVERSION=	2.0.17
+PORTVERSION=	2.0.19
+PORTREVISION=	1
 CATEGORIES=	www ipv6
 MASTER_SITES=	http://fossil.bsdsx.fr/mohawk/tarball/ \
 		http://fossil.etoilebsd.net/mohawk/tarball/
@@ -12,7 +13,7 @@ COMMENT=	Simple and lightweight HTTP daemon
 
 LICENSE=	BSD2CLAUSE
 
-LIB_DEPENDS=	libevent.so:devel/libevent2
+LIB_DEPENDS=	libevent.so:devel/libevent
 
 PLIST_FILES+=	bin/mhtpasswd \
 		man/man5/mohawk.conf.5.gz \

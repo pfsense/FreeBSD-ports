@@ -3,7 +3,7 @@
 
 PORTNAME=	ffmpeg
 PORTVERSION=	3.2.4
-PORTREVISION=	2
+PORTREVISION=	7
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio ipv6 net
 MASTER_SITES=	http://ffmpeg.org/releases/
@@ -267,7 +267,7 @@ OPENJPEG_LIB_DEPENDS=	libopenjp2.so:graphics/openjpeg
 OPENJPEG_CONFIGURE_ENABLE=	libopenjpeg
 
 # openssl
-OPENSSL_USE=		OPENSSL=yes
+OPENSSL_USES=		ssl
 OPENSSL_CONFIGURE_ENABLE=	openssl
 OPENSSL_IMPLIES=	NONFREE
 
@@ -305,7 +305,7 @@ SDL_CONFIGURE_ENABLE=	ffplay
 SDL_CONFIGURE_OFF=	--disable-outdev=sdl --disable-sdl2
 
 # smbclient
-SMB_LIB_DEPENDS=	libsmbclient.so:net/samba-libsmbclient
+SMB_USES=		samba:lib
 SMB_CONFIGURE_ENABLE=	libsmbclient
 SMB_IMPLIES=		GPL3
 
@@ -440,13 +440,14 @@ DATADIR=	${PREFIX}/share/${PORTNAME}${PKGNAMESUFFIX}
 DATADIR=	${PREFIX}/share/${PORTNAME}${PKGNAMESUFFIX}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${PKGNAMESUFFIX}
 CONFIGURE_ENV+=	COMPILER_PATH=${LOCALBASE}/bin
-MAKE_ENV+=	COMPILER_PATH=${LOCALBASE}/bin
+MAKE_ENV+=	COMPILER_PATH=${LOCALBASE}/bin V=1
 
 CONFIGURE_ARGS+=--prefix="${PREFIX}" \
 		--mandir="${PREFIX}/man" \
 		--datadir="${DATADIR}" \
 		--pkgconfigdir="${PREFIX}/libdata/pkgconfig" \
 		--enable-shared \
+		--enable-pic \
 		--enable-gpl \
 		--enable-postproc \
 		--enable-avfilter \
@@ -456,7 +457,6 @@ CONFIGURE_ARGS+=--prefix="${PREFIX}" \
 
 CONFIGURE_ENV_armv6_clang=	ASFLAGS=-no-integrated-as
 CONFIGURE_ARGS_armv6=		--disable-fast-unaligned
-CONFIGURE_ARGS_FreeBSD_9=	--enable-memalign-hack
 
 DOC_FILES=	Changelog CREDITS INSTALL.md LICENSE.md MAINTAINERS \
 		README.md RELEASE_NOTES

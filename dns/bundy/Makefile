@@ -3,7 +3,7 @@
 
 PORTNAME=	bundy
 PORTVERSION=	0.20160125
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	dns
 MASTER_SITES=	LOCAL/mat/bundy SF/boost/boost/1.55.0:boost
 DISTFILES+=	boost_1_55_0.tar.bz2:boost
@@ -30,9 +30,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	bundy-dns
 GH_TAGNAME=	d310c5d
 
-USE_OPENSSL=	yes
-
-USES=	compiler:c++11-lang pathfix pkgconfig libtool python:3 autoreconf
+USES=	compiler:c++11-lang pathfix pkgconfig libtool python:3 autoreconf ssl
 
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
@@ -45,20 +43,8 @@ CPPFLAGS+=	-I${WRKDIR}/boost_1_55_0
 
 OPTIONS_DEFINE=	DOCS
 
-PLIST_SUB=	PYTHON_SUFFIX=cpython-${PYTHON_SUFFIX}
-
 post-install:
 	${MV} ${STAGEDIR}${ETCDIR}/cmdctl-certfile.pem ${STAGEDIR}${ETCDIR}/cmdctl-certfile.pem.sample
 	${MV} ${STAGEDIR}${ETCDIR}/cmdctl-keyfile.pem ${STAGEDIR}${ETCDIR}/cmdctl-keyfile.pem.sample
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} < 3500
-PYOEXTENSION=	pyo
-.else
-PYOEXTENSION=	opt-1.pyc
-.endif
-
-PLIST_SUB+=	PYOEXTENSION=${PYOEXTENSION}
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

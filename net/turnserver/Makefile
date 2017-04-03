@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	turnserver
-PORTVERSION=	4.5.0.5
+PORTVERSION=	4.5.0.6
 CATEGORIES=	net
 MASTER_SITES=	http://turnserver.open-sys.org/downloads/v${PORTVERSION}/:prog \
 		http://turnserver.open-sys.org/downloads/extradocs/:xdocs \
@@ -17,9 +17,7 @@ COMMENT=	STUN/TURN Server; IPv6, DTLS support; RFCs 5389, 5766, 6062, 6156
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libevent.so:devel/libevent2
-
-CONFLICTS=	libevent-1.*
+LIB_DEPENDS=	libevent.so:devel/libevent
 
 USES=		gettext-runtime perl5 shebangfix ssl
 SHEBANG_FILES=	examples/scripts/restapi/shared_secret_maintainer.pl
