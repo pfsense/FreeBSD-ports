@@ -31,14 +31,25 @@
 *   after the source host ID so it appears next in the list. 
 * ------------------------------------------------------------------------------
 * Part of pfSense 2.3 and later (https://www.pfSense.org/).
+* Copyright (c) 2004-2016 Rubicon Communications, LLC (Netgate)
 *
-* Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
-* Licensed under the Apache 2.0 License.
-*
+* Inspired by vhosts package originally written by Mark Crane.
+* Copyright (C) 2008 Mark J Crane
+* Copyright (C) 2015 ESF, LLC
 * Copyright (C) 2016 Softlife Consulting
-* Licensed under the same terms and conditions as pfSense itself.
+* All rights reserved.
 *
-* License: https://github.com/pfsense/pfsense/blob/master/LICENSE
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
 *******************************************************************************/
 require_once("guiconfig.inc");
 require_once("util.inc");
@@ -172,7 +183,7 @@ elseif ($good_id && ($act == 'chg' || $act == 'dup'))
     /*-------------------------------------------------*/
     /* Verify the selected certificate is still valid. */
     /*-------------------------------------------------*/
-    if (!empty(trim($pconfig['certref']))) 
+    if (!empty(trim($pconfig['certref'])))
         {
         $thiscert = lookup_cert($pconfig['certref']);
         $purpose  = ($thiscert ? cert_get_purpose($thiscert['crt'], true) : null);

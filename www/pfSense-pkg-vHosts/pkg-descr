@@ -1,2 +1,3 @@
-A web server package to host HTML, Javascript, CSS, and PHP. It creates another instance 
-of the nginx web server that is already installed and uses PHP5 in FastCGI mode.
+A web server package to host HTML, Javascript, CSS, and PHP. It creates another
+instance of the nginx web server that is already installed and uses PHP5 in 
+FastCGI mode.
