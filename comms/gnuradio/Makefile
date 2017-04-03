@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	gnuradio
-PORTVERSION=	3.7.9.2
-PORTREVISION=	5
+PORTVERSION=	3.7.10.1
+PORTREVISION=	1
 CATEGORIES=	comms astro hamradio
 MASTER_SITES=	http://gnuradio.org/releases/gnuradio/ \
 		LOCAL/db
@@ -16,7 +16,6 @@ BUILD_DEPENDS=	sdl-config:devel/sdl12 \
 		swig2.0:devel/swig20 \
 		cheetah:devel/py-cheetah \
 		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml \
-		${PYTHON_PKGNAMEPREFIX}qt4>0:devel/py-qt4 \
 		xdg-open:devel/xdg-utils \
 		guile:lang/guile \
 		aconnect:audio/alsa-utils \
@@ -24,6 +23,7 @@ BUILD_DEPENDS=	sdl-config:devel/sdl12 \
 		${PYNUMPY} \
 		${PYTHON_SITELIBDIR}/ephem/__init__.py:astro/pyephem
 LIB_DEPENDS=	libcppunit.so:devel/cppunit \
+		libcodec2.so:audio/codec2 \
 		libfftw3.so:math/fftw3 \
 		libfftw3f.so:math/fftw3-float \
 		libqwt.so:x11-toolkits/qwt5 \
@@ -41,8 +41,8 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 # volk/lib/volk_cpu.c: In function 'i_can_has_3dnow':
 # volk/lib/volk_cpu.c:62: error: can't find a register in class 'BREG' while reloading 'asm'
 # volk/lib/volk_cpu.c:62: error: 'asm' operand has impossible constraints
-USES=		cmake:outsource compiler:c11 iconv perl5 python:2.7 shebangfix
-SHEBANG_FILES=	grc/freedesktop/grc_setup_freedesktop.in
+USES=		cmake:outsource compiler:c11 iconv perl5 pkgconfig pyqt:4 python:2.7 shebangfix
+SHEBANG_FILES=	grc/scripts/freedesktop/grc_setup_freedesktop.in
 CMAKE_ARGS+=	-DSWIG_EXECUTABLE:STRING="${LOCALBASE}/bin/swig2.0"\
 		-DICONV_PREFIX:STRING="${ICONV_PREFIX}" \
 		-DICONV_LIB:STRING="X${ICONV_LIB}" \
@@ -51,9 +51,10 @@ CMAKE_ARGS+=	-DSWIG_EXECUTABLE:STRING="${LOCALBASE}/bin/swig2.0"\
 		-DCMAKE_INSTALL_RPATH:STRING="${LOCALBASE}/lib/gcc${_GCC_VER}"
 # for detailed debugging uncomment the next line
 #CMAKE_ARGS+=	--debug-output --trace
-MAJOR_SUB_VER=	3.7.9.2
-DOCSDIR=	share/doc/${PORTNAME}-${MAJOR_SUB_VER}
+MAJOR_SUB_VER=	${PORTVERSION}
+DOCSDIR=	share/doc/${PORTNAME}-${PORTVERSION}
 USE_GNOME=	pygtk2
+USE_PYQT=	core gui opengl
 USE_WX=		3.0+
 USE_QT4=	corelib gui xml qmake moc rcc uic
 WX_COMPS=	wx wx:build wx:run python:build python:run
@@ -101,9 +102,6 @@ TESTING_BUILD_DEPENDS=	cppunit-config:devel/cppunit
 .if ${PORT_OPTIONS:MUHD}
 LIBSTRIP_FILES+=	uhd
 LIB_DEPENDS+=	libuhd.so:comms/uhd
-.endif
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
-USE_GCC=	yes
 .endif
 
 PATCH_FILES=	docs/doxygen/Doxyfile.in \

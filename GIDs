@@ -107,8 +107,8 @@ octoprint:*:162:
 _iked:*:163:
 lightdm:*:164:
 uwsgi:*:165:
-# free: 166
-# free: 167
+yule:*:166:
+ceph:*:167:
 # free: 168
 # free: 169
 tile38:*:170:
@@ -144,7 +144,7 @@ mcserver:*:199:
 sympa:*:200:
 privoxy:*:201:
 dspam:*:202:
-# free: 203
+cinder:*:203:
 yate:*:204:
 gnugk:*:205:
 gini:*:206:
@@ -243,7 +243,7 @@ ntopng:*:288:
 # free: 299
 backuppc:*:300:
 # free: 301
-# free: 302
+netdata:*:302:
 # free: 303
 # free: 304
 # free: 305
@@ -361,7 +361,7 @@ uhub:*:411:
 # free: 417
 # free: 418
 # free: 419
-# free: 420
+oxidized:*:420:
 # free: 421
 # free: 422
 # free: 423
@@ -414,7 +414,7 @@ consul:*:469:
 serf:*:470:
 vault:*:471:
 nomad:*:472:
-# free: 473
+minio:*:473:
 # free: 474
 # free: 475
 # free: 476
@@ -741,7 +741,7 @@ zetacoin:*:780:
 # free: 797
 # free: 798
 # free: 799
-# free: 800
+clickhouse:*:800:
 # free: 801
 # free: 802
 # free: 803
@@ -790,7 +790,7 @@ subsonic:*:844:
 sogod:*:846:
 domoticz:*:847:
 graylog:*:848:
-# free: 849
+chronyd:*:849:
 # free: 850
 # free: 851
 # free: 852
@@ -837,7 +837,7 @@ graylog:*:848:
 # free: 893
 # free: 894
 # free: 895
-# free: 896
+istat:*:896:
 znc:*:897:
 ufdb:*:898:
 guacamole:*:899:

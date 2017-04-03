@@ -1,9 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	gr-osmosdr
-PORTVERSION=	20150716
-PORTREVISION=	4
-PORTREVISION=	1
+PORTVERSION=	20160622
+PORTREVISION=	2
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://contribs.martymac.org/FreeBSD-ports/distfiles/ \
 		LOCAL/martymac

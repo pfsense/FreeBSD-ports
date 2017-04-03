@@ -3,6 +3,7 @@
 
 PORTNAME=	minetest
 PORTVERSION=	0.4.15
+PORTREVISION=	1
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -84,10 +85,6 @@ BUILD_DEPENDS+=	${NONEXISTENT}:x11-toolkits/irrlicht:patch
 IRRLICHT_INCLUDE_DIR=	`${MAKE} -C ${PORTSDIR}/x11-toolkits/irrlicht -V WRKSRC`/include
 CMAKE_ARGS+=	-DIRRLICHT_INCLUDE_DIR:STRING="${IRRLICHT_INCLUDE_DIR}"
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-irrlichtdepend
-.endif
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-src_unittest_test__serialization.cpp
 .endif
 
 post-patch:

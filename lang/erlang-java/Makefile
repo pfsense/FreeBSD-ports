@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	erlang
-PORTVERSION=	19.2
+PORTVERSION=	19.3
 CATEGORIES=	lang parallel java
 MASTER_SITES=	http://www.erlang.org/download/:erlangorg		\
 		http://erlang.stacken.kth.se/download/:erlangorg	\
@@ -31,7 +31,7 @@ MAKE_JOBS_UNSAFE=yes
 
 OPTIONS_DEFINE=	DOCS
 
-ERL_RELEASE=	19.2
+ERL_RELEASE=	19.3
 
 USES=		gmake ncurses perl5
 USE_PERL5=	build
@@ -54,10 +54,6 @@ USE_JAVA=	yes
 
 ERLANG_DOCS=	otp_doc_html_${ERL_RELEASE}.tar.gz
 
-.if ${ARCH} == i386
-MAKE_ARGS+=	ARCH=x86
-.endif
-
 do-build:
 	@${MKDIR} ${WRKSRC}/lib/jinterface/ebin
 	cd ${WRKSRC}/lib/jinterface && ${GMAKE} ERL_TOP=${WRKSRC} TARGET=${CONFIGURE_TARGET}
@@ -74,5 +70,6 @@ do-install-DOCS-on:
 	cd ${WRKSRC}/lib/jinterface && ${COPYTREE_SHARE} doc ${STAGEDIR}${APP_DIR}
 	${TAR} --unlink -xzpf ${DISTDIR}/${DIST_SUBDIR}/${ERLANG_DOCS} \
 		-C ${STAGEDIR}${PREFIX}/lib/erlang lib/jinterface-${APP_VERSION}
+	@${FIND} ${STAGEDIR}${APP_DIR} -type d -empty -delete
 
 .include <bsd.port.mk>

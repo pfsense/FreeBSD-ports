@@ -3,7 +3,7 @@
 
 PORTNAME=	ring-gnome
 PORTVERSION=	0.160516
-PORTREVISION=	1
+PORTREVISION=	2
 #DISTVERSIONPREFIX=	v
 CATEGORIES=	net-im net-p2p
 
@@ -11,7 +11,7 @@ MAINTAINER=	yuri@rawbw.com
 COMMENT=	Gnome client of the Ring VoIP SIP phone and IM
 
 LICENSE=	GPLv3
-LICENSE_FILES=	${WRKSRC}/COPYING
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libringclient.so:net-im/ring-libclient \
 		libqrencode.so:graphics/libqrencode \

@@ -85,7 +85,7 @@ MOZILLA_VER?=	${PORTVERSION}
 MOZILLA_BIN?=	${PORTNAME}-bin
 MOZILLA_EXEC_NAME?=${MOZILLA}
 MOZ_RPATH?=	${MOZILLA}
-USES+=		cpe gmake iconv perl5 pkgconfig \
+USES+=		cpe gmake iconv localbase perl5 pkgconfig \
 			python:2.7,build desktop-file-utils
 CPE_VENDOR?=mozilla
 USE_PERL5=	build
@@ -137,14 +137,12 @@ MOZ_EXPORT+=	${CONFIGURE_ENV} \
 MOZ_OPTIONS+=	--prefix="${PREFIX}"
 MOZ_MK_OPTIONS+=MOZ_OBJDIR="${MOZ_OBJDIR}"
 
-CPPFLAGS+=		-isystem${LOCALBASE}/include
-LDFLAGS+=		-L${LOCALBASE}/lib \
-			-Wl,-rpath,${PREFIX}/lib/${MOZILLA} -Wl,--as-needed
+LDFLAGS+=		-Wl,--as-needed
 
 .if ${OPSYS} != DragonFly # XXX xpcshell crash during install
 # use jemalloc 3.0.0 (4.0 for firefox 43+) API for stats/tuning
 MOZ_EXPORT+=	MOZ_JEMALLOC3=1 MOZ_JEMALLOC4=1
-.if ${OPSYS} != FreeBSD || ${OSVERSION} < 1000012 || ${MOZILLA_VER:R:R} >= 37
+.if ${OPSYS} != FreeBSD || ${MOZILLA_VER:R:R} >= 37
 . if ${MOZILLA_VER:R:R} >= 48
 MOZ_OPTIONS+=	--enable-jemalloc=4
 .else
@@ -169,7 +167,7 @@ cairo_LIB_DEPENDS=	libcairo.so:graphics/cairo
 cairo_MOZ_OPTIONS=	--enable-system-cairo
 .endif
 
-event_LIB_DEPENDS=	libevent.so:devel/libevent2
+event_LIB_DEPENDS=	libevent.so:devel/libevent
 event_MOZ_OPTIONS=	--with-system-libevent
 
 ffi_LIB_DEPENDS=	libffi.so:devel/libffi
@@ -252,9 +250,11 @@ BUILD_DEPENDS+=	${-${dep}_BUILD_DEPENDS}
 # Standard options
 MOZ_CHROME?=	omni
 MOZ_TOOLKIT?=	cairo-gtk2
+MOZ_CHANNEL?=	${PKGNAMESUFFIX:Urelease:S/^-//}
 MOZ_OPTIONS+=	\
 		--enable-chrome-format=${MOZ_CHROME} \
 		--enable-default-toolkit=${MOZ_TOOLKIT} \
+		--enable-update-channel=${MOZ_CHANNEL} \
 		--enable-pie \
 		--with-pthreads
 # Configure options for install
@@ -276,9 +276,7 @@ MOZ_OPTIONS+=	--with-system-zlib		\
 # http://www.chromium.org/developers/how-tos/api-keys
 # Note: these are for FreeBSD use ONLY. For your own distribution,
 # please get your own set of keys.
-MOZ_EXPORT+=	MOZ_GOOGLE_API_KEY=AIzaSyBsp9n41JLW8jCokwn7vhoaMejDFRd1mp8 \
-				MOZ_GOOGLE_OAUTH_API_CLIENTID=996322985003.apps.googleusercontent.com \
-				MOZ_GOOGLE_OAUTH_API_KEY=IR1za9-1VK0zZ0f_O8MVFicn
+MOZ_EXPORT+=	MOZ_GOOGLE_API_KEY=AIzaSyBsp9n41JLW8jCokwn7vhoaMejDFRd1mp8
 
 .if ${PORT_OPTIONS:MGTK3}
 MOZ_TOOLKIT=	cairo-gtk3

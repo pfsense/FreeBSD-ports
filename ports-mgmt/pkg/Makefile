@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pkg
-DISTVERSION=	1.9.4
+DISTVERSION=	1.10.1
 PORTREVISION=	1
 _PKG_VERSION=	${DISTVERSION}
 CATEGORIES=	ports-mgmt
@@ -21,6 +21,7 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-maintainer-mode
 INSTALL_TARGET=	install-strip
 PORTDOCS=	NEWS
+PORTSCOUT=	ignore:1
 
 # Use a submake as 'deinstall install' needs to reevaluate PKG_CMD
 # so that pkg-static is used from the wrkdir

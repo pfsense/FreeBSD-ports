@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	geoipupdate
-PORTVERSION=	2.2.2
-PORTREVISION=	1
+PORTVERSION=	2.3.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net geography
 
@@ -19,5 +18,11 @@ GH_ACCOUNT=	maxmind
 
 USES=		libtool localbase pathfix autoreconf
 GNU_CONFIGURE=	yes
+
+OPTIONS_DEFINE=	DOCS
+
+post-install:
+	${MV} ${STAGEDIR}${DOCSDIR}/GeoIP.conf.default \
+		${STAGEDIR}${PREFIX}/etc/GeoIP.conf.sample
 
 .include <bsd.port.mk>

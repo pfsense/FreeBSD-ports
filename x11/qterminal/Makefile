@@ -3,6 +3,7 @@
 
 PORTNAME=	qterminal
 PORTVERSION=	0.7.0
+PORTREVISION=	1
 CATEGORIES=	x11
 
 MAINTAINER=	bacon4000@gmail.com
@@ -18,7 +19,7 @@ USES=		cmake:outsource compiler:c++11-lang localbase:ldflags \
 		lxqt pkgconfig tar:xz
 USE_QT5=	buildtools_build core gui qmake_build widgets x11extras
 USE_XORG=	x11
-USE_LXQT=	lxqt
+USE_LXQT=	buildtools lxqt
 
 CMAKE_ARGS+=	-DUSE_SYSTEM_QXT:BOOL=OFF
 

@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	node
-PORTVERSION=	6.9.2
+PORTVERSION=	6.10.1
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES=	http://nodejs.org/dist/v${PORTVERSION}/
@@ -14,17 +15,19 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 OPTIONS_DEFINE=	BUNDLED_SSL DOCS NLS DTRACE
-OPTIONS_DEFAULT=	DTRACE
+OPTIONS_DEFAULT=DTRACE
 OPTIONS_SUB=	yes
+
+OPTIONS_DEFAULT_FreeBSD_10=	BUNDLED_SSL
+OPTIONS_DEFAULT+=		${OPTIONS_DEFAULT_${OPSYS}_${OSREL:R}}
 
 .if !exists(/usr/sbin/dtrace)
 OPTIONS_EXCLUDE+=	DTRACE
 .endif
 
-OPTIONS_EXCLUDE_FreeBSD_9=	DTRACE
 OPTIONS_EXCLUDE_FreeBSD_10=	DTRACE
 
-BUNDLED_SSL_DESC=		Use node.js's bundled OpenSSL implementation
+BUNDLED_SSL_DESC=		Use node.js's bundled OpenSSL implementation #'
 BUNDLED_SSL_USES_OFF=		ssl
 BUNDLED_SSL_CONFIGURE_OFF+=	--shared-openssl
 
@@ -59,23 +62,20 @@ LIB_DEPENDS+=	libcares.so:dns/c-ares\
 
 .if empty(PORT_OPTIONS:MBUNDLED_SSL)
 
-.if ${OSVERSION} < 1100085
-# node.js requires openssl 1.0.2, use the port since base isn't new enough
-WITH_OPENSSL_PORT=	yes
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100085 && ${SSL_DEFAULT} == base
+IGNORE=		node.js requires openssl 1.0.2, add DEFAULT_VERSIONS+=ssl=openssl to /etc/make.conf or enable BUNDLED_SSL option
+.endif
+
+.if !empty(SSL_DEFAULT:Mlibressl*)
+IGNORE=		cannot build node.js with LibreSSL. You must enable BUNDLED_SSL
 .endif
 
 .endif
 
 .include <bsd.port.pre.mk>
 
-.if empty(PORT_OPTIONS:MBUNDLED_SSL)
-.if !empty(SSL_DEFAULT:Mlibressl*)
-IGNORE=		cannot build node.js with LibreSSL. You must enable BUNDLED_SSL
-.endif
-.endif
-
 .if ${ARCH} == "armv6"
-CONFIGURE_ARGS=	--openssl-no-asm
+CONFIGURE_ARGS+=--openssl-no-asm
 .endif
 
 .if ${COMPILER_TYPE} == gcc
@@ -84,10 +84,7 @@ CXXFLAGS+=	-D_GLIBCXX_USE_C99
 .endif
 
 .if ${PORT_OPTIONS:MDTRACE}
-PLIST_SUB+=	DTRACE=""
 CONFIGURE_ARGS+=	--with-dtrace
-.else
-PLIST_SUB+=	DTRACE="@comment "
 .endif
 
 post-patch:

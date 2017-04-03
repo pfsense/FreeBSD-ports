@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	squid
-PORTVERSION=	4.0.17
+PORTVERSION=	4.0.18
+PORTREVISION=	3
 CATEGORIES=	www ipv6
 MASTER_SITES=	http://www.squid-cache.org/Versions/v4/ \
 		http://www2.us.squid-cache.org/Versions/v4/ \
@@ -69,7 +70,7 @@ AUTH_SASL_CPPFLAGS=		-I${LOCALBASE}/include
 AUTH_SASL_LDFLAGS=		-L${LOCALBASE}/lib
 AUTH_SASL_LIB_DEPENDS=		libsasl2.so:security/cyrus-sasl2
 AUTH_SASL_VARS=			BASIC_AUTH+=SASL
-AUTH_SMB_RUN_DEPENDS=		smbclient:net/samba43
+AUTH_SMB_USES=			samba:run
 AUTH_SMB_VARS=			BASIC_AUTH+=SMB EXTERNAL_ACL+=wbinfo_group
 AUTH_SQL_RUN_DEPENDS=		p5-DBI>=1.08:databases/p5-DBI
 AUTH_SQL_VARS=			EXTERNAL_ACL+=SQL_session
@@ -227,10 +228,6 @@ CONFIGURE_ARGS=	--with-default-user=squid \
 		--disable-arch-native
 
 .include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
-IGNORE=		doesn't build, messes C++ headers and libs
-.endif
 
 # Authentication methods and modules:
 

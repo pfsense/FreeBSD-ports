@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	plexmediaserver
-PORTVERSION?=	1.3.3.3148
+PORTVERSION?=	1.4.4.3495
 PORTREVISION?=	0
 CATEGORIES=	multimedia
 MASTER_SITES=	https://downloads.plex.tv/plex-media-server/${PORTVERSION}-${PLEX_BUILD}/
@@ -12,7 +12,7 @@ MAINTAINER?=	feld@FreeBSD.org
 COMMENT=	Plex Media Server component
 
 USES=		cpe tar:bzip2
-PLEX_BUILD?=	b38628e
+PLEX_BUILD?=	edef59192
 NO_BUILD=	yes
 WRKSRC=	${WRKDIR}/PlexMediaServer-${PORTVERSION}-${PLEX_BUILD}
 
@@ -32,6 +32,13 @@ BUNDLE_LIBS=	yes
 
 ONLY_FOR_ARCHS=	amd64
 ONLY_FOR_ARCHS_REASON=	binary-only program, source code not available
+
+OPTIONS_DEFINE=	RELAY
+OPTIONS_DEFAULT=	RELAY
+OPTIONS_SUB=	yes
+RELAY_DESC=	Install Plex Relay daemon
+
+.include <bsd.port.options.mk>
 
 .include <bsd.port.pre.mk>
 

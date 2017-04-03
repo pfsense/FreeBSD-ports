@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	elfutils
-PORTVERSION=	0.163
-PORTREVISION=	7
+PORTVERSION=	0.168
 CATEGORIES=	devel
 MASTER_SITES=	https://sourceware.org/elfutils/ftp/${PORTVERSION}/
 
@@ -51,10 +50,4 @@ post-patch:
 pre-configure:
 	@cd ${WRKSRC} && ${AUTOMAKE}
 
-.include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 1003000
-IGNORE=		requires FreeBSD 10.3 (futimens)
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

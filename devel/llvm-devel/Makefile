@@ -3,6 +3,7 @@
 
 PORTNAME=	llvm
 PORTVERSION=	${LLVM_MAJOR}.d${SNAPDATE}
+PORTREVISION=	1
 CATEGORIES=	devel lang
 PKGNAMESUFFIX=	-devel
 
@@ -75,12 +76,11 @@ EXTRAS_GH_PROJECT=	clang-tools-extra:extras
 EXTRAS_GH_SUBDIR=	tools/clang/tools/extra:extras
 EXTRAS_GH_TAGNAME=	${EXTRAS_COMMIT}:extras
 LIT_DESC=		Install lit and FileCheck test tools
-LLDB_VARS=		_USES_PYTHON=python
 LLD_DESC=		Install lld, the LLVM linker
 LLD_GH_PROJECT=		lld:lld
 LLD_GH_SUBDIR=		tools/lld:lld
 LLD_GH_TAGNAME=		${LLD_COMMIT}:lld
-LLDB_DESC=		Install lldb, the LLVM debugger (ignored on 9.x)
+LLDB_DESC=		Install lldb, the LLVM debugger
 LLDB_BUILD_DEPENDS=	swig:devel/swig13
 LLDB_GH_PROJECT=	lldb:lldb
 LLDB_GH_SUBDIR=		tools/lldb:lldb
@@ -90,8 +90,11 @@ LLDB_VARS=		_USES_PYTHON=python
 OPENMP_DESC=		Install libomp, the LLVM OpenMP runtime library
 OPENMP_CONFLICTS_INSTALL=	libiomp5-devel-*
 OPENMP_GH_PROJECT=	openmp:openmp
-OPENMP_GH_SUBDIR=	tools/openmp:openmp
+OPENMP_GH_SUBDIR=	runtimes/openmp:openmp
 OPENMP_GH_TAGNAME=	${OPENMP_COMMIT}:openmp
+OPENMP_EXTRA_PATCHES= \
+	${PATCHDIR}/openmp-patch-bug32279 \
+	${PATCHDIR}/openmp-patch-tools_openmp_libomptarget_CMakeLists.txt
 GOLD_DESC=		Build the LLVM Gold plugin for LTO
 GOLD_CMAKE_ON=		-DLLVM_BINUTILS_INCDIR=${LOCALBASE}/include
 GOLD_BUILD_DEPENDS=	${LOCALBASE}/bin/ld.gold:devel/binutils
@@ -100,7 +103,9 @@ OPTIONS_SUB=	yes
 
 DOCS_BUILD_DEPENDS=		sphinx-build:textproc/py-sphinx
 
-PLIST_SUB+=	LLVM_MAJOR=${LLVM_MAJOR} LLVM_RELEASE=${LLVM_RELEASE}
+PLIST_SUB+=	LLVM_LIB_VER=${LLVM_MAJOR:C/\..*//} \
+		LLVM_MAJOR=${LLVM_MAJOR} \
+		LLVM_RELEASE=${LLVM_RELEASE}
 
 COMMANDS=	bugpoint \
 		llc \
@@ -178,7 +183,9 @@ COMMANDS+=	c-index-test \
 		clang-check \
 		clang-cpp \
 		clang-format \
+		clang-import-test \
 		clang-offload-bundler \
+		clangd \
 		scan-build \
 		scan-view
 MAN1SRCS+=	clang.1 \
@@ -187,7 +194,7 @@ CLANG_PATTERN=	(c-index-test|clang|scan-|Reporter.py|ScanView.py|scanview.css|so
 .endif
 
 .if ${PORT_OPTIONS:MCOMPILER_RT}
-COMPILER_RT_PATTERN=	(asan_blacklist.txt|sanitizer|xray_interface.h)
+COMPILER_RT_PATTERN=	(asan_blacklist.txt|sanitizer|include.xray)
 .endif
 
 .if ${PORT_OPTIONS:MLIT}
@@ -234,6 +241,11 @@ MAN1SRCS+=	bugpoint.1 llc.1 lli.1 llvm-ar.1 llvm-as.1 \
 NOT_FOR_ARCH=	ia64
 
 .include <bsd.port.pre.mk>
+
+.if defined(WITH_DEBUG)
+CMAKE_BUILD_TYPE=	RelWithDebInfo
+STRIP=
+.endif
 
 _CRTLIBDIR=	${LLVM_PREFIX:S|${PREFIX}/||}/lib/freebsd
 .if ${ARCH} == "amd64"
@@ -286,10 +298,6 @@ PORTDOCS+=	clang-tools
 COMMANDS+=	lld \
 		lld-link
 PORTDOCS+=	lld
-.endif
-
-.if ${OPSYS} == "FreeBSD" && ${COMPILER_TYPE} != clang
-BROKEN=	Working C++11 compiler and library required
 .endif
 
 .if ${PORT_OPTIONS:MLLDB} && ${PYTHON_REL} >= 3000
@@ -390,7 +398,8 @@ build-plist:
 	    -e 's|${PORTVERSION}|%%PORTVERSION%%|' \
 	    -e 's|release.cmake|%%CMAKE_BUILD_TYPE%%.cmake|' \
 	    -e 's|${LLVM_RELEASE:C/\./\\./g}|%%LLVM_RELEASE%%|' \
-	    -e 's|${LLVM_MAJOR:C/\./\\./}|%%LLVM_MAJOR%%|' | \
+	    -e 's|${LLVM_MAJOR:C/\./\\./}|%%LLVM_MAJOR%%|' \
+	    -e 's|\.${LLVM_MAJOR:C/\..*//}|.%%LLVM_LIB_VER%%|' | \
 	    ${SORT} >> ${PLIST}.tmp
 	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR}/lit${LLVM_SUFFIX} -type f | \
 	    ${SED} -e 's|${STAGEDIR}${PYTHON_SITELIBDIR}|%%LIT%%%%PYTHON_SITELIBDIR%%|' \
@@ -404,7 +413,7 @@ build-plist:
 	    if ($$0 ~ /lld/ && $$0 !~ /lldb/) {printf "%%%%LLD%%%%"} \
 	    if ($$0 ~ /(${EXTRAS_PATTERN})/) {printf "%%%%EXTRAS%%%%"} \
 	    if ($$0 ~ /(argdumper|lldb|six.py)/) {printf "%%%%LLDB%%%%"} \
-	    if ($$0 ~ /lib.*omp/) {printf "%%%%OPENMP%%%%"} \
+	    if ($$0 ~ /(lib[ig]*omp|omp.h)/) {printf "%%%%OPENMP%%%%"} \
 	    if ($$0 ~ /LLVMgold/) {printf "%%%%GOLD%%%%"} \
 	    if ($$0 !~ /libclang_rt/) {print} \
 	}' ${PLIST}.tmp >> ${PLIST}

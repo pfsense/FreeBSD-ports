@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	freeradius
-DISTVERSION=	3.0.12
+DISTVERSION=	3.0.13
 CATEGORIES=	net
 MASTER_SITES=	ftp://ftp.freeradius.org/pub/freeradius/%SUBDIR%/ \
 		ftp://ftp.ntua.gr/pub/net/radius/freeradius/%SUBDIR%/ \
@@ -43,7 +43,7 @@ OPTIONS_SUB=	yes
 OPTIONS_DEFINE=	USER KERBEROS HEIMDAL HEIMDAL_PORT LDAP MYSQL \
 		PGSQL UNIXODBC FIREBIRD REDIS PYTHON RUBY \
 		EXPERIMENTAL UDPFROMTO DEVELOPER EDIR PERL REST \
-		FREETDS IDN SSL_PORT DOCS SQLITE3
+		FREETDS IDN DOCS SQLITE3
 OPTIONS_DEFAULT=USER PERL
 
 USER_DESC=		Run as user freeradius, group freeradius
@@ -56,7 +56,6 @@ UDPFROMTO_DESC=		Compile in UDPFROMTO support
 DEVELOPER_DESC=		Enable developer options
 EDIR_DESC=		Enable eDirectory support (implies LDAP)
 REST_DESC=		Enable RESTful API support
-SSL_PORT_DESC=		Use OpenSSL from the ports collection
 
 SQLITE3_CONFIGURE_WITH=rlm_sql_sqlite
 SQLITE3_LIB_DEPENDS=	libsqlite3.so:databases/sqlite3
@@ -282,18 +281,6 @@ CONFIGURE_ARGS+=--quiet
 CONFIGURE_ARGS+=--with-udpfromto
 .endif
 
-.if ${PORT_OPTIONS:MSSL_PORT}
-WITH_OPENSSL_PORT=yes
-.endif
-
-# rlm_eap_fast is currently broken under 9.x:
-# https://github.com/FreeRADIUS/freeradius-server/issues/1803
-.if ${OSVERSION} < 1000015
-PLIST_SUB+=     EAPFAST="@comment "
-.else
-PLIST_SUB+=     EAPFAST=""
-.endif
-
 .include <bsd.port.pre.mk>
 
 # if we're installing, place sample configs into ${EXAMPLESDIR}
@@ -350,9 +337,6 @@ SUB_LIST+=	RADIUS_USER="${RADIUS_USER}" \
 SUB_LIST+=	REQUIRE="${_REQUIRE}"
 
 post-patch:
-.if ${OSVERSION} < 1000015
-	${RM} -r ${WRKSRC}/src/modules/rlm_eap/types/rlm_eap_fast
-.endif
 # never try to find execinfo.h (needed until we can enable/disable backtrace
 	@${REINPLACE_CMD} -e '/#include <execinfo.h>/d' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -Ee "s:tests/all.mk ::" ${WRKSRC}/src/all.mk

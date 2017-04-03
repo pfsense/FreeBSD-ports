@@ -2,7 +2,7 @@
 
 PORTNAME=	llvm
 DISTVERSION=	3.9.1
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	devel lang
 MASTER_SITES=	http://llvm.org/${PRE_}releases/${LLVM_RELEASE}/${RCDIR}
 PKGNAMESUFFIX=	${LLVM_SUFFIX}
@@ -56,7 +56,10 @@ CLANG_EXTRA_PATCHES= \
 	${PATCHDIR}/clang-patch-fopenmp.diff \
 	${PATCHDIR}/clang-patch-tools_clang_lib_Headers_CMakeLists.txt \
 	${PATCHDIR}/clang-patch-tools_clang_tools_clang-format_clang-format.py \
-	${PATCHDIR}/clang-patch-tools_clang_tools_scan-build_libexec_ccc-analyzer
+	${PATCHDIR}/clang-patch-tools_clang_tools_scan-build_libexec_ccc-analyzer \
+	${PATCHDIR}/clang-patch-tools_clang_include_clang_Basic_DiagnosticSemaKinds.td \
+	${PATCHDIR}/clang-patch-tools_clang_lib_Sema_SemaOverload.cpp \
+	${PATCHDIR}/config-patch-tools_clang_include_clang_Sema_Overload.h
 CLANG_CONFLICTS_INSTALL=	clang-devel-3.[1234567]*
 CLANG_DISTFILES=	cfe-${DISTVERSION}.src${EXTRACT_SUFX}
 CLANG_CMAKE_ON=		-DCLANG_DEFAULT_OPENMP_RUNTIME=libomp
@@ -89,6 +92,7 @@ LLDB_USES=		execinfo
 LLDB_VARS=		_USES_PYTHON=python
 OPENMP_DESC=		Install libomp, the LLVM OpenMP runtime library
 OPENMP_DISTFILES=	openmp-${DISTVERSION}.src${EXTRACT_SUFX}
+OPENMP_EXTRA_PATCHES=	${PATCHDIR}/openmp-patch-bug32279
 
 # Emulate USE_GITHUB's ${WRKSRC_tag} to reduce diffs to ../llvm-devel
 .for option in CLANG COMPILER_RT EXTRAS LLD LLDB OPENMP
@@ -279,6 +283,12 @@ PORTDOCS+=	lld
 CXXFLAGS+=	-D_GLIBCXX_USE_C99
 .endif
 
+.if ${ARCH} == "armv6"
+BUILD_DEPENDS+=	${LOCALBASE}/bin/ld:devel/binutils
+CONFIGURE_ENV+=	COMPILER_PATH=${LOCALBASE}/bin
+MAKE_ENV+=	COMPILER_PATH=${LOCALBASE}/bin
+.endif
+
 .if ${PYTHON_REL} < 3400
 LLDB_BUILD_DEPENDS+= \
 	${PYTHON_PKGNAMEPREFIX}enum34>0:devel/py-enum34
@@ -313,6 +323,9 @@ post-patch:
 post-patch-CLANG-on:
 	${REINPLACE_CMD} -e 's|%%LLVM_PREFIX%%|${LLVM_PREFIX}|' \
 	    ${PATCH_WRKSRC}/tools/clang/lib/Driver/Tools.cpp
+
+post-patch-COMPILER_RT-on:
+	cd ${WRKSRC_compiler_rt} && patch < ${PATCHDIR}/compiler-rt-patch-svn-294806
 
 post-build-COMPILER_RT-on:
 	${MKDIR} ${WRKDIR}/compiler-rt-build

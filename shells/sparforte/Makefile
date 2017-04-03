@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	sparforte
-PORTVERSION=	2.0.1
+PORTVERSION=	2.0.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	shells lang
 
-MAINTAINER=	marino@FreeBSD.org
+MAINTAINER=	freebsd.contact@marino.st
 COMMENT=	Shell and scripting language for mission-critical, scalable projects
 
 LICENSE=	GPLv2 GMGPL
@@ -22,6 +22,8 @@ USE_SDL=	sdl image
 HAS_CONFIGURE=	yes
 MAKE_ARGS+=	RPM_BUILD_ROOT=1
 PORTDOCS=	*
+
+BROKEN_aarch64=		fails to compile: gnat1: error: unknown value aarch64 for -march
 
 # Repurpose CXXFLAGS for gnatprep options
 CXXFLAGS:=	-DREADLINE=true \
@@ -148,7 +150,7 @@ post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/spar
 
 post-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}	
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC}/doc && ${COPYTREE_SHARE} \* ${STAGEDIR}${DOCSDIR})
 
 post-install-EXAMPLES-on:

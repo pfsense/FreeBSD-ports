@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	warzone2100
-PORTVERSION=	3.2.1
+PORTVERSION=	3.2.2
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/releases/${PORTVERSION}/
 
@@ -19,7 +20,8 @@ LIB_DEPENDS=	libphysfs.so:devel/physfs \
 		libtheora.so:multimedia/libtheora \
 		libfribidi.so:converters/fribidi \
 		libfreetype.so:print/freetype2 \
-		libfontconfig.so:x11-fonts/fontconfig
+		libfontconfig.so:x11-fonts/fontconfig \
+		libharfbuzz.so:print/harfbuzz
 RUN_DEPENDS=	${LOCALBASE}/share/fonts/dejavu/DejaVuSans.ttf:x11-fonts/dejavu
 
 USES=		bison compiler:c++11-lib gmake localbase openal:al pkgconfig ssl tar:xz

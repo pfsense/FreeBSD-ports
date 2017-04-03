@@ -4,7 +4,7 @@
 PORTNAME=	nzbget
 PORTVERSION=	17.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	news
 
 MAINTAINER=	toxic@doobie.com
@@ -47,7 +47,7 @@ RAR_RUN_DEPENDS=	unrar:archivers/unrar
 OPENSSL_CONFIGURE_ON=	--with-tlslib=OpenSSL \
 			--with-openssl-includes=${OPENSSLINC} \
 			--with-openssl-libraries=${OPENSSLLIB}
-OPENSSL_USE=		OPENSSL=yes
+OPENSSL_USES=		ssl
 
 GNUTLS_CONFIGURE_ON=	--with-tlslib=GnuTLS
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls \
@@ -57,12 +57,6 @@ GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls \
 
 .if (${ARCH} == "i386")
 CONFIGURE_ARGS+=	--disable-sigchld-handler
-.endif
-
-.if ${OSVERSION} < 1000500
-USE_GCC=		yes
-CONFIGURE_ENV+=		zlib_LIBS='-lz ' \
-			zlib_CFLAGS=' '
 .endif
 
 post-install:

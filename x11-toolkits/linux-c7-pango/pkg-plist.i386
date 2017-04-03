@@ -15,7 +15,6 @@ usr/lib/libpangoxft-1.0.so.0.3600.8
 usr/lib/pango/1.8.0/modules/pango-arabic-lang.so
 usr/lib/pango/1.8.0/modules/pango-indic-lang.so
 usr/lib/pango/1.8.0/modules/pango-thai-lang.so
-@postexec %D/usr/bin/pango-querymodules-32 --update-cache
 @rmtry usr/lib/pango/1.8.0/modules.cache
 %%PORTDOCS%%%%DOCSDIR%%/AUTHORS
 %%PORTDOCS%%%%DOCSDIR%%/COPYING
@@ -25,3 +24,4 @@ usr/lib/pango/1.8.0/modules/pango-thai-lang.so
 usr/share/man/man1/pango-querymodules-32.1.gz
 usr/share/man/man1/pango-querymodules.1.gz
 usr/share/man/man1/pango-view.1.gz
+@postexec %D/usr/bin/pango-querymodules-32 --update-cache

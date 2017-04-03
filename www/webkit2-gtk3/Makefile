@@ -3,7 +3,7 @@
 
 PORTNAME=	webkit
 PORTVERSION=	2.8.5
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	www
 MASTER_SITES=	http://webkitgtk.org/releases/
 PKGNAMESUFFIX=	2-gtk3
@@ -62,11 +62,6 @@ CMAKE_ARGS+=	-DENABLE_JIT:BOOL=OFF
 
 .if ${ARCH} == powerpc64
 CFLAGS+=	-mminimal-toc
-.endif
-
-.if ${OSVERSION} < 1000033
-BUILD_DEPENDS+=	flex>=0:textproc/flex
-CONFIGURE_ENV+=	FLEX_PATH="${LOCALBASE}/bin/flex"
 .endif
 
 post-patch:

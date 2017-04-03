@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	zabbix32
-PORTVERSION=	3.2.1
+PORTVERSION=	3.2.3
 PORTREVISION?=	0
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/zabbix/ZABBIX%20Latest%20Stable/${PORTVERSION}
@@ -145,10 +145,6 @@ POLARSSL_CONFIGURE_WITH=mbedtls
 POLARSSL_LIB_DEPENDS=	libmbedtls.so:security/polarssl13
 
 .include <bsd.port.pre.mk>
-
-.if ${SSL_DEFAULT} == base
-IGNORE_FreeBSD_9=	Requires OpenSSL >= 1.0.1 (set DEFAULT_VERSIONS+=ssl=openssl)
-.endif
 
 .if ${SSL_DEFAULT:Mlibressl*}
 IGNORE=	requires PSK which is unsupported by the selected LibreSSL

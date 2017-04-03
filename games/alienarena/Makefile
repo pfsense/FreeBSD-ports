@@ -3,7 +3,7 @@
 
 PORTNAME=	alienarena
 PORTVERSION=	2013.766
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	SF/alienarena.mirror/Alien%20Arena%207.66/ \
 		http://icculus.org/alienarena/Files/ \
@@ -14,7 +14,7 @@ DISTNAME=	${PORTNAME}-7.66-linux20130827
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Alien Arena (native version)
 
-RUN_DEPENDS=	${DATADIR}/data1/default.cfg:games/alienarena-data
+RUN_DEPENDS=	${LOCALBASE}/${DATADIR_REL}/data1/default.cfg:games/alienarena-data
 
 USES=		compiler:c++11-lib dos2unix gmake
 USE_CXXSTD=	c++11
@@ -48,13 +48,12 @@ LIBDIR=		${PREFIX}/lib/${PORTNAME}
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MCLIENT}
-USES+=		openal:soft,alut pkgconfig
+USES+=		jpeg openal:soft,alut pkgconfig
 LIB_DEPENDS+=	libcurl.so:ftp/curl \
 		libfreetype.so:print/freetype2 \
-		libjpeg.so:graphics/jpeg \
-		libpng16.so:graphics/png \
-		libvorbis.so:audio/libvorbis
-BUILD_DEPENDS+=	${LOCALBASE}/lib/libode.a:devel/ode
+		libpng.so:graphics/png \
+		libvorbis.so:audio/libvorbis \
+		libode.so:devel/ode
 USE_GL=		yes
 USE_XORG=	xxf86dga xxf86vm
 .endif

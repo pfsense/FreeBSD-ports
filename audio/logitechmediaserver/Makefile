@@ -43,8 +43,8 @@ SHEBANG_FILES=	Bin/darwin/check-update.pl \
 
 # Defaults support playback of relativly unrestricted formats on SB2 or
 # SB3 devices and wired SB1 devices.
-OPTIONS_DEFINE=	APE FAAD FLAC LAME SHORTEN SOX DOCS
-OPTIONS_DEFAULT=APE FAAD FLAX SOX
+OPTIONS_DEFINE=	APE FAAD FLAC LAME SHORTEN SOX TEST DOCS
+OPTIONS_DEFAULT=APE FAAD FLAX SOX TEST
 SHORTEN_DESC=	Support Shorten input
 SOX_DESC=	Support OGG Vorbis input via SoX (SliMP3 and SB1)
 
@@ -54,6 +54,7 @@ FLAC_RUN_DEPENDS=	flac:audio/flac
 LAME_RUN_DEPENDS=	lame:audio/lame
 SHORTEN_RUN_DEPENDS=	shorten:audio/shorten
 SOX_RUN_DEPENDS=	sox:audio/sox
+TEST_VARS_OFF=		CONTRIB_FLAGS=-t
 
 USE_RC_SUBR=	logitechmediaserver
 DOCFILES=	Changelog*.html Installation.txt License*.txt
@@ -62,7 +63,8 @@ CONFFILES=	convert.conf types.conf
 PLIST_SUB=	SLIMDIR=${SLIMDIR} \
 		SLIMDBDIR=${SLIMDBDIR} \
 		OPSYS=${OPSYS:tl} \
-		ARCH=${ARCH}
+		ARCH=${ARCH} \
+		ARCHNAME=${ARCHNAME}
 
 SUB_FILES=	Custom.pm \
 		custom-convert.conf \
@@ -81,14 +83,36 @@ SLIMDBDIR?=	/var/db/logitechmediaserver
 SLIMUSER?=	slimserv
 SLIMGROUP?=	${SLIMUSER}
 
+.include <bsd.port.pre.mk>
+
+ONLY_FOR_ARCHS=	i386 amd64
+
+.if ${ARCH} == "i386"
+ARCHNAME=	i386-freebsd-thread-multi-64int
+PLIST_SUB+=	I386_ONLY=""
+.else
+PLIST_SUB+=	I386_ONLY="@comment "
+.endif
+
+.if ${ARCH} == "amd64"
+ARCHNAME=	amd64-freebsd-thread-multi
+PLIST_SUB+=	AMD64_ONLY=""
+.else
+PLIST_SUB+=	AMD64_ONLY="@comment "
+.endif
+
 do-build:
-	cd ${WRKSRC_vendor}/CPAN && ./buildme.sh
+	cd ${WRKSRC_vendor}/CPAN && ./buildme.sh ${CONTRIB_FLAGS}
 	cd ${WRKSRC}/CPAN/arch && ${CP} -R 5.22 5.24
 
 do-install:
-	@(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/${SLIMDIR})
+	(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/${SLIMDIR})
+	(cd ${WRKSRC_vendor}/CPAN/build && \
+		${COPYTREE_SHARE} arch ${STAGEDIR}${PREFIX}/${SLIMDIR}/CPAN)
+	(cd ${WRKSRC_vendor}/CPAN/build/${PERL_VER}/lib/perl5 && \
+		${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/${SLIMDIR}/CPAN/arch/${PERL_VER}/)
 	(cd ${STAGEDIR}${PREFIX}/${SLIMDIR} && \
-		${FIND} . -name \*.orig -delete -o -name \*.bak -delete && \
+		${FIND} . -name \*.orig -delete -o -name \*.bak -delete -o -name \*.packlist -delete && \
 		${FIND} ./CPAN/arch/ -d 1 ! -name ${PERL_VER} -print0 | ${XARGS} -0 ${RM} -r -- && \
 		${RM} -r -- Bin/* && \
 		${RM} -- ${CONFFILES} ${DOCFILES})
@@ -96,7 +120,6 @@ do-install:
 		${RM} -r -- arm-linux-gnueabihf-thread-multi-64int && \
 		${RM} -r -- i386-linux-thread-multi-64int && \
 		${RM} -r -- x86_64-linux-thread-multi)
-	@${LN} -s ${SLIMDBDIR}/cache ${STAGEDIR}${PREFIX}/${SLIMDIR}/Cache
 .for _CONF in ${CONFFILES}
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${_CONF} ${STAGEDIR}${PREFIX}/${SLIMDIR}/${_CONF}.sample)
 .endfor
@@ -108,12 +131,9 @@ do-install:
 	${INSTALL_DATA} ${WRKDIR}/logitechmediaserver.conf \
 	    ${STAGEDIR}${PREFIX}/etc/newsyslog.conf.d/
 	${INSTALL_SCRIPT} ${WRKSRC}/Bin/dbish ${STAGEDIR}${PREFIX}/${SLIMDIR}/Bin/
-	(cd ${WRKSRC_vendor}/CPAN/build && \
-		${COPYTREE_SHARE} arch ${STAGEDIR}${PREFIX}/${SLIMDIR}/CPAN)
-	(cd ${WRKSRC_vendor}/CPAN/build/${PERL_VER}/lib/perl5 && \
-		${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/${SLIMDIR}/CPAN/arch/${PERL_VER}/)
+	@${LN} -s ${SLIMDBDIR}/cache ${STAGEDIR}${PREFIX}/${SLIMDIR}/Cache
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${DOCFILES} ${STAGEDIR}${DOCSDIR})
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

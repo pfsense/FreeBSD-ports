@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	ccnet-server
-PORTVERSION=	6.0.7
+PORTVERSION=	${SEAFILE_VER}
 DISTVERSIONPREFIX=	v
 DISTVERSIONSUFFIX=	-server
 CATEGORIES=	net-mgmt devel
@@ -14,11 +14,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 BUILD_DEPENDS=	valac:lang/vala
 LIB_DEPENDS=	libsearpc.so:devel/libsearpc \
-		libglib-2.0.so:devel/glib20 \
 		libsqlite3.so:databases/sqlite3 \
 		libzdb.so:databases/libzdb \
 		libuuid.so:misc/e2fsprogs-libuuid \
-		libevent.so:devel/libevent2 \
+		libevent.so:devel/libevent \
 		libjansson.so:devel/jansson
 
 CONFLICT=	ccnet-[0-9]*
@@ -28,6 +27,7 @@ GH_ACCOUNT=	haiwen
 
 USES=		autoreconf gettext libtool localbase mysql:client \
        		pathfix pgsql pkgconfig python:-2.7 shebangfix ssl
+USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 USE_OPENLDAP=	yes
 
@@ -49,12 +49,6 @@ PLIST_SUB=	USERS=${USERS} \
 		SEAFILE_SERVER=${SEAFILE_SERVER} \
 		HAIWENDIR=${HAIWENDIR}
 
-.include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
-WITH_OPENSSL_PORT=	yes
-.endif
-
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${SEABIN} ${STAGEDIR}${PREFIX}/${SEALIB}
 	${INSTALL_PROGRAM} ${STAGEDIR}${PREFIX}/bin/ccnet-init ${STAGEDIR}${PREFIX}/${SEABIN}
@@ -64,6 +58,8 @@ post-install:
 	(cd ${STAGEDIR}${PREFIX}/lib && \
 		${COPYTREE_SHARE} ${PYTHON_VERSION} ${STAGEDIR}${PREFIX}/${SEALIB})
 	@${RM} -rf ${STAGEDIR}${PREFIX}/lib/${PYTHON_VERSION}
-	${LN} -s ${PREFIX}/${SEABIN}/ccnet-server ${STAGEDIR}${PREFIX}/bin/
+	${LN} -s '../${SEABIN}/ccnet-server' ${STAGEDIR}/${PREFIX}/bin/ccnet-server
+
+.include "${.CURDIR}/../seafile-server/Makefile.include"
 
 .include <bsd.port.mk>

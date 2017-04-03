@@ -2,7 +2,7 @@
 
 PORTNAME=	llvm
 DISTVERSION=	3.7.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	devel lang
 MASTER_SITES=	http://llvm.org/${PRE_}releases/${LLVM_RELEASE}/${RCDIR}
 DISTNAME=	${PORTNAME}-${DISTVERSION}.src
@@ -55,7 +55,8 @@ CLANG_PORTDOCS=		clang
 COMPILER_RT_DESC=	Build compiler-rt (sanitizers)
 COMPILER_RT_DISTFILES=	compiler-rt-${DISTVERSION}.src${EXTRACT_SUFX}
 COMPILER_RT_EXTRA_PATCHES= \
-	${PATCHDIR}/compiler-rt-patch-svn-249051
+	${PATCHDIR}/compiler-rt-patch-svn-249051 \
+	${PATCHDIR}/compiler-rt-patch-svn-294806
 DOCS_PORTDOCS=		llvm
 DOCS_CMAKE_ON=		-DLLVM_ENABLE_SPHINX=ON \
 			-DSPHINX_WARNINGS_AS_ERRORS=OFF \
@@ -73,6 +74,7 @@ LLDB_DISTFILES=		lldb-${DISTVERSION}.src${EXTRACT_SUFX}
 OPENMP_DESC=		Install libomp, the LLVM OpenMP runtime library
 OPENMP_DISTFILES=	openmp-${DISTVERSION}.src${EXTRACT_SUFX}
 OPENMP_EXTRA_PATCHES= \
+	${PATCHDIR}/openmp-patch-bug32279 \
 	${PATCHDIR}/openmp-patch-tools_openmp_runtime_tools_expand-vars.pl
 GOLD_DESC=		Build the LLVM Gold plugin for LTO
 GOLD_CMAKE_ON=		-DLLVM_BINUTILS_INCDIR=${LOCALBASE}/include

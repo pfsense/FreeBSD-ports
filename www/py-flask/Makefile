@@ -3,11 +3,12 @@
 
 PORTNAME=	Flask
 PORTVERSION=	0.12
+PORTREVISION=	1
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	olivierd@FreeBSD.org
+MAINTAINER=	rm@FreeBSD.org
 COMMENT=	Micro web framework
 
 LICENSE=	BSD3CLAUSE
@@ -18,7 +19,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}werkzeug>=0.11:www/py-werkzeug \
 		${PYTHON_PKGNAMEPREFIX}click>=6.6:devel/py-click
 
 USES=	python
-USE_PYTHON=	distutils autoplist
+USE_PYTHON=	distutils concurrent autoplist
 NO_ARCH=	yes
 
 .include <bsd.port.mk>

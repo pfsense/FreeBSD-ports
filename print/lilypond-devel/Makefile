@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lilypond
-PORTVERSION=	2.19.51
-PORTREVISION=	1
+PORTVERSION=	2.19.57
 CATEGORIES=	print audio
 MASTER_SITES=	http://download.linuxaudio.org/lilypond/sources/v${PORTVERSION:R}/
 PKGNAMESUFFIX=	-devel
@@ -54,7 +53,6 @@ USE_GNOME=	pango
 
 MAKEFILE=	GNUmakefile
 GNU_MAKEFILE=	yes
-MAKE_JOBS_UNSAFE=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--with-texgyre-dir=${LOCALBASE}/${TEXMFDISTDIR}/fonts/opentype/public/tex-gyre \
@@ -71,12 +69,6 @@ PLIST_SUB=	PORTVERSION=${PORTVERSION}
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes
 
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1000000 && ${OSVERSION} < 1002000
-BROKEN=		does not build on 10.1 (undefined reference to `__cxa_throw_bad_array_new_length')
-.endif
-
 post-patch:
 	${FIND} ${WRKSRC} -name "*.cc" | ${XARGS} \
 	    ${REINPLACE_CMD} -e 's|isinf[ ]*(|::isinf(|g' -e 's|isnan|::isnan|g'
@@ -88,7 +80,6 @@ post-patch-NLS-off:
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/lilypond
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lilypond/${PORTVERSION}/python/midi.so
 	(cd ${STAGEDIR}/${DATADIR} && ${LN} -fs ${PORTVERSION} current)
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

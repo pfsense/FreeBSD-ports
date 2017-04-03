@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	curl
-PORTVERSION=	7.53.0
+PORTVERSION=	7.53.1
 CATEGORIES=	ftp net www
 MASTER_SITES=	http://curl.haxx.se/download/ \
 		LOCAL/sunpoet
@@ -19,7 +19,7 @@ OPTIONS_SINGLE=	GSSAPI
 OPTIONS_RADIO_RESOLV=	CARES THREADED_RESOLVER
 OPTIONS_RADIO_SSL=	GNUTLS NSS OPENSSL POLARSSL WOLFSSL
 OPTIONS_SINGLE_GSSAPI=	GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT GSSAPI_NONE
-OPTIONS_DEFAULT=	CA_BUNDLE COOKIES HTTP2 OPENSSL PROXY RESOLV THREADED_RESOLVER TLS_SRP
+OPTIONS_DEFAULT=	CA_BUNDLE COOKIES GSSAPI_${${SSL_DEFAULT} == base :?BASE :NONE} HTTP2 OPENSSL PROXY RESOLV THREADED_RESOLVER TLS_SRP
 CA_BUNDLE_DESC=		Install CA bundle for OpenSSL
 CA_BUNDLE_IMPLIES=	OPENSSL
 COOKIES_DESC=		Cookies support
@@ -32,14 +32,6 @@ SMB_DESC=		SMB/CIFS support
 THREADED_RESOLVER_DESC=	Threaded DNS resolver
 TLS_SRP_DESC=		TLS-SRP (Secure Remote Password) support
 
-.include <${.CURDIR}/../../Mk/bsd.default-versions.mk>
-
-.if ${SSL_DEFAULT} != base
-OPTIONS_DEFAULT+=	GSSAPI_NONE
-.else
-OPTIONS_DEFAULT+=	GSSAPI_BASE
-.endif
-
 CONFIGURE_ARGS=	--disable-werror \
 		--enable-imap --enable-pop3 --enable-rtsp --enable-smtp \
 		--with-zsh-functions-dir=${LOCALBASE}/share/zsh/site-functions \
@@ -48,7 +40,6 @@ CONFIGURE_ENV=	LOCALBASE=${LOCALBASE} \
 		ac_cv_func_SSLv2_client_method=no
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-TEST_ENV=	${MAKE_ENV} LC_ALL=C
 TEST_TARGET=	test
 USE_LDCONFIG=	yes
 USE_PERL5=	build
@@ -126,7 +117,7 @@ RTMP_CONFIGURE_WITH=	librtmp
 RTMP_LIB_DEPENDS=	librtmp.so:multimedia/librtmp
 RTMP_USES=		pkgconfig
 SMB_CONFIGURE_ENABLE=	smb
-THREADED_RESOLVER_CONFIGURE_ENABLE=	threaded-resolver
+THREADED_RESOLVER_CONFIGURE_ENABLE=	pthreads threaded-resolver
 TLS_SRP_CONFIGURE_ENABLE=	tls-srp
 WOLFSSL_CONFIGURE_WITH=	cyassl
 WOLFSSL_LIB_DEPENDS=	libwolfssl.so:security/wolfssl
@@ -141,10 +132,8 @@ IGNORE=		only supports TLS-SRP with either OpenSSL or GnuTLS
 IGNORE=		only supports LDAPS with SSL
 .endif
 
-.if ${SSL_DEFAULT:Mlibressl*}
-.if ${PORT_OPTIONS:MTLS_SRP}
+.if ${PORT_OPTIONS:MTLS_SRP} && ${SSL_DEFAULT:Mlibressl*}
 IGNORE=		unsupported TLS-SRP in LibreSSL
-.endif
 .endif
 
 post-patch:

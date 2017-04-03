@@ -3,12 +3,12 @@
 
 PORTNAME=	spamassassin
 PORTVERSION=	3.4.1
-PORTREVISION?=	9	# also bump japanese/spamassassin
+PORTREVISION?=	10	# also bump japanese/spamassassin
 CATEGORIES?=	mail perl5
 MASTER_SITES=	APACHE/spamassassin/source CPAN/Mail
 DISTNAME=	Mail-SpamAssassin-${PORTVERSION}
 
-MAINTAINER?=	adamw@FreeBSD.org
+MAINTAINER?=	ports@FreeBSD.org
 COMMENT?=	Highly efficient mail filter for identifying spam
 
 LICENSE=	APACHE20
@@ -19,6 +19,9 @@ BUILD_DEPENDS=	p5-Encode-Detect>=0:converters/p5-Encode-Detect \
 		p5-Net-DNS>=0.63:dns/p5-Net-DNS \
 		p5-NetAddr-IP>=4.010:net-mgmt/p5-NetAddr-IP
 RUN_DEPENDS:=	${BUILD_DEPENDS} \
+		p5-Net-IDN-Encode>=0:textproc/p5-Net-IDN-Encode \
+		p5-Net-LibIDN>=0:dns/p5-Net-LibIDN \
+		p5-URI>=0:net/p5-URI \
 		re2c>=.12.0:devel/re2c
 
 .for dep in DCC DKIM MYSQL PGSQL PYZOR RAZOR RELAY_COUNTRY SPF_QUERY SSL
@@ -46,7 +49,7 @@ CONFIGURE_ARGS=	SYSCONFDIR="${PREFIX}/etc" \
 		LOCALSTATEDIR="${DBDIR}/spamassassin" \
 		BUILD_SPAMC=yes
 
-OPTIONS_DEFINE=		AS_ROOT SSL
+OPTIONS_DEFINE=		AS_ROOT DOCS SSL
 OPTIONS_GROUP=		DATABASE GPG PLUGINS
 OPTIONS_GROUP_DATABASE=	MYSQL PGSQL
 OPTIONS_GROUP_PLUGINS=	DCC DKIM PYZOR RAZOR RELAY_COUNTRY SPF_QUERY

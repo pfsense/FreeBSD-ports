@@ -33,6 +33,7 @@
     SUBDIR += cinnamon-session
     SUBDIR += cl-clx
     SUBDIR += compositeproto
+    SUBDIR += controllermap
     SUBDIR += cool-retro-term
     SUBDIR += damageproto
     SUBDIR += decurs
@@ -45,6 +46,7 @@
     SUBDIR += deskpaint
     SUBDIR += dgs
     SUBDIR += dmenu
+    SUBDIR += dmenu2
     SUBDIR += dmxproto
     SUBDIR += docker-tray
     SUBDIR += dri2proto
@@ -101,6 +103,7 @@
     SUBDIR += hs-X11
     SUBDIR += hs-X11-xft
     SUBDIR += hs-xmobar
+    SUBDIR += hsetroot
     SUBDIR += i3lock
     SUBDIR += i3status
     SUBDIR += iceauth
@@ -132,6 +135,7 @@
     SUBDIR += kf5-kglobalaccel
     SUBDIR += kf5-kinit
     SUBDIR += kf5-krunner
+    SUBDIR += kf5-kwayland
     SUBDIR += kf5-kwindowsystem
     SUBDIR += kf5-plasma-framework
     SUBDIR += kgamma
@@ -178,11 +182,13 @@
     SUBDIR += libgnome-reference
     SUBDIR += libgnomekbd
     SUBDIR += libgnomemm26
+    SUBDIR += libinput
     SUBDIR += libkonq
     SUBDIR += libmatekbd
     SUBDIR += liboldX
     SUBDIR += libsx
     SUBDIR += libsynaptics
+    SUBDIR += libwacom
     SUBDIR += libxcb
     SUBDIR += libxdg-basedir
     SUBDIR += libxfce4menu
@@ -205,6 +211,7 @@
     SUBDIR += lumina-i18n
     SUBDIR += lupe
     SUBDIR += lxde-meta
+    SUBDIR += lxhotkey
     SUBDIR += lxmenu-data
     SUBDIR += lxpanel
     SUBDIR += lxqt-l10n
@@ -244,6 +251,7 @@
     SUBDIR += p5-X11-XCB
     SUBDIR += p5-X11-Xlib
     SUBDIR += p5-XTerm-Conf
+    SUBDIR += pipeglade
     SUBDIR += pixman
     SUBDIR += plasma-scriptengine-python
     SUBDIR += plasma-scriptengine-ruby
@@ -272,9 +280,8 @@
     SUBDIR += rox-wallpaper
     SUBDIR += roxbg
     SUBDIR += roxterm
-    SUBDIR += rsibreak-kde4
+    SUBDIR += rsibreak
     SUBDIR += rstart
-    SUBDIR += ruby-X11
     SUBDIR += rubygem-gnome2
     SUBDIR += rxvt
     SUBDIR += rxvt-unicode
