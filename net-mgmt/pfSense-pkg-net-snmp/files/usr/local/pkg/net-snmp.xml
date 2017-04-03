@@ -49,7 +49,7 @@
 	<service>
 		<name>net-snmptrapd</name>
 		<rcfile>net-snmptrapd.sh</rcfile>
-		<executable>snmpdtrapd</executable>
+		<executable>snmptrapd</executable>
 		<description><![CDATA[NET-SNMP Trap Listening Daemon]]></description>
 	</service>
 	<tabs>
