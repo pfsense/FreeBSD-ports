@@ -50,12 +50,12 @@ user  root wheel;
 worker_processes  2;
 error_log  syslog:server=unix:/var/run/log,facility=local5;
 
-events 
+events
     {
     worker_connections  1024;
     }
 
-http 
+http
     {
     include             /usr/local/etc/nginx/mime.types;
     default_type        application/octet-stream;
@@ -65,7 +65,7 @@ http
 
     access_log          syslog:server=unix:/var/run/log,facility=local5 combined;
     keepalive_timeout   75;
-    
+
     @servers
     }
 CONF;
@@ -85,17 +85,17 @@ $vhosts_g['conf_server'] = <<<CONF_SERVER
         @listen_conf
         server_name @hostnames;
         @ssl_conf
-        
+
         client_max_body_size 200m;
 
         gzip on;
         gzip_types text/plain text/css text/javascript application/x-javascript text/xml application/xml application/xml+rss application/json;
 
         root @root_folder;
-        
+
         location / { index  index.html index.htm index.php; }
 
-        location ~ \.php$ 
+        location ~ \.php$
             {
             try_files                 \$uri =404; #  This line closes a potential security hole
                                                   # ensuring users can't execute uploaded files
@@ -140,10 +140,10 @@ CONF_SERVER_SSL;
 *
 * Config file setting: <custom_php_resync_config_command>
 *******************************************************************************/
-function vhosts_build_service_config() 
+function vhosts_build_service_config()
     {
     global $config, $vhosts_g;
-    
+
     $conf_file_path   = $vhosts_g['conf_file_path'];
     $conf_file_prefix = $vhosts_g['conf_file_prefix'];
 
@@ -157,7 +157,7 @@ function vhosts_build_service_config()
     /* Build 'server' section for each host. */
     /*---------------------------------------*/
     $servers = '';
-    
+
     foreach ($config['installedpackages']['vhosts']['config'] as $vhost)
         {
         /*---------------------------*/
@@ -165,17 +165,17 @@ function vhosts_build_service_config()
         /*---------------------------*/
         if (isset($vhost['disabled']))
             continue;
-            
+
         /*--------------------------------------------------*/
         /* Create the root folder and a default index page. */
         /*--------------------------------------------------*/
         $root_folder = "{$vhosts_g['root_base_path']}/{$vhost['name']}";
-        
+
         safe_mkdir($root_folder);
-        
+
         if (!file_exists("$root_folder/index.php"))
             file_put_contents("$root_folder/index.php", "<?php\necho phpinfo();\n?>\n");
-        
+
         /*--------------------------------------*/
         /* Build SSL config if host has a cert. */
         /*--------------------------------------*/
@@ -185,7 +185,7 @@ function vhosts_build_service_config()
             $cert = lookup_cert($vhost['certref']);
             $crt  = base64_decode($cert['crt']);
             $key  = base64_decode($cert['prv']);
-            
+
             /*----------------------------------------------------------------*/
             /* Create Cert/Key files and SSL config to add to Server section. */
             /*----------------------------------------------------------------*/
@@ -193,17 +193,17 @@ function vhosts_build_service_config()
                 {
                 $crt_file_path = "$conf_file_prefix-{$vhost['name']}.crt";
                 $key_file_path = "$conf_file_prefix-{$vhost['name']}.key";
-                file_put_contents($crt_file_path, $crt); 
+                file_put_contents($crt_file_path, $crt);
                 file_put_contents($key_file_path, $key);
-                
-                $ssl_conf = strtr($vhosts_g['conf_server_ssl'], 
-                    [ 
-                    '@crt_file_path' => $crt_file_path, 
-                    '@key_file_path' => $key_file_path 
+
+                $ssl_conf = strtr($vhosts_g['conf_server_ssl'],
+                    [
+                    '@crt_file_path' => $crt_file_path,
+                    '@key_file_path' => $key_file_path
                     ]);
                 }
             }
-            
+
         /*---------------------------------------------------------*/
         /* Set listen configuration for ipaddress:port.            */
         /* Set 'server_name' to hostname and hostname:port for all */
@@ -215,11 +215,11 @@ function vhosts_build_service_config()
             $hostnames = join(' ', array_map(function($n) use ($vhost) { return "$n $n:{$vhost['port']}"; }, explode(' ', $vhost['hostname'])));
         else
             $hostnames = '_';
-        
+
         /*------------------------------------*/
         /* Add server section for this vhost. */
         /*------------------------------------*/
-        $servers .= strtr($vhosts_g['conf_server'], 
+        $servers .= strtr($vhosts_g['conf_server'],
             [
             '@listen_conf' => $listen_conf,
             '@hostnames'   => $hostnames,
@@ -227,7 +227,7 @@ function vhosts_build_service_config()
             '@root_folder' => $root_folder
             ]);
         }
-        
+
     /*--------------------*/
     /* Build config file. */
     /*--------------------*/
@@ -239,7 +239,7 @@ function vhosts_build_service_config()
 * vhosts_dirty */
 /**
 * Sets/return vhosts subsystem dirty flag.
-* 
+*
 * @param  dirty  True/false to set/clear dirty flag, undef for no change.
 * @return        Returns new or current value of subsystem dirty flag.
 *
@@ -254,18 +254,18 @@ function vhosts_dirty($dirty)
             mark_subsystem_dirty($vhosts_g['subsystem_name']);
         else
             clear_subsystem_dirty($vhosts_g['subsystem_name']);
-            
+
     return is_subsystem_dirty($vhosts_g['subsystem_name']);
     }
-                        
+
 /*******************************************************************************
 * vhosts_post_install */
 /**
-* Creates rc file and builds the service config after package install.  
+* Creates rc file and builds the service config after package install.
 *
 * Config file settings: <custom_php_install_command>
 *******************************************************************************/
-function vhosts_post_install() 
+function vhosts_post_install()
     {
     global $vhosts_g;
 
@@ -288,12 +288,12 @@ function vhosts_post_install()
 *
 * Config file setting: <custom_php_pre_deinstall_command>
 *******************************************************************************/
-function vhosts_pre_deinstall() 
+function vhosts_pre_deinstall()
     {
     global $vhosts_g;
     exec("/bin/rm -f {$vhosts_g['conf_file_prefix']}*");
     }
-    
+
 /*******************************************************************************
 * vhostsd_is_running */
 /**
@@ -305,5 +305,5 @@ function vhostsd_is_running()
     {
     global $vhosts_g;
     return is_pid_running($vhosts_g['pid_file_path']);
-    }    
+    }
 ?>

@@ -8,7 +8,6 @@ Must use <custom_php_pre_deinstall_command>.
 
 vhosts-http hard coded in service_utils.inc:get_service_status().
 
-service_utils.inc does not load <include_file> before calling commands set 
+service_utils.inc does not load <include_file> before calling commands set
 in <service> so custom methods can't be called.  If sync_package() is called
 first, <include_file> would be loaded.
- 
