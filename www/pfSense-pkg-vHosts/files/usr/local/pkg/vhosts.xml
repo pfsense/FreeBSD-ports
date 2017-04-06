@@ -30,27 +30,27 @@
 <!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
 <?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
 <packagegui>
-    <include_file>/usr/local/pkg/vhosts.inc</include_file>
-    <menu>
-        <name>vHosts</name>
-        <section>Services</section>
-        <url>/packages/vhosts.php</url>
-    </menu>
-    <service>
-        <name>vhostsd</name>
-        <rcfile>vhostsd.sh</rcfile>
-        <description>vHosts nginx Web Server</description>
-        <custom_php_service_status_command>
-            is_pid_running('/var/run/vhostsd.pid');
-        </custom_php_service_status_command>
-    </service>
-    <custom_php_resync_config_command>
-        vhosts_build_service_config();
-    </custom_php_resync_config_command>
-    <custom_php_install_command>
-        vhosts_post_install();
-    </custom_php_install_command>
-    <custom_php_pre_deinstall_command>
-        vhosts_pre_deinstall();
-    </custom_php_pre_deinstall_command>
+	<include_file>/usr/local/pkg/vhosts.inc</include_file>
+	<menu>
+		<name>vHosts</name>
+		<section>Services</section>
+		<url>/packages/vhosts.php</url>
+	</menu>
+	<service>
+		<name>vhostsd</name>
+		<rcfile>vhostsd.sh</rcfile>
+		<description>vHosts nginx Web Server</description>
+		<custom_php_service_status_command>
+			is_pid_running('/var/run/vhostsd.pid');
+		</custom_php_service_status_command>
+	</service>
+	<custom_php_resync_config_command>
+		vhosts_build_service_config();
+	</custom_php_resync_config_command>
+	<custom_php_install_command>
+		vhosts_post_install();
+	</custom_php_install_command>
+	<custom_php_pre_deinstall_command>
+		vhosts_pre_deinstall();
+	</custom_php_pre_deinstall_command>
 </packagegui>

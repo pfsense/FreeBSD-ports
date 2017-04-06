@@ -24,10 +24,10 @@
 * limitations under the License.
 *****************************************************************************-->
 <pfsensepkgs>
-    <package>
-        <name>vHosts</name>
-        <descr><![CDATA[vHosts nginx Web Server]]></descr>
-        <version>%%PKGVERSION%%</version>
-        <configurationfile>vhosts.xml</configurationfile>
-    </package>
+	<package>
+		<name>vHosts</name>
+		<descr><![CDATA[vHosts nginx Web Server]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>vhosts.xml</configurationfile>
+	</package>
 </pfsensepkgs>
