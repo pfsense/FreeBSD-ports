@@ -213,6 +213,57 @@
 			<description></description>
 		</field>
 		<field>
+			<name>SNMP Trap Monitoring</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Start SNMP Trapper</fielddescr>
+			<fieldname>startsnmptrapper</fieldname>
+			<description>If enabled, SNMP trapper process is started.</description>
+			<type>select</type>
+			<default_value>0</default_value>
+			<options>
+				<option><name>Enabled</name><value>1</value></option>
+				<option><name>Disabled</name><value>0</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>SNMP Trapper File</fielddescr>
+			<fieldname>snmptrapperfile</fieldname>
+			<description>
+				<![CDATA[
+					Temporary file used for passing data from SNMP trap daemon to the proxy.<br/>
+					Must be the same as in zabbix_trap_receiver.pl or SNMPTT configuration file.<br/>
+				]]>
+			</description>
+			<default_value>/tmp/zabbix_traps.tmp</default_value>
+			<type>input</type>
+			<size>150</size>
+		</field>
+		<field>
+			<fielddescr>Trapper Timeout</fielddescr>
+			<fieldname>trappertimeout</fieldname>
+			<description>Specifies how many seconds trapper may spend processing new data. (Default: 300) (Range: 1-300)</description>
+			<default_value>300</default_value>
+			<type>input</type>
+			<size>3</size>
+		</field>
+		<field>
+			<fielddescr>Start Trappers</fielddescr>
+			<fieldname>starttrappers</fieldname>
+			<description>
+				<![CDATA[
+					Number of pre-forked instances of trappers.<br/>
+					Trappers accept incoming connections from Zabbix sender and active agents.<br/>
+					Default: 5<br/>
+					Range: 0-1000<br/>
+				]]>
+			</description>
+			<default_value>5</default_value>
+			<type>input</type>
+			<size>4</size>
+		</field>
+		<field>
 			<fielddescr>Advanced Parameters</fielddescr>
 			<fieldname>advancedparams</fieldname>
 			<encoding>base64</encoding>
