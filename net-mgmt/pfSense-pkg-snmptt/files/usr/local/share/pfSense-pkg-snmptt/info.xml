@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>snmptt</name>
+		<internalname>snmptt</internalname>
+		<descr>SNMPTT (SNMP Trap Translator) is an SNMP trap handler written in Perl for use with the Net-SNMP / UCD-SNMP snmptrapd program.</descr>
+		<website>http://snmptt.sourceforge.net</website>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>snmptt.xml</configurationfile>
+	</package>
+</pfsensepkgs>
