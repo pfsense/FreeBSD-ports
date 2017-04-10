@@ -33,10 +33,6 @@ $current_openvpn_version_rev = "01";
 $legacy_openvpn_version = "2.3.14";
 $legacy_openvpn_version_rev = "02";
 
-function openvpn_client_export_deinstall() {
-	exec("/bin/rm -r /usr/local/share/openvpn/client-export");
-}
-
 function get_openvpnserver_by_id($srvid) {
 	global $config;
 	foreach($config['openvpn']['openvpn-server'] as $server) {
