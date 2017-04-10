@@ -31,15 +31,20 @@ function print_row($desc, $value) {
 	print '</tr>';
 }
 
-function print_row_pct($desc, $value) {
+function print_row_pct($desc, $value, $max_value = 100) {
+	$perc_value = round(100 * $value / $max_value);
 	print '<tr>';
 	print '  <td style="width:35%"><b>' . $desc . ':</b></td>';
 	print '  <td>';
 	print '    <div class="progress" style="max-width:300px">';
-	print '      <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' . $value . '" style="width: ' . $value . '%">';
+	print '      <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuemin="0" aria-valuemax="' . $max_value . '" aria-valuenow="' . $value . '" style="width: ' . $perc_value . '%">';
 	print '	     </div>';
 	print '	   </div>';
-	print      htmlspecialchars($value) . '%';
+	if ($max_value == 100) {
+		print      htmlspecialchars($value) . '%';
+	} else {
+		print      htmlspecialchars($value) . ' / ' . htmlspecialchars($max_value) . ' (' . htmlspecialchars($perc_value) . '%)';
+	}
 	print '  </td>';
 	print '</tr>';
 }
@@ -77,6 +82,9 @@ if ($status['_alert']) {
 				}
 				if (isset($status['ups.load'])) {
 					print_row_pct(gettext("UPS Load"), $status['ups.load']);
+				}
+				if (isset($status['ups.power']) && isset($status['ups.power.nominal'])) {
+					print_row_pct(gettext("UPS Power (W)"), $status['ups.power'], $status['ups.power.nominal']);
 				}
 				if (isset($status['battery.charge'])) {
 					print_row_pct(gettext("Battery charge"), $status['battery.charge']);
