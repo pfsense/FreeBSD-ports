@@ -13,11 +13,13 @@ COMMENT=	pfSense package pfBlockerNG
 
 LICENSE=	APACHE20
 
+USES=		php
 RUN_DEPENDS=	${LOCALBASE}/bin/geoiplookup:net/GeoIP \
 		${LOCALBASE}/bin/grepcidr:net-mgmt/grepcidr \
 		${LOCALBASE}/bin/aggregate:net-mgmt/aggregate \
 		${LOCALBASE}/bin/mwhois:net/whois \
-		${LOCALBASE}/sbin/lighttpd:www/lighttpd
+		${LOCALBASE}/sbin/lighttpd:www/lighttpd \
+		${PHPBASE}/lib/php/${PHP_EXT_DIR}/intl.so:devel/pecl-intl
 
 NO_BUILD=	yes
 NO_MTREE=	yes
