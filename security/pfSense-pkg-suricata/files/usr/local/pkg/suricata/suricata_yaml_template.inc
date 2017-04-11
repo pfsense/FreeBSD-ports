@@ -144,28 +144,14 @@ threading:
   set-cpu-affinity: no
   detect-thread-ratio: 1.5
 
-mpm-algo: ac
+# Multi pattern algorithm
+# The default mpm-algo value of "auto" will use "hs" if Hyperscan is
+# available, "ac" otherwise.
+mpm-algo: {$mpm_algo}
 
-pattern-matcher:
-  - b2gc:
-      search-algo: B2gSearchBNDMq
-      hash-size: low
-      bf-size: medium
-  - b2gm:
-      search-algo: B2gSearchBNDMq
-      hash-size: low
-      bf-size: medium
-  - b2g:
-      search-algo: B2gSearchBNDMq
-      hash-size: low
-      bf-size: medium
-  - b3g:
-      search-algo: B3gSearchBNDMq
-      hash-size: low
-      bf-size: medium
-  - wumanber:
-      hash-size: low
-      bf-size: medium
+# Single pattern algorithm
+# The default of "auto" will use "hs" if available, otherwise "bm".
+spm-algo: auto
 
 # Defrag settings:
 defrag:

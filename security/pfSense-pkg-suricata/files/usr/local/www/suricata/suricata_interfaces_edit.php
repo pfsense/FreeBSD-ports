@@ -116,7 +116,7 @@ if (empty($pconfig['max_pending_packets']))
 if (empty($pconfig['detect_eng_profile']))
 	$pconfig['detect_eng_profile'] = "medium";
 if (empty($pconfig['mpm_algo']))
-	$pconfig['mpm_algo'] = "ac";
+	$pconfig['mpm_algo'] = "auto";
 if (empty($pconfig['sgh_mpm_context']))
 	$pconfig['sgh_mpm_context'] = "auto";
 if (empty($pconfig['enable_http_log']))
@@ -849,8 +849,8 @@ $section->addInput(new Form_Select(
 	'mpm_algo',
 	'Pattern Matcher Algorithm',
 	$pconfig['mpm_algo'],
-	array('ac' => 'AC', 'ac-gfbs' => 'AC-GFBS', 'b2g' => 'B2G', 'b2gc' => 'B2GC', 'b2gm' => 'B2GM', 'b3g' => 'B3G', 'wumanber' => 'WUMANBER')
-))->setHelp('Choose a multi-pattern matcher (MPM) algorithm. AC is the default, and is the best choice for almost all systems.	');
+	array('auto' => 'Auto', 'ac' => 'AC', 'ac-bs' => 'AC-BS', 'ac-ks' => 'AC-KS', 'hs' => 'Hyperscan')
+))->setHelp('Choose a multi-pattern matcher (MPM) algorithm. Auto is the default, and is the best choice for almost all systems.  Auto will use hyperscan if available.');
 
 $section->addInput(new Form_Select(
 	'sgh_mpm_context',
