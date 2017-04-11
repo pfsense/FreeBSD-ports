@@ -101,7 +101,7 @@ outputs:
       enabled: {$file_store_enabled}
       log-dir: files
       force-magic: {$json_log_magic}
-      force-md5: {$json_log_md5}
+      {$json_log_hash}
       waldo: file.waldo
 
   - file-log:
@@ -110,7 +110,7 @@ outputs:
       append: {$json_log_append}
       filetype: regular
       force-magic: {$json_log_magic}
-      force-md5: {$json_log_md5}
+      {$json_log_hash}
 
   - dns-log:
       enabled: {$dns_log_enabled}

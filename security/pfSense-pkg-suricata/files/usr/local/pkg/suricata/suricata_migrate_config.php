@@ -285,6 +285,16 @@ foreach ($rule as &$r) {
 		$pconfig['eve_log_ssh'] = "on";
 		$updated_cfg = true;
 	}
+	if (!isset($pconfig['tracked_files_hash'])) {
+		if ($pconfig['enabled_tracked_files_md5'] == "on") {
+			$pconfig['tracked_files_hash'] = "md5";
+		}
+		else {
+			$pconfig['tracked_files_hash'] = "none";
+		}
+		unset($pconfig['enabled_tracked_files_md5']);
+		$updated_cfg = true;
+	}
 
 	/******************************************************************/
 	/* Remove per interface default log size and retention limits     */ 
