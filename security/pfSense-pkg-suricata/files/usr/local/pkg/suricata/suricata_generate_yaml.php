@@ -265,10 +265,10 @@ if ($suricatacfg['enable_tracked_files_magic'] == 'on')
 else
 	$json_log_magic = "no";
 
-if ($suricatacfg['enable_tracked_files_md5'] == 'on')
-	$json_log_md5 = "yes";
+if ($suricatacfg['tracked_files_hash'] != 'none')
+	$json_log_hash = "force-hash: [{$suricatacfg['tracked_files_hash']}]";
 else
-	$json_log_md5 = "no";
+	$json_log_hash = "#force-hash: [md5]";
 	
 if ($suricatacfg['enable_file_store'] == 'on') {
 	$file_store_enabled = "yes";
@@ -359,13 +359,15 @@ if (($suricatacfg['eve_log_alerts'] == 'on') && ($suricatacfg['eve_log_alerts_pa
 	
 if (($suricatacfg['eve_log_alerts'] == 'on') && ($suricatacfg['eve_log_alerts_payload'] == 'on')) {
 	$eve_out_types .= "\n        - alert:";
-	$eve_out_types .= "\n            payload: yes # enable dumping payload in Base64";
+	$eve_out_types .= "\n            payload: yes           # enable dumping payload in Base64";
 	$eve_out_types .= "\n            payload-printable: yes # enable dumping payload in printable (lossy) format";
-	$eve_out_types .= "\n            packet: yes # enable dumping of packet (without stream segments)";
-	$eve_out_types .= "\n            http: yes # enable dumping of http fields";
-	$eve_out_types .= "\n            tls: yes # enable dumping of tls fields";
-	$eve_out_types .= "\n            ssh: yes # enable dumping of ssh fields";
-	$eve_out_types .= "\n            smtp: yes # enable dumping of smtp fields";
+	$eve_out_types .= "\n            packet: yes            # enable dumping of packet (without stream segments)";
+	$eve_out_types .= "\n            http: yes              # enable dumping of http fields";
+	$eve_out_types .= "\n            tls: yes               # enable dumping of tls fields";
+	$eve_out_types .= "\n            ssh: yes               # enable dumping of ssh fields";
+	$eve_out_types .= "\n            smtp: yes              # enable dumping of smtp fields";
+	$eve_out_types .= "\n            dnp3: yes              # enable dumping of DNP3 fields";
+	$eve_out_types .= "\n            tagged-packets: yes    # enable logging of tagged packets";
 }
 
 if ($suricatacfg['eve_log_http'] == 'on') {
@@ -376,8 +378,11 @@ if ($suricatacfg['eve_log_http'] == 'on') {
 		$eve_out_types .= "\n            extended: no";
 }
 
-if ($suricatacfg['eve_log_dns'] == 'on')
-	$eve_out_types .= "\n        - dns";
+if ($suricatacfg['eve_log_dns'] == 'on') {
+	$eve_out_types .= "\n        - dns:";
+	$eve_out_types .= "\n            query: yes";
+	$eve_out_types .= "\n            answer: yes";
+}
 
 if ($suricatacfg['eve_log_tls'] == 'on') {
 	$eve_out_types .= "\n        - tls:";
@@ -393,14 +398,27 @@ if ($suricatacfg['eve_log_files'] == 'on') {
 		$eve_out_types .= "\n            force-magic: yes";
 	else
 		$eve_out_types .= "\n            force-magic: no";
-	if ($suricatacfg['enable_tracked_files_md5'] == 'on')
-		$eve_out_types .= "\n            force-md5: yes";
-	else
-		$eve_out_types .= "\n            force-md5: no";
+	if ($suricatacfg['tracked_files_hash'] != 'none') {
+		$eve_out_types .= "\n            force-hash: [{$suricatacfg['tracked_files_hash']}]";
+	}
 }
 
-if ($suricatacfg['eve_log_ssh'] == 'on')
+if ($suricatacfg['eve_log_ssh'] == 'on') {
 	$eve_out_types .= "\n        - ssh";
+}
+
+if ($suricatacfg['eve_log_smtp'] == 'on') {
+	$eve_out_types .= "\n        - smtp:";
+	$eve_out_types .= "\n            extended: yes";
+	$eve_out_types .= "\n            custom: [received, x-mailer, x-originating-ip, relays, reply-to, bcc]";
+	$eve_out_types .= "\n            md5: [subject]";
+}
+
+if ($suricatacfg['eve_log_drop'] == 'on' && $suricatacfg['ips_mode'] == "ips_mode_inline") {
+	$eve_out_types .= "\n        - drop:";
+	$eve_out_types .= "\n            alerts: yes";
+	$eve_out_types .= "\n            flows: all";
+}
 
 // Add interface-specific IP defrag settings
 if (!empty($suricatacfg['frag_memcap']))
