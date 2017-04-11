@@ -142,7 +142,16 @@ detect-engine:
 # Suricata is multi-threaded. Here the threading can be influenced.
 threading:
   set-cpu-affinity: no
-  detect-thread-ratio: 1.5
+  detect-thread-ratio: 1.0
+
+# Luajit has a strange memory requirement, it's 'states' need to be in the
+# first 2G of the process' memory.
+#
+# 'luajit.states' is used to control how many states are preallocated.
+# State use: per detect script: 1 per detect thread. Per output script: 1 per
+# script.
+luajit:
+  states: 128
 
 # Multi pattern algorithm
 # The default mpm-algo value of "auto" will use "hs" if Hyperscan is
@@ -169,6 +178,11 @@ flow:
   prealloc: {$flow_prealloc}
   emergency-recovery: {$flow_emerg_recovery}
   prune-flows: {$flow_prune}
+
+# This option controls the use of vlan ids in the flow (and defrag)
+# hashing.
+vlan:
+  use-for-tracking: true
 
 # Specific timeouts for flows.
 flow-timeouts:
