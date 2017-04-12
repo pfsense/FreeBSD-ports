@@ -274,9 +274,12 @@ if ($suricatacfg['enable_file_store'] == 'on') {
 	$file_store_enabled = "yes";
 	if (!file_exists("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/file.waldo"))
 		@file_put_contents("{$suricatalogdir}suricata_{$if_real}{$suricata_uuid}/file.waldo", "");
+	$file_store_waldo = "waldo: file.waldo";
 }
-else
+else {
 	$file_store_enabled = "no";
+	$file_store_waldo = "#waldo: file.waldo";
+}
 
 if ($suricatacfg['enable_pcap_log'] == 'on')
 	$pcap_log_enabled = "yes";

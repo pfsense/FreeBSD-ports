@@ -102,7 +102,7 @@ outputs:
       log-dir: files
       force-magic: {$json_log_magic}
       {$json_log_hash}
-      waldo: file.waldo
+      {$file_store_waldo}
 
   - file-log:
       enabled: {$json_log_enabled}
