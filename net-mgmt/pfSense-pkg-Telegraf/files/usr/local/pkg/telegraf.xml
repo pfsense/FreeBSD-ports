@@ -46,7 +46,13 @@
             <fieldname>enable</fieldname>
             <type>checkbox</type>
             <description>Check to enable Telegraf.</description>
-            <enablefields>influx_server,influx_db,influx_user,influx_pass</enablefields>
+            <enablefields>interval,influx_server,influx_db,influx_user,influx_pass</enablefields>
+        </field>
+        <field>
+            <fielddescr>Update Interval</fielddescr>
+            <fieldname>interval</fieldname>
+            <type>input</type>
+            <description>Update interval (seconds) (default: 10).</description>
         </field>
         <field>
             <fielddescr>InfluxDB Server</fielddescr>
