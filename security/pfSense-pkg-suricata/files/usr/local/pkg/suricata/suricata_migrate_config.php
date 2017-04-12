@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (C) 2016 Bill Meeks
+ * Copyright (C) 2017 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -51,7 +51,7 @@ $rule = &$config['installedpackages']['suricata']['rule'];
 $updated_cfg = false;
 log_error("[Suricata] Checking configuration settings version...");
 
-// Check the configuration version to see if XMLRPC Sync should
+// Check the configuration version to see if XMLRPC Sync should be
 // auto-disabled as part of the upgrade due to config format changes.
 if ($config['installedpackages']['suricata']['config'][0]['suricata_config_ver'] < 2 && 
     ($config['installedpackages']['suricatasync']['config'][0]['varsynconchanges'] == 'auto' ||
@@ -285,6 +285,32 @@ foreach ($rule as &$r) {
 		$pconfig['eve_log_ssh'] = "on";
 		$updated_cfg = true;
 	}
+	if (!isset($pconfig['eve_log_smtp'])) {
+		$pconfig['eve_log_smtp'] = "on";
+		$updated_cfg = true;
+	}
+	if (!isset($pconfig['eve_log_drop'])) {
+		$pconfig['eve_log_drop'] = "on";
+		$updated_cfg = true;
+	}
+
+	/******************************************************************/
+	/* SHA1 and SHA256 were added as additional hashing options in    */
+	/* Suricata 3.x, so the old binary on/off MD5 hashing parameter   */
+	/* is now one of three string values: NONE, MD5, SHA1 or SHA256.  */
+	/* It has been moved to a new parameter name and the old one is   */
+	/* now deprecated and removed from the config.                    */
+	/******************************************************************/
+	if (!isset($pconfig['tracked_files_hash'])) {
+		if ($pconfig['enabled_tracked_files_md5'] == "on") {
+			$pconfig['tracked_files_hash'] = "md5";
+		}
+		else {
+			$pconfig['tracked_files_hash'] = "none";
+		}
+		unset($pconfig['enabled_tracked_files_md5']);
+		$updated_cfg = true;
+	}
 
 	/******************************************************************/
 	/* Remove per interface default log size and retention limits     */ 
@@ -497,6 +523,17 @@ foreach ($rule as &$r) {
 	/**********************************************************/
 	if (empty($pconfig['ips_mode'])) {
 		$pconfig['ips_mode'] = "ips_mode_legacy";
+		$updated_cfg = true;
+	}
+
+	/**********************************************************/
+	/* Suricata 3.2.1 introduced support for hyperscan as an  */
+	/* option for the multi pattern matcher (MPM) algorithm.  */
+	/* Several older MPM algorithms were also deprecated.     */
+	/**********************************************************/
+	$old_mpm_algos = array('ac-gfbs', 'b2g', 'b2gc', 'b2gm', 'b3g', 'wumanber');
+	if (in_array($pconfig['mpm_algo'], $old_mpm_algos)) {
+		$pconfig['mpm_algo'] = "auto";
 		$updated_cfg = true;
 	}
 

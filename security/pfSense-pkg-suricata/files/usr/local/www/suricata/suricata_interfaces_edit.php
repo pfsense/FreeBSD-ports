@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2017 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -116,7 +116,7 @@ if (empty($pconfig['max_pending_packets']))
 if (empty($pconfig['detect_eng_profile']))
 	$pconfig['detect_eng_profile'] = "medium";
 if (empty($pconfig['mpm_algo']))
-	$pconfig['mpm_algo'] = "ac";
+	$pconfig['mpm_algo'] = "auto";
 if (empty($pconfig['sgh_mpm_context']))
 	$pconfig['sgh_mpm_context'] = "auto";
 if (empty($pconfig['enable_http_log']))
@@ -161,6 +161,11 @@ if (empty($pconfig['eve_log_files']))
 	$pconfig['eve_log_files'] = "on";
 if (empty($pconfig['eve_log_ssh']))
 	$pconfig['eve_log_ssh'] = "on";
+if (empty($pconfig['eve_log_smtp']))
+	$pconfig['eve_log_smtp'] = "on";
+if (empty($pconfig['eve_log_drop'])) {
+	$pconfig['eve_log_drop'] = "on";
+}
 if (empty($pconfig['intf_promisc_mode']))
 	$pconfig['intf_promisc_mode'] = "on";
 
@@ -272,7 +277,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['enable_json_file_log'] == "on") { $natent['enable_json_file_log'] = 'on'; }else{ $natent['enable_json_file_log'] = 'off'; }
 		if ($_POST['append_json_file_log'] == "on") { $natent['append_json_file_log'] = 'on'; }else{ $natent['append_json_file_log'] = 'off'; }
 		if ($_POST['enable_tracked_files_magic'] == "on") { $natent['enable_tracked_files_magic'] = 'on'; }else{ $natent['enable_tracked_files_magic'] = 'off'; }
-		if ($_POST['enable_tracked_files_md5'] == "on") { $natent['enable_tracked_files_md5'] = 'on'; }else{ $natent['enable_tracked_files_md5'] = 'off'; }
+		if ($_POST['tracked_files_hash']) $natent['tracked_files_hash'] = $_POST['tracked_files_hash'];
 		if ($_POST['enable_file_store'] == "on") { $natent['enable_file_store'] = 'on'; }else{ $natent['enable_file_store'] = 'off'; }
 		if ($_POST['enable_eve_log'] == "on") { $natent['enable_eve_log'] = 'on'; }else{ $natent['enable_eve_log'] = 'off'; }
 		if ($_POST['max_pending_packets']) $natent['max_pending_packets'] = $_POST['max_pending_packets']; else unset($natent['max_pending_packets']);
@@ -304,6 +309,8 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['eve_log_tls'] == "on") { $natent['eve_log_tls'] = 'on'; }else{ $natent['eve_log_tls'] = 'off'; }
 		if ($_POST['eve_log_files'] == "on") { $natent['eve_log_files'] = 'on'; }else{ $natent['eve_log_files'] = 'off'; }
 		if ($_POST['eve_log_ssh'] == "on") { $natent['eve_log_ssh'] = 'on'; }else{ $natent['eve_log_ssh'] = 'off'; }
+		if ($_POST['eve_log_smtp'] == "on") { $natent['eve_log_smtp'] = 'on'; }else{ $natent['eve_log_smtp'] = 'off'; }
+		if ($_POST['eve_log_drop'] == "on") { $natent['eve_log_drop'] = 'on'; }else{ $natent['eve_log_drop'] = 'off'; }
 		if ($_POST['delayed_detect'] == "on") { $natent['delayed_detect'] = 'on'; }else{ $natent['delayed_detect'] = 'off'; }
 		if ($_POST['intf_promisc_mode'] == "on") { $natent['intf_promisc_mode'] = 'on'; }else{ $natent['intf_promisc_mode'] = 'off'; }
 		if ($_POST['configpassthru']) $natent['configpassthru'] = base64_encode(str_replace("\r\n", "\n", $_POST['configpassthru'])); else unset($natent['configpassthru']);
@@ -670,13 +677,12 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['enable_tracked_files_magic'] == 'on' ? true:false,
 	'on'
 ));
-$section->addInput(new Form_Checkbox(
-	'enable_tracked_files_md5',
-	'Enable MD5 for Tracked-Files',
-	'Suricata will generate MD5 checksums for all logged Tracked Files. Default is Not Checked.',
-	$pconfig['enable_tracked_files_md5'] == 'on' ? true:false,
-	'on'
-));
+$section->addInput(new Form_Select(
+	'tracked_files_hash',
+	'Tracked-Files Checksum',
+	$pconfig['tracked_files_hash'],
+	array("none" => "None", "md5" => "MD5", "sha1" => "SHA1", "sha256" => "SHA256")
+))->setHelp('Suricata will generate checksums for all logged Tracked Files using the chosen algorithm. Default is None.');
 $section->addInput(new Form_Checkbox(
 	'enable_file_store',
 	'Enable File-Store',
@@ -780,6 +786,22 @@ $group->add(new Form_Checkbox(
 	'on'
 ));
 
+$group->add(new Form_Checkbox(
+	'eve_log_smtp',
+	'SMTP Traffic',
+	'SMTP Traffic',
+	$pconfig['eve_log_smtp'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
+	'eve_log_drop',
+	'Dropped Traffic',
+	'Dropped Traffic',
+	$pconfig['eve_log_drop'] == 'on' ? true:false,
+	'on'
+));
+
 $group->setHelp('Choose the information to log via EVE JSON output. Default is All Checked.');
 
 $section->add($group)->addClass('eve_log_info');
@@ -849,8 +871,8 @@ $section->addInput(new Form_Select(
 	'mpm_algo',
 	'Pattern Matcher Algorithm',
 	$pconfig['mpm_algo'],
-	array('ac' => 'AC', 'ac-gfbs' => 'AC-GFBS', 'b2g' => 'B2G', 'b2gc' => 'B2GC', 'b2gm' => 'B2GM', 'b3g' => 'B3G', 'wumanber' => 'WUMANBER')
-))->setHelp('Choose a multi-pattern matcher (MPM) algorithm. AC is the default, and is the best choice for almost all systems.	');
+	array('auto' => 'Auto', 'ac' => 'AC', 'ac-bs' => 'AC-BS', 'ac-ks' => 'AC-KS', 'hs' => 'Hyperscan')
+))->setHelp('Choose a multi-pattern matcher (MPM) algorithm. Auto is the default, and is the best choice for almost all systems.  Auto will use hyperscan if available.');
 
 $section->addInput(new Form_Select(
 	'sgh_mpm_context',
@@ -1073,6 +1095,15 @@ events.push(function(){
 		if ($('#ips_mode').val() == 'ips_mode_inline') {
 			hideCheckbox('blockoffenderskill', true);
 			hideSelect('blockoffendersip', true);
+			if (hide) {
+				$('#eve_log_drop').parent().hide();
+			}
+			else {
+				$('#eve_log_drop').parent().show();
+			}
+		}
+		else {
+			$('#eve_log_drop').parent().hide();
 		}
 	}
 
@@ -1109,7 +1140,7 @@ events.push(function(){
 		var hide = ! $('#enable_json_file_log').prop('checked');
 		hideCheckbox('append_json_file_log', hide);
 		hideCheckbox('enable_tracked_files_magic', hide);
-		hideCheckbox('enable_tracked_files_md5', hide);
+		hideSelect('tracked_files_hash', hide);
 	}
 
 	function toggle_pcap_log() {
@@ -1121,7 +1152,7 @@ events.push(function(){
 	function toggle_eve_log() {
 		var hide = ! $('#enable_eve_log').prop('checked');
 		hideSelect('eve_output_type', hide);
-		hideClass('eve_log_info',hide);
+		hideClass('eve_log_info', hide);
 	}
 
 	function enable_change() {
@@ -1169,7 +1200,7 @@ events.push(function(){
 		disableInput('enable_json_file_log', disable);
 		disableInput('append_json_file_log', disable);
 		disableInput('enable_tracked_files_magic', disable);
-		disableInput('enable_tracked_files_md5', disable);
+		disableInput('tracked_files_hash', disable);
 		disableInput('enable_file_store', disable);
 		disableInput('enable_pcap_log', disable);
 		disableInput('max_pcap_log_size', disable);
@@ -1184,6 +1215,8 @@ events.push(function(){
 		disableInput('eve_log_tls', disable);
 		disableInput('eve_log_files', disable);
 		disableInput('eve_log_ssh', disable);
+		disableInput('eve_log_smtp', disable);
+		disableInput('eve_log_drop', disable);
 	}
 
 	// Call the list viewing page and write what it returns to the modal text area
@@ -1273,11 +1306,13 @@ events.push(function(){
 		if ($('#ips_mode').val() == 'ips_mode_inline') {
 			hideCheckbox('blockoffenderskill', true);
 			hideSelect('blockoffendersip', true);
+			$('#eve_log_drop').parent().show();
 		}
 		else {
 			hideCheckbox('blockoffenderskill', false);
 			hideSelect('blockoffendersip', false);
 			hideClass('passlist', false);
+			$('#eve_log_drop').parent().hide();
 		}
 	});
 

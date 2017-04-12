@@ -101,8 +101,8 @@ outputs:
       enabled: {$file_store_enabled}
       log-dir: files
       force-magic: {$json_log_magic}
-      force-md5: {$json_log_md5}
-      waldo: file.waldo
+      {$json_log_hash}
+      {$file_store_waldo}
 
   - file-log:
       enabled: {$json_log_enabled}
@@ -110,7 +110,7 @@ outputs:
       append: {$json_log_append}
       filetype: regular
       force-magic: {$json_log_magic}
-      force-md5: {$json_log_md5}
+      {$json_log_hash}
 
   - dns-log:
       enabled: {$dns_log_enabled}
@@ -142,30 +142,25 @@ detect-engine:
 # Suricata is multi-threaded. Here the threading can be influenced.
 threading:
   set-cpu-affinity: no
-  detect-thread-ratio: 1.5
+  detect-thread-ratio: 1.0
 
-mpm-algo: ac
+# Luajit has a strange memory requirement, it's 'states' need to be in the
+# first 2G of the process' memory.
+#
+# 'luajit.states' is used to control how many states are preallocated.
+# State use: per detect script: 1 per detect thread. Per output script: 1 per
+# script.
+luajit:
+  states: 128
 
-pattern-matcher:
-  - b2gc:
-      search-algo: B2gSearchBNDMq
-      hash-size: low
-      bf-size: medium
-  - b2gm:
-      search-algo: B2gSearchBNDMq
-      hash-size: low
-      bf-size: medium
-  - b2g:
-      search-algo: B2gSearchBNDMq
-      hash-size: low
-      bf-size: medium
-  - b3g:
-      search-algo: B3gSearchBNDMq
-      hash-size: low
-      bf-size: medium
-  - wumanber:
-      hash-size: low
-      bf-size: medium
+# Multi pattern algorithm
+# The default mpm-algo value of "auto" will use "hs" if Hyperscan is
+# available, "ac" otherwise.
+mpm-algo: {$mpm_algo}
+
+# Single pattern algorithm
+# The default of "auto" will use "hs" if available, otherwise "bm".
+spm-algo: auto
 
 # Defrag settings:
 defrag:
@@ -183,6 +178,11 @@ flow:
   prealloc: {$flow_prealloc}
   emergency-recovery: {$flow_emerg_recovery}
   prune-flows: {$flow_prune}
+
+# This option controls the use of vlan ids in the flow (and defrag)
+# hashing.
+vlan:
+  use-for-tracking: true
 
 # Specific timeouts for flows.
 flow-timeouts:
