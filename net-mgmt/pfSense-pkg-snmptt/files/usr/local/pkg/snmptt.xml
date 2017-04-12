@@ -41,6 +41,11 @@
 		<rcfile>snmptt.sh</rcfile>
 		<executable>snmptt</executable>
 		<description>SNMPTT Daemon</description>
+		<custom_php_service_status_command>
+			<![CDATA[
+				""; $output=""; exec("/bin/pgrep -anf snmptt", $output, $retval); $rc=(intval($retval) == 0)
+			]]>
+		</custom_php_service_status_command>
 	</service>
 	<tabs>
 		<tab>

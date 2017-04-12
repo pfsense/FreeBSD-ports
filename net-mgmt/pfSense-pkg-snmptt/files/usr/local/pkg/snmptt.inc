@@ -133,10 +133,19 @@ function sync_package_snmptt() {
 	if (is_array($snmptt_config) && $snmptt_config['snmpttenabled']=="on") {
 
 		$snmptt_start = "echo \"Starting SNMPTT Daemon...\"\n";
+		$snmptt_start .= "	if [ -f /var/run/snmptt/snmptt.pid ]; then \n";
+		$snmptt_start .= "		echo \"Already running\" \n";
+		$snmptt_start .= "		exit 1 \n";
+		$snmptt_start .= "	fi \n";
 		$snmptt_start .= "	/usr/local/bin/perl /usr/local/sbin/snmptt --daemon > /dev/null 2>&1 \n";
 
 		$snmptt_stop = "echo \"Stopping SNMPTT Daemon...\"\n";
-		$snmptt_stop .= "	kill `cat /var/run/snmptt/snmptt.pid`";
+		$snmptt_stop .= "	if [ ! -f /var/run/snmptt/snmptt.pid ]; then \n";
+		$snmptt_stop .= "			kill `pgrep -anf 'snmptt --daemon'` \n";
+		$snmptt_stop .= "	else \n";
+		$snmptt_stop .= "			kill `cat /var/run/snmptt/snmptt.pid` \n";
+		$snmptt_stop .= "	fi \n";
+		$snmptt_stop .= "	/bin/sleep 2 \n";
 
 		/* write out rc.d start/stop file */
 		write_rcfile(array(
