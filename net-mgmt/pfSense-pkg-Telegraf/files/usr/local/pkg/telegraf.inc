@@ -28,10 +28,11 @@ require_once("util.inc");
 function telegraf_resync_config() {
 	global $g, $config;
 
+	$telegraf_conf = array();
 	if (is_array($config['installedpackages']['telegraf'])) {
-		$telegraf_conf = &$config['installedpackages']['telegraf']['config'][0];
-	} else {
-		$telegraf_conf = array();
+		foreach ($config['installedpackages']['telegraf']['config'][0] as $k => $v) {
+			$telegraf_conf[$k] = addslashes($v);
+		}
 	}
 
 	conf_mount_rw();
