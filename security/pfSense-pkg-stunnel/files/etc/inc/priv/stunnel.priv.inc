@@ -1,9 +1,9 @@
 <?php
 /*
- * pkg_bind.inc
+ * stunnel.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2016 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,12 +19,13 @@
  * limitations under the License.
  */
 
-global $shortcuts;
+global $priv_list;
 
-$shortcuts['bind'] = array();
-$shortcuts['bind']['main'] = "pkg_edit.php?xml=bind.xml";
-$shortcuts['bind']['log'] = "status_logs.php?logfile=resolver";
-$shortcuts['bind']['status'] = "status_services.php";
-$shortcuts['bind']['service'] = "named";
+$priv_list['page-system-stunnel'] = array();
+$priv_list['page-system-stunnel']['name'] = "WebCfg - System: stunnel package";
+$priv_list['page-system-stunnel']['descr'] = "Allow access to stunnel package GUI";
+$priv_list['page-system-stunnel']['match'] = array();
+$priv_list['page-system-stunnel']['match'][] = "pkg_edit.php?xml=stunnel.xml*";
+$priv_list['page-services-stunnel']['match'][] = "shortcuts/pkg_stunnel.inc*";
 
 ?>

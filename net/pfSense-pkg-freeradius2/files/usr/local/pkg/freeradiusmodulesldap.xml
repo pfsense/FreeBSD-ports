@@ -63,10 +63,6 @@
 			<url>/pkg_edit.php?xml=freeradiussqlconf.xml&amp;id=0</url>
 		</tab>
 		<tab>
-			<text>Certificates</text>
-			<url>/pkg_edit.php?xml=freeradiuscerts.xml&amp;id=0</url>
-		</tab>
-		<tab>
 			<text>LDAP</text>
 			<url>/pkg_edit.php?xml=freeradiusmodulesldap.xml&amp;id=0</url>
 			<active/>
@@ -483,7 +479,7 @@
 				<![CDATA[
 				Choose the SSL CA Certficate here which you created with <a href="system_camanager.php">'System &gt; Cert Manager'</a>.<br/>
 				<span class="text-info">
-				Choose 'none' if you do not use any kind of certificates or are using the <em>deprecated</em> FreeRADIUS Cert Manager.
+				Choose 'none' if you do not use any kind of certificates.
 				(Default: none)
 				</span>
 				]]>
@@ -500,7 +496,7 @@
 				<![CDATA[
 				Choose the SSL Server Certficate here which you created with <a href="system_camanager.php">'System &gt; Cert Manager'</a>.<br/>
 				<span class="text-info">
-				Choose 'none' if you do not use any kind of certificates or are using the <em>deprecated</em> FreeRADIUS Cert Manager.
+				Choose 'none' if you do not use any kind of certificates.
 				(Default: none)
 				</span>
 				]]>
@@ -964,7 +960,7 @@
 				<![CDATA[
 				Choose the SSL CA Certficate here which you created with <a href="system_camanager.php">'System &gt; Cert Manager'</a>.<br/>
 				<span class="text-info">
-				Choose 'none' if you do not use any kind of certificates or are using the <em>deprecated</em> FreeRADIUS Cert Manager.
+				Choose 'none' if you do not use any kind of certificates.
 				(Default: none)
 				</span>
 				]]>
@@ -981,7 +977,7 @@
 				<![CDATA[
 				Choose the SSL Server Certficate here which you created with <a href="system_camanager.php">'System &gt; Cert Manager'</a>.<br/>
 				<span class="text-info">
-				Choose 'none' if you do not use any kind of certificates or are using the <em>deprecated</em> FreeRADIUS Cert Manager.
+				Choose 'none' if you do not use any kind of certificates.
 				(Default: none)
 				</span>
 				]]>

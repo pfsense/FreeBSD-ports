@@ -7,7 +7,7 @@
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2014 Bill Meeks
+ * Copyright (C) 2017 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,13 +46,10 @@ if (!defined('SURICATA_PKG_VER'))
 $pf_version=substr(trim(file_get_contents("/etc/version")),0,3);
 // Define the PBI base directory
 if (!defined('SURICATA_PBI_BASEDIR')) {
-	if ($pf_version == "2.1" || $pf_version == "2.2")
-		define('SURICATA_PBI_BASEDIR', '/usr/pbi/suricata-' . php_uname("m") . '/');
-	else
-		define('SURICATA_PBI_BASEDIR', '/usr/local/');
+	define('SURICATA_PBI_BASEDIR', '/usr/local/');
 }
 
-// Define the PBI binary wrapper directory
+// Define the suricata binary directory
 if (!defined('SURICATA_PBI_BINDIR'))
 	define('SURICATA_PBI_BINDIR', SURICATA_PBI_BASEDIR . 'bin/');
 

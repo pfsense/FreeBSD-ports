@@ -1,0 +1,3 @@
+SSL encryption wrapper between remote client and local or remote servers.
+
+WWW: https://doc.pfsense.org/index.php/Stunnel_package
