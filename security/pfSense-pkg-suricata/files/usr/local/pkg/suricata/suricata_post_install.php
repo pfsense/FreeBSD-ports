@@ -7,7 +7,7 @@
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2017 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,27 +36,6 @@ require_once("/usr/local/pkg/suricata/suricata.inc");
 require("/usr/local/pkg/suricata/suricata_defs.inc");
 
 global $config, $g, $rebuild_rules, $pkg_interface, $suricata_gui_include;
-
-/****************************************
- * Define any new constants here that   *
- * may not be yet defined in the old    *
- * "suricata_defs.inc" include file     *
- * that might be cached and used by     *
- * the package manager installation     *
- * code.                                *
- *                                      *
- * This is a hack to work around the    *
- * fact the old version of the inc file *
- * is cached and used instead of the    *
- * updated version included with the    *
- * updated GUI package.                 *
- ****************************************/
-if (!defined('SURICATA_PBI_BASEDIR'))
-	define('SURICATA_PBI_BASEDIR', '/usr/pbi/suricata-' . php_uname("m"));
-
-/****************************************
- * End of PHP caching workaround        *
- ****************************************/
 
 // Initialize some common values from defined constants
 $suricatadir = SURICATADIR;
@@ -185,7 +164,7 @@ if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] =
 	/****************************************************************/
 
 	/* Do one-time settings migration for new version configuration */
-	update_status(gettext("Migrating settings to new configuration...") . "\n");
+	update_status(gettext("Migrating settings to new configuration..."));
 	include('/usr/local/pkg/suricata/suricata_migrate_config.php');
 	update_status(gettext(" done.") . "\n");
 	log_error(gettext("[Suricata] Downloading and updating configured rule types."));
