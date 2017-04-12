@@ -65,10 +65,6 @@
 			<url>/pkg_edit.php?xml=freeradiussqlconf.xml&amp;id=0</url>
 		</tab>
 		<tab>
-			<text>Certificates</text>
-			<url>/pkg_edit.php?xml=freeradiuscerts.xml&amp;id=0</url>
-		</tab>
-		<tab>
 			<text>LDAP</text>
 			<url>/pkg_edit.php?xml=freeradiusmodulesldap.xml&amp;id=0</url>
 		</tab>
@@ -182,52 +178,13 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>Choose Cert Manager</fielddescr>
-			<fieldname>vareapconfchoosecertmanager</fieldname>
-			<description>Check to use pfSense Certificate Management</description>
-			<sethelp>
-				<![CDATA[
-				Selects how to manage certificates.
-				By default FreeRADIUS Cert Manager is used, because the server needs some default certs to start services.<br/>
-				For more information, see the <a href="/pkg_edit.php?xml=freeradiuscerts.xml">'Certificates' tab</a>.
-				<div class="infoblock blockopen"><div class="alert alert-danger clearfix" role="alert">
-				<strong>WARNING!!!</strong><br/>
-				The FreeRADIUS Cert Manager is not maintained, uses obsolete insecure cryptography (MD5/SHA1),
-				offers no backup capabilities and is pending removal in near future.<br/><br/>
-				Users are strongly urged to transition to the Cert Manager built into pfSense as soon as possible.
-				To use the built-in Cert Manager on pfSense, first create a CA and a Server Certificate at 
-				<a href="system_camanager.php">'System &gt; Cert Manager'</a>.<br/><br/>
-				<dl class="dl-horizontal responsive">
-				<dt>Unchecked</dt><dd>Use FreeRADIUS Cert Manager (Deprecated, do NOT use!)</dd>
-				<dt>Checked</dt><dd>Use pfSense Cert Manager (Strongly recommended)</dd>
-				</dl>
-				</div></div>
-				]]>
-			</sethelp>
-			<type>checkbox</type>
-			<enablefields>ssl_ca_cert,ssl_ca_crl,ssl_server_cert</enablefields>
-		</field>
-		<field>
-			<fielddescr>Private Key Password</fielddescr>
-			<fieldname>vareapconfprivatekeypassword</fieldname>
-			<description>
-				<![CDATA[
-				By default, the certificates created by FreeRADIUS are protected with a password.<br/>
-				<strong><span class="text-danger">Important: </span></strong>
-				Leave this field empty if using the certificates created with <a href="system_camanager.php">'System &gt; Cert Manager'</a>.
-				]]>
-			</description>
-			<type>password</type>
-			<default_value>whatever</default_value>
-		</field>
-		<field>
 			<fielddescr>SSL CA Certificate</fielddescr>
 			<fieldname>ssl_ca_cert</fieldname>
 			<description>
 				<![CDATA[
 				Choose the SSL CA Certficate here which you created with <a href="system_camanager.php">'System &gt; Cert Manager'</a>.<br/>
 				<span class="text-info">
-				Choose 'none' if you do not use any kind of certificates or are using the <em>deprecated</em> FreeRADIUS Cert Manager.
+				Choose 'none' if you do not use any kind of certificates.
 				(Default: none)
 				</span>
 				]]>
@@ -246,7 +203,7 @@
 				<strong><span class="text-danger">Important: </span></strong>
 				You need to restart FreeRADIUS service after adding a certificate to the CRL.<br/>
 				<span class="text-info">
-				Choose 'none' if you do not use any kind of certificates or are using the <em>deprecated</em> FreeRADIUS Cert Manager.
+				Choose 'none' if you do not use any kind of certificates.
 				(Default: none)
 				</span>
 				]]>
@@ -264,7 +221,7 @@
 				<![CDATA[
 				Choose the SSL Server Certficate here which you created with <a href="system_camanager.php">'System &gt; Cert Manager'</a>.<br/>
 				<span class="text-info">
-				Choose 'none' if you do not use any kind of certificates or are using the <em>deprecated</em> FreeRADIUS Cert Manager.
+				Choose 'none' if you do not use any kind of certificates.
 				(Default: none)
 				]]>
 			</description>
@@ -311,7 +268,7 @@
 		<field>
 			<fielddescr>Check Cert Issuer</fielddescr>
 			<fieldname>vareapconfenablecheckcertissuer</fieldname>
-			<description>Validate the certificate aginst the CA</description>
+			<description>Validate the certificate against the CA</description>
 			<sethelp>
 				<![CDATA[
 				When enabled, the server/client certificate must match the CA issuer.

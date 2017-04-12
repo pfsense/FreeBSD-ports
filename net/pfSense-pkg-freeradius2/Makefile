@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-freeradius2
-PORTVERSION=	1.7.7
+PORTVERSION=	1.7.8
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -46,8 +46,6 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/freeradiussqlconf.xml \
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/freeradiusinterfaces.xml \
-		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/freeradiuscerts.xml \
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/freeradiussync.xml \
 		${STAGEDIR}${PREFIX}/pkg

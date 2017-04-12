@@ -7,7 +7,6 @@ pkg/freeradiussettings.xml
 pkg/freeradiuseapconf.xml
 pkg/freeradiussqlconf.xml
 pkg/freeradiusinterfaces.xml
-pkg/freeradiuscerts.xml
 pkg/freeradiussync.xml
 pkg/freeradiusmodulesldap.xml
 pkg/freeradiusauthorizedmacs.xml
