@@ -1896,7 +1896,7 @@ function suricata_load_vrt_policy($policy, $mode='alert', $all_rules=null) {
 	return $vrt_policy_rules;
 }
 
-function suricata_parse_sidconf_file($sidconf_file) {
+function suricata_parse_sidconf_file($sidconf_file,$split_lines=TRUE) {
 
 	/**********************************************/
 	/* This function loads and processes the file */
@@ -1907,6 +1907,11 @@ function suricata_parse_sidconf_file($sidconf_file) {
 	/*                                            */
 	/*  $sidconf_file ==> full path and name of   */
 	/*                    file to process         */
+	/*                                            */
+	/*  $split_lines ==> determines whether lines */
+	/*                   should be split at       */
+	/*                   commas into multiple     */
+	/*                   sid modification	      */
 	/*                                            */
 	/*        Returns ==> an array containing     */
 	/*                    SID modifier tokens     */
@@ -1941,11 +1946,17 @@ function suricata_parse_sidconf_file($sidconf_file) {
 		// Trim leading and trailing spaces plus newline and any carriage returns
 		$buf = trim($line[0], ' \r\n');
 
-		// Now split the SID mod arguments at the commas, if more than one
-		// per line, and add to our $sid_mods array.
-		$line = explode(",", $buf);
-		foreach ($line as $ent) {
-			$sid_mods[] = trim($ent);
+		if ($split_lines) {
+			// If split mode split the SID mod arguments at the commas, if more than one
+			// per line, and add to our $sid_mods array.
+			$line = explode(",", $buf);
+			foreach ($line as $ent) {
+				$sid_mods[] = trim($ent);
+			}
+		}
+		else{
+			//Otherwise add 1 line as 1 modification to the $sid_mods array
+			$sid_mods[] = $buf;
 		}
 	}
 
@@ -2500,38 +2511,57 @@ function suricata_modify_sid_content(&$rule_map, $sid_mods, $log_results = FALSE
 	// Walk the SID mod tokens and decode each one
 	foreach ($sid_mods as $tok) {
 		$matches = array();
-		if (preg_match('/([\d+|,|\*]*)\s+"(.+)"\s+"(.*)"/', $tok, $matches)) {
+		if (preg_match('/((?<sid_category_list> (?<sid_category_plus_comma>[\da-z-_*]+,)* (?<last_sid_cageory>[\da-z-_*]+)) \s+)? "(?<from>.*)" \s+ "(?<to>.*)"/x', $tok, $matches)) {
+			// If a valid config token is found. A valid token is:
+			// An optional group of a comma separated list(sid_category_list) of SIDs(numbers) or categories(lowercase chars,numbers,- or _) plus whitespaces followed by
+			// a search term(from) framed by double quotes followed
+			// whitespaces followed by
+			// a replacement(to) framed by double quotes
+
 			$tokencounter++;
-			$sidlist = explode(",", $matches[1]);
-			$from = '/' . preg_quote($matches[2], '/') . '/';
-			$to = $matches[3];
+			$from = '/' . preg_quote($matches['from'], '/') . '/';
+			$to = $matches['to'];
 			$count = 0;
 
-			// Now walk the provided rule map and make the modifications
-			if ($matches[1] == "*") {
-				// If wildcard '*' provided for SID, then check them all
-				foreach ($rule_map[1] as $rulem) {
-					foreach ($rulem as $k2 => $v) {
-						$modcount++;
-						$rule_map[1][$k2]['rule'] = preg_replace($from, $to, $v['rule'], -1, $count);
-						if ($count > 0) {
-							$rule_map[1][$k2]['managed'] = 1;
-							$sids[1][$k2] = 'modify';
-							$modifiedcount++;
-						}
-					}
-				}
+			if ($matches['sid_category_list'] == "") {
+				// If the sidlist is empty it's the same as a wildcard, therefore create a list with just one wildcard item
+				$sidlist = array("*");
 			}
 			else {
-				// Otherwise just check the provided SIDs
-				foreach ($sidlist as $sid) {
-					if (isset($rule_map[1][$sid])) {
-						$modcount++;
-						$rule_map[1][$sid]['rule'] = preg_replace($from, $to, $rule_map[1][$sid]['rule'], -1, $count);
-						if ($count > 0) {
-							$rule_map[1][$sid]['managed'] = 1;
-							$sids[1][$sid] = 'modify';
-							$modifiedcount++;
+				// Otherwise split the list
+				$sidlist = explode(",", $matches['sid_category_list']);
+			}
+
+
+			// Walk over all sids
+			foreach ($sidlist as $sid) {
+				if (isset($rule_map[1][$sid])) {
+					// If sid is present change modify it
+					$modcount++;
+					$rule_map[1][$sid]['rule'] = preg_replace($from, $to, $rule_map[1][$sid]['rule'], -1, $count);
+					if ($count > 0) {
+						$rule_map[1][$sid]['managed'] = 1;
+						$rule_map[1][$sid]['modified'] = 1;
+						$sids[1][$sid] = 'modify';
+						$modifiedcount++;
+					}
+				}
+				else {
+					// Otherwise it's a wildcard or category modification
+					if (is_array($rule_map)) {
+						// If rule_map is an array walk over it to find all rules which need be be modified
+						foreach ($rule_map[1] as $k2 => $v) {
+							if ($sid == "*" || $v['category'] == $sid) {
+								// If a wildcard changed is handled or the category is matching the rule needs to get modified
+								$modcount++;
+								$rule_map[1][$k2]['rule'] = preg_replace($from, $to, $v['rule'], -1, $count);
+								if ($count > 0) {
+									$rule_map[1][$k2]['managed'] = 1;
+									$rule_map[1][$k2]['modified'] = 1;
+									$sids[1][$k2] = 'modify';
+									$modifiedcount++;
+								}
+							}
 						}
 					}
 				}
@@ -2685,7 +2715,7 @@ function suricata_process_modifysid(&$rule_map, $suricatacfg, $log_results = FAL
 		log_error(gettext("[Suricata] Error - unable to open 'modify_sid_file' \"{$suricatacfg['modify_sid_file']}\" specified for " . convert_friendly_interface_to_friendly_descr($suricatacfg['interface'])));
 		return;
 	} else {
-		$sid_mods = suricata_parse_sidconf_file("{$suricata_sidmods_dir}{$suricatacfg['modify_sid_file']}");
+		$sid_mods = suricata_parse_sidconf_file("{$suricata_sidmods_dir}{$suricatacfg['modify_sid_file']}",FALSE);
 	}
 
 	if (!empty($sid_mods)) {
