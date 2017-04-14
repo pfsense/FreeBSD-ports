@@ -1,0 +1,36 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+
+# PROVIDE: vmware-guestd
+# REQUIRE: FILESYSTEMS
+# BEFORE: LOGIN
+
+# Add these lines to /etc/rc.conf.local or /etc/rc.conf
+# to enable this service:
+#
+# vmware_guestd_enable (bool):	Set to YES by default.
+#				Set it to NO to disable vmware_guestd.
+
+. /etc/rc.subr
+
+name="vmware_guestd"
+rcvar=vmware_guestd_enable
+
+load_rc_config $name
+
+checkvm_cmd="/usr/local/bin/vmware-checkvm > /dev/null"
+if ${checkvm_cmd} > /dev/null ; then
+	: ${vmware_guestd_enable:="YES"}
+else
+	: ${vmware_guestd_enable:="NO"}
+fi
+
+command="/usr/local/bin/vmtoolsd"
+pidfile="/var/run/${name}.pid"
+start_precmd="${checkvm_cmd}"
+stop_precmd="${checkvm_cmd}"
+command_args="--background ${pidfile} -c /usr/local/share/vmware-tools/tools.conf -p /usr/local/lib/open-vm-tools/plugins/vmsvc"
+
+run_rc_command "$1"
