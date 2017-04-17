@@ -73,7 +73,6 @@ function tftp_filesdir_bounds_check($filename, $error_msg) {
 
 function install_package_tftpd() {
 	safe_mkdir(FILES_DIR);
-	unlink_if_exists("/usr/local/etc/rc.d/tftpd");
 	upgrade_config_tftpd();
 }
 
