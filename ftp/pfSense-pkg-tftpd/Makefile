@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-tftpd
 PORTVERSION=	0.1.3
+PORTREVISION=	1
 CATEGORIES=	ftp
 MASTER_SITES=	# empty
 DISTFILES=	# empty
