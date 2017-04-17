@@ -24,24 +24,10 @@ require_once("pfsense-utils.inc");
 require_once("pkg-utils.inc");
 require_once("util.inc");
 
-global $pfs_version;
-$pfs_version = substr(trim(file_get_contents("/etc/version")), 0, 3);
-
-if ($pfs_version == "2.1" || $pfs_version == "2.2") {
-	define('NRPE_BASE', '/usr/pbi/nrpe-' . php_uname("m"));
-} else {
-	define('NRPE_BASE', '/usr/local');
-}
-
-if ($pfs_version == "2.1") {
-	define('NRPE_BINARY', NRPE_BASE . "/sbin/nrpe2");
-} else {
-	define('NRPE_BINARY', "/usr/local/sbin/nrpe2");
-}
-
+define('NRPE_BASE', '/usr/local');
+define('NRPE_BINARY', "/usr/local/sbin/nrpe2");
 define('NRPE_CONFIG_DIR', NRPE_BASE . '/etc');
 define('NRPE_RCFILE', '/usr/local/etc/rc.d/nrpe2.sh');
-
 
 function nrpe2_custom_php_install_command() {
 	global $config;
@@ -90,9 +76,6 @@ function nrpe2_custom_php_install_command() {
 			)
 		);
 	}
-
-	/* Remove the rc script installed with the package */
-	unlink_if_exists(NRPE_CONFIG_DIR . '/rc.d/nrpe2');
 
 }
 
