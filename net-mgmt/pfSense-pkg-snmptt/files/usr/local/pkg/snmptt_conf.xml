@@ -34,7 +34,7 @@
 			<url>/pkg_edit.php?xml=snmptt.xml</url>
 		</tab>
 		<tab>
-			<text>SNMPTT.CONF</text>
+			<text>snmptt.conf</text>
 			<url>/pkg_edit.php?xml=snmptt_conf.xml</url>
 			<active />
 		</tab>
@@ -45,7 +45,7 @@
 			<type>listtopic</type>
 		</field>
 		<field>
-			<fielddescr>SNMPTT.CONF</fielddescr>
+			<fielddescr>snmptt.conf</fielddescr>
 			<fieldname>snmptt_configfile</fieldname>
 			<encoding>base64</encoding>
 			<type>textarea</type>

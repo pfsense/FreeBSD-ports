@@ -32,7 +32,7 @@
 	<addedit_string>SNMPTT has been created/modified.</addedit_string>
 	<delete_string>SNMPTT has been deleted.</delete_string>
 	<menu>
-		<name>SNMPTT</name>
+		<name>SNMP Trap Translator (SNMPTT)</name>
 		<section>Services</section>
 		<url>/pkg_edit.php?xml=snmptt.xml</url>
 	</menu>
@@ -54,7 +54,7 @@
 			<active />
 		</tab>
 		<tab>
-			<text>SNMPTT.CONF</text>
+			<text>snmptt.conf</text>
 			<url>/pkg_edit.php?xml=snmptt_conf.xml</url>
 		</tab>
 	</tabs>
@@ -81,7 +81,6 @@
 			<default_value></default_value>
 			<type>input</type>
 			<size>50</size>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Operation Mode</fielddescr>
@@ -98,7 +97,6 @@
 				<option><name>standalone</name><value>standalone</value></option>
 				<option><name>daemon</name><value>daemon</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Multiple Event</fielddescr>
@@ -115,7 +113,6 @@
 				<option><name>0</name><value>0</value></option>
 				<option><name>1</name><value>1</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>DNS Enable</fielddescr>
@@ -132,7 +129,6 @@
 				<option><name>0</name><value>0</value></option>
 				<option><name>1</name><value>1</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Strip Domain</fielddescr>
@@ -155,7 +151,6 @@
 				<option><name>1</name><value>1</value></option>
 				<option><name>2</name><value>2</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Strip Domain List</fielddescr>
@@ -181,7 +176,6 @@
 				<option><name>0</name><value>0</value></option>
 				<option><name>1</name><value>1</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Net SNMP Perl Enable</fielddescr>
@@ -200,7 +194,6 @@
 				<option><name>0</name><value>0</value></option>
 				<option><name>1</name><value>1</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Net SNMP Perl Cache Enable</fielddescr>
@@ -218,7 +211,6 @@
 				<option><name>0</name><value>0</value></option>
 				<option><name>1</name><value>1</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Net SNMP Perl Best Guess</fielddescr>
@@ -241,7 +233,6 @@
 				<option><name>0</name><value>0</value></option>
 				<option><name>1</name><value>1</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Translate Log Trap OID</fielddescr>
@@ -265,7 +256,6 @@
 				<option><name>3</name><value>3</value></option>
 				<option><name>4</name><value>4</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Translate Value OIDs</fielddescr>
@@ -289,7 +279,6 @@
 				<option><name>3</name><value>3</value></option>
 				<option><name>4</name><value>4</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Translate Enterprise OID Format</fielddescr>
@@ -308,7 +297,6 @@
 				<option><name>3</name><value>3</value></option>
 				<option><name>4</name><value>4</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Translate Trap OID Format</fielddescr>
@@ -327,7 +315,6 @@
 				<option><name>3</name><value>3</value></option>
 				<option><name>4</name><value>4</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Translate Variable Name OID Format</fielddescr>
@@ -346,7 +333,6 @@
 				<option><name>3</name><value>3</value></option>
 				<option><name>4</name><value>4</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Translate Integers</fielddescr>
@@ -363,7 +349,6 @@
 				<option><name>0</name><value>0</value></option>
 				<option><name>1</name><value>1</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Wildcard Expansion Separator</fielddescr>
@@ -394,7 +379,6 @@
 				<option><name>0</name><value>0</value></option>
 				<option><name>1</name><value>1</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Remove Backslash From Quotes</fielddescr>
@@ -411,7 +395,6 @@
 				<option><name>0</name><value>0</value></option>
 				<option><name>1</name><value>1</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Dynamic Nodes</fielddescr>
@@ -428,7 +411,6 @@
 				<option><name>0</name><value>0</value></option>
 				<option><name>1</name><value>1</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Description Mode</fielddescr>
@@ -456,7 +438,6 @@
 				<option><name>1</name><value>1</value></option>
 				<option><name>2</name><value>2</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Description Clean</fielddescr>
@@ -473,7 +454,6 @@
 				<option><name>1</name><value>1</value></option>
 				<option><name>2</name><value>2</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Threads Enable</fielddescr>
@@ -490,7 +470,6 @@
 				<option><name>0</name><value>0</value></option>
 				<option><name>1</name><value>1</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Threads Max</fielddescr>
@@ -504,7 +483,6 @@
 			<default_value>10</default_value>
 			<type>input</type>
 			<size>3</size>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Date Format</fielddescr>
@@ -568,7 +546,6 @@
 				<option><name>0</name><value>0</value></option>
 				<option><name>1</name><value>1</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Keep Unlogged Traps</fielddescr>
@@ -593,7 +570,6 @@
 				<option><name>1</name><value>1</value></option>
 				<option><name>2</name><value>2</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Duplicate Trap Window</fielddescr>
@@ -618,7 +594,6 @@
 				<option><name>0</name><value>0</value></option>
 				<option><name>1</name><value>1</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Log Enable</fielddescr>
@@ -630,7 +605,6 @@
 				<option><name>0</name><value>0</value></option>
 				<option><name>1</name><value>1</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Log File</fielddescr>
@@ -650,7 +624,6 @@
 				<option><name>0</name><value>0</value></option>
 				<option><name>1</name><value>1</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Log System File</fielddescr>
@@ -670,7 +643,6 @@
 				<option><name>0</name><value>0</value></option>
 				<option><name>1</name><value>1</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Unknown Trap Log File</fielddescr>
@@ -687,7 +659,6 @@
 			<default_value>0</default_value>
 			<type>input</type>
 			<size>3</size>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Syslog Enable</fielddescr>
@@ -699,7 +670,6 @@
 				<option><name>0</name><value>0</value></option>
 				<option><name>1</name><value>1</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Syslog Facility</fielddescr>
@@ -727,7 +697,6 @@
 				<option><name>0</name><value>0</value></option>
 				<option><name>1</name><value>1</value></option>
 			</options>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Syslog System Facility</fielddescr>

@@ -39,15 +39,27 @@ function php_deinstall_snmptt() {
 function validate_input_snmptt($post, &$input_errors) {
 
 	if (isset($post['snmpttenabled'])) {
-		/*
-		if ($post['onbatterydelay'] != '' && !is_numericint($post['onbatterydelay'])) {
-			$input_errors[] = 'OnBattery Delay is not numeric.';
+
+		if (!empty($post['snmptt_system_name']) && !is_hostname($post['snmptt_system_name'])) {
+			$input_errors[] = "'SNMPTT System Name' is not a valid hostname.";
 		}
 
-		if ($post['batterylevel'] != '' && !is_numericint($post['batterylevel'])) {
-			$input_errors[] = 'Battery Level is not numeric.';
+		if (!preg_match("/^\".+\"$/", $post['wildcard_expansion_separator'])) {
+			$input_errors[] = "'Wildcard Expansion Separator' must be within quotes and can contain 1 or more characters.";
 		}
-		*/
+
+		if (!is_numericint($post['threads_max'])) {
+			$input_errors[] = "'Threads Max' value is not numeric.";
+		}
+
+		if (!is_numericint($post['sleep'])) {
+			$input_errors[] = "'Sleep' value is not numeric.";
+		}
+
+		if (!is_numericint($post['statistics_interval'])) {
+			$input_errors[] = "'Statistics Interval' value is not numeric.";
+		}
+
 	}
 }
 
