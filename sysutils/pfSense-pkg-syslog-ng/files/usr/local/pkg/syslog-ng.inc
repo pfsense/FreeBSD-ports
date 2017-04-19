@@ -46,9 +46,6 @@ function syslogng_install_command() {
 }
 
 function syslogng_deinstall_command() {
-	if (is_link("/usr/local/lib/syslog-ng")) {
-		unlink("/usr/local/lib/syslog-ng");
-	}
 	$crontask = "/usr/bin/nice -n20 " . SYSLOGNG_BASEDIR . "sbin/logrotate /usr/local/etc/logrotate.conf";
 	install_cron_job("${crontask}", false);
 	unlink_if_exists("/usr/local/etc/logrotate.conf");
