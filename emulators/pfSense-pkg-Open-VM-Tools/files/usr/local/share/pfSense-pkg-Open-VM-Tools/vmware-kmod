@@ -10,17 +10,17 @@
 . /etc/rc.subr
 
 # Global
-checkvm_cmd="%%PREFIX%%/bin/vmware-checkvm > /dev/null"
+checkvm_cmd="/usr/local/bin/vmware-checkvm > /dev/null"
 
 # Functions
 vmware_mod_load()
 {
 	echo -n "Loading $1 kernel module: "
-	kldstat -n %%PREFIX%%/lib/vmware-tools/modules/drivers/$1.ko >/dev/null 2>&1
+	kldstat -n /usr/local/lib/vmware-tools/modules/drivers/$1.ko >/dev/null 2>&1
 	if [ "$?" = "0" ]; then
 		echo "already loaded."
 	else
-		kldload %%PREFIX%%/lib/vmware-tools/modules/drivers/$1.ko >/dev/null 2>&1
+		kldload /usr/local/lib/vmware-tools/modules/drivers/$1.ko >/dev/null 2>&1
 		if [ "$?" = "0" ]; then
 			echo "done."
 		else
@@ -32,7 +32,7 @@ vmware_mod_load()
 vmware_mod_status()
 {
 	echo -n "Checking $1 kernel module: "
-	kldstat -n %%PREFIX%%/lib/vmware-tools/modules/drivers/$1.ko >/dev/null 2>&1
+	kldstat -n /usr/local/lib/vmware-tools/modules/drivers/$1.ko >/dev/null 2>&1
 	if [ "$?" = "0" ]; then
 		echo "loaded."
 	else

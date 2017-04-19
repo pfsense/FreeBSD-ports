@@ -32,8 +32,6 @@ define('SIPROXD', '/usr/local');
 
 function install_package_siproxd() {
 	siproxd_create_chroot();
-	/* remove rc script distributed with the package */
-	unlink_if_exists(SIPROXD . '/etc/rc.d/siproxd');
 }
 
 function deinstall_package_siproxd() {

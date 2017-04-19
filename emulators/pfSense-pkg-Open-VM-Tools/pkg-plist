@@ -1,3 +1,5 @@
 pkg/open-vm-tools.xml
 pkg/open-vm-tools.inc
 %%DATADIR%%/info.xml
+%%DATADIR%%/vmware-guestd
+%%DATADIR%%/vmware-kmod

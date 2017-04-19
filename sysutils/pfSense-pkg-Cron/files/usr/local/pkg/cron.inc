@@ -27,8 +27,4 @@ function cron_sync_package() {
 	configure_cron();
 }
 
-function cron_deinstall_command() {
-	rmdir_recursive("/usr/local/www/packages/cron");
-}
-
 ?>

@@ -31,8 +31,14 @@
 	<service>
 		<name>vmware-guestd</name>
 		<rcfile>vmware-guestd.sh</rcfile>
-		<executable>vmtoolsd</executable>
+		<custom_php_service_status_command>mwexec(&quot;/usr/local/etc/rc.d/vmware-guestd status&quot;) == 0;</custom_php_service_status_command>
 		<description>VMware Guest Daemon</description>
+	</service>
+	<service>
+		<name>vmware-kmod</name>
+		<rcfile>vmware-kmod.sh</rcfile>
+		<custom_php_service_status_command>mwexec(&quot;/usr/local/etc/rc.d/vmware-kmod status&quot;) == 0;</custom_php_service_status_command>
+		<description>VMware Kernel Modules</description>
 	</service>
 	<custom_php_install_command>
 		open_vm_tools_install();
