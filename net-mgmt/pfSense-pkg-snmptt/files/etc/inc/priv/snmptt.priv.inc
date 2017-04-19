@@ -27,5 +27,6 @@ $priv_list['page-services-snmptt']['descr'] = "Allow access to SNMPTT package GU
 
 $priv_list['page-services-snmptt']['match'] = array();
 $priv_list['page-services-snmptt']['match'][] = "pkg_edit.php?xml=snmptt.xml*";
+$priv_list['page-services-snmptt']['match'][] = "pkg_edit.php?xml=snmptt_conf.xml*";
 
 ?>
