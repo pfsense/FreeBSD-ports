@@ -1126,7 +1126,7 @@ function freeradius_eapconf_resync($restart_svc = true) {
 			} else {
 				$check_crl="check_crl = no";
 			}
-			file_put_contents(FREERADIUS_ETC . "/raddb/certs/ca_cert.pem", base64_decode($ca_cert['crt']). $crl);
+			file_put_contents(FREERADIUS_ETC . "/raddb/certs/ca_cert.pem", base64_decode($ca_cert['crt']) . "\n" . $crl);
 			$conf['ssl_ca_cert'] = FREERADIUS_ETC . "/raddb/certs/ca_cert.pem";
 		}
 
