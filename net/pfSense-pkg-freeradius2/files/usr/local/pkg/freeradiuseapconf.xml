@@ -183,9 +183,7 @@
 			<description>
 				<![CDATA[
 				Choose the SSL CA Certficate here which you created with <a href="system_camanager.php">'System &gt; Cert Manager'</a>.<br/>
-				<span class="text-info">
-				Choose 'none' if you do not use any kind of certificates.
-				(Default: none)
+				<span class="text-danger">IMPORTANT:</span> Configuring a valid CA certificate here is required!
 				</span>
 				]]>
 			</description>
@@ -203,7 +201,7 @@
 				<strong><span class="text-danger">Important: </span></strong>
 				You need to restart FreeRADIUS service after adding a certificate to the CRL.<br/>
 				<span class="text-info">
-				Choose 'none' if you do not use any kind of certificates.
+				Choose 'none' if you do not use any CRL.
 				(Default: none)
 				</span>
 				]]>
@@ -220,9 +218,7 @@
 			<description>
 				<![CDATA[
 				Choose the SSL Server Certficate here which you created with <a href="system_camanager.php">'System &gt; Cert Manager'</a>.<br/>
-				<span class="text-info">
-				Choose 'none' if you do not use any kind of certificates.
-				(Default: none)
+				<span class="text-danger">IMPORTANT:</span> Configuring a valid server certificate here is required!
 				]]>
 			</description>
 			<type>select_source</type>
