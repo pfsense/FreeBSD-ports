@@ -4406,6 +4406,20 @@ function freeradius_validate_interfaces($post, &$input_errors) {
 
 /* General Settings input validation */
 function freeradius_validate_settings($post, &$input_errors) {
+	// Force users to configure certificates for EAP
+	if (is_array($config['installedpackages']['freeradiuseapconf']['config'][0])) {
+		$eapconf = $config['installedpackages']['freeradiuseapconf']['config'][0];
+	} else {
+		$input_errors[] = "Please, configure and save EAP settings first. Note that setting the SSL CA/Server Certificate is required.";
+		$eapconf = array();
+	}
+	if ($eapconf['ssl_ca_cert'] == 'none') {
+		$input_errors[] = "Please, configure the 'SSL CA Certificate' on the EAP tab first and save settings there.";
+	}
+
+	if ($eapconf['ssl_server_cert'] == 'none') {
+		$input_errors[] = "Please, configure the 'SSL Server Certificate' on the EAP tab first and save settings there.";
+	}
 
 	// Maximum Requests Tracked
 	if ($post['varsettingsmaxrequests'] != '' && !is_numericint($post['varsettingsmaxrequests'])) {
@@ -4515,6 +4529,15 @@ function freeradius_validate_eap($post, &$input_errors) {
 	// EAP Maximum Sessions Tracking Per Server
 	if ($post['vareapconfmaxsessions'] != '' && !is_numericint($post['vareapconfmaxsessions'])) {
 		$input_errors[] = "The 'Maximum Sessions Tracking Per Server' field must contain an integer value.";
+	}
+
+	// Certificates for TLS
+	if ($post['ssl_ca_cert'] == 'none') {
+		$input_errors[] = "SSL CA Certificate must not be set to 'none'. Create a CA certificate if needed and select it here.";
+	}
+
+	if ($post['ssl_server_cert'] == 'none') {
+		$input_errors[] = "SSL Server Certificate must not be set to 'none'. Create a server certificate if needed and select it here.";
 	}
 
 	// EAP-TLS Fragment Size
