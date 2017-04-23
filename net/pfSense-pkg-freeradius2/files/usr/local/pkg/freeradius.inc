@@ -1144,7 +1144,7 @@ function freeradius_eapconf_resync($restart_svc = true) {
 
 		$conf['ssl_cert_dir'] = FREERADIUS_ETC . '/raddb/certs';
 	} else {
-		log_error(gettext("freeRADIUS: Cannot create server certificates. Please see the 'Certificates for TLS' section on the 'EAP' tab to configure FreeRADIUS server certificates."));
+		file_notice("FreeRADIUS", gettext("Cannot create server certificates. Visit Services &gt; FreeRADIUS &gt; EAP tab and configure server certificates in the 'Certificates for TLS' section."));
 	}
 
 	$vareapconfprivatekeyfile = 'server_key.pem';
