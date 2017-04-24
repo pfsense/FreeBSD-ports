@@ -15,6 +15,9 @@ LICENSE=	APACHE20
 RUN_DEPENDS=	${LOCALBASE}/sbin/radiusd:net/freeradius2 \
 		${LOCALBASE}/bin/bash:shells/bash
 
+USES=		python2.7+
+USE_PYTHON=	autoplist distutils
+
 NO_BUILD=	yes
 NO_MTREE=	yes
 
@@ -57,7 +60,7 @@ do-install:
 		${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/googleauth \
 		${STAGEDIR}/usr/local/etc/raddb/modules
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/googleauth.py \
+	${INSTALL_DATA} -m 0755 ${FILESDIR}${PREFIX}/pkg/googleauth.py \
 		${STAGEDIR}/usr/local/etc/raddb/scripts
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
 		${STAGEDIR}${DATADIR}/info.xml
