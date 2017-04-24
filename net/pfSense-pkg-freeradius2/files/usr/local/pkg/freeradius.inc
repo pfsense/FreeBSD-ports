@@ -627,7 +627,7 @@ function freeradius_users_resync($via_rpc = false) {
 			// end of check if otp is enabled
 			} else {
 				// if otp is enabled we need to set Auth-Type to accept because password will be checked when the otp script gets executed in reply-item list
-				$varuserscheckitem = '"' . $varusersusername . '"' . " Auth-Type = " .  $varusersauthmethod;
+				$varuserscheckitem = '"' . $varusersusername . '"' . " Auth-Type = " . '"' .  $varusersauthmethod . '"';
 			}
 
 			// Add additional CHECK-ITEMS here. Different formatting in "users" file needed.
