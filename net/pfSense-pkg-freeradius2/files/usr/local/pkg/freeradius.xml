@@ -205,8 +205,8 @@
 			<type>select</type>
 			<default_value>motp</default_value>
 				<options>
-				      <option><name>Use mOTP</name><value>motp</value></option>
-				      <option><name>Use Google-Authenticator</name><value>googleauth</value></option>              
+				      <option><name>mOTP</name><value>motp</value></option>
+				      <option><name>Google-Authenticator</name><value>googleauth</value></option>              
 				</options>
 		</field>
 		<field>
