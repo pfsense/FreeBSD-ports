@@ -649,7 +649,7 @@ function freeradius_users_resync($via_rpc = false) {
 
 			// this is the part for mobile otp
 			if ($users['varusersmotpenable'] == 'on') {
-				$varusersreplyitem .= "MOTP-Init-Secret = $varusersmotpinitsecret," . "\n\tMOTP-PIN = $varusersmotppin," . "\n\tMOTP-Offset = $varusersmotpoffset";
+				$varusersreplyitem .= "MOTP-Method = $varusersauthmethod," . "\n\tMOTP-Init-Secret = $varusersmotpinitsecret," . "\n\tMOTP-PIN = $varusersmotppin," . "\n\tMOTP-Offset = $varusersmotpoffset";
 			} else {
 				$varusersreplyitem .= '';
 			}
@@ -4036,6 +4036,15 @@ function freeradius_validate_users($post, &$input_errors) {
 		$input_errors[] = "The 'Password' field must be left empty when 'Enable One-Time-Password for this user' is checked.";
 	}
 
+	// OTP-Method
+	if ($post['varusersmotpenable'] == 'on') {
+		if ($post['varusersauthmethod'] == '') {
+			$input_errors[] = "The 'Authentication method' field may not be empty when 'Enable One-Time-Password for this user' is checked.";
+		} elseif (!preg_match('/^(mOTP|Google-Authenticator)/', $post['varusersauthmethod'])) {
+			$input_errors[] = "The 'Authentication method' field may only contain 'mOTP' or 'Google-Authenticator' (regex /^(mOTP|Google-Authenticator)/).";
+		}
+	}
+	
 	// Init-Secret
 	if ($post['varusersmotpenable'] == 'on') {
 		if ($post['varusersmotpinitsecret'] == '') {
