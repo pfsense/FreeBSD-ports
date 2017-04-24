@@ -538,6 +538,7 @@ function freeradius_users_resync($via_rpc = false) {
 					$varuserspassword = $users['varuserspassword'];
 			}
 
+			$varusersauthmethod = $users['varusersauthmethod']; 
 			$varusersmotpinitsecret = $users['varusersmotpinitsecret'];
 			$varusersmotppin = $users['varusersmotppin'];
 			$varusersmotpoffset = ($users['varusersmotpoffset'] ?: '0');
@@ -626,7 +627,7 @@ function freeradius_users_resync($via_rpc = false) {
 			// end of check if otp is enabled
 			} else {
 				// if otp is enabled we need to set Auth-Type to accept because password will be checked when the otp script gets executed in reply-item list
-				$varuserscheckitem = '"' . $varusersusername . '"' . " Auth-Type = motp";
+				$varuserscheckitem = '"' . $varusersusername . '"' . " Auth-Type = " .  $varusersauthmethod;
 			}
 
 			// Add additional CHECK-ITEMS here. Different formatting in "users" file needed.
@@ -1883,6 +1884,12 @@ authenticate {
 	#  Mobile-One-Time-Password (MOTP) authentication.
 	Auth-Type MOTP {
 		motp
+	}
+
+	#
+	#  Mobile-One-Time-Password (MOTP) authentication.
+	Auth-Type GOOGLEAUTH {
+		googleauth
 	}
 
 	#
