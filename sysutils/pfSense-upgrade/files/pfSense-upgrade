@@ -99,7 +99,9 @@ _exec() {
 _exit() {
 	trap "-" 1 2 15 EXIT
 
-	pkg_lock ${kernel_pkg} ${uboot_pkg}
+	if [ -n "${lock_main_pkgs}" ]; then
+		pkg_lock ${kernel_pkg} ${uboot_pkg}
+	fi
 
 	if [ -n "${delete_pid}" -a -f "${pid_file}" ]; then
 		rm -f ${pid_file}
@@ -421,6 +423,7 @@ pkg_upgrade() {
 		pkg_upgrade_repo
 
 		pkg_unlock ${kernel_pkg} ${uboot_pkg}
+		lock_main_pkgs=1
 
 		if ! upgrade_available; then
 			pkg_lock ${kernel_pkg} ${uboot_pkg}
@@ -961,6 +964,7 @@ validate_repo_conf
 
 # Flags used in _exit
 export delete_annotation=""
+export lock_main_pkgs=""
 export unlock_additional_pkgs=""
 export delete_pid=""
 
