@@ -4040,7 +4040,7 @@ function freeradius_validate_users($post, &$input_errors) {
 	if ($post['varusersmotpenable'] == 'on') {
 		if ($post['varusersauthmethod'] == '') {
 			$input_errors[] = "The 'Authentication method' field may not be empty when 'Enable One-Time-Password for this user' is checked.";
-		} elseif (!preg_match('/^(mOTP|Google-Authenticator)/', $post['varusersauthmethod'])) {
+		} elseif (!preg_match('/^(motp|googleauth)$/', $post['varusersauthmethod'])) {
 			$input_errors[] = "The 'Authentication method' field may only contain 'mOTP' or 'Google-Authenticator' (regex /^(mOTP|Google-Authenticator)/).";
 		}
 	}
