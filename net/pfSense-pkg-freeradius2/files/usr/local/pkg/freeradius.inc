@@ -4040,8 +4040,8 @@ function freeradius_validate_users($post, &$input_errors) {
 	if ($post['varusersmotpenable'] == 'on') {
 		if ($post['varusersmotpinitsecret'] == '') {
 			$input_errors[] = "The 'Init-Secret' field may not be empty when 'Enable One-Time-Password for this user' is checked.";
-		} elseif (!preg_match('/^[0-9a-f]{16,}$/', $post['varusersmotpinitsecret'])) {
-			$input_errors[] = "The 'Init-Secret' field may only contain 0-9 and a-f (regex /^[0-9a-f]*$/) and must contain at least 16 characters.";
+		} elseif (!preg_match('/^[0-9a-zA-Z]{16,}$/', $post['varusersmotpinitsecret'])) {
+			$input_errors[] = "The 'Init-Secret' field may only contain 0-9, a-z and A-Z (regex /^[0-9a-zA-Z]*$/) and must contain at least 16 characters.";
 		}
 	}
 
