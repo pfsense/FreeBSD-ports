@@ -1097,6 +1097,13 @@ if pgrep -qF ${pid_file} >/dev/null 2>&1; then
 	exit 1
 fi
 
+echo $$ > ${pid_file}
+
+# Since this point it's safe to remove pid_file
+delete_pid=1
+
+trap _exit 1 2 15 EXIT
+
 if [ -z "${booting}" -o "${boot_stage}" != "2" ]; then
 	/usr/local/bin/php /etc/rc.conf_mount_rw
 fi
@@ -1104,13 +1111,6 @@ fi
 if [ -n "${booting}" ]; then
 	export REPO_AUTOUPDATE=false
 fi
-
-echo $$ > ${pid_file}
-
-# Since this point it's safe to remove pid_file
-delete_pid=1
-
-trap _exit 1 2 15 EXIT
 
 if [ "${action}" != "upgrade" -a -f "${logfile}" ]; then
 	rm -f ${logfile}
