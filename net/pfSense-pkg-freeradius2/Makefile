@@ -13,10 +13,8 @@ COMMENT=	pfSense package freeradius2
 LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/radiusd:net/freeradius2 \
-		${LOCALBASE}/bin/bash:shells/bash
-
-USES=		python2.7+
-USE_PYTHON=	autoplist distutils
+		${LOCALBASE}/bin/bash:shells/bash \
+		${LOCALBASE}/bin/python2.7:lang/python27
 
 NO_BUILD=	yes
 NO_MTREE=	yes
