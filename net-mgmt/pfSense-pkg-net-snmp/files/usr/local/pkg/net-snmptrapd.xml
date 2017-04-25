@@ -174,6 +174,12 @@
 			</options>
 		</field>
 		<field>
+			<fielddescr>Sub-Agent</fielddescr>
+			<fieldname>snmptrapd_subagent</fieldname>
+			<description>Enable to not become a subagent.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
 			<fielddescr>Custom Options</fielddescr>
 			<fieldname>custom_options</fieldname>
 			<description>
