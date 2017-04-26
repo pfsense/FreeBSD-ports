@@ -48,7 +48,7 @@ function php_deinstall_zabbix_proxy_lts() {
 function validate_input_zabbix_proxy_lts($post, &$input_errors) {
 	if (isset($post['proxyenabled'])) {
 		if (!preg_match("/\w+/", $post['server'])) {
-			$input_errors[] = "Server field is required.";
+			$input_errors[] = "'Server' field is required.";
 		}
 
 		if (!is_numericint($post['serverport'])) {
@@ -58,7 +58,7 @@ function validate_input_zabbix_proxy_lts($post, &$input_errors) {
 		}
 
 		if (!preg_match("/\w+/", $post['hostname'])) {
-			$input_errors[] = "Hostname field is required.";
+			$input_errors[] = "'Hostname' field is required.";
 		}
 
 		if (!is_numericint($post['configfrequency'])) {
@@ -73,7 +73,7 @@ function validate_input_zabbix_proxy_lts($post, &$input_errors) {
 
 		if (!is_numericint($post['starttrappers'])) {
 			$input_errors[] = "'Start Trappers' value is not numeric.";
-		} elseif ($post['starttrappers'] < 0 || $post['starttrappers'] > 1000) {
+		} elseif ($post['starttrappers'] > 1000) {
 			$input_errors[] = "You must enter a valid value for 'Start Trappers'.";
 		}
 	}
