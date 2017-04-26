@@ -54,7 +54,7 @@ function validate_input_zabbix_proxy_lts($post, &$input_errors) {
 		if (!is_numericint($post['serverport'])) {
 			$input_errors[] = "'Server Port' value is not numeric.";
 		} elseif ($post['serverport'] < 1 || $post['serverport'] > 65535) {
-			$input_errors[] = "You must enter a valid value for 'Server Port'.";
+			$input_errors[] = "Enter a valid value for 'Server Port'.";
 		}
 
 		if (!preg_match("/\w+/", $post['hostname'])) {
@@ -68,13 +68,13 @@ function validate_input_zabbix_proxy_lts($post, &$input_errors) {
 		if (!is_numericint($post['trappertimeout'])) {
 			$input_errors[] = "'Trapper Timeout' value is not numeric.";
 		} elseif ($post['trappertimeout'] < 1 || $post['trappertimeout'] > 300) {
-			$input_errors[] = "You must enter a valid value for 'Trapper Timeout'.";
+			$input_errors[] = "Enter a valid value for 'Trapper Timeout'.";
 		}
 
 		if (!is_numericint($post['starttrappers'])) {
 			$input_errors[] = "'Start Trappers' value is not numeric.";
 		} elseif ($post['starttrappers'] > 1000) {
-			$input_errors[] = "You must enter a valid value for 'Start Trappers'.";
+			$input_errors[] = "Enter a valid value for 'Start Trappers'.";
 		}
 	}
 }
