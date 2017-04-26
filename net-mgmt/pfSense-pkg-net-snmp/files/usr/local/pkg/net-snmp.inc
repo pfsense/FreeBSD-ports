@@ -617,6 +617,7 @@ function netsnmp_resync_snmptrapd() {
 	}
 
 	$snmptrapd_config = "";
+	$snmptrapd_daemon_options = "";
 
 	/* The protocol and interface binding for snmptrapd works the same as snmpd */
 	$agentaddresses = array();
@@ -791,6 +792,11 @@ function netsnmp_resync_snmptrapd() {
 			$snmptrapd_config .= "forward {$forward['destination']} " . implode(',', $agentaddresses) . "\n";
 		}
 	}
+
+	if ($nsettings['snmptrapd_subagent']) {
+		$snmptrapd_daemon_options .= "-X ";
+	}
+
 	/* Dump custom options into the configuration as-is */
 	if (!empty($nsettings['custom_options'])) {
 		$snmptrapd_config .= "{$nsettings['custom_options']}\n";
@@ -813,7 +819,7 @@ sleep 1
 
 /usr/local/sbin/snmptrapd -p /var/run/snmptrapd.pid \
 			-M /usr/share/snmp/mibs/:/usr/local/share/snmp/mibs \
-			-C \
+			-C {$snmptrapd_daemon_options} \
 			-c {$snmptrapd_config_file}
 EOF;
 	write_rcfile(array(

@@ -10,4 +10,6 @@ pkg/net-snmp_communities.xml
 pkg/net-snmp_hostinfo.xml
 pkg/net-snmp_trapgen.xml
 pkg/net-snmp_users.xml
+/etc/inc/priv/net-snmp.priv.inc
 %%DATADIR%%/info.xml
+@dir /etc/inc/priv
