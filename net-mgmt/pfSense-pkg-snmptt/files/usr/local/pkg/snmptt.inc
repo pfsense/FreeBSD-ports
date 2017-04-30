@@ -91,6 +91,12 @@ function sync_package_snmptt() {
 	if (is_array($snmptt_config) && $snmptt_config['snmpttenabled']=="on") {
 
 		$snmptt_start = "echo \"Starting SNMPTT Daemon...\"\n";
+		$snmptt_start .= "	for DIR in log run spool; do\n";
+		$snmptt_start .= "		if [ ! -d /var/\$DIR/snmptt ]; then\n";
+		$snmptt_start .= "			mkdir /var/\$DIR/snmptt\n";
+		$snmptt_start .= "			chown snmptt:snmptt /var/\$DIR/snmptt\n";
+		$snmptt_start .= "		fi\n";
+		$snmptt_start .= "	done\n";
 		$snmptt_start .= "	if [ -f /var/run/snmptt/snmptt.pid ]; then\n";
 		$snmptt_start .= "		echo \"Already running\"\n";
 		$snmptt_start .= "		exit 1\n";
