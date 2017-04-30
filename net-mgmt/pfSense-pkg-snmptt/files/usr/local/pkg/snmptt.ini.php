@@ -31,13 +31,13 @@ $snmpttini =<<<EOF
 [General]
 # Name of this system for \$H variable.  If blank, system name will be the computer's
 # hostname via Sys::Hostname.
-snmptt_system_name = {$snmptt_system_name} 
+snmptt_system_name = {$snmptt_config['snmptt_system_name']} 
 
 # Set to either 'standalone' or 'daemon'
 # standalone: snmptt called from snmptrapd.conf
 # daemon: snmptrapd.conf calls snmptthandler
 # Ignored by Windows.  See documentation
-mode = {$mode} 
+mode = {$snmptt_config['mode']} 
 
 # Set to 1 to allow multiple trap definitions to be executed for the same trap.
 # Set to 0 to have it stop after the first match.
@@ -47,7 +47,7 @@ mode = {$mode}
 # 	into consideration the NODES list.  Therefore, if there is a matching trap, but
 #	the NODES list prevents it from being considered a match, the wildcard entry will
 #	only be used if there are no other exact matches.
-multiple_event = {$multiple_event}
+multiple_event = {$snmptt_config['multiple_event']}
 
 # SNMPTRAPD passes the IP address of device sending the trap, and the IP address of the
 # actual SNMP agent.  These addresses could differ if the trap was sent on behalf of another
@@ -59,7 +59,7 @@ multiple_event = {$multiple_event}
 # will then be used for comparing.
 # Set to 0 to disable DNS resolution
 # Set to 1 to enable DNS resolution
-dns_enable = {$dns_enable}
+dns_enable = {$snmptt_config['dns_enable']}
 
 # Set to 0 to enable the use of FQDN (Fully Qualified Domain Names).  If a host name is
 # passed to SNMPTT that contains a domain name, it will not be altered in any way by
@@ -68,7 +68,7 @@ dns_enable = {$dns_enable}
 # example, server01.domain.com would be changed to server01
 # Set to 2 to have SNMPTT strip the domain name from the host name passed to it
 # based on the list of domains in strip_domain_list
-strip_domain = {$strip_domain}
+strip_domain = {$snmptt_config['strip_domain']}
 
 # List of domain names that should be stripped when strip_domain is set to 2.
 # List can contain one or more domains.  For example, if the FQDN of a host is
@@ -84,7 +84,7 @@ END
 # Set to 1 to enable resolving ip address to host names
 # Note: net_snmp_perl_enable *must* be enabled.  The strip_domain settings influence the
 # format of the resolved host name.  DNS must be enabled (dns_enable)
-resolve_value_ip_addresses = {$resolve_value_ip_addresses}
+resolve_value_ip_addresses = {$snmptt_config['resolve_value_ip_addresses']}
 
 # Set to 1 to enable the use of the Perl module from the UCD-SNMP / NET-SNMP package.
 # This is required for \$v variable substitution to work, and also for some other options
@@ -92,14 +92,14 @@ resolve_value_ip_addresses = {$resolve_value_ip_addresses}
 # Set to 0 to disable the use of the Perl module from the UCD-SNMP / NET-SNMP package.
 # Note: Enabling this with stand-alone mode can cause SNMPTT to run very slowly due to
 #       the loading of the MIBS at startup.
-net_snmp_perl_enable = {$net_snmp_perl_enable}
+net_snmp_perl_enable = {$snmptt_config['net_snmp_perl_enable']}
 
 # Set to 1 to enable caching of OID and ENUM translations when net_snmp_perl_enable is 
 # enabled.  Enabling this should result in faster translations.
 # Set to 0 to disable caching.
 # Note: Restart SNMPTT after updating the MIB files for Net-SNMP, otherwise the cache may
 # contain inaccurate data.  Defaults to 1.
-net_snmp_perl_cache_enable = {$net_snmp_perl_cache_enable}
+net_snmp_perl_cache_enable = {$snmptt_config['net_snmp_perl_cache_enable']}
 
 # This sets the best_guess parameter used by the UCD-SNMP / NET-SNMP Perl module for 
 # translating symbolic nams to OIDs and vice versa.
@@ -109,7 +109,7 @@ net_snmp_perl_cache_enable = {$net_snmp_perl_cache_enable}
 # UCD-SNMP and Net-SNMP 5.0.8 and previous may not be able to translate certain formats of
 # symbolic names such as RFC1213-MIB::sysDescr.  Net-SNMP 5.0.9 or patch 722075 will allow
 # all possibilities to be translated.  See the FAQ section in the README for more info
-net_snmp_perl_best_guess = {$net_snmp_perl_best_guess}
+net_snmp_perl_best_guess = {$snmptt_config['net_snmp_perl_best_guess']}
 
 # Configures how the OID of the received trap is handled when outputting to a log file /
 # database.  It does NOT apply to the \$O variable.
@@ -124,7 +124,7 @@ net_snmp_perl_best_guess = {$net_snmp_perl_best_guess}
 #       -net_snmp_perl_enable *must* be enabled
 #       -If using database logging, ensure the trapoid column is large enough to hold the
 #        entire line
-translate_log_trap_oid = {$translate_log_trap_oid}
+translate_log_trap_oid = {$snmptt_config['translate_log_trap_oid']}
 
 # Configures how OIDs contained in the VALUE of the variable bindings are handled.
 # This only applies to the values for \$n, \$+n, \$-n, \$vn, \$+*, \$-*.  For substitutions
@@ -138,22 +138,22 @@ translate_log_trap_oid = {$translate_log_trap_oid}
 # For example, if the value contained: 'A UPS Alarm (.1.3.6.1.4.1.534.1.7.12) has cleared.',
 # it could be translated to: 'A UPS Alarm (UPS-MIB::BuildingAlarm) has cleared.'
 # Note: net_snmp_perl_enable *must* be enabled
-translate_value_oids = {$translate_value_oids}
+translate_value_oids = {$snmptt_config['translate_value_oids']}
 
 # Configures how the symbolic enterprise OID will be displayed for \$E.
 # Set to 1, 2, 3 or 4.  See translate_value_oids options 1,2,3 and 4. 
 # Note: net_snmp_perl_enable *must* be enabled
-translate_enterprise_oid_format = {$translate_enterprise_oid_format}
+translate_enterprise_oid_format = {$snmptt_config['translate_enterprise_oid_format']}
 
 # Configures how the symbolic trap OID will be displayed for \$O.
 # Set to 1, 2, 3 or 4.  See translate_value_oids options 1,2,3 and 4. 
 # Note: net_snmp_perl_enable *must* be enabled
-translate_trap_oid_format = {$translate_trap_oid_format}
+translate_trap_oid_format = {$snmptt_config['translate_trap_oid_format']}
 
 # Configures how the symbolic trap OID will be displayed for \$v, \$-n, \$+n, \$-* and \$+*.
 # Set to 1, 2, 3 or 4.  See translate_value_oids options 1,2,3 and 4. 
 # Note: net_snmp_perl_enable *must* be enabled
-translate_varname_oid_format = {$translate_varname_oid_format}
+translate_varname_oid_format = {$snmptt_config['translate_varname_oid_format']}
 
 # Set to 0 to disable converting INTEGER values to enumeration tags as defined in the 
 # MIB files
@@ -161,7 +161,7 @@ translate_varname_oid_format = {$translate_varname_oid_format}
 # MIB files
 # Example: moverDoorState:open instead of moverDoorState:2
 # Note: net_snmp_perl_enable *must* be enabled
-translate_integers = {$translate_integers}
+translate_integers = {$snmptt_config['translate_integers']}
 
 # Allows you to set the MIBS environment variable used by SNMPTT
 # Leave blank or comment out to have the systems enviroment settings used
@@ -172,7 +172,7 @@ translate_integers = {$translate_integers}
 # Set what is used to separate variables when wildcards are expanded on the FORMAT /
 # EXEC line.  Defaults to a space.  Value MUST be within quotes.  Can contain 1 or 
 # more characters
-wildcard_expansion_separator = {$wildcard_expansion_separator}
+wildcard_expansion_separator = {$snmptt_config['wildcard_expansion_separator']}
 
 # Set to 1 to allow unsafe REGEX code to be executed.
 # Set to 0 to prevent unsafe REGEX code from being executed (default).
@@ -186,12 +186,12 @@ wildcard_expansion_separator = {$wildcard_expansion_separator}
 # This is considered unsafe because the contents of the regular expression 
 # (right) is executed (eval) by Perl which *could contain unsafe code*.
 # BE SURE THAT THE SNMPTT CONFIGURATION FILES ARE SECURE!
-allow_unsafe_regex = {$allow_unsafe_regex}
+allow_unsafe_regex = {$snmptt_config['allow_unsafe_regex']}
 
 # Set to 1 to have the backslash (escape) removed from quotes passed from
 # snmptrapd.  For example, \" would be changed to just "
 # Set to 0 to disable
-remove_backslash_from_quotes = {$remove_backslash_from_quotes}
+remove_backslash_from_quotes = {$snmptt_config['remove_backslash_from_quotes']}
 
 # Set to 1 to have NODES files loaded each time a trap is processed.
 # Set to 0 to have all NODES files loaded when the snmptt.conf files are loaded.
@@ -200,7 +200,7 @@ remove_backslash_from_quotes = {$remove_backslash_from_quotes}
 # NODES files.  This will allow the NODES file to be modified while SNMPTT is 
 # running but can result in many file reads depending on the number of traps
 # received.  Defaults to 0
-dynamic_nodes = {$dynamic_nodes}
+dynamic_nodes = {$snmptt_config['dynamic_nodes']}
 
 # This option allows you to use the \$D substitution variable to include the
 # description text from the SNMPTT.CONF or MIB files.
@@ -214,11 +214,11 @@ dynamic_nodes = {$dynamic_nodes}
 #  module save_descriptions variable.  Enabling this option can greatly 
 #  increase the amount of memory used by the Net-SNMP SNMP Perl module, which 
 #  will result in an increase of memory usage by SNMPTT.
-description_mode = {$description_mode}
+description_mode = {$snmptt_config['description_mode']}
 
 # Set to 1 to remove any white space at the start of each line from the MIB
 # or SNMPTT.CONF description when description_mode is set to 1 or 2.
-description_clean = {$description_clean}
+description_clean = {$snmptt_config['description_clean']}
 
 # Warning: Experimental.  Not recommended for production environments.
 #          When threads are enabled, SNMPTT may quit unexpectedly.
@@ -227,28 +227,28 @@ description_clean = {$description_clean}
 # traps.  See also threads_max.
 # Set to 0 to disable threads (ithreads).
 # Defaults to 0
-threads_enable = {$threads_enable}
+threads_enable = {$snmptt_config['threads_enable']}
 
 # Warning: Experimental.  Not recommended for production environments.
 #          When threads are enabled, SNMPTT may quit unexpectedly.
 # This option allows you to set the maximum number of threads that will 
 # execute at once.  Defaults to 10
-threads_max = {$threads_max}
+threads_max = {$snmptt_config['threads_max']}
 
 # The date format for \$x in strftime() format.  If not defined, defaults 
 # to %a %b %e %Y.
-date_format = {$date_format}
+date_format = {$snmptt_config['date_format']}
 
 # The time format for \$X in strftime() format.  If not defined, defaults 
 # to %H:%M:%S.
-time_format = {$time_format}
+time_format = {$snmptt_config['time_format']}
 
 # The date time format in strftime() format for the date/time when logging 
 # to standard output, snmptt log files (log_file) and the unknown log file 
 # (unknown_trap_log_file).  Defaults to localtime().  For SQL, see 
 # date_time_format_sql.
 # Example:  %a %b %e %Y %H:%M:%S
-date_time_format = {$date_time_format}
+date_time_format = {$snmptt_config['date_time_format']}
 
 [DaemonMode]
 # Set to 1 to have snmptt fork to the background when run in daemon mode
@@ -275,12 +275,12 @@ pid_file = /var/run/snmptt/snmptt.pid
 spool_directory = /var/spool/snmptt/
 
 # Amount of time in seconds to sleep between processing spool files
-sleep = {$sleep}
+sleep = {$snmptt_config['sleep']}
 
 # Set to 1 to have SNMPTT use the time that the trap was processed by SNMPTTHANDLER
 # Set to 0 to have SNMPTT use the time the trap was processed.  Note:  Using 0 can
 # result in the time being off by the number of seconds used for 'sleep'
-use_trap_time = {$use_trap_time}
+use_trap_time = {$snmptt_config['use_trap_time']}
 
 # Set to 0 to have SNMPTT erase the spooled trap file after it attempts to process
 # the trap even if it did not successfully log the trap to any of the log systems.
@@ -291,7 +291,7 @@ use_trap_time = {$use_trap_time}
 # enabled and only one fails, the other log system will continuously be logged to
 # until ALL of the log systems function.
 # The recommended setting is 1 with only one log system enabled.
-keep_unlogged_traps = {$keep_unlogged_traps}
+keep_unlogged_traps = {$snmptt_config['keep_unlogged_traps']}
 
 # How often duplicate traps will be processed.  An MD5 hash of all incoming traps
 # is stored in memory and is used to check for duplicates.  All variables except for
@@ -304,27 +304,27 @@ keep_unlogged_traps = {$keep_unlogged_traps}
 # 5 minutes = 300
 # 10 minutes = 600
 # 15 minutes = 900
-duplicate_trap_window = {$duplicate_trap_window}
+duplicate_trap_window = {$snmptt_config['duplicate_trap_window']}
 
 [Logging]
 # Set to 1 to enable messages to be sent to standard output, or 0 to disable.
 # Would normally be disabled unless you are piping this program to another
-stdout_enable = {$stdout_enable}
+stdout_enable = {$snmptt_config['stdout_enable']}
 
 # Set to 1 to enable text logging of *TRAPS*.  Make sure you specify a log_file 
 # location
-log_enable = {$log_enable}
+log_enable = {$snmptt_config['log_enable']}
 
 # Log file location.  The COMPLETE path and filename.  Ex: '/var/log/snmptt/snmptt.log'
-log_file = {$log_file}
+log_file = {$snmptt_config['log_file']}
 
 # Set to 1 to enable text logging of *SNMPTT system errors*.  Make sure you 
 # specify a log_system_file location
-log_system_enable = {$log_system_enable}
+log_system_enable = {$snmptt_config['log_system_enable']}
 
 # Log file location.  The COMPLETE path and filename.  
 # Ex: '/var/log/snmptt/snmpttsystem.log'
-log_system_file = {$log_system_file} 
+log_system_file = {$snmptt_config['log_system_file']} 
 
 # Set to 1 to enable logging of unknown traps.  This should normally be left off
 # as the file could grow large quickly.  Used primarily for troubleshooting.  If
@@ -333,27 +333,27 @@ log_system_file = {$log_system_file}
 # simply missing from the snmptt.conf file.
 # Unknown traps can be logged either a text file, a SQL table or both.
 # See SQL section to define a SQL table to log unknown traps to.
-unknown_trap_log_enable = {$unknown_trap_log_enable}
+unknown_trap_log_enable = {$snmptt_config['unknown_trap_log_enable']}
 
 # Unknown trap log file location.  The COMPLETE path and filename.  
 # Ex: '/var/log/snmptt/snmpttunknown.log'
 # Leave blank to disable logging to text file if logging to SQL is enabled
 # for unknown traps
-unknown_trap_log_file = {$unknown_trap_log_file}
+unknown_trap_log_file = {$snmptt_config['unknown_trap_log_file']}
 
 # How often in seconds statistics should be logged to syslog or the event log.
 # Set to 0 to disable
 # 1 hour = 216000
 # 12 hours = 2592000
 # 24 hours = 5184000
-statistics_interval = {$statistics_interval}
+statistics_interval = {$snmptt_config['statistics_interval']}
 
 # Set to 1 to enable logging of *TRAPS* to syslog.  If you do not have the Sys::Syslog
 # module then disable this.  Windows users should disable this.
-syslog_enable = {$syslog_enable}
+syslog_enable = {$snmptt_config['syslog_enable']}
 
 # Syslog facility to use for logging of *TRAPS*.  For example: 'local0'
-syslog_facility = {$syslog_facility}
+syslog_facility = {$snmptt_config['syslog_facility']}
 
 # Set the syslog level for *TRAPS* based on the severity level of the trap
 # as defined in the snmptt.conf file.  Values must be one per line between 
@@ -378,18 +378,18 @@ END
 
 # Syslog default level to use for logging of *TRAPS*.  For example: warning
 # Valid values: emerg, alert, crit, err, warning, notice, info, debug 
-syslog_level = {$syslog_level}
+syslog_level = {$snmptt_config['syslog_level']}
 
 # Set to 1 to enable logging of *SNMPTT system errors* to syslog.  If you do not have the 
 # Sys::Syslog module then disable this.  Windows users should disable this.
-syslog_system_enable = {$syslog_system_enable}
+syslog_system_enable = {$snmptt_config['syslog_system_enable']}
 
 # Syslog facility to use for logging of *SNMPTT system errors*.  For example: 'local0'
-syslog_system_facility = {$syslog_system_facility} 
+syslog_system_facility = {$snmptt_config['syslog_system_facility']} 
 
 # Syslog level to use for logging of *SNMPTT system errors*..  For example: 'warning'
 # Valid values: emerg, alert, crit, err, warning, notice, info, debug 
-syslog_system_level = {$syslog_system_level}
+syslog_system_level = {$snmptt_config['syslog_system_level']}
 
 [SQL]
 # Determines if the enterprise column contains the numeric OID or symbolic OID

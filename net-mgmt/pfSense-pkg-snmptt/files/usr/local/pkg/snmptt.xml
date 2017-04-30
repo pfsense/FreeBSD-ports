@@ -94,62 +94,39 @@
 			<type>select</type>
 			<default_value>standalone</default_value>
 			<options>
-				<option><name>standalone</name><value>standalone</value></option>
-				<option><name>daemon</name><value>daemon</value></option>
+				<option><name>Standalone</name><value>standalone</value></option>
+				<option><name>Daemon</name><value>daemon</value></option>
 			</options>
 		</field>
 		<field>
 			<fielddescr>Multiple Event</fielddescr>
 			<fieldname>multiple_event</fieldname>
-			<description>
-				<![CDATA[
-					Set to 1 to allow multiple trap definitions to be executed for the same trap.<br/>
-					Set to 0 to have it stop after the first match.<br/>
-				]]>
-			</description>
 			<type>select</type>
 			<default_value>1</default_value>
 			<options>
-				<option><name>0</name><value>0</value></option>
-				<option><name>1</name><value>1</value></option>
+				<option><name>Stop after the first match (0)</name><value>0</value></option>
+				<option><name>Allow multiple trap definitions (1)</name><value>1</value></option>
 			</options>
 		</field>
 		<field>
 			<fielddescr>DNS Enable</fielddescr>
 			<fieldname>dns_enable</fieldname>
-			<description>
-				<![CDATA[
-					Set to 0 to disable DNS resolution.<br/>
-					Set to 1 to enable DNS resolution.<br/>
-				]]>
-			</description>
 			<type>select</type>
 			<default_value>0</default_value>
 			<options>
-				<option><name>0</name><value>0</value></option>
-				<option><name>1</name><value>1</value></option>
+				<option><name>Disable DNS resolution (0)</name><value>0</value></option>
+				<option><name>Enable DNS resolution (1)</name><value>1</value></option>
 			</options>
 		</field>
 		<field>
 			<fielddescr>Strip Domain</fielddescr>
 			<fieldname>strip_domain</fieldname>
-			<description>
-				<![CDATA[
-					Set to 0 to enable the use of FQDN (Fully Qualified Domain Names). If a host name is<br/>
-					passed to SNMPTT that contains a domain name, it will not be altered in any way by<br/>
-					SNMPTT. This also affects resolve_value_ip_addresses.<br/>
-					Set to 1 to have SNMPTT strip the domain name from the host name passed to it. For<br/>
-					example, server01.domain.com would be changed to server01<br/>
-					Set to 2 to have SNMPTT strip the domain name from the host name passed to it<br/>
-					based on the list of domains in strip_domain_list.<br/>
-				]]>
-			</description>
 			<type>select</type>
 			<default_value>0</default_value>
 			<options>
-				<option><name>0</name><value>0</value></option>
-				<option><name>1</name><value>1</value></option>
-				<option><name>2</name><value>2</value></option>
+				<option><name>Use Fully Qualified Domain Names (0)</name><value>0</value></option>
+				<option><name>Remove all domain names (1)</name><value>1</value></option>
+				<option><name>Remove domain names from strip_domain_list (2)</name><value>2</value></option>
 			</options>
 		</field>
 		<field>
@@ -159,195 +136,124 @@
 			<type>textarea</type>
 			<rows>5</rows>
 			<cols>50</cols>
+			<description>
+				<![CDATA[
+					List of domain names that should be stripped when strip_domain is set to 2.<br/>
+					<b>Note: Put each entry on a separate line.</b><br/>
+				]]>
+			</description>
 			<description>List of domain names that should be stripped when strip_domain is set to 2.</description>
 		</field>
 		<field>
 			<fielddescr>Resolve Value IP Addresses</fielddescr>
 			<fieldname>resolve_value_ip_addresses</fieldname>
-			<description>
-				<![CDATA[
-					Set to 0 to disable resolving ip address to host names.<br/>
-					Set to 1 to enable resolving ip address to host names.<br/>
-				]]>
-			</description>
 			<type>select</type>
 			<default_value>0</default_value>
 			<options>
-				<option><name>0</name><value>0</value></option>
-				<option><name>1</name><value>1</value></option>
+				<option><name>Do not resolve the IP address (0)</name><value>0</value></option>
+				<option><name>Resolve the IP address (1)</name><value>1</value></option>
 			</options>
 		</field>
 		<field>
 			<fielddescr>Net SNMP Perl Enable</fielddescr>
 			<fieldname>net_snmp_perl_enable</fieldname>
-			<description>
-				<![CDATA[
-					Set to 1 to enable the use of the Perl module from the UCD-SNMP / NET-SNMP package.<br/>
-					This is required for $v variable substitution to work, and also for some other options<br/>
-					that are enabled in this .ini file.<br/>
-					Set to 0 to disable the use of the Perl module from the UCD-SNMP / NET-SNMP package.<br/>
-				]]>
-			</description>
 			<type>select</type>
 			<default_value>1</default_value>
 			<options>
-				<option><name>0</name><value>0</value></option>
-				<option><name>1</name><value>1</value></option>
+				<option><name>Do not use NET-SNMP Perl module (0)</name><value>0</value></option>
+				<option><name>Use NET-SNMP Perl module (1)</name><value>1</value></option>
 			</options>
 		</field>
 		<field>
 			<fielddescr>Net SNMP Perl Cache Enable</fielddescr>
 			<fieldname>net_snmp_perl_cache_enable</fieldname>
-			<description>
-				<![CDATA[
-					Set to 1 to enable caching of OID and ENUM translations when net_snmp_perl_enable is<br/>
-					enabled.  Enabling this should result in faster translations.<br/>
-					Set to 0 to disable caching.<br/>
-				]]>
-			</description>
 			<type>select</type>
 			<default_value>1</default_value>
 			<options>
-				<option><name>0</name><value>0</value></option>
-				<option><name>1</name><value>1</value></option>
+				<option><name>Do not enable translation cache for NET-SNMP Perl module (0)</name><value>0</value></option>
+				<option><name>Enable translation cache for NET-SNMP Perl module (1)</name><value>1</value></option>
 			</options>
 		</field>
 		<field>
 			<fielddescr>Net SNMP Perl Best Guess</fielddescr>
 			<fieldname>net_snmp_perl_best_guess</fieldname>
-			<description>
-				<![CDATA[
-					This sets the best_guess parameter used by the UCD-SNMP / NET-SNMP Perl module for<br/>
-					translating symbolic nams to OIDs and vice versa.<br/>
-					For UCD-SNMP, and Net-SNMP 5.0.8 and previous versions, set this value to 0.<br/>
-					For Net-SNMP 5.0.9, or any Net-SNMP with patch 722075 applied, set this value to 2.<br/>
-					A value of 2 is equivalent to -IR on Net-SNMP command line utilities.<br/>
-					UCD-SNMP and Net-SNMP 5.0.8 and previous may not be able to translate certain formats of<br/>
-					symbolic names such as RFC1213-MIB::sysDescr. Net-SNMP 5.0.9 or patch 722075 will allow<br/>
-					all possibilities to be translated.<br/>
-				]]>
-			</description>
 			<type>select</type>
 			<default_value>0</default_value>
 			<options>
-				<option><name>0</name><value>0</value></option>
-				<option><name>1</name><value>1</value></option>
+				<option><name>Parameter for Net-SNMP 5.0.8 and previous versions (0)</name><value>0</value></option>
+				<option><name>Parameter for Net-SNMP 5.0.9 or later (2)</name><value>2</value></option>
 			</options>
 		</field>
 		<field>
 			<fielddescr>Translate Log Trap OID</fielddescr>
 			<fieldname>translate_log_trap_oid</fieldname>
-			<description>
-				<![CDATA[
-					Set to 0 to use the default of numerical OID<br/>
-					Set to 1 to translate the trap OID to short text (symbolic form) (eg: linkUp)<br/>
-					Set to 2 to translate the trap OID to short text with module name (eg: IF-MIB::linkUp)<br/>
-					Set to 3 to translate the trap OID to long text (eg: iso...snmpTraps.linkUp)<br/>
-					Set to 4 to translate the trap OID to long text with module name (eg:<br/>
-					IF-MIB::iso...snmpTraps.linkUp)<br/>
-				]]>
-			</description>
 			<type>select</type>
 			<default_value>2</default_value>
 			<options>
-				<option><name>0</name><value>0</value></option>
-				<option><name>1</name><value>1</value></option>
-				<option><name>2</name><value>2</value></option>
-				<option><name>3</name><value>3</value></option>
-				<option><name>4</name><value>4</value></option>
+				<option><name>Disable translation (0)</name><value>0</value></option>
+				<option><name>Translate to short text (1)</name><value>1</value></option>
+				<option><name>Translate to short text with module name (2)</name><value>2</value></option>
+				<option><name>Translate to long text (3)</name><value>3</value></option>
+				<option><name>Translate to long text with module name (4)</name><value>4</value></option>
 			</options>
 		</field>
 		<field>
 			<fielddescr>Translate Value OIDs</fielddescr>
 			<fieldname>translate_value_oids</fieldname>
-			<description>
-				<![CDATA[
-					Set to 0 to disable translating OID values to text (symbolic form)<br/>
-					Set to 1 to translate OID values to short text (symbolic form) (eg: BuildingAlarm)<br/>
-					Set to 2 to translate OID values to short text with module name (eg: UPS-MIB::BuildingAlarm)<br/>
-					Set to 3 to translate OID values to long text (eg: iso...upsAlarm.BuildingAlarm)<br/>
-					Set to 4 to translate OID values to long text with module name (eg:<br/>
-					UPS-MIB::iso...upsAlarm.BuildingAlarm)<br/>
-				]]>
-			</description>
 			<type>select</type>
 			<default_value>1</default_value>
 			<options>
-				<option><name>0</name><value>0</value></option>
-				<option><name>1</name><value>1</value></option>
-				<option><name>2</name><value>2</value></option>
-				<option><name>3</name><value>3</value></option>
-				<option><name>4</name><value>4</value></option>
+				<option><name>Disable translation (0)</name><value>0</value></option>
+				<option><name>Translate to short text (1)</name><value>1</value></option>
+				<option><name>Translate to short text with module name (2)</name><value>2</value></option>
+				<option><name>Translate to long text (3)</name><value>3</value></option>
+				<option><name>Translate to long text with module name (4)</name><value>4</value></option>
 			</options>
 		</field>
 		<field>
 			<fielddescr>Translate Enterprise OID Format</fielddescr>
 			<fieldname>translate_enterprise_oid_format</fieldname>
-			<description>
-				<![CDATA[
-					Configures how the symbolic enterprise OID will be displayed for $E.<br/>
-					Set to 1, 2, 3 or 4.  See translate_value_oids options 1,2,3 and 4.<br/>
-				]]>
-			</description>
 			<type>select</type>
 			<default_value>1</default_value>
 			<options>
-				<option><name>1</name><value>1</value></option>
-				<option><name>2</name><value>2</value></option>
-				<option><name>3</name><value>3</value></option>
-				<option><name>4</name><value>4</value></option>
+				<option><name>Translate to short text (1)</name><value>1</value></option>
+				<option><name>Translate to short text with module name (2)</name><value>2</value></option>
+				<option><name>Translate to long text (3)</name><value>3</value></option>
+				<option><name>Translate to long text with module name (4)</name><value>4</value></option>
 			</options>
 		</field>
 		<field>
 			<fielddescr>Translate Trap OID Format</fielddescr>
 			<fieldname>translate_trap_oid_format</fieldname>
-			<description>
-				<![CDATA[
-					Configures how the symbolic trap OID will be displayed for $O.<br/>
-					Set to 1, 2, 3 or 4.  See translate_value_oids options 1,2,3 and 4.<br/>
-				]]>
-			</description>
 			<type>select</type>
 			<default_value>1</default_value>
 			<options>
-				<option><name>1</name><value>1</value></option>
-				<option><name>2</name><value>2</value></option>
-				<option><name>3</name><value>3</value></option>
-				<option><name>4</name><value>4</value></option>
+				<option><name>Translate to short text (1)</name><value>1</value></option>
+				<option><name>Translate to short text with module name (2)</name><value>2</value></option>
+				<option><name>Translate to long text (3)</name><value>3</value></option>
+				<option><name>Translate to long text with module name (4)</name><value>4</value></option>
 			</options>
 		</field>
 		<field>
 			<fielddescr>Translate Variable Name OID Format</fielddescr>
 			<fieldname>translate_varname_oid_format</fieldname>
-			<description>
-				<![CDATA[
-					Configures how the symbolic trap OID will be displayed for $v, $-n, $+n, $-* and $+*.<br/>
-					Set to 1, 2, 3 or 4.  See translate_value_oids options 1,2,3 and 4.<br/>
-				]]>
-			</description>
 			<type>select</type>
 			<default_value>1</default_value>
 			<options>
-				<option><name>1</name><value>1</value></option>
-				<option><name>2</name><value>2</value></option>
-				<option><name>3</name><value>3</value></option>
-				<option><name>4</name><value>4</value></option>
+				<option><name>Translate to short text (1)</name><value>1</value></option>
+				<option><name>Translate to short text with module name (2)</name><value>2</value></option>
+				<option><name>Translate to long text (3)</name><value>3</value></option>
+				<option><name>Translate to long text with module name (4)</name><value>4</value></option>
 			</options>
 		</field>
 		<field>
 			<fielddescr>Translate Integers</fielddescr>
 			<fieldname>translate_integers</fieldname>
-			<description>
-				<![CDATA[
-					Set to 0 to disable converting INTEGER values to enumeration tags as defined in the MIB files.<br/>
-					Set to 1 to enable converting INTEGER values to enumeration tags as defined in the MIB files.<br/>
-				]]>
-			</description>
 			<type>select</type>
 			<default_value>1</default_value>
 			<options>
-				<option><name>0</name><value>0</value></option>
-				<option><name>1</name><value>1</value></option>
+				<option><name>Disable converting INTEGER (0)</name><value>0</value></option>
+				<option><name>Enable converting INTEGER (1)</name><value>1</value></option>
 			</options>
 		</field>
 		<field>
@@ -356,7 +262,7 @@
 			<description>
 				<![CDATA[
 					Set what is used to separate variables when wildcards are expanded on the FORMAT / EXEC line.<br/>
-					Defaults to a space.  Value MUST be within quotes. Can contain 1 or more characters.<br/>
+					Defaults to a space.  Value MUST be within double quotes. Can contain 1 or more characters.<br/>
 				]]>
 			</description>
 			<default_value>" "</default_value>
@@ -367,108 +273,64 @@
 		<field>
 			<fielddescr>Allow Unsafe Regex</fielddescr>
 			<fieldname>allow_unsafe_regex</fieldname>
-			<description>
-				<![CDATA[
-					Set to 1 to allow unsafe REGEX code to be executed.<br/>
-					Set to 0 to prevent unsafe REGEX code from being executed (default).<br/>
-				]]>
-			</description>
 			<type>select</type>
 			<default_value>0</default_value>
 			<options>
-				<option><name>0</name><value>0</value></option>
-				<option><name>1</name><value>1</value></option>
+				<option><name>Allow unsafe REGEX (0)</name><value>0</value></option>
+				<option><name>Block unsafe REGEX (1)</name><value>1</value></option>
 			</options>
 		</field>
 		<field>
 			<fielddescr>Remove Backslash From Quotes</fielddescr>
 			<fieldname>remove_backslash_from_quotes</fieldname>
-			<description>
-				<![CDATA[
-					Set to 1 to have the backslash (escape) removed from quotes passed from<br/>
-					snmptrapd. For example, \" would be changed to just " Set to 0 to disable.<br/>
-				]]>
-			</description>
 			<type>select</type>
 			<default_value>0</default_value>
 			<options>
-				<option><name>0</name><value>0</value></option>
-				<option><name>1</name><value>1</value></option>
+				<option><name>Do not Remove Backslash (0)</name><value>0</value></option>
+				<option><name>Remove Backslash (1)</name><value>1</value></option>
 			</options>
 		</field>
 		<field>
 			<fielddescr>Dynamic Nodes</fielddescr>
 			<fieldname>dynamic_nodes</fieldname>
-			<description>
-				<![CDATA[
-					Set to 1 to have NODES files loaded each time a trap is processed.<br/>
-					Set to 0 to have all NODES files loaded when the snmptt.conf files are loaded.<br/>
-				]]>
-			</description>
 			<type>select</type>
 			<default_value>0</default_value>
 			<options>
-				<option><name>0</name><value>0</value></option>
-				<option><name>1</name><value>1</value></option>
+				<option><name>Load NODES files once (0)</name><value>0</value></option>
+				<option><name>Load NODES files in every call (1)</name><value>1</value></option>
 			</options>
 		</field>
 		<field>
 			<fielddescr>Description Mode</fielddescr>
 			<fieldname>description_mode</fieldname>
-			<description>
-				<![CDATA[
-					This option allows you to use the $D substitution variable to include the<br/>
-					description text from the SNMPTT.CONF or MIB files.<br/>
-					Set to 0 to disable the $D substitution variable.  If $D is used, nothing<br/>
-					will be outputted.<br/>
-					Set to 1 to enable the $D substitution variable and have it use the<br/>
-					descriptions stored in the SNMPTT .conf files.  Enabling this option can<br/>
-					greatly increase the amount of memory used by SNMPTT.<br/>
-					Set to 2 to enable the $D substitution variable and have it use the<br/>
-					description from the MIB files.  This enables the UCD-SNMP / NET-SNMP Perl<br/>
-					module save_descriptions variable.  Enabling this option can greatly<br/>
-					increase the amount of memory used by the Net-SNMP SNMP Perl module, which<br/>
-					will result in an increase of memory usage by SNMPTT.<br/>
-				]]>
-			</description>
+			<description>Enabling this option can greatly increase the amount of memory used by SNMPTT.</description>
 			<type>select</type>
 			<default_value>0</default_value>
 			<options>
-				<option><name>0</name><value>0</value></option>
-				<option><name>1</name><value>1</value></option>
-				<option><name>2</name><value>2</value></option>
+				<option><name>Disable the $D substitution variable (0)</name><value>0</value></option>
+				<option><name>Enable the $D substitution variable with SNMPTT.conf (1)</name><value>1</value></option>
+				<option><name>Enable the $D substitution variable with MIB files (2)</name><value>2</value></option>
 			</options>
 		</field>
 		<field>
 			<fielddescr>Description Clean</fielddescr>
 			<fieldname>description_clean</fieldname>
-			<description>
-				<![CDATA[
-					Set to 1 to remove any white space at the start of each line from the MIB<br/>
-					or SNMPTT.CONF description when description_mode is set to 1 or 2.<br/>
-				]]>
-			</description>
+			<description>Used when description_mode is enabled.</description>
 			<type>select</type>
 			<default_value>1</default_value>
 			<options>
-				<option><name>1</name><value>1</value></option>
-				<option><name>2</name><value>2</value></option>
+				<option><name>Do not remove white space at the start of each line from the MIB (0)</name><value>0</value></option>
+				<option><name>Remove white space at the start of each line from the MIB (1)</name><value>1</value></option>
 			</options>
 		</field>
 		<field>
 			<fielddescr>Threads Enable</fielddescr>
 			<fieldname>threads_enable</fieldname>
-			<description>
-				<![CDATA[
-					Set to 1 to enable threads (ithreads) in Perl 5.6.0 or higher.<br/>
-					Set to 0 to disable threads (ithreads).<br/>
-				]]>
-			</description>
 			<type>select</type>
 			<default_value>0</default_value>
 			<options>
-				<option><name>0</name><value>0</value></option>
-				<option><name>1</name><value>1</value></option>
+				<option><name>Disable threads (0)</name><value>0</value></option>
+				<option><name>Enable threads (1)</name><value>1</value></option>
 			</options>
 		</field>
 		<field>
@@ -533,42 +395,22 @@
 		<field>
 			<fielddescr>Use Trap Time</fielddescr>
 			<fieldname>use_trap_time</fieldname>
-			<description>
-				<![CDATA[
-					Set to 1 to have SNMPTT use the time that the trap was processed by SNMPTTHANDLER<br/>
-					Set to 0 to have SNMPTT use the time the trap was processed.  Note:  Using 0 can<br/>
-					result in the time being off by the number of seconds used for 'sleep'<br/>
-				]]>
-			</description>
 			<type>select</type>
 			<default_value>1</default_value>
 			<options>
-				<option><name>0</name><value>0</value></option>
-				<option><name>1</name><value>1</value></option>
+				<option><name>Use time from SNMPTT (0)</name><value>0</value></option>
+				<option><name>Use time from SNMPTTHANDLER (1)</name><value>1</value></option>
 			</options>
 		</field>
 		<field>
 			<fielddescr>Keep Unlogged Traps</fielddescr>
 			<fieldname>keep_unlogged_traps</fieldname>
-			<description>
-				<![CDATA[
-					Set to 0 to have SNMPTT erase the spooled trap file after it attempts to process<br/>
-					the trap even if it did not successfully log the trap to any of the log systems.<br/>
-					Set to 1 to have SNMPTT erase the spooled trap file only after it successfully<br/>
-					logs to at least ONE log system.<br/>
-					Set to 2 to have SNMPTT erase the spooled trap file only after it successfully<br/>
-					logs to ALL of the enabled log systems.  Warning:  If multiple log systems are<br/>
-					enabled and only one fails, the other log system will continuously be logged to<br/>
-					until ALL of the log systems function.<br/>
-					The recommended setting is 1 with only one log system enabled.<br/>
-				]]>
-			</description>
 			<type>select</type>
 			<default_value>1</default_value>
 			<options>
-				<option><name>0</name><value>0</value></option>
-				<option><name>1</name><value>1</value></option>
-				<option><name>2</name><value>2</value></option>
+				<option><name>Erase spooler in every process (0)</name><value>0</value></option>
+				<option><name>Erase spooler if it logs to at least one log system (1)</name><value>1</value></option>
+				<option><name>Erase spooler if it logs to all log system (2)</name><value>2</value></option>
 			</options>
 		</field>
 		<field>
@@ -587,23 +429,21 @@
 		<field>
 			<fielddescr>Stdout Enable</fielddescr>
 			<fieldname>stdout_enable</fieldname>
-			<description>Set to 1 to enable messages to be sent to standard output, or 0 to disable.</description>
 			<type>select</type>
 			<default_value>0</default_value>
 			<options>
-				<option><name>0</name><value>0</value></option>
-				<option><name>1</name><value>1</value></option>
+				<option><name>Disable logging messages to standard output (0)</name><value>0</value></option>
+				<option><name>Enable logging messages to standard output (1)</name><value>1</value></option>
 			</options>
 		</field>
 		<field>
 			<fielddescr>Log Enable</fielddescr>
 			<fieldname>log_enable</fieldname>
-			<description>Set to 1 to enable text logging of TRAPS.</description>
 			<type>select</type>
 			<default_value>1</default_value>
 			<options>
-				<option><name>0</name><value>0</value></option>
-				<option><name>1</name><value>1</value></option>
+				<option><name>Disable logging (0)</name><value>0</value></option>
+				<option><name>Enable logging (1)</name><value>1</value></option>
 			</options>
 		</field>
 		<field>
@@ -617,12 +457,11 @@
 		<field>
 			<fielddescr>Log System Enable</fielddescr>
 			<fieldname>log_system_enable</fieldname>
-			<description>Set to 1 to enable text logging of SNMPTT system errors.</description>
 			<type>select</type>
 			<default_value>1</default_value>
 			<options>
-				<option><name>0</name><value>0</value></option>
-				<option><name>1</name><value>1</value></option>
+				<option><name>Disable logging of SNMPTT system errors (0)</name><value>0</value></option>
+				<option><name>Enable logging of SNMPTT system errors (1)</name><value>1</value></option>
 			</options>
 		</field>
 		<field>
@@ -636,12 +475,11 @@
 		<field>
 			<fielddescr>Unknown Trap Log Enable</fielddescr>
 			<fieldname>unknown_trap_log_enable</fieldname>
-			<description>Set to 1 to enable logging of unknown traps.</description>
 			<type>select</type>
 			<default_value>1</default_value>
 			<options>
-				<option><name>0</name><value>0</value></option>
-				<option><name>1</name><value>1</value></option>
+				<option><name>Disable logging of unknown traps (0)</name><value>0</value></option>
+				<option><name>Enable logging of unknown traps (1)</name><value>1</value></option>
 			</options>
 		</field>
 		<field>
@@ -663,12 +501,11 @@
 		<field>
 			<fielddescr>Syslog Enable</fielddescr>
 			<fieldname>syslog_enable</fieldname>
-			<description>Set to 1 to enable logging of TRAPS to syslog.</description>
 			<type>select</type>
 			<default_value>0</default_value>
 			<options>
-				<option><name>0</name><value>0</value></option>
-				<option><name>1</name><value>1</value></option>
+				<option><name>Disable logging to syslog (0)</name><value>0</value></option>
+				<option><name>Enable logging to syslog (1)</name><value>1</value></option>
 			</options>
 		</field>
 		<field>
@@ -690,12 +527,11 @@
 		<field>
 			<fielddescr>Syslog System Enable</fielddescr>
 			<fieldname>syslog_system_enable</fieldname>
-			<description>Set to 1 to enable logging of SNMPTT system errors to syslog.</description>
 			<type>select</type>
 			<default_value>1</default_value>
 			<options>
-				<option><name>0</name><value>0</value></option>
-				<option><name>1</name><value>1</value></option>
+				<option><name>Disable logging of SNMPTT system errors to syslog (0)</name><value>0</value></option>
+				<option><name>Enable logging of SNMPTT system errors to syslog (1)</name><value>1</value></option>
 			</options>
 		</field>
 		<field>
