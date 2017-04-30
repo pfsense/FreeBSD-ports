@@ -142,7 +142,6 @@
 					<b>Note: Put each entry on a separate line.</b><br/>
 				]]>
 			</description>
-			<description>List of domain names that should be stripped when strip_domain is set to 2.</description>
 		</field>
 		<field>
 			<fielddescr>Resolve Value IP Addresses</fielddescr>
