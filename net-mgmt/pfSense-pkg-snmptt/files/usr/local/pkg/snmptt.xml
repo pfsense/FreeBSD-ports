@@ -87,8 +87,8 @@
 			<fieldname>mode</fieldname>
 			<description>
 				<![CDATA[
-					standalone: snmptt called from snmptrapd.conf<br/>
-					daemon: snmptrapd.conf calls snmptthandle<br/>
+					standalone: <b>/usr/local/sbin/snmptt</b> called from snmptrapd.conf<br/>
+					daemon: <b>/usr/local/sbin/snmptthandler --ini=/usr/local/etc/snmp/snmptt.ini</b> called from snmptrapd.conf<br/>
 				]]>
 			</description>
 			<type>select</type>

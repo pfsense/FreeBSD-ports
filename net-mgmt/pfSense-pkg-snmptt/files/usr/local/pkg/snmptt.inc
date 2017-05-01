@@ -27,8 +27,6 @@ require_once("globals.inc");
 define('SNMPTT_BASE', '/usr/local');
 
 function php_deinstall_snmptt() {
-	global $config, $g;
-
 	unlink_if_exists(SNMPTT_BASE . "/etc/rc.d/snmptt.sh");
 }
 
@@ -86,9 +84,9 @@ function sync_package_snmptt() {
 		}
 	}
 
-	// RC FILE
-	$snmptt_rcfile="/usr/local/etc/rc.d/snmptt.sh";
-	if (is_array($snmptt_config) && $snmptt_config['snmpttenabled']=="on") {
+	if (is_array($snmptt_config) && $snmptt_config['snmpttenabled']=="on" && $snmptt_config['mode'] == "daemon") {
+		// RC FILE
+		$snmptt_rcfile="/usr/local/etc/rc.d/snmptt.sh";
 
 		$snmptt_start = "echo \"Starting SNMPTT Daemon...\"\n";
 		$snmptt_start .= "	for DIR in log run spool; do\n";
@@ -123,6 +121,8 @@ function sync_package_snmptt() {
 			log_error("Starting service snmptt");
 			start_service("snmptt");
 		}
+	} else {
+		unlink_if_exists(SNMPTT_BASE . "/etc/rc.d/snmptt.sh");
 	}
 
 	conf_mount_ro();
