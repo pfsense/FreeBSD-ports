@@ -172,7 +172,7 @@ translate_integers = {$snmptt_config['translate_integers']}
 # Set what is used to separate variables when wildcards are expanded on the FORMAT /
 # EXEC line.  Defaults to a space.  Value MUST be within quotes.  Can contain 1 or 
 # more characters
-wildcard_expansion_separator = {$snmptt_config['wildcard_expansion_separator']}
+wildcard_expansion_separator = "{$wildcard_expansion_separator}"
 
 # Set to 1 to allow unsafe REGEX code to be executed.
 # Set to 0 to prevent unsafe REGEX code from being executed (default).

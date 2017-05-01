@@ -261,13 +261,12 @@
 			<description>
 				<![CDATA[
 					Set what is used to separate variables when wildcards are expanded on the FORMAT / EXEC line.<br/>
-					Defaults to a space.  Value MUST be within double quotes. Can contain 1 or more characters.<br/>
+					Defaults to a space. Can contain 1 or more characters.<br/>
 				]]>
 			</description>
-			<default_value>" "</default_value>
+			<default_value> </default_value>
 			<type>input</type>
 			<size>50</size>
-			<required>true</required>
 		</field>
 		<field>
 			<fielddescr>Allow Unsafe Regex</fielddescr>

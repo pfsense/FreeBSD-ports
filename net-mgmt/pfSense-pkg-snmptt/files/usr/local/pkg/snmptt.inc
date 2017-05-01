@@ -38,10 +38,6 @@ function validate_input_snmptt($post, &$input_errors) {
 			$input_errors[] = "'SNMPTT System Name' is not a valid hostname.";
 		}
 
-		if (!preg_match("/^\".+\"$/", $post['wildcard_expansion_separator'])) {
-			$input_errors[] = "'Wildcard Expansion Separator' must be within quotes and can contain 1 or more characters.";
-		}
-
 		if (!is_numericint($post['threads_max'])) {
 			$input_errors[] = "'Threads Max' value is not numeric.";
 		}
@@ -72,6 +68,11 @@ function sync_package_snmptt() {
 		if ($snmptt_config['snmpttenabled'] == "on") {
 			$strip_domain_list = base64_decode($snmptt_config['strip_domain_list']);
 			$strip_domain_list = preg_replace("~\r\n~", "\n", $strip_domain_list);
+			if (!empty($snmptt_config['wildcard_expansion_separator'])) {
+				$wildcard_expansion_separator = $snmptt_config['wildcard_expansion_separator'];
+			} else {
+				$wildcard_expansion_separator = " ";
+			}
 			include("/usr/local/pkg/snmptt.ini.php");
 			file_put_contents(SNMPTT_BASE . "/etc/snmp/snmptt.ini", $snmpttini, LOCK_EX);
 
