@@ -347,9 +347,10 @@ EOF;
 	// Extra protection for the server cert, if it's supported
 	if (function_exists("cert_get_purpose")) {
 		if (is_array($server_cert) && ($server_cert['crt'])) {
-			$purpose = cert_get_purpose($server_cert['crt'], true);
-			if ($purpose['server'] == 'Yes') {
-				$conf .= "ns-cert-type server{$nl}";
+			$crt_details = openssl_x509_parse(base64_decode($server_cert['crt']));
+			$eku_list = explode(',', $crt_details['extensions']['extendedKeyUsage']);
+			if (in_array('TLS Web Server Authentication', $eku_list)) {
+				$conf .= "remote-cert-tls server{$nl}";
 			}
 		}
 	}
