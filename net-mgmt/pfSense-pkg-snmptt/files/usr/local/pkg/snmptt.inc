@@ -50,6 +50,10 @@ function validate_input_snmptt($post, &$input_errors) {
 			$input_errors[] = "'Statistics Interval' value is not numeric.";
 		}
 
+		if (preg_match("/\"/", $post['wildcard_expansion_separator'])) {
+			$input_errors[] = "Double quotes not allowed in 'Wildcard Expansion Separator' field.";
+		}
+
 	}
 }
 
