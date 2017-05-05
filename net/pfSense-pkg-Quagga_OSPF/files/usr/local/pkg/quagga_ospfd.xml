@@ -61,6 +61,18 @@
 		<description>OSPF routing daemon</description>
 	</service>
 	<service>
+		<name>Quagga OSPF6d</name>
+		<rcfile>quagga.sh</rcfile>
+		<executable>ospf6d</executable>
+		<description>OSPF6 routing daemon</description>
+	</service>
+	<service>
+		<name>Quagga BGPd</name>
+		<rcfile>quagga.sh</rcfile>
+		<executable>bgpd</executable>
+		<description>BGP routing daemon</description>
+	</service>
+	<service>
 		<name>Quagga Zebra</name>
 		<rcfile>quagga.sh</rcfile>
 		<executable>zebra</executable>

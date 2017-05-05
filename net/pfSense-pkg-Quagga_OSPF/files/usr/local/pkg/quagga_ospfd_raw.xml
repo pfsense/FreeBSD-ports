@@ -61,6 +61,16 @@
 		<executable>ospfd</executable>
 	</service>
 	<service>
+		<name>Quagga OSPF6d</name>
+		<rcfile>quagga.sh</rcfile>
+		<executable>ospf6d</executable>
+	</service>
+	<service>
+		<name>Quagga BGPd</name>
+		<rcfile>quagga.sh</rcfile>
+		<executable>bgpd</executable>
+	</service>
+	<service>
 		<name>Quagga Zebra</name>
 		<rcfile>quagga.sh</rcfile>
 		<executable>zebra</executable>
@@ -72,6 +82,34 @@
 			<description>
 				<![CDATA[
 				Note: Once you click "Save" below, the assistant (in the "Global Settings" and "Interface Settings" tabs above) will be overridden with whatever you type here.<br />
+				To get back the assisted config save this form below once with both empty input fields.
+				]]>
+			</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>30</rows>
+			<cols>65</cols>
+		</field>
+		<field>
+			<fielddescr>ospf6d.conf</fielddescr>
+			<fieldname>ospf6d</fieldname>
+			<description>
+				<![CDATA[
+				Note: Once you click "Save" below, the assistant (in the "Global Settings" and "Interface Settings" tabs above) will be overridden with w$
+				To get back the assisted config save this form below once with both empty input fields.
+				]]>
+			</description>		
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<rows>30</rows>
+			<cols>65</cols>
+		</field>
+		<field>
+			<fielddescr>bgpd.conf</fielddescr>
+			<fieldname>bgpd</fieldname>
+			<description>
+				<![CDATA[
+				Note: Once you click "Save" below, the assistant (in the "Global Settings" and "Interface Settings" tabs above) will be overridden with w$
 				To get back the assisted config save this form below once with both empty input fields.
 				]]>
 			</description>
