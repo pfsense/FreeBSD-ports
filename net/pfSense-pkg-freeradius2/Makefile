@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-freeradius2
-PORTVERSION=	1.7.8
+PORTVERSION=	1.7.9
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +13,9 @@ COMMENT=	pfSense package freeradius2
 LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/radiusd:net/freeradius2 \
-		${LOCALBASE}/bin/bash:shells/bash
+		${LOCALBASE}/bin/bash:shells/bash 
+
+USES=		python2.7
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -55,6 +57,10 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/googleauth \
+		${STAGEDIR}/usr/local/etc/raddb/modules
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/googleauth.py \
+		${STAGEDIR}/usr/local/etc/raddb/scripts
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
 		${STAGEDIR}${DATADIR}/info.xml
 

@@ -195,7 +195,22 @@
 				]]>
 			</sethelp>
 			<type>checkbox</type>
-			<enablefields>varusersmotpinitsecret,varusersmotppin,varusersmotpoffset</enablefields>
+			<enablefields>varusersauthmethod,varusersmotpinitsecret,varusersmotppin,varusersmotpoffset</enablefields>
+		</field>
+		<field>
+			<fielddescr>Authentication method</fielddescr>
+			<fieldname>varusersauthmethod</fieldname>
+			<description>
+				<![CDATA[
+				Select the authentication method for this user. Default: mOTP
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>motp</default_value>
+			<options>
+			      <option><name>mOTP</name><value>motp</value></option>
+			      <option><name>Google-Authenticator</name><value>googleauth</value></option>              
+			</options>
 		</field>
 		<field>
 			<fielddescr>Init-Secret</fielddescr>

@@ -538,6 +538,7 @@ function freeradius_users_resync($via_rpc = false) {
 					$varuserspassword = $users['varuserspassword'];
 			}
 
+			$varusersauthmethod = $users['varusersauthmethod']; 
 			$varusersmotpinitsecret = $users['varusersmotpinitsecret'];
 			$varusersmotppin = $users['varusersmotppin'];
 			$varusersmotpoffset = ($users['varusersmotpoffset'] ?: '0');
@@ -626,7 +627,12 @@ function freeradius_users_resync($via_rpc = false) {
 			// end of check if otp is enabled
 			} else {
 				// if otp is enabled we need to set Auth-Type to accept because password will be checked when the otp script gets executed in reply-item list
-				$varuserscheckitem = '"' . $varusersusername . '"' . " Auth-Type = motp";
+				// prevent overwrite with '' on package update
+				if ($varusersauthmethod == '') {
+                                        $varuserscheckitem = '"' . $varusersusername . '"' . " Auth-Type = motp";
+                                } else {
+					$varuserscheckitem = '"' . $varusersusername . '"' . " Auth-Type = " . $varusersauthmethod;
+				}
 			}
 
 			// Add additional CHECK-ITEMS here. Different formatting in "users" file needed.
@@ -1883,6 +1889,12 @@ authenticate {
 	#  Mobile-One-Time-Password (MOTP) authentication.
 	Auth-Type MOTP {
 		motp
+	}
+
+	#
+	#  Mobile-One-Time-Password (MOTP) authentication.
+	Auth-Type GOOGLEAUTH {
+		googleauth
 	}
 
 	#
@@ -4029,12 +4041,21 @@ function freeradius_validate_users($post, &$input_errors) {
 		$input_errors[] = "The 'Password' field must be left empty when 'Enable One-Time-Password for this user' is checked.";
 	}
 
+	// OTP-Method
+	if ($post['varusersmotpenable'] == 'on') {
+		if ($post['varusersauthmethod'] == '') {
+			$input_errors[] = "The 'Authentication method' field may not be empty when 'Enable One-Time-Password for this user' is checked.";
+		} elseif (!preg_match('/^(motp|googleauth)$/', $post['varusersauthmethod'])) {
+			$input_errors[] = "The 'Authentication method' field may only contain 'mOTP' or 'Google-Authenticator' (regex /^(mOTP|Google-Authenticator)/).";
+		}
+	}
+	
 	// Init-Secret
 	if ($post['varusersmotpenable'] == 'on') {
 		if ($post['varusersmotpinitsecret'] == '') {
 			$input_errors[] = "The 'Init-Secret' field may not be empty when 'Enable One-Time-Password for this user' is checked.";
-		} elseif (!preg_match('/^[0-9a-f]{16,}$/', $post['varusersmotpinitsecret'])) {
-			$input_errors[] = "The 'Init-Secret' field may only contain 0-9 and a-f (regex /^[0-9a-f]*$/) and must contain at least 16 characters.";
+		} elseif (!preg_match('/^[0-9a-zA-Z]{16,}$/', $post['varusersmotpinitsecret'])) {
+			$input_errors[] = "The 'Init-Secret' field may only contain 0-9, a-z and A-Z (regex /^[0-9a-zA-Z]*$/) and must contain at least 16 characters.";
 		}
 	}
 
