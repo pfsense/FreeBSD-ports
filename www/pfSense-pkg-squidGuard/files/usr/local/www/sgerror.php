@@ -151,7 +151,7 @@ function get_error_page($er_code_id, $err_msg='') {
 	<?php endif; ?>
 
 	<?php if ($err_msg): ?>
-		<b>Reason:</b> <?= $err_msg ?>
+		<b>Reason:</b> <?= htmlspecialchars($err_msg) ?>
 	<?php endif; ?>
 
 		<hr size="1" noshade>
@@ -293,7 +293,7 @@ if ($url) {
 		header("Location: $url", '', 302);
 	} else {
 		// Output an error
-		echo get_page("sgerror: error arguments $url");
+		echo get_page("sgerror: error arguments " . htmlspecialchars($url));
 	}
 } else {
 	echo get_page($_SERVER['QUERY_STRING']); //$url . implode(" ", $_GET));
