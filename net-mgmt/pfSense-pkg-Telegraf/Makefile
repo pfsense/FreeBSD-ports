@@ -1,18 +1,18 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-zabbix-proxy
-PORTVERSION=	0.9.0
+PORTNAME=	pfSense-pkg-Telegraf
+PORTVERSION=	0.1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package zabbix-proxy
+MAINTAINER=	me@willboyce.com
+COMMENT=	pfSense package Telegraf
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/zabbix_proxy:net-mgmt/zabbix3-proxy
+RUN_DEPENDS=	telegraf:net-mgmt/telegraf
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -27,11 +27,11 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${MKDIR} ${STAGEDIR}${DATADIR}
-	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/zabbix-proxy-lts.xml \
+	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/telegraf.xml \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/zabbix-proxy-lts.inc \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/telegraf.inc \
 		${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/zabbix-proxy-lts.priv.inc \
+	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/telegraf.priv.inc \
 		${STAGEDIR}/etc/inc/priv
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
