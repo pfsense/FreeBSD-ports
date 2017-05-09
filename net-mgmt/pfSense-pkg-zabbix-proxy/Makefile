@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-zabbix-proxy
-PORTVERSION=	0.8.9
-PORTREVISION=	3
+PORTVERSION=	0.9.0
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty

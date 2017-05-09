@@ -48,21 +48,33 @@ function php_deinstall_zabbix_proxy_lts() {
 function validate_input_zabbix_proxy_lts($post, &$input_errors) {
 	if (isset($post['proxyenabled'])) {
 		if (!preg_match("/\w+/", $post['server'])) {
-			$input_errors[] = "Server field is required.";
+			$input_errors[] = "'Server' field is required.";
 		}
 
 		if (!is_numericint($post['serverport'])) {
 			$input_errors[] = "'Server Port' value is not numeric.";
 		} elseif ($post['serverport'] < 1 || $post['serverport'] > 65535) {
-			$input_errors[] = "You must enter a valid value for 'Server Port'.";
+			$input_errors[] = "Enter a valid value for 'Server Port'.";
 		}
 
 		if (!preg_match("/\w+/", $post['hostname'])) {
-			$input_errors[] = "Hostname field is required.";
+			$input_errors[] = "'Hostname' field is required.";
 		}
 
 		if (!is_numericint($post['configfrequency'])) {
 			$input_errors[] = "'Config Frequency' value is not numeric.";
+		}
+
+		if (!is_numericint($post['trappertimeout'])) {
+			$input_errors[] = "'Trapper Timeout' value is not numeric.";
+		} elseif ($post['trappertimeout'] < 1 || $post['trappertimeout'] > 300) {
+			$input_errors[] = "Enter a valid value for 'Trapper Timeout'.";
+		}
+
+		if (!is_numericint($post['starttrappers'])) {
+			$input_errors[] = "'Start Trappers' value is not numeric.";
+		} elseif ($post['starttrappers'] > 1000) {
+			$input_errors[] = "Enter a valid value for 'Start Trappers'.";
 		}
 	}
 }
@@ -117,6 +129,16 @@ function sync_package_zabbix_proxy_lts() {
 				$TLSPSKFile = "TLSPSKFile=/usr/local/etc/zabbix3/zabbix_proxy.psk";
 			}
 
+			$StartSNMPTrapper = $zbproxy_config['startsnmptrapper'];
+			$SNMPTrapperFile = $zbproxy_config['snmptrapperfile'] ?: "/tmp/zabbix_traps.tmp";
+			$TrapperTimeout = $zbproxy_config['trappertimeout'] ?: "300";
+
+			if ($StartSNMPTrapper) {
+				$StartTrappers = $zbproxy_config['starttrappers'] ?: "5";
+			} else {
+				$StartTrappers = "0";
+			}
+
 			$zbproxy_conf_file = <<< EOF
 Server={$zbproxy_config['server']}
 ServerPort={$zbproxy_config['serverport']}
@@ -138,6 +160,10 @@ TLSAccept={$TLSAccept}
 {$TlsKEYfile}
 {$TLSPSKIdentity}
 {$TLSPSKFile}
+StartSNMPTrapper={$StartSNMPTrapper}
+SNMPTrapperFile={$SNMPTrapperFile}
+TrapperTimeout={$TrapperTimeout}
+StartTrappers={$StartTrappers}
 {$AdvancedParams}
 
 EOF;
