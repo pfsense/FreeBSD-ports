@@ -138,7 +138,7 @@ function netsnmp_cert_get_keyid($cert) {
 
 /* Write snmpd config file */
 function netsnmp_resync() {
-	global $config, $snmpd_config_file, $snmpd_users_file, $snmpd_cert_dir, $snmpd_certkey_dir;
+	global $config, $g, $snmpd_config_file, $snmpd_users_file, $snmpd_cert_dir, $snmpd_certkey_dir;
 
 	/* Global Settings tab */
 	$nsettings = &$config['installedpackages']['netsnmp']['config'][0];
@@ -570,6 +570,7 @@ function netsnmp_resync() {
 
 	/* When stopping the daemon, use the PID file to locate and kill the process */
 	$rc_file_stop = <<<EOF
+echo "Stopping net-snmpd..."
 if [ -e /var/run/net_snmpd.pid ]; then
 	/bin/kill -9 `/bin/cat /var/run/net_snmpd.pid`
 	/bin/rm -f /var/run/net_snmpd.pid
@@ -578,6 +579,7 @@ EOF;
 
 	/* When starting the daemon, reap any leftover processes and then start */
 	$rc_file_start = <<<EOF
+echo "Starting net-snmpd..."
 # Ensure no other copies of the daemons are running or it breaks.
 /usr/bin/killall -9 snmpd 2>/dev/null
 sleep 1
@@ -597,6 +599,10 @@ EOF;
 
 	/* Restart the service with the new configuration. */
 	restart_service('net-snmpd');
+
+	if (file_exists("{$g['tmp_path']}/.rc.start_packages.running")) {
+		netsnmp_resync_snmptrapd();
+	}
 }
 
 /***************************************************************************
@@ -806,6 +812,7 @@ function netsnmp_resync_snmptrapd() {
 
 	/* When stopping the daemon, use the PID file to locate and kill the process */
 	$rc_file_stop = <<<EOF
+echo "Stopping net-snmptrapd..."
 if [ -e /var/run/snmptrapd.pid ]; then
 	/bin/kill -9 `/bin/cat /var/run/snmptrapd.pid`
 	/bin/rm -f /var/run/snmptrapd.pid
@@ -813,6 +820,7 @@ fi
 EOF;
 	/* When starting the daemon, reap any leftover processes and then start */
 	$rc_file_start = <<<EOF
+echo "Starting net-snmptrapd..."
 # Ensure no other copies of the daemons are running or it breaks.
 /usr/bin/killall -9 snmptrapd 2>/dev/null
 sleep 1
