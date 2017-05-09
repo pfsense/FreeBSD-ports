@@ -263,7 +263,7 @@ if ($getupdatestatus) {
 			getURL(url+"?"+pars, getstatusgetupdate);
 	}
 </script>
-<div id="widget-haproxy_panel-footer" class="panel-footer collapse">
+<div id="widget-<?=$widgetname?>_panel-footer" class="panel-footer collapse">
 <form action="/widgets/widgets/haproxy.widget.php" method="post" name="iform" id="iform">
 	<table>
 	<tr><td>
