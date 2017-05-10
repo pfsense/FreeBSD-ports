@@ -12,7 +12,7 @@ COMMENT=	pfSense package snmptt
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/snmptt:net-mgmt/snmptt
+RUN_DEPENDS=	snmptt>=1.4_1:net-mgmt/snmptt
 
 NO_BUILD=	yes
 NO_MTREE=	yes

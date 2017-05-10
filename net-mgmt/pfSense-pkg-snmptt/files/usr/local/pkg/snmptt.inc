@@ -24,10 +24,8 @@ require_once("functions.inc");
 require_once("pkg-utils.inc");
 require_once("globals.inc");
 
-define('SNMPTT_BASE', '/usr/local');
-
 function php_deinstall_snmptt() {
-	unlink_if_exists(SNMPTT_BASE . "/etc/rc.d/snmptt.sh");
+	unlink_if_exists("/usr/local/etc/rc.d/snmptt.sh");
 }
 
 function validate_input_snmptt($post, &$input_errors) {
@@ -78,13 +76,13 @@ function sync_package_snmptt() {
 				$wildcard_expansion_separator = " ";
 			}
 			include("/usr/local/pkg/snmptt.ini.php");
-			file_put_contents(SNMPTT_BASE . "/etc/snmp/snmptt.ini", $snmpttini, LOCK_EX);
+			file_put_contents("/usr/local/etc/snmp/snmptt.ini", $snmpttini, LOCK_EX);
 
 			if (is_array($config['installedpackages']['snmpttconf'])) {
 				$snmpttconf_config = $config['installedpackages']['snmpttconf']['config'][0];
 				$snmptt_configfile = base64_decode($snmpttconf_config['snmptt_configfile']);
 				$snmptt_configfile = preg_replace("~\r\n~", "\n", $snmptt_configfile);
-				file_put_contents(SNMPTT_BASE . "/etc/snmp/snmptt.conf", $snmptt_configfile, LOCK_EX);
+				file_put_contents("/usr/local/etc/snmp/snmptt.conf", $snmptt_configfile, LOCK_EX);
 			}
 		}
 	}
@@ -127,7 +125,7 @@ function sync_package_snmptt() {
 			start_service("snmptt");
 		}
 	} else {
-		unlink_if_exists(SNMPTT_BASE . "/etc/rc.d/snmptt.sh");
+		unlink_if_exists("/usr/local/etc/rc.d/snmptt.sh");
 	}
 
 	conf_mount_ro();
