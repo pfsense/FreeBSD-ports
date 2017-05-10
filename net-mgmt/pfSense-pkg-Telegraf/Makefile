@@ -14,6 +14,8 @@ LICENSE=	APACHE20
 
 RUN_DEPENDS=	telegraf:net-mgmt/telegraf
 
+ONLY_FOR_ARCHS=	amd64
+
 NO_BUILD=	yes
 NO_MTREE=	yes
 
