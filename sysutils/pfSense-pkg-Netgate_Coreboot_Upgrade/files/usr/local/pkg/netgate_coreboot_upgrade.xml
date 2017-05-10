@@ -26,7 +26,7 @@
 	]]>
 	</copyright>
 	<description>Provide a mechanism to upgrade Coreboot of Netgate hardware models</description>
-	<name>Netgate_Coreboot_Upgrade</name>
+	<name>Netgate Coreboot Upgrade</name>
 	<title>System: Netgate Coreboot Upgrade</title>
 	<include_file>/usr/local/pkg/netgate_coreboot_upgrade.inc</include_file>
 	<menu>
