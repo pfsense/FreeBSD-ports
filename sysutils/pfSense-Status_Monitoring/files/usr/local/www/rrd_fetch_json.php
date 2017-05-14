@@ -59,17 +59,11 @@ $right_last_updated = $rrd_info_array['last_update'];
 
 //grab the older last updated time of the two databases
 if (empty($right_last_updated)) {
-
 	$last_updated = $left_last_updated;
-
 } elseif (empty($left_last_updated)) {
-
 	$last_updated = $right_last_updated;
-
 } else {
-
 	$last_updated = min($left_last_updated, $right_last_updated);
-
 }
 
 if ($timePeriod === "custom") {
@@ -141,7 +135,6 @@ $unit_desc_lookup = array(
 
 //TODO make this a function for left and right
 if ($left != "null") {
-
 	$rrd_array = rrd_fetch($rrd_location . $left . ".rrd", $rrd_options);
 
 	if (!($rrd_array)) {
@@ -153,7 +146,6 @@ if ($left != "null") {
 	$ignored_left = 0;
 
 	foreach ($ds_list as $ds_key_left => $ds) {
-
 		$data_list = $rrd_array['data'][$ds];
 		$ignore = $invert = $ninetyfifth = false;
 		$graph_type = $graphtype;
@@ -275,100 +267,70 @@ if ($left != "null") {
 			$stats = array();
 
 			foreach ($data_list as $time => $value) {
-
 				$raw_data[] = array($time*1000, $value*$multiplier);
 
 				if (is_nan($value)) {
-
 					$data[] = array($time*1000, 0);
-
 				} else {
-
 					$data[] = array($time*1000, $value*$multiplier);
 					$stats[] = $value*$multiplier;
-
 				}
-				
 			}
 
 			$obj[$ds_key_left_adjusted]['values'] = $data;
 			$obj[$ds_key_left_adjusted]['raw'] = $raw_data;
 
 			if (count($stats)) {
-
 				$obj[$ds_key_left_adjusted]['min'] = min($stats);
 				$obj[$ds_key_left_adjusted]['max'] = max($stats);
 				$obj[$ds_key_left_adjusted]['avg'] = array_sum($stats) / count($stats);
-
 			} else {
-
 				$obj[$ds_key_left_adjusted]['min'] = 0;
 				$obj[$ds_key_left_adjusted]['max'] = 0;
 				$obj[$ds_key_left_adjusted]['avg'] = 0;
-
 			}
-
 		}
 	}
 
 	/* calculate the total lines */
 	if ( ($left_pieces[1] === "traffic") || ($left_pieces[1] === "packets") ) {
-
 		foreach ($obj as $key => $value) {
-
 			//grab inpass and outpass attributes and values
 			if ($value['key'] === "inpass") {
-
 				$inpass_array = array();
 
 				//loop through values and use time
 				foreach ($value['raw'] as $datapoint) {
-
 					$inpass_array[$datapoint[0]/1000] = $datapoint[1]; //divide by thousand to avoid key size limitations
-
 				}
-
 			}
 
 			if ($value['key'] === "inpass6") {
-
 				$inpass6_array = [];
 
 				//loop through values and use time
 				foreach ($value['raw'] as $datapoint6) {
-
 					$inpass6_array[$datapoint6[0]/1000] = $datapoint6[1]; //divide by thousand to avoid key size limitations
-
 				}
-
 			}
 
 			if ($value['key'] === "outpass") {
-
 				$outpass_array = [];
 
 				//loop through values and use time
 				foreach ($value['raw'] as $datapoint) {
-
 					$outpass_array[$datapoint[0]/1000] = $datapoint[1]; //divide by thousand to avoid key size limitations
-
 				}
-
 			}
 
 			if ($value['key'] === "outpass6") {
-
 				$outpass6_array = [];
 
 				//loop through values and use time
 				foreach ($value['raw'] as $datapoint6) {
-
 					$outpass6_array[$datapoint6[0]/1000] = $datapoint6[1]; //divide by thousand to avoid key size limitations
-
 				}
-
 			}
-
 		}
 
 		/* add v4 and v6 together */
@@ -378,33 +340,21 @@ if ($left != "null") {
 		$outpass_stats = [];
 
 		foreach ($inpass_array as $key => $value) {
-
 			if (is_nan($value)) {
-
 				$inpass_total[] = array($key*1000, 0);
-
 			} else {
-
 				$inpass_total[] = array($key*1000, $value + $inpass6_array[$key]);
 				$inpass_stats[] = $value + $inpass6_array[$key];
-
 			}
-
 		}
 
 		foreach ($outpass_array as $key => $value) {
-
 			if (is_nan($value)) {
-
 				$outpass_total[] = array($key*1000, 0);
-
 			} else {
-
 				$outpass_total[] = array($key*1000, $value + $outpass6_array[$key]);
 				$outpass_stats[] = $value + $outpass6_array[$key];
-
 			}
-
 		}
 
 		$ds_key_left_adjusted += 1;
@@ -437,17 +387,14 @@ if ($left != "null") {
 		$obj[$ds_key_left_adjusted]['max'] = max($outpass_stats);
 		$obj[$ds_key_left_adjusted]['avg'] = array_sum($outpass_stats) / count($outpass_stats);
 		$obj[$ds_key_left_adjusted]['values'] = $outpass_total;
-
 	}
 
 	foreach ($obj as $raw_left_key => &$raw_left_value) {
 		unset($raw_left_value['raw']);
 	}
-
 }
 
 if ($right != "null") {
-
 	$rrd_array = rrd_fetch($rrd_location . $right . ".rrd", $rrd_options);
 
 	if (!($rrd_array)) {
@@ -587,95 +534,68 @@ if ($right != "null") {
 			$stats = array();
 
 			foreach ($data_list as $time => $value) {
-
 				$raw_data[] = array($time*1000, $value*$multiplier);
 
 				if (is_nan($value)) {
-
 					$data[] = array($time*1000, 0);
-
 				} else {
-
 					$data[] = array($time*1000, $value*$multiplier);
 					$stats[] = $value*$multiplier;
-
 				}
-				
 			}
 
 			$obj[$ds_key_right_adjusted]['values'] = $data;
 			$obj[$ds_key_right_adjusted]['raw'] = $raw_data;
 
 			if (count($stats)) {
-
 				$obj[$ds_key_right_adjusted]['min'] = min($stats);
 				$obj[$ds_key_right_adjusted]['max'] = max($stats);
 				$obj[$ds_key_right_adjusted]['avg'] = array_sum($stats) / count($stats);
-
 			} else {
-
 				$obj[$ds_key_right_adjusted]['min'] = 0;
 				$obj[$ds_key_right_adjusted]['max'] = 0;
 				$obj[$ds_key_right_adjusted]['avg'] = 0;
-
 			}
-
 		}
-
 	}
 
 	/* calculate the total lines */
 	if ( ($right_pieces[1] === "traffic") || ($right_pieces[1] === "packets") ) {
-
 		foreach ($obj as $key => $value) {
-
 			//grab inpass and outpass attributes and values
 			if ($value['key'] === "inpass" && $value['yAxis'] === 2) {
-
 				$inpass_array = [];
 
 				//loop through values and use time
 				foreach ($value['raw'] as $datapoint) {
-
 					$inpass_array[$datapoint[0]/1000] = $datapoint[1]; //divide by thousand to avoid key size limitations
-
 				}
-
 			}
 
 			if ($value['key'] === "inpass6" && $value['yAxis'] === 2) {
-
 				$inpass6_array = [];
 
 				//loop through values and use time
 				foreach ($value['raw'] as $datapoint6) {
-
 					$inpass6_array[$datapoint6[0]/1000] = $datapoint6[1]; //divide by thousand to avoid key size limitations
-
 				}
 			}
 
 			if ($value['key'] === "outpass" && $value['yAxis'] === 2) {
-
 				$outpass_array = [];
 
 				//loop through values and use time
 				foreach ($value['raw'] as $datapoint) {
-
 					$outpass_array[$datapoint[0]/1000] = $datapoint[1]; //divide by thousand to avoid key size limitations
-
 				}
 			}
 
 			if ($value['key'] === "outpass6" && $value['yAxis'] === 2) {
-
 				$outpass6_array = [];
 
 				//loop through values and use time
 				foreach ($value['raw'] as $datapoint6) {
-
 					$outpass6_array[$datapoint6[0]/1000] = $datapoint6[1]; //divide by thousand to avoid key size limitations
-
 				}
 			}
 		}
@@ -687,34 +607,21 @@ if ($right != "null") {
 		$outpass_stats = [];
 
 		foreach ($inpass_array as $key => $value) {
-
 			if (is_nan($value)) {
-
 				$inpass_total[] = array($key*1000, 0);
-
 			} else {
-
 				$inpass_total[] = array($key*1000, $value + $inpass6_array[$key]);
 				$inpass_stats[] = $value + $inpass6_array[$key];
-
 			}
-
 		}
 
-		
 		foreach ($outpass_array as $key => $value) {
-
 			if (is_nan($value)) {
-
 				$outpass_total[] = array($key*1000, 0);
-
 			} else {
-
 				$outpass_total[] = array($key*1000, $value + $outpass6_array[$key]);
 				$outpass_stats[] = $value + $outpass6_array[$key];
-
 			}
-
 		}
 
 		$ds_key_right_adjusted += 1;
@@ -747,13 +654,11 @@ if ($right != "null") {
 		$obj[$ds_key_right_adjusted]['max'] = max($outpass_stats);
 		$obj[$ds_key_right_adjusted]['avg'] = array_sum($outpass_stats) / count($outpass_stats);
 		$obj[$ds_key_right_adjusted]['values'] = $outpass_total;
-
 	}
 
 	foreach ($obj as $raw_right_key => &$raw_right_value) {
 		unset($raw_right_value['raw']);
 	}
-
 }
 
 header('Content-Type: application/json');
