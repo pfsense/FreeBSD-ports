@@ -91,9 +91,6 @@ if ($timePeriod === "custom") {
 
 $rrd_options = array( 'AVERAGE', '-a', '-r', $resolution, '-s', $start, '-e', $end );
 
-//Initialize
-$left_unit_acronym = $right_unit_acronym = "";
-
 //Set units based on RRD database name
 $graph_unit_lookup = array(
 	"traffic"    => "b/s",
