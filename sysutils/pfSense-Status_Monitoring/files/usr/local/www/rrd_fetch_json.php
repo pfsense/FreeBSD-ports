@@ -130,8 +130,6 @@ $unit_desc_lookup = array(
 	""    => ""
 );
 
-$ds_key_out = 0;
-
 //TODO make this a function for left and right
 if ($left != "null") {
 	$rrd_array = rrd_fetch($rrd_location . $left . ".rrd", $rrd_options);
@@ -246,16 +244,17 @@ if ($left != "null") {
 		}
 
 		if (!$ignore) {
-			$obj[$ds_key_out]['key'] = $ds;
-			$obj[$ds_key_out]['step'] = $step;
-			$obj[$ds_key_out]['last_updated'] = $last_updated*1000;
-			$obj[$ds_key_out]['type'] = $graph_type;
-			$obj[$ds_key_out]['format'] = $format;
-			$obj[$ds_key_out]['yAxis'] = 1;
-			$obj[$ds_key_out]['unit_acronym'] = $unit_acronym;
-			$obj[$ds_key_out]['unit_desc'] = $unit_desc_lookup[$unit_acronym];
-			$obj[$ds_key_out]['invert'] = $invert;
-			$obj[$ds_key_out]['ninetyfifth'] = $ninetyfifth;
+			$entry = array();
+			$entry['key'] = $ds;
+			$entry['step'] = $step;
+			$entry['last_updated'] = $last_updated*1000;
+			$entry['type'] = $graph_type;
+			$entry['format'] = $format;
+			$entry['yAxis'] = 1;
+			$entry['unit_acronym'] = $unit_acronym;
+			$entry['unit_desc'] = $unit_desc_lookup[$unit_acronym];
+			$entry['invert'] = $invert;
+			$entry['ninetyfifth'] = $ninetyfifth;
 
 			$data = array();
 			$raw_data = array();
@@ -272,20 +271,20 @@ if ($left != "null") {
 				}
 			}
 
-			$obj[$ds_key_out]['values'] = $data;
-			$obj[$ds_key_out]['raw'] = $raw_data;
+			$entry['values'] = $data;
+			$entry['raw'] = $raw_data;
 
 			if (count($stats)) {
-				$obj[$ds_key_out]['min'] = min($stats);
-				$obj[$ds_key_out]['max'] = max($stats);
-				$obj[$ds_key_out]['avg'] = array_sum($stats) / count($stats);
+				$entry['min'] = min($stats);
+				$entry['max'] = max($stats);
+				$entry['avg'] = array_sum($stats) / count($stats);
 			} else {
-				$obj[$ds_key_out]['min'] = 0;
-				$obj[$ds_key_out]['max'] = 0;
-				$obj[$ds_key_out]['avg'] = 0;
+				$entry['min'] = 0;
+				$entry['max'] = 0;
+				$entry['avg'] = 0;
 			}
 
-			$ds_key_out++;
+			$obj[] = $entry;
 		}
 	}
 
@@ -355,35 +354,35 @@ if ($left != "null") {
 		}
 
 		//add the new total lines to array
-		$obj[$ds_key_out]['key'] = "inpass total";
-		$obj[$ds_key_out]['type'] = $graphtype;
-		$obj[$ds_key_out]['format'] = "s";
-		$obj[$ds_key_out]['yAxis'] = 1;
-		$obj[$ds_key_out]['unit_acronym'] = $left_unit_acronym;
-		$obj[$ds_key_out]['unit_desc'] = $unit_desc_lookup[$left_unit_acronym];
-		$obj[$ds_key_out]['invert'] = false;
-		$obj[$ds_key_out]['ninetyfifth'] = true;
-		$obj[$ds_key_out]['min'] = min($inpass_stats);
-		$obj[$ds_key_out]['max'] = max($inpass_stats);
-		$obj[$ds_key_out]['avg'] = array_sum($inpass_stats) / count($inpass_stats);
-		$obj[$ds_key_out]['values'] = $inpass_total;
+		$entry = array();
+		$entry['key'] = "inpass total";
+		$entry['type'] = $graphtype;
+		$entry['format'] = "s";
+		$entry['yAxis'] = 1;
+		$entry['unit_acronym'] = $left_unit_acronym;
+		$entry['unit_desc'] = $unit_desc_lookup[$left_unit_acronym];
+		$entry['invert'] = false;
+		$entry['ninetyfifth'] = true;
+		$entry['min'] = min($inpass_stats);
+		$entry['max'] = max($inpass_stats);
+		$entry['avg'] = array_sum($inpass_stats) / count($inpass_stats);
+		$entry['values'] = $inpass_total;
+		$obj[] = $entry;
 
-		$ds_key_out++;
-
-		$obj[$ds_key_out]['key'] = "outpass total";
-		$obj[$ds_key_out]['type'] = $graphtype;
-		$obj[$ds_key_out]['format'] = "s";
-		$obj[$ds_key_out]['yAxis'] = 1;
-		$obj[$ds_key_out]['unit_acronym'] = $left_unit_acronym;
-		$obj[$ds_key_out]['unit_desc'] = $unit_desc_lookup[$left_unit_acronym];
-		$obj[$ds_key_out]['invert'] = $invert_graph;
-		$obj[$ds_key_out]['ninetyfifth'] = true;
-		$obj[$ds_key_out]['min'] = min($outpass_stats);
-		$obj[$ds_key_out]['max'] = max($outpass_stats);
-		$obj[$ds_key_out]['avg'] = array_sum($outpass_stats) / count($outpass_stats);
-		$obj[$ds_key_out]['values'] = $outpass_total;
-
-		$ds_key_out++;
+		$entry = array();
+		$entry['key'] = "outpass total";
+		$entry['type'] = $graphtype;
+		$entry['format'] = "s";
+		$entry['yAxis'] = 1;
+		$entry['unit_acronym'] = $left_unit_acronym;
+		$entry['unit_desc'] = $unit_desc_lookup[$left_unit_acronym];
+		$entry['invert'] = $invert_graph;
+		$entry['ninetyfifth'] = true;
+		$entry['min'] = min($outpass_stats);
+		$entry['max'] = max($outpass_stats);
+		$entry['avg'] = array_sum($outpass_stats) / count($outpass_stats);
+		$entry['values'] = $outpass_total;
+		$obj[] = $entry;
 	}
 
 	foreach ($obj as $raw_left_key => &$raw_left_value) {
@@ -504,16 +503,17 @@ if ($right != "null") {
 		}
 
 		if (!$ignore) {
-			$obj[$ds_key_out]['key'] = $ds;
-			$obj[$ds_key_out]['step'] = $step;
-			$obj[$ds_key_out]['last_updated'] = $last_updated*1000;
-			$obj[$ds_key_out]['type'] = $graph_type;
-			$obj[$ds_key_out]['format'] = $format;
-			$obj[$ds_key_out]['yAxis'] = 2;
-			$obj[$ds_key_out]['unit_acronym'] = $unit_acronym;
-			$obj[$ds_key_out]['unit_desc'] = $unit_desc_lookup[$unit_acronym];
-			$obj[$ds_key_out]['invert'] = $invert;
-			$obj[$ds_key_out]['ninetyfifth'] = $ninetyfifth;
+			$entry = array();
+			$entry['key'] = $ds;
+			$entry['step'] = $step;
+			$entry['last_updated'] = $last_updated*1000;
+			$entry['type'] = $graph_type;
+			$entry['format'] = $format;
+			$entry['yAxis'] = 2;
+			$entry['unit_acronym'] = $unit_acronym;
+			$entry['unit_desc'] = $unit_desc_lookup[$unit_acronym];
+			$entry['invert'] = $invert;
+			$entry['ninetyfifth'] = $ninetyfifth;
 
 			$raw_data = array();
 			$data = array();
@@ -530,20 +530,20 @@ if ($right != "null") {
 				}
 			}
 
-			$obj[$ds_key_out]['values'] = $data;
-			$obj[$ds_key_out]['raw'] = $raw_data;
+			$entry['values'] = $data;
+			$entry['raw'] = $raw_data;
 
 			if (count($stats)) {
-				$obj[$ds_key_out]['min'] = min($stats);
-				$obj[$ds_key_out]['max'] = max($stats);
-				$obj[$ds_key_out]['avg'] = array_sum($stats) / count($stats);
+				$entry['min'] = min($stats);
+				$entry['max'] = max($stats);
+				$entry['avg'] = array_sum($stats) / count($stats);
 			} else {
-				$obj[$ds_key_out]['min'] = 0;
-				$obj[$ds_key_out]['max'] = 0;
-				$obj[$ds_key_out]['avg'] = 0;
+				$entry['min'] = 0;
+				$entry['max'] = 0;
+				$entry['avg'] = 0;
 			}
 
-			$ds_key_out++;
+			$obj[] = $entry;
 		}
 	}
 
@@ -613,35 +613,35 @@ if ($right != "null") {
 		}
 
 		//add the new total lines to array
-		$obj[$ds_key_out]['key'] = "inpass total";
-		$obj[$ds_key_out]['type'] = $graphtype;
-		$obj[$ds_key_out]['format'] = "s";
-		$obj[$ds_key_out]['yAxis'] = 2;
-		$obj[$ds_key_out]['unit_acronym'] = $right_unit_acronym;
-		$obj[$ds_key_out]['unit_desc'] = $unit_desc_lookup[$right_unit_acronym];
-		$obj[$ds_key_out]['invert'] = false;
-		$obj[$ds_key_out]['ninetyfifth'] = true;
-		$obj[$ds_key_out]['min'] = min($inpass_stats);
-		$obj[$ds_key_out]['max'] = max($inpass_stats);
-		$obj[$ds_key_out]['avg'] = array_sum($inpass_stats) / count($inpass_stats);
-		$obj[$ds_key_out]['values'] = $inpass_total;
+		$entry = array();
+		$entry['key'] = "inpass total";
+		$entry['type'] = $graphtype;
+		$entry['format'] = "s";
+		$entry['yAxis'] = 2;
+		$entry['unit_acronym'] = $right_unit_acronym;
+		$entry['unit_desc'] = $unit_desc_lookup[$right_unit_acronym];
+		$entry['invert'] = false;
+		$entry['ninetyfifth'] = true;
+		$entry['min'] = min($inpass_stats);
+		$entry['max'] = max($inpass_stats);
+		$entry['avg'] = array_sum($inpass_stats) / count($inpass_stats);
+		$entry['values'] = $inpass_total;
+		$obj[] = $entry;
 
-		$ds_key_out++;
-
-		$obj[$ds_key_out]['key'] = "outpass total";
-		$obj[$ds_key_out]['type'] = $graphtype;
-		$obj[$ds_key_out]['format'] = "s";
-		$obj[$ds_key_out]['yAxis'] = 2;
-		$obj[$ds_key_out]['unit_acronym'] = $right_unit_acronym;
-		$obj[$ds_key_out]['unit_desc'] = $unit_desc_lookup[$right_unit_acronym];
-		$obj[$ds_key_out]['invert'] = $invert_graph;
-		$obj[$ds_key_out]['ninetyfifth'] = true;
-		$obj[$ds_key_out]['min'] = min($outpass_stats);
-		$obj[$ds_key_out]['max'] = max($outpass_stats);
-		$obj[$ds_key_out]['avg'] = array_sum($outpass_stats) / count($outpass_stats);
-		$obj[$ds_key_out]['values'] = $outpass_total;
-
-		$ds_key_out++;
+		$entry = array();
+		$entry['key'] = "outpass total";
+		$entry['type'] = $graphtype;
+		$entry['format'] = "s";
+		$entry['yAxis'] = 2;
+		$entry['unit_acronym'] = $right_unit_acronym;
+		$entry['unit_desc'] = $unit_desc_lookup[$right_unit_acronym];
+		$entry['invert'] = $invert_graph;
+		$entry['ninetyfifth'] = true;
+		$entry['min'] = min($outpass_stats);
+		$entry['max'] = max($outpass_stats);
+		$entry['avg'] = array_sum($outpass_stats) / count($outpass_stats);
+		$entry['values'] = $outpass_total;
+		$obj[] = $entry;
 	}
 
 	foreach ($obj as $raw_right_key => &$raw_right_value) {
