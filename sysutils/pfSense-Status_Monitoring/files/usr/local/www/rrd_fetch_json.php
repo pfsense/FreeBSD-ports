@@ -58,11 +58,11 @@ $rrd_info_array = rrd_info($rrd_location . $right . ".rrd");
 $right_last_updated = $rrd_info_array['last_update'];
 
 //grab the older last updated time of the two databases
-if(empty($right_last_updated)) {
+if (empty($right_last_updated)) {
 
 	$last_updated = $left_last_updated;
 
-} elseif(empty($left_last_updated)) {
+} elseif (empty($left_last_updated)) {
 
 	$last_updated = $right_last_updated;
 
@@ -74,14 +74,14 @@ if(empty($right_last_updated)) {
 
 if ($timePeriod === "custom") {
 	// Determine highest resolution available for requested time period
-	// Should be possible to determine programmaticly from the RRD header info array (rrd_info).
+	// Should be possible to determine programmatically from the RRD header info array (rrd_info).
 	$rrd_options = array( 'AVERAGE', '-a', '-s', $start, '-e', $start );
 	$left_rrd_array  = rrd_fetch($rrd_location . $left  . ".rrd", $rrd_options);
 	$right_rrd_array = rrd_fetch($rrd_location . $right . ".rrd", $rrd_options);
 	$resolution = max($left_rrd_array['step'], $right_rrd_array['step']);
 
 	// make sure end time isn't later than last updated time entry
-	if( $end > $last_updated ) { $end = $last_updated; }
+	if ( $end > $last_updated ) { $end = $last_updated; }
 
 	// Minus resolution to prevent last value 0 (zero).
 	$end -= $resolution;
@@ -97,7 +97,7 @@ if ($timePeriod === "custom") {
 
 $rrd_options = array( 'AVERAGE', '-a', '-r', $resolution, '-s', $start, '-e', $end );
 
-//Initialze
+//Initialize
 $left_unit_acronym = $right_unit_acronym = "";
 
 //Set units based on RRD database name
@@ -278,7 +278,7 @@ if ($left != "null") {
 
 				$raw_data[] = array($time*1000, $value*$multiplier);
 
-				if(is_nan($value)) {
+				if (is_nan($value)) {
 
 					$data[] = array($time*1000, 0);
 
@@ -294,7 +294,7 @@ if ($left != "null") {
 			$obj[$ds_key_left_adjusted]['values'] = $data;
 			$obj[$ds_key_left_adjusted]['raw'] = $raw_data;
 
-			if(count($stats)) {
+			if (count($stats)) {
 
 				$obj[$ds_key_left_adjusted]['min'] = min($stats);
 				$obj[$ds_key_left_adjusted]['max'] = max($stats);
@@ -311,7 +311,7 @@ if ($left != "null") {
 		}
 	}
 
-	/* calulate the total lines */
+	/* calculate the total lines */
 	if ( ($left_pieces[1] === "traffic") || ($left_pieces[1] === "packets") ) {
 
 		foreach ($obj as $key => $value) {
@@ -379,7 +379,7 @@ if ($left != "null") {
 
 		foreach ($inpass_array as $key => $value) {
 
-			if(is_nan($value)) {
+			if (is_nan($value)) {
 
 				$inpass_total[] = array($key*1000, 0);
 
@@ -394,7 +394,7 @@ if ($left != "null") {
 
 		foreach ($outpass_array as $key => $value) {
 
-			if(is_nan($value)) {
+			if (is_nan($value)) {
 
 				$outpass_total[] = array($key*1000, 0);
 
@@ -590,7 +590,7 @@ if ($right != "null") {
 
 				$raw_data[] = array($time*1000, $value*$multiplier);
 
-				if(is_nan($value)) {
+				if (is_nan($value)) {
 
 					$data[] = array($time*1000, 0);
 
@@ -606,7 +606,7 @@ if ($right != "null") {
 			$obj[$ds_key_right_adjusted]['values'] = $data;
 			$obj[$ds_key_right_adjusted]['raw'] = $raw_data;
 
-			if(count($stats)) {
+			if (count($stats)) {
 
 				$obj[$ds_key_right_adjusted]['min'] = min($stats);
 				$obj[$ds_key_right_adjusted]['max'] = max($stats);
@@ -688,7 +688,7 @@ if ($right != "null") {
 
 		foreach ($inpass_array as $key => $value) {
 
-			if(is_nan($value)) {
+			if (is_nan($value)) {
 
 				$inpass_total[] = array($key*1000, 0);
 
@@ -704,7 +704,7 @@ if ($right != "null") {
 		
 		foreach ($outpass_array as $key => $value) {
 
-			if(is_nan($value)) {
+			if (is_nan($value)) {
 
 				$outpass_total[] = array($key*1000, 0);
 
