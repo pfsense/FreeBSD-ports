@@ -292,6 +292,34 @@ foreach ($side as $settings) {
 			}
 
 			$obj[] = $entry;
+
+			if ($ds == 'offset') {
+				// Make an entry for the absolute value of NTP time offset
+				// Start with the existing entry and just modify it
+				$entry['key'] = 'abs ' . $ds;
+				$raw_data_abs = array();
+				$data_abs = array();
+
+				foreach ($raw_data as $raw_data_entry) {
+					$raw_data_abs[] = array($raw_data_entry[0], abs($raw_data_entry[1]));
+				}
+
+				foreach ($data as $data_entry) {
+					$data_abs[] = array($data_entry[0], abs($data_entry[1]));
+				}
+
+				$entry['values'] = $data_abs;
+				$entry['raw'] = $raw_data_abs;
+				
+				if (count($stats)) {
+					$stats_abs = array_map('abs', $stats);
+					$entry['min'] = min($stats_abs);
+					$entry['max'] = max($stats_abs);
+					$entry['avg'] = array_sum($stats_abs) / count($stats_abs);
+				}
+
+				$obj[] = $entry;
+			}
 		}
 	}
 
