@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * snmptt_conf.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>snmptt_conf</name>
+	<title>Services: SNMPTT</title>
+	<include_file>/usr/local/pkg/snmptt.inc</include_file>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=snmptt.xml</url>
+		</tab>
+		<tab>
+			<text>snmptt.conf</text>
+			<url>/pkg_edit.php?xml=snmptt_conf.xml</url>
+			<active />
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>SNMPTT.CONF</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>snmptt.conf</fielddescr>
+			<fieldname>snmptt_configfile</fieldname>
+			<encoding>base64</encoding>
+			<type>textarea</type>
+			<rows>20</rows>
+			<cols>80</cols>
+			<description>
+				<![CDATA[
+					Zabbix example:<br/>
+					<br/>
+					#<br/>
+					#<br/>
+					#<br/>
+					EVENT general .* "General event" Normal<br/>
+					FORMAT ZBXTRAP $aA $ar $+*<br/>
+					<br/>
+					<a href="http://snmptt.sourceforge.net/docs/snmptt.shtml#SNMPTT.CONF-Configuration-file-format"> More info here.</a><br/>                
+				]]>
+			</description>
+			<required>true</required>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		sync_package_snmptt();
+	</custom_php_resync_config_command>
+</packagegui>
