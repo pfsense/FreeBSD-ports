@@ -58,8 +58,6 @@ function validate_input_snmptt($post, &$input_errors) {
 function sync_package_snmptt() {
 	global $config, $g;
 
-	conf_mount_rw();
-
 	if (is_service_running('snmptt') && !file_exists("{$g['tmp_path']}/.rc.start_packages.running")) {
 		log_error("Stopping service snmptt");
 		stop_service('snmptt');
@@ -128,7 +126,6 @@ function sync_package_snmptt() {
 		unlink_if_exists("/usr/local/etc/rc.d/snmptt.sh");
 	}
 
-	conf_mount_ro();
 }
 
 ?>
