@@ -156,7 +156,6 @@ function tinc_install() {
 	safe_mkdir("/usr/local/etc/tinc/hosts");
 	tinc_write_rcfile();
 	unlink_if_exists("/usr/local/etc/rc.d/tincd");
-	clear_log_file("/var/log/tinc.log");
 
 	/* Create Interface Group */
 	if (!is_array($config['ifgroups']['ifgroupentry'])) {
