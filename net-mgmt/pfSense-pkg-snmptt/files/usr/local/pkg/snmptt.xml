@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * snmptt.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>snmptt</name>
+	<title>Services: SNMPTT</title>
+	<category>Monitoring</category>
+	<include_file>/usr/local/pkg/snmptt.inc</include_file>
+	<addedit_string>SNMPTT has been created/modified.</addedit_string>
+	<delete_string>SNMPTT has been deleted.</delete_string>
+	<menu>
+		<name>SNMP Trap Translator (SNMPTT)</name>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=snmptt.xml</url>
+	</menu>
+	<service>
+		<name>snmptt</name>
+		<rcfile>snmptt.sh</rcfile>
+		<executable>snmptt</executable>
+		<description>SNMPTT Daemon</description>
+		<custom_php_service_status_command>
+			<![CDATA[
+				""; $output=""; exec("/bin/pgrep -anf snmptt", $output, $retval); $rc=(intval($retval) == 0)
+			]]>
+		</custom_php_service_status_command>
+	</service>
+	<tabs>
+		<tab>
+			<text>General</text>
+			<url>/pkg_edit.php?xml=snmptt.xml</url>
+			<active />
+		</tab>
+		<tab>
+			<text>snmptt.conf</text>
+			<url>/pkg_edit.php?xml=snmptt_conf.xml</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>General Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable</fielddescr>
+			<fieldname>snmpttenabled</fieldname>
+			<description>Enable SNMPTT service.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>SNMPTT System Name</fielddescr>
+			<fieldname>snmptt_system_name</fieldname>
+			<description>
+				<![CDATA[
+					Name of this system for $H variable.  If blank, system name will be the computer's<br/>
+					hostname via Sys::Hostname.<br/>
+				]]>
+			</description>
+			<default_value></default_value>
+			<type>input</type>
+			<size>50</size>
+		</field>
+		<field>
+			<fielddescr>Operation Mode</fielddescr>
+			<fieldname>mode</fieldname>
+			<description>
+				<![CDATA[
+					standalone: <b>/usr/local/sbin/snmptt</b> called from snmptrapd.conf<br/>
+					daemon: <b>/usr/local/sbin/snmptthandler --ini=/usr/local/etc/snmp/snmptt.ini</b> called from snmptrapd.conf<br/>
+				]]>
+			</description>
+			<type>select</type>
+			<default_value>standalone</default_value>
+			<options>
+				<option><name>Standalone</name><value>standalone</value></option>
+				<option><name>Daemon</name><value>daemon</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Multiple Event</fielddescr>
+			<fieldname>multiple_event</fieldname>
+			<type>select</type>
+			<default_value>1</default_value>
+			<options>
+				<option><name>Stop after the first match (0)</name><value>0</value></option>
+				<option><name>Allow multiple trap definitions (1)</name><value>1</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>DNS Enable</fielddescr>
+			<fieldname>dns_enable</fieldname>
+			<type>select</type>
+			<default_value>0</default_value>
+			<options>
+				<option><name>Disable DNS resolution (0)</name><value>0</value></option>
+				<option><name>Enable DNS resolution (1)</name><value>1</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Strip Domain</fielddescr>
+			<fieldname>strip_domain</fieldname>
+			<type>select</type>
+			<default_value>0</default_value>
+			<options>
+				<option><name>Use Fully Qualified Domain Names (0)</name><value>0</value></option>
+				<option><name>Remove all domain names (1)</name><value>1</value></option>
+				<option><name>Remove domain names from strip_domain_list (2)</name><value>2</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Strip Domain List</fielddescr>
+			<fieldname>strip_domain_list</fieldname>
+			<encoding>base64</encoding>
+			<type>textarea</type>
+			<rows>5</rows>
+			<cols>50</cols>
+			<description>
+				<![CDATA[
+					List of domain names that should be stripped when strip_domain is set to 2.<br/>
+					<b>Note: Put each entry on a separate line.</b><br/>
+				]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>Resolve Value IP Addresses</fielddescr>
+			<fieldname>resolve_value_ip_addresses</fieldname>
+			<type>select</type>
+			<default_value>0</default_value>
+			<options>
+				<option><name>Do not resolve the IP address (0)</name><value>0</value></option>
+				<option><name>Resolve the IP address (1)</name><value>1</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Net SNMP Perl Enable</fielddescr>
+			<fieldname>net_snmp_perl_enable</fieldname>
+			<type>select</type>
+			<default_value>1</default_value>
+			<options>
+				<option><name>Do not use NET-SNMP Perl module (0)</name><value>0</value></option>
+				<option><name>Use NET-SNMP Perl module (1)</name><value>1</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Net SNMP Perl Cache Enable</fielddescr>
+			<fieldname>net_snmp_perl_cache_enable</fieldname>
+			<type>select</type>
+			<default_value>1</default_value>
+			<options>
+				<option><name>Do not enable translation cache for NET-SNMP Perl module (0)</name><value>0</value></option>
+				<option><name>Enable translation cache for NET-SNMP Perl module (1)</name><value>1</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Net SNMP Perl Best Guess</fielddescr>
+			<fieldname>net_snmp_perl_best_guess</fieldname>
+			<type>select</type>
+			<default_value>0</default_value>
+			<options>
+				<option><name>Parameter for Net-SNMP 5.0.8 and previous versions (0)</name><value>0</value></option>
+				<option><name>Parameter for Net-SNMP 5.0.9 or later (2)</name><value>2</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Translate Log Trap OID</fielddescr>
+			<fieldname>translate_log_trap_oid</fieldname>
+			<type>select</type>
+			<default_value>2</default_value>
+			<options>
+				<option><name>Disable translation (0)</name><value>0</value></option>
+				<option><name>Translate to short text (1)</name><value>1</value></option>
+				<option><name>Translate to short text with module name (2)</name><value>2</value></option>
+				<option><name>Translate to long text (3)</name><value>3</value></option>
+				<option><name>Translate to long text with module name (4)</name><value>4</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Translate Value OIDs</fielddescr>
+			<fieldname>translate_value_oids</fieldname>
+			<type>select</type>
+			<default_value>1</default_value>
+			<options>
+				<option><name>Disable translation (0)</name><value>0</value></option>
+				<option><name>Translate to short text (1)</name><value>1</value></option>
+				<option><name>Translate to short text with module name (2)</name><value>2</value></option>
+				<option><name>Translate to long text (3)</name><value>3</value></option>
+				<option><name>Translate to long text with module name (4)</name><value>4</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Translate Enterprise OID Format</fielddescr>
+			<fieldname>translate_enterprise_oid_format</fieldname>
+			<type>select</type>
+			<default_value>1</default_value>
+			<options>
+				<option><name>Translate to short text (1)</name><value>1</value></option>
+				<option><name>Translate to short text with module name (2)</name><value>2</value></option>
+				<option><name>Translate to long text (3)</name><value>3</value></option>
+				<option><name>Translate to long text with module name (4)</name><value>4</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Translate Trap OID Format</fielddescr>
+			<fieldname>translate_trap_oid_format</fieldname>
+			<type>select</type>
+			<default_value>1</default_value>
+			<options>
+				<option><name>Translate to short text (1)</name><value>1</value></option>
+				<option><name>Translate to short text with module name (2)</name><value>2</value></option>
+				<option><name>Translate to long text (3)</name><value>3</value></option>
+				<option><name>Translate to long text with module name (4)</name><value>4</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Translate Variable Name OID Format</fielddescr>
+			<fieldname>translate_varname_oid_format</fieldname>
+			<type>select</type>
+			<default_value>1</default_value>
+			<options>
+				<option><name>Translate to short text (1)</name><value>1</value></option>
+				<option><name>Translate to short text with module name (2)</name><value>2</value></option>
+				<option><name>Translate to long text (3)</name><value>3</value></option>
+				<option><name>Translate to long text with module name (4)</name><value>4</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Translate Integers</fielddescr>
+			<fieldname>translate_integers</fieldname>
+			<type>select</type>
+			<default_value>1</default_value>
+			<options>
+				<option><name>Disable converting INTEGER (0)</name><value>0</value></option>
+				<option><name>Enable converting INTEGER (1)</name><value>1</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Wildcard Expansion Separator</fielddescr>
+			<fieldname>wildcard_expansion_separator</fieldname>
+			<description>
+				<![CDATA[
+					Set what is used to separate variables when wildcards are expanded on the FORMAT / EXEC line.<br/>
+					Defaults to a space. Can contain 1 or more characters.<br/>
+				]]>
+			</description>
+			<default_value> </default_value>
+			<type>input</type>
+			<size>50</size>
+		</field>
+		<field>
+			<fielddescr>Allow Unsafe Regex</fielddescr>
+			<fieldname>allow_unsafe_regex</fieldname>
+			<type>select</type>
+			<default_value>0</default_value>
+			<options>
+				<option><name>Allow unsafe REGEX (0)</name><value>0</value></option>
+				<option><name>Block unsafe REGEX (1)</name><value>1</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Remove Backslash From Quotes</fielddescr>
+			<fieldname>remove_backslash_from_quotes</fieldname>
+			<type>select</type>
+			<default_value>0</default_value>
+			<options>
+				<option><name>Do not Remove Backslash (0)</name><value>0</value></option>
+				<option><name>Remove Backslash (1)</name><value>1</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Dynamic Nodes</fielddescr>
+			<fieldname>dynamic_nodes</fieldname>
+			<type>select</type>
+			<default_value>0</default_value>
+			<options>
+				<option><name>Load NODES files once (0)</name><value>0</value></option>
+				<option><name>Load NODES files in every call (1)</name><value>1</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Description Mode</fielddescr>
+			<fieldname>description_mode</fieldname>
+			<description>Enabling this option can greatly increase the amount of memory used by SNMPTT.</description>
+			<type>select</type>
+			<default_value>0</default_value>
+			<options>
+				<option><name>Disable the $D substitution variable (0)</name><value>0</value></option>
+				<option><name>Enable the $D substitution variable with SNMPTT.conf (1)</name><value>1</value></option>
+				<option><name>Enable the $D substitution variable with MIB files (2)</name><value>2</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Description Clean</fielddescr>
+			<fieldname>description_clean</fieldname>
+			<description>Used when description_mode is enabled.</description>
+			<type>select</type>
+			<default_value>1</default_value>
+			<options>
+				<option><name>Do not remove white space at the start of each line from the MIB (0)</name><value>0</value></option>
+				<option><name>Remove white space at the start of each line from the MIB (1)</name><value>1</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Threads Enable</fielddescr>
+			<fieldname>threads_enable</fieldname>
+			<type>select</type>
+			<default_value>0</default_value>
+			<options>
+				<option><name>Disable threads (0)</name><value>0</value></option>
+				<option><name>Enable threads (1)</name><value>1</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Threads Max</fielddescr>
+			<fieldname>threads_max</fieldname>
+			<description>
+				<![CDATA[
+					This option allows you to set the maximum number of threads that will<br/>
+					execute at once.  Defaults to 10<br/>
+				]]>
+			</description>
+			<default_value>10</default_value>
+			<type>input</type>
+			<size>3</size>
+		</field>
+		<field>
+			<fielddescr>Date Format</fielddescr>
+			<fieldname>date_format</fieldname>
+			<description>The date format for $x in strftime() format.</description>
+			<default_value>%a %b %e %Y</default_value>
+			<type>input</type>
+			<size>20</size>
+			<required>true</required>
+		</field>
+		<field>
+			<fielddescr>Time Format</fielddescr>
+			<fieldname>time_format</fieldname>
+			<description>The time format for $X in strftime() format.</description>
+			<default_value>%H:%M:%S</default_value>
+			<type>input</type>
+			<size>20</size>
+			<required>true</required>
+		</field>
+		<field>
+			<fielddescr>Date Time Format</fielddescr>
+			<fieldname>date_time_format</fieldname>
+			<description>
+				<![CDATA[
+					The date time format in strftime() format for the date/time when logging<br/>
+					to standard output, snmptt log files (log_file) and the unknown log file<br/>
+					(unknown_trap_log_file). Defaults to localtime().<br/>
+				]]>
+			</description>
+			<default_value>%a %b %e %Y %H:%M:%S</default_value>
+			<type>input</type>
+			<size>20</size>
+			<required>true</required>
+		</field>
+		<field>
+			<name>Daemon Mode</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Sleep</fielddescr>
+			<fieldname>sleep</fieldname>
+			<description>Amount of time in seconds to sleep between processing spool files.</description>
+			<default_value>5</default_value>
+			<type>input</type>
+			<size>3</size>
+			<required>true</required>
+		</field>
+		<field>
+			<fielddescr>Use Trap Time</fielddescr>
+			<fieldname>use_trap_time</fieldname>
+			<type>select</type>
+			<default_value>1</default_value>
+			<options>
+				<option><name>Use time from SNMPTT (0)</name><value>0</value></option>
+				<option><name>Use time from SNMPTTHANDLER (1)</name><value>1</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Keep Unlogged Traps</fielddescr>
+			<fieldname>keep_unlogged_traps</fieldname>
+			<type>select</type>
+			<default_value>1</default_value>
+			<options>
+				<option><name>Erase spooler in every process (0)</name><value>0</value></option>
+				<option><name>Erase spooler if it logs to at least one log system (1)</name><value>1</value></option>
+				<option><name>Erase spooler if it logs to all log system (2)</name><value>2</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Duplicate Trap Window</fielddescr>
+			<fieldname>duplicate_trap_window</fieldname>
+			<description>How often in seconds duplicate traps will be processed.</description>
+			<default_value>0</default_value>
+			<type>input</type>
+			<size>3</size>
+			<required>true</required>
+		</field>
+		<field>
+			<name>Logging</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Stdout Enable</fielddescr>
+			<fieldname>stdout_enable</fieldname>
+			<type>select</type>
+			<default_value>0</default_value>
+			<options>
+				<option><name>Disable logging messages to standard output (0)</name><value>0</value></option>
+				<option><name>Enable logging messages to standard output (1)</name><value>1</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Log Enable</fielddescr>
+			<fieldname>log_enable</fieldname>
+			<type>select</type>
+			<default_value>1</default_value>
+			<options>
+				<option><name>Disable logging (0)</name><value>0</value></option>
+				<option><name>Enable logging (1)</name><value>1</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Log File</fielddescr>
+			<fieldname>log_file</fieldname>
+			<description>Log file location. The COMPLETE path and filename.</description>
+			<default_value>/var/log/snmptt/snmptt.log</default_value>
+			<type>input</type>
+			<size>150</size>
+		</field>
+		<field>
+			<fielddescr>Log System Enable</fielddescr>
+			<fieldname>log_system_enable</fieldname>
+			<type>select</type>
+			<default_value>1</default_value>
+			<options>
+				<option><name>Disable logging of SNMPTT system errors (0)</name><value>0</value></option>
+				<option><name>Enable logging of SNMPTT system errors (1)</name><value>1</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Log System File</fielddescr>
+			<fieldname>log_system_file</fieldname>
+			<description>Log file location. The COMPLETE path and filename.</description>
+			<default_value>/var/log/snmptt/snmpttsystem.log</default_value>
+			<type>input</type>
+			<size>150</size>
+		</field>
+		<field>
+			<fielddescr>Unknown Trap Log Enable</fielddescr>
+			<fieldname>unknown_trap_log_enable</fieldname>
+			<type>select</type>
+			<default_value>1</default_value>
+			<options>
+				<option><name>Disable logging of unknown traps (0)</name><value>0</value></option>
+				<option><name>Enable logging of unknown traps (1)</name><value>1</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Unknown Trap Log File</fielddescr>
+			<fieldname>unknown_trap_log_file</fieldname>
+			<description>Log file location. The COMPLETE path and filename.</description>
+			<default_value>/var/log/snmptt/snmpttunknown.log</default_value>
+			<type>input</type>
+			<size>150</size>
+		</field>
+		<field>
+			<fielddescr>Statistics Interval</fielddescr>
+			<fieldname>statistics_interval</fieldname>
+			<description>How often in seconds statistics should be logged to syslog or the event log.</description>
+			<default_value>0</default_value>
+			<type>input</type>
+			<size>3</size>
+		</field>
+		<field>
+			<fielddescr>Syslog Enable</fielddescr>
+			<fieldname>syslog_enable</fieldname>
+			<type>select</type>
+			<default_value>0</default_value>
+			<options>
+				<option><name>Disable logging to syslog (0)</name><value>0</value></option>
+				<option><name>Enable logging to syslog (1)</name><value>1</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Syslog Facility</fielddescr>
+			<fieldname>syslog_facility</fieldname>
+			<description>Syslog facility to use for logging of TRAPS.</description>
+			<default_value>local0</default_value>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>Syslog Level</fielddescr>
+			<fieldname>syslog_level</fieldname>
+			<description>Syslog default level to use for logging of TRAPS.</description>
+			<default_value>warning</default_value>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>Syslog System Enable</fielddescr>
+			<fieldname>syslog_system_enable</fieldname>
+			<type>select</type>
+			<default_value>1</default_value>
+			<options>
+				<option><name>Disable logging of SNMPTT system errors to syslog (0)</name><value>0</value></option>
+				<option><name>Enable logging of SNMPTT system errors to syslog (1)</name><value>1</value></option>
+			</options>
+		</field>
+		<field>
+			<fielddescr>Syslog System Facility</fielddescr>
+			<fieldname>syslog_system_facility</fieldname>
+			<description>Syslog facility to use for logging of SNMPTT system errors.</description>
+			<default_value>local0</default_value>
+			<type>input</type>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>Syslog System Level</fielddescr>
+			<fieldname>syslog_system_level</fieldname>
+			<description>Syslog level to use for logging of SNMPTT system errors.</description>
+			<default_value>warning</default_value>
+			<type>input</type>
+			<size>60</size>
+		</field>
+	</fields>
+	<custom_php_install_command>
+		sync_package_snmptt();
+	</custom_php_install_command>
+	<custom_php_validation_command>
+		validate_input_snmptt($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		sync_package_snmptt();
+	</custom_php_resync_config_command>
+	<custom_php_deinstall_command>
+		php_deinstall_snmptt();
+	</custom_php_deinstall_command>
+</packagegui>
