@@ -2,6 +2,8 @@
 
 PORTNAME=	openvpn-client-export
 PORTVERSION=	2.4.2
+DISTVERSIONSUFFIX=_1
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	http://files.pfsense.org/packages/openvpn-client-export/
 
