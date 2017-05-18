@@ -14,7 +14,7 @@ COMMENT=	pfSense package freeradius2
 LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/radiusd:net/freeradius2 \
-				${LOCALBASE}/bin/bash:shells/bash
+		${LOCALBASE}/bin/bash:shells/bash
 
 USES=		python2.7 shebangfix
 SHEBANG_FILES=	scripts/googleauth.py
