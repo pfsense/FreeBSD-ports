@@ -30,8 +30,8 @@ require_once("pfsense-utils.inc");
 global $current_openvpn_version, $current_openvpn_version_rev, $legacy_openvpn_version, $legacy_openvpn_version_rev;
 $current_openvpn_version = "2.4.2";
 $current_openvpn_version_rev = "01";
-$legacy_openvpn_version = "2.3.14";
-$legacy_openvpn_version_rev = "02";
+$legacy_openvpn_version = "2.3.15";
+$legacy_openvpn_version_rev = "01";
 
 function get_openvpnserver_by_id($srvid) {
 	global $config;
