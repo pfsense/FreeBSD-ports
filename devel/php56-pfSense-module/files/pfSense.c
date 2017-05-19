@@ -1756,7 +1756,6 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 			bzero(outputbuf, sizeof outputbuf);
 			ether_ntoa_r((struct ether_addr *)LLADDR(tmpdl), outputbuf);
 			add_assoc_string(return_value, "macaddr", outputbuf, 1);
-			md = (struct if_data *)mb->ifa_data;
 
 			if (tmpdl->sdl_type != IFT_ETHER ||
 			    tmpdl->sdl_alen != ETHER_ADDR_LEN) {
