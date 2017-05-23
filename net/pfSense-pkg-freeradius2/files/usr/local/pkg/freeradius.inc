@@ -4406,6 +4406,7 @@ function freeradius_validate_interfaces($post, &$input_errors) {
 
 /* General Settings input validation */
 function freeradius_validate_settings($post, &$input_errors) {
+	global $config;
 	// Force users to configure certificates for EAP
 	if (is_array($config['installedpackages']['freeradiuseapconf']['config'][0])) {
 		$eapconf = $config['installedpackages']['freeradiuseapconf']['config'][0];
