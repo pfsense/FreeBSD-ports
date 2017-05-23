@@ -60,9 +60,9 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/googleauth \
-		${STAGEDIR}/usr/local/etc/raddb/modules
+		${STAGEDIR}${PREFIX}/etc/raddb/modules
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/googleauth.py \
-		${STAGEDIR}/usr/local/etc/raddb/scripts
+		${STAGEDIR}${PREFIX}/etc/raddb/scripts
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
 		${STAGEDIR}${DATADIR}/info.xml
 
