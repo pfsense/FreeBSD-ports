@@ -2274,7 +2274,7 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 	struct ifreq ifr;
 	char outputbuf[128];
 	char *ifname;
-	int ifname_len, llflag, sock, addresscnt = 0, addresscnt6 = 0;
+	int ifname_len, llflag, sock, addresscnt = 0, addresscnt6 = 0, rc, sock_hw;
 	zval *caps;
 	zval *encaps;
 
@@ -2546,7 +2546,30 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 			ether_ntoa_r((struct ether_addr *)LLADDR(tmpdl),
 			    outputbuf);
 			add_assoc_string(return_value, "macaddr", outputbuf, 1);
-			md = (struct if_data *)mb->ifa_data;
+
+			if (tmpdl->sdl_type != IFT_ETHER ||
+			    tmpdl->sdl_alen != ETHER_ADDR_LEN) {
+				break;
+			}
+
+			strncpy(ifr.ifr_name, mb->ifa_name,
+			    sizeof(ifr.ifr_name));
+			memcpy(&ifr.ifr_addr, mb->ifa_addr,
+			    sizeof(mb->ifa_addr->sa_len));
+			ifr.ifr_addr.sa_family = AF_LOCAL;
+			if ((sock_hw = socket(AF_LOCAL, SOCK_DGRAM, 0)) < 0) {
+				break;
+			}
+			rc = ioctl(sock_hw, SIOCGHWADDR, &ifr);
+			close(sock_hw);
+			if (rc != 0) {
+				break;
+			}
+
+			bzero(outputbuf, sizeof outputbuf);
+			ether_ntoa_r((const struct ether_addr *)&ifr.ifr_addr.sa_data,
+			    outputbuf);
+			add_assoc_string(return_value, "hwaddr", outputbuf, 1);
 
 			break;
 		}
