@@ -50,7 +50,11 @@ function bandwidthd_install_config() {
 	}
 	/* Configure stats interface(s) */
 	$subnets = "";
-	$stats_interfaces = $bandwidthd_config['interface_array'] ?: 'lan';
+	if (is_array($bandwidthd_config['interface_array']) && ($bandwidthd_config['interface_array'] > 0)) {
+		$stats_interfaces = $bandwidthd_config['interface_array'];
+	} else {
+		$stats_interfaces = array('lan');
+	}
 	foreach ($stats_interfaces as $iface) {
 		if (is_ipaddr(get_interface_ip($iface))) {
 			$subnets .= "subnet " . gen_subnet(get_interface_ip($iface),get_interface_subnet($iface)) . "/" . get_interface_subnet($iface) . "\n";
@@ -270,10 +274,10 @@ EOD;
 	/* Cron job for graphs */
 	if (($bandwidthd_config['enable']) && ($bandwidthd_config['outputcdf'])) {
 		// Use cron job to rotate logs every day at 00:01
-		install_cron_job("/bin/kill -HUP `cat /var/run/bandwidthd.pid`", true, "1", "0");
+		install_cron_job("/bin/pkill -HUP -F /var/run/bandwidthd.pid", true, "1", "0");
 	} else {
 		// Remove the cron job if it is there
-		install_cron_job("/bin/kill -HUP `cat /var/run/bandwidthd.pid`", false);
+		install_cron_job("/bin/pkill -HUP -F /var/run/bandwidthd.pid", false);
 	}
 
 	conf_mount_ro();
