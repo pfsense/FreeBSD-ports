@@ -534,6 +534,7 @@ function quagga_ospfd_plugin_carp($pluginparams) {
 		stop_service("Quagga OSPFd");
 	}
 }
+
 /* The following function checks for the presence of and writes the contents of "/var/etc/quagga/$module.conf" into the $module . "running" field within the config.xml file  */
 function write_quagga_running_config($module) {
 	global $config;
