@@ -72,11 +72,11 @@
 			<description></description>
 		</field>
 		<field>
-			<fielddescr>BandwidthD Web Interface</fielddescr>
+			<fielddescr>BandwidthD Interface</fielddescr>
 			<fieldname>active_interface</fieldname>
-			<description>Bind the BandwidthD web interface to IP address of the specified interface.</description>
+			<description>The interface where bandwidthd will listen for traffic.</description>
 			<type>interfaces_selection</type>
-			<hideinterfaceregex>(loopback|wan)</hideinterfaceregex>
+			<hideinterfaceregex>(loopback)</hideinterfaceregex>
 			<required/>
 			<default_value>lan</default_value>
 		</field>
@@ -114,10 +114,14 @@
 			<fieldname>promiscuous</fieldname>
 			<description>
 				<![CDATA[
-				Put interface in promiscuous mode to see traffic that may not be routing through the host machine.<br />
-				Note: If the interface is connected to a switch then the interface will only see the traffic on its port.
+				Put interface in promiscuous mode to see traffic that may not be routing through the host machine.
 				]]>
 			</description>
+			<sethelp>
+				<![CDATA[
+				Note: If the interface is connected to a switch then the interface will only see the traffic on its port.
+				]]>
+			</sethelp>
 			<type>checkbox</type>
 		</field>
 		<field>
@@ -140,10 +144,15 @@
 			<fieldname>drawgraphs</fieldname>
 			<description>
 				<![CDATA[
-				Enabled by default in order to graph the traffic that BandwidthD is recording. Uncheck this if you only want CDF output or you are using the database output option.<br />
-				BandwidthD will use very little RAM and CPU if this option is disabled.
+				Graph the traffic that BandwidthD is recording. Enabled by default.
 				]]>
 			</description>
+			<sethelp>
+				<![CDATA[
+				Uncheck this to only generate CDF output or when using the database output option.<br />
+				BandwidthD will use very little RAM and CPU when this option is disabled.
+				]]>
+			</sethelp>
 			<type>checkbox</type>
 			<default_value>on</default_value>
 			<enablefields>meta_refresh,skipintervals,graphcutoff</enablefields>
@@ -153,8 +162,8 @@
 			<fieldname>meta_refresh</fieldname>
 			<description>
 				<![CDATA[
-				Sets the interval (seconds) at which the browser graph display refreshes<br />
-				Default 150, use 0 to disable.
+				Sets the interval, in seconds, at which the browser will refresh the graph display.<br/>
+				Default value is 150 seconds. A value of 0 will disable the refresh.
 				]]>
 			</description>
 			<type>input</type>
@@ -223,10 +232,14 @@
 			<fieldname>outputpostgresql</fieldname>
 			<description>
 				<![CDATA[
-				Log data to a PostgreSQL database.<br />
-				Get the PostgreSQL schema and PHP files to display the results from <a href="https://github.com/individual-it/bandwidthd-pSQL-frontend">https://github.com/individual-it/bandwidthd-pSQL-frontend</a>
+				Log data to a PostgreSQL database
 				]]>
 			</description>
+			<sethelp>
+				<![CDATA[
+				Get the PostgreSQL schema and PHP files to display the results from <a href="https://github.com/individual-it/bandwidthd-pSQL-frontend">https://github.com/individual-it/bandwidthd-pSQL-frontend</a>
+				]]>
+			</sethelp>
 			<enablefields>postgresqlhost,postgresqldatabase,postgresqlusername,postgresqlpasswordenc</enablefields>
 			<type>checkbox</type>
 		</field>
