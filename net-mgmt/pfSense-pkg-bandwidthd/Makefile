@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-bandwidthd
 PORTVERSION=	0.7.4
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -25,6 +26,7 @@ do-extract:
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
+	${MKDIR} ${STAGEDIR}${PREFIX}/www
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/bandwidthd.priv.inc \
