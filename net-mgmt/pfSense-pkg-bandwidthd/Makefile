@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-bandwidthd
-PORTVERSION=	0.7.2
+PORTVERSION=	0.7.3
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty

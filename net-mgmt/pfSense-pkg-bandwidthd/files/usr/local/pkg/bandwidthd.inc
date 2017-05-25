@@ -50,7 +50,7 @@ function bandwidthd_install_config() {
 	}
 	/* Configure stats interface(s) */
 	$subnets = "";
-	if (is_array($bandwidthd_config['interface_array']) && ($bandwidthd_config['interface_array'] > 0)) {
+	if (is_array($bandwidthd_config['interface_array']) && (count($bandwidthd_config['interface_array']) > 0)) {
 		$stats_interfaces = $bandwidthd_config['interface_array'];
 	} else {
 		$stats_interfaces = array('lan');
