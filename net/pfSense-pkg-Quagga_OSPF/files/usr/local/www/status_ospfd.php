@@ -1,6 +1,7 @@
 <?php
 /*
  * status_ospfd.php
+
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2010-2015 Rubicon Communications, LLC (Netgate)
@@ -18,6 +19,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+
+
+
+
  */
 
 require("guiconfig.inc");
@@ -74,9 +79,16 @@ defCmdT("Quagga Zebra Routes", "{$control_script} zebra route");
 defCmdT("Quagga OSPF Interfaces", "{$control_script} ospf interfaces");
 defCmdT("Quagga OSPF CPU Usage", "{$control_script} ospf cpu");
 defCmdT("Quagga OSPF Memory", "{$control_script} ospf mem");
-defCmdT("Quagga BGP Neighbors", "{$control_script} bgp neighbor");
+
+
+
 defCmdT("Quagga BGP Routes", "{$control_script} bgp route");
 defCmdT("Quagga BGP IPv6 Routes", "{$control_script} bgp6 route");
+defCmdT("Quagga BGP Neighbors", "{$control_script} bgp neighbor");
+defCmdT("Quagga BGP Summary", "{$control_script} bgp sum");
+
+
+
 defCmdT("Quagga ospfd.conf", "/bin/cat {$pkg_homedir}/ospfd.conf");
 defCmdT("Quagga bgpd.conf", "/bin/cat {$pkg_homedir}/bgpd.conf");
 defCmdT("Quagga zebra.conf", "/bin/cat {$pkg_homedir}/zebra.conf");
