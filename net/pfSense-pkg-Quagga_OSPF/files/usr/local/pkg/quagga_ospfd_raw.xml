@@ -129,6 +129,18 @@
 				<script>
 				var ospfd = document.getElementById('ospfd');
 				var ospfdrunning = document.getElementById('ospfdrunning'); 
+								function onCopyClick(elem1, elem2) {
+					elem1.value = elem2.value;
+					configCheck(elem1, elem2);
+				}
+				function configCheck(elem1,elem2) {
+					if (elem1.value == elem2.value ) {
+						elem1.style.backgroundColor = elem2.style.backgroundColor = 'limegreen';
+					}
+					else {
+						elem1.style.backgroundColor = elem2.style.backgroundColor = 'darkorange';
+					}
+				}
 				window.onload = configCheck(ospfd, ospfdrunning);
 				ospfd.addEventListener('keyup', function() { configCheck(ospfd, ospfdrunning)});
 				ospfdrunning.addEventListener('keyup', function() { configCheck(ospfd, ospfdrunning) });
@@ -212,18 +224,6 @@
 				<script>
 				var bgpd = document.getElementById('bgpd');
 				var bgpdrunning = document.getElementById('bgpdrunning'); 
-				function onCopyClick(elem1, elem2) {
-					elem1.value = elem2.value;
-					configCheck(elem1, elem2);
-				}
-				function configCheck(elem1,elem2) {
-					if (elem1.value == elem2.value ) {
-						elem1.style.backgroundColor = elem2.style.backgroundColor = 'limegreen';
-					}
-					else {
-						elem1.style.backgroundColor = elem2.style.backgroundColor = 'darkorange';
-					}
-				}
 				window.onload = configCheck(bgpd, bgpdrunning);
 				bgpd.addEventListener('keyup', function() { configCheck(bgpd, bgpdrunning)});
 				bgpdrunning.addEventListener('keyup', function() { configCheck(bgpd, bgpdrunning) });
