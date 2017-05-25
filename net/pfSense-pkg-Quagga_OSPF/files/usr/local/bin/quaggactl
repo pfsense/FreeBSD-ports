@@ -112,7 +112,7 @@ bgp*)
 		shift; shift;
 		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show ip bgp summary $*"
 		;;
-	rou*)
+	gen*)
 		daemon_command ${BGP_PORT} ${BGP_PASSWORD} "show ip bgp"
 		;;
 	esac ;;
