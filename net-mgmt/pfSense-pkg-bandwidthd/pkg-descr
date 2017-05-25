@@ -1,0 +1,9 @@
+BandwidthD tracks usage of TCP/IP network subnets and builds html files with
+graphs to display utilization.<br/>
+
+Charts are built by individual IPs, and by default display utilization over 2
+day, 8 day, 40 day, and 400 day periods. Furthermore, each IP address's
+utilization can be logged out in CDF format, or to a backend database
+server.<br/>
+
+HTTP, TCP, UDP, ICMP, VPN, and P2P traffic are color coded.
