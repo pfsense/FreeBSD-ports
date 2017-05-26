@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Robert Zelaya
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2017 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -251,6 +251,9 @@ if ($a_nat[$id]['autoflowbitrules'] == 'on') {
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
+if (empty($if_friendly)) {
+	$if_friendly = "None";
+}
 $pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Categories"), gettext("{$if_friendly}"));
 include_once("head.inc");
 
