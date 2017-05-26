@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2016 Bill Meeks
+ * Copyright (c) 2013-2017 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,7 +40,7 @@ if (!defined("SNORT_BIN_VERSION")) {
 	if (!empty($snortver))
 		define("SNORT_BIN_VERSION", $snortver);
 	else
-		define("SNORT_BIN_VERSION", "2.9.8.3");
+		define("SNORT_BIN_VERSION", "2.9.9.0");
 }
 if (!defined("SNORT_SID_MODS_PATH"))
 	define('SNORT_SID_MODS_PATH', "{$g['vardb_path']}/snort/sidmods/");
