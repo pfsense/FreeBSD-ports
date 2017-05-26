@@ -7,7 +7,7 @@
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2017 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -123,10 +123,11 @@ if (isset($_POST['sidlist_action']) && isset($_POST['sidlist_fname'])) {
 					header("Cache-Control: private, must-revalidate");
 				}
 				header("Content-Type: application/octet-stream");
-				header("Content-length: " . filesize($file));
-				header("Content-disposition: attachment; filename = " . basename($file));
+				header("Content-length: filesize=" . filesize($file));
+				header("Content-disposition: attachment; filename=" . basename($file));
 				ob_end_clean(); //important or other post will fail
 				readfile($file);
+				exit;
 			}
 			else
 				$savemsg = gettext("Unable to locate the file specified!");
@@ -220,13 +221,14 @@ if (isset($_POST['sidlist_dnload_all'])) {
 			header("Cache-Control: private, must-revalidate");
 		}
 		header("Content-Type: application/octet-stream");
-		header("Content-length: " . filesize("{$g['tmp_path']}/{$file_name}"));
-		header("Content-disposition: attachment; filename = {$file_name}");
+		header("Content-length: filesize=" . filesize("{$g['tmp_path']}/{$file_name}"));
+		header("Content-disposition: attachment; filename=" . $file_name);
 		ob_end_clean(); //important or other post will fail
 		readfile("{$g['tmp_path']}/{$file_name}");
 
 		// Clean up the temp file
 		unlink_if_exists("{$g['tmp_path']}/{$file_name}");
+		exit;
 	}
 	else
 		$savemsg = gettext("An error occurred while creating the gzip archive!");
