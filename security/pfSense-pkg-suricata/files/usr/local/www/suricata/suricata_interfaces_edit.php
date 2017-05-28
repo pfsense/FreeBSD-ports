@@ -166,6 +166,17 @@ if (empty($pconfig['eve_log_smtp']))
 if (empty($pconfig['eve_log_drop'])) {
 	$pconfig['eve_log_drop'] = "on";
 }
+if (empty($pconfig['eve_redis_server']))
+	$pconfig['eve_redis_server'] = "127.0.0.1";
+if (empty($pconfig['eve_redis_port']))
+	$pconfig['eve_redis_port'] = "6379";
+if (empty($pconfig['eve_redis_mode']))
+	$pconfig['eve_redis_mode'] = "list";
+if (empty($pconfig['eve_redis_key']))
+	$pconfig['eve_redis_key'] = "suricata";
+
+
+
 if (empty($pconfig['intf_promisc_mode']))
 	$pconfig['intf_promisc_mode'] = "on";
 
@@ -314,6 +325,11 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['delayed_detect'] == "on") { $natent['delayed_detect'] = 'on'; }else{ $natent['delayed_detect'] = 'off'; }
 		if ($_POST['intf_promisc_mode'] == "on") { $natent['intf_promisc_mode'] = 'on'; }else{ $natent['intf_promisc_mode'] = 'off'; }
 		if ($_POST['configpassthru']) $natent['configpassthru'] = base64_encode(str_replace("\r\n", "\n", $_POST['configpassthru'])); else unset($natent['configpassthru']);
+
+		if ($_POST['eve_redis_server']) $natent['eve_redis_server'] = $_POST['eve_redis_server'];
+		if ($_POST['eve_redis_port']) $natent['eve_redis_port'] = $_POST['eve_redis_port'];
+		if ($_POST['eve_redis_mode']) $natent['eve_redis_mode'] = $_POST['eve_redis_mode'];
+		if ($_POST['eve_redis_key']) $natent['eve_redis_key'] = $_POST['eve_redis_key'];
 
 		// Check if EVE OUTPUT TYPE is 'syslog' and auto-enable Suricata syslog output if true.
 		if ($natent['eve_output_type'] == "syslog" && $natent['alertsystemlog'] == "off") {
@@ -725,8 +741,41 @@ $section->addInput(new Form_Select(
 	'eve_output_type',
 	'EVE Output Type',
 	$pconfig['eve_output_type'],
-	array("file" => "FILE", "syslog" => "SYSLOG")
+	array("file" => "FILE", "syslog" => "SYSLOG","redis"=>"REDIS")
 ))->setHelp('Select EVE log output destination. Choosing FILE is suggested, and is the default value.');
+
+
+$group = new Form_Group('EVE REDIS Server');
+
+$group->add(new Form_Input(
+	'eve_redis_server',
+	'Redis Server',
+	'text',
+	$pconfig['eve_redis_server']
+))->setHelp('Enter the Redis server IP');
+
+$group->add(new Form_Input(
+	'eve_redis_port',
+	'Port',
+	'text',
+	$pconfig['eve_redis_port']
+))->setHelp('Enter the Redis server port');
+
+$section->add($group)->addClass('eve_redis_connection');
+
+$section->addInput(new Form_Select(
+	'eve_redis_mode',
+	'EVE REDIS Mode',
+	$pconfig['eve_redis_mode'],
+	array("list"=>"List (LPUSH)","rlist"=>"List (RPUSH)","channel"=>"Channel")
+))->setHelp('Select the REDIS output mode');
+
+$section->addInput(new Form_Input(
+	'eve_redis_key',
+	'Key',
+	'text',
+	$pconfig['eve_redis_key']
+))->setHelp('Enter the REDIS Key');
 
 $group = new Form_Group('EVE Logged Info');
 
@@ -1154,6 +1203,12 @@ events.push(function(){
 		hideSelect('eve_output_type', hide);
 		hideClass('eve_log_info', hide);
 	}
+	function toggle_eve_redis() {
+		var hide = ! ($('#enable_eve_log').prop('checked') && $('#eve_output_type').val() == "redis");
+		hideClass('eve_redis_connection',hide);
+		hideSelect('eve_redis_mode',hide);
+		hideInput('eve_redis_key',hide);
+	}
 
 	function enable_change() {
 		var disable = ! $('#enable').prop('checked');
@@ -1296,6 +1351,11 @@ events.push(function(){
 
 	$('#enable_eve_log').click(function() {
 		toggle_eve_log();
+		toggle_eve_redis();
+	});
+
+	$('#eve_output_type').change(function() {
+		toggle_eve_redis();
 	});
 
 	$('#blockoffenders').click(function() {
@@ -1327,7 +1387,7 @@ events.push(function(){
 	toggle_json_file_log();
 	toggle_pcap_log();
 	toggle_eve_log();
-
+	toggle_eve_redis();
 });
 //]]>
 </script>
