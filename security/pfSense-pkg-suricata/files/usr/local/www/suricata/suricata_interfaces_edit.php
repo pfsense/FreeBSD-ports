@@ -265,6 +265,15 @@ if (isset($_POST["save"]) && !$input_errors) {
 	if (!empty($_POST['inspect_recursion_limit']) && !is_numeric($_POST['inspect_recursion_limit']))
 		$input_errors[] = gettext("The value for Inspect Recursion Limit can either be blank or contain only digits evaluating to an integer greater than or equal to 0.");
 
+	if (!empty($_POST['eve_redis_server']) && !is_ipaddr($_POST['eve_redis_server']))
+		$input_errors[] = gettext("The value for 'EVE REDIS Server' must be an IP address.");
+
+	if (!empty($_POST['eve_redis_port']) && !is_port($_POST['eve_redis_port']))
+		$input_errors[] = gettext("The value for 'EVE REDIS Server' must have a valid TCP port.");
+
+	if (!empty($_POST['eve_redis_key']) && !preg_match('/^[A-Za-z0-9]+$/',$_POST['eve_redis_key']))
+		$input_errors[] = gettext("The value for 'EVE REDIS Key' must be alphanumeric.");
+
 	// if no errors write to suricata.yaml
 	if (!$input_errors) {
 		$natent = $a_rule[$id];
@@ -772,7 +781,7 @@ $section->addInput(new Form_Select(
 
 $section->addInput(new Form_Input(
 	'eve_redis_key',
-	'Key',
+	'EVE REDIS Key',
 	'text',
 	$pconfig['eve_redis_key']
 ))->setHelp('Enter the REDIS Key');
