@@ -692,7 +692,7 @@ $section->addInput(new Form_Checkbox(
 	limitation on the number of servers, and when a server goes
 	up, it is always immediately reintroduced into the farm, once
 	the full map is recomputed. It also uses slightly less CPU to
-	run (around -1%).");
+	run (around -1%%).");
 
 $section->addInput(new Form_Checkbox(
 	'balance',
@@ -887,7 +887,7 @@ $section->addInput(new Form_Checkbox(
 	'Agent checks',
 	'Use agent checks',
 	$pconfig['agent_check']
-))->setHelp("Use a TCP connection to read an ASCII string of the form 100%,75%,drain,down (more about this in the <a href='http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#5.2-agent-check' target='_blank'>haproxy manual</a>)");
+))->setHelp("Use a TCP connection to read an ASCII string of the form 100%%,75%%,drain,down (more about this in the <a href='http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#5.2-agent-check' target='_blank'>haproxy manual</a>)");
 $section->addInput(new Form_Input('agent_port', 'Agent port', 'number', $pconfig['agent_port']
 ),"haproxy_agent_check")->setHelp('Fill in the TCP portnumber the healthcheck should be performed on.');
 $section->addInput(new Form_Input('agent_inter', 'Agent interval', 'text', $pconfig['agent_inter']
