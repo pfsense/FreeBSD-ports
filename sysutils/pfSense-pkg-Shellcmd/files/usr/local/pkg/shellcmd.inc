@@ -143,16 +143,19 @@ function shellcmd_sync_package() {
 			$i++;
 		}
 	}
-
-	/* Write the new system configuration to config.xml from scratch when done */
-	unset($config['system']['shellcmd']);
-	$config['system']['shellcmd'] = $a_shellcmd;
-	unset($config['system']['earlyshellcmd']);
-	$config['system']['earlyshellcmd'] = $a_earlyshellcmd;
-	unset($config['system']['afterfilterchangeshellcmd']);
-	$config['system']['afterfilterchangeshellcmd'] = $afterfilterchangeshellcmd;
-	write_config("[shellcmd] Successfully (re)synced shellcmd configuration.");
-
+	if (($config['system']['shellcmd'] != $a_shellcmd) ||
+		($config['system']['earlyshellcmd'] != $a_earlyshellcmd) ||
+		($config['system']['afterfilterchangeshellcmd'] != $afterfilterchangeshellcmd)) {
+		/* Write the new system configuration to config.xml from scratch when done 
+		   but only if something changed */
+		unset($config['system']['shellcmd']);
+		$config['system']['shellcmd'] = $a_shellcmd;
+		unset($config['system']['earlyshellcmd']);
+		$config['system']['earlyshellcmd'] = $a_earlyshellcmd;
+		unset($config['system']['afterfilterchangeshellcmd']);
+		$config['system']['afterfilterchangeshellcmd'] = $afterfilterchangeshellcmd;
+		write_config("[shellcmd] Successfully (re)synced shellcmd configuration.");
+	}
 }
 
 
