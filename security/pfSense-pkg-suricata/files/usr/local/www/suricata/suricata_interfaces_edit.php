@@ -1054,7 +1054,7 @@ $section = new Form_Section('Arguments here will be automatically inserted into 
 $section->addInput(new Form_Textarea (
 	'configpassthru',
 	'Advanced Configuration Pass-Through',
-	$pconfig['configpassthru']
+	($_POST['configpassthru']?$_POST['configpassthru']:$pconfig['configpassthru'])
 ))->setHelp('Enter any additional configuration parameters to add to the Suricata configuration here, separated by a newline');
 
 $form->add($section);

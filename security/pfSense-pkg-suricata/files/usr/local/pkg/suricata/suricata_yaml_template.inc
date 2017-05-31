@@ -356,6 +356,9 @@ libhtp:
 coredump:
   max-dump: unlimited
 
+# Suricata user pass through configuration
+{$suricata_config_pass_thru}
+
 EOD;
 
 ?>
