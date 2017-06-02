@@ -364,7 +364,8 @@ function initialSystemConfig() {
 	}
 	local_user_set($admin_user);
 
-	if ($g['default-config-flavor'] == "ec2") {
+	if ($g['default-config-flavor'] == "ec2" ||
+	    $g['default-config-flavor'] == "ec2-ic") {
 		/* add a disabled remote access OpenVPN server */
 		addOpenVPNServer();
 	}
@@ -379,6 +380,7 @@ function initialSystemConfig() {
 switch ($g['default-config-flavor']) {
 case "ec2":
 case "ec2-csm":
+case "ec2-ic":
 case "openstack-csm":
 	if (isset($config['system']['doinitialsetup']))
 		initialSystemConfig();
@@ -388,6 +390,7 @@ case "openstack-csm":
 switch ($g['default-config-flavor']) {
 case "ec2":
 case "ec2-csm":
+case "ec2-ic":
 	$publicIP = retrievePublicIP();
 	writeOpenVPNConfig($publicIP);
 	break;
