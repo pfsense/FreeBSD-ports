@@ -23,9 +23,10 @@ require_once("globals.inc");
 require("config.inc");
 require("ipsec.inc");
 require("pkg-utils.inc");
-require("aws/aws-autoloader.php");
+require("aws-sdk-php/aws-autoloader.php");
 
 use Aws\Ec2\Ec2Client;
+use Aws\Exception\AwsException;
 
 $openbgpd_include = "/usr/local/pkg/openbgpd.inc";
 if (file_exists($openbgpd_include)) {
@@ -41,22 +42,45 @@ if (file_exists($openbgpd_include)) {
 
 
 
-/* return an array containing API credentials formatted for use in API calls */
-function makeCredsArray($awskey, $secret, $region) {
+$default_regions = [
+	'aws' => 'us-east-1',
+	'aws-cn' => 'cn-north-1',
+	'aws-us-gov' => 'us-gov-west-1',
+];
 
-	$aws_creds = array(
-		'key' => $awskey,
-		'secret' => $secret,
-		'region' => $region
-	);
+/* return a client object */
+function makeClient($awskey, $secret, $part, $region) {
 
-	return($aws_creds);
+	global $default_regions;
+
+	if (!isset($region)) {
+		$region = $default_regions[$part];
+	}
+
+	$ec2Client = new \Aws\Ec2\Ec2Client([
+		'version' => '2016-11-15',
+		'region' => $region,
+		'partition' => $part,
+		'credentials' => [
+			'key' => $awskey,
+			'secret' => $secret,
+		]
+	]);
+
+	return $ec2Client;
+}
+
+/* get the list of regions */
+function retrieveRegions($client) {
+
+	$regions = $client->describeRegions([ 'DryRun' => false ]);
+
+	return($regions['Regions']);
 }
 
 /* get the list of VPCs for a user/region specified in the credentials */
-function retrieveVPCs($aws_creds) {
+function retrieveVPCs($client) {
         
-	$client = Ec2Client::factory($aws_creds);
 	$vpcs = $client->describeVpcs(array(
 		'DryRun' => false
 	));
@@ -65,9 +89,8 @@ function retrieveVPCs($aws_creds) {
 }                               
 
 /* get the CIDR block associated with a particular VPC */
-function getVpcCidr($aws_creds, $vpc_id) {
+function getVpcCidr($client, $vpc_id) {
     
-	$client = Ec2Client::factory($aws_creds);
 	$vpcs = $client->describeVpcs(array(
 		'DryRun' => false,
 		'VpcIds' => array($vpc_id)
@@ -76,9 +99,8 @@ function getVpcCidr($aws_creds, $vpc_id) {
 	return($vpcs['Vpcs'][0]['CidrBlock']);
 }
 
-function addTags($aws_creds, $resource_id, $tag_key, $tag_value) {
+function addTags($client, $resource_id, $tag_key, $tag_value) {
 
-	$client = Ec2Client::factory($aws_creds);
 	$result = $client->createTags(array(
 		'DryRun' => false,
 		'Resources' => array($resource_id),
@@ -93,13 +115,12 @@ function addTags($aws_creds, $resource_id, $tag_key, $tag_value) {
 }
 
 
-function addVpnGateway($aws_creds, $vpc_id) {
+function addVpnGateway($client, $vpc_id) {
 
 	/* creation of a VPN Gateway and attaching it to a particular
 	 * VPC are two separate operations in the API.
 	 */
 
-	$client = Ec2Client::factory($aws_creds);
 	$vp_gw = $client->createVpnGateway(array(
 			'DryRun' => false,
 			'Type' => 'ipsec.1'
@@ -109,7 +130,7 @@ function addVpnGateway($aws_creds, $vpc_id) {
 	/* set a tag to name this gateway */
 	$vp_gw_id = $vp_gw['VpnGateway']['VpnGatewayId'];
 	$gw_name = "auto-created by pfSense - VPC $vpc_id";
-	addTags($aws_creds, $vp_gw_id, 'Name', $gw_name);
+	addTags($client, $vp_gw_id, 'Name', $gw_name);
 
 	/* attach the gateway to the VPC */
 	$vpc_att = $client->attachVpnGateway(array(
@@ -126,11 +147,10 @@ function addVpnGateway($aws_creds, $vpc_id) {
  *  Find whether a "VPN Gateway" (AWS object) is attached to a particular VPC
  * and return it's ID. If none is attached, create one and attach it.
  */
-function getVpnGateway($aws_creds, $vpc_id) {
+function getVpnGateway($client, $vpc_id) {
 
 	global $savemsg;
 
-	$client = Ec2Client::factory($aws_creds);
 	$vp_gws = $client->describeVpnGateways(array(
 		'DryRun' => false,
 		'Filters' => array(
@@ -149,21 +169,20 @@ function getVpnGateway($aws_creds, $vpc_id) {
 		$vp_gw_id = $vp_gws['VpnGateways'][0]['VpnGatewayId'];
 		$savemsg .= "<br>Using existing VPN gateway $vp_gw_id.";
 	} else {
-		$vp_gw_id = addVpnGateway($aws_creds, $vpc_id);
+		$vp_gw_id = addVpnGateway($client, $vpc_id);
 		$savemsg .= "<br>Added new VPN gateway $vp_gw_id.";
 	}
                 
 	return($vp_gw_id);
 }
 
-function addCustomerGateway($aws_creds, $pub_ip, $bgp_asn = '65000') {
+function addCustomerGateway($client, $pub_ip, $bgp_asn = '65000') {
 
 	/*
 	 * Create a new customer gateway with the appropriate public IP address.
 	 * Return the ID.
 	 */
 
-	$client = Ec2Client::factory($aws_creds);
 	$result = $client->createCustomerGateway(array(
 			'DryRun' => false,
 			'Type' => 'ipsec.1',
@@ -177,13 +196,13 @@ function addCustomerGateway($aws_creds, $pub_ip, $bgp_asn = '65000') {
 	/* set a name for this customer gw */
 	$gw_name = "Auto-created by pfSense - $pub_ip";
 	if (isset($cust_gw_id)) {
-		addTags($aws_creds, $cust_gw_id, 'Name', $gw_name);
+		addTags($client, $cust_gw_id, 'Name', $gw_name);
 	}
 
 	return($cust_gw_id);
 }
 
-function getCustomerGateway($aws_creds, $pub_ip, $bgp_asn = '65000') {
+function getCustomerGateway($client, $pub_ip, $bgp_asn = '65000') {
 
 	global $savemsg;
 
@@ -192,7 +211,6 @@ function getCustomerGateway($aws_creds, $pub_ip, $bgp_asn = '65000') {
 	 * the user entered. If there is none, create one. Return the ID.
 	 */
 
-	$client = Ec2Client::factory($aws_creds);
 	$cust_gws = $client->describeCustomerGateways(
 		array(
 			'DryRun' => false,
@@ -215,17 +233,16 @@ function getCustomerGateway($aws_creds, $pub_ip, $bgp_asn = '65000') {
 ];
 		$savemsg .= gettext("<br>Using existing customer gateway $cust_gw_id.");
 	} else {
-		$cust_gw_id = addCustomerGateway($aws_creds, $pub_ip, $bgp_asn);
+		$cust_gw_id = addCustomerGateway($client, $pub_ip, $bgp_asn);
 		$savemsg .= gettext("<br>Added customer gateway $cust_gw_id.");
 	}
         
 	return($cust_gw_id);
 }
 
-function addVpnConnection($aws_creds, $vp_gw_id, $cust_gw_id, $static_only) {
+function addVpnConnection($client, $vp_gw_id, $cust_gw_id, $static_only) {
 
 	/* create a new VPN connection */
-	$client = Ec2Client::factory($aws_creds);
 	$result = $client->createVpnConnection(array(
 		'DryRun' => false,
 		'Type' => 'ipsec.1',
@@ -239,12 +256,12 @@ function addVpnConnection($aws_creds, $vp_gw_id, $cust_gw_id, $static_only) {
 	$vpn_conn_id = $result['VpnConnection']['VpnConnectionId'];
 	$vpn_conn_name = "Auto-created by pfSense - VPN gateway $vp_gw_id to Customer gateway $cust_gw_id";
 	if (isset($vpn_conn_id))
-		addTags($aws_creds, $vpn_conn_id, 'Name', $vpn_conn_name);
+		addTags($client, $vpn_conn_id, 'Name', $vpn_conn_name);
 
 	return($result['VpnConnection']);
 }
 
-function getVpnConnection($aws_creds, $vp_gw_id, $cust_gw_id, $static_only) {
+function getVpnConnection($client, $vp_gw_id, $cust_gw_id, $static_only) {
 
 	global $savemsg;
 	/*
@@ -253,7 +270,6 @@ function getVpnConnection($aws_creds, $vp_gw_id, $cust_gw_id, $static_only) {
 	 * the existing one.
 	 */
 
-	$client = Ec2Client::factory($aws_creds);
 	$vpn_conns = $client->describeVpnConnections(array(
 		'DryRun' => false,
 		'Filters' => array(
@@ -276,7 +292,7 @@ function getVpnConnection($aws_creds, $vp_gw_id, $cust_gw_id, $static_only) {
 		$vpn_conn = $vpn_conns['VpnConnections'][0];
                 $savemsg .= gettext("<br>Using existing VPN Connection " . $vpn_conn['VpnConnectionId'] . ".");
         } else {
-		$vpn_conn = addVpnConnection($aws_creds, $vp_gw_id, $cust_gw_id, $static_only);
+		$vpn_conn = addVpnConnection($client, $vp_gw_id, $cust_gw_id, $static_only);
                 $savemsg .= gettext("<br>Added VPN Connection " . $vpn_conn['VpnConnectionId'] . ".");
 	}
 
@@ -284,14 +300,13 @@ function getVpnConnection($aws_creds, $vp_gw_id, $cust_gw_id, $static_only) {
 }
 
 
-function updateSecurityGroups($aws_creds, $vpc_id, $loc_cidrs) {
+function updateSecurityGroups($client, $vpc_id, $loc_cidrs) {
 
 	/*
 	 * Add rules to allow traffic inbound to the VPC from the local subnets
 	 * on the pfSense side
 	 */
 
-	$client = Ec2Client::factory($aws_creds);
 	$sec_groups = $client->describeSecurityGroups(
 		array(
 			'DryRun' => false,
@@ -353,7 +368,7 @@ function updateSecurityGroups($aws_creds, $vpc_id, $loc_cidrs) {
 }
 
 
-function addVpnConnectionRoutes($aws_creds, $vpn_conn_id, $loc_cidrs) {
+function addVpnConnectionRoutes($client, $vpn_conn_id, $loc_cidrs) {
 
 	/*
 	 * Statically routed VPNs require routes to be manually added to the
@@ -363,7 +378,6 @@ function addVpnConnectionRoutes($aws_creds, $vpn_conn_id, $loc_cidrs) {
 
 	global $savemsg;
 
-	$client = Ec2Client::factory($aws_creds);
 	$client->waitUntil('VpnConnectionAvailable',
 		array('VpnConnectionIds' => array($vpn_conn_id))
 	);
@@ -384,7 +398,7 @@ function addVpnConnectionRoutes($aws_creds, $vpn_conn_id, $loc_cidrs) {
 
 }
 
-function propagateVpnRoutes($aws_creds, $vpc_id, $vp_gw_id) {
+function propagateVpnRoutes($client, $vpc_id, $vp_gw_id) {
 
 	global $savemsg;
 	/*
@@ -392,7 +406,6 @@ function propagateVpnRoutes($aws_creds, $vpc_id, $vp_gw_id) {
 	 * to the local subnets to be propagated into them
 	 */
 
-	$client = Ec2Client::factory($aws_creds);
 	$route_tables = $client->describeRouteTables(
 		array(
 			'DryRun' => false,
@@ -835,27 +848,30 @@ function configureBgpDaemon($vpc_id, $loc_cidrs, $tunnel_cfgs) {
 
 	global $config, $savemsg;
 
-	$pkg_name = "OpenBGPD";
-	$install_status = 0;
+	$pkg_name = "pfSense-pkg-OpenBGPD";
+	$short_pkg_name = "OpenBGPD";
+	$install_status = false;
 
 	/* Quagga OSPF package being installed causes conflict with OpenBGPD.
 	 * Don't install OpenBGPD if Quagga OSPF is already installed. 
 	 */
-	$conflicting_pkg = "Quagga OSPF";
-	if (is_package_installed($conflicting_pkg)) {
-		$install_status = -1;
+	$conflicting_pkg = "pfSense-pkg-Quagga_OSPF";
+	if (is_pkg_installed($conflicting_pkg)) {
+		$install_status = false;
 		$savemsg .= gettext("<br>The conflicting package $conflicting_pkg is installed. Installing OpenBGPD will cause instability. Please remove $conflicting_pkg or delete this VPN Connection and add a new one using static routing.");
-	} elseif (!is_package_installed($pkg_name)) {
+	} elseif (!is_pkg_installed($pkg_name)) {
 		conf_mount_rw();
-		$install_status = install_package($pkg_name);
+		$install_status = pkg_install($pkg_name);
 		conf_mount_ro();
+	} else {
+		$install_status = true;
 	}
 
 	/* if package couldn't be installed, generate configs anyway. In case
 	 * manual installation fixed any problems, correct config will be
 	 * in place already.
 	 */
-	if ($install_status == -1) {
+	if ($install_status == false) {
 		$savemsg .= gettext("<br>Installation of $pkg_name failed. Manual installation and configuration is required.");
 	} else {
 		$savemsg .= gettext("<br>$pkg_name successfully installed.");
@@ -998,13 +1014,13 @@ function step1_submitphpaction() {
 	global $stepid, $savemsg, $config;
 
 	if (!isset($_POST['awskey'])) {
-		$savemsg = gettext("You need to enter an access key ID.");
+		$savemsg = gettext("<br>You need to enter an access key ID.");
 		$stepid--;
 		return;
 	}
 
 	if (!isset($_POST['secret'])) {
-		$savemsg = gettext("You need to enter a secret access key.");
+		$savemsg = gettext("<br>You need to enter a secret access key.");
 		$stepid--;
 		return;
 	}
@@ -1016,7 +1032,7 @@ function step1_submitphpaction() {
 	session_write_close();
 }
 
-function step2_stepbeforeformdisplay() {
+function pre_region_select() {
 	global $stepid, $savemsg, $config, $pkg;
 
 	session_start();
@@ -1026,26 +1042,106 @@ function step2_stepbeforeformdisplay() {
                 return;
 	}
 
-	$aws_creds = makeCredsArray($config['vpc']['step1']['awskey'],
-	    $_SESSION['awssecret'],
-	    $config['vpc']['step1']['region']);
+	$client = makeClient($config['vpc']['step1']['awskey'],
+			$_SESSION['awssecret'],
+			$config['vpc']['step1']['partition'], null);
 	session_write_close();
 
 	try {
-		$vpcs = retrieveVPCs($aws_creds);
-	} catch (\Aws\Common\Exception\RuntimeException $e) {
-		$savemsg = gettext($e->getMessage());
+		$regions = retrieveRegions($client);
+	} catch (AwsException $e) {
+		$savemsg .= gettext("<br>Error occurred for request " .
+					$e->getAwsRequestId() .
+					" of type " .
+					$e->getAwsErrorType() .
+					" : " .
+					$e->getAwsErrorMessage());
 		$stepid--;
 		return;
 	}
 
-	if (!is_array($vpcs) || (count($vpcs) == 0)) {
-		$savemsg = gettext("Did not find any VPCs in the selected region");
+	if (!is_array($regions) || (count($regions) == 0)) {
+		$savemsg .= gettext("<br>Did not find any Regions available");
 		$stepid--;
 		return;
 	}
 
 	$fields = &$pkg['step'][1]['fields']['field'];
+	$fields = array();
+
+	/* select the Region to connect to */
+	$field = array(
+		'name' => 'regionName',
+		'type' => 'select',
+		'displayname' => 'Region',
+		'description' => 'Select the Region to connect to',
+		'bindstofield' => 'vpc->step2->region',
+		'options' => array( 'option' => array())
+	);
+
+	foreach($regions as $region) {
+		$opts = array();
+		$opts['name'] = $region['RegionName'];
+		$opts['value'] = $region['RegionName'];
+		$field['options']['option'][] = $opts;
+	}
+
+	$fields[] = $field;
+
+	/* add the submit button */
+	$field = array();
+	$field['name'] = "Next";
+	$field['type'] = "submit";
+	$fields[] = $field;
+}
+
+function submit_region_select() {
+	global $config, $savemsg, $stepid;
+
+	$region = $_POST['regionname'];
+	$config['vpc']['step2']['region'] = $region;
+	$savemsg .= gettext("<br>Using Region {$_POST['regionname']}.");
+
+}
+
+function before_vpc_select() {
+	global $stepid, $savemsg, $config, $pkg;
+
+	session_start();
+	if (!isset($_SESSION['awssecret'])) {
+		$savemsg .= gettext("<br>AWS Secret Key not found in session data.");
+                $stepid=1;
+                return;
+	}
+
+	$client = makeClient($config['vpc']['step1']['awskey'],
+				$_SESSION['awssecret'],
+				$config['vpc']['step1']['partition'],
+				$config['vpc']['step2']['region']
+			); 
+
+	session_write_close();
+
+	try {
+		$vpcs = retrieveVPCs($client);
+	} catch (AwsException $e) {
+		$savemsg .= gettext("<br>Error occurred for request " .
+					$e->getAwsRequestId() .
+					" of type " .
+					$e->getAwsErrorType() .
+					" : " .
+					$e->getAwsErrorMessage());
+		$stepid--;
+		return;
+	}
+
+	if (!is_array($vpcs) || (count($vpcs) == 0)) {
+		$savemsg .= gettext("<br>Did not find any VPCs in the selected region");
+		$stepid--;
+		return;
+	}
+
+	$fields = &$pkg['step'][2]['fields']['field'];
 	$fields = array();
 
 	/* select the VPC to connect to */
@@ -1054,7 +1150,7 @@ function step2_stepbeforeformdisplay() {
 		'type' => 'select',
 		'displayname' => 'VPC',
 		'description' => 'Select the VPC that you wish to connect to',
-		'bindstofield' => 'vpc->step2->vpcid',
+		'bindstofield' => 'vpc->step3->vpcid',
 		'options' => array( 'option' => array())
 	);
 
@@ -1074,35 +1170,41 @@ function step2_stepbeforeformdisplay() {
 	$fields[] = $field;
 }
 
-function step2_submitphpaction() {
+function submit_vpc_select() {
 	global $config, $savemsg, $stepid;
 
 	$vpc_id = $_POST['vpcid'];
-	$config['vpc']['step2']['vpcid'] = $vpc_id;
-	$savemsg = gettext("Using VPC {$_POST['vpcid']}.");
+	$config['vpc']['step3']['vpcid'] = $vpc_id;
+	$savemsg .= gettext("<br>Using VPC {$_POST['vpcid']}.");
 
 	session_start();
-	$aws_creds = makeCredsArray(
-		$config['vpc']['step1']['awskey'],
-		$_SESSION['awssecret'],
-		$config['vpc']['step1']['region']
-	);
+	$client = makeClient($config['vpc']['step1']['awskey'],
+				$_SESSION['awssecret'],
+				$config['vpc']['step1']['partition'],
+				$config['vpc']['step2']['region']
+			); 
+
 	session_write_close();
 
 	try {
-		$vp_gw_id = getVpnGateway($aws_creds, $vpc_id);
-		$vpc_cidr = getVpcCidr($aws_creds, $vpc_id);
-	} catch (\Aws\Common\Exception\RuntimeException $e) {
-		$savemsg = gettext($e->getMessage());
+		$vp_gw_id = getVpnGateway($client, $vpc_id);
+		$vpc_cidr = getVpcCidr($client, $vpc_id);
+	} catch (AwsException $e) {
+		$savemsg .= gettext("<br>Error occurred for request " .
+					$e->getAwsRequestId() .
+					" of type " .
+					$e->getAwsErrorType() .
+					" : " .
+					$e->getAwsErrorMessage());
 		$stepid--;
 		return;
 	}
 	
-	$config['vpc']['step2']['vpgwid'] = $vp_gw_id;
-	$config['vpc']['step2']['vpccidr'] = $vpc_cidr;
+	$config['vpc']['step3']['vpgwid'] = $vp_gw_id;
+	$config['vpc']['step3']['vpccidr'] = $vpc_cidr;
 }
 
-function step3_submitphpaction() {
+function submit_configure_create_vpn() {
 	global $config, $savemsg, $stepid;
 	$savemsg = '';
 
@@ -1115,13 +1217,13 @@ function step3_submitphpaction() {
 		$bgp_asn = '65000';
 	}
 
-	$config['vpc']['step3']['locpubip'] = $loc_pub_ip;
-	$config['vpc']['step3']['loccidrs'] = $loc_cidrs;
-	$config['vpc']['step3']['routing'] = $routing;
-	$config['vpc']['step3']['bgpasn'] = $bgp_asn;
+	$config['vpc']['step4']['locpubip'] = $loc_pub_ip;
+	$config['vpc']['step4']['loccidrs'] = $loc_cidrs;
+	$config['vpc']['step4']['routing'] = $routing;
+	$config['vpc']['step4']['bgpasn'] = $bgp_asn;
 
-	$vpc_id = $config['vpc']['step2']['vpcid'];
-	$vp_gw_id = $config['vpc']['step2']['vpgwid'];
+	$vpc_id = $config['vpc']['step3']['vpcid'];
+	$vp_gw_id = $config['vpc']['step3']['vpgwid'];
 
 	session_start();
 	if (!isset($_SESSION['awssecret'])) {
@@ -1130,55 +1232,56 @@ function step3_submitphpaction() {
 		return;
 	}
 
-	$aws_creds = makeCredsArray(
-		$config['vpc']['step1']['awskey'],
-		$_SESSION['awssecret'],
-		$config['vpc']['step1']['region']
-	);
+	$client = makeClient($config['vpc']['step1']['awskey'],
+				$_SESSION['awssecret'],
+				$config['vpc']['step1']['partition'],
+				$config['vpc']['step2']['region']
+			); 
+
 	session_write_close();
 
 	try {
-		$cust_gw_id = getCustomerGateway($aws_creds, $loc_pub_ip, $bgp_asn);
+		$cust_gw_id = getCustomerGateway($client, $loc_pub_ip, $bgp_asn);
 		$vpn_conn = getVpnConnection(
-			$aws_creds,
+			$client,
 			$vp_gw_id,
 			$cust_gw_id,
 			($routing == "static") ? true : false
 		);
 		$vpn_conn_id = $vpn_conn['VpnConnectionId'];
-		$config['vpc']['step3']['custgwcfg'] = $vpn_conn['CustomerGatewayConfiguration'];
-		$config['vpc']['step3']['vpnconnid'] = $vpn_conn_id;
-		updateSecurityGroups($aws_creds, $vpc_id, $loc_cidrs);
+		$config['vpc']['step4']['custgwcfg'] = $vpn_conn['CustomerGatewayConfiguration'];
+		$config['vpc']['step4']['vpnconnid'] = $vpn_conn_id;
+		updateSecurityGroups($client, $vpc_id, $loc_cidrs);
 
 		if ($routing == 'static') {
-			addVpnConnectionRoutes($aws_creds, $vpn_conn_id, $loc_cidrs);
+			addVpnConnectionRoutes($client, $vpn_conn_id, $loc_cidrs);
 		}
-		propagateVpnRoutes($aws_creds, $vpc_id, $vp_gw_id);
-	} catch (\Aws\Common\Exception\RuntimeException $e) {
-		$savemsg = gettext($e->getMessage());
+		propagateVpnRoutes($client, $vpc_id, $vp_gw_id);
+	} catch (AwsException $e) {
+		$savemsg .= gettext("<br>Error occurred for request " .
+					$e->getAwsRequestId() .
+					" of type " .
+					$e->getAwsErrorType() .
+					" : " .
+					$e->getAwsErrorMessage());
 		$stepid--;
 		return;
 	}
 }
 
-function step4_submitphpaction() {
+function submit_create_tunnels_config_pfsense() {
 	global $config, $savemsg;
 	$savemsg = '';
 
 	$loc_intf = $_POST['interface'];
 	$config['vpc']['step4']['interface'] = $loc_intf;
 
-	$aws_creds = makeCredsArray(
-		$config['vpc']['step1']['awskey'],
-		$_SESSION['awssecret'],
-		$config['vpc']['step1']['region']
-	);
-	$vpc_id = $config['vpc']['step2']['vpcid'];
-	$vpc_cidr = $config['vpc']['step2']['vpccidr'];
-	$loc_cidrs = $config['vpc']['step3']['loccidrs'];
-	$routing = $config['vpc']['step3']['routing'];
+	$vpc_id = $config['vpc']['step3']['vpcid'];
+	$vpc_cidr = $config['vpc']['step3']['vpccidr'];
+	$loc_cidrs = $config['vpc']['step4']['loccidrs'];
+	$routing = $config['vpc']['step4']['routing'];
 
-	$tunnel_cfgs = xml2array($config['vpc']['step3']['custgwcfg']);
+	$tunnel_cfgs = xml2array($config['vpc']['step4']['custgwcfg']);
 
 	addVpcAliases($tunnel_cfgs, $vpc_id, $vpc_cidr, $loc_cidrs);
 	addTunnelInsideAddresses($tunnel_cfgs);
@@ -1190,7 +1293,7 @@ function step4_submitphpaction() {
 	}
 }
 
-function step5_submitphpaction() {
+function submit_apply_config_changes() {
 
 	refreshDirtyConfigs();
 	header("Location: status_ipsec.php");

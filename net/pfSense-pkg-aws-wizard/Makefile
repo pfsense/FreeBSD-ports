@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-aws-wizard
-PORTVERSION=	0.5
-PORTREVISION=	1
+PORTVERSION=	0.6
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -12,6 +11,8 @@ MAINTAINER=	coreteam@pfsense.org
 COMMENT=	PfSense package AWS VPC VPN Connection Wizard
 
 LICENSE=	APACHE20
+
+RUN_DEPENDS=	aws-sdk-php>=3.28.4:devel/aws-sdk-php
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -27,10 +28,7 @@ do-extract:
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/wizards
-	${MKDIR} ${STAGEDIR}/etc/inc/aws
 	${MKDIR} ${STAGEDIR}${DATADIR}
-	(cd ${FILESDIR}/etc/inc/aws && ${COPYTREE_SHARE} . \
-		${STAGEDIR}/etc/inc/aws)
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/aws_wizard.xml \
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/wizards/vpc_vpn_wizard.xml \

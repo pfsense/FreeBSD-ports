@@ -23,7 +23,7 @@
 	]]>
 	</copyright>
 
-	<totalsteps>5</totalsteps>
+	<totalsteps>6</totalsteps>
 	<step>
 		<id>1</id>
 		<title>pfSense VPC VPN Configuration Wizard</title>
@@ -48,43 +48,19 @@
 				<description>Your AWS Secret Key</description>
 			</field>
 			<field>
-				<displayname>Region</displayname>
-				<name>region</name>
+				<displayname>Partition</displayname>
+				<name>partition</name>
 				<type>select</type>
-				<description>The AWS Region you wish to establish a connection to</description>
-				<bindstofield>vpc->step1->region</bindstofield>
+				<description>The AWS Partition your VPC resides in</description>
+				<bindstofield>vpc->step1->partition</bindstofield>
 				<options>
 					<option>
-						<name>us-east-1</name>
-						<value>us-east-1</value>
+						<name>AWS Public Cloud</name>
+						<value>aws</value>
 					</option>
 					<option>
-						<name>us-west-1</name>
-						<value>us-west-1</value>
-					</option>
-					<option>
-						<name>us-west-2</name>
-						<value>us-west-2</value>
-					</option>
-					<option>
-						<name>eu-west-1</name>
-						<value>eu-west-1</value>
-					</option>
-					<option>
-						<name>ap-southeast-1</name>
-						<value>ap-southeast-1</value>
-					</option>
-					<option>
-						<name>ap-southeast-2</name>
-						<value>ap-southeast-2</value>
-					</option>
-					<option>
-						<name>ap-northeast-1</name>
-						<value>ap-northeast-1</value>
-					</option>
-					<option>
-						<name>sa-east-1</name>
-						<value>sa-east-1</value>
+						<name>AWS US Government</name>
+						<value>aws-us-gov</value>
 					</option>
 				</options>
 			</field>
@@ -99,6 +75,20 @@
 	<step>
 		<id>2</id>
 		<title>pfSense VPC VPN Configuration Wizard</title>
+		<description>Region Selection</description>
+		<fields>
+			<field>
+				<name>Next</name>
+				<type>submit</type>
+			</field>
+		</fields>
+		<stepbeforeformdisplay>pre_region_select();</stepbeforeformdisplay>
+		<stepsubmitphpaction>submit_region_select();</stepsubmitphpaction>
+		<includefile>/usr/local/www/wizards/vpc_vpn_wizard.inc</includefile>
+	</step>
+	<step>
+		<id>3</id>
+		<title>pfSense VPC VPN Configuration Wizard</title>
 		<description>VPC Selection</description>
 		<fields>
 			<field>
@@ -106,12 +96,12 @@
 				<type>submit</type>
 			</field>
 		</fields>
-		<stepbeforeformdisplay>step2_stepbeforeformdisplay();</stepbeforeformdisplay>
-		<stepsubmitphpaction>step2_submitphpaction();</stepsubmitphpaction>
+		<stepbeforeformdisplay>before_vpc_select();</stepbeforeformdisplay>
+		<stepsubmitphpaction>submit_vpc_select();</stepsubmitphpaction>
 		<includefile>/usr/local/www/wizards/vpc_vpn_wizard.inc</includefile>
 	</step>
 	<step>
-		<id>3</id>
+		<id>4</id>
 		<title>pfSense VPC VPN Configuration Wizard</title>
 		<description>Create and Configure VPN Connection on AWS</description>
 		<fields>
@@ -120,7 +110,7 @@
 				<type>select</type>
 				<description>Use static or dynamic (BGP) routing. Static is likely the best option for simple topologies.</description>
 				<displayname>Routing Type</displayname>
-				<bindstofield>vpc->step3->routing</bindstofield>
+				<bindstofield>vpc->step4->routing</bindstofield>
 				<options>
 					<option>
 						<name>Static</name>
@@ -137,21 +127,21 @@
 				<type>input</type>
 				<description>If you selected BGP routing, enter the local BGP AS number to use. This could be an AS number assigned to you by a numbering authority (E.g. ARIN, RIPE) or it could be a private AS number in the range 64512-65534. Defaults to 65000.</description>
 				<displayname>BGP AS number</displayname>
-				<bindstofield>vpc->step3->bgpasn</bindstofield>
+				<bindstofield>vpc->step4->bgpasn</bindstofield>
 			</field>
 			<field>
 				<name>locpubip</name>
 				<type>input</type>
 				<description>Either a public IP address assigned to the interface your tunnels will terminate on, or a public IP address that is port forwarded or NATed by an upstream device to a private IP address on the interface your tunnels will terminate on.</description>
 				<displayname>Local Public IP Address</displayname>
-				<bindstofield>vpc->step3->locpubip</bindstofield>
+				<bindstofield>vpc->step4->locpubip</bindstofield>
 			</field>
 			<field>
 				<name>loccidrs</name>
 				<type>input</type>
 				<description>Enter a list of local subnets (ones that are directly connected to the firewall) that hosts in your VPC should be able to reach over the VPN tunnel. Expressed as a comma-separated list of one or more CIDR ranges.</description>
 				<displayname>Local subnets</displayname>
-				<bindstofield>vpc->step3->loccidrs</bindstofield>
+				<bindstofield>vpc->step4->loccidrs</bindstofield>
 			</field>
 			<field>
 				<name>Next</name>
@@ -159,11 +149,11 @@
 				<description>The VPN Connection will be created (resulting in Amazon initiating hourly charges for the connection) and Security Groups and Routing Tables will be modified appropriately on the AWS side. Note that this step may take a few minutes if you are using static routing because static routes cannot be added until the VPN Connection is fully available according to Amazon's EC2 API.</description>
 			</field>
 		</fields>
-		<stepsubmitphpaction>step3_submitphpaction();</stepsubmitphpaction>
+		<stepsubmitphpaction>submit_configure_create_vpn();</stepsubmitphpaction>
 		<includefile>/usr/local/www/wizards/vpc_vpn_wizard.inc</includefile>
 	</step>
 	<step>
-		<id>4</id>
+		<id>5</id>
 		<title>pfSense VPC VPN Configuration Wizard</title>
 		<description>Create IPsec Tunnels and Configure Related Elements on pfSense</description>
 		<fields>
@@ -172,7 +162,7 @@
 				<type>interfaces_selection</type>
 				<description>The interface for the local endpoint of the tunnels.</description>
 				<displayname>Interface</displayname>
-				<bindstofield>vpc->step3->interface</bindstofield>
+				<bindstofield>vpc->step5->interface</bindstofield>
 			</field>
 			<field>
 				<name>Next</name>
@@ -180,11 +170,11 @@
 				<description>This will create the IPsec VPN configurations, firewall rules, aliases, routing configurations and virtual IPs required for pfSense to communicate with the AWS VPC VPN Connection.</description>
 			</field>
 		</fields>
-		<stepsubmitphpaction>step4_submitphpaction();</stepsubmitphpaction>
+		<stepsubmitphpaction>submit_create_tunnels_config_pfsense();</stepsubmitphpaction>
 		<includefile>/usr/local/www/wizards/vpc_vpn_wizard.inc</includefile>
 	</step>
 	<step>
-		<id>5</id>
+		<id>6</id>
 		<title>pfSense VPC VPN Configuration Wizard</title>
 		<description>Apply configuration changes and bring up VPN</description>
 		<fields>
@@ -194,7 +184,7 @@
 				<description>Click next to apply configuration changes and connect this pfSense instance to the AWS VPC VPN Connection that has been created.</description>
 			</field>
 		</fields>
-		<stepsubmitphpaction>step5_submitphpaction();</stepsubmitphpaction>
+		<stepsubmitphpaction>submit_apply_config_changes();</stepsubmitphpaction>
 		<includefile>/usr/local/www/wizards/vpc_vpn_wizard.inc</includefile>
 	</step>
 </pfsensewizard>
