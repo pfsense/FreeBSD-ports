@@ -146,7 +146,20 @@
 				<option><value>rfc1918</value><name>Consider all RFC1918 networks local</name></option>
 				<option><value>selected</value><name>Consider selected interface networks local</name></option>
 				<option><value>lanonly</value><name>Consider only LAN interface local</name></option>
+				<option><value>custom</value><name>Use custom list below</name></option>
 			</options>
+		</field>
+		<field>
+			<fielddescr>Custom Local Networks list</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>CIDR</fielddescr>
+					<fieldname>cidr</fieldname>
+					<type>input</type>
+				</rowhelperfield>
+			</rowhelper>
 		</field>
 		<!-- Hide nonfunctional stuff pending rework - see https://redmine.pfsense.org/issues/7000 -->
 		<!-- 
