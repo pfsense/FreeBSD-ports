@@ -69,7 +69,7 @@
 				<type>submit</type>
 			</field>
 		</fields>
-		<stepsubmitphpaction>step1_submitphpaction();</stepsubmitphpaction>
+		<stepsubmitphpaction>submit_creds_partition();</stepsubmitphpaction>
 		<includefile>/usr/local/www/wizards/vpc_vpn_wizard.inc</includefile>
 	</step>
 	<step>

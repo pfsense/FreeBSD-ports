@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-aws-wizard
-PORTVERSION=	0.6
+PORTVERSION=	0.7
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty

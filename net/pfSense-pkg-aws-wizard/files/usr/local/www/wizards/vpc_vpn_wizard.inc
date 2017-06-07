@@ -1010,16 +1010,16 @@ function refreshDirtyConfigs() {
 
 }
 
-function step1_submitphpaction() {
+function submit_creds_partition() {
 	global $stepid, $savemsg, $config;
 
-	if (!isset($_POST['awskey'])) {
+	if (empty($_POST['awskey'])) {
 		$savemsg = gettext("<br>You need to enter an access key ID.");
 		$stepid--;
 		return;
 	}
 
-	if (!isset($_POST['secret'])) {
+	if (empty($_POST['secret'])) {
 		$savemsg = gettext("<br>You need to enter a secret access key.");
 		$stepid--;
 		return;
@@ -1036,7 +1036,7 @@ function pre_region_select() {
 	global $stepid, $savemsg, $config, $pkg;
 
 	session_start();
-	if (!isset($_SESSION['awssecret'])) {
+	if (empty($_SESSION['awssecret'])) {
 		$savemsg .= gettext("<br>AWS Secret Key not found in session data.");
                 $stepid=1;
                 return;
@@ -1108,7 +1108,7 @@ function before_vpc_select() {
 	global $stepid, $savemsg, $config, $pkg;
 
 	session_start();
-	if (!isset($_SESSION['awssecret'])) {
+	if (empty($_SESSION['awssecret'])) {
 		$savemsg .= gettext("<br>AWS Secret Key not found in session data.");
                 $stepid=1;
                 return;
@@ -1226,7 +1226,7 @@ function submit_configure_create_vpn() {
 	$vp_gw_id = $config['vpc']['step3']['vpgwid'];
 
 	session_start();
-	if (!isset($_SESSION['awssecret'])) {
+	if (empty($_SESSION['awssecret'])) {
 		$savemsg .= gettext("<br>AWS Secret Key not found in session data.");
 		$stepid--;
 		return;
