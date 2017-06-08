@@ -1111,6 +1111,14 @@ delete_pid=1
 
 trap _exit 1 2 15 EXIT
 
+block_external_services=$(/usr/local/sbin/read_xml_tag.sh boolean \
+	system/block_external_services)
+
+if [ "${block_external_services}" = "true" ]; then
+	echo "Aborted due to block_external_services flag"
+	exit 0
+fi
+
 if [ -z "${booting}" -o "${boot_stage}" != "2" ]; then
 	/usr/local/bin/php /etc/rc.conf_mount_rw
 fi
