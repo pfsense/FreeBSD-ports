@@ -149,15 +149,21 @@ function ntopng_sync_package() {
 	}
 
 	/* Create rc script */
-	$start = "";
-	$stop = "";
-	$start .= "\t{$redis_path}/redis-server --bind 127.0.0.1 ::1 --dir /var/db/ntopng/ --dbfilename ntopng.rdb &\n";
+	$stop = <<<EOD
+# Kill ntopng and redis
+	/usr/bin/killall ntopng redis-cli redis-server
+EOD;
+
+	$start = <<<EOD
+# Create DB dir before starting, in case it was removed. Otherwise redis will fail.
+	/bin/mkdir -p /var/db/ntopng
+	{$redis_path}/redis-server --bind 127.0.0.1 ::1 --dir /var/db/ntopng/ --dbfilename ntopng.rdb &
+	/usr/local/bin/ntopng -d /var/db/ntopng -G /var/run/ntopng.pid -s -e {$http_args} {$disable_alerts} {$dump_flows} {$ifaces} {$dns_mode} {$aggregations} {$local_networks} &
+EOD;
 	// TODO:
 	// Add support for --data-dir /somewhere, --httpdocs-dir /somewhereelse,
 	// --dump-timeline (on/off) --http-port, --https-port
 
-	$start .= "\t/usr/local/bin/ntopng -d /var/db/ntopng -G /var/run/ntopng.pid -s -e {$http_args} {$disable_alerts} {$dump_flows} {$ifaces} {$dns_mode} {$aggregations} {$local_networks} &\n";
-	$stop .= "/usr/bin/killall ntopng redis-cli redis-server\n";
 	write_rcfile(array("file" => "ntopng.sh", "start" => $start, "stop" => $stop));
 
 	/* Set up admin password */
