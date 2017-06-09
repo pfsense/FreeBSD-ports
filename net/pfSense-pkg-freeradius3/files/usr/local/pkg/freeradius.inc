@@ -149,7 +149,7 @@ function freeradius_install_command() {
 	if (is_link(FREERADIUS_RADDB)) {
 		@unlink(FREERADIUS_RADDB);
 	}
-	safe_mkdir(FREERADIUS_SCRIPTS . "/scripts");
+	safe_mkdir(FREERADIUS_SCRIPTS);
 	freeradius_chown_recursive(FREERADIUS_RADDB);
 	freeradius_chown_recursive("/var/log/radacct");
 	$frlib = freeradius_get_libdir();
@@ -321,8 +321,8 @@ function freeradius_settings_resync($restart_svc = true) {
 	if ($sqlconf['varsqlconfincludeenable'] == 'on') {
 		$varsqlconfinstantiate = <<<EOD
 
-	{$varsqlconf2failover} {
-		sql
+	{$varsqlconf2failover} sql {
+		sql1
 		{$varsqlconf2instantiate}
 	}
 
@@ -331,8 +331,15 @@ EOD;
 		/* Remove the sql files from the active modules directory when they are not needed. */
 		@unlink_if_exists(FREERADIUS_MODSENABLED . '/sql');
 		@unlink_if_exists(FREERADIUS_MODSENABLED . '/sqlcounter');
+		freeradius_modulescounter_resync();
 		$varsqlconf2failover = '';
-		$varsqlconfinstantiate = '#sql';
+		$varsqlconfinstantiate = <<<EOD
+	#sql
+	daily
+	weekly
+	monthly
+	forever
+EOD;
 	}
 
 	$conf .= <<<EOD
@@ -395,8 +402,6 @@ thread pool {
 	auto_limit_acct = no
 }
 
-#modconfdir = \${confdir}/mods-config/
-#moddir = \${confdir}/mods-available/
 modules {
 	\$INCLUDE \${confdir}/mods-enabled/
 }
@@ -404,10 +409,6 @@ modules {
 instantiate {
 	exec
 	expr
-	daily
-	weekly
-	monthly
-	forever
 	expiration
 	logintime
 	### Dis-/Enable sql instatiate
@@ -1651,7 +1652,7 @@ function freeradius_sqlconf_resync() {
 
 	$conf .= <<<EOD
 
-sql {
+sql sql1 {
 	database = "{$varsqlconfdatabase}"
 	driver = "rlm_sql_\${database}"
 	dialect = "\${database}"
@@ -1672,7 +1673,7 @@ sql {
 	delete_stale_sessions = {$varsqlconfdeletestalesessions}
 	logfile = {$varsqlconfsqltrace}
 	read_clients = {$varsqlconfreadclients}
-	nas_table = "{$varsqlconfnastable}"
+	client_table = "{$varsqlconfnastable}"
 	pool {
 		start = \${thread[pool].start_servers}
 		min = \${thread[pool].min_spare_servers}
@@ -1683,10 +1684,13 @@ sql {
 		lifetime = {$varsqlconflifetime}
 		idle_timeout = 60
 	}
-	group_attribute = "SQL-Group"
+	group_attribute = "\${.:instance}-SQL-Group"
 	\$INCLUDE \${modconfdir}/\${.:name}/main/\${dialect}/queries.conf
 }
 
+EOD;
+	if ($sqlconf['varsqlconf2includeenable'] == 'on') {
+		$conf .= <<<EOD
 sql sql2 {
 	database = "{$varsqlconf2database}"
 	driver = "rlm_sql_\${database}"
@@ -1708,7 +1712,7 @@ sql sql2 {
 	delete_stale_sessions = {$varsqlconf2deletestalesessions}
 	logfile = {$varsqlconf2sqltrace}
 	read_clients = {$varsqlconf2readclients}
-	nas_table = "{$varsqlconf2nastable}"
+	client_table = "{$varsqlconf2nastable}"
 	pool {
 		start = \${thread[pool].start_servers}
 		min = \${thread[pool].min_spare_servers}
@@ -1724,6 +1728,7 @@ sql sql2 {
 }
 
 EOD;
+	}
 
 	$filename = FREERADIUS_MODSENABLED . '/sql';
 	/* Remove what could be a symlink first before writing */
@@ -1731,8 +1736,60 @@ EOD;
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 
-	/* Add a symlink to the stock sql counter */
-	symlink( FREERADIUS_MODSAVAIL . '/sqlcounter' , FREERADIUS_MODSENABLED . '/sqlcounter' );
+	$conf = <<<EOD
+sqlcounter dailycounter {
+	sql_module_instance = sql
+	dialect = "{$varsqlconf2database}"
+	counter_name = Daily-Session-Time
+	check_name = Max-Daily-Session
+	reply_name = Session-Timeout
+	key = User-Name
+	reset = daily
+	\$INCLUDE \${modconfdir}/sql/counter/\${dialect}/\${.:instance}.conf
+}
+
+sqlcounter monthlycounter {
+	sql_module_instance = sql
+	dialect = "{$varsqlconf2database}"
+	counter_name = Monthly-Session-Time
+	check_name = Max-Monthly-Session
+	reply_name = Session-Timeout
+	key = User-Name
+	reset = monthly
+	\$INCLUDE \${modconfdir}/sql/counter/\${dialect}/\${.:instance}.conf
+}
+
+sqlcounter noresetcounter {
+	sql_module_instance = sql
+	dialect = "{$varsqlconf2database}"
+	counter_name = Max-All-Session-Time
+	check_name = Max-All-Session
+	key = User-Name
+	reset = never
+	\$INCLUDE \${modconfdir}/sql/counter/\${dialect}/\${.:instance}.conf
+}
+
+sqlcounter expire_on_login {
+	sql_module_instance = sql
+	dialect = "{$varsqlconf2database}"
+	counter_name = Expire-After-Initial-Login
+	check_name = Expire-After
+	key = User-Name
+	reset = never
+	\$INCLUDE \${modconfdir}/sql/counter/\${dialect}/\${.:instance}.conf
+}
+
+
+EOD;
+
+	$filename = FREERADIUS_MODSENABLED . '/sqlcounter';
+	/* Remove what could be a symlink first before writing */
+	@unlink_if_exists($filename);
+	file_put_contents($filename, $conf);
+	chmod($filename, 0640);
+
+	/* counter and sqlcounter are incompatible */
+	@unlink_if_exists(FREERADIUS_MODSENABLED . '/counter');
 
 	// We don't need a restart at this time because there are
 	// additional changes needed in freeradius_settings_resync()
@@ -1860,36 +1917,48 @@ EOD;
 	if (($sqlconf['varsqlconfincludeenable'] == 'on') && ($sqlconf['varsqlconfenableauthorize'] == 'Enable')) {
 		$varsqlconfauthorize = <<<EOD
 
-	{$varsqlconf2failover} {
-		sql
+	{$varsqlconf2failover} sql {
+		sql1
 		{$varsqlconf2authorize}
 	}
 
 EOD;
 	} else {
-		$varsqlconfauthorize = '### sql DISABLED ###';
+		$varsqlconfauthorize = <<<EOD
+	### sql DISABLED ###'
+	daily
+	weekly
+	monthly
+	forever
+EOD;
 	}
 
 	// accounting section DATABASE 1
 	if (($sqlconf['varsqlconfincludeenable'] == 'on') && ($sqlconf['varsqlconfenableaccounting'] == 'Enable')) {
 		$varsqlconfaccounting = <<<EOD
 
-	{$varsqlconf2failover} {
-		sql
+	{$varsqlconf2failover} sql {
+		sql1
 		{$varsqlconf2accounting}
 	}
 
 EOD;
 	} else {
-		$varsqlconfaccounting = '### sql DISABLED ###';
+		$varsqlconfaccounting = <<<EOD
+	### sql DISABLED ###'
+	daily
+	weekly
+	monthly
+	forever
+EOD;
 	}
 
 	// session section DATABASE 1
 	if (($sqlconf['varsqlconfincludeenable'] == 'on') && ($sqlconf['varsqlconfenablesession'] == 'Enable')) {
 		$varsqlconfsession = <<<EOD
 
-	{$varsqlconf2failover} {
-		sql
+	{$varsqlconf2failover} sql {
+		sql1
 		{$varsqlconf2session}
 	}
 
@@ -1902,8 +1971,8 @@ EOD;
 	if (($sqlconf['varsqlconfincludeenable'] == 'on') && ($sqlconf['varsqlconfenablepostauth'] == 'Enable')) {
 		$varsqlconfpostauth = <<<EOD
 
-	{$varsqlconf2failover} {
-		sql
+	{$varsqlconf2failover} sql {
+		sql1
 		{$varsqlconf2postauth}
 	}
 
@@ -2052,10 +2121,6 @@ authorize {
 {$varsqlconfauthorize}
 #	smbpasswd
 {$varmodulesldapenableauthorize}
-	daily
-	weekly
-	monthly
-	forever
 	# Formerly checkval
 	if (&request:Calling-Station-Id == &control:Calling-Station-Id) {
 		ok
@@ -2115,10 +2180,6 @@ preacct {
 accounting {
 #	cui
 	detail
-	daily
-	weekly
-	monthly
-	forever
 	### This makes it possible to run the datacounter_acct module only on accounting-stop and interim-updates
 	if ((request:Acct-Status-Type == Stop) || (request:Acct-Status-Type == Interim-Update)) {
 		datacounterdaily
