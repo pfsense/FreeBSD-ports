@@ -1160,7 +1160,6 @@ EOD;
 	if ($ca_cert != false) {
 		if (base64_decode($ca_cert['prv'])) {
 			file_put_contents(FREERADIUS_CERTS . "/ca_key.pem", base64_decode($ca_cert['prv']));
-			$conf['ssl_ca_key'] = FREERADIUS_CERTS . '/ca_key.pem';
 		}
 
 		if (base64_decode($ca_cert['crt'])) {
@@ -1172,22 +1171,17 @@ EOD;
 				$check_crl="check_crl = no";
 			}
 			file_put_contents(FREERADIUS_CERTS . "/ca_cert.pem", base64_decode($ca_cert['crt']) . "\n" . $crl);
-			$conf['ssl_ca_cert'] = FREERADIUS_CERTS . "/ca_cert.pem";
 		}
 
 		$svr_cert = lookup_cert($eapconf["ssl_server_cert"]);
 		if ($svr_cert != false) {
 			if (base64_decode($svr_cert['prv'])) {
 				file_put_contents(FREERADIUS_CERTS . "/server_key.pem", base64_decode($svr_cert['prv']));
-				$conf['ssl_key'] = FREERADIUS_CERTS . '/server_key.pem';
 			}
 		}
 		if (base64_decode($svr_cert['crt'])) {
 			file_put_contents(FREERADIUS_CERTS . "/server_cert.pem", base64_decode($svr_cert['crt']));
-			$conf['ssl_server_cert'] = FREERADIUS_CERTS . "/server_cert.pem";
 		}
-
-		$conf['ssl_cert_dir'] = FREERADIUS_CERTS;
 	} else {
 		file_notice("FreeRADIUS", gettext("Cannot create server certificates. Visit Services &gt; FreeRADIUS &gt; EAP tab and configure server certificates in the 'Certificates for TLS' section."));
 	}
@@ -1769,8 +1763,6 @@ function freeradius_serverdefault_resync() {
 	// If unchecked then disable authorize ldap1
 	if (!$arrmodulesldap['varmodulesldapenableauthorize']) {
 		$varmodulesldapenableauthorize = '### ldap ###';
-		/* Deactivate LDAP module if it is not enabled */
-		@unlink_if_exists(FREERADIUS_MODSENABLED . '/ldap');
 	} else {
 		$varmodulesldapenableauthorize = <<<EOD
 
@@ -1810,6 +1802,14 @@ EOD;
 
 EOD;
 	}
+
+	/* If neither LDAP mode or server is configured, do not activate the LDAP module */
+	if (!$arrmodulesldap['varmodulesldapenableauthorize'] && !$arrmodulesldap['varmodulesldapenableauthenticate'] &&
+	    !$arrmodulesldap['varmodulesldapenableauthorize'] && !$arrmodulesldap['varmodulesldapenableauthenticate']) {
+		/* Deactivate LDAP module if it is not enabled */
+		@unlink_if_exists(FREERADIUS_MODSENABLED . '/ldap');
+	}
+
 
 	// Get Variables from freeradiussqlconf.xml for DATABASE 1
 	if (is_array($config['installedpackages']['freeradiussqlconf']['config'][0])) {
@@ -2597,6 +2597,7 @@ EOD;
 
 function freeradius_modulesldap_resync($restart_svc = true) {
 	global $config;
+	$raddb = FREERADIUS_RADDB;
 	$conf = '';
 
 	if (is_array($config['installedpackages']['freeradiusmodulesldap']['config'][0])) {
@@ -2634,76 +2635,79 @@ function freeradius_modulesldap_resync($restart_svc = true) {
 	$varmodulesldap2timelimit = ($arrmodulesldap['varmodulesldap2timelimit'] ?: '3');
 	$varmodulesldap2nettimeout = ($arrmodulesldap['varmodulesldap2nettimeout'] ?: '1');
 
-	// Variables for TLS / Certificates - ldap1
-	$varmodulesldaprequirecert = ($arrmodulesldap['varmodulesldaprequirecert'] ?: 'never');
-
 	// if enabled then create the certs in ../raddb/certs/ and enable "Start_tls" in ldap1 module
 	if ($arrmodulesldap['varmodulesldapenabletlssupport'] == 'on') {
 
 		$ca_cert = lookup_ca($arrmodulesldap["ssl_ca_cert1"]);
 		if ($ca_cert != false) {
-			if (base64_decode($ca_cert['prv'])) {
-				file_put_contents(FREERADIUS_CERTS . "/ca_ldap1_key.pem", base64_decode($ca_cert['prv']));
-				$conf['ssl_ca_key'] = FREERADIUS_CERTS . '/ca_ldap1_key.pem';
-			}
 			if (base64_decode($ca_cert['crt'])) {
 				file_put_contents(FREERADIUS_CERTS . "/ca_ldap1_cert.pem", base64_decode($ca_cert['crt']));
-				$conf['ssl_ca_cert1'] = FREERADIUS_CERTS . "/ca_ldap1_cert.pem";
 			}
-
 			$svr_cert = lookup_cert($arrmodulesldap["ssl_server_cert1"]);
 			if ($svr_cert != false) {
 				if (base64_decode($svr_cert['prv'])) {
 					file_put_contents(FREERADIUS_CERTS . "/radius_ldap1_cert.key", base64_decode($svr_cert['prv']));
-					$conf['ssl_key'] = FREERADIUS_CERTS . '/radius_ldap1_cert.key';
 				}
 			}
 			if (base64_decode($svr_cert['crt'])) {
 				file_put_contents(FREERADIUS_CERTS . "/radius_ldap1_cert.crt", base64_decode($svr_cert['crt']));
-				$conf['ssl_server_cert1'] = FREERADIUS_CERTS . "/radius_ldap1_cert.crt";
 			}
-
-			$conf['ssl_cert_dir'] = FREERADIUS_CERTS;
 		}
-		$varmodulesldapstarttls = "yes";
-	} else {
-		$varmodulesldapstarttls = "no";
+		// Variables for TLS / Certificates - ldap1
+		$varmodulesldaprequirecert = ($arrmodulesldap['varmodulesldaprequirecert'] ?: 'never');
+		$varmodulesldapstarttls = ($arrmodulesldap['varmodulesldapenablestarttls'] == 'on') ? "yes" : "no";
+
+		$varmodulesldap_tlsconfig = <<<EOD
+
+	tls {
+		start_tls = {$varmodulesldapstarttls}
+		ca_file = {$raddb}/certs/ca_ldap1_cert.pem
+		ca_path = {$raddb}/certs/
+		certificate_file = {$raddb}/certs/radius_ldap1_cert.crt
+		private_key_file = {$raddb}/certs/radius_ldap1_cert.key
+		random_file = /dev/urandom
+		require_cert = "{$varmodulesldaprequirecert}"
 	}
 
-	// Variables for TLS / Certificates - ldap2
-	$varmodulesldap2requirecert = ($arrmodulesldap['varmodulesldap2requirecert'] ?: 'never');
+EOD;
+	}
 
 	// if enabled then create the certs in ../raddb/certs/ and enable "Start_tls" in ldap2 module
 	if ($arrmodulesldap['varmodulesldap2enabletlssupport'] == 'on') {
 
 		$ca_cert = lookup_ca($arrmodulesldap["ssl_ca_cert2"]);
 		if ($ca_cert != false) {
-			if (base64_decode($ca_cert['prv'])) {
-				file_put_contents(FREERADIUS_CERTS . "/ca_ldap2_key.pem", base64_decode($ca_cert['prv']));
-				$conf['ssl_ca_key'] = FREERADIUS_CERTS . '/ca_ldap2_key.pem';
-			}
 			if (base64_decode($ca_cert['crt'])) {
 				file_put_contents(FREERADIUS_CERTS . "/ca_ldap2_cert.pem", base64_decode($ca_cert['crt']));
-				$conf['ssl_ca_cert2'] = FREERADIUS_CERTS . "/ca_ldap2_cert.pem";
 			}
 
 			$svr_cert = lookup_cert($arrmodulesldap["ssl_server_cert2"]);
 			if ($svr_cert != false) {
 				if (base64_decode($svr_cert['prv'])) {
 					file_put_contents(FREERADIUS_CERTS . "/radius_ldap2_cert.key", base64_decode($svr_cert['prv']));
-					$conf['ssl_key'] = FREERADIUS_CERTS . '/radius_ldap2_cert.key';
 				}
 			}
 			if (base64_decode($svr_cert['crt'])) {
 				file_put_contents(FREERADIUS_CERTS . "/radius_ldap2_cert.crt", base64_decode($svr_cert['crt']));
-				$conf['ssl_server_cert2'] = FREERADIUS_CERTS . "/radius_ldap2_cert.crt";
 			}
-
-			$conf['ssl_cert_dir'] = FREERADIUS_CERTS;
 		}
-		$varmodulesldap2starttls = "yes";
-	} else {
-		$varmodulesldap2starttls = "no";
+		// Variables for TLS / Certificates - ldap2
+		$varmodulesldap2requirecert = ($arrmodulesldap['varmodulesldap2requirecert'] ?: 'never');
+		$varmodulesldap2starttls = ($arrmodulesldap['varmodulesldap2enablestarttls'] == 'on') ? "yes" : "no";
+
+		$varmodulesldap2_tlsconfig = <<<EOD
+
+	tls {
+		start_tls = {$varmodulesldap2starttls}
+		ca_file = {$raddb}/certs/ca_ldap1_cert.pem
+		ca_path = {$raddb}/certs/
+		certificate_file = {$raddb}/certs/radius_ldap1_cert.crt
+		private_key_file = {$raddb}/certs/radius_ldap1_cert.key
+		random_file = /dev/urandom
+		require_cert = "{$varmodulesldap2requirecert}"
+	}
+
+EOD;
 	}
 
 	// Miscellaneous Configuration + MS Active Directory Compatibility ldap1
@@ -2822,7 +2826,6 @@ EOD;
 	$varmodulesldap2keepaliveprobes = ($arrmodulesldap['varmodulesldap2keepaliveprobes'] ?: '3');
 	$varmodulesldap2keepaliveinterval = ($arrmodulesldap['varmodulesldap2keepaliveinterval'] ?: '3');
 
-	$raddb = FREERADIUS_RADDB;
 	$conf .= <<<EOD
 ldap {
 	server = "{$varmodulesldapserver}"
@@ -2851,15 +2854,7 @@ ldap {
 		{$varmodulesldapdefaultprofile}
 		{$varmodulesldapprofileattribute}
 	}
-	tls {
-		start_tls = {$varmodulesldapstarttls}
-		ca_file = {$raddb}/certs/ca_ldap1_cert.pem
-		ca_path = {$raddb}/certs/
-		certificate_file = {$raddb}/certs/radius_ldap1_cert.crt
-		private_key_file = {$raddb}/certs/radius_ldap1_cert.key
-		random_file = /dev/urandom
-		require_cert = "$varmodulesldaprequirecert"
-	}
+{$varmodulesldap_tlsconfig}
 
 #	valuepair_attribute = 'radiusAttribute'
 	update {
@@ -2989,15 +2984,7 @@ ldap ldap2 {
 		{$varmodulesldap2defaultprofile}
 		{$varmodulesldap2profileattribute}
 	}
-	tls {
-		start_tls = {$varmodulesldap2starttls}
-		ca_file = {$raddb}/certs/ca_ldap2_cert.pem
-		ca_path = {$raddb}/certs/
-		certificate_file = {$raddb}/certs/radius_ldap2_cert.crt
-		private_key_file = {$raddb}/certs/radius_ldap2_cert.key
-		random_file = /dev/urandom
-		require_cert = "{$varmodulesldap2requirecert}"
-	}
+{$varmodulesldap2_tlsconfig}
 
 #	valuepair_attribute = 'radiusAttribute'
 	update {

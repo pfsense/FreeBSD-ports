@@ -470,7 +470,18 @@
 				]]>
 			</sethelp>
 			<type>checkbox</type>
-			<enablefields>ssl_ca_cert1,ssl_server_cert1,varmodulesldaprequirecert</enablefields>
+			<enablefields>varmodulesldapenablestarttls,ssl_ca_cert1,ssl_server_cert1,varmodulesldaprequirecert</enablefields>
+		</field>
+		<field>
+			<fielddescr>Use STARTTLS</fielddescr>
+			<fieldname>varmodulesldapenablestarttls</fieldname>
+			<description>Enable STARTTLS for LDAP server 1</description>
+			<sethelp>
+				<![CDATA[
+				If enabled, STARTTLS will be used instead of LDAPS.
+				]]>
+			</sethelp>
+			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>SSL CA Certificate</fielddescr>
@@ -951,7 +962,18 @@
 				]]>
 			</sethelp>
 			<type>checkbox</type>
-			<enablefields>ssl_ca_cert2,ssl_server_cert2,varmodulesldap2requirecert</enablefields>
+			<enablefields>varmodulesldap2enablestarttls,ssl_ca_cert2,ssl_server_cert2,varmodulesldap2requirecert</enablefields>
+		</field>
+		<field>
+			<fielddescr>Use STARTTLS</fielddescr>
+			<fieldname>varmodulesldap2enablestarttls</fieldname>
+			<description>Enable STARTTLS for LDAP server 2</description>
+			<sethelp>
+				<![CDATA[
+				If enabled, STARTTLS will be used instead of LDAPS.
+				]]>
+			</sethelp>
+			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>SSL CA Certificate</fielddescr>
