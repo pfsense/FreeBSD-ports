@@ -150,6 +150,7 @@ function freeradius_install_command() {
 		@unlink(FREERADIUS_RADDB);
 	}
 	safe_mkdir(FREERADIUS_SCRIPTS);
+	safe_mkdir(FREERADIUS_MODSENABLED);
 	freeradius_chown_recursive(FREERADIUS_RADDB);
 	freeradius_chown_recursive("/var/log/radacct");
 	$frlib = freeradius_get_libdir();
@@ -1313,6 +1314,7 @@ EOD;
 	$filename = FREERADIUS_MODSENABLED . '/eap';
 	/* Remove what could be a symlink first before writing */
 	@unlink_if_exists($filename);
+	safe_mkdir(FREERADIUS_MODSENABLED);
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 
@@ -1733,6 +1735,7 @@ EOD;
 	$filename = FREERADIUS_MODSENABLED . '/sql';
 	/* Remove what could be a symlink first before writing */
 	@unlink_if_exists($filename);
+	safe_mkdir(FREERADIUS_MODSENABLED);
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 
@@ -1785,6 +1788,7 @@ EOD;
 	$filename = FREERADIUS_MODSENABLED . '/sqlcounter';
 	/* Remove what could be a symlink first before writing */
 	@unlink_if_exists($filename);
+	safe_mkdir(FREERADIUS_MODSENABLED);
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 
@@ -2557,6 +2561,7 @@ EOD;
 	$filename = FREERADIUS_MODSENABLED . '/counter';
 	/* Remove what could be a symlink first before writing */
 	@unlink_if_exists($filename);
+	safe_mkdir(FREERADIUS_MODSENABLED);
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 
@@ -2606,6 +2611,7 @@ EOD;
 	$filename = FREERADIUS_MODSENABLED . '/mschap';
 	/* Remove what could be a symlink first before writing */
 	@unlink_if_exists($filename);
+	safe_mkdir(FREERADIUS_MODSENABLED);
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 
@@ -2651,6 +2657,7 @@ EOD;
 	$filename = FREERADIUS_MODSENABLED . '/realm';
 	/* Remove what could be a symlink first before writing */
 	@unlink_if_exists($filename);
+	safe_mkdir(FREERADIUS_MODSENABLED);
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 
@@ -3152,6 +3159,7 @@ EOD;
 	$filename = FREERADIUS_MODSENABLED . '/ldap';
 	/* Remove what could be a symlink first before writing */
 	@unlink_if_exists($filename);
+	safe_mkdir(FREERADIUS_MODSENABLED);
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 
@@ -3226,6 +3234,7 @@ EOD;
 	$filename = FREERADIUS_MODSENABLED . '/files';
 	/* Remove what could be a symlink first before writing */
 	@unlink_if_exists($filename);
+	safe_mkdir(FREERADIUS_MODSENABLED);
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 
@@ -3396,6 +3405,7 @@ EOD;
 	$filename = FREERADIUS_MODSENABLED . '/motp';
 	/* Remove what could be a symlink first before writing */
 	@unlink_if_exists($filename);
+	safe_mkdir(FREERADIUS_MODSENABLED);
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 }
@@ -3428,6 +3438,7 @@ exec datacounterforever {
 EOD;
 
 	$filename = FREERADIUS_MODSENABLED . '/datacounter_acct';
+	safe_mkdir(FREERADIUS_MODSENABLED);
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 }
