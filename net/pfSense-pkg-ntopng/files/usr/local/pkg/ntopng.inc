@@ -125,7 +125,7 @@ function ntopng_sync_package() {
 			$nets = array();
 			foreach ($ntopng_config['row'] as $net) {
 				if (is_subnet($net['cidr'])) {
-					$nets[] = $net['cidr'];
+					$nets[] = trim($net['cidr']);
 				}
 			}
 			if (!empty($nets)) {
