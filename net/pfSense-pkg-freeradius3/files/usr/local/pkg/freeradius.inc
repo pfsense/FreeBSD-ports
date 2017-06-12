@@ -36,6 +36,7 @@ require_once("xmlrpc_client.inc");
 define('FREERADIUS_BASE', '/usr/local');
 global $bash_path;
 $bash_path = FREERADIUS_BASE . "/bin/bash";
+define('FREERADIUS_EXAMPLES', FREERADIUS_BASE . '/share/examples/freeradius/raddb');
 define('FREERADIUS_LIB', FREERADIUS_BASE . '/lib');
 define('FREERADIUS_ETC', FREERADIUS_BASE . '/etc');
 define('FREERADIUS_RADDB', FREERADIUS_ETC . '/raddb');
@@ -45,7 +46,6 @@ define('FREERADIUS_MODSAVAIL', FREERADIUS_RADDB . '/mods-available');
 define('FREERADIUS_MODSENABLED', FREERADIUS_RADDB . '/mods-enabled');
 define('FREERADIUS_SITESAVAIL', FREERADIUS_RADDB . '/sites-available');
 define('FREERADIUS_SITESENABLED', FREERADIUS_RADDB . '/sites-enabled');
-
 
 /*
  * List of functions that directly call restart_service("radiusd")
@@ -145,12 +145,22 @@ function freeradius_install_command() {
 		touch("/var/log/radwtmp");
 	}
 
-	// Previous package versions were creating a symlink targeting itself here
 	if (is_link(FREERADIUS_RADDB)) {
+		/* Previous package versions were creating a symlink targeting itself here */
 		@unlink(FREERADIUS_RADDB);
+	} elseif (is_dir(FREERADIUS_RADDB)) {
+		/* Remove older FreeRADIUS config files, they will be copied from examples or rewritten by the package */
+		rmdir_recursive(FREERADIUS_RADDB, false);
 	}
+	/* Copy stock FreeRADIUS 3.x raddb files */
+	if (is_dir(FREERADIUS_EXAMPLES)) {
+		mwexec('/bin/cp -RP ' . escapeshellarg(FREERADIUS_EXAMPLES) . ' ' . escapeshellarg(FREERADIUS_RADDB));
+	}
+	/* As a safety belt, create some important directories in case the above copy did not. */
 	safe_mkdir(FREERADIUS_SCRIPTS);
 	safe_mkdir(FREERADIUS_MODSENABLED);
+	safe_mkdir(FREERADIUS_RADDB . '/policy.d');
+
 	freeradius_chown_recursive(FREERADIUS_RADDB);
 	freeradius_chown_recursive("/var/log/radacct");
 	$frlib = freeradius_get_libdir();
