@@ -699,7 +699,7 @@ EOD;
 				$varFREERADIUS_SCRIPTS = FREERADIUS_SCRIPTS;
 				$varusersreplyitem .= <<<EOD
 
-	Exec-Program-Wait = "/bin/sh {$varFREERADIUS_SCRIPTS}/datacounter_auth.sh {$varusersusername} {$varusersmaxtotaloctetstimerange}";
+	Exec-Program-Wait = "/bin/sh {$varFREERADIUS_SCRIPTS}/datacounter_auth.sh {$varusersusername} {$varusersmaxtotaloctetstimerange}"
 
 EOD;
 				// create limit file - will be always overwritten so we can increase limit from GUI
@@ -726,7 +726,7 @@ EOD;
 			$conf .= <<<EOD
 {$varusersadditionaloptionstop}
 {$varuserscheckitem}
-	{$varusersreplyitem}
+{$varusersreplyitem}
 
 EOD;
 		} // endforeach

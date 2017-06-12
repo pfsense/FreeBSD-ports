@@ -26,17 +26,17 @@
  */
 
 require("guiconfig.inc");
-define('RADDB', '/usr/local/etc/raddb');
+require("freeradius.inc");
 
 function get_file($file) {
-	$files['radiusd'] = RADDB . "/radiusd.conf";
-	$files['eap'] = RADDB . "/eap.conf";
-	$files['sql'] = RADDB . "/sql.conf";
-	$files['clients'] = RADDB . "/clients.conf";
-	$files['users'] = RADDB . "/users";
-	$files['macs'] = RADDB . "/authorized_macs";
-	$files['virtual-server-default'] = RADDB . "/sites-enabled/default";
-	$files['ldap'] = RADDB . "/modules/ldap";
+	$files['radiusd'] = FREERADIUS_RADDB . "/radiusd.conf";
+	$files['eap'] = FREERADIUS_MODSENABLED . "/eap";
+	$files['sql'] = FREERADIUS_MODSENABLED . "/sql";
+	$files['clients'] = FREERADIUS_RADDB . "/clients.conf";
+	$files['users'] = FREERADIUS_RADDB . "/users";
+	$files['macs'] = FREERADIUS_RADDB . "/authorized_macs";
+	$files['virtual-server-default'] = FREERADIUS_RADDB . "/sites-enabled/default";
+	$files['ldap'] = FREERADIUS_MODSENABLED . "/ldap";
 
 	if ($files[$file] != "" && file_exists($files[$file])) {
 		print '<pre>';
@@ -87,11 +87,11 @@ if ($savemsg) {
 							</button>
 							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('eap');" id='btn_eap' value="eap.conf">
 								<i class="fa fa-file-text-o"></i>
-								eap.conf
+								eap
 							</button>
 							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('sql');" id='btn_sql' value="sql.conf">
 								<i class="fa fa-file-text-o"></i>
-								sql.conf
+								sql
 							</button>
 							<button type="button" class="btn btn-default btn-sm" onClick="get_freeradius_file('clients');" id='btn_clients' value="clients.conf">
 								<i class="fa fa-file-text-o"></i>
