@@ -592,7 +592,6 @@ function freeradius_users_resync($via_rpc = false) {
 	MOTP-Init-Secret = {$varusersmotpinitsecret},
 	MOTP-PIN = {$varusersmotppin},
 	MOTP-Offset = {$varusersmotpoffset}
-
 EOD;
 			} else {
 				$varusersreplyitem .= '';
@@ -606,7 +605,6 @@ EOD;
 				$varusersreplyitem .= <<<EOD
 
 	Framed-IP-Address = {$varusersframedipaddress}
-
 EOD;
 			}
 			if ($varusersframedipnetmask != '') {
@@ -616,7 +614,6 @@ EOD;
 				$varusersreplyitem .= <<<EOD
 
 	Framed-IP-Netmask = {$varusersframedipnetmask}
-
 EOD;
 			}
 			if ($varusersframedroute != '') {
@@ -626,7 +623,6 @@ EOD;
 				$varusersreplyitem .= <<<EOD
 
 	Framed-Route = "{$varusersframedroute}"
-
 EOD;
 			}
 			if ($varuserssessiontimeout != '') {
@@ -636,7 +632,6 @@ EOD;
 				$varusersreplyitem .= <<<EOD
 
 	Session-Timeout := {$varuserssessiontimeout}
-
 EOD;
 			}
 			if ($varusersvlanid != '') {
@@ -647,8 +642,7 @@ EOD;
 
 	Tunnel-Type = VLAN,
 	Tunnel-Medium-Type = IEEE-802,
-	Tunnel-Private-Group-ID = "{$varusersvlanid}";
-
+	Tunnel-Private-Group-ID = "{$varusersvlanid}"
 EOD;
 			}
 			if ($varusersmaxbandwidthup != '') {
@@ -658,7 +652,6 @@ EOD;
 				$varusersreplyitem .= <<<EOD
 
 	WISPr-Bandwidth-Max-Up := {$varusersmaxbandwidthup}
-
 EOD;
 			}
 			if ($varusersmaxbandwidthdown != '') {
@@ -668,7 +661,6 @@ EOD;
 				$varusersreplyitem .= <<<EOD
 
 	WISPr-Bandwidth-Max-Down := {$varusersmaxbandwidthdown}
-
 EOD;
 			}
 			if ($varusersacctinteriminterval != '') {
@@ -678,7 +670,6 @@ EOD;
 				$varusersreplyitem .= <<<EOD
 
 	Acct-Interim-Interval := {$varusersacctinteriminterval}
-
 EOD;
 			}
 			if ($varuserswisprredirectionurl != '') {
@@ -688,7 +679,6 @@ EOD;
 				$varusersreplyitem .= <<<EOD
 
 	WISPr-Redirection-URL := {$varuserswisprredirectionurl}
-
 EOD;
 			}
 			// If an octet limit is set we create the files for the limit and the counter. Further we call an exec script which checks if the limit is reached or not
@@ -701,7 +691,6 @@ EOD;
 				$varusersreplyitem .= <<<EOD
 
 	Exec-Program-Wait = "/bin/sh {$varFREERADIUS_SCRIPTS}/datacounter_auth.sh {$varusersusername} {$varusersmaxtotaloctetstimerange}"
-
 EOD;
 				// create limit file - will be always overwritten so we can increase limit from GUI
 				file_put_contents("/var/log/radacct/datacounter/{$varusersmaxtotaloctetstimerange}/max-octets-{$varusersusername}", $varusersmaxtotaloctets, LOCK_EX);
@@ -868,7 +857,6 @@ function freeradius_authorizedmacs_resync($restart_svc = true, $via_rpc = false)
 				$varmacsreplyitem .= <<<EOD
 
 	Framed-IP-Address = {$varmacsframedipaddress}
-
 EOD;
 			}
 			if ($varmacsframedipnetmask != '') {
@@ -878,7 +866,6 @@ EOD;
 				$varmacsreplyitem .= <<<EOD
 
 	Framed-IP-Netmask = {$varmacsframedipnetmask}
-
 EOD;
 			}
 			if ($varmacsframedroute != '') {
@@ -888,7 +875,6 @@ EOD;
 				$varmacsreplyitem .= <<<EOD
 
 	Framed-Route = "{$varmacsframedroute}"
-
 EOD;
 			}
 			if ($varmacssessiontimeout != '') {
@@ -898,7 +884,6 @@ EOD;
 				$varmacsreplyitem .= <<<EOD
 
 	Session-Timeout := {$varmacssessiontimeout}
-
 EOD;
 			}
 			if ($varmacsvlanid != '') {
@@ -910,7 +895,6 @@ EOD;
 	Tunnel-Type = VLAN,
 	Tunnel-Medium-Type = IEEE-802,
 	Tunnel-Private-Group-ID = "{$varmacsvlanid}"
-
 EOD;
 			}
 			if ($varmacsmaxbandwidthup != '') {
@@ -920,7 +904,6 @@ EOD;
 				$varmacsreplyitem .= <<<EOD
 
 	WISPr-Bandwidth-Max-Up := {$varmacsmaxbandwidthup}
-
 EOD;
 			}
 			if ($varmacsmaxbandwidthdown != '') {
@@ -930,7 +913,6 @@ EOD;
 				$varmacsreplyitem .= <<<EOD
 
 	WISPr-Bandwidth-Max-Down := {$varmacsmaxbandwidthdown}
-
 EOD;
 			}
 			if ($varmacsacctinteriminterval != '') {
@@ -940,7 +922,6 @@ EOD;
 				$varmacsreplyitem .= <<<EOD
 
 	Acct-Interim-Interval := {$varmacsacctinteriminterval}
-
 EOD;
 			}
 			if ($varmacswisprredirectionurl != '') {
@@ -950,7 +931,6 @@ EOD;
 				$varmacsreplyitem .= <<<EOD
 
 	WISPr-Redirection-URL := {$varmacsswisprredirectionurl}
-
 EOD;
 			}
 			// If an octet limit is set we create the files for the limit and the counter. Further we call an exec script which checks if the limit is reached or not
@@ -963,7 +943,6 @@ EOD;
 				$varmacsreplyitem .= <<<EOD
 
 	Exec-Program-Wait = "/bin/sh {$varFREERADIUS_SCRIPTS}/datacounter_auth.sh {$varmacsaddress} {$varmacsmaxtotaloctetstimerange}"
-
 EOD;
 				// create limit file - will be always overwritten so we can increase limit from GUI
 				file_put_contents("/var/log/radacct/datacounter/{$varmacsmaxtotaloctetstimerange}/max-octets-{$varmacsaddress}", $varmacsmaxtotaloctets, LOCK_EX);
