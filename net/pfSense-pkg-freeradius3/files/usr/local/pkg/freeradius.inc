@@ -1170,7 +1170,53 @@ EOD;
 	// This is for the pfsense cert manager.
 	// Depends on freeradius_get_server_certs() and freeradius_get_ca_certs()
 	$ca_cert = lookup_ca($eapconf["ssl_ca_cert"]);
-	if ($ca_cert != false) {
+	if ($ca_cert == false) {
+		if (!is_array($config['ca'])) {
+			$config['ca'] = array();
+		}
+		$a_ca =& $config['ca'];
+
+		if (!is_array($config['cert'])) {
+			$config['cert'] = array();
+		}
+		$a_cert =& $config['cert'];
+
+		/* Generate CA with generic details */
+		$ca = array();
+		$ca['refid'] = uniqid();
+		$ca['descr'] = "FreeRADIUS CA";
+		$ca['serial'] = 0;
+		$dn = array(
+			'countryName' => 'US',
+			'stateOrProvinceName' => 'Texas',
+			'localityName' => 'Austin',
+			'organizationName' => 'Example Certificate Authority',
+			'emailAddress' => 'certs@example.com',
+			'commonName' => 'freeradius-temp-ca');
+		if (!ca_create($ca, "2048", "3650", $dn, "sha256")) {
+			file_notice("FreeRADIUS", gettext("Cannot create temporary FreeRADIUS certificate authority. Visit Services &gt; FreeRADIUS &gt; EAP tab and configure server certificates in the 'Certificates for TLS' section: " . openssl_error_string()));
+			$cert_error = true;
+		} else {
+			$eapconf["ssl_ca_cert"] = $ca['refid'];
+			$ca_cert = $ca;
+			$a_ca[] = $ca;
+			$cert = array();
+			$cert['refid'] = uniqid();
+			$cert['descr'] = "FreeRADIUS Server Certificate";
+
+			/* Generate server certificate against that CA */
+			$dn['commonName'] = "freeradius-temp-server";
+			//$dn['subjectAltName'] = "IP:{$dn['commonName']}";
+			if (!cert_create($cert, $ca['refid'], "2048", "3650", $dn, "server")) {
+				file_notice("FreeRADIUS", gettext("Cannot create temporary FreeRADIUS certificate. Visit Services &gt; FreeRADIUS &gt; EAP tab and configure server certificates in the 'Certificates for TLS' section: " . openssl_error_string()));
+				$cert_error = true;
+			} else {
+				$a_cert[] = $cert;
+				$eapconf["ssl_server_cert"] = $cert['refid'];
+			}
+		}
+	}
+	if (($ca_cert != false) && !$cert_error) {
 		if (base64_decode($ca_cert['prv'])) {
 			file_put_contents(FREERADIUS_CERTS . "/ca_key.pem", base64_decode($ca_cert['prv']));
 		}
@@ -1195,8 +1241,6 @@ EOD;
 		if (base64_decode($svr_cert['crt'])) {
 			file_put_contents(FREERADIUS_CERTS . "/server_cert.pem", base64_decode($svr_cert['crt']));
 		}
-	} else {
-		file_notice("FreeRADIUS", gettext("Cannot create server certificates. Visit Services &gt; FreeRADIUS &gt; EAP tab and configure server certificates in the 'Certificates for TLS' section."));
 	}
 
 	$vareapconfprivatekeyfile = 'server_key.pem';
@@ -1561,7 +1605,7 @@ EOD;
 function freeradius_get_ca_certs() {
 	global $config;
 	$ca_arr = array();
-	$ca_arr[] = array('refid' => 'none', 'descr' => 'none');
+	$ca_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
 
 	if (is_array($config['ca'])) {
 		foreach ($config['ca'] as $ca) {
@@ -1589,7 +1633,7 @@ function freeradius_get_ca_crl() {
 function freeradius_get_server_certs() {
 	global $config;
 	$cert_arr = array();
-	$cert_arr[] = array('refid' => 'none', 'descr' => 'none');
+	$cert_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
 
 	if (is_array($config['cert'])) {
 		foreach ($config['cert'] as $cert) {
@@ -3993,14 +4037,14 @@ function freeradius_validate_settings($post, &$input_errors) {
 		$input_errors[] = "Please, configure and save EAP settings first. Note that setting the SSL CA/Server Certificate is required.";
 		$eapconf = array();
 	}
+/*
 	if ($eapconf['ssl_ca_cert'] == 'none') {
 		$input_errors[] = "Please, configure the 'SSL CA Certificate' on the EAP tab first and save settings there.";
 	}
-
 	if ($eapconf['ssl_server_cert'] == 'none') {
 		$input_errors[] = "Please, configure the 'SSL Server Certificate' on the EAP tab first and save settings there.";
 	}
-
+*/
 	// Maximum Requests Tracked
 	if ($post['varsettingsmaxrequests'] != '' && !is_numericint($post['varsettingsmaxrequests'])) {
 		$input_errors[] = "The 'Maximum Requests Tracked' field must contain an integer value.";
@@ -4111,14 +4155,15 @@ function freeradius_validate_eap($post, &$input_errors) {
 		$input_errors[] = "The 'Maximum Sessions Tracking Per Server' field must contain an integer value.";
 	}
 
+/*
 	// Certificates for TLS
 	if ($post['ssl_ca_cert'] == 'none') {
 		$input_errors[] = "SSL CA Certificate must not be set to 'none'. Create a CA certificate if needed and select it here.";
 	}
-
 	if ($post['ssl_server_cert'] == 'none') {
 		$input_errors[] = "SSL Server Certificate must not be set to 'none'. Create a server certificate if needed and select it here.";
 	}
+*/
 
 	// EAP-TLS Fragment Size
 	if ($post['vareapconffragmentsize'] != '') {
