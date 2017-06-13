@@ -46,6 +46,7 @@ define('FREERADIUS_MODSAVAIL', FREERADIUS_RADDB . '/mods-available');
 define('FREERADIUS_MODSENABLED', FREERADIUS_RADDB . '/mods-enabled');
 define('FREERADIUS_SITESAVAIL', FREERADIUS_RADDB . '/sites-available');
 define('FREERADIUS_SITESENABLED', FREERADIUS_RADDB . '/sites-enabled');
+define('FREERADIUS_POLICYD', FREERADIUS_RADDB . '/policy.d');
 
 /*
  * List of functions that directly call restart_service("radiusd")
@@ -159,7 +160,7 @@ function freeradius_install_command() {
 	/* As a safety belt, create some important directories in case the above copy did not. */
 	safe_mkdir(FREERADIUS_SCRIPTS);
 	safe_mkdir(FREERADIUS_MODSENABLED);
-	safe_mkdir(FREERADIUS_RADDB . '/policy.d');
+	safe_mkdir(FREERADIUS_POLICYD);
 
 	freeradius_chown_recursive(FREERADIUS_RADDB);
 	freeradius_chown_recursive("/var/log/radacct");
@@ -2016,7 +2017,7 @@ EOD;
 
 	### FIRST check MAC address in authorized_macs and if that fails proceed with other checks below in else-section ###";
 	### if cleaning up the Calling-Station-Id...###";
-	rewrite_calling_station_id
+	pfs_rewrite_calling_station_id
 
 	# now check against the authorized_macs file
 	authorized_macs
@@ -2032,7 +2033,7 @@ EOD;
 		$varplainmacpreacctenable = <<<EOD
 
 	##### ACCOUNTING FOR PLAIN MAC-AUTH ENABLED #####
-	rewrite_calling_station_id
+	pfs_rewrite_calling_station_id
 
 EOD;
 	}
@@ -3203,21 +3204,44 @@ function freeradius_plainmacauth_resync() {
 		// This is a check - only restore files if they aren't already
 		if (file_exists(FREERADIUS_RADDB . "/plain_macauth_enabled")) {
 			log_error("FreeRADIUS: Plain-MAC-Auth disabled. Restoring the original file {$filemodulesfilesdefault}");
-			@unlink_if_exists($filemodulesfiles);
-			symlink( $filemodulesfilesdefault , $filemodulesfiles );
 			unlink(FREERADIUS_RADDB . "/plain_macauth_enabled");
-			freeradius_serverdefault_resync();
 		}
+		@unlink_if_exists($filemodulesfiles);
+		symlink( $filemodulesfilesdefault , $filemodulesfiles );
 	} else {
 		// If checked then plain mac auth is enabled
 		// This is a check - only modify files if they aren't already
 		if (!file_exists(FREERADIUS_RADDB . "/plain_macauth_enabled")) {
-			freeradius_modulesfiles_resync();
-			touch(FREERADIUS_RADDB . "/plain_macauth_enabled");
 			log_error("FreeRADIUS: Plain-MAC-Auth enabled. Modified {$filemodulesfiles}");
-			freeradius_serverdefault_resync();
+			touch(FREERADIUS_RADDB . "/plain_macauth_enabled");
 		}
+		freeradius_modulesfiles_resync();
 	}
+	freeradius_policyd_resync();
+}
+
+function freeradius_policyd_resync() {
+	$conf = <<<EOD
+pfs_rewrite_calling_station_id {
+	if (&Calling-Station-Id && (&Calling-Station-Id =~ /^${policy.mac-addr-regexp}$/i)) {
+		update request {
+			&Calling-Station-Id := "%{tolower:%{1}-%{2}-%{3}-%{4}-%{5}-%{6}}"
+		}
+		updated
+	}
+	else {
+		noop
+	}
+}
+
+EOD;
+
+	$filename = FREERADIUS_POLICYD . '/pfs_custom_policies';
+	/* Remove what could be a symlink first before writing */
+	@unlink_if_exists($filename);
+	safe_mkdir(FREERADIUS_POLICYD);
+	file_put_contents($filename, $conf);
+	chmod($filename, 0640);
 }
 
 function freeradius_modulesfiles_resync() {
@@ -3226,17 +3250,17 @@ function freeradius_modulesfiles_resync() {
 
 	$conf .= <<<EOD
 files {
+	moddir = \${modconfdir}/\${.:instance}
 	#key = "%{%{Stripped-User-Name}:-%{User-Name}}"
-	usersfile = \${confdir}/users
-	acctusersfile = \${confdir}/acct_users
-	preproxy_usersfile = \${confdir}/preproxy_users
-	compat = no
+	filename = \${moddir}/authorize
+#	usersfile = \${moddir}/authorize
+	acctusersfile = \${moddir}/accounting
+	preproxy_usersfile = \${moddir}/pre-proxy
 }
 
 files authorized_macs {
 	key = "%{Calling-Station-ID}"
 	usersfile = \${confdir}/authorized_macs
-	compat = no
 }
 
 EOD;
