@@ -1338,7 +1338,7 @@ listen {
 	type = auth
 }
 authorize {
-	filter_username
+#	filter_username
 #	filter_inner_identity
 	chap
 	mschap
@@ -1449,7 +1449,7 @@ listen {
 	type = auth
 }
 authorize {
-	filter_username
+#	filter_username
 #	filter_inner_identity
 	chap
 	mschap
@@ -1939,7 +1939,7 @@ EOD;
 EOD;
 	} else {
 		$varsqlconfauthorize = <<<EOD
-	### sql DISABLED ###'
+	### sql DISABLED ###
 	daily
 	weekly
 	monthly
@@ -1959,7 +1959,7 @@ EOD;
 EOD;
 	} else {
 		$varsqlconfaccounting = <<<EOD
-	### sql DISABLED ###'
+	### sql DISABLED ###
 	daily
 	weekly
 	monthly
@@ -3313,8 +3313,8 @@ function freeradius_motp_resync() {
 
 PATH=\$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 
-alias checksum={$varsettingsmotpchecksumtype}
-have_md5="true"
+    alias checksum={$varsettingsmotpchecksumtype}
+    have_md5="true"
 
 # ensure aliases are expanded by bash
 shopt -s expand_aliases
