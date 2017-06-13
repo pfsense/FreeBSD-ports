@@ -3197,7 +3197,7 @@ function freeradius_plainmacauth_resync() {
 
 	// defining variables with filename path
 	$filemodulesfiles = FREERADIUS_MODSENABLED . '/files';
-	$filemodulesfilesdefault = FREERADIUS_MODSAVAIL . 'files';
+	$filemodulesfilesdefault = FREERADIUS_MODSAVAIL . '/files';
 
 	// If unchecked then plain mac auth is disabled and backups of the original files will be restored
 	if ($varsettings['varsettingsenablemacauth'] == '') {
