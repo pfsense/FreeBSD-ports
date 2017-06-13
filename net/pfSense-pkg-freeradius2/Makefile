@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-freeradius2
-PORTVERSION=	1.7.9
+PORTVERSION=	1.7.10
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -14,6 +14,9 @@ LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/radiusd:net/freeradius2 \
 		${LOCALBASE}/bin/bash:shells/bash
+
+USES=		python2.7 shebangfix
+SHEBANG_FILES=	scripts/googleauth.py
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -28,6 +31,8 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${MKDIR} ${STAGEDIR}${PREFIX}/www
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/raddb/modules
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/raddb/scripts
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/freeradius.xml \
 		${STAGEDIR}${PREFIX}/pkg
@@ -55,6 +60,10 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/etc/raddb/modules/googleauth \
+		${STAGEDIR}${PREFIX}/etc/raddb/modules
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/etc/raddb/scripts/googleauth.py \
+		${STAGEDIR}${PREFIX}/etc/raddb/scripts
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
 		${STAGEDIR}${DATADIR}/info.xml
 

@@ -10,5 +10,7 @@ pkg/freeradiusinterfaces.xml
 pkg/freeradiussync.xml
 pkg/freeradiusmodulesldap.xml
 pkg/freeradiusauthorizedmacs.xml
+etc/raddb/modules/googleauth
+etc/raddb/scripts/googleauth.py
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv
