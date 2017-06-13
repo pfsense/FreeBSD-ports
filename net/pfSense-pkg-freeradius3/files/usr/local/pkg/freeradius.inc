@@ -46,6 +46,7 @@ define('FREERADIUS_MODSAVAIL', FREERADIUS_RADDB . '/mods-available');
 define('FREERADIUS_MODSENABLED', FREERADIUS_RADDB . '/mods-enabled');
 define('FREERADIUS_SITESAVAIL', FREERADIUS_RADDB . '/sites-available');
 define('FREERADIUS_SITESENABLED', FREERADIUS_RADDB . '/sites-enabled');
+define('FREERADIUS_POLICYD', FREERADIUS_RADDB . '/policy.d');
 
 /*
  * List of functions that directly call restart_service("radiusd")
@@ -159,7 +160,7 @@ function freeradius_install_command() {
 	/* As a safety belt, create some important directories in case the above copy did not. */
 	safe_mkdir(FREERADIUS_SCRIPTS);
 	safe_mkdir(FREERADIUS_MODSENABLED);
-	safe_mkdir(FREERADIUS_RADDB . '/policy.d');
+	safe_mkdir(FREERADIUS_POLICYD);
 
 	freeradius_chown_recursive(FREERADIUS_RADDB);
 	freeradius_chown_recursive("/var/log/radacct");
@@ -1169,7 +1170,53 @@ EOD;
 	// This is for the pfsense cert manager.
 	// Depends on freeradius_get_server_certs() and freeradius_get_ca_certs()
 	$ca_cert = lookup_ca($eapconf["ssl_ca_cert"]);
-	if ($ca_cert != false) {
+	if ($ca_cert == false) {
+		if (!is_array($config['ca'])) {
+			$config['ca'] = array();
+		}
+		$a_ca =& $config['ca'];
+
+		if (!is_array($config['cert'])) {
+			$config['cert'] = array();
+		}
+		$a_cert =& $config['cert'];
+
+		/* Generate CA with generic details */
+		$ca = array();
+		$ca['refid'] = uniqid();
+		$ca['descr'] = "FreeRADIUS CA";
+		$ca['serial'] = 0;
+		$dn = array(
+			'countryName' => 'US',
+			'stateOrProvinceName' => 'Texas',
+			'localityName' => 'Austin',
+			'organizationName' => 'Example Certificate Authority',
+			'emailAddress' => 'certs@example.com',
+			'commonName' => 'freeradius-temp-ca');
+		if (!ca_create($ca, "2048", "3650", $dn, "sha256")) {
+			file_notice("FreeRADIUS", gettext("Cannot create temporary FreeRADIUS certificate authority. Visit Services &gt; FreeRADIUS &gt; EAP tab and configure server certificates in the 'Certificates for TLS' section: " . openssl_error_string()));
+			$cert_error = true;
+		} else {
+			$eapconf["ssl_ca_cert"] = $ca['refid'];
+			$ca_cert = $ca;
+			$a_ca[] = $ca;
+			$cert = array();
+			$cert['refid'] = uniqid();
+			$cert['descr'] = "FreeRADIUS Server Certificate";
+
+			/* Generate server certificate against that CA */
+			$dn['commonName'] = "freeradius-temp-server";
+			//$dn['subjectAltName'] = "IP:{$dn['commonName']}";
+			if (!cert_create($cert, $ca['refid'], "2048", "3650", $dn, "server")) {
+				file_notice("FreeRADIUS", gettext("Cannot create temporary FreeRADIUS certificate. Visit Services &gt; FreeRADIUS &gt; EAP tab and configure server certificates in the 'Certificates for TLS' section: " . openssl_error_string()));
+				$cert_error = true;
+			} else {
+				$a_cert[] = $cert;
+				$eapconf["ssl_server_cert"] = $cert['refid'];
+			}
+		}
+	}
+	if (($ca_cert != false) && !$cert_error) {
 		if (base64_decode($ca_cert['prv'])) {
 			file_put_contents(FREERADIUS_CERTS . "/ca_key.pem", base64_decode($ca_cert['prv']));
 		}
@@ -1194,8 +1241,6 @@ EOD;
 		if (base64_decode($svr_cert['crt'])) {
 			file_put_contents(FREERADIUS_CERTS . "/server_cert.pem", base64_decode($svr_cert['crt']));
 		}
-	} else {
-		file_notice("FreeRADIUS", gettext("Cannot create server certificates. Visit Services &gt; FreeRADIUS &gt; EAP tab and configure server certificates in the 'Certificates for TLS' section."));
 	}
 
 	$vareapconfprivatekeyfile = 'server_key.pem';
@@ -1338,7 +1383,7 @@ listen {
 	type = auth
 }
 authorize {
-	filter_username
+#	filter_username
 #	filter_inner_identity
 	chap
 	mschap
@@ -1449,7 +1494,7 @@ listen {
 	type = auth
 }
 authorize {
-	filter_username
+#	filter_username
 #	filter_inner_identity
 	chap
 	mschap
@@ -1560,7 +1605,7 @@ EOD;
 function freeradius_get_ca_certs() {
 	global $config;
 	$ca_arr = array();
-	$ca_arr[] = array('refid' => 'none', 'descr' => 'none');
+	$ca_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
 
 	if (is_array($config['ca'])) {
 		foreach ($config['ca'] as $ca) {
@@ -1588,7 +1633,7 @@ function freeradius_get_ca_crl() {
 function freeradius_get_server_certs() {
 	global $config;
 	$cert_arr = array();
-	$cert_arr[] = array('refid' => 'none', 'descr' => 'none');
+	$cert_arr[] = array('refid' => 'none', 'descr' => 'none (auto)');
 
 	if (is_array($config['cert'])) {
 		foreach ($config['cert'] as $cert) {
@@ -1939,7 +1984,7 @@ EOD;
 EOD;
 	} else {
 		$varsqlconfauthorize = <<<EOD
-	### sql DISABLED ###'
+	### sql DISABLED ###
 	daily
 	weekly
 	monthly
@@ -1959,7 +2004,7 @@ EOD;
 EOD;
 	} else {
 		$varsqlconfaccounting = <<<EOD
-	### sql DISABLED ###'
+	### sql DISABLED ###
 	daily
 	weekly
 	monthly
@@ -2016,7 +2061,7 @@ EOD;
 
 	### FIRST check MAC address in authorized_macs and if that fails proceed with other checks below in else-section ###";
 	### if cleaning up the Calling-Station-Id...###";
-	rewrite_calling_station_id
+	pfs_rewrite_calling_station_id
 
 	# now check against the authorized_macs file
 	authorized_macs
@@ -2032,7 +2077,7 @@ EOD;
 		$varplainmacpreacctenable = <<<EOD
 
 	##### ACCOUNTING FOR PLAIN MAC-AUTH ENABLED #####
-	rewrite_calling_station_id
+	pfs_rewrite_calling_station_id
 
 EOD;
 	}
@@ -3196,28 +3241,51 @@ function freeradius_plainmacauth_resync() {
 
 	// defining variables with filename path
 	$filemodulesfiles = FREERADIUS_MODSENABLED . '/files';
-	$filemodulesfilesdefault = FREERADIUS_MODSAVAIL . 'files';
+	$filemodulesfilesdefault = FREERADIUS_MODSAVAIL . '/files';
 
 	// If unchecked then plain mac auth is disabled and backups of the original files will be restored
 	if ($varsettings['varsettingsenablemacauth'] == '') {
 		// This is a check - only restore files if they aren't already
 		if (file_exists(FREERADIUS_RADDB . "/plain_macauth_enabled")) {
 			log_error("FreeRADIUS: Plain-MAC-Auth disabled. Restoring the original file {$filemodulesfilesdefault}");
-			@unlink_if_exists($filemodulesfiles);
-			symlink( $filemodulesfilesdefault , $filemodulesfiles );
 			unlink(FREERADIUS_RADDB . "/plain_macauth_enabled");
-			freeradius_serverdefault_resync();
 		}
+		@unlink_if_exists($filemodulesfiles);
+		symlink( $filemodulesfilesdefault , $filemodulesfiles );
 	} else {
 		// If checked then plain mac auth is enabled
 		// This is a check - only modify files if they aren't already
 		if (!file_exists(FREERADIUS_RADDB . "/plain_macauth_enabled")) {
-			freeradius_modulesfiles_resync();
-			touch(FREERADIUS_RADDB . "/plain_macauth_enabled");
 			log_error("FreeRADIUS: Plain-MAC-Auth enabled. Modified {$filemodulesfiles}");
-			freeradius_serverdefault_resync();
+			touch(FREERADIUS_RADDB . "/plain_macauth_enabled");
 		}
+		freeradius_modulesfiles_resync();
 	}
+	freeradius_policyd_resync();
+}
+
+function freeradius_policyd_resync() {
+	$conf = <<<EOD
+pfs_rewrite_calling_station_id {
+	if (&Calling-Station-Id && (&Calling-Station-Id =~ /^${policy.mac-addr-regexp}$/i)) {
+		update request {
+			&Calling-Station-Id := "%{tolower:%{1}-%{2}-%{3}-%{4}-%{5}-%{6}}"
+		}
+		updated
+	}
+	else {
+		noop
+	}
+}
+
+EOD;
+
+	$filename = FREERADIUS_POLICYD . '/pfs_custom_policies';
+	/* Remove what could be a symlink first before writing */
+	@unlink_if_exists($filename);
+	safe_mkdir(FREERADIUS_POLICYD);
+	file_put_contents($filename, $conf);
+	chmod($filename, 0640);
 }
 
 function freeradius_modulesfiles_resync() {
@@ -3226,17 +3294,17 @@ function freeradius_modulesfiles_resync() {
 
 	$conf .= <<<EOD
 files {
+	moddir = \${modconfdir}/\${.:instance}
 	#key = "%{%{Stripped-User-Name}:-%{User-Name}}"
-	usersfile = \${confdir}/users
-	acctusersfile = \${confdir}/acct_users
-	preproxy_usersfile = \${confdir}/preproxy_users
-	compat = no
+	filename = \${moddir}/authorize
+#	usersfile = \${moddir}/authorize
+	acctusersfile = \${moddir}/accounting
+	preproxy_usersfile = \${moddir}/pre-proxy
 }
 
 files authorized_macs {
 	key = "%{Calling-Station-ID}"
 	usersfile = \${confdir}/authorized_macs
-	compat = no
 }
 
 EOD;
@@ -3313,8 +3381,8 @@ function freeradius_motp_resync() {
 
 PATH=\$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 
-alias checksum={$varsettingsmotpchecksumtype}
-have_md5="true"
+    alias checksum={$varsettingsmotpchecksumtype}
+    have_md5="true"
 
 # ensure aliases are expanded by bash
 shopt -s expand_aliases
@@ -3969,14 +4037,14 @@ function freeradius_validate_settings($post, &$input_errors) {
 		$input_errors[] = "Please, configure and save EAP settings first. Note that setting the SSL CA/Server Certificate is required.";
 		$eapconf = array();
 	}
+/*
 	if ($eapconf['ssl_ca_cert'] == 'none') {
 		$input_errors[] = "Please, configure the 'SSL CA Certificate' on the EAP tab first and save settings there.";
 	}
-
 	if ($eapconf['ssl_server_cert'] == 'none') {
 		$input_errors[] = "Please, configure the 'SSL Server Certificate' on the EAP tab first and save settings there.";
 	}
-
+*/
 	// Maximum Requests Tracked
 	if ($post['varsettingsmaxrequests'] != '' && !is_numericint($post['varsettingsmaxrequests'])) {
 		$input_errors[] = "The 'Maximum Requests Tracked' field must contain an integer value.";
@@ -4087,14 +4155,15 @@ function freeradius_validate_eap($post, &$input_errors) {
 		$input_errors[] = "The 'Maximum Sessions Tracking Per Server' field must contain an integer value.";
 	}
 
+/*
 	// Certificates for TLS
 	if ($post['ssl_ca_cert'] == 'none') {
 		$input_errors[] = "SSL CA Certificate must not be set to 'none'. Create a CA certificate if needed and select it here.";
 	}
-
 	if ($post['ssl_server_cert'] == 'none') {
 		$input_errors[] = "SSL Server Certificate must not be set to 'none'. Create a server certificate if needed and select it here.";
 	}
+*/
 
 	// EAP-TLS Fragment Size
 	if ($post['vareapconffragmentsize'] != '') {
