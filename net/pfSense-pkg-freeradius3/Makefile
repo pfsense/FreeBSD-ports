@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-freeradius3
 PORTVERSION=	0.6
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -16,8 +16,7 @@ LICENSE=	APACHE20
 RUN_DEPENDS=	${LOCALBASE}/sbin/radiusd:net/freeradius3 \
 		${LOCALBASE}/bin/bash:shells/bash
 
-USES=		python:2.7 shebangfix
-SHEBANG_FILES=	../../files/usr/local/pkg/googleauth.py
+USES=		python:2.7
 
 NO_BUILD=	yes
 NO_MTREE=	yes
