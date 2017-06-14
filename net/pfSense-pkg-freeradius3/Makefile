@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-freeradius3
-PORTVERSION=	0.5.1
+PORTVERSION=	0.6
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -14,6 +14,9 @@ LICENSE=	APACHE20
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/radiusd:net/freeradius3 \
 		${LOCALBASE}/bin/bash:shells/bash
+
+USES=		python2.7 shebangfix
+SHEBANG_FILES=	pkg/googleauth.py
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -55,6 +58,8 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/googleauth.py \
+		${STAGEDIR}${PREFIX}/pkg
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
 		${STAGEDIR}${DATADIR}/info.xml
 
