@@ -47,6 +47,7 @@ define('FREERADIUS_MODSENABLED', FREERADIUS_RADDB . '/mods-enabled');
 define('FREERADIUS_SITESAVAIL', FREERADIUS_RADDB . '/sites-available');
 define('FREERADIUS_SITESENABLED', FREERADIUS_RADDB . '/sites-enabled');
 define('FREERADIUS_POLICYD', FREERADIUS_RADDB . '/policy.d');
+define('FREERADIUS_PKGSOURCE', FREERADIUS_BASE . '/pkg');
 
 /*
  * List of functions that directly call restart_service("radiusd")
@@ -195,6 +196,7 @@ function freeradius_install_command() {
 	// These two functions create the module and the dictionary entry for Mobile-One-Time-Password
 	freeradius_dictionary_resync();
 	freeradius_modulesmotp_resync();
+	freeradius_modulesgoogleauth_resync();
 
 	// Here we create the modules and scripts for the datacounter
 	freeradius_modulesdatacounter_resync();
@@ -477,6 +479,7 @@ function freeradius_users_resync($via_rpc = false) {
 					$varuserspassword = $users['varuserspassword'];
 			}
 
+			$varusersauthmethod = $users['varusersauthmethod'];
 			$varusersmotpinitsecret = $users['varusersmotpinitsecret'];
 			$varusersmotppin = $users['varusersmotppin'];
 			$varusersmotpoffset = ($users['varusersmotpoffset'] ?: '0');
@@ -565,7 +568,11 @@ function freeradius_users_resync($via_rpc = false) {
 			// end of check if otp is enabled
 			} else {
 				// if otp is enabled we need to set Auth-Type to accept because password will be checked when the otp script gets executed in reply-item list
-				$varuserscheckitem = "\"{$varusersusername}\" Auth-Type = motp";
+				// prevent overwrite with '' on package update
+				if (empty($varusersauthmethod)) {
+					$varusersauthmethod = "motp";
+				}
+				$varuserscheckitem = "\"{$varusersusername}\" Auth-Type = {$varusersauthmethod}";
 			}
 
 			// Add additional CHECK-ITEMS here. Different formatting in "users" file needed.
@@ -592,7 +599,6 @@ function freeradius_users_resync($via_rpc = false) {
 	MOTP-Init-Secret = {$varusersmotpinitsecret},
 	MOTP-PIN = {$varusersmotppin},
 	MOTP-Offset = {$varusersmotpoffset}
-
 EOD;
 			} else {
 				$varusersreplyitem .= '';
@@ -606,7 +612,6 @@ EOD;
 				$varusersreplyitem .= <<<EOD
 
 	Framed-IP-Address = {$varusersframedipaddress}
-
 EOD;
 			}
 			if ($varusersframedipnetmask != '') {
@@ -616,7 +621,6 @@ EOD;
 				$varusersreplyitem .= <<<EOD
 
 	Framed-IP-Netmask = {$varusersframedipnetmask}
-
 EOD;
 			}
 			if ($varusersframedroute != '') {
@@ -626,7 +630,6 @@ EOD;
 				$varusersreplyitem .= <<<EOD
 
 	Framed-Route = "{$varusersframedroute}"
-
 EOD;
 			}
 			if ($varuserssessiontimeout != '') {
@@ -636,7 +639,6 @@ EOD;
 				$varusersreplyitem .= <<<EOD
 
 	Session-Timeout := {$varuserssessiontimeout}
-
 EOD;
 			}
 			if ($varusersvlanid != '') {
@@ -647,8 +649,7 @@ EOD;
 
 	Tunnel-Type = VLAN,
 	Tunnel-Medium-Type = IEEE-802,
-	Tunnel-Private-Group-ID = "{$varusersvlanid}";
-
+	Tunnel-Private-Group-ID = "{$varusersvlanid}"
 EOD;
 			}
 			if ($varusersmaxbandwidthup != '') {
@@ -658,7 +659,6 @@ EOD;
 				$varusersreplyitem .= <<<EOD
 
 	WISPr-Bandwidth-Max-Up := {$varusersmaxbandwidthup}
-
 EOD;
 			}
 			if ($varusersmaxbandwidthdown != '') {
@@ -668,7 +668,6 @@ EOD;
 				$varusersreplyitem .= <<<EOD
 
 	WISPr-Bandwidth-Max-Down := {$varusersmaxbandwidthdown}
-
 EOD;
 			}
 			if ($varusersacctinteriminterval != '') {
@@ -678,7 +677,6 @@ EOD;
 				$varusersreplyitem .= <<<EOD
 
 	Acct-Interim-Interval := {$varusersacctinteriminterval}
-
 EOD;
 			}
 			if ($varuserswisprredirectionurl != '') {
@@ -688,7 +686,6 @@ EOD;
 				$varusersreplyitem .= <<<EOD
 
 	WISPr-Redirection-URL := {$varuserswisprredirectionurl}
-
 EOD;
 			}
 			// If an octet limit is set we create the files for the limit and the counter. Further we call an exec script which checks if the limit is reached or not
@@ -701,7 +698,6 @@ EOD;
 				$varusersreplyitem .= <<<EOD
 
 	Exec-Program-Wait = "/bin/sh {$varFREERADIUS_SCRIPTS}/datacounter_auth.sh {$varusersusername} {$varusersmaxtotaloctetstimerange}"
-
 EOD;
 				// create limit file - will be always overwritten so we can increase limit from GUI
 				file_put_contents("/var/log/radacct/datacounter/{$varusersmaxtotaloctetstimerange}/max-octets-{$varusersusername}", $varusersmaxtotaloctets, LOCK_EX);
@@ -868,7 +864,6 @@ function freeradius_authorizedmacs_resync($restart_svc = true, $via_rpc = false)
 				$varmacsreplyitem .= <<<EOD
 
 	Framed-IP-Address = {$varmacsframedipaddress}
-
 EOD;
 			}
 			if ($varmacsframedipnetmask != '') {
@@ -878,7 +873,6 @@ EOD;
 				$varmacsreplyitem .= <<<EOD
 
 	Framed-IP-Netmask = {$varmacsframedipnetmask}
-
 EOD;
 			}
 			if ($varmacsframedroute != '') {
@@ -888,7 +882,6 @@ EOD;
 				$varmacsreplyitem .= <<<EOD
 
 	Framed-Route = "{$varmacsframedroute}"
-
 EOD;
 			}
 			if ($varmacssessiontimeout != '') {
@@ -898,7 +891,6 @@ EOD;
 				$varmacsreplyitem .= <<<EOD
 
 	Session-Timeout := {$varmacssessiontimeout}
-
 EOD;
 			}
 			if ($varmacsvlanid != '') {
@@ -910,7 +902,6 @@ EOD;
 	Tunnel-Type = VLAN,
 	Tunnel-Medium-Type = IEEE-802,
 	Tunnel-Private-Group-ID = "{$varmacsvlanid}"
-
 EOD;
 			}
 			if ($varmacsmaxbandwidthup != '') {
@@ -920,7 +911,6 @@ EOD;
 				$varmacsreplyitem .= <<<EOD
 
 	WISPr-Bandwidth-Max-Up := {$varmacsmaxbandwidthup}
-
 EOD;
 			}
 			if ($varmacsmaxbandwidthdown != '') {
@@ -930,7 +920,6 @@ EOD;
 				$varmacsreplyitem .= <<<EOD
 
 	WISPr-Bandwidth-Max-Down := {$varmacsmaxbandwidthdown}
-
 EOD;
 			}
 			if ($varmacsacctinteriminterval != '') {
@@ -940,7 +929,6 @@ EOD;
 				$varmacsreplyitem .= <<<EOD
 
 	Acct-Interim-Interval := {$varmacsacctinteriminterval}
-
 EOD;
 			}
 			if ($varmacswisprredirectionurl != '') {
@@ -950,7 +938,6 @@ EOD;
 				$varmacsreplyitem .= <<<EOD
 
 	WISPr-Redirection-URL := {$varmacsswisprredirectionurl}
-
 EOD;
 			}
 			// If an octet limit is set we create the files for the limit and the counter. Further we call an exec script which checks if the limit is reached or not
@@ -963,7 +950,6 @@ EOD;
 				$varmacsreplyitem .= <<<EOD
 
 	Exec-Program-Wait = "/bin/sh {$varFREERADIUS_SCRIPTS}/datacounter_auth.sh {$varmacsaddress} {$varmacsmaxtotaloctetstimerange}"
-
 EOD;
 				// create limit file - will be always overwritten so we can increase limit from GUI
 				file_put_contents("/var/log/radacct/datacounter/{$varmacsmaxtotaloctetstimerange}/max-octets-{$varmacsaddress}", $varmacsmaxtotaloctets, LOCK_EX);
@@ -2205,6 +2191,9 @@ authenticate {
 	mschap
 	Auth-Type MOTP {
 		motp
+	}
+	Auth-Type GOOGLEAUTH {
+		googleauth
 	}
 	digest
 #	pam
@@ -3488,6 +3477,36 @@ EOD;
 	chmod($filename, 0640);
 }
 
+function freeradius_modulesgoogleauth_resync() {
+	global $config;
+	$conf = '';
+
+	// put the constant to a variable
+	$varFREERADIUS_SCRIPTS = FREERADIUS_SCRIPTS;
+
+	$conf .= <<<EOD
+exec googleauth {
+	wait = yes
+	program = "{$varFREERADIUS_SCRIPTS}/googleauth.py %{request:User-Name} %{reply:MOTP-Init-Secret} %{reply:MOTP-PIN} %{request:User-Password}"
+}
+
+EOD;
+
+	$filename = FREERADIUS_MODSENABLED . '/googleauth';
+	/* Remove what could be a symlink first before writing */
+	@unlink_if_exists($filename);
+	safe_mkdir(FREERADIUS_MODSENABLED);
+	file_put_contents($filename, $conf);
+	chmod($filename, 0640);
+
+	$googleauth_script = FREERADIUS_SCRIPTS . '/googleauth.py';
+	if (!is_link($googleauth_script) && is_file(FREERADIUS_PKGSOURCE . '/googleauth.py')) {
+		@unlink_if_exists($googleauth_script);
+		chmod(FREERADIUS_PKGSOURCE . '/googleauth.py', 0755);
+		symlink(FREERADIUS_PKGSOURCE . '/googleauth.py', $googleauth_script);
+	}
+}
+
 function freeradius_modulesdatacounter_resync() {
 	global $config;
 	$conf = '';
@@ -3652,12 +3671,29 @@ function freeradius_validate_users($post, &$input_errors) {
 		$input_errors[] = "The 'Password' field must be left empty when 'Enable One-Time-Password for this user' is checked.";
 	}
 
+	// OTP method
+	if ($post['varusersmotpenable'] == 'on') {
+		if ($post['varusersauthmethod'] == '') {
+			$input_errors[] = "The 'Authentication method' field may not be empty when 'Enable One-Time-Password for this user' is checked.";
+		} elseif (!preg_match('/^(motp|googleauth)$/', $post['varusersauthmethod'])) {
+			$input_errors[] = "The 'Authentication method' field contains an invalid selection.";
+		}
+	}
+
 	// Init-Secret
 	if ($post['varusersmotpenable'] == 'on') {
 		if ($post['varusersmotpinitsecret'] == '') {
 			$input_errors[] = "The 'Init-Secret' field may not be empty when 'Enable One-Time-Password for this user' is checked.";
-		} elseif (!preg_match('/^[0-9a-f]{16,}$/', $post['varusersmotpinitsecret'])) {
-			$input_errors[] = "The 'Init-Secret' field may only contain 0-9 and a-f (regex /^[0-9a-f]*$/) and must contain at least 16 characters.";
+		} else {
+			if (preg_match('/^(motp)$/', $post['varusersauthmethod'])) {
+				if (!preg_match('/^[0-9a-f]{16,}$/', $post['varusersmotpinitsecret'])) {
+					$input_errors[] = "The 'Init-Secret' field may only contain 0-9 and a-f (regex /^[0-9a-f]*$/) and must contain at least 16 characters.";
+				}
+			} elseif (preg_match('/^(googleauth)$/', $post['varusersauthmethod'])) {
+				if (!preg_match('/^[0-9a-zA-Z]{16,}$/', $post['varusersmotpinitsecret'])) {
+					$input_errors[] = "The 'Init-Secret' field may only contain 0-9, a-z and A-Z (regex /^[0-9a-zA-Z]*$/) and must contain at least 16 characters.";
+				}
+			}
 		}
 	}
 
