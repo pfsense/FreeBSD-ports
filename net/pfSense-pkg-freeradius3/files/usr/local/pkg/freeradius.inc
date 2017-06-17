@@ -1907,7 +1907,7 @@ EOD;
 
 	/* If neither LDAP mode or server is configured, do not activate the LDAP module */
 	if (!$arrmodulesldap['varmodulesldapenableauthorize'] && !$arrmodulesldap['varmodulesldapenableauthenticate'] &&
-	    !$arrmodulesldap['varmodulesldapenableauthorize'] && !$arrmodulesldap['varmodulesldapenableauthenticate']) {
+	    !$arrmodulesldap['varmodulesldap2enableauthorize'] && !$arrmodulesldap['varmodulesldap2enableauthenticate']) {
 		/* Deactivate LDAP module if it is not enabled */
 		@unlink_if_exists(FREERADIUS_MODSENABLED . '/ldap');
 	}
