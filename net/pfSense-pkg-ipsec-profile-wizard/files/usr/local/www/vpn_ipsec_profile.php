@@ -374,15 +374,24 @@ function generate_ikev2($phase1, $user, $authMethod, $extendedAuth, $realAddr) {
 		$ipsecHashAlg = $ikeHashAlg;
 	}
 
-	$ipsecDhGroup = $raPhase2['pfsgroup'];
+	if (isset($config['ipsec']['client']['pfs_group'])) {
+		$ipsecDhGroup = $config['ipsec']['client']['pfs_group'];
+	} elseif (isset($raPhase2['pfsgroup'])) {
+		$ipsecDhGroup = $raPhase2['pfsgroup'];
+	} else {
+		$ipsecDhGroup = 0;
+	}
+
 	$ipsecLifetime = $raPhase2['lifetime'] / 60;
 
 	$childSADict = key_data_str("EncryptionAlgorithm", "string",
 		$ipsecEncAlg, SASCOPE);
 	$childSADict .= key_data_str("IntegrityAlgorithm", "string",
 		$ipsecHashAlg, SASCOPE);
-	$childSADict .= key_data_str("DiffieHellmanGroup", "integer",
-		$ipsecDhGroup, SASCOPE);
+	if ($ipsecDhGroup > 0) {
+		$childSADict .= key_data_str("DiffieHellmanGroup", "integer",
+			$ipsecDhGroup, SASCOPE);
+	}
 	$childSADict .= key_data_str("LifeTimeInMinutes", "integer",
 		$ipsecLifetime, SASCOPE);
 
