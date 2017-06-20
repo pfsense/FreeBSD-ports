@@ -469,11 +469,9 @@ function generate_ike($phase1, $profId, $certUuid, $user) {
 	 * equal to either the CN of the certificate (which must resolve in
 	 * DNS) or a value populated in an altSubjectName of the certificate
 	 */
-	if (!$phase1['peerid_data']) {
-		if ($setCertUuid) {
-			$phase1['peerid_data'] = get_cert_client_id(
-				$phase1['caref'], $user);
-		}
+	if ($setCertUuid) {
+		$phase1['peerid_data'] = get_cert_client_id(
+			$phase1['caref'], $user);
 	}
 
 	/* generate the pieces that are specific to the IKE version */
