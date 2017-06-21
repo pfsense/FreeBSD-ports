@@ -13,7 +13,7 @@ COMMENT=	pfSense package openvpn-client-export
 LICENSE=	APACHE20
 
 RUN_DEPENDS=	openvpn>=2.4.3:security/openvpn \
-		nopenvpn-client-export>2.4.3_2:security/openvpn-client-export \
+		openvpn-client-export>2.4.3_2:security/openvpn-client-export \
 		zip>0:archivers/zip \
 		p7zip>0:archivers/p7zip
 
