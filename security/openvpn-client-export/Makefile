@@ -2,7 +2,7 @@
 
 PORTNAME=	openvpn-client-export
 PORTVERSION=	2.4.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	http://files.pfsense.org/packages/openvpn-client-export/
 
@@ -11,7 +11,7 @@ COMMENT=	OpenVPN Client Export
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	openvpn23>0:security/openvpn23
+RUN_DEPENDS=	openvpn23>=2.3.17:security/openvpn23
 
 USES=		tar:tgz
 
