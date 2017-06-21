@@ -122,4 +122,7 @@ typedef struct etherswitch_vlangroup etherswitch_vlangroup_t;
 #define IOETHERSWITCHGETCONF		_IOR('i', 10, etherswitch_conf_t)
 #define IOETHERSWITCHSETCONF		_IOW('i', 11, etherswitch_conf_t)
 
+/* XXX pfSense - do not remove. */
+void print_media_word(char *, size_t, int, int);
+
 #endif

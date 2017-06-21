@@ -1673,7 +1673,7 @@ PHP_FUNCTION(pfSense_etherswitch_getinfo)
 		array_init(pmask);
 		for (i = 0; i < info.es_nports; i++)
 			if ((info.es_ports_mask[i / 32] & (1 << (i % 32))) != 0)
-				add_index_bool(pmask, i, true);
+				add_index_bool(pmask, i, 1);
 		add_assoc_zval(return_value, "ports_mask", pmask);
 	}
 
