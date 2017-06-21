@@ -1664,11 +1664,11 @@ PHP_FUNCTION(pfSense_etherswitch_getinfo)
 
 	ALLOC_INIT_ZVAL(swcaps);
 	array_init(swcaps);
-	if (info.es_switch_caps & ETHERSWITCH_PORTS_MASK)
+	if (info.es_switch_caps & ETHERSWITCH_CAPS_PORTS_MASK)
 		add_assoc_long(caps, "PORTS_MASK", 1);
 	add_assoc_zval(return_value, "switch_caps", swcaps);
 
-	if (info.es_switch_caps & ETHERSWITCH_PORTS_MASK) {
+	if (info.es_switch_caps & ETHERSWITCH_CAPS_PORTS_MASK) {
 		ALLOC_INIT_ZVAL(pmask);
 		array_init(pmask);
 		for (i = 0; i < info.es_nports; i++)
