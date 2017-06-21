@@ -1618,9 +1618,9 @@ PHP_FUNCTION(pfSense_etherswitch_getinfo)
 	char *dev, *vlan_mode;
 	etherswitch_conf_t conf;
 	etherswitch_info_t info;
-	int fd;
+	int fd, i;
 	long devlen;
-	zval *caps;
+	zval *caps, *pmask, *swcaps;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &dev, &devlen) == FAILURE)
 		RETURN_NULL();
@@ -1661,6 +1661,21 @@ PHP_FUNCTION(pfSense_etherswitch_getinfo)
 	if (info.es_vlan_caps & ETHERSWITCH_VLAN_DOUBLE_TAG)
 		add_assoc_long(caps, "QinQ", 1);
 	add_assoc_zval(return_value, "caps", caps);
+
+	ALLOC_INIT_ZVAL(swcaps);
+	array_init(swcaps);
+	if (info.es_switch_caps & ETHERSWITCH_PORTS_MASK)
+		add_assoc_long(caps, "PORTS_MASK", 1);
+	add_assoc_zval(return_value, "switch_caps", swcaps);
+
+	if (info.es_switch_caps & ETHERSWITCH_PORTS_MASK) {
+		ALLOC_INIT_ZVAL(pmask);
+		array_init(pmask);
+		for (i = 0; i < info.es_nports; i++)
+			if ((info.es_ports_mask[i / 32] & (1 << (i % 32))) != 0)
+				add_index_bool(pmask, i, true);
+		add_assoc_zval(return_value, "ports_mask", pmask);
+	}
 
 	switch(conf.vlan_mode) {
 	case ETHERSWITCH_VLAN_ISL:
