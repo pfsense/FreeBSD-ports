@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=		openvpn
-DISTVERSION=		2.3.16
+DISTVERSION=		2.3.17
 CATEGORIES=		security net
 MASTER_SITES=		https://swupdate.openvpn.net/community/releases/ \
 			https://build.openvpn.net/downloads/releases/
