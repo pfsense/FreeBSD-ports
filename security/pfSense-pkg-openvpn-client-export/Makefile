@@ -14,7 +14,7 @@ LICENSE=	APACHE20
 
 RUN_DEPENDS=	openvpn-client-export>2.4.3_2:security/openvpn-client-export \
 		zip>0:archivers/zip \
-		7z>0:archivers/p7zip
+		p7zip>0:archivers/p7zip
 
 NO_BUILD=	yes
 NO_MTREE=	yes
