@@ -14,7 +14,7 @@ extern driver_t         etherswitch_driver;
 
 struct etherswitch_reg {
 	uint16_t	reg;
-	uint16_t	val;
+	uint32_t	val;
 };
 typedef struct etherswitch_reg etherswitch_reg_t;
 
@@ -36,11 +36,20 @@ typedef struct etherswitch_phyreg etherswitch_phyreg_t;
 #define	ETHERSWITCH_VLAN_CAPS_BITS	\
 "\020\1ISL\2PORT\3DOT1Q\4DOT1Q4K\5QinQ"
 
+#define	ETHERSWITCH_CAPS_PORTS_MASK	(1 << 0)	/* Ports mask */
+#define	ETHERSWITCH_CAPS_BITS		\
+"\020\1PORTSMASK"
+
+#define	MAX_PORTS			1024
+#define	MAX_PORTS_UINT32		(MAX_PORTS / sizeof(uint32_t))
+
 struct etherswitch_info {
 	int		es_nports;
 	int		es_nvlangroups;
 	char		es_name[ETHERSWITCH_NAMEMAX];
 	uint32_t	es_vlan_caps;
+	uint32_t	es_switch_caps;
+	uint32_t	es_ports_mask[MAX_PORTS_UINT32];
 };
 typedef struct etherswitch_info etherswitch_info_t;
 
@@ -64,10 +73,23 @@ typedef struct etherswitch_conf etherswitch_conf_t;
 #define	ETHERSWITCH_PORT_FLAGS_BITS	\
 "\020\1CPUPORT\2STRIPTAG\3ADDTAG\4FIRSTLOCK\5DROPUNTAGGED\6QinQ\7INGRESS"
 
+#define ETHERSWITCH_PORT_MAX_LEDS 3
+
+enum etherswitch_port_led {
+	ETHERSWITCH_PORT_LED_DEFAULT,
+	ETHERSWITCH_PORT_LED_ON,
+	ETHERSWITCH_PORT_LED_OFF,
+	ETHERSWITCH_PORT_LED_BLINK,
+	ETHERSWITCH_PORT_LED_MAX
+};
+typedef enum etherswitch_port_led etherswitch_port_led_t;
+
 struct etherswitch_port {
 	int		es_port;
 	int		es_pvid;
+	int		es_nleds;
 	uint32_t	es_flags;
+	etherswitch_port_led_t es_led[ETHERSWITCH_PORT_MAX_LEDS];
 	union {
 		struct ifreq		es_uifr;
 		struct ifmediareq	es_uifmr;
@@ -100,6 +122,7 @@ typedef struct etherswitch_vlangroup etherswitch_vlangroup_t;
 #define IOETHERSWITCHGETCONF		_IOR('i', 10, etherswitch_conf_t)
 #define IOETHERSWITCHSETCONF		_IOW('i', 11, etherswitch_conf_t)
 
+/* XXX pfSense - do not remove. */
 void print_media_word(char *, size_t, int, int);
 
 #endif
