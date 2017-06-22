@@ -2725,7 +2725,7 @@ function freeradius_modulesldap_resync($restart_svc = true) {
 	$varmodulesldapserver = ($arrmodulesldap['varmodulesldapserver'] ?: 'ldap.example.com');
 	$varmodulesldapserverport = ($arrmodulesldap['varmodulesldapserverport'] ?: '389');
 	$varmodulesldapidentity = ($arrmodulesldap['varmodulesldapidentity'] ?: 'cn=admin,o=My Company Ltd,c=US');
-	$varmodulesldappassword = ($arrmodulesldap['varmodulesldappassword'] ?: 'mypass');
+	$varmodulesldappassword = (escapeshellarg($arrmodulesldap['varmodulesldappassword']) ?: 'mypass');
 	$varmodulesldapbasedn = ($arrmodulesldap['varmodulesldapbasedn'] ?: 'o=My Company Ltd,c=US');
 	$varmodulesldapfilter = ($arrmodulesldap['varmodulesldapfilter'] ?: '(uid=%{%{Stripped-User-Name}:-%{User-Name}})');
 	$varmodulesldapbasefilter = ($arrmodulesldap['varmodulesldapbasefilter'] ?: '(objectclass=radiusprofile)');
@@ -2738,7 +2738,7 @@ function freeradius_modulesldap_resync($restart_svc = true) {
 	$varmodulesldap2server = ($arrmodulesldap['varmodulesldap2server'] ?: 'ldap.example.com');
 	$varmodulesldap2serverport = ($arrmodulesldap['varmodulesldap2serverport'] ?: '389');
 	$varmodulesldap2identity = ($arrmodulesldap['varmodulesldap2identity'] ?: 'cn=admin,o=My Company Ltd,c=US');
-	$varmodulesldap2password = ($arrmodulesldap['varmodulesldap2password'] ?: 'mypass');
+	$varmodulesldap2password = (escapeshellarg($arrmodulesldap['varmodulesldap2password']) ?: 'mypass');
 	$varmodulesldap2basedn = ($arrmodulesldap['varmodulesldap2basedn'] ?: 'o=My Company Ltd,c=US');
 	$varmodulesldap2filter = ($arrmodulesldap['varmodulesldap2filter'] ?: '(uid=%{%{Stripped-User-Name}:-%{User-Name}})');
 	$varmodulesldap2basefilter = ($arrmodulesldap['varmodulesldap2basefilter'] ?: '(objectclass=radiusprofile)');
