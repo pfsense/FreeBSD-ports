@@ -208,7 +208,7 @@ function nrpe2_custom_php_service() {
 function nrpe2_get_commands() {
 	$nagios_check_path = NRPE_BASE . "/libexec/nagios";
 	$commands = glob("{$nagios_check_path}/check_*");
-	$cmdarr = array();
+	$cmdarr = array(array("command" => "/bin/tcsh -c "));
 	foreach ($commands as $cmd) {
 		$cmdarr[]["command"] = basename($cmd);
 	}
@@ -230,5 +230,3 @@ function nrpe2_custom_php_validation_command($post, &$input_errors) {
 		}
 	}
 }
-
-?>
