@@ -1,0 +1,22 @@
+--- init/freebsd/waagent.orig	2017-06-23 19:49:38 UTC
++++ init/freebsd/waagent
+@@ -4,6 +4,9 @@
+ # REQUIRE: sshd netif dhclient
+ # KEYWORD: nojail
+ 
++waagent_enable="YES"
++waagent_flags=" daemon &"
++
+ . /etc/rc.subr
+ 
+ PATH=$PATH:/usr/local/bin
+@@ -11,8 +14,7 @@ name="waagent"
+ rcvar="waagent_enable"
+ pidfile="/var/run/waagent.pid"
+ command="/usr/local/sbin/${name}"
+-command_interpreter="python"
+-command_args="start"
++command_interpreter="%%PYTHON_CMD%%"
+ 
+ load_rc_config $name
+ run_rc_command "$1"

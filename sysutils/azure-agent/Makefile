@@ -45,6 +45,10 @@ post-patch:
 	${REINPLACE_CMD} -e "s,/usr/bin/python,${PREFIX}/bin/python,g" \
 		${WRKSRC}/init/waagent.service
 	${REINPLACE_CMD} -e "s,:/usr/local/bin,:/usr/local/bin:/usr/local/sbin,g" \
+			 -e "s,%%PYTHON_CMD%%,${PYTHON_CMD}," \
 		${WRKSRC}/init/freebsd/waagent
+	${MV} ${WRKSRC}/init/freebsd/waagent ${WRKSRC}/init/freebsd/waagent.sh
+	${REINPLACE_CMD} -e "/set_freebsd_rc_files/ s,init/freebsd/waagent,init/freebsd/waagent.sh," \
+		${WRKSRC}/setup.py
 
 .include <bsd.port.mk>
