@@ -156,11 +156,11 @@ function nrpe2_custom_php_write_config() {
 		$ccmd = !empty($cmd['critical']) ? "-c {$cmd['critical']}" : "";
 
 		$path_to_command = "{$nagios_check_path}/{$cmd['command']}";
-		$is_absolute_path_command = (strpos($cmd['command'], '/') === 0); 
-		if ($is_absolute_path_command) {
-			$path_to_command = $cmd['command'];
+		$is_custom_shell_command = ($cmd['command'] === 'Custom shell command');
+		if ($is_custom_shell_command) {
+			$path_to_command = '';
 		}
-		if (is_executable($path_to_command) || $is_absolute_path_command) {
+		if (is_executable($path_to_command) || $is_custom_shell_command) {
 			$cmds[] = "command[{$cmd['name']}]={$sudo}{$path_to_command} {$wcmd} {$ccmd} {$cmd['extra']}\n";
 		}
 	}
@@ -215,7 +215,7 @@ function nrpe2_get_commands() {
 	$nagios_check_path = NRPE_BASE . "/libexec/nagios";
 	$commands = glob("{$nagios_check_path}/check_*");
 	$cmdarr = array(
-		array("command" => '/bin/tcsh -c')
+		array("command" => 'Custom shell command')
 	);
 	foreach ($commands as $cmd) {
 		$cmdarr[]["command"] = basename($cmd);
