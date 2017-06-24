@@ -154,8 +154,14 @@ function nrpe2_custom_php_write_config() {
 		$sudo = (isset($cmd['sudo']) && is_executable($sudo_bin)) ? "{$sudo_bin} " : "";
 		$wcmd = !empty($cmd['warning']) ? "-w {$cmd['warning']}" : "";
 		$ccmd = !empty($cmd['critical']) ? "-c {$cmd['critical']}" : "";
-		if (is_executable("{$nagios_check_path}/{$cmd['command']}")) {
-			$cmds[] = "command[{$cmd['name']}]={$sudo}{$nagios_check_path}/{$cmd['command']} {$wcmd} {$ccmd} {$cmd['extra']}\n";
+
+		$path_to_command = "{$nagios_check_path}/{$cmd['command']}";
+		$is_absolute_path_command = (strpos($cmd['command'], '/') === 0); 
+		if ($is_absolute_path_command) {
+			$path_to_command = $cmd['command'];
+		}
+		if (is_executable($path_to_command) || $is_absolute_path_command) {
+			$cmds[] = "command[{$cmd['name']}]={$sudo}{$path_to_command} {$wcmd} {$ccmd} {$cmd['extra']}\n";
 		}
 	}
 	$commands = implode($cmds);
@@ -208,7 +214,9 @@ function nrpe2_custom_php_service() {
 function nrpe2_get_commands() {
 	$nagios_check_path = NRPE_BASE . "/libexec/nagios";
 	$commands = glob("{$nagios_check_path}/check_*");
-	$cmdarr = array(array("command" => "/bin/tcsh -c "));
+	$cmdarr = array(
+		array("command" => '/bin/tcsh -c')
+	);
 	foreach ($commands as $cmd) {
 		$cmdarr[]["command"] = basename($cmd);
 	}
@@ -230,3 +238,5 @@ function nrpe2_custom_php_validation_command($post, &$input_errors) {
 		}
 	}
 }
+
+?>
