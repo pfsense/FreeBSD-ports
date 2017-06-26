@@ -60,8 +60,9 @@ OPENSSL_USES=		ssl
 OPENSSL_CONFIGURE_ON=	--with-crypto-library=openssl
 
 # Pin the libmbedtls version because the 2.3.x port can't work with .so.10 or
-# newer from the security/mbedtls package. Upstream works in progress
-# for OpenVPN 2.4 to use mbedTLS 2.X.
+# newer from the security/mbedtls package.
+# Recent upstream 2.4 versions can use mbedTLS 2.X, and there is a
+# corresponding port.
 POLARSSL_LIB_DEPENDS=	libmbedtls.so.9:security/polarssl13
 POLARSSL_CONFIGURE_ON=	--with-crypto-library=polarssl
 
