@@ -1,4 +1,4 @@
---- azurelinuxagent/common/osutil/freebsd.py.orig	2017-06-27 10:48:46 UTC
+--- azurelinuxagent/common/osutil/freebsd.py.orig	2017-06-08 17:53:14 UTC
 +++ azurelinuxagent/common/osutil/freebsd.py
 @@ -30,14 +30,16 @@ class FreeBSDOSUtil(DefaultOSUtil):
          self._scsi_disks_timeout_set = False

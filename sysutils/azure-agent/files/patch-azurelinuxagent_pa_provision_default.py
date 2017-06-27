@@ -1,4 +1,4 @@
---- azurelinuxagent/pa/provision/default.py.orig	2017-06-27 11:12:03 UTC
+--- azurelinuxagent/pa/provision/default.py.orig	2017-06-08 17:53:14 UTC
 +++ azurelinuxagent/pa/provision/default.py
 @@ -210,13 +210,17 @@ class ProvisionHandler(object):
              salt_len = conf.get_password_crypt_salt_len()

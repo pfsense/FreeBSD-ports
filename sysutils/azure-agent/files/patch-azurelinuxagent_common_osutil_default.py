@@ -1,4 +1,4 @@
---- azurelinuxagent/common/osutil/default.py.orig	2017-06-27 11:25:38 UTC
+--- azurelinuxagent/common/osutil/default.py.orig	2017-06-08 17:53:14 UTC
 +++ azurelinuxagent/common/osutil/default.py
 @@ -234,6 +234,8 @@ class DefaultOSUtil(object):
              if not value.startswith("ssh-"):

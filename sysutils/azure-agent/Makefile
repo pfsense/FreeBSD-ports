@@ -2,7 +2,7 @@
 
 PORTNAME=	azure-agent
 PORTVERSION=	2.2.13
-PORTREVISION=	2
+PORTREVISION=	3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
@@ -48,6 +48,8 @@ post-patch:
 	${REINPLACE_CMD} -e "s,:/usr/local/bin,:/usr/local/bin:/usr/local/sbin,g" \
 			 -e "s,%%PYTHON_CMD%%,${PYTHON_CMD}," \
 		${WRKSRC}/init/freebsd/waagent
+	${REINPLACE_CMD} -e "s,%%PYTHON_CMD%%,${PYTHON_CMD}," \
+		${WRKSRC}/azurelinuxagent/ga/update.py
 	${MV} ${WRKSRC}/init/freebsd/waagent ${WRKSRC}/init/freebsd/waagent.sh
 	${REINPLACE_CMD} -e "/set_freebsd_rc_files/ s,init/freebsd/waagent,init/freebsd/waagent.sh," \
 		${WRKSRC}/setup.py
