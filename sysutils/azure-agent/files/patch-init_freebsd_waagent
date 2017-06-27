@@ -1,4 +1,4 @@
---- init/freebsd/waagent.orig	2017-06-23 19:49:38 UTC
+--- init/freebsd/waagent.orig	2017-06-08 17:53:14 UTC
 +++ init/freebsd/waagent
 @@ -4,6 +4,9 @@
  # REQUIRE: sshd netif dhclient
