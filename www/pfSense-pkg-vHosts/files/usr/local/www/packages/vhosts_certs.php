@@ -350,7 +350,7 @@ else {
 						<th><?=gettext("Common Name")?></th>
 						<th><?=gettext("Valid From")?></th>
 						<th><?=gettext("Valid Until")?></th>
-						<th><?=gettext("Used By")?></th>
+						<th><?=gettext("Host Bindings")?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -362,22 +362,29 @@ else {
 					$commonName = htmlspecialchars($crt['subject']['CN']);
 					$validFrom  = htmlspecialchars(date('r', $crt['validFrom_time_t']));
 					$validUntil = htmlspecialchars(date('r', $crt['validTo_time_t']));
-
+					
+					/*---------------------------------------------------*/
+					/* For host bindings, show first hostname or IP/Port */
+					/* for each host to which this certificate is bound. */
+					/*---------------------------------------------------*/
 					$vhosts     = $config['installedpackages']['vhosts']['config'];
 					$vhosts     = array_filter($vhosts, function($vhost) use ($refid) { return ($vhost['certref'] == $refid); });
-					$usedby     = join('<br/>', array_column($vhosts, 'description'));
-
+					$bindings   = join('<br/>', array_map(function($vhost) {
+					                  $hostname = explode(' ', $vhost['hostname'] ?: '')[0];
+					                  $ipport   = htmlspecialchars("{$vhost['ipaddress']}:{$vhost['port']}");
+					                  return ($hostname ?: $ipport);
+					                  }, $vhosts));
 					?>
 					<tr>
 						<td><?=$commonName?></td>
 						<td><?=$validFrom?></td>
 						<td><?=$validUntil?></td>
-						<td><?=$usedby?></td>
+						<td><?=$bindings?></td>
 						<td>
 							<a class="fa fa-pencil"	     title="<?=gettext('Edit')?>"                     href="?act=chg&amp;id=<?=$i?>"></a>
 							<a class="fa fa-certificate" title="<?=gettext('Show Certificate Details')?>" href="?act=show&amp;id=<?=$i?>" rel="details" cn="<?=$commonName?>"></a>
 
-							<?php if (!$usedby) { ?>
+							<?php if (!$bindings) { ?>
 								<a class="fa fa-trash"	 title="<?=gettext('Delete this Certificate')?>"  href="?act=del&amp;id=<?=$i?>"></a>
 							<?php } ?>
 						</td>

@@ -251,7 +251,7 @@ if (isset($input_action)) {
 			new Form_Input   ('port',          'Port',                 'number',              $pconfig['port'],       ['min' => '0']),
 			new Form_Input   ('hostname',      'Host Name(s)',         'text',                $pconfig['hostname']),
 			new Form_Input   ('description',   'Description',          'text',                $pconfig['description']),
-			new Form_Select  ('certref',       'Secure certificate',                          $pconfig['certref'],    $certlist)
+			new Form_Select  ('certref',       'Secure Certificate',                          $pconfig['certref'],    $certlist)
 			]],
 		[ 'Advanced Options' =>
 			[
