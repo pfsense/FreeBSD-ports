@@ -4,7 +4,7 @@
 PORTNAME=	bitcoin
 PORTVERSION=	0.12.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	net-p2p finance
 
 MAINTAINER=	robbak@robbak.com
@@ -14,6 +14,8 @@ LICENSE=	MIT
 
 LIB_DEPENDS=	libboost_date_time.so:devel/boost-libs \
 		libevent.so:devel/libevent
+
+BROKEN_powerpc64=	fails to compile: util.cpp: undefined reference to boost::program_options::to_internal
 
 USES=		autoreconf compiler:c++0x gmake libtool pkgconfig shebangfix ssl
 SHEBANG_FILES=	src/test/*.py

@@ -1,10 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	ansiweather
-PORTVERSION=	1.10
+PORTVERSION=	1.11
 CATEGORIES=	misc
 
-MAINTAINER=	dbaio@bsd.com.br
+MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Shell script for displaying the current weather in your terminal
 
 LICENSE=	BSD2CLAUSE

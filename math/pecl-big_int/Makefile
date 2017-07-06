@@ -5,11 +5,8 @@ PORTNAME=	big_int
 PORTVERSION=	1.0.7
 PORTREVISION=	1
 CATEGORIES=	math devel pear
-MASTER_SITES=	http://pecl.php.net/get/
-PKGNAMEPREFIX=	pecl-
-DIST_SUBDIR=	PECL
 
-MAINTAINER=	joneum@bsdproject.de
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Functions for calculations with arbitrary length integers and bitsets
 
 LICENSE=	BIG_INT
@@ -17,7 +14,7 @@ LICENSE_NAME=	BIG_INT license
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		php:ext tar:tgz
+USES=		php:pecl
 IGNORE_WITH_PHP=	70 71
 
 CONFIGURE_ARGS=	--enable-big-int=shared

@@ -2,14 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	node
-PORTVERSION=	4.8.1
-PORTREVISION=	1
+PORTVERSION=	4.8.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES=	http://nodejs.org/dist/v${PORTVERSION}/
 PKGNAMESUFFIX=	4
 
-MAINTAINER=	bradleythughes@fastmail.fm
+MAINTAINER=	bhughes@FreeBSD.org
 COMMENT=	V8 JavaScript for client and server (4.x LTS)
 
 LICENSE=	MIT

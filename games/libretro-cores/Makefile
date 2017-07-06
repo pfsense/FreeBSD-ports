@@ -3,7 +3,7 @@
 
 PORTNAME=	libretro-cores
 PORTVERSION=	0.20161109
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 
 MAINTAINER=	yuri@rawbw.com
@@ -107,6 +107,8 @@ USES=		compiler:c++11-lib dos2unix gmake lua:53 python:2 ssl
 USE_LDCONFIG=	yes
 USE_GL=		gl
 DOS2UNIX_FILES=	hatari/Makefile.libretro 81-libretro/81/sp0256.c libretro-uae/Makefile
+
+BROKEN=	checksum mismatch
 
 .include <bsd.port.pre.mk>
 

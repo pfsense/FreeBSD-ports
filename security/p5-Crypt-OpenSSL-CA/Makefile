@@ -3,6 +3,7 @@
 
 PORTNAME=	Crypt-OpenSSL-CA
 PORTVERSION=	0.24
+PORTREVISION=	2
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -26,14 +27,13 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 TEST_DEPENDS=	p5-Test-Group>=0:devel/p5-Test-Group \
 		p5-Test-Taint>=0:devel/p5-Test-Taint
 
+BROKEN_SSL=	openssl-devel
+
 USES=		perl5 ssl
 USE_PERL5=	modbuild
 CONFIGURE_ARGS=	--openssl-cflags=-L${OPENSSLINC} --openssl-ldflags="-I${OPENSSLLIB} ${OPENSSL_LDFLAGS}"
 
-.include <bsd.port.pre.mk>
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Crypt/OpenSSL/CA/*/*.so
 
-.if ${SSL_DEFAULT:Mopenssl-devel}
-BROKEN=		Does not build with openssl-devel
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

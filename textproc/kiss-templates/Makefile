@@ -3,6 +3,7 @@
 
 PORTNAME=		kiss-templates
 PORTVERSION=		0.19
+PORTREVISION=	1
 CATEGORIES=		textproc
 
 MAINTAINER=		andreas.sommer87@googlemail.com
@@ -10,6 +11,8 @@ COMMENT=		Type safe "Keep it simple, stupid" text templates for C++
 
 LICENSE=		BSD2CLAUSE
 LICENSE_FILE=		${WRKSRC}/LICENSE
+
+BROKEN_powerpc64=	fails to compile: No known features for CXX compiler GNU
 
 USE_GITHUB=		yes
 GH_ACCOUNT=		rbock

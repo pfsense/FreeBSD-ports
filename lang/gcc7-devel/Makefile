@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	gcc
-PORTVERSION=	7.0.1.s20170326
-PORTREVISION=	1
+PORTVERSION=	7.1.1.s20170615
 CATEGORIES=	lang
-MASTER_SITES=	GCC/snapshots/${DISTVERSION}
+MASTER_SITES=	GCC/snapshots/${DIST_VERSION}
 PKGNAMESUFFIX=	${SUFFIX}-devel
+DISTNAME=	gcc-${DIST_VERSION}
 
 MAINTAINER=	gerald@FreeBSD.org
 COMMENT=	GNU Compiler Collection 7
@@ -27,16 +27,15 @@ BUILD_DEPENDS+=	runtest:misc/dejagnu
 CPE_VENDOR=	gnu
 CPE_VERSION=	${GCC_VERSION}
 
-# DISTVERSION relates to downloads, GCC_VERSION and SUFFIX to names
+# DIST_VERSION relates to downloads, GCC_VERSION and SUFFIX to names
 # of executables and directories once installed.  A PORTVERSION of
 # Y.2.1.s20140817 results in values of Y-20140817, Y.2.1, and Y
 # for these three.
-DISTVERSION=	${PORTVERSION:C/([0-9]+).*\.s([0-9]+)/\1-\2/}
-PORTREVISION=	1
+DIST_VERSION=	${PORTVERSION:C/([0-9]+).*\.s([0-9]+)/\1-\2/}
 GCC_VERSION=	${PORTVERSION:C/(.+)\.s[0-9]{8}/\1/}
 SUFFIX=		${PORTVERSION:C/([0-9]+).*/\1/}
-ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc powerpc64 sparc64 arm armv6
-USES=		compiler cpe gmake iconv libtool makeinfo perl5 tar:bzip2
+ONLY_FOR_ARCHS=	aarch64 amd64 arm armv6 i386 powerpc powerpc64 sparc64
+USES=		compiler cpe gmake iconv libtool makeinfo perl5 tar:xz
 USE_BINUTILS=	yes
 USE_PERL5=	build
 SSP_UNSAFE=	yes
@@ -69,9 +68,9 @@ USE_GCC=	yes
 .if ${ARCH} == "armv6"
 . if ${COMPILER_TYPE} == clang
 .  if empty(PORT_OPTIONS:MBOOTSTRAP)
-MAKE_ARGS+=CXXFLAGS=-fbracket-depth=512
+MAKE_ARGS+=CXXFLAGS+=-fbracket-depth=512
 .  else
-MAKE_ARGS+=STAGE1_CXXFLAGS=-fbracket-depth=512
+MAKE_ARGS+=STAGE1_CXXFLAGS+=-fbracket-depth=512
 .  endif
 . endif
 .endif
@@ -111,7 +110,7 @@ INFO=		gcc${SUFFIX}/cpp \
 		gcc${SUFFIX}/gccint \
 		gcc${SUFFIX}/gfortran \
 		gcc${SUFFIX}/libgomp
-.if ${ARCH} == "i386" || ${ARCH} == "amd64"
+.if ${ARCH} == "amd64" || ${ARCH} == "i386"
 INFO+=		gcc${SUFFIX}/libquadmath \
 		gcc${SUFFIX}/libitm
 .endif

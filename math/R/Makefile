@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=		R
-PORTVERSION=		3.3.3
-PORTREVISION=		1
+PORTVERSION=		3.4.0
+PORTREVISION=		2
 CATEGORIES=		math lang
 MASTER_SITES=		CRAN/src/base/R-${PORTVERSION:C|\..*||}
 
@@ -15,16 +15,16 @@ LICENSE=		GPLv2
 LIB_DEPENDS=		libcurl.so:ftp/curl \
 			libpcre.so:devel/pcre
 BUILD_DEPENDS=		texi2any:print/texinfo
+RUN_DEPENDS=		gmake:devel/gmake
 
 CONFIGURE_ARGS=		--disable-java \
 			--with-readline \
 			rdocdir=${DOCSDIR}
-CONFIGURE_ENV=		r_cv_header_zlib_h=yes
 GNU_CONFIGURE=		yes
 INSTALL_TARGET=		install-strip
-ONLY_FOR_ARCHS=		i386 amd64
-USES=			fortran iconv libtool localbase objc:compiler pathfix \
-			perl5 readline
+ONLY_FOR_ARCHS=		amd64 i386
+USES=			fortran gmake iconv libtool localbase objc:compiler \
+			pathfix perl5 readline
 
 USE_PERL5=		build
 

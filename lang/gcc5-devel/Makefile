@@ -2,10 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	gcc
-PORTVERSION=	5.4.1.s20170328
+PORTVERSION=	5.4.1.s20170627
 CATEGORIES=	lang java
-MASTER_SITES=	GCC/snapshots/${DISTVERSION}
+MASTER_SITES=	GCC/snapshots/${DIST_VERSION}
 PKGNAMESUFFIX=	${SUFFIX}-devel
+DISTNAME=	gcc-${DIST_VERSION}
 
 MAINTAINER=	gerald@FreeBSD.org
 COMMENT=	GNU Compiler Collection 5
@@ -23,19 +24,19 @@ RUN_DEPENDS+=	${LOCALBASE}/bin/as:devel/binutils
 BUILD_DEPENDS+=	runtest:misc/dejagnu
 .endif
 
-CONFLICTS=	gcc-5.*
+CONFLICTS=	gcc5-5.*
 CPE_VENDOR=	gnu
 CPE_VERSION=	${GCC_VERSION}
 
-# DISTVERSION relates to downloads, GCC_VERSION and SUFFIX to names
+# DIST_VERSION relates to downloads, GCC_VERSION and SUFFIX to names
 # of executables and directories once installed.  A PORTVERSION of
 # Y.2.1.s20140817 results in values of Y-20140817, Y.2.1, and Y
 # for these three.
-DISTVERSION=	${PORTVERSION:C/([0-9]+).*\.s([0-9]+)/\1-\2/}
+DIST_VERSION=	${PORTVERSION:C/([0-9]+).*\.s([0-9]+)/\1-\2/}
 GCC_VERSION=	${PORTVERSION:C/(.+)\.s[0-9]{8}/\1/}
 SUFFIX=		${PORTVERSION:C/([0-9]+).*/\1/}
-ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc powerpc64 sparc64 arm armv6
-USES=		compiler cpe gmake iconv libtool makeinfo perl5 tar:bzip2
+ONLY_FOR_ARCHS=	aarch64 amd64 arm armv6 i386 powerpc powerpc64 sparc64
+USES=		compiler cpe gmake iconv libtool makeinfo perl5 tar:xz
 USE_BINUTILS=	yes
 USE_PERL5=	build
 SSP_UNSAFE=	yes
@@ -45,12 +46,12 @@ OPTIONS_DEFINE_i386=	JAVA
 OPTIONS_DEFINE_amd64=	JAVA
 OPTIONS_DEFINE_powerpc64=	JAVA
 OPTIONS_DEFAULT=	BOOTSTRAP
-OPTIONS_DEFAULT_i386=	JAVA
-OPTIONS_DEFAULT_amd64=	JAVA
-OPTIONS_DEFAULT_powerpc64=	JAVA
 OPTIONS_EXCLUDE_DragonFly=	JAVA
 BOOTSTRAP_DESC=		Build using a full bootstrap
 GRAPHITE_DESC=		Support for Graphite loop optimizations
+
+JAVA_USES=	python shebangfix
+SHEBANG_FILES=	libjava/contrib/aot-compile.in
 
 .if exists(/usr/lib32/libc.so)
 OPTIONS_DEFINE_powerpc64+=	MULTILIB
@@ -74,9 +75,9 @@ CONFIGURE_ENV+=	UNAME_m="powerpc64"
 .if ${ARCH} == "armv6" || ${ARCH} == "aarch64"
 . if ${COMPILER_TYPE} == clang
 .  if empty(PORT_OPTIONS:MBOOTSTRAP)
-MAKE_ARGS+=CXXFLAGS=-fbracket-depth=512
+MAKE_ARGS+=CXXFLAGS+=-fbracket-depth=512
 .  else
-MAKE_ARGS+=STAGE1_CXXFLAGS=-fbracket-depth=512
+MAKE_ARGS+=STAGE1_CXXFLAGS+=-fbracket-depth=512
 .  endif
 . endif
 .endif
@@ -162,6 +163,7 @@ post-stage:
 	${RM} ${STAGEDIR}${PREFIX}/man/man7/*
 	${RM} ${STAGEDIR}${PREFIX}/bin/rebuild-gcj-db${SUFFIX} \
 	         ${STAGEDIR}${PREFIX}/man/man1/rebuild-gcj-db${SUFFIX}.1
+	${RM} -r ${STAGEDIR}${TARGLIB}/gcc/*/${GCC_VERSION}/include-fixed/
 	# Add target libraries and include files to packaging list.
 	${RM} ${WRKDIR}/PLIST.lib
 .for d in ${TARGLIB:S/^${PREFIX}\///} ${LIBEXEC:S/^${PREFIX}\///} include/gcj include/gnu include/java include/javax

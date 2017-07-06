@@ -10,6 +10,8 @@
     SUBDIR += R-cran-digest
     SUBDIR += R-cran-openssl
     SUBDIR += acme-client
+    SUBDIR += acme.sh
+    SUBDIR += acmetool
     SUBDIR += aescrypt
     SUBDIR += aespipe
     SUBDIR += afl
@@ -44,6 +46,7 @@
     SUBDIR += bfbtester
     SUBDIR += binwalk
     SUBDIR += blindelephant
+    SUBDIR += boringssl
     SUBDIR += botan110
     SUBDIR += bro
     SUBDIR += broccoli
@@ -84,7 +87,6 @@
     SUBDIR += clamsmtp
     SUBDIR += clamtk
     SUBDIR += clusterssh
-    SUBDIR += cmd5checkpw
     SUBDIR += cops
     SUBDIR += courier-authlib
     SUBDIR += courier-authlib-base
@@ -97,6 +99,7 @@
     SUBDIR += create-cert
     SUBDIR += cryptlib
     SUBDIR += cryptopp
+    SUBDIR += ct-submit
     SUBDIR += cvm
     SUBDIR += cyberchef
     SUBDIR += cyrus-sasl2
@@ -157,7 +160,6 @@
     SUBDIR += fswatch
     SUBDIR += ftimes
     SUBDIR += fuzz
-    SUBDIR += fuzzdb
     SUBDIR += fwanalog
     SUBDIR += fwbuilder
     SUBDIR += fwipe
@@ -397,7 +399,6 @@
     SUBDIR += nikto
     SUBDIR += nist-kat
     SUBDIR += nmap
-    SUBDIR += nmapsi4
     SUBDIR += nss
     SUBDIR += nss_compat_ossl
     SUBDIR += oath-toolkit
@@ -435,8 +436,6 @@
     SUBDIR += openvpn-auth-radius
     SUBDIR += openvpn-devel
     SUBDIR += openvpn-mbedtls
-    SUBDIR += openvpn23
-    SUBDIR += openvpn23-polarssl
     SUBDIR += ophcrack
     SUBDIR += orthrus
     SUBDIR += osiris
@@ -550,7 +549,6 @@
     SUBDIR += p5-Crypt-OpenSSL-Random
     SUBDIR += p5-Crypt-OpenSSL-X509
     SUBDIR += p5-Crypt-PBKDF2
-    SUBDIR += p5-Crypt-PGPSimple
     SUBDIR += p5-Crypt-PKCS10
     SUBDIR += p5-Crypt-PWSafe3
     SUBDIR += p5-Crypt-PassGen
@@ -774,9 +772,9 @@
     SUBDIR += pecl-pam
     SUBDIR += pecl-scrypt
     SUBDIR += pecl-ssh2
+    SUBDIR += pecl-ssh2-0
     SUBDIR += pev
     SUBDIR += pft
-    SUBDIR += pgp
     SUBDIR += pgpdump
     SUBDIR += pgpgpg
     SUBDIR += pgpin
@@ -843,6 +841,7 @@
     SUBDIR += py-acme
     SUBDIR += py-acme-tiny
     SUBDIR += py-artifacts
+    SUBDIR += py-backports.ssl_match_hostname
     SUBDIR += py-bcrypt
     SUBDIR += py-borg.localrole
     SUBDIR += py-cerealizer
@@ -850,20 +849,23 @@
     SUBDIR += py-certifi
     SUBDIR += py-cpe
     SUBDIR += py-cracklib
-    SUBDIR += py-crits
     SUBDIR += py-cryptkit
+    SUBDIR += py-cryptlib_py
     SUBDIR += py-cryptography
     SUBDIR += py-cybox
     SUBDIR += py-dfdatetime
     SUBDIR += py-dfvfs
     SUBDIR += py-dfwinreg
+    SUBDIR += py-docker-pycreds
     SUBDIR += py-ecdsa
     SUBDIR += py-ed25519ll
     SUBDIR += py-fail2ban
     SUBDIR += py-fchksum
     SUBDIR += py-flask-httpauth
+    SUBDIR += py-gixy
     SUBDIR += py-gnupg
     SUBDIR += py-gnutls
+    SUBDIR += py-google-auth
     SUBDIR += py-gpgme
     SUBDIR += py-gpsoauth
     SUBDIR += py-halberd
@@ -944,7 +946,6 @@
     SUBDIR += py-vulndb
     SUBDIR += py-xmlsec
     SUBDIR += py-yara
-    SUBDIR += py-yara-editor
     SUBDIR += py-yubioath-desktop
     SUBDIR += py-zope.app.authentication
     SUBDIR += py-zope.app.localpermission
@@ -961,7 +962,11 @@
     SUBDIR += py-zope.securitypolicy
     SUBDIR += py-zope.session
     SUBDIR += py-zxcvbn-python
+    SUBDIR += py3-certifi
+    SUBDIR += py3-cryptography
     SUBDIR += py3-libnacl
+    SUBDIR += py3-openssl
+    SUBDIR += py3-pycrypto
     SUBDIR += qtkeychain-qt4
     SUBDIR += qtkeychain-qt5
     SUBDIR += quantis
@@ -1003,8 +1008,13 @@
     SUBDIR += rubygem-bcrypt
     SUBDIR += rubygem-bcrypt-ruby
     SUBDIR += rubygem-devise-two-factor
+    SUBDIR += rubygem-devise-two-factor-rails5
+    SUBDIR += rubygem-devise-two-factor-rails50
     SUBDIR += rubygem-digest-crc
     SUBDIR += rubygem-doorkeeper
+    SUBDIR += rubygem-doorkeeper-openid_connect
+    SUBDIR += rubygem-doorkeeper-rails5
+    SUBDIR += rubygem-doorkeeper-rails50
     SUBDIR += rubygem-encryptor
     SUBDIR += rubygem-ezcrypto
     SUBDIR += rubygem-googleauth
@@ -1035,9 +1045,12 @@
     SUBDIR += rubygem-omniauth-oauth2-generic
     SUBDIR += rubygem-omniauth-saml
     SUBDIR += rubygem-omniauth-shibboleth
+    SUBDIR += rubygem-omniauth13
+    SUBDIR += rubygem-openssl
     SUBDIR += rubygem-openssl-ccm
     SUBDIR += rubygem-openvas-omp
     SUBDIR += rubygem-origami
+    SUBDIR += rubygem-pundit
     SUBDIR += rubygem-pyu-ruby-sasl
     SUBDIR += rubygem-rack-oauth2
     SUBDIR += rubygem-razorback-scriptNugget
@@ -1065,6 +1078,7 @@
     SUBDIR += rubygem-ruby-rc4
     SUBDIR += rubygem-ruby-saml
     SUBDIR += rubygem-scrypt
+    SUBDIR += rubygem-securecompare
     SUBDIR += rubygem-signet
     SUBDIR += rubygem-six
     SUBDIR += rubygem-sshkey
@@ -1101,7 +1115,6 @@
     SUBDIR += signing-party
     SUBDIR += silktools
     SUBDIR += sinfp
-    SUBDIR += skipfish
     SUBDIR += sks
     SUBDIR += slurpie
     SUBDIR += slush
@@ -1117,6 +1130,7 @@
     SUBDIR += snortsam
     SUBDIR += snortsnarf
     SUBDIR += softether
+    SUBDIR += softether-devel
     SUBDIR += softhsm
     SUBDIR += softhsm2
     SUBDIR += spass
@@ -1164,6 +1178,7 @@
     SUBDIR += tclgpg
     SUBDIR += tclsasl
     SUBDIR += tcpcrypt
+    SUBDIR += testssl.sh
     SUBDIR += tinc
     SUBDIR += tinyca
     SUBDIR += titus
@@ -1179,7 +1194,6 @@
     SUBDIR += tripwire-131
     SUBDIR += tripwire12
     SUBDIR += trousers
-    SUBDIR += truecrack
     SUBDIR += truecrypt
     SUBDIR += tsshbatch
     SUBDIR += tthsum

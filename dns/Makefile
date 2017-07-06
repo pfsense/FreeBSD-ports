@@ -40,6 +40,7 @@
     SUBDIR += dnsdist
     SUBDIR += dnsenum
     SUBDIR += dnsflood
+    SUBDIR += dnsforwarder
     SUBDIR += dnshistory
     SUBDIR += dnsjava
     SUBDIR += dnsmasq
@@ -58,6 +59,7 @@
     SUBDIR += dnswall
     SUBDIR += doc
     SUBDIR += dq
+    SUBDIR += drool
     SUBDIR += dualserver
     SUBDIR += erlang-idna
     SUBDIR += ez-ipupdate
@@ -158,17 +160,16 @@
     SUBDIR += p5-Tie-DNS
     SUBDIR += p5-URBL-Prepare
     SUBDIR += p5-pgeodns
+    SUBDIR += packetq
     SUBDIR += pdnsd
     SUBDIR += pear-File_DNS
     SUBDIR += pear-Horde_Idna
-    SUBDIR += pear-Net_DNS
     SUBDIR += pear-Net_DNS2
     SUBDIR += powerdns
     SUBDIR += powerdns-recursor
     SUBDIR += public_suffix_list
-    SUBDIR += py-adns
-    SUBDIR += py-bonjour
     SUBDIR += py-dns
+    SUBDIR += py-dns-lexicon
     SUBDIR += py-dnschain
     SUBDIR += py-dnspython
     SUBDIR += py-easyzone
@@ -184,6 +185,7 @@
     SUBDIR += py-tldextract
     SUBDIR += py-twistedNames
     SUBDIR += py3-dnspython
+    SUBDIR += py3-idna
     SUBDIR += radns
     SUBDIR += rbldnsd
     SUBDIR += rbllookup

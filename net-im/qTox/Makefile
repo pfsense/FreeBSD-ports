@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	qTox
-PORTVERSION=	1.9.0
-PORTREVISION=	1
+PORTVERSION=	1.10.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net-im net-p2p
 
@@ -14,8 +13,8 @@ LICENSE=	GPLv3
 
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
 LIB_DEPENDS=	libtoxcore.so:net-im/tox \
-		libopencv_highgui.so:graphics/opencv2 \
-		libopencv_core.so:graphics/opencv2-core \
+		libopencv_highgui.so:graphics/opencv \
+		libopencv_core.so:graphics/opencv-core \
 		libavcodec.so:multimedia/ffmpeg \
 		libvpx.so:multimedia/libvpx \
 		libfilteraudio.so:audio/libfilteraudio \
@@ -41,7 +40,7 @@ ICON_SIZES=	14x14 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 
 QMAKE_ARGS=	FREEBSD_PKGVERSION=${FULLVERSION}
 
 PLIST_FILES=	bin/qtox \
-		share/applications/qTox.desktop \
+		share/applications/qtox.desktop \
 		share/icons/hicolor/scalable/apps/qtox.svgz
 .for SZ in ${ICON_SIZES}
 PLIST_FILES+=	share/icons/hicolor/${SZ}/apps/qtox.png
@@ -74,7 +73,7 @@ post-patch:
 
 pre-configure:
 	@${REINPLACE_CMD} '/Comment/s,=.*,=${COMMENT},' \
-		${WRKSRC}/qTox.desktop
+		${WRKSRC}/qtox.desktop
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/scalable/apps

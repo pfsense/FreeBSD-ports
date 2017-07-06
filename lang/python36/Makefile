@@ -3,7 +3,7 @@
 
 PORTNAME=	python
 PORTVERSION=	${PYTHON_PORTVERSION}
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	lang python ipv6
 MASTER_SITES=	PYTHON/ftp/python/${PYTHON_PORTVERSION}
 PKGNAMESUFFIX=	${PYTHON_SUFFIX}
@@ -15,12 +15,14 @@ COMMENT=	Interpreted object-oriented programming language
 
 LICENSE=	PSFL
 
-USES=		cpe ncurses pathfix pkgconfig readline ssl tar:xz shebangfix
+USES=		cpe ncurses pathfix pkgconfig readline:port ssl tar:xz shebangfix
 PATHFIX_MAKEFILEIN=	Makefile.pre.in
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 python_CMD=	${PREFIX}/bin/python${PYTHON_PORTVERSION:R}
 SHEBANG_FILES=	Lib/lib2to3/tests/data/*.py Lib/encodings/*.py
+
+BROKEN_SSL=	openssl-devel
 
 CPE_VENDOR=	python
 CPE_PRODUCT=	${CPE_VENDOR}
@@ -106,7 +108,7 @@ PLIST_FILES+=	libdata/pkgconfig/python-%%XYDOT%%%%ABI%%.pc
 # http://bugs.python.org/issue22521
 # http://bugs.python.org/issue23042
 .if ${ARCH} == i386 && !${PORT_OPTIONS:MLIBFFI}
-BROKEN=	You must use libffi from ports on i386. Enable the LIBFFI option
+BROKEN=		You must use libffi from ports on i386. Enable the LIBFFI option
 .endif
 
 .if ${ARCH} == sparc64
@@ -122,6 +124,13 @@ PLIST_SUB+=	NO_NIS=""
 .endif
 
 post-patch:
+# readline shared library is present on base before FreeBSD 11 - r268461
+# force setup.py ignore base and use readline from ports
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100000
+	${REINPLACE_CMD} -e \
+		"s|lib_dirs,\ \'readline\'|[\'${LOCALBASE}/lib\',\ \'.\'],\ \'readline\'|" \
+		${WRKSRC}/setup.py
+.endif
 	${REINPLACE_CMD} -e 's|/usr/local/bin/python|${python_CMD}|' \
 		${WRKSRC}/Lib/cgi.py
 
@@ -131,11 +140,7 @@ post-install:
 .endif
 	for i in ${STAGEDIR}${PREFIX}/lib/python${PYTHON_VER}/lib-dynload/*.so; do \
 		${STRIP_CMD} $$i; done								# Strip shared extensions
+	${INSTALL_DATA} ${WRKSRC}/Tools/gdb/libpython.py \
+		${STAGEDIR}${PREFIX}/lib/libpython${PYTHON_VER}${ABIFLAGS}.so.1.0-gdb.py
 
-.include <bsd.port.pre.mk>
-
-.if ${SSL_DEFAULT:Mopenssl-devel}
-BROKEN=		Does not build with openssl-devel
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME?=	percona
 DISTVERSION=	5.6.35-80.0
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES=	databases ipv6
 MASTER_SITES=	http://www.percona.com/downloads/Percona-Server-5.6/Percona-Server-${DISTVERSION}/source/tarball/
 PKGNAMESUFFIX?=	56-server
@@ -12,11 +12,12 @@ DISTNAME=	percona-server-${DISTVERSION}
 MAINTAINER=	flo@FreeBSD.org
 COMMENT?=	Multithreaded SQL database (server)
 
-BROKEN_powerpc64=	Does not build
+NOT_FOR_ARCHS=		powerpc64
+NOT_FOR_ARCHS_REASON=	unsupported platform
 
 SLAVEDIRS=	databases/percona56-client \
 		databases/percona-pam-for-mysql
-USES=		bison cmake perl5 shebangfix
+USES=		bison cmake:noninja perl5 shebangfix
 
 OPTIONS_DEFINE=	OPENSSL FASTMTX INNODBMEMCACHED TOKUDB
 OPTIONS_DEFAULT=	OPENSSL INNODBMEMCACHED
@@ -96,10 +97,6 @@ post-patch:
 	@${REINPLACE_CMD} 's/*.1/${MANPAGES}/' ${WRKSRC}/man/CMakeLists.txt
 
 .include <bsd.port.pre.mk>
-
-.if ${ARCH} == "arm"
-BROKEN=		Does not compile on arm
-.endif
 
 .if ${PORT_OPTIONS:MTOKUDB}
 NOT_FOR_ARCHS=	i386

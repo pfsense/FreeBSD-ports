@@ -24,7 +24,6 @@
     SUBDIR += bookview
     SUBDIR += bugzilla44
     SUBDIR += bugzilla50
-    SUBDIR += calligra-l10n
     SUBDIR += canna-lib
     SUBDIR += canna-server
     SUBDIR += cannadic
@@ -192,7 +191,6 @@
     SUBDIR += ng-canna
     SUBDIR += ng-devel
     SUBDIR += ngraph-fonts
-    SUBDIR += nhocr
     SUBDIR += nkf
     SUBDIR += onew
     SUBDIR += p5-2chproxy

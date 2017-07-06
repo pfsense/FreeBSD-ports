@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME?=	mysql
-PORTVERSION=	5.5.54
+PORTVERSION=	5.5.56
 PORTREVISION?=	0
 CATEGORIES=	databases ipv6
 MASTER_SITES=	MYSQL/MySQL-5.5
@@ -14,7 +14,7 @@ COMMENT?=	Multithreaded SQL database (server)
 LICENSE=	GPLv2
 
 SLAVEDIRS=	databases/mysql55-client
-USES=		cmake readline shebangfix
+USES=		cmake:noninja readline shebangfix
 CXXFLAGS+=	${CPPFLAGS}
 NO_OPTIONS_SORT=yes
 

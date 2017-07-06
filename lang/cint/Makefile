@@ -3,14 +3,14 @@
 
 PORTNAME=	cint
 PORTVERSION=	5.18.00
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	lang
 MASTER_SITES=	http://root.cern.ch/drupal/sites/default/files/
 
 MAINTAINER=	fjoe@FreeBSD.org
 COMMENT=	C/C++ interpreter
 
-BROKEN_powerpc64=	does not build
+BROKEN_powerpc64=	does not build: cint/include/iosenum.h: segmentation fault (core dumped)
 
 BUILD_DEPENDS=	bash:shells/bash
 
