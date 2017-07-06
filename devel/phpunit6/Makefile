@@ -2,16 +2,18 @@
 # $FreeBSD$
 
 PORTNAME=	phpunit
-PORTVERSION=	6.0.11
+PORTVERSION=	6.2.2
 CATEGORIES=	devel www
 MASTER_SITES=	https://phar.phpunit.de/
 PKGNAMESUFFIX=	6
 EXTRACT_SUFX=	.phar
 
-MAINTAINER=	joneum@bsdproject.de
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Testing framework for unit tests
 
 LICENSE=	BSD3CLAUSE
+
+CONFLICTS_INSTALL=	phpunit
 
 USES=		cpe php
 CPE_VENDOR=	phpunit_project

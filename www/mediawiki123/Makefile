@@ -3,7 +3,6 @@
 
 PORTNAME=	mediawiki
 PORTVERSION=	1.23.17
-PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	http://releases.wikimedia.org/mediawiki/${PORTVERSION:R}/
 PKGNAMESUFFIX=	123

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	openiked
-PORTVERSION=	1.5.1
+PORTVERSION=	1.7
 CATEGORIES=	security net ipv6
 
 MAINTAINER=	marcel@FreeBSD.org
@@ -18,7 +18,7 @@ USE_RC_SUBR=	iked
 USERS=		_iked
 GROUPS=		_iked
 
-USES=           autoreconf libtool ssl
+USES=           autoreconf groff libtool ssl
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 CONFIGURE_ARGS=	--with-libevent-dir=${PREFIX}

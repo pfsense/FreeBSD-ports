@@ -1,4 +1,4 @@
---- device-bsd44.c.orig	2012-06-05 16:12:29 UTC
+--- device-bsd44.c.orig	2015-11-19 13:58:52 UTC
 +++ device-bsd44.c
 @@ -188,6 +188,27 @@ ret:
  

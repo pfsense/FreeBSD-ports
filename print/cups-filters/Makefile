@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	cups-filters
-PORTVERSION=	1.13.4
-PORTREVISION?=	2
+PORTVERSION=	1.13.5
 CATEGORIES=	print
 MASTER_SITES=	http://www.openprinting.org/download/cups-filters/
 
@@ -17,8 +16,7 @@ LIB_DEPENDS=	liblcms2.so:graphics/lcms2 \
 		libcupsimage.so:print/cups \
 		libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig \
-		libpoppler.so:graphics/poppler \
-		libmupdf.so:graphics/mupdf
+		libpoppler.so:graphics/poppler
 
 CONFLICTS=	cups-pstoraster-[0-9]* foomatic-filters-[0-9]*
 
@@ -30,11 +28,12 @@ SHEBANG_FILES=	filter/braille/drivers/generic/brftoembosser.in \
 		filter/braille/drivers/index/imageubrltoindexv4.in \
 		filter/braille/drivers/index/textbrftoindexv3.in \
 		filter/braille/filters/imagetobrf.in \
+		filter/braille/filters/liblouis1.defs.gen.in \
 		filter/braille/filters/texttobrf.in
 USE_GNOME=	glib20
 USE_RC_SUBR=	cups_browsed
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-shell=/bin/sh
+CONFIGURE_ARGS=	--with-shell=/bin/sh --with-pdftops-path=${LOCALBASE}/bin/pdftops
 INSTALL_TARGET=	install-strip
 
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -45,12 +44,13 @@ OPTIONS_DEFINE=			BRAILLE COLORD DOCS IJS IMAGEFILTERS
 OPTIONS_GROUP=			CUPS_BROWSED
 OPTIONS_GROUP_CUPS_BROWSED=	AVAHI LDAP
 OPTIONS_SINGLE=			PDFTOPS_RENDERER
-OPTIONS_SINGLE_PDFTOPS_RENDERER=GS HYBRID PDFTOPS
+OPTIONS_SINGLE_PDFTOPS_RENDERER=GS HYBRID PDFTOPS MUPDF
 OPTIONS_DEFAULT=		AVAHI COLORD HYBRID IJS IMAGEFILTERS
 OPTIONS_SUB=			yes
 
 BRAILLE_CONFIGURE_ENABLE=	braille
 BRAILLE_DESC=			Braille embosser support
+BRAILLE_BUILD_DEPENDS=		bash:shells/bash
 BRAILLE_LIB_DEPENDS=		liblouis.so:devel/liblouis \
 #				liblouisutdml.so:devel/liblouisutdml
 BRAILLE_RUN_DEPENDS=		convert:graphics/ImageMagick \
@@ -94,13 +94,19 @@ GS_DESC=			Ghostscript gs(1)
 
 HYBRID_BUILD_DEPENDS=		pdftops:graphics/poppler-utils
 HYBRID_RUN_DEPENDS=		pdftops:graphics/poppler-utils
-HYBRID_CONFIGURE_ON=		--with-pdftops=hybrid --with-pdftops-path=${LOCALBASE}/bin/pdftops
+HYBRID_CONFIGURE_ON=		--with-pdftops=hybrid
 HYBRID_DESC=			Ghostscript or Poppler depending on printer
 
 PDFTOPS_BUILD_DEPENDS=		pdftops:graphics/poppler-utils
 PDFTOPS_RUN_DEPENDS=		pdftops:graphics/poppler-utils
-PDFTOPS_CONFIGURE_ON=		--with-pdftops=pdftops --with-pdftops-path=${LOCALBASE}/bin/pdftops
+PDFTOPS_CONFIGURE_ON=		--with-pdftops=pdftops
 PDFTOPS_DESC=			Poppler pdftops(1)
+
+MUPDF_BUILD_DEPENDS=		mutool:graphics/mupdf
+MUPDF_RUN_DEPENDS=		mutool:graphics/mupdf
+MUPDF_CONFIGURE_ON=		--with-pdftops=mupdf
+MUPDF_CONFIGURE_ENABLE=		mutool
+MUPDF_DESC=			MuPDF renderer
 
 PDFTOPS_RENDERER_DESC=		Default PDF-to-PostScript renderer
 

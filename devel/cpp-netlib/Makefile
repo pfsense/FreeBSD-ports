@@ -5,6 +5,7 @@ PORTNAME=		cpp-netlib
 DISTVERSIONPREFIX=	${PORTNAME}-
 DISTVERSION=		0.12.0
 DISTVERSIONSUFFIX=	-final
+PORTREVISION=		1
 CATEGORIES=		devel
 
 MAINTAINER=		zi@FreeBSD.org
@@ -13,10 +14,10 @@ COMMENT=		Cross-platform, standards compliant networking library
 LICENSE=		BSL
 LICENSE_FILE=		${WRKSRC}/LICENSE_1_0.txt
 
-BROKEN_powerpc64=	Does not build
-
 BUILD_DEPENDS=		boost-libs>0:devel/boost-libs \
 					asio>0:net/asio
+
+BROKEN_powerpc64=	fails to compile: cc1plus: error: unrecognized command line option "-std=c++11"
 
 USES=			cmake:outsource
 USE_LDCONFIG=		yes

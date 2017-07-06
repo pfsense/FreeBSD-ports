@@ -2,6 +2,7 @@
 
 PORTNAME=	kde-runtime
 PORTVERSION=	${KDE_APPLICATIONS_VERSION}
+PORTREVISION=	4
 CATEGORIES=	x11 kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
@@ -23,9 +24,9 @@ LIB_DEPENDS=	libIlmImf.so:graphics/OpenEXR \
 BUILD_DEPENDS=	${LOCALBASE}/lib/libssh.so:security/libssh
 RUN_DEPENDS=	cagibid:net/cagibi
 
-USES=		cmake:outsource gettext gmake jpeg kde:4 samba:lib shared-mime-info \
+USES=		cmake:outsource gettext jpeg kde:4 samba:lib shared-mime-info \
 		shebangfix tar:xz
-USE_KDE=	kactivities kdelibs oxygen-icons4 \
+USE_KDE=	kactivities kdelibs oxygen-icons5 \
 		attica automoc4 pimlibs soprano strigi nepomuk-core
 USE_QT4=	corelib dbus declarative designer_build gui phonon \
 		network qtestlib script svg webkit xml \

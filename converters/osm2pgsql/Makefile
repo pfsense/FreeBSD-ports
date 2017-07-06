@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	osm2pgsql
-PORTVERSION=	0.92.0
+PORTVERSION=	0.92.1
+PORTREVISION=	1
 CATEGORIES=	converters geography
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -15,6 +16,8 @@ LIB_DEPENDS=	libproj.so:graphics/proj \
 		libgeos35.so:graphics/geos35 \
 		libboost_system.so:devel/boost-libs \
 		libexpat.so:textproc/expat2
+
+BROKEN_powerpc64=	fails to compile: node-ram-cache.hpp: cstdint: No such file or directory
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	openstreetmap

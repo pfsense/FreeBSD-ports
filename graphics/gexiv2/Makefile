@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gexiv2
-PORTVERSION=	0.10.5
+PORTVERSION=	0.10.6
 CATEGORIES=	graphics
 MASTER_SITES=	GNOME/sources/gexiv2/${PORTVERSION:R}
 
@@ -15,6 +15,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	gm4:devel/m4 \
 		vala>=0:lang/vala
 LIB_DEPENDS=	libexiv2.so:graphics/exiv2
+
+BROKEN_powerpc64=	fails to compile: gexiv2-metadata-gps.cpp: 'overflow_error' is not a member of 'std'
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--enable-introspection=yes \
@@ -29,6 +31,6 @@ pre-install:
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libgexiv2.so
-	${RM} ${STAGEDIR}${PREFIX}/lib/python*/site-packages/gi/overrides/GExiv2.py
+	${RM} -r ${STAGEDIR}${PREFIX}/lib/python*
 
 .include <bsd.port.mk>

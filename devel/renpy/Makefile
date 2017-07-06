@@ -3,9 +3,9 @@
 PORTNAME=	renpy
 PORTVERSION?=	6.99.12.4
 DISTVERSIONSUFFIX=-sdk
-PORTREVISION?=	0
+PORTREVISION?=	2
 CATEGORIES=	devel games
-MASTER_SITES=	http://www.renpy.org/dl/${PORTVERSION}/
+MASTER_SITES=	https://www.renpy.org/dl/${PORTVERSION}/
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Framework for developing visual-novel type games

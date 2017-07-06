@@ -3,7 +3,7 @@
 
 PORTNAME=	GraphicsMagick
 PORTVERSION=	1.3.25
-PORTREVISION=	2
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	graphics
 MASTER_SITES=	SF \
@@ -69,6 +69,7 @@ X11_CONFIGURE_WITH=	x
 X11_USE=		XORG=xext
 XML_CONFIGURE_WITH=	xml
 XML_USE=		GNOME=libxml2
+XML_USES=		gnome
 
 .include <bsd.port.options.mk>
 

@@ -2,8 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	hashcat
-PORTVERSION=	3.40
+PORTVERSION=	3.6.0
 DISTVERSIONPREFIX=	v
+PORTEPOCH=	1
 CATEGORIES=	security
 
 MAINTAINER=	lifanov@FreeBSD.org
@@ -18,7 +19,7 @@ BUILD_DEPENDS=	${LOCALBASE}/include/CL/cl.h:devel/opencl \
 USE_GITHUB=	yes
 
 ALL_TARGET=	default
-USES=		gmake localbase shebangfix
+USES=		gmake iconv localbase shebangfix
 SHEBANG_FILES=	extra/tab_completion/install
 USE_CSTD=	c99
 

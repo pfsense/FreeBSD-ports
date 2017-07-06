@@ -2,7 +2,6 @@
 
 PORTNAME=	minio
 PORTVERSION=	${GH_TAGNAME:S/RELEASE.//:S/Z//:S/T/-/:S/-/./g}
-PORTREVISION=	1
 CATEGORIES=	www
 
 MAINTAINER=	swills@FreeBSD.org
@@ -10,18 +9,14 @@ COMMENT=	Amazon S3 compatible object storage server
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	go>=1.7:lang/go \
-		bash:shells/bash
+BUILD_DEPENDS=	go>=1.7:lang/go
 
-USES=		compiler gmake
+USES=		compiler
 
 USE_GITHUB=	yes
-GH_TAGNAME=	RELEASE.2017-03-16T21-50-32Z
+GH_TAGNAME=	RELEASE.2017-05-05T01-14-51Z
 GH_SUBDIR=	src/github.com/${PORTNAME}/${PORTNAME}
-GH_TUPLE=	\
-		minio:mc:RELEASE.2017-02-06T20-16-19Z:mc/src/github.com/minio/mc \
-		hashicorp:go-version:03c5bf6:go_version/src/github.com/hashicorp/go-version
-MAKE_ENV=	GOPATH=${WRKSRC} GOROOT=${LOCALBASE}/go
+COMMIT_ID=	40985cc4e3eec06b7ea82dc34c8d907fd2e7aa12
 
 PLIST_FILES=	bin/minio
 
@@ -32,6 +27,9 @@ GROUPS=		minio
 
 SUB_LIST=	USER="${USERS}" \
 		GROUP="${GROUPS}"
+
+do-build:
+	cd ${WRKSRC}/${GH_SUBDIR} ; GOPATH=${WRKSRC} go build --ldflags '-X github.com/minio/minio/cmd.Version=${GH_TAGNAME:C/RELEASE\.//:C|(..)-(..)-(..)Z|\1:\2:\3Z|} -X github.com/minio/minio/cmd.ReleaseTag=${GH_TAGNAME} -X github.com/minio/minio/cmd.CommitID=${COMMIT_ID} -X github.com/minio/minio/cmd.GOPATH=${WRKSRC} -s -w' -o ${WRKSRC}/bin/minio
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME}/bin/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}

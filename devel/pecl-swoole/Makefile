@@ -2,11 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	swoole
-PORTVERSION=	1.9.8
+PORTVERSION=	1.9.14
 CATEGORIES=	devel net
-MASTER_SITES=	http://pecl.php.net/get/
-PKGNAMEPREFIX=	pecl-
-DIST_SUBDIR=	PECL
 
 MAINTAINER=	vanilla@FreeBSD.org
 COMMENT=	Asynchronous & concurrent & distributed networking framework
@@ -14,7 +11,9 @@ COMMENT=	Asynchronous & concurrent & distributed networking framework
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		execinfo php:ext ssl tar:tgz
+BROKEN_powerpc64=	fails to build: swoole_config.h: error GCC 4.4 or later required
+
+USES=		execinfo php:pecl ssl
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 USE_PHP=	pcre

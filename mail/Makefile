@@ -152,7 +152,6 @@
     SUBDIR += gmime26
     SUBDIR += gmime26-sharp
     SUBDIR += gnarwl
-    SUBDIR += gnome-gmail-notifier
     SUBDIR += gnubiff
     SUBDIR += gnumail
     SUBDIR += gotmail
@@ -207,7 +206,6 @@
     SUBDIR += libsrs2
     SUBDIR += libsrs_alt
     SUBDIR += libvmime
-    SUBDIR += linux-thunderbird
     SUBDIR += listadmin
     SUBDIR += lmtp2nntp
     SUBDIR += lookout
@@ -433,6 +431,7 @@
     SUBDIR += p5-Net-IMAP-Server
     SUBDIR += p5-Net-IMAP-Simple
     SUBDIR += p5-Net-IMAP-Simple-SSL
+    SUBDIR += p5-Net-LMTP
     SUBDIR += p5-Net-ManageSieve
     SUBDIR += p5-Net-POP3-SSLWrapper
     SUBDIR += p5-Net-QMTP
@@ -491,7 +490,6 @@
     SUBDIR += perdition
     SUBDIR += pflogsumm
     SUBDIR += pfqueue
-    SUBDIR += pgpsendmail
     SUBDIR += php56-imap
     SUBDIR += php70-imap
     SUBDIR += php71-imap
@@ -544,6 +542,7 @@
     SUBDIR += py-milter
     SUBDIR += py-notmuch
     SUBDIR += py-ppolicy
+    SUBDIR += py-pymailq
     SUBDIR += py-pyspf
     SUBDIR += py-spambayes
     SUBDIR += py-twistedMail
@@ -613,6 +612,7 @@
     SUBDIR += rss2email3
     SUBDIR += rubygem-actionmailer4
     SUBDIR += rubygem-actionmailer5
+    SUBDIR += rubygem-actionmailer50
     SUBDIR += rubygem-email_reply_parser
     SUBDIR += rubygem-email_reply_parser-discourse
     SUBDIR += rubygem-email_reply_trimmer

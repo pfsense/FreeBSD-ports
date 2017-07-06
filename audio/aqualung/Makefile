@@ -3,7 +3,7 @@
 
 PORTNAME=	aqualung
 PORTVERSION=	1.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
@@ -29,6 +29,8 @@ LIB_DEPENDS=	libFLAC.so:audio/flac \
 		libavcodec.so:multimedia/ffmpeg \
 		libcdio_paranoia.so:sysutils/libcdio-paranoia \
 		liblrdf.so:textproc/liblrdf
+
+BROKEN_powerpc64=	fails to link: libicuuc.so: undefined reference to __cxa_throw_bad_array_new_length
 
 USES=		gettext localbase lua pkgconfig
 USE_GNOME=	gtk20 libxml2 libxslt

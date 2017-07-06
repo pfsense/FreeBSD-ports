@@ -10,6 +10,8 @@ COMMENT?=	General purpose ham radio voice services
 
 LICENSE=	GPLv2
 
+BROKEN=		does not build since newer libsigc++20
+
 LIB_DEPENDS?=	libgsm.so:audio/gsm \
 		libspeex.so:audio/speex \
 		libgpg-error.so:security/libgpg-error \
@@ -24,7 +26,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	sm0svx
 GH_PROJECT=	svxlink
 
-USES=		cmake tcl
+USES=		cmake tcl groff
 CMAKE_SOURCE_PATH=	${WRKSRC}/src
 CMAKE_ARGS+=	-DMAN_INSTALL_DIR:FILEPATH=${MANDIRS} \
 		-DLOCAL_STATE_DIR=/var

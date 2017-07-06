@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gdal
-PORTVERSION=	2.1.3
-PORTREVISION=	1
+PORTVERSION=	2.2.1
 CATEGORIES=	graphics geography
 MASTER_SITES=	http://download.osgeo.org/gdal/${PORTVERSION}/ \
 		ftp://ftp.remotesensing.org/pub/gdal/${PORTVERSION}/ \
@@ -88,7 +87,7 @@ LIBXML2_CONFIGURE_ON=	--with-xml2=${LOCALBASE}/bin/xml2-config
 LIBXML2_LIB_DEPENDS=	libxml2.so:textproc/libxml2
 MYSQL_CONFIGURE_OFF=	--with-mysql=no
 MYSQL_CONFIGURE_ON=	--with-mysql=${LOCALBASE}/bin/mysql_config
-MYSQL_USE=		MYSQL=yes
+MYSQL_USES=		mysql
 NETCDF_CONFIGURE_WITH=	netcdf
 NETCDF_LIB_DEPENDS=	libnetcdf.so:science/netcdf
 ODBC_CONFIGURE_WITH=	odbc
@@ -114,6 +113,7 @@ XERCES_CONFIGURE_WITH=	xerces
 XERCES_LIB_DEPENDS=	libxerces-c.so:textproc/xerces-c3
 
 post-patch:
+	@${REINPLACE_CMD} -e '/^#GDAL_SLIB_SONAME/ s|^#||' ${WRKSRC}/GDALmake.opt.in
 	@${REINPLACE_CMD} -e 's|$$(INST_LIB)/pkgconfig|${PREFIX}/libdata/pkgconfig|' ${WRKSRC}/GNUmakefile
 	@${REINPLACE_CMD} -e 's|-lminizip|-lkmlminizip|' ${WRKSRC}/configure
 # Clean up bundled libraries

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pangomm
-PORTVERSION=	2.36.0
+PORTVERSION=	2.40.1
 PORTREVISION?=	0
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME
@@ -11,6 +11,8 @@ DIST_SUBDIR=	gnome2
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	C++ wrapper for Pango
 
+LICENSE=	LGPL21
+
 USES=		tar:xz
 
 .if !defined(REFERENCE_PORT)
@@ -18,12 +20,11 @@ PORTSCOUT=	limitw:1,even
 
 BUILD_DEPENDS=	gm4:devel/m4
 
-USES+=		gmake libtool pathfix pkgconfig
+USES+=		gmake libtool localbase pathfix pkgconfig compiler:c++11-lang
+USE_CXXSTD=	c++11
 USE_GNOME=	cairomm glibmm pango
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS=	--disable-documentation \
 		--enable-static=yes
 INSTALL_TARGET=	install-strip

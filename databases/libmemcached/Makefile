@@ -2,7 +2,7 @@
 
 PORTNAME=	libmemcached
 PORTVERSION=	1.0.18
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	databases
 MASTER_SITES=	http://launchpad.net/${PORTNAME}/1.0/${PORTVERSION}/+download/
 
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS?=	libevent.so:devel/libevent
 TEST_DEPENDS=	memcached:databases/memcached
 
-USES=		autoreconf execinfo gmake pathfix pkgconfig libtool
+USES=		autoreconf execinfo gmake libtool localbase pathfix pkgconfig
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
@@ -24,7 +24,7 @@ CONFIGURE_ARGS=	--without-memcached \
 		--enable-libmemcachedprotocol
 
 LIBS+=		-L${LOCALBASE}/lib -lexecinfo
-CXXFLAGS+=	-D__STDC_CONSTANT_MACROS
+CXXFLAGS+=	-D__STDC_CONSTANT_MACROS -pthread
 
 OPTIONS_DEFINE=		DEBUG DTRACE MEMASLAP SASL
 OPTIONS_DEFAULT=	MEMASLAP SASL MURMUR FNV64

@@ -3,7 +3,7 @@
 
 PORTNAME=	orthanc-webviewer
 PORTVERSION=	2.2
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	science graphics
 MASTER_SITES=	http://orthanc-server.com/downloads/get.php?path=/plugin-webviewer/:main \
 		http://www.montefiore.ulg.ac.be/~jodogne/Orthanc/ThirdPartyDownloads/WebViewer/:thirdparty
@@ -20,6 +20,8 @@ COMMENT=	Web viewer plugin for Orthanc
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		fails to build
 
 BUILD_DEPENDS=	${LOCALBASE}/include/orthanc/OrthancCPlugin.h:science/orthanc \
 		gtest-config:devel/googletest

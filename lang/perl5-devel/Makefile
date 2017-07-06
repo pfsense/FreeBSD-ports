@@ -2,15 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	perl
-PORTREVISION=	1
 # XXX Remove second line, uncomment first
 #DISTVERSION=	${PERL_VERSION}
+DISTVERSIONPREFIX=	v
 DISTVERSION=	${GH_TAGNAME:C/^v//:C/-g[0-9a-f]*$//}
+DISTVERSIONSUFFIX=	${GH_TAGNAME:C/.*-g/-g/}
+PORTREVISION=	0
 CATEGORIES=	lang devel perl5
 # XXX Leave only CPAN.
-MASTER_SITES=	LOCAL/mat/perl GH CPAN/../../src/5.0
-# XXX Remove DISTNAME
-DISTNAME=	${PORTNAME}-${DISTVERSION}
+MASTER_SITES=	LOCAL/mat/perl GH
+#MASTER_SITES=	CPAN/../../src/5.0
 DIST_SUBDIR=	perl
 
 # XXX -> perl@
@@ -34,9 +35,7 @@ TEST_ENV=	${MAKE_ENV} TEST_JOBS=${MAKE_JOBS_NUMBER} \
 USE_GITHUB=	yes
 GH_ACCOUNT=	Perl
 GH_PROJECT=	perl5
-GH_TAGNAME=	v5.25.11-22-g2e3b2a1
-
-MAKE_JOBS_UNSAFE=	yes
+GH_TAGNAME=	v5.27.1-72-g3a3dd4d
 
 OPTIONS_DEFINE=	DEBUG GDBM PERL_64BITINT MULTIPLICITY SITECUSTOMIZE \
 		THREADS PERL_MALLOC DTRACE DOT_INC
@@ -123,7 +122,7 @@ CONFIGURE_ARGS=	-sde -Dprefix=${PREFIX} \
 # lddlflags is used for all .so linking
 # shrpldflags is used for libperl.so, so remove all the extra bits inherited from lddlflags.
 # XXX change the soname to $$(LIBPERL:R)
-CONFIGURE_ARGS+= \
+CONFIGURE_ARGS+=	\
 	-Alddlflags='-L${WRKSRC} -L${PREFIX}/${_ARCH_LIB}/CORE -lperl' \
 	-Dshrpldflags='$$(LDDLFLAGS:N-L${WRKSRC}:N-L${PREFIX}/${_ARCH_LIB}/CORE:N-lperl) -Wl,-soname,$$(LIBPERL)'
 

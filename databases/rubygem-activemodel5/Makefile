@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	activemodel
-PORTVERSION=	5.0.2
+PORTVERSION=	5.1.2
 CATEGORIES=	databases rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	5
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Toolkit for building modeling frameworks
 
 LICENSE=	MIT

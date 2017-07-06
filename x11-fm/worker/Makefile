@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	worker
-PORTVERSION=	3.8.5
+PORTVERSION=	3.9.0
 PORTREVISION=	1
 CATEGORIES=	x11-fm
 MASTER_SITES=	http://www.boomerangsworld.de/cms/worker/downloads/
