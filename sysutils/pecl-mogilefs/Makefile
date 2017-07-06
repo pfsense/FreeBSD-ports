@@ -5,18 +5,15 @@ PORTNAME=	mogilefs
 PORTVERSION=	0.9.2
 PORTREVISION=	2
 CATEGORIES=	sysutils pear
-MASTER_SITES=	http://pecl.php.net/get/
-PKGNAMEPREFIX=	pecl-
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	gasol.wu@gmail.com
 COMMENT=	PHP client library to communicate with the MogileFS storage
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
 LIB_DEPENDS=	libneon.so:www/neon
 
-USES=		php:ext
+USES=		php:pecl
 IGNORE_WITH_PHP=	70 71
 
 post-extract:

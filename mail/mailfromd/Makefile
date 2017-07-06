@@ -2,9 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	mailfromd
-PORTVERSION=	8.1
+PORTVERSION=	8.1.90
+PORTREVISION=	1
 CATEGORIES=	mail
-MASTER_SITES=	http://download.gnu.org.ua/pub/release/${PORTNAME}/
+MASTER_SITES=	http://download.gnu.org.ua/pub/release/${PORTNAME}/ \
+		http://download.gnu.org.ua/pub/alpha/${PORTNAME}/
 
 MAINTAINER=	zeus@gnu.org.ua
 COMMENT=	Mail filtering daemon for Sendmail, Postfix, and MeTA1

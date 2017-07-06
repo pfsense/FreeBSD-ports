@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	lsof
-DISTVERSION=	4.90I
+DISTVERSION=	4.90M
 PORTEPOCH=	8
 CATEGORIES=	sysutils
-MASTER_SITES=	http://ftp.cerias.purdue.edu/pub/tools/unix/sysutils/lsof/ \
-		ftp://lsof.itap.purdue.edu/pub/tools/unix/lsof/  \
+MASTER_SITES=	ftp://lsof.itap.purdue.edu/pub/tools/unix/lsof/ \
 		ftp://lsof.itap.purdue.edu/pub/tools/unix/lsof/NEW/ \
 		LOCAL/ler/lsof \
 		ftp://ftp.ayamura.org/pub/lsof/ \
@@ -29,6 +28,8 @@ LICENSE=lsof
 LICENSE_NAME=lsof
 LICENSE_FILE=${FILESDIR}/LICENSE
 LICENSE_PERMS=	 dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+
+BROKEN_powerpc64=	fails to compile: sys/pcpu.h: error: size of array '__assert_0' is negative
 
 #Please leave the below line in for the next clean up.
 FIXUP_RELEASE=	YES

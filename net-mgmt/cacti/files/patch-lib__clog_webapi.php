@@ -1,6 +1,6 @@
---- lib/clog_webapi.php.orig	2017-02-04 14:22:42.713430000 +0000
-+++ lib/clog_webapi.php	2017-02-04 14:23:10.949163000 +0000
-@@ -40,7 +40,7 @@
+--- lib/clog_webapi.php.orig	2017-06-05 03:49:49 UTC
++++ lib/clog_webapi.php
+@@ -40,7 +40,7 @@ function clog_purge_logfile() {
  	$logfile = read_config_option('path_cactilog');
  
  	if ($logfile == '') {
@@ -9,12 +9,12 @@
  	}
  
  	if (file_exists($logfile)) {
-@@ -64,7 +64,7 @@
- 	$logfile = read_config_option('path_cactilog');
- 
- 	if ($logfile == '') {
--		$logfile = './log/cacti.log';
+@@ -70,7 +70,7 @@ function clog_view_logfile() {
+ 			$logfile = $requestedFile;
+ 		}
+ 	} elseif ($logfile == '') {
+-		$logfile = $config['base_path'] . '/log/cacti.log';
 +		$logfile = '/var/log/cacti/log';
  	}
  
- 	/* helps determine output color */
+ 	/* ================= input validation and session storage ================= */

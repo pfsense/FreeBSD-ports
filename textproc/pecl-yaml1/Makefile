@@ -4,12 +4,9 @@
 PORTNAME=	yaml
 PORTVERSION=	1.3.0
 CATEGORIES=	textproc pear
-MASTER_SITES=	http://pecl.php.net/get/
-PKGNAMEPREFIX=	pecl-
 PKGNAMESUFFIX=	1
-DIST_SUBDIR=	PECL
 
-MAINTAINER=	dbaio@bsd.com.br
+MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	YAML-1.1 parser and emitter
 
 LICENSE=	MIT
@@ -19,7 +16,7 @@ LIB_DEPENDS=	libyaml.so:textproc/libyaml
 
 PORTSCOUT=	limit:^1.*
 
-USES=		php:ext tar:tgz
+USES=		php:pecl
 IGNORE_WITH_PHP=	70 71
 
 .include <bsd.port.mk>

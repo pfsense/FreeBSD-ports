@@ -3,7 +3,7 @@
 
 PORTNAME=	bro
 PORTVERSION=	2.4.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	http://www.bro.org/downloads/release/
 
@@ -12,16 +12,18 @@ COMMENT=	System for detecting network intruders in real-time
 
 LICENSE=	BSD3CLAUSE
 
-BROKEN_powerpc64=	Does not build
-
 BUILD_DEPENDS=	${LOCALBASE}/bin/bison:devel/bison \
 		${LOCALBASE}/bin/swig:devel/swig13
 LIB_DEPENDS=	libGeoIP.so:net/GeoIP
 
-USES=		cmake:outsource compiler:c++11-lang perl5 python ssl
+BROKEN_powerpc64=	Does not build: error: zero-size array 'names'
+
+USES=		cmake:outsource compiler:c++11-lang perl5 python shebangfix ssl
 
 CMAKE_ARGS+=	-D PYTHON_EXECUTABLE:PATH=${PYTHON_CMD}
 CXXFLAGS+=	-std=c++11 -Wextra -Wall -pedantic
+
+SHEBANG_FILES=	aux/broctl/aux/trace-summary/trace-summary
 
 SUB_FILES=	pkg-message
 NO_MTREE=	yes

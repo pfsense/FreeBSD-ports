@@ -1,6 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	mariadb
+PORTREVISION=	1
 PKGNAMESUFFIX=	55-client
 
 COMMENT=	Multithreaded SQL database (client)
@@ -19,8 +20,9 @@ CONFLICTS_INSTALL=	mariadb5[0-46-9]-client-* \
 			percona*-client-*
 
 CMAKE_ARGS+=	-DWITHOUT_SERVER=1
-USE_LDCONFIG=	${PREFIX}/lib/mysql
 CLIENT_ONLY=	yes
+
+USES+=		ncurses readline
 
 post-install:
 	${RM} ${STAGEDIR}${PREFIX}/bin/mysqld_safe_helper

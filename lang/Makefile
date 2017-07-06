@@ -37,8 +37,6 @@
     SUBDIR += clang33
     SUBDIR += clang34
     SUBDIR += clang35
-    SUBDIR += clang36
-    SUBDIR += clang37
     SUBDIR += clang38
     SUBDIR += cling
     SUBDIR += clojure
@@ -70,6 +68,7 @@
     SUBDIR += erlang-runtime17
     SUBDIR += erlang-runtime18
     SUBDIR += erlang-runtime19
+    SUBDIR += erlang-runtime20
     SUBDIR += erlang-wx
     SUBDIR += execline
     SUBDIR += expect
@@ -106,6 +105,7 @@
     SUBDIR += gcc6-aux
     SUBDIR += gcc6-devel
     SUBDIR += gcc7-devel
+    SUBDIR += gcc8-devel
     SUBDIR += gcl
     SUBDIR += gforth
     SUBDIR += ghc
@@ -203,7 +203,6 @@
     SUBDIR += ocaml
     SUBDIR += ocaml-autoconf
     SUBDIR += ocaml-nox11
-    SUBDIR += ofc
     SUBDIR += ohugs
     SUBDIR += onyx
     SUBDIR += oo2c
@@ -246,9 +245,9 @@
     SUBDIR += pcc
     SUBDIR += pecl-perl
     SUBDIR += perl5-devel
-    SUBDIR += perl5.20
     SUBDIR += perl5.22
     SUBDIR += perl5.24
+    SUBDIR += perl5.26
     SUBDIR += petite-chez
     SUBDIR += pfe
     SUBDIR += phantomjs
@@ -303,7 +302,6 @@
     SUBDIR += rexx-wrapper
     SUBDIR += rhino
     SUBDIR += rubinius
-    SUBDIR += ruby21
     SUBDIR += ruby22
     SUBDIR += ruby23
     SUBDIR += ruby24
@@ -336,6 +334,7 @@
     SUBDIR += spidermonkey170
     SUBDIR += spidermonkey185
     SUBDIR += spidermonkey24
+    SUBDIR += spidermonkey38
     SUBDIR += spl
     SUBDIR += squeak
     SUBDIR += squirrel

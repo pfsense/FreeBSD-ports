@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Alien-wxWidgets
-PORTVERSION=	0.67
-PORTREVISION=	1
+PORTVERSION=	0.69
 CATEGORIES=	x11-toolkits perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -15,13 +14,13 @@ LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-Module-Pluggable>=5.1:devel/p5-Module-Pluggable
-RUN_DEPENDS=	p5-Module-Pluggable>=5.1:devel/p5-Module-Pluggable
+RUN_DEPENDS:=	${BUILD_DEPENDS}
 
+NO_ARCH=	yes
 USES=		perl5 compiler:env
 USE_PERL5=	modbuild
 USE_WX=		3.0
 WX_COMPS=	wx
-WX_UNICODE=	yes
 CONFIGURE_ARGS=	--wxWidgets-build=0 --wxWidgets-unicode=1
 
 post-patch:

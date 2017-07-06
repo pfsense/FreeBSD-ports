@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	immortal
-PORTVERSION=	0.11.0
+PORTVERSION=	0.13.3
 CATEGORIES=	sysutils
 
 MAINTAINER=	nbari@tequila.io
@@ -18,7 +18,7 @@ GH_TUPLE=	immortal:logrotate:3691ab5:logrotate/src/github.com/immortal/logrotate
 		immortal:natcasesort:69368b7:natcasesort/src/github.com/immortal/natcasesort \
 		immortal:xtime:fb1aca1:xtime/src/github.com/immortal/xtime \
 		nbari:violetear:502d8b0:nbari/src/github.com/nbari/violetear \
-		go-yaml:yaml:v2:yaml/src/gopkg.in/yaml.v2
+		go-yaml:yaml:cd8b52f:yaml/src/github.com/go-yaml/yaml
 GH_SUBDIR=	src/github.com/${PORTNAME}/${PORTNAME}
 
 STRIP=		# stripping can break go binaries
@@ -26,13 +26,13 @@ STRIP=		# stripping can break go binaries
 do-build:
 	@cd ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}; \
 	${SETENV} ${BUILD_ENV} GOPATH=${WRKSRC} go build -ldflags \
-	"-X main.version=${PORTVERSION}" -o immortal cmd/immortal/main.go;
+	"-s -w -X main.version=${PORTVERSION}" -o immortal cmd/immortal/main.go;
 	@cd ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}; \
 	${SETENV} ${BUILD_ENV} GOPATH=${WRKSRC} go build -ldflags \
-	"-X main.version=${PORTVERSION}" -o immortalctl cmd/immortalctl/main.go;
+	"-s -w -X main.version=${PORTVERSION}" -o immortalctl cmd/immortalctl/main.go;
 	@cd ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${GH_PROJECT}; \
 	${SETENV} ${BUILD_ENV} GOPATH=${WRKSRC} go build -ldflags \
-	"-X main.version=${PORTVERSION}" -o immortaldir cmd/immortaldir/main.go;
+	"-s -w -X main.version=${PORTVERSION}" -o immortaldir cmd/immortaldir/main.go;
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/github.com/immortal/immortal/immortal ${STAGEDIR}${PREFIX}/bin/immortal

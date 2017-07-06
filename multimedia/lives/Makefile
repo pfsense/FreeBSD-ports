@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lives
-PORTVERSION=	2.8.4
-PORTREVISION=	1
+PORTVERSION=	2.8.7
 CATEGORIES=	multimedia
 MASTER_SITES=	http://lives-video.com/releases/
 DISTNAME=	LiVES-${PORTVERSION}
@@ -11,7 +10,8 @@ DISTNAME=	LiVES-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Video editing system
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:multimedia/v4l_compat \
 		${LOCALBASE}/bin/analyseplugin:audio/ladspa
@@ -22,8 +22,8 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		liboil-0.3.so:devel/liboil \
 		libprojectM.so:graphics/libprojectm \
 		libvisual-0.4.so:graphics/libvisual04 \
-		libopencv_calib3d.so:graphics/opencv2 \
-		libopencv_core.so:graphics/opencv2-core \
+		libopencv_calib3d.so:graphics/opencv \
+		libopencv_core.so:graphics/opencv-core \
 		libpng16.so:graphics/png \
 		libfftw3.so:math/fftw3 \
 		libfftw3f.so:math/fftw3-float \
@@ -51,10 +51,12 @@ USES=		compiler:c++11-lib gettext-runtime ghostscript:run libtool \
 		localbase pathfix perl5 pkgconfig python shebangfix tar:bzip2
 SHEBANG_FILES=	build-lives-rfx-plugin build-lives-rfx-plugin-multi \
 		smogrify tools/autolives.pl lives-plugins/plugins/encoders/*_encoder \
+		lives-plugins/marcos-encoders/*encoder* \
+		lives-plugins/plugins/encoders/multi_encoder3 \
 		lives-plugins/plugins/playback/audiostream/audiostreamer.pl
 GNU_CONFIGURE=	yes
-USE_XORG=	x11
-USE_GL=		gl
+USE_XORG=	x11 xrender
+USE_GL=		gl glu
 USE_SDL=	sdl
 USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool
 USE_LDCONFIG=	yes
@@ -95,6 +97,8 @@ post-patch:
 		${WRKSRC}/lives-plugins/weed-plugins/Makefile.in
 	@${REINPLACE_CMD} '/selectRandom/d' \
 		${WRKSRC}/lives-plugins/weed-plugins/projectM.cpp
+	@${REINPLACE_CMD} 's|/usr/bin/perl|${perl_CMD}|' \
+		${WRKSRC}/build-lives-rfx-plugin
 
 pre-build-NLS-on:
 	@(cd ${WRKSRC}/po && ${DO_MAKE_BUILD} update-po)

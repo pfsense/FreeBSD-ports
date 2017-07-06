@@ -17,25 +17,6 @@
     SUBDIR += bpatch
     SUBDIR += bvi
     SUBDIR += calligra
-    SUBDIR += calligra-l10n
-    SUBDIR += calligra-l10n-bs
-    SUBDIR += calligra-l10n-ca
-    SUBDIR += calligra-l10n-ca_valencia
-    SUBDIR += calligra-l10n-cs
-    SUBDIR += calligra-l10n-da
-    SUBDIR += calligra-l10n-el
-    SUBDIR += calligra-l10n-en_GB
-    SUBDIR += calligra-l10n-es
-    SUBDIR += calligra-l10n-et
-    SUBDIR += calligra-l10n-fi
-    SUBDIR += calligra-l10n-gl
-    SUBDIR += calligra-l10n-it
-    SUBDIR += calligra-l10n-kk
-    SUBDIR += calligra-l10n-nb
-    SUBDIR += calligra-l10n-nl
-    SUBDIR += calligra-l10n-sk
-    SUBDIR += calligra-l10n-sv
-    SUBDIR += calligra-l10n-tr
     SUBDIR += chexedit
     SUBDIR += codelite
     SUBDIR += conglomerate
@@ -81,6 +62,7 @@
     SUBDIR += joe
     SUBDIR += joe2
     SUBDIR += jove
+    SUBDIR += jucipp
     SUBDIR += jupp
     SUBDIR += kate
     SUBDIR += kate-plugin-pate
@@ -196,7 +178,6 @@
     SUBDIR += libreoffice-vec
     SUBDIR += libreoffice-xh
     SUBDIR += libreoffice-zu
-    SUBDIR += libreoffice4
     SUBDIR += linux-sublime
     SUBDIR += linux-sublime3
     SUBDIR += madedit
@@ -228,6 +209,7 @@
     SUBDIR += poedit
     SUBDIR += psgml
     SUBDIR += puff
+    SUBDIR += py-editorconfig
     SUBDIR += py-room
     SUBDIR += rox-edit
     SUBDIR += scite
@@ -265,6 +247,7 @@
     SUBDIR += wordgrinder
     SUBDIR += xcoral
     SUBDIR += xed
+    SUBDIR += xi-core
     SUBDIR += xmlcopyeditor
     SUBDIR += xvile
     SUBDIR += yudit

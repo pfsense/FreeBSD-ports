@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	h2o
-PORTVERSION=	2.1.0
-PORTREVISION=	1
+PORTVERSION=	2.2.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 
@@ -14,7 +13,7 @@ LICENSE=	MIT
 
 USE_GITHUB=	yes
 
-USES=		cmake compiler:c11 cpe perl5 shebangfix ssl
+USES=		cmake:noninja compiler:c11 cpe perl5 shebangfix ssl
 CPE_VENDOR=	h2o_project
 USE_PERL5=	run
 SHEBANG_FILES=	share/h2o/start_server
@@ -53,7 +52,7 @@ MRUBY_CMAKE_OFF=	-DWITH_MRUBY=OFF
 .if ${PORT_OPTIONS:MMRUBY}
 USE_RUBY=	yes
 RUBY_NO_RUN_DEPENDS=	yes
-BUILD_DEPENDS+=	bison:devel/bison
+USES+=	bison
 .endif
 
 post-patch:

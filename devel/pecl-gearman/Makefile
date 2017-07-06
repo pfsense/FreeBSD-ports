@@ -5,18 +5,15 @@ PORTNAME=	gearman
 PORTVERSION=	1.1.2
 PORTREVISION=	1
 CATEGORIES=	devel
-MASTER_SITES=	http://pecl.php.net/get/
-PKGNAMEPREFIX=	pecl-
-DIST_SUBDIR=	PECL
 
-MAINTAINER=	joneum@bsdproject.de
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Gearman API
 
 LICENSE=	PHP301
 
 LIB_DEPENDS=	libgearman.so:devel/gearmand
 
-USES=		php:ext tar:tgz
+USES=		php:pecl
 CONFIGURE_ARGS=	--with-gearman
 IGNORE_WITH_PHP=	70 71
 

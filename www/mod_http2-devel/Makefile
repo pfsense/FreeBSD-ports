@@ -2,15 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	mod_http2-devel
-PORTVERSION=	1.10.0
+PORTVERSION=	1.10.6
 DISTVERSIONPREFIX=	v
-DISTNAME=	mod_http2-${DISTVERSIONPREFIX}${DISTVERSION}
 CATEGORIES=	www
 
 MAINTAINER=	brnrd@FreeBSD.org
 COMMENT=	Early experience HTTP/2 modules for Apache httpd
 
 LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	libnghttp2>=1.2:www/libnghttp2
 LIB_DEPENDS=	libnghttp2.so:www/libnghttp2
@@ -46,5 +46,6 @@ post-install:
 		${STAGEDIR}${DOCSDIR}
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${APACHEMODDIR}/${MODULENAME}.so
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${APACHEMODDIR}/mod_proxy_h2.so
+	${RM} -v ${STAGEDIR}${DOCSDIR}/LICENSE
 
 .include <bsd.port.mk>

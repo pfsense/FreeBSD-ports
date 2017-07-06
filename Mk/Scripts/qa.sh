@@ -29,7 +29,7 @@ list_stagedir_elfs() {
 }
 
 shebangonefile() {
-	local f interp rc
+	local f interp interparg badinterp rc
 
 	f="$@"
 	rc=0
@@ -42,13 +42,23 @@ shebangonefile() {
 	esac
 
 	interp=$(sed -n -e '1s/^#![[:space:]]*\([^[:space:]]*\).*/\1/p;2q' "${f}")
+	badinterp=""
 	case "${interp}" in
 	"") ;;
+	/bin/rc)
+		# whitelist some interpreters
+		;;
+	${LOCALBASE}/bin/python|${PREFIX}/bin/python)
+		badinterp="${interp}"
+		;;
 	${LINUXBASE}/*) ;;
 	${LOCALBASE}/bin/perl5.* | ${PREFIX}/bin/perl5.*)
-		err "'${interp}' is an invalid shebang for '${f#${STAGEDIR}${PREFIX}/}' you must use ${LOCALBASE}/bin/perl."
-		err "Either pass \${PERL} to the build or use USES=shebangfix"
-		rc=1
+		# lang/perl5* are allowed to have these shebangs.
+		if ! expr ${PKGORIGIN} : '^lang/perl5.*' > /dev/null; then
+			err "'${interp}' is an invalid shebang for '${f#${STAGEDIR}${PREFIX}/}' you must use ${LOCALBASE}/bin/perl."
+			err "Either pass \${PERL} to the build or use USES=shebangfix"
+			rc=1
+		fi
 		;;
 	${LOCALBASE}/*) ;;
 	${PREFIX}/*) ;;
@@ -56,15 +66,26 @@ shebangonefile() {
 	/bin/sh) ;;
 	/bin/tcsh) ;;
 	/usr/bin/awk) ;;
-	/usr/bin/env) ;;
+	/usr/bin/env)
+		interparg=$(sed -n -e '1s/^#![[:space:]]*[^[:space:]]*[[:space:]]*\([^[:space:]]*\).*/\1/p;2q' "${f}")
+		case "${interparg}" in
+		python)
+			badinterp="${interp} ${interparg}"
+			;;
+		esac
+		;;
 	/usr/bin/nawk) ;;
 	/usr/bin/sed) ;;
 	/usr/sbin/dtrace) ;;
 	*)
-		err "'${interp}' is an invalid shebang you need USES=shebangfix for '${f#${STAGEDIR}${PREFIX}/}'"
-		rc=1
+		badinterp="${interp}"
 		;;
 	esac
+
+	if [ -n "${badinterp}" ]; then
+		err "'${badinterp}' is an invalid shebang you need USES=shebangfix for '${f#${STAGEDIR}${PREFIX}/}'"
+		rc=1
+	fi
 
 	return ${rc}
 }
@@ -80,8 +101,7 @@ shebang() {
 		shebangonefile "${f}" || rc=1
 	# Use heredoc to avoid losing rc from find|while subshell
 	done <<-EOF
-	$(find ${STAGEDIR}${PREFIX}/bin ${STAGEDIR}${PREFIX}/sbin \
-	    ${STAGEDIR}${PREFIX}/libexec ${STAGEDIR}${PREFIX}/www \
+	$(find ${STAGEDIR}${PREFIX} \
 	    -type f -perm +111 2>/dev/null)
 	EOF
 
@@ -101,8 +121,7 @@ shebang() {
 		fi
 	# Use heredoc to avoid losing rc from find|while subshell
 	done <<-EOF
-	$(find ${STAGEDIR}${PREFIX}/bin ${STAGEDIR}${PREFIX}/sbin \
-	    ${STAGEDIR}${PREFIX}/libexec ${STAGEDIR}${PREFIX}/www \
+	$(find ${STAGEDIR}${PREFIX} \
 	    -type l -exec stat -f "%N${LF}%Y" {} + 2>/dev/null)
 	EOF
 
@@ -379,7 +398,6 @@ proxydeps_suggest_uses() {
 		${pkg} = "graphics/cairomm" -o \
 		${pkg} = "devel/dconf" -o \
 		${pkg} = "audio/esound" -o \
-		${pkg} = "x11-toolkits/gal2" -o \
 		${pkg} = "devel/gconf2" -o \
 		${pkg} = "devel/gconfmm26" -o \
 		${pkg} = "devel/glib12" -o \
@@ -400,10 +418,8 @@ proxydeps_suggest_uses() {
 		${pkg} = "x11-toolkits/gtksourceviewmm3" -o \
 		${pkg} = "devel/libbonobo" -o \
 		${pkg} = "x11-toolkits/libbonoboui" -o \
-		${pkg} = "databases/libgda4" -o \
 		${pkg} = "databases/libgda5" -o \
 		${pkg} = "databases/libgda5-ui" -o \
-		${pkg} = "databases/libgdamm" -o \
 		${pkg} = "databases/libgdamm5" -o \
 		${pkg} = "devel/libglade2" -o \
 		${pkg} = "x11/libgnome" -o \
@@ -432,12 +448,10 @@ proxydeps_suggest_uses() {
 		warn "you need USE_GNOME+=${pkg#*/}"
 	# Gnome different as port
 	# grep LIB_DEPENDS= Mk/Uses/gnome.mk |sed -e 's|\(.*\)_LIB_DEPENDS.*:\(.*\)\/\(.*\)|[ "\1" = "\3" ] \|\| echo "elif [ \\${pkg} = \\\"\2/\3\\\" ]; then; warn \\\"you need USE_GNOME+=\1\\\""|'|sort|sh
-	elif [ ${pkg} = "accessibility/at-spi" ]; then warn "you need USE_GNOME+=atspi"
 	elif [ ${pkg} = "databases/evolution-data-server" ]; then warn "you need USE_GNOME+=evolutiondataserver3"
 	elif [ ${pkg} = "graphics/gdk-pixbuf" ]; then warn "you need USE_GNOME+=gdkpixbuf"
 	elif [ ${pkg} = "graphics/gdk-pixbuf2" ]; then warn "you need USE_GNOME+=gdkpixbuf2"
 	elif [ ${pkg} = "x11/gnome-desktop" ]; then warn "you need USE_GNOME+=gnomedesktop3"
-	elif [ ${pkg} = "accessibility/gnome-speech" ]; then warn "you need USE_GNOME+=gnomespeech"
 	elif [ ${pkg} = "devel/gnome-vfs" ]; then warn "you need USE_GNOME+=gnomevfs2"
 	elif [ ${pkg} = "devel/gobject-introspection" ]; then warn "you need USE_GNOME+=introspection"
 	elif [ ${pkg} = "graphics/libart_lgpl" ]; then warn "you need USE_GNOME+=libartlgpl2"
@@ -523,13 +537,13 @@ proxydeps_suggest_uses() {
 	elif echo ${pkg} | grep -E '/sdl2_(gfx|image|mixer|net|ttf)$' > /dev/null; then
 		warn "you need USE_SDL+=$(echo ${pkg} | sed -E 's|.*/sdl2_||')2"
 	# gl-related
-	elif [ ${pkg} = 'graphics/libGL' ]; then
+	elif expr ${lib_file} : "${LOCALBASE}/lib/libGL.so.*$" > /dev/null; then
 		warn "you need USE_GL+=gl"
-	elif [ ${pkg} = 'graphics/gbm' ]; then
+	elif expr ${lib_file} : "${LOCALBASE}/lib/libgbm.so.*$" > /dev/null; then
 		warn "you need USE_GL+=gbm"
-	elif [ ${pkg} = 'graphics/libglesv2' ]; then
+	elif expr ${lib_file} : "${LOCALBASE}/lib/libGLESv2.so.*$" > /dev/null; then
 		warn "you need USE_GL+=glesv2"
-	elif [ ${pkg} = 'graphics/libEGL' ]; then
+	elif expr ${lib_file} : "${LOCALBASE}/lib/libEGL.so.*$" > /dev/null; then
 		warn "you need USE_GL+=egl"
 	elif [ ${pkg} = 'graphics/glew' ]; then
 		warn "you need USE_GL+=glew"
@@ -582,7 +596,7 @@ proxydeps_suggest_uses() {
 		warn "you need USES+=gnustep and USE_GNUSTEP+=gui"
 	# iconv
 	elif [ ${pkg} = "converters/libiconv" ]; then
-		warn "you need USES+=iconv"
+		warn "you need USES+=iconv, USES+=iconv:wchar_t, or USES+=iconv:translit depending on needs"
 	# jpeg
 	elif [ ${pkg} = "graphics/jpeg" -o ${pkg} = "graphics/jpeg-turbo" ]; then
 		warn "you need USES+=jpeg"
@@ -783,9 +797,35 @@ perlcore() {
 	fi
 }
 
+no_arch() {
+	[ -z "$NO_ARCH" ] && return
+	rc=0
+	while read f; do
+		[ -z "$f" ] && continue
+		if [ -n "$NO_ARCH_IGNORE" ]; then
+			skip=
+			for blacklist in $NO_ARCH_IGNORE; do
+				case $f in
+					*$blacklist) skip=1; break;;
+				esac
+			done
+			[ "$skip" ] && continue
+		fi
+		err "'${f#.}' is a architecture specific binary file and you have set NO_ARCH.  Either remove NO_ARCH or add '$(basename $f)' to NO_ARCH_IGNORE."
+		rc=1
+	done <<-EOF
+	$(list_stagedir_elfs  \
+		| file -F $'\1' -f - -N \
+		| grep -aE 'ELF .* [LM]SB .*, .*, version [0-9]+ \(FreeBSD\)' \
+		| cut -f 1 -d $'\1')
+	EOF
+	return $rc
+}
+
+
 checks="shebang symlinks paths stripped desktopfileutils sharedmimeinfo"
 checks="$checks suidfiles libtool libperl prefixvar baselibs terminfo"
-checks="$checks proxydeps sonames perlcore"
+checks="$checks proxydeps sonames perlcore no_arch"
 
 ret=0
 cd ${STAGEDIR}

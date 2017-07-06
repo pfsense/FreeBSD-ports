@@ -2,7 +2,7 @@
 
 PORTNAME=	domoticz
 PORTVERSION=	3.${DOMOTICZ_REL}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www
 
 MAINTAINER=	kiwi@oav.net
@@ -14,6 +14,8 @@ LICENSE_FILE=	${WRKSRC}/License.txt
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libexpat.so:textproc/expat2 \
 		libtelldus-core.so:comms/telldus-core
+
+BROKEN_armv6=		fails to compile: HarmonyHub.cpp: ordered comparison between pointer and zero
 
 CONFLICTS_INSTALL?=	domoticz-[23]*
 

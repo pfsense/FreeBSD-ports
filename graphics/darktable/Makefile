@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	darktable
-PORTVERSION=	2.2.3
-PORTREVISION=	1
+PORTVERSION=	2.2.5
 CATEGORIES=	graphics
 MASTER_SITES=	https://github.com/darktable-org/${PORTNAME}/releases/download/release-${PORTVERSION:C/\.rc/rc/}/
 
@@ -24,11 +23,11 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libsoup-2.4.so:devel/libsoup \
 		libtiff.so:graphics/tiff
 
-ONLY_FOR_ARCHS=		amd64 arm64
+ONLY_FOR_ARCHS=		amd64
 ONLY_FOR_ARCHS_REASON=	uses SSE instructions and 64-bit address space
 
 USES=		cmake:outsource compiler:c++11-lib desktop-file-utils	\
-		jpeg ninja pkgconfig sqlite tar:xz
+		jpeg pkgconfig sqlite tar:xz
 USE_GL=		glu
 USE_GNOME=	cairo gtk30 intltool librsvg2 libxml2
 USE_XORG=	ice sm x11 xext xrandr
@@ -97,8 +96,8 @@ WEBP_CMAKE_OFF=		-DUSE_WEBP:BOOL=OFF
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == amd64 && ${CHOSEN_COMPILER_TYPE} == clang
-# Enable OpenMP support with Clang 3.9.
-LLVM_VER=	39
+# Enable OpenMP support with Clang 4.0.
+LLVM_VER=	40
 BUILD_DEPENDS+=	clang${LLVM_VER}:devel/llvm${LLVM_VER}
 
 CPP=		clang-cpp${LLVM_VER}

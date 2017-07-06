@@ -3,6 +3,7 @@
 
 PORTNAME=	xlockmore
 PORTVERSION=	5.51
+PORTREVISION=	1
 CATEGORIES?=	x11
 MASTER_SITES=	http://www.sillycycle.com/xlock/ \
 		LOCAL/jgh/x11/${PORTNAME}/
@@ -159,7 +160,7 @@ pre-extract:
 
 post-patch:
 	@${REINPLACE_CMD} -e '/xglockrc/ s|PROGRAM|DATA|' ${WRKSRC}/xglock/Makefile.in
-.if ${OSVERSION} > 1003500
+.if ${OPSYS} == FreeBSD && ${OSVERSION} > 1003500
 	@${REINPLACE_CMD} -e 's|/usr/games/fortune|/usr/bin/fortune|' ${WRKSRC}/modes/Makefile.in
 .endif
 

@@ -27,7 +27,6 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-guile \
 		--enable-local-libopts \
 		--with-trousers-lib=${LOCALBASE}/lib/libtspi.so.1 \
-		--without-libidn2 \
 		ac_cv_type_max_align_t=yes
 MAKE_ENV=	MAKEINFOFLAGS=--no-split
 INSTALL_TARGET=	install-strip
@@ -43,7 +42,7 @@ DANE_LIB_DEPENDS=	libunbound.so:dns/unbound
 DANE_CONFIGURE_ENABLE=	libdane
 
 IDN_CONFIGURE_WITH=	idn
-IDN_LIB_DEPENDS=	libidn.so:dns/libidn
+IDN_LIB_DEPENDS=	libidn2.so:dns/libidn2
 
 NLS_CONFIGURE_ENABLE=	nls
 NLS_CONFIGURE_OFF=	ac_cv_lib_intl_gettext=no

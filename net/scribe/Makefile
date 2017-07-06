@@ -3,15 +3,13 @@
 
 PORTNAME=	scribe
 DISTVERSION=	2.2.2013.04.15
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	net
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Aggregating log data streamed in real time
 
 LICENSE=	APACHE20
-
-BROKEN_powerpc64=	Does not build
 
 BUILD_DEPENDS=	fb303>0:devel/fb303 \
 		thrift:devel/thrift
@@ -21,6 +19,8 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 RUN_DEPENDS=	p5-Class-Accessor>0:devel/p5-Class-Accessor \
 		p5-Thrift>0:devel/p5-Thrift \
 		${PYTHON_PKGNAMEPREFIX}thrift>0:devel/py-thrift
+
+BROKEN_powerpc64=	Does not build
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	facebookarchive

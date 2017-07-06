@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	hyperrogue
-PORTVERSION=	8.3j
+PORTVERSION=	9.4g
+DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -12,6 +13,8 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpng.so:graphics/png
+
+BROKEN_powerpc64=	fails to link: langen-langen.o: relocation truncated to fit: R_PPC64_TOC16_DS
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	zenorogue
@@ -38,8 +41,6 @@ OPTIONS_DEFINE=	DOCS
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/hr-icon.ico ${STAGEDIR}${PREFIX}/share/pixmaps/${PORTNAME}.ico
-	@${MV} ${STAGEDIR}${DATADIR}/music/* ${STAGEDIR}${DATADIR}
-	@${RMDIR} ${STAGEDIR}${DATADIR}/music
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

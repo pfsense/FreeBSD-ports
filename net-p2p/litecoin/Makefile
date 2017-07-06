@@ -4,7 +4,7 @@
 PORTNAME=	litecoin
 PORTVERSION=	0.10.4.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	net-p2p finance
 MASTER_SITES=	LOCAL/swills
 
@@ -15,6 +15,9 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libboost_date_time.so:devel/boost-libs
+
+NOT_FOR_ARCHS=		powerpc powerpc64 sparc64
+NOT_FOR_ARCHS_REASON=	fails to configure: "Big Endian not supported"
 
 USES+=		autoreconf gmake libtool pkgconfig shebangfix ssl
 SHEBANG_FILES=	src/test/*.py
@@ -96,7 +99,7 @@ PLIST_FILES?=	bin/litecoin-qt share/applications/litecoin-qt.desktop \
 
 .if ${SSL_DEFAULT:Mlibressl*}
 # The configure script will output this message, so save the user the trouble
-IGNORE=	Detected LibreSSL: This is NOT supported, and may break consensus compatibility!
+IGNORE=	detected LibreSSL: This is NOT supported, and may break consensus compatibility!
 .endif
 
 .if defined(SLAVE_PORT) && ${SLAVE_PORT} == "no"
