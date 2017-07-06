@@ -20,7 +20,6 @@ RUN_DEPENDS=	${LOCALBASE}/bin/git:devel/git \
 		${LOCALBASE}/bin/salt:sysutils/py-salt \
 		${LOCALBASE}/bin/sudo:security/sudo \
 		${LOCALBASE}/sbin/nginx:www/nginx \
-		${LOCALBASE}/bin/qemu-arm-static:emulators/qemu-user-static \
 		${LOCALBASE}/sbin/sssd:security/sssd \
 		${LOCALBASE}/lib/pam_ldap.so:security/pam_ldap \
 		${LOCALBASE}/lib/pam_mkhomedir.so:security/pam_mkhomedir \
@@ -35,6 +34,10 @@ NO_BUILD=	yes
 NO_MTREE=	yes
 
 .include <bsd.port.pre.mk>
+
+.if (${ARCH} == "amd64")
+RUN_DEPENDS+=	${LOCALBASE}/bin/qemu-arm-static:emulators/qemu-user-static
+.endif
 
 do-install:	# empty
 
