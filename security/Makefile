@@ -436,6 +436,8 @@
     SUBDIR += openvpn-auth-radius
     SUBDIR += openvpn-devel
     SUBDIR += openvpn-mbedtls
+    SUBDIR += openvpn23
+    SUBDIR += openvpn23-polarssl
     SUBDIR += ophcrack
     SUBDIR += orthrus
     SUBDIR += osiris
