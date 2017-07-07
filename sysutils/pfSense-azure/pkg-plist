@@ -1,8 +1,5 @@
-/etc/waagent.conf
-etc/rc.d/waagent.sh
+etc/waagent.conf
 sbin/add-pfsense-user
 sbin/set-pfsense-hostname
 sbin/set-pfsense-password
 sbin/set-pfsense-sshkey
-sbin/waagent
-@dir /etc

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-azure
-PORTVERSION=	0.2
+PORTVERSION=	0.3
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -12,7 +12,7 @@ COMMENT=	pfSense Azure Tools
 
 LICENSE=	APACHE20
 
-USES=		python:2.7
+RUN_DEPENDS=	azure-agent>=2.2.13:sysutils/azure-agent
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -23,18 +23,11 @@ do-extract:
 	${MKDIR} ${WRKSRC}
 
 do-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/etc/rc.d
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc
 	${MKDIR} ${STAGEDIR}${PREFIX}/sbin
-	${MKDIR} ${STAGEDIR}/etc
-	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/sbin/add-pfsense-user \
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/sbin/*-pfsense-* \
 		${STAGEDIR}${PREFIX}/sbin
-	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/sbin/set-pfsense-* \
-		${STAGEDIR}${PREFIX}/sbin
-	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/sbin/waagent \
-		${STAGEDIR}${PREFIX}/sbin
-	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/etc/rc.d/waagent.sh \
-		${STAGEDIR}${PREFIX}/etc/rc.d
-	${INSTALL_DATA} ${FILESDIR}/etc/waagent.conf \
-		${STAGEDIR}/etc
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/etc/waagent.conf \
+		${STAGEDIR}${PREFIX}/etc
 
 .include <bsd.port.mk>
