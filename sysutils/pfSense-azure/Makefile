@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-azure
-PORTVERSION=	0.3
+PORTVERSION=	0.4
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
