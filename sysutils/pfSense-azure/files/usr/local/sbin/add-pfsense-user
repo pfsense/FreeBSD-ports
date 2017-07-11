@@ -1,7 +1,7 @@
 #!/usr/local/bin/php
 <?php
 
-/* Usage: add-pfsense-user <user_name> <expire_date> <ssh_pub_key> <password>
+/* Usage: add-pfsense-user <user_name> <expire_date>
  *
  * Adds a user to the pfSense system config with privileges similar to those
  * that the Azure waagent script attempts to add to a stock FreeBSD/Linux
@@ -10,6 +10,26 @@
 
 require_once('config.inc');
 require_once('auth.inc');
+
+function generateRandomPassword($length = 15) {
+	/* get some random bytes. use them as offsets into the space of
+	   printable ascii characters. 32-126 is the printable characters.
+	   Omit 32 itself since it might be confusing if there is a space
+	   in the password.
+	*/
+
+	$range_size = 126 - 33 + 1;
+	$random_bytes = str_split(openssl_random_pseudo_bytes($length));
+
+	for ($i = 0; $i < $length; $i++) {
+
+		$offset = ord($random_bytes[$i]) % $range_size;
+		$password .= chr(33 + $offset);
+
+	}
+
+	return $password;
+}
 
 if (!isset($config['system']['user']) || !is_array($config['system']['user']))
 	$config['system']['user'] = array();
@@ -40,23 +60,6 @@ if ($argv[1] == "root") {
 	);
 }
 
-$changed_creds = false;
-
-if (!empty($argv[3])) { 
-	$user_config['authorizedkeys'] = base64_encode($argv[3]);
-	local_user_set($user_config);
-	$changed_creds = true;
-}
-
-if (!empty($argv[4])) {
-	local_user_set_password($user_config, $argv[4]);
-	local_user_set($user_config);
-	if ($existing_id != -1  &&  $user_config['name'] != 'root') {
-		$a_user[$existing_id] = $user_config;
-	}
-	$changed_creds = true;
-}
-
 if ($existing_id == -1) {
 	$user_config['name'] = $argv[1];
 	$user_config['descr'] = 'Auto Added account';
@@ -64,6 +67,9 @@ if ($existing_id == -1) {
 	$user_config['scope'] = 'system';
 	$user_config['priv'] = [ 'user-shell-access' ];
 	$user_config['uid'] = $config['system']['nextuid']++;
+	# Add a random password initially otherwise user will not be created
+	# on system, only on config.xml
+	$user_config['password'] = generateRandomPassword();
 
 	if (!empty($argv[2])) {
 		try {
@@ -77,13 +83,11 @@ if ($existing_id == -1) {
 	$a_user[] = $user_config;
 	$groups = [ 'all', 'admins' ];
 	local_user_set_groups($user_config, $groups);
-	$changed_creds = true;
-}
 
-if ($changed_creds) {
 	if ($existing_id != -1) {
 		$a_user[$existing_id] = $user_config;
 	}
+
 	write_config();
 }
 
