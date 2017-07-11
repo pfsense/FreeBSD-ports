@@ -2,8 +2,8 @@
 
 PORTNAME=	azure-agent
 PORTVERSION=	2.2.13
-PORTREVISION=	3
 DISTVERSIONPREFIX=	v
+PORTREVISION=	4
 CATEGORIES=	sysutils
 
 MAINTAINER=	honzhan@microsoft.com
@@ -36,6 +36,7 @@ post-patch:
 		${WRKSRC}/init/waagent ${WRKSRC}/init/waagent.service \
 		${WRKSRC}/setup.py
 	${REINPLACE_CMD} -e "s,/etc,${PREFIX}/etc,g" \
+			 -e "/set_conf_files.*freebsd\/waagent.conf/ s/^/#/" \
 		${WRKSRC}/setup.py
 	${REINPLACE_CMD} -e "s,/etc/waagent,${PREFIX}/etc/waagent,g" \
 		${WRKSRC}/bin/waagent2.0 \
@@ -53,5 +54,10 @@ post-patch:
 	${MV} ${WRKSRC}/init/freebsd/waagent ${WRKSRC}/init/freebsd/waagent.sh
 	${REINPLACE_CMD} -e "/set_freebsd_rc_files/ s,init/freebsd/waagent,init/freebsd/waagent.sh," \
 		${WRKSRC}/setup.py
+
+post-install:
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc
+	${INSTALL_DATA} ${WRKSRC}/config/freebsd/waagent.conf \
+		${STAGEDIR}${PREFIX}/etc/waagent.conf.sample
 
 .include <bsd.port.mk>
