@@ -44,7 +44,17 @@ if ($command == "importcert") {
 			}
 			if ($action['method'] == "servicerestart") {
 				syslog(LOG_NOTICE, "Acme, Restarting service {$action['command']}");
-				restart_service($action['command']);
+				list($servicename, $extras) = acme_fixup_service_args($action['command']);
+				if (!empty($servicename)) {
+					service_control_restart($servicename, $extras);
+				}
+			}
+			if ($action['method'] == "xmlrpcservicerestart") {
+				syslog(LOG_NOTICE, "Acme, Restarting remote service via XMLRPC {$action['command']}");
+				list($servicename, $extras) = acme_fixup_service_args($action['command']);
+				if (!empty($servicename)) {
+					acme_xmlrpc_restart_service($servicename, $extras);
+				}
 			}
 		}
 	}

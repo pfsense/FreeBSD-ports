@@ -362,7 +362,12 @@ $section->addInput(new \Form_Input(
 
 $section->addInput(new \Form_StaticText(
 	'Actions list', 
-	"Used to restart webserver processes after this certificate has been renewed<br/>Examples:<br/>/etc/rc.restart_webgui<br/>/usr/local/etc/rc.d/haproxy.sh restart".
+	"Used to restart webserver processes after this certificate has been renewed<br/>" .
+	"Examples:<br/>" .
+	"<br/>Restart the GUI on this firewall: Select \"Shell Command\" and enter <i>/etc/rc.restart_webgui</i>" .
+	"<br/>Restart HAProxy on this firewall: Select \"Shell Command\" and enter <i>/usr/local/etc/rc.d/haproxy.sh restart</i>" .
+	"<br/>Restart a local captive portal instance: Select \"Restart Local Service\" and enter <i>captiveportal zonename</i> replacing <i>zonename</i> with the zone to restart." .
+	"<br/>Restart the GUI of an HA peer: Select \"Restart Remote Service\" and enter <i>webgui</i>. This utilizes the system default HA XMLRPC Sync Settings." .
 	$actionslist->Draw($a_actions)
 ));
 
