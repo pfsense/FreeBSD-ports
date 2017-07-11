@@ -43,8 +43,8 @@ namespace { // global code
 
 	/* Attempt to restart a remote service via XMLRPC with the default XMLRPC settings. */
 	function acme_xmlrpc_restart_service($servicename = "webgui", $extras = array()) {
-		require_once("xmlrpc_client.inc");
-		$rpc_client = new pfsense_xmlrpc_client();
+		require_once("xmlrpc.inc");
+		global $config;
 		$execstr = "";
 		if ($servicename == "webgui") {
 			/* The GUI needs a special event to restart, it is not a traditional service. */
@@ -55,7 +55,37 @@ require_once('service-utils.inc');
 service_control_restart("{$servicename}", $extras);
 EOD;
 		}
-		$resp = $rpc_client->xmlrpc_exec_php($execstr);
+		$hasync = $config['hasync'];
+		if (empty($hasync['synchronizetoip'])) {
+			return;
+		}
+		if (!empty($config['system']['webgui']['protocol'])) {
+			$synchronizetoip = $config['system']['webgui']['protocol'];
+			$synchronizetoip .= "://";
+		}
+		$port = $config['system']['webgui']['port'];
+		if (empty($port)) {
+			if ($config['system']['webgui']['protocol'] == "http") {
+				$port = "80";
+			} else {
+				$port = "443";
+			}
+		}
+		if (is_ipaddrv6($hasync['synchronizetoip'])) {
+			$hasync['synchronizetoip'] = "[{$hasync['synchronizetoip']}]";
+		}
+		$synchronizetoip .= $hasync['synchronizetoip'];
+		$username = "admin";
+		$password = $hasync['password'];
+		$method = 'pfsense.exec_php';
+		$params = array(
+			XML_RPC_encode($password),
+			XML_RPC_encode($execstr)
+		);
+		$msg = new XML_RPC_Message($method, $params);
+		$cli = new XML_RPC_Client('/xmlrpc.php', $synchronizetoip, $port);
+		$cli->setCredentials($username, $password);
+		$resp = $cli->send($msg, "250");
 		if ($resp != null) {
 			return true;
 		}
