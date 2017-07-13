@@ -144,8 +144,8 @@ function shellcmd_sync_package() {
 		}
 	}
 	if (($config['system']['shellcmd'] != $a_shellcmd) ||
-		($config['system']['earlyshellcmd'] != $a_earlyshellcmd) ||
-		($config['system']['afterfilterchangeshellcmd'] != $afterfilterchangeshellcmd)) {
+	    ($config['system']['earlyshellcmd'] != $a_earlyshellcmd) ||
+	    ($config['system']['afterfilterchangeshellcmd'] != $afterfilterchangeshellcmd)) {
 		/* Write the new system configuration to config.xml from scratch when done 
 		   but only if something changed */
 		unset($config['system']['shellcmd']);
