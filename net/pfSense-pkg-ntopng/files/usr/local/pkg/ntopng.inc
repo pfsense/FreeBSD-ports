@@ -121,6 +121,17 @@ function ntopng_sync_package() {
 				$local_networks = "--local-networks " . escapeshellarg(gen_subnet(get_interface_ip('lan'), get_interface_subnet('lan')) . '/' . get_interface_subnet('lan'));
 			}
 			break;
+		case "custom":
+			$nets = array();
+			foreach ($ntopng_config['row'] as $net) {
+				if (is_subnet($net['cidr'])) {
+					$nets[] = trim($net['cidr']);
+				}
+			}
+			if (!empty($nets)) {
+				$local_networks = "--local-networks " . escapeshellarg(implode(",", $nets));
+			}
+			break;
 		case "rfc1918":
 		default:
 			$local_networks = "--local-networks '192.168.0.0/16,172.16.0.0/12,10.0.0.0/8'";
@@ -322,6 +333,13 @@ function ntopng_validate_input($post, &$input_errors) {
 	}
 	if ($post['redis_password'] != $post['redis_passwordagain']) {
 		$input_errors[] = "The provided passwords did not match.";
+	}
+	$idx = 0;
+	while (isset($_POST["cidr{$idx}"])) {
+		$cidr = $_POST["cidr" . $idx++];
+		if (!is_subnet($cidr)) {
+			$input_errors[] = "Invalid CIDR in custom local networks list at position {$idx}.";
+		}
 	}
 	if ($post['Submit'] == "Update GeoIP Data") {
 		ntopng_update_geoip();
