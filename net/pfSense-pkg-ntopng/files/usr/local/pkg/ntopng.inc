@@ -334,11 +334,13 @@ function ntopng_validate_input($post, &$input_errors) {
 	if ($post['redis_password'] != $post['redis_passwordagain']) {
 		$input_errors[] = "The provided passwords did not match.";
 	}
-	$idx = 0;
-	while (isset($_POST["cidr{$idx}"])) {
-		$cidr = $_POST["cidr" . $idx++];
-		if (!is_subnet($cidr)) {
-			$input_errors[] = "Invalid CIDR in custom local networks list at position {$idx}.";
+	if($_POST["local_networks"] == "custom") {
+		$idx = 0;
+		while (isset($_POST["cidr{$idx}"])) {
+			$cidr = $_POST["cidr" . $idx++];
+			if (!is_subnet($cidr)) {
+				$input_errors[] = "Invalid CIDR in custom local networks list at position {$idx}.";
+			}
 		}
 	}
 	if ($post['Submit'] == "Update GeoIP Data") {
