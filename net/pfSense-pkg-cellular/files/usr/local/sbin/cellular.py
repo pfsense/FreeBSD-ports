@@ -296,7 +296,7 @@ class CellularInterface:
 		parse and convert signal strength to 1-4
 		"""
 
-		steps = [0, 1, 9, 14, 19, 30]
+		steps = [0, 1, 9, 14, 19, 31]
 
 		rssi = int(strength.split(",")[0])
 
