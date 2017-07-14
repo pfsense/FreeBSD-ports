@@ -144,7 +144,7 @@ if (isset($_POST['getsignalstrength'])) {
 			}
 		}
 
-		setTimeout("widget()", 5000);
+		setTimeout("widget()", 30000);
 	}
 
 	function getinfoex_modem() {
@@ -178,7 +178,7 @@ if (isset($_POST['getsignalstrength'])) {
 			$("#modem-mode").html("");
 		}
 
-		setTimeout("getinfoex_modem()", 5000);
+		setTimeout("getinfoex_modem()", 30000);
 	}
 
 	function getstatus_modem() {
@@ -223,7 +223,7 @@ if (isset($_POST['getsignalstrength'])) {
 		} else {
 			$("#modem #ipaddr").html("");
 		}
-		setTimeout('getstatus_modem()', 5000);
+		setTimeout('getstatus_modem()', 30000);
 	}
 
 	function set_signal(str) {
