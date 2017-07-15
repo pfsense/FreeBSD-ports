@@ -72,9 +72,13 @@ function validate_form_lcdproc($post, &$input_errors) {
 			case "ucom1":
 			case "ucom2":
 			case "lpt1":
+			case "ttyU0":
+			case "ttyU1":
+			case "ttyU2":
+			case "ttyU3":
 			case "ugen0.2":
 			case "ugen1.2":
-			case "ugen1.3";
+			case "ugen1.3":
 			case "ugen2.2":
 				continue;
 				break;
@@ -164,6 +168,18 @@ function sync_package_lcdproc() {
 				break;
 			case "lpt1":
 				$realport = "/dev/lpt0";
+				break;
+			case "ttyU0":
+				$realport = "/dev/ttyU0";
+				break;
+			case "ttyU1":
+				$realport = "/dev/ttyU1";
+				break;
+			case "ttyU2":
+				$realport = "/dev/ttyU2";
+				break;
+			case "ttyU3":
+				$realport = "/dev/ttyU3";
 				break;
 			case "ugen0.2":
 				$realport = "/dev/ugen0.2";
