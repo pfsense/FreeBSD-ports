@@ -550,7 +550,6 @@ function build_interface_link_list() {
 			$entry['status'] = "down";
 		}
 
-
 		if ($ifinfo['pppoelink'] == "up" ||
 		    $ifinfo['pptplink']  == "up" ||
 		    $ifinfo['l2tplink']  == "up") {
