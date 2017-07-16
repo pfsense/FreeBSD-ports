@@ -533,7 +533,7 @@ function build_interface_link_list() {
 	$result = array();
 	$ifList = get_configured_interface_with_descr();
 
-	foreach($ifList as $ifdescr => $ifname) {	
+	foreach($ifList as $ifdescr => $ifname) {
 
 		// get the interface link infos
 		$ifinfo = get_interface_info($ifdescr);
@@ -541,7 +541,7 @@ function build_interface_link_list() {
 		$entry = array();
 		$entry['name'] = $ifname;
 		$entry['mac'] = $ifinfo['macaddr'];
-	
+
 		if ($ifinfo['status'] == "up" ||
 		    $ifinfo['status'] == "associated") {
 
