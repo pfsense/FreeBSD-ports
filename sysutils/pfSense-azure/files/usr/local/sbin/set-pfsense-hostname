@@ -15,16 +15,18 @@ if (empty($argv[1])) {
 }
 
 $hostname = $argv[1];
-$domainname = "cloudapp.net";
 
-if (!is_hostname($hostname)) {
+if (!preg_match('/^([^\.]+).(.*)$/', $hostname, $matches)) {
 	echo "Invalid hostname supplied: $hostname\n";
 	return 1;
 }
 
-while (preg_match('/\.' . $domainname . '$/', $hostname, $matches,
-    PREG_OFFSET_CAPTURE) !== 0) {
-	$hostname = substr($hostname, 0, $matches[0][1]);
+$hostname = $matches[1];
+$domainname = $matches[2];
+
+if (!is_hostname($hostname . '.' . $domainname)) {
+	echo "Invalid hostname supplied: $hostname\n";
+	return 1;
 }
 
 $config_changed = false;
