@@ -16,13 +16,12 @@ if (empty($argv[1])) {
 
 $hostname = $argv[1];
 
-if (!preg_match('/^([^\.]+).(.*)$/', $hostname, $matches)) {
-	echo "Invalid hostname supplied: $hostname\n";
-	return 1;
+if (preg_match('/^([^\.]+).(.*)$/', $hostname, $matches)) {
+	$hostname = $matches[1];
+	$domainname = $matches[2];
+} else if (!empty($hostname)) {
+	$domainname = 'localdomain';
 }
-
-$hostname = $matches[1];
-$domainname = $matches[2];
 
 if (!is_hostname($hostname . '.' . $domainname)) {
 	echo "Invalid hostname supplied: $hostname\n";
