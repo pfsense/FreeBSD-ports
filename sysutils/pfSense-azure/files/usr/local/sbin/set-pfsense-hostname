@@ -28,7 +28,8 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $vm_info = json_decode(curl_exec($ch), true);
 curl_close($ch);
 
-if (preg_match('/^([^\.]+).(.*)$/', $hostname, $matches)) {
+if (!file_exists("/conf/trigger_initial_wizard") &&
+    preg_match('/^([^\.]+).(.*)$/', $hostname, $matches)) {
 	$hostname = $matches[1];
 	$domainname = $matches[2];
 } else if (is_array($vm_info)) {
