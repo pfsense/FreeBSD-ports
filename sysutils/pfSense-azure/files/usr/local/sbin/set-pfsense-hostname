@@ -16,11 +16,27 @@ if (empty($argv[1])) {
 
 $hostname = $argv[1];
 
+/* Get system information and create desired hostname */
+$uri = "http://169.254.169.254/metadata/instance?api-version=2017-04-02";
+$ch = curl_init($uri);
+if (!$ch) {
+	echo "Error obtaining VM host information\n";
+	return 1;
+}
+curl_setopt($ch, CURLOPT_HTTPHEADER, array("Metadata: true"));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$vm_info = json_decode(curl_exec($ch), true);
+curl_close($ch);
+
 if (preg_match('/^([^\.]+).(.*)$/', $hostname, $matches)) {
 	$hostname = $matches[1];
 	$domainname = $matches[2];
-} else if (!empty($hostname)) {
-	$domainname = 'localdomain';
+} else if (is_array($vm_info)) {
+	$hostname = $vm_info['compute']['name'];
+	$domainname = $vm_info['compute']['location'] . '.cloudapp.azure.com';
+} else {
+	echo "Unable to identify desired hostname\n";
+	return 1;
 }
 
 if (!is_hostname($hostname . '.' . $domainname)) {
@@ -40,7 +56,12 @@ if ($config['system']['domain'] != $domainname) {
 	$config_changed = true;
 }
 
-$public_ip = resolve_retry("$hostname.$domainname");
+if (!empty($vm_info['network']['interface'][0]['ipv4']['ipAddress'][0]['publicIpAddress'])) {
+	$public_ip = $vm_info['network']['interface'][0]['ipv4']['ipAddress'][0]['publicIpAddress'];
+} else {
+	$public_ip = resolve_retry("$hostname.$domainname");
+}
+
 if ($public_ip && !is_private_ip($public_ip)) {
 	file_put_contents("/var/db/natted_hn0_ip", $public_ip);
 }
