@@ -11,7 +11,8 @@ require_once('system.inc');
 require_once('config.inc');
 
 if (empty($argv[1])) {
-        return 1;
+	echo "Empty hostname is invalid\n";
+	exit(1);
 }
 
 $hostname = $argv[1];
@@ -21,7 +22,7 @@ $uri = "http://169.254.169.254/metadata/instance?api-version=2017-04-02";
 $ch = curl_init($uri);
 if (!$ch) {
 	echo "Error obtaining VM host information\n";
-	return 1;
+	exit(1);
 }
 curl_setopt($ch, CURLOPT_HTTPHEADER, array("Metadata: true"));
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -37,12 +38,12 @@ if (!file_exists("/conf/trigger_initial_wizard") &&
 	$domainname = $vm_info['compute']['location'] . '.cloudapp.azure.com';
 } else {
 	echo "Unable to identify desired hostname\n";
-	return 1;
+	exit(1);
 }
 
 if (!is_hostname($hostname . '.' . $domainname)) {
 	echo "Invalid hostname supplied: $hostname\n";
-	return 1;
+	exit(1);
 }
 
 $config_changed = false;
