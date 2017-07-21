@@ -42,7 +42,7 @@ namespace { // global code
 	}
 }
 
-namespace pfsense_pkg\acme {
+namespace aisense_pkg\acme {
 
 /* include all configuration functions */
 require_once("functions.inc");
