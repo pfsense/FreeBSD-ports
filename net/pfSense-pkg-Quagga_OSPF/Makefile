@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-Quagga_OSPF
+PORTNAME=	AISense-pkg-Quagga_OSPF
 PORTVERSION=	0.6.17
 CATEGORIES=	net
 MASTER_SITES=	# empty
@@ -8,7 +8,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package Quagga_OSPF
+COMMENT=	AISense package Quagga_OSPF
 
 LICENSE=	ESF
 
