@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-haproxy-devel
+PORTNAME=	AISense-pkg-haproxy-devel
 PORTVERSION=	0.52
 CATEGORIES=	net
 MASTER_SITES=	# empty
@@ -8,13 +8,13 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package haproxy-devel
+COMMENT=	AISense package haproxy-devel
 
 LICENSE=	ESF
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/haproxy:net/haproxy-devel
 
-CONFLICTS=	pfSense-pkg-haproxy-[0-9]*
+CONFLICTS=	AISense-pkg-haproxy-[0-9]*
 
 NO_BUILD=	yes
 NO_MTREE=	yes
