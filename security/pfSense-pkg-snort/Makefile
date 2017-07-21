@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-snort
+PORTNAME=	AISense-pkg-snort
 PORTVERSION=	3.2.9.2
 PORTREVISION=	16
 CATEGORIES=	security
@@ -8,8 +8,8 @@ MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package snort
+MAINTAINER=	sales@infrassist.com
+COMMENT=	AISense package snort
 
 LICENSE=	ESF
 
