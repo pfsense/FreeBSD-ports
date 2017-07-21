@@ -29,7 +29,7 @@
 */
 require_once("globals.inc");
 require_once("util.inc");
-require_once("pfsense-utils.inc");
+require_once("aisense-utils.inc");
 
 global $git_root_url, $patch_suffix, $patch_dir, $patch_cmd;
 $git_root_url = "https://github.com/pfsense/pfsense/commit/";
