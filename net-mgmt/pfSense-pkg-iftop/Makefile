@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-iftop
+PORTNAME=	AISense-pkg-iftop
 PORTVERSION=	0.17
 PORTREVISION=	2
 CATEGORIES=	net-mgmt
@@ -9,7 +9,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package iftop
+COMMENT=	AISense package iftop
 
 LICENSE=	ESF
 
