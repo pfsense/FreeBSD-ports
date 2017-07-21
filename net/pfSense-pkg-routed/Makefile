@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-routed
+PORTNAME=	AISense-pkg-routed
 PORTVERSION=	1.2.3
 PORTREVISION=	2
 CATEGORIES=	net
@@ -9,7 +9,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package routed
+COMMENT=	AISense package routed
 
 LICENSE=	ESF
 
