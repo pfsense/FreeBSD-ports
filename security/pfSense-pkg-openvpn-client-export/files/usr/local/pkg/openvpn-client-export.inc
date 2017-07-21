@@ -25,7 +25,7 @@ require_once("openvpn.inc");
 require_once("filter.inc");
 require_once("shaper.inc");
 require_once("util.inc");
-require_once("pfsense-utils.inc");
+require_once("aisense-utils.inc");
 
 global $current_openvpn_version, $current_openvpn_version_rev;
 $current_openvpn_version = "2.4.0";
