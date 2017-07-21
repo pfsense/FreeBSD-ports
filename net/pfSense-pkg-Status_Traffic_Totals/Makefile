@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-Status_Traffic_Totals
+PORTNAME=	AISense-pkg-Status_Traffic_Totals
 PORTVERSION=	1.1
 PORTREVISION=	1
 CATEGORIES=	net
