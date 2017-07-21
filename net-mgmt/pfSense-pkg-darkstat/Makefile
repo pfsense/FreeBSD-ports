@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-darkstat
+PORTNAME=	AISense-pkg-darkstat
 PORTVERSION=	3.1.3
 PORTREVISION=	3
 CATEGORIES=	net-mgmt
@@ -9,7 +9,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package darkstat
+COMMENT=	AISense package darkstat
 
 LICENSE=	ESF
 
