@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-LADVD
+PORTNAME=	AISense-pkg-LADVD
 PORTVERSION=	1.2.2
 CATEGORIES=	net
 MASTER_SITES=	# empty
@@ -8,7 +8,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package LADVD
+COMMENT=	AISense package LADVD
 
 LICENSE=	ESF
 
