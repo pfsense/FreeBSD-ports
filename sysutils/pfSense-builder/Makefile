@@ -1,14 +1,14 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-builder
+PORTNAME=	AISense-builder
 PORTVERSION=	2.3.2
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	renato@pfsense.com
-COMMENT?=	Meta package to install pfSense builder required ports
+MAINTAINER=	sales@infrassist.com
+COMMENT?=	Meta package to install AISense builder required ports
 
 LICENSE=	ESF
 
