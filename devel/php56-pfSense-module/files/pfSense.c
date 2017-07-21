@@ -1007,8 +1007,8 @@ tentry_fill_key(char *arg, uint8_t type, ipfw_obj_tentry *tent)
 			*p = '\0';
 			mac = p + 1;
 			if (ether_aton_r(mac,
-			    (struct ether_addr *)&tentry->mac) == NULL)
-				errx(EX_DATAERR, "bad MAC address: %s", mac);
+			    (struct ether_addr *)&tent->mac) == NULL)
+				return (-1);
 		}
 
 		/* Remove / if exists */
