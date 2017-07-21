@@ -29,7 +29,7 @@
 	POSSIBILITY OF SUCH DAMAGE.
 */
 require_once("filter.inc");
-require_once("pfsense-utils.inc");
+require_once("aisense-utils.inc");
 require_once("pkg-utils.inc");
 require_once("util.inc");
 
