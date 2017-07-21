@@ -1,14 +1,14 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-AutoConfigBackup
+PORTNAME=	AISense-pkg-AutoConfigBackup
 PORTVERSION=	1.47
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package AutoConfigBackup
+MAINTAINER=	sales@infrassist.com
+COMMENT=	AISense package AutoConfigBackup
 
 LICENSE=	ESF
 
