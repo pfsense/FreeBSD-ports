@@ -1,7 +1,7 @@
 # $FreeBSD$
 # pkg-help formatted with fmt 59 63
 
-PORTNAME= pfSense-pkg-bind
+PORTNAME= AISense-pkg-bind
 PORTVERSION=	9.10
 PORTREVISION=	15
 CATEGORIES=	dns net ipv6
