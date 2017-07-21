@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-Notes
+PORTNAME=	AISense-pkg-Notes
 PORTVERSION=	0.2.9
 PORTREVISION=	2
 CATEGORIES=	sysutils
@@ -8,8 +8,8 @@ MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package Notes
+MAINTAINER=	sales@infrassist.com
+COMMENT=	AISense package Notes
 
 LICENSE=	ESF
 
