@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-nmap
+PORTNAME=	AISense-pkg-nmap
 PORTVERSION=	1.4.4
 PORTREVISION=	1
 CATEGORIES=	security
@@ -8,8 +8,8 @@ MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package nmap
+MAINTAINER=	sales@infrassist.com
+COMMENT=	AISense package nmap
 
 LICENSE=	ESF
 
