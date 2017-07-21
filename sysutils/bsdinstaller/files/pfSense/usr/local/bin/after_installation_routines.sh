@@ -9,7 +9,7 @@ product=$(cat ${globals_inc} | \
 	head -n 1 | \
 	sed 's/^.*=>* *//; s/["\;,]*//g')
 
-product=${product:-"pfSense"}
+product=${product:-"AISense"}
 
 # Copy the current running systems config.xml to the target installation area.
 touch /mnt/cf/conf/trigger_initial_wizard
