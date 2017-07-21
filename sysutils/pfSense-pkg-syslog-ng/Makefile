@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-syslog-ng
+PORTNAME=	AISense-pkg-syslog-ng
 PORTVERSION=	1.1.2
 PORTREVISION=	5
 CATEGORIES=	sysutils
@@ -8,8 +8,8 @@ MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package syslog-ng
+MAINTAINER=	sales@infrassist.com
+COMMENT=	AISense package syslog-ng
 
 LICENSE=	ESF
 
