@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-suricata
+PORTNAME=	AISense-pkg-suricata
 PORTVERSION=	3.1.2
 PORTREVISION=	2
 CATEGORIES=	security
@@ -8,8 +8,8 @@ MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package suricata
+MAINTAINER=	sales@infrassist.com
+COMMENT=	AISense package suricata
 
 LICENSE=	ESF
 
