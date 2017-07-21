@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense
+PORTNAME=	AISense
 DISTVERSION=	2.3.2
 PORTREVISION=	1
 CATEGORIES=	security
@@ -8,8 +8,8 @@ MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	renato@pfsense.com
-COMMENT?=	Meta package to install pfSense required ports
+MAINTAINER=	sales@infrassist.com
+COMMENT?=	Meta package to install AISense required ports
 
 LICENSE=	ESF
 
