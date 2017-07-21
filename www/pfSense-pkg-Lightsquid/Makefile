@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-Lightsquid
+PORTNAME=	AISense-pkg-Lightsquid
 PORTVERSION=	3.0.6
 PORTREVISION=	2
 CATEGORIES=	www
@@ -9,7 +9,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package Lightsquid
+COMMENT=	AISense package Lightsquid
 
 LICENSE=	ESF
 
