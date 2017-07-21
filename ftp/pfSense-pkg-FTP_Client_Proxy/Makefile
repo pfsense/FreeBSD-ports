@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-FTP_Client_Proxy
+PORTNAME=	AISense-pkg-FTP_Client_Proxy
 PORTVERSION=	0.3
 PORTREVISION=	2
 CATEGORIES=	ftp
@@ -9,7 +9,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package FTP_Client_Proxy
+COMMENT=	AISense package FTP_Client_Proxy
 
 LICENSE=	ESF
 
