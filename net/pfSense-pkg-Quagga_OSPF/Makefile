@@ -14,7 +14,7 @@ LICENSE=	ESF
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/watchquagga:net/quagga
 
-CONFLICTS=	pfSense-pkg-OpenBGPD-[0-9]*
+CONFLICTS=	AISense-pkg-OpenBGPD-[0-9]*
 
 NO_BUILD=	yes
 NO_MTREE=	yes
