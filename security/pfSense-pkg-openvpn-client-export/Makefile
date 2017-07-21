@@ -1,14 +1,14 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-openvpn-client-export
+PORTNAME=	AISense-pkg-openvpn-client-export
 PORTVERSION=	1.4.1
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package openvpn-client-export
+MAINTAINER=	sales@infrassist.com
+COMMENT=	AISense package openvpn-client-export
 
 LICENSE=	ESF
 
