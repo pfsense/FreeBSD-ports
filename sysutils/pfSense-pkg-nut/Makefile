@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-nut
+PORTNAME=	AISense-pkg-nut
 PORTVERSION=	2.7.4
 PORTREVISION=	4
 CATEGORIES=	sysutils
@@ -8,7 +8,7 @@ MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	coreteam@pfsense.org
+MAINTAINER=	sales@infrassist.com
 COMMENT=	Network UPS Tools
 
 LICENSE=	ESF
