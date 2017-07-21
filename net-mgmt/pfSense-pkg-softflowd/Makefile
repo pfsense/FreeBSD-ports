@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-softflowd
+PORTNAME=	AISense-pkg-softflowd
 PORTVERSION=	1.2.1
 PORTREVISION=	2
 CATEGORIES=	net-mgmt
@@ -9,7 +9,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package softflowd
+COMMENT=	AISense package softflowd
 
 LICENSE=	ESF
 
