@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-squidGuard
+PORTNAME=	AISense-pkg-squidGuard
 PORTVERSION=	1.14.1
 CATEGORIES=	www
 MASTER_SITES=	# empty
@@ -8,7 +8,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package squidGuard
+COMMENT=	AISense package squidGuard
 
 LICENSE=	ESF
 
