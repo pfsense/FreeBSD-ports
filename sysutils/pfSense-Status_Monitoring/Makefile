@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-Status_Monitoring
+PORTNAME=	AISense-Status_Monitoring
 PORTVERSION=	1.4.4
 PORTREVISION=	2
 CATEGORIES=	sysutils
@@ -8,8 +8,8 @@ MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense Status Monitoring
+MAINTAINER=	sales@infrassist.com
+COMMENT=	AISense Status Monitoring
 
 LICENSE=	ESF
 
