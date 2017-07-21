@@ -1,14 +1,14 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-acme
+PORTNAME=	AISense-pkg-acme
 PORTVERSION=	0.1.14
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	PiBa.NL.dev@gmail.com
-COMMENT=	pfSense package acme
+MAINTAINER=	sales@infrassist.com
+COMMENT=	AISense package acme
 
 LICENSE=	APACHE20
 
