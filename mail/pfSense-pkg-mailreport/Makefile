@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-mailreport
+PORTNAME=	AISense-pkg-mailreport
 PORTVERSION=	3.1
 CATEGORIES=	mail
 MASTER_SITES=	# empty
@@ -8,7 +8,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package mailreport
+COMMENT=	AISense package mailreport
 
 LICENSE=	ESF
 
