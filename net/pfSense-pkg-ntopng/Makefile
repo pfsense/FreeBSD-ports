@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-ntopng
+PORTNAME=	AISense-pkg-ntopng
 PORTVERSION=	0.8.6
 CATEGORIES=	net
 MASTER_SITES=	# empty
@@ -8,7 +8,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package ntopng
+COMMENT=	AISense package ntopng
 
 LICENSE=	ESF
 
@@ -19,7 +19,7 @@ RUN_DEPENDS=	${LOCALBASE}/bin/ntopng:net/ntopng \
 		${LOCALBASE}/bin/acyclic:graphics/graphviz \
 		${LOCALBASE}/bin/geoiplookup:net/GeoIP
 
-CONFLICTS=	pfSense-base-nanobsd-[0-9]*
+CONFLICTS=	AISense-base-nanobsd-[0-9]*
 
 NO_BUILD=	yes
 NO_MTREE=	yes
