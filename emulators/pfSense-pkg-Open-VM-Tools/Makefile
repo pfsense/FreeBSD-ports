@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-Open-VM-Tools
+PORTNAME=	AISense-pkg-Open-VM-Tools
 PORTVERSION=	1280544.13
 PORTREVISION=	2
 CATEGORIES=	emulators
@@ -9,7 +9,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package Open-VM-Tools
+COMMENT=	AISense package Open-VM-Tools
 
 LICENSE=	ESF
 
