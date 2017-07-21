@@ -996,12 +996,21 @@ get_mac_addr_mask(const char *p, uint8_t *addr, uint8_t *mask)
 static int
 tentry_fill_key(char *arg, uint8_t type, ipfw_obj_tentry *tent)
 {
-	char *p;
+	char *mac, *p;
 	int mask;
 	uint32_t key;
 
 	switch (type) {
 	case IPFW_TABLE_ADDR:
+		/* Remove the ',' if exists */
+		if ((p = strchr(arg, ',')) != NULL) {
+			*p = '\0';
+			mac = p + 1;
+			if (ether_aton_r(mac,
+			    (struct ether_addr *)&tent->mac) == NULL)
+				return (-1);
+		}
+
 		/* Remove / if exists */
 		if ((p = strchr(arg, '/')) != NULL) {
 			*p = '\0';
@@ -1351,6 +1360,10 @@ table_show_entry(zval *rarray, ipfw_xtable_info *i, ipfw_obj_tentry *tent)
 		add_assoc_string(rarray, "type", "addr", 1);
 		add_assoc_string(rarray, "ip", tbuf, 1);
 		add_assoc_long(rarray, "mask", tent->masklen);
+		if (tent->mac != 0) {
+			ether_ntoa_r((struct ether_addr *)&tent->mac, tbuf);
+			add_assoc_string(rarray, "mac", tbuf, 1);
+		}
 		break;
 	case IPFW_TABLE_MAC2:
 		/* Ethernet MAC address */
