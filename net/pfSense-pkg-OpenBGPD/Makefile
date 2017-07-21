@@ -15,7 +15,7 @@ LICENSE=	ESF
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/bgpctl:net/openbgpd
 
-CONFLICTS=	pfSense-pkg-Quagga_OSPF-[0-9]*
+CONFLICTS=	AISense-pkg-Quagga_OSPF-[0-9]*
 
 NO_BUILD=	yes
 NO_MTREE=	yes
