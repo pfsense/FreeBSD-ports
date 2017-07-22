@@ -77,6 +77,8 @@ PLIST_FILES+=	/scripts/lua_installer \
 		share/dfuibe_lua/150_easy_install.lua \
 		share/dfuibe_lua/300_rescueconfig.lua \
 		share/dfuibe_lua/conf/build.conf \
+		share/dfuibe_lua/conf/pfSense.lua \
+		share/dfuibe_lua/conf/pfSense_rescue.lua \
 		share/dfuibe_lua/conf/AISense.lua \
 		share/dfuibe_lua/conf/AISense_rescue.lua \
 		share/dfuibe_lua/easy_install/100_confirm_basic_install.lua \
