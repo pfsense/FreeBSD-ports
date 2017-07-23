@@ -61,7 +61,7 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/clog:sysutils/clog \
 		${KMODDIR}/bwi_v3_ucode.ko:net/bwi-firmware-kmod \
 		${LOCALBASE}/bin/scponly:shells/scponly \
 		${LOCALBASE}/sbin/xinetd:security/xinetd \
-		${LOCALBASE}/www/status_monitoring.php:sysutils/AISense-Status_Monitoring \
+		${LOCALBASE}/www/status_monitoring.php:sysutils/pfSense-Status_Monitoring \
 		${LOCALBASE}/bin/uclcmd:devel/uclcmd
 
 LIB_DEPENDS=	libltdl.so:devel/libltdl
@@ -90,7 +90,6 @@ RUN_DEPENDS+=	${LOCALBASE}/sbin/dmidecode:sysutils/dmidecode \
 .endif
 
 RUN_DEPENDS+=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/pfSense.so:devel/php56-pfSense-module \
-		${PHPBASE}/lib/php/${PHP_EXT_DIR}/AISense.so:devel/php56-AISense-module \
 		${PHPBASE}/lib/php/${PHP_EXT_DIR}/ssh2.so:security/pecl-ssh2 \
 		${PHPBASE}/lib/php/${PHP_EXT_DIR}/suhosin.so:security/php-suhosin \
 		${PHPBASE}/lib/php/${PHP_EXT_DIR}/xdebug.so:devel/php-xdebug \
