@@ -1390,7 +1390,7 @@ table_show_entry(zval *rarray, ipfw_xtable_info *i, ipfw_obj_tentry *tent)
 	table_show_value(rarray, &tent->v.value, i->vmask);
 	add_assoc_double(rarray, "bytes", (double)tent->bcnt);
 	add_assoc_double(rarray, "packets", (double)tent->pcnt);
-	add_assoc_long(rarray, "timestamp", tent->timestamp);
+	add_assoc_double(rarray, "timestamp", (double)tent->timestamp);
 }
 
 static void
