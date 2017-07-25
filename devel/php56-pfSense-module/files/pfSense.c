@@ -1546,7 +1546,7 @@ PHP_FUNCTION(pfSense_ipfw_table_zerocnt)
 	long arglen, tnamelen;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-	    "s", &tname, &tnamelen) == FAILURE)
+	    "ss", &tname, &tnamelen, &arg, &arglen) == FAILURE)
 		RETURN_FALSE;
 	if (tnamelen == 0 || arglen == 0)
 		RETURN_FALSE;
