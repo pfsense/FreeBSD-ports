@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-Backup
+PORTNAME=	AISense-pkg-Backup
 PORTVERSION=	0.4
 PORTREVISION=	2
 CATEGORIES=	sysutils
@@ -8,8 +8,8 @@ MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package Backup
+MAINTAINER=	sales@infrassist.com
+COMMENT=	AISense package Backup
 
 LICENSE=	ESF
 

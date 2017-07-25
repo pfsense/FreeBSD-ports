@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-sudo
+PORTNAME=	AISense-pkg-sudo
 PORTVERSION=	0.2.9
 PORTREVISION=	3
 CATEGORIES=	security
@@ -8,8 +8,8 @@ MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package sudo
+MAINTAINER=	sales@infrassist.com
+COMMENT=	AISense package sudo
 
 LICENSE=	ESF
 

@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-squid
+PORTNAME=	AISense-pkg-squid
 PORTVERSION=	0.4.35
 PORTREVISION=	3
 CATEGORIES=	www
@@ -9,7 +9,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package squid
+COMMENT=	AISense package squid
 
 LICENSE=	ESF
 

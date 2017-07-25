@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-System_Patches
+PORTNAME=	AISense-pkg-System_Patches
 PORTVERSION=	1.1.6
 PORTREVISION=	1
 CATEGORIES=	sysutils
@@ -8,8 +8,8 @@ MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package System_Patches
+MAINTAINER=	sales@infrassist.com
+COMMENT=	AISense package System_Patches
 
 LICENSE=	ESF
 

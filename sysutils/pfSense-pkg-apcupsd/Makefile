@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-apcupsd
+PORTNAME=	AISense-pkg-apcupsd
 PORTVERSION=	0.3.9
 PORTREVISION=	2
 CATEGORIES=	sysutils
@@ -8,8 +8,8 @@ MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package apcupsd
+MAINTAINER=	sales@infrassist.com
+COMMENT=	AISense package apcupsd
 
 LICENSE=	ESF
 

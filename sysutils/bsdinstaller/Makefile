@@ -70,7 +70,7 @@ STRIP=
 .endif
 
 ###### Packing list.
-# pfSense
+# AISense
 PLIST_FILES+=	/scripts/lua_installer \
 		/scripts/pfi \
 		bin/after_installation_routines.sh \
@@ -79,6 +79,8 @@ PLIST_FILES+=	/scripts/lua_installer \
 		share/dfuibe_lua/conf/build.conf \
 		share/dfuibe_lua/conf/pfSense.lua \
 		share/dfuibe_lua/conf/pfSense_rescue.lua \
+		share/dfuibe_lua/conf/AISense.lua \
+		share/dfuibe_lua/conf/AISense_rescue.lua \
 		share/dfuibe_lua/easy_install/100_confirm_basic_install.lua \
 		share/dfuibe_lua/easy_install/200_select_disk.lua \
 		share/dfuibe_lua/easy_install/220_format_disk.lua \
@@ -486,7 +488,7 @@ do-install:
 	done
 .endif
 .endif # WITH_LUA_BACKEND
-	# Install pfSense files
+	# Install AISense files
 	${TAR} -cf - -C ${FILESDIR}/pfSense/ . | ${TAR} -xf - -C ${STAGEDIR}
-
+	
 .include <bsd.port.post.mk>

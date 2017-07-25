@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-freeradius2
+PORTNAME=	AISense-pkg-freeradius2
 PORTVERSION=	1.7.6
 PORTREVISION=	2
 CATEGORIES=	net
@@ -9,7 +9,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package freeradius2
+COMMENT=	AISense package freeradius2
 
 LICENSE=	ESF
 

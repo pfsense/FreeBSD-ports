@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-siproxd
+PORTNAME=	AISense-pkg-siproxd
 PORTVERSION=	1.1.3
 PORTREVISION=	1
 CATEGORIES=	net
@@ -9,7 +9,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package siproxd
+COMMENT=	AISense package siproxd
 
 LICENSE=	ESF
 

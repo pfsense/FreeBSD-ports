@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-mtr-nox11
+PORTNAME=	AISense-pkg-mtr-nox11
 PORTVERSION=	0.85.6
 PORTREVISION=	1
 CATEGORIES=	net
@@ -9,7 +9,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package mtr-nox11
+COMMENT=	AISense package mtr-nox11
 
 LICENSE=	ESF
 

@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-blinkled
+PORTNAME=	AISense-pkg-blinkled
 PORTVERSION=	0.4.7
 PORTREVISION=	1
 CATEGORIES=	sysutils
@@ -8,8 +8,8 @@ MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package blinkled
+MAINTAINER=	sales@infrassist.com
+COMMENT=	AISense package blinkled
 
 LICENSE=	ESF
 

@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-pfBlockerNG
+PORTNAME=	AISense-pkg-pfBlockerNG
 PORTVERSION=	2.1.1
 PORTREVISION=	6
 CATEGORIES=	net
@@ -9,7 +9,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package pfBlockerNG
+COMMENT=	AISense package pfBlockerNG
 
 LICENSE=	ESF
 

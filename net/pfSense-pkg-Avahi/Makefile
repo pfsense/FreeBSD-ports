@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-Avahi
+PORTNAME=	AISense-pkg-Avahi
 PORTVERSION=	1.11
 PORTREVISION=	2
 CATEGORIES=	net
@@ -9,7 +9,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package Avahi
+COMMENT=	AISense package Avahi
 
 LICENSE=	ESF
 

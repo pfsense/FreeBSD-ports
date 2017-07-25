@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-arping
+PORTNAME=	AISense-pkg-arping
 PORTVERSION=	1.2.2
 PORTREVISION=	1
 CATEGORIES=	net
@@ -9,7 +9,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package arping
+COMMENT=	AISense package arping
 
 LICENSE=	ESF
 

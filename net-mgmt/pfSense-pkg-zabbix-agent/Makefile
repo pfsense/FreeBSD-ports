@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-zabbix-agent
+PORTNAME=	AISense-pkg-zabbix-agent
 PORTVERSION=	0.8.9
 PORTREVISION=	3
 CATEGORIES=	net-mgmt
@@ -9,7 +9,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package zabbix-agent
+COMMENT=	AISense package zabbix-agent
 
 LICENSE=	ESF
 

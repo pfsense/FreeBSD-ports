@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-OpenBGPD
+PORTNAME=	AISense-pkg-OpenBGPD
 PORTVERSION=	0.11
 PORTREVISION=	9
 CATEGORIES=	net
@@ -9,13 +9,13 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package OpenBGPD
+COMMENT=	AISense package OpenBGPD
 
 LICENSE=	ESF
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/bgpctl:net/openbgpd
 
-CONFLICTS=	pfSense-pkg-Quagga_OSPF-[0-9]*
+CONFLICTS=	AISense-pkg-Quagga_OSPF-[0-9]*
 
 NO_BUILD=	yes
 NO_MTREE=	yes

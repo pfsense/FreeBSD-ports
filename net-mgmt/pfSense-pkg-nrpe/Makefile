@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-nrpe
+PORTNAME=	AISense-pkg-nrpe
 PORTVERSION=	2.3.1
 PORTREVISION=	1
 CATEGORIES=	net-mgmt
@@ -9,7 +9,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	tech@voleatech.de
-COMMENT=	pfSense package nrpe
+COMMENT=	AISense package nrpe
 
 LICENSE=	ESF
 

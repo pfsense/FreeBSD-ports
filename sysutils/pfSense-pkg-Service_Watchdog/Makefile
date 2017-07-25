@@ -1,14 +1,14 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-Service_Watchdog
+PORTNAME=	AISense-pkg-Service_Watchdog
 PORTVERSION=	1.8.3
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package Service_Watchdog
+MAINTAINER=	sales@infrassist.com
+COMMENT=	AISense package Service_Watchdog
 
 LICENSE=	ESF
 

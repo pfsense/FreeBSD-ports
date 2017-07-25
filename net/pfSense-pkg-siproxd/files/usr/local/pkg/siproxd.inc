@@ -33,7 +33,7 @@ if (!function_exists("filter_configure")) {
 }
 require_once("globals.inc");
 require_once("interfaces.inc");
-require_once("pfsense-utils.inc");
+require_once("aisense-utils.inc");
 require_once("service-utils.inc");
 require_once("util.inc");
 

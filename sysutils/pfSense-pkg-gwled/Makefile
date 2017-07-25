@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-gwled
+PORTNAME=	AISense-pkg-gwled
 PORTVERSION=	0.2.4
 PORTREVISION=	1
 CATEGORIES=	sysutils
@@ -8,8 +8,8 @@ MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package gwled
+MAINTAINER=	sales@infrassist.com
+COMMENT=	AISense package gwled
 
 LICENSE=	ESF
 

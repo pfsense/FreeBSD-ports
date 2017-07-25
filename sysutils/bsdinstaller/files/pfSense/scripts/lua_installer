@@ -94,7 +94,7 @@ echo -n "LUA_CPATH='/usr/local/lib/lua/5.0/?.so' exec /usr/local/bin/lua50 -l/us
 echo "/usr/local/share/dfuibe_lua/main.lua \
 /usr/local/share/dfuibe_lua/conf/BSDInstaller.lua \
 /usr/local/share/dfuibe_lua/conf/FreeBSD.lua \
-/usr/local/share/dfuibe_lua/conf/pfSense${_conf_suffix}.lua " >> /tmp/lua50c51
+/usr/local/share/dfuibe_lua/conf/AISense${_conf_suffix}.lua " >> /tmp/lua50c51
 
 #/sbin/conscontrol mute on >/dev/null 2>&1
 

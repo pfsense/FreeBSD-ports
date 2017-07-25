@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-Shellcmd
+PORTNAME=	AISense-pkg-Shellcmd
 PORTVERSION=	1.0.2
 PORTREVISION=	2
 CATEGORIES=	sysutils
@@ -8,8 +8,8 @@ MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package Shellcmd
+MAINTAINER=	sales@infrassist.com
+COMMENT=	AISense package Shellcmd
 
 LICENSE=	ESF
 

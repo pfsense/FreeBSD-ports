@@ -1,14 +1,14 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-Cron
+PORTNAME=	AISense-pkg-Cron
 PORTVERSION=	0.3.7
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package Cron
+MAINTAINER=	sales@infrassist.com
+COMMENT=	AISense package Cron
 
 LICENSE=	ESF
 

@@ -37,7 +37,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
 */
-require_once("pfsense-utils.inc");
+require_once("aisense-utils.inc");
 require_once("config.inc");
 require_once("globals.inc");
 require_once("functions.inc");

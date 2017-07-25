@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-iperf
+PORTNAME=	AISense-pkg-iperf
 PORTVERSION=	2.0.5.5
 PORTREVISION=	1
 CATEGORIES=	benchmarks
@@ -9,7 +9,7 @@ DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
-COMMENT=	pfSense package iperf
+COMMENT=	AISense package iperf
 
 LICENSE=	ESF
 
