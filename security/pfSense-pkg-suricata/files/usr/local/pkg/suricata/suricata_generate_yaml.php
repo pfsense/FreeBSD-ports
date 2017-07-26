@@ -340,8 +340,8 @@ if ($suricatacfg['enable_eve_log'] == 'on')
 else
 	$enable_eve_log = "no";
 
-if ($suricatacfg['eve_output_type'] == 'syslog')
-	$eve_output_type = "syslog";
+if (!empty($suricatacfg['eve_output_type']))
+	$eve_output_type = $suricatacfg['eve_output_type'];
 else
 	$eve_output_type = "file";
 
@@ -354,6 +354,23 @@ if (!empty($suricatacfg['eve_systemlog_priority']))
 	$eve_systemlog_priority = $suricatacfg['eve_systemlog_priority'];
 else
 	$eve_systemlog_priority = "info";
+
+// EVE REDIS output settings
+if (!empty($suricatacfg['eve_redis_server']))
+	$eve_redis_output = "\n        server: ". $suricatacfg['eve_redis_server'];
+else
+	$eve_redis_output = "\n        server: 127.0.0.1";
+
+if (!empty($suricatacfg['eve_redis_port']))
+	$eve_redis_output .= "\n        port: " . $suricatacfg['eve_redis_port'];
+
+if (!empty($suricatacfg['eve_redis_mode']))
+	$eve_redis_output .= "\n        mode: " . $suricatacfg['eve_redis_mode'];
+
+if (!empty($suricatacfg['eve_redis_key']))
+	$eve_redis_output .= "\n        key: \"" . $suricatacfg['eve_redis_key'] ."\"";
+
+
 
 // EVE log output included information
 $eve_out_types = "";
@@ -843,5 +860,7 @@ pcap:
     promisc: {$intf_promisc_mode}
 EOD;
 }
+
+$suricata_config_pass_thru = base64_decode($suricatacfg['configpassthru']);
 
 ?>
