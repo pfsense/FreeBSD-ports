@@ -124,10 +124,10 @@ function openbgpd_install_conf() {
 							$conffile .= "\tneighbor {$neighbor['neighbor']} {\n";
 							$conffile .= "\t\tdescr \"{$neighbor['descr']}\"\n";
 							if ($neighbor['md5sigpass']) {
-								$conffile .= "\t\ttcp md5sig password {$neighbor['md5sigpass']}\n";
+								$conffile .= "\t\ttcp md5sig password \"{$neighbor['md5sigpass']}\"\n";
 							}
 							if ($neighbor['md5sigkey']) {
-								$conffile .= "\t\ttcp md5sig key {$neighbor['md5sigkey']}\n";
+								$conffile .= "\t\ttcp md5sig key \"{$neighbor['md5sigkey']}\"\n";
 							}
 							$setlocaladdr = true;
 							if (is_array($neighbor['row'])) {
@@ -160,10 +160,10 @@ function openbgpd_install_conf() {
 					$conffile .= "neighbor {$neighbor['neighbor']} {\n";
 					$conffile .= "\tdescr \"{$neighbor['descr']}\"\n";
 					if ($neighbor['md5sigpass']) {
-						$conffile .= "\ttcp md5sig password {$neighbor['md5sigpass']}\n";
+						$conffile .= "\ttcp md5sig password \"{$neighbor['md5sigpass']}\"\n";
 					}
 					if ($neighbor['md5sigkey']) {
-						$conffile .= "\ttcp md5sig key {$neighbor['md5sigkey']}\n";
+						$conffile .= "\ttcp md5sig key \"{$neighbor['md5sigkey']}\"\n";
 					}
 					$setlocaladdr = true;
 					if (is_array($neighbor['row'])) {
