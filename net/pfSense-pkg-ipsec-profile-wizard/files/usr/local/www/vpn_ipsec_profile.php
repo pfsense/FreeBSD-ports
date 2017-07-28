@@ -760,13 +760,11 @@ if (!isset($phase1) || isset($phase1['disabled'])) {
 
 	include("head.inc");
 	echo "<body link=\"#0000CC\" vlink=\"#0000CC\" alink=\"#0000CC\">\n";
-	include("fbegin.inc");
 
 	echo gettext("No mobile IPsec VPN is configured.") .
 		" <a href=\"vpn_ipsec_mobile.php\">" .
 		gettext("Configure mobile IPsec") . "</a>\n" ;
 
-	include("fend.inc");
 	echo "</body></html>";
 
 	exit;
