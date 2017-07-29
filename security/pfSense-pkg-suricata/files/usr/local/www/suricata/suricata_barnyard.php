@@ -179,11 +179,9 @@ if ($_POST['save']) {
 		if ($_POST['barnyard_dbuser']) $natent['barnyard_dbuser'] = $_POST['barnyard_dbuser']; else unset($natent['barnyard_dbuser']);
 
 		// The password field will return '********' if no changes are made and needs to be escaped.
-		if ($_POST['barnyard_dbpwd'] && ($_POST['barnyard_dbpwd'] != DMYPWD)) $natent['barnyard_dbpwd'] = base64_encode($_POST['barnyard_dbpwd']);
-		else
-			// Because of the base64 encoding/decoding, in the case of a valid value that hasn't changed, it needs to be re-encoded to base64.
-			if ($_POST['barnyard_dbpwd'] != DMYPWD) unset($natent['barnyard_dbpwd']);
-			else $natent['barnyard_dbpwd'] = base64_encode($natent['barnyard_dbpwd']);		
+		// Because of the base64 encoding/decoding, in the case of a valid value that hasn't changed, it will need to be re-encoded to base64.
+		if ($_POST['barnyard_dbpwd'] && ($_POST['barnyard_dbpwd'] != DMYPWD)) $natent['barnyard_dbpwd'] = base64_encode($_POST['barnyard_dbpwd']); else 
+			if ($_POST['barnyard_dbpwd'] != DMYPWD) unset($natent['barnyard_dbpwd']); else $natent['barnyard_dbpwd'] = base64_encode($natent['barnyard_dbpwd']); 
 
 		if ($_POST['barnyard_syslog_rhost']) $natent['barnyard_syslog_rhost'] = $_POST['barnyard_syslog_rhost']; else unset($natent['barnyard_syslog_rhost']);
 		if ($_POST['barnyard_syslog_dport']) $natent['barnyard_syslog_dport'] = $_POST['barnyard_syslog_dport']; else $natent['barnyard_syslog_dport'] = '514';
