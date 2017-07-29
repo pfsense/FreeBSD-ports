@@ -15,7 +15,7 @@
 # was removed.
 #
 # $FreeBSD$
-# $MCom: portlint/portlint.pl,v 1.401 2017/03/29 15:26:37 jclarke Exp $
+# $MCom: portlint/portlint.pl,v 1.409 2017/06/04 22:22:22 jclarke Exp $
 #
 
 use strict;
@@ -50,7 +50,7 @@ $portdir = '.';
 # version variables
 my $major = 2;
 my $minor = 17;
-my $micro = 7;
+my $micro = 9;
 
 # default setting - for FreeBSD
 my $portsdir = '/usr/ports';
@@ -1096,6 +1096,14 @@ sub check_depends_syntax {
 				}
 			}
 
+			# check JAVALIBDIR
+			if ($m{'dep'} =~ m|share/java/classes|) {
+				&perror("FATAL", $file, -1, "you should use \${JAVALIBDIR} ".
+					"in BUILD_DEPENDS/RUN_DEPENDS to define ".
+					"dependencies on JAR files installed in ".
+					"\${JAVAJARDIR}");
+			}
+
 			foreach my $dv ($m{'dep'}, $m{'dir'}, $m{'tgt'}) {
 				foreach my $dmv (keys %depmvars) {
 					$dv =~ s/\$\{$dmv\}/$depmvars{$dmv}/g;
@@ -1176,13 +1184,6 @@ sub check_depends_syntax {
 					"USE_GHOSTSCRIPT(_BUILD|_RUN).");
 			}
 
-			# check JAVALIBDIR
-			if ($m{'dep'} =~ m|share/java/classes|) {
-				&perror("FATAL", $file, -1, "you should use \${JAVALIBDIR} ".
-					"in BUILD_DEPENDS/RUN_DEPENDS to define ".
-					"dependencies on JAR files installed in ".
-					"\${JAVAJARDIR}");
-			}
 
 			# check for PREFIX
 			if ($m{'dep'} =~ /\$\{PREFIX}/) {
@@ -1402,16 +1403,6 @@ sub checkmakefile {
 		my $lineno = &linenumber($`);
 		&perror("WARN", $file, $lineno, "most uses of \${ENV} should really ".
 			"be \${SETENV} to avoid strange behaviors in sh(1).");
-	}
-
-	#
-	# whole file: use of :LU variable expansion modifiers
-	#
-	print "OK: checking for use of :LU variable expansion modifiers.\n" if ($verbose);
-	if ($whole =~ /\$\{[^}]+:[LU]/m) {
-		my $lineno = &linenumber($`);
-		&perror("FATAL", $file, $lineno, ":U and :L syntax is not supported ".
-			"anymore.  Please use :tu and :tl instead.");
 	}
 
 	#
@@ -1635,7 +1626,7 @@ sub checkmakefile {
 		# skip global options
 		next if ($i eq 'DOCS' or $i eq 'NLS' or $i eq 'EXAMPLES' or $i eq 'IPV6' or $i eq 'X11' or $i eq 'DEBUG');
 		if (!grep(/^$i$/, (@mopt, @popt))) {
-			if ($whole !~ /\n${i}_($m)(.)?=[^\n]+/) {
+			if ($whole !~ /\n${i}_($m)(_\w+)?(.)?=[^\n]+/) {
 				if (!$slaveport) {
 					&perror("WARN", $file, -1, "$i is listed in ".
 						"OPTIONS_DEFINE, but no PORT_OPTIONS:M$i appears.");
@@ -1775,25 +1766,24 @@ sub checkmakefile {
 	}
 
 	#
-	# whole file: Check if USES stuff is sorted
+	# whole file: Check if some macros are sorted
 	#
-	my @uses_to_sort = qw(
-		USES
-		USE_PYTHON
-		USE_XORG
+	my @macros_to_sort = qw(
+	    ONLY_FOR_ARCHS
+		NOT_FOR_ARCHS
 	);
-#	print "OK: checking to see if USES_* stuff is sorted.\n" if ($verbose);
-#	foreach my $sorted_use (@uses_to_sort) {
-#		while ($whole =~ /\n$sorted_use.?=\s*(.+)\n/g) {
-#			my $lineno = &linenumber($`);
-#			my $srex = $1;
-#			my @suses = sort(split / /, $srex);
-#			if (join(" ", @suses) ne $srex) {
-#				&perror("WARN", $file, $lineno, "the options to $sorted_use ".
-#					"are not sorted.  Please consider sorting them.");
-#			}
-#		}
-#	}
+	print "OK: checking to see if certain macros are sorted.\n" if ($verbose);
+	foreach my $sorted_macro (@macros_to_sort) {
+		while ($whole =~ /\n$sorted_macro.?=\s*(.+)\n/g) {
+			my $lineno = &linenumber($`);
+			my $srex = $1;
+			my @smacros = sort(split / /, $srex);
+			if (join(" ", @smacros) ne $srex) {
+				&perror("WARN", $file, $lineno, "the arguments to $sorted_macro ".
+					"are not sorted.  Please consider sorting them.");
+			}
+		}
+	}
 
 	#
 	# whole file: USE_GNOME=pkgconfig
@@ -1979,7 +1969,7 @@ xargs xmkmf
 				&& $curline !~ /^NO_CDROM(.)?=[^\n]+$i/m
 				&& $curline !~ /^MAINTAINER(.)?=[^\n]+$i/m
 				&& $curline !~ /^CATEGORIES(.)?=[^\n]+$i/m
-				&& $curline !~ /^USES(.)?=[^\n]+$i/m
+				&& $curline !~ /^(\w+)?USES(.)?=[^\n]+$i/m
 				&& $curline !~ /^WX_COMPS(.)?=[^\n]+$i/m
 				&& $curline !~ /^ONLY_FOR_ARCHS_REASON(.)?=[^\n]+$i/m
 				&& $curline !~ /^NOT_FOR_ARCHS_REASON(.)?=[^\n]+$i/m
@@ -2744,10 +2734,7 @@ DIST_SUBDIR EXTRACT_ONLY
 		foreach my $conflict (split ' ', $makevar{CONFLICTS}) {
 			`$pkg_version -T '$makevar{PKGNAME}' '$conflict'`;
 			my $selfconflict = !$?;
-			if ($conflict !~ /(?:[<>=]|[]?*]$)/) {
-				&perror("WARN", "", -1, "Conflict \"$conflict\" specified too narrow. ".
-					"You should end it with a wildcard (-[0-9]*).");
-			} elsif ($conflict !~ /[<>=-][^-]*[0-9][^-]*$/) {
+			if ($conflict !~ /[<>=-][^-]*[0-9][^-]*$/) {
 				&perror("WARN", "", -1, "Conflict \"$conflict\" specified too broad. ".
 					"You should end it with a version number fragment (-[0-9]*).");
 			}

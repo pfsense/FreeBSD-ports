@@ -2,7 +2,7 @@
 
 PORTNAME=	asterisk
 PORTVERSION=	11.25.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	http://downloads.asterisk.org/pub/telephony/%SUBDIR%/:DEFAULT,g729
 MASTER_SITE_SUBDIR=	asterisk/ \
@@ -19,7 +19,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 EXTRACT_ONLY:=	${DISTNAME}${EXTRACT_SUFX}
 
-ONLY_FOR_ARCHS=	i386 amd64 powerpc sparc64 armv6
+BROKEN_armv6=		fails to configure: the SPANDSP installation appears to be missing or broken
+ONLY_FOR_ARCHS=		amd64 armv6 i386 powerpc sparc64
 
 USES=		bison cpe gmake iconv localbase ncurses shebangfix \
 		sqlite ssl
@@ -31,7 +32,8 @@ USE_RC_SUBR=	asterisk
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--with-ilbc=internal \
 			--with-crypto=${OPENSSLBASE} \
-			--with-ssl=${OPENSSLBASE}
+			--with-ssl=${OPENSSLBASE} \
+			--with-libedit=internal
 
 CPE_VENDOR=	digium
 
@@ -49,7 +51,7 @@ MAKE_ARGS+=	NOISY_BUILD=yes \
 		ASTDATADIR=${DATADIR}
 
 CONFLICTS_BUILD=	linuxthreads-* pjsip-*
-CONFLICTS_INSTALL=	asterisk*-1.8* asterisk*-13*
+CONFLICTS_INSTALL=	asterisk*-13*
 
 OPTIONS_DEFINE=			BACKTRACE CURL EXCHANGE FREETDS LDAP LUA \
 				MP3PLAYER OOH323 OPTIMIZED_CFLAGS RADIUS SNMP SPANDSP SRTP \

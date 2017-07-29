@@ -4,7 +4,7 @@
 PORTNAME=	tvheadend
 PORTVERSION=	4.0.8
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	multimedia
 
 MAINTAINER=	decke@FreeBSD.org
@@ -12,14 +12,15 @@ COMMENT=	TV streaming server supporting DVB, IPTV and V4L
 
 LICENSE=	GPLv3
 
-BROKEN_powerpc64=	Does not build
-
 BUILD_DEPENDS=	bash:shells/bash \
 		${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
-
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		liburiparser.so:net/uriparser
 RUN_DEPENDS=	dtv-scan-tables>=0:multimedia/dtv-scan-tables
+
+BROKEN_mips=		fails to configure: No C compiler found
+BROKEN_mips64=		fails to configure: No C compiler found
+BROKEN_powerpc64=	fails to configure: No C compiler found
 
 USE_GITHUB=	yes
 
@@ -72,13 +73,9 @@ TRANSCODING_CONFIGURE_ENABLE=	libav
 
 XMLTV_RUN_DEPENDS=	p5-xmltv>=0:textproc/p5-xmltv
 
-.include <bsd.port.pre.mk>
-
-.if ( !empty(CC:M*clang*) || ${OSVERSION} >= 1000024 )
 # CLANG also needs -Wno-microsoft which GCC 4.2 does not know
 CFLAGS+=	-Wno-microsoft \
 		-Wno-tautological-constant-out-of-range-compare
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} 's|0.0.0~unknown|${PORTVERSION}-${GH_TAGNAME}|' \
@@ -93,12 +90,10 @@ post-patch:
 	# Remove -Wunused-result because gcc 4.2 on FreeBSD 9.x does not know it
 	@${REINPLACE_CMD} 's|-Wunused-result||' \
 		${WRKSRC}/Makefile
-.if ${OSVERSION} >= 1000000
 	# to suppress clang CC flags on FreeBSD 10+
 	# @${REINPLACE_CMD} 's|clang|clang-options-disabled|' \
 	# to enable clang CC flags, because clang is identified as 'cc' on FreeBSD 10+
 	@${REINPLACE_CMD} 's|clang|cc|' \
 		${WRKSRC}/Makefile
-.endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

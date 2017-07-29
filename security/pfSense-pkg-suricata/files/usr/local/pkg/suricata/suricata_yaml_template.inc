@@ -121,6 +121,7 @@ outputs:
   - eve-log:
       enabled: {$enable_eve_log}
       type: {$eve_output_type}
+      redis: {$eve_redis_output}
       filename: eve.json
       identity: "suricata"
       facility: {$eve_systemlog_facility}
@@ -355,6 +356,9 @@ libhtp:
 
 coredump:
   max-dump: unlimited
+
+# Suricata user pass through configuration
+{$suricata_config_pass_thru}
 
 EOD;
 

@@ -35,12 +35,11 @@ GCC_Include_MAINTAINER=		gerald@FreeBSD.org
 # ascending order and in sync with the table below. 
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-GCCVERSIONS=	040200 040700 040800 040900 050000 060000
+GCCVERSIONS=	040200 040800 040900 050000 060000
 
 # The first field is the OSVERSION in which it disappeared from the base.
 # The second field is the version as USE_GCC would use.
 GCCVERSION_040200=	9999999 4.2
-GCCVERSION_040700=	      0 4.7
 GCCVERSION_040800=	      0 4.8
 GCCVERSION_040900=	      0 4.9
 GCCVERSION_050000=	      0 5
@@ -144,11 +143,7 @@ _USE_GCC:=	${GCC_DEFAULT}
 .  if ${OSVERSION} > ${_GCCVERSION_${v}_R} || !exists(/usr/bin/gcc)
 V:=			${_GCCVERSION_${v}_V:S/.//}
 _GCC_PORT_DEPENDS:=	gcc${V}
-.   if ${_USE_GCC} == ${LANG_GCC_IS}
-_GCC_PORT:=		gcc
-.   else
 _GCC_PORT:=		gcc${V}
-.   endif
 CC:=			gcc${V}
 CXX:=			g++${V}
 CPP:=			cpp${V}

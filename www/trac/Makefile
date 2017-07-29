@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	trac
-PORTVERSION=	1.2
+PORTVERSION=	1.2.1
 CATEGORIES=	www devel python
 MASTER_SITES=	http://ftp.edgewall.com/pub/trac/ \
 		ftp://ftp.edgewall.com/pub/trac/
 DISTNAME=	Trac-${PORTVERSION}
 
-MAINTAINER=	joneum@bsdproject.de
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Enhanced wiki and issue tracking system for software projects
 
 LICENSE=	BSD3CLAUSE

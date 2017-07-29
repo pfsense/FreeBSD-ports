@@ -2,13 +2,15 @@
 
 PORTNAME=	sysadm-client
 PORTVERSION=	1.0
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
 MAINTAINER=	kmoore@FreeBSD.org
 COMMENT=	SysAdm Qt5 Client
 
-LICENSE=	BSD3CLAUSE
+LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/../LICENSE
 
 WRKSRC_SUBDIR=	src-qt5
 USE_QT5=	core buildtools_build gui network qmake websockets widgets svg concurrent
@@ -20,10 +22,4 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	trueos
 GH_PROJECT=	sysadm-ui-qt
 
-.include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 1000000
-IGNORE=		requires FreeBSD 10 or later
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

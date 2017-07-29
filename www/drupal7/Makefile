@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	drupal7
-PORTVERSION=	7.54
+PORTVERSION=	7.56
 CATEGORIES=	www
 MASTER_SITES=	http://ftp.drupal.org/files/projects/
 DISTNAME=	drupal-${PORTVERSION}
 DIST_SUBDIR=	drupal
 
-MAINTAINER=	joneum@bsdproject.de
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Database driven web content management system (CMS)
 
 LICENSE=	GPLv2+

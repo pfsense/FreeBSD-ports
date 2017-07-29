@@ -2,7 +2,7 @@
 
 PORTNAME=	acoustid-fingerprinter
 PORTVERSION=	0.6
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	audio
 
 MAINTAINER=	jhale@FreeBSD.org
@@ -13,6 +13,9 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libchromaprint.so:audio/chromaprint \
 		libtag.so:audio/taglib \
 		libavcodec.so:multimedia/ffmpeg
+
+BROKEN_armv6=		fails to link: fingerprintcalculator.cpp: undefined reference to 'chromaprint_new'
+BROKEN_powerpc64=	fails to compile: libchromaprint.so: undefined reference to std::__cxx11::basic_string
 
 USES=		cmake desktop-file-utils
 USE_QT4=	corelib gui network \

@@ -1,4 +1,0 @@
-A free implementation of the RADIUS protocol.
-Supports MySQL, PostgreSQL, LDAP, Kerberos.
-
-WWW: https://doc.pfsense.org/index.php/FreeRADIUS_2.x_package

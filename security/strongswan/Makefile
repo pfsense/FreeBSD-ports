@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	strongswan
-PORTVERSION=	5.5.2
+PORTVERSION=	5.5.3
 CATEGORIES=	security
 MASTER_SITES=	http://download.strongswan.org/ \
 		http://download2.strongswan.org/
@@ -39,7 +39,7 @@ CONFIGURE_ARGS=	--enable-kernel-pfkey \
 		--with-lib-prefix=${PREFIX}
 
 OPTIONS_DEFINE=	CURL EAPAKA3GPP2 EAPDYNAMIC EAPRADIUS EAPSIMFILE GCM IKEv1 \
-		IPSECKEY KERNELLIBIPSEC LOADTESTER LDAP MYSQL PKI SCEP SMP \
+		IPSECKEY KERNELLIBIPSEC LOADTESTER LDAP MEDIATION MYSQL PKI SCEP SMP \
 		SQLITE SWANCTL TESTVECTOR TPM UNBOUND UNITY VICI XAUTH
 OPTIONS_DEFAULT=	IKEv1 BUILTIN PKI SWANCTL VICI
 OPTIONS_SINGLE=	PRINTF_HOOKS
@@ -57,6 +57,7 @@ IKEv1_DESC=	Enable IKEv1 support
 IPSECKEY_DESC=	Enable authentication with IPSECKEY resource records with DNSSEC
 KERNELLIBIPSEC_DESC=	Enable IPSec userland backend
 LOADTESTER_DESC=	Enable load testing plugin
+MEDIATION_DESC=		Enable IKEv2 Mediation Extension
 PKI_DESC=	Enable PKI tools
 SCEP_DESC=	Enable Simple Certificate Enrollment Protocol
 SMP_DESC=	Enable XML-based management protocol (DEPRECATED)
@@ -86,6 +87,7 @@ KERNELLIBIPSEC_CONFIGURE_ON=	--enable-kernel-libipsec
 LOADTESTER_CONFIGURE_ON=--enable-load-tester
 LDAP_CONFIGURE_ON=	--enable-ldap
 LDAP_USE=		OPENLDAP=yes
+MEDIATION_CONFIGURE_ON=	--enable-mediation
 MYSQL_CONFIGURE_ON=	--enable-mysql
 MYSQL_USES=		mysql
 PKI_CONFIGURE_OFF=	--disable-pki

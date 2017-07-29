@@ -166,6 +166,17 @@ if (empty($pconfig['eve_log_smtp']))
 if (empty($pconfig['eve_log_drop'])) {
 	$pconfig['eve_log_drop'] = "on";
 }
+if (empty($pconfig['eve_redis_server']))
+	$pconfig['eve_redis_server'] = "127.0.0.1";
+if (empty($pconfig['eve_redis_port']))
+	$pconfig['eve_redis_port'] = "6379";
+if (empty($pconfig['eve_redis_mode']))
+	$pconfig['eve_redis_mode'] = "list";
+if (empty($pconfig['eve_redis_key']))
+	$pconfig['eve_redis_key'] = "suricata";
+
+
+
 if (empty($pconfig['intf_promisc_mode']))
 	$pconfig['intf_promisc_mode'] = "on";
 
@@ -254,6 +265,15 @@ if (isset($_POST["save"]) && !$input_errors) {
 	if (!empty($_POST['inspect_recursion_limit']) && !is_numeric($_POST['inspect_recursion_limit']))
 		$input_errors[] = gettext("The value for Inspect Recursion Limit can either be blank or contain only digits evaluating to an integer greater than or equal to 0.");
 
+	if (!empty($_POST['eve_redis_server']) && !is_ipaddr($_POST['eve_redis_server']))
+		$input_errors[] = gettext("The value for 'EVE REDIS Server' must be an IP address.");
+
+	if (!empty($_POST['eve_redis_port']) && !is_port($_POST['eve_redis_port']))
+		$input_errors[] = gettext("The value for 'EVE REDIS Server' must have a valid TCP port.");
+
+	if (!empty($_POST['eve_redis_key']) && !preg_match('/^[A-Za-z0-9]+$/',$_POST['eve_redis_key']))
+		$input_errors[] = gettext("The value for 'EVE REDIS Key' must be alphanumeric.");
+
 	// if no errors write to suricata.yaml
 	if (!$input_errors) {
 		$natent = $a_rule[$id];
@@ -314,6 +334,11 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['delayed_detect'] == "on") { $natent['delayed_detect'] = 'on'; }else{ $natent['delayed_detect'] = 'off'; }
 		if ($_POST['intf_promisc_mode'] == "on") { $natent['intf_promisc_mode'] = 'on'; }else{ $natent['intf_promisc_mode'] = 'off'; }
 		if ($_POST['configpassthru']) $natent['configpassthru'] = base64_encode(str_replace("\r\n", "\n", $_POST['configpassthru'])); else unset($natent['configpassthru']);
+
+		if ($_POST['eve_redis_server']) $natent['eve_redis_server'] = $_POST['eve_redis_server'];
+		if ($_POST['eve_redis_port']) $natent['eve_redis_port'] = $_POST['eve_redis_port'];
+		if ($_POST['eve_redis_mode']) $natent['eve_redis_mode'] = $_POST['eve_redis_mode'];
+		if ($_POST['eve_redis_key']) $natent['eve_redis_key'] = $_POST['eve_redis_key'];
 
 		// Check if EVE OUTPUT TYPE is 'syslog' and auto-enable Suricata syslog output if true.
 		if ($natent['eve_output_type'] == "syslog" && $natent['alertsystemlog'] == "off") {
@@ -725,8 +750,41 @@ $section->addInput(new Form_Select(
 	'eve_output_type',
 	'EVE Output Type',
 	$pconfig['eve_output_type'],
-	array("file" => "FILE", "syslog" => "SYSLOG")
+	array("file" => "FILE", "syslog" => "SYSLOG","redis"=>"REDIS")
 ))->setHelp('Select EVE log output destination. Choosing FILE is suggested, and is the default value.');
+
+
+$group = new Form_Group('EVE REDIS Server');
+
+$group->add(new Form_Input(
+	'eve_redis_server',
+	'Redis Server',
+	'text',
+	$pconfig['eve_redis_server']
+))->setHelp('Enter the Redis server IP');
+
+$group->add(new Form_Input(
+	'eve_redis_port',
+	'Port',
+	'text',
+	$pconfig['eve_redis_port']
+))->setHelp('Enter the Redis server port');
+
+$section->add($group)->addClass('eve_redis_connection');
+
+$section->addInput(new Form_Select(
+	'eve_redis_mode',
+	'EVE REDIS Mode',
+	$pconfig['eve_redis_mode'],
+	array("list"=>"List (LPUSH)","rlist"=>"List (RPUSH)","channel"=>"Channel")
+))->setHelp('Select the REDIS output mode');
+
+$section->addInput(new Form_Input(
+	'eve_redis_key',
+	'EVE REDIS Key',
+	'text',
+	$pconfig['eve_redis_key']
+))->setHelp('Enter the REDIS Key');
 
 $group = new Form_Group('EVE Logged Info');
 
@@ -1054,7 +1112,7 @@ $section = new Form_Section('Arguments here will be automatically inserted into 
 $section->addInput(new Form_Textarea (
 	'configpassthru',
 	'Advanced Configuration Pass-Through',
-	$pconfig['configpassthru']
+	($_POST['configpassthru']?$_POST['configpassthru']:$pconfig['configpassthru'])
 ))->setHelp('Enter any additional configuration parameters to add to the Suricata configuration here, separated by a newline');
 
 $form->add($section);
@@ -1153,6 +1211,12 @@ events.push(function(){
 		var hide = ! $('#enable_eve_log').prop('checked');
 		hideSelect('eve_output_type', hide);
 		hideClass('eve_log_info', hide);
+	}
+	function toggle_eve_redis() {
+		var hide = ! ($('#enable_eve_log').prop('checked') && $('#eve_output_type').val() == "redis");
+		hideClass('eve_redis_connection',hide);
+		hideSelect('eve_redis_mode',hide);
+		hideInput('eve_redis_key',hide);
 	}
 
 	function enable_change() {
@@ -1296,6 +1360,11 @@ events.push(function(){
 
 	$('#enable_eve_log').click(function() {
 		toggle_eve_log();
+		toggle_eve_redis();
+	});
+
+	$('#eve_output_type').change(function() {
+		toggle_eve_redis();
 	});
 
 	$('#blockoffenders').click(function() {
@@ -1327,7 +1396,7 @@ events.push(function(){
 	toggle_json_file_log();
 	toggle_pcap_log();
 	toggle_eve_log();
-
+	toggle_eve_redis();
 });
 //]]>
 </script>

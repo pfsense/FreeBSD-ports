@@ -100,6 +100,7 @@ giftool*		graphics/giftool	Do not redistribute for profit
 gishdemo-*		games/gish-demo		(c) Copyright 2004 Chronic Logic All rights reserved
 gnome2/mcitymicrogui-default* x11-themes/metacity-theme-microgui Themes may contain artwork not done by the author.  Keep FreeBSD safe if the theme author violated copyrights
 GoogleEarthLinux-*	astro/google-earth	Not really sure about the redistribution terms
+gpu-firmware-kmod-*	graphics/gpu-firmware-kmod	Distribution in binary form without license file not allowed.
 groupoffice-com-*	www/groupoffice		Free for personal use only
 gsview*			print/gsview		Can only be distributed for free
 HeroesOfMightAndMagic-*	games/HeroesOfMightAndMagic	Software is commercial
@@ -172,7 +173,6 @@ oracle/instantclient-basic-linux*	databases/linux-oracle-instantclient-basic	Pac
 oracle/instantclient-sqlplus-linux*	databases/linux-oracle-instantclient-sqlplus	Packaging prohibited by Oracle license
 pcsv*fb.tar.gz		lang/petite-chez	User must accept license terms before installation
 PDFlib-Lite-*.tar.gz	print/pdflib		Many odd restrictions on usage and distribution
-perforce/*/p4		devel/p4		Restricted distribution
 perforce/*/p4d		devel/p4d		Restricted distribution
 perforce/*/p4ftpd	devel/p4ftpd		Restricted distribution
 perforce/*/p4p		devel/p4p		Restricted distribution
