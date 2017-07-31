@@ -3,7 +3,7 @@
 
 PORTNAME=	orthanc
 PORTVERSION=	1.1.0
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	science graphics net www
 MASTER_SITES=	http://orthanc-server.com/downloads/get.php?path=/orthanc/:main \
 		http://www.montefiore.ulg.ac.be/~jodogne/Orthanc/ThirdPartyDownloads/:mongoose
@@ -35,7 +35,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libgtest.so:devel/googletest \
 		libpugixml.so:textproc/pugixml
 
-BROKEN_powerpc64=	Does not build
+BROKEN_powerpc64=	fails to configure: CMake: Looking for C++ include pugixml.hpp - not found
 
 CMAKE_ARGS=	-DDCMTK_LIBRARIES="dcmdsig;charls;dcmjpls" \
 		-DDCMTK_DIR="${LOCALBASE}" \

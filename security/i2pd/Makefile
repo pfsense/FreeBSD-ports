@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	i2pd
-PORTVERSION=	2.12.0
-PORTREVISION=	1
+PORTVERSION=	2.14.0
 CATEGORIES=	security net-p2p
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -14,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
 
-BROKEN_powerpc64=	does not build
+BROKEN_powerpc64=	does not build: error: to_string is not a member of std
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	PurpleI2P
@@ -32,10 +31,12 @@ PLIST_SUB=	USER="${USERS}" GROUP="${GROUPS}"
 SUB_LIST=	USER="${USERS}" GROUP="${GROUPS}"
 SUB_FILES=	i2pd.newsyslog.conf
 
-OPTIONS_DEFINE=	AESNI UPNP DOCS
+OPTIONS_DEFINE=	AESNI AVX UPNP DOCS
 
 AESNI_DESC=		Use AES-NI instructions set
 AESNI_CMAKE_BOOL=	WITH_AESNI
+AVX_DESC=		Use AVX instructions
+AVX_CMAKE_BOOL=		WITH_AVX
 UPNP_DESC=		Include support for UPnP client
 UPNP_CMAKE_BOOL=	WITH_UPNP
 UPNP_LIB_DEPENDS=	libminiupnpc.so:net/miniupnpc
@@ -52,6 +53,5 @@ do-install:
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/docs/configuration.md ${STAGEDIR}${DOCSDIR}/
 
 .include <bsd.port.mk>

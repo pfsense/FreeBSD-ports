@@ -3,7 +3,7 @@
 
 PORTNAME=	dovecot2-antispam-plugin
 PORTVERSION=	20130429
-PORTREVISION=	26
+PORTREVISION=	30
 CATEGORIES=	mail
 MASTER_SITES=	http://olgeni.olgeni.com/~olgeni/distfiles/ \
 		LOCAL/olgeni
@@ -17,6 +17,9 @@ LICENSE=	GPLv2
 BUILD_DEPENDS=	dovecot2>=2.2.0:mail/dovecot2 \
 		gawk:lang/gawk
 RUN_DEPENDS=	dovecot2>=2.2.0:mail/dovecot2
+
+DEPRECATED=	Use pigeonhole instead. See https://wiki2.dovecot.org/HowTo/AntispamWithSieve
+EXPIRATION_DATE=2017-07-31
 
 CONFLICTS=	dovecot-antispam-1.*
 WRKSRC=		${WRKDIR}/dovecot-antispam-plugin-5ebc6aae4d7c

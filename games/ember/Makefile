@@ -3,7 +3,7 @@
 
 PORTNAME=	ember
 PORTVERSION=	0.7.2
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	games
 MASTER_SITES=	SF/worldforge/Ember%20%28OGRE%20client%29/${PORTVERSION} \
 		http://amber.worldforge.org/ember/releases/stable/
@@ -24,6 +24,8 @@ LIB_DEPENDS=	libsigc-2.0.so:devel/libsigc++20 \
 		libwfut-0.2.so:devel/libwfut \
 		libboost_thread.so:devel/boost-libs \
 		libCEGUIBase-0.so:graphics/cegui
+
+BROKEN=		fails to compile: ServerService.h: 'sigc++/object_slot.h' file not found
 
 CONFIGURE_ARGS=	--with-png-prefix=${LOCALBASE} --enable-binreloc \
 		--program-transform-name= --disable-cppunit --disable-debug \

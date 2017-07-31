@@ -2,7 +2,7 @@
 
 PORTNAME=	libftdi1
 PORTVERSION=	1.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	http://www.intra2net.com/en/developer/libftdi/download/
 
@@ -20,7 +20,6 @@ OPTIONS_SUB=		yes
 BOOST_DESC=	Build with boost
 PYTHON_DESC=	Build Python bindings
 
-BROKEN_powerpc64=	Does not build
 BROKEN_sparc64=		Does not build: fails to link
 
 USES=		cmake pkgconfig tar:bzip2

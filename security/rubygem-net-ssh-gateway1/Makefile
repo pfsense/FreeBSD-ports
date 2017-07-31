@@ -1,12 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	net-ssh-gateway
-PORTVERSION=	1.2.0
+PORTVERSION=	1.3.0
 CATEGORIES=	security rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	1
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Establish Net::SSH connections through firewalls
 
 LICENSE=	MIT

@@ -3,7 +3,7 @@
 
 PORTNAME=	repsnapper
 PORTVERSION=	2.3.2a3
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	cad
 MASTER_SITES=	https://codeload.github.com/timschmidt/repsnapper/tar.gz/
 DISTNAME=	${PORTVERSION}
@@ -18,6 +18,8 @@ LICENSE_COMB=	multi
 
 LIB_DEPENDS=	libgtkglextmm-x11-1.2.so:x11-toolkits/gtkglextmm \
 		libzip.so:archivers/libzip \
+
+BROKEN=		fails to compile: ustring.h: expected ';' at end of declaration list
 
 USES=		autoreconf gmake libtool perl5 pkgconfig
 USE_GNOME=	gtkmm24 intltool libxml++26

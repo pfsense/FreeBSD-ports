@@ -3,6 +3,7 @@
 
 PORTNAME=	mysqlwsrep
 PORTVERSION=	5.6.35
+PORTREVISION=	1
 CATEGORIES=	databases ipv6
 MASTER_SITES=	http://releases.galeracluster.com/source/
 PKGNAMESUFFIX=	56-server
@@ -18,9 +19,10 @@ RUN_DEPENDS=	socat:net/socat lsof:sysutils/lsof netcat:net/netcat rsync:net/rsyn
 
 DATADIR=	${PREFIX}/share/mysql
 
-BROKEN_powerpc64=	Does not build
+NOT_FOR_ARCHS=		aarch64 armv6 powerpc64
+NOT_FOR_ARCHS_REASON=	error: Unsupported platform
 
-USES=		cmake:outsource libedit shebangfix perl5
+USES=		cmake:outsource,noninja libedit shebangfix perl5
 USE_PERL5=	run
 USE_LDCONFIG=	yes
 

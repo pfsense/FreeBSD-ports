@@ -12,16 +12,16 @@ COMMENT=	Advanced PostgreSQL-based IMAP/POP server
 
 LICENSE=	MIT
 
-BROKEN_powerpc64=	Does not build
-
 BUILD_DEPENDS=	jam:devel/jam
+
+BROKEN_powerpc64=	Does not build: /bin/sh: clang: not found
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	aox
 GH_PROJECT=	aox
 GH_TAGNAME=	e10c73a
 
-USES=		perl5 ssl tar:bzip2
+USES=		perl5 ssl
 USE_PERL5=	build
 WITH_PGSQL=	client
 

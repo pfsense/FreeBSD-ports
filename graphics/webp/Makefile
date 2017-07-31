@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	webp
-PORTVERSION=	0.5.2
-PORTREVISION=	1
+PORTVERSION=	0.6.0
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	http://downloads.webmproject.org/releases/webp/
 DISTNAME=	lib${PORTNAME}-${PORTVERSION}

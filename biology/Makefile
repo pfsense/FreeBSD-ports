@@ -83,6 +83,8 @@
     SUBDIR += psi88
     SUBDIR += py-biom-format
     SUBDIR += py-biopython
+    SUBDIR += py-bx-python
+    SUBDIR += py-pysam
     SUBDIR += pycogent
     SUBDIR += pyfasta
     SUBDIR += python-nexus
@@ -103,7 +105,6 @@
     SUBDIR += t_coffee
     SUBDIR += tinker
     SUBDIR += treepuzzle
-    SUBDIR += treeviewx
     SUBDIR += trimmomatic
     SUBDIR += ugene
     SUBDIR += vcftools

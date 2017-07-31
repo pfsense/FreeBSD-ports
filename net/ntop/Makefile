@@ -3,11 +3,11 @@
 
 PORTNAME=	ntop
 PORTVERSION=	5.0.1
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/Stable
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	amutu@amutu.com
 COMMENT=	Network monitoring tool with command line and web interfaces
 
 LICENSE=	GPLv3
@@ -21,9 +21,12 @@ BUILD_DEPENDS=	rrdtool12>=1.2:databases/rrdtool12 \
 RUN_DEPENDS:=	${BUILD_DEPENDS} \
 		urwfonts>0:x11-fonts/urwfonts
 
+BROKEN_powerpc64=	fails to link: libntop.so: undefined reference to 'bswap_32'
+
 DBDIR?=		/var/db
 
-USES=		autoreconf:build cpe gmake libtool python ssl
+USES=		autoreconf:build cpe gmake libtool python shebangfix ssl
+SHEBANG_FILES=	python/sankey.py
 USE_GNOME=	libxml2
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
@@ -71,6 +74,7 @@ pre-install:
 	@cd ${WRKSRC} && ${MAKE_CMD} dnetter
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so ${STAGEDIR}${PREFIX}/lib/ntop/plugins/*.so
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so \
+		${STAGEDIR}${PREFIX}/lib/ntop/plugins/*.so
 
 .include <bsd.port.mk>

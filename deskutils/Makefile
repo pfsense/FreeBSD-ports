@@ -41,7 +41,6 @@
     SUBDIR += drivel
     SUBDIR += easystroke
     SUBDIR += egroupware
-    SUBDIR += epoch
     SUBDIR += etask
     SUBDIR += everygui
     SUBDIR += fbreader
@@ -57,14 +56,12 @@
     SUBDIR += genius
     SUBDIR += gkrellm-reminder2
     SUBDIR += glabels
-    SUBDIR += gnome-blog
     SUBDIR += gnome-calendar
     SUBDIR += gnome-characters
     SUBDIR += gnome-clocks
     SUBDIR += gnome-contacts
     SUBDIR += gnome-dictionary
     SUBDIR += gnome-documents
-    SUBDIR += gnome-epub-thumbnailer
     SUBDIR += gnome-font-viewer
     SUBDIR += gnome-initial-setup
     SUBDIR += gnome-maps
@@ -132,7 +129,6 @@
     SUBDIR += kruler
     SUBDIR += ksshaskpass
     SUBDIR += launchy
-    SUBDIR += libgcal
     SUBDIR += libopensync-plugin-vformat-devel
     SUBDIR += libstreamanalyzer
     SUBDIR += libstreams
@@ -151,7 +147,6 @@
     SUBDIR += multisync-backup
     SUBDIR += multisync-syncml
     SUBDIR += myitcrm
-    SUBDIR += nagaina
     SUBDIR += nautilus-actions
     SUBDIR += nautilus-sendto
     SUBDIR += nemo-extensions
@@ -159,7 +154,6 @@
     SUBDIR += notecase
     SUBDIR += notification-daemon
     SUBDIR += notify-osd
-    SUBDIR += openproj
     SUBDIR += orage
     SUBDIR += osmo
     SUBDIR += osynctool
@@ -182,7 +176,6 @@
     SUBDIR += plasma-applet-daisy
     SUBDIR += plasma-applet-fancytasks
     SUBDIR += plasma-applet-panelspacer
-    SUBDIR += plasma-applet-playwolf
     SUBDIR += plasma-applet-qstardict
     SUBDIR += plasma-applet-serverstatuswidget
     SUBDIR += plasma-applet-simpleweatherforecast
@@ -190,6 +183,7 @@
     SUBDIR += plasma-applet-yawp
     SUBDIR += plopfolio
     SUBDIR += preferences
+    SUBDIR += projectlibre
     SUBDIR += puush
     SUBDIR += py-bugwarrior
     SUBDIR += py-khal
@@ -226,7 +220,6 @@
     SUBDIR += strigiutils
     SUBDIR += sugarcrm
     SUBDIR += superkaramba
-    SUBDIR += superswitcher
     SUBDIR += surrealtodo
     SUBDIR += syncthing-gtk
     SUBDIR += systempreferences
@@ -249,7 +242,6 @@
     SUBDIR += treeline
     SUBDIR += treesheets
     SUBDIR += tuxcards
-    SUBDIR += vboxgtk
     SUBDIR += virt-manager
     SUBDIR += vit
     SUBDIR += vnc2flv

@@ -6,6 +6,7 @@
     SUBDIR += 3ddesktop
     SUBDIR += 9box
     SUBDIR += 9menu
+    SUBDIR += alacritty
     SUBDIR += alltray
     SUBDIR += altyo
     SUBDIR += antimicro
@@ -66,6 +67,7 @@
     SUBDIR += fireflies
     SUBDIR += fixesproto
     SUBDIR += florence
+    SUBDIR += flruler
     SUBDIR += fluxbg
     SUBDIR += fpc-x11
     SUBDIR += fstobdf
@@ -99,7 +101,7 @@
     SUBDIR += gtkchtheme
     SUBDIR += gtkterm2
     SUBDIR += guake
-    SUBDIR += hotwire-shell
+    SUBDIR += gxkb
     SUBDIR += hs-X11
     SUBDIR += hs-X11-xft
     SUBDIR += hs-xmobar
@@ -126,7 +128,6 @@
     SUBDIR += keybinder-gtk3
     SUBDIR += keyboardcast
     SUBDIR += keylaunch
-    SUBDIR += keynav
     SUBDIR += kf5-frameworkintegration
     SUBDIR += kf5-frameworks
     SUBDIR += kf5-kactivities
@@ -208,7 +209,6 @@
     SUBDIR += lsw
     SUBDIR += luit
     SUBDIR += lumina
-    SUBDIR += lumina-i18n
     SUBDIR += lupe
     SUBDIR += lxde-meta
     SUBDIR += lxhotkey
@@ -251,6 +251,7 @@
     SUBDIR += p5-X11-XCB
     SUBDIR += p5-X11-Xlib
     SUBDIR += p5-XTerm-Conf
+    SUBDIR += pantheon-terminal
     SUBDIR += pipeglade
     SUBDIR += pixman
     SUBDIR += plasma-scriptengine-python
@@ -428,6 +429,7 @@
     SUBDIR += xkbcomp
     SUBDIR += xkbctrl
     SUBDIR += xkbevd
+    SUBDIR += xkbind
     SUBDIR += xkbprint
     SUBDIR += xkbset
     SUBDIR += xkbutils

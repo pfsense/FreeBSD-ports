@@ -289,19 +289,48 @@ function quagga_ospfd_install_conf() {
 	fwrite($fd, $zebraconffile);
 	fclose($fd);
 
-	/* Make bgpd config */
+	/* Make bgpd config, add password and logging */
 	if (isset($config['installedpackages']['quaggaospfdraw']['config'][0]['bgpd'])
 	    && !empty($config['installedpackages']['quaggaospfdraw']['config'][0]['bgpd'])) {
 		// if there is a raw config specified in the config.xml use that instead of the assisted config
 		$bgpdconffile = str_replace("\r","",base64_decode($config['installedpackages']['quaggaospfdraw']['config'][0]['bgpd']));
-	} else {
-		$bgpdconffile = "";
+	} 
+	else {
+		$bgpdconffile = "# This file was created by the pfSense package manager.  Do not edit!\n\n";
+		if ($ospfd_conf['password']) {
+			$bgpdconffile .= "password {$ospfd_conf['password']}\n";
+		}
+		if ($ospfd_conf['logging']) {
+			$bgpdconffile .= "log syslog\n";
+		}
 	}
-
 	$fd = fopen("{$quagga_config_base}/bgpd.conf", "w");
 	fwrite($fd, $bgpdconffile);
 	fclose($fd);
-
+	/* Clear existing md5 authentication sessions and remove existing md5 config files, if they exist. */
+	mwexec("/bin/test -e {$quagga_config_base}/bgpddelmd5pw.conf && /sbin/setkey -f {$quagga_config_base}/bgpddelmd5pw.conf && /bin/rm -f {$quagga_config_base}/bgpddelmd5pw.conf");
+	mwexec("/bin/test -e {$quagga_config_base}/bgpdaddmd5pw.conf && /bin/rm -f {$quagga_config_base}/bgpdaddmd5pw.conf");
+	/* Builds BGPd md5 password configuration files based on confguration in pfSense config.xml. */
+	if (isset($config['installedpackages']['quaggaospfdraw']['config'][0]['row']) && is_array($config['installedpackages']['quaggaospfdraw']['config'][0]['row']))
+	{
+		foreach ($config['installedpackages']['quaggaospfdraw']['config'][0]['row'] as $bgpdpw) {
+			if (($bgpdpw['bgpdsourceaddr'] != "") && ($bgpdpw['bgpdpeeraddr'] != "") && ($bgpdpw['bgpdmd5pw'])!= "") {
+				$bgpdaddmd5file .= "add {$bgpdpw['bgpdsourceaddr']} {$bgpdpw['bgpdpeeraddr']} tcp 0x1000 -A tcp-md5 \"{$bgpdpw['bgpdmd5pw']}\" ;\n";
+				$bgpddelmd5file .= "delete {$bgpdpw['bgpdsourceaddr']} {$bgpdpw['bgpdpeeraddr']} tcp 0x1000 ;\n";
+			}
+		}
+		if ($bgpdaddmd5file != "") {
+			$fd = fopen("{$quagga_config_base}/bgpdaddmd5pw.conf", "w");
+			fwrite($fd, $bgpdaddmd5file);
+			fclose($fd);
+		}
+		
+		if ($bgpddelmd5file != "") {
+			$fd = fopen("{$quagga_config_base}/bgpddelmd5pw.conf", "w");
+			fwrite($fd, $bgpddelmd5file);
+			fclose($fd);
+		}
+	}
         /* Make ospf6 config */
 	if (isset($config['installedpackages']['quaggaospfdraw']['config'][0]['ospf6d'])
 	    && !empty($config['installedpackages']['quaggaospfdraw']['config'][0]['ospf6d'])) {
@@ -351,6 +380,7 @@ if [ -e /var/run/quagga/bgpd.pid ]; then
 	# XXX: See Bug #6305 - Quagga 1.x does not like SIGKILL
 	/bin/pkill -F /var/run/quagga/bgpd.pid
 	/bin/rm -f /var/run/quagga/bgpd.pid
+	/sbin/setkey -f {$quagga_config_base}/bgpddelmd5pw.conf
 fi
 EOF;
 	$rc_file_start = <<<EOF
@@ -390,6 +420,7 @@ fi
 [ -s {$quagga_config_base}/zebra.conf ] && /usr/local/sbin/zebra -d -f {$quagga_config_base}/zebra.conf
 [ -s {$quagga_config_base}/ospfd.conf ] && /usr/local/sbin/ospfd -d -f {$quagga_config_base}/ospfd.conf
 [ -s {$quagga_config_base}/ospf6d.conf ] && /usr/local/sbin/ospf6d -d -f {$quagga_config_base}/ospf6d.conf
+[ -s {$quagga_config_base}/bgpdaddmd5pw.conf ] && /sbin/setkey -f {$quagga_config_base}/bgpdaddmd5pw.conf
 [ -s {$quagga_config_base}/bgpd.conf ] && /usr/local/sbin/bgpd -d -f {$quagga_config_base}/bgpd.conf
 
 EOF;
@@ -503,4 +534,29 @@ function quagga_ospfd_plugin_carp($pluginparams) {
 		stop_service("Quagga OSPFd");
 	}
 }
+
+/* The following function checks for the presence of and writes the contents of "/var/etc/quagga/$module.conf" into the $module . "running" field within the config.xml file  */
+function write_quagga_running_config($module) {
+	global $config;
+	conf_mount_rw();
+	// Since we need to embed this in a string, copy to a var. Can't embed constants.
+	$quagga_config_base = PKG_QUAGGA_CONFIG_BASE;
+	
+	$moduleRunningFile = "{$quagga_config_base}/{$module}.conf";
+
+	if ( file_exists( $moduleRunningFile ) && ( filesize( $moduleRunningFile ) > 0 ) ) {
+		$moduleRunning = fopen( "$moduleRunningFile", "r" );
+		$config['installedpackages']['quaggaospfdraw']['config'][0][$module . "running"] = base64_encode( fread( $moduleRunning, filesize($moduleRunningFile) ));
+ 	}
+	else {
+		$config['installedpackages']['quaggaospfdraw']['config'][0][$module . "running"] = base64_encode("!!!!! {$module}.conf does not exist or is empty.");
+	}
+	write_config( $write_config_only = true );
+	conf_mount_ro();
+} 
+
+write_quagga_running_config(bgpd);
+write_quagga_running_config(ospfd);
+write_quagga_running_config(ospf6d);
+write_quagga_running_config(zebra);
 ?>

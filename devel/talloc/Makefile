@@ -43,6 +43,10 @@ PLIST_FILES+=		include/pytalloc.h \
 			%%PKGCONFIGDIR%%/pytalloc-util.pc
 .endif
 
+.if ${ARCH} == powerpc64 || ${ARCH} == powerpc
+EXTRA_PATCHES+=		${FILESDIR}/powerpc-patch-lib_replace_wscript
+.endif
+
 .include <bsd.port.pre.mk>
 
 .if ! ${PORT_OPTIONS:MMANPAGES}

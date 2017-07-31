@@ -3,7 +3,7 @@
 
 PORTNAME=	gcl
 PORTVERSION=	2.6.12
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	lang tcl tk
 MASTER_SITES=	GNU
 
@@ -12,6 +12,8 @@ COMMENT=	GNU Common Lisp
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
+
+BROKEN=		missing header
 
 BUILD_DEPENDS=	gawk:lang/gawk
 LIB_DEPENDS=	libgmp.so:math/gmp

@@ -13,9 +13,11 @@
     SUBDIR += 4stattack
     SUBDIR += 54321
     SUBDIR += 7kaa
+    SUBDIR += 90secondportraits
     SUBDIR += CaribbeanStud
     SUBDIR += HeroesOfMightAndMagic
     SUBDIR += KnightCap
+    SUBDIR += OpenTomb
     SUBDIR += abbayedesmorts
     SUBDIR += abe
     SUBDIR += abuse_sdl
@@ -63,6 +65,7 @@
     SUBDIR += atr3d
     SUBDIR += atris
     SUBDIR += atris-sounds
+    SUBDIR += auralquiz
     SUBDIR += avanor
     SUBDIR += avoision
     SUBDIR += awale
@@ -77,6 +80,8 @@
     SUBDIR += battalion
     SUBDIR += battletanks
     SUBDIR += belooted
+    SUBDIR += beret
+    SUBDIR += billardgl
     SUBDIR += biloba
     SUBDIR += biniax2
     SUBDIR += biorythm
@@ -197,7 +202,6 @@
     SUBDIR += dangerdeep
     SUBDIR += dangerdeep-data
     SUBDIR += darkplaces
-    SUBDIR += dcross
     SUBDIR += defendguin
     SUBDIR += dhewm3
     SUBDIR += diameter
@@ -375,6 +379,7 @@
     SUBDIR += gnushogi
     SUBDIR += gnustep-ladder
     SUBDIR += gnustep-sudoku
+    SUBDIR += gogrepo
     SUBDIR += golddig
     SUBDIR += goldencheetah
     SUBDIR += golly
@@ -410,7 +415,6 @@
     SUBDIR += heroes
     SUBDIR += hex-a-hop
     SUBDIR += hexalate
-    SUBDIR += hexglass
     SUBDIR += hexxagon
     SUBDIR += highmoon
     SUBDIR += hinversi
@@ -435,8 +439,6 @@
     SUBDIR += instead
     SUBDIR += interlogic
     SUBDIR += ioquake3
-    SUBDIR += ioquake3-devel
-    SUBDIR += ioquake3-devel-server
     SUBDIR += ioquake3-server
     SUBDIR += iortcw
     SUBDIR += iourbanterror
@@ -523,8 +525,6 @@
     SUBDIR += lgeneral
     SUBDIR += lianliankan
     SUBDIR += libdungeonmaker
-    SUBDIR += libfov
-    SUBDIR += libgames-support
     SUBDIR += libggz
     SUBDIR += libgnome-games-support
     SUBDIR += libkdegames
@@ -576,7 +576,6 @@
     SUBDIR += lmpc
     SUBDIR += lolcat
     SUBDIR += lordsawar
-    SUBDIR += lostfeathers
     SUBDIR += lpairs
     SUBDIR += lskat
     SUBDIR += ltris
@@ -684,6 +683,10 @@
     SUBDIR += openarena-server
     SUBDIR += openastromenace
     SUBDIR += openbor
+    SUBDIR += openbor3482
+    SUBDIR += openbor3711
+    SUBDIR += openbor3979
+    SUBDIR += openbor4432
     SUBDIR += openbubbles
     SUBDIR += opencity
     SUBDIR += openclonk
@@ -738,6 +741,7 @@
     SUBDIR += pengpong
     SUBDIR += penguin-command
     SUBDIR += pengupop
+    SUBDIR += pentobi
     SUBDIR += phalanx
     SUBDIR += phlipple
     SUBDIR += picmi
@@ -850,7 +854,6 @@
     SUBDIR += rfksay
     SUBDIR += ri-li
     SUBDIR += rnd_jue
-    SUBDIR += robocalypto
     SUBDIR += robocode
     SUBDIR += robocode-naval
     SUBDIR += robotfindskitten

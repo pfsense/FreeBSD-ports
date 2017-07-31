@@ -65,6 +65,7 @@
     SUBDIR += backupchecker
     SUBDIR += backuppc
     SUBDIR += backuppc-devel
+    SUBDIR += backuppc4
     SUBDIR += bacula-bat
     SUBDIR += bacula-client
     SUBDIR += bacula-client-static
@@ -103,7 +104,6 @@
     SUBDIR += boxbackup-devel
     SUBDIR += brasero
     SUBDIR += bsd-splash-changer
-    SUBDIR += bsdadminscripts
     SUBDIR += bsdconfig
     SUBDIR += bsdcrashtar
     SUBDIR += bsdhwmon
@@ -136,12 +136,13 @@
     SUBDIR += cdrtools-devel
     SUBDIR += cfengine
     SUBDIR += cfengine-masterfiles
+    SUBDIR += cfengine-masterfiles310
     SUBDIR += cfengine-masterfiles36
     SUBDIR += cfengine-masterfiles37
     SUBDIR += cfengine-masterfiles38
     SUBDIR += cfengine-masterfiles39
-    SUBDIR += cfengine-masterfiles310
     SUBDIR += cfengine22
+    SUBDIR += cfengine310
     SUBDIR += cfengine32
     SUBDIR += cfengine33
     SUBDIR += cfengine34
@@ -150,7 +151,6 @@
     SUBDIR += cfengine37
     SUBDIR += cfengine38
     SUBDIR += cfengine39
-    SUBDIR += cfengine310
     SUBDIR += chgrep
     SUBDIR += chyves
     SUBDIR += cinnamon-control-center
@@ -237,6 +237,7 @@
     SUBDIR += dmg2img
     SUBDIR += dmidecode
     SUBDIR += docker
+    SUBDIR += docker-compose
     SUBDIR += docker-freebsd
     SUBDIR += docker-machine
     SUBDIR += doinkd
@@ -246,6 +247,7 @@
     SUBDIR += dsbbatmon
     SUBDIR += dsbdriverd
     SUBDIR += dsbmc
+    SUBDIR += dsbmc-cli
     SUBDIR += dsbmd
     SUBDIR += dsbwrtsysctl
     SUBDIR += dt
@@ -254,6 +256,7 @@
     SUBDIR += du2ps
     SUBDIR += duff
     SUBDIR += dunst
+    SUBDIR += dupd
     SUBDIR += duplicity
     SUBDIR += duply
     SUBDIR += dupmerge
@@ -278,6 +281,7 @@
     SUBDIR += etcupdate
     SUBDIR += eventlog
     SUBDIR += evtviewer
+    SUBDIR += exa
     SUBDIR += exfat-utils
     SUBDIR += extipl
     SUBDIR += ezjail
@@ -309,6 +313,7 @@
     SUBDIR += flexbackup
     SUBDIR += flock
     SUBDIR += flog
+    SUBDIR += flowgger
     SUBDIR += fluent-bit
     SUBDIR += flyback
     SUBDIR += fonteditfs
@@ -407,7 +412,6 @@
     SUBDIR += graid5
     SUBDIR += graveman
     SUBDIR += graylog
-    SUBDIR += grok
     SUBDIR += grub2
     SUBDIR += grub2-bhyve
     SUBDIR += grub2-efi
@@ -461,8 +465,6 @@
     SUBDIR += intel-nvmupdate
     SUBDIR += intel-pcm
     SUBDIR += intel-qcu
-    SUBDIR += iocage
-    SUBDIR += iocage-devel
     SUBDIR += iocell
     SUBDIR += iogen
     SUBDIR += iograph
@@ -480,7 +482,6 @@
     SUBDIR += istatserver
     SUBDIR += jadm
     SUBDIR += jail-primer
-    SUBDIR += jail2
     SUBDIR += jailadmin
     SUBDIR += jailctl
     SUBDIR += jaildaemon
@@ -489,6 +490,7 @@
     SUBDIR += jailutils
     SUBDIR += javaservicewrapper
     SUBDIR += jdiskreport
+    SUBDIR += jdupes
     SUBDIR += jkill
     SUBDIR += jobd
     SUBDIR += jps
@@ -522,7 +524,6 @@
     SUBDIR += lbl-hf
     SUBDIR += lcdproc
     SUBDIR += ldap-account-manager
-    SUBDIR += ldapenter
     SUBDIR += ldapvi
     SUBDIR += ledit
     SUBDIR += less
@@ -619,6 +620,7 @@
     SUBDIR += mksunbootcd
     SUBDIR += mmc-utils
     SUBDIR += mnrpes
+    SUBDIR += modman
     SUBDIR += modules
     SUBDIR += mog
     SUBDIR += monit
@@ -664,6 +666,7 @@
     SUBDIR += namefix
     SUBDIR += nbosd
     SUBDIR += ncdu
+    SUBDIR += ndmpd
     SUBDIR += nepomuk-core
     SUBDIR += nepomuk-widgets
     SUBDIR += nfcutils
@@ -712,6 +715,7 @@
     SUBDIR += p5-Filesys-Statvfs
     SUBDIR += p5-Fuse
     SUBDIR += p5-Fuse-Simple
+    SUBDIR += p5-Giovanni
     SUBDIR += p5-Iterator-File
     SUBDIR += p5-Lchown
     SUBDIR += p5-Linux-Cpuinfo
@@ -784,7 +788,6 @@
     SUBDIR += pciutils
     SUBDIR += pcpustat
     SUBDIR += pdixtract
-    SUBDIR += pdsh
     SUBDIR += pdumpfs
     SUBDIR += pear-Cache
     SUBDIR += pear-Cache_Lite
@@ -817,7 +820,6 @@
     SUBDIR += pick
     SUBDIR += pidof
     SUBDIR += pipemeter
-    SUBDIR += plasma-applet-apcups
     SUBDIR += plconfig
     SUBDIR += pmt
     SUBDIR += policykit
@@ -845,13 +847,13 @@
     SUBDIR += ptools
     SUBDIR += puppet-lint
     SUBDIR += puppet-mode.el
-    SUBDIR += puppet38
     SUBDIR += puppet4
     SUBDIR += puppetserver
     SUBDIR += pv
     SUBDIR += pwd_unmkdb
     SUBDIR += pwgen
     SUBDIR += pwsafe
+    SUBDIR += pxattr
     SUBDIR += py-XenAPI
     SUBDIR += py-analyzemft
     SUBDIR += py-bcfg2
@@ -859,16 +861,17 @@
     SUBDIR += py-consul
     SUBDIR += py-croniter
     SUBDIR += py-crontab
-    SUBDIR += py-danzfs
     SUBDIR += py-diffoscope
     SUBDIR += py-dirsync
     SUBDIR += py-dlipower
+    SUBDIR += py-docker
     SUBDIR += py-drmaa
     SUBDIR += py-execnet
     SUBDIR += py-ezjailremote
     SUBDIR += py-filelike
     SUBDIR += py-freenas.cli
     SUBDIR += py-glances
+    SUBDIR += py-gmailfs-fuse
     SUBDIR += py-halite
     SUBDIR += py-honcho
     SUBDIR += py-iocage
@@ -892,6 +895,7 @@
     SUBDIR += py-ranger
     SUBDIR += py-salt
     SUBDIR += py-scandir
+    SUBDIR += py-scriptine
     SUBDIR += py-shutilwhich
     SUBDIR += py-stdiff
     SUBDIR += py-supervisor
@@ -899,8 +903,11 @@
     SUBDIR += py-uptime
     SUBDIR += py-zdaemon
     SUBDIR += py-zfs
-    SUBDIR += pydf
+    SUBDIR += py3-execnet
     SUBDIR += py3-iocage
+    SUBDIR += py3-pkginfo
+    SUBDIR += py3-ptyprocess
+    SUBDIR += pydf
     SUBDIR += qchroot
     SUBDIR += qjail
     SUBDIR += qjail2
@@ -908,7 +915,9 @@
     SUBDIR += qlogtools
     SUBDIR += qpxtool
     SUBDIR += qsynergy
+    SUBDIR += qt5-qtdiag
     SUBDIR += qt5-qtpaths
+    SUBDIR += qt5-qtplugininfo
     SUBDIR += qtpass
     SUBDIR += quicksynergy
     SUBDIR += qzeitgeist
@@ -938,6 +947,7 @@
     SUBDIR += respond
     SUBDIR += restic
     SUBDIR += retail
+    SUBDIR += rex
     SUBDIR += rfstool
     SUBDIR += rhc
     SUBDIR += riak-cs
@@ -986,6 +996,7 @@
     SUBDIR += rubygem-hiera-file
     SUBDIR += rubygem-hiera1
     SUBDIR += rubygem-hieracles
+    SUBDIR += rubygem-httplog
     SUBDIR += rubygem-itamae
     SUBDIR += rubygem-librarian-puppet
     SUBDIR += rubygem-log4r
@@ -1041,7 +1052,6 @@
     SUBDIR += scalpel
     SUBDIR += scan_ffs
     SUBDIR += scanbuttond
-    SUBDIR += scanmem
     SUBDIR += scct
     SUBDIR += schedutils
     SUBDIR += scprotect
@@ -1064,7 +1074,6 @@
     SUBDIR += shmcat
     SUBDIR += showbeastie
     SUBDIR += siegfried
-    SUBDIR += sievelog
     SUBDIR += skill
     SUBDIR += slack
     SUBDIR += sleuthkit
@@ -1108,10 +1117,11 @@
     SUBDIR += sysinfo
     SUBDIR += syslinux
     SUBDIR += syslog-ng
-    SUBDIR += syslog-ng-devel
     SUBDIR += syslog-ng-incubator
     SUBDIR += syslog-ng36
     SUBDIR += syslog-ng37
+    SUBDIR += syslog-ng39
+    SUBDIR += syslog-ng310
     SUBDIR += syslogger
     SUBDIR += sysrc
     SUBDIR += system-tools-backends
@@ -1160,14 +1170,17 @@
     SUBDIR += u-boot-bananapi
     SUBDIR += u-boot-bananapim2
     SUBDIR += u-boot-beaglebone
+    SUBDIR += u-boot-chip
     SUBDIR += u-boot-cubieboard
     SUBDIR += u-boot-cubieboard2
     SUBDIR += u-boot-cubox-hummingboard
     SUBDIR += u-boot-duovero
+    SUBDIR += u-boot-imx-serial-loader
     SUBDIR += u-boot-master
     SUBDIR += u-boot-olimex-a20-som-evb
     SUBDIR += u-boot-olinuxino-lime
     SUBDIR += u-boot-orangepi-one
+    SUBDIR += u-boot-orangepi-plus-2e
     SUBDIR += u-boot-pandaboard
     SUBDIR += u-boot-pcduino3
     SUBDIR += u-boot-pine64
@@ -1211,6 +1224,7 @@
     SUBDIR += utcount
     SUBDIR += vagrant
     SUBDIR += vbetool
+    SUBDIR += vchanger
     SUBDIR += vcp
     SUBDIR += videogen
     SUBDIR += vii

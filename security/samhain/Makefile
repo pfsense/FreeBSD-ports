@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	samhain
-PORTVERSION=	4.2.0
+PORTVERSION=	4.2.1
 CATEGORIES=	security
 MASTER_SITES=	http://la-samhna.de/archive/
 DISTNAME=	samhain_signed-${PORTVERSION}
@@ -12,11 +12,15 @@ COMMENT=	Samhain Intrusion Detection System
 
 LICENSE=	GPLv2
 
+BROKEN_aarch64=		fails to build: undefined reference to sbrk
+BROKEN_mips=		fails to configure: error: Could not find the libwrap library
+BROKEN_mips64=		fails to configure: error: Could not find the libwrap library
+
 OPTIONS_DEFINE=	ASM DB_RELOAD DEBUG DNMALLOC ENCRYPT GNUPG IPV6 KCHECK LIBWRAP \
 		LOGFILE_MONITOR LOGIN_WATCH MAIL MOUNTS_CHECK MYSQL ODBC PGSQL \
 		PORT_CHECK PROCESS_CHECK POSIX_ACL PRELUDE PTRACE SRP STATIC \
 		SUIDCHECK UDP USERFILES XML_LOGS
-OPTIONS_DEFAULT=ASM DNMALLOC ENCRYPT IPV6 LIBWRAP MAIL SRP
+OPTIONS_DEFAULT=ASM DNMALLOC ENCRYPT LIBWRAP MAIL SRP
 
 DB_RELOAD_DESC=	Enable database reload on SIGHUP
 DNMALLOC_DESC=	Enable dnmalloc

@@ -4,7 +4,7 @@
 PORTNAME=	dogecoin
 PORTVERSION=	1.8.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	net-p2p finance
 
 MAINTAINER=	swills@FreeBSD.org
@@ -13,8 +13,10 @@ COMMENT=	Virtual Peer-to-Peer Currency Client
 LICENSE=	MIT
 
 BUILD_DEPENDS=	protoc:devel/protobuf
-
 LIB_DEPENDS=	libboost_date_time.so:devel/boost-libs
+
+NOT_FOR_ARCHS=		powerpc powerpc64 sparc64
+NOT_FOR_ARCHS_REASON=	fails to configure: "Big Endian not supported"
 
 OPTIONS_DEFINE=	GUI UPNP QRCODES
 OPTIONS_DEFAULT=	GUI QRCODES
