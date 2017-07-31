@@ -544,12 +544,12 @@ function write_quagga_running_config($module) {
 	
 	$moduleRunningFile = "{$quagga_config_base}/{$module}.conf";
 
-	if ( file_exists( $moduleRunningFile ) ) {
+	if ( file_exists( $moduleRunningFile ) && ( filesize( $moduleRunningFile ) > 0 ) ) {
 		$moduleRunning = fopen( "$moduleRunningFile", "r" );
 		$config['installedpackages']['quaggaospfdraw']['config'][0][$module . "running"] = base64_encode( fread( $moduleRunning, filesize($moduleRunningFile) ));
  	}
 	else {
-		$config['installedpackages']['quaggaospfdraw']['config'][0][$module . "running"] = base64_encode("!!!!! {$module}.conf DOES NOT EXIST");
+		$config['installedpackages']['quaggaospfdraw']['config'][0][$module . "running"] = base64_encode("!!!!! {$module}.conf does not exist or is empty.");
 	}
 	write_config( $write_config_only = true );
 	conf_mount_ro();
