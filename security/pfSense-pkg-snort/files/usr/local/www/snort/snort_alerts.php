@@ -385,15 +385,13 @@ if ($_POST['download']) {
 			header("Cache-Control: private, must-revalidate");
 		}
 		header("Content-Type: application/octet-stream");
-		header("Content-length: filesize=" . filesize("{$g['tmp_path']}/{$file_name}"));
+		header("Content-length: " . filesize("{$g['tmp_path']}/{$file_name}"));
 		header("Content-disposition: attachment; filename=" . $file_name);
 		ob_end_clean(); //important or other post will fail
 		readfile("{$g['tmp_path']}/{$file_name}");
 
 		// Clean up the temp file
 		unlink_if_exists("{$g['tmp_path']}/{$file_name}");
-		header("Location: /snort/snort_alerts.php?instance={$instanceid}");
-		exit;
 	}
 	else
 		$savemsg = gettext("An error occurred while creating archive");
