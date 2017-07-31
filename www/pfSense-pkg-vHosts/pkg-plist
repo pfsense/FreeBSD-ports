@@ -2,6 +2,7 @@
 pkg/vhosts.xml
 pkg/vhosts.inc
 pkg/shortcuts/vhosts.inc
-www/packages/vhosts.php
-www/packages/vhosts_certs.php
+www/vhosts.php
+www/vhosts_certs.php
 %%DATADIR%%/info.xml
+@dir /etc/inc/priv

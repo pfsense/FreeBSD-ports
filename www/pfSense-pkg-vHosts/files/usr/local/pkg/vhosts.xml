@@ -34,7 +34,7 @@
 	<menu>
 		<name>vHosts</name>
 		<section>Services</section>
-		<url>/packages/vhosts.php</url>
+		<url>/vhosts.php</url>
 	</menu>
 	<service>
 		<name>vhostsd</name>

@@ -30,6 +30,7 @@ $priv_list['page-services-vhosts']['name'] = "WebCfg - Services: vHosts package"
 $priv_list['page-services-vhosts']['descr'] = "Allow access to vHosts package GUI";
 
 $priv_list['page-services-vhosts']['match'] = array();
-$priv_list['page-services-vhosts']['match'][] = "packages/vhosts.php*";
+$priv_list['page-services-vhosts']['match'][] = "vhosts.php*";
+$priv_list['page-services-vhosts']['match'][] = "vhosts_certs.php*";
 
 ?>

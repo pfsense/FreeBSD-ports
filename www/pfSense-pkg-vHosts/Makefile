@@ -30,17 +30,16 @@ do-extract:
 
 do-install:
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
-	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/shortcuts
-	${MKDIR} ${STAGEDIR}${PREFIX}/www/packages
+	${MKDIR} ${STAGEDIR}${PREFIX}/www
 	${MKDIR} ${STAGEDIR}${DATADIR}
-	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/vhosts.inc                ${STAGEDIR}/etc/inc/priv
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/vhosts.xml                ${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/vhosts.inc                ${STAGEDIR}${PREFIX}/pkg
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/shortcuts/vhosts.inc      ${STAGEDIR}${PREFIX}/pkg/shortcuts
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/packages/vhosts.php       ${STAGEDIR}${PREFIX}/www/packages
-	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/packages/vhosts_certs.php ${STAGEDIR}${PREFIX}/www/packages
-	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml                     ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/vhosts.inc           ${STAGEDIR}/etc/inc/priv
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/vhosts.xml           ${STAGEDIR}${PREFIX}/pkg
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/vhosts.inc           ${STAGEDIR}${PREFIX}/pkg
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/shortcuts/vhosts.inc ${STAGEDIR}${PREFIX}/pkg/shortcuts
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/vhosts.php           ${STAGEDIR}${PREFIX}/www
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/vhosts_certs.php     ${STAGEDIR}${PREFIX}/www
+	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml                ${STAGEDIR}${DATADIR}
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" ${STAGEDIR}${DATADIR}/info.xml
 
 .include <bsd.port.mk>
