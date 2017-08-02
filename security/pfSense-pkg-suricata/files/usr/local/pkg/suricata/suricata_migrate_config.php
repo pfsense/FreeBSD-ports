@@ -289,6 +289,10 @@ foreach ($rule as &$r) {
 		$pconfig['eve_log_smtp'] = "on";
 		$updated_cfg = true;
 	}
+	if (!isset($pconfig['eve_log_flow'])) {
+		$pconfig['eve_log_flow'] = "off";
+		$updated_cfg = true;
+	}    
 	if (!isset($pconfig['eve_log_drop'])) {
 		$pconfig['eve_log_drop'] = "on";
 		$updated_cfg = true;
