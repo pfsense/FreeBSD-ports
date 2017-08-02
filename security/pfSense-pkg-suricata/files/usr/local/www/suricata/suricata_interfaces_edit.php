@@ -163,6 +163,8 @@ if (empty($pconfig['eve_log_ssh']))
 	$pconfig['eve_log_ssh'] = "on";
 if (empty($pconfig['eve_log_smtp']))
 	$pconfig['eve_log_smtp'] = "on";
+if (empty($pconfig['eve_log_flow']))
+	$pconfig['eve_log_flow'] = "off";
 if (empty($pconfig['eve_log_drop'])) {
 	$pconfig['eve_log_drop'] = "on";
 }
@@ -330,6 +332,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['eve_log_files'] == "on") { $natent['eve_log_files'] = 'on'; }else{ $natent['eve_log_files'] = 'off'; }
 		if ($_POST['eve_log_ssh'] == "on") { $natent['eve_log_ssh'] = 'on'; }else{ $natent['eve_log_ssh'] = 'off'; }
 		if ($_POST['eve_log_smtp'] == "on") { $natent['eve_log_smtp'] = 'on'; }else{ $natent['eve_log_smtp'] = 'off'; }
+		if ($_POST['eve_log_flow'] == "on") { $natent['eve_log_flow'] = 'on'; }else{ $natent['eve_log_flow'] = 'off'; }
 		if ($_POST['eve_log_drop'] == "on") { $natent['eve_log_drop'] = 'on'; }else{ $natent['eve_log_drop'] = 'off'; }
 		if ($_POST['delayed_detect'] == "on") { $natent['delayed_detect'] = 'on'; }else{ $natent['delayed_detect'] = 'off'; }
 		if ($_POST['intf_promisc_mode'] == "on") { $natent['intf_promisc_mode'] = 'on'; }else{ $natent['intf_promisc_mode'] = 'off'; }
@@ -853,6 +856,14 @@ $group->add(new Form_Checkbox(
 ));
 
 $group->add(new Form_Checkbox(
+	'eve_log_flow',
+	'Flows',
+	'Flows',
+	$pconfig['eve_log_flow'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
 	'eve_log_drop',
 	'Dropped Traffic',
 	'Dropped Traffic',
@@ -1280,6 +1291,7 @@ events.push(function(){
 		disableInput('eve_log_files', disable);
 		disableInput('eve_log_ssh', disable);
 		disableInput('eve_log_smtp', disable);
+		disableInput('eve_log_flow', disable);
 		disableInput('eve_log_drop', disable);
 	}
 
