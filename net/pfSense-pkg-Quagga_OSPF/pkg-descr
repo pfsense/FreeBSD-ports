@@ -1,2 +1,2 @@
-OSPF routing protocol using Quagga.
+OSPF routing protocol using Quagga with manual configuration of BGP and OSPFv6.
 Conflicts with OpenBGPD; both packages cannot be installed at the same time.
