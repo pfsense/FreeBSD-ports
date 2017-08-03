@@ -2,8 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	guacamole-server
-PORTVERSION=	0.9.11
+PORTVERSION=	0.9.12
 DISTVERSIONSUFFIX=	-incubating
+PORTREVISION=	2
 CATEGORIES=	net
 
 MAINTAINER=	ultima1252@gmail.com
@@ -62,7 +63,5 @@ post-patch:
 	@${REINPLACE_CMD} 's|/etc/ssl|${PREFIX}/etc/ssl|g ; \
 			 s|/etc/guacamole|${PREFIX}/etc/guacd|g' \
 			 ${WRKSRC}/src/guacd/man/guacd.conf.5
-	@${REINPLACE_CMD} 's/-Werror//' \
-			  ${WRKSRC}/src/guacenc/Makefile.am
 
 .include <bsd.port.mk>

@@ -4,6 +4,7 @@
     COMMENT = Multimedia software
 
     SUBDIR += 2mandvd
+    SUBDIR += QtAV
     SUBDIR += ab25
     SUBDIR += abby
     SUBDIR += acidrip
@@ -23,7 +24,6 @@
     SUBDIR += avidemux-qt4
     SUBDIR += avinfo
     SUBDIR += baka-mplayer
-    SUBDIR += bangarang
     SUBDIR += banshee
     SUBDIR += bino
     SUBDIR += bitstream
@@ -68,12 +68,10 @@
     SUBDIR += flvtool++
     SUBDIR += fpc-dts
     SUBDIR += fpc-libvlc
-    SUBDIR += freetuxtv
     SUBDIR += freevo
     SUBDIR += fxtv
     SUBDIR += gaupol
     SUBDIR += gavl
-    SUBDIR += gcap
     SUBDIR += gcfilms
     SUBDIR += gdialog
     SUBDIR += gdvrecv
@@ -203,6 +201,7 @@
     SUBDIR += libquvi-scripts
     SUBDIR += libquvi-scripts09
     SUBDIR += libquvi09
+    SUBDIR += librespot
     SUBDIR += librtmp
     SUBDIR += libsmacker
     SUBDIR += libtheora
@@ -210,8 +209,10 @@
     SUBDIR += libv4l
     SUBDIR += libva
     SUBDIR += libva-intel-driver
+    SUBDIR += libva-utils
     SUBDIR += libva-vdpau-driver
     SUBDIR += libvdpau
+    SUBDIR += libvdpau-va-gl
     SUBDIR += libvpx
     SUBDIR += libx264
     SUBDIR += libxine
@@ -277,7 +278,6 @@
     SUBDIR += ogmrip
     SUBDIR += ogmtools
     SUBDIR += omxplayer
-    SUBDIR += opencinematools
     SUBDIR += openh264
     SUBDIR += openquicktime
     SUBDIR += openshot
@@ -319,6 +319,7 @@
     SUBDIR += py-cec
     SUBDIR += py-enzyme
     SUBDIR += py-ffmpeg
+    SUBDIR += py-flvlib
     SUBDIR += py-gstreamer
     SUBDIR += py-gstreamer1
     SUBDIR += py-guessit
@@ -362,9 +363,12 @@
     SUBDIR += replex
     SUBDIR += rox-videothumbnail
     SUBDIR += rtmpdump
+    SUBDIR += rubygem-av
     SUBDIR += rubygem-clutter-gstreamer
     SUBDIR += rubygem-flvtool2
     SUBDIR += rubygem-gstreamer
+    SUBDIR += rubygem-paperclip-av-transcoder
+    SUBDIR += rubygem-paperclip-av-transcoder-rails50
     SUBDIR += sabbu
     SUBDIR += schroedinger
     SUBDIR += shotcut
@@ -434,7 +438,6 @@
     SUBDIR += vid.stab
     SUBDIR += vlc
     SUBDIR += vlc-qt4
-    SUBDIR += vstream-client
     SUBDIR += vtkmpeg2encode
     SUBDIR += w_scan
     SUBDIR += webcamd

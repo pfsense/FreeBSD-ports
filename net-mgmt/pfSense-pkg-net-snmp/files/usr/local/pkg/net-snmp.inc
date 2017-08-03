@@ -304,11 +304,14 @@ function netsnmp_resync() {
 		$nhisettings['row'] = array();
 	}
 	foreach ($nhisettings['row'] as $extend) {
-		$snmpd_config .= "{$extend['ext_type']} " .
-				 "{$extend['ext_miboid']} " .
-				 "{$extend['ext_name']} " .
-				 "{$extend['ext_prog']} " .
-				 "{$extend['ext_args']}\n";
+		$extend_parameters = "{$extend['ext_miboid']} " .
+					"{$extend['ext_name']} " .
+					"{$extend['ext_prog']} " .
+					"{$extend['ext_args']} ";
+		if (!empty(trim($extend_parameters))) {
+			$snmpd_config .= "{$extend['ext_type']} " .
+					"{$extend_parameters}\n";
+		}
 	}
 
 	/* SNMPv3 Users */

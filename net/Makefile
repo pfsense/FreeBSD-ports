@@ -61,6 +61,7 @@
     SUBDIR += bounce
     SUBDIR += bsdec2-image-upload
     SUBDIR += bsdproxy
+    SUBDIR += bsdrcmds
     SUBDIR += bwi-firmware-kmod
     SUBDIR += bwn-firmware-kmod
     SUBDIR += bwping
@@ -72,8 +73,8 @@
     SUBDIR += chrony
     SUBDIR += citrix_ica
     SUBDIR += cjdns
-    SUBDIR += clamz
     SUBDIR += cloud-init
+    SUBDIR += cloud-init-azure
     SUBDIR += clusterit
     SUBDIR += cnd
     SUBDIR += coda6_client
@@ -151,6 +152,7 @@
     SUBDIR += freerdp1
     SUBDIR += freeswitch
     SUBDIR += freevrrpd
+    SUBDIR += frr
     SUBDIR += fspclient
     SUBDIR += fspd
     SUBDIR += fsplib
@@ -194,6 +196,8 @@
     SUBDIR += grdesktop
     SUBDIR += grilo
     SUBDIR += grilo-plugins
+    SUBDIR += grilo-plugins2
+    SUBDIR += grilo2
     SUBDIR += grive
     SUBDIR += grive2
     SUBDIR += grsync
@@ -335,6 +339,7 @@
     SUBDIR += libmaia
     SUBDIR += libmateweather
     SUBDIR += libmaxminddb
+    SUBDIR += libmdf
     SUBDIR += libmediawiki
     SUBDIR += libmms
     SUBDIR += libmxp
@@ -363,7 +368,6 @@
     SUBDIR += libproxy-webkit
     SUBDIR += librdkafka
     SUBDIR += librouteros
-    SUBDIR += librsync
     SUBDIR += librsync2
     SUBDIR += libsocket++
     SUBDIR += libsocketcpp
@@ -398,6 +402,7 @@
     SUBDIR += mDNSResponder
     SUBDIR += macchanger
     SUBDIR += mad_fcl
+    SUBDIR += madonctl
     SUBDIR += malo-firmware-kmod
     SUBDIR += mdns-repeater
     SUBDIR += mediastreamer
@@ -493,10 +498,10 @@
     SUBDIR += onenetd
     SUBDIR += onioncat
     SUBDIR += opal
+    SUBDIR += open-isns
     SUBDIR += openafs
     SUBDIR += openbgpd
     SUBDIR += openbsc
-    SUBDIR += opendpi
     SUBDIR += openggsn
     SUBDIR += openh323
     SUBDIR += openldap24-client
@@ -572,6 +577,7 @@
     SUBDIR += p5-MaxMind-DB-Writer
     SUBDIR += p5-Net
     SUBDIR += p5-Net-AMQP
+    SUBDIR += p5-Net-AMQP-RabbitMQ
     SUBDIR += p5-Net-APNS
     SUBDIR += p5-Net-APNs-Extended
     SUBDIR += p5-Net-ARP
@@ -969,8 +975,9 @@
     SUBDIR += py-avahi
     SUBDIR += py-beanstalkc
     SUBDIR += py-cjdns
-    SUBDIR += py-cloudfiles
+    SUBDIR += py-cloudflare-scrape
     SUBDIR += py-coherence
+    SUBDIR += py-cymruwhois
     SUBDIR += py-dpkt
     SUBDIR += py-dugong
     SUBDIR += py-ec2-cli-tools
@@ -992,7 +999,7 @@
     SUBDIR += py-libdnet
     SUBDIR += py-libnet
     SUBDIR += py-magic-wormhole
-    SUBDIR += py-matrix-synapse
+    SUBDIR += py-matrix-synapse-ldap3
     SUBDIR += py-maxminddb
     SUBDIR += py-miniupnpc
     SUBDIR += py-msrplib
@@ -1012,7 +1019,6 @@
     SUBDIR += py-pcapy
     SUBDIR += py-pcs
     SUBDIR += py-port-for
-    SUBDIR += py-pybeanstalk
     SUBDIR += py-pygeoip
     SUBDIR += py-pyldap
     SUBDIR += py-pynmsg
@@ -1027,6 +1033,7 @@
     SUBDIR += py-python-bitcoinrpc
     SUBDIR += py-python-ceilometerclient
     SUBDIR += py-python-cinderclient
+    SUBDIR += py-python-cloudfiles
     SUBDIR += py-python-designateclient
     SUBDIR += py-python-glanceclient
     SUBDIR += py-python-heatclient
@@ -1035,6 +1042,7 @@
     SUBDIR += py-python-novaclient
     SUBDIR += py-python-ntlm
     SUBDIR += py-python-openstackclient
+    SUBDIR += py-python-twitter
     SUBDIR += py-pyvmomi
     SUBDIR += py-pyzmq
     SUBDIR += py-qt4-network
@@ -1054,13 +1062,13 @@
     SUBDIR += py-socketio-client
     SUBDIR += py-speedtest-cli
     SUBDIR += py-sshuttle
+    SUBDIR += py-stomp.py
     SUBDIR += py-suds
     SUBDIR += py-suds-jurko
     SUBDIR += py-terminado
     SUBDIR += py-tofu
     SUBDIR += py-tweepy
     SUBDIR += py-twistedPair
-    SUBDIR += py-twitter
     SUBDIR += py-twitter-tools
     SUBDIR += py-txamqp
     SUBDIR += py-txrestapi
@@ -1072,6 +1080,8 @@
     SUBDIR += py-zope.proxy
     SUBDIR += py-zsi
     SUBDIR += py3-netifaces
+    SUBDIR += py3-pysocks
+    SUBDIR += py3-urllib3
     SUBDIR += pygopherd
     SUBDIR += pynids
     SUBDIR += pyrad
@@ -1090,6 +1100,7 @@
     SUBDIR += rabbitmq
     SUBDIR += rabbitmq-c
     SUBDIR += rabbitmq-c-devel
+    SUBDIR += radcli
     SUBDIR += raddump
     SUBDIR += radiator
     SUBDIR += radiusclient
@@ -1175,7 +1186,10 @@
     SUBDIR += rubygem-fog-vsphere
     SUBDIR += rubygem-fog-xenserver
     SUBDIR += rubygem-geoip
+    SUBDIR += rubygem-gitaly
     SUBDIR += rubygem-gitlab_omniauth-ldap
+    SUBDIR += rubygem-gitlab_omniauth-ldap1
+    SUBDIR += rubygem-grpc
     SUBDIR += rubygem-http_parser.rb
     SUBDIR += rubygem-httpauth
     SUBDIR += rubygem-ipaddress
@@ -1189,6 +1203,7 @@
     SUBDIR += rubygem-network_interface
     SUBDIR += rubygem-oauth
     SUBDIR += rubygem-oauth2
+    SUBDIR += rubygem-oauth212
     SUBDIR += rubygem-octokit
     SUBDIR += rubygem-octopress-deploy
     SUBDIR += rubygem-omniauth-auth0
@@ -1197,6 +1212,7 @@
     SUBDIR += rubygem-omniauth-facebook
     SUBDIR += rubygem-omniauth-github
     SUBDIR += rubygem-omniauth-github-discourse
+    SUBDIR += rubygem-omniauth-github11
     SUBDIR += rubygem-omniauth-google-oauth2
     SUBDIR += rubygem-omniauth-oauth
     SUBDIR += rubygem-omniauth-oauth2
@@ -1218,6 +1234,7 @@
     SUBDIR += rubygem-ruby-growl
     SUBDIR += rubygem-ruby-openid
     SUBDIR += rubygem-ruby-yadis
+    SUBDIR += rubygem-ruby_smb
     SUBDIR += rubygem-rubyntlm
     SUBDIR += rubygem-rubyntlm05
     SUBDIR += rubygem-rubytter
@@ -1234,9 +1251,9 @@
     SUBDIR += rubygem-u2f0
     SUBDIR += rubygem-uri-redis
     SUBDIR += rubygem-whois
+    SUBDIR += rubygem-xmlrpc
     SUBDIR += rude
-    SUBDIR += samba42
-    SUBDIR += samba43
+    SUBDIR += s3ql
     SUBDIR += samba44
     SUBDIR += samba45
     SUBDIR += samba46
@@ -1267,7 +1284,6 @@
     SUBDIR += sippy_b2bua
     SUBDIR += siproxd
     SUBDIR += sipsak
-    SUBDIR += sixxs-aiccu
     SUBDIR += skstream
     SUBDIR += sl2tps
     SUBDIR += slurm
@@ -1285,7 +1301,6 @@
     SUBDIR += socketpipe
     SUBDIR += socketw
     SUBDIR += sofia-sip
-    SUBDIR += softethervpn
     SUBDIR += spideroak
     SUBDIR += splatd
     SUBDIR += spoofer

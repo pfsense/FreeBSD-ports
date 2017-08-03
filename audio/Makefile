@@ -47,6 +47,7 @@
     SUBDIR += autocd
     SUBDIR += autotalent
     SUBDIR += autozen
+    SUBDIR += aylet
     SUBDIR += baresip
     SUBDIR += baudline
     SUBDIR += bcg729
@@ -214,8 +215,6 @@
     SUBDIR += gmtp
     SUBDIR += gmusicbrowser
     SUBDIR += gnaural
-    SUBDIR += gnome-audio
-    SUBDIR += gnome-media
     SUBDIR += gnome-music
     SUBDIR += gnomoradio
     SUBDIR += gnormalize
@@ -223,6 +222,7 @@
     SUBDIR += gnupod
     SUBDIR += gnuspeechsa
     SUBDIR += gnustep-cdplayer
+    SUBDIR += goattracker
     SUBDIR += gogglesmm
     SUBDIR += goobox
     SUBDIR += gqmpeg
@@ -259,6 +259,7 @@
     SUBDIR += gstreamer-plugins-shout2
     SUBDIR += gstreamer-plugins-sidplay
     SUBDIR += gstreamer-plugins-sndfile
+    SUBDIR += gstreamer-plugins-sndio
     SUBDIR += gstreamer-plugins-soundtouch
     SUBDIR += gstreamer-plugins-spc
     SUBDIR += gstreamer-plugins-speex
@@ -351,7 +352,6 @@
     SUBDIR += ladspa
     SUBDIR += lame
     SUBDIR += lash
-    SUBDIR += last-cmus
     SUBDIR += last.fm
     SUBDIR += lastfm-desktop
     SUBDIR += liba52
@@ -460,7 +460,6 @@
     SUBDIR += logitechmediaserver-dynamicplaylist
     SUBDIR += logitechmediaserver-lazysearch
     SUBDIR += logitechmediaserver-sqlplaylist
-    SUBDIR += logitechmediaserver-superdatetime
     SUBDIR += logitechmediaserver-trackstat
     SUBDIR += lollypop
     SUBDIR += lpac
@@ -478,7 +477,6 @@
     SUBDIR += mcplay
     SUBDIR += mctoolame-decoder
     SUBDIR += mctoolame-encoder
-    SUBDIR += mehdiaplayer
     SUBDIR += mhwaveedit
     SUBDIR += midipp
     SUBDIR += mikmod
@@ -518,6 +516,7 @@
     SUBDIR += mpdas
     SUBDIR += mpdbrowser
     SUBDIR += mpdcon
+    SUBDIR += mpdscribble
     SUBDIR += mpg123
     SUBDIR += mpg123.el
     SUBDIR += mpg321
@@ -608,7 +607,6 @@
     SUBDIR += penguinsap
     SUBDIR += pianobar
     SUBDIR += picard
-    SUBDIR += pidgin-musictracker
     SUBDIR += pithos
     SUBDIR += play
     SUBDIR += playgsf
@@ -619,6 +617,7 @@
     SUBDIR += portaudio
     SUBDIR += praat
     SUBDIR += pragha
+    SUBDIR += protracker
     SUBDIR += puddletag
     SUBDIR += pulseaudio
     SUBDIR += pulseaudio-module-sndio
@@ -631,6 +630,7 @@
     SUBDIR += py-eyed3
     SUBDIR += py-fmoo-audiotools
     SUBDIR += py-gmusicapi
+    SUBDIR += py-hsaudiotag
     SUBDIR += py-id3
     SUBDIR += py-karaoke
     SUBDIR += py-mad
@@ -647,6 +647,7 @@
     SUBDIR += py-pyliblo
     SUBDIR += py-shout
     SUBDIR += py-soundcloud
+    SUBDIR += py-soundscrape
     SUBDIR += py-speechrecognition
     SUBDIR += py-speex
     SUBDIR += py-tagpy
@@ -688,7 +689,7 @@
     SUBDIR += s3mod
     SUBDIR += sayonara
     SUBDIR += sbagen
-    SUBDIR += schism
+    SUBDIR += schismtracker
     SUBDIR += scrobbler
     SUBDIR += sdl2_mixer
     SUBDIR += sdl_mixer
@@ -781,7 +782,6 @@
     SUBDIR += tuxguitar
     SUBDIR += twolame
     SUBDIR += uade
-    SUBDIR += ufmcontrol-i18n
     SUBDIR += umix
     SUBDIR += umodplayer
     SUBDIR += umurmur
@@ -851,7 +851,6 @@
     SUBDIR += xmp
     SUBDIR += xmradio
     SUBDIR += xoscope
-    SUBDIR += xpi-musicpm
     SUBDIR += xsynth-dssi
     SUBDIR += xvmixer
     SUBDIR += xwave

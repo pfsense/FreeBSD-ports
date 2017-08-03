@@ -15,6 +15,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcurl.so:ftp/curl
 
+BROKEN=		fails to compile: ustring.h: expected ';' at end of declaration list
+
 USES=		desktop-file-utils gettext pkgconfig
 USE_GNOME=	gtkmm24
 GNU_CONFIGURE=	yes

@@ -2,11 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	duplicity
-PORTVERSION=	0.7.11
+PORTVERSION=	0.7.12
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://launchpad.net/duplicity/0.7-series/${PORTVERSION}/+download/
 
-MAINTAINER=	dbaio@bsd.com.br
+MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Backup tool that uses librsync and GnuPG
 
 LICENSE=	GPLv2+
@@ -40,7 +41,7 @@ SSH_DESC=		SSH/SCP/SFTP backend
 PARAMIKO_DESC=		python ssh implementation
 PEXPECT_DESC=		pexpect and use ssh binaries
 
-CLOUDFILES_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cloudfiles>0:net/py-cloudfiles
+CLOUDFILES_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}python-cloudfiles>0:net/py-python-cloudfiles
 FTP_RUN_DEPENDS=	ncftp>=3.2.2:ftp/ncftp3
 FTPS_RUN_DEPENDS=	lftp>=3.7.15:ftp/lftp
 GDOCS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gdata>0:devel/py-gdata

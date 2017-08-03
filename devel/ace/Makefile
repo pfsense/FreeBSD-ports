@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	ace
-PORTVERSION=	6.3.4
+PORTVERSION=	6.4.3
 CATEGORIES=	devel
 MASTER_SITES=	ftp://download.dre.vanderbilt.edu/previous_versions/ \
 		http://download.dre.vanderbilt.edu/previous_versions/
 DISTNAME=	${PORTNAME:tu}-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	amutu@amutu.com
 COMMENT=	Adaptive Communication Environment for C++
 
 LICENSE=	ACE
@@ -35,7 +35,7 @@ CONFLICTS=	ace+tao-5*
 
 BROKEN_aarch64=		Fails to link: missing sbrk
 BROKEN_powerpc=		Does not compile on ${ARCH}
-BROKEN_powerpc64=	Does not build on ${ARCH}
+BROKEN_powerpc64=	Does not build on ${ARCH}: undefined reference to fmodl
 BROKEN_sparc64=		Does not compile on ${ARCH}
 
 OPTIONS_DEFINE=		FLTK QT4 SSL TK TRIO X11
@@ -63,10 +63,6 @@ post-patch:
 	@${REINPLACE_CMD} -e \
 		's|/$$libdir/pkgconfig|/libdata/pkgconfig|g' \
 		${WRKSRC}/bin/ace_install_pkgconfig.pl
-	@${REINPLACE_CMD} -e \
-		's|bin/moc)|bin/moc-qt4)|g ; \
-		 s|bin/moc,|bin/moc-qt4,|g' \
-		${WRKSRC}/ace/QtReactor/GNUmakefile.ACE_Qt4Reactor_moc
 	@${REINPLACE_CMD} -i "" -e \
 		'/^C[CX]/s|\([[:space:]]\)=|\1?=| ; \
 		 s|/usr/local|${LOCALBASE}| ; \

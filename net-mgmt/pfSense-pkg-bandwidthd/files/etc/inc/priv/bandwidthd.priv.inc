@@ -28,4 +28,10 @@ $priv_list['page-diagnostics-bandwidthd-settings']['match'] = array();
 $priv_list['page-diagnostics-bandwidthd-settings']['match'][] = "pkg.php?xml=bandwidthd.xml*";
 $priv_list['page-diagnostics-bandwidthd-settings']['match'][] = "pkg_edit.php?xml=bandwidthd.xml*";
 
+$priv_list['page-diagnostics-bandwidthd-access'] = array();
+$priv_list['page-diagnostics-bandwidthd-access']['name'] = "WebCfg - Diagnostics: Access BandwidthD";
+$priv_list['page-diagnostics-bandwidthd-access']['descr'] = "Allow access to BandwidthD statistics";
+$priv_list['page-diagnostics-bandwidthd-access']['match'] = array();
+$priv_list['page-diagnostics-bandwidthd-access']['match'][] = "diag_bandwidthd.php*";
+
 ?>

@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-net-snmp
-PORTVERSION=	0.1.2
-PORTREVISION=	5
+PORTVERSION=	0.1.3
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gollum-lib
-PORTVERSION=	4.2.2
-PORTREVISION=	3
+PORTVERSION=	4.2.5
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -13,7 +12,7 @@ COMMENT=	Simple, Git-powered wiki with a sweet API and local frontend
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-gemojione>=2.2:graphics/rubygem-gemojione \
+RUN_DEPENDS=	rubygem-gemojione>=3.2:graphics/rubygem-gemojione \
 		rubygem-gollum-grit_adapter>=1.0:www/rubygem-gollum-grit_adapter \
 		rubygem-nokogiri>=1.6.4:textproc/rubygem-nokogiri \
 		rubygem-rouge>=2.0:textproc/rubygem-rouge \
@@ -28,14 +27,15 @@ MARKUP_DESC=	Markup Selection
 GITHUB_DESC=	Use rubygem-github-markup (default)
 GITLAB_DESC=	Use rubygem-gitlab-markup instead
 
-GITHUB_RUN_DEPENDS=	rubygem-github-markup>=1.4:textproc/rubygem-github-markup
+GITHUB_RUN_DEPENDS=	rubygem-github-markup>=1.6:textproc/rubygem-github-markup
 GITLAB_RUN_DEPENDS=	rubygem-gitlab-markup>=1.5:textproc/rubygem-gitlab-markup
-
-GITHUB_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-github-gemspec
-GITLAB_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-gitlab-gemspec
 
 NO_ARCH=	yes
 USE_RUBY=	yes
 USES=		gem
+
+post-patch-GITLAB-on:
+# change runtime dependency from "github-markup ~> 1.6" to "gitlab-markup ~> 1.5"
+	@${REINPLACE_CMD} -e '/s.add_runtime_dependency/ s|github-markup\(.*\)1.6|gitlab-markup\11.5|' ${WRKSRC}/${GEMSPEC}
 
 .include <bsd.port.mk>

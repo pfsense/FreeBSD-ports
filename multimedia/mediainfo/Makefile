@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mediainfo
-PORTVERSION=	0.7.94
+PORTVERSION=	0.7.96
 CATEGORIES=	multimedia
 MASTER_SITES=	http://mediaarea.net/download/binary/${PORTNAME}/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -17,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/../../../License.html
 LIB_DEPENDS=	libmediainfo.so:multimedia/libmediainfo \
 		libzen.so:multimedia/libzen
 
-BROKEN_powerpc64=	does not build
+BROKEN_powerpc64=	does not build: undefined reference to fmodl
 
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

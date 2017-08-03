@@ -3,6 +3,7 @@
 
 PORTNAME=	trigger-rally
 PORTVERSION=	0.6.5
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/trigger-rally/trigger-${PORTVERSION}
 
@@ -13,6 +14,10 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libphysfs.so:devel/physfs
 LIB_DEPENDS+=	libalut.so:audio/freealut
+
+BROKEN_aarch64=		fails to compile: error: the clang compiler does not support -march=native
+BROKEN_armv6=		fails to compile: error: the clang compiler does not support -march=native
+BROKEN_powerpc64=	fails to compile: error: the clang compiler does not support -march=native
 
 WRKSRC_SUBDIR=	src
 USES=		gmake openal:al,alut

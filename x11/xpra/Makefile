@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xpra
-PORTVERSION=	2.0
+PORTVERSION=	2.0.2
 PORTREVISION=	1
 CATEGORIES=	x11
 MASTER_SITES=	http://xpra.org/src/
@@ -38,11 +38,12 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lz4>=0.7.0_1:archivers/py-lz4 \
 		${PYTHON_PKGNAMEPREFIX}gtkglext>1:x11-toolkits/py-gtkglext \
 		${PYNUMPY}
 
-USES=		desktop-file-utils fortran gettext-runtime pkgconfig python:2 shared-mime-info tar:xz
+USES=		desktop-file-utils fortran gettext-runtime pkgconfig python:2 shared-mime-info shebangfix tar:xz
 USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk20 pango
 USE_PYTHON=	distutils
 USE_XORG=	x11 xcomposite xdamage xext xfixes xkbfile xrandr xtst
 PLIST_SUB+=	PORTVERSION=${PORTVERSION} PYTHON_VER=${PYTHON_VER}
+SHEBANG_FILES=	cups/xpraforwarder
 
 OPTIONS_DEFINE=		AVAHI AVCODEC CUPS FFMPEG GSTREAMER HTML5 LIBYUV SWSCALE VPX WEBCAM X264 X265
 OPTIONS_DEFAULT=	AVAHI AVCODEC CUPS FFMPEG GSTREAMER HTML5 LIBYUV SWSCALE VPX X264
@@ -77,7 +78,7 @@ SWSCALE_LIB_DEPENDS=	libswscale.so:multimedia/ffmpeg
 SWSCALE_VARS=		XPRA_OPTIONS+=csc_swscale
 VPX_LIB_DEPENDS=	libvpx.so:multimedia/libvpx
 VPX_VARS=		XPRA_OPTIONS+=vpx
-WEBCAM_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}opencv2>2:graphics/py-opencv2
+WEBCAM_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}opencv>2:graphics/py-opencv
 WEBCAM_VARS=		XPRA_OPTIONS+=webcam
 X264_LIB_DEPENDS=	libx264.so:multimedia/libx264
 X264_VARS=		XPRA_OPTIONS+=enc_x264

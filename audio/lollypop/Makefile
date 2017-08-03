@@ -3,6 +3,7 @@
 
 PORTNAME=	lollypop
 PORTVERSION=	0.9.15
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/gnumdk/${PORTNAME}/releases/download/${PORTVERSION}/
 
@@ -36,7 +37,8 @@ SUB_FILES=	pkg-message
 
 .include <bsd.port.pre.mk>
 
-.if defined(PACKAGE_BUILDING) && ${PYTHON_VER} != ${PYTHON_DEFAULT}
+.if defined(PACKAGE_BUILDING) && !defined(PACKAGE_BUILDING_FLAVORS) && \
+    ${PYTHON_VER} != ${PYTHON_DEFAULT}
 IGNORE=	you have python ${PYTHON_DEFAULT} set as the default, and this needs ${PYTHON_VER}
 .endif
 

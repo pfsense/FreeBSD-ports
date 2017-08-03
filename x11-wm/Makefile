@@ -11,11 +11,13 @@
     SUBDIR += awesome
     SUBDIR += awesome-vicious
     SUBDIR += awesome2
+    SUBDIR += awesome3
     SUBDIR += bbkeys
     SUBDIR += bbpager
     SUBDIR += blackbox
     SUBDIR += bspwm
     SUBDIR += ccsm
+    SUBDIR += cde
     SUBDIR += clementine-wm
     SUBDIR += compiz
     SUBDIR += compiz-fusion

@@ -121,6 +121,17 @@ function ntopng_sync_package() {
 				$local_networks = "--local-networks " . escapeshellarg(gen_subnet(get_interface_ip('lan'), get_interface_subnet('lan')) . '/' . get_interface_subnet('lan'));
 			}
 			break;
+		case "custom":
+			$nets = array();
+			foreach ($ntopng_config['row'] as $net) {
+				if (is_subnet($net['cidr'])) {
+					$nets[] = trim($net['cidr']);
+				}
+			}
+			if (!empty($nets)) {
+				$local_networks = "--local-networks " . escapeshellarg(implode(",", $nets));
+			}
+			break;
 		case "rfc1918":
 		default:
 			$local_networks = "--local-networks '192.168.0.0/16,172.16.0.0/12,10.0.0.0/8'";
@@ -149,15 +160,21 @@ function ntopng_sync_package() {
 	}
 
 	/* Create rc script */
-	$start = "";
-	$stop = "";
-	$start .= "\t{$redis_path}/redis-server --bind 127.0.0.1 ::1 --dir /var/db/ntopng/ --dbfilename ntopng.rdb &\n";
+	$stop = <<<EOD
+# Kill ntopng and redis
+	/usr/bin/killall ntopng redis-cli redis-server
+EOD;
+
+	$start = <<<EOD
+# Create DB dir before starting, in case it was removed. Otherwise redis will fail.
+	/bin/mkdir -p /var/db/ntopng
+	{$redis_path}/redis-server --bind 127.0.0.1 ::1 --dir /var/db/ntopng/ --dbfilename ntopng.rdb &
+	/usr/local/bin/ntopng -d /var/db/ntopng -G /var/run/ntopng.pid -s -e {$http_args} {$disable_alerts} {$dump_flows} {$ifaces} {$dns_mode} {$aggregations} {$local_networks} &
+EOD;
 	// TODO:
 	// Add support for --data-dir /somewhere, --httpdocs-dir /somewhereelse,
 	// --dump-timeline (on/off) --http-port, --https-port
 
-	$start .= "\t/usr/local/bin/ntopng -d /var/db/ntopng -G /var/run/ntopng.pid -s -e {$http_args} {$disable_alerts} {$dump_flows} {$ifaces} {$dns_mode} {$aggregations} {$local_networks} &\n";
-	$stop .= "/usr/bin/killall ntopng redis-cli redis-server\n";
 	write_rcfile(array("file" => "ntopng.sh", "start" => $start, "stop" => $stop));
 
 	/* Set up admin password */
@@ -316,6 +333,15 @@ function ntopng_validate_input($post, &$input_errors) {
 	}
 	if ($post['redis_password'] != $post['redis_passwordagain']) {
 		$input_errors[] = "The provided passwords did not match.";
+	}
+	if($_POST["local_networks"] == "custom") {
+		$idx = 0;
+		while (isset($_POST["cidr{$idx}"])) {
+			$cidr = $_POST["cidr" . $idx++];
+			if (!is_subnet($cidr)) {
+				$input_errors[] = "Invalid CIDR in custom local networks list at position {$idx}.";
+			}
+		}
 	}
 	if ($post['Submit'] == "Update GeoIP Data") {
 		ntopng_update_geoip();

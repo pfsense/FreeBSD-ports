@@ -386,7 +386,7 @@ if ($_POST['download']) {
 		}
 		header("Content-Type: application/octet-stream");
 		header("Content-length: " . filesize("{$g['tmp_path']}/{$file_name}"));
-		header("Content-disposition: attachment; filename = {$file_name}");
+		header("Content-disposition: attachment; filename=" . $file_name);
 		ob_end_clean(); //important or other post will fail
 		readfile("{$g['tmp_path']}/{$file_name}");
 

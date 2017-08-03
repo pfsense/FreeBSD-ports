@@ -35,7 +35,7 @@
 	<menu>
 		<name>BandwidthD</name>
 		<section>Diagnostics</section>
-		<url>/bandwidthd/index.html</url>
+		<url>/diag_bandwidthd.php</url>
 	</menu>
 	<menu>
 		<name>BandwidthD Settings</name>
@@ -50,13 +50,13 @@
 	</service>
 	<tabs>
 		<tab>
+			<text>Access BandwidthD</text>
+			<url>/diag_bandwidthd.php</url>
+		</tab>
+		<tab>
 			<text>Settings</text>
 			<url>/pkg_edit.php?xml=bandwidthd.xml</url>
 			<active/>
-		</tab>
-		<tab>
-			<text>Access BandwidthD</text>
-			<url>/bandwidthd/index.html</url>
 		</tab>
 	</tabs>
 	<advanced_options>enabled</advanced_options>

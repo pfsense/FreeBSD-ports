@@ -2,14 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	node
-PORTVERSION=	4.8.1
-PORTREVISION=	1
+PORTVERSION=	4.8.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES=	http://nodejs.org/dist/v${PORTVERSION}/
 PKGNAMESUFFIX=	4
 
-MAINTAINER=	bradleythughes@fastmail.fm
+MAINTAINER=	bhughes@FreeBSD.org
 COMMENT=	V8 JavaScript for client and server (4.x LTS)
 
 LICENSE=	MIT
@@ -35,7 +34,7 @@ USE_LDCONFIG=	yes
 
 CONFLICTS_INSTALL=	node[56]-[0-9]* node01[02]-[0-9]* node-[0-9]* node-devel-[0-9]* iojs-[0-9]*
 
-ONLY_FOR_ARCHS=	i386 amd64
+ONLY_FOR_ARCHS=	amd64 i386
 CONFIGURE_ARGS=	--prefix=${PREFIX_RELDEST} \
 	 	--without-npm \
 		--shared-libuv \

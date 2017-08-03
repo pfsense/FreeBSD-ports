@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	hamlit
-PORTVERSION=	2.8.0
+PORTVERSION=	2.8.4
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -16,9 +16,9 @@ RUN_DEPENDS=	rubygem-temple>=0.8.0:devel/rubygem-temple \
 		rubygem-thor>=0:devel/rubygem-thor \
 		rubygem-tilt>=0:devel/rubygem-tilt
 
-NO_ARCH=	yes
 USE_RUBY=	yes
-USES=		gem
+USES=		gem shebangfix
+SHEBANG_FILES=	bin/setup bin/test bin/ruby
 
 PLIST_FILES=	bin/hamlit
 

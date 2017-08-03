@@ -467,6 +467,9 @@ function snort_get_config_lists($lists) {
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($a_rule[$id]['interface']);
+if (empty($if_friendly)) {
+	$if_friendly = "None";
+}
 $pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Edit Interface"), gettext("{$if_friendly}"));
 include("head.inc");
 

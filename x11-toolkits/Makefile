@@ -22,8 +22,6 @@
     SUBDIR += fpc-xforms
     SUBDIR += fxscintilla
     SUBDIR += gai
-    SUBDIR += gal2
-    SUBDIR += gal2-reference
     SUBDIR += gdl
     SUBDIR += girara
     SUBDIR += gnocl
@@ -95,6 +93,7 @@
     SUBDIR += kf5-kxmlgui
     SUBDIR += kirigami
     SUBDIR += kirigami2
+    SUBDIR += kproperty
     SUBDIR += lesstif
     SUBDIR += libXaw
     SUBDIR += libXmu
@@ -107,7 +106,6 @@
     SUBDIR += libgnomeui
     SUBDIR += libgnomeui-reference
     SUBDIR += libgnomeuimm26
-    SUBDIR += libgtksourceviewmm
     SUBDIR += libsexy
     SUBDIR += libsexymm
     SUBDIR += libunique3
@@ -284,7 +282,6 @@
     SUBDIR += viewklass
     SUBDIR += vte
     SUBDIR += vte-reference
-    SUBDIR += vte290
     SUBDIR += vte3
     SUBDIR += vtkfox
     SUBDIR += wlc

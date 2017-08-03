@@ -27,7 +27,7 @@ require_once("pfsense-utils.inc");
 require_once("pkg-utils.inc");
 require_once("classes/Form.class.php");
 
-global $current_openvpn_version, $current_openvpn_version_rev;
+global $current_openvpn_version, $current_openvpn_version_rev, $legacy_openvpn_version, $legacy_openvpn_version_rev;
 
 $pgtitle = array("OpenVPN", "Client Export Utility");
 
@@ -325,7 +325,27 @@ if (!empty($act)) {
 	}
 
 	if (substr($act, 0, 4) == "inst") {
-		$exp_name = urlencode($exp_name."-install.exe");
+		$openvpn_version = substr($act, 5);
+		$exp_name = "openvpn-{$exp_name}-install-";
+		switch ($openvpn_version) {
+			case "x86-xp":
+				$exp_name .= "{$legacy_openvpn_version}-I0{$legacy_openvpn_version_rev}-i686.exe";
+				break;
+			case "x64-xp":
+				$exp_name .= "{$legacy_openvpn_version}-I0{$legacy_openvpn_version_rev}-x86_64.exe";
+				break;
+			case "x86-win6":
+				$exp_name .= "{$legacy_openvpn_version}-I6{$legacy_openvpn_version_rev}-i686.exe";
+				break;
+			case "x64-win6":
+				$exp_name .= "{$legacy_openvpn_version}-I6{$legacy_openvpn_version_rev}-x86_64.exe";
+				break;
+			case "24":
+			default:
+				$exp_name .= "{$current_openvpn_version}-I6{$current_openvpn_version_rev}.exe";
+		}
+
+		$exp_name = urlencode($exp_name);
 		$exp_path = openvpn_client_export_installer($srvid, $usrid, $crtid, $useaddr, $verifyservercn, $blockoutsidedns, $legacy, $randomlocalport, $usetoken, $password, $proxy, $advancedoptions, substr($act, 5), $usepkcs11, $pkcs11providers, $pkcs11id);
 	}
 

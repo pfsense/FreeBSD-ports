@@ -7,7 +7,7 @@
  * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2014-2016 Bill Meeks
+ * Copyright (c) 2014-2017 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -76,7 +76,9 @@ if ($_POST['action'] == 'load') {
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($a_instance[$id]['interface']);
-$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Interface Logs"), gettext("{$if_friendly}"));
+if (empty($if_friendly)) {
+	$if_friendly = "None";
+}$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Interface Logs"), gettext("{$if_friendly}"));
 include("head.inc");
 
 if ($input_errors) {

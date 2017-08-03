@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-openvpn-client-export
-PORTVERSION=	1.4.6
+PORTVERSION=	1.4.12
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -12,9 +12,10 @@ COMMENT=	pfSense package openvpn-client-export
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/share/openvpn/client-export/template/config-import:security/openvpn-client-export \
-		${LOCALBASE}/bin/zip:archivers/zip \
-		${LOCALBASE}/bin/7z:archivers/p7zip
+RUN_DEPENDS=	openvpn>=2.4.3:security/openvpn \
+		openvpn-client-export>2.4.3_2:security/openvpn-client-export \
+		zip>0:archivers/zip \
+		p7zip>0:archivers/p7zip
 
 NO_BUILD=	yes
 NO_MTREE=	yes

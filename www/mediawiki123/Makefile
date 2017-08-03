@@ -14,9 +14,10 @@ LICENSE=	GPLv2
 
 CONFLICTS=	mediawiki12[678]-[0-9]*
 
-USES=		shebangfix
+USES=		python:run shebangfix
 SHEBANG_FILES=	maintenance/dev/*.sh \
-		maintenance/hiphop/run-server
+		maintenance/hiphop/run-server \
+		maintenance/language/zhtable/Makefile.py
 SHEBANG_LANG=	hhvm
 hhvm_OLD_CMD=	/usr/bin/hhvm
 hhvm_CMD=	${LOCALBASE}/bin/hhvm # not installed by anything yet

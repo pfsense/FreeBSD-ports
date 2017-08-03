@@ -5,9 +5,9 @@ PORTNAME=	VersionControl_Git
 PORTVERSION=	0.4.4
 CATEGORIES=	devel pear
 
-MAINTAINER=	joneum@bsdproject.de
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	OO interface to handle Git repository
 
-USES=	pear
+USES=		pear
 
 .include <bsd.port.mk>

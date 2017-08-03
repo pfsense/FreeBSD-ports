@@ -638,7 +638,6 @@ share/icons/oxygen/base/128x128/mimetypes/text-x-csharp.png
 share/icons/oxygen/base/128x128/mimetypes/text-x-csrc.png
 share/icons/oxygen/base/128x128/mimetypes/text-x-dtd.png
 share/icons/oxygen/base/128x128/mimetypes/text-x-generic.png
-share/icons/oxygen/base/128x128/mimetypes/text-x-generic.svapplicatiopn-x-awk.png
 share/icons/oxygen/base/128x128/mimetypes/text-x-haskell.png
 share/icons/oxygen/base/128x128/mimetypes/text-x-hex.png
 share/icons/oxygen/base/128x128/mimetypes/text-x-install.png
@@ -1996,6 +1995,11 @@ share/icons/oxygen/base/16x16/emblems/emblem-remove.png
 share/icons/oxygen/base/16x16/emblems/emblem-symbolic-link.png
 share/icons/oxygen/base/16x16/emblems/emblem-unlocked.png
 share/icons/oxygen/base/16x16/emblems/emblem-unmounted.png
+share/icons/oxygen/base/16x16/emblems/gpg-key-trust-level-0.png
+share/icons/oxygen/base/16x16/emblems/gpg-key-trust-level-1.png
+share/icons/oxygen/base/16x16/emblems/gpg-key-trust-level-2.png
+share/icons/oxygen/base/16x16/emblems/gpg-key-trust-level-3.png
+share/icons/oxygen/base/16x16/emblems/gpg-key-trust-level-4.png
 share/icons/oxygen/base/16x16/emblems/image-has-versions-open.png
 share/icons/oxygen/base/16x16/emblems/image-has-versions.png
 share/icons/oxygen/base/16x16/emblems/image-stack-open.png
@@ -2308,8 +2312,6 @@ share/icons/oxygen/base/16x16/mimetypes/text-x-csharp.png
 share/icons/oxygen/base/16x16/mimetypes/text-x-csrc.png
 share/icons/oxygen/base/16x16/mimetypes/text-x-dtd.png
 share/icons/oxygen/base/16x16/mimetypes/text-x-generic.png
-share/icons/oxygen/base/16x16/mimetypes/text-x-generic.svapplication-x-awk.png
-share/icons/oxygen/base/16x16/mimetypes/text-x-generic.svapplicatiopn-x-awk.png
 share/icons/oxygen/base/16x16/mimetypes/text-x-haskell.png
 share/icons/oxygen/base/16x16/mimetypes/text-x-hex.png
 share/icons/oxygen/base/16x16/mimetypes/text-x-install.png
@@ -4095,8 +4097,6 @@ share/icons/oxygen/base/22x22/mimetypes/text-x-csharp.png
 share/icons/oxygen/base/22x22/mimetypes/text-x-csrc.png
 share/icons/oxygen/base/22x22/mimetypes/text-x-dtd.png
 share/icons/oxygen/base/22x22/mimetypes/text-x-generic.png
-share/icons/oxygen/base/22x22/mimetypes/text-x-generic.svapplication-x-awk.png
-share/icons/oxygen/base/22x22/mimetypes/text-x-generic.svapplicatiopn-x-awk.png
 share/icons/oxygen/base/22x22/mimetypes/text-x-haskell.png
 share/icons/oxygen/base/22x22/mimetypes/text-x-hex.png
 share/icons/oxygen/base/22x22/mimetypes/text-x-install.png
@@ -4398,6 +4398,7 @@ share/icons/oxygen/base/256x256/apps/akonadi.png
 share/icons/oxygen/base/256x256/apps/akregator.png
 share/icons/oxygen/base/256x256/apps/clock.png
 share/icons/oxygen/base/256x256/apps/digikam.png
+share/icons/oxygen/base/256x256/apps/hotspot.png
 share/icons/oxygen/base/256x256/apps/internet-web-browser.png
 share/icons/oxygen/base/256x256/apps/k3b.png
 share/icons/oxygen/base/256x256/apps/kbruch.png
@@ -4768,7 +4769,6 @@ share/icons/oxygen/base/256x256/mimetypes/text-x-csharp.png
 share/icons/oxygen/base/256x256/mimetypes/text-x-csrc.png
 share/icons/oxygen/base/256x256/mimetypes/text-x-dtd.png
 share/icons/oxygen/base/256x256/mimetypes/text-x-generic.png
-share/icons/oxygen/base/256x256/mimetypes/text-x-generic.svapplicatiopn-x-awk.png
 share/icons/oxygen/base/256x256/mimetypes/text-x-haskell.png
 share/icons/oxygen/base/256x256/mimetypes/text-x-hex.png
 share/icons/oxygen/base/256x256/mimetypes/text-x-install.png
@@ -6147,8 +6147,6 @@ share/icons/oxygen/base/32x32/mimetypes/text-x-csharp.png
 share/icons/oxygen/base/32x32/mimetypes/text-x-csrc.png
 share/icons/oxygen/base/32x32/mimetypes/text-x-dtd.png
 share/icons/oxygen/base/32x32/mimetypes/text-x-generic.png
-share/icons/oxygen/base/32x32/mimetypes/text-x-generic.svapplication-x-awk.png
-share/icons/oxygen/base/32x32/mimetypes/text-x-generic.svapplicatiopn-x-awk.png
 share/icons/oxygen/base/32x32/mimetypes/text-x-haskell.png
 share/icons/oxygen/base/32x32/mimetypes/text-x-hex.png
 share/icons/oxygen/base/32x32/mimetypes/text-x-install.png
@@ -7557,7 +7555,6 @@ share/icons/oxygen/base/48x48/mimetypes/text-x-csharp.png
 share/icons/oxygen/base/48x48/mimetypes/text-x-csrc.png
 share/icons/oxygen/base/48x48/mimetypes/text-x-dtd.png
 share/icons/oxygen/base/48x48/mimetypes/text-x-generic.png
-share/icons/oxygen/base/48x48/mimetypes/text-x-generic.svapplicatiopn-x-awk.png
 share/icons/oxygen/base/48x48/mimetypes/text-x-haskell.png
 share/icons/oxygen/base/48x48/mimetypes/text-x-hex.png
 share/icons/oxygen/base/48x48/mimetypes/text-x-install.png
@@ -8411,8 +8408,6 @@ share/icons/oxygen/base/64x64/mimetypes/text-x-csharp.png
 share/icons/oxygen/base/64x64/mimetypes/text-x-csrc.png
 share/icons/oxygen/base/64x64/mimetypes/text-x-dtd.png
 share/icons/oxygen/base/64x64/mimetypes/text-x-generic.png
-share/icons/oxygen/base/64x64/mimetypes/text-x-generic.svapplication-x-awk.png
-share/icons/oxygen/base/64x64/mimetypes/text-x-generic.svapplicatiopn-x-awk.png
 share/icons/oxygen/base/64x64/mimetypes/text-x-haskell.png
 share/icons/oxygen/base/64x64/mimetypes/text-x-hex.png
 share/icons/oxygen/base/64x64/mimetypes/text-x-install.png

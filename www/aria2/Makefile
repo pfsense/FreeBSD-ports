@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	aria2
-PORTVERSION=	1.31.0
-PORTREVISION=	2
+PORTVERSION=	1.32.0
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/release-${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -37,7 +36,7 @@ USE_CXXSTD=	c++11
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	${PORTNAME}
-USES=		compiler:c++11-lib libtool pathfix pkgconfig ssl tar:xz
+USES=		compiler:c++11-lib gnome libtool pathfix pkgconfig ssl tar:xz
 
 PORTDOCS=	*
 

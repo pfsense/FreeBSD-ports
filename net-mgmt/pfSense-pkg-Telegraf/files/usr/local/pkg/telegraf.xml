@@ -45,23 +45,23 @@
             <fielddescr>Enable</fielddescr>
             <fieldname>enable</fieldname>
             <type>checkbox</type>
-            <description>Check to enable Telegraf.</description>
+            <description>Enable Telegraf.</description>
             <enablefields>interval,influx_server,influx_db,influx_user,influx_pass</enablefields>
         </field>
         <field>
             <fielddescr>Update Interval</fielddescr>
             <fieldname>interval</fieldname>
             <type>input</type>
-            <description>Update interval (seconds) (default: 10).</description>
+            <description>Seconds. Default: 10 if not specified</description>
         </field>
         <field>
-            <fielddescr>InfluxDB Server</fielddescr>
+            <fielddescr>*InfluxDB Server</fielddescr>
             <fieldname>influx_server</fieldname>
             <type>input</type>
-            <description>Full HTTP or UDP endpoint URL for InfluxDB instance</description>
+            <description>Full HTTP or UDP endpoint URL for InfluxDB instance. E.g.: http://192.168.1.23:8086 for a default InfluxDB instalaltion</description>
         </field>
         <field>
-            <fielddescr>InfluxDB Database</fielddescr>
+            <fielddescr>*InfluxDB Database</fielddescr>
             <fieldname>influx_db</fieldname>
             <type>input</type>
             <description>Target database for metrics (created if does not exist)</description>
@@ -70,12 +70,14 @@
             <fielddescr>InfluxDB Username</fielddescr>
             <fieldname>influx_user</fieldname>
             <type>input</type>
+            <description>Database user name if required by InfluxDB config</description>
         </field>
         <field>
             <fielddescr>InfluxDB Password</fielddescr>
             <fieldname>influx_pass</fieldname>
             <type>password</type>
-	    <encoding>base64</encoding>
+            <description>Database password if required by InfluxDB config</description>
+			<encoding>base64</encoding>
         </field>
     </fields>
     <custom_php_resync_config_command>

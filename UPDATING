@@ -5,6 +5,217 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20170628:
+  AFFECTS: users of www/node
+  AUTHOR: bhughes@freebsd.org
+
+  The www/node port has been updated to Node.js v8.1.2, the latest
+  upstream release. This is a major release, including many significant
+  changes. Users are encouraged to read the release announcements before
+  upgrading:
+
+  https://nodejs.org/en/blog/release/v8.0.0/
+  https://nodejs.org/en/blog/release/v8.1.0/
+
+20170626:
+  AFFECTS: users of net-mgmt/zabbix24*
+  AUTHOR: dbaio@FreeBSD.org
+
+  Zabbix 2.4 has reached end of life and net-mgmt/zabbix24* ports have been
+  removed. Users that have not yet moved to a newer version, should use now
+  net-mgmt/zabbix3-* (LTS release) or net-mgmt/zabbix32-* (Standard release).
+
+  See more info about Zabbix releases here:
+  http://www.zabbix.com/life_cycle_and_release_policy
+
+20170624:
+  AFFECTS: users of mail/dcc-dccd
+  AUTHOR: ultima@FreeBSD.org
+
+  The ALT_HOME option was removed in 1.3.159_1. If this option is being
+  used, please be sure to move the old home directory, /var/dcc to
+  ${PREFIX}/dcc.
+
+20170624:
+  AFFECTS: users of net/rabbitmq
+  AUTHOR: olgeni@FreeBSD.org
+
+  The rabbitmq-3.6.10_1 port has been changed to use version 19 of
+  the Erlang runtime, because RabbitMQ is not yet compatible with
+  version 20.
+
+  Upgrades to the previous rabbitmq-3.6.10 must be avoided as
+  they can lead to data corruption due to changes in Erlang 20.
+
+20170622:
+  AFFECTS: users of database/postgresql* and other software using PostgreSQL to run
+  AUTHOR: tz@FreeBSD.org
+
+  The default version of PostgreSQL has been switched from 9.3 to 9.5.
+  The upgrade procedure can use up twice the space the databases
+  currently needs. If you have a big amount of stored data take a
+  closer look at the manpage of pg_upgrade for avoidance and/or
+  speedup of the upgrade.
+
+  The upgrade instructions consider a basic usage and do not match
+  complex scenarious like replication, sharding or similar.
+  
+  Upgrade instructions:
+
+  First stop your PostgreSQL, create PostgreSQL-binaries and backup your data.
+  If you have another Version of PostgreSQL installed, for example 9.3.12, your
+  files are named accourding to this.
+  
+  # service postgresql stop
+  # pkg create postgresql93-server postgresql93-contrib
+  # mkdir /tmp/pg-upgrade
+  # tar xf postgresql93-server-9.3.17.txz -C /tmp/pg-upgrade
+  # tar xf postgresql93-contrib-9.3.17.txz -C /tmp/pg-upgrade
+  # mv /usr/local/pgsql/data /usr/local/pgsql/data93
+  # pkg delete -f databases/postgresql93-server databases/postgresql93-contrib databases/postgresql93-client
+
+  Now update PostgreSQL:
+
+    pkg user:
+    # pkg install databases/postgresql95-server databases/postgresql95-contrib
+    # pkg upgrade
+
+    Portmaster users:
+    # portmaster databases/postgresql95-server databases/postgresql95-contrib
+    # portmaster -a
+
+    Portupgrade users:
+    # portinstall databases/postgresql95-server databases/postgresql95-contrib
+    # portupgrade -a
+
+  After installing the new PostgreSQL version you need to convert
+  all your databases to new version:
+  
+  # service postgresql initdb
+  # su -l pgsql -c "pg_upgrade -b /tmp/pg-upgrade/usr/local/bin/ -d /usr/local/pgsql/data93/ -B /usr/local/bin/ -D /usr/local/pgsql/data/"
+
+  Now the migration is finished. You can start PostgreSQL again with:
+
+  # service postgresql start
+
+20170614:
+  AFFECTS: users of editors/calligra
+  AUTHOR: groot@kde.org
+
+  Calligra has been updated to 3.0.1, which is a KDE Frameworks 5 (KF5)
+  based application. Calligra now uses Qt5 and KF5. The translations have
+  been merged (upstream) into the application, so separate language /
+  translation ports are no longer provided. Krita has been split out
+  (upstream) into a separate application, which is packaged as 
+  graphics/krita. Kexi, the visual database applications creator,
+  is packaged separately as databases/kexi.
+
+  Users of Calligra are encouraged to install Krita and Kexi separately,
+  and to report issues with the upgrade to kde@.
+
+20170613:
+  AFFECTS: users of net-im/ejabberd
+  AUTHOR: ashish@FreeBSD.org
+
+  After update to 17.04, there is an issue[1] expected with S2S connections,
+  which can be resolved by adding 'mod_s2s_dialback: {}' to 'modules' section
+  of configuration file.
+
+  [1] - https://github.com/processone/ejabberd/issues/1700  
+
+20170603:
+  AFFECTS: users of www/kanboard
+  AUTHOR: joneum@FreeBSD.org
+
+  After update to 1.0.44, there are following breaking changes:
+  * Move calendar to external plugin: https://github.com/kanboard/plugin-calendar
+  * Move Gantt charts to external plugin: https://github.com/kanboard/plugin-gantt
+  * Move Gravatar to external plugin: https://github.com/kanboard/plugin-gravatar
+
+20170602:
+  AFFECTS: users of Qt 5 in presence of binutils
+  AUTHOR: amdmi3@FreeBSD.org
+
+  gold linker from binutils 2.28 may produce duplicate library
+  symbols, which makes shared libraries created with it not usable
+  with conventional ld linker.
+
+  This affects Qt, as qt5-qmake will detect gold and use it to build
+  Qt libraries. Broken libQt5Core will be produced and ports which
+  depend on it will then fail to link with the following errors:
+
+    ...lib/libQt5Core.so:(.dynamic+0x27ac8): multiple definition of `__bss_start at Qt_5'
+    ...lib/libQt5Core.so:(.dynamic+0x27ac8): first defined here
+    ...lib/libQt5Core.so:(.dynamic+0x27ac8): multiple definition of `_edata at Qt_5'
+    ...lib/libQt5Core.so:(.dynamic+0x27ac8): first defined here
+    ...lib/libQt5Core.so:(.dynamic+0x2b2d0): multiple definition of `_end at Qt_5'
+
+  Qt5 was fixed to ignore gold. If you see these errors, you
+  need to rebuild qt5-qmake, then all qt5-* ports.
+
+20170529:
+  AFFECTS: users of sysutils/dsbmd
+  AUTHOR: mk@freeshell.de
+
+  Due to new configuration variables and semantic changes, users of dsbmd
+  version 0.2 and earlier should consider recreating their dsbmd.conf from
+  the new dsbmd.conf.sample.
+
+20170518:
+  AFFECTS: users of www/yarn
+  AUTHOR: adamw@FreeBSD.org
+
+  The default node backend for yarn has switched to www/node. Binary
+  package users should expect the node backend to be switched during
+  the upgrade. To keep the node6 (LTS) backend, rebuild www/yarn with
+  the NODE6 backend option enabled.
+
+20170517:
+  AFFECTS: users of security/pecl-ssh2
+  AUTHOR: dbaio@FreeBSD.org
+
+  The security/pecl-ssh2 has been upgraded to version 1.0, and the new
+  version is not compatible with PHP5. If you need PHP5 support, you can
+  find version 0.13 in security/pecl-ssh2-0.
+
+20170412:
+  AFFECTS: users of sysutils/ansible
+  AUTHOR: lifanov@FreeBSD.org
+
+  The default value for ansible_python_interpreter has been changed
+  to match the upstream /usr/bin/python. If managing FreeBSD systems,
+  adjust the hosts database to explicitly set a valid python interpreter:
+
+  [freebsd]
+  host1
+
+  [freebsd_vars]
+  ansible_python_interpreter=/usr/local/bin/python2.7
+
+20170411:
+  AFFECTS: users of security/libressl
+  AUTHOR: brnrd@FreeBSD.org
+
+  The port has been updated to the latest stable version 2.5 of LibreSSL.
+  The shared library versions of the libraries have been bumped.
+
+  After upgrading, manually update all packages that depend on any of the
+  libraries provided by LibreSSL (libssl, libcrypto and libtls) since the
+  versions of these libraries have changed. Normally, you can obtain the
+  list of dependent software by running the following command:
+
+  # pkg info -r libressl
+
+  Then you should rebuild all ports depending on libressl to avoid dangling
+  shared library dependencies. Poudriere and pkg handle this correctly,
+  portmaster and portupgrade users can use the following to rebuild all
+  dependent ports.
+
+  Portmaster users:
+      portmaster -r libressl
+  Portupgrade users:
+      portupgrade -fr security/libressl
+
 20170411:
   AFFECTS: www/firefox
   AUTHOR: gecko@FreeBSD.org
@@ -31,6 +242,68 @@ you update your ports collection, before attempting any port upgrades.
       File "python/futures/concurrent/futures/process.py", line 263, in _check_system_limits
 	raise NotImplementedError(_system_limited)
     NotImplementedError: system provides too few semaphores (30 available, 256 necessary)
+
+20170410:
+  AFFECTS: users of x11-wm/awesome
+  AUTHOR: garga@FreeBSD.org
+
+  Awesome Window Manager (x11-wm/awesome) was upgraded to 4.1 and its config
+  is not backward compatible with 3.5.  A new port was created to keep 3.5
+  version available at x11-wm/awesome3 and it will be available for 6 months
+  until users have time to upgrade configuration.
+
+  There are references about what has changed in 4.0 at:
+
+  https://awesomewm.org/apidoc/documentation/89-NEWS.md.html#v4
+
+  And configuration porting tips at:
+
+  https://awesomewm.org/apidoc/documentation/17-porting-tips.md.html#v4
+
+  If you would like to keep using 3.x, please run the collowing command to
+  update pkg database:
+
+  # pkg set -n awesome:awesome3
+  # pkg set -o x11-wm/awesome:x11-wm/awesome3
+
+20170404:
+  AFFECTS: users of Xapian 1.2.x and www/ikiwiki
+  AUTHOR: sunpoet@FreeBSD.org
+
+  Xapian has been updated to 1.4.3. The 1.2.x series has been renamed with
+  suffix "12". The Perl binding for Xapian 1.4.x is databases/p5-Xapian.
+  Since www/ikiwiki depends on Search::Xapian, it stays with Xapian 1.2.
+  If you would like to keep using 1.2, please run the following commands
+  to update pkg database:
+
+  xapian-core:
+    # pkg set -n xapian-core:xapian-core12
+    # pkg set -o databases/xapian-core:databases/xapian-core12
+
+  p5-Search-Xapian:
+    # pkg set -n p5-Search-Xapian:p5-Search-Xapian12
+    # pkg set -o databases/p5-Search-Xapian:databases/p5-Search-Xapian12
+
+  xapian-bindings:
+    # pkg set -n xapian-bindings:xapian-bindings12
+    # pkg set -o databases/xapian-bindings:databases/xapian-bindings12
+
+  xapian-omega:
+    # pkg set -n xapian-omega:xapian-omega12
+    # pkg set -o databases/xapian-omega:databases/xapian-omega12
+
+20170401:
+  AFFECTS: net/samba44, net/samba45, net/samba46 and devel/p5-Parse-Pidl*
+  AUTHOR: timur@FreeBSD.org
+
+  It turned out that arbitary versions of p5-Parse-Pidl may lead to the
+  hard to explain crashes of the Samba server and utilities(in particular
+  we suspect it was responsible for the troubles with the DC provisioning).
+
+  So, from now on net/samba* ports use bundled version of Pidl. You need to
+  remove external package from the system:
+
+  pkg delete -f p5-Parse-Pidl p5-Parse-Pidl44
 
 20170331:
   AFFECTS: users of security/openssh-portable

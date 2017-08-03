@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	corebird
-PORTVERSION=	1.4.2
+PORTVERSION=	1.5
 PORTREVISION=	2
 CATEGORIES=	net-im
 
@@ -16,18 +16,17 @@ BUILD_DEPENDS=	valac:lang/vala
 LIB_DEPENDS=	libsoup-2.4.so:devel/libsoup \
 		libnotify.so:devel/libnotify \
 		libjson-glib-1.0.so:devel/json-glib \
-		librest-0.7.so:devel/librest
+		librest-0.7.so:devel/librest \
+		libgspell-1.so:textproc/gspell
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	baedert
 
-USES=		autoreconf gmake libtool pkgconfig sqlite
+USES=		autoreconf compiler:c++11-lang gmake libtool pkgconfig sqlite
 
 GNU_CONFIGURE=	yes
 USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk30 intltool libxml2 pango
 INSTALLS_ICONS=	yes
-
-CONFIGURE_ARGS=	--disable-spellcheck # spellchecking depends on gspell >= 1.0.x
 
 OPTIONS_DEFINE=		GSTREAMER NLS
 OPTIONS_DEFAULT=	GSTREAMER

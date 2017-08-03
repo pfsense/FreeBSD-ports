@@ -2,7 +2,7 @@
 
 PORTNAME=	texstudio
 PORTVERSION=	2.11.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	editors
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/TeXstudio%20${PORTVERSION}
 
@@ -11,6 +11,9 @@ COMMENT=	Integrated writing environment for LaTeX documents
 
 LIB_DEPENDS=	libhunspell-1.6.so:textproc/hunspell \
 		libpoppler.so:graphics/poppler
+
+BROKEN_aarch64=		fails to compile: error: no member named mc_eip in __mcontext
+BROKEN_armv6=		fails to compile: error: no member named mc_eip in __mcontext
 
 USES=		desktop-file-utils dos2unix execinfo ghostscript:run \
 		pkgconfig qmake

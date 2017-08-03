@@ -33,7 +33,7 @@ ALL_TARGET=	lklfuse
 MAKE_JOBS_UNSAFE=yes
 MAKE_ARGS+=	V=1
 # Need ports versions of 'bc', 'ld' to build!
-MAKE_ARGS+=	PATH="${LOCALBASE}/bin:${PATH}"
+MAKE_ARGS+=	PATH="${LOCALBASE}/bin:${PATH}" CC="${CC}" HOSTCC="${CC}"
 
 PLIST_FILES=	bin/lklfuse lib/liblkl.a
 

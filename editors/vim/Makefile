@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	vim
-PORTVERSION=	8.0.0507
+PORTVERSION=	8.0.0670
 DISTVERSIONPREFIX=	v
 CATEGORIES=	editors
 
@@ -20,6 +20,9 @@ OPTIONS_SINGLE_UI=	ATHENA CONSOLE GNOME GTK2 GTK3 MOTIF X11
 OPTIONS_GROUP=		LANGBIND
 OPTIONS_GROUP_LANGBIND=	LUA PERL PYTHON RUBY TCL
 OPTIONS_SUB=		yes
+
+# BROKEN: ruby.h: error: wrong number of arguments specified for 'deprecated' attribute
+OPTIONS_EXCLUDE_powerpc64=	RUBY
 
 DEFAULT_VIMRC_DESC=	Install bundled vimrc as default setting
 EXUBERANT_CTAGS_DESC=	Use exctags instead of ctags
@@ -46,7 +49,7 @@ VIM_VER=	${PORTNAME}${PORTVERSION:R:S|.||g}
 SLAVEDIRS=	editors/vim-lite
 
 USE_GITHUB=	yes
-SHEBANG_FILES=	runtime/tools/efm_perl.pl
+SHEBANG_FILES=	runtime/tools/demoserver.py runtime/tools/efm_perl.pl
 CPE_VERSION=	${PORTVERSION:R}
 PORTSCOUT=	site:https://github.com/vim/vim/releases
 
@@ -153,6 +156,9 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|-liconv|${ICONV_LIB}|g' ${WRKSRC}/src/auto/configure
 	@${ECHO_CMD} '#define SYS_VIMRC_FILE "'${ETCDIR}'/vimrc"' >> ${WRKSRC}/src/feature.h
 	@${ECHO_CMD} '#define SYS_GVIMRC_FILE "'${ETCDIR}'/gvimrc"' >> ${WRKSRC}/src/feature.h
+.if empty(PORT_OPTIONS:MPYTHON)
+	@${REINPLACE_CMD} -e 1d ${WRKSRC}/runtime/tools/demoserver.py
+.endif
 
 post-patch-EXUBERANT_CTAGS-off:
 	@${FIND} ${WRKSRC}/runtime/ -name 'menu*.vim' -print0 | ${XARGS} -0 ${REINPLACE_CMD} -e 's|ctags -R \.|${FIND} . -type f \\\| ${XARGS} ctags|g'

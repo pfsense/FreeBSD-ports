@@ -8,6 +8,7 @@
     SUBDIR += R-cran-DT
     SUBDIR += R-cran-R2HTML
     SUBDIR += R-cran-XML
+    SUBDIR += R-cran-brew
     SUBDIR += R-cran-formatR
     SUBDIR += R-cran-highr
     SUBDIR += R-cran-htmltools
@@ -72,7 +73,6 @@
     SUBDIR += cdif
     SUBDIR += cdiff
     SUBDIR += cgrep
-    SUBDIR += chm2pdf
     SUBDIR += chpp
     SUBDIR += cl-meta
     SUBDIR += cl-meta-sbcl
@@ -139,7 +139,6 @@
     SUBDIR += dsssl-docbook-modular
     SUBDIR += dtd-catalogs
     SUBDIR += dtd2relax
-    SUBDIR += dtdinst
     SUBDIR += dtdparse
     SUBDIR += duncan
     SUBDIR += dwdiff
@@ -219,15 +218,14 @@
     SUBDIR += gnome-doc-utils
     SUBDIR += gnome-spell
     SUBDIR += gnugrep
-    SUBDIR += go-text
     SUBDIR += go.text
     SUBDIR += goldendict
     SUBDIR += google-ctemplate
     SUBDIR += google-translate-cli
     SUBDIR += gpp
     SUBDIR += grap
-    SUBDIR += greple
     SUBDIR += grc-aspell
+    SUBDIR += greple
     SUBDIR += groff
     SUBDIR += groonga
     SUBDIR += gsed
@@ -323,9 +321,7 @@
     SUBDIR += ibus
     SUBDIR += ibus-el
     SUBDIR += ibus-kmfl
-    SUBDIR += ibus-m17n
     SUBDIR += ibus-qt
-    SUBDIR += ibus-table
     SUBDIR += ibus-typing-booster
     SUBDIR += icdiff
     SUBDIR += id-aspell
@@ -373,8 +369,8 @@
     SUBDIR += kibana43
     SUBDIR += kibana44
     SUBDIR += kibana45
-    SUBDIR += kibana50
-    SUBDIR += kibana50-x-pack
+    SUBDIR += kibana5
+    SUBDIR += kibana5-x-pack
     SUBDIR += kiss-templates
     SUBDIR += kmfl-european-latin
     SUBDIR += kmfl-khmer
@@ -387,6 +383,7 @@
     SUBDIR += kmflcomp
     SUBDIR += kn-aspell
     SUBDIR += kompare
+    SUBDIR += kreport
     SUBDIR += ku-aspell
     SUBDIR += ky-aspell
     SUBDIR += l2a
@@ -421,10 +418,10 @@
     SUBDIR += libodfgen01
     SUBDIR += libparsifal
     SUBDIR += librevenge
-    SUBDIR += libroxml
     SUBDIR += libsass
     SUBDIR += libsoldout
     SUBDIR += libsphinxclient
+    SUBDIR += libstaroffice
     SUBDIR += libstree
     SUBDIR += libtextcat
     SUBDIR += libtranslate
@@ -532,6 +529,7 @@
     SUBDIR += p5-Algorithm-CheckDigits
     SUBDIR += p5-Algorithm-RabinKarp
     SUBDIR += p5-Apache-ParseLog
+    SUBDIR += p5-Apache-Solr
     SUBDIR += p5-BibTeX-Parser
     SUBDIR += p5-Bloom-Filter
     SUBDIR += p5-CAM-PDF
@@ -954,6 +952,7 @@
     SUBDIR += p5-Text-Truncate
     SUBDIR += p5-Text-Typography
     SUBDIR += p5-Text-Unaccent
+    SUBDIR += p5-Text-Unaccent-PurePerl
     SUBDIR += p5-Text-VimColor
     SUBDIR += p5-Text-VisualWidth
     SUBDIR += p5-Text-WikiCreole
@@ -963,7 +962,6 @@
     SUBDIR += p5-Text-Wrapper
     SUBDIR += p5-Text-Xslate
     SUBDIR += p5-Text-Xslate-Bridge-TT2Like
-    SUBDIR += p5-Text-Unaccent-PurePerl
     SUBDIR += p5-Text-vCard
     SUBDIR += p5-Tiffany
     SUBDIR += p5-Time-Human
@@ -1123,7 +1121,6 @@
     SUBDIR += p5-XML-XPath
     SUBDIR += p5-XML-XPathEngine
     SUBDIR += p5-XML-XQL
-    SUBDIR += p5-XML-XSH
     SUBDIR += p5-XML-XSLT
     SUBDIR += p5-XML-XUpdate-LibXML
     SUBDIR += p5-YAML
@@ -1246,6 +1243,7 @@
     SUBDIR += py-agate-excel
     SUBDIR += py-alabaster
     SUBDIR += py-asv
+    SUBDIR += py-autopep8
     SUBDIR += py-awesome-slugify
     SUBDIR += py-bugzillatools
     SUBDIR += py-chardet
@@ -1273,6 +1271,7 @@
     SUBDIR += py-guess-language
     SUBDIR += py-hexdump
     SUBDIR += py-html2text
+    SUBDIR += py-humanfriendly
     SUBDIR += py-hunspell
     SUBDIR += py-hyperestraier-python
     SUBDIR += py-hypua2jamo
@@ -1293,6 +1292,7 @@
     SUBDIR += py-openpyxl
     SUBDIR += py-pandocfilters
     SUBDIR += py-paragrep
+    SUBDIR += py-parsel
     SUBDIR += py-parsimonious
     SUBDIR += py-pdfminer
     SUBDIR += py-pss
@@ -1341,6 +1341,7 @@
     SUBDIR += py-sphinxcontrib-fulltoc
     SUBDIR += py-sphinxcontrib-httpdomain
     SUBDIR += py-sphinxcontrib-programoutput
+    SUBDIR += py-stemming
     SUBDIR += py-syck
     SUBDIR += py-tabletext
     SUBDIR += py-terminaltables
@@ -1363,7 +1364,7 @@
     SUBDIR += py-xlutils
     SUBDIR += py-xlwriter
     SUBDIR += py-xlwt
-    SUBDIR += py-xmltv
+    SUBDIR += py-yapf
     SUBDIR += py-zope.app.i18n
     SUBDIR += py-zope.app.locales
     SUBDIR += py-zope.i18nmessageid
@@ -1375,11 +1376,16 @@
     SUBDIR += py3-alabaster
     SUBDIR += py3-asciinema
     SUBDIR += py3-chardet
+    SUBDIR += py3-docutils
+    SUBDIR += py3-humanfriendly
     SUBDIR += py3-hunspell
     SUBDIR += py3-libxml2
+    SUBDIR += py3-numpydoc
     SUBDIR += py3-pager
+    SUBDIR += py3-pygments
     SUBDIR += py3-pystemmer
     SUBDIR += py3-snowballstemmer
+    SUBDIR += py3-sphinx
     SUBDIR += py3-sphinx_rtd_theme
     SUBDIR += py3-texttable
     SUBDIR += pychm
@@ -1411,6 +1417,7 @@
     SUBDIR += resume
     SUBDIR += resume-extensions
     SUBDIR += rfcdiff
+    SUBDIR += ripgrep
     SUBDIR += ripole
     SUBDIR += rl
     SUBDIR += rman
@@ -1445,6 +1452,8 @@
     SUBDIR += rubygem-babel-transpiler
     SUBDIR += rubygem-babosa
     SUBDIR += rubygem-charlock_holmes
+    SUBDIR += rubygem-citrus
+    SUBDIR += rubygem-cld3
     SUBDIR += rubygem-coderay
     SUBDIR += rubygem-colorator
     SUBDIR += rubygem-colored
@@ -1518,6 +1527,8 @@
     SUBDIR += rubygem-phone
     SUBDIR += rubygem-pretty-xml
     SUBDIR += rubygem-rails-dom-testing
+    SUBDIR += rubygem-rails-dom-testing-rails5
+    SUBDIR += rubygem-rails-dom-testing-rails50
     SUBDIR += rubygem-rails-dom-testing1
     SUBDIR += rubygem-rails-html-sanitizer
     SUBDIR += rubygem-rak
@@ -1541,6 +1552,8 @@
     SUBDIR += rubygem-rugments
     SUBDIR += rubygem-sanitize
     SUBDIR += rubygem-sass
+    SUBDIR += rubygem-sass-rails-rails5
+    SUBDIR += rubygem-sass-rails-rails50
     SUBDIR += rubygem-sass-rails5
     SUBDIR += rubygem-sass32
     SUBDIR += rubygem-sax-machine
@@ -1560,6 +1573,7 @@
     SUBDIR += rubygem-unf
     SUBDIR += rubygem-unf_ext
     SUBDIR += rubygem-version_sorter
+    SUBDIR += rubygem-whatlanguage
     SUBDIR += rubygem-wikicloth
     SUBDIR += rubygem-xml-simple
     SUBDIR += rubygem-ya2yaml
@@ -1629,6 +1643,7 @@
     SUBDIR += sr-hunspell
     SUBDIR += srilm
     SUBDIR += ss-hunspell
+    SUBDIR += ssddiff
     SUBDIR += stardict-dict-fa_IR
     SUBDIR += stardict-dictd_mova
     SUBDIR += stardict-quick
@@ -1689,6 +1704,7 @@
     SUBDIR += uim-m17nlib
     SUBDIR += uim-qt4
     SUBDIR += uml2svg
+    SUBDIR += uncle
     SUBDIR += uncrustify
     SUBDIR += uni2ascii
     SUBDIR += unoconv

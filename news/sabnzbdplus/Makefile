@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	sabnzbdplus
-PORTVERSION=	1.2.3
+PORTVERSION=	2.1.0
 CATEGORIES=	news
 
 MAINTAINER=	joshruehlig@gmail.com
@@ -17,7 +17,6 @@ RUN_DEPENDS=	cheetah:devel/py-cheetah \
 USE_GITHUB=	yes
 GH_ACCOUNT=	sabnzbd
 GH_PROJECT=	sabnzbd
-GH_TAGNAME=	a894ca5
 
 USES=		python:2.7 shebangfix
 SHEBANG_FILES=	SABnzbd.py tools/msgfmt.py
@@ -39,14 +38,13 @@ GROUPS=		_sabnzbd
 OPTIONS_DEFINE=	PAR2CMDLINE UNRAR 7ZIP FEEDPARSER YENC SSL DOCS
 OPTIONS_DEFAULT=	PAR2CMDLINE UNRAR 7ZIP FEEDPARSER YENC SSL
 PAR2CMDLINE_DESC=	Required for postprocessing of par files
-UNRAR_DESC=	Often required for unpacking many downloads
 7ZIP_DESC=	Needed for unpacking 7-Zip posts
 FEEDPARSER_DESC=	rss-feed support
 YENC_DESC=	yenc support
 
 PAR2CMDLINE_RUN_DEPENDS=	par2repair:archivers/par2cmdline-tbb
 FEEDPARSER_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}feedparser>=0:textproc/py-feedparser
-YENC_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}yenc>=0:news/py-yenc
+YENC_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sabyenc>=0:news/py-sabyenc
 SSL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cryptography>=0:security/py-cryptography
 UNRAR_RUN_DEPENDS=	unrar:archivers/unrar
 7ZIP_RUN_DEPENDS=	7za:archivers/p7zip

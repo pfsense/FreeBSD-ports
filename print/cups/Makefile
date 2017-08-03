@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	cups
-PORTVERSION=	2.2.2
+PORTVERSION=	2.2.3
 DISTVERSIONPREFIX=v
-PORTREVISION=	1
 CATEGORIES=	print
 
 MAINTAINER=	tijl@FreeBSD.org
@@ -38,7 +37,7 @@ CONFIGURE_ARGS=	--disable-dnssd						\
 		--with-pam-module="unix"				\
 		ac_cv_path_JAVA= ac_cv_path_PERL= ac_cv_path_PHPCGI=	\
 		ac_cv_path_PHP= ac_cv_path_PYTHON=
-USES=		cpe gmake iconv localbase pkgconfig tar:bzip2
+USES=		cpe gmake iconv localbase pkgconfig
 CPE_VENDOR=	apple
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	cupsd

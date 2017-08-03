@@ -1,5 +1,6 @@
 pkg/bandwidthd.inc
 pkg/bandwidthd.xml
+www/diag_bandwidthd.php
 /etc/inc/priv/bandwidthd.priv.inc
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv

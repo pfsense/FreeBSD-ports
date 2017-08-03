@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	mariadb
-PORTVERSION=	2.3.1
-PORTREVISION=	1
+PORTVERSION=	2.3.2
 CATEGORIES=	databases ipv6
 MASTER_SITES=	http://ftp.osuosl.org/pub/${SITESDIR}/ \
 		http://mirrors.supportex.net/${SITESDIR}/ \
@@ -19,6 +18,9 @@ MAINTAINER=	brnrd@FreeBSD.org
 COMMENT=	MariaDB database connector for C
 
 LICENSE=	LGPL21
+
+BROKEN_armv6=		fails to configure: CMake Error: Generator: execution of make failed
+BROKEN_powerpc64=	fails to compile: my_stmt_codec.c: error: invalid use of void expression
 
 CONFLICTS_INSTALL=	mariadb[0-9]*-client-* \
 			mariadb102-server-* \

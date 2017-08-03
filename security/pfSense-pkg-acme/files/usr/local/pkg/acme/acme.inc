@@ -40,6 +40,62 @@ namespace { // global code
 		}
 		return $result;
 	}
+
+	/* Attempt to restart a remote service via XMLRPC with the default XMLRPC settings. */
+	function acme_xmlrpc_restart_service($servicename = "webgui", $extras = array()) {
+		require_once("xmlrpc_client.inc");
+		$rpc_client = new pfsense_xmlrpc_client();
+		$execstr = "";
+		if ($servicename == "webgui") {
+			/* The GUI needs a special event to restart, it is not a traditional service. */
+			$execstr = "send_event('service restart webgui');";
+		} else {
+			$execstr = <<<EOD
+require_once('service-utils.inc');
+service_control_restart("{$servicename}", $extras);
+EOD;
+		}
+		$resp = $rpc_client->xmlrpc_exec_php($execstr);
+		if ($resp != null) {
+			return true;
+		}
+		return false;
+	}
+
+	function acme_fixup_service_args($servicestring) {
+		$args = explode(' ', $servicestring);
+		$extras = array();
+		switch ($args[0]) {
+			case "openvpn":
+				if (in_array($args[1], array("server", "client"))) {
+					$extras['vpnmode'] = $args[1];
+				} else {
+					return;
+				}
+				if (is_numeric($args[2])) {
+					$extras['id'] = $args[2];
+				} else {
+					return;
+				}
+				$vpnsvc = find_service_by_openvpn_vpnid($extras['id']);
+				if (empty($vpnsvc)) {
+					return;
+				}
+				break;
+			case "captiveportal":
+				if (is_validaliasname($args[1])) {
+					$extras['zone'] = $args[1];
+				} else {
+					return;
+				}
+				$cpzone = find_service_by_cp_zone($extras['zone']);
+				if (empty($cpzone)) {
+					return;
+				}
+				break;
+		}
+		return array($args[0], $extras);
+	}
 }
 
 namespace pfsense_pkg\acme {
@@ -279,10 +335,12 @@ $acme_domain_validation_method['http-post'] = array(name => "http-post",
 */
 
 //TODO add more 'actions'
-$acme_newcertificateactions = array();
-$acme_newcertificateactions['shellcommand'] = array(name => "shell command");
-$acme_newcertificateactions['servicerestart'] = array(name => "restart service");
-$acme_newcertificateactions['php_command'] = array(name => "php command script");
+$acme_newcertificateactions = array(
+	'shellcommand' => array(name => "Shell Command"),
+	'php_command' => array(name => "PHP Command Script"),
+	'servicerestart' => array(name => "Restart Local Service"),
+	'xmlrpcservicerestart' => array(name => "Restart Remote Service (XMLRPC)"),
+);
 
 // </editor-fold>
 #end

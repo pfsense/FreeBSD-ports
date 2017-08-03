@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	cyrus-imapd
-PORTVERSION=	3.0.0
+PORTVERSION=	3.0.2
 #PORTREVISION=	0
 CATEGORIES=	mail ipv6
 MASTER_SITES=	ftp://ftp.cyrusimap.org/cyrus-imapd/ \
@@ -18,6 +18,8 @@ LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2 \
 		libicuuc.so:devel/icu \
 		libjansson.so:devel/jansson \
 		libpcre.so:devel/pcre
+
+BROKEN_powerpc64=	fails to compile: mailbox.h: redefinition of typedef 'message_t'
 
 CONFLICTS_INSTALL=	cyrus-imapd-2.* cyrus-imapd2*
 
@@ -43,7 +45,7 @@ CPE_VENDOR=	cmu
 CPE_PRODUCT=	cyrus_imap_server
 
 OPTIONS_DEFINE=		AUTOCREATE BACKUP CLAMAV HTTP IDLED LDAP MURDER MYSQL \
-			NNTP PGSQL REPLICATION SNMP SQLITE SQUAT DOCS EXAMPLES
+			NNTP PGSQL REPLICATION SNMP SQLITE SQUAT DOCS
 #OPTIONS_DEFINE+=	DRAC
 OPTIONS_DEFAULT=	CLAMAV IDLED SQLITE SQUAT
 OPTIONS_SUB=		yes
@@ -137,14 +139,11 @@ CYRUS_MAN8=	arbitron backupd chk_cyrus ctl_backups ctl_conversationsdb \
 		cyr_buildinfo cyr_dbtool cyr_deny cyr_df cyr_expire cyr_info \
 		cyr_synclog cyr_virusscan deliver fud idled imapd ipurge lmtpd \
 		master mbexamine mbpath mbtool notifyd pop3d quota reconstruct \
-		restore rmnews smmapd squatter timsieved tls_prune unexpunge
+		restore rmnews smmapd timsieved tls_prune unexpunge
 CYRUS_PERL_MAN1=cyradm
 CYRUS_PERL_MAN3=Cyrus::Annotator::Daemon Cyrus::Annotator::Message \
 		Cyrus::IMAP Cyrus::IMAP::Admin Cyrus::IMAP::IMSP \
 		Cyrus::IMAP::Shell Cyrus::SIEVE::managesieve
-
-CONFS=		cmu-backend.conf cmu-frontend.conf normal.conf prefork.conf \
-		small.conf
 
 .include <bsd.port.options.mk>
 
@@ -171,6 +170,9 @@ CYRUS_MAN8+=	fetchnews nntpd
 .endif
 .if ${PORT_OPTIONS:MREPLICATION}
 CYRUS_MAN8+=	sync_client sync_reset sync_server
+.endif
+.if ${PORT_OPTIONS:MSQUAT}
+CYRUS_MAN8+=	squatter
 .endif
 
 .if ${PORT_OPTIONS:MDRAC}
@@ -199,7 +201,7 @@ post-install:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${FILESDIR}/imapd.conf \
 		${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/master/conf/normal.conf \
+	${INSTALL_DATA} ${WRKSRC}/doc/examples/cyrus_conf/normal.conf \
 		${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_SCRIPT} ${WRKSRC}/tools/mkimap \
 		${STAGEDIR}${CYRUS_PREFIX}/sbin/mkimap
@@ -226,14 +228,5 @@ post-install-DOCS-on:
 	cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR} \
 		"! ( -path */html/_sources* -o -name .buildinfo )"
 	${RM} -r ${STAGEDIR}${DOCSDIR}/rst ${STAGEDIR}${DOCSDIR}/source
-
-# there are already files in EXAMPLESDIR at that point, so no
-# need to create it.
-post-install-EXAMPLES-on:
-.for f in ${CONFS:Nnormal.conf}
-	@${INSTALL_DATA} ${WRKSRC}/master/conf/${f} \
-		${STAGEDIR}${EXAMPLESDIR}
-	@${ECHO_CMD} ${EXAMPLESDIR:S,^${PREFIX}/,,}/${f} >>${TMPPLIST}
-.endfor
 
 .include <bsd.port.mk>

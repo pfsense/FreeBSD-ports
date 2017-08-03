@@ -1,0 +1,15 @@
+pkg/freeradius.xml
+pkg/freeradius.inc
+/etc/inc/priv/freeradius.priv.inc
+www/freeradius_view_config.php
+pkg/freeradiusclients.xml
+pkg/freeradiussettings.xml
+pkg/freeradiuseapconf.xml
+pkg/freeradiussqlconf.xml
+pkg/freeradiusinterfaces.xml
+pkg/freeradiussync.xml
+pkg/freeradiusmodulesldap.xml
+pkg/freeradiusauthorizedmacs.xml
+pkg/googleauth.py
+%%DATADIR%%/info.xml
+@dir /etc/inc/priv

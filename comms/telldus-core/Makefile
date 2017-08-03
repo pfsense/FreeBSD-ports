@@ -17,8 +17,8 @@ LIB_DEPENDS=	libftdi.so:devel/libftdi \
 		libconfuse.so:devel/libconfuse \
 		libargp.so:devel/argp-standalone
 
-BROKEN_powerpc64=	Does not build
-BROKEN_sparc64=		Does not build
+BROKEN_powerpc64=	Does not build: error: strlen was not declared in this scope
+BROKEN_sparc64=		Does not build: error: strlen was not declared in this scope
 
 USES= 		cmake compiler:c++11-lang iconv:wchar_t
 

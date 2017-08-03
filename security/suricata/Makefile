@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	suricata
-PORTVERSION=	3.2.1
-PORTREVISION=	1
+PORTVERSION=	3.2.3
 CATEGORIES=	security
 MASTER_SITES=	http://www.openinfosecfoundation.org/download/
 
@@ -15,10 +14,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libnet.so:net/libnet \
-		libgnutls.so:security/gnutls \
-		libgcrypt.so:security/libgcrypt \
-		libgpg-error.so:security/libgpg-error \
-		libltdl.so:devel/libltdl \
 		libyaml.so:textproc/libyaml
 
 USES=		autoreconf cpe gmake libtool pathfix pkgconfig
@@ -32,7 +27,8 @@ CPE_VENDOR=	openinfosecfoundation
 INSTALL_TARGET=		install-strip
 TEST_TARGET=		check
 
-OPTIONS_DEFINE=		GEOIP HTP_PORT IPFW JSON NETMAP NSS PORTS_PCAP PRELUDE SC TESTS
+OPTIONS_DEFINE=		GEOIP HTP_PORT IPFW JSON NETMAP NSS PORTS_PCAP PRELUDE \
+			REDIS SC TESTS
 OPTIONS_DEFINE_amd64=	HYPERSCAN
 OPTIONS_DEFAULT=	HTP_PORT IPFW JSON NETMAP PRELUDE
 OPTIONS_SUB=		yes
@@ -53,17 +49,18 @@ NETMAP_DESC=		Netmap support for inline IDP
 NSS_DESC=		File checksums and SSL/TLS fingerprinting
 PORTS_PCAP_DESC=	Use libpcap from ports
 PRELUDE_DESC=		Prelude support for NIDS alerts
+REDIS_DESC=		Redis output support
 SC_DESC=		Suricata socket client (suricatasc)
 TESTS_DESC=		Unit tests in suricata binary
 
 GEOIP_LIB_DEPENDS=		libGeoIP.so:net/GeoIP
 GEOIP_CONFIGURE_ON=		--enable-geoip
 
-HTP_PORT_BUILD_DEPENDS=		libhtp>=0.5.20:devel/libhtp
+HTP_PORT_BUILD_DEPENDS=		libhtp>=0.5.24:devel/libhtp
 HTP_PORT_LIB_DEPENDS=		libhtp.so:devel/libhtp
 HTP_PORT_CONFIGURE_ON=		--enable-non-bundled-htp
 HTP_PORT_CONFIGURE_OFF=		--enable-bundled-htp
-HTP_PORT_CONFLICTS_INSTALL_OFF=	libhtp-[0-9]* libhtp-suricata
+HTP_PORT_CONFLICTS_INSTALL_OFF=	libhtp
 HTP_PORT_USES_OFF=		iconv:translit
 
 HYPERSCAN_LIB_DEPENDS=		libhs.so:devel/hyperscan
@@ -99,9 +96,18 @@ PORTS_PCAP_CONFIGURE_ON=	--with-libpcap-includes=${LOCALBASE}/include \
 PORTS_PCAP_CONFIGURE_OFF=	--with-libpcap-includes=/usr/include \
 				--with-libpcap-libraries=/usr/lib
 
-PRELUDE_LIB_DEPENDS=		libprelude.so:security/libprelude
+PRELUDE_LIB_DEPENDS=		libprelude.so:security/libprelude \
+				libgnutls.so:security/gnutls \
+				libgcrypt.so:security/libgcrypt \
+				libgpg-error.so:security/libgpg-error \
+				libltdl.so:devel/libltdl
 PRELUDE_CONFIGURE_ENABLE=	prelude
 PRELUDE_CONFIGURE_ON=		--with-libprelude-prefix=${LOCALBASE}
+
+REDIS_LIB_DEPENDS=		libhiredis.so:databases/hiredis
+REDIS_CONFIGURE_ON=		--enable-hiredis \
+				--with-libhiredis-includes=${LOCALBASE}/include \
+				--with-libhiredis-libraries=${LOCALBASE}/lib
 
 SC_USES=			python
 SC_CONFIGURE_ENV=		ac_cv_path_HAVE_PYTHON_CONFIG=yes

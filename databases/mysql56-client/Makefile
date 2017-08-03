@@ -2,14 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	mysql
-PORTREVISION?=	3
 PKGNAMESUFFIX=	56-client
 
 COMMENT=	Multithreaded SQL database (client)
 
 LICENSE+=	LGPL21
 
-BROKEN_powerpc64=	Does not build
 BROKEN_sparc64=	Does not build: reports unsupported compiler
 
 MASTERDIR=	${.CURDIR}/../mysql56-server

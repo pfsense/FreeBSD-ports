@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	mutt
-PORTVERSION=	1.8.0
-PORTREVISION?=	1
+PORTVERSION=	1.8.3
+PORTREVISION?=	0
 CATEGORIES+=	mail ipv6
 MASTER_SITES=	ftp://ftp.mutt.org/pub/mutt/ \
 		ftp://ftp.fu-berlin.de/pub/unix/mail/mutt/ \
@@ -17,12 +17,10 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 PATCH_SITES+=	http://www.mutt.org.ua/download/mutt-${VVV_PATCH_VERSION}/:vvv \
 		http://www2.mutt.org.ua/download/mutt-${VVV_PATCH_VERSION}/:vvv \
-		http://home.uchicago.edu/~dgc/sw/mutt/:dgc \
-		https://www.schrab.com/aaron/mutt/:ats \
+		https://github.com/aschrab/mutt/compare/dev-base...feature/:ats \
 		http://vc.org.ua/mutt/:vc
 PATCH_DIST_STRIP=	-p1
-PATCHFILES=	patch-1.5.1.dgc.deepif.1:dgc \
-			patch-1.7.0.ats.date_conditional.1:ats
+PATCHFILES=	date-conditional.diff:ats
 
 MAINTAINER?=	dereks@lifeofadishwasher.com
 COMMENT?=	Small but powerful text based program for read/writing e-mail
@@ -77,7 +75,7 @@ FORCEBASE64_DESC=	Option to force base64 encoding for compose
 GPGME_DESC=	Gpgme interface
 GREETING_PATCH_DESC=	Greeting support
 HTML_DESC=	HTML documentation
-IDN_DESC+=	International Domain Names (implies ICONV)
+IDN_DESC=	International Domain Names (implies ICONV)
 IFDEF_PATCH_DESC=	ifdef feature
 LOCALES_FIX_DESC=	Locales fix
 MAILBOX_MANPAGES_DESC=	Install mbox.5/mmdf.5 manpages
@@ -144,7 +142,6 @@ NCURSES_USES=	ncurses
 
 NLS_USES=	gettext
 NLS_CONFIGURE_ENABLE=	nls
-#NLS_CONFIGURE_OFF=	--disable-nls
 NLS_IMPLIES=	ICONV
 
 # Handle GSSAPI from various places
@@ -190,6 +187,8 @@ IDN_LIB_DEPENDS=	libidn.so:dns/libidn
 IDN_CONFIGURE_WITH=	idn
 IDN_IMPLIES=	ICONV
 
+IFDEF_PATCH_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-ifdef
+
 GPGME_LIB_DEPENDS+=	libgpgme.so:security/gpgme
 GPGME_LIB_DEPENDS+=	libgpg-error.so:security/libgpg-error
 GPGME_LIB_DEPENDS+=	libassuan.so:security/libassuan
@@ -215,8 +214,8 @@ DOCS_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-doc-ref
 .include <bsd.port.options.mk>
 
 # un/comment as each VERSION is created for PORTVERSION
-VVV_PATCH_VERSION=	1.8.0
-GREETING_PATCH_VERSION=	1.8.0
+VVV_PATCH_VERSION=	1.8.2
+#GREETING_PATCH_VERSION=	1.8.3
 
 .if !defined(VVV_PATCH_VERSION)
 VVV_PATCH_VERSION=	${PORTVERSION}
@@ -267,17 +266,21 @@ post-install:
 post-install-NNTP-on:
 	${INSTALL_DATA} ${WRKSRC}/ChangeLog.nntp ${STAGEDIR}${DOCSDIR}
 
-post-patch-IFDEF_PATCH-on:
-	@${PATCH} -d ${PATCH_WRKSRC} ${PATCH_ARGS} -p1 < ${PATCHDIR}/extra-patch-ifdef
-
 WRKSRC=		${WRKDIR}/${DISTNAME:S/i$//}
 
-post-patch:
+pre-configure::
 	@${REINPLACE_CMD} -e 's,/usr/bin/gpg,${LOCALBASE}/bin/gpg,g' \
 		${WRKSRC}/contrib/gpg.rc
 	@${REINPLACE_CMD} -e 's,pgp6,pgp,g' \
 		${WRKSRC}/contrib/pgp6.rc
-	@${REINPLACE_CMD} -E -e 's|@samplesdir@|${EXAMPLESDIR}|g' \
+	@${REINPLACE_CMD} -E -e 's#(/samples|samples/)#share/examples/mutt#g' \
+		${WRKSRC}/doc/reference.html \
+		${WRKSRC}/doc/manual.html \
+		${WRKSRC}/doc/manual.txt \
+		${WRKSRC}/doc/Muttrc \
+		${WRKSRC}/INSTALL \
+		${WRKSRC}/init.h
+	@${REINPLACE_CMD} -e 's#$$(docdir)/samples#${EXAMPLESDIR}#g' \
 		${WRKSRC}/contrib/Makefile.am
 
 pre-configure::
@@ -288,11 +291,9 @@ pre-configure::
 		${WRKSRC}/imap/auth_gss.c
 .endif
 
-.if ${PORT_OPTIONS:MHCACHE_BDB}
-CONFIGURE_SED=	-e 's/BDB_VERSIONS="/&${BDB_LIB_NAME} db${BDB_VER} /'
-pre-configure::
-	@${REINPLACE_CMD} -E ${CONFIGURE_SED} ${CONFIGURE_WRKSRC}/${CONFIGURE_SCRIPT}.ac
-.endif
+pre-configure-HCACHE_BDB-on:
+	@${REINPLACE_CMD} -E -e 's/BDB_VERSIONS="/&${BDB_LIB_NAME} db${BDB_VER} /' \
+		${CONFIGURE_WRKSRC}/${CONFIGURE_SCRIPT}.ac
 
 .if defined (XML_NEEDED) && ${PORT_OPTIONS:MXML}
 BUILD_DEPENDS+=	xsltproc:textproc/libxslt \

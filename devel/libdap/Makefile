@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libdap
-PORTVERSION=	3.18.3
+PORTVERSION=	3.19.0
 CATEGORIES=	devel
 MASTER_SITES=	http://www.opendap.org/pub/source/ \
 		LOCAL/sunpoet
@@ -16,8 +16,6 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libuuid.so:misc/e2fsprogs-libuuid \
 		libxml2.so:textproc/libxml2
-
-BROKEN_powerpc64=	does not build
 
 CONFIGURE_ARGS=	ac_cv_type_max_align_t=yes
 GNU_CONFIGURE=	yes

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	fet
-PORTVERSION=	5.31.2
+PORTVERSION=	5.31.5
+PORTREVISION=	1
 CATEGORIES=	deskutils kde
 MASTER_SITES=	http://lalescu.ro/liviu/fet/download/ \
 		http://lalescu.ro/liviu/fet/download/old/ \

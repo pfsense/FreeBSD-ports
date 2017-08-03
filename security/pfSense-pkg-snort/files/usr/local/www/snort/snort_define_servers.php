@@ -6,7 +6,7 @@
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2008-2009 Robert Zelaya.
- * Copyright (c) 2014-2016 Bill Meeks
+ * Copyright (c) 2014-2017 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -155,7 +155,9 @@ if ($_POST['save']) {
 }
 
 $if_friendly = convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']);
-$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Interface Servers and Ports Variables - {$if_friendly}"));
+if (empty($if_friendly)) {
+	$if_friendly = "None";
+}$pgtitle = array(gettext("Services"), gettext("Snort"), gettext("Interface Servers and Ports Variables - {$if_friendly}"));
 include("head.inc");
 
 /* Display Alert message */
