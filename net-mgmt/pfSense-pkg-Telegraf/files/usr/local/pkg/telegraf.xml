@@ -77,7 +77,6 @@
             <fieldname>influx_pass</fieldname>
             <type>password</type>
             <description>Database password if required by InfluxDB config</description>
-			<encoding>base64</encoding>
         </field>
     </fields>
     <custom_php_resync_config_command>
