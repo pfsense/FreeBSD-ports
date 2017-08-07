@@ -81,6 +81,9 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 			log_error(gettext("[Suricata] Deleting any rotated log files for {$value['descr']} ({$if_real})..."));
 			unlink_if_exists("{$suricata_log_dir}/*.log.*");
 
+			log_error(gettext("[Suricata] Deleting any rotated eve log files for {$value['descr']} ({$if_real})..."));
+			unlink_if_exists("{$suricata_log_dir}/*.json.*");
+
 			// Cleanup any rotated pcap logs
 			log_error(gettext("[Suricata] Deleting any rotated pcap log files for {$value['descr']} ({$if_real})..."));
 			unlink_if_exists("{$suricata_log_dir}/log.pcap.*");
