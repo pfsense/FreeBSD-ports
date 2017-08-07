@@ -688,7 +688,7 @@ display_top_tabs($tab_array);
 		<div class="alert alert-info" id="loading-msg">Loading Graph...</div>
 		<div id="chart-error" class="alert alert-danger" style="display: none;"></div>
 		<div id="monitoring-chart" class="d3-chart">
-			<svg></svg>
+			<svg id="monitoring-svg"></svg>
 		</div>
 	</div>
 </div>
@@ -1282,9 +1282,9 @@ events.push(function() {
 			$("#monitoring-chart").show();
 			$("#loading-msg").hide();
 
-			d3.select("svg").remove(); //delete previous svg so it can be drawn from scratch
+			d3.select("#monitoring-svg").remove(); //delete previous svg so it can be drawn from scratch
 			d3.select("div[id^=nvtooltip-]").remove(); //delete previous tooltip in case it gets hung
-			d3.select('#monitoring-chart').append('svg'); //re-add blank svg so it and be drawn on
+			d3.select('#monitoring-chart').append('svg').attr('id', 'monitoring-svg'); //re-add blank svg so it and be drawn on
 
 			if (error) {
 				if(String(error).startsWith("SyntaxError")) {
