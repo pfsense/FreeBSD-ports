@@ -84,6 +84,7 @@ IS ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <netinet/ip_fw.h>
 #include <netinet/tcp_fsm.h>
 #include <netinet6/in6_var.h>
+#include <net80211/ieee80211_ioctl.h>
 
 #include <vm/vm_param.h>
 
@@ -2375,153 +2376,6 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 		if (strncmp(ifname, mb->ifa_name, ifname_len) != 0)
 			continue;
 
-		if (mb->ifa_flags & IFF_UP)
-			add_assoc_string(return_value, "status", "up", 1);
-		else
-			add_assoc_string(return_value, "status", "down", 1);
-		if (mb->ifa_flags & IFF_LINK0)
-			add_assoc_long(return_value, "link0", 1);
-		if (mb->ifa_flags & IFF_LINK1)
-			add_assoc_long(return_value, "link1", 1);
-		if (mb->ifa_flags & IFF_LINK2)
-			add_assoc_long(return_value, "link2", 1);
-		if (mb->ifa_flags & IFF_MULTICAST)
-			add_assoc_long(return_value, "multicast", 1);
-		if (mb->ifa_flags & IFF_LOOPBACK)
-			add_assoc_long(return_value, "loopback", 1);
-		if (mb->ifa_flags & IFF_POINTOPOINT)
-			add_assoc_long(return_value, "pointtopoint", 1);
-		if (mb->ifa_flags & IFF_PROMISC)
-			add_assoc_long(return_value, "promisc", 1);
-		if (mb->ifa_flags & IFF_PPROMISC)
-			add_assoc_long(return_value, "permanentpromisc", 1);
-		if (mb->ifa_flags & IFF_OACTIVE)
-			add_assoc_long(return_value, "oactive", 1);
-		if (mb->ifa_flags & IFF_ALLMULTI)
-			add_assoc_long(return_value, "allmulti", 1);
-		if (mb->ifa_flags & IFF_SIMPLEX)
-			add_assoc_long(return_value, "simplex", 1);
-		if (mb->ifa_data != NULL) {
-			md = mb->ifa_data;
-			if (md->ifi_link_state == LINK_STATE_UP)
-				add_assoc_long(return_value, "linkstateup", 1);
-			switch (md->ifi_type) {
-			case IFT_IEEE80211:
-				add_assoc_string(return_value, "iftype",
-				    "wireless", 1);
-				break;
-			case IFT_ETHER:
-			case IFT_FASTETHER:
-			case IFT_FASTETHERFX:
-			case IFT_GIGABITETHERNET:
-				add_assoc_string(return_value, "iftype",
-				    "ether", 1);
-				break;
-			case IFT_L2VLAN:
-				add_assoc_string(return_value, "iftype",
-				    "vlan", 1);
-				break;
-			case IFT_BRIDGE:
-				add_assoc_string(return_value, "iftype",
-				    "bridge", 1);
-				break;
-			case IFT_TUNNEL:
-			case IFT_GIF:
-#if (__FreeBSD_version < 1100000)
-			case IFT_FAITH:
-#endif
-			case IFT_ENC:
-			case IFT_PFLOG:
-			case IFT_PFSYNC:
-				add_assoc_string(return_value, "iftype",
-				    "virtual", 1);
-				break;
-			default:
-				add_assoc_string(return_value, "iftype",
-				    "other", 1);
-			}
-		}
-		ALLOC_INIT_ZVAL(caps);
-		ALLOC_INIT_ZVAL(encaps);
-		array_init(caps);
-		array_init(encaps);
-		strncpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
-		if (ioctl(PFSENSE_G(s), SIOCGIFMTU, (caddr_t)&ifr) == 0)
-			add_assoc_long(return_value, "mtu", ifr.ifr_mtu);
-		if (ioctl(PFSENSE_G(s), SIOCGIFCAP, (caddr_t)&ifr) == 0) {
-			add_assoc_long(caps, "flags", ifr.ifr_reqcap);
-			if (ifr.ifr_reqcap & IFCAP_POLLING)
-				add_assoc_long(caps, "polling", 1);
-			if (ifr.ifr_reqcap & IFCAP_RXCSUM)
-				add_assoc_long(caps, "rxcsum", 1);
-			if (ifr.ifr_reqcap & IFCAP_TXCSUM)
-				add_assoc_long(caps, "txcsum", 1);
-			if (ifr.ifr_reqcap & IFCAP_RXCSUM_IPV6)
-				add_assoc_long(caps, "rxcsum6", 1);
-			if (ifr.ifr_reqcap & IFCAP_TXCSUM_IPV6)
-				add_assoc_long(caps, "txcsum6", 1);
-			if (ifr.ifr_reqcap & IFCAP_VLAN_MTU)
-				add_assoc_long(caps, "vlanmtu", 1);
-			if (ifr.ifr_reqcap & IFCAP_JUMBO_MTU)
-				add_assoc_long(caps, "jumbomtu", 1);
-			if (ifr.ifr_reqcap & IFCAP_VLAN_HWTAGGING)
-				add_assoc_long(caps, "vlanhwtag", 1);
-			if (ifr.ifr_reqcap & IFCAP_VLAN_HWCSUM)
-				add_assoc_long(caps, "vlanhwcsum", 1);
-			if (ifr.ifr_reqcap & IFCAP_TSO4)
-				add_assoc_long(caps, "tso4", 1);
-			if (ifr.ifr_reqcap & IFCAP_TSO6)
-				add_assoc_long(caps, "tso6", 1);
-			if (ifr.ifr_reqcap & IFCAP_LRO)
-				add_assoc_long(caps, "lro", 1);
-			if (ifr.ifr_reqcap & IFCAP_WOL_UCAST)
-				add_assoc_long(caps, "wolucast", 1);
-			if (ifr.ifr_reqcap & IFCAP_WOL_MCAST)
-				add_assoc_long(caps, "wolmcast", 1);
-			if (ifr.ifr_reqcap & IFCAP_WOL_MAGIC)
-				add_assoc_long(caps, "wolmagic", 1);
-			if (ifr.ifr_reqcap & IFCAP_TOE4)
-				add_assoc_long(caps, "toe4", 1);
-			if (ifr.ifr_reqcap & IFCAP_TOE6)
-				add_assoc_long(caps, "toe6", 1);
-			if (ifr.ifr_reqcap & IFCAP_VLAN_HWFILTER)
-				add_assoc_long(caps, "vlanhwfilter", 1);
-			add_assoc_long(encaps, "flags", ifr.ifr_curcap);
-			if (ifr.ifr_curcap & IFCAP_POLLING)
-				add_assoc_long(encaps, "polling", 1);
-			if (ifr.ifr_curcap & IFCAP_RXCSUM)
-				add_assoc_long(encaps, "rxcsum", 1);
-			if (ifr.ifr_curcap & IFCAP_TXCSUM)
-				add_assoc_long(encaps, "txcsum", 1);
-			if (ifr.ifr_curcap & IFCAP_VLAN_MTU)
-				add_assoc_long(encaps, "vlanmtu", 1);
-			if (ifr.ifr_curcap & IFCAP_JUMBO_MTU)
-				add_assoc_long(encaps, "jumbomtu", 1);
-			if (ifr.ifr_curcap & IFCAP_VLAN_HWTAGGING)
-				add_assoc_long(encaps, "vlanhwtag", 1);
-			if (ifr.ifr_curcap & IFCAP_VLAN_HWCSUM)
-				add_assoc_long(encaps, "vlanhwcsum", 1);
-			if (ifr.ifr_curcap & IFCAP_TSO4)
-				add_assoc_long(encaps, "tso4", 1);
-			if (ifr.ifr_curcap & IFCAP_TSO6)
-				add_assoc_long(encaps, "tso6", 1);
-			if (ifr.ifr_curcap & IFCAP_LRO)
-				add_assoc_long(encaps, "lro", 1);
-			if (ifr.ifr_curcap & IFCAP_WOL_UCAST)
-				add_assoc_long(encaps, "wolucast", 1);
-			if (ifr.ifr_curcap & IFCAP_WOL_MCAST)
-				add_assoc_long(encaps, "wolmcast", 1);
-			if (ifr.ifr_curcap & IFCAP_WOL_MAGIC)
-				add_assoc_long(encaps, "wolmagic", 1);
-			if (ifr.ifr_curcap & IFCAP_TOE4)
-				add_assoc_long(encaps, "toe4", 1);
-			if (ifr.ifr_curcap & IFCAP_TOE6)
-				add_assoc_long(encaps, "toe6", 1);
-			if (ifr.ifr_curcap & IFCAP_VLAN_HWFILTER)
-				add_assoc_long(encaps, "vlanhwfilter", 1);
-		}
-		add_assoc_zval(return_value, "caps", caps);
-		add_assoc_zval(return_value, "encaps", encaps);
 		if (mb->ifa_addr == NULL)
 			continue;
 		switch (mb->ifa_addr->sa_family) {
@@ -2619,39 +2473,189 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 				}
 			}
 			break;
-		case AF_LINK:
-			tmpdl = (struct sockaddr_dl *)mb->ifa_addr;
-			bzero(outputbuf, sizeof outputbuf);
-			ether_ntoa_r((struct ether_addr *)LLADDR(tmpdl),
-			    outputbuf);
-			add_assoc_string(return_value, "macaddr", outputbuf, 1);
-
-			if (tmpdl->sdl_type != IFT_ETHER ||
-			    tmpdl->sdl_alen != ETHER_ADDR_LEN) {
-				break;
-			}
-
-			strncpy(ifr.ifr_name, mb->ifa_name,
-			    sizeof(ifr.ifr_name));
-			memcpy(&ifr.ifr_addr, mb->ifa_addr,
-			    sizeof(mb->ifa_addr->sa_len));
-			ifr.ifr_addr.sa_family = AF_LOCAL;
-			if ((sock_hw = socket(AF_LOCAL, SOCK_DGRAM, 0)) < 0) {
-				break;
-			}
-			rc = ioctl(sock_hw, SIOCGHWADDR, &ifr);
-			close(sock_hw);
-			if (rc != 0) {
-				break;
-			}
-
-			bzero(outputbuf, sizeof outputbuf);
-			ether_ntoa_r((const struct ether_addr *)&ifr.ifr_addr.sa_data,
-			    outputbuf);
-			add_assoc_string(return_value, "hwaddr", outputbuf, 1);
-
-			break;
 		}
+
+		if (mb->ifa_addr->sa_family != AF_LINK)
+			continue;
+
+		if (mb->ifa_flags & IFF_UP)
+			add_assoc_string(return_value, "status", "up", 1);
+		else
+			add_assoc_string(return_value, "status", "down", 1);
+		if (mb->ifa_flags & IFF_LINK0)
+			add_assoc_long(return_value, "link0", 1);
+		if (mb->ifa_flags & IFF_LINK1)
+			add_assoc_long(return_value, "link1", 1);
+		if (mb->ifa_flags & IFF_LINK2)
+			add_assoc_long(return_value, "link2", 1);
+		if (mb->ifa_flags & IFF_MULTICAST)
+			add_assoc_long(return_value, "multicast", 1);
+		if (mb->ifa_flags & IFF_LOOPBACK)
+			add_assoc_long(return_value, "loopback", 1);
+		if (mb->ifa_flags & IFF_POINTOPOINT)
+			add_assoc_long(return_value, "pointtopoint", 1);
+		if (mb->ifa_flags & IFF_PROMISC)
+			add_assoc_long(return_value, "promisc", 1);
+		if (mb->ifa_flags & IFF_PPROMISC)
+			add_assoc_long(return_value, "permanentpromisc", 1);
+		if (mb->ifa_flags & IFF_OACTIVE)
+			add_assoc_long(return_value, "oactive", 1);
+		if (mb->ifa_flags & IFF_ALLMULTI)
+			add_assoc_long(return_value, "allmulti", 1);
+		if (mb->ifa_flags & IFF_SIMPLEX)
+			add_assoc_long(return_value, "simplex", 1);
+		strncpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
+		if (mb->ifa_data != NULL) {
+			md = mb->ifa_data;
+			if (md->ifi_link_state == LINK_STATE_UP)
+				add_assoc_long(return_value, "linkstateup", 1);
+			switch (md->ifi_type) {
+			case IFT_IEEE80211:
+				add_assoc_string(return_value, "iftype",
+				    "wireless", 1);
+				break;
+			case IFT_ETHER:
+			case IFT_FASTETHER:
+			case IFT_FASTETHERFX:
+			case IFT_GIGABITETHERNET:
+				if (ioctl(PFSENSE_G(s), SIOCG80211STATS,
+				    (caddr_t)&ifr) == 0) {
+					add_assoc_string(return_value, "iftype",
+					    "wireless", 1);
+				} else {
+					add_assoc_string(return_value, "iftype",
+					    "ether", 1);
+				}
+				break;
+			case IFT_L2VLAN:
+				add_assoc_string(return_value, "iftype",
+				    "vlan", 1);
+				break;
+			case IFT_BRIDGE:
+				add_assoc_string(return_value, "iftype",
+				    "bridge", 1);
+				break;
+			case IFT_TUNNEL:
+			case IFT_GIF:
+#if (__FreeBSD_version < 1100000)
+			case IFT_FAITH:
+#endif
+			case IFT_ENC:
+			case IFT_PFLOG:
+			case IFT_PFSYNC:
+				add_assoc_string(return_value, "iftype",
+				    "virtual", 1);
+				break;
+			default:
+				add_assoc_string(return_value, "iftype",
+				    "other", 1);
+			}
+		}
+		ALLOC_INIT_ZVAL(caps);
+		ALLOC_INIT_ZVAL(encaps);
+		array_init(caps);
+		array_init(encaps);
+		if (ioctl(PFSENSE_G(s), SIOCGIFMTU, (caddr_t)&ifr) == 0)
+			add_assoc_long(return_value, "mtu", ifr.ifr_mtu);
+		if (ioctl(PFSENSE_G(s), SIOCGIFCAP, (caddr_t)&ifr) == 0) {
+			add_assoc_long(caps, "flags", ifr.ifr_reqcap);
+			if (ifr.ifr_reqcap & IFCAP_POLLING)
+				add_assoc_long(caps, "polling", 1);
+			if (ifr.ifr_reqcap & IFCAP_RXCSUM)
+				add_assoc_long(caps, "rxcsum", 1);
+			if (ifr.ifr_reqcap & IFCAP_TXCSUM)
+				add_assoc_long(caps, "txcsum", 1);
+			if (ifr.ifr_reqcap & IFCAP_RXCSUM_IPV6)
+				add_assoc_long(caps, "rxcsum6", 1);
+			if (ifr.ifr_reqcap & IFCAP_TXCSUM_IPV6)
+				add_assoc_long(caps, "txcsum6", 1);
+			if (ifr.ifr_reqcap & IFCAP_VLAN_MTU)
+				add_assoc_long(caps, "vlanmtu", 1);
+			if (ifr.ifr_reqcap & IFCAP_JUMBO_MTU)
+				add_assoc_long(caps, "jumbomtu", 1);
+			if (ifr.ifr_reqcap & IFCAP_VLAN_HWTAGGING)
+				add_assoc_long(caps, "vlanhwtag", 1);
+			if (ifr.ifr_reqcap & IFCAP_VLAN_HWCSUM)
+				add_assoc_long(caps, "vlanhwcsum", 1);
+			if (ifr.ifr_reqcap & IFCAP_TSO4)
+				add_assoc_long(caps, "tso4", 1);
+			if (ifr.ifr_reqcap & IFCAP_TSO6)
+				add_assoc_long(caps, "tso6", 1);
+			if (ifr.ifr_reqcap & IFCAP_LRO)
+				add_assoc_long(caps, "lro", 1);
+			if (ifr.ifr_reqcap & IFCAP_WOL_UCAST)
+				add_assoc_long(caps, "wolucast", 1);
+			if (ifr.ifr_reqcap & IFCAP_WOL_MCAST)
+				add_assoc_long(caps, "wolmcast", 1);
+			if (ifr.ifr_reqcap & IFCAP_WOL_MAGIC)
+				add_assoc_long(caps, "wolmagic", 1);
+			if (ifr.ifr_reqcap & IFCAP_TOE4)
+				add_assoc_long(caps, "toe4", 1);
+			if (ifr.ifr_reqcap & IFCAP_TOE6)
+				add_assoc_long(caps, "toe6", 1);
+			if (ifr.ifr_reqcap & IFCAP_VLAN_HWFILTER)
+				add_assoc_long(caps, "vlanhwfilter", 1);
+			add_assoc_long(encaps, "flags", ifr.ifr_curcap);
+			if (ifr.ifr_curcap & IFCAP_POLLING)
+				add_assoc_long(encaps, "polling", 1);
+			if (ifr.ifr_curcap & IFCAP_RXCSUM)
+				add_assoc_long(encaps, "rxcsum", 1);
+			if (ifr.ifr_curcap & IFCAP_TXCSUM)
+				add_assoc_long(encaps, "txcsum", 1);
+			if (ifr.ifr_curcap & IFCAP_VLAN_MTU)
+				add_assoc_long(encaps, "vlanmtu", 1);
+			if (ifr.ifr_curcap & IFCAP_JUMBO_MTU)
+				add_assoc_long(encaps, "jumbomtu", 1);
+			if (ifr.ifr_curcap & IFCAP_VLAN_HWTAGGING)
+				add_assoc_long(encaps, "vlanhwtag", 1);
+			if (ifr.ifr_curcap & IFCAP_VLAN_HWCSUM)
+				add_assoc_long(encaps, "vlanhwcsum", 1);
+			if (ifr.ifr_curcap & IFCAP_TSO4)
+				add_assoc_long(encaps, "tso4", 1);
+			if (ifr.ifr_curcap & IFCAP_TSO6)
+				add_assoc_long(encaps, "tso6", 1);
+			if (ifr.ifr_curcap & IFCAP_LRO)
+				add_assoc_long(encaps, "lro", 1);
+			if (ifr.ifr_curcap & IFCAP_WOL_UCAST)
+				add_assoc_long(encaps, "wolucast", 1);
+			if (ifr.ifr_curcap & IFCAP_WOL_MCAST)
+				add_assoc_long(encaps, "wolmcast", 1);
+			if (ifr.ifr_curcap & IFCAP_WOL_MAGIC)
+				add_assoc_long(encaps, "wolmagic", 1);
+			if (ifr.ifr_curcap & IFCAP_TOE4)
+				add_assoc_long(encaps, "toe4", 1);
+			if (ifr.ifr_curcap & IFCAP_TOE6)
+				add_assoc_long(encaps, "toe6", 1);
+			if (ifr.ifr_curcap & IFCAP_VLAN_HWFILTER)
+				add_assoc_long(encaps, "vlanhwfilter", 1);
+		}
+		add_assoc_zval(return_value, "caps", caps);
+		add_assoc_zval(return_value, "encaps", encaps);
+
+		tmpdl = (struct sockaddr_dl *)mb->ifa_addr;
+		if (tmpdl->sdl_alen != ETHER_ADDR_LEN)
+			continue;
+		bzero(outputbuf, sizeof outputbuf);
+		ether_ntoa_r((struct ether_addr *)LLADDR(tmpdl), outputbuf);
+		add_assoc_string(return_value, "macaddr", outputbuf, 1);
+
+		if (tmpdl->sdl_type != IFT_ETHER)
+			continue;
+		strncpy(ifr.ifr_name, mb->ifa_name, sizeof(ifr.ifr_name));
+		memcpy(&ifr.ifr_addr, mb->ifa_addr,
+		    sizeof(mb->ifa_addr->sa_len));
+		ifr.ifr_addr.sa_family = AF_LOCAL;
+		if ((sock_hw = socket(AF_LOCAL, SOCK_DGRAM, 0)) < 0)
+			continue;
+		rc = ioctl(sock_hw, SIOCGHWADDR, &ifr);
+		close(sock_hw);
+		if (rc != 0)
+			continue;
+
+		bzero(outputbuf, sizeof outputbuf);
+		ether_ntoa_r((const struct ether_addr *)&ifr.ifr_addr.sa_data,
+		    outputbuf);
+		add_assoc_string(return_value, "hwaddr", outputbuf, 1);
 	}
 	freeifaddrs(ifdata);
 }

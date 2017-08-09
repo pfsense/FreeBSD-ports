@@ -67,9 +67,6 @@ function bind_zone_validate($post, &$input_errors) {
 							$input_errors[] = 'On reverse zones, valid record types are NS or PTR';
 						}
 					}
-					if (preg_match("/(MX|NS)/", $_POST["hosttype$i"])) {
-						$_POST["hostname$i"] = "";
-					}
 					if (!preg_match("/(MX|NS)/", $_POST["hosttype$i"]) && $_POST["hostname$i"] == "") {
 						$input_errors[] = 'Record cannot be empty for '.$_POST["hosttype$i"].' type ';
 					}
@@ -507,7 +504,10 @@ EOD;
 							}
 						}
 						for ($y = 0; $y < sizeof($zone['row']); $y++) {
-							$hostname = (preg_match("/(MX|NS)/", $zone['row'][$y]['hosttype']) ? "@" : $zone['row'][$y]['hostname']);
+							$hostname = $zone['row'][$y]['hostname'];
+							if (preg_match("/(MX|NS)/", $zone['row'][$y]['hosttype']) && $hostname == "") {
+								$hostname = "@";
+							}
 							$hosttype = $zone['row'][$y]['hosttype'];
 							$hostdst = $zone['row'][$y]['hostdst'];
 							if (preg_match("/[a-zA-Z]/", $hostdst) && !preg_match("/(TXT|SPF|AAAA)/", $hosttype)) {

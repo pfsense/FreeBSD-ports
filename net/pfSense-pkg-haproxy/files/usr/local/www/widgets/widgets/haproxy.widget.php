@@ -143,14 +143,14 @@ if ($show_frontends == "YES") {
 print "<tr><td class=\"widgetsubheader\" colspan=\"4\"><strong>Backend(s)/Server(s)</strong></td></tr>";
 print "<tr><td class=\"listlr\"><strong>Backend(s)</strong><br>&nbsp;Server(s)";
 if ($show_clients == "YES") {
-	print "<br>&nbsp;&nbsp;<font color=\"blue\"><i>Client(s) addr:port</i></font>";
+	print "<br><div class='text-success'>&nbsp;&nbsp;<i>Client(s) addr:port</i></div>";
 }
 print "</td>";
 print "<td class=\"listlr\"><strong>Sessions</strong><br>(cur/max)<br>";
 if ($show_clients == "YES" and $show_clients_traffic != "YES") {
-	print "<font color=\"blue\">age/id</font>";
+	print "<div class='text-success'>age/id</div>";
 } elseif ($show_clients == "YES" and $show_clients_traffic == "YES") {
-	print "<font color=\"blue\">age/traffic i/o</font>";
+	print "<div class='text-success'>age/traffic i/o</div>";
 }
 print "</td>";
 print "<td class=\"listlr\" colspan=\"2\"><strong><center>Status<br>/<br>Actions</center></strong></td>";
@@ -162,8 +162,8 @@ foreach ($backends as $be => $bedata) {
 		$bename = $bedata['pxname'];
 	} else {
 		$statusicon = $out;
-		$besess = "<strong><font color=\"red\">".$bedata['status']."</font></strong>";
-		$bename = "<font color=\"red\">".$bedata['pxname']."</font>";
+		$besess = "<strong><div class='text-danger'>".$bedata['status']."</div></strong>";
+		$bename = "<div class='text-danger'>".$bedata['pxname']."</div>";
 	}
 	$icondetails = " onmouseover=\"this.title='".$bedata['status']."'\"";
 	print "<tr height=\"4\"><td bgcolor=\"#B1B1B1\" colspan=\"4\"></td></tr>";
@@ -184,22 +184,22 @@ foreach ($backends as $be => $bedata) {
 				$statusicon = $in;
 				$acticon = $stop;
 				$srvname = $srvdata['svname'];
-				$srvdata['scur'] = "<font color=\"blue\">no check</font>";
+				$srvdata['scur'] = "<div class='text-success'>no check</div>";
 			} elseif ($srvdata['status'] == "MAINT") {
 				$nextaction = "start";
 				$statusicon = $out;
 				$acticon = $start;
-				$srvname = "<font color=\"blue\">".$srvdata['svname']."</font>";
-				$srvdata['scur'] = "<font color=\"blue\">".$srvdata['status']."</font>";
+				$srvname = "<div class='text-success'>".$srvdata['svname']."</div>";
+				$srvdata['scur'] = "<div class='text-success'>".$srvdata['status']."</div>";
 			} else {
 				$nextaction = "stop";
 				$statusicon = $out;
 				$acticon = $stop;
-				$srvname = "<font color=\"red\">".$srvdata['svname']."</font>";
-				$srvdata['scur'] = "<font color=\"red\">".$srvdata['status']."</font>";
+				$srvname = "<div class='text-danger'>".$srvdata['svname']."</div>";
+				$srvdata['scur'] = "<div class='text-danger'>".$srvdata['status']."</div>";
 			}
 			$icondetails = " onmouseover=\"this.title='".$srvdata['status']."'\"";
-			print "<tr><td class=\"listlr\">&nbsp;".$srvname."</td>";
+			print "<tr><td class=\"listlr \" style='padding-left:10px;'>".$srvname."</td>";
 			print "<td class=\"listlr\">".$srvdata['scur']."</td>";
 			print "<td class=\"listlr\"$icondetails><center>".$statusicon."</center></td>";
 			
@@ -209,13 +209,13 @@ foreach ($backends as $be => $bedata) {
 			if ($show_clients == "YES") {
 				foreach ($clients as $cli => $clidata) {
 					if ($clidata['be'] == $bedata['pxname'] && $clidata['srv'] == $srvdata['svname']) {
-						print "<tr><td class=\"listlr\">&nbsp;&nbsp;<font color=\"blue\"><i>".$clidata['src']."</i></font>&nbsp;<a href=\"diag_dns.php?host=".$clidata['srcip']."\" title=\"Reverse Resolve with DNS\">".$log."</a></td>";
+						print "<tr><td class=\"listlr\"><div class='text-success'>&nbsp;&nbsp;<i>".$clidata['src']."</i></div>&nbsp;<a href=\"diag_dns.php?host=".$clidata['srcip']."\" title=\"Reverse Resolve with DNS\">".$log."</a></td>";
 						if ($show_clients_traffic == "YES") {
 							$clientstraffic[0] = format_bytes($clidata['session_datareq']);
 							$clientstraffic[1] = format_bytes($clidata['session_datares']);
-							print "<td class=\"listlr\" colspan=\"3\"><font color=\"blue\">".$clidata['age']." / ".$clientstraffic[0]." / ".$clientstraffic[1]."</font></td></tr>";
+							print "<td class=\"listlr\" colspan=\"3\"><div class='text-success'>".$clidata['age']." / ".$clientstraffic[0]." / ".$clientstraffic[1]."</div></td></tr>";
 						} else {
-							print "<td class=\"listlr\" colspan=\"3\"><font color=\"blue\">".$clidata['age']." / ".$clidata['sessid']."</font></td></tr>";
+							print "<td class=\"listlr\" colspan=\"3\"><div class='text-success'>".$clidata['age']." / ".$clidata['sessid']."</div></td></tr>";
 						}
 					}
 				}

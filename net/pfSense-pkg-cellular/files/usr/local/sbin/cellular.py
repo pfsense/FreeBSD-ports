@@ -23,11 +23,12 @@ from __future__ import print_function
 """
 CLI for lte cards in pfsense systems.
 
-2016 by Fabian Schweinfurth tech@voleatech.de (Voleatech GmbH Pfullingen, Germany)
+2016 - 2017 by Voleatech GmbH (tech@voleatech.de)
 """
 
 import sys
 import os
+import time
 
 import argparse
 import ConfigParser
@@ -38,7 +39,9 @@ __version__ = "1.1.0_B22"
 huawei = (lambda a: a.startswith("Huawei"))
 
 class CellularInterface:
-	"""Cellular Serial interface for LTE cards by Voleatech."""
+	"""
+	Cellular Serial interface for LTE cards by Voleatech.
+	"""
 
 	DEBUG = False
 
@@ -93,7 +96,9 @@ class CellularInterface:
 			self.timeout = t
 
 	def set_config(self, args):
-		"""write config to .cellular.conf"""
+		"""
+		write config to .cellular.conf
+		"""
 		tmp = ConfigParser.ConfigParser()
 
 		if (os.path.isfile(self.conf)):
@@ -113,9 +118,11 @@ class CellularInterface:
 		print("OK", file=sys.stdout)
 
 	def init_hardware(self):
-		"""write hardware information to .cellular.conf.
+		"""
+		write hardware information to .cellular.conf.
 
-		sets self.module and self.manufacturer"""
+		sets self.module and self.manufacturer
+		"""
 
 		tmp = ConfigParser.ConfigParser()
 
@@ -160,7 +167,9 @@ class CellularInterface:
 			tmp.write(f)
 
 	def init_config(self, config_file):
-		"""initialize config file if not present or from old version."""
+		"""
+		initialize config file if not present or from old version.
+		"""
 		
 		#make sure confdir exists
 		if (not os.path.isdir(self.confdir)):
@@ -208,7 +217,8 @@ class CellularInterface:
 		cmd - AT command without <AT> at the beginning
 		to_stdout - should answer be printed to stdout? (default True)
 
-		return (return code, answer)."""
+		return (return code, answer).
+		"""
 
 		import re
 
@@ -222,8 +232,17 @@ class CellularInterface:
 			return ("-1", "-1")
 
 		# send AT command
-		ret = self.ser.write("AT{}\r".format(cmd))
-		answ = self.ser.read(1024)
+		# We will try 3 times since the modem is sometimes busy
+		for x in range(0, 2):
+
+			ret = self.ser.write("AT{}\r".format(cmd))
+			answ = self.ser.read(1024)
+
+			# better save than sorry
+			if "OK" in answ:
+				break
+
+			time.sleep(0.2)
 
 		# better save than sorry
 		if ("ERROR" in answ) or (not "OK" in answ):
@@ -244,7 +263,9 @@ class CellularInterface:
 		return (ret, answ)
 
 	def custom_command(self, args):
-		"""send a custom command to the module"""
+		"""
+		send a custom command to the module
+		"""
 		cmd = args.cmd
 
 		if ("AT" in args.cmd and args.cmd.index("AT") == 0):
@@ -253,9 +274,11 @@ class CellularInterface:
 		return self.at_cmd(cmd, args)
 
 	def signal_strength(self, args):
-		"""receive signal strength converted to 1-4
+		"""
+		receive signal strength converted to 1-4
 
-		returns ERROR on Error"""
+		returns ERROR on Error
+		"""
 
 		args.silent = True
 		widget = self.widget(args)
@@ -269,9 +292,11 @@ class CellularInterface:
 		return widget
 
 	def _parse_signal_strength(self, strength):
-		"""parse and convert signal strength to 1-4"""
+		"""
+		parse and convert signal strength to 1-4
+		"""
 
-		steps = [0, 1, 9, 14, 19, 30]
+		steps = [0, 1, 9, 14, 19, 31]
 
 		rssi = int(strength.split(",")[0])
 
@@ -284,7 +309,9 @@ class CellularInterface:
 			return str(ret -1)
 
 	def _at_information(self, args):
-		"""receive module information"""
+		"""
+		receive module information
+		"""
 
 		return self.at_cmd("I", args)
 
@@ -294,7 +321,8 @@ class CellularInterface:
 		return self.at_cmd("^SYSINFOEX", args, short = True)
 
 	def infoex(self, args):
-		"""system information
+		"""
+		system information
 		^SYSINFOEX: 2,3,0,1,,6,"LTE",101,"LTE"
 		^SYSINFOEX: <srv_status>,<srv_domain>,<roam_status>,<sim_state>,<lock_state>,<sysmode>,<sysmode_name>,<submode>,<submode_name>
 		"""
@@ -316,7 +344,9 @@ class CellularInterface:
 			return infoex.split(",")[6].strip('"')
 
 	def get_model(self, args, silent=False):
-		"""get model of module."""
+		"""
+		get model of module.
+		"""
 		import re
 		# TODO: +GMM
 		info = self._at_information(args)
@@ -334,7 +364,9 @@ class CellularInterface:
 		return info
 
 	def get_manufacturer(self, args, silent=False):
-		"""get manufacturere of module."""
+		"""
+		get manufacturere of module.
+		"""
 		import re
 		# TODO: +GMI 
 		info = self._at_information(args)
@@ -357,7 +389,9 @@ class CellularInterface:
 		return ret
 
 	def get_carrier(self, args):
-		"""get carrier and convert to string."""
+		"""
+		get carrier and convert to string.
+		"""
 
 		args.silent = True
 		widget = self.widget(args)
@@ -371,13 +405,15 @@ class CellularInterface:
 		return widget
 
 	def _parse_carrier(self, ret):
-
-		# HUAWAI ONLY
-		if (huawei(self.manufacturer)):
-			return ret.split(",")[2].strip('"')
+		'''
+		Parse carrier string
+		'''
+		return ret.split(",")[2].strip('"')
 
 	def widget(self, args):
-		"""get widget information (signal strength, carrier, mode)"""
+		"""
+		get widget information (signal strength, carrier, mode)
+		"""
 		import re
 
 		cmds = (("+CSQ", self._parse_signal_strength),
@@ -397,7 +433,6 @@ class CellularInterface:
 
 		if (not args.silent):
 			print(",".join(out), file=sys.stdout)
-
 
 		return (out, ret[1])
 
