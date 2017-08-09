@@ -84,6 +84,7 @@ IS ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <netinet/ip_fw.h>
 #include <netinet/tcp_fsm.h>
 #include <netinet6/in6_var.h>
+#include <net80211/ieee80211_ioctl.h>
 
 #include <vm/vm_param.h>
 
