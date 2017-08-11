@@ -192,7 +192,7 @@ function haproxy_userlist_backend_servers($backendname) {
 	return $backend_servers;
 }
 
-$pgtitle = array("Services", "HAProxy", "Frontends");
+$pgtitle = array("Services", "HAProxy", "Frontend");
 include("head.inc");
 if ($input_errors) {
 	print_input_errors($input_errors);
@@ -210,18 +210,25 @@ haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "frontend");
 
 ?>
 <form action="haproxy_listeners.php" method="post">
-<script type="text/javascript" src="/haproxy/haproxy_geturl.js"></script>
 <script type="text/javascript">
 function set_content(elementid, image) {
 	var item = document.getElementById(elementid);
 	item.innerHTML = image;
 }
-
+function toggleFrontend(frontendname) {
+	$.ajax({
+		url: "",
+		data: {id: frontendname, action:"toggle"},
+		success: function(data){
+			js_callback(data);
+		}
+	})
+}
 function js_callback(req) {
 	showapplysettings.style.display = 'block';
 	
-	if(req.content !== '') {
-		var itemsplit = req.content.split("|");
+	if(req !== '') {
+		var itemsplit = req.split("|");
 		buttonid = itemsplit[0];
 		enabled = itemsplit[1];
 		if (enabled === "1"){
@@ -314,7 +321,7 @@ function js_callback(req) {
 						} else {
 							$iconfn = "enabled";
 						}?>
-					<a id="btn_<?=$frontendname;?>" href='javascript:getURL("?id=<?=$frontendname;?>&amp;action=toggle&amp;", js_callback);'>
+					<a id="btn_<?=$frontendname;?>" href='javascript:toggleFrontend("<?=$frontendname;?>");'>
 						<?=haproxyicon($iconfn, gettext("click to toggle enable/disable this frontend"))?>
 					</a>
 				  </td>
