@@ -43,8 +43,9 @@ if (!is_array($config["widgets"]["haproxy"])) {
 $a_config = &$config["widgets"]["haproxy"];
 
 $getupdatestatus=false;
-if(!empty($_GET['getupdatestatus'])) {
+if(!empty($_REQUEST['getupdatestatus'])) {
 	$getupdatestatus=true;
+	header("Content-Type: application/octet-stream");
 }
 
 #Backends/Servers Actions if asked
@@ -65,7 +66,7 @@ if(!empty($_GET['act']) and !empty($_GET['be']) and !empty($_GET['srv'])) {
 }
 
 $simplefields = array("haproxy_widget_timer","haproxy_widget_showfrontends","haproxy_widget_showclients","haproxy_widget_showclienttraffic");
-if ($_POST) {
+if ($_POST['submit']) {
 	foreach($simplefields as $fieldname) {
 		$a_config[$fieldname] = $_POST[$fieldname];
 	}
@@ -236,12 +237,17 @@ if ($getupdatestatus) {
 ?>
 </div>
 
-<script type="text/javascript" src="/haproxy/haproxy_geturl.js"></script>
 <script type="text/javascript">
 	function getstatusgetupdate() {
-		var url = "/widgets/widgets/haproxy.widget.php";
-		var pars = 'getupdatestatus=yes';
-		getURL(url+"?"+pars, activitycallback_haproxy);
+		$.ajax({
+			url: "/widgets/widgets/haproxy.widget.php",
+			data: { 
+				getupdatestatus: "yes"
+			},
+			success: function(data, textStatus, response){
+				activitycallback_haproxy(response);
+			}
+		})
 	}
 	function getstatus_haproxy() {
 		setTimeout(getstatus_haproxy, <?= $refresh_rate ?>);
@@ -249,18 +255,25 @@ if ($getupdatestatus) {
 
 	}
 	function activitycallback_haproxy(transport) {
+		if (transport.getResponseHeader("content-type") != "application/octet-stream") {
+			transport.responseText = "Stats not available";
+		} 
 		if ($('haproxy_content').innerHTML) {
-			$('haproxy_content').innerHTML = transport.content;
+			$('haproxy_content').innerHTML = transport.responseText;
 		} else {
-			$('#haproxy_content').html(transport.content);
+			$('#haproxy_content').html(transport.responseText);
 		}
 	}
 	setTimeout(getstatus_haproxy, <?= $refresh_rate ?>);
 	
-	function control_haproxy(act,be,srv) {
-			var url = "/widgets/widgets/haproxy.widget.php";
-			var pars = 'act='+act+'&be='+be+'&srv='+srv;
-			getURL(url+"?"+pars, getstatusgetupdate);
+	function control_haproxy(act, be, srv) {
+			$.ajax({
+				url: "/widgets/widgets/haproxy.widget.php",
+				data: { 'act': act, 'be': be, 'srv': srv },
+				success: function(){
+					getstatusgetupdate();
+				}
+			})
 	}
 </script>
 <div id="widget-<?=$widgetname?>_panel-footer" class="panel-footer collapse">
