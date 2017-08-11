@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-pkg-frr
 PORTVERSION=	0.0.1
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -27,8 +28,6 @@ do-extract:
 	${MKDIR} ${WRKSRC}
 
 do-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
-	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/frr
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/frr/inc
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${MKDIR} ${STAGEDIR}${PREFIX}/www
