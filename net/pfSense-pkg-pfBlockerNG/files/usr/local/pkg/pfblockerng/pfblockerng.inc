@@ -3355,7 +3355,7 @@ function sync_package_pfblockerng($cron='') {
 									while (($line = @fgets($fhandle, 3072)) !== FALSE) {
 
 										// On 'category match', parse EasyList feed 
-										if (isset($easylist) && !$e_found && strpos($line, '! ***') !== FALSE) {
+										if (isset($easylist)) {
 											if (strpos($line, 'easylist_adservers.') !== FALSE ||
 											    strpos($line, 'easyprivacy_trackingservers.') !== FALSE) {
 												$e_found = TRUE;
@@ -3486,7 +3486,7 @@ function sync_package_pfblockerng($cron='') {
 										$line = trim($line);
 
 										// Parser for EasyList, enable collect of selected EasyList categories
-										if (isset($easylist)) {
+										if (isset($easylist) && strpos($line, '! ***') !== FALSE) {
 											// Skip all previous Easylist entries
 
 											// Collect EasyList feed
