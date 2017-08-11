@@ -4712,7 +4712,7 @@ function sync_package_pfblockerng($cron='') {
 								// Floating rules 'off'. Collect 'floating other', pass, balance to 'other'
 								if ($rule['floating'] == 'yes') {
 									$fother_rules[] = $rule;
-								} elseif ($rule['type'] == 'pass') {
+								} elseif ($rule['type'] == 'pass' || isset($rule['associated-rule-id'])) {
 									if ($pfb['order'] == 'order_0') {
 										$other_rules[] = $rule;
 									} else {
