@@ -3486,7 +3486,7 @@ function sync_package_pfblockerng($cron='') {
 										$line = trim($line);
 
 										// Parser for EasyList, enable collect of selected EasyList categories
-										if (isset($easylist) && strpos($line, '! ***') !== FALSE) {
+										if (isset($easylist)) {
 											// Skip all previous Easylist entries
 
 											// Collect EasyList feed
