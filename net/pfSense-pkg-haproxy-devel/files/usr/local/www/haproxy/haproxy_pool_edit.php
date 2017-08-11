@@ -504,7 +504,8 @@ if ($_POST) {
 }
 
 $closehead = false;
-$pgtitle = array("Services", "HAProxy", "Backend server pool: Edit");
+$pgtitle = array("Services", "HAProxy", "Backend", "Edit");
+$pglinks = array("", "", "/haproxy/haproxy_pools.php", "@self");
 include("head.inc");
 haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "backend");
 
@@ -657,6 +658,9 @@ $serverslist->Draw($a_servers).
 EOT
 ));
 
+$form->add($section);
+$section = new Form_Section('Loadbalancing options (when multiple servers are defined)',"balance", COLLAPSIBLE|SEC_CLOSED);
+
 $mode = $pconfig['balance'];
 $section->addInput(new Form_Checkbox(
 	'balance',
@@ -756,19 +760,10 @@ $section->addInput(new Form_Checkbox(
 	Allow using whole URI including url parameters behind a question mark.'
 );
 
-$section->addInput(new Form_Input('advanced', 'Per server pass thru', 'text', $pconfig['advanced']
-))->setHelp('NOTE: paste text into this box that you would like to pass thru. Applied to each "server" line.');
-
-$textrowcount = max(substr_count($pconfig['advanced_backend'],"\n"), 2) + 2;
-$section->addInput(new Form_Textarea (
-	'advanced_backend',
-	'Backend pass thru',
-	$pconfig['advanced_backend']
-))->setRows($textrowcount)->setNoWrap()->setHelp('NOTE: paste text into this box that you would like to pass thru. Applied to the backend section.');
-
 $form->add($section);
 
-$section = new Form_Section('Access control lists and actions');
+$panel_body_state = (count($pconfig['a_acl']) > 0 || count($pconfig['a_actionitems']) > 0)? SEC_OPEN : SEC_CLOSED;
+$section = new Form_Section('Access control lists and actions', "aclpanel", COLLAPSIBLE|$panel_body_state);
 $section->addInput(new Form_StaticText(
 	'Access Control lists',
 	$htmllist_acls->Draw($pconfig['a_acl']).
@@ -827,6 +822,21 @@ $section->addInput(new Form_StaticText(
 	</div>
 EOT
 ));
+$form->add($section);
+
+$section = new Form_Section_class('Timeout / retry settings');
+$section->addInput(new Form_Input('connection_timeout', 'Connection timeout', 'text', $pconfig['connection_timeout']
+))->setHelp('The time (in milliseconds) we give up if the connection does not complete within (default 30000).');
+$section->addInput(new Form_Input('server_timeout', 'Server timeout', 'text', $pconfig['server_timeout']
+))->setHelp('The time (in milliseconds) we accept to wait for data from the server, or for the server to accept data (default 30000).');
+$section->addInput(new Form_Input('retries', 'Retries', 'text', $pconfig['retries']
+))->setHelp(<<<EOT
+	After a connection failure to a server, it is possible to retry, potentially
+	on another server. This is useful if health-checks are too rare and you don't
+	want the clients to see the failures. The number of attempts to reconnect is
+	set by the "retries" parameter.
+EOT
+);
 $form->add($section);
 
 $section = new Form_Section_class('Health checking');
@@ -893,58 +903,6 @@ $section->addInput(new Form_Input('agent_port', 'Agent port', 'number', $pconfig
 $section->addInput(new Form_Input('agent_inter', 'Agent interval', 'text', $pconfig['agent_inter']
 ),"haproxy_agent_check")->setHelp('Interval between two agent checks, defaults to 2000 ms.');
 
-$form->add($section);
-
-$section = new Form_Section('Advanced settings');
-$section->addInput(new Form_Input('connection_timeout', 'Connection timeout', 'text', $pconfig['connection_timeout']
-))->setHelp('The time (in milliseconds) we give up if the connection does not complete within (default 30000).');
-$section->addInput(new Form_Input('server_timeout', 'Server timeout', 'text', $pconfig['server_timeout']
-))->setHelp('The time (in milliseconds) we accept to wait for data from the server, or for the server to accept data (default 30000).');
-$section->addInput(new Form_Input('retries', 'Retries', 'text', $pconfig['retries']
-))->setHelp(<<<EOT
-	After a connection failure to a server, it is possible to retry, potentially
-	on another server. This is useful if health-checks are too rare and you don't
-	want the clients to see the failures. The number of attempts to reconnect is
-	set by the "retries" parameter.
-EOT
-);
-$interfaces = get_configured_interface_with_descr();
-$section->addInput(new Form_StaticText(
-	'Transparent ClientIP', <<<EOT
-	<div class="alert alert-warning" role="alert">
-		<p>
-			WARNING Activating this option will load rules in IPFW and might interfere with CaptivePortal and possibly other services due 
-			to the way server return traffic must be 'captured' with a automatically created fwd rule. This also breaks directly accessing 
-			the (web)server on the ports configured above. Also a automatic sloppy pf rule is made to allow HAProxy to server traffic.<br/>
-			Workaround exists only by configuring a second port or IP on the destination server for direct access of the website.
-		</p>
-	</div>
-EOT
-.(new Form_Checkbox(
-	'transparent_clientip',
-	'',
-	"Use Client-IP to connect to backend servers.",
-	$pconfig['transparent_clientip']
-))->setHelp("By default, failed health check are logged if server is UP and successful health checks are logged if server is DOWN, so the amount of additional information is limited."
-)
-.
-(new Form_Select(
-	'transparent_interface',
-	'',
-	$pconfig['transparent_interface']?$pconfig['transparent_interface']:"lan",
-	$interfaces
-))->addClass("haproxy_transparent_clientip")->setHelp("Interface that will connect to the backend server. (this will generally be your LAN or OPT1(dmz) interface)")
-.
-<<<EOT
-	
-	Connect transparently to the backend server's so the connection seams to come straight from the client ip address.
-	To work properly this requires the reply traffic to pass through pfSense by means of correct routing.<br/>
-	When using IPv6 only routable ip addresses can be used, host names or link-local addresses (FE80) will not work.<br/>				
-	(uses the option "source 0.0.0.0 usesrc clientip" or "source ipv6@ usesrc clientip")
-	<br/><br/>
-	Note : When this is enabled for any backend HAProxy will run as 'root' instead of chrooting to a lower privileged user, this reduces security in case a vulnerability is found.
-EOT
-));
 $form->add($section);
 
 $section = new Form_Section_class('Cookie persistence');
@@ -1060,9 +1018,9 @@ $section->addInput(new Form_Input('stats_desc', 'Stats Description', 'text', $pc
 $section->addInput(new Form_Input('stats_refresh', 'Stats Refresh', 'text', $pconfig['stats_refresh']
 ),"haproxy_stats_visible")->setHelp('Specify the refresh rate of the stats page in seconds, or specified time unit (us, ms, s, m, h, d).');
 
-
+$panel_body_state = count($a_errorfiles) > 0 ? SEC_OPEN : SEC_CLOSED;
 $form->add($section);
-$section = new Form_Section('Error files');
+$section = new Form_Section('Error files', "errorfiles", COLLAPSIBLE|$panel_body_state);
 $section->addInput(new Form_StaticText(
 	'Error files',
 	"Use these to replace the error pages that haproxy can generate by custom pages created on the files tab.
@@ -1071,7 +1029,8 @@ $section->addInput(new Form_StaticText(
 ));
 $form->add($section);
 
-$section = new Form_Section('Advanced');
+$panel_body_state = (!empty($pconfig['strict_transport_security']) || $pconfig['cookie_attribute_secure'] == "yes") ? SEC_OPEN : SEC_CLOSED;
+$section = new Form_Section('HSTS / Cookie protection', "", COLLAPSIBLE|$panel_body_state);
 $field = (new Form_Input(
 	'strict_transport_security',
 	'',
@@ -1100,6 +1059,62 @@ $section->addInput(new Form_Checkbox(
 	$pconfig['cookie_attribute_secure']
 ))->setHelp("This configuration option sets up the Secure attribute on cookies if it has not been setup by the application server while the client was browsing the application over a ciphered connection.");
 
+$form->add($section);
+
+$panel_body_state = 
+		!empty($pconfig['advanced']) ||
+		!empty($pconfig['advanced_backend'] ||
+		$pconfig['transparent_clientip'] == "yes")
+		? SEC_OPEN : SEC_CLOSED;
+$section = new Form_Section('Advanced settings', "advanced_panel", COLLAPSIBLE|$panel_body_state);
+$section->addInput(new Form_Input('advanced', 'Per server pass thru', 'text', $pconfig['advanced']
+))->setHelp('NOTE: paste text into this box that you would like to pass thru. Applied to each "server" line.');
+
+$textrowcount = max(substr_count($pconfig['advanced_backend'],"\n"), 2) + 2;
+$section->addInput(new Form_Textarea (
+	'advanced_backend',
+	'Backend pass thru',
+	$pconfig['advanced_backend']
+))->setRows($textrowcount)->setNoWrap()->setHelp('NOTE: paste text into this box that you would like to pass thru. Applied to the backend section.');
+
+$interfaces = get_configured_interface_with_descr();
+$section->addInput(new Form_StaticText(
+	'Transparent ClientIP', <<<EOT
+	<div class="alert alert-warning" role="alert">
+		<p>
+			WARNING Activating this option will load rules in IPFW and might interfere with CaptivePortal and possibly other services due 
+			to the way server return traffic must be 'captured' with a automatically created fwd rule. This also breaks directly accessing 
+			the (web)server on the ports configured above. Also a automatic sloppy pf rule is made to allow HAProxy to server traffic.<br/>
+			Workaround exists only by configuring a second port or IP on the destination server for direct access of the website.<br/>
+			Having this option enabled also means that a client on the same subnet as the server wont be able to connect.
+		</p>
+	</div>
+EOT
+.(new Form_Checkbox(
+	'transparent_clientip',
+	'',
+	"Use Client-IP to connect to backend servers.",
+	$pconfig['transparent_clientip']
+))->setHelp("By default, failed health check are logged if server is UP and successful health checks are logged if server is DOWN, so the amount of additional information is limited."
+)
+.
+(new Form_Select(
+	'transparent_interface',
+	'',
+	$pconfig['transparent_interface']?$pconfig['transparent_interface']:"lan",
+	$interfaces
+))->addClass("haproxy_transparent_clientip")->setHelp("Interface that will connect to the backend server. (this will generally be your LAN or OPT1(dmz) interface)")
+.
+<<<EOT
+	
+	Connect transparently to the backend server's so the connection seams to come straight from the client ip address.
+	To work properly this requires the reply traffic to pass through pfSense by means of correct routing.<br/>
+	When using IPv6 only routable ip addresses can be used, host names or link-local addresses (FE80) will not work.<br/>				
+	(uses the option "source 0.0.0.0 usesrc clientip" or "source ipv6@ usesrc clientip")
+	<br/><br/>
+	Note : When this is enabled for any backend HAProxy will run as 'root' instead of chrooting to a lower privileged user, this reduces security in case a vulnerability is found.
+EOT
+));
 $form->add($section);
 
 print $form;
