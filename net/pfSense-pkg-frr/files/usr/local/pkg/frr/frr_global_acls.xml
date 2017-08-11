@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * frr_global_acls.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2012-2015 Rubicon Communications, LLC (Netgate)
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>frr_global_acls</name>
+	<title>Services/FRR/Global Settings</title>
+	<include_file>/usr/local/pkg/frr.inc</include_file>
+	<aftersaveredirect>pkg.php?xml=frr/frr_global_acls.xml</aftersaveredirect>
+	<tabs>
+		<tab>
+			<text>Global Settings</text>
+			<url>pkg_edit.php?xml=frr.xml</url>
+		</tab>
+		<tab>
+			<text>Access Lists</text>
+			<url>pkg.php?xml=frr/frr_global_acls.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Prefix Lists</text>
+			<url>pkg.php?xml=frr/frr_global_prefixes.xml</url>
+		</tab>
+		<tab>
+			<text>Route Maps</text>
+			<url>pkg.php?xml=frr/frr_global_routemaps.xml</url>
+		</tab>
+		<tab>
+			<text>Raw Config</text>
+			<url>pkg_edit.php?xml=frr/frr_global_raw.xml</url>
+		</tab>
+		<tab>
+			<text>[BGP]</text>
+			<url>pkg_edit.php?xml=frr/frr_bgp.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf.xml</url>
+		</tab>
+		<tab>
+			<text>[OSPF6]</text>
+			<url>pkg_edit.php?xml=frr/frr_ospf6.xml</url>
+		</tab>
+		<tab>
+			<text>Status</text>
+			<url>/status_frr.php</url>
+		</tab>
+	</tabs>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>Name</fielddescr>
+			<fieldname>name</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+		</columnitem>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<fielddescr>Name</fielddescr>
+			<fieldname>name</fieldname>
+			<description>
+				<![CDATA[
+				The name of this Access List entry.
+				<br/><br/>
+				Use 1-99 or 1300-1999 for a standard access list (source only),
+				100-199 or 2000-2699 for an extended access list (source and destination),
+				or enter a text name for a zebra access list
+				]]>
+			</description>
+			<type>input</type>
+			<size>20</size>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>descr</fieldname>
+			<size>50</size>
+			<type>input</type>
+		</field>
+		<field>
+			<fielddescr></fielddescr>
+			<description>
+				<![CDATA[
+				Access List entries determine if networks are allowed or denied in specific contexts used in various routing daemons.
+				<br/><br/>
+				Order is important. Use the sequence field to reorder entries after saving. The networks may be a host, network, or "any".
+				Exact only applies to zebra type access lists.
+				<br/><br/>
+				Leave the Destination Network blank when using a standard or zebra access list instead of an extended access list.
+				<br/><br/>
+				Only Zebra Access Lists support IPv6. The type is detected automatically based on the address given. To specify 'any' for IPv6, use 'any6'.
+				]]>
+			</description>
+			<type>info</type>
+		</field>
+		<field>
+			<fielddescr>Access List Entries</fielddescr>
+			<fieldname>none</fieldname>
+			<type>rowhelper</type>
+			<rowhelper>
+				<rowhelperfield>
+					<fielddescr>Sequence</fielddescr>
+					<fieldname>seq</fieldname>
+					<type>input</type>
+					<size>5</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Action</fielddescr>
+					<fieldname>action</fieldname>
+					<description>Permit or deny access to a network.</description>
+					<type>select</type>
+					<default_value>Deny</default_value>
+					<options>
+						<option><name>Deny</name><value>deny</value></option>
+						<option><name>Permit</name><value>permit</value></option>
+					</options>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Source Network</fielddescr>
+					<fieldname>source</fieldname>
+					<type>input</type>
+					<size>25</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Destination Network</fielddescr>
+					<fieldname>destination</fieldname>
+					<type>input</type>
+					<size>25</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Exact</fielddescr>
+					<fieldname>exactmatch</fieldname>
+					<description>Exact match of the prefix (zebra only)</description>
+					<type>checkbox</type>
+					<size>1</size>
+				</rowhelperfield>
+			</rowhelper>
+		</field>
+	</fields>
+	<custom_php_resync_config_command>
+		frr_generate_config();
+	</custom_php_resync_config_command>
+	<custom_php_validation_command>
+		frr_global_acls_validate_input();
+	</custom_php_validation_command>
+</packagegui>
