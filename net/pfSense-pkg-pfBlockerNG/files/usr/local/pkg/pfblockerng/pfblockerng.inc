@@ -3355,9 +3355,9 @@ function sync_package_pfblockerng($cron='') {
 									while (($line = @fgets($fhandle, 3072)) !== FALSE) {
 
 										// On 'category match', parse EasyList feed 
-										if (isset($easylist)) {
-											if (substr($line, 88, 19) == 'easylist_adservers.' ||
-											    substr($line, 91, 28) == 'easyprivacy_trackingservers.') {
+										if (isset($easylist) && !$e_found && strpos($line, '! ***') !== FALSE) {
+											if (strpos($line, 'easylist_adservers.') !== FALSE ||
+											    strpos($line, 'easyprivacy_trackingservers.') !== FALSE) {
 												$e_found = TRUE;
 											}
 										}
@@ -3486,37 +3486,37 @@ function sync_package_pfblockerng($cron='') {
 										$line = trim($line);
 
 										// Parser for EasyList, enable collect of selected EasyList categories
-										if (isset($easylist) && strpos($line, '! *** Fetched from:') !== FALSE) {
+										if (isset($easylist) && strpos($line, '! ***') !== FALSE) {
 											// Skip all previous Easylist entries
 
 											// Collect EasyList feed
-											if (substr($line, 88, 19) == 'easylist_adservers.') {
+											if (strpos($line, 'easylist_adservers.') !== FALSE) {
 												if (in_array('ea', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
-											elseif (substr($line, 88, 25) == 'easylist_adservers_popup.') {
+											elseif (strpos($line, 'easylist_adservers_popup.') !== FALSE) {
 												if (in_array('eap', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
-											elseif (substr($line, 94, 16) == 'adult_adservers.') {
+											elseif (strpos($line, 'adult_adservers.') !== FALSE) {
 												if (in_array('aa', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
-											elseif (substr($line, 94, 22) == 'adult_adservers_popup.') {
+											elseif (strpos($line, 'adult_adservers_popup.') !== FALSE) {
 												if (in_array('aap', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
 
 											// Collect EasyPrivacy feed
-											elseif (substr($line, 91, 28) == 'easyprivacy_trackingservers.') {
+											elseif (strpos($line, 'easyprivacy_trackingservers.') !== FALSE) {
 												if (in_array('epts', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
-											elseif (substr($line, 91, 42) == 'easyprivacy_trackingservers_international.') {
+											elseif (strpos($line, 'easyprivacy_trackingservers_international.') !== FALSE) {
 												if (in_array('epti', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
 
 											// End of useable EasyList feed
-											elseif (substr($line, 88, 20) == 'easylist_thirdparty.') {
+											elseif (strpos($line, 'easylist_thirdparty.') !== FALSE) {
 												break;
 											}
 											// End of useable EasyPrivacy feed
-											elseif (substr($line, 91, 23) == 'easyprivacy_thirdparty.') {
+											elseif (strpos($line, 'easyprivacy_thirdparty.') !== FALSE) {
 												break;
 											}
 										}
