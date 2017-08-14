@@ -34,33 +34,46 @@ EX_OSERR=71	# A system call (e.g.,	fork(2)) failed unexpectedly.
 EX_SOFTWARE=70	# The command did not exit normally, but may have been	signaled
 		# or stopped.
 
-/usr/bin/lockf -s -t 5 ${lockfile} ${pfsense_upgrade} "$@"
-rc=$?
+# Special return code to detect when pfSense-upgrade was upgraded and must
+# be called again to make sure latest version is running
+EX_UPGRADE=99
 
-unset error
-case "$rc" in
-	${EX_TEMPFAIL})
-		echo "Another instance is already running... Aborting!"
-		exit 1
-		;;
-	${EX_CANTCREAT})
-		echo "ERROR: Unable to create lockfile ${lockfile}"
-		exit 1
-		;;
-	${EX_OSERR})
-		echo "ERROR: An unexpected OS error happened"
-		error=1
-		;;
-	${EX_SOFTWARE})
-		echo "ERROR: An unexpected error happened"
-		error=1
-		;;
-esac
+while true; do
+	unset run_again
+	/usr/bin/lockf -s -t 5 ${lockfile} ${pfsense_upgrade} "$@"
+	rc=$?
 
-[ -f "${lockfile}" ] \
-	&& rm -f ${lockfile}
+	unset error
+	case "$rc" in
+		${EX_TEMPFAIL})
+			echo "Another instance is already running... Aborting!"
+			exit 1
+			;;
+		${EX_CANTCREAT})
+			echo "ERROR: Unable to create lockfile ${lockfile}"
+			exit 1
+			;;
+		${EX_OSERR})
+			echo "ERROR: An unexpected OS error happened"
+			error=1
+			;;
+		${EX_SOFTWARE})
+			echo "ERROR: An unexpected error happened"
+			error=1
+			;;
+		${EX_UPGRADE})
+			run_again=1
+			;;
+	esac
 
-[ -n "${error}" ] \
-	&& exit 1
+	[ -f "${lockfile}" ] \
+		&& rm -f ${lockfile}
 
-exit $rc
+	[ -n "${error}" ] \
+		&& exit 1
+
+	[ -n "${run_again}" ] \
+		&& continue
+
+	exit $rc
+done
