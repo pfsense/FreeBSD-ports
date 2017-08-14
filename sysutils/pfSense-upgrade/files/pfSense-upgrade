@@ -422,6 +422,15 @@ pkg_upgrade() {
 
 		pkg_upgrade_repo
 
+		# If a new version of pfSense-upgrade is available, upgrade it
+		# and return a special code 99 used by wrapper to run newer
+		# version again using the same parameters
+		if [ "$(compare_pkg_version ${product}-upgrade)" = "<" ]; then
+			_exec "pkg upgrade${dont_update} ${product}-upgrade" \
+			    "Upgrading ${product}-upgrade" mute
+			_exit 99
+		fi
+
 		pkg_unlock ${kernel_pkg} ${uboot_pkg}
 		lock_main_pkgs=1
 
