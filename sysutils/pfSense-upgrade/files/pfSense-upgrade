@@ -54,7 +54,7 @@ _echo() {
 		logfile=/dev/null
 	fi
 
-	echo ${_n} "${1}" | tee -a ${logfile}
+	echo ${_n} "${@}" | tee -a ${logfile}
 }
 
 _exec() {
