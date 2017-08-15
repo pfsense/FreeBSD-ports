@@ -252,9 +252,9 @@ abi_setup() {
 	CUR_ABI="FreeBSD:${_freebsd_version%%.*}:${_arch}"
 	CUR_ALTABI="freebsd:${_freebsd_version%%.*}"
 
-	if [ "${_arch}" == "armv6" ]; then
+	if [ "${_arch}" = "armv6" ]; then
 		CUR_ALTABI="${CUR_ALTABI}:${_arch}:32:el:eabi:hardfp"
-	elif [ "${_arch}" == "i386" ]; then
+	elif [ "${_arch}" = "i386" ]; then
 		CUR_ALTABI="${CUR_ALTABI}:x86:32"
 	else
 		CUR_ALTABI="${CUR_ALTABI}:x86:64"
@@ -1228,14 +1228,14 @@ case "${action}" in
 		pkg_update force
 		;;
 	install)
-		if [ ${action_pkg} == "ALL_PACKAGES" ] && [ -n ${force} ]; then
+		if [ ${action_pkg} = "ALL_PACKAGES" ] && [ -n ${force} ]; then
 			pkg_reinstall_all
 		else
 			pkg_install ${action_pkg} ${force}
 		fi
 		;;
 	delete)
-		if [ ${action_pkg} == "ALL_PACKAGES" ] && [ -n ${force} ]; then
+		if [ ${action_pkg} = "ALL_PACKAGES" ] && [ -n ${force} ]; then
 			pkg_delete_all
 		else
 			pkg_delete ${action_pkg}
