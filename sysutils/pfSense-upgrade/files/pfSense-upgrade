@@ -448,6 +448,8 @@ pkg_upgrade() {
 		if [ "$(compare_pkg_version ${product}-upgrade)" = "<" ]; then
 			_exec "pkg upgrade${dont_update} ${product}-upgrade" \
 			    "Upgrading ${product}-upgrade" mute
+			[ -n "${NEW_MAJOR}" ] \
+			    && pkg_unlock pkg
 			_exit 99
 		fi
 
@@ -456,11 +458,15 @@ pkg_upgrade() {
 
 		if ! upgrade_available; then
 			pkg_lock ${kernel_pkg} ${uboot_pkg}
+			[ -n "${NEW_MAJOR}" ] \
+			    && pkg_unlock pkg
 			_echo "Your packages are up to date"
 			_exit 0
 		fi
 
 		if [ -n "${dry_run}" ]; then
+			[ -n "${NEW_MAJOR}" ] \
+			    && pkg_unlock pkg
 			pkg ${pkg_chroot} upgrade${dont_update} -nq 2>&1 \
 			    | tee -a ${logfile}
 			pkg_lock ${kernel_pkg} ${uboot_pkg}
