@@ -1010,13 +1010,17 @@ if [ "${HTTP_PROXY}" != "" ]; then
 	export HTTP_PROXY
 fi
 
-HTTP_PROXY_AUTH_USER=$(read_xml_tag.sh string system/proxyuser)
-HTTP_PROXY_AUTH_PASS=$(read_xml_tag.sh string system/proxypass)
-if [ "${HTTP_PROXY_AUTH_USER}" != "" ] &&
-    [ "${HTTP_PROXY_AUTH_PASS}" != "" ]; then
-	HTTP_PROXY_AUTH="${HTTP_PROXY_AUTH_USER}:${HTTP_PROXY_AUTH_PASS}"
-	HTTP_PROXY_AUTH="basic:*:${HTTP_PROXY_AUTH}"
-	export HTTP_PROXY_AUTH
+# Only set proxy variables on FreeBSD 11 until the fix is on 10
+# https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=194483
+if $(uname -r | grep -q '^11'); then
+	HTTP_PROXY_USER=$(read_xml_tag.sh string system/proxyuser)
+	HTTP_PROXY_PASS=$(read_xml_tag.sh string system/proxypass)
+	if [ "${HTTP_PROXY_USER}" != "" ] &&
+	    [ "${HTTP_PROXY_PASS}" != "" ]; then
+		HTTP_PROXY_AUTH="${HTTP_PROXY_USER}:${HTTP_PROXY_PASS}"
+		HTTP_PROXY_AUTH="basic:*:${HTTP_PROXY_AUTH}"
+		export HTTP_PROXY_AUTH
+	fi
 fi
 
 # pkg should not ask for confirmations
