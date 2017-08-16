@@ -4040,7 +4040,7 @@ function freeradius_validate_interfaces($post, &$input_errors) {
 		if ($post['varinterfaceipversion'] == 'ipv6addr' && !is_ipaddrv6($post['varinterfaceip'])) {
 			$input_errors[] = "The 'Interface IP Address' must contain a valid IPv6 address when IPv6 is selected under 'IP Version'.";
 		}
-		if (!is_ipaddr_configured($post['varinterfaceip'])) {
+		if (!is_ipaddr_configured($post['varinterfaceip']) && $post['varinterfaceip'] != "127.0.0.1") {
 			$input_errors[] = "The 'Interface IP Address' must contain a valid, locally configured IP address!";
 		}
 	}

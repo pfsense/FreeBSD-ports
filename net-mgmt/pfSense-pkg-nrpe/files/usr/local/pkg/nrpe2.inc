@@ -154,8 +154,13 @@ function nrpe2_custom_php_write_config() {
 		$sudo = (isset($cmd['sudo']) && is_executable($sudo_bin)) ? "{$sudo_bin} " : "";
 		$wcmd = !empty($cmd['warning']) ? "-w {$cmd['warning']}" : "";
 		$ccmd = !empty($cmd['critical']) ? "-c {$cmd['critical']}" : "";
-		if (is_executable("{$nagios_check_path}/{$cmd['command']}")) {
-			$cmds[] = "command[{$cmd['name']}]={$sudo}{$nagios_check_path}/{$cmd['command']} {$wcmd} {$ccmd} {$cmd['extra']}\n";
+
+		$path_to_command = "{$nagios_check_path}/{$cmd['command']}";
+		if (is_executable($path_to_command)) {
+			$cmds[] = "command[{$cmd['name']}]={$sudo}{$path_to_command} {$wcmd} {$ccmd} {$cmd['extra']}\n";
+		}
+		else if ($cmd['command'] === 'Custom shell command') {
+			$cmds[] = "command[{$cmd['name']}]={$sudo}{$cmd['extra']}\n";
 		}
 	}
 	$commands = implode($cmds);
@@ -208,7 +213,9 @@ function nrpe2_custom_php_service() {
 function nrpe2_get_commands() {
 	$nagios_check_path = NRPE_BASE . "/libexec/nagios";
 	$commands = glob("{$nagios_check_path}/check_*");
-	$cmdarr = array();
+	$cmdarr = array(
+		array("command" => 'Custom shell command')
+	);
 	foreach ($commands as $cmd) {
 		$cmdarr[]["command"] = basename($cmd);
 	}
