@@ -156,11 +156,10 @@ function nrpe2_custom_php_write_config() {
 		$ccmd = !empty($cmd['critical']) ? "-c {$cmd['critical']}" : "";
 
 		$path_to_command = "{$nagios_check_path}/{$cmd['command']}";
-		$is_custom_shell_command = ($cmd['command'] === 'Custom shell command');
 		if (is_executable($path_to_command)) {
 			$cmds[] = "command[{$cmd['name']}]={$sudo}{$path_to_command} {$wcmd} {$ccmd} {$cmd['extra']}\n";
 		}
-		else if ($is_custom_shell_command) {
+		else if ($cmd['command'] === 'Custom shell command') {
 			$cmds[] = "command[{$cmd['name']}]={$sudo}{$cmd['extra']}\n";
 		}
 	}
