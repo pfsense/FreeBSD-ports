@@ -46,25 +46,60 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 	$suricatalogdirsizeKB = suricata_Getdirsize(SURICATALOGDIR);
 
 	if ($suricatalogdirsizeKB > 0 && $suricatalogdirsizeKB > $suricataloglimitsizeKB) {
-		log_error(gettext("[Suricata] Log directory size exceeds configured limit of " . number_format($suricataloglimitsize) . " MB set on Global Settings tab. All Suricata log files will be truncated."));
+		log_error(gettext("[Suricata] Log directory size exceeds configured limit of " . number_format($suricataloglimitsize) . " MB set on Global Settings tab. Starting cleanup of suricata logs."));
 		conf_mount_rw();
-
-		// Truncate the Rules Update Log file if it exists
-		if (file_exists(SURICATA_RULES_UPD_LOGFILE)) {
-			log_error(gettext("[Suricata] Truncating the Rules Update Log file..."));
-			@file_put_contents(SURICATA_RULES_UPD_LOGFILE, "");
-		}
 
 		// Initialize an array of the log files we want to prune
 		$logs = array ( "alerts.log", "block.log", "dns.log", "eve.json", "http.log", "files-json.log", "sid_changes.log", "stats.log", "tls.log" );
 
-		// Clean-up the logs for each configured Suricata instance
+		// Clean-up the rotated logs for each configured Suricata instance
 		foreach ($config['installedpackages']['suricata']['rule'] as $value) {
 			$if_real = get_real_interface($value['interface']);
 			$suricata_uuid = $value['uuid'];
 			$suricata_log_dir = SURICATALOGDIR . "suricata_{$if_real}{$suricata_uuid}";
-			log_error(gettext("[Suricata] Truncating logs for {$value['descr']} ({$if_real})..."));
+			log_error(gettext("[Suricata] Cleaning logs for {$value['descr']} ({$if_real})..."));
 			suricata_post_delete_logs($suricata_uuid);
+
+			foreach ($logs as $file) {
+				// Cleanup any rotated logs
+				log_error(gettext("[Suricata] Deleting rotated log files except last for {$value['descr']} ({$if_real}) $file..."));
+				$filelist = glob("{$suricata_log_dir}/{$file}.*");
+				// Keep most recent file
+				unset($filelist[count($filelist) - 1]);
+				foreach ($filelist as $file) {
+					unlink_if_exists($file);
+				}
+				unset($filelist);
+			}
+
+			// Check for any captured stored files and clean them up
+			unlink_if_exists("{$suricata_log_dir}/files/*");
+
+			// Check for any captured stored TLS certs and clean them up
+			unlink_if_exists("{$suricata_log_dir}/certs/*");
+		}
+
+		if (suricata_Getdirsize(SURICATALOGDIR) < suricataloglimitsizeKB) {
+			goto cleanupExit;
+		}
+
+		// Cleanup any rotated logs not caught above
+		log_error(gettext("[Suricata] Deleting any additional rotated log files..."));
+		unlink_if_exists("{$suricata_log_dir}/suricata_*/*.log.*");
+		unlink_if_exists("{$suricata_log_dir}/suricata_*/*.json.*");
+
+		if (suricata_Getdirsize(SURICATALOGDIR) < suricataloglimitsizeKB) {
+			goto cleanupExit;
+		}
+
+		// Clean-up active logs for each configured Suricata instance
+		foreach ($config['installedpackages']['suricata']['rule'] as $value) {
+			$if_real = get_real_interface($value['interface']);
+			$suricata_uuid = $value['uuid'];
+			$suricata_log_dir = SURICATALOGDIR . "suricata_{$if_real}{$suricata_uuid}";
+			if (suricata_Getdirsize(SURICATALOGDIR) < suricataloglimitsizeKB) {
+				goto cleanupExit;
+			}
 
 			foreach ($logs as $file) {
 				// Truncate the log file if it exists
@@ -75,25 +110,26 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 						log_error("[Suricata] Failed to truncate file '{$suricata_log_dir}/{$file}' -- error was {$e->getMessage()}");
 					}
 				}
+
+				if (suricata_Getdirsize(SURICATALOGDIR) < suricataloglimitsizeKB) {
+					goto cleanupExit;
+				}
 			}
 
-			// Cleanup any rotated logs
-			log_error(gettext("[Suricata] Deleting any rotated log files for {$value['descr']} ({$if_real})..."));
-			unlink_if_exists("{$suricata_log_dir}/*.log.*");
-
-			// Cleanup any rotated pcap logs
-			log_error(gettext("[Suricata] Deleting any rotated pcap log files for {$value['descr']} ({$if_real})..."));
-			unlink_if_exists("{$suricata_log_dir}/log.pcap.*");
-
-			// Check for any captured stored files and clean them up
-			unlink_if_exists("{$suricata_log_dir}/files/*");
-
-			// Check for any captured stored TLS certs and clean them up
-			unlink_if_exists("{$suricata_log_dir}/certs/*");
-
-			// This is needed if suricata is run as suricata user
-			mwexec('/bin/chmod 660 /var/log/suricata/*', true);
+			if (suricata_Getdirsize(SURICATALOGDIR) < suricataloglimitsizeKB) {
+				goto cleanupExit;
+			}
 		}
+
+		// Truncate the Rules Update Log file if it exists
+		if (file_exists(SURICATA_RULES_UPD_LOGFILE)) {
+			log_error(gettext("[Suricata] Truncating the Rules Update Log file..."));
+			@file_put_contents(SURICATA_RULES_UPD_LOGFILE, "");
+		}
+
+		cleanupExit:
+		// This is needed if suricata is run as suricata user
+		mwexec('/bin/chmod 660 /var/log/suricata/*', true);
 		conf_mount_ro();
 		log_error(gettext("[Suricata] Automatic clean-up of Suricata logs completed."));
 	}
