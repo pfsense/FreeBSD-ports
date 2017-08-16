@@ -245,7 +245,7 @@ if ($_POST['save']) {
 	exit;
 }
 
-if ($_POST['unblock'] && $_POST['ip']) {
+if ($_POST['mode']=='unblock' && $_POST['ip']) {
 	if (is_ipaddr($_POST['ip'])) {
 		exec("/sbin/pfctl -t {$suri_pf_table} -T delete {$_POST['ip']}");
 		$savemsg = gettext("Host IP address {$_POST['ip']} has been removed from the Blocked Table.");
