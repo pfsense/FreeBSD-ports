@@ -445,6 +445,10 @@ if ($suricatacfg['eve_log_smtp'] == 'on') {
 	$eve_out_types .= "\n            md5: [subject]";
 }
 
+if ($suricatacfg['eve_log_flow'] == 'on') {
+	$eve_out_types .= "\n        - flow";
+}
+
 if ($suricatacfg['eve_log_drop'] == 'on' && $suricatacfg['ips_mode'] == "ips_mode_inline") {
 	$eve_out_types .= "\n        - drop:";
 	$eve_out_types .= "\n            alerts: yes";
