@@ -38,8 +38,8 @@ diff -urN suricata-4.0.0.orig/src/Makefile.in ./src/Makefile.in
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alert-unified2-alert.Po@am__quote@
 diff -urN suricata-4.0.0.orig/src/alert-pf.c ./src/alert-pf.c
 --- suricata-4.0.0.orig/src/alert-pf.c	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/alert-pf.c	2017-08-15 21:31:21.000000000 -0400
-@@ -0,0 +1,1077 @@
++++ ./src/alert-pf.c	2017-08-16 09:12:18.000000000 -0400
+@@ -0,0 +1,1078 @@
 +/* Copyright (C) 2007-2017 Open Information Security Foundation
 + *
 + * You can copy, redistribute or modify this Program under the terms of
@@ -108,7 +108,7 @@ diff -urN suricata-4.0.0.orig/src/alert-pf.c ./src/alert-pf.c
 + *        pass-list: <filename>      # complete path and filename for txt file of single IP addresses or CIDR networks that should never be blocked
 + *        block-ip: src/dst/both     # which IP in packet to block (default is BOTH)
 + *        pf-table: <pf table name>  # name of packet filter firewall table where block IP addresses should be added.  This table must exist!
-+ *        block-drops-only: yes/no   # only insert blocks in packet filter firewall for rules having DROP action keyword (default is "no")
++ *        block-drops-only: yes/no   # only insert blocks in packet filter firewall table for rules having DROP action keyword (default is "no")
 + *
 + */
 +
@@ -870,13 +870,14 @@ diff -urN suricata-4.0.0.orig/src/alert-pf.c ./src/alert-pf.c
 +            block = "both";
 +    }
 +    const char *state = ctx->kill_state ? "on" : "off";
++    const char *drops = ctx->block_drops ? "on" : "off";
 +
 +    if (pthread_create(&alert_pf_ifmon_thread, NULL, AlertPfMonitorIfaceChanges, ctx))
 +	SCLogError(SC_ERR_SYSCALL, "Failed to create Interface IP Address change monitoring thread for 'alert-pf' output plugin.");
 +    else
 +	SCLogInfo("Created firewall interface IP change monitor thread for auto-whitelisting of firewall interface IP addresses.");
 +
-+    SCLogInfo("alert-pf output initialized, pf-table=%s  block-ip=%s  kill-state=%s", ctx->pftable, block, state);
++    SCLogInfo("alert-pf output initialized, pf-table=%s  block-ip=%s  kill-state=%s  block-drops-only=%s", ctx->pftable, block, state, drops);
 +
 +    return output_ctx;
 +}
