@@ -78,7 +78,7 @@ USE_RC_SUBR=	frr watchfrr
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "arm"
+.if ${ARCH} == "armv6"
 USE_GCC=	yes
 .endif
 
