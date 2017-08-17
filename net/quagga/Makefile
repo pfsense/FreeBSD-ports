@@ -3,7 +3,7 @@
 
 PORTNAME=	quagga
 PORTVERSION=	1.2.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net ipv6
 MASTER_SITES=	SAVANNAH
 
@@ -88,6 +88,12 @@ PLIST_SUB+=	LOCALSTATE_DIR=${LOCALSTATE_DIR} \
 		ENABLE_USER=${ENABLE_USER} \
 		ENABLE_GROUP=${ENABLE_GROUP}
 
+.include <bsd.port.pre.mk>
+
+.if ${ARCH} == "arm"
+USE_GCC=	yes
+.endif
+
 pre-everything::
 	@${ECHO} "============================================================="
 	@${ECHO}
@@ -104,4 +110,4 @@ post-install:
 		${STAGEDIR}${EXAMPLESDIR}
 	@${MV} ${STAGEDIR}${SYSCONF_DIR}/* ${STAGEDIR}${EXAMPLESDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>
