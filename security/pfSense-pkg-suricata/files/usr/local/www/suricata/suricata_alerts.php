@@ -245,7 +245,7 @@ if ($_POST['save']) {
 	exit;
 }
 
-if ($_POST['unblock'] && $_POST['ip']) {
+if ($_POST['mode']=='unblock' && $_POST['ip']) {
 	if (is_ipaddr($_POST['ip'])) {
 		exec("/sbin/pfctl -t {$suri_pf_table} -T delete {$_POST['ip']}");
 		$savemsg = gettext("Host IP address {$_POST['ip']} has been removed from the Blocked Table.");
@@ -378,7 +378,7 @@ if ($_POST['clear']) {
 if ($_POST['download']) {
 	$save_date = date("Y-m-d-H-i-s");
 	$file_name = "suricata_logs_{$save_date}_{$if_real}.tar.gz";
-	exec("cd {$suricatalogdir}suricata_{$if_real}{$suricata_uuid} && /usr/bin/tar -czf {$g['tmp_path']}/{$file_name} *");
+	exec("cd {$suricatalogdir}suricata_{$if_real}{$suricata_uuid} && /usr/bin/tar -czf {$g['tmp_path']}/{$file_name} alert*");
 
 	if (file_exists("{$g['tmp_path']}/{$file_name}")) {
 		ob_start(); //important or other posts will fail
@@ -482,7 +482,7 @@ $group->add(new Form_Button(
 	null,
 	'fa-download'
 ))->removeClass('btn-default')->addClass('btn-info btn-sm')
-  ->setHelp('All log files will be saved');
+  ->setHelp('All alert log files for selected interface will be downloaded');
 
 $group->add(new Form_Button(
 	'clear',
@@ -698,7 +698,7 @@ if ($filterlogentries && count($filterfieldsarray)) {
 <div class="panel panel-default">
 	<div class="panel-heading"><h2 class="panel-title"><?=sprintf($sectitle, $anentries)?></h2></div>
 	<div class="panel-body table-responsive">
-	<?php if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline') : ?>
+	<?php if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' || $a_instance[$instanceid]['block_drops_only'] == 'on') : ?>
 		<div class="content table-responsive">
 			<span class="text-info"><b><?=gettext('Note: ');?></b><?=gettext('Alerts triggered by DROP rules that resulted in dropped (blocked) packets are shown with ');?>
 			<span class="text-danger"><?=gettext('highlighted ');?></span><?=gettext('rows below.');?><span>
@@ -753,8 +753,8 @@ if (file_exists("{$g['varlog_path']}/suricata/suricata_{$if_real}{$suricata_uuid
 			// Field 0 is the event timestamp
 			$fields['time'] = substr($buf, 0, strpos($buf, '  '));
 
-			// Field 1 is the rule action (value is '**' when mode is not inline IPS)
-			if ($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline' && preg_match('/\[([A-Z]+)\]\s/i', $buf, $tmp)) {
+			// Field 1 is the rule action (value is '**' when mode is not inline IPS or 'block-drops-only')
+			if (($a_instance[$instanceid]['ips_mode'] == 'ips_mode_inline'  || $a_instance[$instanceid]['block_drops_only'] == 'on') && preg_match('/\[([A-Z]+)\]\s/i', $buf, $tmp)) {
 				$fields['action'] = trim($tmp[1]);
 			}
 			else {

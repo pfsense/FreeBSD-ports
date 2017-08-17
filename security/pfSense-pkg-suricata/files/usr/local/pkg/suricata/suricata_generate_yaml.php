@@ -170,6 +170,11 @@ if ($suricatacfg['blockoffenderskill'] == 'on')
 else
 	$suri_killstates = "no";
 
+if ($suricatacfg['block_drops_only'] == 'on')
+	$suri_blockdrops = "yes";
+else
+	$suri_blockdrops = "no";
+
 if ($suricatacfg['blockoffendersip'] == 'src')
 	$suri_blockip = 'SRC';
 elseif ($suricatacfg['blockoffendersip'] == 'dst')
@@ -443,6 +448,10 @@ if ($suricatacfg['eve_log_smtp'] == 'on') {
 	$eve_out_types .= "\n            extended: yes";
 	$eve_out_types .= "\n            custom: [received, x-mailer, x-originating-ip, relays, reply-to, bcc]";
 	$eve_out_types .= "\n            md5: [subject]";
+}
+
+if ($suricatacfg['eve_log_flow'] == 'on') {
+	$eve_out_types .= "\n        - flow";
 }
 
 if ($suricatacfg['eve_log_drop'] == 'on' && $suricatacfg['ips_mode'] == "ips_mode_inline") {

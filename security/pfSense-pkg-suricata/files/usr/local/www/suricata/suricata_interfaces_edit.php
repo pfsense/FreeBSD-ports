@@ -111,6 +111,8 @@ if (empty($pconfig['blockoffenderskill']))
 	$pconfig['blockoffenderskill'] = "on";
 if (empty($pconfig['ips_mode']))
 	$pconfig['ips_mode'] = 'ips_mode_legacy';
+if (empty($pconfig['block_drops_only']))
+	$pconfig['block_drops_only'] = "off";
 if (empty($pconfig['max_pending_packets']))
 	$pconfig['max_pending_packets'] = "1024";
 if (empty($pconfig['detect_eng_profile']))
@@ -163,6 +165,8 @@ if (empty($pconfig['eve_log_ssh']))
 	$pconfig['eve_log_ssh'] = "on";
 if (empty($pconfig['eve_log_smtp']))
 	$pconfig['eve_log_smtp'] = "on";
+if (empty($pconfig['eve_log_flow']))
+	$pconfig['eve_log_flow'] = "off";
 if (empty($pconfig['eve_log_drop'])) {
 	$pconfig['eve_log_drop'] = "on";
 }
@@ -308,6 +312,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['blockoffenders'] == "on") $natent['blockoffenders'] = 'on'; else $natent['blockoffenders'] = 'off';
 		if ($_POST['ips_mode']) $natent['ips_mode'] = $_POST['ips_mode']; else unset($natent['ips_mode']);
 		if ($_POST['blockoffenderskill'] == "on") $natent['blockoffenderskill'] = 'on'; else $natent['blockoffenderskill'] = 'off';
+		if ($_POST['block_drops_only'] == "on") $natent['block_drops_only'] = 'on'; else $natent['block_drops_only'] = 'off';
 		if ($_POST['blockoffendersip']) $natent['blockoffendersip'] = $_POST['blockoffendersip']; else unset($natent['blockoffendersip']);
 		if ($_POST['passlistname']) $natent['passlistname'] =  $_POST['passlistname']; else unset($natent['passlistname']);
 		if ($_POST['homelistname']) $natent['homelistname'] =  $_POST['homelistname']; else unset($natent['homelistname']);
@@ -330,6 +335,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['eve_log_files'] == "on") { $natent['eve_log_files'] = 'on'; }else{ $natent['eve_log_files'] = 'off'; }
 		if ($_POST['eve_log_ssh'] == "on") { $natent['eve_log_ssh'] = 'on'; }else{ $natent['eve_log_ssh'] = 'off'; }
 		if ($_POST['eve_log_smtp'] == "on") { $natent['eve_log_smtp'] = 'on'; }else{ $natent['eve_log_smtp'] = 'off'; }
+		if ($_POST['eve_log_flow'] == "on") { $natent['eve_log_flow'] = 'on'; }else{ $natent['eve_log_flow'] = 'off'; }
 		if ($_POST['eve_log_drop'] == "on") { $natent['eve_log_drop'] = 'on'; }else{ $natent['eve_log_drop'] = 'off'; }
 		if ($_POST['delayed_detect'] == "on") { $natent['delayed_detect'] = 'on'; }else{ $natent['delayed_detect'] = 'off'; }
 		if ($_POST['intf_promisc_mode'] == "on") { $natent['intf_promisc_mode'] = 'on'; }else{ $natent['intf_promisc_mode'] = 'off'; }
@@ -853,6 +859,14 @@ $group->add(new Form_Checkbox(
 ));
 
 $group->add(new Form_Checkbox(
+	'eve_log_flow',
+	'Flows',
+	'Flows',
+	$pconfig['eve_log_flow'] == 'on' ? true:false,
+	'on'
+));
+
+$group->add(new Form_Checkbox(
 	'eve_log_drop',
 	'Dropped Traffic',
 	'Dropped Traffic',
@@ -904,6 +918,14 @@ $section->addInput(new Form_Select(
 	$pconfig['blockoffendersip'],
 	array( 'src' => 'SRC', 'dst' => 'DST', 'both' => 'BOTH' )
 ))->setHelp('Select which IP extracted from the packet you wish to block. Choosing BOTH is suggested, and it is the default value.');
+
+$section->addInput(new Form_Checkbox(
+	'block_drops_only',
+	'Block On DROP Only',
+	'Checking this option will insert blocks only when rule signatures having the DROP action are triggered.  When not checked, any rule action (ALERT or DROP) will generate a block of the offending host.  Default is Not Checked.',
+	$pconfig['block_drops_only'] == 'on' ? true:false,
+	'on'
+));
 
 $form->add($section);
 
@@ -1147,11 +1169,13 @@ events.push(function(){
 	function enable_blockoffenders() {
 		var hide = ! $('#blockoffenders').prop('checked');
 		hideCheckbox('blockoffenderskill', hide);
+		hideCheckbox('block_drops_only', hide);
 		hideSelect('blockoffendersip', hide);
 		hideSelect('ips_mode', hide);
 		hideClass('passlist', hide);
 		if ($('#ips_mode').val() == 'ips_mode_inline') {
 			hideCheckbox('blockoffenderskill', true);
+			hideCheckbox('block_drops_only', true);
 			hideSelect('blockoffendersip', true);
 			if (hide) {
 				$('#eve_log_drop').parent().hide();
@@ -1228,6 +1252,7 @@ events.push(function(){
 		disableInput('blockoffenders', disable);
 		disableInput('ips_mode', disable);
 		disableInput('blockoffenderskill', disable);
+		disableInput('block_drops_only', disable);
 		disableInput('blockoffendersip', disable);
 		disableInput('performance', disable);
 		disableInput('max_pending_packets', disable);
@@ -1280,6 +1305,7 @@ events.push(function(){
 		disableInput('eve_log_files', disable);
 		disableInput('eve_log_ssh', disable);
 		disableInput('eve_log_smtp', disable);
+		disableInput('eve_log_flow', disable);
 		disableInput('eve_log_drop', disable);
 	}
 
@@ -1374,11 +1400,13 @@ events.push(function(){
 	$('#ips_mode').on('change', function() {
 		if ($('#ips_mode').val() == 'ips_mode_inline') {
 			hideCheckbox('blockoffenderskill', true);
+			hideCheckbox('block_drops_only', true);
 			hideSelect('blockoffendersip', true);
 			$('#eve_log_drop').parent().show();
 		}
 		else {
 			hideCheckbox('blockoffenderskill', false);
+			hideCheckbox('block_drops_only', false);
 			hideSelect('blockoffendersip', false);
 			hideClass('passlist', false);
 			$('#eve_log_drop').parent().hide();
