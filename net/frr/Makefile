@@ -2,6 +2,7 @@
 
 PORTNAME=	frr
 PORTVERSION=	2.0
+PORTREVISION=	1
 CATEGORIES=	net ipv6
 
 MAINTAINER=	olivier@FreeBSD.org
@@ -75,7 +76,13 @@ VTYSH_CONFIGURE_ENABLE=		vtysh
 
 USE_RC_SUBR=	frr watchfrr
 
+.include <bsd.port.pre.mk>
+
+.if ${ARCH} == "arm"
+USE_GCC=	yes
+.endif
+
 post-install:
 	${MKDIR} ${STAGEDIR}/var/run/frr
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>
