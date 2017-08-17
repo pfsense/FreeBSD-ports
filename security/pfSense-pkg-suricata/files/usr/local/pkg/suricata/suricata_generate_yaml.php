@@ -170,6 +170,11 @@ if ($suricatacfg['blockoffenderskill'] == 'on')
 else
 	$suri_killstates = "no";
 
+if ($suricatacfg['block_drops_only'] == 'on')
+	$suri_blockdrops = "yes";
+else
+	$suri_blockdrops = "no";
+
 if ($suricatacfg['blockoffendersip'] == 'src')
 	$suri_blockip = 'SRC';
 elseif ($suricatacfg['blockoffendersip'] == 'dst')

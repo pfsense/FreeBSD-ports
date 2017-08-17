@@ -531,6 +531,15 @@ foreach ($rule as &$r) {
 	}
 
 	/**********************************************************/
+	/* Create new interface block DROPs only mode setting if  */
+	/* not already configured.  Default to "off".             */
+	/**********************************************************/
+	if (empty($pconfig['block_drops_only'])) {
+		$pconfig['block_drops_only'] = "no";
+		$updated_cfg = true;
+	}
+
+	/**********************************************************/
 	/* Suricata 3.2.1 introduced support for hyperscan as an  */
 	/* option for the multi pattern matcher (MPM) algorithm.  */
 	/* Several older MPM algorithms were also deprecated.     */
