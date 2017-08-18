@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-repo
 DISTVERSION=	2.3.4
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
