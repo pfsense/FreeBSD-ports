@@ -76,13 +76,7 @@ VTYSH_CONFIGURE_ENABLE=		vtysh
 
 USE_RC_SUBR=	frr watchfrr
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "armv6"
-USE_GCC=	yes
-.endif
-
 post-install:
 	${MKDIR} ${STAGEDIR}/var/run/frr
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -88,12 +88,6 @@ PLIST_SUB+=	LOCALSTATE_DIR=${LOCALSTATE_DIR} \
 		ENABLE_USER=${ENABLE_USER} \
 		ENABLE_GROUP=${ENABLE_GROUP}
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "armv6"
-USE_GCC=	yes
-.endif
-
 pre-everything::
 	@${ECHO} "============================================================="
 	@${ECHO}
@@ -110,4 +104,4 @@ post-install:
 		${STAGEDIR}${EXAMPLESDIR}
 	@${MV} ${STAGEDIR}${SYSCONF_DIR}/* ${STAGEDIR}${EXAMPLESDIR}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>
