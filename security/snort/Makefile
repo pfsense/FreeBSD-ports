@@ -3,7 +3,7 @@
 
 PORTNAME=	snort
 PORTVERSION=	2.9.9.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	https://snort.org/downloads/snort/ \
 		http://www.talosintel.com/downloads/ \
@@ -86,7 +86,7 @@ PREPROC_RULE_DIR=	${ETCDIR}/preproc_rules
 LOGS_DIR=		/var/log/snort
 
 CONFIG_FILES=	classification.config gen-msg.map reference.config \
-		snort.conf threshold.conf unicode.map file_magic.conf
+		snort.conf threshold.conf unicode.map file_magic.conf attribute_table.dtd
 
 DOCS=		RELEASE.NOTES doc/AUTHORS doc/BUGS doc/CREDITS \
 		doc/README* doc/USAGE doc/*.pdf
