@@ -846,7 +846,7 @@ $section->addInput(new Form_Select(
 	'eve_redis_mode',
 	'EVE REDIS Mode',
 	$pconfig['eve_redis_mode'],
-	array("list"=>"List (LPUSH)","rlist"=>"List (RPUSH)","channel"=>"Channel")
+	array("list"=>"List (LPUSH)","rpush"=>"List (RPUSH)","channel"=>"Channel(PUBLISH)")
 ))->setHelp('Select the REDIS output mode');
 
 $section->addInput(new Form_Input(
