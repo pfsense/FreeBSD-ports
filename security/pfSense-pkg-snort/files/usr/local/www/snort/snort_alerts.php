@@ -697,6 +697,9 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 			/* IP SRC */
 			$alert_ip_src = $fields[6];
 
+			/* Add zero-width space as soft-break opportunity after each colon if we have an IPv6 address */
+			$alert_ip_src = str_replace(":", ":&#8203;", $alert_ip_src);
+
 			/* Add Reverse DNS lookup icons */
 			$alert_ip_src .= '<br/>';
 			$alert_ip_src .= '<i class="fa fa-search icon-pointer" onclick="javascript:resolve_with_ajax(\'' . $fields[6] . '\');" title="' . gettext("Click to resolve") . '" alt="Reverse Resolve with DNS"></i>';
@@ -722,6 +725,9 @@ if (file_exists("{$snortlogdir}/snort_{$if_real}{$snort_uuid}/alert")) {
 
 			/* IP Destination */
 			$alert_ip_dst = $fields[8];
+
+			/* Add zero-width space as soft-break opportunity after each colon if we have an IPv6 address */
+			$alert_ip_dst = str_replace(":", ":&#8203;", $alert_ip_dst);
 
 			/* Add Reverse DNS lookup icons */
 			$alert_ip_dst .= "<br/>";
