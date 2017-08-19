@@ -110,7 +110,7 @@ if ($_POST['download'])
 				header("Cache-Control: private, must-revalidate");
 			}
 			header("Content-Type: application/octet-stream");
-			header("Content-length: filesize=" . filesize("{$g['tmp_path']}/{$file_name}"));
+			header("Content-length: " . filesize("{$g['tmp_path']}/{$file_name}"));
 			header("Content-disposition: attachment; filename=" . $file_name);
 			ob_end_clean(); //important or other post will fail
 			readfile("{$g['tmp_path']}/{$file_name}");
@@ -119,8 +119,8 @@ if ($_POST['download'])
 			unlink_if_exists("{$g['tmp_path']}/{$file_name}");
 			rmdir_recursive("{$g['tmp_path']}/snort_blocked");
 
-			header("Location: /snort/snort_blocked.php");
-			exit;
+//			header("Location: /snort/snort_blocked.php");
+//			exit;
 		} else
 			$savemsg = gettext("An error occurred while creating archive");
 	} else
@@ -183,7 +183,7 @@ $group->add(new Form_Button(
 	'Download',
 	null,
 	'fa-download'
-))->removeClass('btn-default')->addClass('btn-success btn-sm')
+))->removeClass('btn-default')->addClass('btn-success btn-sm')->setAttribute('title', gettext('Download interface log files as a gzip archive'))
   ->setHelp('All blocked hosts will be saved');
 
 $group->add(new Form_Button(
@@ -191,7 +191,7 @@ $group->add(new Form_Button(
 	'Clear',
 	null,
 	'fa-trash'
-))->removeClass('btn-default')->addClass('btn-danger btn-sm')
+))->removeClass('btn-default')->addClass('btn-danger btn-sm')->setAttribute('title', gettext('Clear all blocked hosts log files'))
   ->setHelp('All blocked hosts will be removed');
 
 $section->add($group);
