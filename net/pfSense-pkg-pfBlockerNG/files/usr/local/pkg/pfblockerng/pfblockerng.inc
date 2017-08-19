@@ -3837,7 +3837,7 @@ function sync_package_pfblockerng($cron='') {
 				pfb_logger("{$log}", 1);
 
 				$pfbupdate = TRUE;
-				$conf[] = "# Unbound custom options\n\nserver:include: {$pfb['dnsbl_file']}.*\n";
+				$conf[] = "# Unbound custom options\n\nserver:include: {$pfb['dnsbl_file']}.*conf\n";
 				@file_put_contents("{$pfb['dnsbldir']}/unbound.tmp", $conf, LOCK_EX);
 			}
 		}
