@@ -982,7 +982,7 @@ function pfb_unbound_dnsbl($mode) {
 	$config = parse_config(true);
 
 	$pfbupdate = FALSE;
-	$unbound_include = "server:include: {$pfb['dnsbl_file']}.*";
+	$unbound_include = "server:include: {$pfb['dnsbl_file']}.*conf";
 
 	// Collect Unbound custom option pfSense conf line
 	$pfb['unboundconfig']	= &$config['unbound']['custom_options'];
@@ -995,7 +995,7 @@ function pfb_unbound_dnsbl($mode) {
 	// Determine if DNSBL include line exists
 	if (!empty($unbound_custom)) {
 		// Append DNSBL Unbound pfSense conf integration
-		if (!strstr($unbound_custom, 'pfb_dnsbl.*')) {
+		if (!strstr($unbound_custom, 'pfb_dnsbl.*conf')) {
 			if ($mode == 'enabled') {
 				$pfbupdate = TRUE;
 				$unbound_custom .= "\n{$unbound_include}";
@@ -1007,7 +1007,7 @@ function pfb_unbound_dnsbl($mode) {
 			if ($mode == 'disabled') {
 				$custom = explode ("\n", $unbound_custom);
 				foreach ($custom as $key => $line) {
-					if (strpos($line, 'pfb_dnsbl.*') !== FALSE) {
+					if (strpos($line, 'pfb_dnsbl.*conf') !== FALSE) {
 						$pfbupdate = TRUE;
 						$log = "\nDNSBL - Removing DNSBL Unbound custom options\n";
 						unset($custom[$key]);
@@ -1031,7 +1031,7 @@ function pfb_unbound_dnsbl($mode) {
 	foreach ($custom as $key => $line) {
 		if (strpos($line, 'pfb_dnsbl.conf') !== FALSE) {
 			$pfbupdate = TRUE;
-			$log = "\nDNSBL - Removing broken Unbound custom option\n";
+			$log .= "\nDNSBL - Removing previous Unbound custom option\n";
 			unset($custom[$key]);
 		}
 	}
@@ -3831,7 +3831,7 @@ function sync_package_pfblockerng($cron='') {
 		}
 
 		// Add 'include:' line in Unbound conf file if not found
-		if (isset($conf) && !strstr(implode($conf), 'pfb_dnsbl.conf')) {
+		if (isset($conf) && !strstr(implode($conf), 'pfb_dnsbl.*conf')) {
 			if (file_exists("{$pfb['dnsbl_file']}.conf")) {
 				$log = "\nAdding Unbound Server:Include line...";
 				pfb_logger("{$log}", 1);
@@ -3854,10 +3854,10 @@ function sync_package_pfblockerng($cron='') {
 		// When DNSBL is disabled and not during an installation.
 		if ($pfb['dnsbl'] == '' && !$pfb['install']) {
 			// Remove 'Unbound' conf integration
-			if (isset($conf) && stripos(implode($conf), 'pfb_dnsbl.conf') !== FALSE) {
+			if (isset($conf) && stripos(implode($conf), 'pfb_dnsbl.*conf') !== FALSE) {
 				$pfbupdate = FALSE;
 				foreach ($conf as $key => $line) {
-					if (strpos($line, 'pfb_dnsbl.conf') !== FALSE) {
+					if (strpos($line, 'pfb_dnsbl.*conf') !== FALSE) {
 						$pfbupdate = TRUE;
 						unset ($conf[$key]);
 					}
