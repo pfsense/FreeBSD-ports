@@ -150,6 +150,9 @@ if (is_dir("{$snortdir}/signatures")) {
 if (is_dir("{$snortdir}/preproc_rules")) {
 	rmdir_recursive("{$snortdir}/preproc_rules");
 }
+if (is_dir("usr/local/lib/snort_dynamicrules")) {
+	rmdir_recursive("usr/local/lib/snort_dynamicrules");
+}
 unlink_if_exists("{$snortdir}/*.md5");
 unlink_if_exists("{$snortdir}/*.conf");
 unlink_if_exists("{$snortdir}/*.map");
