@@ -92,7 +92,7 @@ EOD;
 		$cfg .= "\tusername = \"" . $telegraf_conf['influx_user'] . "\"\n";
 	}
 	if (!empty($telegraf_conf['influx_pass'])) {
-		$cfg .= "\tpassword = \"" . $telegraf_conf['influx_pass'] . "\"\n";
+		$cfg .= "\tpassword = \"" . base64_decode($telegraf_conf['influx_pass']) . "\"\n";
 	}
 	$conffile = "/usr/local/etc/telegraf.conf";
 	file_put_contents($conffile, $cfg);
