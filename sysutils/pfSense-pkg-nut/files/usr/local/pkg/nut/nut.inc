@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2016 Denny Page
+ * Copyright (c) 2016-2017 Denny Page
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -192,6 +192,11 @@ function nut_sync_config() {
 			case 'remote_snmp':
 				$driver = "snmp-ups";
 				$port = $nut_config['remote_addr'];
+				break;
+
+			case 'dummy':
+				$driver = "dummy-ups";
+				$port = $nut_config['dummy_port'];
 				break;
 		}
 
