@@ -162,28 +162,41 @@ function squid_antivirus_statistics() {
 	</table>
 </div>
 
+<?php
+	// If this is an ajax call then this is all we need.
+	if ($_REQUEST['ajax']) {
+		exit;
+	}
+?>
+
 <script type="text/javascript">
 //<![CDATA[
-function getstatus_squidav() {
-	$.ajax({
-		type: 'get',
-		url: '/widgets/widgets/squid_antivirus_status.widget.php',
-		dataType: 'html',
-		dataFilter: function(raw){
-			// We reload the entire widget, strip this block of javascript from it
-			return raw.replace(/<script>([\s\S]*)<\/script>/gi, '');
-		},
-		success: function(data){
-			$('#squidav_status').html(data);
-		},
-		error: function(){
-			$('#squidav_status').html("<div class=\"alert alert-danger\"><?=gettext('Unable to retrieve status'); ?></div>");
-		}
-	});
-}
+events.push(function(){
+	// --------------------- Centralized widget refresh system ------------------------------
 
-	events.push(function(){
-		setInterval('getstatus_squidav()', "<?=$widgetperiod?>");
-	});
+	// Callback function called by refresh system when data is retrieved
+	function squidav_callback(s) {
+		$('#squidav_status').html(s);
+	}
+
+	// POST data to send via AJAX
+	var postdata = {
+		ajax: "ajax"
+	};
+
+	// Create an object defining the widget refresh AJAX call
+	var squidavObject = new Object();
+	squidavObject.name = "SquidAV";
+	squidavObject.url = "/widgets/widgets/squid_antivirus_status.widget.php";
+	squidavObject.callback = squidav_callback;
+	squidavObject.parms = postdata;
+	squidavObject.freq = 1;
+
+	// Register the AJAX object
+	register_ajax(squidavObject);
+
+	// ---------------------------------------------------------------------------------------------------
+});
+
 //]]>
 </script>
