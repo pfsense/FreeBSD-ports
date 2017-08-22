@@ -147,10 +147,15 @@ if (is_dir("{$snortdir}/rules")) {
 if (is_dir("{$snortdir}/signatures")) {
 	rmdir_recursive("{$snortdir}/signatures");
 }
+if (is_dir("{$snortdir}/preproc_rules")) {
+	rmdir_recursive("{$snortdir}/preproc_rules");
+}
 unlink_if_exists("{$snortdir}/*.md5");
 unlink_if_exists("{$snortdir}/*.conf");
 unlink_if_exists("{$snortdir}/*.map");
 unlink_if_exists("{$snortdir}/*.config");
+unlink_if_exists("{$snortdir}/attribute_table.dtd");
+
 if (is_array($config['installedpackages']['snortglobal']['rule']) && count($config['installedpackages']['snortglobal']['rule']) > 0) {
 	foreach ($config['installedpackages']['snortglobal']['rule'] as $snortcfg) {
 		$if_real = get_real_interface($snortcfg['interface']);
