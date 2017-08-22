@@ -1594,11 +1594,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		<div class="panel-heading">
 			<h2 class="panel-title">ARP Spoof Detection<span class="widget-heading-icon"><a data-toggle="collapse" href="#preproc_arp_panel-body"><i class="fa fa-plus-circle"></i></a></span></h2>
 		</div>
-	<?php if ($pconfig['arp_preproc'] == 'on') : ?>
 		<div id="preproc_arp_panel-body" class="panel-body collapse in">
-	<?php else : ?>
-		<div id="preproc_arp_panel-body" class="panel-body collapse out">
-	<?php endif ?>
 <?php
 			$group = new Form_Group('Enable ARP Spoof Detection');
 			$group->add(new Form_Checkbox(
@@ -2183,7 +2179,7 @@ print_callout('<p>' . gettext("Remember to save your changes before you exit thi
 
 	function arp_spoof_enable_change() {
 		// Hide ARP Spoofing Detection section if preprocessor is disabled
-		if (!($('#arp_preproc').prop('checked'))) {
+		if (!($('#arpspoof_preproc').prop('checked'))) {
 			$('#preproc_arp_panel-body').collapse('toggle');
 		}
 	}
@@ -2330,6 +2326,10 @@ events.push(function(){
 
 	$('#sensitive_data').click(function() {
 		sensitive_data_enable_change();
+	});
+
+	$('#arpspoof_preproc').click(function() {
+		arp_spoof_enable_change();
 	});
 
 	$('#pop_preproc').click(function() {
