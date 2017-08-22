@@ -1628,7 +1628,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<th style="width:35%;"><?=gettext("MAC Address")?></th>
 									<th style="width:35%;"><?=gettext("IP Address")?></th>
 									<th>
-										<a href="#" data-toggle="modal" data-target="#arp_spoof_addr_pair" data-eng_id="<?=$arp_spoof_engine_next_id;?>" class="btn btn-sm btn-success" role="button" title="<?=gettext("Add a new server configuration")?>">
+										<a href="#" data-toggle="modal" data-target="#arp_spoof_addr_pair" data-eng_id="<?=$arp_spoof_engine_next_id;?>" class="btn btn-sm btn-success" role="button" title="<?=gettext("Add a new address pair entry")?>">
 											<i class="fa fa-plus icon-embed-btn"></i>
 											<?=gettext(' Add');?>
 										</a>
@@ -1641,8 +1641,8 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 									<td><?=gettext($v['mac_addr'])?></td>
 									<td><?=gettext($v['ip_addr'])?></td>
 									<td>
-										<a href="#" data-toggle="modal" data-target="#arp_spoof_addr_pair" data-eng_id="<?=$f;?>" data-arp_spoof_mac="<?=$v['mac_addr'];?>" data-arp_spoof_ip="<?=$v['ip_addr'];?>" class="fa fa-pencil icon-primary" title="<?=gettext("Edit this entry")?>"></a>
-										<a href="#" class="fa fa-trash icon-primary no-confirm" onclick="del_eng('del_arp_spoof_engine', '<?=$f;?>');" title="<?=gettext("Delete this entry")?>"></a>
+										<a href="#" data-toggle="modal" data-target="#arp_spoof_addr_pair" data-eng_id="<?=$f;?>" data-arp_spoof_mac="<?=$v['mac_addr'];?>" data-arp_spoof_ip="<?=$v['ip_addr'];?>" class="fa fa-pencil icon-primary" title="<?=gettext("Edit this address pair entry")?>"></a>
+										<a href="#" class="fa fa-trash icon-primary no-confirm" onclick="del_eng('del_arp_spoof_engine', '<?=$f;?>');" title="<?=gettext("Delete this adress pair entry")?>"></a>
 									</td>
 								</tr>
 							<?php endforeach; ?>
