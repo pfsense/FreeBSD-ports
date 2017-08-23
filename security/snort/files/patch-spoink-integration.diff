@@ -42,8 +42,8 @@ diff -urN snort-2.9.9.0.orig/src/output-plugins/Makefile.in ./src/output-plugins
  
 diff -urN snort-2.9.9.0.orig/src/output-plugins/spo_pf.c ./src/output-plugins/spo_pf.c
 --- snort-2.9.9.0.orig/src/output-plugins/spo_pf.c	1969-12-31 19:00:00.000000000 -0500
-+++ ./src/output-plugins/spo_pf.c	2017-08-17 17:36:14.000000000 -0400
-@@ -0,0 +1,758 @@
++++ ./src/output-plugins/spo_pf.c	2017-08-21 18:28:36.000000000 -0400
+@@ -0,0 +1,764 @@
 +/*
 +* Copyright (c) 2017  Bill Meeks
 +* Copyright (c) 2012  Ermal Luci
@@ -227,6 +227,12 @@ diff -urN snort-2.9.9.0.orig/src/output-plugins/spo_pf.c ./src/output-plugins/sp
 +    }
 +
 +    DEBUG_WRAP(DebugMessage(DEBUG_LOG, "spoink block'n!!\n"););
++
++	// Test for valid IP header in packet and
++	// ignore packets with no valid IP information
++	// since we need IP addresses to block.
++	if (!IsIP(p))
++		return;
 +
 +    switch (data->block) {
 +    case SPOINK_BLOCK_DST:

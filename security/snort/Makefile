@@ -3,7 +3,7 @@
 
 PORTNAME=	snort
 PORTVERSION=	2.9.9.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	https://snort.org/downloads/snort/ \
 		http://www.talosintel.com/downloads/ \
