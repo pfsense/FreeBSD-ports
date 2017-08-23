@@ -928,6 +928,21 @@ preprocessor appid: \
 
 EOD;
 
+/* def ARP Spoof preprocessor */
+$arpspoof_preproc = "# ARP Spoof preprocessor #\n";
+if ($snortcfg['arp_unicast_detection'] == 'on') {
+	$arpspoof_preproc .= "preprocessor arpspoof: -unicast\n";
+}
+else {
+	$arpspoof_preproc .= "preprocessor arpspoof\n";
+}
+if (is_array($snortcfg['arp_spoof_engine']['item']) && count($snortcfg['arp_spoof_engine']['item']) > 0) {
+	foreach ($snortcfg['arp_spoof_engine']['item'] as $f => $v) {
+		$arpspoof_preproc .= "preprocessor arpspoof_detect_host: ";
+		$arpspoof_preproc .= $v['ip_addr'] . " " . str_replace('-', ':', $v['mac_addr']) . "\n";
+	}
+}
+
 /***************************************/
 /* end of preprocessor string var code */
 /***************************************/
@@ -963,10 +978,10 @@ $snort_preproc_libs = array(
 );
 $snort_preproc = array (
 	"perform_stat", "other_preprocs", "ftp_preprocessor", "smtp_preprocessor", "ssl_preproc", "sip_preproc", "gtp_preproc", "ssh_preproc", "sf_portscan", 
-	"dce_rpc_2", "dns_preprocessor", "sensitive_data", "pop_preproc", "imap_preproc", "dnp3_preproc", "modbus_preproc", "reputation_preproc", "appid_preproc"
+	"dce_rpc_2", "dns_preprocessor", "sensitive_data", "pop_preproc", "imap_preproc", "dnp3_preproc", "modbus_preproc", "reputation_preproc", "appid_preproc", "arpspoof_preproc"
 );
 $default_disabled_preprocs = array(
-	"sf_portscan", "gtp_preproc", "sensitive_data", "dnp3_preproc", "modbus_preproc", "reputation_preproc", "perform_stat", "appid_preproc"
+	"sf_portscan", "gtp_preproc", "sensitive_data", "dnp3_preproc", "modbus_preproc", "reputation_preproc", "perform_stat", "appid_preproc", "arpspoof_preproc"
 );
 $snort_preprocessors = "";
 foreach ($snort_preproc as $preproc) {
