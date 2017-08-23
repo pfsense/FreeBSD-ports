@@ -89,7 +89,7 @@ if ($_POST['apply']) {
 	exit;
 }
 
-$pgtitle = array("Services", "HAProxy", "Backend server pools");
+$pgtitle = array("Services", "HAProxy", "Backend");
 include("head.inc");
 if ($input_errors) {
 	print_input_errors($input_errors);
