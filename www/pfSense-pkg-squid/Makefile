@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-squid
-PORTVERSION=	0.4.38
+PORTVERSION=	0.4.39
 CATEGORIES=	www
 MASTER_SITES=	# empty
 DISTFILES=	# empty
