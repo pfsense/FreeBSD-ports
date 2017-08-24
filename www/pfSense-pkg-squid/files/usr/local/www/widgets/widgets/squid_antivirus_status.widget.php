@@ -162,17 +162,23 @@ function squid_antivirus_statistics() {
 	</table>
 </div>
 
+<?php
+	// If this is an AJAX request, we are done
+	if ($_REQUEST['ajax']) {
+		exit;
+	}
+?>
+
 <script type="text/javascript">
 //<![CDATA[
+// Contains code for the central refresh system AND the previous GET based async refresh system
+// Which method is used depends on if (typeof register_ajax === "function")
 function getstatus_squidav() {
 	$.ajax({
 		type: 'get',
-		url: '/widgets/widgets/squid_antivirus_status.widget.php',
+		url: '/widgets/widgets/squid_antivirus_status.widget.php?ajax=ajax',
 		dataType: 'html',
-		dataFilter: function(raw){
-			// We reload the entire widget, strip this block of javascript from it
-			return raw.replace(/<script>([\s\S]*)<\/script>/gi, '');
-		},
+
 		success: function(data){
 			$('#squidav_status').html(data);
 		},
@@ -182,8 +188,33 @@ function getstatus_squidav() {
 	});
 }
 
-	events.push(function(){
+events.push(function(){
+	// Callback function called by refresh system when data is retrieved
+	function squid_callback(s) {
+		$('#squidav_status').html(s);
+	}
+
+	// POST data to send via AJAX
+	var postdata = {
+		ajax: "ajax"
+	 };
+
+	// Create an object defining the widget refresh AJAX call
+	var squidObject = new Object();
+	squidObject.name = "Squid";
+	squidObject.url = "/widgets/widgets/squid_antivirus_status.widget.php";
+	squidObject.callback = squid_callback;
+	squidObject.parms = postdata;
+	squidObject.freq = 10;
+
+	// Choose which refresh method to used based on availability of register_ajax() function
+	if (typeof register_ajax === "function") {
+		//Use central refresh system and register the AJAX object
+		register_ajax(squidObject);
+	} else {
 		setInterval('getstatus_squidav()', "<?=$widgetperiod?>");
-	});
+	}
+});
+
 //]]>
 </script>
