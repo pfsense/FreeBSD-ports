@@ -3,7 +3,7 @@
  * services_servicewatchdog.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2013-2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2017 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -65,7 +65,7 @@ if (isset($_POST['Update'])) {
 		}
 	}
 	servicewatchdog_cron_job();
-	write_config();
+	write_config(gettext("Services: Service Watchdog: updated notification settings."));
 	header("Location: services_servicewatchdog.php");
 	return;
 }
@@ -77,7 +77,7 @@ if (isset($_POST['del'])) {
 			unset($a_pwservices[$servicei]);
 		}
 		servicewatchdog_cron_job();
-		write_config();
+		write_config(gettext("Services: Service Watchdog: deleted a service from watchdog."));
 		header("Location: services_servicewatchdog.php");
 		return;
 	}
@@ -125,13 +125,13 @@ if (isset($_POST['del'])) {
 		}
 		$a_pwservices = $a_pwservices_new;
 		servicewatchdog_cron_job();
-		write_config();
+		write_config(gettext("Services: Service Watchdog: changed services order configuration."));
 		header("Location: services_servicewatchdog.php");
 		return;
 	} else if (isset($delbtn)) {
 		unset($a_pwservices[$delbtn]);
 		servicewatchdog_cron_job();
-		write_config();
+		write_config(gettext("Services: Service Watchdog: deleted a service from watchdog."));
 		header("Location: services_servicewatchdog.php");
 		return;
 	}
