@@ -3,7 +3,7 @@
  * system_patches.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2017 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,7 +47,7 @@ if ($_GET['savemsg']) {
 if ($_POST) {
 	$pconfig = $_POST;
 	if ($_POST['apply']) {
-		write_config();
+		write_config(gettext("System: Patches: applied a patch."));
 	}
 }
 
@@ -136,7 +136,7 @@ if (isset($_POST['del'])) {
 }
 
 if ($need_save) {
-	write_config();
+	write_config(gettext("System: Patches: saved configuration."));
 	header("Location: system_patches.php");
 	return;
 }
