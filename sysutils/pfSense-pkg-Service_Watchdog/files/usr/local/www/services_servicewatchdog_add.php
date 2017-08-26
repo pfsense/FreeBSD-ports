@@ -3,7 +3,7 @@
  * services_servicewatchdog_add.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2013-2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2013-2017 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -50,7 +50,7 @@ if ($_POST) {
 	if (!$input_errors) {
 		$a_pwservices[] = $system_services[$_POST['svcid']];
 		servicewatchdog_cron_job();
-		write_config();
+		write_config(gettext("Services: Service Watchdog: added a service to watchdog."));
 
 		header("Location: services_servicewatchdog.php");
 		return;
