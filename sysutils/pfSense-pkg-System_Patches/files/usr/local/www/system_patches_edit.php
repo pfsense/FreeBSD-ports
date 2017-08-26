@@ -3,7 +3,7 @@
  * system_patches_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2012-2015 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012-2017 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -80,12 +80,7 @@ if ($_POST) {
 		$reqdfieldsn = array(gettext("Description"),gettext("URL/Commit ID"));
 	}
 
-	$pf_version=substr(trim(file_get_contents("/etc/version")),0,3);
-	if ($pf_version < 2.1) {
-		$input_errors = eval('do_input_validation($_POST, $reqdfields, $reqdfieldsn, &$input_errors); return $input_errors;');
-	} else {
-		do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
-	}
+	do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
 
 	if (!empty($_POST['location']) && !is_commit_id($_POST['location']) && !is_URL($_POST['location'])) {
 		$input_errors[] = gettext("The supplied commit ID/URL appears to be invalid.");
@@ -131,7 +126,7 @@ if ($_POST) {
 			}
 		}
 
-		write_config();
+		write_config(gettext("System: Patches: edited a patch."));
 		if ($thispatch['autoapply']) {
 			patch_add_shellcmd();
 		}
