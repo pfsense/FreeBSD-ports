@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-apcupsd
 PORTVERSION=	0.3.9
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
