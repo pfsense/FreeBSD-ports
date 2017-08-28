@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>FRR</name>
+		<internal_name>frr</internal_name>
+		<descr><![CDATA[FRR routing daemon for BGP, OSPF, and OSPF6.&lt;br /&gt;
+			&lt;strong&gt;Conflicts with Quagga OSPF and OpenBGPD; these packages cannot be installed at the same time.&lt;/strong&gt;]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>frr.xml</configurationfile>
+	</package>
+</pfsensepkgs>
