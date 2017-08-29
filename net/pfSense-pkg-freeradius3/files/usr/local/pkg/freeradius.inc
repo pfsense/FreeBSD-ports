@@ -1074,11 +1074,10 @@ function freeradius_eapconf_resync($restart_svc = true) {
 	global $config;
 	$conf = '';
 
-	if (is_array($config['installedpackages']['freeradiuseapconf']['config'][0])) {
-		$eapconf = $config['installedpackages']['freeradiuseapconf']['config'][0];
-	} else {
-		$eapconf = array();
+	if (!is_array($config['installedpackages']['freeradiuseapconf']['config'][0])) {
+		$config['installedpackages']['freeradiuseapconf']['config'][0] = array();
 	}
+	$eapconf = & $config['installedpackages']['freeradiuseapconf']['config'][0];
 
 	// Disable weak EAP types like MD5, GTC, LEAP
 	if ($eapconf['vareapconfdisableweakeaptypes'] == '') {
@@ -3256,7 +3255,7 @@ function freeradius_plainmacauth_resync() {
 function freeradius_policyd_resync() {
 	$conf = <<<EOD
 pfs_rewrite_calling_station_id {
-	if (&Calling-Station-Id && (&Calling-Station-Id =~ /^${policy.mac-addr-regexp}$/i)) {
+	if (&Calling-Station-Id && (&Calling-Station-Id =~ /^\${policy.mac-addr-regexp}\$/i)) {
 		update request {
 			&Calling-Station-Id := "%{tolower:%{1}-%{2}-%{3}-%{4}-%{5}-%{6}}"
 		}
@@ -4066,21 +4065,6 @@ function freeradius_validate_interfaces($post, &$input_errors) {
 /* General Settings input validation */
 function freeradius_validate_settings($post, &$input_errors) {
 	global $config;
-	// Force users to configure certificates for EAP
-	if (is_array($config['installedpackages']['freeradiuseapconf']['config'][0])) {
-		$eapconf = $config['installedpackages']['freeradiuseapconf']['config'][0];
-	} else {
-		$input_errors[] = "Please, configure and save EAP settings first. Note that setting the SSL CA/Server Certificate is required.";
-		$eapconf = array();
-	}
-/*
-	if ($eapconf['ssl_ca_cert'] == 'none') {
-		$input_errors[] = "Please, configure the 'SSL CA Certificate' on the EAP tab first and save settings there.";
-	}
-	if ($eapconf['ssl_server_cert'] == 'none') {
-		$input_errors[] = "Please, configure the 'SSL Server Certificate' on the EAP tab first and save settings there.";
-	}
-*/
 	// Maximum Requests Tracked
 	if ($post['varsettingsmaxrequests'] != '' && !is_numericint($post['varsettingsmaxrequests'])) {
 		$input_errors[] = "The 'Maximum Requests Tracked' field must contain an integer value.";
