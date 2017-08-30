@@ -299,7 +299,7 @@
 			<fieldname>qrcodetext</fieldname>
 			<description>
 				<![CDATA[
-				Goolge Authenticator supports adding entries via QR Code. Click the button below to generate a QR Code based on the
+				Google Authenticator supports adding entries via QR Code. Click the button below to generate a QR Code based on the
 				current settings above when Google Authenticator is active. The image can be saved and shown to a user, but treat
 				it as a secure piece of information and do not send it through an insecure channel such as e-mail.
 				<br/>
