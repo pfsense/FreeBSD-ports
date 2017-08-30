@@ -81,8 +81,6 @@ function telegraf_resync_config() {
 [[inputs.system]]
 
 [[outputs.influxdb]]
-
-[[outputs.influxdb]]
 	urls = ["{$telegraf_conf['influx_server']}"]
 	database = "{$telegraf_conf['influx_db']}"
 
