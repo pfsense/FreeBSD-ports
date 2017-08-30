@@ -3255,7 +3255,7 @@ function freeradius_plainmacauth_resync() {
 function freeradius_policyd_resync() {
 	$conf = <<<EOD
 pfs_rewrite_calling_station_id {
-	if (&Calling-Station-Id && (&Calling-Station-Id =~ /^\${policy.mac-addr-regexp}\$/i)) {
+	if (&Calling-Station-Id && (&Calling-Station-Id =~ /^${policy.mac-addr-regexp}$/i)) {
 		update request {
 			&Calling-Station-Id := "%{tolower:%{1}-%{2}-%{3}-%{4}-%{5}-%{6}}"
 		}
