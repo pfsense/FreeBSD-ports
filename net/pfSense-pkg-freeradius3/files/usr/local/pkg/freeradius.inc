@@ -504,7 +504,7 @@ function freeradius_users_resync($via_rpc = false) {
 			$varusersmaxtotaloctets = $varusersmaxtotaloctets * 1024 * 1024;
 			$varusersmaxtotaloctetstimerange = $users['varusersmaxtotaloctetstimerange'];
 
-			// GUI uses KiloBit but RADIUS needs Bits so we do a multiplication
+			// GUI uses Kibibit but RADIUS needs bits so we do a multiplication
 			$varusersmaxbandwidthup = ($users['varusersmaxbandwidthup'] ?: '');
 			$varusersmaxbandwidthup = $varusersmaxbandwidthup * 1024;
 			$varusersmaxbandwidthdown = ($users['varusersmaxbandwidthdown'] ?: '');
