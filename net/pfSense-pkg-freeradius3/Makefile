@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-freeradius3
-PORTVERSION=	0.13
+PORTVERSION=	0.15
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
