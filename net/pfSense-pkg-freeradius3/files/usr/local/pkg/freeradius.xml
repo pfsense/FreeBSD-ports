@@ -535,7 +535,7 @@
 			<fieldname>varusersmaxbandwidthdown</fieldname>
 			<description>
 				<![CDATA[
-				Enter the maximum bandwidth for download in <span class="text-info">in kilobits per second (Kbps)</span>.
+				Enter the maximum bandwidth for download <span class="text-info">in kibibits (1024 bits) per second (Kibit/s)</span>.
 				]]>
 			</description>
 			<type>input</type>
@@ -545,7 +545,7 @@
 			<fieldname>varusersmaxbandwidthup</fieldname>
 			<description>
 				<![CDATA[
-				Enter the maximum bandwidth for upload in <span class="text-info">in kilobits per second (Kbps)</span>.
+				Enter the maximum bandwidth for upload <span class="text-info">in kibibits (1024 bits) per second (Kibit/s)</span>.
 				]]>
 			</description>
 			<type>input</type>
