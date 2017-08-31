@@ -817,10 +817,10 @@ function frr_generate_config_bgp() {
 		return null;
 	}
 
-	if (isset($config['installedpackages']['frrraw']['config'][0]['bgpd']) &&
-	    !empty($config['installedpackages']['frrraw']['config'][0]['bgpd'])) {
+	if (isset($config['installedpackages']['frrglobalraw']['config'][0]['bgpd']) &&
+	    !empty($config['installedpackages']['frrglobalraw']['config'][0]['bgpd'])) {
 		// if there is a raw config specified in the config.xml use that instead of the assisted config
-		$bgpdconffile = str_replace("\r","",base64_decode($config['installedpackages']['frrraw']['config'][0]['bgpd']));
+		$bgpdconffile = str_replace("\r","",base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['bgpd']));
 	} else {
 		/* If there is no raw configuration and no GUI configuration, stop. */
 		if (empty($frr_conf['enable']) || empty($frr_bgp_conf['enable'])) {
