@@ -504,7 +504,7 @@ function freeradius_users_resync($via_rpc = false) {
 			$varusersmaxtotaloctets = $varusersmaxtotaloctets * 1024 * 1024;
 			$varusersmaxtotaloctetstimerange = $users['varusersmaxtotaloctetstimerange'];
 
-			// GUI uses KiloBit but RADIUS needs Bits so we do a multiplication
+			// GUI uses Kibibit but RADIUS needs bits so we do a multiplication
 			$varusersmaxbandwidthup = ($users['varusersmaxbandwidthup'] ?: '');
 			$varusersmaxbandwidthup = $varusersmaxbandwidthup * 1024;
 			$varusersmaxbandwidthdown = ($users['varusersmaxbandwidthdown'] ?: '');
@@ -1074,11 +1074,10 @@ function freeradius_eapconf_resync($restart_svc = true) {
 	global $config;
 	$conf = '';
 
-	if (is_array($config['installedpackages']['freeradiuseapconf']['config'][0])) {
-		$eapconf = $config['installedpackages']['freeradiuseapconf']['config'][0];
-	} else {
-		$eapconf = array();
+	if (!is_array($config['installedpackages']['freeradiuseapconf']['config'][0])) {
+		$config['installedpackages']['freeradiuseapconf']['config'][0] = array();
 	}
+	$eapconf = & $config['installedpackages']['freeradiuseapconf']['config'][0];
 
 	// Disable weak EAP types like MD5, GTC, LEAP
 	if ($eapconf['vareapconfdisableweakeaptypes'] == '') {
@@ -3256,7 +3255,7 @@ function freeradius_plainmacauth_resync() {
 function freeradius_policyd_resync() {
 	$conf = <<<EOD
 pfs_rewrite_calling_station_id {
-	if (&Calling-Station-Id && (&Calling-Station-Id =~ /^${policy.mac-addr-regexp}$/i)) {
+	if (&Calling-Station-Id && (&Calling-Station-Id =~ /([0-9a-f]{2})[^0-9a-f]?([0-9a-f]{2})[^0-9a-f]?([0-9a-f]{2})[^0-9a-f]?([0-9a-f]{2})[^0-9a-f]?([0-9a-f]{2})[^0-9a-f]?([0-9a-f]{2})/i)) {
 		update request {
 			&Calling-Station-Id := "%{tolower:%{1}-%{2}-%{3}-%{4}-%{5}-%{6}}"
 		}
@@ -4040,7 +4039,7 @@ function freeradius_validate_interfaces($post, &$input_errors) {
 		if ($post['varinterfaceipversion'] == 'ipv6addr' && !is_ipaddrv6($post['varinterfaceip'])) {
 			$input_errors[] = "The 'Interface IP Address' must contain a valid IPv6 address when IPv6 is selected under 'IP Version'.";
 		}
-		if (!is_ipaddr_configured($post['varinterfaceip'])) {
+		if (!is_ipaddr_configured($post['varinterfaceip']) && $post['varinterfaceip'] != "127.0.0.1") {
 			$input_errors[] = "The 'Interface IP Address' must contain a valid, locally configured IP address!";
 		}
 	}
@@ -4066,21 +4065,6 @@ function freeradius_validate_interfaces($post, &$input_errors) {
 /* General Settings input validation */
 function freeradius_validate_settings($post, &$input_errors) {
 	global $config;
-	// Force users to configure certificates for EAP
-	if (is_array($config['installedpackages']['freeradiuseapconf']['config'][0])) {
-		$eapconf = $config['installedpackages']['freeradiuseapconf']['config'][0];
-	} else {
-		$input_errors[] = "Please, configure and save EAP settings first. Note that setting the SSL CA/Server Certificate is required.";
-		$eapconf = array();
-	}
-/*
-	if ($eapconf['ssl_ca_cert'] == 'none') {
-		$input_errors[] = "Please, configure the 'SSL CA Certificate' on the EAP tab first and save settings there.";
-	}
-	if ($eapconf['ssl_server_cert'] == 'none') {
-		$input_errors[] = "Please, configure the 'SSL Server Certificate' on the EAP tab first and save settings there.";
-	}
-*/
 	// Maximum Requests Tracked
 	if ($post['varsettingsmaxrequests'] != '' && !is_numericint($post['varsettingsmaxrequests'])) {
 		$input_errors[] = "The 'Maximum Requests Tracked' field must contain an integer value.";

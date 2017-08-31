@@ -37,6 +37,7 @@ outputs:
   - alert-pf:
       enabled: {$suri_blockoffenders}
       kill-state: {$suri_killstates}
+      block-drops-only: {$suri_blockdrops}
       pass-list: {$suri_passlist}
       block-ip: {$suri_blockip}
       pf-table: {$suri_pf_table}

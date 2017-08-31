@@ -982,7 +982,7 @@ function pfb_unbound_dnsbl($mode) {
 	$config = parse_config(true);
 
 	$pfbupdate = FALSE;
-	$unbound_include = "server:include: {$pfb['dnsbl_file']}.conf";
+	$unbound_include = "server:include: {$pfb['dnsbl_file']}.*conf";
 
 	// Collect Unbound custom option pfSense conf line
 	$pfb['unboundconfig']	= &$config['unbound']['custom_options'];
@@ -995,7 +995,7 @@ function pfb_unbound_dnsbl($mode) {
 	// Determine if DNSBL include line exists
 	if (!empty($unbound_custom)) {
 		// Append DNSBL Unbound pfSense conf integration
-		if (!strstr($unbound_custom, 'pfb_dnsbl.conf')) {
+		if (!strstr($unbound_custom, 'pfb_dnsbl.*conf')) {
 			if ($mode == 'enabled') {
 				$pfbupdate = TRUE;
 				$unbound_custom .= "\n{$unbound_include}";
@@ -1007,7 +1007,7 @@ function pfb_unbound_dnsbl($mode) {
 			if ($mode == 'disabled') {
 				$custom = explode ("\n", $unbound_custom);
 				foreach ($custom as $key => $line) {
-					if (strpos($line, 'pfb_dnsbl.conf') !== FALSE) {
+					if (strpos($line, 'pfb_dnsbl.*conf') !== FALSE) {
 						$pfbupdate = TRUE;
 						$log = "\nDNSBL - Removing DNSBL Unbound custom options\n";
 						unset($custom[$key]);
@@ -1025,6 +1025,17 @@ function pfb_unbound_dnsbl($mode) {
 			$log = "\nDNSBL - Adding Unbound custom 'include' option\n";
 		}
 	}
+
+	// Remove the old include line, see Bug #6603
+	$custom = explode ("\n", $unbound_custom);
+	foreach ($custom as $key => $line) {
+		if (strpos($line, 'pfb_dnsbl.conf') !== FALSE) {
+			$pfbupdate = TRUE;
+			$log .= "\nDNSBL - Removing previous Unbound custom option\n";
+			unset($custom[$key]);
+		}
+	}
+	$unbound_custom = implode("\n", $custom);
 
 	// Update config.xml, if changes required
 	if ($pfbupdate) {
@@ -3356,8 +3367,8 @@ function sync_package_pfblockerng($cron='') {
 
 										// On 'category match', parse EasyList feed 
 										if (isset($easylist)) {
-											if (substr($line, 88, 19) == 'easylist_adservers.' ||
-											    substr($line, 91, 28) == 'easyprivacy_trackingservers.') {
+											if (strpos($line, 'easylist_adservers.') !== FALSE ||
+											    strpos($line, 'easyprivacy_trackingservers.') !== FALSE) {
 												$e_found = TRUE;
 											}
 										}
@@ -3486,37 +3497,37 @@ function sync_package_pfblockerng($cron='') {
 										$line = trim($line);
 
 										// Parser for EasyList, enable collect of selected EasyList categories
-										if (isset($easylist) && strpos($line, '! *** Fetched from:') !== FALSE) {
+										if (isset($easylist) && strpos($line, '! ***') !== FALSE) {
 											// Skip all previous Easylist entries
 
 											// Collect EasyList feed
-											if (substr($line, 88, 19) == 'easylist_adservers.') {
+											if (strpos($line, 'easylist_adservers.') !== FALSE) {
 												if (in_array('ea', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
-											elseif (substr($line, 88, 25) == 'easylist_adservers_popup.') {
+											elseif (strpos($line, 'easylist_adservers_popup.') !== FALSE) {
 												if (in_array('eap', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
-											elseif (substr($line, 94, 16) == 'adult_adservers.') {
+											elseif (strpos($line, 'adult_adservers.') !== FALSE) {
 												if (in_array('aa', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
-											elseif (substr($line, 94, 22) == 'adult_adservers_popup.') {
+											elseif (strpos($line, 'adult_adservers_popup.') !== FALSE) {
 												if (in_array('aap', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
 
 											// Collect EasyPrivacy feed
-											elseif (substr($line, 91, 28) == 'easyprivacy_trackingservers.') {
+											elseif (strpos($line, 'easyprivacy_trackingservers.') !== FALSE) {
 												if (in_array('epts', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
-											elseif (substr($line, 91, 42) == 'easyprivacy_trackingservers_international.') {
+											elseif (strpos($line, 'easyprivacy_trackingservers_international.') !== FALSE) {
 												if (in_array('epti', $easylist) ? $e_skip = FALSE : $e_skip = TRUE);
 											}
 
 											// End of useable EasyList feed
-											elseif (substr($line, 88, 20) == 'easylist_thirdparty.') {
+											elseif (strpos($line, 'easylist_thirdparty.') !== FALSE) {
 												break;
 											}
 											// End of useable EasyPrivacy feed
-											elseif (substr($line, 91, 23) == 'easyprivacy_thirdparty.') {
+											elseif (strpos($line, 'easyprivacy_thirdparty.') !== FALSE) {
 												break;
 											}
 										}
@@ -3820,13 +3831,13 @@ function sync_package_pfblockerng($cron='') {
 		}
 
 		// Add 'include:' line in Unbound conf file if not found
-		if (isset($conf) && !strstr(implode($conf), 'pfb_dnsbl.conf')) {
+		if (isset($conf) && !strstr(implode($conf), 'pfb_dnsbl.*conf')) {
 			if (file_exists("{$pfb['dnsbl_file']}.conf")) {
 				$log = "\nAdding Unbound Server:Include line...";
 				pfb_logger("{$log}", 1);
 
 				$pfbupdate = TRUE;
-				$conf[] = "# Unbound custom options\n\nserver:include: {$pfb['dnsbl_file']}.conf\n";
+				$conf[] = "# Unbound custom options\n\nserver:include: {$pfb['dnsbl_file']}.*conf\n";
 				@file_put_contents("{$pfb['dnsbldir']}/unbound.tmp", $conf, LOCK_EX);
 			}
 		}
@@ -3843,10 +3854,10 @@ function sync_package_pfblockerng($cron='') {
 		// When DNSBL is disabled and not during an installation.
 		if ($pfb['dnsbl'] == '' && !$pfb['install']) {
 			// Remove 'Unbound' conf integration
-			if (isset($conf) && stripos(implode($conf), 'pfb_dnsbl.conf') !== FALSE) {
+			if (isset($conf) && stripos(implode($conf), 'pfb_dnsbl.*conf') !== FALSE) {
 				$pfbupdate = FALSE;
 				foreach ($conf as $key => $line) {
-					if (strpos($line, 'pfb_dnsbl.conf') !== FALSE) {
+					if (strpos($line, 'pfb_dnsbl.*conf') !== FALSE) {
 						$pfbupdate = TRUE;
 						unset ($conf[$key]);
 					}
@@ -4712,7 +4723,7 @@ function sync_package_pfblockerng($cron='') {
 								// Floating rules 'off'. Collect 'floating other', pass, balance to 'other'
 								if ($rule['floating'] == 'yes') {
 									$fother_rules[] = $rule;
-								} elseif ($rule['type'] == 'pass') {
+								} elseif ($rule['type'] == 'pass' || isset($rule['associated-rule-id'])) {
 									if ($pfb['order'] == 'order_0') {
 										$other_rules[] = $rule;
 									} else {

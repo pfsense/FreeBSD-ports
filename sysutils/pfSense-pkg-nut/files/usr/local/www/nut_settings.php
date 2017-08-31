@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2016 Denny Page
+ * Copyright (c) 2016-2017 Denny Page
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -180,6 +180,12 @@ if ($_POST) {
 		}
 	}
 
+	if ($pconfig['type'] == 'dummy') {
+		if (empty($pconfig['dummy_port'])) {
+			$input_errors[] = gettext("Dummy port cannot be empty");
+		}
+	}
+
 	if (!$input_errors) {
 		$nut = array();
 		$nut['type'] = $pconfig['type'];
@@ -198,6 +204,7 @@ if ($_POST) {
 				$nut['remote_port'] = $pconfig['remote_port'];
 				$nut['remote_user'] = $pconfig['remote_user'];
 				$nut['remote_pass'] = $pconfig['remote_pass'];
+				$nut['dummy_port'] = $pconfig['dummy_port'];
 				break;
 			case 'local_usb':
 				$nut['usb_driver'] = $pconfig['usb_driver'];
@@ -231,6 +238,9 @@ if ($_POST) {
 			case 'remote_snmp':
 				$nut['remote_addr'] = $pconfig['remote_addr'];
 				break;
+			case 'dummy':
+				$nut['dummy_port'] = $pconfig['dummy_port'];
+				break;
 		}
 
 		$nut['upsmon_conf'] = base64_encode(trim(str_replace("\r\n", "\n", $pconfig['upsmon_conf'])));
@@ -260,7 +270,8 @@ $nut_types = array(
 	'remote_nut' => gettext('Remote NUT server'),
 	'remote_apcupsd' => gettext('Remote apcupsd'),
 	'remote_netxml' => gettext('Remote netxml'),
-	'remote_snmp' => gettext('Remote snmp') );
+	'remote_snmp' => gettext('Remote snmp'),
+	'dummy' => gettext('Dummy UPS') );
 
 $usb_drivers = array(
 	'usbhid-ups' => 'usbhid',
@@ -435,6 +446,13 @@ $section->addInput(new Form_Input(
 	$pconfig['remote_pass']
 ))->setType('password');
 
+$section->addInput(new Form_Input(
+	'dummy_port',
+	'Dummy port',
+	'text',
+	$pconfig['dummy_port']
+));
+
 
 $section->addInput(new Form_Textarea(
 	'extra_args',
@@ -517,6 +535,7 @@ events.push(function() {
 				hideInput('remote_port', true);
 				hideInput('remote_user', true);
 				hideInput('remote_pass', true);
+				hideInput('dummy_port', true);
 				hideInput('extra_args', false);
 				hideInput('ups_conf', false);
 				hideInput('upsd_conf', false);
@@ -532,6 +551,7 @@ events.push(function() {
 				hideInput('remote_port', true);
 				hideInput('remote_user', true);
 				hideInput('remote_pass', true);
+				hideInput('dummy_port', true);
 				hideInput('extra_args', false);
 				hideInput('ups_conf', false);
 				hideInput('upsd_conf', false);
@@ -547,6 +567,23 @@ events.push(function() {
 				hideInput('remote_port', true);
 				hideInput('remote_user', true);
 				hideInput('remote_pass', true);
+				hideInput('dummy_port', true);
+				hideInput('extra_args', false);
+				hideInput('ups_conf', false);
+				hideInput('upsd_conf', false);
+				hideInput('upsd_users', false);
+				break;
+			case 'dummy':
+				hideInput('usb_driver', true);
+				hideInput('serial_driver', true);
+				hideInput('serial_port', true);
+				hideInput('generic_type', true);
+				hideInput('remote_proto', true);
+				hideInput('remote_addr', true);
+				hideInput('remote_port', true);
+				hideInput('remote_user', true);
+				hideInput('remote_pass', true);
+				hideInput('dummy_port', false);
 				hideInput('extra_args', false);
 				hideInput('ups_conf', false);
 				hideInput('upsd_conf', false);
@@ -562,6 +599,7 @@ events.push(function() {
 				hideInput('remote_port', false);
 				hideInput('remote_user', false);
 				hideInput('remote_pass', false);
+				hideInput('dummy_port', true);
 				hideInput('extra_args', true);
 				hideInput('ups_conf', true);
 				hideInput('upsd_conf', true);
@@ -577,6 +615,7 @@ events.push(function() {
 				hideInput('remote_port', false);
 				hideInput('remote_user', true);
 				hideInput('remote_pass', true);
+				hideInput('dummy_port', true);
 				hideInput('extra_args', false);
 				hideInput('ups_conf', false);
 				hideInput('upsd_conf', false);
@@ -592,6 +631,7 @@ events.push(function() {
 				hideInput('remote_port', false);
 				hideInput('remote_user', false);
 				hideInput('remote_pass', false);
+				hideInput('dummy_port', true);
 				hideInput('extra_args', false);
 				hideInput('ups_conf', false);
 				hideInput('upsd_conf', false);
@@ -607,6 +647,7 @@ events.push(function() {
 				hideInput('remote_port', true);
 				hideInput('remote_user', true);
 				hideInput('remote_pass', true);
+				hideInput('dummy_port', true);
 				hideInput('extra_args', false);
 				hideInput('ups_conf', false);
 				hideInput('upsd_conf', false);

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-freeradius3
-PORTVERSION=	0.8
+PORTVERSION=	0.15.1
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -29,7 +29,7 @@ do-extract:
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
-	${MKDIR} ${STAGEDIR}${PREFIX}/www
+	${MKDIR} ${STAGEDIR}${PREFIX}/www/freeradius/qrcode/
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/freeradius.xml \
 		${STAGEDIR}${PREFIX}/pkg
@@ -39,6 +39,10 @@ do-install:
 		${STAGEDIR}/etc/inc/priv
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/freeradius_view_config.php \
 		${STAGEDIR}${PREFIX}/www
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/freeradius/qrcode/LICENSE \
+		${STAGEDIR}${PREFIX}/www/freeradius/qrcode
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/freeradius/qrcode/qrcode.js \
+		${STAGEDIR}${PREFIX}/www/freeradius/qrcode
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/freeradiusclients.xml \
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/freeradiussettings.xml \
