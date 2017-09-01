@@ -23,25 +23,29 @@
 require_once("config.inc");
 require_once("pkg-utils.inc");
 require_once("util.inc");
+require_once('services.inc');
 
 $shortcut_section = "cellular";
 
 define('PYTHON_BIN', '/usr/local/bin/python2.7');
 define('INTERFACE_BIN', '/usr/local/sbin/cellular');
 
+
 function cellular_sync() {
+
 	global $config;
 
 	if (is_array($config['installedpackages']['cellular']['config'][0])) {
 		$cellular = $config['installedpackages']['cellular']['config'][0];
 	} else {
-		$cellular = array();
+		return;
 	}
+
 	$device = "";
 	$vtp = $cellular["port"];
 
 	if (isset($vtp) && $vtp != "default") {
-		$device = "-d ".$vtp;
+		$device = "-d " . $vtp;
 	}
 
 	$baudrate = "";
@@ -60,7 +64,34 @@ function cellular_sync() {
 
 	foreach (["port", "baudrate", "timeout", "initstring"] as $key) {
 		$key_val = ($cellular[$key] != "default" && $cellular[$key] != "") ? $cellular[$key] : "";
-		exec(PYTHON_BIN . ' ' . INTERFACE_BIN . ' $device $baudrate $timeout setcfg Interface $key $key_val signal');
+		exec(PYTHON_BIN . ' ' . INTERFACE_BIN . ' setcfg Interface ' . $key . ' ' . $key_val);
+	}
+
+	#Cron
+	install_cron_job('cellular_check.php', false);
+
+	if ($cellular["enable_cellular_check"] == "on") {
+
+		$check_interface = '-i ' . $cellular["check_interface"];
+		$check_interval = $cellular["check_interval"];
+		$enable_reset_modem = '';
+
+		if ($cellular["enable_reset_modem"]) {
+			$enable_reset_modem = '-r ' . $cellular['reset_count'];
+		}
+
+		if ($check_interval == 1) {
+			$check_interval = '*';
+		} else if ($check_interval == 60) {
+			$check_interval = '0';
+		} else {
+			$check_interval = "*/$check_interval";
+		}
+
+		$command = '/usr/local/bin/php /usr/local/sbin/cellular_check.php ' . $check_interface . ' ' . $enable_reset_modem;
+
+		install_cron_job($command, true, $check_interval, "*", "*", "*", "*", "root");
+
 	}
 }
 
@@ -90,6 +121,7 @@ function get_baudrates() {
 }
 
 function cellular_before_everything() {
+
 	global $pkg;
 	global $config;
 
@@ -132,6 +164,13 @@ function cellular_before_everything() {
 
 function cellular_validate_input($post, &$input_errors) {
 
+	global $_POST;
+
+	// Reset
+	if (isset($post['reset'])) {
+			exec(PYTHON_BIN . ' ' . INTERFACE_BIN . " custom " . escapeshellarg('^RESET') . " -v", $sig);
+	}
+
 	// Timeout
 	if ($post['timeout'] != '' && !is_numericint($post['timeout'])) {
 		$input_errors[] = "The 'Timeout' field must contain an integer value.";
@@ -139,7 +178,7 @@ function cellular_validate_input($post, &$input_errors) {
 
 	// Custom Status AT Command
 	if ($post['statuscmd'] != '') {
-		if (!preg_match('/^[A-Z0-9 _,;+=?"*#]*$/', $post['statuscmd'])) {
+		if (!preg_match('/^[A-Z0-9 _,;+=?"*#^]*$/', $post['statuscmd'])) {
 			$input_errors[] = "The 'Custom Status AT Command' field may only contain A-Z, 0-9 and some other characters matching the /^[A-Z0-9 _,;+=?\"*#]*$/ regex.";
 		}
 	}
