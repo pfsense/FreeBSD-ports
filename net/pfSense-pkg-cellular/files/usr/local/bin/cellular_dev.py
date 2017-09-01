@@ -75,7 +75,7 @@ if args.add:
     if args.device:
 
         #Make sure the links are gone
-        remove_link
+        remove_link()
 
         #Before we start kill 3gstat as it blocks us
         os.system("/bin/ps auxww | /usr/bin/grep \"[3]gstats\" | /usr/bin/awk '{print $2}' | /usr/bin/xargs kill")
