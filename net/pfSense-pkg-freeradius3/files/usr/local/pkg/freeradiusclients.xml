@@ -155,7 +155,9 @@
 				<![CDATA[
 				Enter the shared secret of the RADIUS client here. This is the shared secret (password)
 				which the NAS (switch, accesspoint, etc.) needs to communicate with the RADIUS server.
-				<span class="text-info">FreeRADIUS is limited to 31 characters for the shared secret.</span>
+				<span class="text-info">FreeRADIUS is limited to 31 characters for the shared secret.</span><br/>
+				<span class="text-danger">Warning: </span>Single quotes in shared secret must be escaped with a backslash (<code>\'</code>).
+				Backslash must be escaped by using two backslashes (<code>\\</code>).
 				]]>
 			</description>
 			<type>password</type>
