@@ -1004,7 +1004,8 @@ function freeradius_clients_resync($restart_svc = true) {
 	if (!empty($arrclients)) {
 		foreach ($arrclients as $item) {
 			$varclientip = $item['varclientip'];
-			$varclientsharedsecret = $item['varclientsharedsecret'];
+			// Bug #7836: Add single quotes to avoid breaking configuration with certain chars in secret
+			$varclientsharedsecret = "'" . $item['varclientsharedsecret'] . "'";
 			$varclientipversion = $item['varclientipversion'];
 			$varclientshortname = $item['varclientshortname'];
 			$varclientproto = $item['varclientproto'];
