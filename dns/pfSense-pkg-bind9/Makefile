@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-bind
 PORTVERSION=	9.11
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	dns net ipv6
 MASTER_SITES=	# empty
 DISTFILES=	# empty
