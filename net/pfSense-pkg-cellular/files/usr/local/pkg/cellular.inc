@@ -68,8 +68,6 @@ function cellular_sync() {
 	}
 
 	#Cron
-	install_cron_job('cellular_check.php', false);
-
 	if ($cellular["enable_cellular_check"] == "on") {
 
 		$check_interface = '-i ' . $cellular["check_interface"];
@@ -90,8 +88,26 @@ function cellular_sync() {
 
 		$command = '/usr/local/bin/php /usr/local/sbin/cellular_check.php ' . $check_interface . ' ' . $enable_reset_modem;
 
-		install_cron_job($command, true, $check_interval, "*", "*", "*", "*", "root");
+		#Check if the script changed so we need to remove any entry before adding it
+		if (is_array($config['cron']) && is_array($config['cron']['item'])) {
 
+			$is_installed = false;
+
+			foreach ($config['cron']['item'] as $item) {
+				if (strstr($item['command'], $command)) {
+					$is_installed = true;
+					break;
+				}
+			}
+
+			if (!$is_installed) {
+				install_cron_job('cellular_check.php', false);
+			}
+		}
+
+		install_cron_job($command, true, $check_interval, "*", "*", "*", "*", "root");
+	} else {
+		install_cron_job('cellular_check.php', false);
 	}
 }
 
