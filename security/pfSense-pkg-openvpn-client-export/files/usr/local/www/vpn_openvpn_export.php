@@ -644,12 +644,12 @@ print($form);
 </div>
 <br />
 <br />
-<?= print_info_box(gettext("If a client is missing from the list it is likely due to a CA mismatch between the OpenVPN server instance and the client certificate, or the client certificate does not exist on this firewall." .
+<?= print_info_box(gettext("If a client is missing from the list it is likely due to a CA mismatch between the OpenVPN server instance and the client certificate, the client certificate does not exist on this firewall, or a user certificate is not associated with a user when local database authentication is enabled." .
 "<br />" .
 "<br />" .
 "OpenVPN 2.4 requires Windows Vista or later" .
 "<br />" .
-"The &quot;win6&quot; Windows installers include a new tap-windows6 driver that works only on Windows Vista and later. " .
+"The &quot;win6&quot; Windows installers include the tap-windows6 driver which requires Windows Vista or later. " .
 "<br />" .
 "The &quot;XP&quot; Windows installers work on Windows XP and later versions. "), 'info', false); ?>
 
@@ -661,6 +661,7 @@ Links to OpenVPN clients for various platforms:<br />
 <br/><?= gettext("OpenVPN Connect") ?>: <a href="https://play.google.com/store/apps/details?id=net.openvpn.openvpn"><?=gettext("Android (Google Play)")?></a> or <a href="https://itunes.apple.com/us/app/openvpn-connect/id590379981"><?=gettext("iOS (App Store)")?></a> - <?= gettext("Recommended client for iOS") ?>
 <br/><a href="https://www.sparklabs.com/viscosity/"><?= gettext("Viscosity") ?></a> - <?= gettext("Recommended commercial client for Mac OS X and Windows") ?>
 <br/><a href="https://tunnelblick.net"><?= gettext("Tunnelblick") ?></a> - <?= gettext("Free client for OS X") ?>
+<br/><a href="https://community.openvpn.net/openvpn/wiki/OpenvpnSoftwareRepos"><?= gettext("Using the Latest OpenVPN on Linux Distros") ?></a> - <?= gettext("Install OpenVPN using the OpenVPN apt repositories to get the latest version, rather than one included with distributions.") ?>
 
 <script type="text/javascript">
 //<![CDATA[
@@ -733,7 +734,6 @@ function download_begin(act, i, j) {
 		blockoutsidedns = 1;
 	}
 	var legacy = 1;
-
 	var randomlocalport = 0;
 	if (document.getElementById("randomlocalport").checked) {
 		randomlocalport = 1;
@@ -897,18 +897,18 @@ function server_changed() {
 		cell1.className = "listr";
 		cell1.innerHTML = users[i][3];
 		cell2.className = "listr";
-		cell2.innerHTML = "- Standard Configurations:<br\/>";
+		cell2.innerHTML = "- Inline Configurations:<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confzip\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Archive<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Config Only<\/a>";
-		cell2.innerHTML += "<br\/>- Inline Configurations:<br\/>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Most Clients<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinedroid\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Android<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlineios\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> OpenVPN Connect (iOS/Android)<\/a>";
+		cell2.innerHTML += "<br\/>- Bundled Configurations:<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Others<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confzip\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Archive<\/a>";
+		cell2.innerHTML += "&nbsp;&nbsp; ";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Config File Only<\/a>";
 		cell2.innerHTML += "<br\/>- Current Windows Installer (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-24\"," + i + ", -1)' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Windows Vista and Later<\/a>";
@@ -942,18 +942,18 @@ function server_changed() {
 		cell1.className = "listr";
 		cell1.innerHTML = certs[j][1];
 		cell2.className = "listr";
-		cell2.innerHTML = "- Standard Configurations:<br\/>";
+		cell2.innerHTML = "- Inline Configurations:<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confzip\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Archive<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> File Only<\/a>";
-		cell2.innerHTML += "<br\/>- Inline Configurations:<br\/>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Most Clients<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinedroid\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Android<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlineios\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> OpenVPN Connect (iOS/Android)<\/a>";
+		cell2.innerHTML += "<br\/>- Bundled Configurations:<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Others<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confzip\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Archive<\/a>";
+		cell2.innerHTML += "&nbsp;&nbsp; ";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Config File Only<\/a>";
 		cell2.innerHTML += "<br\/>- Current Windows Installer (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-24\", -1," + j + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Windows Vista and Later<\/a>";
@@ -994,18 +994,18 @@ function server_changed() {
 		cell1.className = "listr";
 		cell1.innerHTML = "none";
 		cell2.className = "listr";
-		cell2.innerHTML = "- Standard Configurations:<br\/>";
+		cell2.innerHTML = "- Inline Configurations:<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confzip\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Archive<\/a>";
-		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> File Only<\/a>";
-		cell2.innerHTML += "<br\/>- Inline Configurations:<br\/>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Most Clients<\/a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlinedroid\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Android<\a>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"confinlineios\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> OpenVPN Connect (iOS/Android)<\/a>";
+		cell2.innerHTML += "<br\/>- Bundled Configurations:<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
-		cell2.innerHTML += "<a href='javascript:download_begin(\"confinline\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Others<\/a>";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"confzip\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Archive<\/a>";
+		cell2.innerHTML += "&nbsp;&nbsp; ";
+		cell2.innerHTML += "<a href='javascript:download_begin(\"conf\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Config File Only<\/a>";
 		cell2.innerHTML += "<br\/>- Current Windows Installer (<?=$current_openvpn_version . '-Ix' . $current_openvpn_version_rev?>):<br\/>";
 		cell2.innerHTML += "&nbsp;&nbsp; ";
 		cell2.innerHTML += "<a href='javascript:download_begin(\"inst-24\"," + i + ")' class=\"btn btn-sm btn-primary\"><i class=\"fa fa-download\"></i> Windows Vista and Later<\/a>";
