@@ -2504,6 +2504,7 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 			add_assoc_long(return_value, "allmulti", 1);
 		if (mb->ifa_flags & IFF_SIMPLEX)
 			add_assoc_long(return_value, "simplex", 1);
+		memset(&ifr, 0, sizeof(ifr));
 		strncpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
 		if (mb->ifa_data != NULL) {
 			md = mb->ifa_data;
@@ -2641,7 +2642,6 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 
 		if (tmpdl->sdl_type != IFT_ETHER)
 			continue;
-		strncpy(ifr.ifr_name, mb->ifa_name, sizeof(ifr.ifr_name));
 		memcpy(&ifr.ifr_addr, mb->ifa_addr,
 		    sizeof(mb->ifa_addr->sa_len));
 		ifr.ifr_addr.sa_family = AF_LOCAL;
