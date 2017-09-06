@@ -2354,7 +2354,7 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 	struct ifreq ifr;
 	char outputbuf[128];
 	char *ifname;
-	int ifname_len, llflag, sock, addresscnt = 0, addresscnt6 = 0, rc, sock_hw;
+	int ifname_len, llflag, addresscnt, addresscnt6;
 	zval *caps;
 	zval *encaps;
 
@@ -2366,6 +2366,8 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 	if (ifdata == NULL)
 		RETURN_NULL();
 
+	addresscnt = 0;
+	addresscnt6 = 0;
 	array_init(return_value);
 
 	for(mb = ifdata; mb != NULL; mb = mb->ifa_next) {
@@ -2446,14 +2448,12 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 			strncpy(ifr6.ifr_name, mb->ifa_name,
 			    sizeof(ifr6.ifr_name));
 			memcpy(&ifr6.ifr_ifru.ifru_addr, tmp6, tmp6->sin6_len);
-			if ((sock = socket(PF_INET6, SOCK_DGRAM, 0))) {
-				if (ioctl(sock, SIOCGIFAFLAG_IN6, &ifr6) == 0) {
-					llflag = ifr6.ifr_ifru.ifru_flags6;
-					if ((llflag & IN6_IFF_TENTATIVE) != 0)
-						add_assoc_long(return_value,
-						    "tentative", 1);
-				}
-				close(sock);
+			if (ioctl(PFSENSE_G(inets6),
+			    SIOCGIFAFLAG_IN6, &ifr6) == 0) {
+				llflag = ifr6.ifr_ifru.ifru_flags6;
+				if ((llflag & IN6_IFF_TENTATIVE) != 0)
+					add_assoc_long(return_value,
+					    "tentative", 1);
 			}
 
 			tmp6 = (struct sockaddr_in6 *)mb->ifa_netmask;
@@ -2645,11 +2645,7 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 		memcpy(&ifr.ifr_addr, mb->ifa_addr,
 		    sizeof(mb->ifa_addr->sa_len));
 		ifr.ifr_addr.sa_family = AF_LOCAL;
-		if ((sock_hw = socket(AF_LOCAL, SOCK_DGRAM, 0)) < 0)
-			continue;
-		rc = ioctl(sock_hw, SIOCGHWADDR, &ifr);
-		close(sock_hw);
-		if (rc != 0)
+		if (ioctl(PFSENSE_G(s), SIOCGHWADDR, &ifr) != 0)
 			continue;
 
 		bzero(outputbuf, sizeof outputbuf);
