@@ -635,6 +635,9 @@ pkg_upgrade() {
 			    "Running gitsync" ${mute} ignore_result
 		fi
 	fi
+
+	# Save a copy of latest finished upgrade process
+	cp -f ${logfile} ${upgrade_logfile}
 }
 
 get_meta_pkg_name() {
@@ -856,6 +859,7 @@ export LANG=C
 
 pid_file="/var/run/$(basename $0).pid"
 logfile="/cf/conf/upgrade_log.txt"
+upgrade_logfile="/cf/conf/upgrade_log.latest.txt"
 stdout='/dev/null'
 
 # Export necessary PATH
