@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-upgrade
 PORTVERSION=	0.27
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty

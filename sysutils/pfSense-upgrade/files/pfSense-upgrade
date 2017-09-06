@@ -104,16 +104,8 @@ _exec() {
 _exit() {
 	trap "-" 1 2 15 EXIT
 
-	if [ -n "${lock_main_pkgs}" ]; then
-		pkg_lock ${kernel_pkg} ${uboot_pkg}
-	fi
-
 	if [ -n "${delete_pid}" -a -f "${pid_file}" ]; then
 		rm -f ${pid_file}
-	fi
-
-	if [ -n "${chroot_dir}" ]; then
-		umount -f ${chroot_dir} >/dev/null 2>&1
 	fi
 
 	if [ -z "${booting}" -o "${boot_stage}" != "2" ]; then
@@ -125,7 +117,7 @@ _exit() {
 	fi
 
 	if [ -n "${delete_annotation}" ]; then
-		pkg ${pkg_chroot} annotate -q -D ${kernel_pkg} next_stage
+		pkg annotate -q -D ${kernel_pkg} next_stage
 	fi
 
 	if [ -n "${unlock_additional_pkgs}" ]; then
@@ -149,16 +141,16 @@ pkg_with_pb() {
 	local _event_pipe=""
 
 	if [ -n "${progress_socket}" ]; then
-		if [ -e "${chroot_dir}${progress_socket}" ]; then
-			rm -f ${chroot_dir}${progress_socket}
+		if [ -e "${progress_socket}" ]; then
+			rm -f ${progress_socket}
 		fi
 
 		_event_pipe="-o EVENT_PIPE=${progress_socket}"
 
-		nc -lU ${chroot_dir}${progress_socket} >> ${progress_file} &
+		nc -lU ${progress_socket} >> ${progress_file} &
 		nc_pid=$!
 
-		while [ ! -e "${chroot_dir}${progress_socket}" ]; do
+		while [ ! -e "${progress_socket}" ]; do
 			sleep 0.1
 		done
 	fi
@@ -170,39 +162,7 @@ pkg_with_pb() {
 }
 
 fetch_upgrade_packages() {
-	local _fetch_list=""
-	if [ "${platform}" = "nanobsd" ]; then
-		local _pkg=""
-
-		# Check if all non-auto packages installed on 2nd partition are
-		# installed on current one, if not, mark them to be deleted by
-		# pkg autoremove
-		for _pkg in $(pkg ${pkg_chroot} query -e '%a == 0' %n); do
-			pkg info -e ${_pkg} \
-			    && continue
-
-			_exec "pkg ${pkg_chroot} set -A 1 ${_pkg}" \
-			    "Scheduling package ${_pkg} for removal"
-		done
-
-		# Check if all non-auto packages installed on current partition
-		# are installed on 2nd one, if not, we need to fetch them
-		for _pkg in $(pkg query -e '%a == 0' %n); do
-			pkg ${pkg_chroot} info -e ${_pkg} \
-			    && continue
-
-			_fetch_list="${_fetch_list}${_fetch_list:+ }${_pkg}"
-		done
-
-	fi
-
-	_exec "pkg_with_pb ${pkg_chroot} upgrade -F" \
-	    "Downloading upgrade packages"
-
-	if [ -n "${_fetch_list}" ]; then
-		_exec "pkg_with_pb ${pkg_chroot} fetch -d ${_fetch_list}" \
-		    "Fetching packages not present on upgrade partition"
-	fi
+	_exec "pkg_with_pb upgrade -F" "Downloading upgrade packages"
 }
 
 pkg_lock() {
@@ -214,11 +174,11 @@ pkg_lock() {
 
 	for _pkg in ${_pkgs}; do
 		for _pkg_name in $(pkg query -g %n "${_pkg}"); do
-			_locked=$(pkg ${pkg_chroot} query %k ${_pkg_name})
+			_locked=$(pkg query %k ${_pkg_name})
 			if [ "${_locked}" != "0" ]; then
 				continue
 			fi
-			_exec "pkg ${pkg_chroot} lock ${_pkg_name}" \
+			_exec "pkg lock ${_pkg_name}" \
 			    "Locking package ${_pkg_name}" mute
 		done
 	done
@@ -233,13 +193,25 @@ pkg_unlock() {
 
 	for _pkg in ${_pkgs}; do
 		for _pkg_name in $(pkg query -g %n "${_pkg}"); do
-			_locked=$(pkg ${pkg_chroot} query %k ${_pkg_name})
+			_locked=$(pkg query %k ${_pkg_name})
 			if [ "${_locked}" != "1" ]; then
 				continue
 			fi
-			_exec "pkg ${pkg_chroot} unlock ${_pkg_name}" \
+			_exec "pkg unlock ${_pkg_name}" \
 			    "Unlocking package ${_pkg_name}" mute
 		done
+	done
+}
+
+set_vital_flag() {
+	for _pkg in "$@"; do
+		local _vflag=$(pkg query %V ${_pkg} 2>/dev/null)
+
+		[ "${_vflag}" != "0" ] \
+		    && continue
+
+		_exec "pkg set -y -v 1 ${_pkg}" \
+		    "Setting vital flag on ${_pkg}" mute
 	done
 }
 
@@ -308,8 +280,7 @@ pkg_update() {
 
 	abi_setup
 
-	_exec "pkg ${pkg_chroot} update${_force}" \
-	    "Updating repositories metadata" ${_mute}
+	_exec "pkg update${_force}" "Updating repositories metadata" ${_mute}
 }
 
 pkg_upgrade_repo() {
@@ -322,7 +293,7 @@ pkg_upgrade_repo() {
 
 	# Deprecated pa
 	if is_pkg_installed ${product}-repo-devel; then
-		_exec "pkg ${pkg_chroot} set -A 1 ${product}-repo-devel" \
+		_exec "pkg set -A 1 ${product}-repo-devel" \
 		    "Scheduling package ${product}-repo-devel for removal"
 		_exec "pkg install${dont_update} ${_repo_pkg}" \
 		    "Installing ${_repo_pkg}" mute
@@ -453,11 +424,21 @@ pkg_upgrade() {
 			_exit 99
 		fi
 
-		pkg_unlock ${kernel_pkg} ${uboot_pkg}
-		lock_main_pkgs=1
+		# Old versions used to lock kernel and uboot, make sure we
+		# get it reverted
+		if pkg lock -l 2>&1 | grep -q "kernel"; then
+			pkg_unlock ${kernel_pkg} ${uboot_pkg}
+		fi
+		if [ -n "${uboot_pkg}"] && \
+		    pkg lock -l 2>&1 | grep -q "u-boot"; then
+			pkg_unlock ${uboot_pkg}
+		fi
+
+		# Always make sure important packages are set as vital
+		set_vital_flag pkg ${kernel_pkg} ${product} ${product}-rc \
+		    ${product}-base ${uboot_pkg}
 
 		if ! upgrade_available; then
-			pkg_lock ${kernel_pkg} ${uboot_pkg}
 			[ -n "${NEW_MAJOR}" ] \
 			    && pkg_unlock pkg
 			_echo "Your packages are up to date"
@@ -467,37 +448,19 @@ pkg_upgrade() {
 		if [ -n "${dry_run}" ]; then
 			[ -n "${NEW_MAJOR}" ] \
 			    && pkg_unlock pkg
-			pkg ${pkg_chroot} upgrade${dont_update} -nq 2>&1 \
-			    | tee -a ${logfile}
-			pkg_lock ${kernel_pkg} ${uboot_pkg}
+			pkg upgrade${dont_update} -nq 2>&1 | tee -a ${logfile}
 			_exit 0
 		fi
 
 		local _meta_pkg=$(get_meta_pkg_name)
-		if [ "${platform}" = "nanobsd" ] \
-		    && upgrade_available -r "${product}-core"; then
+		if [ "${platform}" = "nanobsd" ]; then
 			_echo "**** WARNING ****"
-			_echo "Duplicate slice required!!"
 			_echo ""
-			_echo "Before starting the upgrade process, the" \
-			    "currently mounted nanobsd partition"
-			_echo "needs to be cloned to the secondary" \
-			    "partition, where the update will happen"
+			_echo "NanoBSD platform is no longer supported."
 			_echo ""
-			_echo "After installation a reboot will be required" \
-			    "to switch partition."
-			_echo ""
-			if [ -z "${yes}" ]; then
-				_echo -n "Proceed with upgrade? (y/N) "
-				read answer
-				if [ "${answer}" != "y" ]; then
-					_echo "Aborting..."
-					_exit 0
-				fi
-				# Do not make the user have to answer again.
-				yes=1
-			fi
-			setup_nanobsd_env
+			_echo "You can find instructions on how to convert it"
+			    "to Full Installation at http://bit.ly/2wDinm8"
+			_exit 1
 		fi
 
 		# ZFS panics with reroot, do not use it in this case
@@ -511,8 +474,7 @@ pkg_upgrade() {
 
 		if [ -z "${yes}" ]; then
 			# Show user which packages are going to be upgraded
-			pkg ${pkg_chroot} upgrade${dont_update} -nq 2>&1 \
-			    | tee -a ${logfile}
+			pkg upgrade${dont_update} -nq 2>&1 | tee -a ${logfile}
 
 			_echo ""
 			_echo "**** WARNING ****"
@@ -539,27 +501,24 @@ pkg_upgrade() {
 		fi
 
 		if upgrade_available ${kernel_pkg}; then
-			_exec "pkg ${pkg_chroot} upgrade -U ${kernel_pkg}" \
+			_exec "pkg upgrade -U ${kernel_pkg}" \
 			    "Upgrading ${product} kernel"
 		fi
 
 		if [ -n "${uboot_pkg}" ] && upgrade_available ${uboot_pkg}; then
-			_exec "pkg ${pkg_chroot} upgrade -U ${uboot_pkg}" \
+			_exec "pkg upgrade -U ${uboot_pkg}" \
 			    "Upgrading ${product} u-boot"
 		fi
 
 		if [ -n "${NEW_MAJOR}" ]; then
-			pkg ${pkg_chroot} annotate -q -M ${kernel_pkg} \
-			    new_major 1
+			pkg annotate -q -M ${kernel_pkg} new_major 1
 		fi
 
-		pkg ${pkg_chroot} annotate -q -M ${kernel_pkg} next_stage 2
+		pkg annotate -q -M ${kernel_pkg} next_stage 2
 		next_stage=2
 
-		if [ "${platform}" != "nanobsd" ]; then
-			do_reboot
-			_exit 0
-		fi
+		do_reboot
+		_exit 0
 	fi
 
 	if [ "${next_stage}" = "2" ]; then
@@ -570,14 +529,14 @@ pkg_upgrade() {
 		# If those symlinks are present, pkg exit because it expects
 		# them to be a directory
 		if upgrade_available strongswan; then
-			[ -L ${chroot_dir}/usr/local/etc/ipsec.d ] \
-			    && rm -f ${chroot_dir}/usr/local/etc/ipsec.d
-			[ -L ${chroot_dir}/usr/local/etc/ipsec.conf ] \
-			    && rm -f ${chroot_dir}/usr/local/etc/ipsec.conf
-			[ -L ${chroot_dir}/usr/local/etc/strongswan.d ] \
-			    && rm -f ${chroot_dir}/usr/local/etc/strongswan.d
-			[ -L ${chroot_dir}/usr/local/etc/strongswan.conf ] \
-			    && rm -f ${chroot_dir}/usr/local/etc/strongswan.conf
+			[ -L /usr/local/etc/ipsec.d ] \
+			    && rm -f /usr/local/etc/ipsec.d
+			[ -L /usr/local/etc/ipsec.conf ] \
+			    && rm -f /usr/local/etc/ipsec.conf
+			[ -L /usr/local/etc/strongswan.d ] \
+			    && rm -f /usr/local/etc/strongswan.d
+			[ -L /usr/local/etc/strongswan.conf ] \
+			    && rm -f /usr/local/etc/strongswan.conf
 		fi
 
 		if upgrade_available; then
@@ -585,36 +544,28 @@ pkg_upgrade() {
 			if [ -n "${is_pkg_locked}" ]; then
 				# Upgrade pkg
 				pkg_unlock pkg
-				pkg ${pkg_chroot} annotate -q -D \
-				    ${kernel_pkg} new_major
+				pkg annotate -q -D ${kernel_pkg} new_major
 				_exec "pkg-static install -f pkg" \
 				    "Reinstalling pkg due to ABI change"
 
 				# Upgrade base packages using pkg-static
-				_exec "pkg-static ${pkg_chroot} upgrade -r \
-				    ${product}-core" \
+				_exec "pkg-static upgrade -r ${product}-core" \
 				    "Upgrading necessary core packages"
 
 				# Make sure PHP setup is fine
 				/etc/rc.php_ini_setup >/dev/null 2>&1
 			fi
 
-			_exec "pkg ${pkg_chroot} upgrade${dont_update}" \
+			_exec "pkg upgrade${dont_update}" \
 			    "Upgrading necessary packages"
 			delete_annotation=""
 		fi
 
-		pkg ${pkg_chroot} annotate -q -M ${kernel_pkg} next_stage 3
+		pkg annotate -q -M ${kernel_pkg} next_stage 3
 		next_stage=3
 
 		pkg_unlock "${pkg_prefix}*"
 		unlock_additional_pkgs=""
-
-		if [ "${platform}" = "nanobsd" ]; then
-			switch_active_nanobsd_partition
-			do_reboot
-			_exit 0
-		fi
 
 		# 2nd reboot during new major version upgrade
 		if [ -n "${is_pkg_locked}" ]; then
@@ -631,18 +582,17 @@ pkg_upgrade() {
 	if [ "${next_stage}" = "3" ]; then
 		if upgrade_available; then
 			delete_annotation=1
-			_exec "pkg ${pkg_chroot} upgrade${dont_update}" \
+			_exec "pkg upgrade${dont_update}" \
 			    "Upgrading necessary packages"
 			delete_annotation=""
 		fi
 
-		pkg ${pkg_chroot} annotate -q -D ${kernel_pkg} next_stage
+		pkg annotate -q -D ${kernel_pkg} next_stage
 
 		# cleanup caches
-		_exec "pkg ${pkg_chroot} autoremove" \
-		    "Removing unnecessary packages" mute ignore_result
-		_exec "pkg ${pkg_chroot} clean" "Cleanup pkg cache" mute \
+		_exec "pkg autoremove" "Removing unnecessary packages" mute \
 		    ignore_result
+		_exec "pkg clean" "Cleanup pkg cache" mute ignore_result
 	fi
 
 	gitsync=$(read_xml_tag.sh boolean system/gitsync/synconupgrade)
@@ -722,99 +672,10 @@ check_upgrade() {
 	_exit 0
 }
 
-setup_nanobsd_env() {
-	if [ "${platform}" != "nanobsd" ]; then
-		return;
-	fi
-
-	chroot_dir=/tmp/nanobsd_upgrade
-	mkdir -p ${chroot_dir} 2>/dev/null
-	local _cur_partition=$(mount -p / | cut -f1)
-	local _update_partition=$(echo ${_cur_partition} \
-	    | sed -e 's,0$,2,; s,1$,0,; s,2$,1,')
-
-	if [ ! -e "${_update_partition}" ]; then
-		_echo "Secondary partition (${_update_partition}), used for" \
-		    "upgrade not found"
-		_exit 1
-	fi
-
-	# Remove /dev
-	_update_partition=$(echo ${_update_partition} | sed 's,^/dev/,,')
-	local _update_slice=$(glabel status -s \
-	    | awk "\$1 == \"${_update_partition}\" { print \$3 }")
-
-	if [ -z "${_update_slice}" -o ! -e "/dev/${_update_slice}" ]; then
-		_echo "Secondary slice (${_update_slice}), use_update_sliced" \
-		    "for upgrade not found"
-		_exit 1
-	fi
-
-	_update_slice="/dev/${_update_slice}"
-
-	# Clone slice using same logic from nanobsd_clone_slice()
-	sysctl kern.geom.debugflags=16 >/dev/null 2>&1
-	_exec "dd if=/dev/zero of=${_update_slice} bs=1m count=1" \
-	    "Cleaning secondary partition" mute
-	_exec "dd if=${_cur_partition} of=${_update_slice} bs=64k" \
-	    "Duplicating current slice" mute
-	_exec "tunefs -L ${_update_partition##*/} ${_update_slice}" \
-	    "Restoring slice label" mute
-	sysctl kern.geom.debugflags=0 >/dev/null 2>&1
-
-	_exec "/sbin/fsck -y -t ufs /dev/${_update_partition}" \
-	    "Testing duplicated partition integrity" mute
-	_exec "mount /dev/${_update_partition} ${chroot_dir}" \
-	    "Mounting second partition to run upgrade" mute
-
-	# Make sure resolv.conf is present, otherwise upgrade may fail
-	# (bug #6557)
-	local _resolv_conf=$(readlink -f /etc/resolv.conf)
-	_exec "unlink ${chroot_dir}/etc/resolv.conf" \
-	    "Removing resolv.conf symlink from upgrade partition" mute \
-	    ignore_result
-	_exec "cp -f ${_resolv_conf} ${chroot_dir}/etc/resolv.conf" \
-	    "Copying resolv.conf to upgrade partition" mute ignore_result
-
-	sed -i '' -e "s,^${_cur_partition},/dev/${_update_partition}," \
-	    ${chroot_dir}/etc/fstab
-
-	pkg_chroot="-c ${chroot_dir}"
-}
-
-switch_active_nanobsd_partition() {
-	if [ "${platform}" != "nanobsd" ]; then
-		return;
-	fi
-
-	local _cur_partition=$(mount -p / | cut -f1 | sed 's,^/dev/,,')
-	local _disk=$(glabel status -s | \
-	    awk "\$1 == \"${_cur_partition}\" \
-	    { print substr(\$3, 0, length(\$3)-3)}")
-	local _i=$(echo ${_cur_partition} | cut -c ${#_cur_partition})
-
-	if ! echo "${_i}" | egrep -q '^[0-9]$'; then
-		_echo "Invalid partition label ${_cur_partition}"
-		_exit 1
-	fi
-
-	# pfsense0 == part 1 / pfsense1 == part 2
-	if [ ${_i} -eq 0 ]; then
-		_i=2
-	else
-		_i=1
-	fi
-
-	_exec "gpart set -a active -i ${_i} ${_disk}" \
-	    "Setting secondary partition as active" mute
-}
-
 is_pkg_installed() {
 	local _pkg_name="${1}"
-	shift
-	local _pkg_chroot="$@"
 
-	pkg ${_pkg_chroot} info -e ${_pkg_name}
+	pkg info -e ${_pkg_name}
 	return $?
 }
 
@@ -826,12 +687,12 @@ compare_pkg_version() {
 		return 1
 	fi
 
-	if ! is_pkg_installed ${_pkg_name} ${pkg_chroot}; then
+	if ! is_pkg_installed ${_pkg_name}; then
 		echo '!'
 		return 1
 	fi
 
-	local _lver=$(pkg ${pkg_chroot} query %v ${_pkg_name})
+	local _lver=$(pkg query %v ${_pkg_name})
 
 	if [ -z "${_lver}" ]; then
 		_echo "ERROR: It was not possible to determine ${_pkg_name}" \
@@ -839,7 +700,7 @@ compare_pkg_version() {
 		_exit 1
 	fi
 
-	local _rver=$(pkg ${pkg_chroot} rquery -U %v ${_pkg_name})
+	local _rver=$(pkg rquery -U %v ${_pkg_name})
 
 	if [ -z "${_rver}" ]; then
 		_echo "ERROR: It was not possible to determine ${_pkg_name}" \
@@ -1034,7 +895,7 @@ export pkg_prefix=$(php -n /usr/local/sbin/read_global_var pkg_prefix \
 export platform=$(cat /etc/platform)
 
 USE_MFS_TMPVAR=$(read_xml_tag.sh boolean system/use_mfs_tmpvar)
-if [ "${platform}" = "nanobsd" ] || [ "${USE_MFS_TMPVAR}" = "true" ]; then
+if [ "${USE_MFS_TMPVAR}" = "true" ]; then
 	export PKG_DBDIR=/root/var/db/pkg
 	export PKG_CACHEDIR=/root/var/cache/pkg
 fi
@@ -1052,13 +913,8 @@ validate_repo_conf
 
 # Flags used in _exit
 export delete_annotation=""
-export lock_main_pkgs=""
 export unlock_additional_pkgs=""
 export delete_pid=""
-
-# Upgrade process on nanobsd will happen in chroot
-export pkg_chroot=""
-export chroot_dir=""
 
 # Save nc_pid to be able to kill it
 export nc_pid=""
