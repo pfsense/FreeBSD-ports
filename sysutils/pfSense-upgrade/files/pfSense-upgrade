@@ -104,10 +104,6 @@ _exec() {
 _exit() {
 	trap "-" 1 2 15 EXIT
 
-	if [ -n "${lock_main_pkgs}" ]; then
-		pkg_lock ${kernel_pkg} ${uboot_pkg}
-	fi
-
 	if [ -n "${delete_pid}" -a -f "${pid_file}" ]; then
 		rm -f ${pid_file}
 	fi
@@ -204,6 +200,18 @@ pkg_unlock() {
 			_exec "pkg unlock ${_pkg_name}" \
 			    "Unlocking package ${_pkg_name}" mute
 		done
+	done
+}
+
+set_vital_flag() {
+	for _pkg in "$@"; do
+		local _vflag=$(pkg query %V ${_pkg} 2>/dev/null)
+
+		[ "${_vflag}" != "0" ] \
+		    && continue
+
+		_exec "pkg set -y -v 1 ${_pkg}" \
+		    "Setting vital flag on ${_pkg}" mute
 	done
 }
 
@@ -416,11 +424,21 @@ pkg_upgrade() {
 			_exit 99
 		fi
 
-		pkg_unlock ${kernel_pkg} ${uboot_pkg}
-		lock_main_pkgs=1
+		# Old versions used to lock kernel and uboot, make sure we
+		# get it reverted
+		if pkg lock -l 2>&1 | grep -q "kernel"; then
+			pkg_unlock ${kernel_pkg} ${uboot_pkg}
+		fi
+		if [ -n "${uboot_pkg}"] && \
+		    pkg lock -l 2>&1 | grep -q "u-boot"; then
+			pkg_unlock ${uboot_pkg}
+		fi
+
+		# Always make sure important packages are set as vital
+		set_vital_flag pkg ${kernel_pkg} ${product} ${product}-rc \
+		    ${product}-base ${uboot_pkg}
 
 		if ! upgrade_available; then
-			pkg_lock ${kernel_pkg} ${uboot_pkg}
 			[ -n "${NEW_MAJOR}" ] \
 			    && pkg_unlock pkg
 			_echo "Your packages are up to date"
@@ -431,7 +449,6 @@ pkg_upgrade() {
 			[ -n "${NEW_MAJOR}" ] \
 			    && pkg_unlock pkg
 			pkg upgrade${dont_update} -nq 2>&1 | tee -a ${logfile}
-			pkg_lock ${kernel_pkg} ${uboot_pkg}
 			_exit 0
 		fi
 
@@ -896,7 +913,6 @@ validate_repo_conf
 
 # Flags used in _exit
 export delete_annotation=""
-export lock_main_pkgs=""
 export unlock_additional_pkgs=""
 export delete_pid=""
 
