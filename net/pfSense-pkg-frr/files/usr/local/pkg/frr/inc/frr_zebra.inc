@@ -574,10 +574,10 @@ function frr_generate_config_zebra() {
 		$frr_conf = &$config['installedpackages']['frr']['config'][0];
 	}
 
-	if (isset($config['installedpackages']['frrglobalraw']['config'][0]['zebra']) &&
-	    !empty($config['installedpackages']['frrglobalraw']['config'][0]['zebra'])) {
+	if (isset($config['installedpackages']['frrraw']['config'][0]['zebra']) &&
+	    !empty($config['installedpackages']['frrraw']['config'][0]['zebra'])) {
 		// if there is a raw config specifyed in tthe config.xml use that instead of the assisted config
-		$zebraconffile = str_replace("\r", "", base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['zebra']));
+		$zebraconffile = str_replace("\r", "", base64_decode($config['installedpackages']['frrraw']['config'][0]['zebra']));
 	} else {
 		/* If there is no raw configuration and no GUI configuration, stop. */
 		if (empty($frr_conf)) {
