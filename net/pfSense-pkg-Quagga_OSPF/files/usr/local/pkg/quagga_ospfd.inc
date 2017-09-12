@@ -344,6 +344,21 @@ function quagga_ospfd_install_conf() {
 	fwrite($fd, $ospf6dconffile);
 	fclose($fd);
 
+	//UPGRADE PATH - Checks if legacy "CARP Disable" mode was previously in use proior to 0.6.20; if previously in use, sets "carpmode" to "quaggadisable". If not in use, sets "carpmode" to "none".
+	if (!isset($ospfd_conf['carpmode'])) {
+		syslog(LOG_NOTICE, "Quagga: CARP failover mode upgrade initializing");
+		if ($ospfd_conf['carpstatusvid'] != "none") {
+			$ospfd_conf['carpmode'] = "quaggadisable";
+			syslog(LOG_NOTICE, "Quagga: CARP failover mode established as 'quaggadisable'");
+		}
+		else {
+			$ospfd_conf['carpmode'] = "none";
+			syslog(LOG_NOTICE, "Quagga: CARP failover mode established as 'none'");
+		}
+		write_config( $write_config_only = true );
+		syslog(LOG_NOTICE, "Quagga: CARP failover upgrade complete");
+	}
+	
 	$carp_ip_status_check = "";
 	if ((isset($ospfd_conf['carpmode']) && $ospfd_conf['carpmode'] == "quaggadisable") && (isset($ospfd_conf['carpstatusvid']) && $ospfd_conf['carpstatusvid'] != "none")) {
 		$vip = get_configured_vip($ospfd_conf['carpstatusvid']);
@@ -559,10 +574,6 @@ function quagga_ospfd_plugin_carp($pluginparams) {
 	
 	list($vhid, $iface) = explode("@", trim($pluginparams['interface']));
 	$friendly = convert_real_interface_to_friendly_interface_name($iface);
-
-
-
-
 
 	switch ($ospfd_conf['carpmode']) {
 		case "quaggadisable":
