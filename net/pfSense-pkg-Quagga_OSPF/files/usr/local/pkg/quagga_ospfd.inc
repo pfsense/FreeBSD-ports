@@ -347,7 +347,7 @@ function quagga_ospfd_install_conf() {
 	//UPGRADE PATH - Checks if legacy "CARP Disable" mode was previously in use proior to 0.6.20; if previously in use, sets "carpmode" to "quaggadisable". If not in use, sets "carpmode" to "none".
 	if (!isset($ospfd_conf['carpmode'])) {
 		syslog(LOG_NOTICE, "Quagga: CARP failover mode upgrade initializing");
-		if (isset($ospfd_conf['carpstatusvid']) && ($ospfd_conf['carpstatusvid'] != "none")) {
+		if (strpos($ospfd_conf['carpstatusvid'],'_vip') !== false) {
 			$ospfd_conf['carpmode'] = "quaggadisable";
 			syslog(LOG_NOTICE, "Quagga: CARP failover mode established as 'quaggadisable'");
 		}
@@ -368,6 +368,7 @@ function quagga_ospfd_install_conf() {
 
 CARP_STATUS=`/sbin/ifconfig {$carpcheckinterface} | /usr/bin/grep 'carp:' | /usr/bin/grep {$vhid} | /usr/bin/awk '{print \$2;}'`
 if [ \${CARP_STATUS} != "MASTER" ]; then
+	logger "Quagga: CARP \"Quagga Disable\" Mode - Interface {$carpcheckinterface} is NOT in MASTER state, exiting";
 	exit;
 fi
 EOF;
@@ -387,13 +388,14 @@ EOF;
 CARP_STATUS=`/sbin/ifconfig {$carpcheckinterface} | /usr/bin/grep 'carp:' | /usr/bin/grep {$vhid} | /usr/bin/awk '{print \$2;}'`
 if [ \${CARP_STATUS} == "MASTER" ]; then
 	{$control_script} ospf cost {$phyint} {$ospfd_conf['carpactivecost']};
+	logger "Quagga: CARP \"OSPF Cost\" Mode - Interface {$carpcheckinterface} is in MASTER state, OSPF cost set to {$ospfd_conf['carpactivecost']}";
 else
 	{$control_script} ospf cost {$phyint} {$ospfd_conf['carpbackupcost']};
+	logger "Quagga: CARP \"OSPF Cost\" Mode - Interface {$carpcheckinterface} is NOT in MASTER state, OSPF cost set to {$ospfd_conf['carpbackupcost']}";
 fi
 EOF;
 			
 		}
-		syslog(LOG_NOTICE, "Quagga: Failover status {$carp_ip_status_check}");
 	}
 
 
@@ -485,11 +487,13 @@ EOF;
 			case "BACKUP":
 			case "INIT":
 				mwexec_bg("/usr/local/etc/rc.d/quagga.sh stop");
+				syslog(LOG_NOTICE, "Quagga: CARP \"Quagga Disable\" Mode - Interface {$carpcheckinterface} is NOT in MASTER state, exiting");
 				break;
 			// Start the service if the VIP is MASTER state.
 			case "MASTER":
 			// Assume it's up if the status can't be determined.
 			default:
+				syslog(LOG_NOTICE, "Quagga: CARP \"Quagga Disable\" Mode - Interface {$carpcheckinterface} is in MASTER state, starting");
 				mwexec_bg("/usr/local/etc/rc.d/quagga.sh restart");
 				break;
 		}
