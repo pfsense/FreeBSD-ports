@@ -344,10 +344,10 @@ function quagga_ospfd_install_conf() {
 	fwrite($fd, $ospf6dconffile);
 	fclose($fd);
 
-	//UPGRADE PATH - Checks if legacy "CARP Disable" mode was previously in use proior to 0.6.21; if previously in use, sets "carpmode" to "quaggadisable". If not in use, sets "carpmode" to "none".
+	//UPGRADE PATH - Checks if legacy "CARP Disable" mode was previously in use proior to 0.6.20; if previously in use, sets "carpmode" to "quaggadisable". If not in use, sets "carpmode" to "none".
 	if (!isset($ospfd_conf['carpmode'])) {
 		syslog(LOG_NOTICE, "Quagga: CARP failover mode upgrade initializing");
-		if ($ospfd_conf['carpstatusvid'] != "none") {
+		if (isset($ospfd_conf['carpstatusvid']) && ($ospfd_conf['carpstatusvid'] != "none")) {
 			$ospfd_conf['carpmode'] = "quaggadisable";
 			syslog(LOG_NOTICE, "Quagga: CARP failover mode established as 'quaggadisable'");
 		}
