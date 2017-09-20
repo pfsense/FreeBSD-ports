@@ -2523,6 +2523,9 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 				    (caddr_t)&ifr) == 0) {
 					add_assoc_string(return_value, "iftype",
 					    "wireless", 1);
+					/* Reset ifr after use. */
+					memset(&ifr, 0, sizeof(ifr));
+					strncpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
 				} else {
 					add_assoc_string(return_value, "iftype",
 					    "ether", 1);
