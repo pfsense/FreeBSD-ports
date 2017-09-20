@@ -80,19 +80,29 @@ function telegraf_resync_config() {
 
 [[inputs.system]]
 
-[[outputs.influxdb]]
-
-[[outputs.influxdb]]
-	urls = ["{$telegraf_conf['influx_server']}"]
-	database = "{$telegraf_conf['influx_db']}"
 
 EOD;
 
-	if (!empty($telegraf_conf['influx_user'])) {
-		$cfg .= "\tusername = \"" . $telegraf_conf['influx_user'] . "\"\n";
-	}
-	if (!empty($telegraf_conf['influx_pass'])) {
-		$cfg .= "\tpassword = \"" . base64_decode($telegraf_conf['influx_pass']) . "\"\n";
+	if ((is_array($telegraf_conf['telegraf_output']) && in_array("influxdb", $telegraf_conf['telegraf_output'])) || $telegraf_conf['telegraf_output'] == "influxdb") {
+		$cfg .= "[[outputs.influxdb]]\n";
+		$cfg .= "\turls = [\"" . $telegraf_conf['influx_server'] . "\"]\n";
+		$cfg .= "\tdatabase = \"" . $telegraf_conf['influx_db'] . "\"\n";
+
+		if (!empty($telegraf_conf['influx_user'])) {
+			$cfg .= "\tusername = \"" . $telegraf_conf['influx_user'] . "\"\n";
+		}
+		if (!empty($telegraf_conf['influx_pass'])) {
+			$cfg .= "\tpassword = \"" . base64_decode($telegraf_conf['influx_pass']) . "\"\n";
+		}
+	} else if ((is_array($telegraf_conf['telegraf_output']) && in_array("elasticsearch", $telegraf_conf['telegraf_output'])) || $telegraf_conf['telegraf_output'] == "elasticsearch") {
+		$cfg .= "[[outputs.elasticsearch]]\n";
+		$cfg .= "\tenable_sniffer = false\n";
+		$cfg .= "\thealth_check_interval = \"10s\"\n";
+		$cfg .= "\tindex_name = \"telegraf-%Y.%m.%d\"\n";
+		$cfg .= "\tmanage_template = true\n";
+		$cfg .= "\toverwrite_template = false\n";
+		$cfg .= "\ttemplate_name = \"telegraf\"\n";
+		$cfg .= "\turls = [\"" . $telegraf_conf['elasticsearch_server'] . "\"]\n";
 	}
 	$conffile = "/usr/local/etc/telegraf.conf";
 	file_put_contents($conffile, $cfg);
