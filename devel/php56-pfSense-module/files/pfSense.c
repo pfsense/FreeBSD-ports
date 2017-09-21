@@ -1964,7 +1964,7 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 				}
 				if (key_len == 7 && strcasecmp(key, "tagged") == 0 &&
 				    Z_LVAL_PP(data2) != 0) {
-					tagged = 1; 
+					tagged = 1;
 				}
 			}
 			members |= (1 << port);
@@ -2523,9 +2523,6 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 				    (caddr_t)&ifr) == 0) {
 					add_assoc_string(return_value, "iftype",
 					    "wireless", 1);
-					/* Reset ifr after use. */
-					memset(&ifr, 0, sizeof(ifr));
-					strncpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
 				} else {
 					add_assoc_string(return_value, "iftype",
 					    "ether", 1);
@@ -3995,11 +3992,11 @@ PHP_FUNCTION(pfSense_get_os_kern_data) {
 
 static void build_ipsec_sa_array(void *salist, char *label, vici_res_t *res) {
 	char *name, *value;
-
 	/* message sections may be nested. maintain a stack as we traverse */
-	int done = 0, level = 0;
-	zval *nestedarrs[32];
 
+	int done = 0;
+  int level = 0;
+	zval *nestedarrs[32];
 	nestedarrs[level] = (zval *) salist;
 
 	while (!done) {
@@ -4011,7 +4008,14 @@ static void build_ipsec_sa_array(void *salist, char *label, vici_res_t *res) {
 				name = vici_parse_name(res);
 				ALLOC_INIT_ZVAL(nestedarrs[level + 1]);
 				array_init(nestedarrs[level + 1]);
-				add_assoc_zval(nestedarrs[level], name, nestedarrs[level + 1]);
+        if(level == 0){
+            add_next_index_zval(nestedarrs[level],nestedarrs[level+1]);
+
+            char *temp = "con-id";
+            add_assoc_string(nestedarrs[level + 1], temp, name, 1);
+        }else{
+				    add_assoc_zval(nestedarrs[level], name, nestedarrs[level + 1]);
+        }
 				Z_ADDREF_P(nestedarrs[level + 1]);
 				level++;
 				break;
@@ -4041,15 +4045,14 @@ static void build_ipsec_sa_array(void *salist, char *label, vici_res_t *res) {
 				add_next_index_string(nestedarrs[level], value, 1);
 				break;
 			case VICI_PARSE_END:
-				done++;
+				done ++;
 				break;
 			default:
 				php_printf("Parse error!\n");
-				done++;
+				done ++;
 				break;
 		}
 	}
-
 	return;
 }
 
@@ -4072,6 +4075,7 @@ PHP_FUNCTION(pfSense_ipsec_list_sa) {
 			if (res) {
 				vici_free_res(res);
 			}
+    
 		}
 		vici_disconnect(conn);
 	} else {
