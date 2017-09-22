@@ -138,22 +138,22 @@ function showCmdT($idx, $data) { ?>
 if (is_array($config['installedpackages']['frr']['config'])) {
 	$frr_conf = &$config['installedpackages']['frr']['config'][0];
 }
-$frr_enabled = (isset($frr_conf) && !empty($frr_conf['enable'])) || !empty($config['installedpackages']['frrraw']['config'][0]['zebra']);
+$frr_enabled = (isset($frr_conf) && !empty($frr_conf['enable'])) || !empty($config['installedpackages']['frrglobalraw']['config'][0]['zebra']);
 
 if (is_array($config['installedpackages']['frrbgp']['config'])) {
 	$frr_bgp_conf = &$config['installedpackages']['frrbgp']['config'][0];
 }
-$bgpd_enabled = (isset($frr_bgp_conf) && !empty($frr_bgp_conf['enable'])) || !empty($config['installedpackages']['frrraw']['config'][0]['bgpd']);
+$bgpd_enabled = (isset($frr_bgp_conf) && !empty($frr_bgp_conf['enable'])) || !empty($config['installedpackages']['frrglobalraw']['config'][0]['bgpd']);
 
 if (is_array($config['installedpackages']['frrospfd']['config'])) {
 	$ospfd_conf = &$config['installedpackages']['frrospfd']['config'][0];
 }
-$ospfd_enabled = (isset($ospfd_conf) && !empty($ospfd_conf['enable'])) || !empty($config['installedpackages']['frrraw']['config'][0]['ospfd']);
+$ospfd_enabled = (isset($ospfd_conf) && !empty($ospfd_conf['enable'])) || !empty($config['installedpackages']['frrglobalraw']['config'][0]['ospfd']);
 
 if (is_array($config['installedpackages']['frrospf6d']['config'])) {
 	$ospf6d_conf = &$config['installedpackages']['frrospf6d']['config'][0];
 }
-$ospf6d_enabled = (isset($ospf6d_conf) && !empty($ospf6d_conf['enable'])) || !empty($config['installedpackages']['frrraw']['config'][0]['ospf6d']);
+$ospf6d_enabled = (isset($ospf6d_conf) && !empty($ospf6d_conf['enable'])) || !empty($config['installedpackages']['frrglobalraw']['config'][0]['ospf6d']);
 
 $pgtitle = array(gettext("Services"),gettext("FRR"),gettext("Status"));
 

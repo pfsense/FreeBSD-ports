@@ -680,7 +680,7 @@ display_top_tabs($tab_array);
 			</div>
 		</div>
 	</div>
-	<input type="hidden" id="view-title" name="view-title" value="<?=$_GET['view']?>">
+	<input type="hidden" id="view-title" name="view-title" value="<?=htmlspecialchars($_GET['view'])?>">
 </form>
 
 <div class="panel panel-default">

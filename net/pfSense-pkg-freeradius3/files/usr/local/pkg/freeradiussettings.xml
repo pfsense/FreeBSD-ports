@@ -519,6 +519,7 @@
 		freeradius_settings_resync();
 	</custom_delete_php_command>
 	<custom_php_resync_config_command>
+		freeradius_eapconf_resync(false);
 		freeradius_settings_resync();
 	</custom_php_resync_config_command>
 	<custom_php_validation_command>
