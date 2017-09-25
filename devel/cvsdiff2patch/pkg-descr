@@ -1,3 +1,0 @@
-This is a text filter for turning "cvs diff" output into something that
-patch(1) understands.  This is needed when your version of cvs(1) makes
-diffs that confuse patch(1).

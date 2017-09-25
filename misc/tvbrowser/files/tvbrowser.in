@@ -1,4 +1,0 @@
-#!/bin/sh
-
-cd %%DATADIR%%
-JAVA_VERSION="%%JAVA_VERSION%%" exec %%LOCALBASE%%/bin/java -Xms16m -Xmx320m -Djava.library.path="%%DATADIR%%" -Dpropertiesfile=linux.properties -jar tvbrowser.jar "$@"

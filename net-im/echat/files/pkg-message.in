@@ -1,4 +1,0 @@
-======================================================================
-  Please put %%PREFIX%%/etc/echatrc.sample in the right place.
-  eChat will search in ~/.echatrc. Then edit it as you want.
-======================================================================

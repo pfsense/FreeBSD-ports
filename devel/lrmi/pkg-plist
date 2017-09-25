@@ -1,4 +1,0 @@
-lib/liblrmi.so.%%SHLIB_VERSION%%
-lib/liblrmi.so
-include/lrmi/lrmi.h
-include/lrmi/vbe.h

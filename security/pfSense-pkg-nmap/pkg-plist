@@ -1,5 +1,0 @@
-pkg/nmap.xml
-pkg/nmap.inc
-/etc/inc/priv/nmap.priv.inc
-%%DATADIR%%/info.xml
-@dir /etc/inc/priv

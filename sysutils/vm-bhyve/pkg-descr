@@ -1,6 +1,0 @@
-A frontend for bhyve which provides the 'vm' command
-Create/start/stop virtual machines easily
-Bridged/NAT networking
-BSD/Linux/Windows guest support
-
-WWW: https://github.com/churchers/vm-bhyve

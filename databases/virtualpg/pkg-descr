@@ -1,7 +1,0 @@
-VirtualPG is a loadable dynamic extension to both SQLite and SpatiaLite.
-
-Its intended scope is supporting direct SQL access to PostgreSQL and PostGIS own
-tables, so to make any possible kind of data exchange between these two popular
-open source Spatial DBMSes as straightforward and simple as possible.
-
-WWW: https://www.gaia-gis.it/fossil/virtualpg/index

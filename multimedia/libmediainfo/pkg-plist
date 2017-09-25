@@ -1,9 +1,0 @@
-include/MediaInfo/MediaInfo.h
-include/MediaInfo/MediaInfoList.h
-include/MediaInfo/MediaInfo_Const.h
-include/MediaInfo/MediaInfo_Events.h
-lib/libmediainfo.a
-lib/libmediainfo.so
-lib/libmediainfo.so.0
-lib/libmediainfo.so.0.0.0
-libdata/pkgconfig/libmediainfo.pc

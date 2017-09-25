@@ -1,3 +1,0 @@
-sbin/clsync
-man/man1/clsync.1.gz
-@sample %%ETCDIR%%/clsync.conf.sample

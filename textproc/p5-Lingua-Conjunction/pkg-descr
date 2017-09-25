@@ -1,6 +1,0 @@
-Lingua::Conjunction exports a single subroutine, conjunction, that
-converts a list into a properly punctuated text string.
-
-WWW: http://search.cpan.org/dist/Lingua-Conjunction/
-
-Seamus Venasse <svenasse@polaris.ca>

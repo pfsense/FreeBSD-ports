@@ -1,6 +1,0 @@
-SHA256 (mlton-20100608.src.tgz) = f2cb2cf0d6ca8e00331b15e3d23ede05080742895e79e73d2c26a546cd1c0b33
-SIZE (mlton-20100608.src.tgz) = 5785771
-SHA256 (mlton-20100608-1.i386-freebsd.tbz) = 0bf9aee4387dff75540850ab1a77b46b0ddd4687775cc56a9deab00ee3fb3042
-SIZE (mlton-20100608-1.i386-freebsd.tbz) = 10711528
-SHA256 (mlton-20100608-1.amd64-freebsd.tbz) = 1a0721c596a75c27ed4430149a62b9f497d3a8af3f189e36982ef73cd1d61d5d
-SIZE (mlton-20100608-1.amd64-freebsd.tbz) = 11935047

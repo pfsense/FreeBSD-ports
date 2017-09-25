@@ -1,8 +1,0 @@
-innotop connects to a MySQL database server and retrieves
-information from it, then displays it in a manner similar
-to the UNIX top program.
-
-It runs on most Unix systems which have Perl, DBI, and
-Term::ReadKey installed.
-
-WWW: http://code.google.com/p/innotop/

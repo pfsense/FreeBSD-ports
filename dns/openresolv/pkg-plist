@@ -1,9 +1,0 @@
-@dir etc/resolvconf/update-libc.d
-@dir etc/resolvconf/resolv.conf.d
-sbin/resolvconf
-etc/resolvconf/run
-etc/resolvconf/update.d/libc
-etc/resolvconf/update.d/dnsmasq
-etc/resolvconf/update.d/named
-man/man8/resolvconf.8.gz
-@dir /var/run/resolvconf

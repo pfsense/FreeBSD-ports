@@ -1,4 +1,0 @@
-@(games,games,4555) bin/nsnake
-man/man6/nsnake.6.gz
-%%DOCS%%%%DOCSDIR%%/CHANGELOG
-@dir(games,games,) /var/db/nsnake

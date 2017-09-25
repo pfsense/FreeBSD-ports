@@ -1,5 +1,0 @@
-Python bindings to the "Virtual Instrument Software Architecture"
-VISA library, in order to control measurement devices via GPIB,
-RS232, or USB.
-
-WWW: https://pypi.python.org/pypi/PyVISA

@@ -1,7 +1,0 @@
-
-Please edit %%PREFIX%%/etc/uvncrepeater.ini before using UltraVNC
-Repeater!
-
-To enable UVNC Repeater, put the following in your /etc/rc.conf:
-	repeater_enable="YES"
-

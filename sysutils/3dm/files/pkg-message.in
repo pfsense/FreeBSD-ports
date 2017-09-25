@@ -1,5 +1,0 @@
-
-To run 3DM2 at startup, add twdm2_enable="YES" to your /etc/rc.conf.
-
-        Do not forget to edit '%%PREFIX%%/etc/3dm2/3dm2.conf'
-        Visit https://localhost:888/

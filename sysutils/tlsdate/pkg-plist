@@ -1,5 +1,0 @@
-bin/tlsdate
-bin/tlsdate-helper
-etc/tlsdate/ca-roots/tlsdate-ca-roots.conf
-man/man1/tlsdate-helper.1.gz
-man/man1/tlsdate.1.gz

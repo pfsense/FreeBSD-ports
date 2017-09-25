@@ -1,5 +1,0 @@
-dpkg is the basis of the Debian package management system. It consists of low
-level programs to build, install, remove, and perform other maintenance tasks
-relating to Debian packages. Also included is the dselect front end to dpkg.
-
-WWW: http://packages.debian.org/dpkg

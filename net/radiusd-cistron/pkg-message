@@ -1,4 +1,0 @@
-=================================================
-To start cistron radiusd automaticall during boot
-add radiusd_enable="YES" to /etc/rc.conf
-=================================================

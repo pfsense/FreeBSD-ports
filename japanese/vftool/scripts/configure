@@ -1,8 +1,0 @@
-#!/bin/sh
-
-${MV} ${WRKSRC}/Makefile ${WRKSRC}/Makefile.tmpl
-
-${SED}  -e "s@%%AFM%%@${AFMDIR}@g" \
-	-e "s@%%JFM%%@${JFMDIR}@g" \
-	-e "s@%%PK%%@${PKDIR}@g" \
-		<  ${WRKSRC}/Makefile.tmpl > ${WRKSRC}/Makefile

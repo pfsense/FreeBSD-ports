@@ -1,5 +1,0 @@
-include/GL/osmesa.h
-lib/libOSMesa.so
-lib/libOSMesa.so.8
-lib/libOSMesa.so.8.0.0
-libdata/pkgconfig/osmesa.pc

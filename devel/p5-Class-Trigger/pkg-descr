@@ -1,4 +1,0 @@
-Class::Trigger is a mixin class to add / call triggers (or hooks) that
-get called at some points you specify.
-
-WWW: http://search.cpan.org/dist/Class-Trigger/

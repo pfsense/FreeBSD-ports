@@ -1,4 +1,0 @@
-Works like File::Attributes, but will recurse up the directory tree
-until a matching attribute is found.
-
-WWW: http://search.cpan.org/dist/File-Attributes-Recursive/

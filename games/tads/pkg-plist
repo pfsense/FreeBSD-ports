@@ -1,6 +1,0 @@
-bin/tadsc
-bin/tadsr
-bin/tdb
-%%DATADIR%%/adv.t
-%%DATADIR%%/std.t
-%%DATADIR%%/gameinfo.t

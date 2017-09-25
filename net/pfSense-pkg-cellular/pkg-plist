@@ -1,9 +1,0 @@
-pkg/cellular.inc
-pkg/cellular.xml
-pkg/pkg_cellular.inc
-sbin/cellular
-www/widgets/widgets/cellular.widget.php
-%%DATADIR%%/info.xml
-/etc/inc/priv/cellular.priv.inc
-@dir /etc/inc/priv
-@dir /etc/inc

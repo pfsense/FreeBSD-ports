@@ -1,2 +1,0 @@
-@(root,wheel,4555) bin/tcptraceroute
-man/man1/tcptraceroute.1.gz

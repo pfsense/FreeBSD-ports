@@ -1,3 +1,0 @@
-%%SITE_PERL%%/Mail/DeliveryStatus/BounceParser.pm
-%%SITE_PERL%%/Mail/DeliveryStatus/Report.pm
-%%PERL5_MAN3%%/Mail::DeliveryStatus::BounceParser.3.gz

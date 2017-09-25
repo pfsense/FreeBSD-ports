@@ -1,3 +1,0 @@
-Check for memory leaks and circular memory references.
-
-WWW: http://search.cpan.org/dist/Test-Memory-Cycle/

@@ -1,4 +1,0 @@
-Usbutils contains the lsusb utility for displaying information about
-USB buses in the system and the devices connected to them.
-
-WWW: https://github.com/gregkh/usbutils

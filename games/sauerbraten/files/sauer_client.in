@@ -1,4 +1,0 @@
-#!/bin/sh
-
-SAUER_OPTIONS="-q${HOME}/.sauerbraten"
-cd %%DATADIR%% && exec %%PREFIX%%/libexec/sauer_client ${SAUER_OPTIONS} "$@"

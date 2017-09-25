@@ -1,8 +1,0 @@
-@owner www
-@group www
-%%WWWDIR%%/jquery.fancybox.css
-%%WWWDIR%%/jquery.fancybox.js
-%%WWWDIR%%/jquery.fancybox.min.css
-%%WWWDIR%%/jquery.fancybox.min.js
-@owner
-@group

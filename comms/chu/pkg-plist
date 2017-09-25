@@ -1,8 +1,0 @@
-sbin/chu
-%%DATADIR%%/testsignal
-%%PORTDOCS%%%%DOCSDIR%%/COPYING
-%%PORTDOCS%%%%DOCSDIR%%/chu.html
-%%PORTDOCS%%%%DOCSDIR%%/chuman.html
-%%PORTDOCS%%%%DOCSDIR%%/ntp.html
-%%PORTDOCS%%%%DOCSDIR%%/TESTING
-man/man8/chu.8.gz

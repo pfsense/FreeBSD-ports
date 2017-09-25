@@ -1,8 +1,0 @@
---- modules/Makefile.orig	2013-10-05 03:31:52 UTC
-+++ modules/Makefile
-@@ -38,4 +38,4 @@ clean:
- .depend:
- 	$(CCX) $(CFLAGS) -MM *.cpp > $@
- 
--include .depend
-+#include .depend

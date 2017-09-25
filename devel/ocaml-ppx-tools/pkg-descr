@@ -1,5 +1,0 @@
-Tools for authors of syntactic tools (such as ppx rewriters).
-
-This package is licensed by LexiFi under the terms of the MIT license.
-
-WWW: https://github.com/alainfrisch/ppx_tools

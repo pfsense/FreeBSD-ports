@@ -1,5 +1,0 @@
-ICONV is the library for conversion between various charsets.
-
-There are 68 charset modules in this port: those for all charsets
-presented at the Unicode site but not included into the main
-iconv package.

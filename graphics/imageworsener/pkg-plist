@@ -1,5 +1,0 @@
-bin/imagew
-include/imagew.h
-lib/libimageworsener-%%PORTVERSION%%.so
-lib/libimageworsener.a
-lib/libimageworsener.so

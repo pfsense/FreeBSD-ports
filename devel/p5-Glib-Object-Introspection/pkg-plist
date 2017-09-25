@@ -1,5 +1,0 @@
-bin/perli11ndoc
-%%SITE_ARCH%%/Glib/Object/Introspection.pm
-%%SITE_ARCH%%/Glib/Object/Introspection/Install/Files.pm
-%%SITE_ARCH%%/auto/Glib/Object/Introspection/Introspection.so
-%%PERL5_MAN3%%/Glib::Object::Introspection.3.gz

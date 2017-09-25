@@ -1,5 +1,0 @@
-Remember to have the module loaded at boot by adding the following to
-/boot/loader.conf:
-  isboot_load="YES"
-
-See %%DOCSDIR%%/README for additional information.

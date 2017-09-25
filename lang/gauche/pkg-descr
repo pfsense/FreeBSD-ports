@@ -1,6 +1,0 @@
-Gauche is a Scheme interpreter conforming Revised^5 Report on
-Algorithmic Language Scheme. It is designed for rapid development of
-daily tools like system management and text processing. It can handle
-multibyte character strings natively.
-
-WWW: http://practical-scheme.net/gauche/

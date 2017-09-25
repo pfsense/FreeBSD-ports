@@ -1,7 +1,0 @@
-include/gumbo.h
-include/tag_enum.h
-lib/libgumbo.a
-lib/libgumbo.so
-lib/libgumbo.so.1
-lib/libgumbo.so.1.0.0
-libdata/pkgconfig/gumbo.pc

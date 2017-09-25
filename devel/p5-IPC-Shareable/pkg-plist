@@ -1,4 +1,0 @@
-%%SITE_PERL%%/IPC/Shareable.pm
-%%SITE_PERL%%/IPC/Shareable/SharedMem.pm
-%%PERL5_MAN3%%/IPC::Shareable.3.gz
-%%PERL5_MAN3%%/IPC::Shareable::SharedMem.3.gz

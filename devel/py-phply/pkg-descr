@@ -1,4 +1,0 @@
-phply is a parser for the PHP programming language written using PLY,
-a Lex/YACC-style parser generator toolkit for Python.
-
-WWW: https://pypi.python.org/pypi/phply

@@ -1,7 +1,0 @@
-bin/ss2tk
-bin/ssdiff
-bin/xls2csv
-bin/xlscat
-bin/xlsgrep
-%%PERL5_MAN3%%/Spreadsheet::Read.3.gz
-%%SITE_PERL%%/Spreadsheet/Read.pm

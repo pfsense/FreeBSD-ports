@@ -1,7 +1,0 @@
-bin/opencity
-etc/opencity/config/graphism.conf
-etc/opencity/config/graphism.xml
-etc/opencity/config/opencity.xml
-man/man6/opencity.6.gz
-share/applications/opencity.desktop
-share/pixmaps/opencity.png

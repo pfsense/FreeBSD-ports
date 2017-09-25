@@ -1,5 +1,0 @@
-bin/spectrwm
-bin/screenshot.sh
-lib/libswmhack.so
-man/man1/spectrwm.1.gz
-@sample etc/spectrwm.conf.sample

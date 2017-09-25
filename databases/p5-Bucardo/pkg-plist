@@ -1,6 +1,0 @@
-bin/bucardo
-etc/rc.d/bucardo
-%%PERL5_MAN3%%/Bucardo.3.gz
-%%SITE_PERL%%/Bucardo.pm
-%%PERL5_MAN1%%/bucardo.1.gz
-share/bucardo/bucardo.schema

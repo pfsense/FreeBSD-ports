@@ -1,5 +1,0 @@
-bin/harp
-man/man1/harp.1.gz
-%%DATADIR%%/create.sql
-%%DATADIR%%/defaults.conf
-@dir %%DATADIR%%

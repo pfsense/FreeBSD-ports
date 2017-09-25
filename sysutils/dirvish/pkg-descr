@@ -1,6 +1,0 @@
-This is a network-based backup system based of rync.  It can do full and
-incremental backups to a remote file server.  It relies on rsync for the
-host to host copy and uses hard links to provide multiple snapshots of the
-data without duplicating identical files.
-
-WWW: http://www.dirvish.org/

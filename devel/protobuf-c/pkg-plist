@@ -1,8 +1,0 @@
-bin/protoc-c
-include/google/protobuf-c/protobuf-c.h
-include/protobuf-c/protobuf-c.h
-lib/libprotobuf-c.a
-lib/libprotobuf-c.so
-lib/libprotobuf-c.so.1
-lib/libprotobuf-c.so.1.0.0
-libdata/pkgconfig/libprotobuf-c.pc

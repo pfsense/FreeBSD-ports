@@ -1,6 +1,0 @@
-#!/bin/sh
-if [ ! -e ~/.linrad ] ; then
-	mkdir ~/.linrad
-fi
-cd ~/.linrad
-xlinrad

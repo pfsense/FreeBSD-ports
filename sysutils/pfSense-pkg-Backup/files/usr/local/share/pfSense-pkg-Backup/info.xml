@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<pfsensepkgs>
-	<package>
-		<name>Backup</name>
-		<descr><![CDATA[Tool to Backup and Restore files and directories.]]></descr>
-		<version>%%PKGVERSION%%</version>
-		<configurationfile>backup.xml</configurationfile>
-	</package>
-</pfsensepkgs>

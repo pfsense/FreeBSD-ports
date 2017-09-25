@@ -1,4 +1,0 @@
-You can permanently enable ASDF package management by using the
-following commands in your .ccl-init.lisp file:
-
-  (require 'asdf)

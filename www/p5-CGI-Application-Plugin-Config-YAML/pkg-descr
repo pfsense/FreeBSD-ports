@@ -1,3 +1,0 @@
-add Config::YAML support to CGI::Application
-
-WWW: http://search.cpan.org/dist/CGI-Application-Plugin-Config-YAML/

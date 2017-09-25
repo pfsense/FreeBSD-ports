@@ -1,5 +1,0 @@
-Bzip2 bindings for Perl5. That means you can access the
-Bzip2 library from your Perl scripts there by compressing ordinary
-Perl strings.
-
-WWW: http://search.cpan.org/dist/Compress-Bzip2/

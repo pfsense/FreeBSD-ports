@@ -1,4 +1,0 @@
-This is a subclass of WWW::Mechanize that uses the W3C DOM and provides support
-for scripting.
-
-WWW: http://search.cpan.org/dist/WWW-Scripter/

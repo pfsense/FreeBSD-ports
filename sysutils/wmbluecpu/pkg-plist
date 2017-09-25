@@ -1,6 +1,0 @@
-@group kmem
-@mode 2755
-bin/wmbluecpu
-@mode
-@group
-man/man1/wmbluecpu.1.gz

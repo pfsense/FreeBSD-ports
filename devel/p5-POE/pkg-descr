@@ -1,8 +1,0 @@
-POE is a general purpose multitasking and networking framework.
-
-POE does standard event loop things, cooperative multitasking, network
-clients and servers; includes a high level class library that takes care
-of event driven I/O; provides a framework for portable program components.
-
-WWW: http://poe.perl.org/
-WWW: http://search.cpan.org/dist/POE/

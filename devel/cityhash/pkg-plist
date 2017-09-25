@@ -1,8 +1,0 @@
-include/city.h
-lib/libcityhash.a
-lib/libcityhash.so
-lib/libcityhash.so.0
-lib/libcityhash.so.0.0.0
-%%DOCSDIR%%/COPYING
-%%DOCSDIR%%/NEWS
-%%DOCSDIR%%/README

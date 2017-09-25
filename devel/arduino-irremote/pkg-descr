@@ -1,7 +1,0 @@
-Infrared remote library for Arduino: send and receive infrared
-signals with multiple protocols
-
-This library enables you to send and receive using infra-red signals
-on an Arduino.
-
-WWW: http://z3t0.github.io/Arduino-IRremote/

@@ -1,5 +1,0 @@
-bin/usb-devices
-libdata/pkgconfig/usbutils.pc
-man/man1/usb-devices.1.gz
-man/man8/lsusb.8.gz
-sbin/lsusb

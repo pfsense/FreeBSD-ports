@@ -1,9 +1,0 @@
-bin/uufilter
-bin/xloadimage
-bin/xsetbg
-bin/xview
-man/man1/uufilter.1.gz
-man/man1/xloadimage.1.gz
-man/man1/xsetbg.1.gz
-man/man1/xview.1.gz
-@sample etc/xloadimagerc.sample

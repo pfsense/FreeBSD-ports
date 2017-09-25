@@ -1,4 +1,0 @@
-The Perl Ioctl module provides an easily extensible way of getting
-the value of the C ioctl constants.
-
-WWW: http://search.cpan.org/dist/Ioctl/

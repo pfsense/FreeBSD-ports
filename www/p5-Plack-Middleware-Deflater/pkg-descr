@@ -1,3 +1,0 @@
-Compress response body with Gzip or Deflate.
-
-WWW: http://search.cpan.org/dist/Plack-Middleware-Deflater/

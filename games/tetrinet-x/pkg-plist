@@ -1,6 +1,0 @@
-%%DATADIR%%/tetrix.freebsd
-%%DATADIR%%/server-query
-%%DATADIR%%/game.conf
-%%DATADIR%%/game.log
-%%DATADIR%%/game.secure
-%%DATADIR%%/game.winlist

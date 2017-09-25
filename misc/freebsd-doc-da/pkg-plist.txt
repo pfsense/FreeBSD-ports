@@ -1,2 +1,0 @@
-%%DOCSDIR%%/%%DOCLANG%%/articles/ipsec-must/article.txt
-%%DOCSDIR%%/%%DOCLANG%%/articles/pxe/article.txt

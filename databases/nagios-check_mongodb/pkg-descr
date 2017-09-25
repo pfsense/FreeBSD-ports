@@ -1,3 +1,0 @@
-This is a simple Nagios check script to monitor your MongoDB server(s).
-
-WWW: https://github.com/mzupan/nagios-plugin-mongodb

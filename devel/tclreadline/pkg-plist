@@ -1,8 +1,0 @@
-include/tclreadline.h
-lib/libtclreadline-%%PORTVERSION%%.so
-lib/libtclreadline.so
-lib/%%TCL_PKG%%/pkgIndex.tcl
-lib/%%TCL_PKG%%/tclreadlineCompleter.tcl
-lib/%%TCL_PKG%%/tclreadlineInit.tcl
-lib/%%TCL_PKG%%/tclreadlineSetup.tcl
-man/mann/tclreadline.n.gz

@@ -1,8 +1,0 @@
---- Jamfile.orig
-+++ Jamfile
-@@ -2,5 +2,3 @@
- 
- SubInclude TOP src ;
- SubInclude TOP data ;
--
--InstallFile $(DOCDIR) : README AUTHORS COPYING ;

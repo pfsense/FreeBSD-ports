@@ -1,7 +1,0 @@
-bin/background.sh
-bin/bgrandom.pl
-bin/bgrotman.pl
-bin/createlist.sh
-bin/masterlistgen.sh
-@sample etc/bgrot.conf.sample
-man/man1/bgrot.1.gz

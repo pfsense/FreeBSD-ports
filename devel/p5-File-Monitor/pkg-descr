@@ -1,5 +1,0 @@
-This module provides a simple interface for monitoring
-one or more files or directories and reporting any changes
-that are made to them.
-
-WWW: http://search.cpan.org/dist/File-Monitor/

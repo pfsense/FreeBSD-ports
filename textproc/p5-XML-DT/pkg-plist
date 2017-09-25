@@ -1,8 +1,0 @@
-bin/mkdtskel
-bin/mkdtdskel
-bin/mkxmltype
-%%PERL5_MAN1%%/mkdtdskel.1.gz
-%%PERL5_MAN1%%/mkdtskel.1.gz
-%%PERL5_MAN1%%/mkxmltype.1.gz
-%%PERL5_MAN3%%/XML::DT.3.gz
-%%SITE_PERL%%/XML/DT.pm

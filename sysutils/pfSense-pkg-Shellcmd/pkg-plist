@@ -1,5 +1,0 @@
-pkg/shellcmd.xml
-pkg/shellcmd.inc
-/etc/inc/priv/shellcmd.priv.inc
-%%DATADIR%%/info.xml
-@dir /etc/inc/priv

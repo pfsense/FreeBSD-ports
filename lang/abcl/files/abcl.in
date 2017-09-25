@@ -1,3 +1,0 @@
-#!/bin/sh
-
-exec java -cp %%JAVAJARDIR%%/abcl.jar:"$CLASSPATH" org.armedbear.lisp.Main "$@"

@@ -1,2 +1,0 @@
-@exec /bin/ln -sf %%EXECUTABLE%% %%HADDOCK%%
-@unexec /bin/ln -sf %%GHC_HADDOCK_CMD%% %%HADDOCK%%

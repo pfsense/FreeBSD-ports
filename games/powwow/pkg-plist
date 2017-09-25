@@ -1,8 +1,0 @@
-bin/catrw
-bin/follow
-bin/powwow
-bin/powwow-movieplay
-bin/powwow-muc
-man/man6/powwow.6.gz
-%%DATADIR%%/powwow.doc
-%%DATADIR%%/powwow.help

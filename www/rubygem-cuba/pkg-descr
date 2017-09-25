@@ -1,7 +1,0 @@
-Cuba is a microframework for web development originally
-inspired by Rum, a tiny but powerful mapper for Rack applications.
-
-It integrates many templates via Tilt, and testing via
-Cutest and Capybara.
-
-WWW: https://github.com/soveran/cuba

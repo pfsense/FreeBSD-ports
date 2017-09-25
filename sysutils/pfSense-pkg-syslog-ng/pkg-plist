@@ -1,7 +1,0 @@
-pkg/syslog-ng.xml
-pkg/syslog-ng.inc
-/etc/inc/priv/syslog-ng.priv.inc
-pkg/syslog-ng_advanced.xml
-www/syslog-ng_log_viewer.php
-%%DATADIR%%/info.xml
-@dir /etc/inc/priv

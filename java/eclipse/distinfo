@@ -1,5 +1,0 @@
-TIMESTAMP = 1466985570
-SHA256 (eclipse/eclipse.platform.releng.aggregator-4.6.xz) = 916df36f28bd53dd17c9f059b19bad2f58c58865705c1d81ca59bf128bda32f7
-SIZE (eclipse/eclipse.platform.releng.aggregator-4.6.xz) = 215088004
-SHA256 (eclipse/eclipse-maven-repo-4.6.xz) = 5f6e816b012158a5c7e4b5bc7ecc1b12d1cae91e530ec503e8cd9910ab28a624
-SIZE (eclipse/eclipse-maven-repo-4.6.xz) = 135692066

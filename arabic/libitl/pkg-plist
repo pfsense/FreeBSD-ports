@@ -1,6 +1,0 @@
-include/itl/hijri.h
-include/itl/prayer.h
-lib/itl/libitl.a
-lib/itl/libitl.so
-lib/itl/libitl.so.0
-lib/itl/libitl.so.0.0.7

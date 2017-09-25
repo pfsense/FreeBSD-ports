@@ -1,7 +1,0 @@
-include/lightning.h
-include/lightning/jit_%%JIT_ARCH%%.h
-lib/liblightning.a
-lib/liblightning.so
-lib/liblightning.so.0
-lib/liblightning.so.0.0.0
-libdata/pkgconfig/lightning.pc

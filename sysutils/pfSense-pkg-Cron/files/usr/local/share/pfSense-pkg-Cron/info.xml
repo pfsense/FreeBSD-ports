@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<pfsensepkgs>
-	<package>
-		<name>Cron</name>
-		<descr><![CDATA[The cron utility is used to manage commands on a schedule.]]></descr>
-		<version>%%PKGVERSION%%</version>
-		<configurationfile>cron.xml</configurationfile>
-	</package>
-</pfsensepkgs>

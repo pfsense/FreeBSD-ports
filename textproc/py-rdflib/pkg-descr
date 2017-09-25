@@ -1,6 +1,0 @@
-RDFLib is a python library containing an RDF triple store and RDF/XML
-parser/serializer.
-
-Git repository: https://github.com/RDFLib/rdflib
-
-WWW: https://pypi.python.org/pypi/rdflib/

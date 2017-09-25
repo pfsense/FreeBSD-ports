@@ -1,7 +1,0 @@
-bin/downtime
-bin/downtimes
-man/man1/downtime.1.gz
-man/man1/downtimes.1.gz
-man/man8/downtimed.8.gz
-sbin/downtimed
-@dir /var/db/downtimed

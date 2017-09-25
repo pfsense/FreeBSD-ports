@@ -1,3 +1,0 @@
-include/biosfont.h
-man/man4/biosfont.4.gz
-/%%KMODDIR%%/biosfont.ko

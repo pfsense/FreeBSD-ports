@@ -1,4 +1,0 @@
-pload ALL
-testgrid -outdir /tmp/testOCC
-exit
-

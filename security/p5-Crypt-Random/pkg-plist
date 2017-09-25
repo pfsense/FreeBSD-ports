@@ -1,9 +1,0 @@
-bin/makerandom
-%%PERL5_MAN3%%/Crypt::Random.3.gz
-%%SITE_PERL%%/Crypt/Random.pm
-%%SITE_PERL%%/Crypt/Random/Generator.pm
-%%SITE_PERL%%/Crypt/Random/Provider/File.pm
-%%SITE_PERL%%/Crypt/Random/Provider/devrandom.pm
-%%SITE_PERL%%/Crypt/Random/Provider/devurandom.pm
-%%SITE_PERL%%/Crypt/Random/Provider/egd.pm
-%%SITE_PERL%%/Crypt/Random/Provider/rand.pm

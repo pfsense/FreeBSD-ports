@@ -1,7 +1,0 @@
-#!/bin/sh
-
-case $2 in
-  DEINSTALL)
-    perl -MXML::SAX -e 'XML::SAX->remove_parser(q(XML::SAX::Expat))->save_parsers();'
-  ;;
-esac

@@ -1,2 +1,0 @@
-The gccmakedep program creates dependencies in makefiles using
-'gcc -M'.

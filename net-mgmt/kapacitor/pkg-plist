@@ -1,3 +1,0 @@
-bin/kapacitor
-bin/kapacitord
-@sample etc/kapacitor.conf.sample

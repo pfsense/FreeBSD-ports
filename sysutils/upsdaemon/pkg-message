@@ -1,7 +1,0 @@
-*************************************************
-NOTICE:
-
-     To run UpsDaemon from startup add
-     upsdaemon_enable="YES" in rc.conf
-
-*************************************************

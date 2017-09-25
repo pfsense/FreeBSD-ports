@@ -1,8 +1,0 @@
-bin/rime_deployer
-bin/rime_dict_manager
-include/rime_api.h
-lib/librime.so
-lib/librime.so.%%VER%%
-lib/librime.so.1
-libdata/pkgconfig/rime.pc
-share/cmake/rime/RimeConfig.cmake

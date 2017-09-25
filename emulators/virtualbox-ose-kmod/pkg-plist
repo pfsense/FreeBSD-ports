@@ -1,6 +1,0 @@
-/%%KMODDIR%%/vboxdrv.ko
-%%DEBUG%%/%%KMODDIR%%/vboxdrv.ko.%%SYMBOLSUFFIX%%
-/%%KMODDIR%%/vboxnetadp.ko
-%%DEBUG%%/%%KMODDIR%%/vboxnetadp.ko.%%SYMBOLSUFFIX%%
-/%%KMODDIR%%/vboxnetflt.ko
-%%DEBUG%%/%%KMODDIR%%/vboxnetflt.ko.%%SYMBOLSUFFIX%%

@@ -1,5 +1,0 @@
-include/icq.h
-lib/libicq.a
-lib/libicq.so
-lib/libicq.so.1
-lib/libicq.so.1.0.0

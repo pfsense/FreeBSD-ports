@@ -1,4 +1,0 @@
-#!/bin/sh
-
-cd @ETDIR@ || exit 1
-exec ./etded.x86 "$@"

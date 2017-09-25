@@ -1,8 +1,0 @@
-bin/clamav-unofficial-sigs.sh
-@sample %%ETCDIR%%/master.conf.sample
-@sample %%ETCDIR%%/os.conf.sample
-@sample %%ETCDIR%%/user.conf.sample
-man/man8/clamav-unofficial-sigs.8.gz
-%%PORTDOCS%%%%DOCSDIR%%/INSTALL
-%%PORTDOCS%%%%DOCSDIR%%/LICENSE
-%%PORTDOCS%%%%DOCSDIR%%/README.md

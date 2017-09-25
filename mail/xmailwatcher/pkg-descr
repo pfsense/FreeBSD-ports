@@ -1,3 +1,0 @@
-This is XMAILWATCHER, which periodically checks a user's mailbox. If
-there is mail, the user is notified either by a changing icon, or by a
-list of senders and subjects in an X object.

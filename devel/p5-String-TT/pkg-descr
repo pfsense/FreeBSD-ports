@@ -1,3 +1,0 @@
-String::TT exports a "tt" function, which takes a TT (Template Toolkit)
-template as its argument. It uses the current lexical scope to resolve
-variable references.

@@ -1,4 +1,0 @@
-This is a port of simavr, an AVR simulator using avr-gcc's register
-definitions.
-
-WWW: https://github.com/buserror/simavr

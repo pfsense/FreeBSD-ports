@@ -1,3 +1,0 @@
-%%RTHOME%%/plugins/RT-Extension-LDAPImport/lib/RT/Extension/LDAPImport.pm
-%%RTHOME%%/plugins/RT-Extension-LDAPImport/bin/rtldapimport
-man/man3/RT::Extension::LDAPImport.3.gz

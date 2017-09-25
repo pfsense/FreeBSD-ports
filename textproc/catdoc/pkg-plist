@@ -1,8 +1,0 @@
-bin/catdoc
-bin/catppt
-%%WORDVIEW%%bin/wordview
-bin/xls2csv
-man/man1/catdoc.1.gz
-man/man1/catppt.1.gz
-%%WORDVIEW%%man/man1/wordview.1.gz
-man/man1/xls2csv.1.gz

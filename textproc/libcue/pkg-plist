@@ -1,6 +1,0 @@
-include/libcue.h
-include/libcue/libcue.h
-lib/libcue.so
-lib/libcue.so.2
-lib/libcue.so.2.1.0
-libdata/pkgconfig/libcue.pc

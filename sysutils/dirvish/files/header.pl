@@ -1,4 +1,0 @@
-#!%%PERL%%
-
-$CONFDIR = "%%CONFDIR%%";
-

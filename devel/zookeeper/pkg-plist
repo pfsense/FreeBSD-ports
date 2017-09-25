@@ -1,9 +1,0 @@
-bin/zkCli.sh
-bin/zkServer.sh
-%%JAVAJARDIR%%/zookeeper-%%PORTVERSION%%.jar
-%%JAVAJARDIR%%/zookeeper.jar
-%%ETCDIR%%/log4j.properties
-%%ETCDIR%%/configuration.xsl
-%%ETCDIR%%/zoo_sample.cfg
-@dir(zookeeper,zookeeper,755) %%ZOOKEEPER_LOGDIR%%
-@dir(zookeeper,zookeeper,755) %%ZOOKEEPER_DBDIR%%

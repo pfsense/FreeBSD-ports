@@ -1,2 +1,0 @@
-APPENDDEF(`confENVDEF',`-I%%LOCALBASE%%/include')
-APPENDDEF(`confLIBDIRS', `-L%%LOCALBASE%%/lib')

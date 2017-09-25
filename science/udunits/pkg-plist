@@ -1,8 +1,0 @@
-bin/udunits2
-include/converter.h
-include/udunits.h
-include/udunits2.h
-lib/libudunits2.a
-lib/libudunits2.so
-lib/libudunits2.so.0
-lib/libudunits2.so.0.1.0

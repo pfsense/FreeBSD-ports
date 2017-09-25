@@ -1,4 +1,0 @@
-This is the plugin manager as used by pytest but stripped of pytest
-specific details.
-
-WWW: https://pypi.python.org/pypi/pluggy

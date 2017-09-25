@@ -1,6 +1,0 @@
-Regular-expression matcher for posix extended regular expressions
-against UTF8 text.
-
-Functions: regexp
-
-WWW: https://www.sqlite.org/

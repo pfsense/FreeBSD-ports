@@ -1,8 +1,0 @@
-bin/iproxy
-include/usbmuxd-proto.h
-include/usbmuxd.h
-lib/libusbmuxd.a
-lib/libusbmuxd.so
-lib/libusbmuxd.so.4
-lib/libusbmuxd.so.4.0.0
-libdata/pkgconfig/libusbmuxd.pc

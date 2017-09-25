@@ -1,8 +1,0 @@
-bin/proxy
-include/proxy.h
-lib/libproxy.so
-lib/libproxy.so.1
-lib/libproxy.so.1.0.0
-libdata/pkgconfig/libproxy-1.0.pc
-share/cmake/Modules/Findlibproxy.cmake
-share/vala/vapi/libproxy-1.0.vapi

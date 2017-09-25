@@ -1,5 +1,0 @@
-dynrules is a dynamic ruleset scripting package for Python. It uses the
-Dynamic Scripting technique to create adaptive AI scripts automatically
-from predefined rulesets.
-
-WWW: http://bitbucket.org/marcusva/py-dynrules

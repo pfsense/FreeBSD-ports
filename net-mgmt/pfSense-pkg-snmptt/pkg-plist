@@ -1,7 +1,0 @@
-pkg/snmptt.xml
-pkg/snmptt.inc
-pkg/snmptt.ini.php
-pkg/snmptt_conf.xml
-/etc/inc/priv/snmptt.priv.inc
-%%DATADIR%%/info.xml
-@dir /etc/inc/priv

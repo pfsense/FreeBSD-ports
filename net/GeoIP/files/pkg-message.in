@@ -1,3 +1,0 @@
-GeoIP does not ship with the actual data files. You must download
-them yourself! Please run:
-# %%PREFIX%%/bin/geoipupdate.sh

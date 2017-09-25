@@ -1,4 +1,0 @@
-@sample(%%MAILOWN%%,%%MAILGRP%%,660) etc/authlib/authmysqlrc.sample
-lib/courier-authlib/libauthmysql.so
-%%PORTDOCS%%%%DOCSDIR%%/README.authmysql.html
-%%PORTDOCS%%%%DOCSDIR%%/README.authmysql.myownquery

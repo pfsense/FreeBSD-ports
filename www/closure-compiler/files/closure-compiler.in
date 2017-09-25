@@ -1,5 +1,0 @@
-#!/bin/sh -f
-
-DATADIR="%%DATADIR%%"
-
-exec %%JAVA%% -jar "${DATADIR}/closure-compiler-v%%PORTVERSION%%.jar" $*

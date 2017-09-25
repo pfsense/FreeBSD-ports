@@ -1,6 +1,0 @@
-bin/aide
-@sample etc/aide.conf.sample
-man/man1/aide.1.gz
-man/man5/aide.conf.5.gz
-@dir(,,0700) /var/db/aide/databases
-@dir(,,0700) /var/db/aide

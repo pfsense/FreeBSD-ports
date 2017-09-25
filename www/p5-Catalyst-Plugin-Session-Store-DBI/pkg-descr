@@ -1,3 +1,0 @@
-This storage module will store session data in a database using DBI.
-
-WWW: http://search.cpan.org/dist/Catalyst-Plugin-Session-Store-DBI/

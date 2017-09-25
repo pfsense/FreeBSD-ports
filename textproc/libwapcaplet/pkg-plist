@@ -1,5 +1,0 @@
-include/libwapcaplet/libwapcaplet.h
-lib/libwapcaplet.so
-lib/libwapcaplet.so.0
-lib/libwapcaplet.so.%%VERSION%%
-libdata/pkgconfig/libwapcaplet.pc

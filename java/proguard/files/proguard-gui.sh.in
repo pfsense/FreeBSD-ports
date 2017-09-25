@@ -1,5 +1,0 @@
-#!/bin/sh
-#
-# $FreeBSD$
-
-exec "%%LOCALBASE%%/bin/java" -DsuppressSwingDropSupport=true -Xmx256m -jar "%%DATADIR%%/proguardgui.jar" "$@"

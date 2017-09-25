@@ -1,3 +1,0 @@
-Wrap all inserts into transactions.
-
-WWW: http://search.cpan.org/dist/DBICx-TxnInsert/

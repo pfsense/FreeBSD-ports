@@ -1,9 +1,0 @@
-include/libpgf/PGFimage.h
-include/libpgf/PGFplatform.h
-include/libpgf/PGFstream.h
-include/libpgf/PGFtypes.h
-lib/libpgf.a
-lib/libpgf.so
-lib/libpgf.so.7
-lib/libpgf.so.7.0.15
-libdata/pkgconfig/libpgf.pc

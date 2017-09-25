@@ -1,8 +1,0 @@
-===========================================================================
-
-In order to automatically load the microcode during boot add the following
-line to to /etc/rc.conf or /etc/rc.conf.local:
-
-afbinit_enable="YES"
-
-===========================================================================

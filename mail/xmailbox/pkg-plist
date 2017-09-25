@@ -1,7 +1,0 @@
-bin/xmailbox
-lib/X11/app-defaults/XMailbox
-man/man1/xmailbox.1.gz
-%%PORTDOCS%%%%DOCSDIR%%/DISCLAIMER
-%%PORTDOCS%%%%DOCSDIR%%/README
-%%DATADIR%%/dingdong.au
-%%DATADIR%%/ugotmail.au

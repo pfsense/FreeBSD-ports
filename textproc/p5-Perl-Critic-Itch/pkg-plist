@@ -1,4 +1,0 @@
-%%SITE_PERL%%/Perl/Critic/Itch.pm
-%%SITE_PERL%%/Perl/Critic/Policy/CodeLayout/ProhibitHashBarewords.pm
-%%PERL5_MAN3%%/Perl::Critic::Itch.3.gz
-%%PERL5_MAN3%%/Perl::Critic::Policy::CodeLayout::ProhibitHashBarewords.3.gz

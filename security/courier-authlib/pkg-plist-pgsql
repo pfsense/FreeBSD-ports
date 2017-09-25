@@ -1,3 +1,0 @@
-@sample(%%MAILOWN%%,%%MAILGRP%%,660) etc/authlib/authpgsqlrc.sample
-lib/courier-authlib/libauthpgsql.so
-%%PORTDOCS%%%%DOCSDIR%%/README.authpostgres.html

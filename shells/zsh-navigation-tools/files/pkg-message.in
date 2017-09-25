@@ -1,2 +1,0 @@
-To enable zsh-navigation-tools, add the following to your zshrc:
-source %%DATADIR%%/zsh-navigation-tools.plugin.zsh

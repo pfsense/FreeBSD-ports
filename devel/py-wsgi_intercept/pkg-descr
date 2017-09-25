@@ -1,3 +1,0 @@
-wsgi_intercept installs a WSGI application in place of a real URI for testing.
-
-WWW: http://pypi.python.org/pypi/wsgi_intercept

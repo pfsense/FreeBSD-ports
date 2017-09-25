@@ -1,3 +1,0 @@
-%%SUID%%@(root,wheel,4110) bin/netselect
-%%NO_SUID%%@(root,wheel,100) bin/netselect
-%%PORTDOCS%%%%DOCSDIR%%/README

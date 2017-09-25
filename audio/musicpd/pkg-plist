@@ -1,4 +1,0 @@
-bin/musicpd
-@sample etc/musicpd.conf.sample
-man/man1/musicpd.1.gz
-man/man5/musicpd.conf.5.gz

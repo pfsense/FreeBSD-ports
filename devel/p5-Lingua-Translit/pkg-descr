@@ -1,5 +1,0 @@
-Lingua::Translit can be used to convert text from one writing system to
-another, based on national or international transliteration tables. Where
-possible a reverse transliteration is supported.
-
-WWW: http://search.cpan.org/dist/Lingua-Translit/

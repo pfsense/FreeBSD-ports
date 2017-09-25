@@ -1,9 +1,0 @@
---- etc/luajit.pc.orig	2017-05-03 11:00:21.130353000 -0400
-+++ etc/luajit.pc	2017-05-03 11:00:54.763566000 -0400
-@@ -21,5 +21,5 @@
- Version: ${version}
- Requires:
- Libs: -L${libdir} -l${libname}
--Libs.private: -Wl,-E -lm -ldl
-+Libs.private: -Wl,-E -lm
- Cflags: -I${includedir}

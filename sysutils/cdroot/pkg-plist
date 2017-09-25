@@ -1,7 +1,0 @@
-bin/mkcdroot
-%%DATADIR%%/README
-%%DATADIR%%/cdroot_initdisk
-%%DATADIR%%/cdroot_inst
-%%DATADIR%%/cdroot_mount
-%%DATADIR%%/cdroot_site_overrides.sample
-%%DATADIR%%/rc.replacement

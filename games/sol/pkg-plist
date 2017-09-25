@@ -1,6 +1,0 @@
-@(games,games,6755) bin/sol
-man/man6/sol.6.gz
-%%PORTDOCS%%%%DOCSDIR%%/CREDITS
-%%PORTDOCS%%%%DOCSDIR%%/README
-@(games,games,0660) share/sol/sol.score
-@dir(games,games,0770) share/sol

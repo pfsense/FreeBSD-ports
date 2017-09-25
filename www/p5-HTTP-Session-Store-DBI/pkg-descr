@@ -1,3 +1,0 @@
-Store session data in DBI for HTTP::Session.
-
-WWW: http://search.cpan.org/dist/HTTP-Session-Store-DBI/

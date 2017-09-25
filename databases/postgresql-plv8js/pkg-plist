@@ -1,7 +1,0 @@
-lib/postgresql/plv8.so
-share/postgresql/extension/plv8.control
-share/postgresql/extension/plv8--%%PORTVERSION%%.sql
-share/postgresql/extension/plcoffee.control
-share/postgresql/extension/plcoffee--%%PORTVERSION%%.sql
-share/postgresql/extension/plls.control
-share/postgresql/extension/plls--%%PORTVERSION%%.sql

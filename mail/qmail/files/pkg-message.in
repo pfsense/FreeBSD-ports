@@ -1,4 +1,0 @@
-	ATTENTION:
-
-You can enable qmail as your default mailer executing:
-> %%PREFIX%%/scripts/enable-qmail

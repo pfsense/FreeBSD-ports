@@ -1,3 +1,0 @@
-Using the heap rather than the stack for recursion (i.e., turning the
-STACK_RECURSION knob off) is slower but less prone to segfaults from
-stack exhaustion when matching certain patterns.

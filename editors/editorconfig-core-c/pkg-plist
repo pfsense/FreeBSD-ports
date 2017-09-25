@@ -1,8 +1,0 @@
-bin/editorconfig
-bin/editorconfig-%%PORTVERSION%%
-include/editorconfig/editorconfig.h
-include/editorconfig/editorconfig_handle.h
-lib/libeditorconfig.so
-lib/libeditorconfig.so.%%SHLIB_MAJOR%%
-lib/libeditorconfig.so.%%SHLIB_VER%%
-lib/libeditorconfig_static.a

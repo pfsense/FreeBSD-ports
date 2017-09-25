@@ -1,4 +1,0 @@
-A little program to bounce TCP connections to another machine/port.
-By default it listens on port 1523.
-
-WWW: http://www.iagora.com/~espel/hacks.html

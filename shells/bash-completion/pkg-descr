@@ -1,5 +1,0 @@
-This is a programmable completion convenience library for the bash(1)
-shell. It features the ability to tab-complete arguments for many common
-programs.
-
-WWW: https://github.com/scop/bash-completion

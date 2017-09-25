@@ -1,4 +1,0 @@
-The fastest way to talk to many redis nodes. Can do routing as well as blindly
-blasting commands to many nodes.
-
-WWW: https://github.com/getsentry/rb

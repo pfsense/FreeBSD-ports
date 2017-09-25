@@ -1,4 +1,0 @@
-This is a suite of perl packages providing functionality to sign and
-verify email per draft 01 of the DomainKeys specification.
-
-WWW: http://search.cpan.org/dist/Mail-DomainKeys/

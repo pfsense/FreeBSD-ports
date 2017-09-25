@@ -1,9 +1,0 @@
---- Makefile.am.orig	2016-04-29 17:26:45 UTC
-+++ Makefile.am
-@@ -8,5 +8,5 @@ if ENABLE_DAEMON
- MISCDIR = misc
- endif
- 
--SUBDIRS = usr man $(MISCDIR) $(TESTDIR)
-+SUBDIRS = usr man $(TESTDIR)
- 

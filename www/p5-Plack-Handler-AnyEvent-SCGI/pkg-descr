@@ -1,3 +1,0 @@
-PSGI handler on AnyEvent::SCGI.
-
-WWW: http://search.cpan.org/dist/Plack-Handler-AnyEvent-SCGI/

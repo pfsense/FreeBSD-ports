@@ -1,4 +1,0 @@
-File::Scan allows users to make multiplatform virus scans which
-can detect Windows/DOS/Mac viruses.
-
-It includes a virus scanner and a signature database.

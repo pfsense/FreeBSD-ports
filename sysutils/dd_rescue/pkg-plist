@@ -1,5 +1,0 @@
-bin/dd_rescue
-lib/libddr_hash.so
-lib/libddr_null.so
-man/man1/dd_rescue.1.gz
-%%PORTDOCS%%%%DOCSDIR%%/README.dd_rescue

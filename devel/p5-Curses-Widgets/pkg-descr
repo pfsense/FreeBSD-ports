@@ -1,6 +1,0 @@
-This module provides a standard library of functions and
-widgets for use in creating Curses-based interfaces.
-Should work reliably with both Curses and nCurses
-libraries.
-
-WWW: http://search.cpan.org/dist/CursesWidgets/

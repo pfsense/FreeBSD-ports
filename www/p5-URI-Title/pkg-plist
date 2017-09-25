@@ -1,7 +1,0 @@
-%%SITE_PERL%%/URI/Title.pm
-%%SITE_PERL%%/URI/Title/HTML.pm
-%%SITE_PERL%%/URI/Title/Image.pm
-%%SITE_PERL%%/URI/Title/MP3.pm
-%%SITE_PERL%%/URI/Title/PDF.pm
-%%SITE_PERL%%/URI/title.pl
-%%PERL5_MAN3%%/URI::Title.3.gz

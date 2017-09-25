@@ -1,4 +1,0 @@
-Please edit %%ETCDIR%%/hsflowd.conf based on your needs and add the following
-to /etc/rc.conf:
-
-hsflowd_enable="YES"

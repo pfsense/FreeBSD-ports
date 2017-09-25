@@ -1,9 +1,0 @@
-A simple, visually-appealing notification daemon for Xfce that implements the
-Freedesktop.org Desktop Notifications Specification.
-
-Features:
-   * Themable using the GTK+ theming mechanism
-   * Visually appealing: rounded corners, shaped windows
-   * Supports transparency and fade effects
-
-WWW: http://goodies.xfce.org/projects/applications/xfce4-notifyd

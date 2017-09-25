@@ -1,7 +1,0 @@
-bin/qccx
-%%DATADIR%%/client.qc
-%%DATADIR%%/defs.qc
-%%DATADIR%%/internal.qc
-%%DATADIR%%/misc.qc
-%%DATADIR%%/world.qc
-%%DATADIR%%/progs.src

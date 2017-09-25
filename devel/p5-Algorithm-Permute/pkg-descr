@@ -1,5 +1,0 @@
-Algorithm::Permute provides a handy and fast permutation with an OO interface,
-although its algorithm is perhaps not the fastest available.  Currently it only
-supports permutation n of n objects.
-
-WWW: http://search.cpan.org/dist/Algorithm-Permute/

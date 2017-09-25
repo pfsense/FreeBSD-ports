@@ -1,3 +1,0 @@
-%%CLASSDIR%%/res.cls
-@exec %%MKTEXLSR%%
-@unexec %%MKTEXLSR%%

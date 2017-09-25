@@ -1,9 +1,0 @@
-bin/cdi
-bin/cdo
-include/cdi.h
-include/cdi.inc
-lib/libcdi.a
-lib/libcdi.so
-lib/libcdi.so.0
-lib/libcdi.so.0.0.0
-libdata/pkgconfig/cdi.pc

@@ -1,3 +1,0 @@
-ExtUtils::Config is an abstraction around the %Config hash.
-
-WWW: http://search.cpan.org/dist/ExtUtils-Config/

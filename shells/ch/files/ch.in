@@ -1,7 +1,0 @@
-#!/bin/sh
-
-# This program needs to know where to find its data, so we pass that
-# information using the CHHOME environment variable.
-
-export CHHOME="%%DATADIR%%"
-exec "$CHHOME/bin/ch" "$@"

@@ -1,9 +1,0 @@
-bin/arccat
-include/libarc/arc.h
-include/libarc/mblock.h
-include/libarc/memb.h
-include/libarc/unlzh.h
-include/libarc/url.h
-include/libarc/zip.h
-lib/libarc.so
-lib/libarc.so.1

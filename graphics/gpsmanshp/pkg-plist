@@ -1,3 +1,0 @@
-lib/tcl%%TCLVERSION%%/gpsmanshp-%%PORTVERSION%%/gpsmanshp.so
-lib/tcl%%TCLVERSION%%/gpsmanshp-%%PORTVERSION%%/pkgIndex.tcl
-%%PORTDOCS%%%%DOCSDIR%%/GPSManSHP.pdf

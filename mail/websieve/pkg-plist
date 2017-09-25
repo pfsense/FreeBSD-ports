@@ -1,3 +1,0 @@
-%%WWWDIR%%/websieve.pl
-@sample etc/websieve/websieve.conf.sample
-etc/websieve/funclib.pl

@@ -1,5 +1,0 @@
-pkg/blinkled.xml
-pkg/blinkled.inc
-/etc/inc/priv/blinkled.priv.inc
-%%DATADIR%%/info.xml
-@dir /etc/inc/priv

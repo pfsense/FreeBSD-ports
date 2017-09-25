@@ -1,3 +1,0 @@
-#!/bin/sh
-
-cd %%PREFIX%%/libexec/processing && ./start-processing

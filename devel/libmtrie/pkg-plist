@@ -1,5 +1,0 @@
-include/mtrie.h
-lib/libmtrie.a
-lib/libmtrie.so
-lib/libmtrie.so.1
-%%HURRRR%%lib/libmtrie_p.a

@@ -1,5 +1,0 @@
-etc/rc.d/rtpproxy
-bin/makeann
-bin/rtpproxy
-bin/rtpproxy_debug
-man/man8/rtpproxy.8.gz

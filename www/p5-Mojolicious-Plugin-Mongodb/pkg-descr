@@ -1,4 +1,0 @@
-Mojolicious::Plugin::Mongodb provides a few helpers to ease the use of MongoDB
-in your Mojolicious application.
-
-WWW: http://search.cpan.org/dist/Mojolicious-Plugin-Mongodb/

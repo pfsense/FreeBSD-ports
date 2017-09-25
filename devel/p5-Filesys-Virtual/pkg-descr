@@ -1,5 +1,0 @@
-Perl extension to provide a framework for a virtual filesystem.
-Currently this module only exists to complement
-POE::Component::Server::FTP.
-
-WWW: http://search.cpan.org/dist/Filesys-Virtual/

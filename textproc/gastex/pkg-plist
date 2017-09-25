@@ -1,5 +1,0 @@
-share/texmf/tex/latex/gastex/gastex.sty
-share/texmf/dvips/gastex/gastex.pro
-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/ex-gastex.tex
-@exec %D/bin/mktexlsr
-@unexec %D/bin/mktexlsr

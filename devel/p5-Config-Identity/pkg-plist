@@ -1,4 +1,0 @@
-%%SITE_PERL%%/Config/Identity.pm
-%%SITE_PERL%%/Config/Identity/GitHub.pm
-%%SITE_PERL%%/Config/Identity/PAUSE.pm
-%%PERL5_MAN3%%/Config::Identity.3.gz

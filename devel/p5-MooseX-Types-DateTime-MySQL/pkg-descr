@@ -1,3 +1,0 @@
-This module implements type coercions for MySQL date and time types.
-
-WWW: http://search.cpan.org/dist/MooseX-Types-DateTime-MySQL/

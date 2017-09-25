@@ -1,6 +1,0 @@
-bin/flowgrind
-bin/flowgrind-stop
-sbin/flowgrindd
-man/man1/flowgrind-stop.1.gz
-man/man1/flowgrind.1.gz
-man/man1/flowgrindd.1.gz

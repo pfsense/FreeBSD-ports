@@ -1,5 +1,0 @@
-This is yet another 'mixi' (the largest SNS in Japan) scraper,
-powered by Web::Scraper. Though APIs are different and incompatible with
-precedent WWW::Mixi.
-
-WWW: http://search.cpan.org/dist/WWW-Mixi-Scraper/

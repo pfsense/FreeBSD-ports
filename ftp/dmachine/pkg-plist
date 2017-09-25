@@ -1,5 +1,0 @@
-bin/dmachine
-share/java/classes/dmachine.jar
-%%PORTDOCS%%%%DOCSDIR%%/README
-%%PORTDOCS%%%%DOCSDIR%%/NEWS
-%%PORTDOCS%%%%DOCSDIR%%/dmachine.cnf

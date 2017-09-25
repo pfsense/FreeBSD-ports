@@ -1,2 +1,0 @@
-#!/bin/sh
-exec java -jar %%DATADIR%%/ffdec.jar ${@}

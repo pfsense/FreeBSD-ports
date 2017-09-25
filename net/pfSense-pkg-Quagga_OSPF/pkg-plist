@@ -1,9 +1,0 @@
-pkg/quagga_ospfd.xml
-pkg/quagga_ospfd.inc
-/etc/inc/priv/quagga_ospfd.priv.inc
-pkg/quagga_ospfd_interfaces.xml
-pkg/quagga_ospfd_raw.xml
-www/status_ospfd.php
-bin/quaggactl
-%%DATADIR%%/info.xml
-@dir /etc/inc/priv

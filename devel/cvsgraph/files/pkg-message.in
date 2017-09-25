@@ -1,3 +1,0 @@
-You must copy %%PREFIX%%/etc/cvsgraph.conf.sample to
-%%PREFIX%%/etc/cvsgraph.conf in order to use cvsgraph.
-

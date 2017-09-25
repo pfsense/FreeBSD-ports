@@ -1,5 +1,0 @@
-This is the distribution of "cpdup", a powerful filesystem mirroring and
-backup utility which also has file integrity testing features, supports
-incremental backups, and remote mirroring via ssh.
-
-WWW: http://apollo.backplane.com/FreeBSDPorts/

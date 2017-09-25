@@ -1,6 +1,0 @@
-pkg/ntopng.xml
-pkg/ntopng.inc
-www/ntopng_redirect.php
-/etc/inc/priv/ntopng.priv.inc
-%%DATADIR%%/info.xml
-@dir /etc/inc/priv

@@ -1,6 +1,0 @@
-bin/sysgather
-@sample etc/sysgather.conf.sample
-man/man1/sysgather.1.gz
-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/debian.conf
-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/freebsd.conf
-%%PORTEXAMPLES%%%%EXAMPLESDIR%%/slackware.conf

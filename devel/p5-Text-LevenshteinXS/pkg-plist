@@ -1,4 +1,0 @@
-%%SITE_ARCH%%/auto/Text/LevenshteinXS/LevenshteinXS.so
-%%SITE_ARCH%%/auto/Text/LevenshteinXS/autosplit.ix
-%%SITE_ARCH%%/Text/LevenshteinXS.pm
-%%PERL5_MAN3%%/Text::LevenshteinXS.3.gz

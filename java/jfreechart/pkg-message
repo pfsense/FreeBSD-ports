@@ -1,6 +1,0 @@
-**************************************************************
-
-In order to use classes in org.jfree.chart.servlet package,
-please put Java Servlet 2.3 implementation in class path.
-
-**************************************************************

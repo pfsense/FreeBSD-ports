@@ -1,4 +1,0 @@
-CGI::Application::Plugin::Redirect
-    Easy external redirects in CGI::Application.
-
-WWW: http://search.cpan.org/dist/CGI-Application-Plugin-Redirect/

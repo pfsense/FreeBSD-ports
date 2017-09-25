@@ -1,4 +1,0 @@
-%%SITE_ARCH%%/Astro/FITS/CFITSIO.pm
-%%SITE_ARCH%%/auto/Astro/FITS/CFITSIO/autosplit.ix
-%%SITE_ARCH%%/auto/Astro/FITS/CFITSIO/CFITSIO.so
-%%PERL5_MAN3%%/Astro::FITS::CFITSIO.3.gz

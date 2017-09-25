@@ -1,8 +1,0 @@
-bin/player
-bin/playerctl
-include/Desktop/Player.h
-man/man1/player.1.gz
-man/man1/playerctl.1.gz
-share/Player/splash.png
-share/applications/player.desktop
-share/locale/fr/LC_MESSAGES/Player.mo

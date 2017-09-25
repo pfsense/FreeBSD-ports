@@ -1,6 +1,0 @@
-sbin/vpnc
-sbin/vpnc-disconnect
-man/man8/vpnc.8.gz
-%%DECRYPT%%bin/cisco-decrypt
-%%DECRYPT%%man/man1/cisco-decrypt.1.gz
-@sample etc/vpnc.conf.sample

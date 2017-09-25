@@ -1,4 +1,0 @@
-PROG=cpuid
-NO_MAN=yet
-BINDIR=${PREFIX}/bin
-.include <bsd.prog.mk>"

@@ -1,4 +1,0 @@
-Lingua::Stem::Ru applies the Porter Stemming Algorithm to its parameters,
-returning the stemmed words.
-
-WWW: http://search.cpan.org/dist/Lingua-Stem-Ru/

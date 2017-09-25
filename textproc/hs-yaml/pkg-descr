@@ -1,6 +1,0 @@
-Provides support for parsing and emitting Yaml documents.  This package
-includes the full libyaml C library version 0.1.2 by Kirill Simonov in
-the package so you don't need to worry about any non-Haskell
-dependencies.
-
-WWW: https://github.com/snoyberg/yaml/

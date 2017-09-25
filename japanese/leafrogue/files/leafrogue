@@ -1,2 +1,0 @@
-#!/bin/sh
-rogue_s leaf.msg $*

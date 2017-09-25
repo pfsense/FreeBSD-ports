@@ -1,9 +1,0 @@
-%%QPOPAUTH%%@(%%USERS%%,%%GROUPS%%,4555) bin/qapopauth
-%%QPOPAUTH%%@(%%USERS%%,%%GROUPS%%,4555) bin/qpopauth
-@sample(%%USERS%%,%%GROUPS%%,0444) %%ETCDIR%%/popusers.sample
-libexec/qpopper
-man/man8/qpopper.8.gz
-%%QPOPAUTH%%man/man8/qpopauth.8.gz
-%%EPOPPASSD%%libexec/qpoppassd
-%%DOCUMENTATION%%%%DOCSDIR%%/GUIDE.pdf
-@dir(%%USERS%%,%%GROUPS%%,) %%ETCDIR%%

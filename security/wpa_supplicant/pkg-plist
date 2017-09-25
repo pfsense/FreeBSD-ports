@@ -1,4 +1,0 @@
-sbin/wpa_supplicant
-sbin/wpa_passphrase
-sbin/wpa_cli
-@sample etc/wpa_supplicant.conf.sample

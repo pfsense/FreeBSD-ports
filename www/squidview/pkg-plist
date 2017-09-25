@@ -1,7 +1,0 @@
-bin/squidview
-man/man1/squidview.1.gz
-%%PORTDOCS%%%%DOCSDIR%%/HOWTO
-%%PORTDOCS%%%%DOCSDIR%%/README
-%%DATADIR%%/aliases
-%%DATADIR%%/users
-%%DATADIR%%/words

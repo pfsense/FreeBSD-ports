@@ -1,3 +1,0 @@
-@sample etc/monitord.conf.sample
-man/man8/monitord.8.gz
-sbin/monitord

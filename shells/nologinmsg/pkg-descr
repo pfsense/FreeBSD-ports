@@ -1,2 +1,0 @@
-Slightly more functional replacement for /sbin/nologin. Adds per-user
-messages, and group messages (of a form).

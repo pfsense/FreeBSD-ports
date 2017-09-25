@@ -1,4 +1,0 @@
-bin/proxychains
-bin/proxyresolv
-@sample etc/proxychains.conf.sample
-lib/libproxychains-4.so

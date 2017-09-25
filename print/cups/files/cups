@@ -1,4 +1,0 @@
-# $FreeBSD$
-
-auth	include	system
-account	include	system

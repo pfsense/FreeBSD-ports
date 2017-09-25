@@ -1,5 +1,0 @@
-Config::Model will generate interactive configuration editors (with integrated
-help and data validation). These editors can be graphical, curses based, or
-based on ReadLine.
-
-WWW: https://metacpan.org/pod/Config::Model

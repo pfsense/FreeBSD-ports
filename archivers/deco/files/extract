@@ -1,3 +1,0 @@
-#!/bin/sh
- 
-exec tar xJ${Verbose+vv}f "$1"

@@ -1,6 +1,0 @@
-lib/aspell-%%VER%%/nds.dat
-lib/aspell-%%VER%%/nds_affix.dat
-lib/aspell-%%VER%%/nds_phonet.dat
-share/aspell/lowsaxon.alias
-share/aspell/nds.multi
-share/aspell/nds.rws

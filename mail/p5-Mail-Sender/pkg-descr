@@ -1,5 +1,0 @@
-Mail::Sender provides an object oriented interface to sending mails.  It
-doesn't need any outer program.  It connects to a mail server directly
-from Perl, using Socket.
-
-WWW: http://search.cpan.org/dist/Mail-Sender/

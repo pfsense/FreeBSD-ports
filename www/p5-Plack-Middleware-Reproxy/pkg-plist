@@ -1,6 +1,0 @@
-%%SITE_PERL%%/Plack/Middleware/Reproxy.pm
-%%SITE_PERL%%/Plack/Middleware/Reproxy/Callback.pm
-%%SITE_PERL%%/Plack/Middleware/Reproxy/Furl.pm
-%%PERL5_MAN3%%/Plack::Middleware::Reproxy.3.gz
-%%PERL5_MAN3%%/Plack::Middleware::Reproxy::Callback.3.gz
-%%PERL5_MAN3%%/Plack::Middleware::Reproxy::Furl.3.gz

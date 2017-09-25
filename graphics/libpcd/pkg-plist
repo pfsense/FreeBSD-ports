@@ -1,5 +1,0 @@
-include/pcd.h
-lib/libpcd.a
-lib/libpcd.so
-lib/libpcd.so.2
-lib/libpcd.so.2.0.1

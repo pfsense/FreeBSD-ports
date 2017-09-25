@@ -1,6 +1,0 @@
-bin/qrcodegen
-%%DATADIR%%/FAQ.txt
-%%DATADIR%%/Installation.txt
-%%DATADIR%%/NOTICE
-%%DATADIR%%/QRCodeGen.jar
-%%DATADIR%%/Version.html

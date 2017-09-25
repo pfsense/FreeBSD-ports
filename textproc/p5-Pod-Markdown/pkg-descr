@@ -1,3 +1,0 @@
-This module subclasses Pod::Parser and converts POD to Markdown.
-
-WWW: http://search.cpan.org/dist/Pod-Markdown/

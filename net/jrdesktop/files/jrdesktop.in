@@ -1,5 +1,0 @@
-#!/bin/sh
-
-JRDESKTOP_JAR=%%JAVAJARDIR%%/%%PORTNAME%%-%%PORTVERSION%%.jar
-
-%%JAVA%% -jar ${JRDESKTOP_JAR} display

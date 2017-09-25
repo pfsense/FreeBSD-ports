@@ -1,3 +1,0 @@
-@sample etc/chpasswd/chpasswd.conf.sample
-etc/chpasswd/chpasswd.log
-www/cgi-bin/chpasswd.cgi

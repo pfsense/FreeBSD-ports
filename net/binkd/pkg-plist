@@ -1,6 +1,0 @@
-@sample etc/binkd.cfg.sample
-sbin/binkd
-man/man8/binkd.8.gz
-%%PORTDOCS%%%%DOCSDIR%%/README
-%%PORTDOCS%%%%DOCSDIR%%/README.FIX
-%%PORTDOCS%%%%DOCSDIR%%/SRIF.TXT

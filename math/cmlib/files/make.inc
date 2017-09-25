@@ -1,6 +1,0 @@
-FORTRAN=	${FC}
-OPTS=		${FFLAGS}
-NOPTS=		${FFLAGS} -g 
-RANLIB=		ranlib
-MACHCON=	FreeBSD
-LIBRARY=	libcm.a

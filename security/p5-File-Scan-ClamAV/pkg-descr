@@ -1,9 +1,0 @@
-A library for connecting to and sending commands to a local
-ClamAV clamd service - an anti-virus daemon process.
-
-You can find more information about clam anti-virus at
-WWW: http://www.clamav.net/
-
-File::Scan::ClamAV was originally based on the Clamd module
-
-WWW: http://search.cpan.org/dist/File-Scan-ClamAV/

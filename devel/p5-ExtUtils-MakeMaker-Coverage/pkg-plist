@@ -1,3 +1,0 @@
-bin/testcover
-%%PERL5_MAN3%%/ExtUtils::MakeMaker::Coverage.3.gz
-%%SITE_PERL%%/ExtUtils/MakeMaker/Coverage.pm

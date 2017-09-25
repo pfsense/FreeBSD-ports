@@ -1,7 +1,0 @@
-LTS (Long Term Support) release of Zabbix Monitoring agent. Zabbix LTS releases
-are supported for Zabbix customers during five (5) years i.e. 3 years of
-Full Support (general, critical and security issues) and 2 additional years
-of Limited Support (critical and security issues only). Zabbix LTS version
-release will result in change of the first version number.
-
-WWW: http://www.zabbix.com/life_cycle_and_release_policy.php

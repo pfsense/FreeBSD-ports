@@ -1,4 +1,0 @@
-bin/svnup
-man/man1/svnup.1.gz
-man/man5/svnup.conf.5.gz
-@sample etc/svnup.conf.sample

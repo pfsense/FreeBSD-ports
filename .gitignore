@@ -1,8 +1,0 @@
-/distfiles
-/packages
-/*/*/work
-/INDEX-[0-9]*
-*~
-*.rej
-*.orig
-*.sw[p-z]

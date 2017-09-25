@@ -1,3 +1,0 @@
-%%RUBY_SITEARCHLIBDIR%%/_xapian.a
-%%RUBY_SITEARCHLIBDIR%%/_xapian.so
-%%RUBY_SITELIBDIR%%/xapian.rb

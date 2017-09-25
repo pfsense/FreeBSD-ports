@@ -1,4 +1,0 @@
-Reduces size of javascript files by stripping out extraneous whitespace
-and other syntactic elements, without changing the semantics.
-
-WWW: https://github.com/erikd/hjsmin

@@ -1,3 +1,0 @@
-%%SITE_PERL%%/Cache/Memcached.pm
-%%SITE_PERL%%/Cache/Memcached/GetParser.pm
-%%PERL5_MAN3%%/Cache::Memcached.3.gz

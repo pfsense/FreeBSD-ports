@@ -1,3 +1,0 @@
-@(,games,2755) bin/yahtzee
-@sample(,games,664) /var/games/yahtzee/yahtzee.sco.sample
-@dir(,games,775) /var/games/yahtzee

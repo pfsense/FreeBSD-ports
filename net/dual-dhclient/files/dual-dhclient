@@ -1,8 +1,0 @@
-#!/bin/sh
-
-# $FreeBSD$
-
-# Public domain
-
-/sbin/dhclient "$@"
-/usr/local/sbin/dhclient -6 -nw -cf /dev/null "$@"

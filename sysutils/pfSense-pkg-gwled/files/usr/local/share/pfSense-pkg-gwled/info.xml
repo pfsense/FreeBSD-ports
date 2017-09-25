@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<pfsensepkgs>
-	<package>
-		<name>gwled</name>
-		<descr><![CDATA[Allows you to use LEDs for monitoring gateway status on supported platforms (ALIX, WRAP, Soekris, etc.)]]></descr>
-		<version>%%PKGVERSION%%</version>
-		<configurationfile>gwled.xml</configurationfile>
-	</package>
-</pfsensepkgs>

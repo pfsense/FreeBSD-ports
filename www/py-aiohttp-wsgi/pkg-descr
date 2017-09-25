@@ -1,9 +1,0 @@
-WSGI adapter for aiohttp.
-
-Features:
-
- * Run WSGI applications (e.g. Django, Flask) on aiohttp.
- * Handle thousands of client connections, using asyncio.
- * Add websockets to your existing Python web app!
-
-WWW: https://github.com/etianen/aiohttp-wsgi

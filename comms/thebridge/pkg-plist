@@ -1,6 +1,0 @@
-bin/tbdcmd
-bin/tbdchat
-etc/tbd.conf.sample
-libexec/tbd
-%%DATADIR%%/README
-%%DATADIR%%/usermgmt.cgi

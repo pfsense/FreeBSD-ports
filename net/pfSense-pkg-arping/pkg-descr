@@ -1,3 +1,0 @@
-Broadcasts a who-has ARP packet on the network and prints answers.
-
-WWW: https://doc.pfsense.org/index.php/Arping

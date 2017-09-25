@@ -1,6 +1,0 @@
-include/pycairo/pycairo.h
-%%PYTHON_SITELIBDIR%%/cairo/__init__.py
-%%PYTHON_SITELIBDIR%%/cairo/__init__.pyc
-%%PYTHON_SITELIBDIR%%/cairo/__init__.pyo
-%%PYTHON_SITELIBDIR%%/cairo/_cairo.so
-libdata/pkgconfig/pycairo.pc

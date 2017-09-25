@@ -1,5 +1,0 @@
-bin/xmemory
-man/man1/xmemory.1.gz
-%%DATADIR%%/default.mem
-%%DATADIR%%/home.mem
-%%DATADIR%%/sports.mem

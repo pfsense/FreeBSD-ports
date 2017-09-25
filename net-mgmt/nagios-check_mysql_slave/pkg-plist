@@ -1,4 +1,0 @@
-libexec/nagios/check_mysql_slave
-libexec/nagios/check_mysql_slave_epn
-%%PORTDOCS%%%%DOCSDIR%%/check_mysql_slave.html
-%%PORTDOCS%%%%DOCSDIR%%/check_mysql_slave.pod

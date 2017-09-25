@@ -1,3 +1,0 @@
-This is a dummy port which takes its version number from ${OSVERSION}, in
-order to work around a bug in portsnap triggered by having identical INDEX
-files on different major versions.

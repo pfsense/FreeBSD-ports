@@ -1,6 +1,0 @@
-@group kmem
-@mode 2555
-bin/asmem
-@mode
-@group
-man/man1/asmem.1.gz

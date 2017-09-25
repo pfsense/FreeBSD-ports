@@ -1,4 +1,0 @@
-This module provides functions for fast and correct slurping and spewing. All
-functions are optionally exported.
-
-WWW: https://metacpan.org/pod/File::Slurper

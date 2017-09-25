@@ -1,5 +1,0 @@
-This is a port of the BSD "standard" games from Dragonfly BSD which
-includes many improvements and cleanups from NetBSD and OpenBSD.
-
-This source was formerly a part of the FreeBSD base system, but has
-survived in the Dragonfly BSD repository.

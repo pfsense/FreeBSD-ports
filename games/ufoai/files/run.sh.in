@@ -1,4 +1,0 @@
-#!/bin/sh
-
-cd @UFODIR@ || exit 1
-exec @UFODIR@/@APP@ "$@"

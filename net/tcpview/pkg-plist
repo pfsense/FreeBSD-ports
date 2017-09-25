@@ -1,8 +1,0 @@
-bin/tcpview
-lib/tcpview/filters/BGP
-lib/tcpview/filters/telnet
-lib/tcpview/filters/generic
-lib/tcpview/hosts
-lib/tcpview/manuf
-man/man1/tcpview.1.gz
-lib/X11/app-defaults/Tcpview

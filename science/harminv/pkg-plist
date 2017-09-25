@@ -1,5 +1,0 @@
-bin/harminv
-include/harminv.h
-lib/libharminv.a
-libdata/pkgconfig/harminv.pc
-man/man1/harminv.1.gz

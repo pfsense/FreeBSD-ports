@@ -1,4 +1,0 @@
-Template::Plugin::JavaScript is a TT filter that filters text so it can
-be safely used in JavaScript quotes.
-
-WWW: http://search.cpan.org/dist/Template-Plugin-JavaScript/

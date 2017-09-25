@@ -1,9 +1,0 @@
-bin/znotes
-share/pixmaps/znotes.png
-%%NLS%%%%DATADIR%%/translations/znotes_cs.qm
-%%NLS%%%%DATADIR%%/translations/znotes_en.qm
-%%NLS%%%%DATADIR%%/translations/znotes_es.qm
-%%NLS%%%%DATADIR%%/translations/znotes_pt_BR.qm
-%%NLS%%%%DATADIR%%/translations/znotes_ru.qm
-%%NLS%%%%DATADIR%%/translations/znotes_sk.qm
-%%NLS%%%%DATADIR%%/translations/znotes_uk.qm

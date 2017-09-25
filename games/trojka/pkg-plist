@@ -1,3 +1,0 @@
-@(,games,2755) bin/trojka
-man/man6/trojka.6.gz
-@sample(,games,664) /var/games/trojka.scores.sample

@@ -1,8 +1,0 @@
-Who doesn't remember the first time they learned to copy and paste, and
-generated an exponentially growing text document?   Yes, that's right,
-clipboards are magical.
-
-With Clipboard.pm, this magic is now trivial to access,
-cross-platformly, from your Perl code.
-
-WWW: http://search.cpan.org/dist/Clipboard/

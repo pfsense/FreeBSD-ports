@@ -1,6 +1,0 @@
-@mode 0700
-libexec/cups/backend/cups-pdf
-@mode
-share/cups/model/CUPS-PDF.ppd
-@sample etc/cups/cups-pdf.conf.sample
-%%PORTDOCS%%%%DOCSDIR%%/README

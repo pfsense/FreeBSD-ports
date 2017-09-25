@@ -1,4 +1,0 @@
-Base class and utility methods for manipulating Perl via PPI. Pulled out from
-the Padre::Task::PPI code.
-
-WWW: http://search.cpan.org/dist/PPIx-EditorTools/

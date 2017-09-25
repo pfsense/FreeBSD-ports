@@ -1,5 +1,0 @@
-include/statemap.h
-include/statemap1.0/pkgIndex.tcl
-include/statemap1.0/statemap.tcl
-%%JAVAJARDIR%%/Smc.jar
-%%JAVAJARDIR%%/statemap.jar

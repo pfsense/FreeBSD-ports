@@ -1,4 +1,0 @@
-SQL::Maker is yet another SQL builder class.  It is based on
-DBIx::Skinny's SQL generator.
-
-WWW: http://search.cpan.org/dist/SQL-Maker/

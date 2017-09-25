@@ -1,4 +1,0 @@
-#!/bin/sh
-APPBASE="%%PREFIX%%/bluej"
-CP="$APPBASE/lib/bluej.jar"
-java -Dawt.useSystemAAFontSettings=on -cp "$CP" bluej.Boot  "$@"

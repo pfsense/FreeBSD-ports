@@ -1,4 +1,0 @@
-This module creates compile-time constants in the manner of
-constant.pm, but makes them local to the enclosing scope.
-
-WWW: http://search.cpan.org/dist/constant-lexical/

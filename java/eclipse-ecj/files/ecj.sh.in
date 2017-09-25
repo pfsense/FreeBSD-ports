@@ -1,3 +1,0 @@
-#!/bin/sh
-
-JAVA_VERSION="%%JAVA_VERSION%%" "%%LOCALBASE%%/bin/java" -classpath "%%JAVAJARDIR%%/ecj-%%PORTVERSION%%.jar" org.eclipse.jdt.internal.compiler.batch.Main "${@:--help}"

@@ -1,3 +1,0 @@
-Note: the dbskkd-cdb requires inetd or daemontools to run.
-Example configurations are available at %%DOCSDIR%%/examples.md.
-*Note well*: dbskkd-cdb must not be invoked with the root privilege.

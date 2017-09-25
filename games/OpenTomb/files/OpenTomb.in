@@ -1,3 +1,0 @@
-#!/bin/sh
-
-exec %%PREFIX%%/share/OpenTomb/OpenTomb -base_path %%PREFIX%%/share/OpenTomb -autoexec %%PREFIX%%/share/OpenTomb/autoexec.lua -config ~/.config.lua

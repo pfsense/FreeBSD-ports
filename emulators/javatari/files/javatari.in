@@ -1,8 +1,0 @@
-#!/bin/csh
-# $FreeBSD$
-
-set JAVA = "%%LOCALBASE%%/bin/java"
-set JARPATH = "%%JAVALIBDIR%%"
-setenv JAVA_VERSION "%%JAVA_VERSION%%"
-
-exec "${JAVA}" -jar %%JAVAJARDIR%%/%%JARFILE%%

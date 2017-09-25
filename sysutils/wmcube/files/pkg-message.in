@@ -1,7 +1,0 @@
--------------------------------------------
-The extra 3d objects are located in:
-	%%PREFIX%%/share/wmcube
-
-To run wmcube type:
-	wmcube -o %%PREFIX%%/share/wmcube &
--------------------------------------------

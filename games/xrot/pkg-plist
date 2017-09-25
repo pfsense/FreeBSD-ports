@@ -1,2 +1,0 @@
-@(root,games,2555) bin/xrot
-@sample(root,games,664) /var/games/xrot.scores.sample

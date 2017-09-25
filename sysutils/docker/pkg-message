@@ -1,2 +1,0 @@
-This port contains Docker client only.
-For Docker server support, install docker-machine.

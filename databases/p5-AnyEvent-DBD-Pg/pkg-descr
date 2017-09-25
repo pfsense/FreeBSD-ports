@@ -1,3 +1,0 @@
-AnyEvent interface to DBD::Pg's async interface.
-
-WWW: http://search.cpan.org/dist/AnyEvent-DBD-Pg/

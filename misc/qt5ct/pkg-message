@@ -1,2 +1,0 @@
-To activate qt5ct settings add QT_QPA_PLATFORMTHEME=qt5ct to your
-environment.

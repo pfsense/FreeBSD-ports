@@ -1,5 +1,0 @@
-The aim of SCEW is to provide an easy interface around the Expat XML parser.
-SCEW also incorporates functions to create and handle XML trees.  That is, add
-and delete nodes, change attribute names and values, etc.
-
-WWW: http://www.nongnu.org/scew/

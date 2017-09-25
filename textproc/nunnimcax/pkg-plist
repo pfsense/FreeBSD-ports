@@ -1,5 +1,0 @@
-include/NunniMCAX.h
-lib/libNunniMCAX.a
-lib/libNunniMCAX.so
-lib/libNunniMCAX.so.%%SHLIB_MAJOR%%
-%%PROFILE%%lib/libNunniMCAX_p.a

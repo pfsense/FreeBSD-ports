@@ -1,5 +1,0 @@
-bsdhwmon is a program for FreeBSD for monitoring hardware sensors (fans,
-temperatures, voltages, chassis intrusion, and more) on commerical-grade
-server hardware.
-
-WWW: https://github.com/koitsu/bsdhwmon

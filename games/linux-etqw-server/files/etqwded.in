@@ -1,4 +1,0 @@
-#!/bin/sh
-
-cd @ETQWDIR@ || exit 1
-exec ./etqwded.x86 "$@"
