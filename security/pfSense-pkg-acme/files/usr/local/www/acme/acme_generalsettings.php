@@ -44,7 +44,7 @@ if ($_POST) {
 		}
 		
 		set_cronjob();
-		write_config();
+		write_config(gettext("Services: Acme: General settings saved."));
 	}
 }
 
