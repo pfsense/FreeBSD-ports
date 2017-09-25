@@ -357,9 +357,9 @@ pkg_upgrade() {
 
 	# Detect if has u-boot package installed
 	unset uboot_pkg
-	if pkg info ${product}-u-boot-ufw\* >/dev/null 2>&1; then
+	if pkg info ${product}-u-boot-\* >/dev/null 2>&1; then
 		export uboot_pkg=$(pkg query %n \
-		    $(pkg info ${product}-u-boot-ufw\*))
+		    $(pkg info ${product}-u-boot-\*))
 	fi
 
 	if [ -n "${uboot_pkg}" -a \
