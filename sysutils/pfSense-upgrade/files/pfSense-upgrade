@@ -501,6 +501,19 @@ pkg_upgrade() {
 		fi
 
 		if upgrade_available ${kernel_pkg}; then
+			# pfSense-SG-3100 is obsolete and must be removed
+			# before upgrade kernel / rc and preserve
+			# loader.rc.local just to be extra safe
+			if is_pkg_installed ${product}-SG-3100; then
+				rm -f /tmp/loader.rc.local >/dev/null 2>&1
+				[ -f /boot/loader.rc.local ] \
+				    && cp /boot/loader.rc.local /tmp 2>/dev/null
+				_exec "pkg delete ${product}-SG-3100" \
+				    "Removing ${product}-SG-3100" mute \
+				    ignore_result
+				[ -f /tmp/loader.rc.local ] \
+				    && cp /tmp/loader.rc.local /boot 2>/dev/null
+			fi
 			_exec "pkg upgrade -U ${kernel_pkg}" \
 			    "Upgrading ${product} kernel"
 		fi
