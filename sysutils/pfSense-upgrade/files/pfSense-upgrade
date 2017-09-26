@@ -572,6 +572,10 @@ pkg_upgrade() {
 			_exec "pkg upgrade${dont_update}" \
 			    "Upgrading necessary packages"
 			delete_annotation=""
+
+			# Always make sure important packages are set as vital
+			set_vital_flag pkg ${kernel_pkg} ${product} \
+			    ${product}-rc ${product}-base ${uboot_pkg}
 		fi
 
 		pkg annotate -q -M ${kernel_pkg} next_stage 3
