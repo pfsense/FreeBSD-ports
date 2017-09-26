@@ -427,7 +427,7 @@ pkg_upgrade() {
 		# Old versions used to lock kernel and uboot, make sure we
 		# get it reverted
 		if pkg lock -l 2>&1 | grep -q "kernel"; then
-			pkg_unlock ${kernel_pkg} ${uboot_pkg}
+			pkg_unlock ${kernel_pkg}
 		fi
 		if [ -n "${uboot_pkg}"] && \
 		    pkg lock -l 2>&1 | grep -q "u-boot"; then
