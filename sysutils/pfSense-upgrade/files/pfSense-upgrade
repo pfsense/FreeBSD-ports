@@ -429,7 +429,7 @@ pkg_upgrade() {
 		if pkg lock -l 2>&1 | grep -q "kernel"; then
 			pkg_unlock ${kernel_pkg}
 		fi
-		if [ -n "${uboot_pkg}"] && \
+		if [ -n "${uboot_pkg}" ] && \
 		    pkg lock -l 2>&1 | grep -q "u-boot"; then
 			pkg_unlock ${uboot_pkg}
 		fi
