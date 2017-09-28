@@ -356,21 +356,31 @@ pkg_upgrade() {
 	    grep -v -- -debug-))
 
 	# Detect if has u-boot package installed
+	unset uboot_bin
 	unset uboot_pkg
-	if pkg info ${product}-u-boot-\* >/dev/null 2>&1; then
+	unset uboot_mntp
+	if pkg info ${product}-u-boot-ufw\* >/dev/null 2>&1; then
 		export uboot_pkg=$(pkg query %n \
-		    $(pkg info ${product}-u-boot-\*))
+		    $(pkg info ${product}-u-boot-ufw\*))
+		export uboot_mntp=/boot/msdos
+		export uboot_bin=u-boot.img
+	fi
+	if pkg info ${product}-u-boot-sg3100\* >/dev/null 2>&1; then
+		export uboot_pkg=$(pkg query %n \
+		    $(pkg info ${product}-u-boot-sg3100\*))
+		export uboot_mntp=/boot/u-boot
+		export uboot_bin=u-boot.bin
 	fi
 
 	if [ -n "${uboot_pkg}" -a \
 	    "$(compare_pkg_version ${uboot_pkg})" = "<" ]; then
-		if [ ! -f /boot/msdos/u-boot.img ]; then
+		if [ ! -f ${uboot_mntp}/${uboot_bin} ]; then
 			# Try to mount /boot/msdos
-			mount /boot/msdos >/dev/null 2>&1
+			mount ${uboot_mntp} >/dev/null 2>&1
 		fi
 
-		if [ ! -f /boot/msdos/u-boot.img ]; then
-			_echo "ERROR: u-boot partition (/boot/msdos) is not" \
+		if [ ! -f ${uboot_mntp}/${uboot_bin} ]; then
+			_echo "ERROR: u-boot partition (${uboot_mntp}) is not" \
 			    "properly mounted"
 			_exit 1
 		fi
