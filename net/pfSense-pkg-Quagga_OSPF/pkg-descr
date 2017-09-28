@@ -1,2 +1,2 @@
 OSPF routing protocol using Quagga.
-Conflicts with OpenBGPD; both packages cannot be installed at the same time.
+Conflicts with OpenBGPD and FRR; these packages cannot be installed at the same time.
