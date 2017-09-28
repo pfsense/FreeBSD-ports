@@ -3,8 +3,9 @@
 	<package>
 		<name>Quagga OSPF</name>
 		<internal_name>Quagga_OSPF</internal_name>
-		<descr><![CDATA[OSPF routing protocol using Quagga.&lt;br /&gt;
-			&lt;strong&gt;Conflicts with OpenBGPD; both packages cannot be installed at the same time.&lt;/strong&gt;]]></descr>
+		<descr>OSPF routing protocol using Quagga.
+			Conflicts with OpenBGPD and FRR; these packages cannot be installed at the same time.
+		</descr>
 		<version>%%PKGVERSION%%</version>
 		<configurationfile>quagga_ospfd.xml</configurationfile>
 	</package>
