@@ -790,7 +790,7 @@ function pfb_create_dnsbl($mode) {
 								'local-port'		=> "{$port}",
 								'interface'		=> "{$pfb['dnsbl_iface']}",
 								'descr'			=> 'pfB DNSBL - DO NOT EDIT',
-								'associated-rule-id'	=> '',
+								'associated-rule-id'	=> 'pass',
 								'natreflection'		=> 'purenat'
 								);
 			}
