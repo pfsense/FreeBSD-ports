@@ -36,58 +36,47 @@
 		<tab>
 			<text>Snort Interfaces</text>
 			<url>/snort/snort_interfaces.php</url>
-			<no_drop_down/>
 		</tab>
 		<tab>
 			<text>Global Settings</text>
 			<url>/snort/snort_interfaces_global.php</url>
-			<no_drop_down/>
 		</tab>
 		<tab>
 			<text>Updates</text>
 			<url>/snort/snort_download_updates.php</url>
-			<no_drop_down/>
 		</tab>
 		<tab>
 			<text>Alerts</text>
 			<url>/snort/snort_alerts.php</url>
-			<no_drop_down/>
 		</tab>
 		<tab>
 			<text>Blocked</text>
 			<url>/snort/snort_blocked.php</url>
-			<no_drop_down/>
 		</tab>
 		<tab>
 			<text>Pass Lists</text>
 			<url>/snort/snort_passlist.php</url>
-			<no_drop_down/>
 		</tab>
 		<tab>
 			<text>Suppress</text>
 			<url>/snort/snort_interfaces_suppress.php</url>
-			<no_drop_down/>
 		</tab>
 		<tab>
 			<text>IP Lists</text>
 			<url>/snort/snort_ip_list_mgmt.php</url>
-			<no_drop_down/>
 		</tab>
 		<tab>
 			<text>SID Mgmt</text>
 			<url>/snort/snort_sid_mgmt.php</url>
-			<no_drop_down/>
 		</tab>
 		<tab>
 			<text>Log Mgmt</text>
 			<url>/snort/snort_log_mgmt.php</url>
-			<no_drop_down/>
 		</tab>
 		<tab>
 			<text>Sync</text>
 			<url>/pkg_edit.php?xml=snort/snort_sync.xml</url>
 			<active/>
-			<no_drop_down/>
 		</tab>
 	</tabs>
 	<fields>
