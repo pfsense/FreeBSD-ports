@@ -199,13 +199,13 @@ function pfb_global() {
 
 	// cURL - system proxy server setttings, if configured
 	if (!empty($config['system']['proxyurl'])) {
-		$pfb['curl_defaults']['CURLOPT_PROXY']			= $config['system']['proxyurl'];
+		$pfb['curl_defaults'][CURLOPT_PROXY]			= $config['system']['proxyurl'];
 		if (!empty($config['system']['proxyport'])) {
-			$pfb['curl_defaults']['CURLOPT_PROXYPORT']	= $config['system']['proxyport'];
+			$pfb['curl_defaults'][CURLOPT_PROXYPORT]	= $config['system']['proxyport'];
 		}
 		if (!empty($config['system']['proxyuser']) && !empty($config['system']['proxypass'])) {
-			$pfb['curl_defaults']['CURLOPT_PROXYAUTH']	= 'CURLAUTH_ANY | CURLAUTH_ANYSAFE';
-			$pfb['curl_defaults']['CURLOPT_PROXYUSERPWD']	= "{$config['system']['proxyuser']}:{$config['system']['proxypass']}";
+			$pfb['curl_defaults'][CURLOPT_PROXYAUTH]	= 'CURLAUTH_ANY | CURLAUTH_ANYSAFE';
+			$pfb['curl_defaults'][CURLOPT_PROXYUSERPWD]	= "{$config['system']['proxyuser']}:{$config['system']['proxypass']}";
 		}
 	}
 
