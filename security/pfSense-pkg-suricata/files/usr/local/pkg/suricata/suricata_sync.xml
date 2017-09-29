@@ -10,7 +10,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013 Marcello Coutinho
- * Copyright (c) 2014-2015 Bill Meeks
+ * Copyright (c) 2014-2017 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,63 +34,51 @@
 		<tab>
 			<text>Interfaces</text>
 			<url>/suricata/suricata_interfaces.php</url>
-			<no_drop_down/>
 		</tab>
 		<tab>
 			<text>Global Settings</text>
 			<url>/suricata/suricata_global.php</url>
-			<no_drop_down/>
 		</tab>
 		<tab>
 			<text>Updates</text>
 			<url>/suricata/suricata_download_updates.php</url>
-			<no_drop_down/>
 		</tab>
 		<tab>
 			<text>Alerts</text>
 			<url>/suricata/suricata_alerts.php</url>
-			<no_drop_down/>
 		</tab>
 		<tab>
 			<text>Blocks</text>
 			<url>/suricata/suricata_blocked.php</url>
-			<no_drop_down/>
 		</tab>
 		<tab>
 			<text>Pass Lists</text>
 			<url>/suricata/suricata_passlist.php</url>
-			<no_drop_down/>
 		</tab>
 		<tab>
 			<text>Suppress</text>
 			<url>/suricata/suricata_suppress.php</url>
-			<no_drop_down/>
 		</tab>
 		<tab>
 			<text>Logs View</text>
 			<url>/suricata/suricata_logs_browser.php</url>
-			<no_drop_down/>
 		</tab>
 		<tab>
 			<text>Logs Mgmt</text>
 			<url>/suricata/suricata_logs_mgmt.php</url>
-			<no_drop_down/>
 		</tab>
 		<tab>
 			<text>SID Mgmt</text>
 			<url>/suricata/suricata_sid_mgmt.php</url>
-			<no_drop_down/>
 		</tab>
 		<tab>
 			<text>Sync</text>
 			<url>/pkg_edit.php?xml=suricata/suricata_sync.xml</url>
-			<no_drop_down/>
 			<active/>
 		</tab>
 		<tab>
 			<text>IP Lists</text>
 			<url>/suricata/suricata_ip_list_mgmt.php</url>
-			<no_drop_down/>
 		</tab>
 	</tabs>
 	<fields>
