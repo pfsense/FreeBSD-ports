@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-repo
 DISTVERSION=	2.3.4
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -25,7 +25,8 @@ DATADIR=	${PREFIX}/share/pfSense
 
 .include <bsd.port.pre.mk>
 
-PFSENSE_REPOS?=	pfSense-repo pfSense-repo-devel pfSense-repo-next
+PFSENSE_REPOS?=	pfSense-repo pfSense-repo-devel pfSense-repo-next \
+		pfSense-repo-23
 PFSENSE_REPOS_${ARCH}?=	${PFSENSE_REPOS}
 TMP_PLIST_FILES=${PFSENSE_REPOS_${ARCH}:C/$/.conf/} \
 		${PFSENSE_REPOS_${ARCH}:C/$/.descr/} \
