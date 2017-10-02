@@ -4,6 +4,11 @@ if [ "${2}" != "POST-INSTALL" ]; then
 	exit 0
 fi
 
+# Do not configure pkg repo on poudriere
+if [ -f /etc/make.conf ] && grep -q 'POUDRIERE_PORTS_NAME=' /etc/make.conf; then
+	exit 0
+fi
+
 DEFAULT_REPO=%%DATADIR%%/pkg/repos/%%PRODUCT_NAME%%-repo.conf
 REPO_PATH=/usr/local/etc/pkg/repos
 REPO_CONF=${REPO_PATH}/%%PRODUCT_NAME%%.conf
