@@ -282,7 +282,7 @@ define('F_OVERREWRITE',         'overrewrite');
 define('F_OVERREWRITENAME',     'overrewritename');
 define('F_TIMETYPE',            'timetype');
 define('F_TIMEDAYS',            'timedays');
-define('F_DATRANGE',            'daterange');
+define('F_DATERANGE',            'daterange');
 define('F_TIMERANGE',           'sg_timerange');
 define('F_RMOD',                'redirect_mode');                     # [redirect_mode] = rmod_int <base- use sgerror.php>; rmod_301; rmod_302;
 define('F_NOTALLOWINGIP',       'notallowingip');                     # not allowing ip in URL
@@ -1835,15 +1835,15 @@ function check_date($date)
 {
     $err = '';
     $val = trim($date);
-    $dtfmt = "/^([0-9]{4})\.([0-9]{2})\.([0-9]{2})/i";
+    $dtfmt = "/^([0-9]{4})\.([0-9]{2})\.([0-9]{2})\-([0-9]{4})\.([0-9]{2})\.([0-9]{2})$/i";
 
     # check date range
-    if (preg_match("{$dtfmt}-{$dtfmt}$", $val)) {
+    if (preg_match("{$dtfmt}", $val)) {
         $val = explode("-", str_replace(".", '', $val));
         if (intval($val[0]) >= intval($val[1]))
             $err .= "Invalid date range, begin range must be less than the end. {$val[0]} - {$val[1]}";
     }
-    elseif (!preg_match("/^(([0-9]{4})|[*])\.(([0-9]{2})|[*])\.(([0-9]{2})|[*])$/i", $val)) {
+    elseif (!preg_match("/^(([0-9]{4})|[*])\.(([0-9]{2})|[*])\.(([0-9]{2})|[*])$|^([0-9]{4})\.([0-9]{2})\.([0-9]{2})\-([0-9]{4})\.([0-9]{2})\.([0-9]{2})$/i", $val)) {
         $err .= "Bad date format.";
     }
 
