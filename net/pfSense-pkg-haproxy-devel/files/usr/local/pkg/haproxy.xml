@@ -45,7 +45,7 @@
 		<name>HAProxy</name>
 		<rcfile>haproxy.sh</rcfile>
 		<executable>haproxy</executable>
-		<description>The Reliable, High Performance TCP/HTTP Load Balancer</description>
+		<description>TCP/HTTP Load Balancer</description>
 	</service>	
 	<plugins>
 		<item>
