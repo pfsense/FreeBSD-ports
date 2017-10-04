@@ -1,0 +1,40 @@
+--- package.json.orig	2017-09-09 15:36:27 UTC
++++ package.json
+@@ -7,10 +7,9 @@
+     "build:production": "cross-env RAILS_ENV=production ./bin/webpack",
+     "manage:translations": "node ./config/webpack/translationRunner.js",
+     "start": "node ./streaming/index.js",
+-    "test": "npm run test:lint && npm run test:mocha",
++    "test": "yarn run test:lint && yarn run test:mocha",
+     "test:lint": "eslint -c .eslintrc.yml --ext=js app/javascript/ config/webpack/ spec/javascript/ streaming/",
+-    "test:mocha": "cross-env NODE_ENV=test mocha --require ./spec/javascript/setup.js --compilers js:babel-register ./spec/javascript/components/**/*.test.js",
+-    "postinstall": "npm rebuild node-sass"
++    "test:mocha": "cross-env NODE_ENV=test mocha --require ./spec/javascript/setup.js --compilers js:babel-register ./spec/javascript/components/**/*.test.js"
+   },
+   "repository": {
+     "type": "git",
+@@ -117,24 +116,5 @@
+     "webpack-manifest-plugin": "^1.2.1",
+     "webpack-merge": "^4.1.0",
+     "websocket.js": "^0.1.12"
+-  },
+-  "devDependencies": {
+-    "babel-eslint": "^7.2.3",
+-    "chai": "^4.1.0",
+-    "chai-enzyme": "^0.8.0",
+-    "enzyme": "^2.9.1",
+-    "eslint": "^3.19.0",
+-    "eslint-plugin-jsx-a11y": "^4.0.0",
+-    "eslint-plugin-react": "^6.10.3",
+-    "jsdom": "^11.1.0",
+-    "mocha": "^3.4.1",
+-    "react-intl-translations-manager": "^5.0.0",
+-    "react-test-renderer": "^15.6.1",
+-    "sinon": "^2.3.7",
+-    "webpack-dev-server": "^2.6.1",
+-    "yargs": "^8.0.2"
+-  },
+-  "optionalDependencies": {
+-    "fsevents": "*"
+   }
+ }

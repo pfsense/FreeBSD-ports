@@ -2,12 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	tcl
-DISTVERSION=	8.7.a0.20170524
+DISTVERSION=	8.7a1
 PORTREVISION=	1
 CATEGORIES=	lang
-MASTER_SITES=	http://core.tcl.tk/tcl/tarball/
-PKGNAMESUFFIX=	${PORTVERSION:R:R:S/.//}
-DISTFILES=	Tcl+Source+Code${EXTRACT_SUFX}?uuid=${FOSSIL_CHECKIN}
+MASTER_SITES=	SF/tcl/Tcl/${DISTVERSION} \
+		TCLTK/tcl8_7
+PKGNAMESUFFIX=	${PORTVERSION:R:S/.//}
+DISTNAME=	${PORTNAME}${DISTVERSION}-src
 
 MAINTAINER=	tcltk@FreeBSD.org
 COMMENT=	Tool Command Language
@@ -32,9 +33,7 @@ OPTIONS_EXCLUDE+=	DTRACE
 
 OPTIONS_EXCLUDE_FreeBSD_10=	DTRACE
 
-FOSSIL_CHECKIN=	f1c99ff14c
-
-PATCH_WRKSRC=	${WRKDIR}/Tcl_Source_Code
+PATCH_WRKSRC=	${WRKDIR}/${PORTNAME}${DISTVERSION}
 WRKSRC=		${PATCH_WRKSRC}/unix
 
 ALL_TARGET=	all
@@ -49,7 +48,7 @@ CONFIGURE_ARGS=	--enable-shared \
 		--enable-symbols
 CONFIGURE_ENV=	PORTSDIR=${PORTSDIR}
 
-TCL_VER=	${PORTVERSION:R:R}
+TCL_VER=	${PORTVERSION:R}
 MAN_SUFFIX=	${PKGBASE}
 
 MAKE_ENV=	SHORT_TCL_VER=${PKGNAMESUFFIX} \
@@ -93,5 +92,7 @@ post-install:
 	# Make sure users of USES=tcl:87 are able to look up the library
 	${LN} -s libtcl${TCL_VER}.so ${STAGEDIR}${PREFIX}/lib/libtcl${PKGNAMESUFFIX}.so
 	${LN} -s libtcl${PKGNAMESUFFIX}.so ${STAGEDIR}${PREFIX}/lib/libtcl${PKGNAMESUFFIX}.so.1
+	${MKDIR} ${STAGEDIR}${PREFIX}/include/tcl${TCL_VER}/doc
+	${INSTALL_DATA} ${WRKSRC}/../doc/man.macros ${STAGEDIR}${PREFIX}/include/tcl${TCL_VER}/doc/man.macros
 
 .include <bsd.port.mk>

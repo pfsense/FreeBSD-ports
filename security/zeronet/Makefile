@@ -2,8 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	zeronet
-PORTVERSION=	0.5.6
+PORTVERSION=	0.5.7
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	security net-p2p
 
 MAINTAINER=	yuri@rawbw.com
@@ -14,14 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}msgpack-python>0:devel/py-msgpack-python \
 		${PYTHON_PKGNAMEPREFIX}gevent>=1.0.2:devel/py-gevent \
-		${PYTHON_PKGNAMEPREFIX}rsa>0:security/py-rsa \
-		${PYTHON_PKGNAMEPREFIX}maxminddb>0:net/py-maxminddb \
-		${PYTHON_PKGNAMEPREFIX}pyelliptic>0:security/py-pyelliptic \
-		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	HelloZeroNet
-GH_PROJECT=	ZeroNet
+		${PYTHON_PKGNAMEPREFIX}stem>0:security/py-stem
 
 SUB_FILES=	zeronet-service zeronet-cmd pkg-message
 SUB_LIST=	LOCALBASE=${LOCALBASE} USER=${USER} GROUP=${GROUP}
@@ -30,24 +24,19 @@ PLIST_SUB=	USER=${USER} GROUP=${GROUP}
 # ZeroNet hasn't been ported to Python 3 yet
 # https://github.com/HelloZeroNet/ZeroNet/issues/149
 USES=		python:2.7
+USE_GITHUB=	yes
+GH_ACCOUNT=	HelloZeroNet
+GH_PROJECT=	ZeroNet
 NO_ARCH=	yes
 
-OPTIONS_DEFINE=	TOR DEBUG
-TOR_DESC=	Enable TOR anonymity network integration
+OPTIONS_DEFINE=	DEBUG
 
-TOR_RUN_DEPENDS=tor:security/tor \
-		${PYTHON_PKGNAMEPREFIX}stem>0:security/py-stem
 DEBUG_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}werkzeug>0:www/py-werkzeug
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MTOR}
-USER=		_tor
-GROUP=		_tor
-.else
 USER=		nobody
 GROUP=		nobody
-.endif
 
 do-build:
 	@(cd ${WRKSRC} && \

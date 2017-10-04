@@ -3,7 +3,7 @@
 
 PORTNAME=	anyterm
 PORTVERSION=	1.1.29
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	www
 MASTER_SITES=	http://anyterm.org/download/ \
 		http://dl1.douglasthrift.net/${PORTNAME}/ \
@@ -27,6 +27,10 @@ USE_GCC=	any
 ALL_TARGET=	default_target
 PLIST_FILES=	man/man1/anytermd.1.gz \
 		sbin/anytermd
+
+# Force the use of an older C++ standard; anyterm 1.1.29 is not compatible with
+# C++11.
+USE_CXXSTD=	gnu++03
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/private/etc/apache2|${FILESDIR}|' \

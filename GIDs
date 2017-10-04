@@ -57,7 +57,7 @@ dcc:*:112:
 amavis:*:113:
 dhis:*:114:
 _symon:*:115:
-# free: 116
+u2f:*:116:
 smokeping:*:117:
 ircproxyd:*:118:
 mythtv:*:119:
@@ -158,9 +158,9 @@ drizzle:*:213:
 kyototycoon:*:214:
 opendnssec:*:215:
 nsd:*:216:
-# free: 217
-# free: 218
-# free: 219
+anvil:*:217:
+zap:*:218:
+sddm:*:219:
 bs:*:220:
 # free: 221
 rtpproxy:*:222:
@@ -175,7 +175,7 @@ kismet:*:229:
 # free: 231
 # free: 232
 # free: 233
-# free: 234
+kafka:*:234:
 # free: 235
 # free: 236
 # free: 237
@@ -295,7 +295,7 @@ _sabnzbd:*:350:
 sonarr:*:351:
 radarr:*:352:
 _iodined:*:353:
-# free: 354
+jackett:*:354:
 # free: 355
 # free: 356
 # free: 357
@@ -420,7 +420,7 @@ gitlab-runner:*:474:
 # free: 476
 # free: 477
 prometheus:*:478:
-# free: 479
+alertmanager:*:479:
 # free: 480
 # free: 481
 # free: 482
@@ -712,14 +712,14 @@ bopm:*:717:
 # free: 768
 # free: 769
 postgres:*:770:
-# free: 771
+cockroach:*:771:
 # free: 772
 # free: 773
 # free: 774
 # free: 775
 # free: 776
 openxpki:*:777:
-# free: 778
+litecoin:*:778:
 bitcoin:*:779:
 zetacoin:*:780:
 # free: 781
@@ -765,7 +765,7 @@ openacs:*:820:
 dotlrn:*:821:
 # free: 822
 # free: 823
-# free: 824
+selenium:*:824:
 polw:*:825:
 statsd:*:826:
 # free: 827
@@ -829,7 +829,7 @@ chronyd:*:849:
 # free: 885
 # free: 886
 # free: 887
-# free: 888
+vuls:*:888:
 # free: 889
 # free: 890
 # free: 891

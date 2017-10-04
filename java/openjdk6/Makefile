@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	openjdk6
-PORTVERSION=	b43
+PORTVERSION=	b44
 PORTEPOCH=	1
 CATEGORIES=	java devel
 MASTER_SITES=	APACHE/ant/binaries/:ant \
@@ -13,7 +13,8 @@ DISTFILES=	${ANTFILE}:ant \
 		${JDK_SRC_DISTFILE}${EXTRACT_SUFX}:jdk
 EXTRACT_ONLY=	${JDK_SRC_DISTFILE}${EXTRACT_SUFX} ${ANTFILE}
 PATCHFILES=	patch-6-b42.xz \
-		patch-6-b43.xz
+		patch-6-b43.xz \
+		patch-6-b44.xz
 
 MAINTAINER=	java@FreeBSD.org
 COMMENT?=	Oracle's Java 6 virtual machine release under the GPL v2
@@ -85,7 +86,7 @@ NOPRECIOUSMAKEVARS=	yes
 ONLY_FOR_ARCHS=	amd64 i386
 
 BOOTSTRAP_JDKS=	${LOCALBASE}/openjdk6 \
-		${LOCALBASE}/bootstrap-openjdk
+		${LOCALBASE}/bootstrap-openjdk6
 
 # do we have valid native jdk installed?
 .for CJDK in ${BOOTSTRAP_JDKS}
@@ -96,8 +97,8 @@ BOOTSTRAPJDKDIR=	${CJDK}
 
 # if no valid jdk found, set dependency
 .if !defined(BOOTSTRAPJDKDIR)
-BOOTSTRAPJDKDIR?=	${LOCALBASE}/bootstrap-openjdk
-BUILD_DEPENDS+=		${BOOTSTRAPJDKDIR}/bin/javac:java/bootstrap-openjdk
+BOOTSTRAPJDKDIR?=	${LOCALBASE}/bootstrap-openjdk6
+BUILD_DEPENDS+=		${BOOTSTRAPJDKDIR}/bin/javac:java/bootstrap-openjdk6
 .endif
 
 MAKE_ENV=	OS= \

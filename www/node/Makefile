@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	node
-PORTVERSION=	8.1.4
+PORTVERSION=	8.6.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 MASTER_SITES=	http://nodejs.org/dist/v${PORTVERSION}/
@@ -34,7 +34,9 @@ BUNDLED_SSL_RUN_DEPENDS_OFF=	ca_root_nss>=0:security/ca_root_nss
 NLS_CONFIGURE_ON=	--with-intl=system-icu
 NLS_LIB_DEPENDS=	libicui18n.so:devel/icu
 
-USES=		compiler:c++11-lib execinfo gmake python:2,build pkgconfig \
+DTRACE_CONFIGURE_ON=	--with-dtrace
+
+USES=		compiler:c++11-lib gmake python:2,build pkgconfig \
 		localbase shebangfix
 
 HAS_CONFIGURE=	yes
@@ -82,22 +84,6 @@ CONFIGURE_ARGS+=--openssl-no-asm
 .if ${COMPILER_TYPE} == gcc
 # GCC does not expose std::snprintf() without this define
 CXXFLAGS+=	-D_GLIBCXX_USE_C99
-.endif
-
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} < 40
-# Conditinal work around for a bug in libc++ included with clang 3.x:
-# https://bugs.llvm.org/show_bug.cgi?id=18249
-# https://bugs.llvm.org/show_bug.cgi?id=18350
-# https://bugs.llvm.org/show_bug.cgi?id=18853
-#
-# Upstream Node.js adds the define to all FreeBSD builds. This breaks
-# the build with clang 4.0, so we patch it out (files/patch-common.gypi)
-# and add it here instead.
-CXXFLAGS+=	-D_LIBCPP_TRIVIAL_PAIR_COPY_CTOR
-.endif
-
-.if ${PORT_OPTIONS:MDTRACE}
-CONFIGURE_ARGS+=	--with-dtrace
 .endif
 
 post-patch:

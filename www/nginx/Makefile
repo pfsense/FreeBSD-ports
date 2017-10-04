@@ -3,16 +3,21 @@
 
 PORTNAME=	nginx
 PORTVERSION=	1.12.1
+PORTREVISION?=	1
 PORTEPOCH=	2
 CATEGORIES=	www
 MASTER_SITES=	http://nginx.org/download/
 MASTER_SITES+=	LOCAL/osa
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER?=	ports@FreeBSD.org
+MAINTAINER?=	joneum@FreeBSD.org
 COMMENT?=	Robust and small WWW server
 
 LICENSE=	BSD2CLAUSE
+
+CONFLICTS_INSTALL=	nginx-devel
+
+PORTSCOUT=	limit:^1\.12\.[0-9]*
 
 USES+=		cpe
 
@@ -108,6 +113,7 @@ OPTIONS_DEFINE=	\
 	LUA \
 	MEMC \
 	MODSECURITY \
+	MODSECURITY_DEVEL \
 	NAXSI \
 	PASSENGER \
 	POSTGRES \
@@ -130,6 +136,11 @@ OPTIONS_DEFAULT?=DSO FILE_AIO HTTP HTTP_ADDITION HTTP_AUTH_REQ HTTP_CACHE \
 		HTTP_SLICE HTTP_REWRITE HTTP_SSL HTTP_STATUS HTTP_SUB \
 		HTTPV2 MAIL MAIL_SSL STREAM STREAM_SSL STREAM_SSL_PREREAD \
 		THREADS WWW
+
+# If the target is makesum, make sure that every distfile is fetched.
+.if ${.TARGETS:Mmakesum}
+OPTIONS_DEFAULT=		${OPTIONS_DEFINE}
+.endif
 
 DSO_DESC=			Enable dynamic modules support
 DEBUG_DESC=			Build with debugging support
@@ -217,6 +228,7 @@ LET_DESC=			3rd party let module
 LUA_DESC=			3rd party lua module
 MEMC_DESC=			3rd party memc (memcached) module
 MODSECURITY_DESC=		3rd party mod_security module
+MODSECURITY_DEVEL_DESC=		3rd party mod_security v3 module
 NAXSI_DESC=			3rd party naxsi module
 PASSENGER_DESC=			3rd party passenger module
 POSTGRES_DESC=			3rd party postgres module
@@ -239,9 +251,9 @@ WANT_GNOME=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MX11}
-IMAGEMAGICK_LIB_DEPENDS= libMagickWand-6.so:graphics/ImageMagick
+IMAGEMAGICK_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick
 .else
-IMAGEMAGICK_LIB_DEPENDS= libMagickWand-6.so:graphics/ImageMagick-nox11
+IMAGEMAGICK_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick-nox11
 .endif
 
 .if ${PORT_OPTIONS:MPASSENGER}
@@ -465,11 +477,11 @@ EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-ngx_http_echo_request_info.c
 .endif
 
 .if ${PORT_OPTIONS:MFASTDFS}
-NGINX_FASTDFS_VERSION=     5a8110f
-GH_ACCOUNT+=    happyfish100:fastdfs
-GH_PROJECT+=    fastdfs-nginx-module:fastdfs
-GH_TAGNAME+=    ${NGINX_FASTDFS_VERSION}:fastdfs
-EXTRA_PATCHES+= ${PATCHDIR}/extra-patch-fastdfs-src-config
+NGINX_FASTDFS_VERSION=	5a8110f
+GH_ACCOUNT+=	happyfish100:fastdfs
+GH_PROJECT+=	fastdfs-nginx-module:fastdfs
+GH_TAGNAME+=	${NGINX_FASTDFS_VERSION}:fastdfs
+EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-fastdfs-src-config
 BUILD_DEPENDS+=	${LOCALBASE}/include/fastcommon/logger.h:devel/libfastcommon \
 		${LOCALBASE}/include/fastdfs/fdfs_client.h:ftp/fastdfs
 LIB_DEPENDS+=	libfastcommon.so:devel/libfastcommon \
@@ -761,7 +773,7 @@ EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-ngx_http_sticky_misc.c
 
 .if ${PORT_OPTIONS:MHTTP_VIDEO_THUMBEXTRACTOR}
 NGINX_VIDEO_THUMBEXTRACTOR_VERSION=	0.7.0
-LIB_DEPENDS+= 	libavformat.so:multimedia/ffmpeg \
+LIB_DEPENDS+=	libavformat.so:multimedia/ffmpeg \
 		libavcodec.so:multimedia/ffmpeg \
 		libavutil.so:multimedia/ffmpeg \
 		libswscale.so:multimedia/ffmpeg
@@ -897,6 +909,12 @@ EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-nginx-modsecurity-configure \
 		${PATCHDIR}/extra-patch-ngx_http_modsecurity.c
 .endif
 
+.if ${PORT_OPTIONS:MMODSECURITY_DEVEL}
+LIB_DEPENDS+=	libmodsecurity.so.3:www/mod_security-devel
+GH_TUPLE+=	SpiderLabs:ModSecurity-nginx:abbf2c4:modsec
+CONFIGURE_ARGS+=--add-module=${WRKSRC_modsec}
+.endif
+
 .if ${PORT_OPTIONS:MNAXSI}
 NGINX_NAXSI_VERSION=	0.54
 GH_ACCOUNT+=	nbs-system:naxsi
@@ -915,7 +933,7 @@ CONFIGURE_ARGS+=--without-http_rewrite_module \
 .endif
 
 .if ${PORT_OPTIONS:MPASSENGER}
-PASSENGER_VERSION=	5.1.5
+PASSENGER_VERSION=	5.1.8
 MASTER_SITES+=	http://s3.amazonaws.com/phusion-passenger/releases/:passenger
 DISTFILES+=	passenger-${PASSENGER_VERSION}.tar.gz:passenger
 .if !empty(PORT_OPTIONS:MDSO)
@@ -1124,9 +1142,8 @@ CONFIGURE_ARGS+=--add-module=${WRKSRC_arrayvar}
 .endif
 
 .if ${PORT_OPTIONS:MBROTLI}
-NGINX_BROTLI_VERSION=	ada972b
-LIB_DEPENDS+=	libbrotlidec.so:devel/libbrotli \
-		libbrotlienc.so:devel/libbrotli
+NGINX_BROTLI_VERSION=	12529813
+LIB_DEPENDS+=	libbrotlicommon.so:archivers/brotli
 GH_ACCOUNT+=	google:brotli
 GH_PROJECT+=	ngx_brotli:brotli
 GH_TAGNAME+=	${NGINX_BROTLI_VERSION}:brotli

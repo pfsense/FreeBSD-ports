@@ -4,13 +4,15 @@
 PORTNAME=	ring-daemon
 PORTVERSION=	0.160516
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net-im net-p2p
 
 MAINTAINER=	yuri@rawbw.com
 COMMENT=	Daemon part of the Ring VoIP SIP phone and IM
 
 LICENSE=	GPLv3
+
+BROKEN=		fails to build
 
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
 LIB_DEPENDS=	libyaml-cpp.so:devel/yaml-cpp \

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	openblas
-PORTVERSION=	0.2.19
+PORTVERSION=	0.2.20
 PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
@@ -17,13 +17,14 @@ COMMENT=	Optimized BLAS library based on GotoBLAS2
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+USES=		fortran gmake perl5
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	xianyi
 GH_PROJECT=	OpenBLAS
 LARGE_FILE=	large.tgz
 TIMING_FILE=	timing.tgz
 
-USES=		fortran gmake perl5
 USE_LDCONFIG=	yes
 USE_PERL5=	build
 
@@ -32,6 +33,7 @@ OPENBLAS_LIBS=	libopenblas libopenblasp
 OPENBLAS_SVER=	0
 OPENBLAS_FILES=	${OPENBLAS_LIBS:S|$|.so|} ${OPENBLAS_LIBS:S|$|.so.${OPENBLAS_SVER}|} ${OPENBLAS_LIBS:S|$|.a|}
 PLIST_FILES=	${OPENBLAS_FILES:S|^|lib/|}
+TEST_TARGET=	tests
 
 OPTIONS_DEFINE=		INTERFACE64 OPENMP
 OPTIONS_DEFINE_i386=	DYNAMIC_ARCH AVX AVX2
@@ -125,11 +127,11 @@ post-patch:
 	-e 's+$${CROSS_SUFFIX}+${LOCALBASE}/bin/+' \
 	-e '/Clang.*OpenMP/g' \
 		${WRKSRC}/Makefile.system
-.if ${PORT_OPTIONS:MOPENMP}
+
+post-patch-OPENMP-on:
 	${REINPLACE_CMD} -e "s+OPENBLAS_NUM_THREADS+OMP_NUM_THREADS+g" \
 		${WRKSRC}/test/Makefile \
 		${WRKSRC}/ctest/Makefile
-.endif
 
 do-build:
 	cd ${WRKSRC} ; ${SETENV} ${BUILDFLAGS} NUM_THREADS=1 USE_THREAD=0 \
