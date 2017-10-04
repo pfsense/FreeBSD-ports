@@ -20,7 +20,7 @@ PLIST_SUB=	PORTNAME=${PORTNAME}
 
 .include <bsd.port.pre.mk>
 
-RUN_DEPENDS+=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/rrd.so:databases/pecl-rrd
+RUN_DEPENDS+=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/rrd.so:databases/pecl-rrd1
 
 do-extract:
 	${MKDIR} ${WRKSRC}
