@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	corebird
-PORTVERSION=	1.5
-PORTREVISION=	2
+PORTVERSION=	1.5.1
+PORTREVISION=	1
 CATEGORIES=	net-im
 
 MAINTAINER=	cpm@FreeBSD.org
@@ -34,7 +34,7 @@ OPTIONS_SUB=		yes
 
 GSTREAMER_LIB_DEPENDS=		libgstbase-1.0.so:multimedia/gstreamer1 \
 				libgstreamer-1.0.so:multimedia/gstreamer1
-GSTREAMER_USE=			gstreamer1=yes,bad,good,gtksink,hls,libav,soup,x,ximagesrc
+GSTREAMER_USE=			gstreamer1=yes,bad,good,gtk,hls,libav,soup,x,ximagesrc
 GSTREAMER_CONFIGURE_OFF=	--disable-video
 
 NLS_USES=			gettext
@@ -43,8 +43,11 @@ NLS_CONFIGURE_OFF=		--disable-nls
 GLIB_SCHEMAS=	org.baedert.corebird.gschema.xml
 
 post-extract:
-	@(cd ${WRKSRC}/data && ${MV} org.baedert.corebird.desktop.in \
-		corebird.desktop.in)
+	@${REINPLACE_CMD} -e 's|tests||' ${WRKSRC}/Makefile.am
+	@${REINPLACE_CMD} -e 's|org.baedert.corebird.desktop.in|corebird.desktop.in|' \
+		${WRKSRC}/data/Makefile.am
+	@cd ${WRKSRC}/data && ${MV} org.baedert.corebird.desktop.in \
+		corebird.desktop.in
 
 # Replace locales files in right place
 post-configure:

@@ -1,130 +1,20 @@
 --- translation/en.orig	2017-05-20 02:07:36 UTC
 +++ translation/en
-@@ -24,7 +24,7 @@
- 1002=Select Directory
- 1003=Select Color
- 1004=Select Font
--2000=File already exists.\nDo you want to save overwrite it?
-+2000=File already exists.\nDo you want to overwrite it?
- 2001=Filename is not correct.
- 
- #-----------------
-@@ -122,7 +122,7 @@
- +=Circle
- +=Broken line
- +=Central point
--+=Bezier curve
-++=Bézier curve
- +=Spline curve
- 100=Rectangle
- +=Ellipse
-@@ -188,7 +188,7 @@
- +=multiplication
- +=addition
- +=subtraction
--+=screen(color filter)
-++=screen (color filter)
- +=overlay
- +=hard light
- +=soft light
-@@ -279,7 +279,7 @@
- +=HLS
- +=demitint
- 100=segment setting
--+=segment (3〜64、0 for biggest)
-++=segment (3~64, 0 for biggest)
- 1000=set color here(&S) [Shift+left click]
- +=procure this color(&P) [left click]
- 1100=Edit(&E)...
-@@ -291,7 +291,7 @@
- +=Display width setting(&O)...
- 1200=Change counts
- +=counts
--+=Current palette will be turned all white,OK?
-++=Current palette will be turned all white, OK?
- +=display setting
- +=set width and height\n(text except of number is treated as a separate mark)\nexample: 12,16
- 
-@@ -442,7 +442,7 @@
- # gradation
- 
- [1101]
--0=painting col -> background col
-+0=painting color -> background color
- +=Custom
- +=Reverse
- +=Repeat
-@@ -491,7 +491,7 @@
- 
- [1105]
- 0=Line
--+=Bezier curve
-++=Bézier curve
- +=fade in
- +=fade out
- +=take out
-@@ -533,8 +533,8 @@
- 0=grid setting
- +=Grid
- +=Dividing line
--+=horz
--+=vert
-++=horizontal
-++=vertical
- 
- #--------------------
- # new image
-@@ -603,7 +603,7 @@
- +=value
- +=repeat (always)
- +=monochrome
--+=+Ctrl : Separate points from current to pressed position uniformly-spaced\n+Shift : set current color to pressed position\n+Alt : delete point
-++=+Ctrl: Separate points from current to pressed position uniformly-spaced\n+Shift: set current color to pressed position\n+Alt: delete point
- 
- 100=delete current point(&D)
- +=divide space between the right one(&V)
-@@ -693,7 +693,7 @@
- # selection expand/shrink
- 
- [2013]
--0=selection expand&shrink
-+0=selection expand and shrink
- +=Number of pixels (shrink with negative values)
- 
- #---------------------------------
-@@ -848,7 +848,7 @@
- +=command
- 450=Confirm button number (Please push button on this)
- 
--500=[*] applied when next time starting up
-+500=[*] applied upon program restart
- +=working directory
- +=GUI font
- +=panel font
-@@ -907,8 +907,8 @@
- +=strength
- +=amount
- +=density
--+=random: radius min(%)
--+=random: density min(%)
-++=random: radius min (%)
-++=random: density min (%)
- +=type of point
- +=distance
- +=reverse
-@@ -1167,12 +1167,12 @@
- +=Lens blur...
- 
- +=Clouds...
--+=Dot pattern(1)...
--+=Dot pattern(2)...
-++=Dot pattern (1)...
-++=Dot pattern (2)...
- +=Random point draw...
- +=Draw points along the rim...
- +=Border...
--+=Horizontal&&vertical lines...
-++=Horizontal and vertical lines...
- +=Plaid...
- 
- +=Concentration line...
+@@ -598,7 +598,7 @@
+ 100=type
+ +=blend mode
+ +=color
+-+=[palette]\nRight click/Ctrl+left click: regist color
+++=[palette]\nRight click/Ctrl+left click: register color
+ +=Double clicking on the image preview part of the layer list\nwill display a color selection dialog.
+ +=inverted color luminance to alpha value
+ +=merge with new layer
+@@ -1166,7 +1166,7 @@
+ 5100=Brightness/Contrast...
+ +=Gamma...
+ +=Level...
+-+=RGB...
+++=RGB adjustment...
+ +=HSV adjustment...
+ +=Negative-positive reversal
+ +=Grayscale

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	erlang
-PORTVERSION=	19.3.6.1
+PORTVERSION=	19.3.6.2
 CATEGORIES=	lang parallel java
 MASTER_SITES=	http://www.erlang.org/download/:erlangorg		\
 		http://erlang.stacken.kth.se/download/:erlangorg	\
@@ -18,7 +18,7 @@ PATCH_SITES=	http://olgeni.olgeni.com/~olgeni/distfiles/ \
 		LOCAL/olgeni
 PATCHFILES=	patch-otp-19.3.1 patch-otp-19.3.2 patch-otp-19.3.3 \
 		patch-otp-19.3.4 patch-otp-19.3.5 patch-otp-19.3.6 \
-		patch-otp-19.3.6.1
+		patch-otp-19.3.6.1 patch-otp-19.3.6.2
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Functional programming language from Ericsson
@@ -68,6 +68,14 @@ USES=		gmake ncurses perl5
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib
+
+APP_UPGRADE=	erts            8.3 8.3.5.2 \
+		lib/crypto    3.7.3   3.7.4 \
+		lib/inets     6.3.6   6.3.9 \
+		lib/ssh       4.4.1   4.4.2 \
+		lib/ssl       8.1.1   8.1.3 \
+		lib/dialyzer    3.1   3.1.1 \
+		lib/xmerl    1.3.13  1.3.14
 
 .include <bsd.port.options.mk>
 
@@ -213,35 +221,11 @@ post-install:
 .if ${PORT_OPTIONS:MDOCS}
 	${TAR} --unlink -xzpf ${DISTDIR}/${DIST_SUBDIR}/${ERLANG_DOCS} \
 		-C ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/erts-8.3/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/erts-8.3.5.1
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/erts-8.3
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/crypto-3.7.3/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/crypto-3.7.4
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/crypto-3.7.3
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/inets-6.3.6/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/inets-6.3.9
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/inets-6.3.6
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssh-4.4.1/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssh-4.4.2
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssh-4.4.1
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssl-8.1.1/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssl-8.1.3
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssl-8.1.1
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/dialyzer-3.1/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/dialyzer-3.1.1
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/dialyzer-3.1
-
-	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/xmerl-1.3.13/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/xmerl-1.3.14
-	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/xmerl-1.3.13
-
+.for app v1 v2 in ${APP_UPGRADE}
+	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/${app}-${v1}/* \
+		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/${app}-${v2}
+	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/${app}-${v1}
+.endfor
 	${INSTALL_DATA} ${WRKSRC}/lib/dialyzer/doc/*.txt \
 		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/dialyzer-*/doc/
 .endif

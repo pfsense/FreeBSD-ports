@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	connectagram
-PORTVERSION=	1.2.4
+PORTVERSION=	1.2.5
 PORTREVISION=	1
 DISTVERSIONSUFFIX=	-src
 CATEGORIES=	games
@@ -24,7 +24,7 @@ OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e \
-		's|share/man|man|' ${WRKSRC}/connectagram.pro
+		's|share/man|man|;s|metainfo|appdata|' ${WRKSRC}/connectagram.pro
 	@${REINPLACE_CMD} -e \
 		's|std::lround|lround|' ${WRKSRC}/src/*.cpp
 

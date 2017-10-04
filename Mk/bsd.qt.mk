@@ -92,8 +92,8 @@ QT_DIST=		3d base canvas3d charts connectivity datavis3d declarative \
 				declarative-render2d gamepad graphicaleffects imageformats \
 				location multimedia quickcontrols quickcontrols2 script scxml \
 				sensors serialbus serialport svg tools translations \
-				virtualkeyboard webchannel webkit websockets x11extras \
-				xmlpatterns
+				virtualkeyboard wayland webchannel webengine \
+				websockets x11extras xmlpatterns
 .		endif
 .  endif
 
@@ -320,8 +320,8 @@ _USE_QT5_ONLY=	3d buildtools canvas3d charts concurrent connectivity \
 				graphicaleffects location paths phonon4 plugininfo printsupport \
 				qdbus qdoc qdoc-data qev qml quick quickcontrols \
 				quickcontrols2 scxml sensors serialbus serialport \
-				sql-tds uiplugin uitools virtualkeyboard webchannel \
-				websockets widgets x11extras
+				sql-tds uiplugin uitools virtualkeyboard wayland webchannel \
+				webengine websockets websockets-qml widgets x11extras
 
 3d_PORT=		graphics/${_QT_RELNAME}-3d
 3d_LIB=		libQt${_QT_LIBVER}3DCore.so
@@ -592,8 +592,14 @@ virtualkeyboard_PATH=	${QT_PLUGINDIR}/platforminputcontexts/libqtvirtualkeyboard
 webchannel_PORT=	www/${_QT_RELNAME}-webchannel
 webchannel_LIB=	libQt${_QT_LIBVER}WebChannel.so
 
+webengine_PORT=		www/${_QT_RELNAME}-webengine
+webengine_LIB=	libQt${_QT_LIBVER}WebEngine.so
+
 websockets_PORT=	www/${_QT_RELNAME}-websockets
 websockets_LIB=	libQt${_QT_LIBVER}WebSockets.so
+
+websockets-qml_PORT=	www/${_QT_RELNAME}-websockets-qml
+websockets-qml_PATH=	${QT_QMLDIR}/QtWebSockets/qmldir
 
 webkit_PORT=		www/${_QT_RELNAME}-webkit
 webkit_LIB=	libQt${_QT_LIBVER}WebKit.so

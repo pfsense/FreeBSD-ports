@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	osquery
-PORTVERSION=	2.5.1
+PORTVERSION=	2.8.0
+PORTREVISION=	3
 CATEGORIES=	sysutils
 
 MAINTAINER=	zi@FreeBSD.org
@@ -15,6 +16,7 @@ BUILD_DEPENDS=	thrift>0:devel/thrift \
 		bash>0:shells/bash \
 		linenoise-ng>0:devel/linenoise-ng \
 		asio>0:net/asio \
+		rapidjson>0:devel/rapidjson \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>0:devel/py-Jinja2
 LIB_DEPENDS=	libaugeas.so:textproc/augeas \
 		libboost_regex.so:devel/boost-libs \
@@ -65,9 +67,9 @@ LLDPD_CONFIGURE_ENV_OFF=SKIP_LLDPD=1
 .include <bsd.port.pre.mk>
 
 .if ${OSVERSION} < 1100000
-BUILD_DEPENDS+=	clang38:devel/llvm38
-CC=	clang38
-CXX=	clang++38
+BUILD_DEPENDS+=	clang40:devel/llvm40
+CC=	clang40
+CXX=	clang++40
 .endif
 
 post-patch:

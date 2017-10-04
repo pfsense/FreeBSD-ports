@@ -2,8 +2,8 @@
 
 PORTNAME=	icinga2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.6.3
-PORTREVISION=	1
+DISTVERSION=	2.7.1
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	lme@FreeBSD.org
@@ -12,16 +12,17 @@ COMMENT=	Monitoring and management system for hosts, services and networks
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN_powerpc64=	does not build: Your version of GCC (4.2.1) is too old for building Icinga 2 (GCC >= 4.6.0)
+
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libyajl.so:devel/yajl
 RUN_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash
 
-BROKEN_powerpc64=	does not build: Your version of GCC (4.2.1) is too old for building Icinga 2 (GCC >= 4.6.0)
+USES=		alias bison cmake libedit
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	icinga
 
-USES=		alias bison cmake execinfo libedit
 USE_LDCONFIG=	yes
 
 USE_RC_SUBR=	${PORTNAME}

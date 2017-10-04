@@ -3,6 +3,7 @@
 
 PORTNAME=	dnsdist
 DISTVERSION=	1.2.0
+PORTREVISION=	2
 CATEGORIES=	dns net
 MASTER_SITES=	https://downloads.powerdns.com/releases/ \
 		LOCAL/cpm
@@ -12,9 +13,7 @@ COMMENT=	Highly DNS-, DoS- and abuse-aware loadbalancer
 
 LICENSE=	GPLv2 UNLICENSE
 LICENSE_COMB=	multi
-LICENSE_NAME_UNLICENSE=	The Unlicense
 LICENSE_FILE_UNLICENSE=	${WRKSRC}/ext/incbin/UNLICENSE
-LICENSE_PERMS_UNLICENSE=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libatomic_ops.a:devel/libatomic_ops
 LIB_DEPENDS=	libboost_serialization.so:devel/boost-libs \

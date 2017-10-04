@@ -3,7 +3,7 @@
 
 PORTNAME=	clementine
 PORTVERSION=	1.3.1
-PORTREVISION=	10
+PORTREVISION=	14
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-player
 
@@ -32,7 +32,6 @@ GH_PROJECT=	Clementine
 USES=		cmake \
 		compiler:c++11-lib \
 		desktop-file-utils \
-		execinfo \
 		gettext-tools \
 		pkgconfig \
 		sqlite
@@ -62,7 +61,7 @@ USE_GSTREAMER1=	cdparanoia \
 		faad \
 		flac \
 		lame \
-		mad \
+		mpg123 \
 		neon \
 		shout2 \
 		soup \

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	flang
-DISTVERSION=	3.9-20170522
+DISTVERSION=	4.0-20170812
 PORTREVISION=	1
 CATEGORIES=	devel
 
@@ -12,10 +12,10 @@ COMMENT=	Fortran compiler targeting LLVM
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BUILD_DEPENDS=	llvm39>=0:devel/llvm39 \
+BUILD_DEPENDS=	llvm40>=0:devel/llvm40 \
 		openmp>=0:devel/openmp \
 		flang-clang>=0:devel/flang-clang
-RUN_DEPENDS=	llvm39>=0:devel/llvm39 \
+RUN_DEPENDS=	llvm40>=0:devel/llvm40 \
 		openmp>=0:devel/openmp \
 		flang-clang>=0:devel/flang-clang
 
@@ -33,9 +33,9 @@ USES+=		${_USES_PYTHON}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	flang-compiler
-GH_TAGNAME=	5af07d4
+GH_TAGNAME=	f7af78c
 
-CMAKE_ARGS+=	-DLLVM_CONFIG=${LOCALBASE}/bin/llvm-config39 \
+CMAKE_ARGS+=	-DLLVM_CONFIG=${LOCALBASE}/bin/llvm-config40 \
 		-DCMAKE_CXX_COMPILER=${LOCALBASE}flang/bin/clang++ \
 		-DCMAKE_C_COMPILER=${LOCALBASE}/flang/bin/clang \
 		-DCMAKE_Fortran_COMPILER=${LOCALBASE}/flang/bin/flang

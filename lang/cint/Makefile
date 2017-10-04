@@ -3,7 +3,7 @@
 
 PORTNAME=	cint
 PORTVERSION=	5.18.00
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	lang
 MASTER_SITES=	http://root.cern.ch/drupal/sites/default/files/
 
@@ -21,6 +21,10 @@ USE_GCC=	yes
 USES=		gmake readline tar:tgz
 USE_LDCONFIG=	${PREFIX}/lib/cint
 ALL_TARGET=
+
+# The port does not build with C++11/C++14, so explicitly use an older
+# standard.
+USE_CXXSTD=	gnu++03
 
 INSTALL_ARGS=	--bindir=${STAGEDIR}${PREFIX}/bin\
 		--libdir=${STAGEDIR}${PREFIX}/lib/cint\

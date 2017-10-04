@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	stunnel
-PORTVERSION=	5.41
+PORTVERSION=	5.42
 PORTEPOCH=	1
 CATEGORIES=	security
 MASTER_SITES=	https://www.stunnel.org/downloads/%SUBDIR%/ \
@@ -18,7 +18,7 @@ MASTER_SITES=	https://www.stunnel.org/downloads/%SUBDIR%/ \
 		http://www.namesdir.com/mirrors/stunnel/%SUBDIR%/ \
 		http://stunnel.cybermirror.org/%SUBDIR%/ \
 		http://mirrors.zerg.biz/stunnel/%SUBDIR%/ \
-		http://mirrors.rit.edu/zi/
+		ZI
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	SSL encryption wrapper for standard network daemons
@@ -118,6 +118,6 @@ cert:
 	@${ECHO} "The new certificate will be saved into ${ETCDIR}/stunnel.pem"
 	@${ECHO} "**************************************************************************"
 	@${ECHO} ""
-	@(cd ${WRKSRC}/tools/; make install-data-local)
+	@(cd ${WRKSRC}/tools/; make cert)
 
 .include <bsd.port.post.mk>

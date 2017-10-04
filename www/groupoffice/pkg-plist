@@ -7,6 +7,7 @@
 %%WWWDIR%%/RELEASE.TXT
 %%WWWDIR%%/composer.json
 %%WWWDIR%%/composer.lock
+%%WWWDIR%%/config.php.bak
 @sample %%WWWDIR%%/config.php.sample
 %%WWWDIR%%/controller/AclGroupController.php
 %%WWWDIR%%/controller/AclUserController.php
@@ -505,6 +506,14 @@
 %%WWWDIR%%/go/vendor/pear/Net/Socket.php
 %%WWWDIR%%/go/vendor/pear/PEAR.php
 %%WWWDIR%%/go/vendor/pear/PEAR5.php
+%%WWWDIR%%/go/vendor/sabre/dav/.travis.yml
+%%WWWDIR%%/go/vendor/sabre/event/.travis.yml
+%%WWWDIR%%/go/vendor/sabre/http/.travis.yml
+%%WWWDIR%%/go/vendor/sabre/http/bin/.empty
+%%WWWDIR%%/go/vendor/sabre/uri/.travis.yml
+%%WWWDIR%%/go/vendor/sabre/vobject/.travis.yml
+%%WWWDIR%%/go/vendor/sabre/xml/.travis.yml
+%%WWWDIR%%/go/vendor/sabre/xml/bin/.empty
 %%WWWDIR%%/go/vendor/swift/CHANGES
 %%WWWDIR%%/go/vendor/swift/LICENSE
 %%WWWDIR%%/go/vendor/swift/README
@@ -1249,6 +1258,7 @@
 %%WWWDIR%%/modules/addressbook/controller/CompanyController.php
 %%WWWDIR%%/modules/addressbook/controller/ContactController.php
 %%WWWDIR%%/modules/addressbook/controller/ExportContactsWithCompaniesController.php
+%%WWWDIR%%/modules/addressbook/controller/MaintenanceController.php
 %%WWWDIR%%/modules/addressbook/controller/PortletController.php
 %%WWWDIR%%/modules/addressbook/controller/SentMailingController.php
 %%WWWDIR%%/modules/addressbook/controller/SettingsController.php
@@ -2471,6 +2481,8 @@
 %%WWWDIR%%/modules/email/themes/Group-Office/images/email.png
 %%WWWDIR%%/modules/email/themes/Group-Office/style.css
 %%WWWDIR%%/modules/email/views/Extjs3/LabelDialog.js
+%%WWWDIR%%/modules/email/views/Extjs3/TemplateGridPanel.js
+%%WWWDIR%%/modules/email/views/Extjs3/TemplateSelectionDialog.js
 %%WWWDIR%%/modules/email/views/Responsive/load.php
 %%WWWDIR%%/modules/exactonline/ExactonlineModule.php
 %%WWWDIR%%/modules/exactonline/README.TXT
@@ -3477,6 +3489,7 @@
 %%WWWDIR%%/modules/phpcustomfield/CustomField.js
 %%WWWDIR%%/modules/phpcustomfield/PhpcustomfieldModule.php
 %%WWWDIR%%/modules/phpcustomfield/customfieldtype/Php.php
+%%WWWDIR%%/modules/phpcustomfield/language/de.php
 %%WWWDIR%%/modules/phpcustomfield/language/en.php
 %%WWWDIR%%/modules/phpcustomfield/language/fr.php
 %%WWWDIR%%/modules/phpcustomfield/scripts.txt
@@ -3708,7 +3721,9 @@
 %%WWWDIR%%/modules/projects2/views/Extjs3/IncomeGrid.js
 %%WWWDIR%%/modules/projects2/views/Extjs3/InvoiceDialog.js
 %%WWWDIR%%/modules/projects2/views/Extjs3/InvoiceablePanel.js
+%%WWWDIR%%/modules/projects2/views/Extjs3/MergeDialog.js
 %%WWWDIR%%/modules/projects2/views/Extjs3/OfficeTimePanel.js
+%%WWWDIR%%/modules/projects2/views/Extjs3/ProjectGrid.js
 %%WWWDIR%%/modules/projects2/views/Extjs3/ResourceDialog.js
 %%WWWDIR%%/modules/projects2/views/Extjs3/ResourceGrid.js
 %%WWWDIR%%/modules/projects2/views/Extjs3/SelectEmployee.js
@@ -7910,6 +7925,7 @@
 %%WWWDIR%%/views/Extjs3/javascript/form/Combo.js
 %%WWWDIR%%/views/Extjs3/javascript/form/ComboBoxMulti.js
 %%WWWDIR%%/views/Extjs3/javascript/form/ComboReset.js
+%%WWWDIR%%/views/Extjs3/javascript/form/DateFieldReset.js
 %%WWWDIR%%/views/Extjs3/javascript/form/DateTime.js
 %%WWWDIR%%/views/Extjs3/javascript/form/DateTimeField.js
 %%WWWDIR%%/views/Extjs3/javascript/form/FieldHelp.js

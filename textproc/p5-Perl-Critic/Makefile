@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Perl-Critic
-PORTVERSION=	1.128
+PORTVERSION=	1.130
 CATEGORIES=	textproc devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -10,7 +10,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Critique Perl source for style and standards
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-B-Keywords>=1.05:devel/p5-B-Keywords \

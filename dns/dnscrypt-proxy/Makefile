@@ -3,7 +3,7 @@
 
 PORTNAME=	dnscrypt-proxy
 PORTVERSION=	1.9.5
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	dns
 MASTER_SITES=	https://download.dnscrypt.org/dnscrypt-proxy/ \
 		http://download.dnscrypt.org/dnscrypt-proxy/ \
@@ -23,7 +23,7 @@ USERS=		_dnscrypt-proxy
 GROUPS=		_dnscrypt-proxy
 
 GNU_CONFIGURE=	yes
-USES=		execinfo gmake
+USES=		gmake
 
 INSTALL_TARGET=	install-strip
 

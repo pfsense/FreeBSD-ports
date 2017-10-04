@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	Perlanet
-PORTVERSION=	0.58
+PORTVERSION=	1.1.0
+DISTVERSIONPREFIX=	v
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:DAVECROSS
@@ -11,7 +12,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Program for creating programs that aggregate web feeds
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-CHI>=0:devel/p5-CHI \
@@ -31,6 +32,6 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 NO_ARCH=	yes
 USES=		perl5
-USE_PERL5=	modbuild
+USE_PERL5=	configure
 
 .include <bsd.port.mk>

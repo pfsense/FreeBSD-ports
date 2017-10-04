@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	fox
-PORTVERSION=	1.7.59
-PORTREVISION=	2
+PORTVERSION=	1.7.60
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	http://ftp.fox-toolkit.org/pub/ \
 		ftp://ftp.fox-toolkit.org/pub/

@@ -13,12 +13,15 @@ COMMENT=	Programming editor written in Vala
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+DEPRECATED=	Vanubi is no longer actively maintained
+EXPIRATION_DATE=	2017-10-06
+
 BUILD_DEPENDS=	valac:lang/vala
 
 GH_TAGNAME=	eedac1d
 
 USE_GITHUB=	yes
-USES=		autoreconf desktop-file-utils execinfo gmake libtool pkgconfig
+USES=		autoreconf desktop-file-utils gmake libtool pkgconfig
 GNU_CONFIGURE=	yes
 USE_GNOME=	glib20 gtk30 gtksourceview3 libwnck3 vte3
 USE_LDCONFIG=	yes

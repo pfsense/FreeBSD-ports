@@ -1,21 +1,20 @@
 # $FreeBSD$
 
 PORTNAME=	cld3
-DISTVERSION=	3.1.3
-PORTREVISION=	1
+DISTVERSION=	3.2.0
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	jrm@FreeBSD.org
+MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Compact Language Detection for Ruby
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_powerpc64=	fails to install: Error installing cld3-3.1.2.gem: Failed to build gem native extension
+
 RUN_DEPENDS=	protobuf>0:devel/protobuf \
 		rubygem-ffi>0:devel/rubygem-ffi
-
-BROKEN_powerpc64=	fails to install: Error installing cld3-3.1.2.gem: Failed to build gem native extension
 
 USE_RUBY=	yes
 USES=		gem pkgconfig

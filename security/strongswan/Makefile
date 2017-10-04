@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	strongswan
-PORTVERSION=	5.5.3
+PORTVERSION=	5.6.0
 CATEGORIES=	security
 MASTER_SITES=	http://download.strongswan.org/ \
 		http://download2.strongswan.org/
@@ -12,7 +12,7 @@ COMMENT=	Open Source IKEv2 IPsec-based VPN solution
 
 LICENSE=	GPLv2
 
-USES=		cpe execinfo libtool:keepla pkgconfig tar:bzip2 ssl
+USES=		cpe libtool:keepla pkgconfig tar:bzip2 ssl
 USE_RC_SUBR=	strongswan
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	${PREFIX}/lib/ipsec

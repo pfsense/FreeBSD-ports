@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	phpunit
-PORTVERSION=	6.2.2
+PORTVERSION=	6.3.1
 CATEGORIES=	devel www
 MASTER_SITES=	https://phar.phpunit.de/
 PKGNAMESUFFIX=	6

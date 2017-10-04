@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME?=	mariadb
-PORTVERSION=	10.2.6
-PORTREVISION?=	2
+PORTVERSION=	10.2.9
+PORTREVISION?=	0
 CATEGORIES=	databases ipv6
 MASTER_SITES=	http://mirrors.supportex.net/${SITESDIR}/ \
 		http://mirror2.hs-esslingen.de/pub/Mirrors/${SITESDIR}/ \
@@ -28,7 +28,7 @@ SUB_FILES=	pkg-message
 PKGMESSAGE=	${WRKDIR}/pkg-message
 
 SLAVEDIRS=	databases/mariadb102-client
-USES=		bison:build cmake compiler:c++11-lib cpe execinfo iconv:translit ncurses shebangfix ssl
+USES=		bison:build cmake compiler:c++11-lib cpe iconv:translit libedit ncurses shebangfix ssl
 USE_LDCONFIG=	${PREFIX}/lib/mysql
 SHEBANG_FILES=	scripts/*.sh
 SITESDIR=	mariadb/mariadb-${PORTVERSION}/source
@@ -93,7 +93,6 @@ CMAKE_ARGS+=	-DINSTALL_DOCDIR="share/doc/mysql" \
 		-DCURSES_CURSES_LIBRARY="/usr/lib/libcurses.so" \
 		-DCURSES_FORM_LIBRARY="/usr/lib/libform.so" \
 		-DCURSES_CURSES_LIBRARY="/usr/lib/libncurses.so" \
-		-DEXECINFO_ROOT="${LOCALBASE}" \
 		-DICONV_LIBRARIES="${ICONV_LIB_PATH}" \
 		-DKRB5_CONFIG="${KRB5CONFIG}" \
 		-DCURSES_NCURSES_LIBRARY="${NCURSESLIB}/libncurses.so" \
@@ -113,6 +112,7 @@ DATADIR=	${PREFIX}/share/mysql
 CONFLICTS_INSTALL=	mariadb5*-${PKGNAMESUFFIX:C/^[0-9]*-//}-* \
 			mariadb10[013-9]-${PKGNAMESUFFIX:C/^[0-9]*-//}-* \
 			mysql[0-9]*-${PKGNAMESUFFIX:C/^[0-9]*-//}-* \
+			mysqlwsrep* \
 			percona[0-9]*-${PKGNAMESUFFIX:C/^[0-9]*-//}-*
 
 FASTMTX_CMAKE_ON=	-DWITH_FAST_MUTEXES=1
@@ -179,6 +179,7 @@ post-install:
 		${STAGEDIR}${PREFIX}/bin/mysqlaccess
 	${RM} -r ${STAGEDIR}/${PREFIX}/share/mysql/policy \
 		${STAGEDIR}/${PREFIX}/share/pkgconfig
+	${RM} ${STAGEDIR}${LOCALBASE}/lib/mysql/libmysqlclient*
 .endif # defined(CLIENT_ONLY)
 
 .if defined(WITH_OPENSSL_PORT)
@@ -200,8 +201,8 @@ post-patch:
 		${WRKSRC}/cmake/os/DragonFly.cmake
 .endif
 
-post-configure-MROONGA-on:
-	${REINPLACE_CMD} 's|-llz4|-L${LOCALBASE}/lib -llz4|' \
-		${WRKSRC}/storage/mroonga/CMakeFiles/mroonga.dir/link.txt
+#post-configure-MROONGA-on:
+#	${REINPLACE_CMD} 's|-llz4|-L${LOCALBASE}/lib -llz4|' \
+#		${WRKSRC}/storage/mroonga/CMakeFiles/mroonga.dir/link.txt
 
 .include <bsd.port.post.mk>

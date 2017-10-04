@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	wrapt
-PORTVERSION=	1.10.10
+PORTVERSION=	1.10.11
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +13,7 @@ LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USE_PYTHON=	autoplist concurrent distutils
-USES=		python
+USES?=		python
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/wrapt/_wrappers.so

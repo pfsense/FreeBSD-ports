@@ -32,7 +32,7 @@
     SUBDIR += gnustep-gui
     SUBDIR += granite
     SUBDIR += gstreamer-plugins-pango
-    SUBDIR += gstreamer1-plugins-gtksink
+    SUBDIR += gstreamer1-plugins-gtk
     SUBDIR += gstreamer1-plugins-pango
     SUBDIR += gtk-sharp-beans
     SUBDIR += gtk-sharp20
@@ -86,13 +86,12 @@
     SUBDIR += kf5-kconfigwidgets
     SUBDIR += kf5-kdesignerplugin
     SUBDIR += kf5-kguiaddons
+    SUBDIR += kf5-kirigami2
     SUBDIR += kf5-kitemviews
     SUBDIR += kf5-kjobwidgets
     SUBDIR += kf5-ktextwidgets
     SUBDIR += kf5-kwidgetsaddons
     SUBDIR += kf5-kxmlgui
-    SUBDIR += kirigami
-    SUBDIR += kirigami2
     SUBDIR += kproperty
     SUBDIR += lesstif
     SUBDIR += libXaw
@@ -219,7 +218,6 @@
     SUBDIR += py-wxPython28-common
     SUBDIR += py-wxPython30
     SUBDIR += py-xlib
-    SUBDIR += py33-tkinter
     SUBDIR += py34-tkinter
     SUBDIR += py35-tkinter
     SUBDIR += py36-tkinter
@@ -230,7 +228,6 @@
     SUBDIR += qt5-canvas3d
     SUBDIR += qt5-charts
     SUBDIR += qt5-datavis3d
-    SUBDIR += qt5-declarative
     SUBDIR += qt5-declarative-render2d
     SUBDIR += qt5-gamepad
     SUBDIR += qt5-gui
@@ -240,6 +237,7 @@
     SUBDIR += qt5-uiplugin
     SUBDIR += qt5-virtualkeyboard
     SUBDIR += qt5-widgets
+    SUBDIR += qt5pas
     SUBDIR += qtermwidget
     SUBDIR += qwt5
     SUBDIR += qwt5-designerplugin
@@ -271,6 +269,7 @@
     SUBDIR += tk84
     SUBDIR += tk85
     SUBDIR += tk86
+    SUBDIR += tk87
     SUBDIR += tkdnd
     SUBDIR += tkshape
     SUBDIR += tktable
