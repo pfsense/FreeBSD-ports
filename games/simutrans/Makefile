@@ -9,7 +9,7 @@ MASTER_SITES=	SF/simutrans/simutrans/${DISTVERSION} \
 DISTFILES=	simutrans-src-${DISTVERSION}.zip \
 		simulinux-${DISTVERSION}.zip
 
-MAINTAINER=	tijl@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Transport Simulator
 
 LICENSE=	ART10
@@ -37,8 +37,7 @@ MAKE_ARGS=	BACKEND=mixer_sdl \
 		FLAGS="-DUSE_C -DREVISION=${SIMUTRANS_REVISION}" \
 		VERBOSE=1
 NO_WRKSUBDIR=	yes
-USES=		dos2unix gmake zip
-DOS2UNIX_FILES=	gui/loadsave_frame.h
+USES=		gmake zip
 USE_SDL=	sdl mixer
 
 DESKTOP_ENTRIES=Simutrans "" "" simutrans "Game;Simulation;" false

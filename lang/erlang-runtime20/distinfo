@@ -1,7 +1,7 @@
-TIMESTAMP = 1498129462
-SHA256 (erlang/otp_src_20.0.tar.gz) = fe80e1e14a2772901be717694bb30ac4e9a07eee0cc7a28988724cbd21476811
-SIZE (erlang/otp_src_20.0.tar.gz) = 87346046
-SHA256 (erlang/otp_doc_man_20.0.tar.gz) = b7f1542a94a170f8791f5d80a85706f9e8838924ea65d4301032d0c0cfb845cc
-SIZE (erlang/otp_doc_man_20.0.tar.gz) = 1430939
-SHA256 (erlang/otp_doc_html_20.0.tar.gz) = 1ab25110b148ce263d6e68cd5a3b912299b6066cfcd9d2fce416a4e9b7d2543a
-SIZE (erlang/otp_doc_html_20.0.tar.gz) = 33948386
+TIMESTAMP = 1506693440
+SHA256 (erlang/otp_src_20.1.tar.gz) = 900d35eb563607785a8e27f4b4c03cf6c98b4596028c5d6958569ddde5d4ddbf
+SIZE (erlang/otp_src_20.1.tar.gz) = 87342296
+SHA256 (erlang/otp_doc_man_20.1.tar.gz) = 05ccf82ff85316e2eb1bebf1a1741dfac1ee450ed49cf0be365f9d4fec6d7b46
+SIZE (erlang/otp_doc_man_20.1.tar.gz) = 1334036
+SHA256 (erlang/otp_doc_html_20.1.tar.gz) = 442c9b75a33be685a1af67414cc8758a4ef40e27cdcab9e432d4d9c6f3254dcf
+SIZE (erlang/otp_doc_html_20.1.tar.gz) = 33059931

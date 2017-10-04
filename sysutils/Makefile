@@ -39,9 +39,11 @@
     SUBDIR += android-file-transfer-qt5
     SUBDIR += ansible
     SUBDIR += ansible1
+    SUBDIR += anvil
     SUBDIR += apachetop
     SUBDIR += apcpwr
     SUBDIR += apcupsd
+    SUBDIR += aptly
     SUBDIR += arcconf
     SUBDIR += archivemount
     SUBDIR += areca-cli
@@ -51,6 +53,7 @@
     SUBDIR += asmon
     SUBDIR += asusoled
     SUBDIR += ataidle
+    SUBDIR += atf-allwinner
     SUBDIR += atitvout
     SUBDIR += atop
     SUBDIR += auto-admin
@@ -76,6 +79,11 @@
     SUBDIR += bacula5-client-static
     SUBDIR += bacula5-docs
     SUBDIR += bacula5-server
+    SUBDIR += bacula9-bat
+    SUBDIR += bacula9-client
+    SUBDIR += bacula9-client-static
+    SUBDIR += bacula9-docs
+    SUBDIR += bacula9-server
     SUBDIR += baloo
     SUBDIR += baloo-widgets
     SUBDIR += bamf
@@ -137,12 +145,14 @@
     SUBDIR += cfengine
     SUBDIR += cfengine-masterfiles
     SUBDIR += cfengine-masterfiles310
+    SUBDIR += cfengine-masterfiles311
     SUBDIR += cfengine-masterfiles36
     SUBDIR += cfengine-masterfiles37
     SUBDIR += cfengine-masterfiles38
     SUBDIR += cfengine-masterfiles39
     SUBDIR += cfengine22
     SUBDIR += cfengine310
+    SUBDIR += cfengine311
     SUBDIR += cfengine32
     SUBDIR += cfengine33
     SUBDIR += cfengine34
@@ -179,8 +189,9 @@
     SUBDIR += conky
     SUBDIR += conky-awesome
     SUBDIR += consolehm
-    SUBDIR += consolekit
+    SUBDIR += consolekit2
     SUBDIR += consul
+    SUBDIR += consul_exporter
     SUBDIR += consul-alerts
     SUBDIR += contractor
     SUBDIR += copytape
@@ -240,12 +251,14 @@
     SUBDIR += docker-compose
     SUBDIR += docker-freebsd
     SUBDIR += docker-machine
+    SUBDIR += doctl
     SUBDIR += doinkd
     SUBDIR += dolly
     SUBDIR += downtime
     SUBDIR += downtimed
     SUBDIR += dsbbatmon
     SUBDIR += dsbdriverd
+    SUBDIR += dsblogoutmgr
     SUBDIR += dsbmc
     SUBDIR += dsbmc-cli
     SUBDIR += dsbmd
@@ -299,7 +312,7 @@
     SUBDIR += ffs2recov
     SUBDIR += file
     SUBDIR += filedupe
-    SUBDIR += filelight-kde4
+    SUBDIR += filelight
     SUBDIR += fileprune
     SUBDIR += fileschanged
     SUBDIR += filetype
@@ -315,7 +328,6 @@
     SUBDIR += flog
     SUBDIR += flowgger
     SUBDIR += fluent-bit
-    SUBDIR += flyback
     SUBDIR += fonteditfs
     SUBDIR += foremost
     SUBDIR += fortunelock
@@ -406,6 +418,7 @@
     SUBDIR += gnome-system-monitor
     SUBDIR += gnome_subr
     SUBDIR += goaccess
+    SUBDIR += goss
     SUBDIR += gpart
     SUBDIR += gpte
     SUBDIR += graffer
@@ -450,9 +463,11 @@
     SUBDIR += hptcli
     SUBDIR += hs-angel
     SUBDIR += hs-cpu
+    SUBDIR += hs-disk-free-space
     SUBDIR += hs-ekg
     SUBDIR += hs-ekg-core
     SUBDIR += hs-ekg-json
+    SUBDIR += hs-mountpoints
     SUBDIR += htop
     SUBDIR += httplog
     SUBDIR += hwstat
@@ -560,6 +575,7 @@
     SUBDIR += logwatch
     SUBDIR += lookat
     SUBDIR += lr
+    SUBDIR += lscpu
     SUBDIR += lsof
     SUBDIR += lsop
     SUBDIR += ltrace
@@ -667,6 +683,7 @@
     SUBDIR += nbosd
     SUBDIR += ncdu
     SUBDIR += ndmpd
+    SUBDIR += neofetch
     SUBDIR += nepomuk-core
     SUBDIR += nepomuk-widgets
     SUBDIR += nfcutils
@@ -832,6 +849,7 @@
     SUBDIR += polkit-qt5
     SUBDIR += powerdxx
     SUBDIR += powerman
+    SUBDIR += powermon
     SUBDIR += pp
     SUBDIR += pprotectd
     SUBDIR += prelink
@@ -848,6 +866,7 @@
     SUBDIR += puppet-lint
     SUBDIR += puppet-mode.el
     SUBDIR += puppet4
+    SUBDIR += puppet5
     SUBDIR += puppetserver
     SUBDIR += pv
     SUBDIR += pwd_unmkdb
@@ -872,9 +891,9 @@
     SUBDIR += py-freenas.cli
     SUBDIR += py-glances
     SUBDIR += py-gmailfs-fuse
+    SUBDIR += py-google-compute-engine
     SUBDIR += py-halite
     SUBDIR += py-honcho
-    SUBDIR += py-iocage
     SUBDIR += py-iowait
     SUBDIR += py-nagiosplugin
     SUBDIR += py-nomad
@@ -955,12 +974,12 @@
     SUBDIR += rmonitor
     SUBDIR += roottail
     SUBDIR += rovclock
+    SUBDIR += rpi-firmware
     SUBDIR += rsnapshot
     SUBDIR += rsyncbackup
     SUBDIR += rsyncrypto
     SUBDIR += rsyslog8
     SUBDIR += rtty
-    SUBDIR += rubygem-SyslogLogger
     SUBDIR += rubygem-backup
     SUBDIR += rubygem-bosh-gen
     SUBDIR += rubygem-bosh_cli
@@ -971,6 +990,7 @@
     SUBDIR += rubygem-capistrano-harrow
     SUBDIR += rubygem-chef
     SUBDIR += rubygem-chef-api
+    SUBDIR += rubygem-chef-config
     SUBDIR += rubygem-chef-zero
     SUBDIR += rubygem-facter
     SUBDIR += rubygem-fluent-mixin-plaintextformatter
@@ -993,6 +1013,7 @@
     SUBDIR += rubygem-hammer_cli_foreman_salt
     SUBDIR += rubygem-hammer_cli_foreman_ssh
     SUBDIR += rubygem-hiera
+    SUBDIR += rubygem-hiera-eyaml
     SUBDIR += rubygem-hiera-file
     SUBDIR += rubygem-hiera1
     SUBDIR += rubygem-hieracles
@@ -1007,9 +1028,9 @@
     SUBDIR += rubygem-ohai
     SUBDIR += rubygem-parallel
     SUBDIR += rubygem-puppet_forge
-    SUBDIR += rubygem-puppet_forge1
     SUBDIR += rubygem-r10k
     SUBDIR += rubygem-rubyipmi
+    SUBDIR += rubygem-serverspec
     SUBDIR += rubygem-shellany
     SUBDIR += rubygem-smart_proxy_chef
     SUBDIR += rubygem-smart_proxy_dynflow
@@ -1023,6 +1044,7 @@
     SUBDIR += rubygem-sys-proctable
     SUBDIR += rubygem-sys-uname
     SUBDIR += rubygem-sys-uptime
+    SUBDIR += rubygem-syslog-logger
     SUBDIR += rubygem-teamocil
     SUBDIR += rubygem-tmuxinator
     SUBDIR += rubygem-vagrant-bhyve
@@ -1074,6 +1096,8 @@
     SUBDIR += shmcat
     SUBDIR += showbeastie
     SUBDIR += siegfried
+    SUBDIR += signon-qt5
+    SUBDIR += signon-ui
     SUBDIR += skill
     SUBDIR += slack
     SUBDIR += sleuthkit
@@ -1118,10 +1142,12 @@
     SUBDIR += syslinux
     SUBDIR += syslog-ng
     SUBDIR += syslog-ng-incubator
+    SUBDIR += syslog-ng310
+    SUBDIR += syslog-ng311
+    SUBDIR += syslog-ng312
     SUBDIR += syslog-ng36
     SUBDIR += syslog-ng37
     SUBDIR += syslog-ng39
-    SUBDIR += syslog-ng310
     SUBDIR += syslogger
     SUBDIR += sysrc
     SUBDIR += system-tools-backends
@@ -1177,6 +1203,9 @@
     SUBDIR += u-boot-duovero
     SUBDIR += u-boot-imx-serial-loader
     SUBDIR += u-boot-master
+    SUBDIR += u-boot-nanopi-m1plus
+    SUBDIR += u-boot-nanopi-neo
+    SUBDIR += u-boot-nanopi-neo-air
     SUBDIR += u-boot-olimex-a20-som-evb
     SUBDIR += u-boot-olinuxino-lime
     SUBDIR += u-boot-orangepi-one
@@ -1190,6 +1219,8 @@
     SUBDIR += u-boot-sinovoip-bpi-m3
     SUBDIR += u-boot-utilite
     SUBDIR += u-boot-wandboard
+    SUBDIR += u-boot-zedboard
+    SUBDIR += u-boot-zybo
     SUBDIR += ua
     SUBDIR += ucspi-ipc
     SUBDIR += ucspi-proxy
@@ -1202,6 +1233,7 @@
     SUBDIR += ufs_copy
     SUBDIR += uhidd
     SUBDIR += uif2iso
+    SUBDIR += unetbootin
     SUBDIR += unieject
     SUBDIR += uniutils
     SUBDIR += unquote
@@ -1321,8 +1353,10 @@
     SUBDIR += zfstools
     SUBDIR += zidrav
     SUBDIR += zisofs-tools
+    SUBDIR += znapzend
     SUBDIR += zogftw
     SUBDIR += zrep
+    SUBDIR += zrepl
     SUBDIR += zsd
     SUBDIR += zxfer
 

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	fzf
-PORTVERSION=	0.16.5
+PORTVERSION=	0.16.10
+PORTREVISION=	1
 CATEGORIES=	textproc
 
 MAINTAINER=	sascha@root-login.org
@@ -17,30 +18,40 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	junegunn
 GH_SUBDIR:=	src/github.com/${GH_ACCOUNT}/${PORTNAME}
 
-GH_TUPLE=	junegunn:go-runewidth:63c378b:runwidth/src/github.com/junegunn/go-runewidth \
-    		junegunn:go-shellwords:35d512a:shellwords/src/github.com/junegunn/go-shellwords \
-		junegunn:go-isatty:66b8e73:isatty/src/github.com/junegunn/go-isatty \
+GH_TUPLE=	mattn:go-runewidth:14207d2:runwidth/src/github.com/mattn/go-runewidth \
+    		mattn:go-shellwords:02e3cf0:shellwords/src/github.com/mattn/go-shellwords \
+		mattn:go-isatty:66b8e73:isatty/src/github.com/mattn/go-isatty \
+		gdamore:tcell:44772c1:tcell/src/github.com/gdamore/tcell \
 		golang:crypto:b8a2a83:terminal/src/golang.org/x/crypto
 
+SUB_FILES=	pkg-message
 PLIST_FILES=	bin/fzf man/man1/fzf.1.gz
+PORTEXAMPLES=	shell/completion.bash shell/completion.zsh \
+		shell/key-bindings.bash shell/key-bindings.fish \
+		shell/key-bindings.zsh
 
-STRIP=		# do not strip go binaries
-
-OPTIONS_DEFINE=	TMUX
-TMUX_DESC=	Install fzf-tmux (depends on BASH)
-
+OPTIONS_DEFINE=		EXAMPLES TMUX
 OPTIONS_DEFAULT=	TMUX
+
+TMUX_DESC=	Install fzf-tmux (depends on BASH)
 
 TMUX_RUN_DEPENDS=	bash:shells/bash
 TMUX_PLIST_FILES=	bin/fzf-tmux man/man1/fzf-tmux.1.gz
 
+GOENV=		GOPATH=${WRKSRC} CGO_CFLAGS="${CGO_CFLAGS}" \
+		CGO_LDFLAGS="${CGO_LDFLAGS}" GOBIN=""
+
 do-build:
-	(cd ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME}/src/fzf && \
-		${SETENV} ${MAKE_ENV} GOPATH=${WRKSRC} \
-		go build -o bin/${PORTNAME})
+	cd ${WRKSRC}/src/github.com/${GH_ACCOUNT_DEFAULT}/${PORTNAME} && \
+	${SETENV} ${MAKE_ENV} ${GOENV} ${GO_CMD} build -a \
+		-ldflags "-X main.revision=6dbc108 -w" -o bin/${PORTNAME}
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME}/src/${PORTNAME}/bin/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+	${INSTALL_PROGRAM} ${WRKSRC}/src/github.com/${GH_ACCOUNT_DEFAULT}/${PORTNAME}/bin/${PORTNAME} \
+		${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	(cd ${WRKSRC} && \
+	    ${COPYTREE_SHARE} shell ${STAGEDIR}${EXAMPLESDIR})
 
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/man/man1/fzf.1 ${STAGEDIR}${MANPREFIX}/man/man1

@@ -31,6 +31,7 @@
     SUBDIR += cups-pk-helper
     SUBDIR += cups-smb-backend
     SUBDIR += deforaos-pdfviewer
+    SUBDIR += derelict-ft
     SUBDIR += detex
     SUBDIR += dot2tex
     SUBDIR += dvi2tty
@@ -41,6 +42,8 @@
     SUBDIR += enscript-a4
     SUBDIR += enscript-letter
     SUBDIR += enscript-letterdj
+    SUBDIR += epson-inkjet-printer-201401w
+    SUBDIR += epson-inkjet-printer-201601w
     SUBDIR += epson-inkjet-printer-escpr
     SUBDIR += epsonepl
     SUBDIR += fig2dev
@@ -160,6 +163,7 @@
     SUBDIR += pdfcube
     SUBDIR += pdflib
     SUBDIR += pdflib-perl
+    SUBDIR += pdfstitch
     SUBDIR += pdftk
     SUBDIR += pear-File_PDF
     SUBDIR += pecl-haru
@@ -199,6 +203,7 @@
     SUBDIR += py-reportlab
     SUBDIR += py-reportlab1
     SUBDIR += py-rtf
+    SUBDIR += py-stapler
     SUBDIR += py-trml2pdf
     SUBDIR += py3-fonttools
     SUBDIR += py3-pycups

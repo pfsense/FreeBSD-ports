@@ -7,6 +7,9 @@ PKGNAMESUFFIX=	-libblkid
 
 COMMENT=	Blkid library from e2fsprogs package
 
+LICENSE=	LGPL20+
+_no_license_file=	sorry
+
 LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid
 
 CONFIGURE_ARGS=	--enable-elf-shlibs
@@ -19,8 +22,6 @@ INSTALL_TARGET=	install install-shlibs
 INSTALL_WRKSRC=	${WRKSRC}/lib/blkid
 
 PKGDIR=		${.CURDIR}
-
-BROKEN_aarch64=		Fails to build: No targets specified and no makefile found
 
 pre-build:
 	${MKDIR} ${WRKSRC}/lib/blkid/elfshared

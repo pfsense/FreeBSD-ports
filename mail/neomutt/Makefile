@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	neomutt
-PORTVERSION=	20170609
+PORTVERSION=	20170912
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	mail
 
@@ -14,13 +14,14 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.md
 RUN_DEPENDS=	${LOCALBASE}/etc/mime.types:misc/mime-support \
 		urlview:textproc/urlview
 
+USES=		autoreconf iconv:translit localbase shebangfix ssl
+
 USE_GITHUB=	yes
 
-USES=		autoreconf iconv:translit localbase shebangfix ssl
 GNU_CONFIGURE=	yes
 
 OPTIONS_SUB=	yes
-SHEBANG_FILES=	smime_keys.pl
+SHEBANG_FILES=	contrib/smime_keys
 
 OPTIONS_DEFINE=	NLS DOCS SASL IDN FLOCK GPGME NOTMUCH
 OPTIONS_DEFAULT=SASL TOKYOCABINET NOTMUCH GPGME LMDB NCURSES

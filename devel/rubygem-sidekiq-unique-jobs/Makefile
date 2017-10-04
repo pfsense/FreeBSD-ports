@@ -1,11 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	sidekiq-unique-jobs
-PORTVERSION=	5.0.8
+PORTVERSION=	5.0.10
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	jrm@FreeBSD.org
+MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Ensure only a single copy of a job is in Redis
 
 LICENSE=	MIT

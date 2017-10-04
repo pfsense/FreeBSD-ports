@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	awesome
-PORTVERSION=	4.1
+PORTVERSION=	4.2
 DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
 CATEGORIES=	x11-wm
@@ -34,7 +34,7 @@ CONFLICTS_INSTALL=	awesome3-[0-9]*
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	awesomewm
-USES=		cmake:outsource execinfo gettext iconv pkgconfig lua shebangfix
+USES=		cmake:outsource gettext iconv pkgconfig lua shebangfix
 SHEBANG_FILES=	utils/awesome-client
 CMAKE_ARGS=	-DSYSCONFDIR=${PREFIX}/etc \
 		-DAWESOME_MAN_PATH=${MANPREFIX}/man \

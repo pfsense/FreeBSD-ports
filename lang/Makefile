@@ -20,7 +20,6 @@
     SUBDIR += basic256
     SUBDIR += beignet
     SUBDIR += bf2c
-    SUBDIR += bigloo
     SUBDIR += bsh
     SUBDIR += bwbasic
     SUBDIR += c
@@ -50,6 +49,7 @@
     SUBDIR += cython
     SUBDIR += cython3
     SUBDIR += diveintopython
+    SUBDIR += dlang-tools
     SUBDIR += dlv
     SUBDIR += dmd1
     SUBDIR += dmd2
@@ -104,6 +104,7 @@
     SUBDIR += gcc6
     SUBDIR += gcc6-aux
     SUBDIR += gcc6-devel
+    SUBDIR += gcc7
     SUBDIR += gcc7-devel
     SUBDIR += gcc8-devel
     SUBDIR += gcl
@@ -224,7 +225,6 @@
     SUBDIR += p5-Marpa-PP
     SUBDIR += p5-Marpa-XS
     SUBDIR += p5-Modern-Perl
-    SUBDIR += p5-Parse-Perl
     SUBDIR += p5-Perl6-Subs
     SUBDIR += p5-Promises
     SUBDIR += p5-Pugs-Compiler-Rule
@@ -284,7 +284,6 @@
     SUBDIR += python2
     SUBDIR += python27
     SUBDIR += python3
-    SUBDIR += python33
     SUBDIR += python34
     SUBDIR += python35
     SUBDIR += python36
@@ -362,7 +361,6 @@
     SUBDIR += v8-devel
     SUBDIR += vala
     SUBDIR += visualworks
-    SUBDIR += whitespace
     SUBDIR += x10
     SUBDIR += yabasic
     SUBDIR += yap

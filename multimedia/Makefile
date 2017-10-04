@@ -17,14 +17,12 @@
     SUBDIR += audacious-plugins
     SUBDIR += audacious-plugins-gtk3
     SUBDIR += audiopreview
-    SUBDIR += avbin
     SUBDIR += avidemux
     SUBDIR += avidemux-cli
     SUBDIR += avidemux-plugins
     SUBDIR += avidemux-qt4
     SUBDIR += avinfo
     SUBDIR += baka-mplayer
-    SUBDIR += banshee
     SUBDIR += bino
     SUBDIR += bitstream
     SUBDIR += bombono
@@ -82,6 +80,7 @@
     SUBDIR += gmp-api
     SUBDIR += gmtk
     SUBDIR += gnome-mplayer
+    SUBDIR += gnome-mpv
     SUBDIR += gnome-subtitles
     SUBDIR += gpac-libgpac
     SUBDIR += gpac-mp4box
@@ -123,6 +122,7 @@
     SUBDIR += gstreamer1-plugins-assrender
     SUBDIR += gstreamer1-plugins-bad
     SUBDIR += gstreamer1-plugins-core
+    SUBDIR += gstreamer1-plugins-dash
     SUBDIR += gstreamer1-plugins-dts
     SUBDIR += gstreamer1-plugins-dv
     SUBDIR += gstreamer1-plugins-dvdread
@@ -133,11 +133,14 @@
     SUBDIR += gstreamer1-plugins-libde265
     SUBDIR += gstreamer1-plugins-mpeg2dec
     SUBDIR += gstreamer1-plugins-mpeg2enc
+    SUBDIR += gstreamer1-plugins-mplex
     SUBDIR += gstreamer1-plugins-openh264
     SUBDIR += gstreamer1-plugins-resindvd
     SUBDIR += gstreamer1-plugins-rtmp
     SUBDIR += gstreamer1-plugins-schroedinger
+    SUBDIR += gstreamer1-plugins-smoothstreaming
     SUBDIR += gstreamer1-plugins-theora
+    SUBDIR += gstreamer1-plugins-ttml
     SUBDIR += gstreamer1-plugins-ugly
     SUBDIR += gstreamer1-plugins-v4l2
     SUBDIR += gstreamer1-plugins-vpx
@@ -318,7 +321,6 @@
     SUBDIR += pwcview
     SUBDIR += py-cec
     SUBDIR += py-enzyme
-    SUBDIR += py-ffmpeg
     SUBDIR += py-flvlib
     SUBDIR += py-gstreamer
     SUBDIR += py-gstreamer1

@@ -2,20 +2,27 @@
 # $FreeBSD$
 
 PORTNAME=	gdb
-PORTVERSION=	7.12.1
-PORTREVISION=	2
+PORTVERSION=	8.0.1
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
-MAINTAINER=	luca.pizzamiglio@gmail.com
+MAINTAINER=	pizzamig@FreeBSD.org
 COMMENT=	GNU GDB of newer version than comes with the system
 
 LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING3
+
+# untested on sparc64, might work
+ONLY_FOR_ARCHS=	aarch64 amd64 armv6 i386 mips powerpc powerpc64
 
 TEST_DEPENDS=	runtest:misc/dejagnu
 
 TEST_TARGET=	check
-USES=		compiler:env cpe iconv gmake libtool tar:xz
+# XXX: This should be compiler:c++11-lib as GDB doesn't really require
+# C++14.  However, clang in 10.3 crashes while building this port.
+# Requiring C++14 forces 10.3 to use an external version of clang while
+# still using the base system clang on 11.0 and later.
+USES=		compiler:c++14-lang cpe iconv gmake libtool tar:xz
 USE_CSTD=	gnu89
 CPE_VENDOR=	gnu
 GNU_CONFIGURE=	yes
@@ -31,15 +38,25 @@ CFLAGS:=	${CFLAGS:C/ +$//}	# blanks at EOL creep in sometimes
 CFLAGS+=	-DRL_NO_COMPAT -Wno-unused-function -Wno-unused-variable
 EXCLUDE=	dejagnu expect sim texinfo intl
 EXTRACT_AFTER_ARGS=	${EXCLUDE:S/^/--exclude /}
-EXTRA_PATCHES=	${FILESDIR}/commit-387360daf9 \
-		${FILESDIR}/commit-b268007c68
+EXTRA_PATCHES=	${FILESDIR}/commit-45eba0ab7d \
+		${FILESDIR}/commit-3c3ae77e68 \
+		${FILESDIR}/commit-b5430a3ced \
+		${FILESDIR}/commit-762c974a09 \
+		${FILESDIR}/commit-929edea98d \
+		${FILESDIR}/commit-6e5eab33ab \
+		${FILESDIR}/commit-382b69bbb7 \
+		${FILESDIR}/commit-2af9fc4432 \
+		${FILESDIR}/commit-0b9305edf1 \
+		${FILESDIR}/commit-e6f3b9c319 \
+		${FILESDIR}/commit-4b654465bf \
+		${FILESDIR}/commit-b30ff123fb \
+		${FILESDIR}/commit-48aeef91c2 \
+		${FILESDIR}/commit-0aa37b654c \
+		${FILESDIR}/commit-0335ac6d12
 LIB_DEPENDS+=	libexpat.so:textproc/expat2
 
 VER=		${PORTVERSION:S/.//g}
 PLIST_SUB=	VER=${VER}
-
-# untested elsewhere, might work
-ONLY_FOR_ARCHS=		amd64 armv6 i386 mips powerpc powerpc64	
 
 OPTIONS_DEFINE=	DEBUG GDB_LINK GUILE KGDB PYTHON TUI
 

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Test-Trap
-PORTVERSION=	0.3.2
+PORTVERSION=	0.3.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
@@ -11,7 +11,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Trap exit codes, exceptions, output, etc
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-Data-Dump>=0:devel/p5-Data-Dump

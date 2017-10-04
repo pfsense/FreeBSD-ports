@@ -3,7 +3,7 @@
 
 PORTNAME?=	mysql
 PORTVERSION=	5.7.19
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases ipv6
 MASTER_SITES=	MYSQL/MySQL-5.7
 PKGNAMESUFFIX?=	57-server
@@ -81,6 +81,7 @@ USES+=		mysql:57
 
 CONFLICTS_INSTALL=	mysql5[0-68-9]-server-* \
 			mysql[0-46-9][0-9]-server-* \
+			mysqlwsrep* \
 			mariadb[0-9][0-9]-server-* \
 			percona[0-9][0-9]-server-*
 

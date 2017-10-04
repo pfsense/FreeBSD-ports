@@ -2,14 +2,14 @@
 
 PORTNAME=	kde-workspace
 PORTVERSION=	${KDE4_WORKSPACE_VERSION}
-PORTREVISION=	6
+PORTREVISION=	12
 CATEGORIES=	x11 kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE Plasma Desktop
 
 LIB_DEPENDS=	libdbus-1.so:devel/dbus \
-		libck-connector.so:sysutils/consolekit \
+		libck-connector.so:sysutils/consolekit2 \
 		libpci.so:devel/libpci \
 		libhal.so:sysutils/hal \
 		libqjson.so:devel/qjson \
@@ -129,6 +129,9 @@ pre-configure:
 
 post-install:
 	${LN} -sf ${PREFIX}/bin/startkde ${STAGEDIR}${PREFIX}/bin/startkde4
+# Install kde4.desktop to launch kde4 via sddm.
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/xsessions
+	${INSTALL_DATA} ${FILESDIR}/kde4.desktop ${STAGEDIR}${PREFIX}/share/xsessions
 
 post-install-GSTREAMER-on:
 	@${HEAD} -1 ${PKGMESSAGE} >> ${PKGMESSAGE}

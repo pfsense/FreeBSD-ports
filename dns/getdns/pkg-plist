@@ -1,5 +1,4 @@
 bin/getdns_query
-bin/stubby
 include/getdns/getdns.h
 include/getdns/getdns_extra.h
 %%LIBEV%%include/getdns/getdns_ext_libev.h
@@ -7,7 +6,7 @@ include/getdns/getdns_extra.h
 %%LIBUV%%include/getdns/getdns_ext_libuv.h
 lib/libgetdns.so
 lib/libgetdns.so.%%SOMAJVER%%
-lib/libgetdns.so.%%SOMAJVER%%.0.1
+lib/libgetdns.so.%%SOVERSION%%
 lib/libgetdns.a
 libdata/pkgconfig/getdns.pc
 libdata/pkgconfig/getdns_ext_event.pc

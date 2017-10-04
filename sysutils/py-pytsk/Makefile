@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pytsk
-PORTVERSION=	20170508
+PORTVERSION=	20170802
 PORTREVISION=	1
 CATEGORIES=	sysutils security devel python
 MASTER_SITES=	CHEESESHOP \
@@ -14,6 +14,7 @@ MAINTAINER=	antoine@FreeBSD.org
 COMMENT=	Python bindings for the Sleuthkit
 
 LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libtalloc.so:devel/talloc \
 		libtsk.so:sysutils/sleuthkit

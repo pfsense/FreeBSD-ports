@@ -1,12 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	seahub
-PORTVERSION=	${SEAHUB_VER}
 DISTVERSIONPREFIX=	v
+DISTVERSION=	${SEAHUB_VER}
 DISTVERSIONSUFFIX=	-pro
 CATEGORIES=	www
 
-MAINTAINER=	ultima1252@gmail.com
+MAINTAINER=	ultima@FreeBSD.org
 COMMENT=	Web frontend for Seafile
 
 LICENSE=	APACHE20
@@ -25,19 +25,19 @@ RUN_DEPENDS=	bash:shells/bash \
 		${PYTHON_PKGNAMEPREFIX}flup>=0:www/py-flup \
 		${PYTHON_PKGNAMEPREFIX}chardet>=0:textproc/py-chardet \
 		${PYTHON_PKGNAMEPREFIX}dateutil>=0:devel/py-dateutil \
+		${PYTHON_PKGNAMEPREFIX}requests>=0:www/py-requests \
 		${PYTHON_PKGNAMEPREFIX}six>=0:devel/py-six \
 		${PYTHON_PKGNAMEPREFIX}openpyxl>=0:textproc/py-openpyxl \
 		${PYTHON_PKGNAMEPREFIX}pillow>=0:graphics/py-pillow \
 		${PYTHON_PKGNAMEPREFIX}MySQLdb>0:databases/py-MySQLdb
 
+USES=		python:-2.7 shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	haiwen
-
-USES=		python:-2.7 shebangfix
 SHEBANG_FILES=	*.sh tests/*.sh *.template *.py tools/*.py seahub/*.py
 
-NO_BUILD=	yes
 NO_ARCH=	yes
+NO_BUILD=	yes
 
 OPTIONS_DEFINE=		SEAFOBJ SEAFDAV NLS
 OPTIONS_DEFAULT=	SEAFOBJ SEAFDAV

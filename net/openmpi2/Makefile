@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	openmpi
-PORTVERSION=	2.0.2
-PORTREVISION=	4
+PORTVERSION=	2.1.1
+PORTREVISION=	1
 CATEGORIES=	net parallel
 MASTER_SITES=	http://www.open-mpi.org/software/ompi/v${PORTVERSION:R}/downloads/
 PKGNAMESUFFIX=	2
@@ -24,7 +24,7 @@ BROKEN_sparc64=		fails to compile on sparc64
 HAS_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 # :keepla because port uses lt_dlopen
-USES=		execinfo fortran gmake libtool:keepla localbase perl5 \
+USES=		fortran gmake libtool:keepla localbase perl5 \
 		pkgconfig tar:bzip2
 USE_PERL5=	build
 
@@ -45,6 +45,7 @@ CONFIGURE_ARGS+=	--prefix=${PREFIX}/${MPIDIR} \
 			--enable-heterogeneous \
 			--enable-mpi-thread-multiple \
 			--with-libevent=external \
+			--with-wrapper-ldflags=-Wl,-rpath=-Wl,-rpath=${LOCALBASE}/lib/gcc${_GCC_VER} \
 			ompi_cv_fortran_ignore_tkr_data=0
 
 USE_LDCONFIG=	${PREFIX}/${MPIDIR}/lib \

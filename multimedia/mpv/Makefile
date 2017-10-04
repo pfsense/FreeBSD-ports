@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	mpv
-PORTVERSION=	0.25.0
+PORTVERSION=	0.27.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio
 
@@ -14,40 +13,37 @@ COMMENT=	Free and open-source general-purpose video player
 LICENSE=	GPLv2+ LGPL21+
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	ffmpeg>=3.2.2,1:multimedia/ffmpeg
+BUILD_DEPENDS=	ffmpeg>=3.3,1:multimedia/ffmpeg
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	mpv-player
-# Keep in sync with bootstrap.py to avoid regressions
-GH_TUPLE=	waf-project:waf:waf-1.8.12:waf
-
-WAF_CMD=	${WRKSRC_waf}/waf-light
 
 USES=		compiler:c11 desktop-file-utils iconv jpeg localbase:ldflags \
 		pkgconfig python:build waf
 USE_LDCONFIG=	yes
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	mpv-player
+# Keep in sync with bootstrap.py to avoid regressions
+GH_TUPLE=	waf-project:waf:waf-1.9.8:waf
+
+WAF_CMD=	${WRKSRC_waf}/waf-light
 
 CONFIGURE_ENV=	BIN_PYTHON="${PYTHON_CMD}"
 CONFIGURE_ARGS=	--docdir="${EXAMPLESDIR}" \
 		--htmldir="${DOCSDIR}/html" \
 		--mandir="${MANPREFIX}/man" \
 		--disable-debug-build \
-		--disable-d3d-hwaccel \
 		--disable-optimize \
 		--disable-pdf \
 		--disable-rubberband \
 		--disable-vaapi-wayland \
 		--disable-vapoursynth \
 		--disable-vapoursynth-lazy \
-		--disable-videotoolbox-hwaccel \
-		--disable-videotoolbox-gl \
 		--disable-wayland \
 		--enable-libmpv-shared
 
 OPTIONS_DEFINE=		ARCHIVE ASS DOCS LCMS2 LUAJIT MANPAGES TEST UCHARDET ZSH
 OPTIONS_DEFAULT=	ARCHIVE ASS DVDREAD DVDNAV MANPAGES OPENGL UCHARDET \
-			V4L VAAPI VDPAU X11 YTDL ZSH
+			V4L VAAPI VDPAU X11 YTDL
 OPTIONS_GROUP=		IN VO AO
 OPTIONS_GROUP_IN=	CDIO DVDREAD DVDNAV LIBBLURAY V4L YTDL SMB
 OPTIONS_GROUP_VO=	CACA OPENGL VAAPI VDPAU X11
@@ -77,18 +73,16 @@ CACA_LIB_DEPENDS=		libcaca.so:graphics/libcaca
 CACA_CONFIGURE_OFF=		--disable-caca
 
 CDIO_LIB_DEPENDS=		libcdio_paranoia.so:sysutils/libcdio-paranoia
-CDIO_CONFIGURE_OFF=		--disable-cdda
+CDIO_CONFIGURE_ON=		--enable-cdda
 
 DOCS_BUILD_DEPENDS=		rst2html:textproc/py-docutils
 DOCS_CONFIGURE_ON=		--enable-html
 
 DVDNAV_LIB_DEPENDS=		libdvdnav.so:multimedia/libdvdnav
 DVDNAV_CONFIGURE_ON=		--enable-dvdnav
-DVDNAV_CONFIGURE_OFF=		--disable-dvdnav
 
 DVDREAD_LIB_DEPENDS=		libdvdread.so:multimedia/libdvdread
 DVDREAD_CONFIGURE_ON=		--enable-dvdread
-DVDREAD_CONFIGURE_OFF=		--disable-dvdread
 
 JACK_LIB_DEPENDS=		libjack.so:audio/jack
 JACK_CONFIGURE_OFF=		--disable-jack
@@ -97,6 +91,7 @@ LCMS2_LIB_DEPENDS=		liblcms2.so:graphics/lcms2
 LCMS2_CONFIGURE_OFF=		--disable-lcms2
 
 LIBBLURAY_LIB_DEPENDS=		libbluray.so:multimedia/libbluray
+LIBBLURAY_CONFIGURE_ON=		--enable-libbluray
 LIBBLURAY_CONFIGURE_OFF=	--disable-libbluray
 
 LUAJIT_LIB_DEPENDS=		libluajit-5.1.so:lang/luajit
@@ -116,14 +111,13 @@ PULSEAUDIO_CONFIGURE_OFF=	--disable-pulse
 
 SDL_USE=			SDL=sdl2
 SDL_CONFIGURE_ON=		--enable-sdl2
-SDL_CONFIGURE_OFF=		--disable-sdl2
 
 SNDIO_LIB_DEPENDS=		libsndio.so:audio/sndio
 SNDIO_CONFIGURE_ON=		--enable-sndio
 SNDIO_CONFIGURE_OFF=		--disable-sndio
 
 SMB_USES=			samba:lib
-SMB_CONFIGURE_OFF=		--disable-libsmbclient
+SMB_CONFIGURE_ON=		--enable-libsmbclient
 
 TEST_BUILD_DEPENDS=		cmocka>=1.1.0:sysutils/cmocka
 TEST_CONFIGURE_ON=		--enable-test
@@ -134,7 +128,7 @@ UCHARDET_CONFIGURE_OFF=		--disable-uchardet
 
 V4L_BUILD_DEPENDS=		${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
 V4L_LIB_DEPENDS=		libv4l2.so:multimedia/libv4l
-V4L_CONFIGURE_OFF=		--disable-tv-v4l2
+V4L_CONFIGURE_ON=		--enable-tv --enable-dvbin
 
 VAAPI_LIB_DEPENDS=		libva.so:multimedia/libva
 VAAPI_CONFIGURE_OFF=		--disable-vaapi
