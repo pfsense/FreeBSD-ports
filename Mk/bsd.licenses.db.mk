@@ -80,6 +80,9 @@ _LICENSE_LIST+= MPL MPL10 MPL11 MPL20
 # Others
 _LICENSE_LIST+= NONE
 
+# ESF
+_LICENSE_LIST+= ESF
+
 # List of groups (only names must be present)
 
 _LICENSE_NAME_FSF=	Free Software Foundation Approved
@@ -417,6 +420,9 @@ _LICENSE_GROUPS_ZLIB=	GPL FSF OSI
 
 _LICENSE_NAME_ZPL21=	Zope Public License version 2.1
 _LICENSE_GROUPS_ZPL21=	GPL OSI
+
+_LICENSE_NAME_ESF=	Electric Sheep Fencing License
+_LICENSE_GROUPS_ESF=
 
 # Set default permissions if not defined
 
