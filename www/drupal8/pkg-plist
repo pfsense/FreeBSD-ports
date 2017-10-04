@@ -6607,7 +6607,7 @@
 %%WWWDIR%%/core/modules/simpletest/tests/src/Unit/PhpUnitErrorTest.php
 %%WWWDIR%%/core/modules/simpletest/tests/src/Unit/SimpletestPhpunitRunCommandTest.php
 %%WWWDIR%%/core/modules/simpletest/tests/src/Unit/TestBaseTest.php
-%%WWWDIR%%/core/modules/simpletest/tests/src/Unit/TestInfoParsingTest.php
+%%WWWDIR%%/core/modules/simpletest/tests/src/Unit/TestDiscoveryTest.php
 %%WWWDIR%%/core/modules/simpletest/tests/src/Unit/TraitAccessTest.php
 %%WWWDIR%%/core/modules/simpletest/tests/src/Unit/WebTestBaseTest.php
 %%WWWDIR%%/core/modules/statistics/config/install/statistics.settings.yml
@@ -7297,6 +7297,7 @@
 %%WWWDIR%%/core/modules/system/tests/modules/entity_test/src/Entity/EntityTestNoBundle.php
 %%WWWDIR%%/core/modules/system/tests/modules/entity_test/src/Entity/EntityTestNoId.php
 %%WWWDIR%%/core/modules/system/tests/modules/entity_test/src/Entity/EntityTestNoLabel.php
+%%WWWDIR%%/core/modules/system/tests/modules/entity_test/src/Entity/EntityTestNoUuid.php
 %%WWWDIR%%/core/modules/system/tests/modules/entity_test/src/Entity/EntityTestRev.php
 %%WWWDIR%%/core/modules/system/tests/modules/entity_test/src/Entity/EntityTestStringId.php
 %%WWWDIR%%/core/modules/system/tests/modules/entity_test/src/Entity/EntityTestViewBuilder.php

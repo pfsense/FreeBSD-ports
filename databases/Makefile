@@ -33,6 +33,7 @@
     SUBDIR += cego
     SUBDIR += cegobridge
     SUBDIR += clickhouse
+    SUBDIR += cockroach
     SUBDIR += couchdb
     SUBDIR += courier-authlib-mysql
     SUBDIR += courier-authlib-pgsql
@@ -97,7 +98,8 @@
     SUBDIR += gomdb
     SUBDIR += gosqlite3
     SUBDIR += gqlplus
-    SUBDIR += grass
+    SUBDIR += grass6
+    SUBDIR += grass7
     SUBDIR += gtksql
     SUBDIR += hamsterdb
     SUBDIR += hashtypes
@@ -157,7 +159,6 @@
     SUBDIR += libpbl
     SUBDIR += libpqtypes
     SUBDIR += libsdb
-    SUBDIR += libzbxpgsql
     SUBDIR += libzdb
     SUBDIR += linux-c6-sqlite3
     SUBDIR += linux-c7-sqlite3
@@ -195,6 +196,7 @@
     SUBDIR += mongodb34
     SUBDIR += mongodb34-rocks
     SUBDIR += mongodb34-tools
+    SUBDIR += mroonga
     SUBDIR += mrtg-mysql-load
     SUBDIR += mtools-mongodb
     SUBDIR += mtop
@@ -231,6 +233,7 @@
     SUBDIR += mysqltcl
     SUBDIR += mysqltuner
     SUBDIR += mysqlwsrep56-server
+    SUBDIR += mysqlwsrep57-server
     SUBDIR += mytop
     SUBDIR += nagios-check_mongodb
     SUBDIR += nagios-check_postgres_replication
@@ -554,6 +557,7 @@
     SUBDIR += pecl-pdo_user
     SUBDIR += pecl-redis
     SUBDIR += pecl-rrd
+    SUBDIR += pecl-rrd1
     SUBDIR += pecl-tokyo_tyrant
     SUBDIR += percona-pam-for-mysql
     SUBDIR += percona-toolkit
@@ -564,10 +568,14 @@
     SUBDIR += percona57-client
     SUBDIR += percona57-pam-for-mysql
     SUBDIR += percona57-server
+    SUBDIR += pgFormatter
     SUBDIR += pg_activity
     SUBDIR += pg_citus
+    SUBDIR += pg_dirtyread
+    SUBDIR += pg_partman
     SUBDIR += pg_qualstats
     SUBDIR += pg_reorg
+    SUBDIR += pg_repack
     SUBDIR += pg_rman
     SUBDIR += pg_stat_kcache
     SUBDIR += pg_statsinfo
@@ -581,6 +589,7 @@
     SUBDIR += pgespresso
     SUBDIR += pgfouine
     SUBDIR += pgloader
+    SUBDIR += pgloader3
     SUBDIR += pglogical
     SUBDIR += pgmodeler
     SUBDIR += pgpool
@@ -588,6 +597,7 @@
     SUBDIR += pgpool-II-35
     SUBDIR += pgpool-II-36
     SUBDIR += pgreplay
+    SUBDIR += pgroonga
     SUBDIR += pgrouting
     SUBDIR += pgsphere
     SUBDIR += pgtcl
@@ -649,11 +659,14 @@
     SUBDIR += phpmyadmin
     SUBDIR += phppgadmin
     SUBDIR += pldebugger
+    SUBDIR += plpgsql_check
+    SUBDIR += pointcloud
     SUBDIR += postgis-jdbc
     SUBDIR += postgis20
     SUBDIR += postgis21
     SUBDIR += postgis22
     SUBDIR += postgis23
+    SUBDIR += postgres-xl
     SUBDIR += postgresql-cstore_fdw
     SUBDIR += postgresql-jdbc
     SUBDIR += postgresql-libpgeasy
@@ -661,12 +674,23 @@
     SUBDIR += postgresql-libpqxx3
     SUBDIR += postgresql-mysql_fdw
     SUBDIR += postgresql-odbc
+    SUBDIR += postgresql-orafce
     SUBDIR += postgresql-plproxy
     SUBDIR += postgresql-plruby
     SUBDIR += postgresql-plv8js
     SUBDIR += postgresql-relay
     SUBDIR += postgresql-repmgr
     SUBDIR += postgresql-repmgr2
+    SUBDIR += postgresql-tds_fdw
+    SUBDIR += postgresql-zhparser
+    SUBDIR += postgresql10-client
+    SUBDIR += postgresql10-contrib
+    SUBDIR += postgresql10-docs
+    SUBDIR += postgresql10-pgtcl
+    SUBDIR += postgresql10-plperl
+    SUBDIR += postgresql10-plpython
+    SUBDIR += postgresql10-pltcl
+    SUBDIR += postgresql10-server
     SUBDIR += postgresql92-client
     SUBDIR += postgresql92-contrib
     SUBDIR += postgresql92-docs
@@ -717,8 +741,10 @@
     SUBDIR += proftpd-mod_sql_tds
     SUBDIR += puppetdb-terminus3
     SUBDIR += puppetdb-terminus4
+    SUBDIR += puppetdb-terminus5
     SUBDIR += puppetdb3
     SUBDIR += puppetdb4
+    SUBDIR += puppetdb5
     SUBDIR += pure-sql3
     SUBDIR += puredb
     SUBDIR += pxlib
@@ -755,13 +781,13 @@
     SUBDIR += py-htsql-pgsql
     SUBDIR += py-kyotocabinet
     SUBDIR += py-leveldb
+    SUBDIR += py-lmdb
     SUBDIR += py-motor
     SUBDIR += py-mycli
     SUBDIR += py-mysql-connector-python
     SUBDIR += py-mysql-connector-python2
     SUBDIR += py-mysql2pgsql
     SUBDIR += py-mysqlclient
-    SUBDIR += py-odbc
     SUBDIR += py-oops
     SUBDIR += py-oursql
     SUBDIR += py-peewee
@@ -781,6 +807,7 @@
     SUBDIR += py-pylibmc
     SUBDIR += py-pymssql
     SUBDIR += py-pymysql
+    SUBDIR += py-pyodbc
     SUBDIR += py-pypuppetdb
     SUBDIR += py-pypuppetdb03
     SUBDIR += py-pytc
@@ -795,6 +822,7 @@
     SUBDIR += py-redis
     SUBDIR += py-riak
     SUBDIR += py-rrdtool_lgpl
+    SUBDIR += py-sispy
     SUBDIR += py-south
     SUBDIR += py-sqlalchemy-migrate
     SUBDIR += py-sqlalchemy10
@@ -817,8 +845,6 @@
     SUBDIR += py3-bsddb3
     SUBDIR += py3-mysqlclient
     SUBDIR += py3-psycopg2
-    SUBDIR += py33-gdbm
-    SUBDIR += py33-sqlite3
     SUBDIR += py34-gdbm
     SUBDIR += py34-sqlite3
     SUBDIR += py35-gdbm
@@ -871,6 +897,7 @@
     SUBDIR += ruby-qdbm
     SUBDIR += ruby-tokyocabinet
     SUBDIR += ruby-xapian
+    SUBDIR += rubygem-active_model_serializers
     SUBDIR += rubygem-active_record_query_trace
     SUBDIR += rubygem-activemodel-serializers-xml
     SUBDIR += rubygem-activemodel4
@@ -929,12 +956,15 @@
     SUBDIR += rubygem-hiredis
     SUBDIR += rubygem-jdbc-mysql
     SUBDIR += rubygem-leo_manager_client
+    SUBDIR += rubygem-mario-redis-lock
     SUBDIR += rubygem-memcache
     SUBDIR += rubygem-memcache-client
     SUBDIR += rubygem-mysql
     SUBDIR += rubygem-mysql2
     SUBDIR += rubygem-openid-redis-store
     SUBDIR += rubygem-paranoia
+    SUBDIR += rubygem-peek-mysql2
+    SUBDIR += rubygem-peek-pg
     SUBDIR += rubygem-pg
     SUBDIR += rubygem-pg_array_parser
     SUBDIR += rubygem-pghero
@@ -975,7 +1005,6 @@
     SUBDIR += sqlite2
     SUBDIR += sqlite3
     SUBDIR += sqlitebrowser
-    SUBDIR += sqlitebrowser-qt5
     SUBDIR += sqliteconvert
     SUBDIR += sqliteman
     SUBDIR += sqlitemanager
@@ -1016,6 +1045,9 @@
     SUBDIR += xapian-core10
     SUBDIR += xapian-core12
     SUBDIR += xtrabackup
+    SUBDIR += zabbix22-libzbxpgsql
+    SUBDIR += zabbix3-libzbxpgsql
+    SUBDIR += zabbix32-libzbxpgsql
     SUBDIR += zodb3
 
 .include <bsd.port.subdir.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pdal
-PORTVERSION=	1.4.0
+PORTVERSION=	1.5.0
 PORTREVISION=	3
 CATEGORIES=	math databases graphics
 
@@ -18,9 +18,10 @@ LIB_DEPENDS=	libgdal.so:graphics/gdal \
 		libcurl.so:ftp/curl \
 		libgeotiff.so:graphics/libgeotiff \
 		libxml2.so:textproc/libxml2 \
-		liblaszip.so:archivers/laszip
+		liblaszip.so:archivers/laszip \
+		libjsoncpp.so:devel/jsoncpp
 
-USES=		cmake:outsource compiler:c++11-lib pathfix pkgconfig execinfo
+USES=		cmake:outsource compiler:c++11-lib pathfix pkgconfig
 USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	${PORTNAME:tu}
@@ -32,11 +33,13 @@ CXXFLAGS+=	-D_GLIBCXX_USE_C99
 CMAKE_ARGS+=	-DWITH_LASZIP:BOOL=TRUE #Doesn't build without laszip. LASZIP is recommended
 
 OPTIONS_DEFINE=	BASH \
-		ICEBRIDGE PGPOINTCLOUD SQLITE \
+		ICEBRIDGE PGPOINTCLOUD SQLITE MBIO \
 		PYTHON TESTS
-OPTIONS_DEFAULT=	PYTHON TESTS
+OPTIONS_DEFAULT=	PYTHON PGPOINTCLOUD SQLITE
+#Option without port
+#lazperf
 #Plugins with lib not in port:
-#RivLib, Matlab, MrSID, CPD, GeoWave, GreyHound, HexBin
+#RivLib, Matlab, MrSID, CPD, GeoWave, GreyHound, HexBin, NITF (nitro)
 OPTIONS_SUB=	yes
 
 PGPOINTCLOUD_DESC=	Enable Coherent PostgreSQL Point Cloud plugin
@@ -61,9 +64,14 @@ TESTS_CMAKE_ON=	-DBUILD_PLUGIN_TESTS:BOOL=TRUE
 TESTS_CMAKE_OFF=	DBUILD_PLUGIN_TESTS:BOOL=FALSE
 
 ICEBRIDGE_DESC=	Enable Icebridge plugin
-ICEBRIDGE_LIB_DEPENDS=	libhdf5.so:science/hdf5
+ICEBRIDGE_LIB_DEPENDS=	libhdf5.so:science/hdf5 \
+			libsz.so:science/szip
 ICEBRIDGE_CMAKE_ON=	-DBUILD_PLUGIN_ICEBRIDGE:BOOL=TRUE
 ICEBRIDGE_CMAKE_OFF=	-DBUILD_PLUGIN_ICEBRIDGE:BOOL=FALSE
+
+MBIO_DESC=	Enable MBIO plugin
+MBIO_CMAKE_ON=		-DBUILD_PLUGIN_MBIO:BOOL=TRUE
+MBIO_CMAKE_OFF=		-DBUILD_PLUGIN_MBIO:BOOL=FALSE
 
 BASH_DESC=	BASH completion
 BASH_CMAKE_ON=	-DWITH_COMPLETION:BOOL=TRUE

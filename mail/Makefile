@@ -97,12 +97,7 @@
     SUBDIR += dma
     SUBDIR += dot-forward
     SUBDIR += dovecot
-    SUBDIR += dovecot-antispam
-    SUBDIR += dovecot-managesieve
-    SUBDIR += dovecot-sieve
-    SUBDIR += dovecot2
-    SUBDIR += dovecot2-antispam-plugin
-    SUBDIR += dovecot2-pigeonhole
+    SUBDIR += dovecot-pigeonhole
     SUBDIR += drac
     SUBDIR += dracmail
     SUBDIR += dspam
@@ -218,6 +213,7 @@
     SUBDIR += mailfromd
     SUBDIR += mailfront
     SUBDIR += mailgraph
+    SUBDIR += mailhog
     SUBDIR += mailman
     SUBDIR += mailmgr
     SUBDIR += mailpile
@@ -242,7 +238,6 @@
     SUBDIR += milter-bogom
     SUBDIR += milter-callback
     SUBDIR += milter-greylist
-    SUBDIR += milter-greylist-devel
     SUBDIR += milter-manager
     SUBDIR += milter-regex
     SUBDIR += milter-skem
@@ -255,7 +250,6 @@
     SUBDIR += mlmmj
     SUBDIR += mls
     SUBDIR += mmr
-    SUBDIR += movemail
     SUBDIR += mpop
     SUBDIR += mreport
     SUBDIR += msgconvert
@@ -325,6 +319,7 @@
     SUBDIR += p5-Email-Address
     SUBDIR += p5-Email-Address-List
     SUBDIR += p5-Email-Address-Loose
+    SUBDIR += p5-Email-Address-XS
     SUBDIR += p5-Email-AddressParser
     SUBDIR += p5-Email-Date
     SUBDIR += p5-Email-Date-Format
@@ -532,11 +527,13 @@
     SUBDIR += proxsmtp
     SUBDIR += py-Products.MailHost
     SUBDIR += py-Products.SecureMailHost
+    SUBDIR += py-aiosmtpd
     SUBDIR += py-apolicy
     SUBDIR += py-authres
     SUBDIR += py-cyruslib
     SUBDIR += py-dkimpy
     SUBDIR += py-email-reply-parser
+    SUBDIR += py-flufl.bounce
     SUBDIR += py-fuglu
     SUBDIR += py-libgmail
     SUBDIR += py-milter
@@ -545,7 +542,6 @@
     SUBDIR += py-pymailq
     SUBDIR += py-pyspf
     SUBDIR += py-spambayes
-    SUBDIR += py-twistedMail
     SUBDIR += py-zope.sendmail
     SUBDIR += pymsgauth
     SUBDIR += pysieved
@@ -591,7 +587,6 @@
     SUBDIR += rlytest
     SUBDIR += rmilter
     SUBDIR += roundcube
-    SUBDIR += roundcube-air
     SUBDIR += roundcube-automatic_addressbook
     SUBDIR += roundcube-carddav
     SUBDIR += roundcube-contextmenu
@@ -617,11 +612,11 @@
     SUBDIR += rubygem-email_reply_parser-discourse
     SUBDIR += rubygem-email_reply_trimmer
     SUBDIR += rubygem-exception_notification
-    SUBDIR += rubygem-larch
     SUBDIR += rubygem-mail
     SUBDIR += rubygem-mail_room
     SUBDIR += rubygem-mailboxer
     SUBDIR += rubygem-mailfactory
+    SUBDIR += rubygem-mini_mime
     SUBDIR += rubygem-pony
     SUBDIR += rubygem-premailer
     SUBDIR += rubygem-premailer-rails
@@ -646,6 +641,7 @@
     SUBDIR += slapd-cyrus
     SUBDIR += sma
     SUBDIR += smfsav
+    SUBDIR += smfsav-devel
     SUBDIR += smtp-cli
     SUBDIR += smtp-gated
     SUBDIR += smtpfeed

@@ -10,7 +10,6 @@
     SUBDIR += bcftools
     SUBDIR += bedtools
     SUBDIR += biococoa
-    SUBDIR += biojava
     SUBDIR += blat
     SUBDIR += bowtie
     SUBDIR += bowtie2
@@ -61,6 +60,7 @@
     SUBDIR += p5-Bio-Coordinate
     SUBDIR += p5-Bio-Das
     SUBDIR += p5-Bio-Das-Lite
+    SUBDIR += p5-Bio-FeatureIO
     SUBDIR += p5-Bio-GFF3
     SUBDIR += p5-Bio-Glite
     SUBDIR += p5-Bio-Graphics

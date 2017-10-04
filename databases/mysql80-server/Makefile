@@ -4,7 +4,7 @@
 PORTNAME?=		mysql
 PORTVERSION=		8.0.0
 DISTVERSIONSUFFIX?=	-dmr
-PORTREVISION?=		4
+PORTREVISION?=		5
 CATEGORIES=		databases ipv6
 MASTER_SITES=		MYSQL/MySQL-8.0
 PKGNAMESUFFIX?=		80-server
@@ -80,6 +80,7 @@ USES+=		mysql:80
 
 CONFLICTS_INSTALL=	mysql8[1-9]-server-* \
 			mysql[0-79][0-9]-server-* \
+			mysqlwsrep* \
 			mariadb[0-9][0-9]-server-* \
 			percona[0-9][0-9]-server-*
 

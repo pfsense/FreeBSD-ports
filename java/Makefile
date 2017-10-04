@@ -8,6 +8,8 @@
     SUBDIR += berkeley-db
     SUBDIR += bluej
     SUBDIR += bootstrap-openjdk
+    SUBDIR += bootstrap-openjdk6
+    SUBDIR += bootstrap-openjdk8
     SUBDIR += bouncycastle
     SUBDIR += bouncycastle15
     SUBDIR += cacao
@@ -33,7 +35,6 @@
     SUBDIR += intellij
     SUBDIR += intellij-fsnotifier
     SUBDIR += intellij-pty4j
-    SUBDIR += intellij-pycharm
     SUBDIR += intellij-rubymine
     SUBDIR += intellij-ultimate
     SUBDIR += jad
@@ -48,6 +49,7 @@
     SUBDIR += jakarta-commons-discovery
     SUBDIR += jakarta-commons-httpclient
     SUBDIR += jakarta-commons-lang
+    SUBDIR += jakarta-commons-lang3
     SUBDIR += jakarta-commons-logging
     SUBDIR += jakarta-commons-pool
     SUBDIR += jakarta-commons-primitives

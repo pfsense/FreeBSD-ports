@@ -110,7 +110,9 @@
     SUBDIR += pipelight
     SUBDIR += playonbsd
     SUBDIR += ppsspp
+    SUBDIR += ppsspp-devel
     SUBDIR += ppsspp-qt5
+    SUBDIR += ppsspp-qt5-devel
     SUBDIR += py-gns3-converter
     SUBDIR += py-nova
     SUBDIR += py-unicorn
@@ -121,6 +123,7 @@
     SUBDIR += qemu-cheri128m
     SUBDIR += qemu-devel
     SUBDIR += qemu-launcher
+    SUBDIR += qemu-ppcnv
     SUBDIR += qemu-riscv
     SUBDIR += qemu-sbruno
     SUBDIR += qemu-user-static

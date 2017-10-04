@@ -3,14 +3,14 @@
 
 PORTNAME=	mupdf
 PORTVERSION=	1.11
-PORTREVISION=	1
+PORTREVISION=	2
 DISTVERSIONSUFFIX=	-source
 PORTEPOCH=	1
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.mupdf.com/downloads/ \
 		http://www.mupdf.com/downloads/archive/
 
-MAINTAINER=	udvzsolt@gmail.com
+MAINTAINER=	uzsolt@uzsolt.hu
 COMMENT=	Lightweight PDF viewer and toolkit
 
 LICENSE=	AGPLv3

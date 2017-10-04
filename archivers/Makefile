@@ -11,8 +11,10 @@
     SUBDIR += ark
     SUBDIR += atool
     SUBDIR += bicom
+    SUBDIR += brotli
     SUBDIR += bzip
     SUBDIR += bzip2
+    SUBDIR += c-blosc
     SUBDIR += cabextract
     SUBDIR += dact
     SUBDIR += deb2targz
@@ -52,6 +54,7 @@
     SUBDIR += kf5-karchive
     SUBDIR += kzip
     SUBDIR += laszip
+    SUBDIR += lazperf
     SUBDIR += lbrate
     SUBDIR += lbzip2
     SUBDIR += lcab
@@ -198,6 +201,7 @@
     SUBDIR += rubygem-ruby-xz
     SUBDIR += rubygem-rubyzip
     SUBDIR += rubygem-rubyzip2
+    SUBDIR += rubygem-snappy
     SUBDIR += rvm
     SUBDIR += rzip
     SUBDIR += sectar

@@ -2,12 +2,13 @@
 
 PORTNAME=	arduino-tools
 PORTVERSION=	1.8.2
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	# Mostly metaport - installs files, no build
 DISTFILES=	#
 EXTRACT_ONLY=	#
 
-MAINTAINER=	bsdports@kyle-evans.net
+MAINTAINER=	kevans@FreeBSD.org
 COMMENT=	Brings together all of the tool dependencies used for Arduino 1.6+
 
 LICENSE=	BSD3CLAUSE
@@ -26,7 +27,7 @@ RUN_DEPENDS=	arduino-avrdude:devel/arduino-avrdude \
 NO_BUILD=	yes
 NO_ARCH=	yes
 
-ARMGCC_FULL_VERS=	6-2017-q1-update
+ARMGCC_FULL_VERS=	6-2017-q2-update
 
 ARMGCC_VERS=	4.9.2
 AVRDUDE_VERS=	6.3.0-arduino9

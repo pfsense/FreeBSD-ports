@@ -11,9 +11,9 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	tobez@FreeBSD.org
 COMMENT=	Sub::Name - (re)name a sub
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_FILE=	${WRKSRC}/LICENCE
 
 TEST_DEPENDS=	p5-B-C>=1.48:devel/p5-B-C \
 		p5-Devel-CheckBin>=0:devel/p5-Devel-CheckBin
