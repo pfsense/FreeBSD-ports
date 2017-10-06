@@ -196,6 +196,13 @@ fetch_upgrade_packages() {
 
 	fi
 
+	# Workaround for pkg bug https://github.com/freebsd/pkg/issues/1613
+	if pkg upgrade -Unq 2>&1 | \
+	    sed '/ will be affected/,/ be REINSTALLED:/ {; d; };' | \
+	    egrep -q '^[[:blank:]]*pkg-[0-9]'; then
+		_fetch_list="${_fetch_list}${_fetch_list:+ }pkg"
+	fi
+
 	_exec "pkg_with_pb ${pkg_chroot} upgrade -F" \
 	    "Downloading upgrade packages"
 
