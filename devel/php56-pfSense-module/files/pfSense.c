@@ -1711,6 +1711,7 @@ PHP_FUNCTION(pfSense_etherswitch_getinfo)
 	array_init(return_value);
 	add_assoc_string(return_value, "name", info.es_name, 1);
 	add_assoc_long(return_value, "nports", info.es_nports);
+	add_assoc_long(return_value, "nlaggroups", info.es_nlaggroups);
 	add_assoc_long(return_value, "nvlangroups", info.es_nvlangroups);
 
 	ALLOC_INIT_ZVAL(caps);
@@ -1731,6 +1732,8 @@ PHP_FUNCTION(pfSense_etherswitch_getinfo)
 	array_init(swcaps);
 	if (info.es_switch_caps & ETHERSWITCH_CAPS_PORTS_MASK)
 		add_assoc_long(swcaps, "PORTS_MASK", 1);
+	if (info.es_switch_caps & ETHERSWITCH_CAPS_LAGG)
+		add_assoc_long(swcaps, "LAGG", 1);
 	add_assoc_zval(return_value, "switch_caps", swcaps);
 
 	if (info.es_switch_caps & ETHERSWITCH_CAPS_PORTS_MASK) {
@@ -1818,6 +1821,8 @@ PHP_FUNCTION(pfSense_etherswitch_getport)
 		add_assoc_long(flags, "ADDTAG", 1);
 	if (p.es_flags & ETHERSWITCH_PORT_FIRSTLOCK)
 		add_assoc_long(flags, "FIRSTLOCK", 1);
+	if (p.es_flags & ETHERSWITCH_PORT_DROPTAGGED)
+		add_assoc_long(flags, "DROPTAGGED", 1);
 	if (p.es_flags & ETHERSWITCH_PORT_DROPUNTAGGED)
 		add_assoc_long(flags, "DROPUNTAGGED", 1);
 	if (p.es_flags & ETHERSWITCH_PORT_DOUBLE_TAG)
