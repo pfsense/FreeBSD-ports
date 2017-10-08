@@ -772,8 +772,11 @@ events.push(function() {
 		"86400": "%Y-%m-%d",
 		"43200": "%Y-%m-%d",
 		"3600": "%m/%d %H:%M",
+		"1800": "%m/%d %H:%M",
 		"300": "%H:%M:%S",
-		"60": "%H:%M:%S"
+		"150": "%H:%M:%S",
+		"60": "%H:%M:%S",
+		"30": "%H:%M:%S"
 	};
 
 	//lookup human readable time based on number of seconds
