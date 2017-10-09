@@ -181,6 +181,7 @@ void init_log(const char *lname, size_t size) {
 	char buffer[BUFFER_SIZE];
 	struct clog_footer cf;
 
+	memset(&cf, 0, sizeof(cf));
 	memcpy(&cf.cf_magic,MAGIC_CONST,4);
 	cf.cf_max = size - sizeof(struct clog_footer);
 
