@@ -934,6 +934,10 @@ function squid_validate_cache($post, &$input_errors) {
 	if ($post['donotcache'] != "") {
 		foreach (split("\n", $post['donotcache']) as $host) {
 			$host = trim($host);
+			// Allow matching all subdomains, like .example.com
+			if (strpos($host, '.') === 0) {
+				$host = substr($host, 1);
+			}
 			if (!is_ipaddr($host) && !is_domain($host)) {
 				$input_errors[] = "The host '$host' is not a valid IP or hostname.";
 			}
