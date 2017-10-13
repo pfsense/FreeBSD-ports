@@ -125,7 +125,7 @@ _exit() {
 	fi
 
 	if [ -n "${delete_annotation}" ]; then
-		pkg ${pkg_chroot} annotate -q -D ${kernel_pkg} next_stage
+		pkg-static ${pkg_chroot} annotate -q -D ${kernel_pkg} next_stage
 	fi
 
 	if [ -n "${unlock_additional_pkgs}" ]; then
@@ -163,7 +163,7 @@ pkg_with_pb() {
 		done
 	fi
 
-	pkg ${_event_pipe} $@
+	pkg-static ${_event_pipe} $@
 	local _pkg_result=$?
 	nc_pid=""
 	return ${_pkg_result}
@@ -177,18 +177,18 @@ fetch_upgrade_packages() {
 		# Check if all non-auto packages installed on 2nd partition are
 		# installed on current one, if not, mark them to be deleted by
 		# pkg autoremove
-		for _pkg in $(pkg ${pkg_chroot} query -e '%a == 0' %n); do
-			pkg info -e ${_pkg} \
+		for _pkg in $(pkg-static ${pkg_chroot} query -e '%a == 0' %n); do
+			pkg-static info -e ${_pkg} \
 			    && continue
 
-			_exec "pkg ${pkg_chroot} set -A 1 ${_pkg}" \
+			_exec "pkg-static ${pkg_chroot} set -A 1 ${_pkg}" \
 			    "Scheduling package ${_pkg} for removal"
 		done
 
 		# Check if all non-auto packages installed on current partition
 		# are installed on 2nd one, if not, we need to fetch them
-		for _pkg in $(pkg query -e '%a == 0' %n); do
-			pkg ${pkg_chroot} info -e ${_pkg} \
+		for _pkg in $(pkg-static query -e '%a == 0' %n); do
+			pkg-static ${pkg_chroot} info -e ${_pkg} \
 			    && continue
 
 			_fetch_list="${_fetch_list}${_fetch_list:+ }${_pkg}"
@@ -197,7 +197,7 @@ fetch_upgrade_packages() {
 	fi
 
 	# Workaround for pkg bug https://github.com/freebsd/pkg/issues/1613
-	if pkg upgrade -Unq 2>&1 | \
+	if pkg-static upgrade -Unq 2>&1 | \
 	    sed '/ will be affected/,/ be REINSTALLED:/ {; d; };' | \
 	    egrep -q '^[[:blank:]]*pkg-[0-9]'; then
 		_fetch_list="${_fetch_list}${_fetch_list:+ }pkg"
@@ -220,12 +220,12 @@ pkg_lock() {
 	fi
 
 	for _pkg in ${_pkgs}; do
-		for _pkg_name in $(pkg query -g %n "${_pkg}"); do
-			_locked=$(pkg ${pkg_chroot} query %k ${_pkg_name})
+		for _pkg_name in $(pkg-static query -g %n "${_pkg}"); do
+			_locked=$(pkg-static ${pkg_chroot} query %k ${_pkg_name})
 			if [ "${_locked}" != "0" ]; then
 				continue
 			fi
-			_exec "pkg ${pkg_chroot} lock ${_pkg_name}" \
+			_exec "pkg-static ${pkg_chroot} lock ${_pkg_name}" \
 			    "Locking package ${_pkg_name}" mute
 		done
 	done
@@ -239,12 +239,12 @@ pkg_unlock() {
 	fi
 
 	for _pkg in ${_pkgs}; do
-		for _pkg_name in $(pkg query -g %n "${_pkg}"); do
-			_locked=$(pkg ${pkg_chroot} query %k ${_pkg_name})
+		for _pkg_name in $(pkg-static query -g %n "${_pkg}"); do
+			_locked=$(pkg-static ${pkg_chroot} query %k ${_pkg_name})
 			if [ "${_locked}" != "1" ]; then
 				continue
 			fi
-			_exec "pkg ${pkg_chroot} unlock ${_pkg_name}" \
+			_exec "pkg-static ${pkg_chroot} unlock ${_pkg_name}" \
 			    "Unlocking package ${_pkg_name}" mute
 		done
 	done
@@ -315,13 +315,13 @@ pkg_update() {
 
 	abi_setup
 
-	_exec "pkg ${pkg_chroot} update${_force}" \
+	_exec "pkg-static ${pkg_chroot} update${_force}" \
 	    "Updating repositories metadata" ${_mute}
 }
 
 pkg_upgrade_repo() {
 	if [ -z "${NEW_MAJOR}" -a "$(compare_pkg_version pkg)" = "<" ]; then
-		_exec "pkg upgrade${dont_update} pkg" "Upgrading pkg" mute
+		_exec "pkg-static upgrade${dont_update} pkg" "Upgrading pkg" mute
 		pkg_update force
 	fi
 
@@ -329,11 +329,11 @@ pkg_upgrade_repo() {
 
 	# Deprecated pa
 	if is_pkg_installed ${product}-repo-devel; then
-		_exec "pkg ${pkg_chroot} set -A 1 ${product}-repo-devel" \
+		_exec "pkg-static ${pkg_chroot} set -A 1 ${product}-repo-devel" \
 		    "Scheduling package ${product}-repo-devel for removal"
-		_exec "pkg install${dont_update} ${_repo_pkg}" \
+		_exec "pkg-static install${dont_update} ${_repo_pkg}" \
 		    "Installing ${_repo_pkg}" mute
-		_exec "pkg delete ${product}-repo-devel" \
+		_exec "pkg-static delete ${product}-repo-devel" \
 		    "Removing ${product}-repo-devel" mute ignore_result
 		validate_repo_conf
 		pkg_update force
@@ -358,7 +358,7 @@ pkg_upgrade_repo() {
 	esac
 
 	cp /usr/local/etc/pkg/repos/${product}.conf /tmp/${product}.conf.copy
-	_exec "pkg upgrade${dont_update}${_force} ${_repo_pkg}" \
+	_exec "pkg-static upgrade${dont_update}${_force} ${_repo_pkg}" \
 	    "Upgrading ${_repo_pkg}" mute
 	abi_setup
 	# If conf differs, for an update
@@ -369,7 +369,7 @@ pkg_upgrade_repo() {
 		# New repo may contain newer pkg
 		if [ -z "${NEW_MAJOR}" -a "$(compare_pkg_version pkg)" = "<" ]
 		then
-			_exec "pkg upgrade pkg" "Upgrading pkg" mute
+			_exec "pkg-static upgrade pkg" "Upgrading pkg" mute
 			pkg_update force
 		fi
 	fi
@@ -378,7 +378,7 @@ pkg_upgrade_repo() {
 
 upgrade_available() {
 	# XXX locked packages message should be printed on stderr by pkg?
-	local _lines=$(pkg upgrade${dont_update} -nq "$@" 2>/dev/null \
+	local _lines=$(pkg-static upgrade${dont_update} -nq "$@" 2>/dev/null \
 	    | sed -e '/^$/d; /is locked and may not be modified/d' \
 	    | wc -l)
 
@@ -388,14 +388,14 @@ upgrade_available() {
 
 pkg_upgrade() {
 	# figure out which kernel variant is running
-	export kernel_pkg=$(pkg query %n $(pkg info ${product}-kernel-\* | \
+	export kernel_pkg=$(pkg-static query %n $(pkg-static info ${product}-kernel-\* | \
 	    grep -v -- -debug-))
 
 	# Detect if has u-boot package installed
 	unset uboot_pkg
-	if pkg info ${product}-u-boot-ufw\* >/dev/null 2>&1; then
-		export uboot_pkg=$(pkg query %n \
-		    $(pkg info ${product}-u-boot-ufw\*))
+	if pkg-static info ${product}-u-boot-ufw\* >/dev/null 2>&1; then
+		export uboot_pkg=$(pkg-static query %n \
+		    $(pkg-static info ${product}-u-boot-ufw\*))
 	fi
 
 	if [ -n "${uboot_pkg}" -a \
@@ -418,8 +418,8 @@ pkg_upgrade() {
 		_exit 1
 	fi
 
-	export next_stage=$(pkg annotate -q -S ${kernel_pkg} next_stage)
-	export is_pkg_locked=$(pkg annotate -q -S ${kernel_pkg} new_major)
+	export next_stage=$(pkg-static annotate -q -S ${kernel_pkg} next_stage)
+	export is_pkg_locked=$(pkg-static annotate -q -S ${kernel_pkg} new_major)
 
 	if [ -n "${next_stage}" -a -n "${booting}" -a -n "${boot_stage}" ]; then
 		if [ ${boot_stage} != ${next_stage} ]; then
@@ -453,7 +453,7 @@ pkg_upgrade() {
 		# and return a special code 99 used by wrapper to run newer
 		# version again using the same parameters
 		if [ "$(compare_pkg_version ${product}-upgrade)" = "<" ]; then
-			_exec "pkg upgrade${dont_update} ${product}-upgrade" \
+			_exec "pkg-static upgrade${dont_update} ${product}-upgrade" \
 			    "Upgrading ${product}-upgrade" mute
 			[ -n "${NEW_MAJOR}" ] \
 			    && pkg_unlock pkg
@@ -474,7 +474,7 @@ pkg_upgrade() {
 		if [ -n "${dry_run}" ]; then
 			[ -n "${NEW_MAJOR}" ] \
 			    && pkg_unlock pkg
-			pkg ${pkg_chroot} upgrade${dont_update} -nq 2>&1 \
+			pkg-static ${pkg_chroot} upgrade${dont_update} -nq 2>&1 \
 			    | tee -a ${logfile}
 			pkg_lock ${kernel_pkg} ${uboot_pkg}
 			_exit 0
@@ -518,7 +518,7 @@ pkg_upgrade() {
 
 		if [ -z "${yes}" ]; then
 			# Show user which packages are going to be upgraded
-			pkg ${pkg_chroot} upgrade${dont_update} -nq 2>&1 \
+			pkg-static ${pkg_chroot} upgrade${dont_update} -nq 2>&1 \
 			    | tee -a ${logfile}
 
 			_echo ""
@@ -552,21 +552,21 @@ pkg_upgrade() {
 		fi
 
 		if upgrade_available ${kernel_pkg}; then
-			_exec "pkg ${pkg_chroot} upgrade -U ${kernel_pkg}" \
+			_exec "pkg-static ${pkg_chroot} upgrade -U ${kernel_pkg}" \
 			    "Upgrading ${product} kernel"
 		fi
 
 		if [ -n "${uboot_pkg}" ] && upgrade_available ${uboot_pkg}; then
-			_exec "pkg ${pkg_chroot} upgrade -U ${uboot_pkg}" \
+			_exec "pkg-static ${pkg_chroot} upgrade -U ${uboot_pkg}" \
 			    "Upgrading ${product} u-boot"
 		fi
 
 		if [ -n "${NEW_MAJOR}" ]; then
-			pkg ${pkg_chroot} annotate -q -M ${kernel_pkg} \
+			pkg-static ${pkg_chroot} annotate -q -M ${kernel_pkg} \
 			    new_major 1
 		fi
 
-		pkg ${pkg_chroot} annotate -q -M ${kernel_pkg} next_stage 2
+		pkg-static ${pkg_chroot} annotate -q -M ${kernel_pkg} next_stage 2
 		next_stage=2
 
 		if [ "${platform}" != "nanobsd" ]; then
@@ -598,7 +598,7 @@ pkg_upgrade() {
 			if [ -n "${is_pkg_locked}" ]; then
 				# Upgrade pkg
 				pkg_unlock pkg
-				pkg ${pkg_chroot} annotate -q -D \
+				pkg-static ${pkg_chroot} annotate -q -D \
 				    ${kernel_pkg} new_major
 				_exec "pkg-static install -f pkg" \
 				    "Reinstalling pkg due to ABI change"
@@ -612,12 +612,12 @@ pkg_upgrade() {
 				/etc/rc.php_ini_setup >/dev/null 2>&1
 			fi
 
-			_exec "pkg ${pkg_chroot} upgrade${dont_update}" \
+			_exec "pkg-static ${pkg_chroot} upgrade${dont_update}" \
 			    "Upgrading necessary packages"
 			delete_annotation=""
 		fi
 
-		pkg ${pkg_chroot} annotate -q -M ${kernel_pkg} next_stage 3
+		pkg-static ${pkg_chroot} annotate -q -M ${kernel_pkg} next_stage 3
 		next_stage=3
 
 		pkg_unlock "${pkg_prefix}*"
@@ -644,17 +644,17 @@ pkg_upgrade() {
 	if [ "${next_stage}" = "3" ]; then
 		if upgrade_available; then
 			delete_annotation=1
-			_exec "pkg ${pkg_chroot} upgrade${dont_update}" \
+			_exec "pkg-static ${pkg_chroot} upgrade${dont_update}" \
 			    "Upgrading necessary packages"
 			delete_annotation=""
 		fi
 
-		pkg ${pkg_chroot} annotate -q -D ${kernel_pkg} next_stage
+		pkg-static ${pkg_chroot} annotate -q -D ${kernel_pkg} next_stage
 
 		# cleanup caches
-		_exec "pkg ${pkg_chroot} autoremove" \
+		_exec "pkg-static ${pkg_chroot} autoremove" \
 		    "Removing unnecessary packages" mute ignore_result
-		_exec "pkg ${pkg_chroot} clean" "Cleanup pkg cache" mute \
+		_exec "pkg-static ${pkg_chroot} clean" "Cleanup pkg cache" mute \
 		    ignore_result
 	fi
 
@@ -715,7 +715,7 @@ get_meta_pkg_name() {
 
 check_upgrade() {
 	local _meta_pkg=$(get_meta_pkg_name)
-	local _core_pkgs=$(pkg query -e \
+	local _core_pkgs=$(pkg-static query -e \
 	    "%n ~ ${product}-kernel-* || %n ~ ${product}-base*" %n)
 
 	pkg_update "" mute
@@ -726,7 +726,7 @@ check_upgrade() {
 		[ "$(compare_pkg_version ${_pkg})" != "<" ] \
 		    && continue
 
-		local _new_version=$(pkg rquery -U %v ${_pkg})
+		local _new_version=$(pkg-static rquery -U %v ${_pkg})
 		_echo "${_new_version} version of ${product} is available"
 		_exit 2
 	done
@@ -827,7 +827,7 @@ is_pkg_installed() {
 	shift
 	local _pkg_chroot="$@"
 
-	pkg ${_pkg_chroot} info -e ${_pkg_name}
+	pkg-static ${_pkg_chroot} info -e ${_pkg_name}
 	return $?
 }
 
@@ -844,7 +844,7 @@ compare_pkg_version() {
 		return 1
 	fi
 
-	local _lver=$(pkg ${pkg_chroot} query %v ${_pkg_name})
+	local _lver=$(pkg-static ${pkg_chroot} query %v ${_pkg_name})
 
 	if [ -z "${_lver}" ]; then
 		_echo "ERROR: It was not possible to determine ${_pkg_name}" \
@@ -852,7 +852,7 @@ compare_pkg_version() {
 		_exit 1
 	fi
 
-	local _rver=$(pkg ${pkg_chroot} rquery -U %v ${_pkg_name})
+	local _rver=$(pkg-static ${pkg_chroot} rquery -U %v ${_pkg_name})
 
 	if [ -z "${_rver}" ]; then
 		_echo "ERROR: It was not possible to determine ${_pkg_name}" \
@@ -860,7 +860,7 @@ compare_pkg_version() {
 		_exit 1
 	fi
 
-	local _version=$(pkg version -t ${_lver} ${_rver})
+	local _version=$(pkg-static version -t ${_lver} ${_rver})
 
 	if [ $? -ne 0 ]; then
 		_echo "ERROR: Error comparing ${_pkg_name} local and remote" \
@@ -907,12 +907,12 @@ pkg_install() {
 
 	_exec "pkg_with_pb ${_cmd}${dry_run:+ }${dry_run} ${_pkg_name}" \
 	    "${_msg} ${_pkg_name}"
-	_exec "pkg clean" "Cleaning up cache" mute ignore_result
+	_exec "pkg-static clean" "Cleaning up cache" mute ignore_result
 }
 
 # Reinstall every pfSense-pkg-* package
 pkg_reinstall_all() {
-	for _pkg in $(pkg query -e '%a == 0' %n); do
+	for _pkg in $(pkg-static query -e '%a == 0' %n); do
 		case ${_pkg} in "${pkg_prefix}"* )
 			_echo "Reinstalling ${_pkg}"
 			pkg_install ${_pkg} 1
@@ -936,12 +936,12 @@ pkg_delete() {
 
 	_exec "pkg_with_pb delete${dry_run:+ }${dry_run} ${_pkg_name}" \
 	    "Removing ${_pkg_name}"
-	_exec "pkg autoremove" "Removing stale packages" mute ignore_result
+	_exec "pkg-static autoremove" "Removing stale packages" mute ignore_result
 }
 
 # Delete every pfSense-pkg-* package
 pkg_delete_all() {
-	for _pkg in $(pkg query -e '%a == 0' %n); do
+	for _pkg in $(pkg-static query -e '%a == 0' %n); do
 		case ${_pkg} in "${pkg_prefix}"* )
 			_echo "Removing ${_pkg}"
 			pkg_delete ${_pkg}
