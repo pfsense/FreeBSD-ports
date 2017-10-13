@@ -510,6 +510,12 @@ pkg_upgrade() {
 			fi
 		fi
 
+		# Help users to fix fstab before risk moving to FreeBSD 11
+		if grep -q -E '/dev/ad[[:digit:]]' /etc/fstab; then
+			_exec "/usr/local/sbin/ufslabels.sh commit" \
+			    "Fixing bad /etc/fstab" mute ignore_result
+		fi
+
 		# Unlock pkg to make sure it's downloaded
 		if [ -n "${NEW_MAJOR}" ]; then
 			pkg_unlock pkg
