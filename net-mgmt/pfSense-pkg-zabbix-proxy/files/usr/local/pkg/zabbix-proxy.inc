@@ -1,6 +1,6 @@
 <?php
 /*
- * zabbix-proxy-lts.inc
+ * zabbix-proxy.inc
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
@@ -28,24 +28,29 @@ require_once("globals.inc");
 require_once("certs.inc");
 
 define('ZABBIX_PROXY_BASE', '/usr/local');
+define('ZABBIX_VERSION', %%ZABBIXVERSION%%);
 
-function php_deinstall_zabbix_proxy_lts() {
-	unlink_if_exists(ZABBIX_PROXY_BASE . "/etc/zabbix3/zabbix_proxy_lts.conf");
-	unlink_if_exists("/var/log/zabbix-proxy-lts/zabbix_proxy_lts.log");
-	unlink_if_exists("/var/run/zabbix-proxy-lts/zabbix_proxy_lts.pid");
+function php_deinstall_zabbix_proxy() {
+	unlink_if_exists(ZABBIX_PROXY_BASE . "/etc/zabbix%%ZABBIXVERSION%%/zabbix_proxy.conf");
+	unlink_if_exists("/var/log/zabbix-proxy/zabbix_proxy.log");
+	unlink_if_exists("/var/run/zabbix-proxy/zabbix_proxy.pid");
 
-	if (is_dir("/var/log/zabbix-proxy-lts")) {
-		mwexec("/bin/rm -rf /var/log/zabbix-proxy-lts/");
+
+	if (is_dir(ZABBIX_PROXY_BASE . "/etc/zabbix%%ZABBIXVERSION%%")) {
+		mwexec("/bin/rm -rf " . ZABBIX_PROXY_BASE . "/etc/zabbix%%ZABBIXVERSION%%");
 	}
-	if (is_dir("/var/run/zabbix-proxy-lts")) {
-		mwexec("/bin/rm -rf /var/run/zabbix-proxy-lts/");
+	if (is_dir("/var/log/zabbix-proxy")) {
+		mwexec("/bin/rm -rf /var/log/zabbix-proxy/");
 	}
-	if (is_dir("/var/db/zabbix-proxy-lts")) {
-		mwexec("/bin/rm -rf /var/db/zabbix-proxy-lts/");
+	if (is_dir("/var/run/zabbix-proxy")) {
+		mwexec("/bin/rm -rf /var/run/zabbix-proxy/");
+	}
+	if (is_dir("/var/db/zabbix-proxy")) {
+		mwexec("/bin/rm -rf /var/db/zabbix-proxy/");
 	}
 }
 
-function validate_input_zabbix_proxy_lts($post, &$input_errors) {
+function validate_input_zabbix_proxy($post, &$input_errors) {
 	if (isset($post['proxyenabled'])) {
 		if (!preg_match("/\w+/", $post['server'])) {
 			$input_errors[] = "'Server' field is required.";
@@ -79,54 +84,68 @@ function validate_input_zabbix_proxy_lts($post, &$input_errors) {
 	}
 }
 
-function sync_package_zabbix_proxy_lts() {
+function sync_package_zabbix_proxy() {
 	global $config, $g;
 
 	conf_mount_rw();
 
 	// Check zabbix proxy config
-	if (is_array($config['installedpackages']['zabbixproxylts'])) {
-		$zbproxy_config = $config['installedpackages']['zabbixproxylts']['config'][0];
+	if (is_array($config['installedpackages']['%%ZABBIXUNIQNAME%%'])) {
+		$zbproxy_config = $config['installedpackages']['%%ZABBIXUNIQNAME%%']['config'][0];
 		if ($zbproxy_config['proxyenabled'] == "on") {
 			$Mode = (is_numericint($zbproxy_config['proxymode']) ? $zbproxy_config['proxymode'] : 0);
 			$AdvancedParams = base64_decode($zbproxy_config['advancedparams']);
-			$TLSConnect = $zbproxy_config['tlsconnect'];
-			$TLSAccept = $zbproxy_config['tlsaccept'] ?: "unencrypted";
 
-			if ($zbproxy_config['tlscaso']) {
-				$TlsCAfile = "TLSCAFile=/usr/local/etc/ssl/cert.pem";
-			} else {
-				if ($zbproxy_config['tlscafile'] != "none") {
-					$ca = lookup_ca($zbproxy_config['tlscafile']);
-					zabbix_proxy_add_keyfile($ca['crt'], "ca");
-					$TlsCAfile = "TLSCAFile=/usr/local/etc/zabbix3/zabbix_proxy.ca";
+			// Zabbix TLS is present in 3.0 or later versions.
+			if(ZABBIX_VERSION >= 30) {
+				$TLSConnect = "TLSConnect=" . $zbproxy_config['tlsconnect'];
+				$TLSAccept = "TLSAccept=";
+				$TLSAccept .= $zbproxy_config['tlsaccept'] ?: "unencrypted";
+
+				if ($zbproxy_config['tlscaso']) {
+					$TlsCAfile = "TLSCAFile=/usr/local/etc/ssl/cert.pem";
+				} else {
+					if ($zbproxy_config['tlscafile'] != "none") {
+						$ca = lookup_ca($zbproxy_config['tlscafile']);
+						zabbix_proxy_add_keyfile($ca['crt'], "ca");
+						$TlsCAfile = "TLSCAFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_proxy.ca";
+					}
 				}
-			}
 
-			if ($zbproxy_config['tlscrlfile'] != "none") {
-				$crl = lookup_crl($zbproxy_config['tlscrlfile']);
-				crl_update($crl);
-				zabbix_proxy_add_keyfile($crl['text'], "crl-verify");
-				$TlsCRLfile = "TLSCRLFile=/usr/local/etc/zabbix3/zabbix_proxy.crl-verify";
-			}
+				if ($zbproxy_config['tlscrlfile'] != "none") {
+					$crl = lookup_crl($zbproxy_config['tlscrlfile']);
+					crl_update($crl);
+					zabbix_proxy_add_keyfile($crl['text'], "crl-verify");
+					$TlsCRLfile = "TLSCRLFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_proxy.crl-verify";
+				}
 
-			if ($zbproxy_config['tlscertfile'] != "none") {
-				$cert = lookup_cert($zbproxy_config['tlscertfile']);
+				if ($zbproxy_config['tlscertfile'] != "none") {
+					$cert = lookup_cert($zbproxy_config['tlscertfile']);
 
-				zabbix_proxy_add_keyfile($cert['crt'], "cert");
-				$TlsCERTfile = "TLSCertFile=/usr/local/etc/zabbix3/zabbix_proxy.cert";
+					zabbix_proxy_add_keyfile($cert['crt'], "cert");
+					$TlsCERTfile = "TLSCertFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_proxy.cert";
 
-				zabbix_proxy_add_keyfile($cert['prv'], "key");
-				$TlsKEYfile = "TLSKeyFile=/usr/local/etc/zabbix3/zabbix_proxy.key";
-			}
+					zabbix_proxy_add_keyfile($cert['prv'], "key");
+					$TlsKEYfile = "TLSKeyFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_proxy.key";
+				}
 
-			if (! empty($zbproxy_config['tlspskidentity']) ) {
-				$TLSPSKIdentity = "TLSPSKIdentity={$zbproxy_config['tlspskidentity']}";
-			}
+				if (! empty($zbproxy_config['tlspskidentity']) ) {
+					$TLSPSKIdentity = "TLSPSKIdentity={$zbproxy_config['tlspskidentity']}";
+				}
 
-			if (! empty($zbproxy_config['tlspskfile']) ) {
-				zabbix_proxy_add_keyfile($zbproxy_config['tlspskfile'], "psk");
-				$TLSPSKFile = "TLSPSKFile=/usr/local/etc/zabbix3/zabbix_proxy.psk";
+				if (! empty($zbproxy_config['tlspskfile']) ) {
+					zabbix_proxy_add_keyfile($zbproxy_config['tlspskfile'], "psk");
+					$TLSPSKFile = "TLSPSKFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_proxy.psk";
+				}
+			} else {
+				$TLSConnect = "#TLSConnect=";
+				$TLSAccept = "#TLSAccept=";
+				$TlsCAfile = "#TlsCAfile=";
+				$TlsCRLfile = "#TlsCRLfile=";
+				$TlsCERTfile = "#TlsCERTfile=";
+				$TlsKEYfile = "#TlsKEYfile=";
+				$TLSPSKIdentity = "#TLSPSKIdentity=";
+				$TLSPSKFile = "#TLSPSKFile=";
 			}
 
 			$StartSNMPTrapper = $zbproxy_config['startsnmptrapper'];
@@ -143,17 +162,17 @@ function sync_package_zabbix_proxy_lts() {
 Server={$zbproxy_config['server']}
 ServerPort={$zbproxy_config['serverport']}
 Hostname={$zbproxy_config['hostname']}
-PidFile=/var/run/zabbix-proxy-lts/zabbix_proxy_lts.pid
-DBName=/var/db/zabbix-proxy-lts/proxy.db
-LogFile=/var/log/zabbix-proxy-lts/zabbix_proxy_lts.log
+PidFile=/var/run/zabbix-proxy/zabbix_proxy.pid
+DBName=/var/db/zabbix-proxy/proxy.db
+LogFile=/var/log/zabbix-proxy/zabbix_proxy.log
 ConfigFrequency={$zbproxy_config['configfrequency']}
 FpingLocation=/usr/local/sbin/fping
 # There's currently no fping6 (IPv6) dependency in the package,
 # but if there was, the binary would likely also be in /usr/local/sbin.
 Fping6Location=/usr/local/sbin/fping6
 ProxyMode={$Mode}
-TLSConnect={$TLSConnect}
-TLSAccept={$TLSAccept}
+{$TLSConnect}
+{$TLSAccept}
 {$TlsCAfile}
 {$TlsCRLfile}
 {$TlsCERTfile}
@@ -167,7 +186,7 @@ StartTrappers={$StartTrappers}
 {$AdvancedParams}
 
 EOF;
-			file_put_contents(ZABBIX_PROXY_BASE . "/etc/zabbix3/zabbix_proxy.conf", strtr($zbproxy_conf_file, array("\r" => "")));
+			file_put_contents(ZABBIX_PROXY_BASE . "/etc/zabbix%%ZABBIXVERSION%%/zabbix_proxy.conf", strtr($zbproxy_conf_file, array("\r" => "")));
 		}
 	}
 
@@ -219,29 +238,29 @@ EOF;
 
 	// Check startup script files
 	// Create a few directories and ensure the sample files are in place
-	if (!is_dir(ZABBIX_PROXY_BASE . "/etc/zabbix3")) {
-		mwexec("/bin/mkdir -p " . ZABBIX_PROXY_BASE . "/etc/zabbix3");
+	if (!is_dir(ZABBIX_PROXY_BASE . "/etc/zabbix%%ZABBIXVERSION%%")) {
+		mwexec("/bin/mkdir -p " . ZABBIX_PROXY_BASE . "/etc/zabbix%%ZABBIXVERSION%%");
 	}
 
 	$dir_checks = <<< EOF
 
-	if [ ! -d /var/log/zabbix-proxy-lts ]; then
-		/bin/mkdir -p /var/log/zabbix-proxy-lts
-		/usr/sbin/chmod 755 /var/log/zabbix-proxy-lts
+	if [ ! -d /var/log/zabbix-proxy ]; then
+		/bin/mkdir -p /var/log/zabbix-proxy
+		/usr/sbin/chmod 755 /var/log/zabbix-proxy
 	fi
-	/usr/sbin/chown -R zabbix:zabbix /var/log/zabbix-proxy-lts
+	/usr/sbin/chown -R zabbix:zabbix /var/log/zabbix-proxy
 
-	if [ ! -d /var/run/zabbix-proxy-lts ]; then
-		/bin/mkdir -p /var/run/zabbix-proxy-lts
-		/usr/sbin/chmod 755 /var/run/zabbix-proxy-lts
+	if [ ! -d /var/run/zabbix-proxy ]; then
+		/bin/mkdir -p /var/run/zabbix-proxy
+		/usr/sbin/chmod 755 /var/run/zabbix-proxy
 	fi
-	/usr/sbin/chown -R zabbix:zabbix /var/run/zabbix-proxy-lts
+	/usr/sbin/chown -R zabbix:zabbix /var/run/zabbix-proxy
 
-	if [ ! -d /var/db/zabbix-proxy-lts ]; then
-		/bin/mkdir -p /var/db/zabbix-proxy-lts
-		/usr/sbin/chmod 755 /var/db/zabbix-proxy-lts
+	if [ ! -d /var/db/zabbix-proxy ]; then
+		/bin/mkdir -p /var/db/zabbix-proxy
+		/usr/sbin/chmod 755 /var/db/zabbix-proxy
 	fi
-	/usr/sbin/chown -R zabbix:zabbix /var/db/zabbix-proxy-lts
+	/usr/sbin/chown -R zabbix:zabbix /var/db/zabbix-proxy
 
 EOF;
 
@@ -250,33 +269,33 @@ EOF;
 	/bin/pgrep -anx zabbix_proxy 2>/dev/null
 	if [ "\$?" -eq "0" ]; then
 		/usr/bin/killall -9 zabbix_proxy
-		/bin/rm -f /var/run/zabbix-proxy-lts/zabbix_proxy_lts.pid
+		/bin/rm -f /var/run/zabbix-proxy/zabbix_proxy.pid
 	fi
 
 EOF;
 
-	$zproxy_rcfile = "/usr/local/etc/rc.d/zabbix_proxy_lts.sh";
+	$zproxy_rcfile = "/usr/local/etc/rc.d/zabbix_proxy.sh";
 	if (is_array($zbproxy_config) && $zbproxy_config['proxyenabled'] == "on") {
 		$zproxy_start = strtr($dir_checks, array("\r" => ""));
-		$zproxy_start .= "\techo \"Starting Zabbix Proxy LTS\"...\n";
+		$zproxy_start .= "\techo \"Starting Zabbix Proxy\"...\n";
 		$zproxy_start .= "\t" . ZABBIX_PROXY_BASE . "/sbin/zabbix_proxy\n";
 
-		$zproxy_stop = "echo \"Stopping Zabbix Proxy LTS\"\n";
+		$zproxy_stop = "echo \"Stopping Zabbix Proxy\"\n";
 		$zproxy_stop .= "\t/usr/bin/killall zabbix_proxy\n";
 		$zproxy_stop .= "\t/bin/sleep 5\n";
 		$zproxy_stop .= strtr($pid_check, array("\r" => ""));
 
 		// write out rc.d start/stop file
 		write_rcfile(array(
-			"file" => "zabbix_proxy_lts.sh",
+			"file" => "zabbix_proxy.sh",
 			"start" => $zproxy_start,
 			"stop" => $zproxy_stop
 			)
 		);
-		restart_service("zabbix_proxy_lts");
+		restart_service("zabbix_proxy");
 	} else {
-		if (is_service_running("zabbix_proxy_lts")) {
-			stop_service("zabbix_proxy_lts");
+		if (is_service_running("zabbix_proxy")) {
+			stop_service("zabbix_proxy");
 		}
 		unlink_if_exists($zproxy_rcfile);
 	}
@@ -287,7 +306,7 @@ EOF;
 // Based on openvpn_add_keyfile() function
 function zabbix_proxy_add_keyfile($data, $directive) {
 
-	$fpath = "/usr/local/etc/zabbix3/zabbix_proxy.{$directive}";
+	$fpath = "/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_proxy.{$directive}";
 
 	file_put_contents($fpath, base64_decode($data));
 	@chmod($fpath, 0600);
