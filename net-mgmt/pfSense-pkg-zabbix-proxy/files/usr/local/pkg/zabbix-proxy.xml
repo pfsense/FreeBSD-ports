@@ -5,7 +5,7 @@
 	<copyright>
 	<![CDATA[
 /*
- * zabbix-proxy-lts.xml
+ * zabbix-proxy.xml
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
@@ -27,40 +27,40 @@
  */
 	]]>
 	</copyright>
-	<name>zabbixproxylts</name>
-	<title>Services: Zabbix Proxy LTS</title>
+	<name>%%ZABBIXUNIQNAME%%</name>
+	<title>Services: %%ZABBIXTITLE%%</title>
 	<category>Monitoring</category>
-	<include_file>/usr/local/pkg/zabbix-proxy-lts.inc</include_file>
+	<include_file>/usr/local/pkg/zabbix-proxy.inc</include_file>
 	<addedit_string>Zabbix Proxy has been created/modified.</addedit_string>
 	<delete_string>Zabbix Proxy has been deleted.</delete_string>
 	<menu>
-		<name>Zabbix Proxy LTS</name>
+		<name>%%ZABBIXTITLE%%</name>
 		<section>Services</section>
-		<url>/pkg_edit.php?xml=zabbix-proxy-lts.xml&amp;id=0</url>
+		<url>/pkg_edit.php?xml=zabbix-proxy.xml&amp;id=0</url>
 	</menu>
 	<service>
-		<name>zabbix_proxy_lts</name>
-		<rcfile>zabbix_proxy_lts.sh</rcfile>
+		<name>zabbix_proxy</name>
+		<rcfile>zabbix_proxy.sh</rcfile>
 		<executable>zabbix_proxy</executable>
-		<description>Zabbix Proxy LTS Collection Daemon</description>
+		<description>Zabbix Proxy Collection Daemon</description>
 	</service>
 	<tabs>
 		<tab>
 			<text>Proxy</text>
-			<url>/pkg_edit.php?xml=zabbix-proxy-lts.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=zabbix-proxy.xml&amp;id=0</url>
 			<active />
 		</tab>
 	</tabs>
 	<advanced_options>enabled</advanced_options>
 	<fields>
 		<field>
-			<name>Zabbix Proxy LTS Settings</name>
+			<name>Zabbix Proxy Settings</name>
 			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr>Enable</fielddescr>
 			<fieldname>proxyenabled</fieldname>
-			<description>Enable Zabbix Proxy LTS service.</description>
+			<description>Enable Zabbix Proxy service.</description>
 			<type>checkbox</type>
 		</field>
 		<field>
@@ -275,15 +275,15 @@
 		</field>
 	</fields>
 	<custom_php_install_command>
-		sync_package_zabbix_proxy_lts();
+		sync_package_zabbix_proxy();
 	</custom_php_install_command>
 	<custom_php_validation_command>
-		validate_input_zabbix_proxy_lts($_POST, $input_errors);
+		validate_input_zabbix_proxy($_POST, $input_errors);
 	</custom_php_validation_command>
 	<custom_php_resync_config_command>
-		sync_package_zabbix_proxy_lts();
+		sync_package_zabbix_proxy();
 	</custom_php_resync_config_command>
 	<custom_php_deinstall_command>
-		php_deinstall_zabbix_proxy_lts();
+		php_deinstall_zabbix_proxy();
 	</custom_php_deinstall_command>
 </packagegui>
