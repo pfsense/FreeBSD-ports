@@ -26,7 +26,7 @@ SUB_FILES=	pkg-install pkg-deinstall
 SUB_LIST=	PORTNAME=${PORTNAME}
 
 ZABBIXUNIQNAME?=	zabbixproxylts
-ZABBIXTITLE?=	Zabbix Proxy LTS	
+ZABBIXTITLE?=	Zabbix Proxy LTS
 
 do-extract:
 	${MKDIR} ${WRKSRC}
