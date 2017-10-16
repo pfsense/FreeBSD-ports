@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-zabbix-agent
-PORTVERSION=	0.8.9
-PORTREVISION=	3
+PORTVERSION=	1.0.0
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
