@@ -68,11 +68,11 @@ if($_POST['enable']) {
 	if(($_POST['enable'] === 'false')) {
 		unset($config['rrd']['enable']);
 		$savemsg = "RRD graphing has been disabled.";
-		$changedesc .= gettext($savemsg);
+		$changedesc .= gettext("RRD graphing has been disabled.");
 	} else {
 		$config['rrd']['enable'] = true;
 		$savemsg = "RRD graphing has been enabled.";
-		$changedesc .= gettext($savemsg);
+		$changedesc .= gettext("RRD graphing has been enabled.");
 	}
 	write_config($changedesc);
 
