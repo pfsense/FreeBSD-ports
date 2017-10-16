@@ -20,6 +20,7 @@ LIB_DEPENDS=	libgmp.so:math/gmp \
 
 CONFLICTS_INSTALL=	guile-[0-9]*
 
+MAKE_JOBS_UNSAFE=	yes
 BROKEN_powerpc64=	does not build: error: expected declaration specifiers or ... before __builtin_choose_expr
 BROKEN_sparc64=		fails to compile: errors in complex.h
 
@@ -48,15 +49,13 @@ REINPLACE_FILES=	libguile/smob.c libguile/filesys.c libguile/gc.c \
 
 INFO=		guile r5rs
 
-.include <bsd.port.options.mk>
-
 post-patch:
 	@cd ${WRKSRC} ; \
 	  ${REINPLACE_CMD} -e 's|<malloc\.h>|<stdlib.h>|g' ${REINPLACE_FILES}
 	@${REINPLACE_CMD} -e 's|sys/time.h sys/timeb.h|sys/time.h |g' \
 		${WRKSRC}/configure
-.if ${PORT_OPTIONS:MTHREADS}
+
+post-patch-THREADS-on:
 	@${REINPLACE_CMD} -e 's|bdw-gc|bdw-gc-threaded|g' ${WRKSRC}/configure
-.endif
 
 .include <bsd.port.mk>

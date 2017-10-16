@@ -4,7 +4,7 @@
 PORTNAME=	libvpx
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.6.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -18,7 +18,7 @@ BUILD_DEPENDS=	yasm:devel/yasm
 USE_GITHUB=	yes
 GH_ACCOUNT=	webmproject
 
-USES=		compiler:c11 cpe gmake perl5 shebangfix
+USES=		cpe gmake perl5 shebangfix
 CPE_VENDOR=	john_koleszar
 HAS_CONFIGURE=	yes
 USE_PERL5=	build

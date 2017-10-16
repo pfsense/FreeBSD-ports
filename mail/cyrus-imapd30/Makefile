@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	cyrus-imapd
-PORTVERSION=	3.0.2
-#PORTREVISION=	0
+PORTVERSION=	3.0.4
+PORTREVISION=	1
 CATEGORIES=	mail ipv6
 MASTER_SITES=	ftp://ftp.cyrusimap.org/cyrus-imapd/ \
 		http://cyrusimap.org/releases/
@@ -44,8 +44,8 @@ MAKE_JOBS_UNSAFE=	yes
 CPE_VENDOR=	cmu
 CPE_PRODUCT=	cyrus_imap_server
 
-OPTIONS_DEFINE=		AUTOCREATE BACKUP CLAMAV HTTP IDLED LDAP MURDER MYSQL \
-			NNTP PGSQL REPLICATION SNMP SQLITE SQUAT DOCS
+OPTIONS_DEFINE=		AUTOCREATE BACKUP CLAMAV HTTP IDLED LDAP LMDB MURDER \
+			MYSQL NNTP PGSQL REPLICATION SNMP SQLITE SQUAT DOCS
 #OPTIONS_DEFINE+=	DRAC
 OPTIONS_DEFAULT=	CLAMAV IDLED SQLITE SQUAT
 OPTIONS_SUB=		yes
@@ -61,12 +61,10 @@ DRAC_CONFIGURE_ON=	--with-drac=${LOCALBASE}
 DRAC_BUILD_DEPENDS=	${LOCALBASE}/lib/libdrac.a:mail/drac
 HTTP_DESC=		Enable HTTP support
 HTTP_CONFIGURE_ENABLE=	http
-#HTTP_BUILD_DEPENDS=	${LOCALBASE}/bin/xxd:editors/vim-lite
 HTTP_LIB_DEPENDS=	libical.so:devel/libical \
 			libnghttp2.so:www/libnghttp2 \
-			libshp.so:devel/shapelib
-# Our libbrotli is too old
-#HTTP_LIB_DEPENDS+=	libbrotlidec.so:devel/libbrotli
+			libshp.so:devel/shapelib \
+			libbrotlidec.so:archivers/brotli
 # Need additional patch to opendkim
 #HTTP_LIB_DEPENDS+=	libopendkim.so:mail/opendkim
 #HTTP_CPPFLAGS+=	-I${LOCALBASE}/include/opendkim
@@ -76,6 +74,9 @@ IDLED_CONFIGURE_ENABLE=	idled
 LDAP_DESC=		Enable LDAP support (experimental)
 LDAP_USE=		OPENLDAP=yes
 LDAP_CONFIGURE_ON=	--with-ldap=${LOCALBASE}
+LMDB_DESC=		Use LMDB backend
+LMDB_LIB_DEPENDS=	liblmdb.so:databases/lmdb
+LMDB_CONFIGURE_WITH=	lmdb
 MURDER_DESC=		Enable IMAP Murder support
 MURDER_CONFIGURE_ENABLE=murder
 MURDER_MAKE_ENV=	PTHREAD_LIBS="-lpthread"

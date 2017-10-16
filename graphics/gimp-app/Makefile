@@ -3,6 +3,7 @@
 
 PORTNAME?=	gimp-app
 PORTVERSION=	2.8.22
+PORTREVISION=	1
 PORTEPOCH?=	1
 CATEGORIES?=	graphics gnome
 MASTER_SITES=	GIMP/gimp/v${PORTVERSION:R}
@@ -26,7 +27,7 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes
 
 GNU_CONFIGURE=	yes
-USES+=		cpe execinfo gettext gmake jpeg libtool \
+USES+=		cpe gettext gmake jpeg libtool \
 		localbase pathfix pkgconfig shebangfix tar:bzip2
 USE_XORG=	ice sm xcursor xext xfixes xmu xpm xt x11
 USE_GNOME+=	cairo gtk20 intlhack

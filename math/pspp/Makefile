@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	pspp
-PORTVERSION=	0.10.2
-PORTREVISION=	2
+PORTVERSION=	1.0.1
+PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	GNU
 
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	texinfo>0:print/texinfo
 LIB_DEPENDS=	libgslcblas.so:math/gsl
 
-USES=		charsetfix gmake iconv localbase libtool perl5 pkgconfig readline
+USES=		charsetfix gettext-tools gmake iconv localbase libtool perl5 pkgconfig readline
 USE_GNOME=	libxml2
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
@@ -42,8 +42,8 @@ GUI_VARS=		INSTALLS_ICONS=yes
 GUI_CONFIGURE_WITH=	cairo gui gui-tools
 GUI_INSTALL_TARGET=	install-icons install-ext-icons
 
-NLS_USES=		gettext
-NLS_CONFIGURE_ENABLE=	nls
+NLS_USES=		gettext-runtime
+NLS_CONFIGURE_OFF=	--disable-nls
 NLS_MAKE_ARGS_OFF=	POFILES=""
 
 PGSQL_USES=		pgsql
@@ -51,7 +51,7 @@ PGSQL_CONFIGURE_WITH=	libpq
 
 post-patch:
 	@${REINPLACE_CMD} -e \
-		's|: $$(INSTALL_DATA_HOOKS)|:|' ${WRKSRC}/Makefile.in
+		's|: $$(INSTALL_DATA_HOOKS)|:|g' ${WRKSRC}/Makefile.in
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/pspp-mode.el \

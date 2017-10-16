@@ -808,6 +808,14 @@ function squid_validate_general($post, &$input_errors) {
 	if ($post['ssl_proxy'] == 'on') {
 		if ($post['dca'] == 'none') {
 			$input_errors[] = "SSL interception cannot be enabled without a CA.";
+		} else {
+			$dca = lookup_ca($post['dca']);
+			if (!$dca) {
+				$input_errors[] = "Invalid SSL interception CA.";
+			}
+			if (empty($dca['prv'])) {
+				$input_errors[] = "The SSL interception CA must have a private key (internal CA, not external)";
+			}
 		}
 		if (empty($post['ssl_active_interface'])) {
 			$input_errors[] = "You must select at least one interface under 'SSL Intercept Interface(s)' when 'HTTPS/SSL Interception' is enabled.";
@@ -934,6 +942,10 @@ function squid_validate_cache($post, &$input_errors) {
 	if ($post['donotcache'] != "") {
 		foreach (split("\n", $post['donotcache']) as $host) {
 			$host = trim($host);
+			// Allow matching all subdomains, like .example.com
+			if (strpos($host, '.') === 0) {
+				$host = substr($host, 1);
+			}
 			if (!is_ipaddr($host) && !is_domain($host)) {
 				$input_errors[] = "The host '$host' is not a valid IP or hostname.";
 			}
@@ -1136,15 +1148,14 @@ function squid_resync_general() {
 				$crt_pk = SQUID_CONFBASE . "/serverkey.pem";
 				$crt_capath = SQUID_LOCALBASE . "/share/certs/";
 				$sslproxy_options = "NO_SSLv2,NO_SSLv3";
-				/* XXX: Bug #4453, Bug #6592, Feature #6593
+				/* XXX: Bug #4453, Bug #6592, Feature #6593, Bug #6563
 				 * http://wiki.squid-cache.org/ConfigExamples/Intercept/SslBumpExplicit#Modern_DH.2FEDH_ciphers_usage
 				 */
-				if (!empty($settings['sslproxy_compatibility_mode']) && ($settings['sslproxy_compatibility_mode'] == 'modern')) {
+				if (empty($settings['sslproxy_compatibility_mode']) || ($settings['sslproxy_compatibility_mode'] == 'modern')) {
 					// Modern cipher suites
-					$sslproxy_cipher = "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH+aRSA+RC4:EECDH:EDH+aRSA:!RC4:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS";
+					$sslproxy_cipher = "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH+aRSA+RC4:EECDH:EDH+aRSA:!RC4:!aNULL:!eNULL:!LOW:!3DES:!SHA1:!MD5:!EXP:!PSK:!SRP:!DSS";
 					$sslproxy_options .= ",NO_TLSv1";
 				} else {
-					// Use intermediate cipher suites by default to match port versions <0.4.29 behavior on upgrade
 					$sslproxy_cipher = "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH+aRSA+RC4:EECDH:EDH+aRSA:HIGH:!RC4:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS";
 				}
 				if (!empty($settings["dhparams_size"])) {
@@ -2401,4 +2412,18 @@ function squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $passwor
 			log_error("[squid] XMLRPC reload data success with {$url}:{$port} (pfsense.exec_php).");
 		}
 	}
+}
+
+/* Get a listing of CA entries which are valid for use with MITM/Splice.
+ * They MUST have a private key present!
+ */
+function squid_list_ssl_ca() {
+	global $config;
+	$prvca_list = array();
+	foreach ($config['ca'] as $ca) {
+		if (!empty($ca['prv'])) {
+			$prvca_list[] = $ca;
+		}
+	}
+	return $prvca_list;
 }

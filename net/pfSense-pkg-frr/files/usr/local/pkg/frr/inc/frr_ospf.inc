@@ -33,10 +33,10 @@ function frr_generate_config_ospf() {
 		$ospfd_conf = &$config['installedpackages']['frrospfd']['config'][0];
 	}
 
-	if (isset($config['installedpackages']['frrraw']['config'][0]['ospfd']) &&
-	    !empty($config['installedpackages']['frrraw']['config'][0]['ospfd'])) {
+	if (isset($config['installedpackages']['frrglobalraw']['config'][0]['ospfd']) &&
+	    !empty($config['installedpackages']['frrglobalraw']['config'][0]['ospfd'])) {
 		/* If the user has supplied a raw configuration, use that instead of the GUI configuration. */
-		$conffile = str_replace("\r", "", base64_decode($config['installedpackages']['frrraw']['config'][0]['ospfd']));
+		$conffile = str_replace("\r", "", base64_decode($config['installedpackages']['frrglobalraw']['config'][0]['ospfd']));
 	} else {
 		/* If there is no raw configuration and no GUI configuration, stop. */
 		if (empty($ospfd_conf)) {

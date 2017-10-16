@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-Status_Monitoring
-PORTVERSION=	1.7.1
-PORTREVISION=	3
+PORTVERSION=	1.7.3
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -21,7 +20,7 @@ PLIST_SUB=	PORTNAME=${PORTNAME}
 
 .include <bsd.port.pre.mk>
 
-RUN_DEPENDS+=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/rrd.so:databases/pecl-rrd
+RUN_DEPENDS+=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/rrd.so:databases/pecl-rrd1
 
 do-extract:
 	${MKDIR} ${WRKSRC}

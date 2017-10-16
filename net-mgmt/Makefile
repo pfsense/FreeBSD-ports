@@ -8,6 +8,7 @@
     SUBDIR += adcli
     SUBDIR += aggregate
     SUBDIR += aircrack-ng
+    SUBDIR += alertmanager
     SUBDIR += ap-utils
     SUBDIR += argus3
     SUBDIR += argus3-clients
@@ -19,6 +20,7 @@
     SUBDIR += bgpq
     SUBDIR += bgpq3
     SUBDIR += bgpuma
+    SUBDIR += blackbox_exporter
     SUBDIR += bpft
     SUBDIR += braa
     SUBDIR += bsnmp-jails
@@ -63,7 +65,6 @@
     SUBDIR += ehnt
     SUBDIR += etherape
     SUBDIR += ettercap
-    SUBDIR += ezradius
     SUBDIR += fastnetmon
     SUBDIR += fetchconfig
     SUBDIR += flow-extract
@@ -88,6 +89,9 @@
     SUBDIR += icingaweb2-module-cube
     SUBDIR += icingaweb2-module-director
     SUBDIR += icingaweb2-module-generictts
+    SUBDIR += icingaweb2-module-grafana
+    SUBDIR += icingaweb2-module-map
+    SUBDIR += icingaweb2-module-vsphere
     SUBDIR += icli
     SUBDIR += icmpmonitor
     SUBDIR += icmpquery
@@ -121,11 +125,13 @@
     SUBDIR += mrtg
     SUBDIR += mrtg-ping-probe
     SUBDIR += mtrace
+    SUBDIR += mysqld_exporter
     SUBDIR += nagcon
     SUBDIR += nagios
     SUBDIR += nagios-certexp-plugin
     SUBDIR += nagios-check_bacula
     SUBDIR += nagios-check_bacula5
+    SUBDIR += nagios-check_bacula9
     SUBDIR += nagios-check_clamav
     SUBDIR += nagios-check_cpu_usage
     SUBDIR += nagios-check_dhcp.pl
@@ -190,18 +196,21 @@
     SUBDIR += nitpicker
     SUBDIR += nrpe
     SUBDIR += nrpe-ssl
+    SUBDIR += nrpe3
     SUBDIR += nsca
     SUBDIR += nsca-client
     SUBDIR += nsca-ng
     SUBDIR += nsca-ng-client
     SUBDIR += nsca27
     SUBDIR += nsca27-client
+    SUBDIR += nstat
     SUBDIR += nstreams
     SUBDIR += observium
     SUBDIR += ocsinventory-agent
     SUBDIR += ocsinventory-ng
     SUBDIR += omping
     SUBDIR += onionlauncher
+    SUBDIR += openbmp
     SUBDIR += openlldp
     SUBDIR += openvmps
     SUBDIR += p0f
@@ -284,8 +293,13 @@
     SUBDIR += pnp-icinga2
     SUBDIR += portmon
     SUBDIR += prometheus
+    SUBDIR += pushgateway
+    SUBDIR += py-adal
     SUBDIR += py-ipcalc
     SUBDIR += py-ipy
+    SUBDIR += py-msrest
+    SUBDIR += py-msrestazure
+    SUBDIR += py-pdagent
     SUBDIR += py-pyang
     SUBDIR += py-pysmi
     SUBDIR += py-pyzabbix
@@ -345,6 +359,7 @@
     SUBDIR += telegraf
     SUBDIR += tornova
     SUBDIR += torrus
+    SUBDIR += unbound_exporter
     SUBDIR += unifi5
     SUBDIR += victorops-nagios
     SUBDIR += vidalia
@@ -373,5 +388,9 @@
     SUBDIR += zabbix32-frontend
     SUBDIR += zabbix32-proxy
     SUBDIR += zabbix32-server
+    SUBDIR += zabbix34-agent
+    SUBDIR += zabbix34-frontend
+    SUBDIR += zabbix34-proxy
+    SUBDIR += zabbix34-server
 
 .include <bsd.port.subdir.mk>

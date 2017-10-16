@@ -1,6 +1,6 @@
 OpenBGPD is a free implementation of the Border Gateway Protocol, version 4. It
 allows ordinary machines to be used as routers exchanging routes with other
 systems speaking the BGP protocol.
-Conflicts with Quagga_OSPF; both packages cannot be installed at the same time.
+Conflicts with Quagga_OSPF and FRR; these packages cannot be installed at the same time.
 
 WWW: https://doc.pfsense.org/index.php/OpenBGPD_package

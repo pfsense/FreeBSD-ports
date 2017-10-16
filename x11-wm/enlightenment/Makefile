@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	enlightenment
-PORTVERSION=	0.21.7
-PORTREVISION=	2
+PORTVERSION=	0.21.9
 PORTEPOCH=	2
 CATEGORIES=	x11-wm enlightenment
 MASTER_SITES=	http://download.enlightenment.org/rel/apps/${PORTNAME}/
@@ -18,7 +17,7 @@ LIB_DEPENDS=	libefl.so:devel/efl \
 		libxcb-keysyms.so:x11/xcb-util-keysyms
 
 GNU_CONFIGURE=	yes
-USES=		alias autoreconf desktop-file-utils execinfo gettext-tools \
+USES=		alias autoreconf desktop-file-utils gettext-tools \
 		gmake iconv libtool pathfix pkgconfig tar:xz
 USE_XORG=	xcb
 USE_LDCONFIG=	yes

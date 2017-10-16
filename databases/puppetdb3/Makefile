@@ -6,19 +6,21 @@ CATEGORIES=	databases java
 MASTER_SITES=	http://downloads.puppetlabs.com/puppetdb/
 PKGNAMESUFFIX=	3
 
-MAINTAINER=	freebsd@zleslie.info
+MAINTAINER=	puppet@FreeBSD.org
 COMMENT=	PuppetDB storeconfigs backend
+
+DEPRECATED=	End of life upstream
+EXPIRATION_DATE=	2017-11-01
 
 LICENSE=	APACHE20
 
 RUN_DEPENDS=	bash:shells/bash \
 		puppet:sysutils/puppet4
-BUILD_DEPENDS=	rubygem-facter>=0:sysutils/rubygem-facter \
-		rubygem-rake>=0:devel/rubygem-rake
+BUILD_DEPENDS=	rubygem-rake>=0:devel/rubygem-rake
 
 USE_RC_SUBR=	puppetdb
 
-CONFLICTS_INSTALL=	puppetdb-* puppetdb4-*
+CONFLICTS_INSTALL=	puppetdb4-* puppetdb5-*
 USE_JAVA=	yes
 NO_BUILD=	yes
 JAVA_VERSION=	1.7+

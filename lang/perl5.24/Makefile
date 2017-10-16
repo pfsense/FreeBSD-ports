@@ -3,7 +3,6 @@
 
 PORTNAME=	perl
 DISTVERSION=	${PERL_VERSION}
-PORTREVISION=	1
 CATEGORIES=	lang devel perl5
 MASTER_SITES=	CPAN/../../src/5.0 CPAN/../by-authors/id/S/SH/SHAY
 DIST_SUBDIR=	perl
@@ -11,10 +10,10 @@ DIST_SUBDIR=	perl
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Practical Extraction and Report Language
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 LICENSE_FILE_ART10=	${WRKSRC}/Artistic
-LICENSE_FILE_GPLv1=	${WRKSRC}/Copying
+LICENSE_FILE_GPLv1+ =	${WRKSRC}/Copying
 
 # Uncomment when the default Perl is switched to 5.26
 #DEPRECATED=	Support ends three years after .0 release, please upgrade to a more recent version of Perl
@@ -35,7 +34,7 @@ OPTIONS_EXCLUDE_FreeBSD_10=	DTRACE
 .if !exists(/usr/sbin/dtrace)
 OPTIONS_EXCLUDE+=	DTRACE
 .endif
-.for a in aarch64 arm armeb armv6 mips mips64 mips64el mipsel mipsn32 powerpc \
+.for a in aarch64 arm armeb armv6 armv7 mips mips64 mips64el mipsel mipsn32 powerpc \
 	powerpc64 sparc64
 OPTIONS_EXCLUDE_${a}=	DTRACE
 .endfor

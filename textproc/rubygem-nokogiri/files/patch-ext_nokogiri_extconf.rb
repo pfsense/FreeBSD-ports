@@ -1,4 +1,4 @@
---- ext/nokogiri/extconf.rb.orig	2017-06-05 04:54:11 UTC
+--- ext/nokogiri/extconf.rb.orig	2017-09-20 14:58:44 UTC
 +++ ext/nokogiri/extconf.rb
 @@ -658,6 +658,43 @@ have_func('xmlRelaxNGSetValidStructuredE
  have_func('xmlSchemaSetValidStructuredErrors')

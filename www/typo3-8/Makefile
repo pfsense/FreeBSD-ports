@@ -18,7 +18,7 @@ IGNORE_WITH_PHP=	56
 PORTSCOUT=	limit:^${PORT_V_MAJOR}\.${PORT_V_MINOR}\.
 
 USES=		cpe php:web shebangfix
-SHEBANG_FILES=	vendor/doctrine/instantiator/.travis.install.sh
+SHEBANG_GLOB=	*.sh *.php
 NO_BUILD=	yes
 NO_ARCH=	yes
 USE_PHP=	ctype fileinfo filter hash json mysqli openssl pcre session soap xml zip simplexml
@@ -26,7 +26,7 @@ WRKSRC=		${WRKDIR}/${TYPO3SRC}
 
 PORT_V_MAJOR=	8
 PORT_V_MINOR=	7
-PORT_V_PATCH=	4
+PORT_V_PATCH=	7
 
 TYPO3WWW=	www
 TYPO3SRC=	${PORTNAME}_src-${PORTVERSION}
@@ -81,6 +81,5 @@ post-install:
 	@${ECHO} "@dir ${TYPO3WWW}/${TYPO3SRC}/vendor/doctrine/dbal/lib/vendor/Symfony/Component/Console" >> ${TMPPLIST}
 	@${ECHO} "@dir ${TYPO3WWW}/${TYPO3SRC}/vendor/doctrine/dbal/lib/vendor/doctrine-build-common" >> ${TMPPLIST}
 	@${ECHO} "@dir ${TYPO3WWW}/${TYPO3SRC}/vendor/doctrine/dbal/lib/vendor/doctrine-common" >> ${TMPPLIST}
-	@${ECHO} "@dir ${TYPO3WWW}/${TYPO3SRC}/vendor/guzzlehttp/guzzle/build" >> ${TMPPLIST}
 
 .include <bsd.port.mk>

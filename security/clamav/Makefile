@@ -3,11 +3,11 @@
 
 PORTNAME=	clamav
 PORTVERSION=	0.99.2
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	security
 MASTER_SITES=	http://www.clamav.net/downloads/production/
 
-MAINTAINER=	garga@FreeBSD.org
+MAINTAINER=	ler@FreeBSD.org
 COMMENT=	Command line virus scanner written entirely in C
 
 LICENSE=	GPLv2

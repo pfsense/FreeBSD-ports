@@ -135,6 +135,7 @@
     SUBDIR += deegree-wps
     SUBDIR += deegree-wpvs
     SUBDIR += delaboratory
+    SUBDIR += derelict-gl3
     SUBDIR += devil
     SUBDIR += dia
     SUBDIR += diacanvas2
@@ -149,6 +150,7 @@
     SUBDIR += djvulibre
     SUBDIR += dmtx-utils
     SUBDIR += driconf
+    SUBDIR += drm-next-kmod
     SUBDIR += dspdfviewer
     SUBDIR += duhdraw
     SUBDIR += dynamechs
@@ -177,6 +179,7 @@
     SUBDIR += exiftran
     SUBDIR += exiv2
     SUBDIR += exrtools
+    SUBDIR += facedetect
     SUBDIR += farbfeld
     SUBDIR += feh
     SUBDIR += fig2sxd
@@ -249,7 +252,6 @@
     SUBDIR += gimp-app
     SUBDIR += gimp-beautify-plugin
     SUBDIR += gimp-data-extras
-    SUBDIR += gimp-elsamuko-script
     SUBDIR += gimp-ez-perspective-plugin
     SUBDIR += gimp-focusblur-plugin
     SUBDIR += gimp-gmic-plugin
@@ -321,9 +323,11 @@
     SUBDIR += gstreamer1-plugins-gdkpixbuf
     SUBDIR += gstreamer1-plugins-gl
     SUBDIR += gstreamer1-plugins-jpeg
+    SUBDIR += gstreamer1-plugins-kms
     SUBDIR += gstreamer1-plugins-libcaca
     SUBDIR += gstreamer1-plugins-libvisual
     SUBDIR += gstreamer1-plugins-opencv
+    SUBDIR += gstreamer1-plugins-openexr
     SUBDIR += gstreamer1-plugins-openjpeg
     SUBDIR += gstreamer1-plugins-png
     SUBDIR += gstreamer1-plugins-rsvg
@@ -347,6 +351,7 @@
     SUBDIR += hs-cairo
     SUBDIR += hs-dia-base
     SUBDIR += hs-dia-functions
+    SUBDIR += hs-graphviz
     SUBDIR += hs-svgcairo
     SUBDIR += hugin
     SUBDIR += icat
@@ -408,6 +413,7 @@
     SUBDIR += kf5-kimageformats
     SUBDIR += kf5-kplotting
     SUBDIR += kf5-prison
+    SUBDIR += kgraphviewer
     SUBDIR += kiconedit
     SUBDIR += kipi-plugin-acquireimages
     SUBDIR += kipi-plugin-advancedslideshow
@@ -630,6 +636,7 @@
     SUBDIR += opencv-java
     SUBDIR += opendx
     SUBDIR += opengl-man
+    SUBDIR += openicc-config
     SUBDIR += openimageio
     SUBDIR += openjpeg
     SUBDIR += openjpeg15
@@ -856,6 +863,7 @@
     SUBDIR += py-graph
     SUBDIR += py-graph-core
     SUBDIR += py-graph-dot
+    SUBDIR += py-graphviz
     SUBDIR += py-graphy
     SUBDIR += py-gvgen
     SUBDIR += py-imageio
@@ -922,6 +930,7 @@
     SUBDIR += qt5-opengl
     SUBDIR += qt5-pixeltool
     SUBDIR += qt5-svg
+    SUBDIR += qt5-wayland
     SUBDIR += qtawesome
     SUBDIR += quat
     SUBDIR += quat-gui
@@ -932,7 +941,6 @@
     SUBDIR += raster3d
     SUBDIR += rawstudio
     SUBDIR += rawtherapee
-    SUBDIR += rawtherapee-devel
     SUBDIR += rayshade
     SUBDIR += reallyslick
     SUBDIR += recoverjpeg
@@ -1089,6 +1097,8 @@
     SUBDIR += xournal
     SUBDIR += xpaint
     SUBDIR += xpdf
+    SUBDIR += xpdf3
+    SUBDIR += xpdf4
     SUBDIR += xpeps
     SUBDIR += xpx
     SUBDIR += xsane

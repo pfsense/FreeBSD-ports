@@ -3,7 +3,7 @@
 
 PORTNAME=	nrpe
 DISTVERSION=	2.15
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/nagios/${PORTNAME}-2.x/${PORTNAME}-${PORTVERSION}
 
@@ -12,7 +12,7 @@ COMMENT?=	Nagios Remote Plugin Executor
 
 LICENSE=	GPLv2
 
-CONFLICTS=	nrpe-ssl-2.*
+CONFLICTS?=	nrpe-ssl nrpe3
 
 USES=		perl5
 USE_PERL5=	build

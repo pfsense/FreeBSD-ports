@@ -2,25 +2,28 @@
 # $FreeBSD$
 
 PORTNAME=	rocksdb
-PORTVERSION=	5.5.1
-DISTVERSIONPREFIX=	v
+PORTVERSION=	5.7.3
+PORTREVISION=	1
+DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	databases
 
 MAINTAINER?=	sunpoet@FreeBSD.org
 COMMENT?=	Persistent key-value store for fast storage environments
 
-LICENSE=	BSD3CLAUSE
-LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BUILD_DEPENDS=	bash:shells/bash
-LIB_DEPENDS=	libgflags.so:devel/gflags \
-		libsnappy.so:archivers/snappy
+LICENSE=	APACHE20 GPLv2
+LICENSE_COMB=	dual
+LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE.Apache
+LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 
 BROKEN_DragonFly=	does not build on DragonFly BSD using GCC with -Werror
 BROKEN_aarch64=	does not build: the clang compiler does not support -march=native
 BROKEN_armv6=	does not build: the clang compiler does not support -march=native
 BROKEN_powerpc64=	does not build: the clang compiler does not support -march=native
 BROKEN_sparc64=	cannot build: uses unknown compiler flags
+
+BUILD_DEPENDS=	bash:shells/bash
+LIB_DEPENDS=	libgflags.so:devel/gflags \
+		libsnappy.so:archivers/snappy
 
 OPTIONS_DEFINE=	DEBUG LZ4 ZSTD
 OPTIONS_DEFAULT=LZ4
@@ -36,6 +39,7 @@ USE_CXXSTD=	c++11
 USE_LDCONFIG=	yes
 USES=		compiler:c++11-lib gmake localbase:ldflags shebangfix
 
+PLIST_SUB=	PORTVERSION=${PORTVERSION} SHLIB_MAJOR=${PORTVERSION:R:R} SHLIB_MINOR=${PORTVERSION:R:E}
 PORTDATA=	make_config.mk
 
 GH_ACCOUNT=	facebook

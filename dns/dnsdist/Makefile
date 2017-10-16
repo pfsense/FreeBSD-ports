@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	dnsdist
-DISTVERSION=	1.1.0
-PORTREVISION=	6
+DISTVERSION=	1.2.0
+PORTREVISION=	2
 CATEGORIES=	dns net
 MASTER_SITES=	https://downloads.powerdns.com/releases/ \
 		LOCAL/cpm
@@ -13,9 +13,7 @@ COMMENT=	Highly DNS-, DoS- and abuse-aware loadbalancer
 
 LICENSE=	GPLv2 UNLICENSE
 LICENSE_COMB=	multi
-LICENSE_NAME_UNLICENSE=	The Unlicense
 LICENSE_FILE_UNLICENSE=	${WRKSRC}/ext/incbin/UNLICENSE
-LICENSE_PERMS_UNLICENSE=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libatomic_ops.a:devel/libatomic_ops
 LIB_DEPENDS=	libboost_serialization.so:devel/boost-libs \
@@ -42,9 +40,9 @@ USE_RC_SUBR=	dnsdist
 
 # Fix dnsdist binaries when building on FreeBSD 10.3
 .if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100000
-BUILD_DEPENDS+=	clang39:devel/llvm39
-CC=		clang39
-CXX=		clang++39
+BUILD_DEPENDS+=	clang40:devel/llvm40
+CC=		clang40
+CXX=		clang++40
 .endif
 
 post-install:

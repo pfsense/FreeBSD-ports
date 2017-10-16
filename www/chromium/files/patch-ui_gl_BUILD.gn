@@ -1,15 +1,23 @@
---- ui/gl/BUILD.gn.orig	2017-06-05 19:03:30 UTC
-+++ ui/gl/BUILD.gn
-@@ -14,7 +14,7 @@ declare_args() {
+--- ui/gl/BUILD.gn.orig	2017-09-05 21:05:48.000000000 +0200
++++ ui/gl/BUILD.gn	2017-09-07 01:56:19.612744000 +0200
+@@ -15,7 +15,7 @@
                         (target_cpu == "x86" || target_cpu == "x64")
  }
  
--use_egl = is_win || is_android || is_linux
-+use_egl = is_win || is_android || is_linux || is_bsd
+-use_egl = is_win || is_android || is_linux || is_fuchsia
++use_egl = is_win || is_android || is_linux || is_fuchsia || is_bsd
  use_glx = use_x11 || ozone_platform_x11
  
  if (is_android) {
-@@ -180,7 +180,7 @@ component("gl") {
+@@ -181,14 +181,14 @@
+       "gl_surface_egl.h",
+     ]
+ 
+-    if (is_linux) {
++    if (is_linux || is_bsd) {
+       sources += [
+         "gl_image_native_pixmap.cc",
+         "gl_image_native_pixmap.h",
        ]
      }
    }

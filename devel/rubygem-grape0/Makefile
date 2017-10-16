@@ -6,7 +6,7 @@ CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	0
 
-MAINTAINER=	ruby@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Framework for rapid API development with great conventions
 
 LICENSE=	MIT
@@ -22,7 +22,6 @@ RUN_DEPENDS=	rubygem-activesupport4>=0:devel/rubygem-activesupport4 \
 		rubygem-rack-accept>=0:www/rubygem-rack-accept \
 		rubygem-virtus>=1.0.0:devel/rubygem-virtus
 
-CONFLICTS=	rubygem-grape
 PORTSCOUT=	limit:^0\.
 
 NO_ARCH=	yes

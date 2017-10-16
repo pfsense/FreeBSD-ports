@@ -3,7 +3,7 @@
 
 PORTNAME=	kicad
 DISTVERSION=	r${GIT_SRC_DATE}
-#PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	cad
 MASTER_SITES=	LOCAL/mr
 PKGNAMESUFFIX=	-devel
@@ -14,11 +14,11 @@ COMMENT=		Schematic and PCB editing software
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS= ${LOCALBASE}/include/glm/glm.hpp:math/glm
+BUILD_DEPENDS=	${LOCALBASE}/include/glm/glm.hpp:math/glm
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libcurl.so:ftp/curl
 
-CONFLICTS=	kicad-2014*
+CONFLICTS=	kicad-4.*
 
 DOCVERSION=	1.1
 LIBVERSION=	1.0

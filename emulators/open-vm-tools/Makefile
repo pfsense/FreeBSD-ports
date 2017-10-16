@@ -3,24 +3,28 @@
 
 PORTNAME=		open-vm-tools
 PORTVERSION=		${RELEASE_VER}
+DISTVERSIONPREFIX=	stable-
+PORTREVISION=		4
 PORTEPOCH=		2
 CATEGORIES=		emulators
 
-MAINTAINER=		swills@FreeBSD.org
+MAINTAINER=		jpaetzel@FreeBSD.org
 COMMENT?=		Open VMware tools for FreeBSD VMware guests
 
 LICENSE=		LGPL21
 LICENSE_FILE=		${WRKSRC}/COPYING
 
+ONLY_FOR_ARCHS=		amd64 i386
+
 LIB_DEPENDS=		libmspack.so:archivers/libmspack \
 			libxerces-c.so:textproc/xerces-c3 \
 			libxml-security-c.so:security/apache-xml-security-c
 
-RELEASE_VER=		10.1.5
-BUILD_VER=		5055683
+RELEASE_VER=		10.1.10
+BUILD_VER=		6082533
 
-OPTIONS_DEFINE=		DNET ICU LIBNOTIFY OPENSSL X11
-OPTIONS_DEFAULT=	DNET ICU LIBNOTIFY OPENSSL X11
+OPTIONS_DEFINE=		DNET LIBNOTIFY OPENSSL X11
+OPTIONS_DEFAULT=	DNET LIBNOTIFY OPENSSL X11
 
 OPTIONS_SUB=
 
@@ -35,26 +39,23 @@ X11_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 LIBNOTIFY_LIB_DEPENDS=	libnotify.so:devel/libnotify
 DNET_CONFIGURE_WITH=	dnet
 DNET_LIB_DEPENDS=	libdnet.so:net/libdnet
-ICU_CONFIGURE_WITH=	icu
-ICU_LIB_DEPENDS=	libicuuc.so:devel/icu
 OPENSSL_CONFIGURE_WITH=	ssl
 
-WRKSRC=			${WRKDIR}/${PORTNAME}-stable-${RELEASE_VER}/open-vm-tools/
+WRKSRC_SUBDIR=		open-vm-tools
 
 GNU_CONFIGURE=		yes
-USE_GNOME=		glib20
 USES=			autoreconf:-iv fuse gettext-runtime kmod libtool localbase pathfix pkgconfig
+USE_GNOME=		glib20
 
 USE_GITHUB=		yes
 GH_ACCOUNT=		vmware
-GH_TAGNAME=		stable-${RELEASE_VER}
 
 USE_LDCONFIG=		yes
 CPPFLAGS+=		-Wno-deprecated-declarations
 
 SSP_UNSAFE=		kernel module does not support ssp
 
-CONFIGURE_ARGS+=	--disable-grabbitmqproxy \
+CONFIGURE_ARGS+=	--disable-grabbitmqproxy --without-icu \
 			--disable-vgauth --without-procps \
 			--sysconfdir=${PREFIX}/etc
 
@@ -71,8 +72,6 @@ CONFLICTS=		open-vm-tools-nox11-[0-9]*
 .else
 CONFLICTS=		open-vm-tools-[0-9]*
 .endif
-
-ONLY_FOR_ARCHS=		i386 amd64
 
 CONFIGURE_ENV+=		SYSDIR=${SRC_BASE}/sys
 

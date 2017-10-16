@@ -5,9 +5,266 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20170930:
+  AFFECTS: users of PHP and its modules
+  AUTHOR: eugen@FreeBSD.org
+
+  All lang/php* ports switched to depend on devel/oniguruma6
+  instead of previous oniguruma version some time ago.
+
+  If you have not moved from devel/oniguruma5 before and
+  have troubles updating PHP,
+
+  for users of portmaster:
+	portmaster -o devel/oniguruma6 devel/oniguruma5
+	portmaster -r devel/oniguruma6
+
+  for users of portupgrade:
+	portupgrade -o devel/oniguruma6 devel/oniguruma5
+	portupgrade -fr devel/oniguruma6
+
+  pkg should handle this automatically.
+
+20170928:
+  AFFECTS: users of security/courier-authlib and its modules
+  AUTHOR: madpilot@FreeBSD.org
+
+  The affected ports have been modified to follow the upstream
+  suggested best practice to use the sysconftool on installation.
+
+  Please make sure your configuration files include all the comments
+  that tool uses to correctly update the configuration on update.
+
+  You can use the ".sample" or ".dist" files as templates for missing
+  comments if needed.
+
+20170915:
+  AFFECTS: users of devel/cargo
+  AUTHOR: rust@FreeBSD.org
+
+  Starting with version 1.19.0, Cargo is provided with Rust. Therefore,
+  devel/cargo was merged into lang/rust.
+
+20170914:
+  AFFECTS: users of CMake & CMake Modules
+  AUTHOR: adridg@FreeBSD.org
+
+  The devel/cmake-modules port has been merged into devel/cmake.
+
+  The benefit of being able to update the modules without the binary
+  is outweighed by the issues caused by having the binary out-of-sync
+  with the modules.
+
+  Users should delete the devel/cmake-modules package and then
+  upgrade or reinstall devel/cmake.
+ 
+  All ports have been updated to depend only on CMake.
+
+20170904
+  AFFECTS: users of net-mgmt/seafile-server
+  AUTHOR: ultima@FreeBSD.org
+
+  Users using MySQL updating to 6.1.2 need to verify table's collation
+  are utf8_unicode_ci. Upstream has set collation type to be implicit
+  and will cause all libraries to disappear if set to incorrect collation.
+
+20170828
+  AFFECTS: users of security/gnupg
+  AUTHOR: adamw@FreeBSD.org
+
+  security/gnupg has become the new stable version of GnuPG. This is
+  an LTS branch. gnupg20 will reach EOL at the end of the year, and all
+  gnupg20 users should migrate to gnupg22.
+
+  See https://gnupg.org/faq/whats-new-in-2.1.html for important changes.
+
+20170820:
+  AFFECTS: users of www/uwsgi
+  AUTHOR: ultima@FreeBSD.org
+
+  The default socket owner and mode had been changed from www:www 600
+  to uwsgi:www 660. This should resolve issue #1471[1] on github.
+
+  [1] https://github.com/unbit/uwsgi/issues/1471
+
+20170808:
+  AFFECTS: users of lang/ghc and */hs-*
+  AUTHOR: haskell@FreeBSD.org
+
+  The Glorious Glasgow Haskell Compiler has been updated to version
+  8.0.2.  Hence it is recommended to rebuild or reinstall all the
+  dependent ports and the lang/ghc port itself in one of the following
+  ways:
+
+  # portmaster -w -r ghc
+    or
+  # portupgrade -fr lang/ghc
+
+  In case of pkg(8), it is probably safer to remove all the GHC-dependent
+  packages along with GHC and reinstall everything from scratch.  For
+  example:
+
+  # pkg query "%ro" ghc > ghc-pkgs.txt
+  # pkg delete -y lang/ghc
+
+  In ghc-pkgs.txt, check and remove all the packages that have been moved
+  on the update, then use this command:
+
+  # pkg install -y `cat ghc-pkgs.txt`
+
+20170807:
+  AFFECTS: users of mail/dovecot2 and mail/dovecot2-pigeonhole
+  AUTHOR: adamw@FreeBSD.org
+
+  Now that dovecot1 has been removed from the ports tree, dovecot2
+  and dovecot2-pigeonhole have been renamed to simply dovecot and
+  dovecot-pigeonhole.
+
+  pkg should handle the rename automatically, but if you run into
+  trouble, you can point pkg at the new origin via:
+
+  # pkg set -o mail/dovecot2:mail/dovecot
+  # pkg set -o mail/dovecot2-pigeonhole:mail/dovecot-pigeonhole
+
+  Similarly, you can point portmaster at the new location via:
+
+  # portmaster -o mail/dovecot mail/dovecot2
+
+  If all else fails, just remove and reinstall the package:
+
+  # pkg delete dovecot2
+  # pkg install dovecot
+
+20170806:
+  AFFECTS: users of mail/dovecot2-antispam-plugin
+  AUTHOR: adamw@FreeBSD.org
+
+  Development of the antispam plugin ceased years ago, and upstream
+  recommends using pigeonhole (mail/dovecot2-pigeonhole) instead.
+
+  See https://wiki2.dovecot.org/HowTo/AntispamWithSieve for a recipe
+  to replicate the antispam plugin's behaviour.
+
+20170803:
+  AFFECTS: users of net/guacamole-client
+  AUTHOR: ultima@FreeBSD.org
+
+  As of version 0.9.13, the configuration directory for guacamole-client
+  has changed from /usr/local/etc/guacamole to
+  /usr/local/etc/guacamole-client.
+
+20170803:
+  AFFECTS: users of net/guacamole-server
+  AUTHOR: ultima@FreeBSD.org
+
+  As of version 0.9.13, the configuration directory for guacamole-server
+  has changed from /usr/local/etc/guacd to /usr/local/etc/guacamole-server.
+
+20170803:
+  AFFECTS: users of sysutils/terraform
+  AUTHOR: lifanov@FreeBSD.org
+
+  Terraform was updated to version 0.10.0, which split out provider plugins.
+  Provider plugins are now installed in the project directory the next time
+  "terraform init" is run. Please see the complete upgrading guide:
+
+  https://www.terraform.io/upgrade-guides/0-10.html
+
+20170729:
+  AFFECTS: users of net-p2p/bitcoin
+  AUTHOR: lwhsu@FreeBSD.org
+
+  Bitcoin data directory has been changed from /var/db/bitcoind to
+  /var/db/bitcoin.  Users of previous versions may want to migrate data to
+  new location or specify bitcoind_data.
+
+20170729:
+  AFFECTS: users of mail/mailscanner
+  AUTHOR: crees@FreeBSD.org
+
+  Version 5.0.3 of MailScanner introduced a serious bug in packaging.
+  Unfortunately if it is installed, your configuration has been deleted.
+
+  If you have managed to get it working, please back up
+  /usr/local/etc/MailScanner as it will also be deleted on deinstall
+  of the same package.
+
+20170726:
+  AFFECTS: users of www/luakit
+  AUTHOR: ports@textmail.me
+
+  Luakit was updated to version 2017.07.26, which is incompatible to the
+  previous release from 2012. Please remove old configuration files from
+  the following directories:
+        ${PREFIX}/etc/xdg/luakit
+        ${HOME}/.config/luakit
+        ${HOME}/.local/share/luakit
+
+20170721:
+  AFFECTS: users of security/sshguard*
+  AUTHOR: dan.mcgregir@usask.ca
+
+  security/sshguard was updated to 2.0.0, and security/sshguard-pf,
+  security/sshguard-ipfw, and security/sshguard-null have been merged into
+  security/sshguard.
+
+  Configuration of the service is now handled in ${PREFIX}/etc/sshguard.conf.
+  Please select the desired backend, -null is selected by default.
+
+  In order to upgrade from 1.7.1 change the origin to security/sshguard
+
+  # pkg set -o security/sshguard-ipfw:security/sshguard
+  # pkg set -o security/sshguard-null:security/sshguard
+  # pkg set -o security/sshguard-pf:security/sshguard
+
+20170717:
+  AFFECTS: users of devel/p5-Log-Any and devel/p5-Log-Any-Adapter-Syslog
+  AUTHOR: eugen@FreeBSD.org
+
+  devel/p5-Log-Any-Adapter-Syslog functionality have been merged into
+  devel/p5-Log-Any and from now devel/p5-Log-Any must be used.
+
+  devel/p5-Log-Any-Adapter-Syslog will be marked as deprecated and removed.
+
+20170712:
+  AFFECTS: users of devel/apr1
+  AUTHOR: brnrd@FreeBSD.org
+
+  APR was updated to 1.6.0 and APR-util was updated to 1.6.2
+
+  The Apache Portable Runtime project removed support for FreeTDS from the
+  APR Utilities in version 1.6. Users of FreeTDS will have to migrate
+  configurations to use the newly added ODBC support in conjunction with
+  FreeTDS using FreeTDS' ODBC capabilities.
+
+  Please rebuild all ports which are using functions from APR/APR-util
+  such as Apache, Subversion, etc. Normally, you can obtain the list of
+  dependent software by running the following command:
+
+  # pkg info -r apr
+
+  Then you should rebuild all ports depending on APR(-util) to avoid
+  dangling shared library dependencies. Poudriere and pkg handle this
+  correctly, portmaster and portupgrade users can use the following to
+  rebuild all dependent ports.
+
+  Portmaster users:
+      portmaster -r apr
+  Portupgrade users:
+      portupgrade -fr devel/apr1
+
+20170710:
+  AFFECTS: users of net-im/ejabberd
+  AUTHOR: ashish@FreeBSD.org
+
+  After update to 17.07, there is an issue[1] expected related to certificate
+  verification with TLS connections.
+
+  [1] - https://github.com/processone/ejabberd/issues/1833
+
 20170628:
   AFFECTS: users of www/node
-  AUTHOR: bhughes@freebsd.org
+  AUTHOR: bhughes@FreeBSD.org
 
   The www/node port has been updated to Node.js v8.1.2, the latest
   upstream release. This is a major release, including many significant
@@ -59,13 +316,13 @@ you update your ports collection, before attempting any port upgrades.
 
   The upgrade instructions consider a basic usage and do not match
   complex scenarious like replication, sharding or similar.
-  
+
   Upgrade instructions:
 
   First stop your PostgreSQL, create PostgreSQL-binaries and backup your data.
   If you have another Version of PostgreSQL installed, for example 9.3.12, your
   files are named accourding to this.
-  
+
   # service postgresql stop
   # pkg create postgresql93-server postgresql93-contrib
   # mkdir /tmp/pg-upgrade
@@ -90,7 +347,7 @@ you update your ports collection, before attempting any port upgrades.
 
   After installing the new PostgreSQL version you need to convert
   all your databases to new version:
-  
+
   # service postgresql initdb
   # su -l pgsql -c "pg_upgrade -b /tmp/pg-upgrade/usr/local/bin/ -d /usr/local/pgsql/data93/ -B /usr/local/bin/ -D /usr/local/pgsql/data/"
 
@@ -106,7 +363,7 @@ you update your ports collection, before attempting any port upgrades.
   based application. Calligra now uses Qt5 and KF5. The translations have
   been merged (upstream) into the application, so separate language /
   translation ports are no longer provided. Krita has been split out
-  (upstream) into a separate application, which is packaged as 
+  (upstream) into a separate application, which is packaged as
   graphics/krita. Kexi, the visual database applications creator,
   is packaged separately as databases/kexi.
 
@@ -121,7 +378,7 @@ you update your ports collection, before attempting any port upgrades.
   which can be resolved by adding 'mod_s2s_dialback: {}' to 'modules' section
   of configuration file.
 
-  [1] - https://github.com/processone/ejabberd/issues/1700  
+  [1] - https://github.com/processone/ejabberd/issues/1700
 
 20170603:
   AFFECTS: users of www/kanboard

@@ -1711,6 +1711,7 @@ PHP_FUNCTION(pfSense_etherswitch_getinfo)
 	array_init(return_value);
 	add_assoc_string(return_value, "name", info.es_name, 1);
 	add_assoc_long(return_value, "nports", info.es_nports);
+	add_assoc_long(return_value, "nlaggroups", info.es_nlaggroups);
 	add_assoc_long(return_value, "nvlangroups", info.es_nvlangroups);
 
 	ALLOC_INIT_ZVAL(caps);
@@ -1731,6 +1732,8 @@ PHP_FUNCTION(pfSense_etherswitch_getinfo)
 	array_init(swcaps);
 	if (info.es_switch_caps & ETHERSWITCH_CAPS_PORTS_MASK)
 		add_assoc_long(swcaps, "PORTS_MASK", 1);
+	if (info.es_switch_caps & ETHERSWITCH_CAPS_LAGG)
+		add_assoc_long(swcaps, "LAGG", 1);
 	add_assoc_zval(return_value, "switch_caps", swcaps);
 
 	if (info.es_switch_caps & ETHERSWITCH_CAPS_PORTS_MASK) {
@@ -1818,6 +1821,8 @@ PHP_FUNCTION(pfSense_etherswitch_getport)
 		add_assoc_long(flags, "ADDTAG", 1);
 	if (p.es_flags & ETHERSWITCH_PORT_FIRSTLOCK)
 		add_assoc_long(flags, "FIRSTLOCK", 1);
+	if (p.es_flags & ETHERSWITCH_PORT_DROPTAGGED)
+		add_assoc_long(flags, "DROPTAGGED", 1);
 	if (p.es_flags & ETHERSWITCH_PORT_DROPUNTAGGED)
 		add_assoc_long(flags, "DROPUNTAGGED", 1);
 	if (p.es_flags & ETHERSWITCH_PORT_DOUBLE_TAG)
@@ -1964,7 +1969,7 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 				}
 				if (key_len == 7 && strcasecmp(key, "tagged") == 0 &&
 				    Z_LVAL_PP(data2) != 0) {
-					tagged = 1; 
+					tagged = 1;
 				}
 			}
 			members |= (1 << port);
@@ -2354,7 +2359,7 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 	struct ifreq ifr;
 	char outputbuf[128];
 	char *ifname;
-	int ifname_len, llflag, sock, addresscnt = 0, addresscnt6 = 0, rc, sock_hw;
+	int ifname_len, llflag, addresscnt, addresscnt6;
 	zval *caps;
 	zval *encaps;
 
@@ -2366,6 +2371,8 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 	if (ifdata == NULL)
 		RETURN_NULL();
 
+	addresscnt = 0;
+	addresscnt6 = 0;
 	array_init(return_value);
 
 	for(mb = ifdata; mb != NULL; mb = mb->ifa_next) {
@@ -2446,14 +2453,12 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 			strncpy(ifr6.ifr_name, mb->ifa_name,
 			    sizeof(ifr6.ifr_name));
 			memcpy(&ifr6.ifr_ifru.ifru_addr, tmp6, tmp6->sin6_len);
-			if ((sock = socket(PF_INET6, SOCK_DGRAM, 0))) {
-				if (ioctl(sock, SIOCGIFAFLAG_IN6, &ifr6) == 0) {
-					llflag = ifr6.ifr_ifru.ifru_flags6;
-					if ((llflag & IN6_IFF_TENTATIVE) != 0)
-						add_assoc_long(return_value,
-						    "tentative", 1);
-				}
-				close(sock);
+			if (ioctl(PFSENSE_G(inets6),
+			    SIOCGIFAFLAG_IN6, &ifr6) == 0) {
+				llflag = ifr6.ifr_ifru.ifru_flags6;
+				if ((llflag & IN6_IFF_TENTATIVE) != 0)
+					add_assoc_long(return_value,
+					    "tentative", 1);
 			}
 
 			tmp6 = (struct sockaddr_in6 *)mb->ifa_netmask;
@@ -2504,6 +2509,7 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 			add_assoc_long(return_value, "allmulti", 1);
 		if (mb->ifa_flags & IFF_SIMPLEX)
 			add_assoc_long(return_value, "simplex", 1);
+		memset(&ifr, 0, sizeof(ifr));
 		strncpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
 		if (mb->ifa_data != NULL) {
 			md = mb->ifa_data;
@@ -2522,6 +2528,9 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 				    (caddr_t)&ifr) == 0) {
 					add_assoc_string(return_value, "iftype",
 					    "wireless", 1);
+					/* Reset ifr after use. */
+					memset(&ifr, 0, sizeof(ifr));
+					strncpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
 				} else {
 					add_assoc_string(return_value, "iftype",
 					    "ether", 1);
@@ -2641,15 +2650,10 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 
 		if (tmpdl->sdl_type != IFT_ETHER)
 			continue;
-		strncpy(ifr.ifr_name, mb->ifa_name, sizeof(ifr.ifr_name));
 		memcpy(&ifr.ifr_addr, mb->ifa_addr,
 		    sizeof(mb->ifa_addr->sa_len));
 		ifr.ifr_addr.sa_family = AF_LOCAL;
-		if ((sock_hw = socket(AF_LOCAL, SOCK_DGRAM, 0)) < 0)
-			continue;
-		rc = ioctl(sock_hw, SIOCGHWADDR, &ifr);
-		close(sock_hw);
-		if (rc != 0)
+		if (ioctl(PFSENSE_G(s), SIOCGHWADDR, &ifr) != 0)
 			continue;
 
 		bzero(outputbuf, sizeof outputbuf);
@@ -3996,11 +4000,11 @@ PHP_FUNCTION(pfSense_get_os_kern_data) {
 
 static void build_ipsec_sa_array(void *salist, char *label, vici_res_t *res) {
 	char *name, *value;
-
 	/* message sections may be nested. maintain a stack as we traverse */
-	int done = 0, level = 0;
-	zval *nestedarrs[32];
 
+	int done = 0;
+	int level = 0;
+	zval *nestedarrs[32];
 	nestedarrs[level] = (zval *) salist;
 
 	while (!done) {
@@ -4012,7 +4016,14 @@ static void build_ipsec_sa_array(void *salist, char *label, vici_res_t *res) {
 				name = vici_parse_name(res);
 				ALLOC_INIT_ZVAL(nestedarrs[level + 1]);
 				array_init(nestedarrs[level + 1]);
-				add_assoc_zval(nestedarrs[level], name, nestedarrs[level + 1]);
+				if (level == 0) {
+					add_next_index_zval(nestedarrs[level],nestedarrs[level+1]);
+
+					char *temp = "con-id";
+					add_assoc_string(nestedarrs[level + 1], temp, name, 1);
+				} else {
+					add_assoc_zval(nestedarrs[level], name, nestedarrs[level + 1]);
+				}
 				Z_ADDREF_P(nestedarrs[level + 1]);
 				level++;
 				break;
@@ -4050,7 +4061,6 @@ static void build_ipsec_sa_array(void *salist, char *label, vici_res_t *res) {
 				break;
 		}
 	}
-
 	return;
 }
 

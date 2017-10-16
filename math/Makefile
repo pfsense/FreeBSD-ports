@@ -7,7 +7,10 @@
     SUBDIR += PDL
     SUBDIR += R
     SUBDIR += R-cran-Amelia
+    SUBDIR += R-cran-CVST
     SUBDIR += R-cran-ChangeAnomalyDetection
+    SUBDIR += R-cran-DEoptimR
+    SUBDIR += R-cran-DRR
     SUBDIR += R-cran-Formula
     SUBDIR += R-cran-KFAS
     SUBDIR += R-cran-LearnBayes
@@ -21,6 +24,7 @@
     SUBDIR += R-cran-RSvgDevice
     SUBDIR += R-cran-RcppArmadillo
     SUBDIR += R-cran-RcppEigen
+    SUBDIR += R-cran-RcppRoll
     SUBDIR += R-cran-Rmpfr
     SUBDIR += R-cran-Rsolnp
     SUBDIR += R-cran-SparseM
@@ -31,7 +35,10 @@
     SUBDIR += R-cran-bdsmatrix
     SUBDIR += R-cran-car
     SUBDIR += R-cran-coda
+    SUBDIR += R-cran-combinat
+    SUBDIR += R-cran-ddalpha
     SUBDIR += R-cran-deldir
+    SUBDIR += R-cran-dimRed
     SUBDIR += R-cran-dlmodeler
     SUBDIR += R-cran-dplyr
     SUBDIR += R-cran-expm
@@ -39,14 +46,17 @@
     SUBDIR += R-cran-fracdiff
     SUBDIR += R-cran-geepack
     SUBDIR += R-cran-gmp
+    SUBDIR += R-cran-gower
     SUBDIR += R-cran-gpclib
     SUBDIR += R-cran-gss
     SUBDIR += R-cran-gtable
     SUBDIR += R-cran-igraph
     SUBDIR += R-cran-influenceR
     SUBDIR += R-cran-inline
+    SUBDIR += R-cran-ipred
     SUBDIR += R-cran-irlba
     SUBDIR += R-cran-labeling
+    SUBDIR += R-cran-lava
     SUBDIR += R-cran-lazyeval
     SUBDIR += R-cran-lme4
     SUBDIR += R-cran-maxLik
@@ -61,11 +71,14 @@
     SUBDIR += R-cran-numDeriv
     SUBDIR += R-cran-outliers
     SUBDIR += R-cran-pbkrtest
+    SUBDIR += R-cran-prodlim
     SUBDIR += R-cran-psych
     SUBDIR += R-cran-quadprog
     SUBDIR += R-cran-qualityTools
     SUBDIR += R-cran-quantreg
+    SUBDIR += R-cran-recipes
     SUBDIR += R-cran-rgenoud
+    SUBDIR += R-cran-robustbase
     SUBDIR += R-cran-sandwich
     SUBDIR += R-cran-sf
     SUBDIR += R-cran-sm
@@ -85,6 +98,7 @@
     SUBDIR += acalc
     SUBDIR += add
     SUBDIR += algae
+    SUBDIR += alglib
     SUBDIR += algotutor
     SUBDIR += alt-ergo
     SUBDIR += amath
@@ -165,6 +179,7 @@
     SUBDIR += fftw3-long
     SUBDIR += fftw3-quad
     SUBDIR += fityk
+    SUBDIR += form
     SUBDIR += fpc-fftw
     SUBDIR += fpc-gmp
     SUBDIR += fpc-numlib
@@ -216,7 +231,10 @@
     SUBDIR += hs-data-lens-template
     SUBDIR += hs-distributive
     SUBDIR += hs-erf
+    SUBDIR += hs-fixed
+    SUBDIR += hs-half
     SUBDIR += hs-ieee754
+    SUBDIR += hs-integer-logarithms
     SUBDIR += hs-kan-extensions
     SUBDIR += hs-math-functions
     SUBDIR += hs-mwc-random
@@ -274,6 +292,7 @@
     SUBDIR += ltl
     SUBDIR += ltl2ba
     SUBDIR += lybniz
+    SUBDIR += mate-calc
     SUBDIR += math77
     SUBDIR += mathmod
     SUBDIR += mathomatic

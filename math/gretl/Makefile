@@ -3,7 +3,7 @@
 
 PORTNAME=	gretl
 PORTVERSION=	1.9.13
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	math finance
 MASTER_SITES=	SF
 
@@ -63,7 +63,7 @@ OPENMP_CONFIGURE_ON=	--enable-openmp
 
 R_DESC=			libR support
 R_CONFIGURE_WITH=	libR
-R_LIB_DEPENDS=		libR.so:math/R
+R_LIB_DEPENDS=          ${CRAN_DEPENDS}
 
 UNZIP_DESC=		UnZip compression support via libgsf
 UNZIP_CONFIGURE_WITH=	gsf

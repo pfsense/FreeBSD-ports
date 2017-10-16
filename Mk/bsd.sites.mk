@@ -44,8 +44,7 @@ MASTER_SITE_PORTS_JP+= \
 .if !defined(IGNORE_MASTER_SITE_AFTERSTEP)
 MASTER_SITE_AFTERSTEP+= \
 	ftp://ftp.afterstep.org/%SUBDIR%/ \
-	ftp://ftp.kddlabs.co.jp/X11/AfterStep/%SUBDIR%/ \
-	ftp://ftp.dti.ad.jp/pub/X/AfterStep/%SUBDIR%/
+	ftp://ftp.kddlabs.co.jp/X11/AfterStep/%SUBDIR%/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_APACHE)
@@ -287,8 +286,7 @@ MASTER_SITE_FREEBSD_ORG+= \
 	ftp://ftp.se.FreeBSD.org/pub/FreeBSD/%SUBDIR%/ \
 	ftp://ftp.jp.FreeBSD.org/pub/FreeBSD/%SUBDIR%/ \
 	ftp://ftp.uk.FreeBSD.org/pub/FreeBSD/%SUBDIR%/ \
-	ftp://ftp.ru.FreeBSD.org/pub/FreeBSD/%SUBDIR%/ \
-	ftp://ftp.dti.ad.jp/pub/FreeBSD/%SUBDIR%/
+	ftp://ftp.ru.FreeBSD.org/pub/FreeBSD/%SUBDIR%/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_FRUGALWARE)
@@ -420,87 +418,28 @@ GH_PROJECT?=	${GH_PROJECT_DEFAULT}
 # Use full PREFIX/SUFFIX and converted DISTVERSION
 GH_TAGNAME_DEFAULT=	${DISTVERSIONFULL}
 GH_TAGNAME?=	${GH_TAGNAME_DEFAULT}
-# Iterate over GH_ACCOUNT, GH_PROJECT and GH_TAGNAME to extract groups
+# Iterate over GH_ACCOUNT, GH_PROJECT, GH_TAGNAME and GH_SUBDIR to extract groups
 _GITHUB_GROUPS= DEFAULT
-.  for _A in ${GH_ACCOUNT}
-_S_TEMP=	${_A:S/^${_A:C@:[^/:]+$@@}//:S/^://}
-.    if !empty(_S_TEMP)
-.      for _group in ${_S_TEMP:S/,/ /g}
-_G_TEMP=	${_group}
-.        if ${_G_TEMP} == all || ${_G_TEMP} == ALL || ${_G_TEMP} == default
+.  for _gh_v in GH_ACCOUNT GH_PROJECT GH_TAGNAME GH_SUBDIR
+.    for _v_ex in ${${_gh_v}}
+_GH_GROUPS=	${_v_ex:S/^${_v_ex:C@:[^/:]+$@@}//:S/^://}
+.      if !empty(_GH_GROUPS)
+.        for _group in ${_GH_GROUPS:S/,/ /g}
+.          if ${_group} == all || ${_group} == ALL || ${_group} == default
 check-makevars::
 		@${ECHO_MSG} "Makefile error: the words all, ALL and default are reserved and cannot be"
-		@${ECHO_MSG} "used in group definitions. Please fix your GH_ACCOUNT"
+		@${ECHO_MSG} "used in group definitions. Please fix your ${_gh_v}"
 		@${FALSE}
-.        endif
-.        if !${_GITHUB_GROUPS:M${_group}}
+.          endif
+.          if !${_GITHUB_GROUPS:M${_group}}
 _GITHUB_GROUPS+=	${_group}
-.         endif
-GH_ACCOUNT_${_group}=	${_A:C@^(.*):[^/:]+$@\1@}
-.      endfor
-.    else
-GH_ACCOUNT_DEFAULT=	${_A:C@^(.*):[^/:]+$@\1@}
-.    endif
-.  endfor
-.  for _P in ${GH_PROJECT}
-_S_TEMP=	${_P:S/^${_P:C@:[^/:]+$@@}//:S/^://}
-.    if !empty(_S_TEMP)
-.      for _group in ${_S_TEMP:S/,/ /g}
-_G_TEMP=	${_group}
-.        if ${_G_TEMP} == all || ${_G_TEMP} == ALL || ${_G_TEMP} == default
-check-makevars::
-		@${ECHO_MSG} "Makefile error: the words all, ALL and default are reserved and cannot be"
-		@${ECHO_MSG} "used in group definitions. Please fix your GH_PROJECT"
-		@${FALSE}
-.        endif
-.        if !${_GITHUB_GROUPS:M${_group}}
-_GITHUB_GROUPS+=	${_group}
-.         endif
-GH_PROJECT_${_group}=	${_P:C@^(.*):[^/:]+$@\1@}
-.      endfor
-.    else
-GH_PROJECT_DEFAULT=	${_P:C@^(.*):[^/:]+$@\1@}
-.    endif
-.  endfor
-.  for _T in ${GH_TAGNAME}
-_S_TEMP=	${_T:S/^${_T:C@:[^/:]+$@@}//:S/^://}
-.    if !empty(_S_TEMP)
-.      for _group in ${_S_TEMP:S/,/ /g}
-_G_TEMP=	${_group}
-.        if ${_G_TEMP} == all || ${_G_TEMP} == ALL || ${_G_TEMP} == default
-check-makevars::
-		@${ECHO_MSG} "Makefile error: the words all, ALL and default are reserved and cannot be"
-		@${ECHO_MSG} "used in group definitions. Please fix your GH_TAGNAME"
-		@${FALSE}
-.        endif
-.        if !${_GITHUB_GROUPS:M${_group}}
-_GITHUB_GROUPS+=	${_group}
-.         endif
-GH_TAGNAME_${_group}=	${_T:C@^(.*):[^/:]+$@\1@}
-.      endfor
-.    else
-GH_TAGNAME_DEFAULT=	${_T:C@^(.*):[^/:]+$@\1@}
-.    endif
-.  endfor
-.  for _S in ${GH_SUBDIR}
-_S_SEMP=	${_S:S/^${_S:C@:[^/:]+$@@}//:S/^://}
-.    if !empty(_S_SEMP)
-.      for _group in ${_S_SEMP:S/,/ /g}
-_G_SEMP=	${_group}
-.        if ${_G_SEMP} == all || ${_G_SEMP} == ALL || ${_G_SEMP} == default
-check-makevars::
-		@${ECHO_MSG} "Makefile error: the words all, ALL and default are reserved and cannot be"
-		@${ECHO_MSG} "used in group definitions. Please fix your GH_SUBDIR"
-		@${FALSE}
-.        endif
-.        if !${_GITHUB_GROUPS:M${_group}}
-_GITHUB_GROUPS+=	${_group}
-.         endif
-GH_SUBDIR_${_group}=	${_S:C@^(.*):[^/:]+$@\1@}
-.      endfor
-.    else
-GH_SUBDIR_DEFAULT=	${_S:C@^(.*):[^/:]+$@\1@}
-.    endif
+.          endif
+${_gh_v}_${_group}=	${_v_ex:C@^(.*):[^/:]+$@\1@}
+.        endfor
+.      else
+${_gh_v}_DEFAULT=	${_v_ex:C@^(.*):[^/:]+$@\1@}
+.      endif
+.    endfor
 .  endfor
 # Put the default values back into the variables so that the *default* behavior
 # is not changed.
@@ -531,8 +470,14 @@ DISTNAME:=	${DISTNAME}_GH${_GITHUB_REV}
 .  endif
 _GITHUB_EXTRACT_SUFX=	.tar.gz
 # Put the DEFAULT distfile first
+_GITHUB_CLONE_DIR?=	${WRKDIR}/git-clone
+_PORTS_DIRECTORIES+=	${_GITHUB_CLONE_DIR}
 .  if !${USE_GITHUB:Mnodefault} && defined(_GITHUB_MUST_SET_DISTNAME)
 DISTFILES+=	${DISTNAME}${_GITHUB_EXTRACT_SUFX}
+git-clone: git-clone-DEFAULT
+git-clone-DEFAULT: ${_GITHUB_CLONE_DIR}
+	@git clone https://github.com/${GH_ACCOUNT_DEFAULT}/${GH_PROJECT_DEFAULT}.git ${_GITHUB_CLONE_DIR}/${GH_PROJECT_DEFAULT}
+	@${ECHO_MSG} "Cloned the default github repository into ${_GITHUB_CLONE_DIR}/${GH_PROJECT_DEFAULT}" | ${FMT_80}
 .  endif
 .  if !empty(GH_SUBDIR)
 _SITES_extract:=	690:post-extract-gh-DEFAULT
@@ -564,8 +509,12 @@ post-extract-gh-${_group}:
 	@${RMDIR} ${WRKSRC}/${GH_SUBDIR_${_group}} 2>/dev/null || :
 	@${MKDIR} ${WRKSRC}/${GH_SUBDIR_${_group}:H} 2>/dev/null || :
 	@${MV} ${WRKSRC_${_group}} ${WRKSRC}/${GH_SUBDIR_${_group}}
-	@ln -s ${WRKSRC:T}/${GH_SUBDIR_${_group}} ${WRKSRC_${_group}}
+	@${LN} -s ${WRKSRC:T}/${GH_SUBDIR_${_group}} ${WRKSRC_${_group}}
 .      endif
+git-clone: git-clone-${_group}
+git-clone-${_group}: ${_GITHUB_CLONE_DIR}
+	@git clone https://github.com/${GH_ACCOUNT_${_group}}/${GH_PROJECT_${_group}}.git ${_GITHUB_CLONE_DIR}/${GH_PROJECT_${_group}}
+	@${ECHO_MSG} "Cloned the ${_group} github repository into ${_GITHUB_CLONE_DIR}/${GH_PROJECT_${_group}}" | ${FMT_80}
 .    endfor
 .  endif
 convert-to-gh-tuple:
@@ -582,7 +531,6 @@ MASTER_SITE_GNOME+= \
 	ftp://ftp.cse.buffalo.edu/pub/Gnome/%SUBDIR%/ \
 	http://fr2.rpmfind.net/linux/gnome.org/%SUBDIR%/ \
 	http://www.gtlib.gatech.edu/pub/gnome/%SUBDIR%/ \
-	ftp://ftp.dti.ad.jp/pub/X/gnome/%SUBDIR%/ \
 	http://linorg.usp.br/gnome/%SUBDIR%/ \
 	http://mirror.aarnet.edu.au/pub/gnome/%SUBDIR%/ \
 	ftp://ftp.kddlabs.co.jp/pub/GNOME/%SUBDIR%/ \
@@ -609,7 +557,6 @@ MASTER_SITE_GNU+= \
 	http://www.gtlib.gatech.edu/pub/gnu/gnu/%SUBDIR%/ \
 	http://mirrors.kernel.org/gnu/%SUBDIR%/ \
 	ftp://ftp.kddlabs.co.jp/GNU/gnu/%SUBDIR%/ \
-	ftp://ftp.dti.ad.jp/pub/GNU/%SUBDIR%/ \
 	ftp://ftp.mirrorservice.org/sites/ftp.gnu.org/gnu/%SUBDIR%/ \
 	ftp://ftp.informatik.hu-berlin.de/pub/gnu/gnu/%SUBDIR%/ \
 	ftp://ftp.informatik.rwth-aachen.de/pub/mirror/ftp.gnu.org/pub/gnu/%SUBDIR%/ \
@@ -692,7 +639,6 @@ MASTER_SITE_ISC+= \
 	ftp://ftp.ciril.fr/pub/isc/%SUBDIR%/ \
 	ftp://ftp.freenet.de/pub/ftp.isc.org/isc/%SUBDIR%/ \
 	ftp://ftp.iij.ad.jp/pub/network/isc/%SUBDIR%/ \
-	ftp://ftp.dti.ad.jp/pub/net/isc/%SUBDIR%/ \
 	ftp://ftp.u-aizu.ac.jp/pub/net/isc/%SUBDIR%/ \
 	ftp://ftp.task.gda.pl/mirror/ftp.isc.org/isc/%SUBDIR%/ \
 	ftp://ftp.sunet.se/pub/network/isc/%SUBDIR%/ \
@@ -825,7 +771,6 @@ MASTER_SITE_MYSQL+= \
 	ftp://mirror.widexs.nl/pub/mysql/Downloads/%SUBDIR%/ \
 	ftp://mirror.switch.ch/mirror/mysql/Downloads/%SUBDIR%/ \
 	http://mysql.dp.ua/Downloads/%SUBDIR%/ \
-	http://mysql.mirrored.ca/Downloads/%SUBDIR%/ \
 	ftp://mirror.services.wisc.edu/mirrors/mysql/Downloads/%SUBDIR%/ \
 	http://mysql.mirrors.pair.com/Downloads/%SUBDIR%/ \
 	ftp://ftp.linorg.usp.br/mysql/Downloads/%SUBDIR%/ \
@@ -845,7 +790,6 @@ MASTER_SITE_NETBSD+= \
 	ftp://sunsite.uio.no/bsd/unix/NetBSD/packages/distfiles/%SUBDIR%/ \
 	ftp://ftp.sunet.se/pub/NetBSD/packages/distfiles/%SUBDIR%/ \
 	ftp://ftp.demon.co.uk/pub/mirrors/NetBSD/packages/distfiles/%SUBDIR%/ \
-	ftp://ftp.dti.ad.jp/pub/NetBSD/packages/distfiles/%SUBDIR%/ \
 	ftp://ftp.funet.fi/pub/NetBSD/packages/distfiles/%SUBDIR%/
 .endif
 
@@ -937,9 +881,7 @@ _PERL_CPAN_ID=	${MASTER_SITE_SUBDIR:C/^CPAN:(.)(.)(.*)$/\1\/\1\2\/\1\2\3/}
 #
 .if !defined(IGNORE_MASTER_SITE_PGSQL)
 MASTER_SITE_PGSQL+= \
-	http://ftp.postgresql.org/pub/%SUBDIR%/ \
-	https://ftp.postgresql.org/pub/%SUBDIR%/ \
-	ftp://ftp.postgresql.org/pub/%SUBDIR%/
+	https://ftp.postgresql.org/pub/%SUBDIR%/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_PHP)
@@ -1185,7 +1127,6 @@ MASTER_SITE_XCONTRIB+= \
 	ftp://ftp.gwdg.de/pub/x11/x.org/contrib/%SUBDIR%/ \
 	ftp://ftp.x.org/contrib/%SUBDIR%/ \
 	ftp://ftp.sunet.se/pub/X11/ftp.x.org/contrib/%SUBDIR%/ \
-	ftp://ftp.dti.ad.jp/pub/X/XFree86/mirror/X.Org/contrib/%SUBDIR%/ \
 	ftp://ftp.kddlabs.co.jp/X11/ftp.x.org/contrib/%SUBDIR%/ \
 	ftp://ftp2.x.org/contrib/%SUBDIR%/
 .endif
@@ -1234,6 +1175,13 @@ MASTER_SITE_KERNEL_ORG+= \
 	http://ftp.yandex.ru/pub/%SUBDIR%/ \
 	http://ftp.heanet.ie/pub/%SUBDIR%/ \
 	http://slackware.cs.utah.edu/pub/kernel.org/pub/%SUBDIR%/
+.endif
+
+.if !defined(IGNORE_MASTER_SITE_ZI)
+MASTER_SITE_ZI+= \
+	https://mirrors.rit.edu/zi/ \
+	https://blackened.zi0r.com/mirrors/ \
+	${MASTER_SITE_LOCAL:S/%SUBDIR%/zi/}
 .endif
 
 # Macro magic

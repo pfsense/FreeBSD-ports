@@ -3,7 +3,7 @@
 
 PORTNAME=	python
 PORTVERSION=	${PYTHON_PORTVERSION}
-PORTREVISION=	4
+PORTREVISION=	1
 CATEGORIES=	lang python ipv6
 MASTER_SITES=	PYTHON/ftp/python/${PYTHON_PORTVERSION}
 PKGNAMESUFFIX=	${PYTHON_SUFFIX}
@@ -77,7 +77,6 @@ LIBFFI_LIB_DEPENDS=	libffi.so:devel/libffi
 # Use CPPFLAGS over CFLAGS due to -I ordering, causing elementtree and pyexpat
 # to break in Python 2.7, or preprocessor complaints in Python >= 3.3
 # Upstream Issue: http://bugs.python.org/issue6299
-
 NLS_USES=		gettext
 NLS_CPPFLAGS=		-I${LOCALBASE}/include
 NLS_LIBS=		-L${LOCALBASE}/lib -lintl
@@ -137,6 +136,17 @@ post-patch:
 post-install:
 .if ! ${PORT_OPTIONS:MDEBUG}
 	${RM} ${STAGEDIR}${PREFIX}/lib/libpython3.so						# Upstream Issue: http://bugs.python.org/issue17975
+.endif
+# This code block exists for the qemu-user enabled cross build environment.
+# When using this environment in poudriere, CC is not set to the default
+# of /usr/bin/cc and a cross-compile toolchain is used.  We need to hand
+# edit this so that the run time configuration for python matches what the
+# FreeBSD base system provides.  sbruno 02Aug2017
+.if ${CC} == /nxb-bin/usr/bin/cc
+	@${REINPLACE_CMD} -e 's=/nxb-bin==' \
+		${STAGEDIR}${PREFIX}/lib/python${PYTHON_VER}/_sysconfigdata_m_freebsd${OSREL:R}_.py
+	@${REINPLACE_CMD} -e 's=/nxb-bin==' \
+		${STAGEDIR}${PREFIX}/lib/python${PYTHON_VER}/config-${PYTHON_VER}m/Makefile
 .endif
 	for i in ${STAGEDIR}${PREFIX}/lib/python${PYTHON_VER}/lib-dynload/*.so; do \
 		${STRIP_CMD} $$i; done								# Strip shared extensions
