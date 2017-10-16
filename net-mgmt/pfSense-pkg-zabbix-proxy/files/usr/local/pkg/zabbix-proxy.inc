@@ -274,7 +274,7 @@ EOF;
 	if (is_array($zbproxy_config) && $zbproxy_config['proxyenabled'] == "on") {
 		$zproxy_start = strtr($dir_checks, array("\r" => ""));
 		$zproxy_start .= "\techo \"Starting Zabbix Proxy\"...\n";
-		$zproxy_start .= "\t" . ZABBIX_PROXY_BASE . "/sbin/zabbix_proxy\n";
+		$zproxy_start .= "\t" . ZABBIX_PROXY_BASE . "/sbin/zabbix_proxy -c /usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_proxy.conf\n";
 
 		$zproxy_stop = "echo \"Stopping Zabbix Proxy\"\n";
 		$zproxy_stop .= "\t/usr/bin/killall zabbix_proxy\n";
