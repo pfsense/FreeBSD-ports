@@ -63,15 +63,18 @@ function createSlug($string) {
 
 }
 
+$changedesc = gettext("Status: Monitoring:") . " ";
 if($_POST['enable']) {
 	if(($_POST['enable'] === 'false')) {
 		unset($config['rrd']['enable']);
 		$savemsg = "RRD graphing has been disabled.";
+		$changedesc .= gettext("RRD graphing has been disabled.");
 	} else {
 		$config['rrd']['enable'] = true;
 		$savemsg = "RRD graphing has been enabled.";
+		$changedesc .= gettext("RRD graphing has been enabled.");
 	}
-	write_config();
+	write_config($changedesc);
 
 	enable_rrd_graphing();
 }
@@ -86,7 +89,7 @@ if ($_POST['ResetRRD']) {
 //old config that needs to be updated
 if(strpos($config['rrd']['category'], '&resolution') === false) {
 	$config['rrd']['category'] = "left=system-processor&right=&resolution=300&timePeriod=-1d&startDate=&endDate=&startTime=0&endTime=0&graphtype=line&invert=true&refresh-interval=0";
-	write_config();
+	write_config(gettext("Status: Monitoring: updated old configuration."));
 }
 
 //save settings for current view
@@ -772,8 +775,11 @@ events.push(function() {
 		"86400": "%Y-%m-%d",
 		"43200": "%Y-%m-%d",
 		"3600": "%m/%d %H:%M",
+		"1800": "%m/%d %H:%M",
 		"300": "%H:%M:%S",
-		"60": "%H:%M:%S"
+		"150": "%H:%M:%S",
+		"60": "%H:%M:%S",
+		"30": "%H:%M:%S"
 	};
 
 	//lookup human readable time based on number of seconds

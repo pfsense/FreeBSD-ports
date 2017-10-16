@@ -222,12 +222,11 @@ stream:
   midstream: {$stream_enable_midstream}
   async-oneside: {$stream_enable_async}
   max-synack-queued: {$max_synack_queued}
-
-reassembly:
-  memcap: {$reassembly_memcap}
-  depth: {$reassembly_depth}
-  toserver-chunk-size: {$reassembly_to_server_chunk}
-  toclient-chunk-size: {$reassembly_to_client_chunk}
+  reassembly:
+    memcap: {$reassembly_memcap}
+    depth: {$reassembly_depth}
+    toserver-chunk-size: {$reassembly_to_server_chunk}
+    toclient-chunk-size: {$reassembly_to_client_chunk}
 
 # Host table is used by tagging and per host thresholding subsystems.
 host:
