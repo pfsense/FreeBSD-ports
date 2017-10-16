@@ -380,7 +380,7 @@ function frr_zebra_generate_routemaps() {
 		}
 
 		/* Metric */
-		switch ($rm['nexthop_action']) {
+		switch ($rm['metric_action']) {
 			case "match":
 				if (frr_validate_ulong($rm['metric_value'])) {
 					$rmconf .= "  match metric {$rm['metric_value']}\n";
