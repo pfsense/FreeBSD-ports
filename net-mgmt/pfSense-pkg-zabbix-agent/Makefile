@@ -27,7 +27,7 @@ SUB_LIST=	PORTNAME=${PORTNAME}
 ZABBIXINTERNALNAME?=	zabbix-agent
 ZABBIXTITLE?=	Zabbix Agent LTS
 
-# Same for all Zabbix Proxy ports to share their configs
+# Same for all Zabbix Agent ports to share their configs
 # zabbixagentlts for keep compatibility with current configs
 ZABBIXUNIQNAME?=	zabbixagentlts
 
