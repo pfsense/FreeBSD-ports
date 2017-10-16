@@ -39,6 +39,7 @@
 		<name>syslog-ng</name>
 		<rcfile>syslog-ng.sh</rcfile>
 		<executable>syslog-ng</executable>
+		<description>Syslog-ng Syslog Server</description>
 	</service>
 	<tabs>
 		<tab>
