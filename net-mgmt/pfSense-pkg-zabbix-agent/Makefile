@@ -1,12 +1,11 @@
 # $FreeBSD$
 
-PORTNAME=	pfSense-pkg-zabbix-agent
+PORTNAME?=	pfSense-pkg-zabbix-agent
 PORTVERSION=	1.0.0
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
-PKGNAMESUFFIX?=	30
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package zabbix-agent
@@ -25,8 +24,14 @@ NO_MTREE=	yes
 SUB_FILES=	pkg-install pkg-deinstall
 SUB_LIST=	PORTNAME=${PORTNAME}
 
-ZABBIXUNIQNAME?=	zabbixagentlts
+ZABBIXINTERNALNAME?=	zabbix-agent
 ZABBIXTITLE?=	Zabbix Agent LTS
+
+# Same for all Zabbix Proxy ports to share their configs
+# zabbixagentlts for keep compatibility with current configs
+ZABBIXUNIQNAME?=	zabbixagentlts
+
+ZABBIXVERSION?=	30
 
 do-extract:
 	${MKDIR} ${WRKSRC}
@@ -41,12 +46,13 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/zabbix-agent.priv.inc \
 		${STAGEDIR}/etc/inc/priv
-	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
+	${INSTALL_DATA} ${FILESDIR}/usr/local/share/pfSense-pkg-zabbix-agent/info.xml \
 		${STAGEDIR}${DATADIR}
 	${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
-		-e "s|%%ZABBIXVERSION%%|${PKGNAMESUFFIX}|" \
+		-e "s|%%ZABBIXVERSION%%|${ZABBIXVERSION}|" \
 		-e "s|%%ZABBIXUNIQNAME%%|${ZABBIXUNIQNAME}|" \
 		-e "s|%%ZABBIXTITLE%%|${ZABBIXTITLE}|" \
+		-e "s|%%ZABBIXINTERNALNAME%%|${ZABBIXINTERNALNAME}|" \
 		${STAGEDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${PREFIX}/pkg/zabbix-agent.inc \
 		${STAGEDIR}${PREFIX}/pkg/zabbix-agent.xml
