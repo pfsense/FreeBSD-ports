@@ -847,6 +847,8 @@ function frr_generate_config_bgp() {
 		$bgpdconffile .= frr_bgp_generate_aspaths();
 		/* BGP Community Lists */
 		$bgpdconffile .= frr_bgp_generate_communitylists();
+		/* BGP Prefix Lists */
+		$bgpdconffile .= frr_zebra_generate_prefixlists();
 		/* Some route-map commands are BGP-specific, so print them here, too. */
 		$bgpdconffile .= frr_zebra_generate_routemaps();
 	}
