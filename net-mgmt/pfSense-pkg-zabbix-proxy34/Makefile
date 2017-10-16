@@ -2,15 +2,16 @@
 
 MASTERDIR=	${.CURDIR}/../pfSense-pkg-zabbix-proxy
 
-PKGNAMESUFFIX=	34
+PORTNAME=	pfSense-pkg-zabbix-proxy${ZABBIXVERSION}
 
 CONFLICTS=	pfSense-pkg-zabbix-proxy \
 		pfSense-pkg-zabbix-proxy22 \
 		pfSense-pkg-zabbix-proxy32
 
-RUN_DEPENDS=	zabbix_proxy:net-mgmt/zabbix34-proxy
+RUN_DEPENDS=	zabbix_proxy:net-mgmt/zabbix${ZABBIXVERSION}-proxy
 
-ZABBIXUNIQNAME=	zabbixproxy34
+ZABBIXINTERNALNAME=	zabbix-proxy${ZABBIXVERSION}
 ZABBIXTITLE=	Zabbix Proxy 3.4
+ZABBIXVERSION=	34	
 
 .include "${MASTERDIR}/Makefile"

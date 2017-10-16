@@ -282,7 +282,7 @@ EOF;
 	$zagent_rcfile = "/usr/local/etc/rc.d/zabbix_agentd.sh";
 	if (is_array($zbagent_config) && $zbagent_config['agentenabled'] == "on") {
 		$zagent_start .= strtr($dir_checks, array("\r" => "")). "\necho \"Starting Zabbix Agent...\"\n";
-		$zagent_start .= ZABBIX_AGENT_BASE . "/sbin/zabbix_agentd\n";
+		$zagent_start .= ZABBIX_AGENT_BASE . "/sbin/zabbix_agentd -c /usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_agentd.conf\n";
 
 		$zagent_stop = "echo \"Stopping Zabbix Agent...\"\n";
 		$zagent_stop .= "/usr/bin/killall zabbix_agentd\n";
