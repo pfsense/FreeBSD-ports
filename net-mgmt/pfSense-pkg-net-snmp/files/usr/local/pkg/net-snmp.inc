@@ -587,7 +587,7 @@ echo "Starting net-snmpd..."
 /usr/bin/killall -9 snmpd 2>/dev/null
 sleep 1
 
-/usr/local/sbin/snmpd -Ls d \
+/usr/local/sbin/snmpd -LF 0-4 d \
 			-p /var/run/net_snmpd.pid \
 			-M /usr/share/snmp/mibs/:/usr/local/share/snmp/mibs \
 			-C \
