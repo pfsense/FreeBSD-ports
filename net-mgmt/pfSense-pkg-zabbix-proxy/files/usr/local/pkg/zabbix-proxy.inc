@@ -35,10 +35,6 @@ function php_deinstall_zabbix_proxy() {
 	unlink_if_exists("/var/log/zabbix-proxy/zabbix_proxy.log");
 	unlink_if_exists("/var/run/zabbix-proxy/zabbix_proxy.pid");
 
-
-	if (is_dir(ZABBIX_PROXY_BASE . "/etc/zabbix%%ZABBIXVERSION%%")) {
-		mwexec("/bin/rm -rf " . ZABBIX_PROXY_BASE . "/etc/zabbix%%ZABBIXVERSION%%");
-	}
 	if (is_dir("/var/log/zabbix-proxy")) {
 		mwexec("/bin/rm -rf /var/log/zabbix-proxy/");
 	}
