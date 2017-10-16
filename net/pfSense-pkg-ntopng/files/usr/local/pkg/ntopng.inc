@@ -31,10 +31,6 @@ global $redis_path;
 $redis_path = "/usr/local/bin";
 
 function ntopng_php_install_command() {
-	$fonts_path = "/usr/local/lib/X11/fonts";
-	/* Fix broken GUI fonts */
-	mwexec("/bin/cp -Rp {$fonts_path}/webfonts/ {$fonts_path}/TTF/");
-
 	/* Create dirs for Redis DB, data and graphs */
 	ntopng_create_datadir();
 }
