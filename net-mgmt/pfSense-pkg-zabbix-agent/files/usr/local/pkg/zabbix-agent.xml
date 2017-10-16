@@ -5,7 +5,7 @@
 	<copyright>
 	<![CDATA[
 /*
- * zabbix-agent-lts.xml
+ * zabbix-agent.xml
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
@@ -27,40 +27,40 @@
  */
 	]]>
 	</copyright>
-	<name>zabbixagentlts</name>
-	<title>Services: Zabbix Agent LTS</title>
+	<name>%%ZABBIXUNIQNAME%%</name>
+	<title>Services: %%ZABBIXTITLE%%</title>
 	<category>Monitoring</category>
-	<include_file>/usr/local/pkg/zabbix-agent-lts.inc</include_file>
-	<addedit_string>Zabbix Agent LTS has been created/modified.</addedit_string>
-	<delete_string>Zabbix Agent LTS has been deleted.</delete_string>
+	<include_file>/usr/local/pkg/zabbix-agent.inc</include_file>
+	<addedit_string>Zabbix Agent has been created/modified.</addedit_string>
+	<delete_string>Zabbix Agent has been deleted.</delete_string>
 	<menu>
-		<name>Zabbix Agent LTS</name>
+		<name>%%ZABBIXTITLE%%</name>
 		<section>Services</section>
-		<url>/pkg_edit.php?xml=zabbix-agent-lts.xml&amp;id=0</url>
+		<url>/pkg_edit.php?xml=zabbix-agent.xml&amp;id=0</url>
 	</menu>
 	<service>
-		<name>zabbix_agentd_lts</name>
-		<rcfile>zabbix_agentd_lts.sh</rcfile>
+		<name>zabbix_agentd</name>
+		<rcfile>zabbix_agentd.sh</rcfile>
 		<executable>zabbix_agentd</executable>
-		<description>Zabbix Agent LTS Host Monitor Daemon</description>
+		<description>Zabbix Agent Host Monitor Daemon</description>
 	</service>
 	<tabs>
 		<tab>
 			<text>Agent</text>
-			<url>/pkg_edit.php?xml=zabbix-agent-lts.xml&amp;id=0</url>
+			<url>/pkg_edit.php?xml=zabbix-agent.xml&amp;id=0</url>
 			<active />
 		</tab>
 	</tabs>
 	<advanced_options>enabled</advanced_options>
 	<fields>
 		<field>
-			<name>Zabbix Agent LTS Settings</name>
+			<name>Zabbix Agent Settings</name>
 			<type>listtopic</type>
 		</field>
 		<field>
 			<fielddescr>Enable</fielddescr>
 			<fieldname>agentenabled</fieldname>
-			<description>Enable Zabbix Agent LTS service.</description>
+			<description>Enable Zabbix Agent service.</description>
 			<type>checkbox</type>
 		</field>
 		<field>
@@ -280,15 +280,15 @@
 		</field>
 	</fields>
 	<custom_php_install_command>
-		sync_package_zabbix_agent_lts();
+		sync_package_zabbix_agent();
 	</custom_php_install_command>
 	<custom_php_validation_command>
-		validate_input_zabbix_agent_lts($_POST, $input_errors);
+		validate_input_zabbix_agent($_POST, $input_errors);
 	</custom_php_validation_command>
 	<custom_php_resync_config_command>
-		sync_package_zabbix_agent_lts();
+		sync_package_zabbix_agent();
 	</custom_php_resync_config_command>
 	<custom_php_deinstall_command>
-		php_deinstall_zabbix_agent_lts();
+		php_deinstall_zabbix_agent();
 	</custom_php_deinstall_command>
 </packagegui>
