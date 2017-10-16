@@ -409,7 +409,13 @@ if (isset($_POST["save"]) && !$input_errors) {
 		// Check if EVE OUTPUT TYPE is 'syslog' and auto-enable Suricata syslog output if true.
 		if ($natent['eve_output_type'] == "syslog" && $natent['alertsystemlog'] == "off") {
 			$natent['alertsystemlog'] = "on";
-			$savemsg = gettext("EVE Output to syslog requires Suricata alerts to be copied to the system log, so 'Send Alerts to System Log' has been auto-enabled.");
+			$savemsg1 = gettext("EVE Output to syslog requires Suricata alerts to be copied to the system log, so 'Send Alerts to System Log' has been auto-enabled.");
+		}
+
+		// Check if Inline IPS mode is enabled and display a message about potential
+		// incompatibilities with Netmap and some NIC hardware drivers.
+		if ($natent['ips_mode'] == "ips_mode_inline") {
+			$savemsg2 = gettext("Inline IPS Mode is selected.  Not all hardware NIC drivers support Netmap operation which is required for Inline IPS Mode.  If problems are experienced, switch to Legacy Mode instead.");
 		}
 
 		$if_real = get_real_interface($natent['interface']);
@@ -571,8 +577,11 @@ include_once("head.inc");
 if ($input_errors) {
 	print_input_errors($input_errors);
 }
-if ($savemsg) {
-	print_info_box($savemsg);
+if ($savemsg1) {
+	print_info_box($savemsg1);
+}
+if ($savemsg2) {
+	print_info_box($savemsg2);
 }
 
 if ($pconfig['enable'] == 'on' && $pconfig['ips_mode'] == 'ips_mode_inline' && (!isset($config['system']['disablechecksumoffloading']) || !isset($config['system']['disablesegmentationoffloading']) || !isset($config['system']['disablelargereceiveoffloading']))) {
@@ -1134,7 +1143,8 @@ $group->add(new Form_Select(
 $group->setHelp('Legacy Mode uses the PCAP engine to generate copies of packets for inspection as they traverse the interface.  Some "leakage" of packets will occur before ' . 
 		'Suricata can determine if the traffic matches a rule and should be blocked.  Inline mode instead intercepts and inspects packets before they are handed ' . 
 		'off to the host network stack for further processing.  Packets matching DROP rules are simply discarded (dropped) and not passed to the host ' . 
-		'network stack.  No leakage of packets occurs with Inline Mode.  Note that Inline Mode only works with NIC drivers which support Netmap.');
+		'network stack.  No leakage of packets occurs with Inline Mode.  WARNING:  Inline Mode only works with NIC drivers which properly support Netmap!  If the ' . 
+		'hardware NIC driver does not support Netmap, using Inline Mode can result in a firewall system crash!  If problems are experienced with Inline Mode, switch to Legacy Mode instead.');
 $section->add($group);
 
 $section->addInput(new Form_Checkbox(
