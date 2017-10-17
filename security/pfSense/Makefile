@@ -12,70 +12,75 @@ COMMENT?=	Meta package to install pfSense required ports
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/clog:sysutils/clog \
-		${LOCALBASE}/bin/rate:net-mgmt/rate \
-		${LOCALBASE}/bin/dpinger:net/dpinger \
-		${LOCALBASE}/sbin/radvd:net/radvd \
-		${LOCALBASE}/bin/cpdup:sysutils/cpdup \
-		${LOCALBASE}/bin/ipmitool:sysutils/ipmitool \
-		${LOCALBASE}/bin/minicron:sysutils/minicron \
-		${LOCALBASE}/bin/voucher:sysutils/voucher \
-		${LOCALBASE}/bin/links:www/links \
-		${LOCALBASE}/sbin/expiretable:security/expiretable \
-		${LOCALBASE}/sbin/dhclient:net/isc-dhcp43-client \
-		${LOCALBASE}/sbin/dhcpleases:sysutils/dhcpleases \
-		${LOCALBASE}/sbin/dhcpleases6:sysutils/dhcpleases6 \
-		${LOCALBASE}/sbin/choparp:net-mgmt/choparp \
-		${LOCALBASE}/sbin/dhcpd:net/isc-dhcp43-server \
-		${LOCALBASE}/sbin/check_reload_status:sysutils/check_reload_status \
-		${LOCALBASE}/sbin/dhcrelay:net/isc-dhcp43-relay \
-		${LOCALBASE}/sbin/dhcp6c:net/dhcp6 \
-		${LOCALBASE}/sbin/dnsmasq:dns/dnsmasq \
-		${LOCALBASE}/sbin/igmpproxy:net/igmpproxy \
-		${LOCALBASE}/sbin/filterdns:net/filterdns \
-		${LOCALBASE}/sbin/filterlog:sysutils/filterlog \
-		${LOCALBASE}/sbin/nginx:www/nginx \
-		${LOCALBASE}/sbin/ssh_tunnel_shell:sysutils/ssh_tunnel_shell \
-		${LOCALBASE}/sbin/miniupnpd:net/miniupnpd \
-		${LOCALBASE}/sbin/mpd5:net/mpd5 \
-		${LOCALBASE}/sbin/openvpn:security/openvpn \
-		${LOCALBASE}/sbin/pftop:sysutils/pftop \
-		${LOCALBASE}/sbin/relayctl:net/relayd \
-		${LOCALBASE}/sbin/sshlockout_pf:sysutils/sshlockout_pf \
-		${LOCALBASE}/sbin/qstats:sysutils/qstats \
-		${LOCALBASE}/bin/wol:net/wol \
-		${LOCALBASE}/sbin/ataidle:sysutils/ataidle \
-		${LOCALBASE}/sbin/cpustats:sysutils/cpustats \
-		${LOCALBASE}/bin/xmllint:textproc/libxml2 \
-		${LOCALBASE}/sbin/ntp-keygen:net/ntp \
-		${LOCALBASE}/lib/snmp_regex.a:net-mgmt/bsnmp-regex \
-		${LOCALBASE}/lib/snmp_ucd.so:net-mgmt/bsnmp-ucd \
-		${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss \
-		${LOCALBASE}/bin/nsupdate:dns/bind-tools \
-		${LOCALBASE}/sbin/ipsec:security/strongswan \
-		${LOCALBASE}/sbin/unbound:dns/unbound \
-		${KMODDIR}/bwi_v3_ucode.ko:net/bwi-firmware-kmod \
-		${LOCALBASE}/bin/scponly:shells/scponly \
-		${LOCALBASE}/sbin/xinetd:security/xinetd \
-		${LOCALBASE}/www/status_monitoring.php:sysutils/pfSense-Status_Monitoring \
-		${LOCALBASE}/bin/uclcmd:devel/uclcmd \
-		${LOCALBASE}/share/mobile-broadband-provider-info/serviceproviders.xml:net/mobile-broadband-provider-info \
-		${LOCALBASE}/share/pear/XML/RPC2/Client.php:net/pear-XML_RPC2 \
-		${LOCALBASE}/share/pear/Crypt/CHAP.php:security/pear-Crypt_CHAP \
-		${LOCALBASE}/share/pear/Net/IPv6.php:net/pear-Net_IPv6 \
-		${LOCALBASE}/share/pear/Auth/RADIUS.php:net/pear-Auth_RADIUS \
-		${LOCALBASE}/share/pear/Mail.php:mail/pear-Mail \
-		${LOCALBASE}/share/pear/Net/Growl.php:net/pear-Net_Growl \
-		${DATADIR}/pkg/repos/pfSense-repo.conf:sysutils/pfSense-repo
-
+RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
+		bind-tools>=0:dns/bind-tools \
+		bsnmp-regex>=0:net-mgmt/bsnmp-regex \
+		bsnmp-ucd>=0:net-mgmt/bsnmp-ucd \
+		bwi-firmware-kmod>=0:net/bwi-firmware-kmod \
+		ca_root_nss>=0:security/ca_root_nss \
+		check_reload_status>=0:sysutils/check_reload_status \
+		choparp>=0:net-mgmt/choparp \
+		clog>=0:sysutils/clog \
+		cpdup>=0:sysutils/cpdup \
+		cpustats>=0:sysutils/cpustats \
+		dhcp6>=0:net/dhcp6 \
+		dhcpleases6>=0:sysutils/dhcpleases6 \
+		dhcpleases>=0:sysutils/dhcpleases \
+		dnsmasq>=0:dns/dnsmasq \
+		dpinger>=0:net/dpinger \
+		expiretable>=0:security/expiretable \
+		filterdns>=0:net/filterdns \
+		filterlog>=0:sysutils/filterlog \
+		hostapd>=0:net/hostapd \
+		igmpproxy>=0:net/igmpproxy \
+		ipmitool>=0:sysutils/ipmitool \
+		isc-dhcp43-client>=0:net/isc-dhcp43-client \
+		isc-dhcp43-relay>=0:net/isc-dhcp43-relay \
+		isc-dhcp43-server>=0:net/isc-dhcp43-server \
+		libxml2>=0:textproc/libxml2 \
+		links>=0:www/links \
+		minicron>=0:sysutils/minicron \
+		miniupnpd>=0:net/miniupnpd \
+		mobile-broadband-provider-info>=0:net/mobile-broadband-provider-info \
+		mpd5>=0:net/mpd5 \
+		nginx>=0:www/nginx \
+		ntp>=0:net/ntp \
+		openvpn>=0:security/openvpn \
+		pear-Auth_RADIUS>=0:net/pear-Auth_RADIUS \
+		pear-Crypt_CHAP>=0:security/pear-Crypt_CHAP \
+		pear-Mail>=0:mail/pear-Mail \
+		pear-Net_Growl>=0:net/pear-Net_Growl \
+		pear-Net_IPv6>=0:net/pear-Net_IPv6 \
+		pear-XML_RPC2>=0:net/pear-XML_RPC2 \
+		pecl-zmq>=0:net/pecl-zmq \
+		pfSense-Status_Monitoring>=0:sysutils/pfSense-Status_Monitoring \
+		pfSense-repo>=0:sysutils/pfSense-repo \
+		pftop>=0:sysutils/pftop \
+		php-suhosin>=0:security/php-suhosin \
+		php-xdebug>=0:devel/php-xdebug \
+		php56-pfSense-module>=0:devel/php56-pfSense-module \
+		qstats>=0:sysutils/qstats \
+		radvd>=0:net/radvd \
+		rate>=0:net-mgmt/rate \
+		relayd>=0:net/relayd \
+		scponly>=0:shells/scponly \
+		ssh_tunnel_shell>=0:sysutils/ssh_tunnel_shell \
+		sshlockout_pf>=0:sysutils/sshlockout_pf \
+		strongswan>=0:security/strongswan \
+		uclcmd>=0:devel/uclcmd \
+		unbound>=0:dns/unbound \
+		voucher>=0:sysutils/voucher \
+		wol>=0:net/wol \
+		wpa_supplicant>=0:security/wpa_supplicant \
+		xinetd>=0:security/xinetd
 LIB_DEPENDS=	libltdl.so:devel/libltdl
+
+USES=		kmod
 
 USE_PHP=	bz2 bcmath ctype curl dom filter gettext json mbstring \
 		mcrypt hash opcache openssl pcntl pdo pdo_sqlite posix \
 		radius readline session shmop simplexml sockets sysvmsg sysvsem \
 		sysvshm sqlite3 tokenizer xml ldap zlib xmlreader xmlwriter
-
-USES=		kmod
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -93,11 +98,6 @@ RUN_DEPENDS+=	${LOCALBASE}/sbin/dmidecode:sysutils/dmidecode \
 		${LOCALBASE}/sbin/wrapresetbtn:sysutils/wrapalixresetbutton \
 		${LOCALBASE}/bin/beep:audio/beep
 .endif
-
-RUN_DEPENDS+=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/pfSense.so:devel/php56-pfSense-module \
-		${PHPBASE}/lib/php/${PHP_EXT_DIR}/suhosin.so:security/php-suhosin \
-		${PHPBASE}/lib/php/${PHP_EXT_DIR}/xdebug.so:devel/php-xdebug \
-		${PHPBASE}/lib/php/${PHP_EXT_DIR}/zmq.so:net/pecl-zmq
 
 do-install:
 	${MKDIR} ${STAGEDIR}/etc
