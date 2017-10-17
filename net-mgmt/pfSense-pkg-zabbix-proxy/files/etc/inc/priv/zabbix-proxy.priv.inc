@@ -1,6 +1,6 @@
 <?php
 /*
- * zabbix-agent-lts.priv.inc
+ * zabbix-proxy.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
@@ -21,11 +21,11 @@
 
 global $priv_list;
 
-$priv_list['page-services-zabbix-agent-lts'] = array();
-$priv_list['page-services-zabbix-agent-lts']['name'] = "WebCfg - Services: Zabbix Agent LTS package";
-$priv_list['page-services-zabbix-agent-lts']['descr'] = "Allow access to Zabbix Agent LTS package GUI";
+$priv_list['page-services-zabbix-proxy'] = array();
+$priv_list['page-services-zabbix-proxy']['name'] = "WebCfg - Services: Zabbix Proxy package";
+$priv_list['page-services-zabbix-proxy']['descr'] = "Allow access to Zabbix Proxy package GUI";
 
-$priv_list['page-services-zabbix-agent-lts']['match'] = array();
-$priv_list['page-services-zabbix-agent-lts']['match'][] = "pkg_edit.php?xml=zabbix-agent-lts.xml*";
+$priv_list['page-services-zabbix-proxy']['match'] = array();
+$priv_list['page-services-zabbix-proxy']['match'][] = "pkg_edit.php?xml=zabbix-proxy.xml*";
 
 ?>
