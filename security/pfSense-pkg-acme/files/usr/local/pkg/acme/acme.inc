@@ -324,6 +324,15 @@ $acme_domain_validation_method['dns_pdns'] = array(name => "DNS-PowerDNS",
 			'description' =>"Fill in the TTL 60"
 		)
 	));
+$acme_domain_validation_method['dns_he'] = array(name => "DNS-Hurricane Electric",
+	'fields' => array(
+		'HE_Username' => array('name'=>"he_username",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"Hurricane Electric username"
+		),
+		'HE_Password' => array('name'=>"he_password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"Hurricane Electric password"
+		)
+	));
 //TODO add more challenge validation types
 /* 
 $acme_domain_validation_method['http-post'] = array(name => "http-post",
