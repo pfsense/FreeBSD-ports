@@ -31,6 +31,7 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		expiretable>=0:security/expiretable \
 		filterdns>=0:net/filterdns \
 		filterlog>=0:sysutils/filterlog \
+		hostapd>=0:net/hostapd \
 		igmpproxy>=0:net/igmpproxy \
 		ipmitool>=0:sysutils/ipmitool \
 		isc-dhcp43-client>=0:net/isc-dhcp43-client \
@@ -65,6 +66,7 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		unbound>=0:dns/unbound \
 		voucher>=0:sysutils/voucher \
 		wol>=0:net/wol \
+		wpa_supplicant>=0:security/wpa_supplicant \
 		xinetd>=0:security/xinetd
 LIB_DEPENDS=	libltdl.so:devel/libltdl
 
