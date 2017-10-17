@@ -1,6 +1,6 @@
 <?php
 /*
- * zabbix-agent-lts.inc
+ * zabbix-agent.inc
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2015 Rubicon Communications, LLC (Netgate)
@@ -28,21 +28,22 @@ require_once("globals.inc");
 require_once("certs.inc");
 
 define('ZABBIX_AGENT_BASE', '/usr/local');
+define('ZABBIX_VERSION', %%ZABBIXVERSION%%);
 
-function php_deinstall_zabbix_agent_lts() {
-	unlink_if_exists(ZABBIX_AGENT_BASE . "/etc/zabbix3/zabbix_agentd.conf");
-	unlink_if_exists("/var/log/zabbix-agent-lts/zabbix_agentd_lts.log");
-	unlink_if_exists("/var/run/zabbix-agent-lts/zabbix_agentd_lts.pid");
+function php_deinstall_zabbix_agent() {
+	unlink_if_exists(ZABBIX_AGENT_BASE . "/etc/zabbix%%ZABBIXVERSION%%/zabbix_agentd.conf");
+	unlink_if_exists("/var/log/zabbix-agent/zabbix_agentd.log");
+	unlink_if_exists("/var/run/zabbix-agent/zabbix_agentd.pid");
 
-	if (is_dir("/var/log/zabbix-agent-lts")) {
-		mwexec("/bin/rm -rf /var/log/zabbix-agent-lts/");
+	if (is_dir("/var/log/zabbix-agent")) {
+		mwexec("/bin/rm -rf /var/log/zabbix-agent/");
 	}
-	if (is_dir("/var/run/zabbix-agent-lts")) {
-		mwexec("/bin/rm -rf /var/run/zabbix-agent-lts/");
+	if (is_dir("/var/run/zabbix-agent")) {
+		mwexec("/bin/rm -rf /var/run/zabbix-agent/");
 	}
 }
 
-function validate_input_zabbix_agent_lts($post, &$input_errors) {
+function validate_input_zabbix_agent($post, &$input_errors) {
 
 	if (isset($post['agentenabled'])) {
 		if (!preg_match("/\w+/", $post['server'])) {
@@ -109,14 +110,14 @@ function validate_input_zabbix_agent_lts($post, &$input_errors) {
 	}
 }
 
-function sync_package_zabbix_agent_lts() {
+function sync_package_zabbix_agent() {
 	global $config, $g;
 
 	conf_mount_rw();
 
 	// Check Zabbix Agent settings
-	if (is_array($config['installedpackages']['zabbixagentlts'])) {
-		$zbagent_config = $config['installedpackages']['zabbixagentlts']['config'][0];
+	if (is_array($config['installedpackages']['%%ZABBIXUNIQNAME%%'])) {
+		$zbagent_config = $config['installedpackages']['%%ZABBIXUNIQNAME%%']['config'][0];
 		if ($zbagent_config['agentenabled'] == "on") {
 			$RefreshActChecks = (preg_match("/(\d+)/", $zbagent_config['refreshactchecks'], $matches)? $matches[1] : "120");
 			$BufferSend = (preg_match("/(\d+)/", $zbagent_config['buffersend'], $matches) ? $matches[1] : "5");
@@ -126,43 +127,57 @@ function sync_package_zabbix_agent_lts() {
 			$ListenIp = $zbagent_config['listenip'] ?: "0.0.0.0";
 			$ListenPort = $zbagent_config['listenport'] ?: "10050";
 			$TimeOut = $zbagent_config['timeout'] ?: "3";
-			$TLSConnect = $zbagent_config['tlsconnect'];
-			$TLSAccept = $zbagent_config['tlsaccept'] ?: "unencrypted";
 
-			if ($zbagent_config['tlscaso']) {
-				$TlsCAfile = "TLSCAFile=/usr/local/etc/ssl/cert.pem";
-			} else {
-				if ($zbagent_config['tlscafile'] != "none") {
-					$ca = lookup_ca($zbagent_config['tlscafile']);
-					zabbix_agent_add_keyfile($ca['crt'], "ca");
-					$TlsCAfile = "TLSCAFile=/usr/local/etc/zabbix3/zabbix_agentd.ca";
+			// Zabbix TLS is present in 3.0 or later versions.
+			if(ZABBIX_VERSION >= 30) {
+				$TLSConnect = "TLSConnect=" . $zbagent_config['tlsconnect'];
+				$TLSAccept = "TLSAccept=";
+				$TLSAccept .= $zbagent_config['tlsaccept'] ?: "unencrypted";
+
+				if ($zbagent_config['tlscaso']) {
+					$TlsCAfile = "TLSCAFile=/usr/local/etc/ssl/cert.pem";
+				} else {
+					if ($zbagent_config['tlscafile'] != "none") {
+						$ca = lookup_ca($zbagent_config['tlscafile']);
+						zabbix_agent_add_keyfile($ca['crt'], "ca");
+						$TlsCAfile = "TLSCAFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_agentd.ca";
+					}
 				}
-			}
 
-			if ($zbagent_config['tlscrlfile'] != "none") {
-				$crl = lookup_crl($zbagent_config['tlscrlfile']);
-				crl_update($crl);
-				zabbix_agent_add_keyfile($crl['text'], "crl-verify");
-				$TlsCRLfile = "TLSCRLFile=/usr/local/etc/zabbix3/zabbix_agentd.crl-verify";
-			}
+				if ($zbagent_config['tlscrlfile'] != "none") {
+					$crl = lookup_crl($zbagent_config['tlscrlfile']);
+					crl_update($crl);
+					zabbix_agent_add_keyfile($crl['text'], "crl-verify");
+					$TlsCRLfile = "TLSCRLFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_agentd.crl-verify";
+				}
 
-			if ($zbagent_config['tlscertfile'] != "none") {
-				$cert = lookup_cert($zbagent_config['tlscertfile']);
+				if ($zbagent_config['tlscertfile'] != "none") {
+					$cert = lookup_cert($zbagent_config['tlscertfile']);
 
-				zabbix_agent_add_keyfile($cert['crt'], "cert");
-				$TlsCERTfile = "TLSCertFile=/usr/local/etc/zabbix3/zabbix_agentd.cert";
+					zabbix_agent_add_keyfile($cert['crt'], "cert");
+					$TlsCERTfile = "TLSCertFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_agentd.cert";
 
-				zabbix_agent_add_keyfile($cert['prv'], "key");
-				$TlsKEYfile = "TLSKeyFile=/usr/local/etc/zabbix3/zabbix_agentd.key";
-			}
+					zabbix_agent_add_keyfile($cert['prv'], "key");
+					$TlsKEYfile = "TLSKeyFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_agentd.key";
+				}
 
-			if (! empty($zbagent_config['tlspskidentity']) ) {
-				$TLSPSKIdentity = "TLSPSKIdentity={$zbagent_config['tlspskidentity']}";
-			}
+				if (! empty($zbagent_config['tlspskidentity']) ) {
+					$TLSPSKIdentity = "TLSPSKIdentity={$zbagent_config['tlspskidentity']}";
+				}
 
-			if (! empty($zbagent_config['tlspskfile']) ) {
-				zabbix_agent_add_keyfile($zbagent_config['tlspskfile'], "psk");
-				$TLSPSKFile = "TLSPSKFile=/usr/local/etc/zabbix3/zabbix_agentd.psk";
+				if (! empty($zbagent_config['tlspskfile']) ) {
+					zabbix_agent_add_keyfile($zbagent_config['tlspskfile'], "psk");
+					$TLSPSKFile = "TLSPSKFile=/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_agentd.psk";
+				}
+			} else {
+				$TLSConnect = "#TLSConnect=";
+				$TLSAccept = "#TLSAccept=";
+				$TlsCAfile = "#TlsCAfile=";
+				$TlsCRLfile = "#TlsCRLfile=";
+				$TlsCERTfile = "#TlsCERTfile=";
+				$TlsKEYfile = "#TlsKEYfile=";
+				$TLSPSKIdentity = "#TLSPSKIdentity=";
+				$TLSPSKFile = "#TLSPSKFile=";
 			}
 
 
@@ -174,15 +189,15 @@ ListenIP={$ListenIp}
 ListenPort={$ListenPort}
 RefreshActiveChecks={$RefreshActChecks}
 DebugLevel=3
-PidFile=/var/run/zabbix-agent-lts/zabbix_agentd_lts.pid
-LogFile=/var/log/zabbix-agent-lts/zabbix_agentd_lts.log
+PidFile=/var/run/zabbix-agent/zabbix_agentd.pid
+LogFile=/var/log/zabbix-agent/zabbix_agentd.log
 LogFileSize=1
 Timeout={$TimeOut}
 BufferSend={$BufferSend}
 BufferSize={$BufferSize}
 StartAgents={$StartAgents}
-TLSConnect={$TLSConnect}
-TLSAccept={$TLSAccept}
+{$TLSConnect}
+{$TLSAccept}
 {$TlsCAfile}
 {$TlsCRLfile}
 {$TlsCERTfile}
@@ -192,7 +207,7 @@ TLSAccept={$TLSAccept}
 {$UserParams}
 
 EOF;
-			file_put_contents(ZABBIX_AGENT_BASE . "/etc/zabbix3/zabbix_agentd.conf", strtr($zbagent_conf_file, array("\r" => "")));
+			file_put_contents(ZABBIX_AGENT_BASE . "/etc/zabbix%%ZABBIXVERSION%%/zabbix_agentd.conf", strtr($zbagent_conf_file, array("\r" => "")));
 		}
 	}
 
@@ -244,46 +259,46 @@ EOF;
 
 	// Check startup script files
 	// Create a few directories and ensure the sample files are in place
-	if (!is_dir(ZABBIX_AGENT_BASE . "/etc/zabbix3")) {
-		mwexec("/bin/mkdir -p " . ZABBIX_AGENT_BASE . "/etc/zabbix3");
+	if (!is_dir(ZABBIX_AGENT_BASE . "/etc/zabbix%%ZABBIXVERSION%%")) {
+		mwexec("/bin/mkdir -p " . ZABBIX_AGENT_BASE . "/etc/zabbix%%ZABBIXVERSION%%");
 	}
 
 	$dir_checks = <<< EOF
 
-	if [ ! -d /var/log/zabbix-agent-lts ]; then
-		/bin/mkdir -p /var/log/zabbix-agent-lts
-		/usr/sbin/chmod 755 /var/log/zabbix-agent-lts
+	if [ ! -d /var/log/zabbix-agent ]; then
+		/bin/mkdir -p /var/log/zabbix-agent
+		/usr/sbin/chmod 755 /var/log/zabbix-agent
 	fi
-	/usr/sbin/chown -R zabbix:zabbix /var/log/zabbix-agent-lts
+	/usr/sbin/chown -R zabbix:zabbix /var/log/zabbix-agent
 
-	if [ ! -d /var/run/zabbix-agent-lts ]; then
-		/bin/mkdir -p /var/run/zabbix-agent-lts
-		/usr/sbin/chmod 755 /var/run/zabbix-agent-lts
+	if [ ! -d /var/run/zabbix-agent ]; then
+		/bin/mkdir -p /var/run/zabbix-agent
+		/usr/sbin/chmod 755 /var/run/zabbix-agent
 	fi
-	/usr/sbin/chown -R zabbix:zabbix /var/run/zabbix-agent-lts
+	/usr/sbin/chown -R zabbix:zabbix /var/run/zabbix-agent
 
 EOF;
 
-	$zagent_rcfile = "/usr/local/etc/rc.d/zabbix_agentd_lts.sh";
+	$zagent_rcfile = "/usr/local/etc/rc.d/zabbix_agentd.sh";
 	if (is_array($zbagent_config) && $zbagent_config['agentenabled'] == "on") {
-		$zagent_start .= strtr($dir_checks, array("\r" => "")). "\necho \"Starting Zabbix Agent LTS...\"\n";
-		$zagent_start .= ZABBIX_AGENT_BASE . "/sbin/zabbix_agentd\n";
+		$zagent_start .= strtr($dir_checks, array("\r" => "")). "\necho \"Starting Zabbix Agent...\"\n";
+		$zagent_start .= ZABBIX_AGENT_BASE . "/sbin/zabbix_agentd -c /usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_agentd.conf\n";
 
-		$zagent_stop = "echo \"Stopping Zabbix Agent LTS...\"\n";
+		$zagent_stop = "echo \"Stopping Zabbix Agent...\"\n";
 		$zagent_stop .= "/usr/bin/killall zabbix_agentd\n";
 		$zagent_stop .= "/bin/sleep 5\n";
 
 		// write out rc.d start/stop file
 		write_rcfile(array(
-			"file" => "zabbix_agentd_lts.sh",
+			"file" => "zabbix_agentd.sh",
 			"start" => "$zagent_start",
 			"stop" => "$zagent_stop"
 			)
 		);
-		restart_service("zabbix_agentd_lts");
+		restart_service("zabbix_agentd");
 	} else {
-		if (is_service_running("zabbix_agentd_lts")) {
-			stop_service("zabbix_agentd_lts");
+		if (is_service_running("zabbix_agentd")) {
+			stop_service("zabbix_agentd");
 		}
 		unlink_if_exists($zagent_rcfile);
 	}
@@ -294,7 +309,7 @@ EOF;
 // Based on openvpn_add_keyfile() function
 function zabbix_agent_add_keyfile($data, $directive) {
 
-	$fpath = "/usr/local/etc/zabbix3/zabbix_agentd.{$directive}";
+	$fpath = "/usr/local/etc/zabbix%%ZABBIXVERSION%%/zabbix_agentd.{$directive}";
 
 	file_put_contents($fpath, base64_decode($data));
 	@chmod($fpath, 0600);
