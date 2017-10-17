@@ -35,4 +35,10 @@ ALTABI=$(cat ${REAL_CONF%%.conf}.altabi)
 echo "ABI=${ABI}" > ${PKG_CONF}
 echo "ALTABI=${ALTABI}" >> ${PKG_CONF}
 
+# Help users to fix fstab before risk moving to FreeBSD 11
+if /usr/bin/grep -q -E '/dev/ad[[:digit:]]' /etc/fstab; then
+	echo "===> Fixing bad /etc/fstab"
+	/usr/local/sbin/ufslabels.sh commit
+fi
+
 exit 0
