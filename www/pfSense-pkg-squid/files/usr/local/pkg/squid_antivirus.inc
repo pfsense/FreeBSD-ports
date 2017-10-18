@@ -705,13 +705,17 @@ function squid_write_cicap_rcfile() {
 	$cicap_start_cmd = "{$cicap_bin} -f {$cicap_conf}";
 	$cicap_stop_cmd = <<< EOF
 
-if [ -p "{$cicap_pipe}" ]; then
-	/bin/echo -n "stop" > /var/run/c-icap/c-icap.ctl
-else
-	/usr/bin/killall -9 c-icap 2>/dev/null
+if /bin/pgrep -aq c-icap 2>/dev/null; then
+	if [ -p "{$cicap_pipe}" ]; then
+		/bin/echo -n "stop" > /var/run/c-icap/c-icap.ctl
+	else
+		/usr/bin/killall -9 c-icap 2>/dev/null
+	fi
 fi
 sleep 5
-/bin/rm -f {$cicap_pipe}
+if [ -p "{$cicap_pipe}" ]; then
+	/bin/rm -f {$cicap_pipe}
+fi
 EOF;
 	conf_mount_rw();
 	log_error("[squid] Creating '{$c_icap_rcfile}' rc script.");
