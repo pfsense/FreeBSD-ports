@@ -64,24 +64,34 @@ if (empty($pfb_query)) {
 	}
 }
 
+// Increment DNSBL Alias counter
 if (!empty($pfb_query)) {
-	// Increment DNSBL Alias Counter
+	$pfb_found = FALSE;
+
 	$dnsbl_info = '/var/db/pfblockerng/dnsbl_info';
 	if (($handle = @fopen("{$dnsbl_info}", 'r')) !== FALSE) {
-		flock($handle, LOCK_EX);
-		$pfb_output = @fopen("{$dnsbl_info}.bk", 'w');
-		flock($pfb_output, LOCK_EX);
+		if (@flock($handle, LOCK_EX)) {
+			if (($pfb_output = @fopen("{$dnsbl_info}.bk", 'w')) !== FALSE) {
+				if (@flock($pfb_output, LOCK_EX)) {
+					$pfb_found = TRUE;
 
-		// Find line with corresponding DNSBL Aliasname
-		while (($line = @fgetcsv($handle)) !== FALSE) {
-			if ($line[0] == $pfb_query) {
-				$line[3] += 1;
+					// Find line with corresponding DNSBL Aliasname
+					while (($line = @fgetcsv($handle)) !== FALSE) {
+						if ($line[0] == $pfb_query) {
+							$line[3] += 1;
+						}
+						@fputcsv($pfb_output, $line);
+					}
+					@flock($pfb_output, LOCK_UN);
+				}
+				@fclose($pfb_output);
 			}
-			@fputcsv($pfb_output, $line);
+			@flock($handle, LOCK_UN);
 		}
-
-		@fclose($pfb_output);
 		@fclose($handle);
+	}
+
+	if ($pfb_found) {
 		@rename("{$dnsbl_info}.bk", "{$dnsbl_info}");
 	}
 }

@@ -2500,24 +2500,34 @@ function pfb_livetail($logfile, $mode) {
 							exec("/usr/bin/grep -l ' \"{$query} 60 IN A' {$pfb['dnsalias']}/*", $match);
 							$pfb_query = strstr($match[0], 'DNSBL', FALSE);
 
+							// Increment DNSBL Alias counter
 							if (!empty($pfb_query)) {
-								// Increment DNSBL Alias counter
+								$pfb_found = FALSE;
+
 								if (($handle = @fopen("{$pfb['dnsbl_info']}", 'r')) !== FALSE) {
-									@flock($handle, LOCK_EX);
-									$pfb_output = @fopen("{$pfb['dnsbl_info']}.bk", 'w');
-									@flock($pfb_output, LOCK_EX);
+									if (@flock($handle, LOCK_EX)) {
+										if (($pfb_output = @fopen("{$pfb['dnsbl_info']}.bk", 'w')) !== FALSE) {
+											if (@flock($pfb_output, LOCK_EX)) {
+												$pfb_found = TRUE;
 
-									// Find line with corresponding DNSBL Aliasname
-									while (($line = @fgetcsv($handle)) !== FALSE) {
-										if ($line[0] == $pfb_query) {
-											$line[3] += 1;
+												// Find line with corresponding DNSBL Aliasname
+												while (($line = @fgetcsv($handle)) !== FALSE) {
+													if ($line[0] == $pfb_query) {
+															$line[3] += 1;
+													}
+													@fputcsv($pfb_output, $line);
+												}
+												@flock($pfb_output, LOCK_UN);
+											}
+											@fclose($pfb_output);
 										}
-										@fputcsv($pfb_output, $line);
+										@flock($handle, LOCK_UN);
 									}
-
-									@fclose($pfb_output);
 									@fclose($handle);
-									@rename ("{$pfb['dnsbl_info']}.bk", "{$pfb['dnsbl_info']}");
+
+									if ($pfb_found) {
+										@rename ("{$pfb['dnsbl_info']}.bk", "{$pfb['dnsbl_info']}");
+									}
 								}
 							}
 						}

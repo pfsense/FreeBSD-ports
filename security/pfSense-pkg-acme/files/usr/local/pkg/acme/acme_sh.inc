@@ -69,7 +69,7 @@ class acme_sh {
 	}
 	
 	function init($ca, $name) {
-		$conf = "API='{$ca}'\n";
+		$conf = "ACME_DIRECTORY='{$ca}/directory'\n";
 		$cahost = parse_url($ca, PHP_URL_HOST);
 		$acmeconf = "/tmp/acme/{$name}/";
 		$this->acmeconf = $acmeconf;
