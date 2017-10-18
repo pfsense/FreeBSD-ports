@@ -707,7 +707,7 @@ function squid_write_cicap_rcfile() {
 
 if /bin/pgrep -aq c-icap 2>/dev/null; then
 	if [ -p "{$cicap_pipe}" ]; then
-		/bin/echo -n "stop" > /var/run/c-icap/c-icap.ctl
+		/bin/echo -n "stop" > {$cicap_pipe}
 	else
 		/usr/bin/killall -9 c-icap 2>/dev/null
 	fi
