@@ -333,6 +333,12 @@ $acme_domain_validation_method['dns_he'] = array(name => "DNS-Hurricane Electric
 			'description' =>"Hurricane Electric password"
 		)
 	));
+@$acme_domain_validation_method['dns_gandi_livedns'] = array(name => "DNS-Gandi LiveDNS",
+        'fields' => array(
+                'GANDI_LIVEDNS_KEY' => array('name'=>"gandi_livedns_key",'columnheader'=>"API Key",'type'=>"textbox",
+                        'description' =>"Set the Gandi LiveDNS API Key once retrieved from https://account.gandi.net"
+                )
+        ));
 //TODO add more challenge validation types
 /* 
 $acme_domain_validation_method['http-post'] = array(name => "http-post",
