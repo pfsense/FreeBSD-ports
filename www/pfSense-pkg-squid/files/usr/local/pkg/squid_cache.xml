@@ -142,7 +142,9 @@
 			<description>
 				<![CDATA[
 				Enter domain(s) and/or IP address(es) that should never be cached.
-				<span class="text-info">Put each entry on a separate line.</span>
+				<span class="text-info">Put each entry on a separate line.</span><br/>
+    				Hint: To deny any access to cached objects, use <code>all</code>.
+				To match subdomains, prefix a domain with <code>.</code>
 				]]>
 			</description>
 			<type>textarea</type>
