@@ -21,8 +21,8 @@
  */
 
 
-require("guiconfig.inc");
-require("/usr/local/pkg/nut/nut.inc");
+require_once("guiconfig.inc");
+require_once("/usr/local/pkg/nut/nut.inc");
 
 if (!is_array($config['installedpackages']['nut']['config'])) {
 	$config['installedpackages']['nut']['config'] = array();
