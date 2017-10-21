@@ -319,9 +319,7 @@ elseif ($_POST['save'] || $_POST['apply']) {
 			$a_nat[$id] = $natent;
 			write_config();
 			$rebuild_rules = false;
-			conf_mount_rw();
 			suricata_generate_yaml($natent);
-			conf_mount_ro();
 
 			// Sync to configured CARP slaves if any are enabled
 			suricata_sync_on_changes();
