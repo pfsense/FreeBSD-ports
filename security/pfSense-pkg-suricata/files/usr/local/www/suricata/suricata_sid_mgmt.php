@@ -173,9 +173,7 @@ if (isset($_POST['save_auto_sid_conf'])) {
 			// Update the suricata.yaml file and
 			// rebuild rules for this interface.
 			$rebuild_rules = true;
-			conf_mount_rw();
 			suricata_generate_yaml($a_nat[$k]);
-			conf_mount_ro();
 			$rebuild_rules = false;
 
 			// Signal Suricata to "live reload" the rules
