@@ -45,7 +45,6 @@ function snort_check_dir_size_limit($snortloglimitsize) {
 	$snortlogdirsizeKB = snort_Getdirsize(SNORTLOGDIR);
 	if ($snortlogdirsizeKB > 0 && $snortlogdirsizeKB > $snortloglimitsizeKB) {
 		log_error(gettext("[Snort] Log directory size exceeds configured limit of " . number_format($snortloglimitsize) . " MB set on Global Settings tab. All Snort log files will be truncated."));
-		conf_mount_rw();
 
 		// Truncate the Rules Update Log file if it exists
 		if (file_exists(SNORT_RULES_UPD_LOGFILE)) {
@@ -90,7 +89,6 @@ function snort_check_dir_size_limit($snortloglimitsize) {
 				mwexec("/bin/pkill -HUP -F {$g['varrun_path']}/snort_{$if_real}{$snort_uuid}.pid -a");
 			}
 		}
-		conf_mount_ro();
 		log_error(gettext("[Snort] Automatic clean-up of Snort logs completed."));
 	}
 }
