@@ -92,9 +92,7 @@ if ($_POST['save']) {
 
 		// No need to rebuild rules for Barnyard2 changes
 		$rebuild_rules = false;
-		conf_mount_rw();
 		sync_suricata_package_config();
-		conf_mount_ro();
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -196,9 +194,7 @@ if ($_POST['save']) {
 
 		// No need to rebuild rules for Barnyard2 changes
 		$rebuild_rules = false;
-		conf_mount_rw();
 		sync_suricata_package_config();
-		conf_mount_ro();
 
 		// If disabling Barnyard2 on the interface, stop any
 		// currently running instance.  If an instance is
