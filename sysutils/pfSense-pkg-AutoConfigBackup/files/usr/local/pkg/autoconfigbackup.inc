@@ -21,6 +21,7 @@
 
 require_once("filter.inc");
 require_once("notices.inc");
+require_once("util.inc");
 
 // Plugin moved to save only
 unlink_if_exists("/usr/local/pkg/parse_config/parse_config_upload.inc");
@@ -88,11 +89,7 @@ function acb_custom_php_resync_config_command() {
 		return;
 	}
 
-	if (is_file("/cf/conf/lastpfSbackup.txt")) {
-		conf_mount_rw();
-		unlink("/cf/conf/lastpfSbackup.txt");
-		conf_mount_ro();
-	}
+	unlink_if_exists("/cf/conf/lastpfSbackup.txt");
 	if (!function_exists("filter_configure")) {
 		require_once("filter.inc");
 	}
