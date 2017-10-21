@@ -943,7 +943,8 @@ function squid_validate_cache($post, &$input_errors) {
 			if (strpos($host, '.') === 0) {
 				$host = substr($host, 1);
 			}
-			if (!is_ipaddr($host) && !is_domain($host)) {
+			// Allow "all" ACL as special case to disable any cache access
+			if (!is_ipaddr($host) && !is_domain($host) && $host != "all") {
 				$input_errors[] = "The host '$host' is not a valid IP or hostname.";
 			}
 		}
@@ -1464,13 +1465,20 @@ EOD;
 
 	$donotcache = sq_text_area_decode($settings['donotcache']);
 	if (!empty($donotcache)) {
-		file_put_contents(SQUID_ACLDIR . '/donotcache.acl', $donotcache);
-		$conf .= 'acl donotcache dstdomain "' . SQUID_ACLDIR . "/donotcache.acl\"\n";
-		$conf .= "cache deny donotcache\n";
+		// Allow "all" ACL as special case to disable any cache access
+		if ($donotcache == "all") {
+			$conf .= "cache deny all\n";
+		} else {
+			file_put_contents(SQUID_ACLDIR . '/donotcache.acl', $donotcache);
+			$conf .= 'acl donotcache dstdomain "' . SQUID_ACLDIR . "/donotcache.acl\"\n";
+			$conf .= "cache deny donotcache\n";
+		}
 	} elseif (file_exists(SQUID_ACLDIR . '/donotcache.acl')) {
 		unlink(SQUID_ACLDIR . '/donotcache.acl');
 	}
-	$conf .= "cache allow all\n";
+	if ($donotcache != "all") {
+		$conf .= "cache allow all\n";
+	}
 
 	return $conf.$refresh_conf;
 }
