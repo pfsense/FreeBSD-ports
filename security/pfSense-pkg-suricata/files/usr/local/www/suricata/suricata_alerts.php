@@ -115,9 +115,7 @@ function suricata_add_supplist_entry($suppress) {
 	/* and return true; otherwise return false.                             */
 	if ($found_list) {
 		write_config();
-		conf_mount_rw();
 		sync_suricata_package_config();
-		conf_mount_ro();
 		return true;
 	}
 	else
@@ -349,9 +347,7 @@ if ($_POST['mode'] == 'togglesid' && is_numeric($_POST['sidid']) && is_numeric($
 	/* rules for this interface.                     */
 	/*************************************************/
 	$rebuild_rules = true;
-	conf_mount_rw();
 	suricata_generate_yaml($a_instance[$instanceid]);
-	conf_mount_ro();
 	$rebuild_rules = false;
 
 	/* Signal Suricata to live-load the new rules */
