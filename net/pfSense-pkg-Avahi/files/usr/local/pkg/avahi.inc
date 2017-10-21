@@ -149,8 +149,7 @@ function avahi_write_rcfile() {
 		$avahi_config = array();
 	}
 
-	$start = "/etc/rc.conf_mount_rw\n";
-	$start .= "if [ ! -d /proc/0 ]; then\n";
+	$start = "if [ ! -d /proc/0 ]; then\n";
 	$start .= "	/bin/mkdir -p /proc\n";
 	$start .= "	/sbin/mount -t procfs procfs /proc\n";
 	$start .= "fi\n";
@@ -168,7 +167,6 @@ function avahi_write_rcfile() {
 		}
 	}
 	$start .= AVAHI_BASE . "/sbin/avahi-daemon -D\n";
-	$start .= "/etc/rc.conf_mount_ro\n";
 
 	$stop = "/usr/bin/killall avahi-daemon >/dev/null 2>&1\n";
 	if (!$avahi_config['disable_dbus']) {
@@ -188,7 +186,6 @@ function avahi_write_rcfile() {
 
 function avahi_sync() {
 	global $config;
-	conf_mount_rw();
 
 	if (is_service_running("avahi")) {
 		stop_service("avahi");
@@ -211,7 +208,6 @@ function avahi_sync() {
 		}
 	}
 
-	conf_mount_ro();
 }
 
 function avahi_upgrade_config() {
