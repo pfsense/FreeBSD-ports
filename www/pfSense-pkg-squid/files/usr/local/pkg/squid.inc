@@ -170,7 +170,6 @@ function squid_check_ca_hashes() {
 		}
 	}
 	if ($cert_count < 10) {
-		conf_mount_rw();
 		// create ca-root hashes from ca-root-nss package
 		log_error("[squid] Creating root certificate bundle hashes from the Mozilla Project...");
 		$cas = file(SQUID_LOCALBASE . '/share/certs/ca-root-nss.crt');
@@ -361,9 +360,7 @@ fi
 
 EOD;
 
-	conf_mount_rw();
 	write_rcfile($rc);
-	conf_mount_ro();
 }
 
 /* Start sqp_monitor.sh watchdog script */
@@ -2010,8 +2007,6 @@ function squid_resync($via_rpc = "no") {
 		return;
 	}
 
-	conf_mount_rw();
-
 	// Fix user/group entry permissions
 	squid_fixup_user();
 
@@ -2049,7 +2044,6 @@ function squid_resync($via_rpc = "no") {
 	// restart Squid if enabled and reconfigure filter
 	squid_restart_services();
 	filter_configure();
-	conf_mount_ro();
 }
 
 /*
