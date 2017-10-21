@@ -23,7 +23,6 @@
 
 require_once("config.inc");
 require_once("certs.inc");
-require_once("functions.inc");
 require_once("globals.inc");
 require_once("pkg-utils.inc");
 require_once("service-utils.inc");
