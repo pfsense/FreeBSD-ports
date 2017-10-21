@@ -47,7 +47,6 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 
 	if ($suricatalogdirsizeKB > 0 && $suricatalogdirsizeKB > $suricataloglimitsizeKB) {
 		log_error(gettext("[Suricata] Log directory size exceeds configured limit of " . number_format($suricataloglimitsize) . " MB set on Global Settings tab. Starting cleanup of suricata logs."));
-		conf_mount_rw();
 
 		// Initialize an array of the log files we want to prune
 		$logs = array ( "alerts.log", "block.log", "dns.log", "eve.json", "http.log", "files-json.log", "sid_changes.log", "stats.log", "tls.log" );
@@ -130,7 +129,6 @@ function suricata_check_dir_size_limit($suricataloglimitsize) {
 		cleanupExit:
 		// This is needed if suricata is run as suricata user
 		mwexec('/bin/chmod 660 /var/log/suricata/*', true);
-		conf_mount_ro();
 		log_error(gettext("[Suricata] Automatic clean-up of Suricata logs completed."));
 	}
 }
