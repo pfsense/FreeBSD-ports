@@ -73,9 +73,7 @@ if (isset($_POST['del_btn'])) {
 		}
 		if ($need_save) {
 			write_config("Snort pkg: deleted SUPPRESSION LIST.");
-			conf_mount_rw();
 			sync_snort_package_config();
-			conf_mount_ro();
 			header("Location: /snort/snort_interfaces_suppress.php");
 			return;
 		}
@@ -97,9 +95,7 @@ else {
 		else {
 			unset($a_suppress[$delbtn_list]);
 			write_config("Snort pkg: deleted SUPPRESSION LIST.");
-			conf_mount_rw();
 			sync_snort_package_config();
-			conf_mount_ro();
 			header("Location: /snort/snort_interfaces_suppress.php");
 			return;
 		}
