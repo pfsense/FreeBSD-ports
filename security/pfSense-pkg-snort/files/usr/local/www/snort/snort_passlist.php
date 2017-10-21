@@ -79,9 +79,7 @@ if (isset($_POST['del_btn'])) {
 		}
 		if ($need_save) {
 			write_config("Snort pkg: deleted PASS LIST.");
-			conf_mount_rw();
 			sync_snort_package_config();
-			conf_mount_ro();
 			header("Location: /snort/snort_passlist.php");
 			return;
 		}
@@ -103,9 +101,7 @@ else {
 		else {
 			unset($a_passlist[$delbtn_list]);
 			write_config("Snort pkg: deleted PASS LIST.");
-			conf_mount_rw();
 			sync_snort_package_config();
-			conf_mount_ro();
 			header("Location: /snort/snort_passlist.php");
 			return;
 		}
