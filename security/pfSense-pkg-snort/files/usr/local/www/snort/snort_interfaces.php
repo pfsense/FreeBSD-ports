@@ -42,7 +42,6 @@ $ifaces = get_configured_interface_list();
 if (isset($_POST['del_x'])) {
 	/* Delete selected Snort interfaces */
 	if (is_array($_POST['rule']) && count($_POST['rule'])) {
-		conf_mount_rw();
 		foreach ($_POST['rule'] as $rulei) {
 			$if_real = get_real_interface($a_nat[$rulei]['interface']);
 			$if_friendly = convert_friendly_interface_to_friendly_descr($snortcfg['interface']);
@@ -64,9 +63,7 @@ if (isset($_POST['del_x'])) {
 		// Save updated configuration
 		write_config("Snort pkg: deleted one or more Snort interfaces.");
 		sleep(2);
-		conf_mount_rw();
 		sync_snort_package_config();
-		conf_mount_ro();	  
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -99,9 +96,7 @@ else {
 		// Save updated configuration
 		write_config("Snort pkg: deleted one or more Snort interfaces.");
 		sleep(2);
-		conf_mount_rw();
 		sync_snort_package_config();
-		conf_mount_ro();	  
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -122,9 +117,7 @@ if ($_POST['by2toggle'] && is_numericint($_POST['id'])) {
 		case 'start':
 			/* set flag to rebuild interface rules before starting Snort */
 			$rebuild_rules = true;
-			conf_mount_rw();
 			sync_snort_package_config();
-			conf_mount_ro();
 			$rebuild_rules = false;
 			if (snort_is_running($snortcfg['uuid'], $if_real, 'barnyard2')) {
 				log_error("Restarting Barnyard2 on {$if_friendly}({$if_real}) per user request...");
@@ -157,9 +150,7 @@ if ($_POST['toggle'] && is_numericint($_POST['id'])) {
 		case 'start':
 			/* set flag to rebuild interface rules before starting Snort */
 			$rebuild_rules = true;
-			conf_mount_rw();
 			sync_snort_package_config();
-			conf_mount_ro();
 			$rebuild_rules = false;
 			if (snort_is_running($snortcfg['uuid'], $if_real)) {
 				log_error("Restarting Snort on {$if_friendly}({$if_real}) per user request...");
