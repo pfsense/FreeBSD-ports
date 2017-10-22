@@ -145,6 +145,18 @@
 			<multiple/>
 		</field>
 		<field>
+			<fielddescr>Proxy Outgoing Interface</fielddescr>
+			<fieldname>active_outgoing_interface</fieldname>
+			<description>
+				<![CDATA[
+				The interface the proxy server will use to send outgoing traffic.
+				]]>
+			</description>
+			<type>interfaces_selection</type>
+			<hideinterfaceregex>wan|loopback</hideinterfaceregex>
+			<default_value>lan</default_value>
+		</field>
+		<field>
 			<fielddescr>Proxy Port</fielddescr>
 			<fieldname>proxy_port</fieldname>
 			<description>
