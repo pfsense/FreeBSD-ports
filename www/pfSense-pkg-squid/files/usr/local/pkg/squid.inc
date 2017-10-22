@@ -1259,6 +1259,14 @@ function squid_resync_general() {
 			$conf .= "http_port 127.0.0.1:{$port} intercept\n";
 		}
 	}
+
+	if ($settings['active_outgoing_interface']) {
+		$oface_ip = squid_get_real_interface_address($settings['active_outgoing_interface']);
+		if ($oface_ip[0]) {
+			$conf .= "tcp_outgoing_address {$oface_ip[0]}\n";
+		}
+	}
+
 	$icp_port = ($settings['icp_port'] ? $settings['icp_port'] : 0);
 	$dns_v4_first = ($settings['dns_v4_first'] == "on" ? "on" : "off");
 	$piddir = "{$g['varrun_path']}/squid";
