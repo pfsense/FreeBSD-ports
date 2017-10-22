@@ -71,7 +71,7 @@
 		<field>
 			<fielddescr>Subscription Username</fielddescr>
 			<fieldname>username</fieldname>
-			<description>Enter the subscription username for portal.pfsense.org</description>
+			<description>Enter the subscription username (not email address) for portal.pfsense.org</description>
 			<type>input</type>
 		</field>
 		<field>
