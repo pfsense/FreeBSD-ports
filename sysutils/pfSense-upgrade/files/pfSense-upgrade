@@ -452,9 +452,10 @@ pkg_upgrade() {
 		# If a new version of pfSense-upgrade is available, upgrade it
 		# and return a special code 99 used by wrapper to run newer
 		# version again using the same parameters
-		if [ "$(compare_pkg_version ${product}-upgrade)" = "<" ]; then
-			_exec "pkg-static upgrade${dont_update} ${product}-upgrade" \
-			    "Upgrading ${product}-upgrade" mute
+		if [ "$(compare_pkg_version ${product}-upgrade)" != "=" ]; then
+			_exec "pkg-static upgrade${dont_update} -f \
+			    ${product}-upgrade" "Upgrading ${product}-upgrade" \
+			    mute
 			[ -n "${NEW_MAJOR}" ] \
 			    && pkg_unlock pkg
 			_exit 99
