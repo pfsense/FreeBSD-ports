@@ -128,8 +128,8 @@ if ($_POST['save-view']) {
 	$savemsg = "The current view has been updated.";
 }
 
-//add a new view
-if ($_POST['add-view']) {
+//add a new view and make sure the string isn't empty
+if ($_POST['add-view'] && $_POST['view-title'] != "") {
 
 	$title = $_POST['view-title'];
 
@@ -1161,7 +1161,9 @@ events.push(function() {
 	    do {
 
 			view_title=prompt("Enter a unique title for your view:");
-
+			if(view_title == null){
+				break;
+			}
 	        var title_slug = createSlug(view_title);
 
 	        if(jQuery.inArray(title_slug, current_titles) !== -1) {
