@@ -9,7 +9,11 @@ if [ -f /etc/make.conf ] && grep -q 'POUDRIERE_PORTS_NAME=' /etc/make.conf; then
 	exit 0
 fi
 
-DEFAULT_REPO=%%DATADIR%%/pkg/repos/%%PRODUCT_NAME%%-repo.conf
+if [ -f %%DATADIR%%/pkg/repos/%%PRODUCT_NAME%%-repo-23.conf ]; then
+	DEFAULT_REPO=%%DATADIR%%/pkg/repos/%%PRODUCT_NAME%%-repo-23.conf
+else
+	DEFAULT_REPO=%%DATADIR%%/pkg/repos/%%PRODUCT_NAME%%-repo.conf
+fi
 REPO_PATH=/usr/local/etc/pkg/repos
 REPO_CONF=${REPO_PATH}/%%PRODUCT_NAME%%.conf
 
