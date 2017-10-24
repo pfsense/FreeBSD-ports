@@ -2341,7 +2341,6 @@ function pfb_aliastables($mode) {
 
 	// Only execute function if platform is NanoBSD or Ramdisks are used.
 	if (($g['platform'] != 'pfSense') || isset($config['system']['use_mfs_tmpvar'])) {
-		conf_mount_rw();
 		if ($mode == 'update') {
 			// Archive aliastable folder
 			pfb_logger("\n\nArchiving Aliastable folder\n", 1);
@@ -2380,14 +2379,11 @@ function pfb_aliastables($mode) {
 				$msg = "\n** Adding earlyshellcmd **\n";
 			}
 		}
-		conf_mount_ro();
 	}
 	else {
 		if (file_exists("{$pfb['aliasarchive']}")) {
 			// Remove aliastables archive if found.
-			conf_mount_rw();
-			@unlink_if_exists("{$pfb['aliasarchive']}");
-			conf_mount_ro();
+			unlink_if_exists("{$pfb['aliasarchive']}");
 		}
 		// Remove earlyshellcmd if found.
 		if (isset($config['system']['earlyshellcmd'])) {
