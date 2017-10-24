@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Netgate_Coreboot_Upgrade
-PORTVERSION=	0.11
+PORTVERSION=	0.12
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -17,7 +17,7 @@ RUN_DEPENDS=	flashrom:sysutils/flashrom
 NO_MTREE=	yes
 
 COREBOOT_DFF2_ROM=ADI_DFF2-01.00.00.17-nodebug.rom
-COREBOOT_RCC_ROM=ADI_RCC-01.00.00.15-nodebug-16m.rom
+COREBOOT_RCC_ROM=ADI_RCC-01.00.00.18-nodebug-16m.rom
 COREBOOT_RCCVE_ROM=ADI_RCCVE-01.00.00.17-nodebug.rom
 
 PLIST_SUB=	COREBOOT_DFF2_ROM=${COREBOOT_DFF2_ROM} \
