@@ -192,18 +192,13 @@ if (isset($_POST['sidlist_dnload']) && isset($_POST['sidlist_fname'])) {
 	$file = $sidmods_path . basename($_POST['sidlist_fname']);
 	if (file_exists($file)) {
 		ob_start(); //important or other posts will fail
-		if (isset($_SERVER['HTTPS'])) {
-			header('Pragma: ');
-			header('Cache-Control: ');
-		} else {
-			header("Pragma: private");
-			header("Cache-Control: private, must-revalidate");
-		}
+		session_cache_limiter('nocache');
 		header("Content-Type: application/octet-stream");
-		header("Content-length: " . filesize($file));
-		header("Content-disposition: attachment; filename = " . basename($file));
+		header("Content-Length: " . filesize($file));
+		header("Content-Disposition: attachment; filename = " . basename($file));
 		ob_end_clean(); //important or other post will fail
 		readfile($file);
+		exit();
 	}
 	else
 		$savemsg = gettext("Unable to locate the file specified!");
@@ -212,25 +207,20 @@ if (isset($_POST['sidlist_dnload']) && isset($_POST['sidlist_fname'])) {
 if (isset($_POST['sidlist_dnload_all'])) {
 	$save_date = date("Y-m-d-H-i-s");
 	$file_name = "suricata_sid_conf_files_{$save_date}.tar.gz";
-	exec("cd {$sidmods_path} && /usr/bin/tar -czf /tmp/{$file_name} *");
+	exec("/usr/bin/tar -czf /tmp/{$file_name} --strip-components 5 {$sidmods_path}/*");
 
 	if (file_exists("/tmp/{$file_name}")) {
 		ob_start(); //important or other posts will fail
-		if (isset($_SERVER['HTTPS'])) {
-			header('Pragma: ');
-			header('Cache-Control: ');
-		} else {
-			header("Pragma: private");
-			header("Cache-Control: private, must-revalidate");
-		}
+		session_cache_limiter('nocache');
 		header("Content-Type: application/octet-stream");
-		header("Content-length: " . filesize("/tmp/{$file_name}"));
-		header("Content-disposition: attachment; filename = {$file_name}");
+		header("Content-Length: " . filesize("/tmp/{$file_name}"));
+		header("Content-Disposition: attachment; filename = {$file_name}");
 		ob_end_clean(); //important or other post will fail
 		readfile("/tmp/{$file_name}");
 
 		// Clean up the temp file
 		unlink_if_exists("/tmp/{$file_name}");
+		exit();
 	}
 	else
 		$savemsg = gettext("An error occurred while creating the gzip archive!");
