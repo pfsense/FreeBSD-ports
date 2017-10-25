@@ -28,6 +28,8 @@
  * limitations under the License.
  */
 
+require_once('util.inc');
+
 header("Cache-Control: private, no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
@@ -70,9 +72,11 @@ if (!empty($pfb_query)) {
 
 	$dnsbl_info = '/var/db/pfblockerng/dnsbl_info';
 	if (($handle = @fopen("{$dnsbl_info}", 'r')) !== FALSE) {
-		if (@flock($handle, LOCK_EX)) {
+		$lock_handle = @try_lock($handle, 5);
+		if ($lock_handle) {
 			if (($pfb_output = @fopen("{$dnsbl_info}.bk", 'w')) !== FALSE) {
-				if (@flock($pfb_output, LOCK_EX)) {
+				$lock_pfb_output = @try_lock($pfb_output, 5);
+				if ($lock_pfb_output) {
 					$pfb_found = TRUE;
 
 					// Find line with corresponding DNSBL Aliasname
@@ -82,12 +86,14 @@ if (!empty($pfb_query)) {
 						}
 						@fputcsv($pfb_output, $line);
 					}
-					@flock($pfb_output, LOCK_UN);
+					@unlock($lock_pfb_output);
 				}
+				@unlock_force($pfb_output);
 				@fclose($pfb_output);
 			}
-			@flock($handle, LOCK_UN);
+			@unlock($lock_handle);
 		}
+		@unlock_force($handle);
 		@fclose($handle);
 	}
 
