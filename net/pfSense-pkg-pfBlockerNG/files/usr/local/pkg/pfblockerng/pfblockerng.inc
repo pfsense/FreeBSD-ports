@@ -2341,7 +2341,6 @@ function pfb_aliastables($mode) {
 
 	// Only execute function if platform is NanoBSD or Ramdisks are used.
 	if (($g['platform'] != 'pfSense') || isset($config['system']['use_mfs_tmpvar'])) {
-		conf_mount_rw();
 		if ($mode == 'update') {
 			// Archive aliastable folder
 			pfb_logger("\n\nArchiving Aliastable folder\n", 1);
@@ -2380,14 +2379,11 @@ function pfb_aliastables($mode) {
 				$msg = "\n** Adding earlyshellcmd **\n";
 			}
 		}
-		conf_mount_ro();
 	}
 	else {
 		if (file_exists("{$pfb['aliasarchive']}")) {
 			// Remove aliastables archive if found.
-			conf_mount_rw();
 			@unlink_if_exists("{$pfb['aliasarchive']}");
-			conf_mount_ro();
 		}
 		// Remove earlyshellcmd if found.
 		if (isset($config['system']['earlyshellcmd'])) {
@@ -2505,9 +2501,11 @@ function pfb_livetail($logfile, $mode) {
 								$pfb_found = FALSE;
 
 								if (($handle = @fopen("{$pfb['dnsbl_info']}", 'r')) !== FALSE) {
-									if (@flock($handle, LOCK_EX)) {
+									$lock_handle = @try_lock($handle, 5);
+									if ($lock_handle) {
 										if (($pfb_output = @fopen("{$pfb['dnsbl_info']}.bk", 'w')) !== FALSE) {
-											if (@flock($pfb_output, LOCK_EX)) {
+											$lock_pfb_output = @try_lock($pfb_output, 5);
+											if ($lock_pfb_output) {
 												$pfb_found = TRUE;
 
 												// Find line with corresponding DNSBL Aliasname
@@ -2517,12 +2515,14 @@ function pfb_livetail($logfile, $mode) {
 													}
 													@fputcsv($pfb_output, $line);
 												}
-												@flock($pfb_output, LOCK_UN);
+												@unlock($lock_pfb_output);
 											}
+											@unlock_force($pfb_output);
 											@fclose($pfb_output);
 										}
-										@flock($handle, LOCK_UN);
+										@unlock($lock_handle);
 									}
+									@unlock_force($handle);
 									@fclose($handle);
 
 									if ($pfb_found) {
@@ -5093,10 +5093,14 @@ function sync_package_pfblockerng($cron='') {
 		pfb_logger("{$log}", 1);
 
 		$tablesin = $tablesout = array();
-		// Collect all 'pfB_' Rules that are 'Block/Reject' and do not have bypass states enabled
+		// Collect all 'pfB_' and 'pfb_' rules that are 'Block/Reject' and do not have bypass states enabled
 		if (isset($config['aliases']['alias'])) {
 			foreach ($config['aliases']['alias'] as $alias) {
-				if ($alias['type'] == 'urltable' && strpos($alias['name'], 'pfB_') !== FALSE && strpos($alias['descr'], '[s]') === FALSE) {
+				
+                                if ($alias['type'] == 'urltable' &&
+                                    (strpos($alias['name'], 'pfB_') !== FALSE || strpos($alias['name'], 'pfb_') !== FALSE) &&
+                                    strpos($alias['descr'], '[s]') === FALSE) {
+					
 					if (isset($config['filter']['rule'])) {
 						foreach ($config['filter']['rule'] as $rule) {
 							if ($alias['name'] === $rule['source']['address'] || $alias['name'] === $rule['destination']['address']) {
