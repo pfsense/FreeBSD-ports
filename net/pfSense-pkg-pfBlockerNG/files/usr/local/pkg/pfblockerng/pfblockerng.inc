@@ -2505,9 +2505,11 @@ function pfb_livetail($logfile, $mode) {
 								$pfb_found = FALSE;
 
 								if (($handle = @fopen("{$pfb['dnsbl_info']}", 'r')) !== FALSE) {
-									if (@flock($handle, LOCK_EX)) {
+									$lock_handle = @try_lock($handle, 5);
+									if ($lock_handle) {
 										if (($pfb_output = @fopen("{$pfb['dnsbl_info']}.bk", 'w')) !== FALSE) {
-											if (@flock($pfb_output, LOCK_EX)) {
+											$lock_pfb_output = @try_lock($pfb_output, 5);
+											if ($lock_pfb_output) {
 												$pfb_found = TRUE;
 
 												// Find line with corresponding DNSBL Aliasname
@@ -2517,12 +2519,14 @@ function pfb_livetail($logfile, $mode) {
 													}
 													@fputcsv($pfb_output, $line);
 												}
-												@flock($pfb_output, LOCK_UN);
+												@unlock($lock_pfb_output);
 											}
+											@unlock_force($pfb_output);
 											@fclose($pfb_output);
 										}
-										@flock($handle, LOCK_UN);
+										@unlock($lock_handle);
 									}
+									@unlock_force($handle);
 									@fclose($handle);
 
 									if ($pfb_found) {
