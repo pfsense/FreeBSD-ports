@@ -18,7 +18,8 @@ NO_MTREE=	yes
 
 SUB_FILES=	pkg-install
 SUB_LIST=	PORTNAME=${PORTNAME} \
-		PRODUCT_NAME=${PRODUCT_NAME}
+		PRODUCT_NAME=${PRODUCT_NAME} \
+		DEFAULT_REPO=${DATADIR}/pkg/repos/${PFSENSE_DEFAULT_REPO_${ARCH}}.conf
 
 DATADIR=	${PREFIX}/share/pfSense
 
@@ -27,6 +28,8 @@ DATADIR=	${PREFIX}/share/pfSense
 PFSENSE_REPOS?=	pfSense-repo pfSense-repo-devel pfSense-repo-next \
 		pfSense-repo-23
 PFSENSE_REPOS_${ARCH}?=	${PFSENSE_REPOS}
+PFSENSE_DEFAULT_REPO?=	pfSense-repo-devel
+PFSENSE_DEFAULT_REPO_${ARCH}?=	${PFSENSE_DEFAULT_REPO}
 TMP_PLIST_FILES=${PFSENSE_REPOS_${ARCH}:C/$/.conf/} \
 		${PFSENSE_REPOS_${ARCH}:C/$/.descr/} \
 		${PFSENSE_REPOS_${ARCH}:C/$/.abi/} \
