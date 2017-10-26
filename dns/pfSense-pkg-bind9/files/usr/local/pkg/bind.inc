@@ -106,16 +106,19 @@ if (!function_exists('pf_version')) {
 function bind_sync() {
 
 	global $config;
-	conf_mount_rw();
 	// Create rndc
 	$rndc_confgen = "/usr/local/sbin/rndc-confgen";
-	if (!file_exists(BIND_LOCALBASE."/etc/rndc-confgen.pfsense") && file_exists($rndc_confgen)) {
-		exec("$rndc_confgen ", $rndc_conf);
+	if (is_executable($rndc_confgen)) {
+		// Bug #7271: do not use the default command channel port, it conflicts with Unbound
+		unlink_if_exists(BIND_LOCALBASE . "/etc/rndc-confgen.pfsense");
+		exec("$rndc_confgen -p 8953 ", $rndc_conf);
 		$confgen_file = "";
 		foreach ($rndc_conf as $line) {
 			$confgen_file .= "$line\n";
 		}
 		file_put_contents(BIND_LOCALBASE."/etc/rndc-confgen.pfsense", $confgen_file);
+	} else {
+		log_error("[bind] $rndc_confgen not found, please reinstall bind package.");
 	}
 	$rndc_bindconf = "";
 	$rndc_file = "";
@@ -735,7 +738,6 @@ EOD;
 	}
 	// Sync to backup servers
 	bind_sync_on_changes();
-	conf_mount_ro();
 }
 
 function bind_print_javascript_type_zone() {
@@ -875,9 +877,8 @@ EOD;
 			{$BIND_LOCALBASE}/sbin/named {$ip_version} -c /etc/namedb/named.conf -u bind -t /cf/named/
 		fi
 EOD;
-	conf_mount_rw();
+
 	write_rcfile($rc);
-	conf_mount_ro();
 }
 
 /* Uses XMLRPC to synchronize the changes to a remote node */
