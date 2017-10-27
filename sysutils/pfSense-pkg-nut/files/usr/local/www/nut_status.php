@@ -21,8 +21,8 @@
  */
 
 
-require("guiconfig.inc");
-require("/usr/local/pkg/nut/nut.inc");
+require_once("guiconfig.inc");
+require_once("/usr/local/pkg/nut/nut.inc");
 
 function print_row($desc, $value) {
 	print '<tr>';

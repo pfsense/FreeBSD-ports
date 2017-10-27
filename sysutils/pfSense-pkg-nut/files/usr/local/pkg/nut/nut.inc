@@ -255,7 +255,6 @@ function nut_sync_config() {
 		$monfile .= "\n\n" . base64_decode($nut_config['upsmon_conf']) . "\n";
 	}
 
-	conf_mount_rw();
 	if (!empty($upsfile)) {
 		nut_write_file(NUT_UPSFILE, $upsfile);
 	} else {
@@ -273,7 +272,6 @@ function nut_sync_config() {
 	}
 	nut_write_file(NUT_MONFILE, $monfile);
 	nut_write_rcfile($driver);
-	conf_mount_ro();
 
 	if (platform_booting()) {
 		return;
