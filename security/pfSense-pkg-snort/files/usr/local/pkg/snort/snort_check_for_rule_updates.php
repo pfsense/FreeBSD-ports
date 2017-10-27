@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Robert Zelaya
- * Copyright (c) 2013-2016 Bill Meeks
+ * Copyright (c) 2013-2017 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -471,12 +471,8 @@ if ($snortdownload == 'on') {
 		snort_update_status(gettext("Installing Sourcefire VRT rules..."));
 
 		/* Currently, only FreeBSD-8-1, FreeBSD-9-0 and FreeBSD-10-0 precompiled SO rules exist from Snort.org */
-		/* Default to FreeBSD 8.1, and then test for FreeBSD 9.x  or FreeBSD 10.x */
-		$freebsd_version_so = 'FreeBSD-8-1';
-		if (substr(php_uname("r"), 0, 1) == '9')
-			$freebsd_version_so = 'FreeBSD-9-0';
-		elseif (substr(php_uname("r"), 0, 2) == '10')
-			$freebsd_version_so = 'FreeBSD-10-0';
+		/* Default to FreeBSD-10-0 for now as that is highest available version of SO rules */
+		$freebsd_version_so = 'FreeBSD-10-0';
 
 		/* Remove the old Snort rules files */
 		$vrt_prefix = VRT_FILE_PREFIX;
