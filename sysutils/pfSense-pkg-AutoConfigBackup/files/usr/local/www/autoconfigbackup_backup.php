@@ -18,9 +18,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require("globals.inc");
-require("guiconfig.inc");
-require("autoconfigbackup.inc");
+require_once("autoconfigbackup.inc");
+require_once("globals.inc");
+require_once("guiconfig.inc");
+require_once("util.inc");
 
 if (!$config['installedpackages']['autoconfigbackup']['config'][0]['username']) {
 	Header("Location: /pkg_edit.php?xml=autoconfigbackup.xml&id=0&savemsg=Please+setup+Auto+Config+Backup");
@@ -41,9 +42,7 @@ if ($_POST) {
 		$savemsg = "Backup not completed - write_config() failed.";
 	}
 	$config = parse_config(true);
-	conf_mount_rw();
 	unlink_if_exists("/cf/conf/lastpfSbackup.txt");
-	conf_mount_ro();
 
 	/* The config write above will trigger a fresh upload with the given reason.
 	 * This manual upload appears to be a relic of an older time (1.2.x)

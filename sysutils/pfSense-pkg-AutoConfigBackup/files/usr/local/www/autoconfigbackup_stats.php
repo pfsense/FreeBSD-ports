@@ -18,9 +18,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require("globals.inc");
-require("guiconfig.inc");
-require("autoconfigbackup.inc");
+require_once("globals.inc");
+require_once("guiconfig.inc");
+require_once("autoconfigbackup.inc");
 
 // Seperator used during client / server communications
 $oper_sep = "\|\|";
