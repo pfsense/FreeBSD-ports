@@ -21,11 +21,12 @@
  * limitations under the License.
  */
 
-require_once("util.inc");
-require_once("functions.inc");
-require_once("pkg-utils.inc");
-require_once("globals.inc");
+require_once("config.inc");
 require_once("certs.inc");
+require_once("globals.inc");
+require_once("pkg-utils.inc");
+require_once("service-utils.inc");
+require_once("util.inc");
 
 define('ZABBIX_AGENT_BASE', '/usr/local');
 define('ZABBIX_VERSION', %%ZABBIXVERSION%%);
@@ -112,8 +113,6 @@ function validate_input_zabbix_agent($post, &$input_errors) {
 
 function sync_package_zabbix_agent() {
 	global $config, $g;
-
-	conf_mount_rw();
 
 	// Check Zabbix Agent settings
 	if (is_array($config['installedpackages']['%%ZABBIXUNIQNAME%%'])) {
@@ -303,7 +302,6 @@ EOF;
 		unlink_if_exists($zagent_rcfile);
 	}
 
-	conf_mount_ro();
 }
 
 // Based on openvpn_add_keyfile() function
