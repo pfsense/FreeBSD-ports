@@ -108,10 +108,6 @@ _exit() {
 		rm -f ${pid_file}
 	fi
 
-	if [ -z "${booting}" -o "${boot_stage}" != "2" ]; then
-		php /etc/rc.conf_mount_ro
-	fi
-
 	if [ -n "${nc_pid}" ] && ps -p ${nc_pid} >/dev/null 2>&1; then
 		kill ${nc_pid}
 	fi
@@ -1106,10 +1102,6 @@ block_external_services=$(read_xml_tag.sh boolean \
 if [ "${block_external_services}" = "true" ]; then
 	echo "Aborted due to block_external_services flag"
 	exit 0
-fi
-
-if [ -z "${booting}" -o "${boot_stage}" != "2" ]; then
-	php /etc/rc.conf_mount_rw
 fi
 
 if [ -n "${booting}" ]; then
