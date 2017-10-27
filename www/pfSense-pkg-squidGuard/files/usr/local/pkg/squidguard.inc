@@ -880,7 +880,6 @@ function squidguard_install_command() {
         sg_check_system();
 
         # generate squidGuard blacklist entries file (check with squidGuard PORT)
-#        conf_mount_rw();
         $blklist_file = SQUIDGUARD_BLK_FILELISTPATH;
 
      
@@ -891,7 +890,6 @@ function squidguard_install_command() {
         }
         set_file_access(SQUIDGUARD_WORKDIR, OWNER_NAME, 0755);
         set_file_access(SQUIDGUARD_DBHOME, OWNER_NAME, 0755);
-#        conf_mount_ro();
 
         sg_reconfigure();
     }
@@ -976,7 +974,6 @@ function convert_pfxml_to_sgxml() {
     capability_update_source();
 
     global $config;
-    conf_mount_rw();
     $sgxml = array();
     $pfxml = $config['installedpackages'][MODULE_GENERAL]['config'][0];
 
@@ -1033,7 +1030,6 @@ function convert_pfxml_to_sgxml() {
     $cfg_xml = dump_xml_config($sgxml, F_SQUIDGUARD);
     safe_mkdir(dirname($sgxml[F_SGCONF_XML]));
     file_put_contents($sgxml[F_SGCONF_XML], $cfg_xml);
-    conf_mount_ro();
 
     return $sgxml;
 }
