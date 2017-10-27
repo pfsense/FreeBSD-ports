@@ -20,7 +20,7 @@
  * limitations under the License.
  */
 
-require("guiconfig.inc");
+require_once("guiconfig.inc");
 require_once("/usr/local/pkg/apcupsd.inc");
 
 $pgtitle = array(gettext("Package"), gettext("Services: Apcupsd"), gettext("Status"));
