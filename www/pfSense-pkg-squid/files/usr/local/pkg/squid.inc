@@ -170,7 +170,6 @@ function squid_check_ca_hashes() {
 		}
 	}
 	if ($cert_count < 10) {
-		conf_mount_rw();
 		// create ca-root hashes from ca-root-nss package
 		log_error("[squid] Creating root certificate bundle hashes from the Mozilla Project...");
 		$cas = file(SQUID_LOCALBASE . '/share/certs/ca-root-nss.crt');
@@ -361,9 +360,7 @@ fi
 
 EOD;
 
-	conf_mount_rw();
 	write_rcfile($rc);
-	conf_mount_ro();
 }
 
 /* Start sqp_monitor.sh watchdog script */
@@ -946,7 +943,8 @@ function squid_validate_cache($post, &$input_errors) {
 			if (strpos($host, '.') === 0) {
 				$host = substr($host, 1);
 			}
-			if (!is_ipaddr($host) && !is_domain($host)) {
+			// Allow "all" ACL as special case to disable any cache access
+			if (!is_ipaddr($host) && !is_domain($host) && $host != "all") {
 				$input_errors[] = "The host '$host' is not a valid IP or hostname.";
 			}
 		}
@@ -1467,13 +1465,20 @@ EOD;
 
 	$donotcache = sq_text_area_decode($settings['donotcache']);
 	if (!empty($donotcache)) {
-		file_put_contents(SQUID_ACLDIR . '/donotcache.acl', $donotcache);
-		$conf .= 'acl donotcache dstdomain "' . SQUID_ACLDIR . "/donotcache.acl\"\n";
-		$conf .= "cache deny donotcache\n";
+		// Allow "all" ACL as special case to disable any cache access
+		if ($donotcache == "all") {
+			$conf .= "cache deny all\n";
+		} else {
+			file_put_contents(SQUID_ACLDIR . '/donotcache.acl', $donotcache);
+			$conf .= 'acl donotcache dstdomain "' . SQUID_ACLDIR . "/donotcache.acl\"\n";
+			$conf .= "cache deny donotcache\n";
+		}
 	} elseif (file_exists(SQUID_ACLDIR . '/donotcache.acl')) {
 		unlink(SQUID_ACLDIR . '/donotcache.acl');
 	}
-	$conf .= "cache allow all\n";
+	if ($donotcache != "all") {
+		$conf .= "cache allow all\n";
+	}
 
 	return $conf.$refresh_conf;
 }
@@ -2010,8 +2015,6 @@ function squid_resync($via_rpc = "no") {
 		return;
 	}
 
-	conf_mount_rw();
-
 	// Fix user/group entry permissions
 	squid_fixup_user();
 
@@ -2049,7 +2052,6 @@ function squid_resync($via_rpc = "no") {
 	// restart Squid if enabled and reconfigure filter
 	squid_restart_services();
 	filter_configure();
-	conf_mount_ro();
 }
 
 /*
