@@ -22,6 +22,7 @@
 require_once("filter.inc");
 require_once("pfsense-utils.inc");
 require_once("pkg-utils.inc");
+require_once("service-utils.inc");
 require_once("util.inc");
 
 define('NRPE_BASE', '/usr/local');
@@ -138,10 +139,8 @@ EOD;
 }
 
 function nrpe2_resync_package() {
-	conf_mount_rw();
 	nrpe2_custom_php_write_config();
 	nrpe2_custom_php_service();
-	conf_mount_ro();
 }
 
 function nrpe2_custom_php_write_config() {
