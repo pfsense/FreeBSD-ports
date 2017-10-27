@@ -18,9 +18,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+require_once("config.inc");
+require_once("filter.inc");
+require_once("service-utils.inc");
+require_once("util.inc");
 
 function sync_package_ftpproxy() {
-	conf_mount_rw();
 	global $config;
 	$cf = $config['installedpackages']['ftpclientproxy']['config'][0];
 
@@ -73,7 +76,6 @@ function sync_package_ftpproxy() {
 		)
 	);
 	restart_service("ftp-proxy");
-	conf_mount_ro();
 	filter_configure();
 }
 
