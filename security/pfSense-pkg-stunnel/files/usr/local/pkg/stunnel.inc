@@ -31,7 +31,7 @@ define('STUNNEL_ETCDIR', STUNNEL_LOCALBASE . "/etc/stunnel");
 
 function stunnel_save() {
 	global $config;
-	conf_mount_rw();
+
 	safe_mkdir(STUNNEL_ETCDIR, 0755);
 	$fout = fopen(STUNNEL_ETCDIR . "/stunnel.conf", "w");
 	fwrite($fout, "cert = " . STUNNEL_ETCDIR . "/stunnel.pem \n");
@@ -75,8 +75,6 @@ function stunnel_save() {
 			unlink($file);
 		}
 	}
-
-	conf_mount_ro();
 
 	restart_service("stunnel");
 }
