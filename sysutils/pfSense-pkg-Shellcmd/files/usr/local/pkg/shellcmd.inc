@@ -20,12 +20,13 @@
  * limitations under the License.
  */
 
+require_once("config.inc");
+
 function shellcmd_install_command() {
 	global $config;
 
 	shellcmd_import_config();
 	shellcmd_sync_package();
-
 }
 
 
@@ -101,7 +102,6 @@ function shellcmd_forced_restore($pkg) {
 
 function shellcmd_sync_package() {
 	global $config;
-	conf_mount_rw();
 
 	$cmd = '';
 	$cmdtype = '';
