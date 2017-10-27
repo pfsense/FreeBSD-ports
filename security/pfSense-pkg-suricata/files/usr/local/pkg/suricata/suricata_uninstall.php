@@ -34,7 +34,6 @@ $iprep_path = SURICATA_IPREP_PATH;
 $rcdir = RCFILEPREFIX;
 $suricata_rules_upd_log = SURICATA_RULES_UPD_LOGFILE;
 $suri_pf_table = SURICATA_PF_TABLE;
-$mounted_rw = FALSE;
 
 log_error(gettext("[Suricata] Suricata package uninstall in progress..."));
 
@@ -71,15 +70,6 @@ if ($config['installedpackages']['suricata']['config'][0]['clearlogs'] == 'on') 
 	log_error(gettext("[Suricata] Clearing all Suricata-related log files..."));
 	unlink_if_exists("{$suricata_rules_upd_log}");
 	rmdir_recursive("{$suricatalogdir}");
-}
-
-/**************************************************/
-/* If not already, set Suricata conf partition to */
-/* read-write so we can make changes there        */
-/**************************************************/
-if (!is_subsystem_dirty('mount')) {
-	conf_mount_rw();
-	$mounted_rw = TRUE;
 }
 
 /*********************************************************/
@@ -123,13 +113,6 @@ if (!empty($widgets)) {
 	$config['widgets']['sequence'] = implode(",", $widgetlist);
 	write_config("Suricata pkg removed Dashboard Alerts widget.");
 }
-
-/*******************************************************/
-/* We're finished with conf partition mods, return to  */
-/* read-only if we changed it                          */
-/*******************************************************/
-if ($mounted_rw == TRUE)
-	conf_mount_ro();
 
 /* Keep this as a last step */
 if ($config['installedpackages']['suricata']['config'][0]['forcekeepsettings'] != 'on') {

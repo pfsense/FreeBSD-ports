@@ -105,16 +105,10 @@ if ($_POST['clear']) {
 
 if ($_REQUEST['updatemode']) {
 	if ($_REQUEST['updatemode'] == 'force') {
-		// Mount file system R/W since we need to remove files
-		conf_mount_rw();
-
 		// Remove the existing MD5 signature files to force a download
 		unlink_if_exists("{$suricatadir}{$emergingthreats_filename}.md5");
 		unlink_if_exists("{$suricatadir}{$snort_community_rules_filename}.md5");
 		unlink_if_exists("{$suricatadir}{$snort_rules_file}.md5");
-
-		// Revert file system to R/O.
-		conf_mount_ro();
 	}
 	
 	// Launch a background process to download the updates

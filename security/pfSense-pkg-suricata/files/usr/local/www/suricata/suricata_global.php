@@ -160,9 +160,7 @@ if (!$input_errors) {
 			install_cron_job("/usr/local/pkg/suricata/suricata_geoipupdate.php", FALSE);
 
 		/* create passlist and homenet file, then sync files */
-		conf_mount_rw();
 		sync_suricata_package_config();
-		conf_mount_ro();
 
 		/* forces page to reload new settings */
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );

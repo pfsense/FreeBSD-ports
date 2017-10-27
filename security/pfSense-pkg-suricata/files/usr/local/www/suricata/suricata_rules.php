@@ -508,9 +508,7 @@ elseif (isset($_POST['clear'])) {
 	unset($a_rule[$id]['customrules']);
 	write_config("Suricata pkg: clear all custom rules for {$a_rule[$id]['interface']}.");
 	$rebuild_rules = true;
-	conf_mount_rw();
 	suricata_generate_yaml($a_rule[$id]);
-	conf_mount_ro();
 	$rebuild_rules = false;
 	$pconfig['customrules'] = '';
 
@@ -529,9 +527,7 @@ elseif (isset($_POST['save'])) {
 		unset($a_rule[$id]['customrules']);
 	write_config("Suricata pkg: save modified custom rules for {$a_rule[$id]['interface']}.");
 	$rebuild_rules = true;
-	conf_mount_rw();
 	suricata_generate_yaml($a_rule[$id]);
-	conf_mount_ro();
 	$rebuild_rules = false;
 	/* Signal Suricata to "live reload" the rules */
 	suricata_reload_config($a_rule[$id]);
@@ -561,9 +557,7 @@ elseif (isset($_POST['apply'])) {
 	/* rules for this interface.                     */
 	/*************************************************/
 	$rebuild_rules = true;
-	conf_mount_rw();
 	suricata_generate_yaml($a_rule[$id]);
-	conf_mount_ro();
 	$rebuild_rules = false;
 
 	/* Signal Suricata to "live reload" the rules */

@@ -142,9 +142,7 @@ if (isset($_POST["save"])) {
 	/* rules for this interface.                     */
 	/*************************************************/
 	$rebuild_rules = true;
-	conf_mount_rw();
 	suricata_generate_yaml($a_nat[$id]);
-	conf_mount_ro();
 	$rebuild_rules = false;
 
 	/* Signal Suricata to "live reload" the rules */

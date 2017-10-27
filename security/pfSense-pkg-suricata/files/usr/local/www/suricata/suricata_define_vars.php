@@ -116,9 +116,7 @@ if ($_POST) {
 
 		/* Update the suricata.yaml file for this interface. */
 		$rebuild_rules = false;
-		conf_mount_rw();
 		suricata_generate_yaml($a_nat[$id]);
-		conf_mount_ro();
 
 		/* Soft-restart Suricaa to live-load new variables. */
 		suricata_reload_config($a_nat[$id]);

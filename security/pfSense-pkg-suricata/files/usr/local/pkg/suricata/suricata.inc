@@ -3902,9 +3902,7 @@ function suricata_do_xmlrpc_sync($syncdownloadrules, $sync_to_ip, $port, $protoc
 	unset(\$g["suricata_postinstall"]);
 	log_error(gettext("[suricata] XMLRPC pkg sync: Generating suricata.yaml file using Master Host settings..."));
 	\$rebuild_rules = true;
-	conf_mount_rw();
 	sync_suricata_package_config();
-	conf_mount_ro();
 	\$rebuild_rules = false;
 	{$suricatastart}
 	log_error(gettext("[suricata] XMLRPC pkg sync process on this host is complete..."));

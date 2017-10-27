@@ -425,9 +425,7 @@ elseif ($_POST['save'] || $_POST['apply']) {
 			$a_nat[$id] = $natent;
 			write_config("Suricata pkg: saved updated app-layer parser configuration for " . convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']));
 			$rebuild_rules = false;
-			conf_mount_rw();
 			suricata_generate_yaml($natent);
-			conf_mount_ro();
 
 			// Sync to configured CARP slaves if any are enabled
 			suricata_sync_on_changes();

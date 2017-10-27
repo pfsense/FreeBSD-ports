@@ -150,9 +150,7 @@ if ($_POST['save']) {
 
 		// Update the suricata conf file for this interface
 		$rebuild_rules = false;
-		conf_mount_rw();
 		suricata_generate_yaml($a_nat[$id]);
-		conf_mount_ro();
 
 		// Soft-restart Suricata to live-load new variables
 		suricata_reload_config($a_nat[$id]);

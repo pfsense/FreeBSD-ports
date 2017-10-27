@@ -52,10 +52,6 @@ if (download_file("http://geolite.maxmind.com/download/geoip/database/GeoLiteCou
 if (download_file("http://geolite.maxmind.com/download/geoip/database/GeoIPv6.dat.gz", "{$geoip_tmppath}GeoIPv6.dat.gz") != true)
 	log_error(gettext("[Suricata] An error occurred downloading the 'GeoIPv6.dat.gz' update file for GeoIP."));
 
-// Mount filesystem read-write since we need to write
-// the extracted databases to PBI_BASE/share/GeoIP.
-conf_mount_rw();
-
 // If the files downloaded successfully, unpack them and store
 // the DB files in the PBI_BASE/share/GeoIP directory.
 if (file_exists("{$geoip_tmppath}GeoIP.dat.gz")) {
@@ -67,9 +63,6 @@ if (file_exists("{$geoip_tmppath}GeoIPv6.dat.gz")) {
 	mwexec("/usr/bin/gunzip -f {$geoip_tmppath}GeoIPv6.dat.gz");
 	@rename("{$geoip_tmppath}GeoIPv6.dat", "{$suricata_geoip_dbdir}GeoIPv6.dat");
 }
-
-// Finished with filesystem mods, so remount read-only
-conf_mount_ro();
 
 // Cleanup the tmp directory path
 rmdir_recursive("$geoip_tmppath");
