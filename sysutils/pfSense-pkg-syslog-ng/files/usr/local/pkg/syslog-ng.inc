@@ -266,7 +266,6 @@ function syslogng_generate_rules($type) {
 
 function syslogng_resync() {
 	global $config;
-	conf_mount_rw();
 
 	$settings = $config['installedpackages']['syslogng']['config'][0];
 	$objects = $config['installedpackages']['syslogngadvanced']['config'];
@@ -359,7 +358,6 @@ function syslogng_resync() {
 	}
 
 	write_config();
-	conf_mount_ro();
 	filter_configure();
 }
 
@@ -393,7 +391,7 @@ else
 fi
 
 EOD;
-	conf_mount_rw();
+
 	write_rcfile($rc);
 }
 ?>
