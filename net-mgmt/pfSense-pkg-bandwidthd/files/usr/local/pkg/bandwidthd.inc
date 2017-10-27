@@ -32,7 +32,6 @@ function bandwidthd_install_deinstall() {
 
 function bandwidthd_install_config() {
 	global $config, $g, $bandwidthd_config;
-	conf_mount_rw();
 
 	/* bandwidthd doesn't have a way to pass a custom config path, unfortunately */
 	/* So, the .conf file must be ./etc/bandwidthd.conf relative to the current dir */
@@ -279,8 +278,6 @@ EOD;
 		// Remove the cron job if it is there
 		install_cron_job("/bin/pkill -HUP -F /var/run/bandwidthd.pid", false);
 	}
-
-	conf_mount_ro();
 	
 	/* Restart the service if enabled; otherwise stop it */
 	if ($bandwidthd_config['enable']) {
