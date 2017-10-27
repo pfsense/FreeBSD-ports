@@ -64,9 +64,6 @@ unlink_if_exists("{$g['varrun_path']}/snort_pkg_starting.lck");
 /* Set flag for post-install in progress */
 $g['snort_postinstall'] = true;
 
-/* Set conf partition to read-write so we can make changes there */
-conf_mount_rw();
-
 /* cleanup default files */
 @rename("{$snortdir}/snort.conf-sample", "{$snortdir}/snort.conf");
 @rename("{$snortdir}/threshold.conf-sample", "{$snortdir}/threshold.conf");
@@ -178,7 +175,6 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 	include('/usr/local/pkg/snort/snort_check_for_rule_updates.php');
 	update_status(gettext("Generating snort.conf configuration file from saved settings.") . "\n");
 	$rebuild_rules = true;
-	conf_mount_rw();
 
 	/* Create the snort.conf files for each enabled interface */
 	$snortconf = $config['installedpackages']['snortglobal']['rule'];
@@ -235,9 +231,6 @@ if ($config['installedpackages']['snortglobal']['forcekeepsettings'] == 'on') {
 	update_status(gettext("Finished rebuilding Snort configuration files.") . "\n");
 	log_error(gettext("[Snort] Finished rebuilding installation from saved settings."));
 }
-
-/* We're finished with conf partition mods, return to read-only */
-conf_mount_ro();
 
 /* If an existing Snort Dashboard Widget container is not found, */
 /* then insert our default Widget Dashboard container.           */

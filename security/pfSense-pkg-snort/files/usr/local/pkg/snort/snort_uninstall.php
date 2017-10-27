@@ -41,7 +41,6 @@ $snortlibdir = SNORT_PBI_BASEDIR . "lib";
 $snortlogdir = SNORTLOGDIR;
 $rcdir = RCFILEPREFIX;
 $snort_rules_upd_log = SNORT_RULES_UPD_LOGFILE;
-$mounted_rw = FALSE;
 
 log_error(gettext("[Snort] Snort package uninstall in progress..."));
 
@@ -125,15 +124,6 @@ if ($config['installedpackages']['snortglobal']['clearlogs'] == 'on') {
 }
 
 /**********************************************************/
-/* If not already, set Snort conf partition to read-write */
-/* so we can make changes there                           */
-/**********************************************************/
-if (!is_subsystem_dirty('mount')) {
-	conf_mount_rw();
-	$mounted_rw = TRUE;
-}
-
-/**********************************************************/
 /* Remove files and directories that pkg will not because */
 /* we changed or created them post-install.               */
 /**********************************************************/
@@ -189,12 +179,5 @@ else {
 	log_error(gettext("[Snort] Package files removed but all Snort configuration info has been retained."));
 }
 
-/**********************************************************/
-/* We're finished with conf partition mods, return to     */
-/* read-only if we changed it.                            */
-/**********************************************************/
-if ($mounted_rw == TRUE) {
-	conf_mount_ro();
-}
 return true;
 ?>
