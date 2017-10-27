@@ -332,14 +332,52 @@ function initialSystemConfig() {
 		echo "Didn't find user data in config. Exiting EC2 setup.\n";
 		exit;
 	}
-	$admin_user = &$config['system']['user'][0];
+
+	$a_users = &$config['system']['user'];
+
+	$ec2_user = 'ec2-user';
+	$ec2_id = -1;
+	foreach ($a_users as $id => $user) {
+		if ($user['name'] == $ec2_user) {
+			$ec2_id = $id;
+			break;
+		}
+	}
+
+	# Create EC2 user when it doesn't exist
+	if ($ec2_id == -1) {
+		$new_user = array(
+			'scope' => 'user',
+			'descr' => 'EC2 User',
+			'name' => $ec2_user,
+			'uid' => $config['system']['nextuid']++
+		);
+		$ec2_id = count($a_users);
+		$a_users[$ec2_id] = $new_user;
+		/*
+		 * Add user to groups so PHP can see the memberships properly
+		 * or else the user's shell account does not get proper
+		 * permissions (if applicable) See #5152.
+		 */
+		local_user_set_groups($new_user, array('admins'));
+		local_user_set($new_user);
+		/*
+		 * Add user to groups again to ensure they are set everywhere,
+		 * otherwise the user may not appear to be a member of the
+		 * group. See commit:5372d26d9d25d751d16865ed9d46869d3b0ec5e1.
+		 */
+		local_user_set_groups($new_user, array('admins'));
+		write_config("EC2 User created by ec2_setup");
+	}
+
+	$a_ec2_user = &$config['system']['user'][$ec2_id];
 
 	/* get the administative SSH Key and add it to the config */
-	if (!isset($admin_user['authorizedkeys'])) {
+	if (!isset($a_ec2_user['authorizedkeys'])) {
 		$ssh_key = retrieveSSHKey();
 		if ($ssh_key) {
 			echo "SSH Key retrieved: $ssh_key\n";
-			$admin_user['authorizedkeys'] = base64_encode($ssh_key);
+			$a_ec2_user['authorizedkeys'] = base64_encode($ssh_key);
 		} else
 			echo "Failed to retrieve an SSH key for administrative access\n";
 	}
@@ -354,15 +392,15 @@ function initialSystemConfig() {
 
 	if ($admin_password) {
 		$pw_string = "***\n***\n";
-		$pw_string .= "*** Admin password changed to: $admin_password\n";
+		$pw_string .= "*** ec2-user password changed to: $admin_password\n";
 		$pw_string .= "***\n***\n";
-		local_user_set_password($admin_user, $admin_password);
+		local_user_set_password($a_ec2_user, $admin_password);
 		file_put_contents("/etc/motd-passwd", $pw_string);
 	} else {
 		@unlink('/etc/motd-passwd');
 		echo "No password generated for admin, keeping default password\n";
 	}
-	local_user_set($admin_user);
+	local_user_set($a_ec2_user);
 
 	if ($g['default-config-flavor'] == "ec2" ||
 	    $g['default-config-flavor'] == "ec2-ic") {
@@ -373,8 +411,35 @@ function initialSystemConfig() {
 	if (isset($user_data['mgmtnet']))
 		configureMgmtNetRules($user_data['mgmtnet']);
 
+	if (file_exists("/usr/local/pkg/sudo.inc") &&
+	    is_array($config['installedpackages']['sudo']['config'][0]['row'])) {
+		$a_row = &$config['installedpackages']['sudo']['config'][0]['row'];
+
+		$row_id = -1;
+		foreach ($a_row as $id => $row) {
+			if ($row['username'] == "user:{$ec2_user}") {
+				$row_id = $id;
+				break;
+			}
+		}
+
+		if ($row_id == -1) {
+			$new_row = array(
+				'username' => "user:{$ec2_user}",
+				'runas' => 'user:root',
+				'nopasswd' => 'ON',
+				'cmdlist' => 'ALL'
+			);
+			$a_row[] = $new_row;
+			write_config("Sudo configured for EC2 User");
+
+			require_once("/usr/local/pkg/sudo.inc");
+			sudo_write_config();
+		}
+	}
+
 	unset($config['system']['doinitialsetup']);
-	write_config();
+	write_config("EC2 setup completed");
 }
 
 switch ($g['default-config-flavor']) {
