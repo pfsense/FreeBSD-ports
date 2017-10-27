@@ -20,10 +20,11 @@
  * limitations under the License.
  */
 
+require_once("config.inc");
 require_once("globals.inc");
-require_once("util.inc");
-require_once("functions.inc");
 require_once("pkg-utils.inc");
+require_once("service-utils.inc");
+require_once("util.inc");
 
 function ladvd_resync_config() {
 	global $config;
@@ -36,7 +37,6 @@ function ladvd_resync_config() {
 	}
 
 	$ladvd_conf = &$config['installedpackages']['ladvd']['config'][0];
-	conf_mount_rw();
 
 	/* ladvd is turned off in package settings */
 	if (empty($ladvd_conf['enable'])) {
@@ -107,7 +107,6 @@ function ladvd_resync_config() {
 	}
 
 	sleep(1);
-	conf_mount_ro();
 }
 
 ?>
