@@ -114,7 +114,6 @@ if ($_POST) {
 		if (!$input_errors) {
 			$config['installedpackages']['haproxy']['email_mailers']['item'] = $a_mailers;
 			$config['installedpackages']['haproxy']['dns_resolvers']['item'] = $a_resolvers;
-		
 			$config['installedpackages']['haproxy']['enable'] = $_POST['enable'] ? true : false;
 			$config['installedpackages']['haproxy']['terminate_on_reload'] = $_POST['terminate_on_reload'] ? true : false;
 			$config['installedpackages']['haproxy']['maxconn'] = $_POST['maxconn'] ? $_POST['maxconn'] : false;
@@ -128,6 +127,14 @@ if ($_POST) {
 			$config['installedpackages']['haproxy']['nbproc'] = $_POST['nbproc'] ? $_POST['nbproc'] : false;			
 			foreach($simplefields as $stat)
 				$config['installedpackages']['haproxy'][$stat] = $_POST[$stat];
+
+			// flag for Status/Services to show when the package is 'disabled' so no start button is shown.
+			if ($_POST['enable']) {
+				unset($config['installedpackages']['haproxy']['config'][0]['enable']);
+			} else {
+				$config['installedpackages']['haproxy']['config'][0]['enable'] = 'off';
+			}
+			
 			touch($d_haproxyconfdirty_path);
 			write_config();
 		}
@@ -440,8 +447,7 @@ $section->addInput(new Form_Checkbox(
 	'Sync HAProxy configuration to backup CARP members via XMLRPC.',
 	$pconfig['enablesync']
 ))->setHelp(<<<EOD
-	Note: remember to also turn on HAProxy Sync on the backup nodes.<br/>
-	The synchronisation host and password are those configured in pfSense main <a href="/system_hasync.php">"System: High Availability Sync"</a> settings.
+	Note: The synchronisation host and password are those configured in pfSense main <a href="/system_hasync.php">"System: High Availability Sync"</a> settings.
 EOD
 );
 $form->add($section);
