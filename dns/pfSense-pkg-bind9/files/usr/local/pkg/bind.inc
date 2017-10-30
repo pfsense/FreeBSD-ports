@@ -887,7 +887,7 @@ function bind_sync_on_changes() {
 	if (is_array($config['installedpackages']['bindsync']['config'])) {
 		$bind_sync = $config['installedpackages']['bindsync']['config'][0];
 		$synconchanges = $bind_sync['synconchanges'];
-		$synctimeout = $bind_sync['synctimeout'] ?: '30';
+		$synctimeout = (int)$bind_sync['synctimeout'] ?: 30;
 		$master_zone_ip = $bind_sync['masterip'];
 		switch ($synconchanges) {
 			case 'manual':

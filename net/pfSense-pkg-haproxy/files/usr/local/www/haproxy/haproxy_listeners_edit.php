@@ -44,7 +44,7 @@ if (!is_array($config['installedpackages']['haproxy']['ha_backends']['item'])) {
 }
 
 $a_backend = &$config['installedpackages']['haproxy']['ha_backends']['item'];
-$a_pools = &$config['installedpackages']['haproxy']['ha_pools']['item'];
+$a_pools = $config['installedpackages']['haproxy']['ha_pools']['item'];
 if (!is_array($a_pools)) {
 	$a_pools = array();
 }
@@ -472,7 +472,8 @@ if ($_POST) {
 }
 
 $closehead = false;
-$pgtitle = array("HAProxy", "Frontend", "Edit");
+$pgtitle = array("Services", "HAProxy", "Frontend", "Edit");
+$pglinks = array("", "", "/haproxy/haproxy_listeners.php", "@self");
 include("head.inc");
 haproxy_display_top_tabs_active($haproxy_tab_array['haproxy'], "frontend");
 

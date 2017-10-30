@@ -1,10 +1,10 @@
 <?php
 /*
- * pkg_haproxy.inc
+ * widget-haproxy.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2013 Marcello Coutinho <marcellocoutinho@gmail.com>
+ * Copyright (c) 2017 PiBa-NL
+ * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,10 +20,5 @@
  * limitations under the License.
  */
 
-global $shortcuts;
-
-$shortcuts['haproxy'] = array();
-$shortcuts['haproxy']['main'] = "haproxy/haproxy_global.php";
-$shortcuts['haproxy']['log'] = "/status_pkglogs.php?pkg=haproxy";
-$shortcuts['haproxy']['status'] = "/haproxy/haproxy_stats.php?haproxystats=1";
-$shortcuts['haproxy']['service'] = "haproxy";
+$haproxy_title = gettext("HAProxy");
+$haproxy_title_link = "/haproxy/haproxy_listeners.php";
