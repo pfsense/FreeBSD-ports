@@ -24,8 +24,6 @@ global $shortcuts;
 
 $shortcuts['haproxy'] = array();
 $shortcuts['haproxy']['main'] = "haproxy/haproxy_global.php";
-$shortcuts['haproxy']['log'] = "diag_logs.php";
-$shortcuts['haproxy']['status'] = "status_services.php";
-$shortcuts['haproxy']['service'] = "HAProxy";
-
-?>
+$shortcuts['haproxy']['log'] = "/status_pkglogs.php?pkg=haproxy-devel";
+$shortcuts['haproxy']['status'] = "/haproxy/haproxy_stats.php?haproxystats=1";
+$shortcuts['haproxy']['service'] = "haproxy";
