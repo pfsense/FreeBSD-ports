@@ -371,30 +371,38 @@ function initialSystemConfig() {
 	}
 
 	$a_ec2_user = &$config['system']['user'][$ec2_id];
+	$a_admin_user = &$config['system']['user'][0];
 
 	/* get the administative SSH Key and add it to the config */
-	if (!isset($a_ec2_user['authorizedkeys'])) {
-		$ssh_key = retrieveSSHKey();
-		if ($ssh_key) {
-			echo "SSH Key retrieved: $ssh_key\n";
-			$a_ec2_user['authorizedkeys'] = base64_encode($ssh_key);
-		} else
-			echo "Failed to retrieve an SSH key for administrative access\n";
+	$ssh_key = retrieveSSHKey();
+	if ($ssh_key) {
+		echo "SSH Key retrieved: $ssh_key\n";
+	} else {
+		echo "Failed to retrieve an SSH key for administrative access\n";
 	}
 
-	/* get user metadata, set admin password if one was specified */
+	if ($ssh_key && !isset($a_ec2_user['authorizedkeys'])) {
+		$a_ec2_user['authorizedkeys'] = base64_encode($ssh_key);
+	}
+
+	if ($ssh_key && !isset($a_admin_user['authorizedkeys'])) {
+		$a_admin_user['authorizedkeys'] = base64_encode($ssh_key);
+		local_user_set($a_admin_user);
+	}
+
+	/* get user metadata, set ec2-user password if one was specified */
 	$user_data = retrieveUserData();
 	if ($user_data && isset($user_data['password']))
-		$admin_password = $user_data['password'];
+		$ec2_user_password = $user_data['password'];
 	else
 		/* none specified, generate a random one */
-		$admin_password = generateRandomPassword();
+		$ec2_user_password = generateRandomPassword();
 
-	if ($admin_password) {
+	if ($ec2_user_password) {
 		$pw_string = "***\n***\n";
-		$pw_string .= "*** ec2-user password changed to: $admin_password\n";
+		$pw_string .= "*** ec2-user password changed to: $ec2_user_password\n";
 		$pw_string .= "***\n***\n";
-		local_user_set_password($a_ec2_user, $admin_password);
+		local_user_set_password($a_ec2_user, $ec2_user_password);
 		file_put_contents("/etc/motd-passwd", $pw_string);
 	} else {
 		@unlink('/etc/motd-passwd');
