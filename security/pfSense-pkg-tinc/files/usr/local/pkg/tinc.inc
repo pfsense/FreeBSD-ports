@@ -25,6 +25,34 @@ require_once('service-utils.inc');
 require_once('util.inc');
 require_once('system.inc');
 
+function tinc_plugin_carp($pluginparams) {
+	// $pluginparams['type'] = 'carp';
+	// $pluginparams['event'] = 'rc.carpmaster';
+	// $pluginparams['interface'] = $argument;
+	log_error("[tinc] got carp event ");
+	if ($pluginparams['type'] == 'carp') {
+		if ($pluginparams['event'] == 'rc.carpmaster') {
+			// start
+			log_error("[tinc] got CARP:MASTER -> starting");
+			if (is_service_running('tinc')) {
+				log_error("[tinc] already running");
+			} else {
+				start_service("tinc");
+			}
+		}
+		if ($pluginparams['event'] == 'rc.carpbackup') {
+			// stop
+			log_error("[tinc] got CARP:BACKUP -> stopping");
+			if (!is_service_running('tinc')) {
+				log_error("[tinc] already stopped");
+			} else {
+				stop_service("tinc");
+			}
+		}
+	}
+}
+
+
 function tinc_save() {
 	global $config, $configpath;
 	$configpath = '/usr/local/etc/tinc';
