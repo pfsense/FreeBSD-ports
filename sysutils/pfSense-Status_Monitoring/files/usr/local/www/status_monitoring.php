@@ -149,7 +149,7 @@ if ($_POST['add-view'] && $_POST['view-title'] != "") {
 
 	write_config(gettext("Status Monitoring View Added"));
 
-	$savemsg = "The \"" . $title . "\" view has been added.";
+	$savemsg = "The \"" . htmlspecialchars($title) . "\" view has been added.";
 }
 
 $view_removed = false;
@@ -436,7 +436,7 @@ if (is_array($config['rrd']['savedviews'])) {
 		}
 
 		$view_slug = "/status_monitoring.php?view=" . createSlug($view['title']);
-		$tab_array[] = array($view['title'], $active_tab, $view_slug);
+		$tab_array[] = array(htmlspecialchars($view['title']), $active_tab, $view_slug);
 
 	}
 
