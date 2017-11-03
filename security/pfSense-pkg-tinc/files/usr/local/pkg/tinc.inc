@@ -174,7 +174,7 @@ function tinc_save() {
 function tinc_write_rcfile() {
 	$rc['file'] = 'tinc.sh';
 	$rc['start'] .= "/usr/local/sbin/tincd --config=/usr/local/etc/tinc\n\t";
-	$rc['stop'] .= "/usr/local/sbin/tincd --kill \n\t";
+	$rc['stop'] .= "/usr/local/sbin/tincd --kill && sleep 2\n\t";
 	write_rcfile($rc);
 }
 
