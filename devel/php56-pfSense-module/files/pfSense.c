@@ -1919,27 +1919,27 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 	zvar = NULL;
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sll|z", &dev,
 	    &devlen, &vlangroup, &vlan, &zvar) == FAILURE)
-		RETURN_FALSE;
+		RETURN_LONG(-1);
 	if ((vlan & ~ETHERSWITCH_VID_MASK) != 0)
-		RETURN_FALSE;
+		RETURN_LONG(-1);
 	/* vlangroup == -1 is only valid with a vlanid. */
 	if (vlangroup == -1 && vlan == 0)
-		RETURN_FALSE;
+		RETURN_LONG(-1);
 	if (devlen == 0)
 		dev = "/dev/etherswitch0";
 	if (etherswitch_dev_is_valid(dev) < 0)
-		RETURN_FALSE;
+		RETURN_LONG(-1);
 	fd = open(dev, O_RDONLY);
 	if (fd == -1)
-		RETURN_FALSE;
+		RETURN_LONG(-1);
 	memset(&info, 0, sizeof(info));
 	if (ioctl(fd, IOETHERSWITCHGETINFO, &info) != 0) {
 		close(fd);
-		RETURN_FALSE;
+		RETURN_LONG(-1);
 	}
 	if (vlangroup != -1 && vlangroup >= info.es_nvlangroups) {
 		close(fd);
-		RETURN_FALSE;
+		RETURN_LONG(-1);
 	}
 
 	/* If we are setting a vlan id, parse switch ports members. */
@@ -1988,7 +1988,7 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 			vg.es_vlangroup = i;
 			if (ioctl(fd, IOETHERSWITCHGETVLANGROUP, &vg) != 0) {
 				close(fd);
-				RETURN_FALSE;
+				RETURN_LONG(-1);
 			}
 			if ((vg.es_vid & ETHERSWITCH_VID_VALID) == 0) {
 				vlangroup = i;
@@ -1997,7 +1997,7 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 		}
 		if (vlangroup == -1) {
 			close(fd);
-			RETURN_FALSE;
+			RETURN_LONG(-1);
 		}
 	}
 
@@ -2005,17 +2005,17 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 	vg.es_vlangroup = vlangroup;
 	if (ioctl(fd, IOETHERSWITCHGETVLANGROUP, &vg) != 0) {
 		close(fd);
-		RETURN_FALSE;
+		RETURN_LONG(-1);
 	}
 	vg.es_vid = vlan;
 	vg.es_member_ports = members;
 	vg.es_untagged_ports = untagged;
 	if (ioctl(fd, IOETHERSWITCHSETVLANGROUP, &vg) != 0) {
 		close(fd);
-		RETURN_FALSE;
+		RETURN_LONG(-1);
 	}
 	close(fd);
-	RETURN_TRUE;
+	RETURN_LONG(vlangroup);
 }
 #endif
 
