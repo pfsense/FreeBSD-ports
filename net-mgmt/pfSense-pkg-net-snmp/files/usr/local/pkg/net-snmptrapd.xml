@@ -191,6 +191,7 @@
 			<cols>78</cols>
 			<rows>5</rows>
 			<advancedfield/>
+			<encoding>base64</encoding>
 		</field>
 	</fields>
 	<custom_php_resync_config_command>
