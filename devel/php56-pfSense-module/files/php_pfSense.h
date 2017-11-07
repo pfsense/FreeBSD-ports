@@ -115,6 +115,7 @@ PHP_FUNCTION(pfSense_ipfw_pipe);
 #ifdef ETHERSWITCH_FUNCTIONS
 PHP_FUNCTION(pfSense_etherswitch_getinfo);
 PHP_FUNCTION(pfSense_etherswitch_getport);
+PHP_FUNCTION(pfSense_etherswitch_setport);
 PHP_FUNCTION(pfSense_etherswitch_getvlangroup);
 PHP_FUNCTION(pfSense_etherswitch_setvlangroup);
 #endif
