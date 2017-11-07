@@ -62,6 +62,7 @@ _exec() {
 	local _msg="${2}"
 	local _mute="${3}"
 	local _ignore_result="${4}"
+	local _do_not_exit="${5}"
 
 	local _stdout="${stdout}"
 
@@ -99,7 +100,9 @@ _exec() {
 	else
 		[ -n "${_stdout}" -a -n "${_msg}" ] \
 		    && _echo "failed."
-		_exit 1
+		[ -n "${_do_not_exit}" ] \
+		    && return 1 \
+		    || _exit 1
 	fi
 }
 
