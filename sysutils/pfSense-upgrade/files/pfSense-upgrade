@@ -62,9 +62,10 @@ _exec() {
 	local _msg="${2}"
 	local _mute="${3}"
 	local _ignore_result="${4}"
+
 	local _stdout="${stdout}"
 
-	if [ -z "${_cmd}" -o -z "${_msg}" ]; then
+	if [ -z "${_cmd}" ]; then
 		return 1
 	fi
 
@@ -72,7 +73,8 @@ _exec() {
 		_stdout=''
 	fi
 
-	_echo -n ">>> ${_msg}... "
+	[ -n "${_msg}" ] \
+	    && _echo -n ">>> ${_msg}... "
 	if [ -z "${_stdout}" ]; then
 		_echo ""
 		# Ref. https://stackoverflow.com/a/30658405
@@ -91,11 +93,11 @@ _exec() {
 	fi
 
 	if [ ${_result} -eq 0 -o -n "${_ignore_result}" ]; then
-		[ -n "${_stdout}" ] \
+		[ -n "${_stdout}" -a -n "${_msg}" ] \
 		    && _echo "done."
 		return 0
 	else
-		[ -n "${_stdout}" ] \
+		[ -n "${_stdout}" -a -n "${_msg}" ] \
 		    && _echo "failed."
 		_exit 1
 	fi
