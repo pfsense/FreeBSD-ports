@@ -173,6 +173,7 @@ static zend_function_entry pfSense_functions[] = {
 #ifdef ETHERSWITCH_FUNCTIONS
     PHP_FE(pfSense_etherswitch_getinfo, NULL)
     PHP_FE(pfSense_etherswitch_getport, NULL)
+    PHP_FE(pfSense_etherswitch_setport, NULL)
     PHP_FE(pfSense_etherswitch_getvlangroup, NULL)
     PHP_FE(pfSense_etherswitch_setvlangroup, NULL)
 #endif
@@ -1842,6 +1843,44 @@ PHP_FUNCTION(pfSense_etherswitch_getport)
 		add_assoc_string(media, "active", buf, 1);
 	}
 	add_assoc_zval(return_value, "media", media);
+}
+
+PHP_FUNCTION(pfSense_etherswitch_setport)
+{
+	char *dev;
+	etherswitch_port_t p;
+	int fd;
+	long devlen, port, pvid;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sll", &dev,
+	    &devlen, &port, &pvid) == FAILURE)
+		RETURN_FALSE;
+	if (devlen == 0)
+		dev = "/dev/etherswitch0";
+	if (etherswitch_dev_is_valid(dev) < 0)
+		RETURN_FALSE;
+	fd = open(dev, O_RDONLY);
+	if (fd == -1)
+		RETURN_FALSE;
+
+	memset(&p, 0, sizeof(p));
+	p.es_port = port;
+	if (ioctl(fd, IOETHERSWITCHGETPORT, &p) != 0) {
+		close(fd);
+		RETURN_FALSE;
+	}
+	if (pvid >= 0 && pvid <= 4094)
+		p.es_pvid = pvid;
+
+	/* XXX - ports flags */
+
+	if (ioctl(fd, IOETHERSWITCHSETPORT, &p) != 0) {
+		close(fd);
+		RETURN_FALSE;
+	}
+	close(fd);
+
+	RETURN_TRUE;
 }
 
 PHP_FUNCTION(pfSense_etherswitch_getvlangroup)
