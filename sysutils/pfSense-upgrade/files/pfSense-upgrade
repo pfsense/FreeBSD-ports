@@ -456,7 +456,7 @@ pkg_upgrade() {
 		set_vital_flag pkg ${kernel_pkg} ${product} ${product}-rc \
 		    ${product}-base ${uboot_pkg}
 
-		if ! upgrade_available; then
+		if check_upgrade mute; then
 			[ -n "${NEW_MAJOR}" ] \
 			    && pkg_unlock pkg
 			_echo "Your packages are up to date"
