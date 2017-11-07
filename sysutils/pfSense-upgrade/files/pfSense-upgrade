@@ -370,13 +370,13 @@ pkg_upgrade() {
 	unset uboot_bin
 	unset uboot_pkg
 	unset uboot_mntp
-	if pkg-static info ${product}-u-boot-ufw\* >/dev/null 2>&1; then
+	if is_pkg_installed ${product}-u-boot-ufw\*; then
 		export uboot_pkg=$(pkg-static query %n \
 		    $(pkg-static info ${product}-u-boot-ufw\*))
 		export uboot_mntp=/boot/msdos
 		export uboot_bin=u-boot.img
 	fi
-	if pkg-static info ${product}-u-boot-sg3100\* >/dev/null 2>&1; then
+	if is_pkg_installed ${product}-u-boot-sg3100\*; then
 		export uboot_pkg=$(pkg-static query %n \
 		    $(pkg-static info ${product}-u-boot-sg3100\*))
 		export uboot_mntp=/boot/u-boot
