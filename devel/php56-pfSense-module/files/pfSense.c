@@ -1853,19 +1853,19 @@ PHP_FUNCTION(pfSense_etherswitch_setport)
 	long devlen, port, pvid;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sll", &dev,
-	    &devlen, &port, $pvid) == FAILURE)
-		RETURN_FALSE();
+	    &devlen, &port, &pvid) == FAILURE)
+		RETURN_FALSE;
 	if (devlen == 0)
 		dev = "/dev/etherswitch0";
 	if (etherswitch_dev_is_valid(dev) < 0)
-		RETURN_FALSE();
+		RETURN_FALSE;
 	fd = open(dev, O_RDONLY);
 	if (fd == -1)
 		RETURN_FALSE;
 
 	memset(&p, 0, sizeof(p));
 	p.es_port = port;
-	if (ioctl(cfg->fd, IOETHERSWITCHGETPORT, &p) != 0) {
+	if (ioctl(fd, IOETHERSWITCHGETPORT, &p) != 0) {
 		close(fd);
 		RETURN_FALSE;
 	}
@@ -1874,7 +1874,7 @@ PHP_FUNCTION(pfSense_etherswitch_setport)
 
 	/* XXX - ports flags */
 
-	if (ioctl(cfg->fd, IOETHERSWITCHSETPORT, &p) != 0) {
+	if (ioctl(fd, IOETHERSWITCHSETPORT, &p) != 0) {
 		close(fd);
 		RETURN_FALSE;
 	}
