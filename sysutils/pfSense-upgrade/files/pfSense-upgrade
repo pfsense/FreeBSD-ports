@@ -712,6 +712,7 @@ get_meta_pkg_name() {
 }
 
 check_upgrade() {
+	local _mute="$1"
 	local _meta_pkg=$(get_meta_pkg_name)
 	local _core_pkgs=$(pkg-static query -e \
 	    "%n ~ ${product}-kernel-* || %n ~ ${product}-base*" %n)
@@ -725,12 +726,15 @@ check_upgrade() {
 		    && continue
 
 		local _new_version=$(pkg-static rquery -U %v ${_pkg})
-		_echo "${_new_version} version of ${product} is available"
-		_exit 2
+		[ -z "${_mute}" ] \
+		    && _echo \
+		    "${_new_version} version of ${product} is available"
+		return 2
 	done
 
-	_echo "Your system is up to date"
-	_exit 0
+	[ -z "${_mute}" ] \
+	    && _echo "Your system is up to date"
+	return 0
 }
 
 setup_nanobsd_env() {
@@ -1241,6 +1245,7 @@ fi
 case "${action}" in
 	check)
 		check_upgrade
+		_exit $?
 		;;
 	upgrade)
 		pkg_upgrade
