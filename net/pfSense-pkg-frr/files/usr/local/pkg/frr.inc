@@ -369,8 +369,9 @@ function frr_setkey() {
 	/* Build md5 password configuration for BGP Peers */
 	$neighbors = frr_get_neighbors_with_name_key();
 	foreach ($neighbors as $nname => $neighbor) {
-		if ((($neighbor['password_type'] == "setkey") ||
-		    ($neighbor['password_type'] == "both")) &&
+		list($pwtype_base, $pwtype_bidir) = explode('-', $neighbor['password_type'], 2);
+		if ((($pwtype_base == "setkey") ||
+		    ($pwtype_base == "both")) &&
 		    is_ipaddr($neighbor['peer'])) {
 			if (array_key_exists($neighbor['peergroup'], $neighbors)) {
 				$peergroup = $neighbors[$neighbor['peergroup']];
@@ -417,13 +418,23 @@ function frr_setkey() {
 				continue;
 			}
 
+			/* Use bidirectional setkey? */
+			if ($pwtype_bidir == 'bidir') {
+				$tmp['bidir'] = true;
+			}
 			$peers[] = $tmp;
 		}
 	}
 
 	foreach ($peers as $peer) {
 		$md5pw_add .= "add {$peer['src']} {$peer['dst']} tcp 0x1000 -A tcp-md5 \"{$peer['pw']}\";\n";
+		if ($peer['bidir']) {
+			$md5pw_add .= "add {$peer['dst']} {$peer['src']} tcp 0x1001 -A tcp-md5 \"{$peer['pw']}\";\n";
+		}
 		$md5pw_del .= "delete {$peer['src']} {$peer['dst']} tcp 0x1000 ;\n";
+		if ($peer['bidir']) {
+			$md5pw_del .= "delete {$peer['dst']} {$peer['src']} tcp 0x1001 ;\n";
+		}
 	}
 	if (!empty($md5pw_add)) {
 		file_put_contents("{$frr_config_base}/frr_md5pw_add.conf", $md5pw_add);
