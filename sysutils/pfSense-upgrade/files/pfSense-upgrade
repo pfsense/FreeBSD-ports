@@ -162,6 +162,8 @@ _exit() {
 
 pkg_with_pb() {
 	local _event_pipe=""
+	local _cmd="${1}"
+	local _msg="${2}"
 
 	if [ -n "${progress_socket}" ]; then
 		if [ -e "${chroot_dir}${progress_socket}" ]; then
@@ -178,10 +180,8 @@ pkg_with_pb() {
 		done
 	fi
 
-	pkg-static ${_event_pipe} $@
-	local _pkg_result=$?
+	_exec "pkg-static ${_event_pipe} ${_cmd}" "${_msg}"
 	nc_pid=""
-	return ${_pkg_result}
 }
 
 fetch_upgrade_packages() {
@@ -218,11 +218,10 @@ fetch_upgrade_packages() {
 		_fetch_list="${_fetch_list}${_fetch_list:+ }pkg"
 	fi
 
-	_exec "pkg_with_pb ${pkg_chroot} upgrade -F" \
-	    "Downloading upgrade packages"
+	pkg_with_pb "${pkg_chroot} upgrade -F" "Downloading upgrade packages"
 
 	if [ -n "${_fetch_list}" ]; then
-		_exec "pkg_with_pb ${pkg_chroot} fetch -d ${_fetch_list}" \
+		pkg_with_pb "${pkg_chroot} fetch -d ${_fetch_list}" \
 		    "Fetching packages not present on upgrade partition"
 	fi
 }
@@ -924,7 +923,7 @@ pkg_install() {
 		local _msg="Installing"
 	fi
 
-	_exec "pkg_with_pb ${_cmd}${dry_run:+ }${dry_run} ${_pkg_name}" \
+	pkg_with_pb "${_cmd}${dry_run:+ }${dry_run} ${_pkg_name}" \
 	    "${_msg} ${_pkg_name}"
 	_exec "pkg-static clean" "Cleaning up cache" mute ignore_result
 }
@@ -953,7 +952,7 @@ pkg_delete() {
 		_exit 1
 	fi
 
-	_exec "pkg_with_pb delete${dry_run:+ }${dry_run} ${_pkg_name}" \
+	pkg_with_pb "delete${dry_run:+ }${dry_run} ${_pkg_name}" \
 	    "Removing ${_pkg_name}"
 	_exec "pkg-static autoremove" "Removing stale packages" mute ignore_result
 }
