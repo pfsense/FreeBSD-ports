@@ -390,8 +390,7 @@ pkg_upgrade() {
 		    ${product}-u-boot-ufw\*))
 		export uboot_mntp=/boot/msdos
 		export uboot_bin=u-boot.img
-	fi
-	if is_pkg_installed ${product}-u-boot-sg3100\*; then
+	elif is_pkg_installed ${product}-u-boot-sg3100\*; then
 		export uboot_pkg=$(_pkg query %n $(_pkg info \
 		    ${product}-u-boot-sg3100\*))
 		export uboot_mntp=/boot/u-boot
