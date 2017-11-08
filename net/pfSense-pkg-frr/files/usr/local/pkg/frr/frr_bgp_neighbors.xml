@@ -132,9 +132,11 @@
 			<default_value>none</default_value>
 			<options>
 				<option><name>None (Do not use a Password)</name><value>none</value></option>
-				<option><name>FRR and setkey</name><value>both</value></option>
+				<option><name>FRR and setkey Outbound</name><value>both</value></option>
+				<option><name>FRR and setkey Bidirectional</name><value>both-bidir</value></option>
 				<option><name>FRR Only</name><value>frr</value></option>
-				<option><name>setkey Only</name><value>setkey</value></option>
+				<option><name>setkey Only Outbound</name><value>setkey</value></option>
+				<option><name>setkey Only Bidirectional</name><value>setkey-bidir</value></option>
 			</options>
 			<combinefields>end</combinefields>
 		</field>

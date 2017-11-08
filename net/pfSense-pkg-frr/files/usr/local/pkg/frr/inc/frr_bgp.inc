@@ -491,9 +491,10 @@ function frr_bgp_generate_neighbors() {
 			default:
 		}
 
+		list($pwtype_base, $pwtype_bidir) = explode('-', $neighbor['password_type'], 2);
 		if (!empty($neighbor['password']) &&
-		    (($neighbor['password_type'] == "frr") ||
-		    ($neighbor['password_type'] == "both"))) {
+		    (($pwtype_base == "frr") ||
+		    ($pwtype_base == "both"))) {
 			$nconf .= "  neighbor {$neighbor['peer']} password {$neighbor['password']}\n";
 		}
 
