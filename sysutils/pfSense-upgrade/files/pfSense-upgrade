@@ -80,16 +80,26 @@ _exec() {
 		_echo ""
 		# Ref. https://stackoverflow.com/a/30658405
 		exec 4>&1
+		# Silence annoying pkg message of Major OS upgrade
 		local _result=$( \
 		    { { ${_cmd} 2>&1 3>&-; printf $? 1>&3; } 4>&- \
-		    | tee -a ${logfile} 1>&4; } 3>&1)
+		    | tee -a ${logfile} \
+		    | grep -v \
+		    'pkg-static: Warning: Major OS version upgrade detected.' \
+		    1>&4; } 3>&1 \
+		)
 		exec 4>&-
 	else
 		# Ref. https://stackoverflow.com/a/30658405
 		exec 4>&1
+		# Silence annoying pkg message of Major OS upgrade
 		local _result=$( \
 		    { { ${_cmd} >${_stdout} 2>&1 3>&-; printf $? 1>&3; } 4>&- \
-		    | tee -a ${logfile} 1>&4; } 3>&1)
+		    | tee -a ${logfile} \
+		    | grep -v \
+		    'pkg-static: Warning: Major OS version upgrade detected.' \
+		    1>&4; } 3>&1 \
+		)
 		exec 4>&-
 	fi
 
@@ -721,7 +731,7 @@ check_upgrade() {
 	local _skip_update="$2"
 	local _meta_pkg=$(get_meta_pkg_name)
 	local _core_pkgs=$(pkg-static query -e \
-	    "%n ~ ${product}-kernel-* || %n ~ ${product}-base*" %n)
+	    "%n ~ ${product}-kernel-* || %n ~ ${product}-base*" %n 2>/dev/null)
 
 	[ -z "${_skip_update}" ] \
 	    && pkg_update "" mute
@@ -836,7 +846,7 @@ is_pkg_installed() {
 	shift
 	local _pkg_chroot="$@"
 
-	pkg-static ${_pkg_chroot} info -e ${_pkg_name}
+	pkg-static ${_pkg_chroot} info -e ${_pkg_name} 2>/dev/null
 	return $?
 }
 
