@@ -89,21 +89,26 @@
 			<rowhelper>
 				<rowhelperfield>
 					<fielddescr>Local Source Address</fielddescr>
-					<fieldname>md5src</fieldname>
+					<fieldname>tcpsigsrc</fieldname>
 					<type>input</type>
 					<size>25</size>
 				</rowhelperfield>
 				<rowhelperfield>
 					<fielddescr>Remote Peer Address</fielddescr>
-					<fieldname>md5dst</fieldname>
+					<fieldname>tcpsigdst</fieldname>
 					<type>input</type>
 					<size>25</size>
 				</rowhelperfield>
 				<rowhelperfield>
 					<fielddescr>MD5 Password</fielddescr>
-					<fieldname>md5pw</fieldname>
+					<fieldname>tcpsigpw</fieldname>
 					<type>input</type>
 					<size>64</size>
+				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Bidirectional SA</fielddescr>
+					<fieldname>tcpsigbidir</fieldname>
+					<type>checkbox</type>
 				</rowhelperfield>
 			</rowhelper>
 		</field>
