@@ -154,6 +154,8 @@ _exit() {
 
 pkg_with_pb() {
 	local _event_pipe=""
+	local _cmd="${1}"
+	local _msg="${2}"
 
 	if [ -n "${progress_socket}" ]; then
 		if [ -e "${progress_socket}" ]; then
@@ -170,20 +172,18 @@ pkg_with_pb() {
 		done
 	fi
 
-	pkg-static ${_event_pipe} $@
-	local _pkg_result=$?
+	_exec "pkg-static ${_event_pipe} ${_cmd}" "${_msg}"
 	nc_pid=""
-	return ${_pkg_result}
 }
 
 fetch_upgrade_packages() {
-	_exec "pkg_with_pb upgrade -F" "Downloading upgrade packages"
+	pkg_with_pb "upgrade -F" "Downloading upgrade packages"
 
 	# Workaround for pkg bug https://github.com/freebsd/pkg/issues/1613
 	if pkg-static upgrade -Unq 2>&1 | \
 	    sed '/ will be affected/,/ be REINSTALLED:/ {; d; };' | \
 	    egrep -q '^[[:blank:]]*pkg-[0-9]'; then
-		_exec "pkg_with_pb upgrade -fF pkg" "Downloading pkg"
+		pkg_with_pb "upgrade -fF pkg" "Downloading pkg"
 	fi
 }
 
@@ -821,7 +821,7 @@ pkg_install() {
 		local _msg="Installing"
 	fi
 
-	_exec "pkg_with_pb ${_cmd}${dry_run:+ }${dry_run} ${_pkg_name}" \
+	pkg_with_pb "${_cmd}${dry_run:+ }${dry_run} ${_pkg_name}" \
 	    "${_msg} ${_pkg_name}"
 	_exec "pkg-static clean" "Cleaning up cache" mute ignore_result
 }
@@ -850,7 +850,7 @@ pkg_delete() {
 		_exit 1
 	fi
 
-	_exec "pkg_with_pb delete${dry_run:+ }${dry_run} ${_pkg_name}" \
+	pkg_with_pb "delete${dry_run:+ }${dry_run} ${_pkg_name}" \
 	    "Removing ${_pkg_name}"
 	_exec "pkg-static autoremove" "Removing stale packages" mute \
 	    ignore_result
