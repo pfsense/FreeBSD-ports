@@ -355,12 +355,13 @@ function frr_setkey() {
 
 	/* Build md5 password configuration files based on raw tab list */
 	if (is_array($config['installedpackages']['frrglobalraw']['config'][0]['row'])) {
-		foreach ($config['installedpackages']['frrglobalraw']['config'][0]['row'] as $frrmd5pw) {
-			if (($frrmd5pw['md5src'] != "") && ($frrmd5pw['md5dst'] != "") && ($frrmd5pw['md5pw'])!= "") {
+		foreach ($config['installedpackages']['frrglobalraw']['config'][0]['row'] as $frrtcpsigpw) {
+			if (($frrtcpsigpw['tcpsigsrc'] != "") && ($frrtcpsigpw['tcpsigdst'] != "") && ($frrtcpsigpw['tcpsigpw'])!= "") {
 				$tmp = array();
-				$tmp['src'] = $frrmd5pw['md5src'];
-				$tmp['dst'] = $frrmd5pw['md5dst'];
-				$tmp['pw'] = $frrmd5pw['md5pw'];
+				$tmp['src'] = $frrtcpsigpw['tcpsigsrc'];
+				$tmp['dst'] = $frrtcpsigpw['tcpsigdst'];
+				$tmp['pw'] = $frrtcpsigpw['tcpsigpw'];
+				$tmp['bidir'] = !empty($frrtcpsigpw['tcpsigbidir']);
 				$peers[] = $tmp;
 			}
 		}
