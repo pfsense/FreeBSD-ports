@@ -485,13 +485,23 @@ pkg_upgrade() {
 		pkg_unlock ${kernel_pkg} ${uboot_pkg}
 		lock_main_pkgs=1
 
-		if check_upgrade mute skip_update; then
-			pkg_lock ${kernel_pkg} ${uboot_pkg}
-			[ -n "${NEW_MAJOR}" ] \
-			    && pkg_unlock pkg
-			_echo "Your packages are up to date"
-			_exit 0
-		fi
+		check_upgrade mute skip_update
+		case "$?" in
+			0)
+				pkg_lock ${kernel_pkg} ${uboot_pkg}
+				[ -n "${NEW_MAJOR}" ] \
+				    && pkg_unlock pkg
+				_echo "Your packages are up to date"
+				_exit 0
+				;;
+			3)
+				pkg_lock ${kernel_pkg} ${uboot_pkg}
+				[ -n "${NEW_MAJOR}" ] \
+				    && pkg_unlock pkg
+				_echo "Your system is on a newer version"
+				_exit 0
+				;;
+		esac
 
 		if [ -n "${dry_run}" ]; then
 			[ -n "${NEW_MAJOR}" ] \
@@ -744,9 +754,19 @@ check_upgrade() {
 
 	pkg_upgrade_repo
 
+	local _version_compare=""
 	for _package in ${_meta_pkg} ${_core_pkgs}; do
-		[ "$(compare_pkg_version ${_package})" != "<" ] \
-		    && continue
+		_version_compare=$(compare_pkg_version ${_package})
+		case "${_version_compare}" in
+			=)
+				continue
+				;;
+			'>')
+				[ -z "${_mute}" ] \
+				    && _echo "Your system is on a newer version"
+				return 3
+				;;
+		esac
 
 		local _new_version=$(_pkg rquery -U %v ${_package})
 		[ -z "${_mute}" ] \
