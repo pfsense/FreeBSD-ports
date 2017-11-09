@@ -20,7 +20,7 @@ NO_MTREE=	yes
 SUB_FILES=	pkg-install
 SUB_LIST=	PORTNAME=${PORTNAME} \
 		PRODUCT_NAME=${PRODUCT_NAME} \
-		DEFAULT_REPO=${DATADIR}/pkg/repos/${PFSENSE_DEFAULT_REPO_${ARCH}}.conf
+		DEFAULT_REPO=${DEFAULT_REPO}
 
 DATADIR=	${PREFIX}/share/pfSense
 
@@ -30,11 +30,13 @@ PFSENSE_REPOS?=	pfSense-repo pfSense-repo-devel
 PFSENSE_REPOS_${ARCH}?=	${PFSENSE_REPOS}
 PFSENSE_DEFAULT_REPO?=	pfSense-repo-devel
 PFSENSE_DEFAULT_REPO_${ARCH}?=	${PFSENSE_DEFAULT_REPO}
+DEFAULT_REPO=	${DATADIR}/pkg/repos/${PFSENSE_DEFAULT_REPO_${ARCH}}.conf
 TMP_PLIST_FILES=${PFSENSE_REPOS_${ARCH}:C/$/.conf/} \
 		${PFSENSE_REPOS_${ARCH}:C/$/.descr/} \
 		${PFSENSE_REPOS_${ARCH}:C/$/.abi/} \
 		${PFSENSE_REPOS_${ARCH}:C/$/.altabi/}
-PLIST_FILES=	${TMP_PLIST_FILES:C/^/%%DATADIR%%\/pkg\/repos\//}
+PLIST_FILES=	${TMP_PLIST_FILES:C/^/%%DATADIR%%\/pkg\/repos\//} \
+		${DEFAULT_REPO}.default
 DEFAULT_ABI=	${OPSYS}:${OSREL:C/\..*//}:${ARCH}
 
 .if ${ARCH} == "amd64"
@@ -78,6 +80,7 @@ do-build:
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/pkg/repos
+	${TOUCH} ${STAGEDIR}${DEFAULT_REPO}.default
 .for f in ${PFSENSE_REPOS_${ARCH}}
 	${INSTALL_DATA} ${WRKSRC}/${f}.conf ${STAGEDIR}${DATADIR}/pkg/repos
 	${INSTALL_DATA} ${WRKSRC}/${f}.descr ${STAGEDIR}${DATADIR}/pkg/repos
