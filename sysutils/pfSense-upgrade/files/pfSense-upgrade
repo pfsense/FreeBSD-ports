@@ -140,6 +140,10 @@ _exit() {
 		_pkg annotate -q -D ${kernel_pkg} next_stage
 	fi
 
+	if [ -n "${unlock_pkg}" ]; then
+		pkg_unlock pkg
+	fi
+
 	if [ -n "${unlock_additional_pkgs}" ]; then
 		pkg_unlock "${pkg_prefix}*"
 	fi
@@ -451,6 +455,7 @@ pkg_upgrade() {
 		# on N
 		if [ -n "${NEW_MAJOR}" ]; then
 			pkg_lock pkg
+			unlock_pkg=1
 		fi
 
 		pkg_upgrade_repo
@@ -462,8 +467,6 @@ pkg_upgrade() {
 			_exec "pkg-static upgrade${dont_update} -f \
 			    ${product}-upgrade" "Upgrading ${product}-upgrade" \
 			    mute
-			[ -n "${NEW_MAJOR}" ] \
-			    && pkg_unlock pkg
 			_exit 99
 		fi
 
@@ -484,22 +487,16 @@ pkg_upgrade() {
 		check_upgrade mute skip_update
 		case "$?" in
 			0)
-				[ -n "${NEW_MAJOR}" ] \
-				    && pkg_unlock pkg
 				_echo "Your packages are up to date"
 				_exit 0
 				;;
 			3)
-				[ -n "${NEW_MAJOR}" ] \
-				    && pkg_unlock pkg
 				_echo "Your system is on a newer version"
 				_exit 0
 				;;
 		esac
 
 		if [ -n "${dry_run}" ]; then
-			[ -n "${NEW_MAJOR}" ] \
-			    && pkg_unlock pkg
 			_exec "pkg-static upgrade${dont_update} -nq" "" nomute \
 			    ignore_result do_not_exit
 			_exit 0
@@ -550,6 +547,7 @@ pkg_upgrade() {
 		# Unlock pkg to make sure it's downloaded
 		if [ -n "${NEW_MAJOR}" ]; then
 			pkg_unlock pkg
+			unlock_pkg=""
 		fi
 
 		# Download all upgrade packages first
@@ -558,6 +556,7 @@ pkg_upgrade() {
 		# Then lock it again
 		if [ -n "${NEW_MAJOR}" ]; then
 			pkg_lock pkg
+			unlock_pkg=1
 		fi
 
 		if upgrade_available ${kernel_pkg}; then
@@ -1020,6 +1019,7 @@ validate_repo_conf
 # Flags used in _exit
 export delete_annotation=""
 export unlock_additional_pkgs=""
+export unlock_pkg=""
 export delete_pid=""
 
 # Save nc_pid to be able to kill it
