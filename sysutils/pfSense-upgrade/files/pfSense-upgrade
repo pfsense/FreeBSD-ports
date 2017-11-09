@@ -325,9 +325,7 @@ abi_setup() {
 
 	local _pkg_abi=$(_pkg query %q pkg)
 	if [ "${CUR_ABI}" != "${_pkg_abi}" -a "${_pkg_abi}" != "${ABI}" ]; then
-		pkg_unlock pkg
-		_exec "pkg-static upgrade${dont_update} -f pkg" \
-		    "Upgrading pkg" mute
+		reinstall_pkg=1
 	fi
 
 	if [ "${CUR_ABI}" = "${ABI}" -o "${CUR_ABI}" = "${ALTABI}" ] ; then
@@ -361,8 +359,12 @@ pkg_update() {
 }
 
 pkg_upgrade_repo() {
-	if [ -z "${NEW_MAJOR}" -a "$(compare_pkg_version pkg)" = "<" ]; then
-		_exec "pkg-static upgrade${dont_update} pkg" "Upgrading pkg" mute
+	if [ -n "${reinstall_pkg}" ] \
+	    || [ -z "${NEW_MAJOR}" -a "$(compare_pkg_version pkg)" = "<" ]; then
+		pkg_unlock pkg
+		_exec "pkg-static upgrade${dont_update} pkg" "Upgrading pkg" \
+		    mute
+		reinstall_pkg=""
 		pkg_update force
 	fi
 
@@ -1142,6 +1144,7 @@ export delete_annotation=""
 export lock_main_pkgs=""
 export unlock_additional_pkgs=""
 export unlock_pkg=""
+export reinstall_pkg=""
 export delete_pid=""
 
 # Upgrade process on nanobsd will happen in chroot
