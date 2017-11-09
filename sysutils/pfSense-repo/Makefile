@@ -25,7 +25,7 @@ DATADIR=	${PREFIX}/share/pfSense
 
 .include <bsd.port.pre.mk>
 
-PFSENSE_REPOS?=	pfSense-repo pfSense-repo-devel pfSense-repo-next
+PFSENSE_REPOS?=	pfSense-repo pfSense-repo-devel
 PFSENSE_REPOS_${ARCH}?=	${PFSENSE_REPOS}
 PFSENSE_DEFAULT_REPO?=	pfSense-repo-devel
 PFSENSE_DEFAULT_REPO_${ARCH}?=	${PFSENSE_DEFAULT_REPO}
