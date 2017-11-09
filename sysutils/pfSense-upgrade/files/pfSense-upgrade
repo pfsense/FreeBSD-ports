@@ -1036,7 +1036,15 @@ do_reboot() {
 validate_repo_conf() {
 	# Make sure to use default repo conf when it doesn't exist
 	pkg_repo_conf="/usr/local/etc/pkg/repos/${product}.conf"
-	default="/usr/local/share/${product}/pkg/repos/${product}-repo.conf"
+
+	default_path="/usr/local/share/${product}/pkg/repos"
+	default_file=$(ls -1 ${default_path}/*.default 2>/dev/null | tail -n 1)
+
+	if [ -n "${default_file}" -a -f "${default_file}" ]; then
+		default="${default_file%%.default}"
+	else
+		default="${default_path}/${product}-repo.conf"
+	fi
 
 	pkg_repo_conf_path=$(read_xml_tag.sh string system/pkg_repo_conf_path)
 
