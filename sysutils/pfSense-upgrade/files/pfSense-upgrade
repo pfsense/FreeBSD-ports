@@ -81,11 +81,14 @@ _exec() {
 		# Ref. https://stackoverflow.com/a/30658405
 		exec 4>&1
 		# Silence annoying pkg message of Major OS upgrade
+		# XXX locked packages message should be printed on stderr by pkg
 		local _result=$( \
 		    { { ${_cmd} 2>&1 3>&-; printf $? 1>&3; } 4>&- \
 		    | tee -a ${logfile} \
 		    | grep -v \
 		    'pkg-static: Warning: Major OS version upgrade detected.' \
+		    | grep -v 'is locked and may not be modified' \
+		    | sed -e '/^ *$/d' \
 		    1>&4; } 3>&1 \
 		)
 		exec 4>&-
@@ -93,11 +96,14 @@ _exec() {
 		# Ref. https://stackoverflow.com/a/30658405
 		exec 4>&1
 		# Silence annoying pkg message of Major OS upgrade
+		# XXX locked packages message should be printed on stderr by pkg
 		local _result=$( \
 		    { { ${_cmd} >${_stdout} 2>&1 3>&-; printf $? 1>&3; } 4>&- \
 		    | tee -a ${logfile} \
 		    | grep -v \
 		    'pkg-static: Warning: Major OS version upgrade detected.' \
+		    | grep -v 'is locked and may not be modified' \
+		    | sed -e '/^ *$/d' \
 		    1>&4; } 3>&1 \
 		)
 		exec 4>&-
