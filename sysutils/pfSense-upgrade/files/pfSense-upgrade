@@ -281,6 +281,13 @@ abi_setup() {
 	echo "ABI=${ABI}" > /usr/local/etc/pkg.conf
 	echo "ALTABI=${ALTABI}" >> /usr/local/etc/pkg.conf
 
+	local _pkg_abi=$(_pkg query %q pkg)
+	if [ "${CUR_ABI}" != "${_pkg_abi}" -a "${_pkg_abi}" != "${ABI}" ]; then
+		pkg_unlock pkg
+		_exec "pkg-static upgrade${dont_update} -f pkg" \
+		    "Upgrading pkg" mute
+	fi
+
 	if [ "${CUR_ABI}" = "${ABI}" -o "${CUR_ABI}" = "${ALTABI}" ] ; then
 		NEW_MAJOR=""
 	else
