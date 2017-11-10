@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-upgrade
-PORTVERSION=	0.38
+PORTVERSION=	0.39
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
