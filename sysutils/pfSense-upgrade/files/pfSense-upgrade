@@ -769,7 +769,7 @@ check_upgrade() {
 			'>')
 				[ -z "${_mute}" ] \
 				    && _echo "Your system is on a newer version"
-				return 3
+				return 0
 				;;
 		esac
 
