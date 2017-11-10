@@ -88,7 +88,6 @@ _exec() {
 		    | grep -v \
 		    'pkg-static: Warning: Major OS version upgrade detected.' \
 		    | grep -v 'is locked and may not be modified' \
-		    | sed -e '/^ *$/d' \
 		    1>&4; } 3>&1 \
 		)
 		exec 4>&-
@@ -103,7 +102,6 @@ _exec() {
 		    | grep -v \
 		    'pkg-static: Warning: Major OS version upgrade detected.' \
 		    | grep -v 'is locked and may not be modified' \
-		    | sed -e '/^ *$/d' \
 		    1>&4; } 3>&1 \
 		)
 		exec 4>&-
@@ -670,6 +668,19 @@ pkg_upgrade() {
 			delete_annotation=""
 		fi
 
+		if is_pkg_installed ${pkg_prefix}\*; then
+			for _package in $(_pkg query %n $(_pkg info -E -g \
+			    ${pkg_prefix}\*)); do
+				_pkg rquery -U %v ${_package} >/dev/null \
+				    && continue
+
+				# This package was removed from remote repo
+				# Make sure it's uninstalled
+				_exec "pkg-static set -A 1 ${_package}" \
+				    "Scheduling package ${_package} for removal"
+			done
+		fi
+
 		_pkg annotate -q -D ${kernel_pkg} next_stage
 
 		# cleanup caches
@@ -758,7 +769,7 @@ check_upgrade() {
 			'>')
 				[ -z "${_mute}" ] \
 				    && _echo "Your system is on a newer version"
-				return 3
+				return 0
 				;;
 		esac
 
