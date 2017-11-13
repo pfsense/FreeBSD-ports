@@ -3,7 +3,7 @@
 
 PORTNAME=	radvd
 PORTVERSION=	2.17
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net ipv6
 MASTER_SITES=	http://www.litech.org/radvd/dist/
 
