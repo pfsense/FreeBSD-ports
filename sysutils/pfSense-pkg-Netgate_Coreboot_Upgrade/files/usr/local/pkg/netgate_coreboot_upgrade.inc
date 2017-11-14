@@ -82,10 +82,7 @@ function get_new_coreboot_details() {
 	
 	$model = get_coreboot_model();
 	$details = array();
-	`echo "model: {$model}" >> /tmp/lala`;
-	`echo "rom_names[model]: {$rom_names[$model]}" >> /tmp/lala`;
 	$path = COREBOOT_PATH . $rom_names[$model];
-	`echo "path: {$path}" >> /tmp/lala`;
 
 	if (empty($model) || empty($rom_names[$model]) ||
 	    !file_exists(COREBOOT_PATH . $rom_names[$model])) {
