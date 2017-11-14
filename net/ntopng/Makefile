@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ntopng
-PORTVERSION=	3.0.2017.10.03
+PORTVERSION=	3.0.2017.11.02
 CATEGORIES=	net
 
 MAINTAINER=	madpilot@FreeBSD.org
@@ -32,7 +32,7 @@ GROUPS=		ntopng
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ntop
-GH_TAGNAME=	499e0bf
+GH_TAGNAME=	f0c02af
 
 CPE_VENDOR=	ntop
 
