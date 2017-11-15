@@ -504,11 +504,12 @@ function freeradius_users_resync($via_rpc = false) {
 			$varusersmaxtotaloctets = $varusersmaxtotaloctets * 1024 * 1024;
 			$varusersmaxtotaloctetstimerange = $users['varusersmaxtotaloctetstimerange'];
 
-			// GUI uses Kibibit but RADIUS needs bits so we do a multiplication
+			// GUI uses Kbit but RADIUS needs bits so we do a multiplication
+			// Use 1000 (Kbit) and not 1024 (Kibibit) to match the division used by Captive Portal
 			$varusersmaxbandwidthup = ($users['varusersmaxbandwidthup'] ?: '');
-			$varusersmaxbandwidthup = $varusersmaxbandwidthup * 1024;
+			$varusersmaxbandwidthup = $varusersmaxbandwidthup * 1000;
 			$varusersmaxbandwidthdown = ($users['varusersmaxbandwidthdown'] ?: '');
-			$varusersmaxbandwidthdown = $varusersmaxbandwidthdown * 1024;
+			$varusersmaxbandwidthdown = $varusersmaxbandwidthdown * 1000;
 
 			// Accounting-Interim-Interval - Must not be smaller than 60 and should be bigger than 600s
 			if (($users['varusersacctinteriminterval'] >= '0') && ($users['varusersacctinteriminterval'] < '60')) {
