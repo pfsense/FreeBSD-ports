@@ -3,7 +3,7 @@
 
 PORTNAME=	snort
 PORTVERSION=	2.9.9.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	security
 MASTER_SITES=	https://snort.org/downloads/snort/ \
 		ZI
