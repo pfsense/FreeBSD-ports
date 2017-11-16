@@ -1,0 +1,23 @@
+--- configure.orig	2017-11-16 00:00:54.945659000 -0200
++++ configure	2017-11-16 00:01:21.959828000 -0200
+@@ -16030,6 +16030,20 @@
+ 
+ fi
+ 
++# any armv6/7 platform has to have this one defined. 
++{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for armv6/7" >&5       
++$as_echo_n "checking for armv6/v7... " >&6; }
++if eval "echo $host_cpu|grep -i 'armv[6|7]' >/dev/null"; then
++           
++$as_echo "#define WORDS_MUSTALIGN 1" >>confdefs.h
++
++    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
++$as_echo "yes" >&6; }
++else
++    { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
++$as_echo "no" >&6; }
++fi
++
+ # any sparc platform has to have this one defined.
+ { $as_echo "$as_me:${as_lineno-$LINENO}: checking for sparc" >&5
+ $as_echo_n "checking for sparc... " >&6; }
