@@ -2,7 +2,7 @@
 
 PORTNAME=	pfSense-pkg-haproxy
 PORTVERSION=	0.54
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -13,7 +13,7 @@ COMMENT=	pfSense package haproxy
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	haproxy>=1.7.2:net/haproxy
+RUN_DEPENDS=	${LOCALBASE}/sbin/haproxy:net/haproxy
 
 CONFLICTS=	pfSense-pkg-haproxy-devel-[0-9]*
 
