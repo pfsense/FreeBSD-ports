@@ -65,6 +65,7 @@ do-build:
 		-e "s,%%PKG_REPO_SERVER_RELEASE%%,${PKG_REPO_SERVER_RELEASE},g" \
 		-e "s,%%POUDRIERE_PORTS_NAME%%,${POUDRIERE_PORTS_NAME},g" \
 		-e "s,%%PRODUCT_NAME%%,${PRODUCT_NAME},g" \
+		-e "s,%%REPO_BRANCH_PREFIX%%,${REPO_BRANCH_PREFIX},g" \
 		${WRKSRC}/${f}.conf
 	@if [ -f ${WRKSRC}/${f}.abi ]; then \
 		${REINPLACE_CMD} -i '' \
