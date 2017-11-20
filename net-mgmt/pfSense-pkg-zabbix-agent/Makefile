@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME?=	pfSense-pkg-zabbix-agent
-PORTVERSION=	1.0.0
+PORTVERSION=	1.0.1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -25,7 +25,7 @@ SUB_FILES=	pkg-install pkg-deinstall
 SUB_LIST=	PORTNAME=${PORTNAME}
 
 ZABBIXINTERNALNAME?=	zabbix-agent
-ZABBIXTITLE?=	Zabbix Agent LTS
+ZABBIXTITLE?=	Zabbix Agent 3.0
 
 # Same for all Zabbix Agent ports to share their configs
 # zabbixagentlts for keep compatibility with current configs

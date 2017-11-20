@@ -62,6 +62,14 @@ function validate_input_zabbix_proxy($post, &$input_errors) {
 			$input_errors[] = "'Hostname' field is required.";
 		}
 
+		if ($post['listenport'] != '') {
+			if (!is_numericint($post['listenport'])) {
+				$input_errors[] = "'Listen Port' value is not numeric.";
+			} elseif ($post['listenport'] < 1 || $post['listenport'] > 65535) {
+				$input_errors[] = "You must enter a valid value for 'Listen Port'.";
+			}
+		}
+
 		if (!is_numericint($post['configfrequency'])) {
 			$input_errors[] = "'Config Frequency' value is not numeric.";
 		}
@@ -89,6 +97,8 @@ function sync_package_zabbix_proxy() {
 	if (is_array($config['installedpackages']['%%ZABBIXUNIQNAME%%'])) {
 		$zbproxy_config = $config['installedpackages']['%%ZABBIXUNIQNAME%%']['config'][0];
 		if ($zbproxy_config['proxyenabled'] == "on") {
+			$ListenIp = $zbproxy_config['listenip'] ?: "0.0.0.0";
+			$ListenPort = $zbproxy_config['listenport'] ?: "10051";
 			$Mode = (is_numericint($zbproxy_config['proxymode']) ? $zbproxy_config['proxymode'] : 0);
 			$AdvancedParams = base64_decode($zbproxy_config['advancedparams']);
 
@@ -147,17 +157,14 @@ function sync_package_zabbix_proxy() {
 			$StartSNMPTrapper = $zbproxy_config['startsnmptrapper'];
 			$SNMPTrapperFile = $zbproxy_config['snmptrapperfile'] ?: "/tmp/zabbix_traps.tmp";
 			$TrapperTimeout = $zbproxy_config['trappertimeout'] ?: "300";
-
-			if ($StartSNMPTrapper) {
-				$StartTrappers = $zbproxy_config['starttrappers'] ?: "5";
-			} else {
-				$StartTrappers = "0";
-			}
+			$StartTrappers = $zbproxy_config['starttrappers'] ?: "5";
 
 			$zbproxy_conf_file = <<< EOF
 Server={$zbproxy_config['server']}
 ServerPort={$zbproxy_config['serverport']}
 Hostname={$zbproxy_config['hostname']}
+ListenIP={$ListenIp}
+ListenPort={$ListenPort}
 PidFile=/var/run/zabbix-proxy/zabbix_proxy.pid
 DBName=/var/db/zabbix-proxy/proxy.db
 LogFile=/var/log/zabbix-proxy/zabbix_proxy.log
