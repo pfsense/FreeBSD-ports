@@ -53,8 +53,11 @@ function frr_validate_asnum($value) {
 }
 
 function frr_validate_intrange($value, $min, $max) {
-	return filter_var($value, FILTER_VALIDATE_INT,
-			    array('options' => array('min_range' => $min, 'max_range' => $max)));
+	if (is_numericint($value) && ($value >= $min) && ($value <= $max)) {
+		return $value;
+	} else {
+		return null;
+	}
 }
 
 function frr_validate_community_asval_list($arr) {
