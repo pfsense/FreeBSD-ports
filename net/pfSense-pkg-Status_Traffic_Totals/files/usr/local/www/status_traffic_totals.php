@@ -105,6 +105,12 @@ function vnstat_delete_nic_dbs($portlist) {
 
 	}
 
+	// clean-up remnants of possible old interface db's no longer present in pfSense interface list..
+	$dbfiles = glob('/var/db/vnstat/*');
+	foreach($dbfiles as $db) {
+		$dbfile = basename($db);
+		exec('/usr/local/bin/vnstat -i ' . escapeshellarg($dbfile) . ' --delete --force');
+	}
 }
 
 /*
