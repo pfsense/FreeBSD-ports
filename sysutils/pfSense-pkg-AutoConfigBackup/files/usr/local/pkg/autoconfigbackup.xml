@@ -69,6 +69,17 @@
 			</options>
 		</field>
 		<field>
+			<fielddescr>Ignore Captive Portal Vouchers</fielddescr>
+			<fieldname>ignore_vouchers</fieldname>
+			<description>Don't backup captive portal voucher syncs</description>
+			<type>select</type>
+			<default_value>true</default_value>
+			<options>
+				<option><value>true</value><name>True</name></option>
+				<option><value>false</value><name>False</name></option>
+			</options>
+		</field>
+		<field>
 			<fielddescr>Subscription Username</fielddescr>
 			<fieldname>username</fieldname>
 			<description>Enter the subscription username for portal.pfsense.org</description>
