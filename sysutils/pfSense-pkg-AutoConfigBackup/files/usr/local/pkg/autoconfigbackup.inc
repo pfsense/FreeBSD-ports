@@ -261,10 +261,11 @@ function upload_config($reasonm = "") {
 			$raw_config_sha256_hash = trim(shell_exec("/sbin/sha256 /cf/conf/config.xml | /usr/bin/awk '{ print $4 }'"));
 			$data = encrypt_data($data, $encryptpw);
 			tagfile_reformat($data, $data, "config.xml");
-
+			$uniqueID = system_get_uniqueid();
 			$post_fields = array(
 				'reason' => urlencode((string)$reason),
 				'hostname' => urlencode($hostname),
+				'uid' => urlencode($uniqueID),
 				'configxml' => urlencode($data),
 				'nooverwrite' => urlencode($nooverwrite),
 				'raw_config_sha256_hash' => urlencode($raw_config_sha256_hash)
