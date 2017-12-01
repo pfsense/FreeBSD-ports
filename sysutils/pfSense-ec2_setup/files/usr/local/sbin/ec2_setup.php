@@ -385,11 +385,6 @@ function initialSystemConfig() {
 		$a_ec2_user['authorizedkeys'] = base64_encode($ssh_key);
 	}
 
-	if ($ssh_key && !isset($a_admin_user['authorizedkeys'])) {
-		$a_admin_user['authorizedkeys'] = base64_encode($ssh_key);
-		local_user_set($a_admin_user);
-	}
-
 	/* get user metadata, set ec2-user password if one was specified */
 	$user_data = retrieveUserData();
 	if ($user_data && isset($user_data['password']))
@@ -403,12 +398,18 @@ function initialSystemConfig() {
 		$pw_string .= "*** ec2-user password changed to: $ec2_user_password\n";
 		$pw_string .= "***\n***\n";
 		local_user_set_password($a_ec2_user, $ec2_user_password);
+		local_user_set_password($a_admin_user, $ec2_user_password);
 		file_put_contents("/etc/motd-passwd", $pw_string);
 	} else {
 		@unlink('/etc/motd-passwd');
 		echo "No password generated for admin, keeping default password\n";
 	}
 	local_user_set($a_ec2_user);
+
+	if ($ssh_key && !isset($a_admin_user['authorizedkeys'])) {
+		$a_admin_user['authorizedkeys'] = base64_encode($ssh_key);
+	}
+	local_user_set($a_admin_user);
 
 	if ($g['default-config-flavor'] == "ec2" ||
 	    $g['default-config-flavor'] == "ec2-ic") {
