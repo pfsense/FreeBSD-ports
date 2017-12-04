@@ -970,6 +970,8 @@ foreach ($snort_servers as $alias => $avalue) {
 	$ipvardef .= "ipvar " . strtoupper($alias) . " [{$avalue}]\n";
 }
 
+// Rebuild dynamic preprocessor directory library files based on enabled 
+// preprocessors for this interface.
 $snort_preproc_libs = array(
 	"dce_rpc_2" => "dce2_preproc", "dns_preprocessor" => "dns_preproc", "ftp_preprocessor" => "ftptelnet_preproc", "imap_preproc" => "imap_preproc",
 	"pop_preproc" => "pop_preproc", "reputation_preproc" => "reputation_preproc", "sensitive_data" => "sdf_preproc", 
@@ -983,6 +985,19 @@ $snort_preproc = array (
 $default_disabled_preprocs = array(
 	"sf_portscan", "gtp_preproc", "sensitive_data", "dnp3_preproc", "modbus_preproc", "reputation_preproc", "perform_stat", "appid_preproc", "arpspoof_preproc"
 );
+
+/***************************************/
+/* Begin preprocessor lib file copies  */
+/***************************************/
+
+// Start by removing all existing preproc libraries in the
+// snort_dynamicpreprocessors directory for the interface.
+mwexec("/bin/rm -rf {$snort_dirs['dynamicpreprocessor']}/*.so");
+
+// Build the string variable we use to actually populate the snort.conf
+// file's preprocessors config section by walking the list of enabled
+// preprocessors and copying the required library files from the master
+// directory to the subdirectory for this Snort interface.
 $snort_preprocessors = "";
 foreach ($snort_preproc as $preproc) {
 	if ($snortcfg[$preproc] == 'on' || empty($snortcfg[$preproc]) ) {
@@ -993,10 +1008,10 @@ foreach ($snort_preproc as $preproc) {
 
 		/* NOTE: The $$ is not a bug. It is an advanced feature of php */
 		if (!empty($snort_preproc_libs[$preproc])) {
-			$preproclib = "libsf_" . $snort_preproc_libs[$preproc];
-			if (!file_exists($snort_dirs['dynamicpreprocessor'] . "{$preproclib}.so")) {
-				if (file_exists("{$snortlibdir}/snort_dynamicpreprocessor/{$preproclib}.so")) {
-					@copy("{$snortlibdir}/snort_dynamicpreprocessor/{$preproclib}.so", "{$snort_dirs['dynamicpreprocessor']}/{$preproclib}.so");
+			$preproclib = "libsf_" . $snort_preproc_libs[$preproc] . ".so";
+			if (!file_exists($snort_dirs['dynamicpreprocessor'] . "{$preproclib}")) {
+				if (file_exists("{$snortlibdir}/snort_dynamicpreprocessor/{$preproclib}")) {
+					@copy("{$snortlibdir}/snort_dynamicpreprocessor/{$preproclib}", "{$snort_dirs['dynamicpreprocessor']}/{$preproclib}");
 					$snort_preprocessors .= $$preproc;
 					$snort_preprocessors .= "\n";
 				} else
@@ -1013,6 +1028,10 @@ foreach ($snort_preproc as $preproc) {
 }
 // Remove final trailing newline
 $snort_preprocessors = rtrim($snort_preprocessors);
+
+/***************************************/
+/* end of preprocessor lib file copy   */
+/***************************************/
 
 $snort_misc_include_rules = "";
 if (file_exists("{$snortcfgdir}/reference.config"))
