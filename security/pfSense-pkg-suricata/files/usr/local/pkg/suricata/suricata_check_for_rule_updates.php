@@ -68,7 +68,7 @@ if ($etpro == "on") {
 	$emergingthreats_filename = ETPRO_DNLD_FILENAME;
 	$emergingthreats_filename_md5 = ETPRO_DNLD_FILENAME . ".md5";
 	$emergingthreats_url = ETPRO_BASE_DNLD_URL;
-	$emergingthreats_url .= "{$etproid}/suricata/";
+	$emergingthreats_url .= "{$etproid}/suricata-4.0/";
 	$et_name = "Emerging Threats Pro";
 	$et_md5_remove = ET_DNLD_FILENAME . ".md5";
 	unlink_if_exists("{$suricatadir}{$et_md5_remove}");
@@ -79,7 +79,7 @@ else {
 	$emergingthreats_url = ET_BASE_DNLD_URL;
 	// If using Sourcefire VRT rules with ET, then we should use the open-nogpl ET rules
 	$emergingthreats_url .= $vrt_enabled == "on" ? "open-nogpl/" : "open/";
-	$emergingthreats_url .= "suricata/";
+	$emergingthreats_url .= "suricata-4.0/";
 	$et_name = "Emerging Threats Open";
 	$et_md5_remove = ETPRO_DNLD_FILENAME . ".md5";
 	unlink_if_exists("{$suricatadir}{$et_md5_remove}");
