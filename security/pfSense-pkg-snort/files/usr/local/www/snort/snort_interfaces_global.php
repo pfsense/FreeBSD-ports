@@ -286,9 +286,9 @@ $group->add(new Form_Checkbox(
         $pconfig['openappid_rules_detectors'] == 'on' ? true:false,
         'on'
 ));
-$group->setHelp('Note - the AppID Open Rules file is maintained by a volunteer contributor.  The file is hosted at a University in Brazil that employs Geo-IP protection for their network.  ' . 
-'Snort users in some countries may experience issues downloading the rules package because of the Geo-IP blocking used by the hosting web site.  The URL for the file ' . 
-'is <a href="' . SNORT_OPENAPPID_RULES_URL . SNORT_OPENAPPID_RULES_FILENAME . '" target="_blank">' . SNORT_OPENAPPID_RULES_URL . SNORT_OPENAPPID_RULES_FILENAME . '</a>.');
+$group->setHelp('Note - the AppID Open Rules file is maintained by a volunteer contributor and hosted by the pfSense team.  ' . 
+'The URL for the file ' . 'is <a href="' . SNORT_OPENAPPID_RULES_URL . SNORT_OPENAPPID_RULES_FILENAME . '" target="_blank">' . 
+SNORT_OPENAPPID_RULES_URL . SNORT_OPENAPPID_RULES_FILENAME . '</a>.');
 $section->add($group);
 $form->add($section);
 
