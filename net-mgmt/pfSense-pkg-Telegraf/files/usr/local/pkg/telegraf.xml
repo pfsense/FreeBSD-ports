@@ -46,13 +46,23 @@
             <fieldname>enable</fieldname>
             <type>checkbox</type>
             <description>Enable Telegraf.</description>
-            <enablefields>interval,influx_server,influx_db,influx_user,influx_pass</enablefields>
+            <enablefields>interval,telegraf_output,influx_server,influx_db,influx_user,influx_pass,elasticsearch_server</enablefields>
         </field>
         <field>
             <fielddescr>Update Interval</fielddescr>
             <fieldname>interval</fieldname>
             <type>input</type>
             <description>Seconds. Default: 10 if not specified</description>
+        </field>
+        <field>
+            <fielddescr>Telegraf Output</fielddescr>
+            <fieldname>telegraf_output</fieldname>
+            <type>select</type>
+            <options>
+                <option><name>InfluxDB</name><value>influxdb</value></option>
+                <option><name>ElasticSearch</name><value>elasticsearch</value></option>
+            </options>
+            <multiple/>
         </field>
         <field>
             <fielddescr>*InfluxDB Server</fielddescr>
@@ -78,6 +88,12 @@
             <type>password</type>
             <description>Database password if required by InfluxDB config</description>
 			<encoding>base64</encoding>
+        </field>
+        <field>
+            <fielddescr>*ElasticSearch Servers</fielddescr>
+            <fieldname>elasticsearch_server</fieldname>
+            <type>input</type>
+            <description>Full HTTP endpoint URL for ElasticSearch instance. E.g.: http://192.168.1.23:9200</description>
         </field>
     </fields>
     <custom_php_resync_config_command>
