@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME?=	pfSense-pkg-zabbix-proxy
-PORTVERSION=	1.0.0
+PORTVERSION=	1.0.1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -25,7 +25,7 @@ SUB_FILES=	pkg-install pkg-deinstall
 SUB_LIST=	PORTNAME=${PORTNAME}
 
 ZABBIXINTERNALNAME?=	zabbix-proxy
-ZABBIXTITLE?=	Zabbix Proxy LTS
+ZABBIXTITLE?=	Zabbix Proxy 3.0
 
 # Same for all Zabbix Proxy ports to share their configs
 # zabbixproxylts for keep compatibility with current configs

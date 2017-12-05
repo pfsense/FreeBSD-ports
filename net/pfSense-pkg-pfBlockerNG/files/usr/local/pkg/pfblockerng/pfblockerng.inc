@@ -2500,34 +2500,28 @@ function pfb_livetail($logfile, $mode) {
 							if (!empty($pfb_query)) {
 								$pfb_found = FALSE;
 
-								if (($handle = @fopen("{$pfb['dnsbl_info']}", 'r')) !== FALSE) {
-									$lock_handle = @try_lock($handle, 5);
-									if ($lock_handle) {
+								$lock_handle = @try_lock("dnsbl_info", 5);
+								if ($lock_handle) {
+									if (($handle = @fopen("{$pfb['dnsbl_info']}", 'r')) !== FALSE) {
 										if (($pfb_output = @fopen("{$pfb['dnsbl_info']}.bk", 'w')) !== FALSE) {
-											$lock_pfb_output = @try_lock($pfb_output, 5);
-											if ($lock_pfb_output) {
-												$pfb_found = TRUE;
+											$pfb_found = TRUE;
 
-												// Find line with corresponding DNSBL Aliasname
-												while (($line = @fgetcsv($handle)) !== FALSE) {
-													if ($line[0] == $pfb_query) {
-															$line[3] += 1;
-													}
-													@fputcsv($pfb_output, $line);
+											// Find line with corresponding DNSBL Aliasname
+											while (($line = @fgetcsv($handle)) !== FALSE) {
+												if ($line[0] == $pfb_query) {
+														$line[3] += 1;
 												}
-												@unlock($lock_pfb_output);
+												@fputcsv($pfb_output, $line);
 											}
-											@unlock_force($pfb_output);
 											@fclose($pfb_output);
 										}
-										@unlock($lock_handle);
+										@fclose($handle);
 									}
-									@unlock_force($handle);
-									@fclose($handle);
 
 									if ($pfb_found) {
 										@rename ("{$pfb['dnsbl_info']}.bk", "{$pfb['dnsbl_info']}");
 									}
+									@unlock($lock_handle);
 								}
 							}
 						}
