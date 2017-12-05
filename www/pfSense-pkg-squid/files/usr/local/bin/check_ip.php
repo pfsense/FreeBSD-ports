@@ -35,14 +35,16 @@ if (!defined(STDOUT)) {
 while (!feof(STDIN)) {
 	$check_ip = trim(fgets(STDIN));
 	$dbs = glob("{$g['vardb_path']}/captiveportal*.db");
-
+	$status = NULL;
 	foreach ($dbs as $db) {
 		if(!strpos($db, "_radius")) {
 			$status = squid_check_ip($db, $check_ip);
-			break;
+			if (isset($status)){
+				break;
+			}
 		}
 	}
-	if (isset($status)) {
+	if (!is_null($status)) {
 		fwrite(STDOUT, "OK user={$status}\n");
 	} else {
 		fwrite(STDOUT, "ERR\n");
