@@ -80,7 +80,7 @@ if (!defined("SNORT_OPENAPPID_DNLD_URL"))
 if (!defined("SNORT_OPENAPPID_DNLD_FILENAME"))
 	define("SNORT_OPENAPPID_DNLD_FILENAME", "snort-openappid.tar.gz");
 if (!defined("SNORT_OPENAPPID_RULES_URL"))
-	define("SNORT_OPENAPPID_RULES_URL", "http://www.ifs.edu.br/");
+	define("SNORT_OPENAPPID_RULES_URL", "http://files.pfsense.org/openappid/");
 if (!defined("SNORT_OPENAPPID_RULES_FILENAME"))
 	define("SNORT_OPENAPPID_RULES_FILENAME", "appid_rules.tar.gz");
 if (!defined("SNORT_RULES_UPD_LOGFILE"))
