@@ -54,7 +54,7 @@ if ($ifinfo['ppplink']) {
 
                         if ($count >= $reset) {
                                 print "Resetting Modem";
-                                shell_exec('echo "AT^RESET" > ' . $port);
+                                shell_exec('echo "AT^RESET" > ' . escapeshellarg($port));
                                 $count = 0;
                         }
 

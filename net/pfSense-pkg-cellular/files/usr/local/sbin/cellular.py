@@ -554,7 +554,7 @@ if __name__ == "__main__":
         interface.set_timeout(args.timeout)
 
     #Before we start kill 3gstat as it blocks us
-    os.system("/bin/ps auxww | /usr/bin/grep \"[3]gstats\" | /usr/bin/awk '{print $2}' | /usr/bin/xargs kill")
+    os.system("/bin/pkill -fx '.*[3]gstats.*'")
 
     ## now call the function
     actions[args.action]["action"](args, **actions[args.action]["kwargs"])

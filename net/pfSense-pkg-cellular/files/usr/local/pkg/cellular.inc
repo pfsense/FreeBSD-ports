@@ -64,18 +64,18 @@ function cellular_sync() {
 
 	foreach (["port", "baudrate", "timeout", "initstring"] as $key) {
 		$key_val = ($cellular[$key] != "default" && $cellular[$key] != "") ? $cellular[$key] : "";
-		exec(PYTHON_BIN . ' ' . INTERFACE_BIN . ' setcfg Interface ' . $key . ' ' . $key_val);
+		exec(PYTHON_BIN . ' ' . INTERFACE_BIN . ' setcfg Interface ' . $key . ' ' . escapeshellarg($key_val));
 	}
 
 	#Cron
 	if ($cellular["enable_cellular_check"] == "on") {
 
-		$check_interface = '-i ' . $cellular["check_interface"];
+		$check_interface = '-i ' . escapeshellarg($cellular["check_interface"]);
 		$check_interval = $cellular["check_interval"];
 		$enable_reset_modem = '';
 
 		if ($cellular["enable_reset_modem"]) {
-			$enable_reset_modem = '-r ' . $cellular['reset_count'];
+			$enable_reset_modem = '-r ' . escapeshellarg($cellular['reset_count']);
 		}
 
 		if ($check_interval == 1) {
@@ -94,10 +94,10 @@ function cellular_sync() {
 			$is_installed = false;
 
 			foreach ($config['cron']['item'] as $item) {
-				if (strstr($item['command'], $command)) {
-					$is_installed = true;
-					break;
-				}
+					if (strstr($item['command'], $command)) {
+							$is_installed = true;
+							break;
+					}
 			}
 
 			if (!$is_installed) {
