@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-VER=2.7.3
+VER=2.7.5
 
 PROJECT_NAME="acme.sh"
 
@@ -164,11 +164,11 @@ _dlg_versions() {
     echo "nginx doesn't exists."
   fi
 
-  echo "nc:"
-  if _exists "nc"; then
-    nc -h 2>&1
+  echo "socat:"
+  if _exists "socat"; then
+    socat -h 2>&1
   else
-    _debug "nc doesn't exists."
+    _debug "socat doesn't exists."
   fi
 }
 
@@ -463,8 +463,7 @@ if _exists xargs && [ "$(printf %s '\\x41' | xargs printf)" = 'A' ]; then
 fi
 
 _h2b() {
-  if _exists xxd; then
-    xxd -r -p
+  if _exists xxd && xxd -r -p 2>/dev/null; then
     return
   fi
 
@@ -1814,7 +1813,13 @@ _send_signed_request() {
 
     _CACHED_NONCE="$(echo "$responseHeaders" | grep "Replay-Nonce:" | _head_n 1 | tr -d "\r\n " | cut -d ':' -f 2)"
 
-    if _contains "$response" "JWS has invalid anti-replay nonce"; then
+    _body="$response"
+    if [ "$needbase64" ]; then
+      _body="$(echo "$_body" | _dbase64)"
+      _debug2 _body "$_body"
+    fi
+
+    if _contains "$_body" "JWS has invalid anti-replay nonce"; then
       _info "It seems the CA server is busy now, let's wait and retry."
       _request_retry_times=$(_math "$_request_retry_times" + 1)
       _sleep 5
@@ -1967,68 +1972,22 @@ _startserver() {
   _debug "ncaddr" "$ncaddr"
 
   _debug "startserver: $$"
-  nchelp="$(nc -h 2>&1)"
 
   _debug Le_HTTPPort "$Le_HTTPPort"
   _debug Le_Listen_V4 "$Le_Listen_V4"
   _debug Le_Listen_V6 "$Le_Listen_V6"
-  _NC="nc"
 
+  _NC="socat"
   if [ "$Le_Listen_V4" ]; then
     _NC="$_NC -4"
   elif [ "$Le_Listen_V6" ]; then
     _NC="$_NC -6"
   fi
 
-  if [ "$Le_Listen_V4$Le_Listen_V6$ncaddr" ]; then
-    if ! _contains "$nchelp" "-4"; then
-      _err "The nc doesn't support '-4', '-6' or local-address, please install 'netcat-openbsd' and try again."
-      _err "See $(__green $_PREPARE_LINK)"
-      return 1
-    fi
-  fi
-
-  if echo "$nchelp" | grep "\-q[ ,]" >/dev/null; then
-    _NC="$_NC -q 1 -l $ncaddr"
-  else
-    if echo "$nchelp" | grep "GNU netcat" >/dev/null && echo "$nchelp" | grep "\-c, \-\-close" >/dev/null; then
-      _NC="$_NC -c -l $ncaddr"
-    elif echo "$nchelp" | grep "\-N" | grep "Shutdown the network socket after EOF on stdin" >/dev/null; then
-      _NC="$_NC -N -l $ncaddr"
-    else
-      _NC="$_NC -l $ncaddr"
-    fi
-  fi
-
   _debug "_NC" "$_NC"
-
-  #for centos ncat
-  if _contains "$nchelp" "nmap.org"; then
-    _debug "Using ncat: nmap.org"
-    if ! _exec "printf \"%s\r\n\r\n%s\" \"HTTP/1.1 200 OK\" \"$content\" | $_NC \"$Le_HTTPPort\" >&2"; then
-      _exec_err
-      return 1
-    fi
-    if [ "$DEBUG" ]; then
-      _exec_err
-    fi
-    return
-  fi
-
-  #  while true ; do
-  if ! _exec "printf \"%s\r\n\r\n%s\" \"HTTP/1.1 200 OK\" \"$content\" | $_NC -p \"$Le_HTTPPort\" >&2"; then
-    _exec "printf \"%s\r\n\r\n%s\" \"HTTP/1.1 200 OK\" \"$content\" | $_NC \"$Le_HTTPPort\" >&2"
-  fi
-
-  if [ "$?" != "0" ]; then
-    _err "nc listen error."
-    _exec_err
-    exit 1
-  fi
-  if [ "$DEBUG" ]; then
-    _exec_err
-  fi
-  #  done
+  #todo  listen address
+  $_NC TCP-LISTEN:$Le_HTTPPort,crlf,reuseaddr,fork SYSTEM:"sleep 0.5; echo HTTP/1.1 200 OK; echo ; echo  $content; echo;" &
+  serverproc="$!"
 }
 
 _stopserver() {
@@ -2038,25 +1997,8 @@ _stopserver() {
     return
   fi
 
-  _debug2 "Le_HTTPPort" "$Le_HTTPPort"
-  if [ "$Le_HTTPPort" ]; then
-    if [ "$DEBUG" ] && [ "$DEBUG" -gt "3" ]; then
-      _get "http://localhost:$Le_HTTPPort" "" 1
-    else
-      _get "http://localhost:$Le_HTTPPort" "" 1 >/dev/null 2>&1
-    fi
-  fi
+  kill $pid
 
-  _debug2 "Le_TLSPort" "$Le_TLSPort"
-  if [ "$Le_TLSPort" ]; then
-    if [ "$DEBUG" ] && [ "$DEBUG" -gt "3" ]; then
-      _get "https://localhost:$Le_TLSPort" "" 1
-      _get "https://localhost:$Le_TLSPort" "" 1
-    else
-      _get "https://localhost:$Le_TLSPort" "" 1 >/dev/null 2>&1
-      _get "https://localhost:$Le_TLSPort" "" 1 >/dev/null 2>&1
-    fi
-  fi
 }
 
 # sleep sec
@@ -2111,7 +2053,7 @@ _starttlsserver() {
     return 1
   fi
 
-  __S_OPENSSL="${ACME_OPENSSL_BIN:-openssl} s_server -cert $TLS_CERT  -key $TLS_KEY "
+  __S_OPENSSL="${ACME_OPENSSL_BIN:-openssl} s_server -www -cert $TLS_CERT  -key $TLS_KEY "
   if [ "$opaddr" ]; then
     __S_OPENSSL="$__S_OPENSSL -accept $opaddr:$port"
   else
@@ -2128,9 +2070,9 @@ _starttlsserver() {
 
   _debug "$__S_OPENSSL"
   if [ "$DEBUG" ] && [ "$DEBUG" -ge "2" ]; then
-    (printf "%s\r\n\r\n%s" "HTTP/1.1 200 OK" "$content" | $__S_OPENSSL -tlsextdebug) &
+    $__S_OPENSSL -tlsextdebug &
   else
-    (printf "%s\r\n\r\n%s" "HTTP/1.1 200 OK" "$content" | $__S_OPENSSL >/dev/null 2>&1) &
+    $__S_OPENSSL >/dev/null 2>&1 &
   fi
 
   serverproc="$!"
@@ -2306,6 +2248,7 @@ _initpath() {
     fi
   fi
 
+  _debug2 ACME_DIRECTORY "$ACME_DIRECTORY"
   _ACME_SERVER_HOST="$(echo "$ACME_DIRECTORY" | cut -d : -f 2 | tr -s / | cut -d / -f 2)"
   _debug2 "_ACME_SERVER_HOST" "$_ACME_SERVER_HOST"
 
@@ -2967,8 +2910,8 @@ _on_before_issue() {
   fi
 
   if _hasfield "$_chk_web_roots" "$NO_VALUE"; then
-    if ! _exists "nc"; then
-      _err "Please install netcat(nc) tools first."
+    if ! _exists "socat"; then
+      _err "Please install socat tools first."
       return 1
     fi
   fi
@@ -3215,7 +3158,7 @@ _regAccount() {
       fi
       if [ "$code" = '202' ]; then
         _info "Update account tos info success."
-
+        echo "$response" >"$ACCOUNT_JSON_PATH"
         CA_KEY_HASH="$(__calcAccountKeyHash)"
         _debug "Calc CA_KEY_HASH" "$CA_KEY_HASH"
         _savecaconf CA_KEY_HASH "$CA_KEY_HASH"
@@ -3554,7 +3497,7 @@ issue() {
       token="$(printf "%s\n" "$entry" | _egrep_o '"token":"[^"]*' | cut -d : -f 2 | tr -d '"')"
       _debug token "$token"
 
-      uri="$(printf "%s\n" "$entry" | _egrep_o '"uri":"[^"]*' | cut -d : -f 2,3 | tr -d '"')"
+      uri="$(printf "%s\n" "$entry" | _egrep_o '"uri":"[^"]*' | cut -d '"' -f 4)"
       _debug uri "$uri"
 
       keyauthorization="$token.$thumbprint"
@@ -3712,13 +3655,12 @@ issue() {
         _info "Standalone mode server"
         _ncaddr="$(_getfield "$_local_addr" "$_ncIndex")"
         _ncIndex="$(_math $_ncIndex + 1)"
-        _startserver "$keyauthorization" "$_ncaddr" &
+        _startserver "$keyauthorization" "$_ncaddr"
         if [ "$?" != "0" ]; then
           _clearup
           _on_issue_err "$_post_hook" "$vlist"
           return 1
         fi
-        serverproc="$!"
         sleep 1
         _debug serverproc "$serverproc"
       elif [ "$_currentRoot" = "$MODE_STATELESS" ]; then
@@ -4053,7 +3995,10 @@ issue() {
   Le_NextRenewTime=$(_math "$Le_NextRenewTime" - 86400)
   _savedomainconf "Le_NextRenewTime" "$Le_NextRenewTime"
 
-  _on_issue_success "$_post_hook" "$_renew_hook"
+  if ! _on_issue_success "$_post_hook" "$_renew_hook"; then
+    _err "Call hook error."
+    return 1
+  fi
 
   if [ "$_real_cert$_real_key$_real_ca$_reload_cmd$_real_fullchain" ]; then
     _savedomainconf "Le_RealCertPath" "$_real_cert"
@@ -4075,7 +4020,6 @@ renew() {
   fi
 
   _isEcc="$2"
-  Le_ReloadCmd="$3"
 
   _initpath "$Le_Domain" "$_isEcc"
 
@@ -4836,9 +4780,9 @@ _precheck() {
     return 1
   fi
 
-  if ! _exists "nc"; then
-    _err "It is recommended to install nc first, try to install 'nc' or 'netcat'."
-    _err "We use nc for standalone server if you use standalone mode."
+  if ! _exists "socat"; then
+    _err "It is recommended to install socat first."
+    _err "We use socat for standalone server if you use standalone mode."
     _err "If you don't use standalone mode, just ignore this warning."
   fi
 
@@ -4938,9 +4882,11 @@ install() {
     _debug "Skip install cron job"
   fi
 
-  if ! _precheck "$_nocron"; then
-    _err "Pre-check failed, can not install."
-    return 1
+  if [ "$IN_CRON" != "1" ]; then
+    if ! _precheck "$_nocron"; then
+      _err "Pre-check failed, can not install."
+      return 1
+    fi
   fi
 
   if [ -z "$_c_home" ] && [ "$LE_CONFIG_HOME" != "$LE_WORKING_DIR" ]; then
@@ -4993,7 +4939,9 @@ install() {
 
   _info "Installed to $LE_WORKING_DIR/$PROJECT_ENTRY"
 
-  _installalias "$_c_home"
+  if [ "$IN_CRON" != "1" ]; then
+    _installalias "$_c_home"
+  fi
 
   for subf in $_SUB_FOLDERS; do
     if [ -d "$subf" ]; then
@@ -5083,7 +5031,7 @@ _uninstallalias() {
 }
 
 cron() {
-  IN_CRON=1
+  export IN_CRON=1
   _initpath
   _info "$(__green "===Starting cron===")"
   if [ "$AUTO_UPGRADE" = "1" ]; then
@@ -5820,7 +5768,7 @@ _process() {
       installcert "$_domain" "$_cert_file" "$_key_file" "$_ca_file" "$_reloadcmd" "$_fullchain_file" "$_ecc"
       ;;
     renew)
-      renew "$_domain" "$_ecc" "$_reloadcmd"
+      renew "$_domain" "$_ecc"
       ;;
     renewAll)
       renewAll "$_stopRenewOnError"
