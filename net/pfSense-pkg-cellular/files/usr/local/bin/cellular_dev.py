@@ -37,19 +37,19 @@ mgmt_path = "/dev/" + mgm_file
 def remove_link():
 
     if os.path.lexists(data_path):
-        os.system("rm " + data_path)
+        os.unlink(data_path)
 
     if os.path.lexists(mgmt_path):
-        os.system("rm " + mgmt_path)
+        os.unlink(mgmt_path)
 
     #Remove locks
     data_lock = "/var/spool/lock/LCK.." + data_file
     if os.path.exists(data_lock):
-        os.system("rm " + data_lock)
+        os.remove(data_lock)
     
     mgmt_lock = "/var/spool/lock/LCK.." + mgm_file
     if os.path.exists(mgmt_lock):
-        os.system("rm " + mgmt_lock)
+        os.remove(mgmt_lock)
 
 # Argument parser
 parser = argparse.ArgumentParser(description = "Interface for Cellular Dev Point")
@@ -78,20 +78,20 @@ if args.add:
         remove_link()
 
         #Before we start kill 3gstat as it blocks us
-        os.system("/bin/ps auxww | /usr/bin/grep \"[3]gstats\" | /usr/bin/awk '{print $2}' | /usr/bin/xargs kill")
+        os.system("/bin/pkill -fx '.*[3]gstats.*'")
 
         dev_pre = args.device[:-1]
         dev_post = args.device[-1]
-        dev_ug = commands.getoutput("sysctl -n dev." + dev_pre + "." + dev_post + ".ttyname")
+        dev_ug = commands.getoutput("/sbin/sysctl -n dev." + dev_pre + "." + dev_post + ".ttyname")
         path_ug = "/dev/cua" + dev_ug
 
         data_ug = path_ug + ".0"
         if os.path.exists(data_ug):
-            os.system("ln -s " + data_ug + " " + data_path)
+            os.link(data_ug, data_path)
 
         mgmt_ug = path_ug + ".2"
         if os.path.exists(mgmt_ug):
-            os.system("ln -s " + mgmt_ug + " " + mgmt_path)
+            os.link(mgmt_ug, mgmt_path)
 
 elif args.remove:
 
