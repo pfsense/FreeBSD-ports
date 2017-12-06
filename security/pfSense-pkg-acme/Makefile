@@ -1,18 +1,19 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-acme
-PORTVERSION=	0.1.23
+PORTVERSION=	0.1.30
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	PiBa.NL.dev@gmail.com
-COMMENT=	pfSense package acme
+COMMENT=	ACME package for pfSense
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	pecl-ssh2-0>=0.13:security/pecl-ssh2-0
+RUN_DEPENDS=	pecl-ssh2-0>=0.13:security/pecl-ssh2-0 \
+		${LOCALBASE}/bin/socat:net/socat
 
 USES=		php
 USE_PHP=	ftp
