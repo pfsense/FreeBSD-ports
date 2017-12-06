@@ -37,10 +37,10 @@ mgmt_path = "/dev/" + mgm_file
 def remove_link():
 
     if os.path.lexists(data_path):
-        os.unlink(data_path)
+        os.remove(data_path)
 
     if os.path.lexists(mgmt_path):
-        os.unlink(mgmt_path)
+        os.remove(mgmt_path)
 
     #Remove locks
     data_lock = "/var/spool/lock/LCK.." + data_file
