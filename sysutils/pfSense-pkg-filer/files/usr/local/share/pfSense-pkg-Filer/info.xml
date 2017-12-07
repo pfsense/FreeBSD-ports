@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>Filer</name>
+		<descr><![CDATA[Allows you to create and overwrite files from the GUI.]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>filer.xml</configurationfile>
+		<category>Diagnostics</category>
+	</package>
+</pfsensepkgs>
