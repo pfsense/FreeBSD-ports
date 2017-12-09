@@ -234,8 +234,8 @@
 			<fieldname>temp03</fieldname>
 		</field>
 		<field>
-			<fielddescr>TLL</fielddescr>
-			<fieldname>tll</fieldname>
+			<fielddescr>TTL</fielddescr>
+			<fieldname>ttl</fieldname>
 			<description>Default expiration time of all resource records without their own TTL value.</description>
 			<type>input</type>
 		</field>
