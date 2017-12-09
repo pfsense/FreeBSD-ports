@@ -44,7 +44,7 @@ function bind_zone_validate($post, &$input_errors) {
 	}
 
 	if (isset($_POST['rpz']) && $_POST['rpz'] == "on") {
-		if ($_POST['type'] !== "master" || $_POST['type'] !== "slave") {
+		if ($_POST['type'] !== "master" && $_POST['type'] !== "slave") {
 			$input_errors[] = "Only a master or slave zone can be used in a response policy";
 		}
 	}
@@ -476,14 +476,14 @@ EOD;
 						chown(CHROOT_LOCALBASE . "/etc/namedb/$zonetype/$zoneview", "bind");
 						$zonettl = $zone['ttl'] ? $zone['ttl'] : "43200";
 						$zonemail = $zone['mail'] ? $zone['mail'] : "zonemaster.{$zonename}";
-						$zonemail = preg_replace("/@/", ".", $zonemail);
+						$zonemail = $zonerpz ? "root.localhost" : preg_replace("/@/", ".", $zonemail);
 						$zoneserial = $zone['serial'];
 						$zonerefresh = $zone['refresh'] ? $zone['refresh'] : "3600";
 						$zoneretry = $zone['retry'] ? $zone['retry'] : "600";
 						$zoneexpire = $zone['expire'] ? $zone['expire'] : "86400";
 						$zoneminimum = $zone['minimum'] ? $zone['minimum'] : "3600";
-						$zonenameserver = $zone['nameserver'];
-						$zoneipns = $zone['ipns'];
+						$zonenameserver = $zonerpz ? "localhost" : $zone['nameserver'];
+						$zoneipns = $zonerpz ? "" : $zone['ipns'];
 						$zonereverso = $zone['reverso'];
 						$zonereversv6o = $zone['reversv6o'];
 
@@ -494,7 +494,7 @@ EOD;
 							} else {
 								$zone_conf .= "\$ORIGIN {$zonename}.in-addr.arpa.\n\n";
 							}
-						} else {
+						} elseif (!$zonerpz) {
 							$zone_conf .= "\$ORIGIN {$zonename}.\n\n";
 						}
 						$zone_conf .= ";\tDatabase file {$zonename}.DB for {$zonename} zone.\n";
