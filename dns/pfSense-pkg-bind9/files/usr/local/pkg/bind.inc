@@ -185,6 +185,7 @@ EOD;
 			$bind_conf .= "\t\tzone \"$rpz\";\n";
 		}
 		$bind_conf .= "\t};\n";
+	}
 	// Check response rate limit option
 	//https://kb.isc.org/article/AA-01000/0/A-Quick-Introduction-to-Response-Rate-Limiting.html
 	//http://ss.vix.su/~vjs/rl-arm.html
