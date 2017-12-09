@@ -154,6 +154,12 @@
 			<type>checkbox</type>
 		</field>
 		<field>
+			<fielddescr>Response Policy Zone</fielddescr>
+			<fieldname>rpz</fieldname>
+			<description>Check if this zone is used in a response policy.</description>
+			<type>checkbox</type>
+		</field>
+		<field>
 			<fielddescr>Custom Option</fielddescr>
 			<fieldname>custom</fieldname>
 			<description>You can put your own custom options here.</description>
