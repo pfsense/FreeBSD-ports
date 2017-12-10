@@ -449,8 +449,9 @@ if ($suricatacfg['eve_log_smtp'] == 'on') {
 		$eve_out_types .= "\n            extended: yes";
 	else
 		$eve_out_types .= "\n            extended: no";
+	if($suricatacfg['eve_log_smtp_extended_fields'] != "")
+		$eve_out_types .= "\n            custom: [".$suricatacfg['eve_log_smtp_extended_fields']."]";
 
-	$eve_out_types .= "\n            custom: [received, x-mailer, x-originating-ip, relays, reply-to, bcc]";
 	$eve_out_types .= "\n            md5: [subject]";
 }
 
