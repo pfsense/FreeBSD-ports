@@ -1090,7 +1090,7 @@ $section->add($group)->addClass('eve_log_info');
 
 $section->addInput(new Form_Select(
 	'eve_log_http_extended_headers',
-	'HTTP Extended Headers',
+	'Extended HTTP Headers',
 	explode(", ",$pconfig['eve_log_http_extended_headers']),
 	array("accept"=>"accept","accept-charset"=>"accept-charset","accept-datetime"=>"accept-datetime","accept-encoding"=>"accept-encoding","accept-language"=>"accept-language","accept-range"=>"accept-range","age"=>"age","allow"=>"allow","authorization"=>"authorization","cache-control"=>"cache-control","connection"=>"connection","content-encoding"=>"content-encoding","content-language"=>"content-language","content-length"=>"content-length","content-location"=>"content-location","content-md5"=>"content-md5","content-range"=>"content-range","content-type"=>"content-type","cookie"=>"cookie","date"=>"date","dnt"=>"dnt","etags"=>"etags","from"=>"from","last-modified"=>"last-modified","link"=>"link","location"=>"location","max-forwards"=>"max-forwards","origin"=>"origin","pragma"=>"pragma","proxy-authenticate"=>"proxy-authenticate","proxy-authorization"=>"proxy-authorization","range"=>"range","referrer"=>"referrer","refresh"=>"refresh","retry-after"=>"retry-after","server"=>"server","set-cookie"=>"set-cookie","te"=>"te","trailer"=>"trailer","transfer-encoding"=>"transfer-encoding","upgrade"=>"upgrade","vary"=>"vary","via"=>"via","warning"=>"warning","www-authenticate"=>"www-authenticate","x-authenticated-user"=>"x-authenticated-user","x-flash-version"=>"x-flash-version","x-forwarded-proto"=>"x-forwarded-proto","x-requested-with"=>"x-requested-with"),
 	true
@@ -1099,7 +1099,7 @@ $section->addInput(new Form_Select(
 
 $section->addInput(new Form_Select(
 	'eve_log_smtp_extended_fields',
-	'SMTP Extended fields',
+	'Extended SMTP Fields',
 	explode(", ",$pconfig['eve_log_smtp_extended_fields']),
 	array("bcc"=>"bcc","content-md5"=>"content-md5","date"=>"date","importance"=>"importance","in-reply-to"=>"in-reply-to","message-id"=>"message-id","organization"=>"organization","priority"=>"priority","received"=>"received","references"=>"references","reply-to"=>"reply-to","sensitivity"=>"sensitivity","subject"=>"subject","user-agent"=>"user-agent","x-mailer"=>"x-mailer","x-originating-ip"=>"x-originating-ip"),
 	true
@@ -1565,6 +1565,7 @@ events.push(function(){
 	function toggle_eve_log_http() {
 		var disable = ! $('#eve_log_http').prop('checked');
 		disableInput('eve_log_http_extended',disable);
+		toggle_eve_log_http_extended();
 	}
 
 	function toggle_eve_log_tls() {
@@ -1575,6 +1576,7 @@ events.push(function(){
 	function toggle_eve_log_smtp() {
 		var disable = ! $('#eve_log_smtp').prop('checked');
 		disableInput('eve_log_smtp_extended',disable);
+		toggle_eve_log_smtp_extended();
 	}
 
 	function toggle_eve_log_files() {
@@ -1582,6 +1584,18 @@ events.push(function(){
 		hideCheckbox('eve_log_files_magic',hide);
 		hideSelect('eve_log_files_hash',hide);
 	}
+
+	function toggle_eve_log_http_extended() {
+		var hide = ! ($('#eve_log_http_extended').prop('checked') && $('#enable_eve_log').prop('checked') && $('#eve_log_http').prop('checked'));
+		hideSelect('eve_log_http_extended_headers\\[\\]',hide);
+	}
+
+	function toggle_eve_log_smtp_extended() {
+		var hide = ! ($('#eve_log_smtp_extended').prop('checked') && $('#enable_eve_log').prop('checked') && $('#eve_log_smtp').prop('checked'));
+		hideSelect('eve_log_smtp_extended_fields\\[\\]',hide);
+	}
+
+
 
 	function enable_change() {
 		var disable = ! $('#enable').prop('checked');
@@ -1676,6 +1690,10 @@ events.push(function(){
 		disableInput('eve_log_stats_deltas',disable);
 		disableInput('eve_log_stats_threads',disable);
 
+		disableInput('eve_log_http_extended_headers\\[\\]',disable);
+		disableInput('eve_log_smtp_extended_fields\\[\\]',disable);
+
+
 	}
 
 	// Call the list viewing page and write what it returns to the modal text area
@@ -1759,6 +1777,8 @@ events.push(function(){
 		toggle_eve_log_alerts();
 		toggle_eve_log_alerts_xff();
 		toggle_eve_log_stats();
+		toggle_eve_log_http_extended();
+		toggle_eve_log_smtp_extended();
 	});
 
 	$('#eve_output_type').change(function() {
@@ -1796,6 +1816,14 @@ events.push(function(){
 
 	$('#blockoffenders').click(function() {
 		enable_blockoffenders();
+	});
+
+	$('#eve_log_http_extended').click(function(){
+		toggle_eve_log_http_extended();
+	});
+
+	$('#eve_log_smtp_extended').click(function(){
+		toggle_eve_log_smtp_extended();
 	});
 
 	$('#ips_mode').on('change', function() {
