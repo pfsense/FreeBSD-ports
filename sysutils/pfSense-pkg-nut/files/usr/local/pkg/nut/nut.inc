@@ -32,6 +32,7 @@ define("NUT_UPSFILE", NUT_ETC . "/ups.conf");
 define("NUT_UPSDFILE", NUT_ETC . "/upsd.conf");
 define("NUT_USERSFILE", NUT_ETC . "/upsd.users");
 define("NUT_RCFILE", "/usr/local/etc/rc.d/nut.sh");
+define("NUT_SHUTDOWNFILE", "/usr/local/etc/rc.d/shutdown.nut.sh");
 
 $shortcut_section = "nut";
 
@@ -57,6 +58,18 @@ function nut_check_var_db() {
 		chgrp($d, "uucp");
 	}
 }
+
+function nut_write_file($file, $content, $perm) {
+	$fd = fopen($file, "w");
+	if (!$fd) {
+		log_error("ERROR: Could not open {$file} for writing");
+		exit;
+	}
+	chmod($file, $perm);
+	fwrite($fd, $content);
+	fclose($fd);
+}
+
 
 function nut_write_rcfile($driver) {
 	nut_check_var_db();
@@ -97,15 +110,15 @@ function nut_write_rcfile($driver) {
 }
 
 
-function nut_write_file($file, $content) {
-	$fd = fopen($file, "w");
-	if (!$fd) {
-		log_error("ERROR: Could not open {$file} for writing");
-		exit;
-	}
-	chmod($file, 0640);
-	fwrite($fd, $content);
-	fclose($fd);
+function nut_write_shutdownfile() {
+	$shutdownfile = "#!/bin/sh\n\n";
+	$shutdownfile .= "if /usr/local/sbin/upsmon -K\n";
+	$shutdownfile .= "then\n";
+	$shutdownfile .= "	echo \"NUT killing power...\" | wall\n";
+	$shutdownfile .= "	/usr/local/sbin/upsdrvctl shutdown\n";
+	$shutdownfile .= "fi\n";
+
+	nut_write_file(NUT_SHUTDOWNFILE, $shutdownfile, 0755);
 }
 
 
@@ -125,11 +138,12 @@ function nut_sync_config() {
 	}
 
 	if ($type == 'disabled') {
-		unlink_if_exists(NUT_RCFILE);
 		unlink_if_exists(NUT_MONFILE);
 		unlink_if_exists(NUT_UPSFILE);
 		unlink_if_exists(NUT_UPSDFILE);
 		unlink_if_exists(NUT_USERSFILE);
+		unlink_if_exists(NUT_RCFILE);
+		unlink_if_exists(NUT_SHUTDOWNFILE);
 		return;
 	}
 
@@ -257,22 +271,23 @@ function nut_sync_config() {
 
 	conf_mount_rw();
 	if (!empty($upsfile)) {
-		nut_write_file(NUT_UPSFILE, $upsfile);
+		nut_write_file(NUT_UPSFILE, $upsfile, 0640);
 	} else {
 		unlink_if_exists(NUT_UPSFILE);
 	}
 	if (!empty($upsdfile)) {
-		nut_write_file(NUT_UPSDFILE, $upsdfile);
+		nut_write_file(NUT_UPSDFILE, $upsdfile, 0640);
 	} else {
 		unlink_if_exists(NUT_UPSDFILE);
 	}
 	if (!empty($usersfile)) {
-		nut_write_file(NUT_USERSFILE, $usersfile);
+		nut_write_file(NUT_USERSFILE, $usersfile, 0640);
 	} else {
 		unlink_if_exists(NUT_USERSFILE);
 	}
-	nut_write_file(NUT_MONFILE, $monfile);
+	nut_write_file(NUT_MONFILE, $monfile, 0640);
 	nut_write_rcfile($driver);
+	nut_write_shutdownfile();
 	conf_mount_ro();
 
 	if (platform_booting()) {
@@ -458,9 +473,10 @@ function nut_deinstall_command() {
 		stop_service('nut');
 	}
 
-	unlink_if_exists(NUT_RCFILE);
 	unlink_if_exists(NUT_MONFILE);
 	unlink_if_exists(NUT_UPSFILE);
 	unlink_if_exists(NUT_UPSDFILE);
 	unlink_if_exists(NUT_USERSFILE);
+	unlink_if_exists(NUT_RCFILE);
+	unlink_if_exists(NUT_SHUTDOWNFILE);
 }

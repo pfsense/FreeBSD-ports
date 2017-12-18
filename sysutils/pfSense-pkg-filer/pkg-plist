@@ -1,0 +1,7 @@
+pkg/filer.xml
+pkg/filer_sync.xml
+pkg/filer.inc
+/etc/inc/priv/filer.priv.inc
+%%DATADIR%%/info.xml
+@dir /etc/inc/priv
+@dir /etc/inc
