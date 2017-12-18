@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nss
-PORTVERSION=	3.34
+PORTVERSION=	3.34.1
 #DISTVERSIONSUFFIX=	-with-ckbi-1.98
 CATEGORIES=	security
 MASTER_SITES=	MOZILLA/security/${PORTNAME}/releases/${DISTNAME:tu:C/[-.]/_/g}_RTM/src
@@ -57,7 +57,7 @@ BINS=		${DIST}/${OPSYS}${OSREL}_OPT.OBJ
 BINS=		${DIST}/${OPSYS}${OSREL}_DBG.OBJ
 .endif
 
-.if ${OPSYS} == FreeBSD && ${ARCH} == i386
+.if ${OPSYS} == FreeBSD && ${ARCH} == i386 && ! ${MACHINE_CPU:Msse2}
 USES+=		compiler:c++14-lang # gcm.h
 .endif
 
