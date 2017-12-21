@@ -427,7 +427,9 @@ function frr_bgp_generate_neighbors() {
 	$nconf = "\n  # BGP Neighbors\n";
 
 	foreach ($frr_neighbor_conf as $neighbor) {
-
+		/* Placeholder for directives that could be global or in address-family */
+		$tconf = "";
+		$afconf = "";
 		/* General Options */
 		/* Check if this is a group or a peer */
 		$ntype = "peer";
@@ -439,22 +441,29 @@ function frr_bgp_generate_neighbors() {
 			    ($neighbor['peergroup'] != 'none') &&
 			    in_array($neighbor['peergroup'], frr_get_list_values(frr_get_bgp_neighbor_list(true)))) {
 				$nconf .= "  neighbor {$neighbor['peer']} peer-group {$neighbor['peergroup']}\n";
-			} else {
-				$nconf .= "  neighbor {$neighbor['peer']}\n";
+				$tconf .= "  neighbor {$neighbor['peer']} peer-group {$neighbor['peergroup']}\n";
 			}
+			$afconf .= "  address-family";
+			if (is_ipaddrv4($neighbor['peer'])) {
+				$afconf .= " ipv4";
+			} elseif (is_ipaddrv6($neighbor['peer'])) {
+				$afconf .= " ipv6";
+			}
+			$afconf .= " unicast\n";
+			$afconf .= "    neighbor {$neighbor['peer']} activate\n";
 		} else {
 			/* This is not a valid neighbor! */
 			continue;
 		}
 
+		/* remote-as must come first, except for peer-group def/member line! */
+		if (frr_validate_asnum($neighbor['asnum'])) {
+			$nconf .= "  neighbor {$neighbor['peer']} remote-as {$neighbor['asnum']}\n";
+		}
+
 		if (!empty($neighbor['descr'])) {
 			$neighbor['descr'] = substr($neighbor['descr'], 0, 80);
 			$nconf .= "  neighbor {$neighbor['peer']} description {$neighbor['descr']}\n";
-		}
-
-		/* Basic Options */
-		if (frr_validate_asnum($neighbor['asnum'])) {
-			$nconf .= "  neighbor {$neighbor['peer']} remote-as {$neighbor['asnum']}\n";
 		}
 
 		if (in_array($neighbor['updatesource'], frr_get_list_values(frr_get_interfaces())) &&
@@ -465,28 +474,26 @@ function frr_bgp_generate_neighbors() {
 			}
 		}
 
-		/* TODO: Candidate for moving to address-family */
 		if (!empty($neighbor['defaultoriginate']) && ($neighbor['defaultoriginate'] != "no")) {
-			$nconf .= "  neighbor {$neighbor['peer']} default-originate";
+			$tconf .= "  neighbor {$neighbor['peer']} default-originate";
 			if (($neighbor['defaultoriginate'] != "yes") &&
 			    in_array($neighbor['defaultoriginate'], frr_get_list_values(frr_get_routemap_list(false, true)))) {
-				$nconf .= " route-map {$neighbor['defaultoriginate']}";
+				$tconf .= " route-map {$neighbor['defaultoriginate']}";
 			}
-			$nconf .= "\n";
+			$tconf .= "\n";
 		}
 
-		/* TODO: Candidate for moving to address-family */
 		switch ($neighbor['sendcommunity']) {
 			case "disabled":
-				$nconf .= "  no neighbor {$neighbor['peer']} send-community\n";
+				$tconf .= "  no neighbor {$neighbor['peer']} send-community\n";
 				break;
 			case "enabled":
-				$nconf .= "  neighbor {$neighbor['peer']} send-community\n";
+				$tconf .= "  neighbor {$neighbor['peer']} send-community\n";
 				break;
 			case "standard":
 			case "extended":
 			case "both":
-				$nconf .= "  neighbor {$neighbor['peer']} send-community {$neighbor['sendcommunity']}\n";
+				$tconf .= "  neighbor {$neighbor['peer']} send-community {$neighbor['sendcommunity']}\n";
 				break;
 			default:
 		}
@@ -498,16 +505,14 @@ function frr_bgp_generate_neighbors() {
 			$nconf .= "  neighbor {$neighbor['peer']} password {$neighbor['password']}\n";
 		}
 
-		/* TODO: Candidate for moving to address-family */
 		if ($neighbor['nexthopself'] == "enabled") {
-			$nconf .= "  neighbor {$neighbor['peer']} next-hop-self\n";
+			$tconf .= "  neighbor {$neighbor['peer']} next-hop-self\n";
 		} elseif ($neighbor['nexthopself'] == "force") {
-			$nconf .= "  neighbor {$neighbor['peer']} next-hop-self force\n";
+			$tconf .= "  neighbor {$neighbor['peer']} next-hop-self force\n";
 		}
 
-		/* TODO: Candidate for moving to address-family */
 		if (!empty($neighbor['softreconfigurationinbound'])) {
-			$nconf .= "  neighbor {$neighbor['peer']} soft-reconfiguration inbound\n";
+			$tconf .= "  neighbor {$neighbor['peer']} soft-reconfiguration inbound\n";
 		}
 
 		if (frr_validate_intrange($neighbor['timers_keepalive'], 0, 65535)) {
@@ -524,106 +529,93 @@ function frr_bgp_generate_neighbors() {
 		}
 
 		/* Peer Filtering */
-		/* TODO: Candidate for moving to address-family */
 		if (in_array($neighbor['distribute_in'], frr_get_list_values(frr_get_accesslist_list())) &&
 		    ($neighbor['distribute_in'] != "none")) {
-			$nconf .= "  neighbor {$neighbor['peer']} distribute-list {$neighbor['distribute_in']} in\n";
+			$tconf .= "  neighbor {$neighbor['peer']} distribute-list {$neighbor['distribute_in']} in\n";
 		}
-		/* TODO: Candidate for moving to address-family */
 		if (in_array($neighbor['distribute_out'], frr_get_list_values(frr_get_accesslist_list())) &&
 		    ($neighbor['distribute_out'] != "none")) {
-			$nconf .= "  neighbor {$neighbor['peer']} distribute-list {$neighbor['distribute_out']} out\n";
+			$tconf .= "  neighbor {$neighbor['peer']} distribute-list {$neighbor['distribute_out']} out\n";
 		}
 
 		if (in_array($neighbor['prefixfilter_in'], frr_get_list_values(frr_get_prefixlist_list())) &&
 		    ($neighbor['prefixfilter_in'] != "none")) {
-			$nconf .= "  neighbor {$neighbor['peer']} prefix-list {$neighbor['prefixfilter_in']} in\n";
+			$tconf .= "  neighbor {$neighbor['peer']} prefix-list {$neighbor['prefixfilter_in']} in\n";
 		}
 		if (in_array($neighbor['prefixfilter_out'], frr_get_list_values(frr_get_prefixlist_list())) &&
 		    ($neighbor['prefixfilter_out'] != "none")) {
-			$nconf .= "  neighbor {$neighbor['peer']} prefix-list {$neighbor['prefixfilter_out']} out\n";
+			$tconf .= "  neighbor {$neighbor['peer']} prefix-list {$neighbor['prefixfilter_out']} out\n";
 		}
 
-		/* TODO: Candidate for moving to address-family */
 		if (in_array($neighbor['aspathfilter_in'], frr_get_list_values(frr_get_bgp_aspath_list())) &&
 		    ($neighbor['aspathfilter_in'] != "none")) {
-			$nconf .= "  neighbor {$neighbor['peer']} filter-list {$neighbor['aspathfilter_in']} in\n";
+			$tconf .= "  neighbor {$neighbor['peer']} filter-list {$neighbor['aspathfilter_in']} in\n";
 		}
-		/* TODO: Candidate for moving to address-family */
 		if (in_array($neighbor['aspathfilter_out'], frr_get_list_values(frr_get_bgp_aspath_list())) &&
 		    ($neighbor['aspathfilter_out'] != "none")) {
-			$nconf .= "  neighbor {$neighbor['peer']} filter-list {$neighbor['aspathfilter_out']} out\n";
+			$tconf .= "  neighbor {$neighbor['peer']} filter-list {$neighbor['aspathfilter_out']} out\n";
 		}
 
-		/* TODO: Candidate for moving to address-family */
 		if (in_array($neighbor['routemap_in'], frr_get_list_values(frr_get_routemap_list())) &&
 		    ($neighbor['routemap_in'] != "none")) {
-			$nconf .= "  neighbor {$neighbor['peer']} route-map {$neighbor['routemap_in']} in\n";
+			$tconf .= "  neighbor {$neighbor['peer']} route-map {$neighbor['routemap_in']} in\n";
 		}
-		/* TODO: Candidate for moving to address-family */
 		if (in_array($neighbor['routemap_out'], frr_get_list_values(frr_get_routemap_list())) &&
 		    ($neighbor['routemap_out'] != "none")) {
-			$nconf .= "  neighbor {$neighbor['peer']} route-map {$neighbor['routemap_out']} out\n";
+			$tconf .= "  neighbor {$neighbor['peer']} route-map {$neighbor['routemap_out']} out\n";
 		}
 
-		/* TODO: Candidate for moving to address-family */
 		if (in_array($neighbor['unsuppressmap'], frr_get_list_values(frr_get_routemap_list())) &&
 		    ($neighbor['unsuppressmap'] != "none")) {
-			$nconf .= "  neighbor {$neighbor['peer']} unsuppress-map {$neighbor['unsuppressmap']}\n";
+			$tconf .= "  neighbor {$neighbor['peer']} unsuppress-map {$neighbor['unsuppressmap']}\n";
 		}
 
 		/* Advanced Options */
-		/* TODO: Candidate for moving to address-family */
 		if (frr_validate_intrange($neighbor['weight'], 0, 65535)) {
-			$nconf .= "  neighbor {$neighbor['peer']} weight {$neighbor['weight']}\n";
+			$tconf .= "  neighbor {$neighbor['peer']} weight {$neighbor['weight']}\n";
 		}
 
 		if (!empty($neighbor['passive'])) {
 			$nconf .= "  neighbor {$neighbor['peer']} passive\n";
 		}
 
-		/* TODO: Candidate for moving to address-family */
 		if (!empty($neighbor['addpathtxallpaths'])) {
-			$nconf .= "  neighbor {$neighbor['peer']} addpath-tx-all-paths\n";
+			$tconf .= "  neighbor {$neighbor['peer']} addpath-tx-all-paths\n";
 		}
-		/* TODO: Candidate for moving to address-family */
 		if (!empty($neighbor['addpathtxbestpathperas'])) {
-			$nconf .= "  neighbor {$neighbor['peer']} addpath-tx-bestpath-per-AS\n";
+			$tconf .= "  neighbor {$neighbor['peer']} addpath-tx-bestpath-per-AS\n";
 		}
 
 		if (frr_validate_intrange($neighbor['advertisementinterval'], 0, 600)) {
 			$nconf .= "  neighbor {$neighbor['peer']} advertisement-interval {$neighbor['advertisementinterval']}\n";
 		}
 
-		/* TODO: Candidate for moving to address-family */
 		if (!empty($neighbor['allowasin']) && ($neighbor['allowasin'] != "disabled")) {
-			$nconf .= "  neighbor {$neighbor['peer']} allowas-in";
+			$tconf .= "  neighbor {$neighbor['peer']} allowas-in";
 			if ($neighbor['allowasin'] == "origin") {
-				$nconf .= " origin";
+				$tconf .= " origin";
 			} elseif (frr_validate_intrange($neighbor['allowasin'], 1, 10)) {
-				$nconf .= " {$neighbor['allowasin']}";
+				$tconf .= " {$neighbor['allowasin']}";
 			}
-			$nconf .= "\n";
+			$tconf .= "\n";
 		}
 
-		/* TODO: Candidate for moving to address-family */
 		if (!empty($neighbor['asoverride'])) {
-			$nconf .= "  neighbor {$neighbor['peer']} as-override\n";
+			$tconf .= "  neighbor {$neighbor['peer']} as-override\n";
 		}
 
-		/* TODO: Candidate for moving to address-family */
 		if (!empty($neighbor['attributeunchanged'])) {
-			$nconf .= "  neighbor {$neighbor['peer']} attribute-unchanged";
+			$tconf .= "  neighbor {$neighbor['peer']} attribute-unchanged";
 			if (!empty($neighbor['attributeunchanged_aspath'])) {
-				$nconf .= " as-path";
+				$tconf .= " as-path";
 			}
 			if (!empty($neighbor['attributeunchanged_med'])) {
-				$nconf .= " med";
+				$tconf .= " med";
 			}
 			if (!empty($neighbor['attributeunchanged_nexthop'])) {
-				$nconf .= " next-hop";
+				$tconf .= " next-hop";
 			}
-			$nconf .= "\n";
+			$tconf .= "\n";
 		}
 
 		if (frr_validate_intrange($neighbor['bfd_multiplier'], 2, 255)) {
@@ -691,28 +683,35 @@ function frr_bgp_generate_neighbors() {
 			$nconf .= "\n";
 		}
 
-		/* TODO: Candidate for moving to address-family */
 		if (!empty($neighbor['removeprivateas'])) {
-			$nconf .= "  neighbor {$neighbor['peer']} remove-private-AS";
+			$tconf .= "  neighbor {$neighbor['peer']} remove-private-AS";
 			if (!empty($neighbor['removeprivateas_all'])) {
-				$nconf .= " all";
+				$tconf .= " all";
 			}
 			if (!empty($neighbor['removeprivateas_replace'])) {
-				$nconf .= " replace-AS";
+				$tconf .= " replace-AS";
 			}
-			$nconf .= "\n";
+			$tconf .= "\n";
 		}
 
 		if (!empty($neighbor['routeclient_reflector'])) {
-			$nconf .= "  neighbor {$neighbor['peer']} route-reflector-client\n";
+			$tconf .= "  neighbor {$neighbor['peer']} route-reflector-client\n";
 		}
-		/* TODO: Candidate for moving to address-family */
 		if (!empty($neighbor['routeclient_server'])) {
-			$nconf .= "  neighbor {$neighbor['peer']} route-server-client\n";
+			$tconf .= "  neighbor {$neighbor['peer']} route-server-client\n";
 		}
 
 		if (!empty($neighbor['solo'])) {
 			$nconf .= "  neighbor {$neighbor['peer']} solo\n";
+		}
+
+		if (!empty($afconf)) {
+			/* Fix spacing for extra directives */
+			$tconf = str_replace("\n", "\n  ", $tconf);
+			/* Add the AF header, extra directives, and then exit the block */
+			$nconf .= $afconf . '  ' . $tconf . "exit-address-family \n";
+		} else {
+			$nconf .= $tconf;
 		}
 
 	}
