@@ -163,6 +163,15 @@
 			<source><![CDATA[frr_get_routemap_list(false, true)]]></source>
 			<source_name>name</source_name>
 			<source_value>value</source_value>
+		</field>
+		<field>
+			<fielddescr>Redistribute OSPF</fielddescr>
+			<fieldname>redistributeospf</fieldname>
+			<description>Redistribute OSPF routes to BGP Neighbors</description>
+			<type>select_source</type>
+			<source><![CDATA[frr_get_routemap_list(false, true)]]></source>
+			<source_name>name</source_name>
+			<source_value>value</source_value>
 			<combinefields>end</combinefields>
 		</field>
 		<field>
