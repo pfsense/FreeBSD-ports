@@ -179,6 +179,9 @@ function frr_generate_config_ospf() {
 		if ($ospfd_conf['redistributekernel']) {
 			$conffile .= "  redistribute kernel route-map DNR\n";
 		}
+		if ($ospfd_conf['redistributebgp']) {
+			$conffile .= "  redistribute bgp route-map DNR\n";
+		}
 		if ($ospfd_conf['redistributedefaultroute']) {
 			$conffile .= "  default-information originate\n";
 		}
