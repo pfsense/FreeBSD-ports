@@ -200,6 +200,14 @@ function frr_bgp_generate_router() {
 		}
 		$bgpconf .= "\n";
 	}
+	if (!empty($frr_bgp_conf['redistributeospf']) && ($frr_bgp_conf['redistributeospf'] != "no")) {
+		$bgpconf .= "  redistribute ospf";
+		if (($frr_bgp_conf['redistributeospf'] != "yes") &&
+		    in_array($frr_bgp_conf['redistributeospf'], frr_get_list_values(frr_get_routemap_list(false, true)))) {
+			$bgpconf .= " route-map {$frr_bgp_conf['redistributeospf']}";
+		}
+		$bgpconf .= "\n";
+	}
 
 	/* Network Distribution */
 	/* TODO: Candidate for moving to address-family */
