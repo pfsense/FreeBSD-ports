@@ -54,10 +54,12 @@ function frr_get_bgp_community_list() {
 }
 
 /* Fetch the list of BGP Neighbor addresses for use in selection lists */
-function frr_get_bgp_neighbor_list($grouponly = false, $peeronly = false) {
+function frr_get_bgp_neighbor_list($grouponly = false, $peeronly = false, $includenone = true, $nameprefix = "", $valueprefix = "") {
 	global $config;
 	$list = array();
-	$list[] = array("name" => "None", "value" => "none");
+	if ($includenone) {
+		$list[] = array("name" => "{$nameprefix}None", "value" => "{$valueprefix}none");
+	}
 
 	/* Build the list, and if only groups are wanted, return a list of only
 	 * peers with names and not IP addresses. If only peers are wanted, only
@@ -68,7 +70,10 @@ function frr_get_bgp_neighbor_list($grouponly = false, $peeronly = false) {
 			    ($peeronly && !is_ipaddr($nei['peer']))) {
 				continue;
 			}
-			$list[] = array("name" => "{$nei['peer']} - {$nei['descr']}", "value" => $nei['peer']);
+			if (!empty($nei['descr'])) {
+				$nei['descr'] = " - {$nei['descr']}";
+			}
+			$list[] = array("name" => "{$nameprefix}{$nei['peer']}{$nei['descr']}", "value" => $valueprefix . $nei['peer']);
 		}
 	}
 
