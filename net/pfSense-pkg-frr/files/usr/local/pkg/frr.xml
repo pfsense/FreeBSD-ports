@@ -179,9 +179,13 @@
 			<fielddescr></fielddescr>
 			<description>
 				<![CDATA[
-				Networks marked "Do Not Accept" will be prevented from having exact-matching routes accepted from routing protocols
+				Networks marked <b>Do Not Accept</b> will be prevented from having exact-matching routes accepted from routing protocols
 				<br/><br/>
-				Networks marked "Null Route" will never be routed, and traffic destined for these networks will be dropped.
+				Networks marked <b>Null Route</b> will never be routed, and traffic destined for these networks will be dropped.
+				<br/><br/>
+				Networks with a selected <b>Static Route Target</b> will have a route entered into the FRR/Zebra static route table, which
+				can be used by other protocols for route redistribution. The <b>Null Route</b> option takes precedence and will cause this
+				option to be ignored. These routes are also added to the operating system routing table.
 				]]>
 			</description>
 			<type>info</type>
@@ -211,6 +215,16 @@
 					<type>input</type>
 					<size>25</size>
 				</rowhelperfield>
+				<rowhelperfield>
+					<fielddescr>Static Route Target</fielddescr>
+					<fieldname>routetarget</fieldname>
+					<description>Target for an FRR static route</description>
+					<type>select_source</type>
+					<source><![CDATA[frr_get_route_destinations()]]></source>
+					<source_name>name</source_name>
+					<source_value>value</source_value>
+				</rowhelperfield>
+
 			</rowhelper>
 		</field>
 	</fields>
