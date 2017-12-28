@@ -531,6 +531,54 @@ function frr_zebra_generate_nullroutes() {
 	return $nullroutes;
 }
 
+/* Static Routes for zebra configuration based on GUI config */
+function frr_zebra_generate_staticroutes() {
+	require_once("gwlb.inc");
+	global $config, $frr_config_base;
+	/* Populate FRR Global Settings */
+	if (!is_array($config['installedpackages']['frr']['config'][0]['row'])) {
+		/* If FRR is not configured or the route handling list is empty, stop. */
+		return null;
+	}
+	$staticroutes = "\n# Static Routes\n";
+	/* Check FRR configuration network list for null route entries */
+	foreach ($config['installedpackages']['frr']['config'][0]['row'] as $redistr) {
+		if (isset($redistr['nullroute']) || !is_subnet($redistr['routevalue'])) {
+			/* Null routes are handled separately, and we need a valid subnet! */
+			continue;
+		}
+		if (!empty($redistr['routetarget'])) {
+			/* Resolve target based on type|value */
+			list ($type, $target) = explode("|", $redistr['routetarget'], 2);
+			switch ($type) {
+				/* Gateways */
+				case "gw":
+					$target = lookup_gateway_ip_by_name($target);
+					break;
+				/* BGP Neighbors */
+				case "bgp":
+					/* Target is already a usable address */
+					break;
+				/* Interfaces */
+				case "if":
+					$family = "all";
+					if (is_subnetv6()) {
+						$family = "inet6";
+					}
+					$target = get_real_interface($target, $family);
+					break;
+				default:
+					/* Invalid target!*/
+					continue;
+			}
+			if (!empty($target)) {
+				$staticroutes .= "ip route {$redistr['routevalue']} {$target}\n";
+			}
+		}
+	}
+	return $staticroutes;
+}
+
 /* Generate a convenience list of accept filters */
 function frr_zebra_generate_acceptfilters() {
 	global $config, $frr_config_base;
@@ -607,6 +655,8 @@ function frr_generate_config_zebra() {
 		$zebraconffile .= frr_zebra_generate_routemaps();
 		/* Null Routes */
 		$zebraconffile .= frr_zebra_generate_nullroutes();
+		/* Static Routes */
+		$zebraconffile .= frr_zebra_generate_staticroutes();
 		/* Default Accept Filters */
 		$zebraconffile .= frr_zebra_generate_acceptfilters();
 	}
