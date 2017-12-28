@@ -63,7 +63,7 @@ function frr_get_carp_list() {
 
 /* Build a list of assigned/enabled interfaces, formatted for use in a selection
  * list, including IP Aliases, CARP VIPs, and OpenVPN interfaces. */
-function frr_get_interfaces($includedefault = true, $includevips = true) {
+function frr_get_interfaces($includedefault = true, $includevips = true, $includelocalhost = false, $nameprefix = "", $valueprefix = "") {
 	global $config;
 
 	/* Only include the 'default' option when requested, some places like
@@ -74,13 +74,16 @@ function frr_get_interfaces($includedefault = true, $includevips = true) {
 	} else {
 		$interfaces = array();
 	}
+	if ($includelocalhost) {
+		$interfaces['lo0'] = "Localhost (lo0)";
+	}
 	$interfaces = array_merge($interfaces, get_configured_interface_with_descr());
 	$ifs = array();
 
 	/* Change the interfaces array into one properly formatted for an XML GUI select_source list */
 	foreach ($interfaces as $iface => $ifacename) {
-		$tmp["name"] = $ifacename;
-		$tmp["value"] = $iface;
+		$tmp["name"] = $nameprefix . $ifacename;
+		$tmp["value"] = $valueprefix . $iface;
 		$ifs[] = $tmp;
 	}
 
@@ -88,8 +91,8 @@ function frr_get_interfaces($includedefault = true, $includevips = true) {
 	if ($includevips) {
 		$viplist = get_configured_vip_list();
 		foreach ($viplist as $vip => $address) {
-			$tmp["name"] = $address;
-			$tmp["value"] = $vip.'|'.$address;
+			$tmp["name"] = $nameprefix . $address;
+			$tmp["value"] = $valueprefix . $vip.'|'.$address;
 			if (get_vip_descr($address)) {
 				$tmp["name"] .= " (" . get_vip_descr($address) . ")";
 			}
@@ -102,8 +105,8 @@ function frr_get_interfaces($includedefault = true, $includevips = true) {
 		if (is_array($config['openvpn']["openvpn-{$mode}"])) {
 			foreach ($config['openvpn']["openvpn-{$mode}"] as $id => $setting) {
 				if (!isset($setting['disable'])) {
-					$tmp["name"] = gettext("OpenVPN") . " ".$mode.": ".htmlspecialchars($setting['description']);
-					$tmp["value"] = 'ovpn' . substr($mode, 0, 1) . $setting['vpnid'];
+					$tmp["name"] = $nameprefix . gettext("OpenVPN") . " ".$mode.": ".htmlspecialchars($setting['description']);
+					$tmp["value"] = $valueprefix . 'ovpn' . substr($mode, 0, 1) . $setting['vpnid'];
 					$ifs[] = $tmp;
 				}
 			}
@@ -171,6 +174,33 @@ function frr_get_interfaceinfo($interface, $ipv6 = false) {
 	}
 	$subnet = ($ipv6) ? gen_subnetv6($interface_ip, $interface_subnet) : gen_subnet($interface_ip, $interface_subnet);
 	return array($interface_ip, $interface_subnet, $subnet);
+}
+
+/* Build a list of potential route destinations (gateways, interfaces) */
+function frr_get_route_destinations() {
+	global $config;
+	$list = array();
+
+	$list[] = array("name" => "None", "value" => "none");
+
+	/* Add non-disabled gateways to the list */
+	$gateways = return_gateways_array();
+	foreach ($gateways as $gw) {
+		if (!empty($gw['descr'])) {
+			$gw['descr'] = " ({$gw['descr']})";
+		}
+		$tmp["name"] = "Gateway: {$gw['name']}{$gw['descr']}";
+		$tmp["value"] = "gw|{$gw['name']}";
+		$list[] = $tmp;
+	}
+
+	/* Add BGP Neighbors */
+	$list = array_merge_recursive($list, frr_get_bgp_neighbor_list(false, true, false, "BGP Neighbor: ", "bgp|"));
+
+	/* Add interfaces (including OpenVPN interfaces) */
+	$list = array_merge_recursive($list, frr_get_interfaces(false, false, true, "Interface: ", "if|"));
+
+	return $list;
 }
 
 /* Function to compare arrays that contain seq values to sort  */
