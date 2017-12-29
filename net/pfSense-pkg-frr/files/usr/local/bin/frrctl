@@ -82,7 +82,10 @@ zebra)
 	int*)
 		daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "show interface $3"
 		;;
-	rou*)
+	route6)
+		daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "show ipv6 route"
+		;;
+	route)
 		daemon_command ${ZEBRA_PORT} ${ZEBRA_PASSWORD} "show ip route"
 		;;
 	bgpr*)
