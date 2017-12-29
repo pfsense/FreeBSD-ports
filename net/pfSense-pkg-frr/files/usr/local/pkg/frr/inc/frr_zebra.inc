@@ -562,7 +562,7 @@ function frr_zebra_generate_staticroutes() {
 				/* Interfaces */
 				case "if":
 					$family = "all";
-					if (is_subnetv6()) {
+					if (is_subnetv6($target)) {
 						$family = "inet6";
 					}
 					$target = get_real_interface($target, $family);
