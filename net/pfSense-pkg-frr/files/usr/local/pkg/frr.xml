@@ -137,7 +137,7 @@
 		<field>
 			<fielddescr>Master Password</fielddescr>
 			<fieldname>password</fieldname>
-			<description>Password to access the Zebra and OSPF management daemons. Required.</description>
+			<description>Password to access the management daemons. Required.</description>
 			<type>input</type>
 			<required/>
 		</field>
@@ -191,7 +191,7 @@
 			<type>info</type>
 		</field>
 		<field>
-			<fielddescr>Bad Routes</fielddescr>
+			<fielddescr>Routes</fielddescr>
 			<fieldname>none</fieldname>
 			<type>rowhelper</type>
 			<rowhelper>
