@@ -1314,7 +1314,7 @@ function haproxy_updateocsp($socketupdate = true) {
 		if (is_arrayset($frontend, 'ha_certificates', 'item')) {
 			$certs = $frontend['ha_certificates']['item'];
 			foreach($certs as $cert) {
-				$filename = "$subfolder/{$cert['ssl_certificate']}.pem";
+				$filename = "$subfolder/{$frontend['name']}_{$cert['ssl_certificate']}.pem";
 				haproxy_updateocsp_one($socketupdate, $filename, $frontend['name']);
 			}
 		}
@@ -1367,7 +1367,11 @@ function haproxy_writeconf($configpath) {
 		if ($a_global['remotesyslog']) {
 			fwrite ($fd, "\tlog\t\t\t{$a_global['remotesyslog']}\t{$a_global['logfacility']}\t{$a_global['loglevel']}\n");
 		}
-		fwrite ($fd, "\tstats socket /tmp/haproxy.socket level admin\n");
+		$exposefdlisteners = "";
+		if (haproxy_version() >= "1.8") {
+			$exposefdlisteners = " expose-fd listeners";
+		}
+		fwrite ($fd, "\tstats socket /tmp/haproxy.socket level admin $exposefdlisteners\n");
 		
 		if(!use_transparent_clientip_proxying()) {
 			fwrite ($fd, "\tuid\t\t\t80\n");
@@ -1376,8 +1380,15 @@ function haproxy_writeconf($configpath) {
 		fwrite ($fd, "\tgid\t\t\t80\n");
 		// Set numprocs if defined or use system default (#cores)
 		$numprocs = $a_global['nbproc'] ? $a_global['nbproc'] : "1";
-		fwrite ($fd, "\tnbproc\t\t\t$numprocs\n");
-		fwrite ($fd, "\tchroot\t\t\t$chroot_dir\n");
+		$numthread = $a_global['nbthread'] ? $a_global['nbthread'] : "1";
+		fwrite ($fd, "\tnbproc\t\t\t{$numprocs}\n");
+		if (haproxy_version() >= "1.8") {
+			fwrite ($fd, "\tnbthread\t\t\t{$numthread}\n");
+		}
+		$hard_stop_after = !empty($a_global['hard_stop_after']) ? $a_global['hard_stop_after'] : "15m";
+		fwrite ($fd, "\thard-stop-after\t\t{$hard_stop_after}\n");
+
+		fwrite ($fd, "\tchroot\t\t\t\t$chroot_dir\n");
 		fwrite ($fd, "\tdaemon\n");
 		
 		if ($a_global['ssldefaultdhparam']) {
@@ -1461,37 +1472,50 @@ function haproxy_writeconf($configpath) {
 			}
 			$primaryfrontend = get_primaryfrontend($frontend);
 
-			$bname = $primaryfrontend['name'];
-			if (!is_array($a_bind[$bname])) {
-				$a_bind[$bname] = array();
-				$a_bind[$bname] = $primaryfrontend;
-				$a_bind[$bname]['config'] = array();
+			$primary_fename = $primaryfrontend['name'];
+			if (!is_array($a_bind[$primary_fename])) {
+				$a_bind[$primary_fename] = array();
+				$a_bind[$primary_fename] = $primaryfrontend;
+				$a_bind[$primary_fename]['config'] = array();
 			}
 
 			//check ssl info
 			$ssl = get_frontend_uses_ssl($frontend);
-			
+			$crtfiles = array();
 			if ($ssl) {
+				$certfolder = "$configpath/{$primary_fename}";
+				$certs = $frontend['ha_certificates']['item'];
+				$ssl_crt = "";
+				
 				//ssl crt ./server.pem ca-file ./ca.crt verify optional crt-ignore-err all crl-file ./ca_crl.pem
-				$filename = "$configpath/{$frontend['name']}.pem";
-				$ssl_crt = " crt $filename";
+				if ($frontend['secondary'] != 'yes') {
+					$filename = "$configpath/{$frontend['name']}.pem";
+					$ssl_crt = " crt $filename";
+//					$ssl_crt .= " crt $certfolder";
+					@mkdir($certfolder, 0755, true);
 
-				haproxy_write_certificate_fullchain($filename, $frontend['ssloffloadcert']);
-				if ($frontend['sslocsp'] == 'yes') {
-					$ocspurl = haproxy_getocspurl($filename);
-					if (!empty($ocspurl)) {
-						haproxy_write_certificate_issuer($filename . ".issuer", $frontend['ssloffloadcert']);
-						touch($filename . ".ocsp");//create initial empty file. this will trigger updates, and inform haproxy it 'should' be using ocsp
+					$crtfiles[] = $filename;
+					haproxy_write_certificate_fullchain($filename, $frontend['ssloffloadcert']);
+					if ($frontend['sslocsp'] == 'yes') {
+						$ocspurl = haproxy_getocspurl($filename);
+						if (!empty($ocspurl)) {
+							haproxy_write_certificate_issuer($filename . ".issuer", $frontend['ssloffloadcert']);
+							touch($filename . ".ocsp");//create initial empty file. this will trigger updates, and inform haproxy it 'should' be using ocsp
+						}
 					}
+				} else {
+					// add the cert to the 'additional certs' array
+					$tempcert = array();
+					$tempcert['ssl_certificate'] = $frontend['ssloffloadcert'];
+					$certs[] = $tempcert;
 				}
 				
-				$subfolder = "$configpath/{$frontend['name']}";
-				$certs = $frontend['ha_certificates']['item'];
 				if (is_array($certs)) {
 					if (count($certs) > 0) {
-						@mkdir($subfolder, 0755, true);
+						@mkdir($certfolder, 0755, true);
 						foreach($certs as $cert){
-							$filenamefoldercert = "$subfolder/{$cert['ssl_certificate']}.pem";
+							$filenamefoldercert = "$certfolder/{$frontend['name']}_{$cert['ssl_certificate']}.pem";
+							$crtfiles[] = $filenamefoldercert;
 							haproxy_write_certificate_fullchain($filenamefoldercert, $cert['ssl_certificate']);
 							if ($frontend['sslocsp'] == 'yes') {
 								$ocspurl = haproxy_getocspurl($filenamefoldercert);
@@ -1501,7 +1525,6 @@ function haproxy_writeconf($configpath) {
 								}
 							}
 						}
-						$ssl_crt .= " crt $subfolder";
 					}
 				}
 			} else {
@@ -1509,21 +1532,22 @@ function haproxy_writeconf($configpath) {
 				unlink_if_exists("var/etc/{$frontend['name']}.{$frontend['port']}.crt");//cleanup for possible old haproxy package version
 			}
 
-			$b = &$a_bind[$bname];
+			$b = &$a_bind[$primary_fename];
 			
 			if (($frontend['secondary'] != 'yes') && ($frontend['name'] != $b['name'])) {
 				// only 1 frontend can be the primary for a set of frontends that share 1 address:port.
-					$input_errors[] = "Multiple primary frontends for $bname use the 'Shared Frontend' option instead";
+					$input_errors[] = "Multiple primary frontends for $primary_fename use the 'Shared Frontend' option instead";
 			}
 			
 			if ($ssl_crt != "") {
 				if ($b['ssl_info'] == "") {
-					$b['ssl_info'] = "ssl {$frontend['dcertadv']}";
+					$b['ssl_info'] = " {$frontend['dcertadv']}";
 				}
 				$b['ssl_info'] .= $ssl_crt;
 			}
+			$frontend['crtfiles'] = $crtfiles; // keep list of .pem files for building the crt-list
 
-			// pointer to each frontend 
+			// pointer to each frontend
 			$b['config'][] = $frontend;
 		}
 	}
@@ -1542,6 +1566,7 @@ function haproxy_writeconf($configpath) {
 			fwrite ($fd, "{$frontendinfo}");
 			
 			$advancedextra = array();
+/**/
 			$ca_file = "";
 			$first = true;
 			if (is_array($bind['clientcert_ca']['item'])) {
@@ -1565,12 +1590,18 @@ function haproxy_writeconf($configpath) {
 				}
 				$crl_file = " crl-file $filename";
 			}
+/**/
+			$ssl_ignoreclienterror = "";
+			if ($bind['sslclientcert-invalid']) {
+				$ssl_ignoreclienterror = " crt-ignore-err all";
+			}
+			
 			$advanced_bind = $bind['advanced_bind'];
 			$ssl_info = $bind['ssl_info'];
-			$ssl_info .= $ca_file . $crl_file;
-			if ($bind['sslclientcert-invalid']) {
-				$ssl_info .= " crt-ignore-err all";
-			}
+			$ssl_info .= $ca_file . $crl_file . $ssl_ignoreclienterror;
+			
+			$crtlistfilename = "$configpath/{$frontendname}.crt_list";
+			$ssl_crtlist = " crt-list {$crtlistfilename}";
 			
 			$useipv4 = false;
 			$useipv6 = false;
@@ -1578,12 +1609,49 @@ function haproxy_writeconf($configpath) {
 			$bindips = get_frontend_bindips($bind);
 			$listenip = "";
 			foreach($bindips as $bindip) {
-				$ssl = $bindip['extaddr_ssl'] == 'yes' ? $ssl_info : "";
+				$ssl = $bindip['extaddr_ssl'] == 'yes' ? " ssl" . $ssl_info . $ssl_crtlist : "";
 				$listenip .=  "\tbind\t\t\t{$bindip['addr']}:{$bindip['port']} name {$bindip['addr']}:{$bindip['port']} {$ssl} {$advanced_bind} {$bindip['extaddr_advanced']}\n";
 				$useipv4 |= is_ipaddrv4($bindip['addr']);
 				$useipv6 |= is_ipaddrv6($bindip['addr']);
 			}
 			fwrite ($fd, "{$listenip}");
+			
+			$crtlist = "";
+			foreach ($bind['config'] as $frontend) {
+				// loop through 'shared frontends' within one primary.
+				$ssloptions = "";
+				
+				$ca_file = "";
+				$first = true;
+				if (is_array($frontend['clientcert_ca']['item'])) {
+					$filename = "$configpath/clientca_{$frontend['name']}.pem";
+					foreach($frontend['clientcert_ca']['item'] as $ca) {
+						if (!empty($ca['cert_ca'])) {
+							haproxy_write_certificate_crt($filename, $ca['cert_ca'], false, !$first);
+							$first = false;
+						}
+					}
+					$verify = $frontend['sslclientcert-none'] == 'yes' ? "verify optional" : "verify required";
+					$ca_file = " ca-file $filename $verify";
+				}
+				$crl_file = "";
+				$first = true;
+				if (is_array($frontend['clientcert_crl']['item'])) {
+					$filename = "$configpath/clientcrl_{$frontend['name']}.pem";
+					foreach($frontend['clientcert_crl']['item'] as $ca) {
+						haproxy_write_certificate_crl($filename, $ca['cert_crl'], !$first);
+						$first = false;
+					}
+					$crl_file = " crl-file $filename";
+				}
+				
+				$ssloptions .= " {$frontend['dcertadv']}";
+				$ssloptions .= "{$ca_file}{$crl_file}";
+				foreach($frontend['crtfiles'] as $crtfile) {
+					$crtlist .= "{$crtfile} [{$ssloptions}] {$frontend['sslsnifilter']}\r\n";
+				}
+			}
+			file_put_contents($crtlistfilename, $crtlist);
 			
 			if (use_frontend_as_unixsocket($frontendname)) {
 				fwrite ($fd, "\tbind /tmp/haproxy_chroot/{$frontendname}.socket name unixsocket uid 80 accept-proxy {$ssl_info} {$advanced_bind}\n");
@@ -2165,7 +2233,7 @@ function haproxy_check_run($reload) {
 		}
 		$useocsp = haproxy_uses_ocsp();
 		if ($useocsp == "true") {
-			install_cron_job("/etc/rc.haproxy_ocsp.sh", true, "*/120");
+			install_cron_job("/etc/rc.haproxy_ocsp.sh", true, "1");
 		} else {
 			install_cron_job("/etc/rc.haproxy_ocsp.sh", false);
 		}
@@ -2215,7 +2283,11 @@ function haproxy_check_run($reload) {
 			}
 			
 			syslog(LOG_NOTICE, "haproxy: reload old pid:$old_pid");
-			exec("/usr/local/sbin/haproxy -f {$configpath}/haproxy.cfg -p /var/run/haproxy.pid $sf_st `cat /var/run/haproxy.pid` 2>&1", $output, $errcode);
+			$restartargs = "";
+			if (haproxy_version() >= "1.8") {
+				$restartargs = " -x /tmp/haproxy.socket";
+			}
+			exec("/usr/local/sbin/haproxy -f {$configpath}/haproxy.cfg -p /var/run/haproxy.pid -D $restartargs $sf_st `cat /var/run/haproxy.pid` 2>&1", $output, $errcode);
 		} else {
 			syslog(LOG_NOTICE, "haproxy: starting old pid:$old_pid");
 			exec("/usr/local/sbin/haproxy -f {$configpath}/haproxy.cfg -p /var/run/haproxy.pid -D 2>&1", $output, $errcode);
