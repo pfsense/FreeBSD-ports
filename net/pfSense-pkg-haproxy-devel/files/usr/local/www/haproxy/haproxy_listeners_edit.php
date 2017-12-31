@@ -53,7 +53,7 @@ uasort($a_pools, haproxy_compareByName);
 global $simplefields;
 $simplefields = array('name','desc','status','secondary','primary_frontend','type','forwardfor','httpclose','extaddr','backend_serverpool',
 	'max_connections','client_timeout','port','advanced_bind',
-	'ssloffloadcert','sslsnifilter','dcertadv','ssloffload','ssloffloadacl','ssloffloadacl_an','ssloffloadacladditional','ssloffloadacladditional_an',
+	'ssloffloadcert','sslsnifilter','ssl_crtlist_advanced','dcertadv','ssloffload','ssloffloadacl','ssloffloadacl_an','ssloffloadacladditional','ssloffloadacladditional_an',
 	'sslclientcert-none','sslclientcert-invalid','sslocsp',
 	'socket-stats',
 	'dontlognull','dontlog-normal','log-separate-errors','log-detailed');
@@ -927,11 +927,21 @@ $section->addInput(
 ),"haproxy_ssloffloading_enabled");
 
 $section->addInput(new Form_Input('dcertadv', 'Advanced ssl options', 'text', $pconfig['dcertadv']
-),"haproxy_ssloffloading_enabled")->setHelp('NOTE: Paste additional ssl options(without commas) to include on ssl listening options.<br/>
+),"haproxy_ssloffloading_enabled haproxy_primary")->setHelp('NOTE: Paste additional ssl options(without commas) to include on ssl listening options.<br/>
 	some options: force-sslv3, force-tlsv10 force-tlsv11 force-tlsv12 no-sslv3 no-tlsv10 no-tlsv11 no-tlsv12 no-tls-tickets<br/>
 	Example: no-sslv3 ciphers EECDH+aRSA+AES:TLSv1+kRSA+AES:TLSv1+kRSA+3DES');
 // haproxy_ssl_advanced << css class to hide field.?
 $form->add($section);
+
+$section->addInput(new Form_Input('ssl_crtlist_advanced', 'Advanced certificate specific ssl options',
+	'text', $pconfig['ssl_crtlist_advanced']
+),"haproxy_ssloffloading_enabled")->setHelp('NOTE: Paste additional ssl options(without commas) to include on ssl listening options.<br/>
+	some options: alpn, no-ca-names, ecdhe, curves, ciphers, ssl-min-ver and ssl-max-ver<br/>
+	Example: alpn h2,http/1.1 ciphers EECDH+aRSA+AES:TLSv1+kRSA+AES:TLSv1+kRSA+3DES ecdhe secp256k1');
+// haproxy_ssl_advanced << css class to hide field.?
+$form->add($section);
+// options that are in the gui as regular settings: verify, ca-file, crl-file
+// deprecated: npn
 
 $section = new Form_Section_class("SSL Offloading - client certificates");
 $section->addClass("haproxy_ssloffloading_enabled");

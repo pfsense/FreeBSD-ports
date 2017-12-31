@@ -1645,9 +1645,13 @@ function haproxy_writeconf($configpath) {
 					$crl_file = " crl-file $filename";
 				}
 				
-				$ssloptions .= " {$frontend['dcertadv']}";
-				$ssloptions .= "{$ca_file}{$crl_file}";
+				//$ssloptions .= " {$frontend['dcertadv']}";
+				$ssl_crtlist_advanced = empty($frontend['ssl_crtlist_advanced']) ? "" : " {$frontend['ssl_crtlist_advanced']}";
+				$ssloptions .= "{$ssl_crtlist_advanced}{$ca_file}{$crl_file}";
 				foreach($frontend['crtfiles'] as $crtfile) {
+					if ($frontendname == $frontend['name']) {
+//						continue;// skip primary from the crt-list
+					}
 					$crtlist .= "{$crtfile} [{$ssloptions}] {$frontend['sslsnifilter']}\r\n";
 				}
 			}
