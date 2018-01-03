@@ -13,6 +13,7 @@ BUILD_DIRS=	config src/include src/interfaces src/port \
 		src/bin/pgbench doc src/makefiles src/test/regress
 INSTALL_DIRS=	${BUILD_DIRS}
 
+LDFLAGS+=	-Wl,-z,notext
 CLIENT_ONLY=	yes
 COMPONENT=	-client
 USE_LDCONFIG=	yes
