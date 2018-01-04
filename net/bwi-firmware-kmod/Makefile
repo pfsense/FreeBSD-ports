@@ -31,7 +31,6 @@ PLIST_SUB=	KMODNAME="${KMODNAME}"
 NO_PACKAGE=	this is a modified version of a restricted firmware
 
 USES=		kmod uidfix
-LLD_UNSAFE=	yes
 
 do-build:
 	cd ${WRKSRC} &&  \
