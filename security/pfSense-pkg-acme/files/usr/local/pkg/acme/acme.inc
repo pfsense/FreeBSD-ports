@@ -203,13 +203,8 @@ $acme_domain_validation_method['dns_nsupdate'] = array(name => "DNS-NSupdate / R
 		'NSUPDATE_SERVER' => array('name'=>"nsupdate_server",'columnheader'=>"Server",'type'=>"textbox",
 			'description' =>"Fill in the nsupdate DNS server (IP address or hostname)"
 		),
-		'NSUPDATE_KEYTYPE' => array('name' => 'nsupdate_keytype', 'columnheader' => 'Key Type', 'type' => 'select',
-			'items' => array(
-				'host' => array('name' => 'Host Key'),
-				'user' => array('name' => 'User Key'),
-				'zone' => array('name' => 'Zone Key'),
-			),
-			'description' => 'Choose the nsupdate key type (typically "host")'
+		'NSUPDATE_KEYNAME' => array('name'=>"nsupdate_keyname",'columnheader'=>"Key Name",'type'=>"textbox",
+			'description' =>"Fill in a name for the key, if it is different than _acme-challenge.[Domainname]"
 		),
 		'NSUPDATE_KEYALGO' => array('name' => 'nsupdate_keyalgo', 'columnheader' => 'Key Algorithm', 'type' => 'select',
 			'items' => array(
