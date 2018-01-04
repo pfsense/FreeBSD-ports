@@ -127,6 +127,7 @@ class acme_sh {
 	
 	function signCertificate($action, $accountkey, $certificatepsk, $domainstosign, $api = null, $envvariables = null, $extras = null) {
 		// $action = issue / renew
+		global $acme_domain_validation_method;
 		file_put_contents("{$this->path_account}/account.key", base64_decode($accountkey));
 		$cmdparameters = "";
 		if ($api && substr($api, 0, 4 ) === "dns_") {
@@ -175,31 +176,20 @@ class acme_sh {
 				$envvariables['NSUPDATE_SERVER'] = $nsupdatefileprefix;
 				$nsupdatekey = base64_decode($extras[$nsupdatedomain]['NSUPDATE_KEY']);
 
-				/* Use the same .key/.private format as RFC2136 Dynamic DNS (See /etc/inc/services.inc (services_dnsupdate_process() */
-				$key_type = $extras[$nsupdatedomain]['NSUPDATE_KEYTYPE'];
-				switch ($extras[$nsupdatedomain]['NSUPDATE_KEYTYPE']) {
-					case "zone":
-						$flags = 257;
-						$proto = 3;
-						break;
-					case "user":
-						$flags = 0;
-						$proto = 2;
-						break;
-					case "host":
-					default:
-						$flags = 513;
-						$proto = 3;
-				}
-				$key_algo = empty($extras[$nsupdatedomain]['NSUPDATE_KEYALGO']) ? '157' : $extras[$nsupdatedomain]['NSUPDATE_KEYALGO'];
-				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$nsupdatedomain}.key", "_acme-challenge.{$nsupdatedomain} IN KEY {$flags} {$proto} {$key_algo} {$nsupdatekey}\n");
-				$privkey = <<<EOD
-Private-key-format: v1.3
-Algorithm: {$key_algo}
-Key: {$nsupdatekey}
+				/* Set a default key algo of HMAC-MD5 if the key type is invalid. */
+				$key_algo = empty($extras[$nsupdatedomain]['NSUPDATE_KEYALGO']) || !array_key_exists($extras[$nsupdatedomain]['NSUPDATE_KEYALGO'], $acme_domain_validation_method['dns_nsupdate']['fields']['NSUPDATE_KEYALGO']['items']) ? '157' : $extras[$nsupdatedomain]['NSUPDATE_KEYALGO'];
+
+				$key_name = empty($extras[$nsupdatedomain]['NSUPDATE_KEYNAME']) ? "_acme-challenge.{$nsupdatedomain}" : $extras[$nsupdatedomain]['NSUPDATE_KEYNAME'];
+
+				/* Use ddns-confgen format key */
+				$keydata = <<<EOD
+key "{$key_name}." {
+	algorithm {$acme_domain_validation_method['dns_nsupdate']['fields']['NSUPDATE_KEYALGO']['items'][$key_algo]['name']};
+	secret "{$nsupdatekey}";
+};
 
 EOD;
-				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$nsupdatedomain}.private", $privkey);
+				file_put_contents("{$nsupdatefileprefix}_acme-challenge.{$nsupdatedomain}.key", $keydata);
 			}
 			$envvariables['NSUPDATE_KEY'] = $nsupdatefileprefix;
 		}
