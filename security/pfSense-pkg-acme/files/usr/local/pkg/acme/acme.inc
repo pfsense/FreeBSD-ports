@@ -392,6 +392,15 @@ $acme_domain_validation_method['dns_infoblox'] = array(name => "DNS-Infoblox",
 			'description' =>"Fill in the DNS View, or enter 'default'"
 		)
 	));
+$acme_domain_validation_method['dns_inwx'] = array(name => "DNS-INWX.de",
+	'fields' => array(
+		'INWX_User' => array('name'=>"inwx_username",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"INWX.de username"
+		),
+		'INWX_Password' => array('name'=>"inwx_password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"INWX.de password"
+		)
+	));
 $acme_domain_validation_method['dns_ispconfig'] = array(name => "DNS-ISPConfig",
 	'fields' => array(
 		'ISPC_User' => array('name'=>"ispc_user",'columnheader'=>"User",'type'=>"textbox",
@@ -485,6 +494,24 @@ $acme_domain_validation_method['dns_pdns'] = array(name => "DNS-PowerDNS",
 		),
 		'PDNS_Ttl' => array('name'=>"pdns_ttl",'columnheader'=>"TTL",'type'=>"textbox",
 			'description' =>"Fill in the TTL 60"
+		)
+	));
+$acme_domain_validation_method['dns_servercow'] = array(name => "DNS-Servercow",
+	'fields' => array(
+		'SERVERCOW_API_Username' => array('name'=>"servercow_api_username",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"Servercow username"
+		),
+		'SERVERCOW_API_Password' => array('name'=>"servercow_api_password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"Servercow password"
+		)
+	));
+$acme_domain_validation_method['dns_unoeuro'] = array(name => "DNS-UnoEuro",
+	'fields' => array(
+		'UNO_User' => array('name'=>"uno_user",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"UnoEuro username"
+		),
+		'UNO_Key' => array('name'=>"uno_key",'columnheader'=>"API Key",'type'=>"textbox",
+			'description' =>"UnoEuro API Key"
 		)
 	));
 $acme_domain_validation_method['dns_vscale'] = array(name => "DNS-vscale.io",
