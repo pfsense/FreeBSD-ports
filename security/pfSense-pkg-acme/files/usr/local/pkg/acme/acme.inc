@@ -20,6 +20,49 @@
  */
 
 namespace { // global code
+	/* Write an ACME certificates to the filesystem. */
+	function acme_write_certificate($certref) {
+		global $config;
+		$prefix = '/conf/acme';
+		safe_mkdir($prefix);
+
+		/* Lookup the certificate and CA */
+		$cert = lookup_cert($certref);
+		if (empty($cert)) {
+			return;
+		}
+		$ca = lookup_ca($cert['caref']);
+		if (empty($ca)) {
+			return;
+		}
+
+		/* Decode the certificate, key, and CA certificate */
+		$crt = base64_decode($cert['crt']);
+		$key = base64_decode($cert['prv']);
+		$ca = base64_decode($ca['crt']) . "\n";
+
+		/* Write out the certificate data in various useful formats */
+		file_put_contents("{$prefix}/{$cert['descr']}.crt", $crt);
+		file_put_contents("{$prefix}/{$cert['descr']}.key", $key);
+		file_put_contents("{$prefix}/{$cert['descr']}.ca", $ca);
+		file_put_contents("{$prefix}/{$cert['descr']}.fullchain", $crt . $ca);
+		file_put_contents("{$prefix}/{$cert['descr']}.all.pem", $crt . $key . $ca);
+		return;
+	}
+	/* Write all ACME certificates to the filesystem */
+	function acme_write_all_certificates() {
+		global $config;
+		$a_global = &$config['installedpackages']['acme'];
+		if (!isset($a_global['writecerts'])) {
+			return;
+		}
+
+		/* Find all certificates  */
+		$acmecerts = acme_plugin_certificates(array('type' => 'certificates', 'event' => 'used_certificates'));
+		foreach ($acmecerts['certificatelist'] as $certref => $ac) {
+			acme_write_certificate($certref);
+		}
+	}
 	function acme_plugin_certificates($pluginparams) {
 		global $config;
 		$result = array();
@@ -591,6 +634,7 @@ function acme_custom_php_install_command() {
 	set_cronjob();
 	$static_output .= "Acme, running acme_custom_php_install_command() DONE\n";
 	update_output_window($static_output);
+	acme_write_all_certificates();
 }
 
 function get_itembyname($a_array, $name) {
