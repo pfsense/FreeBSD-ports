@@ -21,8 +21,9 @@ CONFLICTS=	fvwm-1.* fvwm-2.*
 
 BROKEN_aarch64=	Fails to build: error: GETLEFTBITS_ALIGNMENT must be 1
 BROKEN_armv6=	Fails to build: error: GETLEFTBITS_ALIGNMENT must be 1
+BROKEN_armv7=	Fails to build: error: GETLEFTBITS_ALIGNMENT must be 1
 
-USES=		gettext libtool localbase:ldflags pathfix pkgconfig python shebangfix tar:bzip2
+USES=		gettext libtool localbase:ldflags pathfix pkgconfig python:2.7 shebangfix tar:bzip2
 SHEBANG_FILES=	${WRKSRC}/fvwm-insitu/bin/fvwm-convert-2.4.in \
 		${WRKSRC}/fvwm-insitu/bin/fvwm-convert-2.6.in \
 		${WRKSRC}/fvwm-insitu/bin/fvwm-menu-desktop.in \
@@ -44,7 +45,6 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-fontdir=${LOCALBASE}/share/fonts
 USE_LDCONFIG=	yes
 USE_XORG=	xcursor xft xinerama xpm xrender xt xtst
-WANT_GNOME=	yes
 MAKE_ARGS=	METISSE_DOC_DIR="${DOCSDIR}"
 INSTALL_TARGET=	install-strip
 

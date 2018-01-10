@@ -3,7 +3,7 @@
 
 PORTNAME=	ffmpeg
 PORTVERSION=	0.7.17
-PORTREVISION=	8
+PORTREVISION=	12
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio ipv6 net
 MASTER_SITES=	http://ffmpeg.org/releases/
@@ -164,7 +164,7 @@ COMPAT_HEADERS=libavcodec/avcodec.h \
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == armv6
+.if ${ARCH} == armv6 || ${ARCH} == armv7
 CONFIGURE_ENV+=	ASFLAGS=-no-integrated-as
 CFLAGS+=	-no-integrated-as
 .endif

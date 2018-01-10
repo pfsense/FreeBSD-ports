@@ -5,13 +5,15 @@ PORTVERSION=	1.0
 DISTVERSIONSUFFIX=	.src
 PORTREVISION=	8
 CATEGORIES=	comms hamradio
-MASTER_SITES=	http://www.w1hkj.com/LinuxApps/ \
-		LOCAL/db
+MASTER_SITES=	http://www.w1hkj.com/LinuxApps/
 DISTNAME=	fl_geoid
 EXTRACT_SUFX=	.src.tar.gz
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Geodetic computer for amateur radio use
+
+LICENSE=	GPLv2+ NONE  # only one src file contains license
+LICENSE_COMB=	multi
 
 LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk
 
@@ -23,9 +25,9 @@ post-patch:
 		's|%%PREFIX%%|${PREFIX}|g' ${WRKSRC}/geoid.cxx
 
 do-install:
-	@${INSTALL_PROGRAM} ${WRKSRC}/geoid ${STAGEDIR}${PREFIX}/bin
-	@${INSTALL_DATA} ${WRKSRC}/geoid.png ${STAGEDIR}${PREFIX}/share/pixmaps
+	${INSTALL_PROGRAM} ${WRKSRC}/geoid ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_DATA} ${WRKSRC}/geoid.png ${STAGEDIR}${PREFIX}/share/pixmaps
 	@${MKDIR} ${STAGEDIR}${DATADIR}
-	@${INSTALL_DATA}	${WRKSRC}/country.pos ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${WRKSRC}/country.pos ${STAGEDIR}${DATADIR}
 
 .include <bsd.port.mk>

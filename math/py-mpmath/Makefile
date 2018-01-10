@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mpmath
-PORTVERSION=	0.19
+PORTVERSION=	1.0.0
 CATEGORIES=	math python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +12,7 @@ COMMENT=	Python Library for Arbitrary-precision Floating-point Arithmetic
 
 LICENSE=	BSD3CLAUSE
 
-BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/gmpy.so:math/py-gmpy
+BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/gmpy.so:math/py-gmpy@${FLAVOR}
 
 USES=		python
 USE_PYTHON=	distutils autoplist

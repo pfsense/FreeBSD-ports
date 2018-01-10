@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	privatetickets
-PORTVERSION=	2.1.0
+PORTVERSION=	2.2.0
 CATEGORIES=	www devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	trac-
@@ -15,7 +15,7 @@ LICENSE=	BSD2CLAUSE
 
 RUN_DEPENDS=	tracd:www/trac
 
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

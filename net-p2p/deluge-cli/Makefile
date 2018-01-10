@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	deluge
-PORTVERSION=	1.3.15
+DISTVERSIONPREFIX=	${PORTNAME}-
+DISTVERSION=	1.3.15
 PORTREVISION=	2
 CATEGORIES=	net-p2p python
 PKGNAMESUFFIX=	-cli
@@ -13,19 +14,18 @@ LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	intltool-merge:textproc/intltool
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xdg>=0.18:devel/py-xdg \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xdg>=0.18:devel/py-xdg@${FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}libtorrent-rasterbar>=0:net-p2p/libtorrent-rasterbar-python \
-		${PYTHON_PKGNAMEPREFIX}openssl>=0.8:security/py-openssl \
-		${PYTHON_PKGNAMEPREFIX}chardet>=1.0.1:textproc/py-chardet \
-		${PYTHON_PKGNAMEPREFIX}mako>=0.2.5:textproc/py-mako \
-		${PYTHON_PKGNAMEPREFIX}service_identity>=0:security/py-service_identity \
-		${PYTHON_PKGNAMEPREFIX}twisted>=0:devel/py-twisted
+		${PYTHON_PKGNAMEPREFIX}openssl>=0.8:security/py-openssl@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}chardet>=1.0.1:textproc/py-chardet@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}mako>=0.2.5:textproc/py-mako@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}service_identity>=0:security/py-service_identity@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}twisted>=0:devel/py-twisted@${FLAVOR}
 
 USES=		gettext python:-2.7
 USE_PYTHON=	autoplist distutils
 USE_GITHUB=	yes
 GH_ACCOUNT=	deluge-torrent
-GH_TAGNAME=	${PORTNAME}-${PORTVERSION}
 
 NO_ARCH=	yes
 

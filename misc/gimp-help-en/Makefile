@@ -4,9 +4,8 @@
 PORTNAME=	gimp-help
 PORTVERSION=	2.8.2
 CATEGORIES?=	misc graphics
-MASTER_SITES=	ftp://ftp.gimp.org/pub/%SUBDIR%/ \
-		http://gimp.mirrors.hoobly.com/%SUBDIR%/ \
-		http://ftp.gwdg.de/pub/misc/grafik/gimp/%SUBDIR%/ \
+MASTER_SITES=	http://gimp.mirrors.hoobly.com/pub/%SUBDIR%/ \
+		http://ftp.gwdg.de/pub/misc/grafik/%SUBDIR%/ \
 		http://www.mirrorservice.org/sites/ftp.gimp.org/pub/%SUBDIR%/
 MASTER_SITE_SUBDIR=	gimp/help
 PKGNAMEPREFIX?=	${DOCLANG}-
@@ -17,7 +16,7 @@ COMMENT?=	GIMP User Manual in English
 
 LICENSE=	GFDL
 
-BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/libxml2mod.so:textproc/py-libxml2 \
+BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/libxml2mod.so:textproc/py-libxml2@${PY_FLAVOR} \
 		${LOCALBASE}/share/xsl/docbook/xhtml/chunk.xsl:textproc/docbook-xsl
 
 USES=		gettext-tools gmake perl5 pkgconfig python:2 shebangfix tar:bzip2

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Term-Table
-PORTVERSION=	0.008
+PORTVERSION=	0.012
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	p5-Importer>=0.024:devel/p5-Importer
 RUN_DEPENDS:=	${BUILD_DEPENDS}
-TEST_DEPENDS=	p5-Test-Simple>=1.302072:devel/p5-Test-Simple
+TEST_DEPENDS=	p5-Test-Simple>=1.302097:devel/p5-Test-Simple
 
 NO_ARCH=	yes
 USE_PERL5=	configure

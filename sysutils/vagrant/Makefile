@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	vagrant
-PORTVERSION=	2.0.0
+PORTVERSION=	2.0.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils rubygems devel
 

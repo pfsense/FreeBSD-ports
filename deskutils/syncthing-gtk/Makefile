@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	syncthing-gtk
-PORTVERSION=	0.9.2.5
+PORTVERSION=	0.9.2.6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	deskutils python
 
@@ -10,8 +10,8 @@ COMMENT=	Python based GUI for Syncthing
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>0:devel/py-dateutil \
-		${PYTHON_PKGNAMEPREFIX}bcrypt>0:security/py-bcrypt
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>0:devel/py-dateutil@${FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}bcrypt>0:security/py-bcrypt@${FLAVOR}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	syncthing

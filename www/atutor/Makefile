@@ -12,7 +12,9 @@ COMMENT=	Open Source Web-based Learning Content Management System (LCMS)
 
 LICENSE=	GPLv2
 
-USES=		cpe
+IGNORE_WITH_PHP=	70 71 72
+
+USES=		cpe php
 
 USE_PHP=	session mbstring zlib mysql
 WRKSRC=		${WRKDIR}/ATutor

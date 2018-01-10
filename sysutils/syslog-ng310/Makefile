@@ -6,7 +6,10 @@ DISTVERSION=	3.10.1
 CATEGORIES=	sysutils
 DISTFILES=	syslog-ng-${DISTVERSION}.tar.gz
 MASTER_SITES=	https://github.com/balabit/syslog-ng/releases/download/syslog-ng-${DISTVERSION}/
+
+.if !defined(MASTERDIR)
 PKGNAMESUFFIX=	310
+.endif
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Powerful syslogd replacement
@@ -21,7 +24,10 @@ BROKEN_sparc64=		fails to link: Internal error: Segmentation fault (program ld)
 
 CONFLICTS?=	syslog-ng-[0-9]* syslog-ng[0-9]-[0-9]* \
 		syslog-ng[0-9][0-9]-[0-9]* \
-		syslog-ng-devel-[0-9]*
+		syslog-ng[0-9][0-9][0-9]-[0-9]* \
+		syslog-ng-devel-[0-9]* \
+		syslog-ng-incubator-*
+
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 
 MAKE_JOBS_UNSAFE=	yes
@@ -93,12 +99,12 @@ MONGO_PLIST_FILES=		lib/syslog-ng/libafmongodb.so
 
 JSON_CONFIGURE_ENABLE=		json
 JSON_LIB_DEPENDS=		libjson-c.so:devel/json-c
-JSON_PLIST_FILES= 		lib/syslog-ng/libjson-plugin.so \
+JSON_PLIST_FILES=		lib/syslog-ng/libjson-plugin.so \
 				share/syslog-ng/include/scl/cim/template.conf
 
 JAVA_CONFIGURE_ENABLE=		java
 JAVA_USE_JAVA=			yes
-JAVA_PLIST_FILES= 		lib/syslog-ng/libmod-java.so \
+JAVA_PLIST_FILES=		lib/syslog-ng/libmod-java.so \
 				lib/syslog-ng/java-modules/syslog-ng-core.jar
 
 JAVA_MOD_CONFIGURE_ENABLE=	java-modules
@@ -131,11 +137,11 @@ JAVA_MOD_PLIST_FILES=		lib/syslog-ng/java-modules/log4j-1.2.16.jar \
 PYTHON_CONFIGURE_ENABLE=	python
 PYTHON_CONFIGURE_WITH=		python=2.7
 PYTHON_USES=			python:2.7
-PYTHON_PLIST_FILES= 		lib/syslog-ng/libmod-python.so
+PYTHON_PLIST_FILES=		lib/syslog-ng/libmod-python.so
 
 CURL_CONFIGURE_OFF=		--with-libcurl=off
 CURL_LIB_DEPENDS=		libcurl.so:ftp/curl
-CURL_PLIST_FILES= 		lib/syslog-ng/libhttp.so
+CURL_PLIST_FILES=		lib/syslog-ng/libhttp.so
 
 .include <bsd.port.pre.mk>
 
