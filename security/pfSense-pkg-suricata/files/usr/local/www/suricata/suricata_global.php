@@ -298,7 +298,7 @@ $section->addInput(new Form_Select(
 		  '1h_b' => gettext('1 HOUR'), '3h_b' => gettext('3 HOURS'), '6h_b' => gettext('6 HOURS'),
 		  '12h_b' => gettext('12 HOURS'), '1d_b' => gettext('1 DAY'), '4d_b' => gettext('4 DAYS'),
 		  '7d_b' => gettext('7 DAYS'), '28d_b' => gettext('28 DAYS'))
-))->setHelp('Please select the amount of time you would like hosts to be blocked.<br /><br />Hint: in most cases, 1 hour is a good choice.');
+))->setHelp('Please select the amount of time you would like hosts to be blocked.  Note this setting is only applicable when using Legacy Mode blocking!  This setting is ignored when using Inline IPS Mode.<br /><br />Hint: in most cases, 1 hour is a good choice.');
 $section->addInput(new Form_Checkbox(
 	'log_to_systemlog',
 	'Log to System Log',
