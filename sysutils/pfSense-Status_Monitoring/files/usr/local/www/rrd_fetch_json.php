@@ -29,6 +29,15 @@ require("guiconfig.inc");
 
 $rrd_location = "/var/db/rrd/";
 
+/* Check if an RRD file exists */
+function monitoring_rrd_check($name) {
+	global $rrd_location;
+	if (file_exists($rrd_location . basename($name))) {
+		return true;
+	}
+	return false;
+}
+
 //lookup end time based on resolution (ensure resolution interval)
 $resolutionLookup = array(
 	"60"    => "1min",
@@ -51,11 +60,18 @@ $invert_graph = ($_POST['invert'] === 'true');
 $left_pieces = explode("-", $left);
 $right_pieces = explode("-", $right);
 
-$rrd_info_array = rrd_info($rrd_location . $left . ".rrd");
-$left_last_updated = $rrd_info_array['last_update'];
-
-$rrd_info_array = rrd_info($rrd_location . $right . ".rrd");
-$right_last_updated = $rrd_info_array['last_update'];
+if (monitoring_rrd_check($rrd_location . $left . ".rrd")) {
+	$rrd_info_array = rrd_info($rrd_location . $left . ".rrd");
+	$left_last_updated = $rrd_info_array['last_update'];
+} else {
+	$left_last_updated = 0;
+}
+if (monitoring_rrd_check($rrd_location . $right . ".rrd")) {
+	$rrd_info_array = rrd_info($rrd_location . $right . ".rrd");
+	$right_last_updated = $rrd_info_array['last_update'];
+} else {
+	$right_last_updated = 0;
+}
 
 //grab the older last updated time of the two databases
 if(empty($right_last_updated)) {
@@ -76,8 +92,17 @@ if ($timePeriod === "custom") {
 	// Determine highest resolution available for requested time period
 	// Should be possible to determine programmaticly from the RRD header info array (rrd_info).
 	$rrd_options = array( 'AVERAGE', '-a', '-s', $start, '-e', $start );
-	$left_rrd_array  = rrd_fetch($rrd_location . $left  . ".rrd", $rrd_options);
-	$right_rrd_array = rrd_fetch($rrd_location . $right . ".rrd", $rrd_options);
+	if (monitoring_rrd_check($rrd_location . $left  . ".rrd")) {
+		$left_rrd_array  = rrd_fetch($rrd_location . $left  . ".rrd", $rrd_options);
+	} else {
+		$left_rrd_array = array();
+	}
+	if (monitoring_rrd_check($rrd_location . $right . ".rrd")) {
+		$right_rrd_array = rrd_fetch($rrd_location . $right . ".rrd", $rrd_options);
+	} else {
+		$right_rrd_array = array();
+	}
+
 	$resolution = max($left_rrd_array['step'], $right_rrd_array['step']);
 
 	// make sure end time isn't later than last updated time entry
@@ -142,6 +167,10 @@ $unit_desc_lookup = array(
 //TODO make this a function for left and right
 if ($left != "null") {
 
+
+	if (!monitoring_rrd_check($rrd_location . $left . ".rrd")) {
+		die ('{ "error" : "' . gettext("Invalid RRD file") . '" }');
+	}
 	$rrd_array = rrd_fetch($rrd_location . $left . ".rrd", $rrd_options);
 
 	if (!($rrd_array)) {
