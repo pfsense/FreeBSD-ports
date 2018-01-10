@@ -1,0 +1,12 @@
+--- conf/Makefile.orig	2018-01-10 17:01:00 UTC
++++ conf/Makefile
+@@ -10,6 +10,9 @@ MPD_SAMPLES+=	mpd.script.sample
+ NOOBJ=
+ NO_OBJ=
+ 
++BINOWN!=		/usr/bin/id -n -u
++BINGRP!=		/usr/bin/id -n -g
++
+ all clean cleandir depend:
+ 
+ afterinstall:

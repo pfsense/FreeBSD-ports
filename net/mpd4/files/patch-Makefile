@@ -1,0 +1,9 @@
+--- Makefile.orig	2018-01-10 17:10:12 UTC
++++ Makefile
+@@ -2,6 +2,5 @@
+ 
+ SUBDIR+=	src
+ SUBDIR+=	conf
+-SUBDIR+=	doc
+ 
+ .include <bsd.subdir.mk>
