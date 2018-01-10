@@ -477,6 +477,9 @@ if ($left != "null") {
 
 if ($right != "null") {
 
+	if (!monitoring_rrd_check($rrd_location . $right . ".rrd")) {
+		die ('{ "error" : "' . gettext("Invalid RRD file") . '" }');
+	}
 	$rrd_array = rrd_fetch($rrd_location . $right . ".rrd", $rrd_options);
 
 	if (!($rrd_array)) {
