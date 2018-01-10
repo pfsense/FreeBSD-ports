@@ -1,7 +1,7 @@
 bin/bind9-config
 bin/isc-config.sh
-etc/mtree/BIND.chroot.dist
-etc/mtree/BIND.chroot.local.dist
+@sample etc/mtree/BIND.chroot.dist.sample
+@sample etc/mtree/BIND.chroot.local.dist.sample
 %%ETCDIR%%/bind.keys
 %%ETCDIR%%/master/empty.db
 %%ETCDIR%%/master/localhost-forward.db
