@@ -2,6 +2,7 @@
 
 PORTNAME=	zoneminder-h264
 PORTVERSION=	1.30.20170222
+PORTREVISION=	2
 CATEGORIES=	multimedia
 
 MAINTAINER=	bsd@abinet.ru

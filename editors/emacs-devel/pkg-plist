@@ -48,6 +48,7 @@ share/applications/emacs.desktop
 %%DATADIR%%/%%EMACS_VER%%/etc/NEWS.23
 %%DATADIR%%/%%EMACS_VER%%/etc/NEWS.24
 %%DATADIR%%/%%EMACS_VER%%/etc/NEWS.25
+%%DATADIR%%/%%EMACS_VER%%/etc/NEWS.26
 %%DATADIR%%/%%EMACS_VER%%/etc/NEXTSTEP
 %%DATADIR%%/%%EMACS_VER%%/etc/NXML-NEWS
 %%DATADIR%%/%%EMACS_VER%%/etc/ORDERS
@@ -494,6 +495,7 @@ share/applications/emacs.desktop
 %%DATADIR%%/%%EMACS_VER%%/etc/images/icons/hicolor/48x48/apps/emacs.png
 %%DATADIR%%/%%EMACS_VER%%/etc/images/icons/hicolor/48x48/apps/emacs22.png
 %%DATADIR%%/%%EMACS_VER%%/etc/images/icons/hicolor/48x48/apps/emacs23.png
+%%DATADIR%%/%%EMACS_VER%%/etc/images/icons/hicolor/scalable/apps/emacs.ico
 %%DATADIR%%/%%EMACS_VER%%/etc/images/icons/hicolor/scalable/apps/emacs.svg
 %%DATADIR%%/%%EMACS_VER%%/etc/images/icons/hicolor/scalable/apps/emacs23.svg
 %%DATADIR%%/%%EMACS_VER%%/etc/images/icons/hicolor/scalable/mimetypes/emacs-document.svg
@@ -705,6 +707,7 @@ share/applications/emacs.desktop
 %%DATADIR%%/%%EMACS_VER%%/etc/images/sort-row-ascending.xpm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/spell.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/spell.xpm
+%%DATADIR%%/%%EMACS_VER%%/etc/images/splash.bmp
 %%DATADIR%%/%%EMACS_VER%%/etc/images/splash.pbm
 %%DATADIR%%/%%EMACS_VER%%/etc/images/splash.png
 %%DATADIR%%/%%EMACS_VER%%/etc/images/splash.svg
@@ -1576,6 +1579,8 @@ share/applications/emacs.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/ert.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/ewoc.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/ewoc.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/faceup.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/faceup.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/find-func.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/find-func.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/float-sup.el.gz
@@ -1626,6 +1631,8 @@ share/applications/emacs.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/regi.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/ring.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/ring.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/rmc.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/rmc.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/rx.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/rx.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/emacs-lisp/seq.el.gz
@@ -2992,6 +2999,8 @@ share/applications/emacs.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/ob-groovy.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/ob-haskell.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/ob-haskell.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/org/ob-hledger.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/org/ob-hledger.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/ob-io.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/ob-io.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/ob-java.el.gz
@@ -3042,8 +3051,6 @@ share/applications/emacs.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/ob-ruby.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/ob-sass.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/ob-sass.elc
-%%DATADIR%%/%%EMACS_VER%%/lisp/org/ob-scala.el.gz
-%%DATADIR%%/%%EMACS_VER%%/lisp/org/ob-scala.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/ob-scheme.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/ob-scheme.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/ob-screen.el.gz
@@ -3064,6 +3071,8 @@ share/applications/emacs.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/ob-table.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/ob-tangle.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/ob-tangle.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/org/ob-vala.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/org/ob-vala.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/ob.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/ob.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/org-agenda.el.gz
@@ -3092,6 +3101,8 @@ share/applications/emacs.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/org-datetree.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/org-docview.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/org-docview.elc
+%%DATADIR%%/%%EMACS_VER%%/lisp/org/org-duration.el.gz
+%%DATADIR%%/%%EMACS_VER%%/lisp/org/org-duration.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/org-element.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/org-element.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/org/org-entities.el.gz
@@ -3345,8 +3356,6 @@ share/applications/emacs.desktop
 %%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/flymake.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/flymake-proc.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/flymake-proc.elc
-%%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/flymake-ui.el.gz
-%%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/flymake-ui.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/fortran.el.gz
 %%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/fortran.elc
 %%DATADIR%%/%%EMACS_VER%%/lisp/progmodes/gdb-mi.el.gz
@@ -3978,6 +3987,7 @@ share/applications/emacs.desktop
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/keymap.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/kqueue.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/lastfile.c
+%%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/lcms.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/lisp.h
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/lread.c
 %%SOURCES%%%%DATADIR%%/%%EMACS_VER%%/src/macfont.h
@@ -4095,6 +4105,7 @@ share/icons/hicolor/16x16/apps/emacs.png
 share/icons/hicolor/24x24/apps/emacs.png
 share/icons/hicolor/32x32/apps/emacs.png
 share/icons/hicolor/48x48/apps/emacs.png
+share/icons/hicolor/scalable/apps/emacs.ico
 share/icons/hicolor/scalable/apps/emacs.svg
 share/icons/hicolor/scalable/mimetypes/emacs-document.svg
 share/icons/hicolor/scalable/mimetypes/emacs-document23.svg

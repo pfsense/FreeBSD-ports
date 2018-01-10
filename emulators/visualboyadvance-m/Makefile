@@ -3,7 +3,7 @@
 
 PORTNAME=	visualboyadvance-m
 PORTVERSION=	2.0.0b2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	emulators
 
 MAINTAINER=	root@cooltrainer.org
@@ -15,6 +15,7 @@ LIB_DEPENDS=	libpng.so:graphics/png
 
 BROKEN_aarch64=		fails to build: regparm is not valid on this platform
 BROKEN_armv6=		fails to build: regparm is not valid on this platform
+BROKEN_armv7=		fails to build: regparm is not valid on this platform
 
 USE_GITHUB=	yes
 GH_TAGNAME=	VBA-M_Beta_2
@@ -35,7 +36,6 @@ DEBUGGER_DESC=	Enable the debugger
 ASMCORE_DESC=	Enable x86 ASM CPU cores (i386 only)
 ASMSCALERS_DESC=	Enable x86 ASM graphic filters (i386 only)
 
-WANT_GNOME=	yes
 DOS2UNIX_REGEX=	.*\.(c|cpp|h|ypp)
 USE_XORG=	x11 xext
 USE_GL=		gl glu
@@ -82,7 +82,7 @@ LIRC_CMAKE_BOOL=	ENABLE_LIRC
 
 post-patch:
 	@${REINPLACE_CMD} -e '/SET.*LIRC_CLIENT_LIBRARY/ s|lirc_client|${LOCALBASE}/lib/lib&.so|; \
-       		s|share/man|man|' ${WRKSRC}/CMakeLists.txt
+		s|share/man|man|' ${WRKSRC}/CMakeLists.txt
 
 maint-gen-distfile:
 	@if [ -f ${DISTDIR}/${DISTNAME}${EXTRACT_SUFX} ]; then \

@@ -10,9 +10,10 @@ MASTER_SITES=	http://www.oscommerce.com/files/
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Full-featured open source e-commerce system
 
-USES=		cpe zip
+IGNORE_WITH_PHP=	70 71 72
+
+USES=		cpe php:web zip
 USE_PHP=	mysql session pcre gd curl openssl
-WANT_PHP_WEB=	yes
 NO_BUILD=	yes
 NO_ARCH=	yes
 SUB_FILES=	pkg-message

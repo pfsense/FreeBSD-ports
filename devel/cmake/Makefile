@@ -3,7 +3,8 @@
 
 PORTNAME=	cmake
 # Remember to update devel/cmake-doc and devel/cmake-gui as well.
-DISTVERSION=	3.9.3
+DISTVERSION=	3.10.1
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://www.cmake.org/files/v${PORTVERSION:R}/
 
@@ -13,6 +14,15 @@ COMMENT=	Cross-platform Makefile generator
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/Copyright.txt
 
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libexpat.so:textproc/expat2 \
+		libjsoncpp.so:devel/jsoncpp \
+		libuv.so:devel/libuv \
+		librhash.so:security/rhash
+
+USES=		compiler:c++11-lang libarchive ncurses
+
+HAS_CONFIGURE=	yes
 CONFIGURE_ENV=	MAKE=make
 CONFIGURE_ARGS=	--prefix=${PREFIX} \
 		--datadir="/${DATADIR_REL}" \
@@ -24,14 +34,6 @@ CONFIGURE_ARGS=	--prefix=${PREFIX} \
 OPTIONS_DEFINE=	DOCS MANPAGES
 OPTIONS_DEFAULT=MANPAGES
 OPTIONS_SUB=	yes
-USES=		libarchive ncurses
-HAS_CONFIGURE=	yes
-
-LIB_DEPENDS=	libcurl.so:ftp/curl \
-		libexpat.so:textproc/expat2 \
-		libjsoncpp.so:devel/jsoncpp \
-		libuv.so:devel/libuv \
-		librhash.so:security/rhash
 
 MANPAGES_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx
 MANPAGES_CONFIGURE_ON=	--sphinx-man

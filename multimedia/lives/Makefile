@@ -3,7 +3,7 @@
 
 PORTNAME=	lives
 PORTVERSION=	2.8.7
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	multimedia
 MASTER_SITES=	http://lives-video.com/releases/
 DISTNAME=	LiVES-${PORTVERSION}
@@ -25,7 +25,7 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libvisual-0.4.so:graphics/libvisual04 \
 		libopencv_calib3d.so:graphics/opencv \
 		libopencv_core.so:graphics/opencv-core \
-		libpng16.so:graphics/png \
+		libpng.so:graphics/png \
 		libfftw3.so:math/fftw3 \
 		libfftw3f.so:math/fftw3-float \
 		libavcodec.so:multimedia/ffmpeg \

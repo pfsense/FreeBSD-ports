@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	postgis
-PORTVERSION=	2.3.3
+PORTVERSION=	2.3.5
 CATEGORIES=	databases geography
 MASTER_SITES=	http://download.osgeo.org/postgis/source/
 PKGNAMESUFFIX=	23
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libproj.so:graphics/proj \
 		libgeos.so:graphics/geos \
 		libjson-c.so:devel/json-c
 
-CONFLICTS=	postgis20-2.0.*  postgis-2.1.* postgis-22*
+CONFLICTS=	postgis20  postgis21 postgis22 postgis24 postgis
 
 USES=		gettext gmake iconv:wchar_t libtool:keepla perl5 pgsql pkgconfig shebangfix
 GNU_CONFIGURE=	yes
@@ -31,7 +31,7 @@ USE_PERL5=	build
 WANT_PGSQL=	lib server
 
 OPTIONS_DEFINE=		LOADERGUI RASTER TOPOLOGY SFCGAL ADDRSTD
-OPTIONS_DEFAULT=	TOPOLOGY ADDRSTD
+OPTIONS_DEFAULT=	TOPOLOGY ADDRSTD SFCGAL
 NO_OPTIONS_SORT=	yes
 OPTIONS_SUB=		yes
 

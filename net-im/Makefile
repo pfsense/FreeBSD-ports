@@ -3,8 +3,6 @@
 
     COMMENT = Instant messaging
 
-    SUBDIR += ayttm
-    SUBDIR += bsflite
     SUBDIR += centerim
     SUBDIR += centerim-devel
     SUBDIR += chattahoochie
@@ -28,6 +26,7 @@
     SUBDIR += fugu
     SUBDIR += gajim
     SUBDIR += gale
+    SUBDIR += gitterdone
     SUBDIR += gloox
     SUBDIR += hotot
     SUBDIR += hs-haskell-xmpp
@@ -88,7 +87,6 @@
     SUBDIR += p5-Jabber-Connection
     SUBDIR += p5-Jabber-Lite
     SUBDIR += p5-Jabber-SimpleSend
-    SUBDIR += p5-Net-AIM
     SUBDIR += p5-Net-AOLIM
     SUBDIR += p5-Net-Async-XMPP
     SUBDIR += p5-Net-ICQ2000
@@ -116,19 +114,20 @@
     SUBDIR += pidgin-osd
     SUBDIR += pidgin-pidgimpd
     SUBDIR += pidgin-privacy-please
+    SUBDIR += pidgin-rocketchat
     SUBDIR += pidgin-sipe
     SUBDIR += pidgin-skype
     SUBDIR += pidgin-skypeweb
     SUBDIR += pidgin-twitter
     SUBDIR += plasma-applet-ktp
     SUBDIR += poezio
-    SUBDIR += pork
     SUBDIR += profanity
     SUBDIR += prosody
     SUBDIR += prosody-modules
     SUBDIR += proxy65
     SUBDIR += psi
     SUBDIR += psimedia
+    SUBDIR += purple-hangouts
     SUBDIR += py-fbmq
     SUBDIR += py-jabber
     SUBDIR += py-jabberbot
@@ -168,6 +167,7 @@
     SUBDIR += skype4
     SUBDIR += teamwords
     SUBDIR += telegram
+    SUBDIR += telegram-desktop
     SUBDIR += telegram-purple
     SUBDIR += telegramqml
     SUBDIR += telepathy-accounts-signon
