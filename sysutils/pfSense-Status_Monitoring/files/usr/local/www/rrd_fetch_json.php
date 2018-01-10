@@ -31,6 +31,15 @@ require("guiconfig.inc");
 
 $rrd_location = "/var/db/rrd/";
 
+/* Check if an RRD file exists */
+function monitoring_rrd_check($name) {
+	global $rrd_location;
+	if (file_exists($rrd_location . basename($name))) {
+		return true;
+	}
+	return false;
+}
+
 //lookup end time based on resolution (ensure resolution interval)
 $resolutionLookup = array(
 	"60"    => "1min",
@@ -94,6 +103,10 @@ foreach ($side as $lr => $settings) {
 	$pieces = explode("-", $side[$lr]['selection']);
 	$side[$lr]['category'] = $pieces[1];
 	$side[$lr]['rrd_file'] = $rrd_location . $side[$lr]['selection'] . '.rrd';
+	/* Check if the RRD file exists before using it, continue if it's not found because that axis has nothing selected. */
+	if (!monitoring_rrd_check($side[$lr]['rrd_file'])) {
+		continue;
+	}
 	$rrd_info_array = rrd_info($side[$lr]['rrd_file']);
 	$side[$lr]['last_update'] = $rrd_info_array['last_update'];
 	$side[$lr]['unit_acronym'] = $graph_unit_lookup[$side[$lr]['category']];
@@ -113,8 +126,18 @@ if ($timePeriod === "custom") {
 	// Determine highest resolution available for requested time period
 	// Should be possible to determine programmatically from the RRD header info array (rrd_info).
 	$rrd_options = array( 'AVERAGE', '-a', '-s', $start, '-e', $start );
-	$left_rrd_array  = rrd_fetch($side['l']['rrd_file'], $rrd_options);
-	$right_rrd_array = rrd_fetch($side['r']['rrd_file'], $rrd_options);
+
+	if (monitoring_rrd_check($side['l']['rrd_file'])) {
+		$left_rrd_array  = rrd_fetch($side['l']['rrd_file'], $rrd_options);
+	} else {
+		$left_rrd_array = array();
+	}
+	if (monitoring_rrd_check($side['r']['rrd_file'])) {
+		$right_rrd_array = rrd_fetch($side['r']['rrd_file'], $rrd_options);
+	} else {
+		$right_rrd_array = array();
+	}
+
 	$resolution = max($left_rrd_array['step'], $right_rrd_array['step']);
 
 	// make sure end time isn't later than last updated time entry
@@ -138,9 +161,11 @@ foreach ($side as $settings) {
 	if ($settings['selection'] == "null") {
 		continue;
 	}
+	if (!monitoring_rrd_check($settings['rrd_file'])) {
+		die ('{ "error" : "' . gettext("Invalid RRD file") . '" }');
+	}
 
 	$rrd_array = rrd_fetch($settings['rrd_file'], $rrd_options);
-
 	if (!($rrd_array)) {
 		die ('{ "error" : "' . rrd_error() . '" }');
 	}
