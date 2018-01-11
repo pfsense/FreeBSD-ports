@@ -408,7 +408,7 @@ include_once("head.inc"); ?>
 							<i id="suricata_<?=$if_real.$suricata_uuid;?>_start" class="fa fa-play-circle icon-pointer icon-primary text-info hidden" onclick="javascript:suricata_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Start Suricata on this interface');?>"></i>
 							<i id="suricata_<?=$if_real.$suricata_uuid;?>_stop" class="fa fa-stop-circle-o icon-pointer icon-primary text-info" onclick="javascript:suricata_iface_toggle('stop', '<?=$nnats?>');" title="<?=gettext('Stop Suricata on this interface');?>"></i>
 						<?php elseif ($suri_starting == TRUE || file_exists("{$g['varrun_path']}/suricata_pkg_starting.lck")) : ?>
-							<i id="suricata_<?=$if_real.$suricata_uuid;?>" class="fa fa-spinner fa-spin text-info icon-primary" title="<?=gettext('Suricata is starting on this interface');?>"></i>
+							<i id="suricata_<?=$if_real.$suricata_uuid;?>" class="fa fa-cog fa-spin text-info icon-primary" title="<?=gettext('Suricata is starting on this interface');?>"></i>
 							&nbsp;
 							<i id="suricata_<?=$if_real.$suricata_uuid;?>_restart" class="fa fa-repeat icon-pointer icon-primary text-info hidden" onclick="javascript:suricata_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Restart Suricata on this interface');?>"></i>
 							<i id="suricata_<?=$if_real.$suricata_uuid;?>_start" class="fa fa-play-circle icon-pointer icon-primary text-info hidden" onclick="javascript:suricata_iface_toggle('start', '<?=$nnats?>');" title="<?=gettext('Start Suricata on this interface');?>"></i>
@@ -599,7 +599,7 @@ include_once("head.inc"); ?>
 		for(var key in data) {
 			if (data[key] != 'DISABLED') {
 				if (data[key] == 'STOPPED') {
-					$('#' + key).removeClass('fa-check-circle fa-spinner fa-spin text-success text-info');
+					$('#' + key).removeClass('fa-check-circle fa-cog fa-spin text-success text-info');
 					$('#' + key).addClass('fa-times-circle text-danger');
 					$('#' + key + '_restart').addClass('hidden');
 					$('#' + key + '_stop').addClass('hidden');
@@ -607,14 +607,14 @@ include_once("head.inc"); ?>
 				}
 				if (data[key] == 'STARTING') {
 					$('#' + key).removeClass('fa-check-circle fa-times-circle text-success text-danger');
-					$('#' + key).addClass('fa-spinner fa-spin text-info');
+					$('#' + key).addClass('fa-cog fa-spin text-info');
 					$('#' + key + '_restart').addClass('hidden');
 					$('#' + key + '_start').addClass('hidden');
 					$('#' + key + '_stop').removeClass('hidden');
 				}
 				if (data[key] == 'RUNNING') {
 					$('#' + key).addClass('fa-check-circle text-success');
-					$('#' + key).removeClass('fa-times-circle fa-spinner fa-spin text-danger text-info');
+					$('#' + key).removeClass('fa-times-circle fa-cog fa-spin text-danger text-info');
 					$('#' + key + '_restart').removeClass('hidden');
 					$('#' + key + '_stop').removeClass('hidden');
 					$('#' + key + '_start').addClass('hidden');
