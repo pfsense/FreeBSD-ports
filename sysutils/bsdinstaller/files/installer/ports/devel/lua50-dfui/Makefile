@@ -38,8 +38,8 @@ do-fetch:
 	fi
 
 do-install:
-	${INSTALL_PROGRAM} -o root -g wheel -m 444 ${WRKSRC}/ldfui.so ${LOCALBASE}/lib/lua/5.0/
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/dfui.lua ${LOCALBASE}/share/lua/5.0/
+	${INSTALL_PROGRAM} -m 444 ${WRKSRC}/ldfui.so ${LOCALBASE}/lib/lua/5.0/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/dfui.lua ${LOCALBASE}/share/lua/5.0/
 
 OSTYPE!=sysctl -n kern.ostype
 

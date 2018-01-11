@@ -141,19 +141,19 @@ do-install:
 	${MKDIR} -p ${DFUIBE_LUA_DIR}/configure/menu
 	${MKDIR} -p ${DFUIBE_LUA_DIR}/upgrade
 	${MKDIR} -p ${DFUIBE_LUA_DIR}/netboot
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/*.lua ${DFUIBE_LUA_DIR}/
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/lib/*.lua ${DFUIBE_LUA_DIR}/lib/
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/conf/*.lua ${DFUIBE_LUA_DIR}/conf/
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/pit/*.lua ${DFUIBE_LUA_DIR}/pit/
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/install/*.lua ${DFUIBE_LUA_DIR}/install/
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/configure/*.lua ${DFUIBE_LUA_DIR}/configure/
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/configure/menu/*.lua ${DFUIBE_LUA_DIR}/configure/menu/
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/upgrade/*.lua ${DFUIBE_LUA_DIR}/upgrade/
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/netboot/*.lua ${DFUIBE_LUA_DIR}/netboot/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/*.lua ${DFUIBE_LUA_DIR}/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/lib/*.lua ${DFUIBE_LUA_DIR}/lib/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/conf/*.lua ${DFUIBE_LUA_DIR}/conf/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/pit/*.lua ${DFUIBE_LUA_DIR}/pit/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/install/*.lua ${DFUIBE_LUA_DIR}/install/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/configure/*.lua ${DFUIBE_LUA_DIR}/configure/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/configure/menu/*.lua ${DFUIBE_LUA_DIR}/configure/menu/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/upgrade/*.lua ${DFUIBE_LUA_DIR}/upgrade/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/netboot/*.lua ${DFUIBE_LUA_DIR}/netboot/
 .if ${PORT_OPTIONS:MNLS}
 	for _language in ${LANGUAGES}; do \
 		(cd ${WRKSRC}/po && msgfmt -o $${_language}.mo $${_language}); \
-		${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/po/$${_language}.mo \
+		${INSTALL_DATA} -m 444 ${WRKSRC}/po/$${_language}.mo \
 		    ${LOCALEDIR}/$${_language}/LC_MESSAGES/${PORTNAME}.mo; \
 	done
 .endif

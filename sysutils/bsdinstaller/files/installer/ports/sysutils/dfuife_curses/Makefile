@@ -46,11 +46,11 @@ do-fetch:
 
 do-install:
 	${MKDIR} -p ${LOCALBASE}/share/dfuife_curses
-	${INSTALL_PROGRAM} -o root -g wheel ${WRKSRC}/dfuife_curses ${LOCALBASE}/sbin/
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/fred.txt ${LOCALBASE}/share/dfuife_curses/
+	${INSTALL_PROGRAM} ${WRKSRC}/dfuife_curses ${LOCALBASE}/sbin/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/fred.txt ${LOCALBASE}/share/dfuife_curses/
 .if defined(WITH_NLS)
 	for _language in ${LANGUAGES}; do \
-		${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/po/$${_language}.mo \
+		${INSTALL_DATA} -m 444 ${WRKSRC}/po/$${_language}.mo \
 		    ${LOCALEDIR}/$${_language}/LC_MESSAGES/${PORTNAME}.mo; \
 	done
 .endif

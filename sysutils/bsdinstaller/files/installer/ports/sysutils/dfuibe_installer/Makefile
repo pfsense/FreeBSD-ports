@@ -51,11 +51,11 @@ do-fetch:
 	fi
 
 do-install:
-	${INSTALL_PROGRAM} -o root -g wheel -m 555 ${WRKSRC}/dfuibe_installer ${LOCALBASE}/sbin
+	${INSTALL_PROGRAM} -m 555 ${WRKSRC}/dfuibe_installer ${LOCALBASE}/sbin
 	${MKDIR} -p ${SHAREDIR}
-	${INSTALL_DATA} -o root -g wheel -m 555 ${WRKSRC}/conf/cmdnames.conf ${SHAREDIR}
+	${INSTALL_DATA} -m 555 ${WRKSRC}/conf/cmdnames.conf ${SHAREDIR}
 	for _language in ${LANGUAGES}; do \
-		${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/po/$${_language}.mo \
+		${INSTALL_DATA} -m 444 ${WRKSRC}/po/$${_language}.mo \
 		    ${LOCALEDIR}/$${_language}/LC_MESSAGES/${PORTNAME}.mo; \
 	done
 

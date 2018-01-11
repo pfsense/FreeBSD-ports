@@ -41,15 +41,15 @@ do-fetch:
 
 do-install:
 	${MKDIR} -p ${LOCALBASE}/include/installer
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/libinstaller.a ${LOCALBASE}/lib/
-	${INSTALL_PROGRAM} -o root -g wheel -m 444 ${WRKSRC}/libinstaller.so.5 ${LOCALBASE}/lib/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/libinstaller.a ${LOCALBASE}/lib/
+	${INSTALL_PROGRAM} -m 444 ${WRKSRC}/libinstaller.so.5 ${LOCALBASE}/lib/
 	${LN} -sf ${LOCALBASE}/lib/libinstaller.so.5 ${LOCALBASE}/lib/libinstaller.so
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/commands.h ${LOCALBASE}/include/installer/
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/confed.h ${LOCALBASE}/include/installer/
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/diskutil.h ${LOCALBASE}/include/installer/
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/functions.h ${LOCALBASE}/include/installer/
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/package.h ${LOCALBASE}/include/installer/
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/uiutil.h ${LOCALBASE}/include/installer/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/commands.h ${LOCALBASE}/include/installer/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/confed.h ${LOCALBASE}/include/installer/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/diskutil.h ${LOCALBASE}/include/installer/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/functions.h ${LOCALBASE}/include/installer/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/package.h ${LOCALBASE}/include/installer/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/uiutil.h ${LOCALBASE}/include/installer/
 
 OSTYPE!=sysctl -n kern.ostype
 

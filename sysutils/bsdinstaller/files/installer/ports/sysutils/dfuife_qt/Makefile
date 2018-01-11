@@ -33,7 +33,7 @@ do-fetch:
 	fi
 
 do-install:
-	${INSTALL_PROGRAM} -o root -g wheel -m 555 ${WRKSRC}/dfuife_qt ${LOCALBASE}/sbin
+	${INSTALL_PROGRAM} -m 555 ${WRKSRC}/dfuife_qt ${LOCALBASE}/sbin
 
 OSTYPE!=sysctl -n kern.ostype
 

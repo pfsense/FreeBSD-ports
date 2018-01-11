@@ -57,6 +57,6 @@ distribution: strip
 
 distribution_nls: nls
 	for _language in ${LANGUAGES}; do \
-		${INSTALL} -c -o root -g wheel -m 444 po/$${_language}.mo \
+		${INSTALL} -c -m 444 po/$${_language}.mo \
 		    ${LOCALEDIR}/$${_language}/LC_MESSAGES/${PACKAGE}.mo; \
 	done

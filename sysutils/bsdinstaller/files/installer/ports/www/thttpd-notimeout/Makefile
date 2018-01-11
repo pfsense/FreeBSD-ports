@@ -30,17 +30,17 @@ MAN8=		thttpd.8 redirect.8 ssi.8 syslogtocern.8
 do-install:
 	@${INSTALL_PROGRAM} ${WRKSRC}/thttpd ${PREFIX}/sbin/
 	@${INSTALL_MAN} ${WRKSRC}/thttpd.8 ${PREFIX}/man/man8
-	@${INSTALL} -d -o root -g wheel -m 0755 ${PREFIX}/www
-	@${INSTALL} -d -o root -g wheel -m 0755 ${PREFIX}/www/data
-	@${INSTALL} -d -o root -g wheel -m 0755 ${PREFIX}/www/logs
-	@${INSTALL} -d -o root -g wheel -m 0755 ${PREFIX}/www/cgi-bin
+	@${INSTALL} -d -m 0755 ${PREFIX}/www
+	@${INSTALL} -d -m 0755 ${PREFIX}/www/data
+	@${INSTALL} -d -m 0755 ${PREFIX}/www/logs
+	@${INSTALL} -d -m 0755 ${PREFIX}/www/cgi-bin
 	@${INSTALL_PROGRAM} ${WRKSRC}/cgi-src/redirect ${PREFIX}/www/cgi-bin/
 	@${INSTALL_PROGRAM} ${WRKSRC}/cgi-src/ssi ${PREFIX}/www/cgi-bin/
 	@${INSTALL_PROGRAM} ${WRKSRC}/cgi-src/phf ${PREFIX}/www/cgi-bin/
 	@${INSTALL_MAN} ${WRKSRC}/cgi-src/redirect.8 ${PREFIX}/man/man8
 	@${INSTALL_MAN} ${WRKSRC}/cgi-src/ssi.8 ${PREFIX}/man/man8
 	@${INSTALL_PROGRAM} ${WRKSRC}/extras/makeweb ${PREFIX}/bin/
-	@${INSTALL} -c -m 755 -o root -g wheel ${WRKSRC}/extras/syslogtocern ${PREFIX}/bin/
+	@${INSTALL} -c -m 755 ${WRKSRC}/extras/syslogtocern ${PREFIX}/bin/
 	@${INSTALL_PROGRAM} ${WRKSRC}/extras/htpasswd ${PREFIX}/bin/
 	@${INSTALL_MAN} ${WRKSRC}/extras/makeweb.1 ${PREFIX}/man/man1
 	@${INSTALL_MAN} ${WRKSRC}/extras/htpasswd.1 ${PREFIX}/man/man1

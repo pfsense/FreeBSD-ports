@@ -38,13 +38,13 @@ do-fetch:
 
 do-install:
 	${MKDIR} -p ${LOCALBASE}/include/dfui
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/libdfui.a ${LOCALBASE}/lib/
-	${INSTALL_PROGRAM} -o root -g wheel -m 444 ${WRKSRC}/libdfui.so.4 ${LOCALBASE}/lib/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/libdfui.a ${LOCALBASE}/lib/
+	${INSTALL_PROGRAM} -m 444 ${WRKSRC}/libdfui.so.4 ${LOCALBASE}/lib/
 	${LN} -sf ${LOCALBASE}/lib/libdfui.so.4 ${LOCALBASE}/lib/libdfui.so
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/dfui.h ${LOCALBASE}/include/dfui/
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/dump.h ${LOCALBASE}/include/dfui/
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/lang.h ${LOCALBASE}/include/dfui/
-	${INSTALL_DATA} -o root -g wheel -m 444 ${WRKSRC}/system.h ${LOCALBASE}/include/dfui/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/dfui.h ${LOCALBASE}/include/dfui/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/dump.h ${LOCALBASE}/include/dfui/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/lang.h ${LOCALBASE}/include/dfui/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/system.h ${LOCALBASE}/include/dfui/
 
 OSTYPE!=sysctl -n kern.ostype
 
