@@ -413,8 +413,9 @@ do-install:
 	${INSTALL_DATA} -m 555 ${WRKSRC}/backend/installer/conf/cmdnames.conf ${STAGEDIR}${PREFIX}/share/dfuibe_installer
 .if ${PORT_OPTIONS:MNLS}
 	for _language in ${LANGUAGES}; do \
+		${MKDIR} ${STAGEDIR}${LOCALEDIR}/$${_language}/LC_MESSAGES; \
 		${INSTALL_DATA} -m 444 ${WRKSRC}/backend/installer/po/$${_language}.mo \
-		    ${LOCALEDIR}/$${_language}/LC_MESSAGES/dfuibe_installer.mo; \
+		    ${STAGEDIR}${LOCALEDIR}/$${_language}/LC_MESSAGES/dfuibe_installer.mo; \
 	done
 .endif
 .endif
@@ -462,28 +463,29 @@ do-install:
 	${INSTALL_DATA} -m 444 ${WRKSRC}/lib/lua/gettext/gettext.lua ${STAGEDIR}${PREFIX}/share/lua/5.0/
 .endif
 	echo "Installing dfuibe_lua..."
-	${MKDIR} ${DFUIBE_LUA_DIR}
-	${MKDIR} ${DFUIBE_LUA_DIR}/lib
-	${MKDIR} ${DFUIBE_LUA_DIR}/conf
-	${MKDIR} ${DFUIBE_LUA_DIR}/pit
-	${MKDIR} ${DFUIBE_LUA_DIR}/install
-	${MKDIR} ${DFUIBE_LUA_DIR}/configure
-	${MKDIR} ${DFUIBE_LUA_DIR}/configure/menu
-	${MKDIR} ${DFUIBE_LUA_DIR}/upgrade
-	${MKDIR} ${DFUIBE_LUA_DIR}/netboot
-	${INSTALL_DATA} -m 444 ${WRKSRC}/backend/lua/*.lua ${DFUIBE_LUA_DIR}/
-	${INSTALL_DATA} -m 444 ${WRKSRC}/backend/lua/lib/*.lua ${DFUIBE_LUA_DIR}/lib/
-	${INSTALL_DATA} -m 444 ${WRKSRC}/backend/lua/conf/*.lua ${DFUIBE_LUA_DIR}/conf/
-	${INSTALL_DATA} -m 444 ${WRKSRC}/backend/lua/pit/*.lua ${DFUIBE_LUA_DIR}/pit/
-	${INSTALL_DATA} -m 444 ${WRKSRC}/backend/lua/install/*.lua ${DFUIBE_LUA_DIR}/install/
-	${INSTALL_DATA} -m 444 ${WRKSRC}/backend/lua/configure/*.lua ${DFUIBE_LUA_DIR}/configure/
-	${INSTALL_DATA} -m 444 ${WRKSRC}/backend/lua/configure/menu/*.lua ${DFUIBE_LUA_DIR}/configure/menu/
-	${INSTALL_DATA} -m 444 ${WRKSRC}/backend/lua/upgrade/*.lua ${DFUIBE_LUA_DIR}/upgrade/
-	${INSTALL_DATA} -m 444 ${WRKSRC}/backend/lua/netboot/*.lua ${DFUIBE_LUA_DIR}/netboot/
+	${MKDIR} ${STAGEDIR}${DFUIBE_LUA_DIR}
+	${MKDIR} ${STAGEDIR}${DFUIBE_LUA_DIR}/lib
+	${MKDIR} ${STAGEDIR}${DFUIBE_LUA_DIR}/conf
+	${MKDIR} ${STAGEDIR}${DFUIBE_LUA_DIR}/pit
+	${MKDIR} ${STAGEDIR}${DFUIBE_LUA_DIR}/install
+	${MKDIR} ${STAGEDIR}${DFUIBE_LUA_DIR}/configure
+	${MKDIR} ${STAGEDIR}${DFUIBE_LUA_DIR}/configure/menu
+	${MKDIR} ${STAGEDIR}${DFUIBE_LUA_DIR}/upgrade
+	${MKDIR} ${STAGEDIR}${DFUIBE_LUA_DIR}/netboot
+	${INSTALL_DATA} -m 444 ${WRKSRC}/backend/lua/*.lua ${STAGEDIR}${DFUIBE_LUA_DIR}/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/backend/lua/lib/*.lua ${STAGEDIR}${DFUIBE_LUA_DIR}/lib/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/backend/lua/conf/*.lua ${STAGEDIR}${DFUIBE_LUA_DIR}/conf/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/backend/lua/pit/*.lua ${STAGEDIR}${DFUIBE_LUA_DIR}/pit/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/backend/lua/install/*.lua ${STAGEDIR}${DFUIBE_LUA_DIR}/install/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/backend/lua/configure/*.lua ${STAGEDIR}${DFUIBE_LUA_DIR}/configure/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/backend/lua/configure/menu/*.lua ${STAGEDIR}${DFUIBE_LUA_DIR}/configure/menu/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/backend/lua/upgrade/*.lua ${STAGEDIR}${DFUIBE_LUA_DIR}/upgrade/
+	${INSTALL_DATA} -m 444 ${WRKSRC}/backend/lua/netboot/*.lua ${STAGEDIR}${DFUIBE_LUA_DIR}/netboot/
 .if ${PORT_OPTIONS:MNLS}
 	for _language in ${LANGUAGES}; do \
+		${MKDIR} ${STAGEDIR}${LOCALEDIR}/$${_language}/LC_MESSAGES; \
 		${INSTALL_DATA} -m 444 ${WRKSRC}/backend/lua/po/$${_language}.mo \
-		    ${LOCALEDIR}/$${_language}/LC_MESSAGES/dfuibe_lua.mo; \
+		    ${STAGEDIR}${LOCALEDIR}/$${_language}/LC_MESSAGES/dfuibe_lua.mo; \
 	done
 .endif
 .endif # WITH_LUA_BACKEND
