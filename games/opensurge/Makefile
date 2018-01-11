@@ -13,9 +13,6 @@ DISTFILES=	${PORTNAME}-src-build${SVN_REV}${EXTRACT_SUFX} \
 MAINTAINER=	nemysis@FreeBSD.org
 COMMENT=	Game based on the Sonic the Hedgehog universe
 
-DEPRECATED=	Depends on expired and unfetchable x11-fonts/alfont
-EXPIRATION_DATE=2017-11-01
-
 LICENSE=	GPLv2+ CC-BY-SA-3.0
 LICENSE_COMB=	multi
 LICENSE_FILE_GPLv2+ =	${WRKSRC}/licenses/GPLv2.txt
@@ -73,7 +70,7 @@ post-install:
 
 .for s in ${ICON_SIZES}
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/${s}/apps/
-	@${INSTALL_DATA} ${WRKSRC}/src/misc/${PORTNAME}_${s}.png \
+	${INSTALL_DATA} ${WRKSRC}/src/misc/${PORTNAME}_${s}.png \
 		${STAGEDIR}${PREFIX}/share/icons/hicolor/${s}/apps/${PORTNAME}.png
 .endfor
 	${LN} -sf ${PREFIX}/share/icons/hicolor/48x48/apps/${PORTNAME}.png \

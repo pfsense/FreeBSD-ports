@@ -10,9 +10,10 @@ DISTNAME=	SiteBar-${PORTVERSION}
 MAINTAINER=	gunter@six-two.net
 COMMENT=	The Bookmark Server for Personal and Team Use
 
-USES=		tar:bzip2
+IGNORE_WITH_PHP=	70 71 72
+
+USES=		php:web tar:bzip2
 USE_PHP=	mysql pcre
-WANT_PHP_WEB=	yes
 NO_BUILD=	yes
 DATADIR=	${PREFIX}/www/${PORTNAME}
 

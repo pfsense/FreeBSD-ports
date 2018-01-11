@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gcc
-PORTVERSION=	7.2.1.s20170928
+PORTVERSION=	7.2.1.s20171228
 CATEGORIES=	lang
 MASTER_SITES=	GCC/snapshots/${DIST_VERSION}
 PKGNAMESUFFIX=	${SUFFIX}-devel
@@ -14,7 +14,7 @@ COMMENT=	GNU Compiler Collection 7
 LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi
 
-ONLY_FOR_ARCHS=	aarch64 amd64 arm armv6 i386 powerpc powerpc64 sparc64
+ONLY_FOR_ARCHS=	aarch64 amd64 arm armv6 armv7 i386 powerpc powerpc64 sparc64
 
 LIB_DEPENDS=	libgmp.so:math/gmp \
 		libmpfr.so:math/mpfr \
@@ -61,21 +61,10 @@ CONFIGURE_ARGS+=	--disable-multilib
 
 .if ${ARCH} == amd64
 CONFIGURE_TARGET=	x86_64-portbld-${OPSYS:tl}${OSREL}
-.endif
 
-.if ${ARCH} == powerpc64
+.elif ${ARCH} == powerpc64
 CONFIGURE_ENV+=	UNAME_m="powerpc64"
 USE_GCC=	yes
-.endif
-
-.if ${ARCH} == armv6
-. if ${COMPILER_TYPE} == clang
-.  if empty(PORT_OPTIONS:MBOOTSTRAP)
-MAKE_ARGS+=CXXFLAGS+=-fbracket-depth=512
-.  else
-MAKE_ARGS+=STAGE1_CXXFLAGS+=-fbracket-depth=512
-.  endif
-. endif
 .endif
 
 LANGUAGES:=	c,c++,objc,fortran
@@ -88,6 +77,10 @@ CONFIGURE_ARGS+=--disable-bootstrap
 .else
 CONFIGURE_ARGS+=--with-build-config=bootstrap-debug
 ALL_TARGET=	bootstrap-lean
+.endif
+INSTALL_TARGET=	install-strip
+.if ${UID} != 0
+BINMODE=	755
 .endif
 CONFIGURE_ARGS+=--disable-nls \
 		--enable-gnu-indirect-function \

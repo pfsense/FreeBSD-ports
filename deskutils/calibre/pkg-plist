@@ -85,9 +85,6 @@ lib/calibre/calibre/debug.py
 lib/calibre/calibre/devices/__init__.py
 lib/calibre/calibre/devices/android/__init__.py
 lib/calibre/calibre/devices/android/driver.py
-lib/calibre/calibre/devices/apple/__init__.py
-lib/calibre/calibre/devices/apple/driver.py
-lib/calibre/calibre/devices/apple/itunes.py
 lib/calibre/calibre/devices/binatone/__init__.py
 lib/calibre/calibre/devices/binatone/driver.py
 lib/calibre/calibre/devices/blackberry/__init__.py
@@ -1003,7 +1000,6 @@ lib/calibre/calibre/gui2/store/stores/biblio_plugin.py
 lib/calibre/calibre/gui2/store/stores/bn_plugin.py
 lib/calibre/calibre/gui2/store/stores/bubok_portugal_plugin.py
 lib/calibre/calibre/gui2/store/stores/bubok_publishing_plugin.py
-lib/calibre/calibre/gui2/store/stores/cdp_plugin.py
 lib/calibre/calibre/gui2/store/stores/chitanka_plugin.py
 lib/calibre/calibre/gui2/store/stores/ebook_nl_plugin.py
 lib/calibre/calibre/gui2/store/stores/ebookpoint_plugin.py
@@ -1016,7 +1012,6 @@ lib/calibre/calibre/gui2/store/stores/feedbooks_plugin.py
 lib/calibre/calibre/gui2/store/stores/google_books_plugin.py
 lib/calibre/calibre/gui2/store/stores/gutenberg_plugin.py
 lib/calibre/calibre/gui2/store/stores/kobo_plugin.py
-lib/calibre/calibre/gui2/store/stores/koobe_plugin.py
 lib/calibre/calibre/gui2/store/stores/legimi_plugin.py
 lib/calibre/calibre/gui2/store/stores/libri_de_plugin.py
 lib/calibre/calibre/gui2/store/stores/litres_plugin.py
@@ -1039,6 +1034,7 @@ lib/calibre/calibre/gui2/store/stores/pragmatic_bookshelf_plugin.py
 lib/calibre/calibre/gui2/store/stores/publio_plugin.py
 lib/calibre/calibre/gui2/store/stores/rw2010_plugin.py
 lib/calibre/calibre/gui2/store/stores/smashwords_plugin.py
+lib/calibre/calibre/gui2/store/stores/swiatebookow_plugin.py
 lib/calibre/calibre/gui2/store/stores/virtualo_plugin.py
 lib/calibre/calibre/gui2/store/stores/weightless_books_plugin.py
 lib/calibre/calibre/gui2/store/stores/whsmith_uk_plugin.py
@@ -1692,6 +1688,7 @@ lib/calibre/tinycss/version.py
 %%DATADIR%%/images/remove_books.png
 %%DATADIR%%/images/reports.png
 %%DATADIR%%/images/resize.png
+%%DATADIR%%/images/restart.png
 %%DATADIR%%/images/rotate-right.png
 %%DATADIR%%/images/save.png
 %%DATADIR%%/images/scheduler.png
@@ -1702,6 +1699,7 @@ lib/calibre/tinycss/version.py
 %%DATADIR%%/images/search_delete_saved.png
 %%DATADIR%%/images/search.png
 %%DATADIR%%/images/series.png
+%%DATADIR%%/images/similar.png
 %%DATADIR%%/images/smarten-punctuation.png
 %%DATADIR%%/images/snippets.png
 %%DATADIR%%/images/sort.png

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	osquery
-PORTVERSION=	2.8.0
-PORTREVISION=	3
+PORTVERSION=	2.10.2
 CATEGORIES=	sysutils
 
 MAINTAINER=	zi@FreeBSD.org
@@ -11,6 +10,8 @@ COMMENT=	SQL powered OS instrumentation, monitoring, and analytics
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=		fails to link
 
 BUILD_DEPENDS=	thrift>0:devel/thrift \
 		bash>0:shells/bash \
@@ -38,12 +39,13 @@ CONFIGURE_ENV+=	OSQUERY_BUILD_VERSION="${PORTVERSION}" HOME="${WRKDIR}" \
 		SKIP_TESTS="yes" CC="${CC}" CXX="${CXX}"
 CMAKE_ARGS+=	-DFREEBSD=awesome -DCMAKE_SYSTEM_NAME="FreeBSD"
 BLDDIR=		${WRKDIR}/.build/${PORTNAME}
+TPVERSION=	${PORTVERSION}
 USE_RC_SUBR=	${PORTNAME}d
 USE_GITHUB=	yes
 GH_ACCOUNT=	facebook ${PORTNAME}:tp
 GH_PROJECT=	third-party:tp
 GH_SUBDIR=	third-party:tp
-GH_TAGNAME=	${PORTVERSION}:tp
+GH_TAGNAME=	${TPVERSION}:tp
 
 # Some options for things that bring in many dependencies
 OPTIONS_DEFINE=	TSK AWS YARA LLDPD

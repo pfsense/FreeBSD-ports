@@ -1,11 +1,11 @@
---- os_freebsd.cpp.orig	2016-12-17 18:42:22 UTC
+--- os_freebsd.cpp.orig	2017-04-24 16:34:16 UTC
 +++ os_freebsd.cpp
-@@ -1936,6 +1936,8 @@ smart_device * freebsd_smart_interface::
-   int i;
-   const char * test_name = name;
- 
-+  memset(&ccb, 0, sizeof(ccb));
-+
-   // if dev_name null, or string length zero
-   if (!name || !*name)
-     return 0;
+@@ -484,7 +484,7 @@ bool freebsd_nvme_device::open()
+   	}
+   	nsid = 0xFFFFFFFF; // broadcast id
+   }
+-  else if (sscanf(dev, NVME_CTRLR_PREFIX"%d"NVME_NS_PREFIX"%d%c", 
++  else if (sscanf(dev, NVME_CTRLR_PREFIX"%d" NVME_NS_PREFIX "%d%c", 
+   	&ctrlid, &nsid, &tmp) == 2) 
+   {
+   	if(ctrlid < 0 || nsid < 0) {

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	passenger
-PORTVERSION=	5.1.8
+PORTVERSION=	5.1.12
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMEPREFIX=	rubygem-
@@ -86,7 +86,7 @@ pre-patch:
 		s!#{PlatformInfo.debugging_cflags}!${CFLAGS}!g; \
 		s!-O2!!g; \
 		s! -feliminate-unused-debug-symbols -feliminate-unused-debug-types!!g; \
-		166s!true!false!' \
+		155s!true!false!' \
 		${WRKSRC}/build/basics.rb
 	@${REINPLACE_CMD} '1s:python:python2:' \
 		${WRKSRC}/src/cxx_supportlib/vendor-copy/libuv/gyp_uv.py
@@ -118,6 +118,8 @@ post-install:
 	${CHMOD} +x ${STAGEDIR}${PREFIX}/${GEMS_DIR}/${PORTNAME}-${PORTVERSION}/buildout/support-binaries/*
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${GEM_LIB_DIR}/buildout/ruby/*/passenger_native_support.so
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${GEM_LIB_DIR}/buildout/support-binaries/PassengerAgent
+
+post-install-APACHE22-on:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${GEM_LIB_DIR}/buildout/apache2/mod_passenger.so
 
 post-install-SYMLINK-on:

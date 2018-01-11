@@ -66,6 +66,7 @@ bin/xscreensaver-hacks/energystream
 bin/xscreensaver-hacks/engine
 bin/xscreensaver-hacks/epicycle
 bin/xscreensaver-hacks/eruption
+bin/xscreensaver-hacks/esper
 bin/xscreensaver-hacks/euler2d
 bin/xscreensaver-hacks/extrusion
 bin/xscreensaver-hacks/fadeplot
@@ -216,6 +217,7 @@ bin/xscreensaver-hacks/unicrud
 bin/xscreensaver-hacks/unknownpleasures
 bin/xscreensaver-hacks/vermiculate
 bin/xscreensaver-hacks/vidwhacker
+bin/xscreensaver-hacks/vigilance
 bin/xscreensaver-hacks/voronoi
 bin/xscreensaver-hacks/wander
 bin/xscreensaver-hacks/webcollage
@@ -302,6 +304,7 @@ man/man6/energystream.6.gz
 man/man6/engine.6.gz
 man/man6/epicycle.6.gz
 man/man6/eruption.6.gz
+man/man6/esper.6.gz
 man/man6/euler2d.6.gz
 man/man6/extrusion.6.gz
 man/man6/fadeplot.6.gz
@@ -448,6 +451,7 @@ man/man6/unicrud.6.gz
 man/man6/unknownpleasures.6.gz
 man/man6/vermiculate.6.gz
 man/man6/vidwhacker.6.gz
+man/man6/vigilance.6.gz
 man/man6/voronoi.6.gz
 man/man6/wander.6.gz
 man/man6/webcollage.6.gz
@@ -468,7 +472,6 @@ share/applications/xscreensaver-lock.desktop
 share/applications/xscreensaver-properties.desktop
 share/applications/xscreensaver-start.desktop
 share/applications/xscreensaver-stop.desktop
-%%NLS%%share/locale/ca/LC_MESSAGES/xscreensaver.mo
 %%NLS%%share/locale/da/LC_MESSAGES/xscreensaver.mo
 %%NLS%%share/locale/de/LC_MESSAGES/xscreensaver.mo
 %%NLS%%share/locale/es/LC_MESSAGES/xscreensaver.mo
@@ -554,6 +557,7 @@ share/pixmaps/xscreensaver.xpm
 %%DATADIR%%/config/engine.xml
 %%DATADIR%%/config/epicycle.xml
 %%DATADIR%%/config/eruption.xml
+%%DATADIR%%/config/esper.xml
 %%DATADIR%%/config/euler2d.xml
 %%DATADIR%%/config/extrusion.xml
 %%DATADIR%%/config/fadeplot.xml
@@ -701,6 +705,7 @@ share/pixmaps/xscreensaver.xpm
 %%DATADIR%%/config/unknownpleasures.xml
 %%DATADIR%%/config/vermiculate.xml
 %%DATADIR%%/config/vidwhacker.xml
+%%DATADIR%%/config/vigilance.xml
 %%DATADIR%%/config/voronoi.xml
 %%DATADIR%%/config/wander.xml
 %%DATADIR%%/config/webcollage.xml
