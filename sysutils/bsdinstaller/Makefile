@@ -35,7 +35,7 @@ ALL_TARGET=	nls
 MAKE_ARGS+=	LOCALEDIR="" NLS_CFLAGS="" NLS_LDFLAGS=""
 .endif
 
-DFUIBE_LUA_DIR=	${STAGEDIR}${PREFIX}/share/dfuibe_lua
+DFUIBE_LUA_DIR=	${PREFIX}/share/dfuibe_lua
 
 # Make it so that we don't have to build the parts we're not installing...
 MAKE_ARGS+=	BUILD_QT_FRONTEND=false
@@ -387,13 +387,13 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/dfuife_curses
 	${INSTALL_PROGRAM} ${WRKSRC}/frontends/ncurses/dfuife_curses ${STAGEDIR}${PREFIX}/sbin/
 	${INSTALL_DATA} -m 444 ${WRKSRC}/frontends/ncurses/fred.txt ${STAGEDIR}${PREFIX}/share/dfuife_curses/
-.if ${PORT_OPTIONS:MNLS}
+. if ${PORT_OPTIONS:MNLS}
 	for _language in ${LANGUAGES}; do \
 		${MKDIR} ${STAGEDIR}${LOCALEDIR}/$${_language}/LC_MESSAGES; \
 		${INSTALL_DATA} -m 444 ${WRKSRC}/frontends/ncurses/po/$${_language}.mo \
 		    ${STAGEDIR}${LOCALEDIR}/$${_language}/LC_MESSAGES/dfuife_curses.mo; \
 	done
-.endif
+. endif
 .endif
 .if ${PORT_OPTIONS:MCGI}
 	echo "Installing dfuife_cgi..."
@@ -411,13 +411,13 @@ do-install:
 	${INSTALL_PROGRAM} -s -m 555 ${WRKSRC}/backend/installer/dfuibe_installer ${STAGEDIR}${PREFIX}/sbin
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/dfuibe_installer
 	${INSTALL_DATA} -m 555 ${WRKSRC}/backend/installer/conf/cmdnames.conf ${STAGEDIR}${PREFIX}/share/dfuibe_installer
-.if ${PORT_OPTIONS:MNLS}
+. if ${PORT_OPTIONS:MNLS}
 	for _language in ${LANGUAGES}; do \
 		${MKDIR} ${STAGEDIR}${LOCALEDIR}/$${_language}/LC_MESSAGES; \
 		${INSTALL_DATA} -m 444 ${WRKSRC}/backend/installer/po/$${_language}.mo \
 		    ${STAGEDIR}${LOCALEDIR}/$${_language}/LC_MESSAGES/dfuibe_installer.mo; \
 	done
-.endif
+. endif
 .endif
 .if ${PORT_OPTIONS:MLUA_BACKEND}
 	echo "Installing lua50..."
@@ -452,16 +452,16 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/lib/lua/luasocket/lua/*.lua ${STAGEDIR}${PREFIX}/share/lua/5.0/
 	echo "Installing lua50-transceiver..."
 	${INSTALL_DATA} ${WRKSRC}/lib/lua/transceiver/transceiver.lua ${STAGEDIR}${PREFIX}/share/lua/5.0/
-.if ${PORT_OPTIONS:MCURSES}
+. if ${PORT_OPTIONS:MCURSES}
 	echo "Installing lua50-lcurses..."
 	${INSTALL_PROGRAM} ${WRKSRC}/lib/lua/lcurses/lcurses.so ${STAGEDIR}${PREFIX}/lib/lua/5.0
 	${INSTALL_DATA} ${WRKSRC}/lib/lua/lcurses/curses.lua ${STAGEDIR}${PREFIX}/share/lua/5.0/
-.endif
-.if ${PORT_OPTIONS:MNLS}
+. endif
+. if ${PORT_OPTIONS:MNLS}
 	echo "Installing lua50-gettext..."
 	${INSTALL_PROGRAM} -m 444 ${WRKSRC}/lib/lua/gettext/lgettext.so ${STAGEDIR}${PREFIX}/lib/lua/5.0/
 	${INSTALL_DATA} -m 444 ${WRKSRC}/lib/lua/gettext/gettext.lua ${STAGEDIR}${PREFIX}/share/lua/5.0/
-.endif
+. endif
 	echo "Installing dfuibe_lua..."
 	${MKDIR} ${STAGEDIR}${DFUIBE_LUA_DIR}
 	${MKDIR} ${STAGEDIR}${DFUIBE_LUA_DIR}/lib
@@ -481,13 +481,13 @@ do-install:
 	${INSTALL_DATA} -m 444 ${WRKSRC}/backend/lua/configure/menu/*.lua ${STAGEDIR}${DFUIBE_LUA_DIR}/configure/menu/
 	${INSTALL_DATA} -m 444 ${WRKSRC}/backend/lua/upgrade/*.lua ${STAGEDIR}${DFUIBE_LUA_DIR}/upgrade/
 	${INSTALL_DATA} -m 444 ${WRKSRC}/backend/lua/netboot/*.lua ${STAGEDIR}${DFUIBE_LUA_DIR}/netboot/
-.if ${PORT_OPTIONS:MNLS}
+. if ${PORT_OPTIONS:MNLS}
 	for _language in ${LANGUAGES}; do \
 		${MKDIR} ${STAGEDIR}${LOCALEDIR}/$${_language}/LC_MESSAGES; \
 		${INSTALL_DATA} -m 444 ${WRKSRC}/backend/lua/po/$${_language}.mo \
 		    ${STAGEDIR}${LOCALEDIR}/$${_language}/LC_MESSAGES/dfuibe_lua.mo; \
 	done
-.endif
+. endif
 .endif # WITH_LUA_BACKEND
 	# Install pfSense files
 	${TAR} -cf - -C ${FILESDIR}/pfSense/ . | ${TAR} -xf - -C ${STAGEDIR}
