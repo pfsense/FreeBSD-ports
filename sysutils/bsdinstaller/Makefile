@@ -389,8 +389,9 @@ do-install:
 	${INSTALL_DATA} -m 444 ${WRKSRC}/frontends/ncurses/fred.txt ${STAGEDIR}${PREFIX}/share/dfuife_curses/
 .if ${PORT_OPTIONS:MNLS}
 	for _language in ${LANGUAGES}; do \
+		${MKDIR} ${STAGEDIR}${LOCALEDIR}/$${_language}/LC_MESSAGES; \
 		${INSTALL_DATA} -m 444 ${WRKSRC}/frontends/ncurses/po/$${_language}.mo \
-		    ${LOCALEDIR}/$${_language}/LC_MESSAGES/dfuife_curses.mo; \
+		    ${STAGEDIR}${LOCALEDIR}/$${_language}/LC_MESSAGES/dfuife_curses.mo; \
 	done
 .endif
 .endif
