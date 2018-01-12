@@ -1596,12 +1596,16 @@ function haproxy_writeconf($configpath) {
 				$ssl_ignoreclienterror = " crt-ignore-err all";
 			}
 			
+			$crtlistfilename = "{$configpath}/{$frontendname}.crt_list";
 			$advanced_bind = $bind['advanced_bind'];
-			$ssl_info = $bind['ssl_info'];
-			$ssl_info .= $ca_file . $crl_file . $ssl_ignoreclienterror;
 			
-			$crtlistfilename = "$configpath/{$frontendname}.crt_list";
-			$ssl_crtlist = " crt-list {$crtlistfilename}";
+			if (empty($bind['ssl_info'])) {
+				$ssl_info = "";
+			} else {
+				$ssl_info = " ssl" . $bind['ssl_info'];
+				$ssl_info .=  " crt-list {$crtlistfilename}";
+				$ssl_info .= $ca_file . $crl_file . $ssl_ignoreclienterror;
+			}
 			
 			$useipv4 = false;
 			$useipv6 = false;
@@ -1609,7 +1613,7 @@ function haproxy_writeconf($configpath) {
 			$bindips = get_frontend_bindips($bind);
 			$listenip = "";
 			foreach($bindips as $bindip) {
-				$ssl = $bindip['extaddr_ssl'] == 'yes' ? " ssl" . $ssl_info . $ssl_crtlist : "";
+				$ssl = $bindip['extaddr_ssl'] == 'yes' ? $ssl_info : "";
 				$listenip .=  "\tbind\t\t\t{$bindip['addr']}:{$bindip['port']} name {$bindip['addr']}:{$bindip['port']} {$ssl} {$advanced_bind} {$bindip['extaddr_advanced']}\n";
 				$useipv4 |= is_ipaddrv4($bindip['addr']);
 				$useipv6 |= is_ipaddrv6($bindip['addr']);
