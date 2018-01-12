@@ -122,7 +122,7 @@
 			<type>select</type>
 			<options>
 				<option><name>Master</name><value>master</value><enablefields>description</enablefields></option>
-				<option><name>Slave</name><value>slave</value><enablefields>ttl</enablefields></option>
+				<option><name>Slave</name><value>slave</value><enablefields>tll</enablefields></option>
 				<option><name>Forward</name><value>forward</value><enablefields>forward</enablefields></option>
 				<option><name>Redirect</name><value>redirect</value><enablefields>redirect</enablefields></option>
 			</options>
@@ -235,7 +235,7 @@
 		</field>
 		<field>
 			<fielddescr>TTL</fielddescr>
-			<fieldname>ttl</fieldname>
+			<fieldname>tll</fieldname>
 			<description>Default expiration time of all resource records without their own TTL value.</description>
 			<type>input</type>
 		</field>
