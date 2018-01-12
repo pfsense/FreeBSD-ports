@@ -50,7 +50,7 @@ function bind_zone_validate($post, &$input_errors) {
 	}
 	switch ($_POST['type']) {
 		case 'redirect':
-			$_POST['ttl'] = 300;
+			$_POST['tll'] = 300;
 			$_POST['refresh'] = 0;
 			$_POST['serial'] = 0;
 			$_POST['retry'] = 0;
@@ -474,7 +474,7 @@ EOD;
 						// Check/update slave dir permission
 						chown(CHROOT_LOCALBASE . "/etc/namedb/{$zonetype}", "bind");
 						chown(CHROOT_LOCALBASE . "/etc/namedb/{$zonetype}/{$zoneview}", "bind");
-						$zonettl = $zone['ttl'] ? $zone['ttl'] : "43200";
+						$zonetll = $zone['tll'] ? $zone['tll'] : "43200";
 						$zonemail = $zone['mail'] ? $zone['mail'] : "zonemaster.{$zonename}";
 						$zonemail = $zonerpz ? "root.localhost" : preg_replace("/@/", ".", $zonemail);
 						$zoneserial = $zone['serial'];
@@ -487,7 +487,7 @@ EOD;
 						$zonereverso = $zone['reverso'];
 						$zonereversv6o = $zone['reversv6o'];
 
-						$zone_conf = "\$TTL {$zonettl}\n;\n";
+						$zone_conf = "\$TTL {$zonetll}\n;\n";
 						if ($zonereverso == "on") {
 							if ($zonereversv6o == "on") {
 								$zone_conf .= "\$ORIGIN {$zonename}.ip6.arpa.\n\n";
@@ -767,7 +767,7 @@ function bind_print_javascript_type_zone() {
 			switch (tipo) {
 				case 'master':
 					document.iform.slaveip.disabled = 1;
-					document.iform.ttl.disabled = 0;
+					document.iform.tll.disabled = 0;
 					document.iform.nameserver.disabled = 0;
 					document.iform.reverso.disabled = 0;
 					document.iform.reversv6o.disabled = 0;
@@ -789,7 +789,7 @@ function bind_print_javascript_type_zone() {
 					break;
 				case 'slave':
 					document.iform.slaveip.disabled = 0;
-					document.iform.ttl.disabled = 1;
+					document.iform.tll.disabled = 1;
 					document.iform.nameserver.disabled = 1;
 					document.iform.reverso.disabled = 0;
 					document.iform.reversv6o.disabled = 0;
@@ -811,7 +811,7 @@ function bind_print_javascript_type_zone() {
 					break;
 				case 'forward':
 					document.iform.slaveip.disabled = 1;
-					document.iform.ttl.disabled = 1;
+					document.iform.tll.disabled = 1;
 					document.iform.nameserver.disabled = 1;
 					document.iform.reverso.disabled = 1;
 					document.iform.reversv6o.disabled = 1;
@@ -833,7 +833,7 @@ function bind_print_javascript_type_zone() {
 					break;
 				case 'redirect':
 					document.iform.slaveip.disabled = 1;
-					document.iform.ttl.disabled = 1;
+					document.iform.tll.disabled = 1;
 					document.iform.nameserver.disabled = 0;
 					document.iform.reverso.disabled = 1;
 					document.iform.reversv6o.disabled = 1;
