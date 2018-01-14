@@ -305,7 +305,7 @@ function snort_build_list($snortcfg, $listname = "", $whitelist = false, $extern
 	/* though, to prevent locking out the firewall itself.              */
 	/********************************************************************/
 	$snortip = get_interface_ip($snortcfg['interface']);
-	if (($externallist && $localnet == 'yes') || (!$externallist && (!$whitelist || $localnet == 'yes' || empty($localnet)))) {
+	if (($externallist && $localnet == 'yes') || (!$externallist && $whitelist && ($localnet == 'yes' || empty($localnet)))) {
 		if (is_ipaddr($snortip)) {
 			if ($snortcfg['interface'] <> "wan") {
 				if ($sn = get_interface_subnet($snortcfg['interface'])) {
@@ -328,7 +328,7 @@ function snort_build_list($snortcfg, $listname = "", $whitelist = false, $extern
 	// Trim off the interface designation (e.g., %em1) if present
 	if (strpos($snortip, "%") !== FALSE)
 		$snortip = substr($snortip, 0, strpos($snortip, "%"));
-	if (($externallist && $localnet == 'yes') || (!$externallist && (!$whitelist || $localnet == 'yes' || empty($localnet)))) {
+	if (($externallist && $localnet == 'yes') || ($whitelist && ($localnet == 'yes' || empty($localnet))) || (!$externallist && !$whitelist && ($localnet == 'yes' || empty($localnet)))) {
 		if (is_ipaddrv6($snortip)) {
 			if ($snortcfg['interface'] <> "wan") {
 				if ($sn = get_interface_subnetv6($snortcfg['interface'])) {
@@ -356,7 +356,7 @@ function snort_build_list($snortcfg, $listname = "", $whitelist = false, $extern
 			$home_net[] = $snortip;
 	}
 
-	if (($externallist && $localnet == 'yes') || (!$externallist && (!$whitelist || $localnet == 'yes' || empty($localnet)))) {		
+	if (($externallist && $localnet == 'yes') || ($whitelist && ($localnet == 'yes' || empty($localnet))) || (!$externallist && !$whitelist && ($localnet == 'yes' || empty($localnet)))) {
 		/*************************************************************************/
 		/*  Iterate through the interface list and write out whitelist items and */
 		/*  also compile a HOME_NET list of all the local interfaces for snort.  */
