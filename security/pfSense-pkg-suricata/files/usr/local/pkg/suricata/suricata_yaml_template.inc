@@ -217,7 +217,6 @@ stream:
   memcap: {$stream_memcap}
   checksum-validation: no
   inline: auto
-  max-sessions: {$stream_max_sessions}
   prealloc-sessions: {$stream_prealloc_sessions}
   midstream: {$stream_enable_midstream}
   async-oneside: {$stream_enable_async}
