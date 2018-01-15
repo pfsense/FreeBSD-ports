@@ -920,10 +920,10 @@ print($section);
 									<tr class="text-nowrap">
 										<td><?=$textss; ?>
 								<?php if ($v['managed'] == 1) : ?>
-											<i {$iconb_class} title='{$title}'</i>{$textse}";
+										<i <?=$iconb_class; ?> title="<?=$title; ?>"</i><?=$textse; ?>
 								<?php else : ?>
-											<a id="rule_<?=$gid; ?>_<?=$sid; ?>" href="#" onClick="doToggle('<?=$gid; ?>', '<?=$sid; ?>');" 
-											<?=$iconb_class; ?> title="<?=$title; ?>"</a><?=$textse; ?>
+										<a id="rule_<?=$gid; ?>_<?=$sid; ?>" href="#" onClick="doToggle('<?=$gid; ?>', '<?=$sid; ?>');" 
+										<?=$iconb_class; ?> title="<?=$title; ?>"></a><?=$textse; ?>
 								<?php endif; ?>
 									       </td>
 									       <td ondblclick="getRuleFileContents('<?=$gid; ?>','<?=$sid; ?>');">
