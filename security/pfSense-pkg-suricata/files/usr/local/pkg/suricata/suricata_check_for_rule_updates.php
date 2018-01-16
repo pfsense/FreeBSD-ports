@@ -7,7 +7,7 @@
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2016 Bill Meeks
+ * Copyright (C) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,6 +33,7 @@ global $g, $rebuild_rules;
 
 $suricatadir = SURICATADIR;
 $suricatalogdir = SURICATALOGDIR;
+$suri_eng_ver = filter_var(SURICATA_BIN_VERSION, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 $mounted_rw = FALSE;
 
 /* define checks */
@@ -68,7 +69,7 @@ if ($etpro == "on") {
 	$emergingthreats_filename = ETPRO_DNLD_FILENAME;
 	$emergingthreats_filename_md5 = ETPRO_DNLD_FILENAME . ".md5";
 	$emergingthreats_url = ETPRO_BASE_DNLD_URL;
-	$emergingthreats_url .= "{$etproid}/suricata-4.0/";
+	$emergingthreats_url .= "{$etproid}/suricata-{$suri_eng_ver}/";
 	$et_name = "Emerging Threats Pro";
 	$et_md5_remove = ET_DNLD_FILENAME . ".md5";
 	unlink_if_exists("{$suricatadir}{$et_md5_remove}");
@@ -79,7 +80,7 @@ else {
 	$emergingthreats_url = ET_BASE_DNLD_URL;
 	// If using Sourcefire VRT rules with ET, then we should use the open-nogpl ET rules
 	$emergingthreats_url .= $vrt_enabled == "on" ? "open-nogpl/" : "open/";
-	$emergingthreats_url .= "suricata-4.0/";
+	$emergingthreats_url .= "suricata-{$suri_eng_ver}/";
 	$et_name = "Emerging Threats Open";
 	$et_md5_remove = ETPRO_DNLD_FILENAME . ".md5";
 	unlink_if_exists("{$suricatadir}{$et_md5_remove}");

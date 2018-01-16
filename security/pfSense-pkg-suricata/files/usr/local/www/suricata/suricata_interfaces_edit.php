@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2017 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1172,6 +1172,28 @@ $section->addInput(new Form_Checkbox(
 
 $form->add($section);
 
+// Add Inline IPS rule edit warning modal pop-up
+$modal = new Modal('Important Information About IPS Inline Mode Blocking', 'ips_warn_dlg', 'large', 'Close');
+
+$modal->addInput(new Form_StaticText (
+	null,
+	'<span class="help-block">' . 
+	gettext('When using Inline IPS Mode blocking, you must manually change the rule action ') . 
+	gettext('from ALERT to DROP for every rule which you wish to block traffic when triggered.') . 
+	'<br/><br/>' . 
+	gettext('The default action for rules is ALERT.  This will produce alerts but will not ') . 
+	gettext('block traffic when using Inline IPS Mode for blocking. ') . 
+	'<br/><br/>' . 
+	gettext('Use the "dropsid.conf" feature on the SID MGMT tab to select rules whose action ') . 
+	gettext('should be changed from ALERT to DROP.  If you run the Snort VRT rules and have ') . 
+	gettext('an IPS policy selected on the CATEGORIES tab, then rules defined as DROP by the ') . 
+	gettext('selected IPS policy will have their action automatically changed to DROP when the ') . 
+	gettext('"IPS Policy Mode" selector is configured for "Policy".') . 
+	'</span>'
+));
+
+$form->add($modal);
+
 $section = new Form_Section('Detection Engine Settings');
 $section->addInput(new Form_Input(
 	'max_pending_packets',
@@ -1750,6 +1772,7 @@ events.push(function(){
 			hideCheckbox('block_drops_only', true);
 			hideSelect('blockoffendersip', true);
 			$('#eve_log_drop').parent().show();
+			$('#ips_warn_dlg').modal('show');
 		}
 		else {
 			hideCheckbox('blockoffenderskill', false);
@@ -1757,6 +1780,7 @@ events.push(function(){
 			hideSelect('blockoffendersip', false);
 			hideClass('passlist', false);
 			$('#eve_log_drop').parent().hide();
+			$('#ips_warn_dlg').modal('hide');
 		}
 	});
 
