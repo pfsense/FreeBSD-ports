@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-cellular
-PORTVERSION=	1.1.5
+PORTVERSION=	1.2
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -32,6 +32,8 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
 	${MKDIR} ${STAGEDIR}${PREFIX}/sbin
+	${MKDIR} ${STAGEDIR}${PREFIX}/bin
+	${MKDIR} ${STAGEDIR}/etc/devd
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/widgets/widgets
 	${INSTALL_DATA} ${WRKSRC}${PREFIX}/pkg/cellular.xml \
@@ -46,6 +48,12 @@ do-install:
 		${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${WRKSRC}${PREFIX}/www/widgets/widgets/cellular.widget.php \
 		${STAGEDIR}${PREFIX}/www/widgets/widgets
+	${INSTALL_DATA} ${WRKSRC}/etc/devd/cellular.conf \
+		${STAGEDIR}/etc/devd
+	${INSTALL_DATA} ${WRKSRC}${PREFIX}/sbin/cellular_check.php \
+		${STAGEDIR}${PREFIX}/sbin
+	${INSTALL_DATA} ${WRKSRC}${PREFIX}/bin/cellular_dev.py \
+		${STAGEDIR}${PREFIX}/bin
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \
 		${STAGEDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${PREFIX}/pkg/cellular.xml
