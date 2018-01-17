@@ -741,12 +741,18 @@ EOD;
 function bind_print_javascript_type_zone() {
 	$js = <<<'JS'
 	<script>
+	events.push(function(){
+		on_type_zone_changed();
+		$("textarea#resultconfig").attr("disabled", true);
+		$("textarea#dsset").attr("disabled", true);
+		$("select#type").change(function(){on_type_zone_changed();});
+
 		function on_type_zone_changed() {
 			var tipo = $("select#type").val();
 			switch (tipo) {
 				case 'master':
 					$("input#slaveip").attr("disabled", true);
-					$("input#ttl").attr("disabled", false);
+					$("input#tll").attr("disabled", false);
 					$("input#nameserver").attr("disabled", false);
 					$("input#reverso").attr("disabled", false);
 					$("input#reversv6o").attr("disabled", false);
@@ -770,7 +776,7 @@ function bind_print_javascript_type_zone() {
 					break;
 				case 'slave':
 					$("input#slaveip").attr("disabled", false);
-					$("input#ttl").attr("disabled", true);
+					$("input#tll").attr("disabled", true);
 					$("input#nameserver").attr("disabled", true);
 					$("input#reverso").attr("disabled", false);
 					$("input#reversv6o").attr("disabled", false);
@@ -794,7 +800,7 @@ function bind_print_javascript_type_zone() {
 					break;
 				case 'forward':
 					$("input#slaveip").attr("disabled", true);
-					$("input#ttl").attr("disabled", true);
+					$("input#tll").attr("disabled", true);
 					$("input#nameserver").attr("disabled", true);
 					$("input#reverso").attr("disabled", true);
 					$("input#reversv6o").attr("disabled", true);
@@ -818,7 +824,7 @@ function bind_print_javascript_type_zone() {
 					break;
 				case 'redirect':
 					$("input#slaveip").attr("disabled", true);
-					$("input#ttl").attr("disabled", true);
+					$("input#tll").attr("disabled", true);
 					$("input#nameserver").attr("disabled", false);
 					$("input#reverso").attr("disabled", true);
 					$("input#reversv6o").attr("disabled", true);
@@ -844,19 +850,6 @@ function bind_print_javascript_type_zone() {
 					break;
 			}
 		}
-	</script>
-JS;
-	echo $js;
-}
-
-function bind_print_javascript_type_zone2() {
-	$js = <<<'JS'
-	<script>
-	// we can't put this at the end of the body, so wait until jQuery is loaded
-	window.addEventListener("load", function(){
-		on_type_zone_changed();
-		$("textarea#resultconfig").attr("disabled", true);
-		$("textarea#dsset").attr("disabled", true);
 	});
 	</script>
 JS;
