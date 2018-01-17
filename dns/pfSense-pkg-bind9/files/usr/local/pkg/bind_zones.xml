@@ -126,7 +126,6 @@
 				<option><name>Forward</name><value>forward</value><enablefields>forward</enablefields></option>
 				<option><name>Redirect</name><value>redirect</value><enablefields>redirect</enablefields></option>
 			</options>
-			<onchange>on_type_zone_changed()</onchange>
 			<required/>
 		</field>
 		<field>
@@ -473,9 +472,6 @@
 			<usecolspan2/>
 		</field>
 	</fields>
-	<custom_php_after_form_command>
-		bind_print_javascript_type_zone2();
-	</custom_php_after_form_command>
 	<custom_php_after_head_command>
 		bind_print_javascript_type_zone();
 	</custom_php_after_head_command>
