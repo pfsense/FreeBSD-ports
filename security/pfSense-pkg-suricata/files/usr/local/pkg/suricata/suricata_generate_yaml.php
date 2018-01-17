@@ -406,17 +406,9 @@ if ($suricatacfg['eve_log_alerts_xff'] == 'on'){
 if ($suricatacfg['eve_log_http'] == 'on') {
 	$eve_out_types .= "\n        - http:";
 	if ($suricatacfg['eve_log_http_extended'] == 'on') {
-                $eve_out_types .= "\n            extended: yes";
-                $eve_out_types .= "\n            custom: [accept, accept-charset, accept-encoding, accept-language,";
-                $eve_out_types .= "\n                    accept-datetime, authorization, cache-control, cookie, from,";
-                $eve_out_types .= "\n                    max-forwards, origin, pragma, proxy-authorization, range, te, via,";
-                $eve_out_types .= "\n                    x-requested-with, dnt, x-forwarded-proto, accept-range, age,";
-                $eve_out_types .= "\n                    allow, connection, content-encoding, content-language,";
-                $eve_out_types .= "\n                    content-length, content-location, content-md5, content-range,";
-                $eve_out_types .= "\n                    content-type, date, etags, last-modified, link, location,";
-                $eve_out_types .= "\n                    proxy-authenticate, referrer, refresh, retry-after, server,";
-                $eve_out_types .= "\n                    set-cookie, trailer, transfer-encoding, upgrade, vary, warning,";
-                $eve_out_types .= "\n                    www-authenticate, x-flash-version, x-authenticated-user]";
+		$eve_out_types .= "\n            extended: yes";
+		if ($suricatacfg['eve_log_http_extended_headers'] != "")
+			$eve_out_types .= "\n            custom: [".$suricatacfg['eve_log_http_extended_headers']."]";
          } else {
                 $eve_out_types .= "\n            extended: no";
          }
@@ -457,8 +449,9 @@ if ($suricatacfg['eve_log_smtp'] == 'on') {
 		$eve_out_types .= "\n            extended: yes";
 	else
 		$eve_out_types .= "\n            extended: no";
+	if($suricatacfg['eve_log_smtp_extended_fields'] != "")
+		$eve_out_types .= "\n            custom: [".$suricatacfg['eve_log_smtp_extended_fields']."]";
 
-	$eve_out_types .= "\n            custom: [received, x-mailer, x-originating-ip, relays, reply-to, bcc]";
 	$eve_out_types .= "\n            md5: [subject]";
 }
 
