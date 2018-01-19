@@ -246,7 +246,7 @@ X11_DESC=			graphics/ImageMagick[-nox11] dependency
 XSS_DESC=			3rd party xss module
 VIDEO_DESC=			Video module support
 
-.include <bsd.port.pre.mk>
+.include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MX11}
 IMAGEMAGICK_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick
