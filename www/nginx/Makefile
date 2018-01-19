@@ -246,7 +246,7 @@ X11_DESC=			graphics/ImageMagick[-nox11] dependency
 XSS_DESC=			3rd party xss module
 VIDEO_DESC=			Video module support
 
-.include <bsd.port.options.mk>
+.include <bsd.port.pre.mk>
 
 .if ${PORT_OPTIONS:MX11}
 IMAGEMAGICK_LIB_DEPENDS=	libMagickWand-6.so:graphics/ImageMagick
@@ -860,7 +860,11 @@ CONFIGURE_ARGS+=--add-module=${WRKSRC_let}
 .endif
 
 .if ${PORT_OPTIONS:MLUA}
+. if ${ARCH} == "aarch64"
+LIB_DEPENDS+=	libluajit-5.1.so:lang/luajit21
+. else
 LIB_DEPENDS+=	libluajit-5.1.so:lang/luajit
+. endif
 CONFIGURE_ENV+=	"LUAJIT_INC=${LOCALBASE}/include/luajit-2.0"
 CONFIGURE_ENV+=	"LUAJIT_LIB=${LOCALBASE}/lib"
 NGINX_LUA_VERSION=	0.10.8
