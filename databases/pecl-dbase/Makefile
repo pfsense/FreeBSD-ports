@@ -2,16 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	dbase
-PORTVERSION=	5.1.0
-PORTREVISION=	1
+PORTVERSION=	5.1.1
 CATEGORIES=	databases pear
 
-MAINTAINER=	toomas@median.ee
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	dBase database file access functions for PHP
 
 LICENSE=	PHP301
 
 USES=		php:pecl
-IGNORE_WITH_PHP=	70 71
+IGNORE_WITH_PHP=	70 71 72
 
 .include <bsd.port.mk>

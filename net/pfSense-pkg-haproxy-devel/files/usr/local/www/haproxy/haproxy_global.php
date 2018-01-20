@@ -29,7 +29,7 @@ require_once("haproxy/haproxy_utils.inc");
 require_once("haproxy/haproxy_htmllist.inc");
 require_once("haproxy/pkg_haproxy_tabs.inc");
 
-$simplefields = array('localstats_refreshtime', 'localstats_sticktable_refreshtime', 'log-send-hostname', 'ssldefaultdhparam',
+$simplefields = array('nbthread', 'hard_stop_after', 'localstats_refreshtime', 'localstats_sticktable_refreshtime', 'log-send-hostname', 'ssldefaultdhparam',
   'email_level', 'email_myhostname', 'email_from', 'email_to',
   'resolver_retries', 'resolver_timeoutretry', 'resolver_holdvalid');
 
@@ -286,13 +286,21 @@ $section->add($group);
 $cpucores = trim(`/sbin/sysctl kern.smp.cpus | cut -d" " -f2`);
 
 $section->addInput(new Form_Input('nbproc', 'Number of processes to start', 'text', $pconfig['nbproc']
-))->setHelp(<<<EOD
+))->setPlaceholder("1")->setHelp(<<<EOD
 	Defaults to 1 if left blank ({$cpucores} CPU core(s) detected).<br/>
 	Note : Consider leaving this value empty or 1  because in multi-process mode (nbproc > 1) memory is not shared between the processes, which could result in random behaviours for several options like ACL's, sticky connections, stats pages, admin maintenance options and some others.<br/>
 	For more information about the <b>"nbproc"</b> option please see <b><a href='http://cbonte.github.io/haproxy-dconv/1.7/configuration.html#nbproc' target='_blank'>HAProxy Documentation</a></b>
 EOD
 );
 
+if (haproxy_version() >= "1.8") {
+	$section->addInput(new Form_Input('nbthread', 'Number of theads to start per process', 'text', $pconfig['nbthread']
+	))->setPlaceholder("1")->setHelp(<<<EOD
+		Defaults to 1 if left blank ({$cpucores} CPU core(s) detected).<br/>
+		FOR NOW, THREADS SUPPORT IN HAPROXY 1.8 IS HIGHLY EXPERIMENTAL AND IT MUST BE ENABLED WITH CAUTION AND AT YOUR OWN RISK.
+EOD
+	);
+}
 
 $section->addInput(new Form_Checkbox(
 	'terminate_on_reload',
@@ -307,6 +315,12 @@ $section->addInput(new Form_Checkbox(
 EOD
 );
 
+$section->addInput(new Form_Input('hard_stop_after', 'Reload stop behaviour', 'text', $pconfig['hard_stop_after']
+))->setPlaceholder("15m")->setHelp(<<<EOD
+	Defines the maximum time allowed to perform a clean soft-stop.
+	Defaults to 15 minutes, but could also be defined in different units like 30s, 15m, 3h or 1d.
+EOD
+);
 
 $vipinterfaces = array();
 $vipinterfaces[] = array('ip' => '', 'name' => 'Disabled');

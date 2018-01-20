@@ -72,6 +72,8 @@ PYQT4_DISTINFO_FILE=	${.CURDIR:H:H}/devel/${PYQT_RELNAME}/distinfo
 PYQT5_DISTNAME=		PyQt5_gpl-${PYQT5_VERSION}
 PYQT5_DISTINFO_FILE=	${.CURDIR:H:H}/devel/${PYQT_RELNAME}/distinfo
 QSCI2_DISTNAME=		QScintilla-gpl-${QSCI2_VERSION}
+PYQT4_LICENSE=		GPLv3
+PYQT5_LICENSE=		GPLv3
 
 # PyQt components split up into pyqt4/pyqt5/...
 _USE_PYQT_ALL=		core dbus dbussupport demo designer designerplugin \
@@ -91,6 +93,7 @@ PYQT_PY_RELNAME=	${PYTHON_PKGNAMEPREFIX}qt${_PYQT_VERSION}
 PYQT_MASTERSITES=	${MASTER_SITES_PYQT${_PYQT_VERSION}}
 PYQT_DISTNAME=		${PYQT${_PYQT_VERSION}_DISTNAME}
 PYQT_DISTINFO_FILE=	${PYQT${_PYQT_VERSION}_DISTINFO_FILE}
+PYQT_LICENSE=		${PYQT${_PYQT_VERSION}_LICENSE}
 
 py-sip_PATH=		${PYTHON_PKGNAMEPREFIX}sip>=${SIP_VERSION}
 
@@ -202,6 +205,7 @@ MASTER_SITES=	${PYQT_MASTERSITES}
 PKGNAMEPREFIX=	${PYQT_PY_RELNAME}-
 DISTNAME=	${PYQT_DISTNAME}
 DISTINFO_FILE=	${PYQT_DISTINFO_FILE}
+LICENSE?=	${PYQT_LICENSE}
 HAS_CONFIGURE=	yes
 QT_NONSTANDARD=	yes  # Do not add unknown arguments to CONFIGURE_ARGS.
 
@@ -219,6 +223,7 @@ CONFIGURE_ARGS+=-b ${PREFIX}/bin \
 		-d ${PYTHONPREFIX_SITELIBDIR} \
 		-q ${QMAKE} \
 		--confirm-license \
+		--sip ${LOCALBASE}/bin/sip-${PYTHON_VER} \
 		--sipdir ${SIPDIR}
 
 # One of the things PyQt looks for to determine whether to build the Qt DBus
@@ -240,8 +245,8 @@ do-configure:
 _USE_PYQT_ALL+=			${_USE_PYQT${_PYQT_VERSION}_ONLY}
 .for comp in ${_USE_PYQT_ALL:O:u}
 _USE_PYQT_ALL_SUFFIXED+=		py-${comp} py-${comp}_build py-${comp}_run
-py-${comp}_BUILD_DEPENDS?=		${py-${comp}_PATH}:${py-${comp}_PORT}
-py-${comp}_RUN_DEPENDS?=		${py-${comp}_PATH}:${py-${comp}_PORT}
+py-${comp}_BUILD_DEPENDS?=		${py-${comp}_PATH}:${py-${comp}_PORT}@${PY_FLAVOR}
+py-${comp}_RUN_DEPENDS?=		${py-${comp}_PATH}:${py-${comp}_PORT}@${PY_FLAVOR}
 py-${comp}_build_BUILD_DEPENDS?=	${py-${comp}_BUILD_DEPENDS}
 py-${comp}_run_RUN_DEPENDS?=		${py-${comp}_RUN_DEPENDS}
 .endfor

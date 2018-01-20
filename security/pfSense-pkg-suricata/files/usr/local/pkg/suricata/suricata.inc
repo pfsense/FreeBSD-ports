@@ -7,7 +7,7 @@
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2016 Bill Meeks
+ * Copyright (C) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -348,7 +348,7 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 	/* IP for Suricata, though, to prevent locking out the firewall.    */
 	/********************************************************************/
 	$suricataip = get_interface_ip($suricatacfg['interface']);
-	if (($externallist && $localnet == 'yes') || (!$externallist && (!$passlist || $localnet == 'yes' || empty($localnet)))) {
+	if (($externallist && $localnet == 'yes') || (!$externallist && $passlist && ($localnet == 'yes' || empty($localnet)))) {
 		if (is_ipaddrv4($suricataip)) {
 			if ($suricatacfg['interface'] <> "wan") {
 				if ($sn = get_interface_subnet($suricatacfg['interface'])) {
@@ -374,7 +374,7 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 	if (strpos($suricataip, "%") !== FALSE) {
 		$suricataip = substr($suricataip, 0, strpos($suricataip, "%"));
 	}
-	if (($externallist && $localnet == 'yes') || (!$externallist && (!$passlist || $localnet == 'yes' || empty($localnet)))) {
+	if (($externallist && $localnet == 'yes') || ($passlist && ($localnet == 'yes' || empty($localnet))) || (!$externallist && !$passlist && ($localnet == 'yes' || empty($localnet)))) {
 		if (is_ipaddrv6($suricataip)) {
 			if ($suricatacfg['interface'] <> "wan") {
 				if ($sn = get_interface_subnetv6($suricatacfg['interface'])) {
@@ -408,7 +408,7 @@ function suricata_build_list($suricatacfg, $listname = "", $passlist = false, $e
 
 	// Now find all the locally-attached network subnets and add them to the
 	// list if user chose to include Local Networks.
-	if (($externallist && $localnet == 'yes') || (!$externallist && (!$passlist || $localnet == 'yes' || empty($localnet)))) {		
+	if (($externallist && $localnet == 'yes') || ($passlist && ($localnet == 'yes' || empty($localnet))) || (!$externallist && !$passlist && ($localnet == 'yes' || empty($localnet)))) {		
 		/*************************************************************************/
 		/*  Iterate through the interface list and write out pass list items and */
 		/*  also compile a HOME_NET list of all local interfaces for suricata.   */

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	openmpi
-PORTVERSION=	2.1.1
+PORTVERSION=	2.1.2
 PORTREVISION=	1
 CATEGORIES=	net parallel
 MASTER_SITES=	http://www.open-mpi.org/software/ompi/v${PORTVERSION:R}/downloads/
@@ -19,6 +19,7 @@ LIB_DEPENDS=	libhwloc.so:devel/hwloc \
 		libmunge.so:security/munge
 
 BROKEN_armv6=		fails to package: pkg-static: mca_patcher_overwrite.la: No such file or directory
+BROKEN_armv7=		fails to package: pkg-static: mca_patcher_overwrite.la: No such file or directory
 BROKEN_sparc64=		fails to compile on sparc64
 
 HAS_CONFIGURE=	yes

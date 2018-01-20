@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	pkg
-DISTVERSION=	1.10.2
+DISTVERSION=	1.10.3
+PORTREVISION=	1
 _PKG_VERSION=	${DISTVERSION}
 CATEGORIES=	ports-mgmt
 MASTER_SITES=	\
@@ -33,7 +34,7 @@ EXTRA_PATCHES=	${FILESDIR}/extra-patch-docs_pkg.8
 
 .include <bsd.port.pre.mk>
 
-.if defined(WITH_DEBUG) && !defined(WITHOUT_DEBUG)
+.if defined(WITH_DEBUG)
 MAKE_ARGS+=	DEBUG_FLAGS="${DEBUG_FLAGS}"
 .endif
 

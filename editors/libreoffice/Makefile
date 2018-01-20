@@ -2,7 +2,7 @@
 
 .include "${.CURDIR}/Makefile.common"
 
-PORTREVISION=	4
+PORTREVISION=	2
 MASTER_SITES=	http://download.documentfoundation.org/libreoffice/src/${PORTVERSION}/ \
 		http://dev-www.libreoffice.org/src/:src \
 		http://dev-www.libreoffice.org/extern/:ext
@@ -86,6 +86,9 @@ DISTFILES+=	4b87018f7fff1d054939d19920b751a0-collada2gltf-master-cb1d97788a.tar.
 		86b1daaa438f5a7bea9a52d7b9799ac0-xmlsec1-1.2.23.tar.gz:src \
 		cppunit-1.13.2.tar.gz:src
 
+NOT_FOR_ARCHS=		aarch64 armv6 armv7
+NOT_FOR_ARCHS_REASON=	Unsupported host_cpu
+
 .if defined(PRERELEASE)
 MASTER_SITES+=	http://dev-builds.libreoffice.org/pre-releases/src/
 .endif
@@ -103,7 +106,6 @@ USE_QT4=	# empty but required
 USE_XORG=	xaw xrandr
 USES=		autoreconf:build bison compiler:c++11-lib cpe gmake jpeg \
 		perl5 pkgconfig python shared-mime-info tar:xz
-WANT_GNOME=	yes
 
 OPTIONS_DEFINE=	CUPS GNOME GTK2 GTK3 JAVA KDE4 MMEDIA PGSQL SDK SYSTRAY \
 		TEST WEBDAV
@@ -209,7 +211,6 @@ TEST_CONFIGURE_ENABLE=	cve-tests
 WEBDAV_CONFIGURE_ENABLE=	neon
 WEBDAV_LIB_DEPENDS=	libneon.so:www/neon
 
-ACLOCAL_ARGS=	-I "${WRKSRC}/m4"
 CPPFLAGS+=	-isystem ${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 

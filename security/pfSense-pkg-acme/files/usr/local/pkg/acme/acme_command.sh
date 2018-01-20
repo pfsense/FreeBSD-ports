@@ -58,6 +58,7 @@ if ($command == "importcert") {
 			}
 		}
 	}
+	acme_write_all_certificates();
 }
 
 if ($command == "deploykey") {

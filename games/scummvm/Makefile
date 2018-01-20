@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	scummvm
-PORTVERSION=	1.9.0
+PORTVERSION=	2.0.0
 CATEGORIES=	games emulators
 MASTER_SITES=	http://www.scummvm.org/frs/scummvm/${PORTVERSION}/
 
@@ -67,7 +67,7 @@ SNDIO_CONFIGURE_OFF=	--disable-sndio
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "armv6"
+.if ${ARCH} == armv6 || ${ARCH} == armv7
 CONFIGURE_ENV+=	ASFLAGS=-meabi=5
 .endif
 

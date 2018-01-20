@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	mysqlwsrep
-PORTVERSION?=	5.7.18
+PORTVERSION?=	5.7.20
 DISTVERSIONPREFIX?=	wsrep_
-DISTVERSIONSUFFIX?=	-25.12
-PORTREVISION?=	1
+DISTVERSIONSUFFIX?=	-25.13
 CATEGORIES=	databases ipv6
 MASTER_SITES+=	SF/boost/boost/1.59.0:boost
 PKGNAMESUFFIX=	57-server
@@ -46,7 +45,7 @@ GH_PROJECT?=	mysql-wsrep
 DATADIR=	${PREFIX}/share/mysql
 ETCDIR=		${PREFIX}/etc/mysql
 
-NOT_FOR_ARCHS=	aarch64 armv6 powerpc64
+NOT_FOR_ARCHS=	aarch64 armv6 armv7 powerpc64
 NOT_FOR_ARCHS_REASON=	Not supported platform
 
 CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
@@ -185,7 +184,7 @@ post-install:
 	${MKDIR} ${STAGEDIR}${MY_SECDIR}
 	${MKDIR} ${STAGEDIR}${MY_TMPDIR}
 
-.if ${ARCH} == "armv6"
+.if ${ARCH} == armv6 || ${ARCH} == armv7
 EXTRA_PATCHES+=		${FILESDIR}/extra-patch-config.h.cmake
 .endif
 

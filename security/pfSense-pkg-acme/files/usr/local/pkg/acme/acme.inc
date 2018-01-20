@@ -20,6 +20,49 @@
  */
 
 namespace { // global code
+	/* Write an ACME certificates to the filesystem. */
+	function acme_write_certificate($certref) {
+		global $config;
+		$prefix = '/conf/acme';
+		safe_mkdir($prefix);
+
+		/* Lookup the certificate and CA */
+		$cert = lookup_cert($certref);
+		if (empty($cert)) {
+			return;
+		}
+		$ca = lookup_ca($cert['caref']);
+		if (empty($ca)) {
+			return;
+		}
+
+		/* Decode the certificate, key, and CA certificate */
+		$crt = base64_decode($cert['crt']);
+		$key = base64_decode($cert['prv']);
+		$ca = base64_decode($ca['crt']) . "\n";
+
+		/* Write out the certificate data in various useful formats */
+		file_put_contents("{$prefix}/{$cert['descr']}.crt", $crt);
+		file_put_contents("{$prefix}/{$cert['descr']}.key", $key);
+		file_put_contents("{$prefix}/{$cert['descr']}.ca", $ca);
+		file_put_contents("{$prefix}/{$cert['descr']}.fullchain", $crt . $ca);
+		file_put_contents("{$prefix}/{$cert['descr']}.all.pem", $crt . $key . $ca);
+		return;
+	}
+	/* Write all ACME certificates to the filesystem */
+	function acme_write_all_certificates() {
+		global $config;
+		$a_global = &$config['installedpackages']['acme'];
+		if (!isset($a_global['writecerts'])) {
+			return;
+		}
+
+		/* Find all certificates  */
+		$acmecerts = acme_plugin_certificates(array('type' => 'certificates', 'event' => 'used_certificates'));
+		foreach ($acmecerts['certificatelist'] as $certref => $ac) {
+			acme_write_certificate($certref);
+		}
+	}
 	function acme_plugin_certificates($pluginparams) {
 		global $config;
 		$result = array();
@@ -157,12 +200,18 @@ $acme_domain_validation_method['standalone'] = array(name => "standalone HTTP se
 	'fields' => array(
 		'port' => array('name'=>"port",'columnheader'=>"Port",'type'=>"textbox",'size'=>"50",
 			'description' =>"HTTP listen port for stand-alone server. Must be 80 or have port 80 on WAN forwarded to this port. Firewall rules must also allow traffic to reach this port."
+		),
+		'ipv6' => array('name'=>"ipv6",'columnheader'=>"IPv6",'type'=>"checkbox",
+			'description' =>"Bind to IPv6 instead of IPv4."
 		)
 	));
 $acme_domain_validation_method['standalonetls'] = array(name => "standalone TLS server",
 	'fields' => array(
 		'port' => array('name'=>"port",'columnheader'=>"Port",'type'=>"textbox",'size'=>"50",
 			'description' =>"TLS listen port for stand-alone server. Must be 443 or have port 443 on WAN forwarded to this port. Firewall rules must also allow traffic to reach this port."
+		),
+		'ipv6' => array('name'=>"ipv6",'columnheader'=>"IPv6",'type'=>"checkbox",
+			'description' =>"Bind to IPv6 instead of IPv4."
 		)
 	));
 $acme_domain_validation_method['dns_manual'] = array(name => "DNS-Manual",
@@ -173,13 +222,8 @@ $acme_domain_validation_method['dns_nsupdate'] = array(name => "DNS-NSupdate / R
 		'NSUPDATE_SERVER' => array('name'=>"nsupdate_server",'columnheader'=>"Server",'type'=>"textbox",
 			'description' =>"Fill in the nsupdate DNS server (IP address or hostname)"
 		),
-		'NSUPDATE_KEYTYPE' => array('name' => 'nsupdate_keytype', 'columnheader' => 'Key Type', 'type' => 'select',
-			'items' => array(
-				'host' => array('name' => 'Host Key'),
-				'user' => array('name' => 'User Key'),
-				'zone' => array('name' => 'Zone Key'),
-			),
-			'description' => 'Choose the nsupdate key type (typically "host")'
+		'NSUPDATE_KEYNAME' => array('name'=>"nsupdate_keyname",'columnheader'=>"Key Name",'type'=>"textbox",
+			'description' =>"Fill in a name for the key, if it is different than _acme-challenge.[Domainname]"
 		),
 		'NSUPDATE_KEYALGO' => array('name' => 'nsupdate_keyalgo', 'columnheader' => 'Key Algorithm', 'type' => 'select',
 			'items' => array(
@@ -367,6 +411,15 @@ $acme_domain_validation_method['dns_infoblox'] = array(name => "DNS-Infoblox",
 			'description' =>"Fill in the DNS View, or enter 'default'"
 		)
 	));
+$acme_domain_validation_method['dns_inwx'] = array(name => "DNS-INWX.de",
+	'fields' => array(
+		'INWX_User' => array('name'=>"inwx_username",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"INWX.de username"
+		),
+		'INWX_Password' => array('name'=>"inwx_password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"INWX.de password"
+		)
+	));
 $acme_domain_validation_method['dns_ispconfig'] = array(name => "DNS-ISPConfig",
 	'fields' => array(
 		'ISPC_User' => array('name'=>"ispc_user",'columnheader'=>"User",'type'=>"textbox",
@@ -462,6 +515,24 @@ $acme_domain_validation_method['dns_pdns'] = array(name => "DNS-PowerDNS",
 			'description' =>"Fill in the TTL 60"
 		)
 	));
+$acme_domain_validation_method['dns_servercow'] = array(name => "DNS-Servercow",
+	'fields' => array(
+		'SERVERCOW_API_Username' => array('name'=>"servercow_api_username",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"Servercow username"
+		),
+		'SERVERCOW_API_Password' => array('name'=>"servercow_api_password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"Servercow password"
+		)
+	));
+$acme_domain_validation_method['dns_unoeuro'] = array(name => "DNS-UnoEuro",
+	'fields' => array(
+		'UNO_User' => array('name'=>"uno_user",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"UnoEuro username"
+		),
+		'UNO_Key' => array('name'=>"uno_key",'columnheader'=>"API Key",'type'=>"textbox",
+			'description' =>"UnoEuro API Key"
+		)
+	));
 $acme_domain_validation_method['dns_vscale'] = array(name => "DNS-vscale.io",
 	'fields' => array(
 		'VSCALE_API_KEY' => array('name'=>"vscale_api_key",'columnheader'=>"API Key",'type'=>"textbox",
@@ -533,6 +604,7 @@ function acme_custom_php_install_command() {
 	set_cronjob();
 	$static_output .= "Acme, running acme_custom_php_install_command() DONE\n";
 	update_output_window($static_output);
+	acme_write_all_certificates();
 }
 
 function get_itembyname($a_array, $name) {

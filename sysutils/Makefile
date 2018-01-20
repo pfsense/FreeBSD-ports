@@ -6,7 +6,6 @@
     SUBDIR += 3dm
     SUBDIR += 44bsd-more
     SUBDIR += 915resolution
-    SUBDIR += DTraceToolkit
     SUBDIR += LPRng
     SUBDIR += LPRngTool
     SUBDIR += UEFITool
@@ -39,6 +38,7 @@
     SUBDIR += android-file-transfer-qt5
     SUBDIR += ansible
     SUBDIR += ansible1
+    SUBDIR += ansible23
     SUBDIR += anvil
     SUBDIR += apachetop
     SUBDIR += apcpwr
@@ -74,11 +74,6 @@
     SUBDIR += bacula-client-static
     SUBDIR += bacula-docs
     SUBDIR += bacula-server
-    SUBDIR += bacula5-bat
-    SUBDIR += bacula5-client
-    SUBDIR += bacula5-client-static
-    SUBDIR += bacula5-docs
-    SUBDIR += bacula5-server
     SUBDIR += bacula9-bat
     SUBDIR += bacula9-client
     SUBDIR += bacula9-client-static
@@ -306,6 +301,7 @@
     SUBDIR += fatback
     SUBDIR += fconfig
     SUBDIR += fcron
+    SUBDIR += fd
     SUBDIR += fdupes
     SUBDIR += feather
     SUBDIR += fetchlog
@@ -355,6 +351,7 @@
     SUBDIR += fusefs-curlftpfs
     SUBDIR += fusefs-encfs
     SUBDIR += fusefs-exfat
+    SUBDIR += fusefs-ext2
     SUBDIR += fusefs-ext4fuse
     SUBDIR += fusefs-funionfs
     SUBDIR += fusefs-fusepak
@@ -366,6 +363,7 @@
     SUBDIR += fusefs-httpfs
     SUBDIR += fusefs-ifuse
     SUBDIR += fusefs-libs
+    SUBDIR += fusefs-libs3
     SUBDIR += fusefs-lkl
     SUBDIR += fusefs-mhddfs
     SUBDIR += fusefs-mp3fs
@@ -408,6 +406,7 @@
     SUBDIR += gkrellm2
     SUBDIR += gkrelltop
     SUBDIR += gksu
+    SUBDIR += glogg
     SUBDIR += gnome-control-center
     SUBDIR += gnome-device-manager
     SUBDIR += gnome-mount
@@ -468,6 +467,7 @@
     SUBDIR += hs-ekg-core
     SUBDIR += hs-ekg-json
     SUBDIR += hs-mountpoints
+    SUBDIR += hstr
     SUBDIR += htop
     SUBDIR += httplog
     SUBDIR += hwstat
@@ -475,11 +475,13 @@
     SUBDIR += i7z
     SUBDIR += iat
     SUBDIR += immortal
+    SUBDIR += incron
     SUBDIR += inotify-tools
     SUBDIR += installwatch
     SUBDIR += intel-nvmupdate
     SUBDIR += intel-pcm
     SUBDIR += intel-qcu
+    SUBDIR += iocage
     SUBDIR += iocell
     SUBDIR += iogen
     SUBDIR += iograph
@@ -630,6 +632,7 @@
     SUBDIR += minimunin
     SUBDIR += minirsyslogd
     SUBDIR += mixer
+    SUBDIR += mkdesktop
     SUBDIR += mkfile
     SUBDIR += mkfwimage
     SUBDIR += mkntpwd
@@ -693,6 +696,7 @@
     SUBDIR += node_exporter
     SUBDIR += nomad
     SUBDIR += npadmin
+    SUBDIR += nq
     SUBDIR += nrg2iso
     SUBDIR += nut
     SUBDIR += nvclock
@@ -796,6 +800,7 @@
     SUBDIR += pax-utils
     SUBDIR += pbi-manager
     SUBDIR += pbimaker
+    SUBDIR += pc-networkmanager
     SUBDIR += pcapfix
     SUBDIR += pcbsd-appweb
     SUBDIR += pcbsd-libsh
@@ -833,6 +838,8 @@
     SUBDIR += php70-posix
     SUBDIR += php71-fileinfo
     SUBDIR += php71-posix
+    SUBDIR += php72-fileinfo
+    SUBDIR += php72-posix
     SUBDIR += phybs
     SUBDIR += pick
     SUBDIR += pidof
@@ -868,6 +875,7 @@
     SUBDIR += puppet4
     SUBDIR += puppet5
     SUBDIR += puppetserver
+    SUBDIR += puppetserver5
     SUBDIR += pv
     SUBDIR += pwd_unmkdb
     SUBDIR += pwgen
@@ -882,12 +890,14 @@
     SUBDIR += py-crontab
     SUBDIR += py-diffoscope
     SUBDIR += py-dirsync
+    SUBDIR += py-distro
     SUBDIR += py-dlipower
     SUBDIR += py-docker
     SUBDIR += py-drmaa
     SUBDIR += py-execnet
     SUBDIR += py-ezjailremote
     SUBDIR += py-filelike
+    SUBDIR += py-filelock
     SUBDIR += py-freenas.cli
     SUBDIR += py-glances
     SUBDIR += py-gmailfs-fuse
@@ -917,22 +927,19 @@
     SUBDIR += py-scriptine
     SUBDIR += py-shutilwhich
     SUBDIR += py-stdiff
+    SUBDIR += py-superlance
     SUBDIR += py-supervisor
     SUBDIR += py-tmuxp
     SUBDIR += py-uptime
     SUBDIR += py-zdaemon
     SUBDIR += py-zfs
-    SUBDIR += py3-execnet
-    SUBDIR += py3-iocage
-    SUBDIR += py3-pkginfo
-    SUBDIR += py3-ptyprocess
     SUBDIR += pydf
     SUBDIR += qchroot
     SUBDIR += qjail
-    SUBDIR += qjail2
     SUBDIR += qjail4
     SUBDIR += qlogtools
     SUBDIR += qpxtool
+    SUBDIR += qsudo
     SUBDIR += qsynergy
     SUBDIR += qt5-qtdiag
     SUBDIR += qt5-qtpaths
@@ -1104,10 +1111,12 @@
     SUBDIR += sloth
     SUBDIR += slst
     SUBDIR += slurm-wlm
+    SUBDIR += smart
     SUBDIR += smartmontools
     SUBDIR += smenu
     SUBDIR += smp_utils
     SUBDIR += snap
+    SUBDIR += snooze
     SUBDIR += snowlog
     SUBDIR += socket
     SUBDIR += socklog
@@ -1145,6 +1154,7 @@
     SUBDIR += syslog-ng310
     SUBDIR += syslog-ng311
     SUBDIR += syslog-ng312
+    SUBDIR += syslog-ng313
     SUBDIR += syslog-ng36
     SUBDIR += syslog-ng37
     SUBDIR += syslog-ng39
@@ -1189,10 +1199,13 @@
     SUBDIR += tty-clock
     SUBDIR += ttyd
     SUBDIR += ttyload
+    SUBDIR += trueos-libqt5
     SUBDIR += tuptime
     SUBDIR += tw_cli
+    SUBDIR += twmn
     SUBDIR += tzdialog
     SUBDIR += u-boot-a13-olinuxino
+    SUBDIR += u-boot-a64-olinuxino
     SUBDIR += u-boot-bananapi
     SUBDIR += u-boot-bananapim2
     SUBDIR += u-boot-beaglebone
@@ -1209,7 +1222,9 @@
     SUBDIR += u-boot-olimex-a20-som-evb
     SUBDIR += u-boot-olinuxino-lime
     SUBDIR += u-boot-orangepi-one
+    SUBDIR += u-boot-orangepi-pc2
     SUBDIR += u-boot-orangepi-plus-2e
+    SUBDIR += u-boot-orangepi-zero
     SUBDIR += u-boot-pandaboard
     SUBDIR += u-boot-pcduino3
     SUBDIR += u-boot-pine64
@@ -1217,6 +1232,8 @@
     SUBDIR += u-boot-rpi2
     SUBDIR += u-boot-rpi3
     SUBDIR += u-boot-sinovoip-bpi-m3
+    SUBDIR += u-boot-sopine
+    SUBDIR += u-boot-tools
     SUBDIR += u-boot-utilite
     SUBDIR += u-boot-wandboard
     SUBDIR += u-boot-zedboard
@@ -1244,6 +1261,7 @@
     SUBDIR += usb_modeswitch
     SUBDIR += usbhid-dump
     SUBDIR += usbhotkey
+    SUBDIR += usbtop
     SUBDIR += usbutils
     SUBDIR += uschedule
     SUBDIR += userinfo

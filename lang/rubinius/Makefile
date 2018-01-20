@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rubinius
-PORTVERSION=	3.70
-PORTREVISION=	1
+PORTVERSION=	3.86
 CATEGORIES=	lang
 MASTER_SITES=	http://releases.rubini.us/:source
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:source
@@ -12,7 +11,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	LLVM based ruby language implementation
 
-LICENSE=	MPL
+LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/bundle:sysutils/rubygem-bundler \

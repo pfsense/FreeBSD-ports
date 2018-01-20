@@ -1,4 +1,5 @@
 bin/kquitapp5
+etc/xdg/kdbusaddons.categories
 include/KF5/KDBusAddons/KDBusConnectionPool
 include/KF5/KDBusAddons/KDBusInterProcessLock
 include/KF5/KDBusAddons/KDBusService
@@ -38,6 +39,7 @@ share/locale/gd/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/gl/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/hu/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/ia/LC_MESSAGES/kdbusaddons5_qt.qm
+share/locale/id/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/it/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/ja/LC_MESSAGES/kdbusaddons5_qt.qm
 share/locale/ko/LC_MESSAGES/kdbusaddons5_qt.qm

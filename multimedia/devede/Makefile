@@ -4,7 +4,7 @@
 PORTNAME=	devede
 PORTVERSION=	3.23.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	multimedia
 
 MAINTAINER=	ports@FreeBSD.org
@@ -23,7 +23,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	rastersoft
 GH_PROJECT=	Devede
 
-USES=		iconv python:run shebangfix
+USES=		iconv python:2.7,run shebangfix
 USE_GNOME=	pygtk2:run
 SHEBANG_FILES=	devede
 NO_ARCH=	yes

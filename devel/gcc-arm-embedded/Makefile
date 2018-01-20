@@ -27,7 +27,7 @@ PYGDB_USES=		python:2
 
 OPTIONS_SUB=		yes
 
-NOT_FOR_ARCHS=		aarch64 arm armeb armv6 \
+NOT_FOR_ARCHS=		arm armeb armv6 armv7 \
 			mips mips64 mips64el mipsel mipsn32
 NOT_FOR_ARCHS_REASON=	Very slow to build on emulator
 
@@ -84,7 +84,7 @@ VAR_TO_SUBMAKE_NOEXPAND=	CONFIGURE_ENV MAKE_ENV
 .include <bsd.port.pre.mk>
 
 .if ${PORT_OPTIONS:MPURE}
-IGNORE=	"PURE option is not valid anymore, no libraries are bundled"
+IGNORE=	PURE option is not valid anymore, no libraries are bundled
 .endif
 
 post-extract:

@@ -53,7 +53,7 @@ uasort($a_pools, haproxy_compareByName);
 global $simplefields;
 $simplefields = array('name','desc','status','secondary','primary_frontend','type','forwardfor','httpclose','extaddr','backend_serverpool',
 	'max_connections','client_timeout','port','advanced_bind',
-	'ssloffloadcert','dcertadv','ssloffload','ssloffloadacl','ssloffloadacl_an','ssloffloadacladditional','ssloffloadacladditional_an',
+	'ssloffloadcert','sslsnifilter','ssl_crtlist_advanced','dcertadv','ssloffload','ssloffloadacl','ssloffloadacl_an','ssloffloadacladditional','ssloffloadacladditional_an',
 	'sslclientcert-none','sslclientcert-invalid','sslocsp',
 	'socket-stats',
 	'dontlognull','dontlog-normal','log-separate-errors','log-detailed');
@@ -345,30 +345,30 @@ if ($_POST) {
 	do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
 
 	if (preg_match("/[^a-zA-Z0-9\.\-_]/", $_POST['name'])) {
-		$input_errors[] = "The field 'Name' contains invalid characters.";
+		$input_errors[] = gettext("The field 'Name' contains invalid characters.");
 	}
 
 	if ($pconfig['secondary'] != "yes") {
 		if ($_POST['max_connections'] && !is_numeric($_POST['max_connections'])) {
-			$input_errors[] = "The field 'Max connections' value is not a number.";
+			$input_errors[] = sprintf(gettext("The value '%s' in field 'Max connections' is not a number."), htmlspecialchars($_POST['max_connections']));
 		}
 
 		$ports = split(",", $_POST['port'] . ",");
 		foreach($ports as $port) {
 			if ($port && !is_numeric($port) && !is_port_or_alias($port)) {
-				$input_errors[] = "The field 'Port' value '".htmlspecialchars($port)."' is not a number or alias thereof.";
+				$input_errors[] = sprintf(gettext("The value '%s' in field 'Port' is not a number or alias thereof."), htmlspecialchars($port));
 			}
 		}
 
 		if ($_POST['client_timeout'] !== "" && !is_numeric($_POST['client_timeout'])) {
-			$input_errors[] = "The field 'Client timeout' value is not a number.";
+			$input_errors[] = sprintf(gettext("The value '%s' in field 'Client timeout' is not a number."), htmlspecialchars($_POST['client_timeout']));
 		}
 	}
 
 	/* Ensure that our pool names are unique */
 	for ($i=0; isset($config['installedpackages']['haproxy']['ha_backends']['item'][$i]); $i++) {
 		if (($_POST['name'] == $config['installedpackages']['haproxy']['ha_backends']['item'][$i]['name']) && ($i != $id)) {
-			$input_errors[] = "This frontend name has already been used. Frontend names must be unique. $i != $id";
+			$input_errors[] = gettext("This frontend name has already been used. Frontend names must be unique.")." $i != $id";
 		}
 	}
 
@@ -395,31 +395,31 @@ if ($_POST) {
 
 		$acltype = haproxy_find_acl($acl['expression']);
 		if (preg_match("/[^a-zA-Z0-9\.\-_]/", $acl_name)) {
-			$input_errors[] = "The field 'Name' contains invalid characters.";
+			$input_errors[] = sprintf(gettext("The acl field 'Name' with value '%s' contains invalid characters."), $acl_name);
 		}
 
 		if (!isset($acltype['novalue'])) {
 			if (!preg_match("/.{1,}/", $acl_value)) {
-				$input_errors[] = "The field 'Value' is required.";
+				$input_errors[] = sprintf(gettext("The acl field 'Value' for acl '%s' is required."), $acl_name);
 			}
 		}
 
 		if (!preg_match("/.{2,}/", $acl_name)) {
-			$input_errors[] = "The field 'Name' is required with at least 2 characters.";
+			$input_errors[] = gettext("The acl field 'Name' is required with at least 2 characters.");
 		}
 	}
 	foreach($a_extaddr as $extaddr) {
 		$ports = explode(",",$extaddr['extaddr_port']);
 		foreach($ports as $port){
 			if ($port && !is_numeric($port) && !is_port_or_alias($port)) {
-				$input_errors[] = "The field 'Port' value '".htmlspecialchars($port)."' is not a number or alias thereof.";
+				$input_errors[] = sprintf(gettext("The external address field 'Port' value '%s' is not a number or alias thereof."), htmlspecialchars($port));
 			}
 		}
 	
 		if ($extaddr['extaddr'] == 'custom') {
 			$extaddr_custom = $extaddr['extaddr_custom'];
 			if (empty($extaddr_custom) || (!is_ipaddroralias($extaddr_custom))) {
-				$input_errors[] = sprintf(gettext("%s is not a valid source IP address or alias."),$extaddr_custom);
+				$input_errors[] = sprintf(gettext("The external address '%s' is not a valid source IP address or alias."), $extaddr_custom);
 			}
 		}
 	}
@@ -489,6 +489,7 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 	.haproxy_mode_http{display:none;}
 	.haproxy_ssloffloading_show{display:none;}
 	.haproxy_ssloffloading_enabled{display:none;}
+	.haproxy_ssl_advanced{display:none;}
 	.haproxy_primary{}
 	.haproxy_secondary{display:none;}
   </style>
@@ -537,6 +538,7 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 		var primary;
 		var secondary = d.getElementById("secondary");
 		var primary_frontend = d.getElementById("primary_frontend");
+		var sslsnifilter = d.getElementById("sslsnifilter");
 		if ((secondary !== null) && (secondary.checked)) {
 			primary = primaryfrontends[primary_frontend.value];
 			type = primary['ref']['type'];
@@ -558,10 +560,15 @@ $primaryfrontends = get_haproxy_frontends($excludefrontend);
 		setCSSdisplay(".haproxy_ssloffloading_show", sslshow);
 		setCSSdisplay(".haproxy_ssloffloading_enabled", ssl);
 		setCSSdisplay(".haproxy_mode_http", type === "http");
+		var issecondary = false;
+		var hassnifilter = false;
 		if (secondary !== null) {
+			issecondary = secondary.checked;
 			setCSSdisplay(".haproxy_primary", !secondary.checked);
 			setCSSdisplay(".haproxy_secondary", secondary.checked);
+			hassnifilter = sslsnifilter.value != '';
 		}
+		//setCSSdisplay(".haproxy_ssl_advanced", ssl && (!issecondary || hassnifilter));
 		
 		type_change(type);
 		
@@ -859,6 +866,16 @@ $section->addInput(new Form_Checkbox(
 	'Specify additional certificates for this shared-frontend.',
 	$pconfig['ssloffload']
 ),"haproxy_secondary");
+
+$section->addInput(new Form_Input(
+	'sslsnifilter',
+	'SNI Filter',
+	'text',
+	$pconfig['sslsnifilter']
+), "haproxy_secondary haproxy_ssloffloading_enabled"
+)->setHelp('Specify a SNI filter to apply below SSL settings to specific domain(s), see the "crt-list" option from haproxy for details. <br/>'.
+		'EXAMPLE: *.securedomain.tld !public.securedomain.tld');
+
 $section->addInput(
 	new Form_StaticText(
 		'Certificate',
@@ -883,13 +900,12 @@ $section->addInput(
 	))
 ),"haproxy_ssloffloading_enabled");
 
-
 $section->addInput(new Form_Checkbox(
 	'sslocsp',
 	'OCSP',
 	'Load certificate ocsp responses for easy certificate validation by the client.',
 	$pconfig['sslocsp']
-),"haproxy_ssloffloading_enabled")->setHelp("Make sure to add appropriate acl's to check for presence of a user certificate where needed.");
+),"haproxy_ssloffloading_enabled")->setHelp("A cron job wil update the ocsp response every hour.");
 
 $section->addInput(
 	new Form_StaticText(
@@ -914,11 +930,19 @@ $section->addInput(new Form_Input('dcertadv', 'Advanced ssl options', 'text', $p
 ),"haproxy_ssloffloading_enabled haproxy_primary")->setHelp('NOTE: Paste additional ssl options(without commas) to include on ssl listening options.<br/>
 	some options: force-sslv3, force-tlsv10 force-tlsv11 force-tlsv12 no-sslv3 no-tlsv10 no-tlsv11 no-tlsv12 no-tls-tickets<br/>
 	Example: no-sslv3 ciphers EECDH+aRSA+AES:TLSv1+kRSA+AES:TLSv1+kRSA+3DES');
+// haproxy_ssl_advanced << css class to hide field.?
 
+$section->addInput(new Form_Input('ssl_crtlist_advanced', 'Advanced certificate specific ssl options',
+	'text', $pconfig['ssl_crtlist_advanced']
+),"haproxy_ssloffloading_enabled")->setHelp('NOTE: Paste additional ssl options(without commas) to include on ssl listening options.<br/>
+	some options: alpn, no-ca-names, ecdhe, curves, ciphers, ssl-min-ver and ssl-max-ver<br/>
+	Example: alpn h2,http/1.1 ciphers EECDH+aRSA+AES:TLSv1+kRSA+AES:TLSv1+kRSA+3DES ecdhe secp256k1');
 $form->add($section);
+// options that are in the gui as regular settings: verify, ca-file, crl-file
+// deprecated: npn
 
 $section = new Form_Section_class("SSL Offloading - client certificates");
-$section->addClass("haproxy_ssloffloading_enabled haproxy_primary");
+$section->addClass("haproxy_ssloffloading_enabled");
 $section->addInput(new Form_StaticText(
 	'Note',
 	"<b>Client certificate verification options, leave all these options empty if you do not want to ask for a client certificate</b><br/>
@@ -1013,6 +1037,9 @@ events.push(function() {
 		updatevisibility();
 	});
 	$('#ssloffload').click(function () {
+		updatevisibility();
+	});
+	$('#sslsnifilter').on('change input keyup cut paste', function () {
 		updatevisibility();
 	});
 

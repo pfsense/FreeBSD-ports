@@ -159,6 +159,10 @@
     SUBDIR += php71-phar
     SUBDIR += php71-zip
     SUBDIR += php71-zlib
+    SUBDIR += php72-bz2
+    SUBDIR += php72-phar
+    SUBDIR += php72-zip
+    SUBDIR += php72-zlib
     SUBDIR += pigz
     SUBDIR += pixz
     SUBDIR += plzip
@@ -166,11 +170,13 @@
     SUBDIR += ppmd-7z
     SUBDIR += ppunpack
     SUBDIR += pxz
+    SUBDIR += py-acefile
     SUBDIR += py-attic
     SUBDIR += py-backports.lzma
     SUBDIR += py-borgbackup
     SUBDIR += py-brotli
     SUBDIR += py-bz2file
+    SUBDIR += py-czipfile
     SUBDIR += py-libarchive-c
     SUBDIR += py-librtfcomp
     SUBDIR += py-lz4
@@ -183,7 +189,7 @@
     SUBDIR += py-rcssmin
     SUBDIR += py-rjsmin
     SUBDIR += py-warctools
-    SUBDIR += py3-libarchive-c
+    SUBDIR += py-xopen
     SUBDIR += qpress
     SUBDIR += quazip
     SUBDIR += quazip-qt5

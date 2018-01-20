@@ -13,7 +13,7 @@ CONFIGURE_ARGS=		--enable QtCore
 PYQT_DIST=		yes
 
 USES=			python pyqt:4
-USE_PYTHON=		py3kplist
+USE_PYTHON=		py3kplist flavors
 USE_PYQT=		sip
 USE_QT4=		corelib qmake_build moc_build
 
@@ -28,10 +28,6 @@ API_LIB_DEPENDS=	libqscintilla2.so:devel/qscintilla2
 DEBUG_CONFIGURE_ON=	--debug --trace
 
 .include <bsd.port.pre.mk>
-
-.if ${PYTHON_MAJOR_VER} == "3"
-BROKEN=		fails to configure
-.endif
 
 # Bug 180467: We need to remove the port_v${VERSION} directory that does not
 # correspond to the Python version being used to avoid failures in the

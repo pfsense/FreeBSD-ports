@@ -4,6 +4,7 @@
 PORTNAME=	beignet
 DISTVERSION=	1.3.2
 DISTVERSIONSUFFIX=	-source
+PORTREVISION=	2
 CATEGORIES=	lang
 MASTER_SITES=	https://01.org/sites/default/files/
 
@@ -28,19 +29,24 @@ USE_GL=		gl egl
 USE_LDCONFIG=	${LOCALBASE}/lib/${PORTNAME}
 SHEBANG_FILES=	src/git_sha1.sh backend/kernels/compile.sh
 ALL_TARGET=	all
-LLVMVER=	${MESA_LLVM_VER:U39}
+LLVMVER=	${MESA_LLVM_VER:U50}
 
 CMAKE_ARGS+=	-DLLVM_CONFIG_EXECUTABLE=${LOCALBASE}/bin/llvm-config${LLVMVER}
-
-PLIST_SUB=	OCL20=${"${ARCH:Mamd64}" != "":?"":"@comment "}
 
 ONLY_FOR_ARCHS=	i386 amd64
 ONLY_FOR_ARCHS_REASON=	Beignet needs a graphics driver supported by the Intel KMS driver
 
-OPTIONS_DEFINE=	FP64 TEST
-FP64_DESC=	Double precision (experimental)
+OPTIONS_DEFINE=	FP64 OCL20 TEST
+OPTIONS_DEFAULT=	OCL20
+OPTIONS_EXCLUDE_i386=	OCL20
+OPTIONS_SUB=	yes
 
+FP64_DESC=	Double precision (experimental)
 FP64_CMAKE_BOOL=	EXPERIMENTAL_DOUBLE
+
+OCL20_DESC=	OpenCL 2.0 support
+OCL20_CMAKE_BOOL=	ENABLE_OPENCL_20
+
 TEST_ALL_TARGET=	flat_address_space utest_run
 
 post-patch:

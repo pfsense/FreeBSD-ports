@@ -11,6 +11,8 @@ DISTNAME=	${PORTNAME:tl}-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	MySQL Squid Access Report
 
+IGNORE_WITH_PHP=	70 71 72
+
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKROOT}/COPYING
 
@@ -20,6 +22,7 @@ WRKROOT=	${WRKDIR}/${PORTNAME:tl}
 WRKSRC=		${WRKROOT}/bin/mysar-binary-importer
 GNU_CONFIGURE=	yes
 USE_MYSQL=	yes
+USES=		php
 USE_PHP=	mysql pcre
 USE_CSTD=	gnu89
 

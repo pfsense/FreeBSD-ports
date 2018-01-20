@@ -3,7 +3,6 @@
 
 PORTNAME=	python
 PORTVERSION=	${PYTHON_PORTVERSION}
-PORTREVISION=	1
 CATEGORIES=	lang python ipv6
 MASTER_SITES=	PYTHON/ftp/python/${PYTHON_PORTVERSION}
 PKGNAMESUFFIX=	${PYTHON_SUFFIX}
@@ -20,7 +19,7 @@ PATHFIX_MAKEFILEIN=	Makefile.pre.in
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 python_CMD=	${PREFIX}/bin/python${PYTHON_PORTVERSION:R}
-SHEBANG_FILES=	Lib/lib2to3/tests/data/*.py Lib/encodings/*.py
+SHEBANG_FILES=	Lib/*.py Lib/*/*.py Lib/*/*/*.py Lib/*/*/*/*.py
 
 BROKEN_SSL=	openssl-devel
 

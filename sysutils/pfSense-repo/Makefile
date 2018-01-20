@@ -2,6 +2,7 @@
 
 PORTNAME=	pfSense-repo
 DISTVERSION=	2.4.3
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -38,7 +39,9 @@ PLIST_FILES=	${TMP_PLIST_FILES:C/^/%%DATADIR%%\/pkg\/repos\//} \
 		${DEFAULT_REPO}.default
 DEFAULT_ABI=	${OPSYS}:${OSREL:C/\..*//}:${ARCH}
 
-.if ${ARCH} == "amd64"
+.if ${ARCH} == "aarch64"
+ALTABI_ARCH=	aarch64:64
+.elif ${ARCH} == "amd64"
 ALTABI_ARCH=	x86:64
 .elif ${ARCH} == "i386"
 ALTABI_ARCH=	x86:32

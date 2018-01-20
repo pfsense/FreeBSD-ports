@@ -14,6 +14,7 @@
     SUBDIR += bowtie
     SUBDIR += bowtie2
     SUBDIR += bwa
+    SUBDIR += canu
     SUBDIR += cd-hit
     SUBDIR += cdbfasta
     SUBDIR += chemeq
@@ -26,6 +27,7 @@
     SUBDIR += fasta3
     SUBDIR += fastdnaml
     SUBDIR += fastool
+    SUBDIR += fastqc
     SUBDIR += fasttree
     SUBDIR += fastx-toolkit
     SUBDIR += fluctuate
@@ -37,8 +39,10 @@
     SUBDIR += hmmer
     SUBDIR += htslib
     SUBDIR += iolib
+    SUBDIR += iqtree
     SUBDIR += jalview
     SUBDIR += jellyfish
+    SUBDIR += kallisto
     SUBDIR += lagan
     SUBDIR += lamarc
     SUBDIR += libgtextutils
@@ -70,6 +74,7 @@
     SUBDIR += p5-Bio-SCF
     SUBDIR += p5-BioPerl
     SUBDIR += p5-BioPerl-Run
+    SUBDIR += p5-TrimGalore
     SUBDIR += p5-transdecoder
     SUBDIR += paml
     SUBDIR += phrap
@@ -84,6 +89,8 @@
     SUBDIR += py-biom-format
     SUBDIR += py-biopython
     SUBDIR += py-bx-python
+    SUBDIR += py-cutadapt
+    SUBDIR += py-macs2
     SUBDIR += py-pysam
     SUBDIR += pycogent
     SUBDIR += pyfasta

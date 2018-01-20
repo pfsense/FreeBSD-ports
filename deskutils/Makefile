@@ -40,7 +40,6 @@
     SUBDIR += drivel
     SUBDIR += easystroke
     SUBDIR += egroupware
-    SUBDIR += etask
     SUBDIR += everygui
     SUBDIR += fbreader
     SUBDIR += fet
@@ -92,6 +91,7 @@
     SUBDIR += gnustep-wrapper
     SUBDIR += go-for-it
     SUBDIR += gourmet
+    SUBDIR += gpicker
     SUBDIR += griffith
     SUBDIR += growl-for-linux
     SUBDIR += gruler
@@ -129,6 +129,7 @@
     SUBDIR += kruler
     SUBDIR += ksshaskpass
     SUBDIR += launchy
+    SUBDIR += latte-dock
     SUBDIR += libopensync-plugin-vformat-devel
     SUBDIR += libstreamanalyzer
     SUBDIR += libstreams
@@ -142,6 +143,7 @@
     SUBDIR += lumina-fm
     SUBDIR += lumina-mediaplayer
     SUBDIR += lumina-notify
+    SUBDIR += lumina-pdf
     SUBDIR += lumina-screenshot
     SUBDIR += lumina-textedit
     SUBDIR += lumina-xdg-entry
@@ -161,6 +163,7 @@
     SUBDIR += nemo-extensions
     SUBDIR += note
     SUBDIR += notecase
+    SUBDIR += noti
     SUBDIR += notification-daemon
     SUBDIR += notify-osd
     SUBDIR += orage
@@ -217,6 +220,7 @@
     SUBDIR += rubygem-shellplay
     SUBDIR += rubygem-taskjuggler
     SUBDIR += semantik
+    SUBDIR += showdown
     SUBDIR += shutter
     SUBDIR += silence
     SUBDIR += simpleagenda

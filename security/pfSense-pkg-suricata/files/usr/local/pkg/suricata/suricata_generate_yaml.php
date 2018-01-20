@@ -7,7 +7,7 @@
  * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
  * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2016 Bill Meeks
+ * Copyright (C) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -81,7 +81,8 @@ $suricata_servers = array (
 	"sql_servers" => "\$HOME_NET", "telnet_servers" => "\$HOME_NET", "dnp3_server" => "\$HOME_NET",
 	"dnp3_client" => "\$HOME_NET", "modbus_server" => "\$HOME_NET", "modbus_client" => "\$HOME_NET",
 	"enip_server" => "\$HOME_NET", "enip_client" => "\$HOME_NET", "ftp_servers" => "\$HOME_NET", "ssh_servers" => "\$HOME_NET", 
-	"aim_servers" => "64.12.24.0/23,64.12.28.0/23,64.12.161.0/24,64.12.163.0/24,64.12.200.0/24,205.188.3.0/24,205.188.5.0/24,205.188.7.0/24,205.188.9.0/24,205.188.153.0/24,205.188.179.0/24,205.188.248.0/24"
+	"aim_servers" => "64.12.24.0/23,64.12.28.0/23,64.12.161.0/24,64.12.163.0/24,64.12.200.0/24,205.188.3.0/24,205.188.5.0/24,205.188.7.0/24,205.188.9.0/24,205.188.153.0/24,205.188.179.0/24,205.188.248.0/24", 
+	"sip_servers" => "\$HOME_NET"
 );
 $addr_vars = "";
 	foreach ($suricata_servers as $alias => $avalue) {
@@ -405,17 +406,9 @@ if ($suricatacfg['eve_log_alerts_xff'] == 'on'){
 if ($suricatacfg['eve_log_http'] == 'on') {
 	$eve_out_types .= "\n        - http:";
 	if ($suricatacfg['eve_log_http_extended'] == 'on') {
-                $eve_out_types .= "\n            extended: yes";
-                $eve_out_types .= "\n            custom: [accept, accept-charset, accept-encoding, accept-language,";
-                $eve_out_types .= "\n                    accept-datetime, authorization, cache-control, cookie, from,";
-                $eve_out_types .= "\n                    max-forwards, origin, pragma, proxy-authorization, range, te, via,";
-                $eve_out_types .= "\n                    x-requested-with, dnt, x-forwarded-proto, accept-range, age,";
-                $eve_out_types .= "\n                    allow, connection, content-encoding, content-language,";
-                $eve_out_types .= "\n                    content-length, content-location, content-md5, content-range,";
-                $eve_out_types .= "\n                    content-type, date, etags, last-modified, link, location,";
-                $eve_out_types .= "\n                    proxy-authenticate, referrer, refresh, retry-after, server,";
-                $eve_out_types .= "\n                    set-cookie, trailer, transfer-encoding, upgrade, vary, warning,";
-                $eve_out_types .= "\n                    www-authenticate, x-flash-version, x-authenticated-user]";
+		$eve_out_types .= "\n            extended: yes";
+		if ($suricatacfg['eve_log_http_extended_headers'] != "")
+			$eve_out_types .= "\n            custom: [".$suricatacfg['eve_log_http_extended_headers']."]";
          } else {
                 $eve_out_types .= "\n            extended: no";
          }
@@ -456,8 +449,9 @@ if ($suricatacfg['eve_log_smtp'] == 'on') {
 		$eve_out_types .= "\n            extended: yes";
 	else
 		$eve_out_types .= "\n            extended: no";
+	if($suricatacfg['eve_log_smtp_extended_fields'] != "")
+		$eve_out_types .= "\n            custom: [".$suricatacfg['eve_log_smtp_extended_fields']."]";
 
-	$eve_out_types .= "\n            custom: [received, x-mailer, x-originating-ip, relays, reply-to, bcc]";
 	$eve_out_types .= "\n            md5: [subject]";
 }
 

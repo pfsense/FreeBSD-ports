@@ -1,10 +1,11 @@
---- bytesex.h.orig	2003-07-28 17:00:55.000000000 +0800
-+++ bytesex.h	2015-12-22 22:30:11.367208000 +0800
-@@ -8,10 +8,14 @@
+--- bytesex.h.orig	2003-07-28 09:00:55 UTC
++++ bytesex.h
+@@ -8,10 +8,15 @@
  #define ARS_BYTESEX_H
  
  #if 	defined(__i386__) \
 +	|| defined (__amd64__) \
++	|| defined (__aarch64__) \
 +	|| defined(__ia64__) \
  	|| defined(__alpha__) \
 +	|| defined(__arm__) \

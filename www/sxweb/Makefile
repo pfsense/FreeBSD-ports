@@ -9,14 +9,14 @@ MASTER_SITES=	http://cdn.skylable.com/source/
 MAINTAINER=	vg@FreeBSD.org
 COMMENT=	SXDrive Web app
 
+IGNORE_WITH_PHP=	70 71 72
+
 RUN_DEPENDS=	sxinit:net-mgmt/sx
 
-USES=		cpe
+USES=		cpe php:web
 USE_PHP=	ctype curl dom gd hash iconv json mbstring mysql mysqli \
 		pcre pdo pdo_mysql posix session simplexml sockets spl \
 		xml xmlreader xmlwriter
-
-WANT_PHP_WEB=	yes
 
 NO_BUILD=	yes
 SXWEB_USERNAME?=	${WWWOWN}

@@ -83,6 +83,73 @@
 			<fieldname>info</fieldname>
 			<type>info</type>
 		</field>
+		<field>
+			<fielddescr>Reset Modem</fielddescr>
+			<fieldname>reset</fieldname>
+			<type>button</type>
+			<description>
+			<![CDATA[
+				This will reset the modem. Please make sure to use the cuaZ99.0 port in PPP or the modem will change its port after the restart.
+			]]>
+			</description>
+		</field>
+		<field>
+			<name>Connection Check Settings</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable Check</fielddescr>
+			<fieldname>enable_cellular_check</fieldname>
+			<description>
+				<![CDATA[
+				Check this to enable the cellullar check.
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Interface Selection</fielddescr>
+			<fieldname>check_interface</fieldname>
+			<type>interfaces_selection</type>
+			<description>Select interface that the Modem is running on</description>
+			<hideinterfaceregex>(loopback)</hideinterfaceregex>
+		</field>
+		<field>
+			<fielddescr>Check Interval</fielddescr>
+			<fieldname>check_interval</fieldname>
+			<description><![CDATA[Select the time that the check should run and try to restart the Cellular connection (in Minutes).]]></description>
+			<type>select</type>
+				<options>
+				<option><name>1</name><value>1</value></option>
+				<option><name>5</name><value>5</value></option>
+				<option><name>10</name><value>10</value></option>
+				<option><name>15</name><value>15</value></option>
+				<option><name>30</name><value>30</value></option>
+				<option><name>60</name><value>60</value></option>
+				</options>
+		</field>
+		<field>
+			<fielddescr>Reset Modem</fielddescr>
+			<fieldname>enable_reset_modem</fieldname>
+			<description>
+				<![CDATA[
+				Check this to also reset the modem. Please make sure to use the cuaZ99.0 port in PPP or the modem will change its port after the restart.
+				]]>
+			</description>
+			<type>checkbox</type>
+		</field>
+		<field>
+			<fielddescr>Reset Count</fielddescr>
+			<fieldname>reset_count</fieldname>
+			<description><![CDATA[Select the retry count before the modem gets reset. 1 means everytime the connection is down.]]></description>
+			<type>select</type>
+				<options>
+				<option><name>1</name><value>1</value></option>
+				<option><name>2</name><value>2</value></option>
+				<option><name>5</name><value>5</value></option>
+				<option><name>10</name><value>10</value></option>
+				</options>
+		</field>
 	</fields>
 	<custom_php_resync_config_command>
 		cellular_sync();

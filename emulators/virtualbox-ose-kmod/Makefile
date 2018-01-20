@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	virtualbox-ose
-PORTVERSION=	5.1.28
+PORTVERSION=	5.2.4
 CATEGORIES=	emulators
 MASTER_SITES=	http://download.virtualbox.org/virtualbox/${PORTVERSION}/
 PKGNAMESUFFIX=	-kmod
@@ -41,6 +41,7 @@ CONFLICTS_INSTALL=	virtualbox-ose-kmod-devel-* \
 			virtualbox-ose-kmod-legacy-*
 
 OPTIONS_DEFINE=	DEBUG VIMAGE
+OPTIONS_DEFAULT=VIMAGE
 OPTIONS_SUB=	yes
 DEBUG_DESC=	Debug symbols, additional logs and assertions
 VIMAGE_DESC=	VIMAGE virtual networking support
@@ -56,7 +57,7 @@ BUILD_WRKSRC=	${VBOX_BIN}
 
 KMK_BUILDTYPE=	release
 KMK_CONFIG=	VBOX_LIBPATH_X11=${LOCALBASE} VBOX_FREEBSD_SRC=${SRC_BASE}/sys
-KMK_FLAGS=	HostDrivers-scripts vboxdrv-mod VBoxNetFlt-src VBoxNetAdp-src
+KMK_FLAGS=	HostDrivers-scripts vboxdrv-src VBoxNetFlt-src VBoxNetAdp-src
 
 .if ${PORT_OPTIONS:MDEBUG}
 KMK_FLAGS+=	BUILD_TYPE=debug

@@ -3,7 +3,7 @@
 
 PORTNAME=	erlang
 PORTVERSION=	17.5.6.9
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	lang parallel java
 MASTER_SITES=	http://www.erlang.org/download/:erlangorg		\
 		http://erlang.stacken.kth.se/download/:erlangorg	\
@@ -169,7 +169,7 @@ CONFIGURE_ARGS+=--enable-dirty-schedulers
 MAKE_ARGS+=	ARCH=x86
 .endif
 
-.if ${ARCH} == armv6
+.if ${ARCH} == armv6 || ${ARCH} == armv7
 MAKE_ARGS+=	ARCH=arm
 .endif
 

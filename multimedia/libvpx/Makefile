@@ -7,13 +7,16 @@ DISTVERSION=	1.6.1
 PORTREVISION=	2
 CATEGORIES=	multimedia
 
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES=	bc4bc9b6223d.patch:-p1
+
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	VP8/VP9 Codec SDK
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	yasm:devel/yasm
+BUILD_DEPENDS=	nasm:devel/nasm
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	webmproject
@@ -28,11 +31,8 @@ CONFIGURE_ENV=	ASFLAGS="${ASFLAGS}"
 # Only explicitly list ARCHs with SIMD optimizations
 CONFIGURE_ARGS_aarch64=	--target=arm64-linux-gcc
 CONFIGURE_ARGS_amd64=	--target=x86_64-linux-gcc
+CONFIGURE_ARGS_armv7=	--target=armv7-linux-gcc
 CONFIGURE_ARGS_i386=	--target=x86-linux-gcc
-.if ${CFLAGS:M-march=armv[78]*}
-CONFIGURE_ARGS+=	--target=armv7-linux-gcc
-ASFLAGS+=		-meabi=5
-.endif
 CONFIGURE_ARGS+=${CONFIGURE_ARGS_${ARCH}} \
 		--prefix=${PREFIX} \
 		--disable-install-docs \
@@ -41,13 +41,20 @@ CONFIGURE_ARGS+=${CONFIGURE_ARGS_${ARCH}} \
 		--enable-vp8 \
 		--enable-vp9
 MAKE_ARGS+=	verbose=yes
+ASFLAGS+=	${ASFLAGS_${ARCH}}
+ASFLAGS_armv7=	-meabi=5
 ALL_TARGET=	# empty
+
+# armv7 is actually armv6 target before FreeBSD 12.0
+.if ${CFLAGS:M-march=armv7*}
+CONFIGURE_ARGS+=	${CONFIGURE_ARGS_armv7}
+ASFLAGS+=		${ASFLAGS_armv7}
+.endif
 
 OPTIONS_DEFINE=	DEBUG MULTIRES POSTPROC RTCPU SHARED SIZE_LIMIT TEST THREADS
 OPTIONS_DEFAULT=MULTIRES POSTPROC RTCPU SHARED SIZE_LIMIT THREADS
 OPTIONS_EXCLUDE_aarch64=RTCPU
-OPTIONS_EXCLUDE_armv6=	RTCPU
-OPTIONS_SUB=		SHARED
+OPTIONS_SUB=		yes
 
 DEBUG_CONFIGURE_ON=	--enable-debug
 

@@ -91,17 +91,21 @@
     SUBDIR += R-cran-units
     SUBDIR += R-cran-xts
     SUBDIR += R-cran-zoo
+    SUBDIR += SCIP
+    SUBDIR += SoPlex
     SUBDIR += aamath
     SUBDIR += abacus
     SUBDIR += abakus
     SUBDIR += abs
     SUBDIR += acalc
     SUBDIR += add
+    SUBDIR += adept
     SUBDIR += algae
     SUBDIR += alglib
     SUBDIR += algotutor
     SUBDIR += alt-ergo
     SUBDIR += amath
+    SUBDIR += ambit
     SUBDIR += analitza
     SUBDIR += ann
     SUBDIR += apc
@@ -115,7 +119,6 @@
     SUBDIR += aspcud
     SUBDIR += asymptote
     SUBDIR += atlas
-    SUBDIR += bargraph
     SUBDIR += biggles
     SUBDIR += blacs
     SUBDIR += blas
@@ -166,6 +169,7 @@
     SUBDIR += emc2
     SUBDIR += ent
     SUBDIR += entropy
+    SUBDIR += eprover
     SUBDIR += ess
     SUBDIR += eukleides
     SUBDIR += eval
@@ -179,6 +183,7 @@
     SUBDIR += fftw3-long
     SUBDIR += fftw3-quad
     SUBDIR += fityk
+    SUBDIR += flann
     SUBDIR += form
     SUBDIR += fpc-fftw
     SUBDIR += fpc-gmp
@@ -207,6 +212,7 @@
     SUBDIR += gnubc
     SUBDIR += gnumeric
     SUBDIR += gnuplot
+    SUBDIR += gnuplot-lite
     SUBDIR += gnuplot-tex-extras
     SUBDIR += goblin
     SUBDIR += gotoblas
@@ -275,6 +281,7 @@
     SUBDIR += libRmath
     SUBDIR += libflame
     SUBDIR += liblbfgs
+    SUBDIR += libmesh
     SUBDIR += libmissing
     SUBDIR += libocas
     SUBDIR += liborigin
@@ -317,12 +324,14 @@
     SUBDIR += mtl
     SUBDIR += mtrxmath
     SUBDIR += mumps
+    SUBDIR += mumps-edf
     SUBDIR += mumps-mpich
     SUBDIR += muparser
     SUBDIR += naturalmath
     SUBDIR += nauty
     SUBDIR += ndiff
     SUBDIR += newmat
+    SUBDIR += nfft
     SUBDIR += ngraph
     SUBDIR += nlopt
     SUBDIR += ntl
@@ -597,6 +606,8 @@
     SUBDIR += php70-gmp
     SUBDIR += php71-bcmath
     SUBDIR += php71-gmp
+    SUBDIR += php72-bcmath
+    SUBDIR += php72-gmp
     SUBDIR += physcalc
     SUBDIR += picosat
     SUBDIR += plman
@@ -678,6 +689,7 @@
     SUBDIR += rapid
     SUBDIR += reduce
     SUBDIR += reed-solomon
+    SUBDIR += rexx-regmath
     SUBDIR += rkward-kde4
     SUBDIR += rngstreams
     SUBDIR += rocs
@@ -717,6 +729,7 @@
     SUBDIR += spooles-mpich
     SUBDIR += stp
     SUBDIR += suitesparse
+    SUBDIR += sundials
     SUBDIR += superlu
     SUBDIR += superlu_mt
     SUBDIR += surf
@@ -756,5 +769,6 @@
     SUBDIR += xspread
     SUBDIR += yacas
     SUBDIR += z3
+    SUBDIR += zimpl
 
 .include <bsd.port.subdir.mk>

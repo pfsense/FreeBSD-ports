@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	nettle
-PORTVERSION=	3.3
+PORTVERSION=	3.4
 CATEGORIES=	security
 MASTER_SITES=	GNU \
-		http://www.lysator.liu.se/~nisse/archive/ 
+		http://www.lysator.liu.se/~nisse/archive/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Low-level cryptographic library
@@ -24,7 +24,7 @@ CONFIGURE_ARGS=	--enable-shared
 CONFIGURE_ENV=	M4="/usr/bin/m4 -g"
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-USES=		gmake localbase makeinfo pathfix ssl
+USES=		gmake localbase makeinfo pathfix
 
 INFO=		nettle
 PORTDOCS=	NEWS README TODO nettle.html nettle.pdf
@@ -34,6 +34,12 @@ PORTEXAMPLES=	*.c *.h
 
 .if ${ARCH} == "sparc64"
 CONFIGURE_ENV+=	CCPIC=-fPIC
+.endif
+
+post-patch:
+	@${REINPLACE_CMD} -e '/libdir=/ s|lib32|lib|' ${WRKSRC}/configure
+.if ${ARCH} == "mips64"
+	@${REINPLACE_CMD} -e 's|__sgi|__unix__|' ${WRKSRC}/configure
 .endif
 
 post-install:

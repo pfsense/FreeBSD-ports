@@ -337,6 +337,9 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 #                         passed to the compiler by setting DEBUG_FLAGS. It is
 #                         set to "-g" at default.
 #
+#			  NOTE: to override a globally defined WITH_DEBUG at a
+#			        later time ".undef WITH_DEBUG" can be used
+#
 # WITH_DEBUG_PORTS		- A list of origins for which WITH_DEBUG will be set
 #
 # WITHOUT_SSP	- Disable SSP.
@@ -1058,12 +1061,20 @@ STAGEDIR?=	${WRKDIR}/stage
 NOTPHONY?=
 FLAVORS?=
 FLAVOR?=
-# XXX: We have no real FLAVORS support in ports or tools yet.
-#PORTS_FEATURES+=	FLAVORS
+# Disallow forced FLAVOR as make argument since we cannot change it to the
+# proper default.
+.if empty(FLAVOR) && !empty(.MAKEOVERRIDES:MFLAVOR)
+.error FLAVOR may not be passed empty as a make argument.
+.endif
+# Store env FLAVOR for later
+.if !defined(_FLAVOR)
+_FLAVOR:=	${FLAVOR}
+.endif
+PORTS_FEATURES+=	FLAVORS
 MINIMAL_PKG_VERSION=	1.6.0
 
 _PORTS_DIRECTORIES+=	${PKG_DBDIR} ${PREFIX} ${WRKDIR} ${EXTRACT_WRKDIR} \
-						${STAGEDIR}${PREFIX} ${WRKDIR}/pkg
+						${STAGEDIR}${PREFIX} ${WRKDIR}/pkg ${BINARY_LINKDIR}
 
 # Ensure .CURDIR contains an absolute path without a trailing slash.  Failed
 # builds can occur when PORTSDIR is a symbolic link, or with something like
@@ -1075,20 +1086,8 @@ _PORTS_DIRECTORIES+=	${PKG_DBDIR} ${PREFIX} ${WRKDIR} ${EXTRACT_WRKDIR} \
 
 .include "${PORTSDIR}/Mk/bsd.commands.mk"
 
-.if !empty(FLAVOR)
-.  if empty(FLAVORS)
-IGNORE=	FLAVOR is defined while this port does not have FLAVORS.
-.  elif ! ${FLAVORS:M${FLAVOR}}
-IGNORE=	Unknown flavor '${FLAVOR}', possible flavors: ${FLAVORS}.
-.  endif
-.endif
-
-.if !empty(FLAVORS) && empty(FLAVOR)
-FLAVOR=	${FLAVORS:[1]}
-.endif
-
 # Do not leak flavors to childs make
-.MAKEOVERRIDES:=	${MAKEOVERRIDES:NFLAVOR=*}
+.MAKEOVERRIDES:=	${.MAKEOVERRIDES:NFLAVOR}
 
 .if defined(CROSS_TOOLCHAIN)
 .if !defined(CROSS_SYSROOT)
@@ -1174,7 +1173,7 @@ OSVERSION!=	${AWK} '/^\#define[[:blank:]]__FreeBSD_version/ {print $$3}' < ${SRC
 .endif
 _EXPORTED_VARS+=	OSVERSION
 
-.if (${OPSYS} == FreeBSD && (${OSVERSION} < 1003000 || (${OSVERSION} >= 1100000 && ${OSVERSION} < 1100122))) || \
+.if (${OPSYS} == FreeBSD && (${OSVERSION} < 1003000 || (${OSVERSION} >= 1100000 && ${OSVERSION} < 1101001))) || \
     (${OPSYS} == DragonFly && ${DFLYVERSION} < 400400)
 _UNSUPPORTED_SYSTEM_MESSAGE=	Ports Collection support for your ${OPSYS} version has ended, and no ports\
 								are guaranteed to build on this system. Please upgrade to a supported release.
@@ -1463,6 +1462,61 @@ ${_f}_ARGS:=	${f:C/^[^\:]*(\:|\$)//:S/,/ /g}
 .include "${USESDIR}/${f:C/\:.*//}.mk"
 .endfor
 
+.if !empty(FLAVORS)
+.  if ${FLAVORS:Mall}
+DEV_ERROR+=		"FLAVORS cannot contain 'all', it is a reserved value"
+.  endif
+.  for f in ${FLAVORS}
+.    if ${f:C/[[:lower:][:digit:]_]//g}
+_BAD_FLAVOR_NAMES+=		${f}
+.    endif
+.  endfor
+.  if !empty(_BAD_FLAVOR_NAMES)
+DEV_ERROR+=		"FLAVORS contains flavors that are not all [a-z0-9_]: ${_BAD_FLAVOR_NAMES}"
+.  endif
+.endif
+
+.if !empty(FLAVOR)
+.  if empty(FLAVORS)
+IGNORE=	FLAVOR is defined (to ${FLAVOR}) while this port does not have FLAVORS.
+.  elif ! ${FLAVORS:M${FLAVOR}}
+IGNORE=	Unknown flavor '${FLAVOR}', possible flavors: ${FLAVORS}.
+.  endif
+.endif
+
+.if !empty(FLAVORS) && empty(FLAVOR)
+FLAVOR=	${FLAVORS:[1]}
+.endif
+
+.if !empty(FLAVOR) && !defined(_DID_FLAVORS_HELPERS)
+_DID_FLAVORS_HELPERS=	yes
+_FLAVOR_HELPERS_OVERRIDE=	DESCR PLIST PKGNAMEPREFIX PKGNAMESUFFIX
+_FLAVOR_HELPERS_APPEND=	 	CONFLICTS CONFLICTS_BUILD CONFLICTS_INSTALL \
+							PKG_DEPENDS EXTRACT_DEPENDS PATCH_DEPENDS \
+							FETCH_DEPENDS BUILD_DEPENDS LIB_DEPENDS \
+							RUN_DEPENDS TEST_DEPENDS
+# These overwrite the current value
+.for v in ${_FLAVOR_HELPERS_OVERRIDE}
+.if defined(${FLAVOR}_${v})
+${v}=	${${FLAVOR}_${v}}
+.endif
+.endfor
+
+# These append to the current value
+.for v in ${_FLAVOR_HELPERS_APPEND}
+.if defined(${FLAVOR}_${v})
+${v}+=	${${FLAVOR}_${v}}
+.endif
+.endfor
+
+.for v in BROKEN IGNORE
+.if defined(${FLAVOR}_${v})
+${v}=	flavor "${FLAVOR}" ${${FLAVOR}_${v}}
+.endif
+.endfor
+.endif # defined(${FLAVOR})
+
+
 EXTRACT_SUFX?=			.tar.gz
 
 .if defined(USE_LINUX_PREFIX)
@@ -1555,6 +1609,9 @@ QA_ENV+=		STAGEDIR=${STAGEDIR} \
 				LOCALBASE=${LOCALBASE} \
 				"STRIP=${STRIP}" \
 				TMPPLIST=${TMPPLIST} \
+				CURDIR='${.CURDIR}' \
+				FLAVOR=${FLAVOR} \
+				FLAVORS='${FLAVORS}' \
 				BUNDLE_LIBS=${BUNDLE_LIBS} \
 				LDCONFIG_DIR="${LDCONFIG_DIR}" \
 				PKGORIGIN=${PKGORIGIN} \
@@ -1607,7 +1664,17 @@ _WRKDIR=	work-${FLAVOR}
 .endif
 
 WRKDIR?=		${WRKDIRPREFIX}${.CURDIR}/${_WRKDIR}
+BINARY_LINKDIR=	${WRKDIR}/.bin
+PATH:=			${BINARY_LINKDIR}:${PATH}
+.if !${MAKE_ENV:MPATH=*} && !${CONFIGURE_ENV:MPATH=*}
+MAKE_ENV+=			PATH=${PATH}
+CONFIGURE_ENV+=		PATH=${PATH}
+.endif
+
 .if !defined(IGNORE_MASTER_SITE_GITHUB) && defined(USE_GITHUB) && empty(USE_GITHUB:Mnodefault)
+.if defined(WRKSRC)
+DEV_WARNING+=	"You are using USE_GITHUB and WRKSRC is set which is wrong.  Set GH_PROJECT correctly, or set WRKSRC_SUBDIR instead."
+.endif
 WRKSRC?=		${WRKDIR}/${GH_PROJECT}-${GH_TAGNAME_EXTRACT}
 .endif
 # If the distname is not extracting into a specific subdirectory, have the
@@ -1674,7 +1741,7 @@ CFLAGS:=	${CFLAGS:C/${_CPUCFLAGS}//}
 .endif
 
 # Reset value from bsd.own.mk.
-.if defined(WITH_DEBUG) && !defined(WITHOUT_DEBUG)
+.if defined(WITH_DEBUG)
 .if !defined(INSTALL_STRIPPED)
 STRIP=	#none
 MAKE_ENV+=	DONTSTRIP=yes
@@ -2140,12 +2207,12 @@ SCRIPTS_ENV+=	${INSTALL_MACROS}
 # In the -exec shell commands, we add add a . as the first argument, it would
 # end up being $0 aka the script name, which is not part of $@, so we force it
 # to be able to use $@ directly.
-COPYTREE_BIN=	${SH} -c '(${FIND} -Ed $$0 $$2 | ${CPIO} -dumpl $$1 >/dev/null 2>&1) && \
-						   ${FIND} -Ed $$0 $$2 \(   -type d -exec ${SH} -c '\''cd '\''$$1'\'' && chmod 755 "$$@"'\'' -- . {} + \
-												 -o -type f -exec ${SH} -c '\''cd '\''$$1'\'' && chmod ${BINMODE} "$$@"'\'' -- . {} + \)' --
-COPYTREE_SHARE=	${SH} -c '(${FIND} -Ed $$0 $$2 | ${CPIO} -dumpl $$1 >/dev/null 2>&1) && \
-						   ${FIND} -Ed $$0 $$2 \(   -type d -exec ${SH} -c '\''cd '\''$$1'\'' && chmod 755 "$$@"'\'' -- . {} + \
-												 -o -type f -exec ${SH} -c '\''cd '\''$$1'\'' && chmod ${_SHAREMODE} "$$@"'\'' -- . {} + \)' --
+COPYTREE_BIN=	${SH} -c '(${FIND} -Ed $$1 $$3 | ${CPIO} -dumpl $$2 >/dev/null 2>&1) && \
+						   ${FIND} -Ed $$1 $$3 \(   -type d -exec ${SH} -c '\''cd '\''$$2'\'' && chmod 755 "$$@"'\'' . {} + \
+												 -o -type f -exec ${SH} -c '\''cd '\''$$2'\'' && chmod ${BINMODE} "$$@"'\'' . {} + \)' COPYTREE_BIN
+COPYTREE_SHARE=	${SH} -c '(${FIND} -Ed $$1 $$3 | ${CPIO} -dumpl $$2 >/dev/null 2>&1) && \
+						   ${FIND} -Ed $$1 $$3 \(   -type d -exec ${SH} -c '\''cd '\''$$2'\'' && chmod 755 "$$@"'\'' . {} + \
+												 -o -type f -exec ${SH} -c '\''cd '\''$$2'\'' && chmod ${_SHAREMODE} "$$@"'\'' . {} + \)' COPYTREE_SHARE
 
 # The user can override the NO_PACKAGE by specifying this from
 # the make command line
@@ -3738,12 +3805,17 @@ post-clean-noflavor:
 clean: ${CLEAN_DEPENDENCIES}
 .endif
 
-.for _f in ${FLAVORS}
+.if !empty(_FLAVOR)
+_CLEANFLAVORS=	${_FLAVOR}
+.else
+_CLEANFLAVORS=	${FLAVORS}
+.endif
+.for _f in ${_CLEANFLAVORS}
 CLEAN_DEPENDENCIES=
 .if !defined(NOCLEANDEPENDS)
 CLEAN_DEPENDENCIES+=	limited-clean-depends-${_f}
 limited-clean-depends-${_f}:
-	@cd ${.CURDIR} && ${MAKE} FLAVOR=${_f} limited-clean-depends
+	@cd ${.CURDIR} && ${SETENV} FLAVOR=${_f} ${MAKE} limited-clean-depends
 .endif
 .if target(pre-clean)
 CLEAN_DEPENDENCIES+=	pre-clean-${_f}
@@ -3945,6 +4017,7 @@ ${deptype:tl}-depends:
 		dp_SCRIPTSDIR="${SCRIPTSDIR}" \
 		PORTSDIR="${PORTSDIR}" \
 		dp_MAKE="${MAKE}" \
+		dp_MAKEFLAGS='${.MAKEFLAGS}' \
 		${SH} ${SCRIPTSDIR}/do-depends.sh
 .endif
 .endfor
@@ -3977,6 +4050,8 @@ DEPENDS-LIST= \
 
 ALL-DEPENDS-LIST=			${DEPENDS-LIST} -r ${_UNIFIED_DEPENDS:Q}
 MISSING-DEPENDS-LIST=		${DEPENDS-LIST} -m ${_UNIFIED_DEPENDS:Q}
+BUILD-DEPENDS-LIST=			${DEPENDS-LIST} "${PKG_DEPENDS} ${EXTRACT_DEPENDS} ${PATCH_DEPENDS} ${FETCH_DEPENDS} ${BUILD_DEPENDS} ${LIB_DEPENDS}"
+RUN-DEPENDS-LIST=			${DEPENDS-LIST} "${LIB_DEPENDS} ${RUN_DEPENDS}"
 TEST-DEPENDS-LIST=			${DEPENDS-LIST} ${TEST_DEPENDS:Q}
 CLEAN-DEPENDS-LIST=			${DEPENDS-LIST} -wr ${_UNIFIED_DEPENDS:Q} 
 CLEAN-DEPENDS-LIMITED-LIST=	${DEPENDS-LIST} -w ${_UNIFIED_DEPENDS:Q}
@@ -4006,11 +4081,17 @@ deinstall-depends:
 fetch-specials:
 	@${ECHO_MSG} "===> Fetching all distfiles required by ${PKGNAME} for building"
 	@for dir in ${_DEPEND_SPECIALS}; do \
+		case $${dir} in \
+			*@*) \
+				flavor=$${dir#*@}; \
+				dir=$${dir%@*}; \
+				;; \
+		esac; \
 		case $$dir in \
 		/*) ;; \
 		*) dir=${PORTSDIR}/$$dir ;; \
 		esac; \
-		(cd $$dir; ${MAKE} fetch); \
+		(cd $$dir; ${SETENV} FLAVOR=$${flavor} ${MAKE} fetch); \
 	done
 .endif
 
@@ -4103,36 +4184,10 @@ build-depends-list:
 	@${BUILD-DEPENDS-LIST}
 .endif
 
-BUILD-DEPENDS-LIST= \
-	for dir in $$(${ECHO_CMD} "${PKG_DEPENDS} ${EXTRACT_DEPENDS} ${PATCH_DEPENDS} ${FETCH_DEPENDS} ${BUILD_DEPENDS} ${LIB_DEPENDS}" | ${SED} -E -e 's,([^: ]*):([^: ]*)(:[^ ]*)?,\2,g' -e 'y/ /\n/'| ${SORT} -u); do \
-		case $$dir in \
-		/*) pdir=$$dir ;; \
-		*) pdir=${PORTSDIR}/$$dir ;; \
-		esac ; \
-		if [ -d $$pdir ]; then \
-			${ECHO_CMD} $$pdir; \
-		else \
-			${ECHO_MSG} "${PKGNAME}: \"$$pdir\" non-existent -- dependency list incomplete" >&2; \
-		fi; \
-	done | ${SORT} -u
-
 run-depends-list:
 .if defined(LIB_DEPENDS) || defined(RUN_DEPENDS)
 	@${RUN-DEPENDS-LIST}
 .endif
-
-RUN-DEPENDS-LIST= \
-	for dir in $$(${ECHO_CMD} "${_LIB_RUN_DEPENDS:C,.*:([^:]*).*,\1,}" | ${SED} -e 'y/ /\n/' | ${SORT} -u); do \
-		case $$dir in \
-		/*) pdir=$$dir ;; \
-		*) pdir=${PORTSDIR}/$$dir ;; \
-		esac ; \
-		if [ -d $$pdir ]; then \
-			${ECHO_CMD} $$pdir; \
-		else \
-			${ECHO_MSG} "${PKGNAME}: \"$$pdir\" non-existent -- dependency list incomplete" >&2; \
-		fi; \
-	done | ${SORT} -u
 
 test-depends-list:
 .if defined(TEST_DEPENDS)
@@ -4164,6 +4219,12 @@ PACKAGE-DEPENDS-LIST?= \
 	fi; \
 	checked="${PARENT_CHECKED}"; \
 	for dir in ${_LIB_RUN_DEPENDS:C,[^:]*:([^:]*):?.*,\1,}; do \
+		case $${dir} in \
+		*@*) \
+			flavor=$${dir\#*@}; \
+			dir=$${dir%@*}; \
+			;; \
+		esac; \
 		case "$$dir" in \
 		/*) ;; \
 		*) dir=${PORTSDIR}/$$dir ;; \
@@ -4173,7 +4234,7 @@ PACKAGE-DEPENDS-LIST?= \
 			case $$checked in	\
 			$$dir|$$dir\ *|*\ $$dir|*\ $$dir\ *) continue;;	\
 			esac;	\
-			childout=$$(cd $$dir; ${MAKE} CHILD_DEPENDS=yes PARENT_CHECKED="$$checked" package-depends-list); \
+			childout=$$(cd $$dir; ${SETENV} FLAVOR=$${flavor} ${MAKE} CHILD_DEPENDS=yes PARENT_CHECKED="$$checked" package-depends-list); \
 			set -- $$childout; \
 			childdir=""; \
 			while [ $$\# != 0 ]; do \
@@ -4304,6 +4365,7 @@ INDEX_OUT=${INDEX_TMPDIR}/${INDEXFILE}.desc.aggr
 INDEX_OUT=/dev/stdout
 .  endif
 
+.  if empty(FLAVORS) || defined(_DESCRIBE_WITH_FLAVOR)
 describe:
 	@(${ECHO_CMD} -n "${PKGNAME}|${.CURDIR}|${PREFIX}|"; \
 	${ECHO_CMD} -n ${COMMENT:Q}; \
@@ -4318,6 +4380,13 @@ describe:
 			;; \
 		esac; \
 	done < ${DESCR}; ${ECHO_CMD}) >>${INDEX_OUT}
+.  else # empty(FLAVORS)
+describe: ${FLAVORS:S/^/describe-/}
+.   for f in ${FLAVORS}
+describe-${f}:
+	@cd ${.CURDIR} && ${SETENV} FLAVOR=${f} ${MAKE} -B -D_DESCRIBE_WITH_FLAVOR describe
+.   endfor
+.  endif # empty(FLAVORS)
 . endif
 
 www-site:
@@ -4599,6 +4668,25 @@ stage-qa:
 .endif
 .endif
 
+pretty-flavors-package-names: .PHONY
+.if empty(FLAVORS)
+	@${ECHO_CMD} "no flavor: ${PKGNAME}"
+.else
+.for f in ${FLAVORS}
+	@${ECHO_CMD} -n "${f}: "
+	@cd ${.CURDIR} && ${SETENV} FLAVOR=${f} ${MAKE} -B -V PKGNAME
+.endfor
+.endif
+
+flavors-package-names: .PHONY
+.if empty(FLAVORS)
+	@${ECHO_CMD} "${PKGNAME}"
+.else
+.for f in ${FLAVORS}
+	@cd ${.CURDIR} && ${SETENV} FLAVOR=${f} ${MAKE} -B -V PKGNAME
+.endfor
+.endif
+
 # Fake installation of package so that user can pkg delete it later.
 .if !target(fake-pkg)
 STAGE_ARGS=		-i ${STAGEDIR}
@@ -4640,6 +4728,24 @@ ${_t}:
 
 .if !target(pre-check-config)
 pre-check-config:
+_CHECK_OPTIONS_NAMES=	OPTIONS_DEFINE
+_CHECK_OPTIONS_NAMES+=	${OPTIONS_GROUP:S/^/OPTIONS_GROUP_/}
+_CHECK_OPTIONS_NAMES+=	${OPTIONS_MULTI:S/^/OPTIONS_MULTI_/}
+_CHECK_OPTIONS_NAMES+=	${OPTIONS_RADIO:S/^/OPTIONS_RADIO_/}
+_CHECK_OPTIONS_NAMES+=	${OPTIONS_SINGLE:S/^/OPTIONS_SINGLE_/}
+.for var in ${_CHECK_OPTIONS_NAMES}
+.  if defined(${var})
+.    for o in ${${var}}
+.      if ${o:C/[-_[:upper:][:digit:]]//g}
+OPTIONS_BAD_NAMES+=	${o}
+.      endif
+.    endfor
+.  endif
+.endfor
+.if defined(OPTIONS_BAD_NAMES) && !empty(OPTIONS_BAD_NAMES)
+DEV_WARNING+=	"These options name have characters outside of [-_A-Z0-9]:"
+DEV_WARNING+=	"${OPTIONS_BAD_NAMES:O:u}"
+.endif
 .for single in ${OPTIONS_SINGLE}
 .  for opt in ${OPTIONS_SINGLE_${single}}
 .    if empty(ALL_OPTIONS:M${single}) || !empty(PORT_OPTIONS:M${single})
@@ -5182,6 +5288,15 @@ install-desktop-entries:
 .endif
 .endif
 
+.if !empty(BINARY_ALIAS)
+.if !target(create-binary-alias)
+create-binary-alias: ${BINARY_LINKDIR}
+.for target src in ${BINARY_ALIAS:C/=/ /}
+	@${RLN} `which ${src}` ${BINARY_LINKDIR}/${target}
+.endfor
+.endif
+.endif
+
 .if defined(WARNING)
 WARNING_WAIT?=	10
 show-warnings:
@@ -5269,7 +5384,8 @@ _PATCH_SEQ=		050:ask-license 100:patch-message 150:patch-depends \
 				700:post-patch 850:post-patch-script \
 				${_OPTIONS_patch} ${_USES_patch}
 _CONFIGURE_DEP=	patch
-_CONFIGURE_SEQ=	150:build-depends 151:lib-depends 200:configure-message \
+_CONFIGURE_SEQ=	150:build-depends 151:lib-depends 160:create-binary-alias \
+				200:configure-message \
 				300:pre-configure 450:pre-configure-script \
 				490:run-autotools-fixup 500:do-configure 700:post-configure \
 				850:post-configure-script \
@@ -5282,7 +5398,7 @@ _STAGE_DEP=		build
 # STAGE is special in its numbering as it has install and stage, so install is
 # the main, and stage goes after.
 _STAGE_SEQ=		050:stage-message 100:stage-dir 150:run-depends \
-				151:lib-depends 200:apply-slist 300:pre-install \
+				200:apply-slist 300:pre-install \
 				400:generate-plist 450:pre-su-install 475:create-users-groups \
 				500:do-install 550:kmod-post-install 600:fixup-lib-pkgconfig 700:post-install \
 				750:post-install-script 800:post-stage 850:compress-man \
@@ -5302,7 +5418,7 @@ _TEST_SEQ=		100:test-message 150:test-depends 300:pre-test 500:do-test \
 				800:post-test \
 				${_OPTIONS_test} ${_USES_test}
 _INSTALL_DEP=	stage
-_INSTALL_SEQ=	100:install-message 150:run-depends 151:lib-depends \
+_INSTALL_SEQ=	100:install-message \
 				200:check-already-installed
 _INSTALL_SUSEQ=	300:fake-pkg 500:security-check
 

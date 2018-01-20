@@ -150,7 +150,6 @@ gnugk:*:205:
 gini:*:206:
 _mixminion:*:207:
 _dnsdist:*:208:
-gogs:*:209:
 shoutcast:*:210:
 git:*:211:
 hg:*:212:
@@ -416,7 +415,7 @@ vault:*:471:
 nomad:*:472:
 minio:*:473:
 gitlab-runner:*:474:
-# free: 475
+traefik:*:475:
 # free: 476
 # free: 477
 prometheus:*:478:
@@ -722,7 +721,7 @@ openxpki:*:777:
 litecoin:*:778:
 bitcoin:*:779:
 zetacoin:*:780:
-# free: 781
+monero:*:781:
 # free: 782
 # free: 783
 # free: 784
@@ -835,7 +834,7 @@ vuls:*:888:
 # free: 891
 # free: 892
 # free: 893
-# free: 894
+arangodb:*:894:
 snmptt:*:895:
 istat:*:896:
 znc:*:897:

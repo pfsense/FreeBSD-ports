@@ -333,6 +333,7 @@
 %%WWWDIR%%/app/ExternalLink/FileLinkProvider.php
 %%WWWDIR%%/app/ExternalLink/WebLink.php
 %%WWWDIR%%/app/ExternalLink/WebLinkProvider.php
+%%WWWDIR%%/app/Filter/BaseComparisonFilter.php
 %%WWWDIR%%/app/Filter/BaseDateFilter.php
 %%WWWDIR%%/app/Filter/BaseFilter.php
 %%WWWDIR%%/app/Filter/ProjectActivityCreationDateFilter.php
@@ -370,6 +371,7 @@
 %%WWWDIR%%/app/Filter/TaskProjectFilter.php
 %%WWWDIR%%/app/Filter/TaskProjectsFilter.php
 %%WWWDIR%%/app/Filter/TaskReferenceFilter.php
+%%WWWDIR%%/app/Filter/TaskScoreFilter.php
 %%WWWDIR%%/app/Filter/TaskStartDateFilter.php
 %%WWWDIR%%/app/Filter/TaskStartsWithIdFilter.php
 %%WWWDIR%%/app/Filter/TaskStatusFilter.php
@@ -467,6 +469,7 @@
 %%WWWDIR%%/app/Locale/sv_SE/translations.php
 %%WWWDIR%%/app/Locale/th_TH/translations.php
 %%WWWDIR%%/app/Locale/tr_TR/translations.php
+%%WWWDIR%%/app/Locale/vi_VN/translations.php
 %%WWWDIR%%/app/Locale/zh_CN/translations.php
 %%WWWDIR%%/app/Middleware/ApplicationAuthorizationMiddleware.php
 %%WWWDIR%%/app/Middleware/AuthenticationMiddleware.php
@@ -1063,6 +1066,7 @@
 %%WWWDIR%%/assets/sass/_input_addon.sass
 %%WWWDIR%%/assets/sass/_links.sass
 %%WWWDIR%%/assets/sass/_logo.sass
+%%WWWDIR%%/assets/sass/_main.sass
 %%WWWDIR%%/assets/sass/_markdown_editor.sass
 %%WWWDIR%%/assets/sass/_markdown_rendering.sass
 %%WWWDIR%%/assets/sass/_mixins.sass

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	libring
-DISTVERSION=	1.0.2
+DISTVERSION=	1.3.0
 CATEGORIES=	devel
 PKGNAMEPREFIX=	elixir-
 

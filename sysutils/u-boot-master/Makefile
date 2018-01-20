@@ -5,21 +5,23 @@
 
 PORTNAME=	u-boot
 PORTVERSION=	${UBOOT_VERSION}
-DISTVERSIONPREFIX= ports-v
+PORTREVISION=	1
+DISTVERSIONPREFIX=	ports-v
 CATEGORIES=	sysutils
 PKGNAMESUFFIX?=	-${MODEL}
 
 MAINTAINER=	imp@FreeBSD.org
-COMMENT=	Cross-build das u-boot for ${MODEL}
+COMMENT=	Cross-build das u-boot for model ${MODEL}
 
 LICENSE=	GPLv2
 
 BUILD_DEPENDS+=	gsed:textproc/gsed \
-		swig:devel/swig13 \
+		swig3.0:devel/swig30 \
 		dtc>=1.4.1:sysutils/dtc
 BUILD_DEPENDS+=	${COMPILER}:devel/${COMPILER}
 
-USES=		gmake python:build shebangfix
+USES=		gmake python:2.7,build shebangfix
+BINARY_ALIAS=	swig=swig3.0 sed=gsed
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
@@ -31,11 +33,15 @@ UBOOT_DIR=	share/u-boot/${PORTNAME}${PKGNAMESUFFIX}
 INST=		${PREFIX}/${UBOOT_DIR}
 DESCR?=		${.CURDIR}/pkg-descr
 
-MAKE_ARGS+=	V=1 CROSS_COMPILE=${CROSS_COMPILE} DTC=${LOCALBASE}/bin/dtc ${ARCHFLAGS}
+MAKE_ARGS+=	V=1 CROSS_COMPILE=${CROSS_COMPILE} DTC=${LOCALBASE}/bin/dtc PYTHON=${PYTHON_CMD} ${ARCHFLAGS}
 
 NO_ARCH=	yes
 
 # Sanity checks
+.if !defined(MODEL) && !defined(BOARD_CONFIG) && !defined(FAMILY)
+MODEL=		NONE
+IGNORE=		is a metaport; there is nothing to build
+.else
 .if !defined(MODEL)
 IGNORE+=	MODEL is not defined
 .endif
@@ -44,6 +50,7 @@ IGNORE+=	BOARD_CONFIG is not defined
 .endif
 .if !defined(FAMILY)
 IGNORE+=	FAMILY is not defined
+.endif
 .endif
 
 # Overrides for OMAP family
@@ -60,11 +67,14 @@ UBOOT_ARCH_ALLWINNER64=aarch64
 UBOOT_PLIST_ZYNQ_7000=u-boot.img boot.bin uEnv.txt
 UBOOT_MOVE_ZYNQ_7000=${WRKSRC}/spl/boot.bin ${.CURDIR}/files/uEnv.txt
 
+# Overrides for RPI family
+UBOOT_PLIST_RPI=	u-boot.bin
+
 # Uboot variables
 .if !defined(UBOOT_VERSION) && defined(UBOOT_VERSION_${FAMILY:tu})
 UBOOT_VERSION=${UBOOT_VERSION_${FAMILY:tu}}
 .endif
-UBOOT_VERSION?=	2017.07.00.1
+UBOOT_VERSION?=	2017.09.00
 
 .if !defined(UBOOT_PLIST) && defined(UBOOT_PLIST_${FAMILY:tu})
 UBOOT_PLIST=${UBOOT_PLIST_${FAMILY:tu}}
@@ -93,14 +103,27 @@ COMPILER?=${CROSS_COMPILE}gcc
 UBOOT_MOVE=${UBOOT_MOVE_${FAMILY:tu}}
 .endif
 
+# Per family dependancies
+.if defined(FAMILY) && ${FAMILY} == allwinner64
+BUILD_DEPENDS+=	${LOCALBASE}/share/atf-allwinner/bl31.bin:sysutils/atf-allwinner
+MAKE_ENV+=	BL31=${LOCALBASE}/share/atf-allwinner/bl31.bin
+.endif
+
 # Each u-boot family has different files to include, bring them in.
 .for i in ${UBOOT_PLIST}
-PLIST_FILES+= ${UBOOT_DIR}/${i}
+PLIST_FILES+=	${UBOOT_DIR}/${i}
 .endfor
-PLIST_FILES+= ${UBOOT_DIR}/README
+PLIST_FILES+=	${UBOOT_DIR}/README
 
 do-configure:
 	(cd ${WRKSRC}; ${SETENV} ${CONFIGURE_ENV} ${MAKE_CMD} ${BOARD_CONFIG})
+
+# U-Boot for Allwinner 64bits SoCs is splited in two parts
+# Generate a single binary to ease deployement on sdcard
+.if defined(FAMILY) && ${FAMILY} == allwinner64
+post-build:
+	${CAT} ${WRKSRC}/spl/sunxi-spl.bin ${WRKSRC}/u-boot.itb > ${WRKSRC}/u-boot-sunxi-with-spl.bin
+.endif
 
 # If we need to put anything into WRKSRC, do so now so we can build the PLIST
 # in do-install

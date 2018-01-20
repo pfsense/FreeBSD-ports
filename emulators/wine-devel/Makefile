@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	wine
-DISTVERSION=	2.17
-PORTREVISION=	1
+DISTVERSION=	3.0-rc4
 PORTEPOCH=	1
 CATEGORIES=	emulators
 MASTER_SITES=	SF/${PORTNAME}/Source \
@@ -19,6 +18,7 @@ LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=	amd64 i386
+STAGING_BROKEN=	Staging patchset still not available for this version
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex \
 		prelink:sysutils/prelink
@@ -37,6 +37,7 @@ CONFIGURE_ARGS+=--verbose --disable-tests \
 		--without-opencl \
 		--without-osmesa \
 		--with-oss \
+		--without-pulse \
 		--without-sane \
 		--without-tiff
 CONFIGURE_ENV=	CPPBIN="${CPP}" FLEX="${LOCALBASE}/bin/flex"
@@ -101,7 +102,7 @@ WINEMAKER_RUN_DEPENDS=	p5-XML-LibXML>0:textproc/p5-XML-LibXML
 
 X11_CONFIGURE_WITH=	x cms fontconfig freetype glu jpeg opengl png xinerama xinput2 xrandr xrender
 X11_USES=		jpeg
-X11_USE=		GL=glu XORG=xcomposite,xcursor,xi,xinerama,xrandr,xrender
+X11_USE=		GL=glu XORG=x11,xext,xcomposite,xcursor,xi,xinerama,xrandr,xrender
 X11_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 			libfreetype.so:print/freetype2 \
 			liblcms2.so:graphics/lcms2 \
@@ -146,14 +147,10 @@ DISTFILES+=	${COMP_DIST}:cho
 
 EXTRACT_DEPENDS=bash:shells/bash \
 		git:devel/git \
-		${AUTOCONF_DEPENDS}
-
-CONFIGURE_ARGS+=--without-pulse
-USE_AUTOTOOLS=	autoconf:env
+		autoreconf-2.69:devel/autoconf
 
 post-extract: fix-shebang
 	cd ${WRKSRC} && ${TAR} xf ${DISTDIR}/${COMP_DIST} --strip-components 1
-	${REINPLACE_CMD} 's|autoreconf|${AUTORECONF}|g' ${WRKSRC}/patches/patchinstall.sh
 	cd ${WRKSRC} && bash ./patches/patchinstall.sh --backend=patch DESTDIR=${WRKSRC} --all
 .endif
 
@@ -170,5 +167,13 @@ post-install:
 .endfor
 	${INSTALL_DATA} ${WRKSRC}/programs/winedbg/README ${STAGEDIR}${DOCSDIR}/README.winedbg
 	${INSTALL_DATA} ${WRKSRC}/tools/winedump/README ${STAGEDIR}${DOCSDIR}/README.winedump
+
+check-wine-devel-vs-wine-staging:
+	@${GREP} %%STAGING%% pkg-plist | while read f; do \
+	  f=`echo $$f | ${SED} -e 's/%%STAGING%%//'`; \
+	  if [ -f "$$STAGEDIR/$$PREFIX/$$f" ]; then \
+	    ${PRINTF} "%s no longer contigent on %%STAGING%%?\n" "$$f"; \
+	  fi \
+	done
 
 .include <bsd.port.post.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	unison
 PORTVERSION=	2.48.4
-PORTREVISION?=	1
+PORTREVISION?=	2
 CATEGORIES=	net
 MASTER_SITES=	http://www.cis.upenn.edu/~bcpierce/unison/download/releases/${DISTNAME}/
 DISTFILES=	${EXTRACT_ONLY} ${EXTRA_DOCS}
@@ -20,7 +20,6 @@ USES=		gmake localbase
 USE_OCAML=	yes
 WRKSRC=		${WRKDIR}/src
 NO_OCAML_RUNDEPENDS=yes
-WANT_GNOME=	yes
 CONFLICTS?=	unison-devel-[0-9]* unison-nox11-[0-9]*
 MAKE_ENV=	CLIBS="${LIBS:S/^-/-ccopt -/}" COFLAGS="${CFLAGS:C/ *(-[^ ]*) */ -ccopt \"\1 \"/gW}"
 MAKE_JOBS_UNSAFE=	yes

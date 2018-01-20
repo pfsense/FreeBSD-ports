@@ -300,6 +300,7 @@ include/dovecot/istream-header-filter.h
 include/dovecot/istream-jsonstr.h
 include/dovecot/istream-mail.h
 include/dovecot/istream-metawrap.h
+include/dovecot/istream-multiplex.h
 include/dovecot/istream-nonuls.h
 include/dovecot/istream-private.h
 include/dovecot/istream-qp.h
@@ -462,6 +463,7 @@ include/dovecot/ostream-failure-at.h
 include/dovecot/ostream-file-private.h
 include/dovecot/ostream-hash.h
 include/dovecot/ostream-metawrap.h
+include/dovecot/ostream-multiplex.h
 include/dovecot/ostream-null.h
 include/dovecot/ostream-private.h
 include/dovecot/ostream-rawlog.h
@@ -630,6 +632,8 @@ lib/dovecot/lib20_mail_log_plugin.a
 lib/dovecot/lib20_mail_log_plugin.so
 lib/dovecot/lib20_mailbox_alias_plugin.a
 lib/dovecot/lib20_mailbox_alias_plugin.so
+lib/dovecot/lib20_notify_status_plugin.a
+lib/dovecot/lib20_notify_status_plugin.so
 lib/dovecot/lib20_push_notification_plugin.a
 lib/dovecot/lib20_push_notification_plugin.so
 lib/dovecot/lib20_quota_clone_plugin.a
@@ -692,6 +696,8 @@ lib/dovecot/libfs_crypt.a
 lib/dovecot/libfs_crypt.so
 lib/dovecot/libfs_mail_crypt.a
 lib/dovecot/libfs_mail_crypt.so
+lib/dovecot/libssl_iostream_openssl.a
+lib/dovecot/libssl_iostream_openssl.so
 lib/dovecot/stats/libstats_auth.a
 lib/dovecot/stats/libstats_auth.so
 lib/dovecot/stats/libstats_mail.a
@@ -793,7 +799,6 @@ share/aclocal/dovecot.m4
 %%DATADIR%%/stopwords/stopwords_ro.txt
 %%DATADIR%%/stopwords/stopwords_ru.txt
 %%DATADIR%%/stopwords/stopwords_sv.txt
-%%LIBWRAP%%libexec/dovecot/tcpwrap
 %%LDAP%%include/dovecot/ldap-client.h
 %%LDAP%%lib/dovecot/dict/libdict_ldap.a
 %%LDAP%%lib/dovecot/dict/libdict_ldap.so
@@ -801,12 +806,11 @@ share/aclocal/dovecot.m4
 %%LDAP%%lib/dovecot/libdovecot-ldap.so
 %%LDAP%%lib/dovecot/libdovecot-ldap.so.0
 %%LDAP%%lib/dovecot/libdovecot-ldap.so.0.0.0
+%%LIBWRAP%%libexec/dovecot/tcpwrap
 %%LUCENE%%lib/dovecot/doveadm/lib20_doveadm_fts_lucene_plugin.a
 %%LUCENE%%lib/dovecot/doveadm/lib20_doveadm_fts_lucene_plugin.so
 %%LUCENE%%lib/dovecot/lib21_fts_lucene_plugin.a
 %%LUCENE%%lib/dovecot/lib21_fts_lucene_plugin.so
 %%SOLR%%lib/dovecot/lib21_fts_solr_plugin.a
 %%SOLR%%lib/dovecot/lib21_fts_solr_plugin.so
-lib/dovecot/libssl_iostream_openssl.a
-lib/dovecot/libssl_iostream_openssl.so
 @postunexec echo "If you are removing dovecot2 permanently, you should 'rm -rf /var/db/dovecot' to clear out any remaining data."

@@ -8,10 +8,11 @@ CATEGORIES=	emulators
 MAINTAINER=	vg@FreeBSD.org
 COMMENT=	gem5 Simulator System
 
-BUILD_DEPENDS=	swig2.0:devel/swig20 \
+BUILD_DEPENDS=	swig3.0:devel/swig30 \
 		scons:devel/scons
 
 BROKEN_armv6=		fails to link: undefined reference to HDLcd::BUS_OPTIONS_RESETV
+BROKEN_armv7=		fails to link: undefined reference to HDLcd::BUS_OPTIONS_RESETV
 BROKEN_i386=		does not build
 BROKEN_mips64=		fails to build: claims that gcc version 4.6 or newer required
 BROKEN_powerpc64=	fails to build: claims that gcc version 4.6 or newer required
@@ -20,7 +21,7 @@ DATE=		20140422
 USE_GITHUB=	yes
 GH_ACCOUNT=	CTSRD-CHERI
 GH_TAGNAME=	99d65cc
-SWIG_BIN=	swig2.0
+SWIG_BIN=	swig3.0
 USES=		gmake
 
 .include <bsd.port.pre.mk>

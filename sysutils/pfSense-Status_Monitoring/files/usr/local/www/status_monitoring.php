@@ -998,7 +998,7 @@ events.push(function() {
 			if(!start || !end) {
 				error = "Invalid Date/Time in Custom Period."
 				$("#monitoring-chart").hide();
-				$("#chart-error").show().html('<strong>Error</strong>: ' + error);
+				$("#chart-error").show().text('Error: ' + error);
 				console.warn(error);
 				return false;
 			}
@@ -1218,13 +1218,13 @@ events.push(function() {
 
 				if (error) {
 					$("#monitoring-chart").hide();
-					$("#chart-error").show().html('<strong>Error</strong>: ' + error);
+					$("#chart-error").show().text('Error: ' + error);
 					return console.warn(error);
 				}
 
 				if (json.error) {
 					$("#monitoring-chart").hide();
-					$("#chart-error").show().html('<strong>Error</strong>: ' + json.error);
+					$("#chart-error").show().text('Error: ' + json.error);
 					return console.warn(json.error);
 				}
 
@@ -1300,13 +1300,13 @@ events.push(function() {
 				}
 
 				$("#monitoring-chart").hide();
-				$("#chart-error").show().html('<strong>Error</strong>: ' + error);
+				$("#chart-error").show().text('Error: ' + error);
 				return console.warn(error);
 			}
 
 			if (json.error) {
 				$("#monitoring-chart").hide();
-				$("#chart-error").show().html('<strong>Error</strong>: ' + json.error);
+				$("#chart-error").show().text('Error: ' + json.error);
 				return console.warn(json.error);
 			}
 
