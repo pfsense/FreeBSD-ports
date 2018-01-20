@@ -13,7 +13,7 @@ COMMENT=	Arpwatch package for pfSense
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/arpwatch:net-mgmt/arpwatch
+RUN_DEPENDS=	arpwatch>=0:net-mgmt/arpwatch
 
 NO_BUILD=	yes
 NO_MTREE=	yes

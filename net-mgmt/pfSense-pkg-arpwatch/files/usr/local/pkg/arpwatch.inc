@@ -26,8 +26,6 @@ define('ARPWATCH_SENDMAIL_PROXY', '/usr/local/arpwatch/sendmail_proxy.php');
 function arpwatch_install_command() {
 	global $config;
 
-	conf_mount_rw();
-
 	// sendmail proxy
 	arpwatch_install_sendmail_proxy();
 
@@ -47,30 +45,31 @@ function arpwatch_install_command() {
 		arpwatch_clear_database();
 	}
 
-	$rc = [];
+	$rc = array();
 	$rc['file'] = 'arpwatch.sh';
 
 	$rc['start'] = '';
 
-	foreach (explode(',', $active_interfaces) as $active_interface) {
-		$ifname = convert_friendly_interface_to_real_interface_name($active_interface);
-		$arp_file = arpwatch_get_arp_file($ifname);
+	$active_interfaces_array = explode(',', $active_interfaces);
 
-		touch($arp_file);
+	if (is_array($active_interfaces_array)) {
+		foreach ($active_interfaces_array as $active_interface) {
+			$ifname = convert_friendly_interface_to_real_interface_name($active_interface);
+			$arp_file = arpwatch_get_arp_file($ifname);
 
-		$rc['start'] .= "/usr/local/sbin/arpwatch $disable_bogons $disable_zero -f $arp_file -i $ifname -m $notifications_recipient"."\n";
+			touch($arp_file);
+
+			$rc['start'] .= "/usr/local/sbin/arpwatch $disable_bogons $disable_zero -f $arp_file -i $ifname -m $notifications_recipient"."\n";
+		}
 	}
 
-	$rc['stop'] = '/usr/bin/killall arpwatch || exit 0';
+	$rc['stop'] = '/usr/bin/killall arpwatch || exit 0';
 
 	write_rcfile($rc);
 
-	conf_mount_ro();
-	
 	if ($arpwatch_config['enable']) {
 		restart_service("arpwatch");
-	}
-	else {
+	} else {
 		stop_service("arpwatch");
 	}
 }
@@ -110,12 +109,12 @@ function arpwatch_get_arp_file($ifname) {
 }
 
 function arpwatch_update_vendors() {
-	mwexec("/usr/bin/fetch -o ".ARPWATCH_LOCAL_DIR."/ethercodes.dat ".ARPWATCH_ETHERCODES_URL);
+	download_file(ARPWATCH_ETHERCODES_URL, ARPWATCH_LOCAL_DIR."/ethercodes.dat");
 }
 
 function arpwatch_clear_database() {
-	mwexec("/usr/bin/find ".ARPWATCH_LOCAL_DIR." -type f -name 'arp_*.dat' -delete");
-	mwexec("/usr/bin/find ".ARPWATCH_LOCAL_DIR." -type f -name 'arp_*.dat-' -delete");
+	unlink_if_exists(ARPWATCH_LOCAL_DIR."/arp_*.dat");
+	unlink_if_exists(ARPWATCH_LOCAL_DIR."/arp_*.dat-");
 }
 
 function arpwatch_parse_database() {
@@ -124,13 +123,16 @@ function arpwatch_parse_database() {
 	$arpwatch_config = $config['installedpackages']['arpwatch']['config'][0];
 	$active_interfaces = $arpwatch_config['active_interfaces'];
 
-	$entries = [];
+	$database = array();
+	$entries = array();
 
 	foreach (explode(',', $active_interfaces) as $active_interface) {
 		$ifname = convert_friendly_interface_to_real_interface_name($active_interface);
 		$arp_file = arpwatch_get_arp_file($ifname);
 
-		$database = file($arp_file);
+		if (file_exists($arp_file)) {
+			$database = file($arp_file);
+		}
 
 		foreach ($database as $line) {
 			list($mac, $ip, $timestamp, $hostname) = explode("\t", trim($line));
@@ -142,12 +144,11 @@ function arpwatch_parse_database() {
 			}
 
 			$oui = strtoupper(substr($mac, 0, 8));
-			$matches = [];
+			$matches = array();
 
 			if (preg_match("/^$oui\s+(.*)$/m", file_get_contents(ARPWATCH_LOCAL_DIR.'/ethercodes.dat'), $matches)) {
 				$vendor = $matches[1];
-			}
-			else {
+			} else {
 				$vendor = 'unknown';
 			}
 
@@ -186,7 +187,7 @@ function arpwatch_parse_database() {
 
 function arpwatch_get_database_entries() {
 	// update arp files
-	mwexec("/usr/bin/killall -ALRM arpwatch || exit 0");
+	sigkillbyname("arpwatch", "ALRM");
 
 	// wait a bit
 	usleep(0.2 * 10**6);
@@ -206,7 +207,7 @@ $message = stream_get_contents($fd);
 fclose($fd);
 
 if (false !== $message) {
-	$subject = [];
+	$subject = array();
 	preg_match('/^Subject: (.*)$/m', $message, $subject);
 	$message = preg_replace('/^From: .*$/m', '', $message);
 	$message = preg_replace('/^To: .*$/m', '', $message);

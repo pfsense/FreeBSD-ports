@@ -23,7 +23,7 @@ require_once("arpwatch.inc");
 
 $entries = arpwatch_get_database_entries();
 
-$pgtitle = [gettext("Package"), gettext("Arpwatch"), gettext("Database")];
+$pgtitle = array(gettext("Package"), gettext("Arpwatch"), gettext("Database"));
 
 include("head.inc");
 
