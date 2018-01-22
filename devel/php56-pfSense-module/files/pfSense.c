@@ -2330,20 +2330,15 @@ PHP_FUNCTION(pfSense_getall_interface_addresses)
 	    &ifname_len) == FAILURE)
 		RETURN_NULL();
 
-	getifaddrs(&ifdata);
-	if (ifdata == NULL)
+	if (getifaddrs(&ifdata) == -1)
 		RETURN_NULL();
 
 	array_init(return_value);
 
-	for(mb = ifdata; mb != NULL; mb = mb->ifa_next) {
-		if (mb == NULL)
-			continue;
+	for(mb = ifdata; mb != NULL && mb->ifa_addr != NULL; mb = mb->ifa_next) {
 		if (ifname_len != strlen(mb->ifa_name))
 			continue;
 		if (strncmp(ifname, mb->ifa_name, ifname_len) != 0)
-			continue;
-		if (mb->ifa_addr == NULL)
 			continue;
 
 		switch (mb->ifa_addr->sa_family) {
@@ -2385,6 +2380,7 @@ PHP_FUNCTION(pfSense_getall_interface_addresses)
 			break;
 		}
 	}
+	freeifaddrs(ifdata);
 }
 
 PHP_FUNCTION(pfSense_get_interface_addresses)
