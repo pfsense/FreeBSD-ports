@@ -564,16 +564,18 @@ pfctl_addrprefix(char *addr, struct pf_addr *mask)
 	/* prefix only with numeric addresses */
 	hints.ai_flags |= AI_NUMERICHOST;
 
-	if ((ret_ga = getaddrinfo(addr, NULL, &hints, &res))) {
+	if ((ret_ga = getaddrinfo(addr, NULL, &hints, &res)) != 0) {
 		php_printf("getaddrinfo: %s", gai_strerror(ret_ga));
 		return (-1);
 		/* NOTREACHED */
 	}
 
 	if (res->ai_family == AF_INET && prefix > 32) {
+		freeaddrinfo(res);
 		php_printf("prefix too long for AF_INET");
 		return (-1);
 	} else if (res->ai_family == AF_INET6 && prefix > 128) {
+		freeaddrinfo(res);
 		php_printf("prefix too long for AF_INET6");
 		return (-1);
 	}
@@ -629,7 +631,7 @@ PHP_FUNCTION(pfSense_kill_srcstates)
 
 	pfctl_addrprefix(ip1, &psnk.psnk_src.addr.v.a.mask);
 
-	if ((ret_ga = getaddrinfo(ip1, NULL, NULL, &res[0]))) {
+	if ((ret_ga = getaddrinfo(ip1, NULL, NULL, &res[0])) != 0) {
 		php_printf("getaddrinfo: %s", gai_strerror(ret_ga));
 		RETURN_NULL();
 		/* NOTREACHED */
@@ -765,7 +767,7 @@ PHP_FUNCTION(pfSense_kill_states)
 	if (pfctl_addrprefix(ip1, &psk.psk_src.addr.v.a.mask) < 0)
 		RETURN_NULL();
 
-	if ((ret_ga = getaddrinfo(ip1, NULL, NULL, &res[0]))) {
+	if ((ret_ga = getaddrinfo(ip1, NULL, NULL, &res[0])) != 0) {
 		php_printf("getaddrinfo: %s", gai_strerror(ret_ga));
 		RETURN_NULL();
 		/* NOTREACHED */
@@ -2330,20 +2332,15 @@ PHP_FUNCTION(pfSense_getall_interface_addresses)
 	    &ifname_len) == FAILURE)
 		RETURN_NULL();
 
-	getifaddrs(&ifdata);
-	if (ifdata == NULL)
+	if (getifaddrs(&ifdata) == -1)
 		RETURN_NULL();
 
 	array_init(return_value);
 
-	for(mb = ifdata; mb != NULL; mb = mb->ifa_next) {
-		if (mb == NULL)
-			continue;
+	for(mb = ifdata; mb != NULL && mb->ifa_addr != NULL; mb = mb->ifa_next) {
 		if (ifname_len != strlen(mb->ifa_name))
 			continue;
 		if (strncmp(ifname, mb->ifa_name, ifname_len) != 0)
-			continue;
-		if (mb->ifa_addr == NULL)
 			continue;
 
 		switch (mb->ifa_addr->sa_family) {
@@ -2385,6 +2382,7 @@ PHP_FUNCTION(pfSense_getall_interface_addresses)
 			break;
 		}
 	}
+	freeifaddrs(ifdata);
 }
 
 PHP_FUNCTION(pfSense_get_interface_addresses)
@@ -2406,24 +2404,19 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 	    &ifname_len) == FAILURE)
 		RETURN_NULL();
 
-	getifaddrs(&ifdata);
-	if (ifdata == NULL)
+	if (getifaddrs(&ifdata) == -1)
 		RETURN_NULL();
 
 	addresscnt = 0;
 	addresscnt6 = 0;
 	array_init(return_value);
 
-	for(mb = ifdata; mb != NULL; mb = mb->ifa_next) {
-		if (mb == NULL)
-			continue;
+	for(mb = ifdata; mb != NULL && mb->ifa_addr != NULL; mb = mb->ifa_next) {
 		if (ifname_len != strlen(mb->ifa_name))
 			continue;
 		if (strncmp(ifname, mb->ifa_name, ifname_len) != 0)
 			continue;
 
-		if (mb->ifa_addr == NULL)
-			continue;
 		switch (mb->ifa_addr->sa_family) {
 		case AF_INET:
 			if (addresscnt > 0)
@@ -2794,16 +2787,13 @@ PHP_FUNCTION(pfSense_interface_listget) {
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|l", &flags) == FAILURE)
 		RETURN_NULL();
 
-	getifaddrs(&ifdata);
-	if (ifdata == NULL)
+	if (getifaddrs(&ifdata) == -1)
 		RETURN_NULL();
 
 	array_init(return_value);
 	ifname = NULL;
 	ifname_len = 0;
 	for(mb = ifdata; mb != NULL; mb = mb->ifa_next) {
-		if (mb == NULL)
-			continue;
 
 		if (flags != 0) {
 			if (mb->ifa_flags & IFF_UP && flags < 0)
@@ -3161,15 +3151,12 @@ PHP_FUNCTION(pfSense_get_interface_info)
 	if ((dev = open("/dev/pf", O_RDWR)) < 0)
 		RETURN_NULL();
 
-	getifaddrs(&ifdata);
-	if (ifdata == NULL) {
+	if (getifaddrs(&ifdata) == -1) {
 		close(dev);
 		RETURN_NULL();
 	}
 
-	for(mb = ifdata; mb != NULL; mb = mb->ifa_next) {
-		if (mb == NULL)
-			continue;
+	for(mb = ifdata; mb != NULL && mb->ifa_addr != NULL; mb = mb->ifa_next) {
 		if (ifname_len != strlen(mb->ifa_name))
 			continue;
 		if (strncmp(ifname, mb->ifa_name, ifname_len) != 0)
