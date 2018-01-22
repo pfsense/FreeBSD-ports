@@ -564,16 +564,18 @@ pfctl_addrprefix(char *addr, struct pf_addr *mask)
 	/* prefix only with numeric addresses */
 	hints.ai_flags |= AI_NUMERICHOST;
 
-	if ((ret_ga = getaddrinfo(addr, NULL, &hints, &res))) {
+	if ((ret_ga = getaddrinfo(addr, NULL, &hints, &res)) != 0) {
 		php_printf("getaddrinfo: %s", gai_strerror(ret_ga));
 		return (-1);
 		/* NOTREACHED */
 	}
 
 	if (res->ai_family == AF_INET && prefix > 32) {
+		freeaddrinfo(res);
 		php_printf("prefix too long for AF_INET");
 		return (-1);
 	} else if (res->ai_family == AF_INET6 && prefix > 128) {
+		freeaddrinfo(res);
 		php_printf("prefix too long for AF_INET6");
 		return (-1);
 	}
@@ -629,7 +631,7 @@ PHP_FUNCTION(pfSense_kill_srcstates)
 
 	pfctl_addrprefix(ip1, &psnk.psnk_src.addr.v.a.mask);
 
-	if ((ret_ga = getaddrinfo(ip1, NULL, NULL, &res[0]))) {
+	if ((ret_ga = getaddrinfo(ip1, NULL, NULL, &res[0])) != 0) {
 		php_printf("getaddrinfo: %s", gai_strerror(ret_ga));
 		RETURN_NULL();
 		/* NOTREACHED */
@@ -765,7 +767,7 @@ PHP_FUNCTION(pfSense_kill_states)
 	if (pfctl_addrprefix(ip1, &psk.psk_src.addr.v.a.mask) < 0)
 		RETURN_NULL();
 
-	if ((ret_ga = getaddrinfo(ip1, NULL, NULL, &res[0]))) {
+	if ((ret_ga = getaddrinfo(ip1, NULL, NULL, &res[0])) != 0) {
 		php_printf("getaddrinfo: %s", gai_strerror(ret_ga));
 		RETURN_NULL();
 		/* NOTREACHED */
