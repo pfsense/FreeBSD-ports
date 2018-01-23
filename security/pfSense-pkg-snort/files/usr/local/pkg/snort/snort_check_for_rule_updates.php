@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Robert Zelaya
- * Copyright (c) 2013-2017 Bill Meeks
+ * Copyright (c) 2013-2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -71,7 +71,7 @@ if ($etpro == "on") {
 	$emergingthreats_filename = SNORT_ETPRO_DNLD_FILENAME;
 	$emergingthreats_filename_md5 = SNORT_ETPRO_DNLD_FILENAME . ".md5";
 	$emergingthreats_url = ETPRO_BASE_DNLD_URL;
-	$emergingthreats_url .= "{$etproid}/snort-" . SNORT_BIN_VERSION . "/";
+	$emergingthreats_url .= "{$etproid}/snort-" . ET_VERSION . "/";
 	$emergingthreats = "on";
 	$et_name = "Emerging Threats Pro";
 	$et_md5_remove = SNORT_ET_DNLD_FILENAME . ".md5";
@@ -83,7 +83,7 @@ else {
 	$emergingthreats_url = ET_BASE_DNLD_URL;
 	// If using Sourcefire Subscriber rules with ET, then we should use the open-nogpl ET rules
 	$emergingthreats_url .= $vrt_enabled == "on" ? "open-nogpl/" : "open/";
-	$emergingthreats_url .= "snort-" . SNORT_BIN_VERSION . "/";
+	$emergingthreats_url .= "snort-" . ET_VERSION . "/";
 	$et_name = "Emerging Threats Open";
 	$et_md5_remove = SNORT_ETPRO_DNLD_FILENAME . ".md5";
 	unlink_if_exists("{$snortdir}/{$et_md5_remove}");
