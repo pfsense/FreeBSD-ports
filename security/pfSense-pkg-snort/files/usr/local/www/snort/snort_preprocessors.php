@@ -1392,7 +1392,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 	//----- END Portscan settings -----
 
 	//----- START FTP/Telnet Global setttings -----
-	if ($pconfig['ftp_preprocessor']=="on") {
+	if ($pconfig['ftp_preprocessor'] == "on") {
 		$section = new Form_Section('FTP and Telnet Global Options', 'preproc_ftpglobal', COLLAPSIBLE|SEC_OPEN);
 	} else {
 		$section = new Form_Section('FTP and Telnet Global Options', 'preproc_ftpglobal', COLLAPSIBLE|SEC_CLOSED);
@@ -1428,7 +1428,12 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 	//----- END FTP/Telnet Global settings -----
 
 	//----- START Telnet Protocol setttings -----
-	$section = new Form_Section('Telnet Protocol Options', 'preproc_telnet', COLLAPSIBLE|SEC_OPEN);
+	if ($pconfig['ftp_preprocessor'] == "on" && $pconfig['ftp_telnet_normalize'] == "on") {
+		$section = new Form_Section('Telnet Protocol Options', 'preproc_telnet', COLLAPSIBLE|SEC_OPEN);
+	}
+	else {
+		$section = new Form_Section('Telnet Protocol Options', 'preproc_telnet', COLLAPSIBLE|SEC_CLOSED);
+	}
 	$section->addInput(new Form_Checkbox(
 		'ftp_telnet_normalize',
 		'Normalization',
@@ -1576,12 +1581,12 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		'number',
 		$pconfig['sdf_alert_threshold']
 	))->setAttribute('min', '0')->setHelp('Personally Identifiable Information (PII) combination alert threshold.  Default is 25.');
-	$group->setHelp('This value sets the number of PII combinations required to trigger an alert.  This should be set higher than the highest individual count in your <em>sd_pattern</em> rules.');
+	$group->setHelp('This value sets the number of PII combinations required to trigger an alert.  This should be set higher than the highest individual count in any of your sd_pattern rules.');
 	$section->add($group);
 	$section->addInput(new Form_Checkbox(
 		'sdf_mask_output',
 		'Mask Output',
-		'Replace all but last 4 digits of PII with <em>X</em> on credit card and Social Security Numbers.  Default is Not Checked.',
+		'Replace all but last 4 digits of credit card and Social Security Numbers with X.  Default is Not Checked.',
 		$pconfig['sdf_mask_output'] == 'on' ? true:false,
 		'on'
 	));
@@ -2164,9 +2169,19 @@ print_callout('<p>' . gettext("Remember to save your changes before you exit thi
 	function ftp_telnet_enable_change() {
 		// Hide FTP-Telnet sections if FTP preprocessor is disabled
 		if (!($('#ftp_preprocessor').prop('checked'))) {
-			$('#preproc_ftpglobal_panel-body').collapse('toggle');
-			$('#preproc_telnet_panel-body').collapse('toggle');
-			$('#preproc_ftp_panel-body').collapse('toggle');
+			$('#preproc_telnet_panel-body').collapse('hide');
+			$('#preproc_ftp_panel-body').collapse('hide');
+			$('#preproc_ftpglobal_panel-body').collapse('hide');
+		}
+		else {
+			$('#preproc_ftpglobal_panel-body').collapse('show');
+			$('#preproc_ftp_panel-body').collapse('show');
+			if ($('#ftp_telnet_normalize').prop('checked')) {
+				$('#preproc_telnet_panel-body').collapse('show');
+			}
+			else {
+				$('#preproc_telnet_panel-body').collapse('hide');
+			}
 		}
 	}
 
@@ -2321,6 +2336,10 @@ events.push(function(){
 	});
 
 	$('#ftp_preprocessor').click(function() {
+		ftp_telnet_enable_change();
+	});
+
+	$('#ftp_telnet_normalize').click(function() {
 		ftp_telnet_enable_change();
 	});
 
