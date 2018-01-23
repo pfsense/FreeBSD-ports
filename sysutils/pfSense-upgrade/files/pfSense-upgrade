@@ -21,25 +21,25 @@
 usage() {
 	me=$(basename $0)
 	cat << EOD >&2
-Usage: ${me} [-46bdfhnRUy] [-l logfile] [-p socket] [-c|-u|[-i|-d] pkg_name]"
-	-4          - Force IPv4"
-	-6          - Force IPv6"
-	-b          - Platform is booting"
-	-d          - Turn on debug"
-	-f          - Force package installation"
-	-h          - Show this usage help"
-	-l logfile  - Logfile path (defaults to /cf/conf/upgrade_log.txt)"
-	-n          - Dry run"
-	-p socket   - Write pkg progress to socket"
-	-R          - Do not reboot (this can be dangerous)"
-	-U          - Do not update repository information"
-	-y          - Assume yes as the answer to any possible interaction"
-"
-The following parameters are mutually exclusive:"
-	-c          - Check if upgrade is necessary"
-	-i pkg_name - Install package PKG_NAME"
-	-r pkg_name - Remove package PKG_NAME"
-	-u          - Update repository information"
+Usage: ${me} [-46bdfhnRUy] [-l logfile] [-p socket] [-c|-u|[-i|-d] pkg_name]
+	-4          - Force IPv4
+	-6          - Force IPv6
+	-b          - Platform is booting
+	-d          - Turn on debug
+	-f          - Force package installation
+	-h          - Show this usage help
+	-l logfile  - Logfile path (defaults to /cf/conf/upgrade_log.txt)
+	-n          - Dry run
+	-p socket   - Write pkg progress to socket
+	-R          - Do not reboot (this can be dangerous)
+	-U          - Do not update repository information
+	-y          - Assume yes as the answer to any possible interaction
+
+The following parameters are mutually exclusive:
+	-c          - Check if upgrade is necessary
+	-i pkg_name - Install package PKG_NAME
+	-r pkg_name - Remove package PKG_NAME
+	-u          - Update repository information
 EOD
 }
 
