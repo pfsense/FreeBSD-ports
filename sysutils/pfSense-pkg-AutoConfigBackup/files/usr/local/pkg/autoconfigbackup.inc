@@ -307,6 +307,7 @@ function upload_config($reasonm = "") {
 				log_error($notice_text . " - " . $data);
 				file_notice("AutoConfigBackup", $notice_text, "Backup Failure", "/pkg_edit.php?xml=autoconfigbackup.xml&id=0");
 				update_filter_reload_status($notice_text);
+				$input_errors["acb_upload"] = $notice_text;
 			} else {
 				// Update last pfS backup time
 				$fd = fopen("/cf/conf/lastpfSbackup.txt", "w");
