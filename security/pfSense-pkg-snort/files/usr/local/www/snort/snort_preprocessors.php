@@ -6,7 +6,7 @@
  * Copyright (c) 2011-2016 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
  * Copyright (c) 2008-2009 Robert Zelaya
- * Copyright (c) 2013-2017 Bill Meeks
+ * Copyright (c) 2013-2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -769,8 +769,8 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		'Enable this only if you maintain customized preprocessor text rules files for this interface. Default is Not Checked.',
 		$pconfig['protect_preproc_rules'] == 'on' ? true:false,
 		'on'
-	))->setHelp('Enable this only if you use customized preprocessor text rules files and you do not want them overwritten by automatic Snort VRT rule updates.  ' . 
-		    'This option is disabled when Snort VRT rules download is not enabled on the Global Settings tab.  Most users should leave this option unchecked.');
+	))->setHelp('Enable this only if you use customized preprocessor text rules files and you do not want them overwritten by automatic Snort Subscriber Rules updates.  ' . 
+		    'This option is disabled when Snort Subscriber Rules download is not enabled on the Global Settings tab.  Most users should leave this option unchecked.');
 	$section->add($group);
 	$group = new Form_Group('Auto Rule Disable');
 	$group->add(new Form_Checkbox(
@@ -1558,7 +1558,7 @@ print_callout('<p>' . gettext("Rules may be dependent on enbled preprocessors!  
 		'sensitive_data',
 		'Enable',
 		'Sensitive data searches for credit card numbers, Social Security numbers and e-mail addresses in data.  Default is Not Checked.' . 
-		'To enable this preprocessor, you must enable the Snort VRT rules on the GLOBAL SETTINGS tab.',
+		'To enable this preprocessor, you must enable the Snort Subscriber Rules on the GLOBAL SETTINGS tab.',
 		$pconfig['sensitive_data'] == 'on' ? true:false,
 		'on'
 	));
