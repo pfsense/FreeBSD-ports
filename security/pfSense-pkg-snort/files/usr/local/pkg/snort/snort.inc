@@ -1732,10 +1732,11 @@ function snort_load_vrt_policy($policy, $all_rules=null) {
 	/* This function returns an array of all rules  */
 	/* marked with the passed in $policy metadata.  */
 	/*                                              */
-	/*    $policy --> desired VRT security policy   */
+	/*    $policy --> desired Snort security policy */
 	/*                  1.  connectivity            */
 	/*                  2.  balanced                */
 	/*                  3.  security                */
+	/*                  4.  max-detect              */
 	/*                                              */
 	/* $all_rules --> optional Rules Map array of   */
 	/*                rules to scan for policy.     */
@@ -1746,11 +1747,11 @@ function snort_load_vrt_policy($policy, $all_rules=null) {
 	$snortdir = SNORTDIR;
 	$vrt_policy_rules = array();
 
-	/* Load a map of all the VRT rules if we were   */
+	/* Load a map of all the Snort rules if we were */
 	/* not passed a pre-loaded one to use.          */
 	if (is_null($all_rules)) {
-		/* Since only Snort VRT rules have IPS Policy metadata, */
-		/* limit our search to just those files.                */
+		/* Since only Snort Subscriber rules have IPS Policy */
+		/* metadata, limit our search to just those files.   */
 		$snort_vrt_files = glob("{$snortdir}/rules/snort_*.rules");
 		$all_rules = snort_load_rules_map($snort_vrt_files);
 	}
@@ -1819,7 +1820,7 @@ function snort_write_enforcing_rules_file($rule_map, $rule_path) {
 		@fwrite($fp, "# These rules are your current set of enforced rules for the protected\n");
 		@fwrite($fp, "# interface.  This list was compiled from the categories selected on the\n");
 		@fwrite($fp, "# CATEGORIES tab of the Snort configuration for the interface and/or any\n");
-		@fwrite($fp, "# chosen Snort VRT pre-defined IPS Policy.\n#\n");
+		@fwrite($fp, "# chosen Snort Subscriber Rules pre-defined IPS Policy.\n#\n");
 		@fwrite($fp, "# Any enablesid or disablesid customizations you made have been applied\n");
 		@fwrite($fp, "# to the rules in this file.\n\n");
 		foreach ($rule_map as $rulem) {
@@ -3211,8 +3212,8 @@ function snort_prepare_rule_files($snortcfg, $snortcfgdir) {
 			unset($enabled_files, $cat_mods, $rulem, $v);
 		}
 
-		/* Check if a pre-defined Snort VRT policy is selected. If so, */
-		/* add all the VRT policy rules to our enforcing rule set.     */
+		/* Check if a pre-defined Snort Subscriber rules policy is selected. */
+		/* If so, add all the VRT policy rules to our enforcing rule set.    */
 		if (!empty($snortcfg['ips_policy'])) {
 			$policy_rules = snort_load_vrt_policy($snortcfg['ips_policy'], $all_rules);
 			foreach ($policy_rules as $k1 => $policy) {
@@ -3370,7 +3371,7 @@ function snort_filter_preproc_rules($snortcfg, &$active_rules, $persist_log = fa
 	 *                                                 *
 	 * IMPORTANT -- Keep this part of the code current *
 	 * with changes to preprocessor rule options in    *
-	 * Snort VRT rules.                                *
+	 * Snort Subscriber rules.                         *
 	 *                                                 *
 	 *                                                 *
 	 * Format of array is:                             *

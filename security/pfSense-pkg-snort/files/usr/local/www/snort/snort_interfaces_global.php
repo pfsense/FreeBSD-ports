@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2011-2016 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2006 Manuel Kasper <mk@neon1.net>.
- * Copyright (c) 2015 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * Copyright (c) 2008-2009 Robert Zelaya
  * All rights reserved.
  *
@@ -76,7 +76,7 @@ if ($_POST['rule_update_starttime']) {
 }
 
 if ($_POST['snortdownload'] == "on" && empty($_POST['oinkmastercode']))
-		$input_errors[] = "You must supply an Oinkmaster code in the box provided in order to enable Snort VRT rules!";
+		$input_errors[] = "You must supply an Oinkmaster code in the box provided in order to enable Snort Subscriber rules!";
 
 if ($_POST['emergingthreats_pro'] == "on" && empty($_POST['etpro_code']))
 		$input_errors[] = "You must supply a subscription code in the box provided in order to enable Emerging Threats Pro rules!";
@@ -118,7 +118,7 @@ if (!$input_errors) {
 		// any matching the disabled ruleset prefixes.
 		if (is_array($config['installedpackages']['snortglobal']['rule'])) {
 			foreach ($config['installedpackages']['snortglobal']['rule'] as &$iface) {
-				// Disable Snort IPS policy if VRT rules are disabled
+				// Disable Snort IPS policy if Snort Subscriber rules are disabled
 				if ($disable_ips_policy) {
 					$iface['ips_policy_enable'] = 'off';
 					unset($iface['ips_policy']);
@@ -192,17 +192,17 @@ $form = new Form(new Form_Button(
 	'Save'
 ));
 
-$section = new Form_Section('Snort Vulnerability Research Team (VRT) Rules');
+$section = new Form_Section('Snort Subscriber Rules');
 $section->addInput(new Form_Checkbox(
 	'snortdownload',
 	'Enable Snort VRT',
-	'Click to enable download of Snort VRT free Registered User or paid Subscriber rules',
+	'Click to enable download of Snort free Registered User or paid Subscriber rules',
 	$pconfig['snortdownload'] == 'on' ? true:false,
 	'on'
 ));
 $section->addInput(new Form_StaticText(
 	null,
-	'<a href="https://www.snort.org/users/sign_up" target="_blank">' . 'Sign Up for a free Registered User Rule Account' . '</a><br/><a href="https://www.snort.org/products" target="_blank">' . 'Sign Up for paid Sourcefire VRT Certified Subscriber Rules' . '</a>'
+	'<a href="https://www.snort.org/users/sign_up" target="_blank">' . 'Sign Up for a free Registered User Rules Account' . '</a><br/><a href="https://www.snort.org/products" target="_blank">' . 'Sign Up for paid Snort Subscriber Rule Set (by Talos)' . '</a>'
 ));
 $section->addInput(new Form_Input(
 	'oinkmastercode',
@@ -223,7 +223,7 @@ $section->addInput(new Form_Checkbox(
 ));
 $section->addInput(new Form_StaticText(
 	null,
-	'The Snort Community Ruleset is a GPLv2 VRT certified ruleset that is distributed free of charge without any VRT License restrictions.  This ruleset is updated daily and is a subset of the subscriber ruleset.'
+	'The Snort Community Ruleset is a GPLv2 Talos certified ruleset that is distributed free of charge without any Snort Subscriber License restrictions.  This ruleset is updated daily and is a subset of the subscriber ruleset.'
 ));
 
 $form->add($section);
