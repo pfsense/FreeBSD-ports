@@ -3028,16 +3028,21 @@ function snort_generate_barnyard2_conf($snortcfg, $if_real) {
 		$snortbarnyardlog_output_plugins .= "\n\n";
 	}
 	if ($snortcfg['barnyard_syslog_enable'] == 'on') {
-		$snortbarnyardlog_output_plugins .= "# syslog_full: log to a syslog receiver\noutput alert_syslog_full: ";
+		if ($snortcfg['barnyard_syslog_local'] == 'on') {
+			$snortbarnyardlog_output_plugins .= "# syslog_full: log to a local syslog receiver\noutput alert_syslog_full: ";
+		}
+		else {
+			$snortbarnyardlog_output_plugins .= "# syslog_full: log to a remote syslog receiver\noutput log_syslog_full: ";
+		}
 		if (isset($snortcfg['barnyard_sensor_name']) && strlen($snortcfg['barnyard_sensor_name']) > 0)
 			$snortbarnyardlog_output_plugins .= "sensor_name {$snortcfg['barnyard_sensor_name']}, ";
 		else
 			$snortbarnyardlog_output_plugins .= "sensor_name {$snortbarnyard_hostname_info}, ";
 		if ($snortcfg['barnyard_syslog_local'] == 'on')
-			$snortbarnyardlog_output_plugins .= "local, log_facility {$snortcfg['barnyard_syslog_facility']}, log_priority {$snortcfg['barnyard_syslog_priority']}\n\n";
+			$snortbarnyardlog_output_plugins .= "local, log_facility {$snortcfg['barnyard_syslog_facility']}, log_priority {$snortcfg['barnyard_syslog_priority']}, operation_mode default\n\n";
 		else {
 			$snortbarnyardlog_output_plugins .= "server {$snortcfg['barnyard_syslog_rhost']}, protocol {$snortcfg['barnyard_syslog_proto']}, ";
-			$snortbarnyardlog_output_plugins .= "port {$snortcfg['barnyard_syslog_dport']}, operation_mode {$snortcfg['barnyard_syslog_opmode']}, ";
+			$snortbarnyardlog_output_plugins .= "port {$snortcfg['barnyard_syslog_dport']}, operation_mode {$snortcfg['barnyard_syslog_opmode']}, payload_encoding {$snortcfg['barnyard_syslog_payload_encoding']}, ";
 			$snortbarnyardlog_output_plugins .= "log_facility {$snortcfg['barnyard_syslog_facility']}, log_priority {$snortcfg['barnyard_syslog_priority']}\n\n";
 		}
 	}
