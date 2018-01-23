@@ -512,8 +512,8 @@ $form->add($section);
 $section = new Form_Section('Alert Settings');
 $section->addInput(new Form_Checkbox(
 	'alertsystemlog',
-	'Send Alerts to System Logs',
-	'Snort will send Alerts to the firewall\'s system logs',
+	'Send Alerts to System Log',
+	'Snort will send Alerts to the firewall\'s system log.  Default is Not Checked.',
 	$pconfig['alertsystemlog'] == 'on' ? true:false,
 	'on'
 ));
