@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2004-2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -223,7 +223,7 @@ display_top_tabs($tab_array, true);
 				</thead>
 				<tbody>
 				<tr>
-					<td><?=gettext("Snort VRT Rules");?></td>
+					<td><?=gettext("Snort Subscriber Ruleset");?></td>
 					<td><?=trim($snort_org_sig_chk_local);?></td>
 					<td><?=gettext($snort_org_sig_date);?></td>
 				</tr>
