@@ -15,6 +15,7 @@ bin/u2spewfoo
 @sample etc/snort/threshold.conf-sample etc/snort/threshold.conf
 @sample etc/snort/unicode.map-sample etc/snort/unicode.map
 @sample etc/snort/file_magic.conf-sample etc/snort/file_magic.conf
+@sample etc/snort/attribute_table.dtd-sample etc/snort/attribute_table.dtd
 include/snort/dynamic_output/bitop.h
 include/snort/dynamic_output/ipv6_port.h
 include/snort/dynamic_output/obfuscation.h
