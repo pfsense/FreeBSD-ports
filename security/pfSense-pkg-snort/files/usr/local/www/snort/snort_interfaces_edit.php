@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2011-2016 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008-2009 Robert Zelaya
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -512,8 +512,8 @@ $form->add($section);
 $section = new Form_Section('Alert Settings');
 $section->addInput(new Form_Checkbox(
 	'alertsystemlog',
-	'Send Alerts to System Logs',
-	'Snort will send Alerts to the firewall\'s system logs',
+	'Send Alerts to System Log',
+	'Snort will send Alerts to the firewall\'s system log.  Default is Not Checked.',
 	$pconfig['alertsystemlog'] == 'on' ? true:false,
 	'on'
 ));
@@ -567,28 +567,28 @@ $section->addInput(new Form_Select(
 $section->addInput(new Form_Checkbox(
 	'fpm_split_any_any',
 	'Split ANY-ANY',
-	'Enable splitting of ANY-ANY port group',
+	'Enable splitting of ANY-ANY port group.  Default is Not Checked.',
 	$pconfig['fpm_split_any_any'] == 'on' ? true:false,
 	'yes'
 ));
 $section->addInput(new Form_Checkbox(
 	'fpm_search_optimize',
 	'Search Optimize',
-	'Enable search optimization',
+	'Enable search optimization.  Default is Not Checked.',
 	$pconfig['fpm_search_optimize'] == 'on' ? true:false,
 	'on'
 ));
 $section->addInput(new Form_Checkbox(
 	'fpm_no_stream_inserts',
 	'Stream Inserts',
-	'Do not evaluate stream inserted packets against the detection engine',
+	'Do not evaluate stream inserted packets against the detection engine.  Default is Not Checked.',
 	$pconfig['fpm_no_stream_inserts'] == 'on' ? true:false,
 	'on'
 ));
 $section->addInput(new Form_Checkbox(
 	'cksumcheck',
 	'Checksum Check Disable',
-	'Disable checksum checking within Snort to improve performance',
+	'Disable checksum checking within Snort to improve performance.  Default is Not Checked.',
 	$pconfig['cksumcheck'] == 'on' ? true:false,
 	'on'
 ));
