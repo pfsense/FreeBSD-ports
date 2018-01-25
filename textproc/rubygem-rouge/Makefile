@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	rouge
-PORTVERSION=	2.2.1
+PORTVERSION=	3.1.0
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
@@ -11,6 +11,8 @@ COMMENT=	Simple, easy-to-extend drop-in replacement for pygments
 LICENSE=	BSD2CLAUSE MIT
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+CONFLICTS_INSTALL=	rubygems-rouge2
 
 NO_ARCH=	yes
 USES=		gem

@@ -4,7 +4,7 @@
  *
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2016 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2013-2014 Bill Meeks
+ * Copyright (c) 2013-2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -511,6 +511,13 @@ foreach ($rule as &$r) {
 	if (!empty($pconfig['unified2_log_limit']) && 
 	    !preg_match('/^\d+[g|k|m|G|K|M]/', $pconfig['unified2_log_limit'])) {
 		$pconfig['unified2_log_limit'] .= "M";
+		$updated_cfg = true;
+	}
+
+	// Set new BY2 syslog parameter to default if it is empty
+	// and Barnyard2 is enabled.
+	if ($pconfig['barnyard_enable'] == 'on' && empty($pconfig['barnyard_syslog_payload_encoding'])) {
+		$pconfig['barnyard_syslog_payload_encoding'] = 'hex';
 		$updated_cfg = true;
 	}
 

@@ -177,8 +177,14 @@ $snort_ports = array(
 /* Check for defined Aliases that may override default port settings as we build the portvars array */
 $portvardef = "";
 foreach ($snort_ports as $alias => $avalue) {
-	if (!empty($snortcfg["def_{$alias}"]) && is_alias($snortcfg["def_{$alias}"]))
-		$snort_ports[$alias] = trim(filter_expand_alias($snortcfg["def_{$alias}"]));
+	if (!empty($snortcfg["def_{$alias}"]) && is_alias($snortcfg["def_{$alias}"])) {
+		if (strlen(trim(filter_expand_alias($snortcfg["def_{$alias}"]))) > 0) {
+			$snort_ports[$alias] = trim(filter_expand_alias($snortcfg["def_{$alias}"]));
+		}
+		else {
+			log_error("[snort] WARNING: unable to resolve Alias specified for PORTS variable " . strtoupper($alias) . " ... using default value '{$avalue}' instead.");
+		}
+	}
 	$snort_ports[$alias] = preg_replace('/\s+/', ',', trim($snort_ports[$alias]));
 	$portvardef .= "portvar " . strtoupper($alias) . " [" . $snort_ports[$alias] . "]\n";
 }
@@ -628,8 +634,13 @@ if (!empty($snortcfg['pscan_sense_level']))
 $sf_pscan_ignore_scanners = "\$HOME_NET";
 if (!empty($snortcfg['pscan_ignore_scanners'])) {
 	if (is_alias($snortcfg['pscan_ignore_scanners'])) {
-		$sf_pscan_ignore_scanners = trim(filter_expand_alias($snortcfg['pscan_ignore_scanners']));
-		$sf_pscan_ignore_scanners = preg_replace('/\s+/', ',', trim($sf_pscan_ignore_scanners));
+		if (strlen(trim(filter_expand_alias($snortcfg['pscan_ignore_scanners']))) > 0) {
+			$sf_pscan_ignore_scanners = trim(filter_expand_alias($snortcfg['pscan_ignore_scanners']));
+			$sf_pscan_ignore_scanners = preg_replace('/\s+/', ',', trim($sf_pscan_ignore_scanners));
+		}
+		else {
+			log_error("[snort] WARNING: unable to resolve Alias {$snortcfg['pscan_ignore_scanners']} for PSCAN_IGNORE_SCANNERS ... reverting to default value of HOME_NET.");
+		}
 	} else {
         	$sf_pscan_ignore_scanners = $snortcfg['pscan_ignore_scanners'];
         }
@@ -637,8 +648,13 @@ if (!empty($snortcfg['pscan_ignore_scanners'])) {
 $sf_pscan_ignore_scanned = "";
 if (!empty($snortcfg['pscan_ignore_scanned'])) {
 	if (is_alias($snortcfg['pscan_ignore_scanned'])) {
-		$sf_pscan_ignore_scanned = trim(filter_expand_alias($snortcfg['pscan_ignore_scanned']));
-		$sf_pscan_ignore_scanned = preg_replace('/\s+/', ',', trim($sf_pscan_ignore_scanned));
+		if (strlen(trim(filter_expand_alias($snortcfg['pscan_ignore_scanned']))) > 0) {
+			$sf_pscan_ignore_scanned = trim(filter_expand_alias($snortcfg['pscan_ignore_scanned']));
+			$sf_pscan_ignore_scanned = preg_replace('/\s+/', ',', trim($sf_pscan_ignore_scanned));
+		}
+		else {
+			log_error("[snort] WARNING: unable to resolve Alias {$snortcfg['pscan_ignore_scanned']} for PSCAN_IGNORE_SCANNED ... reverting to default value of null.");
+		}
 	} else {
           	$sf_pscan_ignore_scanned = $snortcfg['pscan_ignore_scanned'];
         }
@@ -964,8 +980,13 @@ $snort_servers = array (
 $ipvardef = "";
 foreach ($snort_servers as $alias => $avalue) {
 	if (!empty($snortcfg["def_{$alias}"]) && is_alias($snortcfg["def_{$alias}"])) {
-		$avalue = trim(filter_expand_alias($snortcfg["def_{$alias}"]));
-		$avalue = preg_replace('/\s+/', ',', trim($avalue));
+		if (strlen(trim(filter_expand_alias($snortcfg["def_{$alias}"]))) > 0) {
+			$avalue = trim(filter_expand_alias($snortcfg["def_{$alias}"]));
+			$avalue = preg_replace('/\s+/', ',', trim($avalue));
+		}
+		else {
+			log_error("[snort] WARNING: unable to resolve Alias specified for SERVERS variable " . strtoupper($alias) . " ... using default value '{$avalue}' instead.");
+		}
 	}
 	$ipvardef .= "ipvar " . strtoupper($alias) . " [{$avalue}]\n";
 }
