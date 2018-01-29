@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-syslog-ng
-PORTVERSION=	1.14
+PORTVERSION=	1.15
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
