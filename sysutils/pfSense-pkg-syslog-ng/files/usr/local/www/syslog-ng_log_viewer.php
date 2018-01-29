@@ -167,7 +167,7 @@ if (empty($log_messages)) {
 				<tbody>
 <?php
 	foreach($log_messages as $log_message) {
-		print('<tr><td >' . $log_message . '</td></tr>');
+		print('<tr><td >' . htmlspecialchars($log_message, ENT_QUOTES) . '</td></tr>');
 	}
 ?>
 				</tbody>
