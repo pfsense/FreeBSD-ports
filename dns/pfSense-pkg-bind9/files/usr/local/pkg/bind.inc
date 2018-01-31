@@ -757,113 +757,121 @@ EOD;
 }
 
 function bind_print_javascript_type_zone() {
-	?>
-	<script type="text/javascript">
-		<!--
-		function on_type_zone_changed() {
+	$js = <<<'JS'
+	<script>
+	events.push(function(){
+		on_type_zone_changed();
+		$("textarea#resultconfig").attr("disabled", true);
+		$("textarea#dsset").attr("disabled", true);
+		$("select#type").change(function(){on_type_zone_changed();});
 
-			var field = document.iform.type;
-			var tipo = field.options[field.selectedIndex].value;
+		function on_type_zone_changed() {
+			var tipo = $("select#type").val();
 			switch (tipo) {
 				case 'master':
-					document.iform.slaveip.disabled = 1;
-					document.iform.tll.disabled = 0;
-					document.iform.nameserver.disabled = 0;
-					document.iform.reverso.disabled = 0;
-					document.iform.reversv6o.disabled = 0;
-					document.iform.forwarders.disabled = 1;
-					document.iform.dnssec.disabled = 0;
-					document.iform.backupkeys.disabled = 0;
-					document.iform.regdhcpstatic.disabled = 0;
-					document.iform.ipns.disabled = 0;
-					document.iform.mail.disabled = 0;
-					document.iform.serial.disabled = 0;
-					document.iform.refresh.disabled = 0;
-					document.iform.retry.disabled = 0;
-					document.iform.expire.disabled = 0;
-					document.iform.minimum.disabled = 0;
-					document.iform.allowquery.disabled = 0;
-					document.iform.allowupdate.disabled = 0;
-					document.iform.enable_updatepolicy.disabled = 0;
-					document.iform.updatepolicy.disabled = 1;
+					$("input#slaveip").attr("disabled", true);
+					$("input#tll").attr("disabled", false);
+					$("input#nameserver").attr("disabled", false);
+					$("input#reverso").attr("disabled", false);
+					$("input#reversv6o").attr("disabled", false);
+					$("input#forwarders").attr("disabled", true);
+					$("input#dnssec").attr("disabled", false);
+					$("input#backupkeys").attr("disabled", false);
+					$("input#regdhcpstatic").attr("disabled", false);
+					$("input#ipns").attr("disabled", false);
+					$("input#mail").attr("disabled", false);
+					$("input#serial").attr("disabled", false);
+					$("input#refresh").attr("disabled", false);
+					$("input#retry").attr("disabled", false);
+					$("input#expire").attr("disabled", false);
+					$("input#minimum").attr("disabled", false);
+					$("select#allowquery\\[\\]").attr("disabled", false);
+					$("select#allowupdate\\[\\]").attr("disabled", false);
+					$("select#allowtransfer\\[\\]").attr("disabled", false);
+					$("input#enable_updatepolicy").attr("disabled", false);
+					$("input#updatepolicy").attr("disabled", true);
+					$("input#rpz").attr("disabled", false);
 					break;
 				case 'slave':
-					document.iform.slaveip.disabled = 0;
-					document.iform.tll.disabled = 1;
-					document.iform.nameserver.disabled = 1;
-					document.iform.reverso.disabled = 0;
-					document.iform.reversv6o.disabled = 0;
-					document.iform.forwarders.disabled = 1;
-					document.iform.dnssec.disabled = 0;
-					document.iform.backupkeys.disabled = 0;
-					document.iform.regdhcpstatic.disabled = 0;
-					document.iform.ipns.disabled = 1;
-					document.iform.mail.disabled = 1;
-					document.iform.serial.disabled = 1;
-					document.iform.refresh.disabled = 1;
-					document.iform.retry.disabled = 1;
-					document.iform.expire.disabled = 1;
-					document.iform.minimum.disabled = 1;
-					document.iform.allowquery.disabled = 0;
-					document.iform.allowupdate.disabled = 1;
-					document.iform.enable_updatepolicy.disabled = 1;
-					document.iform.updatepolicy.disabled = 1;
+					$("input#slaveip").attr("disabled", false);
+					$("input#tll").attr("disabled", true);
+					$("input#nameserver").attr("disabled", true);
+					$("input#reverso").attr("disabled", false);
+					$("input#reversv6o").attr("disabled", false);
+					$("input#forwarders").attr("disabled", true);
+					$("input#dnssec").attr("disabled", false);
+					$("input#backupkeys").attr("disabled", false);
+					$("input#regdhcpstatic").attr("disabled", false);
+					$("input#ipns").attr("disabled", true);
+					$("input#mail").attr("disabled", true);
+					$("input#serial").attr("disabled", true);
+					$("input#refresh").attr("disabled", true);
+					$("input#retry").attr("disabled", true);
+					$("input#expire").attr("disabled", true);
+					$("input#minimum").attr("disabled", true);
+					$("select#allowquery\\[\\]").attr("disabled", false);
+					$("select#allowupdate\\[\\]").attr("disabled", true);
+					$("select#allowtransfer\\[\\]").attr("disabled", true);
+					$("input#enable_updatepolicy").attr("disabled", true);
+					$("input#updatepolicy").attr("disabled", true);
+					$("input#rpz").attr("disabled", false);
 					break;
 				case 'forward':
-					document.iform.slaveip.disabled = 1;
-					document.iform.tll.disabled = 1;
-					document.iform.nameserver.disabled = 1;
-					document.iform.reverso.disabled = 1;
-					document.iform.reversv6o.disabled = 1;
-					document.iform.forwarders.disabled = 0;
-					document.iform.dnssec.disabled = 1;
-					document.iform.backupkeys.disabled = 1;
-					document.iform.regdhcpstatic.disabled = 1;
-					document.iform.ipns.disabled = 1;
-					document.iform.mail.disabled = 1;
-					document.iform.serial.disabled = 1;
-					document.iform.refresh.disabled = 1;
-					document.iform.retry.disabled = 1;
-					document.iform.expire.disabled = 1;
-					document.iform.minimum.disabled = 1;
-					document.iform.allowquery.disabled = 1;
-					document.iform.allowupdate.disabled = 1;
-					document.iform.enable_updatepolicy.disabled = 1;
-					document.iform.updatepolicy.disabled = 1;
+					$("input#slaveip").attr("disabled", true);
+					$("input#tll").attr("disabled", true);
+					$("input#nameserver").attr("disabled", true);
+					$("input#reverso").attr("disabled", true);
+					$("input#reversv6o").attr("disabled", true);
+					$("input#forwarders").attr("disabled", false);
+					$("input#dnssec").attr("disabled", true);
+					$("input#backupkeys").attr("disabled", true);
+					$("input#regdhcpstatic").attr("disabled", true);
+					$("input#ipns").attr("disabled", true);
+					$("input#mail").attr("disabled", true);
+					$("input#serial").attr("disabled", true);
+					$("input#refresh").attr("disabled", true);
+					$("input#retry").attr("disabled", true);
+					$("input#expire").attr("disabled", true);
+					$("input#minimum").attr("disabled", true);
+					$("select#allowquery\\[\\]").attr("disabled", true);
+					$("select#allowupdate\\[\\]").attr("disabled", true);
+					$("select#allowtransfer\\[\\]").attr("disabled", true);
+					$("input#enable_updatepolicy").attr("disabled", true);
+					$("input#updatepolicy").attr("disabled", true);
+					$("input#rpz").attr("disabled", true);
 					break;
 				case 'redirect':
-					document.iform.slaveip.disabled = 1;
-					document.iform.tll.disabled = 1;
-					document.iform.nameserver.disabled = 0;
-					document.iform.reverso.disabled = 1;
-					document.iform.reversv6o.disabled = 1;
-					document.iform.forwarders.disabled = 1;
-					document.iform.dnssec.disabled = 1;
-					document.iform.backupkeys.disabled = 1;
-					document.iform.regdhcpstatic.disabled = 1;
-					document.iform.ipns.disabled = 1;
-					document.iform.mail.disabled = 0;
-					document.iform.serial.disabled = 0;
-					document.iform.refresh.disabled = 0;
-					document.iform.retry.disabled = 0;
-					document.iform.expire.disabled = 0;
-					document.iform.minimum.disabled = 0;
-					document.iform.allowquery.disabled = 0;
-					document.iform.allowupdate.disabled = 1;
-					document.iform.enable_updatepolicy.disabled = 1;
-					document.iform.updatepolicy.disabled = 1;
+					$("input#slaveip").attr("disabled", true);
+					$("input#tll").attr("disabled", true);
+					$("input#nameserver").attr("disabled", false);
+					$("input#reverso").attr("disabled", true);
+					$("input#reversv6o").attr("disabled", true);
+					$("input#forwarders").attr("disabled", false);
+					$("input#dnssec").attr("disabled", true);
+					$("input#backupkeys").attr("disabled", true);
+					$("input#regdhcpstatic").attr("disabled", true);
+					$("input#ipns").attr("disabled", true);
+					$("input#mail").attr("disabled", false);
+					$("input#serial").attr("disabled", false);
+					$("input#refresh").attr("disabled", false);
+					$("input#retry").attr("disabled", false);
+					$("input#expire").attr("disabled", false);
+					$("input#minimum").attr("disabled", false);
+					$("select#allowquery\\[\\]").attr("disabled", false);
+					$("select#allowupdate\\[\\]").attr("disabled", true);
+					$("select#allowtransfer\\[\\]").attr("disabled", true);
+					$("input#enable_updatepolicy").attr("disabled", true);
+					$("input#updatepolicy").attr("disabled", true);
+					$("input#rpz").attr("disabled", true);
 					break;
 				default:
 					break;
 			}
 		}
-		-->
+	});
 	</script>
-	<?php
-}
-
-function bind_print_javascript_type_zone2() {
-	print("<script language=\"text/javascript\">on_type_zone_changed(); document.iform.resultconfig.disabled = 1; document.iform.dsset.disabled = 1;</script>\n");
+JS;
+	echo $js;
 }
 
 function bind_write_rcfile() {
