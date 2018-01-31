@@ -1781,6 +1781,7 @@ EOD;
 	file_put_contents($filename, $conf);
 	chmod($filename, 0640);
 
+	/* SQL Counters */
 	$conf = <<<EOD
 sqlcounter dailycounter {
 	sql_module_instance = sql
@@ -1830,12 +1831,18 @@ EOD;
 	$filename = FREERADIUS_MODSENABLED . '/sqlcounter';
 	/* Remove what could be a symlink first before writing */
 	@unlink_if_exists($filename);
-	safe_mkdir(FREERADIUS_MODSENABLED);
-	file_put_contents($filename, $conf);
-	chmod($filename, 0640);
 
-	/* counter and sqlcounter are incompatible */
-	@unlink_if_exists(FREERADIUS_MODSENABLED . '/counter');
+	/* Only write this out if accounting is enabled on one of the SQL instances */
+	if ((($sqlconf['varsqlconfincludeenable'] == 'on') && ($sqlconf['varsqlconfenableaccounting'] == 'Enable')) ||
+	    (($sqlconf['varsqlconf2includeenable'] == 'on') && ($sqlconf['varsqlconf2enableaccounting'] == 'Enable'))) {
+		safe_mkdir(FREERADIUS_MODSENABLED);
+		file_put_contents($filename, $conf);
+		chmod($filename, 0640);
+		/* counter and sqlcounter are incompatible */
+		@unlink_if_exists(FREERADIUS_MODSENABLED . '/counter');
+	} else {
+		freeradius_modulescounter_resync();
+	}
 
 	// We don't need a restart at this time because there are
 	// additional changes needed in freeradius_settings_resync()
@@ -1932,25 +1939,25 @@ EOD;
 	$varsqlconf2enablepostauth = ($sqlconf['varsqlconf2enablepostauth'] ?: 'Disable');
 
 	// authorize section DATABASE 2
-	if ($sqlconf['varsqlconf2enableauthorize'] == 'Enable') {
+	if (($sqlconf['varsqlconf2includeenable'] == 'on') && ($sqlconf['varsqlconf2enableauthorize'] == 'Enable')) {
 		$varsqlconf2authorize = 'sql2';
 	} else {
 		$varsqlconf2authorize = '### sql2 DISABLED ###';
 	}
 	// accounting section DATABASE 2
-	if ($sqlconf['varsqlconf2enableaccounting'] == 'Enable') {
+	if (($sqlconf['varsqlconf2includeenable'] == 'on') && ($sqlconf['varsqlconf2enableaccounting'] == 'Enable')) {
 		$varsqlconf2accounting = 'sql2';
 	} else {
 		$varsqlconf2accounting = '### sql2 DISABLED ###';
 	}
 	// session section DATABASE 2
-	if ($sqlconf['varsqlconf2enablesession'] == 'Enable') {
+	if (($sqlconf['varsqlconf2includeenable'] == 'on') && ($sqlconf['varsqlconf2enablesession'] == 'Enable')) {
 		$varsqlconf2session = 'sql2';
 	} else {
 		$varsqlconf2session = '### sql2 DISABLED ###';
 	}
 	// post-auth section DATABASE 2
-	if ($sqlconf['varsqlconf2enablepostauth'] == 'Enable') {
+	if (($sqlconf['varsqlconf2includeenable'] == 'on') && ($sqlconf['varsqlconf2enablepostauth'] == 'Enable')) {
 		$varsqlconf2postauth = 'sql2';
 	} else {
 		$varsqlconf2postauth = '### sql2 DISABLED ###';
