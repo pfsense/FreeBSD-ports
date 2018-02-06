@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE packagegui SYSTEM "../schema/packages.dtd">
+<?xml-stylesheet type="text/xsl" href="../xsl/package.xsl"?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * arpwatch.xml
+ *
+ * Copyright (c) 2018 Julien Le Goff <julego@gmail.com>
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>arpwatch</name>
+	<title>Arpwatch</title>
+	<include_file>/usr/local/pkg/arpwatch.inc</include_file>
+	<aftersaveredirect>/pkg_edit.php?xml=arpwatch.xml</aftersaveredirect>
+	<menu>
+		<name>Arpwatch</name>
+		<section>Services</section>
+		<url>/pkg_edit.php?xml=arpwatch.xml</url>
+	</menu>
+	<service>
+		<name>arpwatch</name>
+		<rcfile>arpwatch.sh</rcfile>
+		<executable>arpwatch</executable>
+		<description>Arpwatch Daemon</description>
+	</service>
+	<tabs>
+		<tab>
+			<text>Settings</text>
+			<url>/pkg_edit.php?xml=arpwatch.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>Database</text>
+			<url>/arpwatch_database.php</url>
+		</tab>
+	</tabs>
+	<fields>
+		<field>
+			<name>General Options</name>
+			<type>listtopic</type>
+		</field>
+		<field>
+			<fielddescr>Enable Arpwatch</fielddescr>
+			<fieldname>enable</fieldname>
+			<type>checkbox</type>
+			<description></description>
+		</field>
+		<field>
+			<fielddescr>Interfaces</fielddescr>
+			<fieldname>active_interfaces</fieldname>
+			<description>The interfaces that will listen for ARP packets.</description>
+			<type>interfaces_selection</type>
+			<hideinterfaceregex>(loopback)</hideinterfaceregex>
+			<multiple>true</multiple>
+			<required/>
+			<default_value>lan</default_value>
+		</field>
+		<field>
+			<fielddescr>Notifications recipient</fielddescr>
+			<fieldname>notifications_recipient</fieldname>
+			<description>The email address that will receive notifications (warning: may send a lot of notifications in busy networks).</description>
+			<type>input</type>
+			<size>50</size>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Disable bogons</fielddescr>
+			<fieldname>disable_bogons</fieldname>
+			<type>checkbox</type>
+			<description>Disables reporting any bogons.</description>
+		</field>
+		<field>
+			<fielddescr>Disable 0.0.0.0</fielddescr>
+			<fieldname>disable_zero</fieldname>
+			<type>checkbox</type>
+			<description>Disables reporting 0.0.0.0 changes, helpful in busy DHCP networks.</description>
+		</field>
+		<field>
+			<fielddescr>Update vendors</fielddescr>
+			<fieldname>update_vendors</fieldname>
+			<type>checkbox</type>
+			<description>Updates the ethernet vendor database, downloaded from http://linuxnet.ca/ieee/oui/.</description>
+		</field>
+		<field>
+			<fielddescr>Clear database</fielddescr>
+			<fieldname>clear_database</fieldname>
+			<type>checkbox</type>
+			<description>Reset the database of collected mac/ip addresses before starting Arpwatch.</description>
+		</field>
+	</fields>
+	<custom_php_install_command>
+		arpwatch_install_command();
+	</custom_php_install_command>
+	<custom_php_deinstall_command>
+		arpwatch_deinstall_command();
+	</custom_php_deinstall_command>
+	<custom_php_validation_command>
+		arpwatch_validate_input($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_php_resync_config_command>
+		arpwatch_resync_config_command();
+	</custom_php_resync_config_command>
+</packagegui>
