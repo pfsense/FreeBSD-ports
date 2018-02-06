@@ -408,18 +408,20 @@ if ($_POST) {
 			$input_errors[] = gettext("The acl field 'Name' is required with at least 2 characters.");
 		}
 	}
-	foreach($a_extaddr as $extaddr) {
-		$ports = explode(",",$extaddr['extaddr_port']);
-		foreach($ports as $port){
-			if ($port && !is_numeric($port) && !is_port_or_alias($port)) {
-				$input_errors[] = sprintf(gettext("The external address field 'Port' value '%s' is not a number or alias thereof."), htmlspecialchars($port));
+	if ($pconfig['secondary'] != "yes") {
+		foreach($a_extaddr as $extaddr) {
+			$ports = explode(",",$extaddr['extaddr_port']);
+			foreach($ports as $port){
+				if ($port && !is_numeric($port) && !is_port_or_alias($port)) {
+					$input_errors[] = sprintf(gettext("The external address field 'Port' value '%s' is not a number or alias thereof."), htmlspecialchars($port));
+				}
 			}
-		}
-	
-		if ($extaddr['extaddr'] == 'custom') {
-			$extaddr_custom = $extaddr['extaddr_custom'];
-			if (empty($extaddr_custom) || (!is_ipaddroralias($extaddr_custom))) {
-				$input_errors[] = sprintf(gettext("The external address '%s' is not a valid source IP address or alias."), $extaddr_custom);
+
+			if ($extaddr['extaddr'] == 'custom') {
+				$extaddr_custom = $extaddr['extaddr_custom'];
+				if (empty($extaddr_custom) || (!is_ipaddroralias($extaddr_custom))) {
+					$input_errors[] = sprintf(gettext("The external address '%s' is not a valid source IP address or alias."), $extaddr_custom);
+				}
 			}
 		}
 	}
