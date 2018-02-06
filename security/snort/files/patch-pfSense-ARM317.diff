@@ -1,13 +1,15 @@
---- configure.orig	2017-11-16 00:00:54.945659000 -0200
-+++ configure	2017-11-16 00:01:21.959828000 -0200
-@@ -16030,6 +16030,20 @@
- 
+diff -ruN snort-2.9.11.1.orig/configure snort-2.9.11.1/configure
+--- configure	2017-12-19 22:15:20.000000000 -0500
++++ configure	2018-01-18 17:42:25.000000000 -0500
+@@ -16834,6 +16836,21 @@
+     echo "DAQ version doesn't support tracing verdict reason."
  fi
  
 +# any armv6/7 platform has to have this one defined. 
 +{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for armv6/7" >&5       
 +$as_echo_n "checking for armv6/v7... " >&6; }
 +if eval "echo $host_cpu|grep -i 'armv[6|7]' >/dev/null"; then
++    NO_OPTIMIZE="yes"
 +           
 +$as_echo "#define WORDS_MUSTALIGN 1" >>confdefs.h
 +
