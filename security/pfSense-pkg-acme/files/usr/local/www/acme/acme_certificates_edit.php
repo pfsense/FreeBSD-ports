@@ -203,8 +203,14 @@ if ($_POST) {
 	$a_domains = $domainslist->acme_htmllist_get_values();
 	foreach($a_domains as $server){
 		$domain_name = $server['name'];
-		if (!is_hostname($domain_name)) {
+		if (!is_hostname($domain_name, true)) {
 			$input_errors[] = "The field 'Domainname' does not contain a valid hostname.";
+		} elseif (!is_hostname($domain_name)) {
+			/* If the hostname is valid when allowing wildcards, but not without, then it must be a wildcard */
+			$account = get_accountkey($_POST['acmeaccount']);
+			if (substr($account['acmeserver'], -2, 2) != '-2') {
+				$input_errors[] = "A wildcard 'Domainname' is present but the ACME Account key is not registered to an ACME v2 server.";
+			}
 		}
 	}
 	$a_actions = $actionslist->acme_htmllist_get_values();
