@@ -37,9 +37,10 @@ if ($_POST['action'] == "createkey") {
 if ($_POST['action'] == "registerkey") {
 	$caname = $_POST['caname'];
 	$key = $_POST['key'];
+	$email = $_POST['email'];
 	$ca = $a_acmeserver[$caname]['url'];
 	echo "Register key at ca: {$ca}\n";
-	echo registerAcmeAccountKey("_registerkey", $ca, $key);
+	echo registerAcmeAccountKey("_registerkey", $ca, $key, $email);
 	exit;
 }
 
@@ -69,7 +70,7 @@ if (!is_numeric($id))
 
 global $simplefields;
 $simplefields = array(
-	"name","desc",
+	"name","desc", "email",
 	"acmeserver","renewafter"
 );
 
@@ -121,7 +122,14 @@ if ($_POST) {
 			do_input_validation($_POST, $reqdfields, $reqdfieldsn, $input_errors);
 		}
 	}
-	
+
+	if (!empty($_POST['email'])) {
+		/* Validate e-mail address */
+		if (preg_match("/[\!\#\$\%\^\(\)\~\?\>\<\&\/\\\,\"\']/", $_POST['email'])) {
+			$input_errors[] = gettext("The supplied e-mail address contains invalid characters.");
+		}
+	}
+
 	/* Ensure that our account key names are unique */
 	for ($i=0; isset($config['installedpackages']['acme']['accountkeys']['item'][$i]); $i++) {
 		if (($_POST['name'] == $config['installedpackages']['acme']['accountkeys']['item'][$i]['name']) && ($i != $id)) {
@@ -204,7 +212,17 @@ $section->addInput(new \Form_Select(
 	'Acme Server',
 	$pconfig['acmeserver'],
 	form_keyvalue_array($a_acmeserver)
-));
+))->setHelp('The ACME server which will be used to issue certificates using this key.%1$s' .
+	'Use testing servers until certificate validation works, then switch to production.%1$s' .
+	'Only ACME v2 servers support wildcard certificates.%1$s%1$s' .
+	'ACME v2 servers are experimental and only the staging service is active at the moment. ', '<br/>');
+
+$section->addInput(new \Form_Input(
+	'email',
+	'E-Mail Address',
+	'text',
+	$pconfig['email']
+))->setHelp('The e-mail address to register for this key. This is used by Let\'s Encrypt to send automated certificate expiration notices.');
 
 $section->addInput(new \Form_Textarea(
 	'accountkey',
@@ -287,9 +305,10 @@ events.push(function() {
 		$("#btnregisterkeyicon").removeClass("fa-key").addClass("fa-cog fa-spin");
 		var key = $("#accountkey").val();
 		var caname = $("#acmeserver").val();
+		var email = $("#email").val();
 		ajaxRequest = $.ajax({
 			type: "post",
-			data: { action: "registerkey", caname: caname, key: key },
+			data: { action: "registerkey", caname: caname, key: key, email: email },
 			success: function(data) {
 				$("#btnregisterkeyicon").removeClass("fa-cog fa-spin").addClass("fa-check");
 			}
