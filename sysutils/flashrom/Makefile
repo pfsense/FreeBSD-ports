@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	flashrom
-PORTVERSION=	0.9.9
-PORTREVISION=	2
+PORTVERSION=	1.0
 CATEGORIES=	sysutils
 MASTER_SITES=	http://download.flashrom.org/releases/
 
@@ -30,7 +29,7 @@ ONLY_FOR_ARCHS=	amd64 i386
 PORTDOCS=	*
 
 DOCSRCDIR1=	${WRKSRC}
-DOC_FILES1=	ChangeLog README
+DOC_FILES1=	README
 
 DOCSRCDIR2=	${WRKSRC}/Documentation
 DOCSDIR2=	${DOCSDIR}/Documentation
