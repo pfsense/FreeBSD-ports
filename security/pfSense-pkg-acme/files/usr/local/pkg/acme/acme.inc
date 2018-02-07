@@ -162,11 +162,17 @@ $a_enabledisable['disable'] = array('name' => 'Disabled');
 
 global $a_acmeserver;
 $a_acmeserver = array();
-$a_acmeserver['letsencrypt-staging'] = array('name' => "Let's Encrypt Staging (for TESTING purposes)",
-    'url' => 'https://acme-staging.api.letsencrypt.org'
+$a_acmeserver['letsencrypt-staging'] = array('name' => "Let's Encrypt Staging ACME v1 (for TESTING purposes)",
+    'url' => 'https://acme-staging.api.letsencrypt.org',
 );
-$a_acmeserver['letsencrypt-production'] = array('name' => "Let's Encrypt Production (Applies rate limits to certificate requests)",
-    'url' => 'https://acme-v01.api.letsencrypt.org'
+$a_acmeserver['letsencrypt-staging-2'] = array('name' => "EXPERIMENTAL: Let's Encrypt Staging ACME v2 (for TESTING purposes)",
+    'url' => 'https://acme-staging-v02.api.letsencrypt.org'
+);
+$a_acmeserver['letsencrypt-production'] = array('name' => "Let's Encrypt Production ACME v1 (Applies rate limits to certificate requests)",
+    'url' => 'https://acme-v01.api.letsencrypt.org',
+);
+$a_acmeserver['letsencrypt-production-2'] = array('name' => "EXPERIMENTAL: Let's Encrypt Production ACME v2 (Applies rate limits to certificate requests)",
+    'url' => 'https://acme-v02.api.letsencrypt.org'
 );
 /*$a_acmeserver['dummy'] = array('name' => "dummy",
     'url' => 'https://example.org'
@@ -255,6 +261,18 @@ $acme_domain_validation_method['dns_ad'] = array(name => "DNS-Alwaysdata",
 			'description' =>"Alwaysdata API Key"
 		)
 	));
+$acme_domain_validation_method['dns_autodns'] = array(name => "DNS-autoDNS from InternetX",
+	'fields' => array(
+		'AUTODNS_USER' => array('name'=>"autodns_user",'columnheader'=>"User",'type'=>"textbox",
+			'description' =>"Fill in the autoDNS Username"
+		),
+		'AUTODNS_PASSWORD' => array('name'=>"autodns_password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"Fill in the autoDNS Password"
+		),
+		'AUTODNS_CONTEXT' => array('name'=>"autodns_context",'columnheader'=>"Context",'type'=>"textbox",
+			'description' =>"Fill in the autoDNS Context"
+		)
+	));
 $acme_domain_validation_method['dns_aws'] = array(name => "DNS-Amazon Route53",
 	'fields' => array(
 		'AWS_ACCESS_KEY_ID' => array('name'=>"aws_access_key_id",'columnheader'=>"Id",'type'=>"textbox",
@@ -262,6 +280,21 @@ $acme_domain_validation_method['dns_aws'] = array(name => "DNS-Amazon Route53",
 		),
 		'AWS_SECRET_ACCESS_KEY' => array('name'=>"aws_secret_access_key",'columnheader'=>"Key",'type'=>"textbox",
 			'description' =>"Fill in the API Key"
+		)
+	));
+$acme_domain_validation_method['dns_azure'] = array(name => "DNS-Azure (Microsoft)",
+	'fields' => array(
+		'AZUREDNS_SUBSCRIPTIONID' => array('name'=>"azuredns_subscriptionid",'columnheader'=>"Subscription ID",'type'=>"textbox",
+			'description' =>"Fill in the Azure Subscription ID"
+		),
+		'AZUREDNS_TENANTID' => array('name'=>"azuredns_tenantid",'columnheader'=>"Tenant ID",'type'=>"textbox",
+			'description' =>"Fill in the Azure Tenant ID"
+		),
+		'AZUREDNS_APPID' => array('name'=>"azuredns_appid",'columnheader'=>"App ID",'type'=>"textbox",
+			'description' =>"Fill in the Azure App ID"
+		),
+		'AZUREDNS_CLIENTSECRET' => array('name'=>"azuredns_clientsecret",'columnheader'=>"Client Secret",'type'=>"textbox",
+			'description' =>"Fill in the Azure Client Secret"
 		)
 	));
 $acme_domain_validation_method['dns_cloudns'] = array(name => "DNS-ClouDNS",
@@ -479,6 +512,12 @@ $acme_domain_validation_method['dns_namecom'] = array(name => "DNS-name.com",
 			'description' =>"Fill in the Name.com API Token"
 		)
 	));
+$acme_domain_validation_method['dns_namesilo'] = array(name => "DNS-Namesilo",
+	'fields' => array(
+		'Namesilo_Key' => array('name'=>"namesilo_key",'columnheader'=>"Key",'type'=>"textbox",
+			'description' =>"Namesilo API Key"
+		)
+	));
 $acme_domain_validation_method['dns_nsone'] = array(name => "DNS-NS1 (nsone.com)",
 	'fields' => array(
 		'NS1_Key' => array('name'=>"ns1_key",'columnheader'=>"API Key",'type'=>"textbox",
@@ -513,6 +552,12 @@ $acme_domain_validation_method['dns_pdns'] = array(name => "DNS-PowerDNS",
 		),
 		'PDNS_Ttl' => array('name'=>"pdns_ttl",'columnheader'=>"TTL",'type'=>"textbox",
 			'description' =>"Fill in the TTL 60"
+		)
+	));
+$acme_domain_validation_method['dns_selectel'] = array(name => "DNS-Selectel",
+	'fields' => array(
+		'SL_Key' => array('name'=>"sl_key",'columnheader'=>"Key",'type'=>"textbox",
+			'description' =>"Selectel API Key"
 		)
 	));
 $acme_domain_validation_method['dns_servercow'] = array(name => "DNS-Servercow",
@@ -667,8 +712,8 @@ function & get_certificate($name) {
 		return $acmesh->generateDomainKey($domain, $keylength);
 	}
 	
-	function registerAcmeAccountKey($name, $ca, $key) {
-		$acmesh = new acme_sh($name, $ca);
+	function registerAcmeAccountKey($name, $ca, $key, $email = "") {
+		$acmesh = new acme_sh($name, $ca, $email);
 		return $acmesh->registeraccount($key);
 	}
 
