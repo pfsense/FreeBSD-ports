@@ -5,15 +5,13 @@ PORTVERSION=	0.9.4
 CATEGORIES=	net-mgmt
 MASTER_SITES=	# empty
 DISTFILES=	# empty
-EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	802.1ab Link Layer Discovery Protocol (LLDP) daemon
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/lldpd:net-mgmt/lldpd \
-		${LOCALBASE}/sbin/lldpcli:net-mgmt/lldpd
+RUN_DEPENDS=	lldpd>=0:net-mgmt/lldpd
 
 NO_BUILD=	yes
 NO_MTREE=	yes
@@ -25,10 +23,8 @@ do-extract:
 	${MKDIR} ${WRKSRC}
 
 do-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/lldpd
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
-	${MKDIR} ${STAGEDIR}${PREFIX}/www
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/shortcuts
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/lldpd.xml \

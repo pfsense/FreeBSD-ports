@@ -20,9 +20,9 @@
  */
 
 
-require("guiconfig.inc");
+require_once("guiconfig.inc");
 require_once("interfaces.inc");
-require("/usr/local/pkg/lldpd/lldpd.inc");
+require_once("/usr/local/pkg/lldpd/lldpd.inc");
 
 
 if (!is_array($config['installedpackages']['lldpd']['config'])) {
@@ -315,11 +315,11 @@ events.push(function() {
 
 	function receiveonlyChange(enabled) {
 		if (enabled) {
-			document.getElementById('lldp_proto_ro').value = map_proto_ro(document.getElementById('lldp_proto').value);
-			document.getElementById('cdp_proto_ro').value = map_proto_cdp_ro(document.getElementById('cdp_proto').value);
-			document.getElementById('edp_proto_ro').value = map_proto_ro(document.getElementById('edp_proto').value);
-			document.getElementById('fdp_proto_ro').value = map_proto_ro(document.getElementById('fdp_proto').value);
-			document.getElementById('ndp_proto_ro').value = map_proto_ro(document.getElementById('ndp_proto').value);
+			$('#lldp_proto_ro').val(map_proto_ro($('#lldp_proto').val));
+			$('#cdp_proto_ro').val(map_proto_cdp_ro($('#cdp_proto').val));
+			$('#edp_proto_ro').val(map_proto_ro($('#edp_proto').val));
+			$('#fdp_proto_ro').val(map_proto_ro($('#fdp_proto').val));
+			$('#ndp_proto_ro').val(map_proto_ro($('#ndp_proto').val));
 
 			hideInput('chassis', true);
 			hideInput('management', true);
