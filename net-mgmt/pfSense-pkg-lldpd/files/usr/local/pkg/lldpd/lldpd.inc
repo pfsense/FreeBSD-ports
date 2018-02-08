@@ -142,14 +142,16 @@ function lldpd_sync_config() {
 		/* Management ip address */
 		$ipv4 = get_interface_ip($lldpd_config['management']);
 		$ipv6 = get_interface_ipv6($lldpd_config['management']);
+		$addrs = array();
 		if (isset($ipv4)) {
-			$cmd .= ' -m \'' . $ipv4;
-			if (isset($ipv6)) {
-				$cmd .= ',' . $ipv6;
-			}
-			$cmd .= '\'';
-		} else if (isset($ipv6)) {
-			$cmd .= ' -m \'' . $ipv6 . '\'';
+			array_push($addrs, $ipv4);
+		}
+		if (isset($ipv6)) {
+			array_push($addrs, $ipv6);
+		}
+		if (!empty($addrs))
+		{
+			$cmd .= ' -m ' . escapeshellarg(implode(',', $addrs));
 		}
 	}
 
