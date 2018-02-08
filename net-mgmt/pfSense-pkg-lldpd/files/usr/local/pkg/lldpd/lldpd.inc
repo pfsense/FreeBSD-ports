@@ -62,6 +62,7 @@ function lldpd_sync_config() {
 		case 'disabled':
 			$cmd .= ' -ll';
 			break;
+		default:
 	}
 	
 	/* CDP protocol */
@@ -81,6 +82,7 @@ function lldpd_sync_config() {
 		case 'active_v2_only':
 			$cmd .= ' -ccccc';
 			break;
+		default:
 	}
 	
 	/* EDP protocol */
@@ -91,6 +93,7 @@ function lldpd_sync_config() {
 		case 'active':
 			$cmd .= ' -ee';
 			break;
+		default:
 	}
 	
 	/* FDP protocol */
@@ -101,6 +104,7 @@ function lldpd_sync_config() {
 		case 'active':
 			$cmd .= ' -ff';
 			break;
+		default:
 	}
 	
 	/* NDP protocol */
@@ -111,6 +115,7 @@ function lldpd_sync_config() {
 		case 'active':
 			$cmd .= ' -ss';
 			break;
+		default:
 	}
 	
 	/* Interface list */
@@ -121,7 +126,7 @@ function lldpd_sync_config() {
 		}
 	}
 	if (count($interfaces)) {
-		$cmd .= ' -I \'' . implode(',', $interfaces) . '\'';
+		$cmd .= ' -I ' . escapeshellarg(implode(',', $interfaces));
 	}
 	
 	/* Receive-only flag */
@@ -131,7 +136,7 @@ function lldpd_sync_config() {
 		/* Chassis interface */
 		$chassis = implode(',', get_parent_physical_interface($lldpd_config['chassis']));
 		if (isset($chassis)) {
-			$cmd .= ' -C \'' . $chassis . '\'';
+			$cmd .= ' -C ' . escapeshellarg($chassis);
 		}
 	
 		/* Management ip address */
@@ -164,13 +169,6 @@ function lldpd_sync_config() {
 
 	log_error("Starting service lldpd");
 	start_service('lldpd');
-}
-
-
-function lldpd_install_command() {
-	global $config;
-
-	/* Currently unused */
 }
 
 

@@ -20,9 +20,9 @@
  */
 
 
-require("guiconfig.inc");
+require_once("guiconfig.inc");
 require_once("interfaces.inc");
-require("/usr/local/pkg/lldpd/lldpd.inc");
+require_once("/usr/local/pkg/lldpd/lldpd.inc");
 
 
 $pgtitle = array(gettext("Services"), gettext("LLDP"), gettext("Status"));
@@ -35,41 +35,41 @@ display_top_tabs($tab_array);
 ?>
 
 <div class="panel panel-default">
-    <div class="panel-heading">
+	<div class="panel-heading">
 	<h2 class="panel-title"><?=gettext("LLDP Status")?></h2>
-    </div>
-    <div class="panel-body">
+	</div>
+	<div class="panel-body">
 	<div class="container-fluid">
-            <br>
-	    <pre>
+		<br>
+		<pre>
 <?php
 if (is_service_running('lldpd')) {
-    $pipe = popen(LLDPD_CLIENT . ' show chassis detail', "r");
-    while ($line = fgets($pipe)) {
-        echo htmlspecialchars($line);
-    }
-    pclose($pipe);
+	$pipe = popen(LLDPD_CLIENT . ' show chassis detail', "r");
+	while ($line = fgets($pipe)) {
+		echo htmlspecialchars($line);
+	}
+	pclose($pipe);
 } else {
-    echo "\n", gettext("The LLDP service is not running"), "\n";
+	echo "\n", gettext("The LLDP service is not running"), "\n";
 }
 ?>
-	    </pre>
-	    <br>
-	    <pre>
+		</pre>
+		<br>
+		<pre>
 <?php
 if (is_service_running('lldpd')) {
-    $pipe = popen(LLDPD_CLIENT . ' show neighbors detail', "r");
-    while ($line = fgets($pipe)) {
-        echo htmlspecialchars($line);
-    }
-    pclose($pipe);
+	$pipe = popen(LLDPD_CLIENT . ' show neighbors detail', "r");
+	while ($line = fgets($pipe)) {
+		echo htmlspecialchars($line);
+	}
+	pclose($pipe);
 } else {
-    echo "\n", gettext("The LLDP service is not running"), "\n";
+	echo "\n", gettext("The LLDP service is not running"), "\n";
 }
 ?>
-	    </pre>
-        </div>
-    </div>
+		</pre>
+		</div>
+	</div>
 </div>
 
 <?php include("foot.inc");
