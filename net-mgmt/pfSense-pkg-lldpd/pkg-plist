@@ -1,0 +1,8 @@
+pkg/lldpd.xml
+pkg/lldpd/lldpd.inc
+/etc/inc/priv/lldpd.priv.inc
+www/lldpd_settings.php
+www/lldpd_status.php
+www/shortcuts/pkg_lldpd.inc
+%%DATADIR%%/info.xml
+@dir /etc/inc/priv

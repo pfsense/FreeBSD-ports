@@ -1,0 +1,6 @@
+lldpd provies support for the 802.1ab Link Layer Discovery Protocol (LLDP),
+as well as support for several proprietary discovery protocols including
+Cisco Discovery Protocol (CDP), Extreme Discovery Protocol (EDP), Foundry
+Discovery Protocol (FDP), and Nortel Discovery Protocol (NDP / SONMP).
+
+WWW: https://forum.pfsense.org/index.php?topic=143799.0

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<pfsensepkgs>
+	<package>
+		<name>lldpd</name>
+		<pkginfolink>https://forum.pfsense.org/index.php?topic=143799.0</pkginfolink>
+		<website>http://vincentbernat.github.io/lldpd/</website>
+		<descr><![CDATA[802.1ab Link Layer Discovery Protocol (LLDP) daemon]]></descr>
+		<version>%%PKGVERSION%%</version>
+		<configurationfile>lldpd.xml</configurationfile>
+	</package>
+</pfsensepkgs>
