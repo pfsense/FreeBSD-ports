@@ -285,7 +285,7 @@ $acme_domain_validation_method['dns_aws'] = array(name => "DNS-Amazon Route53",
 $acme_domain_validation_method['dns_azure'] = array(name => "DNS-Azure (Microsoft)",
 	'fields' => array(
 		'AZUREDNS_SUBSCRIPTIONID' => array('name'=>"azuredns_subscriptionid",'columnheader'=>"Subscription ID",'type'=>"textbox",
-			'description' =>"Fill in the Azure Subscription ID"
+			'description' =>"Fill in the Azure Subscription ID. First, <a href=\"https://github.com/Neilpang/acme.sh/wiki/How-to-use-Azure-DNS\">setup a service principal for access to the DNS Zone</a>."
 		),
 		'AZUREDNS_TENANTID' => array('name'=>"azuredns_tenantid",'columnheader'=>"Tenant ID",'type'=>"textbox",
 			'description' =>"Fill in the Azure Tenant ID"
