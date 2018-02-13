@@ -87,11 +87,11 @@ if args.add:
 
         data_ug = path_ug + ".0"
         if os.path.exists(data_ug):
-            os.link(data_ug, data_path)
+            os.symlink(data_ug, data_path)
 
         mgmt_ug = path_ug + ".2"
         if os.path.exists(mgmt_ug):
-            os.link(mgmt_ug, mgmt_path)
+            os.symlink(mgmt_ug, mgmt_path)
 
 elif args.remove:
 
