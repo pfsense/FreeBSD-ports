@@ -18,11 +18,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-pfsense_upgrade=$(realpath $(dirname $0)/../libexec/$(basename $0))
+pfsense_upgrade=$(realpath -q $(dirname $0)/../libexec/$(basename $0))
 lockfile="/tmp/$(basename $0).lock"
 
 if [ ! -f ${pfsense_upgrade} ]; then
 	echo "ERROR: Unable to find ${pfsense_upgrade}"
+	exit 1
+fi
+
+if [ "$(id -u)" -ne "0" ]; then
+	echo "ERROR: It must run as root"
 	exit 1
 fi
 
