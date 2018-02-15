@@ -5,7 +5,7 @@ by listening on a network interface or by reading a
 packet capture file. These flows may be reported via
 NetFlow to a collecting host or summarised within
 softflowd itself.<br/> Softflowd supports Netflow
-versions 1, 5 and 9 and is fully IPv6-capable - it can
+versions 1, 5, 9 and 10 (IPFIX) and is fully IPv6-capable - it can
 track IPv6 flows and send export datagrams via IPv6. It
 also supports export to multicast groups, allowing for
 redundant flow collectors.

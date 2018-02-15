@@ -61,7 +61,7 @@
 			<fielddescr>Interface</fielddescr>
 			<fieldname>interface</fieldname>
 			<type>interfaces_selection</type>
-			<description>Pick an interface from which to collect netflow data. A separate instance of softflowd will be launched for each interface.</description>
+			<description>Pick an interface from which to collect netflow data. A separate instance of softflowd will be launched for each interface. Flows tracked on each interface will be tagged with a unique interface index (starting at 1) populated in the same order as they're displayed above.</description>
 			<multiple/>
 		</field>
 		<field>
@@ -103,9 +103,10 @@
 		<field>
 			<fielddescr>Netflow version</fielddescr>
 			<fieldname>version</fieldname>
-			<description>Select the desired version of the NetFlow protocol.</description>
+			<description>Select the desired version of the NetFlow protocol (10 means IPFIX).</description>
 			<type>select</type>
 			<options>
+				<option><name>10</name><value>10</value></option>
 				<option><name>9</name><value>9</value></option>
 				<option><name>5</name><value>5</value></option>
 				<option><name>1</name><value>1</value></option>
@@ -121,8 +122,9 @@
 				<div class="infoblock">
 				The track_level value may be one of:<br/>
 				<dl class="dl-horizontal responsive">
-					<dt>full</dt><dd>Track everything in the flow, the default.</dd>
-					<dt>proto</dt><dd>Track source and destination addresses and protocol.</dd>
+					<dt>vlan</dt><dd>Track everything in the flow.</dd>
+					<dt>full</dt><dd>Track protocol, source and destination addresses and source and destination ports, the default.</dd>
+					<dt>proto</dt><dd>Track protocol and source and destination addresses.</dd>
 					<dt>ip</dt><dd>Only track source and destination addresses.</dd>
 				</dl>
 				Selecting either of the latter options will produce flows with less information in them (e.g. TCP/UDP ports will not be recorded).
@@ -133,6 +135,7 @@
 			</description>
 			<type>select</type>
 			<options>
+				<option><name>VLAN</name><value>vlan</value></option>
 				<option><name>Full</name><value>full</value></option>
 				<option><name>Proto</name><value>proto</value></option>
 				<option><name>IP</name><value>ip</value></option>
@@ -230,4 +233,7 @@
 	<custom_php_command_before_form>
 		cleanup_config_softflowd();
 	</custom_php_command_before_form>
+	<custom_php_after_head_command>
+		display_interface_indices_softflowd();
+	</custom_php_after_head_command>
 </packagegui>
