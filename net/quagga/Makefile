@@ -88,6 +88,10 @@ PLIST_SUB+=	LOCALSTATE_DIR=${LOCALSTATE_DIR} \
 		ENABLE_USER=${ENABLE_USER} \
 		ENABLE_GROUP=${ENABLE_GROUP}
 
+post-patch:
+	@${REINPLACE_CMD} -e '/test.*enable_snmp.*= ""/s/""/"no"/' \
+		${WRKSRC}/configure
+
 pre-everything::
 	@${ECHO} "============================================================="
 	@${ECHO}
