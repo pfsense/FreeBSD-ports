@@ -442,6 +442,7 @@ EOD;
 	freeradius_plainmacauth_resync();
 	freeradius_motp_resync();
 	freeradius_serverdefault_resync();
+	freeradius_modulesmschap_resync();
 
 	// Change owner of freeradius created files
 	if (is_dir("/var/log/radacct/")) {
@@ -2660,6 +2661,8 @@ mschap {
 
 EOD;
 
+	/* We never want this NTLM module to be active */
+	@unlink_if_exists(FREERADIUS_MODSENABLED . '/ntlm_auth');
 	$filename = FREERADIUS_MODSENABLED . '/mschap';
 	/* Remove what could be a symlink first before writing */
 	@unlink_if_exists($filename);
