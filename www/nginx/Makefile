@@ -860,8 +860,8 @@ CONFIGURE_ARGS+=--add-module=${WRKSRC_let}
 .endif
 
 .if ${PORT_OPTIONS:MLUA}
-LIB_DEPENDS+=	libluajit-5.1.so:lang/luajit
-CONFIGURE_ENV+=	"LUAJIT_INC=${LOCALBASE}/include/luajit-2.0"
+LIB_DEPENDS+=	libluajit-5.1.so:lang/luajit21
+CONFIGURE_ENV+=	"LUAJIT_INC=${LOCALBASE}/include/luajit-2.1"
 CONFIGURE_ENV+=	"LUAJIT_LIB=${LOCALBASE}/lib"
 NGINX_LUA_VERSION=	0.10.8
 GH_ACCOUNT+=	openresty:lua
@@ -895,7 +895,7 @@ CONFIGURE_ARGS+=--add-module=${WRKSRC_memc}
 NGINX_MODSECURITY_VERSION=	2.9.1
 LIB_DEPENDS+=	libapr-1.so:devel/apr1 \
 		libcurl.so:ftp/curl \
-		libluajit-5.1.so:lang/luajit \
+		libluajit-5.1.so:lang/luajit21 \
 		libpcre.so:devel/pcre \
 		libyajl.so:devel/yajl
 USE_APACHE=	22+
