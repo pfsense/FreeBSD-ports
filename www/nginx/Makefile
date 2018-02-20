@@ -862,11 +862,10 @@ CONFIGURE_ARGS+=--add-module=${WRKSRC_let}
 .if ${PORT_OPTIONS:MLUA}
 . if ${ARCH} == "aarch64"
 LIB_DEPENDS+=	libluajit-5.1.so:lang/luajit21
-CONFIGURE_ENV+=	"LUAJIT_INC=${LOCALBASE}/include/luajit-2.1"
 . else
 LIB_DEPENDS+=	libluajit-5.1.so:lang/luajit
-CONFIGURE_ENV+=	"LUAJIT_INC=${LOCALBASE}/include/luajit-2.0"
 . endif
+CONFIGURE_ENV+=	"LUAJIT_INC=${LOCALBASE}/include/luajit-2.0"
 CONFIGURE_ENV+=	"LUAJIT_LIB=${LOCALBASE}/lib"
 NGINX_LUA_VERSION=	0.10.8
 GH_ACCOUNT+=	openresty:lua
