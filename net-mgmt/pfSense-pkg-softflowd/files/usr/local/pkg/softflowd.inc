@@ -49,7 +49,7 @@ function sync_package_softflowd() {
 			}
 			
 			$start .= "\n\t/usr/local/sbin/softflowd ";
-			$start .= " -i " . $if_index++ . ":" . escapeshellarg($interface);
+			$start .= " -i " . escapeshellarg($if_index++ . ":" . $interface);
 			$start .= " -n " . escapeshellarg("{$cf['host']}:{$cf['port']}");
 			if (is_numericint($cf['maxflows'])) {
 				$start .= " -m " . escapeshellarg($cf['maxflows']);
@@ -171,16 +171,18 @@ function display_interface_indices_softflowd() {
 	}
 	
 	/* Compile and display the list of interface indices if softflowd is active */
-	$interface_list = explode(",", $cf['interface']);
-	$interface_indices = "";
-	if (!empty($cf['host']) && !empty($interface_list) && $cf['enable'] != "off") {
-		$if_index = 1;
-		foreach ($interface_list as $interface_friendly) {
-			$interface_desc = convert_friendly_interface_to_friendly_descr($interface_friendly);
-			$interface_indices .= "{$if_index}: {$interface_desc}<br>";
-			$if_index++;
+	if (isset($cf) && isset($cf['interface'])) {
+		$interface_list = explode(",", $cf['interface']);
+		$interface_indices = "";
+		if (!empty($cf['host']) && !empty($interface_list) && $cf['enable'] != "off") {
+			$if_index = 1;
+			foreach ($interface_list as $interface_friendly) {
+				$interface_desc = convert_friendly_interface_to_friendly_descr($interface_friendly);
+				$interface_indices .= "{$if_index}: {$interface_desc}<br>";
+				$if_index++;
+			}
+			print_info_box("The following interface indices are currently in use:<br><br>{$interface_indices}", "info", "");
 		}
-		print_info_box("The following interface indices are currently in use:<br><br>{$interface_indices}", "info", "");
 	}
 }
 
