@@ -171,7 +171,7 @@ function display_interface_indices_softflowd() {
 	}
 	
 	/* Compile and display the list of interface indices if softflowd is active */
-	if (isset($cf) && isset($cf['interface'])) {
+	if (isset($cf['interface'])) {
 		$interface_list = explode(",", $cf['interface']);
 		$interface_indices = "";
 		if (!empty($cf['host']) && !empty($interface_list) && $cf['enable'] != "off") {
