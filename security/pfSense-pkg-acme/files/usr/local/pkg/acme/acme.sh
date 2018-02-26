@@ -3086,10 +3086,6 @@ _on_issue_err() {
     )
   fi
 
-  if [ "$IS_RENEW" = "1" ] && _hasfield "$Le_Webroot" "dns"; then
-    _err "$_DNS_MANUAL_ERR"
-  fi
-
   if [ "$DEBUG" ] && [ "$DEBUG" -gt "0" ]; then
     _debug "$(_dlg_versions)"
   fi
@@ -3120,10 +3116,6 @@ _on_issue_success() {
       _err "Error when run renew hook."
       return 1
     fi
-  fi
-
-  if _hasfield "$Le_Webroot" "dns"; then
-    _err "$_DNS_MANUAL_WARN"
   fi
 
 }
