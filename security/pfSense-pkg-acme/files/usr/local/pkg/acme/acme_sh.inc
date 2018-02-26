@@ -230,6 +230,10 @@ EOF;
 			, $envvariables);
 		$cer = "{$certpath}/{$domainstosign[0]}.cer";
 		if (file_exists($cer)) {
+			if ($action == "renew") {
+				/* Renew action will not automatically run the reload command! */
+				mwexec("{$this->acmeconf}reloadcmd.sh");
+			}
 			return $cer;
 		}
 		return false;
