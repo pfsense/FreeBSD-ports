@@ -63,6 +63,7 @@ RUN_DEPENDS=	ataidle>=0:sysutils/ataidle \
 		rate>=0:net-mgmt/rate \
 		relayd>=0:net/relayd \
 		scponly>=0:shells/scponly \
+		smartmontools>=0:sysutils/smartmontools \
 		ssh_tunnel_shell>=0:sysutils/ssh_tunnel_shell \
 		sshlockout_pf>=0:sysutils/sshlockout_pf \
 		strongswan>=0:security/strongswan \
@@ -93,7 +94,6 @@ PLIST_DIRS=	/etc
 
 .if (${ARCH} == "amd64" || ${ARCH} == "i386")
 RUN_DEPENDS+=	${LOCALBASE}/sbin/dmidecode:sysutils/dmidecode \
-		${LOCALBASE}/sbin/smartctl:sysutils/smartmontools \
 		${LOCALBASE}/sbin/wrapresetbtn:sysutils/wrapalixresetbutton \
 		${LOCALBASE}/bin/beep:audio/beep
 .endif
