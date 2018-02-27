@@ -206,6 +206,9 @@ if ($_POST) {
 		if (!is_hostname($domain_name, true)) {
 			$input_errors[] = "The field 'Domainname' does not contain a valid hostname.";
 		} elseif (!is_hostname($domain_name)) {
+			if (strtolower(substr($server['method'], 0, 3)) != "dns") {
+				$input_errors[] = "Wildcard 'Domainname' validation requires a DNS-based method.";
+			}
 			/* If the hostname is valid when allowing wildcards, but not without, then it must be a wildcard */
 			$account = get_accountkey($_POST['acmeaccount']);
 			if (substr($account['acmeserver'], -2, 2) != '-2') {
