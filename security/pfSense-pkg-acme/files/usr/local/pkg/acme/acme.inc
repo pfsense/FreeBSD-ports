@@ -302,6 +302,9 @@ $acme_domain_validation_method['dns_cloudns'] = array(name => "DNS-ClouDNS",
 		'CLOUDNS_AUTH_ID' => array('name'=>"cloudns_auth_id",'columnheader'=>"Auth ID",'type'=>"textbox",
 			'description' =>"Fill in the authentication ID"
 		),
+		'CLOUDNS_SUB_AUTH_ID' => array('name'=>"cloudns_sub_auth_id",'columnheader'=>"Sub Auth ID",'type'=>"textbox",
+			'description' =>"Fill in the sub authentication ID"
+		),
 		'CLOUDNS_AUTH_PASSWORD' => array('name'=>"cloudns_auth_password",'columnheader'=>"Password",'type'=>"textbox",
 			'description' =>"Fill in the Password"
 		)
@@ -354,6 +357,15 @@ $acme_domain_validation_method['dns_me'] = array(name => "DNS-DNSMadeEasy",
 			'description' =>"Fill in the API Secret"
 		)
 	));
+$acme_domain_validation_method['dns_do'] = array(name => "DNS-Domain-Offensive / Resellerinterface / Domainrobot",
+	'fields' => array(
+		'DO_PID' => array('name'=>"do_pid",'columnheader'=>"Customer ID",'type'=>"textbox",
+			'description' =>"Fill in the DO Customer ID"
+		),
+		'DO_PW' => array('name'=>"do_pw",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"Fill in the DO Password"
+		)
+	));
 $acme_domain_validation_method['dns_dp'] = array(name => "DNS-Dnspod.cn",
 	'fields' => array(
 		'DP_Id' => array('name'=>"dp_id",'columnheader'=>"Id",'type'=>"textbox",
@@ -363,13 +375,10 @@ $acme_domain_validation_method['dns_dp'] = array(name => "DNS-Dnspod.cn",
 			'description' =>"Fill in the API Key"
 		)
 	));
-$acme_domain_validation_method['dns_do'] = array(name => "DNS-Domain-Offensive / Resellerinterface / Domainrobot",
+$acme_domain_validation_method['dns_dreamhost'] = array(name => "DNS-DreamHost",
 	'fields' => array(
-		'DO_PID' => array('name'=>"do_pid",'columnheader'=>"Customer ID",'type'=>"textbox",
-			'description' =>"Fill in the DO Customer ID"
-		),
-		'DO_PW' => array('name'=>"do_pw",'columnheader'=>"Password",'type'=>"textbox",
-			'description' =>"Fill in the DO Password"
+		'DH_API_KEY' => array('name'=>"dh_api_key",'columnheader'=>"API Token",'type'=>"textbox",
+			'description' =>"Fill in the Dreamhost API Token"
 		)
 	));
 $acme_domain_validation_method['dns_duckdns'] = array(name => "DNS-DuckDNS",
@@ -588,6 +597,12 @@ $acme_domain_validation_method['dns_yandex'] = array(name => "DNS-Yandex",
 	'fields' => array(
 		'PDD_Token' => array('name'=>"pdd_token",'columnheader'=>"PDD Token",'type'=>"textbox",
 			'description' =>"Fill in the Yandex PDD Token, generate at <a href=\"https://pddimp.yandex.ru/api2/admin/get_token\">https://pddimp.yandex.ru/api2/admin/get_token</a>"
+		)
+	));
+$acme_domain_validation_method['dns_zonomi'] = array(name => "DNS-Zonomi",
+	'fields' => array(
+		'ZM_Key' => array('name'=>"zm_key",'columnheader'=>"API Key",'type'=>"textbox",
+			'description' =>"Fill in the Zonomi API Key"
 		)
 	));
 

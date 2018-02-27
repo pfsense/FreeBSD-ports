@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-VER=2.7.6
+VER=2.7.7
 
 PROJECT_NAME="acme.sh"
 
@@ -1283,6 +1283,7 @@ _create_account_key() {
   else
     #generate account key
     _createkey "$length" "$ACCOUNT_KEY_PATH"
+    chmod 600 "$ACCOUNT_KEY_PATH"
   fi
 
 }
@@ -1563,6 +1564,9 @@ _inithttp() {
       _ACME_CURL="$_ACME_CURL --cacert $CA_BUNDLE "
     fi
 
+    if _contains "$(curl --help 2>&1)" "--globoff"; then
+      _ACME_CURL="$_ACME_CURL -g "
+    fi
   fi
 
   if [ -z "$_ACME_WGET" ] && _exists "wget"; then
@@ -1837,7 +1841,7 @@ _send_signed_request() {
     _body="$response"
     if [ "$needbase64" ]; then
       _body="$(echo "$_body" | _dbase64)"
-      _debug2 _body "$_body"
+      _debug3 _body "$_body"
     fi
 
     if _contains "$_body" "JWS has invalid anti-replay nonce"; then
@@ -2005,9 +2009,19 @@ _startserver() {
     _NC="$_NC -6"
   fi
 
-  _debug "_NC" "$_NC"
-  #todo  listen address
-  $_NC TCP-LISTEN:$Le_HTTPPort,crlf,reuseaddr,fork SYSTEM:"sleep 0.5; echo HTTP/1.1 200 OK; echo ; echo  $content; echo;" &
+  if [ "$DEBUG" ] && [ "$DEBUG" -gt "1" ]; then
+    _NC="$_NC -d -d -v"
+  fi
+
+  SOCAT_OPTIONS=TCP-LISTEN:$Le_HTTPPort,crlf,reuseaddr,fork
+
+  #Adding bind to local-address
+  if [ "$ncaddr" ]; then
+    SOCAT_OPTIONS="$SOCAT_OPTIONS,bind=${ncaddr}"
+  fi
+
+  _debug "_NC" "$_NC $SOCAT_OPTIONS"
+  $_NC $SOCAT_OPTIONS SYSTEM:"sleep 1; echo HTTP/1.0 200 OK; echo ; echo  $content; echo;" &
   serverproc="$!"
 }
 
@@ -2765,9 +2779,9 @@ _isRealNginxConf() {
 
         _left="$(sed -n "${_start_nn},99999p" "$2")"
         _debug2 _left "$_left"
-        if echo "$_left" | tr "\t" ' ' | grep -n "^ *server *" >/dev/null; then
-          _end=$(echo "$_left" | tr "\t" ' ' | grep -n "^ *server *" | _head_n 1)
-          _debug "_end" "$_end"
+        _end="$(echo "$_left" | tr "\t" ' ' | grep -n "^ *server *" | grep -v server_name | _head_n 1)"
+        _debug "_end" "$_end"
+        if [ "$_end" ]; then
           _end_n=$(echo "$_end" | cut -d : -f 1)
           _debug "_end_n" "$_end_n"
           _seg_n=$(echo "$_left" | sed -n "1,${_end_n}p")
@@ -3086,10 +3100,6 @@ _on_issue_err() {
     )
   fi
 
-  if [ "$IS_RENEW" = "1" ] && _hasfield "$Le_Webroot" "dns"; then
-    _err "$_DNS_MANUAL_ERR"
-  fi
-
   if [ "$DEBUG" ] && [ "$DEBUG" -gt "0" ]; then
     _debug "$(_dlg_versions)"
   fi
@@ -3120,10 +3130,6 @@ _on_issue_success() {
       _err "Error when run renew hook."
       return 1
     fi
-  fi
-
-  if _hasfield "$Le_Webroot" "dns"; then
-    _err "$_DNS_MANUAL_WARN"
   fi
 
 }
@@ -3389,7 +3395,7 @@ issue() {
     _main_domain=$(echo "$2,$3" | cut -d , -f 1)
     _alt_domains=$(echo "$2,$3" | cut -d , -f 2- | sed "s/,${NO_VALUE}$//")
   fi
-  _key_length="$4"
+  _key_length="${4}"
   _real_cert="$5"
   _real_key="$6"
   _real_ca="$7"
@@ -3486,6 +3492,11 @@ issue() {
   else
     _key=$(_readdomainconf Le_Keylength)
     _debug "Read key length:$_key"
+
+    if [ -z "${_key_length}" ] && [ ! -z "${_key}" ]; then
+      _key_length="${_key}"
+    fi
+
     if [ ! -f "$CERT_KEY_PATH" ] || [ "$_key_length" != "$_key" ] || [ "$Le_ForceNewDomainKey" = "1" ]; then
       if ! createDomainKey "$_main_domain" "$_key_length"; then
         _err "Create domain key error."
@@ -3624,6 +3635,10 @@ $_authorizations_map"
       _debug entry "$entry"
       if [ -z "$entry" ]; then
         _err "Error, can not get domain token entry $d"
+        _supported_vtypes="$(echo "$response" | _egrep_o "\"challenges\":\[[^]]*]" | tr '{' "\n" | grep type | cut -d '"' -f 4 | tr "\n" ' ')"
+        if [ "$_supported_vtypes" ]; then
+          _err "The supported validation types are: $_supported_vtypes, but you specified: $vtype"
+        fi
         _clearup
         _on_issue_err "$_post_hook"
         return 1
@@ -4594,7 +4609,7 @@ _installcert() {
       cat "$CERT_KEY_PATH" >"$_real_key"
     else
       cat "$CERT_KEY_PATH" >"$_real_key"
-      chmod 700 "$_real_key"
+      chmod 600 "$_real_key"
     fi
   fi
 
@@ -5107,7 +5122,7 @@ _installalias() {
 
 }
 
-# nocron confighome
+# nocron confighome noprofile
 install() {
 
   if [ -z "$LE_WORKING_DIR" ]; then
@@ -5116,6 +5131,7 @@ install() {
 
   _nocron="$1"
   _c_home="$2"
+  _noprofile="$3"
   if ! _initpath; then
     _err "Install failed."
     return 1
@@ -5181,7 +5197,7 @@ install() {
 
   _info "Installed to $LE_WORKING_DIR/$PROJECT_ENTRY"
 
-  if [ "$IN_CRON" != "1" ]; then
+  if [ "$IN_CRON" != "1" ] && [ -z "$_noprofile" ]; then
     _installalias "$_c_home"
   fi
 
@@ -5407,10 +5423,11 @@ Parameters:
   "
 }
 
-# nocron
+# nocron noprofile
 _installOnline() {
   _info "Installing from online archive."
   _nocron="$1"
+  _noprofile="$2"
   if [ ! "$BRANCH" ]; then
     BRANCH="master"
   fi
@@ -5431,7 +5448,7 @@ _installOnline() {
 
     cd "$PROJECT_NAME-$BRANCH"
     chmod +x $PROJECT_ENTRY
-    if ./$PROJECT_ENTRY install "$_nocron"; then
+    if ./$PROJECT_ENTRY install "$_nocron" "" "$_noprofile"; then
       _info "Install success!"
     fi
 
@@ -5447,7 +5464,7 @@ upgrade() {
     _initpath
     export LE_WORKING_DIR
     cd "$LE_WORKING_DIR"
-    _installOnline "nocron"
+    _installOnline "nocron" "noprofile"
   ); then
     _info "Upgrade success!"
     exit 0
