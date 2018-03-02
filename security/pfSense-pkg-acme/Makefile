@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-acme
-PORTVERSION=	0.2.1
+PORTVERSION=	0.2.2
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -52,35 +52,21 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg/acme
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/acme/pkg_acme_tabs.inc \
 		${STAGEDIR}${PREFIX}/pkg/acme
-	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_ovh.sh \
-		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
-	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_pdns.sh \
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_ad.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_ali.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_autodns.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_aws.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_azure.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_cf.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
-	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_cx.sh \
-		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
-	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_dp.sh \
-		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
-	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_gd.sh \
-		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
-	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_ispconfig.sh \
-		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
-	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_lexicon.sh \
-		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
-	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_lua.sh \
-		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
-	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_me.sh \
-		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
-	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_nsupdate.sh \
-		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
-	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_ad.sh \
-		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_cloudns.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_cx.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_cyon.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
@@ -89,6 +75,10 @@ do-install:
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_dnsimple.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_do.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_dp.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_dreamhost.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_duckdns.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
@@ -100,23 +90,51 @@ do-install:
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_gandi_livedns.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_gd.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_he.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_infoblox.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_inwx.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_ispconfig.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_knot.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_lexicon.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_linode.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_lua.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_me.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_myapi.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_namecom.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_namesilo.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_nsone.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_nsupdate.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_ovh.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_pdns.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_selectel.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_servercow.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_unoeuro.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_vscale.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_yandex.sh \
+		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
+	${INSTALL_SCRIPT} ${FILESDIR}${PREFIX}/pkg/acme/dnsapi/dns_zonomi.sh \
 		${STAGEDIR}${PREFIX}/pkg/acme/dnsapi
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/www/acme/acme_accountkeys.php \
 		${STAGEDIR}${PREFIX}/www/acme
