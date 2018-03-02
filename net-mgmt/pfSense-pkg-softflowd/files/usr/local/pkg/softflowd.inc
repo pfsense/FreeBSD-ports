@@ -38,6 +38,7 @@ function sync_package_softflowd() {
 	if (!empty($cf['host']) && !empty($interface_list) && $cf['enable'] != "off") {
 		$cf['host'] = is_ipaddrv6($cf['host']) ? "[{$cf['host']}]" : $cf['host'];
 		$start = "/usr/bin/killall -9 softflowd";
+		$if_index = 1;
 		foreach ($interface_list as $interface_friendly) {
 			if (empty($interface_friendly)) {
 				continue;
@@ -46,8 +47,9 @@ function sync_package_softflowd() {
 			if (empty($interface)) {
 				continue;
 			}
+			
 			$start .= "\n\t/usr/local/sbin/softflowd ";
-			$start .= " -i " . escapeshellarg($interface);
+			$start .= " -i " . escapeshellarg($if_index++ . ":" . $interface);
 			$start .= " -n " . escapeshellarg("{$cf['host']}:{$cf['port']}");
 			if (is_numericint($cf['maxflows'])) {
 				$start .= " -m " . escapeshellarg($cf['maxflows']);
@@ -113,10 +115,10 @@ function validate_form_softflowd($post, &$input_errors) {
 	if (!is_port($post['port'])) {
 		$input_errors[] = "You must specify a valid port number in the 'Port' field";
 	}
-	if (!in_array($post['version'], array(1, 5, 9))) {
+	if (!in_array($post['version'], array(1, 5, 9, 10))) {
 		$input_errors[] = 'You must specify a netflow version';
 	}
-	if (!in_array($post['flowtracking'], array("full", "proto", "ip"))) {
+	if (!in_array($post['flowtracking'], array("vlan", "full", "proto", "ip"))) {
 		$input_errors[] = 'You must specify a valid flow tracking selection';
 	}
 	if (!empty($post['hoplimit']) && (!is_numericint($post['hoplimit']) || ($post['hoplimit'] < 1) || ($post['hoplimit'] > 255))) {
@@ -157,6 +159,31 @@ function cleanup_config_softflowd() {
 	}
 	$a_pkg = array();
 	$a_pkg[0] = $pffconf;
+}
+
+function display_interface_indices_softflowd() {
+	global $config;
+
+	if (is_array($config['installedpackages']['softflowd']['config'][0])) {
+		$cf = $config['installedpackages']['softflowd']['config'][0];
+	} else {
+		$cf = array();
+	}
+	
+	/* Compile and display the list of interface indices if softflowd is active */
+	if (isset($cf['interface'])) {
+		$interface_list = explode(",", $cf['interface']);
+		$interface_indices = "";
+		if (!empty($cf['host']) && !empty($interface_list) && $cf['enable'] != "off") {
+			$if_index = 1;
+			foreach ($interface_list as $interface_friendly) {
+				$interface_desc = convert_friendly_interface_to_friendly_descr($interface_friendly);
+				$interface_indices .= "{$if_index}: {$interface_desc}<br>";
+				$if_index++;
+			}
+			print_info_box("The following interface indices are currently in use:<br><br>{$interface_indices}", "info", "");
+		}
+	}
 }
 
 ?>
