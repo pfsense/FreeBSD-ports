@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Status_Traffic_Totals
-PORTVERSION=	1.2.3
+PORTVERSION=	1.2.4
 CATEGORIES=	net
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -15,7 +15,8 @@ LICENSE=	APACHE20
 NO_BUILD=	yes
 NO_MTREE=	yes
 
-PLIST_SUB=	PORTNAME=${PORTNAME}
+SUB_FILES=	pkg-install pkg-deinstall
+SUB_LIST=	PORTNAME=${PORTNAME}
 
 .include <bsd.port.pre.mk>
 
@@ -29,7 +30,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/www
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
 	${MKDIR} ${STAGEDIR}${DATADIR}
-	${INSTALL_DATA} -m 0644 ${FILESDIR}${PREFIX}/pkg/Status_Traffic_Totals.xml \
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/Status_Traffic_Totals.xml \
 		${STAGEDIR}${PREFIX}/pkg
 	${INSTALL_DATA} ${FILESDIR}/etc/inc/priv/status_traffic_totals.priv.inc \
 		${STAGEDIR}/etc/inc/priv
