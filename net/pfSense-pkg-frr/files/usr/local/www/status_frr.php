@@ -161,6 +161,9 @@ $pgtitle = array(gettext("Services"),gettext("FRR"),gettext("Status"));
 if ((empty($_REQUEST['protocol']) || ($_REQUEST['protocol'] == "zebra")) && $frr_enabled) {
 	defCmdT("zebra_routes", "Zebra Routes", "{$control_script} zebra route", true, 5);
 }
+if ((empty($_REQUEST['protocol']) || ($_REQUEST['protocol'] == "zebra")) && $frr_enabled) {
+	defCmdT("zebra_routes6", "Zebra IPv6 Routes", "{$control_script} zebra route6", true, 5);
+}
 
 if ((empty($_REQUEST['protocol']) || ($_REQUEST['protocol'] == "bgp")) && $frr_enabled && $bgpd_enabled) {
 	defCmdT("bgp_routes", "BGP Routes", "{$control_script} bgp route", true, 6);

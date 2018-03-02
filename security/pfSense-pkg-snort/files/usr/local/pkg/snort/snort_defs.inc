@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009-2010 Robert Zelaya
- * Copyright (c) 2013-2017 Bill Meeks
+ * Copyright (c) 2013-2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,11 +36,12 @@ if (!defined("SNORTLOGDIR"))
 if (!defined("SNORT_BIN_VERSION")) {
 	// Grab the Snort binary version programmatically
 	$snortbindir = SNORT_PBI_BINDIR;
-	$snortver = exec_command("{$snortbindir}/snort -V 2>&1 |/usr/bin/grep Version | /usr/bin/cut -c20-26");
+	$snortver = exec_command("{$snortbindir}/snort -V 2>&1 |/usr/bin/grep Version | /usr/bin/cut -c20-27");
+	$snortver = trim($snortver);
 	if (!empty($snortver))
 		define("SNORT_BIN_VERSION", $snortver);
 	else
-		define("SNORT_BIN_VERSION", "2.9.9.0");
+		define("SNORT_BIN_VERSION", "2.9.11.1");
 }
 if (!defined("SNORT_SID_MODS_PATH"))
 	define('SNORT_SID_MODS_PATH', "{$g['vardb_path']}/snort/sidmods/");
@@ -80,7 +81,7 @@ if (!defined("SNORT_OPENAPPID_DNLD_URL"))
 if (!defined("SNORT_OPENAPPID_DNLD_FILENAME"))
 	define("SNORT_OPENAPPID_DNLD_FILENAME", "snort-openappid.tar.gz");
 if (!defined("SNORT_OPENAPPID_RULES_URL"))
-	define("SNORT_OPENAPPID_RULES_URL", "http://www.ifs.edu.br/");
+	define("SNORT_OPENAPPID_RULES_URL", "http://files.pfsense.org/openappid/");
 if (!defined("SNORT_OPENAPPID_RULES_FILENAME"))
 	define("SNORT_OPENAPPID_RULES_FILENAME", "appid_rules.tar.gz");
 if (!defined("SNORT_RULES_UPD_LOGFILE"))

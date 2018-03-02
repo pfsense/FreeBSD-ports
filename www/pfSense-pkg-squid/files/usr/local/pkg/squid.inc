@@ -337,7 +337,10 @@ function squid_write_rcfile() {
 	$rc['file'] = 'squid.sh';
 	$rc['start'] = <<< EOD
 #/sbin/sysctl net.inet.ip.portrange.reservedhigh=0
-if [ -z "`/bin/ps auxw | /usr/bin/grep "[s]quid " | /usr/bin/awk '{print $2}'`" ]; then
+SQUID_ENABLED=$(/usr/local/sbin/read_xml_tag.sh string installedpackages/squid/config/enable_squid)
+if [ "\${SQUID_ENABLED}" != "on" ]; then
+	exit 0
+elif [ -z "`/bin/ps auxw | /usr/bin/grep "[s]quid " | /usr/bin/awk '{print $2}'`" ]; then
 	{$squid_base}/sbin/squid -f {$squid_conffile_var}
 fi
 
@@ -808,6 +811,14 @@ function squid_validate_general($post, &$input_errors) {
 	if ($post['ssl_proxy'] == 'on') {
 		if ($post['dca'] == 'none') {
 			$input_errors[] = "SSL interception cannot be enabled without a CA.";
+		} else {
+			$dca = lookup_ca($post['dca']);
+			if (!$dca) {
+				$input_errors[] = "Invalid SSL interception CA.";
+			}
+			if (empty($dca['prv'])) {
+				$input_errors[] = "The SSL interception CA must have a private key (internal CA, not external)";
+			}
 		}
 		if (empty($post['ssl_active_interface'])) {
 			$input_errors[] = "You must select at least one interface under 'SSL Intercept Interface(s)' when 'HTTPS/SSL Interception' is enabled.";
@@ -2404,4 +2415,18 @@ function squid_do_xmlrpc_sync($sync_to_ip, $port, $protocol, $username, $passwor
 			log_error("[squid] XMLRPC reload data success with {$url}:{$port} (pfsense.exec_php).");
 		}
 	}
+}
+
+/* Get a listing of CA entries which are valid for use with MITM/Splice.
+ * They MUST have a private key present!
+ */
+function squid_list_ssl_ca() {
+	global $config;
+	$prvca_list = array();
+	foreach ($config['ca'] as $ca) {
+		if (!empty($ca['prv'])) {
+			$prvca_list[] = $ca;
+		}
+	}
+	return $prvca_list;
 }

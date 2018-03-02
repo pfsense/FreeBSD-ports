@@ -5,8 +5,7 @@ PORTNAME=	vagalume
 PORTVERSION=	0.8.6
 PORTREVISION=	2
 CATEGORIES=	audio
-MASTER_SITES=	http://vagalume.igalia.com/files/source/ \
-		DEBIAN_POOL/pool/main/v/vagalume/
+MASTER_SITES=	http://vagalume.igalia.com/files/source/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GTK+-based client for the Last.fm online radio
@@ -25,7 +24,7 @@ INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=	DBUS TRAY NLS GCONF
 OPTIONS_DEFAULT=	DBUS TRAY
-OPTIONS_SUB=	NLS DBUS
+OPTIONS_SUB=	yes
 TRAY_DESC=	Tray icon and libnotify support
 
 DBUS_LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib

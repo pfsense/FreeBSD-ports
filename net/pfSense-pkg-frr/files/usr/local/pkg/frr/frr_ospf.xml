@@ -108,26 +108,33 @@
 		<field>
 			<fielddescr>Redistribute</fielddescr>
 			<fieldname>redistributeconnectedsubnets</fieldname>
-			<description>Redistribute connected networks (Default no)</description>
+			<description>Redistribute connected networks</description>
 			<type>checkbox</type>
 			<combinefields>begin</combinefields>
 		</field>
 		<field>
-			<fielddescr>Redistribute default route</fielddescr>
+			<fielddescr>Redistribute Kernel</fielddescr>
+			<fieldname>redistributekernel</fieldname>
+			<description>Redistribute Kernel routing table (pfSense static routes)</description>
+			<type>checkbox</type>
+			<combinefields>end</combinefields>
+		</field>
+		<field>
+			<fieldname>redistributebgp</fieldname>
+			<description>Redistribute BGP Routes to OSPF Neighbors</description>
+			<type>checkbox</type>
+			<combinefields>begin</combinefields>
+		</field>
+		<field>
+			<fielddescr>Redistribute Default</fielddescr>
 			<fieldname>redistributedefaultroute</fieldname>
-			<description>Redistribute a default route to this device (Default no)</description>
+			<description>Redistribute a default route to this device</description>
 			<type>checkbox</type>
 		</field>
 		<field>
 			<fielddescr>Redistribute static</fielddescr>
 			<fieldname>redistributestatic</fieldname>
 			<description>Redistribute FRR static routes</description>
-			<type>checkbox</type>
-		</field>
-		<field>
-			<fielddescr>Redistribute Kernel</fielddescr>
-			<fieldname>redistributekernel</fieldname>
-			<description>Redistribute Kernel routing table (pfSense static routes)</description>
 			<type>checkbox</type>
 			<combinefields>end</combinefields>
 		</field>

@@ -30,7 +30,7 @@
 	<title>Status: RRD Summary</title>
 	<menu>
 		<name>RRD Summary</name>
-		<tooltiptext>Display total amount of traffic passed In/Out during this and the previous month.</tooltiptext>
+		<tooltiptext>Estimated month-over-month traffic passed In/Out during the specified period.</tooltiptext>
 		<section>Status</section>
 		<url>/status_rrd_summary.php</url>
 	</menu>

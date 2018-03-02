@@ -128,8 +128,8 @@ if ($_POST['save-view']) {
 	$savemsg = "The current view has been updated.";
 }
 
-//add a new view
-if ($_POST['add-view']) {
+//add a new view and make sure the string isn't empty
+if ($_POST['add-view'] && $_POST['view-title'] != "") {
 
 	$title = $_POST['view-title'];
 
@@ -149,7 +149,7 @@ if ($_POST['add-view']) {
 
 	write_config(gettext("Status Monitoring View Added"));
 
-	$savemsg = "The \"" . $title . "\" view has been added.";
+	$savemsg = "The \"" . htmlspecialchars($title) . "\" view has been added.";
 }
 
 $view_removed = false;
@@ -436,7 +436,7 @@ if (is_array($config['rrd']['savedviews'])) {
 		}
 
 		$view_slug = "/status_monitoring.php?view=" . createSlug($view['title']);
-		$tab_array[] = array($view['title'], $active_tab, $view_slug);
+		$tab_array[] = array(htmlspecialchars($view['title']), $active_tab, $view_slug);
 
 	}
 
@@ -998,7 +998,7 @@ events.push(function() {
 			if(!start || !end) {
 				error = "Invalid Date/Time in Custom Period."
 				$("#monitoring-chart").hide();
-				$("#chart-error").show().html('<strong>Error</strong>: ' + error);
+				$("#chart-error").show().text('Error: ' + error);
 				console.warn(error);
 				return false;
 			}
@@ -1161,7 +1161,9 @@ events.push(function() {
 	    do {
 
 			view_title=prompt("Enter a unique title for your view:");
-
+			if(view_title == null){
+				break;
+			}
 	        var title_slug = createSlug(view_title);
 
 	        if(jQuery.inArray(title_slug, current_titles) !== -1) {
@@ -1216,13 +1218,13 @@ events.push(function() {
 
 				if (error) {
 					$("#monitoring-chart").hide();
-					$("#chart-error").show().html('<strong>Error</strong>: ' + error);
+					$("#chart-error").show().text('Error: ' + error);
 					return console.warn(error);
 				}
 
 				if (json.error) {
 					$("#monitoring-chart").hide();
-					$("#chart-error").show().html('<strong>Error</strong>: ' + json.error);
+					$("#chart-error").show().text('Error: ' + json.error);
 					return console.warn(json.error);
 				}
 
@@ -1298,13 +1300,13 @@ events.push(function() {
 				}
 
 				$("#monitoring-chart").hide();
-				$("#chart-error").show().html('<strong>Error</strong>: ' + error);
+				$("#chart-error").show().text('Error: ' + error);
 				return console.warn(error);
 			}
 
 			if (json.error) {
 				$("#monitoring-chart").hide();
-				$("#chart-error").show().html('<strong>Error</strong>: ' + json.error);
+				$("#chart-error").show().text('Error: ' + json.error);
 				return console.warn(json.error);
 			}
 

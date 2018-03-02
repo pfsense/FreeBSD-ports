@@ -3,7 +3,7 @@
 
 PORTNAME=	dtrace-toolkit
 PORTVERSION=	1.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	sysutils
 
 MAINTAINER=	skreuzer@FreeBSD.org

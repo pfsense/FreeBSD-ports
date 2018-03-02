@@ -48,7 +48,6 @@
     SUBDIR += edict-fpw
     SUBDIR += edict-utf-8
     SUBDIR += edyvalue
-    SUBDIR += egg-canna
     SUBDIR += eijiro-fpw
     SUBDIR += epwutil
     SUBDIR += esecanna
@@ -124,7 +123,6 @@
     SUBDIR += japaneseAFM
     SUBDIR += jargon-fpw
     SUBDIR += jcode.pl
-    SUBDIR += jd
     SUBDIR += jed
     SUBDIR += jishyo
     SUBDIR += jls

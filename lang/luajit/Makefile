@@ -3,6 +3,7 @@
 
 PORTNAME=	luajit
 DISTVERSION=	2.0.5
+PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	http://luajit.org/download/
 DISTNAME=	LuaJIT-${DISTVERSION}
@@ -16,7 +17,7 @@ USE_LDCONFIG=	yes
 
 PLIST_SUB+=	VERSION=${DISTVERSION}
 
-ONLY_FOR_ARCHS=		amd64 armv6 i386
+ONLY_FOR_ARCHS=		amd64 armv6 armv7 i386
 ONLY_FOR_ARCHS_REASON=	Requires newer gcc/clang to compile.
 
 post-install:

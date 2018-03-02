@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME?=	mariadb
-PORTVERSION=	5.5.57
-PORTREVISION?=	3
+PORTVERSION=	5.5.59
+PORTREVISION?=	0
 CATEGORIES=	databases ipv6
 MASTER_SITES=	http://ftp.osuosl.org/pub/mariadb/${PORTNAME}-${PORTVERSION}/source/ \
 		http://mirrors.supportex.net/mariadb/${PORTNAME}-${PORTVERSION}/source/ \
@@ -24,7 +24,7 @@ SUB_FILES=	pkg-message
 PKGMESSAGE=	${WRKDIR}/pkg-message
 
 SLAVEDIRS=	databases/mariadb55-client
-USES=		cmake:noninja shebangfix ssl
+USES+=		cmake:noninja shebangfix ssl
 USE_LDCONFIG=	${PREFIX}/lib/mysql
 SHEBANG_FILES=	scripts/*.sh sql-bench/[a-km-z]*
 
@@ -51,7 +51,6 @@ CMAKE_ARGS+=	-DINSTALL_DOCDIR="share/doc/mysql" \
 DATADIR=	${PREFIX}/share/mysql
 
 BROKEN_aarch64=		Fails to link: missing sbrk
-BROKEN_armv6=		Does not compile on armv6
 BROKEN_sparc64=		Does not compile: Unsupported platform
 
 .if defined(USE_MYSQL)

@@ -2,8 +2,12 @@ pkg/cellular.inc
 pkg/cellular.xml
 pkg/pkg_cellular.inc
 sbin/cellular
+sbin/cellular_check.php
+bin/cellular_dev.py
 www/widgets/widgets/cellular.widget.php
 %%DATADIR%%/info.xml
 /etc/inc/priv/cellular.priv.inc
 @dir /etc/inc/priv
 @dir /etc/inc
+/etc/devd/cellular.conf
+@dir /etc/devd

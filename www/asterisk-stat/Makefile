@@ -11,11 +11,13 @@ DISTNAME=	${PORTNAME}-v${PORTVERSION:S/./_/g}
 MAINTAINER=	jfkimura@yahoo.co.jp
 COMMENT=	ASTERISK call detail records analyzer
 
+IGNORE_WITH_PHP=	70 71 72
+
 LIB_DEPENDS=	libgd.so:graphics/gd
 
 NO_BUILD=	yes
+USES=		php:web
 USE_PHP=	session gd pcre
-WANT_PHP_WEB=	yes
 ASTERISKDIR?=	${WWWDIR}
 SITE_SUBDIR=	asterisk-stat-v2
 WRKSRC=		${WRKDIR}/${SITE_SUBDIR}

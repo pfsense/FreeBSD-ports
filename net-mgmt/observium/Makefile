@@ -1,9 +1,10 @@
 # Created by: rflynn@acsalaska.net
 # $FreeBSD$
+# Observium version can be found by looking at ${WRKSRC}/includes/definitions/version.inc.php
 
 PORTNAME=	observium
-PORTVERSION=	0.16.10.8128
-PORTREVISION=	5
+PORTVERSION=	0.17.9.8859
+PORTREVISION=	0
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://www.observium.org/
 DISTNAME=	${PORTNAME}-community-latest
@@ -12,59 +13,23 @@ DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 MAINTAINER=	dirkx@webweaving.org
 COMMENT=	Autodiscovering PHP/MySQL/SNMP based network monitoring
 
-LICENSE=        EULA
+LICENSE=	EULA
 LICENSE_NAME=	"Observium License Version 1.0"
 LICENSE_FILE=	${WRKSRC}/LICENSE.COMMUNITY
-LICENSE_PERMS=  dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		php:cli python shebangfix
+USES=		php:cli python${PY_MYSQL} shebangfix
 SHEBANG_FILES=	\
 		mibs/process.pl \
 		poller-wrapper.py \
-		scripts/add_ds_to_rrd.pl \
-		scripts/add_ds.pl \
-		scripts/agent-local/areca-hw \
-		scripts/agent-local/asterisk \
-		scripts/agent-local/bind \
-		scripts/agent-local/crashplan \
-		scripts/agent-local/edac \
-		scripts/agent-local/exim-mailqueue.sh \
-		scripts/agent-local/hdarray \
-		scripts/agent-local/ipmitool-sensor \
-		scripts/agent-local/kamailio \
-		scripts/agent-local/ksm \
-		scripts/agent-local/lighttpd \
-		scripts/agent-local/lmsensors \
-		scripts/agent-local/lvs_stats \
-		scripts/agent-local/memcached \
-		scripts/agent-local/nginx \
-		scripts/agent-local/postfix_mailgraph \
-		scripts/agent-local/postfix_qshape \
-		scripts/agent-local/postgresql.pl \
-		scripts/agent-local/proxmox-qemu \
-		scripts/agent-local/sabnzbd-qstatus \
-		scripts/agent-local/temperature \
-		scripts/agent-local/virt-what \
-		scripts/agent-local/vmwaretools \
-		scripts/agent-local/zimbra \
-		scripts/get-geshi.sh \
-		scripts/get-jpgraph.sh \
-		scripts/glue.py \
-		scripts/ifAlias \
-		scripts/ifAlias_persist \
-		scripts/logparser \
-		scripts/makecss.sh \
-		scripts/observium_agent \
-		scripts/removespikes.php \
-		scripts/removespikes.pl \
-		scripts/rename-mibs.pl \
-		scripts/rrdtoolx.py
+		poller.php \
+		scripts/
 
 USE_PHP=	ctype filter gd iconv json mcrypt mysqli openssl posix session snmp tokenizer xml zlib
-IGNORE_WITH_PHP=	71
 
+NO_ARCH=	yes
 NO_BUILD=	yes
 
 RUN_DEPENDS+=	rrdtool:databases/rrdtool \
@@ -91,6 +56,7 @@ LIBVIRT_RUN_DEPENDS=	virsh:devel/libvirt
 NAGPLUGINS_RUN_DEPENDS=	${LOCALBASE}/libexec/nagios/check_nagios:net-mgmt/nagios-plugins
 NMAP_RUN_DEPENDS=	nmap:security/nmap
 PYPOLLER_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MySQLdb>0:databases/py-MySQLdb
+PYPOLLER_VARS=	PY_MYSQL=:2.7
 SVN_RUN_DEPENDS=	svn:devel/subversion
 WMIC_RUN_DEPENDS=	wmic:net-mgmt/wmi-client
 

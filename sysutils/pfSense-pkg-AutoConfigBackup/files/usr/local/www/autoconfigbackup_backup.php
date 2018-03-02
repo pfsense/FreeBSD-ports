@@ -28,9 +28,11 @@ if (!$config['installedpackages']['autoconfigbackup']['config'][0]['username']) 
 }
 
 if ($_POST) {
+
 	if ($_REQUEST['nooverwrite']) {
 		touch("/tmp/acb_nooverwrite");
 	}
+
 	if ($_REQUEST['reason']) {
 		if (write_config($_REQUEST['reason'])) {
 			$savemsg = "Backup completed successfully.";
@@ -40,6 +42,7 @@ if ($_POST) {
 	} else {
 		$savemsg = "Backup not completed - write_config() failed.";
 	}
+
 	$config = parse_config(true);
 	conf_mount_rw();
 	unlink_if_exists("/cf/conf/lastpfSbackup.txt");
@@ -60,7 +63,7 @@ include("head.inc");
 if ($input_errors) {
 	print_input_errors($input_errors);
 }
-if ($savemsg) {
+else if ($savemsg) {
 	print_info_box($savemsg, 'success');
 }
 

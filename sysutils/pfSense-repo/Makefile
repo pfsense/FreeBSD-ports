@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-repo
-DISTVERSION=	2.4.1
+DISTVERSION=	2.4.3
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -18,7 +19,8 @@ NO_MTREE=	yes
 
 SUB_FILES=	pkg-install
 SUB_LIST=	PORTNAME=${PORTNAME} \
-		PRODUCT_NAME=${PRODUCT_NAME}
+		PRODUCT_NAME=${PRODUCT_NAME} \
+		DEFAULT_REPO=${DEFAULT_REPO}
 
 DATADIR=	${PREFIX}/share/pfSense
 
@@ -26,14 +28,20 @@ DATADIR=	${PREFIX}/share/pfSense
 
 PFSENSE_REPOS?=	pfSense-repo pfSense-repo-devel
 PFSENSE_REPOS_${ARCH}?=	${PFSENSE_REPOS}
+PFSENSE_DEFAULT_REPO?=	pfSense-repo-devel
+PFSENSE_DEFAULT_REPO_${ARCH}?=	${PFSENSE_DEFAULT_REPO}
+DEFAULT_REPO=	${DATADIR}/pkg/repos/${PFSENSE_DEFAULT_REPO_${ARCH}}.conf
 TMP_PLIST_FILES=${PFSENSE_REPOS_${ARCH}:C/$/.conf/} \
 		${PFSENSE_REPOS_${ARCH}:C/$/.descr/} \
 		${PFSENSE_REPOS_${ARCH}:C/$/.abi/} \
 		${PFSENSE_REPOS_${ARCH}:C/$/.altabi/}
-PLIST_FILES=	${TMP_PLIST_FILES:C/^/%%DATADIR%%\/pkg\/repos\//}
+PLIST_FILES=	${TMP_PLIST_FILES:C/^/%%DATADIR%%\/pkg\/repos\//} \
+		${DEFAULT_REPO}.default
 DEFAULT_ABI=	${OPSYS}:${OSREL:C/\..*//}:${ARCH}
 
-.if ${ARCH} == "amd64"
+.if ${ARCH} == "aarch64"
+ALTABI_ARCH=	aarch64:64
+.elif ${ARCH} == "amd64"
 ALTABI_ARCH=	x86:64
 .elif ${ARCH} == "i386"
 ALTABI_ARCH=	x86:32
@@ -59,6 +67,7 @@ do-build:
 		-e "s,%%PKG_REPO_SERVER_RELEASE%%,${PKG_REPO_SERVER_RELEASE},g" \
 		-e "s,%%POUDRIERE_PORTS_NAME%%,${POUDRIERE_PORTS_NAME},g" \
 		-e "s,%%PRODUCT_NAME%%,${PRODUCT_NAME},g" \
+		-e "s,%%REPO_BRANCH_PREFIX%%,${REPO_BRANCH_PREFIX},g" \
 		${WRKSRC}/${f}.conf
 	@if [ -f ${WRKSRC}/${f}.abi ]; then \
 		${REINPLACE_CMD} -i '' \
@@ -74,6 +83,7 @@ do-build:
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/pkg/repos
+	${TOUCH} ${STAGEDIR}${DEFAULT_REPO}.default
 .for f in ${PFSENSE_REPOS_${ARCH}}
 	${INSTALL_DATA} ${WRKSRC}/${f}.conf ${STAGEDIR}${DATADIR}/pkg/repos
 	${INSTALL_DATA} ${WRKSRC}/${f}.descr ${STAGEDIR}${DATADIR}/pkg/repos

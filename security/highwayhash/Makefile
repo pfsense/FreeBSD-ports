@@ -11,7 +11,8 @@ COMMENT=	Fast strong hash functions: SipHash/HighwayHash
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	amd64 arm64 powerpc powerpc64
+BROKEN_aarch64=		fails to compile: /usr/lib/clang/5.0.0/include/mmintrin.h:47:5: use of undeclared identifier '__builtin_ia32_emms'
+ONLY_FOR_ARCHS=		aarch64 amd64 powerpc powerpc64
 ONLY_FOR_ARCHS_REASON=	Assembly is implemented only for specific architectures in highwayhash/tsc_timer.h
 
 USES=		gmake
@@ -26,7 +27,7 @@ post-patch:
 		s|LIBDIR|XLIBDIR|; \
 		s| -O3||; \
 		s|install -m0755 high|${INSTALL_DATA} high|; \
-       		s|install -m0755 lib|${INSTALL_LIB} lib|' \
+		s|install -m0755 lib|${INSTALL_LIB} lib|' \
 		${WRKSRC}/Makefile
 
 post-install:

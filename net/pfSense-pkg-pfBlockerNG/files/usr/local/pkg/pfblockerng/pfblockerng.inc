@@ -2341,7 +2341,6 @@ function pfb_aliastables($mode) {
 
 	// Only execute function if platform is NanoBSD or Ramdisks are used.
 	if (($g['platform'] != 'pfSense') || isset($config['system']['use_mfs_tmpvar'])) {
-		conf_mount_rw();
 		if ($mode == 'update') {
 			// Archive aliastable folder
 			pfb_logger("\n\nArchiving Aliastable folder\n", 1);
@@ -2380,14 +2379,11 @@ function pfb_aliastables($mode) {
 				$msg = "\n** Adding earlyshellcmd **\n";
 			}
 		}
-		conf_mount_ro();
 	}
 	else {
 		if (file_exists("{$pfb['aliasarchive']}")) {
 			// Remove aliastables archive if found.
-			conf_mount_rw();
 			@unlink_if_exists("{$pfb['aliasarchive']}");
-			conf_mount_ro();
 		}
 		// Remove earlyshellcmd if found.
 		if (isset($config['system']['earlyshellcmd'])) {
@@ -2500,24 +2496,32 @@ function pfb_livetail($logfile, $mode) {
 							exec("/usr/bin/grep -l ' \"{$query} 60 IN A' {$pfb['dnsalias']}/*", $match);
 							$pfb_query = strstr($match[0], 'DNSBL', FALSE);
 
+							// Increment DNSBL Alias counter
 							if (!empty($pfb_query)) {
-								// Increment DNSBL Alias counter
-								if (($handle = @fopen("{$pfb['dnsbl_info']}", 'r')) !== FALSE) {
-									@flock($handle, LOCK_EX);
-									$pfb_output = @fopen("{$pfb['dnsbl_info']}.bk", 'w');
-									@flock($pfb_output, LOCK_EX);
+								$pfb_found = FALSE;
 
-									// Find line with corresponding DNSBL Aliasname
-									while (($line = @fgetcsv($handle)) !== FALSE) {
-										if ($line[0] == $pfb_query) {
-											$line[3] += 1;
+								$lock_handle = @try_lock("dnsbl_info", 5);
+								if ($lock_handle) {
+									if (($handle = @fopen("{$pfb['dnsbl_info']}", 'r')) !== FALSE) {
+										if (($pfb_output = @fopen("{$pfb['dnsbl_info']}.bk", 'w')) !== FALSE) {
+											$pfb_found = TRUE;
+
+											// Find line with corresponding DNSBL Aliasname
+											while (($line = @fgetcsv($handle)) !== FALSE) {
+												if ($line[0] == $pfb_query) {
+														$line[3] += 1;
+												}
+												@fputcsv($pfb_output, $line);
+											}
+											@fclose($pfb_output);
 										}
-										@fputcsv($pfb_output, $line);
+										@fclose($handle);
 									}
 
-									@fclose($pfb_output);
-									@fclose($handle);
-									@rename ("{$pfb['dnsbl_info']}.bk", "{$pfb['dnsbl_info']}");
+									if ($pfb_found) {
+										@rename ("{$pfb['dnsbl_info']}.bk", "{$pfb['dnsbl_info']}");
+									}
+									@unlock($lock_handle);
 								}
 							}
 						}
@@ -5083,10 +5087,14 @@ function sync_package_pfblockerng($cron='') {
 		pfb_logger("{$log}", 1);
 
 		$tablesin = $tablesout = array();
-		// Collect all 'pfB_' Rules that are 'Block/Reject' and do not have bypass states enabled
+		// Collect all 'pfB_' and 'pfb_' rules that are 'Block/Reject' and do not have bypass states enabled
 		if (isset($config['aliases']['alias'])) {
 			foreach ($config['aliases']['alias'] as $alias) {
-				if ($alias['type'] == 'urltable' && strpos($alias['name'], 'pfB_') !== FALSE && strpos($alias['descr'], '[s]') === FALSE) {
+				
+                                if ($alias['type'] == 'urltable' &&
+                                    (strpos($alias['name'], 'pfB_') !== FALSE || strpos($alias['name'], 'pfb_') !== FALSE) &&
+                                    strpos($alias['descr'], '[s]') === FALSE) {
+					
 					if (isset($config['filter']['rule'])) {
 						foreach ($config['filter']['rule'] as $rule) {
 							if ($alias['name'] === $rule['source']['address'] || $alias['name'] === $rule['destination']['address']) {

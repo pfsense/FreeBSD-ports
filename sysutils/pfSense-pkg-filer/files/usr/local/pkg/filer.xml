@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<packagegui>
+	<copyright>
+	<![CDATA[
+/*
+ * filer.xml
+ *
+ * part of pfSense (https://www.pfsense.org)
+ * Copyright (c) 2017 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2012 Marcello Coutinho
+ * Copyright (c) 2011 Brian Scholer
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+	]]>
+	</copyright>
+	<name>filer</name>
+	<title>Filer</title>
+	<include_file>/usr/local/pkg/filer.inc</include_file>
+	<menu>
+		<name>Filer</name>
+		<tooltiptext>Filer</tooltiptext>
+		<section>Diagnostics</section>
+		<configfile>filer.xml</configfile>
+	</menu>
+	<tabs>
+		<tab>
+			<text>Files</text>
+			<url>/pkg.php?xml=filer.xml</url>
+			<active/>
+		</tab>
+		<tab>
+			<text>XMLRPC Sync</text>
+			<url>/pkg_edit.php?xml=filer_sync.xml</url>
+		</tab>
+	</tabs>
+	<adddeleteeditpagefields>
+		<columnitem>
+			<fielddescr>File</fielddescr>
+			<fieldname>fullfile</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Permissions</fielddescr>
+			<fieldname>mod</fieldname>
+		</columnitem>
+		<columnitem>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+		</columnitem>
+	</adddeleteeditpagefields>
+	<fields>
+		<field>
+			<type>listtopic</type>
+			<fieldname>temp</fieldname>
+			<name>File configuration</name>
+		</field>
+		<field>
+			<fielddescr>File</fielddescr>
+			<fieldname>fullfile</fieldname>
+			<type>input</type>
+			<size>60</size>
+			<description>Enter full file path.</description>
+			<required/>
+		</field>
+		<field>
+			<fielddescr>Description</fielddescr>
+			<fieldname>description</fieldname>
+			<description>Enter a description for this file.</description>
+			<type>input</type>
+			<typehint>(Not parsed -- this is for your reference only.)</typehint>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>Permissions</fielddescr>
+			<fieldname>mod</fieldname>
+			<type>input</type>
+			<size>10</size>
+			<description>
+				<![CDATA[
+				Enter file permission you want on this file<br />
+				If left blank, default file permissions (0644) will be used.
+				]]>
+			</description>
+		</field>
+		<field>
+			<fielddescr>File Contents</fielddescr>
+			<fieldname>filedata</fieldname>
+			<description>Leave blank to load an existing file from file system or paste the file content you want to save.</description>
+			<type>textarea</type>
+			<encoding>base64</encoding>
+			<cols>75</cols>
+			<rows>25</rows>
+			<required/>
+		</field>
+		<field>
+			<type>listtopic</type>
+			<fieldname>temp</fieldname>
+			<name>Command to run after file save/sync.</name>
+		</field>
+		<field>
+			<fielddescr>Script/Command</fielddescr>
+			<fieldname>cmd</fieldname>
+			<description>Enter script or command to run after file save/sync.</description>
+			<type>input</type>
+			<typehint>(Optional. If using a custom script, it must have executable bit set.)</typehint>
+			<size>60</size>
+		</field>
+		<field>
+			<fielddescr>Execute mode</fielddescr>
+			<fieldname>background</fieldname>
+			<type>select</type>
+			<options>
+				<option><name>Background (default)</name><value>background</value></option>
+				<option><name>Foreground</name><value>foreground</value></option>
+				<option><name>Do not run this script</name><value>disabled</value></option>
+			</options>
+			<description>Choose the way script will run.</description>
+		</field>
+	</fields>
+	<custom_php_validation_command>
+		filer_validate_input($_POST, $input_errors);
+	</custom_php_validation_command>
+	<custom_delete_php_command>
+		sync_package_filer();
+	</custom_delete_php_command> 
+	<custom_php_resync_config_command>
+		sync_package_filer();
+	</custom_php_resync_config_command>
+</packagegui>

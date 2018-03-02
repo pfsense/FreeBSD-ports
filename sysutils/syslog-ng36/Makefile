@@ -3,13 +3,14 @@
 
 PORTNAME=	syslog-ng
 DISTVERSION=	3.6.4
-PORTREVISION=	1
-.if !defined(MASTERDIR)
-PKGNAMESUFFIX=	36
-.endif
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	https://github.com/balabit/${PORTNAME}/releases/download/${PORTNAME}-${DISTVERSION}/ \
 		http://www.balabit.com/downloads/files/syslog-ng/open-source-edition/${DISTVERSION}/source/ \
+
+.if !defined(MASTERDIR)
+PKGNAMESUFFIX=	36
+.endif
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Powerful syslogd replacement
@@ -119,7 +120,7 @@ CONFIGURE_ARGS+=	--disable-sql
 .if ${PORT_OPTIONS:MJSON}
 LIB_DEPENDS+=		libjson-c.so:devel/json-c
 CONFIGURE_ARGS+=	--enable-json
-PLIST_FILES+= 		lib/syslog-ng/libjson-plugin.so
+PLIST_FILES+=		lib/syslog-ng/libjson-plugin.so
 .else
 CONFIGURE_ARGS+=        --disable-json
 .endif

@@ -5,12 +5,15 @@ PORTNAME=	beast
 PORTVERSION=	0.7.8
 PORTREVISION=	9
 CATEGORIES=	audio
-MASTER_SITES=	http://testbit.eu/pub/dists/beast/v${PORTVERSION:R}/
+MASTER_SITES=	https://beast.testbit.org/pub/v0/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Powerful music composition and modular synthesis application
 
 LICENSE=	LGPL21
+
+DEPRECATED=	4.5 years old version, six versions behind, requires old toolchain, and unmaintained.
+EXPIRATION_DATE=2018-01-04
 
 LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libmad.so:audio/libmad \
@@ -19,6 +22,7 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
 BROKEN_armv6=		fails to package: bseblockutils.SSE.so: No such file or directory
+BROKEN_armv7=		fails to package: bseblockutils.SSE.so: No such file or directory
 BROKEN_powerpc64=	fails to package: bseblockutils.SSE.so: No such file or directory
 
 USES=		desktop-file-utils gettext gmake libtool pathfix pkgconfig \

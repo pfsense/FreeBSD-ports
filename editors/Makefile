@@ -29,6 +29,7 @@
     SUBDIR += dkns
     SUBDIR += dlangide
     SUBDIR += drjava
+    SUBDIR += dte
     SUBDIR += e3
     SUBDIR += ecce
     SUBDIR += edith
@@ -233,13 +234,10 @@
     SUBDIR += texworks
     SUBDIR += the
     SUBDIR += thoteditor
-    SUBDIR += tpad
-    SUBDIR += tree-widget
     SUBDIR += treeform
     SUBDIR += tweak
     SUBDIR += uemacs
     SUBDIR += uzap
-    SUBDIR += vanubi
     SUBDIR += vigor
     SUBDIR += vile
     SUBDIR += vim

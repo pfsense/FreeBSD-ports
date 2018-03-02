@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME?=	mysql
-PORTVERSION=	5.7.19
-PORTREVISION=	2
+PORTVERSION=	5.7.21
 CATEGORIES=	databases ipv6
 MASTER_SITES=	MYSQL/MySQL-5.7
 PKGNAMESUFFIX?=	57-server
@@ -26,8 +25,10 @@ MY_DBDIR=	/var/db/mysql
 MY_SECDIR=	/var/db/mysql_secure
 MY_TMPDIR=	/var/db/mysql_tmpdir
 
-LIB_DEPENDS+=	libevent.so:devel/libevent \
-		liblz4.so:archivers/liblz4
+LIB_DEPENDS+=	libcurl.so:ftp/curl \
+		libevent.so:devel/libevent \
+		liblz4.so:archivers/liblz4 \
+		libprotobuf.so:devel/protobuf
 
 CMAKE_BUILD_TYPE=	Release
 
@@ -56,6 +57,8 @@ CMAKE_ARGS+=	-DINSTALL_LAYOUT=FREEBSD \
 		-DWITH_LIBEVENT=system \
 		-DWITH_LZ4=system \
 		-DWITH_ZLIB=system \
+		-DWITH_PROTOBUF=system \
+		-DWITH_CURL=system \
 		-DINSTALL_MYSQLTESTDIR=0 \
 		-DWITH_DEBUG=0
 
@@ -134,7 +137,7 @@ FEDERATED_SUB_LIST+=		FEDER="--federated"
 FEDERATED_SUB_LIST_OFF+=	FEDER=""
 
 # issue 220865: Currently there's no source to be built with server-side support.
-# 		But this keeps the pkg-plist not overlaping
+#		But this keeps the pkg-plist not overlaping
 CMAKE_ARGS+=	-DWITH_AUTHENTICATION_LDAP=0
 .endif
 
@@ -153,7 +156,7 @@ post-patch:
 	@${REINPLACE_CMD} 's/*.1/${MMAN1}/' ${WRKSRC}/man/CMakeLists.txt
 	# issue 220865: MySQL developers forgot that FreeBSD != Linux
 	@${REINPLACE_CMD} -e 's|%%FREEBSD_LOCAL_LIB%%|${LOCALBASE}/lib|g' \
-	    ${WRKSRC}/cmake/plugin.cmake
+	    ${WRKSRC}/configure.cmake
 
 .if !defined(CLIENT_ONLY)
 post-install:

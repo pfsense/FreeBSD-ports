@@ -20,15 +20,16 @@ OPTIONS_DEFINE=	DOCS EXAMPLES NLS
 OPTIONS_SUB=	yes
 
 CONFIGURE_ARGS=	--disable-yacc
+.ifdef QEMU_EMULATING
+# XXX bug 224740: configure hangs
+CONFIGURE_ENV=	gl_cv_func_printf_enomem=no
+.endif
 GNU_CONFIGURE=	yes
 TEST_TARGET=	check
 USE_PERL5=	build
 USES=		charsetfix localbase makeinfo perl5 tar:xz
 
 INFO=		bison
-PORTDATA=	*
-PORTDOCS=	*
-PORTEXAMPLES=	*
 
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext

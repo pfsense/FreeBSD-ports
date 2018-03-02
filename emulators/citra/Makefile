@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	citra
-PORTVERSION=	s20170930
-PORTREVISION?=	1
+PORTVERSION=	s20180222
+PORTREVISION?=	0
 CATEGORIES=	emulators
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -26,19 +26,21 @@ ONLY_FOR_ARCHS_REASON=	https://github.com/MerryMage/dynarmic/issues/35
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	citra-emu
-GH_TAGNAME=	5ba48c16
+GH_TAGNAME=	e51a642a
 GH_TUPLE=	citra-emu:ext-soundtouch:019d208:soundtouch/externals/soundtouch \
-		MerryMage:dynarmic:8f15e3f:dynarmic/externals/dynarmic \
-		fmtlib:fmt:3.0.0-187-gac5484c:fmt/externals/fmt \
-		herumi:xbyak:v5.40:xbyak/externals/xbyak \
-		lsalzman:enet:a84c120:enet/externals/enet \
-		neobrain:nihstro:7e24743:nihstro/externals/nihstro \
-		philsquared:Catch:v1.9.4:catch/externals/catch \
-		svn2github:inih:603729d:inih/externals/inih/inih \
-		weidai11:cryptopp:CRYPTOPP_5_6_5-610-g24bc2b8:cryptopp/externals/cryptopp/cryptopp
+		MerryMage:dynarmic:d1d4705:dynarmic/externals/dynarmic \
+		benhoyt:inih:r40:inih/externals/inih/inih \
+		catchorg:Catch2:v2.1.1:catch/externals/catch \
+		fmtlib:fmt:4.0.0:fmt/externals/fmt \
+		herumi:xbyak:v5.53-1-gc5da377:xbyak/externals/xbyak \
+		lsalzman:enet:39a72ab:enet/externals/enet \
+		neobrain:nihstro:fd69de1:nihstro/externals/nihstro \
+		weidai11:cryptopp:CRYPTOPP_6_0_0:cryptopp/externals/cryptopp/cryptopp
 
 USES=		cmake:outsource compiler:c++14-lang iconv localbase:ldflags
 USE_SDL=	sdl2
+EXTRA_PATCHES+=	${EXTRA_PATCHES_${OPSYS}_${OSREL:R}}
+EXTRA_PATCHES_FreeBSD_10=	${PATCHDIR}/extra-patch-c++14
 CXXFLAGS+=	-D_GLIBCXX_USE_C99 -D_GLIBCXX_USE_C99_MATH_TR1 \
 		-D_DECLARE_C99_LDBL_MATH # XXX ports/193528
 
@@ -58,13 +60,13 @@ SDL_PLIST_FILES=bin/${PORTNAME} \
 		man/man6/${PORTNAME}.6.gz
 
 QT5_USES=	desktop-file-utils shared-mime-info
-QT5_USE=	QT5=qmake_build,buildtools_build,core,gui,opengl,widgets
+QT5_USE=	QT5=qmake_build,buildtools_build,concurrent_build,core,gui,opengl,widgets
 QT5_CMAKE_BOOL=	ENABLE_QT
 QT5_PLIST_FILES=bin/${PORTNAME}-qt \
 		man/man6/${PORTNAME}-qt.6.gz \
 		share/applications/${PORTNAME}.desktop \
-		share/mime/packages/${PORTNAME}.xml \
-		share/pixmaps/${PORTNAME}.svg
+		share/icons/hicolor/scalable/apps/${PORTNAME}.svg \
+		share/mime/packages/${PORTNAME}.xml
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,share/man,man,' \

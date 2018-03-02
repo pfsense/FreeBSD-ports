@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gegl
-PORTVERSION=	0.3.18
+PORTVERSION=	0.3.20
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	GIMP
 PKGNAMESUFFIX=	3
@@ -16,10 +17,11 @@ LICENSE_FILE_GPLv3+ =	${WRKSRC}/COPYING
 LICENSE_FILE_LGPL3+ =	${WRKSRC}/COPYING.LESSER
 
 LIB_DEPENDS=	libbabl-0.1.so:x11/babl \
-		libjson-glib-1.0.so:devel/json-glib
+		libjson-glib-1.0.so:devel/json-glib \
+		libpng.so:graphics/png
 
-USES=		cpe gettext gmake libtool localbase pathfix pkgconfig \
-		shebangfix tar:bzip2
+USES=		cpe gettext gmake jpeg libtool localbase pathfix pkgconfig \
+		shebangfix uniquefiles tar:bzip2
 USE_GNOME=	glib20 intltool introspection:build
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
@@ -28,7 +30,7 @@ CONFIGURE_ARGS=	--without-vala --disable-docs
 CONFIGURE_ARGS+=--without-mrg --without-lensfun
 INSTALL_TARGET=	install-strip
 
-GEGL_MINOR=	318
+GEGL_MINOR=	320
 GEGL_VER=	0.3
 PLIST_SUB+=	GEGL_MINOR="${GEGL_MINOR}" GEGL_VER=${GEGL_VER}
 
@@ -38,12 +40,16 @@ EXAMPLES=	2geglbuffer \
 
 SHEBANG_FILES=	tools/xml_insert.sh
 
+# Fix conflicts with graphics/gegl and sysutils/coreutils
+EXAMPLESDIR=	${PREFIX}/share/examples/gegl${PKGNAMESUFFIX}
+UNIQUE_SUFFIX_FILES=	bin/gcut bin/gegl
+
 OPTIONS_SUB=	yes
-OPTIONS_DEFINE=	CAIRO ENSCRIPT EXIV2 FFMPEG PIXBUF GRAPHVIZ JASPER JPEG \
-		LUA OPENEXR RAW PANGO PNG LIBRSVG2 SDL SPIRO V4L \
+OPTIONS_DEFINE=	CAIRO ENSCRIPT EXIV2 FFMPEG PIXBUF GRAPHVIZ JASPER \
+		LUA OPENEXR RAW PANGO LIBRSVG2 SDL SPIRO V4L \
 		EXAMPLES LCMS2 WEBP TIFF GEXIV2
-OPTIONS_DEFAULT=CAIRO ENSCRIPT EXIV2 PIXBUF GRAPHVIZ JASPER JPEG LCMS2 LUA \
-		OPENEXR RAW PANGO PNG LIBRSVG2 SDL SPIRO V4L WEBP TIFF
+OPTIONS_DEFAULT=CAIRO ENSCRIPT EXIV2 PIXBUF GRAPHVIZ JASPER LCMS2 LUA \
+		OPENEXR RAW PANGO LIBRSVG2 SDL SPIRO V4L WEBP TIFF
 
 ENSCRIPT_DESC=	Enscript support
 SPIRO_DESC=	Spiro support
@@ -70,11 +76,8 @@ GRAPHVIZ_CONFIGURE_WITH=	graphviz
 JASPER_LIB_DEPENDS=	libjasper.so:graphics/jasper
 JASPER_CONFIGURE_WITH=	jasper
 
-JPEG_USES=		jpeg
-JPEG_CONFIGURE_WITH=	libjpeg
-
 LCMS2_LIB_DEPENDS=	liblcms2.so:graphics/lcms2
-LCMS2_CONFIGURE_WITH=	lcms
+LCMS2_CONFIGURE_OFF=	--without-lcms
 
 LUA_USES=		lua
 LUA_CONFIGURE_WITH=	lua
@@ -86,11 +89,8 @@ OPENEXR_CONFIGURE_WITH=	openexr
 RAW_LIB_DEPENDS=	libraw.so:graphics/libraw
 RAW_CONFIGURE_WITH=	libraw
 
-PNG_LIB_DEPENDS=	libpng.so:graphics/png
-PNG_CONFIGURE_WITH=	libpng
-
 LIBRSVG2_USE=		GNOME=librsvg2
-LIBRSVG2_CONFIGURE_WITH=	librsvg
+LIBRSVG2_CONFIGURE_OFF=	--without-librsvg
 
 SDL_USE=		SDL=sdl
 SDL_CONFIGURE_WITH=	sdl
@@ -131,26 +131,19 @@ PLIST_SUB+=	PANGOCAIRO="@comment "
 .endif
 
 post-patch:
-	${REINPLACE_CMD} "s/lua >/lua-${LUA_VER} >/g" ${WRKSRC}/configure
-.if ! ${PORT_OPTIONS:MEXAMPLES}
-	${REINPLACE_CMD} -e 's|tools examples|tools|g' \
-		${WRKSRC}/Makefile.in
-.endif
-	${REINPLACE_CMD} -e 's|\(lua\)\(5\.1\)|\1-\2|g ; s|x86_64|amd64|g' \
+	${REINPLACE_CMD} -e "s/lua >/lua-${LUA_VER} >/g" \
+		-e 's|\(lua\)\(5\.1\)|\1-\2|g ; s|x86_64|amd64|g' \
 		${WRKSRC}/configure
 
-post-install:
-.if ${PORT_OPTIONS:MEXAMPLES}
+post-patch-EXAMPLES-off:
+	${REINPLACE_CMD} -e 's|tools examples|tools|g' \
+		${WRKSRC}/Makefile.in
+
+post-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/data
 	${INSTALL_DATA} ${WRKSRC}/examples/data/surfer.png ${STAGEDIR}${EXAMPLESDIR}/data
 .for ex in ${EXAMPLES}
 	${INSTALL_DATA} ${WRKSRC}/examples/${ex}.c ${STAGEDIR}${EXAMPLESDIR}
 .endfor
-# temporary hacks to allow parallel install
-	@${MV} ${STAGEDIR}${PREFIX}/share/examples/gegl \
-		${STAGEDIR}${PREFIX}/share/examples/gegl3
-.endif
-# temporary hacks to allow parallel install
-	@${MV} ${STAGEDIR}${PREFIX}/bin/gegl ${STAGEDIR}${PREFIX}/bin/gegl3
 
 .include <bsd.port.mk>

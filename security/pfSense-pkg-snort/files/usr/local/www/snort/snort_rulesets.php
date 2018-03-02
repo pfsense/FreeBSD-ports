@@ -5,7 +5,7 @@
  * part of pfSense (https://www.pfsense.org)
  * Copyright (c) 2006-2016 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2009 Robert Zelaya
- * Copyright (c) 2017 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -92,8 +92,8 @@ if (!file_exists("{$snortdir}/rules/" . GPL_FILE_PREFIX . "community.rules"))
 if (($snortdownload == 'off') || ($a_nat[$id]['ips_policy_enable'] != 'on'))
 	$policy_select_disable = "disabled";
 
-// If a Snort VRT policy is enabled and selected, remove all Snort VRT
-// rules from the configured rule sets to allow automatic selection.
+// If a Snort Subscriber Rules policy is enabled and selected, remove all Snort
+// Subscriber rules from the configured rule sets to allow automatic selection.
 if ($a_nat[$id]['ips_policy_enable'] == 'on') {
 	if (isset($a_nat[$id]['ips_policy'])) {
 		$disable_vrt_rules = "disabled";
@@ -227,7 +227,7 @@ if (isset($_POST['selectall'])) {
 			$enabled_rulesets_array[] = basename($file);
 	}
 
-	/* Include the Snort VRT rules only if enabled and no IPS policy is set */
+	/* Include the Snort Subscriber rules only if enabled and no IPS policy is set */
 	if ($snortdownload == 'on' && $a_nat[$id]['ips_policy_enable'] == 'off') {
 		$files = glob("{$snortdir}/rules/" . VRT_FILE_PREFIX . "*.rules");
 		foreach ($files as $file)
@@ -351,17 +351,17 @@ if ($btn_view_flowb_rules == TRUE) {
 print($section);
 
 if ($snortdownload == "on") {
-	$section = new Form_Section('Snort VRT IPS Policy Selection');
+	$section = new Form_Section('Snort Subscriber IPS Policy Selection');
 	$section->addInput(new Form_Checkbox(
 		'ips_policy_enable',
 		'Use IPS Policy',
-		'If checked, Snort will use rules from one of three pre-defined IPS policies in the Snort VRT rules. Default is Not Checked.',
+		'If checked, Snort will use rules from one of three pre-defined IPS policies in the Snort Subscriber rules. Default is Not Checked.',
 		$pconfig['ips_policy_enable'] == 'on' ? true:false,
 		'on'
 	));
 	$section->addInput(new Form_StaticText(
 	null,
-	'<span class="help-block">Selecting this option disables manual selection of Snort VRT categories in the list below, ' . 
+	'<span class="help-block">Selecting this option disables manual selection of Snort Subscriber categories in the list below, ' . 
 		'although Emerging Threats categories may still be selected if enabled on the Global Settings tab.  These ' . 
 		'will be added to the pre-defined Snort IPS policy rules from the Snort VRT.</span>'
 	));
@@ -369,15 +369,17 @@ if ($snortdownload == "on") {
 		'ips_policy',
 		'IPS Policy Selection',
 		$pconfig['ips_policy'],
-		array('connectivity' => 'Connectivity', 'balanced' => 'Balanced', 'security' => 'Security')
-	))->setHelp('Snort IPS policies are:  Connectivity, Balanced or Security.');
+		array('connectivity' => 'Connectivity', 'balanced' => 'Balanced', 'security' => 'Security', 'max-detect' => 'Max-Detect')
+	))->setHelp('Snort IPS policies are:  Connectivity, Balanced, Security or Max-Detect.');
 
 	$section->addInput(new Form_StaticText(
 		'',
 		'<span class="help-block">Connectivity blocks most major threats with few or no false positives. ' . 
 		'Balanced is a good starter policy. It is speedy, has good base coverage level, and covers ' . 
 		'most threats of the day.  It includes all rules in Connectivity. Security is a stringent ' . 
-		'policy.  It contains everything in the first two plus policy-type rules such as a Flash object in an Excel file.</span>'
+		'policy.  It contains everything in the first two plus policy-type rules such as a Flash object ' . 
+		'in an Excel file.  Max-Detect is a policy created for testing network traffic through your ' . 
+		'device.  This policy should be used with caution on production systems!</span>'
 	));
 	print($section);
 }
@@ -408,7 +410,7 @@ if ($snortdownload == "on") {
 			<?php if ($no_community_files)
 				$msg_community = gettext("NOTE: Snort Community Rules have not been downloaded.  Perform a Rules Update to enable them.");
 			      else
-				$msg_community = gettext("Snort GPLv2 Community Rules (VRT certified)");
+				$msg_community = gettext("Snort GPLv2 Community Rules (Talos certified)");
 			      $community_rules_file = gettext(GPL_FILE_PREFIX . "community.rules");
 			?>
 
@@ -507,7 +509,7 @@ if ($snortdownload == "on") {
 						<th><?=gettext("Enabled"); ?></th>
 						<th><?=gettext('Ruleset: Snort SO Rules');?></th>
 					<?php else: ?>
-						<th colspan="4"><?=gettext("Snort VRT rules {$msg_snort}"); ?></th>
+						<th colspan="4"><?=gettext("Snort Subscriber rules {$msg_snort}"); ?></th>
 					<?php endif; ?>
 					<?php if ($openappid_rulesdownload == 'on' && !$no_openappid_files): ?>
 						<th><?=gettext("Enabled"); ?></th>

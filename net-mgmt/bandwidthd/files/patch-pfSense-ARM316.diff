@@ -1,0 +1,50 @@
+--- conf.tab.c.orig	2017-11-13 18:36:06.550975000 -0600
++++ conf.tab.c	2017-11-13 18:39:26.100661000 -0600
+@@ -1090,20 +1090,23 @@
+   case 20:
+ #line 97 "conf.y"
+     {
++	char subnet[128];
+ 	struct in_addr addr, addr2;
+ 	
+ 	SubnetTable[SubnetCount].ip = inet_network(yyvsp[-1].string) & inet_network(yyvsp[0].string);
+     	SubnetTable[SubnetCount].mask = inet_network(yyvsp[0].string);	
+ 
+ 	addr.s_addr = ntohl(SubnetTable[SubnetCount].ip);
++	inet_ntoa_r(addr, subnet, sizeof(subnet));
+ 	addr2.s_addr = ntohl(SubnetTable[SubnetCount++].mask);
+-	syslog(LOG_INFO, "Monitoring subnet %s with netmask %s", inet_ntoa(addr), inet_ntoa(addr2));
++	syslog(LOG_INFO, "Monitoring subnet %s with netmask %s", subnet, inet_ntoa(addr2));
+ 	}
+     break;
+ 
+   case 21:
+ #line 111 "conf.y"
+     {
++	char subn[128];
+ 	unsigned int Subnet, Counter, Mask;
+ 	struct in_addr addr, addr2;
+ 
+@@ -1116,8 +1119,9 @@
+  	SubnetTable[SubnetCount].mask = Subnet; 
+ 	SubnetTable[SubnetCount].ip = inet_network(yyvsp[-2].string) & Subnet;
+ 	addr.s_addr = ntohl(SubnetTable[SubnetCount].ip);
++	inet_ntoa_r(addr, subn, sizeof(subn));
+ 	addr2.s_addr = ntohl(SubnetTable[SubnetCount++].mask);
+-	syslog(LOG_INFO, "Monitoring subnet %s with netmask %s", inet_ntoa(addr), inet_ntoa(addr2));
++	syslog(LOG_INFO, "Monitoring subnet %s with netmask %s", subn, inet_ntoa(addr2));
+ 	}
+     break;
+ 
+diff -ur bandwidthd-2.0.1-old/graph.c bandwidthd-2.0.1/graph.c
+--- graph.c.orig	2017-11-13 18:36:06.551603000 -0600
++++ graph.c	2017-11-13 18:40:09.339780000 -0600
+@@ -771,7 +771,7 @@
+     int black, red;
+     time_t sample_begin, sample_end;    
+     struct tm *timestruct;
+-    long int MarkTime;
++    time_t MarkTime;
+ 	long int MarkTimeStep;
+     double x;
+     

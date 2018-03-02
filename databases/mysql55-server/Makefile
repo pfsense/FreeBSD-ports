@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME?=	mysql
-PORTVERSION=	5.5.57
+PORTVERSION=	5.5.59
 PORTREVISION?=	0
 CATEGORIES=	databases ipv6
 MASTER_SITES=	MYSQL/MySQL-5.5
@@ -87,7 +87,7 @@ post-patch:
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "armv6"
+.if ${ARCH} == armv6 || ${ARCH} == armv7
 EXTRA_PATCHES+=		${FILESDIR}/extra-patch-config.h.cmake
 .endif
 

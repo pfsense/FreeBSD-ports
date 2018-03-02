@@ -47,6 +47,11 @@
 		<executable>tincd</executable>
 		<description>Tinc Mesh VPN</description>
 	</service>
+	<plugins>
+		<item>
+			<type>plugin_carp</type>
+		</item>
+	</plugins>
 	<tabs>
 		<tab>
 			<text>Settings</text>

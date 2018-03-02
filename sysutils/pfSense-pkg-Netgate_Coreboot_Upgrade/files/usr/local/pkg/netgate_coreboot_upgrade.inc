@@ -40,6 +40,9 @@ function get_coreboot_model() {
 	case 'RCC':
 		return 'RCC';
 		break;
+	case 'PLCC-B':
+		return 'PLCC';
+		break;
 	default:
 		return '';
 	}
@@ -52,8 +55,8 @@ function is_netgate_hw() {
 function get_coreboot_details($coreboot) {
 	$details = array();
 
-	if (!preg_match('/^ADI_(RCC|RCCVE|DFF2)-([\d.]{11})-/', $coreboot,
-	    $matches)) {
+	if (!preg_match('/^ADI_(RCC|RCCVE|DFF2|PLCC)-([\d.]{11})/',
+	    $coreboot, $matches)) {
 		return $details;
 	}
 
@@ -78,14 +81,12 @@ function get_new_coreboot_details() {
 	    'RCC' => '%%COREBOOT_RCC_ROM%%',
 	    'RCCVE' => '%%COREBOOT_RCCVE_ROM%%',
 	    'DFF2' => '%%COREBOOT_DFF2_ROM%%',
+	    'PLCC' => '%%COREBOOT_PLCCB_ROM%%',
 	);
 	
 	$model = get_coreboot_model();
 	$details = array();
-	`echo "model: {$model}" >> /tmp/lala`;
-	`echo "rom_names[model]: {$rom_names[$model]}" >> /tmp/lala`;
 	$path = COREBOOT_PATH . $rom_names[$model];
-	`echo "path: {$path}" >> /tmp/lala`;
 
 	if (empty($model) || empty($rom_names[$model]) ||
 	    !file_exists(COREBOOT_PATH . $rom_names[$model])) {
@@ -104,8 +105,14 @@ function upgrade_coreboot($coreboot, &$output) {
 	putenv("PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:" .
 	    "/usr/local/sbin");
 
-	$_gc = exec("/usr/local/sbin/adi_flash_util -u " .
-	    $coreboot['rom_path'] . ' 2>&1', $output, $rc);
+	if ($coreboot['model'] == 'PLCC') {
+		$_gc = exec("/usr/local/bin/flashrom -p " .
+		    "internal:boardmismatch=force -w " . $coreboot['rom_path'] .
+		    ' 2>&1', $output, $rc);
+	} else {
+		$_gc = exec("/usr/local/sbin/adi_flash_util -u " .
+		    $coreboot['rom_path'] . ' 2>&1', $output, $rc);
+	}
 
 	$output = implode("\n", $output);
 

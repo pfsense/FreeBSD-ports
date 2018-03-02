@@ -1,14 +1,14 @@
 # $FreeBSD$
 
 PORTNAME=	envconsul
-PORTVERSION=	0.6.2
+PORTVERSION=	0.7.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Populate values from Consul into a process environment
 
-LICENSE=	MPL
+LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/go:lang/go

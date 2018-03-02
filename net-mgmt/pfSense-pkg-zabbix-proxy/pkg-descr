@@ -1,7 +1,11 @@
-LTS (Long Term Support) release of Zabbix Agent proxy. Zabbix LTS releases
-are supported for Zabbix customers during five (5) years i.e. 3 years of
-Full Support (general, critical and security issues) and 2 additional years
-of Limited Support (critical and security issues only). Zabbix LTS version release
-will result in change of the first version number.
+A Zabbix proxy can collect performance and availability data on behalf of the
+Zabbix server. This way, a proxy can take on itself some of the load of
+collecting data and offload the Zabbix server.
 
-WWW: http://www.zabbix.com/life_cycle_and_release_policy.php
+Also, using a proxy is the easiest way of implementing centralized and
+distributed monitoring, when all agents and proxies report to one Zabbix server
+and all data is collected centrally.
+
+Zabbix is an enterprise-class open source distributed monitoring solution.
+
+WWW: https://www.zabbix.com/

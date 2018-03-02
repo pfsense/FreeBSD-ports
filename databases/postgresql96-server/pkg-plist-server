@@ -527,7 +527,6 @@ lib/libpgcommon.a
 %%TZDATA%%%%DATADIR%%/timezone/CST6CDT
 %%TZDATA%%%%DATADIR%%/timezone/Canada/Atlantic
 %%TZDATA%%%%DATADIR%%/timezone/Canada/Central
-%%TZDATA%%%%DATADIR%%/timezone/Canada/East-Saskatchewan
 %%TZDATA%%%%DATADIR%%/timezone/Canada/Eastern
 %%TZDATA%%%%DATADIR%%/timezone/Canada/Mountain
 %%TZDATA%%%%DATADIR%%/timezone/Canada/Newfoundland
@@ -740,7 +739,6 @@ lib/libpgcommon.a
 %%TZDATA%%%%DATADIR%%/timezone/US/Michigan
 %%TZDATA%%%%DATADIR%%/timezone/US/Mountain
 %%TZDATA%%%%DATADIR%%/timezone/US/Pacific
-%%TZDATA%%%%DATADIR%%/timezone/US/Pacific-New
 %%TZDATA%%%%DATADIR%%/timezone/US/Samoa
 %%TZDATA%%%%DATADIR%%/timezone/UTC
 %%TZDATA%%%%DATADIR%%/timezone/Universal

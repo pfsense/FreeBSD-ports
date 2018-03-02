@@ -161,9 +161,14 @@ display_top_tabs($tab_array, true);
 					<td>
 						<?=htmlspecialchars($list['name'])?>
 					</td>
+					<?php if (!empty($list['address'])) : ?>
 					<td title="<?=filter_expand_alias($list['address'])?>">
 						<?=gettext($list['address'])?>
 					</td>
+					<?php else : ?>
+					<td>
+					</td>
+					<?php endif; ?>
 					<td>
 						<?=htmlspecialchars($list['descr'])?>
 					</td>

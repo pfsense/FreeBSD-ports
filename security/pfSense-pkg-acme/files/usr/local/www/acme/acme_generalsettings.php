@@ -29,7 +29,7 @@ require_once("acme/acme_utils.inc");
 require_once("acme/acme_htmllist.inc");
 require_once("acme/pkg_acme_tabs.inc");
 
-$simplefields = array('enable');
+$simplefields = array('enable', 'writecerts');
 
 if (!is_array($config['installedpackages']['acme'])) {
 	$config['installedpackages']['acme'] = array();
@@ -44,6 +44,7 @@ if ($_POST) {
 		}
 		
 		set_cronjob();
+		acme_write_all_certificates();
 		write_config(gettext("Services: Acme: General settings saved."));
 	}
 }
@@ -71,9 +72,16 @@ $section = new \Form_Section("General settings");
 
 $section->addInput(new \Form_Checkbox(
 	'enable',
-	'',
+	'Cron Entry',
 	'Enable Acme client renewal job. This will configure cron to renew certificates once a day at 3:16. Keeping track of the last succesfull renewal and the number of days set after to renew again. When renewal happens a service can be restarted or a shell script run to load the new certificate for services that need it, if needed this needs to be configured as a action under the certificate settings.',
 	$pconfig['enable']
+));
+
+$section->addInput(new \Form_Checkbox(
+	'writecerts',
+	'Write Certificates',
+	'Write ACME certificates to /conf/acme/ in various formats for use by other scripts or daemons which do not integrate with the certificate manager.',
+	$pconfig['writecerts']
 ));
 
 $form->add($section);

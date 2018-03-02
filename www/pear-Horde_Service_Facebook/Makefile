@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	Horde_Service_Facebook
-PORTVERSION=	2.0.9
+DISTVERSION=	2.0.10
 CATEGORIES=	www pear
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde Facebook client
 
-USES=	horde
+USES=	horde php
 USE_PHP=	json simplexml
 USE_HORDE_RUN=	Horde_Exception \
 		Horde_Http \

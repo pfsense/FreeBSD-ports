@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	moonlight-embedded
-PORTVERSION=	2.4.3
 DISTVERSIONPREFIX=	v
+DISTVERSION=	2.4.6
 CATEGORIES=	games
 
 MAINTAINER=	tobik@FreeBSD.org
@@ -21,7 +21,7 @@ LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
 USES=		cmake localbase:ldflags perl5 pkgconfig ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	irtimmer
-GH_TUPLE=	irtimmer:moonlight-common-c:a1bdb36766f8db5dc9cc0694c9a376f0dca3ab59:common/third_party/moonlight-common-c
+GH_TUPLE=	irtimmer:moonlight-common-c:186cef0e3a4c104dc224f0ca413345571d79b48c:common/third_party/moonlight-common-c
 USE_LDCONFIG=	yes
 USE_PERL5=	build
 USE_SDL=	sdl2
@@ -46,7 +46,7 @@ post-patch:
 		${WRKSRC}/libgamestream/CMakeLists.txt
 	@${RM} ${WRKSRC}/libgamestream/discover.c
 	@${REINPLACE_CMD} -e 's@/etc/moonlight/moonlight.conf@${PREFIX}/etc/moonlight.conf@' \
-		-e 's@moonligt@moonlight@' \
+		-e 's@moonligt@moonlight@g' \
 		${WRKSRC}/docs/README.pod
 
 post-install:

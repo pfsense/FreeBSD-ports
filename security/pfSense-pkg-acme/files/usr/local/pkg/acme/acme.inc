@@ -20,6 +20,49 @@
  */
 
 namespace { // global code
+	/* Write an ACME certificates to the filesystem. */
+	function acme_write_certificate($certref) {
+		global $config;
+		$prefix = '/conf/acme';
+		safe_mkdir($prefix);
+
+		/* Lookup the certificate and CA */
+		$cert = lookup_cert($certref);
+		if (empty($cert)) {
+			return;
+		}
+		$ca = lookup_ca($cert['caref']);
+		if (empty($ca)) {
+			return;
+		}
+
+		/* Decode the certificate, key, and CA certificate */
+		$crt = base64_decode($cert['crt']);
+		$key = base64_decode($cert['prv']);
+		$ca = base64_decode($ca['crt']) . "\n";
+
+		/* Write out the certificate data in various useful formats */
+		file_put_contents("{$prefix}/{$cert['descr']}.crt", $crt);
+		file_put_contents("{$prefix}/{$cert['descr']}.key", $key);
+		file_put_contents("{$prefix}/{$cert['descr']}.ca", $ca);
+		file_put_contents("{$prefix}/{$cert['descr']}.fullchain", $crt . $ca);
+		file_put_contents("{$prefix}/{$cert['descr']}.all.pem", $crt . $key . $ca);
+		return;
+	}
+	/* Write all ACME certificates to the filesystem */
+	function acme_write_all_certificates() {
+		global $config;
+		$a_global = &$config['installedpackages']['acme'];
+		if (!isset($a_global['writecerts'])) {
+			return;
+		}
+
+		/* Find all certificates  */
+		$acmecerts = acme_plugin_certificates(array('type' => 'certificates', 'event' => 'used_certificates'));
+		foreach ($acmecerts['certificatelist'] as $certref => $ac) {
+			acme_write_certificate($certref);
+		}
+	}
 	function acme_plugin_certificates($pluginparams) {
 		global $config;
 		$result = array();
@@ -119,11 +162,17 @@ $a_enabledisable['disable'] = array('name' => 'Disabled');
 
 global $a_acmeserver;
 $a_acmeserver = array();
-$a_acmeserver['letsencrypt-staging'] = array('name' => "Let's Encrypt Staging (for TESTING purposes)",
-    'url' => 'https://acme-staging.api.letsencrypt.org'
+$a_acmeserver['letsencrypt-staging'] = array('name' => "Let's Encrypt Staging ACME v1 (for TESTING purposes)",
+    'url' => 'https://acme-staging.api.letsencrypt.org',
 );
-$a_acmeserver['letsencrypt-production'] = array('name' => "Let's Encrypt Production (Applies rate limits to certificate requests)",
-    'url' => 'https://acme-v01.api.letsencrypt.org'
+$a_acmeserver['letsencrypt-staging-2'] = array('name' => "EXPERIMENTAL: Let's Encrypt Staging ACME v2 (for TESTING purposes)",
+    'url' => 'https://acme-staging-v02.api.letsencrypt.org'
+);
+$a_acmeserver['letsencrypt-production'] = array('name' => "Let's Encrypt Production ACME v1 (Applies rate limits to certificate requests)",
+    'url' => 'https://acme-v01.api.letsencrypt.org',
+);
+$a_acmeserver['letsencrypt-production-2'] = array('name' => "EXPERIMENTAL: Let's Encrypt Production ACME v2 (Applies rate limits to certificate requests)",
+    'url' => 'https://acme-v02.api.letsencrypt.org'
 );
 /*$a_acmeserver['dummy'] = array('name' => "dummy",
     'url' => 'https://example.org'
@@ -157,16 +206,45 @@ $acme_domain_validation_method['standalone'] = array(name => "standalone HTTP se
 	'fields' => array(
 		'port' => array('name'=>"port",'columnheader'=>"Port",'type'=>"textbox",'size'=>"50",
 			'description' =>"HTTP listen port for stand-alone server. Must be 80 or have port 80 on WAN forwarded to this port. Firewall rules must also allow traffic to reach this port."
+		),
+		'ipv6' => array('name'=>"ipv6",'columnheader'=>"IPv6",'type'=>"checkbox",
+			'description' =>"Bind to IPv6 instead of IPv4."
 		)
 	));
 $acme_domain_validation_method['standalonetls'] = array(name => "standalone TLS server",
 	'fields' => array(
 		'port' => array('name'=>"port",'columnheader'=>"Port",'type'=>"textbox",'size'=>"50",
 			'description' =>"TLS listen port for stand-alone server. Must be 443 or have port 443 on WAN forwarded to this port. Firewall rules must also allow traffic to reach this port."
+		),
+		'ipv6' => array('name'=>"ipv6",'columnheader'=>"IPv6",'type'=>"checkbox",
+			'description' =>"Bind to IPv6 instead of IPv4."
 		)
 	));
 $acme_domain_validation_method['dns_manual'] = array(name => "DNS-Manual",
 	'fields' => array(
+	));
+$acme_domain_validation_method['dns_nsupdate'] = array(name => "DNS-NSupdate / RFC 2136",
+	'fields' => array(
+		'NSUPDATE_SERVER' => array('name'=>"nsupdate_server",'columnheader'=>"Server",'type'=>"textbox",
+			'description' =>"Fill in the nsupdate DNS server (IP address or hostname)"
+		),
+		'NSUPDATE_KEYNAME' => array('name'=>"nsupdate_keyname",'columnheader'=>"Key Name",'type'=>"textbox",
+			'description' =>"Fill in a name for the key, if it is different than _acme-challenge.[Domainname]"
+		),
+		'NSUPDATE_KEYALGO' => array('name' => 'nsupdate_keyalgo', 'columnheader' => 'Key Algorithm', 'type' => 'select',
+			'items' => array(
+				'157' => array('name' => 'HMAC-MD5'),
+				'165' => array('name' => 'HMAC-SHA512'),
+				'164' => array('name' => 'HMAC-SHA384'),
+				'163' => array('name' => 'HMAC-SHA256'),
+				'162' => array('name' => 'HMAC-SHA224'),
+				'161' => array('name' => 'HMAC-SHA1'),
+			),
+			'description' => 'Choose the nsupdate key algorithm  (typically "HMAC-MD5")'
+		),
+		'NSUPDATE_KEY' => array('name'=>"nsupdate_key",'columnheader'=>"Key",'type'=>"textarea",
+			'description' =>"Fill in the nsupdate key contents"
+		)
 	));
 $acme_domain_validation_method['dns_ali'] = array(name => "DNS-Aliyuncs",
 	'fields' => array(
@@ -177,6 +255,24 @@ $acme_domain_validation_method['dns_ali'] = array(name => "DNS-Aliyuncs",
 			'description' =>"Fill in the API Secret"
 		)
 	));
+$acme_domain_validation_method['dns_ad'] = array(name => "DNS-Alwaysdata",
+	'fields' => array(
+		'AD_API_KEY' => array('name'=>"ad_api_key",'columnheader'=>"API Key",'type'=>"textbox",
+			'description' =>"Alwaysdata API Key"
+		)
+	));
+$acme_domain_validation_method['dns_autodns'] = array(name => "DNS-autoDNS from InternetX",
+	'fields' => array(
+		'AUTODNS_USER' => array('name'=>"autodns_user",'columnheader'=>"User",'type'=>"textbox",
+			'description' =>"Fill in the autoDNS Username"
+		),
+		'AUTODNS_PASSWORD' => array('name'=>"autodns_password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"Fill in the autoDNS Password"
+		),
+		'AUTODNS_CONTEXT' => array('name'=>"autodns_context",'columnheader'=>"Context",'type'=>"textbox",
+			'description' =>"Fill in the autoDNS Context"
+		)
+	));
 $acme_domain_validation_method['dns_aws'] = array(name => "DNS-Amazon Route53",
 	'fields' => array(
 		'AWS_ACCESS_KEY_ID' => array('name'=>"aws_access_key_id",'columnheader'=>"Id",'type'=>"textbox",
@@ -184,6 +280,33 @@ $acme_domain_validation_method['dns_aws'] = array(name => "DNS-Amazon Route53",
 		),
 		'AWS_SECRET_ACCESS_KEY' => array('name'=>"aws_secret_access_key",'columnheader'=>"Key",'type'=>"textbox",
 			'description' =>"Fill in the API Key"
+		)
+	));
+$acme_domain_validation_method['dns_azure'] = array(name => "DNS-Azure (Microsoft)",
+	'fields' => array(
+		'AZUREDNS_SUBSCRIPTIONID' => array('name'=>"azuredns_subscriptionid",'columnheader'=>"Subscription ID",'type'=>"textbox",
+			'description' =>"Fill in the Azure Subscription ID. First, <a href=\"https://github.com/Neilpang/acme.sh/wiki/How-to-use-Azure-DNS\">setup a service principal for access to the DNS Zone</a>."
+		),
+		'AZUREDNS_TENANTID' => array('name'=>"azuredns_tenantid",'columnheader'=>"Tenant ID",'type'=>"textbox",
+			'description' =>"Fill in the Azure Tenant ID"
+		),
+		'AZUREDNS_APPID' => array('name'=>"azuredns_appid",'columnheader'=>"App ID",'type'=>"textbox",
+			'description' =>"Fill in the Azure App ID"
+		),
+		'AZUREDNS_CLIENTSECRET' => array('name'=>"azuredns_clientsecret",'columnheader'=>"Client Secret",'type'=>"textbox",
+			'description' =>"Fill in the Azure Client Secret"
+		)
+	));
+$acme_domain_validation_method['dns_cloudns'] = array(name => "DNS-ClouDNS",
+	'fields' => array(
+		'CLOUDNS_AUTH_ID' => array('name'=>"cloudns_auth_id",'columnheader'=>"Auth ID",'type'=>"textbox",
+			'description' =>"Fill in the authentication ID"
+		),
+		'CLOUDNS_SUB_AUTH_ID' => array('name'=>"cloudns_sub_auth_id",'columnheader'=>"Sub Auth ID",'type'=>"textbox",
+			'description' =>"Fill in the sub authentication ID"
+		),
+		'CLOUDNS_AUTH_PASSWORD' => array('name'=>"cloudns_auth_password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"Fill in the Password"
 		)
 	));
 $acme_domain_validation_method['dns_cf'] = array(name => "DNS-Cloudflare",
@@ -204,6 +327,45 @@ $acme_domain_validation_method['dns_cx'] = array(name => "DNS-Cloudxns",
 			'description' =>"Fill in the API Secret"
 		)
 	));
+$acme_domain_validation_method['dns_cyon'] = array(name => "DNS-cyon.ch",
+	'fields' => array(
+		'CY_Username' => array('name'=>"cy_username",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"Fill in the CY username"
+		),
+		'CY_Password' => array('name'=>"cy_password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"Fill in the CY Password"
+		)
+	));
+$acme_domain_validation_method['dns_dgon'] = array(name => "DNS-DigitalOcean",
+	'fields' => array(
+		'DO_API_KEY' => array('name'=>"do_api_key",'columnheader'=>"DO API Key",'type'=>"textbox",
+			'description' =>"Fill in the DigitalOcean API Key"
+		)
+	));
+$acme_domain_validation_method['dns_dnsimple'] = array(name => "DNS-DNSimple",
+	'fields' => array(
+		'DNSimple_OAUTH_TOKEN' => array('name'=>"dnsimple_oauth_token",'columnheader'=>"OAUTH Token",'type'=>"textbox",
+			'description' =>"Fill in the DNSimple oauth token, visit <a href=\"https://dnsimple.com/user\">https://dnsimple.com/user</a> to generate."
+		)
+	));
+$acme_domain_validation_method['dns_me'] = array(name => "DNS-DNSMadeEasy",
+	'fields' => array(
+		'ME_Key' => array('name'=>"me_key",'columnheader'=>"Key",'type'=>"textbox",
+			'description' =>"Fill in the API Key"
+		),
+		'ME_Secret' => array('name'=>"me_secret",'columnheader'=>"Secret",'type'=>"textbox",
+			'description' =>"Fill in the API Secret"
+		)
+	));
+$acme_domain_validation_method['dns_do'] = array(name => "DNS-Domain-Offensive / Resellerinterface / Domainrobot",
+	'fields' => array(
+		'DO_PID' => array('name'=>"do_pid",'columnheader'=>"Customer ID",'type'=>"textbox",
+			'description' =>"Fill in the DO Customer ID"
+		),
+		'DO_PW' => array('name'=>"do_pw",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"Fill in the DO Password"
+		)
+	));
 $acme_domain_validation_method['dns_dp'] = array(name => "DNS-Dnspod.cn",
 	'fields' => array(
 		'DP_Id' => array('name'=>"dp_id",'columnheader'=>"Id",'type'=>"textbox",
@@ -213,6 +375,54 @@ $acme_domain_validation_method['dns_dp'] = array(name => "DNS-Dnspod.cn",
 			'description' =>"Fill in the API Key"
 		)
 	));
+$acme_domain_validation_method['dns_dreamhost'] = array(name => "DNS-DreamHost",
+	'fields' => array(
+		'DH_API_KEY' => array('name'=>"dh_api_key",'columnheader'=>"API Token",'type'=>"textbox",
+			'description' =>"Fill in the Dreamhost API Token"
+		)
+	));
+$acme_domain_validation_method['dns_duckdns'] = array(name => "DNS-DuckDNS",
+	'fields' => array(
+		'DuckDNS_Token' => array('name'=>"duckdns_token",'columnheader'=>"API Token",'type'=>"textbox",
+			'description' =>"Fill in the DuckDNS API Token (Look in DuckDNS account settings)"
+		)
+	));
+$acme_domain_validation_method['dns_dyn'] = array(name => "DNS-Dyn.com",
+	'fields' => array(
+		'DYN_Customer' => array('name'=>"dyn_customer",'columnheader'=>"Customer",'type'=>"textbox",
+			'description' =>"Fill in the dyn.com customer ID"
+		),
+		'DYN_Username' => array('name'=>"dyn_username",'columnheader'=>"API Username",'type'=>"textbox",
+			'description' =>"Fill in the dyn.com API Username (Dyn Managed DNS user, Needs Z&R Permissions for RecordAdd, RecordUpdate, RecordDelete, RecordGet, ZoneGet, ZoneAddNode, ZoneRemoveNode, ZonePublish)"
+		),
+		'DYN_Password' => array('name'=>"dyn_password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"Fill in the dyn.com Password"
+		)
+	));
+$acme_domain_validation_method['dns_dynu'] = array(name => "DNS-Dynu",
+	'fields' => array(
+		'Dynu_ClientId' => array('name'=>"dynu_clientid",'columnheader'=>"API Client ID",'type'=>"textbox",
+			'description' =>"Fill in the API Client ID created in the Dynu account settings"
+		),
+		'Dynu_Secret' => array('name'=>"dynu_secret",'columnheader'=>"Secret",'type'=>"textbox",
+			'description' =>"Fill in the API Secret"
+		)
+	));
+$acme_domain_validation_method['dns_freedns'] = array(name => "DNS-FreeDNS",
+	'fields' => array(
+		'FREEDNS_User' => array('name'=>"freedns_user",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"Fill in the username"
+		),
+		'FREEDNS_Password' => array('name'=>"freedns_password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"Fill in the Password"
+		)
+	));
+@$acme_domain_validation_method['dns_gandi_livedns'] = array(name => "DNS-Gandi LiveDNS",
+	'fields' => array(
+		'GANDI_LIVEDNS_KEY' => array('name'=>"gandi_livedns_key",'columnheader'=>"API Key",'type'=>"textbox",
+			'description' =>"Set the Gandi LiveDNS API Key, retrieved from <a href=\"https://account.gandi.net\">https://account.gandi.net</a>"
+		)
+	));
 $acme_domain_validation_method['dns_gd'] = array(name => "DNS-Godaddy",
 	'fields' => array(
 		'GD_Key' => array('name'=>"gd_key",'columnheader'=>"Key",'type'=>"textbox",
@@ -220,6 +430,36 @@ $acme_domain_validation_method['dns_gd'] = array(name => "DNS-Godaddy",
 		),
 		'GD_Secret' => array('name'=>"gd_secret",'columnheader'=>"Secret",'type'=>"textbox",
 			'description' =>"Fill in the API Secret"
+		)
+	));
+$acme_domain_validation_method['dns_he'] = array(name => "DNS-Hurricane Electric",
+	'fields' => array(
+		'HE_Username' => array('name'=>"he_username",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"Hurricane Electric username"
+		),
+		'HE_Password' => array('name'=>"he_password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"Hurricane Electric password"
+		)
+	));
+$acme_domain_validation_method['dns_infoblox'] = array(name => "DNS-Infoblox",
+	'fields' => array(
+		'Infoblox_Creds' => array('name'=>"infoblox_creds",'columnheader'=>"Credentials",'type'=>"textbox",
+			'description' =>"Fill in the credentials in <strong>username:password</strong> format"
+		),
+		'Infoblox_Server' => array('name'=>"infoblox_server",'columnheader'=>"Server",'type'=>"textbox",
+			'description' =>"Fill in the IP address or hostname of the Infoblox server"
+		),
+		'Infoblox_View' => array('name'=>"infoblox_view",'columnheader'=>"View",'type'=>"textbox",
+			'description' =>"Fill in the DNS View, or enter 'default'"
+		)
+	));
+$acme_domain_validation_method['dns_inwx'] = array(name => "DNS-INWX.de",
+	'fields' => array(
+		'INWX_User' => array('name'=>"inwx_username",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"INWX.de username"
+		),
+		'INWX_Password' => array('name'=>"inwx_password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"INWX.de password"
 		)
 	));
 $acme_domain_validation_method['dns_ispconfig'] = array(name => "DNS-ISPConfig",
@@ -248,6 +488,21 @@ $acme_domain_validation_method['dns_lexicon'] = array(name => "DNS-Lexicon",
 			'description' =>"Fill in the API Id"
 		)
 	));*/
+$acme_domain_validation_method['dns_knot'] = array(name => "DNS-Knot API",
+	'fields' => array(
+		'KNOT_SERVER' => array('name'=>"knot_server",'columnheader'=>"Knot Server",'type'=>"textbox",
+			'description' =>"Fill in the IP address of the Knot server"
+		),
+		'KNOT_KEY' => array('name'=>"knot_key",'columnheader'=>"Knot Key",'type'=>"textbox",
+			'description' =>"Fill in the Knot TSIG Key"
+		)
+	));
+$acme_domain_validation_method['dns_linode'] = array(name => "DNS-Linode",
+	'fields' => array(
+		'LINODE_API_KEY' => array('name'=>"linode_api_key",'columnheader'=>"Linode API Key",'type'=>"textbox",
+			'description' =>"Fill in the Linode API Key"
+		)
+	));
 $acme_domain_validation_method['dns_luadns'] = array(name => "DNS-Luadns",
 	'fields' => array(
 		'LUA_Key' => array('name'=>"lua_key",'columnheader'=>"Key",'type'=>"textbox",
@@ -257,41 +512,25 @@ $acme_domain_validation_method['dns_luadns'] = array(name => "DNS-Luadns",
 			'description' =>"Fill in the API Email Address"
 		)
 	));
-$acme_domain_validation_method['dns_me'] = array(name => "DNS-DNSMadeEasy",
+$acme_domain_validation_method['dns_namecom'] = array(name => "DNS-name.com",
 	'fields' => array(
-		'ME_Key' => array('name'=>"me_key",'columnheader'=>"Key",'type'=>"textbox",
-			'description' =>"Fill in the API Key"
+		'Namecom_Username' => array('name'=>"namecom_username",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"Fill in the Name.com username"
 		),
-		'ME_Secret' => array('name'=>"me_secret",'columnheader'=>"Secret",'type'=>"textbox",
-			'description' =>"Fill in the API Secret"
+		'Namecom_Token' => array('name'=>"namecom_token",'columnheader'=>"API Token",'type'=>"textbox",
+			'description' =>"Fill in the Name.com API Token"
 		)
 	));
-$acme_domain_validation_method['dns_nsupdate'] = array(name => "DNS-NSupdate",
+$acme_domain_validation_method['dns_namesilo'] = array(name => "DNS-Namesilo",
 	'fields' => array(
-		'NSUPDATE_SERVER' => array('name'=>"nsupdate_server",'columnheader'=>"Server",'type'=>"textbox",
-			'description' =>"Fill in the nsupdate DNS server (IP address or hostname)"
-		),
-		'NSUPDATE_KEYTYPE' => array('name' => 'nsupdate_keytype', 'columnheader' => 'Key Type', 'type' => 'select',
-			'items' => array(
-				'host' => array('name' => 'Host Key'),
-				'user' => array('name' => 'User Key'),
-				'zone' => array('name' => 'Zone Key'),
-			),
-			'description' => 'Choose the nsupdate key type (typically "host")'
-		),
-		'NSUPDATE_KEYALGO' => array('name' => 'nsupdate_keyalgo', 'columnheader' => 'Key Algorithm', 'type' => 'select',
-			'items' => array(
-				'157' => array('name' => 'HMAC-MD5'),
-				'165' => array('name' => 'HMAC-SHA512'),
-				'164' => array('name' => 'HMAC-SHA384'),
-				'163' => array('name' => 'HMAC-SHA256'),
-				'162' => array('name' => 'HMAC-SHA224'),
-				'161' => array('name' => 'HMAC-SHA1'),
-			),
-			'description' => 'Choose the nsupdate key algorithm  (typically "HMAC-MD5")'
-		),
-		'NSUPDATE_KEY' => array('name'=>"nsupdate_key",'columnheader'=>"Key",'type'=>"textarea",
-			'description' =>"Fill in the nsupdate key contents"
+		'Namesilo_Key' => array('name'=>"namesilo_key",'columnheader'=>"Key",'type'=>"textbox",
+			'description' =>"Namesilo API Key"
+		)
+	));
+$acme_domain_validation_method['dns_nsone'] = array(name => "DNS-NS1 (nsone.com)",
+	'fields' => array(
+		'NS1_Key' => array('name'=>"ns1_key",'columnheader'=>"API Key",'type'=>"textbox",
+			'description' =>"Fill in the API Key"
 		)
 	));
 $acme_domain_validation_method['dns_ovh'] = array(name => "DNS-ovh / kimsufi / soyoustart / runabove",
@@ -324,15 +563,49 @@ $acme_domain_validation_method['dns_pdns'] = array(name => "DNS-PowerDNS",
 			'description' =>"Fill in the TTL 60"
 		)
 	));
-$acme_domain_validation_method['dns_he'] = array(name => "DNS-Hurricane Electric",
+$acme_domain_validation_method['dns_selectel'] = array(name => "DNS-Selectel",
 	'fields' => array(
-		'HE_Username' => array('name'=>"he_username",'columnheader'=>"Username",'type'=>"textbox",
-			'description' =>"Hurricane Electric username"
-		),
-		'HE_Password' => array('name'=>"he_password",'columnheader'=>"Password",'type'=>"textbox",
-			'description' =>"Hurricane Electric password"
+		'SL_Key' => array('name'=>"sl_key",'columnheader'=>"Key",'type'=>"textbox",
+			'description' =>"Selectel API Key"
 		)
 	));
+$acme_domain_validation_method['dns_servercow'] = array(name => "DNS-Servercow",
+	'fields' => array(
+		'SERVERCOW_API_Username' => array('name'=>"servercow_api_username",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"Servercow username"
+		),
+		'SERVERCOW_API_Password' => array('name'=>"servercow_api_password",'columnheader'=>"Password",'type'=>"textbox",
+			'description' =>"Servercow password"
+		)
+	));
+$acme_domain_validation_method['dns_unoeuro'] = array(name => "DNS-UnoEuro",
+	'fields' => array(
+		'UNO_User' => array('name'=>"uno_user",'columnheader'=>"Username",'type'=>"textbox",
+			'description' =>"UnoEuro username"
+		),
+		'UNO_Key' => array('name'=>"uno_key",'columnheader'=>"API Key",'type'=>"textbox",
+			'description' =>"UnoEuro API Key"
+		)
+	));
+$acme_domain_validation_method['dns_vscale'] = array(name => "DNS-vscale.io",
+	'fields' => array(
+		'VSCALE_API_KEY' => array('name'=>"vscale_api_key",'columnheader'=>"API Key",'type'=>"textbox",
+			'description' =>"Fill in the API Key"
+		)
+	));
+$acme_domain_validation_method['dns_yandex'] = array(name => "DNS-Yandex",
+	'fields' => array(
+		'PDD_Token' => array('name'=>"pdd_token",'columnheader'=>"PDD Token",'type'=>"textbox",
+			'description' =>"Fill in the Yandex PDD Token, generate at <a href=\"https://pddimp.yandex.ru/api2/admin/get_token\">https://pddimp.yandex.ru/api2/admin/get_token</a>"
+		)
+	));
+$acme_domain_validation_method['dns_zonomi'] = array(name => "DNS-Zonomi",
+	'fields' => array(
+		'ZM_Key' => array('name'=>"zm_key",'columnheader'=>"API Key",'type'=>"textbox",
+			'description' =>"Fill in the Zonomi API Key"
+		)
+	));
+
 //TODO add more challenge validation types
 /* 
 $acme_domain_validation_method['http-post'] = array(name => "http-post",
@@ -391,6 +664,7 @@ function acme_custom_php_install_command() {
 	set_cronjob();
 	$static_output .= "Acme, running acme_custom_php_install_command() DONE\n";
 	update_output_window($static_output);
+	acme_write_all_certificates();
 }
 
 function get_itembyname($a_array, $name) {
@@ -453,8 +727,8 @@ function & get_certificate($name) {
 		return $acmesh->generateDomainKey($domain, $keylength);
 	}
 	
-	function registerAcmeAccountKey($name, $ca, $key) {
-		$acmesh = new acme_sh($name, $ca);
+	function registerAcmeAccountKey($name, $ca, $key, $email = "") {
+		$acmesh = new acme_sh($name, $ca, $email);
 		return $acmesh->registeraccount($key);
 	}
 

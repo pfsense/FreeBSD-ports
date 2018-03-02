@@ -208,7 +208,7 @@ function netsnmp_resync() {
 
 	/* Dump custom options into the configuration as-is */
 	if (!empty($nsettings['custom_options'])) {
-		$snmpd_config .= "{$nsettings['custom_options']}\n";
+		$snmpd_config .= "\n" . str_replace("\r", "", base64_decode($nsettings['custom_options'])) . "\n";
 	}
 
 /*
@@ -808,7 +808,7 @@ function netsnmp_resync_snmptrapd() {
 
 	/* Dump custom options into the configuration as-is */
 	if (!empty($nsettings['custom_options'])) {
-		$snmptrapd_config .= "{$nsettings['custom_options']}\n";
+		$snmptrapd_config .= "\n" . str_replace("\r", "", base64_decode($nsettings['custom_options'])) . "\n";
 	}
 
 	file_put_contents($snmptrapd_config_file, $snmptrapd_config);

@@ -2,6 +2,7 @@
 
 PORTNAME=	python27
 PORTVERSION=	${PYTHON_PORTVERSION}
+PORTREVISION=	1
 CATEGORIES=	lang python ipv6
 MASTER_SITES=	PYTHON/ftp/python/${PORTVERSION}
 DISTNAME=	Python-${PORTVERSION}
@@ -92,7 +93,7 @@ PLIST_SUB+=	X86_ONLY=""
 PLIST_SUB+=	X86_ONLY="@comment "
 .endif
 
-.if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == ia64 || ${ARCH} == sparc64 || ${ARCH} == powerpc64 || ${ARCH} == mips64
+.if ${ARCH} == aarch64 || ${ARCH} == amd64 || ${ARCH} == mips64 || ${ARCH} == powerpc64 || ${ARCH} == sparc64
 PLIST_SUB+=	32BIT_ONLY="@comment "
 .else
 PLIST_SUB+=	32BIT_ONLY=""
@@ -142,6 +143,12 @@ post-install:
 # FreeBSD base system provides.  sbruno 02Aug2017
 .if ${CC} == /nxb-bin/usr/bin/cc
 	@${REINPLACE_CMD} -e 's=/nxb-bin==' \
+		${STAGEDIR}${PREFIX}/lib/python2.7/_sysconfigdata.py
+	@cd ${WRKSRC} && ${SETENV} LD_LIBRARY_PATH=${WRKSRC} \
+		./python -E -m compileall -d ${PREFIX}/lib/python2.7 \
+		${STAGEDIR}${PREFIX}/lib/python2.7/_sysconfigdata.py
+	@cd ${WRKSRC} && ${SETENV} LD_LIBRARY_PATH=${WRKSRC} \
+		./python -E -O -m compileall -d ${PREFIX}/lib/python2.7 \
 		${STAGEDIR}${PREFIX}/lib/python2.7/_sysconfigdata.py
 	@${REINPLACE_CMD} -e 's=/nxb-bin==' \
 		${STAGEDIR}${PREFIX}/lib/python2.7/config/Makefile

@@ -3,7 +3,7 @@
 
 PORTNAME=	gdisk
 PORTVERSION=	0.8.10
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/gptfdisk/gptfdisk/${PORTVERSION}
 DISTNAME=	gptfdisk-${PORTVERSION}
@@ -24,8 +24,8 @@ OPTIONS_DEFINE=	CGDISK UTF16
 OPTIONS_SUB=	yes
 CGDISK_DESC=	Curses-based interactive program
 UTF16_DESC=	Support for Unicode partition names
-UTF16_CPPFLAGS+=	-DUSE_UTF16
-UTF16_LDFLAGS+=	-licuio
+UTF16_CPPFLAGS=	-DUSE_UTF16
+UTF16_LDFLAGS=	-licuio -licuuc
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

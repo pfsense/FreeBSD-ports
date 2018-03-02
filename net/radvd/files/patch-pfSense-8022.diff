@@ -1,0 +1,13 @@
+--- send.c.orig	2017-11-10 09:50:44.558753000 -0600
++++ send.c	2017-11-10 09:52:47.949739000 -0600
+@@ -716,7 +716,9 @@
+ 
+ 	if (dest == NULL) {
+ 		static uint8_t const all_hosts_addr[] = {0xff, 0x02, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
+-		dest = (struct in6_addr const *)all_hosts_addr;
++		static struct in6_addr all_hosts_addrv6;
++		memcpy(&all_hosts_addrv6, all_hosts_addr, sizeof(all_hosts_addrv6));
++		dest = &all_hosts_addrv6;
+ 		clock_gettime(CLOCK_MONOTONIC, &iface->times.last_multicast);
+ 	}
+ 

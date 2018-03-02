@@ -19,7 +19,7 @@ www/haproxy/haproxy_stats.php
 www/haproxy/haproxy_templates.php
 www/widgets/widgets/haproxy.widget.php
 www/shortcuts/pkg_haproxy.inc
-www/haproxy/haproxy_geturl.js
+www/widgets/include/widget-haproxy.inc
 /etc/inc/priv/haproxy.priv.inc
 %%DATADIR%%/info.xml
 @dir /etc/inc/priv

@@ -11,11 +11,11 @@ COMMENT=	Minimalist implementation of python in 64k of code
 
 LICENSE=	MIT PSFL
 LICENSE_COMB=	multi
-LICENSE_FILE=	LICENSE.txt
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 GH_ACCOUNT=	philhassey
 
-USES=		python:build
+USES=		python:2.7,build
 USE_PYTHON=	distutils noegginfo
 USE_GITHUB=	yes
 

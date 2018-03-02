@@ -29,9 +29,9 @@ GH_ACCOUNT=	haiwen
 GH_PROJECT=	seafile-client
 
 USE_GNOME=	glib20
-USE_QT5=	core dbus gui network testlib widgets \
+USE_QT5=	core gui network widgets \
 		qmake_build buildtools_build linguisttools_build
-INSTALLS_ICONS=	yes
+#INSTALLS_ICONS=	yes
 CMAKE_ARGS=	-DCMAKE_INCLUDE_PATH:PATH=include/glib-2.0 \
 		-DOPENSSL_INCLUDE_DIRS=${OPENSSLINC} \
 		-DOPENSSL_LIBRARIES="-L${OPENSSLLIB} -lcrypto"

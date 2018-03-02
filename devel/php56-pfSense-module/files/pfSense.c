@@ -173,6 +173,7 @@ static zend_function_entry pfSense_functions[] = {
 #ifdef ETHERSWITCH_FUNCTIONS
     PHP_FE(pfSense_etherswitch_getinfo, NULL)
     PHP_FE(pfSense_etherswitch_getport, NULL)
+    PHP_FE(pfSense_etherswitch_setport, NULL)
     PHP_FE(pfSense_etherswitch_getvlangroup, NULL)
     PHP_FE(pfSense_etherswitch_setvlangroup, NULL)
 #endif
@@ -563,16 +564,18 @@ pfctl_addrprefix(char *addr, struct pf_addr *mask)
 	/* prefix only with numeric addresses */
 	hints.ai_flags |= AI_NUMERICHOST;
 
-	if ((ret_ga = getaddrinfo(addr, NULL, &hints, &res))) {
+	if ((ret_ga = getaddrinfo(addr, NULL, &hints, &res)) != 0) {
 		php_printf("getaddrinfo: %s", gai_strerror(ret_ga));
 		return (-1);
 		/* NOTREACHED */
 	}
 
 	if (res->ai_family == AF_INET && prefix > 32) {
+		freeaddrinfo(res);
 		php_printf("prefix too long for AF_INET");
 		return (-1);
 	} else if (res->ai_family == AF_INET6 && prefix > 128) {
+		freeaddrinfo(res);
 		php_printf("prefix too long for AF_INET6");
 		return (-1);
 	}
@@ -628,7 +631,7 @@ PHP_FUNCTION(pfSense_kill_srcstates)
 
 	pfctl_addrprefix(ip1, &psnk.psnk_src.addr.v.a.mask);
 
-	if ((ret_ga = getaddrinfo(ip1, NULL, NULL, &res[0]))) {
+	if ((ret_ga = getaddrinfo(ip1, NULL, NULL, &res[0])) != 0) {
 		php_printf("getaddrinfo: %s", gai_strerror(ret_ga));
 		RETURN_NULL();
 		/* NOTREACHED */
@@ -764,7 +767,7 @@ PHP_FUNCTION(pfSense_kill_states)
 	if (pfctl_addrprefix(ip1, &psk.psk_src.addr.v.a.mask) < 0)
 		RETURN_NULL();
 
-	if ((ret_ga = getaddrinfo(ip1, NULL, NULL, &res[0]))) {
+	if ((ret_ga = getaddrinfo(ip1, NULL, NULL, &res[0])) != 0) {
 		php_printf("getaddrinfo: %s", gai_strerror(ret_ga));
 		RETURN_NULL();
 		/* NOTREACHED */
@@ -1844,6 +1847,44 @@ PHP_FUNCTION(pfSense_etherswitch_getport)
 	add_assoc_zval(return_value, "media", media);
 }
 
+PHP_FUNCTION(pfSense_etherswitch_setport)
+{
+	char *dev;
+	etherswitch_port_t p;
+	int fd;
+	long devlen, port, pvid;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sll", &dev,
+	    &devlen, &port, &pvid) == FAILURE)
+		RETURN_FALSE;
+	if (devlen == 0)
+		dev = "/dev/etherswitch0";
+	if (etherswitch_dev_is_valid(dev) < 0)
+		RETURN_FALSE;
+	fd = open(dev, O_RDONLY);
+	if (fd == -1)
+		RETURN_FALSE;
+
+	memset(&p, 0, sizeof(p));
+	p.es_port = port;
+	if (ioctl(fd, IOETHERSWITCHGETPORT, &p) != 0) {
+		close(fd);
+		RETURN_FALSE;
+	}
+	if (pvid >= 0 && pvid <= 4094)
+		p.es_pvid = pvid;
+
+	/* XXX - ports flags */
+
+	if (ioctl(fd, IOETHERSWITCHSETPORT, &p) != 0) {
+		close(fd);
+		RETURN_FALSE;
+	}
+	close(fd);
+
+	RETURN_TRUE;
+}
+
 PHP_FUNCTION(pfSense_etherswitch_getvlangroup)
 {
 	char buf[32], *dev, *tag;
@@ -1919,27 +1960,27 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 	zvar = NULL;
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sll|z", &dev,
 	    &devlen, &vlangroup, &vlan, &zvar) == FAILURE)
-		RETURN_FALSE;
+		RETURN_LONG(-1);
 	if ((vlan & ~ETHERSWITCH_VID_MASK) != 0)
-		RETURN_FALSE;
+		RETURN_LONG(-1);
 	/* vlangroup == -1 is only valid with a vlanid. */
 	if (vlangroup == -1 && vlan == 0)
-		RETURN_FALSE;
+		RETURN_LONG(-1);
 	if (devlen == 0)
 		dev = "/dev/etherswitch0";
 	if (etherswitch_dev_is_valid(dev) < 0)
-		RETURN_FALSE;
+		RETURN_LONG(-1);
 	fd = open(dev, O_RDONLY);
 	if (fd == -1)
-		RETURN_FALSE;
+		RETURN_LONG(-1);
 	memset(&info, 0, sizeof(info));
 	if (ioctl(fd, IOETHERSWITCHGETINFO, &info) != 0) {
 		close(fd);
-		RETURN_FALSE;
+		RETURN_LONG(-1);
 	}
 	if (vlangroup != -1 && vlangroup >= info.es_nvlangroups) {
 		close(fd);
-		RETURN_FALSE;
+		RETURN_LONG(-1);
 	}
 
 	/* If we are setting a vlan id, parse switch ports members. */
@@ -1988,7 +2029,7 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 			vg.es_vlangroup = i;
 			if (ioctl(fd, IOETHERSWITCHGETVLANGROUP, &vg) != 0) {
 				close(fd);
-				RETURN_FALSE;
+				RETURN_LONG(-1);
 			}
 			if ((vg.es_vid & ETHERSWITCH_VID_VALID) == 0) {
 				vlangroup = i;
@@ -1997,7 +2038,7 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 		}
 		if (vlangroup == -1) {
 			close(fd);
-			RETURN_FALSE;
+			RETURN_LONG(-1);
 		}
 	}
 
@@ -2005,17 +2046,17 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 	vg.es_vlangroup = vlangroup;
 	if (ioctl(fd, IOETHERSWITCHGETVLANGROUP, &vg) != 0) {
 		close(fd);
-		RETURN_FALSE;
+		RETURN_LONG(-1);
 	}
 	vg.es_vid = vlan;
 	vg.es_member_ports = members;
 	vg.es_untagged_ports = untagged;
 	if (ioctl(fd, IOETHERSWITCHSETVLANGROUP, &vg) != 0) {
 		close(fd);
-		RETURN_FALSE;
+		RETURN_LONG(-1);
 	}
 	close(fd);
-	RETURN_TRUE;
+	RETURN_LONG(vlangroup);
 }
 #endif
 
@@ -2291,20 +2332,15 @@ PHP_FUNCTION(pfSense_getall_interface_addresses)
 	    &ifname_len) == FAILURE)
 		RETURN_NULL();
 
-	getifaddrs(&ifdata);
-	if (ifdata == NULL)
+	if (getifaddrs(&ifdata) == -1)
 		RETURN_NULL();
 
 	array_init(return_value);
 
-	for(mb = ifdata; mb != NULL; mb = mb->ifa_next) {
-		if (mb == NULL)
-			continue;
+	for(mb = ifdata; mb != NULL && mb->ifa_addr != NULL; mb = mb->ifa_next) {
 		if (ifname_len != strlen(mb->ifa_name))
 			continue;
 		if (strncmp(ifname, mb->ifa_name, ifname_len) != 0)
-			continue;
-		if (mb->ifa_addr == NULL)
 			continue;
 
 		switch (mb->ifa_addr->sa_family) {
@@ -2346,6 +2382,7 @@ PHP_FUNCTION(pfSense_getall_interface_addresses)
 			break;
 		}
 	}
+	freeifaddrs(ifdata);
 }
 
 PHP_FUNCTION(pfSense_get_interface_addresses)
@@ -2367,24 +2404,19 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 	    &ifname_len) == FAILURE)
 		RETURN_NULL();
 
-	getifaddrs(&ifdata);
-	if (ifdata == NULL)
+	if (getifaddrs(&ifdata) == -1)
 		RETURN_NULL();
 
 	addresscnt = 0;
 	addresscnt6 = 0;
 	array_init(return_value);
 
-	for(mb = ifdata; mb != NULL; mb = mb->ifa_next) {
-		if (mb == NULL)
-			continue;
+	for(mb = ifdata; mb != NULL && mb->ifa_addr != NULL; mb = mb->ifa_next) {
 		if (ifname_len != strlen(mb->ifa_name))
 			continue;
 		if (strncmp(ifname, mb->ifa_name, ifname_len) != 0)
 			continue;
 
-		if (mb->ifa_addr == NULL)
-			continue;
 		switch (mb->ifa_addr->sa_family) {
 		case AF_INET:
 			if (addresscnt > 0)
@@ -2755,16 +2787,13 @@ PHP_FUNCTION(pfSense_interface_listget) {
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|l", &flags) == FAILURE)
 		RETURN_NULL();
 
-	getifaddrs(&ifdata);
-	if (ifdata == NULL)
+	if (getifaddrs(&ifdata) == -1)
 		RETURN_NULL();
 
 	array_init(return_value);
 	ifname = NULL;
 	ifname_len = 0;
 	for(mb = ifdata; mb != NULL; mb = mb->ifa_next) {
-		if (mb == NULL)
-			continue;
 
 		if (flags != 0) {
 			if (mb->ifa_flags & IFF_UP && flags < 0)
@@ -3122,15 +3151,12 @@ PHP_FUNCTION(pfSense_get_interface_info)
 	if ((dev = open("/dev/pf", O_RDWR)) < 0)
 		RETURN_NULL();
 
-	getifaddrs(&ifdata);
-	if (ifdata == NULL) {
+	if (getifaddrs(&ifdata) == -1) {
 		close(dev);
 		RETURN_NULL();
 	}
 
-	for(mb = ifdata; mb != NULL; mb = mb->ifa_next) {
-		if (mb == NULL)
-			continue;
+	for(mb = ifdata; mb != NULL && mb->ifa_addr != NULL; mb = mb->ifa_next) {
 		if (ifname_len != strlen(mb->ifa_name))
 			continue;
 		if (strncmp(ifname, mb->ifa_name, ifname_len) != 0)
@@ -4006,7 +4032,7 @@ static void build_ipsec_sa_array(void *salist, char *label, vici_res_t *res) {
 	int level = 0;
 	zval *nestedarrs[32];
 	nestedarrs[level] = (zval *) salist;
-
+	char *temp = "con-id";
 	while (!done) {
 		name = value = NULL;
 		vici_parse_t pres;
@@ -4018,8 +4044,6 @@ static void build_ipsec_sa_array(void *salist, char *label, vici_res_t *res) {
 				array_init(nestedarrs[level + 1]);
 				if (level == 0) {
 					add_next_index_zval(nestedarrs[level],nestedarrs[level+1]);
-
-					char *temp = "con-id";
 					add_assoc_string(nestedarrs[level + 1], temp, name, 1);
 				} else {
 					add_assoc_zval(nestedarrs[level], name, nestedarrs[level + 1]);
@@ -4040,7 +4064,12 @@ static void build_ipsec_sa_array(void *salist, char *label, vici_res_t *res) {
 				name = vici_parse_name(res);
 				ALLOC_INIT_ZVAL(nestedarrs[level + 1]);
 				array_init(nestedarrs[level + 1]);
-				add_assoc_zval(nestedarrs[level], name, nestedarrs[level + 1]);
+				if (level == 0) {
+					add_next_index_zval(nestedarrs[level],nestedarrs[level+1]);
+					add_assoc_string(nestedarrs[level + 1], temp, name, 1);
+				} else {
+					add_assoc_zval(nestedarrs[level], name, nestedarrs[level + 1]);
+				}
 				Z_ADDREF_P(nestedarrs[level + 1]);
 				level++;
 				break;

@@ -60,6 +60,7 @@ function frr_generate_config_ospf6() {
 		$passive_interfaces = array();
 		$interface_networks = array();
 
+		$router_interface_areas = "";
 		/* Setup interface entries to define network types, costs, etc. */
 		if (is_array($config['installedpackages']['frrospf6dinterfaces']['config'])) {
 			foreach ($config['installedpackages']['frrospf6dinterfaces']['config'] as $conf) {
@@ -93,11 +94,9 @@ function frr_generate_config_ospf6() {
 				if (empty($interface_ip)) {
 					continue;
 				}
-				if (!empty($conf['interfacearea'])) {
-					$interface_networks[] = array( "subnet" => "{$subnet}/{$interface_subnet}", "area" => $conf['interfacearea']);
-				} else {
-					$interface_networks[] = array( "subnet" => "{$subnet}/{$interface_subnet}", "area" => $ospf6d_conf['area']);
-				}
+				$interface_area = (strlen($conf['interfacearea']) > 0) ? $conf['interfacearea'] : $ospf6d_conf['area'];
+				$router_interface_areas .= "  interface {$realif} area {$interface_area}\n";
+				$interface_networks[] = array( "subnet" => "{$subnet}/{$interface_subnet}", "area" => $interface_area);
 			}
 		}
 		$redist = "";
@@ -113,7 +112,8 @@ function frr_generate_config_ospf6() {
 					$noredist .= "  access-list dnr-list deny {$redistr['routevalue']}\n";
 				} else {
 					$area = ($redistr['routearea'] == "") ? $ospf6d_conf['area'] : $redistr['routearea'];
-					$redist .= "  area {$area} range {$redistr['routevalue']}\n";
+					$cost = (is_numeric($redistr['routearea']) && ($redistr['routearea'] >= 0)) ? $redistr['routearea']: 1;
+					$redist .= "  area {$area} range {$redistr['routevalue']} cost {$cost}\n";
 				}
 			}
 		}
@@ -122,10 +122,12 @@ function frr_generate_config_ospf6() {
 		/* If the router ID is defined in BGP, use that, otherwise try to use
 		 * the global router ID, if one is set. */
 		if (is_ipaddrv4($ospf6d_conf['routerid'])) {
-			$conffile .= "  ospf router-id {$ospf6d_conf['routerid']}\n";
+			$conffile .= "  router-id {$ospf6d_conf['routerid']}\n";
 		} elseif (is_ipaddrv4($frr_conf['routerid'])) {
-			$conffile .= "  ospf router-id {$frr_conf['routerid']}\n";
+			$conffile .= "  router-id {$frr_conf['routerid']}\n";
 		}
+
+		$conffile .= $router_interface_areas;
 
 		$stub_start = "  area {$ospf6d_conf['area']} ";
 		switch($ospf6d_conf['updatefib']) {
@@ -169,7 +171,8 @@ function frr_generate_config_ospf6() {
 		if (is_array($interface_networks)) {
 			foreach ($interface_networks as $ifn) {
 				if (is_subnetv6($ifn['subnet'])) {
-					$conffile .= "  area {$ifn['area']} range {$ifn['subnet']}\n";
+					$cost = (is_numeric($conf['metric']) && ($conf['metric'] >= 0)) ? $conf['metric'] : 1;
+					$conffile .= "  area {$ifn['area']} range {$ifn['subnet']} cost {$cost}\n";
 					$conffile .= "  area {$ifn['area']} export-list dnr6-list\n";
 				}
 			}

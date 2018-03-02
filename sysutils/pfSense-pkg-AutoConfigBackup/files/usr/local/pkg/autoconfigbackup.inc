@@ -39,6 +39,19 @@ function acb_enabled() {
 	return $acb_enabled;
 }
 
+/* Check whether Ignore vouchers is set to true */
+function ignore_vouchers() {
+	global $config;
+	$ignore_vouchers = false;
+
+	if (is_array($config['installedpackages']['autoconfigbackup']['config'])) {
+		if ($config['installedpackages']['autoconfigbackup']['config'][0]['ignore_vouchers'] != "false") {
+			$ignore_vouchers = true;
+		}
+	}
+	return $ignore_vouchers;
+}
+
 // Ensures patches match
 function acb_custom_php_validation_command($post, &$input_errors) {
 	global $_POST, $savemsg, $config;
@@ -205,6 +218,15 @@ function upload_config($reasonm = "") {
 	} else {
 		$reason	= $config['revision']['description'];
 	}
+
+	/*
+	* Syncing vouchers happens every minute and sometimes multiple times. We don't
+	* want to fill up our db with a lot of the same config so just ignore that case.
+	*/
+
+	if(strpos($reason, 'Syncing vouchers') !== false && ignore_vouchers()){
+		return;
+	}
 	// Username must be sent lowercase. See Redmine #7127 and Netgate Redmine #163
 	$username = strtolower($config['installedpackages']['autoconfigbackup']['config'][0]['username']);
 	$password = $config['installedpackages']['autoconfigbackup']['config'][0]['password'];
@@ -239,10 +261,11 @@ function upload_config($reasonm = "") {
 			$raw_config_sha256_hash = trim(shell_exec("/sbin/sha256 /cf/conf/config.xml | /usr/bin/awk '{ print $4 }'"));
 			$data = encrypt_data($data, $encryptpw);
 			tagfile_reformat($data, $data, "config.xml");
-
+			$uniqueID = system_get_uniqueid();
 			$post_fields = array(
 				'reason' => urlencode((string)$reason),
 				'hostname' => urlencode($hostname),
+				'uid' => urlencode($uniqueID),
 				'configxml' => urlencode($data),
 				'nooverwrite' => urlencode($nooverwrite),
 				'raw_config_sha256_hash' => urlencode($raw_config_sha256_hash)
@@ -284,6 +307,7 @@ function upload_config($reasonm = "") {
 				log_error($notice_text . " - " . $data);
 				file_notice("AutoConfigBackup", $notice_text, "Backup Failure", "/pkg_edit.php?xml=autoconfigbackup.xml&id=0");
 				update_filter_reload_status($notice_text);
+				$input_errors["acb_upload"] = $notice_text;
 			} else {
 				// Update last pfS backup time
 				$fd = fopen("/cf/conf/lastpfSbackup.txt", "w");

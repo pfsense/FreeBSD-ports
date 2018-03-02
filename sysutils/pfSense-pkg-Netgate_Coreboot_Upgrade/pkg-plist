@@ -5,6 +5,7 @@ sbin/adi_flash_util
 sbin/adi_powercycle
 %%DATADIR%%/info.xml
 %%DATADIR%%/roms/%%COREBOOT_DFF2_ROM%%
+%%DATADIR%%/roms/%%COREBOOT_PLCCB_ROM%%
 %%DATADIR%%/roms/%%COREBOOT_RCC_ROM%%
 %%DATADIR%%/roms/%%COREBOOT_RCCVE_ROM%%
 www/netgate_coreboot_upgrade.php
