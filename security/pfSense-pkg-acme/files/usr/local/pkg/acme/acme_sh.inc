@@ -181,7 +181,7 @@ class acme_sh {
 				/* Set a default key algo of HMAC-MD5 if the key type is invalid. */
 				$key_algo = empty($extras[$nsupdatedomain]['NSUPDATE_KEYALGO']) || !array_key_exists($extras[$nsupdatedomain]['NSUPDATE_KEYALGO'], $acme_domain_validation_method['dns_nsupdate']['fields']['NSUPDATE_KEYALGO']['items']) ? '157' : $extras[$nsupdatedomain]['NSUPDATE_KEYALGO'];
 
-				$key_name = empty($extras[$nsupdatedomain]['NSUPDATE_KEYNAME']) ? "_acme-challenge.{$nsupdatedomain}" : $extras[$nsupdatedomain]['NSUPDATE_KEYNAME'];
+				$key_name = empty($extras[$nsupdatedomain]['NSUPDATE_KEYNAME']) ? "_acme-challenge.{$nsupdatedomain}" : rtrim($extras[$nsupdatedomain]['NSUPDATE_KEYNAME'], '.');
 
 				/* Use ddns-confgen format key */
 				$keydata = <<<EOD
