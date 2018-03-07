@@ -201,7 +201,7 @@ $a_acmeserver['letsencrypt-staging-2'] = array('name' => "EXPERIMENTAL: Let's En
 $a_acmeserver['letsencrypt-production'] = array('name' => "Let's Encrypt Production ACME v1 (Applies rate limits to certificate requests)",
     'url' => 'https://acme-v01.api.letsencrypt.org',
 );
-$a_acmeserver['letsencrypt-production-2'] = array('name' => "EXPERIMENTAL: Let's Encrypt Production ACME v2 (Applies rate limits to certificate requests)",
+$a_acmeserver['letsencrypt-production-2'] = array('name' => "EXPERIMENTAL/NOT YET LIVE: Let's Encrypt Production ACME v2 (Applies rate limits to certificate requests)",
     'url' => 'https://acme-v02.api.letsencrypt.org'
 );
 /*$a_acmeserver['dummy'] = array('name' => "dummy",
@@ -370,6 +370,15 @@ $acme_domain_validation_method['dns_dgon'] = array(name => "DNS-DigitalOcean",
 	'fields' => array(
 		'DO_API_KEY' => array('name'=>"do_api_key",'columnheader'=>"DO API Key",'type'=>"textbox",
 			'description' =>"Fill in the DigitalOcean API Key"
+		)
+	));
+$acme_domain_validation_method['dns_da'] = array(name => "DNS-DirectAdmin",
+	'fields' => array(
+		'DA_Api' => array('name'=>"da_api",'columnheader'=>"DA API URI",'type'=>"textbox",
+			'description' =>"Fill in the DirectAdmin API URI (e.g. https://remoteUser:remotePassword@da.example.com:8443)"
+		),
+		'DA_Api_Insecure' => array('name'=>"da_api_insecure",'columnheader'=>"DA API Secure",'type'=>"textbox",
+			'description' =>"DirectAdmin API Security check, 0=check for valid SSL certificate, 1=always accept",
 		)
 	));
 $acme_domain_validation_method['dns_dnsimple'] = array(name => "DNS-DNSimple",
