@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Netgate_Coreboot_Upgrade
-PORTVERSION=	0.14
+PORTVERSION=	0.15
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -12,7 +12,8 @@ COMMENT=	pfSense package Netgate Coreboot Upgrade
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	e2fsprogs-libuuid>=0:misc/e2fsprogs-libuuid
+BUILD_DEPENDS=	e2fsprogs-libuuid>=0:misc/e2fsprogs-libuuid \
+		gmake:devel/gmake
 RUN_DEPENDS=	flashrom:sysutils/flashrom \
 		e2fsprogs-libuuid>=0:misc/e2fsprogs-libuuid
 
@@ -33,6 +34,7 @@ SUB_LIST=	PORTNAME=${PORTNAME}
 
 do-extract:
 	${MKDIR} ${WRKSRC}
+	${CP} -R ${FILESDIR}/cbfstool ${WRKSRC}
 
 do-build:
 	${CC} ${CFLAGS} -o ${WRKSRC}/adi_smbios_util -luuid \
@@ -43,6 +45,7 @@ do-build:
 		${FILESDIR}/adi_flash_util/adi_flash_util.c
 	${CC} ${CFLAGS} -o ${WRKSRC}/adi_powercycle \
 		${FILESDIR}/adi_powercycle/adi_powercycle.c
+	${GMAKE} -C ${WRKSRC}/cbfstool HOSTCC=${CC} HOSTCXX=${CXX}
 
 do-install:
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
@@ -71,6 +74,7 @@ do-install:
 		${STAGEDIR}${DATADIR}/info.xml
 	${INSTALL_DATA} ${FILESDIR}/roms/*.rom ${STAGEDIR}${DATADIR}/roms
 	${INSTALL_DATA} ${FILESDIR}/roms/*.bin ${STAGEDIR}${DATADIR}/roms
+	${INSTALL_PROGRAM} ${WRKSRC}/cbfstool/cbfstool ${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_PROGRAM} ${WRKSRC}/adi_flash_util ${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_PROGRAM} ${WRKSRC}/adi_smbios_util ${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_PROGRAM} ${WRKSRC}/adi_powercycle ${STAGEDIR}${PREFIX}/sbin
