@@ -12,6 +12,7 @@ COMMENT=	pfSense package Netgate Coreboot Upgrade
 
 LICENSE=	APACHE20
 
+BUILD_DEPENDS=	e2fsprogs-libuuid>=0:misc/e2fsprogs-libuuid
 RUN_DEPENDS=	flashrom:sysutils/flashrom \
 		e2fsprogs-libuuid>=0:misc/e2fsprogs-libuuid
 
