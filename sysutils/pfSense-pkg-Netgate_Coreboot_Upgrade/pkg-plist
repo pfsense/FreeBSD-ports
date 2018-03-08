@@ -4,6 +4,7 @@ pkg/netgate_coreboot_upgrade.xml
 sbin/adi_flash_util
 sbin/adi_smbios_util
 sbin/adi_powercycle
+sbin/cbfstool
 %%DATADIR%%/info.xml
 %%DATADIR%%/roms/%%COREBOOT_DFF2_ROM%%
 %%DATADIR%%/roms/%%COREBOOT_PLCCB_ROM%%
