@@ -1,20 +1,27 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Netgate_Coreboot_Upgrade
-PORTVERSION=	0.13
+PORTVERSION=	0.16
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
-DISTFILES=	# empty
-EXTRACT_ONLY=	# empty
 
 MAINTAINER=	coreteam@pfsense.org
 COMMENT=	pfSense package Netgate Coreboot Upgrade
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	flashrom:sysutils/flashrom
+BUILD_DEPENDS=	e2fsprogs-libuuid>=0:misc/e2fsprogs-libuuid \
+		gmake:devel/gmake
+RUN_DEPENDS=	flashrom:sysutils/flashrom \
+		e2fsprogs-libuuid>=0:misc/e2fsprogs-libuuid
 
 NO_MTREE=	yes
+USE_GITHUB=	nodefault
+
+# coreboot (cbfstool)
+GH_ACCOUNT=	coreboot:coreboot,vboot
+GH_PROJECT=	coreboot:coreboot vboot:vboot
+GH_TAGNAME=	4.7:coreboot e0b3841:vboot
 
 COREBOOT_DFF2_ROM=ADI_DFF2-01.00.00.17-nodebug.rom
 COREBOOT_RCC_ROM=ADI_RCC-01.00.00.18-nodebug-16m.rom
@@ -28,15 +35,26 @@ PLIST_SUB=	COREBOOT_DFF2_ROM=${COREBOOT_DFF2_ROM} \
 
 SUB_FILES=	pkg-install pkg-deinstall
 SUB_LIST=	PORTNAME=${PORTNAME}
+WRKSRC=		${WRKDIR}/${PORTNAME}
+CBFSTOOL_PATH=	${WRKSRC}/coreboot/util/cbfstool
 
-do-extract:
+pre-extract:
 	${MKDIR} ${WRKSRC}
 
+post-extract:
+	${LN} -sf ${WRKSRC_coreboot} ${WRKSRC}/coreboot
+
 do-build:
+	${CC} ${CFLAGS} -o ${WRKSRC}/adi_smbios_util -luuid \
+		-I${LOCALBASE}/include -L${LOCALBASE}/lib \
+		-include ${FILESDIR}/adi_smbios_util/config.h \
+		${FILESDIR}/adi_smbios_util/adi_smbios_util.c
 	${CC} ${CFLAGS} -o ${WRKSRC}/adi_flash_util \
 		${FILESDIR}/adi_flash_util/adi_flash_util.c
 	${CC} ${CFLAGS} -o ${WRKSRC}/adi_powercycle \
 		${FILESDIR}/adi_powercycle/adi_powercycle.c
+	${GMAKE} -C ${CBFSTOOL_PATH} HOSTCC=${CC} HOSTCXX=${CXX} \
+		VBOOT_SOURCE=${WRKSRC_vboot}
 
 do-install:
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
@@ -65,7 +83,9 @@ do-install:
 		${STAGEDIR}${DATADIR}/info.xml
 	${INSTALL_DATA} ${FILESDIR}/roms/*.rom ${STAGEDIR}${DATADIR}/roms
 	${INSTALL_DATA} ${FILESDIR}/roms/*.bin ${STAGEDIR}${DATADIR}/roms
+	${INSTALL_PROGRAM} ${CBFSTOOL_PATH}/cbfstool ${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_PROGRAM} ${WRKSRC}/adi_flash_util ${STAGEDIR}${PREFIX}/sbin
+	${INSTALL_PROGRAM} ${WRKSRC}/adi_smbios_util ${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_PROGRAM} ${WRKSRC}/adi_powercycle ${STAGEDIR}${PREFIX}/sbin
 
 .include <bsd.port.mk>
