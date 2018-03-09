@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-Netgate_Coreboot_Upgrade
-PORTVERSION=	0.16
+PORTVERSION=	0.17
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 
@@ -31,12 +31,21 @@ COREBOOT_PLCCB_ROM=ADI_PLCC-01.00.00.02.bin
 PLIST_SUB=	COREBOOT_DFF2_ROM=${COREBOOT_DFF2_ROM} \
 		COREBOOT_RCC_ROM=${COREBOOT_RCC_ROM} \
 		COREBOOT_RCCVE_ROM=${COREBOOT_RCCVE_ROM} \
-		COREBOOT_PLCCB_ROM=${COREBOOT_PLCCB_ROM}
+		COREBOOT_PLCCB_ROM=${COREBOOT_PLCCB_ROM} \
+		PLCC=${PLCC}
 
 SUB_FILES=	pkg-install pkg-deinstall
 SUB_LIST=	PORTNAME=${PORTNAME}
 WRKSRC=		${WRKDIR}/${PORTNAME}
 CBFSTOOL_PATH=	${WRKSRC}/coreboot/util/cbfstool
+
+.include <bsd.port.options.mk>
+
+.if ${OSVERSION} >= 1100001
+PLCC=""
+.else
+PLCC="@comment "
+.endif
 
 pre-extract:
 	${MKDIR} ${WRKSRC}
@@ -45,16 +54,18 @@ post-extract:
 	${LN} -sf ${WRKSRC_coreboot} ${WRKSRC}/coreboot
 
 do-build:
-	${CC} ${CFLAGS} -o ${WRKSRC}/adi_smbios_util -luuid \
-		-I${LOCALBASE}/include -L${LOCALBASE}/lib \
-		-include ${FILESDIR}/adi_smbios_util/config.h \
-		${FILESDIR}/adi_smbios_util/adi_smbios_util.c
 	${CC} ${CFLAGS} -o ${WRKSRC}/adi_flash_util \
 		${FILESDIR}/adi_flash_util/adi_flash_util.c
 	${CC} ${CFLAGS} -o ${WRKSRC}/adi_powercycle \
 		${FILESDIR}/adi_powercycle/adi_powercycle.c
+.if ${OSVERSION} >= 1100001
+	${CC} ${CFLAGS} -o ${WRKSRC}/adi_smbios_util -luuid \
+		-I${LOCALBASE}/include -L${LOCALBASE}/lib \
+		-include ${FILESDIR}/adi_smbios_util/config.h \
+		${FILESDIR}/adi_smbios_util/adi_smbios_util.c
 	${GMAKE} -C ${CBFSTOOL_PATH} HOSTCC=${CC} HOSTCXX=${CXX} \
 		VBOOT_SOURCE=${WRKSRC_vboot}
+.endif
 
 do-install:
 	${MKDIR} ${STAGEDIR}/etc/inc/priv
@@ -83,9 +94,11 @@ do-install:
 		${STAGEDIR}${DATADIR}/info.xml
 	${INSTALL_DATA} ${FILESDIR}/roms/*.rom ${STAGEDIR}${DATADIR}/roms
 	${INSTALL_DATA} ${FILESDIR}/roms/*.bin ${STAGEDIR}${DATADIR}/roms
-	${INSTALL_PROGRAM} ${CBFSTOOL_PATH}/cbfstool ${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_PROGRAM} ${WRKSRC}/adi_flash_util ${STAGEDIR}${PREFIX}/sbin
-	${INSTALL_PROGRAM} ${WRKSRC}/adi_smbios_util ${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_PROGRAM} ${WRKSRC}/adi_powercycle ${STAGEDIR}${PREFIX}/sbin
+.if ${OSVERSION} >= 1100001
+	${INSTALL_PROGRAM} ${WRKSRC}/adi_smbios_util ${STAGEDIR}${PREFIX}/sbin
+	${INSTALL_PROGRAM} ${CBFSTOOL_PATH}/cbfstool ${STAGEDIR}${PREFIX}/sbin
+.endif
 
 .include <bsd.port.mk>
