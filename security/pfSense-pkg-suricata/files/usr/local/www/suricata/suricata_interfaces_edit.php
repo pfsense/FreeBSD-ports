@@ -230,6 +230,8 @@ if (empty($pconfig['eve_redis_key']))
 
 if (empty($pconfig['intf_promisc_mode']))
 	$pconfig['intf_promisc_mode'] = "on";
+if (empty($pconfig['intf_snaplen']))
+	$pconfig['intf_snaplen'] = "1518";
 
 // See if creating a new interface by duplicating an existing one
 if (strcasecmp($action, 'dup') == 0) {
@@ -316,6 +318,9 @@ if (isset($_POST["save"]) && !$input_errors) {
 	if (!empty($_POST['inspect_recursion_limit']) && !is_numeric($_POST['inspect_recursion_limit']))
 		$input_errors[] = gettext("The value for Inspect Recursion Limit can either be blank or contain only digits evaluating to an integer greater than or equal to 0.");
 
+	if ($_POST['intf_snaplen'] < 1 || !is_numeric($_POST['intf_snaplen']))
+		$input_errors[] = gettext("The value for Interface Snaplen must contain only digits evaluating to an integer value greater than or equal to 1.");
+
 	if (!empty($_POST['eve_redis_server']) && !is_ipaddr($_POST['eve_redis_server']))
 		$input_errors[] = gettext("The value for 'EVE REDIS Server' must be an IP address.");
 
@@ -353,6 +358,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 		if ($_POST['enable_eve_log'] == "on") { $natent['enable_eve_log'] = 'on'; }else{ $natent['enable_eve_log'] = 'off'; }
 		if ($_POST['max_pending_packets']) $natent['max_pending_packets'] = $_POST['max_pending_packets']; else unset($natent['max_pending_packets']);
 		if ($_POST['inspect_recursion_limit'] >= '0') $natent['inspect_recursion_limit'] = $_POST['inspect_recursion_limit']; else unset($natent['inspect_recursion_limit']);
+		if ($_POST['intf_snaplen'] > '0') $natent['intf_snaplen'] = $_POST['intf_snaplen']; else $natent['inspect_recursion_limit'] = "1518";
 		if ($_POST['detect_eng_profile']) $natent['detect_eng_profile'] = $_POST['detect_eng_profile']; else unset($natent['detect_eng_profile']);
 		if ($_POST['mpm_algo']) $natent['mpm_algo'] = $_POST['mpm_algo']; else unset($natent['mpm_algo']);
 		if ($_POST['sgh_mpm_context']) $natent['sgh_mpm_context'] = $_POST['sgh_mpm_context']; else unset($natent['sgh_mpm_context']);
@@ -1282,6 +1288,13 @@ $section->addInput(new Form_Checkbox(
 	'on'
 ));
 
+$section->addInput(new Form_Input(
+	'intf_snaplen',
+	'Interface PCAP Snaplen',
+	'text',
+	$pconfig['intf_snaplen']
+))->setHelp('Enter value in bytes for the interface PCAP snaplen. Default is 1518.  This parameter is only valid when IDS or Legacy Mode IPS is enabled.<br />This value may need to be increased if the physical interface is passing VLAN traffic and expected alerts are not being received.');
+
 $form->add($section);
 
 $section = new Form_Section('Networks Suricata Should Inspect and Protect');
@@ -1474,6 +1487,7 @@ events.push(function(){
 			hideCheckbox('blockoffenderskill', true);
 			hideCheckbox('block_drops_only', true);
 			hideSelect('blockoffendersip', true);
+			hideInput('intf_snaplen', true);
 			if (hide) {
 				$('#eve_log_drop').parent().hide();
 			}
@@ -1483,6 +1497,7 @@ events.push(function(){
 		}
 		else {
 			$('#eve_log_drop').parent().hide();
+			hideInput('intf_snaplen', false);
 		}
 	}
 
@@ -1616,6 +1631,7 @@ events.push(function(){
 		disableInput('sgh_mpm_context', disable);
 		disableInput('delayed_detect', disable);
 		disableInput('intf_promisc_mode', disable);
+		disableInput('intf_snaplen', disable);
 		disableInput('fpm_split_any_any', disable);
 		disableInput('fpm_search_optimize', disable);
 		disableInput('fpm_no_stream_inserts', disable);
@@ -1831,6 +1847,7 @@ events.push(function(){
 			hideCheckbox('blockoffenderskill', true);
 			hideCheckbox('block_drops_only', true);
 			hideSelect('blockoffendersip', true);
+			hideInput('intf_snaplen', true);
 			$('#eve_log_drop').parent().show();
 			$('#ips_warn_dlg').modal('show');
 		}
@@ -1838,6 +1855,7 @@ events.push(function(){
 			hideCheckbox('blockoffenderskill', false);
 			hideCheckbox('block_drops_only', false);
 			hideSelect('blockoffendersip', false);
+			hideInput('intf_snaplen', false);
 			hideClass('passlist', false);
 			$('#eve_log_drop').parent().hide();
 			$('#ips_warn_dlg').modal('hide');
