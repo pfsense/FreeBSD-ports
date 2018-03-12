@@ -213,7 +213,7 @@ include_once("head.inc");
 					<td><?=gettext($emergingt_net_sig_date);?></td>
 				</tr>
 				<tr>
-					<td><b><?=gettext("Snort VRT Rules");?></b></td>
+					<td><b><?=gettext("Snort Subscriber Rules");?></b></td>
 					<td><?=trim($snort_org_sig_chk_local);?></td>
 					<td><?=gettext($snort_org_sig_date);?></td>
 				</tr>

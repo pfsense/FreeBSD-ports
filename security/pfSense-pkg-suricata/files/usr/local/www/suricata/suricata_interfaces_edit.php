@@ -1217,7 +1217,7 @@ $modal->addInput(new Form_StaticText (
 	gettext('block traffic when using Inline IPS Mode for blocking. ') . 
 	'<br/><br/>' . 
 	gettext('Use the "dropsid.conf" feature on the SID MGMT tab to select rules whose action ') . 
-	gettext('should be changed from ALERT to DROP.  If you run the Snort VRT rules and have ') . 
+	gettext('should be changed from ALERT to DROP.  If you run the Snort rules and have ') . 
 	gettext('an IPS policy selected on the CATEGORIES tab, then rules defined as DROP by the ') . 
 	gettext('selected IPS policy will have their action automatically changed to DROP when the ') . 
 	gettext('"IPS Policy Mode" selector is configured for "Policy".') . 

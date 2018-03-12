@@ -67,10 +67,10 @@ if ($_POST['autoruleupdatetime']) {
 }
 
 if ($_POST['enable_vrt_rules'] == "on" && empty($_POST['snort_rules_file']))
-		$input_errors[] = "You must supply a snort rules tarball filename in the box provided in order to enable Snort VRT rules!";
+		$input_errors[] = "You must supply a snort rules tarball filename in the box provided in order to enable Snort Subscriber rules!";
 
 if ($_POST['enable_vrt_rules'] == "on" && empty($_POST['oinkcode']))
-		$input_errors[] = "You must supply an Oinkmaster code in the box provided in order to enable Snort VRT rules!";
+		$input_errors[] = "You must supply an Oinkmaster code in the box provided in order to enable Snort Subscriber rules!";
 
 if ($_POST['enable_etpro_rules'] == "on" && empty($_POST['etprocode']))
 		$input_errors[] = "You must supply a subscription code in the box provided in order to enable Emerging Threats Pro rules!";
@@ -106,7 +106,7 @@ if (!$input_errors) {
 		// any matching the disabled ruleset prefixes.
 		if (is_array($config['installedpackages']['suricata']['rule'])) {
 			foreach ($config['installedpackages']['suricata']['rule'] as &$iface) {
-				// Disable Snort IPS policy if VRT rules are disabled
+				// Disable Snort IPS policy if Snort rules are disabled
 				if ($disable_ips_policy) {
 					$iface['ips_policy_enable'] = 'off';
 					unset($iface['ips_policy']);
@@ -226,30 +226,30 @@ $section->addInput(new Form_Input(
 ))->setHelp('Obtain an ETPro subscription code and paste it here.');
 $section->addInput(new Form_Checkbox(
 	'enable_vrt_rules',
-	'Install Snort VRT rules',
-	'Snort VRT free Registered User or paid Subscriber rules',
+	'Install Snort rules',
+	'Snort free Registered User or paid Subscriber rules',
 	$pconfig['enable_vrt_rules'] == 'on' ? true:false,
 	'on'
-))->setHelp('<a href="https://www.snort.org/users/sign_up">Sign Up for a free Registered User Rule Account</a><br /><a href="https://www.snort.org/products">Sign Up for paid Sourcefire VRT Certified Subscriber Rules</a>');
+))->setHelp('<a href="https://www.snort.org/users/sign_up">Sign Up for a free Registered User Rules Account</a><br /><a href="https://www.snort.org/products">Sign Up for paid Snort Subscriber Rule Set (by Talos)</a>');
 $section->addInput(new Form_Input(
 	'snort_rules_file',
-	'Snort VRT Rules Filename',
+	'Snort Rules Filename',
 	'text',
 	$pconfig['snort_rules_file']
-))->setHelp('Enter the rules tarball filename (filename only, do not include the URL.)<br />Example: snortrules-snapshot-2990.tar.gz');
+))->setHelp('Enter the rules tarball filename (filename only, do not include the URL.)<br />Example: snortrules-snapshot-29111.tar.gz');
 $section->addInput(new Form_Input(
 	'oinkcode',
-	'Snort VRT Oinkmaster Code',
+	'Snort Oinkmaster Code',
 	'text',
 	$pconfig['oinkcode']
 ))->setHelp('Obtain a snort.org Oinkmaster code and paste it here.');
 $section->addInput(new Form_Checkbox(
 	'snortcommunityrules',
-	'Install Snort Community rules',
-	'The Snort Community Ruleset is a GPLv2 VRT certified ruleset that is distributed free of charge without any VRT License restrictions. This ruleset is updated daily and is a subset of the subscriber ruleset.',
+	'Install Snort GPLv2 Community rules',
+	'The Snort Community Ruleset is a GPLv2 Talos-certified ruleset that is distributed free of charge without any Snort Subscriber License restrictions. This ruleset is updated daily and is a subset of the subscriber ruleset.',
 	$pconfig['snortcommunityrules'] == 'on' ? true:false,
 	'on'
-))->setHelp('If you are a Snort VRT Paid Subscriber, the community ruleset is already built into your download of the Snort VRT rules, and there is no benefit in adding this rule set.');
+))->setHelp('If you are a Snort Subscriber Rules customer (paid subscriber), the community ruleset is already built into your download of the Snort Subscriber rules, and there is no benefit in adding this rule set separately.');
 $section->addInput(new Form_Checkbox(
 	'hide_deprecated_rules',
 	'Hide Deprecated Rules Categories',
