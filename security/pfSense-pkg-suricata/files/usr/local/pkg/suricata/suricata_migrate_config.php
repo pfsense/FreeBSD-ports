@@ -550,6 +550,15 @@ foreach ($rule as &$r) {
 		$updated_cfg = true;
 	}
 
+	/**********************************************************/
+	/* Set default value for new interface snaplen parameter  */
+	/* if one has not been previously configured.             */
+	/**********************************************************/
+	if (empty($pconfig['intf_snaplen'])) {
+		$pconfig['intf_snaplen'] = "1518";
+		$updated_cfg = true;
+	}
+
 	// Save the new configuration data into the $config array pointer
 	$r = $pconfig;
 }
