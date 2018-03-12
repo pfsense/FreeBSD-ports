@@ -89,7 +89,7 @@ if (empty($test))
 if (!file_exists("{$suricatadir}rules/" . GPL_FILE_PREFIX . "community.rules"))
 	$no_community_files = true;
 
-// If a Snort VRT policy is enabled and selected, remove all Snort VRT
+// If a Snort rules policy is enabled and selected, remove all Snort 
 // rules from the configured rule sets to allow automatic selection.
 if ($a_nat[$id]['ips_policy_enable'] == 'on') {
 	if (isset($a_nat[$id]['ips_policy'])) {
@@ -220,7 +220,7 @@ if (isset($_POST["save"])) {
 			$enabled_rulesets_array[] = basename($file);
 	}
 
-	/* Include the Snort VRT rules only if enabled and no IPS policy is set */
+	/* Include the Snort rules only if enabled and no IPS policy is set */
 	if ($snortdownload == 'on' && empty($_POST['ips_policy_enable'])) {
 		$files = glob("{$suricatadir}rules/" . VRT_FILE_PREFIX . "*.rules");
 		foreach ($files as $file)
@@ -345,10 +345,10 @@ else:
 			($a_nat[$id]['ips_policy_enable'] == "on"),
 			'on'
 		);
-		$chkips->setHelp('<span class="text-danger"><strong>' . gettext("Note:  ") . '</strong></span>' . gettext('You must be using the Snort VRT rules to use this option.' . '<br />' .
-					'Selecting this option disables manual selection of Snort VRT categories in the list below, ' .
+		$chkips->setHelp('<span class="text-danger"><strong>' . gettext("Note:  ") . '</strong></span>' . gettext('You must be using the Snort rules to use this option.' . '<br />' .
+					'Selecting this option disables manual selection of Snort rules categories in the list below, ' .
 						'although Emerging Threats categories may still be selected if enabled on the Global Settings tab.  ' .
-						'These will be added to the pre-defined Snort IPS policy rules from the Snort VRT.'));
+						'These will be added to the pre-defined Snort IPS policy rules from the Snort rules set.'));
 		$section->addInput($chkips);
 		$section->addInput(new Form_Select(
 			'ips_policy',
@@ -401,7 +401,7 @@ else:
 			<?php if ($no_community_files)
 				$msg_community = gettext("NOTE: Snort Community Rules have not been downloaded.  Perform a Rules Update to enable them.");
 			      else
-				$msg_community = gettext("Snort GPLv2 Community Rules (VRT certified)");
+				$msg_community = gettext("Snort GPLv2 Community Rules (Talos-certified)");
 			      $community_rules_file = gettext(GPL_FILE_PREFIX . "community.rules");
 			?>
 
@@ -498,7 +498,7 @@ else:
 						<th><?=gettext("Enabled"); ?></th>
 						<th><?=gettext('Ruleset: Snort SO Rules');?></th>
 					<?php else: ?>
-						<th colspan="4"><?=gettext("Snort VRT rules {$msg_snort}"); ?></th>
+						<th colspan="4"><?=gettext("Snort Rules {$msg_snort}"); ?></th>
 					<?php endif; ?>
 					</tr>
 				</thead>
