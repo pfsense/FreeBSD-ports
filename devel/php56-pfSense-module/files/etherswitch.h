@@ -38,8 +38,9 @@ typedef struct etherswitch_phyreg etherswitch_phyreg_t;
 
 #define	ETHERSWITCH_CAPS_PORTS_MASK	(1 << 0)	/* Ports mask */
 #define	ETHERSWITCH_CAPS_LAGG		(1 << 1)	/* LAGG support */
+#define	ETHERSWITCH_CAPS_PSTATE		(1 << 2)	/* Port state */
 #define	ETHERSWITCH_CAPS_BITS		\
-"\020\1PORTSMASK\2LAGG"
+"\020\1PORTSMASK\2LAGG\3PSTATE"
 
 #define	MAX_PORTS			1024
 #define	MAX_PORTS_UINT32		(MAX_PORTS / sizeof(uint32_t))
@@ -77,6 +78,13 @@ typedef struct etherswitch_conf etherswitch_conf_t;
 "\020\1CPUPORT\2STRIPTAG\3ADDTAG\4FIRSTLOCK\5DROPUNTAGGED\6QinQ\7INGRESS" \
 "\10DROPTAGGED"
 
+#define	ETHERSWITCH_PSTATE_DISABLED	(1 << 0)
+#define	ETHERSWITCH_PSTATE_BLOCKING	(1 << 1)
+#define	ETHERSWITCH_PSTATE_LEARNING	(1 << 2)
+#define	ETHERSWITCH_PSTATE_FORWARDING	(1 << 3)
+#define	ETHERSWITCH_PSTATE_BITS						\
+"\020\1DISABLED\2BLOCKING\3LEARNING\4FORWARDING"
+
 #define ETHERSWITCH_PORT_MAX_LEDS 3
 
 enum etherswitch_port_led {
@@ -93,6 +101,7 @@ struct etherswitch_port {
 	int		es_pvid;
 	int		es_nleds;
 	uint32_t	es_flags;
+	uint32_t	es_state;
 	etherswitch_port_led_t es_led[ETHERSWITCH_PORT_MAX_LEDS];
 	union {
 		struct ifreq		es_uifr;
