@@ -7,7 +7,7 @@
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2016 Bill Meeks
+ * Copyright (c) 2018 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -414,8 +414,6 @@ else:
 						<th><?=gettext('Ruleset: Snort GPLv2 Community Rules'); ?></th>
 						<th></th>
 						<th></th>
-						<th></th>
-						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -423,19 +421,27 @@ else:
 				<?php if ($cat_mods[$community_rules_file] == 'enabled') : ?>
 					<tr>
 						<td>
-							<i class="fa fa-adn text-success" title="<?=gettext('Auto-disabled by settings on SID Mgmt tab'); ?>"></i>
+							<i class="fa fa-adn text-success" title="<?=gettext('Auto-enabled by settings on SID Mgmt tab'); ?>"></i>
 						</td>
-						<td colspan="5">
+						<td colspan="4">
+						<?php if ($no_community_files): ?>
+							<?php echo gettext("{$msg_community}"); ?>
+						<?php else: ?>
 							<a href='suricata_rules.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>'><?=gettext('{$msg_community}');?></a>
+						<?php endif; ?>
 						</td>
 					</tr>
 				<?php else: ?>
 					<tr>
 						<td>
-							<i class="fa fa-adn text-danger" title="<?=gettext("Auto-enabled by settings on SID Mgmt tab");?>"><i>
+							<i class="fa fa-adn text-danger" title="<?=gettext("Auto-disabled by settings on SID Mgmt tab");?>"><i>
 						</td>
-						<td colspan="5">
-							<?=gettext("{$msg_community}"); ?>
+						<td colspan="4">
+						<?php if ($no_community_files): ?>
+							<?php echo gettext("{$msg_community}"); ?>
+						<?php else: ?>
+							<a href='suricata_rules_edit.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>' target='_blank' rel='noopener noreferrer'><?=gettext("{$msg_community}"); ?></a>
+						<?php endif; ?>
 						</td>
 					</tr>
 				<?php endif; ?>
@@ -444,8 +450,12 @@ else:
 					<td>
 						<input type="checkbox" name="toenable[]" value="<?=$community_rules_file;?>" checked="checked"/>
 					</td>
-					<td colspan="5">
-						<a href='suricata_rules.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>'><?php echo gettext("{$msg_community}"); ?></a>
+					<td colspan="4">
+						<?php if ($no_community_files): ?>
+							<?php echo gettext("{$msg_community}"); ?>
+						<?php else: ?>
+							<a href='suricata_rules.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>'><?php echo gettext("{$msg_community}"); ?></a>
+						<?php endif; ?>
 					</td>
 				</tr>
 			<?php else: ?>
@@ -453,8 +463,12 @@ else:
 					<td>
 						<input type="checkbox" name="toenable[]" value="<?=$community_rules_file; ?>" />
 					</td>
-					<td colspan="5">
-						<?=gettext("{$msg_community}"); ?>
+					<td colspan="4">
+						<?php if ($no_community_files): ?>
+							<?php echo gettext("{$msg_community}"); ?>
+						<?php else: ?>
+							<a href='suricata_rules_edit.php?id=<?=$id;?>&openruleset=<?=$community_rules_file;?>' target='_blank' rel='noopener noreferrer'><?=gettext("{$msg_community}"); ?></a>
+						<?php endif; ?>
 					</td>
 				</tr>
 			<?php endif; ?>
@@ -495,10 +509,8 @@ else:
 					<?php if ($snortdownload == 'on' && !$no_snort_files): ?>
 						<th><?=gettext("Enabled"); ?></th>
 						<th><?=gettext('Ruleset: Snort Text Rules');?></th>
-						<th><?=gettext("Enabled"); ?></th>
-						<th><?=gettext('Ruleset: Snort SO Rules');?></th>
 					<?php else: ?>
-						<th colspan="4"><?=gettext("Snort Rules {$msg_snort}"); ?></th>
+						<th colspan="2"><?=gettext("Snort Rules {$msg_snort}"); ?></th>
 					<?php endif; ?>
 					</tr>
 				</thead>
@@ -573,7 +585,7 @@ else:
 						echo "</td>\n";
 						echo "<td>\n";
 						if (empty($CHECKED))
-							echo $file;
+							echo "<a href='suricata_rules_edit.php?id={$id}&openruleset=" . urlencode($file) . "' target='_blank' rel='noopener noreferrer'>{$file}</a>\n";
 						else
 							echo "<a href='suricata_rules.php?id={$id}&openruleset=" . urlencode($file) . "'>{$file}</a>\n";
 						echo "</td>\n";
@@ -604,12 +616,17 @@ else:
 							}
 						}
 						else {
-							echo "	\n<input type='checkbox' name='toenable[]' value='{$file}' {$CHECKED} />\n";
+							if ($CHECKED == "disabled") {
+								echo "	\n<input type='checkbox' name='toenable[]' value='{$file}' {$CHECKED} title='" . gettext('Disabled because an IPS Policy is selected') . "' />\n";
+							}
+							else {
+								echo "	\n<input type='checkbox' name='toenable[]' value='{$file}' {$CHECKED} />\n";
+							}
 						}
 						echo "</td>\n";
 						echo "<td>\n";
 						if (empty($CHECKED) || $CHECKED == "disabled")
-							echo $file;
+							echo "<a href='suricata_rules_edit.php?id={$id}&openruleset=" . urlencode($file) . "' target='_blank' rel='noopener noreferrer'>{$file}</a>\n";
 						else
 							echo "<a href='suricata_rules.php?id={$id}&openruleset=" . urlencode($file) . "'>{$file}</a>\n";
 						echo "</td>\n";
@@ -651,6 +668,12 @@ events.push(function() {
 
 			if (str.substr(0,6) == "snort_") {
 				$(this).attr('disabled', !endis);
+				if (!endis) {
+					$(this).prop('title', 'Disabled because an IPS Policy is selected');
+				}
+				else {
+					$(this).prop('title', '');
+				}
 			}
 		});
 	}
