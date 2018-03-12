@@ -504,6 +504,7 @@ if (isset($_POST["save"]) && !$input_errors) {
 			$natent['enable_async_sessions'] = 'off';
 			$natent['delayed_detect'] = 'off';
 			$natent['intf_promisc_mode'] = 'on';
+			$natent['intf_snaplen'] = '1518';
 
 			$natent['asn1_max_frames'] = '256';
 			$natent['dns_global_memcap'] = "16777216";
