@@ -160,6 +160,13 @@ if ($suricatacfg['intf_promisc_mode'] == 'on')
 else
 	$intf_promisc_mode = "no";
 
+if (!empty($suricatacfg['intf_snaplen'])) {
+	$intf_snaplen = $suricatacfg['intf_snaplen'];
+}
+else {
+	$intf_snaplen = "1518";
+}
+
 // Add interface-specific blocking settings
 if ($suricatacfg['blockoffenders'] == 'on' && $suricatacfg['ips_mode'] == 'ips_mode_legacy')
 	$suri_blockoffenders = "yes";
@@ -892,6 +899,7 @@ pcap:
   - interface: {$if_real}
     checksum-checks: auto
     promisc: {$intf_promisc_mode}
+    snaplen: {$intf_snaplen}
 EOD;
 }
 
